@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name></name>
     <message>
@@ -17,11 +19,11 @@
     <name>QObject</name>
     <message>
         <source>Couldn&apos;t initialize QSql driver!</source>
-        <translation>¡No pude inicializar el driver QSql!</translation>
+        <translation type="obsolete">¡No pude inicializar el driver QSql!</translation>
     </message>
     <message>
         <source>Couldn&apos;t open mySQL connection!</source>
-        <translation>¡No pude abrir la conexión mySQL!</translation>
+        <translation type="obsolete">¡No pude abrir la conexión mySQL!</translation>
     </message>
     <message>
         <source>Sequentially</source>
@@ -376,10 +378,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>invalid SQL or failed DB connection</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>All</source>
         <translation type="unfinished">Todo</translation>
     </message>
@@ -417,6 +415,158 @@
     </message>
     <message>
         <source>Mr. Master Reconciliation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Spin Count</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cut Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>unknown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>feature</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>open</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>theme</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>promo</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>cold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>fade</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>NoTime</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>invalid SQL or failed DB connection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stop Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Pause Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Añadir</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Borrar</translation>
+    </message>
+    <message>
+        <source>Copy</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Move</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sound Panel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Main Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Aux Log 1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Aux Log 2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Test Tone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rivendell Radio Automation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>1 kHz at Reference Level [-16 dBFS]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>tone</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>unable to re-read database schema.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t initialize MySql driver!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t open MySQL connection on</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Switcher</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Input</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Output</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Left</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Right</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Stereo</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -710,7 +860,7 @@ Color</translation>
     </message>
     <message>
         <source>ARTIST</source>
-        <translation>ARTISTA<byte value="x9"/></translation>
+        <translation>ARTISTA	</translation>
     </message>
     <message>
         <source>CLIENT</source>
@@ -1443,6 +1593,10 @@ Overwrite?</source>
         <source>144 kbps</source>
         <translation></translation>
     </message>
+    <message>
+        <source>PCM24</source>
+        <translation type="unfinished">PCM24</translation>
+    </message>
 </context>
 <context>
     <name>RDGetAth</name>
@@ -1782,7 +1936,7 @@ Do you still want to proceed?</source>
     <name>RDListLogs</name>
     <message>
         <source>Select Log - User: </source>
-        <translation>Seleccionar Playlist - Usuario: </translation>
+        <translation type="obsolete">Seleccionar Playlist - Usuario: </translation>
     </message>
     <message>
         <source>Select Log</source>
@@ -1790,15 +1944,15 @@ Do you still want to proceed?</source>
     </message>
     <message>
         <source>NAME</source>
-        <translation>NOMBRE</translation>
+        <translation type="obsolete">NOMBRE</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation>DESCRIPCIÓN</translation>
+        <translation type="obsolete">DESCRIPCIÓN</translation>
     </message>
     <message>
         <source>SERVICE</source>
-        <translation>SERVICIO</translation>
+        <translation type="obsolete">SERVICIO</translation>
     </message>
     <message>
         <source>OK</source>
@@ -1807,6 +1961,18 @@ Do you still want to proceed?</source>
     <message>
         <source>Cancel</source>
         <translation>Cancelar</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2136,11 +2302,18 @@ please try again!</source>
     <name>RDSqlDatabaseStatus</name>
     <message>
         <source>Database connection restored.</source>
-        <translation>Se recuperó la conexión a la base de datos.</translation>
+        <translation type="obsolete">Se recuperó la conexión a la base de datos.</translation>
     </message>
     <message>
         <source>Database connection failed : </source>
-        <translation>Falló la conexión a la base de datos : </translation>
+        <translation type="obsolete">Falló la conexión a la base de datos : </translation>
+    </message>
+</context>
+<context>
+    <name>RDSqlTableModel</name>
+    <message>
+        <source>[none]</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

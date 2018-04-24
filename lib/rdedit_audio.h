@@ -2,9 +2,7 @@
 //
 // Edit Rivendell Audio
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdedit_audio.h,v 1.9.6.2 2013/11/13 23:36:33 cvs Exp $
+//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,19 +21,23 @@
 #ifndef RDEDIT_AUDIO_H
 #define RDEDIT_AUDIO_H
 
-#include <qdialog.h>
-#include <qscrollbar.h>
-#include <qpixmap.h>
-#include <qimage.h>
-#include <qlineedit.h>
-#include <qpointarray.h>
-#include <qcursor.h>
-#include <qpopupmenu.h>
-#include <qlabel.h>
-#include <qspinbox.h>
-#include <qtimer.h>
-#include <qnamespace.h>
-#include <qcheckbox.h>
+#include <Q3PointArray>
+#include <Q3PopupMenu>
+#include <Q3RangeControl>
+#include <QCheckBox>
+#include <QCloseEvent>
+#include <QCursor>
+#include <QDialog>
+#include <QImage>
+#include <QKeyEvent>
+#include <QLabel>
+#include <QLineEdit>
+#include <QMouseEvent>
+#include <QPaintEvent>
+#include <QPixmap>
+#include <QScrollBar>
+#include <QSpinBox>
+#include <QTimer>
 
 #include <rdconfig.h>
 #include <rdmarker_edit.h>
@@ -67,9 +69,9 @@
 //
 // Widget Colors
 //
-#define EDITAUDIO_PLAY_COLOR white
-#define EDITAUDIO_REMOVE_FLASH_COLOR blue
-#define EDITAUDIO_WAVEFORM_COLOR black
+#define EDITAUDIO_PLAY_COLOR Qt::white
+#define EDITAUDIO_REMOVE_FLASH_COLOR Qt::blue
+#define EDITAUDIO_WAVEFORM_COLOR Qt::black
 #define EDITAUDIO_HIGHLIGHT_COLOR colorGroup().mid()
 
 class RDEditAudio : public QDialog
@@ -78,8 +80,7 @@ class RDEditAudio : public QDialog
  public:
   RDEditAudio(RDCart *cart,QString cut_name,RDCae *cae,RDUser *user,
 	      RDStation *station,RDConfig *config,int card,int port,
-	      int preroll,int trim_level,
-	      QWidget *parent=0,const char *name=0);
+	      int preroll,int trim_level,QWidget *parent=0);
   ~RDEditAudio();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -149,9 +150,11 @@ class RDEditAudio : public QDialog
   void DrawMaps();
   void UpdateCursors();
   void DrawCursors(int xpos,int ypos,int xsize,int ysize,int chan);
+  /*
   int DrawCursor(int xpos,int ypos,int xsize,int ysize,int chan,
 		 int samp,int prev,QColor color,Arrow arrow,int apos,
 		 RDEditAudio::CuePoints pt,Qt::RasterOp op=Qt::CopyROP);
+  */
   void EraseCursor(int xpos,int ypos,int xsize,int ysize,int chan,
 		   int samp,int prev,QColor color,Arrow arrow,int apos);
   void DrawWave(int xsize,int ysize,int chan,QString label,QPixmap *pix);
@@ -163,7 +166,7 @@ class RDEditAudio : public QDialog
   unsigned edit_sample_rate;
   unsigned edit_sample_length;
   unsigned edit_channels;
-  QPopupMenu *edit_menu;
+  Q3PopupMenu *edit_menu;
   QScrollBar *edit_hscroll;
   QImage edit_left_ref_image;
   QImage edit_right_ref_image;
@@ -176,7 +179,7 @@ class RDEditAudio : public QDialog
   RDMarkerEdit *edit_cursor_edit[RDEditAudio::LastMarker];
   QCursor *edit_arrow_cursor;
   QCursor *edit_cross_cursor;
-  QPointArray *edit_wave_array;
+  Q3PointArray *edit_wave_array;
   QSpinBox *edit_trim_box;
   RDMarkerButton *edit_cue_button[RDEditAudio::LastMarker];
   QString edit_cue_string;
@@ -188,7 +191,7 @@ class RDEditAudio : public QDialog
   RDTransportButton *edit_pause_button;
   RDTransportButton *edit_stop_button;
   RDStereoMeter *edit_meter;
-  QRangeControl *edit_gain_control;
+  Q3RangeControl *edit_gain_control;
   RDMarkerEdit *edit_gain_edit;
   QTimer *edit_gain_timer;
   QTimer *edit_meter_timer;

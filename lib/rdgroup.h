@@ -2,9 +2,7 @@
 //
 // Abstract a Rivendell Service
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdgroup.h,v 1.17.8.1.2.1 2014/05/30 00:26:28 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,7 +18,6 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qsqldatabase.h>
 #include <qcolor.h>
 
 #include <rdcart.h>
@@ -32,7 +29,7 @@ class RDGroup
 {
  public:
   enum ExportType {None=0,Traffic=1,Music=2};
-  RDGroup(QString name,bool create=false,QSqlDatabase *db=0);
+  RDGroup(QString name,bool create=false);
   QString name() const;
   bool exists() const;
   QString description() const;
@@ -65,6 +62,10 @@ class RDGroup
 		    unsigned quan) const;
   bool cartNumberValid(unsigned cartnum) const;
   QString xml() const;
+  static bool create(const QString &name,bool all_users,bool all_groups);
+  static void remove(const QString &name);
+  static bool exists(const QString &name);
+  static unsigned cartQuantity(const QString &name);
   
  private:
   unsigned GetNextFreeCart(unsigned startcart) const;
@@ -74,7 +75,6 @@ class RDGroup
   void SetRow(const QString &param,unsigned value) const;
   void SetRow(const QString &param,const QString &value) const;
   QString ReportField(ExportType type) const;
-  QSqlDatabase *group_db;
   QString group_name;
 };
 

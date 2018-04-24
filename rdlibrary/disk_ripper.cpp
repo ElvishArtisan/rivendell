@@ -2,9 +2,7 @@
 //
 // CD Ripper Dialog for Rivendell.
 //
-//   (C) Copyright 2002-2003,2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: disk_ripper.cpp,v 1.30.4.3.2.7 2014/06/02 18:59:24 cvs Exp $
+//   (C) Copyright 2002-2003,2010,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,10 +27,15 @@
 #include <math.h>
 #include <linux/cdrom.h>
 #include <qpushbutton.h>
-#include <qfiledialog.h>
+#include <q3filedialog.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
+//Added by qt3to4:
+#include <QLabel>
+#include <QResizeEvent>
+#include <QCloseEvent>
 
+#include <rdapplication.h>
 #include <rddb.h>
 #include <rd.h>
 #include <rdconf.h>
@@ -51,8 +54,8 @@
 
 
 DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
-		       bool profile_rip,QWidget *parent,const char *name) 
-  : QDialog(parent,name)
+		       bool profile_rip,QWidget *parent) 
+  : QDialog(parent)
 {
   rip_isrc_read=false;
   rip_filter_text=filter;
@@ -109,7 +112,7 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   connect(rip_cdrom,SIGNAL(mediaChanged()),this,SLOT(mediaChangedData()));
   connect(rip_cdrom,SIGNAL(played(int)),this,SLOT(playedData(int)));
   connect(rip_cdrom,SIGNAL(stopped()),this,SLOT(stoppedData()));
-  rip_cdrom->setDevice(rdlibrary_conf->ripperDevice());
+  rip_cdrom->setDevice(rda->libraryConf()->ripperDevice());
   rip_cdrom->open();
 
   //
@@ -130,7 +133,7 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   QLabel *label=new QLabel(tr("Artist:"),this);
   label->setGeometry(10,10,50,18);
   label->setFont(label_font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   rip_artist_edit=new QLineEdit(this);
 
   //
@@ -139,7 +142,7 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   label=new QLabel(tr("Album:"),this);
   label->setGeometry(10,32,50,18);
   label->setFont(label_font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   rip_album_edit=new QLineEdit(this);
 
   //
@@ -148,37 +151,37 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   label=new QLabel(tr("Other:"),this);
   label->setGeometry(10,54,50,16);
   label->setFont(label_font);
-  label->setAlignment(AlignRight);
-  rip_other_edit=new QTextEdit(this);
+  label->setAlignment(Qt::AlignRight);
+  rip_other_edit=new Q3TextEdit(this);
   rip_other_edit->setReadOnly(true);
 
   //
   // Apply FreeDB Check Box
   //
-  rip_apply_box=new QCheckBox(this,"rip_apply_box");
+  rip_apply_box=new QCheckBox(this);
   rip_apply_box->setChecked(true);
   rip_apply_box->setDisabled(true);
   rip_apply_label=
     new QLabel(rip_apply_box,tr("Apply FreeDB Values to Carts"),this);
   rip_apply_label->setFont(label_font);
-  rip_apply_label->setAlignment(AlignLeft);
+  rip_apply_label->setAlignment(Qt::AlignLeft);
   rip_apply_box->setChecked(false);
   rip_apply_label->setDisabled(true);
 
   //
   // Track List
   //
-  rip_track_list=new QListView(this);
+  rip_track_list=new Q3ListView(this);
   rip_track_list->setAllColumnsShowFocus(true);
   rip_track_list->setItemMargin(5);
   rip_track_list->setSorting(-1);
-  rip_track_list->setSelectionMode(QListView::Extended);
+  rip_track_list->setSelectionMode(Q3ListView::Extended);
   connect(rip_track_list,SIGNAL(selectionChanged()),
 	  this,SLOT(selectionChangedData()));
   connect(rip_track_list,
-	  SIGNAL(doubleClicked(QListViewItem *,const QPoint &,int)),
+	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,
-	  SLOT(doubleClickedData(QListViewItem *,const QPoint &,int)));
+	  SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
   rip_track_label=new QLabel(rip_track_list,tr("Tracks"),this);
   rip_track_label->setFont(label_font);
   rip_track_list->addColumn(tr("TRACK"));
@@ -197,15 +200,15 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   //
   // Progress Bars
   //
-  rip_disk_bar=new QProgressBar(this);
+  rip_disk_bar=new Q3ProgressBar(this);
   rip_diskbar_label=new QLabel(tr("Disk Progress"),this);
   rip_diskbar_label->setFont(label_font);
-  rip_diskbar_label->setAlignment(AlignLeft|AlignVCenter);
+  rip_diskbar_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   rip_diskbar_label->setDisabled(true);
-  rip_track_bar=new QProgressBar(this);
+  rip_track_bar=new Q3ProgressBar(this);
   rip_trackbar_label=new QLabel(tr("Track Progress"),this);
   rip_trackbar_label->setFont(label_font);
-  rip_trackbar_label->setAlignment(AlignLeft|AlignVCenter);
+  rip_trackbar_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   rip_trackbar_label->setDisabled(true);
 
   //
@@ -224,7 +227,7 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   // Stop Button
   //
   rip_stop_button=new RDTransportButton(RDTransportButton::Stop,this);
-  rip_stop_button->setOnColor(red);
+  rip_stop_button->setOnColor(Qt::red);
   rip_stop_button->on();
   connect(rip_stop_button,SIGNAL(clicked()),this,SLOT(stopButtonData()));
   
@@ -277,7 +280,7 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   rip_normalize_box->setChecked(true);
   rip_normalizebox_label=new QLabel(rip_normalize_box,tr("Normalize"),this);
   rip_normalizebox_label->setFont(label_font);
-  rip_normalizebox_label->setAlignment(AlignLeft|AlignVCenter);
+  rip_normalizebox_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   connect(rip_normalize_box,SIGNAL(toggled(bool)),
 	  this,SLOT(normalizeCheckData(bool)));
 
@@ -288,10 +291,10 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   rip_normalize_spin->setRange(-30,0);
   rip_normalize_label=new QLabel(rip_normalize_spin,tr("Level:"),this);
   rip_normalize_label->setFont(label_font);
-  rip_normalize_label->setAlignment(AlignRight|AlignVCenter);
+  rip_normalize_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   rip_normalize_unit=new QLabel(tr("dBFS"),this);
   rip_normalize_unit->setFont(label_font);
-  rip_normalize_unit->setAlignment(AlignLeft|AlignVCenter);
+  rip_normalize_unit->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Autotrim Check Box
@@ -300,7 +303,7 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   rip_autotrim_box->setChecked(true);
   rip_autotrimbox_label=new QLabel(rip_autotrim_box,tr("Autotrim"),this);
   rip_autotrimbox_label->setFont(label_font);
-  rip_autotrimbox_label->setAlignment(AlignLeft|AlignVCenter);
+  rip_autotrimbox_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   connect(rip_autotrim_box,SIGNAL(toggled(bool)),
 	  this,SLOT(autotrimCheckData(bool)));
 
@@ -311,10 +314,10 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   rip_autotrim_spin->setRange(-99,0);
   rip_autotrim_label=new QLabel(rip_autotrim_spin,tr("Level:"),this);
   rip_autotrim_label->setFont(label_font);
-  rip_autotrim_label->setAlignment(AlignRight|AlignVCenter);
+  rip_autotrim_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   rip_autotrim_unit=new QLabel(tr("dBFS"),this);
   rip_autotrim_unit->setFont(label_font);
-  rip_autotrim_unit->setAlignment(AlignLeft|AlignVCenter);
+  rip_autotrim_unit->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Channels
@@ -322,7 +325,7 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   rip_channels_box=new QComboBox(this);
   rip_channels_label=new QLabel(rip_channels_box,tr("Channels:"),this);
   rip_channels_label->setFont(label_font);
-  rip_channels_label->setAlignment(AlignRight|AlignVCenter);
+  rip_channels_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Rip Disc Button
@@ -342,11 +345,11 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   //
   // Populate Data
   //
-  rip_normalize_spin->setValue(rdlibrary_conf->ripperLevel()/100);
-  rip_autotrim_spin->setValue(rdlibrary_conf->trimThreshold()/100);
+  rip_normalize_spin->setValue(rda->libraryConf()->ripperLevel()/100);
+  rip_autotrim_spin->setValue(rda->libraryConf()->trimThreshold()/100);
   rip_channels_box->insertItem("1");
   rip_channels_box->insertItem("2");
-  rip_channels_box->setCurrentItem(rdlibrary_conf->defaultChannels()-1);
+  rip_channels_box->setCurrentItem(rda->libraryConf()->defaultChannels()-1);
   rip_done=false;
 }
 
@@ -354,7 +357,7 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
 DiskRipper::~DiskRipper()
 {
   QStringList files=rip_cdda_dir.entryList();
-  for(unsigned i=0;i<files.size();i++) {
+  for(int i=0;i<files.size();i++) {
     if((files[i]!=".")&&(files[i]!="..")) {
       rip_cdda_dir.remove(files[i]);
     }
@@ -433,8 +436,10 @@ void DiskRipper::ripDiskButtonData()
   // Read ISRCs
   //
   if(!rip_isrc_read) {
-    rip_cddb_lookup->
-      readIsrc(rip_cdda_dir.path(),rdlibrary_conf->ripperDevice());
+    if(rda->libraryConf()->readIsrc()) {
+      rip_cddb_lookup->
+	readIsrc(rip_cdda_dir.path(),rda->libraryConf()->ripperDevice());
+    }
     rip_isrc_read=true;
   }
 
@@ -534,11 +539,9 @@ void DiskRipper::setCutButtonData()
     return;
   }
   QString cutname=rip_cutnames[item->text(0).toUInt()-1];
-  RDCutDialog *dialog=new RDCutDialog(&cutname,rdstation_conf,lib_system,
-				      rip_filter_text,
+  RDCutDialog *dialog=new RDCutDialog(&cutname,rip_filter_text,
 				      rip_group_text,rip_schedcode_text,
-				      lib_user->name(),true,
-				      true,true,this,"cut_dialog");
+				      rda->user()->name(),true,true,true,this);
   if(dialog->exec()==0) {
     if(cutname.isEmpty()) {
       rip_cutnames[item->text(0).toUInt()-1]="";
@@ -558,7 +561,7 @@ void DiskRipper::setCutButtonData()
 				    QMessageBox::Yes,
 				    QMessageBox::No)) {
 	case QMessageBox::No:
-	case QMessageBox::NoButton:
+	case Qt::NoButton:
 	  delete dialog;
 	  return;
 	  
@@ -573,7 +576,7 @@ void DiskRipper::setCutButtonData()
 				      QMessageBox::Yes,
 				      QMessageBox::No)) {
 	  case QMessageBox::No:
-	  case QMessageBox::NoButton:
+	  case Qt::NoButton:
 	    return;
 	    
 	  default:
@@ -617,7 +620,7 @@ void DiskRipper::setMultiButtonData()
   //
   // Get Destination Group
   //
-  RDListGroups *list_groups=new RDListGroups(rip_group_text,lib_user->name(),
+  RDListGroups *list_groups=new RDListGroups(rip_group_text,rda->user()->name(),
 					     this);
   if(list_groups->exec()<0) {
     delete list_groups;
@@ -638,7 +641,7 @@ void DiskRipper::setMultiButtonData()
     }
     item=(RDListViewItem *)item->nextSibling();
   }
-  if(!group->reserveCarts(&cart_nums,rdstation_conf->name(),RDCart::Audio,
+  if(!group->reserveCarts(&cart_nums,rda->station()->name(),RDCart::Audio,
 			  count)) {
     QMessageBox::warning(this,"RDLibrary - "+tr("Error"),
 			 tr("Unable to allocate carts in group")+" \""+
@@ -677,7 +680,7 @@ void DiskRipper::setSingleButtonData()
   //
   // Get Destination Group
   //
-  RDListGroups *list_groups=new RDListGroups(rip_group_text,lib_user->name(),
+  RDListGroups *list_groups=new RDListGroups(rip_group_text,rda->user()->name(),
 					     this);
   if(list_groups->exec()<0) {
     delete list_groups;
@@ -692,7 +695,7 @@ void DiskRipper::setSingleButtonData()
   //
   // Reserve Cart
   //
-  if(!group->reserveCarts(&cart_nums,rdstation_conf->name(),RDCart::Audio,1)) {
+  if(!group->reserveCarts(&cart_nums,rda->station()->name(),RDCart::Audio,1)) {
     QMessageBox::warning(this,"RDLibrary - "+tr("Error"),
 			 tr("Unable to allocate cart in group")+" \""+
 			 group->name()+"\".");
@@ -792,7 +795,7 @@ void DiskRipper::mediaChangedData()
     rip_cutnames.push_back(QString());
     rip_end_track.push_back(-1);
     rip_wave_datas.push_back(new RDWaveData());
-    rip_wave_datas.back()->setTitle(tr("Track")+QString().sprintf(" %d",i+1));
+    rip_wave_datas.back()->setTitle(tr("Track")+QString().sprintf(" %d",rip_cdrom->tracks()-i+1));
     l=new RDListViewItem(rip_track_list);
     l->setText(0,QString().sprintf("%d",i));
     if(rip_cdrom->isAudio(i)) {
@@ -807,8 +810,8 @@ void DiskRipper::mediaChangedData()
   rip_cdrom->setCddbRecord(&rip_cddb_record);
   rip_cddb_lookup->setCddbRecord(&rip_cddb_record);
   rip_cddb_lookup->
-    lookupRecord(rip_cdda_dir.path(),rdlibrary_conf->ripperDevice(),
-		 rdlibrary_conf->cddbServer(),8880,
+    lookupRecord(rip_cdda_dir.path(),rda->libraryConf()->ripperDevice(),
+		 rda->libraryConf()->cddbServer(),8880,
 		 RIPPER_CDDB_USER,PACKAGE_NAME,VERSION);
 }
 
@@ -912,7 +915,7 @@ void DiskRipper::selectionChangedData()
 }
 
 
-void DiskRipper::doubleClickedData(QListViewItem *item,const QPoint &pt,
+void DiskRipper::doubleClickedData(Q3ListViewItem *item,const QPoint &pt,
 				   int col)
 {
   setCutButtonData();
@@ -921,7 +924,7 @@ void DiskRipper::doubleClickedData(QListViewItem *item,const QPoint &pt,
 
 void DiskRipper::closeData()
 {
-  RDCart::removePending(rdstation_conf,lib_user,lib_config);
+  RDCart::removePending(rda->station(),rda->user(),rda->config());
   if(rip_done&&rip_apply_box->isChecked()) {
     done(0);
   }
@@ -1040,25 +1043,25 @@ void DiskRipper::RipTrack(int track,int end_track,QString cutname,QString title)
   connect(rip_rip_button,SIGNAL(clicked()),ripper,SLOT(abort()));
   RDAudioImport *conv=NULL;
   RDSettings *settings=NULL;
-  ripper->setDevice(rdlibrary_conf->ripperDevice());
+  ripper->setDevice(rda->libraryConf()->ripperDevice());
   ripper->setDestinationFile(tmpfile);
   switch((ripper_err=ripper->rip(rip_track_number-1,end_track-1))) {
   case RDCdRipper::ErrorOk:
-    conv=new RDAudioImport(rdstation_conf,lib_config,this);
+    conv=new RDAudioImport(rda->station(),rda->config(),this);
     conv->setSourceFile(tmpfile);
     conv->setCartNumber(cut->cartNumber());
     conv->setCutNumber(cut->cutNumber());
     conv->setUseMetadata(false);
     settings=new RDSettings();
-    if(rdlibrary_conf->defaultFormat()==1) {
+    if(rda->libraryConf()->defaultFormat()==1) {
       settings->setFormat(RDSettings::MpegL2Wav);
     }
     else {
       settings->setFormat(RDSettings::Pcm16);
     }
     settings->setChannels(rip_channels_box->currentText().toInt());
-    settings->setSampleRate(lib_system->sampleRate());
-    settings->setBitRate(rdlibrary_conf->defaultBitrate());
+    settings->setSampleRate(rda->system()->sampleRate());
+    settings->setBitRate(rda->libraryConf()->defaultBitrate());
     if(rip_normalize_box->isChecked()) {
       settings->setNormalizationLevel(rip_normalize_spin->value());
     }
@@ -1067,7 +1070,7 @@ void DiskRipper::RipTrack(int track,int end_track,QString cutname,QString title)
     }
     conv->setDestinationSettings(settings);
     switch((conv_err=conv->
-	    runImport(lib_user->name(),lib_user->password(),
+	    runImport(rda->user()->name(),rda->user()->password(),
 		      &audio_conv_err))) {
     case RDAudioImport::ErrorOk:
       cart->setMetadata(rip_wave_datas[track-1]);
@@ -1077,7 +1080,7 @@ void DiskRipper::RipTrack(int track,int end_track,QString cutname,QString title)
       break;
 
     default:
-      cart->remove(rdstation_conf,lib_user,lib_config);
+      cart->remove();
       QMessageBox::warning(this,tr("RDLibrary - Importer Error"),
 			   RDAudioImport::errorText(conv_err,audio_conv_err));
       break;
@@ -1091,14 +1094,14 @@ void DiskRipper::RipTrack(int track,int end_track,QString cutname,QString title)
   case RDCdRipper::ErrorInternal:
   case RDCdRipper::ErrorNoDisc:
   case RDCdRipper::ErrorNoTrack:
-    cart->remove(rdstation_conf,lib_user,lib_config);
+    cart->remove();
     QMessageBox::warning(this,tr("RDLibrary - Ripper Error"),
 			 RDCdRipper::errorText(ripper_err));
     break;
 
   case RDCdRipper::ErrorAborted:
     rip_aborting=true;
-    cart->remove(rdstation_conf,lib_user,lib_config);
+    cart->remove();
     break;
   }
   delete ripper;
@@ -1131,11 +1134,19 @@ QString DiskRipper::BuildTrackName(int start_track,int end_track) const
   while(item!=NULL) {
     if(item->text(0).toInt()==start_track) {
       ret=item->text(2);
+      if(ret.isEmpty()) {
+	ret=tr("Track")+" "+item->text(0);
+      }
     }
     else {
       if((item->text(0).toInt()>start_track)&&
 	 (item->text(0).toInt()<=end_track)) {
-	ret+=" / "+item->text(2);
+	if(item->text(2).isEmpty()) {
+	  ret+=" / "+tr("Track")+" "+item->text(0);
+	}
+	else {
+	  ret+=" / "+item->text(2);
+	}
       }
     }
     item=(RDListViewItem *)item->nextSibling();

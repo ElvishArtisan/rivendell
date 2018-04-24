@@ -2,9 +2,7 @@
 //
 // A utility for sending RML Commands
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdsoftkeys.cpp,v 1.7.8.2 2014/01/08 02:08:41 cvs Exp $
+//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -36,6 +34,9 @@
 #include <qpushbutton.h>
 #include <qmessagebox.h>
 #include <qsettings.h>
+//Added by qt3to4:
+#include <QCloseEvent>
+#include <QPixmap>
 
 #include <rdprofile.h>
 #include <rd.h>
@@ -49,9 +50,8 @@
 //
 #include "../icons/rivendell-22x22.xpm"
 
-
-MainWidget::MainWidget(QWidget *parent,const char *name)
-  : QMainWindow(parent,name)
+MainWidget::MainWidget(QWidget *parent)
+  : Q3MainWindow(parent)
 {
   key_ysize=70;
 
@@ -89,7 +89,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // RML Send Socket
   //
-  key_socket=new QSocketDevice(QSocketDevice::Datagram);
+  key_socket=new Q3SocketDevice(Q3SocketDevice::Datagram);
 
   //
   // Create Buttons
@@ -115,7 +115,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   unsigned row=0;
   while(!(rmlcmd=profile->stringValue("SoftKeys",QString().
 				   sprintf("Command%d",n+1),"")).isEmpty()) {
-    for(unsigned i=0;i<rmlcmd.length();i++) {
+    for(int i=0;i<rmlcmd.length();i++) {
       if(rmlcmd.at(i)==':') {
 	key_macros.push_back(rmlcmd.right(rmlcmd.length()-(i+1)));
 	key_addrs.push_back(rmlcmd.left(i));
@@ -287,6 +287,7 @@ int main(int argc,char *argv[])
   //
   // Load Translations
   //
+  /*
   QString tr_path;
   QString qt_path;
 #ifdef WIN32
@@ -311,11 +312,11 @@ int main(int argc,char *argv[])
   QTranslator tests(0);
   tests.load(tr_path+QString("rdsoftkeys_")+QTextCodec::locale(),".");
   a.installTranslator(&tests);
-
+  */
   //
   // Start Event Loop
   //
-  MainWidget *w=new MainWidget(NULL,"main");
+  MainWidget *w=new MainWidget();
   a.setMainWidget(w);
   w->setGeometry(w->geometry().x(),w->geometry().y(),w->sizeHint().width(),w->sizeHint().height());
   w->show();

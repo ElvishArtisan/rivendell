@@ -2,9 +2,7 @@
 //
 //   A 'progress dialog' widget that shows busy state.
 //
-//   (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdbusydialog.cpp,v 1.1.2.1 2012/11/26 20:19:36 cvs Exp $
+//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -22,9 +20,12 @@
 //
 
 #include <rdbusydialog.h>
+//Added by qt3to4:
+#include <QResizeEvent>
+#include <QLabel>
 
-RDBusyDialog::RDBusyDialog(QWidget *parent,const char *name,WFlags f)
-  : QDialog(parent,name,true,f)
+RDBusyDialog::RDBusyDialog(QWidget *parent,Qt::WFlags f)
+  : QDialog(parent,"",true,f)
 {
   QFont font("helvetica",16,QFont::Bold);
   font.setPixelSize(16);

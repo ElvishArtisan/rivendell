@@ -2,9 +2,7 @@
 //
 // A class to read an ini formatted configuration file.
 //
-// (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdprofile.cpp,v 1.4.8.1 2014/01/20 19:13:30 cvs Exp $
+// (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -19,14 +17,12 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-//
 
 #include <qfile.h>
 #include <qstringlist.h>
-#include <qtextstream.h>
+#include <q3textstream.h>
 
 #include <rdprofile.h>
-
 
 RDProfile::RDProfile()
 {
@@ -49,11 +45,11 @@ bool RDProfile::setSource(const QString &filename)
   profile_section.push_back(RDProfileSection());
   profile_section.back().setName("");
   QFile *file=new QFile(filename);
-  if(!file->open(IO_ReadOnly)) {
+  if(!file->open(QIODevice::ReadOnly)) {
     delete file;
     return false;
   }
-  QTextStream *text=new QTextStream(file);
+  Q3TextStream *text=new Q3TextStream(file);
   QString line=text->readLine().stripWhiteSpace();
   while(!line.isNull()) {
     if((line.left(1)!=";")&&(line.left(1)!="#")) {
@@ -87,7 +83,7 @@ void RDProfile::setSourceString(const QString &str)
   profile_section.push_back(RDProfileSection());
   profile_section.back().setName("");
   lines=lines.split("\n",str);
-  for(unsigned i=0;i<lines.size();i++) {
+  for(int i=0;i<lines.size();i++) {
     QString line=lines[i];
     if((line.left(1)!=";")&&(line.left(1)!="#")) {
       if((line.left(1)=="[")&&(line.right(1)=="]")) {

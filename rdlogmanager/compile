@@ -1,0 +1,41 @@
+-*- mode: compilation; default-directory: "~/rivendell/rdlogmanager/" -*-
+Compilation started at Fri Feb  6 19:10:40
+
+make -k 
+  CXX    edit_grid.o
+edit_grid.cpp: In member function ‘void EditGrid::allHourButtonData()’:
+edit_grid.cpp:190: error: no matching function for call to ‘ListClocks::ListClocks(QString*, EditGrid* const, const char [11])’
+./list_clocks.h:42: note: candidates are: ListClocks::ListClocks(QString*, QWidget*)
+./list_clocks.h:39: note:                 ListClocks::ListClocks(const ListClocks&)
+make: *** [edit_grid.o] Error 1
+  CXX    edit_schedrules.o
+edit_schedrules.cpp: In member function ‘void EditSchedRules::importData()’:
+edit_schedrules.cpp:215: error: no matching function for call to ‘ListClocks::ListClocks(QString*, EditSchedRules* const, const char [11])’
+./list_clocks.h:42: note: candidates are: ListClocks::ListClocks(QString*, QWidget*)
+./list_clocks.h:39: note:                 ListClocks::ListClocks(const ListClocks&)
+make: *** [edit_schedrules.o] Error 1
+  CXX    list_clocks.o
+list_clocks.cpp: In member function ‘void ListClocks::addData()’:
+list_clocks.cpp:252: error: no matching function for call to ‘EditClock::EditClock(QString&, bool, std::vector<QString, std::allocator<QString> >*, ListClocks* const, const char [13])’
+./edit_clock.h:50: note: candidates are: EditClock::EditClock(QString, bool, std::vector<QString, std::allocator<QString> >*, QWidget*)
+./edit_clock.h:47: note:                 EditClock::EditClock(const EditClock&)
+list_clocks.cpp: In member function ‘void ListClocks::editData()’:
+list_clocks.cpp:307: error: no matching function for call to ‘EditClock::EditClock(QString, bool, std::vector<QString, std::allocator<QString> >*, ListClocks* const, const char [13])’
+./edit_clock.h:50: note: candidates are: EditClock::EditClock(QString, bool, std::vector<QString, std::allocator<QString> >*, QWidget*)
+./edit_clock.h:47: note:                 EditClock::EditClock(const EditClock&)
+make: *** [list_clocks.o] Error 1
+  CXX    list_grids.o
+list_grids.cpp: In member function ‘void ListGrids::editData()’:
+list_grids.cpp:114: error: no matching function for call to ‘EditGrid::EditGrid(QString, ListGrids* const, const char [12])’
+./edit_grid.h:39: note: candidates are: EditGrid::EditGrid(QString, QWidget*)
+./edit_grid.h:36: note:                 EditGrid::EditGrid(const EditGrid&)
+make: *** [list_grids.o] Error 1
+  CXX    rdlogmanager.o
+rdlogmanager.cpp: In member function ‘void MainWidget::clocksData()’:
+rdlogmanager.cpp:323: error: no matching function for call to ‘ListClocks::ListClocks(NULL, MainWidget* const, const char [12])’
+./list_clocks.h:42: note: candidates are: ListClocks::ListClocks(QString*, QWidget*)
+./list_clocks.h:39: note:                 ListClocks::ListClocks(const ListClocks&)
+make: *** [rdlogmanager.o] Error 1
+make: Target `all' not remade because of errors.
+
+Compilation exited abnormally with code 2 at Fri Feb  6 19:10:42

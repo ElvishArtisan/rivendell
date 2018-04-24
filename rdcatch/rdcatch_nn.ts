@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>AddRecording</name>
     <message>
@@ -970,7 +972,7 @@ ny</translation>
     </message>
     <message>
         <source>rdcatch : </source>
-        <translation>rdcatch:</translation>
+        <translation type="obsolete">rdcatch:</translation>
     </message>
     <message>
         <source>Show Only Active Events</source>
@@ -1315,6 +1317,10 @@ ny</translation>
     <message>
         <source>User</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PCM24</source>
+        <translation type="unfinished">PCM24</translation>
     </message>
 </context>
 </TS>

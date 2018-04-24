@@ -2,9 +2,7 @@
 //
 // The SoundPanel Button for RDAirPlay.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdpanel_button.cpp,v 1.26.6.9 2014/02/06 20:43:47 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,12 +23,17 @@
 
 #include <qpixmap.h>
 #include <qpainter.h>
+//Added by qt3to4:
+#include <QDropEvent>
+#include <QMouseEvent>
+#include <QKeyEvent>
+#include <QDragEnterEvent>
 
 #include <rdcartdrag.h>
 
 RDPanelButton::RDPanelButton(int row,int col,RDStation *station,bool flash,
-			     QWidget *parent,const char *name)
-  : QPushButton(parent,name)
+			     QWidget *parent)
+  : QPushButton(parent)
 {
   button_row=row;
   button_col=col;
@@ -550,7 +553,7 @@ QString RDPanelButton::GetNextLine(QString *str,const QFontMetrics &m,int len)
 {
   QString ret;
 
-  for(unsigned i=0;i<str->length();i++) {
+  for(int i=0;i<str->length();i++) {
     if(m.width(str->left(i))>len) {
       int l=i;
       while((!str->at(l--).isSpace())&&(l>=0));

@@ -2,9 +2,7 @@
 //
 // Rivendell web service portal -- DeleteAudio service
 //
-//   (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: deleteaudio.cpp,v 1.6.2.1 2012/07/17 19:29:43 cvs Exp $
+//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,12 +24,13 @@
 #include <fcntl.h>
 #include <errno.h>
 
+#include <rdapplication.h>
 #include <rdformpost.h>
 #include <rdweb.h>
 #include <rdcart.h>
 #include <rdconf.h>
 
-#include <rdxport.h>
+#include "rdxport.h"
 
 void Xport::DeleteAudio()
 {
@@ -50,7 +49,7 @@ void Xport::DeleteAudio()
   //
   // Process Request
   //
-  if((!xport_user->deleteCarts())&&(!xport_user->adminConfig())) {
+  if((!rda->user()->deleteCarts())&&(!rda->user()->adminConfig())) {
     XmlExit("User not authorized",401);
   }
   RDCut *cut=new RDCut(cartnum,cutnum);
@@ -60,6 +59,10 @@ void Xport::DeleteAudio()
   }
   unlink(RDCut::pathName(cartnum,cutnum));
   unlink(RDCut::pathName(cartnum,cutnum)+".energy");
+  QString sql=QString("delete from CUT_EVENTS where ")+
+    "CUT_NAME=\""+RDCut::cutName(cartnum,cutnum)+"\"";
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  delete q;
   syslog(LOG_NOTICE,"unlink(%s): %s",(const char *)RDCut::pathName(cartnum,cutnum),strerror(errno));
   delete cut;
   XmlExit("OK",200);

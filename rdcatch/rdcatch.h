@@ -1,10 +1,8 @@
 // rdcatch.h
 //
-// The Netcatch Manager for Rivendell.
+// The Event Schedule Manager for Rivendell.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcatch.h,v 1.51 2011/08/30 23:35:44 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,7 +18,6 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-
 #ifndef RDCATCH_H
 #define RDCATCH_H
 
@@ -35,7 +32,11 @@
 #include <qcheckbox.h>
 #include <qcombobox.h>
 #include <qpixmap.h>
-#include <qscrollview.h>
+#include <q3scrollview.h>
+//Added by qt3to4:
+#include <QCloseEvent>
+#include <QResizeEvent>
+#include <QLabel>
 
 #include <rdtransportbutton.h>
 #include <rdlistviewitem.h>
@@ -52,8 +53,6 @@
 #include <catch_monitor.h>
 #include <vbox.h>
 
-using namespace std;
-
 /*
  * Widget Settings
  */
@@ -66,7 +65,7 @@ class MainWidget : public QWidget
 {
   Q_OBJECT
  public:
-  MainWidget(QWidget *parent=0,const char *name=0);
+  MainWidget(QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
   
@@ -83,6 +82,7 @@ class MainWidget : public QWidget
   void statusChangedData(int,unsigned,RDDeck::Status,int,
 			 const QString &cutname);
   void monitorChangedData(int serial,unsigned chan,bool state);
+  void deckEventSentData(int serial,int chan,int number);
   void scrollButtonData();
   void reportsButtonData();
   void headButtonData();
@@ -94,8 +94,8 @@ class MainWidget : public QWidget
   void meterLevelData(int,int,int,int);
   void abortData(int);
   void monitorData(int);
-  void selectionChangedData(QListViewItem *item);
-  void doubleClickedData(QListViewItem *,const QPoint &,int);
+  void selectionChangedData(Q3ListViewItem *item);
+  void doubleClickedData(Q3ListViewItem *,const QPoint &,int);
   void filterChangedData(bool state);
   void dowChangedData(int id);
   void clockData();
@@ -130,13 +130,13 @@ class MainWidget : public QWidget
   void LoadGeometry();
   void SaveGeometry();
   std::vector<CatchMonitor *> catch_monitor;
-  QScrollView *catch_monitor_view;
+  Q3ScrollView *catch_monitor_view;
   VBox *catch_monitor_vbox;
   struct {
     RDCatchConnect *connect;
     QString station;
-    vector<unsigned> chan;
-    vector<unsigned> mon_id;
+    std::vector<unsigned> chan;
+    std::vector<unsigned> mon_id;
   } catch_connect[RD_MAX_STATIONS];
   int catch_station_count;
   QSqlDatabase *catch_db;

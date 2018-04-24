@@ -2,9 +2,7 @@
 //
 // Add a Rivendell Replicator
 //
-//   (C) Copyright 2002 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: add_replicator.h,v 1.2 2010/07/29 19:32:34 cvs Exp $
+//   (C) Copyright 2002,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,16 +21,14 @@
 #ifndef ADD_REPLICATOR_H
 #define ADD_REPLICATOR_H
 
-#include <qdialog.h>
-#include <qcheckbox.h>
-#include <qlineedit.h>
-
+#include <QDialog>
+#include <QLineEdit>
 
 class AddReplicator : public QDialog
 {
   Q_OBJECT
   public:
-   AddReplicator(QString *rname,QWidget *parent=0,const char *name=0);
+   AddReplicator(QString *rname,QWidget *parent=0);
    ~AddReplicator();
    QSize sizeHint() const;
    QSizePolicy sizePolicy() const;
@@ -47,5 +43,4 @@ class AddReplicator : public QDialog
 };
 
 
-#endif
-
+#endif  // ADD_REPLICATOR_H

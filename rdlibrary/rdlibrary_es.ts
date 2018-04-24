@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>AudioCart</name>
     <message>
@@ -218,6 +220,10 @@ Do you still want to delete?</source>
     </message>
     <message>
         <source>You must select a single cut!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ORD</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -855,6 +861,26 @@ Notas</translation>
         <source>Use Event Length for Now &amp;&amp; Next Updates</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>By Specified Order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>By Weight</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Schedule Cuts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The following cut order values are assigned more than once</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duplicate Cut Order</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditMacro</name>
@@ -1042,7 +1068,7 @@ Cartucho</translation>
     <name>MainWidget</name>
     <message>
         <source>Can&apos;t Connect</source>
-        <translation>No puedo conectar</translation>
+        <translation type="obsolete">No puedo conectar</translation>
     </message>
     <message>
         <source>Filter:</source>
@@ -1214,13 +1240,13 @@ Do you still want to delete it?</source>
     </message>
     <message>
         <source>Deleting cart %06u will also empty the clipboard.
-      <byte value="x9"/>Do you still want to proceed?</source>
+      	Do you still want to proceed?</source>
         <translation>Al eliminar el cartucho %06u también se vaciará el portapapeles.
-      <byte value="x9"/>¿Desea continuar?</translation>
+      	¿Desea continuar?</translation>
     </message>
     <message>
         <source>rdlibrary : </source>
-        <translation>rdlibrary : </translation>
+        <translation type="obsolete">rdlibrary : </translation>
     </message>
     <message>
         <source>&amp;Search</source>
@@ -1525,6 +1551,10 @@ Do you still want to save?</source>
     </message>
     <message>
         <source>AES ALARM</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Order</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

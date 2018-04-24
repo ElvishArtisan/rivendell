@@ -2,9 +2,7 @@
 //
 //   A class for recording Microsoft WAV files.
 //
-//   (C) Copyright 2002-2007 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdhpirecordstream.h,v 1.6.6.1 2012/05/04 14:56:22 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -55,7 +53,7 @@ class RDHPIRecordStream : public QObject,public RDWaveFile
   enum RecordState {Recording=0,RecordReady=1,Paused=2,Stopped=3,
 		    RecordStarted=4};
   enum Error {Ok=0,NoFile=1,NoStream=2,AlreadyOpen=3};
-  RDHPIRecordStream(RDHPISoundCard *card,QWidget *parent=0,const char *name=0);
+  RDHPIRecordStream(RDHPISoundCard *card,QWidget *parent=0);
   ~RDHPIRecordStream();
   QString errorString(RDHPIRecordStream::Error err);
   RDHPIRecordStream::Error createWave();

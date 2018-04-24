@@ -2,9 +2,7 @@
 //
 //   The Log ListView widget for RDAirPlay's Full Log widget.
 //
-//   (C) Copyright 2002-2013 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: lib_listview.h,v 1.1.2.1 2013/12/28 00:00:33 cvs Exp $
+//   (C) Copyright 2002-2013,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,12 +23,15 @@
 
 #include <rdlistview.h>
 #include <rdlog_line.h>
+//Added by qt3to4:
+#include <QDropEvent>
+#include <QDragEnterEvent>
 
 class LibListView : public RDListView
 {
   Q_OBJECT
  public:
-  LibListView(QWidget *parent,const char *name=0);
+  LibListView(QWidget *parent);
 
  signals:
   void cartDropped(int line,RDLogLine *ll);

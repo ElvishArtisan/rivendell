@@ -2,9 +2,7 @@
 //
 // Container class for RDCartSlot options
 //
-//   (C) Copyright 2012 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdslotoptions.cpp,v 1.2.2.5 2012/11/28 18:49:36 cvs Exp $
+//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,7 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qobject.h>
+#include <QObject>
+#include <QVariant>
 
 #include <rddb.h>
 #include <rdescape_string.h>
@@ -140,11 +139,21 @@ bool RDSlotOptions::load()
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString("select CARD,INPUT_PORT,OUTPUT_PORT,")+
-    "MODE,DEFAULT_MODE,HOOK_MODE,DEFAULT_HOOK_MODE,"+
-    "STOP_ACTION,DEFAULT_STOP_ACTION,"+
-    "CART_NUMBER,DEFAULT_CART_NUMBER,SERVICE_NAME from CARTSLOTS "+
-    "where (STATION_NAME=\""+RDEscapeString(set_stationname)+"\")&&"+
+  sql=QString("select ")+
+    "CARD,"+                 // 00
+    "INPUT_PORT,"+           // 01
+    "OUTPUT_PORT,"+          // 02
+    "MODE,"+                 // 03
+    "DEFAULT_MODE,"+         // 04
+    "HOOK_MODE,"+            // 05
+    "DEFAULT_HOOK_MODE,"+    // 06
+    "STOP_ACTION,"+          // 07
+    "DEFAULT_STOP_ACTION,"+  // 08
+    "CART_NUMBER,"+          // 09
+    "DEFAULT_CART_NUMBER,"+  // 10
+    "SERVICE_NAME "+         // 11
+    "from CARTSLOTS where "+
+    "(STATION_NAME=\""+RDEscapeString(set_stationname)+"\")&&"+
     QString().sprintf("(SLOT_NUMBER=%u)",set_slotno);
   q=new RDSqlQuery(sql);
   if(q->first()) {

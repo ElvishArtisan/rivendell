@@ -2,9 +2,7 @@
 //
 // Abstract an RDLogedit Configuration.
 //
-//   (C) Copyright 2002-2005 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdlogedit_conf.cpp,v 1.12.8.1 2014/01/08 18:14:34 cvs Exp $
+//   (C) Copyright 2002-2005,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -34,13 +32,15 @@ RDLogeditConf::RDLogeditConf(const QString &station)
   
   lib_station=station;
 
-  sql=QString().sprintf("select ID from RDLOGEDIT where STATION=\"%s\"",
-			(const char *)RDEscapeString(lib_station));
+  sql=QString("select ")+
+    "ID "+
+    "from RDLOGEDIT where "+
+    "STATION=\""+RDEscapeString(lib_station)+"\"";
   q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;
-    sql=QString().sprintf("insert into RDLOGEDIT set STATION=\"%s\"",
-			  (const char *)RDEscapeString(lib_station));
+    sql=QString("insert into RDLOGEDIT set ")+
+      "STATION=\""+RDEscapeString(lib_station)+"\"";
     q=new RDSqlQuery(sql);
   }
   delete q;
@@ -282,11 +282,15 @@ void RDLogeditConf::getSettings(RDSettings *s) const
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString().sprintf("select DEFAULT_CHANNELS,SAMPRATE,\
-                         FORMAT,BITRATE,RIPPER_LEVEL,\
-                         TRIM_THRESHOLD from RDLOGEDIT \
-                         where STATION=\"%s\"",
-			(const char *)RDEscapeString(lib_station));
+  sql=QString("select ")+
+    "DEFAULT_CHANNELS,"+
+    "SAMPRATE,"+
+    "FORMAT,"+
+    "BITRATE,"+
+    "RIPPER_LEVEL,"+
+    "TRIM_THRESHOLD "+
+    "from RDLOGEDIT where "+
+    "STATION=\""+RDEscapeString(lib_station)+"\"";
   q=new RDSqlQuery(sql);
   s->clear();
   if(q->first()) {
@@ -315,10 +319,9 @@ void RDLogeditConf::SetRow(const QString &param,int value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE RDLOGEDIT SET %s=%d WHERE STATION=\"%s\"",
-			(const char *)param,
-			value,
-			(const char *)RDEscapeString(lib_station));
+  sql=QString("update RDLOGEDIT set ")+
+    param+QString().sprintf("=%d where ",value)+
+    "STATION=\""+RDEscapeString(lib_station)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -329,10 +332,9 @@ void RDLogeditConf::SetRow(const QString &param,unsigned value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE RDLOGEDIT SET %s=%d WHERE STATION=\"%s\"",
-			(const char *)param,
-			value,
-			(const char *)RDEscapeString(lib_station));
+  sql=QString("update RDLOGEDIT set ")+
+    param+QString().sprintf("=%d where ",value)+
+    "STATION=\""+RDEscapeString(lib_station)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -343,10 +345,9 @@ void RDLogeditConf::SetRow(const QString &param,bool value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("update RDLOGEDIT set %s=\"%s\" where STATION=\"%s\"",
-			(const char *)param,
-			(const char *)RDYesNo(value),
-			(const char *)RDEscapeString(lib_station));
+  sql=QString("update RDLOGEDIT set ")+
+    param+"=\""+RDYesNo(value)+"\" where "+
+    "STATION=\""+RDEscapeString(lib_station)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }

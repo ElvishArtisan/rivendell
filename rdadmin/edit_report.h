@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell Report
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_report.h,v 1.14.8.1.2.1 2014/05/22 01:21:36 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,25 +21,22 @@
 #ifndef EDIT_REPORT_H
 #define EDIT_REPORT_H
 
-#include <qdialog.h>
-#include <qsqldatabase.h>
-#include <qlineedit.h>
-#include <qcombobox.h>
-#include <qcheckbox.h>
-#include <qlabel.h>
-#include <qspinbox.h>
-#include <qdatetimeedit.h>
+#include <QCheckBox>
+#include <QComboBox>
+#include <QDateTimeEdit>
+#include <QDialog>
+#include <QLabel>
+#include <QLineEdit>
+#include <QSpinBox>
 
 #include <rdlistselector.h>
-
 #include <rdreport.h>
-
 
 class EditReport : public QDialog
 {
  Q_OBJECT
  public:
-  EditReport(QString rptname,QWidget *parent=0,const char *name=0);
+  EditReport(QString rptname,QWidget *parent=0);
   ~EditReport();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -83,11 +78,11 @@ class EditReport : public QDialog
   QCheckBox *edit_daypart_check;
   QLabel *edit_daypart_label;
   QLabel *edit_starttime_label;
-  QTimeEdit *edit_starttime_edit;
+  QDateTimeEdit *edit_starttime_edit;
   QLabel *edit_endtime_label;
-  QTimeEdit *edit_endtime_edit;
+  QDateTimeEdit *edit_endtime_edit;
 };
 
 
-#endif
+#endif  // EDIT_REPORT.H
 

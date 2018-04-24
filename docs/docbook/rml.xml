@@ -1,0 +1,2269 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<article xmlns="http://docbook.org/ns/docbook" version="5.0">
+<info>
+  <title>Rivendell Macro Language</title>
+  <edition>1.0.0</edition>
+  <author>
+    <personname>
+      <firstname>Fred</firstname>
+      <surname>Gleason</surname>
+      <email>fredg@paravelsystems.com</email>
+    </personname>
+  </author>
+</info>
+
+<sect1>
+  <title>Scope</title>
+  <para>
+    Rivendell Macro Language (RML) is a system of commands formulated to
+    specify actions to be taken by and within the Rivendell Radio Automation
+    system.  
+  </para>
+</sect1>
+
+<sect1>
+  <title>Protocol</title>
+  <para>
+    The Normal form of a command takes the following syntax:
+  </para>
+  <para>
+    <replaceable>cmd</replaceable> [<replaceable>arg</replaceable>] [<replaceable>...</replaceable>]!
+  </para>
+  <variablelist>
+    <varlistentry>
+      <term>
+	<replaceable>cmd</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  A command mneumonic consisting of  two alpha-numeric characters
+	  indicating the action to be performed.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<replaceable>arg</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Zero or more arguments, delimited by spaces or, if the last
+	  argument, by ! (see below)
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	!
+      </term>
+      <listitem>
+	<para>
+	  The ASCII character  33, indicating the end of the command sequence.
+	</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+</sect1>
+
+<sect1>
+  <title>Command Delivery</title>
+  <para>
+    To be executed by a Rivendell system, an appropriate command should be
+    delivered to UDP ports 5858 or 5859 on said system, using the SOCK_DGRAM
+    connectionless protocol.  Commands delivered to port 5858 may receive a
+    reply back to the originating IP address at UDP socket 5860 to indicated
+    command success/failure, while commanders delivered to 5859 will be
+    processed, but no reply made.
+  </para>
+</sect1>
+
+<sect1>
+  <title>Command Reply</title>
+  <para>
+    If delivered to UDP port 5858, each command may receive a reply, 
+    formulated as follows:
+  </para>
+  <para>
+    <replaceable>rpy</replaceable> <computeroutput>+</computeroutput>|<computeroutput>-</computeroutput>
+  </para>
+  <variablelist>
+    <varlistentry>
+      <term>
+	<replaceable>rpy</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  The full command string (including arguments) originally received
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<computeroutput>+</computeroutput>
+      </term>
+      <listitem>
+	<para>
+	  ACK response, indicates success of the command.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<computeroutput>-</computeroutput>
+      </term>
+      <listitem>
+	<para>
+	  NAK response, indicates failure of the command.
+	</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+</sect1>
+
+<sect1>
+  <title>Specifying Color</title>
+  <para>
+    In places where a color can be specified as a macro argument, the
+    following predefined values are valid:
+  </para>
+  <simplelist>
+    <member><userinput>white</userinput></member>
+    <member><userinput>red</userinput></member>
+    <member><userinput>green</userinput></member>
+    <member><userinput>blue</userinput></member>
+    <member><userinput>cyan</userinput></member>
+    <member><userinput>magenta</userinput></member>
+    <member><userinput>yellow</userinput></member>
+    <member><userinput>gray</userinput></member>
+    <member><userinput>lightGray</userinput></member>
+    <member><userinput>black</userinput></member>
+    <member><userinput>darkRed</userinput></member>
+    <member><userinput>darkGreen</userinput></member>
+    <member><userinput>darkBlue</userinput></member>
+    <member><userinput>darkCyan</userinput></member>
+    <member><userinput>darkMagenta</userinput></member>
+    <member><userinput>darkYellow</userinput></member>
+    <member><userinput>darkGray</userinput></member>
+  </simplelist>
+</sect1>
+
+<sect1>
+  <title>Binary Data</title>
+  <para>
+    Certain commands (e.g. <command>SO</command> and <command>UO</command>)
+    have the ability to transmit arbitrary binary data in addition to textual
+    characters.  Such arbitrary binary data can be specified by means of
+    escape codes as follows:
+  </para>
+  <para>
+    <userinput>%</userinput><replaceable>hexcode</replaceable>
+  </para>
+  <para>
+    <variablelist>
+      <varlistentry>
+	<term>
+	  <replaceable>hexcode</replaceable>
+	</term>
+	<listitem>
+	  Two digit numeric value of the byte to send in hexidecimal.
+	</listitem>
+      </varlistentry>
+    </variablelist>
+  </para>
+  <para>
+    For example, the sequence 'TEST' followed by a carriage return/newline
+    could be specified as:
+  </para>
+  <para>
+    <userinput>TEST%0D%0A</userinput>
+  </para>
+</sect1>
+
+<sect1>
+  <title>Commands</title>
+  <sect2>
+    <title><command>Add Next [PX]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>rdairplay</command><manvolnum>1</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>PX</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Insert a cart in a log in the next to play position.
+    </para>
+    <para>
+      <userinput>PX
+      <replaceable>mach</replaceable>
+      <replaceable>cart</replaceable>!</userinput>
+    </para>
+    <para>
+      Insert cart <replaceable>cart</replaceable>> in the next to play
+      position on log machine <replaceable>mach</replaceable>.
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Binary Serial Out [BO]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>ripcd</command><manvolnum>8</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>BO</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Output a string of binary codes.
+    </para>
+    <para>
+      <userinput>BO
+      <replaceable>portnum</replaceable>
+      <replaceable>hexcode</replaceable>
+      <replaceable>..</replaceable>!</userinput>
+    </para>
+    <para>
+      Output a string of binary codes represented by
+      <replaceable>hexcode</replaceable> <replaceable>..</replaceable> on
+      serial port <replaceable>portnum</replaceable>!
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Clear Serial Trap [SC]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>ripcd</command><manvolnum>8</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>SC</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Clear a serial trap.
+    </para>
+    <para>
+      <userinput>SC
+      <replaceable>portnum</replaceable>
+      <replaceable>cart</replaceable>
+      <replaceable>string</replaceable>!</userinput>
+    </para>
+    <para>
+      <userinput>SC
+      <replaceable>portnum</replaceable>
+      <replaceable>cart</replaceable>!</userinput>
+    </para>
+    <para>
+      <userinput>SC
+      <replaceable>portnum</replaceable>!</userinput>
+    </para>
+    <para>
+      Clear a serial trap.  The three argument form will clear all traps on
+      <replaceable>port</replaceable> that reference
+      <replaceable>cart</replaceable> and <replaceable>string</replaceable>.
+      The two argument form will clear all traps on
+      <replaceable>port</replaceable> that reference
+      <replaceable>cart</replaceable>, while the one argument form will
+      clear all traps on <replaceable>port</replaceable>.
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Command Send [CC]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>ripcd</command><manvolnum>8</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>CC</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Send RML to a remote host.
+    </para>
+    <para>
+      <userinput>CC
+      <replaceable>dest</replaceable>
+      [<userinput>:</userinput><replaceable>udpport</replaceable>]
+      <replaceable>rml</replaceable>!</userinput>
+    </para>
+    <para>
+      Send the RML command <replaceable>rml</replaceable> to
+      <replaceable>dest</replaceable>.<replaceable>dest</replaceable> may be
+      either a Rivendell host name or an IP address.   A UDP port value may be
+      optionally specified as <replaceable>udpport</replaceable> (default
+      value 5859).
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Connect Jack Ports [JC]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>ripcd</command><manvolnum>8</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>JC</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Connect a JACK input port to an output port.
+    </para>
+    <para>
+      <userinput>JC
+      <replaceable>output</replaceable>
+      <replaceable>input</replaceable>!</userinput>
+    </para>
+    <para>
+      Attempt to connect JACK input port <replaceable>input</replaceable>
+      to <replaceable>output</replaceable>.
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Console Label [CL]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>ripcd</command><manvolnum>8</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>CL</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Set the label on a control surface.
+    </para>
+    <para>
+      <userinput>CL
+      <replaceable>matrix</replaceable>
+      <replaceable>surface</replaceable>
+      <replaceable>chan</replaceable>
+      <replaceable>label</replaceable>!</userinput>
+    </para>
+    <para>
+      On matrix <replaceable>matrix</replaceable>, set the input
+      <replaceable>chan</replaceable> module label of control surface
+      <replaceable>surface</replaceable> to <replaceable>label</replaceable>.
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Copy Cut [CP]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>rdcatchd</command><manvolnum>8</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>CP</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Copy cut audio and metadata.
+    </para>
+    <para>
+      <userinput>CP
+      <replaceable>srccart</replaceable>
+      <replaceable>srccut</replaceable>
+      <replaceable>dstcart</replaceable>
+      <replaceable>dstcut</replaceable>!</userinput>
+    </para>
+    <para>
+      Copy the audio and metadata from cut number
+      <replaceable>srccut</replaceable> in cart
+      <replaceable>srccart</replaceable> to cut number
+      <replaceable>dstcut</replaceable> in cart
+      <replaceable>dstcart</replaceable>.  The destination cart/cut must
+      already exist.
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Cut Event [CE]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>rdcatchd</command><manvolnum>8</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>CE</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Place a cut event at the current location of an active RDCatch recording.
+    </para>
+    <para>
+      <userinput>CE
+      <replaceable>decknum</replaceable>
+      <replaceable>eventnum</replaceable>!</userinput>
+    </para>
+    <para>
+      Place a cut event with event number 
+      <replaceable>eventnum</replaceable> at the current position of the
+      active recording in RDCatch Deck 
+      <replaceable>decknum</replaceable>.
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Database Backup [DB]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>ripcd</command><manvolnum>8</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>DB</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Backup the Rivendell database.
+    </para>
+    <para>
+      <userinput>DB
+      <replaceable>filename</replaceable>!</userinput>
+    </para>
+    <para>
+      Create a backup copy of the active Rivendell database in
+      <replaceable>filename</replaceable>. 
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Disconnect Jack Ports [JD]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>ripcd</command><manvolnum>8</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>JD</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Disconnect a JACK input port from an output port.
+    </para>
+    <para>
+      <userinput>JD
+      <replaceable>output</replaceable>
+      <replaceable>input</replaceable>!</userinput>
+    </para>
+    <para>
+      Attempt to disconnect JACK input port <replaceable>input</replaceable>
+      from <replaceable>output</replaceable>.
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Duck Panel Button [PD]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>rdairplay</command><manvolnum>1</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>PD</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Set the duck level of a SoundPanel button in RDAirPlay.
+    </para>
+    <para>
+      <userinput>PD
+      <replaceable>panel</replaceable>
+      <replaceable>col</replaceable>
+      <replaceable>row</replaceable>
+      <replaceable>level</replaceable>
+      <replaceable>fade</replaceable>
+      [<replaceable>mport</replaceable>]!</userinput>
+    </para>
+    <para>
+      Set the duck level of button at <replaceable>column</replaceable>,
+      <replaceable>row</replaceable>> of panel
+      <replaceable>panel</replaceable>.
+      Panel: <userinput>S1</userinput>...<userinput>S50</userinput> or
+      <userinput>U1</userinput>...<userinput>U50</userinput>;
+      <userinput>C</userinput> for <replaceable>panel</replaceable> means
+      currently selected panel.
+      If <replaceable>col</replaceable> and/or <replaceable>row</replaceable>
+      is <userinput>0</userinput>: duck all buttons in
+      <replaceable>col</replaceable> or <replaceable>row</replaceable>. 
+      If playing, the audio fades to <replaceable>level</replaceable>
+      (in dbFS) in <replaceable>fade</replaceable> msecs. 
+      If specified, only stop carts playing on panel port
+      <replaceable>mport</replaceable>. The duck level will be set to 0 after
+      the playback is finished, or the button is stopped or reset.
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Execute Breakaway [DX]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>rdcartslots</command><manvolnum>1</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>DX</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Execute a breakaway.
+    </para>
+    <para>
+      <userinput>DX
+      <replaceable>slot</replaceable><replaceable>len</replaceable>!</userinput>
+    </para>
+    <para>
+      Execute a breakaway of length <replaceable>len</replaceable> (in mS)
+      using the autofill carts configured for the service currently loaded
+      in the <replaceable>slot</replaceable> slot.  The slot must be in
+      Breakaway mode.  If a breakaway is currently executing, it will 
+      immediately be aborted and a new one started.  Passing a '0' for
+      <replaceable>len</replaceable> will cause any currently executing
+      breakaway immediately to be aborted and input audio restored.
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Execute Cart [EX]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>rdcatchd</command><manvolnum>8</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>EX</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Execute a macro cart.
+    </para>
+    <para>
+      <userinput>EX
+      <replaceable>cartnum</replaceable>!</userinput>
+    </para>
+    <para>
+      Execute macro cart <replaceable>cartnum</replaceable> on the local host.
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Fire Salvo [FS]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>ripcd</command><manvolnum>8</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>FS</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Execute a switcher salvo.
+    </para>
+    <para>
+      <userinput>FS
+      <replaceable>matrix</replaceable>
+      <replaceable>salvo</replaceable>!</userinput>
+    </para>
+    <para>
+      Fire salvo number <replaceable>salvo</replaceable> on matrix
+      <replaceable>matrix</replaceable>.
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>GPI Enable [GE]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>ripcd</command><manvolnum>8</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>GE</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Enable/disable a GPI line.
+    </para>
+    <para>
+      <userinput>GE
+      <replaceable>matrix</replaceable>
+      <replaceable>type</replaceable>
+      <replaceable>gpinum</replaceable>
+      <replaceable>state</replaceable>!</userinput>
+    </para>
+    <para>
+      Enable or disable the GPI line of type <replaceable>type</replaceable>
+      indicated by <replaceable>gpinum</replaceable> on matrix
+      <replaceable>matrix</replaceable>.  Possible types are:
+    </para>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term><userinput>I</userinput></term>
+	  <listitem>Input</listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><userinput>O</userinput></term>
+	  <listitem>Output</listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>GPI Enable [GE]</command> (old format, deprecated)</title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>ripcd</command><manvolnum>8</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>GE</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Enable/disable a GPI line.
+    </para>
+    <para>
+      <userinput>GE
+      <replaceable>matrix</replaceable>
+      <replaceable>gpinum</replaceable>
+      <replaceable>state</replaceable>!</userinput>
+    </para>
+    <para>
+      Enable or disable the GPI line indicated by
+      <replaceable>gpinum</replaceable> on matrix
+      <replaceable>matrix</replaceable>.
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>GPI Set [GI]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>ripcd</command><manvolnum>8</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>GI</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Set action in response to a GPIO event.
+    </para>
+    <para>
+      <userinput>GI
+      <replaceable>matrix</replaceable>
+      <replaceable>type</replaceable>
+      <replaceable>gpinum</replaceable>
+      <replaceable>state</replaceable>
+      <replaceable>cart</replaceable>!</userinput>
+    </para>
+    <para>
+      Execute the macro cart <replaceable>cart</replaceable> upon transition
+      of the GPIO of type <replaceable>type</replaceable> and line
+      <replaceable>gpinum</replaceable> on matrix
+      <replaceable>matrix</replaceable> to <replaceable>state</replaceable>.
+      Possible types are: 
+    </para>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term><userinput>I</userinput></term>
+	  <listitem>Input</listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><userinput>O</userinput></term>
+	  <listitem>Output</listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>GPI Set [GI]</command> (old format, deprecated)</title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>ripcd</command><manvolnum>8</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>GI</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Set action in response to a GPIO event.
+    </para>
+    <para>
+      <userinput>GI
+      <replaceable>matrix</replaceable>
+      <replaceable>gpinum</replaceable>
+      <replaceable>state</replaceable>
+      <replaceable>cart</replaceable>!</userinput>
+    </para>
+    <para>
+      Execute the macro cart <replaceable>cart</replaceable> upon transition
+      of the GPIO of line <replaceable>gpinum</replaceable> on matrix
+      <replaceable>matrix</replaceable> to <replaceable>state</replaceable>.
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>GPO Set [GO]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>ripcd</command><manvolnum>8</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>GO</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Set the state of a GPIO line.
+    </para>
+    <para>
+      <userinput>GO
+      <replaceable>matrix</replaceable>
+      <replaceable>type</replaceable>
+      <replaceable>gponum</replaceable>
+      <replaceable>state</replaceable>
+      <replaceable>length</replaceable>!</userinput>
+    </para>
+    <para>
+      Command GPIO line <replaceable>gponum</replaceable> of type 
+      <replaceable>type</replaceable> on matrix
+      <replaceable>matrix</replaceable>> to <replaceable>state</replaceable>
+      for <replaceable>length</replaceable>> mS.  A length of
+      <userinput>0</userinput> indicates to hold the state indefinitely.
+      Possible types are: 
+    </para>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term><userinput>I</userinput></term>
+	  <listitem>Input</listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><userinput>O</userinput></term>
+	  <listitem>Output</listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Possible states are:
+    </para>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term><userinput>0</userinput></term>
+	  <listitem>OFF</listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><userinput>1</userinput></term>
+	  <listitem>ON</listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term><userinput>-1</userinput></term>
+	  <listitem>Passthrough hardware input (valid only for Input type)</listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>GPO Set [GO]</command> (old format, deprecated)</title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>ripcd</command><manvolnum>8</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>GO</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Set the state of a GPIO line.
+    </para>
+    <para>
+      <userinput>GO
+      <replaceable>matrix</replaceable>
+      <replaceable>gponum</replaceable>
+      <replaceable>state</replaceable>
+      <replaceable>length</replaceable>!</userinput>
+    </para>
+    <para>
+      Command GPIO line <replaceable>gponum</replaceable> on matrix
+      <replaceable>matrix</replaceable>> to <replaceable>state</replaceable>
+      for <replaceable>length</replaceable>> mS.  A length of
+      <userinput>0</userinput> indicates to hold the state indefinitely.
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Insert Serial Trap [SI]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>ripcd</command><manvolnum>8</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>SI</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Insert a serial trap to detect a character sequence.
+    </para>
+    <para>
+      <userinput>SI
+      <replaceable>portnum</replaceable>
+      <replaceable>cart</replaceable>
+      <replaceable>string</replaceable>!</userinput>
+    </para>
+    <para>
+      Insert a serial trap to execute the macro cart
+      <replaceable>cart</replaceable> upon receipt of
+      <replaceable>string</replaceable> on serial port
+      <replaceable>port</replaceable>.
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Label Panel [PC]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>rdairplay</command><manvolnum>1</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>PC</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Set the label of a SoundPanel button in RDAirPlay.
+    </para>
+    <para>
+      <userinput>PC
+      <replaceable>panel</replaceable>
+      <replaceable>col</replaceable>
+      <replaceable>row</replaceable>
+      <replaceable>label</replaceable>
+      <replaceable>color</replaceable>!</userinput>
+    </para>
+    <para>
+      Set the button at <replaceable>col</replaceable>,
+      <replaceable>row</replaceable> of panel <replaceable>panel</replaceable>
+      to have a text label of <replaceable>label</replaceable> and a
+      background color of <replaceable>color</replaceable>.
+      Panel: <userinput>S1</userinput>...<userinput>S50</userinput> or
+      <userinput>U1</userinput>...<userinput>U50</userinput>;
+      <userinput>C</userinput> for <replaceable>panel</replaceable> means
+      currently selected panel.
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Load Log [LL]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>rdairplay</command><manvolnum>1</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>LL</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Load a log into RDAirPlay.
+    </para>
+    <para>
+      <userinput>LL
+      <replaceable>mach</replaceable>
+      [<replaceable>logname</replaceable>]
+      [<replaceable>startline</replaceable>]!</userinput>
+    </para>
+    <para>
+      Load the log <replaceable>logname</replaceable> in log machine
+      <replaceable>mach</replaceable>.  After loading, start the log at line
+      <replaceable>startline</replaceable> if it is >=0.  If
+      <replaceable>startline</replaceable> is -2, the log will be started at
+      the first event if that event does not have a 'stop' transition. 
+      Default <replaceable>startline</replaceable>=-1. If no 
+      <replaceable>log</replaceable>> is specified, the machine's current log
+      is unloaded.
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Load Panel [PE]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>rdairplay</command><manvolnum>1</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>PE</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Load a cart into a SoundPanel button in RDAirPlay.
+    </para>
+    <para>
+      <userinput>PE
+      <replaceable>panel</replaceable>
+      <replaceable>col</replaceable>
+      <replaceable>row</replaceable>
+      <replaceable>cart</replaceable>!</userinput>
+    </para>
+    <para>
+      Load cart <replaceable>cart</replaceable> into the button at
+      <replaceable>col</replaceable>,<replaceable>row</replaceable> of panel
+      <replaceable>panel</replaceable>.
+      Panel: <userinput>S1</userinput>...<userinput>S50</userinput> or
+      <userinput>U1</userinput>...<userinput>U50</userinput>;
+      <userinput>C</userinput> for <replaceable>panel</replaceable> means
+      currently selected panel.
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Load Slot [DL]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>rdcartslots</command><manvolnum>1</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>DL</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Load an RDCartSlots slot.
+    </para>
+    <para>
+      This command has two syntaxes, depending upon the mode of the slot.
+    </para>
+    <para>
+      Cart Deck Mode syntax:
+    </para>
+    <para>
+      <userinput>DL
+      <replaceable>slot</replaceable>
+      <replaceable>cart</replaceable>!</userinput>
+    </para>
+    <para>
+      Load the cart <replaceable>cart</replaceable> into the
+      <replaceable>slot</replaceable> slot.  Passing a '0' for
+      <replaceable>cart</replaceable> will cause the slot to be unloaded. 
+      This command will be ignored if the slot is currently playing.
+    </para>
+    <para>
+      Breakaway Mode syntax:
+    </para>
+    <para>
+      <userinput>DL
+      <replaceable>slot</replaceable>
+      <replaceable>svcname</replaceable>!</userinput>
+    </para>
+    <para>
+      Set the <replaceable>slot</replaceable> slot to use service
+      <replaceable>svcname</replaceable>.  Omitting the
+      <replaceable>svcname</replaceable> argument will cause the slot to be
+      unloaded. This command will be ignored if the slot is currently
+      executing a breakaway.
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Login [LO]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>ripcd</command><manvolnum>8</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>LO</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Change the active Rivendell user context.
+    </para>
+    <para>
+      <userinput>LO
+      <replaceable>user</replaceable>
+      <replaceable>password</replaceable>!</userinput>
+    </para>
+    <para>
+      Set the current Rivendell user to <replaceable>user</replaceable>.
+      If no arguments are supplied, log out the station --i.e. revert to the
+      default user. 
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Macro Timer [MT]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>ripcd</command><manvolnum>8</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>MT</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Timer for running macro carts.
+    </para>
+    <para>
+      <userinput>MT
+      <replaceable>timernum</replaceable>
+      <replaceable>timeout</replaceable>
+      <replaceable>cart</replaceable>!</userinput>
+    </para>
+    <para>
+      Set the macro timer <replaceable>timernum</replaceable> to execute macro
+      cart <replaceable>cart</replaceable> in
+      <replaceable>timeout</replaceable> milliseconds.  Setting
+      <replaceable>timeout</replaceable> to <userinput>0</userinput> disables
+      the timer.  Sixteen macro timers (numbered 1-16) are available on each
+      Rivendell host.
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Make Next [MN]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>rdairplay</command><manvolnum>1</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>MN</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Load changes to a currently loaded log in RDAirPlay.
+    </para>
+    <para>
+      <userinput>RL
+      <replaceable>mach</replaceable>
+      <replaceable>line</replaceable>!</userinput>
+    </para>
+    <para>
+      Set the next event for log machine <replaceable>mach</replaceable> to
+      line <replaceable>line</replaceable>>.
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Message Box [MB]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>ripcd</command><manvolnum>8</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>MB</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Display a popup message box on a host display.
+    </para>
+    <para>
+      <userinput>MB
+      <replaceable>display</replaceable>
+      <replaceable>severity</replaceable>
+      <replaceable>msg</replaceable>!</userinput>
+    </para>
+    <para>
+      Display the text <replaceable>msg</replaceable> in a popup window on X
+      display <replaceable>display</replaceable>, with an icon to indicate
+      <replaceable>severity</replaceable>.  Valid values of
+      <replaceable>severity</replaceable> are:
+    </para>
+    <variablelist>
+      <varlistentry>
+	<term><userinput>1</userinput></term>
+	<listitem>Information</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><userinput>2</userinput></term>
+	<listitem>Warning</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><userinput>3</userinput></term>
+	<listitem>Critical</listitem>
+      </varlistentry>
+    </variablelist>
+  </sect2>
+
+  <sect2>
+    <title><command>Pause Panel [PU]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>rdairplay</command><manvolnum>1</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>PU</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Pause a SoundPanel button in RDAirPlay.
+    </para>
+    <para>
+      <userinput>PU
+      <replaceable>panel</replaceable>
+      <replaceable>col</replaceable>
+      <replaceable>row</replaceable>
+      [<replaceable>mport</replaceable>]!</userinput>
+    </para>
+    <para>
+      Pause the button at <replaceable>col</replaceable>,
+      <replaceable>row</replaceable> of panel <replaceable>panel</replaceable>.
+      Panel: <userinput>S1</userinput>...<userinput>S50</userinput> or
+      <userinput>U1</userinput>...<userinput>U50</userinput>;
+      <userinput>C</userinput> for <replaceable>panel</replaceable> means
+      currently selected panel.
+      If <replaceable>col</replaceable> and/or <replaceable>row</replaceable>
+      is <userinput>0</userinput>: pause all playing buttons in
+      <replaceable>col</replaceable> or <replaceable>row</replaceable>. 
+      If specified, start the playout on panel port
+      <replaceable>mport</replaceable>.
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Play Panel [PP]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>rdairplay</command><manvolnum>1</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>PP</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Load a cart into a SoundPanel button in RDAirPlay.
+    </para>
+    <para>
+      <userinput>PP
+      <replaceable>panel</replaceable>
+      <replaceable>col</replaceable>
+      <replaceable>row</replaceable>
+      [<replaceable>mport</replaceable>]
+      [0|1]!</userinput>
+    </para>
+    <para>
+      Play the button at <replaceable>col</replaceable>,
+      <replaceable>row</replaceable> of panel <replaceable>panel</replaceable>.
+      Panel: <userinput>S1</userinput>...<userinput>S50</userinput> or
+      <userinput>U1</userinput>...<userinput>U50</userinput>;
+      <userinput>C</userinput> for <replaceable>panel</replaceable> means
+      currently selected panel.
+      If <replaceable>col</replaceable> and/or <replaceable>row</replaceable>
+      is <userinput>0</userinput>: Start the first loaded button that is not
+      active.  If specified, start the playout on panel port
+      <replaceable>mport</replaceable>. The started panel will stay active when
+      finished, if the 5th argument is <userinput>1</userinput>. 
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Play Slot [DP]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>rdcartslots</command><manvolnum>1</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>DP</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Play an RDCartSlots slot.
+    </para>
+    <para>
+      <userinput>DP
+      <replaceable>slot</replaceable>!</userinput>
+    </para>
+    <para>
+      Play the cart currently loaded in the <replaceable>slot</replaceable>
+      slot.  The slot must be in Cart Deck mode.  This command will be
+      ignored if the slot is unloaded or already playing.
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Refresh Log [RL]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>rdairplay</command><manvolnum>1</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>RL</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Load changes to a currently loaded log in RDAirPlay.
+    </para>
+    <para>
+      <userinput>RL
+      <replaceable>mach</replaceable>!</userinput>
+    </para>
+    <para>
+      Refresh the log currently loaded in log machine
+      <replaceable>mach</replaceable>. 
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Run Shell Command [RN]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>ripcd</command><manvolnum>8</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>RN</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Run a shell command.
+    </para>
+    <para>
+      <userinput>RN
+      <replaceable>cmd</replaceable>!</userinput>
+    </para>
+    <para>
+      Run the shell command <replaceable>cmd</replaceable>.
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Select Widget [PW]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>rdairplay</command><manvolnum>1</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>PW</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Select right-hand widget in RDAirPlay.
+    </para>
+    <para>
+      <userinput>PW
+      <replaceable>mach</replaceable>!</userinput>
+    </para>
+    <para>
+      Select right-hand widget to log-machine <replaceable>mach</replaceable>
+      or <userinput>0</userinput> for sound panel.
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Serial Out [SO]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>ripcd</command><manvolnum>8</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>SO</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Output a string on a serial port.
+    </para>
+    <para>
+      <userinput>SO
+      <replaceable>portnum</replaceable>
+      <replaceable>data</replaceable>!</userinput>
+    </para>
+    <para>
+      Output <replaceable>data</replaceable> on serial port
+      <replaceable>portnum</replaceable>.  <replaceable>data</replaceable> can
+      consist of arbitrary binary data as well as textual characters (see
+      <command>Binary Data</command> above).
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Serial Reload [SY]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>ripcd</command><manvolnum>8</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>SY</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Reload the configuration for a serial port.
+    </para>
+    <para>
+      <userinput>SY
+      <replaceable>portnum</replaceable>!</userinput>
+    </para>
+    <para>
+      Reload the configuration for serial port
+      <replaceable>portnum</replaceable>.  Normally, this should only be
+      issued by RDAdmin following a configuration change.
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Set Color Label [LC]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>rdairplay</command><manvolnum>1</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>LC</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Display a color message in the label widget on RDAirPlay.
+    </para>
+    <para>
+      <userinput>LC
+      <replaceable>color</replaceable>
+      <replaceable>string</replaceable>!</userinput>
+    </para>
+    <para>
+      Display <replaceable>string</replaceable>> in color 
+      <replaceable>color</replaceable> in the message widget. 
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Set Default Now &amp; Next Cart [SN]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>rdairplay</command><manvolnum>1</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>SN</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Set the default Now &amp; Next cart.
+    </para>
+    <para>
+      <userinput>SN
+      now</userinput>|<userinput>next
+      <replaceable>mach</replaceable>
+      <replaceable>cart</replaceable>!</userinput>
+    </para>
+    <para>
+      Set the default Now &amp; Next cart for log
+      <replaceable>mach</replaceable> to <replaceable>cart</replaceable>.  
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Set Display [SD]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>ripcd</command><manvolnum>8</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>SD</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Set a console display.
+    </para>
+    <para>
+      <userinput>SD
+      <replaceable>matrix</replaceable>
+      <replaceable>display</replaceable>
+      <replaceable>line</replaceable>
+      <replaceable>col</replaceable>
+      <replaceable>attr</replaceable>
+      <replaceable>label</replaceable>!</userinput>
+    </para>
+    <para>
+      On matrix <replaceable>matrix</replaceable>, set the console display
+      <replaceable>display</replaceable> to <replaceable>label</replaceable>,
+      starting at position <replaceable>line</replaceable>,
+      <replaceable>col</replaceable> and using message attributes
+      <replaceable>attr</replaceable>.
+    </para>
+    <para>
+      The message attributes value is constructed as follows:
+    </para>
+    <variablelist>
+      <varlistentry>
+	<term>Bit 7</term>
+	<listitem>Display mode</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>Bits 6,5</term>
+	<listitem>Video attribute</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>Bit 2,1,0</term>
+	<listitem>Message Text Color</listitem>
+      </varlistentry>
+    </variablelist>
+    <para>
+      Display Mode:
+    </para>
+    <variablelist>
+      <varlistentry>
+	<term>0</term>
+	<listitem>Overwrite text</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>1</term>
+	<listitem>Insert text</listitem>
+      </varlistentry>
+    </variablelist>
+    <para>
+      Video Attribute:
+    </para>
+    <variablelist>
+      <varlistentry>
+	<term>00</term>
+	<listitem>Normal</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>01</term>
+	<listitem>Flash</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>02</term>
+	<listitem>Reverse</listitem>
+      </varlistentry>
+    </variablelist>
+    <para>
+      Text Color:
+    </para>
+    <variablelist>
+      <varlistentry>
+	<term>000</term>
+	<listitem>White</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>001</term>
+	<listitem>Red</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>010</term>
+	<listitem>Yellow</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>011</term>
+	<listitem>Green</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>100</term>
+	<listitem>Cyan</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>101</term>
+	<listitem>Magenta</listitem>
+      </varlistentry>
+    </variablelist>
+  </sect2>
+
+  <sect2>
+    <title><command>Set Duck Level [MD]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>rdairplay</command><manvolnum>1</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>MD</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Set duck level for an RDAirPlay log machine.
+    </para>
+    <para>
+      <userinput>MD
+      <replaceable>mach</replaceable>
+      <replaceable>level</replaceable>
+      <replaceable>fade</replaceable>
+      [<replaceable>mport</replaceable>]!</userinput>
+    </para>
+    <para>
+      Set the duck level of <replaceable>mach</replaceable>, or 
+      <userinput>0</userinput> for all log machines. If playing, the audio
+      fades to <replaceable>level</replaceable> (in dbFS) in
+      <replaceable>fade</replaceable> msecs. If specified, only affect carts
+      playing on machine port <replaceable>mport</replaceable>.
+      Loading or clearing a log will set the duck level back to 0.
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Set Label [LB]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>rdairplay</command><manvolnum>1</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>LB</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Display a message in the label widget on RDAirPlay.
+    </para>
+    <para>
+      <userinput>LB
+      <replaceable>string</replaceable>!</userinput>
+    </para>
+    <para>
+      Display <replaceable>string</replaceable>> in the message widget. 
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Set Mode [PM]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>rdairplay</command><manvolnum>1</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>PM</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Set the mode of an RDAirPlay log machine.
+    </para>
+    <para>
+      <userinput>PM
+      <replaceable>mode</replaceable>
+      [<replaceable>mach</replaceable>]!</userinput>
+    </para>
+    <para>
+      Set log machine <replaceable>mach</replaceable> to mode
+      <replaceable>mode</replaceable>.  If mode is not given or the Mode
+      Control Style is set to 'Unified', then all log machines are set to
+      <replaceable>mode</replaceable>.  Valid values for
+      <replaceable>mode</replaceable> are:
+      <variablelist>
+	<varlistentry>
+	  <term>1</term>
+	  <listitem>LiveAssist</listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>2</term>
+	  <listitem>Auto</listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>3</term>
+	  <listitem>Manual</listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Sleep [SP]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>ripcd</command><manvolnum>8</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>SP</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Pause for specified time.
+    </para>
+    <para>
+      <userinput>SP
+      <replaceable>msecs</replaceable>!</userinput>
+    </para>
+    <para>
+      Wait for <replaceable>msecs</replaceable> milliseconds.
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Start [PL]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>rdairplay</command><manvolnum>1</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>PL</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Start a log at a specified line.
+    </para>
+    <para>
+      <userinput>PL
+      <replaceable>mach</replaceable>
+      <replaceable>line</replaceable>!</userinput>
+    </para>
+    <para>
+      Start log machine <replaceable>mach</replaceable> at line
+      <replaceable>line</replaceable> if stopped, otherwise do nothing.
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Start Button [PB]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>rdairplay</command><manvolnum>1</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>PB</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Push an RDAirPlay Start button.
+    </para>
+    <para>
+      <userinput>PB
+      <replaceable>button</replaceable>!</userinput>
+    </para>
+    <para>
+      Push button <replaceable>button</replaceable>.
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Start Next [PN]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>rdairplay</command><manvolnum>1</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>PN</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Start the next event in a log.
+    </para>
+    <para>
+      <userinput>PN
+      <replaceable>mach</replaceable>
+      [<replaceable>mport</replaceable>]
+      [<replaceable>skip</replaceable>]!</userinput>
+    </para>
+    <para>
+      Start log machine <replaceable>mach</replaceable>> if stopped, or start
+      next event if already running.  If specified, start the playout on
+      machine port <replaceable>mport</replaceable>>.  If
+      <replaceable>skip</replaceable> is supplied, equal to '1' and the log
+      machine is in Manual or Live Assist mode, then any intervening
+      meta-events in log between the current 'next' event and the next cart
+      will be skipped over.
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Start Record Deck [RS]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>rdcatchd</command><manvolnum>8</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>RS</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Start an RDCatch Recording
+    </para>
+    <para>
+      <userinput>RS
+      <replaceable>decknum</replaceable>
+      <replaceable>cartnum</replaceable>
+      <replaceable>cutnum</replaceable>
+      <replaceable>maxlen</replaceable>!</userinput>
+    </para>
+    <para>
+      Start recording to cut <replaceable>cutnum</replaceable> of cart
+      <replaceable>cartnum</replaceable>, using RDCatch record deck
+      <replaceable>decknum</replaceable> for a maximum time of
+      <replaceable>maxlen</replaceable> mS.  The record parameters used
+      (format, sample rate, channels, etc) will be those configured for the
+      selected deck in RDAdmin->ManageHosts->RDCatch.  The selected cart and
+      cut must already exist.  Any audio previously residing in the selected 
+      cart and cut will be overwritten.
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Stop [PS]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>rdairplay</command><manvolnum>1</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>PS</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Stop a log in RDAirPlay.
+    </para>
+    <para>
+      <userinput>PS
+      <replaceable>mach</replaceable>|<userinput>0</userinput>
+      [<replaceable>fade</replaceable>]
+      [<replaceable>mport</replaceable>]!</userinput>
+    </para>
+    <para>
+      Stop log machine <replaceable>mach</replaceable>, or
+      <userinput>0</userinput> for all log machines. If specified, only stop
+      carts playing on machine port <replaceable>mport</replaceable>. If
+      specified, fade out <replaceable>fade</replaceable> msecs.
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Stop Panel [PT]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>rdairplay</command><manvolnum>1</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>PT</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Stop a SoundPanel button in RDAirPlay.
+    </para>
+    <para>
+      <userinput>PT
+      <replaceable>panel</replaceable>
+      <replaceable>col</replaceable>
+      <replaceable>row</replaceable>
+      [<replaceable>mport</replaceable>]
+      [0|1]
+      <replaceable>fade</replaceable>!</userinput>
+    </para>
+    <para>
+      Stop the button at <replaceable>col</replaceable>,
+      <replaceable>row</replaceable> of panel <replaceable>panel</replaceable>.
+      Panel: <userinput>S1</userinput>...<userinput>S50</userinput> or
+      <userinput>U1</userinput>...<userinput>U50</userinput>;
+      <userinput>C</userinput> for <replaceable>panel</replaceable> means
+      currently selected panel.
+      If <replaceable>col</replaceable> and/or <replaceable>row</replaceable>
+      is <userinput>0</userinput>: stop all playing buttons in
+      <replaceable>col</replaceable> or <replaceable>row</replaceable>. 
+      If specified, start the playout on panel port
+      <replaceable>mport</replaceable>. The stopped panel will stay active when
+      finished, if the 5th argument is <userinput>1</userinput>. 
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Stop Record Deck [RR]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>rdcatchd</command><manvolnum>8</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>RR</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Stop an RDCatch Recording
+    </para>
+    <para>
+      <userinput>RR
+      <replaceable>decknum</replaceable>!</userinput>
+    </para>
+    <para>
+      Stop any active recording on RDCatch deck <replaceable>decknum</replaceable>.
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Stop Slot [DS]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>rdcartslots</command><manvolnum>1</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>DS</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Stop an RDCartSlots slot.
+    </para>
+    <para>
+      <userinput>DS
+      <replaceable>slot</replaceable>!</userinput>
+    </para>
+    <para>
+      Stop the cart currently loaded in the <replaceable>slot</replaceable>
+      slot.  The slot must be in Cart Deck mode.  This command will be
+      ignored if the slot is unloaded or already playing.
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Switch Add [SA]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>ripcd</command><manvolnum>8</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>SA</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Add an input to an output.
+    </para>
+    <para>
+      <userinput>SA
+      <replaceable>matrix</replaceable>
+      <replaceable>input</replaceable>
+      <replaceable>output</replaceable>!</userinput>
+    </para>
+    <para>
+      Command switch matrix number <replaceable>matrix</replaceable> to add
+      input number <replaceable>input</replaceable> to output number
+      <replaceable>output</replaceable>.  Unlike <command>SWITCH TAKE</command>,
+      this command leaves any other previously assigned inputs unchanged.
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Switch Add With Gain [SG]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>ripcd</command><manvolnum>8</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>SG</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Add an input to an output while specifyng the crosspoint gain.
+    </para>
+    <para>
+      <userinput>SG
+      <replaceable>matrix</replaceable>
+      <replaceable>input</replaceable>
+      <replaceable>output</replaceable>
+      <replaceable>gain</replaceable>!</userinput>
+    </para>
+    <para>
+      Command switch matrix number <replaceable>matrix</replaceable> to add
+      input number <replaceable>input</replaceable> to output number
+      <replaceable>output</replaceable> at gain <replaceable>gain</replaceable>.
+      The gain is specified in 1/10 of a dB, with 0 = unity gain. 
+      Unlike <command>SWITCH TAKE</command>, this command leaves any other
+      previously assigned inputs unchanged.
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Switch Crosspoint Gain [SX]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>ripcd</command><manvolnum>8</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>SX</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Set crosspoint gain.
+    </para>
+    <para>
+      <userinput>SX
+      <replaceable>matrix</replaceable>
+      <replaceable>input</replaceable>
+      <replaceable>output</replaceable>
+      <replaceable>level</replaceable>!</userinput>
+    </para>
+    <para>
+      Command switch matrix number <replaceable>matrix</replaceable> to adjust
+      the gain of the crosspoint connecting input
+      <replaceable>input</replaceable> to output
+      <replaceable>output</replaceable> to <replaceable>level</replaceable> dB.
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Switch Level [SL]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>ripcd</command><manvolnum>8</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>SL</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Set input gain.
+    </para>
+    <para>
+      <userinput>SL
+      <replaceable>matrix</replaceable>
+      <replaceable>input</replaceable>
+      <replaceable>level</replaceable>!</userinput>
+    </para>
+    <para>
+      Command switch matrix number <replaceable>matrix</replaceable> to adjust
+      the gain of input number <replaceable>input</replaceable> to
+      <replaceable>level</replaceable> dB.
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Switch Reload [SZ]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>ripcd</command><manvolnum>8</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>SZ</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Reload the configuration for a switch matrix.
+    </para>
+    <para>
+      <userinput>SZ
+      <replaceable>matrix</replaceable>!</userinput>
+    </para>
+    <para>
+      Reload the configuration for switch matrix
+      <replaceable>matrix</replaceable>.  Normally, this should only be
+      issued by RDAdmin following a configuration change.
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Switch Remove [SR]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>ripcd</command><manvolnum>8</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>SR</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Remove an input from an output.
+    </para>
+    <para>
+      <userinput>SR
+      <replaceable>matrix</replaceable>
+      <replaceable>input</replaceable>
+      <replaceable>output</replaceable>!</userinput>
+    </para>
+    <para>
+      Command switch matrix number <replaceable>matrix</replaceable> to remove
+      input number <replaceable>input</replaceable> from output number
+      <replaceable>output</replaceable>.  Unlike <command>SWITCH TAKE</command>,
+      this command leaves any other previously assigned inputs unchanged.
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Switch Take [ST]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>ripcd</command><manvolnum>8</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>ST</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Exclusively route an input to an output.
+    </para>
+    <para>
+      <userinput>ST
+      <replaceable>matrix</replaceable>
+      <replaceable>input</replaceable>
+      <replaceable>output</replaceable>!</userinput>
+    </para>
+    <para>
+      Command switch matrix number <replaceable>matrix</replaceable> to take
+      input number <replaceable>input</replaceable> to output number
+      <replaceable>output</replaceable>.  "Take" in this context implies
+      removing any previously assigned inputs from the referenced output.
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>Toggle On Air Flag [TA]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>ripcd</command><manvolnum>8</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>TA</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Set the state of the On Air flag.
+    </para>
+    <para>
+      <userinput>TA 0</userinput>|<userinput>1!</userinput>
+    </para>
+    <para>
+      Set the On-Air flag to ON [<userinput>1</userinput>] or OFF
+      [<userinput>0</userinput>].
+    </para>
+  </sect2>
+
+  <sect2>
+    <title><command>UDP Out [UO]</command></title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>ripcd</command><manvolnum>8</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>UO</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Send data to a UDP port.
+    </para>
+    <para>
+      <userinput>UO
+      <replaceable>ipaddr</replaceable>
+      <replaceable>udpport</replaceable>
+      <replaceable>data</replaceable>!</userinput>
+    </para>
+    <para>
+      Send <replaceable>data</replaceable> in a UDP packet to port
+      <replaceable>udpport</replaceable> at <replaceable>ipaddr</replaceable>.
+      <replaceable>data</replaceable> can consist of arbitrary binary data as
+      well as textual characters (see <command>Binary Data</command> above).
+    </para>
+  </sect2>
+
+</sect1>
+
+</article>

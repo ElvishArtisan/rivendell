@@ -2,9 +2,7 @@
 //
 // Rivendell Log Playout Machine
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: log_play.h,v 1.90.8.3.2.1 2014/05/22 19:37:45 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,7 +26,7 @@
 #include <qobject.h>
 #include <qsignalmapper.h>
 #include <qtimer.h>
-#include <qsocketdevice.h>
+#include <q3socketdevice.h>
 #include <qdatetime.h>
 
 #include <rd.h>
@@ -62,7 +60,7 @@ class LogPlay : public QObject,public RDLogEvent
 {
  Q_OBJECT
  public:
-  LogPlay(RDCae *cae,int id,QSocketDevice *nn_sock,QString logname,
+  LogPlay(int id,Q3SocketDevice *nn_sock,QString logname,
 	  std::vector<RLMHost *> *rlm_hosts,QObject *parent=0);
   QString serviceName() const;
   void setServiceName(const QString &svcname);
@@ -224,7 +222,7 @@ class LogPlay : public QObject,public RDLogEvent
   RDPlayDeck *play_deck[RD_MAX_STREAMS];
   bool play_deck_active[RD_MAX_STREAMS];
   int next_channel;
-  QSocketDevice *play_nownext_socket;
+  Q3SocketDevice *play_nownext_socket;
   QString play_nownext_string;
   QHostAddress play_nownext_address;
   Q_UINT16 play_nownext_port;

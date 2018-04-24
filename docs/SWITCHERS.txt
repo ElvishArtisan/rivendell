@@ -7,10 +7,13 @@ Broadcast Tools 10x1 Audio Switcher
 Broadcast Tools 16x1 Audio Switcher
 Broadcast Tools 16x2 Audio Switcher
 Broadcast Tools 8x2 Audio Switcher
+Broadcast Tools ADMS 44.22 Analog/AES Digital Matrix Switcher
 Broadcast Tools GPI-16 General Purpose Input Module
 Broadcast Tools Sentinel 4 Web AES Switcher
+Broadcast Tools SRC-16
 Broadcast Tools SS 12.4 Audio Switcher
 Broadcast Tools SS 16.4 Audio Switcher
+Broadcast Tools SS 4.1 MLR Switcher/Router
 Broadcast Tools SS 4.2 Audio Switcher
 Broadcast Tools SS 4.4 Audio Switcher
 Broadcast Tools ACS 8.2 Audio Control Switcher
@@ -22,10 +25,14 @@ LiveWire Multicast GPIO
 Local Audio Adapter
 Logitek vGuest
 Quartz Electronics Type 1 Routing Protocol
+Ross NK Video Switchers (via SCP/A Serial Interface)
+Serial Port Modem Control Lines
+Sierra Automated Systems 16000(D) Audio Router
 Sierra Automated Systems 32000 Audio Router
 Sierra Automated Systems 64000 Audio Router
-Sierra Automated Systems Universal Serial Interface (USI)
+Sierra Automated Systems User Serial Interface (USI)
 Sine Systems ACU-1 (Prophet version)
+Software Authority Protocol
 StarGuide III Satellite Receiver
 Wegener Unity4000 DVB Satellite Receiver
 
@@ -127,6 +134,40 @@ Operation in 'multidrop' mode is not supported.
 
 
 ----------------------------------------------------------------------------
+BROADCAST TOOLS ADMS 44.22 Analog/AES Digital Matrix Switcher
+
+Driver Name: BoradcastTools ADMS 44.22
+
+Supported RML Commands:
+  GPI Enable ('GE')
+  GPI Set ('GI')
+  GPO Set ('GO')
+  Switch Take ('ST')
+  Switch Add ('SA')
+  Switch Level ('SL')
+  Switch Remove ('SR')
+
+GENERAL NOTES:
+Control is done by means of a serial connection to the unit's integrated
+serial port.  The 'OPTIONS' switches on the back of the unit should be set
+as follows:
+
+  1: OFF (UP)
+  2: OFF (UP)
+  3: OFF (UP)
+  4: OFF (UP)
+  5: OFF (UP)
+  6: OFF (UP)
+  7: ON  (DOWN)
+  8: ON  (DOWN)
+  9: OFF (UP)
+ 10: OFF (UP)
+
+The Rivendell serial interface should be set to use 9600 bits/sec, 8 bits,
+1 stop bit and no flow control.
+
+
+---------------------------------------------------------------------------
 BROADCAST TOOLS GPI-16 General Purpose Input Module
 
 Driver Name: BroadcastTools GPI-16
@@ -161,6 +202,24 @@ On the 'Email/Network Setup' page of the unit, be sure that the 'TCP Enabled'
 box is checked and that 'TCP Listen Port' is set to the same number as is
 used in the 'IP Port' setting in Rivendell's driver configuration
 ('56' by default).
+
+
+----------------------------------------------------------------------------
+BROADCAST TOOLS SRC-16
+
+Driver Name: BroadcastTools SRC-16
+
+Supported RML Commands:
+  GPI Enable ('GE')
+  GPI Set ('GI')
+
+GENERAL NOTES:
+Control is done by means of a serial connection to the unit's integrated
+serial port.
+
+The unit should work correctly with factory default settings.  The Rivendell
+serial interface should be set to use 9600 bits/sec, 8 bits, 1 stop bit and
+no flow control.
 
 
 ----------------------------------------------------------------------------
@@ -242,6 +301,33 @@ Operation in 'multidrop' mode is not supported.  If you wish to use
 GPI (referred to as 'PIP', for 'Parallel Input Port' in the Broadcast 
 Tools documentation), then you will also need to be sure that DIP
 switch SW13-7 is ON.
+
+
+----------------------------------------------------------------------------
+BROADCAST TOOLS SS 4.1 MLR SWITCHER/ROUTER
+
+Driver Name: BroadcastTools SS4.1 MLR
+
+Supported RML Commands:
+  Switch Take ('ST')
+  GPI Enable ('GE')
+  GPI Set ('GI')
+
+GENERAL NOTES:
+Control is done by means of an RS-232C connection to a four pin RJ11
+modular jack on the back of the unit (an adapter to a standard DB9
+connector is supplied by Broadcast Tools with the unit).  Serial port
+speed on the SS 4.1 should be set to 9600 (DIP switches SW6-4 and
+SW6-5 set to 'off').  Serial port parameters in RDAdmin should be set
+to 9600 baud rate, no parity, 8 data bits, 1 stop bit, CR/LF termination.
+
+The SS 4.1 should be configured to use unit ID '0', with DIP switches
+SW6-1, SW6-2 and SW6-3 all set to 'off'.
+
+Operation in 'multidrop' mode is not supported.  If you wish to use
+GPI (referred to as 'PIP', for 'Parallel Input Port' in the Broadcast 
+Tools documentation), then you will also need to be sure that DIP
+switch SW6-7 is ON.
 
 
 ----------------------------------------------------------------------------
@@ -508,6 +594,68 @@ Control can done either by means of an RS-232C connection or by means of
 TCP/IP to TCP port 23.
 
 
+----------------------------------------------------------------------------
+Ross NK Video Switchers (via SCP/A Serial Interface)
+
+Driver Name: Ross NK-SCP/A Interface
+
+Supported RML Commands:
+  Switch Take ('ST')
+
+GENERAL NOTES:
+Control is done by means of an RS-232C connection to a NK-SCP/A serial
+interface.  Serial port parameters should be set to 9600 baud rate, no parity,
+8 data bits, 1 stop bit, CR termination.  The Breakaway to use is defined
+by setting the 'Card' parameter in the driver configuration, with
+Card 0 = Breakaway 1, Card 1 = Breakaway 2, etc.
+
+
+----------------------------------------------------------------------------
+SERIAL PORT MODEM CONTROL LINES
+
+Driver Name: Serial Port Modem Control Lines
+
+Supported RML Commands:
+  GPO Set ('GO')
+
+GENERAL NOTES:
+This driver enables GPIO via the modem control lines on an RS-232C serial
+device.  The lines map as follows:
+
+ GPI  SIGNAL
+ -------------------------------
+  1   Data Set Ready      (DSR)
+  2   Clear To Send       (CTS)
+  3   Carrier Detect      (CI)
+  4   Ring Indicator      (RI)
+
+ GPO  SIGNAL
+ -------------------------------
+  1   Data Terminal Ready (DTR)
+  2   Ready To Send       (RTS)
+
+
+----------------------------------------------------------------------------
+SIERRA AUTOMATED SYSTEMS 16000(D) AUDIO ROUTER
+
+Driver Name: SAS 16000(D)
+
+Supported RML Commands:
+  Switch Take ('ST')
+
+GENERAL NOTES:
+Both analog and AES3 digital (D) variants are supported.  Control can done
+by means of an RS-232C connection to the 'User Serial Interface' port on
+the unit.  Serial port parameters should be:
+
+Baud Rate: 9600
+Parity: None
+Data Bits: 8
+Stop Bits: 1
+Terminator: None
+
+
+----------------------------------------------------------------------------
 SIERRA AUTOMATED SYSTEMS 32000 AUDIO ROUTER
 
 Driver Name: SAS 32000
@@ -563,9 +711,9 @@ outputs as well as audio crosspoints.
 
 
 ----------------------------------------------------------------------------
-SIERRA AUTOMATED SYSTEMS Universal Serial Interface (USI)
+SIERRA AUTOMATED SYSTEMS User Serial Interface (USI)
 
-Driver Name: SAS User Serial Interface
+Driver Name: SAS USI
 
 Supported RML Commands:
   Switch Take ('ST')
@@ -603,6 +751,25 @@ rate, even parity, 8 data bits, 1 stop bit and no terminator.
 The ACU-1 should be set to use factory default settings.  This can be done
 by simultaneously pressing buttons 1 and 8 on the front panel of the unit
 for at least one second.
+
+
+----------------------------------------------------------------------------
+SOFTWARE AUTHORITY PROTOCOL
+
+Driver Name: Software Authority Protocol
+
+Supported RML Commands:
+  Switch Take ('ST')
+  GPO Set ('GO')
+
+GENERAL NOTES:
+Used to control devices (such as the Axia 'PathFinder' system) by means of
+the 'Software Authority' protocol.  Control is by means of a
+TCP/IP connection (typically to port 9500) on the controled system.  The 'Card'
+parameter should be set to the 'Router Number' of the router to be controlled.
+
+Most parameters, including the number of inputs and outputs as well as the
+endpoint names, are autodetected by the driver.
 
 
 ----------------------------------------------------------------------------

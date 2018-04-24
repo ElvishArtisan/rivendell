@@ -2,9 +2,7 @@
 //
 // Abstract a Rivendell Podcast Entry
 //
-//   (C) Copyright 2002-2007 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdpodcast.h,v 1.7 2010/07/29 19:32:33 cvs Exp $
+//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -78,6 +76,7 @@ class RDPodcast
  private:
   void SetRow(const QString &param,int value) const;
   void SetRow(const QString &param,const QString &value) const;
+  void SetRow(const QString &param,const QDateTime &datetime,const QString &value) const;
   QString podcast_keyname;
   unsigned podcast_id;
 };

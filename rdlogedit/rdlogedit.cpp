@@ -2,9 +2,7 @@
 //
 // The Log Editor Utility for Rivendell.
 //
-//   (C) Copyright 2002-2005 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdlogedit.cpp,v 1.77.4.9.2.1 2014/05/21 18:19:43 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,34 +24,30 @@
 #include <sys/wait.h>
 #include <unistd.h>
 #endif  // WIN32
-#include <qapplication.h>
-#include <qwindowsstyle.h>
-#include <qwidget.h>
-#include <qpainter.h>
-#include <qsqlpropertymap.h>
-#include <qmessagebox.h>
-#include <qpushbutton.h>
-#include <qlabel.h>
-#include <qlabel.h>
-#include <qlistview.h>
-#include <qtextcodec.h>
-#include <qtranslator.h>
-#include <qsettings.h>
-#include <qpixmap.h>
-#include <qpainter.h>
+
+#include <Q3ListView>
+#include <Q3SqlPropertyMap>
+#include <QApplication>
+#include <QLabel>
+#include <QMessageBox>
+#include <QPainter>
+#include <QPixmap>
+#include <QPushButton>
+#include <QResizeEvent>
+#include <QSettings>
+#include <QTextCodec>
+#include <QTranslator>
+#include <QWidget>
+#include <QWindowsStyle>
 
 #include <rd.h>
+#include <rdapplication.h>
 #include <rdconf.h>
-#include <rdripc.h>
-#include <rdstation.h>
 #include <rdcheck_daemons.h>
 #include <rdcreate_log.h>
 #include <rdadd_log.h>
-#include <rdcmd_switch.h>
-#include <rddb.h>
 #include <rdtextfile.h>
 #include <rdmixer.h>
-#include <dbversion.h>
 #include <rdescape_string.h>
 
 #include <rdlogedit.h>
@@ -76,17 +70,9 @@
 //
 // Global Resources
 //
-RDStation *rdstation_conf;
-RDUser *rduser;
-RDRipc *rdripc;
-RDConfig *log_config;
-RDLogeditConf *rdlogedit_conf;
-RDSystem *rdsystem;
 RDCartDialog *log_cart_dialog;
 bool import_running=false;
 #ifndef WIN32
-RDCae *rdcae;
-
 
 void SigHandler(int signo)
 {
@@ -106,27 +92,16 @@ void SigHandler(int signo)
 #endif  // WIN32
 
 
-MainWidget::MainWidget(QWidget *parent,const char *name,WFlags f)
-  :QMainWindow(parent,name,f)
+MainWidget::MainWidget(QWidget *parent)
+  :Q3MainWindow(parent)
 {
+  new RDApplication(RDApplication::Gui,"rdlogedit",RDLOGEDIT_USAGE);
+
   QString str1;
   QString str2;
   log_log_list=NULL;
-  bool skip_db_check=false;
-  unsigned schema=0;
   QString sql;
   RDSqlQuery *q;
-
-  //
-  // Read Command Options
-  //
-  RDCmdSwitch *cmd=new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdlogedit","\n");
-  for(unsigned i=0;i<cmd->keys();i++) {
-    if(cmd->key(i)=="--skip-db-check") {
-      skip_db_check=true;
-    }
-  }
-  delete cmd;
 
   //
   // Fix the Window Size
@@ -144,70 +119,25 @@ MainWidget::MainWidget(QWidget *parent,const char *name,WFlags f)
   //
   // Load Local Configs
   //
-  log_config=new RDConfig();
-  log_config->load();
   str1=QString("RDLogEdit")+"v"+VERSION+" - "+tr("Host");
   str2=tr("User")+": ["+tr("Unknown")+"]";
   setCaption(QString().sprintf("%s: %s, %s",(const char *)str1,
-			       (const char *)log_config->stationName(),
+			       (const char *)rda->config()->stationName(),
 			       (const char *)str2));
   log_import_path=RDGetHomeDir();
 
-  //
-  // Open Database
-  //
-  QString err;
-  log_db=RDInitDb(&schema,&err);
-  if(!log_db) {
-    QMessageBox::warning(this,tr("Can't Connect"),err);
-    exit(0);
-  }
-  if((schema!=RD_VERSION_DATABASE)&&(!skip_db_check)) {
-#ifdef WIN32
-	    QMessageBox::warning(this,tr("RDLogEdit -- Database Skew"),
-				 tr("This version of RDLogEdit is incompatible with the version installed on the server.\nSee your system administrator for an update!"));
-#else
-    fprintf(stderr,
-	    "rdlogedit: database version mismatch, should be %u, is %u\n",
-	    RD_VERSION_DATABASE,schema);
-#endif  // WIN32
-    exit(256);
-  }
-
-  //
-  // Allocate Global Resources
-  //
-  rdstation_conf=new RDStation(log_config->stationName());
-
-  //
-  // CAE Connection
-  //
 #ifndef WIN32
-  rdcae=new RDCae(rdstation_conf,log_config,parent,name);
-  rdcae->connectHost();
+  rda->cae()->connectHost();
 #endif  // WIN32
 
   //
   // RIPC Connection
   //
 #ifndef WIN32
-  rdripc=new RDRipc(log_config->stationName());
-  connect(rdripc,SIGNAL(connected(bool)),this,SLOT(connectedData(bool)));
-  connect(rdripc,SIGNAL(userChanged()),this,SLOT(userData()));
-  rdripc->connectHost("localhost",RIPCD_TCP_PORT,log_config->password());
-#else
-  rdripc=NULL;
+  connect(rda->ripc(),SIGNAL(connected(bool)),this,SLOT(connectedData(bool)));
+  connect(rda->ripc(),SIGNAL(userChanged()),this,SLOT(userData()));
+  rda->ripc()->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 #endif  // WIN32
-
-  //
-  // System Configuration
-  //
-  rdsystem=new RDSystem();
-
-  //
-  // RDLogEdit Configuration
-  //
-  rdlogedit_conf=new RDLogeditConf(log_config->stationName());
 
   // 
   // Create Fonts
@@ -230,30 +160,15 @@ MainWidget::MainWidget(QWidget *parent,const char *name,WFlags f)
   log_redball_map=new QPixmap(redball_xpm);
 
   //
-  // Cart Picker
-  //
-#ifdef WIN32
-  log_cart_dialog=new RDCartDialog(&log_filter,&log_group,&log_schedcode,
-				   NULL,NULL,rdstation_conf,rdsystem,
-				   log_config,this);
-#else
-  log_cart_dialog=new RDCartDialog(&log_filter,&log_group,&log_schedcode,
-				   rdcae,rdripc,rdstation_conf,rdsystem,
-				   log_config,this);
-#endif
-
-  //
   // User
   //
 #ifndef WIN32
-  rduser=NULL;
-
   //
   // Load Audio Assignments
   //
-  RDSetMixerPorts(log_config->stationName(),rdcae);
+  RDSetMixerPorts(rda->config()->stationName(),rda->cae());
 #else 
-  rduser=new RDUser(RD_USER_LOGIN_NAME);
+  rda->setUser(RD_USER_LOGIN_NAME);
 #endif  // WIN32
 
   //
@@ -289,16 +204,25 @@ MainWidget::MainWidget(QWidget *parent,const char *name,WFlags f)
   connect(log_filter_button,SIGNAL(clicked()),this,SLOT(filterClearedData()));
 
   //
+  // Show Recent Checkbox
+  //
+  log_recent_check=new QCheckBox(this);
+  connect(log_recent_check,SIGNAL(toggled(bool)),this,SLOT(recentData(bool)));
+  log_recent_label=
+    new QLabel(log_recent_check,tr("Show Only Recent Logs"),this);
+  log_recent_label->setFont(button_font);
+
+  //
   // Log List
   //
-  log_log_list=new QListView(this,"log_log_list");
+  log_log_list=new Q3ListView(this);
   log_log_list->setFont(default_font);
   log_log_list->setAllColumnsShowFocus(true);
   log_log_list->setItemMargin(5);
   connect(log_log_list,
-	  SIGNAL(doubleClicked(QListViewItem *,const QPoint &,int)),
+	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,
-	  SLOT(logDoubleclickedData(QListViewItem *,const QPoint &,int)));
+	  SLOT(logDoubleclickedData(Q3ListViewItem *,const QPoint &,int)));
   log_log_list->addColumn("");
   log_log_list->setColumnAlignment(0,Qt::AlignCenter);
   log_log_list->addColumn(tr("LOG NAME"));
@@ -331,7 +255,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name,WFlags f)
   //
   // Add Button
   //
-  log_add_button=new QPushButton(this,"log_add_button");
+  log_add_button=new QPushButton(this);
   log_add_button->setFont(button_font);
   log_add_button->setText(tr("&Add"));
   connect(log_add_button,SIGNAL(clicked()),this,SLOT(addData()));
@@ -339,7 +263,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name,WFlags f)
   //
   // Edit Button
   //
-  log_edit_button=new QPushButton(this,"log_edit_button");
+  log_edit_button=new QPushButton(this);
   log_edit_button->setFont(button_font);
   log_edit_button->setText(tr("&Edit"));
   connect(log_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
@@ -347,7 +271,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name,WFlags f)
   //
   // Delete Button
   //
-  log_delete_button=new QPushButton(this,"log_delete_button");
+  log_delete_button=new QPushButton(this);
   log_delete_button->setFont(button_font);
   log_delete_button->setText(tr("&Delete"));
   connect(log_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
@@ -355,7 +279,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name,WFlags f)
   //
   // Tracker Button
   //
-  log_track_button=new QPushButton(this,"log_track_button");
+  log_track_button=new QPushButton(this);
   log_track_button->setFont(button_font);
   log_track_button->setText(tr("Voice\n&Tracker"));
   connect(log_track_button,SIGNAL(clicked()),this,SLOT(trackData()));
@@ -366,7 +290,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name,WFlags f)
   //
   // Log Report Button
   //
-  log_report_button=new QPushButton(this,"log_report_button");
+  log_report_button=new QPushButton(this);
   log_report_button->setFont(button_font);
   log_report_button->setText(tr("Log\nReport"));
   connect(log_report_button,SIGNAL(clicked()),this,SLOT(reportData()));
@@ -374,7 +298,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name,WFlags f)
   //
   // Close Button
   //
-  log_close_button=new QPushButton(this,"log_close_button");
+  log_close_button=new QPushButton(this);
   log_close_button->setFont(button_font);
   log_close_button->setText(tr("&Close"));
   connect(log_close_button,SIGNAL(clicked()),this,SLOT(quitMainWidget()));
@@ -412,24 +336,22 @@ void MainWidget::userData()
 
   str1=QString("RDLogEdit")+" v"+VERSION+" - "+tr("Host");
   str2=QString(tr("User"));
-  setCaption(str1+": "+log_config->stationName()+", "+str2+": "+
-	     rdripc->user());
-  if(rduser!=NULL) {
-    delete rduser;
-  }
-  rduser=new RDUser(rdripc->user());
+  setCaption(str1+": "+rda->config()->stationName()+", "+str2+": "+
+	     rda->ripc()->user());
+  rda->setUser(rda->ripc()->user());
 
   //
   // Set Control Perms
   //
-  log_add_button->setEnabled(rduser->createLog());
-  log_delete_button->setEnabled(rduser->deleteLog());
-  log_track_button->setEnabled(rduser->voicetrackLog());
+  log_add_button->setEnabled(rda->user()->createLog());
+  log_delete_button->setEnabled(rda->user()->deleteLog());
+  log_track_button->setEnabled(rda->user()->voicetrackLog());
+}
 
-  // Update the list of logs if applicable.
-  if (rdstation_conf->broadcastSecurity() == RDStation::UserSec) {
-    RefreshList();
-  }
+
+void MainWidget::recentData(bool state)
+{
+  RefreshList();
 }
 
 
@@ -442,30 +364,25 @@ void MainWidget::addData()
   std::vector<QString> newlogs;
   RDAddLog *log;
 
-  if(rduser->createLog()) {
-    if (rdstation_conf->broadcastSecurity() == RDStation::UserSec) {
-      log=new RDAddLog(&logname,&svcname,NULL,tr("Add Log"),this,"add_log",
-                       rduser);
-    } else { // RDStation::HostSec
-      log=new RDAddLog(&logname,&svcname,NULL,tr("Add Log"),this,"add_log");
-    }
+  if(rda->user()->createLog()) {
+    log=new RDAddLog(&logname,&svcname,NULL,tr("Add Log"),this);
     if(log->exec()!=0) {
       delete log;
       return;
     }
     delete log;
-    sql=QString().sprintf("INSERT INTO LOGS SET NAME=\"%s\",TYPE=0,\
-                           DESCRIPTION=\"%s log\",ORIGIN_USER=\"%s\",\
-                           ORIGIN_DATETIME=NOW(),LINK_DATETIME=NOW(),\
-                           SERVICE=\"%s\"",
-			  (const char *)logname,
-			  (const char *)logname,
+    sql=QString("insert into LOGS set ")+
+      "NAME=\""+RDEscapeString(logname)+"\","+
+      "TYPE=0,"+
+      "DESCRIPTION=\""+RDEscapeString(logname)+" log\","+
 #ifdef WIN32
-			  RD_USER_LOGIN_NAME,
+      "ORIGIN_USER=\""+RDEscapeString(RD_USER_LOGIN_NAME)+"\","+
 #else
-			  (const char *)rdripc->user(),
+      "ORIGIN_USER=\""+RDEscapeString(rda->ripc()->user())+"\","+
 #endif  // WIN32
-			  (const char *)svcname);
+      "ORIGIN_DATETIME=now(),"+
+      "LINK_DATETIME=now(),"+
+      "SERVICE=\""+RDEscapeString(svcname)+"\"";
     q=new RDSqlQuery(sql);
     if(!q->isActive()) {
       QMessageBox::warning(this,tr("Log Exists"),tr("Log Already Exists!"));
@@ -474,14 +391,15 @@ void MainWidget::addData()
     }
     delete q;
     RDCreateLogTable(RDLog::tableName(logname));
-    EditLog *editlog=new EditLog(logname,&log_clipboard,&newlogs,this);
+    EditLog *editlog=new EditLog(logname,&log_filter,&log_group,&log_schedcode,
+				 &log_clipboard,&newlogs,this);
     editlog->exec();
     delete editlog;
     ListListViewItem *item=new ListListViewItem(log_log_list);
     item->setText(1,logname);
     RefreshItem(item);
     log_log_list->setSelected(item,true);
-    log_log_list->ensureItemVisible((QListViewItem *)item);
+    log_log_list->ensureItemVisible((Q3ListViewItem *)item);
     for(unsigned i=0;i<newlogs.size();i++) {
       item=new ListListViewItem(log_log_list);
       item->setText(1,newlogs[i]);
@@ -499,7 +417,8 @@ void MainWidget::editData()
   if(item==NULL) {
     return;
   }
-  EditLog *log=new EditLog(item->text(1),&log_clipboard,&newlogs,this);
+  EditLog *log=new EditLog(item->text(1),&log_filter,&log_group,&log_schedcode,
+			   &log_clipboard,&newlogs,this);
   log->exec();
   delete log;
   RefreshItem(item);
@@ -517,12 +436,12 @@ void MainWidget::deleteData()
   QString str1;
   QString str2;
   unsigned tracks=0;
-  QListViewItem *item=log_log_list->selectedItem();
+  Q3ListViewItem *item=log_log_list->selectedItem();
 
   if(item==NULL) {
     return;
   }
-  if(rduser->deleteLog()) {
+  if(rda->user()->deleteLog()) {
     if(QMessageBox::question(this,tr("Delete Log"),
      tr(QString().sprintf("Are you sure you want to delete the \"%s\" log?",
 			  (const char *)item->text(1))),
@@ -545,7 +464,7 @@ void MainWidget::deleteData()
 	return;
       }
     }
-    if(!log->remove(rdstation_conf,rduser,log_config)) {
+    if(!log->remove(rda->station(),rda->user(),rda->config())) {
       QMessageBox::warning(this,tr("RDLogEdit"),
 			   tr("Unable to delete log, audio deletion error!"));
       delete log;
@@ -592,9 +511,20 @@ void MainWidget::reportData()
   //
   // Report Body
   //
-  sql="select NAME,DESCRIPTION,SERVICE,MUSIC_LINKS,MUSIC_LINKED,\
-       TRAFFIC_LINKS,TRAFFIC_LINKED,COMPLETED_TRACKS,SCHEDULED_TRACKS,\
-       START_DATE,END_DATE,MODIFIED_DATETIME from LOGS order by NAME";
+  sql=QString("select ")+
+    "NAME,"+               // 00
+    "DESCRIPTION,"+        // 01
+    "SERVICE,"+            // 02
+    "MUSIC_LINKS,"+        // 03
+    "MUSIC_LINKED,"+       // 04
+    "TRAFFIC_LINKS,"+      // 05
+    "TRAFFIC_LINKED,"+     // 06
+    "COMPLETED_TRACKS,"+   // 07
+    "SCHEDULED_TRACKS,"+   // 08
+    "START_DATE,"+         // 09
+    "END_DATE,"+           // 10
+    "MODIFIED_DATETIME "+  // 11
+    "from LOGS order by NAME";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     //
@@ -707,7 +637,7 @@ void MainWidget::filterClearedData()
 }
 
 
-void MainWidget::logDoubleclickedData(QListViewItem *,const QPoint &,int)
+void MainWidget::logDoubleclickedData(Q3ListViewItem *,const QPoint &,int)
 {
   editData();
 }
@@ -715,7 +645,7 @@ void MainWidget::logDoubleclickedData(QListViewItem *,const QPoint &,int)
 
 void MainWidget::quitMainWidget()
 {
-  log_db->removeDatabase(log_config->mysqlDbname());
+  log_db->removeDatabase(rda->config()->mysqlDbname());
   exit(0);
 }
 
@@ -730,7 +660,9 @@ void MainWidget::resizeEvent(QResizeEvent *e)
   log_filter_label->setGeometry(230,10,50,20);
   log_filter_edit->setGeometry(285,10,size().width()-360,20);
   log_filter_button->setGeometry(size().width()-60,8,50,25);
-  log_log_list->setGeometry(10,37,size().width()-20,size().height()-107);
+  log_recent_check->setGeometry(285,35,15,15);
+  log_recent_label->setGeometry(305,33,200,20);
+  log_log_list->setGeometry(10,57,size().width()-20,size().height()-127);
   log_add_button->setGeometry(10,size().height()-55,80,50);
   log_edit_button->setGeometry(100,size().height()-55,80,50);
   log_delete_button->setGeometry(190,size().height()-55,80,50);
@@ -745,13 +677,26 @@ void MainWidget::RefreshItem(ListListViewItem *item)
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("select DESCRIPTION,SERVICE,START_DATE,END_DATE,\
-                         ORIGIN_USER,ORIGIN_DATETIME,COMPLETED_TRACKS,\
-                         SCHEDULED_TRACKS,MUSIC_LINKS,MUSIC_LINKED,\
-                         TRAFFIC_LINKS,TRAFFIC_LINKED,LINK_DATETIME,\
-                         MODIFIED_DATETIME,AUTO_REFRESH from LOGS\
-                         where (TYPE=0)&&(LOG_EXISTS=\"Y\")&&(NAME=\"%s\")",
-			(const char *)item->text(1));
+  sql=QString("select ")+
+    "DESCRIPTION,"+        // 00
+    "SERVICE,"+            // 01
+    "START_DATE,"+         // 02
+    "END_DATE,"+           // 03
+    "ORIGIN_USER,"+        // 04
+    "ORIGIN_DATETIME,"+    // 05
+    "COMPLETED_TRACKS,"+   // 06
+    "SCHEDULED_TRACKS,"+   // 07
+    "MUSIC_LINKS,"+        // 08
+    "MUSIC_LINKED,"+       // 09
+    "TRAFFIC_LINKS,"+      // 10
+    "TRAFFIC_LINKED,"+     // 11
+    "LINK_DATETIME,"+      // 12
+    "MODIFIED_DATETIME,"+  // 13
+    "AUTO_REFRESH "+       // 14
+    "from LOGS where "+    // 15
+    "(TYPE=0)&&"+
+    "(LOG_EXISTS=\"Y\")&&"+
+    "(NAME=\""+RDEscapeString(item->text(1))+"\")";
   q=new RDSqlQuery(sql);
   if(q->next()) {
     item->setText(2,q->value(0).toString());
@@ -821,7 +766,9 @@ void MainWidget::RefreshList()
 
   log_log_list->clear(); // Note: clear here, in case user has no perms.
 
-  sql="select NAME from LOGS where (TYPE=0)&&(LOG_EXISTS=\"Y\")";
+  sql=QString("select NAME from LOGS where ")+
+    "(TYPE=0)&&"+
+    "(LOG_EXISTS=\"Y\")";
 
   if(log_service_box->currentItem()!=0) {
     sql+="&&(SERVICE=\""+RDEscapeString(log_service_box->currentText())+"\")";
@@ -832,29 +779,10 @@ void MainWidget::RefreshList()
     sql+="(DESCRIPTION like \"%%"+RDEscapeString(filter)+"%%\")||";
     sql+="(SERVICE like \"%%"+RDEscapeString(filter)+"%%\"))";
   }
-
-  if (rdstation_conf->broadcastSecurity() == RDStation::UserSec
-      && rduser != NULL) {
-    QStringList services_list;
-    QString sql_where;
-
-    services_list = rduser->services();
-    if(services_list.size()==0) {
-      return;
-    }
-
-    sql_where=" and (";
-    for ( QStringList::Iterator it = services_list.begin(); 
-          it != services_list.end(); ++it ) {
-      sql_where+=QString().sprintf("SERVICE=\"%s\"||",
-                             (const char *)*it);
-    }
-    sql_where=sql_where.left(sql_where.length()-2);
-    sql_where+=")";
-
-    sql=sql+sql_where;
-  } // else no filter for RDStation::HostSec
-
+  if(log_recent_check->isChecked()) {
+    sql+=QString().sprintf("order by ORIGIN_DATETIME desc limit %d",
+			   RDLOGEDIT_LIMIT_QUAN);
+  }
   q=new RDSqlQuery(sql);
   while(q->next()) {
     item=new ListListViewItem(log_log_list);
@@ -872,6 +800,7 @@ int main(int argc,char *argv[])
   //
   // Load Translations
   //
+  /*
   QString tr_path;
   QString qt_path;
 #ifdef WIN32
@@ -900,11 +829,11 @@ int main(int argc,char *argv[])
   QTranslator tr(0);
   tr.load(tr_path+QString("rdlogedit_")+QTextCodec::locale(),".");
   a.installTranslator(&tr);
-
+  */
   //
   // Start Event Loop
   //
-  MainWidget *w=new MainWidget(NULL,"main");
+  MainWidget *w=new MainWidget();
   a.setMainWidget(w);
   w->setGeometry(QRect(QPoint(w->geometry().x(),w->geometry().y()),
 		 w->sizeHint()));

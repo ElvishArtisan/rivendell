@@ -2,9 +2,7 @@
 //
 // The sound panel widget for RDAirPlay
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdsound_panel.cpp,v 1.62.6.13.2.3 2014/05/20 22:39:35 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -36,8 +34,8 @@ RDSoundPanel::RDSoundPanel(int cols,int rows,int station_panels,
 			   const QString &label_template,bool extended,
 			   RDEventPlayer *player,RDRipc *ripc,RDCae *cae,
 			   RDStation *station,RDCartDialog *cart_dialog,
-			   QWidget *parent,const char *name)
-  : QWidget(parent,name)
+			   QWidget *parent)
+  : QWidget(parent)
 {
   panel_playmode_box=NULL;
   panel_button_columns=cols;
@@ -93,7 +91,7 @@ RDSoundPanel::RDSoundPanel(int cols,int rows,int station_panels,
   //
   // Load Buttons
   //
-  panel_mapper=new QSignalMapper(this,"panel_mapper");
+  panel_mapper=new QSignalMapper(this);
   connect(panel_mapper,SIGNAL(mapped(int)),this,SLOT(buttonMapperData(int)));
 
   LoadPanels();
@@ -101,7 +99,7 @@ RDSoundPanel::RDSoundPanel(int cols,int rows,int station_panels,
   //
   // Panel Selector
   //
-  panel_selector_box=new RDComboBox(this,"panel_selector_box");
+  panel_selector_box=new RDComboBox(this);
   panel_selector_box->setFont(button_font);
   panel_selector_box->addIgnoredKey(Qt::Key_Space);
   panel_selector_box->
@@ -132,7 +130,7 @@ RDSoundPanel::RDSoundPanel(int cols,int rows,int station_panels,
   //
   // Play Mode Box
   //
-  panel_playmode_box=new QComboBox(this,"panel_playmode_box");
+  panel_playmode_box=new QComboBox(this);
   panel_playmode_box->setFont(button_font);
   panel_playmode_box->
     setGeometry((15+PANEL_BUTTON_SIZE_X)*(panel_button_columns-3)-5,
@@ -146,7 +144,7 @@ RDSoundPanel::RDSoundPanel(int cols,int rows,int station_panels,
   //
   // Reset Button
   //
-  panel_reset_button=new RDPushButton(this,"reset_button");
+  panel_reset_button=new RDPushButton(this);
   panel_reset_button->
     setGeometry((15+PANEL_BUTTON_SIZE_X)*(panel_button_columns-2),
 		(15+PANEL_BUTTON_SIZE_Y)*panel_button_rows,
@@ -154,13 +152,13 @@ RDSoundPanel::RDSoundPanel(int cols,int rows,int station_panels,
   panel_reset_button->setFont(button_font);
   panel_reset_button->setText(tr("Reset"));
   panel_reset_button->setFlashColor(QColor(RDPANEL_RESET_FLASH_COLOR));
-  panel_reset_button->setFocusPolicy(QWidget::NoFocus);
+  panel_reset_button->setFocusPolicy(Qt::NoFocus);
   connect(panel_reset_button,SIGNAL(clicked()),this,SLOT(resetClickedData()));
 
   //
   // All Button
   //
-  panel_all_button=new RDPushButton(this,"all_button");
+  panel_all_button=new RDPushButton(this);
   panel_all_button->
     setGeometry((15+PANEL_BUTTON_SIZE_X)*(panel_button_columns-1),
 		(15+PANEL_BUTTON_SIZE_Y)*panel_button_rows,
@@ -168,14 +166,14 @@ RDSoundPanel::RDSoundPanel(int cols,int rows,int station_panels,
   panel_all_button->setFont(button_font);
   panel_all_button->setText(tr("All"));
   panel_all_button->setFlashColor(QColor(RDPANEL_RESET_FLASH_COLOR));
-  panel_all_button->setFocusPolicy(QWidget::NoFocus);
+  panel_all_button->setFocusPolicy(Qt::NoFocus);
   panel_all_button->hide();
   connect(panel_all_button,SIGNAL(clicked()),this,SLOT(allClickedData()));
 
   //
   // Setup Button
   //
-  panel_setup_button=new RDPushButton(this,"setup_button");
+  panel_setup_button=new RDPushButton(this);
   panel_setup_button->
     setGeometry((15+PANEL_BUTTON_SIZE_X)*(panel_button_columns-1),
 		(15+PANEL_BUTTON_SIZE_Y)*panel_button_rows,
@@ -183,7 +181,7 @@ RDSoundPanel::RDSoundPanel(int cols,int rows,int station_panels,
   panel_setup_button->setFont(button_font);
   panel_setup_button->setText(tr("Setup"));
   panel_setup_button->setFlashColor(QColor(RDPANEL_SETUP_FLASH_COLOR));
-  panel_setup_button->setFocusPolicy(QWidget::NoFocus);
+  panel_setup_button->setFocusPolicy(Qt::NoFocus);
   connect(panel_setup_button,SIGNAL(clicked()),this,SLOT(setupClickedData()));
 
   //
@@ -191,8 +189,7 @@ RDSoundPanel::RDSoundPanel(int cols,int rows,int station_panels,
   //
   panel_button_dialog=
     new RDButtonDialog(panel_station->name(),panel_label_template,
-		       panel_cart_dialog,panel_svcname,this,
-		       "panel_button_dialog");
+		       panel_cart_dialog,panel_svcname,this);
 
   //
   // CAE Setup
@@ -1468,21 +1465,39 @@ void RDSoundPanel::LogTraffic(RDPanelButton *button)
   RDSqlQuery *q;
   QDateTime datetime(QDate::currentDate(),QTime::currentTime());
 
-  sql=QString("select CART.TITLE,CART.ARTIST,CART.PUBLISHER,")+
-    "CART.COMPOSER,CART.USAGE_CODE,CUTS.ISRC,"+
-    "CART.ALBUM,CART.LABEL,CUTS.ISCI,CART.CONDUCTOR,CART.USER_DEFINED,"
-    "CART.SONG_ID from CART left join CUTS "+
+  sql=QString("select ")+
+    "CART.TITLE,"+         // 00
+    "CART.ARTIST,"+        // 01
+    "CART.PUBLISHER,"+     // 02
+    "CART.COMPOSER,"+      // 03
+    "CART.USAGE_CODE,"+    // 04
+    "CUTS.ISRC,"+          // 05
+    "CART.ALBUM,"+         // 06
+    "CART.LABEL,"+         // 07
+    "CUTS.ISCI,"+          // 08
+    "CART.CONDUCTOR,"+     // 09
+    "CART.USER_DEFINED,"+  // 10
+    "CART.SONG_ID,"+       // 11
+    "CUTS.DESCRIPTION,"+   // 12
+    "CUTS.OUTCUE "+        // 13
+    "from CART left join CUTS "+
     "on CART.NUMBER=CUTS.CART_NUMBER where "+
     "CUTS.CUT_NAME=\""+RDEscapeString(button->cutName())+"\"";
   q=new RDSqlQuery(sql);
   if(q->first()) {
+
+    QString eventDateTimeSQL = "NULL";
+
+    if(datetime.isValid() && button->startTime().isValid())
+      eventDateTimeSQL = RDCheckDateTime(QDateTime(datetime.date(),
+            button->startTime()), "yyyy-MM-dd hh:mm:ss");
+
     sql=QString("insert into `")+panel_svcname+"_SRT` set "+
       QString().sprintf("LENGTH=%d,",button->startTime().
 			msecsTo(datetime.time()))+
       QString().sprintf("CART_NUMBER=%u,",button->cart())+
       "STATION_NAME=\""+RDEscapeString(panel_station->name().utf8())+"\","+
-      "EVENT_DATETIME=\""+datetime.toString("yyyy-MM-dd")+" "+
-      button->startTime().toString("hh:mm:ss")+"\","+
+      "EVENT_DATETIME="+eventDateTimeSQL+","+
       QString().sprintf("EVENT_TYPE=%d,",RDAirPlayConf::TrafficStop)+
       QString().sprintf("EVENT_SOURCE=%d,",RDLogLine::SoundPanel)+
       QString().sprintf("PLAY_SOURCE=%d,",RDLogLine::SoundPanel)+
@@ -1497,6 +1512,8 @@ void RDSoundPanel::LogTraffic(RDPanelButton *button)
       "ALBUM=\""+RDEscapeString(q->value(6).toString().utf8())+"\","+
       "LABEL=\""+RDEscapeString(q->value(7).toString().utf8())+"\","+
       "ISCI=\""+RDEscapeString(q->value(8).toString().utf8())+"\","+
+      "DESCRIPTION=\""+RDEscapeString(q->value(12).toString().utf8())+"\","+
+      "OUTCUE=\""+RDEscapeString(q->value(13).toString().utf8())+"\","+
       "CONDUCTOR=\""+RDEscapeString(q->value(9).toString().utf8())+"\","+
       "USER_DEFINED=\""+RDEscapeString(q->value(10).toString().utf8())+"\","+
       "SONG_ID=\""+RDEscapeString(q->value(11).toString().utf8())+"\","+

@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry id="stdin" xmlns="http://docbook.org/ns/docbook" version="5.0">
+  <!--
+      Header
+  -->
+  <refmeta>
+    <refentrytitle>rdexport</refentrytitle>
+    <manvolnum>1</manvolnum>
+    <refmiscinfo class='source'>April 2016</refmiscinfo>
+    <refmiscinfo class='manual'>Linux Audio Manual</refmiscinfo>
+  </refmeta>
+  <refnamediv>
+    <refname>rdexport</refname>
+    <refpurpose>Export audio from a Rivendell audio store</refpurpose>
+  </refnamediv>
+  <info>
+    <author>
+      <personname>
+	<firstname>Fred</firstname>
+	<surname>Gleason</surname>
+	<email>fredg@paravelsystems.com</email>
+      </personname>
+      <contrib>Application Author</contrib>
+    </author>
+  </info>
+
+  <!--
+      Body
+  -->
+  <refsynopsisdiv id='synopsis'>
+    <cmdsynopsis>
+      <command>rdexport</command>
+      <arg choice='opt'><replaceable>OPTIONS</replaceable></arg>
+      <arg choice='req'><replaceable>output-dir</replaceable></arg>
+      <sbr/>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+
+  <refsect1 id='description'><title>Description</title>
+  <para>
+    <command>rdexport</command><manvolnum>1</manvolnum> can be used to export
+    audio from a Rivendell audio store.
+  </para>
+  </refsect1>
+
+  <refsect1 id='options'><title>Options</title>
+  <variablelist remap='TP'>
+    <varlistentry>
+      <term>
+	<option>--allow-clobber</option>
+      </term>
+      <listitem>
+	<para>
+	  Overwrite a file if it already exists.  If this option is not given,
+	  <command>rdexport</command><manvolnum>1</manvolnum> will
+	  automatically append an integer string -- e.g. "[1]" -- to avoid
+	  such overwriting.
+	</para>
+      </listitem>
+    </varlistentry>
+ 
+    <varlistentry>
+      <term>
+	<option>--bitrate=</option><replaceable>rate</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Specify the bitrate to use, in <replaceable>rate</replaceable>
+	  bits per second.  Default value is the bitrate of the original
+	  audio, or 256000 bits/sec for PCM originals.
+	</para>
+	<para>
+	  This setting is meaningful only when used with the
+	  <userinput>MP2</userinput> or <userinput>MP3</userinput> formats.
+	</para>
+      </listitem>
+    </varlistentry>
+
+   <varlistentry>
+      <term>
+	<option>--carts=</option><replaceable>start-cart</replaceable>:<replaceable>end-cart</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Specify a range of cart numbers to be exported, from
+	  <replaceable>start-cart</replaceable> to
+	  <replaceable>end-cart</replaceable> (both inclusive).  This option
+	  may be given multiple times.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--channels=</option><replaceable>chans</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Specify the number of channels to use. Valid values are
+	  <userinput>1</userinput> or <userinput>2</userinput>. Default
+	  value is the channel count of the original audio.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--continue-after-error</option>
+      </term>
+      <listitem>
+	<para>
+	  Continue processing exports even in the face of exporter errors
+	  on particular carts.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--escape-string=</option><replaceable>string</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Specify the string to use to replace illegal characters in output
+	  filenames.  Illegal characters that will be so replaced are:
+	  <userinput>*</userinput>,
+	  <userinput>/</userinput>,
+	  <userinput>&lt;</userinput>,
+	  <userinput>&gt;</userinput>,
+	  <userinput>"</userinput>,
+	  <userinput>\</userinput>,
+	  <userinput>|</userinput> and
+	  <userinput>?</userinput>.
+	  Default value is <userinput>_</userinput>.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--format=</option><replaceable>format</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Specify the file and audio encoding format to be used. The
+	  following values for <replaceable>format</replaceable> are
+	  recognized:
+	</para>
+	<variablelist>
+	  <varlistentry>
+	    <term><userinput>FLAC</userinput></term>
+	    <listitem>
+	      <para>Free Lossless Audio Codec (.flac)</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>MP2</userinput></term>
+	    <listitem>
+	      <para>MPEG-1 Layer 2 (.mp2)</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>MP3</userinput></term>
+	    <listitem>
+	      <para>MPEG-1 Layer 3 (.mp3)</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>PCM16</userinput></term>
+	    <listitem>
+	      <para>PCM16 audio in a WAV file format (.wav)</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>PCM24</userinput></term>
+	    <listitem>
+	      <para>PCM24 audio in a WAV file format (.wav)</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>VORBIS</userinput></term>
+	    <listitem>
+	      <para>OggVorbis (.ogg)</para>
+	    </listitem>
+	  </varlistentry>
+	</variablelist>
+	<para>
+	  Default value is to use whatever format was used in the audio store.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--group=</option><replaceable>group-name</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Specify a group to be exported. This option may be given multiple
+	  times.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--metadata-pattern=</option><replaceable>pattern</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Specify a pattern to define how output files should be named.
+	  Patterns consist of characters interspersed with zero or more
+	  wildcard characters as follows:
+	</para>
+	<variablelist>
+	  <varlistentry>
+	    <term><userinput>%a</userinput></term>
+	    <listitem>
+	      <para>Artist</para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term><userinput>%b</userinput></term>
+	    <listitem>
+	      <para>Record Label</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>%c</userinput></term>
+	    <listitem>
+	      <para>Client</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>%e</userinput></term>
+	    <listitem>
+	      <para>Agency</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>%g</userinput></term>
+	    <listitem>
+	      <para>Rivendell group name</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>%h</userinput></term>
+	    <listitem>
+	      <para>Event length in milliseconds</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>%i</userinput></term>
+	    <listitem>
+	      <para>Cut Description</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>%j</userinput></term>
+	    <listitem>
+	      <para>Cut Number</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>%l</userinput></term>
+	    <listitem>
+	      <para>Album</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>%m</userinput></term>
+	    <listitem>
+	      <para>Composer</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>%n</userinput></term>
+	    <listitem>
+	      <para>Cart Number</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>%o</userinput></term>
+	    <listitem>
+	      <para>Outcue</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>%p</userinput></term>
+	    <listitem>
+	      <para>Publisher</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>%r</userinput></term>
+	    <listitem>
+	      <para>Conductor</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>%s</userinput></term>
+	    <listitem>
+	      <para>Song ID</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>%t</userinput></term>
+	    <listitem>
+	      <para>Title</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>%u</userinput></term>
+	    <listitem>
+	      <para>User Defined</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>%y</userinput></term>
+	    <listitem>
+	      <para>Release Year</para>
+	    </listitem>
+	  </varlistentry>
+
+	</variablelist>
+      </listitem>
+    </varlistentry>
+    <para>
+      Default value is <userinput>%n_%j</userinput>.
+    </para>
+
+    <varlistentry>
+      <term>
+	<option>--quality=</option><replaceable>qual</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Specify the quality level to use, in the range
+	  <userinput>-1</userinput> through <userinput>10</userinput>,
+	  inclusive. Default value is <userinput>3</userinput>.
+	</para>
+	<para>
+	  This setting is meaningful only when used with the
+	  <userinput>VORBIS</userinput> format.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--samplerate=</option><replaceable>rate</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Specify the sample rate to use, in <replaceable>rate</replaceable>
+	  samples per second.  Default value is the sample rate of the original
+	  audio.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--xml</option>
+      </term>
+      <listitem>
+	<para>
+	  Generate an XML file for each generated audio file containing
+	  its cart/cut metadata.
+	</para>
+      </listitem>
+    </varlistentry>
+
+  </variablelist>
+</refsect1>
+
+<refsect1 id='see_also'><title>See Also</title>
+<para>
+  <citerefentry>
+    <refentrytitle>rdimport</refentrytitle><manvolnum>1</manvolnum>
+  </citerefentry>
+  <literal>,</literal>
+  <citerefentry>
+    <refentrytitle>rdmarkerset</refentrytitle><manvolnum>8</manvolnum>
+  </citerefentry>
+</para>
+</refsect1>
+
+</refentry>
+

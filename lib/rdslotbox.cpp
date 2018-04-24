@@ -2,9 +2,7 @@
 //
 // Cart slot label widget for RDCartSlot
 //
-//   (C) Copyright 2012 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdslotbox.cpp,v 1.5.2.8 2014/02/06 20:43:47 cvs Exp $
+//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,6 +19,13 @@
 //
 
 #include <qpainter.h>
+//Added by qt3to4:
+#include <QDropEvent>
+#include <QPaintEvent>
+#include <QPixmap>
+#include <QLabel>
+#include <QMouseEvent>
+#include <QDragEnterEvent>
 
 #include "rdconf.h"
 #include "rdplay_deck.h"
@@ -100,9 +105,9 @@ RDSlotBox::RDSlotBox(RDPlayDeck *deck,RDAirPlayConf *conf,QWidget *parent)
 
   line_text_palette=palette();
   line_text_palette.setColor(QPalette::Active,QColorGroup::Foreground,
-				  QColor(black));
+				  QColor(Qt::black));
   line_text_palette.setColor(QPalette::Inactive,QColorGroup::Foreground,
-				  QColor(black));
+				  QColor(Qt::black));
 
   //
   // Audio Meter
@@ -132,7 +137,7 @@ RDSlotBox::RDSlotBox(RDPlayDeck *deck,RDAirPlayConf *conf,QWidget *parent)
   //
   // Position Slider
   //
-  line_position_bar=new QProgressBar(this);
+  line_position_bar=new Q3ProgressBar(this);
   line_position_bar->setGeometry(115,69,sizeHint().width()-190,13);
   line_position_bar->setPercentageVisible(false);
   line_position_bar->hide();
@@ -581,7 +586,7 @@ void RDSlotBox::SetColor(QColor color)
   line_talktime_label->setPalette(line_text_palette);
   line_up_label->setBackgroundColor(color);
   line_up_label->setPalette(line_text_palette);
-  line_position_bar->setBackgroundColor(QColor(lightGray));
+  line_position_bar->setBackgroundColor(QColor(Qt::lightGray));
   line_down_label->setBackgroundColor(color);
   line_down_label->setPalette(line_text_palette);
   line_icon_label->setBackgroundColor(color);

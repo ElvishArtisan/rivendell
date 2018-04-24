@@ -2,9 +2,7 @@
 //
 // A Rivendell switcher driver for the Harlond Virtual Mixer
 //
-//   (C) Copyright 2002-2012 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: harlond.h,v 1.2.2.2 2012/08/06 00:12:07 cvs Exp $
+//   (C) Copyright 2002-2012,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,7 +27,7 @@
 
 #include <qsignalmapper.h>
 #include <qtimer.h>
-#include <qsocket.h>
+#include <q3socket.h>
 
 #include <rd.h>
 #include <rdmatrix.h>
@@ -70,7 +68,7 @@ class Harlond : public Switcher
   bool AddCrosspoint(int input,int output);
   bool RemoveCrosspoint(int input,int output);
   QString GetBussCode(int output);
-  QSocket *bt_socket;
+  Q3Socket *bt_socket;
   QString bt_recv_buffer;
   QTimer *bt_watchdog_timer;
   QHostAddress bt_ip_address;

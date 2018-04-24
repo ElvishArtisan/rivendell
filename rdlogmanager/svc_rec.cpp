@@ -1,10 +1,8 @@
 // svc_rec.cpp
 //
-// A Qt-based application for testing General Purpose Outputs (GPO).
+// Calendar widget.
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: svc_rec.cpp,v 1.8 2010/07/29 19:32:37 cvs Exp $
+//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,20 +18,20 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-
 #include <qwidget.h>
 #include <qstring.h>
 #include <qlabel.h>
 #include <qpalette.h>
+//Added by qt3to4:
+#include <QMouseEvent>
 #include <rddb.h>
 #include <svc_rec.h>
 
 //
 // Global Classes
 //
-SvcRec::SvcRec(const QString &svcname,
-			   QWidget *parent,const char *name)
-  :QWidget(parent,name)
+SvcRec::SvcRec(const QString &svcname,QWidget *parent)
+  :QWidget(parent)
 {
   QString sql;
   RDSqlQuery *q;
@@ -55,9 +53,8 @@ SvcRec::SvcRec(const QString &svcname,
   QDate current_date=QDate::currentDate();
   pick_high_year=current_date.year();
   pick_low_year=pick_high_year;
-  sql=QString().sprintf("select EVENT_DATETIME from `%s_SRT`\
-                         order by EVENT_DATETIME",
-			(const char *)pick_tablename);
+  sql=QString("select EVENT_DATETIME from `")+pick_tablename+"_SRT` "+
+    "order by EVENT_DATETIME";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     pick_low_year=q->value(0).toDate().year();
@@ -67,7 +64,7 @@ SvcRec::SvcRec(const QString &svcname,
   //
   // Month
   //
-  pick_month_box=new QComboBox(this,"pick_month_box");
+  pick_month_box=new QComboBox(this);
   pick_month_box->setGeometry(0,0,120,26);
   for(int i=1;i<13;i++) {
     pick_month_box->insertItem(QDate::longMonthName(i));
@@ -78,7 +75,7 @@ SvcRec::SvcRec(const QString &svcname,
   //
   // Year
   //
-  pick_year_box=new QComboBox(this,"pick_year_box");
+  pick_year_box=new QComboBox(this);
   pick_year_box->setGeometry(130,0,90,26);
   for(int i=pick_low_year;i<(pick_high_year+1);i++) {
     pick_year_box->insertItem(QString().sprintf("%04d",i));
@@ -98,57 +95,57 @@ SvcRec::SvcRec(const QString &svcname,
 			   palette().color(QPalette::Active,
 					   QColorGroup::Mid));
 
-  QLabel *label=new QLabel(tr("Mo"),this,"monday_label");
+  QLabel *label=new QLabel(tr("Mo"),this);
   label->setGeometry(SVC_REC_X_ORIGIN,30,30,30);
   label->setFont(pick_day_font[1]);
-  label->setAlignment(AlignCenter);
+  label->setAlignment(Qt::AlignCenter);
 
-  label=new QLabel(tr("Tu"),this,"tuesday_label");
+  label=new QLabel(tr("Tu"),this);
   label->setGeometry(SVC_REC_X_ORIGIN+SVC_REC_X_INTERVAL,
 		     SVC_REC_Y_ORIGIN,30,30);
   label->setFont(pick_day_font[1]);
-  label->setAlignment(AlignCenter);
+  label->setAlignment(Qt::AlignCenter);
 
-  label=new QLabel(tr("We"),this,"wednesday_label");
+  label=new QLabel(tr("We"),this);
   label->setGeometry(SVC_REC_X_ORIGIN+SVC_REC_X_INTERVAL*2,
 		     SVC_REC_Y_ORIGIN,30,30);
   label->setFont(pick_day_font[1]);
-  label->setAlignment(AlignCenter);
+  label->setAlignment(Qt::AlignCenter);
 
-  label=new QLabel(tr("Th"),this,"thursday_label");
+  label=new QLabel(tr("Th"),this);
   label->setGeometry(SVC_REC_X_ORIGIN+SVC_REC_X_INTERVAL*3,
 		     SVC_REC_Y_ORIGIN,30,30);
   label->setFont(pick_day_font[1]);
-  label->setAlignment(AlignCenter);
+  label->setAlignment(Qt::AlignCenter);
 
-  label=new QLabel(tr("Fr"),this,"friday_label");
+  label=new QLabel(tr("Fr"),this);
   label->setGeometry(SVC_REC_X_ORIGIN+SVC_REC_X_INTERVAL*4,
 		     SVC_REC_Y_ORIGIN,30,30);
   label->setFont(pick_day_font[1]);
-  label->setAlignment(AlignCenter);
+  label->setAlignment(Qt::AlignCenter);
 
-  label=new QLabel(tr("Sa"),this,"saturday_label");
+  label=new QLabel(tr("Sa"),this);
   label->setGeometry(SVC_REC_X_ORIGIN+SVC_REC_X_INTERVAL*5,
 		     SVC_REC_Y_ORIGIN,30,30);
   label->setFont(pick_day_font[1]);
-  label->setAlignment(AlignCenter);
+  label->setAlignment(Qt::AlignCenter);
   label->setPalette(weekend_palette);
 
-  label=new QLabel(tr("Su"),this,"sunday_label");
+  label=new QLabel(tr("Su"),this);
   label->setGeometry(SVC_REC_X_ORIGIN+SVC_REC_X_INTERVAL*6,
 		     SVC_REC_Y_ORIGIN,30,30);
   label->setFont(pick_day_font[1]);
-  label->setAlignment(AlignCenter);
+  label->setAlignment(Qt::AlignCenter);
   label->setPalette(weekend_palette);
 
 
   for(int i=0;i<6;i++) {
     for(int j=0;j<7;j++) {
-      pick_date_label[i][j]=new QLabel(this,"date_label");
+      pick_date_label[i][j]=new QLabel(this);
       pick_date_label[i][j]->
 	setGeometry(SVC_REC_X_ORIGIN+SVC_REC_X_INTERVAL*j,
 		    SVC_REC_Y_ORIGIN+20+SVC_REC_Y_INTERVAL*i,30,30);
-      pick_date_label[i][j]->setAlignment(AlignCenter);
+      pick_date_label[i][j]->setAlignment(Qt::AlignCenter);
     }
   }
   PrintDays();
@@ -220,12 +217,10 @@ void SvcRec::deleteDay()
 
   QString tablename=pick_service_name;
   tablename.replace(" ","_");
-  sql=QString().sprintf("delete from `%s_SRT` where \
-                         (EVENT_DATETIME>=\"%s\")&&\
-                         (EVENT_DATETIME<=\"%s\")",
-			(const char *)tablename,
-			(const char *)date().toString("yyyy-MM-dd 00:00:00"),
-			(const char *)date().toString("yyyy-MM-dd 23:59:59"));
+  sql=QString("delete from `")+tablename+"_SRT` where "+
+    "(EVENT_DATETIME>=\""+date().toString("yyyy-MM-dd 00:00:00")+"\")&&"+
+    "(EVENT_DATETIME<\""+date().addDays(1).toString("yyyy-MM-dd 00:00:00")+
+    "\")";
   q=new RDSqlQuery(sql);
   delete q;
   GetActiveDays(pick_date);
@@ -408,12 +403,11 @@ void SvcRec::GetActiveDays(const QDate &date)
   RDSqlQuery *q;
 
   for(int i=0;i<=31;i++) {
-    sql=QString().sprintf("select ID from `%s_SRT` where \
-                           (EVENT_DATETIME>=\"%s-%02d 00:00:00\")&&\
-                           (EVENT_DATETIME<=\"%s-%02d 23:59:59\")",
-			  (const char *)pick_tablename,
-			  (const char *)date.toString("yyyy-MM"),i+1,
-			  (const char *)date.toString("yyyy-MM"),i+1);
+    sql=QString("select ID from `")+pick_tablename+"_SRT` where	"+
+      "(EVENT_DATETIME>=\""+date.toString("yyyy-MM")+
+      QString().sprintf("-%02d 00:00:00\")&&",i+1)+
+      "(EVENT_DATETIME<=\""+date.toString("yyyy-MM")+
+      QString().sprintf("-%02d 23:59:59\")",i+1);
     q=new RDSqlQuery(sql);
     pick_active_days[i]=q->first();
     delete q;

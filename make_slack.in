@@ -4,9 +4,7 @@
 #
 # Make a Slackware package.
 #
-# (C) Copyright 2006 Fred Gleason <fredg@paravelsystems.com>
-#
-#      $Id: make_slack.in,v 1.15 2010/07/29 19:32:30 cvs Exp $
+# (C) Copyright 2006,2016 Fred Gleason <fredg@paravelsystems.com>
 #
 #    This program is free software; you can redistribute it and/or modify
 #    it under the terms of version 2 of the GNU General Public License as

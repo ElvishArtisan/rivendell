@@ -2,9 +2,7 @@
 //
 // Container class for Rivendel Web Service result messages.
 //
-//   (C) Copyright 2011 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdwebresult.cpp,v 1.1 2011/12/23 23:07:00 cvs Exp $
+//   (C) Copyright 2011,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -104,7 +102,7 @@ bool RDWebResult::readXml(const QString &xml)
   //        a proper XML parser.
   //
   QStringList list=list.split("\r\n",xml);
-  for(unsigned i=0;i<list.size();i++) {
+  for(int i=0;i<list.size();i++) {
     //printf("%d: %s\n",i,(const char *)list[i]);
     if(list[i].contains("ErrorString")) {
       QStringList list2=list.split("<",list[i]);

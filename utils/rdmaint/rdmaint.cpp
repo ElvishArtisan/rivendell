@@ -2,9 +2,7 @@
 //
 // A Utility for running periodic system maintenance.
 //
-//   (C) Copyright 2008 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdmaint.cpp,v 1.9.4.4 2013/11/13 23:36:39 cvs Exp $
+//   (C) Copyright 2008-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,27 +27,27 @@
 #include <fcntl.h>
 #include <ctype.h>
 
-#include <qapplication.h>
-#include <qdir.h>
-#include <qfile.h>
+#include <QCoreApplication>
+#include <QDir>
+#include <QFile>
 
-#include <rd.h>
+#include <rdapplication.h>
 #include <rdconf.h>
-#include <rdmaint.h>
-#include <rdlibrary_conf.h>
 #include <rdescape_string.h>
-#include <rddb.h>
 #include <rdurl.h>
 #include <rdpodcast.h>
 #include <rdcart.h>
 #include <rdlog.h>
 
-MainObject::MainObject(QObject *parent,const char *name)
-  :QObject(parent,name)
+#include "rdmaint.h"
+
+MainObject::MainObject(QObject *parent)
+  :QObject(parent)
 {
+  new RDApplication(RDApplication::Console,"rdmain",RDMAINT_USAGE);
+
   QString sql;
   RDSqlQuery *q;
-  unsigned schema=0;
 
   //
   // Initialize Data Structures
@@ -60,46 +58,20 @@ MainObject::MainObject(QObject *parent,const char *name)
   //
   // Read Command Options
   //
-  maint_cmd=new RDCmdSwitch(qApp->argc(),qApp->argv(),
-			     "rdmaint",RDMAINT_USAGE);
-  if(maint_cmd->keys()>3) {
+  if(rda->cmdSwitch()->keys()>3) {
     fprintf(stderr,"\n");
     fprintf(stderr,"%s",RDMAINT_USAGE);
     fprintf(stderr,"\n");
-    delete maint_cmd;
     exit(256);
   }
-  for(unsigned i=0;i<maint_cmd->keys();i++) {
-    if(maint_cmd->key(i)=="--verbose") {
+  for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
+    if(rda->cmdSwitch()->key(i)=="--verbose") {
       maint_verbose=true;
     }
-    if(maint_cmd->key(i)=="--system") {
+    if(rda->cmdSwitch()->key(i)=="--system") {
       maint_system=true;
     }
   }
-
-  //
-  // Read Configuration
-  //
-  maint_config=new RDConfig();
-  maint_config->load();
-
-  //
-  // Open Database
-  //
-  QString err (tr("rdmaint: "));
-  QSqlDatabase *db=RDInitDb(&schema,&err);
-  if(!db) {
-    fprintf(stderr,err.ascii());
-    delete maint_cmd;
-    exit(256);
-  }
-  delete maint_cmd;
-
-  //
-  // Get Station
-  //
-  maint_station=new RDStation(maint_config->stationName());
 
   //
   // Get User
@@ -110,7 +82,7 @@ MainObject::MainObject(QObject *parent,const char *name)
     fprintf(stderr,"unable to find valid user\n");
     exit(256);
   }
-  maint_user=new RDUser(q->value(0).toString());
+  rda->setUser(q->value(0).toString());
   delete q;
 
   if(maint_system) {
@@ -153,29 +125,32 @@ void MainObject::PurgeCuts()
   RDSqlQuery *q2;
   QDateTime dt=QDateTime(QDate::currentDate(),QTime::currentTime());
 
-  sql=QString("select NAME,CUT_SHELFLIFE,DELETE_EMPTY_CARTS from GROUPS ")+
-    "where CUT_SHELFLIFE>=0";
+  sql=QString("select ")+
+    "NAME,"+
+    "CUT_SHELFLIFE,"+
+    "DELETE_EMPTY_CARTS "+
+    "from GROUPS where "+
+    "CUT_SHELFLIFE>=0";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    sql=QString().sprintf("select CART.NUMBER,CUTS.CUT_NAME \
-                           from CUTS left join CART \
-                           on CUTS.CART_NUMBER=CART.NUMBER \
-                           where (CART.GROUP_NAME=\"%s\")&&\
-                           (CUTS.END_DATETIME<\"%s 00:00:00\")",
-			  (const char *)RDEscapeString(q->value(0).toString()),
-			  (const char *)dt.addDays(-q->value(1).toInt()).
-			  toString("yyyy-MM-dd"));
+    sql=QString("select ")+
+      "CART.NUMBER,"+
+      "CUTS.CUT_NAME "+
+      "from CUTS left join CART "+
+      "on CUTS.CART_NUMBER=CART.NUMBER where "+
+      "(CART.GROUP_NAME=\""+RDEscapeString(q->value(0).toString())+"\")&&"+
+      "(CUTS.END_DATETIME<\""+
+      dt.addDays(-q->value(1).toInt()).toString("yyyy-MM-dd")+" 00:00:00\")";
     q1=new RDSqlQuery(sql);
     while(q1->next()) {
       RDCart *cart=new RDCart(q1->value(0).toUInt());
-      if(cart->removeCut(maint_station,maint_user,q1->value(1).toString(),
-			 maint_config)) {
-	maint_config->
+      if(cart->removeCut(q1->value(1).toString())) {
+	rda->config()->
 	  log("rdmaint",RDConfig::LogInfo,QString().sprintf("purged cut %s",
 			(const char *)q1->value(1).toString()));
       }
       else {
-	maint_config->
+	rda->config()->
 	  log("rdmaint",RDConfig::LogErr,QString().
 	      sprintf("unable to purge cut %s: audio deletion error",
 		      (const char *)q1->value(1).toString()));
@@ -185,8 +160,8 @@ void MainObject::PurgeCuts()
 			      q1->value(0).toUInt());
 	q2=new RDSqlQuery(sql);
 	if(!q2->first()) {
-	  cart->remove(maint_station,maint_user,maint_config);
-	  maint_config->
+	  cart->remove();
+	  rda->config()->
 	    log("rdmaint",RDConfig::LogInfo,QString().
 		sprintf("deleted purged cart %06u",cart->number()));
 	}
@@ -206,16 +181,17 @@ void MainObject::PurgeLogs()
   RDSqlQuery *q;
   QDateTime dt=QDateTime(QDate::currentDate(),QTime::currentTime());
 
-  sql=QString().sprintf("select NAME from LOGS where \
-                         (PURGE_DATE!=\"0000-00-00\")&&(PURGE_DATE<\"%s\")",
-			(const char *)dt.date().toString("yyyy-MM-dd"));
+  sql=QString("select NAME from LOGS where ")+
+    "(PURGE_DATE!=\"0000-00-00\")&&"+
+    "(PURGE_DATE is not null)&&"+
+    "(PURGE_DATE<\""+dt.date().toString("yyyy-MM-dd")+"\")";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    maint_config->
+    rda->config()->
       log("rdmain",RDConfig::LogInfo,QString().sprintf("purged log %s",
 		       (const char *)q->value(0).toString()));
     RDLog *log=new RDLog(q->value(0).toString());
-    log->remove(maint_station,maint_user,maint_config);
+    log->remove(rda->station(),rda->user(),rda->config());
     delete log;
   }
   delete q;
@@ -234,10 +210,9 @@ void MainObject::PurgeElr()
   while(q->next()) {
     QString tablename=q->value(0).toString()+"_SRT";
     tablename.replace(" ","_");
-    sql=QString().sprintf("delete from %s where EVENT_DATETIME<\"%s 00:00:00\"",
-			  (const char *)tablename,
-			  (const char *)dt.addDays(-q->value(1).toInt()).
-			  toString("yyyy-MM-dd"));
+    sql=QString("delete from `")+tablename+"` where "+
+      "EVENT_DATETIME<\""+
+      dt.addDays(-q->value(1).toInt()).toString("yyyy-MM-dd")+" 00:00:00\"";
     q1=new RDSqlQuery(sql);
     delete q1;
   }
@@ -251,12 +226,13 @@ void MainObject::PurgeDropboxes()
   RDSqlQuery *q;
   RDSqlQuery *q1;
 
-  sql=QString().sprintf("select DROPBOX_PATHS.FILE_PATH,DROPBOX_PATHS.ID from \
-                         DROPBOXES left join DROPBOX_PATHS \
-                         on (DROPBOXES.ID=DROPBOX_PATHS.DROPBOX_ID) \
-                         where DROPBOXES.STATION_NAME=\"%s\"",
-			(const char *)RDEscapeString(maint_config->
-						     stationName()));
+  sql=QString("select ")+
+    "DROPBOX_PATHS.FILE_PATH,"+
+    "DROPBOX_PATHS.ID "+
+    "from DROPBOXES left join DROPBOX_PATHS "+
+    "on (DROPBOXES.ID=DROPBOX_PATHS.DROPBOX_ID) where "+
+    "DROPBOXES.STATION_NAME=\""+RDEscapeString(rda->config()->stationName())+
+    "\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(!QFile::exists(q->value(0).toString())) {
@@ -285,7 +261,7 @@ void MainObject::PurgeGpioEvents()
   
 int main(int argc,char *argv[])
 {
-  QApplication a(argc,argv,false);
-  new MainObject(NULL,"main");
+  QCoreApplication a(argc,argv);
+  new MainObject();
   return a.exec();
 }

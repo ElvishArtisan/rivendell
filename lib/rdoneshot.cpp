@@ -2,7 +2,7 @@
 //
 // A class for providing one-shot single use timers.
 //
-//   (C) Copyright 2008 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2008,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,8 +20,8 @@
 
 #include <rdoneshot.h>
 
-RDOneShot::RDOneShot(QObject *parent,const char *name)
-  : QObject(parent,name)
+RDOneShot::RDOneShot(QObject *parent)
+  : QObject(parent)
 {
   //
   // Timeout Mapper

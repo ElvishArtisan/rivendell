@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell LiveWire Node
 //
-//   (C) Copyright 2002-2007 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: view_node_info.h,v 1.3 2010/07/29 19:32:35 cvs Exp $
+//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,21 +21,20 @@
 #ifndef VIEW_NODE_INFO_H
 #define VIEW_NODE_INFO_H
 
-#include <qdialog.h>
-#include <qlineedit.h>
-#include <qspinbox.h>
-#include <qdialog.h>
+#include <QDialog>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QSpinBox>
 
 #include <rdlivewire.h>
-#include <rdlistview.h>
-#include <rdlistviewitem.h>
-
+#include <rdtablewidget.h>
 
 class ViewNodeInfo : public QDialog
 {
  Q_OBJECT
  public:
-  ViewNodeInfo(QWidget *parent=0,const char *name=0);
+  ViewNodeInfo(QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 
@@ -52,8 +49,6 @@ class ViewNodeInfo : public QDialog
   void closeData();
 
  private:
-  void WriteSourceItem(RDLiveWireSource *src,RDListViewItem *item);
-  void WriteDestinationItem(RDLiveWireDestination *dst,RDListViewItem *item);
   RDLiveWire *view_livewire;
   QLineEdit *view_hostname_edit;
   QLineEdit *view_tcpport_edit;
@@ -65,8 +60,8 @@ class ViewNodeInfo : public QDialog
   QLineEdit *view_channels_edit;
   QLineEdit *view_gpis_edit;
   QLineEdit *view_gpos_edit;
-  RDListView *view_sources_view;
-  RDListView *view_destinations_view;
+  RDTableWidget *view_sources_widget;
+  RDTableWidget *view_destinations_widget;
   unsigned view_base_output;
 };
 

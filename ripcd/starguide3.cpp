@@ -2,9 +2,7 @@
 //
 // A Rivendell switcher driver for the StarGuide III Satellite Receiver
 //
-//   (C) Copyright 2002-2005 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: starguide3.cpp,v 1.14 2010/08/03 23:39:26 cvs Exp $
+//   (C) Copyright 2002-2005,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,14 +20,15 @@
 
 #include <stdlib.h>
 
-#include <qsqldatabase.h>
 #include <rddb.h>
 #include <globals.h>
-#include <starguide3.h>
 
+#include <rdescape_string.h>
 
-StarGuide3::StarGuide3(RDMatrix *matrix,QObject *parent,const char *name)
-  : Switcher(matrix,parent,name)
+#include "starguide3.h"
+
+StarGuide3::StarGuide3(RDMatrix *matrix,QObject *parent)
+  : Switcher(matrix,parent)
 {
   QString sql;
   RDSqlQuery *q;
@@ -43,11 +42,15 @@ StarGuide3::StarGuide3(RDMatrix *matrix,QObject *parent,const char *name)
   //
   // Load Feed Data
   //
-  sql=QString().sprintf("select NUMBER,ENGINE_NUM,DEVICE_NUM,CHANNEL_MODE\
-                         from INPUTS  where STATION_NAME=\"%s\" && MATRIX=%d \
-                         order by NUMBER",
-			(const char *)rdstation->name(),
-			matrix->matrix());
+  sql=QString("select ")+
+    "NUMBER,"+
+    "ENGINE_NUM,"+
+    "DEVICE_NUM,"+
+    "CHANNEL_MODE "+
+    "from INPUTS  where "+
+    "(STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\")&&"+
+    QString().sprintf("(MATRIX=%d)",matrix->matrix())+
+    "order by NUMBER";
   q=new RDSqlQuery(sql);
   q->first();
   for(int i=0;i<sg_inputs;i++) {
@@ -64,14 +67,14 @@ StarGuide3::StarGuide3(RDMatrix *matrix,QObject *parent,const char *name)
   //
   // Initialize the TTY Port
   //
-  RDTty *tty=new RDTty(rdstation->name(),matrix->port(RDMatrix::Primary));
+  RDTty *tty=new RDTty(rda->station()->name(),matrix->port(RDMatrix::Primary));
   sg_device=new RDTTYDevice();
   if(tty->active()) {
     sg_device->setName(tty->port());
     sg_device->setSpeed(tty->baudRate());
     sg_device->setWordLength(tty->dataBits());
     sg_device->setParity(tty->parity());
-    sg_device->open(IO_Raw|IO_ReadWrite);
+    sg_device->open(QIODevice::Unbuffered|QIODevice::ReadWrite);
   }
   delete tty;
 }

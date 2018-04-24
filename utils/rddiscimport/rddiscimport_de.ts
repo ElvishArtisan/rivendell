@@ -1,23 +1,8 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>MainWidget</name>
-    <message>
-        <source>Database Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Can&apos;t Connect</source>
-        <comment>Unable to connect to mySQL Server!</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Can&apos;t Connect</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to connect to mySQL Server!</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Ripper Error</source>
         <translation type="unfinished"></translation>

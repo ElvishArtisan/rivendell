@@ -19,7 +19,7 @@ dnl   License along with this program; if not, write to the Free Software
 dnl   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 dnl
 
-AC_INIT([rivendell],m4_esyscmd(cat PACKAGE_VERSION))
+AC_INIT([rivendell],m4_esyscmd(cat PACKAGE_VERSION | tr -d '\n'))
 AM_INIT_AUTOMAKE
 AC_SUBST(RPM_RELEASE,1)
 m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
@@ -66,10 +66,10 @@ AC_ARG_ENABLE(jack,[  --disable-jack          disable JACK sound support],
 		      [JACK_DISABLED=yes],[])
 AC_ARG_ENABLE(alsa,[  --disable-alsa          disable direct ALSA sound support],
 		      [ALSA_DISABLED=yes],[])
+AC_ARG_ENABLE(docbook,[  --disable-docbook       disable building of documentation],[DOCBOOK_DISABLED=yes],[])
+
 AC_ARG_ENABLE(gpio,[  --disable-gpio          disable General Purpose Input/Output GPIO support],
 		      [GPIO_DISABLED=yes],[])
-AC_ARG_ENABLE(pam,[  --disable-pam           disable Rivendell PAM pam_rd.so support],
-		      [PAM_DISABLED=yes],[])
 AC_ARG_ENABLE(mad,[  --disable-mad           disable MPEG decode support],
 		      [MAD_DISABLED=yes],[])
 AC_ARG_ENABLE(twolame,[  --disable-twolame       disable MPEG Layer 2 encode support],
@@ -78,14 +78,16 @@ AC_ARG_ENABLE(lame,[  --disable-lame          disable MPEG Layer 3 encode suppor
 		      [LAME_DISABLED=yes],[])
 AC_ARG_ENABLE(flac,[  --disable-flac          disable FLAC encode/decode support],
 		      [FLAC_DISABLED=yes],[])
+AC_ARG_ENABLE(mp4v2,[ --disable-mp4           disable M4A decode support],
+		      [MP4V2_DISABLED=yes],[])
 
 #
-# Check for Qt
+# Check for Qt4 (Mandatory)
 #
-BNV_HAVE_QT
-if test $have_qt = "no" ; then
-  AC_MSG_ERROR([*** Qt toolkit not found, unable to continue ***])
-fi
+PKG_CHECK_MODULES(QT4,QtCore QtGui QtNetwork QtSql QtXml Qt3Support,,[AC_MSG_ERROR([*** Qt4 not found ***])])
+AC_CHECK_PROG(MOC_NAME,moc-qt4,[moc-qt4],[moc])
+AC_SUBST(QT_MOC,$MOC_NAME)
+
 
 #
 # Determine the target architecture
@@ -209,9 +211,30 @@ if test -z $FLAC_DISABLED ; then
 fi
 
 #
+# Check for MP4V2
+#
+if test -z $MP4V2_DISABLED ; then
+  AC_CHECK_HEADER(mp4v2/mp4v2.h,[MP4V2_HEADER_FOUND=yes],[])
+  if test $MP4V2_HEADER_FOUND ; then
+    AC_CHECK_HEADER(neaacdec.h,[MP4V2_FOUND=yes],[])
+    if test $MP4V2_FOUND ; then
+       AC_DEFINE(HAVE_MP4_LIBS)
+    fi
+  fi  
+fi
+
+#
+# Build DocBook Items?
+#
+if test -z $DOCBOOK_DISABLED ; then
+  USING_DOCBOOK=yes
+fi
+AM_CONDITIONAL([DOCBOOK_AM], [test "$USING_DOCBOOK" = yes])
+
+#
 # Set Hard Library Dependencies
 #
-AC_SUBST(LIB_RDLIBS,"-lm -lpthread -lqui -lrd -lcurl -lid3 $FLAC_LIBS -lsndfile -lsamplerate -lcdda_interface -lcdda_paranoia -lcrypt -ldl -lpam -lSoundTouch")
+AC_SUBST(LIB_RDLIBS,"-lm -lpthread -lrd -lcurl -lid3 $FLAC_LIBS -lsndfile -lsamplerate -lcdda_interface -lcdda_paranoia -lcrypt -ldl -lpam -lSoundTouch")
 
 #
 # Setup MPEG Dependencies
@@ -366,7 +389,6 @@ if test -z $PAM_DISABLED ; then
     USING_PAM=yes
   fi
 fi
-AM_CONDITIONAL([PAM_RD_AM], [test "$USING_PAM" = yes])
 
 #
 # Distro-Specific Stuff
@@ -427,22 +449,26 @@ AC_CONFIG_FILES([rivendell.spec \
     utils/rdalsaconfig/Makefile \
     utils/rdcheckcuts/Makefile \
     utils/rdchunk/Makefile \
+    utils/rdcleandirs/Makefile \
+    utils/rdclilogedit/Makefile \
     utils/rdcollect/Makefile \
     utils/rddbcheck/Makefile \
     utils/rddelete/Makefile \
     utils/rddgimport/Makefile \
     utils/rddiscimport/Makefile \
+    utils/rdexport/Makefile \
     utils/rdgen/Makefile \
-    utils/rdhpiinfo/Makefile \
     utils/rdgpimon/Makefile \
+    utils/rdhpiinfo/Makefile \
     utils/rdimport/Makefile \
     utils/rdmaint/Makefile \
     utils/rdmarkerset/Makefile \
     utils/rdpopup/Makefile \
     utils/rdpurgecasts/Makefile \
+    utils/rdrevert/Makefile \
     utils/rdsoftkeys/Makefile \
+    utils/rdunittest/Makefile \
     utils/rmlsend/Makefile \
-    utils/sas_shim/Makefile \
     web/Makefile \
     web/rdfeed/Makefile \
     web/rdcastmanager/Makefile \
@@ -450,8 +476,8 @@ AC_CONFIG_FILES([rivendell.spec \
     web/tests/Makefile \
     conf/Makefile \
     docs/Makefile \
+    docs/docbook/Makefile \
     docs/examples/Makefile \
-    docs/man/Makefile \
     docs/tables/Makefile \
     debian/Makefile \
     debian/patches/Makefile \
@@ -478,7 +504,7 @@ AC_CONFIG_FILES([rivendell.spec \
     ios/rmlsend/Makefile \
     ios/rmlsend/Classes/Makefile \
     ios/rmlsend/RMLSend.xcodeproj/Makefile \
-    pam_rd/Makefile ])
+    ])
 AC_OUTPUT()
 chmod 755 make_slack
 chmod 755 rivendell-suse
@@ -534,12 +560,10 @@ AC_MSG_NOTICE("|       OggVorbis Encoding/Decoding Support ... No    |")
 else
 AC_MSG_NOTICE("|       OggVorbis Encoding/Decoding Support ... Yes   |")
 fi
-AC_MSG_NOTICE("|                                                     |")
-AC_MSG_NOTICE("| Optional Components:                                |")
-if test -z $USING_PAM ; then
-AC_MSG_NOTICE("|           Rivendell PAM pam_rd.so Support ... No    |")
+if test -z $MP4V2_FOUND ; then
+AC_MSG_NOTICE("|                      M4A Decoding Support ... No    |")
 else
-AC_MSG_NOTICE("|           Rivendell PAM pam_rd.so Support ... Yes   |")
+AC_MSG_NOTICE("|                      M4A Decoding Support ... Yes   |")
 fi
 AC_MSG_NOTICE("|-----------------------------------------------------|")
 AC_MSG_NOTICE()

@@ -2,9 +2,7 @@
 //
 // The macro cart editor for RDLibrary.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: macro_cart.cpp,v 1.13.8.2 2013/12/23 21:51:44 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,20 +19,22 @@
 //
 
 #include <qbitmap.h>
+//Added by qt3to4:
+#include <QLabel>
 #include <unistd.h>
 #include <qdialog.h>
 #include <qstring.h>
-#include <qlistview.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
+#include <q3listview.h>
+#include <q3listbox.h>
+#include <q3textedit.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
-#include <qbuttongroup.h>
-#include <qsqldatabase.h>
+#include <q3buttongroup.h>
 
 #include <rd.h>
+#include <rdapplication.h>
 #include <rdaudio_exists.h>
 
 #include <cdripper.h>
@@ -44,14 +44,14 @@
 #include <globals.h>
 
 
-MacroCart::MacroCart(RDCart *cart,QWidget *parent,const char *name)
-  : QWidget(parent,name)
+MacroCart::MacroCart(RDCart *cart,QWidget *parent)
+  : QWidget(parent)
 {
   rdcart_length=0;
   rdcart_cart=cart;
   setCaption(QString().sprintf("%u",rdcart_cart->number())+" - "+
     rdcart_cart->title());
-  rdcart_allow_modification=lib_user->modifyCarts();
+  rdcart_allow_modification=rda->user()->modifyCarts();
 
   //
   // Generate Fonts
@@ -64,7 +64,7 @@ MacroCart::MacroCart(RDCart *cart,QWidget *parent,const char *name)
   //
   // Add Macro Button
   //
-  rdcart_add_button=new QPushButton(this,"add_macro_button");
+  rdcart_add_button=new QPushButton(this);
   rdcart_add_button->setGeometry(10,0,80,50);
   rdcart_add_button->setFont(button_font);
   rdcart_add_button->setText(tr("Add"));
@@ -73,7 +73,7 @@ MacroCart::MacroCart(RDCart *cart,QWidget *parent,const char *name)
   //
   // Delete Macro Button
   //
-  rdcart_delete_button=new QPushButton(this,"delete_macro_button");
+  rdcart_delete_button=new QPushButton(this);
   rdcart_delete_button->setGeometry(10,60,80,50);
   rdcart_delete_button->setFont(button_font);
   rdcart_delete_button->setText(tr("Delete"));
@@ -82,7 +82,7 @@ MacroCart::MacroCart(RDCart *cart,QWidget *parent,const char *name)
   //
   // Copy Macro Button
   //
-  rdcart_copy_button=new QPushButton(this,"copy_macro_button");
+  rdcart_copy_button=new QPushButton(this);
   rdcart_copy_button->setGeometry(10,120,80,50);
   rdcart_copy_button->setFont(button_font);
   rdcart_copy_button->setText(tr("Copy"));
@@ -91,7 +91,7 @@ MacroCart::MacroCart(RDCart *cart,QWidget *parent,const char *name)
   //
   // Paste Macro Button
   //
-  paste_macro_button=new QPushButton(this,"paste_macro_button");
+  paste_macro_button=new QPushButton(this);
   paste_macro_button->setGeometry(10,180,80,50);
   paste_macro_button->setFont(button_font);
   paste_macro_button->setText(tr("Paste"));
@@ -101,19 +101,18 @@ MacroCart::MacroCart(RDCart *cart,QWidget *parent,const char *name)
   //
   // Cart Macro List
   //
-  rdcart_events=new RDMacroEvent(rdstation_conf->address(),rdripc,
-				 this,"rdcart_events");
+  rdcart_events=new RDMacroEvent(rda->station()->address(),rda->ripc(),this);
   rdcart_events->load(rdcart_cart->macros());
 
-  rdcart_macro_list=new QListView(this,"rdcart_macro_list");
+  rdcart_macro_list=new Q3ListView(this);
   rdcart_macro_list->setGeometry(100,0,430,sizeHint().height());
   rdcart_macro_list->setAllColumnsShowFocus(true);
   rdcart_macro_list->setItemMargin(5);
   rdcart_macro_list->setSorting(0);
   connect(rdcart_macro_list,
-	  SIGNAL(doubleClicked(QListViewItem *,const QPoint &,int)),
+	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,
-	  SLOT(doubleClickedData(QListViewItem *,const QPoint &,int)));
+	  SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
 
   rdcart_macro_list->addColumn(tr("LINE"));
   rdcart_macro_list->setColumnAlignment(0,Qt::AlignHCenter);
@@ -121,8 +120,7 @@ MacroCart::MacroCart(RDCart *cart,QWidget *parent,const char *name)
   rdcart_macro_list->addColumn(tr("COMMAND"));
   rdcart_macro_list->setColumnAlignment(1,Qt::AlignLeft);
 
-  rdcart_macro_list_label=new QLabel(rdcart_macro_list,tr("Macros"),
-				   this,"rdcartmacro_list_label");
+  rdcart_macro_list_label=new QLabel(rdcart_macro_list,tr("Macros"),this);
   rdcart_macro_list_label->setGeometry(105,345,430,22);
   rdcart_macro_list_label->setFont(QFont("Helvetica",16,QFont::Bold));
 
@@ -131,7 +129,7 @@ MacroCart::MacroCart(RDCart *cart,QWidget *parent,const char *name)
   //
   // Edit Macro Button
   //
-  rdcart_edit_button=new QPushButton(this,"edit_edit_button");
+  rdcart_edit_button=new QPushButton(this);
   rdcart_edit_button->setGeometry(550,0,80,50);
   rdcart_edit_button->setFont(button_font);
   rdcart_edit_button->setText(tr("Edit"));
@@ -140,7 +138,7 @@ MacroCart::MacroCart(RDCart *cart,QWidget *parent,const char *name)
   //
   // Run Line Button
   //
-  rdcart_runline_button=new QPushButton(this,"run_macro_button");
+  rdcart_runline_button=new QPushButton(this);
   rdcart_runline_button->setGeometry(550,120,80,50);
   rdcart_runline_button->setFont(button_font);
   rdcart_runline_button->setText(tr("Run\nLine"));
@@ -150,7 +148,7 @@ MacroCart::MacroCart(RDCart *cart,QWidget *parent,const char *name)
   //
   // Run Cart Button
   //
-  rdcart_runcart_button=new QPushButton(this,"run_macro_button");
+  rdcart_runcart_button=new QPushButton(this);
   rdcart_runcart_button->setGeometry(550,180,80,50);
   rdcart_runcart_button->setFont(button_font);
   rdcart_runcart_button->setText(tr("Run\nCart"));
@@ -193,7 +191,7 @@ void MacroCart::save()
 
 void MacroCart::addMacroData()
 {
-  QListViewItem *item=rdcart_macro_list->selectedItem();
+  Q3ListViewItem *item=rdcart_macro_list->selectedItem();
   RDMacro cmd;
   unsigned line;
 
@@ -206,7 +204,7 @@ void MacroCart::addMacroData()
   else {
     line=item->text(0).toUInt()-1;
   }
-  EditMacro *edit=new EditMacro(&cmd,true,this,"edit_macro");
+  EditMacro *edit=new EditMacro(&cmd,true,this);
   if(edit->exec()!=-1) {
     AddLine(line,&cmd);
     UpdateLength();
@@ -217,7 +215,7 @@ void MacroCart::addMacroData()
 
 void MacroCart::deleteMacroData()
 {
-  QListViewItem *item=rdcart_macro_list->selectedItem();
+  Q3ListViewItem *item=rdcart_macro_list->selectedItem();
 
   if((item==NULL)||(item->text(0).isEmpty())) {
     return;
@@ -229,7 +227,7 @@ void MacroCart::deleteMacroData()
 
 void MacroCart::copyMacroData()
 {
-  QListViewItem *item=rdcart_macro_list->selectedItem();
+  Q3ListViewItem *item=rdcart_macro_list->selectedItem();
 
   if((item==NULL)||(item->text(0).isEmpty())) {
     return;
@@ -241,7 +239,7 @@ void MacroCart::copyMacroData()
 
 void MacroCart::pasteMacroData()
 {
-  QListViewItem *item=rdcart_macro_list->selectedItem();
+  Q3ListViewItem *item=rdcart_macro_list->selectedItem();
   unsigned line;
 
   if(item==NULL) {
@@ -260,13 +258,13 @@ void MacroCart::pasteMacroData()
 
 void MacroCart::editMacroData()
 {
-  QListViewItem *item=rdcart_macro_list->selectedItem();
+  Q3ListViewItem *item=rdcart_macro_list->selectedItem();
 
   if((item==NULL)||(item->text(0).isEmpty())) {
     return;
   }
   unsigned line=item->text(0).toUInt()-1;
-  EditMacro *edit=new EditMacro(rdcart_events->command(line),false,this,"edit");
+  EditMacro *edit=new EditMacro(rdcart_events->command(line),false,this);
   if(edit->exec()!=-1) {
     RefreshLine(item);
     UpdateLength();
@@ -277,7 +275,7 @@ void MacroCart::editMacroData()
 
 void MacroCart::runLineMacroData()
 {
-  QListViewItem *item=rdcart_macro_list->selectedItem();
+  Q3ListViewItem *item=rdcart_macro_list->selectedItem();
 
   if((item==NULL)||(item->text(0).isEmpty())) {
     return;
@@ -293,10 +291,10 @@ void MacroCart::runCartMacroData()
 }
 
 
-void MacroCart::doubleClickedData(QListViewItem *,const QPoint &,int)
+void MacroCart::doubleClickedData(Q3ListViewItem *,const QPoint &,int)
 {
   if(rdcart_allow_modification) {
-    QListViewItem *item=rdcart_macro_list->selectedItem();
+    Q3ListViewItem *item=rdcart_macro_list->selectedItem();
 
     if((item==NULL)||(item->text(0).isEmpty())) {
       addMacroData();
@@ -310,13 +308,13 @@ void MacroCart::doubleClickedData(QListViewItem *,const QPoint &,int)
 
 void MacroCart::RefreshList()
 {
-  QListViewItem *item;
+  Q3ListViewItem *item;
   char cmdstr[RD_RML_MAX_LENGTH];
 
-  item=new QListViewItem(rdcart_macro_list);
+  item=new Q3ListViewItem(rdcart_macro_list);
   item->setText(1,tr("--- End of cart ---"));
   for(int i=0;i<rdcart_events->size();i++) {
-    item=new QListViewItem(rdcart_macro_list);
+    item=new Q3ListViewItem(rdcart_macro_list);
     rdcart_events->command(i)->generateString(cmdstr,RD_RML_MAX_LENGTH);
     item->setText(0,QString().sprintf("%03d",i+1));
     item->setText(1,cmdstr);
@@ -324,7 +322,7 @@ void MacroCart::RefreshList()
 }
 
 
-void MacroCart::RefreshLine(QListViewItem *item)
+void MacroCart::RefreshLine(Q3ListViewItem *item)
 {
   char cmdstr[RD_RML_MAX_LENGTH];
   int line=item->text(0).toInt()-1;
@@ -337,7 +335,7 @@ void MacroCart::AddLine(unsigned line,RDMacro *cmd)
 {
   unsigned curr_line;
 
-  QListViewItem *item=rdcart_macro_list->firstChild();
+  Q3ListViewItem *item=rdcart_macro_list->firstChild();
   for(int i=0;i<rdcart_macro_list->childCount();i++) {
     if(((curr_line=(item->text(0).toUInt()-1))>=line)&&
       (!item->text(0).isEmpty())) {
@@ -346,21 +344,21 @@ void MacroCart::AddLine(unsigned line,RDMacro *cmd)
     item=item->nextSibling();
   }
   rdcart_events->insert(line,cmd);
-  item=new QListViewItem(rdcart_macro_list);
+  item=new Q3ListViewItem(rdcart_macro_list);
   item->setText(0,QString().sprintf("%03u",line+1));
   RefreshLine(item);
   rdcart_macro_list->setSelected(item,true);
 }
 
 
-void MacroCart::DeleteLine(QListViewItem *item)
+void MacroCart::DeleteLine(Q3ListViewItem *item)
 {
   unsigned line=item->text(0).toUInt()-1;
   unsigned curr_line;
-  QListViewItem *next=item->nextSibling();
+  Q3ListViewItem *next=item->nextSibling();
   rdcart_macro_list->removeItem(item);
   rdcart_events->remove(line);
-  QListViewItem *l=rdcart_macro_list->firstChild();
+  Q3ListViewItem *l=rdcart_macro_list->firstChild();
   for(int i=0;i<rdcart_macro_list->childCount();i++) {
     if(((curr_line=(l->text(0).toUInt()-1))>line)&&
       (!l->text(0).isEmpty())) {

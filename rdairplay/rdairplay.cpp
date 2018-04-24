@@ -2,9 +2,7 @@
 //
 // The On Air Playout Utility for Rivendell.
 //
-//   (C) Copyright 2002-2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdairplay.cpp,v 1.189.2.24 2014/03/02 03:21:52 cvs Exp $
+//   (C) Copyright 2002-2010,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,37 +26,37 @@
 #include <sys/wait.h>
 #include <syslog.h>
 
-#include <qapplication.h>
-#include <qwindowsstyle.h>
-#include <qwidget.h>
-#include <qpainter.h>
-#include <qsqlpropertymap.h>
-#include <qmessagebox.h>
-#include <qpushbutton.h>
-#include <qlistview.h>
-#include <qsignalmapper.h>
-#include <qtimer.h>
-#include <qtextcodec.h>
-#include <qtranslator.h>
-#include <qpainter.h>
+#include <Q3Frame>
+#include <Q3ListView>
+#include <Q3SqlPropertyMap>
+#include <QApplication>
+#include <QCloseEvent>
+#include <QKeyEvent>
+#include <QMessageBox>
+#include <QPainter>
+#include <QPaintEvent>
+#include <QPixmap>
+#include <QPushButton>
+#include <QSignalMapper>
+#include <QTextCodec>
+#include <QTimer>
+#include <QTranslator>
+#include <QWidget>
+#include <QWindowsStyle>
 
 #include <rd.h>
+#include <rdapplication.h>
 #include <rdconf.h>
 #include <rdairplay.h>
 #include <rdstation.h>
 #include <rdaudio_port.h>
 #include <rdcart_search_text.h>
-#include <rduser.h>
-#include <rdripc.h>
 #include <rdmixer.h>
 #include <rdcheck_daemons.h>
-#include <rdairplay_conf.h>
 #include <rdcart_dialog.h>
 #include <rdmacro.h>
-#include <rdcmd_switch.h>
 #include <rdgetpasswd.h>
 #include <rddatedecode.h>
-#include <rddb.h>
 #include <rdescape_string.h>
 #include <dbversion.h>
 
@@ -71,16 +69,9 @@
 //
 // Global Resources
 //
-RDStation *rdstation_conf;
-RDSystem *rdsystem_conf;
-RDAirPlayConf *rdairplay_conf;
 RDAudioPort *rdaudioport_conf;
-RDUser *rduser;
-RDRipc *rdripc;
-RDCae *rdcae;
 RDEventPlayer *rdevent_player;
 RDCartDialog *rdcart_dialog;
-RDConfig *air_config;
 MainWidget *prog_ptr;
 RDHotKeyList *rdkeylist;
 RDHotkeys *rdhotkeys;
@@ -101,9 +92,11 @@ void MainWidget::logLine(RDConfig::LogPriority prio,const QString &s)
   LogLine(prio,s);
 }
 
-MainWidget::MainWidget(QWidget *parent,const char *name)
-  :QWidget(parent,name)
+MainWidget::MainWidget(QWidget *parent)
+  :QWidget(parent)
 {
+  new RDApplication(RDApplication::Gui,"rdairplay",RDAIRPLAY_USAGE);
+
   prog_ptr=this;
   QString str;
   int cards[3];
@@ -115,8 +108,6 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   QPainter *pd=NULL;
   air_refresh_pixmap=NULL;
   air_panel=NULL;
-  bool skip_db_check=false;
-  unsigned schema=0;
 
   //
   // Ensure Single Instance
@@ -134,7 +125,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   air_splash_screen=new QSplashScreen(QPixmap(rivendell_128x128_xpm));
   air_splash_screen->hide();
-  QTimer *timer=new QTimer(this,"splash_timer");
+  QTimer *timer=new QTimer(this);
   connect(timer,SIGNAL(timeout()),this,SLOT(clearSplashData()));
   timer->start(AIR_PLAY_SPLASH_TIME,true);
 
@@ -147,24 +138,17 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   // Read Command Options
   //
   QString lineno;
-  RDCmdSwitch *cmd=new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdairplay",
-				   RDAIRPLAY_USAGE);
-  for(unsigned i=0;i<cmd->keys();i++) {
-    if(cmd->key(i)=="--skip-db-check") {
-      skip_db_check=true;
-    }
-  }
   for(unsigned i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
     air_start_line[i]=0;
     air_start_start[i]=false;
-    for(unsigned j=0;j<cmd->keys();j++) {
-      if(cmd->key(j)==QString().sprintf("--log%u",i+1)) {
-	air_start_logname[i]=cmd->value(j);
-	for(unsigned k=0;k<cmd->value(j).length();k++) {
-	  if(cmd->value(j).at(k)==QChar(':')) {
+    for(unsigned j=0;j<rda->cmdSwitch()->keys();j++) {
+      if(rda->cmdSwitch()->key(j)==QString().sprintf("--log%u",i+1)) {
+	air_start_logname[i]=rda->cmdSwitch()->value(j);
+	for(int k=0;k<rda->cmdSwitch()->value(j).length();k++) {
+	  if(rda->cmdSwitch()->value(j).at(k)==QChar(':')) {
 	    air_start_logname[i]=
-	      RDDateTimeDecode(cmd->value(j).left(k),air_startup_datetime);
-	    lineno=cmd->value(j).right(cmd->value(j).length()-(k+1));
+	      RDDateTimeDecode(rda->cmdSwitch()->value(j).left(k),air_startup_datetime);
+	    lineno=rda->cmdSwitch()->value(j).right(rda->cmdSwitch()->value(j).length()-(k+1));
 	    if(lineno.right(1)=="+") {
 	      air_start_start[i]=true;
 	      lineno=lineno.left(lineno.length()-1);
@@ -175,7 +159,6 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
       }
     }
   }
-  delete cmd;
 
   //
   // Fix the Window Size
@@ -225,56 +208,38 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Load Local Configs
   //
-  air_config=new RDConfig();
-  air_config->load();
-  logfile=air_config->airplayLogname();
+  logfile=rda->config()->airplayLogname();
 
   str=QString("RDAirPlay")+" v"+VERSION+" - "+tr("Host:");
   setCaption(QString().sprintf("%s %s",(const char *)str,
-			       (const char *)air_config->stationName()));
+			       (const char *)rda->config()->stationName()));
 
   //
-  // Open Database
+  // Database Monitor
   //
-  QString err;
-  QSqlDatabase *db=RDInitDb(&schema,&err);
-  if(!db) {
-    QMessageBox::warning(this,tr("Database Error"),
-			 //tr("Can't Connect","Unable to connect to mySQL Server!"));
-			 err);
-    exit(0);
-  }
-  if((schema!=RD_VERSION_DATABASE)&&(!skip_db_check)) {
-    fprintf(stderr,"rdlogin: database version mismatch, should be %u, is %u\n",
-	    RD_VERSION_DATABASE,schema);
-    exit(256);
-  }
-  connect (RDDbStatus(),SIGNAL(logText(RDConfig::LogPriority,const QString &)),
-	   this,SLOT(logLine(RDConfig::LogPriority,const QString &))); 
+  //  connect (RDDbStatus(),SIGNAL(logText(RDConfig::LogPriority,const QString &)),
+  //	   this,SLOT(logLine(RDConfig::LogPriority,const QString &))); 
 
   //
   // Master Clock Timer
   //
-  air_master_timer=new QTimer(this,"air_master_timer");
+  air_master_timer=new QTimer(this);
   connect(air_master_timer,SIGNAL(timeout()),this,SLOT(masterTimerData()));
   air_master_timer->start(MASTER_TIMER_INTERVAL);
 
   //
   // Allocate Global Resources
   //
-  rdstation_conf=new RDStation(air_config->stationName());
-  rdsystem_conf=new RDSystem();
-  rdairplay_conf=new RDAirPlayConf(air_config->stationName(),"RDAIRPLAY");
-  rdairplay_previous_exit_code=rdairplay_conf->exitCode();
-  rdairplay_conf->setExitCode(RDAirPlayConf::ExitDirty);
-  air_clear_filter=rdairplay_conf->clearFilter();
-  air_bar_action=rdairplay_conf->barAction();
-  air_op_mode_style=rdairplay_conf->opModeStyle();
+  rdairplay_previous_exit_code=rda->airplayConf()->exitCode();
+  rda->airplayConf()->setExitCode(RDAirPlayConf::ExitDirty);
+  air_clear_filter=rda->airplayConf()->clearFilter();
+  air_bar_action=rda->airplayConf()->barAction();
+  air_op_mode_style=rda->airplayConf()->opModeStyle();
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
     air_op_mode[i]=RDAirPlayConf::Previous;
   }
-  air_editor_cmd=rdstation_conf->editorPath();
-  mainmap=new QPixmap(rdairplay_conf->skinPath());
+  air_editor_cmd=rda->station()->editorPath();
+  mainmap=new QPixmap(rda->airplayConf()->skinPath());
   if(mainmap->isNull()||(mainmap->width()<1024)||(mainmap->height()<738)) {
     delete mainmap;
     mainmap=NULL;
@@ -288,21 +253,21 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   for(unsigned i=0;i<RDAirPlayConf::LastChannel;i++) {
     RDAirPlayConf::Channel chan=(RDAirPlayConf::Channel)i;
-    air_start_gpi_matrices[i]=rdairplay_conf->startGpiMatrix(chan);
-    air_start_gpi_lines[i]=rdairplay_conf->startGpiLine(chan)-1;
-    air_start_gpo_matrices[i]=rdairplay_conf->startGpoMatrix(chan);
-    air_start_gpo_lines[i]=rdairplay_conf->startGpoLine(chan)-1;
-    air_stop_gpi_matrices[i]=rdairplay_conf->stopGpiMatrix(chan);
-    air_stop_gpi_lines[i]=rdairplay_conf->stopGpiLine(chan)-1;
-    air_stop_gpo_matrices[i]=rdairplay_conf->stopGpoMatrix(chan);
-    air_stop_gpo_lines[i]=rdairplay_conf->stopGpoLine(chan)-1;
-    air_channel_gpio_types[i]=rdairplay_conf->gpioType(chan);
+    air_start_gpi_matrices[i]=rda->airplayConf()->startGpiMatrix(chan);
+    air_start_gpi_lines[i]=rda->airplayConf()->startGpiLine(chan)-1;
+    air_start_gpo_matrices[i]=rda->airplayConf()->startGpoMatrix(chan);
+    air_start_gpo_lines[i]=rda->airplayConf()->startGpoLine(chan)-1;
+    air_stop_gpi_matrices[i]=rda->airplayConf()->stopGpiMatrix(chan);
+    air_stop_gpi_lines[i]=rda->airplayConf()->stopGpiLine(chan)-1;
+    air_stop_gpo_matrices[i]=rda->airplayConf()->stopGpoMatrix(chan);
+    air_stop_gpo_lines[i]=rda->airplayConf()->stopGpoLine(chan)-1;
+    air_channel_gpio_types[i]=rda->airplayConf()->gpioType(chan);
     air_audio_channels[i]=
-      AudioChannel(rdairplay_conf->card(chan),rdairplay_conf->port(chan));
+      AudioChannel(rda->airplayConf()->card(chan),rda->airplayConf()->port(chan));
 
-    if((rdairplay_conf->card(chan)>=0)&&(rdairplay_conf->port(chan)>=0)) {
+    if((rda->airplayConf()->card(chan)>=0)&&(rda->airplayConf()->port(chan)>=0)) {
       int achan=
-	AudioChannel(rdairplay_conf->card(chan),rdairplay_conf->port(chan));
+	AudioChannel(rda->airplayConf()->card(chan),rda->airplayConf()->port(chan));
       if(air_channel_timers[0][achan]==NULL) {
 	air_channel_timers[0][achan]=new QTimer(this);
 	air_channel_timers[1][achan]=new QTimer(this);
@@ -313,11 +278,11 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Fixup Main Log GPIO Channel Assignments
   //
-  if(((rdairplay_conf->card(RDAirPlayConf::MainLog1Channel)==
-      rdairplay_conf->card(RDAirPlayConf::MainLog2Channel))&&
-     (rdairplay_conf->port(RDAirPlayConf::MainLog1Channel)==
-      rdairplay_conf->port(RDAirPlayConf::MainLog2Channel)))||
-     rdairplay_conf->card(RDAirPlayConf::MainLog2Channel)<0) {
+  if(((rda->airplayConf()->card(RDAirPlayConf::MainLog1Channel)==
+      rda->airplayConf()->card(RDAirPlayConf::MainLog2Channel))&&
+     (rda->airplayConf()->port(RDAirPlayConf::MainLog1Channel)==
+      rda->airplayConf()->port(RDAirPlayConf::MainLog2Channel)))||
+     rda->airplayConf()->card(RDAirPlayConf::MainLog2Channel)<0) {
     air_start_gpi_matrices[RDAirPlayConf::MainLog2Channel]=-1;
     air_start_gpo_matrices[RDAirPlayConf::MainLog2Channel]=-1;
     air_stop_gpi_matrices[RDAirPlayConf::MainLog2Channel]=
@@ -328,54 +293,48 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // CAE Connection
   //
-  rdcae=new RDCae(rdstation_conf,air_config,parent,name);
-  rdcae->connectHost();
+  air_cae=new RDCae(rda->station(),rda->config(),parent);
+  air_cae->connectHost();
 
   //
   // Set Audio Assignments
   //
-  air_segue_length=rdairplay_conf->segueLength()+1;
-  RDSetMixerPorts(air_config->stationName(),rdcae);
+  air_segue_length=rda->airplayConf()->segueLength()+1;
+  RDSetMixerPorts(rda->config()->stationName(),air_cae);
 
   //
   // RIPC Connection
   //
-  rdripc=new RDRipc(air_config->stationName());
-  connect(rdripc,SIGNAL(connected(bool)),this,SLOT(ripcConnected(bool)));
-  connect(rdripc,SIGNAL(userChanged()),this,SLOT(userData()));
-  connect(rdripc,SIGNAL(rmlReceived(RDMacro *)),
+  connect(rda->ripc(),SIGNAL(connected(bool)),this,SLOT(ripcConnected(bool)));
+  connect(rda->ripc(),SIGNAL(userChanged()),this,SLOT(userData()));
+  connect(rda->ripc(),SIGNAL(rmlReceived(RDMacro *)),
 	  this,SLOT(rmlReceivedData(RDMacro *)));
-  connect(rdripc,SIGNAL(gpiStateChanged(int,int,bool)),
+  connect(rda->ripc(),SIGNAL(gpiStateChanged(int,int,bool)),
 	  this,SLOT(gpiStateChangedData(int,int,bool)));
 
   //
   // Macro Player
   //
-  rdevent_player=new RDEventPlayer(rdripc,this);
-
-  //
-  // User
-  //
-  rduser=NULL;
+  rdevent_player=new RDEventPlayer(rda->ripc(),this);
 
   //
   // UDP Transmission Socket
   //
-  air_nownext_socket=new QSocketDevice(QSocketDevice::Datagram);
+  air_nownext_socket=new Q3SocketDevice(Q3SocketDevice::Datagram);
 
   //
   // Log Machines
   //
-  QSignalMapper *reload_mapper=new QSignalMapper(this,"reload_mapper");
+  QSignalMapper *reload_mapper=new QSignalMapper(this);
   connect(reload_mapper,SIGNAL(mapped(int)),this,SLOT(logReloadedData(int)));
-  QSignalMapper *rename_mapper=new QSignalMapper(this,"rename_mapper");
+  QSignalMapper *rename_mapper=new QSignalMapper(this);
   connect(rename_mapper,SIGNAL(mapped(int)),this,SLOT(logRenamedData(int)));
-  QString default_svcname=rdairplay_conf->defaultSvc();
+  QString default_svcname=rda->airplayConf()->defaultSvc();
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
-    air_log[i]=new LogPlay(rdcae,i,air_nownext_socket,"",&air_plugin_hosts);
+    air_log[i]=new LogPlay(i,air_nownext_socket,"",&air_plugin_hosts);
     air_log[i]->setDefaultServiceName(default_svcname);
-    air_log[i]->setNowCart(rdairplay_conf->logNowCart(i));
-    air_log[i]->setNextCart(rdairplay_conf->logNextCart(i));
+    air_log[i]->setNowCart(rda->airplayConf()->logNowCart(i));
+    air_log[i]->setNextCart(rda->airplayConf()->logNextCart(i));
     reload_mapper->setMapping(air_log[i],i);
     connect(air_log[i],SIGNAL(reloaded()),reload_mapper,SLOT(map()));
     rename_mapper->setMapping(air_log[i],i);
@@ -393,15 +352,15 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Audio Channel Assignments
   //
-  air_cue_card=rdairplay_conf->card(RDAirPlayConf::CueChannel);
-  air_cue_port=rdairplay_conf->port(RDAirPlayConf::CueChannel);
+  air_cue_card=rda->airplayConf()->card(RDAirPlayConf::CueChannel);
+  air_cue_port=rda->airplayConf()->port(RDAirPlayConf::CueChannel);
   for(int i=0;i<3;i++) {
-    air_meter_card[i]=rdairplay_conf->card((RDAirPlayConf::Channel)i);
-    air_meter_port[i]=rdairplay_conf->port((RDAirPlayConf::Channel)i);
-    cards[i]=rdairplay_conf->card((RDAirPlayConf::Channel)i);
-    ports[i]=rdairplay_conf->port((RDAirPlayConf::Channel)i);
-    start_rmls[i]=rdairplay_conf->startRml((RDAirPlayConf::Channel)i);
-    stop_rmls[i]=rdairplay_conf->stopRml((RDAirPlayConf::Channel)i);
+    air_meter_card[i]=rda->airplayConf()->card((RDAirPlayConf::Channel)i);
+    air_meter_port[i]=rda->airplayConf()->port((RDAirPlayConf::Channel)i);
+    cards[i]=rda->airplayConf()->card((RDAirPlayConf::Channel)i);
+    ports[i]=rda->airplayConf()->port((RDAirPlayConf::Channel)i);
+    start_rmls[i]=rda->airplayConf()->startRml((RDAirPlayConf::Channel)i);
+    stop_rmls[i]=rda->airplayConf()->stopRml((RDAirPlayConf::Channel)i);
   }
   if(air_meter_card[1]<0) {  // Fixup disabled main log port 2 playout
     air_meter_card[1]=air_meter_card[0];
@@ -412,18 +371,18 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   air_log[0]->setChannels(cards,ports,start_rmls,stop_rmls);
 
   for(int i=0;i<2;i++) {
-    cards[i]=rdairplay_conf->card(RDAirPlayConf::AuxLog1Channel);
-    ports[i]=rdairplay_conf->port(RDAirPlayConf::AuxLog1Channel);
-    start_rmls[i]=rdairplay_conf->startRml(RDAirPlayConf::AuxLog1Channel);
-    stop_rmls[i]=rdairplay_conf->stopRml(RDAirPlayConf::AuxLog1Channel);
+    cards[i]=rda->airplayConf()->card(RDAirPlayConf::AuxLog1Channel);
+    ports[i]=rda->airplayConf()->port(RDAirPlayConf::AuxLog1Channel);
+    start_rmls[i]=rda->airplayConf()->startRml(RDAirPlayConf::AuxLog1Channel);
+    stop_rmls[i]=rda->airplayConf()->stopRml(RDAirPlayConf::AuxLog1Channel);
   }
   air_log[1]->setChannels(cards,ports,start_rmls,stop_rmls);
 
   for(int i=0;i<2;i++) {
-    cards[i]=rdairplay_conf->card(RDAirPlayConf::AuxLog2Channel);
-    ports[i]=rdairplay_conf->port(RDAirPlayConf::AuxLog2Channel);
-    start_rmls[i]=rdairplay_conf->startRml(RDAirPlayConf::AuxLog2Channel);
-    stop_rmls[i]=rdairplay_conf->stopRml(RDAirPlayConf::AuxLog2Channel);
+    cards[i]=rda->airplayConf()->card(RDAirPlayConf::AuxLog2Channel);
+    ports[i]=rda->airplayConf()->port(RDAirPlayConf::AuxLog2Channel);
+    start_rmls[i]=rda->airplayConf()->startRml(RDAirPlayConf::AuxLog2Channel);
+    stop_rmls[i]=rda->airplayConf()->stopRml(RDAirPlayConf::AuxLog2Channel);
   }
   air_log[2]->setChannels(cards,ports,start_rmls,stop_rmls);
 
@@ -431,29 +390,28 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   // Cart Picker
   //
   rdcart_dialog=
-    new RDCartDialog(&air_add_filter,&air_add_group,&air_add_schedcode,
-		     rdcae,rdripc,rdstation_conf,rdsystem_conf,air_config,this);
+    new RDCartDialog(&air_add_filter,&air_add_group,&air_add_schedcode,this);
 
   //
   // Wall Clock
   //
-  WallClock *clock=new WallClock(this,"wall_clock");
+  WallClock *clock=new WallClock(this);
   clock->
     setGeometry(10,5,clock->sizeHint().width(),clock->sizeHint().height());
-  clock->setCheckSyncEnabled(rdairplay_conf->checkTimesync());
+  clock->setCheckSyncEnabled(rda->airplayConf()->checkTimesync());
   connect(air_master_timer,SIGNAL(timeout()),clock,SLOT(tickClock()));
- clock->setFocusPolicy(QWidget::NoFocus);
+ clock->setFocusPolicy(Qt::NoFocus);
   connect(clock,SIGNAL(timeModeChanged(RDAirPlayConf::TimeMode)),
 	  this,SLOT(timeModeData(RDAirPlayConf::TimeMode)));
 
   //
   // Post Counter
   //
-  air_post_counter=new PostCounter(this,"air_post_counter");
+  air_post_counter=new PostCounter(this);
   air_post_counter->setGeometry(220,5,air_post_counter->sizeHint().width(),
 				air_post_counter->sizeHint().height());
   air_post_counter->setPostPoint(QTime(),0,false,false);
-  air_post_counter->setFocusPolicy(QWidget::NoFocus);
+  air_post_counter->setFocusPolicy(Qt::NoFocus);
   connect(air_master_timer,SIGNAL(timeout()),
 	  air_post_counter,SLOT(tickCounter()));
   connect(air_log[0],SIGNAL(postPointChanged(QTime,int,bool,bool)),
@@ -462,14 +420,13 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Pie Counter
   //
-  air_pie_counter=new PieCounter(rdairplay_conf->pieCountLength(),
-				 this,"air_pie_counter");
+  air_pie_counter=new PieCounter(rda->airplayConf()->pieCountLength(),this);
   air_pie_counter->setGeometry(426,5,air_pie_counter->sizeHint().width(),
 				air_pie_counter->sizeHint().height());
-  air_pie_counter->setCountLength(rdairplay_conf->pieCountLength());
-  air_pie_end=rdairplay_conf->pieEndPoint();
+  air_pie_counter->setCountLength(rda->airplayConf()->pieCountLength());
+  air_pie_end=rda->airplayConf()->pieEndPoint();
   air_pie_counter->setOpMode(air_op_mode[0]);
-  air_pie_counter->setFocusPolicy(QWidget::NoFocus);
+  air_pie_counter->setFocusPolicy(Qt::NoFocus);
   if(mainmap!=NULL) {
     pm=new QPixmap(1024,738);
     pd=new QPainter(pm);
@@ -481,42 +438,42 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   }
   connect(air_master_timer,SIGNAL(timeout()),
 	  air_pie_counter,SLOT(tickCounter()));
-  connect(rdripc,SIGNAL(onairFlagChanged(bool)),
+  connect(rda->ripc(),SIGNAL(onairFlagChanged(bool)),
 	  air_pie_counter,SLOT(setOnairFlag(bool)));
 
   //
   // Audio Meter
   //
-  air_stereo_meter=new RDStereoMeter(this,"air_stereo_meter");
+  air_stereo_meter=new RDStereoMeter(this);
   air_stereo_meter->setGeometry(50,70,air_stereo_meter->sizeHint().width(),
 				air_stereo_meter->sizeHint().height());
   air_stereo_meter->setMode(RDSegMeter::Peak);
- air_stereo_meter->setFocusPolicy(QWidget::NoFocus);
-  if(air_config->useStreamMeters()) {
+ air_stereo_meter->setFocusPolicy(Qt::NoFocus);
+  if(rda->config()->useStreamMeters()) {
     air_stereo_meter->hide();
   }
 
   //
   // Message Label
   //
-  air_message_label=new RDLabel(this,"air_message_label");
+  air_message_label=new RDLabel(this);
   air_message_label->setGeometry(sizeHint().width()-425,70,
 		MESSAGE_WIDGET_WIDTH,air_stereo_meter->sizeHint().height());
   air_message_label->setWordWrapEnabled(true);
   air_message_label->setLineWidth(1);
   air_message_label->setMidLineWidth(1);
-  air_message_label->setFrameStyle(QFrame::Box|QFrame::Raised);
-  air_message_label->setAlignment(AlignCenter);
- air_message_label->setFocusPolicy(QWidget::NoFocus);
+  air_message_label->setFrameStyle(Q3Frame::Box|Q3Frame::Raised);
+  air_message_label->setAlignment(Qt::AlignCenter);
+ air_message_label->setFocusPolicy(Qt::NoFocus);
 
   //
   // Stop Counter
   //
-  air_stop_counter=new StopCounter(this,"air_stop_counter");
+  air_stop_counter=new StopCounter(this);
   air_stop_counter->setGeometry(600,5,air_stop_counter->sizeHint().width(),
 				air_stop_counter->sizeHint().height());
   air_stop_counter->setTime(QTime(0,0,0));
- air_stop_counter->setFocusPolicy(QWidget::NoFocus);
+ air_stop_counter->setFocusPolicy(Qt::NoFocus);
   connect(air_master_timer,SIGNAL(timeout()),
 	  air_stop_counter,SLOT(tickCounter()));
   connect(air_log[0],SIGNAL(nextStopChanged(QTime)),
@@ -530,7 +487,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
     setGeometry(sizeHint().width()-air_mode_display->sizeHint().width()-10,
 		5,air_mode_display->sizeHint().width(),
 		air_mode_display->sizeHint().height());
-  air_mode_display->setFocusPolicy(QWidget::NoFocus);
+  air_mode_display->setFocusPolicy(Qt::NoFocus);
   air_mode_display->setOpModeStyle(air_op_mode_style);
   connect(air_mode_display,SIGNAL(clicked()),this,SLOT(modeButtonData()));
 
@@ -558,56 +515,56 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Add Button
   //
-  air_add_button=new RDPushButton(this,"air_add_button");
+  air_add_button=new RDPushButton(this);
   air_add_button->setGeometry(10,sizeHint().height()-65,80,60);
   air_add_button->setFont(button_font);
   air_add_button->setText(tr("ADD"));
- air_add_button->setFocusPolicy(QWidget::NoFocus);
+ air_add_button->setFocusPolicy(Qt::NoFocus);
   connect(air_add_button,SIGNAL(clicked()),this,SLOT(addButtonData()));
 
   //
   // Delete Button
   //
-  air_delete_button=new RDPushButton(this,"air_delete_button");
+  air_delete_button=new RDPushButton(this);
   air_delete_button->setGeometry(100,sizeHint().height()-65,80,60);
   air_delete_button->setFont(button_font);
   air_delete_button->setText(tr("DEL"));
   air_delete_button->setFlashColor(AIR_FLASH_COLOR);
- air_delete_button->setFocusPolicy(QWidget::NoFocus);
+ air_delete_button->setFocusPolicy(Qt::NoFocus);
   connect(air_delete_button,SIGNAL(clicked()),this,SLOT(deleteButtonData()));
 
   //
   // Move Button
   //
-  air_move_button=new RDPushButton(this,"air_move_button");
+  air_move_button=new RDPushButton(this);
   air_move_button->setGeometry(190,sizeHint().height()-65,80,60);
   air_move_button->setFont(button_font);
   air_move_button->setText(tr("MOVE"));
   air_move_button->setFlashColor(AIR_FLASH_COLOR);
- air_move_button->setFocusPolicy(QWidget::NoFocus);
+ air_move_button->setFocusPolicy(Qt::NoFocus);
   connect(air_move_button,SIGNAL(clicked()),this,SLOT(moveButtonData()));
 
   //
   // Copy Button
   //
-  air_copy_button=new RDPushButton(this,"air_copy_button");
+  air_copy_button=new RDPushButton(this);
   air_copy_button->setGeometry(280,sizeHint().height()-65,80,60);
   air_copy_button->setFont(button_font);
   air_copy_button->setText(tr("COPY"));
   air_copy_button->setFlashColor(AIR_FLASH_COLOR);
-  air_copy_button->setFocusPolicy(QWidget::NoFocus);
+  air_copy_button->setFocusPolicy(Qt::NoFocus);
   connect(air_copy_button,SIGNAL(clicked()),this,SLOT(copyButtonData()));
 
   //
   // Refresh Indicator
   //
-  air_refresh_label=new RDLabel(this,"air_refresh_label");
+  air_refresh_label=new RDLabel(this);
   air_refresh_label->setGeometry(390,sizeHint().height()-65,120,60);
   air_refresh_label->setFont(button_font);
   QPalette p=palette();
-  p.setColor(QColorGroup::Foreground,red);
+  p.setColor(QColorGroup::Foreground,Qt::red);
   air_refresh_label->setPalette(p);
-  air_refresh_label->setAlignment(AlignCenter);
+  air_refresh_label->setAlignment(Qt::AlignCenter);
   if(mainmap!=NULL) {
     air_refresh_pixmap=new QPixmap(1024,738);
     pd=new QPainter(air_refresh_pixmap);
@@ -620,25 +577,25 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Meter Timer
   //
-  timer=new QTimer(this,"meter_timer");
+  timer=new QTimer(this);
   connect(timer,SIGNAL(timeout()),this,SLOT(meterData()));
   timer->start(RD_METER_UPDATE_INTERVAL);
 
   //
   // Sound Panel Array
   //
-  if (rdairplay_conf->panels(RDAirPlayConf::StationPanel) || 
-      rdairplay_conf->panels(RDAirPlayConf::UserPanel)){
+  if (rda->airplayConf()->panels(RDAirPlayConf::StationPanel) || 
+      rda->airplayConf()->panels(RDAirPlayConf::UserPanel)){
     int card=-1;
     air_panel=
       new RDSoundPanel(AIR_PANEL_BUTTON_COLUMNS,AIR_PANEL_BUTTON_ROWS,
-		       rdairplay_conf->panels(RDAirPlayConf::StationPanel),
-		       rdairplay_conf->panels(RDAirPlayConf::UserPanel),
-		       rdairplay_conf->flashPanel(),
-		       rdairplay_conf->buttonLabelTemplate(),false,
-		       rdevent_player,rdripc,rdcae,rdstation_conf,
-		       rdcart_dialog,this,"air_panel");
-    air_panel->setLogfile(air_config->airplayLogname());
+		       rda->airplayConf()->panels(RDAirPlayConf::StationPanel),
+		       rda->airplayConf()->panels(RDAirPlayConf::UserPanel),
+		       rda->airplayConf()->flashPanel(),
+		       rda->airplayConf()->buttonLabelTemplate(),false,
+		       rdevent_player,rda->ripc(),air_cae,rda->station(),
+		       rdcart_dialog,this);
+    air_panel->setLogfile(rda->config()->airplayLogname());
     air_panel->setGeometry(510,140,air_panel->sizeHint().width(),
 			 air_panel->sizeHint().height());
     if(mainmap!=NULL) {
@@ -650,58 +607,58 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
       delete pd;
       delete pm;
     }
-    air_panel->setPauseEnabled(rdairplay_conf->panelPauseEnabled());
-    air_panel->setCard(0,rdairplay_conf->card(RDAirPlayConf::SoundPanel1Channel));
-    air_panel->setPort(0,rdairplay_conf->port(RDAirPlayConf::SoundPanel1Channel));
-    air_panel->setFocusPolicy(QWidget::NoFocus);
-    if((card=rdairplay_conf->card(RDAirPlayConf::SoundPanel2Channel))<0) {
+    air_panel->setPauseEnabled(rda->airplayConf()->panelPauseEnabled());
+    air_panel->setCard(0,rda->airplayConf()->card(RDAirPlayConf::SoundPanel1Channel));
+    air_panel->setPort(0,rda->airplayConf()->port(RDAirPlayConf::SoundPanel1Channel));
+    air_panel->setFocusPolicy(Qt::NoFocus);
+    if((card=rda->airplayConf()->card(RDAirPlayConf::SoundPanel2Channel))<0) {
       air_panel->setCard(1,air_panel->card(RDAirPlayConf::MainLog1Channel));
       air_panel->setPort(1,air_panel->port(RDAirPlayConf::MainLog1Channel));
     }
     else {
       air_panel->setCard(1,card);
-      air_panel->setPort(1,rdairplay_conf->port(RDAirPlayConf::SoundPanel2Channel));
+      air_panel->setPort(1,rda->airplayConf()->port(RDAirPlayConf::SoundPanel2Channel));
     }
-    if((card=rdairplay_conf->card(RDAirPlayConf::SoundPanel3Channel))<0) {
+    if((card=rda->airplayConf()->card(RDAirPlayConf::SoundPanel3Channel))<0) {
       air_panel->setCard(2,air_panel->card(RDAirPlayConf::MainLog2Channel));
       air_panel->setPort(2,air_panel->port(RDAirPlayConf::MainLog2Channel));
     }
     else {
       air_panel->setCard(2,card);
-      air_panel->setPort(2,rdairplay_conf->port(RDAirPlayConf::SoundPanel3Channel));
+      air_panel->setPort(2,rda->airplayConf()->port(RDAirPlayConf::SoundPanel3Channel));
     }
-    if((card=rdairplay_conf->card(RDAirPlayConf::SoundPanel4Channel))<0) {
+    if((card=rda->airplayConf()->card(RDAirPlayConf::SoundPanel4Channel))<0) {
       air_panel->setCard(3,air_panel->card(RDAirPlayConf::SoundPanel1Channel));
       air_panel->setPort(3,air_panel->port(RDAirPlayConf::SoundPanel1Channel));
     }
     else {
       air_panel->setCard(3,card);
-      air_panel->setPort(3,rdairplay_conf->port(RDAirPlayConf::SoundPanel4Channel));
+      air_panel->setPort(3,rda->airplayConf()->port(RDAirPlayConf::SoundPanel4Channel));
     }
-    if((card=rdairplay_conf->card(RDAirPlayConf::SoundPanel5Channel))<0) {
+    if((card=rda->airplayConf()->card(RDAirPlayConf::SoundPanel5Channel))<0) {
       air_panel->setCard(4,air_panel->card(RDAirPlayConf::CueChannel));
       air_panel->setPort(4,air_panel->port(RDAirPlayConf::CueChannel));
     }
     else {
       air_panel->setCard(4,card);
-      air_panel->setPort(4,rdairplay_conf->
+      air_panel->setPort(4,rda->airplayConf()->
 			 port(RDAirPlayConf::SoundPanel5Channel));
     }
-    air_panel->setRmls(0,rdairplay_conf->
+    air_panel->setRmls(0,rda->airplayConf()->
 		  startRml(RDAirPlayConf::SoundPanel1Channel),
-		  rdairplay_conf->stopRml(RDAirPlayConf::SoundPanel1Channel));
-    air_panel->setRmls(1,rdairplay_conf->
+		  rda->airplayConf()->stopRml(RDAirPlayConf::SoundPanel1Channel));
+    air_panel->setRmls(1,rda->airplayConf()->
 		  startRml(RDAirPlayConf::SoundPanel2Channel),
-		  rdairplay_conf->stopRml(RDAirPlayConf::SoundPanel2Channel));
-    air_panel->setRmls(2,rdairplay_conf->
+		  rda->airplayConf()->stopRml(RDAirPlayConf::SoundPanel2Channel));
+    air_panel->setRmls(2,rda->airplayConf()->
 		  startRml(RDAirPlayConf::SoundPanel3Channel),
-		  rdairplay_conf->stopRml(RDAirPlayConf::SoundPanel3Channel));
-    air_panel->setRmls(3,rdairplay_conf->
+		  rda->airplayConf()->stopRml(RDAirPlayConf::SoundPanel3Channel));
+    air_panel->setRmls(3,rda->airplayConf()->
 		  startRml(RDAirPlayConf::SoundPanel4Channel),
-		  rdairplay_conf->stopRml(RDAirPlayConf::SoundPanel4Channel));
-    air_panel->setRmls(4,rdairplay_conf->
+		  rda->airplayConf()->stopRml(RDAirPlayConf::SoundPanel4Channel));
+    air_panel->setRmls(4,rda->airplayConf()->
 		  startRml(RDAirPlayConf::SoundPanel5Channel),
-		  rdairplay_conf->stopRml(RDAirPlayConf::SoundPanel5Channel));
+		  rda->airplayConf()->stopRml(RDAirPlayConf::SoundPanel5Channel));
     int next_output=0;
     int channum[2];
     bool assigned=false;
@@ -740,8 +697,8 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
       }
     }
 
-    air_panel->setSvcName(rdairplay_conf->defaultSvc());
-    connect(rdripc,SIGNAL(userChanged()),air_panel,SLOT(changeUser()));
+    air_panel->setSvcName(rda->airplayConf()->defaultSvc());
+    connect(rda->ripc(),SIGNAL(userChanged()),air_panel,SLOT(changeUser()));
     connect(air_master_timer,SIGNAL(timeout()),air_panel,SLOT(tickClock()));
     connect(air_panel,SIGNAL(selectClicked(unsigned,int,int)),
 	    this,SLOT(selectClickedData(unsigned,int,int)));
@@ -754,10 +711,9 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Full Log List
   //
-  air_pause_enabled=rdairplay_conf->pauseEnabled();
+  air_pause_enabled=rda->airplayConf()->pauseEnabled();
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
-    air_log_list[i]=new ListLog(air_log[i],i,air_pause_enabled,
-				this,"air_log_list");
+    air_log_list[i]=new ListLog(air_log[i],air_cae,i,air_pause_enabled,this);
     air_log_list[i]->setGeometry(510,140,air_log_list[i]->sizeHint().width(),
 			      air_log_list[i]->sizeHint().height());
     air_log_list[i]->hide();
@@ -770,23 +726,23 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Full Log Buttons
   //
-  QSignalMapper *mapper=new QSignalMapper(this,"log_mapper");
+  QSignalMapper *mapper=new QSignalMapper(this);
   connect(mapper,SIGNAL(mapped(int)),this,SLOT(fullLogButtonData(int)));
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
     air_log_button[i]=new QPushButton(this);
     air_log_button[i]->setGeometry(647+i*123,sizeHint().height()-65,118,60);
     air_log_button[i]->setFont(button_font);
-    air_log_button[i]->setFocusPolicy(QWidget::NoFocus);
+    air_log_button[i]->setFocusPolicy(Qt::NoFocus);
     mapper->setMapping(air_log_button[i],i);
     connect(air_log_button[i],SIGNAL(clicked()),mapper,SLOT(map()));
   }
   air_log_button[0]->setText(tr("Main Log\n[--]"));
     air_log_button[1]->setText(tr("Aux 1 Log\n[--]"));
-  if(!rdairplay_conf->showAuxButton(0)) {
+  if(!rda->airplayConf()->showAuxButton(0)) {
     air_log_button[1]->hide();
   }
     air_log_button[2]->setText(tr("Aux 2 Log\n[--]"));
-  if(!rdairplay_conf->showAuxButton(1)) {
+  if(!rda->airplayConf()->showAuxButton(1)) {
     air_log_button[2]->hide();
   }
 
@@ -795,22 +751,22 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   air_empty_cart=new RDEmptyCart(this);
   air_empty_cart->setGeometry(520,sizeHint().height()-51,32,32);
-  if(!rdstation_conf->enableDragdrop()) {
+  if(!rda->station()->enableDragdrop()) {
     air_empty_cart->hide();
   }
 
   //
   // SoundPanel Button
   //
-  air_panel_button=new QPushButton(this,"air_panel_button");
+  air_panel_button=new QPushButton(this);
   air_panel_button->setGeometry(562,sizeHint().height()-65,80,60);
   air_panel_button->setFont(button_font);
   air_panel_button->setText(tr("Sound\nPanel"));
   air_panel_button->setPalette(active_color);
-  air_panel_button->setFocusPolicy(QWidget::NoFocus);
+  air_panel_button->setFocusPolicy(Qt::NoFocus);
   connect(air_panel_button,SIGNAL(clicked()),this,SLOT(panelButtonData()));
-  if (rdairplay_conf->panels(RDAirPlayConf::StationPanel) || 
-      rdairplay_conf->panels(RDAirPlayConf::UserPanel)){
+  if (rda->airplayConf()->panels(RDAirPlayConf::StationPanel) || 
+      rda->airplayConf()->panels(RDAirPlayConf::UserPanel)){
   } 
   else {
     air_panel_button->hide();
@@ -822,8 +778,8 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Button Log
   //
-  air_button_list=new ButtonLog(air_log[0],0,rdairplay_conf,air_pause_enabled,
-				this,"air_button_list");
+  air_button_list=new ButtonLog(air_log[0],air_cae,0,rda->airplayConf(),
+				air_pause_enabled,this);
   air_button_list->setGeometry(10,140,air_button_list->sizeHint().width(),
 			       air_button_list->sizeHint().height());
   if(mainmap!=NULL) {
@@ -844,7 +800,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   // Set Startup Mode
   //
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
-    switch(rdairplay_conf->logStartMode(i)) {
+    switch(rda->airplayConf()->logStartMode(i)) {
       case RDAirPlayConf::Manual:
 	SetManualMode(i);
 	break;
@@ -859,10 +815,10 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
 	
       case RDAirPlayConf::Previous:
 	if(air_op_mode_style==RDAirPlayConf::Unified) {
-	  SetMode(i,rdairplay_conf->opMode(0));
+	  SetMode(i,rda->airplayConf()->opMode(0));
 	}
 	else {
-	  SetMode(i,rdairplay_conf->opMode(i));
+	  SetMode(i,rda->airplayConf()->opMode(i));
 	}
 	break;
     }
@@ -877,10 +833,12 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Load Plugins
   //
-  sql=QString().sprintf("select PLUGIN_PATH,PLUGIN_ARG from NOWNEXT_PLUGINS \
-                         where (STATION_NAME=\"%s\")&&(LOG_MACHINE=0)",
-			(const char *)
-			RDEscapeString(air_config->stationName()));
+  sql=QString("select ")+
+    "PLUGIN_PATH,"+
+    "PLUGIN_ARG "+
+    "from NOWNEXT_PLUGINS where "+
+    "(STATION_NAME=\""+RDEscapeString(rda->config()->stationName())+"\")&&"+
+    "(LOG_MACHINE=0)";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     air_plugin_hosts.
@@ -899,11 +857,10 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
 
   // Create the HotKeyList object
   //
-  rdkeylist = new RDHotKeyList();
-  rdhotkeys = new RDHotkeys(RDEscapeString(air_config->stationName()),
-		  "airplay");
-  AltKeyHit = false;
-  CtrlKeyHit = false;
+  rdkeylist=new RDHotKeyList();
+  rdhotkeys=new RDHotkeys(rda->config()->stationName(),"rdairplay");
+  AltKeyHit=false;
+  CtrlKeyHit=false;
 
   //
   // Set Signal Handlers
@@ -913,7 +870,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Start the RIPC Connection
   //
-  rdripc->connectHost("localhost",RIPCD_TCP_PORT,air_config->password());
+  rda->ripc()->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 
   LogLine(RDConfig::LogInfo,"RDAirPlay started");
 }
@@ -946,26 +903,26 @@ void MainWidget::ripcConnected(bool state)
   //
   // Get Onair Flag State
   //
-  rdripc->sendOnairFlag();
+  rda->ripc()->sendOnairFlag();
 
   //
   // Load Initial Logs
   //
   for(unsigned i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
     if(air_start_logname[i].isNull()) {
-      switch(rdairplay_conf->startMode(i)) {
+      switch(rda->airplayConf()->startMode(i)) {
 	  case RDAirPlayConf::StartEmpty:
 	    break;
 	    
 	  case RDAirPlayConf::StartPrevious:
 	    air_start_logname[i]=
-	      RDDateTimeDecode(rdairplay_conf->currentLog(i),
+	      RDDateTimeDecode(rda->airplayConf()->currentLog(i),
 			       air_startup_datetime);
 	    if(!air_start_logname[i].isEmpty()) {
 	      if(rdairplay_previous_exit_code==RDAirPlayConf::ExitDirty) {
-		if((air_start_line[i]=rdairplay_conf->logCurrentLine(i))>=0) {
-		  air_start_start[i]=rdairplay_conf->autoRestart(i)&&
-		    rdairplay_conf->logRunning(i);
+		if((air_start_line[i]=rda->airplayConf()->logCurrentLine(i))>=0) {
+		  air_start_start[i]=rda->airplayConf()->autoRestart(i)&&
+		    rda->airplayConf()->logRunning(i);
 		}
 	      }
 	      else {
@@ -977,15 +934,15 @@ void MainWidget::ripcConnected(bool state)
 
 	  case RDAirPlayConf::StartSpecified:
 	    air_start_logname[i]=
-	      RDDateTimeDecode(rdairplay_conf->logName(i),
+	      RDDateTimeDecode(rda->airplayConf()->logName(i),
 			       air_startup_datetime);
 	    if(!air_start_logname[i].isEmpty()) {
 	      if(rdairplay_previous_exit_code==RDAirPlayConf::ExitDirty) {
-		if(air_start_logname[i]==rdairplay_conf->currentLog(i)) {
-		  if((air_start_line[i]=rdairplay_conf->logCurrentLine(i))>=
+		if(air_start_logname[i]==rda->airplayConf()->currentLog(i)) {
+		  if((air_start_line[i]=rda->airplayConf()->logCurrentLine(i))>=
 		     0) {
-		    air_start_start[i]=rdairplay_conf->autoRestart(i)&&
-		      rdairplay_conf->logRunning(i);
+		    air_start_start[i]=rda->airplayConf()->autoRestart(i)&&
+		      rda->airplayConf()->logRunning(i);
 		  }
 		  else {
 		    air_start_line[i]=0;
@@ -998,15 +955,15 @@ void MainWidget::ripcConnected(bool state)
       }
     }
     if(!air_start_logname[i].isEmpty()) {
-      sql=QString().sprintf("select NAME from LOGS where NAME=\"%s\"",
-			    (const char *)air_start_logname[i]);
+      sql=QString("select NAME from LOGS where ")+
+	"NAME=\""+RDEscapeString(air_start_logname[i])+"\"";
       q=new RDSqlQuery(sql);
       if(q->first()) {
 	rml.setCommand(RDMacro::LL);  // Load Log
 	rml.setArgQuantity(2);
 	rml.setArg(0,i+1);
 	rml.setArg(1,air_start_logname[i]);
-	rdripc->sendRml(&rml);
+	rda->ripc()->sendRml(&rml);
       }
       else {
 	fprintf(stderr,"rdairplay: log \"%s\" doesn't exist\n",
@@ -1382,12 +1339,7 @@ void MainWidget::logReloadedData(int log)
 			left(air_log[0]->logName().length()-4)));
 	if(air_log[0]->logName().isEmpty()) {
 	  if(air_panel!=NULL) {
-	    if(rdstation_conf->broadcastSecurity()==RDStation::UserSec) {
-	      air_panel->setSvcName(
-                rduser->serviceCheckDefault( rdairplay_conf->defaultSvc() ) );
-	    } else { // RDStation::HostSec
-	      air_panel->setSvcName(rdairplay_conf->defaultSvc());
-	    }
+	    air_panel->setSvcName(rda->airplayConf()->defaultSvc());
 	  }
 	}
 	else {
@@ -1438,13 +1390,13 @@ void MainWidget::logReloadedData(int log)
     rml.setArgQuantity(2);
     rml.setArg(0,log+1);
     rml.setArg(1,air_start_line[log]);
-    rdripc->sendRml(&rml);
+    rda->ripc()->sendRml(&rml);
     
     if(air_start_start[log]) {
       rml.setCommand(RDMacro::PN);  // Start Next
       rml.setArgQuantity(1);
       rml.setArg(0,log+1);
-      rdripc->sendRml(&rml);
+      rda->ripc()->sendRml(&rml);
     }
   }
   else {
@@ -1457,21 +1409,18 @@ void MainWidget::logReloadedData(int log)
 
 void MainWidget::userData()
 {
-  if(rduser!=NULL) {
-    delete rduser;
-  }
-  rduser=new RDUser(rdripc->user());
+  rda->setUser(rda->ripc()->user());
   LogLine(RDConfig::LogInfo,QString().
-	  sprintf("user changed to '%s'",(const char *)rdripc->user()));
+	  sprintf("user changed to '%s'",(const char *)rda->ripc()->user()));
   SetCaption();
 
   //
   // Set Control Perms
   //
-  bool add_allowed=rduser->addtoLog();
-  bool delete_allowed=rduser->removefromLog();
-  bool arrange_allowed=rduser->arrangeLog();
-  bool playout_allowed=rduser->playoutLog();
+  bool add_allowed=rda->user()->addtoLog();
+  bool delete_allowed=rda->user()->removefromLog();
+  bool arrange_allowed=rda->user()->arrangeLog();
+  bool playout_allowed=rda->user()->playoutLog();
 
   air_add_button->setEnabled(add_allowed&&arrange_allowed&&playout_allowed);
   air_move_button->setEnabled(arrange_allowed&&playout_allowed);
@@ -1482,19 +1431,6 @@ void MainWidget::userData()
     air_log_list[i]->userChanged(add_allowed,delete_allowed,
 				 arrange_allowed,playout_allowed);
   }
-
-  // Update default services for the new user, if applicable.
-  if (rdstation_conf->broadcastSecurity() == RDStation::UserSec) {
-    QString default_svcname = 
-        rduser->serviceCheckDefault( rdairplay_conf->defaultSvc() );
-    for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
-      air_log[i]->setDefaultServiceName(default_svcname);
-    }
-    if(air_panel!=NULL) {
-      air_panel->setSvcName(default_svcname);
-    }
-  }
-
 }
 
 
@@ -1620,14 +1556,14 @@ void MainWidget::selectClickedData(int id,int line,RDLogLine::Status status)
 	  air_log[id]->
 	    insert(air_log[id]->size(),air_add_cart,RDLogLine::Play);
 	  air_log[id]->logLine(air_log[id]->size()-1)->
-	    setTransType(rdairplay_conf->defaultTransType());
+	    setTransType(rda->airplayConf()->defaultTransType());
 	  air_log_list[id]->refresh(air_log[id]->size()-1);
 	}
 	else {
 	  air_log[id]->
 	    insert(line,air_add_cart,air_log[id]->nextTransType(line));
 	  air_log[id]->logLine(line)->
-	    setTransType(rdairplay_conf->defaultTransType());
+	    setTransType(rda->airplayConf()->defaultTransType());
 	  air_log_list[id]->refresh(line);
 	}
 	SetActionMode(StartButton::Stop);
@@ -1708,18 +1644,18 @@ void MainWidget::selectClickedData(int id,int line,RDLogLine::Status status)
 	else {
 	  if(line<0) {
 	    air_log[id]->insert(air_log[id]->size(),air_add_cart,
-				rdairplay_conf->defaultTransType(),
-				rdairplay_conf->defaultTransType());
+				rda->airplayConf()->defaultTransType(),
+				rda->airplayConf()->defaultTransType());
 	    air_log[id]->logLine(air_log[id]->size()-1)->
-	      setTransType(rdairplay_conf->defaultTransType());
+	      setTransType(rda->airplayConf()->defaultTransType());
 	    air_log_list[id]->refresh(air_log[id]->size()-1);
 	  }
 	  else {
 	    air_log[id]->
 	      insert(line,air_add_cart,air_log[id]->nextTransType(line),
-		     rdairplay_conf->defaultTransType());
+		     rda->airplayConf()->defaultTransType());
 	    air_log[id]->logLine(line)->
-	      setTransType(rdairplay_conf->defaultTransType());
+	      setTransType(rda->airplayConf()->defaultTransType());
 	    air_log_list[id]->refresh(line);
 	  }
 	}
@@ -1782,14 +1718,14 @@ void MainWidget::cartDroppedData(int id,int line,RDLogLine *ll)
       air_log[id]->
 	insert(air_log[id]->size(),ll->cartNumber(),RDLogLine::Play);
       air_log[id]->logLine(air_log[id]->size()-1)->
-	setTransType(rdairplay_conf->defaultTransType());
+	setTransType(rda->airplayConf()->defaultTransType());
       air_log_list[id]->refresh(air_log[id]->size()-1);
     }
     else {
       air_log[id]->
 	insert(line,ll->cartNumber(),air_log[id]->nextTransType(line));
       air_log[id]->logLine(line)->
-	setTransType(rdairplay_conf->defaultTransType());
+	setTransType(rda->airplayConf()->defaultTransType());
       air_log_list[id]->refresh(line);
     }
   }
@@ -1806,7 +1742,7 @@ void MainWidget::meterData()
 
   for(int i=0;i<AIR_TOTAL_PORTS;i++) {
     if(FirstPort(i)) {
-      rdcae->outputMeterUpdate(air_meter_card[i],air_meter_port[i],level);
+      air_cae->outputMeterUpdate(air_meter_card[i],air_meter_port[i],level);
       for(int j=0;j<2;j++) {
 	ratio[j]+=pow(10.0,((double)level[j])/1000.0);
       }
@@ -1927,13 +1863,13 @@ void MainWidget::transportChangedData()
 	air_pie_counter->setTransType(air_log[0]->nextTrans(line));
 	if(logline->playDeck()==NULL) {
 	  air_pie_counter->setLogline(NULL);
-	  air_pie_counter->start(rdstation_conf->timeOffset());
+	  air_pie_counter->start(rda->station()->timeOffset());
 	}
 	else {
 	  air_pie_counter->setLogline(logline);
 	  air_pie_counter->start(((RDPlayDeck *)logline->playDeck())->
 				 currentPosition()+
-				 rdstation_conf->timeOffset());
+				 rda->station()->timeOffset());
 	}
       }
     }
@@ -1974,7 +1910,11 @@ void MainWidget::refreshStatusChangedData(bool active)
     }
     air_refresh_label->setText("");
   }
-  qApp->processEvents();
+  //
+  // FIXME: Disabled in 2.10.3caefix05 due to segfault problems.
+  //        Do we really need this?
+  //
+  //  qApp->processEvents();
 }
 
 
@@ -1993,8 +1933,8 @@ void MainWidget::keyPressEvent(QKeyEvent *e)
 	break;
 
       case Qt::Key_X:
-	if(((e->state()&AltButton)!=0)&&
-	   ((e->state()&ShiftButton)==0)&&((e->state()&ControlButton)==0)) {
+	if(((e->state()&Qt::AltModifier)!=0)&&
+	   ((e->state()&Qt::ShiftModifier)==0)&&((e->state()&Qt::ControlModifier)==0)) {
 	  QCloseEvent *ce=new QCloseEvent();
 	  closeEvent(ce);
 	  delete ce;
@@ -2092,7 +2032,7 @@ void MainWidget::keyReleaseEvent(QKeyEvent *e)
 
   if (hotkeystrokes.length() > 0)  {
 
-    hot_label=(*rdhotkeys).GetRowLabel(RDEscapeString(air_config->stationName()),
+    hot_label=(*rdhotkeys).GetRowLabel(RDEscapeString(rda->config()->stationName()),
                         (const char *)"airplay",(const char *)hotkeystrokes);
 
     if (hot_label.length()>0) {
@@ -2136,14 +2076,14 @@ void MainWidget::keyReleaseEvent(QKeyEvent *e)
         }
     
         if ((strcmp(hot_label,"Aux Log 1") == 0) &&
-             (rdairplay_conf->showAuxButton(0) ) )
+             (rda->airplayConf()->showAuxButton(0) ) )
         {
             fullLogButtonData(1);
             return;
         }
     
         if ( (strcmp(hot_label,"Aux Log 2") == 0) &&
-             (rdairplay_conf->showAuxButton(1) ) )
+             (rda->airplayConf()->showAuxButton(1) ) )
         {
             fullLogButtonData(2);
             return;
@@ -2170,14 +2110,14 @@ void MainWidget::keyReleaseEvent(QKeyEvent *e)
 
 void MainWidget::closeEvent(QCloseEvent *e)
 {
-  if(!rdairplay_conf->exitPasswordValid("")) {
+  if(!rda->airplayConf()->exitPasswordValid("")) {
     QString passwd;
     RDGetPasswd *gw=new RDGetPasswd(&passwd,this);
     gw->exec();
-    if(!rdairplay_conf->exitPasswordValid(passwd)) {
+    if(!rda->airplayConf()->exitPasswordValid(passwd)) {
       return;
     }
-    rdairplay_conf->setExitCode(RDAirPlayConf::ExitClean);
+    rda->airplayConf()->setExitCode(RDAirPlayConf::ExitClean);
     LogLine(RDConfig::LogInfo,"RDAirPlay exiting");
     air_lock->unlock();
     exit(0);
@@ -2193,7 +2133,7 @@ void MainWidget::closeEvent(QCloseEvent *e)
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
     delete air_log[i];
   }
-  rdairplay_conf->setExitCode(RDAirPlayConf::ExitClean);
+  rda->airplayConf()->setExitCode(RDAirPlayConf::ExitClean);
   LogLine(RDConfig::LogInfo,"RDAirPlay exiting");
   air_lock->unlock();
   exit(0);
@@ -2203,8 +2143,8 @@ void MainWidget::closeEvent(QCloseEvent *e)
 void MainWidget::paintEvent(QPaintEvent *e)
 {
   QPainter *p=new QPainter(this);
-  p->setPen(black);
-  p->fillRect(10,70,410,air_stereo_meter->sizeHint().height(),black);
+  p->setPen(Qt::black);
+  p->fillRect(10,70,410,air_stereo_meter->sizeHint().height(),Qt::black);
   p->end();
   delete p;
 }
@@ -2233,8 +2173,8 @@ void MainWidget::SetCaption()
     log="--    ";
   }
   setCaption(QString("RDAirPlay")+" v"+VERSION+" - "+tr("Host")+": "+
-	     air_config->stationName()+" "+
-	     tr("User:")+" "+rdripc->user()+" "+
+	     rda->config()->stationName()+" "+
+	     tr("User:")+" "+rda->ripc()->user()+" "+
 	     tr("Log:")+" "+log.left(log.length()-4)+" "+
 	     tr("Service:")+" "+air_log[0]->serviceName());
 }
@@ -2283,7 +2223,7 @@ void MainWidget::SetManualMode(int mach)
   }
   air_mode_display->setOpMode(mach,RDAirPlayConf::Manual);
   air_op_mode[mach]=RDAirPlayConf::Manual;
-  rdairplay_conf->setOpMode(mach,RDAirPlayConf::Manual);
+  rda->airplayConf()->setOpMode(mach,RDAirPlayConf::Manual);
   air_log[mach]->setOpMode(RDAirPlayConf::Manual);
   air_log_list[mach]->setOpMode(RDAirPlayConf::Manual);
   if(mach==0) {
@@ -2308,7 +2248,7 @@ void MainWidget::SetAutoMode(int mach)
   }
   air_mode_display->setOpMode(mach,RDAirPlayConf::Auto);
   air_op_mode[mach]=RDAirPlayConf::Auto;
-  rdairplay_conf->setOpMode(mach,RDAirPlayConf::Auto);
+  rda->airplayConf()->setOpMode(mach,RDAirPlayConf::Auto);
   air_log[mach]->setOpMode(RDAirPlayConf::Auto);
   air_log_list[mach]->setOpMode(RDAirPlayConf::Auto);
   if(mach==0) {
@@ -2333,7 +2273,7 @@ void MainWidget::SetLiveAssistMode(int mach)
   }
   air_mode_display->setOpMode(mach,RDAirPlayConf::LiveAssist);
   air_op_mode[mach]=RDAirPlayConf::LiveAssist;
-  rdairplay_conf->setOpMode(mach,RDAirPlayConf::LiveAssist);
+  rda->airplayConf()->setOpMode(mach,RDAirPlayConf::LiveAssist);
   air_log[mach]->setOpMode(RDAirPlayConf::LiveAssist);
   air_log_list[mach]->setOpMode(RDAirPlayConf::LiveAssist);
   if(mach==0) {
@@ -2385,19 +2325,13 @@ void MainWidget::SetActionMode(StartButton::Mode mode)
 	  }
 	}
 	if(svc_quan==0) {
-          if (rdstation_conf->broadcastSecurity() == RDStation::UserSec) {
-            services_list = rduser->services();
-          } else { // RDStation::HostSec
-            sql=QString().sprintf("select SERVICE_NAME from SERVICE_PERMS \
-                                   where STATION_NAME=\"%s\"",
-                                   (const char *)rdstation_conf->name());
-            q=new RDSqlQuery(sql);
-            while(q->next()) {
-              services_list.append( q->value(0).toString() );
-            }
-            delete q;
-          }
-
+	  sql=QString("select SERVICE_NAME from SERVICE_PERMS where ")+
+	    "STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\"";
+	  q=new RDSqlQuery(sql);
+	  while(q->next()) {
+	    services_list.append( q->value(0).toString() );
+	  }
+	  delete q;
           for ( QStringList::Iterator it = services_list.begin(); 
                 it != services_list.end()&&svc_quan<(RD_MAX_DEFAULT_SERVICES-1);
                 ++it ) {
@@ -2418,7 +2352,7 @@ void MainWidget::SetActionMode(StartButton::Mode mode)
 	  air_panel->setActionMode(RDAirPlayConf::Normal);
 	}
 	if(rdcart_dialog->exec(&air_add_cart,RDCart::All,0,0,
-			       rduser->name(),rduser->password())==0) {
+			       rda->user()->name(),rda->user()->password())==0) {
 	  SetActionMode(StartButton::AddTo);
 	}
 	else {
@@ -2529,6 +2463,7 @@ int main(int argc,char *argv[])
   //
   // Load Translations
   //
+  /*
   QTranslator qt(0);
   qt.load(QString(QTDIR)+QString("/translations/qt_")+QTextCodec::locale(),
 	  ".");
@@ -2548,11 +2483,11 @@ int main(int argc,char *argv[])
   tr.load(QString(PREFIX)+QString("/share/rivendell/rdairplay_")+
 	     QTextCodec::locale(),".");
   a.installTranslator(&tr);
-
+  */
   //
   // Start Event Loop
   //
-  MainWidget *w=new MainWidget(NULL,"main");
+  MainWidget *w=new MainWidget();
   a.setMainWidget(w);
   w->setGeometry(QRect(QPoint(0,0),w->sizeHint()));
   w->show();
@@ -2567,7 +2502,7 @@ void LogLine(RDConfig::LogPriority prio,const QString &line)
 {
   FILE *file;
 
-  air_config->log("rdairplay",prio,line);
+  rda->config()->log("rdairplay",prio,line);
 
   if(logfile.isEmpty()) {
     return;

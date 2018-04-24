@@ -2,9 +2,7 @@
 //
 // Service Picker dialog
 //
-//   (C) Copyright 2012 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdlistsvcs.h,v 1.1.2.2 2012/11/16 18:10:40 cvs Exp $
+//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,8 +22,10 @@
 #define RDLISTSVCS_H
 
 #include <qdialog.h>
-#include <qlistbox.h>
+#include <q3listbox.h>
 #include <qpushbutton.h>
+//Added by qt3to4:
+#include <QResizeEvent>
 
 class RDListSvcs : public QDialog
 {
@@ -40,7 +40,7 @@ class RDListSvcs : public QDialog
   int exec(QString *svcname);
 
  private slots:
-  void doubleClickedData(QListBoxItem *item);
+  void doubleClickedData(Q3ListBoxItem *item);
   void okData();
   void cancelData();
 
@@ -48,7 +48,7 @@ class RDListSvcs : public QDialog
   void resizeEvent(QResizeEvent *e);
 
  private:
-  QListBox *edit_svc_list;
+  Q3ListBox *edit_svc_list;
   QString *edit_svcname;
   QPushButton *edit_ok_button;
   QPushButton *edit_cancel_button;

@@ -2,9 +2,7 @@
 //
 //   A widget for editing a list of integer values.
 //
-//   (C) Copyright 2008 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdintegeredit.cpp,v 1.3 2010/07/29 19:32:33 cvs Exp $
+//   (C) Copyright 2008,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -19,14 +17,15 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-//
 
 #include <rdintegerdialog.h>
 #include <rdintegeredit.h>
+//Added by qt3to4:
+#include <QLabel>
 
 RDIntegerEdit::RDIntegerEdit(const QString &lbl,int low,int high,
-			     QWidget *parent,const char *name)
-  : QWidget(parent,name)
+			     QWidget *parent)
+  : QWidget(parent)
 {
   edit_low=low;
   edit_high=high;
@@ -44,13 +43,13 @@ RDIntegerEdit::RDIntegerEdit(const QString &lbl,int low,int high,
   //
   // Values List
   //
-  edit_values_box=new QListBox(this);
+  edit_values_box=new Q3ListBox(this);
 
   //
   // Title Label
   //
   edit_label=new QLabel(edit_values_box,lbl,this);
-  edit_label->setAlignment(AlignCenter);
+  edit_label->setAlignment(Qt::AlignCenter);
   edit_label->setFont(label_font);
 
   //
@@ -134,7 +133,7 @@ void RDIntegerEdit::addData()
 
 void RDIntegerEdit::deleteData()
 {
-  QListBoxItem *item=edit_values_box->selectedItem();
+  Q3ListBoxItem *item=edit_values_box->selectedItem();
   if(item==NULL) {
     return;
   }
@@ -142,7 +141,7 @@ void RDIntegerEdit::deleteData()
 }
 
 
-QListBoxItem *RDIntegerEdit::GetItem(int value)
+Q3ListBoxItem *RDIntegerEdit::GetItem(int value)
 {
   for(unsigned i=0;i<edit_values_box->count();i++) {
     if(edit_values_box->item(i)->text().toInt()==value) {

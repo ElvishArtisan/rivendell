@@ -2,9 +2,7 @@
 //
 // Add a Rivendell User
 //
-//   (C) Copyright 2002-2008 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: add_user.cpp,v 1.20 2010/07/29 19:32:34 cvs Exp $
+//   (C) Copyright 2002-2008,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,41 +18,30 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <math.h>
+#include <QDialog>
+#include <QLabel>
+#include <QMessageBox>
+#include <QPushButton>
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <qbuttongroup.h>
-#include <rddb.h>
-
-#include <edit_user.h>
-#include <add_user.h>
+#include <rdapplication.h>
 #include <rdpasswd.h>
 #include <rdescape_string.h>
 
+#include "add_user.h"
+#include "edit_user.h"
 
-AddUser::AddUser(QString *username,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+AddUser::AddUser(QString *username,QWidget *parent)
+  : QDialog(parent)
 {
   user_name=username;
 
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
-  setCaption(tr("Add User"));
+  setWindowTitle("RDAdmin  - "+tr("Add User"));
 
   //
   // Create Fonts
@@ -65,19 +52,18 @@ AddUser::AddUser(QString *username,QWidget *parent,const char *name)
   //
   // User Name
   //
-  user_name_edit=new QLineEdit(this,"user_name_edit");
+  user_name_edit=new QLineEdit(this);
   user_name_edit->setGeometry(125,11,sizeHint().width()-135,19);
   user_name_edit->setMaxLength(255);
-  QLabel *user_name_label=new QLabel(user_name_edit,tr("&New User Name:"),this,
-				       "user_name_label");
+  QLabel *user_name_label=new QLabel(user_name_edit,tr("&New User Name:"),this);
   user_name_label->setGeometry(10,13,110,19);
   user_name_label->setFont(font);
-  user_name_label->setAlignment(AlignRight|ShowPrefix);
+  user_name_label->setAlignment(Qt::AlignRight|Qt::TextShowMnemonic);
 
   //
   //  Ok Button
   //
-  QPushButton *ok_button=new QPushButton(this,"ok_button");
+  QPushButton *ok_button=new QPushButton(this);
   ok_button->setGeometry(size().width()-180,size().height()-60,80,50);
   ok_button->setDefault(true);
   ok_button->setFont(font);
@@ -87,7 +73,7 @@ AddUser::AddUser(QString *username,QWidget *parent,const char *name)
   //
   //  Cancel Button
   //
-  QPushButton *cancel_button=new QPushButton(this,"cancel_button");
+  QPushButton *cancel_button=new QPushButton(this);
   cancel_button->setGeometry(size().width()-90,size().height()-60,80,50);
   cancel_button->setFont(font);
   cancel_button->setText(tr("&Cancel"));
@@ -147,7 +133,7 @@ void AddUser::okData()
     delete q1;
   }
   delete q;
-  EditUser *user=new EditUser(user_name_edit->text(),this,"user");
+  EditUser *user=new EditUser(user_name_edit->text(),this);
   if(user->exec()<0) {
     sql=QString().sprintf("delete from USER_PERMS where USER_NAME=\"%s\"",
 			  (const char *)username);

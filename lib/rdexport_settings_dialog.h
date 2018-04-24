@@ -2,9 +2,7 @@
 //
 // Edit Rivendell Audio Settings
 //
-//   (C) Copyright 2002-2005 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdexport_settings_dialog.h,v 1.8 2010/07/29 19:32:33 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,23 +21,21 @@
 #ifndef RDEXPORT_SETTINGS_DIALOG_H
 #define RDEXPORT_SETTINGS_DIALOG_H
 
-#include <qdialog.h>
-#include <qsqldatabase.h>
-#include <qlineedit.h>
-#include <qcombobox.h>
-#include <qspinbox.h>
-#include <qlabel.h>
+#include <QComboBox>
+#include <QDialog>
+#include <QLabel>
+#include <QLineEdit>
+#include <QSpinBox>
 
 #include <rdsettings.h>
 #include <rdstation.h>
-#include <rdencoderlist.h>
 
 class RDExportSettingsDialog : public QDialog
 {
   Q_OBJECT
   public:
   RDExportSettingsDialog(RDSettings *settings,RDStation *station,
-			 QWidget *parent=0,const char *name=0);
+			 QWidget *parent=0);
    ~RDExportSettingsDialog();
    QSize sizeHint() const;
    QSizePolicy sizePolicy() const;
@@ -55,7 +51,6 @@ class RDExportSettingsDialog : public QDialog
    void ShowBitRates(RDSettings::Format fmt,int samprate,int bitrate,int qual);
    void SetCurrentItem(QComboBox *box,int value);
    RDSettings::Format GetFormat(QString str);
-   RDEncoderList *lib_encoders;
    RDSettings *lib_settings;
    RDStation *lib_station;
    QComboBox *lib_format_box;

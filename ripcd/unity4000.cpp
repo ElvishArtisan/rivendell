@@ -2,9 +2,7 @@
 //
 // A Rivendell switcher driver for the UNITY4000
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: unity4000.cpp,v 1.13 2010/08/03 23:39:26 cvs Exp $
+//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,13 +21,13 @@
 #include <stdlib.h>
 
 #include <rddb.h>
+#include <rdescape_string.h>
 
-#include <globals.h>
-#include <unity4000.h>
+#include "globals.h"
+#include "unity4000.h"
 
-
-Unity4000::Unity4000(RDMatrix *matrix,QObject *parent,const char *name)
-  : Switcher(matrix,parent,name)
+Unity4000::Unity4000(RDMatrix *matrix,QObject *parent)
+  : Switcher(matrix,parent)
 {
   QString sql;
   RDSqlQuery *q;
@@ -43,11 +41,14 @@ Unity4000::Unity4000(RDMatrix *matrix,QObject *parent,const char *name)
   //
   // Load Feed Data
   //
-  sql=QString().sprintf("select NUMBER,FEED_NAME,CHANNEL_MODE from INPUTS \
-                         where STATION_NAME=\"%s\" && MATRIX=%d \
-                         order by NUMBER",
-			(const char *)rdstation->name(),
-			matrix->matrix());
+  sql=QString("select ")+
+    "NUMBER,"+
+    "FEED_NAME,"+
+    "CHANNEL_MODE "+
+    "from INPUTS where "+
+    "(STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\")&&"+
+    QString().sprintf("(MATRIX=%d) ",matrix->matrix())+
+    "order by NUMBER";
   q=new RDSqlQuery(sql);
   q->first();
   for(int i=0;i<unity_inputs;i++) {
@@ -63,14 +64,14 @@ Unity4000::Unity4000(RDMatrix *matrix,QObject *parent,const char *name)
   //
   // Initialize the TTY Port
   //
-  RDTty *tty=new RDTty(rdstation->name(),matrix->port(RDMatrix::Primary));
+  RDTty *tty=new RDTty(rda->station()->name(),matrix->port(RDMatrix::Primary));
   unity_device=new RDTTYDevice();
   if(tty->active()) {
     unity_device->setName(tty->port());
     unity_device->setSpeed(tty->baudRate());
     unity_device->setWordLength(tty->dataBits());
     unity_device->setParity(tty->parity());
-    unity_device->open(IO_Raw|IO_ReadWrite);
+    unity_device->open(QIODevice::Unbuffered|QIODevice::ReadWrite);
   }
   delete tty;
 }

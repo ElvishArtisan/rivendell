@@ -2,9 +2,7 @@
 ##
 ## Automake.am for rivendell/rdadmin
 ##
-## (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-##
-##      $Id: Makefile.am,v 1.72.4.6 2013/03/09 00:21:11 cvs Exp $
+## (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -22,8 +20,8 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -DQTDIR=\"@QT_DIR@\" @QT_CXXFLAGS@ -I$(top_srcdir)/lib
-LIBS = @QT_LIBS@ -L$(top_srcdir)/lib
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -I$(top_srcdir)/lib @QT4_CFLAGS@ -DQT3_SUPPORT -I/usr/include/Qt3Support
+LIBS = -L$(top_srcdir)/lib
 MOC = @QT_MOC@
 CWRAP = ../helpers/cwrap
 
@@ -36,17 +34,16 @@ install-exec-local:
 	mkdir -p $(DESTDIR)$(prefix)/share/rivendell
 	cp rdadmin_*.qm $(DESTDIR)$(prefix)/share/rivendell
 
-uninstall:
+uninstall-local:
 	rm -f $(DESTDIR)$(prefix)/share/rivendell/rdadmin_*.qm
 
 all:	
-	@QT_BIN@/lupdate rdadmin.pro
-	@QT_BIN@/lrelease rdadmin.pro
+	lupdate-qt4 rdadmin.pro
+	lrelease-qt4 rdadmin.pro
 
 bin_PROGRAMS = rdadmin
 
 dist_rdadmin_SOURCES = add_aux_field.cpp add_aux_field.h\
-                       add_encoder.cpp add_encoder.h\
                        add_feed.cpp add_feed.h\
                        add_group.cpp add_group.h\
                        add_hostvar.cpp add_hostvar.h\
@@ -58,7 +55,6 @@ dist_rdadmin_SOURCES = add_aux_field.cpp add_aux_field.h\
                        add_svc.cpp add_svc.h\
                        add_user.cpp add_user.h\
                        autofill_carts.cpp autofill_carts.h\
-                       createdb.cpp createdb.h\
                        edit_audios.cpp edit_audios.h\
                        edit_aux_field.cpp edit_aux_field.h\
                        edit_backup.cpp edit_backup.h\
@@ -66,7 +62,6 @@ dist_rdadmin_SOURCES = add_aux_field.cpp add_aux_field.h\
                        edit_channelgpios.cpp edit_channelgpios.h\
                        edit_decks.cpp edit_decks.h\
                        edit_dropbox.cpp edit_dropbox.h\
-                       edit_encoder.cpp edit_encoder.h\
                        edit_endpoint.cpp edit_endpoint.h\
                        edit_feed.cpp edit_feed.h\
                        edit_feed_perms.cpp edit_feed_perms.h\
@@ -103,7 +98,6 @@ dist_rdadmin_SOURCES = add_aux_field.cpp add_aux_field.h\
                        info_dialog.cpp info_dialog.h\
                        list_aux_fields.cpp list_aux_fields.h\
                        list_dropboxes.cpp list_dropboxes.h\
-                       list_encoders.cpp list_encoders.h\
                        list_endpoints.cpp list_endpoints.h\
                        list_feeds.cpp list_feeds.h\
                        list_gpis.cpp list_gpis.h\
@@ -122,7 +116,6 @@ dist_rdadmin_SOURCES = add_aux_field.cpp add_aux_field.h\
                        list_users.cpp list_users.h\
                        list_vguest_resources.cpp list_vguest_resources.h\
                        login.cpp login.h\
-                       mysql_login.cpp mysql_login.h\
                        opendb.cpp opendb.h\
                        rdadmin.cpp rdadmin.h\
                        rename_group.cpp rename_group.h\
@@ -131,7 +124,6 @@ dist_rdadmin_SOURCES = add_aux_field.cpp add_aux_field.h\
                        view_node_info.cpp view_node_info.h
 
 nodist_rdadmin_SOURCES = moc_add_aux_field.cpp\
-                         moc_add_encoder.cpp\
                          moc_add_feed.cpp\
                          moc_add_group.cpp\
                          moc_add_hostvar.cpp\
@@ -150,7 +142,6 @@ nodist_rdadmin_SOURCES = moc_add_aux_field.cpp\
                          moc_edit_channelgpios.cpp\
                          moc_edit_decks.cpp\
                          moc_edit_dropbox.cpp\
-                         moc_edit_encoder.cpp\
                          moc_edit_endpoint.cpp\
                          moc_edit_feed.cpp\
                          moc_edit_feed_perms.cpp\
@@ -186,7 +177,6 @@ nodist_rdadmin_SOURCES = moc_add_aux_field.cpp\
                          moc_info_dialog.cpp\
                          moc_list_aux_fields.cpp\
                          moc_list_dropboxes.cpp\
-                         moc_list_encoders.cpp\
                          moc_list_endpoints.cpp\
                          moc_list_feeds.cpp\
                          moc_list_gpis.cpp\
@@ -205,14 +195,13 @@ nodist_rdadmin_SOURCES = moc_add_aux_field.cpp\
                          moc_list_users.cpp\
                          moc_list_vguest_resources.cpp\
                          moc_login.cpp\
-                         moc_mysql_login.cpp\
                          moc_rdadmin.cpp\
                          moc_rename_group.cpp\
                          moc_test_import.cpp\
                          moc_view_adapters.cpp\
                          moc_view_node_info.cpp
 
-rdadmin_LDADD = @LIB_RDLIBS@ -lsamplerate @LIBVORBIS@
+rdadmin_LDADD = @LIB_RDLIBS@ -lsamplerate @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
 
 EXTRA_DIST = info_banner1.xpm\
              info_banner2.xpm\

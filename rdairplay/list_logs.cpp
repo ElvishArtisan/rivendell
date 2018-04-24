@@ -2,9 +2,7 @@
 //
 // Select a Rivendell Log
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_logs.cpp,v 1.22.6.1 2012/08/10 19:07:21 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,14 +19,18 @@
 //
 
 #include <qpushbutton.h>
+//Added by qt3to4:
+#include <QCloseEvent>
 
 #include <rdadd_log.h>
-#include <rddb.h>
-#include <list_logs.h>
-#include <globals.h>
+#include <rdapplication.h>
+#include <rdescape_string.h>
 
-ListLogs::ListLogs(LogPlay *log,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+#include "globals.h"
+#include "list_logs.h"
+
+ListLogs::ListLogs(LogPlay *log,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   //
   // Fix the Window Size
@@ -50,15 +52,15 @@ ListLogs::ListLogs(LogPlay *log,QWidget *parent,const char *name)
   //
   // Log List
   //
-  list_log_list=new QListView(this,"list_log_list");
+  list_log_list=new Q3ListView(this,"list_log_list");
   list_log_list->setGeometry(10,10,
                             sizeHint().width()-20,sizeHint().height()-80);
   list_log_list->setAllColumnsShowFocus(true);
   list_log_list->setItemMargin(5);
   connect(list_log_list,
-          SIGNAL(doubleClicked(QListViewItem *,const QPoint &,int)),
+          SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
           this,
-          SLOT(doubleClickedData(QListViewItem *,const QPoint &,int)));
+          SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
   list_log_list->addColumn(tr("NAME"));
   list_log_list->setColumnAlignment(0,Qt::AlignLeft);
   list_log_list->addColumn(tr("DESCRIPTION"));
@@ -132,7 +134,7 @@ int ListLogs::exec(QString *logname,QString *svcname)
 {
   list_logname=logname;
   list_svcname=svcname;
-  list_saveas_button->setEnabled(rduser->createLog());
+  list_saveas_button->setEnabled(rda->user()->createLog());
   RefreshList();
   return QDialog::exec();
 }
@@ -144,7 +146,7 @@ void ListLogs::closeEvent(QCloseEvent *e)
 }
 
 
-void ListLogs::doubleClickedData(QListViewItem *,const QPoint &,int)
+void ListLogs::doubleClickedData(Q3ListViewItem *,const QPoint &,int)
 {
   loadButtonData();
 }
@@ -152,7 +154,7 @@ void ListLogs::doubleClickedData(QListViewItem *,const QPoint &,int)
 
 void ListLogs::loadButtonData()
 {
-  QListViewItem *item=list_log_list->selectedItem();
+  Q3ListViewItem *item=list_log_list->selectedItem();
   if(item==NULL) {
     return;
   }
@@ -177,14 +179,8 @@ void ListLogs::saveAsButtonData()
   QString logname;
   QString svcname=*list_svcname;
   RDAddLog *log;
-  if (rdstation_conf->broadcastSecurity() == RDStation::UserSec) {
-    log=new RDAddLog(&logname,&svcname,rdstation_conf,
-                     tr("Rename Log"),this,"log", rduser);
-  } else { // RDStation::HostSec
-    log=new RDAddLog(&logname,&svcname,rdstation_conf,
-                     tr("Rename Log"),this,"log");
-  }
 
+  log=new RDAddLog(&logname,&svcname,rda->station(),tr("Rename Log"),this);
   if(log->exec()<0) {
     delete log;
     return;
@@ -212,37 +208,31 @@ void ListLogs::RefreshList()
 {
   RDSqlQuery *q;
   QString sql;
-  QListViewItem *l;
+  Q3ListViewItem *l;
   QDate current_date=QDate::currentDate();
   QStringList services_list;
 
   list_log_list->clear();
 
-  if (rdstation_conf->broadcastSecurity() == RDStation::UserSec) {
-    if(rduser!=NULL) {
-      services_list = rduser->services();
-    }
-  } 
-  else { // RDStation::HostSec
-    sql=QString().sprintf("select SERVICE_NAME from SERVICE_PERMS \
-                           where STATION_NAME=\"%s\"",
-                           (const char *)rdstation_conf->name());
-    q=new RDSqlQuery(sql);
-    while(q->next()) {
-      services_list.append( q->value(0).toString() );
-    }
-    delete q;
+  sql=QString("select SERVICE_NAME from SERVICE_PERMS where ")+
+    "STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\"";
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    services_list.append( q->value(0).toString() );
   }
+  delete q;
 
   if(services_list.size()==0) {
     return;
   }
-  sql=QString().sprintf("select NAME,DESCRIPTION,SERVICE from LOGS \
-                         where (TYPE=0)&&(LOG_EXISTS=\"Y\")&&\
-                         ((START_DATE<=\"%s\")||(START_DATE=\"0000-00-00\"))&&\
-                         ((END_DATE>=\"%s\")||(END_DATE=\"0000-00-00\"))&&(",
-                        (const char *)current_date.toString("yyyy-MM-dd"),
-                        (const char *)current_date.toString("yyyy-MM-dd"));
+  sql=QString("select NAME,DESCRIPTION,SERVICE from LOGS ")+
+    "where (TYPE=0)&&(LOG_EXISTS=\"Y\")&&"+
+    "((START_DATE<=\""+current_date.toString("yyyy-MM-dd")+"\")||"+
+    "(START_DATE=\"0000-00-00\")||"+
+    "(START_DATE is null))&&"+
+    "((END_DATE>=\""+current_date.toString("yyyy-MM-dd")+"\")||"+
+    "(END_DATE=\"0000-00-00\")||"+
+    "(END_DATE is null))&&(";
   for ( QStringList::Iterator it = services_list.begin(); 
         it != services_list.end(); ++it ) {
     sql+=QString().sprintf("SERVICE=\"%s\"||",
@@ -253,7 +243,7 @@ void ListLogs::RefreshList()
 
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    l=new QListViewItem(list_log_list);
+    l=new Q3ListViewItem(list_log_list);
     l->setText(0,q->value(0).toString());
     l->setText(1,q->value(1).toString());
     l->setText(2,q->value(2).toString());

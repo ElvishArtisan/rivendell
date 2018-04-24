@@ -2,9 +2,7 @@
 //
 // Display help for audio ports (edit_audios.*)
 //
-// (C) Copyright 2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: help_audios.h,v 1.5 2010/07/29 19:32:34 cvs Exp $
+// (C) Copyright 2006,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,20 +17,18 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-//
 
 #ifndef HELP_AUDIOS_H
 #define HELP_AUDIOS_H
 
-#include <qdialog.h>
-#include <qtextedit.h>
-
+#include <QDialog>
+#include <QTextEdit>
 
 class HelpAudioPorts : public QDialog
 {
  Q_OBJECT
  public:
-  HelpAudioPorts(QWidget *parent=0,const char *name=0);
+  HelpAudioPorts(QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 
@@ -44,4 +40,4 @@ class HelpAudioPorts : public QDialog
 };
 
 
-#endif
+#endif  // HELP_AUDIOS_H

@@ -2,9 +2,7 @@
 //
 // Edit an Auxiliary Field for an RSS Feed
 //
-//   (C) Copyright 2002-2007 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_aux_field.cpp,v 1.5 2010/07/29 19:32:34 cvs Exp $
+//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,28 +18,26 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qmessagebox.h>
 #include <rddb.h>
 #include <rdescape_string.h>
-#include <edit_aux_field.h>
 
+#include "edit_aux_field.h"
 
-EditAuxField::EditAuxField(unsigned feed_id,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+EditAuxField::EditAuxField(unsigned feed_id,QWidget *parent)
+  : QDialog(parent)
 {
   QString sql;
   RDSqlQuery *q;
 
   edit_field_id=feed_id;
-  setCaption(tr("Edit Auxiliary Metadata Fields"));
+
+  setWindowTitle("RDAdmin - "+tr("Edit Auxiliary Metadata Fields"));
 
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   //
   // Create Fonts
@@ -54,53 +50,43 @@ EditAuxField::EditAuxField(unsigned feed_id,QWidget *parent,const char *name)
   //
   // Variable Name
   //
-  edit_varname_edit=new QLineEdit(this,"edit_varname_edit");
-  edit_varname_edit->setGeometry(120,10,130,20);
+  edit_varname_edit=new QLineEdit(this);
   edit_varname_edit->setReadOnly(true);
-  QLabel *label=
-    new QLabel(edit_varname_edit,tr("Variable Name: "),
-	       this,"edit_varname_label");
-  label->setGeometry(10,13,105,20);
-  label->setFont(bold_font);
-  label->setAlignment(AlignRight);
+  edit_varname_label=new QLabel(edit_varname_edit,tr("Variable Name: "),this);
+  edit_varname_label->setFont(bold_font);
+  edit_varname_label->setAlignment(Qt::AlignRight);
 
   //
   // Variable Name
   //
-  edit_caption_edit=new QLineEdit(this,"edit_caption_edit");
-  edit_caption_edit->setGeometry(120,37,sizeHint().width()-130,20);
+  edit_caption_edit=new QLineEdit(this);
   edit_caption_edit->setMaxLength(64);
-  label=new QLabel(edit_caption_edit,tr("Caption: "),
-		   this,"edit_caption_label");
-  label->setGeometry(10,37,105,20);
-  label->setFont(bold_font);
-  label->setAlignment(AlignRight);
+  edit_caption_label=new QLabel(edit_caption_edit,tr("Caption: "),this);
+  edit_caption_label->setFont(bold_font);
+  edit_caption_label->setAlignment(Qt::AlignRight);
 
   //
   //  Ok Button
   //
-  QPushButton *button=new QPushButton(this,"ok_button");
-  button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
-  button->setDefault(true);
-  button->setFont(bold_font);
-  button->setText(tr("&OK"));
-  connect(button,SIGNAL(clicked()),this,SLOT(okData()));
+  edit_ok_button=new QPushButton(this);
+  edit_ok_button->setDefault(true);
+  edit_ok_button->setFont(bold_font);
+  edit_ok_button->setText(tr("&OK"));
+  connect(edit_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
   //  Cancel Button
   //
-  button=new QPushButton(this,"cancel_button");
-  button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
-			     80,50);
-  button->setFont(bold_font);
-  button->setText(tr("&Cancel"));
-  connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
+  edit_cancel_button=new QPushButton(this);
+  edit_cancel_button->setFont(bold_font);
+  edit_cancel_button->setText(tr("&Cancel"));
+  connect(edit_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //
   // Load Data
   //
-  sql=QString().sprintf("select VAR_NAME,CAPTION from AUX_METADATA \
-                         where ID=%u",edit_field_id);
+  sql=QString("select VAR_NAME,CAPTION from AUX_METADATA where ")+
+    QString().sprintf("ID=%u",edit_field_id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     edit_varname_edit->setText(q->value(0).toString());
@@ -127,10 +113,9 @@ void EditAuxField::okData()
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString().sprintf("update AUX_METADATA set CAPTION=\"%s\" \
-                         where ID=%u",
-		       (const char *)RDEscapeString(edit_caption_edit->text()),
-		       edit_field_id);
+  sql=QString("update AUX_METADATA set ")+
+    "CAPTION=\""+RDEscapeString(edit_caption_edit->text())+"\" where "+
+    QString().sprintf("ID=%u",edit_field_id);
   q=new RDSqlQuery(sql);
   delete q;
 
@@ -141,4 +126,15 @@ void EditAuxField::okData()
 void EditAuxField::cancelData()
 {
   done(-1);
+}
+
+
+void EditAuxField::resizeEvent(QResizeEvent *e)
+{
+  edit_varname_edit->setGeometry(120,10,130,20);
+  edit_varname_label->setGeometry(10,13,105,20);
+  edit_caption_edit->setGeometry(120,37,size().width()-130,20);
+  edit_caption_label->setGeometry(10,37,105,20);
+  edit_ok_button->setGeometry(size().width()-180,size().height()-60,80,50);
+  edit_cancel_button->setGeometry(size().width()-90,size().height()-60,80,50);
 }

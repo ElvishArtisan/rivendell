@@ -2,9 +2,7 @@
 //
 // Export a Rivendell SoundExchange Report to an ASCII Text File.
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: export_soundex.cpp,v 1.9 2010/07/29 19:32:33 cvs Exp $
+//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -78,9 +76,14 @@ bool RDReport::ExportSoundEx(const QDate &startdate,const QDate &enddate,
   //
   // Roll Up Records
   //
-  sql=QString().sprintf("select CART_NUMBER,ARTIST,TITLE,ISRC,ALBUM,LABEL \
-                         from `%s_SRT` order by CART_NUMBER",
-			(const char *)mixtable);
+  sql=QString("select ")+
+    "CART_NUMBER,"+
+    "ARTIST,"+
+    "TITLE,"+
+    "ISRC,"+
+    "ALBUM,"+
+    "LABEL "+
+    "from `"+mixtable+"_SRT` order by CART_NUMBER";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(q->value(0).toUInt()==cartnum) {

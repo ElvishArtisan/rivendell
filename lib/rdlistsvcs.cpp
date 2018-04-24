@@ -2,9 +2,7 @@
 //
 // Service Picker dialog
 //
-//   (C) Copyright 2012 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdlistsvcs.cpp,v 1.1.2.2 2012/11/16 18:10:40 cvs Exp $
+//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,6 +19,8 @@
 //
 
 #include <qcolordialog.h>
+//Added by qt3to4:
+#include <QResizeEvent>
 
 #include <rddb.h>
 #include <rdcart.h>
@@ -52,9 +52,9 @@ RDListSvcs::RDListSvcs(const QString &caption,QWidget *parent)
   //
   // Services
   //
-  edit_svc_list=new QListBox(this);
-  connect(edit_svc_list,SIGNAL(doubleClicked(QListBoxItem *)),
-	  this,SLOT(doubleClickedData(QListBoxItem *)));
+  edit_svc_list=new Q3ListBox(this);
+  connect(edit_svc_list,SIGNAL(doubleClicked(Q3ListBoxItem *)),
+	  this,SLOT(doubleClickedData(Q3ListBoxItem *)));
 
   //
   //  Ok Button
@@ -113,7 +113,7 @@ int RDListSvcs::exec(QString *svcname)
 }
 
 
-void RDListSvcs::doubleClickedData(QListBoxItem *item)
+void RDListSvcs::doubleClickedData(Q3ListBoxItem *item)
 {
   okData();
 }

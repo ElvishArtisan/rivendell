@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry id="stdin" xmlns="http://docbook.org/ns/docbook" version="5.0">
+  <!--
+      Header
+  -->
+  <refmeta>
+    <refentrytitle>rdrevert</refentrytitle>
+    <manvolnum>8</manvolnum>
+    <refmiscinfo class='source'>March 2016</refmiscinfo>
+    <refmiscinfo class='manual'>Linux Audio Manual</refmiscinfo>
+  </refmeta>
+  <refnamediv>
+    <refname>rdrevert</refname>
+    <refpurpose>Revert a Rivendell database to a previous schema version</refpurpose>
+  </refnamediv>
+  <info>
+    <author>
+      <personname>
+	<firstname>Fred</firstname>
+	<surname>Gleason</surname>
+	<email>fredg@paravelsystems.com</email>
+      </personname>
+      <contrib>Application Author</contrib>
+    </author>
+  </info>
+
+  <!--
+      Body
+  -->
+  <refsynopsisdiv id='synopsis'>
+    <cmdsynopsis>
+      <command>rdrevert</command>
+      <arg choice='opt'><replaceable>OPTIONS</replaceable></arg>
+      <arg choice='opt'><userinput>--set-schema=</userinput><replaceable>schema</replaceable></arg>
+      <arg choice='opt'><userinput>--set-version=</userinput><replaceable>version</replaceable></arg>
+      <sbr/>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+
+  <refsect1 id='description'><title>Description</title>
+  <para>
+    <command>rdrevert</command><manvolnum>8</manvolnum> can be used to revert
+    the schema of a Rivendell database to an earlier version, specified as
+    either a Rivendell version string or an absolute schema version number.
+    If no arguments are given, <command>rdrevert</command><manvolnum>8</manvolnum>
+    will print the current database schema version to standard output and
+    then exit.
+  </para>
+  </refsect1>
+
+  <refsect1 id='options'><title>Options</title>
+  <variablelist remap='TP'>
+    <varlistentry>
+      <term>
+	<option>--set-schema=</option><replaceable>schema</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Set the version number of the schema to which to revert.
+	  <command>rdrevert</command><manvolnum>8</manvolnum> can revert back
+	  up to schema version 242 (v2.10.0) inclusive.  Attempting to
+	  revert to an earlier schema than 242 will generate an 
+	  <computeroutput>unsupported schema</computeroutput> error.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--set-version=</option><replaceable>version</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Determine the schema to which to revert on the basis of the
+	  specified Rivendell version --e.g. <userinput>2.10.3</userinput>.
+	</para>
+      </listitem>
+    </varlistentry>
+
+  </variablelist>
+</refsect1>
+
+</refentry>
+

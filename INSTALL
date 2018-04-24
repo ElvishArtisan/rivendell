@@ -30,19 +30,17 @@ most distros, or you can find it at http://www.mega-nerd.com/libsndfile/.
 mySQL Database Server
 Included in most Linux distributions.  See http://www.mysql.com/.
 
+OggVorbis - Open Source Audio Coding Library.  Needed for OggVorbis
+importing and exporting.  Included with most distros, or available at: 
+http://www.xiph.org/.
+
 PAM Pluggable Authentication Modules
 A suite of shared libraries that enable the local system administrator to 
 choose how applications authenticate users.  Included with virtually all modern
 distros, or see http://www.kernel.org/pub/linux/libs/pam/.
 
-OggVorbis - Open Source Audio Coding Library.  Needed for OggVorbis
-importing and exporting.  Included with most distros, or available at: 
-http://www.xiph.org/.
-
-Qt Toolkit, v3.3 or better
-Most modern Linux distros include this.  It's typically installed as part
-of the KDE Desktop Environment, although KDE is by no means required.
-It can also be downloaded directly from TrollTech (http://www.trolltech.com/).
+Qt4 Toolkit, v4.8.x or better
+Most modern Linux distros include this. Available at http:///www.qt.io/.
 
 Secret Rabbit Code
 A sample-rate converter library, written by Erik de Castro Lopo.  Included
@@ -84,6 +82,10 @@ GPIO Driver
 A kernel driver for the line of data-acquisition boards from 
 MeasurementComputing.  See http://www.rivendellaudio.org/.
 
+FAAD2 / mp4v2 - AAC/MP4 Decoding Libraries.  Needed for MP4 file importation.
+Available at http://www.audiocoding.com/faad2.html and
+https://code.google.com/p/mp4v2/ respectively.
+
 LAME - MPEG Layer 3 Encoder Library.  Needed for MPEG Layer 3 exporting.
 Available at http://lame.sourceforge.net/.
 
@@ -92,6 +94,27 @@ Available at http://www.underbit.com/products/mad/.
 
 TwoLAME - MPEG Layer 2 Encoder Library.  Needed for MPEG Layer 2 exporting and
 capture.  Available at http://www.twolame.org/.
+
+
+DOCUMENTATION
+-------------
+The larger pieces of the Rivendell documentation are written in XML-DocBook5.
+Pre-generated docs are included in the source tarball, so special tools will
+not normally be required to view or install them.  However, if you need to
+rebuild them (either because you've modified the DocBook sources or are
+installing from the primary GitHub repository), then you will need the
+following:
+
+XML-DocBook5 Stylesheets.  Available at 
+http://sourceforge.net/projects/docbook/.  You will also need to create a
+$DOCBOOK_STYLESHEETS variable in your environment that points to the top
+of the stylesheet tree.  More information can be found at
+http://www.docbook.org/tdg5/en/html/appa.html#s.stylesheetinstall.  On
+RHEL-ish systems, they are also available in the 'docbook5-style-xsl'
+package.
+
+xsltproc.  Command line XSLT processor.  Available at
+http://xmlsoft.org/XSLT/xsltproc2.html
 
 
 INSTALLATION

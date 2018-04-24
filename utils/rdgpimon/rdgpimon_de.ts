@@ -1,22 +1,24 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>MainWidget</name>
     <message>
         <source>Database Error</source>
-        <translation>Datenbankfehler</translation>
+        <translation type="obsolete">Datenbankfehler</translation>
     </message>
     <message>
         <source>Can&apos;t Connect</source>
         <comment>Unable to connect to mySQL Server!</comment>
-        <translation>Kann keine Verbindung zum mySQL-Server herstellen</translation>
+        <translation type="obsolete">Kann keine Verbindung zum mySQL-Server herstellen</translation>
     </message>
     <message>
         <source>Can&apos;t Connect</source>
-        <translation>Kann keine Verbindung herstellen</translation>
+        <translation type="obsolete">Kann keine Verbindung herstellen</translation>
     </message>
     <message>
         <source>Unable to connect to mySQL Server!</source>
-        <translation>Kann keine Verbindung zum mySQL-Server herstellen!</translation>
+        <translation type="obsolete">Kann keine Verbindung zum mySQL-Server herstellen!</translation>
     </message>
     <message>
         <source>Matrix:</source>

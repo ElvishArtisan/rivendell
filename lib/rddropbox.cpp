@@ -2,9 +2,7 @@
 //
 // Abstract a Rivendell dropbox configuration.
 //
-//   (C) Copyright 2002-2007 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rddropbox.cpp,v 1.9.8.1 2013/12/11 20:17:13 cvs Exp $
+//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,29 +23,9 @@
 #include <rddropbox.h>
 #include <rdescape_string.h>
 
-
-//
-// Global Classes
-//
-RDDropbox::RDDropbox(int id,const QString &stationname)
+RDDropbox::RDDropbox(int id)
 {
-  RDSqlQuery *q;
-  QString sql;
-
   box_id=id;
-
-  if(id<0) {
-    sql=QString().sprintf("insert into DROPBOXES set STATION_NAME=\"%s\"",
-			  (const char *)stationname);
-    q=new RDSqlQuery(sql);
-    delete q;
-    sql="select ID from DROPBOXES order by ID desc";
-    q=new RDSqlQuery(sql);
-    if(q->first()) {
-      box_id=q->value(0).toInt();
-    }
-    delete q;
-  }
 }
 
 
@@ -302,13 +280,44 @@ void RDDropbox::setCreateEnddateOffset(int offset) const
 }
 
 
+int RDDropbox::create(const QString &stationname)
+{
+  int ret=-1;
+
+  QString sql=QString("insert into DROPBOXES set ")+
+    "STATION_NAME=\""+RDEscapeString(stationname)+"\"";
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  ret=q->lastInsertId().toInt();
+  delete q;
+
+  return ret;
+}
+
+
+void RDDropbox::remove(int id)
+{
+  QString sql;
+  RDSqlQuery *q;
+
+  sql=QString("delete from DROPBOX_PATHS where ")+
+    QString().sprintf("DROPBOX_ID=%d",id);
+  q=new RDSqlQuery(sql);
+  delete q;
+
+  sql=QString("delete from DROPBOXES where ")+
+    QString().sprintf("ID=%d",id);
+  q=new RDSqlQuery(sql);
+  delete q;
+}
+
+
 void RDDropbox::SetRow(const QString &param,int value) const
 {
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("update DROPBOXES set %s=%d where ID=%d",
-			(const char *)param,value,box_id);
+  sql=QString("update DROPBOXES set ")+
+    param+QString().sprintf("=%d where ID=%d",value,box_id);
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -319,8 +328,8 @@ void RDDropbox::SetRow(const QString &param,unsigned value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("update DROPBOXES set %s=%u where ID=%d",
-			(const char *)param,value,box_id);
+  sql=QString("update DROPBOXES set ")+
+    param+QString().sprintf("=%u where ID=%d",value,box_id);
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -331,10 +340,9 @@ void RDDropbox::SetRow(const QString &param,const QString &value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("update DROPBOXES set %s=\"%s\" where ID=%d",
-			(const char *)param,
-			(const char *)RDEscapeString(value),
-			box_id);
+  sql=QString("update DROPBOXES set ")+
+    param+"=\""+RDEscapeString(value)+"\" where "+
+    QString().sprintf("ID=%d",box_id);
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -345,9 +353,9 @@ void RDDropbox::SetRow(const QString &param,bool value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("update DROPBOXES set %s=\"%s\" where ID=%d",
-			(const char *)param,(const char *)RDYesNo(value),
-			box_id);
+  sql=QString("update DROPBOXES set ")+
+    param+"=\""+RDYesNo(value)+"\" where "+
+    QString().sprintf("ID=%d",box_id);
   q=new RDSqlQuery(sql);
   delete q;
 }

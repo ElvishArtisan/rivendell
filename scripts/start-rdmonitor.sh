@@ -4,9 +4,7 @@
 ##
 ##    Start the Rivendell RDMonitor applet
 ##
-##    (C) Copyright 2012 Fred Gleason <fredg@paravelsystems.com>
-##
-##      $Id: start-rdmonitor.sh,v 1.1.2.1 2012/10/20 00:24:46 cvs Exp $
+##    (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##    This program is free software; you can redistribute it and/or modify
 ##    it under the terms of version 2 of the GNU General Public License as

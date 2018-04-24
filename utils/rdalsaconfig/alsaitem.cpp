@@ -2,9 +2,7 @@
 //
 // QListBoxItem for ALSA PCM devices. 
 //
-//   (C) Copyright 2009 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: alsaitem.cpp,v 1.2 2010/07/29 19:32:39 cvs Exp $
+//   (C) Copyright 2009,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,14 +20,14 @@
 
 #include <alsaitem.h>
 
-AlsaItem::AlsaItem(QListBox *listbox,const QString &text)
-: QListBoxText(listbox,text)
+AlsaItem::AlsaItem(Q3ListBox *listbox,const QString &text)
+: Q3ListBoxText(listbox,text)
 {
 }
 
 
 AlsaItem::AlsaItem(const QString &text)
-  : QListBoxText(text)
+  : Q3ListBoxText(text)
 {
   alsa_card=-1;
   alsa_device=-1;

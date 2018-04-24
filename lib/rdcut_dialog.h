@@ -2,9 +2,7 @@
 //
 // A widget to select a Rivendell Cut.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcut_dialog.h,v 1.14 2011/08/30 23:35:43 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,16 +22,19 @@
 #define RDCUT_DIALOG_H
 
 #include <qdialog.h>
-#include <qlistview.h>
+#include <q3listview.h>
 #include <qlineedit.h>
 #include <qpushbutton.h>
 #include <qcombobox.h>
-#include <qprogressdialog.h>
+#include <q3progressdialog.h>
 #include <qcheckbox.h>
+//Added by qt3to4:
+#include <QPixmap>
+#include <QLabel>
+#include <QCloseEvent>
 
 #include <rdlistviewitem.h>
 #include <rdstation.h>
-#include <rdsystem.h>
 
 #define RDCUT_DIALOG_STEP_SIZE 1000
 
@@ -41,11 +42,11 @@ class RDCutDialog : public QDialog
 {
  Q_OBJECT
  public:
-  RDCutDialog(QString *cutname,RDStation *station,RDSystem *system,
-	      QString *filter=0,QString *group=0,QString *schedcode=NULL,
-	      QString username="",bool show_clear=false,bool allow_add=false,
-	      bool exclude_tracks=false,
-	      QWidget *parent=0,const char *name=0);
+
+  RDCutDialog(QString *cutname,QString *filter=0,QString *group=0,
+	      QString *schedcode=NULL,QString username="",
+	      bool show_clear=false,bool allow_add=false,
+	      bool exclude_tracks=false,QWidget *parent=0);
   ~RDCutDialog();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -58,7 +59,7 @@ class RDCutDialog : public QDialog
   void clearData();
   void groupActivatedData(const QString &);
   void limitChangedData(int state);
-  void cartClickedData(QListViewItem *);
+  void cartClickedData(Q3ListViewItem *);
   void selectionChangedData();
   void searchButtonData();
   void clearButtonData();
@@ -78,7 +79,7 @@ class RDCutDialog : public QDialog
   void LoadState();
   void SaveState();
   RDListView *cut_cart_list;
-  QListView *cut_cut_list;
+  Q3ListView *cut_cut_list;
   QLineEdit *cut_filter_edit;
   QCheckBox *cart_limit_box;
   QPushButton *cut_search_button;
@@ -99,8 +100,7 @@ class RDCutDialog : public QDialog
   bool cut_allow_clear;
   bool cut_exclude_tracks;
   RDStation::FilterMode cut_filter_mode;
-  RDSystem *cut_system;
-  QProgressDialog *cut_progress_dialog;
+  Q3ProgressDialog *cut_progress_dialog;
 };
 
 

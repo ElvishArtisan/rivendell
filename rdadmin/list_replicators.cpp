@@ -1,10 +1,8 @@
 // list_replicators.cpp
 //
-// List Rivendell Replicators
+// List Rivendell Replication Configuratins
 //
-//   (C) Copyright 2002-2008 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_replicators.cpp,v 1.3 2011/10/17 18:48:40 cvs Exp $
+//   (C) Copyright 2002-2008,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,38 +20,28 @@
 
 #include <math.h>
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qbuttongroup.h>
-#include <rddb.h>
+#include <QMessageBox>
+#include <QResizeEvent>
 
 #include <rdcart.h>
-#include <rdtextfile.h>
 #include <rdescape_string.h>
 #include <rdreplicator.h>
+#include <rdtextfile.h>
 
-#include <list_replicators.h>
-#include <list_replicator_carts.h>
-#include <edit_replicator.h>
-#include <add_replicator.h>
+#include "add_replicator.h"
+#include "edit_replicator.h"
+#include "list_replicators.h"
+#include "list_replicator_carts.h"
 
-ListReplicators::ListReplicators(QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+ListReplicators::ListReplicators(QWidget *parent)
+  : QDialog(parent)
 {
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
 
-  setCaption(tr("Rivendell Replicators"));
+  setWindowTitle("RDAdmin - "+tr("Rivendell Replicators"));
 
   //
   // Create Fonts
@@ -68,7 +56,7 @@ ListReplicators::ListReplicators(QWidget *parent,const char *name)
   //
   //  Add Button
   //
-  list_add_button=new QPushButton(this,"list_add_button");
+  list_add_button=new QPushButton(this);
   list_add_button->setFont(font);
   list_add_button->setText(tr("&Add"));
   connect(list_add_button,SIGNAL(clicked()),this,SLOT(addData()));
@@ -76,7 +64,7 @@ ListReplicators::ListReplicators(QWidget *parent,const char *name)
   //
   //  Edit Button
   //
-  list_edit_button=new QPushButton(this,"list_edit_button");
+  list_edit_button=new QPushButton(this);
   list_edit_button->setFont(font);
   list_edit_button->setText(tr("&Edit"));
   connect(list_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
@@ -84,7 +72,7 @@ ListReplicators::ListReplicators(QWidget *parent,const char *name)
   //
   //  Delete Button
   //
-  list_delete_button=new QPushButton(this,"list_delete_button");
+  list_delete_button=new QPushButton(this);
   list_delete_button->setFont(font);
   list_delete_button->setText(tr("&Delete"));
   connect(list_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
@@ -92,7 +80,7 @@ ListReplicators::ListReplicators(QWidget *parent,const char *name)
   //
   //  List Carts Button
   //
-  list_list_button=new QPushButton(this,"list_list_button");
+  list_list_button=new QPushButton(this);
   list_list_button->setFont(font);
   list_list_button->setText(tr("&List\nCarts"));
   connect(list_list_button,SIGNAL(clicked()),this,SLOT(listData()));
@@ -100,7 +88,7 @@ ListReplicators::ListReplicators(QWidget *parent,const char *name)
   //
   //  Close Button
   //
-  list_close_button=new QPushButton(this,"list_close_button");
+  list_close_button=new QPushButton(this);
   list_close_button->setDefault(true);
   list_close_button->setFont(font);
   list_close_button->setText(tr("&Close"));
@@ -109,7 +97,7 @@ ListReplicators::ListReplicators(QWidget *parent,const char *name)
   //
   // Replicator List
   //
-  list_replicators_view=new RDListView(this,"list_replicators_view");
+  list_replicators_view=new RDListView(this);
   list_replicators_view->setFont(list_font);
   list_replicators_view->setAllColumnsShowFocus(true);
   list_replicators_view->setItemMargin(5);
@@ -117,14 +105,14 @@ ListReplicators::ListReplicators(QWidget *parent,const char *name)
   list_replicators_view->addColumn(tr("TYPE"));
   list_replicators_view->addColumn(tr("DESCRIPTION"));
   list_replicators_view->addColumn(tr("HOST"));
-  QLabel *list_box_label=new QLabel(list_replicators_view,tr("&Replicators:"),
-				    this,"list_box_label");
+  QLabel *list_box_label=
+    new QLabel(list_replicators_view,tr("&Replicators:"),this);
   list_box_label->setFont(font);
   list_box_label->setGeometry(14,11,85,19);
   connect(list_replicators_view,
-	  SIGNAL(doubleClicked(QListViewItem *,const QPoint &,int)),
+	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,
-	  SLOT(doubleClickedData(QListViewItem *,const QPoint &,int)));
+	  SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
 
   RefreshList();
 }
@@ -200,7 +188,7 @@ void ListReplicators::deleteData()
   switch(QMessageBox::warning(this,tr("Delete Replicator"),warning,
 			      QMessageBox::Yes,QMessageBox::No)) {
       case QMessageBox::No:
-      case QMessageBox::NoButton:
+      case Qt::NoButton:
 	return;
 
       default:
@@ -210,31 +198,28 @@ void ListReplicators::deleteData()
   //
   // Delete Group Assignments
   //
-  sql=QString().sprintf("delete from REPLICATOR_MAP \
-                         where REPLICATOR_NAME=\"%s\"",
-			(const char *)name);
+  sql=QString("delete from REPLICATOR_MAP where ")+
+    "REPLICATOR_NAME=\""+RDEscapeString(name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
   
   //
   // Delete State Records
   //
-  sql=QString().sprintf("delete from REPL_CART_STATE \
-                         where REPLICATOR_NAME=\"%s\"",
-			(const char *)name);
+  sql=QString("delete from REPL_CART_STATE where ")+
+    "REPLICATOR_NAME=\""+RDEscapeString(name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
-  sql=QString().sprintf("delete from REPL_CUT_STATE \
-                         where REPLICATOR_NAME=\"%s\"",
-			(const char *)name);
+  sql=QString("delete from REPL_CUT_STATE where ")+
+    "REPLICATOR_NAME=\""+RDEscapeString(name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 
   //
   // Delete from Replicator List
   //
-  sql=QString().sprintf("delete from REPLICATORS where NAME=\"%s\"",
-			(const char *)name);
+  sql=QString("delete from REPLICATORS where ")+
+    "NAME=\""+RDEscapeString(name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
   delete item;
@@ -253,7 +238,7 @@ void ListReplicators::listData()
 }
 
 
-void ListReplicators::doubleClickedData(QListViewItem *item,const QPoint &pt,
+void ListReplicators::doubleClickedData(Q3ListViewItem *item,const QPoint &pt,
 				   int col)
 {
   editData();
@@ -284,7 +269,12 @@ void ListReplicators::RefreshList()
   RDListViewItem *item;
 
   list_replicators_view->clear();
-  sql="select NAME,TYPE_ID,DESCRIPTION,STATION_NAME from REPLICATORS";
+  sql=QString("select ")+
+    "NAME,"+
+    "TYPE_ID,"+
+    "DESCRIPTION,"+
+    "STATION_NAME "+
+    "from REPLICATORS";
   q=new RDSqlQuery(sql);
   while (q->next()) {
     item=new RDListViewItem(list_replicators_view);
@@ -303,9 +293,12 @@ void ListReplicators::RefreshItem(RDListViewItem *item)
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString().sprintf("select TYPE_ID,DESCRIPTION,STATION_NAME \
-                         from REPLICATORS where NAME=\"%s\"",
-			(const char *)RDEscapeString(item->text(0)));
+  sql=QString("select ")+
+    "TYPE_ID,"+
+    "DESCRIPTION,"+
+    "STATION_NAME "+
+    "from REPLICATORS where "+
+    "NAME=\""+RDEscapeString(item->text(0))+"\"";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     item->setText(1,

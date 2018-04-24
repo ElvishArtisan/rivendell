@@ -2,9 +2,7 @@
 //
 // Rivendell web service portal -- CopyAudio service
 //
-//   (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: copyaudio.cpp,v 1.4 2012/02/13 23:01:50 cvs Exp $
+//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,6 +26,7 @@
 #include <errno.h>
 #include <unistd.h>
 
+#include <rdapplication.h>
 #include <rdformpost.h>
 #include <rdweb.h>
 #include <rdcart.h>
@@ -35,7 +34,7 @@
 #include <rdsettings.h>
 #include <rdconf.h>
 
-#include <rdxport.h>
+#include "rdxport.h"
 
 void Xport::CopyAudio()
 {
@@ -63,10 +62,10 @@ void Xport::CopyAudio()
   //
   // Verify User Perms
   //
-  if(!xport_user->cartAuthorized(source_cartnum)) {
+  if(!rda->user()->cartAuthorized(source_cartnum)) {
     XmlExit("No such cart",404);
   }
-  if(!xport_user->cartAuthorized(destination_cartnum)) {
+  if(!rda->user()->cartAuthorized(destination_cartnum)) {
     XmlExit("No such cart",404);
   }
 
@@ -76,6 +75,8 @@ void Xport::CopyAudio()
   unlink(RDCut::pathName(destination_cartnum,destination_cutnum));
   if(link(RDCut::pathName(source_cartnum,source_cutnum),
 	  RDCut::pathName(destination_cartnum,destination_cutnum))!=0) {
+    XmlExit("dst: "+RDCut::pathName(source_cartnum,source_cutnum)+"  src: "+
+	    RDCut::pathName(destination_cartnum,destination_cutnum),400);
     XmlExit(strerror(errno),400);
   }
   XmlExit("OK",200);

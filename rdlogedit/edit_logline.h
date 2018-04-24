@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell Log Entry
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_logline.h,v 1.17 2010/07/29 19:32:37 cvs Exp $
+//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,14 +22,17 @@
 #define EDIT_LOGLINE_H
 
 #include <qdialog.h>
-#include <qdatetimeedit.h>
+#include <q3datetimeedit.h>
 #include <qcombobox.h>
 #include <qlineedit.h>
 #include <qlabel.h>
 #include <qcheckbox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 #include <qspinbox.h>
+//Added by qt3to4:
+#include <QCloseEvent>
 
+#include <rdcart_dialog.h>
 #include <rdlog_event.h>
 #include <rdlog_line.h>
 #include <rdgroup_list.h>
@@ -41,9 +42,9 @@ class EditLogLine : public QDialog
 {
   Q_OBJECT
  public:
-  EditLogLine(RDLogLine *,QString *filter,QString *group,QString svcname,
-	      RDGroupList *grplist,RDLogEvent *log,int lineno,
-	      QWidget *parent=0,const char *name=0);
+  EditLogLine(RDLogLine *,QString *filter,QString *group,QString *schedcode,
+	      QString svcname,RDGroupList *grplist,RDLogEvent *log,int lineno,
+	      QWidget *parent=0);
   ~EditLogLine();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -73,9 +74,11 @@ class EditLogLine : public QDialog
   QLineEdit *edit_cart_edit;
   QLineEdit *edit_title_edit;
   QLineEdit *edit_artist_edit;
+  RDCartDialog *edit_cart_dialog;
   QString *edit_filter;
   QString *edit_group;
-  QButtonGroup *edit_grace_group;
+  QString *edit_schedcode;
+  Q3ButtonGroup *edit_grace_group;
   RDTimeEdit *edit_grace_edit;
   QString edit_service;
   RDGroupList *edit_group_list;

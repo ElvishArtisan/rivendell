@@ -2,10 +2,7 @@
 ##
 ## Automake.am for rivendell/importers
 ##
-## (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-##
-##      $Id: Makefile.am,v 1.18.8.2 2012/11/29 01:37:35 cvs Exp $
-##      $Date: 2012/11/29 01:37:35 $
+## (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -23,8 +20,8 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall @QT_CXXFLAGS@ -I$(top_srcdir)/lib
-LIBS = @QT_LIBS@ -L$(top_srcdir)/lib
+AM_CPPFLAGS = -Wall -I$(top_srcdir)/lib @QT4_CFLAGS@ -DQT3_SUPPORT -I/usr/include/Qt3Support
+LIBS = -L$(top_srcdir)/lib
 MOC = @QT_MOC@
 
 # The dependency for qt's Meta Object Compiler (moc)
@@ -35,32 +32,27 @@ bin_PROGRAMS = nexgen_filter\
                panel_copy\
                rdcatch_copy\
                rivendell_filter\
-               sas_filter\
                wings_filter
 
 dist_nexgen_filter_SOURCES = nexgen_filter.cpp nexgen_filter.h
 nodist_nexgen_filter_SOURCES = moc_nexgen_filter.cpp
-nexgen_filter_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
+nexgen_filter_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
 
 dist_panel_copy_SOURCES = panel_copy.cpp panel_copy.h
 nodist_panel_copy_SOURCES = moc_panel_copy.cpp
-panel_copy_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
+panel_copy_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
 
 dist_rdcatch_copy_SOURCES = rdcatch_copy.cpp rdcatch_copy.h
 nodist_rdcatch_copy_SOURCES = moc_rdcatch_copy.cpp
-rdcatch_copy_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
+rdcatch_copy_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
 
 dist_rivendell_filter_SOURCES = rivendell_filter.cpp rivendell_filter.h
 nodist_rivendell_filter_SOURCES = moc_rivendell_filter.cpp
-rivendell_filter_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
-
-dist_sas_filter_SOURCES = sas_filter.cpp sas_filter.h
-nodist_sas_filter_SOURCES = moc_sas_filter.cpp
-sas_filter_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
+rivendell_filter_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
 
 dist_wings_filter_SOURCES = wings_filter.cpp wings_filter.h
 nodist_wings_filter_SOURCES = moc_wings_filter.cpp
-wings_filter_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
+wings_filter_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
 
 EXTRA_DIST = export_slax
 

@@ -2,7 +2,7 @@
 //
 // Rivendell web service portal
 //
-//   (C) Copyright 2010,2014 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010,2014,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,14 +24,13 @@
 
 #include <qobject.h>
 
-#include <rdconfig.h>
-#include <rduser.h>
-#include <rdsystem.h>
+#include <rdaudioconvert.h>
+#include <rdformpost.h>
 
 class Xport : public QObject
 {
  public:
-  Xport(QObject *parent=0,const char *name=0);
+  Xport(QObject *parent=0);
 
  private:
   bool Authenticate();
@@ -47,6 +46,8 @@ class Xport : public QObject
   void ListCuts();
   void ListCut();
   void EditCut();
+  void CheckPointerValidity(int ptr_values[2],bool use_ptrs[2],
+			    const QString &type,unsigned max_value);
   void RemoveCut();
   void ListGroups();
   void ListGroup();
@@ -57,14 +58,15 @@ class Xport : public QObject
   void AudioStore();
   void ListLogs();
   void ListLog();
+  void ListSchedCodes();
+  void AssignSchedCode();
+  void UnassignSchedCode();
+  void ListCartSchedCodes();
   void ListServices();
   void Exit(int code);
   void XmlExit(const QString &str,int code,
 	       RDAudioConvert::ErrorCode err=RDAudioConvert::ErrorOk);
   RDFormPost *xport_post;
-  RDUser *xport_user;
-  RDConfig *xport_config;
-  RDSystem *xport_system;
 };
 
 

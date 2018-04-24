@@ -2,9 +2,7 @@
 //
 // Connection to the Rivendell Interprocess Communication Daemon
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdripc.cpp,v 1.36.6.2 2013/03/09 00:21:11 cvs Exp $
+//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,11 +24,11 @@
 #include <qapplication.h>
 
 #include <rddb.h>
+#include <rdescape_string.h>
 #include <rdripc.h>
 
-
-RDRipc::RDRipc(QString stationname,QObject *parent,const char *name)
-  : QObject(parent,name)
+RDRipc::RDRipc(QString stationname,QObject *parent)
+  : QObject(parent)
 {
   ripc_stationname=stationname;
   ripc_onair_flag=false;
@@ -44,7 +42,7 @@ RDRipc::RDRipc(QString stationname,QObject *parent,const char *name)
   //
   // TCP Connection
   //
-  ripc_socket=new QSocket(this,"ripc_socket");
+  ripc_socket=new Q3Socket(this);
   connect(ripc_socket,SIGNAL(connected()),this,SLOT(connectedData()));
   connect(ripc_socket,SIGNAL(error(int)),this,SLOT(errorData(int)));
   connect(ripc_socket,SIGNAL(readyRead()),this,SLOT(readyData()));
@@ -163,9 +161,8 @@ void RDRipc::sendRml(RDMacro *macro)
   }
   macro->generateString(buffer,RD_RML_MAX_LENGTH-1);
   QString rmlline(buffer);
-  QString sql=QString().sprintf("select NAME,VARVALUE from HOSTVARS \
-                                   where STATION_NAME=\"%s\"",
-				(const char *)ripc_stationname);
+  QString sql=QString("select NAME,VARVALUE from HOSTVARS where ")+
+    "STATION_NAME=\""+RDEscapeString(ripc_stationname)+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
     rmlline.replace(q->value(0).toString(),q->value(1).toString());
@@ -306,7 +303,7 @@ void RDRipc::DispatchCommand()
     }
     strcat(str,"!");
     if(macro.parseString(str,strlen(str))) {
-      macro.setAddress(QHostAddress().setAddress(args[1]));
+      macro.setAddress(QHostAddress(args[1]));
       macro.setRole(RDMacro::Reply);
       emit rmlReceived(&macro);
     }

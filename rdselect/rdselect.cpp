@@ -2,9 +2,7 @@
 //
 // System Selector for Rivendell
 //
-//   (C) Copyright 2012 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdselect.cpp,v 1.1.2.9 2014/01/21 21:59:33 cvs Exp $
+//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,14 +25,17 @@
 #include <sys/mount.h>
 #include <errno.h>
 
-#include <qapplication.h>
-#include <qwindowsstyle.h>
-#include <qpainter.h>
-#include <qmessagebox.h>
-#include <qlabel.h>
-#include <qtextcodec.h>
-#include <qtranslator.h>
-#include <qdir.h>
+#include <QApplication>
+#include <QDesktopWidget>
+#include <QDir>
+#include <QLabel>
+#include <QMessageBox>
+#include <QPainter>
+#include <QPixmap>
+#include <QResizeEvent>
+#include <QTextCodec>
+#include <QTranslator>
+#include <QWindowsStyle>
 
 #include <rd.h>
 #include <rdconf.h>
@@ -51,9 +52,8 @@
 #include "../icons/greencheckmark.xpm"
 #include "../icons/redx.xpm"
 
-
-MainWidget::MainWidget(QWidget *parent,const char *name)
-  :QWidget(parent,name)
+MainWidget::MainWidget(QWidget *parent)
+  :QWidget(parent)
 {
   //
   // Read Command Options
@@ -142,7 +142,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   config_dir.setFilter(QDir::Files|QDir::Readable);
   config_dir.setNameFilter("*.conf");
   select_filenames=config_dir.entryList();
-  for(unsigned i=0;i<select_filenames.size();i++) {
+  for(int i=0;i<select_filenames.size();i++) {
     select_filenames[i]=
       QString(RD_DEFAULT_RDSELECT_DIR)+"/"+select_filenames[i];
     if(select_filenames[i]==target) {
@@ -158,15 +158,15 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   select_current_label=new QLabel(this);
   select_current_label->setFont(label_font);
-  select_current_label->setAlignment(AlignCenter);
+  select_current_label->setAlignment(Qt::AlignCenter);
 
   //
   // Selector Box
   //
-  select_box=new QListBox(this);
+  select_box=new Q3ListBox(this);
   select_box->setFont(default_font);
-  connect(select_box,SIGNAL(doubleClicked(QListBoxItem *)),
-	  this,SLOT(doubleClickedData(QListBoxItem *)));
+  connect(select_box,SIGNAL(doubleClicked(Q3ListBoxItem *)),
+	  this,SLOT(doubleClickedData(Q3ListBoxItem *)));
   for(unsigned i=0;i<select_configs.size();i++) {
     select_box->insertItem(select_configs[i]->label());
   }
@@ -218,7 +218,7 @@ QSizePolicy MainWidget::sizePolicy() const
 }
 
 
-void MainWidget::doubleClickedData(QListBoxItem *item)
+void MainWidget::doubleClickedData(Q3ListBoxItem *item)
 {
   okData();
 }
@@ -239,7 +239,7 @@ void MainWidget::okData()
     SetSystem(-1);
     QMessageBox::warning(this,tr("RDSelect"),
 			 tr("Unable to shutdown current configuration")+
-			 "\n["+strerror(errno)+"].");
+			 "\n["+QString(strerror(errno))+"].");
     return;
   }
   if(!Startup(select_box->currentItem())) {
@@ -354,6 +354,7 @@ int main(int argc,char *argv[])
   //
   // Load Translations
   //
+  /*
   QTranslator qt(0);
   qt.load(QString(QTDIR)+QString("/translations/qt_")+QTextCodec::locale(),
 	  ".");
@@ -373,11 +374,11 @@ int main(int argc,char *argv[])
   tr.load(QString(PREFIX)+QString("/share/rivendell/rdselect_")+
 	     QTextCodec::locale(),".");
   a.installTranslator(&tr);
-
+  */
   //
   // Start Event Loop
   //
-  MainWidget *w=new MainWidget(NULL,"main");
+  MainWidget *w=new MainWidget();
   a.setMainWidget(w);
   w->show();
   return a.exec();

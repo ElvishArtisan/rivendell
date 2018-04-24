@@ -2,7 +2,7 @@
 //
 // Get information about the audio store.
 //
-//   (C) Copyright 2014 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2014,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -34,8 +34,7 @@ class RDAudioStore : public QObject
  public:
   enum ErrorCode {ErrorOk=0,ErrorInternal=5,ErrorUrlInvalid=7,
 		  ErrorService=8,ErrorInvalidUser=9,ErrorNoAudio=10};
-  RDAudioStore(RDStation *station,RDConfig *config,QObject *parent=0,
-	       const char *name=0);
+  RDAudioStore(RDStation *station,RDConfig *config,QObject *parent=0);
   uint64_t freeBytes() const;
   uint64_t totalBytes() const;
   RDAudioStore::ErrorCode runStore(const QString &username,

@@ -2,9 +2,7 @@
 //
 // A Qt-based application for playing Microsoft WAV files. 
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdchunk.cpp,v 1.3.8.3 2014/01/21 21:59:33 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,7 +18,6 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-
 #include <qapplication.h>
 #include <qwindowsstyle.h>
 #include <qrect.h>
@@ -28,11 +25,13 @@
 #include <qpainter.h>
 #include <qmessagebox.h>
 #include <qlineedit.h>
-#include <qlistbox.h>
-#include <qfiledialog.h>
+#include <q3listbox.h>
+#include <q3filedialog.h>
 #include <qlabel.h>
 #include <qtextcodec.h>
 #include <qtranslator.h>
+//Added by qt3to4:
+#include <QPaintEvent>
 
 #include <unistd.h>
 #include <stdio.h>
@@ -45,9 +44,8 @@
 
 #include <rdchunk.h>
 
-
-MainWidget::MainWidget(QWidget *parent,const char *name)
-  :QWidget(parent,name)
+MainWidget::MainWidget(QWidget *parent)
+  :QWidget(parent)
 {
   y_chunk_button=40;
 
@@ -81,16 +79,16 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Load Button
   //
-  QPushButton *button=new QPushButton(tr("Load"),this,"load_button");
+  QPushButton *button=new QPushButton(tr("Load"),this);
   button->setGeometry(10,10,sizeHint().width()-20,30);
   connect(button,SIGNAL(clicked()),this,SLOT(loadWaveFile()));
 
   //
   // Chunk Label
   //
-  wave_chunk_label=new QLabel(tr("Chunks"),this,"wave_chunk_label");
+  wave_chunk_label=new QLabel(tr("Chunks"),this);
   wave_chunk_label->setGeometry(25,55,sizeHint().width()-50,20);
-  wave_chunk_label->setAlignment(AlignCenter);
+  wave_chunk_label->setAlignment(Qt::AlignCenter);
   wave_chunk_label->setFont(label_font);
   wave_chunk_label->hide();
 }
@@ -117,7 +115,7 @@ void MainWidget::createChunkButtons()
   // Create chunk buttons
   //
   if(wavefile->getFormatChunk()) {
-    fmt_button=new QPushButton(this,"fmt");
+    fmt_button=new QPushButton(this);
     fmt_button->setText("Format");
     fmt_button->setGeometry(xptr,yptr,80,25);
     fmt_button->show();
@@ -125,7 +123,7 @@ void MainWidget::createChunkButtons()
     connect(fmt_button,SIGNAL(clicked()),this,SLOT(displayFmt()));
   }
   if(wavefile->getDataChunk()) {
-    data_button=new QPushButton(this,"data");
+    data_button=new QPushButton(this);
     data_button->setText("Data");
     data_button->setGeometry(xptr,yptr,80,25);
     data_button->show();
@@ -133,7 +131,7 @@ void MainWidget::createChunkButtons()
     connect(data_button,SIGNAL(clicked()),this,SLOT(displayData()));
   }
   if(wavefile->getFactChunk()) {
-    fact_button=new QPushButton(this,"fact");
+    fact_button=new QPushButton(this);
     fact_button->setText("Fact");
     fact_button->setGeometry(xptr,yptr,80,25);
     fact_button->show();
@@ -141,7 +139,7 @@ void MainWidget::createChunkButtons()
     connect(fact_button,SIGNAL(clicked()),this,SLOT(displayFact()));
   }
   if(wavefile->getCartChunk()) {
-    cart_button=new QPushButton(this,"cart");
+    cart_button=new QPushButton(this);
     cart_button->setText("Cart");
     cart_button->setGeometry(xptr,yptr,80,25); 
     cart_button->show();
@@ -149,7 +147,7 @@ void MainWidget::createChunkButtons()
     connect(cart_button,SIGNAL(clicked()),this,SLOT(displayCart()));
   }
   if(wavefile->getBextChunk()) {
-    bext_button=new QPushButton(this,"bext");
+    bext_button=new QPushButton(this);
     bext_button->setText("Bext");
     bext_button->setGeometry(xptr,yptr,80,25);
     bext_button->show();
@@ -157,7 +155,7 @@ void MainWidget::createChunkButtons()
     connect(bext_button,SIGNAL(clicked()),this,SLOT(displayBext()));
   }
   if(wavefile->getMextChunk()) {
-    mext_button=new QPushButton(this,"mext");
+    mext_button=new QPushButton(this);
     mext_button->setText("Mext");
     mext_button->setGeometry(xptr,yptr,80,25);
     mext_button->show();
@@ -165,7 +163,7 @@ void MainWidget::createChunkButtons()
     connect(mext_button,SIGNAL(clicked()),this,SLOT(displayMext()));
   }
   if(wavefile->getLevlChunk()) {
-    levl_button=new QPushButton(this,"levl");
+    levl_button=new QPushButton(this);
     levl_button->setText("Levl");
     levl_button->setGeometry(xptr,yptr,80,25);
     levl_button->show();
@@ -173,7 +171,7 @@ void MainWidget::createChunkButtons()
     connect(levl_button,SIGNAL(clicked()),this,SLOT(displayLevl()));
   }
   if(wavefile->getAIR1Chunk()) {
-    AIR1_button=new QPushButton(this,"AIR1");
+    AIR1_button=new QPushButton(this);
     AIR1_button->setText("AIR1");
     AIR1_button->setGeometry(xptr,yptr,80,25);
     AIR1_button->show();
@@ -246,7 +244,7 @@ void MainWidget::loadWaveFile()
   delete wavefile;
   wavefile=NULL;
   destroyChunkButtons();
-  wave_name=QFileDialog::getOpenFileName(wave_path,RD_AUDIO_FILE_FILTER,this);
+  wave_name=Q3FileDialog::getOpenFileName(wave_path,RD_AUDIO_FILE_FILTER,this);
   if(wave_name.isEmpty()) {
     wave_loaded=false;
     wave_path=RDHomeDir();
@@ -288,11 +286,10 @@ void MainWidget::paintEvent(QPaintEvent *paintevent)
   p->setFont(QFont("arial",12,QFont::Bold));
 
   if(wave_loaded) {
-    p->moveTo(10,65);
-    p->lineTo(sizeHint().width()-10,65);
-    p->lineTo(sizeHint().width()-10,y_chunk_button);
-    p->lineTo(10,y_chunk_button);
-    p->lineTo(10,65);
+    p->drawLine(10,65,sizeHint().width()-10,65);
+    p->drawLine(sizeHint().width()-10,65,sizeHint().width()-10,y_chunk_button);
+    p->drawLine(sizeHint().width()-10,y_chunk_button,10,y_chunk_button);
+    p->drawLine(10,y_chunk_button,10,65);
   }    
 }
 
@@ -712,6 +709,7 @@ int main(int argc,char *argv[])
   //
   // Load Translations
   //
+  /*
   QTranslator qt(0);
   qt.load(QString(QTDIR)+QString("/translations/qt_")+QTextCodec::locale(),
 	  ".");
@@ -731,11 +729,11 @@ int main(int argc,char *argv[])
   tr.load(QString(PREFIX)+QString("/share/rivendell/rdutils_")+
 	     QTextCodec::locale(),".");
   a.installTranslator(&tr);
-
+  */
   //
   // Start Event Loop
   //
-  MainWidget *w=new MainWidget(NULL,"main");
+  MainWidget *w=new MainWidget();
   a.setMainWidget(w);
   w->setGeometry(QRect(QPoint(0,0),w->sizeHint()));
   w->show();

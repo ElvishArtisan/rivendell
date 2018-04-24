@@ -2,9 +2,7 @@
 //
 // The Administrator Utility for Rivendell.
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdadmin.cpp,v 1.72.4.7 2014/02/11 23:46:27 cvs Exp $
+//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,43 +25,40 @@
 #include <sys/wait.h>
 #include <signal.h>
 
-#include <qapplication.h>
-#include <qwindowsstyle.h>
-#include <qwidget.h>
-#include <qpainter.h>
-#include <qmessagebox.h>
-#include <qpushbutton.h>
-#include <qlabel.h>
-#include <qfiledialog.h>
-#include <qtextcodec.h>
-#include <qtranslator.h>
+#include <QApplication>
+#include <QCoreApplication>
+#include <QFileDialog>
+#include <QLabel>
+#include <QMessageBox>
+#include <QPainter>
+#include <QPixmap>
+#include <QPushButton>
+#include <QTextCodec>
+#include <QTranslator>
+#include <QWindowsStyle>
+#include <QWidget>
 
-#include <rdconf.h>
-#include <rduser.h>
 #include <rd.h>
-#include <dbversion.h>
+#include <rdapplication.h>
 #include <rdcheck_daemons.h>
-#include <rdcmd_switch.h>
-#include <rddb.h>
-#include <rddbheartbeat.h>
-
-#include <globals.h>
-#include <login.h>
-#include <list_users.h>
-#include <list_groups.h>
-#include <list_svcs.h>
-#include <list_stations.h>
-#include <list_reports.h>
-#include <list_feeds.h>
-#include <list_schedcodes.h>
-#include <list_replicators.h>
-#include <edit_settings.h>
-#include <rdadmin.h>
-#include <opendb.h>
-#include <info_dialog.h>
-#include <createdb.h>
-
+#include <rdconf.h>
 #include <rdescape_string.h>
+#include <rduser.h>
+
+#include "edit_settings.h"
+#include "globals.h"
+#include "info_dialog.h"
+#include "list_feeds.h"
+#include "list_groups.h"
+#include "list_replicators.h"
+#include "list_reports.h"
+#include "list_schedcodes.h"
+#include "list_stations.h"
+#include "list_svcs.h"
+#include "list_users.h"
+#include "login.h"
+#include "opendb.h"
+#include "rdadmin.h"
 
 //
 // Icons
@@ -73,21 +68,8 @@
 //
 // Global Classes
 //
-RDRipc *rdripc;
-RDConfig *admin_config;
-RDUser *admin_user;
-RDStation *admin_station;
-RDSystem *admin_system;
 RDCartDialog *admin_cart_dialog;
 bool exiting=false;
-QString admin_admin_username;
-QString admin_admin_password;
-QString admin_admin_hostname;
-QString admin_admin_dbname;
-QString admin_create_db_hostname;
-bool admin_skip_backup=false;
-QString admin_backup_filename="";
-
 void SigHandler(int signo)
 {
   pid_t pLocalPid;
@@ -115,18 +97,18 @@ void PrintError(const QString &str,bool interactive)
 }
 
 
-MainWidget::MainWidget(QWidget *parent,const char *name)
-  :QWidget(parent,name)
+MainWidget::MainWidget(QWidget *parent)
+  :QWidget(parent)
 {
+  new RDApplication(RDApplication::Gui,"rdadmin",RDADMIN_USAGE,true);
+
   QString str;
 
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   //
   // Create Fonts
@@ -138,66 +120,51 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   qApp->setFont(default_font);
 
   //
-  // Create And Set Icon
+  // Window Titling
   //
   admin_rivendell_map=new QPixmap(rivendell_xpm);
-  setIcon(*admin_rivendell_map);
-
-  //
-  // Load Configs
-  //
-  admin_config=new RDConfig();
-  admin_config->load();
-
+  setWindowIcon(*admin_rivendell_map);
   str=QString(tr("RDAdmin")+" v"+VERSION+" - Host:");
-  setCaption(QString().
-	     sprintf("%s %s",(const char *)str,
-		     (const char *)admin_config->stationName()));
+  setWindowTitle(QString("RDAdmin v")+VERSION+" - "+tr("Host")+": "+
+		 rda->config()->stationName());
 
   //
   // Open Database
   //
-  if(!OpenDb(admin_config->mysqlDbname(),admin_config->mysqlUsername(),
-	     admin_config->mysqlPassword(),admin_config->mysqlHostname(),
-	     admin_config->stationName(),true)) {
-    exit(1);
+  if(!OpenDb()) {
+    exit(256);
   }
-  new RDDbHeartbeat(admin_config->mysqlHeartbeatInterval());
 
   //
   // Check (and possibly start) daemons
   //
+  /*
   if(!RDStartDaemons()) {
     QMessageBox::warning(this,tr("Daemons Failed"),
 			 tr("Unable to start Rivendell System Daemons!"));
     exit(1);
   }
-
+  */
   //
-  // Initialize Global Classes
+  // Connect to ripcd(8).
   //
-  char temp[256];
-  GetPrivateProfileString(RD_CONF_FILE,"Identity","Password",
-			  temp,"",255);
-  rdripc=new RDRipc(admin_config->stationName(),this,"rdripc");
-  rdripc->connectHost("localhost",RIPCD_TCP_PORT,temp);
-  admin_station=new RDStation(admin_config->stationName(),this);
-  admin_system=new RDSystem();
+  rda->
+    ripc()->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 
   //
   // Log In
   //
-  Login *login=new Login(&admin_username,&admin_password,this,"login");
+  Login *login=new Login(&admin_username,&admin_password,NULL);
   if(login->exec()!=0) {
     exit(0);
   }
-  admin_user=new RDUser(admin_username);
-  if(!admin_user->checkPassword(admin_password,false)) {
+  rda->setUser(admin_username);
+  if(!rda->user()->checkPassword(admin_password,false)) {
     QMessageBox::warning(this,"Login Failed","Login Failed!.\n");
     exiting=true;
   }
   else {
-    if(!admin_user->adminConfig()) {
+    if(!rda->user()->adminConfig()) {
       QMessageBox::warning(this,tr("Insufficient Priviledges"),
          tr("This account has insufficient priviledges for this operation."));
       exiting=true;
@@ -208,28 +175,27 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   // Cart Dialog
   //
   admin_cart_dialog=
-    new RDCartDialog(&admin_filter,&admin_group,&admin_schedcode,NULL,
-		     rdripc,admin_station,admin_system,admin_config,this);
+    new RDCartDialog(&admin_filter,&admin_group,&admin_schedcode,this);
 
   //
   // User Labels
   //
-  QLabel *name_label=new QLabel(this,"name_label");
+  QLabel *name_label=new QLabel(this);
   name_label->setGeometry(0,5,sizeHint().width(),20);
   name_label->setAlignment(Qt::AlignVCenter|Qt::AlignCenter);
   name_label->setFont(font);
-  name_label->setText(QString().sprintf("USER: %s",(const char *)admin_user->name()));
+  name_label->setText(QString().sprintf("USER: %s",(const char *)rda->user()->name()));
 
-  QLabel *description_label=new QLabel(this,"description_label");
+  QLabel *description_label=new QLabel(this);
   description_label->setGeometry(0,24,sizeHint().width(),14);
   description_label->setAlignment(Qt::AlignVCenter|Qt::AlignCenter);
   name_label->setFont(font);
-  description_label->setText(admin_user->description());
+  description_label->setText(rda->user()->description());
 
   //
   // Manage Users Button
   //
-  QPushButton *users_button=new QPushButton(this,"users_button");
+  QPushButton *users_button=new QPushButton(this);
   users_button->setGeometry(10,50,80,60);
   users_button->setFont(font);
   users_button->setText(tr("Manage\n&Users"));
@@ -238,7 +204,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Manage Groups Button
   //
-  QPushButton *groups_button=new QPushButton(this,"groups_button");
+  QPushButton *groups_button=new QPushButton(this);
   groups_button->setGeometry(10,120,80,60);
   groups_button->setFont(font);
   groups_button->setText(tr("Manage\n&Groups"));
@@ -247,7 +213,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Manage Services Button
   //
-  QPushButton *services_button=new QPushButton(this,"services_button");
+  QPushButton *services_button=new QPushButton(this);
   services_button->setGeometry(100,50,80,60);
   services_button->setFont(font);
   services_button->setText(tr("Manage\n&Services"));
@@ -256,7 +222,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Manage Stations (Hosts) Button
   //
-  QPushButton *stations_button=new QPushButton(this,"stations_button");
+  QPushButton *stations_button=new QPushButton(this);
   stations_button->setGeometry(100,120,80,60);
   stations_button->setFont(font);
   stations_button->setText(tr("Manage\nHo&sts"));
@@ -265,7 +231,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Manage Reports
   //
-  QPushButton *reports_button=new QPushButton(this,"reports_button");
+  QPushButton *reports_button=new QPushButton(this);
   reports_button->setGeometry(190,50,80,60);
   reports_button->setFont(font);
   reports_button->setText(tr("Manage\nR&eports"));
@@ -274,7 +240,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Manage Podcasts
   //
-  QPushButton *podcasts_button=new QPushButton(this,"podcasts_button");
+  QPushButton *podcasts_button=new QPushButton(this);
   podcasts_button->setGeometry(280,50,80,60);
   podcasts_button->setFont(font);
   podcasts_button->setText(tr("Manage\n&Feeds"));
@@ -283,7 +249,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // System Wide Settings Button
   //
-  QPushButton *system_button=new QPushButton(this,"system_button");
+  QPushButton *system_button=new QPushButton(this);
   system_button->setGeometry(190,120,80,60);
   system_button->setFont(font);
   system_button->setText(tr("System\nSettings"));
@@ -292,7 +258,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Manage Scheduler Codes Button
   //
-  QPushButton *schedcodes_button=new QPushButton(this,"schedcodes_button");
+  QPushButton *schedcodes_button=new QPushButton(this);
   schedcodes_button->setGeometry(280,120,80,60);
   schedcodes_button->setFont(font);
   schedcodes_button->setText(tr("Scheduler\nCodes"));
@@ -301,7 +267,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Manage Replicators Button
   //
-  QPushButton *repl_button=new QPushButton(this,"repl_button");
+  QPushButton *repl_button=new QPushButton(this);
   repl_button->setGeometry(10,190,80,60);
   repl_button->setFont(font);
   repl_button->setText(tr("Manage\nReplicators"));
@@ -310,7 +276,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // System Info Button
   //
-  QPushButton *info_button=new QPushButton(this,"info_button");
+  QPushButton *info_button=new QPushButton(this);
   info_button->setGeometry(100,190,80,60);
   info_button->setFont(font);
   info_button->setText(tr("System\nInfo"));
@@ -319,7 +285,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Backup Database Button
   //
-  QPushButton *backup_button=new QPushButton(this,"backup_button");
+  QPushButton *backup_button=new QPushButton(this);
   backup_button->setGeometry(190,190,80,60);
   backup_button->setFont(font);
   backup_button->setText(tr("&Backup\nDatabase"));
@@ -328,16 +294,17 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Restore Database Button
   //
-  QPushButton *restore_button=new QPushButton(this,"restore_button");
+  QPushButton *restore_button=new QPushButton(this);
   restore_button->setGeometry(280,190,80,60);
   restore_button->setFont(font);
   restore_button->setText(tr("&Restore\nDatabase"));
   connect(restore_button,SIGNAL(clicked()),this,SLOT(restoreData()));
+  restore_button->setDisabled(true);
   
   //
   // Quit Button
   //
-  QPushButton *quit_button=new QPushButton(this,"quit_button");
+  QPushButton *quit_button=new QPushButton(this);
   quit_button->setGeometry(10,sizeHint().height()-70,sizeHint().width()-20,60);
   quit_button->setFont(font);
   quit_button->setText(tr("&Quit"));
@@ -349,7 +316,6 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
 
 MainWidget::~MainWidget()
 {
-  delete admin_user;
 }
 
 
@@ -367,7 +333,7 @@ QSizePolicy MainWidget::sizePolicy() const
 
 void MainWidget::manageUsersData()
 {
-  ListUsers *list_users=new ListUsers(admin_user->name(),this,"list_users");
+  ListUsers *list_users=new ListUsers(rda->user()->name(),this);
   list_users->exec();
   delete list_users;
 }
@@ -375,21 +341,21 @@ void MainWidget::manageUsersData()
 
 void MainWidget::manageGroupsData()
 {
-  ListGroups *list_groups=new ListGroups(this,"list_groups");
+  ListGroups *list_groups=new ListGroups(this);
   list_groups->exec();
   delete list_groups;
 }
 
 void MainWidget::manageSchedCodes()
 {
-  ListSchedCodes *list_schedCodes=new ListSchedCodes(this,"list_schedCodes");
+  ListSchedCodes *list_schedCodes=new ListSchedCodes(this);
   list_schedCodes->exec();
   delete list_schedCodes;
 }
 
 void MainWidget::manageServicesData()
 {
-  ListSvcs *list_svcs=new ListSvcs(this,"list_svcs");
+  ListSvcs *list_svcs=new ListSvcs(this);
   list_svcs->exec();
   delete list_svcs;
 }
@@ -397,7 +363,7 @@ void MainWidget::manageServicesData()
 
 void MainWidget::manageStationsData()
 {
-  ListStations *list_stations=new ListStations(this,"list_stations");
+  ListStations *list_stations=new ListStations(this);
   list_stations->exec();
   delete list_stations;
 }
@@ -405,7 +371,7 @@ void MainWidget::manageStationsData()
 
 void MainWidget::systemSettingsData()
 {
-  EditSettings *edit_settings=new EditSettings(this,"edit_settings");
+  EditSettings *edit_settings=new EditSettings(this);
   edit_settings->exec();
   delete edit_settings;
 }
@@ -417,9 +383,9 @@ void MainWidget::backupData()
   QString cmd;
   int status;
 
-  filename=QFileDialog::getSaveFileName(RDGetHomeDir(),
-				      tr("Rivendell Database Backup (*.sql)"),
-					this);
+  filename=QFileDialog::getSaveFileName(this,"RDAdmin - "+tr("Save Backup"),
+					RDGetHomeDir(),
+					tr("Rivendell Database Backup (*.sql)"));
   if(filename.isEmpty()) {
     return;
   }
@@ -427,10 +393,10 @@ void MainWidget::backupData()
     filename+=".sql";
   }
   cmd=QString().sprintf("mysqldump -c %s -h %s -u %s -p%s > %s",
-			(const char *)admin_config->mysqlDbname(),
-			(const char *)admin_config->mysqlHostname(),
-			(const char *)admin_config->mysqlUsername(),
-			(const char *)admin_config->mysqlPassword(),
+			(const char *)rda->config()->mysqlDbname(),
+			(const char *)rda->config()->mysqlHostname(),
+			(const char *)rda->config()->mysqlUsername(),
+			(const char *)rda->config()->mysqlPassword(),
 			(const char *)filename);
   status=system((const char *)cmd);
   if(WEXITSTATUS(status)!=0) {
@@ -446,11 +412,11 @@ void MainWidget::backupData()
 
 void MainWidget::restoreData()
 {
+  /*
   QString filename;
   QString cmd;
   int status;
   RDSqlQuery *q;
-  int ver=RD_VERSION_DATABASE;
 
   if(QMessageBox::warning(NULL,tr("Restore Database"),
 			  tr("WARNING: This operation will COMPLETELY\nOVERWRITE the existing Rivendell Database!\nDo you want to continue?"),
@@ -484,10 +450,11 @@ void MainWidget::restoreData()
   }
   delete q;
   admin_skip_backup=true;
-  UpdateDb(ver);
+  //  UpdateDb(ver);
   QMessageBox::information(this,tr("Restore Complete"),
 			   tr("Restore completed successfully."));
   RDStartDaemons();
+  */
 }
 
 
@@ -501,7 +468,7 @@ void MainWidget::manageReplicatorsData()
 
 void MainWidget::systemInfoData()
 {
-  InfoDialog *info=new InfoDialog(this,"info_dialog");
+  InfoDialog *info=new InfoDialog(this);
   info->exec();
   delete info;
 }
@@ -509,7 +476,7 @@ void MainWidget::systemInfoData()
 
 void MainWidget::reportsData()
 {
-  ListReports *list_reports=new ListReports(this,"list_reports");
+  ListReports *list_reports=new ListReports(this);
   list_reports->exec();
   delete list_reports;
 }
@@ -517,7 +484,7 @@ void MainWidget::reportsData()
 
 void MainWidget::podcastsData()
 {
-  ListFeeds *list_feeds=new ListFeeds(this,"list_feeds");
+  ListFeeds *list_feeds=new ListFeeds(this);
   list_feeds->exec();
   delete list_feeds;
 }
@@ -536,8 +503,7 @@ void MainWidget::ClearTables()
   QString sql="show tables";
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
-    sql=QString().sprintf("drop table %s",
-			  (const char *)q->value(0).toString());
+    sql=QString("drop table ")+q->value(0).toString();
     q1=new RDSqlQuery(sql);
     delete q1;
   }
@@ -552,6 +518,7 @@ int gui_main(int argc,char *argv[])
   //
   // Load Translations
   //
+  /*
   QTranslator qt(0);
   qt.load(QString(QTDIR)+QString("/translations/qt_")+QTextCodec::locale(),
 	  ".");
@@ -571,16 +538,15 @@ int gui_main(int argc,char *argv[])
   tr.load(QString(PREFIX)+QString("/share/rivendell/rdadmin_")+
 	  QTextCodec::locale(),".");
   a.installTranslator(&tr);
-
+  */
   //
   // Start Event Loop
   //
-  MainWidget *w=new MainWidget(NULL,"main");
+  MainWidget *w=new MainWidget();
   if(exiting) {
       exit(0);
   }
   a.setMainWidget(w);
-  w->setGeometry(QRect(QPoint(0,0),w->sizeHint()));
   w->show();
   return a.exec();
 }
@@ -588,27 +554,13 @@ int gui_main(int argc,char *argv[])
 
 int cmdline_main(int argc,char *argv[])
 {
-  QApplication a(argc,argv,false);
+  QCoreApplication a(argc,argv);
+  new RDApplication(RDApplication::Console,"rdadmin",RDADMIN_USAGE,true);
   
-  //
-  // Load Configs
-  //
-  admin_config=new RDConfig();
-  admin_config->load();
-
   //
   // Open Database
   //
-  QString station_name=admin_config->stationName();
-  if(!admin_create_db_hostname.isEmpty()) {
-    station_name=admin_create_db_hostname;
-  }
-  if(!OpenDb(admin_config->mysqlDbname(),admin_config->mysqlUsername(),
-	     admin_config->mysqlPassword(),admin_config->mysqlHostname(),
-	     station_name,false)) {
-    return 1;
-  }
-
+  OpenDb();
   return 0;
 }
 
@@ -622,34 +574,6 @@ int main(int argc,char *argv[])
   for(unsigned i=0;i<cmd->keys();i++) {
     if(cmd->key(i)=="--check-db") {
       found_check_db=true;
-      cmd->setProcessed(i,true);
-    }
-    if(cmd->key(i)=="--mysql-admin-user") {
-      admin_admin_username=cmd->value(i);
-      cmd->setProcessed(i,true);
-    }
-    if(cmd->key(i)=="--mysql-admin-password") {
-      admin_admin_password=cmd->value(i);
-      cmd->setProcessed(i,true);
-    }
-    if(cmd->key(i)=="--mysql-admin-hostname") {
-      admin_admin_hostname=cmd->value(i);
-      cmd->setProcessed(i,true);
-    }
-    if(cmd->key(i)=="--mysql-admin-dbname") {
-      admin_admin_dbname=cmd->value(i);
-      cmd->setProcessed(i,true);
-    }
-    if(cmd->key(i)=="--create-db-hostname") {
-      admin_create_db_hostname=cmd->value(i);
-      cmd->setProcessed(i,true);
-    }
-    if(cmd->key(i)=="--backup-filename") {
-      admin_backup_filename=cmd->value(i);
-      cmd->setProcessed(i,true);
-    }
-    if(cmd->key(i)=="--skip-backup") {
-      admin_skip_backup=true;
       cmd->setProcessed(i,true);
     }
   }

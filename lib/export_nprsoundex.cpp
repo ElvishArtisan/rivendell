@@ -2,9 +2,7 @@
 //
 // Export a Rivendell NPR SoundExchange Report to an ASCII Text File.
 //
-//   (C) Copyright 2002-2006,2013 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: export_nprsoundex.cpp,v 1.1.2.2.2.1 2014/06/24 18:27:03 cvs Exp $
+//   (C) Copyright 2002-2006,2013,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,15 +20,16 @@
 
 #include <stdio.h>
 
-#include <qfile.h>
-#include <qmessagebox.h>
-#include <rddb.h>
-#include <rdlog_line.h>
+#include <QFile>
+#include <QMessageBox>
+
 #include <rdairplay_conf.h>
 #include <rddatedecode.h>
-#include <rdreport.h>
-#include <rdget_ath.h>
+#include <rddb.h>
 #include <rdescape_string.h>
+#include <rdget_ath.h>
+#include <rdlog_line.h>
+#include <rdreport.h>
 
 //
 // This implements a National Public Radio (NPR) standard.
@@ -70,8 +69,14 @@ bool RDReport::ExportNprSoundEx(const QDate &startdate,const QDate &enddate,
   //
   // Roll Up Records
   //
-  sql=QString("select EVENT_DATETIME,LENGTH,TITLE,ARTIST,ALBUM,LABEL from `")+
-    mixtable+"_SRT` order by EVENT_DATETIME";
+  sql=QString("select ")+
+    "EVENT_DATETIME,"+
+    "LENGTH,"+
+    "TITLE,"+
+    "ARTIST,"+
+    "ALBUM,"+
+    "LABEL "+
+    "from `"+mixtable+"_SRT` order by EVENT_DATETIME";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     fprintf(f,"%s\t",(const char *)q->value(0).toDateTime().

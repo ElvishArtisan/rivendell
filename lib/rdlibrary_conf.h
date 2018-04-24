@@ -2,9 +2,7 @@
 //
 // Abstract RDLibrary Configuration
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdlibrary_conf.h,v 1.22.8.1 2014/01/09 01:03:54 cvs Exp $
+//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -32,9 +30,8 @@ class RDLibraryConf
  public:
   enum RecordMode {Manual=0,Vox=1};
   enum SearchLimit {LimitNo=0,LimitYes=1,LimitPrevious=2};
-  RDLibraryConf(const QString &station,unsigned instance);
+  RDLibraryConf(const QString &station);
   QString station() const;
-  unsigned instance() const;
   int inputCard() const;
   void setInputCard(int input) const;
   int inputPort() const;
@@ -71,6 +68,8 @@ class RDLibraryConf
   void setRipperLevel(int level) const;
   QString cddbServer() const;
   void setCddbServer(QString server) const;
+  bool readIsrc() const;
+  void setReadIsrc(bool state) const;
   bool enableEditor() const;
   void setEnableEditor(bool state) const;
   void getSettings(RDSettings *s) const;
@@ -87,7 +86,6 @@ class RDLibraryConf
   void SetRow(const QString &param,const QString &value) const;
   void SetRow(const QString &param,bool value) const;
   QString lib_station;
-  unsigned lib_instance;
   unsigned lib_id;
 };
 

@@ -2,9 +2,7 @@
 //
 // Rivendell web service portal -- TrimAudio service
 //
-//   (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: trimaudio.cpp,v 1.4 2012/02/13 23:01:50 cvs Exp $
+//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,6 +24,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
+#include <rdapplication.h>
 #include <rdformpost.h>
 #include <rdweb.h>
 #include <rdcart.h>
@@ -33,7 +32,7 @@
 #include <rdsettings.h>
 #include <rdconf.h>
 
-#include <rdxport.h>
+#include "rdxport.h"
 
 void Xport::TrimAudio()
 {
@@ -59,7 +58,7 @@ void Xport::TrimAudio()
   //
   // Verify User Perms
   //
-  if(!xport_user->cartAuthorized(cartnum)) {
+  if(!rda->user()->cartAuthorized(cartnum)) {
     XmlExit("No such cart",404);
   }
 

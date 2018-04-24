@@ -1,0 +1,447 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry id="stdin" xmlns="http://docbook.org/ns/docbook" version="5.0">
+  <!--
+      Header
+  -->
+  <refmeta>
+    <refentrytitle>rdclilogedit</refentrytitle>
+    <manvolnum>1</manvolnum>
+    <refmiscinfo class='source'>April 2016</refmiscinfo>
+    <refmiscinfo class='manual'>Linux Audio Manual</refmiscinfo>
+  </refmeta>
+  <refnamediv>
+    <refname>rdclilogedit</refname>
+    <refpurpose>Command-line editor for Rivendell logs</refpurpose>
+  </refnamediv>
+  <info>
+    <author>
+      <personname>
+	<firstname>Fred</firstname>
+	<surname>Gleason</surname>
+	<email>fredg@paravelsystems.com</email>
+      </personname>
+      <contrib>Application Author</contrib>
+    </author>
+  </info>
+
+  <!--
+      Body
+  -->
+  <refsynopsisdiv id='synopsis'>
+    <cmdsynopsis>
+      <command>rdclilogedit</command>
+      <arg choice='opt'><replaceable>OPTIONS</replaceable></arg>
+      <sbr/>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+
+  <refsect1 id='description'><title>Description</title>
+  <para>
+    <command>rdclilogedit</command><manvolnum>1</manvolnum> is a command-line
+    editor for Rivendell logs.  It is loosely styled after the venerable
+    <command>ed</command><manvolnum>1</manvolnum> command-line text editor.
+  </para>
+  </refsect1>
+
+  <refsect1 id='options'><title>Options</title>
+  <variablelist remap='TP'>
+    <varlistentry>
+      <term>
+	<option>-n</option>, <option>--quiet</option>, <option>--silent</option>
+      </term>
+      <listitem>
+	<para>
+	  Suppress generation of the command-line prompt (often desirable
+	  when driving <command>rdclilogedit</command><manvolnum>1</manvolnum>
+	  from a script).
+	</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+</refsect1>
+
+
+  <refsect1 id='commands'><title>Commands</title>
+  <para>
+    <command>rdclilogedit</command><manvolnum>1</manvolnum> supports the
+    notion of an 'edit buffer' into which Rivendell logs can be loaded,
+    modified and then saved back to the Rivendell database.  The contents
+    of the edit buffer can be manipulated by means of simple textual commands
+    (seperated by newline or <userinput>;</userinput> sent to STDIN). The
+    following commands are supported:
+  </para>
+  <variablelist remap='TP'>
+    <varlistentry>
+      <term>
+	<command>addcart</command>
+	<arg choice="req"><replaceable>line</replaceable></arg>
+	<arg choice="req"><replaceable>cart-num</replaceable></arg>
+      </term>
+      <listitem>
+	<para>
+	  Add a new cart event before line
+	  <replaceable>line</replaceable> using cart
+	  <replaceable>cart-num</replaceable>.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<command>addchain</command>
+	<arg choice="req"><replaceable>line</replaceable></arg>
+	<arg choice="req"><replaceable>log-name</replaceable></arg>
+      </term>
+      <listitem>
+	<para>
+	  Add a new chain-to event before line
+	  <replaceable>line</replaceable> pointing to
+	  <replaceable>log-name</replaceable>.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<command>addmarker</command>
+	<arg choice="req"><replaceable>line</replaceable></arg>
+      </term>
+      <listitem>
+	<para>
+	  Add a new marker event before line <replaceable>line</replaceable>.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<command>addtrack</command>
+	<arg choice="req"><replaceable>line</replaceable></arg>
+      </term>
+      <listitem>
+	<para>
+	  Add a new track event before line <replaceable>line</replaceable>.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<command>bye</command>
+      </term>
+      <listitem>
+	<para>
+	  Exit the program.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<command>deletelog</command>
+	<arg choice="req"><replaceable>log-name</replaceable></arg>
+      </term>
+      <listitem>
+	<para>
+	  Delete the log <replaceable>log-name</replaceable> from the
+	  Rivendell database.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<command>exit</command>
+      </term>
+      <listitem>
+	<para>
+	  Exit the program.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<command>header</command>
+      </term>
+      <listitem>
+	<para>
+	  Print the header data for the currently loaded log.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<command>help</command>
+	<arg choice="opt"><replaceable>cmd-name</replaceable></arg>
+      </term>
+      <listitem>
+	<para>
+	  Print help about command <replaceable>cmd-name</replaceable>. If
+	  <replaceable>cmd-name</replaceable> is
+	  omitted, print the full list of available commands.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<command>list</command>
+      </term>
+      <listitem>
+	<para>
+	  Print the log in the edit buffer.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<command>listlogs</command>
+      </term>
+      <listitem>
+	<para>
+	  Print a list of the available Rivendell logs.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<command>listservices</command>
+      </term>
+      <listitem>
+	<para>
+	  Print a list of the available Rivendell services.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<command>load</command>
+	<arg choice="req"><replaceable>log-name</replaceable></arg>
+      </term>
+      <listitem>
+	<para>
+	  Load the log <replaceable>log-name</replaceable>
+	  into the edit buffer.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<command>new</command>
+	<arg choice="req"><replaceable>log-name</replaceable></arg>
+      </term>
+      <listitem>
+	<para>
+	  Create a new, empty log called 
+	  <replaceable>log-name</replaceable> in the edit buffer.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<command>quit</command>
+      </term>
+      <listitem>
+	<para>
+	  Exit the program.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<command>remove</command>
+	<arg choice="req"><replaceable>line</replaceable></arg>
+      </term>
+      <listitem>
+	<para>
+	  Remove the log event at line <replaceable>line</replaceable> in
+	  the edit buffer.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<command>save</command>
+      </term>
+      <listitem>
+	<para>
+	  Save the contents of the edit buffer.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<command>saveas</command>
+	<arg choice="req"><replaceable>log-name</replaceable></arg>
+      </term>
+      <listitem>
+	<para>
+	  Save the contents of the edit buffer to a new log called
+	  <replaceable>log-name</replaceable>.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<command>setautorefresh</command>
+	<arg choice="req"><userinput>yes</userinput>|<userinput>no</userinput></arg>
+      </term>
+      <listitem>
+	<para>
+	  Set the state of the log's auto-refresh flag.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<command>setcart</command>
+	<arg choice="req"><replaceable>line</replaceable></arg>
+	<arg choice="req"><replaceable>cart-num</replaceable></arg>
+      </term>
+      <listitem>
+	<para>
+	  Set the cart event at line <replaceable>line</replaceable> to use
+	  cart number <replaceable>cart-num</replaceable>.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<command>setcomment</command>
+	<arg choice="req"><replaceable>line</replaceable></arg>
+	<arg choice="req"><replaceable>str</replaceable></arg>
+      </term>
+      <listitem>
+	<para>
+	  Set the Comment field of the marker or track event at line
+	  <replaceable>line</replaceable> to <replaceable>str</replaceable>.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<command>setdesc</command>
+	<arg choice="req"><replaceable>str</replaceable></arg>
+      </term>
+      <listitem>
+	<para>
+	  Set the Description field of the log to
+	  <replaceable>str</replaceable>.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<command>setenddate</command>
+	<arg choice="opt"><replaceable>date</replaceable></arg>
+      </term>
+      <listitem>
+	<para>
+	  Set the End Date of the log to <replaceable>date</replaceable>,
+	  where <replaceable>date</replaceable> is in the format
+	  <userinput>YYYY-MM-DD</userinput>. To clear the End Date
+	  value completely, omit the <replaceable>date</replaceable>
+	  parameter.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<command>setlabel</command>
+	<arg choice="req"><replaceable>line</replaceable></arg>
+	<arg choice="req"><replaceable>str</replaceable></arg>
+      </term>
+      <listitem>
+	<para>
+	  Set the Label field of the chain-to or marker event at line
+	  <replaceable>line</replaceable> to <replaceable>str</replaceable>.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<command>setpurgedate</command>
+	<arg choice="opt"><replaceable>date</replaceable></arg>
+      </term>
+      <listitem>
+	<para>
+	  Set the Purge Date of the log to <replaceable>date</replaceable>,
+	  where <replaceable>date</replaceable> is in the format
+	  <userinput>YYYY-MM-DD</userinput>. To clear the Purge Date
+	  value completely, omit the <replaceable>date</replaceable>
+	  parameter.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<command>setservice</command>
+	<arg choice="req"><replaceable>str</replaceable></arg>
+      </term>
+      <listitem>
+	<para>
+	  Set the log's owning Service to <replaceable>str</replaceable>.
+	  (To print a list of valid Service names, see
+	  <userinput>listservices</userinput>).
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<command>setstartdate</command>
+	<arg choice="opt"><replaceable>date</replaceable></arg>
+      </term>
+      <listitem>
+	<para>
+	  Set the Start Date of the log to <replaceable>date</replaceable>,
+	  where <replaceable>date</replaceable> is in the format
+	  <userinput>YYYY-MM-DD</userinput>. To clear the Start Date
+	  value completely, omit the <replaceable>date</replaceable>
+	  parameter.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<command>settime</command>
+	<arg choice="req"><replaceable>line</replaceable></arg>
+	<arg choice="req"><userinput>hard</userinput>|<userinput>none</userinput></arg>
+	<arg choice="opt"><replaceable>time</replaceable></arg>
+      </term>
+      <listitem>
+	<para>
+	  Set the start time type and value for a log event.  When
+	  specifying a type of <userinput>hard</userinput>, the
+	  <replaceable>time</replaceable> value (format
+	  <userinput>HH:MM:SS</userinput>) must also be specified.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<command>settrans</command>
+	<arg choice="req"><replaceable>line</replaceable></arg>
+	<arg choice="req"><userinput>play</userinput>|<userinput>segue</userinput>|<userinput>stop</userinput></arg>
+      </term>
+      <listitem>
+	<para>
+	  Set the transition type for a log event.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<command>unload</command>
+      </term>
+      <listitem>
+	<para>
+	  Unload and clear the contents of the edit buffer.
+	</para>
+      </listitem>
+    </varlistentry>
+
+  </variablelist>
+</refsect1>
+
+<refsect1 id='bugs'><title>Bugs</title>
+<para>
+  <command>rdclilogedit</command><manvolnum>1</manvolnum> has no ability
+  to create or edit log link events (such as Music or Traffic links).
+</para>
+</refsect1>
+
+</refentry>
+

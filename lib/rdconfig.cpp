@@ -2,9 +2,7 @@
 //
 // A container class for a Rivendell Base Configuration
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdconfig.cpp,v 1.24.6.7 2013/11/13 23:36:32 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,40 +18,33 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <stdio.h>
+
 #ifndef WIN32
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <pwd.h>
 #include <grp.h>
-#endif
+#endif  // WIN32
 
-#include <qmessagebox.h>
-#include <qsettings.h>
-#include <qstringlist.h>
+#include <QDateTime>
+#include <QMessageBox>
+#include <QSettings>
+#include <QStringList>
 
 #include <rdprofile.h>
 #include <rdconfig.h>
 
-
-RDConfig *RDConfiguration(void) 
+RDConfig::RDConfig(RDCmdSwitch *cmd)
 {
-  static RDConfig *config = NULL;
-  if (!config){
-    config = new RDConfig();
-    config->load();
-  }
-  return config;
-}
-
-
-RDConfig::RDConfig()
-{
+  conf_cmd=cmd;
   clear();
 }
 
 
-RDConfig::RDConfig(QString filename)
+RDConfig::RDConfig(QString filename,RDCmdSwitch *cmd)
 {
+  conf_cmd=cmd;
   clear();
   conf_filename=filename;
 }
@@ -148,9 +139,35 @@ QString RDConfig::mysqlDriver() const
 }
 
 
+QString RDConfig::mysqlEngine() const
+{
+  return conf_mysql_engine;
+}
+
+
+QString RDConfig::mysqlCharset() const
+{
+  return conf_mysql_charset;
+}
+
+
+QString RDConfig::mysqlCollation() const
+{
+  return conf_mysql_collation;
+}
+
+
 int RDConfig::mysqlHeartbeatInterval() const
 {
   return conf_mysql_heartbeat_interval;
+}
+
+
+QString RDConfig::createTablePostfix() const
+{
+  return QString(" ENGINE ")+conf_mysql_engine+" "+
+    "CHARACTER SET "+conf_mysql_charset+" "+
+    "COLLATE "+conf_mysql_collation;
 }
 
 
@@ -446,6 +463,12 @@ void RDConfig::load()
   conf_mysql_password=profile->stringValue("mySQL","Password",conf_password);
   conf_mysql_driver=
     profile->stringValue("mySQL","Driver",DEFAULT_MYSQL_DRIVER);
+  conf_mysql_engine=
+    profile->stringValue("mySQL","Engine",DEFAULT_MYSQL_ENGINE);
+  conf_mysql_charset=
+    profile->stringValue("mySQL","Charset",DEFAULT_MYSQL_CHARSET);
+  conf_mysql_collation=
+    profile->stringValue("mySQL","Collation",DEFAULT_MYSQL_COLLATION);
   conf_mysql_heartbeat_interval=
     profile->intValue("mySQL","HeartbeatInterval",
 		      DEFAULT_MYSQL_HEARTBEAT_INTERVAL);
@@ -503,6 +526,26 @@ void RDConfig::load()
     conf_destinations.push_back(dest);
   }
   delete profile;
+
+  //
+  // Override rd.conf(5) values from the command line
+  //
+  if(conf_cmd!=NULL) {
+    for(unsigned i=0;i<conf_cmd->keys();i++) {
+      if(conf_cmd->key(i)=="--db-hostname") {
+	conf_mysql_hostname=conf_cmd->value(i);
+      }
+      if(conf_cmd->key(i)=="--db-dbname") {
+	conf_mysql_dbname=conf_cmd->value(i);
+      }
+      if(conf_cmd->key(i)=="--db-username") {
+	conf_mysql_username=conf_cmd->value(i);
+      }
+      if(conf_cmd->key(i)=="--db-password") {
+	conf_mysql_password=conf_cmd->value(i);
+      }
+    }
+  }
 }
 
 
@@ -523,6 +566,9 @@ void RDConfig::clear()
   conf_mysql_dbname="";
   conf_mysql_password="";
   conf_mysql_driver="";
+  conf_mysql_engine="";
+  conf_mysql_charset="";
+  conf_mysql_collation="";
   conf_mysql_heartbeat_interval=DEFAULT_MYSQL_HEARTBEAT_INTERVAL;
   conf_log_facility=RDConfig::LogSyslog;
   conf_log_directory="";

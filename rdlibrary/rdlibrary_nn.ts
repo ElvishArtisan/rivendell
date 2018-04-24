@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>AudioCart</name>
     <message>
@@ -213,6 +215,10 @@ Do you still want to delete?</source>
     </message>
     <message>
         <source>You must select a single cut!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ORD</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -850,6 +856,26 @@ Notes</source>
         <source>Use Event Length for Now &amp;&amp; Next Updates</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>By Specified Order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>By Weight</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Schedule Cuts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The following cut order values are assigned more than once</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duplicate Cut Order</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditMacro</name>
@@ -1037,11 +1063,11 @@ korg</translation>
     </message>
     <message>
         <source>rdlibrary : </source>
-        <translation>rdlibrary : </translation>
+        <translation type="obsolete">rdlibrary : </translation>
     </message>
     <message>
         <source>Can&apos;t Connect</source>
-        <translation>Greier ikkje kopla til</translation>
+        <translation type="obsolete">Greier ikkje kopla til</translation>
     </message>
     <message>
         <source>Filter:</source>
@@ -1193,9 +1219,9 @@ Vil du sletta ho likevel?</translation>
     </message>
     <message>
         <source>Deleting cart %06u will also empty the clipboard.
-      <byte value="x9"/>Do you still want to proceed?</source>
+      	Do you still want to proceed?</source>
         <translation>Viss du slettar korga %06u, tømer du utklyppstavla.
-      <byte value="x9"/>Vil du halda fram?</translation>
+      	Vil du halda fram?</translation>
     </message>
     <message>
         <source>Empty Clipboard</source>
@@ -1516,6 +1542,10 @@ Vil du lagra likevel?</translation>
     </message>
     <message>
         <source>AES ALARM</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Order</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

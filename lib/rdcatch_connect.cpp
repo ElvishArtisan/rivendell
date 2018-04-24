@@ -2,9 +2,7 @@
 //
 // Connect to the Rivendell Netcatcher Daemon.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcatch_connect.cpp,v 1.26 2010/07/29 19:32:33 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,8 +25,8 @@
 #include <rdcatch_connect.h>
 
 
-RDCatchConnect::RDCatchConnect(int serial,QObject *parent,const char *name)
-  : QObject(parent,name)
+RDCatchConnect::RDCatchConnect(int serial,QObject *parent)
+  : QObject(parent)
 {
   cc_serial=serial;
 
@@ -42,7 +40,7 @@ RDCatchConnect::RDCatchConnect(int serial,QObject *parent,const char *name)
   //
   // TCP Connection
   //
-  cc_socket=new QSocket(this,"cc_socket");
+  cc_socket=new Q3Socket(this,"cc_socket");
   connect(cc_socket,SIGNAL(connected()),this,SLOT(connectedData()));
   connect(cc_socket,SIGNAL(error(int)),this,SLOT(errorData(int)));
   connect(cc_socket,SIGNAL(readyRead()),this,SLOT(readyData()));
@@ -263,6 +261,7 @@ void RDCatchConnect::DispatchCommand()
   unsigned chan;
   int status;
   int id;
+  int number;
 
   if(!strcmp(args[0],"PW")) {   // Password Response
     if(args[1][0]=='+') {
@@ -273,6 +272,16 @@ void RDCatchConnect::DispatchCommand()
       emit connected(cc_serial,false);
     }
   }
+
+  if(!strcmp(args[0],"DE")) {   // Deck Event
+    if(sscanf(args[1],"%d",&deck)!=1) {
+      return;
+    }
+    if(sscanf(args[2],"%d",&number)!=1) {
+      return;
+    }
+    emit deckEventSent(cc_serial,deck,number);
+  }    
 
   if(!strcmp(args[0],"RE")) {   // Channel Status
     if(sscanf(args[1],"%u",&chan)!=1){

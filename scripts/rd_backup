@@ -5,9 +5,7 @@
 # Dump the local Rivendell database and copy the dump to one or more 
 # remote hosts.
 #
-# Copyright (C) 2006 Fred Gleason <fredg@paravelsystems.com>
-#
-#      $Id: rd_backup,v 1.5 2007/10/08 18:37:33 fredg Exp $
+# Copyright (C) 2006,2016 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as

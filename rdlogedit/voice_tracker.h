@@ -2,9 +2,7 @@
 //
 // A Rivendell Voice Tracker
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: voice_tracker.h,v 1.50 2010/09/16 19:52:08 cvs Exp $
+//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,7 +22,7 @@
 #define VOICE_TRACKER_H
 
 #include <qdialog.h>
-#include <qlistview.h>
+#include <q3listview.h>
 #include <qpixmap.h>
 #include <qradiobutton.h>
 #include <qsqldatabase.h>
@@ -34,7 +32,12 @@
 #include <qpixmap.h>
 #include <qtimer.h>
 #include <qcursor.h>
-#include <qpopupmenu.h>
+#include <q3popupmenu.h>
+//Added by qt3to4:
+#include <QKeyEvent>
+#include <QMouseEvent>
+#include <QPaintEvent>
+#include <QWheelEvent>
 
 #include <rdtransportbutton.h>
 #include <rdstereometer.h>
@@ -52,13 +55,13 @@
 //
 // Widget Settings
 //
-#define TRACKER_TEXT_COLOR red
+#define TRACKER_TEXT_COLOR Qt::red
 #define TRACKER_RUBBERBAND_COLOR "#008000"
-#define TRACKER_RECORD_COLOR green
-#define TRACKER_RECORD_BUTTON_COLOR red
-#define TRACKER_START_BUTTON_COLOR green
-#define TRACKER_ABORT_BUTTON_COLOR red
-#define TRACKER_DONE_BUTTON_COLOR blue
+#define TRACKER_RECORD_COLOR Qt::green
+#define TRACKER_RECORD_BUTTON_COLOR Qt::red
+#define TRACKER_START_BUTTON_COLOR Qt::green
+#define TRACKER_ABORT_BUTTON_COLOR Qt::red
+#define TRACKER_DONE_BUTTON_COLOR Qt::blue
 #define TRACKER_START_WIDTH 19633
 #define TRACKER_MSECS_PER_PIXEL 29
 //#define TRACKER_MB_PER_PIXEL 141
@@ -78,8 +81,7 @@ class VoiceTracker : public QDialog
 {
   Q_OBJECT
  public:
-  VoiceTracker(const QString &logname,QString *import_path,
-	       QWidget *parent=0,const char *name=0);
+  VoiceTracker(const QString &logname,QString *import_path,QWidget *parent=0);
   ~VoiceTracker();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -112,7 +114,7 @@ class VoiceTracker : public QDialog
   void stateChangedData(int id,RDPlayDeck::State state);
   void positionData(int id,int msecs);
   void segueStartData(int id);
-  void logClickedData(QListViewItem *item,const QPoint &pt,int col);
+  void logClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
   void transitionChangedData(int line,RDLogLine::TransType trans);
   void meterData();
   void recordLoadedData(int card,int stream);
@@ -277,7 +279,7 @@ class VoiceTracker : public QDialog
   QPalette track_record_palette;
   QPalette track_done_palette;
   QPalette track_abort_palette;
-  QPopupMenu *track_menu;
+  Q3PopupMenu *track_menu;
   int menu_clicked_point;
   QString *edit_import_path;
   RDSettings *edit_settings;

@@ -2,9 +2,7 @@
 //
 // Parser Parameters for RDAdmin.
 //
-// (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: importfields.h,v 1.2 2010/07/29 19:32:34 cvs Exp $
+// (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,14 +17,11 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-//
 
 #ifndef IMPORTFIELDS_H
 #define IMPORTFIELDS_H
 
-#include <qwidget.h>
-#include <qlabel.h>
-#include <qspinbox.h>
+#include <QSpinBox>
 
 #include <rdsvc.h>
 
@@ -34,7 +29,7 @@ class ImportFields : public QWidget
 {
  Q_OBJECT
  public:
-  ImportFields(QWidget *parent=0,const char *name=0);
+  ImportFields(QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
   bool changed() const;

@@ -2,9 +2,7 @@
 ##
 ## Automake.am for rivendell/web/rdcastmanager
 ##
-##   (C) Copyright 2002-2007 Fred Gleason <fredg@paravelsystems.com>
-##
-##      $Id: Makefile.am,v 1.4.8.1 2012/11/29 01:37:38 cvs Exp $
+##   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -21,8 +19,8 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -DQTDIR=\"@QT_DIR@\" @QT_CXXFLAGS@ -I$(top_srcdir)/lib
-LIBS = @QT_LIBS@ -L$(top_srcdir)/lib
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -I$(top_srcdir)/lib @QT4_CFLAGS@ -DQT3_SUPPORT -I/usr/include/Qt3Support
+LIBS = -L$(top_srcdir)/lib
 MOC = @QT_MOC@
 
 # The dependency for qt's Meta Object Compiler (moc)
@@ -34,7 +32,7 @@ install-exec-am:
 	cp .libs/rdcastmanager.cgi $(DESTDIR)$(libexecdir)/
 	cat rdcastmanager.js | $(top_srcdir)/helpers/jsmin > $(DESTDIR)$(libexecdir)/rdcastmanager.js
 
-uninstall:	
+uninstall-local:	
 	rm -f $(DESTDIR)/$(libexecdir)/rdcastmanager.cgi
 	rm -f $(DESTDIR)/$(libexecdir)/rdcastmanager.js
 
@@ -42,7 +40,7 @@ libexec_PROGRAMS = rdcastmanager.cgi
 
 dist_rdcastmanager_cgi_SOURCES = rdcastmanager.cpp rdcastmanager.h
 
-rdcastmanager_cgi_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
+rdcastmanager_cgi_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
 
 EXTRA_DIST = rdcastmanager.js\
              rdcastmanager.pro

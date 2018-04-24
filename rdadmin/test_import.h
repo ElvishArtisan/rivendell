@@ -2,9 +2,7 @@
 //
 // Test a Rivendell Log Import
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: test_import.h,v 1.6 2010/07/29 19:32:35 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,21 +21,20 @@
 #ifndef TEST_IMPORT_H
 #define TEST_IMPORT_H
 
-#include <qdialog.h>
-#include <qsqldatabase.h>
-#include <qdatetimeedit.h>
-#include <qlineedit.h>
+#include <QDateTimeEdit>
+#include <QDialog>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
 
 #include <rdsvc.h>
-#include <rdlistview.h>
-
+#include <rdtablewidget.h>
 
 class TestImport : public QDialog
 {
  Q_OBJECT
  public:
-  TestImport(RDSvc *svc,RDSvc::ImportSource src,
-	     QWidget *parent=0,const char *name=0);
+  TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent=0);
   ~TestImport();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -45,18 +42,25 @@ class TestImport : public QDialog
  private slots:
   void selectData();
   void importData();
-  void dateChangedData(const QDate &date);
+  void dateChangedData(const QDateTime &dt);
   void closeData();
 
  protected:
   void paintEvent(QPaintEvent *e);
+  void resizeEvent(QResizeEvent *e);
 
  private:
+  void AddLine(int line);
   RDSvc *test_svc;
   RDSvc::ImportSource test_src;
-  QDateEdit *test_date_edit;
-  RDListView *test_events_list;
+  QLabel *test_date_label;
+  QDateTimeEdit *test_date_edit;
+  QPushButton *test_import_button;
+  QLabel *test_events_label;
+  RDTableWidget *test_events_widget;
+  QLabel *test_filename_label;
   QLineEdit *test_filename_edit;
+  QPushButton *test_close_button;
 };
 
 

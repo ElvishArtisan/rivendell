@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell Dropbox Configuration
 //
-//   (C) Copyright 2002-2007 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_dropbox.cpp,v 1.11.8.3.2.1 2014/06/03 18:23:35 cvs Exp $
+//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,31 +18,21 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <math.h>
+#include <QColorDialog>
+#include <QFileDialog>
+#include <QMessageBox>
+#include <QValidator>
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <qbuttongroup.h>
-#include <qcolordialog.h>
-#include <qvalidator.h>
-#include <qfiledialog.h>
+#include <rdapplication.h>
 
-#include <globals.h>
-#include <rdcart_dialog.h>
-#include <rddb.h>
-#include <rdescape_string.h>
-#include <edit_dropbox.h>
+#include "globals.h"
+#include "rdcart_dialog.h"
+#include "rddb.h"
+#include "rdescape_string.h"
+#include "edit_dropbox.h"
 
-
-EditDropbox::EditDropbox(int id,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+EditDropbox::EditDropbox(int id,QWidget *parent)
+  : QDialog(parent)
 {
   QString sql;
   RDSqlQuery *q;
@@ -52,14 +40,12 @@ EditDropbox::EditDropbox(int id,QWidget *parent,const char *name)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   box_dropbox=new RDDropbox(id);
 
-  setCaption(tr("Dropbox Configuration"));
+  setWindowTitle("RDAdmin - "+tr("Dropbox Configuration"));
 
   //
   // Create Fonts
@@ -72,7 +58,7 @@ EditDropbox::EditDropbox(int id,QWidget *parent,const char *name)
   //
   // Dialogs
   //
-  box_schedcodes_dialog=new RDSchedCodesDialog(this);
+  box_schedcodes_dialog=new RDSchedCodesDialog("RDAdmin",this);
 
   //
   // Group Name
@@ -82,7 +68,7 @@ EditDropbox::EditDropbox(int id,QWidget *parent,const char *name)
   QLabel *label=new QLabel(box_group_name_box,tr("Default Group:"),this);
   label->setGeometry(10,10,105,20);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Path
@@ -93,7 +79,7 @@ EditDropbox::EditDropbox(int id,QWidget *parent,const char *name)
   label=new QLabel(box_path_edit,tr("&Path Spec:"),this);
   label->setGeometry(10,32,105,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   QPushButton *button=
     new QPushButton(tr("Select"),this);
   button->setGeometry(sizeHint().width()-60,30,50,23);
@@ -105,12 +91,12 @@ EditDropbox::EditDropbox(int id,QWidget *parent,const char *name)
   //
   box_to_cart_edit=new QLineEdit(this);
   box_to_cart_edit->setGeometry(120,54,60,19);
-  box_to_cart_edit->setValidator(new QIntValidator(1,999999,this));
+  //  box_to_cart_edit->setValidator(new QIntValidator(1,999999,this));
   box_to_cart_edit->setMaxLength(6);
   label=new QLabel(box_to_cart_edit,tr("To &Cart:"),this);
   label->setGeometry(10,54,105,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   box_select_cart_button=
     new QPushButton(tr("Select"),this);
   box_select_cart_button->setGeometry(190,52,50,23);
@@ -127,7 +113,7 @@ EditDropbox::EditDropbox(int id,QWidget *parent,const char *name)
     new QLabel(box_delete_cuts_box,tr("Delete cuts before importing"),this);
   box_delete_cuts_label->setGeometry(280,54,sizeHint().width()-150,20);
   box_delete_cuts_label->setFont(font);
-  box_delete_cuts_label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  box_delete_cuts_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Metadata Format
@@ -138,7 +124,7 @@ EditDropbox::EditDropbox(int id,QWidget *parent,const char *name)
   label=new QLabel(box_metadata_pattern_edit,tr("&Metadata Pattern:"),this);
   label->setGeometry(10,76,105,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // User Defined Field
@@ -149,7 +135,7 @@ EditDropbox::EditDropbox(int id,QWidget *parent,const char *name)
   label=new QLabel(box_user_defined_edit,tr("&User Defined:"),this);
   label->setGeometry(10,98,105,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Log Path
@@ -161,7 +147,7 @@ EditDropbox::EditDropbox(int id,QWidget *parent,const char *name)
     new QLabel(box_log_path_edit,tr("&Log File:"),this);
   label->setGeometry(10,120,105,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   button=new QPushButton(tr("Select"),this);
   button->setGeometry(sizeHint().width()-60,118,50,23);
   button->setFont(normal_font);
@@ -184,7 +170,7 @@ EditDropbox::EditDropbox(int id,QWidget *parent,const char *name)
 		   this);
   label->setGeometry(110,175,sizeHint().width()-120,20);
   label->setFont(font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Normalization
@@ -194,17 +180,17 @@ EditDropbox::EditDropbox(int id,QWidget *parent,const char *name)
   label=new QLabel(box_normalization_box,tr("Normalize Levels"),this);
   label->setGeometry(110,197,100,20);
   label->setFont(font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
   box_normalization_level_spin=new QSpinBox(this);
   box_normalization_level_spin->setGeometry(275,197,50,20);
   box_normalization_level_spin->setRange(-100,-1);
   box_normalization_level_label=new QLabel(tr("Level:"),this);
   box_normalization_level_label->setGeometry(210,197,60,20);
   box_normalization_level_label->setFont(font);
-  box_normalization_level_label->setAlignment(AlignVCenter|AlignRight);
+  box_normalization_level_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   box_normalization_level_unit=new QLabel(tr("dBFS"),this);
   box_normalization_level_unit->setGeometry(330,197,60,20);
-  box_normalization_level_unit->setAlignment(AlignVCenter|AlignLeft);
+  box_normalization_level_unit->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   connect(box_normalization_box,SIGNAL(toggled(bool)),
 	  this,SLOT(normalizationToggledData(bool)));
 
@@ -216,17 +202,17 @@ EditDropbox::EditDropbox(int id,QWidget *parent,const char *name)
   label=new QLabel(box_autotrim_box,tr("Autotrim Cuts"),this);
   label->setGeometry(110,221,100,20);
   label->setFont(font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
   box_autotrim_level_spin=new QSpinBox(this);
   box_autotrim_level_spin->setGeometry(275,221,50,20);
   box_autotrim_level_spin->setRange(-100,-1);
   box_autotrim_level_label=new QLabel(tr("Level:"),this);
   box_autotrim_level_label->setGeometry(210,221,60,20);
   box_autotrim_level_label->setFont(font);
-  box_autotrim_level_label->setAlignment(AlignVCenter|AlignRight);
+  box_autotrim_level_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   box_autotrim_level_unit=new QLabel(tr("dBFS"),this);
   box_autotrim_level_unit->setGeometry(330,221,60,20);
-  box_autotrim_level_unit->setAlignment(AlignVCenter|AlignLeft);
+  box_autotrim_level_unit->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   connect(box_autotrim_box,SIGNAL(toggled(bool)),
 	  this,SLOT(autotrimToggledData(bool)));
 
@@ -239,7 +225,7 @@ EditDropbox::EditDropbox(int id,QWidget *parent,const char *name)
 		   tr("Get cart number from CartChunk CutID"),this);
   label->setGeometry(110,247,sizeHint().width()-40,20);
   label->setFont(font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Title from CartChunk ID
@@ -250,7 +236,7 @@ EditDropbox::EditDropbox(int id,QWidget *parent,const char *name)
 		   tr("Get cart title from CartChunk CutID"),this);
   label->setGeometry(110,271,sizeHint().width()-40,20);
   label->setFont(font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Fix Broken Formats
@@ -261,7 +247,7 @@ EditDropbox::EditDropbox(int id,QWidget *parent,const char *name)
 		   tr("Attempt to work around malformatted input files"),this);
   label->setGeometry(110,295,sizeHint().width()-40,20);
   label->setFont(font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Start Date Offset
@@ -273,11 +259,11 @@ EditDropbox::EditDropbox(int id,QWidget *parent,const char *name)
   label=new QLabel(box_startoffset_spin,tr("Offset start date by"),this);
   label->setGeometry(90,319,120,20);
   label->setFont(font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
   label=new QLabel(box_startoffset_spin,tr("days"),this);
   label->setGeometry(275,321,100,20);
   label->setFont(font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // End Date Offset
@@ -289,11 +275,11 @@ EditDropbox::EditDropbox(int id,QWidget *parent,const char *name)
   label=new QLabel(box_endoffset_spin,tr("Offset end date by"),this);
   label->setGeometry(90,343,120,20);
   label->setFont(font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
   label=new QLabel(box_endoffset_spin,tr("days"),this);
   label->setGeometry(275,343,100,20);
   label->setFont(font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Create Dates
@@ -304,7 +290,7 @@ EditDropbox::EditDropbox(int id,QWidget *parent,const char *name)
 		   this);
   label->setGeometry(110,375,sizeHint().width()-40,20);
   label->setFont(font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
   box_create_startdate_offset_spin=
     new QSpinBox(this);
   box_create_startdate_offset_spin->setGeometry(300,401,50,20);
@@ -314,11 +300,11 @@ EditDropbox::EditDropbox(int id,QWidget *parent,const char *name)
 	       this);
   box_create_startdate_label->setGeometry(120,401,160,20);
   box_create_startdate_label->setFont(font);
-  box_create_startdate_label->setAlignment(AlignVCenter|AlignRight);
+  box_create_startdate_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   box_create_startdate_unit=
     new QLabel(box_create_startdate_offset_spin,("days"),this);
   box_create_startdate_unit->setGeometry(360,403,60,20);
-  box_create_startdate_unit->setAlignment(AlignVCenter|AlignLeft);
+  box_create_startdate_unit->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   box_create_enddate_offset_spin=new QSpinBox(this);
   box_create_enddate_offset_spin->setGeometry(300,431,50,20);
   box_create_enddate_offset_spin->setRange(-180,180);
@@ -327,11 +313,11 @@ EditDropbox::EditDropbox(int id,QWidget *parent,const char *name)
 		this);
   box_create_enddate_label->setGeometry(120,431,160,20);
   box_create_enddate_label->setFont(font);
-  box_create_enddate_label->setAlignment(AlignVCenter|AlignRight);
+  box_create_enddate_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   box_create_enddate_unit=
     new QLabel(box_create_enddate_offset_spin,("days"),this);
   box_create_enddate_unit->setGeometry(360,431,60,20);
-  box_create_enddate_unit->setAlignment(AlignVCenter|AlignLeft);
+  box_create_enddate_unit->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   connect(box_create_dates_box,SIGNAL(toggled(bool)),
           this,SLOT(createDatesToggledData(bool)));
 
@@ -420,7 +406,8 @@ QSizePolicy EditDropbox::sizePolicy() const
 void EditDropbox::selectPathData()
 {
   QString path=box_path_edit->text();
-  path=QFileDialog::getExistingDirectory(path,this);
+  path=QFileDialog::
+    getExistingDirectory(this,"RDAdmin - "+tr("Select Dropbox Path"),path);
   if(!path.isEmpty()) {
     box_path_edit->setText(path);
   }
@@ -431,7 +418,7 @@ void EditDropbox::selectCartData()
 {
   int cartnum=box_to_cart_edit->text().toInt();
   admin_cart_dialog->exec(&cartnum,RDCart::Audio,NULL,0,
-			  admin_user->name(),admin_user->password());
+			  rda->user()->name(),rda->user()->password());
   if(cartnum>0) {
     box_to_cart_edit->setText(QString().sprintf("%06d",cartnum));
   }
@@ -441,7 +428,8 @@ void EditDropbox::selectCartData()
 void EditDropbox::selectLogPathData()
 {
   QString path=box_log_path_edit->text();
-  path=QFileDialog::getSaveFileName(path,QString::null,this);
+  path=
+    QFileDialog::getSaveFileName(this,"RDAdmin - "+tr("Select Log File"),path);
   if(!path.isEmpty()) {
     box_log_path_edit->setText(path);
   }
@@ -539,7 +527,7 @@ void EditDropbox::okData()
     QString().sprintf("DROPBOX_ID=%d",box_dropbox->id());
   q=new RDSqlQuery(sql);
   delete q;
-  for(unsigned i=0;i<box_schedcodes.size();i++) {
+  for(int i=0;i<box_schedcodes.size();i++) {
     sql=QString("insert into DROPBOX_SCHED_CODES set ")+
       QString().sprintf("DROPBOX_ID=%d,",box_dropbox->id())+
       "SCHED_CODE=\""+RDEscapeString(box_schedcodes[i])+"\"";

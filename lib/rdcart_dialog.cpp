@@ -2,9 +2,7 @@
 //
 // A widget to select a Rivendell Cart.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcart_dialog.cpp,v 1.48.4.8 2014/02/11 23:46:25 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,18 +21,22 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include <qpushbutton.h>
-#include <qlabel.h>
-#include <qsqlquery.h>
-#include <qdatetime.h>
-#include <qapplication.h>
-#include <qeventloop.h>
-#include <qfiledialog.h>
-#include <qmessagebox.h>
+#include <Q3FileDialog>
+#include <QPushButton>
+#include <QLabel>
+#include <QSqlQuery>
+#include <QDateTime>
+#include <QEventLoop>
+#include <QMessageBox>
+#include <QPixmap>
+#include <QResizeEvent>
+#include <QCloseEvent>
 
+#include <rdapplication.h>
 #include <rdconf.h>
 #include <rdcart_dialog.h>
 #include <rdcart_search_text.h>
+#include <rdescape_string.h>
 #include <rdtextvalidator.h>
 #include <rdprofile.h>
 #include <rddb.h>
@@ -52,8 +54,7 @@
 #include "../icons/rml5.xpm"
 
 RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
-			   RDCae *cae,RDRipc *ripc,RDStation *station,
-			   RDSystem *system,RDConfig *config,QWidget *parent)
+			   QWidget *parent)
   : QDialog(parent,"",true)
 {
   //
@@ -62,18 +63,18 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   setMinimumWidth(sizeHint().width());
   setMinimumHeight(sizeHint().height());
 
-  cart_station=station;
-  cart_system=system;
-  cart_config=config;
   cart_cartnum=NULL;
   cart_type=RDCart::All;
   cart_group=group;
   cart_schedcode=schedcode;
+  if(cart_schedcode->isNull()) {
+    *cart_schedcode=tr("ALL");
+  }
   cart_temp_allowed=NULL;
 #ifdef WIN32
   cart_filter_mode=RDStation::FilterSynchronous;
 #else
-  cart_filter_mode=station->filterMode();
+  cart_filter_mode=rda->station()->filterMode();
 #endif  // WIN32
 
   if(filter==NULL) {
@@ -104,20 +105,15 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   cart_macro_map=new QPixmap(rml5_xpm);
 
   //
-  // Text Validator
-  //
-  RDTextValidator *validator=new RDTextValidator(this,"validator",true);
-
-  //
   // Progress Dialog
   //
   cart_progress_dialog=
-    new QProgressDialog(tr("Please Wait..."),"Cancel",10,this,
+    new Q3ProgressDialog(tr("Please Wait..."),"Cancel",10,this,
 			"cart_progress_dialog",false,
 			Qt::WStyle_Customize|Qt::WStyle_NormalBorder);
   cart_progress_dialog->setCaption(" ");
   QLabel *label=new QLabel(tr("Please Wait..."),cart_progress_dialog);
-  label->setAlignment(AlignCenter);
+  label->setAlignment(Qt::AlignCenter);
   label->setFont(progress_font);
   cart_progress_dialog->setLabel(label);
   cart_progress_dialog->setCancelButton(NULL);
@@ -129,10 +125,8 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   // Filter Selector
   //
   cart_filter_edit=new QLineEdit(this);
-  cart_filter_edit->setValidator(validator);
-  cart_filter_label=new QLabel(cart_filter_edit,tr("Cart Filter:"),
-		   this,"cart_filter_label");
-  cart_filter_label->setAlignment(AlignRight|AlignVCenter);
+  cart_filter_label=new QLabel(cart_filter_edit,tr("Cart Filter:"),this);
+  cart_filter_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   cart_filter_label->setFont(button_font);
   connect(cart_filter_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(filterChangedData(const QString &)));
@@ -158,7 +152,7 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   //
   cart_group_box=new RDComboBox(this);
   cart_group_label=new QLabel(cart_group_box,tr("Group:"),this);
-  cart_group_label->setAlignment(AlignRight|AlignVCenter);
+  cart_group_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   cart_group_label->setFont(button_font);
   connect(cart_group_box,SIGNAL(activated(const QString &)),
 	  this,SLOT(groupActivatedData(const QString &)));
@@ -169,7 +163,7 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   cart_schedcode_box=new RDComboBox(this);
   cart_schedcode_label=
     new QLabel(cart_schedcode_box,tr("Scheduler Code:"),this);
-  cart_schedcode_label->setAlignment(AlignRight|AlignVCenter);
+  cart_schedcode_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   cart_schedcode_label->setFont(button_font);
   connect(cart_schedcode_box,SIGNAL(activated(const QString &)),
 	  this,SLOT(schedcodeActivatedData(const QString &)));
@@ -183,7 +177,7 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
     new QLabel(cart_limit_box,tr("Show Only First")+
 	       QString().sprintf(" %d ",
 		      RD_LIMITED_CART_SEARCH_QUANTITY)+tr("Matches"),this);
-  cart_limit_label->setAlignment(AlignLeft|AlignVCenter);
+  cart_limit_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   cart_limit_label->setFont(button_font);
   connect(cart_limit_box,SIGNAL(stateChanged(int)),
 	  this,SLOT(limitChangedData(int)));
@@ -192,15 +186,15 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   // Cart List
   //
   cart_cart_list=new RDListView(this);
-  cart_cart_list->setSelectionMode(QListView::Single);
+  cart_cart_list->setSelectionMode(Q3ListView::Single);
   cart_cart_list->setAllColumnsShowFocus(true);
   cart_cart_list->setItemMargin(5);
-  connect(cart_cart_list,SIGNAL(clicked(QListViewItem *)),
-	  this,SLOT(clickedData(QListViewItem *)));
+  connect(cart_cart_list,SIGNAL(clicked(Q3ListViewItem *)),
+	  this,SLOT(clickedData(Q3ListViewItem *)));
   connect(cart_cart_list,
-	  SIGNAL(doubleClicked(QListViewItem *,const QPoint &,int)),
+	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,
-	  SLOT(doubleClickedData(QListViewItem *,const QPoint &,int)));
+	  SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
   cart_cart_label=new QLabel(cart_cart_list,"Carts",this);
   cart_cart_label->setFont(button_font);
   cart_cart_list->addColumn("");
@@ -215,7 +209,7 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
 
   cart_cart_list->addColumn(tr("TITLE"),200);
   cart_cart_list->setColumnAlignment(3,Qt::AlignLeft);
-  cart_cart_list->setColumnWidthMode(3,QListView::Manual);
+  cart_cart_list->setColumnWidthMode(3,Q3ListView::Manual);
 
   cart_cart_list->addColumn(tr("ARTIST"));
   cart_cart_list->setColumnAlignment(4,Qt::AlignLeft);
@@ -248,16 +242,16 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   // Audition Player
   //
 #ifndef WIN32
-  if((cae==NULL)||(station->cueCard()<0)||(station->cuePort()<0)) {
+  if((rda->cae()==NULL)||(rda->station()->cueCard()<0)||(rda->station()->cuePort()<0)) {
     cart_player=NULL;
   }
   else {
     cart_player=
-      new RDSimplePlayer(cae,ripc,station->cueCard(),station->cuePort(),
-			 station->cueStartCart(),station->cueStopCart(),this);
+      new RDSimplePlayer(rda->station()->cueCard(),rda->station()->cuePort(),
+			 rda->station()->cueStartCart(),rda->station()->cueStopCart(),this);
     cart_player->playButton()->setDisabled(true);
     cart_player->stopButton()->setDisabled(true);
-    cart_player->stopButton()->setOnColor(red);
+    cart_player->stopButton()->setOnColor(Qt::red);
   }
 #endif  // WIN32
 
@@ -267,7 +261,7 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   cart_editor_button=new QPushButton(tr("Send to\n&Editor"),this);
   cart_editor_button->setFont(button_font);
   connect(cart_editor_button,SIGNAL(clicked()),this,SLOT(editorData()));
-  if(station->editorPath().isEmpty()) {
+  if(rda->station()->editorPath().isEmpty()) {
     cart_editor_button->hide();
   }
 
@@ -277,7 +271,7 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   cart_file_button=new QPushButton(tr("Load From\n&File"),this);
   cart_file_button->setFont(button_font);
   connect(cart_file_button,SIGNAL(clicked()),this,SLOT(loadFileData()));
-  if(station->editorPath().isEmpty()) {
+  if(rda->station()->editorPath().isEmpty()) {
     cart_file_button->hide();
   }
 #ifdef WIN32
@@ -335,7 +329,7 @@ int RDCartDialog::exec(int *cartnum,RDCart::Type type,QString *svcname,
   switch(cart_type) {
     case RDCart::All:
     case RDCart::Audio:
-      if(cart_station->editorPath().isEmpty()) {
+      if(rda->station()->editorPath().isEmpty()) {
 	cart_editor_button->hide();
       }
       else {
@@ -463,7 +457,7 @@ void RDCartDialog::limitChangedData(int state)
 }
 
 
-void RDCartDialog::clickedData(QListViewItem *item)
+void RDCartDialog::clickedData(Q3ListViewItem *item)
 {
   RDListViewItem *i=(RDListViewItem *)item;
   if (i==NULL) {
@@ -482,7 +476,7 @@ void RDCartDialog::clickedData(QListViewItem *item)
 }
 
 
-void RDCartDialog::doubleClickedData(QListViewItem *,const QPoint &,int)
+void RDCartDialog::doubleClickedData(Q3ListViewItem *,const QPoint &,int)
 {
   okData();
 }
@@ -499,20 +493,30 @@ void RDCartDialog::editorData()
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString().sprintf("select CUTS.CUT_NAME,CUTS.LENGTH,CART.GROUP_NAME,\
-                         CART.TITLE,CART.ARTIST,CART.ALBUM,CART.YEAR,\
-                         CART.LABEL,CART.CLIENT,CART.AGENCY,CART.COMPOSER,\
-                         CART.PUBLISHER,CART.USER_DEFINED \
-                         from CUTS left join CART \
-                         on CUTS.CART_NUMBER=CART.NUMBER \
-                         where (CUTS.CART_NUMBER=%u)&&(CUTS.LENGTH>0)",
-			item->text(1).toUInt());
+  sql=QString("select ")+
+    "CUTS.CUT_NAME,"+      // 00
+    "CUTS.LENGTH,"+        // 01
+    "CART.GROUP_NAME,"+    // 02
+    "CART.TITLE,"+         // 03
+    "CART.ARTIST,"+        // 04
+    "CART.ALBUM,"+         // 05
+    "CART.YEAR,"+          // 06
+    "CART.LABEL,"+         // 07
+    "CART.CLIENT,"+        // 08
+    "CART.AGENCY,"+        // 09
+    "CART.COMPOSER,"+      // 10
+    "CART.PUBLISHER,"+     // 11
+    "CART.USER_DEFINED "+  // 12
+    "from CUTS left join CART "+
+    "on CUTS.CART_NUMBER=CART.NUMBER where "+
+    QString().sprintf("(CUTS.CART_NUMBER=%u)&&",item->text(1).toUInt())+
+    "(CUTS.LENGTH>0)";
   q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;
     return;
   }
-  QString cmd=cart_station->editorPath();
+  QString cmd=rda->station()->editorPath();
   cmd.replace("%f",RDCut::pathName(q->value(0).toString()));
   cmd.replace("%n",QString().sprintf("%06u",item->text(1).toUInt()));
   cmd.replace("%h",QString().sprintf("%d",q->value(1).toInt()));
@@ -553,7 +557,7 @@ void RDCartDialog::loadFileData()
   RDWaveFile *wavefile=NULL;
   RDWaveData wavedata;
 
-  filename=QFileDialog::getOpenFileName(cart_import_path,
+  filename=Q3FileDialog::getOpenFileName(cart_import_path,
 					cart_import_file_filter,this);
   if(!filename.isEmpty()) {
 
@@ -561,7 +565,7 @@ void RDCartDialog::loadFileData()
     // Get Cart Number
     //
     cart_import_path=RDGetPathPart(filename);
-    group=new RDGroup(cart_system->tempCartGroup());
+    group=new RDGroup(rda->system()->tempCartGroup());
     if((!group->exists())||((cartnum=group->nextFreeCart())==0)) {
       delete group;
       QMessageBox::warning(this,tr("Cart Error"),
@@ -574,20 +578,20 @@ void RDCartDialog::loadFileData()
     // Create Cart
     //
     cart=new RDCart(cartnum);
-    if(!cart->create(cart_system->tempCartGroup(),RDCart::Audio)) {
+    if(!cart->create(rda->system()->tempCartGroup(),RDCart::Audio)) {
       delete cart;
       QMessageBox::warning(this,tr("Cart Error"),
 			   tr("Unable to create temporary cart for import!"));
       return;
     }
-    cart->setOwner(cart_station->name());
+    cart->setOwner(rda->station()->name());
     cut=new RDCut(cartnum,1,true);
 
     //
     // Import Audio
     //
     cart_busy_dialog->show(tr("Importing"),tr("Importing..."));
-    conv=new RDAudioImport(cart_station,cart_config,this);
+    conv=new RDAudioImport(rda->station(),rda->config(),this);
     conv->setCartNumber(cartnum);
     conv->setCutNumber(1);
     conv->setSourceFile(filename);
@@ -730,28 +734,45 @@ void RDCartDialog::RefreshCarts()
     schedcode="";
   }
   if(cart_type==RDCart::All) {
-    sql=QString().sprintf("select CART.NUMBER,CART.TITLE,CART.ARTIST,\
-                           CART.CLIENT,CART.AGENCY,CART.USER_DEFINED,\
-                           CART.COMPOSER,CART.CONDUCTOR,\
-                           CART.START_DATETIME,CART.END_DATETIME,CART.TYPE,\
-                           CART.FORCED_LENGTH,CART.GROUP_NAME,GROUPS.COLOR \
-                           from CART left join GROUPS \
-                           on CART.GROUP_NAME=GROUPS.NAME where %s",
-		 (const char *)GetSearchFilter(cart_filter_edit->text(),
-					       group,schedcode));
+    sql=QString("select ")+
+      "CART.NUMBER,"+          // 00
+      "CART.TITLE,"+           // 01
+      "CART.ARTIST,"+          // 02
+      "CART.CLIENT,"+          // 03
+      "CART.AGENCY,"+          // 04
+      "CART.USER_DEFINED,"+    // 05
+      "CART.COMPOSER,"+        // 06
+      "CART.CONDUCTOR,"+       // 07
+      "CART.START_DATETIME,"+  // 08
+      "CART.END_DATETIME,"+    // 09
+      "CART.TYPE,"+            // 10
+      "CART.FORCED_LENGTH,"+   // 11
+      "CART.GROUP_NAME,"+      // 12
+      "GROUPS.COLOR "+         // 13
+      "from CART left join GROUPS "+
+      "on CART.GROUP_NAME=GROUPS.NAME where "+
+      GetSearchFilter(cart_filter_edit->text(),group,schedcode);
   }
   else {
-    sql=QString().sprintf("select CART.NUMBER,CART.TITLE,CART.ARTIST,\
-                           CART.CLIENT,CART.AGENCY,CART.USER_DEFINED,\
-                           CART.COMPOSER,CART.CONDUCTOR,\
-                           CART.START_DATETIME,CART.END_DATETIME,CART.TYPE,\
-                           CART.FORCED_LENGTH,CART.GROUP_NAME,GROUPS.COLOR \
-                           from CART left join GROUPS \
-                           on CART.GROUP_NAME=GROUPS.NAME \
-                           where (%s)&&(TYPE=%d)",
-			(const char *)GetSearchFilter(cart_filter_edit->text(),
-						      group,schedcode),
-			  cart_type);
+    sql=QString("select ")+
+      "CART.NUMBER,"+          // 00
+      "CART.TITLE,"+           // 01
+      "CART.ARTIST,"+          // 02
+      "CART.CLIENT,"+          // 03
+      "CART.AGENCY,"+          // 04
+      "CART.USER_DEFINED,"+    // 05
+      "CART.COMPOSER,"+        // 06
+      "CART.CONDUCTOR,"+       // 07
+      "CART.START_DATETIME,"+  // 08
+      "CART.END_DATETIME,"+    // 09
+      "CART.TYPE,"+            // 10
+      "CART.FORCED_LENGTH,"+   // 11
+      "CART.GROUP_NAME,"+      // 12
+      "GROUPS.COLOR "+         // 13
+      "from CART left join GROUPS "+
+      "on CART.GROUP_NAME=GROUPS.NAME where "+
+      "("+GetSearchFilter(cart_filter_edit->text(),group,schedcode)+")&&"+
+      QString().sprintf("(TYPE=%d)",cart_type);
   }
   if(cart_limit_box->isChecked()) {
     sql+=QString().sprintf(" limit %d",RD_LIMITED_CART_SEARCH_QUANTITY);
@@ -799,7 +820,7 @@ void RDCartDialog::RefreshCarts()
     if(count++>RDCART_DIALOG_STEP_SIZE) {
       cart_progress_dialog->setProgress(++step);
       count=0;
-      qApp->eventLoop()->processEvents(QEventLoop::ExcludeUserInput);
+      qApp->processEvents(QEventLoop::ExcludeUserInput);
     }
   }
   cart_progress_dialog->reset();
@@ -823,8 +844,8 @@ void RDCartDialog::BuildGroupList()
     sql+=" where ";
     for(int i=0;i<cart_service_quan;i++) {
       if(!cart_service[i].isEmpty()) {
-	sql+=QString().sprintf("(SERVICE_NAME=\"%s\")||",
-			       (const char *)cart_service[i]);
+	sql+=QString("(SERVICE_NAME=\"")+
+	  RDEscapeString(cart_service[i])+"\")||";
       }
     }
     sql=sql.left(sql.length()-2);
@@ -892,14 +913,13 @@ QString RDCartDialog::GetSearchFilter(const QString &filter,
   //
   sql=QString().sprintf("select NAME from GROUPS where ");
   for(int i=1;i<cart_group_box->count();i++) {
-    sql+=QString().sprintf("(NAME!=\"%s\")&&",
-			   (const char *)cart_group_box->text(i));
+    sql+=QString("(NAME!=\"")+RDEscapeString(cart_group_box->text(i))+"\")&&";
   }
   sql=sql.left(sql.length()-2);
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    search+=QString().sprintf("&&(GROUP_NAME!=\"%s\")",
-			      (const char *)q->value(0).toString());
+    search+=QString("&&(GROUP_NAME!=\"")+
+      RDEscapeString(q->value(0).toString())+"\")";
   }
   delete q;
   return search;
@@ -918,7 +938,7 @@ QString RDCartDialog::StateFile() {
 void RDCartDialog::LoadState()
 {
   QString state_file = StateFile();
-  if (state_file == NULL) {
+  if(state_file.isNull()) {
     return;
   }
 
@@ -937,7 +957,7 @@ void RDCartDialog::SaveState()
   FILE *f=NULL;
 
   QString state_file = StateFile();
-  if (state_file == NULL) {
+  if(state_file.isNull()) {
     return;
   }
 

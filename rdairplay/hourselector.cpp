@@ -2,9 +2,7 @@
 //
 // Hour Selector widget for RDAirPlay
 //
-//   (C) Copyright 2012 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: hourselector.cpp,v 1.1.2.1 2012/11/13 23:45:13 cvs Exp $
+//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,11 +19,13 @@
 //
 
 #include <qsignalmapper.h>
+//Added by qt3to4:
+#include <QResizeEvent>
 
 #include <hourselector.h>
 
-HourSelector::HourSelector(QWidget *parent,const char *name)
-  : QWidget(parent,name)
+HourSelector::HourSelector(QWidget *parent)
+  : QWidget(parent)
 {
   //
   // Fonts

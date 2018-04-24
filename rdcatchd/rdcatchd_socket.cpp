@@ -2,9 +2,7 @@
 //
 // An automated event executer.
 //
-//   (C) Copyright 2002 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcatchd_socket.cpp,v 1.7 2010/07/29 19:32:36 cvs Exp $
+//   (C) Copyright 2002,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,10 +18,9 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-
 #include <qapplication.h>
 #include <qobject.h>
-#include <qserversocket.h>
+#include <q3serversocket.h>
 #include <qhostaddress.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -32,16 +29,15 @@
 
 #include <rdcatchd_socket.h>
 
-RDCatchdSocket::RDCatchdSocket(Q_UINT16 port,int backlog,QObject *parent,
-		     const char *name) 
-  : QServerSocket(port,0,parent,name)
+RDCatchdSocket::RDCatchdSocket(Q_UINT16 port,int backlog,QObject *parent)
+  : Q3ServerSocket(port,0,parent)
 {
 }
 
 
 RDCatchdSocket::RDCatchdSocket(const QHostAddress &address,Q_UINT16 port,int backlog,
 		     QObject *parent,const char *name) 
-  : QServerSocket(address,port,0,parent,name)
+  : Q3ServerSocket(address,port,0,parent,name)
 {
 }
 

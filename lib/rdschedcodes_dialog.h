@@ -2,11 +2,9 @@
 //
 // Scheduler code editor dialog
 //
-//  (C) Copyright 2014 Fred Gleason <fredg@paravelsystems.com>
+//  (C) Copyright 2014,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   Based on original code by Stefan Gabriel <stg@st-gabriel.de>
-//
-//     $Id: rdschedcodes_dialog.h,v 1.1.2.1 2014/05/28 21:21:40 cvs Exp $
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,10 +23,11 @@
 #ifndef RDSCHEDCODE_DIALOG_H
 #define RDSCHEDCODE_DIALOG_H
 
-#include <qdialog.h>
-#include <qlabel.h>
-#include <qpushbutton.h>
-#include <qstringlist.h>
+#include <QDialog>
+#include <QPaintEvent>
+#include <QPushButton>
+#include <QResizeEvent>
+#include <QStringList>
 
 #include <rdlistselector.h>
 
@@ -36,7 +35,7 @@ class RDSchedCodesDialog : public QDialog
 {
   Q_OBJECT
  public:
-  RDSchedCodesDialog(QWidget *parent=0);
+  RDSchedCodesDialog(const QString &caption,QWidget *parent=0);
   ~RDSchedCodesDialog();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;

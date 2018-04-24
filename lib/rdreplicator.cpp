@@ -2,9 +2,7 @@
 //
 // Abstract a Rivendell replicator configuration
 //
-//   (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdreplicator.cpp,v 1.3 2010/08/03 17:52:18 cvs Exp $
+//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -218,9 +216,9 @@ QString RDReplicator::typeString(RDReplicator::Type type)
 QVariant RDReplicator::GetValue(const QString &field) const
 {
   QVariant ret;
-  QString sql=QString().sprintf("select %s from REPLICATORS where NAME=\"%s\"",
-				(const char *)field,
-				(const char *)RDEscapeString(replicator_name));
+  QString sql=QString("select ")+
+    field+" from REPLICATORS where "+
+    "NAME=\""+RDEscapeString(replicator_name)+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     ret=q->value(0);
@@ -236,10 +234,9 @@ void RDReplicator::SetRow(const QString &param,QString value) const
   QString sql;
 
   value.replace("\\","\\\\");  // Needed to preserve Windows pathnames
-  sql=QString().sprintf("update REPLICATORS set %s=\"%s\" where NAME=\"%s\"",
-			(const char *)param,
-			(const char *)RDEscapeString(value),
-			(const char *)RDEscapeString(replicator_name));
+  sql=QString("update REPLICATORS set ")+
+    param+"=\""+RDEscapeString(value)+"\" where "+
+    "NAME=\""+RDEscapeString(replicator_name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -250,10 +247,9 @@ void RDReplicator::SetRow(const QString &param,int value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("update REPLICATORS set %s=%d where NAME=\"%s\"",
-			(const char *)param,
-			value,
-			(const char *)RDEscapeString(replicator_name));
+  sql=QString("update REPLICATORS set ")+
+    param+QString().sprintf("=%d where ",value)+
+    "NAME=\""+RDEscapeString(replicator_name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -264,10 +260,9 @@ void RDReplicator::SetRow(const QString &param,unsigned value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("update REPLICATORS set %s=%u where NAME=\"%s\"",
-			(const char *)param,
-			value,
-			(const char *)RDEscapeString(replicator_name));
+  sql=QString("update REPLICATORS set ")+
+    param+QString().sprintf("=%u where ",value)+
+    "NAME=\""+RDEscapeString(replicator_name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }

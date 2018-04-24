@@ -2,9 +2,7 @@
 //
 //   An flashing button widget.
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdpushbutton.cpp,v 1.3 2010/07/29 19:32:33 cvs Exp $
+//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -23,30 +21,31 @@
 #include <qpushbutton.h>
 #include <qpainter.h>
 #include <qpixmap.h>
-#include <qpointarray.h>
+#include <q3pointarray.h>
 #include <qtimer.h>
 #include <qpalette.h>
+//Added by qt3to4:
+#include <QMouseEvent>
 
 #include <rdpushbutton.h>
 
 
-RDPushButton::RDPushButton(QWidget *parent=0,const char *name) :
-  QPushButton(parent,name)
+RDPushButton::RDPushButton(QWidget *parent=0)
+  :  QPushButton(parent)
 {
   Init();
 }
 
 
-RDPushButton::RDPushButton(const QString &text,QWidget *parent,
-			   const char *name)
-  : QPushButton(text,parent,name)
+RDPushButton::RDPushButton(const QString &text,QWidget *parent)
+  : QPushButton(text,parent)
 {
   Init();
 }
 
-RDPushButton::RDPushButton(const QIconSet &icon,const QString &text,
-			 QWidget *parent,const char *name)
-  : QPushButton(text,parent,name)
+RDPushButton::RDPushButton(const QIcon &icon,const QString &text,
+			   QWidget *parent)
+  : QPushButton(text,parent)
 {
   Init();
 }
@@ -126,15 +125,15 @@ void RDPushButton::setPalette(const QPalette &pal)
 void RDPushButton::mousePressEvent(QMouseEvent *e)
 {
   switch(e->button()) {
-      case QMouseEvent::LeftButton:
+      case Qt::LeftButton:
 	QPushButton::mousePressEvent(e);
 	break;
 	
-      case QMouseEvent::MidButton:
+      case Qt::MidButton:
 	emit centerPressed();
 	break;
 	
-      case QMouseEvent::RightButton:
+      case Qt::RightButton:
 	emit rightPressed();
 	break;
 
@@ -147,11 +146,11 @@ void RDPushButton::mousePressEvent(QMouseEvent *e)
 void RDPushButton::mouseReleaseEvent(QMouseEvent *e)
 {
   switch(e->button()) {
-      case QMouseEvent::LeftButton:
+      case Qt::LeftButton:
 	QPushButton::mouseReleaseEvent(e);
 	break;
 	
-      case QMouseEvent::MidButton:
+      case Qt::MidButton:
 	e->accept();
 	emit centerReleased();
 	if((e->x()>=0)&&(e->x()<geometry().width())&&
@@ -161,7 +160,7 @@ void RDPushButton::mouseReleaseEvent(QMouseEvent *e)
 	}
 	break;
 	
-      case QMouseEvent::RightButton:
+      case Qt::RightButton:
 	e->accept();
 	emit rightReleased();
 	if((e->x()>=0)&&(e->x()<geometry().width())&&

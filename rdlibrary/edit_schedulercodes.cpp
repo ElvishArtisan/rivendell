@@ -4,8 +4,6 @@
 //
 //   Stefan Gabriel <stg@st-gabriel.de>
 //
-//   
-//
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
 //   published by the Free Software Foundation.
@@ -25,13 +23,16 @@
 #include <qpushbutton.h>
 #include <qpainter.h>
 #include <qmessagebox.h>
+//Added by qt3to4:
+#include <QPaintEvent>
 
 #include <rddb.h>
 #include <edit_schedulercodes.h>
 
 
-EditSchedulerCodes::EditSchedulerCodes(QString *sched_codes,QString *remove_codes,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+EditSchedulerCodes::EditSchedulerCodes(QString *sched_codes,
+				       QString *remove_codes,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   edit_sched_codes=sched_codes;
   edit_remove_codes=remove_codes;
@@ -69,7 +70,7 @@ EditSchedulerCodes::EditSchedulerCodes(QString *sched_codes,QString *remove_code
   //
   // Services Selector
   //
-  codes_sel=new RDListSelector(this,"codes_sel");
+  codes_sel=new RDListSelector(this);
   codes_sel->setFont(listfont);
   codes_sel->setGeometry(10,10,380,200);
   codes_sel->sourceSetLabel(tr("Available Codes"));
@@ -79,7 +80,7 @@ EditSchedulerCodes::EditSchedulerCodes(QString *sched_codes,QString *remove_code
   else {
     codes_sel->destSetLabel(tr("ASSIGN to Carts"));
     
-    remove_codes_sel=new RDListSelector(this,"codes_sel");
+    remove_codes_sel=new RDListSelector(this);
     remove_codes_sel->setFont(listfont);
     remove_codes_sel->setGeometry(sizeHint().width()+10,10,380,200);
     remove_codes_sel->sourceSetLabel(tr("Available Codes"));
@@ -89,7 +90,7 @@ EditSchedulerCodes::EditSchedulerCodes(QString *sched_codes,QString *remove_code
   //
   //  Ok Button
   //
-  QPushButton *ok_button=new QPushButton(this,"ok_button");
+  QPushButton *ok_button=new QPushButton(this);
   if(edit_remove_codes==NULL) 
     ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   else  
@@ -102,7 +103,7 @@ EditSchedulerCodes::EditSchedulerCodes(QString *sched_codes,QString *remove_code
   //
   //  Cancel Button
   //
-  QPushButton *cancel_button=new QPushButton(this,"cancel_button");
+  QPushButton *cancel_button=new QPushButton(this);
   if(edit_remove_codes==NULL) 
     cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
@@ -114,11 +115,11 @@ EditSchedulerCodes::EditSchedulerCodes(QString *sched_codes,QString *remove_code
   connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
 
-  for(unsigned i=0;i<edit_sched_codes->length()/11;i++) {
+  for(int i=0;i<edit_sched_codes->length()/11;i++) {
     codes_sel->destInsertItem(edit_sched_codes->mid(i*11,11).stripWhiteSpace());
     } 
   if(edit_remove_codes!=NULL) {
-    for(unsigned i=0;i<edit_remove_codes->length()/11;i++) {
+    for(int i=0;i<edit_remove_codes->length()/11;i++) {
       remove_codes_sel->destInsertItem(remove_codes->mid(i*11,11).stripWhiteSpace());
       } 
     }
@@ -159,9 +160,8 @@ QSizePolicy EditSchedulerCodes::sizePolicy() const
 void EditSchedulerCodes::paintEvent(QPaintEvent *e)
 {
   QPainter *p=new QPainter(this);
-  p->setPen(QColor(black));
-  p->moveTo(sizeHint().width(),10);
-  p->lineTo(sizeHint().width(),210);
+  p->setPen(QColor(Qt::black));
+  p->drawLine(sizeHint().width(),10,sizeHint().width(),210);
   p->end();
 }
 

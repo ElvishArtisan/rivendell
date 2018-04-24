@@ -2,9 +2,7 @@
 //
 // Edit a vGuest Resource Record.
 //
-//   (C) Copyright 2002-2005 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_vguest_resource.cpp,v 1.5 2010/07/29 19:32:34 cvs Exp $
+//   (C) Copyright 2002-2005,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,32 +18,26 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qmessagebox.h>
+#include <QMessageBox>
 
-#include <rdtextvalidator.h>
+#include "edit_vguest_resource.h"
 
-#include <edit_vguest_resource.h>
-
-
-EditVguestResource::EditVguestResource(RDMatrix::VguestType type,
-				       int *enginenum,int *devicenum,
-				       int *surfacenum,int *relaynum,
-				       QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+EditVguestResource::EditVguestResource(RDMatrix *matrix,
+				       RDMatrix::VguestType type,int num,
+				       QWidget *parent)
+  : QDialog(parent)
 {
+  edit_matrix=matrix;
   edit_type=type;
-  edit_enginenum=enginenum;
-  edit_devicenum=devicenum;
-  edit_surfacenum=surfacenum;
-  edit_relaynum=relaynum;
+  edit_number=num;
+
+  edit_guest=new RDVguestResource(matrix,type,num);
 
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   //
   // Create Fonts
@@ -58,51 +50,48 @@ EditVguestResource::EditVguestResource(RDMatrix::VguestType type,
   //
   // Logitek Engine Number
   //
-  edit_enginenum_edit=new QLineEdit(this,"edit_enginenum_edit");
+  edit_enginenum_edit=new QLineEdit(this);
   edit_enginenum_edit->setGeometry(135,10,50,20);
-  QLabel *label=new QLabel(edit_enginenum_edit,tr("Engine (Hex): "),
-			   this,"edit_enginenum_label");
+  QLabel *label=new QLabel(edit_enginenum_edit,tr("Engine")+":",this);
   label->setGeometry(10,10,120,20);
   label->setFont(bold_font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Logitek Device Number
   //
-  edit_devicenum_edit=new QLineEdit(this,"edit_devicenum_edit");
+  edit_devicenum_edit=new QLineEdit(this);
   edit_devicenum_edit->setGeometry(135,36,50,20);
-  label=new QLabel(edit_devicenum_edit,tr("Device (Hex): "),
-		   this,"edit_devicenum_label");
+  label=new QLabel(edit_devicenum_edit,tr("Device (Hex)")+":",this);
   label->setGeometry(10,36,120,20);
   label->setFont(bold_font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Logitek Surface Number
   //
-  edit_surfacenum_edit=new QLineEdit(this,"edit_surfacenum_edit");
+  edit_surfacenum_edit=new QLineEdit(this);
   edit_surfacenum_edit->setGeometry(135,62,50,20);
-  label=new QLabel(edit_surfacenum_edit,tr("Surface (Hex): "),
-		   this,"edit_surfacenum_label");
+  label=new QLabel(edit_surfacenum_edit,tr("Surface")+":",this);
   label->setGeometry(10,62,120,20);
   label->setFont(bold_font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Logitek Relay Number
   //
-  edit_relaynum_edit=new QLineEdit(this,"edit_relaynum_edit");
+  edit_relaynum_edit=new QLineEdit(this);
   edit_relaynum_edit->setGeometry(135,88,50,20);
-  edit_relaynum_label=new QLabel(edit_relaynum_edit,tr("Bus/Relay (Hex): "),
-		   this,"edit_relaynum_label");
+  edit_relaynum_label=
+    new QLabel(edit_relaynum_edit,tr("Bus/Relay")+":",this);
   edit_relaynum_label->setGeometry(10,88,120,20);
   edit_relaynum_label->setFont(bold_font);
-  edit_relaynum_label->setAlignment(AlignRight|AlignVCenter);
+  edit_relaynum_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   //  Ok Button
   //
-  QPushButton *button=new QPushButton(this,"ok_button");
+  QPushButton *button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
   button->setFont(bold_font);
@@ -112,7 +101,7 @@ EditVguestResource::EditVguestResource(RDMatrix::VguestType type,
   //
   //  Cancel Button
   //
-  button=new QPushButton(this,"cancel_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   button->setFont(bold_font);
@@ -122,27 +111,30 @@ EditVguestResource::EditVguestResource(RDMatrix::VguestType type,
   //
   // Load Data
   //
-  if(*enginenum>=0) {
-    edit_enginenum_edit->setText(QString().sprintf("%04X",*enginenum));
+  if(edit_guest->engineNumber()>=0) {
+    edit_enginenum_edit->
+      setText(QString().sprintf("%d",edit_guest->engineNumber()));
   }
-  if(*devicenum>=0) {
-    edit_devicenum_edit->setText(QString().sprintf("%04X",*devicenum));
+  if(edit_guest->deviceNumber()>=0) {
+    edit_devicenum_edit->
+      setText(QString().sprintf("%04X",edit_guest->deviceNumber()));
   }
-  if(*surfacenum>=0) {
-    edit_surfacenum_edit->setText(QString().sprintf("%04X",*surfacenum));
+  if(edit_guest->surfaceNumber()>=0) {
+    edit_surfacenum_edit->
+      setText(QString().sprintf("%d",edit_guest->surfaceNumber()));
   }
-  switch(edit_type) {
-      case RDMatrix::VguestTypeRelay:
-	setCaption(tr("Edit vGuest Switch"));
-	if(*relaynum>=0) {
-	  edit_relaynum_edit->setText(QString().sprintf("%04X",*relaynum));
-	}
-	break;
+  switch(edit_guest->type()) {
+  case RDMatrix::VguestTypeRelay:
+    setWindowTitle("RDAdmin - "+tr("Edit vGuest Switch"));
+    if(edit_guest->relayNumber()>=0) {
+      edit_relaynum_edit->
+	setText(QString().sprintf("%d",edit_guest->relayNumber()));
+    }
+    break;
 
-      case RDMatrix::VguestTypeDisplay:
-	setCaption(tr("Edit vGuest Display"));
-	edit_relaynum_edit->setDisabled(true);
-	break;
+  case RDMatrix::VguestTypeDisplay:
+    setWindowTitle("RDAdmin - "+tr("Edit vGuest Display"));
+    edit_relaynum_edit->setDisabled(true);
   }
 }
 
@@ -206,10 +198,11 @@ void EditVguestResource::okData()
       return;
     }
   }
-  *edit_enginenum=enginenum;
-  *edit_devicenum=devicenum;
-  *edit_surfacenum=surfacenum;
-  *edit_relaynum=relaynum;
+  edit_guest->setEngineNumber(enginenum);
+  edit_guest->setDeviceNumber(devicenum);
+  edit_guest->setSurfaceNumber(surfacenum);
+  edit_guest->setRelayNumber(relaynum);
+
   done(0);
 }
 

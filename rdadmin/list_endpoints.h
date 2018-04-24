@@ -2,9 +2,7 @@
 //
 // List Rivendell Endpoints
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_endpoints.h,v 1.8 2010/07/29 19:32:34 cvs Exp $
+//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,40 +21,48 @@
 #ifndef LIST_ENDPOINTS_H
 #define LIST_ENDPOINTS_H
 
-#include <qdialog.h>
-#include <qsqldatabase.h>
-#include <qlabel.h>
-#include <qpushbutton.h>
-#include <qlistview.h>
+#include <QDialog>
+#include <QLabel>
+#include <QPushButton>
 
 #include <rduser.h>
 #include <rdmatrix.h>
-
+#include <rdsqltablemodel.h>
+#include <rdtableview.h>
 
 class ListEndpoints : public QDialog
 {
  Q_OBJECT
  public:
-  ListEndpoints(RDMatrix *matrix,RDMatrix::Endpoint endpoint,
-		QWidget *parent=0,const char *name=0);
+  ListEndpoints(RDMatrix *matrix,RDMatrix::Endpoint endpoint,QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 
  private slots:
   void editData();
-  void doubleClickedData(QListViewItem *item,const QPoint &pt,int col);
+  void doubleClickedData(const QModelIndex &index);
   void okData();
   void cancelData();
 
+ protected:
+  void resizeEvent(QResizeEvent *e);
+
  private:
+  QString ModelSql(RDMatrix::Type type) const;
+  bool SetHeaders(RDSqlTableModel *model,RDMatrix::Type type,
+		  RDMatrix::Endpoint end);
   RDMatrix *list_matrix;
   RDMatrix::Endpoint list_endpoint;
-  QListView *list_list_view;
+  RDSqlTableModel *list_model;
+  QLabel *list_label;
+  RDTableView *list_view;
   int list_size;
   QString list_table;
   bool list_readonly;
+  QPushButton *list_edit_button;
+  QPushButton *list_ok_button;
+  QPushButton *list_cancel_button;
 };
 
 
-#endif
-
+#endif  // LIST_ENDPOINTS_H

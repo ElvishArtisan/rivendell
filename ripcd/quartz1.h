@@ -2,9 +2,7 @@
 //
 // A Rivendell switcher driver for the Quartz Type 1 Switcher Protocol
 //
-//   (C) Copyright 2002-2004,2008 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: quartz1.h,v 1.8 2010/08/03 23:39:26 cvs Exp $
+//   (C) Copyright 2002-2004,2008,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,7 +21,7 @@
 #ifndef QUARTZ1_H
 #define QUARTZ1_H
 
-#include <qsocket.h>
+#include <q3socket.h>
 #include <qhostaddress.h>
 #include <qtimer.h>
 
@@ -41,7 +39,7 @@ class Quartz1 : public Switcher
 {
  Q_OBJECT
  public:
-  Quartz1(RDMatrix *matrix,QObject *parent=0,const char *name=0);
+  Quartz1(RDMatrix *matrix,QObject *parent=0);
   RDMatrix::Type type();
   unsigned gpiQuantity();
   unsigned gpoQuantity();
@@ -60,7 +58,7 @@ class Quartz1 : public Switcher
  private:
   void SendCommand(const char *str);
   RDTTYDevice *sas_device[2];
-  QSocket *sas_socket[2];
+  Q3Socket *sas_socket[2];
   char sas_buffer[2][QUARTZ1_MAX_LENGTH];
   unsigned sas_ptr[2];
   QHostAddress sas_ipaddress[2];

@@ -2,9 +2,7 @@
 //
 // Rivendell switcher driver for the Sine Systems ACU-1 (Prophet)
 //
-//   (C) Copyright 2012 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: acu1p.h,v 1.1.2.2 2012/12/13 03:14:00 cvs Exp $
+//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -44,7 +42,7 @@ class Acu1p : public Switcher
 {
  Q_OBJECT
  public:
- Acu1p(RDMatrix *matrix,QObject *parent=0,const char *name=0);
+ Acu1p(RDMatrix *matrix,QObject *parent=0);
   ~Acu1p();
   RDMatrix::Type type();
   unsigned gpiQuantity();

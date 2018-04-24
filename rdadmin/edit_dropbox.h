@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell Dropbox Configuration
 //
-//   (C) Copyright 2002-2007 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_dropbox.h,v 1.5.8.1.2.1 2014/06/03 18:23:36 cvs Exp $
+//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,29 +21,22 @@
 #ifndef EDIT_DROPBOX_H
 #define EDIT_DROPBOX_H
 
-#include <qdialog.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
-#include <qpixmap.h>
-#include <qspinbox.h>
-#include <qcheckbox.h>
-#include <qsqldatabase.h>
-#include <qlineedit.h>
-#include <qcombobox.h>
-#include <qlabel.h>
-#include <qpushbutton.h>
-#include <qlabel.h>
-#include <qstringlist.h>
+#include <QCheckBox>
+#include <QComboBox>
+#include <QDialog>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QSpinBox>
 
 #include <rddropbox.h>
 #include <rdschedcodes_dialog.h>
-
 
 class EditDropbox : public QDialog
 {
  Q_OBJECT
  public:
-  EditDropbox(int id,QWidget *parent=0,const char *name=0);
+  EditDropbox(int id,QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 

@@ -2,9 +2,7 @@
 //
 // A drag source for an empty cart.
 //
-//   (C) Copyright 2013 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdemptycart.h,v 1.1.2.1 2013/12/30 20:37:01 cvs Exp $
+//   (C) Copyright 2013,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -20,12 +18,13 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-
 #ifndef RDEMPTYCART_H
 #define RDEMPTYCART_H
 
 #include <qlabel.h>
 #include <qwidget.h>
+//Added by qt3to4:
+#include <QMouseEvent>
 
 #include <rdcartdrag.h>
 
@@ -33,7 +32,7 @@ class RDEmptyCart : public QWidget
 {
   Q_OBJECT
  public:
-  RDEmptyCart(QWidget *parent=0,const char *name=0);
+  RDEmptyCart(QWidget *parent=0);
   ~RDEmptyCart();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;

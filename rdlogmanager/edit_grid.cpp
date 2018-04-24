@@ -2,9 +2,7 @@
 //
 // Edit Rivendell Log Grid
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_grid.cpp,v 1.12.8.2 2014/01/21 21:28:34 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,14 +24,20 @@
 
 #include <qdialog.h>
 #include <qstring.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qpainter.h>
 #include <qmessagebox.h>
 #include <qcolordialog.h>
 #include <qsignalmapper.h>
+//Added by qt3to4:
+#include <QCloseEvent>
+#include <QPaintEvent>
+#include <QLabel>
+#include <Q3PopupMenu>
 
 #include <rddb.h>
 #include <rd.h>
+#include <rdescape_string.h>
 #include <rdevent.h>
 #include <rdcreate_log.h>
 
@@ -41,9 +45,8 @@
 #include <list_clocks.h>
 #include <edit_clock.h>
 
-
-EditGrid::EditGrid(QString servicename,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+EditGrid::EditGrid(QString servicename,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   QString sql;
   QString str;
@@ -75,15 +78,15 @@ EditGrid::EditGrid(QString servicename,QWidget *parent,const char *name)
   // Hour Buttons
   //
   QLabel *label;
-  QSignalMapper *mapper=new QSignalMapper(this,"hour_button_mapper");
+  QSignalMapper *mapper=new QSignalMapper(this);
   connect(mapper,SIGNAL(mapped(int)),this,SLOT(hourButtonData(int)));
   for(int i=0;i<5;i++) {
-    label=new QLabel(QDate::longDayName(i+1),this,"day_label");
+    label=new QLabel(QDate::longDayName(i+1),this);
     label->setGeometry(20,14+75*i,90,16);
     label->setFont(bold_font);
-    label->setAlignment(AlignCenter);
+    label->setAlignment(Qt::AlignCenter);
     for(int j=0;j<24;j++) {
-      edit_hour_button[i][j]=new RDPushButton(this,"hour_button");
+      edit_hour_button[i][j]=new RDPushButton(this);
       edit_hour_button[i][j]->setGeometry(10+42*j,30+75*i,42,40);
       edit_hour_button[i][j]->setFont(button_font);
       edit_hour_button[i][j]->setId(24*i+j);
@@ -95,12 +98,12 @@ EditGrid::EditGrid(QString servicename,QWidget *parent,const char *name)
     }
   }
   for(int i=5;i<7;i++) {
-    label=new QLabel(QDate::longDayName(i+1),this,"day_label");
+    label=new QLabel(QDate::longDayName(i+1),this);
     label->setGeometry(20,44+75*i,90,16);
     label->setFont(bold_font);
-    label->setAlignment(AlignCenter);
+    label->setAlignment(Qt::AlignCenter);
     for(int j=0;j<24;j++) {
-      edit_hour_button[i][j]=new RDPushButton(this,"hour_button");
+      edit_hour_button[i][j]=new RDPushButton(this);
       edit_hour_button[i][j]->setGeometry(10+42*j,60+75*i,42,40);
       edit_hour_button[i][j]->setFont(button_font);
       edit_hour_button[i][j]->setId(24*i+j);
@@ -115,7 +118,7 @@ EditGrid::EditGrid(QString servicename,QWidget *parent,const char *name)
   //
   // Right Button Menu
   //
-  edit_right_menu=new QPopupMenu(this,"edit_right_menu");
+  edit_right_menu=new Q3PopupMenu(this);
   connect(edit_right_menu,SIGNAL(aboutToShow()),this,SLOT(aboutToShowData()));
   edit_right_menu->
     insertItem(tr("Edit Clock"),this,SLOT(editClockData()),0,0);
@@ -125,7 +128,7 @@ EditGrid::EditGrid(QString servicename,QWidget *parent,const char *name)
   //
   // Change All Button
   //
-  QPushButton *all_button=new QPushButton(this,"change_all_button");
+  QPushButton *all_button=new QPushButton(this);
   all_button->setGeometry(10,sizeHint().height()-60,80,50);
   all_button->setDefault(false);
   all_button->setFont(bold_font);
@@ -135,7 +138,7 @@ EditGrid::EditGrid(QString servicename,QWidget *parent,const char *name)
   //
   //  Close Button
   //
-  QPushButton *button=new QPushButton(this,"close_button");
+  QPushButton *button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   button->setDefault(true);
   button->setFont(bold_font);
@@ -169,17 +172,23 @@ void EditGrid::hourButtonData(int id)
   if(clockname.isEmpty()) {
     clockname=current_clockname;
   }
-  ListClocks *listclocks=new ListClocks(&clockname,this,"listclocks");
+  ListClocks *listclocks=new ListClocks(&clockname,this);
   if(listclocks->exec()<0) {
     delete listclocks;
     return;
   }
   delete listclocks;
   current_clockname=clockname;
-  QString sql=QString().sprintf("update SERVICES set CLOCK%d=\"%s\"\
-                                 where NAME=\"%s\"",
-				id,(const char *)clockname,
-				(const char *)edit_servicename);
+  QString sql=QString("update SERVICE_CLOCKS set ");
+  if(clockname.isEmpty()) {
+    sql+="CLOCK_NAME=null ";
+  }
+  else {
+    sql+="CLOCK_NAME=\""+RDEscapeString(clockname)+"\" ";
+  }
+  sql+=QString("where ")+
+    "(SERVICE_NAME=\""+RDEscapeString(edit_servicename)+"\")&&"+
+    QString().sprintf("(HOUR=%d)",id);
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
   LabelButton(dayofweek,hour,clockname);
@@ -189,7 +198,7 @@ void EditGrid::hourButtonData(int id)
 void EditGrid::allHourButtonData()
 {
   QString clockname="";
-  ListClocks *listclocks=new ListClocks(&clockname,this,"listclocks");
+  ListClocks *listclocks=new ListClocks(&clockname,this);
   if(listclocks->exec()<0) {
     delete listclocks;
     return;
@@ -198,10 +207,9 @@ void EditGrid::allHourButtonData()
   if(QMessageBox::question(this,"RDLogManager - "+tr("Clear Clocks"),
 			   tr("Are you sure you want to update ALL clocks in the grid?")+"\n"+tr("This operation cannot be undone!"),QMessageBox::Yes,QMessageBox::No)==QMessageBox::Yes) {
     for(int id=0;id<168;id++) {
-      QString sql=QString().sprintf("update SERVICES set CLOCK%d=\"%s\"\
-                                   where NAME=\"%s\"",
-				    id,(const char *)clockname,
-				    (const char *)edit_servicename);
+      QString sql=QString("update SERVICE_CLOCKS set ")+
+	"CLOCK_NAME=\""+RDEscapeString(clockname)+"\" where "+
+	"SERVICE_NAME=\""+RDEscapeString(edit_servicename)+"\"";
       RDSqlQuery *q=new RDSqlQuery(sql);
       delete q;
       int dayofweek=id/24+1;
@@ -247,7 +255,7 @@ void EditGrid::editClockData()
   if(clockname.isEmpty()) {
     return;
   }
-  EditClock *dialog=new EditClock(clockname,false,&new_clocks,this,"dialog");
+  EditClock *dialog=new EditClock(clockname,false,&new_clocks,this);
   if(dialog->exec()<0) {
     delete dialog;
     return;
@@ -261,10 +269,9 @@ void EditGrid::clearHourData()
 {
   int dayofweek=edit_rightclick_id/24+1;
   int hour=edit_rightclick_id-24*(dayofweek-1);
-  QString sql=QString().sprintf("update SERVICES set CLOCK%d=\"\"\
-                                 where NAME=\"%s\"",
-				edit_rightclick_id,
-				(const char *)edit_servicename);
+  QString sql=QString("update SERVICE_CLOCKS set CLOCK_NAME=null where ")+
+    "(SERVICE_NAME=\""+RDEscapeString(edit_servicename)+"\")&&"+
+    QString().sprintf("HOUR=%d)",hour);
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
   LabelButton(dayofweek,hour,"");
@@ -280,7 +287,7 @@ void EditGrid::closeData()
 void EditGrid::paintEvent(QPaintEvent *e)
 {
   QPainter *p=new QPainter(this);
-  p->setPen(QColor(black));
+  p->setPen(QColor(Qt::black));
   for(int i=0;i<5;i++) {
     p->drawRect(5,21+75*i,sizeHint().width()-10,55);
   }
@@ -312,9 +319,11 @@ void EditGrid::LabelButton(int dayofweek,int hour,QString clockname)
   QString code=QString("---");
   QColor color=backgroundColor();
 
-  QString sql=QString().sprintf("select SHORT_NAME,COLOR from CLOCKS\
-                                 where NAME=\"%s\"",
-				(const char *)clockname);
+  QString sql=QString("select ")+
+    "SHORT_NAME,"+
+    "COLOR "+
+    "from CLOCKS where "+
+    "NAME=\""+RDEscapeString(clockname)+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     code=q->value(0).toString();
@@ -331,10 +340,10 @@ void EditGrid::LabelButton(int dayofweek,int hour,QString clockname)
 
 QString EditGrid::GetClock(int dayofweek,int hour)
 {
-  QString sql=QString().sprintf("select CLOCK%d from SERVICES where\
-                                 NAME=\"%s\"",
-				24*(dayofweek-1)+hour,
-				(const char *)edit_servicename);
+  QString sql=QString("select CLOCK_NAME from SERVICE_CLOCKS where ")+
+    "(SERVICE_NAME=\""+RDEscapeString(edit_servicename)+"\")&&"+
+    QString().sprintf("(HOUR=%d)",24*(dayofweek-1)+hour);
+
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     return q->value(0).toString();

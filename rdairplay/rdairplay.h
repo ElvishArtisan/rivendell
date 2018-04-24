@@ -2,9 +2,7 @@
 //
 // The On Air Playout Utility for Rivendell.
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdairplay.h,v 1.89.4.9 2014/02/10 20:45:14 cvs Exp $
+//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -34,20 +32,21 @@
 #include <qtimer.h>
 #include <qsignalmapper.h>
 #include <qpalette.h>
-#include <qsocketdevice.h>
+#include <q3socketdevice.h>
 #include <qpixmap.h>
 #include <qsplashscreen.h>
 #include <qfontmetrics.h>
+//Added by qt3to4:
+#include <QCloseEvent>
+#include <QPaintEvent>
+#include <QKeyEvent>
 
 #include <rdpushbutton.h>
 #include <rdstereometer.h>
 #include <rdlabel.h>
 #include <rdinstancelock.h>
-#include <rduser.h>
-#include <rdripc.h>
 #include <rdplay_deck.h>
 #include <rdmacro.h>
-#include <rdconfig.h>
 #include <rd.h>
 #include <rdttydevice.h>
 #include <rdemptycart.h>
@@ -90,12 +89,11 @@
 #define MESSAGE_WIDGET_WIDTH 410
 #define RDAIRPLAY_USAGE "[<log-spec>=[:<nextline>[+]]] [...]\n\nWhere <log-spec> refers to one of the three log machines\n('--log1', '--log2' or '--log3') and <nextline> to the line number\nto do a 'make next' to after the log is loaded (default = 0). If the\n'+' is appended, then the log is started after the 'make next'.\n\nExamples:\n rdairplay --log1=MyLog\n    Load 'MyLog' into the Main Log machine\n\n rdairplay --log2=MyLog:14+\n    Load 'MyLog' into the Aux Log 1 machine, 'Make Next'\n    to line 14 and then start the log.\n\n rdairplay --log1=YourLog --log2=MyLog\n    Load 'YourLog' into the Main Log machine and 'MyLog' into the\n    Aux Log 1 machine.\n"
 
-
 class MainWidget : public QWidget
 {
   Q_OBJECT
  public:
-  MainWidget(QWidget *parent=0,const char *name=0);
+  MainWidget(QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 
@@ -201,7 +199,7 @@ class MainWidget : public QWidget
   RDLabel *air_refresh_label;
   QPixmap *air_refresh_pixmap;
   QString air_editor_cmd;
-  QSocketDevice *air_nownext_socket;
+  Q3SocketDevice *air_nownext_socket;
   std::vector<RLMHost *> air_plugin_hosts;
   QSplashScreen *air_splash_screen;
   int  keystrokecount;
@@ -221,6 +219,7 @@ class MainWidget : public QWidget
   RDAirPlayConf::GpioType air_channel_gpio_types[RDAirPlayConf::LastChannel];
   std::map<unsigned,QTimer *> air_channel_timers[2];
   RDEmptyCart *air_empty_cart;
+  RDCae *air_cae;
 };
 
 

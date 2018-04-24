@@ -2,9 +2,7 @@
 //
 // List Rivendell GPIs
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_gpis.h,v 1.7 2010/07/29 19:32:34 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,44 +21,40 @@
 #ifndef LIST_GPIS_H
 #define LIST_GPIS_H
 
-#include <qdialog.h>
-#include <qsqldatabase.h>
-#include <qlabel.h>
-#include <qpushbutton.h>
-#include <qlistview.h>
+#include <QDialog>
+#include <QLabel>
+#include <QPushButton>
 
-#include <rduser.h>
 #include <rdmatrix.h>
-
+#include <rdtablewidget.h>
 
 class ListGpis : public QDialog
 {
  Q_OBJECT
  public:
-  ListGpis(RDMatrix *matrix,RDMatrix::GpioType type,
-	   QWidget *parent=0,const char *name=0);
+  ListGpis(RDMatrix *matrix,RDMatrix::GpioType type,QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 
  private slots:
   void editData();
-  void doubleClickedData(QListViewItem *,const QPoint &,int);
-  void okData();
-  void cancelData();
+  void doubleClickedData(const QModelIndex &index);
+  void closeData();
 
  protected:
   void resizeEvent(QResizeEvent *e);
 
  private:
+  void RefreshList();
+  void UpdateRow(int row);
   RDMatrix *list_matrix;
   RDMatrix::GpioType list_type;
   QString list_tablename;
-  QListView *list_list_view;
-  QLabel *list_list_label;
+  QLabel *list_label;
+  RDTableWidget *list_widget;
   int list_size;
   QPushButton *list_edit_button;
-  QPushButton *list_ok_button;
-  QPushButton *list_cancel_button;
+  QPushButton *list_close_button;
 };
 
 

@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell TTY Configuration
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_ttys.cpp,v 1.16 2010/07/29 19:32:34 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,41 +18,28 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <qtextedit.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <qbuttongroup.h>
-
-#include <rddb.h>
-#include <edit_ttys.h>
-#include <rdstation.h>
-#include <rdtextvalidator.h>
+#include <rdapplication.h>
 #include <rdmacro.h>
-#include <globals.h>
 
+#include "edit_ttys.h"
+#include "globals.h"
 
-EditTtys::EditTtys(QString station,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+EditTtys::EditTtys(QString station,QWidget *parent)
+  : QDialog(parent)
 {
   QString str;
 
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   edit_station=station;
   for(int i=0;i<MAX_TTYS;i++) {
     edit_port_modified[i]=false;
   }
-  setCaption(tr("Edit TTYs"));
+  setWindowTitle("RDAdmin - "+tr("Edit TTYs"));
 
   //
   // Create Fonts
@@ -63,111 +48,99 @@ EditTtys::EditTtys(QString station,QWidget *parent,const char *name)
   font.setPixelSize(12);
 
   //
-  // Text Validator
-  //
-  RDTextValidator *validator=new RDTextValidator(this,"validator");
-
-  //
   // Port Selector
   //
-  edit_port_box=new QComboBox(this,"edit_port_box");
+  edit_port_box=new QComboBox(this);
   edit_port_box->setGeometry(75,10,100,24);
-  edit_port_box->setInsertionPolicy(QComboBox::NoInsertion);
+  edit_port_box->setInsertionPolicy(QComboBox::NoInsert);
   connect(edit_port_box,SIGNAL(activated(int)),this,SLOT(idSelectedData()));
-  QLabel *label=new QLabel(edit_port_box,tr("Port ID:"),
-			   this,"edit_port_label");
+  QLabel *label=new QLabel(edit_port_box,tr("Port ID:"),this);
   label->setGeometry(10,14,60,22);
   label->setFont(font);
-  label->setAlignment(AlignRight);
+  label->setAlignment(Qt::AlignRight);
 
   //
   // Enable Button
   //
-  edit_enable_button=new QCheckBox(this,"edit_enable_button");
+  edit_enable_button=new QCheckBox(this);
   edit_enable_button->setGeometry(265,14,15,15);
   connect(edit_enable_button,SIGNAL(stateChanged(int)),
 	  this,SLOT(enableButtonData(int)));
-  label=new QLabel(edit_enable_button,tr("Enabled"),this,"edit_enable_button");
+  label=new QLabel(edit_enable_button,tr("Enabled"),this);
   label->setGeometry(200,14,60,22);
   label->setFont(font);
-  label->setAlignment(AlignRight);
+  label->setAlignment(Qt::AlignRight);
 
   //
   // The TTY Port
   //
-  edit_port_edit=new QLineEdit(this,"edit_port_edit");
+  edit_port_edit=new QLineEdit(this);
   edit_port_edit->setGeometry(145,54,100,20);
-  edit_port_edit->setValidator(validator);
-  edit_port_label=new QLabel(edit_port_edit,tr("TTY Device:"),this,
-			     "edit_port_edit");
+  edit_port_label=new QLabel(edit_port_edit,tr("TTY Device:"),this);
   edit_port_label->setGeometry(20,56,120,22);
   edit_port_label->setFont(font);
-  edit_port_label->setAlignment(AlignRight);
+  edit_port_label->setAlignment(Qt::AlignRight);
   
   //
   // Baudrate Selector
   //
-  edit_baudrate_box=new QComboBox(this,"edit_baudrate_box");
+  edit_baudrate_box=new QComboBox(this);
   edit_baudrate_box->setGeometry(145,80,90,24);
-  edit_baudrate_box->setInsertionPolicy(QComboBox::NoInsertion);
-  edit_baudrate_label=new QLabel(edit_baudrate_box,tr("Baud Rate:"),this,
-			   "edit_baudrate_label");
+  edit_baudrate_box->setInsertionPolicy(QComboBox::NoInsert);
+  edit_baudrate_label=new QLabel(edit_baudrate_box,tr("Baud Rate:"),this);
   edit_baudrate_label->setGeometry(20,84,120,22);
   edit_baudrate_label->setFont(font);
-  edit_baudrate_label->setAlignment(AlignRight);
+  edit_baudrate_label->setAlignment(Qt::AlignRight);
 
   //
   // Parity Selector
   //
-  edit_parity_box=new QComboBox(this,"edit_parity_box");
+  edit_parity_box=new QComboBox(this);
   edit_parity_box->setGeometry(145,108,90,24); 
-  edit_parity_box->setInsertionPolicy(QComboBox::NoInsertion);
-  edit_parity_label=new QLabel(edit_parity_box,tr("Parity:"),this,
-			   "edit_parity_label");
+  edit_parity_box->setInsertionPolicy(QComboBox::NoInsert);
+  edit_parity_label=new QLabel(edit_parity_box,tr("Parity:"),this);
   edit_parity_label->setGeometry(20,110,120,22);
   edit_parity_label->setFont(font);
-  edit_parity_label->setAlignment(AlignRight);
+  edit_parity_label->setAlignment(Qt::AlignRight);
 
   //
   // Data Bits Selector
   //
-  edit_databits_box=new QComboBox(this,"edit_databits_box");
+  edit_databits_box=new QComboBox(this);
   edit_databits_box->setGeometry(145,136,60,24);
-  edit_databits_box->setInsertionPolicy(QComboBox::NoInsertion);
-  edit_databits_label=new QLabel(edit_databits_box,tr("Data Bits:"),this,
-			   "edit_databits_label");
+  edit_databits_box->setInsertionPolicy(QComboBox::NoInsert);
+  edit_databits_label=new QLabel(edit_databits_box,tr("Data Bits:"),this);
   edit_databits_label->setGeometry(20,138,120,22);
   edit_databits_label->setFont(font);
-  edit_databits_label->setAlignment(AlignRight);
+  edit_databits_label->setAlignment(Qt::AlignRight);
 
   //
   // Stop Bits Selector
   //
-  edit_stopbits_box=new QComboBox(this,"edit_stopbits_box");
+  edit_stopbits_box=new QComboBox(this);
   edit_stopbits_box->setGeometry(145,164,60,24);
-  edit_stopbits_box->setInsertionPolicy(QComboBox::NoInsertion);
-  edit_stopbits_label=new QLabel(edit_stopbits_box,tr("Stop Bits:"),this,
-			   "edit_stopbits_label");
+  edit_stopbits_box->setInsertionPolicy(QComboBox::NoInsert);
+  edit_stopbits_label=new QLabel(edit_stopbits_box,tr("Stop Bits:"),this);
   edit_stopbits_label->setGeometry(20,166,120,22);
   edit_stopbits_label->setFont(font);
-  edit_stopbits_label->setAlignment(AlignRight);
+  edit_stopbits_label->setAlignment(Qt::AlignRight);
 
   //
   // Termination Character Selector
   //
-  edit_termination_box=new QComboBox(this,"edit_termination_box");
+  edit_termination_box=new QComboBox(this);
   edit_termination_box->setGeometry(145,192,90,24);
-  edit_termination_box->setInsertionPolicy(QComboBox::NoInsertion);
-  edit_termination_label=new QLabel(edit_termination_box,tr("Terminator:"),
-				    this,"edit_termination_label");
+  edit_termination_box->setInsertionPolicy(QComboBox::NoInsert);
+  edit_termination_label=
+    new QLabel(edit_termination_box,tr("Terminator:"),this);
   edit_termination_label->setGeometry(20,194,120,22);
   edit_termination_label->setFont(font);
-  edit_termination_label->setAlignment(AlignRight);
+  edit_termination_label->setAlignment(Qt::AlignRight);
 
   //
   //  Close Button
   //
-  QPushButton *close_button=new QPushButton(this,"close_button");
+  QPushButton *close_button=new QPushButton(this);
   close_button->setGeometry(210,230,80,50);
   close_button->setFont(font);
   close_button->setText(tr("&Close"));
@@ -300,7 +273,7 @@ void EditTtys::closeData()
 	macro.setArg(0,i);
       }
       macro.setAddress(rmt_station->address());
-      rdripc->sendRml(&macro);
+      rda->ripc()->sendRml(&macro);
       delete q;
     }
   }
@@ -387,12 +360,9 @@ void EditTtys::ReadRecord(int id)
 
 void EditTtys::WriteRecord(int id)
 {
-  int baud;
-
   edit_tty->setActive(edit_enable_button->isChecked());
   edit_tty->setPort(edit_port_edit->text());
-  sscanf((const char *)edit_baudrate_box->currentText(),"%d",&baud);
-  edit_tty->setBaudRate(baud);
+    edit_tty->setBaudRate(edit_baudrate_box->currentText().toInt());
   edit_tty->setParity((RDTTYDevice::Parity)edit_parity_box->currentItem());
   edit_tty->setDataBits(edit_databits_box->currentItem()+5);
   edit_tty->setStopBits(edit_stopbits_box->currentItem()+1);

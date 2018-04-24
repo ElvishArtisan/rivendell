@@ -2,11 +2,8 @@
 //
 //   A 'progress bar' widget that shows busy state.
 //
-//   (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
 //
-//    $Id: rdbusybar.cpp,v 1.2 2010/07/29 19:32:33 cvs Exp $
-//
-//   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
 //   version 2 as published by the Free Software Foundation.
 //
@@ -22,12 +19,15 @@
 //
 
 #include <rdbusybar.h>
+//Added by qt3to4:
+#include <Q3Frame>
+#include <QLabel>
 
-RDBusyBar::RDBusyBar(QWidget *parent,const char *name,WFlags f)
-  : QFrame(parent,name,f)
+RDBusyBar::RDBusyBar(QWidget *parent,Qt::WFlags f)
+  : Q3Frame(parent,"",f)
 {
   bar_pos=0;
-  setFrameStyle(QFrame::StyledPanel|QFrame::Sunken);
+  setFrameStyle(Q3Frame::StyledPanel|Q3Frame::Sunken);
   QPalette p=palette();
   p.setColor(QPalette::Active,QColorGroup::Background,
 	     p.color(QPalette::Active,QColorGroup::Base));

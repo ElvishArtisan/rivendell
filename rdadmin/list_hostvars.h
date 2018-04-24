@@ -2,9 +2,7 @@
 //
 // List Rivendell Host Variables
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_hostvars.h,v 1.5 2010/07/29 19:32:35 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,40 +21,44 @@
 #ifndef LIST_HOSTVARS_H
 #define LIST_HOSTVARS_H
 
-#include <qdialog.h>
-#include <qlistview.h>
-#include <qtextedit.h>
-#include <qpixmap.h>
-#include <qradiobutton.h>
-#include <qsqldatabase.h>
+#include <QDialog>
+#include <QLabel>
+#include <QPushButton>
 
 #include <rd.h>
 #include <rdmatrix.h>
-
+#include <rdsqltablemodel.h>
+#include <rdtableview.h>
 
 class ListHostvars : public QDialog
 {
  Q_OBJECT
  public:
-  ListHostvars(QString station,QWidget *parent=0,const char *name=0);
+  ListHostvars(QString station,QWidget *parent=0);
   ~ListHostvars();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
   
-  private slots:
-   void addData();
-   void editData();
-   void deleteData();
-   void doubleClickedData(QListViewItem *,const QPoint &,int);
-   void okData();
-   void cancelData();
+ private slots:
+  void addData();
+  void editData();
+  void deleteData();
+  void doubleClickedData(const QModelIndex &index);
+  void closeData();
 
-  private:
-   void RefreshList();
-   QListView *list_view;
-   QString list_station;
+ protected:
+  void resizeEvent(QResizeEvent *e);
+
+ private:
+  RDSqlTableModel *list_model;
+  QLabel *list_label;
+  RDTableView *list_view;
+  QString list_station;
+  QPushButton *list_add_button;
+  QPushButton *list_edit_button;
+  QPushButton *list_delete_button;
+  QPushButton *list_close_button;
 };
 
 
-#endif
-
+#endif  // LIST_HOSTVARS_H

@@ -2,9 +2,7 @@
 //
 // Export a Rivendell Classical Music Playout report
 //
-//   (C) Copyright 2014 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: export_musicclassical.cpp,v 1.1.2.1 2014/05/20 22:39:33 cvs Exp $
+//   (C) Copyright 2014,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,13 +20,14 @@
 
 #include <stdio.h>
 
-#include <qfile.h>
-#include <qmessagebox.h>
-#include <rddb.h>
-#include <rdlog_line.h>
+#include <QFile>
+#include <QMessageBox>
+
 #include <rdairplay_conf.h>
 #include <rdconf.h>
 #include <rddatedecode.h>
+#include <rddb.h>
+#include <rdlog_line.h>
 #include <rdreport.h>
 
 bool RDReport::ExportMusicClassical(const QDate &startdate,const QDate &enddate,
@@ -59,25 +58,17 @@ bool RDReport::ExportMusicClassical(const QDate &startdate,const QDate &enddate,
   else {
     cart_fmt="%6u";
   }
-  sql=QString().sprintf("select `%s_SRT`.LENGTH,\
-                         `%s_SRT`.CART_NUMBER,\
-                         `%s_SRT`.EVENT_DATETIME,\
-                         `%s_SRT`.TITLE,\
-                         `%s_SRT`.ALBUM,\
-                         `%s_SRT`.COMPOSER,\
-                         `%s_SRT`.USER_DEFINED \
-                         from `%s_SRT` left join CART on\
-                         `%s_SRT`.CART_NUMBER=CART.NUMBER\
-                         order by EVENT_DATETIME",
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable);
+  sql=QString("select ")+
+    "`"+mixtable+"_SRT`.LENGTH,"+          // 00
+    "`"+mixtable+"_SRT`.CART_NUMBER,"+     // 01
+    "`"+mixtable+"_SRT`.EVENT_DATETIME,"+  // 02
+    "`"+mixtable+"_SRT`.TITLE,"+           // 03
+    "`"+mixtable+"_SRT`.ALBUM,"+           // 04
+    "`"+mixtable+"_SRT`.COMPOSER,"+        // 05
+    "`"+mixtable+"_SRT`.USER_DEFINED "+    // 06
+    "from `"+mixtable+"_SRT` left join CART "+
+    "on `"+mixtable+"_SRT`.CART_NUMBER=CART.NUMBER "+
+    "order by EVENT_DATETIME";
   q=new RDSqlQuery(sql);
 
   //
@@ -94,7 +85,7 @@ bool RDReport::ExportMusicClassical(const QDate &startdate,const QDate &enddate,
   }
   str=QString().sprintf("%s -- %s\n",(const char *)name(),
 			(const char *)description());
-  for(unsigned i=0;i<(120-str.length())/2;i++) {
+  for(int i=0;i<(120-str.length())/2;i++) {
     fprintf(f," ");
   }
   fprintf(f,"%s\n",(const char *)str);

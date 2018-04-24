@@ -3,9 +3,7 @@
 // This implements a widget that represents a stereo audio level meter,
 // complete with labels and scale.
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdplaymeter.cpp,v 1.3 2010/07/29 19:32:33 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -29,22 +27,24 @@
 #include <qpainter.h>
 #include <qpushbutton.h>
 #include <qsize.h>
+//Added by qt3to4:
+#include <QPaintEvent>
 #include <stdio.h>
 #include <qslider.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 #include <qsizepolicy.h>
 #include <qmessagebox.h>
 
 #include <rdplaymeter.h>
 
-RDPlayMeter::RDPlayMeter(RDSegMeter::Orientation orient,QWidget *parent,const char *name)
-  : QWidget(parent,name)
+RDPlayMeter::RDPlayMeter(RDSegMeter::Orientation orient,QWidget *parent)
+  : QWidget(parent)
 {
   meter_label=QString("");
-  setBackgroundColor(black);
+  setBackgroundColor(Qt::black);
   orientation=orient;
   makeFont();
-  meter=new RDSegMeter(orientation,this,"meter");
+  meter=new RDSegMeter(orientation,this);
   meter->setSegmentSize(5);
   meter->setSegmentGap(1);
 }
@@ -219,7 +219,7 @@ void RDPlayMeter::paintEvent(QPaintEvent *paintEvent)
   //
   QPainter *p=new QPainter(this);
   p->setFont(label_font);
-  p->setPen(white);
+  p->setPen(Qt::white);
   if(!meter_label.isEmpty()) {
     switch(orientation) {
 	case RDSegMeter::Left:

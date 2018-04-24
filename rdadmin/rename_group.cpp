@@ -2,9 +2,7 @@
 //
 // Rename a Rivendell Group
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rename_group.cpp,v 1.14 2010/08/03 16:26:03 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,42 +18,30 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <math.h>
+#include <QLabel>
+#include <QMessageBox>
+#include <QPushButton>
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <qbuttongroup.h>
 #include <rddb.h>
-
-#include <rename_group.h>
-#include <rduser.h>
+#include <rdescape_string.h>
 #include <rdpasswd.h>
 #include <rdtextvalidator.h>
-#include <rdescape_string.h>
+#include <rduser.h>
 
+#include "rename_group.h"
 
-RenameGroup::RenameGroup(QString group,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+RenameGroup::RenameGroup(QString group,QWidget *parent)
+  : QDialog(parent)
 {
   group_name=group;
 
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
-  setCaption(tr("Rename Group"));
+  setWindowTitle("RDAdmin  - "+tr("Rename Group"));
 
   //
   // Create Fonts
@@ -66,40 +52,38 @@ RenameGroup::RenameGroup(QString group,QWidget *parent,const char *name)
   //
   // Text Validator
   //
-  RDTextValidator *validator=new RDTextValidator(this,"validator");
+  RDTextValidator *validator=new RDTextValidator(this);
 
   //
   // Current Group Name
   //
-  group_name_edit=new QLineEdit(this,"group_name_edit");
+  group_name_edit=new QLineEdit(this);
   group_name_edit->setGeometry(165,11,sizeHint().width()-175,19);
   group_name_edit->setMaxLength(10);
   group_name_edit->setReadOnly(true);
   QLabel *group_name_label=
-    new QLabel(group_name_edit,tr("Current Group Name:"),
-	       this,"group_name_label");
+    new QLabel(group_name_edit,tr("Current Group Name:"),this);
   group_name_label->setGeometry(10,11,150,19);
   group_name_label->setFont(font);
-  group_name_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  group_name_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // New Group Name
   //
-  group_newname_edit=new QLineEdit(this,"group_newname_edit");
+  group_newname_edit=new QLineEdit(this);
   group_newname_edit->setGeometry(165,33,sizeHint().width()-175,19);
   group_newname_edit->setMaxLength(10);
   group_newname_edit->setValidator(validator);
   QLabel *group_newname_label=
-    new QLabel(group_newname_edit,tr("New &Group Name:"),
-	       this,"group_newname_label");
+    new QLabel(group_newname_edit,tr("New &Group Name:"),this);
   group_newname_label->setGeometry(10,33,150,19);
   group_newname_label->setFont(font);
-  group_newname_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  group_newname_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   //  Ok Button
   //
-  QPushButton *ok_button=new QPushButton(this,"ok_button");
+  QPushButton *ok_button=new QPushButton(this);
   ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   ok_button->setDefault(true);
   ok_button->setFont(font);
@@ -109,7 +93,7 @@ RenameGroup::RenameGroup(QString group,QWidget *parent,const char *name)
   //
   //  Cancel Button
   //
-  QPushButton *cancel_button=new QPushButton(this,"cancel_button");
+  QPushButton *cancel_button=new QPushButton(this);
   cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   cancel_button->setFont(font);
@@ -154,9 +138,8 @@ void RenameGroup::okData()
     return;
   }
 
-  sql=QString().
-    sprintf("select NAME from GROUPS where NAME=\"%s\"",
-	    (const char *)RDEscapeString(group_newname_edit->text()));
+  sql=QString("select NAME from GROUPS where ")+
+    "NAME=\""+RDEscapeString(group_newname_edit->text())+"\"";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     str1=QString(tr("A"));
@@ -176,42 +159,36 @@ void RenameGroup::okData()
   //
   // Update Cart List
   //
-  sql=QString().
-    sprintf("update CART set GROUP_NAME=\"%s\" where GROUP_NAME=\"%s\"",
-	    (const char *)RDEscapeString(group_newname_edit->text()),
-	    (const char *)RDEscapeString(group_name_edit->text()));
+  sql=QString("update CART set ")+
+    "GROUP_NAME=\""+RDEscapeString(group_newname_edit->text())+"\" where "+
+    "GROUP_NAME=\""+RDEscapeString(group_name_edit->text())+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 
   //
   // Update LogManager Events
   //
-  sql=QString().
-    sprintf("update EVENTS set SCHED_GROUP=\"%s\" where SCHED_GROUP=\"%s\"",
-	    (const char *)RDEscapeString(group_newname_edit->text()),
-	    (const char *)RDEscapeString(group_name_edit->text()));
+  sql=QString("update EVENTS set ")+
+    "SCHED_GROUP=\""+RDEscapeString(group_newname_edit->text())+"\" where "+
+    "SCHED_GROUP=\""+RDEscapeString(group_name_edit->text())+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 
   //
   // Update Replicators
   //
-  sql=QString().
-    sprintf("update REPLICATOR_MAP set GROUP_NAME=\"%s\" \
-             where GROUP_NAME=\"%s\"",
-	    (const char *)RDEscapeString(group_newname_edit->text()),
-	    (const char *)RDEscapeString(group_name_edit->text()));
+  sql=QString("update REPLICATOR_MAP set ")+
+    "GROUP_NAME=\""+RDEscapeString(group_newname_edit->text())+"\" where "+
+    "GROUP_NAME=\""+RDEscapeString(group_name_edit->text())+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 
   //
   // Update Dropboxes
   //
-  sql=QString().
-    sprintf("update DROPBOXES set GROUP_NAME=\"%s\" \
-             where GROUP_NAME=\"%s\"",
-	    (const char *)RDEscapeString(group_newname_edit->text()),
-	    (const char *)RDEscapeString(group_name_edit->text()));
+  sql=QString("update DROPBOXES set ")+
+    "GROUP_NAME=\""+RDEscapeString(group_newname_edit->text())+"\" where "+
+    "GROUP_NAME=\""+RDEscapeString(group_name_edit->text())+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 
@@ -219,56 +196,49 @@ void RenameGroup::okData()
   // Update Group List
   //
   if(!merging) {
-    sql=QString().
-      sprintf("update GROUPS set NAME=\"%s\" where NAME=\"%s\"",
-	      (const char *)RDEscapeString(group_newname_edit->text()),
-	      (const char *)RDEscapeString(group_name_edit->text()));
+    sql=QString("update GROUPS set ")+
+      "NAME=\""+RDEscapeString(group_newname_edit->text())+"\" where "+
+      "NAME=\""+RDEscapeString(group_name_edit->text())+"\"";
     q=new RDSqlQuery(sql);
     delete q;
 
     //
     // Update AUDIO_PERMS
     //
-    sql=QString().
-      sprintf("update AUDIO_PERMS set GROUP_NAME=\"%s\" \
-               where GROUP_NAME=\"%s\"",
-	      (const char *)RDEscapeString(group_newname_edit->text()),
-	      (const char *)RDEscapeString(group_name_edit->text()));
+    sql=QString("update AUDIO_PERMS set ")+
+      "GROUP_NAME=\""+RDEscapeString(group_newname_edit->text())+"\" where "+
+      "GROUP_NAME=\""+RDEscapeString(group_name_edit->text())+"\"";
     q=new RDSqlQuery(sql);
     delete q;
 
     //
     // Update USER_PERMS
     //
-    sql=QString().
-      sprintf("update USER_PERMS set GROUP_NAME=\"%s\" where GROUP_NAME=\"%s\"",
-	      (const char *)RDEscapeString(group_newname_edit->text()),
-	      (const char *)RDEscapeString(group_name_edit->text()));
+    sql=QString("update USER_PERMS set ")+
+      "GROUP_NAME=\""+RDEscapeString(group_newname_edit->text())+"\" where "+
+      "GROUP_NAME=\""+RDEscapeString(group_name_edit->text())+"\"";
     q=new RDSqlQuery(sql);
     delete q;
   }
   else {
-    sql=QString().
-      sprintf("delete from GROUPS where NAME=\"%s\"",
-	      (const char *)RDEscapeString(group_name_edit->text()));
+    sql=QString("delete from GROUPS where ")+
+      "NAME=\""+RDEscapeString(group_name_edit->text())+"\"";
     q=new RDSqlQuery(sql);
     delete q;
 
     //
     // Update AUDIO_PERMS
     //
-    sql=QString().
-      sprintf("delete from AUDIO_PERMS where GROUP_NAME=\"%s\"",
-	      (const char *)RDEscapeString(group_name_edit->text()));
+    sql=QString("delete from AUDIO_PERMS where ")+
+      "GROUP_NAME=\""+RDEscapeString(group_name_edit->text())+"\"";
     q=new RDSqlQuery(sql);
     delete q;
     
     //
     // Update USER_PERMS
     //
-    sql=QString().
-      sprintf("delete from USER_PERMS where GROUP_NAME=\"%s\"",
-	      (const char *)RDEscapeString(group_name_edit->text()));
+    sql=QString("delete from USER_PERMS where ")+
+      "GROUP_NAME=\""+RDEscapeString(group_name_edit->text())+"\"";
     q=new RDSqlQuery(sql);
     delete q;
   }

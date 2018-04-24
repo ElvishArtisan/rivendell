@@ -2,9 +2,7 @@
 //
 // An RSS Feed Generator for Rivendell.
 //
-//   (C) Copyright 2002-2007 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdfeed_script.cpp,v 1.5.4.1 2013/10/16 21:14:38 cvs Exp $
+//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,29 +23,28 @@
 #include <fcntl.h>
 #include <ctype.h>
 
-#include <map>
+#include <QCoreApplication>
+#include <QDateTime>
+#include <QStringList>
 
-#include <qapplication.h>
-#include <qdatetime.h>
-#include <qstringlist.h>
-
+#include <rdapplication.h>
 #include <rdconf.h>
-#include <rdconfig.h>
+#include <rdescape_string.h>
 #include <rdpodcast.h>
-#include <rddb.h>
 #include <rdweb.h>
 #include <rdfeedlog.h>
 #include <rdformpost.h>
 #include <rdfeed.h>
-#include <dbversion.h>
 
-#include <rdfeed_script.h>
+#include "rdfeed_script.h"
 
 char server_name[PATH_MAX];
 
-MainObject::MainObject(QObject *parent,const char *name)
-  :QObject(parent,name)
+MainObject::MainObject(QObject *parent)
+  :QObject(parent)
 {
+  new RDApplication(RDApplication::Cgi,"rdfeed.cgi","CGI");
+
   char keyname[10];
   int cast_id=-1;
   bool count;
@@ -100,42 +97,6 @@ MainObject::MainObject(QObject *parent,const char *name)
     count=true;
   }
 
-  //
-  // Open Database
-  //
-  QSqlDatabase *db=QSqlDatabase::addDatabase(config->mysqlDriver());
-  if(!db) {
-    printf("Content-type: text/html\n\n");
-    printf("rdfeed: unable to initialize connection to database\n");
-    exit(0);
-  }
-  db->setDatabaseName(config->mysqlDbname());
-  db->setUserName(config->mysqlUsername());
-  db->setPassword(config->mysqlPassword());
-  db->setHostName(config->mysqlHostname());
-  if(!db->open()) {
-    printf("Content-type: text/html\n\n");
-    printf("rdfeed: unable to connect to database\n");
-    db->removeDatabase(config->mysqlDbname());
-    exit(0);
-  }
-  RDSqlQuery *q=new RDSqlQuery("select DB from VERSION");
-  if(!q->first()) {
-    printf("Content-type: text/html\n");
-    printf("Status: 500\n\n");
-    printf("rdfeed: missing/invalid database version!\n");
-    db->removeDatabase(config->mysqlDbname());
-    exit(0);
-  }
-  if(q->value(0).toUInt()!=RD_VERSION_DATABASE) {
-    printf("Content-type: text/html\n");
-    printf("Status: 500\n\n");
-    printf("rdfeed: skewed database version!\n");
-    db->removeDatabase(config->mysqlDbname());
-    exit(0);
-  }
-  delete q;
-
   if(cast_id<0) {
     ServeRss(keyname,count);
   }
@@ -149,14 +110,26 @@ void MainObject::ServeRss(const char *keyname,bool count)
   RDSqlQuery *q;
   RDSqlQuery *q1;
 
-  sql=QString().sprintf("select CHANNEL_TITLE,CHANNEL_DESCRIPTION,\
-                         CHANNEL_CATEGORY,CHANNEL_LINK,CHANNEL_COPYRIGHT,\
-                         CHANNEL_WEBMASTER,CHANNEL_LANGUAGE,\
-                         LAST_BUILD_DATETIME,ORIGIN_DATETIME,\
-                         HEADER_XML,CHANNEL_XML,ITEM_XML,BASE_URL,ID, \
-                         UPLOAD_EXTENSION,CAST_ORDER,REDIRECT_PATH,\
-                         BASE_PREAMBLE from FEEDS \
-                         where KEY_NAME=\"%s\"",keyname);
+  sql=QString("select ")+
+    "CHANNEL_TITLE,"+        // 00
+    "CHANNEL_DESCRIPTION,"+  // 01
+    "CHANNEL_CATEGORY,"+     // 02
+    "CHANNEL_LINK,"+         // 03
+    "CHANNEL_COPYRIGHT,"+    // 04
+    "CHANNEL_WEBMASTER,"+    // 05
+    "CHANNEL_LANGUAGE,"+     // 06
+    "LAST_BUILD_DATETIME,"+  // 07
+    "ORIGIN_DATETIME,"+      // 08
+    "HEADER_XML,"+           // 09
+    "CHANNEL_XML,"+          // 10
+    "ITEM_XML,"+             // 11
+    "BASE_URL,ID,"+          // 12
+    "UPLOAD_EXTENSION,"+     // 13
+    "CAST_ORDER,"+           // 14
+    "REDIRECT_PATH,"+        // 15
+    "BASE_PREAMBLE "+        // 16
+    "from FEEDS where "+
+    "KEY_NAME=\""+RDEscapeString(keyname)+"\"";
   q=new RDSqlQuery(sql);
   if(!q->first()) {
     printf("Content-type: text/html\n\n");
@@ -199,14 +172,24 @@ void MainObject::ServeRss(const char *keyname,bool count)
   //
   // Render Item XML
   //
-  sql=QString().sprintf("select ITEM_TITLE,ITEM_DESCRIPTION,ITEM_CATEGORY,\
-                         ITEM_LINK,ITEM_AUTHOR,ITEM_SOURCE_TEXT,\
-                         ITEM_SOURCE_URL,ITEM_COMMENTS,\
-                         AUDIO_FILENAME,AUDIO_LENGTH,AUDIO_TIME,\
-                         EFFECTIVE_DATETIME,ID from PODCASTS \
-                         where (FEED_ID=%d)&&(STATUS=%d) \
-                         order by EFFECTIVE_DATETIME",
-			q->value(13).toUInt(),RDPodcast::StatusActive);
+  sql=QString("select ")+
+    "ITEM_TITLE,"+          // 00
+    "ITEM_DESCRIPTION,"+    // 01
+    "ITEM_CATEGORY,"+       // 02
+    "ITEM_LINK,"+           // 03
+    "ITEM_AUTHOR,"+         // 04
+    "ITEM_SOURCE_TEXT,"+    // 05
+    "ITEM_SOURCE_URL,"+     // 06
+    "ITEM_COMMENTS,"+       // 06
+    "AUDIO_FILENAME,"+      // 07
+    "AUDIO_LENGTH,"+        // 08
+    "AUDIO_TIME,"+          // 09
+    "EFFECTIVE_DATETIME,"+  // 10
+    "ID "+                  // 11
+    "from PODCASTS where "+
+    QString().sprintf("(FEED_ID=%d)&&",q->value(13).toUInt())+
+    QString().sprintf("(STATUS=%d)",RDPodcast::StatusActive)+
+    "order by EFFECTIVE_DATETIME";
   if(q->value(15).toString()=="N") {
     sql+=" desc";
   }
@@ -236,11 +219,13 @@ void MainObject::ServeLink(const char *keyname,int cast_id,bool count)
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString().sprintf("select FEEDS.BASE_URL,PODCASTS.AUDIO_FILENAME from \
-                         FEEDS left join PODCASTS \
-                         on FEEDS.ID=PODCASTS.FEED_ID \
-                         where (FEEDS.KEY_NAME=\"%s\")&&(PODCASTS.ID=%d)",
-			(const char *)keyname,cast_id);
+  sql=QString("select ")+
+    "FEEDS.BASE_URL,"+
+    "PODCASTS.AUDIO_FILENAME "+
+    "from FEEDS left join PODCASTS "+
+    "on FEEDS.ID=PODCASTS.FEED_ID where "+
+    "(FEEDS.KEY_NAME=\""+RDEscapeString(keyname)+"\")&&"+
+    QString().sprintf("(PODCASTS.ID=%d)",cast_id);
   q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;
@@ -335,8 +320,8 @@ QString MainObject::ResolveAuxWildcards(QString xml,QString keyname,
     sql+=",";
   }
   sql=sql.left(sql.length()-1);
-  sql+=QString().sprintf(" from %s_FIELDS where CAST_ID=%u",
-			 (const char *)keyname,cast_id);
+  sql+=QString(" from `")+keyname+"_FIELDS` where "+
+    QString().sprintf("CAST_ID=%u",cast_id);
   q->seek(-1);
   q1=new RDSqlQuery(sql);
   while(q1->next()) {
@@ -358,7 +343,7 @@ bool MainObject::ShouldCount(const QString &hdr)
   int n;
   QString str;
 
-  for(unsigned i=0;i<lines.size();i++) {
+  for(int i=0;i<lines.size();i++) {
     if((n=lines[i].find("="))>0) {
       if(lines[i].left(n).lower()=="bytes") {
 	str=lines[i].right(lines[i].length()-n-1).stripWhiteSpace();
@@ -391,7 +376,7 @@ void MainObject::Redirect(const QString &url)
 
 int main(int argc,char *argv[])
 {
-  QApplication a(argc,argv,false);
-  new MainObject(NULL,"main");
+  QCoreApplication a(argc,argv);
+  new MainObject();
   return a.exec();
 }

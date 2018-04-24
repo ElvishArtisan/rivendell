@@ -1,10 +1,8 @@
 // edit_hostvar.cpp
 //
-// Edit a Rivendell Workstation Configuration
+// Edit a Rivendell Host Variable
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_hostvar.cpp,v 1.8 2010/07/29 19:32:34 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,120 +18,86 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <qbuttongroup.h>
-#include <qsqldatabase.h>
+#include "edit_hostvar.h"
 
-#include <rdcatch_connect.h>
-
-#include <edit_hostvar.h>
-#include <edit_rdlibrary.h>
-#include <edit_rdairplay.h>
-#include <edit_decks.h>
-#include <edit_audios.h>
-#include <edit_ttys.h>
-#include <list_matrices.h>
-#include <list_hostvars.h>
-
-
-EditHostvar::EditHostvar(QString station,QString var,QString *varvalue,
-			 QString *remark,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+EditHostvar::EditHostvar(int id,QWidget *parent)
+  : QDialog(parent)
 {
-  edit_varvalue=varvalue;
-  edit_remark=remark;
-
   //
   // Create Fonts
   //
   QFont font=QFont("Helvetica",12,QFont::Bold);
   font.setPixelSize(12);
 
-  setCaption(tr("Edit Host Variable"));
+  setWindowTitle("RDAdmin - "+tr("Edit Host Variable"));
 
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+
+  edit_hostvar=new RDHostVariable(id);
 
   //
   // Variable Name
   //
-  edit_name_edit=new QLineEdit(this,"edit_name_edit");
-  edit_name_edit->setGeometry(125,11,120,19);
+  edit_name_edit=new QLineEdit(this);
   edit_name_edit->setReadOnly(true);
-  QLabel *label=new QLabel(edit_name_edit,tr("Variable Name:"),
-			   this,"edit_name_label");
-  label->setGeometry(10,11,110,19);
-  label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  edit_name_label=new QLabel(edit_name_edit,tr("Variable Name")+":",this);
+  edit_name_label->setFont(font);
+  edit_name_label->
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Variable Value
   //
-  edit_varvalue_edit=new QLineEdit(this,"edit_varvalue_edit");
-  edit_varvalue_edit->setGeometry(125,33,sizeHint().width()-135,19);
+  edit_varvalue_edit=new QLineEdit(this);
   edit_varvalue_edit->setMaxLength(255);
-  label=new QLabel(edit_varvalue_edit,tr("Variable Value:"),
-		   this,"edit_varvalue_label");
-  label->setGeometry(10,33,110,19);
-  label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  edit_varvalue_label=
+    new QLabel(edit_varvalue_edit,tr("Variable Value")+":",this);
+  edit_varvalue_label->setFont(font);
+  edit_varvalue_label->
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Remark
   //
-  edit_remark_edit=new QLineEdit(this,"edit_remark_edit");
-  edit_remark_edit->setGeometry(125,55,sizeHint().width()-135,19);
+  edit_remark_edit=new QLineEdit(this);
   edit_remark_edit->setMaxLength(255);
-  label=new QLabel(edit_remark_edit,tr("Remark:"),this,"edit_remark_label");
-  label->setGeometry(10,55,110,19);
-  label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  edit_remark_label=new QLabel(edit_remark_edit,tr("Remark")+":",this);
+  edit_remark_label->setFont(font);
+  edit_remark_label->
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   //  Ok Button
   //
-  QPushButton *ok_button=new QPushButton(this,"ok_button");
-  ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
-  ok_button->setDefault(true);
-  ok_button->setFont(font);
-  ok_button->setText(tr("&OK"));
-  connect(ok_button,SIGNAL(clicked()),this,SLOT(okData()));
+  edit_ok_button=new QPushButton(this);
+  edit_ok_button->setDefault(true);
+  edit_ok_button->setFont(font);
+  edit_ok_button->setText(tr("&OK"));
+  connect(edit_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
   //  Cancel Button
   //
-  QPushButton *cancel_button=new QPushButton(this,"cancel_button");
-  cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
-			     80,50);
-  cancel_button->setFont(font);
-  cancel_button->setText(tr("&Cancel"));
-  connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
+  edit_cancel_button=new QPushButton(this);
+  edit_cancel_button->setFont(font);
+  edit_cancel_button->setText(tr("&Cancel"));
+  connect(edit_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //
   // Load Values
   //
-  edit_name_edit->setText(var);
-  edit_varvalue_edit->setText(*varvalue);
-  edit_remark_edit->setText(*remark);
+  edit_name_edit->setText(edit_hostvar->name());
+  edit_varvalue_edit->setText(edit_hostvar->value());
+  edit_remark_edit->setText(edit_hostvar->remarks());
 }
 
 
 EditHostvar::~EditHostvar()
 {
+  delete edit_hostvar;
 }
 
 
@@ -151,8 +115,8 @@ QSizePolicy EditHostvar::sizePolicy() const
 
 void EditHostvar::okData()
 {
-  *edit_varvalue=edit_varvalue_edit->text();
-  *edit_remark=edit_remark_edit->text();
+  edit_hostvar->setValue(edit_varvalue_edit->text());
+  edit_hostvar->setRemarks(edit_remark_edit->text());
   done(0);
 }
 
@@ -163,3 +127,14 @@ void EditHostvar::cancelData()
 }
 
 
+void EditHostvar::resizeEvent(QResizeEvent *e)
+{
+  edit_name_label->setGeometry(10,11,110,19);
+  edit_name_edit->setGeometry(125,11,size().width()-135,19);
+  edit_varvalue_label->setGeometry(10,33,110,19);
+  edit_varvalue_edit->setGeometry(125,33,size().width()-135,19);
+  edit_remark_label->setGeometry(10,55,110,19);
+  edit_remark_edit->setGeometry(125,55,size().width()-135,19);
+  edit_ok_button->setGeometry(size().width()-180,size().height()-60,80,50);
+  edit_cancel_button->setGeometry(size().width()-90,size().height()-60,80,50);
+}

@@ -2,9 +2,7 @@
 //
 // List Rivendell Matrices
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_matrices.cpp,v 1.28.6.2 2012/12/10 15:40:15 cvs Exp $
+//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,37 +18,27 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qbuttongroup.h>
+#include <QMessageBox>
 
-#include <rdstation.h>
-#include <rddb.h>
-#include <globals.h>
-#include <list_matrices.h>
-#include <edit_matrix.h>
-#include <add_matrix.h>
+#include <rdapplication.h>
+#include <rdescape_string.h>
 
-ListMatrices::ListMatrices(QString station,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+#include "add_matrix.h"
+#include "edit_matrix.h"
+#include "globals.h"
+#include "list_matrices.h"
+
+ListMatrices::ListMatrices(QString station,QWidget *parent)
+  : QDialog(parent)
 {
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   list_station=station;
-  setCaption(tr("Rivendell Switcher List"));
+  setWindowTitle("RDAdmin - "+tr("Rivendell Switcher List"));
 
   //
   // Create Fonts
@@ -70,28 +58,33 @@ ListMatrices::ListMatrices(QString station,QWidget *parent,const char *name)
   //
   // Matrix List Box
   //
-  list_view=new QListView(this,"list_box");
-  list_view->setGeometry(10,24,sizeHint().width()-20,sizeHint().height()-94);
-  QLabel *label=new QLabel(list_view,tr("Switchers:"),this,"list_view_label");
+  QLabel *label=new QLabel(tr("Switchers:"),this);
   label->setFont(font);
   label->setGeometry(14,5,85,19);
-  list_view->setAllColumnsShowFocus(true);
-  list_view->setItemMargin(5);
-  list_view->addColumn(tr("MATRIX"));
-  list_view->setColumnAlignment(0,Qt::AlignHCenter);
-  list_view->addColumn(tr("DESCRIPTION"));
-  list_view->setColumnAlignment(1,Qt::AlignLeft);
-  list_view->addColumn(tr("TYPE"));
-  list_view->setColumnAlignment(2,Qt::AlignLeft);
-  connect(list_view,SIGNAL(doubleClicked(QListViewItem *,const QPoint &,int)),
-	  this,SLOT(doubleClickedData(QListViewItem *,const QPoint &,int)));
-
-  RefreshList();
+  list_model=new RDSqlTableModel(this);
+  QString sql=QString("select ")+
+    "MATRIX,"+
+    "NAME,"+
+    "TYPE "+
+    "from MATRICES where "+
+    "STATION_NAME=\""+RDEscapeString(list_station)+"\" "+
+    "order by MATRIX";
+  list_model->setQuery(sql);
+  list_model->setHeaderData(0,Qt::Horizontal,tr("Matrix"));
+  list_model->setHeaderData(1,Qt::Horizontal,tr("Description"));
+  list_model->setHeaderData(2,Qt::Horizontal,tr("Type"));
+  list_model->setFieldType(2,RDSqlTableModel::MatrixType);
+  list_view=new RDTableView(this);
+  list_view->setGeometry(10,24,sizeHint().width()-20,sizeHint().height()-94);
+  list_view->setModel(list_model);
+  list_view->resizeColumnsToContents();
+  connect(list_view,SIGNAL(doubleClicked(const QModelIndex &)),
+	  this,SLOT(doubleClickedData(const QModelIndex &)));
 
   //
   //  Add Button
   //
-  QPushButton *add_button=new QPushButton(this,"add_button");
+  QPushButton *add_button=new QPushButton(this);
   add_button->setGeometry(10,sizeHint().height()-60,80,50);
   add_button->setFont(font);
   add_button->setText(tr("&Add"));
@@ -100,7 +93,7 @@ ListMatrices::ListMatrices(QString station,QWidget *parent,const char *name)
   //
   //  Edit Button
   //
-  QPushButton *edit_button=new QPushButton(this,"edit_button");
+  QPushButton *edit_button=new QPushButton(this);
   edit_button->setGeometry(100,sizeHint().height()-60,80,50);
   edit_button->setFont(font);
   edit_button->setText(tr("&Edit"));
@@ -109,7 +102,7 @@ ListMatrices::ListMatrices(QString station,QWidget *parent,const char *name)
   //
   //  Delete Button
   //
-  QPushButton *delete_button=new QPushButton(this,"delete_button");
+  QPushButton *delete_button=new QPushButton(this);
   delete_button->setGeometry(190,sizeHint().height()-60,80,50);
   delete_button->setFont(font);
   delete_button->setText(tr("&Delete"));
@@ -118,7 +111,7 @@ ListMatrices::ListMatrices(QString station,QWidget *parent,const char *name)
   //
   //  Close Button
   //
-  QPushButton *close_button=new QPushButton(this,"close_button");
+  QPushButton *close_button=new QPushButton(this);
   close_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			    80,50);
   close_button->setDefault(true);
@@ -159,11 +152,11 @@ void ListMatrices::addData()
   RDMatrix *matrix=new RDMatrix(list_station,matrix_num);
   EditMatrix *edit=new EditMatrix(matrix,this);
   if(edit->exec()!=0) {
-    DeleteMatrix(matrix_num);
+    RDMatrix::remove(list_station,matrix_num);
   }
   else {
     list_matrix_modified[matrix_num]=true;
-    AddList(matrix_num);
+    list_model->update();
   }
   delete edit;
   delete matrix;
@@ -172,56 +165,38 @@ void ListMatrices::addData()
 
 void ListMatrices::editData()
 {
-  if(list_view->selectedItem()==NULL) {
-    return;
+  QItemSelectionModel *s=list_view->selectionModel();
+  if(s->hasSelection()) {
+    RDMatrix *matrix=new RDMatrix(list_station,s->selectedRows()[0].data().toInt());
+    EditMatrix *edit=new EditMatrix(matrix,this);
+    if(edit->exec()==0) {
+      list_model->update();
+      list_matrix_modified[s->selectedRows()[0].data().toInt()]=true;
+    }
+    delete edit;
+    delete matrix;
   }
-  int matrix_num=list_view->currentItem()->text(0).toInt();
-  RDMatrix *matrix=new RDMatrix(list_station,matrix_num);
-  QListViewItem *item=list_view->selectedItem();
-  EditMatrix *edit=new EditMatrix(matrix,this);
-  if(edit->exec()==0) {
-    RefreshRecord(item);
-    list_matrix_modified[matrix_num]=true;
-  }
-  delete edit;
-  delete matrix;
 }
 
 
 void ListMatrices::deleteData()
 {
-  QString str1;
-  QString str2;
-  QString str3;
-
-  if(list_view->currentItem()==NULL) {
-    return;
+  QItemSelectionModel *s=list_view->selectionModel();
+  if(s->hasSelection()) {
+    if(QMessageBox::question(this,"RDAdmin - "+tr("Delete Switcher"),
+			     tr("Are you sure you want to delete this switcher?"),
+			     QMessageBox::No,QMessageBox::Yes)!=
+       QMessageBox::Yes) {
+      return;
+    }
+    RDMatrix::remove(list_station,s->selectedRows()[0].data().toInt());
+    list_matrix_modified[s->selectedRows()[0].data().toInt()]=true;
+    list_model->update();
   }
-  int matrix=list_view->currentItem()->text(0).toInt();
-  QString desc=list_view->currentItem()->text(1);
-  str1=QString(tr("Are you sure you want to delete switcher"));
-  str2=QString(tr("on"));
-  str3=QString(tr("ALL references to this switcher will be deleted!"));
-  QString msg=QString().sprintf("%s \"%d:%s\" %s \"%s\"?\n%s",
-				(const char *)str1,
-				matrix,
-				(const char *)desc,
-				(const char *)str2,
-				(const char *)list_station,
-				(const char *)str3);
-  if(QMessageBox::warning(this,tr("Deleting Switcher"),msg,
-			  QMessageBox::Yes,QMessageBox::No)!=
-     QMessageBox::Yes) {
-    return;
-  }
-  DeleteMatrix(matrix);
-  list_matrix_modified[matrix]=true;
-  RefreshList();
 }
 
 
-void ListMatrices::doubleClickedData(QListViewItem *item,const QPoint &pt,
-				     int col)
+void ListMatrices::doubleClickedData(const QModelIndex &index)
 {
   editData();
 }
@@ -241,96 +216,9 @@ void ListMatrices::closeData()
     if(list_matrix_modified[i]) {
       macro.setAddress(rmt_station->address());
       macro.setArg(0,i);
-      rdripc->sendRml(&macro);
+      rda->ripc()->sendRml(&macro);
     }
   }
   delete rmt_station;
   done(0);
-}
-
-
-void ListMatrices::DeleteMatrix(int matrix)
-{
-  QString sql=QString().sprintf("delete from MATRICES where \
-                               STATION_NAME=\"%s\" && MATRIX=%d",
-				(const char *)list_station,
-				matrix);
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString().sprintf("delete from INPUTS where \
-                         STATION_NAME=\"%s\" && MATRIX=%d",
-			(const char *)list_station,
-			matrix);
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString().sprintf("delete from OUTPUTS where \
-                         STATION_NAME=\"%s\" && MATRIX=%d",
-			(const char *)list_station,
-			matrix);
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString().sprintf("delete from SWITCHER_NODES where \
-                         STATION_NAME=\"%s\" && MATRIX=%d",
-			(const char *)list_station,
-			matrix);
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString().sprintf("delete from GPIS where \
-                         STATION_NAME=\"%s\" && MATRIX=%d",
-			(const char *)list_station,
-			matrix);
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString().sprintf("delete from GPOS where \
-                         STATION_NAME=\"%s\" && MATRIX=%d",
-			(const char *)list_station,
-			matrix);
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString().sprintf("delete from VGUEST_RESOURCES where \
-                         STATION_NAME=\"%s\" && MATRIX_NUM=%d",
-			(const char *)list_station,
-			matrix);
-  q=new RDSqlQuery(sql);
-  delete q;
-}
-
-
-void ListMatrices::RefreshList()
-{
-  QListViewItem *l;
-
-  list_view->clear();
-  QString sql=QString().sprintf("select MATRIX,NAME,TYPE from MATRICES \
-                                 where STATION_NAME=\"%s\" order by MATRIX",
-				(const char *)list_station);
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  while(q->next()) {
-    l=new QListViewItem(list_view);
-    l->setText(0,q->value(0).toString());
-    l->setText(1,q->value(1).toString());
-    l->setText(2,RDMatrix::typeString((RDMatrix::Type)q->value(2).toInt()));
-  }
-  delete q;
-}
-
-
-void ListMatrices::AddList(int matrix_num)
-{
-  RDMatrix *matrix=new RDMatrix(list_station,matrix_num);
-  QListViewItem *item=new QListViewItem(list_view);
-  item->setText(0,QString().sprintf("%d",matrix_num));
-  item->setText(1,matrix->name());
-  item->setText(2,RDMatrix::typeString(matrix->type()));
-  delete matrix;
-  list_view->setCurrentItem(item);
-  list_view->setSelected(item,true);
-}
-
-
-void ListMatrices::RefreshRecord(QListViewItem *item)
-{
-  RDMatrix *matrix=new RDMatrix(list_station,item->text(0).toInt());
-  item->setText(1,matrix->name());
-  delete matrix;
 }

@@ -2,9 +2,7 @@
 //
 // A Utility to Purge Expired Podcasts.
 //
-//   (C) Copyright 2007 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdpurgecasts.cpp,v 1.7 2011/06/21 22:20:44 cvs Exp $
+//   (C) Copyright 2007,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,26 +27,26 @@
 #include <fcntl.h>
 #include <ctype.h>
 
-#include <qapplication.h>
-#include <qdir.h>
+#include <QCoreApplication>
+#include <QDir>
 
 #include <rd.h>
+#include <rdapplication.h>
 #include <rdconf.h>
-#include <rdpurgecasts.h>
-#include <rdlibrary_conf.h>
 #include <rdescape_string.h>
-#include <rddb.h>
 #include <rdurl.h>
 #include <rdfeed.h>
 #include <rdpodcast.h>
 
+#include "rdpurgecasts.h"
 
-MainObject::MainObject(QObject *parent,const char *name)
-  :QObject(parent,name)
+MainObject::MainObject(QObject *parent)
+  :QObject(parent)
 {
+  new RDApplication(RDApplication::Console,"rdpurgecasts",RDPURGECASTS_USAGE);
+
   QString sql;
   RDSqlQuery *q;
-  unsigned schema=0;
 
   //
   // Initialize Data Structures
@@ -58,38 +56,17 @@ MainObject::MainObject(QObject *parent,const char *name)
   //
   // Read Command Options
   //
-  purge_cmd=new RDCmdSwitch(qApp->argc(),qApp->argv(),
-			     "rdpurgecasts",RDPURGECASTS_USAGE);
-  if(purge_cmd->keys()>2) {
+  if(rda->cmdSwitch()->keys()>2) {
     fprintf(stderr,"\n");
     fprintf(stderr,"%s",RDPURGECASTS_USAGE);
     fprintf(stderr,"\n");
-    delete purge_cmd;
     exit(256);
   }
-  for(unsigned i=0;i<purge_cmd->keys();i++) {
-    if(purge_cmd->key(i)=="--verbose") {
+  for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
+    if(rda->cmdSwitch()->key(i)=="--verbose") {
       purge_verbose=true;
     }
   }
-
-  //
-  // Read Configuration
-  //
-  purge_config=new RDConfig();
-  purge_config->load();
-
-  //
-  // Open Database
-  //
-  QString err (tr("rdpurgecasts: "));
-  QSqlDatabase *db=RDInitDb(&schema,&err);
-  if(!db) {
-    fprintf(stderr,err.ascii());
-    delete purge_cmd;
-    exit(256);
-  }
-  delete purge_cmd;
 
   //
   // Scan Podcasts
@@ -132,7 +109,7 @@ void MainObject::PurgeCast(unsigned id)
   while(q->next()) {
     feed=new RDFeed(q->value(0).toUInt());
     cast=new RDPodcast(id);
-    cast->removeAudio(feed,&errs,purge_config->logXloadDebugData());
+    cast->removeAudio(feed,&errs,rda->config()->logXloadDebugData());
     if(purge_verbose) {
       printf("purging cast: ID=%d,cmd=\"%s\"\n",id,(const char *)cmd);
     }
@@ -148,8 +125,8 @@ void MainObject::PurgeCast(unsigned id)
     else {
       QString keyname=q->value(2).toString();
       keyname.replace(" ","_");
-      sql=QString().sprintf("delete from %s_FLG where CAST_ID=%d",
-			    (const char *)keyname,id);
+      sql=QString("delete from `")+keyname+"_FLG` where "+
+	QString().sprintf("CAST_ID=%d",id);
       q1=new RDSqlQuery(sql);
       delete q1;
 
@@ -157,11 +134,10 @@ void MainObject::PurgeCast(unsigned id)
       q1=new RDSqlQuery(sql);
       delete q1;
     }
-    sql=QString().sprintf("update FEEDS set LAST_BUILD_DATETIME=\"%s\" \
-                           where ID=%u",
-			  (const char *)current_datetime.
-			  toString("yyyy-MM-dd hh:mm:ss"),
-			  q->value(0).toUInt());
+    sql=QString("update FEEDS set ")+
+      "LAST_BUILD_DATETIME=\""+
+      current_datetime.toString("yyyy-MM-dd hh:mm:ss")+"\" where "+
+      QString().sprintf("ID=%u",q->value(0).toUInt());
     q1=new RDSqlQuery(sql);
     delete q1;
 
@@ -172,7 +148,7 @@ void MainObject::PurgeCast(unsigned id)
   
 int main(int argc,char *argv[])
 {
-  QApplication a(argc,argv,false);
-  new MainObject(NULL,"main");
+  QCoreApplication a(argc,argv);
+  new MainObject();
   return a.exec();
 }

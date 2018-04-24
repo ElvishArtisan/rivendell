@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell Cart
 //
-//   (C) Copyright 2002 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_cart.h,v 1.30.2.2 2014/01/13 23:02:42 cvs Exp $
+//   (C) Copyright 2002,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,17 +23,19 @@
 
 #include <qdialog.h>
 #include <qlabel.h>
-#include <qlistview.h>
-#include <qlistbox.h>
+#include <q3listview.h>
+#include <q3listbox.h>
 #include <qcombobox.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qpixmap.h>
 #include <qcheckbox.h>
 #include <qsqldatabase.h>
 #include <qlineedit.h>
 #include <qcheckbox.h>
+//Added by qt3to4:
+#include <QCloseEvent>
 #include <globals.h>
-#include <qdatetimeedit.h>
+#include <q3datetimeedit.h>
 
 #include <rdcart.h>
 #include <rdlibrary_conf.h>
@@ -50,11 +50,11 @@ class EditCart : public QDialog
   Q_OBJECT
  public:
   EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
-	   QWidget *parent=0,const char *name=0,QListView *lib_cart_list=NULL);
+	   QWidget *parent=0,const char *name=0,Q3ListView *lib_cart_list=NULL);
   ~EditCart();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
-  
+
  private slots:
   void notesData();
   void scriptData();
@@ -71,7 +71,7 @@ class EditCart : public QDialog
 
  private:
   void PopulateGroupList();
-  QListView *lib_cart_list_edit;
+  Q3ListView *lib_cart_list_edit;
   bool ValidateLengths();
   RDCart *rdcart_cart;
   QLineEdit *rdcart_type_edit;
@@ -79,6 +79,8 @@ class EditCart : public QDialog
   QComboBox *rdcart_group_box;
   QLineEdit *rdcart_group_edit;
   AudioControls rdcart_controls;
+  QComboBox *rdcart_cut_sched_box;
+  QLineEdit *rdcart_cut_sched_edit;
   QCheckBox *rdcart_syncronous_box;
   QCheckBox *rdcart_use_event_length_box;
   QLabel *rdcart_syncronous_label;

@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>EditCast</name>
     <message>
@@ -275,6 +277,10 @@ Podcast trotzdem löschen?</translation>
         <source>Continue deleting cast?</source>
         <translation>Löschen des Podcasts fortsetzen?</translation>
     </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MainWidget</name>
@@ -288,7 +294,7 @@ Podcast trotzdem löschen?</translation>
     </message>
     <message>
         <source>Can&apos;t Connect</source>
-        <translation>Kann mich nicht verbinden</translation>
+        <translation type="obsolete">Kann mich nicht verbinden</translation>
     </message>
     <message>
         <source>Key Name</source>

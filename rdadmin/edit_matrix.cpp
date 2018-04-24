@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell Matrix
 //
-//   (C) Copyright 2002-2012 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_matrix.cpp,v 1.36.6.5.2.1 2014/06/24 18:27:05 cvs Exp $
+//   (C) Copyright 2002-2012,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,32 +18,24 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qtextedit.h>
-#include <qpainter.h>
-#include <qmessagebox.h>
-#include <qsqldatabase.h>
+#include <QMessageBox>
+#include <QPainter>
 
 #include <rd.h>
-#include <rdmatrix.h>
-#include <rdtextvalidator.h>
-#include <rddb.h>
-#include <rdcart_dialog.h>
+#include <rdapplication.h>
 #include <rdescape_string.h>
 
-#include "globals.h"
-#include "edit_user.h"
 #include "edit_matrix.h"
+#include "globals.h"
 #include "list_endpoints.h"
 #include "list_gpis.h"
-#include "list_nodes.h"
 #include "list_livewiregpios.h"
-#include "list_vguest_resources.h"
+#include "list_nodes.h"
 #include "list_sas_resources.h"
+#include "list_vguest_resources.h"
 
-EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent,const char *name)
-  : QDialog(parent,name)
+EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
+  : QDialog(parent)
 {
   QString str;
 
@@ -56,12 +46,10 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent,const char *name)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
-  setCaption(tr("RDAdmin - Edit Switcher"));
+  setWindowTitle("RDAdmin - "+tr("Edit Switcher"));
 
   //
   // Create Fonts
@@ -70,11 +58,6 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent,const char *name)
   bold_font.setPixelSize(12);
   QFont font=QFont("Helvetica",12,QFont::Normal);
   font.setPixelSize(12);
-
-  //
-  // Text Validator
-  //
-  RDTextValidator *validator=new RDTextValidator(this);
 
   //
   // Matrix Number
@@ -103,7 +86,6 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent,const char *name)
   //
   edit_name_edit=new QLineEdit(this);
   edit_name_edit->setGeometry(135,50,240,19);
-  edit_name_edit->setValidator(validator);
   label=new QLabel(edit_name_edit,tr("Description:"),this);
   label->setGeometry(10,50,120,19);
   label->setFont(bold_font);
@@ -367,7 +349,6 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent,const char *name)
   //
   edit_device_edit=new QLineEdit(this);
   edit_device_edit->setGeometry(75,396,90,19);
-  edit_device_edit->setValidator(validator);
   edit_device_label=new QLabel(edit_device_edit,tr("Device:"),this);
   edit_device_label->setGeometry(5,396,65,19);
   edit_device_label->setFont(bold_font);
@@ -1094,6 +1075,8 @@ void EditMatrix::livewireGpioButtonData()
 
 void EditMatrix::vguestRelaysButtonData()
 {
+  edit_matrix->resizeVguestResources(RDMatrix::VguestTypeRelay,
+				     edit_gpos_box->value(),true);
   ListVguestResources *dialog=
     new ListVguestResources(edit_matrix,RDMatrix::VguestTypeRelay,
 			    edit_gpos_box->value(),this);
@@ -1104,6 +1087,8 @@ void EditMatrix::vguestRelaysButtonData()
 
 void EditMatrix::vguestDisplaysButtonData()
 {
+  edit_matrix->resizeVguestResources(RDMatrix::VguestTypeDisplay,
+				     edit_displays_box->value(),true);
   ListVguestResources *dialog=
     new ListVguestResources(edit_matrix,RDMatrix::VguestTypeDisplay,
 			    edit_displays_box->value(),this);
@@ -1125,7 +1110,7 @@ void EditMatrix::startCartData()
 {
   int cartnum=edit_start_cart_edit->text().toUInt();
   if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,NULL,0,
-			     admin_user->name(),admin_user->password())==0) {
+			     rda->user()->name(),rda->user()->password())==0) {
     if(cartnum>0) {
       edit_start_cart_edit->setText(QString().sprintf("%06u",cartnum));
     }
@@ -1140,7 +1125,7 @@ void EditMatrix::stopCartData()
 {
   int cartnum=edit_stop_cart_edit->text().toUInt();
   if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,NULL,0,
-			     admin_user->name(),admin_user->password())==0) {
+			     rda->user()->name(),rda->user()->password())==0) {
     if(cartnum>0) {
       edit_stop_cart_edit->setText(QString().sprintf("%06u",cartnum));
     }
@@ -1155,7 +1140,7 @@ void EditMatrix::startCart2Data()
 {
   int cartnum=edit_start_cart2_edit->text().toUInt();
   if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,NULL,0,
-			     admin_user->name(),admin_user->password())==0) {
+			     rda->user()->name(),rda->user()->password())==0) {
     if(cartnum>0) {
       edit_start_cart2_edit->setText(QString().sprintf("%06u",cartnum));
     }
@@ -1170,7 +1155,7 @@ void EditMatrix::stopCart2Data()
 {
   int cartnum=edit_stop_cart2_edit->text().toUInt();
   if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,NULL,0,
-			     admin_user->name(),admin_user->password())==0) {
+			     rda->user()->name(),rda->user()->password())==0) {
     if(cartnum>0) {
       edit_stop_cart2_edit->setText(QString().sprintf("%06u",cartnum));
     }
@@ -1321,6 +1306,15 @@ bool EditMatrix::WriteMatrix()
     setStartCart(RDMatrix::Backup,edit_start_cart2_edit->text().toUInt());
   edit_matrix->
     setStopCart(RDMatrix::Backup,edit_stop_cart2_edit->text().toUInt());
+
+  edit_matrix->resizeEndpoints(RDMatrix::Input,edit_inputs_box->value(),false);
+  edit_matrix->
+    resizeEndpoints(RDMatrix::Output,edit_outputs_box->value(),false);
+
+  edit_matrix->resizeVguestResources(RDMatrix::VguestTypeRelay,
+				     edit_gpos_box->value(),false);
+  edit_matrix->resizeVguestResources(RDMatrix::VguestTypeDisplay,
+				     edit_displays_box->value(),false);
 
   return true;
 }

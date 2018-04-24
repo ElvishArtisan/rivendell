@@ -2,9 +2,7 @@
 //
 //   An flashing button widget.
 //
-//   (C) Copyright 2002 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdlineedit.cpp,v 1.1 2007/09/14 14:06:24 fredg Exp $
+//   (C) Copyright 2002,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -22,15 +20,17 @@
 //
 
 #include <rdlineedit.h>
+//Added by qt3to4:
+#include <QKeyEvent>
 
-RDLineEdit::RDLineEdit(QWidget *parent,const char *name)
-  : QLineEdit(parent,name)
+RDLineEdit::RDLineEdit(QWidget *parent)
+  : QLineEdit(parent)
 {
 }
 
 
-RDLineEdit::RDLineEdit(const QString &contents,QWidget *parent,const char *name)
-  : QLineEdit(contents,parent,name)
+RDLineEdit::RDLineEdit(const QString &contents,QWidget *parent)
+  : QLineEdit(contents,parent)
 {
 }
 

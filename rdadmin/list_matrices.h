@@ -2,9 +2,7 @@
 //
 // List Rivendell Matrices
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_matrices.h,v 1.9.8.1 2012/12/10 15:40:15 cvs Exp $
+//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,22 +21,18 @@
 #ifndef LIST_MATRICES_H
 #define LIST_MATRICES_H
 
-#include <qdialog.h>
-#include <qlistview.h>
-#include <qtextedit.h>
-#include <qpixmap.h>
-#include <qradiobutton.h>
-#include <qsqldatabase.h>
+#include <QDialog>
 
 #include <rd.h>
 #include <rdmatrix.h>
-
+#include <rdsqltablemodel.h>
+#include <rdtableview.h>
 
 class ListMatrices : public QDialog
 {
  Q_OBJECT
  public:
-  ListMatrices(QString station,QWidget *parent=0,const char *name=0);
+  ListMatrices(QString station,QWidget *parent=0);
   ~ListMatrices();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -47,19 +41,16 @@ class ListMatrices : public QDialog
    void addData();
    void editData();
    void deleteData();
-   void doubleClickedData(QListViewItem *item,const QPoint &pt,int col);
+   void doubleClickedData(const QModelIndex &index);
    void closeData();
 
   private:
-   void DeleteMatrix(int matrix);
-   void RefreshList();
-   void AddList(int matrix_num);
-   void RefreshRecord(QListViewItem *item);
-   QListView *list_view;
+   RDSqlTableModel *list_model;
+   RDTableView *list_view;
    QString list_station;
    bool list_matrix_modified[MAX_MATRICES];
 };
 
 
-#endif
+#endif  // LIST_MATRICES_H
 

@@ -29,6 +29,9 @@ authentication.
 PRIVILEDGED - a connection must be authenticated before these can be
 executed.
 
+DE <deck> <number>! -- Deck Event Processed
+Sent by RDCatchd whenever a deck event is processed.
+
 RD! -- Reload Deck List
 Reload the record/play deck configuration.  Rdcatchd will respond with RD
 +!.

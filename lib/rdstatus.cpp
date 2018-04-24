@@ -2,9 +2,7 @@
 //
 // Functions for getting system status.
 //
-//   (C) Copyright 2012 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdstatus.cpp,v 1.1.2.2 2012/10/22 23:09:39 cvs Exp $
+//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -27,6 +25,8 @@
 
 #include <qstringlist.h>
 #include <qsqldatabase.h>
+//Added by qt3to4:
+#include <QSqlQuery>
 
 #include "rdstatus.h"
 
@@ -66,9 +66,10 @@ bool RDAudioStoreValid(RDConfig *config)
 bool RDDbValid(RDConfig *config,int *schema)
 {
   QString sql;
-  QSqlQuery *q;
+  //  QSqlQuery *q;
   bool ret=false;
 
+  /*
   QSqlDatabase *db=QSqlDatabase::addDatabase(config->mysqlDriver());
   if(db) {
     db->setDatabaseName(config->mysqlDbname());
@@ -87,5 +88,6 @@ bool RDDbValid(RDConfig *config,int *schema)
     }
     QSqlDatabase::removeDatabase(db);
   }
+  */
   return ret;
 }

@@ -2,9 +2,7 @@
 //
 // On Air Playout Utility for Rivendell.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: loglinebox.h,v 1.47.8.6 2014/02/06 20:43:51 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,7 +18,6 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-
 #ifndef LOGLINEBOX_H
 #define LOGLINEBOX_H
 
@@ -30,9 +27,15 @@
 #include <qtimer.h>
 #include <qdatetime.h>
 #include <qpushbutton.h>
-#include <qprogressbar.h>
+#include <q3progressbar.h>
 #include <qpalette.h>
 #include <qpixmap.h>
+//Added by qt3to4:
+#include <QDropEvent>
+#include <QPaintEvent>
+#include <QLabel>
+#include <QMouseEvent>
+#include <QDragEnterEvent>
 
 #include <rdlabel.h>
 #include <rdlog_line.h>
@@ -56,7 +59,7 @@ class LogLineBox : public QWidget
  public:
   enum Mode {Full=0,Half=1};
   enum BarMode {Transitioning=0,Stopping=1};
-  LogLineBox(RDAirPlayConf *conf,QWidget *parent=0,const char *name=0);
+  LogLineBox(RDAirPlayConf *conf,QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
   LogLineBox::Mode mode() const;
@@ -109,7 +112,7 @@ class LogLineBox : public QWidget
   QLabel *line_up_label;
   QLabel *line_down_label;
   RDLabel *line_comment_label;
-  QProgressBar *line_position_bar;
+  Q3ProgressBar *line_position_bar;
   QTimer *line_countdown_timer;
   QTime line_end_time;
   int log_id;

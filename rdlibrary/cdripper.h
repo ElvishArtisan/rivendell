@@ -2,9 +2,7 @@
 //
 // CD Ripper Dialog for Rivendell
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: cdripper.h,v 1.14.8.5 2014/01/14 18:02:26 cvs Exp $
+//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,14 +26,17 @@
 #include <qdialog.h>
 #include <qlabel.h>
 #include <qlineedit.h>
-#include <qprogressbar.h>
+#include <q3progressbar.h>
 #include <qtimer.h>
 #include <qdir.h>
 #include <qfile.h>
 #include <qspinbox.h>
 #include <qcombobox.h>
 #include <qcheckbox.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
+//Added by qt3to4:
+#include <QResizeEvent>
+#include <QCloseEvent>
 
 #include <rdcut.h>
 #include <rdtransportbutton.h>
@@ -51,7 +52,7 @@ class CdRipper : public QDialog
   Q_OBJECT
  public:
   CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
-	   bool profile_rip,QWidget *parent=0,const char *name=0);
+	   bool profile_rip,QWidget *parent=0);
   ~CdRipper();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -100,13 +101,13 @@ class CdRipper : public QDialog
   QLabel *rip_artist_label;
   QLineEdit *rip_artist_edit;
   QLabel *rip_other_label;
-  QTextEdit *rip_other_edit;
+  Q3TextEdit *rip_other_edit;
   QCheckBox *rip_apply_box;
   QLabel *rip_apply_label;
   RDTransportButton *rip_eject_button;
   RDTransportButton *rip_play_button;
   RDTransportButton *rip_stop_button;
-  QProgressBar *rip_bar;
+  Q3ProgressBar *rip_bar;
   QLabel *rip_normalize_label;
   QCheckBox *rip_normalize_box;
   QLabel *rip_normalize_box_label;

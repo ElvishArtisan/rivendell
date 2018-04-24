@@ -2,9 +2,7 @@
 //
 // List and Generate Log Reports
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_reports.h,v 1.5 2010/07/29 19:32:37 cvs Exp $
+//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,7 +22,7 @@
 #define LIST_REPORTS_H
 
 #include <qdialog.h>
-#include <qdatetimeedit.h>
+#include <q3datetimeedit.h>
 #include <qcombobox.h>
 #include <qsqldatabase.h>
 
@@ -38,7 +36,7 @@ class ListReports : public QDialog
  ListReports(const QString &logname,const QString &description,
 	     const QString service_name,const QDate &start_date,
 	     const QDate &end_date,bool auto_refresh,RDLogEvent *events,
-	     QWidget *parent=0,const char *name=0);
+	     QWidget *parent=0);
  ~ListReports();
  QSize sizeHint() const;
  QSizePolicy sizePolicy() const;
@@ -59,7 +57,7 @@ class ListReports : public QDialog
   QDate list_end_date;
   bool list_auto_refresh;
   RDLogEvent *list_events;
-  QDateEdit *list_date_edit;
+  Q3DateEdit *list_date_edit;
 };
 
 

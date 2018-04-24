@@ -2,9 +2,7 @@
 //
 // A PodCast Management Utility for Rivendell.
 //
-//   (C) Copyright 2002-2005 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcastmanager.cpp,v 1.15.4.3 2014/01/21 21:59:31 cvs Exp $
+//   (C) Copyright 2002-2005,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,27 +23,27 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
-#endif
-#include <qapplication.h>
-#include <qwindowsstyle.h>
-#include <qwidget.h>
-#include <qpushbutton.h>
-#include <qlabel.h>
-#include <qtextcodec.h>
-#include <qtranslator.h>
-#include <qsettings.h>
-#include <qpainter.h>
-#include <qmessagebox.h>
+#endif  // WIN32
+
+#include <QApplication>
+#include <QLabel>
+#include <QMessageBox>
+#include <QPainter>
+#include <QPixmap>
+#include <QPushButton>
+#include <QResizeEvent>
+#include <QSettings>
+#include <QTextCodec>
+#include <QTranslator>
+#include <QWidget>
+#include <QWindowsStyle>
 
 #include <rd.h>
+#include <rdapplication.h>
 #include <rdconf.h>
-#include <rduser.h>
-#include <rdripc.h>
 #include <rdcastmanager.h>
-#include <rdcmd_switch.h>
-#include <rddb.h>
+#include <rdescape_string.h>
 #include <rdpodcast.h>
-#include <dbversion.h>
 
 #include <list_casts.h>
 #include <globals.h>
@@ -63,31 +61,14 @@
 QString cast_filter;
 QString cast_group;
 QString cast_schedcode;
-RDUser *cast_user;
-RDRipc *cast_ripc;
-RDStation *rdstation_conf;
-RDConfig *config;
-RDSystem *cast_system=NULL;
 
-MainWidget::MainWidget(QWidget *parent,const char *name,WFlags f)
-  :QMainWindow(parent,name,f)
+MainWidget::MainWidget(QWidget *parent)
+  :Q3MainWindow(parent)
 {
+  new RDApplication(RDApplication::Gui,"rdcastmanager",RDCASTMANAGER_USAGE);
+
   QString str1;
   QString str2;
-  bool skip_db_check=false;
-  unsigned schema=0;
-
-  //
-  // Read Command Options
-  //
-  RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdcastmanager","\n");
-  for(unsigned i=0;i<cmd->keys();i++) {
-    if(cmd->key(i)=="--skip-db-check") {
-      skip_db_check=true;
-    }
-  }
-  delete cmd;
 
   //
   // Fix the Window Size
@@ -98,55 +79,24 @@ MainWidget::MainWidget(QWidget *parent,const char *name,WFlags f)
   //
   // Load Local Configs
   //
-  config=new RDConfig();
-  config->load();
   str1=QString("RDCastManager")+" v"+VERSION+" - "+tr("Host");
   str2=QString(tr("User: [Unknown]"));
   setCaption(QString().sprintf("%s: %s, %s",(const char *)str1,
-			       (const char *)config->stationName(),
+			       (const char *)rda->config()->stationName(),
 			       (const char *)str2));
-
-  //
-  // Open Database
-  //
-  QString err;
-  QSqlDatabase *db=RDInitDb(&schema,&err);
-  if(!db) {
-    QMessageBox::warning(this,tr("Can't Connect"),err);
-    exit(0);
-  }
-  if((schema!=RD_VERSION_DATABASE)&&(!skip_db_check)) {
-    fprintf(stderr,
-	    "rdcastmanager: database version mismatch, should be %u, is %u\n",
-	    RD_VERSION_DATABASE,schema);
-    exit(256);
-  }
 
   //
   // RIPC Connection
   //
 #ifndef WIN32
-  cast_ripc=new RDRipc(config->stationName());
-  connect(cast_ripc,SIGNAL(userChanged()),this,SLOT(userChangedData()));
-  cast_ripc->connectHost("localhost",RIPCD_TCP_PORT,config->password());
-#else
-  cast_ripc=NULL;
+  connect(rda->ripc(),SIGNAL(userChanged()),this,SLOT(userChangedData()));
+  rda->ripc()->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 #endif  // WIN32
-
-  //
-  // Station Configuration
-  //
-  rdstation_conf=new RDStation(config->stationName(),this);
-  cast_system=new RDSystem();
 
   //
   // User
   //
-#ifndef WIN32
-  cast_user=NULL;
-#else 
-  cast_user=new RDUser(RD_USER_LOGIN_NAME);
-#endif  // WIN32
+  rda->setUser(RD_USER_LOGIN_NAME);
 
   // 
   // Create Fonts
@@ -168,14 +118,14 @@ MainWidget::MainWidget(QWidget *parent,const char *name,WFlags f)
   //
   // Feed List
   //
-  cast_feed_list=new RDListView(this,"cast_feed_list");
+  cast_feed_list=new RDListView(this);
   cast_feed_list->setFont(default_font);
   cast_feed_list->setAllColumnsShowFocus(true);
   cast_feed_list->setItemMargin(5);
   connect(cast_feed_list,
-	  SIGNAL(doubleClicked(QListViewItem *,const QPoint &,int)),
+	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,
-	  SLOT(feedDoubleclickedData(QListViewItem *,const QPoint &,int)));
+	  SLOT(feedDoubleclickedData(Q3ListViewItem *,const QPoint &,int)));
   cast_feed_list->addColumn("");
   cast_feed_list->setColumnAlignment(0,Qt::AlignCenter);
   cast_feed_list->addColumn(tr("Key Name"));
@@ -190,7 +140,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name,WFlags f)
   //
   // Open Button
   //
-  cast_open_button=new QPushButton(this,"cast_open_button");
+  cast_open_button=new QPushButton(this);
   cast_open_button->setFont(button_font);
   cast_open_button->setText(tr("&View\nFeed"));
   connect(cast_open_button,SIGNAL(clicked()),this,SLOT(openData()));
@@ -198,7 +148,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name,WFlags f)
   //
   // Close Button
   //
-  cast_close_button=new QPushButton(this,"cast_close_button");
+  cast_close_button=new QPushButton(this);
   cast_close_button->setFont(button_font);
   cast_close_button->setText(tr("&Close"));
   connect(cast_close_button,SIGNAL(clicked()),this,SLOT(quitMainWidget()));
@@ -222,16 +172,13 @@ void MainWidget::userChangedData()
   QString str1;
   QString str2;
 
-  if(cast_user!=NULL) {
-    delete cast_user;
-  }
   str1=QString("RDCastManager")+" v"+VERSION+" - "+tr("Host");
   str2=QString(tr("User"));
   setCaption(QString().sprintf("%s: %s, %s: %s",(const char *)str1,
-			       (const char *)config->stationName(),
+			       (const char *)rda->config()->stationName(),
 			       (const char *)str2,
-			       (const char *)cast_ripc->user()));
-  cast_user=new RDUser(cast_ripc->user());
+			       (const char *)rda->ripc()->user()));
+  rda->setUser(rda->ripc()->user());
   RefreshList();
 }
 
@@ -249,7 +196,7 @@ void MainWidget::openData()
 }
 
 
-void MainWidget::feedDoubleclickedData(QListViewItem *,const QPoint &,int)
+void MainWidget::feedDoubleclickedData(Q3ListViewItem *,const QPoint &,int)
 {
   openData();
 }
@@ -277,9 +224,12 @@ void MainWidget::RefreshItem(RDListViewItem *item)
   int active=0;
   int total=0;
 
-  sql=QString().sprintf("select CHANNEL_TITLE,CHANNEL_DESCRIPTION,ID \
-                         from FEEDS where KEY_NAME=\"%s\"",
-			(const char *)item->text(1));
+  sql=QString("select ")+
+    "CHANNEL_TITLE,"+
+    "CHANNEL_DESCRIPTION,"+
+    "ID "+
+    "from FEEDS where "+
+    "KEY_NAME=\""+RDEscapeString(item->text(1))+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     sql=QString().sprintf("select STATUS from PODCASTS where FEED_ID=%u",
@@ -323,9 +273,8 @@ void MainWidget::RefreshList()
     id=item->id();
   }
   cast_feed_list->clear();
-  sql=QString().sprintf("select KEY_NAME from FEED_PERMS \
-                         where USER_NAME=\"%s\"",
-			(const char *)cast_user->name());
+  sql=QString("select KEY_NAME from FEED_PERMS where ")+
+    "USER_NAME=\""+RDEscapeString(rda->user()->name())+"\"";
   q=new RDSqlQuery(sql);
   if(q->size()<=0) {  // No valid feeds!
     delete q;
@@ -333,8 +282,8 @@ void MainWidget::RefreshList()
   }
   sql="select ID,KEY_NAME from FEEDS where ";
   while(q->next()) {
-    sql+=QString().sprintf("(KEY_NAME=\"%s\")||",
-			   (const char *)q->value(0).toString());
+    sql+=QString("(KEY_NAME=")+"\""+
+      RDEscapeString(q->value(0).toString())+"\")||";
   }
   delete q;
   sql=sql.left(sql.length()-2);
@@ -363,6 +312,7 @@ int main(int argc,char *argv[])
   //
   // Load Translations
   //
+  /*
   QString tr_path;
   QString qt_path;
 #ifdef WIN32
@@ -391,11 +341,11 @@ int main(int argc,char *argv[])
   QTranslator tr(0);
   tr.load(tr_path+QString("rdcastmanager_")+QTextCodec::locale(),".");
   a.installTranslator(&tr);
-
+  */
   //
   // Start Event Loop
   //
-  MainWidget *w=new MainWidget(NULL,"main",0);
+  MainWidget *w=new MainWidget();
   a.setMainWidget(w);
   w->setGeometry(w->geometry().x(),w->geometry().y(),w->sizeHint().width(),w->sizeHint().height());
   w->show();

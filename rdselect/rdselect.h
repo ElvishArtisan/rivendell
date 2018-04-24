@@ -2,9 +2,7 @@
 //
 // System Selector for Rivendell
 //
-//   (C) Copyright 2012 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdselect.h,v 1.1.2.3 2012/10/22 18:22:38 cvs Exp $
+//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,11 +26,13 @@
 #include <qwidget.h>
 #include <qsize.h>
 #include <qsizepolicy.h>
-#include <qlistbox.h>
+#include <q3listbox.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
 #include <qstringlist.h>
 #include <qpixmap.h>
+//Added by qt3to4:
+#include <QResizeEvent>
 
 #include <rdconfig.h>
 #include <rdmonitor_config.h>
@@ -41,12 +41,12 @@ class MainWidget : public QWidget
 {
   Q_OBJECT
  public:
-  MainWidget(QWidget *parent=0,const char *name=0);
+  MainWidget(QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 
  private slots:
-  void doubleClickedData(QListBoxItem *item);
+  void doubleClickedData(Q3ListBoxItem *item);
   void okData();
   void cancelData();
   
@@ -64,7 +64,7 @@ class MainWidget : public QWidget
   int select_current_id;
   QLabel *select_current_label;
   QLabel *select_label;
-  QListBox *select_box;
+  Q3ListBox *select_box;
   QPixmap *login_rivendell_map;
   QPushButton *ok_button;
   QPushButton *cancel_button;

@@ -2,9 +2,7 @@
 //
 // Spawn an external text file viewer.
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdtextfile.cpp,v 1.7 2010/07/29 19:32:34 cvs Exp $
+//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,7 +25,7 @@
 #include <stdio.h>
 
 #include <qmessagebox.h>
-#include <qprocess.h>
+#include <q3process.h>
 
 #include <rdconf.h>
 #include <rd.h>
@@ -61,7 +59,7 @@ bool RDTextFile(const QString &data)
   QStringList args;
   args+=editor;
   args+=tempfile;
-  QProcess *proc=new QProcess(args);
+  Q3Process *proc=new Q3Process(args);
   proc->launch("");
   delete proc;
 #else

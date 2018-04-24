@@ -2,9 +2,7 @@
 //
 // System Monitor for Rivendell
 //
-//   (C) Copyright 2012 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdmonitor.cpp,v 1.1.2.13 2014/02/10 20:54:14 cvs Exp $
+//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,17 +24,20 @@
 
 #include <qapplication.h>
 #include <qpainter.h>
-#include <qsqldatabase.h>
 #include <qmessagebox.h>
 #include <qpushbutton.h>
 #include <qlabel.h>
 #include <qtextcodec.h>
 #include <qtranslator.h>
 #include <qpainter.h>
-#include <qprocess.h>
+#include <q3process.h>
 #include <qdir.h>
 #include <qsignalmapper.h>
-#include <qsqldatabase.h>
+//Added by qt3to4:
+#include <QPaintEvent>
+#include <QResizeEvent>
+#include <QPixmap>
+#include <QMouseEvent>
 
 #include <dbversion.h>
 #include <rd.h>
@@ -67,9 +68,8 @@ void SigHandler(int signo)
   }
 }
 
-
-MainWidget::MainWidget(QWidget *parent,const char *name)
-  :QWidget(parent,name,Qt::WStyle_Customize|Qt::WStyle_NoBorder|Qt::WStyle_StaysOnTop|WX11BypassWM)
+MainWidget::MainWidget(QWidget *parent)
+  :QWidget(parent,"",Qt::WStyle_Customize|Qt::WStyle_NoBorder|Qt::WStyle_StaysOnTop|Qt::WX11BypassWM)
 {
   QString str;
   mon_dialog_x=0;
@@ -136,7 +136,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   connect(mon_validate_timer,SIGNAL(timeout()),this,SLOT(validate()));
   mon_validate_timer->start(5000);
 
-  mon_tooltip=new StatusTip(this);
+  //  mon_tooltip=new StatusTip(this);
 
   mon_name_label->setText(mon_rdconfig->label());
   SetPosition();
@@ -178,8 +178,10 @@ void MainWidget::validate()
   //
   // Record Results
   //
+  /*
   mon_tooltip->
     setStatus(QRect(0,0,size().width(),size().height()),db_ok,schema,snd_ok);
+  */
   SetSummaryState(db_ok&&(schema==RD_VERSION_DATABASE)&&snd_ok);
   SetPosition();
 }
@@ -193,7 +195,7 @@ void MainWidget::quitMainWidget()
 
 void MainWidget::mousePressEvent(QMouseEvent *e)
 {
-  if(e->button()!=QMouseEvent::RightButton) {
+  if(e->button()!=Qt::RightButton) {
     e->ignore();
     return;
   }
@@ -210,7 +212,7 @@ void MainWidget::mousePressEvent(QMouseEvent *e)
 
 void MainWidget::mouseDoubleClickEvent(QMouseEvent *e)
 {
-  if(e->button()!=QMouseEvent::LeftButton) {
+  if(e->button()!=Qt::LeftButton) {
     e->ignore();
     return;
   }
@@ -380,6 +382,7 @@ int main(int argc,char *argv[])
   //
   // Load Translations
   //
+  /*
   QTranslator qt(0);
   qt.load(QString(QTDIR)+QString("/translations/qt_")+QTextCodec::locale(),
 	  ".");
@@ -399,11 +402,12 @@ int main(int argc,char *argv[])
   tr.load(QString(PREFIX)+QString("/share/rivendell/rdmonitor_")+
 	     QTextCodec::locale(),".");
   a.installTranslator(&tr);
+  */
 
   //
   // Start Event Loop
   //
-  MainWidget *w=new MainWidget(NULL,"main");
+  MainWidget *w=new MainWidget();
   a.setMainWidget(w);
   w->show();
   return a.exec();

@@ -2,9 +2,7 @@
 //
 // A Rivendell LWRP GPIO driver for LiveWire networks.
 //
-//   (C) Copyright 2013 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: livewire_lwrpgpio.h,v 1.1.2.1 2013/11/17 02:03:21 cvs Exp $
+//   (C) Copyright 2013,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,7 +26,7 @@
 
 #include <vector>
 
-#include <qsocket.h>
+#include <q3socket.h>
 #include <qhostaddress.h>
 #include <qsignalmapper.h>
 #include <qtimer.h>
@@ -46,7 +44,7 @@ class LiveWireLwrpGpio : public Switcher
 {
  Q_OBJECT
  public:
-  LiveWireLwrpGpio(RDMatrix *matrix,QObject *parent=0,const char *name=0);
+  LiveWireLwrpGpio(RDMatrix *matrix,QObject *parent=0);
   ~LiveWireLwrpGpio();
   RDMatrix::Type type();
   unsigned gpiQuantity();

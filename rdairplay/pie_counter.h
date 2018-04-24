@@ -2,9 +2,7 @@
 //
 // The pie counter widget for Rivendell
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: pie_counter.h,v 1.20 2010/07/29 19:32:36 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,6 +25,8 @@
 #include <qdatetime.h>
 #include <qlabel.h>
 #include <qpixmap.h>
+//Added by qt3to4:
+#include <QPaintEvent>
 
 #include <rdlog_line.h>
 #include <rdairplay_conf.h>
@@ -54,7 +54,7 @@ class PieCounter : public QWidget
 {
  Q_OBJECT
  public:
-  PieCounter(int count_length,QWidget *parent=0,const char *name=0);
+  PieCounter(int count_length,QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
   int line() const;

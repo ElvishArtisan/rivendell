@@ -2,9 +2,7 @@
 //
 //   A color-selectable QListViewItem class for Rivendell
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdlistviewitem.h,v 1.10 2010/07/29 19:32:33 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,24 +17,21 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-//
 
 #ifndef RDLISTVIEWITEM_H
 #define RDLISTVIEWITEM_H
 
 #include <vector>
 
-#include <qlistview.h>
+#include <q3listview.h>
 #include <qpixmap.h>
 
 #include <rdlistview.h>
 
-using namespace std;
-
-class RDListViewItem : public QListViewItem
+class RDListViewItem : public Q3ListViewItem
 {
  public:
-  RDListViewItem(QListView *parent);
+  RDListViewItem(Q3ListView *parent);
   int line() const;
   void setLine(int line);
   int id() const;
@@ -48,13 +43,13 @@ class RDListViewItem : public QListViewItem
   void setTextColor(int column,QColor color,int weight);
   void paintCell(QPainter *p,const QColorGroup &cg,int column,
 		 int width,int align);
-  int compare(QListViewItem *i,int col,bool ascending) const;
+  int compare(Q3ListViewItem *i,int col,bool ascending) const;
 
  private:
   int item_line;
   int item_id;
-  vector<QColor> item_text_color;
-  vector<int> item_text_weight;
+  std::vector<QColor> item_text_color;
+  std::vector<int> item_text_weight;
   QColor item_background_color;
   RDListView *list_parent;
 };

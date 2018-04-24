@@ -2,9 +2,7 @@
 //
 // Connection to the Rivendell Core Audio Engine
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcae.cpp,v 1.59.4.5 2013/11/14 02:04:57 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,7 +26,7 @@
 #include <qobject.h>
 #include <ctype.h>
 
-#include <qsocketdevice.h>
+#include <q3socketdevice.h>
 #include <qtimer.h>
 #include <qstringlist.h>
 
@@ -37,9 +35,8 @@
 #include <rddebug.h>
 #include <rdescape_string.h>
 
-RDCae::RDCae(RDStation *station,RDConfig *config,
-	     QObject *parent,const char *name)
-  : QObject(parent,name)
+RDCae::RDCae(RDStation *station,RDConfig *config,QObject *parent)
+  : QObject(parent)
 {
   cae_station=station;
   cae_config=config;
@@ -50,13 +47,13 @@ RDCae::RDCae(RDStation *station,RDConfig *config,
   //
   // TCP Connection
   //
-  cae_socket=new QSocketDevice(QSocketDevice::Stream);
+  cae_socket=new Q3SocketDevice(Q3SocketDevice::Stream);
   cae_socket->setBlocking(false);
 
   //
   // Meter Connection
   //
-  cae_meter_socket=new QSocketDevice(QSocketDevice::Datagram);
+  cae_meter_socket=new Q3SocketDevice(Q3SocketDevice::Datagram);
   cae_meter_socket->setBlocking(false);
   for(Q_INT16 i=30000;i<30100;i++) {
     if(cae_meter_socket->bind(QHostAddress(),i)) {
@@ -149,6 +146,13 @@ bool RDCae::loadPlay(int card,QString name,int *stream,int *handle)
   }
   cae_handle[card][*stream]=*handle;
   cae_pos[card][*stream]=0xFFFFFFFF;
+
+  // CAE Daemon sends back a stream of -1 if there is an issue with allocating it
+  // such as file missing, etc.
+  if(*stream < 0) {
+      return false;
+  }
+
   return true;
 }
 

@@ -2,9 +2,7 @@
 //
 //   A Stereo Audio Meter Widget
 //
-//   (C) Copyright 2002 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdstereometer.h,v 1.4 2010/07/29 19:32:34 cvs Exp $
+//   (C) Copyright 2002,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -19,7 +17,6 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-//
 
 #ifndef RDSTEREOMETER_H
 #define RDSTEREOMETER_H
@@ -30,16 +27,17 @@
 #include <qsize.h>
 #include <qsizepolicy.h>
 #include <qstring.h>
+//Added by qt3to4:
+#include <QPaintEvent>
 #include <rdsegmeter.h>
 
-#define CLIP_LIGHT_COLOR red
-
+#define CLIP_LIGHT_COLOR Qt::red
 
 class RDStereoMeter : public QWidget
 {
  Q_OBJECT
  public:
-  RDStereoMeter(QWidget *parent=0,const char *name=0);
+  RDStereoMeter(QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
   void setReference(int level);

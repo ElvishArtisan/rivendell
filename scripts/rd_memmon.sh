@@ -4,9 +4,7 @@
 #
 #   Display a top session showing Rivendell components
 #
-#   (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
-#
-#      $Id: rd_memmon.sh,v 1.2 2010/10/06 20:40:47 cvs Exp $
+#   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as

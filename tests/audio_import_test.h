@@ -2,9 +2,7 @@
 //
 // Test Rivendell file importing
 //
-//   (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: audio_import_test.h,v 1.2 2010/07/29 19:32:38 cvs Exp $
+//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,24 +24,16 @@
 #include <list>
 
 #include <qobject.h>
-#include <qsqldatabase.h>
 
-#include <rdconfig.h>
 #include <rdsettings.h>
 #include <rdcmd_switch.cpp>
 
 #define AUDIO_IMPORT_TEST_USAGE "[options]\n\nTest the Rivendell audio importer routines\n\nOptions are:\n--username=<username>\n\n--password=<password>\n\n--cart-number=<cartnum>\n\n--cut-number=<cutnum>\n\n--source-file=<filename>\n\n--destination-channels=<chans>\n\n--normalization-level=<dbfs>\n\n--autotrim-level=<dbfs>\n\n--use-metadata\n\n"
 
-//
-// Global Variables
-//
-RDConfig *rdconfig;
-
-
 class MainObject : public QObject
 {
  public:
-  MainObject(QObject *parent=0,const char *name=0);
+  MainObject(QObject *parent=0);
 
  private:
   QString username;

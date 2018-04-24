@@ -2,9 +2,7 @@
 //
 // Abstract a Rivendell User.
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rduser.cpp,v 1.26.8.1 2013/12/03 23:34:34 cvs Exp $
+//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -51,11 +49,12 @@ bool RDUser::authenticated(bool webuser) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("select LOGIN_NAME,ENABLE_WEB from USERS \
-                         where LOGIN_NAME=\"%s\" \
-                         && PASSWORD=\"%s\"",
-			(const char *)RDEscapeString(user_name),
-			(const char *)RDEscapeString(user_password));
+  sql=QString("select ")+
+    "LOGIN_NAME,"+
+    "ENABLE_WEB "+
+    "from USERS where "+
+    "(LOGIN_NAME=\""+RDEscapeString(user_name)+"\")&&"+
+    "(PASSWORD=\""+RDEscapeString(user_password)+"\")";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     bool ret=RDBool(q->value(1).toString())||
@@ -392,9 +391,8 @@ bool RDUser::groupAuthorized(const QString &group_name)
   RDSqlQuery *q;
   bool ret=false;
 
-  sql=QString().
-    sprintf("select GROUP_NAME from USER_PERMS where USER_NAME=\"%s\"",
-	    (const char *)RDEscapeString(user_name));
+  sql=QString("select GROUP_NAME from USER_PERMS where ")+
+    "USER_NAME=\""+RDEscapeString(user_name)+"\"";
   q=new RDSqlQuery(sql);
   ret=q->first();
   delete q;
@@ -426,12 +424,11 @@ bool RDUser::cartAuthorized(unsigned cartnum) const
   RDSqlQuery *q;
   bool ret=false;
 
-  sql=QString().
-      sprintf("select CART.NUMBER from CART \
-               left join USER_PERMS \
-               on CART.GROUP_NAME=USER_PERMS.GROUP_NAME \
-               where (USER_PERMS.USER_NAME=\"%s\")&&(CART.NUMBER=%u)",
-	      (const char *)RDEscapeString(user_name),cartnum);
+  sql=QString("select CART.NUMBER from CART ")+
+    "left join USER_PERMS "+
+    "on CART.GROUP_NAME=USER_PERMS.GROUP_NAME where "+
+    "(USER_PERMS.USER_NAME=\""+RDEscapeString(user_name)+"\")&&"+
+    QString().sprintf("(CART.NUMBER=%u)",cartnum);
   q=new RDSqlQuery(sql);
   ret=q->first();
   delete q;
@@ -469,11 +466,10 @@ QStringList RDUser::services() const
     sql=QString().sprintf("SELECT NAME FROM SERVICES" );
   } 
   else {
-    sql=QString().sprintf("select distinct AUDIO_PERMS.SERVICE_NAME \
-                           from USER_PERMS left join AUDIO_PERMS \
-                           on USER_PERMS.GROUP_NAME=AUDIO_PERMS.GROUP_NAME \
-                           where USER_PERMS.USER_NAME=\"%s\"",
-			  (const char *)RDEscapeString(user_name));
+    sql=QString("select distinct AUDIO_PERMS.SERVICE_NAME ")+
+      "from USER_PERMS left join AUDIO_PERMS "+
+      "on USER_PERMS.GROUP_NAME=AUDIO_PERMS.GROUP_NAME where "+
+      "USER_PERMS.USER_NAME=\""+RDEscapeString(user_name)+"\"";
   }
   
   q=new RDSqlQuery(sql);
@@ -486,15 +482,83 @@ QStringList RDUser::services() const
 }
 
 
+bool RDUser::create(const QString &loginname)
+{
+  QString sql;
+  RDSqlQuery *q;
+  RDSqlQuery *q1;
+  bool ret;
+
+  sql=QString("insert into USERS set ")+
+    "LOGIN_NAME=\""+RDEscapeString(loginname)+"\"";
+  q=new RDSqlQuery(sql);
+  ret=q->isActive();
+  delete q;
+
+  if(ret) {
+    sql=QString("select NAME from GROUPS");
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("insert into USER_PERMS set ")+
+	"USER_NAME=\""+RDEscapeString(loginname)+"\","+
+	"GROUP_NAME=\""+RDEscapeString(q->value(0).toString())+"\"";
+      q1=new RDSqlQuery(sql);
+      delete q1;
+    }
+  }
+  delete q;
+
+  return ret;
+}
+
+
+void RDUser::remove(const QString &login_name)
+{
+  QString sql;
+  RDSqlQuery *q;
+
+  //
+  // Delete RSS Feed Perms
+  //
+  sql=QString("delete from FEED_PERMS where ")+
+    "USER_NAME=\""+RDEscapeString(login_name)+"\"";
+  q=new RDSqlQuery(sql);
+  delete q;
+  
+  //
+  // Delete Member User Perms
+  //
+  sql=QString("delete from USER_PERMS where ")+
+    "USER_NAME=\""+RDEscapeString(login_name)+"\"";
+  q=new RDSqlQuery(sql);
+  delete q;
+  
+  //
+  // Delete from User List
+  //
+  sql=QString("delete from USERS where ")+
+    "LOGIN_NAME=\""+RDEscapeString(login_name)+"\"";
+  q=new RDSqlQuery(sql);
+  delete q;
+
+  //
+  // Delete from Cached Web Connections
+  //
+  sql=QString("delete from WEB_CONNECTIONS where ")+
+    "LOGIN_NAME=\""+RDEscapeString(login_name)+"\"";
+  q=new RDSqlQuery(sql);
+  delete q;
+}
+
+
 void RDUser::SetRow(const QString &param,const QString &value) const
 {
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE USERS SET %s=\"%s\" WHERE LOGIN_NAME=\"%s\"",
-			(const char *)param,
-			(const char *)RDEscapeString(value),
-			(const char *)user_name);
+  sql=QString("update USERS set ")+
+    param+"=\""+RDEscapeString(value)+"\" where "+
+    "LOGIN_NAME=\""+RDEscapeString(user_name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }

@@ -5,10 +5,7 @@
 # A GUi interface for rdtrans.sh script that is used to manage Rivendell
 # translation files.
 #
-# (C) Copyright 2010 Frederick Henderson <frederickjh@henderson-meier.org>
-#
-#      $Id: rdtransgui.sh,v 1.1 2011/03/01 21:00:07 cvs Exp $
-#      $Date: 2011/03/01 21:00:07 $
+# (C) Copyright 2010,2016 Frederick Henderson <frederickjh@henderson-meier.org>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as

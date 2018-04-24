@@ -2,9 +2,7 @@
 //
 // A container class for a Rivendell Loadable Module host.
 //
-//   (C) Copyright 2008 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rlmhost.cpp,v 1.7.6.9.2.1 2014/03/19 19:25:18 cvs Exp $
+//   (C) Copyright 2008,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -33,8 +31,8 @@
 
 
 RLMHost::RLMHost(const QString &path,const QString &arg,
-		 QSocketDevice *udp_socket,QObject *parent,const char *name)
-  : QObject(parent,name)
+		 Q3SocketDevice *udp_socket,QObject *parent)
+  : QObject(parent)
 {
   plugin_path=path;
   plugin_arg=arg;
@@ -188,7 +186,7 @@ void RLMHost::loadMetadata(const RDLogLine *logline,struct rlm_pad *pad,
     pad->rlm_carttype=logline->cartType();
     if(!logline->year().isNull()) {
       snprintf(pad->rlm_year,5,"%s",
-	       (const char *)logline->year().toString("YYYY"));
+	       (const char *)logline->year().toString("yyyy"));
     }
     if(!logline->groupName().isEmpty()) {
       snprintf(pad->rlm_group,11,"%s",
@@ -339,7 +337,7 @@ void RLMHost::ttyReceiveReadyData(int fd)
   int n;
 
   for(unsigned i=0;i<plugin_tty_devices.size();i++) {
-    if(plugin_tty_devices[i]->socket()==fd) {
+    if(plugin_tty_devices[i]->fileDescriptor()==fd) {
       while((n=plugin_tty_devices[i]->readBlock(data,1024))>0) {
 	if(plugin_serial_data_received_sym!=NULL) {
 	  plugin_serial_data_received_sym(this,i,data,n);
@@ -376,10 +374,11 @@ int RLMOpenSerial(void *ptr,const char *port,int speed,int parity,
   host->plugin_tty_devices.back()->setSpeed(speed);
   host->plugin_tty_devices.back()->setParity((RDTTYDevice::Parity)parity);
   host->plugin_tty_devices.back()->setWordLength(word_length);
-  if(host->plugin_tty_devices.back()->open(IO_ReadWrite)) {
+  if(host->plugin_tty_devices.back()->open(QIODevice::ReadWrite)) {
 
     host->plugin_tty_notifiers.
-      push_back(new QSocketNotifier(host->plugin_tty_devices.back()->socket(),
+      push_back(new QSocketNotifier(host->plugin_tty_devices.back()->
+				    fileDescriptor(),
 				    QSocketNotifier::Read));
     host->connect(host->plugin_tty_notifiers.back(),SIGNAL(activated(int)),
 		  host,SLOT(ttyReceiveReadyData(int)));

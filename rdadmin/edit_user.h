@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell User
 //
-//   (C) Copyright 2002 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_user.h,v 1.21 2010/07/29 19:32:34 cvs Exp $
+//   (C) Copyright 2002,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,24 +21,21 @@
 #ifndef EDIT_USER_H
 #define EDIT_USER_H
 
-#include <qdialog.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
-#include <qpixmap.h>
-#include <qcheckbox.h>
-#include <qsqldatabase.h>
-#include <qlineedit.h>
-#include <qlabel.h>
-#include <qpushbutton.h>
+#include <QButtonGroup>
+#include <QCheckBox>
+#include <QDialog>
+#include <QGroupBox>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
 
 #include <rduser.h>
-
 
 class EditUser : public QDialog
 {
   Q_OBJECT
  public:
-  EditUser(const QString &user,QWidget *parent=0,const char *name=0);
+  EditUser(const QString &user,QWidget *parent=0);
   ~EditUser();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -60,11 +55,17 @@ class EditUser : public QDialog
   QLineEdit *user_phone_edit;
   QCheckBox *user_web_box;
   QLabel *user_web_label;
+  QGroupBox *user_admin_groupbox;
+  QLabel *user_admin_config_label;
   QButtonGroup *user_admin_group;
+  QGroupBox *user_prod_groupbox;
   QButtonGroup *user_prod_group;
   QButtonGroup *user_traffic_group;
+  QGroupBox *user_traffic_groupbox;
   QButtonGroup *user_onair_group;
+  QGroupBox *user_onair_groupbox;
   QButtonGroup *user_podcast_group;
+  QGroupBox *user_podcast_groupbox;
   QCheckBox *user_admin_config_button;
   QCheckBox *user_create_carts_button;
   QCheckBox *user_delete_carts_button;

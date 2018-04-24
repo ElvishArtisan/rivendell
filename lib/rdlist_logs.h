@@ -2,14 +2,12 @@
 //
 // Select a Rivendell Log
 //
+//   (C) Copyright 2007,2016 Fred Gleason <fredg@paravelsystems.com>
+//
 // The RDListLogs class creates a basic dialog that displays a list of logs
 // (log name, description, and service) and allows the user to select one.  If
 // user security is enabled (by passing a an RDUser object to the constructor)
 // then the list of logs is filtered based on the users permissions.
-//
-//   (C) Copyright 2007 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdlist_logs.h,v 1.8 2010/07/29 19:32:33 cvs Exp $
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,41 +26,39 @@
 #ifndef RDLIST_LOGS_H
 #define RDLIST_LOGS_H
 
-#include <qsqldatabase.h>
-#include <qdialog.h>
-#include <qlistview.h>
-#include <qpushbutton.h>
-#include <rduser.h>
+#include <QCloseEvent>
+#include <QDialog>
+#include <QPushButton>
 
+#include <rdsqltablemodel.h>
+#include <rdtableview.h>
 
 class RDListLogs : public QDialog
 {
   Q_OBJECT
 
  public:
-  /**
-   * Constructor for the RDListLogs object.
-   *
-   * NOTE: the presence of the optional rduser parameter is used to flag if
-   * user security should be used instead of host based security.
-   */
   RDListLogs(QString *logname,const QString &stationname,
-	     QWidget *parent=0,const char *name=0,RDUser *rduser=0);
+	     QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 
  private slots:
-  void doubleClickedData(QListViewItem *,const QPoint &,int);
-  void closeEvent(QCloseEvent *);
+  void doubleClickedData(const QModelIndex &index);
   void okButtonData();
   void cancelButtonData();
 
+ protected:
+  void resizeEvent(QResizeEvent *e);
+  void closeEvent(QCloseEvent *e);
+
  private:
-  void RefreshList();
-  QListView *list_log_list;
+  RDSqlTableModel *list_model;
+  RDTableView *list_view;
   QString *list_logname;
   QString list_stationname;
-  RDUser *list_user;
+  QPushButton *list_ok_button;
+  QPushButton *list_cancel_button;
 };
 
 

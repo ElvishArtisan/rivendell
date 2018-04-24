@@ -2,9 +2,7 @@
 //
 // The Event Schedule Manager for Rivendell.
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcatch.cpp,v 1.127.4.8 2014/02/11 23:46:30 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,39 +19,38 @@
 //
 
 #include <unistd.h>
-#include <vector>
 
-#include <qapplication.h>
-#include <qwindowsstyle.h>
-#include <qwidget.h>
-#include <qpainter.h>
-#include <qsqlpropertymap.h>
-#include <qmessagebox.h>
-#include <qpushbutton.h>
-#include <qlabel.h>
-#include <qlabel.h>
-#include <qlistview.h>
-#include <qsignalmapper.h>
-#include <qtextcodec.h>
-#include <qtranslator.h>
-#include <qlayout.h>
+#include <Q3ListView>
+#include <Q3SqlPropertyMap>
+#include <QApplication>
+#include <QCloseEvent>
+#include <QLabel>
+#include <QLabel>
+#include <QLayout>
+#include <QMessageBox>
+#include <QPainter>
+#include <QPixmap>
+#include <QPushButton>
+#include <QResizeEvent>
+#include <QSignalMapper>
+#include <QTextCodec>
+#include <QTranslator>
+#include <QWidget>
+#include <QWindowsStyle>
 
+#include <rdapplication.h>
+#include <rdescape_string.h>
 #include <rdprofile.h>
-#include <rddb.h>
 #include <rdconf.h>
 #include <rd.h>
-#include <rduser.h>
-#include <rdripc.h>
 #include <rdcut.h>
 #include <rdcatch.h>
-#include <rdstation.h>
 #include <rddeck.h>
 #include <rdaudio_port.h>
 #include <rdcut_path.h>
 #include <rdmixer.h>
 #include <rdcheck_daemons.h>
 #include <rdsettings.h>
-#include <rdcmd_switch.h>
 #include <rdedit_audio.h>
 #include <dbversion.h>
 
@@ -73,17 +70,10 @@
 //
 // Global Resources
 //
-RDConfig *catch_config;
-RDStation *rdstation_conf;
 RDAudioPort *rdaudioport_conf;
-RDUser *catch_user;
-RDLibraryConf *rdlibrary_conf;
-RDRipc *catch_ripc;
-RDCae *catch_cae;
 RDCartDialog *catch_cart_dialog;
 int catch_audition_card=-1;
 int catch_audition_port=-1;
-RDSystem *catch_system=NULL;
 
 //
 // Icons
@@ -97,31 +87,25 @@ RDSystem *catch_system=NULL;
 #include "../icons/rivendell-22x22.xpm"
 
 
-MainWidget::MainWidget(QWidget *parent,const char *name)
-  :QWidget(parent,name)
+MainWidget::MainWidget(QWidget *parent)
+  :QWidget(parent)
 {
+  new RDApplication(RDApplication::Gui,"rdcatch",RDCATCH_USAGE);
+
   QString str;
   catch_host_warnings=false;
   catch_audition_stream=-1;
-  bool skip_db_check=false;
-  unsigned schema=0;
 
   catch_scroll=false;
 
   //
   // Read Command Options
   //
-  RDCmdSwitch *cmd=new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdcatch",
-				   RDCATCH_USAGE);
-  for(unsigned i=0;i<cmd->keys();i++) {
-    if(cmd->key(i)=="--offline-host-warnings") {
-      catch_host_warnings=RDBool(cmd->value(i));
-    }
-    if(cmd->key(i)=="--skip-db-check") {
-      skip_db_check=true;
+  for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
+    if(rda->cmdSwitch()->key(i)=="--offline-host-warnings") {
+      catch_host_warnings=RDBool(rda->cmdSwitch()->value(i));
     }
   }
-  delete cmd;
 
   //
   // Fix the Window Size
@@ -180,93 +164,65 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   RDInitializeDaemons();
 
-  //
-  // Load Local Configs
-  //
-  catch_config=new RDConfig();
-  catch_config->load();
-
   str=QString("RDCatch")+" v"+VERSION+" - "+tr("Host")+":";
   setCaption(QString().sprintf("%s %s",(const char *)str,
-			       (const char *)catch_config->stationName()));
+			       (const char *)rda->config()->stationName()));
 
   //
   // Open Database
   //
-  QString err (tr("rdcatch : "));
-  catch_db=RDInitDb(&schema,&err);
-  if(!catch_db) {
-    log(RDConfig::LogErr,err);
-    exit(0);
-  }
-  if((schema!=RD_VERSION_DATABASE)&&(!skip_db_check)) {
-    fprintf(stderr,"rdcatch: database version mismatch, should be %u, is %u\n",
-	    RD_VERSION_DATABASE,schema);
-    exit(256);
-  }
+  //  connect(RDDbStatus(),SIGNAL(logText(RDConfig::LogPriority,const QString &)),
+  //	  this,SLOT(log(RDConfig::LogPriority,const QString &)));
 
-  connect(RDDbStatus(),SIGNAL(logText(RDConfig::LogPriority,const QString &)),
-	  this,SLOT(log(RDConfig::LogPriority,const QString &)));
   //
   // Allocate Global Resources
   //
-  rdstation_conf=new RDStation(catch_config->stationName());
-  catch_audition_card=rdstation_conf->cueCard();
-  catch_audition_port=rdstation_conf->cuePort();
-  catch_time_offset=rdstation_conf->timeOffset();
-  catch_system=new RDSystem();
+  catch_audition_card=rda->station()->cueCard();
+  catch_audition_port=rda->station()->cuePort();
+  catch_time_offset=rda->station()->timeOffset();
 
   //
   // Load Audio Settings
   //
-  RDDeck *deck=new RDDeck(catch_config->stationName(),0);
+  RDDeck *deck=new RDDeck(rda->config()->stationName(),0);
   delete deck;
   head_playing=false;
   tail_playing=false;
-  rdaudioport_conf=new RDAudioPort(rdstation_conf->name(),catch_audition_card);
-
-  //
-  // Library Config
-  //
-  rdlibrary_conf=new RDLibraryConf(catch_config->stationName(),0);
+  rdaudioport_conf=new RDAudioPort(rda->station()->name(),catch_audition_card);
 
   //
   // RIPC Connection
   //
-  catch_ripc=new RDRipc(catch_config->stationName());
-  connect(catch_ripc,SIGNAL(connected(bool)),
+  connect(rda->ripc(),SIGNAL(connected(bool)),
 	  this,SLOT(ripcConnectedData(bool)));
-  catch_user=NULL;
-  connect(catch_ripc,SIGNAL(userChanged()),this,SLOT(ripcUserData()));
-  catch_ripc->connectHost("localhost",RIPCD_TCP_PORT,catch_config->password());
+  connect(rda->ripc(),SIGNAL(userChanged()),this,SLOT(ripcUserData()));
+  rda->ripc()->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 
   //
   // CAE Connection
   //
-  catch_cae=new RDCae(rdstation_conf,catch_config,this,"catch_cae");
-  connect(catch_cae,SIGNAL(isConnected(bool)),this,SLOT(initData(bool)));
-  connect(catch_cae,SIGNAL(playing(int)),this,SLOT(playedData(int)));
-  connect(catch_cae,SIGNAL(playStopped(int)),
+  connect(rda->cae(),SIGNAL(isConnected(bool)),this,SLOT(initData(bool)));
+  connect(rda->cae(),SIGNAL(playing(int)),this,SLOT(playedData(int)));
+  connect(rda->cae(),SIGNAL(playStopped(int)),
 	  this,SLOT(playStoppedData(int)));
-  catch_cae->connectHost();
+  rda->cae()->connectHost();
 
   //
   // Set Audio Assignments
   //
-  RDSetMixerPorts(rdstation_conf->name(),catch_cae);
+  RDSetMixerPorts(rda->station()->name(),rda->cae());
 
   //
   // Deck Monitors
   //
-  catch_monitor_view=new QScrollView(this,"catch_monitor_view",
-				     Qt::WNoAutoErase);
+  catch_monitor_view=new Q3ScrollView(this,"",Qt::WNoAutoErase);
   catch_monitor_vbox=new VBox(catch_monitor_view);
   catch_monitor_vbox->setSpacing(2);
   catch_monitor_view->addChild(catch_monitor_vbox);
 
-  QSignalMapper *mapper=new QSignalMapper(this,"deck_mapper");
+  QSignalMapper *mapper=new QSignalMapper(this);
   connect(mapper,SIGNAL(mapped(int)),this,SLOT(abortData(int)));
-  QSignalMapper *mon_mapper=new QSignalMapper(this,"monitor_mapper");
+  QSignalMapper *mon_mapper=new QSignalMapper(this);
   connect(mon_mapper,SIGNAL(mapped(int)),this,SLOT(monitorData(int)));
   QString sql;
   RDSqlQuery *q1;
@@ -276,7 +232,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   catch_station_count=0;
   while(q->next()) {
     catch_connect[catch_station_count].connect=
-      new RDCatchConnect(catch_station_count,this,"catch_connect");
+      new RDCatchConnect(catch_station_count,this);
     catch_connect[catch_station_count].station=
       q->value(0).toString().lower();
     connect(catch_connect[catch_station_count].connect,
@@ -299,16 +255,25 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
 	    SIGNAL(eventPurged(int)),
 	    this,SLOT(eventPurgedData(int)));
     connect(catch_connect[catch_station_count].connect,
+	    SIGNAL(deckEventSent(int,int,int)),
+	    this,SLOT(deckEventSentData(int,int,int)));
+    connect(catch_connect[catch_station_count].connect,
 	    SIGNAL(heartbeatFailed(int)),
 	    this,SLOT(heartbeatFailedData(int)));
     catch_connect[catch_station_count].connect->
       connectHost(q->value(1).toString(),RDCATCHD_TCP_PORT,
-		  catch_config->password());
+		  rda->config()->password());
     catch_station_count++;
 
-    sql=QString().sprintf("select CHANNEL,MON_PORT_NUMBER from DECKS \
-where (CARD_NUMBER!=-1)&&(PORT_NUMBER!=-1)&&(CHANNEL>0)&&(STATION_NAME=\"%s\") \
-order by CHANNEL",(const char *)q->value(0).toString().lower());
+    sql=QString("select ")+
+      "CHANNEL,"+
+      "MON_PORT_NUMBER "+
+      "from DECKS where "+
+      "(CARD_NUMBER!=-1)&&"+
+      "(PORT_NUMBER!=-1)&&"+
+      "(CHANNEL>0)&&"+
+      "(STATION_NAME=\""+RDEscapeString(q->value(0).toString().lower())+"\") "+
+      "order by CHANNEL";
     q1=new RDSqlQuery(sql);
     while(q1->next()) {
       catch_connect[catch_station_count-1].
@@ -327,7 +292,7 @@ order by CHANNEL",(const char *)q->value(0).toString().lower());
 
       catch_monitor.back()->deckMon()->
 	enableMonitorButton((q1->value(1).toInt()>=0)&&
-			    (catch_config->stationName().lower()==
+			    (rda->config()->stationName().lower()==
 			     q->value(0).toString().lower()));
       catch_monitor.back()->deckMon()->show();
       mapper->setMapping(catch_monitor.back()->deckMon(),
@@ -347,11 +312,6 @@ order by CHANNEL",(const char *)q->value(0).toString().lower());
   }
 
   //
-  // User
-  //
-  catch_user=NULL;
-
-  //
   // Filter Selectors
   //
   catch_show_active_box=new QCheckBox(this,"catch_show_active_box");
@@ -359,23 +319,21 @@ order by CHANNEL",(const char *)q->value(0).toString().lower());
 				     tr("Show Only Active Events"),
 				     this,"catch_show_active_label");
   catch_show_active_label->setFont(label_font);
-  catch_show_active_label->setAlignment(AlignLeft|AlignVCenter);
+  catch_show_active_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   connect(catch_show_active_box,SIGNAL(toggled(bool)),
 	  this,SLOT(filterChangedData(bool)));
-  catch_show_today_box=new QCheckBox(this,"catch_show_today_box");
-  catch_show_today_label=new QLabel(catch_show_active_box,
-				     tr("Show Only Today's Events"),
-				     this,"catch_show_today_label");
+  catch_show_today_box=new QCheckBox(this);
+  catch_show_today_label=
+    new QLabel(catch_show_active_box,tr("Show Only Today's Events"),this);
   catch_show_today_label->setFont(label_font);
-  catch_show_today_label->setAlignment(AlignLeft|AlignVCenter);
+  catch_show_today_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   connect(catch_show_today_box,SIGNAL(toggled(bool)),
 	  this,SLOT(filterChangedData(bool)));
 
-  catch_dow_box=new QComboBox(this,"catch_down_box");
-  catch_dow_label=new QLabel(catch_dow_box,tr("Show DayOfWeek:"),
-				     this,"catch_dow_label");
+  catch_dow_box=new QComboBox(this);
+  catch_dow_label=new QLabel(catch_dow_box,tr("Show DayOfWeek:"),this);
   catch_dow_label->setFont(label_font);
-  catch_dow_label->setAlignment(AlignRight|AlignVCenter);
+  catch_dow_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   catch_dow_box->insertItem(tr("All"));
   catch_dow_box->insertItem(tr("Weekdays"));
   catch_dow_box->insertItem(tr("Sunday"));
@@ -390,24 +348,22 @@ order by CHANNEL",(const char *)q->value(0).toString().lower());
   //
   // Cart Picker
   //
-  catch_cart_dialog=new RDCartDialog(&catch_filter,&catch_group,
-				     &catch_schedcode,catch_cae,catch_ripc,
-				     rdstation_conf,catch_system,catch_config,
-				     this);
+  catch_cart_dialog=
+    new RDCartDialog(&catch_filter,&catch_group,&catch_schedcode,this);
 
   //
   // Cart List
   //
-  catch_recordings_list=new CatchListView(this,"catch_recordings_list");
+  catch_recordings_list=new CatchListView(this);
   catch_recordings_list->setAllColumnsShowFocus(true);
   catch_recordings_list->setItemMargin(5);
   catch_recordings_list->setFont(list_font);
-  connect(catch_recordings_list,SIGNAL(selectionChanged(QListViewItem *)),
-	  this,SLOT(selectionChangedData(QListViewItem *)));
+  connect(catch_recordings_list,SIGNAL(selectionChanged(Q3ListViewItem *)),
+	  this,SLOT(selectionChangedData(Q3ListViewItem *)));
   connect(catch_recordings_list,
-	  SIGNAL(doubleClicked(QListViewItem *,const QPoint &,int)),
+	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,
-	  SLOT(doubleClickedData(QListViewItem *,const QPoint &,int)));
+	  SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
 
   catch_recordings_list->addColumn("");
   catch_recordings_list->setColumnAlignment(0,Qt::AlignHCenter);
@@ -480,7 +436,7 @@ order by CHANNEL",(const char *)q->value(0).toString().lower());
   //
   // Add Button
   //
-  catch_add_button=new QPushButton(this,"add_button");
+  catch_add_button=new QPushButton(this);
   catch_add_button->setFont(button_font);
   catch_add_button->setText(tr("&Add"));
   connect(catch_add_button,SIGNAL(clicked()),this,SLOT(addData()));
@@ -488,7 +444,7 @@ order by CHANNEL",(const char *)q->value(0).toString().lower());
   //
   // Edit Button
   //
-  catch_edit_button=new QPushButton(this,"edit_button");
+  catch_edit_button=new QPushButton(this);
   catch_edit_button->setFont(button_font);
   catch_edit_button->setText(tr("&Edit"));
   connect(catch_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
@@ -496,7 +452,7 @@ order by CHANNEL",(const char *)q->value(0).toString().lower());
   //
   // Delete Button
   //
-  catch_delete_button=new QPushButton(this,"delete_button");
+  catch_delete_button=new QPushButton(this);
   catch_delete_button->setFont(button_font);
   catch_delete_button->setText(tr("&Delete"));
   connect(catch_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
@@ -504,7 +460,7 @@ order by CHANNEL",(const char *)q->value(0).toString().lower());
   //
   // Scroll Button
   //
-  catch_scroll_button=new QPushButton(this,"catch_scroll_button");
+  catch_scroll_button=new QPushButton(this);
   catch_scroll_button->setFont(button_font);
   catch_scroll_button->setText(tr("Scroll"));
   connect(catch_scroll_button,SIGNAL(clicked()),this,SLOT(scrollButtonData()));
@@ -512,7 +468,7 @@ order by CHANNEL",(const char *)q->value(0).toString().lower());
   //
   // Reports Button
   //
-  catch_reports_button=new QPushButton(this,"catch_reports_button");
+  catch_reports_button=new QPushButton(this);
   catch_reports_button->setFont(button_font);
   catch_reports_button->setText(tr("Reports"));
   connect(catch_reports_button,SIGNAL(clicked()),this,SLOT(reportsButtonData()));
@@ -520,43 +476,40 @@ order by CHANNEL",(const char *)q->value(0).toString().lower());
   //
   // Wall Clock
   //
-  catch_clock_label=new QLabel("00:00:00",this,"catch_clock_label");
+  catch_clock_label=new QLabel("00:00:00",this);
   catch_clock_label->setFont(clock_font);
-  catch_clock_label->setAlignment(AlignCenter);
-  catch_clock_timer=new QTimer(this,"catch_clock_timer");
+  catch_clock_label->setAlignment(Qt::AlignCenter);
+  catch_clock_timer=new QTimer(this);
   connect(catch_clock_timer,SIGNAL(timeout()),this,SLOT(clockData()));
   clockData();
 
   //
   // Play Head Button
   //
-  catch_head_button=
-    new RDTransportButton(RDTransportButton::PlayFrom,this,"catch_head_button");
+  catch_head_button=new RDTransportButton(RDTransportButton::PlayFrom,this);
   catch_head_button->setDisabled(true);
   connect(catch_head_button,SIGNAL(clicked()),this,SLOT(headButtonData()));
 
   //
   // Play Tail Button
   //
-  catch_tail_button=
-    new RDTransportButton(RDTransportButton::PlayTo,this,"catch_tail_button");
+  catch_tail_button=new RDTransportButton(RDTransportButton::PlayTo,this);
   catch_tail_button->setDisabled(true);
   connect(catch_tail_button,SIGNAL(clicked()),this,SLOT(tailButtonData()));
 
   //
   // Play Stop Button
   //
-  catch_stop_button=
-    new RDTransportButton(RDTransportButton::Stop,this,"catch_stop_button");
+  catch_stop_button=new RDTransportButton(RDTransportButton::Stop,this);
   catch_stop_button->setDisabled(true);
-  catch_stop_button->setOnColor(red);
+  catch_stop_button->setOnColor(Qt::red);
   connect(catch_stop_button,SIGNAL(clicked()),this,SLOT(stopButtonData()));
   catch_stop_button->on();
 
   //
   // Close Button
   //
-  catch_close_button=new QPushButton(this,"close_button");
+  catch_close_button=new QPushButton(this);
   catch_close_button->setFont(button_font);
   catch_close_button->setText(tr("&Close"));
   catch_close_button->setFocus();
@@ -566,13 +519,13 @@ order by CHANNEL",(const char *)q->value(0).toString().lower());
   //
   // Next Event Timer
   //
-  catch_next_timer=new QTimer(this,"catch_next_timer");
+  catch_next_timer=new QTimer(this);
   connect(catch_next_timer,SIGNAL(timeout()),this,SLOT(nextEventData()));
 
   //
   // Midnight Timer
   //
-  catch_midnight_timer=new QTimer(this,"catch_midnight_timer");
+  catch_midnight_timer=new QTimer(this);
   connect(catch_midnight_timer,SIGNAL(timeout()),this,SLOT(midnightData()));
   midnightData();
   LoadGeometry();
@@ -591,14 +544,14 @@ order by CHANNEL",(const char *)q->value(0).toString().lower());
   // Silly Resize Workaround
   // (so that the deck monitors get laid out properly)
   //
-  QTimer *timer=new QTimer(this,"resize_timer");
+  QTimer *timer=new QTimer(this);
   connect(timer,SIGNAL(timeout()),this,SLOT(resizeData()));
   timer->start(1,true);
 }
 
 void MainWidget::log(RDConfig::LogPriority prio,const QString &msg)
 {
-  catch_config->log("RDCatch",prio,msg);
+  rda->config()->log("RDCatch",prio,msg);
 }
 
 QSize MainWidget::sizeHint() const
@@ -688,7 +641,7 @@ void MainWidget::addData()
   RDListViewItem *item;
   int conn;
 
-  if(!catch_user->editCatches()) {
+  if(!rda->user()->editCatches()) {
     return;
   }
   EnableScroll(false);
@@ -740,7 +693,7 @@ void MainWidget::editData()
   EditDownload *download;
   EditUpload *upload;
 
-  if(!catch_user->editCatches()) {
+  if(!rda->user()->editCatches()) {
     return;
   }
   if(item==NULL) {
@@ -784,7 +737,7 @@ void MainWidget::editData()
 	break;
 
       case RDRecording::Playout:
-	playout=new EditPlayout(id,&new_events,&catch_filter,this,"playout");
+	playout=new EditPlayout(id,&new_events,&catch_filter,this);
 	if(playout->exec()>=0) {
 	  RefreshLine(item);
 	  new_conn=GetConnection(item->text(24));
@@ -800,7 +753,7 @@ void MainWidget::editData()
 	break;
 
       case RDRecording::MacroEvent:
-	event=new EditCartEvent(id,&new_events,this,"recording");
+	event=new EditCartEvent(id,&new_events,this);
 	if(event->exec()>=0) {
 	  RefreshLine(item);
 	  new_conn=GetConnection(item->text(24));
@@ -816,7 +769,7 @@ void MainWidget::editData()
 	break;
 
       case RDRecording::SwitchEvent:
-	switch_event=new EditSwitchEvent(id,&new_events,this,"recording");
+	switch_event=new EditSwitchEvent(id,&new_events,this);
 	if(switch_event->exec()>=0) {
 	  RefreshLine(item);
 	  new_conn=GetConnection(item->text(24));
@@ -832,7 +785,7 @@ void MainWidget::editData()
 	break;
 
       case RDRecording::Download:
-	download=new EditDownload(id,&new_events,&catch_filter,this,"playout");
+	download=new EditDownload(id,&new_events,&catch_filter,this);
 	if(download->exec()>=0) {
 	  RefreshLine(item);
 	  new_conn=GetConnection(item->text(24));
@@ -848,7 +801,7 @@ void MainWidget::editData()
 	break;
 
       case RDRecording::Upload:
-	upload=new EditUpload(id,&new_events,&catch_filter,this,"playout");
+	upload=new EditUpload(id,&new_events,&catch_filter,this);
 	if(upload->exec()>=0) {
 	  RefreshLine(item);
 	  new_conn=GetConnection(item->text(24));
@@ -877,7 +830,7 @@ void MainWidget::deleteData()
   RDListViewItem *item=(RDListViewItem *)catch_recordings_list->selectedItem();
   int conn;
 
-  if(!catch_user->editCatches()||(item==NULL)) {
+  if(!rda->user()->editCatches()||(item==NULL)) {
     return;
   }
   EnableScroll(false);
@@ -903,8 +856,8 @@ void MainWidget::deleteData()
     return;
   }
   catch_connect[conn].connect->removeEvent(item->text(28).toInt());
-  sql=QString().sprintf("delete from RECORDINGS where ID=%s",
-			(const char *)item->text(28));
+  sql=QString("delete from RECORDINGS where ")+
+    "ID="+item->text(28);
   q=new RDSqlQuery(sql);
   delete q;
   RDListViewItem *next=(RDListViewItem *)item->nextSibling();
@@ -930,17 +883,14 @@ void MainWidget::ripcUserData()
   QString str;
 
   str=QString("RDCatch")+" v"+VERSION+" - "+tr("Host")+":";
-  setCaption(str+" "+catch_config->stationName()+", "+tr("User")+": "+
-	     catch_ripc->user());
-  if(catch_user!=NULL) {
-    delete catch_user;
-  }
-  catch_user=new RDUser(catch_ripc->user());
+  setCaption(str+" "+rda->config()->stationName()+", "+tr("User")+": "+
+	     rda->ripc()->user());
+  rda->setUser(rda->ripc()->user());
 
   //
   // Set Control Perms
   //
-  bool modification_allowed=catch_user->editCatches();
+  bool modification_allowed=rda->user()->editCatches();
   catch_add_button->setEnabled(modification_allowed);
   catch_edit_button->setEnabled(modification_allowed);
   catch_delete_button->setEnabled(modification_allowed);
@@ -1042,6 +992,15 @@ void MainWidget::monitorChangedData(int serial,unsigned chan,bool state)
 }
 
 
+void MainWidget::deckEventSentData(int serial,int chan,int number)
+{
+  int mon=GetMonitor(serial,chan);
+  if(mon>=0) {
+    catch_monitor[mon]->deckMon()->setEvent(number);
+  }
+}
+
+
 void MainWidget::scrollButtonData()
 {
   EnableScroll(!catch_scroll);
@@ -1067,18 +1026,18 @@ void MainWidget::headButtonData()
   EnableScroll(false);
   if((!head_playing)&&(!tail_playing)) {  // Start Head Play
     RDCut *cut=new RDCut(item->text(26));
-    catch_cae->loadPlay(catch_audition_card,item->text(26),
+    rda->cae()->loadPlay(catch_audition_card,item->text(26),
 			&catch_audition_stream,&catch_play_handle);
     if(catch_audition_stream<0) {
       return;
     }
-    RDSetMixerOutputPort(catch_cae,catch_audition_card,catch_audition_stream,
+    RDSetMixerOutputPort(rda->cae(),catch_audition_card,catch_audition_stream,
 			 catch_audition_port);
-    catch_cae->positionPlay(catch_play_handle,cut->startPoint());
-    catch_cae->setPlayPortActive(catch_audition_card,catch_audition_port,catch_audition_stream);
-    catch_cae->setOutputVolume(catch_audition_card,catch_audition_stream,catch_audition_port,
+    rda->cae()->positionPlay(catch_play_handle,cut->startPoint());
+    rda->cae()->setPlayPortActive(catch_audition_card,catch_audition_port,catch_audition_stream);
+    rda->cae()->setOutputVolume(catch_audition_card,catch_audition_stream,catch_audition_port,
            0+cut->playGain());
-    catch_cae->play(catch_play_handle,RDCATCH_AUDITION_LENGTH,
+    rda->cae()->play(catch_play_handle,RDCATCH_AUDITION_LENGTH,
 		    RD_TIMESCALE_DIVISOR,false);
     head_playing=true;
     delete cut;
@@ -1095,24 +1054,24 @@ void MainWidget::tailButtonData()
   EnableScroll(false);
   if((!head_playing)&&(!tail_playing)) {  // Start Tail Play
     RDCut *cut=new RDCut(item->text(26));
-    catch_cae->loadPlay(catch_audition_card,item->text(26),
+    rda->cae()->loadPlay(catch_audition_card,item->text(26),
 			&catch_audition_stream,&catch_play_handle);
     if(catch_audition_stream<0) {
       return;
     }
-    RDSetMixerOutputPort(catch_cae,catch_audition_card,catch_audition_stream,
+    RDSetMixerOutputPort(rda->cae(),catch_audition_card,catch_audition_stream,
 			 catch_audition_port);
     if((cut->endPoint()-cut->startPoint()-RDCATCH_AUDITION_LENGTH)>0) {
-      catch_cae->positionPlay(catch_play_handle,
+      rda->cae()->positionPlay(catch_play_handle,
 			      cut->endPoint()-RDCATCH_AUDITION_LENGTH);
     }
     else {
-      catch_cae->positionPlay(catch_play_handle,cut->startPoint());
+      rda->cae()->positionPlay(catch_play_handle,cut->startPoint());
     }
-    catch_cae->setPlayPortActive(catch_audition_card,catch_audition_port,catch_audition_stream);
-    catch_cae->setOutputVolume(catch_audition_card,catch_audition_stream,catch_audition_port,
+    rda->cae()->setPlayPortActive(catch_audition_card,catch_audition_port,catch_audition_stream);
+    rda->cae()->setOutputVolume(catch_audition_card,catch_audition_stream,catch_audition_port,
            0+cut->playGain());
-    catch_cae->play(catch_play_handle,RDCATCH_AUDITION_LENGTH,
+    rda->cae()->play(catch_play_handle,RDCATCH_AUDITION_LENGTH,
 		    RD_TIMESCALE_DIVISOR,false);
     tail_playing=true;
     delete cut;
@@ -1123,8 +1082,8 @@ void MainWidget::tailButtonData()
 void MainWidget::stopButtonData()
 {
   if(head_playing||tail_playing) {  // Stop Play
-    catch_cae->stopPlay(catch_play_handle);
-    catch_cae->unloadPlay(catch_play_handle);
+    rda->cae()->stopPlay(catch_play_handle);
+    rda->cae()->unloadPlay(catch_play_handle);
   }
 }
 
@@ -1158,7 +1117,7 @@ void MainWidget::playStoppedData(int handle)
   catch_head_button->off();
   catch_tail_button->off();
   catch_stop_button->on();
-  catch_cae->unloadPlay(catch_play_handle);
+  rda->cae()->unloadPlay(catch_play_handle);
 }
 
 
@@ -1195,7 +1154,7 @@ void MainWidget::monitorData(int id)
 }
 
 
-void MainWidget::selectionChangedData(QListViewItem *item)
+void MainWidget::selectionChangedData(Q3ListViewItem *item)
 {
   if(item==NULL) {
     catch_head_button->setDisabled(true);
@@ -1222,7 +1181,7 @@ void MainWidget::selectionChangedData(QListViewItem *item)
 }
 
 
-void MainWidget::doubleClickedData(QListViewItem *,const QPoint &,int)
+void MainWidget::doubleClickedData(Q3ListViewItem *,const QPoint &,int)
 {
   editData();
 }
@@ -1267,7 +1226,7 @@ void MainWidget::heartbeatFailedData(int id)
 
 void MainWidget::quitMainWidget()
 {
-  catch_db->removeDatabase(catch_config->mysqlDbname());
+  catch_db->removeDatabase(rda->config()->mysqlDbname());
   SaveGeometry();
   exit(0);
 }
@@ -1511,20 +1470,24 @@ int MainWidget::ShowNextEvents(int day,QTime time,QTime *next)
   QString sql;
   int count=0;
   if(time.isNull()) {
-    sql=QString().sprintf("select ID,START_TIME from RECORDINGS \
-                           where (IS_ACTIVE=\"Y\")&& \
-                           (%s=\"Y\") \
-                           order by START_TIME",
-			  (const char *)RDGetShortDayNameEN(day).upper());
+    sql=QString("select ")+
+      "ID,"+
+      "START_TIME "+
+      "from RECORDINGS where "+
+      "(IS_ACTIVE=\"Y\")&&"+
+      "("+RDGetShortDayNameEN(day).upper()+"=\"Y\") "+
+      "order by START_TIME";
   }
   else {
-    sql=QString().sprintf("select ID,START_TIME from RECORDINGS \
-                           where (IS_ACTIVE=\"Y\")&& \
-                           (time_to_sec(START_TIME)>time_to_sec(\"%s\"))&& \
-                           (%s=\"Y\") \
-                           order by START_TIME",
-			  (const char *)time.toString("hh:mm:ss"),
-			  (const char *)RDGetShortDayNameEN(day).upper());
+    sql=QString("select ")+
+      "ID,"+
+      "START_TIME "+
+      "from RECORDINGS where "+
+      "(IS_ACTIVE=\"Y\")&&"+
+      "(time_to_sec(START_TIME)>time_to_sec(\""+
+      time.toString("hh:mm:ss")+"\"))&&"+
+      "("+RDGetShortDayNameEN(day).upper()+"=\"Y\") "+
+      "order by START_TIME";
   }
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(!q->first()) {
@@ -1657,46 +1620,56 @@ void MainWidget::RefreshList()
   QString str;
 
   catch_recordings_list->clear();
-  sql=QString("select RECORDINGS.DESCRIPTION,RECORDINGS.IS_ACTIVE,\
-               RECORDINGS.STATION_NAME,RECORDINGS.START_TIME,\
-               RECORDINGS.LENGTH,RECORDINGS.CUT_NAME,RECORDINGS.SUN,\
-               RECORDINGS.MON,RECORDINGS.TUE,RECORDINGS.WED,RECORDINGS.THU,\
-               RECORDINGS.FRI,RECORDINGS.SAT,RECORDINGS.SWITCH_INPUT,\
-               RECORDINGS.START_GPI,RECORDINGS.END_GPI,\
-               RECORDINGS.TRIM_THRESHOLD,RECORDINGS.STARTDATE_OFFSET,\
-               RECORDINGS.ENDDATE_OFFSET,RECORDINGS.FORMAT,\
-               RECORDINGS.CHANNELS,RECORDINGS.SAMPRATE,RECORDINGS.BITRATE,\
-               RECORDINGS.CHANNEL,RECORDINGS.MACRO_CART,RECORDINGS.ID,\
-               RECORDINGS.TYPE,RECORDINGS.SWITCH_OUTPUT,RECORDINGS.EXIT_CODE,\
-               RECORDINGS.ONE_SHOT,RECORDINGS.START_TYPE,\
-               RECORDINGS.START_LENGTH,RECORDINGS.START_MATRIX,\
-               RECORDINGS.START_LINE,RECORDINGS.START_OFFSET,\
-               RECORDINGS.END_TYPE,RECORDINGS.END_TIME,RECORDINGS.END_LENGTH,\
-               RECORDINGS.END_MATRIX,RECORDINGS.END_LINE,CUTS.ORIGIN_NAME,\
-               CUTS.ORIGIN_DATETIME,RECORDINGS.URL,RECORDINGS.QUALITY,\
-               FEEDS.KEY_NAME,EXIT_TEXT from RECORDINGS left join CUTS\
-               on (RECORDINGS.CUT_NAME=CUTS.CUT_NAME) left join FEEDS \
-               on (RECORDINGS.FEED_ID=FEEDS.ID)");
-  // Field Offsets:
-  //
-  //  0 - REC.DESCRIPTION       18 - REC.ENDDATE_OFFSET 36 - REC.END_TIME
-  //  1 - REC.IS_ACTIVE         19 - REC.FORMAT         37 - REC.END_LENGTH
-  //  2 - REC.STATION_NAME      20 - REC.CHANNELS       38 - REC.END_MATRIX
-  //  3 - REC.START_TIME        21 - REC.SAMPRATE       39 - REC.END_LINE
-  //  4 - REC.LENGTH            22 - REC.BITRATE        40 - CUTS.ORIGIN_NAME
-  //  5 - REC.CUT_NAME          23 - REC.CHANNEL        41 - CUTS.ORIGIN_DATETIME
-  //  6 - REC.SUN               24 - REC.MACRO_CART     42 - REC.URL
-  //  7 - REC.MON               25 - REC.ID             43 - REC.QUALITY
-  //  8 - REC.TUE               26 - REC.TYPE           44 - FEEDS.KEY_NAME
-  //  9 - REC.WED               27 - REC.SWITCH_OUTPUT  45 - REC.EXIT_TEXT
-  // 10 - REC.THU               28 - REC.EXIT_CODE
-  // 11 - REC.FRI               29 - REC.ONE_SHOT
-  // 12 - REC.SAT               30 - REC.START_TYPE
-  // 13 - REC.SWITCH_INPUT      31 - REC.START_LENGTH
-  // 14 - REC.START_GPI         32 - REC.START_MATRIX
-  // 15 - REC.END_GPI           33 - REC.START_LINE
-  // 16 - REC.TRIM_THRESHOLD    34 - REC.START_OFFSET
-  // 17 - REC.STARTDATE_OFFSET  35 - REC.END_TYPE
+  sql=QString("select ")+
+    "RECORDINGS.DESCRIPTION,"+       // 00
+    "RECORDINGS.IS_ACTIVE,"+         // 01
+    "RECORDINGS.STATION_NAME,"+      // 02
+    "RECORDINGS.START_TIME,"+        // 03
+    "RECORDINGS.LENGTH,"+            // 04
+    "RECORDINGS.CUT_NAME,"+          // 05
+    "RECORDINGS.SUN,"+               // 06
+    "RECORDINGS.MON,"+               // 07
+    "RECORDINGS.TUE,"+               // 08
+    "RECORDINGS.WED,"+               // 09
+    "RECORDINGS.THU,"+               // 10
+    "RECORDINGS.FRI,"+               // 11
+    "RECORDINGS.SAT,"+               // 12
+    "RECORDINGS.SWITCH_INPUT,"+      // 13
+    "RECORDINGS.START_GPI,"+         // 14
+    "RECORDINGS.END_GPI,"+           // 15
+    "RECORDINGS.TRIM_THRESHOLD,"+    // 16
+    "RECORDINGS.STARTDATE_OFFSET,"+  // 17
+    "RECORDINGS.ENDDATE_OFFSET,"+    // 18
+    "RECORDINGS.FORMAT,"+            // 19
+    "RECORDINGS.CHANNELS,"+          // 20
+    "RECORDINGS.SAMPRATE,"+          // 21
+    "RECORDINGS.BITRATE,"+           // 22
+    "RECORDINGS.CHANNEL,"+           // 23
+    "RECORDINGS.MACRO_CART,"+        // 24
+    "RECORDINGS.ID,"+                // 25
+    "RECORDINGS.TYPE,"+              // 26
+    "RECORDINGS.SWITCH_OUTPUT,"+     // 27
+    "RECORDINGS.EXIT_CODE,"+         // 28
+    "RECORDINGS.ONE_SHOT,"+          // 29
+    "RECORDINGS.START_TYPE,"+        // 30
+    "RECORDINGS.START_LENGTH,"+      // 31
+    "RECORDINGS.START_MATRIX,"+      // 32
+    "RECORDINGS.START_LINE,"+        // 33
+    "RECORDINGS.START_OFFSET,"+      // 34
+    "RECORDINGS.END_TYPE,"+          // 35
+    "RECORDINGS.END_TIME,"+          // 36
+    "RECORDINGS.END_LENGTH,"+        // 37
+    "RECORDINGS.END_MATRIX,"+        // 38
+    "RECORDINGS.END_LINE,"+          // 39
+    "CUTS.ORIGIN_NAME,"+             // 40
+    "CUTS.ORIGIN_DATETIME,"+         // 41
+    "RECORDINGS.URL,"+               // 42
+    "RECORDINGS.QUALITY,"+           // 43
+    "FEEDS.KEY_NAME,"+               // 44
+    "EXIT_TEXT "+                    // 45
+    "from RECORDINGS left join CUTS "+
+    "on (RECORDINGS.CUT_NAME=CUTS.CUT_NAME) left join FEEDS "+
+    "on (RECORDINGS.FEED_ID=FEEDS.ID)";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     l=new RDListViewItem(catch_recordings_list);
@@ -1762,219 +1735,238 @@ void MainWidget::RefreshList()
     l->setText(29,q->value(26).toString());   // Type
     l->setText(32,QString().sprintf("%u",RDDeck::Idle));
     switch((RDRecording::Type)q->value(26).toInt()) {
-	case RDRecording::Recording:
-	  l->setPixmap(0,*catch_record_map);
-	  l->setText(2,QString().sprintf("%s : %dR",
-					 (const char *)q->value(2).toString(),
-					 q->value(23).toInt()));
-	  switch((RDRecording::StartType)q->value(30).toUInt()) {
-	      case RDRecording::HardStart:
-		str=QString(tr("Hard"));
-		l->setText(3,q->value(3).toTime().
-			   toString(QString().sprintf("%s: hh:mm:ss",
-						      (const char *)str)));
-		break;
+    case RDRecording::Recording:
+      l->setPixmap(0,*catch_record_map);
+      l->setText(2,QString().sprintf("%s : %dR",
+				     (const char *)q->value(2).toString(),
+				     q->value(23).toInt()));
+      switch((RDRecording::StartType)q->value(30).toUInt()) {
+      case RDRecording::HardStart:
+	str=QString(tr("Hard"));
+	l->setText(3,q->value(3).toTime().
+		   toString(QString().sprintf("%s: hh:mm:ss",
+					      (const char *)str)));
+	break;
 
-	      case RDRecording::GpiStart:
-		str=QString(tr("Gpi"));
-		l->setText(3,QString().
-			   sprintf("%s: %s,%s,%d:%d,%s",
-				   (const char *)str,
-				   (const char *)q->value(3).
-				   toTime().toString("hh:mm:ss"),
-				   (const char *)q->value(3).toTime().
-				   addMSecs(q->value(31).toInt()).
-				   toString("hh:mm:ss"),
-				   q->value(32).toInt(),
-				   q->value(33).toInt(),
-				   (const char *)QTime().
-				   addMSecs(q->value(34).toUInt()).
-				   toString("mm:ss")));
-		break;
-	  }
-	  switch((RDRecording::EndType)q->value(35).toUInt()) {
-	      case RDRecording::LengthEnd:
-		str=QString(tr("Len"));
-		l->setText(4,QString().sprintf("%s: %s",
-					       (const char *)str,
-					       (const char *)
-					  RDGetTimeLength(q->value(4).toUInt(),
-							 false,false)));
-		break;
+      case RDRecording::GpiStart:
+	str=QString(tr("Gpi"));
+	l->setText(3,QString().
+		   sprintf("%s: %s,%s,%d:%d,%s",
+			   (const char *)str,
+			   (const char *)q->value(3).
+			   toTime().toString("hh:mm:ss"),
+			   (const char *)q->value(3).toTime().
+			   addMSecs(q->value(31).toInt()).
+			   toString("hh:mm:ss"),
+			   q->value(32).toInt(),
+			   q->value(33).toInt(),
+			   (const char *)QTime().
+			   addMSecs(q->value(34).toUInt()).
+			   toString("mm:ss")));
+	break;
+      }
+      switch((RDRecording::EndType)q->value(35).toUInt()) {
+      case RDRecording::LengthEnd:
+	str=QString(tr("Len"));
+	l->setText(4,QString().sprintf("%s: %s",
+				       (const char *)str,
+				       (const char *)
+				       RDGetTimeLength(q->value(4).toUInt(),
+						       false,false)));
+	break;
 
-	      case RDRecording::HardEnd:
-		str=QString(tr("Hard"));
-		l->setText(4,QString().sprintf("%s: %s",
-					       (const char *)str,
-					       (const char *)
-					       q->value(36).toTime().
-					       toString("hh:mm:ss")));
-		break;
+      case RDRecording::HardEnd:
+	str=QString(tr("Hard"));
+	l->setText(4,QString().sprintf("%s: %s",
+				       (const char *)str,
+				       (const char *)
+				       q->value(36).toTime().
+				       toString("hh:mm:ss")));
+	break;
 
-	      case RDRecording::GpiEnd:
-		str=QString(tr("Gpi"));
-		l->setText(4,QString().
-			   sprintf("%s: %s,%s,%d:%d",
-				   (const char *)str,
-				   (const char *)q->value(36).
-				   toTime().toString("hh:mm:ss"),
-				   (const char *)q->value(36).toTime().
-				   addMSecs(q->value(37).toInt()).
-				   toString("hh:mm:ss"),
-				   q->value(38).toInt(),
-				   q->value(39).toInt()));
-		break;
-	  }
-	  str=QString(tr("Cut"));
-	  l->setText(6,QString().
-		     sprintf("%s %s",(const char *)str,
-			     (const char *)q->value(5).toString()));
-	  sql=QString().sprintf("select SWITCH_STATION,SWITCH_MATRIX\
-                                 from DECKS where \
-                                 (STATION_NAME=\"%s\")&&(CHANNEL=%d)",
-				(const char *)q->value(2).toString(),
-				q->value(23).toInt());
-	  q1=new RDSqlQuery(sql);
-	  if(q1->first()) {  // Source
-	    l->setText(5,GetSourceName(q1->value(0).toString(),  
-					q1->value(1).toInt(),
-					q->value(13).toInt()));
-	  }
-	  delete q1;
-	  switch((RDSettings::Format)q->value(19).toInt()) {    // Format
-	      case RDSettings::Pcm16:
-		l->setText(20,tr("PCM16"));
-		break;
-	      case RDSettings::MpegL1:
-		l->setText(20,tr("MPEG Layer 1"));
-		break;
-	      case RDSettings::MpegL2:
-	      case RDSettings::MpegL2Wav:
-		l->setText(20,tr("MPEG Layer 2"));
-		break;
-	      case RDSettings::MpegL3:
-		l->setText(20,tr("MPEG Layer 3"));
-		break;
-	      case RDSettings::Flac:
-		l->setText(20,tr("FLAC"));
-		break;
-	      case RDSettings::OggVorbis:
-		l->setText(20,tr("OggVorbis"));
-		break;
-	  }
-	  l->setText(21,q->value(20).toString());   // Channels
-	  l->setText(22,q->value(21).toString());   // Sample Rate
-	  l->setText(23,q->value(22).toString());   // Bit Rate
-	  break;
+      case RDRecording::GpiEnd:
+	str=QString(tr("Gpi"));
+	l->setText(4,QString().
+		   sprintf("%s: %s,%s,%d:%d",
+			   (const char *)str,
+			   (const char *)q->value(36).
+			   toTime().toString("hh:mm:ss"),
+			   (const char *)q->value(36).toTime().
+			   addMSecs(q->value(37).toInt()).
+			   toString("hh:mm:ss"),
+			   q->value(38).toInt(),
+			   q->value(39).toInt()));
+	break;
+      }
+      str=QString(tr("Cut"));
+      l->setText(6,QString().
+		 sprintf("%s %s",(const char *)str,
+			 (const char *)q->value(5).toString()));
+      sql=QString("select ")+
+	"SWITCH_STATION,"+
+	"SWITCH_MATRIX "+
+	"from DECKS where "+
+	"(STATION_NAME=\""+RDEscapeString(q->value(2).toString())+"\")&&"+
+	QString().sprintf("(CHANNEL=%d)",q->value(23).toInt());
+      q1=new RDSqlQuery(sql);
+      if(q1->first()) {  // Source
+	l->setText(5,GetSourceName(q1->value(0).toString(),  
+				   q1->value(1).toInt(),
+				   q->value(13).toInt()));
+      }
+      delete q1;
+      switch((RDSettings::Format)q->value(19).toInt()) {    // Format
+      case RDSettings::Pcm16:
+	l->setText(20,tr("PCM16"));
+	break;
 
-	case RDRecording::Playout:
-	  l->setPixmap(0,*catch_playout_map);
-	  l->setText(2,QString().sprintf("%s : %dP",
-					 (const char *)q->value(2).toString(),
-					 q->value(23).toInt()-128));
-	  l->setText(3,q->value(3).toTime().toString("Hard: hh:mm:ss"));
-	  cut=new RDCut(q->value(5).toString());
-	  str=QString(tr("Len"));
-	  if(cut->exists()) {
-	    l->setText(4,QString().sprintf("%s: %s",(const char *)str,
-		   (const char *)RDGetTimeLength(cut->length(),false,false)));
-	  }
-	  delete cut;
-	  str=QString(tr("Cut"));
-	  l->setText(5,QString().
-		     sprintf("%s %s",(const char *)str,
-			     (const char *)q->value(5).toString()));
-	  break;
+      case RDSettings::Pcm24:
+	l->setText(20,tr("PCM24"));
+	break;
 
-	case RDRecording::MacroEvent:
-	  l->setPixmap(0,*catch_macro_map);
-	  l->setText(2,q->value(2).toString());
-	  str=QString(tr("Hard"));
-	  l->setText(3,q->value(3).toTime().
-		     toString(QString().
-			      sprintf("%s: hh:mm:ss",(const char *)str)));
-	  str=QString(tr("Cart"));
-	  l->setText(5,QString().sprintf("%s %06d",(const char *)str,
-					 q->value(24).toInt()));
-	  break;
+      case RDSettings::MpegL1:
+	l->setText(20,tr("MPEG Layer 1"));
+	break;
 
-	case RDRecording::SwitchEvent:
-	  l->setPixmap(0,*catch_switch_map);
-	  l->setText(2,q->value(2).toString());
-	  str=QString(tr("Hard"));
-	  l->setText(3,q->value(3).toTime().
-	       toString(QString().sprintf("%s: hh:mm:ss",(const char *)str)));
-	  l->setText(5,GetSourceName(q->value(2).toString(),  // Source
-				     q->value(23).toInt(),
-				     q->value(13).toInt()));
-	  l->setText(6,GetDestinationName(q->value(2).toString(),  // Dest
-					  q->value(23).toInt(),
-					  q->value(27).toInt()));
-	  break;
+      case RDSettings::MpegL2:
+      case RDSettings::MpegL2Wav:
+	l->setText(20,tr("MPEG Layer 2"));
+	break;
 
-	case RDRecording::Download:
-	  l->setPixmap(0,*catch_download_map);
-	  l->setText(2,q->value(2).toString());
-	  str=QString(tr("Hard"));
-	  l->setText(3,q->value(3).toTime().
-		     toString(QString().
-			      sprintf("%s: hh:mm:ss",(const char *)str)));
-	  str=QString(tr("Cut"));
-	  l->setText(5,q->value(42).toString());
-	  l->setText(6,QString().
-		     sprintf("%s %s",(const char *)str,
-			     (const char *)q->value(5).toString()));
-	  break;
+      case RDSettings::MpegL3:
+	l->setText(20,tr("MPEG Layer 3"));
+	break;
 
-	case RDRecording::Upload:
-	  l->setPixmap(0,*catch_upload_map);
-	  l->setText(2,q->value(2).toString());
-	  str=QString(tr("Hard"));
-	  l->setText(3,q->value(3).toTime().
-		     toString(QString().
-			      sprintf("%s: hh:mm:ss",(const char *)str)));
-	  str=QString(tr("Cut"));
-	  l->setText(5,QString().
-		     sprintf("%s %s",(const char *)str,
-			     (const char *)q->value(5).toString()));
-	  l->setText(6,q->value(42).toString());
-	  switch((RDSettings::Format)q->value(19).toInt()) {    // Format
-	      case RDSettings::Pcm16:
-		l->setText(20,tr("PCM16"));
-		break;
-	      case RDSettings::MpegL1:
-		l->setText(20,tr("MPEG Layer 1"));
-		break;
-	      case RDSettings::MpegL2:
-	      case RDSettings::MpegL2Wav:
-		l->setText(20,tr("MPEG Layer 2"));
-		break;
-	      case RDSettings::MpegL3:
-		l->setText(20,tr("MPEG Layer 3"));
-		break;
-	      case RDSettings::Flac:
-		l->setText(20,tr("FLAC"));
-		break;
-	      case RDSettings::OggVorbis:
-		l->setText(20,tr("OggVorbis"));
-		break;
-	  }
-	  if(q->value(44).toString().isEmpty()) {
-	    l->setText(14,tr("[none]"));
-	  }
-	  else {
-	    l->setText(14,q->value(44).toString());    // Feed Key Name
-	  }
-	  l->setText(21,q->value(20).toString());   // Channels
-	  l->setText(22,q->value(21).toString());   // Sample Rate
-	  if(q->value(22).toInt()==0) {     // Bit Rate/Quality
-	    l->setText(23,QString().sprintf("Qual %d",q->value(43).toInt()));
-	  }
-	  else {
-	    l->setText(23,QString().sprintf("%d kb/sec",
-					    q->value(22).toInt()/1000));
-	  }
-	  break;
+      case RDSettings::Flac:
+	l->setText(20,tr("FLAC"));
+	break;
+
+      case RDSettings::OggVorbis:
+	l->setText(20,tr("OggVorbis"));
+	break;
+      }
+      l->setText(21,q->value(20).toString());   // Channels
+      l->setText(22,q->value(21).toString());   // Sample Rate
+      l->setText(23,q->value(22).toString());   // Bit Rate
+      break;
+
+    case RDRecording::Playout:
+      l->setPixmap(0,*catch_playout_map);
+      l->setText(2,QString().sprintf("%s : %dP",
+				     (const char *)q->value(2).toString(),
+				     q->value(23).toInt()-128));
+      l->setText(3,q->value(3).toTime().toString("Hard: hh:mm:ss"));
+      cut=new RDCut(q->value(5).toString());
+      str=QString(tr("Len"));
+      if(cut->exists()) {
+	l->setText(4,QString().sprintf("%s: %s",(const char *)str,
+				       (const char *)RDGetTimeLength(cut->length(),false,false)));
+      }
+      delete cut;
+      str=QString(tr("Cut"));
+      l->setText(5,QString().
+		 sprintf("%s %s",(const char *)str,
+			 (const char *)q->value(5).toString()));
+      break;
+
+    case RDRecording::MacroEvent:
+      l->setPixmap(0,*catch_macro_map);
+      l->setText(2,q->value(2).toString());
+      str=QString(tr("Hard"));
+      l->setText(3,q->value(3).toTime().
+		 toString(QString().
+			  sprintf("%s: hh:mm:ss",(const char *)str)));
+      str=QString(tr("Cart"));
+      l->setText(5,QString().sprintf("%s %06d",(const char *)str,
+				     q->value(24).toInt()));
+      break;
+
+    case RDRecording::SwitchEvent:
+      l->setPixmap(0,*catch_switch_map);
+      l->setText(2,q->value(2).toString());
+      str=QString(tr("Hard"));
+      l->setText(3,q->value(3).toTime().
+		 toString(QString().sprintf("%s: hh:mm:ss",(const char *)str)));
+      l->setText(5,GetSourceName(q->value(2).toString(),  // Source
+				 q->value(23).toInt(),
+				 q->value(13).toInt()));
+      l->setText(6,GetDestinationName(q->value(2).toString(),  // Dest
+				      q->value(23).toInt(),
+				      q->value(27).toInt()));
+      break;
+
+    case RDRecording::Download:
+      l->setPixmap(0,*catch_download_map);
+      l->setText(2,q->value(2).toString());
+      str=QString(tr("Hard"));
+      l->setText(3,q->value(3).toTime().
+		 toString(QString().
+			  sprintf("%s: hh:mm:ss",(const char *)str)));
+      str=QString(tr("Cut"));
+      l->setText(5,q->value(42).toString());
+      l->setText(6,QString().
+		 sprintf("%s %s",(const char *)str,
+			 (const char *)q->value(5).toString()));
+      break;
+
+    case RDRecording::Upload:
+      l->setPixmap(0,*catch_upload_map);
+      l->setText(2,q->value(2).toString());
+      str=QString(tr("Hard"));
+      l->setText(3,q->value(3).toTime().
+		 toString(QString().
+			  sprintf("%s: hh:mm:ss",(const char *)str)));
+      str=QString(tr("Cut"));
+      l->setText(5,QString().
+		 sprintf("%s %s",(const char *)str,
+			 (const char *)q->value(5).toString()));
+      l->setText(6,q->value(42).toString());
+      switch((RDSettings::Format)q->value(19).toInt()) {    // Format
+      case RDSettings::Pcm16:
+	l->setText(20,tr("PCM16"));
+	break;
+
+      case RDSettings::Pcm24:
+	l->setText(20,tr("PCM24"));
+	break;
+
+      case RDSettings::MpegL1:
+	l->setText(20,tr("MPEG Layer 1"));
+	break;
+
+      case RDSettings::MpegL2:
+      case RDSettings::MpegL2Wav:
+	l->setText(20,tr("MPEG Layer 2"));
+	break;
+
+      case RDSettings::MpegL3:
+	l->setText(20,tr("MPEG Layer 3"));
+	break;
+
+      case RDSettings::Flac:
+	l->setText(20,tr("FLAC"));
+	break;
+
+      case RDSettings::OggVorbis:
+	l->setText(20,tr("OggVorbis"));
+	break;
+      }
+      if(q->value(44).toString().isEmpty()) {
+	l->setText(14,tr("[none]"));
+      }
+      else {
+	l->setText(14,q->value(44).toString());    // Feed Key Name
+      }
+      l->setText(21,q->value(20).toString());   // Channels
+      l->setText(22,q->value(21).toString());   // Sample Rate
+      if(q->value(22).toInt()==0) {     // Bit Rate/Quality
+	l->setText(23,QString().sprintf("Qual %d",q->value(43).toInt()));
+      }
+      else {
+	l->setText(23,QString().sprintf("%d kb/sec",
+					q->value(22).toInt()/1000));
+      }
+      break;
     }
     DisplayExitCode(l,(RDRecording::ExitCode)q->value(28).toInt(),
 		    q->value(45).toString());
@@ -1992,55 +1984,56 @@ void MainWidget::RefreshLine(RDListViewItem *item)
   QString str;
 
   int id=item->text(28).toInt();
-  sql=QString().sprintf("select RECORDINGS.DESCRIPTION,\
-                                RECORDINGS.IS_ACTIVE,\
-                                RECORDINGS.STATION_NAME,\
-                                RECORDINGS.START_TIME,\
-                                RECORDINGS.LENGTH,\
-                                RECORDINGS.CUT_NAME,\
-                                RECORDINGS.SUN,\
-                                RECORDINGS.MON,\
-                                RECORDINGS.TUE,\
-                                RECORDINGS.WED,\
-                                RECORDINGS.THU,\
-                                RECORDINGS.FRI,\
-                                RECORDINGS.SAT,\
-                                RECORDINGS.SWITCH_INPUT,\
-                                RECORDINGS.START_GPI,\
-                                RECORDINGS.END_GPI,\
-                                RECORDINGS.TRIM_THRESHOLD,\
-                                RECORDINGS.STARTDATE_OFFSET,\
-                                RECORDINGS.ENDDATE_OFFSET,\
-                                RECORDINGS.FORMAT,\
-                                RECORDINGS.CHANNELS,\
-                                RECORDINGS.SAMPRATE,\
-                                RECORDINGS.BITRATE,\
-                                RECORDINGS.CHANNEL,\
-                                RECORDINGS.MACRO_CART,\
-                                RECORDINGS.TYPE,\
-                                RECORDINGS.SWITCH_OUTPUT,\
-                                RECORDINGS.EXIT_CODE,\
-                                RECORDINGS.ONE_SHOT,\
-                                RECORDINGS.START_TYPE,\
-                                RECORDINGS.START_LENGTH,\
-                                RECORDINGS.START_MATRIX,\
-                                RECORDINGS.START_LINE,\
-                                RECORDINGS.START_OFFSET,\
-                                RECORDINGS.END_TYPE,\
-                                RECORDINGS.END_TIME,\
-                                RECORDINGS.END_LENGTH,\
-                                RECORDINGS.END_MATRIX,\
-                                RECORDINGS.END_LINE,\
-                                CUTS.ORIGIN_NAME,\
-                                CUTS.ORIGIN_DATETIME,\
-                                RECORDINGS.URL,\
-                                RECORDINGS.QUALITY,\
-                                FEEDS.KEY_NAME,\
-                                RECORDINGS.EXIT_TEXT \
-                         from RECORDINGS left join CUTS \
-                        on (RECORDINGS.CUT_NAME=CUTS.CUT_NAME) left join FEEDS\
-                        on (RECORDINGS.FEED_ID=FEEDS.ID) \
-                        where RECORDINGS.ID=%d",id);
+  sql=QString("select ")+
+    "RECORDINGS.DESCRIPTION,"+       // 00
+    "RECORDINGS.IS_ACTIVE,"+         // 01
+    "RECORDINGS.STATION_NAME,"+      // 02
+    "RECORDINGS.START_TIME,"+        // 03
+    "RECORDINGS.LENGTH,"+            // 04
+    "RECORDINGS.CUT_NAME,"+          // 05
+    "RECORDINGS.SUN,"+               // 06
+    "RECORDINGS.MON,"+               // 07
+    "RECORDINGS.TUE,"+               // 08
+    "RECORDINGS.WED,"+               // 09
+    "RECORDINGS.THU,"+               // 10
+    "RECORDINGS.FRI,"+               // 11
+    "RECORDINGS.SAT,"+               // 12
+    "RECORDINGS.SWITCH_INPUT,"+      // 13
+    "RECORDINGS.START_GPI,"+         // 14
+    "RECORDINGS.END_GPI,"+           // 15
+    "RECORDINGS.TRIM_THRESHOLD,"+    // 16
+    "RECORDINGS.STARTDATE_OFFSET,"+  // 17
+    "RECORDINGS.ENDDATE_OFFSET,"+    // 18
+    "RECORDINGS.FORMAT,"+            // 19
+    "RECORDINGS.CHANNELS,"+          // 20
+    "RECORDINGS.SAMPRATE,"+          // 21
+    "RECORDINGS.BITRATE,"+           // 22
+    "RECORDINGS.CHANNEL,"+           // 23
+    "RECORDINGS.MACRO_CART,"+        // 24
+    "RECORDINGS.TYPE,"+              // 25
+    "RECORDINGS.SWITCH_OUTPUT,"+     // 26
+    "RECORDINGS.EXIT_CODE,"+         // 27
+    "RECORDINGS.ONE_SHOT,"+          // 28
+    "RECORDINGS.START_TYPE,"+        // 29
+    "RECORDINGS.START_LENGTH,"+      // 30
+    "RECORDINGS.START_MATRIX,"+      // 31
+    "RECORDINGS.START_LINE,"+        // 32
+    "RECORDINGS.START_OFFSET,"+      // 33
+    "RECORDINGS.END_TYPE,"+          // 34
+    "RECORDINGS.END_TIME,"+          // 35
+    "RECORDINGS.END_LENGTH,"+        // 36
+    "RECORDINGS.END_MATRIX,"+        // 37
+    "RECORDINGS.END_LINE,"+          // 38
+    "CUTS.ORIGIN_NAME,"+             // 39
+    "CUTS.ORIGIN_DATETIME,"+         // 40
+    "RECORDINGS.URL,"+               // 41
+    "RECORDINGS.QUALITY,"+           // 42
+    "FEEDS.KEY_NAME,"+               // 43
+    "RECORDINGS.EXIT_TEXT "+         // 44
+    "from RECORDINGS left join CUTS "+
+    "on (RECORDINGS.CUT_NAME=CUTS.CUT_NAME) left join FEEDS "+
+    "on (RECORDINGS.FEED_ID=FEEDS.ID) where "+
+    QString().sprintf("RECORDINGS.ID=%d",id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     if(RDBool(q->value(1).toString())) {
@@ -2193,11 +2186,12 @@ void MainWidget::RefreshLine(RDListViewItem *item)
 				      q->value(38).toInt()));
 		break;
 	  }	
-	  sql=QString().sprintf("select SWITCH_STATION,SWITCH_MATRIX\
-                                 from DECKS where \
-                                 (STATION_NAME=\"%s\")&&(CHANNEL=%d)",
-				(const char *)q->value(2).toString(),
-				q->value(23).toInt());
+	  sql=QString("select ")+
+	    "SWITCH_STATION,"+
+	    "SWITCH_MATRIX "+
+	    "from DECKS where "+
+	    "(STATION_NAME=\""+RDEscapeString(q->value(2).toString())+"\")&&"+
+	    QString().sprintf("(CHANNEL=%d)",q->value(23).toInt());
 	  q1=new RDSqlQuery(sql);
 	  if(q1->first()) {
 	    item->setText(5,GetSourceName(q1->value(0).toString(),
@@ -2209,25 +2203,34 @@ void MainWidget::RefreshLine(RDListViewItem *item)
 		       sprintf("Cut %s",(const char *)q->value(5).toString()));
 	  item->setPixmap(0,*catch_record_map);
 	  switch((RDSettings::Format)q->value(19).toInt()) {   // Format
-	      case RDSettings::Pcm16:
-		item->setText(20,tr("PCM16"));
-		break;
-	      case RDSettings::MpegL1:
-		item->setText(20,tr("MPEG Layer 1"));
-		break;
-	      case RDSettings::MpegL2:
-	      case RDSettings::MpegL2Wav:
-		item->setText(20,tr("MPEG Layer 2"));
-		break;
-	      case RDSettings::MpegL3:
-		item->setText(20,tr("MPEG Layer 3"));
-		break;
-	      case RDSettings::Flac:
-		item->setText(20,tr("FLAC"));
-		break;
-	      case RDSettings::OggVorbis:
-		item->setText(20,tr("OggVorbis"));
-		break;
+	  case RDSettings::Pcm16:
+	    item->setText(20,tr("PCM16"));
+	    break;
+
+	  case RDSettings::Pcm24:
+	    item->setText(20,tr("PCM24"));
+	    break;
+
+	  case RDSettings::MpegL1:
+	    item->setText(20,tr("MPEG Layer 1"));
+	    break;
+
+	  case RDSettings::MpegL2:
+	  case RDSettings::MpegL2Wav:
+	    item->setText(20,tr("MPEG Layer 2"));
+	    break;
+
+	  case RDSettings::MpegL3:
+	    item->setText(20,tr("MPEG Layer 3"));
+	    break;
+
+	  case RDSettings::Flac:
+	    item->setText(20,tr("FLAC"));
+	    break;
+
+	  case RDSettings::OggVorbis:
+	    item->setText(20,tr("OggVorbis"));
+	    break;
 	  }
 	  item->setText(21,q->value(20).toString());   // Channels
 	  item->setText(22,q->value(21).toString());   // Sample Rate
@@ -2328,25 +2331,34 @@ void MainWidget::RefreshLine(RDListViewItem *item)
 	    item->setText(14,q->value(43).toString());
 	  }
 	  switch((RDSettings::Format)q->value(19).toInt()) {   // Format
-	      case RDSettings::Pcm16:
-		item->setText(20,tr("PCM16"));
-		break;
-	      case RDSettings::MpegL1:
-		item->setText(20,tr("MPEG Layer 1"));
-		break;
-	      case RDSettings::MpegL2:
-	      case RDSettings::MpegL2Wav:
-		item->setText(20,tr("MPEG Layer 2"));
-		break;
-	      case RDSettings::MpegL3:
-		item->setText(20,tr("MPEG Layer 3"));
-		break;
-	      case RDSettings::Flac:
-		item->setText(20,tr("FLAC"));
-		break;
-	      case RDSettings::OggVorbis:
-		item->setText(20,tr("OggVorbis"));
-		break;
+	  case RDSettings::Pcm16:
+	    item->setText(20,tr("PCM16"));
+	    break;
+
+	  case RDSettings::Pcm24:
+	    item->setText(20,tr("PCM24"));
+	    break;
+
+	  case RDSettings::MpegL1:
+	    item->setText(20,tr("MPEG Layer 1"));
+	    break;
+
+	  case RDSettings::MpegL2:
+	  case RDSettings::MpegL2Wav:
+	    item->setText(20,tr("MPEG Layer 2"));
+	    break;
+
+	  case RDSettings::MpegL3:
+	    item->setText(20,tr("MPEG Layer 3"));
+	    break;
+
+	  case RDSettings::Flac:
+	    item->setText(20,tr("FLAC"));
+	    break;
+
+	  case RDSettings::OggVorbis:
+	    item->setText(20,tr("OggVorbis"));
+	    break;
 	  }
 	  item->setText(21,q->value(20).toString());   // Channels
 	  item->setText(22,q->value(21).toString());   // Sample Rate
@@ -2375,13 +2387,14 @@ void MainWidget::UpdateExitCode(RDListViewItem *item)
 {
   RDRecording::ExitCode code=RDRecording::InternalError;
   QString err_text=tr("Unknown");
-  QString sql=QString().sprintf("select RECORDINGS.EXIT_CODE,\
-                                 CUTS.ORIGIN_NAME,CUTS.ORIGIN_DATETIME,\
-                                 RECORDINGS.EXIT_TEXT \
-                                 from RECORDINGS left join CUTS \
-                                 on RECORDINGS.CUT_NAME=CUTS.CUT_NAME \
-                                 where RECORDINGS.ID=%d",
-				item->text(28).toInt());
+  QString sql=QString("select ")+
+    "RECORDINGS.EXIT_CODE,"+
+    "CUTS.ORIGIN_NAME,"+
+    "CUTS.ORIGIN_DATETIME,"+
+    "RECORDINGS.EXIT_TEXT "+
+    "from RECORDINGS left join CUTS "+
+    "on RECORDINGS.CUT_NAME=CUTS.CUT_NAME where "+
+    QString().sprintf("RECORDINGS.ID=%d",item->text(28).toInt());
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     code=(RDRecording::ExitCode)q->value(0).toInt();
@@ -2435,11 +2448,10 @@ void MainWidget::DisplayExitCode(RDListViewItem *item,
 QString MainWidget::GetSourceName(QString station,int matrix,int input)
 {
   QString input_name;
-  QString sql=QString().sprintf("select NAME from INPUTS where \
-                                 (STATION_NAME=\"%s\")&&\
-                                 (MATRIX=%d)&&(NUMBER=%d)",
-				(const char *)station,
-				matrix,input);
+  QString sql=QString("select NAME from INPUTS where ")+
+    "(STATION_NAME=\""+RDEscapeString(station)+"\")&&"+
+    QString().sprintf("(MATRIX=%d)&&",matrix)+
+    QString().sprintf("(NUMBER=%d)",input);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     input_name=q->value(0).toString();
@@ -2452,11 +2464,10 @@ QString MainWidget::GetSourceName(QString station,int matrix,int input)
 QString MainWidget::GetDestinationName(QString station,int matrix,int output)
 {
   QString output_name;
-  QString sql=QString().sprintf("select NAME from OUTPUTS where \
-                                 (STATION_NAME=\"%s\")&&\
-                                 (MATRIX=%d)&&(NUMBER=%d)",
-				(const char *)station,
-				matrix,output);
+  QString sql=QString("select NAME from OUTPUTS where ")+
+    "(STATION_NAME=\""+RDEscapeString(station)+"\")&&"+
+    QString().sprintf("(MATRIX=%d)&&",matrix)+
+    QString().sprintf("(NUMBER=%d)",output);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     output_name=q->value(0).toString();
@@ -2526,7 +2537,7 @@ QString MainWidget::GeometryFile() {
 void MainWidget::LoadGeometry()
 {
   QString geometry_file = GeometryFile();
-  if(geometry_file==NULL) {
+  if(geometry_file.isNull()) {
     return;
   }
   RDProfile *profile=new RDProfile();
@@ -2541,7 +2552,7 @@ void MainWidget::LoadGeometry()
 void MainWidget::SaveGeometry()
 {
   QString geometry_file = GeometryFile();
-  if(geometry_file==NULL) {
+  if(geometry_file.isNull()) {
     return;
   }
   FILE *file=fopen(geometry_file,"w");
@@ -2562,6 +2573,7 @@ int main(int argc,char *argv[])
   //
   // Load Translations
   //
+  /*
   QTranslator qt(0);
   qt.load(QString(QTDIR)+QString("/translations/qt_")+QTextCodec::locale(),
 	  ".");
@@ -2581,11 +2593,11 @@ int main(int argc,char *argv[])
   tr.load(QString(PREFIX)+QString("/share/rivendell/rdcatch_")+
 	     QTextCodec::locale(),".");
   a.installTranslator(&tr);
-
+  */
   //
   // Start Event Loop
   //
-  MainWidget *w=new MainWidget(NULL,"main");
+  MainWidget *w=new MainWidget();
   a.setMainWidget(w);
   w->show();
   return a.exec();

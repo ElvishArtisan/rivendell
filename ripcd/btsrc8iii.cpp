@@ -2,9 +2,7 @@
 //
 // A Rivendell switcher driver for the BroadcastTools SRC-8 III
 //
-//   (C) Copyright 2002-2005,2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: btsrc8iii.cpp,v 1.3 2010/08/03 23:39:25 cvs Exp $
+//   (C) Copyright 2002-2005,2010,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,8 +26,8 @@
 #include <btsrc8iii.h>
 
 
-BtSrc8Iii::BtSrc8Iii(RDMatrix *matrix,QObject *parent,const char *name)
-  : Switcher(matrix,parent,name)
+BtSrc8Iii::BtSrc8Iii(RDMatrix *matrix,QObject *parent)
+  : Switcher(matrix,parent)
 {
   //
   // Initialize Data Structures
@@ -50,14 +48,14 @@ BtSrc8Iii::BtSrc8Iii(RDMatrix *matrix,QObject *parent,const char *name)
   //
   // Initialize the TTY Port
   //
-  RDTty *tty=new RDTty(rdstation->name(),matrix->port(RDMatrix::Primary));
+  RDTty *tty=new RDTty(rda->station()->name(),matrix->port(RDMatrix::Primary));
   bt_device=new RDTTYDevice();
   if(tty->active()) {
     bt_device->setName(tty->port());
     bt_device->setSpeed(tty->baudRate());
     bt_device->setWordLength(tty->dataBits());
     bt_device->setParity(tty->parity());
-    bt_device->open(IO_Raw|IO_ReadWrite);
+    bt_device->open(QIODevice::Unbuffered|QIODevice::ReadWrite);
   }
   delete tty;
 

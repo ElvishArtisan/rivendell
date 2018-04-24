@@ -3,9 +3,7 @@
 // A Rivendell switcher driver for the SAS64000 connected via
 //   a GPI-1600
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: sas64000gpi.h,v 1.10 2010/08/03 23:39:26 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -36,7 +34,7 @@ class Sas64000Gpi : public Switcher
 {
  Q_OBJECT
  public:
-  Sas64000Gpi(RDMatrix *matrix,QObject *parent=0,const char *name=0);
+  Sas64000Gpi(RDMatrix *matrix,QObject *parent=0);
   ~Sas64000Gpi();
   RDMatrix::Type type();
   unsigned gpiQuantity();

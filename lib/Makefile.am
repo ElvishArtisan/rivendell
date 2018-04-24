@@ -2,9 +2,7 @@
 ##
 ## Automake.am for rivendell/lib
 ##
-## (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-##
-##      $Id: Makefile.am,v 1.132.4.15.2.3 2014/05/28 21:21:39 cvs Exp $
+## (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -22,7 +20,7 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" @QT_CXXFLAGS@ -Wno-strict-aliasing
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" @QT4_CFLAGS@ -Wno-strict-aliasing -DQT3_SUPPORT -I/usr/include/Qt3Support
 MOC = @QT_MOC@
 CWRAP = ../helpers/cwrap
 
@@ -41,17 +39,18 @@ install-exec-local:
 	mkdir -p $(DESTDIR)$(prefix)/share/rivendell
 	cp librd_*.qm $(DESTDIR)$(prefix)/share/rivendell
 
-uninstall:
+uninstall-local:
 	rm -f $(DESTDIR)$(prefix)/share/rivendell/librd_*.qm
 
 all:	
-	@QT_BIN@/lupdate lib.pro
-	@QT_BIN@/lrelease lib.pro
+	lupdate-qt4 lib.pro
+	lrelease-qt4 lib.pro
 
 lib_LTLIBRARIES = librd.la
 dist_librd_la_SOURCES = dbversion.h\
                         gpio.h\
                         export_bmiemr.cpp\
+                        export_cutlog.cpp\
                         export_deltaflex.cpp\
                         export_musicclassical.cpp\
                         export_musicplayout.cpp\
@@ -59,12 +58,15 @@ dist_librd_la_SOURCES = dbversion.h\
                         export_nprsoundex.cpp\
                         export_radiotraffic.cpp\
                         export_soundex.cpp\
+                        export_spincount.cpp\
                         export_technical.cpp\
                         export_textlog.cpp\
                         html_gpl2.cpp\
+                        rd.h\
                         rdadd_cart.cpp rdadd_cart.h\
                         rdadd_log.cpp rdadd_log.h\
                         rdairplay_conf.cpp rdairplay_conf.h\
+                        rdapplication.cpp rdapplication.h\
                         rdaudio_exists.cpp rdaudio_exists.h\
                         rdaudio_port.cpp rdaudio_port.h\
                         rdaudioconvert.cpp rdaudioconvert.h\
@@ -122,8 +124,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdedit_audio.cpp rdedit_audio.h\
                         rdedit_panel_name.cpp rdedit_panel_name.h\
                         rdemptycart.cpp rdemptycart.h\
-                        rdencoder.cpp rdencoder.h\
-                        rdencoderlist.cpp rdencoderlist.h\
+                        rdendpoint.cpp rdendpoint.h\
                         rdescape_string.cpp rdescape_string.h\
                         rdevent.cpp rdevent.h\
                         rdevent_line.cpp rdevent_line.h\
@@ -142,6 +143,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdgrid.cpp rdgrid.h\
                         rdgroup.cpp rdgroup.h\
                         rdgroup_list.cpp rdgroup_list.h\
+                        rdhostvariable.cpp rdhostvariable.h\
                         rdhotkeys.cpp rdhotkeys.h\
                         rdhotkeylist.cpp rdhotkeylist.h\
                         rdidvalidator.cpp rdidvalidator.h\
@@ -149,7 +151,6 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdinstancelock.cpp rdinstancelock.h\
                         rdintegeredit.cpp rdintegeredit.h\
                         rdintegerdialog.cpp rdintegerdialog.h\
-                        rd.h\
                         rdlabel.cpp rdlabel.h\
                         rdlibrary_conf.cpp rdlibrary_conf.h\
                         rdlicense.cpp rdlicense.h\
@@ -176,6 +177,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdmeteraverage.cpp rdmeteraverage.h\
                         rdmixer.cpp rdmixer.h\
                         rdmonitor_config.cpp rdmonitor_config.h\
+			rdmp4.cpp rdmp4.h\
                         rdnownext.cpp rdnownext.h\
                         rdoneshot.cpp rdoneshot.h\
                         rdpam.cpp rdpam.h\
@@ -195,6 +197,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdreport.cpp rdreport.h\
                         rdringbuffer.cpp rdringbuffer.h\
                         rdripc.cpp rdripc.h\
+                        rdschedcode.cpp rdschedcode.h\
                         rdschedcodes_dialog.cpp rdschedcodes_dialog.h\
                         rdsegmeter.cpp rdsegmeter.h\
                         rdsettings.cpp rdsettings.h\
@@ -205,6 +208,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdslotoptions.cpp rdslotoptions.h\
                         rdsocket.cpp rdsocket.h\
                         rdsound_panel.cpp rdsound_panel.h\
+                        rdsqltablemodel.cpp rdsqltablemodel.h\
                         rdstation.cpp rdstation.h\
                         rdstatus.cpp rdstatus.h\
                         rdstereometer.cpp rdstereometer.h\
@@ -212,6 +216,8 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdsvc.cpp rdsvc.h\
                         rdsystem.cpp rdsystem.h\
                         rdsystemuser.cpp rdsystemuser.h\
+                        rdtableview.cpp rdtableview.h\
+                        rdtablewidget.cpp rdtablewidget.h\
                         rdtextfile.cpp rdtextfile.h\
                         rdtextvalidator.cpp rdtextvalidator.h\
                         rdtimeedit.cpp rdtimeedit.h\
@@ -222,10 +228,12 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdtty.cpp rdtty.h\
                         rdttydevice.cpp rdttydevice.h\
                         rdttyout.cpp rdttyout.h\
+                        rdunittestdata.cpp rdunittestdata.h\
                         rdurl.cpp rdurl.h\
                         rduser.cpp rduser.h\
                         rdupload.cpp rdupload.h\
                         rdversion.cpp rdversion.h\
+                        rdvguestresource.cpp rdvguestresource.h\
                         rdwavedata.cpp rdwavedata.h\
                         rdwavedata_dialog.cpp rdwavedata_dialog.h\
                         rdwavefile.cpp rdwavefile.h\
@@ -279,7 +287,6 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdgpio.cpp\
                           moc_rdgpioselector.cpp\
                           moc_rdhotkeys.cpp\
-                          moc_rdhotkeylist.cpp\
                           moc_rdimport_audio.cpp\
                           moc_rdintegeredit.cpp\
                           moc_rdintegerdialog.cpp\
@@ -306,14 +313,18 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdsegmeter.cpp\
                           moc_rdsimpleplayer.cpp\
                           moc_rdslider.cpp\
-                          moc_rdsocket.cpp\
                           moc_rdsound_panel.cpp\
                           moc_rdslotbox.cpp\
                           moc_rdslotdialog.cpp\
+                          moc_rdsocket.cpp\
+                          moc_rdsqltablemodel.cpp\
                           moc_rdstereometer.cpp\
                           moc_rdsvc.cpp\
+                          moc_rdtableview.cpp\
+                          moc_rdtablewidget.cpp\
                           moc_rdtimeedit.cpp\
                           moc_rdtimeengine.cpp\
+                          moc_rdttydevice.cpp\
                           moc_rdtransportbutton.cpp\
                           moc_rdtrimaudio.cpp\
                           moc_rdupload.cpp\

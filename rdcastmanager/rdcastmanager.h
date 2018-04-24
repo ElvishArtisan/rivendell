@@ -2,9 +2,7 @@
 //
 // A RSS Feed Management Utility for Rivendell.
 //
-//   (C) Copyright 2002-2007 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcastmanager.h,v 1.6 2010/07/29 19:32:36 cvs Exp $
+//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,18 +18,19 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-
 #ifndef RDCASTMANAGER_H
 #define RDCASTMANAGER_H
 
 #include <vector>
 
-#include <qmainwindow.h>
+#include <q3mainwindow.h>
 #include <qsize.h>
 #include <qsizepolicy.h>
 #include <qsqldatabase.h>
 #include <qpushbutton.h>
 #include <qpixmap.h>
+//Added by qt3to4:
+#include <QResizeEvent>
 
 #include <rdlistview.h>
 #include <rduser.h>
@@ -40,19 +39,20 @@
 #include <rdlog_line.h>
 #include <rdconfig.h>
 
+#define RDCASTMANAGER_USAGE "\n"
 
-class MainWidget : public QMainWindow
+class MainWidget : public Q3MainWindow
 {
  Q_OBJECT
  public:
-  MainWidget(QWidget *parent=0,const char *name=0,WFlags f=0);
+  MainWidget(QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
   
  private slots:
   void openData();
   void userChangedData();
-  void feedDoubleclickedData(QListViewItem *item,const QPoint &pt,int col);
+  void feedDoubleclickedData(Q3ListViewItem *item,const QPoint &pt,int col);
   void quitMainWidget();
 
  protected:

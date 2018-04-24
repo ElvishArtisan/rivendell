@@ -2,9 +2,7 @@
 //
 // Connection to the Rivendell Core Audio Engine
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcae.h,v 1.32.4.2 2012/11/30 16:14:59 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,7 +26,7 @@
 #include <qsqldatabase.h>
 #include <qstring.h>
 #include <qobject.h>
-#include <qsocketdevice.h>
+#include <q3socketdevice.h>
 #include <qlabel.h>
 
 #include <rd.h>
@@ -43,9 +41,8 @@ class RDCae : public QObject
   enum ClockSource {InternalClock=0,AesEbuClock=1,SpDiffClock=2,WordClock=4};
   enum ChannelMode {Normal=0,Swap=1,LeftOnly=2,RightOnly=3};
   enum SourceType {Analog=0,AesEbu=1};
-  enum AudioCoding {Pcm16=0,MpegL1=1,MpegL2=2,MpegL3=3};
-  RDCae(RDStation *station,RDConfig *config,
-	QObject *parent=0,const char *name=0);
+  enum AudioCoding {Pcm16=0,MpegL1=1,MpegL2=2,MpegL3=3,Pcm24=4};
+  RDCae(RDStation *station,RDConfig *config,QObject *parent=0);
   ~RDCae();
   void connectHost();
   bool loadPlay(int card,QString name,int *stream,int *handle);
@@ -109,7 +106,7 @@ class RDCae : public QObject
   int StreamNumber(const char *arg);
   int GetHandle(const char *arg);
   void UpdateMeters();
-  QSocketDevice *cae_socket;
+  Q3SocketDevice *cae_socket;
   bool debug;
   char args[CAE_MAX_ARGS][CAE_MAX_LENGTH];
   int argnum;
@@ -118,7 +115,7 @@ class RDCae : public QObject
   bool input_status[RD_MAX_CARDS][RD_MAX_PORTS];
   int cae_handle[RD_MAX_CARDS][RD_MAX_STREAMS];
   unsigned cae_pos[RD_MAX_CARDS][RD_MAX_STREAMS];
-  QSocketDevice *cae_meter_socket;
+  Q3SocketDevice *cae_meter_socket;
   short cae_input_levels[RD_MAX_CARDS][RD_MAX_PORTS][2];
   short cae_output_levels[RD_MAX_CARDS][RD_MAX_PORTS][2];
   short cae_stream_output_levels[RD_MAX_CARDS][RD_MAX_PORTS][2];

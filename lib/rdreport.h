@@ -2,9 +2,7 @@
 //
 // Abstract a Rivendell Report Descriptor
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdreport.h,v 1.17.8.7.2.4 2014/05/22 01:21:35 cvs Exp $
+//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -37,12 +35,13 @@ class RDReport
 		     SoundExchange=4,RadioTraffic=5,VisualTraffic=6,
 		     CounterPoint=7,Music1=8,MusicSummary=9,WideOrbit=10,
 		     NprSoundExchange=11,MusicPlayout=12,NaturalLog=13,
-		     MusicClassical=14,MrMaster=15,LastFilter=16};
+		     MusicClassical=14,MrMaster=15,SpinCount=16,CutLog=17,
+		     LastFilter=18};
   enum ExportOs {Linux=0,Windows=1};
   enum ExportType {Generic=0,Traffic=1,Music=2};
   enum StationType {TypeOther=0,TypeAm=1,TypeFm=2,TypeLast=3};
   enum ErrorCode {ErrorOk=0,ErrorCanceled=1,ErrorCantOpen=2};
-  RDReport(const QString &rptname,QObject *parent=0,const char *name=0);
+  RDReport(const QString &rptname,QObject *parent=0);
   QString name() const;
   bool exists() const;
   QString description() const;
@@ -87,6 +86,7 @@ class RDReport
   bool outputExists(const QDate &startdate);
   bool generateReport(const QDate &startdate,const QDate &enddate,
 		      RDStation *station,QString *out_path);
+  static void remove(const QString &str);
   static QString filterText(RDReport::ExportFilter filter);
   static QString stationTypeText(RDReport::StationType type);
   static bool multipleDaysAllowed(RDReport::ExportFilter filter);
@@ -114,6 +114,10 @@ class RDReport
 			  const QString &mixtable);
   bool ExportMusicSummary(const QDate &startdate,const QDate &enddate,
 			  const QString &mixtable);
+  bool ExportSpinCount(const QDate &startdate,const QDate &enddate,
+		       const QString &mixtable);
+  bool ExportCutLog(const QDate &startdate,const QDate &enddate,
+		    const QString &mixtable);
   QString StringField(const QString &str,const QString &null_text="") const;
   void SetRow(const QString &param,const QString &value) const;
   void SetRow(const QString &param,int value) const;

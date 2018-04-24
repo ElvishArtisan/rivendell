@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell LogManager Note
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_note.h,v 1.5.8.1 2012/04/23 17:22:47 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,14 +23,16 @@
 
 #include <qdialog.h>
 #include <qpushbutton.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
+//Added by qt3to4:
+#include <QCloseEvent>
 
 
 class EditNote : public QDialog
 {
  Q_OBJECT
  public:
-  EditNote(QString *text,QWidget *parent=0,const char *name=0);
+  EditNote(QString *text,QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 
@@ -45,7 +45,7 @@ class EditNote : public QDialog
 
  private:
   QString *edit_text;
-  QTextEdit *edit_text_edit;
+  Q3TextEdit *edit_text_edit;
 };
 
 

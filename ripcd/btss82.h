@@ -2,9 +2,7 @@
 //
 // A Rivendell switcher driver for the BroadcastTools SS 8.2
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: btss82.h,v 1.11.8.1 2012/12/11 03:49:48 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -39,7 +37,7 @@ class BtSs82 : public Switcher
 {
  Q_OBJECT
  public:
-  BtSs82(RDMatrix *matrix,QObject *parent=0,const char *name=0);
+  BtSs82(RDMatrix *matrix,QObject *parent=0);
   ~BtSs82();
   RDMatrix::Type type();
   unsigned gpiQuantity();

@@ -2,9 +2,7 @@
 //
 // Display Audio Adapter Information
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: view_adapters.cpp,v 1.14 2010/07/29 19:32:35 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,19 +18,16 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qpushbutton.h>
-#include <qtextedit.h>
-#include <qlabel.h>
+#include <QLabel>
+#include <QPushButton>
+#include <QTextEdit>
 
 #include <rd.h>
-#include <rdencoderlist.h>
 
-#include <view_adapters.h>
+#include "view_adapters.h"
 
-
-ViewAdapters::ViewAdapters(RDStation *rdstation,
-			   QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+ViewAdapters::ViewAdapters(RDStation *rdstation,QWidget *parent)
+  : QDialog(parent)
 {
   QString str1;
   QString str2;
@@ -40,12 +35,10 @@ ViewAdapters::ViewAdapters(RDStation *rdstation,
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
-  setCaption(tr("Audio Resource Information"));
+  setWindowTitle("RDAdmin - "+tr("Audio Resource Information"));
 
   //
   // Create Fonts
@@ -69,7 +62,7 @@ ViewAdapters::ViewAdapters(RDStation *rdstation,
   //
   // Resource List
   //
-  QTextEdit *text_edit=new QTextEdit(this,"adapter_edit");
+  QTextEdit *text_edit=new QTextEdit(this);
   text_edit->setGeometry(10,28,sizeHint().width()-20,sizeHint().height()-98);
   text_edit->setReadOnly(true);
   QString text;
@@ -98,10 +91,14 @@ ViewAdapters::ViewAdapters(RDStation *rdstation,
       text+=tr("    MPEG Layer 2\n");
       text+=tr("    MPEG Layer 3\n");
     }
+    if(rdstation->haveCapability(RDStation::HaveMp4Decode)) {
+      text+=tr("    MP-4/AAC\n");
+    }
     if(rdstation->haveCapability(RDStation::HaveOgg123)) {
       text+=tr("    OggVorbis\n");
     }
     text+=tr("    PCM16 Linear\n");
+    text+=tr("    PCM24 Linear\n");
     text+="\n";
     text+=tr("SUPPORTED EXPORT FORMATS\n");
     if(rdstation->haveCapability(RDStation::HaveFlac)) {
@@ -117,11 +114,7 @@ ViewAdapters::ViewAdapters(RDStation *rdstation,
       text+=tr("    OggVorbis\n");
     }
     text+=tr("    PCM16 Linear\n");
-    RDEncoderList *encoders=new RDEncoderList(rdstation->name());
-    for(unsigned i=0;i<encoders->encoderQuantity();i++) {
-      text+="    "+encoders->encoder(i)->name()+" [Custom]\n";
-    }
-    delete encoders;
+    text+=tr("    PCM24 Linear\n");
 
     text+="\n";
     
@@ -172,9 +165,8 @@ ViewAdapters::ViewAdapters(RDStation *rdstation,
   //
   //  Close Button
   //
-  QPushButton *button=new QPushButton(this,"close_button");
-  button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
-			    80,50);
+  QPushButton *button=new QPushButton(this);
+  button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   button->setFont(button_font);
   button->setText(tr("&Close"));
   button->setDefault(true);

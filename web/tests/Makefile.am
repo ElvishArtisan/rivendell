@@ -2,9 +2,7 @@
 ##
 ## Automake.am for rivendell/web/tests
 ##
-##   (C) Copyright 2010,2013 Fred Gleason <fredg@paravelsystems.com>
-##
-##      $Id: Makefile.am,v 1.6.6.4 2013/10/14 04:23:55 cvs Exp $
+##   (C) Copyright 2010,2013-2015 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -25,74 +23,98 @@ install-exec-am:
 	mkdir -p $(DESTDIR)@libexecdir@
 	cp addcart.html $(DESTDIR)@libexecdir@
 	cp addcut.html $(DESTDIR)@libexecdir@
+	cp assignschedcode.html $(DESTDIR)@libexecdir@
 	cp audioinfo.html $(DESTDIR)@libexecdir@
 	cp audiostore.html $(DESTDIR)@libexecdir@
 	cp copyaudio.html $(DESTDIR)@libexecdir@
 	cp delete_audio.html $(DESTDIR)@libexecdir@
 	cp editcart.html $(DESTDIR)@libexecdir@
+	cp editcut.js $(DESTDIR)@libexecdir@
+	cp editcut.html $(DESTDIR)@libexecdir@
+	cp editcart.js $(DESTDIR)@libexecdir@
 	cp export.html $(DESTDIR)@libexecdir@
 	cp exportpeaks.html $(DESTDIR)@libexecdir@
 	cp import.html $(DESTDIR)@libexecdir@
 	cp import.html $(DESTDIR)@libexecdir@
 	cp listcart.html $(DESTDIR)@libexecdir@
 	cp listcarts.html $(DESTDIR)@libexecdir@
+	cp listcartschedcodes.html $(DESTDIR)@libexecdir@
 	cp listcut.html $(DESTDIR)@libexecdir@
 	cp listcuts.html $(DESTDIR)@libexecdir@
 	cp listgroup.html $(DESTDIR)@libexecdir@
 	cp listgroups.html $(DESTDIR)@libexecdir@
 	cp listlog.html $(DESTDIR)@libexecdir@
 	cp listlogs.html $(DESTDIR)@libexecdir@
+	cp listschedcodes.html $(DESTDIR)@libexecdir@
 	cp listservices.html $(DESTDIR)@libexecdir@
 	cp removecart.html $(DESTDIR)@libexecdir@
 	cp removecut.html $(DESTDIR)@libexecdir@
 	cp trimaudio.html $(DESTDIR)@libexecdir@
+	cp unassignschedcode.html $(DESTDIR)@libexecdir@
+	cp utils.js $(DESTDIR)@libexecdir@
 
-uninstall:	
+uninstall-local:	
 	rm -f $(DESTDIR)@libexecdir@/addcart.html
 	rm -f $(DESTDIR)@libexecdir@/addcut.html
+	rm -f $(DESTDIR)@libexecdir@/assignschedcode.html
 	rm -f $(DESTDIR)@libexecdir@/audioinfo.html
 	rm -f $(DESTDIR)@libexecdir@/audiostore.html
 	rm -f $(DESTDIR)@libexecdir@/copyaudio.html
 	rm -f $(DESTDIR)@libexecdir@/delete_audio.html
 	rm -f $(DESTDIR)@libexecdir@/editcart.html
+	rm -f $(DESTDIR)@libexecdir@/editcart.js
+	rm -f $(DESTDIR)@libexecdir@/editcut.html
+	rm -f $(DESTDIR)@libexecdir@/editcut.js
 	rm -f $(DESTDIR)@libexecdir@/export.html
 	rm -f $(DESTDIR)@libexecdir@/exportpeaks.html
 	rm -f $(DESTDIR)@libexecdir@/import.html
 	rm -f $(DESTDIR)@libexecdir@/listcart.html
 	rm -f $(DESTDIR)@libexecdir@/listcarts.html
+	rm -f $(DESTDIR)@libexecdir@/listcartschedcodes.html
 	rm -f $(DESTDIR)@libexecdir@/listcut.html
 	rm -f $(DESTDIR)@libexecdir@/listcuts.html
 	rm -f $(DESTDIR)@libexecdir@/listgroup.html
 	rm -f $(DESTDIR)@libexecdir@/listgroups.html
 	rm -f $(DESTDIR)@libexecdir@/listlog.html
 	rm -f $(DESTDIR)@libexecdir@/listlogs.html
+	rm -f $(DESTDIR)@libexecdir@/listschedcodes.html
 	rm -f $(DESTDIR)@libexecdir@/listservices.html
 	rm -f $(DESTDIR)@libexecdir@/removecart.html
 	rm -f $(DESTDIR)@libexecdir@/removecut.html
 	rm -f $(DESTDIR)@libexecdir@/trimaudio.html
+	rm -f $(DESTDIR)@libexecdir@/unassignschedcode.html
+	rm -f $(DESTDIR)@libexecdir@/utils.js
 
 EXTRA_DIST = addcart.html\
              addcut.html\
+             assignschedcode.html\
              audioinfo.html\
              audiostore.html\
              copyaudio.html\
              delete_audio.html\
              editcart.html\
+             editcart.js\
+             editcut.html\
+             editcut.js\
              export.html\
              exportpeaks.html\
              import.html\
              listcart.html\
              listcarts.html\
+             listcartschedcodes.html\
              listcut.html\
              listcuts.html\
              listgroup.html\
              listgroups.html\
              listlog.html\
              listlogs.html\
+             listschedcodes.html\
              listservices.html\
              removecart.html\
              removecut.html\
-             trimaudio.html
+             trimaudio.html\
+             unassignschedcode.html\
+             utils.js
 
 CLEANFILES = *~
 MAINTAINERCLEANFILES = *~\

@@ -2,9 +2,7 @@
 //
 // Abstract an RDCatch Configuration.
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcatch_conf.cpp,v 1.8 2010/07/29 19:32:33 cvs Exp $
+//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,7 +23,6 @@
 #include <rdcatch_conf.h>
 #include <rdescape_string.h>
 
-
 //
 // Global Classes
 //
@@ -36,15 +33,13 @@ RDCatchConf::RDCatchConf(const QString &station)
 
   air_station=station;
 
-  sql=QString().
-    sprintf("select ID from RDCATCH where STATION=\"%s\"",
-			(const char *)air_station);
+  sql=QString("select ID from RDCATCH where ")+
+    "STATION=\""+RDEscapeString(air_station)+"\"";
   q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;
-    sql=QString().
-      sprintf("insert into RDCATCH set STATION=\"%s\"",
-			  (const char *)air_station);
+    sql=QString("insert into RDCATCH set ")+
+      "STATION=\""+RDEscapeString(air_station)+"\"";
     q=new RDSqlQuery(sql);
     delete q;
   } else {
@@ -76,11 +71,9 @@ void RDCatchConf::SetRow(const QString &param,const QString &value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().
-    sprintf("UPDATE RDCATCH SET %s=\"%s\" WHERE STATION=\"%s\"",
-	    (const char *)param,
-	    (const char *)RDEscapeString(value),
-	    (const char *)RDEscapeString(air_station));
+  sql=QString("update RDCATCH set ")+
+    param+"=\""+RDEscapeString(value)+"\" where "+
+    "STATION=\""+RDEscapeString(air_station)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }

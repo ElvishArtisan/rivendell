@@ -1,10 +1,8 @@
 // list_replicator_carts.h
 //
-// List Rivendell Replication Configurations
+// List Rivendell Replicator Carts
 //
-//   (C) Copyright 2012 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_replicator_carts.h,v 1.1 2011/10/17 18:48:40 cvs Exp $
+//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,22 +21,19 @@
 #ifndef LIST_REPLICATOR_CARTS_H
 #define LIST_REPLICATOR_CARTS_H
 
-#include <qdialog.h>
-#include <qpixmap.h>
-#include <qradiobutton.h>
-#include <qpushbutton.h>
-#include <qpixmap.h>
-#include <qtimer.h>
+#include <QDialog>
+#include <QPixmap>
+#include <QPushButton>
+#include <QResizeEvent>
+#include <QTimer>
 
 #include <rdlistviewitem.h>
-#include <rddb.h>
-
 
 class ListReplicatorCarts : public QDialog
 {
   Q_OBJECT
  public:
-  ListReplicatorCarts(QWidget *parent=0,const char *name=0);
+  ListReplicatorCarts(QWidget *parent=0);
   ~ListReplicatorCarts();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;

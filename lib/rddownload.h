@@ -2,9 +2,7 @@
 //
 // Download a File
 //
-//   (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rddownload.h,v 1.2 2010/07/29 19:32:33 cvs Exp $
+//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,7 +22,7 @@
 #define RDDOWNLOAD_H
 
 #include <qobject.h>
-#include <qurl.h>
+#include <q3url.h>
 
 class RDDownload : public QObject
 {
@@ -36,8 +34,7 @@ class RDDownload : public QObject
 		  ErrorUnspecified=8,ErrorInvalidUser=9,ErrorAborted=10,
 		  ErrorInvalidLogin=11,ErrorRemoteAccess=12,
 		  ErrorRemoteConnection=13};
-  RDDownload(const QString &station_name,
-		QObject *parent=0,const char *name=0);
+  RDDownload(const QString &station_name,QObject *parent=0);
   void setSourceUrl(const QString &url);
   void setDestinationFile(const QString &filename);
   int totalSteps() const;
@@ -57,7 +54,7 @@ class RDDownload : public QObject
   void UpdateProgress(int step);
   friend int DownloadProgressCallback(void *clientp,double dltotal,double dlnow,
 				      double ultotal,double ulnow);
-  QUrl conv_src_url;
+  Q3Url conv_src_url;
   QString conv_dst_filename;
   bool conv_aborting;
   uint conv_dst_size;

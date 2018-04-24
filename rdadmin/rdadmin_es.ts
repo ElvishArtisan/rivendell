@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -204,27 +206,27 @@ y un respaldo de la base de datos se guardó en </translation>
     <name>AddEncoder</name>
     <message>
         <source>Add Encoder</source>
-        <translation>Agregar Codificador</translation>
+        <translation type="obsolete">Agregar Codificador</translation>
     </message>
     <message>
         <source>&amp;New Encoder Name:</source>
-        <translation>&amp;Nombre:</translation>
+        <translation type="obsolete">&amp;Nombre:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;Aceptar</translation>
+        <translation type="obsolete">&amp;Aceptar</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>Add Encoder Error</source>
-        <translation>Error añadiendo Codificador</translation>
+        <translation type="obsolete">Error añadiendo Codificador</translation>
     </message>
     <message>
         <source>A encoder with that name already exists!</source>
-        <translation>¡Un codificador con ese nombre ya existe!</translation>
+        <translation type="obsolete">¡Un codificador con ese nombre ya existe!</translation>
     </message>
 </context>
 <context>
@@ -298,7 +300,15 @@ y un respaldo de la base de datos se guardó en </translation>
     </message>
     <message>
         <source>Group Already Exists!</source>
-        <translation>¡El grupo ya existe!</translation>
+        <translation type="obsolete">¡El grupo ya existe!</translation>
+    </message>
+    <message>
+        <source>A</source>
+        <translation type="unfinished">Un grupo </translation>
+    </message>
+    <message>
+        <source>group already exists!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -313,11 +323,11 @@ y un respaldo de la base de datos se guardó en </translation>
     </message>
     <message>
         <source>Variable Value:</source>
-        <translation>Valor:</translation>
+        <translation type="obsolete">Valor:</translation>
     </message>
     <message>
         <source>Remark:</source>
-        <translation>Comentario:</translation>
+        <translation type="obsolete">Comentario:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -335,12 +345,32 @@ y un respaldo de la base de datos se guardó en </translation>
         <source>The variable name is invalid.</source>
         <translation>El nombre de la variable es inválido.</translation>
     </message>
+    <message>
+        <source>Variable Exists</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The variable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>already exists!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Internal Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to create host variable!</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AddMatrix</name>
     <message>
         <source>Add Switcher</source>
-        <translation type="obsolete">Agregar Suichera</translation>
+        <translation type="unfinished">Agregar Suichera</translation>
     </message>
     <message>
         <source>&amp;New Matrix Number:</source>
@@ -384,11 +414,7 @@ y un respaldo de la base de datos se guardó en </translation>
     </message>
     <message>
         <source>New Switcher</source>
-        <translation>Nueva Suichera</translation>
-    </message>
-    <message>
-        <source>RDAdmin - Add Switcher</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Nueva Suichera</translation>
     </message>
 </context>
 <context>
@@ -538,6 +564,10 @@ y un respaldo de la base de datos se guardó en </translation>
         <source>Host Already Exists!</source>
         <translation>¡El equipo ya existe!</translation>
     </message>
+    <message>
+        <source>Host</source>
+        <translation type="unfinished">Equipo</translation>
+    </message>
 </context>
 <context>
     <name>AddSvc</name>
@@ -621,23 +651,23 @@ y un respaldo de la base de datos se guardó en </translation>
     <name>AutofillCarts</name>
     <message>
         <source>Autofill Carts - Service:</source>
-        <translation>Autollenado de cartuchos - Servicio:</translation>
+        <translation type="obsolete">Autollenado de cartuchos - Servicio:</translation>
     </message>
     <message>
         <source>Cart</source>
-        <translation>Cartucho</translation>
+        <translation type="unfinished">Cartucho</translation>
     </message>
     <message>
         <source>Length</source>
-        <translation>Duración</translation>
+        <translation type="unfinished">Duración</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation>Título</translation>
+        <translation type="unfinished">Título</translation>
     </message>
     <message>
         <source>Artist</source>
-        <translation>Artista</translation>
+        <translation type="unfinished">Artista</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -654,6 +684,14 @@ y un respaldo de la base de datos se guardó en </translation>
     <message>
         <source>&amp;Cancel</source>
         <translation>&amp;Cancelar</translation>
+    </message>
+    <message>
+        <source>Autofill Carts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -816,10 +854,6 @@ y un respaldo de la base de datos se guardó en </translation>
 <context>
     <name>EditCartSlots</name>
     <message>
-        <source>RDAdmin - Edit CartSlots</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
@@ -937,6 +971,10 @@ y un respaldo de la base de datos se guardó en </translation>
     </message>
     <message>
         <source>Slot selected has changed!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit CartSlots</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1110,6 +1148,22 @@ computador para obtener los recursos de audio de dicho equipo.</translation>
         <source>Check that the unit is online and try again.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>PCM24</source>
+        <translation type="unfinished">PCM24</translation>
+    </message>
+    <message>
+        <source>Select</source>
+        <translation type="unfinished">Elegir</translation>
+    </message>
+    <message>
+        <source>Event Carts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>RDAdmin - </source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditDropbox</name>
@@ -1229,44 +1283,52 @@ computador para obtener los recursos de audio de dicho equipo.</translation>
         <source>Scheduler Codes</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Select Dropbox Path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select Log File</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditEncoder</name>
     <message>
         <source>RDAdmin - Edit Encoder</source>
-        <translation>RDAdmin - Editar Codificador</translation>
+        <translation type="obsolete">RDAdmin - Editar Codificador</translation>
     </message>
     <message>
         <source>Name:</source>
-        <translation>Nombre:</translation>
+        <translation type="obsolete">Nombre:</translation>
     </message>
     <message>
         <source>Allow Channels</source>
-        <translation>Canales permitidos</translation>
+        <translation type="obsolete">Canales permitidos</translation>
     </message>
     <message>
         <source>Allow Sample Rates</source>
-        <translation>Tasas muest permit</translation>
+        <translation type="obsolete">Tasas muest permit</translation>
     </message>
     <message>
         <source>Allow Bit Rates</source>
-        <translation>Tasas bit permitidas</translation>
+        <translation type="obsolete">Tasas bit permitidas</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;Aceptar</translation>
+        <translation type="obsolete">&amp;Aceptar</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>Default Extension:</source>
-        <translation>Extensión por omisión:</translation>
+        <translation type="obsolete">Extensión por omisión:</translation>
     </message>
     <message>
         <source>Command Line:</source>
-        <translation>Línea de comandos:</translation>
+        <translation type="obsolete">Línea de comandos:</translation>
     </message>
 </context>
 <context>
@@ -1281,15 +1343,15 @@ computador para obtener los recursos de audio de dicho equipo.</translation>
     </message>
     <message>
         <source>Name: </source>
-        <translation>Nombre: </translation>
+        <translation type="obsolete">Nombre: </translation>
     </message>
     <message>
         <source>Feed: </source>
-        <translation>Feed: </translation>
+        <translation type="obsolete">Feed: </translation>
     </message>
     <message>
         <source>Mode: </source>
-        <translation>Modo: </translation>
+        <translation type="obsolete">Modo: </translation>
     </message>
     <message>
         <source>Stereo</source>
@@ -1305,7 +1367,7 @@ computador para obtener los recursos de audio de dicho equipo.</translation>
     </message>
     <message>
         <source>Engine (Hex): </source>
-        <translation>Motor (Hex): </translation>
+        <translation type="obsolete">Motor (Hex): </translation>
     </message>
     <message>
         <source>Provider ID:</source>
@@ -1313,7 +1375,7 @@ computador para obtener los recursos de audio de dicho equipo.</translation>
     </message>
     <message>
         <source>Device (Hex): </source>
-        <translation>Disposit (Hex): </translation>
+        <translation type="obsolete">Disposit (Hex): </translation>
     </message>
     <message>
         <source>Service ID:</source>
@@ -1329,23 +1391,43 @@ computador para obtener los recursos de audio de dicho equipo.</translation>
     </message>
     <message>
         <source>Invalid Number</source>
-        <translation>Número inválido</translation>
+        <translation type="unfinished">Número inválido</translation>
     </message>
     <message>
         <source>The Engine Number is Invalid!</source>
-        <translation>¡El número del motor es inválido!</translation>
+        <translation type="unfinished">¡El número del motor es inválido!</translation>
     </message>
     <message>
         <source>The Provider ID is Invalid!</source>
-        <translation>¡El ID del proveedor es inválido!</translation>
+        <translation type="unfinished">¡El ID del proveedor es inválido!</translation>
     </message>
     <message>
         <source>The Device Number is Invalid!</source>
-        <translation>¡El número del dispositivo es inválido!</translation>
+        <translation type="unfinished">¡El número del dispositivo es inválido!</translation>
     </message>
     <message>
         <source>The Service ID is Invalid!</source>
-        <translation>¡El ID del servicio es inválido!</translation>
+        <translation type="unfinished">¡El ID del servicio es inválido!</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Feed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Engine</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Device (Hex)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1584,11 +1666,15 @@ al URL especificado.
     </message>
     <message>
         <source>Invalid Cart</source>
-        <translation>Cartucho inválido</translation>
+        <translation type="obsolete">Cartucho inválido</translation>
     </message>
     <message>
         <source>Invalid Cart Number!</source>
-        <translation>¡Número de cartucho inválido!</translation>
+        <translation type="obsolete">¡Número de cartucho inválido!</translation>
+    </message>
+    <message>
+        <source>Edit GPO</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1695,15 +1781,15 @@ Do you still want to save?</source>
     </message>
     <message>
         <source>Variable Name:</source>
-        <translation>Nombre de la variable:</translation>
+        <translation type="obsolete">Nombre de la variable:</translation>
     </message>
     <message>
         <source>Variable Value:</source>
-        <translation>Valor:</translation>
+        <translation type="obsolete">Valor:</translation>
     </message>
     <message>
         <source>Remark:</source>
-        <translation>Comentario:</translation>
+        <translation type="obsolete">Comentario:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -1712,6 +1798,18 @@ Do you still want to save?</source>
     <message>
         <source>&amp;Cancel</source>
         <translation>&amp;Cancelar</translation>
+    </message>
+    <message>
+        <source>Variable Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Variable Value</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remark</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1722,11 +1820,11 @@ Do you still want to save?</source>
     </message>
     <message>
         <source>Button / Function </source>
-        <translation>Botón / Función </translation>
+        <translation type="obsolete">Botón / Función </translation>
     </message>
     <message>
         <source>KeyStroke</source>
-        <translation>Teclas</translation>
+        <translation type="unfinished">Teclas</translation>
     </message>
     <message>
         <source>Set</source>
@@ -1754,11 +1852,11 @@ Do you still want to save?</source>
     </message>
     <message>
         <source>Duplicate Entries</source>
-        <translation>Entradas duplicadas</translation>
+        <translation type="obsolete">Entradas duplicadas</translation>
     </message>
     <message>
         <source>Hotkeys Clear</source>
-        <translation>Borrar atajos de teclado</translation>
+        <translation type="unfinished">Borrar atajos de teclado</translation>
     </message>
     <message>
         <source>Hotkeys Updated</source>
@@ -1766,15 +1864,23 @@ Do you still want to save?</source>
     </message>
     <message>
         <source>No Items Selected</source>
-        <translation>No se han seleccionado ítems</translation>
+        <translation type="unfinished">No se han seleccionado ítems</translation>
     </message>
     <message>
         <source>Please Select an Item From the List</source>
-        <translation>Por favor, seleccione un ítem de la lista</translation>
+        <translation type="unfinished">Por favor, seleccione un ítem de la lista</translation>
     </message>
     <message>
         <source>Hot Key Configuration for</source>
         <translation>Atajos de teclado para</translation>
+    </message>
+    <message>
+        <source>Button / Function</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure - This will Clear All Hot Key Settings!</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1793,11 +1899,11 @@ Do you still want to save?</source>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;Aceptar</translation>
+        <translation type="unfinished">&amp;Aceptar</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="unfinished">&amp;Cancelar</translation>
     </message>
     <message>
         <source>JACK Command Line:</source>
@@ -1824,7 +1930,7 @@ Do you still want to save?</source>
         <translation type="unfinished">E&amp;liminar</translation>
     </message>
     <message>
-        <source>JACK Clients to Start:</source>
+        <source>&amp;Add</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1836,20 +1942,20 @@ Do you still want to save?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;Add</source>
+        <source>JACK Clients to Start:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>[New Client]</source>
+        <source>Delete JACK Client</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>RDAdmin - JACK Clients</source>
+        <source>Are you sure you want to delete this JACK client?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Are you sure you want to delete JACK Client</source>
-        <translation type="unfinished"></translation>
+        <source>&amp;Close</source>
+        <translation type="obsolete">&amp;Cerrar</translation>
     </message>
 </context>
 <context>
@@ -1918,7 +2024,7 @@ Do you still want to save?</source>
     <name>EditMatrix</name>
     <message>
         <source>Edit Switcher</source>
-        <translation type="obsolete">Editar Suichera</translation>
+        <translation type="unfinished">Editar Suichera</translation>
     </message>
     <message>
         <source>Matrix Number:</source>
@@ -2100,10 +2206,6 @@ Switches</source>
 SAS</translation>
     </message>
     <message>
-        <source>RDAdmin - Edit Switcher</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>LiveWire
 GPIOs</source>
         <translation type="unfinished"></translation>
@@ -2157,7 +2259,7 @@ GPIOs</source>
     </message>
     <message>
         <source>Invalid Address</source>
-        <translation>Dirección inválida</translation>
+        <translation type="obsolete">Dirección inválida</translation>
     </message>
     <message>
         <source>Add</source>
@@ -2173,11 +2275,11 @@ GPIOs</source>
     </message>
     <message>
         <source>Path</source>
-        <translation>Carpeta</translation>
+        <translation type="unfinished">Carpeta</translation>
     </message>
     <message>
         <source>Argument</source>
-        <translation>Argumento</translation>
+        <translation type="unfinished">Argumento</translation>
     </message>
     <message>
         <source>Loadable Modules:</source>
@@ -2198,6 +2300,14 @@ GPIOs</source>
     <message>
         <source>Aux Log 2</source>
         <translation>Lista aux. 2</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is invalid.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2228,7 +2338,11 @@ GPIOs</source>
     </message>
     <message>
         <source>Select plugin</source>
-        <translation>Elegir plugin</translation>
+        <translation type="obsolete">Elegir plugin</translation>
+    </message>
+    <message>
+        <source>Select plug-in</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2416,7 +2530,7 @@ Parameters</source>
     </message>
     <message>
         <source>Space Bar Action</source>
-        <translation>Barra espaciadora</translation>
+        <translation type="obsolete">Barra espaciadora</translation>
     </message>
     <message>
         <source>Start Next</source>
@@ -2583,6 +2697,10 @@ GPIOs</source>
         <source>Aux 2 Log Startup Mode:</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Spacebar Action:</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditRDLibrary</name>
@@ -2592,11 +2710,11 @@ GPIOs</source>
     </message>
     <message>
         <source>INPUT</source>
-        <translation>ENTRADA</translation>
+        <translation type="obsolete">ENTRADA</translation>
     </message>
     <message>
         <source>OUTPUT</source>
-        <translation>SALIDA</translation>
+        <translation type="obsolete">SALIDA</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -2636,7 +2754,7 @@ GPIOs</source>
     </message>
     <message>
         <source>Ripper Level:</source>
-        <translation>Nivel de Ripper:</translation>
+        <translation type="obsolete">Nivel de Ripper:</translation>
     </message>
     <message>
         <source>&amp;FreeDB Server:</source>
@@ -2748,19 +2866,19 @@ GPIOs</source>
     </message>
     <message>
         <source>40 kbps/chan</source>
-        <translation>40 kbps/canal</translation>
+        <translation type="obsolete">40 kbps/canal</translation>
     </message>
     <message>
         <source>224 kbps/chan</source>
-        <translation>224 kbps/canal</translation>
+        <translation type="obsolete">224 kbps/canal</translation>
     </message>
     <message>
         <source>256 kbps/chan</source>
-        <translation>256 kbps/canal</translation>
+        <translation type="obsolete">256 kbps/canal</translation>
     </message>
     <message>
         <source>320 kbps/chan</source>
-        <translation>320 kbps/canal</translation>
+        <translation type="obsolete">320 kbps/canal</translation>
     </message>
     <message>
         <source>No</source>
@@ -2794,12 +2912,32 @@ equipo configurado para ejecutar CAE para obtener la información de audio.</tra
         <source>Limit Searches at Startup</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>PCM24</source>
+        <translation type="unfinished">PCM24</translation>
+    </message>
+    <message>
+        <source>&amp;Read ISRCs from CD:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Normalization Level:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Input</source>
+        <translation type="unfinished">Entrada</translation>
+    </message>
+    <message>
+        <source>Output</source>
+        <translation type="unfinished">Salida</translation>
+    </message>
 </context>
 <context>
     <name>EditRDLogedit</name>
     <message>
         <source>RDLogedit config for </source>
-        <translation>Configuración de RDLogEdit para </translation>
+        <translation type="obsolete">Configuración de RDLogEdit para </translation>
     </message>
     <message>
         <source>INPUT</source>
@@ -2955,23 +3093,23 @@ computador para obtener los recursos de audio de dicho equipo.</translation>
     </message>
     <message>
         <source>40 kbps/chan</source>
-        <translation>40 kbps/canal</translation>
+        <translation type="obsolete">40 kbps/canal</translation>
     </message>
     <message>
         <source>224 kbps/chan</source>
-        <translation>224 kbps/canal</translation>
+        <translation type="obsolete">224 kbps/canal</translation>
     </message>
     <message>
         <source>256 kbps/chan</source>
-        <translation>256 kbps/canal</translation>
+        <translation type="obsolete">256 kbps/canal</translation>
     </message>
     <message>
         <source>320 kbps/chan</source>
-        <translation>320 kbps/canal</translation>
+        <translation type="obsolete">320 kbps/canal</translation>
     </message>
     <message>
         <source>No</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">No</translation>
     </message>
     <message>
         <source>Yes</source>
@@ -2979,6 +3117,14 @@ computador para obtener los recursos de audio de dicho equipo.</translation>
     </message>
     <message>
         <source>Enable &amp;2nd Start Button:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PCM24</source>
+        <translation type="unfinished">PCM24</translation>
+    </message>
+    <message>
+        <source>RDLogEdit config for </source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3384,11 +3530,11 @@ para generar la base de datos con los recursos de audio disponibles.</translatio
     </message>
     <message>
         <source>CART</source>
-        <translation>CARTUCHO</translation>
+        <translation type="obsolete">CARTUCHO</translation>
     </message>
     <message>
         <source>TITLE</source>
-        <translation>TÍTULO</translation>
+        <translation type="obsolete">TÍTULO</translation>
     </message>
     <message>
         <source>&amp;Save List</source>
@@ -3404,23 +3550,23 @@ para generar la base de datos con los recursos de audio disponibles.</translatio
     </message>
     <message>
         <source>File Exists</source>
-        <translation>El archivo ya existe</translation>
+        <translation type="unfinished">El archivo ya existe</translation>
     </message>
     <message>
         <source>The file &quot;</source>
-        <translation>El archivo &quot;</translation>
+        <translation type="unfinished">El archivo &quot;</translation>
     </message>
     <message>
         <source>&quot; exists.
 
 Overwrite?</source>
-        <translation>&quot; ya existe.
+        <translation type="unfinished">&quot; ya existe.
 
 ¿Sobreescribir?</translation>
     </message>
     <message>
         <source>File Error</source>
-        <translation>Error de archivo</translation>
+        <translation type="unfinished">Error de archivo</translation>
     </message>
     <message>
         <source>Checking the Library for duplicates.</source>
@@ -3428,6 +3574,22 @@ Overwrite?</source>
     </message>
     <message>
         <source>Temporary Cart Group:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cart</source>
+        <translation type="unfinished">Cartucho</translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished">Título</translation>
+    </message>
+    <message>
+        <source>Save File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to write file &quot;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3577,15 +3739,15 @@ del Equipo</translation>
     </message>
     <message>
         <source>Security Model:</source>
-        <translation>Modelo segurid:</translation>
+        <translation type="obsolete">Modelo segurid:</translation>
     </message>
     <message>
         <source>Host</source>
-        <translation>Equipo</translation>
+        <translation type="obsolete">Equipo</translation>
     </message>
     <message>
         <source>User</source>
-        <translation>Usuario</translation>
+        <translation type="obsolete">Usuario</translation>
     </message>
     <message>
         <source>Custom
@@ -3904,7 +4066,7 @@ debe guardarse.  ¿Hacerlo ahora?</translation>
     <name>EditUser</name>
     <message>
         <source>User: </source>
-        <translation>Usuario:</translation>
+        <translation type="obsolete">Usuario:</translation>
     </message>
     <message>
         <source>&amp;User Name:</source>
@@ -3930,7 +4092,7 @@ debe guardarse.  ¿Hacerlo ahora?</translation>
     </message>
     <message>
         <source>Administrative Rights</source>
-        <translation>Permisos administrativos</translation>
+        <translation type="obsolete">Permisos administrativos</translation>
     </message>
     <message>
         <source>Administer S&amp;ystem</source>
@@ -4048,6 +4210,14 @@ Feeds para Podcasts</translation>
         <source>Allow Web Logins</source>
         <translation>Permitir ingreso vía Web</translation>
     </message>
+    <message>
+        <source>Administrative Privileges</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User</source>
+        <translation type="unfinished">Usuario</translation>
+    </message>
 </context>
 <context>
     <name>EditUserPerms</name>
@@ -4076,19 +4246,19 @@ Feeds para Podcasts</translation>
     <name>EditVguestResource</name>
     <message>
         <source>Engine (Hex): </source>
-        <translation>Motor (Hex): </translation>
+        <translation type="obsolete">Motor (Hex): </translation>
     </message>
     <message>
         <source>Device (Hex): </source>
-        <translation>Disposit (Hex): </translation>
+        <translation type="obsolete">Disposit (Hex): </translation>
     </message>
     <message>
         <source>Surface (Hex): </source>
-        <translation>Superficie (Hex): </translation>
+        <translation type="obsolete">Superficie (Hex): </translation>
     </message>
     <message>
         <source>Bus/Relay (Hex): </source>
-        <translation>Bus/Relay (Hex): </translation>
+        <translation type="obsolete">Bus/Relay (Hex): </translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -4108,23 +4278,39 @@ Feeds para Podcasts</translation>
     </message>
     <message>
         <source>Invalid Number</source>
-        <translation>Número inválido</translation>
+        <translation type="unfinished">Número inválido</translation>
     </message>
     <message>
         <source>The Engine Number is Invalid!</source>
-        <translation>¡El número de motor es inválido!</translation>
+        <translation type="unfinished">¡El número de motor es inválido!</translation>
     </message>
     <message>
         <source>The Device Number is Invalid!</source>
-        <translation>¡El número de dispositivo es inválido!</translation>
+        <translation type="unfinished">¡El número de dispositivo es inválido!</translation>
     </message>
     <message>
         <source>The Surface Number is Invalid!</source>
-        <translation>¡El número de superficie es inválido!</translation>
+        <translation type="unfinished">¡El número de superficie es inválido!</translation>
     </message>
     <message>
         <source>The Bus/Relay Number is Invalid!</source>
-        <translation>¡El número Bus/Relay es inválido!</translation>
+        <translation type="unfinished">¡El número Bus/Relay es inválido!</translation>
+    </message>
+    <message>
+        <source>Engine</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Device (Hex)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Surface</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bus/Relay</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4188,7 +4374,11 @@ PARA UN PROPÓSITO PARTICULAR.  Oprima el botón &quot;Ver licencia&quot; para d
     </message>
     <message>
         <source>Copyright 2002-2014</source>
-        <translation type="unfinished">Copyright 2002-2014</translation>
+        <translation type="obsolete">Copyright 2002-2014</translation>
+    </message>
+    <message>
+        <source>Copyright 2002-2016</source>
+        <translation type="unfinished">Copyright 2002-2016</translation>
     </message>
 </context>
 <context>
@@ -4199,11 +4389,11 @@ PARA UN PROPÓSITO PARTICULAR.  Oprima el botón &quot;Ver licencia&quot; para d
     </message>
     <message>
         <source>Var Name</source>
-        <translation>Nombre</translation>
+        <translation type="obsolete">Nombre</translation>
     </message>
     <message>
         <source>Caption</source>
-        <translation>Texto</translation>
+        <translation type="unfinished">Texto</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -4223,13 +4413,17 @@ PARA UN PROPÓSITO PARTICULAR.  Oprima el botón &quot;Ver licencia&quot; para d
     </message>
     <message>
         <source>Warning</source>
-        <translation>Advertencia</translation>
+        <translation type="unfinished">Advertencia</translation>
     </message>
     <message>
         <source>This will delete all data associated with this field!
 Are you sure you want to continue?</source>
-        <translation>¡Esto eliminará todos los datos asociados con este campo!
+        <translation type="unfinished">¡Esto eliminará todos los datos asociados con este campo!
 ¿Está seguro de continuar?</translation>
+    </message>
+    <message>
+        <source>Variable Name</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4252,54 +4446,74 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>Group</source>
-        <translation>Grupo</translation>
+        <translation type="unfinished">Grupo</translation>
     </message>
     <message>
         <source>Path</source>
-        <translation>Carpeta</translation>
+        <translation type="unfinished">Carpeta</translation>
     </message>
     <message>
         <source>Normalization Level</source>
-        <translation>Nivel de Normalización</translation>
+        <translation type="unfinished">Nivel de Normalización</translation>
     </message>
     <message>
         <source>Autotrim Level</source>
-        <translation>Nivel de AutoRecorte</translation>
+        <translation type="unfinished">Nivel de AutoRecorte</translation>
     </message>
     <message>
         <source>To Cart</source>
-        <translation>A Cartucho</translation>
+        <translation type="unfinished">A Cartucho</translation>
     </message>
     <message>
         <source>Use CartChunk ID</source>
-        <translation>Usar ID de CartChunk</translation>
+        <translation type="unfinished">Usar ID de CartChunk</translation>
     </message>
     <message>
         <source>Delete Cuts</source>
-        <translation>Borrar audios</translation>
+        <translation type="unfinished">Borrar audios</translation>
     </message>
     <message>
         <source>Metadata Pattern</source>
-        <translation>Patrón de metadatos</translation>
+        <translation type="unfinished">Patrón de metadatos</translation>
     </message>
     <message>
         <source>Fix Broken Formats</source>
-        <translation>Arreglar formatos rotos</translation>
+        <translation type="unfinished">Arreglar formatos rotos</translation>
     </message>
     <message>
         <source>[off]</source>
-        <translation>[apagado]</translation>
+        <translation type="obsolete">[apagado]</translation>
     </message>
     <message>
         <source>[auto]</source>
-        <translation>[auto]</translation>
+        <translation type="obsolete">[auto]</translation>
     </message>
     <message>
         <source>[none]</source>
-        <translation>[ninguno]</translation>
+        <translation type="obsolete">[ninguno]</translation>
+    </message>
+    <message>
+        <source>Rivendell Dropbox Configurations on</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>User Defined</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to create dropbox!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Dropbox</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete the dropbox?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4307,61 +4521,61 @@ Are you sure you want to continue?</source>
     <name>ListEncoders</name>
     <message>
         <source>RDAdmin - List Encoders</source>
-        <translation>RDAdmin - Lista de codificadores</translation>
+        <translation type="obsolete">RDAdmin - Lista de codificadores</translation>
     </message>
     <message>
         <source>Format Name</source>
-        <translation>Nombre del formato</translation>
+        <translation type="obsolete">Nombre del formato</translation>
     </message>
     <message>
         <source>Valid Channels</source>
-        <translation>Canales válidos</translation>
+        <translation type="obsolete">Canales válidos</translation>
     </message>
     <message>
         <source>Valid Sample Rates</source>
-        <translation>Tasas muestra válidas</translation>
+        <translation type="obsolete">Tasas muestra válidas</translation>
     </message>
     <message>
         <source>Valid Bit Rates</source>
-        <translation>Tasas de bit válidas</translation>
+        <translation type="obsolete">Tasas de bit válidas</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation>&amp;Editar</translation>
+        <translation type="obsolete">&amp;Editar</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Cerrar</translation>
+        <translation type="obsolete">&amp;Cerrar</translation>
     </message>
     <message>
         <source>[none]</source>
-        <translation>[ninguna]</translation>
+        <translation type="obsolete">[ninguna]</translation>
     </message>
     <message>
         <source>&amp;Add</source>
-        <translation>&amp;Agregar</translation>
+        <translation type="obsolete">&amp;Agregar</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation>E&amp;liminar</translation>
+        <translation type="obsolete">E&amp;liminar</translation>
     </message>
     <message>
         <source>RDAdmin - Delete Encoder</source>
-        <translation>RDAdmin - Eliminar codificador</translation>
+        <translation type="obsolete">RDAdmin - Eliminar codificador</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this encoder?</source>
-        <translation>¿Está seguro de querer eliminar este codificador?</translation>
+        <translation type="obsolete">¿Está seguro de querer eliminar este codificador?</translation>
     </message>
     <message>
         <source>Extension</source>
-        <translation>Extensión</translation>
+        <translation type="obsolete">Extensión</translation>
     </message>
     <message>
         <source>This encoder is in use by the following RSS feeds:
 
 </source>
-        <translation>Este codificador está siendo usado por las fuentes RSS:
+        <translation type="obsolete">Este codificador está siendo usado por las fuentes RSS:
 
 </translation>
     </message>
@@ -4369,13 +4583,13 @@ Are you sure you want to continue?</source>
         <source>
 
 Do you still want to delete it?</source>
-        <translation>
+        <translation type="obsolete">
 
 ¿Aún desea eliminarlo?</translation>
     </message>
     <message>
         <source>Encoders on</source>
-        <translation>Codificad. en</translation>
+        <translation type="obsolete">Codificad. en</translation>
     </message>
 </context>
 <context>
@@ -4390,39 +4604,39 @@ Do you still want to delete it?</source>
     </message>
     <message>
         <source>INPUT</source>
-        <translation>ENTRADA</translation>
+        <translation type="obsolete">ENTRADA</translation>
     </message>
     <message>
         <source>OUTPUT</source>
-        <translation>SALIDA</translation>
+        <translation type="obsolete">SALIDA</translation>
     </message>
     <message>
         <source>LABEL</source>
-        <translation>ETIQ</translation>
+        <translation type="obsolete">ETIQ</translation>
     </message>
     <message>
         <source>SOURCE</source>
-        <translation>FUENTE</translation>
+        <translation type="obsolete">FUENTE</translation>
     </message>
     <message>
         <source>MODE</source>
-        <translation>MODO</translation>
+        <translation type="obsolete">MODO</translation>
     </message>
     <message>
         <source>ENGINE (Hex)</source>
-        <translation>MOTOR (Hex)</translation>
+        <translation type="obsolete">MOTOR (Hex)</translation>
     </message>
     <message>
         <source>DEVICE (Hex)</source>
-        <translation>DISPOSIT (Hex)</translation>
+        <translation type="obsolete">DISPOSIT (Hex)</translation>
     </message>
     <message>
         <source>PROVIDER ID</source>
-        <translation>ID PROVEEDOR</translation>
+        <translation type="obsolete">ID PROVEEDOR</translation>
     </message>
     <message>
         <source>SERVICE ID</source>
-        <translation>ID SERVICIO</translation>
+        <translation type="obsolete">ID SERVICIO</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
@@ -4438,43 +4652,75 @@ Do you still want to delete it?</source>
     </message>
     <message>
         <source>Stereo</source>
-        <translation>Estéreo</translation>
+        <translation type="obsolete">Estéreo</translation>
     </message>
     <message>
         <source>Left</source>
-        <translation>Izquierda</translation>
+        <translation type="obsolete">Izquierda</translation>
     </message>
     <message>
         <source>Right</source>
-        <translation>Derecha</translation>
+        <translation type="obsolete">Derecha</translation>
     </message>
     <message>
         <source>Input</source>
-        <translation>Entrada</translation>
+        <translation type="obsolete">Entrada</translation>
     </message>
     <message>
         <source>Output</source>
-        <translation>Salida</translation>
+        <translation type="obsolete">Salida</translation>
     </message>
     <message>
         <source>stereo</source>
-        <translation>estéreo</translation>
+        <translation type="obsolete">estéreo</translation>
     </message>
     <message>
         <source>left</source>
-        <translation>izq</translation>
+        <translation type="obsolete">izq</translation>
     </message>
     <message>
         <source>right</source>
-        <translation>der</translation>
+        <translation type="obsolete">der</translation>
     </message>
     <message>
         <source>NODE</source>
-        <translation>NODO</translation>
+        <translation type="obsolete">NODO</translation>
     </message>
     <message>
         <source>#</source>
-        <translation>#</translation>
+        <translation type="unfinished">#</translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Device (hex)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Provider ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Node</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Engine</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4501,23 +4747,23 @@ Do you still want to delete it?</source>
     </message>
     <message>
         <source>Key</source>
-        <translation>Nombre</translation>
+        <translation type="unfinished">Nombre</translation>
     </message>
     <message>
         <source>Title</source>
-        <translation>Título</translation>
+        <translation type="unfinished">Título</translation>
     </message>
     <message>
         <source>AutoPost</source>
-        <translation>AutoPublicar</translation>
+        <translation type="unfinished">AutoPublicar</translation>
     </message>
     <message>
         <source>Keep Metadata</source>
-        <translation>Mantener metadatos</translation>
+        <translation type="unfinished">Mantener metadatos</translation>
     </message>
     <message>
         <source>Creation Date</source>
-        <translation>Fecha de creación</translation>
+        <translation type="unfinished">Fecha de creación</translation>
     </message>
     <message>
         <source>&amp;Feeds:</source>
@@ -4525,23 +4771,35 @@ Do you still want to delete it?</source>
     </message>
     <message>
         <source>Are you sure you want to delete feed</source>
-        <translation>¿Está seguro de borrar el feed </translation>
+        <translation type="unfinished">¿Está seguro de borrar el feed </translation>
     </message>
     <message>
         <source>Delete Feed</source>
-        <translation>Eliminar Feed</translation>
+        <translation type="obsolete">Eliminar Feed</translation>
     </message>
     <message>
         <source>Deleting Audio...</source>
-        <translation>Eliminando Audio...</translation>
+        <translation type="obsolete">Eliminando Audio...</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Cancelar</translation>
+        <translation type="obsolete">Cancelar</translation>
     </message>
     <message>
         <source>Deleting</source>
-        <translation>Borrando</translation>
+        <translation type="obsolete">Borrando</translation>
+    </message>
+    <message>
+        <source>Id</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete RSS Feed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Feed Removal</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4556,7 +4814,7 @@ Do you still want to delete it?</source>
     </message>
     <message>
         <source>GPI</source>
-        <translation>GPI</translation>
+        <translation type="unfinished">GPI</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
@@ -4564,19 +4822,19 @@ Do you still want to delete it?</source>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;Aceptar</translation>
+        <translation type="obsolete">&amp;Aceptar</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>[unassigned]</source>
-        <translation>[no asignado]</translation>
+        <translation type="obsolete">[no asignado]</translation>
     </message>
     <message>
         <source>GPO</source>
-        <translation>GPO</translation>
+        <translation type="unfinished">GPO</translation>
     </message>
     <message>
         <source>List GPOs</source>
@@ -4588,19 +4846,43 @@ Do you still want to delete it?</source>
     </message>
     <message>
         <source>ON MACRO CART</source>
-        <translation>CART MACRO ON</translation>
+        <translation type="obsolete">CART MACRO ON</translation>
     </message>
     <message>
         <source>ON DESCRIPTION</source>
-        <translation>DESCRIPCIÓN ON</translation>
+        <translation type="obsolete">DESCRIPCIÓN ON</translation>
     </message>
     <message>
         <source>OFF MACRO CART</source>
-        <translation>CART MACRO OFF</translation>
+        <translation type="obsolete">CART MACRO OFF</translation>
     </message>
     <message>
         <source>OFF DESCRIPTION</source>
-        <translation>DESCRIPCIÓN OFF</translation>
+        <translation type="obsolete">DESCRIPCIÓN OFF</translation>
+    </message>
+    <message>
+        <source>[none]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ON Macro Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ON Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OFF Macro Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OFF Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Cerrar</translation>
     </message>
 </context>
 <context>
@@ -4637,39 +4919,39 @@ Do you still want to delete it?</source>
     </message>
     <message>
         <source>NAME</source>
-        <translation>NOMBRE</translation>
+        <translation type="obsolete">NOMBRE</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation>DESCRIPCIÓN</translation>
+        <translation type="obsolete">DESCRIPCIÓN</translation>
     </message>
     <message>
         <source>START CART</source>
-        <translation>CART INICIO</translation>
+        <translation type="obsolete">CART INICIO</translation>
     </message>
     <message>
         <source>END CART</source>
-        <translation>CART FIN</translation>
+        <translation type="obsolete">CART FIN</translation>
     </message>
     <message>
         <source>ENFORCE RANGE</source>
-        <translation>OBLIGAR RANGO</translation>
+        <translation type="obsolete">OBLIGAR RANGO</translation>
     </message>
     <message>
         <source>DEFAULT TYPE</source>
-        <translation>TIPO INICIAL</translation>
+        <translation type="obsolete">TIPO INICIAL</translation>
     </message>
     <message>
         <source>TRAFFIC REPORT</source>
-        <translation>REPORTE TRÁFICO</translation>
+        <translation type="obsolete">REPORTE TRÁFICO</translation>
     </message>
     <message>
         <source>MUSIC REPORT</source>
-        <translation>REPORTE MÚSICA</translation>
+        <translation type="obsolete">REPORTE MÚSICA</translation>
     </message>
     <message>
         <source>NOW &amp; NEXT</source>
-        <translation>NOW &amp; NEXT</translation>
+        <translation type="obsolete">NOW &amp; NEXT</translation>
     </message>
     <message>
         <source>&amp;Groups:</source>
@@ -4677,22 +4959,62 @@ Do you still want to delete it?</source>
     </message>
     <message>
         <source>member carts will be deleted along with group</source>
-        <translation>cartuchos serán borrados junto con el grupo</translation>
+        <translation type="obsolete">cartuchos serán borrados junto con el grupo</translation>
     </message>
     <message>
         <source>Are you sure you want to delete group</source>
-        <translation>Desea eliminar el grupo</translation>
+        <translation type="unfinished">Desea eliminar el grupo</translation>
     </message>
     <message>
         <source>Delete Group</source>
-        <translation>Borrar grupo</translation>
+        <translation type="unfinished">Borrar grupo</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>End Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enforce Range</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Traffic Report</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Music Report</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Now &amp; Next</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>member carts will deleted along with group</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>ListHostvars</name>
     <message>
         <source>Host Variables for</source>
-        <translation>Variables de equipo para</translation>
+        <translation type="obsolete">Variables de equipo para</translation>
     </message>
     <message>
         <source>Host Variables</source>
@@ -4700,15 +5022,15 @@ Do you still want to delete it?</source>
     </message>
     <message>
         <source>NAME</source>
-        <translation>NOMBRE</translation>
+        <translation type="obsolete">NOMBRE</translation>
     </message>
     <message>
         <source>VALUE</source>
-        <translation>VALOR</translation>
+        <translation type="obsolete">VALOR</translation>
     </message>
     <message>
         <source>REMARK</source>
-        <translation>COMENTARIO</translation>
+        <translation type="obsolete">COMENTARIO</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -4724,11 +5046,39 @@ Do you still want to delete it?</source>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;Aceptar</translation>
+        <translation type="obsolete">&amp;Aceptar</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
+    </message>
+    <message>
+        <source>Host variables for</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Value</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remarks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Host Variable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete the host variable?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Cerrar</translation>
     </message>
 </context>
 <context>
@@ -4739,7 +5089,7 @@ Do you still want to delete it?</source>
     </message>
     <message>
         <source>Switchers:</source>
-        <translation type="unfinished">Suicheras:</translation>
+        <translation type="obsolete">Suicheras:</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
@@ -4747,18 +5097,18 @@ Do you still want to delete it?</source>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;Aceptar</translation>
+        <translation type="obsolete">&amp;Aceptar</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Cancelar</translation>
-    </message>
-    <message>
-        <source>[none]</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>Lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Source #</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4766,12 +5116,12 @@ Do you still want to delete it?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>[all]</source>
+        <source>GPIO Slots:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Source #</source>
-        <translation type="unfinished"></translation>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Cerrar</translation>
     </message>
 </context>
 <context>
@@ -4785,16 +5135,12 @@ Do you still want to delete it?</source>
         <translation>Suicheras:</translation>
     </message>
     <message>
-        <source>MATRIX</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>DESCRIPTION</source>
-        <translation>DESCRIPCIÓN</translation>
+        <translation type="obsolete">DESCRIPCIÓN</translation>
     </message>
     <message>
         <source>TYPE</source>
-        <translation>TIPO</translation>
+        <translation type="obsolete">TIPO</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -4814,19 +5160,19 @@ Do you still want to delete it?</source>
     </message>
     <message>
         <source>Are you sure you want to delete switcher</source>
-        <translation>¿Está seguro de borrar la suichera</translation>
+        <translation type="obsolete">¿Está seguro de borrar la suichera</translation>
     </message>
     <message>
         <source>on</source>
-        <translation>en</translation>
+        <translation type="obsolete">en</translation>
     </message>
     <message>
         <source>ALL references to this switcher will be deleted!</source>
-        <translation>¡TODAS las referencias a esta suichera serán borradas!</translation>
+        <translation type="obsolete">¡TODAS las referencias a esta suichera serán borradas!</translation>
     </message>
     <message>
         <source>Deleting Switcher</source>
-        <translation>Borrando suichera</translation>
+        <translation type="obsolete">Borrando suichera</translation>
     </message>
     <message>
         <source>Local GPIO</source>
@@ -4843,6 +5189,26 @@ Do you still want to delete it?</source>
     <message>
         <source>Local Audio Adapter</source>
         <translation type="obsolete">Adaptador de Audio Local</translation>
+    </message>
+    <message>
+        <source>Matrix</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Switcher</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete this switcher?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4967,15 +5333,19 @@ Cartuchos</translation>
     </message>
     <message>
         <source>R&amp;eports:</source>
-        <translation>R&amp;eportes:</translation>
+        <translation type="obsolete">R&amp;eportes:</translation>
     </message>
     <message>
         <source>Are you sure you want to delete report</source>
-        <translation>Está seguro de querer eliminar este reporte</translation>
+        <translation type="unfinished">Está seguro de querer eliminar este reporte</translation>
     </message>
     <message>
         <source>Delete Report</source>
-        <translation>Eliminar reporte</translation>
+        <translation type="unfinished">Eliminar reporte</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -5045,15 +5415,23 @@ Cartuchos</translation>
     </message>
     <message>
         <source>Ho&amp;sts:</source>
-        <translation>C&amp;omputadores:</translation>
+        <translation type="unfinished">C&amp;omputadores:</translation>
     </message>
     <message>
         <source>Are you sure you want to delete host</source>
-        <translation>Está seguro de querer eliminar este equipo</translation>
+        <translation type="unfinished">Está seguro de querer eliminar este equipo</translation>
     </message>
     <message>
         <source>Delete Station</source>
-        <translation>Eliminar equipo</translation>
+        <translation type="obsolete">Eliminar equipo</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Host</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -5080,29 +5458,45 @@ Cartuchos</translation>
     </message>
     <message>
         <source>&amp;Services:</source>
-        <translation>&amp;Servicios:</translation>
+        <translation type="obsolete">&amp;Servicios:</translation>
     </message>
     <message>
         <source>Are you sure you want to delete service</source>
-        <translation>Está seguro de querer eliminar este servicio</translation>
+        <translation type="unfinished">Está seguro de querer eliminar este servicio</translation>
     </message>
     <message>
         <source>Delete Service</source>
-        <translation>Eliminar un servicio</translation>
+        <translation type="unfinished">Eliminar un servicio</translation>
     </message>
     <message>
         <source>There are</source>
-        <translation>Hay </translation>
+        <translation type="unfinished">Hay </translation>
     </message>
     <message>
         <source>logs owned by this service that will also be deleted.
 Do you still want to proceed?</source>
-        <translation>PlayLists pertenecientes a este servicio que serán eliminados.
+        <translation type="obsolete">PlayLists pertenecientes a este servicio que serán eliminados.
 ¿Desea continuar y eliminarlos?</translation>
     </message>
     <message>
         <source>Logs Exist</source>
-        <translation>El PlayList ya existe</translation>
+        <translation type="unfinished">El PlayList ya existe</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Services:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>logs owned by this service that will also be deleted.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you still want to proceed?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -5199,11 +5593,11 @@ Do you still want to proceed?</source>
     </message>
     <message>
         <source>Daemons Failed</source>
-        <translation>Falla en los servicios</translation>
+        <translation type="obsolete">Falla en los servicios</translation>
     </message>
     <message>
         <source>Unable to start Rivendell System Daemons!</source>
-        <translation>¡No fue posible iniciar los Servicios del Sistema Rivendell!</translation>
+        <translation type="obsolete">¡No fue posible iniciar los Servicios del Sistema Rivendell!</translation>
     </message>
     <message>
         <source>Insufficient Priviledges</source>
@@ -5293,31 +5687,31 @@ base datos</translation>
     </message>
     <message>
         <source>Restore Database</source>
-        <translation>Restaurar base de datos</translation>
+        <translation type="obsolete">Restaurar base de datos</translation>
     </message>
     <message>
         <source>WARNING: This operation will COMPLETELY
 OVERWRITE the existing Rivendell Database!
 Do you want to continue?</source>
-        <translation>ADVERTENCIA: Esta operación SOBREESCRIBIRÁ
+        <translation type="obsolete">ADVERTENCIA: Esta operación SOBREESCRIBIRÁ
 COMPLETAMENTE la base de datos existente.
 ¿Desea continuar?</translation>
     </message>
     <message>
         <source>Restore Error</source>
-        <translation>Error en la restauración</translation>
+        <translation type="obsolete">Error en la restauración</translation>
     </message>
     <message>
         <source>Unable to restore backup!</source>
-        <translation>¡No pude restaurar la base de datos!</translation>
+        <translation type="obsolete">¡No pude restaurar la base de datos!</translation>
     </message>
     <message>
         <source>Restore Complete</source>
-        <translation>Restauración finalizada</translation>
+        <translation type="obsolete">Restauración finalizada</translation>
     </message>
     <message>
         <source>Restore completed successfully.</source>
-        <translation>La restauración fue completada exitosamente.</translation>
+        <translation type="obsolete">La restauración fue completada exitosamente.</translation>
     </message>
     <message>
         <source>Manage
@@ -5341,28 +5735,36 @@ Replicadores</translation>
         <source>RDAdmin</source>
         <translation type="unfinished">RDAdmin</translation>
     </message>
+    <message>
+        <source>Save Backup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Host</source>
+        <translation type="unfinished">Equipo</translation>
+    </message>
 </context>
 <context>
     <name>MySqlLogin</name>
     <message>
         <source>mySQL Admin</source>
-        <translation>Admin. MySQL</translation>
+        <translation type="obsolete">Admin. MySQL</translation>
     </message>
     <message>
         <source>User &amp;Name:</source>
-        <translation>&amp;Usuario:</translation>
+        <translation type="obsolete">&amp;Usuario:</translation>
     </message>
     <message>
         <source>&amp;Password:</source>
-        <translation>&amp;Contraseña:</translation>
+        <translation type="obsolete">&amp;Contraseña:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;Aceptar</translation>
+        <translation type="obsolete">&amp;Aceptar</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
 </context>
 <context>
@@ -5372,50 +5774,50 @@ Replicadores</translation>
 Please enter a login for an account with
 administrative rights on the mySQL server,
 and we will try to get this straightened out.</source>
-        <translation>¡No se pudo acceder a la base de datos Rivendell!
+        <translation type="obsolete">¡No se pudo acceder a la base de datos Rivendell!
 Si desea crear una NUEVA base de datos, ingrese 
 el login y la clave de una cuenta Mysql con 
 derechos administrativos.</translation>
     </message>
     <message>
         <source>Wrong access permissions for accessing mySQL!</source>
-        <translation>¡Permisología errónea al acceder a la base de datos MySQL!</translation>
+        <translation type="obsolete">¡Permisología errónea al acceder a la base de datos MySQL!</translation>
     </message>
     <message>
         <source>Unable to connect to mySQL!</source>
-        <translation>¡No es posible conectarse con la base de datos MySQL!</translation>
+        <translation type="obsolete">¡No es posible conectarse con la base de datos MySQL!</translation>
     </message>
     <message>
         <source>Unable to create a Rivendell Database!</source>
-        <translation>¡No pude crear la base de datos Rivendell!</translation>
+        <translation type="obsolete">¡No pude crear la base de datos Rivendell!</translation>
     </message>
     <message>
         <source>Unable to connect to new Rivendell Database!</source>
-        <translation>¡No pude conectarme a la nueva base de datos Rivendell!</translation>
+        <translation type="obsolete">¡No pude conectarme a la nueva base de datos Rivendell!</translation>
     </message>
     <message>
         <source>Unable to create Rivendell Database!</source>
-        <translation>¡No pude crear la base de datos Rivendell!</translation>
+        <translation type="obsolete">¡No pude crear la base de datos Rivendell!</translation>
     </message>
     <message>
         <source>Unable to connect to Rivendell Database!</source>
-        <translation>¡No pude conectarme a la base de datos Rivendell!</translation>
+        <translation type="obsolete">¡No pude conectarme a la base de datos Rivendell!</translation>
     </message>
     <message>
         <source>Unable to initialize Rivendell Database!</source>
-        <translation>¡No fue posible inicializar la base de datos Rivendell!</translation>
+        <translation type="obsolete">¡No fue posible inicializar la base de datos Rivendell!</translation>
     </message>
     <message>
         <source>RDAdmin</source>
-        <translation>RDAdmin</translation>
+        <translation type="obsolete">RDAdmin</translation>
     </message>
     <message>
         <source>New Rivendell Database Created!</source>
-        <translation>¡Se ha creado una nueva base de datos!</translation>
+        <translation type="obsolete">¡Se ha creado una nueva base de datos!</translation>
     </message>
     <message>
         <source>Unable to upgrade database</source>
-        <translation>No fue posible actualizar la base de datos</translation>
+        <translation type="obsolete">No fue posible actualizar la base de datos</translation>
     </message>
     <message>
         <source>The Rivendell Database is too old to be upgraded,
@@ -5423,7 +5825,7 @@ and so must be replaced.  This will DESTROY any
 existing audio and data!  If you want to do this,
 enter a username and password for a mySQL account
 with administrative privledges, otherwise hit cancel.</source>
-        <translation>La base de datos Rivendell es muy antigua y no
+        <translation type="obsolete">La base de datos Rivendell es muy antigua y no
 puede ser actualizada, por lo que será reemplazada.
 ¡Esto DESTRUIRÁ todo audio y datos existentes! 
 Si desea continuar, introduzca el usuario y la clave
@@ -5432,61 +5834,61 @@ o de lo contrario seleccione CANCELAR.</translation>
     </message>
     <message>
         <source>Unable to log into Administrator account!</source>
-        <translation>¡No pudo ingresar a una cuenta administrativa!</translation>
+        <translation type="obsolete">¡No pudo ingresar a una cuenta administrativa!</translation>
     </message>
     <message>
         <source>Unable to authorize a Rivendell Database!</source>
-        <translation>¡No puedo autorizar la base de datos Rivendell!</translation>
+        <translation type="obsolete">¡No puedo autorizar la base de datos Rivendell!</translation>
     </message>
     <message>
         <source>Update Needed</source>
-        <translation>Se necesita actualizar</translation>
+        <translation type="obsolete">Se necesita actualizar</translation>
     </message>
     <message>
         <source>The Rivendell Database needs to be updated.
 All audio and settings will be preserved, but
 this will STOP any audio playout or recording
 on this machine for a few seconds.  Continue?</source>
-        <translation>La base de datos requiere ser actualizada. Todo el audio 
+        <translation type="obsolete">La base de datos requiere ser actualizada. Todo el audio 
 y la configuración se van a preservar, pero hay  que 
 DETENER las reproducciones y grabaciones por unos
 segundos. ¿Desea continuar?</translation>
     </message>
     <message>
         <source>Unable to update Rivendell Database:</source>
-        <translation>No fue posible actualizar la base de datos:</translation>
+        <translation type="obsolete">No fue posible actualizar la base de datos:</translation>
     </message>
     <message>
         <source>
 Database backup failed!</source>
-        <translation>
+        <translation type="obsolete">
 ¡No se pudo respaldar la base de datos!</translation>
     </message>
     <message>
         <source>
 Schema modification failed!</source>
-        <translation>
+        <translation type="obsolete">
 ¡Falló la modificación del esquema!</translation>
     </message>
     <message>
         <source>
 Unknown/unspecified error!</source>
-        <translation>
+        <translation type="obsolete">
 ¡Error desconocido/no especificado!</translation>
     </message>
     <message>
         <source>The Rivendell Database has been updated to version</source>
-        <translation>La base de datos de Rivendell ha sido actualizada a la versión </translation>
+        <translation type="obsolete">La base de datos de Rivendell ha sido actualizada a la versión </translation>
     </message>
     <message>
         <source>
 and a backup of the original database saved in </source>
-        <translation>
+        <translation type="obsolete">
 y un respaldo de la base de datos se guardó en </translation>
     </message>
     <message>
         <source>Database Updated</source>
-        <translation>Base de datos actualizada</translation>
+        <translation type="obsolete">Base de datos actualizada</translation>
     </message>
     <message>
         <source>RDAdmin Error</source>
@@ -5498,119 +5900,159 @@ y un respaldo de la base de datos se guardó en </translation>
     </message>
     <message>
         <source>Start Line 1</source>
-        <translation>Iniciar Línea 1</translation>
+        <translation type="obsolete">Iniciar Línea 1</translation>
     </message>
     <message>
         <source>Stop Line 1</source>
-        <translation>Detener Línea 1</translation>
+        <translation type="obsolete">Detener Línea 1</translation>
     </message>
     <message>
         <source>Pause Line 1</source>
-        <translation>Pausar Línea 1</translation>
+        <translation type="obsolete">Pausar Línea 1</translation>
     </message>
     <message>
         <source>Start Line 2</source>
-        <translation>Iniciar Línea 2</translation>
+        <translation type="obsolete">Iniciar Línea 2</translation>
     </message>
     <message>
         <source>Stop Line 2</source>
-        <translation>Detener Línea 2</translation>
+        <translation type="obsolete">Detener Línea 2</translation>
     </message>
     <message>
         <source>Pause Line 2</source>
-        <translation>Pausar Línea 2</translation>
+        <translation type="obsolete">Pausar Línea 2</translation>
     </message>
     <message>
         <source>Start Line 3</source>
-        <translation>Iniciar Línea 3</translation>
+        <translation type="obsolete">Iniciar Línea 3</translation>
     </message>
     <message>
         <source>Stop Line 3</source>
-        <translation>Detener Línea 3</translation>
+        <translation type="obsolete">Detener Línea 3</translation>
     </message>
     <message>
         <source>Pause Line 3</source>
-        <translation>Pausar Línea 3</translation>
+        <translation type="obsolete">Pausar Línea 3</translation>
     </message>
     <message>
         <source>Start Line 4</source>
-        <translation>Iniciar Línea 4</translation>
+        <translation type="obsolete">Iniciar Línea 4</translation>
     </message>
     <message>
         <source>Stop Line 4</source>
-        <translation>Detener Línea 4</translation>
+        <translation type="obsolete">Detener Línea 4</translation>
     </message>
     <message>
         <source>Pause Line 4</source>
-        <translation>Pausar Línea 4</translation>
+        <translation type="obsolete">Pausar Línea 4</translation>
     </message>
     <message>
         <source>Start Line 5</source>
-        <translation>Iniciar Línea 5</translation>
+        <translation type="obsolete">Iniciar Línea 5</translation>
     </message>
     <message>
         <source>Stop Line 5</source>
-        <translation>Detener Línea 5</translation>
+        <translation type="obsolete">Detener Línea 5</translation>
     </message>
     <message>
         <source>Pause Line 5</source>
-        <translation>Pausar Línea 5</translation>
+        <translation type="obsolete">Pausar Línea 5</translation>
     </message>
     <message>
         <source>Start Line 6</source>
-        <translation>Iniciar Línea 6</translation>
+        <translation type="obsolete">Iniciar Línea 6</translation>
     </message>
     <message>
         <source>Stop Line 6</source>
-        <translation>Detener Línea 6</translation>
+        <translation type="obsolete">Detener Línea 6</translation>
     </message>
     <message>
         <source>Pause Line 6</source>
-        <translation>Pausar Línea 6</translation>
+        <translation type="obsolete">Pausar Línea 6</translation>
     </message>
     <message>
         <source>Start Line 7</source>
-        <translation>Iniciar Línea 7</translation>
+        <translation type="obsolete">Iniciar Línea 7</translation>
     </message>
     <message>
         <source>Stop Line 7</source>
-        <translation>Detener Línea 7</translation>
+        <translation type="obsolete">Detener Línea 7</translation>
     </message>
     <message>
         <source>Pause Line 7</source>
-        <translation>Pausar Línea 7</translation>
+        <translation type="obsolete">Pausar Línea 7</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation>Añadir</translation>
+        <translation type="obsolete">Añadir</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Borrar</translation>
+        <translation type="obsolete">Borrar</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation>Copiar</translation>
+        <translation type="obsolete">Copiar</translation>
     </message>
     <message>
         <source>Move</source>
-        <translation>Mover</translation>
+        <translation type="obsolete">Mover</translation>
     </message>
     <message>
         <source>Sound Panel</source>
-        <translation>Panel de sonidos</translation>
+        <translation type="obsolete">Panel de sonidos</translation>
     </message>
     <message>
         <source>Main Log</source>
-        <translation>Lista Ppal</translation>
+        <translation type="obsolete">Lista Ppal</translation>
     </message>
     <message>
         <source>Aux Log 1</source>
-        <translation>Lista aux. 1</translation>
+        <translation type="obsolete">Lista aux. 1</translation>
     </message>
     <message>
         <source>Aux Log 2</source>
-        <translation>Lista aux. 2</translation>
+        <translation type="obsolete">Lista aux. 2</translation>
+    </message>
+    <message>
+        <source>DB Message</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unsupported database schema.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unknown/corrupt database.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to create new database:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to initialize new database:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New Rivendell database created.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to update new database:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Skewed database schema.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to update database:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This database must first be converted to Rivendell 3.x format.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -5698,7 +6140,7 @@ Do you want to combine the two?</source>
     </message>
     <message>
         <source>Title</source>
-        <translation>Título</translation>
+        <translation type="obsolete">Título</translation>
     </message>
     <message>
         <source>Contract #</source>
@@ -5722,17 +6164,25 @@ Do you want to combine the two?</source>
     </message>
     <message>
         <source>Import Error</source>
-        <translation>Error de importación</translation>
+        <translation type="unfinished">Error de importación</translation>
     </message>
     <message>
         <source>There was an error during import
 please check your settings and try again.</source>
-        <translation>Ha habido un error durante la importación
+        <translation type="unfinished">Ha habido un error durante la importación
 Revise los parámetros e intente de nuevo.</translation>
     </message>
     <message>
         <source>[spot break]</source>
-        <translation>[parada del spot]</translation>
+        <translation type="unfinished">[parada del spot]</translation>
+    </message>
+    <message>
+        <source>Cart Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Line</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -5853,6 +6303,16 @@ Revise los parámetros e intente de nuevo.</translation>
     <message>
         <source>&amp;Close</source>
         <translation>&amp;Cerrar</translation>
+    </message>
+    <message>
+        <source>    MP-4/AAC
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>    PCM24 Linear
+</source>
+        <translation type="unfinished">PCM24 lineal</translation>
     </message>
 </context>
 </TS>

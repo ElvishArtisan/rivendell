@@ -2,9 +2,7 @@
 #
 # The lib/ QMake project file for Rivendell.
 #
-# (C) Copyright 2003-2007 Fred Gleason <fredg@paravelsystems.com>
-#
-#      $Id: lib.pro,v 1.36.8.13.2.1 2014/06/02 22:52:24 cvs Exp $
+# (C) Copyright 2003-2016 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as
@@ -31,16 +29,19 @@ win32 {
 }
 
 SOURCES += export_bmiemr.cpp
+SOURCES += export_cutlog.cpp
 SOURCES += export_deltaflex.cpp
 SOURCES += export_musicclassical.cpp
 SOURCES += export_musicplayout.cpp
 SOURCES += export_musicsummary.cpp
 SOURCES += export_nprsoundex.cpp
 SOURCES += export_radiotraffic.cpp
+SOURCES += export_spincount.cpp
 SOURCES += export_soundex.cpp
 SOURCES += export_technical.cpp
 SOURCES += export_textlog.cpp
 SOURCES += rdadd_log.cpp
+SOURCES += rdapplication.cpp
 SOURCES += rdaudiosettings.cpp
 SOURCES += rdaudiosettings_dialog.cpp
 SOURCES += rdbusybar.cpp
@@ -64,8 +65,7 @@ SOURCES += rddbheartbeat.cpp
 SOURCES += rddebug.cpp
 SOURCES += rddropbox.cpp
 SOURCES += rdemptycart.cpp
-SOURCES += rdencoder.cpp
-SOURCES += rdencoderlist.cpp
+SOURCES += rdendpoint.cpp
 SOURCES += rdescape_string.cpp
 SOURCES += rdevent.cpp
 SOURCES += rdevent_line.cpp
@@ -76,6 +76,7 @@ SOURCES += rdgroup_list.cpp
 SOURCES += rdidvalidator.cpp
 SOURCES += rdintegeredit.cpp
 SOURCES += rdintegerdialog.cpp
+SOURCES += rdhostvariable.cpp
 SOURCES += rdlabel.cpp
 SOURCES += rdlibrary_conf.cpp
 SOURCES += rdlicense.cpp
@@ -97,20 +98,28 @@ SOURCES += rdprofilesection.cpp
 SOURCES += rdpushbutton.cpp
 SOURCES += rdreport.cpp
 SOURCES += rdripc.cpp
+SOURCES += rdschedcode.cpp
 SOURCES += rdsegmeter.cpp
+SOURCES += rdsettings.cpp
 SOURCES += rdslider.cpp
 SOURCES += rdsocket.cpp
+SOURCES += rdsqltablemodel.cpp
 SOURCES += rdstation.cpp
 SOURCES += rdstereometer.cpp
 SOURCES += rdsvc.cpp
 SOURCES += rdsystem.cpp
+SOURCES += rdtableview.cpp
+SOURCES += rdtablewidget.cpp
 SOURCES += rdtextfile.cpp
 SOURCES += rdtextvalidator.cpp
 SOURCES += rdtimeedit.cpp
 SOURCES += rdtimeengine.cpp
 SOURCES += rdtransportbutton.cpp
+SOURCES += rdunittestdata.cpp
 SOURCES += rduser.cpp
+SOURCES += rdvguestresource.cpp
 SOURCES += rdwavedata.cpp
+SOURCES += rdweb.cpp
 SOURCES += schedcartlist.cpp
 SOURCES += schedruleslist.cpp
 win32 {
@@ -132,6 +141,7 @@ x11 {
   SOURCES += rdcddblookup.cpp
   SOURCES += rdcdplayer.cpp
   SOURCES += rdcddbrecord.cpp
+  SOURCES += rdcgiapplication.cpp
   SOURCES += rdcheck_daemons.cpp
   SOURCES += rdcheck_version.cpp
   SOURCES += rdcmd_cache.cpp
@@ -157,7 +167,6 @@ x11 {
   SOURCES += rdpasswd.cpp
   SOURCES += rdplay_deck.cpp
   SOURCES += rdrecording.cpp
-  SOURCES += rdsettings.cpp
   SOURCES += rdsimpleplayer.cpp
   SOURCES += rdsound_panel.cpp
   SOURCES += rdstatus.cpp
@@ -172,6 +181,7 @@ x11 {
 HEADERS += schedcartlist.h
 HEADERS += schedruleslist.h
 HEADERS += rdadd_log.h
+HEADERS += rdapplication.h
 HEADERS += rdaudiosettings.h
 HEADERS += rdaudiosettings_dialog.h
 HEADERS += rdbusybar.h
@@ -196,8 +206,7 @@ HEADERS += rddbheartbeat.h
 HEADERS += rddebug.h
 HEADERS += rddropbox.h
 HEADERS += rdemptycart.h
-HEADERS += rdencoder.h
-HEADERS += rdencoderlist.h
+HEADERS += rdendpoint.h
 HEADERS += rdescape_string.h
 HEADERS += rdevent.h
 HEADERS += rdevent_line.h
@@ -206,6 +215,7 @@ HEADERS += rdget_ath.h
 HEADERS += rdgetpasswd.h
 HEADERS += rdgroup_list.h
 HEADERS += rd.h
+HEADERS += rdhostvariable.h
 HEADERS += rdidvalidator.h
 HEADERS += rdintegeredit.h
 HEADERS += rdintegerdialog.h
@@ -230,21 +240,29 @@ HEADERS += rdprofilesection.h
 HEADERS += rdpushbutton.h
 HEADERS += rdreport.h
 HEADERS += rdripc.h
+HEADERS += rdschedcode.h
 HEADERS += rdsegmeter.h
+HEADERS += rdsettings.h
 HEADERS += rdslider.h
 HEADERS += rdsocket.h
+HEADERS += rdsqltablemodel.h
 HEADERS += rdstation.h
 HEADERS += rdstereometer.h
 HEADERS += rdsvc.h
 HEADERS += rdsystem.h
+HEADERS += rdtableview.h
+HEADERS += rdtablewidget.h
 HEADERS += rdtextfile.h
 HEADERS += rdtextvalidator.h
 HEADERS += rdtimeedit.h
 HEADERS += rdtimeengine.h
 HEADERS += rdtransportbutton.h
 HEADERS += rdttydevice.h
+HEADERS += rdunittestdata.h
 HEADERS += rduser.h
+HEADERS += rdvguestresource.h
 HEADERS += rdwavedata.h
+HEADERS += rdweb.h
 
 win32 {
   HEADERS += rdwin32.h
@@ -262,6 +280,7 @@ x11 {
   HEADERS += rdcddblookup.h
   HEADERS += rdcdplayer.h
   HEADERS += rdcddbrecord.h
+  HEADERS += rdcgiapplication.h
   HEADERS += rdcheck_daemons.h
   HEADERS += rdcheck_version.h
   HEADERS += rdcmd_cache.h
@@ -289,7 +308,6 @@ x11 {
   HEADERS += rdpasswd.h
   HEADERS += rdplay_deck.h
   HEADERS += rdrecording.h
-  HEADERS += rdsettings.h
   HEADERS += rdsimpleplayer.h
   HEADERS += rdsound_panel.h
   HEADERS += rdstatus.h

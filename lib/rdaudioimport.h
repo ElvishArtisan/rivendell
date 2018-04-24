@@ -2,9 +2,7 @@
 //
 // Import an Audio File using the RdXport Web Service
 //
-//   (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdaudioimport.h,v 1.4.4.1 2013/11/13 23:36:30 cvs Exp $
+//   (C) Copyright 2010-2014,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -38,8 +36,7 @@ class RDAudioImport : public QObject
 		  ErrorNoDestination=3,ErrorInternal=5,ErrorUrlInvalid=7,
 		  ErrorService=8,ErrorInvalidUser=9,ErrorAborted=10,
 		  ErrorConverter=11};
-  RDAudioImport(RDStation *station,RDConfig *config,QObject *parent=0,
-		const char *name=0);
+  RDAudioImport(RDStation *station,RDConfig *config,QObject *parent=0);
   void setCartNumber(unsigned cartnum);
   void setCutNumber(unsigned cutnum);
   void setSourceFile(const QString &filename);

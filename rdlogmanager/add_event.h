@@ -2,9 +2,7 @@
 //
 // Add a Rivendell Log Manager Event
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: add_event.h,v 1.5.8.1 2012/04/23 17:22:47 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,21 +22,22 @@
 #define ADD_EVENT_H
 
 #include <qdialog.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
+#include <q3listbox.h>
+#include <q3textedit.h>
 #include <qpixmap.h>
 #include <qcheckbox.h>
 #include <qsqldatabase.h>
 #include <qlineedit.h>
+//Added by qt3to4:
+#include <QCloseEvent>
 
 #include <rdevent.h>
-
 
 class AddEvent : public QDialog
 {
   Q_OBJECT
  public:
-  AddEvent(QString *logname,QWidget *parent=0,const char *name=0);
+  AddEvent(QString *logname,QWidget *parent=0);
   ~AddEvent();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;

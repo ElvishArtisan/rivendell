@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell LogManager Track
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_track.cpp,v 1.6.8.1 2012/04/23 17:22:47 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,19 +20,20 @@
 
 #include <qdialog.h>
 #include <qstring.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qpainter.h>
 #include <qmessagebox.h>
-#include <qsqldatabase.h>
+//Added by qt3to4:
+#include <QCloseEvent>
 
 #include <rd.h>
 #include <rdevent.h>
 #include <rdcreate_log.h>
 
-#include <edit_track.h>
+#include "edit_track.h"
 
-EditTrack::EditTrack(QString *text,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+EditTrack::EditTrack(QString *text,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   setCaption(tr("Edit Voice Track Marker"));
   edit_text=text;
@@ -58,7 +57,7 @@ EditTrack::EditTrack(QString *text,QWidget *parent,const char *name)
   //
   // The Text Editor
   //
-  edit_text_edit=new QTextEdit(this,"edit_text_edit");
+  edit_text_edit=new Q3TextEdit(this);
   edit_text_edit->setGeometry(10,10,
 			      sizeHint().width()-20,sizeHint().height()-80);
   edit_text_edit->setText(*edit_text);
@@ -66,7 +65,7 @@ EditTrack::EditTrack(QString *text,QWidget *parent,const char *name)
   //
   //  OK Button
   //
-  QPushButton *button=new QPushButton(this,"ok_button");
+  QPushButton *button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
   button->setFont(bold_font);
@@ -76,7 +75,7 @@ EditTrack::EditTrack(QString *text,QWidget *parent,const char *name)
   //
   //  Cancel Button
   //
-  button=new QPushButton(this,"cancel_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   button->setFont(bold_font);
   button->setText(tr("&Cancel"));

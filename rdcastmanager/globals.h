@@ -2,9 +2,7 @@
 //
 // Global Variable Declarations for RDCastManager
 //
-//   (C) Copyright 2007 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: globals.h,v 1.5 2011/08/30 23:35:44 cvs Exp $
+//   (C) Copyright 2007,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,11 +22,6 @@
 #define GLOBALS_H
 
 #include <qstring.h>
-#include <rduser.h>
-#include <rdripc.h>
-#include <rdstation.h>
-#include <rdconfig.h>
-#include <rdsystem.h>
 
 //
 // Global Resources
@@ -36,11 +29,6 @@
 extern QString cast_filter;
 extern QString cast_group;
 extern QString cast_schedcode;
-extern RDUser *cast_user;
-extern RDRipc *cast_ripc;
-extern RDConfig *config;
-extern RDStation *rdstation_conf;
-extern RDSystem *cast_system;
 
 
 #endif  // GLOBALS_H

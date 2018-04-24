@@ -2,9 +2,7 @@
 //
 //   A Qt class for accessing the FreeDB CD Database.
 //
-//   (C) Copyright 2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdcddblookup.cpp,v 1.5.8.3 2014/01/14 17:35:31 cvs Exp $
+//   (C) Copyright 2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -19,19 +17,19 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-//
 
 #include <stdlib.h>
 #include <string.h>
-#include <qtimer.h>
-#include <qregexp.h>
-#include <qdatetime.h>
+
+#include <QDateTime>
+#include <QRegExp>
+#include <QTimer>
 
 #include <rdcddblookup.h>
 #include <rdprofile.h>
 
-RDCddbLookup::RDCddbLookup(FILE *profile_msgs,QObject *parent,const char *name) 
-  : QObject(parent,name)
+RDCddbLookup::RDCddbLookup(FILE *profile_msgs,QObject *parent)
+  : QObject(parent)
 {
   lookup_state=0;
   lookup_profile_msgs=profile_msgs;
@@ -49,7 +47,7 @@ RDCddbLookup::RDCddbLookup(FILE *profile_msgs,QObject *parent,const char *name)
   //
   // Socket
   //
-  lookup_socket=new QSocket(this,"lookup_socket");
+  lookup_socket=new Q3Socket(this,"lookup_socket");
   connect(lookup_socket,SIGNAL(readyRead()),this,SLOT(readyReadData()));
   connect(lookup_socket,SIGNAL(error(int)),this,SLOT(errorData(int)));
 }
@@ -247,13 +245,13 @@ void RDCddbLookup::readyReadData()
 void RDCddbLookup::errorData(int err)
 {
   switch(err) {
-      case QSocket::ErrConnectionRefused:
+      case Q3Socket::ErrConnectionRefused:
 	printf("CDDB: Connection Refused!\n");
 	break;
-      case QSocket::ErrHostNotFound:
+      case Q3Socket::ErrHostNotFound:
 	printf("CDDB: Host Not Found!\n");
 	break;
-      case QSocket::ErrSocketRead:
+      case Q3Socket::ErrSocketRead:
 	printf("CDDB: Socket Read Error!\n");
 	break;
   }
@@ -277,7 +275,7 @@ QString RDCddbLookup::DecodeString(QString &str)
   QString outstr;
   QChar ch;
 
-  for(unsigned i=0;i<str.length();i++) {
+  for(int i=0;i<str.length();i++) {
     if((ch=str.at(i).latin1())=='\\') {
       outstr+=QString("\n");
       i++;
@@ -293,7 +291,7 @@ QString RDCddbLookup::DecodeString(QString &str)
 void RDCddbLookup::ParsePair(QString *line,QString *tag,QString *value,
 			    int *index)
 {
-  for(unsigned i=0;i<line->length();i++) {
+  for(int i=0;i<line->length();i++) {
     if(line->at(i)=='=') {
       *tag=line->left(i);
       *value=line->right(line->length()-i-1);
@@ -309,7 +307,7 @@ int RDCddbLookup::GetIndex(QString *tag)
 {
   int index;
 
-  for(unsigned i=0;i<tag->length();i++) {
+  for(int i=0;i<tag->length();i++) {
     if(tag->at(i).isDigit()) {
       index=tag->right(tag->length()-i).toInt();
       *tag=tag->left(i);

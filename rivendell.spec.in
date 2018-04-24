@@ -1,7 +1,7 @@
 ## rivendell.spec.in
 ##
 ##    The Rivendell Radio Automation System
-##    Copyright (C) 2002-2014  Fred Gleason <fredg@paravelsystems.com>
+##    Copyright (C) 2002-2016  Fred Gleason <fredg@paravelsystems.com>
 ##
 ##    This program is free software; you can redistribute it and/or modify
 ##    it under the terms of version 2 of the GNU General Public License as
@@ -101,8 +101,6 @@ rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
 mkdir $RPM_BUILD_ROOT/.qt
 touch $RPM_BUILD_ROOT/.qt/qt
-rm -f $RPM_BUILD_ROOT/lib/security/pam_rd.la
-rm -f $RPM_BUILD_ROOT/lib64/security/pam_rd.la
 if test "@WIN32_SOURCE@" ; then
   mkdir -p $RPM_BUILD_ROOT/var/win32
   cp @WIN32_SOURCE@ $RPM_BUILD_ROOT/var/win32/
@@ -179,7 +177,7 @@ if test "@DISTRO@" = "redhat" ; then
   fi
 fi
 if [ -x %{_bindir}/gtk-update-icon-cache ] ; then
-  %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
+  %{_bindir}/gtk-update-icon-cache -f --quiet %{_datadir}/icons/hicolor || :
 fi
 exit 0
 
@@ -229,7 +227,9 @@ rm -rf $RPM_BUILD_ROOT
 @LOCAL_PREFIX@/bin/rdalsaconfig
 @CONSOLEHELPER_RDALSACONFIG@
 @LOCAL_PREFIX@/bin/rdgpimon
+@LOCAL_PREFIX@/bin/rdclilogedit
 @LOCAL_PREFIX@/bin/rddelete
+@LOCAL_PREFIX@/bin/rdexport
 @LOCAL_PREFIX@/bin/rdimport
 @LOCAL_PREFIX@/bin/rdpurgecasts
 @LOCAL_PREFIX@/bin/rdmaint
@@ -242,9 +242,10 @@ rm -rf $RPM_BUILD_ROOT
 @LOCAL_PREFIX@/bin/rdchunk
 @LOCAL_PREFIX@/bin/rdmemcheck.sh
 %attr(4755,root,root)@LOCAL_PREFIX@/bin/ripcd
-@LOCAL_PREFIX@/sbin/sas_shim
 @LOCAL_PREFIX@/sbin/rddbcheck
 @LOCAL_PREFIX@/sbin/rdmarkerset
+@LOCAL_PREFIX@/sbin/rdcleandirs
+@LOCAL_PREFIX@/sbin/rdrevert
 @LOCAL_PREFIX@/share/rivendell/*
 /etc/init.d/rdrepld
 @LOCAL_PREFIX@/share/icons/hicolor/16x16/apps/rivendell.png
@@ -275,7 +276,6 @@ rm -rf $RPM_BUILD_ROOT
 @LOCAL_PREFIX@/share/desktop-directories/rivendell-rivendell.directory
 @LOCAL_PREFIX@/share/desktop-directories/rivendell-utilities.directory
 /etc/xdg/menus/applications-merged/rivendell-rivendell.menu
-/@RD_LIB_PATH@/security/pam_rd.so
 /.qt/qt
 @libexecdir@/*
 %attr(6755,root,root) @libexecdir@/rdxport.cgi
@@ -283,7 +283,11 @@ rm -rf $RPM_BUILD_ROOT
 @WIN32_PATH@
 /etc/pam.d/rdalsaconfig-root
 /etc/security/console.apps/rdalsaconfig-root
+%{_mandir}/man1/rdexport.1.gz
 %{_mandir}/man1/rdimport.1.gz
+%{_mandir}/man1/rdclilogedit.1.gz
+%{_mandir}/man8/rdmarkerset.8.gz
+%{_mandir}/man8/rdrevert.8.gz
 %doc AUTHORS
 %doc ChangeLog
 %doc COPYING 
@@ -295,7 +299,6 @@ rm -rf $RPM_BUILD_ROOT
 %doc conf/rd.conf-sample
 %doc conf/my.cnf-master
 %doc conf/my.cnf-standby
-%doc docs/cae.sxw 
 %doc docs/catchd.txt 
 %doc docs/colors 
 %doc docs/GPIO.txt 
@@ -303,9 +306,10 @@ rm -rf $RPM_BUILD_ROOT
 %doc docs/SWITCHERS.txt
 %doc docs/JACK.txt
 %doc docs/ENCODERS.txt
-%doc docs/pam_rd.txt
-%doc docs/rml.sxw
 %doc docs/MESSAGE_BOX.txt
+%doc docs/docbook/cae.pdf
+%doc docs/docbook/rml.pdf
+%doc docs/docbook/web_api.pdf
 %doc docs/tables/audio_perms.txt 
 %doc docs/tables/audio_ports.txt 
 %doc docs/tables/cart.txt 
@@ -331,7 +335,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc docs/tables/users.txt 
 %doc docs/tables/version.txt 
 %doc docs/asound.conf-sample
-%doc docs/web_api.odt
+%doc conf/rlm_walltime.conf
 %doc conf/rlm_serial.conf
 %doc conf/rlm_udp.conf
 %doc conf/rlm_twitter.conf
@@ -348,7 +352,6 @@ rm -rf $RPM_BUILD_ROOT
 %doc conf/rlm_filewrite.conf
 %doc conf/rlm_spinitron_plus.conf
 %doc docs/implemented_macros.txt
-%doc utils/sas_shim/rc.sas_shim
 %doc docs/datetime_wildcards.txt
 %doc docs/reports.txt
 %doc docs/NOW+NEXT.txt
@@ -402,7 +405,6 @@ rm -rf $RPM_BUILD_ROOT
 @LOCAL_PREFIX@/bin/wings_filter
 @LOCAL_PREFIX@/bin/rivendell_filter
 @LOCAL_PREFIX@/bin/nexgen_filter
-@LOCAL_PREFIX@/bin/sas_filter
 @LOCAL_PREFIX@/bin/crc-unity4k.sh
 @LOCAL_PREFIX@/bin/rdcatch_copy
 @LOCAL_PREFIX@/bin/panel_copy

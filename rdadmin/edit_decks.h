@@ -2,9 +2,7 @@
 //
 // Edit Rivendell Netcatcher Configuration
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_decks.h,v 1.15.6.1 2012/11/28 18:49:36 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,18 +23,19 @@
 
 #include <vector>
 
-#include <qdialog.h>
-#include <qsqldatabase.h>
-#include <qcombobox.h>
-#include <qpushbutton.h>
-#include <qspinbox.h>
-#include <qlabel.h>
-#include <qlineedit.h>
+#include <QComboBox>
+#include <QDialog>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPaintEvent>
+#include <QPushButton>
+#include <QSpinBox>
 
-#include <rddeck.h>
 #include <rdcardselector.h>
-#include <rdstation.h>
 #include <rdcatch_conf.h>
+#include <rdcombobox.h>
+#include <rddeck.h>
+#include <rdstation.h>
 
 class EditDecks : public QDialog
 {
@@ -55,6 +54,8 @@ class EditDecks : public QDialog
    void formatActivatedData(int);
    void stationActivatedData(const QString &);
    void matrixActivatedData(const QString &);
+   void playSettingsChangedData(int id,int card,int port);
+   void eventCartSelectedData(int n);
    void closeData();
 
   protected:
@@ -88,8 +89,8 @@ class EditDecks : public QDialog
    QLabel *edit_swstation_label;
    QComboBox *edit_swstation_box;
    QLabel *edit_swmatrix_label;
-   QComboBox *edit_swmatrix_box;
-   std::vector<int> edit_matrix_ids;
+   RDComboBox *edit_swmatrix_box;
+   //   std::vector<int> edit_matrix_ids;
    QLabel *edit_swoutput_label;
    QComboBox *edit_swoutput_box;
    QLabel *edit_swdelay_label;
@@ -97,8 +98,11 @@ class EditDecks : public QDialog
    QSpinBox *edit_swdelay_box;
    QSpinBox *edit_threshold_box;
    QLineEdit *edit_errorrml_edit;
+   QLabel *edit_event_section_label;
+   QLabel *edit_event_labels[RD_CUT_EVENT_ID_QUAN];
+   QLineEdit *edit_event_edits[RD_CUT_EVENT_ID_QUAN];
+   QPushButton *edit_event_buttons[RD_CUT_EVENT_ID_QUAN];
 };
 
 
-#endif
-
+#endif  // EDIT_DECKS_H

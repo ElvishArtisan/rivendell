@@ -2,9 +2,7 @@
 //
 // Abstract a Rivendell Cut.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcut.cpp,v 1.76.6.10.2.2 2014/07/15 20:02:22 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -33,6 +31,7 @@
 #include <rdwavefile.h>
 #endif
 
+#include <rdapplication.h>
 #include <rdcut.h>
 #include <rdtextvalidator.h>
 #include <rdconfig.h>
@@ -41,19 +40,20 @@
 #include <rdweb.h>
 #include <rdcopyaudio.h>
 #include <rdtrimaudio.h>
+//Added by qt3to4:
+#include <Q3Signal>
 
 //
 // Global Classes
 //
-RDCut::RDCut(const QString &name,bool create,QSqlDatabase *db)
+RDCut::RDCut(const QString &name,bool create)
 {
   RDSqlQuery *q;
   QString sql;
 
-  cut_db=db;
   cut_name=name;
 
-  cut_signal=new QSignal();
+  cut_signal=new Q3Signal();
 
   if(name.isEmpty()) {
     cut_number=0;
@@ -61,31 +61,32 @@ RDCut::RDCut(const QString &name,bool create,QSqlDatabase *db)
     return;
   }
 
-  sscanf((const char *)name+7,"%u",&cut_number);
-  sscanf((const char *)name.left(6),"%u",&cart_number);
+  cut_number=RDCut::cutNumber(name);
+  cart_number=RDCut::cartNumber(name);
   if(create) {
-    sql=QString().sprintf("insert into CUTS set CUT_NAME=\"%s\",CART_NUMBER=%u",
-			  (const char *)cut_name,cart_number);
-    q=new RDSqlQuery(sql,cut_db);
+    sql=QString("insert into CUTS set ")+
+      "CUT_NAME=\""+cut_name+"\","+
+      QString().sprintf("CART_NUMBER=%u",cart_number);
+    q=new RDSqlQuery(sql);
     delete q;
   }
 }
 
 
-RDCut::RDCut(unsigned cartnum,int cutnum,bool create,QSqlDatabase *db)
+RDCut::RDCut(unsigned cartnum,int cutnum,bool create)
 {
   RDSqlQuery *q;
   QString sql;
 
-  cut_db=db;
   cut_name=RDCut::cutName(cartnum,cutnum);
 
-  cut_signal=new QSignal();
+  cut_signal=new Q3Signal();
 
   if(create) {
-    sql=QString().sprintf("insert into CUTS set CUT_NAME=\"%s\",CART_NUMBER=%u",
-			  (const char *)cut_name,cartnum);
-    q=new RDSqlQuery(sql,cut_db);
+    sql=QString("insert into CUTS set ")+
+      "CUT_NAME=\""+cut_name+"\","+
+      QString().sprintf("CART_NUMBER=%u",cartnum);
+    q=new RDSqlQuery(sql);
     delete q;
   }
   cut_number=cutnum;
@@ -101,7 +102,7 @@ RDCut::~RDCut()
 
 bool RDCut::exists() const
 {
-  return RDDoesRowExist("CUTS","CUT_NAME",cut_name,cut_db);
+  return RDDoesRowExist("CUTS","CUT_NAME",cut_name);
 }
 
 
@@ -122,10 +123,21 @@ bool RDCut::isValid(const QDateTime &datetime) const
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString().sprintf("select MON,TUE,WED,THU,FRI,SAT,SUN,EVERGREEN,\
-                         START_DATETIME,END_DATETIME,START_DAYPART,END_DAYPART\
-                         from CUTS where CUT_NAME=\"%s\"",
-			(const char *)cut_name);
+  sql=QString("select ")+
+    "MON,"+             // 00
+    "TUE,"+             // 01
+    "WED,"+             // 02
+    "THU,"+             // 03
+    "FRI,"+             // 04
+    "SAT,"+             // 05
+    "SUN,"+             // 06
+    "EVERGREEN,"+       // 07
+    "START_DATETIME,"+  // 08
+    "END_DATETIME,"+    // 09
+    "START_DAYPART,"+   // 10
+    "END_DAYPART "+     // 11
+    "from CUTS where "+
+    "CUT_NAME=\""+cut_name+"\"";
   q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;
@@ -199,7 +211,7 @@ void RDCut::setEvergreen(bool state) const
 
 QString RDCut::description() const
 {
-  return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"DESCRIPTION",cut_db).
+  return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"DESCRIPTION").
     toString();
 }
 
@@ -212,7 +224,7 @@ void RDCut::setDescription(const QString &string) const
 
 QString RDCut::outcue() const
 {
-  return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"OUTCUE",cut_db).toString();
+  return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"OUTCUE").toString();
 }
 
 
@@ -224,7 +236,7 @@ void RDCut::setOutcue(const QString &string) const
 
 QString RDCut::isrc(IsrcFormat fmt) const
 {
-  QString str= RDGetSqlValue("CUTS","CUT_NAME",cut_name,"ISRC",cut_db).
+  QString str= RDGetSqlValue("CUTS","CUT_NAME",cut_name,"ISRC").
     toString();
   if((fmt==RDCut::RawIsrc)||(str.length()!=12)) {
     return str;
@@ -244,7 +256,7 @@ void RDCut::setIsrc(const QString &isrc) const
 
 QString RDCut::isci() const
 {
-  return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"ISCI",cut_db).toString();
+  return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"ISCI").toString();
 }
 
 
@@ -256,7 +268,7 @@ void RDCut::setIsci(const QString &isci) const
 
 unsigned RDCut::length() const
 {
-  return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"LENGTH",cut_db).
+  return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"LENGTH").
     toUInt();
 }
 
@@ -270,7 +282,7 @@ void RDCut::setLength(int length) const
 QDateTime RDCut::originDatetime(bool *valid) const
 {
   return 
-    RDGetSqlValue("CUTS","CUT_NAME",cut_name,"ORIGIN_DATETIME",cut_db,valid).
+    RDGetSqlValue("CUTS","CUT_NAME",cut_name,"ORIGIN_DATETIME",valid).
     toDateTime();
 }
 
@@ -284,7 +296,7 @@ void RDCut::setOriginDatetime(const QDateTime &datetime) const
 QDateTime RDCut::startDatetime(bool *valid) const
 {
   return 
-    RDGetSqlValue("CUTS","CUT_NAME",cut_name,"START_DATETIME",cut_db,valid).
+    RDGetSqlValue("CUTS","CUT_NAME",cut_name,"START_DATETIME",valid).
     toDateTime();
 }
 
@@ -303,7 +315,7 @@ void RDCut::setStartDatetime(const QDateTime &datetime,bool valid) const
 QDateTime RDCut::endDatetime(bool *valid) const
 {
   return 
-    RDGetSqlValue("CUTS","CUT_NAME",cut_name,"END_DATETIME",cut_db,valid).
+    RDGetSqlValue("CUTS","CUT_NAME",cut_name,"END_DATETIME",valid).
     toDateTime();
 }
 
@@ -322,7 +334,7 @@ void RDCut::setEndDatetime(const QDateTime &datetime,bool valid) const
 QTime RDCut::startDaypart(bool *valid) const
 {
   return 
-    RDGetSqlValue("CUTS","CUT_NAME",cut_name,"START_DAYPART",cut_db,valid).
+    RDGetSqlValue("CUTS","CUT_NAME",cut_name,"START_DAYPART",valid).
     toTime();
 }
 
@@ -341,7 +353,7 @@ void RDCut::setStartDaypart(const QTime &time,bool valid) const
 bool RDCut::weekPart(int dayofweek) const
 {
   return RDBool(RDGetSqlValue("CUTS","CUT_NAME",cut_name,
-			    RDGetShortDayNameEN(dayofweek).upper(),cut_db).
+			    RDGetShortDayNameEN(dayofweek).upper()).
 	       toString());
 }
 
@@ -355,7 +367,7 @@ void RDCut::setWeekPart(int dayofweek,bool state) const
 QTime RDCut::endDaypart(bool *valid) const
 {
   return 
-    RDGetSqlValue("CUTS","CUT_NAME",cut_name,"END_DAYPART",cut_db,valid).
+    RDGetSqlValue("CUTS","CUT_NAME",cut_name,"END_DAYPART",valid).
     toTime();
 }
 
@@ -373,7 +385,7 @@ void RDCut::setEndDaypart(const QTime &time,bool valid) const
 
 QString RDCut::originName() const
 {
-  return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"ORIGIN_NAME",cut_db).
+  return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"ORIGIN_NAME").
     toString();
 }
 
@@ -386,7 +398,7 @@ void RDCut::setOriginName(const QString &name) const
 
 unsigned RDCut::weight() const
 {
-  return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"WEIGHT",cut_db).
+  return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"WEIGHT").
     toUInt();
 }
 
@@ -397,10 +409,23 @@ void RDCut::setWeight(int value) const
 }
 
 
+int RDCut::playOrder() const
+{
+  return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"PLAY_ORDER").
+    toInt();
+}
+
+
+void RDCut::setPlayOrder(int order) const
+{
+  SetRow("PLAY_ORDER",order);
+}
+
+
 QDateTime RDCut::lastPlayDatetime(bool *valid) const
 {
   return 
-    RDGetSqlValue("CUTS","CUT_NAME",cut_name,"LAST_PLAY_DATETIME",cut_db,valid).
+    RDGetSqlValue("CUTS","CUT_NAME",cut_name,"LAST_PLAY_DATETIME",valid).
     toDateTime();
 }
 
@@ -419,7 +444,7 @@ void RDCut::setLastPlayDatetime(const QDateTime &datetime,bool valid) const
 QDateTime RDCut::uploadDatetime(bool *valid) const
 {
   return 
-    RDGetSqlValue("CUTS","CUT_NAME",cut_name,"UPLOAD_DATETIME",cut_db,valid).
+    RDGetSqlValue("CUTS","CUT_NAME",cut_name,"UPLOAD_DATETIME",valid).
     toDateTime();
 }
 
@@ -437,7 +462,7 @@ void RDCut::setUploadDatetime(const QDateTime &datetime,bool valid) const
 
 unsigned RDCut::playCounter() const
 {
-  return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"PLAY_COUNTER",cut_db).
+  return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"PLAY_COUNTER").
     toUInt();
 }
 
@@ -463,7 +488,7 @@ void RDCut::setValidity(RDCut::Validity state)
 
 unsigned RDCut::localCounter() const
 {
-  return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"LOCAL_COUNTER",cut_db).
+  return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"LOCAL_COUNTER").
     toUInt();
 }
 
@@ -476,7 +501,7 @@ void RDCut::setLocalCounter(unsigned count) const
 
 unsigned RDCut::codingFormat() const
 {
-  return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"CODING_FORMAT",cut_db).
+  return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"CODING_FORMAT").
     toUInt();
 }
 
@@ -489,7 +514,7 @@ void RDCut::setCodingFormat(unsigned format) const
 
 unsigned RDCut::sampleRate() const
 {
-  return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"SAMPLE_RATE",cut_db).
+  return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"SAMPLE_RATE").
     toUInt();
 }
 
@@ -502,7 +527,7 @@ void RDCut::setSampleRate(unsigned rate) const
 
 unsigned RDCut::bitRate() const
 {
-  return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"BIT_RATE",cut_db).
+  return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"BIT_RATE").
     toUInt();
 }
 
@@ -515,7 +540,7 @@ void RDCut::setBitRate(unsigned rate) const
 
 unsigned RDCut::channels() const
 {
-  return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"CHANNELS",cut_db).
+  return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"CHANNELS").
     toUInt();
 }
 
@@ -528,7 +553,7 @@ void RDCut::setChannels(unsigned chan) const
 
 int RDCut::playGain() const
 {
-  return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"PLAY_GAIN",cut_db).
+  return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"PLAY_GAIN").
     toInt();
 }
 
@@ -544,10 +569,10 @@ int RDCut::startPoint(bool calc) const
   int n;
 
   if(!calc) {
-    return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"START_POINT",cut_db).
+    return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"START_POINT").
       toInt();
   }
-  if((n=RDGetSqlValue("CUTS","CUT_NAME",cut_name,"START_POINT",cut_db).
+  if((n=RDGetSqlValue("CUTS","CUT_NAME",cut_name,"START_POINT").
       toInt())!=-1) {
     return n;
   }
@@ -566,10 +591,10 @@ int RDCut::endPoint(bool calc) const
   int n;
 
   if(!calc) {
-    return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"END_POINT",cut_db).
+    return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"END_POINT").
       toInt();
   }
-  if((n=RDGetSqlValue("CUTS","CUT_NAME",cut_name,"END_POINT",cut_db).
+  if((n=RDGetSqlValue("CUTS","CUT_NAME",cut_name,"END_POINT").
       toInt())!=-1) {
     return n;
   }
@@ -588,10 +613,10 @@ int RDCut::fadeupPoint(bool calc) const
   int n;
 
   if(!calc) {
-    return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"FADEUP_POINT",cut_db).
+    return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"FADEUP_POINT").
       toInt();
   }
-  if((n=RDGetSqlValue("CUTS","CUT_NAME",cut_name,"FADEUP_POINT",cut_db).
+  if((n=RDGetSqlValue("CUTS","CUT_NAME",cut_name,"FADEUP_POINT").
       toInt())!=-1) {
     return n;
   }
@@ -610,10 +635,10 @@ int RDCut::fadedownPoint(bool calc) const
   int n;
 
   if(!calc) {
-    return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"FADEDOWN_POINT",cut_db).
+    return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"FADEDOWN_POINT").
       toInt();
   }
-  if((n=RDGetSqlValue("CUTS","CUT_NAME",cut_name,"FADEDOWN_POINT",cut_db).
+  if((n=RDGetSqlValue("CUTS","CUT_NAME",cut_name,"FADEDOWN_POINT").
       toInt())!=-1) {
     return n;
   }
@@ -632,10 +657,10 @@ int RDCut::segueStartPoint(bool calc) const
   int n;
 
   if(!calc) {
-    return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"SEGUE_START_POINT",cut_db).
+    return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"SEGUE_START_POINT").
       toInt();
   }
-  if((n=RDGetSqlValue("CUTS","CUT_NAME",cut_name,"SEGUE_START_POINT",cut_db).
+  if((n=RDGetSqlValue("CUTS","CUT_NAME",cut_name,"SEGUE_START_POINT").
       toInt())!=-1) {
     return n;
   }
@@ -654,10 +679,10 @@ int RDCut::segueEndPoint(bool calc) const
   int n;
 
   if(!calc) {
-    return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"SEGUE_END_POINT",cut_db).
+    return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"SEGUE_END_POINT").
       toInt();
   }
-  if((n=RDGetSqlValue("CUTS","CUT_NAME",cut_name,"SEGUE_END_POINT",cut_db).
+  if((n=RDGetSqlValue("CUTS","CUT_NAME",cut_name,"SEGUE_END_POINT").
       toInt())!=-1) {
     return n;
   }
@@ -673,7 +698,7 @@ void RDCut::setSegueEndPoint(int point) const
 
 int RDCut::segueGain() const
 {
-  return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"SEGUE_GAIN",cut_db).toInt();
+  return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"SEGUE_GAIN").toInt();
 }
 
 
@@ -688,10 +713,10 @@ int RDCut::hookStartPoint(bool calc) const
   int n;
 
   if(!calc) {
-    return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"HOOK_START_POINT",cut_db).
+    return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"HOOK_START_POINT").
       toInt();
   }
-  if((n=RDGetSqlValue("CUTS","CUT_NAME",cut_name,"HOOK_START_POINT",cut_db).
+  if((n=RDGetSqlValue("CUTS","CUT_NAME",cut_name,"HOOK_START_POINT").
       toInt())!=-1) {
     return n;
   }
@@ -710,10 +735,10 @@ int RDCut::hookEndPoint(bool calc) const
   int n;
 
   if(!calc) {
-    return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"HOOK_END_POINT",cut_db).
+    return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"HOOK_END_POINT").
       toInt();
   }
-  if((n=RDGetSqlValue("CUTS","CUT_NAME",cut_name,"HOOK_END_POINT",cut_db).
+  if((n=RDGetSqlValue("CUTS","CUT_NAME",cut_name,"HOOK_END_POINT").
       toInt())!=-1) {
     return n;
   }
@@ -732,10 +757,10 @@ int RDCut::talkStartPoint(bool calc) const
   int n;
 
   if(!calc) {
-    return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"TALK_START_POINT",cut_db).
+    return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"TALK_START_POINT").
       toInt();
   }
-  if((n=RDGetSqlValue("CUTS","CUT_NAME",cut_name,"TALK_START_POINT",cut_db).
+  if((n=RDGetSqlValue("CUTS","CUT_NAME",cut_name,"TALK_START_POINT").
       toInt())!=-1) {
     return n;
   }
@@ -754,10 +779,10 @@ int RDCut::talkEndPoint(bool calc) const
   int n;
 
   if(!calc) {
-    return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"TALK_END_POINT",cut_db).
+    return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"TALK_END_POINT").
       toInt();
   }
-  if((n=RDGetSqlValue("CUTS","CUT_NAME",cut_name,"TALK_END_POINT",cut_db).
+  if((n=RDGetSqlValue("CUTS","CUT_NAME",cut_name,"TALK_END_POINT").
       toInt())!=-1) {
     return n;
   }
@@ -775,7 +800,7 @@ int RDCut::effectiveStart() const
 {
   int n;
 
-  if((n=RDGetSqlValue("CUTS","CUT_NAME",cut_name,"START_POINT",cut_db).
+  if((n=RDGetSqlValue("CUTS","CUT_NAME",cut_name,"START_POINT").
       toInt())!=-1) {
     return n;
   }
@@ -787,7 +812,7 @@ int RDCut::effectiveEnd() const
 {
   int n;
 
-  if((n=RDGetSqlValue("CUTS","CUT_NAME",cut_name,"END_POINT",cut_db).
+  if((n=RDGetSqlValue("CUTS","CUT_NAME",cut_name,"END_POINT").
       toInt())!=-1) {
     return n;
   }
@@ -797,12 +822,12 @@ int RDCut::effectiveEnd() const
 
 void RDCut::logPlayout() const
 {
-  QString sql=
-    QString().sprintf("update CUTS set LAST_PLAY_DATETIME=\"%s\",\
-                       PLAY_COUNTER=%d,LOCAL_COUNTER=%d where CUT_NAME=\"%s\"",
-		      (const char *)QDateTime(QDate::currentDate(),
-		        QTime::currentTime()).toString("yyyy-MM-dd hh:mm:ss"),
-		      playCounter()+1,localCounter()+1,(const char *)cut_name);
+  QString sql=QString("update CUTS set ")+
+    "LAST_PLAY_DATETIME=\""+
+    QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss")+"\","+
+    QString().sprintf("PLAY_COUNTER=%d,",playCounter()+1)+
+    QString().sprintf("LOCAL_COUNTER=%d where ",localCounter()+1)+
+    "CUT_NAME=\""+cut_name+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
 }
@@ -816,66 +841,77 @@ bool RDCut::copyTo(RDStation *station,RDUser *user,
 #else
   QString sql;
   RDSqlQuery *q;
+  RDSqlQuery *q1;
   bool ret=true;
 
   //
   // Copy the Database Record
   //
-  sql=
-    QString().sprintf("select DESCRIPTION,OUTCUE,LENGTH,\
-                       CODING_FORMAT,SAMPLE_RATE,\
-                       BIT_RATE,CHANNELS,PLAY_GAIN,START_POINT,END_POINT,\
-                       FADEUP_POINT,FADEDOWN_POINT,SEGUE_START_POINT,\
-                       SEGUE_END_POINT,HOOK_START_POINT,HOOK_END_POINT,\
-                       TALK_START_POINT,TALK_END_POINT from CUTS\
-                       where CUT_NAME=\"%s\"",(const char *)cut_name);
+  sql=QString("select ")+
+    "DESCRIPTION,"+        // 00
+    "OUTCUE,"+             // 01
+    "LENGTH,"+             // 02
+    "CODING_FORMAT,"+      // 03
+    "SAMPLE_RATE,"+        // 04
+    "BIT_RATE,"+           // 05
+    "CHANNELS,"+           // 06
+    "PLAY_GAIN,"+          // 07
+    "START_POINT,"+        // 08
+    "END_POINT,"+          // 09
+    "FADEUP_POINT,"+       // 10
+    "FADEDOWN_POINT,"+     // 11
+    "SEGUE_START_POINT,"+  // 12
+    "SEGUE_END_POINT,"+    // 13
+    "HOOK_START_POINT,"+   // 14
+    "HOOK_END_POINT,"+     // 15
+    "TALK_START_POINT,"+   // 16
+    "TALK_END_POINT "+     // 17
+    "from CUTS where "+
+    "CUT_NAME=\""+cut_name+"\"";
   q=new RDSqlQuery(sql);
   if(q->first()) {
-    sql=QString().sprintf("update CUTS set\
-                           PLAY_COUNTER=0,\
-                           DESCRIPTION=\"%s\",\
-                           OUTCUE=\"%s\",\
-                           LENGTH=%u,\
-                           ORIGIN_DATETIME=now(),\
-                           ORIGIN_NAME=\"%s\",\
-                           CODING_FORMAT=%u,\
-                           SAMPLE_RATE=%u,\
-                           BIT_RATE=%u,\
-                           CHANNELS=%u,\
-                           PLAY_GAIN=%d,\
-                           START_POINT=%d,\
-                           END_POINT=%d,\
-                           FADEUP_POINT=%d,\
-                           FADEDOWN_POINT=%d,\
-                           SEGUE_START_POINT=%d,\
-                           SEGUE_END_POINT=%d,\
-                           HOOK_START_POINT=%d,\
-                           HOOK_END_POINT=%d,\
-                           TALK_START_POINT=%d,\
-                           TALK_END_POINT=%d where CUT_NAME=\"%s\"",
-			  (const char *)q->value(0).toString().utf8(),
-			  (const char *)q->value(1).toString().utf8(),
-			  q->value(2).toUInt(),
-			  (const char *)RDEscapeString(station->name()),
-			  q->value(3).toUInt(),
-			  q->value(4).toUInt(),
-			  q->value(5).toUInt(),
-			  q->value(6).toUInt(),
-			  q->value(7).toInt(),
-			  q->value(8).toInt(),
-			  q->value(9).toInt(),
-			  q->value(10).toInt(),
-			  q->value(11).toInt(),
-			  q->value(12).toInt(),
-			  q->value(13).toInt(),
-			  q->value(14).toInt(),
-			  q->value(15).toInt(),
-			  q->value(16).toInt(),
-			  q->value(17).toInt(),			  
-			  (const char *)cutname);
+    sql=QString("update CUTS set ")+
+      "PLAY_COUNTER=0,"+
+      "DESCRIPTION=\""+RDEscapeString(q->value(0).toString())+"\","+
+      "OUTCUE=\""+RDEscapeString(q->value(1).toString())+"\","+
+      QString().sprintf("LENGTH=%u,",q->value(2).toUInt())+
+      "ORIGIN_DATETIME=now(),"+
+      "ORIGIN_NAME=\""+RDEscapeString(station->name())+"\","+
+      QString().sprintf("CODING_FORMAT=%u,",q->value(3).toUInt())+
+      QString().sprintf("SAMPLE_RATE=%u,",q->value(4).toUInt())+
+      QString().sprintf("BIT_RATE=%u,",q->value(5).toUInt())+
+      QString().sprintf("CHANNELS=%u,",q->value(6).toUInt())+
+      QString().sprintf("PLAY_GAIN=%d,",q->value(7).toInt())+
+      QString().sprintf("START_POINT=%d,",q->value(8).toInt())+
+      QString().sprintf("END_POINT=%d,",q->value(9).toInt())+
+      QString().sprintf("FADEUP_POINT=%d,",q->value(10).toInt())+
+      QString().sprintf("FADEDOWN_POINT=%d,",q->value(11).toInt())+
+      QString().sprintf("SEGUE_START_POINT=%d,",q->value(12).toInt())+
+      QString().sprintf("SEGUE_END_POINT=%d,",q->value(13).toInt())+
+      QString().sprintf("HOOK_START_POINT=%d,",q->value(14).toInt())+
+      QString().sprintf("HOOK_END_POINT=%d,",q->value(15).toInt())+
+      QString().sprintf("TALK_START_POINT=%d,",q->value(16).toInt())+
+      QString().sprintf("TALK_END_POINT=%d ",q->value(17).toInt())+
+      "where CUT_NAME=\""+cutname+"\"";
   }
   delete q;
   q=new RDSqlQuery(sql);
+  delete q;
+
+  //
+  // Copy the Cut Events
+  //
+  sql=QString("select NUMBER,POINT from CUT_EVENTS ")+
+    "where CUT_NAME=\""+cutName()+"\"";
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    sql=QString("insert into CUT_EVENTS set ")+
+      "CUT_NAME=\""+cutname+"\","+
+      QString().sprintf("NUMBER=%d,",q->value(0).toInt())+
+      QString().sprintf("POINT=%d",q->value(1).toInt());
+    q1=new RDSqlQuery(sql);
+    delete q1;
+  }
   delete q;
 
   //
@@ -899,38 +935,54 @@ void RDCut::getMetadata(RDWaveData *data) const
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString().sprintf("select DESCRIPTION,OUTCUE,ISRC,ISCI,ORIGIN_DATETIME,\
-                         START_DATETIME,END_DATETIME,START_DAYPART,END_DAYPART,\
-                         SEGUE_START_POINT,\
-                         SEGUE_END_POINT,TALK_START_POINT,TALK_END_POINT,\
-                         START_POINT,END_POINT,HOOK_START_POINT,\
-                         HOOK_END_POINT,FADEUP_POINT,FADEDOWN_POINT \
-                         from CUTS where CUT_NAME=\"%s\"",
-			(const char *)cut_name);
+  sql=QString("select ")+  
+    "CUT_NAME,"+           // 00
+    "DESCRIPTION,"+        // 01
+    "OUTCUE,"+             // 02
+    "ISRC,"+               // 03
+    "ISCI,"+               // 04
+    "ORIGIN_DATETIME,"+    // 05
+    "START_DATETIME,"+     // 06
+    "END_DATETIME,"+       // 07
+    "START_DAYPART,"+      // 08
+    "END_DAYPART,"+        // 09
+    "SEGUE_START_POINT,"+  // 10
+    "SEGUE_END_POINT,"+    // 11
+    "TALK_START_POINT,"+   // 12
+    "TALK_END_POINT,"+     // 13
+    "START_POINT,"+        // 14
+    "END_POINT,"+          // 15
+    "HOOK_START_POINT,"+   // 16
+    "HOOK_END_POINT,"+     // 17
+    "FADEUP_POINT,"+       // 18
+    "FADEDOWN_POINT "+     // 19
+    "from CUTS where CUT_NAME=\""+cut_name+"\"";
   q=new RDSqlQuery(sql);
   if(q->first()) {
-    data->setTitle(q->value(0).toString());
-    data->setOutCue(q->value(1).toString());
-    data->setIsrc(q->value(2).toString());
-    data->setIsci(q->value(3).toString());
-    data->setOriginationDate(q->value(4).toDate());
-    data->setOriginationTime(q->value(4).toTime());
-    data->setStartDate(q->value(5).toDate());
-    data->setStartTime(q->value(5).toTime());
-    data->setEndDate(q->value(6).toDate());
-    data->setEndTime(q->value(6).toTime());
-    data->setDaypartStartTime(q->value(7).toTime());
-    data->setDaypartEndTime(q->value(8).toTime());
-    data->setSegueStartPos(q->value(9).toInt());
-    data->setSegueEndPos(q->value(10).toInt());
-    data->setIntroStartPos(q->value(11).toInt());
-    data->setIntroEndPos(q->value(12).toInt());
-    data->setStartPos(q->value(13).toInt());
-    data->setEndPos(q->value(14).toInt());
-    data->setHookStartPos(q->value(15).toInt());
-    data->setHookEndPos(q->value(16).toInt());
-    data->setFadeUpPos(q->value(17).toInt());
-    data->setFadeDownPos(q->value(18).toInt());
+    data->setCutName(q->value(0).toString());
+    data->setCutNumber(RDCut::cutNumber(q->value(0).toString()));
+    data->setDescription(q->value(1).toString());
+    data->setOutCue(q->value(2).toString());
+    data->setIsrc(q->value(3).toString());
+    data->setIsci(q->value(4).toString());
+    data->setOriginationDate(q->value(5).toDate());
+    data->setOriginationTime(q->value(5).toTime());
+    data->setStartDate(q->value(6).toDate());
+    data->setStartTime(q->value(6).toTime());
+    data->setEndDate(q->value(7).toDate());
+    data->setEndTime(q->value(7).toTime());
+    data->setDaypartStartTime(q->value(8).toTime());
+    data->setDaypartEndTime(q->value(9).toTime());
+    data->setSegueStartPos(q->value(10).toInt());
+    data->setSegueEndPos(q->value(11).toInt());
+    data->setIntroStartPos(q->value(12).toInt());
+    data->setIntroEndPos(q->value(13).toInt());
+    data->setStartPos(q->value(14).toInt());
+    data->setEndPos(q->value(15).toInt());
+    data->setHookStartPos(q->value(16).toInt());
+    data->setHookEndPos(q->value(17).toInt());
+    data->setFadeUpPos(q->value(18).toInt());
+    data->setFadeDownPos(q->value(19).toInt());
     data->setMetadataFound(true);
   }
   delete q;
@@ -941,13 +993,12 @@ void RDCut::setMetadata(RDWaveData *data) const
 {
   QString sql="update CUTS set ";
   if(!data->description().isEmpty()) {
-    sql+=QString().sprintf("DESCRIPTION=\"%s\",",
-	      (const char *)RDTextValidator::stripString(data->description()).
-			   utf8());
+    sql+=QString("DESCRIPTION=\"")+
+      RDTextValidator::stripString(data->description())+"\",";
   }
   if(!data->outCue().isEmpty()) {
-    sql+=QString().sprintf("OUTCUE=\"%s\",",
-    (const char *)RDTextValidator::stripString(data->outCue()).utf8());
+    sql+=QString("OUTCUE=\"")+
+      RDTextValidator::stripString(data->outCue())+"\",";
   }
   else {
     switch(data->endType()) {
@@ -1032,8 +1083,9 @@ void RDCut::setMetadata(RDWaveData *data) const
   }
   if(data->daypartStartTime().isValid()&&data->daypartEndTime().isValid()&&
      (data->daypartStartTime()<data->daypartEndTime())) {
-    sql+="START_DAYPART=\""+data->daypartStartTime().toString("hh:mm:ss")+"\","+
-      "END_DAYPART=\""+data->daypartEndTime().toString("hh:mm:ss")+"\",";
+    sql+="START_DAYPART="+
+      RDCheckDateTime(data->daypartStartTime(),"hh:mm:ss")+","+
+      "END_DAYPART="+RDCheckDateTime(data->daypartEndTime(),"hh:mm:ss")+",";
   }
   if((data->hookStartPos()>=data->startPos())&&
      (data->hookStartPos()<=data->endPos())&&
@@ -1051,32 +1103,28 @@ void RDCut::setMetadata(RDWaveData *data) const
      (data->fadeDownPos()<=data->endPos())) {
     sql+=QString().sprintf("FADEDOWN_POINT=%d,",data->fadeDownPos());
   }
-  if((data->startDate()>QDate(1900,1,1))&&(data->endDate().year()<8000)) {
-    if(data->startTime().isValid()) {
-    sql+=QString().sprintf("START_DATETIME=\"%s %s\",",
-			   (const char *)data->startDate().
-			   toString("yyyy-MM-dd"),
-			   (const char *)data->startTime().
-			   toString("hh:mm:ss"));
-    }
-    else {
-      sql+=QString().sprintf("START_DATETIME=\"%s 00:00:00\",",
-			     (const char *)data->startDate().
-			     toString("yyyy-MM-dd"));
-    }
+  if(data->startDate().isValid() && 
+     (data->startDate()>QDate(1900,1,1))&&(data->endDate().year()<8000)) {
+    QDateTime startDateTime(data->startDate());
+      
+    if(data->startTime().isValid())
+      startDateTime.setTime(data->startTime());
+    else
+      startDateTime.setTime(QTime(0,0,0));
+      
+    sql+=QString().sprintf("START_DATETIME=%s,",
+        (const char *)RDCheckDateTime(startDateTime,"yyyy-MM-dd hh:mm:ss"));
+      
     if(data->endDate().isValid()&&(data->endDate().year()<8000)) {
-      if(data->endTime().isValid()) {
-	sql+=QString().sprintf("END_DATETIME=\"%s %s\",",
-			       (const char *)data->endDate().
-			       toString("yyyy-MM-dd"),
-			       (const char *)data->endTime().
-			       toString("hh:mm:ss"));
-      }
-      else {
-	sql+=QString().sprintf("END_DATETIME=\"%s 23:59:59\",",
-			       (const char *)data->endDate().
-			       toString("yyyy-MM-dd"));
-      }
+      QDateTime endDateTime(data->endDate());
+      
+      if(data->endTime().isValid())
+        endDateTime.setTime(data->endTime());
+      else
+        endDateTime.setTime(QTime(23,59,59));
+      
+      sql+=QString().sprintf("END_DATETIME=%s,",
+            (const char *)RDCheckDateTime(endDateTime,"yyyy-MM-dd hh:mm:ss"));
     }
   }
   if(sql.right(1)==",") {
@@ -1086,10 +1134,28 @@ void RDCut::setMetadata(RDWaveData *data) const
     sprintf(" where CUT_NAME=\"%s\"",(const char *)cut_name.utf8());
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
+
+  //
+  // Sanity Check: NEVER permit the 'description' field to be empty.
+  //
+  sql=QString("select DESCRIPTION from CUTS where ")+
+    "CUT_NAME=\""+RDEscapeString(cut_name)+"\"";
+  q=new RDSqlQuery(sql);
+  if(q->first()) {
+    if(q->value(0).toString().isEmpty()) {
+      sql=QString("update CUTS set ")+
+	QString().sprintf("DESCRIPTION=\"Cut %03d\"",
+			  RDCut::cutNumber(cut_name))+
+	" where CUT_NAME=\""+RDEscapeString(cut_name)+"\"";
+      delete q;
+      q=new RDSqlQuery(sql);
+    }
+  }
+  delete q;
 }
 
 
-QString RDCut::xml() const
+QString RDCut::xml(bool absolute,RDSettings *settings) const
 {
 #ifdef WIN32
   return QString();
@@ -1098,18 +1164,48 @@ QString RDCut::xml() const
   RDSqlQuery *q;
   QString ret="";
 
-  sql=QString().sprintf("select EVERGREEN,DESCRIPTION,OUTCUE,ISRC,ISCI,\
-                         LENGTH,ORIGIN_DATETIME,START_DATETIME,END_DATETIME,\
-                         SUN,MON,TUE,WED,THU,FRI,SAT,START_DAYPART,END_DAYPART,\
-                         ORIGIN_NAME,WEIGHT,LAST_PLAY_DATETIME,\
-                         PLAY_COUNTER,LOCAL_COUNTER,VALIDITY,CODING_FORMAT,\
-                         SAMPLE_RATE,BIT_RATE,CHANNELS,PLAY_GAIN,START_POINT,\
-                         END_POINT,FADEUP_POINT,FADEDOWN_POINT,\
-                         SEGUE_START_POINT,SEGUE_END_POINT,SEGUE_GAIN\
-                         HOOK_START_POINT,HOOK_END_POINT,\
-                         TALK_START_POINT,TALK_END_POINT \
-                         from CUTS where CUT_NAME=\"%s\"",
-			(const char *)cut_name);
+  sql=QString("select ")+
+    "EVERGREEN,"+              // 00
+    "DESCRIPTION,"+            // 01
+    "OUTCUE,"+                 // 02
+    "ISRC,"+                   // 03
+    "ISCI,"+                   // 04
+    "LENGTH,"+                 // 05
+    "ORIGIN_DATETIME,"+        // 06
+    "START_DATETIME,"+         // 07
+    "END_DATETIME,"+           // 08
+    "SUN,"+                    // 09
+    "MON,"+                    // 10
+    "TUE,"+                    // 11
+    "WED,"+                    // 12
+    "THU,"+                    // 13
+    "FRI,"+                    // 14
+    "SAT,"+                    // 15
+    "START_DAYPART,"+          // 16
+    "END_DAYPART,"+            // 17
+    "ORIGIN_NAME,"+            // 18
+    "WEIGHT,"+                 // 19
+    "LAST_PLAY_DATETIME,"+     // 20
+    "PLAY_COUNTER,"+           // 21
+    "LOCAL_COUNTER,"+          // 22
+    "VALIDITY,"+               // 23
+    "CODING_FORMAT,"+          // 24
+    "SAMPLE_RATE,"+            // 25
+    "BIT_RATE,"+               // 26
+    "CHANNELS,"+               // 27
+    "PLAY_GAIN,"+              // 28
+    "START_POINT,"+            // 29
+    "END_POINT,"+              // 30
+    "FADEUP_POINT,"+           // 31
+    "FADEDOWN_POINT,"+         // 32
+    "SEGUE_START_POINT,"+      // 33
+    "SEGUE_END_POINT,"+        // 34
+    "SEGUE_GAIN,"+             // 35
+    "HOOK_START_POINT,"+       // 36
+    "HOOK_END_POINT,"+         // 37
+    "TALK_START_POINT,"+       // 38
+    "TALK_END_POINT "+         // 39
+    "from CUTS where CUT_NAME=\""+cut_name+"\"";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     ret+="<cut>\n";
@@ -1163,24 +1259,83 @@ QString RDCut::xml() const
     ret+="  "+RDXmlField("weight",q->value(19).toUInt());
     ret+="  "+RDXmlField("lastPlayDatetime",q->value(20).toDateTime());
     ret+="  "+RDXmlField("playCounter",q->value(21).toUInt());
-    ret+="  "+RDXmlField("localCounter",q->value(22).toUInt());
-    ret+="  "+RDXmlField("validity",q->value(23).toUInt());
-    ret+="  "+RDXmlField("codingFormat",q->value(24).toUInt());
-    ret+="  "+RDXmlField("sampleRate",q->value(25).toUInt());
-    ret+="  "+RDXmlField("bitRate",q->value(26).toUInt());
-    ret+="  "+RDXmlField("channels",q->value(27).toUInt());
+    if(settings==NULL) {
+      ret+="  "+RDXmlField("codingFormat",q->value(24).toUInt());
+      ret+="  "+RDXmlField("sampleRate",q->value(25).toUInt());
+      ret+="  "+RDXmlField("bitRate",q->value(26).toUInt());
+      ret+="  "+RDXmlField("channels",q->value(27).toUInt());
+    }
+    else {
+      ret+="  "+RDXmlField("codingFormat",(int)settings->format());
+      ret+="  "+RDXmlField("sampleRate",settings->sampleRate());
+      ret+="  "+RDXmlField("bitRate",settings->bitRate());
+      ret+="  "+RDXmlField("channels",settings->channels());
+    }
     ret+="  "+RDXmlField("playGain",q->value(28).toUInt());
-    ret+="  "+RDXmlField("startPoint",q->value(29).toInt());
-    ret+="  "+RDXmlField("endPoint",q->value(30).toInt());
-    ret+="  "+RDXmlField("fadeupPoint",q->value(31).toInt());
-    ret+="  "+RDXmlField("fadedownPoint",q->value(32).toInt());
-    ret+="  "+RDXmlField("segueStartPoint",q->value(33).toInt());
-    ret+="  "+RDXmlField("segueEndPoint",q->value(34).toInt());
-    ret+="  "+RDXmlField("segueGain",q->value(35).toInt());
-    ret+="  "+RDXmlField("hookStartPoint",q->value(36).toInt());
-    ret+="  "+RDXmlField("hookEndPoint",q->value(37).toInt());
-    ret+="  "+RDXmlField("talkStartPoint",q->value(38).toInt());
-    ret+="  "+RDXmlField("talkEndPoint",q->value(39).toInt());
+    if(absolute) {
+      ret+="  "+RDXmlField("startPoint",q->value(29).toInt());
+      ret+="  "+RDXmlField("endPoint",q->value(30).toInt());
+      ret+="  "+RDXmlField("fadeupPoint",q->value(31).toInt());
+      ret+="  "+RDXmlField("fadedownPoint",q->value(32).toInt());
+      ret+="  "+RDXmlField("segueStartPoint",q->value(33).toInt());
+      ret+="  "+RDXmlField("segueEndPoint",q->value(34).toInt());
+      ret+="  "+RDXmlField("segueGain",q->value(35).toInt());
+      ret+="  "+RDXmlField("hookStartPoint",q->value(36).toInt());
+      ret+="  "+RDXmlField("hookEndPoint",q->value(37).toInt());
+      ret+="  "+RDXmlField("talkStartPoint",q->value(38).toInt());
+      ret+="  "+RDXmlField("talkEndPoint",q->value(39).toInt());
+    }
+    else {
+      ret+="  "+RDXmlField("startPoint",0);
+      ret+="  "+
+	RDXmlField("endPoint",q->value(30).toInt()-q->value(29).toInt());
+      if(q->value(31).toInt()<0) {
+	ret+="  "+RDXmlField("fadeupPoint",-1);
+      }
+      else {
+	ret+="  "+
+	  RDXmlField("fadeupPoint",q->value(31).toInt()-q->value(29).toInt());
+      }
+      if(q->value(32).toInt()<0) {
+	ret+="  "+RDXmlField("fadedownPoint",-1);
+      }
+      else {
+	ret+="  "+
+	  RDXmlField("fadedownPoint",q->value(32).toInt()-q->value(29).toInt());
+      }
+      if(q->value(33).toInt()<0) {
+	ret+="  "+RDXmlField("segueStartPoint",-1);
+	ret+="  "+RDXmlField("segueEndPoint",-1);
+      }
+      else {
+	ret+="  "+RDXmlField("segueStartPoint",
+			     q->value(33).toInt()-q->value(29).toInt());
+	ret+="  "+RDXmlField("segueEndPoint",
+			     q->value(34).toInt()-q->value(29).toInt());
+      }
+      ret+="  "+RDXmlField("segueGain",q->value(35).toInt());
+      if(q->value(36).toInt()<0) {
+	ret+="  "+RDXmlField("hookStartPoint",-1);
+	ret+="  "+RDXmlField("hookEndPoint",-1);
+      }
+      else {
+	ret+="  "+RDXmlField("hookStartPoint",
+			     q->value(36).toInt()-q->value(29).toInt());
+	ret+="  "+RDXmlField("hookEndPoint",
+			     q->value(37).toInt()-q->value(29).toInt());
+      }
+      if(q->value(38).toInt()<0) {
+	ret+="  "+RDXmlField("talkStartPoint",-1);
+	ret+="  "+RDXmlField("talkEndPoint",-1);
+      }
+      else {
+	ret+="  "+RDXmlField("talkStartPoint",
+			     q->value(38).toInt()-q->value(29).toInt());
+	ret+="  "+RDXmlField("talkEndPoint",
+			     q->value(39).toInt()-q->value(29).toInt());
+      }
+    }
+
     ret+="</cut>\n";
   }
   delete q;
@@ -1208,29 +1363,30 @@ bool RDCut::checkInRecording(const QString &stationname,RDSettings *settings,
     format=0;
     break;
   }
-  sql=QString().sprintf("update CUTS set START_POINT=0,END_POINT=%d,\
-                         FADEUP_POINT=-1,FADEDOWN_POINT=-1,\
-                         SEGUE_START_POINT=-1,SEGUE_END_POINT=-1,\
-                         TALK_START_POINT=-1,TALK_END_POINT=-1,\
-                         HOOK_START_POINT=-1,HOOK_END_POINT=-1,\
-                         PLAY_GAIN=0,PLAY_COUNTER=0,LOCAL_COUNTER=0,\
-                         CODING_FORMAT=%d,SAMPLE_RATE=%d,\
-                         BIT_RATE=%d,CHANNELS=%d,LENGTH=%d,\
-                         ORIGIN_DATETIME=\"%s %s\",ORIGIN_NAME=\"%s\",\
-                         UPLOAD_DATETIME=null \
-                         where CUT_NAME=\"%s\"",
-			msecs,
-			format,
-			settings->sampleRate(),
-			settings->bitRate(),
-			settings->channels(),
-			msecs,
-			(const char *)QDate::currentDate().
-			toString("yyyy-MM-dd"),
-			(const char *)QTime::currentTime().
-			toString("hh:mm:ss"),
-			(const char *)stationname,
-			(const char *)cut_name);
+  sql=QString("update CUTS set ")+
+    "START_POINT=0,"+
+    QString().sprintf("END_POINT=%d,",msecs)+
+    "FADEUP_POINT=-1,"+
+    "FADEDOWN_POINT=-1,"+
+    "SEGUE_START_POINT=-1,"+
+    "SEGUE_END_POINT=-1,"+
+    "TALK_START_POINT=-1,"+
+    "TALK_END_POINT=-1,"+
+    "HOOK_START_POINT=-1,"+
+    "HOOK_END_POINT=-1,"+
+    "PLAY_GAIN=0,"+
+    "PLAY_COUNTER=0,"+
+    "LOCAL_COUNTER=0,"+
+    QString().sprintf("CODING_FORMAT=%d,",format)+
+    QString().sprintf("SAMPLE_RATE=%d,",settings->sampleRate())+
+    QString().sprintf("BIT_RATE=%d,",settings->bitRate())+
+    QString().sprintf("CHANNELS=%d,",settings->channels())+
+    QString().sprintf("LENGTH=%d,",msecs)+
+    "ORIGIN_DATETIME=\""+
+    QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss")+"\","+
+    "ORIGIN_NAME=\""+RDEscapeString(stationname)+"\","+
+    "UPLOAD_DATETIME=null "+
+    "where CUT_NAME=\""+cut_name+"\"";
   q=new RDSqlQuery(sql);
   delete q;
   return true;
@@ -1367,46 +1523,56 @@ void RDCut::reset() const
 	  format=0;
 	  break;
     }
-    sql=QString().sprintf("update CUTS set LENGTH=%u,\
-                           ORIGIN_DATETIME=NOW(),\
-                           ORIGIN_NAME=\"\",\
-                           LAST_PLAY_DATETIME=NULL,PLAY_COUNTER=0,\
-                           CODING_FORMAT=%d,SAMPLE_RATE=%u,BIT_RATE=%u,\
-                           CHANNELS=%u,PLAY_GAIN=0,\
-                           START_POINT=0,END_POINT=%u,FADEUP_POINT=-1,\
-                           FADEDOWN_POINT=-1,\
-                           SEGUE_START_POINT=-1,SEGUE_END_POINT=-1,\
-		           SEGUE_GAIN=%d,\
-                           HOOK_START_POINT=-1,HOOK_END_POINT=-1,\
-                           TALK_START_POINT=-1,TALK_END_POINT=-1 \
-                           where CUT_NAME=\"%s\"",
-			  wave->getExtTimeLength(),
-			  format,
-			  wave->getSamplesPerSec(),
-			  wave->getHeadBitRate(),
-			  wave->getChannels(),
-			  wave->getExtTimeLength(),
-			  RD_FADE_DEPTH,
-			  (const char *)cut_name);
+    sql=QString("update CUTS set ")+
+      QString().sprintf("LENGTH=%u,",wave->getExtTimeLength())+
+      "ORIGIN_DATETIME=NOW(),"+
+      "ORIGIN_NAME=\"\","+
+      "LAST_PLAY_DATETIME=null,"+
+      "PLAY_COUNTER=0,"+
+      QString().sprintf("CODING_FORMAT=%d,",format)+
+      QString().sprintf("SAMPLE_RATE=%u,",wave->getSamplesPerSec())+
+      QString().sprintf("BIT_RATE=%u,",wave->getHeadBitRate())+
+      QString().sprintf("CHANNELS=%u,",wave->getChannels())+
+      "PLAY_GAIN=0,"+
+      "START_POINT=0,"+
+      QString().sprintf("END_POINT=%u,",wave->getExtTimeLength())+
+      "FADEUP_POINT=-1,"+
+      "FADEDOWN_POINT=-1,"+
+      "SEGUE_START_POINT=-1,"+
+      "SEGUE_END_POINT=-1,"+
+      QString().sprintf("SEGUE_GAIN=%d,",RD_FADE_DEPTH)+
+      "HOOK_START_POINT=-1,"+
+      "HOOK_END_POINT=-1,"+
+      "TALK_START_POINT=-1,"+
+      "TALK_END_POINT=-1 "+
+      "where CUT_NAME=\""+cut_name+"\"";
   }
   else {
-    sql=QString().sprintf("update CUTS set LENGTH=0,\
-                           ORIGIN_DATETIME=NULL,\
-                           ORIGIN_NAME=\"\",\
-                           LAST_PLAY_DATETIME=NULL,PLAY_COUNTER=0,\
-                           CODING_FORMAT=0,SAMPLE_RATE=0,BIT_RATE=0,\
-                           CHANNELS=0,PLAY_GAIN=0,\
-                           START_POINT=-1,END_POINT=-1,FADEUP_POINT=-1,\
-                           FADEDOWN_POINT=-1,\
-                           SEGUE_START_POINT=-1,SEGUE_END_POINT=-1,\
-		           SEGUE_GAIN= %d,\
-                           HOOK_START_POINT=-1,HOOK_END_POINT=-1,\
-                           TALK_START_POINT=-1,TALK_END_POINT=-1 \
-                           where CUT_NAME=\"%s\"",
-			   RD_FADE_DEPTH,
-			  (const char *)cut_name);
+    sql=QString("update CUTS set ")+
+      "LENGTH=0,"+
+      "ORIGIN_DATETIME=null,"+
+      "ORIGIN_NAME=\"\","+
+      "LAST_PLAY_DATETIME=null,"+
+      "PLAY_COUNTER=0,"+
+      "CODING_FORMAT=0,"+
+      "SAMPLE_RATE=0,"+
+      "BIT_RATE=0,"+
+      "CHANNELS=0,"+
+      "PLAY_GAIN=0,"+
+      "START_POINT=-1,"+
+      "END_POINT=-1,"+
+      "FADEUP_POINT=-1,"+
+      "FADEDOWN_POINT=-1,"+
+      "SEGUE_START_POINT=-1,"+
+      "SEGUE_END_POINT=-1,"+
+      QString().sprintf("SEGUE_GAIN=%d,",RD_FADE_DEPTH)+
+      "HOOK_START_POINT=-1,"+
+      "HOOK_END_POINT=-1,"+
+      "TALK_START_POINT=-1,"+
+      "TALK_END_POINT=-1 "+
+      "where CUT_NAME=\""+cut_name+"\"";
   }
-  q=new RDSqlQuery(sql,cut_db);
+  q=new RDSqlQuery(sql);
   delete q;
   wave->closeWave();
   delete wave;
@@ -1473,7 +1639,7 @@ QString RDCut::pathName(unsigned cartnum,unsigned cutnum)
 
 QString RDCut::pathName(const QString &cutname)
 {
-  return RDConfiguration()->audioFileName(cutname); 
+  return rda->config()->audioFileName(cutname); 
 }
 
 
@@ -1533,11 +1699,10 @@ void RDCut::SetRow(const QString &param,const QString &value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE CUTS SET %s=\"%s\" WHERE CUT_NAME=\"%s\"",
-			(const char *)param,
-			(const char *)RDEscapeString(value.utf8()),
-			(const char *)cut_name);
-  q=new RDSqlQuery(sql,cut_db);
+  sql=QString("update CUTS set ")+
+    param+"=\""+RDEscapeString(value)+"\" where "+
+    "CUT_NAME=\""+cut_name+"\"";
+  q=new RDSqlQuery(sql);
   delete q;
 }
 
@@ -1547,11 +1712,10 @@ void RDCut::SetRow(const QString &param,unsigned value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE CUTS SET %s=%u WHERE CUT_NAME=\"%s\"",
-			(const char *)param,
-			value,
-			(const char *)cut_name);
-  q=new RDSqlQuery(sql,cut_db);
+  sql=QString("update CUTS set ")+
+    param+QString().sprintf("=%u where ",value)+
+    "CUT_NAME=\""+cut_name+"\"";
+  q=new RDSqlQuery(sql);
   delete q;
 }
 
@@ -1561,11 +1725,10 @@ void RDCut::SetRow(const QString &param,int value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE CUTS SET %s=%d WHERE CUT_NAME=\"%s\"",
-			(const char *)param,
-			value,
-			(const char *)cut_name);
-  q=new RDSqlQuery(sql,cut_db);
+  sql=QString("update CUTS set ")+
+    param+QString().sprintf("=%d where ",value)+
+    "CUT_NAME=\""+cut_name+"\"";
+  q=new RDSqlQuery(sql);
   delete q;
 }
 
@@ -1575,11 +1738,10 @@ void RDCut::SetRow(const QString &param,const QDateTime &value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE CUTS SET %s=\"%s\" WHERE CUT_NAME=\"%s\"",
-			(const char *)param,
-			(const char *)value.toString("yyyy-MM-dd hh:mm:ss"),
-			(const char *)cut_name);
-  q=new RDSqlQuery(sql,cut_db);
+  sql=QString("update CUTS set ")+
+    param+"="+RDCheckDateTime(value,"yyyy-MM-dd hh:mm:ss")+" where "+
+    "CUT_NAME=\""+cut_name+"\"";
+  q=new RDSqlQuery(sql);
   delete q;
 }
 
@@ -1589,11 +1751,10 @@ void RDCut::SetRow(const QString &param,const QDate &value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE CUTS SET %s=\"%s\" WHERE CUT_NAME=\"%s\"",
-			(const char *)param,
-			(const char *)value.toString("yyyy-MM-dd"),
-			(const char *)cut_name);
-  q=new RDSqlQuery(sql,cut_db);
+  sql=QString("update CUTS set ")+
+    param+"="+RDCheckDateTime(value,"yyyy-MM-dd")+" where "+
+    "CUT_NAME=\""+cut_name+"\"";
+  q=new RDSqlQuery(sql);
   delete q;
 }
 
@@ -1602,11 +1763,10 @@ void RDCut::SetRow(const QString &param,const QTime &value) const
 {
   RDSqlQuery *q;
   QString sql;
-  sql=QString().sprintf("UPDATE CUTS SET %s=\"%s\" WHERE CUT_NAME=\"%s\"",
-			(const char *)param,
-			(const char *)value.toString("hh:mm:ss"),
-			(const char *)cut_name);
-  q=new RDSqlQuery(sql,cut_db);
+  sql=QString("update CUTS set ")+
+    param+"="+RDCheckDateTime(value,"hh:mm:ss")+" where "+
+    "CUT_NAME=\""+cut_name+"\"";
+  q=new RDSqlQuery(sql);
   delete q;
 }
 
@@ -1615,9 +1775,9 @@ void RDCut::SetRow(const QString &param) const
 {
   RDSqlQuery *q;
   QString sql;
-  sql=QString().sprintf("UPDATE CUTS SET %s=NULL WHERE CUT_NAME=\"%s\"",
-			(const char *)param,
-			(const char *)cut_name);
-  q=new RDSqlQuery(sql,cut_db);
+  sql=QString("update CUTS set ")+
+    param+"=NULL where "+
+    "CUT_NAME=\""+cut_name+"\"";
+  q=new RDSqlQuery(sql);
   delete q;
 }

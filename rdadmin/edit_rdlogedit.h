@@ -2,9 +2,7 @@
 //
 // Edit an RDLogEdit Configuration
 //
-//   (C) Copyright 2002-2005 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_rdlogedit.h,v 1.9.6.1 2014/01/08 18:14:35 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,24 +21,21 @@
 #ifndef EDIT_RDLOGEDIT_H
 #define EDIT_RDLOGEDIT_H
 
-#include <qdialog.h>
-#include <qsqldatabase.h>
-#include <qlineedit.h>
-#include <qcombobox.h>
-#include <qspinbox.h>
-#include <qdatetimeedit.h>
+#include <QDateTimeEdit>
+#include <QDialog>
+#include <QLineEdit>
+#include <QComboBox>
+#include <QSpinBox>
 
-#include <rdstation.h>
-#include <rdlogedit_conf.h>
 #include <rdcardselector.h>
-
+#include <rdlogedit_conf.h>
+#include <rdstation.h>
 
 class EditRDLogedit : public QDialog
 {
   Q_OBJECT
  public:
-  EditRDLogedit(RDStation *station,RDStation *cae_station,
-		QWidget *parent=0,const char *name=0);
+  EditRDLogedit(RDStation *station,RDStation *cae_station,QWidget *parent=0);
   ~EditRDLogedit();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -55,7 +50,7 @@ class EditRDLogedit : public QDialog
   void cancelData();
 
  private:
-  void ShowBitRates(int layer,int rate);
+  void ShowBitRates(int index,int rate);
   RDLogeditConf *lib_lib;
   RDCardSelector *lib_input_card;
   RDCardSelector *lib_output_card;
@@ -66,7 +61,7 @@ class EditRDLogedit : public QDialog
   QSpinBox *lib_preroll_spin;
   QSpinBox *lib_threshold_spin;
   QSpinBox *lib_normalization_spin;
-  QTimeEdit *lib_maxlength_time;
+  QDateTimeEdit *lib_maxlength_time;
   QLineEdit *lib_startcart_edit;
   QLineEdit *lib_endcart_edit;
   QLineEdit *lib_recstartcart_edit;

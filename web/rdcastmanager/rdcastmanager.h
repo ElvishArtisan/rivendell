@@ -2,9 +2,7 @@
 //
 // Web-Based RSS Podcast Manager for Rivendell.
 //
-//   (C) Copyright 2002-2007 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcastmanager.h,v 1.5 2010/07/29 19:32:40 cvs Exp $
+//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,12 +18,10 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-
 #ifndef RDCASTMANAGER_H
 #define RDCASTMANAGER_H
 
 #include <qobject.h>
-#include <qsqldatabase.h>
 #include <qhostaddress.h>
 
 #include <rdformpost.h>
@@ -53,7 +49,7 @@
 class MainObject : public QObject
 {
  public:
-  MainObject(QObject *parent=0,const char *name=0);
+  MainObject(QObject *parent=0);
 
  private:
   int AuthenticatePost();
@@ -87,7 +83,6 @@ class MainObject : public QObject
   bool cast_delete_priv;
   QDate cast_start_date;
   QDate cast_end_date;
-  RDConfig *cast_config;
 };
 
 

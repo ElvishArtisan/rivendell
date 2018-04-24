@@ -2,9 +2,7 @@
 //
 // The Library Utility for Rivendell.
 //
-//   (C) Copyright 2002-2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdlibrary.cpp,v 1.117.4.18.2.2 2014/05/22 14:30:45 cvs Exp $
+//   (C) Copyright 2002-2010,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,27 +23,29 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-#include <qapplication.h>
-#include <qwindowsstyle.h>
-#include <qeventloop.h>
-#include <qwidget.h>
-#include <qpainter.h>
-#include <qsqlpropertymap.h>
-#include <qmessagebox.h>
-#include <qlabel.h>
-#include <qtextcodec.h>
-#include <qtranslator.h>
-#include <qlabel.h>
-#include <qlistview.h>
-#include <qprogressdialog.h>
-#include <qtooltip.h>
+#include <Q3ListView>
+#include <Q3ProgressDialog>
+#include <Q3SqlPropertyMap>
+#include <QApplication>
+#include <QCloseEvent>
+#include <QEventLoop>
+#include <QLabel>
+#include <QMessageBox>
+#include <QPainter>
+#include <QPixmap>
+#include <QResizeEvent>
+#include <QTextCodec>
+#include <QToolTip>
+#include <QTranslator>
+#include <QWindowsStyle>
+#include <QWidget>
+
 #include <curl/curl.h>
 
 #include <rd.h>
-#include <rddb.h>
+#include <rdapplication.h>
 #include <rdconf.h>
 #include <rduser.h>
-#include <rdripc.h>
 #include <rdmixer.h>
 #include <rdadd_cart.h>
 #include <rdprofile.h>
@@ -65,22 +65,15 @@
 #include <list_reports.h>
 #include <globals.h>
 #include <validate_cut.h>
-#include <cart_tip.h>
+//#include <cart_tip.h>
 
 //
 // Global Resources
 //
-RDLibraryConf *rdlibrary_conf;
-RDStation *rdstation_conf;
 RDAudioPort *rdaudioport_conf;
-RDRipc *rdripc;
-RDCae *rdcae;
 DiskGauge *disk_gauge;
 RDCut *cut_clipboard=NULL;
-RDConfig *lib_config;
-RDUser *lib_user;
 bool audio_changed;
-RDSystem *lib_system=NULL;
 
 //
 // Prototypes
@@ -96,11 +89,11 @@ void SigHandler(int signo);
 #include "../icons/rivendell-22x22.xpm"
 
 
-MainWidget::MainWidget(QWidget *parent,const char *name)
-  :QWidget(parent,name)
+MainWidget::MainWidget(QWidget *parent)
+  :QWidget(parent)
 {
-  unsigned schema=0;
-  bool skip_db_check=false;
+  new RDApplication(RDApplication::Gui,"rdlibrary",RDLIBRARY_USAGE);
+
   profile_ripping=false;
   lib_edit_pending=false;
   lib_user_changed=false;
@@ -108,25 +101,18 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Read Command Options
   //
-  RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdlibrary",RDLIBRARY_USAGE);
-  for(unsigned i=0;i<cmd->keys();i++) {
-    if(cmd->key(i)=="--skip-db-check") {
-      skip_db_check=true;
-      cmd->setProcessed(i,true);
-    }
-    if(cmd->key(i)=="--profile-ripping") {
+  for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
+    if(rda->cmdSwitch()->key(i)=="--profile-ripping") {
       profile_ripping=true;
-      cmd->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(!cmd->processed(i)) {
+    if(!rda->cmdSwitch()->processed(i)) {
       QMessageBox::warning(this,"RDLibrary - "+tr("Error"),
 			   tr("Unknown command-line option")+
-			   " \""+cmd->key(i)+"\".");
+			   " \""+rda->cmdSwitch()->key(i)+"\".");
       exit(256);
     }
   }
-  delete cmd;
 
   //
   // Fix the Window Size
@@ -163,12 +149,12 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   // Progress Dialog
   //
   lib_progress_dialog=
-    new QProgressDialog(tr("Please Wait..."),"Cancel",10,this,
+    new Q3ProgressDialog(tr("Please Wait..."),"Cancel",10,this,
 			"lib_progress_dialog",false,
 			Qt::WStyle_Customize|Qt::WStyle_NormalBorder);
   lib_progress_dialog->setCaption(" ");
   QLabel *label=new QLabel(tr("Please Wait..."),lib_progress_dialog);
-  label->setAlignment(AlignCenter);
+  label->setAlignment(Qt::AlignCenter);
   label->setFont(filter_font);
   lib_progress_dialog->setLabel(label);
   lib_progress_dialog->setCancelButton(NULL);
@@ -179,74 +165,40 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   RDInitializeDaemons();
 
-  //
-  // Load Local Configs
-  //
-  lib_config=new RDConfig();
-  lib_config->load();
-
   SetCaption("");
   lib_import_path=RDGetHomeDir();
 
   //
-  // Open Database
-  //
-  QString err(tr("rdlibrary : "));
-  QSqlDatabase *db=RDInitDb(&schema,&err);
-  if(!db) {
-    QMessageBox::warning(this,
-			 tr("Can't Connect"),err);
-    exit(0);
-  }
-  if((RD_VERSION_DATABASE!=schema)&&(!skip_db_check)) {
-    fprintf(stderr,
-	    "rdlibrary: database version mismatch, should be %u, is %u\n",
-	    RD_VERSION_DATABASE,schema);
-    exit(256);
-  }
-
-  //
   // Allocate Global Resources
   //
-  rdlibrary_conf=new RDLibraryConf(lib_config->stationName(),0);
-  rdstation_conf=new RDStation(lib_config->stationName());
-  lib_filter_mode=rdstation_conf->filterMode();
-  rdaudioport_conf=new RDAudioPort(lib_config->stationName(),
-				   rdlibrary_conf->inputCard());
-  rdripc=new RDRipc(lib_config->stationName());
-  connect(rdripc,SIGNAL(connected(bool)),this,SLOT(connectedData(bool)));
-  connect(rdripc,SIGNAL(userChanged()),this,SLOT(userData()));
-  rdripc->connectHost("localhost",RIPCD_TCP_PORT,lib_config->password());
+  lib_filter_mode=rda->station()->filterMode();
+  rdaudioport_conf=new RDAudioPort(rda->config()->stationName(),
+				   rda->libraryConf()->inputCard());
+  connect(rda->ripc(),SIGNAL(connected(bool)),this,SLOT(connectedData(bool)));
+  connect(rda->ripc(),SIGNAL(userChanged()),this,SLOT(userData()));
+  rda->ripc()->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
   cut_clipboard=NULL;
-  lib_system=new RDSystem();
   lib_user_timer=new QTimer(this);
   connect(lib_user_timer,SIGNAL(timeout()),this,SLOT(userData()));
 
   //
   // CAE Connection
   //
-  rdcae=new RDCae(rdstation_conf,lib_config,parent,name);
-  rdcae->connectHost();
+  rda->cae()->connectHost();
 
   //
   // Load Audio Assignments
   //
-  RDSetMixerPorts(lib_config->stationName(),rdcae);
-
-  //
-  // User
-  //
-  lib_user=NULL;
+  RDSetMixerPorts(rda->config()->stationName(),rda->cae());
 
   //
   // Filter
   //
-  lib_filter_edit=new QLineEdit(this,"filter_edit");
+  lib_filter_edit=new QLineEdit(this);
   lib_filter_edit->setFont(default_font);
-  lib_filter_label=new QLabel(lib_filter_edit,tr("Filter:"),
-			      this,"filter_label");
+  lib_filter_label=new QLabel(lib_filter_edit,tr("Filter:"),this);
   lib_filter_label->setFont(button_font);
-  lib_filter_label->setAlignment(AlignVCenter|AlignRight);
+  lib_filter_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   connect(lib_filter_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(filterChangedData(const QString &)));
   connect(lib_filter_edit,SIGNAL(returnPressed()),
@@ -255,7 +207,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Filter Search Button
   //
-  lib_search_button=new QPushButton(tr("&Search"),this,"search_button");
+  lib_search_button=new QPushButton(tr("&Search"),this);
   lib_search_button->setFont(button_font);
   connect(lib_search_button,SIGNAL(clicked()),this,SLOT(searchClickedData()));
   switch(lib_filter_mode) {
@@ -270,7 +222,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Filter Clear Button
   //
-  lib_clear_button=new QPushButton(tr("&Clear"),this,"clear_button");
+  lib_clear_button=new QPushButton(tr("&Clear"),this);
   lib_clear_button->setFont(button_font);
   lib_clear_button->setDisabled(true);
   connect(lib_clear_button,SIGNAL(clicked()),this,SLOT(clearClickedData()));
@@ -278,24 +230,22 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Group Filter
   //
-  lib_group_box=new QComboBox(this,"lib_group_box");
+  lib_group_box=new QComboBox(this);
   lib_group_box->setFont(default_font);
-  lib_group_label=new QLabel(lib_group_box,tr("Group:"),
-			     this,"lib_group_label");
+  lib_group_label=new QLabel(lib_group_box,tr("Group:"),this);
   lib_group_label->setFont(button_font);
-  lib_group_label->setAlignment(AlignVCenter|AlignRight);
+  lib_group_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   connect(lib_group_box,SIGNAL(activated(const QString &)),
 	  this,SLOT(groupActivatedData(const QString &)));
 
   //
   // Scheduler Codes Filter
   //
-  lib_codes_box=new QComboBox(this,"lib_codes_box");
+  lib_codes_box=new QComboBox(this);
   lib_codes_box->setFont(default_font);
-  lib_codes_label=new QLabel(lib_codes_box,tr("Scheduler Code:"),
-			     this,"lib_codes_label");
+  lib_codes_label=new QLabel(lib_codes_box,tr("Scheduler Code:"),this);
   lib_codes_label->setFont(button_font);
-  lib_codes_label->setAlignment(AlignVCenter|AlignRight);
+  lib_codes_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   connect(lib_codes_box,SIGNAL(activated(const QString &)),
 	  this,SLOT(groupActivatedData(const QString &)));
 
@@ -307,10 +257,10 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   lib_allowdrag_label=
     new QLabel(lib_allowdrag_box,tr("Allow Cart Dragging"),this);
   lib_allowdrag_label->setFont(button_font);
-  lib_allowdrag_label->setAlignment(AlignVCenter|AlignLeft);
+  lib_allowdrag_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   connect(lib_allowdrag_box,SIGNAL(stateChanged(int)),
 	  this,SLOT(dragsChangedData(int)));
-  if(!rdstation_conf->enableDragdrop()) {
+  if(!rda->station()->enableDragdrop()) {
     lib_allowdrag_box->hide();
     lib_allowdrag_label->hide();
   }
@@ -318,68 +268,65 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Show Audio Carts Checkbox
   //
-  lib_showaudio_box=new QCheckBox(this,"lib_showaudio_box");
+  lib_showaudio_box=new QCheckBox(this);
   lib_showaudio_box->setChecked(true);
-  lib_showaudio_label=new QLabel(lib_showaudio_box,tr("Show Audio Carts"),
-			     this,"lib_showaudio_label");
+  lib_showaudio_label=new QLabel(lib_showaudio_box,tr("Show Audio Carts"),this);
   lib_showaudio_label->setFont(button_font);
-  lib_showaudio_label->setAlignment(AlignVCenter|AlignLeft);
+  lib_showaudio_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   connect(lib_showaudio_box,SIGNAL(stateChanged(int)),
 	  this,SLOT(audioChangedData(int)));
 
   //
   // Show Macro Carts Checkbox
   //
-  lib_showmacro_box=new QCheckBox(this,"lib_showmacro_box");
+  lib_showmacro_box=new QCheckBox(this);
   lib_showmacro_box->setChecked(true);
-  lib_showmacro_label=new QLabel(lib_showmacro_box,tr("Show Macro Carts"),
-			     this,"lib_showmacro_label");
+  lib_showmacro_label=new QLabel(lib_showmacro_box,tr("Show Macro Carts"),this);
   lib_showmacro_label->setFont(button_font);
-  lib_showmacro_label->setAlignment(AlignVCenter|AlignLeft);
+  lib_showmacro_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   connect(lib_showmacro_box,SIGNAL(stateChanged(int)),
 	  this,SLOT(macroChangedData(int)));
 
   //
   // Show Cart Notes Checkbox
   //
-  lib_shownotes_box=new QCheckBox(this,"lib_shownotes_box");
+  lib_shownotes_box=new QCheckBox(this);
   lib_shownotes_box->setChecked(true);
-  lib_shownotes_label=new QLabel(lib_shownotes_box,tr("Show Note Bubbles"),
-			     this,"lib_shownotes_label");
+  lib_shownotes_label=
+    new QLabel(lib_shownotes_box,tr("Show Note Bubbles"),this);
   lib_shownotes_label->setFont(button_font);
-  lib_shownotes_label->setAlignment(AlignVCenter|AlignLeft);
+  lib_shownotes_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
 
   //
   // Show Matches Checkbox
   //
-  lib_showmatches_box=new QCheckBox(this,"lib_showmatches_box");
+  lib_showmatches_box=new QCheckBox(this);
   lib_showmatches_label=
     new QLabel(lib_showmatches_box,tr("Show Only First ")+
 	       QString().sprintf("%d",RD_LIMITED_CART_SEARCH_QUANTITY)+
-				 tr(" Matches"),
-	       this,"lib_showmatches_label");
+	       tr(" Matches"),this);
   lib_showmatches_label->setFont(button_font);
-  lib_showmatches_label->setAlignment(AlignVCenter|AlignLeft);
+  lib_showmatches_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   connect(lib_showmatches_box,SIGNAL(stateChanged(int)),
 	  this,SLOT(searchLimitChangedData(int)));
 
   //
   // Cart List
   //
-  lib_cart_list=new LibListView(this,"lib_cart_list");
+  lib_cart_list=new LibListView(this);
   lib_cart_list->setFont(default_font);
   lib_cart_list->setAllColumnsShowFocus(true);
   lib_cart_list->setItemMargin(5);
-  lib_cart_list->setSelectionMode(QListView::Extended);
-  lib_cart_tip=new CartTip(lib_cart_list->viewport());
+  lib_cart_list->setSelectionMode(Q3ListView::Extended);
+  //  lib_cart_tip=new CartTip(lib_cart_list->viewport());
   connect(lib_cart_list,
-	  SIGNAL(doubleClicked(QListViewItem *,const QPoint &,int)),
+	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,
-	  SLOT(cartDoubleclickedData(QListViewItem *,const QPoint &,int)));
-  connect(lib_cart_list,SIGNAL(pressed(QListViewItem *)),
-	  this,SLOT(cartClickedData(QListViewItem *)));
-  connect(lib_cart_list,SIGNAL(onItem(QListViewItem *)),
-	  this,SLOT(cartOnItemData(QListViewItem *)));
+	  SLOT(cartDoubleclickedData(Q3ListViewItem *,const QPoint &,int)));
+  connect(lib_cart_list,SIGNAL(pressed(Q3ListViewItem *)),
+	  this,SLOT(cartClickedData(Q3ListViewItem *)));
+  connect(lib_cart_list,SIGNAL(onItem(Q3ListViewItem *)),
+	  this,SLOT(cartOnItemData(Q3ListViewItem *)));
   lib_cart_list->addColumn("");
   lib_cart_list->setColumnAlignment(0,Qt::AlignHCenter);
   lib_cart_list->addColumn(tr("CART"));
@@ -439,7 +386,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Add Button
   //
-  lib_add_button=new QPushButton(this,"lib_add_button");
+  lib_add_button=new QPushButton(this);
   lib_add_button->setFont(button_font);
   lib_add_button->setText(tr("&Add"));
   connect(lib_add_button,SIGNAL(clicked()),this,SLOT(addData()));
@@ -447,7 +394,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Edit Button
   //
-  lib_edit_button=new QPushButton(this,"lib_edit_button");
+  lib_edit_button=new QPushButton(this);
   lib_edit_button->setFont(button_font);
   lib_edit_button->setText(tr("&Edit"));
   connect(lib_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
@@ -455,7 +402,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Delete Button
   //
-  lib_delete_button=new QPushButton(this,"lib_delete_button");
+  lib_delete_button=new QPushButton(this);
   lib_delete_button->setFont(button_font);
   lib_delete_button->setText(tr("&Delete"));
   connect(lib_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
@@ -463,14 +410,13 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Disk Gauge
   //
-  disk_gauge=new DiskGauge(lib_system->sampleRate(),
-			   rdlibrary_conf->defaultChannels(),
-			   this,"disk_gauge");
+  disk_gauge=new DiskGauge(rda->system()->sampleRate(),
+			   rda->libraryConf()->defaultChannels(),this);
 
   //
   // Rip Button
   //
-  lib_rip_button=new QPushButton(this,"lib_rip_button");
+  lib_rip_button=new QPushButton(this);
   lib_rip_button->setFont(button_font);
   lib_rip_button->setText(tr("&Rip\nCD"));
   connect(lib_rip_button,SIGNAL(clicked()),this,SLOT(ripData()));
@@ -478,7 +424,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Reports Button
   //
-  lib_reports_button=new QPushButton(this,"lib_reports_button");
+  lib_reports_button=new QPushButton(this);
   lib_reports_button->setFont(button_font);
   lib_reports_button->setText(tr("Re&ports"));
   connect(lib_reports_button,SIGNAL(clicked()),this,SLOT(reportsData()));
@@ -486,7 +432,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Close Button
   //
-  lib_close_button=new QPushButton(this,"lib_close_button");
+  lib_close_button=new QPushButton(this);
   lib_close_button->setFont(button_font);
   lib_close_button->setText(tr("&Close"));
   connect(lib_close_button,SIGNAL(clicked()),this,SLOT(quitMainWidget()));
@@ -499,7 +445,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Load Data
   //
-  switch(rdlibrary_conf->limitSearch()) {
+  switch(rda->libraryConf()->limitSearch()) {
   case RDLibraryConf::LimitNo:
     lib_showmatches_box->setChecked(false);
     break;
@@ -509,7 +455,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
     break;
 
   case RDLibraryConf::LimitPrevious:
-    lib_showmatches_box->setChecked(rdlibrary_conf->searchLimited());
+    lib_showmatches_box->setChecked(rda->libraryConf()->searchLimited());
     break;
   }
 
@@ -544,16 +490,19 @@ void MainWidget::userData()
     return;
   }
 
-  SetCaption(rdripc->user());
+  SetCaption(rda->ripc()->user());
+  /*
   if(lib_user!=NULL) {
     delete lib_user;
   }
-  lib_user=new RDUser(rdripc->user());
+  */
+  rda->setUser(rda->ripc()->user());
+  //lib_user=new RDUser(rda->ripc()->user());
 
   lib_group_box->clear();
   lib_group_box->insertItem(tr("ALL"));
   sql=QString("select GROUP_NAME from USER_PERMS where ")+
-    "USER_NAME=\""+RDEscapeString(lib_user->name())+"\" order by GROUP_NAME";
+    "USER_NAME=\""+RDEscapeString(rda->user()->name())+"\" order by GROUP_NAME";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     lib_group_box->insertItem(q->value(0).toString());
@@ -567,10 +516,10 @@ void MainWidget::userData()
     lib_rip_button->setDisabled(true);
   }
   else {
-    lib_add_button->setEnabled(lib_user->createCarts());
+    lib_add_button->setEnabled(rda->user()->createCarts());
     lib_edit_button->setEnabled(true);
-    lib_delete_button->setEnabled(lib_user->deleteCarts());
-    lib_rip_button->setEnabled(lib_user->editAudio());
+    lib_delete_button->setEnabled(rda->user()->deleteCarts());
+    lib_rip_button->setEnabled(rda->user()->editAudio());
   }
 
   lib_codes_box->clear();
@@ -636,8 +585,7 @@ void MainWidget::addData()
   LockUser();
 
   RDAddCart *add_cart=new RDAddCart(&lib_default_group,&cart_type,&cart_title,
-				    lib_user->name(),lib_system,
-				    this,"add_cart");
+				    rda->user()->name(),rda->system(),this);
   if((cart_num=add_cart->exec())<0) {
     delete add_cart;
     UnlockUser();
@@ -655,14 +603,14 @@ void MainWidget::addData()
     new EditCart(cart_num,&lib_import_path,true,profile_ripping,this);
   if(cart->exec() <0) {
     RDCart *rdcart=new RDCart(cart_num);
-    rdcart->remove(rdstation_conf,lib_user,lib_config);
+    rdcart->remove();
     delete rdcart;
   } 
   else {
     RDListViewItem *item=new RDListViewItem(lib_cart_list);
     item->setText(1,QString().sprintf("%06u",cart_num));
     RefreshLine(item);
-    QListViewItemIterator it(lib_cart_list);
+    Q3ListViewItemIterator it(lib_cart_list);
     while(it.current()) {
       lib_cart_list->setSelected(it.current(),false);
       ++it;
@@ -680,11 +628,11 @@ void MainWidget::addData()
 void MainWidget::editData()
 {
   int sel_count=0;
-  QListViewItemIterator *it;
+  Q3ListViewItemIterator *it;
 
   LockUser();
 
-  it=new QListViewItemIterator(lib_cart_list);
+  it=new Q3ListViewItemIterator(lib_cart_list);
   while(it->current()) {
     if (it->current()->isSelected()) {
       sel_count++;
@@ -698,7 +646,7 @@ void MainWidget::editData()
     return;
   }
   if(sel_count==1) { //single edit
-    it=new QListViewItemIterator(lib_cart_list);
+    it=new Q3ListViewItemIterator(lib_cart_list);
     while(!it->current()->isSelected()) {
       ++(*it);
     }
@@ -713,7 +661,7 @@ void MainWidget::editData()
     delete it;
   }
   else { //multi edit
-    if(lib_user->modifyCarts()) {
+    if(rda->user()->modifyCarts()) {
       EditCart *edit_cart=
 	new EditCart(0,&lib_import_path,false,profile_ripping,this,"",
 				       lib_cart_list);
@@ -721,7 +669,7 @@ void MainWidget::editData()
       edit_cart->exec();
       delete edit_cart;
     
-      it=new QListViewItemIterator(lib_cart_list);
+      it=new Q3ListViewItemIterator(lib_cart_list);
       while(it->current()) {
         if (it->current()->isSelected()) {
           RefreshLine((RDListViewItem *)it->current());
@@ -742,12 +690,12 @@ void MainWidget::deleteData()
   RDSqlQuery *q;
   QString str;
   int sel_count=0;
-  QListViewItemIterator *it;
+  Q3ListViewItemIterator *it;
   bool del_flag;
 
   LockUser();
 
-  it=new QListViewItemIterator(lib_cart_list);
+  it=new Q3ListViewItemIterator(lib_cart_list);
   while(it->current()) {
     if (it->current()->isSelected()) {
       sel_count++;
@@ -767,7 +715,7 @@ void MainWidget::deleteData()
     UnlockUser();
     return;
   }
-  it=new QListViewItemIterator(lib_cart_list);
+  it=new Q3ListViewItemIterator(lib_cart_list);
   while(it->current()) {
     if (it->current()->isSelected()) {
     del_flag=true;
@@ -793,7 +741,7 @@ Do you still want to delete it?"),item->text(1).toUInt());
 				  QMessageBox::Yes,
 				  QMessageBox::No)) {
 	  case QMessageBox::No:
-	  case QMessageBox::NoButton:
+	  case Qt::NoButton:
                 del_flag=false;
 
 	  default:
@@ -805,7 +753,7 @@ Do you still want to delete it?"),item->text(1).toUInt());
   }
   if(del_flag && item->text(21).isEmpty()) {
     RDCart *rdcart=new RDCart(item->text(1).toUInt());
-    if(!rdcart->remove(rdstation_conf,lib_user,lib_config)) {
+    if(!rdcart->remove()) {
       QMessageBox::warning(this,tr("RDLibrary"),tr("Unable to delete audio!"));
       return;
     }
@@ -832,10 +780,10 @@ void MainWidget::ripData()
   QString group=lib_group_box->currentText();
   QString schedcode=lib_codes_box->currentText();
   DiskRipper *dialog=new DiskRipper(&lib_filter_text,&group,&schedcode,
-				    profile_ripping,this,"disk_ripper");
+				    profile_ripping,this);
   if(dialog->exec()==0) {
     for(int i=0;i<lib_group_box->count();i++) {
-      if(lib_group_box->text(i)==*group) {
+      if(lib_group_box->text(i)==group) {
 	lib_filter_edit->setText(lib_filter_text);
 	lib_group_box->setCurrentItem(i);
 	groupActivatedData(lib_group_box->currentText());
@@ -855,30 +803,32 @@ void MainWidget::reportsData()
   ListReports *lr=
     new ListReports(lib_filter_edit->text(),GetTypeFilter(),
 		    lib_group_box->currentText(),lib_codes_box->currentText(),
-		    this,"lr");
+		    this);
   lr->exec();
   delete lr;
   UnlockUser();
 }
 
 
-void MainWidget::cartOnItemData(QListViewItem *item)
+void MainWidget::cartOnItemData(Q3ListViewItem *item)
 {
+  /*
   if((!lib_shownotes_box->isChecked())||(item==NULL)) {
     return;
   }
   lib_cart_tip->
     setCartNumber(lib_cart_list->itemRect(item),item->text(1).toUInt());
+  */
 }
 
 
-void MainWidget::cartClickedData(QListViewItem *item)
+void MainWidget::cartClickedData(Q3ListViewItem *item)
 {
   int del_count=0;
   int sel_count=0;
-  QListViewItemIterator *it;
+  Q3ListViewItemIterator *it;
 
-  it=new QListViewItemIterator(lib_cart_list);
+  it=new Q3ListViewItemIterator(lib_cart_list);
   while(it->current()) {
     if (it->current()->isSelected()) {
       sel_count++;
@@ -891,7 +841,7 @@ void MainWidget::cartClickedData(QListViewItem *item)
   delete it;
   
   if(del_count>0) {
-    lib_delete_button->setEnabled(lib_user->deleteCarts());
+    lib_delete_button->setEnabled(rda->user()->deleteCarts());
   } 
   else {
     lib_delete_button->setEnabled(false);
@@ -901,7 +851,7 @@ void MainWidget::cartClickedData(QListViewItem *item)
       lib_edit_button->setEnabled(false);
     }
     else {
-      lib_edit_button->setEnabled(lib_user->modifyCarts());
+      lib_edit_button->setEnabled(rda->user()->modifyCarts());
     }
   } 
   else {
@@ -910,7 +860,7 @@ void MainWidget::cartClickedData(QListViewItem *item)
 }
 
 
-void MainWidget::cartDoubleclickedData(QListViewItem *,const QPoint &,int)
+void MainWidget::cartDoubleclickedData(Q3ListViewItem *,const QPoint &,int)
 {
   editData();
 }
@@ -930,7 +880,7 @@ void MainWidget::macroChangedData(int state)
 
 void MainWidget::searchLimitChangedData(int state)
 {
-  rdlibrary_conf->setSearchLimited(state);
+  rda->libraryConf()->setSearchLimited(state);
   filterChangedData("");
 }
 
@@ -938,10 +888,10 @@ void MainWidget::searchLimitChangedData(int state)
 void MainWidget::dragsChangedData(int state)
 {
   if(state) {
-    lib_cart_list->setSelectionMode(QListView::Single);
+    lib_cart_list->setSelectionMode(Q3ListView::Single);
   }
   else {
-    lib_cart_list->setSelectionMode(QListView::Extended);
+    lib_cart_list->setSelectionMode(Q3ListView::Extended);
   }
 }
 
@@ -1062,19 +1012,47 @@ void MainWidget::RefreshList()
   // 36 - CUTS.SUN
   //
 
-  sql="select CART.NUMBER,CART.FORCED_LENGTH,CART.TITLE,CART.ARTIST,\
-       CART.ALBUM,CART.LABEL,\
-       CART.CLIENT,CART.AGENCY,CART.USER_DEFINED,\
-       CART.COMPOSER,CART.PUBLISHER,CART.CONDUCTOR,\
-       CART.GROUP_NAME,CART.START_DATETIME,CART.END_DATETIME,CART.TYPE,\
-       CART.CUT_QUANTITY,CART.LAST_CUT_PLAYED,\
-       CART.ENFORCE_LENGTH,CART.PRESERVE_PITCH,\
-       CART.LENGTH_DEVIATION,CART.OWNER,CART.VALIDITY,GROUPS.COLOR, \
-       CUTS.LENGTH,CUTS.EVERGREEN,CUTS.START_DATETIME,CUTS.END_DATETIME,\
-       CUTS.START_DAYPART,CUTS.END_DAYPART,CUTS.MON,CUTS.TUE,\
-       CUTS.WED,CUTS.THU,CUTS.FRI,CUTS.SAT,CUTS.SUN from CART \
-       left join GROUPS on CART.GROUP_NAME=GROUPS.NAME \
-       left join CUTS on CART.NUMBER=CUTS.CART_NUMBER";
+  sql=QString("select ")+
+    "CART.NUMBER,"+            // 00
+    "CART.FORCED_LENGTH,"+     // 01
+    "CART.TITLE,"+             // 02
+    "CART.ARTIST,"+            // 03
+    "CART.ALBUM,"+             // 04
+    "CART.LABEL,"+             // 05
+    "CART.CLIENT,"+            // 06
+    "CART.AGENCY,"+            // 07
+    "CART.USER_DEFINED,"+      // 08
+    "CART.COMPOSER,"+          // 09
+    "CART.PUBLISHER,"+         // 10
+    "CART.CONDUCTOR,"+         // 11
+    "CART.GROUP_NAME,"+        // 12
+    "CART.START_DATETIME,"+    // 13
+    "CART.END_DATETIME,"+      // 14
+    "CART.TYPE,"+              // 15
+    "CART.CUT_QUANTITY,"+      // 16
+    "CART.LAST_CUT_PLAYED,"+   // 17
+    "CART.ENFORCE_LENGTH,"+    // 18
+    "CART.PRESERVE_PITCH,"+    // 19
+    "CART.LENGTH_DEVIATION,"+  // 20
+    "CART.OWNER,"+             // 21
+    "CART.VALIDITY,"+          // 22
+    "GROUPS.COLOR,"+           // 23
+    "CUTS.LENGTH,"+            // 24
+    "CUTS.EVERGREEN,"+         // 25
+    "CUTS.START_DATETIME,"+    // 26
+    "CUTS.END_DATETIME,"+      // 27
+    "CUTS.START_DAYPART,"+     // 28
+    "CUTS.END_DAYPART,"+       // 29
+    "CUTS.MON,"+               // 30
+    "CUTS.TUE,"+               // 31
+    "CUTS.WED,"+               // 32
+    "CUTS.THU,"+               // 33
+    "CUTS.FRI,"+               // 34
+    "CUTS.SAT,"+               // 35
+    "CUTS.SUN "+               // 36
+    "from CART left join GROUPS "+
+    "on CART.GROUP_NAME=GROUPS.NAME left join CUTS "+
+    "on CART.NUMBER=CUTS.CART_NUMBER";
   QString schedcode="";
   if(lib_codes_box->currentText()!=tr("ALL")) {
     schedcode=lib_codes_box->currentText();
@@ -1082,7 +1060,7 @@ void MainWidget::RefreshList()
   if(lib_group_box->currentText()==QString(tr("ALL"))) {
     sql+=QString(" where ")+
       RDAllCartSearchText(lib_filter_edit->text(),schedcode,
-			  lib_user->name(),true)+" && "+type_filter;
+			  rda->user()->name(),true)+" && "+type_filter;
 
   }
   else {
@@ -1188,7 +1166,7 @@ void MainWidget::RefreshList()
 	  }
 	}
 	else {
-	  l->setTextColor(3,QColor(black),QFont::Normal);
+	  l->setTextColor(3,QColor(Qt::black),QFont::Normal);
 	}
       }
     }
@@ -1196,7 +1174,7 @@ void MainWidget::RefreshList()
     if(count++>RDLIBRARY_STEP_SIZE) {
       lib_progress_dialog->setProgress(++step);
       count=0;
-      qApp->eventLoop()->processEvents(QEventLoop::ExcludeUserInput);
+      qApp->processEvents(QEventLoop::ExcludeUserInput);
     }
   }
   UpdateItemColor(l,validity,end_datetime,current_datetime);
@@ -1227,28 +1205,47 @@ void MainWidget::RefreshLine(RDListViewItem *item)
 {
   RDCart::Validity validity=RDCart::NeverValid;
   QDateTime current_datetime(QDate::currentDate(),QTime::currentTime());
-  QString sql=QString().sprintf("select CART.FORCED_LENGTH,CART.TITLE,\
-                                 CART.ARTIST,\
-                                 CART.ALBUM,CART.LABEL,\
-                                 CART.CLIENT,\
-                                 CART.AGENCY,CART.USER_DEFINED,\
-                                 CART.COMPOSER,CART.CONDUCTOR,CART.PUBLISHER,\
-                                 CART.GROUP_NAME,CART.START_DATETIME,\
-                                 CART.END_DATETIME,CART.TYPE,\
-                                 CART.CUT_QUANTITY,CART.LAST_CUT_PLAYED,\
-                                 CART.ENFORCE_LENGTH,\
-                                 CART.PRESERVE_PITCH,\
-                                 CART.LENGTH_DEVIATION,CART.OWNER,\
-                                 CART.VALIDITY,GROUPS.COLOR,CUTS.LENGTH,\
-                                 CUTS.EVERGREEN,CUTS.START_DATETIME,\
-                                 CUTS.END_DATETIME,CUTS.START_DAYPART,\
-                                 CUTS.END_DAYPART,CUTS.MON,CUTS.TUE,\
-                                 CUTS.WED,CUTS.THU,CUTS.FRI,CUTS.SAT,CUTS.SUN \
-                                 from CART left join GROUPS on \
-                                 CART.GROUP_NAME=GROUPS.NAME left join \
-                                 CUTS on CART.NUMBER=CUTS.CART_NUMBER \
-                                 where CART.NUMBER=%u",
-				item->text(1).toUInt());
+  QString sql=QString("select ")+
+    "CART.FORCED_LENGTH,"+     // 00
+    "CART.TITLE,"+             // 01
+    "CART.ARTIST,"+            // 02
+    "CART.ALBUM,"+             // 03
+    "CART.LABEL,"+             // 04
+    "CART.CLIENT,"+            // 05
+    "CART.AGENCY,"+            // 06
+    "CART.USER_DEFINED,"+      // 07
+    "CART.COMPOSER,"+          // 08
+    "CART.CONDUCTOR,"+         // 09
+    "CART.PUBLISHER,"+         // 10
+    "CART.GROUP_NAME,"+        // 11
+    "CART.START_DATETIME,"+    // 12
+    "CART.END_DATETIME,"+      // 13
+    "CART.TYPE,"+              // 14
+    "CART.CUT_QUANTITY,"+      // 15
+    "CART.LAST_CUT_PLAYED,"+   // 16
+    "CART.ENFORCE_LENGTH,"+    // 17
+    "CART.PRESERVE_PITCH,"+    // 18
+    "CART.LENGTH_DEVIATION,"+  // 19
+    "CART.OWNER,"+             // 20
+    "CART.VALIDITY,"+          // 21
+    "GROUPS.COLOR,"+           // 22
+    "CUTS.LENGTH,"+            // 23
+    "CUTS.EVERGREEN,"+         // 24
+    "CUTS.START_DATETIME,"+    // 25
+    "CUTS.END_DATETIME,"+      // 26
+    "CUTS.START_DAYPART,"+     // 27
+    "CUTS.END_DAYPART,"+       // 28
+    "CUTS.MON,"+               // 29
+    "CUTS.TUE,"+               // 30
+    "CUTS.WED,"+               // 31
+    "CUTS.THU,"+               // 32
+    "CUTS.FRI,"+               // 33
+    "CUTS.SAT,"+               // 34
+    "CUTS.SUN "+               // 35
+    "from CART left join GROUPS "+
+    "on CART.GROUP_NAME=GROUPS.NAME left join CUTS "+
+    "on CART.NUMBER=CUTS.CART_NUMBER where "+
+    QString().sprintf("CART.NUMBER=%u",item->text(1).toUInt());
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
     if((RDCart::Type)q->value(14).toUInt()==RDCart::Macro) {
@@ -1328,7 +1325,7 @@ void MainWidget::RefreshLine(RDListViewItem *item)
 	}
       }
       else {
-	item->setTextColor(3,QColor(black),QFont::Normal);
+	item->setTextColor(3,QColor(Qt::black),QFont::Normal);
       }
     }
   }
@@ -1381,7 +1378,7 @@ void MainWidget::SetCaption(QString user)
 
   str1=QString("RDLibrary")+" v"+VERSION+" - "+tr("Host")+":";
   str2=tr("User")+":";
-  setCaption(str1+" "+lib_config->stationName()+", "+str2+" "+user);
+  setCaption(str1+" "+rda->config()->stationName()+", "+str2+" "+user);
 }
 
 
@@ -1418,7 +1415,7 @@ QString MainWidget::GeometryFile() {
 void MainWidget::LoadGeometry()
 {
   QString geometry_file = GeometryFile();
-  if(geometry_file==NULL) {
+  if(geometry_file.isNull()) {
     return;
   }
   RDProfile *profile=new RDProfile();
@@ -1427,6 +1424,8 @@ void MainWidget::LoadGeometry()
 	 profile->intValue("RDLibrary","Height",sizeHint().height()));
   lib_shownotes_box->
     setChecked(profile->boolValue("RDLibrary","ShowNoteBubbles",true));
+  lib_allowdrag_box->
+    setChecked(profile->boolValue("RDLibrary","AllowCartDragging",false));
 
   delete profile;
 }
@@ -1435,7 +1434,7 @@ void MainWidget::LoadGeometry()
 void MainWidget::SaveGeometry()
 {
   QString geometry_file = GeometryFile();
-  if(geometry_file==NULL) {
+  if(geometry_file.isNull()) {
     return;
   }
   FILE *file=fopen(geometry_file,"w");
@@ -1452,8 +1451,8 @@ void MainWidget::SaveGeometry()
   else {
     fprintf(file,"No\n");
   }
-  fprintf(file,"LimitMatches=");
-  if(lib_showmatches_box->isChecked()) {
+  fprintf(file,"AllowCartDragging=");
+  if(lib_allowdrag_box->isChecked()) {
     fprintf(file,"Yes\n");
   }
   else {
@@ -1489,6 +1488,7 @@ int main(int argc,char *argv[])
   //
   // Load Translations
   //
+  /*
   QTranslator qt(0);
   qt.load(QString(QTDIR)+QString("/translations/qt_")+QTextCodec::locale(),
 	  ".");
@@ -1508,11 +1508,11 @@ int main(int argc,char *argv[])
   tr.load(QString(PREFIX)+QString("/share/rivendell/rdlibrary_")+
 	     QTextCodec::locale(),".");
   a.installTranslator(&tr);
-
+  */
   //
   // Start Event Loop
   //
-  MainWidget *w=new MainWidget(NULL,"main");
+  MainWidget *w=new MainWidget();
   a.setMainWidget(w);
   w->show();
   return a.exec();

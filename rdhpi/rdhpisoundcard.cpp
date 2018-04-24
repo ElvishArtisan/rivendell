@@ -2,9 +2,7 @@
 //
 //   The audio card subsystem for the HPI Library.
 //
-//   (C) Copyright 2002-2007 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdhpisoundcard.cpp,v 1.10.6.3 2012/08/07 15:48:04 cvs Exp $
+//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,7 +17,6 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-//
 
 #include <syslog.h>
 
@@ -28,8 +25,8 @@
 
 #include <unistd.h>
 
-RDHPISoundCard::RDHPISoundCard(QObject *parent,const char *name)
-  : QObject(parent,name)
+RDHPISoundCard::RDHPISoundCard(QObject *parent)
+  : QObject(parent)
 {
   card_quantity=0;
   fade_type=RDHPISoundCard::Log;

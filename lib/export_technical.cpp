@@ -2,9 +2,7 @@
 //
 // Export a Rivendell Technical Report to an ASCII Text File.
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: export_technical.cpp,v 1.9.8.1 2012/11/16 18:10:39 cvs Exp $
+//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,15 +20,15 @@
 
 #include <stdio.h>
 
-#include <qfile.h>
-#include <qmessagebox.h>
-#include <rddb.h>
-#include <rdlog_line.h>
+#include <QFile>
+#include <QMessageBox>
+
 #include <rdairplay_conf.h>
 #include <rdconf.h>
 #include <rddatedecode.h>
+#include <rddb.h>
+#include <rdlog_line.h>
 #include <rdreport.h>
-
 
 bool RDReport::ExportTechnical(const QDate &startdate,const QDate &enddate,
 			       bool incl_hdr,bool incl_crs,
@@ -65,32 +63,25 @@ bool RDReport::ExportTechnical(const QDate &startdate,const QDate &enddate,
   else {
     cart_fmt="%6u";
   }
-  sql=QString().sprintf("select `%s_SRT`.LENGTH,`%s_SRT`.CART_NUMBER,\
-                         `%s_SRT`.EVENT_DATETIME,`%s_SRT`.EVENT_TYPE,\
-                         `%s_SRT`.EXT_START_TIME,`%s_SRT`.EXT_LENGTH,\
-                         `%s_SRT`.EXT_DATA,`%s_SRT`.EXT_EVENT_ID,\
-                         `%s_SRT`.TITLE,CART.FORCED_LENGTH,\
-                         `%s_SRT`.STATION_NAME,`%s_SRT`.PLAY_SOURCE,\
-                         `%s_SRT`.CUT_NUMBER,`%s_SRT`.START_SOURCE,\
-                         `%s_SRT`.ONAIR_FLAG from `%s_SRT` left join CART on\
-                         `%s_SRT`.CART_NUMBER=CART.NUMBER\
-                         order by EVENT_DATETIME",
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable);
+  sql=QString("select ")+
+    "`"+mixtable+"_SRT`.LENGTH,"+          // 00
+    "`"+mixtable+"_SRT`.CART_NUMBER,"+     // 01
+    "`"+mixtable+"_SRT`.EVENT_DATETIME,"+  // 02
+    "`"+mixtable+"_SRT`.EVENT_TYPE,"+      // 03
+    "`"+mixtable+"_SRT`.EXT_START_TIME,"+  // 04
+    "`"+mixtable+"_SRT`.EXT_LENGTH,"+      // 05
+    "`"+mixtable+"_SRT`.EXT_DATA,"+        // 06
+    "`"+mixtable+"_SRT`.EXT_EVENT_ID,"+    // 07
+    "`"+mixtable+"_SRT`.TITLE,"+           // 08
+    "CART.FORCED_LENGTH,"+                 // 09
+    "`"+mixtable+"_SRT`.STATION_NAME,"+    // 10
+    "`"+mixtable+"_SRT`.PLAY_SOURCE,"+   // 11
+    "`"+mixtable+"_SRT`.CUT_NUMBER,"+      // 12
+    "`"+mixtable+"_SRT`.START_SOURCE,"+    // 13
+    "`"+mixtable+"_SRT`.ONAIR_FLAG "+      // 14
+    "from `"+mixtable+"_SRT` left join CART "+
+    "on `"+mixtable+"_SRT`.CART_NUMBER=CART.NUMBER "+
+    "order by EVENT_DATETIME";
   q=new RDSqlQuery(sql);
 
   //
@@ -108,7 +99,7 @@ bool RDReport::ExportTechnical(const QDate &startdate,const QDate &enddate,
     }
     str=QString().sprintf("%s -- %s%s",(const char *)name(),
 			  (const char *)description(),eol);
-    for(unsigned i=0;i<(80-str.length())/2;i++) {
+    for(int i=0;i<(80-str.length())/2;i++) {
       fprintf(f," ");
     }
     fprintf(f,"%s%s",(const char *)str,eol);

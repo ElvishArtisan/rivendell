@@ -2,9 +2,7 @@
 //
 // Add an entry to the reconciliation table.
 //
-//   (C) Copyright 2002-2005 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: log_traffic.cpp,v 1.20.8.2.2.3 2014/06/24 18:27:05 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,8 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qsqldatabase.h>
-
+#include <rdapplication.h>
 #include <rdconf.h>
 #include <rddb.h>
 #include <rdescape_string.h>
@@ -29,7 +26,6 @@
 
 #include <log_traffic.h>
 #include <globals.h>
-
 
 void LogTraffic(const QString &svcname,const QString &logname,
 		RDLogLine *logline,RDLogLine::PlaySource src,
@@ -47,17 +43,23 @@ void LogTraffic(const QString &svcname,const QString &logname,
   if((logline==NULL)||(svcname.isEmpty())) {
     return;
   }
+
+  QString eventDateTimeSQL = "NULL";
+
+  if(datetime.isValid() && logline->startTime(RDLogLine::Actual).isValid())
+    eventDateTimeSQL = RDCheckDateTime(QDateTime(datetime.date(),
+          logline->startTime(RDLogLine::Actual)), "yyyy-MM-dd hh:mm:ss");
+
   sql=QString("insert into `")+RDSvc::svcTableName(svcname)+"` set "+
     QString().sprintf("LENGTH=%d,",length)+
     "LOG_NAME=\""+RDEscapeString(logname.utf8())+"\","+
     QString().sprintf("LOG_ID=%d,",logline->id())+
     QString().sprintf("CART_NUMBER=%u,",logline->cartNumber())+
-    "STATION_NAME=\""+RDEscapeString(rdstation_conf->name().utf8())+"\","+
-    "EVENT_DATETIME=\""+datetime.toString("yyyy-MM-dd")+" "+
-    logline->startTime(RDLogLine::Actual).toString("hh:mm:ss")+"\","+
+    "STATION_NAME=\""+RDEscapeString(rda->station()->name().utf8())+"\","+
+    "EVENT_DATETIME="+eventDateTimeSQL+","+
     QString().sprintf("EVENT_TYPE=%d,",action)+
     QString().sprintf("EVENT_SOURCE=%d,",logline->source())+
-    "EXT_START_TIME=\""+logline->extStartTime().toString("hh:mm:ss")+"\","+
+    "EXT_START_TIME="+RDCheckDateTime(logline->extStartTime(),"hh:mm:ss")+","+
     QString().sprintf("EXT_LENGTH=%d,",logline->extLength())+
     "EXT_DATA=\""+RDEscapeString(logline->extData())+"\","+
     "EXT_EVENT_ID=\""+RDEscapeString(logline->extEventId())+"\","+
@@ -67,8 +69,8 @@ void LogTraffic(const QString &svcname,const QString &logname,
     "EXT_CART_NAME=\""+RDEscapeString(logline->extCartName().utf8())+"\","+
     "TITLE=\""+RDEscapeString(logline->title().utf8())+"\","+
     "ARTIST=\""+RDEscapeString(logline->artist().utf8())+"\","+
-    "SCHEDULED_TIME=\""+RDEscapeString(logline->startTime(RDLogLine::Logged).
-				       toString("hh:mm:ss"))+"\","+
+    "SCHEDULED_TIME="+RDCheckDateTime(logline->startTime(RDLogLine::Logged),
+				       "hh:mm:ss")+","+
     "ISRC=\""+RDEscapeString(logline->isrc().utf8())+"\","+
     "PUBLISHER=\""+RDEscapeString(logline->publisher().utf8())+"\","+
     "COMPOSER=\""+RDEscapeString(logline->composer().utf8())+"\","+
@@ -80,6 +82,8 @@ void LogTraffic(const QString &svcname,const QString &logname,
     "USER_DEFINED=\""+RDEscapeString(logline->userDefined().utf8())+"\","+
     "CONDUCTOR=\""+RDEscapeString(logline->conductor().utf8())+"\","+
     "SONG_ID=\""+RDEscapeString(logline->songId().utf8())+"\","+
+    "DESCRIPTION=\""+RDEscapeString(logline->description().utf8())+"\","+
+    "OUTCUE=\""+RDEscapeString(logline->outcue().utf8())+"\","+
     "ISCI=\""+RDEscapeString(logline->isci().utf8())+"\"";
 
   q=new RDSqlQuery(sql);

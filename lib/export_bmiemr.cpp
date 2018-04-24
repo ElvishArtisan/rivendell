@@ -2,9 +2,7 @@
 //
 // Export a Rivendell Report to BMI EMR Format
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: export_bmiemr.cpp,v 1.10.8.1.2.1 2014/03/19 23:50:20 cvs Exp $
+//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,7 +23,6 @@
 #include <rddatedecode.h>
 #include <rdreport.h>
 #include <rdcart.h>
-
 
 bool RDReport::ExportBmiEmr(const QDate &startdate,const QDate &enddate,
 			    const QString &mixtable)
@@ -67,12 +64,6 @@ bool RDReport::ExportBmiEmr(const QDate &startdate,const QDate &enddate,
     report_error_code=RDReport::ErrorCantOpen;
     return false;
   }
-  /*
-  sql=QString().sprintf("select EVENT_DATETIME,TITLE,ARTIST,COMPOSER,\
-                         LENGTH,ISRC,USAGE_CODE from `%s_SRT` \
-                         order by EVENT_DATETIME",
-			(const char *)mixtable);
-  */
   sql=QString("select EVENT_DATETIME,TITLE,ARTIST,COMPOSER,")+
     "LENGTH,ISRC,USAGE_CODE from `"+
     mixtable+"_SRT` order by EVENT_DATETIME"; 

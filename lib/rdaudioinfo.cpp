@@ -2,9 +2,7 @@
 //
 // Get information about a cut in the audio store.
 //
-//   (C) Copyright 2011 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdaudioinfo.cpp,v 1.3.4.3 2013/11/13 23:36:30 cvs Exp $
+//   (C) Copyright 2011,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -47,9 +45,8 @@ size_t RDAudioInfoCallback(void *ptr,size_t size,size_t nmemb,void *userdata)
 }
 
 
-RDAudioInfo::RDAudioInfo(RDStation *station,RDConfig *config,
-			     QObject *parent,const char *name)
-  : QObject(parent,name)
+RDAudioInfo::RDAudioInfo(RDStation *station,RDConfig *config,QObject *parent)
+  : QObject(parent)
 {
   conv_station=station;
   conv_config=config;
@@ -58,6 +55,7 @@ RDAudioInfo::RDAudioInfo(RDStation *station,RDConfig *config,
   conv_format=RDWaveFile::Pcm16;
   conv_channels=0;
   conv_sample_rate=0;
+  conv_bit_rate=0;
   conv_frames=0;
   conv_length=0;
 }
@@ -78,6 +76,12 @@ unsigned RDAudioInfo::channels() const
 unsigned RDAudioInfo::sampleRate() const
 {
   return conv_sample_rate;
+}
+
+
+unsigned RDAudioInfo::bitRate() const
+{
+  return conv_bit_rate;
 }
 
 
@@ -183,6 +187,7 @@ RDAudioInfo::ErrorCode RDAudioInfo::runInfo(const QString &username,
   conv_format=(RDWaveFile::Format)ParseInt("format",conv_xml);
   conv_channels=ParseInt("channels",conv_xml);
   conv_sample_rate=ParseInt("sampleRate",conv_xml);
+  conv_bit_rate=ParseInt("bitRate",conv_xml);
   conv_frames=ParseInt("frames",conv_xml);
   conv_length=ParseInt("length",conv_xml);
 
@@ -230,7 +235,7 @@ int RDAudioInfo::ParseInt(const QString &tag,const QString &xml)
   //        a proper XML parser.
   //
   QStringList list=list.split("\n",xml);
-  for(unsigned i=0;i<list.size();i++) {
+  for(int i=0;i<list.size();i++) {
     if(list[i].contains(tag)) {
       QStringList list2=list.split("<",list[i]);
       if(list2.size()>=2) {

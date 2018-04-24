@@ -2,9 +2,7 @@
 //
 //   A class for handling Microsoft WAV files.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdwavefile.h,v 1.10.6.2 2014/01/15 19:56:32 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -40,12 +38,11 @@
 #include <vorbis/vorbisenc.h>
 #endif  // HAVE_VORBIS
 
+#include <rdmp4.h>
+
 #include <rdwavedata.h>
 #include <rdringbuffer.h>
 #include <rdsettings.h>
-
-using namespace std;
-
 
 //
 // Number of timers allowed in the CartChunk structure.
@@ -80,6 +77,7 @@ using namespace std;
 #define AV10_CHUNK_SIZE 512
 #define AIR1_CHUNK_SIZE 2048
 #define COMM_CHUNK_SIZE 18
+#define RDXL_CHUNK_SIZE 4
 
 //
 // Maximum Header Size for ATX Files
@@ -112,11 +110,10 @@ using namespace std;
 class RDWaveFile
 {
  public:
-  enum Encoding {Raw=0,Signed16Int=1,Signed32Float=2};
   enum Format {Pcm8=0,Pcm16=1,Float32=2,MpegL1=3,MpegL2=4,MpegL3=5,
-	       DolbyAc2=6,DolbyAc3=7,Vorbis=8};
+  	       DolbyAc2=6,DolbyAc3=7,Vorbis=8,Pcm24=9};
   enum Type {Unknown=0,Wave=1,Mpeg=2,Ogg=3,Atx=4,Tmc=5,Flac=6,Ambos=7,
-	     Aiff=8};
+	     Aiff=8,M4A=9};
   enum MpegID {NonMpeg=0,Mpeg1=1,Mpeg2=2};
 
   /**
@@ -156,7 +153,7 @@ class RDWaveFile
    *
    * Returns true if WAV file was created successfully, otherwise false.
    **/
-   bool createWave(RDWaveData *data=NULL);
+  bool createWave(RDWaveData *data=NULL,unsigned ptr_offset=0);
 
   /**
    * Open the WAV file for playback.  A WAV file name must first have 
@@ -216,17 +213,6 @@ class RDWaveFile
    * Returns the length of the contents of the DATA chunk, in bytes.
    **/
    unsigned getDataLength() const;
-
-  /**
-   * Returns the current encoding type.
-   **/
-   RDWaveFile::Encoding encoding() const;
-
-  /**
-   * Set the encoding type.
-   * @param code The encoding to use.
-   **/
-   void setEncoding(RDWaveFile::Encoding code);
 
   /**
    * Read a block of data from the DATA chunk, using the current 
@@ -654,25 +640,11 @@ class RDWaveFile
    QString getCartTimerLabel(int index) const;
 
   /**
-   * Set the label for one of the eight CartChunk timers.
-   * @param index The index number of the timer to access (0 - 7).
-   * @param label the label of the corresponding timer.
-   **/
-   void setCartTimerLabel(int index,QString label);
-
-  /**
    * Retrieve the sample value for one of the eight CartChunk timers.
    * @param index The index number of the timer to access (0 - 7).
    * Returns the sample value of the corresponding timer.
    **/
    unsigned getCartTimerSample(int index) const;
-
-  /**
-   * Set the sample value for one of the eight CartChunk timers.
-   * @param index The index number of the timer to access (0 - 7).
-   * @param sample the sample value of the corresponding timer.
-   **/
-   void setCartTimerSample(int index,unsigned sample);
 
   /**
    * Returns the contents of the URL field in the WAV file's CART chunk.
@@ -1034,6 +1006,13 @@ class RDWaveFile
 
    bool getAIR1Chunk() const;
 
+   /**
+    * Returns true if the WAV file contains an RDXL chunk, otherwise false.
+    **/
+   bool getRdxlChunk() const;
+   QString getRdxlContents() const;
+   void setRdxlContents(const QString &xml);
+
    double getNormalizeLevel() const;
    void setNormalizeLevel(double level);
 
@@ -1046,12 +1025,14 @@ class RDWaveFile
    bool IsTmc(int fd);
    bool IsFlac(int fd);
    bool IsAiff(int fd);
+   bool IsM4A(int fd);
    off_t FindChunk(int fd,const char *chunk_name,unsigned *chunk_size,
 		   bool big_end=false);
    bool GetChunk(int fd,const char *chunk_name,unsigned *chunk_size,
 		 unsigned char *chunk,size_t size,bool big_end=false);
    void WriteChunk(int fd,const char *cname,unsigned char *buf,unsigned size,
 		   bool big_end=false);
+   void WriteChunk(int fd,const char *cname,const QString &contents);
    bool GetFmt(int fd);
    bool GetFact(int fd);
    bool GetCart(int fd);
@@ -1062,6 +1043,7 @@ class RDWaveFile
    bool GetScot(int fd);
    bool GetAv10(int fd);
    bool GetAir1(int fd);
+   bool GetRdxl(int fd);
    bool GetComm(int fd);
    bool ReadListElement(unsigned char *buffer,unsigned *offset,unsigned size);
    bool ReadTmcMetadata(int fd);
@@ -1073,7 +1055,7 @@ class RDWaveFile
    bool GetFlacStreamInfo();
    void ReadFlacMetadata();
    bool MakeFmt();
-   bool MakeCart();
+   bool MakeCart(unsigned ptr_offset);
    bool MakeBext();
    bool MakeMext();
    bool MakeLevl();
@@ -1091,6 +1073,7 @@ class RDWaveFile
    int WriteOggPage(ogg_page *page);
 #endif  // HAVE_VORBIS
    int WriteOggBuffer(char *buf,int size);
+   unsigned FrameOffset(int msecs) const;
    QFile wave_file;
    RDWaveData *wave_data;
    bool recordable;                // Allow DATA chunk writes?
@@ -1113,6 +1096,7 @@ class RDWaveFile
    unsigned head_emphasis;         // De-emphasis
    unsigned short head_flags;      // MPEG header flags
    unsigned long pts;              // The MPEG PTS
+   unsigned ptr_offset_msecs;
    RDWaveFile::MpegID mpeg_id;              
    int mpeg_frame_size;
    bool id3v1_tag;
@@ -1197,7 +1181,7 @@ class RDWaveFile
    QString cutString(char *,unsigned,unsigned);
    QDate cutDate(char *,unsigned);
    QTime cutTime(char *,unsigned);
-   vector<unsigned short> energy_data;
+   std::vector<unsigned short> energy_data;
    bool energy_loaded;
    unsigned energy_ptr;
    int wave_id;
@@ -1205,7 +1189,6 @@ class RDWaveFile
 
    unsigned char *cook_buffer;
    int cook_buffer_size;
-   RDWaveFile::Encoding cook_encoding;
    float encode_quality;
    int serial_number;
    int atx_offset;
@@ -1226,6 +1209,9 @@ class RDWaveFile
    bool AIR1_chunk;
    unsigned char AIR1_chunk_data[AIR1_CHUNK_SIZE];
 
+   bool rdxl_chunk;
+   QString rdxl_contents;
+
    double normalize_level; 
    
    bool av10_chunk;
@@ -1240,6 +1226,10 @@ class RDWaveFile
    ogg_page ogg_pg;
    ogg_packet ogg_pack;
 #endif  // HAVE_VORBIS
+#ifdef HAVE_MP4_LIBS
+   DLMP4 dlmp4;
+#endif
+
 };
 
 
@@ -1378,6 +1368,7 @@ class RDWaveFile
  */
 #define WAVE_FORMAT_VORBIS 0xFFFF
 #define WAVE_FORMAT_FLAC 0xFFFE
+#define WAVE_FORMAT_M4A 0xFFFD
 
 /*
  * Proprietary Format Categories

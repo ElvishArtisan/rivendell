@@ -2,9 +2,7 @@
 //
 // A Calendar Widget.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rddatepicker.h,v 1.3 2010/07/29 19:32:33 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -34,6 +32,8 @@
 #include <qlabel.h>
 #include <qcombobox.h>
 #include <qspinbox.h>
+//Added by qt3to4:
+#include <QMouseEvent>
 
 //
 // Display Settings
@@ -47,8 +47,7 @@ class RDDatePicker : public QWidget
 {
   Q_OBJECT
  public:
-  RDDatePicker(int low_year,int high_year,QWidget *parent=0,
-	       const char *name=0);
+  RDDatePicker(int low_year,int high_year,QWidget *parent=0);
   ~RDDatePicker();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;

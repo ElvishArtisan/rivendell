@@ -2,9 +2,7 @@
 //
 // Edit Rivendell Systemwide Configuration
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_settings.cpp,v 1.4.8.1 2012/11/26 20:19:38 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,27 +18,19 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <qfiledialog.h>
-#include <qfile.h>
-#include <qdatetime.h>
-#include <qprogressdialog.h>
-#include <qapplication.h>
-#include <qfiledialog.h>
+#include <QFileDialog>
+#include <QLabel>
+#include <QMessageBox>
 
-#include <rdescape_string.h>
-#include <rddb.h>
+#include <rdapplication.h>
 #include <rdconf.h>
-#include <rdaudiosettings_dialog.h>
+#include <rdescape_string.h>
 
-#include <edit_settings.h>
-#include <globals.h>
+#include "edit_settings.h"
+#include "globals.h"
 
-EditSettings::EditSettings(QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+EditSettings::EditSettings(QWidget *parent)
+  : QDialog(parent)
 {
   QString sql;
   RDSqlQuery *q;
@@ -59,75 +49,67 @@ EditSettings::EditSettings(QWidget *parent,const char *name)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   edit_system=new RDSystem();
 
-  setCaption(tr("System-Wide Settings"));
+  setWindowTitle("RDAdmin - "+tr("System-Wide Settings"));
 
   edit_system=new RDSystem();
 
   //
   // System Sample Rate
   //
-  edit_sample_rate_box=new QComboBox(this,"edit_sample_rate_box");
+  edit_sample_rate_box=new QComboBox(this);
   edit_sample_rate_box->setGeometry(200,10,70,20);
   edit_sample_rate_box->insertItem("32000");
   edit_sample_rate_box->insertItem("44100");
   edit_sample_rate_box->insertItem("48000");
-  QLabel *label=new QLabel(edit_sample_rate_box,
-			   tr("System Sample Rate:"),this,
-			   "edit_sample_rate_label");
+  QLabel *label=new QLabel(edit_sample_rate_box,tr("System Sample Rate:"),this);
   label->setGeometry(10,10,185,20);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
-  label=new QLabel(tr("samples/second"),this,"edit_sample_rate_unit");
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  label=new QLabel(tr("samples/second"),this);
   label->setGeometry(275,10,sizeHint().width()-285,20);
   label->setFont(font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Allow Duplicate Cart Titles Box
   //
-  edit_duplicate_carts_box=new QCheckBox(this,"edit_duplicate_carts_box");
+  edit_duplicate_carts_box=new QCheckBox(this);
   edit_duplicate_carts_box->setGeometry(20,32,15,15);
-  label=new QLabel(edit_duplicate_carts_box,
-		   tr("Allow Duplicate Cart Titles"),this,
-		   "edit_duplicate_carts_box");
+  label=
+    new QLabel(edit_duplicate_carts_box,tr("Allow Duplicate Cart Titles"),this);
   label->setGeometry(40,30,sizeHint().width()-50,20);
   label->setFont(font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // ISCI Cross Reference Path
   //
-  edit_isci_path_edit=new QLineEdit(this,"edit_isci_path_box");
+  edit_isci_path_edit=new QLineEdit(this);
   edit_isci_path_edit->setGeometry(200,54,sizeHint().width()-210,20);
-  label=new QLabel(edit_isci_path_edit,tr("ISCI Cross Reference Path:"),this,
-		   "edit_isci_path_label");
+  label=new QLabel(edit_isci_path_edit,tr("ISCI Cross Reference Path:"),this);
   label->setGeometry(10,54,185,20);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Maximum POST Size
   //
-  edit_maxpost_spin=new QSpinBox(this,"edit_maxpost_spin");
+  edit_maxpost_spin=new QSpinBox(this);
   edit_maxpost_spin->setGeometry(200,76,60,20);
   edit_maxpost_spin->setRange(1,1000);
-  label=new QLabel(edit_maxpost_spin,
-		   tr("Maximum Remote Post Length:"),this,
-		   "edit_maxpost_label");
+  label=new QLabel(edit_maxpost_spin,tr("Maximum Remote Post Length:"),this);
   label->setGeometry(10,76,185,20);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
-  label=new QLabel(tr("Mbytes"),this,"edit_maxpost_unit");
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  label=new QLabel(tr("Mbytes"),this);
   label->setGeometry(265,76,60,20);
   label->setFont(font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Temporary Cart Group
@@ -143,27 +125,28 @@ EditSettings::EditSettings(QWidget *parent,const char *name)
   label=new QLabel(edit_temp_cart_group_box,tr("Temporary Cart Group:"),this);
   label->setGeometry(10,97,185,20);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Duplicate List (initially hidden)
   //
-  edit_duplicate_label=new RDLabel(this,"edit_duplicate_label");
+  edit_duplicate_label=new RDLabel(this);
   edit_duplicate_label->setText(tr("The following duplicate titles must be corrected before \"Allow Duplicate Values\" can be turned off."));
   edit_duplicate_label->setWordWrapEnabled(true);
   edit_duplicate_label->setGeometry(15,120,sizeHint().width()-30,50);
   edit_duplicate_label->setFont(normal_font);
   edit_duplicate_label->hide();
-  edit_duplicate_list=new QListView(this);
+
+  edit_duplicate_list=new RDTableWidget(this);
   edit_duplicate_list->setGeometry(10,165,sizeHint().width()-20,200);
-  edit_duplicate_list->setItemMargin(5);
-  edit_duplicate_list->setAllColumnsShowFocus(true);
-  edit_duplicate_list->addColumn(tr("CART"));
-  edit_duplicate_list->setColumnAlignment(0,AlignCenter);
-  edit_duplicate_list->addColumn(tr("TITLE"));
-  edit_duplicate_list->setColumnAlignment(1,AlignLeft);
+  edit_duplicate_list->setSelectionMode(QAbstractItemView::NoSelection);
+  edit_duplicate_list->setColumnCount(2);
+  edit_duplicate_list->
+    setHorizontalHeaderItem(0,new QTableWidgetItem(tr("Cart")));
+  edit_duplicate_list->
+    setHorizontalHeaderItem(1,new QTableWidgetItem(tr("Title")));
   edit_duplicate_list->hide();
-  edit_save_button=new QPushButton(this,"save_button");
+  edit_save_button=new QPushButton(this);
   edit_save_button->
     setGeometry(sizeHint().width()-85,370,70,25);
   edit_save_button->setFont(normal_font);
@@ -174,7 +157,7 @@ EditSettings::EditSettings(QWidget *parent,const char *name)
   //
   //  Ok Button
   //
-  edit_ok_button=new QPushButton(this,"ok_button");
+  edit_ok_button=new QPushButton(this);
   edit_ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,
 				  80,50);
   edit_ok_button->setFont(font);
@@ -184,7 +167,7 @@ EditSettings::EditSettings(QWidget *parent,const char *name)
   //
   //  Cancel Button
   //
-  edit_cancel_button=new QPushButton(this,"cancel_button");
+  edit_cancel_button=new QPushButton(this);
   edit_cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 				  80,50);
   edit_cancel_button->setFont(font);
@@ -232,7 +215,8 @@ QSizePolicy EditSettings::sizePolicy() const
 void EditSettings::saveData()
 {
   QString filename=RDGetHomeDir();
-  filename=QFileDialog::getSaveFileName(filename,"Text Files *.txt",this);
+  filename=QFileDialog::getSaveFileName(this,"RDAdmin - "+tr("Save File"),
+					RDHomeDir(),"Text Files *.txt");
   if(filename.isNull()) {
     return;
   }
@@ -261,11 +245,11 @@ void EditSettings::saveData()
   fprintf(f,"\n");
   fprintf(f,"Cart    Title\n");
   fprintf(f,"----    -----\n");
-  QListViewItem *item=edit_duplicate_list->firstChild();
-  while(item!=NULL) {
-    fprintf(f,"%s  %s\n",(const char *)item->text(0),
-	    (const char *)item->text(1));
-    item=item->nextSibling();
+  for(int i=0;i<edit_duplicate_list->rowCount();i++) {
+    fprintf(f,"%s  %s\n",(const char *)edit_duplicate_list->item(i,0)->
+	    data(Qt::DisplayRole).toString().toUtf8(),
+	    (const char *)edit_duplicate_list->item(i,1)->
+	    data(Qt::DisplayRole).toString().toUtf8());
   }
   fclose(f);
 }
@@ -281,7 +265,7 @@ void EditSettings::okData()
   if(edit_duplicate_carts_box->isChecked()!=
      edit_system->allowDuplicateCartTitles()) {
     QLabel *msg=new QLabel(this);
-    QProgressDialog *pd=new QProgressDialog(this);
+    Q3ProgressDialog *pd=new Q3ProgressDialog(this);
     pd->setLabel(msg);
     pd->setCancelButton(NULL);
     pd->setMinimumDuration(2);
@@ -297,10 +281,9 @@ void EditSettings::okData()
       int step_size=q->size()/10;
       pd->setProgress(0,10);
       while(q->next()) {
-	sql=QString().sprintf("select NUMBER from CART \
-                           where (TITLE=\"%s\")&&(NUMBER!=%u)",
-			      (const char *)RDEscapeString(q->value(1).toString()),
-			      q->value(0).toUInt());
+	sql=QString("select NUMBER from CART where ")+
+	  "(TITLE=\""+RDEscapeString(q->value(1).toString())+"\")&&"+
+	  QString().sprintf("(NUMBER!=%u)",q->value(0).toUInt());
 	q1=new RDSqlQuery(sql);
 	while(q1->next()) {
 	  dups[q1->value(0).toUInt()]=q->value(1).toString();
@@ -316,31 +299,35 @@ void EditSettings::okData()
       delete q;
       pd->reset();
       if(dups.size()>0) {
-	QListViewItem *item;
 	y_pos=305;
-	setMinimumWidth(sizeHint().width());
-	setMaximumWidth(sizeHint().width());
-	setMinimumHeight(sizeHint().height());
-	setMaximumHeight(sizeHint().height());
+	setMinimumSize(sizeHint());
+	setMaximumSize(sizeHint());
 	edit_duplicate_carts_box->setChecked(true);
 	edit_duplicate_label->show();
 	edit_duplicate_list->show();
 	edit_save_button->show();
-	edit_duplicate_list->clear();
 	edit_ok_button->setGeometry(sizeHint().width()-180,
 				    sizeHint().height()-60,
 				    80,50);
 	edit_cancel_button->
 	  setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
+
+	edit_duplicate_list->setRowCount(dups.size());
+	int rownum=0;
 	for(std::map<unsigned,QString>::const_iterator ci=dups.begin();
 	    ci!=dups.end();ci++) {
-	  item=new QListViewItem(edit_duplicate_list);
-	  item->setText(0,QString().sprintf("%06u",ci->first));
-	  item->setText(1,ci->second);
+	  QTableWidgetItem *item=
+	    new QTableWidgetItem(QString().sprintf("%06u",ci->first));
+	  edit_duplicate_list->setItem(rownum,0,item);
+	  item=new QTableWidgetItem(ci->second);
+	  edit_duplicate_list->setItem(rownum,1,item);
+	  edit_duplicate_list->
+	    setVerticalHeaderItem(rownum,new QTableWidgetItem(""));
+	  rownum++;
 	}
+	edit_duplicate_list->resizeColumnsToContents();
 	return;
       }
-
       //
       // All ok -- make the change
       //
@@ -389,10 +376,9 @@ void EditSettings::BuildDuplicatesList(std::map<unsigned,QString> *dups)
   sql="select NUMBER,TITLE from CART order by NUMBER";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    sql=QString().sprintf("select NUMBER from CART \
-                           where (TITLE=\"%s\")&&(NUMBER!=%u)",
-			  (const char *)RDEscapeString(q->value(1).toString()),
-			  q->value(0).toUInt());
+    sql=QString("select NUMBER from CART where ")+
+      "(TITLE=\""+RDEscapeString(q->value(1).toString())+"\")&&"+
+      QString().sprintf("(NUMBER!=%u)",q->value(0).toUInt());
     q1=new RDSqlQuery(sql);
     while(q1->next()) {
       (*dups)[q1->value(0).toUInt()]=q->value(1).toString();

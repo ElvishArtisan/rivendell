@@ -2,9 +2,7 @@
 //
 // Add a Rivendell RDCatch Event
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: add_recording.cpp,v 1.26.8.1 2014/01/07 23:40:36 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,12 +23,16 @@
 #include <qdialog.h>
 #include <qstring.h>
 #include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
+#include <q3listbox.h>
+#include <q3textedit.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
+//Added by qt3to4:
+#include <QLabel>
+#include <QKeyEvent>
+#include <QCloseEvent>
 
 #include <rddb.h>
 #include <rd.h>
@@ -46,9 +48,7 @@
 #include <edit_download.h>
 #include <edit_upload.h>
 
-
 extern RDStation *rdstation_conf;
-
 
 AddRecording::AddRecording(int id,QString *filter,QWidget *parent)
   : QDialog(parent,"",true,Qt::WStyle_Customize|Qt::WStyle_DialogBorder)
@@ -82,7 +82,7 @@ AddRecording::AddRecording(int id,QString *filter,QWidget *parent)
   QLabel *label=new QLabel(tr("Schedule a:"),this,"title_label");
   label->setGeometry(0,0,sizeHint().width(),30);
   label->setFont(label_font);
-  label->setAlignment(AlignCenter);
+  label->setAlignment(Qt::AlignCenter);
 
   //
   //  Recording Button
@@ -92,8 +92,8 @@ AddRecording::AddRecording(int id,QString *filter,QWidget *parent)
   button->setFont(button_font);
   button->setText(tr("&Recording"));
   button->setDisabled(true);
-  QString sql=QString("select CHANNEL from DECKS \
-                       where (CARD_NUMBER>=0)&&(CHANNEL>0)&&(CHANNEL<=9)");
+  QString sql=QString("select CHANNEL from DECKS where ")+
+    "(CARD_NUMBER>=0)&&(CHANNEL>0)&&(CHANNEL<=9)";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     button->setEnabled(true);
@@ -109,8 +109,11 @@ AddRecording::AddRecording(int id,QString *filter,QWidget *parent)
   button->setFont(button_font);
   button->setText(tr("&Playout"));
   button->setDisabled(true);
-  sql=QString("select CHANNEL from DECKS where (CARD_NUMBER>=0)&&")+
-    "(PORT_NUMBER>=0)&&(CHANNEL>128)&&(CHANNEL<=137)";
+sql=QString("select CHANNEL from DECKS where ")+
+  "(CARD_NUMBER>=0)&&"+
+  "(PORT_NUMBER>=0)&&"+
+  "(CHANNEL>128)&&"+
+  "(CHANNEL<=137)";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     button->setEnabled(true);

@@ -2,9 +2,7 @@
 //
 // Generates a standardized SQL 'WHERE' clause for filtering Rivendell carts.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcart_search_text.cpp,v 1.21.4.2 2013/12/11 20:54:15 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -153,13 +151,12 @@ QString RDAllCartSearchText(const QString &filter,const QString &schedcode,
   RDSqlQuery *q;
   QString search="(";
 
-  sql=QString().sprintf("select GROUP_NAME from USER_PERMS\
-                         where USER_NAME=\"%s\"",
-			(const char *)user);
+  sql=QString("select GROUP_NAME from USER_PERMS where ")+
+    "USER_NAME=\""+RDEscapeString(user)+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    search+=QString().sprintf("(CART.GROUP_NAME=\"%s\")||",
-			      (const char *)q->value(0).toString());
+    search+=QString("(CART.GROUP_NAME=\"")+
+      RDEscapeString(q->value(0).toString())+"\")||";
   }
   delete q;
   search=search.left(search.length()-2)+QString(")");

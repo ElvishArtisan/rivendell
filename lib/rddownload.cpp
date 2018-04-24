@@ -2,9 +2,7 @@
 //
 // Download a File
 //
-//   (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rddownload.cpp,v 1.5.4.2 2013/01/30 15:03:53 cvs Exp $
+//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -70,9 +68,8 @@ int DownloadErrorCallback(CURL *curl,curl_infotype type,char *msg,size_t size,
 }
 
 
-RDDownload::RDDownload(const QString &station_name,
-		   QObject *parent,const char *name)
-  : QObject(parent,name)
+RDDownload::RDDownload(const QString &station_name,QObject *parent)
+  : QObject(parent)
 {
   conv_aborting=false;
 }
@@ -134,8 +131,8 @@ RDDownload::ErrorCode RDDownload::runDownload(const QString &username,
   // otherwise some versions of LibCurl will throw a 'bad/illegal format' 
   // error.
   //
-  strncpy(url,conv_src_url.toString(conv_src_url.protocol().lower()=="http"),
-	  1024);
+  strncpy(url,conv_src_url.
+	  toString(conv_src_url.protocol().lower().left(4)=="http"),1024);
   curl_easy_setopt(curl,CURLOPT_URL,url);
   curl_easy_setopt(curl,CURLOPT_WRITEDATA,f);
   strncpy(userpwd,username+":"+password,256);

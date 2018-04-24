@@ -2,9 +2,7 @@
 //
 // A Qt-based application for importing Dial Global CDN downloads
 //
-//   (C) Copyright 2012 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rddgimport.h,v 1.1.2.4 2013/02/05 01:35:35 cvs Exp $
+//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -34,18 +32,14 @@
 #include <qlineedit.h>
 #include <qpushbutton.h>
 #include <qdatetime.h>
-#include <qdatetimeedit.h>
-#include <qtextedit.h>
+#include <q3datetimeedit.h>
+#include <q3textedit.h>
+//Added by qt3to4:
+#include <QResizeEvent>
 
-#include <rdconfig.h>
-#include <rddb.h>
 #include <rdgroup.h>
-#include <rdlibrary_conf.h>
-#include <rdstation.h>
 #include <rdbusybar.h>
 #include <rdsvc.h>
-#include <rduser.h>
-#include <rdripc.h>
 
 #include <event.h>
 
@@ -57,7 +51,7 @@ class MainWidget : public QWidget
 {
   Q_OBJECT
  public:
-   MainWidget(QWidget *parent=0,const char *name=0);
+   MainWidget(QWidget *parent=0);
    QSize sizeHint() const;
 
  private slots:
@@ -91,10 +85,10 @@ class MainWidget : public QWidget
   QLineEdit *dg_filename_edit;
   QPushButton *dg_filename_button;
   QLabel *dg_date_label;
-  QDateEdit *dg_date_edit;
+  Q3DateEdit *dg_date_edit;
   QPushButton *dg_date_button;
   QLabel *dg_messages_label;
-  QTextEdit *dg_messages_text;
+  Q3TextEdit *dg_messages_text;
   RDBusyBar *dg_bar;
   QPushButton *dg_process_button;
   QPushButton *dg_close_button;
@@ -102,12 +96,6 @@ class MainWidget : public QWidget
   std::vector<Event *> dg_events;
   RDGroup *dg_group;
   RDSvc *dg_svc;
-  RDRipc *dg_ripc;
-  RDUser *dg_user;
-  RDStation *dg_station;
-  RDLibraryConf *dg_library_conf;
-  RDConfig *dg_config;
-  QSqlDatabase *dg_db;
 };
 
 

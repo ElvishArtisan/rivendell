@@ -2,9 +2,7 @@
 ##
 ## Automake.am for rivendell/utils/rddiscimport
 ##
-##   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-##
-##      $Id: Makefile.am,v 1.1.2.1 2013/12/03 23:34:35 cvs Exp $
+##   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -21,8 +19,8 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -DQTDIR=\"@QT_DIR@\" @QT_CXXFLAGS@ -I$(top_srcdir)/lib
-LIBS = @QT_LIBS@ -L$(top_srcdir)/lib
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -I$(top_srcdir)/lib @QT4_CFLAGS@ -DQT3_SUPPORT -I/usr/include/Qt3Support
+LIBS = -L$(top_srcdir)/lib
 MOC = @QT_MOC@
 
 # The dependency for qt's Meta Object Compiler (moc)
@@ -34,12 +32,12 @@ install-exec-local:
 	mkdir -p $(DESTDIR)$(prefix)/share/rivendell
 	cp rddiscimport_*.qm $(DESTDIR)$(prefix)/share/rivendell
 
-uninstall:
+uninstall-local:	
 	rm -f $(DESTDIR)$(prefix)/share/rivendell/rddiscimport_*.qm
 
 all:	
-	@QT_BIN@/lupdate rddiscimport.pro
-	@QT_BIN@/lrelease rddiscimport.pro
+	lupdate-qt4 rddiscimport.pro
+	lrelease-qt4 rddiscimport.pro
 
 bin_PROGRAMS = rddiscimport
 
@@ -49,7 +47,7 @@ dist_rddiscimport_SOURCES = metalibrary.cpp metalibrary.h\
 
 nodist_rddiscimport_SOURCES = moc_rddiscimport.cpp
 
-rddiscimport_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
+rddiscimport_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
 
 EXTRA_DIST = rddiscimport.pro\
              rddiscimport_de.ts\

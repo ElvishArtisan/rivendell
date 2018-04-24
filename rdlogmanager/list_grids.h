@@ -2,9 +2,7 @@
 //
 // List Rivendell Log Grids
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_grids.h,v 1.5 2010/07/29 19:32:37 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,28 +25,27 @@
 #include <qsqldatabase.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
-#include <qlistview.h>
+#include <q3listview.h>
 
 #include <rduser.h>
 #include <rdmatrix.h>
-
 
 class ListGrids : public QDialog
 {
  Q_OBJECT
  public:
-  ListGrids(QWidget *parent=0,const char *name=0);
+  ListGrids(QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 
  private slots:
   void editData();
-  void doubleClickedData(QListViewItem *,const QPoint &,int);
+  void doubleClickedData(Q3ListViewItem *,const QPoint &,int);
   void closeData();
 
  private:
   void RefreshList();
-  QListView *edit_grids_list;
+  Q3ListView *edit_grids_list;
 };
 
 

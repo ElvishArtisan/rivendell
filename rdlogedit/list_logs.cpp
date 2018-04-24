@@ -2,9 +2,7 @@
 //
 // Select a Rivendell Log
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_logs.cpp,v 1.9 2010/07/29 19:32:37 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,13 +19,16 @@
 //
 
 #include <qpushbutton.h>
+//Added by qt3to4:
+#include <QCloseEvent>
+
 #include <rddb.h>
-#include <list_logs.h>
-#include <globals.h>
 
+#include "globals.h"
+#include "list_logs.h"
 
-ListLogs::ListLogs(QString *logname,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+ListLogs::ListLogs(QString *logname,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   //
   // Fix the Window Size
@@ -50,15 +51,15 @@ ListLogs::ListLogs(QString *logname,QWidget *parent,const char *name)
   //
   // Log List
   //
-  list_log_list=new QListView(this,"list_log_list");
+  list_log_list=new Q3ListView(this);
   list_log_list->setGeometry(10,10,
 			    sizeHint().width()-20,sizeHint().height()-80);
   list_log_list->setAllColumnsShowFocus(true);
   list_log_list->setItemMargin(5);
   connect(list_log_list,
-	  SIGNAL(doubleClicked(QListViewItem *,const QPoint &,int)),
+	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,
-	  SLOT(doubleClickedData(QListViewItem *,const QPoint &,int)));
+	  SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
   list_log_list->addColumn(tr("NAME"));
   list_log_list->setColumnAlignment(0,Qt::AlignLeft);
   list_log_list->addColumn(tr("DESCRIPTION"));
@@ -69,7 +70,7 @@ ListLogs::ListLogs(QString *logname,QWidget *parent,const char *name)
   //
   // Load Button
   //
-  QPushButton *button=new QPushButton(this,"load_button");
+  QPushButton *button=new QPushButton(this);
   button->setGeometry(10,sizeHint().height()-60,80,50);
   button->setFont(button_font);
   button->setText(tr("&OK"));
@@ -78,7 +79,7 @@ ListLogs::ListLogs(QString *logname,QWidget *parent,const char *name)
   //
   // Cancel Button
   //
-  button=new QPushButton(this,"cancel_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   button->setFont(button_font);
   button->setText(tr("&Cancel"));
@@ -107,7 +108,7 @@ void ListLogs::closeEvent(QCloseEvent *e)
 }
 
 
-void ListLogs::doubleClickedData(QListViewItem *,const QPoint &,int)
+void ListLogs::doubleClickedData(Q3ListViewItem *,const QPoint &,int)
 {
   okButtonData();
 }
@@ -115,7 +116,7 @@ void ListLogs::doubleClickedData(QListViewItem *,const QPoint &,int)
 
 void ListLogs::okButtonData()
 {
-  QListViewItem *item=list_log_list->selectedItem();
+  Q3ListViewItem *item=list_log_list->selectedItem();
   if(item==NULL) {
     return;
   }
@@ -134,36 +135,14 @@ void ListLogs::RefreshList()
 {
   RDSqlQuery *q;
   QString sql;
-  QListViewItem *l;
+  Q3ListViewItem *l;
 
   list_log_list->clear(); // Note: clear here, in case user has no perms.
 
   sql="select NAME,DESCRIPTION,SERVICE from LOGS where TYPE=0";
-
-  if (rdstation_conf->broadcastSecurity() == RDStation::UserSec) {
-    QStringList services_list;
-    QString sql_where;
-
-    services_list = rduser->services();
-    if(services_list.size()==0) {
-      return;
-    }
-
-    sql_where=" and (";
-    for ( QStringList::Iterator it = services_list.begin(); 
-          it != services_list.end(); ++it ) {
-      sql_where+=QString().sprintf("SERVICE=\"%s\"||",
-                             (const char *)*it);
-    }
-    sql_where=sql_where.left(sql_where.length()-2);
-    sql_where+=")";
-
-    sql=sql+sql_where;
-  } // else no filter for RDStation::HostSec
-
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    l=new QListViewItem(list_log_list);
+    l=new Q3ListViewItem(list_log_list);
     l->setText(0,q->value(0).toString());
     l->setText(1,q->value(1).toString());
     l->setText(2,q->value(2).toString());

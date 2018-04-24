@@ -2,9 +2,7 @@
 #
 # The utils/ QMake project file for Rivendell
 #
-# (C) Copyright 2003-2006 Fred Gleason <fredg@paravelsystems.com>
-#
-#      $Id: rddiscimport.pro,v 1.1.2.2 2013/12/04 18:06:36 cvs Exp $
+# (C) Copyright 2003-2006,2016 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as

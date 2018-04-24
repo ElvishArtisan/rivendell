@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell Jack Client Configuration
 //
-//   (C) Copyright 2012 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_jack_client.cpp,v 1.1.2.1 2012/11/14 02:24:23 cvs Exp $
+//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,27 +18,24 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <math.h>
-
-#include <globals.h>
 #include <rddb.h>
-#include <edit_jack_client.h>
+#include <rdescape_string.h>
 
-EditJackClient::EditJackClient(RDStation *station,
-			       QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+#include "edit_jack_client.h"
+
+EditJackClient::EditJackClient(RDStation *station,QWidget *parent)
+  : QDialog(parent)
 {
-  QString sql;
-
   edit_station=station;
+  edit_id=-1;
 
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
 
-  setCaption(tr("JACK Client Configuration for ")+edit_station->name());
+  setWindowTitle("RDAdmin - "+tr("JACK Client Configuration for ")+
+		 edit_station->name());
 
   //
   // Create Fonts
@@ -58,7 +53,7 @@ EditJackClient::EditJackClient(RDStation *station,
     new QLabel(edit_jack_description_edit,tr("Description:"),this);
   edit_jack_description_label->setFont(font);
   edit_jack_description_label->
-    setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // JACK Client Description
@@ -68,12 +63,12 @@ EditJackClient::EditJackClient(RDStation *station,
     new QLabel(edit_jack_command_line_edit,tr("Command Line:"),this);
   edit_jack_command_line_label->setFont(font);
   edit_jack_command_line_label->
-    setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   //  Ok Button
   //
-  edit_ok_button=new QPushButton(this,"edit_ok_button");
+  edit_ok_button=new QPushButton(this);
   edit_ok_button->setDefault(true);
   edit_ok_button->setFont(font);
   edit_ok_button->setText(tr("&OK"));
@@ -82,7 +77,7 @@ EditJackClient::EditJackClient(RDStation *station,
   //
   //  Cancel Button
   //
-  edit_cancel_button=new QPushButton(this,"edit_cancel_button");
+  edit_cancel_button=new QPushButton(this);
   edit_cancel_button->setFont(font);
   edit_cancel_button->setText(tr("&Cancel"));
   connect(edit_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
@@ -101,20 +96,34 @@ QSizePolicy EditJackClient::sizePolicy() const
 }
 
 
-int EditJackClient::exec(QString *desc,QString *cmd)
+int EditJackClient::exec(int id)
 {
-  edit_description=desc;
-  edit_jack_description_edit->setText(*desc);
-  edit_command_line=cmd;
-  edit_jack_command_line_edit->setText(*cmd);
+  edit_id=id;
+
+  QString sql=QString("select ")+
+    "DESCRIPTION,"+
+    "COMMAND_LINE "+
+    "from JACK_CLIENTS where "+
+    QString().sprintf("ID=%d",id);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(q->first()) {
+    edit_jack_description_edit->setText(q->value(0).toString());
+    edit_jack_command_line_edit->setText(q->value(1).toString());
+  }
+  delete q;
   return QDialog::exec();
 }
 
 
 void EditJackClient::okData()
 {
-  *edit_description=edit_jack_description_edit->text();
-  *edit_command_line=edit_jack_command_line_edit->text();
+  QString sql=QString("update JACK_CLIENTS set ")+
+    "DESCRIPTION=\""+RDEscapeString(edit_jack_description_edit->text())+"\","+
+    "COMMAND_LINE=\""+RDEscapeString(edit_jack_command_line_edit->text())+"\" "+
+    "where "+
+    QString().sprintf("ID=%d",edit_id);
+  RDSqlQuery::run(sql);
+
   done(0);
 }
 

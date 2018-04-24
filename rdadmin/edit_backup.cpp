@@ -2,9 +2,7 @@
 //
 // Edit an automatic backup configuration.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_backup.cpp,v 1.10 2010/07/29 19:32:34 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,28 +18,21 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <qsqldatabase.h>
-#include <qmessagebox.h>
+#include <QMessageBox>
+#include <QPushButton>
 
 #include <rd.h>
-#include <rdtextvalidator.h>
 
-#include <edit_backup.h>
+#include "edit_backup.h"
 
-
-EditBackup::EditBackup(RDStation *station,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+EditBackup::EditBackup(RDStation *station,QWidget *parent)
+  : QDialog(parent)
 {
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   //
   // Create Fonts
@@ -52,51 +43,44 @@ EditBackup::EditBackup(RDStation *station,QWidget *parent,const char *name)
   big_font.setPixelSize(14);
 
   //
-  // Text Validator
-  //
-  RDTextValidator *validator=new RDTextValidator(this,"validator");
-
-  //
   // Dialog Name
   //
   edit_station=station;
-  setCaption(tr("Backup config for ")+station->name());
+  setWindowTitle("RDAdmin - "+tr("Backup config for ")+station->name());
 
   //
   // Backup Life
   //
-  edit_life_box=new QSpinBox(this,"edit_life_box");
+  edit_life_box=new QSpinBox(this);
   edit_life_box->setGeometry(155,10,40,19);
   edit_life_box->setMinValue(0);
   edit_life_box->setMaxValue(30);
-  QLabel *edit_life_box_label=new QLabel(edit_life_box,tr("Keep Backups For:"),
-					 this,"edit_life_box_label");
+  QLabel *edit_life_box_label=
+    new QLabel(edit_life_box,tr("Keep Backups For:"),this);
   edit_life_box_label->setGeometry(10,10,140,19);
   edit_life_box_label->setFont(small_font);
-  edit_life_box_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
-  QLabel *edit_life_box_unit=new QLabel(tr("days"),this,"edit_life_box_unit");
+  edit_life_box_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  QLabel *edit_life_box_unit=new QLabel(tr("days"),this);
   edit_life_box_unit->setGeometry(200,10,120,19);
   edit_life_box_unit->setFont(small_font);
-  edit_life_box_unit->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  edit_life_box_unit->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
   connect(edit_life_box,SIGNAL(valueChanged(int)),
 	  this,SLOT(lifeChangedData(int)));
 
   //
   // Backup Directory
   //
-  edit_path_edit=new QLineEdit(this,"edit_life_box");
+  edit_path_edit=new QLineEdit(this);
   edit_path_edit->setGeometry(155,35,sizeHint().width()-165,19);
-  edit_path_edit->setValidator(validator);
-  edit_path_label=new QLabel(edit_life_box,tr("Backup Directory:"),
-			     this,"edit_path_label");
+  edit_path_label=new QLabel(edit_life_box,tr("Backup Directory:"),this);
   edit_path_label->setGeometry(10,35,140,19);
   edit_path_label->setFont(small_font);
-  edit_path_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  edit_path_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   //  Ok Button
   //
-  QPushButton *ok_button=new QPushButton(this,"ok_button");
+  QPushButton *ok_button=new QPushButton(this);
   ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   ok_button->setDefault(true);
   ok_button->setFont(small_font);
@@ -106,7 +90,7 @@ EditBackup::EditBackup(RDStation *station,QWidget *parent,const char *name)
   //
   //  Cancel Button
   //
-  QPushButton *cancel_button=new QPushButton(this,"cancel_button");
+  QPushButton *cancel_button=new QPushButton(this);
   cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   cancel_button->setFont(small_font);

@@ -2,9 +2,7 @@
 //
 // List Rivendell Users
 //
-//   (C) Copyright 2002-2008 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_users.h,v 1.11 2010/07/29 19:32:35 cvs Exp $
+//   (C) Copyright 2002-2008,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,22 +21,19 @@
 #ifndef LIST_USERS_H
 #define LIST_USERS_H
 
-#include <qdialog.h>
-#include <qpixmap.h>
-#include <qradiobutton.h>
-#include <qsqldatabase.h>
-#include <qpushbutton.h>
-#include <qpixmap.h>
+#include <QDialog>
+#include <QPixmap>
+#include <QPushButton>
+#include <QRadioButton>
+#include <QResizeEvent>
 
 #include <rdlistviewitem.h>
-#include <rddb.h>
-
 
 class ListUsers : public QDialog
 {
   Q_OBJECT
  public:
-  ListUsers(const QString &admin_name,QWidget *parent=0,const char *name=0);
+  ListUsers(const QString &admin_name,QWidget *parent=0);
   ~ListUsers();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -47,7 +42,7 @@ class ListUsers : public QDialog
   void addData();
   void editData();
   void deleteData();
-  void doubleClickedData(QListViewItem *item,const QPoint &pt,int col);
+  void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
   void closeData();
 
  protected:

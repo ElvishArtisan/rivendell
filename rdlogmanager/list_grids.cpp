@@ -2,9 +2,7 @@
 //
 // List Rivendell Log Grids
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_grids.cpp,v 1.10 2010/07/29 19:32:37 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,7 +20,7 @@
 
 #include <qdialog.h>
 #include <qstring.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qpainter.h>
 #include <qmessagebox.h>
 
@@ -35,8 +33,8 @@
 #include <edit_grid.h>
 #include <globals.h>
 
-ListGrids::ListGrids(QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+ListGrids::ListGrids(QWidget *parent)
+  : QDialog(parent,"",true)
 {
   setCaption(tr("Log Grids"));
 
@@ -59,7 +57,7 @@ ListGrids::ListGrids(QWidget *parent,const char *name)
   //
   // Grids List
   //
-  edit_grids_list=new QListView(this,"edit_grids_list");
+  edit_grids_list=new Q3ListView(this);
   edit_grids_list->setGeometry(10,10,
 				sizeHint().width()-20,sizeHint().height()-80);
   edit_grids_list->setAllColumnsShowFocus(true);
@@ -67,13 +65,13 @@ ListGrids::ListGrids(QWidget *parent,const char *name)
   edit_grids_list->addColumn(tr("Name"));
   edit_grids_list->addColumn(tr("Description"));
   connect(edit_grids_list,
-	  SIGNAL(doubleClicked(QListViewItem *,const QPoint &,int)),
-	  this,SLOT(doubleClickedData(QListViewItem *,const QPoint &,int)));
+	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
+	  this,SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
 
   //
   //  Edit Button
   //
-  QPushButton *button=new QPushButton(this,"edit_button");
+  QPushButton *button=new QPushButton(this);
   button->setGeometry(10,sizeHint().height()-60,80,50);
   button->setFont(bold_font);
   button->setText(tr("&Edit"));
@@ -82,7 +80,7 @@ ListGrids::ListGrids(QWidget *parent,const char *name)
   //
   //  Close Button
   //
-  button=new QPushButton(this,"close_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   button->setDefault(true);
   button->setFont(bold_font);
@@ -107,17 +105,17 @@ QSizePolicy ListGrids::sizePolicy() const
 
 void ListGrids::editData()
 {
-  QListViewItem *item=edit_grids_list->selectedItem();
+  Q3ListViewItem *item=edit_grids_list->selectedItem();
   if(item==NULL) {
     return;
   }
-  EditGrid *grid_dialog=new EditGrid(item->text(0),this,"grid_dialog");
+  EditGrid *grid_dialog=new EditGrid(item->text(0),this);
   grid_dialog->exec();
   delete grid_dialog;
 }
 
 
-void ListGrids::doubleClickedData(QListViewItem *item,const QPoint &,int)
+void ListGrids::doubleClickedData(Q3ListViewItem *item,const QPoint &,int)
 {
   editData();
 }
@@ -131,36 +129,14 @@ void ListGrids::closeData()
 
 void ListGrids::RefreshList()
 {
-  QListViewItem *prev_item=edit_grids_list->selectedItem();
+  Q3ListViewItem *prev_item=edit_grids_list->selectedItem();
   QString sql="select NAME,DESCRIPTION from SERVICES";
-
-  if (rdstation_conf->broadcastSecurity() == RDStation::UserSec
-      && rduser != NULL) {
-    QStringList services_list;
-    QString sql_where;
-
-    services_list = rduser->services();
-    if(services_list.size()==0) {
-      return;
-    }
-
-    sql_where=" where (";
-    for ( QStringList::Iterator it = services_list.begin(); 
-          it != services_list.end(); ++it ) {
-      sql_where+=QString().sprintf("NAME=\"%s\"||",
-                             (const char *)*it);
-    }
-    sql_where=sql_where.left(sql_where.length()-2);
-    sql_where+=")";
-
-    sql=sql+sql_where;
-  } // else no filter for RDStation::HostSec
 
   edit_grids_list->clear();
   RDSqlQuery *q=new RDSqlQuery(sql);
-  QListViewItem *item=NULL;
+  Q3ListViewItem *item=NULL;
   while(q->next()) {
-    item=new QListViewItem(edit_grids_list);
+    item=new Q3ListViewItem(edit_grids_list);
     item->setText(0,q->value(0).toString());
     item->setText(1,q->value(1).toString());
   }

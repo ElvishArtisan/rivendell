@@ -2,9 +2,7 @@
 //
 // List Rivendell Reports
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_reports.h,v 1.7 2010/07/29 19:32:35 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,34 +21,38 @@
 #ifndef LIST_REPORTS_H
 #define LIST_REPORTS_H
 
-#include <qdialog.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
-#include <qpixmap.h>
-#include <qradiobutton.h>
-#include <qsqldatabase.h>
+#include <QDialog>
+#include <QListView>
+#include <QPushButton>
 
+#include <rdsqltablemodel.h>
 
 class ListReports : public QDialog
 {
   Q_OBJECT
-  public:
-   ListReports(QWidget *parent=0,const char *name=0);
-   ~ListReports();
-   QSize sizeHint() const;
-   QSizePolicy sizePolicy() const;
+ public:
+  ListReports(QWidget *parent=0);
+  ~ListReports();
+  QSize sizeHint() const;
+  QSizePolicy sizePolicy() const;
 
-  private slots:
-   void addData();
-   void editData();
-   void deleteData();
-   void doubleClickedData(QListBoxItem *item);
-   void closeData();
+ private slots:
+  void addData();
+  void editData();
+  void deleteData();
+  void doubleClickedData(const QModelIndex &index);
+  void closeData();
 
-  private:
-   void DeleteReport(QString rptname);
-   void RefreshList(QString rptname="");
-   QListBox *list_box;
+ protected:
+  void resizeEvent(QResizeEvent *e);
+
+ private:
+  RDSqlTableModel *list_model;
+  QListView *list_view;
+  QPushButton *list_add_button;
+  QPushButton *list_edit_button;
+  QPushButton *list_delete_button;
+  QPushButton *list_close_button;
 };
 
 

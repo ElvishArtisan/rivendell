@@ -2,9 +2,7 @@
 //
 // List Rivendell Log Events
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_events.h,v 1.17.8.2 2014/01/10 19:32:55 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,19 +27,21 @@
 #include <qsqldatabase.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
-#include <qlistview.h>
+#include <q3listview.h>
 #include <qcombobox.h>
+//Added by qt3to4:
+#include <QResizeEvent>
+#include <QCloseEvent>
 
 #include <rduser.h>
 #include <rdmatrix.h>
 #include <rddb.h>
 
-
 class ListEvents : public QDialog
 {
  Q_OBJECT
  public:
-  ListEvents(QString *eventname,QWidget *parent=0,const char *name=0);
+  ListEvents(QString *eventname,QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 
@@ -50,7 +50,7 @@ class ListEvents : public QDialog
   void editData();
   void deleteData();
   void renameData();
-  void doubleClickedData(QListViewItem *,const QPoint &,int);
+  void doubleClickedData(Q3ListViewItem *,const QPoint &,int);
   void filterActivatedData(int id);
   void closeData();
   void okData();
@@ -62,14 +62,14 @@ class ListEvents : public QDialog
 
  private:
   void RefreshList();
-  void RefreshItem(QListViewItem *item,std::vector<QString> *new_events=NULL);
-  void UpdateItem(QListViewItem *item,QString name);
-  void WriteItem(QListViewItem *item,RDSqlQuery *q);
+  void RefreshItem(Q3ListViewItem *item,std::vector<QString> *new_events=NULL);
+  void UpdateItem(Q3ListViewItem *item,QString name);
+  void WriteItem(Q3ListViewItem *item,RDSqlQuery *q);
   int ActiveEvents(QString event_name,QString *clock_list);
   void DeleteEvent(QString event_name);
   QString GetEventFilter(QString svc_name);
   QString GetNoneFilter();
-  QListView *edit_events_list;
+  Q3ListView *edit_events_list;
   QString *edit_eventname;
   QLabel *edit_filter_label;
   QComboBox *edit_filter_box;

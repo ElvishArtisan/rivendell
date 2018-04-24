@@ -2,9 +2,7 @@
 //
 // Cart slot label widget for RDCartSlot
 //
-//   (C) Copyright 2012 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdslotbox.h,v 1.3.2.7 2014/02/06 20:43:47 cvs Exp $
+//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,10 +25,15 @@
 #include <qtimer.h>
 #include <qdatetime.h>
 #include <qpushbutton.h>
-#include <qprogressbar.h>
+#include <q3progressbar.h>
 #include <qpalette.h>
 #include <qpixmap.h>
 #include <qlabel.h>
+//Added by qt3to4:
+#include <QDragEnterEvent>
+#include <QDropEvent>
+#include <QMouseEvent>
+#include <QPaintEvent>
 
 #include <rdlabel.h>
 #include <rdlog_line.h>
@@ -52,7 +55,7 @@ class RDSlotBox : public QWidget
   Q_OBJECT
  public:
   enum BarMode {Transitioning=0,Stopping=1};
-  RDSlotBox(RDPlayDeck *deck,RDAirPlayConf *conf,QWidget *parent=0);
+  RDSlotBox(RDPlayDeck *deck,RDAirPlayConf *conf,QWidget *parent);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
   RDLogLine *logLine();
@@ -91,7 +94,7 @@ class RDSlotBox : public QWidget
   QLabel *line_talktime_label;
   QLabel *line_up_label;
   QLabel *line_down_label;
-  QProgressBar *line_position_bar;
+  Q3ProgressBar *line_position_bar;
   QTime line_end_time;
   int log_id;
   RDLogLine *line_logline;

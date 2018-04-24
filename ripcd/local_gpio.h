@@ -2,9 +2,7 @@
 //
 // A Rivendell switcher driver for MeasurementComputing GPIO cards.
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: local_gpio.h,v 1.14 2010/08/03 23:39:26 cvs Exp $
+//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -35,7 +33,7 @@ class LocalGpio : public Switcher
 {
  Q_OBJECT
  public:
-  LocalGpio(RDMatrix *matrix,QObject *parent=0,const char *name=0);
+  LocalGpio(RDMatrix *matrix,QObject *parent=0);
   ~LocalGpio();
   RDMatrix::Type type();
   unsigned gpiQuantity();

@@ -2,9 +2,7 @@
 //
 // Edit A Rivendell Log Grid
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_grid.h,v 1.8.8.1 2013/10/11 17:16:49 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,19 +24,21 @@
 #include <qdialog.h>
 #include <qsqldatabase.h>
 #include <qlabel.h>
-#include <qpopupmenu.h>
+#include <q3popupmenu.h>
+//Added by qt3to4:
+#include <QPaintEvent>
+#include <QCloseEvent>
 
 #include <rdpushbutton.h>
 
 #include <rdlistview.h>
 #include <rdclock.h>
 
-
 class EditGrid : public QDialog
 {
  Q_OBJECT
  public:
-  EditGrid(QString servicename,QWidget *parent=0,const char *name=0);
+  EditGrid(QString servicename,QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 
@@ -62,7 +62,7 @@ class EditGrid : public QDialog
   QString edit_servicename;
   QString current_clockname;
   RDPushButton *edit_hour_button[7][24];
-  QPopupMenu *edit_right_menu;
+  Q3PopupMenu *edit_right_menu;
   int edit_rightclick_id;
 };
 

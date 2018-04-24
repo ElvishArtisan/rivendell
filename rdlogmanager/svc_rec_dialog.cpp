@@ -2,9 +2,7 @@
 //
 // A Services/Reports Management Dialog.
 //
-//   (C) Copyright 2002-2005 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: svc_rec_dialog.cpp,v 1.10 2010/07/29 19:32:37 cvs Exp $
+//   (C) Copyright 2002-2005,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,8 +18,6 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-
-#include <qapplication.h>
 #include <qwidget.h>
 #include <qpushbutton.h>
 #include <qrect.h>
@@ -34,6 +30,7 @@
 #include <qsignalmapper.h>
 #include <qfile.h>
 
+#include <rdapplication.h>
 #include <rdreport.h>
 #include <rddatedecode.h>
 
@@ -43,9 +40,8 @@
 //
 // Global Classes
 //
-SvcRecDialog::SvcRecDialog(const QString &svcname,
-			   QWidget *parent,const char *name)
-  :QDialog(parent,name,true)
+SvcRecDialog::SvcRecDialog(const QString &svcname,QWidget *parent)
+  :QDialog(parent,"",true)
 {
   QFont font;
 
@@ -58,7 +54,7 @@ SvcRecDialog::SvcRecDialog(const QString &svcname,
   //
   // Datepicker
   //
-  date_picker=new SvcRec(svcname,this,"date_picker");
+  date_picker=new SvcRec(svcname,this);
   date_picker->setGeometry(10,10,
 			   date_picker->sizeHint().width(),
 			   date_picker->sizeHint().height());
@@ -68,21 +64,21 @@ SvcRecDialog::SvcRecDialog(const QString &svcname,
   //
   // Delete Button
   //
-  date_delete_button=new QPushButton(this,"date_delete_button");
+  date_delete_button=new QPushButton(this);
   date_delete_button->
     setGeometry(10,sizeHint().height()-60,80,50);
   date_delete_button->setFont(font);
   date_delete_button->setText(tr("&Purge\nData"));
   connect(date_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
 #ifndef WIN32
-  date_delete_button->setEnabled(rduser->deleteRec()&&
+  date_delete_button->setEnabled(rda->user()->deleteRec()&&
     date_picker->dayActive(date_picker->date().day()));
 #endif  // WIN32
 
   //
   // Close Button
   //
-  QPushButton *button=new QPushButton(this,"close_button");
+  QPushButton *button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   button->setFont(font);\
   button->setText(tr("&Close"));
@@ -115,7 +111,7 @@ void SvcRecDialog::dateSelectedData(const QDate &,bool active)
   date_delete_button->
     setEnabled(date_picker->dayActive(date_picker->date().day()));
 #else
-  date_delete_button->setEnabled(rduser->deleteRec()&&
+  date_delete_button->setEnabled(rda->user()->deleteRec()&&
     date_picker->dayActive(date_picker->date().day()));
 #endif  // WIN32
 }

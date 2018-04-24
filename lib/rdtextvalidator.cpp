@@ -2,9 +2,7 @@
 //
 // Validate a string as being valid for a SQL text datatype.
 //
-//   (C) Copyright 2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdtextvalidator.cpp,v 1.11 2010/07/29 19:32:34 cvs Exp $
+//   (C) Copyright 2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,7 +20,6 @@
 
 #include <rdtextvalidator.h>
 
-
 RDTextValidator::RDTextValidator(QObject *parent,const char *name,bool allow_quote)
   : QValidator(parent,name)
 {
@@ -37,7 +34,11 @@ RDTextValidator::RDTextValidator(QObject *parent,const char *name,bool allow_quo
 
 QValidator::State RDTextValidator::validate(QString &input,int &pos) const
 {
-  char c=input.at(pos-1).latin1();
+  if (input.length()==0) {
+    return QValidator::Acceptable;
+  }
+  int inspection_pos = std::max(0,std::min(input.length()-1,pos));
+  char c=input.at(inspection_pos).latin1();
   for(unsigned i=0;i<banned_chars.size();i++) {
     if(banned_chars[i]==c) {
       return QValidator::Invalid;

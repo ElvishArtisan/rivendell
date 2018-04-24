@@ -42,6 +42,7 @@
 //
 // Function Prototypes
 //
+#ifndef WIN32
 extern int RDReadPost(char *,int);
 extern int RDPutPostString(char *,char *,char *,int);
 extern int RDFindPostString(const char *,const char *,char *,int);
@@ -69,6 +70,7 @@ extern QString RDAuthenticateSession(long int session_id,
 				     const QHostAddress &addr);
 extern void RDLogoutSession(long int session_id,const QHostAddress &addr);
 extern bool RDParsePost(std::map<QString,QString> *vars);
+#endif  // WIN32
 extern QString RDXmlField(const QString &tag,const QString &value,
 			  const QString &attrs="");
 extern QString RDXmlField(const QString &tag,const char *value,
@@ -81,16 +83,22 @@ extern QString RDXmlField(const QString &tag,const bool value,
 			  const QString &attrs="");
 extern QString RDXmlField(const QString &tag,const QDateTime &value,
 			  const QString &attrs="");
+extern QString RDXmlField(const QString &tag,const QDate &value,
+			  const QString &attrs="");
 extern QString RDXmlField(const QString &tag,const QTime &value,
 			  const QString &attrs="");
 extern QString RDXmlField(const QString &tag);
+extern QString RDXmlDate(const QDate &date);
+extern QString RDXmlTime(const QTime &time);
+extern QString RDXmlDateTime(const QDateTime &datetime);
+extern QString RDXmlTimeZoneSuffix();
 extern QString RDXmlEscape(const QString &str);
 extern QString RDXmlUnescape(const QString &str);
 extern QString RDUrlEscape(const QString &str);
 extern QString RDUrlUnescape(const QString &str);
 extern QString RDWebDateTime(const QDateTime &datetime);
-extern QDateTime RDGetWebDateTime(const QString &str);
-extern QTime RDGetWebTime(const QString &str);
-extern int RDGetWebMonth(const QString &str);
+extern QDateTime RDGetWebDateTime(const QString &str,bool *ok=NULL);
+extern QTime RDGetWebTime(const QString &str,bool *ok=NULL);
+extern int RDGetWebMonth(const QString &str,bool *ok=NULL);
 
 #endif  // RDWEB_H

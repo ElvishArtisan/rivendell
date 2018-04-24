@@ -2,9 +2,7 @@
 //
 // Abstract a Rivendell Switcher Matrix
 //
-//   (C) Copyright 2002-2007 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdmatrix.cpp,v 1.28.8.11 2014/02/17 02:19:01 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -62,7 +60,13 @@ bool __mx_primary_controls[RDMatrix::LastType][RDMatrix::LastControl]=
     {0,0,0,0,0,0,0,0,0,1,0,1,1,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0},  // 360 AM16
     {0,0,1,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,1,1,0,0,0,0,1,0,0,0,0},  // LiveWire LWRP GPIO
     {0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0},  // BT Sentinel 4 Web
-    {0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0}   // BT GPI-16
+    {0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0},  // BT GPI-16
+    {0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0},  // Modem Lines
+    {0,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0},  // Software Authority
+    {0,1,1,1,0,0,1,1,0,0,0,1,1,0,0,0,1,1,1,1,0,0,0,0,1,0,0,0,0},  // SAS 16000
+    {0,1,0,0,0,0,0,0,1,0,0,1,1,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0},  // Ross NK/SCP
+    {0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0},  // BT ADMS 44.22
+    {0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0}   // BT SS 4.1 MLR
   };
 bool __mx_backup_controls[RDMatrix::LastType][RDMatrix::LastControl]=
   {
@@ -99,7 +103,13 @@ bool __mx_backup_controls[RDMatrix::LastType][RDMatrix::LastControl]=
     {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},  // 360 AM16
     {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},  // LiveWire LWRP GPIO
     {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},  // BT Sentinel 4 Web
-    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}   // BT GPI-16
+    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},  // BT GPI-16
+    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},  // Modem Lines
+    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},  // Software Authority
+    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},  // SAS 16000
+    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},  // ROSS NK/SCP
+    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},  // BT ADMS 44.22
+    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}   // BT SS 4.1 MLR
   };
 
 int __mx_default_values[RDMatrix::LastType][RDMatrix::LastControl]=
@@ -137,7 +147,13 @@ int __mx_default_values[RDMatrix::LastType][RDMatrix::LastControl]=
     {0,0,0,0,0,0,0,0,0,0,0,16,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0},  // 360 AM16
     {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5,0},    // LiveWire  LWRP GPIO
     {1,0,0,0,0,0,0,0,0,0,0,4,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0},   // BT Sentinel 4 Web
-    {0,0,0,0,0,0,0,0,0,0,0,0,0,16,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0}   // BT GPI-16
+    {0,0,0,0,0,0,0,0,0,0,0,0,0,16,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0},  // BT GPI-16
+    {0,0,0,0,0,0,0,0,0,0,0,0,0,4,2,0,0,0,0,0,0,0,0,0,0,0,0,1,0},   // Modem Lines
+    {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0},   // Software Authority
+    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0},   // SAS 16000
+    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0},  // Ross NK/SCP
+    {0,0,0,0,0,0,0,0,0,0,0,8,2,16,13,0,0,0,0,0,0,0,0,0,0,0,0,1,0}, // BT ADMS 44.22
+    {0,0,0,0,0,0,0,0,0,0,0,4,1,8,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0}  // BT SS 4.1 MLR
   };
 
 RDMatrix::RDMatrix(const QString &station,int matrix)
@@ -451,12 +467,12 @@ QString RDMatrix::inputName(int input) const
 
 RDMatrix::Mode RDMatrix::inputMode(int input) const
 {
-  QString sql=QString().sprintf("select CHANNEL_MODE from INPUTS where \
-                                 STATION_NAME=\"%s\" && \
-                                 MATRIX=%d && NUMBER=%d",
-				(const char *)mx_station,
-				mx_number,
-				input);
+  QString sql=QString("select ")+
+    "CHANNEL_MODE "+
+    "from INPUTS where "+
+    "(STATION_NAME=\""+RDEscapeString(mx_station)+"\")&&"+
+    QString().sprintf("(MATRIX=%d)&&",mx_number)+
+    QString().sprintf("(NUMBER=%d)",input);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;
@@ -546,6 +562,163 @@ void RDMatrix::setDisplays(int quan) const
 }
 
 
+void RDMatrix::resizeEndpoints(RDMatrix::Endpoint pt,int size,bool grow_only)
+{
+  QString sql;
+  RDSqlQuery *q;
+  RDSqlQuery *q1;
+  QString table="INPUTS";
+  QString label=QObject::tr("Input");
+
+  if(pt==RDMatrix::Output) {
+    table="OUTPUTS";
+    label=QObject::tr("Output");
+  }
+  sql=QString("select ID from ")+table+" where "+
+    "(STATION_NAME=\""+RDEscapeString(station())+"\")&&"+
+    QString().sprintf("(MATRIX=%d)",matrix());
+  q=new RDSqlQuery(sql);
+  for(int i=q->size();i<size;i++) {
+    sql=QString("insert into ")+table+" set "+
+      "STATION_NAME=\""+RDEscapeString(station())+"\","+
+      QString().sprintf("MATRIX=%d,",matrix())+
+      QString().sprintf("NUMBER=%d,",i+1)+
+      "NAME=\""+RDEscapeString(label+" "+QString().sprintf("%03d",i+1))+
+      "\"";
+    q1=new RDSqlQuery(sql);
+    delete q1;
+  }
+  delete q;
+
+  if(!grow_only) {
+    sql=QString("delete from ")+table+" where "+
+      "(STATION_NAME=\""+RDEscapeString(station())+"\")&&"+
+      QString().sprintf("(MATRIX=%d)&&",matrix())+
+      QString().sprintf("(NUMBER>%d)",size);
+    q=new RDSqlQuery(sql);
+    delete q;
+  }
+}
+
+
+void RDMatrix::resizeVguestResources(VguestType type,int size,bool grow_only)
+{
+  QString sql;
+  RDSqlQuery *q;
+  RDSqlQuery *q1;
+
+  sql=QString("select ID from VGUEST_RESOURCES where ")+
+    "(STATION_NAME=\""+RDEscapeString(station())+"\")&&"+
+    QString().sprintf("(MATRIX_NUM=%d)&&",matrix())+
+    QString().sprintf("(VGUEST_TYPE=%d)",(int)type);
+  q=new RDSqlQuery(sql);
+  for(int i=q->size();i<size;i++) {
+    sql=QString("insert into VGUEST_RESOURCES set ")+
+      "STATION_NAME=\""+RDEscapeString(station())+"\","+
+      QString().sprintf("MATRIX_NUM=%d,",matrix())+
+      QString().sprintf("VGUEST_TYPE=%d,",(int)type)+
+      QString().sprintf("NUMBER=%d",i+1);
+    q1=new RDSqlQuery(sql);
+    delete q1;
+  }
+
+  if(!grow_only) {
+    sql=QString("delete from VGUEST_RESOURCES where ")+
+      "(STATION_NAME=\""+RDEscapeString(station())+"\")&&"+
+      QString().sprintf("(MATRIX_NUM=%d)&&",matrix())+
+      QString().sprintf("(VGUEST_TYPE=%d)&&",(int)type)+
+      QString().sprintf("(NUMBER>%d)",size);
+    q=new RDSqlQuery(sql);
+    delete q;
+  }
+}
+
+
+bool RDMatrix::create(const QString &stationname,int matrix_num,
+		      RDMatrix::Type type)
+{
+  bool ret=false;
+
+  QString sql=QString("insert into MATRICES set ")+
+    "STATION_NAME=\""+
+    RDEscapeString(stationname)+"\","+
+    "NAME=\""+QObject::tr("New Switcher")+"\","+
+    "GPIO_DEVICE=\""+RD_DEFAULT_GPIO_DEVICE+"\","+
+    QString().sprintf("MATRIX=%d,",matrix_num)+
+    "PORT=0,"+
+    QString().sprintf("TYPE=%d,",type)+
+    QString().sprintf("INPUTS=%d,",RDMatrix::
+		      defaultControlValue(type,RDMatrix::InputsControl))+
+    QString().sprintf("OUTPUTS=%d,",RDMatrix::
+		      defaultControlValue(type,RDMatrix::OutputsControl))+
+    QString().sprintf("GPIS=%d,",RDMatrix::
+		      defaultControlValue(type,RDMatrix::GpisControl))+
+    QString().sprintf("GPOS=%d,",RDMatrix::
+		      defaultControlValue(type,RDMatrix::GposControl))+
+    QString().sprintf("PORT_TYPE=%d,",RDMatrix::
+		      defaultControlValue(type,RDMatrix::PortTypeControl))+
+    QString().sprintf("PORT_TYPE_2=%d",RDMatrix::NoPort);
+  RDSqlQuery::run(sql,&ret);
+
+  return ret;
+}
+
+
+void RDMatrix::remove(const QString &stationname,int matrix_num)
+{
+  QString sql=QString("delete from MATRICES where ")+
+    "(STATION_NAME=\""+RDEscapeString(stationname)+"\")&&"+
+    QString().sprintf("(MATRIX=%d)",matrix_num);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString("delete from INPUTS where ")+
+    "(STATION_NAME=\""+RDEscapeString(stationname)+"\")&&"+
+    QString().sprintf("(MATRIX=%d)",matrix_num);
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString("delete from OUTPUTS where ")+
+    "(STATION_NAME=\""+RDEscapeString(stationname)+"\")&&"+
+    QString().sprintf("(MATRIX=%d)",matrix_num);
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString("delete from SWITCHER_NODES where ")+
+    "(STATION_NAME=\""+RDEscapeString(stationname)+"\")&&"+
+    QString().sprintf("(MATRIX=%d)",matrix_num);
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString("delete from GPIS where ")+
+    "(STATION_NAME=\""+RDEscapeString(stationname)+"\")&&"+
+    QString().sprintf("(MATRIX=%d)",matrix_num);
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString("delete from GPOS where ")+
+    "(STATION_NAME=\""+RDEscapeString(stationname)+"\")&&"+
+    QString().sprintf("(MATRIX=%d)",matrix_num);
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString("delete from VGUEST_RESOURCES where ")+
+    "(STATION_NAME=\""+RDEscapeString(stationname)+"\")&&"+
+    QString().sprintf("MATRIX_NUM=%d",matrix_num);
+  q=new RDSqlQuery(sql);
+  delete q;
+}
+
+
+bool RDMatrix::exists(const QString &stationname,int matrix_num)
+{
+  bool ret=false;
+
+  QString sql=QString("select MATRIX from MATRICES where ")+
+    "(STATION_NAME=\""+RDEscapeString(stationname)+"\")&&"+
+    QString().sprintf("(MATRIX=%d)",matrix_num);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  ret=q->first();
+  delete q;
+
+  return ret;
+}
+
+
 QString RDMatrix::typeString(RDMatrix::Type type)
 {
   switch(type) {
@@ -597,8 +770,12 @@ QString RDMatrix::typeString(RDMatrix::Type type)
 	return QString("BroadcastTools ACS 8.2");
 	break;
 
+      case RDMatrix::Sas16000:
+	return QString("SAS 16000(D)");
+	break;
+
       case RDMatrix::SasUsi:
-	return QString("SAS User Serial Interface");
+	return QString("SAS USI");
 	break;
 
       case RDMatrix::Bt16x2:
@@ -677,11 +854,83 @@ QString RDMatrix::typeString(RDMatrix::Type type)
 	return QString("BroadcastTools GPI-16");
 	break;
 
+      case RDMatrix::ModemLines:
+	return QString("Serial Port Modem Control Lines");
+	break;
+
+      case RDMatrix::SoftwareAuthority:
+	return QString("Software Authority Protocol");
+	break;
+
+      case RDMatrix::RossNkScp:
+	return QString("Ross NK-SCP/A Interface");
+	break;
+
+      case RDMatrix::BtAdms4422:
+	return QString("BroadcastTools ADMS 44.22");
+	break;
+
+      case RDMatrix::BtSs41Mlr:
+	return QString("BroadcastTools SS 4.1 MLR");
+	break;
+
       default:
 	return QString("Unknown Type");
 	break;
   }
   return QString("Unknown Type");
+}
+
+
+QString RDMatrix::endpointString(RDMatrix::Endpoint end)
+{
+  QString ret=QObject::tr("unknown");
+
+  switch(end) {
+  case RDMatrix::Input:
+    ret=QObject::tr("Input");
+    break;
+
+  case RDMatrix::Output:
+    ret=QObject::tr("Output");
+    break;
+  }
+
+  return ret;
+}
+
+
+QString RDMatrix::modeString(RDMatrix::Mode mode)
+{
+  QString ret=QObject::tr("unknown");
+
+  switch(mode) {
+  case RDMatrix::Left:
+    ret=QObject::tr("Left");
+    break;
+
+  case RDMatrix::Right:
+    ret=QObject::tr("Right");
+    break;
+
+  case RDMatrix::Stereo:
+    ret=QObject::tr("Stereo");
+    break;
+  }
+
+  return ret;
+}
+
+
+RDMatrix::Mode RDMatrix::modeFromString(const QString &str)
+{
+  if(str.toLower()==RDMatrix::modeString(RDMatrix::Left).toLower()) {
+    return RDMatrix::Left;
+  }
+  if(str.toLower()==RDMatrix::modeString(RDMatrix::Right).toLower()) {
+    return RDMatrix::Right;
+  }
+  return RDMatrix::Stereo;
 }
 
 
@@ -718,13 +967,10 @@ int RDMatrix::defaultControlValue(RDMatrix::Type type,
 
 QString RDMatrix::GetEndpointName(int pointnum,const QString &table) const
 {
-  QString sql=QString().sprintf("select NAME from %s where \
-                                 STATION_NAME=\"%s\" && \
-                                 MATRIX=%d && NUMBER=%d",
-				(const char *)table,
-				(const char *)mx_station,
-				mx_number,
-				pointnum);
+  QString sql=QString("select NAME from `")+table+"` where "+
+    "(STATION_NAME=\""+RDEscapeString(mx_station)+"\")&&"+
+    QString().sprintf("(MATRIX=%d)&&",mx_number)+
+    QString().sprintf("(NUMBER=%d)",pointnum);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;
@@ -739,11 +985,9 @@ QString RDMatrix::GetEndpointName(int pointnum,const QString &table) const
 QVariant RDMatrix::GetRow(const QString &param) const
 {
   QVariant var;
-  QString sql=QString().sprintf("select %s from MATRICES where \
-                                STATION_NAME=\"%s\" && MATRIX=%d",
-				(const char *)RDEscapeString(param),
-				(const char *)mx_station,
-                                mx_number);
+  QString sql=QString("select `")+param+"` from MATRICES where "+
+    "(STATION_NAME=\""+RDEscapeString(mx_station)+"\")&&"+
+    QString().sprintf("(MATRIX=%d)",mx_number);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     var=q->value(0);
@@ -758,12 +1002,10 @@ void RDMatrix::SetRow(const QString &param,const QString &value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE MATRICES SET %s=\"%s\" \
-                         WHERE STATION_NAME=\"%s\" && MATRIX=%d",
-			(const char *)RDEscapeString(param),
-			(const char *)RDEscapeString(value),
-			(const char *)mx_station,
-			mx_number);
+  sql=QString("update MATRICES set ")+
+    param+"=\""+RDEscapeString(value)+"\" where "+
+    "(STATION_NAME=\""+RDEscapeString(mx_station)+"\")&&"+
+    QString().sprintf("(MATRIX=%d)",mx_number);
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -774,12 +1016,10 @@ void RDMatrix::SetRow(const QString &param,int value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE MATRICES SET %s=%d \
-                         WHERE STATION_NAME=\"%s\" && MATRIX=%d",
-			(const char *)RDEscapeString(param),
-			value,
-			(const char *)mx_station,
-			mx_number);
+  sql=QString("update MATRICES set ")+
+    param+QString().sprintf("=%d where ",value)+
+    "(STATION_NAME=\""+RDEscapeString(mx_station)+"\")&&"+
+    QString().sprintf("(MATRIX=%d)",mx_number);
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -790,12 +1030,10 @@ void RDMatrix::SetRow(const QString &param,unsigned value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE MATRICES SET %s=%u \
-                         WHERE STATION_NAME=\"%s\" && MATRIX=%d",
-			(const char *)RDEscapeString(param),
-			value,
-			(const char *)mx_station,
-			mx_number);
+  sql=QString("update MATRICES set ")+
+    param+QString().sprintf("=%u where ",value)+
+    "(STATION_NAME=\""+RDEscapeString(mx_station)+"\")&&"+
+    QString().sprintf("(MATRIX=%d)",mx_number);
   q=new RDSqlQuery(sql);
   delete q;
 }

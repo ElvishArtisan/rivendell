@@ -1,0 +1,3105 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<article xmlns="http://docbook.org/ns/docbook" version="5.0">
+<info>
+  <title>Rivendell Web Interface API</title>
+  <author>
+    <personname>
+      <firstname>Fred</firstname>
+      <surname>Gleason</surname>
+      <email>fredg@paravelsystems.com</email>
+    </personname>
+  </author>
+</info>
+
+<sect1>
+  <title>Data Types</title>
+  <table xml:id="ex.datatypes" frame="all">
+    <title>Data Types</title>
+    <tgroup cols="2" align="left" colsep="1" rowsep="1">
+      <colspec colname="TYPE" />
+      <colspec colname="DESCRIPTION" />
+      <thead>
+	<row>
+	  <entry>
+	    TYPE
+	  </entry>
+	  <entry>
+	    DESCRIPTION
+	  </entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>
+	    DateTime
+	  </entry>
+	  <entry>
+	    <para>
+	      xs:dateTime format string:
+	      <replaceable class="parameter">YYYY</replaceable>-<replaceable class="parameter">MM</replaceable>-<replaceable class="parameter">DD</replaceable>T<replaceable class="parameter">HH</replaceable>:<replaceable class="parameter">MM</replaceable>:<replaceable class="parameter">SS</replaceable><optional>Z</optional>|<optional>+<replaceable>HH</replaceable>:<replaceable>MM</replaceable></optional>|<optional>-<replaceable>HH</replaceable>:<replaceable>MM</replaceable></optional>
+	    </para>
+	    <para>
+	      If no timezone information is specified, all values will be
+	      assumed to be in the local timezone of the processing system.
+	    </para>
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    Date
+	  </entry>
+	  <entry>
+	    <para>
+	      xs:date format string:
+	      <replaceable class="parameter">YYYY</replaceable>-<replaceable class="parameter">MM</replaceable>-<replaceable class="parameter">DD</replaceable><optional>Z</optional>|<optional>+<replaceable>HH</replaceable>:<replaceable>MM</replaceable></optional>|<optional>-<replaceable>HH</replaceable>:<replaceable>MM</replaceable></optional>
+	    </para>
+	    <para>
+	      If no timezone information is specified, all values will be
+	      assumed to be in the local timezone of the processing system.
+	    </para>
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    Time
+	  </entry>
+	  <entry>
+	    <para>
+	      xs:time format string:
+	      <replaceable class="parameter">HH</replaceable>:<replaceable class="parameter">MM</replaceable>:<replaceable class="parameter">SS</replaceable><optional>Z</optional>|<optional>+<replaceable>HH</replaceable>:<replaceable>MM</replaceable></optional>|<optional>-<replaceable>HH</replaceable>:<replaceable>MM</replaceable></optional>
+	    </para>
+	    <para>
+	      If no timezone information is specified, all values will be
+	      assumed to be in the local timezone of the processing system.
+	    </para>
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    String
+	  </entry>
+	  <entry>
+	    Text data, encoded
+	  </entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect1>
+
+<sect1>
+  <title>Result Reporting</title>
+  <para>
+    Commands that return an error or do not return specialized data types
+    (e.g. audio data for the Export command) will return an XML document
+    describing the result of the command, in the following format:
+  </para>
+  <para>
+    <programlisting>
+&lt;RDWebResult&gt;
+  &lt;ResponseCode&gt;<replaceable>resp_code</replaceable>&lt;/ResponseCode&gt;
+  &lt;ErrorString&gt;<replaceable>resp_string</replaceable>&lt;/ErrorString&gt;
+  &lt;AudioConvertError&gt;<replaceable>conv_error_code</replaceable>&lt;/AudioConvertError&gt;
+&lt;/RDWebResult&gt;
+    </programlisting>
+  </para>
+  <variablelist>
+    <varlistentry>
+      <term>
+	<replaceable>resp_code</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  The HTTP result code, as defined in RFC2616
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<replaceable>resp_string</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  A text string describing the result, suitable for displaying in a UI
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<replaceable>conv_error_code</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  An extended error code from the audio converter routines. These values
+	  are defined in the <code>RDAudioConvert::ErrorCode</code> enumeration
+	  in <code>lib/rdaudioconvert.h</code>. This parameter is optional.
+	</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+</sect1>
+
+<sect1>
+  <title>AddCart</title>
+  <subtitle>Add a new cart</subtitle>
+  <para>
+    Command Code: <code>RDXPORT_COMMAND_ADDCART</code>
+  </para>
+  <para>
+    Required User Permissions: <code>Create Carts</code>
+  </para>
+  <para>
+    A <computeroutput>403</computeroutput> error will be returned if the requested cart number is
+    not within the configured range for the specified group and
+    'Enforce Cart Range' is set in RDAdmin->ManageGroups.
+  </para>
+  <table xml:id="ex.addcart" frame="all">
+    <title>AddCart Call Fields</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+	<row>
+	  <entry>
+	    FIELD NAME
+	  </entry>
+	  <entry>
+	    MEANING
+	  </entry>
+	  <entry>
+	    REMARKS
+	  </entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>
+	    COMMAND
+	  </entry>
+	  <entry>
+	    12
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LOGIN_NAME
+	  </entry>
+	  <entry>
+	    Rivendell User Name
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    PASSWORD
+	  </entry>
+	  <entry>
+	    Login Password
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    GROUP_NAME
+	  </entry>
+	  <entry>
+	    Name of Group
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    TYPE
+	  </entry>
+	  <entry>
+	    Cart type
+	  </entry>
+	  <entry>
+	    Valid values are "audio" or "macro"
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    CART_NUMBER
+	  </entry>
+	  <entry>
+	    Number of Cart
+	  </entry>
+	  <entry>
+	    Optional, default is to use next available cart number for
+	    specified group
+	  </entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect1>
+
+<sect1>
+  <title>AddCut</title>
+  <subtitle>Add a new cut to an existing cart</subtitle>
+  <para>
+    Command Code: <code>RDXPORT_COMMAND_ADDCUT</code>
+  </para>
+  <para>
+    Required User Permissions: <code>Edit Audio</code>
+  </para>
+  <para>
+    A <computeroutput>404</computeroutput> error will be returned if the
+    requested cart number is not authorized for the specified Rivendell user in
+    RDAdmin->ManageUsers->AssignGroupPerms.
+  </para>
+  <table xml:id="ex.addcut" frame="all">
+    <title>AddCut Call Fields</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+	<row>
+	  <entry>
+	    FIELD NAME
+	  </entry>
+	  <entry>
+	    MEANING
+	  </entry>
+	  <entry>
+	    REMARKS
+	  </entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>
+	    COMMAND
+	  </entry>
+	  <entry>
+	    10
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LOGIN_NAME
+	  </entry>
+	  <entry>
+	    Rivendell User Name
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    PASSWORD
+	  </entry>
+	  <entry>
+	    Login Password
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    CART_NUMBER
+	  </entry>
+	  <entry>
+	    Number of Cart
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect1>
+
+<sect1>
+  <title>AssignSchedCode</title>
+  <subtitle>Assign a scheduler code to an existing cart</subtitle>
+  <para>
+    Command Code: <code>RDXPORT_COMMAND_ASSIGNSCHEDCODE</code>
+  </para>
+  <para>
+    Required User Permissions: <code>Modify Carts</code>
+  </para>
+  <para>
+    A <computeroutput>404</computeroutput> error will be returned if the
+    specified cart number is not authorized for the specified Rivendell user in
+    RDAdmin->ManageUsers->AssignGroupPerms.
+  </para>
+  <table xml:id="ex.assignschedcode" frame="all">
+    <title>AssignSchedCode Call Fields</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+	<row>
+	  <entry>
+	    FIELD NAME
+	  </entry>
+	  <entry>
+	    MEANING
+	  </entry>
+	  <entry>
+	    REMARKS
+	  </entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>
+	    COMMAND
+	  </entry>
+	  <entry>
+	    25
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LOGIN_NAME
+	  </entry>
+	  <entry>
+	    Rivendell User Name
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    PASSWORD
+	  </entry>
+	  <entry>
+	    Login Password
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    CART_NUMBER
+	  </entry>
+	  <entry>
+	    Number of Cart
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    CODE
+	  </entry>
+	  <entry>
+	    Scheduler Code to assign
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect1>
+
+<sect1>
+  <title>AudioInfo</title>
+  <subtitle>Get information about an entry in the audio store</subtitle>
+  <para>
+    Command Code: <code>RDXPORT_COMMAND_AUDIOINFO</code>
+  </para>
+  <para>
+    Required User Permissions: none
+  </para>
+  <table xml:id="ex.audioinfo" frame="all">
+    <title>AudioInfo Call Fields</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+	<row>
+	  <entry>
+	    FIELD NAME
+	  </entry>
+	  <entry>
+	    MEANING
+	  </entry>
+	  <entry>
+	    REMARKS
+	  </entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>
+	    COMMAND
+	  </entry>
+	  <entry>
+	    19
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LOGIN_NAME
+	  </entry>
+	  <entry>
+	    Rivendell User Name
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    PASSWORD
+	  </entry>
+	  <entry>
+	    Login Password
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    CART_NUMBER
+	  </entry>
+	  <entry>
+	    Number of Cart
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    CUT_NUMBER
+	  </entry>
+	  <entry>
+	    Number of Cut
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect1>
+
+<sect1>
+  <title>AudioStore</title>
+  <subtitle>Get information about the audio store</subtitle>
+  <para>
+    Command Code: <code>RDXPORT_COMMAND_AUDIOSTORE</code>
+  </para>
+  <para>
+    Required User Permissions: none
+  </para>
+  <table xml:id="ex.audiostore" frame="all">
+    <title>AudioStore Call Fields</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+	<row>
+	  <entry>
+	    FIELD NAME
+	  </entry>
+	  <entry>
+	    MEANING
+	  </entry>
+	  <entry>
+	    REMARKS
+	  </entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>
+	    COMMAND
+	  </entry>
+	  <entry>
+	    23
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LOGIN_NAME
+	  </entry>
+	  <entry>
+	    Rivendell User Name
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    PASSWORD
+	  </entry>
+	  <entry>
+	    Login Password
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect1>
+
+<sect1>
+  <title>DeleteAudio</title>
+  <subtitle>Delete PCM/MPEG data from the audio store</subtitle>
+  <para>
+    Command Code: <code>RDXPORT_COMMAND_DELETEAUDIO</code>
+  </para>
+  <para>
+    Required User Permissions: <code>Delete Carts</code>
+  </para>
+  <table xml:id="ex.deleteaudio" frame="all">
+    <title>DeleteAudio Call Fields</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+	<row>
+	  <entry>
+	    FIELD NAME
+	  </entry>
+	  <entry>
+	    MEANING
+	  </entry>
+	  <entry>
+	    REMARKS
+	  </entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>
+	    COMMAND
+	  </entry>
+	  <entry>
+	    3
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LOGIN_NAME
+	  </entry>
+	  <entry>
+	    Rivendell User Name
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    PASSWORD
+	  </entry>
+	  <entry>
+	    Login Password
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    CART_NUMBER
+	  </entry>
+	  <entry>
+	    Number of Cart
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    CUT_NUMBER
+	  </entry>
+	  <entry>
+	    Number of Cut
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect1>
+
+<sect1>
+  <title>EditCart</title>
+  <subtitle>
+    Write metadata changes for an existing cart into the
+    database
+  </subtitle>
+  <para>
+    Command Code: <code>RDXPORT_COMMAND_EDITCART</code>
+  </para>
+  <para>
+    Required User Permissions: <code>Modify Carts</code>
+  </para>
+  <para>
+    A <computeroutput>404</computeroutput> error will be returned if the
+    requested cart belongs to a group that is not authorized for the
+    specified Rivendell user in RDAdmin->ManageUsers->AssignGroupPerms, or
+    if it is attempted to assign the cart to such a group.
+  </para>
+  <para>
+    A <computeroutput>409</computeroutput> error will be returned if the
+    requested cart's number falls outside the valid range for the requested
+    GROUP_NAME.
+  </para>
+  <para>
+    If the tags for an 'optional' field are omitted, then the respective
+    parameter on the target cart will be left unchanged.
+  </para>
+  <table xml:id="ex.editcart" frame="all">
+    <title>EditCart Call Fields</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+	<row>
+	  <entry>
+	    FIELD NAME
+	  </entry>
+	  <entry>
+	    MEANING
+	  </entry>
+	  <entry>
+	    REMARKS
+	  </entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>
+	    COMMAND
+	  </entry>
+	  <entry>
+	    14
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LOGIN_NAME
+	  </entry>
+	  <entry>
+	    Rivendell User Name
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    PASSWORD
+	  </entry>
+	  <entry>
+	    Login Password
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    CART_NUMBER
+	  </entry>
+	  <entry>
+	    Number of Cart
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    INCLUDE_CUTS
+	  </entry>
+	  <entry>
+	    Include cut data in return, 0 = no, 1 = yes
+	  </entry>
+	  <entry>
+	    Optional, default is 0
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    GROUP_NAME
+	  </entry>
+	  <entry>
+	    Set Rivendell group
+	  </entry>
+	  <entry>
+	    Optional
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    TITLE
+	  </entry>
+	  <entry>
+	    Set Title
+	  </entry>
+	  <entry>
+	    Optional
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    ARTIST
+	  </entry>
+	  <entry>
+	    Set Artist
+	  </entry>
+	  <entry>
+	    Optional
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    ALBUM
+	  </entry>
+	  <entry>
+	    Set Album
+	  </entry>
+	  <entry>
+	    Optional
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    YEAR
+	  </entry>
+	  <entry>
+	    Set Year
+	  </entry>
+	  <entry>
+	    Optional
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LABEL
+	  </entry>
+	  <entry>
+	    Set Record Label
+	  </entry>
+	  <entry>
+	    Optional
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    CLIENT
+	  </entry>
+	  <entry>
+	    Set Client
+	  </entry>
+	  <entry>
+	    Optional
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    AGENCY
+	  </entry>
+	  <entry>
+	    Set Agency
+	  </entry>
+	  <entry>
+	    Optional
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    PUBLISHER
+	  </entry>
+	  <entry>
+	    Set Publisher
+	  </entry>
+	  <entry>
+	    Optional
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    COMPOSER
+	  </entry>
+	  <entry>
+	    Set Composer
+	  </entry>
+	  <entry>
+	    Optional
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    USER_DEFINED
+	  </entry>
+	  <entry>
+	    Set User Defined
+	  </entry>
+	  <entry>
+	    Optional
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    USER_CODE
+	  </entry>
+	  <entry>
+	    Set User Code
+	  </entry>
+	  <entry>
+	    Optional
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    ENFORCE_LENGTH
+	  </entry>
+	  <entry>
+	    Set Enforce Length State
+	  </entry>
+	  <entry>
+	    Optional, Numeric, 0 = No, 1 = Yes
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    FORCED_LENGTH
+	  </entry>
+	  <entry>
+	    Set Forced Length
+	  </entry>
+	  <entry>
+	    Optional, in milliseconds
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    ASYNCHRONOUS
+	  </entry>
+	  <entry>
+	    Set Asynchronous
+	  </entry>
+	  <entry>
+	    Optional, Numeric, 0 = No, 1 = Yes
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    OWNER
+	  </entry>
+	  <entry>
+	    Set Owner
+	  </entry>
+	  <entry>
+	    Optional
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    NOTES
+	  </entry>
+	  <entry>
+	    Set Notes Text
+	  </entry>
+	  <entry>
+	    Optional
+	  </entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect1>
+
+<sect1>
+  <title>EditCut</title>
+  <subtitle>
+    Write metadata changes for an existing cut into the database
+  </subtitle>
+  <para>
+    Command Code: <code>RDXPORT_COMMAND_EDITCUT</code>
+  </para>
+  <para>
+    Required User Permissions: <code>Edit Audio</code>
+  </para>
+  <para>
+    A <computeroutput>404</computeroutput> error will be returned if the
+    requested cart belongs to a group that is not authorized for the
+    specified Rivendell user in RDAdmin->ManageUsers->AssignGroupPerms.
+    <para>
+      If the tags for an 'optional' field are omitted, then the respective
+      parameter on the target cart will be left unchanged.
+    </para>
+  </para>
+  <table xml:id="ex.editcut" frame="all">
+    <title>EditCut Call Fields</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+	<row>
+	  <entry>
+	    FIELD NAME
+	  </entry>
+	  <entry>
+	    MEANING
+	  </entry>
+	  <entry>
+	    REMARKS
+	  </entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>
+	    COMMAND
+	  </entry>
+	  <entry>
+	    15
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LOGIN_NAME
+	  </entry>
+	  <entry>
+	    Rivendell User Name
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    PASSWORD
+	  </entry>
+	  <entry>
+	    Login Password
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    CART_NUMBER
+	  </entry>
+	  <entry>
+	    Number of Cart
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    CUT_NUMBER
+	  </entry>
+	  <entry>
+	    Number of Cut
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    EVERGREEN
+	  </entry>
+	  <entry>
+	    Set the Evergreen Falg, valid values are 0 = no, 1 = yes
+	  </entry>
+	  <entry>
+	    Optional
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    DESCRIPTION
+	  </entry>
+	  <entry>
+	    Set Description
+	  </entry>
+	  <entry>
+	    Optional
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    OUTCUE
+	  </entry>
+	  <entry>
+	    Set Outcue
+	  </entry>
+	  <entry>
+	    Optional
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    ISRC
+	  </entry>
+	  <entry>
+	    Set International Standard Recording Code
+	  </entry>
+	  <entry>
+	    Optional
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    ISCI
+	  </entry>
+	  <entry>
+	    Set Internatinal Standardized Commercial Identifier
+	  </entry>
+	  <entry>
+	    Optional
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    START_DATETIME
+	  </entry>
+	  <entry>
+	    Set Start Date/Time
+	  </entry>
+	  <entry>
+	    Optional, RFC-822 format
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    END_DATETIME
+	  </entry>
+	  <entry>
+	    Set End Date/Time
+	  </entry>
+	  <entry>
+	    Optional, RFC-822 format
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    MON
+	  </entry>
+	  <entry>
+	    Set Monday daypart flag
+	  </entry>
+	  <entry>
+	    Optional, 0 = no, 1 = yes
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    TUE
+	  </entry>
+	  <entry>
+	    Set Tuesday daypart flag
+	  </entry>
+	  <entry>
+	    Optional, 0 = no, 1 = yes
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    WED
+	  </entry>
+	  <entry>
+	    Set Wedensday daypart flag
+	  </entry>
+	  <entry>
+	    Optional, 0 = no, 1 = yes
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    THU
+	  </entry>
+	  <entry>
+	    Set Thursday daypart flag
+	  </entry>
+	  <entry>
+	    Optional, 0 = no, 1 = yes
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    FRI
+	  </entry>
+	  <entry>
+	    Set Friday daypart flag
+	  </entry>
+	  <entry>
+	    Optional, 0 = no, 1 = yes
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    SAT
+	  </entry>
+	  <entry>
+	    Set Saturday daypart flag
+	  </entry>
+	  <entry>
+	    Optional, 0 = no, 1 = yes
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    SUN
+	  </entry>
+	  <entry>
+	    Set Sunday daypart flag
+	  </entry>
+	  <entry>
+	    Optional, 0 = no, 1 = yes
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    START_DAYPART
+	  </entry>
+	  <entry>
+	    Set Start daypart time
+	  </entry>
+	  <entry>
+	    Optional, RFC-822 format
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    END_DAYPART
+	  </entry>
+	  <entry>
+	    Set End daypart time
+	  </entry>
+	  <entry>
+	    Optional, RFC-822 format
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    WEIGHT
+	  </entry>
+	  <entry>
+	    Set rotation weight
+	  </entry>
+	  <entry>
+	    Optional, numeric
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    START_POINT
+	  </entry>
+	  <entry>
+	    Set Start Marker position
+	  </entry>
+	  <entry>
+	    Optional, mS from absolute start of audio data
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    END_POINT
+	  </entry>
+	  <entry>
+	    Set End Marker position
+	  </entry>
+	  <entry>
+	    Optional, mS from absolute start of audio data
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    FADEUP_POINT
+	  </entry>
+	  <entry>
+	    Set Fadeup Marker position
+	  </entry>
+	  <entry>
+	    Optional, mS from absolute start of audio data
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    FADEDOWN_POINT
+	  </entry>
+	  <entry>
+	    Set Fadedown Marker position
+	  </entry>
+	  <entry>
+	    Optional, mS from absolute start of audio data
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    SEGUE_START_POINT
+	  </entry>
+	  <entry>
+	    Set Segue Start Marker position
+	  </entry>
+	  <entry>
+	    Optional, mS from absolute start of audio data
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    SEGUE_END_POINT
+	  </entry>
+	  <entry>
+	    Set Segue End Marker position
+	  </entry>
+	  <entry>
+	    Optional, mS from absolute start of audio data
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    HOOK_START_POINT
+	  </entry>
+	  <entry>
+	    Set Hook Start Marker position
+	  </entry>
+	  <entry>
+	    Optional, mS from absolute start of audio data
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    HOOK_END_POINT
+	  </entry>
+	  <entry>
+	    Set Hook End Marker position
+	  </entry>
+	  <entry>
+	    Optional, mS from absolute start of audio data
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    TALK_START_POINT
+	  </entry>
+	  <entry>
+	    Set Talk Start Marker position
+	  </entry>
+	  <entry>
+	    Optional, mS from absolute start of audio data
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    TALK_END_POINT
+	  </entry>
+	  <entry>
+	    Set Talk End Marker position
+	  </entry>
+	  <entry>
+	    Optional, mS from absolute start of audio data
+	  </entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect1>
+
+<sect1>
+  <title>Export</title>
+  <subtitle>Export audio data from the audio store</subtitle>
+  <para>
+    Command Code: <code>RDXPORT_COMMAND_EXPORT</code>
+  </para>
+  <para>
+    Required User Permissions: none
+  </para>
+  <table xml:id="ex.export" frame="all">
+    <title>Export Call Fields</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+	<row>
+	  <entry>
+	    FIELD NAME
+	  </entry>
+	  <entry>
+	    MEANING
+	  </entry>
+	  <entry>
+	    REMARKS
+	  </entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>
+	    COMMAND
+	  </entry>
+	  <entry>
+	    1
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LOGIN_NAME
+	  </entry>
+	  <entry>
+	    Rivendell User Name
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    PASSWORD
+	  </entry>
+	  <entry>
+	    Login Password
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    CART_NUMBER
+	  </entry>
+	  <entry>
+	    Number of Cart
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    CUT_NUMBER
+	  </entry>
+	  <entry>
+	    Number of Cut
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    FORMAT
+	  </entry>
+	  <entry>
+	    Encoding format of exported data
+	  </entry>
+	  <entry>
+	    Mandatory, 0 = PCM16 WAV, 2 = MPEG L2 native, 3 = MPEG L3 native,
+	    4 = FLAC, 5 = OggVorbis, 6 = MPEG L2 WAV, 7 = PCM24 WAV
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    CHANNELS
+	  </entry>
+	  <entry>
+	    Number of audio channels
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    SAMPLE_RATE
+	  </entry>
+	  <entry>
+	    Sample rate
+	  </entry>
+	  <entry>
+	    Mandatory, in samples/sec
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    BIT_RATE
+	  </entry>
+	  <entry>
+	    Bit rate
+	  </entry>
+	  <entry>
+	    Mandatory, set to '0' for PCM or VBR
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    QUALITY
+	  </entry>
+	  <entry>
+	    Quality Level
+	  </entry>
+	  <entry>
+	    Mandatory, used only by OggVorbis, set to '0' for others
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    START_POINT
+	  </entry>
+	  <entry>
+	    Start point of audio export
+	  </entry>
+	  <entry>
+	    Mandatory, mS from absolute start of stored audio
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    END_POINT
+	  </entry>
+	  <entry>
+	    End point of audio export
+	  </entry>
+	  <entry>
+	    Mandatory, mS from absolute start of stored audio
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    NORMALIZATION_LEVEL
+	  </entry>
+	  <entry>
+	    Normalization leve, in dBFS
+	  </entry>
+	  <entry>
+	    Mandatory, 0 = No normalization
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    ENABLE_METADATA
+	  </entry>
+	  <entry>
+	    Include metadata in export
+	  </entry>
+	  <entry>
+	    Mandatory, 0 = no, 1 = yes
+	  </entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect1>
+
+<sect1>
+  <title>ExportPeaks</title>
+  <subtitle>Export audio peak data from the audio store</subtitle>
+  <para>
+    Command Code: <code>RDXPORT_COMMAND_EXPORT</code>
+  </para>
+  <para>
+    Required User Permissions: none
+  </para>
+  <para>
+    A <computeroutput>404</computeroutput> error will be returned if the
+    requested cart is not authorized for the specified Rivendell user in
+    RDAdmin->ManageUsers->AssignGroupPerms.
+  </para>
+  <table xml:id="ex.exportpeaks" frame="all">
+    <title>ExportPeaks Call Fields</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+	<row>
+	  <entry>
+	    FIELD NAME
+	  </entry>
+	  <entry>
+	    MEANING
+	  </entry>
+	  <entry>
+	    REMARKS
+	  </entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>
+	    COMMAND
+	  </entry>
+	  <entry>
+	    16
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LOGIN_NAME
+	  </entry>
+	  <entry>
+	    Rivendell User Name
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    PASSWORD
+	  </entry>
+	  <entry>
+	    Login Password
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    CART_NUMBER
+	  </entry>
+	  <entry>
+	    Number of Cart
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    CUT_NUMBER
+	  </entry>
+	  <entry>
+	    Number of Cut
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect1>
+
+<sect1>
+  <title>Import</title>
+  <subtitle>Import audio data into the audio store</subtitle>
+  <para>
+    Command Code: <code>RDXPORT_COMMAND_IMPORT</code>
+  </para>
+  <para>
+    Required User Permissions: <code>Edit Audio</code>
+  </para>
+  <para>
+    A <computeroutput>404</computeroutput> error will be returned if the
+    requested cart is not authorized for the specified Rivendell user in
+    RDAdmin->ManageUsers->AssignGroupPerms.
+  </para>
+  <para>
+    NOTE: The method must be called with 'multipart/form-data' encoding.
+  </para>
+  <table xml:id="ex.import
+" frame="all">
+    <title>Import Call Fields</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+	<row>
+	  <entry>
+	    FIELD NAME
+	  </entry>
+	  <entry>
+	    MEANING
+	  </entry>
+	  <entry>
+	    REMARKS
+	  </entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>
+	    COMMAND
+	  </entry>
+	  <entry>
+	    2
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LOGIN_NAME
+	  </entry>
+	  <entry>
+	    Rivendell User Name
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    PASSWORD
+	  </entry>
+	  <entry>
+	    Login Password
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    CART_NUMBER
+	  </entry>
+	  <entry>
+	    Number of Cart
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    CUT_NUMBER
+	  </entry>
+	  <entry>
+	    Number of Cut
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    CHANNELS
+	  </entry>
+	  <entry>
+	    Number of audio channels
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    NORMALIZATION_LEVEL
+	  </entry>
+	  <entry>
+	    Normalization level, in dBFS
+	  </entry>
+	  <entry>
+	    Mandatory, 0 = no normalization
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    AUTOTRIM_LEVEL
+	  </entry>
+	  <entry>
+	    Autotrim level, in dBFS
+	  </entry>
+	  <entry>
+	    Mandatory, 0 = no autotrim
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    USE_METADATA
+	  </entry>
+	  <entry>
+	    Apply source metadata to cart
+	  </entry>
+	  <entry>
+	   Mandatory, 0 = No, 1 = Yes
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    FILENAME
+	  </entry>
+	  <entry>
+	    Binary file data
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect1>
+
+<sect1>
+  <title>ListCart</title>
+  <subtitle>Return information about a specified cart</subtitle>
+  <para>
+    Command Code: <code>RDXPORT_COMMAND_LISTCART</code>
+  </para>
+  <para>
+    Required User Permissions: none
+  </para>
+  <para>
+    A <computeroutput>404</computeroutput> error will be returned if the
+    requested cart belongs to a group that is not authorized for the
+    specified Rivendell user in RDAdmin->ManageUsers->AssignGroupPerms.
+  </para>
+  <table xml:id="ex.listcart" frame="all">
+    <title>ListCart Call Fields</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+	<row>
+	  <entry>
+	    FIELD NAME
+	  </entry>
+	  <entry>
+	    MEANING
+	  </entry>
+	  <entry>
+	    REMARKS
+	  </entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>
+	    COMMAND
+	  </entry>
+	  <entry>
+	    7
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LOGIN_NAME
+	  </entry>
+	  <entry>
+	    Rivendell User Name
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    PASSWORD
+	  </entry>
+	  <entry>
+	    Login Password
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    CART_NUMBER
+	  </entry>
+	  <entry>
+	    Number of Cart
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    INCLUDE_CUTS
+	  </entry>
+	  <entry>
+	    Include cut information in return
+	  </entry>
+	  <entry>
+	    Optional, 0 = no, 1 = yes, default is 1
+	  </entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect1>
+
+<sect1>
+  <title>ListCarts</title>
+  <subtitle>Return information about a set of carts</subtitle>
+  <para>
+    Command Code: <code>RDXPORT_COMMAND_LISTCARTS</code>
+  </para>
+  <para>
+    Required User Permissions: none
+  </para>
+  <para>
+    Only those carts that belong to groups authorized for the specified
+    Rivendell user in RDAdmin->ManageUsers->AssignGroupPerms will be returned.
+  </para>
+  <table xml:id="ex.listcarts" frame="all">
+    <title>ListCarts Call Fields</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+	<row>
+	  <entry>
+	    FIELD NAME
+	  </entry>
+	  <entry>
+	    MEANING
+	  </entry>
+	  <entry>
+	    REMARKS
+	  </entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>
+	    COMMAND
+	  </entry>
+	  <entry>
+	    6
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LOGIN_NAME
+	  </entry>
+	  <entry>
+	    Rivendell User Name
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    PASSWORD
+	  </entry>
+	  <entry>
+	    Login Password
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    GROUP_NAME
+	  </entry>
+	  <entry>
+	    Limit returns to members of specified group
+	  </entry>
+	  <entry>
+	    Optional, default is to search all available carts
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    INCLUDE_CUTS
+	  </entry>
+	  <entry>
+	    Include cut information in return
+	  </entry>
+	  <entry>
+	    Optional, 0 = no, 1 = yes, default is 1
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    FILTER
+	  </entry>
+	  <entry>
+	    Limit returns to carts containing specified space-separated
+	    keyword(s)
+	  </entry>
+	  <entry>
+	    Optional, default is to apply no filtering
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    TYPE
+	  </entry>
+	  <entry>
+	    Limit returns to carts of the specified type
+	  </entry>
+	  <entry>
+	    Optional, valid values are 'audio' or 'macro'
+	  </entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect1>
+
+<sect1>
+  <title>ListCartSchedCodes</title>
+  <subtitle>Return information about all scheduler codes assigned to a cart</subtitle>
+  <para>
+    Command Code: <code>RDXPORT_COMMAND_LISTCARTSCHEDCODES</code>
+  </para>
+  <para>
+    Required User Permissions: none
+  </para>
+  <para>
+    A <computeroutput>404</computeroutput> error will be returned if the
+    requested cart belongs to a group that is not authorized for the
+    specified Rivendell user in RDAdmin->ManageUsers->AssignGroupPerms.
+  </para>
+  <table xml:id="ex.listcartschedcodes" frame="all">
+    <title>ListCartSchedCodes Call Fields</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+	<row>
+	  <entry>
+	    FIELD NAME
+	  </entry>
+	  <entry>
+	    MEANING
+	  </entry>
+	  <entry>
+	    REMARKS
+	  </entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>
+	    COMMAND
+	  </entry>
+	  <entry>
+	    27
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LOGIN_NAME
+	  </entry>
+	  <entry>
+	    Rivendell User Name
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    PASSWORD
+	  </entry>
+	  <entry>
+	    Login Password
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    CART_NUMBER
+	  </entry>
+	  <entry>
+	    Number of Cart
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect1>
+
+<sect1>
+  <title>ListCut</title>
+  <subtitle>Return information about a specified cut</subtitle>
+  <para>
+    Command Code: <code>RDXPORT_COMMAND_LISTCUT</code>
+  </para>
+  <para>
+    Required User Permissions: none
+  </para>
+  <para>
+    A <computeroutput>404</computeroutput> error will be returned if the
+    requested cart belongs to a group that is not authorized for the
+    specified Rivendell user in RDAdmin->ManageUsers->AssignGroupPerms.
+  </para>
+  <table xml:id="ex.listcut" frame="all">
+    <title>ListCut Call Fields</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+	<row>
+	  <entry>
+	    FIELD NAME
+	  </entry>
+	  <entry>
+	    MEANING
+	  </entry>
+	  <entry>
+	    REMARKS
+	  </entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>
+	    COMMAND
+	  </entry>
+	  <entry>
+	    8
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LOGIN_NAME
+	  </entry>
+	  <entry>
+	    Rivendell User Name
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    PASSWORD
+	  </entry>
+	  <entry>
+	    Login Password
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    CART_NUMBER
+	  </entry>
+	  <entry>
+	    Number of Cart
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    CUT_NUMBER
+	  </entry>
+	  <entry>
+	    Number of Cut
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect1>
+
+<sect1>
+  <title>ListCuts</title>
+  <subtitle>Return information about all cuts belonging to a cart</subtitle>
+  <para>
+    Command Code: <code>RDXPORT_COMMAND_LISTCUTS</code>
+  </para>
+  <para>
+    Required User Permissions: none
+  </para>
+  <para>
+    A <computeroutput>404</computeroutput> error will be returned if the
+    requested cart belongs to a group that is not authorized for the
+    specified Rivendell user in RDAdmin->ManageUsers->AssignGroupPerms.
+  </para>
+  <table xml:id="ex.listcuts" frame="all">
+    <title>ListCuts Call Fields</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+	<row>
+	  <entry>
+	    FIELD NAME
+	  </entry>
+	  <entry>
+	    MEANING
+	  </entry>
+	  <entry>
+	    REMARKS
+	  </entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>
+	    COMMAND
+	  </entry>
+	  <entry>
+	    9
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LOGIN_NAME
+	  </entry>
+	  <entry>
+	    Rivendell User Name
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    PASSWORD
+	  </entry>
+	  <entry>
+	    Login Password
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    CART_NUMBER
+	  </entry>
+	  <entry>
+	    Number of Cart
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect1>
+
+<sect1>
+  <title>ListGroup</title>
+  <subtitle>Return information about a specified group</subtitle>
+  <para>
+    Command Code: <code>RDXPORT_COMMAND_LISTGROUP</code>
+  </para>
+  <para>
+    Required User Permissions: none
+  </para>
+  <para>
+    A <computeroutput>404</computeroutput> error will be returned if the
+    requested group is not authorized for the specified Rivendell user in
+    RDAdmin->ManageUsers->AssignGroupPerms.
+  </para>
+  <table xml:id="ex.listgroup" frame="all">
+    <title>ListGroup Call Fields</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+	<row>
+	  <entry>
+	    FIELD NAME
+	  </entry>
+	  <entry>
+	    MEANING
+	  </entry>
+	  <entry>
+	    REMARKS
+	  </entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>
+	    COMMAND
+	  </entry>
+	  <entry>
+	    5
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LOGIN_NAME
+	  </entry>
+	  <entry>
+	    Rivendell User Name
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    PASSWORD
+	  </entry>
+	  <entry>
+	    Login Password
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    GROUP_NAME
+	  </entry>
+	  <entry>
+	    Name of group
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect1>
+
+<sect1>
+  <title>ListGroups</title>
+  <subtitle>Return information about all available groups</subtitle>
+  <para>
+    Command Code: <code>RDXPORT_COMMAND_LISTGROUPS</code>
+  </para>
+  <para>
+    Required User Permissions: none
+  </para>
+  <para>
+    The set of returned groups will be tailored according to what the
+    specified Rivendell user is authorized to see in
+    RDAdmin->ManageUsers->AssignGroupPerms.
+  </para>
+  <table xml:id="ex.listgroups" frame="all">
+    <title>ListGroups Call Fields</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+	<row>
+	  <entry>
+	    FIELD NAME
+	  </entry>
+	  <entry>
+	    MEANING
+	  </entry>
+	  <entry>
+	    REMARKS
+	  </entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>
+	    COMMAND
+	  </entry>
+	  <entry>
+	    4
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LOGIN_NAME
+	  </entry>
+	  <entry>
+	    Rivendell User Name
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    PASSWORD
+	  </entry>
+	  <entry>
+	    Login Password
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect1>
+
+<sect1>
+  <title>ListLog</title>
+  <subtitle>Return a listing of the specified log</subtitle>
+  <para>
+    Command Code: <code>RDXPORT_COMMAND_LISTLOG</code>
+  </para>
+  <para>
+    Required User Permissions: none
+  </para>
+  <table xml:id="ex.listlog" frame="all">
+    <title>ListLog Call Fields</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+	<row>
+	  <entry>
+	    FIELD NAME
+	  </entry>
+	  <entry>
+	    MEANING
+	  </entry>
+	  <entry>
+	    REMARKS
+	  </entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>
+	    COMMAND
+	  </entry>
+	  <entry>
+	    22
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LOGIN_NAME
+	  </entry>
+	  <entry>
+	    Rivendell User Name
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    PASSWORD
+	  </entry>
+	  <entry>
+	    Login Password
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    NAME
+	  </entry>
+	  <entry>
+	    The name of the log
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect1>
+
+<sect1>
+  <title>ListLogs</title>
+  <subtitle>Return information about all available logs</subtitle>
+  <para>
+    Command Code: <code>RDXPORT_COMMAND_LISTLOGS</code>
+  </para>
+  <para>
+    Required User Permissions: none
+  </para>
+  <table xml:id="ex.listlogs" frame="all">
+    <title>ListLogs Call Fields</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+	<row>
+	  <entry>
+	    FIELD NAME
+	  </entry>
+	  <entry>
+	    MEANING
+	  </entry>
+	  <entry>
+	    REMARKS
+	  </entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>
+	    COMMAND
+	  </entry>
+	  <entry>
+	    20
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LOGIN_NAME
+	  </entry>
+	  <entry>
+	    Rivendell User Name
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    PASSWORD
+	  </entry>
+	  <entry>
+	    Login Password
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    SERVICE_NAME
+	  </entry>
+	  <entry>
+	    Limits returns to logs that are owned by specified service
+	  </entry>
+	  <entry>
+	    Optional.  Default is to return all logs.
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    TRACKABLE
+	  </entry>
+	  <entry>
+	    Limits returns to logs that contain one or more voicetrack slots
+	  </entry>
+	  <entry>
+	    Optional, valid values 0=no, 1=yes.  Default is to return all logs
+	  </entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect1>
+
+<sect1>
+  <title>ListSchedulerCodes</title>
+  <subtitle>Return information about all available scheduler codes</subtitle>
+  <para>
+    Command Code: <code>RDXPORT_COMMAND_LISTSCHEDCODES</code>
+  </para>
+  <para>
+    Required User Permissions: none
+  </para>
+  <table xml:id="ex.listschedcodes" frame="all">
+    <title>ListSchedCodes Call Fields</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+	<row>
+	  <entry>
+	    FIELD NAME
+	  </entry>
+	  <entry>
+	    MEANING
+	  </entry>
+	  <entry>
+	    REMARKS
+	  </entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>
+	    COMMAND
+	  </entry>
+	  <entry>
+	    24
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LOGIN_NAME
+	  </entry>
+	  <entry>
+	    Rivendell User Name
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    PASSWORD
+	  </entry>
+	  <entry>
+	    Login Password
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect1>
+
+<sect1>
+  <title>ListServices</title>
+  <subtitle>Return information about all available services</subtitle>
+  <para>
+    Command Code: <code>RDXPORT_COMMAND_LISTSERVICES</code>
+  </para>
+  <para>
+    Required User Permissions: none
+  </para>
+  <table xml:id="ex.listservices" frame="all">
+    <title>ListServices Call Fields</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+	<row>
+	  <entry>
+	    FIELD NAME
+	  </entry>
+	  <entry>
+	    MEANING
+	  </entry>
+	  <entry>
+	    REMARKS
+	  </entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>
+	    COMMAND
+	  </entry>
+	  <entry>
+	    21
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LOGIN_NAME
+	  </entry>
+	  <entry>
+	    Rivendell User Name
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    PASSWORD
+	  </entry>
+	  <entry>
+	    Login Password
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    TRACKABLE
+	  </entry>
+	  <entry>
+	    Limits returns to services that have a valid voicetracking
+	    configuration
+	  </entry>
+	  <entry>
+	    Optional, valid values 0=no, 1=yes.  Default is to return all
+	    services
+	  </entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect1>
+
+<sect1>
+  <title>RemoveCart</title>
+  <subtitle>Remove a cart from the Library</subtitle>
+  <para>
+    Command Code: <code>RDXPORT_COMMAND_REMOVECART</code>
+  </para>
+  <para>
+    Required User Permissions: <code>Delete Cart</code>
+  </para>
+  <table xml:id="ex.removecart" frame="all">
+    <title>RemoveCart Call Fields</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+	<row>
+	  <entry>
+	    FIELD NAME
+	  </entry>
+	  <entry>
+	    MEANING
+	  </entry>
+	  <entry>
+	    REMARKS
+	  </entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>
+	    COMMAND
+	  </entry>
+	  <entry>
+	    13
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LOGIN_NAME
+	  </entry>
+	  <entry>
+	    Rivendell User Name
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    PASSWORD
+	  </entry>
+	  <entry>
+	    Login Password
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    CART_NUMBER
+	  </entry>
+	  <entry>
+	    Number of cart
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect1>
+
+<sect1>
+  <title>RemoveCut</title>
+  <subtitle>Remove an existing cut from a cart</subtitle>
+  <para>
+    Command Code: <code>RDXPORT_COMMAND_REMOVECUT</code>
+  </para>
+  <para>
+    Required User Permissions: <code>Edit Audio</code>
+  </para>
+  <table xml:id="ex.removecut" frame="all">
+    <title>RemoveCut Call Fields</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+	<row>
+	  <entry>
+	    FIELD NAME
+	  </entry>
+	  <entry>
+	    MEANING
+	  </entry>
+	  <entry>
+	    REMARKS
+	  </entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>
+	    COMMAND
+	  </entry>
+	  <entry>
+	    11
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LOGIN_NAME
+	  </entry>
+	  <entry>
+	    Rivendell User Name
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    PASSWORD
+	  </entry>
+	  <entry>
+	    Login Password
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    CART_NUMBER
+	  </entry>
+	  <entry>
+	    Number of cart
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    CUT_NUMBER
+	  </entry>
+	  <entry>
+	    Number of cut
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect1>
+
+<sect1>
+  <title>TrimAudio</title>
+  <subtitle>
+    Return a time pointer to the first or last instance of a particular
+    level in a cut.
+  </subtitle>
+  <para>
+    Command Code: <code>RDXPORT_COMMAND_TRIMAUDIO</code>
+  </para>
+  <para>
+    Required User Permissions: <code>Edit Audio</code>
+  </para>
+  <para>
+    A <computeroutput>404</computeroutput> error will be returned if the
+    requested cart is not authorized for the specified Rivendell user in
+    RDAdmin->ManageUsers->AssignGroupPerms.
+  </para>
+  <table xml:id="ex.trimaudio" frame="all">
+    <title>TrimAudio Call Fields</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+	<row>
+	  <entry>
+	    FIELD NAME
+	  </entry>
+	  <entry>
+	    MEANING
+	  </entry>
+	  <entry>
+	    REMARKS
+	  </entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>
+	    COMMAND
+	  </entry>
+	  <entry>
+	    17
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LOGIN_NAME
+	  </entry>
+	  <entry>
+	    Rivendell User Name
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    PASSWORD
+	  </entry>
+	  <entry>
+	    Login Password
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    CART_NUMBER
+	  </entry>
+	  <entry>
+	    Number of cart
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    CUT_NUMBER
+	  </entry>
+	  <entry>
+	    Number of cut
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    TRIM_LEVEL
+	  </entry>
+	  <entry>
+	    Level in 1/100 dB, relative to Rivendell reference level (-16 dBFS)
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect1>
+
+<sect1>
+  <title>UnassignSchedCode</title>
+  <subtitle>Unassign a scheduler code from an existing cart</subtitle>
+  <para>
+    Command Code: <code>RDXPORT_COMMAND_UNASSIGNSCHEDCODE</code>
+  </para>
+  <para>
+    Required User Permissions: <code>Modify Carts</code>
+  </para>
+  <para>
+    A <computeroutput>404</computeroutput> error will be returned if the
+    specified cart number is not authorized for the specified Rivendell user in
+    RDAdmin->ManageUsers->AssignGroupPerms.
+  </para>
+  <table xml:id="ex.unassignschedcode" frame="all">
+    <title>UnassignSchedCode Call Fields</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+	<row>
+	  <entry>
+	    FIELD NAME
+	  </entry>
+	  <entry>
+	    MEANING
+	  </entry>
+	  <entry>
+	    REMARKS
+	  </entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>
+	    COMMAND
+	  </entry>
+	  <entry>
+	    26
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    LOGIN_NAME
+	  </entry>
+	  <entry>
+	    Rivendell User Name
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    PASSWORD
+	  </entry>
+	  <entry>
+	    Login Password
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    CART_NUMBER
+	  </entry>
+	  <entry>
+	    Number of Cart
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    CODE
+	  </entry>
+	  <entry>
+	    Scheduler Code to assign
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect1>
+
+</article>

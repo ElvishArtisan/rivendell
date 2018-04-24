@@ -2,9 +2,7 @@
 //
 // Abstract a Rivendell Playback Deck
 //
-//   (C) Copyright 2003-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdplay_deck.cpp,v 1.85.8.5 2013/05/21 19:04:44 cvs Exp $
+//   (C) Copyright 2003-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,8 +23,8 @@
 #include <rdplay_deck.h>
 #include <rdmixer.h>
 
-RDPlayDeck::RDPlayDeck(RDCae *cae,int id,QObject *parent,const char *name)
-  : QObject(parent,name)
+RDPlayDeck::RDPlayDeck(RDCae *cae,int id,QObject *parent)
+  : QObject(parent)
 {
   play_id=id;
   play_state=RDPlayDeck::Stopped;

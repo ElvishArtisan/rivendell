@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>AddClock</name>
     <message>
@@ -1156,7 +1158,7 @@ data</translation>
     <name>MainWidget</name>
     <message>
         <source>Can&apos;t Connect</source>
-        <translation>Nelze spojit</translation>
+        <translation type="obsolete">Nelze spojit</translation>
     </message>
     <message>
         <source>RDLogManager</source>
@@ -1196,12 +1198,12 @@ data</translation>
     </message>
     <message>
         <source>RDLogEdit -- Database Skew</source>
-        <translation>RDLogEdit - Nesouměrnost v databázi</translation>
+        <translation type="obsolete">RDLogEdit - Nesouměrnost v databázi</translation>
     </message>
     <message>
         <source>This version of RDLogManager is incompatible with the version installed on the server.
 See your system administrator for an update!</source>
-        <translation>Tato verze RDLogManager je neslučitelná s verzí nainstalovanou na serveru.
+        <translation type="obsolete">Tato verze RDLogManager je neslučitelná s verzí nainstalovanou na serveru.
 Vyhledejte svého správce systému kvůli aktualizaci!</translation>
     </message>
 </context>

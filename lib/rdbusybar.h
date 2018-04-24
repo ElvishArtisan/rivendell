@@ -2,9 +2,7 @@
 //
 //   A 'progress bar' widget that shows busy state.
 //
-//   (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdbusybar.h,v 1.2.8.1 2012/11/26 20:19:36 cvs Exp $
+//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -25,16 +23,16 @@
 #define RDBUSYBAR_H
 
 #include <qwidget.h>
-#include <qframe.h>
+#include <q3frame.h>
 #include <qlabel.h>
 #include <qtimer.h>
 
-class RDBusyBar : public QFrame
+class RDBusyBar : public Q3Frame
 {
   Q_OBJECT
 
  public:
-  RDBusyBar(QWidget *parent=0,const char *name=0,WFlags f=0);
+  RDBusyBar(QWidget *parent=0,Qt::WFlags f=0);
 
  public slots:
   void activate(bool state);

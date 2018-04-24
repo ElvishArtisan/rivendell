@@ -2,9 +2,7 @@
 //
 // A Qt-based application for importing Dial Global CDN downloads
 //
-//   (C) Copyright 2012 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rddgimport.cpp,v 1.1.2.12 2014/01/21 21:59:33 cvs Exp $
+//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,16 +22,18 @@
 #include <stdio.h>
 #include <errno.h>
 
-#include <qapplication.h>
-#include <qwindowsstyle.h>
-#include <qtextcodec.h>
-#include <qfiledialog.h>
-#include <qmessagebox.h>
-#include <qstringlist.h>
-#include <qfile.h>
+#include <Q3FileDialog>
+#include <QApplication>
+#include <QFile>
+#include <QLabel>
+#include <QMessageBox>
+#include <QResizeEvent>
+#include <QStringList>
+#include <QTextCodec>
+#include <QWindowsStyle>
 
+#include <rdapplication.h>
 #include <rdescape_string.h>
-#include <rdcmd_switch.h>
 #include <rdconf.h>
 #include <rddatedialog.h>
 #include <rdgroup.h>
@@ -42,23 +42,18 @@
 #include <rdaudioimport.h>
 #include <rddatedecode.h>
 
-#include <rddgimport.h>
+#include "rddgimport.h"
 
-MainWidget::MainWidget(QWidget *parent,const char *name)
-  : QWidget(parent,name)
+MainWidget::MainWidget(QWidget *parent)
+  : QWidget(parent)
 {
-  dg_user=NULL;
+  new RDApplication(RDApplication::Gui,"rddgimport",RDDGIMPORT_USAGE);
+
   dg_group=NULL;
   dg_svc=NULL;
 
   QString sql;
   RDSqlQuery *q;
-
-  //
-  // Read Command Options
-  //
-  RDCmdSwitch *cmd=new RDCmdSwitch(qApp->argc(),qApp->argv(),"rddgimport","\n");
-  delete cmd;
 
   //
   // Set Window Size
@@ -67,32 +62,6 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   setMinimumHeight(sizeHint().height());
 
   SetCaption();
-
-  //
-  // Load Local Configs
-  //
-  dg_config=new RDConfig();
-  dg_config->load();
-
-  //
-  // Open Database
-  //
-  dg_db=QSqlDatabase::addDatabase(dg_config->mysqlDriver());
-  if(!dg_db) {
-    QMessageBox::warning(this,tr("Database Error"),
-		    tr("Can't Connect","Unable to connect to mySQL Server!"));
-    exit(0);
-  }
-  dg_db->setDatabaseName(dg_config->mysqlDbname());
-  dg_db->setUserName(dg_config->mysqlUsername());
-  dg_db->setPassword(dg_config->mysqlPassword());
-  dg_db->setHostName(dg_config->mysqlHostname());
-  if(!dg_db->open()) {
-    QMessageBox::warning(this,tr("Can't Connect"),
-			 tr("Unable to connect to mySQL Server!"));
-    dg_db->removeDatabase(dg_config->mysqlDbname());
-    exit(0);
-  }
 
   //
   // Fonts
@@ -106,11 +75,9 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Configuration Elements
   //
-  dg_station=new RDStation(dg_config->stationName(),this);
-  dg_library_conf=new RDLibraryConf(dg_config->stationName(),0);
-  dg_ripc=new RDRipc(dg_config->stationName(),this);
-  connect(dg_ripc,SIGNAL(userChanged()),this,SLOT(userChangedData()));
-  dg_ripc->connectHost("localhost",RIPCD_TCP_PORT,dg_config->password());
+  connect(rda->ripc(),SIGNAL(userChanged()),this,SLOT(userChangedData()));
+  rda->
+    ripc()->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 
   //
   // Service Selector
@@ -139,7 +106,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Date Selector
   //
-  dg_date_edit=new QDateEdit(this);
+  dg_date_edit=new Q3DateEdit(this);
   dg_date_edit->setDate(QDate::currentDate());
   dg_date_label=new QLabel(dg_date_edit,tr("Date:"),this);
   dg_date_label->setFont(label_font);
@@ -158,7 +125,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Messages Area
   //
-  dg_messages_text=new QTextEdit(this);
+  dg_messages_text=new Q3TextEdit(this);
   dg_messages_text->setReadOnly(true);
   dg_messages_label=new QLabel(dg_service_box,tr("Messages"),this);
   dg_messages_label->setFont(label_font);
@@ -231,7 +198,7 @@ void MainWidget::filenameSelectedData()
     filename=RDGetHomeDir();
   }
   filename=
-    QFileDialog::getOpenFileName(filename,tr("Text Files")+" (*.txt *.TXT);;"+
+    Q3FileDialog::getOpenFileName(filename,tr("Text Files")+" (*.txt *.TXT);;"+
 				 tr("All Files")+" (*.*)",this);
   if(!filename.isEmpty()) {
     dg_filename_edit->setText(filename);
@@ -270,10 +237,7 @@ void MainWidget::processData()
 
 void MainWidget::userChangedData()
 {
-  if(dg_user!=NULL) {
-    delete dg_user;
-  }
-  dg_user=new RDUser(dg_ripc->user());
+  rda->setUser(rda->ripc()->user());
   SetCaption();
 }
 
@@ -305,8 +269,8 @@ void MainWidget::resizeEvent(QResizeEvent *e)
 void MainWidget::SetCaption()
 {
   QString username=tr("[unknown]");
-  if(dg_user!=NULL) {
-    username=dg_user->name();
+  if(rda->user()!=NULL) {
+    username=rda->user()->name();
   }
   setCaption(tr("RDDgImport")+" v"+VERSION+" "+tr("User")+": "+username);
 }
@@ -325,7 +289,7 @@ bool MainWidget::LoadEvents()
   if((f=fopen(dg_filename_edit->text(),"r"))==NULL) {
     QMessageBox::warning(this,tr("RDDgImport"),
 			 tr("Unable to open source file")+"["+
-			 strerror(errno)+"].");
+			 QString(strerror(errno))+"].");
     return false;
   }
   while(fgets(data,1024,f)!=NULL) {
@@ -395,7 +359,7 @@ bool MainWidget::WriteTrafficFile()
 		       dg_date_edit->date());
   if((f=fopen(outname,"w"))==NULL) {
     LogMessage(tr("WARNING: Unable to open traffic output file")+" \""+
-	       outname+"\" ["+strerror(errno)+"].");
+	       outname+"\" ["+QString(strerror(errno))+"].");
     return false;
   }
 
@@ -433,6 +397,12 @@ bool MainWidget::CheckSpot(const QString &isci)
   QDate today=QDate::currentDate();
   QDate killdate=dg_date_edit->date().addDays(RDDGIMPORT_KILLDATE_OFFSET);
 
+  QString endDateTimeSQL = "NULL";
+
+  if(killdate.isValid())
+    endDateTimeSQL = RDCheckDateTime(QDateTime(killdate,QTime(23,59,59)),
+                                    "yyyy-MM-dd hh:mm:ss");
+
   sql=QString("select CUT_NAME,CUTS.START_DATETIME,CUTS.END_DATETIME ")+
     "from CART left join CUTS on CART.NUMBER=CUTS.CART_NUMBER "+
     "where (CART.GROUP_NAME=\""+RDEscapeString(dg_svc->autospotGroup())+"\")&&"
@@ -445,7 +415,7 @@ bool MainWidget::CheckSpot(const QString &isci)
       if(q->value(1).isNull()) {
 	sql+="START_DATETIME=\""+today.toString("yyyy-MM-dd")+" 00:00:00\",";
       }
-      sql+="END_DATETIME=\""+killdate.toString("yyyy-MM-dd")+" 23:59:59\" ";
+      sql+="END_DATETIME="+endDateTimeSQL+" ";
       sql+="where CUT_NAME=\""+q->value(0).toString()+"\"";
       q1=new RDSqlQuery(sql);
       delete q1;
@@ -488,8 +458,8 @@ bool MainWidget::ImportSpot(Event *evt)
   //
   // Initialize Audio Importer
   //
-  settings.setNormalizationLevel(dg_library_conf->ripperLevel()/100);
-  settings.setChannels(dg_library_conf->defaultChannels());
+  settings.setNormalizationLevel(rda->libraryConf()->ripperLevel()/100);
+  settings.setChannels(rda->libraryConf()->defaultChannels());
 
   if((dg_carts[evt->isci()]=dg_group->nextFreeCart())==0) {
     LogMessage(tr("Unable to allocate new cart for")+" "+evt->isci()+" ["+
@@ -503,9 +473,9 @@ bool MainWidget::ImportSpot(Event *evt)
   }
   cart=new RDCart(dg_carts[evt->isci()]);
   cart->create(dg_group->name(),RDCart::Audio);
-  if((cutnum=cart->addCut(dg_library_conf->defaultLayer(),
-			  dg_library_conf->defaultBitrate(),
-			  dg_library_conf->defaultChannels(),
+  if((cutnum=cart->addCut(rda->libraryConf()->defaultLayer(),
+			  rda->libraryConf()->defaultBitrate(),
+			  rda->libraryConf()->defaultChannels(),
 			  evt->isci(),evt->title()))<0) {
     LogMessage(tr("WARNING: Unable to create cut for cart")+" \""+
 	       QString().sprintf("%u",dg_carts[evt->isci()])+"\".");
@@ -518,14 +488,14 @@ bool MainWidget::ImportSpot(Event *evt)
 				addDays(RDDGIMPORT_KILLDATE_OFFSET),
 				QTime(23,59,59)),true);
   
-  conv=new RDAudioImport(dg_station,dg_config,this);
+  conv=new RDAudioImport(rda->station(),rda->config(),this);
   conv->setCartNumber(dg_carts[evt->isci()]);
   conv->setCutNumber(cutnum);
   conv->setSourceFile(audiofile);
   conv->setDestinationSettings(&settings);
   conv->setUseMetadata(false);
   conv_err=conv->
-    runImport(dg_user->name(),dg_user->password(),&audio_conv_err);
+    runImport(rda->user()->name(),rda->user()->password(),&audio_conv_err);
   switch(conv_err) {
   case RDAudioImport::ErrorOk:
     break;
@@ -639,6 +609,7 @@ int main(int argc,char *argv[])
   //
   // Load Translations
   //
+  /*
   QTranslator qt(0);
   qt.load(QString(QTDIR)+QString("/translations/qt_")+QTextCodec::locale(),
 	  ".");
@@ -658,11 +629,11 @@ int main(int argc,char *argv[])
   tr.load(QString(PREFIX)+QString("/share/rivendell/rdgpimon_")+
 	     QTextCodec::locale(),".");
   a.installTranslator(&tr);
-
+  */
   //
   // Start Event Loop
   //
-  MainWidget *w=new MainWidget(NULL,"main");
+  MainWidget *w=new MainWidget();
   a.setMainWidget(w);
   w->setGeometry(QRect(QPoint(0,0),w->sizeHint()));
   w->show();

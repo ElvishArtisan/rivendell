@@ -2,9 +2,7 @@
 //
 // The Core Audio Engine component of Rivendell
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: cae.h,v 1.79.4.4 2012/11/30 16:14:58 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -32,11 +30,11 @@
 
 #include <qobject.h>
 #include <qstring.h>
-#include <qsocketdevice.h>
-#include <qserversocket.h>
+#include <q3socketdevice.h>
+#include <q3serversocket.h>
 #include <qsignalmapper.h>
 #include <qtimer.h>
-#include <qprocess.h>
+#include <q3process.h>
 
 #include <rdwavefile.h>
 #include <rdsocket.h>
@@ -81,6 +79,11 @@ struct alsa_format {
 #include <rdconfig.h>
 #include <rdstation.h>
 
+#ifndef HAVE_SRC_CONV
+void src_int_to_float_array (const int *in, float *out, int len);
+void src_float_to_int_array (const float *in, int *out, int len);
+#endif  // HAVE_SRC_CONV
+
 //
 // Debug Options
 //
@@ -97,8 +100,6 @@ struct alsa_format {
 //
 void LogLine(RDConfig::LogPriority prio,const QString &line);
 void SigHandler(int signum);
-extern RDConfig *rd_config;
-
 
 class MainObject : public QObject
 {
@@ -142,8 +143,8 @@ class MainObject : public QObject
   bool debug;
   unsigned system_sample_rate;
   Q_INT16 tcp_port;
-  QServerSocket *server;
-  QSocketDevice *meter_socket;
+  Q3ServerSocket *server;
+  Q3SocketDevice *meter_socket;
   RDSocket *socket[CAE_MAX_CONNECTIONS];
   Q_UINT16 meter_port[CAE_MAX_CONNECTIONS];
   char args[CAE_MAX_CONNECTIONS][CAE_MAX_ARGS][CAE_MAX_LENGTH];
@@ -263,10 +264,12 @@ class MainObject : public QObject
   bool jack_activated;
 #ifdef JACK
   int jack_card;
-  std::vector<QProcess *> jack_clients;
+  std::vector<Q3Process *> jack_clients;
   RDWaveFile *jack_record_wave[RD_MAX_STREAMS];
   RDWaveFile *jack_play_wave[RD_MAX_STREAMS];
   short *jack_wave_buffer;
+  int *jack_wave32_buffer;
+  uint8_t *jack_wave24_buffer;
   jack_default_audio_sample_t *jack_sample_buffer;
   soundtouch::SoundTouch *jack_st_conv[RD_MAX_STREAMS];
   short jack_input_volume_db[RD_MAX_STREAMS];
@@ -338,6 +341,7 @@ class MainObject : public QObject
   short alsa_output_volume_db[RD_MAX_CARDS][RD_MAX_PORTS][RD_MAX_STREAMS];
   short alsa_passthrough_volume_db[RD_MAX_CARDS][RD_MAX_PORTS][RD_MAX_PORTS];
   short *alsa_wave_buffer;
+  uint8_t *alsa_wave24_buffer;
   RDWaveFile *alsa_record_wave[RD_MAX_CARDS][RD_MAX_STREAMS];
   RDWaveFile *alsa_play_wave[RD_MAX_CARDS][RD_MAX_STREAMS];
   int alsa_offset[RD_MAX_CARDS][RD_MAX_STREAMS];
@@ -352,6 +356,7 @@ class MainObject : public QObject
 #endif  // ALSA
 
   bool CheckLame();
+  bool CheckMp4Decode();
 
   //
   // TwoLAME Encoder

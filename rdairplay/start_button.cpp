@@ -2,9 +2,7 @@
 //
 // The Start Button for RDAirPlay Rivendell
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: start_button.cpp,v 1.27 2011/02/11 23:06:05 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,9 +26,8 @@
 #include <start_button.h>
 #include <colors.h>
 
-
-StartButton::StartButton(bool allow_pause,QWidget *parent,const char *name)
-  : QPushButton(parent,name)
+StartButton::StartButton(bool allow_pause,QWidget *parent)
+  : QPushButton(parent)
 {
   start_time_mode=RDAirPlayConf::TwentyFourHour;
   start_time=QTime();
@@ -217,12 +214,11 @@ void StartButton::Resize(int x,int y,int w,int h)
   p->fillRect(0,0,w,h,palette().color(QPalette::Active,QColorGroup::Button));
   //p->eraseRect(0,0,w,h);
   if(start_mode!=StartButton::Disabled) {
-    p->setPen(QColor(color1));
+    p->setPen(QColor(Qt::color1));
     p->setFont(start_label_font);
     p->drawText((geometry().width()-p->fontMetrics().width(start_title))/2,
 		22,start_title);
-    p->moveTo(10,24);
-    p->lineTo(70,24);
+    p->drawLine(10,24,70,24);
     p->setFont(start_counter_font);
     if(!start_time.isNull()) {
       if(start_time_mode==RDAirPlayConf::TwentyFourHour) {

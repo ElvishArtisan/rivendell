@@ -2,9 +2,7 @@
 //
 // The Core Audio Engine component of Rivendell
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: cae.cpp,v 1.115.4.3 2012/11/30 16:14:57 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,7 +19,6 @@
 //
 
 
-#include <qapplication.h>
 #include <qobject.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -37,45 +34,62 @@
 #include <errno.h>
 #include <dlfcn.h>
 
-#include <qdir.h>
-#include <qsqldatabase.h>
-#include <qsessionmanager.h>
+#include <QApplication>
+#include <QCoreApplication>
+#include <QDir>
+#include <QSessionManager>
 
+#include <rdapplication.h>
 #include <rdsocket.h>
 #include <rdconf.h>
 #include <rdcheck_daemons.h>
 #include <rddebug.h>
-#include <rdcmd_switch.h>
-#include <rdsystem.h>
 
 #include <cae_socket.h>
 #include <cae.h>
 
 volatile bool exiting=false;
-RDConfig *rd_config;
+
 #ifdef JACK
 extern jack_client_t *jack_client;
 #endif  // JACK
 
 #define PRINT_COMMANDS
 
+#ifndef HAVE_SRC_CONV
+void src_int_to_float_array (const int *in, float *out, int len)
+{
+  for(int i=0;i<len;i++) {
+    out[i]=(double)in[i]/2147483648.0;
+  }
+}
+
+
+void src_float_to_int_array (const float *in, int *out, int len)
+{
+  for(int i=0;i<len;i++) {
+    out[i]=(int)(in[i]*2147483648.0);
+  }
+}
+#endif  // HAVE_SRC_CONV
+
 void LogLine(RDConfig::LogPriority prio,const QString &line)
 {
   FILE *file;
 
-  rd_config->log("caed",prio,line);
+  rda->config()->log("caed",prio,line);
 
-  if(rd_config->caeLogfile().isEmpty()) {
+  if(rda->config()->caeLogfile().isEmpty()) {
     return;
   }
 
   QDateTime current=QDateTime::currentDateTime();
 
-  file=fopen(rd_config->caeLogfile(),"a");
+  file=fopen(rda->config()->caeLogfile(),"a");
   if(file==NULL) {
     return;
   }
-  chmod(rd_config->caeLogfile(),S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH);
+  chmod(rda->config()->caeLogfile(),S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH);
   fprintf(file,"%02d/%02d/%4d - %02d:%02d:%02d.%03d : %s\n",
 	  current.date().month(),
 	  current.date().day(),
@@ -104,18 +118,7 @@ void SigHandler(int signum)
 MainObject::MainObject(QObject *parent,const char *name)
   :QObject(parent,name)
 {
-  //
-  // Read Command Options
-  //
-  RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"caed",CAED_USAGE);
-  delete cmd;
-
-  //
-  // LogLine references rd_config
-  // 
-  rd_config=new RDConfig(RD_CONF_FILE);
-  rd_config->load();
+  new RDApplication(RDApplication::Console,"caed",CAED_USAGE);
 
   //
   // Make sure we're the only instance running
@@ -186,48 +189,28 @@ MainObject::MainObject(QObject *parent,const char *name)
   connect(server,SIGNAL(connection(int)),this,SLOT(newConnection(int)));
 
   if(!debug) {
-    RDDetach(rd_config->logCoreDumpDirectory());
+    RDDetach(rda->config()->logCoreDumpDirectory());
   }
 
   signal(SIGHUP,SigHandler);
   signal(SIGINT,SigHandler);
   signal(SIGTERM,SigHandler);
 
-  if(!RDWritePid(RD_PID_DIR,"caed.pid",rd_config->uid())) {
+  if(!RDWritePid(RD_PID_DIR,"caed.pid",rda->config()->uid())) {
     LogLine(RDConfig::LogErr,"can't write pid file");
     fprintf(stderr,"caed: can't write pid file\n");
     exit(1);
   }
 
   //
-  // Allowcate Meter Socket
+  // Allocate Meter Socket
   //
-  meter_socket=new QSocketDevice(QSocketDevice::Datagram);
-
-  //
-  // Open Database
-  //
-  QSqlDatabase *db=QSqlDatabase::addDatabase(rd_config->mysqlDriver());
-  if(!db) {
-    LogLine(RDConfig::LogErr,"can't open mySQL database");
-    fprintf(stderr,"caed: can't open mySQL database");
-    exit(1);
-  }
-  db->setDatabaseName(rd_config->mysqlDbname());
-  db->setUserName(rd_config->mysqlUsername());
-  db->setPassword(rd_config->mysqlPassword());
-  db->setHostName(rd_config->mysqlHostname());
-  if(!db->open()) {
-    LogLine(RDConfig::LogErr,"unable to connect to mySQL Server");
-    printf("caed: unable to connect to mySQL Server");
-    db->removeDatabase(rd_config->mysqlDbname());
-    exit(1);
-  }
+  meter_socket=new Q3SocketDevice(Q3SocketDevice::Datagram);
 
   //
   // Start Up the Drivers
   //
-  RDStation *station=new RDStation(rd_config->stationName());
+  RDStation *station=new RDStation(rda->config()->stationName());
   RDSystem *sys=new RDSystem();
   system_sample_rate=sys->sampleRate();
   delete sys;
@@ -246,7 +229,7 @@ MainObject::MainObject(QObject *parent,const char *name)
   //
   station->setScanned(true);
   delete station;
-  db->removeDatabase(rd_config->mysqlDbname());
+  //  db->removeDatabase(rda->config()->mysqlDbname());
 
   //
   // Initialize Mixers
@@ -295,9 +278,9 @@ MainObject::MainObject(QObject *parent,const char *name)
     jack_running=true;
   }
 #endif  // JACK
-  if(rd_config->useRealtime()) {
+  if(rda->config()->useRealtime()) {
     if(!jack_running) {
-      sched_params.sched_priority=rd_config->realtimePriority();
+      sched_params.sched_priority=rda->config()->realtimePriority();
     }
     sched_policy=SCHED_FIFO;
 #ifdef ALSA
@@ -344,17 +327,17 @@ MainObject::MainObject(QObject *parent,const char *name)
   //
 /*
   if(getuid()==0) {
-    if(setuid(rd_config->uid())<0) {
+    if(setuid(rda->config()->uid())<0) {
       perror("cae");
       exit(1);
     }
-//  if(setegid(rd_config->gid())<0) {
+//  if(setegid(rda->config()->gid())<0) {
 //    perror("cae");
 //    exit(1);
 //  }
   }
 */
-  if(rd_config->enableMixerLogging()) {
+  if(rda->config()->enableMixerLogging()) {
     LogLine(RDConfig::LogNotice,"mixer logging enabled");
   }
   LogLine(RDConfig::LogInfo,"cae started");
@@ -377,7 +360,7 @@ void MainObject::newConnection(int fd)
     close(fd);
     return;
   }
-  socket[i]=new RDSocket(i,this,"socket_0");
+  socket[i]=new RDSocket(i,this);
   socket[i]->setSocket(fd);
   connect(socket[i],SIGNAL(readyReadID(int)),this,SLOT(socketData(int)));
   connect(socket[i],SIGNAL(connectionClosedID(int)),
@@ -689,7 +672,7 @@ void MainObject::DispatchCommand(int ch)
     return;
   }
   if(!strcmp(args[ch][0],"PW")) {  // Password Authenticate
-    if(!strcmp(args[ch][1],rd_config->password())) {
+    if(!strcmp(args[ch][1],rda->config()->password())) {
       auth[ch]=true;
       EchoCommand(ch,"PW +!");
       return;
@@ -716,7 +699,7 @@ void MainObject::DispatchCommand(int ch)
       EchoCommand(ch,temp);
       return;
     }
-    wavename = rd_config->audioFileName (QString(args[ch][2]));
+    wavename = rda->config()->audioFileName (QString(args[ch][2]));
     switch(cae_driver[card]) {
 	case RDStation::Hpi:
 	  if(!hpiLoadPlayback(card,wavename,&new_stream)) {
@@ -1071,7 +1054,7 @@ void MainObject::DispatchCommand(int ch)
 	EchoArgs(ch,'-');
  	return;
       }
-      wavename = rd_config->audioFileName(QString(args[ch][7]));
+      wavename = rda->config()->audioFileName(QString(args[ch][7]));
       unlink(wavename);  // So we don't trainwreck any current playouts!
       unlink(wavename+".energy");
       switch(cae_driver[card]) {
@@ -1273,7 +1256,7 @@ void MainObject::DispatchCommand(int ch)
 	  EchoArgs(ch,'+');
 	  return;
     }
-    if(rd_config->enableMixerLogging()) {
+    if(rda->config()->enableMixerLogging()) {
       LogLine(RDConfig::LogInfo,QString().
 	      sprintf("SetClockSource - Card: %d  Source: %d",card,stream));
     }
@@ -1310,7 +1293,7 @@ void MainObject::DispatchCommand(int ch)
 	  EchoArgs(ch,'-');
 	  return;
     }
-    if(rd_config->enableMixerLogging()) {
+    if(rda->config()->enableMixerLogging()) {
       LogLine(RDConfig::LogInfo,QString().
 	      sprintf("SetInputVolume - Card: %d  Stream: %d Level: %d",
 		      card,stream,level));
@@ -1352,7 +1335,7 @@ void MainObject::DispatchCommand(int ch)
 	  EchoArgs(ch,'-');
 	  return;
     }
-    if(rd_config->enableMixerLogging()) {
+    if(rda->config()->enableMixerLogging()) {
       LogLine(RDConfig::LogInfo,QString().
 	      sprintf("SetOutputVolume - Card: %d  Stream: %d  Port: %d  Level: %d",
 		      card,stream,port,level));
@@ -1395,7 +1378,7 @@ void MainObject::DispatchCommand(int ch)
 	  EchoArgs(ch,'-');
 	  return;
     }
-    if(rd_config->enableMixerLogging()) {
+    if(rda->config()->enableMixerLogging()) {
       LogLine(RDConfig::LogInfo,QString().
 	      sprintf("FadeOutputVolume - Card: %d  Stream: %d  Port: %d  Level: %d  Length: %d",
 		      card,stream,port,level,length));
@@ -1437,7 +1420,7 @@ void MainObject::DispatchCommand(int ch)
 	  EchoArgs(ch,'-');
 	  return;
     }
-    if(rd_config->enableMixerLogging()) {
+    if(rda->config()->enableMixerLogging()) {
       LogLine(RDConfig::LogInfo,QString().
 	      sprintf("SetInputLevel - Card: %d  Port: %d  Level: %d",
 		      card,port,level));
@@ -1479,7 +1462,7 @@ void MainObject::DispatchCommand(int ch)
 	  EchoArgs(ch,'-');
 	  return;
     }
-    if(rd_config->enableMixerLogging()) {
+    if(rda->config()->enableMixerLogging()) {
       LogLine(RDConfig::LogInfo,QString().
 	      sprintf("SetOutputLevel - Card: %d  Port: %d  Level: %d",
 		      card,port,level));
@@ -1521,7 +1504,7 @@ void MainObject::DispatchCommand(int ch)
 	  EchoArgs(ch,'-');
 	  return;
     }
-    if(rd_config->enableMixerLogging()) {
+    if(rda->config()->enableMixerLogging()) {
       LogLine(RDConfig::LogInfo,QString().
 	      sprintf("SetInputMode - Card: %d  Port: %d  Mode: %d",
 		      card,port,mode));
@@ -1563,7 +1546,7 @@ void MainObject::DispatchCommand(int ch)
 	  EchoArgs(ch,'-');
 	  return;
     }
-    if(rd_config->enableMixerLogging()) {
+    if(rda->config()->enableMixerLogging()) {
       LogLine(RDConfig::LogInfo,QString().
 	      sprintf("SetOutputMode - Card: %d  Port: %d  Mode: %d",
 		      card,port,mode));
@@ -1604,7 +1587,7 @@ void MainObject::DispatchCommand(int ch)
 	  EchoArgs(ch,'-');
 	  return;
     }
-    if(rd_config->enableMixerLogging()) {
+    if(rda->config()->enableMixerLogging()) {
       LogLine(RDConfig::LogInfo,QString().
 	      sprintf("SetInputVOXLevel - Card: %d  Stream: %d  Level: %d",
 		      card,stream,level));
@@ -1646,7 +1629,7 @@ void MainObject::DispatchCommand(int ch)
 	  EchoArgs(ch,'-');
 	  return;
     }
-    if(rd_config->enableMixerLogging()) {
+    if(rda->config()->enableMixerLogging()) {
       LogLine(RDConfig::LogInfo,QString().
 	      sprintf("SetInputType - Card: %d  Port: %d  Type: %d",
 		      card,port,type));
@@ -1689,7 +1672,7 @@ void MainObject::DispatchCommand(int ch)
 	  EchoArgs(ch,'-');
 	  return;
     }
-    if(rd_config->enableMixerLogging()) {
+    if(rda->config()->enableMixerLogging()) {
       LogLine(RDConfig::LogInfo,QString().
 	      sprintf("SetPassthroughLevel - Card: %d  InPort: %d  OutPort: %d Level: %d",
 		      card,in_port,out_port,level));
@@ -1869,7 +1852,7 @@ void MainObject::BroadcastCommand(const char *command)
 
 void MainObject::EchoCommand(int ch,const char *command)
 {
-  if(socket[ch]->state()==QSocket::Connection) {
+  if(socket[ch]->state()==Q3Socket::Connection) {
 #ifdef PRINT_COMMANDS
     printf("CAE: Connection %d sending %s\n",ch,command);
 #endif  // PRINT_COMMANDS
@@ -1991,6 +1974,11 @@ void MainObject::ProbeCaps(RDStation *station)
   station->setHaveCapability(RDStation::HaveTwoLame,LoadTwoLame());
   station->setHaveCapability(RDStation::HaveMpg321,LoadMad());
 
+  //
+  // MP4 Decoder
+  //
+  station->setHaveCapability(RDStation::HaveMp4Decode,CheckMp4Decode());
+
 #ifdef HPI
   station->setDriverVersion(RDStation::Hpi,hpiVersion());
 #else
@@ -2044,6 +2032,17 @@ bool MainObject::CheckLame()
 #else
   return false;
 #endif  // HAVE_LAME
+}
+
+
+bool MainObject::CheckMp4Decode()
+{
+#ifdef HAVE_MP4_LIBS
+  return (dlopen("libfaad.so",RTLD_LAZY)!=NULL)&&
+    (dlopen("libmp4v2.so",RTLD_LAZY)!=NULL);
+#else
+  return false;
+#endif  // HAVE_MP4_LIBS
 }
 
 
@@ -2268,7 +2267,7 @@ void MainObject::SendMeterUpdate(const char *msg,unsigned len)
 int main(int argc,char *argv[])
 {
   int rc;
-  QApplication a(argc,argv,false);
+  QCoreApplication a(argc,argv);
   new MainObject(NULL,"main");
   rc=a.exec();
   LogLine(RDConfig::LogDebug,QString().sprintf("cae post a.exec() rc:%d", rc));

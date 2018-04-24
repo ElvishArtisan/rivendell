@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell RDCatch Playout
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_playout.cpp,v 1.23.4.1 2014/01/07 23:40:36 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,27 +21,32 @@
 #include <qdialog.h>
 #include <qstring.h>
 #include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
+#include <q3listbox.h>
+#include <q3textedit.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
+//Added by qt3to4:
+#include <QCloseEvent>
+#include <QPaintEvent>
+#include <QLabel>
+#include <QKeyEvent>
 
-#include <rddb.h>
+#include <rdapplication.h>
 #include <rd.h>
 #include <rdcut.h>
 #include <rdcut_dialog.h>
 #include <rdcut_path.h>
+#include <rdescape_string.h>
 #include <rdtextvalidator.h>
 
 #include <edit_playout.h>
 #include <globals.h>
 
-
 EditPlayout::EditPlayout(int id,std::vector<int> *adds,QString *filter,
-			 QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+			 QWidget *parent)
+  : QDialog(parent,"",true)
 {
   QString temp;
 
@@ -74,7 +77,7 @@ EditPlayout::EditPlayout(int id,std::vector<int> *adds,QString *filter,
   //
   // Text Validator
   //
-  RDTextValidator *validator=new RDTextValidator(this,"validator");
+  RDTextValidator *validator=new RDTextValidator(this);
 
   //
   // The Recording Record
@@ -84,62 +87,57 @@ EditPlayout::EditPlayout(int id,std::vector<int> *adds,QString *filter,
   //
   // Active Button
   //
-  edit_active_button=new QCheckBox(this,"edit_active_button");
+  edit_active_button=new QCheckBox(this);
   edit_active_button->setGeometry(10,11,20,20);
-  QLabel *label=new QLabel(edit_active_button,
-		   tr("Event Active"),this,"edit_active_label");
+  QLabel *label=new QLabel(edit_active_button,tr("Event Active"),this);
   label->setGeometry(30,11,125,20);
   label->setFont(label_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Station
   //
-  edit_station_box=new QComboBox(this,"edit_station_box");
+  edit_station_box=new QComboBox(this);
   edit_station_box->setGeometry(200,10,140,23);
-  label=new QLabel(edit_station_box,tr("Location:"),this,
-				       "edit_station_label");
+  label=new QLabel(edit_station_box,tr("Location:"),this);
   label->setGeometry(125,10,70,23);
   label->setFont(label_font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   connect(edit_station_box,SIGNAL(activated(int)),
 	  this,SLOT(activateStationData(int)));
 
   //
   // Start Time
   //
-  edit_starttime_edit=new QTimeEdit(this,"edit_starttime_edit");
+  edit_starttime_edit=new Q3TimeEdit(this);
   edit_starttime_edit->setGeometry(sizeHint().width()-90,12,80,20);
-  label=new QLabel(edit_starttime_edit,
-		   tr("Start Time:"),this,"edit_starttime_label");
+  label=new QLabel(edit_starttime_edit,tr("Start Time:"),this);
   label->setGeometry(sizeHint().width()-175,12,80,20);
   label->setFont(label_font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Description
   //
-  edit_description_edit=new QLineEdit(this,"edit_description_edit");
+  edit_description_edit=new QLineEdit(this);
   edit_description_edit->setGeometry(105,43,sizeHint().width()-115,20);
   edit_description_edit->setValidator(validator);
-  label=new QLabel(edit_description_edit,
-		   tr("Description:"),this,"edit_description_label");
+  label=new QLabel(edit_description_edit,tr("Description:"),this);
   label->setGeometry(10,43,90,20);
   label->setFont(label_font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Destination
   //
-  edit_destination_edit=new QLineEdit(this,"edit_destination_edit");
+  edit_destination_edit=new QLineEdit(this);
   edit_destination_edit->setGeometry(105,70,sizeHint().width()-185,20);
   edit_destination_edit->setReadOnly(true);
-  label=new QLabel(edit_destination_edit,
-		   tr("Destination:"),this,"edit_destination_label");
+  label=new QLabel(edit_destination_edit,tr("Destination:"),this);
   label->setGeometry(10,70,90,20);
   label->setFont(label_font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
-  QPushButton *button=new QPushButton(this,"destination_button");
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  QPushButton *button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-70,65,60,30);
   button->setFont(day_font);
   button->setText(tr("&Select"));
@@ -148,103 +146,95 @@ EditPlayout::EditPlayout(int id,std::vector<int> *adds,QString *filter,
   //
   // Button Label
   //
-  label=new QLabel(tr("Active Days"),this,"active_days_label");
+  label=new QLabel(tr("Active Days"),this);
   label->setGeometry(47,101,90,19);
   label->setFont(label_font);
-  label->setAlignment(AlignHCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignHCenter|Qt::TextShowMnemonic);
 
   //
   // Monday Button
   //
-  edit_mon_button=new QCheckBox(this,"edit_mon_button");
+  edit_mon_button=new QCheckBox(this);
   edit_mon_button->setGeometry(20,120,20,20);
-  label=new QLabel(edit_mon_button,
-		   tr("Monday"),this,"edit_mon_label");
+  label=new QLabel(edit_mon_button,tr("Monday"),this);
   label->setGeometry(40,120,115,20);
   label->setFont(day_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Tuesday Button
   //
-  edit_tue_button=new QCheckBox(this,"edit_tue_button");
+  edit_tue_button=new QCheckBox(this);
   edit_tue_button->setGeometry(115,120,20,20);
-  label=new QLabel(edit_tue_button,
-		   tr("Tuesday"),this,"edit_tue_label");
+  label=new QLabel(edit_tue_button,tr("Tuesday"),this);
   label->setGeometry(135,120,115,20);
   label->setFont(day_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Wednesday Button
   //
-  edit_wed_button=new QCheckBox(this,"edit_wed_button");
+  edit_wed_button=new QCheckBox(this);
   edit_wed_button->setGeometry(215,120,20,20);
-  label=new QLabel(edit_wed_button,
-		   tr("Wednesday"),this,"edit_wed_label");
+  label=new QLabel(edit_wed_button,tr("Wednesday"),this);
   label->setGeometry(235,120,115,20);
   label->setFont(day_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Thursday Button
   //
-  edit_thu_button=new QCheckBox(this,"edit_thu_button");
+  edit_thu_button=new QCheckBox(this);
   edit_thu_button->setGeometry(335,120,20,20);
-  label=new QLabel(edit_thu_button,
-		   tr("Thursday"),this,"edit_thu_label");
+  label=new QLabel(edit_thu_button,tr("Thursday"),this);
   label->setGeometry(355,120,115,20);
   label->setFont(day_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Friday Button
   //
-  edit_fri_button=new QCheckBox(this,"edit_fri_button");
+  edit_fri_button=new QCheckBox(this);
   edit_fri_button->setGeometry(440,120,20,20);
-  label=new QLabel(edit_fri_button,
-		   tr("Friday"),this,"edit_fri_label");
+  label=new QLabel(edit_fri_button,tr("Friday"),this);
   label->setGeometry(460,120,40,20);
   label->setFont(day_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Saturday Button
   //
-  edit_sat_button=new QCheckBox(this,"edit_sat_button");
+  edit_sat_button=new QCheckBox(this);
   edit_sat_button->setGeometry(130,145,20,20);
-  label=new QLabel(edit_sat_button,
-		   tr("Saturday"),this,"edit_sat_label");
+  label=new QLabel(edit_sat_button,tr("Saturday"),this);
   label->setGeometry(150,145,60,20);
   label->setFont(day_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Sunday Button
   //
-  edit_sun_button=new QCheckBox(this,"edit_sun_button");
+  edit_sun_button=new QCheckBox(this);
   edit_sun_button->setGeometry(300,145,20,20);
-  label=new QLabel(edit_sun_button,
-		   tr("Sunday"),this,"edit_sun_label");
+  label=new QLabel(edit_sun_button,tr("Sunday"),this);
   label->setGeometry(320,145,60,20);
   label->setFont(day_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // OneShot Button
   //
-  edit_oneshot_box=new QCheckBox(this,"edit_oneshot_box");
+  edit_oneshot_box=new QCheckBox(this);
   edit_oneshot_box->setGeometry(20,180,15,15);
-  label=new QLabel(edit_oneshot_box,
-		   tr("Make OneShot"),this,"edit_oneshot_label");
+  label=new QLabel(edit_oneshot_box,tr("Make OneShot"),this);
   label->setGeometry(40,178,115,20);
   label->setFont(label_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   //  Save As Button
   //
-  button=new QPushButton(this,"saveas_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-300,sizeHint().height()-60,80,50);
   button->setFont(button_font);
   button->setText(tr("&Save As\nNew"));
@@ -256,7 +246,7 @@ EditPlayout::EditPlayout(int id,std::vector<int> *adds,QString *filter,
   //
   //  Ok Button
   //
-  button=new QPushButton(this,"ok_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
   button->setFont(button_font);
@@ -266,7 +256,7 @@ EditPlayout::EditPlayout(int id,std::vector<int> *adds,QString *filter,
   //
   //  Cancel Button
   //
-  button=new QPushButton(this,"cancel_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   button->setFont(button_font);
   button->setText(tr("&Cancel"));
@@ -334,9 +324,9 @@ void EditPlayout::activateStationData(int id,bool use_temp)
 
 void EditPlayout::selectCutData()
 {
-  RDCutDialog *cut=new RDCutDialog(&edit_cutname,rdstation_conf,catch_system,
-				   edit_filter,NULL,NULL,"",false,false,false,
-				   this);
+  RDCutDialog *cut=
+    new RDCutDialog(&edit_cutname,edit_filter,NULL,NULL,"",false,false,false,
+		    this);
   switch(cut->exec()) {
       case 0:
 	edit_destination_edit->setText(edit_cutname);
@@ -382,7 +372,7 @@ void EditPlayout::cancelData()
 void EditPlayout::paintEvent(QPaintEvent *e)
 {
   QPainter *p=new QPainter(this);
-  p->setPen(QColor(black));
+  p->setPen(QColor(Qt::black));
   p->drawRect(10,109,sizeHint().width()-20,62);
   p->end();
 }
@@ -414,9 +404,14 @@ void EditPlayout::PopulateDecks(QComboBox *box)
   int count=0;
 
   box->clear();
-  QString sql=QString("select STATION_NAME,CHANNEL from DECKS \
-where (CARD_NUMBER!=-1)&&(PORT_NUMBER!=-1)&&\
-(CHANNEL>128) order by STATION_NAME,CHANNEL");
+  QString sql=QString("select ")+
+    "STATION_NAME,"+
+    "CHANNEL "+
+    "from DECKS where "+
+    "(CARD_NUMBER!=-1)&&"+
+    "(PORT_NUMBER!=-1)&&"+
+    "(CHANNEL>128) "+
+    "order by STATION_NAME,CHANNEL";
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
     box->insertItem(QString().sprintf("%s : %dP",
@@ -484,13 +479,14 @@ bool EditPlayout::CheckEvent(bool include_myself)
 
   sscanf((const char *)edit_station_box->currentText(),"%s%s%d",
 	 station,gunk,&chan);
-  QString sql=
-    QString().sprintf("select RECORDINGS.START_TIME,CUTS.LENGTH\
-                       from RECORDINGS left join CUTS\
-                       on(RECORDINGS.CUT_NAME=CUTS.CUT_NAME)\
-                       where (RECORDINGS.STATION_NAME=\"%s\")&&\
-                       (RECORDINGS.TYPE=%d)&&(RECORDINGS.CHANNEL=%d)",
-		      station,RDRecording::Playout,chan+128);
+  QString sql=QString("select ")+
+    "RECORDINGS.START_TIME,"+
+    "CUTS.LENGTH "+
+    "from RECORDINGS left join CUTS "+
+    "on RECORDINGS.CUT_NAME=CUTS.CUT_NAME where "+
+    "(RECORDINGS.STATION_NAME=\""+RDEscapeString(station)+"\")&&"+
+    QString().sprintf("(RECORDINGS.TYPE=%d)&&",RDRecording::Playout)+
+    QString().sprintf("(RECORDINGS.CHANNEL=%d)",chan+128);
   if(edit_sun_button->isChecked()) {
     sql+="&&(RECORDINGS.SUN=\"Y\")";
   }

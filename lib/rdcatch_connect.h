@@ -2,9 +2,7 @@
 //
 // Connect to the Rivendell Netcatcher Daemon.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcatch_connect.h,v 1.19 2010/07/29 19:32:33 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,7 +21,7 @@
 #include <qsqldatabase.h>
 #include <qstring.h>
 #include <qobject.h>
-#include <qsocket.h>
+#include <q3socket.h>
 #include <qlabel.h>
 
 #include <rd.h>
@@ -37,12 +35,11 @@
 #define CC_MAX_LENGTH 256
 #define CC_HEARTBEAT_INTERVAL 15000
 
-
 class RDCatchConnect : public QObject
 {
  Q_OBJECT;
  public:
-  RDCatchConnect(int serial,QObject *parent=0,const char *name=0);
+  RDCatchConnect(int serial,QObject *parent=0);
   ~RDCatchConnect();
   void connectHost(QString hostname,Q_UINT16 hostport,QString password);
   RDDeck::Status status(unsigned chan) const;
@@ -72,6 +69,7 @@ class RDCatchConnect : public QObject
   void meterLevel(int serial,int deck,int chan,int level);
   void eventUpdated(int id);
   void eventPurged(int id);
+  void deckEventSent(int serial,int chan,int number);
   void heartbeatFailed(int id);
   
  private slots:
@@ -83,7 +81,7 @@ class RDCatchConnect : public QObject
  private:
   void SendCommand(QString cmd);
   void DispatchCommand();
-  QSocket *cc_socket;
+  Q3Socket *cc_socket;
   QString cc_password;
   bool debug;
   char args[CC_MAX_ARGS][CC_MAX_LENGTH];

@@ -4,9 +4,7 @@
 #
 # Script for monitoring Rivendell memory usage.
 #
-# (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
-#
-#      $Id: rdmemcheck.sh,v 1.1 2010/12/21 17:28:43 cvs Exp $
+# (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as

@@ -2,9 +2,7 @@
 //
 // The Log Editor Utility for Rivendell.
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdlogedit.h,v 1.28.4.1 2014/01/08 23:32:50 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,42 +18,43 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-
 #ifndef RDLOGEDIT_H
 #define RDLOGEDIT_H
 
 #include <vector>
 
-#include <qmainwindow.h>
+#include <q3mainwindow.h>
 #include <qsize.h>
 #include <qsizepolicy.h>
 #include <qsqldatabase.h>
+#include <qcheckbox.h>
 #include <qlineedit.h>
-#include <qlistview.h>
+#include <q3listview.h>
 #include <qpushbutton.h>
 #include <qpixmap.h>
 #include <qcombobox.h>
 #include <qlabel.h>
+//Added by qt3to4:
+#include <QResizeEvent>
 
-#include <rduser.h>
-#include <rdripc.h>
-#include <rdlibrary_conf.h>
 #include <rdlog_line.h>
 
 #include <list_listviewitem.h>
 
+#define RDLOGEDIT_USAGE "\n\n"
 
-class MainWidget : public QMainWindow
+class MainWidget : public Q3MainWindow
 {
  Q_OBJECT
  public:
-  MainWidget(QWidget *parent=0,const char *name=0,WFlags f=0);
+  MainWidget(QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
   
  private slots:
   void connectedData(bool state);
   void userData();
+  void recentData(bool state);
   void addData();
   void editData();
   void deleteData();
@@ -63,7 +62,7 @@ class MainWidget : public QMainWindow
   void reportData();
   void filterChangedData(const QString &str);
   void filterClearedData();
-  void logDoubleclickedData(QListViewItem *item,const QPoint &pt,int col);
+  void logDoubleclickedData(Q3ListViewItem *item,const QPoint &pt,int col);
   void quitMainWidget();
 
  protected:
@@ -83,7 +82,9 @@ class MainWidget : public QMainWindow
   QLabel *log_filter_label;
   QLineEdit *log_filter_edit;
   QPushButton *log_filter_button;
-  QListView *log_log_list;
+  QCheckBox *log_recent_check;
+  QLabel *log_recent_label;
+  Q3ListView *log_log_list;
   std::vector<RDLogLine> log_clipboard;
   QPushButton *log_add_button;
   QPushButton *log_edit_button;

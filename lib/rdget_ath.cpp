@@ -2,9 +2,7 @@
 //
 // Get an Aggreggate Tuning Hours (ATH) Figure.
 //
-//   (C) Copyright 2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdget_ath.cpp,v 1.4 2010/07/29 19:32:33 cvs Exp $
+//   (C) Copyright 2006,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,9 +25,8 @@
 
 #include <rdget_ath.h>
 
-
-RDGetAth::RDGetAth(double *ath,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+RDGetAth::RDGetAth(double *ath,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   ath_ath=ath;
 
@@ -71,7 +68,7 @@ RDGetAth::RDGetAth(double *ath,QWidget *parent,const char *name)
 				       "ath_ath_label");
   ath_ath_label->setGeometry(10,70,40,19);
   ath_ath_label->setFont(font);
-  ath_ath_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  ath_ath_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   //  Ok Button

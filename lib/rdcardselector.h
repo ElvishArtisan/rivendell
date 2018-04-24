@@ -2,9 +2,7 @@
 //
 // Audio Card Selector Widget for Rivendell
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcardselector.h,v 1.9.8.1 2013/03/22 15:11:50 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,53 +21,54 @@
 #ifndef RDCARDSELECTOR_H
 #define RDCARDSELECTOR_H
 
-#include <qwidget.h>
-#include <qspinbox.h>
-#include <qlabel.h>
+#include <QLabel>
+#include <QSpinBox>
 
 #include <rd.h>
-
 
 class RDCardSelector : public QWidget
 {
   Q_OBJECT
-  public:
-   RDCardSelector(QWidget *parent=0,const char *name=0);
-   ~RDCardSelector();
-   QSize sizeHint() const;
-   QSizePolicy sizePolicy() const;
-   bool isDisabled() const;
-   int id() const;
-   void setId(int id);
-   QString title() const;
-   void setTitle(QString title);
-   int card() const;
-   void setCard(int card);
-   int port() const;
-   void setPort(int port);
-   int maxCards() const;
-   void setMaxCards(int num);
-   int maxPorts(int card) const;
-   void setMaxPorts(int card,int num);
+ public:
+  RDCardSelector(QWidget *parent=0);
+  ~RDCardSelector();
+  QSize sizeHint() const;
+  QSizePolicy sizePolicy() const;
+  bool isDisabled() const;
+  int id() const;
+  void setId(int id);
+  QString title() const;
+  void setTitle(QString title);
+  int card() const;
+  void setCard(int card);
+  int port() const;
+  void setPort(int port);
+  int maxCards() const;
+  void setMaxCards(int num);
+  int maxPorts(int card) const;
+  void setMaxPorts(int card,int num);
 
-  signals:
-   void settingsChanged(int id,int card,int port);
-   void cardChanged(int card);
-   void portChanged(int port);
+ signals:
+  void settingsChanged(int id,int card,int port);
+  void cardChanged(int card);
+  void portChanged(int port);
 
-  private slots:
-   void cardData(int);
-   void portData(int);
+ private slots:
+  void cardData(int);
+  void portData(int);
 
-  private:
-   QLabel *card_card_label;
-   QSpinBox *card_card_box;
-   QLabel *card_port_label;
-   QSpinBox *card_port_box;
-   QLabel *card_title;
-   int yoffset;
-   int card_max_ports[RD_MAX_CARDS];
-   int card_id;
+ protected:
+  void resizeEvent(QResizeEvent *e);
+
+ private:
+  QLabel *card_card_label;
+  QSpinBox *card_card_box;
+  QLabel *card_port_label;
+  QSpinBox *card_port_box;
+  QLabel *card_title;
+  int yoffset;
+  int card_max_ports[RD_MAX_CARDS];
+  int card_id;
 };
 
 

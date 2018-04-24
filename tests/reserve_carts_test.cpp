@@ -2,9 +2,7 @@
 //
 // Test the Rivendell db connection routines.
 //
-//   (C) Copyright 2012 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: reserve_carts_test.cpp,v 1.1.2.1 2014/05/30 00:26:31 cvs Exp $
+//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,49 +23,45 @@
 
 #include <vector>
 
-#include <qapplication.h>
-#include <qvariant.h>
+#include <QCoreApplication>
+#include <QVariant>
 
-#include <rdconfig.h>
+#include <rdapplication.h>
 #include <rdgroup.h>
-#include <rdcmd_switch.h>
 #include <rddb.h>
 
 #include "reserve_carts_test.h"
 
-MainObject::MainObject(QObject *parent,const char *name)
-  :QObject(parent,name)
+MainObject::MainObject(QObject *parent)
+  :QObject(parent)
 {
-  RDConfig *config;
+  new RDApplication(RDApplication::Console,"reserve_carts_test",
+		    RESERVE_CARTS_TEST_USAGE);
   QString group_name;
   unsigned quantity=0;
   bool ok=false;
   RDGroup *group=NULL;
   std::vector<unsigned> cart_nums;
-  unsigned schema=0;
 
   //
   // Read Command Options
   //
-  RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"reserve_carts_test",
-		    RESERVE_CARTS_TEST_USAGE);
-  for(unsigned i=0;i<cmd->keys();i++) {
-    if(cmd->key(i)=="--group") {
-      group_name=cmd->value(i);
-      cmd->setProcessed(i,true);
+  for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
+    if(rda->cmdSwitch()->key(i)=="--group") {
+      group_name=rda->cmdSwitch()->value(i);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(cmd->key(i)=="--quantity") {
-      quantity=cmd->value(i).toUInt(&ok);
+    if(rda->cmdSwitch()->key(i)=="--quantity") {
+      quantity=rda->cmdSwitch()->value(i).toUInt(&ok);
       if(!ok) {
 	fprintf(stderr,"invalid --quantity specified\n");
 	exit(256);
       }
-      cmd->setProcessed(i,true);
+      rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(!cmd->processed(i)) {
+    if(!rda->cmdSwitch()->processed(i)) {
       fprintf(stderr,"reserve_carts_test: unknown option \"%s\"\n",
-	      (const char *)cmd->value(i));
+	      (const char *)rda->cmdSwitch()->value(i));
       exit(256);
     }
   }
@@ -85,23 +79,6 @@ MainObject::MainObject(QObject *parent,const char *name)
   }
 
   //
-  // Load Configuration
-  //
-  config=new RDConfig();
-  config->load();
-
-  //
-  // Open Database
-  //
-  QString err (tr("upload_test: "));
-  QSqlDatabase *db=RDInitDb(&schema,&err);
-  if(!db) {
-    fprintf(stderr,err.ascii());
-    delete cmd;
-    exit(256);
-  }
-
-  //
   // Run the Test
   //
   group=new RDGroup(group_name);
@@ -110,7 +87,7 @@ MainObject::MainObject(QObject *parent,const char *name)
 	    (const char *)group_name.utf8());
     exit(256);
   }
-  if(group->reserveCarts(&cart_nums,config->stationName(),RDCart::Audio,
+  if(group->reserveCarts(&cart_nums,rda->config()->stationName(),RDCart::Audio,
 			 quantity)) {
     printf("reserved the following carts:\n");
     for(unsigned i=0;i<cart_nums.size();i++) {
@@ -127,7 +104,7 @@ MainObject::MainObject(QObject *parent,const char *name)
 
 int main(int argc,char *argv[])
 {
-  QApplication a(argc,argv,false);
-  new MainObject(NULL,"main");
+  QCoreApplication a(argc,argv);
+  new MainObject();
   return a.exec();
 }

@@ -2,9 +2,7 @@
 //
 // A Rivendell switcher driver for the BroadcastTools 16x2
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: bt16x2.h,v 1.11 2010/08/03 23:39:25 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -39,7 +37,7 @@ class Bt16x2 : public Switcher
 {
  Q_OBJECT
  public:
-  Bt16x2(RDMatrix *matrix,QObject *parent=0,const char *name=0);
+  Bt16x2(RDMatrix *matrix,QObject *parent=0);
   ~Bt16x2();
   RDMatrix::Type type();
   unsigned gpiQuantity();

@@ -4,10 +4,7 @@
 #
 # A shell utility for packaging Rivendell translation files.
 #
-# (C) Copyright 2005,2008 Fred Gleason <fredg@paravelsystems.com>
-#
-#      $Id: rdpack.sh,v 1.6 2010/07/29 19:32:32 cvs Exp $
-#      $Date: 2010/07/29 19:32:32 $
+# (C) Copyright 2005,2008,2016 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as

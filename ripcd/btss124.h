@@ -1,10 +1,8 @@
 // btss124.h
 //
-// A Rivendell switcher driver for the BroadcastTools SS 8.2
+// A Rivendell switcher driver for the BroadcastTools SS 12.4
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: btss124.h,v 1.9 2010/08/03 23:39:26 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -36,7 +34,7 @@ class BtSs124 : public Switcher
 {
  Q_OBJECT
  public:
-  BtSs124(RDMatrix *matrix,QObject *parent=0,const char *name=0);
+  BtSs124(RDMatrix *matrix,QObject *parent=0);
   ~BtSs124();
   RDMatrix::Type type();
   unsigned gpiQuantity();

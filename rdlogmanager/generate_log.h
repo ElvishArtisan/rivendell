@@ -2,9 +2,7 @@
 //
 // Generate a Rivendell Log
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: generate_log.h,v 1.9 2010/07/29 19:32:37 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,10 +25,12 @@
 #include <qsqldatabase.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
-#include <qdatetimeedit.h>
+#include <q3datetimeedit.h>
 #include <qcombobox.h>
-#include <qprogressdialog.h>
+#include <q3progressdialog.h>
 #include <qpixmap.h>
+//Added by qt3to4:
+#include <QResizeEvent>
 
 #define GENERATE_LOG_FILESCAN_INTERVAL 5000
 
@@ -38,7 +38,7 @@ class GenerateLog : public QDialog
 {
  Q_OBJECT
  public:
-  GenerateLog(QWidget *parent=0,const char *name=0,int cmd_schwitch=0,QString *cmd_service=NULL,QDate *cmd_date=NULL);
+  GenerateLog(QWidget *parent=0,int cmd_schwitch=0,QString *cmd_service=NULL,QDate *cmd_date=NULL);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 
@@ -52,14 +52,24 @@ class GenerateLog : public QDialog
   void fileScanData();
   void closeData();
 
+ protected:
+  void resizeEvent(QResizeEvent *e);
+
  private:
   void UpdateControls();
+  QLabel *gen_service_label;
   QComboBox *gen_service_box;
-  QDateEdit *gen_date_edit;
-  QProgressDialog *gen_progress_dialog;
+  QLabel *gen_date_label;
+  Q3DateEdit *gen_date_edit;
+  QPushButton *gen_select_button;
+  QLabel *gen_import_label;
+  QLabel *gen_available_label;
+  QLabel *gen_merged_label;
+  Q3ProgressDialog *gen_progress_dialog;
   QPushButton *gen_create_button;
   QPushButton *gen_music_button;
   QPushButton *gen_traffic_button;
+  QPushButton *gen_close_button;
   QLabel *gen_tfc_avail_label;
   QLabel *gen_tfc_merged_label;
   QLabel *gen_mus_avail_label;

@@ -2,9 +2,7 @@
 //
 // Add a Rivendell Service
 //
-//   (C) Copyright 2002 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: add_event.cpp,v 1.13.8.1 2012/04/23 17:22:47 cvs Exp $
+//   (C) Copyright 2002,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,15 +21,16 @@
 #include <qdialog.h>
 #include <qstring.h>
 #include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
+#include <q3listbox.h>
+#include <q3textedit.h>
 #include <qlabel.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
-#include <qbuttongroup.h>
-#include <qsqldatabase.h>
+#include <q3buttongroup.h>
+//Added by qt3to4:
+#include <QCloseEvent>
 
 #include <rdtextvalidator.h>
 #include <rdpasswd.h>
@@ -39,9 +38,8 @@
 #include <edit_event.h>
 #include <add_event.h>
 
-
-AddEvent::AddEvent(QString *logname,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+AddEvent::AddEvent(QString *logname,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   event_name=logname;
 
@@ -99,20 +97,20 @@ AddEvent::AddEvent(QString *logname,QWidget *parent,const char *name)
   //
   // Event Name
   //
-  event_name_edit=new QLineEdit(this,"event_name_edit");
+  event_name_edit=new QLineEdit(this);
   event_name_edit->setGeometry(145,11,sizeHint().width()-155,19);
   event_name_edit->setMaxLength(58);  // MySQL limitation!
   event_name_edit->setValidator(validator);
-  QLabel *event_name_label=new QLabel(event_name_edit,tr("&New Event Name:"),
-				      this,"event_name_label");
+  QLabel *event_name_label=
+    new QLabel(event_name_edit,tr("&New Event Name:"),this);
   event_name_label->setGeometry(10,11,130,19);
   event_name_label->setFont(font);
-  event_name_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  event_name_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   //  Ok Button
   //
-  QPushButton *ok_button=new QPushButton(this,"ok_button");
+  QPushButton *ok_button=new QPushButton(this);
   ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   ok_button->setDefault(true);
   ok_button->setFont(font);
@@ -122,7 +120,7 @@ AddEvent::AddEvent(QString *logname,QWidget *parent,const char *name)
   //
   //  Cancel Button
   //
-  QPushButton *cancel_button=new QPushButton(this,"cancel_button");
+  QPushButton *cancel_button=new QPushButton(this);
   cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   cancel_button->setFont(font);

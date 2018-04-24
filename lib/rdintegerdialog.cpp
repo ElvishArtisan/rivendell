@@ -2,9 +2,7 @@
 //
 // A widget to set an integer value.
 //
-//   (C) Copyright 2008 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdintegerdialog.cpp,v 1.3 2010/07/29 19:32:33 cvs Exp $
+//   (C) Copyright 2008,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,12 +20,14 @@
 
 #include <qpushbutton.h>
 #include <qlabel.h>
+//Added by qt3to4:
+#include <QCloseEvent>
 
 #include <rdintegerdialog.h>
 
 RDIntegerDialog::RDIntegerDialog(int *value,const QString &lbl,int low,int high,
-				 QWidget *parent,const char *name)
-  : QDialog(parent,name,false)
+				 QWidget *parent)
+  : QDialog(parent,"",false)
 {
   int_value=value;
 
@@ -56,7 +56,7 @@ RDIntegerDialog::RDIntegerDialog(int *value,const QString &lbl,int low,int high,
   QLabel *label=new QLabel(int_value_box,lbl,this);
   label->setGeometry(10,10,110,20);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // OK Button

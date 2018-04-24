@@ -2,9 +2,7 @@
 //
 //   A class for playing Microsoft WAV files.
 //
-//   (C) Copyright 2002-2007 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdhpiplaystream.cpp,v 1.8.6.1 2012/05/04 14:56:22 cvs Exp $
+//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,7 +16,6 @@
 //   You should have received a copy of the GNU General Public
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-//
 //
 
 #include <stdlib.h>
@@ -63,10 +60,8 @@ volatile static int stream_mutex[HPI_MAX_ADAPTERS][HPI_MAX_STREAMS]=
    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
 #endif
 
-
-RDHPIPlayStream::RDHPIPlayStream(RDHPISoundCard *card,
-			       QWidget *parent,const char *name) 
-  :QObject(parent,name),RDWaveFile()
+RDHPIPlayStream::RDHPIPlayStream(RDHPISoundCard *card,QWidget *parent) 
+  :QObject(parent),RDWaveFile()
 {  
   //  hpi_err_t hpi_err;
   int quan;
@@ -196,6 +191,13 @@ bool RDHPIPlayStream::formatSupported(RDWaveFile::Format format)
 	state=HPI_OutStreamQueryFormat(NULL,hostream,&hpi_format);
 	break;
 
+      case RDWaveFile::Pcm24:
+	LogHpi(HPI_FormatCreate(&hpi_format,getChannels(),
+				HPI_FORMAT_PCM24_SIGNED,
+				getSamplesPerSec(),getHeadBitRate(),0));
+	state=HPI_OutStreamQueryFormat(NULL,hostream,&hpi_format);
+	break;
+
       case RDWaveFile::MpegL1:
 	LogHpi(HPI_FormatCreate(&hpi_format,getChannels(),
 				HPI_FORMAT_MPEG_L1,
@@ -242,6 +244,10 @@ bool RDHPIPlayStream::formatSupported()
 
 	    case 16:
 	      return formatSupported(RDWaveFile::Pcm16);
+	      break;
+
+	    case 24:
+	      return formatSupported(RDWaveFile::Pcm24);
 	      break;
 
 	    default:
@@ -419,6 +425,11 @@ bool RDHPIPlayStream::play()
 	      case 16:
 		LogHpi(HPI_FormatCreate(&format,getChannels(),
 					HPI_FORMAT_PCM16_SIGNED,
+					getSamplesPerSec(),0,0));
+		break;
+	      case 24:
+		LogHpi(HPI_FormatCreate(&format,getChannels(),
+					HPI_FORMAT_PCM24_SIGNED,
 					getSamplesPerSec(),0,0));
 		break;
 	      case 32:

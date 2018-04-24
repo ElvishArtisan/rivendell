@@ -2,9 +2,7 @@
 //
 // A Combo Box widget for Rivendell.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcombobox.h,v 1.7 2011/05/18 18:57:54 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,13 +24,19 @@
 #include <vector>
 
 #include <qcombobox.h>
+//Added by qt3to4:
+#include <QKeyEvent>
+#include <QMouseEvent>
 
 class RDComboBox : public QComboBox
 {
   Q_OBJECT
  public:
-  RDComboBox(QWidget *parent=0,const char *name=0);
-  void insertItem(const QString &str,bool unique=false);
+  RDComboBox(QWidget *parent=0);
+  void insertItem(const QString &str,bool unique=false,
+		  const QVariant &data=QVariant());
+  QVariant currentData();
+  bool setCurrentData(const QVariant &data);
   void setSetupMode(bool state);
   void addIgnoredKey(int key);
 

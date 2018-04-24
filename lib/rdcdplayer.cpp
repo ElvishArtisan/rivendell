@@ -2,9 +2,7 @@
 //
 // Abstract a Linux CDROM Device.
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdcdplayer.cpp,v 1.5.2.2 2014/01/10 18:52:24 cvs Exp $
+//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -34,8 +32,8 @@
 #include <rdcdplayer.h>
 
 
-RDCdPlayer::RDCdPlayer(FILE *profile_msgs,QWidget *parent,const char *name)
-  : QObject(parent,name)
+RDCdPlayer::RDCdPlayer(FILE *profile_msgs,QWidget *parent)
+  : QObject(parent)
 {
   cdrom_profile_msgs=profile_msgs;
   cdrom_fd=-1;
@@ -201,13 +199,15 @@ int RDCdPlayer::rightVolume()
 
 void RDCdPlayer::setCddbRecord(RDCddbRecord *rec)
 {  
-  rec->setTracks(cdrom_track_count);
-  rec->setDiscId(cdrom_disc_id);
-  rec->setDiscLength(75*(60*cdrom_track_start[cdrom_track_count].msf.minute+
-    cdrom_track_start[cdrom_track_count].msf.second)+
-		     cdrom_track_start[cdrom_track_count].msf.frame);
-  for(int i=0;i<cdrom_track_count;i++) {
-    rec->setTrackOffset(i,trackOffset(i));
+  if(cdrom_track_count>0) {
+    rec->setTracks(cdrom_track_count);
+    rec->setDiscId(cdrom_disc_id);
+    rec->setDiscLength(75*(60*cdrom_track_start[cdrom_track_count].msf.minute+
+			   cdrom_track_start[cdrom_track_count].msf.second)+
+		       cdrom_track_start[cdrom_track_count].msf.frame);
+    for(int i=0;i<cdrom_track_count;i++) {
+      rec->setTrackOffset(i,trackOffset(i));
+    }
   }
 }
 
@@ -460,6 +460,7 @@ void RDCdPlayer::ReadToc()
   //
   if(ioctl(cdrom_fd,CDROMREADTOCHDR,&tochdr)<0) {
     cdrom_track_count=0;
+    return;
   }
   cdrom_track_count=tochdr.cdth_trk1-tochdr.cdth_trk0+1;
 

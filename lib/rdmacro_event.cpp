@@ -2,9 +2,7 @@
 //
 // A container class for a list of RML macros.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdmacro_event.cpp,v 1.22 2011/03/01 20:35:52 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,9 +21,9 @@
 #include <qstringlist.h>
 
 #include <rddb.h>
+#include <rdescape_string.h>
 #include <rdmacro_event.h>
 #include <rdstation.h>
-
 
 RDMacroEvent::RDMacroEvent(RDRipc *ripc,QObject *parent,const char *name)
   : QObject(parent,name)
@@ -117,7 +115,7 @@ bool RDMacroEvent::load(QString str)
   int ptr=0;
   char c;
 
-  for(unsigned i=0;i<str.length();i++) {
+  for(int i=0;i<str.length();i++) {
     if((c=str.ascii()[i])=='!') {
       buffer[ptr++]=c;
       if(!cmd.parseString(buffer,ptr)) {
@@ -249,11 +247,11 @@ void RDMacroEvent::exec(int line)
 	  port=args[1].toUInt();
 	}
 	//stationname=event_cmds[line]->arg(0).toString();
-	sql=
-	  QString().sprintf("select VARVALUE from HOSTVARS \
-                             where (STATION_NAME=\"%s\")&&(NAME=\"%s\")",
-			    (const char *)event_ripc->station(),
-			    (const char *)stationname);
+	sql=QString("select ")+
+	  "VARVALUE "+
+	  "from HOSTVARS where "+
+	  "(STATION_NAME=\""+RDEscapeString(event_ripc->station())+"\")&&"+
+	  "(NAME=\""+RDEscapeString(stationname)+"\")";
 	q=new RDSqlQuery(sql);
 	if(q->first()) {
 	  stationname=q->value(0).toString();

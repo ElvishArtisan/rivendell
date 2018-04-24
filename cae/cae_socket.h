@@ -2,9 +2,7 @@
 //
 // The Core Audio Engine component of Rivendell
 //
-//   (C) Copyright 2002 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: cae_socket.h,v 1.7 2010/07/29 19:32:30 cvs Exp $
+//   (C) Copyright 2002,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,11 +23,11 @@
 
 #include <qobject.h>
 #include <qstring.h>
-#include <qserversocket.h>
+#include <q3serversocket.h>
 #include <qhostaddress.h>
 
 
-class CaeSocket : public QServerSocket
+class CaeSocket : public Q3ServerSocket
 {
   Q_OBJECT
   public:
@@ -43,7 +41,7 @@ class CaeSocket : public QServerSocket
    void connection(int);
 
   private:
-   QServerSocket *socket;
+   Q3ServerSocket *socket;
 };
 
 

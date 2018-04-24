@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>AudioCart</name>
     <message>
@@ -214,6 +216,10 @@ Do you still want to delete?</source>
     </message>
     <message>
         <source>You must select a single cut!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ORD</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -852,6 +858,26 @@ limite do sistema!   Você ainda quer salvar?</translation>
         <source>Use Event Length for Now &amp;&amp; Next Updates</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>By Specified Order</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>By Weight</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Schedule Cuts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The following cut order values are assigned more than once</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Duplicate Cut Order</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditMacro</name>
@@ -1039,11 +1065,11 @@ Cartão</translation>
     </message>
     <message>
         <source>rdlibrary : </source>
-        <translation>RDBiblio: </translation>
+        <translation type="obsolete">RDBiblio: </translation>
     </message>
     <message>
         <source>Can&apos;t Connect</source>
-        <translation>Sem conexão</translation>
+        <translation type="obsolete">Sem conexão</translation>
     </message>
     <message>
         <source>Filter:</source>
@@ -1199,9 +1225,9 @@ Você ainda quer deletá-lo?</translation>
     </message>
     <message>
         <source>Deleting cart %06u will also empty the clipboard.
-      <byte value="x9"/>Do you still want to proceed?</source>
+      	Do you still want to proceed?</source>
         <translation>Deletar o Cartão %06u também esvaziará o clipboard.
-      <byte value="x9"/>Você ainda quer proceder?</translation>
+      	Você ainda quer proceder?</translation>
     </message>
     <message>
         <source>Empty Clipboard</source>
@@ -1518,6 +1544,10 @@ Você ainda quer salvar?</translation>
     </message>
     <message>
         <source>AES ALARM</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Order</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

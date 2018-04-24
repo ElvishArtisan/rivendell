@@ -2,9 +2,7 @@
 #
 # The ripcd/ QMake project file for Rivendell
 #
-# (C) Copyright 2003-2005 Fred Gleason <fredg@paravelsystems.com>
-#
-#      $Id: ripcd.pro,v 1.3 2007/02/14 21:57:04 fredg Exp $
+# (C) Copyright 2003-2005,2016 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as

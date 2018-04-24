@@ -2,9 +2,7 @@
 //
 // Select a Set of Dates for a Rivendell Report
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: pick_report_dates.cpp,v 1.8.8.2 2013/01/22 20:59:39 cvs Exp $
+//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,17 +23,18 @@
 #include <qmessagebox.h>
 #include <qfile.h>
 
+#include <rdapplication.h>
 #include <rddatedialog.h>
+#include <rdescape_string.h>
 #include <rdreport.h>
 #include <rddatedecode.h>
 #include <rddb.h>
-#include <globals.h>
-#include <pick_report_dates.h>
 
+#include "globals.h"
+#include "pick_report_dates.h"
 
-PickReportDates::PickReportDates(const QString &svcname,
-				   QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+PickReportDates::PickReportDates(const QString &svcname,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   QString sql;
   RDSqlQuery *q;
@@ -63,16 +62,15 @@ PickReportDates::PickReportDates(const QString &svcname,
   //
   // Report List
   //
-  edit_report_box=new QComboBox(this,"edit_report_box");
+  edit_report_box=new QComboBox(this);
   edit_report_box->setGeometry(75,11,sizeHint().width()-85,19);
-  QLabel *label=new QLabel(edit_report_box,tr("&Report:"),
-				      this,"edit_report_label");
+  QLabel *label=new QLabel(edit_report_box,tr("&Report:"),this);
   label->setGeometry(10,11,60,19);
   label->setFont(bold_font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
-  sql=QString().sprintf("select REPORT_NAME from REPORT_SERVICES\
-                         where SERVICE_NAME=\"%s\" order by REPORT_NAME",
-			(const char *)svcname);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::ShowPrefix);
+  sql=QString("select REPORT_NAME from REPORT_SERVICES where ")+
+    "SERVICE_NAME=\""+RDEscapeString(svcname)+"\" "+
+    "order by REPORT_NAME";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     edit_report_box->insertItem(q->value(0).toString());
@@ -82,15 +80,14 @@ PickReportDates::PickReportDates(const QString &svcname,
   //
   // Start Date
   //
-  edit_startdate_edit=new QDateEdit(this,"edit_startdate_edit");
+  edit_startdate_edit=new Q3DateEdit(this);
   edit_startdate_edit->setGeometry(150,35,100,22);
   edit_startdate_edit->setDate(yesterday_date);
-  label=new QLabel(edit_startdate_edit,tr("&Start Date:"),
-				      this,"edit_startdate_label");
+  label=new QLabel(edit_startdate_edit,tr("&Start Date:"),this);
   label->setGeometry(75,36,70,19);
   label->setFont(bold_font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
-  QPushButton *button=new QPushButton(this,"startdate_button");
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::ShowPrefix);
+  QPushButton *button=new QPushButton(this);
   button->setGeometry(260,33,50,27);
   button->setFont(font);
   button->setText(tr("&Select"));
@@ -99,15 +96,14 @@ PickReportDates::PickReportDates(const QString &svcname,
   //
   // End Date
   //
-  edit_enddate_edit=new QDateEdit(this,"edit_enddate_edit");
+  edit_enddate_edit=new Q3DateEdit(this);
   edit_enddate_edit->setGeometry(150,65,100,22);
   edit_enddate_edit->setDate(yesterday_date);
-  label=new QLabel(edit_enddate_edit,tr("&End Date:"),
-				      this,"edit_enddate_label");
+  label=new QLabel(edit_enddate_edit,tr("&End Date:"),this);
   label->setGeometry(75,66,70,19);
   label->setFont(bold_font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
-  button=new QPushButton(this,"enddate_button");
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::ShowPrefix);
+  button=new QPushButton(this);
   button->setGeometry(260,63,50,27);
   button->setFont(font);
   button->setText(tr("&Select"));
@@ -116,7 +112,7 @@ PickReportDates::PickReportDates(const QString &svcname,
   //
   //  Generate Button
   //
-  button=new QPushButton(this,"list_purge_button");
+  button=new QPushButton(this);
   button->setGeometry(10,sizeHint().height()-60,80,50);
   button->setFont(bold_font);
   button->setText(tr("&Generate\nReport"));
@@ -125,7 +121,7 @@ PickReportDates::PickReportDates(const QString &svcname,
   //
   //  Close Button
   //
-  button=new QPushButton(this,"close_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   button->setDefault(true);
   button->setFont(bold_font);
@@ -219,7 +215,7 @@ void PickReportDates::generateData()
   }
   QString out_path;
   report->generateReport(edit_startdate_edit->date(),
-			 edit_enddate_edit->date(),rdstation_conf,&out_path);
+			 edit_enddate_edit->date(),rda->station(),&out_path);
   switch(report->errorCode()) {
       case RDReport::ErrorOk:
 	QMessageBox::information(this,tr("Report Complete"),

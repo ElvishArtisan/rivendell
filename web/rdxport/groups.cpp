@@ -2,9 +2,7 @@
 //
 // Rivendell web service portal -- Group services
 //
-//   (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: groups.cpp,v 1.5 2012/02/13 23:01:50 cvs Exp $
+//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,14 +24,14 @@
 #include <fcntl.h>
 #include <errno.h>
 
+#include <rdapplication.h>
 #include <rdformpost.h>
 #include <rdweb.h>
-#include <rduser.h>
 #include <rdgroup.h>
 #include <rdconf.h>
 #include <rdescape_string.h>
 
-#include <rdxport.h>
+#include "rdxport.h"
 
 void Xport::ListGroups()
 {
@@ -44,9 +42,9 @@ void Xport::ListGroups()
   //
   // Generate Group List
   //
-  sql=QString().sprintf("select GROUP_NAME from USER_PERMS \
-                         where USER_NAME=\"%s\" order by GROUP_NAME",
-			(const char *)RDEscapeString(xport_user->name()));
+  sql=QString("select GROUP_NAME from USER_PERMS where ")+
+    "USER_NAME=\""+RDEscapeString(rda->user()->name())+"\" "+
+    "order by GROUP_NAME";
   q=new RDSqlQuery(sql);
 
   //
@@ -85,10 +83,9 @@ void Xport::ListGroup()
   //
   // Check Group Accessibility
   //
-  sql=QString().sprintf("select GROUP_NAME from USER_PERMS \
-                         where (USER_NAME=\"%s\")&&(GROUP_NAME=\"%s\")",
-			(const char *)RDEscapeString(xport_user->name()),
-			(const char *)RDEscapeString(group_name));
+  sql=QString("select GROUP_NAME from USER_PERMS where ")+
+    "(USER_NAME=\""+RDEscapeString(rda->user()->name())+"\")&&"+
+    "(GROUP_NAME=\""+RDEscapeString(group_name)+"\")";
   q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;

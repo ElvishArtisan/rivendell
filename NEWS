@@ -1,6 +1,208 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
+v2.15.1 --  8/5/2016
+
+Changes:
+   WAV File Format. Tweak WAV file export format to enhance compatibility
+   with various third-party applications.
+
+   Various other bug fixes.  See the ChangeLog for details.   
+
+Database Update:
+   This version of Rivendell uses database schema version 259, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+
+-------------------------------------------------------------------------------
+v2.15.0 --  7/29/2016
+
+Changes:
+   RDExport Enhancements.  Added switches to control audio format of
+   exported files as well as full-fidelity Rivendell metadata export
+   via embedded RDXML chunks and the --xml switch. See the rdexport(1)
+   and rdimport(1) man pages for details.
+
+   Command-line Log Editor.  Added an rdclilogedit(1) command to permit
+   editing of logs from the command-line or scripts. See the
+   rdclilogedit(1) man page for details.
+
+   Internal DB Changes.  Normalized DB table structure to permit full
+   compatibility with the MySQL InnoDB data engine.
+
+   Various other bug fixes.  See the ChangeLog for details.   
+
+Database Update:
+   This version of Rivendell uses database schema version 259, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+
+-------------------------------------------------------------------------------
+v2.14.1 --  6/11/2016
+
+Changes:
+   Fixed regressions in processing NULL date values.
+
+Database Update:
+   This version of Rivendell uses database schema version 258, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+
+-------------------------------------------------------------------------------
+v2.14.0 --  6/10/2016
+
+Changes:
+   Event Recording.  Added the ability to capture real-time events in
+   RDCatch recordings and replay them in sync with the captured audio
+   via RDCatch playout decks (see RDAdmin->ManageHosts->RDCatch to
+   configure).
+
+   New RML. Added a 'Cut Event' ['CE'] RML for placing real-time event
+   markers into active RDCatch recordings.
+
+   Traffic Import Enhancements.  Added support for specifying precise
+   Start Time and Length parameters for Traffic events embedded within
+   Music events.
+
+   Various other bug fixes.  See the ChangeLog for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 258, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+
+-------------------------------------------------------------------------------
+v2.13.0 --  5/10/2016
+
+Changes:
+   New RLM.  Added a 'rlm_walltime' RLM for the Paravel Systems WallTime
+   clock.
+
+   New Utility.  Added an rdexport(8) command utility.  See the rdexport(1)
+   man page for details.
+
+   New Report.  Added a 'Cut Log' report that includes the Description
+   field for played events.
+
+   Various other bug fixes.  See the ChangeLog for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 255, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+
+-------------------------------------------------------------------------------
+v2.12.0 --  4/14/2016
+
+Changes:
+   Sequential Cut Play-Out.  Cuts can now be configured on a per-cart basis
+   to play in a set sequential order rather than by relative weight value.
+
+   New Switcher Support.  Support has been added for the Broadcast Tools
+   ADMS 44.22 and SS 4.1 MLR switchers.
+
+   New RML.  A 'Copy Cut' ['CP'] RML has been added that allows cuts to
+   be copied between carts.
+
+   RDLogEdit Changes.  Added a 'Show Only Recent Logs' checkbox.
+
+   New Web API Methods.  The following new methods have been added to the
+   web API:
+       AssignSchedCode
+       ListCartSchedCodes
+       ListSchedCodes
+       UnassignSchedCode
+
+   Database Schema Reversion.  Added an rdrevert(8) command to allow
+   database schema changes to be reverted to an earlier version (experimental).
+
+   Documentation Changes.  The documentation has been converted to
+   XML-DocBook5.
+
+   Various other bug fixes.  See the ChangeLog for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 254, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+
+-------------------------------------------------------------------------------
+v2.11.0 --  9/18/2015
+
+Changes:
+   New RDCatch Up/Download Protocols.  Added support for 'sftp' and 'scp'
+   protocols .
+
+   MP4/AAC File Importation.  Added support for importing MP4/AAC audio
+   files.  (See the 'INSTALL' file for details regarding additional
+   libraries required to activate).
+
+   New Switcher Support.  Added support for the Ross NK series of video
+   switcher via the Ross SCP/A module.  See the 'SWITCHERS'txt' file for
+   details.
+
+   PCM24 Support.  Added support for using PCM24 in the core audio library.
+
+   CD Ripper.  Refactored CD ripper code to provide faster and more
+   reliable operation.
+
+   Various other bug fixes.  See the ChangeLog for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 245, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+
+-------------------------------------------------------------------------------
+v2.10.3 --  2/24/2015
+
+Changes:
+   New RLM.  Added a Rivendell Loadable Module for the Live365 'Add Song'
+   service.
+
+   New AsPlayed Reports.  Added 'Mr. Master' and 'Spin Count' reports.
+
+   Modem Lines Switcher Driver.  Added support for using RS-232C modem
+   handshake lines for GPIO.
+
+   Software Authority Switcher Driver.  Added support for switcher devices
+   using the 'Software Authority' protocol (such as PathFinder PC/PRO).
+
+   rdmarkerset(8) Enhancements.  Added the ability to set segue marker
+   positions in rdmarkerset(8).
+
+   Various other bug fixes.  See the ChangeLog for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 242, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+
+-------------------------------------------------------------------------------
 v2.10.2 --  11/26/2014
 
 Changes:
@@ -22,6 +224,7 @@ Database Update:
 
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
+
 -------------------------------------------------------------------------------
 v2.10.1 --  11/4/2014
 

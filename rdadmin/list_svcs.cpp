@@ -2,9 +2,7 @@
 //
 // List Rivendell Services
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_svcs.cpp,v 1.26 2010/07/29 19:32:35 cvs Exp $
+//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,35 +18,26 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qbuttongroup.h>
-#include <rddb.h>
+#include <QLabel>
+#include <QMessageBox>
+#include <QPushButton>
 
-#include <list_svcs.h>
-#include <edit_svc.h>
-#include <add_svc.h>
+#include <rdapplication.h>
+#include <rdescape_string.h>
 
+#include "add_svc.h"
+#include "edit_svc.h"
+#include "list_svcs.h"
 
-ListSvcs::ListSvcs(QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+ListSvcs::ListSvcs(QWidget *parent)
+  : QDialog(parent)
 {
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
 
-  setCaption(tr("Services"));
+  setWindowTitle("RDAdmin - "+tr("Services"));
 
   //
   // Create Fonts
@@ -61,65 +50,62 @@ ListSvcs::ListSvcs(QWidget *parent,const char *name)
   //
   //  Add Button
   //
-  QPushButton *add_button=new QPushButton(this,"add_button");
-  add_button->setGeometry(100,30,80,50);
-  add_button->setFont(font);
-  add_button->setText(tr("&Add"));
-  connect(add_button,SIGNAL(clicked()),this,SLOT(addData()));
+  list_add_button=new QPushButton(this);
+  list_add_button->setFont(font);
+  list_add_button->setText(tr("&Add"));
+  connect(list_add_button,SIGNAL(clicked()),this,SLOT(addData()));
 
   //
   //  Edit Button
   //
-  QPushButton *edit_button=new QPushButton(this,"edit_button");
-  edit_button->setGeometry(100,90,80,50);
-  edit_button->setFont(font);
-  edit_button->setText(tr("&Edit"));
-  connect(edit_button,SIGNAL(clicked()),this,SLOT(editData()));
+  list_edit_button=new QPushButton(this);
+  list_edit_button->setFont(font);
+  list_edit_button->setText(tr("&Edit"));
+  connect(list_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
 
   //
   //  Delete Button
   //
-  QPushButton *delete_button=new QPushButton(this,"delete_button");
-  delete_button->setGeometry(100,150,80,50);
-  delete_button->setFont(font);
-  delete_button->setText(tr("&Delete"));
-  connect(delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
+  list_delete_button=new QPushButton(this);
+  list_delete_button->setFont(font);
+  list_delete_button->setText(tr("&Delete"));
+  connect(list_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
 
   //
   //  Close Button
   //
-  QPushButton *close_button=new QPushButton(this,"close_button");
-  close_button->setGeometry(100,240,80,50);
-  close_button->setDefault(true);
-  close_button->setFont(font);
-  close_button->setText(tr("&Close"));
-  connect(close_button,SIGNAL(clicked()),this,SLOT(closeData()));
+  list_close_button=new QPushButton(this);
+  list_close_button->setDefault(true);
+  list_close_button->setFont(font);
+  list_close_button->setText(tr("&Close"));
+  connect(list_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 
   //
   // Services List Box
   //
-  list_box=new QListBox(this,"list_box");
-  list_box->setGeometry(10,30,80,260);
-  QLabel *list_box_label=new QLabel(list_box,tr("&Services:"),
-				    this,"list_box_label");
+  list_model=new RDSqlTableModel(this);
+  list_model->setQuery("select NAME from SERVICES order by NAME");
+  list_model->setHeaderData(0,Qt::Horizontal,tr("Name"));
+  list_view=new QListView(this);
+  list_view->setModel(list_model);
+  list_view->show();
+  connect(list_view,SIGNAL(doubleClicked(const QModelIndex &)),
+	  this,SLOT(doubleClickedData(const QModelIndex &)));
+  QLabel *list_box_label=new QLabel(tr("Services:"),this);
   list_box_label->setFont(font);
   list_box_label->setGeometry(14,11,85,19);
-  connect(list_box,SIGNAL(doubleClicked(QListBoxItem *)),
-	  this,SLOT(doubleClickedData(QListBoxItem *)));
-
-  RefreshList();
 }
 
 
 ListSvcs::~ListSvcs()
 {
-  delete list_box;
+  //  delete list_box;
 }
 
 
 QSize ListSvcs::sizeHint() const
 {
-  return QSize(200,300);
+  return QSize(400,300);
 } 
 
 
@@ -133,67 +119,61 @@ void ListSvcs::addData()
 {
   QString svcname;
 
-  AddSvc *add_svc=new AddSvc(&svcname,this,"add_svc");
+  AddSvc *add_svc=new AddSvc(&svcname,this);
   if(add_svc->exec()<0) {
     delete add_svc;
     return;
   }
   delete add_svc;
-  RefreshList(svcname);
+  list_model->update();
 }
 
 
 void ListSvcs::editData()
 {
-  if(list_box->currentItem()<0) {
-    return;
+  QItemSelectionModel *s=list_view->selectionModel();
+  if(s->hasSelection()) {
+    doubleClickedData(s->selectedRows()[0]);
   }
-  EditSvc *edit_svc=new EditSvc(list_box->currentText(),this,"edit_svc");
-  edit_svc->exec();
-  delete edit_svc;
 }
 
 
 void ListSvcs::deleteData()
 {
-  QString str1;
-  QString str2;
   QString sql;
   RDSqlQuery *q;
 
-  str1=QString(tr("Are you sure you want to delete service"));
-  if(QMessageBox::warning(this,tr("Delete Service"),
-			  QString().sprintf(
-			    "%s %s?",(const char *)str1,
-			    (const char *)list_box->currentText()),
-			  QMessageBox::Yes,QMessageBox::No)!=
-     QMessageBox::Yes) {
-    return;
-  }
-  sql=QString().sprintf("select NAME from LOGS where SERVICE=\"%s\"",
-			(const char *)list_box->currentText());
-  q=new RDSqlQuery(sql);
-  if(q->first()) {
-    str1=tr("There are");
-    str2=tr("logs owned by this service that will also be deleted.\nDo you still want to proceed?");
-    if(QMessageBox::warning(this,tr("Logs Exist"),
-			 QString().sprintf("%s %d %s",
-					   (const char *)str1,
-					   q->size(),
-					   (const char *)str2),
+  QItemSelectionModel *s=list_view->selectionModel();
+  QString svcname=s->selectedRows()[0].data().toString();
+  if(s->hasSelection()) {
+    if(QMessageBox::warning(this,tr("Delete Service"),
+			    tr("Are you sure you want to delete service")+
+			    " \""+svcname+"\"?",
 			    QMessageBox::Yes,QMessageBox::No)!=
        QMessageBox::Yes) {
-      delete q;
       return;
     }
-  }
-  delete q;
-  RDSvc *svc=new RDSvc(list_box->currentText());
-  svc->remove();
-  delete svc;
-  list_box->removeItem(list_box->currentItem());
-  if(list_box->currentItem()>=0) {
-    list_box->setSelected(list_box->currentItem(),true);
+    sql=QString("select NAME from LOGS where ")+
+      "SERVICE=\""+RDEscapeString(svcname)+"\"";
+    q=new RDSqlQuery(sql);
+    if(q->first()) {
+      if(QMessageBox::
+	 warning(this,tr("Logs Exist"),
+		 tr("There are")+
+		 QString().sprintf(" %d ",q->size())+
+		 tr("logs owned by this service that will also be deleted.")+
+		 "\n"+tr("Do you still want to proceed?"),
+		 QMessageBox::Yes,QMessageBox::No)!=
+	 QMessageBox::Yes) {
+	delete q;
+	return;
+      }
+    }
+    delete q;
+    RDSvc *svc=new RDSvc(svcname);
+    svc->remove();
+    delete svc;
+    list_model->update();
   }
 }
 
@@ -204,24 +184,19 @@ void ListSvcs::closeData()
 }
 
 
-void ListSvcs::doubleClickedData(QListBoxItem *item)
+void ListSvcs::resizeEvent(QResizeEvent *e)
 {
-  editData();
+  list_view->setGeometry(10,30,size().width()-110,size().height()-40);
+  list_add_button->setGeometry(size().width()-90,30,80,50);
+  list_edit_button->setGeometry(size().width()-90,90,80,50);
+  list_delete_button->setGeometry(size().width()-90,150,80,50);
+  list_close_button->setGeometry(size().width()-90,240,80,50);
 }
 
 
-void ListSvcs::RefreshList(QString svcname)
+void ListSvcs::doubleClickedData(const QModelIndex &index)
 {
-  QString sql;
-  RDSqlQuery *q;
-
-  list_box->clear();
-  q=new RDSqlQuery("select NAME from SERVICES");
-  while (q->next()) {
-    list_box->insertItem(q->value(0).toString());
-    if(svcname==list_box->text(list_box->count()-1)) {
-      list_box->setCurrentItem(list_box->count()-1);
-    }
-  }
-  delete q;
+  EditSvc *edit_svc=new EditSvc(index.data().toString(),this);
+  edit_svc->exec();
+  delete edit_svc;
 }

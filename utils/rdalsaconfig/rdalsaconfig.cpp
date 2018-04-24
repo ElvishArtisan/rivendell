@@ -2,9 +2,7 @@
 //
 // A Qt-based application to display info about ALSA cards.
 //
-//   (C) Copyright 2009 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdalsaconfig.cpp,v 1.2.8.3 2014/01/21 21:59:33 cvs Exp $
+//   (C) Copyright 2009,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,6 +25,10 @@
 #include <qapplication.h>
 #include <qwindowsstyle.h>
 #include <qmessagebox.h>
+//Added by qt3to4:
+#include <QCloseEvent>
+#include <QResizeEvent>
+#include <QLabel>
 
 #include <rdcmd_switch.h>
 
@@ -60,8 +62,8 @@ void StartDaemons()
 }
 
 
-MainWidget::MainWidget(QWidget *parent,const char *name)
-  :QWidget(parent,name)
+MainWidget::MainWidget(QWidget *parent)
+  :QWidget(parent)
 {
   setCaption(tr("RDAlsaConfig")+" v"+VERSION);
 
@@ -82,35 +84,34 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Available Devices
   //
-  alsa_system_list=new QListBox(this);
+  alsa_system_list=new Q3ListBox(this);
   alsa_system_list->setFont(font);
   alsa_system_label=
     new QLabel(alsa_system_list,tr("Available Sound Devices"),this);
   alsa_system_label->setFont(label_font);
-  alsa_system_label->setAlignment(AlignLeft|AlignVCenter);
+  alsa_system_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Up Button
   //
-  alsa_up_button=
-    new RDTransportButton(RDTransportButton::Up,this,"alsa_up_button");
+  alsa_up_button=new RDTransportButton(RDTransportButton::Up,this);
   connect(alsa_up_button,SIGNAL(clicked()),this,SLOT(upData()));
 
   //
   // Down Button
   //
   alsa_down_button=
-    new RDTransportButton(RDTransportButton::Down,this,"alsa_down_button");
+    new RDTransportButton(RDTransportButton::Down,this);
   connect(alsa_down_button,SIGNAL(clicked()),this,SLOT(downData()));
 
   //
   // Selected Devices
   //
-  alsa_config_list=new QListBox(this);
+  alsa_config_list=new Q3ListBox(this);
   alsa_config_list->setFont(font);
   alsa_config_label=new QLabel(alsa_config_list,tr("Active Sound Devices"),this);
   alsa_config_label->setFont(label_font);
-  alsa_config_label->setAlignment(AlignLeft|AlignVCenter);
+  alsa_config_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Save Button
@@ -257,7 +258,7 @@ void MainWidget::closeEvent(QCloseEvent *e)
 }
 
 
-void MainWidget::LoadList(QListBox *system,QListBox *config)
+void MainWidget::LoadList(Q3ListBox *system,Q3ListBox *config)
 {
   for(unsigned i=0;i<alsa_alsa->cards();i++) {
     for(int j=0;j<alsa_alsa->pcmDevices(i);j++) {
@@ -300,7 +301,7 @@ bool MainWidget::PcmUnused(int card,int device)
 }
 
 
-void MainWidget::MoveItem(QListBox *src,QListBox *dest)
+void MainWidget::MoveItem(Q3ListBox *src,Q3ListBox *dest)
 {
   AlsaItem *item=(AlsaItem *)src->selectedItem();
   if(item==NULL) {
@@ -312,7 +313,7 @@ void MainWidget::MoveItem(QListBox *src,QListBox *dest)
 }
 
 
-Autogen::Autogen(QObject *parent,const char *name)
+Autogen::Autogen(QObject *parent)
 {
   StopDaemons();
 
@@ -372,7 +373,7 @@ int main(int argc,char *argv[])
   //
   if(alsa_autogen) {
     QApplication a(argc,argv,false);
-    new Autogen(NULL,"main");
+    new Autogen();
     return a.exec();
   }
 
@@ -380,7 +381,7 @@ int main(int argc,char *argv[])
   // Start GUI
   //
   QApplication a(argc,argv);
-  MainWidget *w=new MainWidget(NULL,"main");
+  MainWidget *w=new MainWidget();
   a.setMainWidget(w);
   w->setGeometry(QRect(QPoint(0,0),w->sizeHint()));
   w->show();

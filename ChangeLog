@@ -14712,3 +14712,1556 @@
 2015-01-09 Fred Gleason <fredg@paravelsystems.com>
 	* Applied patch by Daniel Bair to add support for dark themes
 	[GitHub pull request #000046].
+2015-01-23 Fred Gleason <fredg@paravelsystems.com>
+	* Reversed the GPI logic polarity for the Broadcast Tools GPI-16 in
+	'ripcd/btgpi16.cpp' and 'ripcd/btgpi16.h'.
+2015-01-24 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.10.2int01.
+2015-01-25 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDMatrix::ModemLines' to the 'RDMatrix::Type' enumeration
+	in 'lib/rdmatrix.cpp' and 'lib/rdmatrix.h'.
+	* Added a driver for using tty modem lines for GPIO in
+	'ripcd/modemlines.cpp' and 'ripcd/modemlines.h'.
+2015-01-26 Fred Gleason <fredg@paravelsystems.com>
+	* Reverted GPI logic reversal for the Broadcast Tools GPI-16 in
+	'ripcd/btgpi16.cpp' and 'ripcd/btgpi16.h'.
+2015-01-27 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.10.2int02.
+2015-01-28 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdlibrary/list_reports.cpp' that broke the
+	'Cart Data Dump (CSV)' report when the library was filtered by
+	group.
+	* Added 'CONDUCTOR', 'SONG_ID' and 'SCHED_CODE' fields to the
+	'Cart Data Dump (CSV)' report in 'rdlibrary/list_reports.cpp'.
+2015-01-29 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdidvalidator.cpp' that caused an empty
+	string to be evaluated as invalid.
+2015-01-29 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.10.2int03.
+2015-02-06 Fred Gleason <fredg@paravelsystems.com>
+	* Added a '--auto-segue' switch to rdmarkerset(8) in
+	'utils/rdmarkerset.cpp' and 'utils/rdmarkerset.h'.
+	* Created a man page for rdmarkerset(8).
+	* Added a reference to rdmarkerset(8) in the rdimport(1) man page.
+2015-02-06 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.10.2int04.
+2015-02-06 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a typo in the rdmarkerset(8) man page.
+2015-02-06 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Spin Count' report in 'lib/export_spincount.cpp',
+	'lib/rdreport.cpp' and 'lib/rdreport.h'.
+2015-02-06 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up Qt object calls in 'rdlogmanager/'.
+2015-02-11 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for 'Conductor', 'Song-ID', 'Year', 'Outcue' and
+	'Description' fields in 'rlm/rlm_padpoint.c'.
+	* Fixed a bug when generating the 'Year' field in RLM updates
+	in 'rdairplay/rlmhost.cpp'.
+2015-02-18 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDMatrix::SoftwareAuthority' to the 'RDMatrix::Type'
+	enumeration in 'lib/rdmatrix.cpp' and 'lib/rdmatrix.h'.
+	* Implemented a switcher driver for systems using Software Authority
+	Protocol in 'ripcd/swauthority.cpp' and 'ripcd/swauthority.h'.
+2015-02-21 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'ripcd/swauthority.cpp' that failed to log
+	notification when reconnecting.
+2015-02-21 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdmatrix.cpp' that caused the configuration
+	for 'Software Authority Protocol' to grey out the 'IP Address'
+	field when creating a new matrix.
+2015-02-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for selecting router number when using Software
+	Authority Protocol in 'ripcd/swauthority.cpp' and
+	'ripcd/swauthority.h'.
+2015-02-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for GPIO to the Software Authority Protocol driver
+	in 'ripcd/swauthority.cpp' and 'ripcd/swauthority.h'.
+2015-02-22 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'rdairplay/log_play.cpp' that caused
+	the 'Play Tail' button to start from an incorrect position when
+	non-zero Start Marker position was set for the cut.
+2015-02-22 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdlivewire.cpp' that caused long LWRP
+	messages to be truncated.
+	* Refactored parser code in 'lib/rdlivewire.cpp' for greater
+	robustness.
+	* Fixed a bug in 'rdadmin/view_node_info.cpp' that caused
+	slots to be sorted in incorrect order.
+	* Renamed the 'STREAMING' column to 'ACTIVE' in
+	'rdadmin/view_node_info.cpp'.
+2015-02-23 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.10.2int05.
+2015-02-24 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'NEWS'.
+	* Incremented the package version to 2.10.3.
+2015-02-25 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'conf/rlm_padpoint.conf' to reflect new 'standard' port
+	value.
+2015-02-27 Fred Gleason <fredg@paravelsystems.com>
+	* Renamed the 'SAS User Serial Interface' driver to
+	'SAS USI (3 digit)'.
+	* Added an 'SAS USI (2 digit)' swticher driver in
+	'ripcd/sasusi2digit.cpp' and 'ripcd/sasusi2digit.h'.
+2015-03-04 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for 'scp' and 'sftp' protocols in
+	'rdcatch/edit_upload.cpp'.
+	* Added support for 'scp' and 'sftp' protocols in
+	'rdcatch/edit_download.cpp'.
+2015-03-04 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.10.3int00.
+2015-03-05 Fred Gleason <fredg@paravelsystems.com>
+	* Renamed the 'SAS USI (3 digit)' driver to
+	'SAS User Serial Interface'.
+	* Renamed the 'SAS USI (2 digit)' driver to
+	'SAS 16000(D)'.
+2015-03-05 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the 'SAS USI' driver in 'ripcd/sasusi.cpp' to support
+	four digit endpoint numbers.
+2015-03-05 Fred Gleason <fredg@paravelsystems.com>
+	* Increased 'MAX_ENDPOINTS' in 'lib/rd.h' from 1024 to 2048.
+2015-03-05 Fred Gleason <fredg@paravelsystems.com>
+	* Increased digit count on endpoints from 3 to 4 in
+	'rdadmin/list_endpoints.cpp'.
+2015-03-06 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.10.3int01.
+2015-03-09 Fred Gleason <fredg@paravelsystems.com>
+	* Merged patch from Chris Smowton to enable importation of
+	MP4 files [GitHub pull request #000029].
+	* Added prerequisites for MP4 importation in 'INSTALL'.
+2015-03-09 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'STATIONS.HAVE_MP4_DECODE' field to the database.
+	* Incremented the database version to 243.
+	* Added a 'Capability::HaveMp4Decode' value to the
+	'RDStation::Capability' enumeration in 'lib/rdstation.cpp' and
+	'lib/rdstation.h'.
+2015-03-10 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdcdplayer.cpp' that threw a segfault
+	when opening the ripper with no CD inserted under RHEL 7.
+2015-03-16 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'DESCRIPTION', 'OUTCUE', 'FILENAME' and '*_POINT' fields
+	to the 'Cart CSV Report' in 'rdlibrary/list_reports.cpp'.
+2015-03-17 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'get_distro.sh' to detect RHEL 7 correctly.
+2015-03-23 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a fencepost bug in 'ripcd/sasusi.cpp' that caused the
+	last relay in the list to fail to respond to a 'GO' RML.
+2015-04-02 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the definition of the 'JACK_CLIENTS.COMMAND_LINE'
+	field from 'char(255)' to 'text' in the database.
+	* Incremented the database version to 244.
+2015-04-06 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdlibrary/disk_ripper.cpp' that caused the tracks
+	from discs with no CDDB data to received scrambled/incorrect cart
+	titles.
+2015-04-07 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'RDLIBRARY.READ_ISRC' field to the database.
+	* Incremented the database version to 245.
+	* Added 'RDLibraryConf::readIsrc()' and 'RDLibraryConf::setReadIsrc()'
+	methods in 'lib/rdlibrary_conf.cpp' and 'lib/rdlibrary_conf.h'.
+	* Added a 'Read ISRCs from CD' control to the 'Edit RDLibrary' dialog
+	in 'rdadmin/edit_rdlibrary.cpp' and 'rdadmin/edi_rdlibrary.h'.
+	* Implemented the 'Read ISRCs from CD' option in the full disc
+	ripper in 'rdlibrary/disk_ripper.cpp'.
+	* Implemented the 'Read ISRCs from CD' option in the per-track disc
+	ripper in 'rdlibrary/cdripper.cpp'.
+2015-04-21 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.10.3int02.
+2015-05-20 Fred Gleason <fredg@paravelsystems.com>
+	* Added default parameters to the 'PadPoint' RLM in 'rlm_padpoint.c'.
+2015-05-28 Fred Gleason <fredg@paravelsystems.com>
+	* Added rdcleandirs(8) utility in 'utils/rdcleandirs/'.
+2015-05-28 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDMatrix::RossNkScp' value to the 'RDMatrix::Type'
+	enumeration in 'lib/rdmatrix.cpp' and 'lib/rdmatrix.h'.
+	* Implemented a switcher driver for the Ross NK line of video
+	switchers via the SCP/A serial interface in 'ripcd/rossnkscp.cpp'
+	and 'riptcd/rossnkscp.h'.
+2015-06-10 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored 'LogPlay' class to provide per-instance RDCae instances.
+	in 'rdairplay/log_play.cpp' and 'rdairplay/log_play.h'.
+2015-07-02 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'LogPlay::refresh()' that caused a segfault
+	in 'rdairplay/log_play.cpp'.
+	* Instrumented the 'LogPlay::refresh()' method in
+	'rdairplay/log_play.cpp'.
+2015-07-14 Fred Gleason <fredg@paravelsystems.com>
+	* Instrumented 'HourSelect::updateTimeData()' in
+	'rdairplay/hourselector.cpp'.
+	* Instrumented 'LogPlay::transTimerData()' in
+	'rdairplay/log_play.cpp'.
+	* Instrumented 'LogPlay::graceTimerData()' in
+	'rdairplay/log_play.cpp'.
+	* Instrumented 'RLMHost::timerData()' in 'rdairplay/rlmhost.cpp'.
+2015-08-12 Fred Gleason <fredg@paravelsystems.com>
+	* Instrumented the cleanup phase of the 'LogPlay::refresh()' method in
+	'rdairplay/log_play.cpp'.
+2015-08-13 Fred Gleason <fredg@paravelsystems.com>
+	* Commented out the 'qApp->processEvents()' call in the
+	'refreshStatusChangedData()' method in 'rdairplay/rdairplay.cpp'.
+2015-08-29 Fred Gleason <fredg@paravelsystems.com>
+	* Removed instrumentation code in 'rdairplay/hourselector.cpp'.
+	* Removed instrumentation code in 'rdairplay/log_play.cpp'.
+	* Removed instrumentation code in 'rdairplay/rlmhost.cpp'.
+2015-08-30 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDAudioConvert::Stage3Pcm24()' method in
+	'lib/rdaudioconvert.cpp' and 'lib/rdaudioconvert.h'.
+	* Added a 'Format::Pcm24' value to the 'RDSettings::Format'
+	enumeration in 'lib/rdsettings.h'.
+	* Modified the 'RDAudioConvert' class to support generating PCM24
+	output in 'lib/rdaudioconvert.cpp' and 'lib/rdaudioconvert.h'.
+	* Modified the 'RDPlayStream' class to support playing PCM24
+	data in 'rdhpi/rdplaystream.cpp'.
+	* Modified the 'RDRecordStream' class to support capturing PCM24
+	data in 'rdhpi/rdrecordstream.cpp'.
+	* Added an 'audio_peaks_test' harness in 'tests/audio_peaks_test.cpp'
+	and 'tests/audio_peaks_test.h'.
+	* Added 'PCM24' to the list of available formats in
+	'rdadmin/edit_rdlibrary.cpp' and 'rdadmin/edit_rdlibrary.h'.
+	* Added 'PCM24' to the list of available formats in
+	'rdadmin/edit_decks.cpp'.
+	* Added PCM24 support for file importation in
+	'web/rdxport/import.cpp'.
+	* Added an 'RDCae::Pcm24' value to the 'RDCae::AudioCoding
+	enumeration in 'lib/rdcae.h'.
+2015-08-30 Fred Gleason <fredg@paravelsystems.com>
+	* Added PCM24 to 'lib/export_settings_dialog.cpp'.
+2015-08-30 Fred Gleason <fredg@paravelsystems.com>
+	* Added PCM24 play-out and capture support for JACK in
+	'cae/cae_jack.cpp' and 'cae/cae.h'.
+2015-08-30 Fred Gleason <fredg@paravelsystems.com>
+	* Added a --frames=' parameter in 'tests/audio_peaks_test.cpp'.
+	* Fixed a fencepost bug in generating peak energy data in
+	'lib/rdwavefile.cpp'.
+2015-09-05 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'PCM24' to the list of available formats in
+	'rdadmin/edit_rdlogedit.cpp' and 'rdadmin/edit_rdlogedit.h'.
+	* Added PCM24 support for voice tracking in
+	'rdlogedit/voice_tracker.cpp'.
+2015-09-07 Fred Gleason <fredg@paravelsystems.com>
+	* Added PCM24 play-out and capture support for ALSA in
+	'cae/cae_alsa.cpp' and 'cae/cae.h'.
+2015-09-09 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'src_float_to_int()' and 'src_int_to_float()' functions in
+	'cae/cae.cpp' and 'cae/cae.h'.
+2015-09-15 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.10.3pcm24.3.
+2015-09-15 Fred Gleason <fredg@paravelsystems.com>
+	* Added rdcleandirs(8) to the %Files list in rivendell.spec.in.
+2015-09-15 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.10.3pcm24.4.
+2015-09-16 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'PCM24' to the list of supported import and export formats
+	in 'rdadmin/view_adapters.cpp'.
+2015-09-16 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.10.3pcm24.5.
+2015-09-16 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'rdcatchd/rdcatchd.cpp' that broke
+	MPEG-1 Layer 3 exports.
+2015-09-17 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'm4a', 'M4A', 'aac' and 'AAC' file extensions to
+	RD_AUDIO_FILE_FILTER in 'lib/rd.h'.
+2015-09-17 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.10.3pcm24.6.
+2015-09-18 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'NEWS'.
+	* Updated the package version to 2.11.0.
+2016-03-20 Fred Gleason <fredg@paravelsystems.com>
+	* Added a switcher driver for the Broadcast Tools ADMS 44.22.
+2016-03-23 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'CART.USE_WEIGHTING' field to the database.
+	* Added a 'CUTS.PLAY_ORDER' field to the database.
+	* Incremented the database version to 254.
+	* Added a 'Schedule Cuts By' control to the Edit Cart dialog in
+	'rdlibrary/edit_cart.cpp' and 'rdlibrary/edit_cart.h'.
+	* Added 'RDCart::useWeighting()' and 'RDCart::setUseWeighting()'
+	methods in 'lib/rdcart.cpp' and 'lib/rdcart.h'.
+	* Added 'RDCut::playOrder()' and 'RDCut::setPlayOrder()' methods
+	in 'lib/rdcut.cpp' and 'lib/rdcut.h'.
+2016-03-24 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a buffer size bug in 'lib/rdlivewire.cpp'.
+	* Fixed a bug in 'ripcd/livewire_lwrpaudio.cpp' that caused
+	spurious errors to be dumped to stderr.
+2016-03-24 Fred Gleason <fredg@paravelsystems.com>
+	* Removed spurious linefeed in 'PACKAGE_VERSION'.
+2016-03-24 Fred Gleason <fredg@paravelsystems.com>
+       * Added a 'Type' control to 'web/tests/listcart.html'.
+       * Fixed a bug in 'web/rdxport/carts.cpp' that broke the 'ListCarts'
+       API call when no group was specified.
+2016-03-24 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'web/tests/utils.js'.
+	* Fixed a bug in 'web/rdxport/carts.cpp' that allowed the EditCart web
+	method to set carts to non-existent groups.
+2016-03-24 Fred Gleason <fredg@paravelsystems.com>
+	* Update web test methods in 'web/tests/'.
+	* Added an 'RDSchedCode' class in 'lib/rdschedcode.cpp' and
+	'lib/rdschedcode.h'.
+	* Implemented the 'ListSchedCodes' web method in
+	'web/rdxport/schedcodes.cpp'.
+	* Implemented the 'AssignSchedCode' web method in
+	'web/rdxport/schedcodes.cpp'.
+	* Implemented the 'UnassignSchedCode' web method in
+	'web/rdxport/schedcodes.cpp'.
+	* Implemented the 'ListCartSchedCodes' web method in
+	'web/rdxport/schedcodes.cpp'.
+	* Extended 'RDGetWebTime()' and 'RDGetWebDateTime()' functions to
+	support XML 'xs' namespace formats.
+	* Implemented '*_POINT' fields in the 'EditCut' web method in
+	'web/rdxport/carts.cpp'.
+	* Modified the 'RDCart::removeSchedCode()' method so as to treat
+	scheduler codes in a case-insensitve manner.
+	* Modified the return of the 'EditCut' web method to provide a full
+	<cutList> record in 'web/rdxport/carts.cpp'.
+2016-03-24 Fred Gleason <fredg@paravelsystems.com>
+	* Ported 'docs/cae.sxw' to DocBook-XML5 in 'docs/docbook/cae.xml'.
+	* Ported 'docs/web_api.odt' to DocBook-XML5 in
+	'docs/dockbook/web_api.xml'.
+2016-03-25 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'web/rdxport/export.cpp' that caused the web 'Export'
+	service to return an internal server error if the requested audio
+	didn't exist.
+2016-03-25 Fred Gleason <fredg@paravelsystems.com>
+	* Changed 'uninstall' to 'uninstall-local' targets in all
+	'Makefile.am' files.
+2016-03-25 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.11.0test00.
+2016-03-25 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'rdlibrary/audio_cart.cpp' that caused
+	information to be corrupted in the cut list after editing a cut's
+	dayparting information.
+2016-03-25 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Show Only Recent Logs' checkbox in 'rdlogedit/rdlogedit.cpp'
+	and 'rdlogedit/rdlogedit.h'.
+2016-03-28 Fred Gleason <fredg@paravelsystems.com>
+	* Added an rdrevert(8) commmand in 'utils/rdrevert/'.
+2016-03-28 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdadmin/createdb.cpp' that caused schema conversion
+	199 to fail.
+2016-03-28 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rivendell.spec.in' that broke the 'make rpm'
+	target.
+2016-03-28 Fred Gleason <fredg@paravelsystems.com>
+	* Added revert methods for schemas 251-253 in
+	'utils/rdrevert/rdrevert.cpp'.
+2016-03-29 Fred Gleason <fredg@paravelsystems.com>
+	* Translated 'docs/rml.sxw' to XML5-DocBook in 'docs/docbook/rml.xml'.
+2016-03-29 Fred Gleason <fredg@paravelsystems.com>
+	* Alphabeticized the set of RML commands in 'docs/docbook/rml.xml'.
+2016-03-29 Fred Gleason <fredg@paravelsystems.com>
+	* Added the 'Copy Cut' ['CP'] RML in 'lib/rdmacro.cpp' and
+	'lib/rdmacro.h'.
+	* Implemented the 'Copy Cut' ['CP'] RML in 'rdcatchd/local_macros.cpp'.
+2016-03-30 Fred Gleason <fredg@paravelsystems.com>
+	* Added a switcher driver for the Broadcast Tools SS 4.1 MLR
+	Switcher/Router in 'ripcd/btss41mlr.cpp' and 'ripcd/btss41mlr.h'.
+2016-03-30 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'rdlibrary/audio_cart.cpp' that caused
+	cuts to be shown as invalid when 'Schedule Cuts by weight' was
+	selected.
+2016-03-30 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'utils/rdmaint/rdmaint.cpp' that caused purging
+	of ELR data from services containing a '-' in its name to fail.
+2016-03-31 Fred Gleason <fredg@paravelsystems.com>
+	* Modified 'rivendell.ism' to use PDF versions of the docs.
+2016-03-31 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.11.0test01.
+2016-04-14 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'NEWS'.
+	* Incremented the package version to 2.12.0.
+2016-04-14 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the libXmu from the list of tested libraries for Qt3 in
+	'acinclude.m4'.
+2016-04-17 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'rlm_walltime' RLM in 'rlm/rlm_walltime.c'.
+2016-04-23 Fred Gleason <fredg@paravelsystems.com>
+	* Renamed the 'ClockAddress' parameter to 'HostAddress' in
+	'rlm/rlm_walltime.c'.
+2016-04-25 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'ripcd/btsrc16.cpp' that broke RML processing.
+2016-04-25 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Cut Log' report in 'lib/export_cutlog.cpp'.
+	* Added 'DESCRIPTION' and 'OUTCUE' fields to the '_SRT' table
+	schema.
+	* Incremented the database version to 255.
+2016-04-25 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.12.0int00.
+2016-04-26 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdlibrary/edit_cart.cpp' that threw a segfault
+	when attempting to open multiple carts simultaneously.
+2016-04-26 Brian McGlynn <brian.mcglynn@geneseemedia.net>
+        * Updated lib/rdcae.cpp to return error code when file does not exist
+	in /var/snd
+2015-04-26 Brian McGlynn <brian.mcglynn@geneseemedia.net>
+        * Added "Group By" statement in 'rdlibrary/rdlibrary.cpp' to allow a
+ 	full 100 results to be shown
+2015-04-26 Brian McGlynn <brian.mcglynn@geneseemedia.net>
+  	* Refactored RDLogEditor code to improve performance when
+  	saving and updating logs.  (from albanpeigner pull request #42)
+	* Created modification pointer in voicetracker for better performance
+	over WAN networks
+2016-04-26 Brian McGlynn <brian.mcglynn@geneseemedia.net>
+	* Updated Cart Scheduler to favor weighted playback for cuts expiring
+	first following the number of plays
+2016-04-27 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'bitRate' field in the return for the AudioInfo web method.
+	* Added an rdexport(1) utility in 'utils/rdexport/'.
+2016-04-27 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdcut.cpp' that caused the cut 'Description'
+	field to be applied as a cut Title.
+2016-04-29 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented export for marker data in WAV files in
+	'lib/rdwavefile.cpp' and 'lib/rdwavefile.h'.
+2016-04-29 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'rdlibrary/audio_cart.cpp' that caused
+	marker data to be deleted when exporting a cut.
+2016-04-29 Fred Gleason <fredg@paravelsystems.com>
+	* Added a pointer offset argument to the 'RDWaveFile::createWave()'
+	method in 'lib/rdwavefile.cpp' and 'lib/rdwavefile.h'.
+2016-04-29 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed bugs in 'docs/docbook/Makefile.am' and 'rivendell.spec.in'
+	that broke the 'make rpm' target.
+2016-04-29 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/lib.pro' that broke the build on Windows.
+2016-04-29 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.12.0int01.
+2016-05-10 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'NEWS'
+	* Incremented the package version to 2.13.0.
+2016-05-13 Fred Gleason <fredg@paravelsystems.com>
+	* Removed a superfluous dependency on libXi in 'acinclude.m4'.
+2016-05-13 Fred Gleason <fredg@paravelsystems.com>
+	* Added the '-f' switch to the invocation of gtk-update-icon-cache(8)
+	in 'rivendell.spec.in'.
+2016-05-18 Fred Gleason <fredg@paravelsystems.com>
+	* Added an entry for the Broadcast Tools SRC-16 in
+	'docs/SWITCHERS.txt'.
+	* Added a 'CUT_EVENTS' table to the database.
+	* Added a 'DECK_EVENTS' table to the database.
+	* Incremented the database version to 256.
+	* Implemented a 'Cut Event' ['CE'] RML.
+	* Added a 'Event Carts' section to the Edit Deck dialog in
+	'rdadmin/edit_deck.cpp' and 'rdadmin/edit_deck.h'.
+2016-05-18 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for the RDCatchd 'DE' command in
+	'rdcatchd/rdcatchd.cpp', 'rdcatchd/rdcatchd.h',
+	'rdcatchd/event_player.cpp', 'rdcatchd/event_player.h' and
+	'rdcatchd/local_macros.cpp'.
+	* Added a deck event indicator to RDCatch's deck monitor in
+	'rdcatch/deckmon.cpp' and 'rdcatch/deckmon.h'.
+2016-05-20 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdadmin/createdb.cpp' that caused creation
+	of a new DB to fail.
+2016-05-20 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'not null' attribute from the 'LOGS.LINK_DATETIME',
+	'LOGS.START_DATE' and 'LOGS.END_DATE' fields in the database
+	[GitHub issue #000121].
+	* Incremented the database version to 257.
+2016-05-24 Fred Gleason <fredg@paravelsystems.com>
+	* Removed all CVS tags.
+	* Removed 'const char *name' parameter from all QObject contructors.
+2016-05-24 Fred Gleason <fredg@paravelsystems.com>
+	* Merged fix for gcc 6.1.1 from Daniel Kamil Kozar [GitHub pull
+	request #000126].
+2016-05-24 Fred Gleason <fredg@paravelsystems.com>
+	* Reverted GitHub pull request #000117.
+2016-05-25 Fred Gleason <fredg@paravelsystems.com>
+	* Merged pull request from Wayne Merricks to fix DB creation on
+	Ubuntu 16.04 [GitHub pull request #000130].
+2016-05-25 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.13.0int00.
+2016-05-25 Fred Gleason <fredg@paravelsystems.com>
+	Added a '--escape-string=' parameter to rdexport(1).
+2016-05-25 Fred Gleason <fredg@paravelsystems.com>
+	* Added a '--continue-after-error' parameter to rdexport(1).
+	* Added a '--allow-clobber' parameter to rdexport(1).
+2016-05-26 Fred Gleason <fredg@paravelsystems.com>
+	* Documented the '--allow-clobber' switch in
+	'docs/docbook/rdexport.xml'.
+	* Documented the '--continue-after-error' switch in
+	'docs/docbook/rdexport.xml'.
+2016-05-26 Fred Gleason <fredg@paravelsystems.com>
+	* Documented the '--escape-string' switch in
+	'docs/docbook/rdexport.xml'.
+2016-05-26 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDAudioExport::cartNumber()', 'RDAudioExport::cutNumber()'
+	and 'RDAudioExport::settings()' meethods in 'lib/rdaudioexport.cpp'
+	and 'lib/rdaudioexport.h'.
+	* Added expanded error logging in 'utils/rdexport/rdexport.cpp'.
+2016-06-01 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the Edit Log screen in 'rdlogedit/edit_log.cpp' to
+	display the link Start Time and Length for Traffic and Music links
+	in the 'EXT DATA' column.
+	* Removed display of the link Length for Traffic and Music links
+	from the LENGTH column in 'rdlogedit/edit_log.cpp'.
+2016-06-01 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the default value of the 'CART_NUMBER' field in '_LOG'
+	tables from NULL to 0.
+	* Incremented the database version to 258.
+2016-06-07 Fred Gleason <fredg@paravelsystems.com>
+	* Added code in 'lib/rdevent_line.cpp' and 'lib/rdsvc.cpp' to allow
+	embedded traffic breaks to be specified with start time and length
+	in the music schedule.
+2016-06-07 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the 'RDSvc::import()' method in 'lib/rdsvc.cpp' to
+	improve robustness and readability.
+2016-06-07 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored 'rdlogmanager/generate_log.cpp' and
+	'rdlogmanager/generate_log.h' to use 'QWidget::resizeEvent()'.
+2016-06-07 Fred Gleason <fredg@paravelsystems.com>
+	* Made the 'Test Import' dialog resizeable in
+	'rdadmin/test_import.cpp' and 'rdadmin/test_import.h'.
+2016-06-07 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.13.0int01.
+2016-06-08 Fred Gleason <fredg@paravelsystems.com>
+	* Translated the rdimport(1) manpage to DocBook-XML 5.
+	* Translated the rdmarkerset(8) manpage to DocBook-XML 5.
+2016-06-08 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.13.0int02.
+2016-06-10 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'NEWS'.
+	* Incremented the package version to 2.14.0.
+2016-06-10 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdairplay/list_logs.cpp' that failed to process
+	SQL NULL date values correctly.
+2016-06-10 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdlist_logs.cpp' that failed to process
+	SQL NULL date values correctly.
+2016-06-10 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'utils/rdmaint/rdmaint.cpp' that failed to process
+	SQL NULL date values correctly.
+2016-06-10 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.14.0int00.
+2016-06-11 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'NEWS'.
+	* Incremented the package version to 2.14.1
+2016-06-14 Fred Gleason <fredg@paravelsystems.com>
+	* Merged fixes for NULL SQL date-time values from Wayne Merricks
+	[GitHub pull request #000133].
+2016-06-15 Fred Gleason <fredg@paravelsystems.com>
+	* Added '--bitrate=', '--channels=', '--format=', '--quality='
+	and '--samplerate=' to rdexport(1) in 'utils/rdexport/rdexport.cpp'
+	and 'utils/rdexport/rdexport.h'.
+2016-06-15 Fred Gleason <fredg@paravelsystems.com>
+	* Added an '--xml' switch to rdexport(1) in
+	'utils/rdexport/rdexport.cpp' and 'utils/rdexport/rdexport.h'.
+2016-06-17 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdcut.cpp' that caused a SQL error when
+	generating an XML 'cutList' object.
+2016-06-17 Fred Gleason <fredg@paravelsystems.com>
+	* Modified rdexport(1) to list correct audio format parameters
+	in the XML output.
+2016-06-17 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rddownload.cpp' that caused download URLs
+	using 'https' protocol to fail to be properly escaped.
+2016-06-17 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdsvc.cpp' that caused import events with
+	minute field values greater than '59' in the Start Time to fail
+	to be imported.
+2016-06-18 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'xdg/Makefile.am' that caused the 'make rpm' target
+	to break when HPI support was not enabled.
+2016-06-21 Fred Gleason <fredg@paravelsystems.com>
+	* Reimplemented 'get_distro.sh' as 'get_distro.pl'.
+2016-06-22 Fred Gleason <fredg@paravelsystems.com>
+	* Added statment to create an 'm4' directory in 'autogen.sh'.
+2016-06-23 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored layout of dialogs in rdlogedit(1) so as to display
+	dialog heirarchy correctly.
+2016-07-07 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.14.1int00.
+2016-07-11 Fred Gleason <fredg@paravelsystems.com>
+	* Added rdxml_parse_test(1) in 'tests/'.
+	* Added a RDCart::readXml()' method in 'lib/rdcart.cpp' and
+	'lib/rdcart.h'.
+	* Fixed a typo in the 'averageSegueLength' field in the 'RDCart::xml()'
+	method in 'lib/rdcart.cpp'.
+	* Removed the 'validity' field from the output of the 'RDCart::xml()'
+	method in 'lib/rdcart.cpp'.
+	* Removed the 'validity' and 'localCounter' fields from the output
+	of the 'RDCut::xml()' method in 'lib/rdcut.cpp'.
+2016-07-12 Fred Gleason <fredg@paravelsystems.com>
+	* Added an '--xml' switch to rdimport(1) in
+	'utils/rdimport/rdimport.cpp' and 'utils/rdimport/rdimport.h'.
+2016-07-12 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented storage of RDXML data structures within a 'rdxl' chunk
+	in WAV files.
+2016-07-12 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for reading conductor field values (TPE3) from
+	ID3 tags in 'lib/rdwavefile.cpp'.
+2016-07-13 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented storage of RDXML data structures within a 'rdxl'
+	user defined information frame in ID3 tags 'lib/rdwavefile.cpp' and
+	'lib/rdaudio_convert.cpp'.
+2016-07-13 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'RDCart::GetXmlValue()' method that caused
+	XML field values not to be unescaped correctly.
+2016-07-13 Fred Gleason <fredg@paravelsystems.com>
+	* Made the 'Allow Cart Dragging' checkbox setting persistent across
+	RDLibrary sessions in 'rdlibrary/rdlibrary.cpp'.
+2016-07-15 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed bugs in 'lib/lib.pro', 'lib/rdweb.cpp, 'lib/rdweb.h' and
+	'rdlogedit/edit_logline.cpp' that broke the build under Windows.
+2016-07-18 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.14.1int01.
+2016-07-20 Fred Gleason <fredg@paravelsystems.com>
+	* Stubbed out a command-line log editor in 'utils/rdclilogedit/'.
+2016-07-20 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'help' command to rdclilogedit(1) in
+	'utils/rdclilogedit/rdclilogedit.cpp'.
+2016-07-20 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'setcart' command to rdclilogedit(1) in
+	'utils/rdclilogedit/rdclilogedit.cpp' and
+	'utils/rdclilogedit/rdclilogedit.h'.
+2016-07-20 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'save' command to rdclilogedit(1) in
+	'utils/rdclilogedit/rdclilogedit.cpp' and
+	'utils/rdclilogedit/rdclilogedit.h'.
+	* Added a 'saveas' command to rdclilogedit(1) in
+	'utils/rdclilogedit/rdclilogedit.cpp' and
+	'utils/rdclilogedit/rdclilogedit.h'.
+2016-07-20 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'addcart' command to rdclilogedit(1) in
+	'utils/rdclilogedit/rdclilogedit.cpp' and
+	'utils/rdclilogedit/rdclilogedit.h'.
+2016-07-20 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'remove' command to rdclilogedit(1) in
+	'utils/rdclilogedit/rdclilogedit.cpp' and
+	'utils/rdclilogedit/rdclilogedit.h'.
+2016-07-20 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'settrans' command to rdclilogedit(1) in
+	'utils/rdclilogedit/rdclilogedit.cpp' and
+	'utils/rdclilogedit/rdclilogedit.h'.
+2016-07-20 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'settime' command to rdclilogedit(1) in
+	'utils/rdclilogedit/rdclilogedit.cpp' and
+	'utils/rdclilogedit/rdclilogedit.h'.
+2016-07-20 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'utils/rdclilogedit/rdclilogedit.cpp' that caused
+	segfaults with certain commands when run without a log loaded.
+2016-07-21 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'utils/rdclilogedit/rdclilogedit.cpp' that caused
+	large output listings to be truncated.
+2016-07-21 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented '!' override character in rdclilogedit(1).
+2016-07-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'addchain' command to rdclilogedit(1).
+	* Added a 'addmarker' command to rdclilogedit(1).
+	* Added a 'addtrack' command to rdclilogedit(1).
+2016-07-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'setcomment' command to rdclilogedit(1).
+	* Added a 'setlabel' command to rdclilogedit(1).
+2016-07-21 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented '!' override character in rdclilogedit(1) for the
+	'exit' command.
+2016-07-21 Fred Gleason <fredg@paravelsystems.com>
+	* Moved enforcement of user permissions to the
+	'MainObject::DispatchCommand()' method in
+	'utils/rdclilogedit/parser.cpp'.
+2016-07-21 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored rdclilogedit(1) to use synchronous input.
+2016-07-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'new' command to rdclilogedit(1).
+2016-07-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'header' command to rdclilogedit(1).
+2016-07-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'setautorefresh' command to rdclilogedit(1).
+	* Added a 'setdesc' command to rdclilogedit(1).
+	* Added a 'setenddate' command to rdclilogedit(1).
+	* Added a 'setpurgedate' command to rdclilogedit(1).
+	* Added a 'setservice' command to rdclilogedit(1).
+	* Added a 'setstartdate' command to rdclilogedit(1).
+2016-07-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added a '--script' option to rdclilogedit(1).
+2016-07-22 Fred Gleason <fredg@paravelsystems.com>
+	* Added a man page for rdclilogedit(1).
+2016-07-22 Fred Gleason <fredg@paravelsystems.com>
+	* Added the man page for rdclilogedit(1) to the manifest in
+	'rivendell.spec.in'.
+2016-07-22 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed bug in 'utils/rdclilogedit/rdclilogedit.cpp' that would
+	cause the DB connection to time out.
+2016-07-22 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented an end-of-log delimiter in the output of the 'list'
+	command for rdclilogedit(1).
+2016-07-22 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for using the ';' character as the command separator
+	for rdclilogedit(1).
+2016-07-22 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'utils/rdclilogedit/operations.cpp' that caused
+	spurious 'no such service' errors when using the 'setservice'
+	command on new logs.
+2016-07-22 Fred Gleason <fredg@paravelsystems.com>
+	* Renamed the '--script' option in rdclilogedit(1) to be '-n' or
+	'--quiet' or '--silent'.
+2016-07-22 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'utils/rdclilogedit/operations.cpp' where attempting
+	to load a log with mismatched case in the name would generate a SQL
+	error.
+2016-07-22 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented a 'deletelog' command for rdclilogedit(1).
+2016-07-22 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'rdairplay/log_traffic.cpp' that generated
+	a SQL error when logging ELR data.
+2016-07-22 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdairplay/log_play.cpp' that caused a SQL error.
+2016-07-22 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up warning in 'rdairplay/log_play.cpp'.
+2016-07-23 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up warning in 'lib/rdlog_line.cpp'.
+	* Cleaned up warning in 'lib/rdwavefile.cpp'.
+	* Cleaned up warning in 'rdlogmanager/edit_event.cpp'.
+2016-07-25 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'SERVICE_CLOCKS' table to the database.
+	* Incremented the database version to 259.
+	* Modified 'rdlogmanager/edit_clock.cpp' to use the new
+	'SERVICE_CLOCKS' table.
+	* Modified 'rdlogmanager/list_clocks.cpp' to use the new
+	'SERVICE_CLOCKS' table.
+2016-07-26 Fred Gleason <fredg@paravelsystems.com>
+	* Added a sanity check in the 'RDCut::setMetadata()' method in
+	'lib/rdcut.cpp' to ensure that the cut 'Description' field is always
+	populated.
+2016-07-26 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a typo in 'docs/docbook/rdclilogedit.xml'.
+2016-07-27 Fred Gleason <fredg@paravelsystems.com>
+	* Removed dead code from 'lib/rdsvc.cpp'.
+2016-07-27 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'lib/rdsvc.cpp' that broke log data imports
+	for data lines with leading whitespace.
+2016-07-27 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.14.1int02.
+2016-07-27 Fred Gleason <fredg@paravelsystems.com>
+	* Added a check for 'root' permissions at startup in
+	'utils/rdrevert/rdrevert.cpp'.
+2016-07-29 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'NEWS'.
+	* Incremented the package version to 2.15.0.
+2016-08-01 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'pam_rd' plug-in [GitHub issue #0135].
+2016-08-01 Fred Gleason <fredg@paravelsystems.com>
+	* Retired the 'STATIONS.BROADCAST_SECURITY' field in the database.
+	* Removed the 'Security Model' option in 'rdadmin/edit_station.cpp'
+	and 'rdadmin/edit_station.h'.
+	* Removed the 'RDStation::broadcastSecurity()' and
+	'RDStation::setBroadcastSecurity()' methods in 'lib/rdstation.cpp'
+	and 'lib/rdstation.h' [GitHub issue #00139].
+2016-08-01 Fred Gleason <fredg@paravelsystems.com>
+	* Removed schema update code for schemas earlier than 259 from
+	'rdadmin/createdb.cpp'.
+	* Refactored DB creation to require the presence of an empty DB
+	before creating a new Rivendell database.
+2016-08-01 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDApplication' class in 'lib/rdapplication.cpp' and
+	'lib/rdapplication.h'.
+	* Refactored rdlibrary(1) to use 'RDApplication'.
+2016-08-01 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored rdairplay(1) to use 'RDApplication'.
+2016-08-01 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored rdcartslots(1) to use 'RDApplication'.
+2016-08-01 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored rdcastmanager(1) to use 'RDApplication'.
+2016-08-01 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored rdcatch(1) to use 'RDApplication'.
+2016-08-01 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'rdadmin/createdb.cpp' that caused the
+	'SERVICE_CLOCKS' table to fail to be created when generating
+	a new database.
+2016-08-02 Fred Gleason <fredg@paravelsystems.com>
+	* Added wav_chunk_test(1) in 'tests/wav_chunk_test/'.
+2016-08-02 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdwavefile.cpp' that caused an incorrect
+	payload size to be written for WAV files.
+2016-08-02 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'Start' fields to wav_chunk_test(1).
+2016-08-02 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rdwavefile.cpp' that caused WAV files to
+	be written with incorrect LEVL chunk data.
+2016-08-02 Fred Gleason <fredg@paravelsystems.com>
+	* Added a work-around in 'lib/rdwavefile.cpp' to ensure that RDXL
+	chunks are always of even length.
+2016-08-03 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdlibrary(1) that caused exports to contain incorrect
+	marker data in the RDXL file structure.
+2016-08-03 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored rdlogedit(1) to use 'RDApplication'.
+2016-08-03 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored rdlogin(1) to use 'RDApplication'.
+2016-08-04 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored rdlogmanager(1) to use 'RDApplication'.
+2016-08-04 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored rdpanel(1) to use 'RDApplication'.
+2016-08-04 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored rdrepld(1) to use 'RDApplication'.
+2016-08-04 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored ripcd(8) to use 'RDApplication'.
+2016-08-04 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored rdcatchd(8) to use 'RDApplication'.
+2016-08-04 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored caed(8) to use 'RDApplication'.
+2016-08-04 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored nexgen_filter(1) to use 'RDApplication'.
+2016-08-04 Fred Gleason <fredg@paravelsystems.com>
+	* Removed sas_filter(1) from 'importers/'.
+2016-08-04 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored wings_filter(1) to use 'RDApplication'.
+2016-08-04 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored audio_export_test(1) to use 'RDApplication'.
+	* Refactored audio_import_test(1) to use 'RDApplication'.
+	* Refactored audio_peaks_test(1) to use 'RDApplication'.
+	* Refactored reserve_carts_test(1) to use 'RDApplication'.
+	* Removed sas_switch_torture(1) from 'tests/'.
+	* Removed sas_torture(1) from 'tests/'.
+	* Refactored upload_test(1) to use 'RDApplication'.
+2016-08-05 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'NEWS'.
+2016-08-06 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored 'rlm/rlm_walltime.c' to use http PUTs.
+2016-08-07 Fred Gleason <fredg@paravelsystems.com>
+	* Removed support for the 'HostAddress=' parameter from the
+	'rlm_walltime' plug-in in 'rlm/rlm_walltime.c'.
+2016-08-05 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored rdcheckcuts(1) to use 'RDApplication'.
+	* Refactored rdclilogedit(1) to use 'RDApplication'.
+	* Refactored rddbcheck(8) to use 'RDApplication'.
+	* Refactored rddelete(1) to use 'RDApplication'.
+	* Refactored rddgimport(1) to use 'RDApplication'.
+	* Refactored rddiscimport(1) to use 'RDApplication'.
+	* Refactored rdexport(1) to use 'RDApplication'.
+	* Refactored rdgpimon(1) to use 'RDApplication'.
+	* Refactored rdimport(1) to use 'RDApplication'.
+	* Refactored rdmaint(8) to use 'RDApplication'.
+	* Refactored rdmarkerset(8) to use 'RDApplication'.
+	* Refactored rdpurgecasts(1) to use 'RDApplication'.
+	* Refactored rdrevert(8) to use 'RDApplication'.
+	* Removed sas_shim(8) in 'utils/sas_shim/'.
+2016-08-05 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDCgiApplication' class in 'lib/rdcgiapplication.cpp'
+	and 'lib/rdcgiapplication.h'.
+	* Refactored rdcastmanager.cgi(1) to use 'RDCgiApplication'.
+	* Refactored rdfeed.xml(1) to use 'RDCgiApplication'.
+	* Refactored rdxport.cgi(1) to use 'RDCgiApplication'.
+2016-08-05 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented console error messages in 'lib/rdapplication.cpp'.
+2016-08-05 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'web/rdxport/rdxport.cpp' that caused a segfault
+	when authenticating web connections.
+2016-08-05 Fred Gleason <fredg@paravelsystems.com>
+	* Removed (const char *) casts from SQL statements in
+	'importers/panel_copy.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'importers/rdcatch_copy.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'importers/rivendell_filter.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'importers/wings_filter.cpp'.
+2016-08-08 Fred Gleason <fredg@paravelsystems.com>
+	* Removed dead code from 'lib/export_bmiemr.cpp'.
+	* Cleaned up lupdate warning in 'lib/rdapplication.cpp'.
+2016-08-08 Fred Gleason <fredg@paravelsystems.com>
+	* Removed (const char *) casts from SQL statements in
+	'lib/export_deltflex.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/export_musicclassical.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/export_musicplayout.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/export_musicsummary.cpp'.
+	* Put SQL statements into standard form in
+	'lib/export_nprsoundex.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/export_radiotraffic.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/export_soundex.cpp'.
+	* Put SQL statements into standard form in
+	'lib/export_spincount.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/export_technical.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/export_textlog.cpp'.
+2016-08-08 Fred Gleason <fredg@paravelsystems.com>
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdadd_cart.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdadd_log.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdairplay_conf.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdaudio_port.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdcart.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdcart_dialog.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdcart_search_text.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdcart_slot.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdcatch_conf.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdclock.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdcreateauxfieldstable.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdcreate_log.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdcut.cpp'.
+	* Removed 'QSqlDatabase' parameter from the contructors for the
+	'RDCut' class in 'lib/rdcut.cpp' and 'lib/rdcut.h'.
+	* Removed 'QSqlDatabase' parameter from the contructors for the
+	'RDGroup' class in 'lib/rdgroup.cpp' and 'lib/rdgroup.h'.
+	* Removed 'QSqlDatabase' parameter from the 'RDDoesRowExist()',
+	'RDGetSqlValue()' and 'RDIsSqlNull()' functions in 'rdconf.cpp'
+	and 'rdconf.h'.
+2016-08-08 Fred Gleason <fredg@paravelsystems.com>
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdcut_dialog.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rddeck.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rddropbox.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdevent.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdevent_line.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdfeed.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdfeedlog.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdgroup.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdhotkeys.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdlibrary_conf.cpp'.
+	* Removed the 'instance' parameter from the RDLibraryConf' constructor
+	in 'lib/rdlibrary_conf.cpp' and 'lib/rdlibrary_conf.h'.
+2016-08-09 Fred Gleason <fredg@paravelsystems.com>
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdlist_groups.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdlist_logs.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdlog.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdlogedit_conf.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdlog_event.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdlog_line.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdmacro_event.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdmatrix.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdpodcast.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdrecording.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdreplicator.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdreport.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdripc.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdsettings.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdsimpleplayer.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdslotoptions.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdstation.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdsvc.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdsystem.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rdtty.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/rduser.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'lib/schedruleslist.cpp'.
+2016-08-09 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'lib/rdairplay_conf.cpp' that caused RDAirPlay
+	to lock out exiting.
+2016-08-10 Fred Gleason <fredg@paravelsystems.com>
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/add_aux_field.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/add_feed.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/add_group.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/add_replicator.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/add_report.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/add_schedcodes.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/add_station.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/autofill_carts.cpp'.
+2016-08-10 Fred Gleason <fredg@paravelsystems.com>
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/createdb.cpp'.
+2016-08-10 Fred Gleason <fredg@paravelsystems.com>
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/edit_aux_field.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/edit_cartslots.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/edit_decks.cpp'.
+	* Removed 'rdadmin/add_encoder.cpp', 'rdadmin/add_encoder.h',
+	'rdadmin/edit_encoder.cpp, 'rdadmin/edit_encoder.h',
+	'rdadmin/list_encoders.cpp' and 'rdadmin/list_encoders.h'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/edit_feed_perms.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/edit_group.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/edit_hotkeys.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/edit_jack.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/edit_node.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/edit_now_next.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/edit_rdairplay.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/edit_rdpanel.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/edit_replicator.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/edit_report.cpp'.
+2016-08-11 Fred Gleason <fredg@paravelsystems.com>
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/edit_schedcodes.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/edit_settings.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/edit_station.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/edit_svc_perms.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/edit_user_perms.cpp'.
+2016-08-11 Fred Gleason <fredg@paravelsystems.com>
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/list_aux_fields.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/list_dropboxes.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/list_endpoints.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/list_feeds.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/list_gpis.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/list_groups.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/list_hostvars.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/list_matrices.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/list_nodes.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/list_replicator_carts.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/list_replicators.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/list_sas_resources.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/list_schedcodes.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/list_stations.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/list_svcs.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/list_users.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/list_vguest_resources.cpp'.
+2016-08-11 Fred Gleason <fredg@paravelsystems.com>
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/rdadmin.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/rename_group.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdadmin/test_import.cpp'.
+2016-08-11 Fred Gleason <fredg@paravelsystems.com>
+	* Removed (const char *) casts from SQL statements in
+	'rdairplay/list_log.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdairplay/list_logs.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdairplay/rdairplay.cpp'.
+2016-08-11 Fred Gleason <fredg@paravelsystems.com>
+	* Removed (const char *) casts from SQL statements in
+	'rdcastmanager/edit_cast.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdcastmanager/list_casts.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdcastmanager/pick_report_dates.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdcastmanager/rdcastmanager.cpp'.
+2016-08-11 Fred Gleason <fredg@paravelsystems.com>
+	* Removed (const char *) casts from SQL statements in
+	'rdcatch/add_recording.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdcatch/deckmon.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdcatch/edit_cartevent.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdcatch/edit_download.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdcatch/edit_playout.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdcatch/edit_recording.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdcatch/edit_switchevent.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdcatch/edit_upload.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdcatch/list_reports.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdcatch/rdcatch.cpp'.
+2016-08-11 Fred Gleason <fredg@paravelsystems.com>
+	* Removed (const char *) casts from SQL statements in
+	'rdcatchd/rdcatchd.cpp'.
+2016-08-12 Fred Gleason <fredg@paravelsystems.com>
+	* Removed (const char *) casts from SQL statements in
+	'rdlibrary/list_reports.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdlibrary/rdlibrary.cpp'.
+2016-08-12 Fred Gleason <fredg@paravelsystems.com>
+	* Removed (const char *) casts from SQL statements in
+	'rdlogedit/edit_chain.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdlogedit/edit_log.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdlogedit/import_track.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdlogedit/rdlogedit.cpp'.
+2016-08-12 Fred Gleason <fredg@paravelsystems.com>
+	* Removed (const char *) casts from SQL statements in
+	'rdlogin/rdlogin.cpp'.
+	* Removed direct SQL driver invocations from 'rdlogin.cpp'
+	and 'rdlogin.h'.
+2016-08-12 Fred Gleason <fredg@paravelsystems.com>
+	* Removed (const char *) casts from SQL statements in
+	'rdlogmanager/edit_clock.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdlogmanager/edit_event.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdlogmanager/edit_eventline.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdlogmanager/edit_grid.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdlogmanager/edit_perms.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdlogmanager/edit_schedrules.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdlogmanager/list_clocks.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdlogmanager/list_events.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdlogmanager/list_svcs.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdlogmanager/pick_report_dates.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdlogmanager/rdlogmanager.cpp'.
+	* Removed direct SQL driver invocations from 'rdlogmanager.cpp'
+	and 'rdlogmanager.h'.
+	* Removed (const char *) casts from SQL statements in
+	'rdlogmanager/rename_item.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdlogmanager/svc_rec.cpp'.
+2016-08-12 Fred Gleason <fredg@paravelsystems.com>
+	* Removed superfluous #include statements from
+	'rdmonitor/rdmonitor.cpp'.
+2016-08-12 Fred Gleason <fredg@paravelsystems.com>
+	* Removed superfluous #include statements from
+	'rdpanel/rdpanel.cpp'.
+2016-08-12 Fred Gleason <fredg@paravelsystems.com>
+	* Removed (const char *) casts from SQL statements in
+	'rdrepld/citadelxds.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'rdrepld/rdrepld.cpp'.
+2016-08-12 Fred Gleason <fredg@paravelsystems.com>
+	* Removed (const char *) casts from SQL statements in
+	'ripcd/livewire_lwrpaudio.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'ripcd/livewire_mcastgpio.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'ripcd/local_macros.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'ripcd/ripcd.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'ripcd/sasusi.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'ripcd/starguide3.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'ripcd/swauthority.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'ripcd/unity4000.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'ripcd/vguest.cpp'.
+2016-08-12 Fred Gleason <fredg@paravelsystems.com>
+	* Removed (const char *) casts from SQL statements in
+	'utils/rddbcheck/rddbcheck.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'utils/rdgpimon/rdgpimon.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'utils/rdimport/rdimport.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'utils/rdmaint/rdmaint.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'utils/rdpurgecasts/rdpurgecasts.cpp'.
+2016-08-12 Fred Gleason <fredg@paravelsystems.com>
+	* Removed (const char *) casts from SQL statements in
+	'web/rdcastmanager/rdcastmanager.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'web/rdfeed/rdfeed_script.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'web/rdxport/carts.cpp'.
+	* Removed (const char *) casts from SQL statements in
+	'web/rdxport/groups.cpp'.
+2016-08-12 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed regressions in 'lib/rdlog_event.cpp' and 'lib/rdlog.cpp'
+	that broke log saving.
+2016-08-12 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'rdlibrary/rdlibrary.cpp' that generated a
+	SQL error when saving a cart.
+2016-08-12 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'RDCae *', 'RDRipc *', RDStation *', 'RDSystem *' and
+	'RDConfig *' parameters from the contructor of the RDCartDialog
+	dialog.
+	* Removed the 'RDCae *' and 'RDRipc *' parameters from the
+	contructor of the RDSimplePlayer dialog.
+2016-08-15 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'lib/export_technical.cpp' that caused a
+	SQL error.
+2016-08-17 Fred Gleason <fredg@paravelsystems.com>
+	* Ported contents of 'lib/' to Qt4.
+	* Ported contents of 'rdhpi/' to Qt4.
+	* Ported contents of 'cae/' to Qt4.
+	* Ported contents of 'importers/' to Qt4.
+	* Ported contents of 'rdadmin/' to Qt4.
+	* Ported contents of 'rdairplay/' to Qt4.
+	* Ported contents of 'rdcartslots/' to Qt4.
+	* Ported contents of 'rdcastmanager/' to Qt4.
+	* Ported contents of 'rdcatch/' to Qt4.
+	* Ported contents of 'rdcatchd/' to Qt4.
+	* Ported contents of 'rdlibrary/' to Qt4.
+	* Ported contents of 'rdlogedit/' to Qt4.
+	* Ported contents of 'rdlogin/' to Qt4.
+	* Ported contents of 'rdmonitor/' to Qt4.
+	* Ported contents of 'rdrepld/' to Qt4.
+	* Ported contents of 'rdselect/' to Qt4.
+	* Ported contents of 'ripcd/' to Qt4.
+	* Ported contents of 'tests/' to Qt4.
+	* Ported contents of 'utils/rdalsaconfig' to Qt4.
+	* Ported contents of 'utils/rdcheckcuts' to Qt4.
+	* Ported contents of 'utils/rdhpiinfo' to Qt4.
+	* Ported contents of 'utils/rddbcheck' to Qt4.
+	* Ported contents of 'utils/rddgimport' to Qt4.
+	* Ported contents of 'utils/rdchunk' to Qt4.
+	* Ported contents of 'utils/rdclilogedit' to Qt4.
+	* Ported contents of 'utils/rdcollect' to Qt4.
+	* Ported contents of 'utils/rddelete' to Qt4.
+	* Ported contents of 'utils/rddiscimport' to Qt4.
+	* Ported contents of 'utils/rdexport' to Qt4.
+	* Ported contents of 'utils/rdgpimon' to Qt4.
+	* Ported contents of 'utils/rdimport' to Qt4.
+	* Ported contents of 'utils/rdpopup' to Qt4.
+	* Ported contents of 'utils/rdrevert' to Qt4.
+	* Ported contents of 'utils/rdsoftkeys' to Qt4.
+	* Ported contents of 'utils/rmlsend' to Qt4.
+	* Ported contents of 'web/rdcastmanager' to Qt4.
+	* Ported contents of 'web/rdfeed' to Qt4.
+	* Ported contents of 'web/rdxport' to Qt4.
+2016-08-17 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the Qt dependency in 'INSTALL'.
+2016-08-18 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDConfig::mysqlEngine()', 'RDConfig::mysqlCharset()' and
+	'RDConfig::mysqlCollation()' methods in 'lib/rdconfig.cpp' and
+	'lib/rdconfig.h'.
+	* Added an 'RDUnitTest' utility in 'utils/rdunittest/'.
+2016-08-19 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the 'RDApplication' class to be compatible with the Qt4
+	event loop.
+2016-08-19 Fred Gleason <fredg@paravelsystems.com>
+	* Added unit tests for English, Japanese and Korean typefaces in
+	'utils/rdunittest/mojibake_tests.cpp'.
+2016-08-22 Fred Gleason <fredg@paravelsystems.com>
+	* Added unit tests for Arabic, Cantonese, Khmer, Korean, Lao,
+	Mandarin, Tibetan typefaces in 'utils/rdunittest/mojibake_tests.cpp'.
+2016-08-22 Fred Gleason <fredg@paravelsystems.com>
+	* Added code to set MySQL connection character set and collation
+	explicitly in 'lib/rddb.cpp.
+2016-08-22 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'UPDATE' test in 'utils/rdunittest/low_level_db_tests.cpp'.
+2016-08-22 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RdMakeDb()' function in 'lib/rddb.cpp' and 'lib/rddb.h'.
+	* Added 'RDUser::add()' and 'RDUser::remove()' methods in
+	'lib/rduser.cpp' and 'lib/rduser.h'.
+	* Added 'RDStation::add()' and 'RDStation::remove()' methods in
+	'lib/rdstation.cpp' and 'lib/rdstation.h'.
+	* Migrated database creation and initialization methods from
+	'rdadmin/createdb.cpp' to 'lib/rddb.cpp'.
+	* Added database creation and initialization tests in
+	'utils/rdunitest/high_level_tests.cpp'.
+2016-08-23 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the MySQL default character set to UTF-8 in
+	'conf/rd.conf-sample'.
+2016-08-23 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented DB open logic in 'rdadmin/opendb.cpp'.
+2016-08-23 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'lib/rddb.cpp' that caused incorrect host names
+	to be inserted into newly created databases.
+	* Added a 'Host Creation' test in
+	'utils/rdunittest/high_level_db_tests.cpp'.
+2016-08-23 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Q3FileDialog class from 'rdadmin/rdadmin.cpp'.
+	* Fixed a bug in 'rdadmin/rdadmin.cpp' that caused the Login dialog
+	to generate a segfault upon receipt of windowing messages.
+2016-08-23 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/add_user.cpp' and
+	'rdadmin/add_user.h'.
+	* Removed Qt3Support components from 'rdadmin/edit_user.cpp' and
+	'rdadmin/edit_user.h'.
+	* Removed Qt3Support components from 'lib/rdpasswd.cpp' and
+	'lib/rdpasswd.h'.
+	* Removed Qt3Support components from 'rdadmin/edit_user_perms.cpp' and
+	'rdadmin/edit_user_perms.h'.
+	* Removed Qt3Support components from 'rdadmin/edit_feed_perms.cpp' and
+	'rdadmin/edit_feed_perms.h'.
+	* Fixed a bug in 'rdadmin/edit_user_perms.cpp' that caused a SQL
+	error when saving permissions.
+2016-08-23 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/list_groups.cpp' and
+	'rdadmin/list_groups.h'.
+	* Removed Qt3Support components from 'rdadmin/add_group.cpp' and
+	'rdadmin/add_group.h'.
+	* Removed Qt3Support components from 'rdadmin/edit_group.cpp' and
+	'rdadmin/edit_group.h'.
+	* Removed Qt3Support components from 'rdadmin/rename_group.cpp' and
+	'rdadmin/rename_group.h'.
+2016-08-23 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/list_replicators.cpp' and
+	'rdadmin/list_replicators.h'.
+	* Removed Qt3Support components from 'rdadmin/add_replicator.cpp' and
+	'rdadmin/add_replicator.h'.
+	* Removed Qt3Support components from 'rdadmin/edit_replicator.cpp' and
+	'rdadmin/edit_replicator.h'.
+	* Removed Qt3Support components from
+	'rdadmin/list_replicator_carts.cpp' and
+	'rdadmin/list_replicator_carts.h'.
+2016-08-24 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/list_svcs.cpp' and
+	'rdadmin/list_svcs.h'.
+	* Removed Qt3Support components from 'rdadmin/add_svc.cpp' and
+	'rdadmin/add_svc.h'.
+	* Removed Qt3Support components from 'rdadmin/edit_svc.cpp' and
+	'rdadmin/edit_svc.h'.
+	* Removed Qt3Support components from 'rdadmin/edit_svc_perms.cpp' and
+	'rdadmin/edit_svc_perms.h'.
+2016-08-26 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDTableModel' class in 'lib/rdtablemodel.cpp' and
+	'lib/rdtablemodel.h'.
+	* Added an 'RDTableView' class in 'lib/rdtableview.cpp' and
+	'lib/rdtableview.h'.
+	* Removed Qt3Support components from 'rdadmin/autofill_carts.cpp' and
+	'rdadmin/autofill_carts.h'.
+2016-08-26 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/list_reports.cpp' and
+	'rdadmin/list_reports.h'.
+	* Removed Qt3Support components from 'rdadmin/add_report.cpp' and
+	'rdadmin/add_report.h'.
+	* Removed Qt3Support components from 'rdadmin/edit_report.cpp' and
+	'rdadmin/edit_report.h'.
+2016-08-26 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/edit_settings.cpp' and
+	'rdadmin/edit_settings.h'.
+	* Renamed the 'RDTableModel' class to 'RDSqlTableModel'.
+	* Added an 'RDTableWidget' widget in 'lib/rdtablewidget.cpp' and
+	'lib/rdtablewidget.h'.
+2016-08-27 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/list_feeds.cpp' and
+	'rdadmin/list_feeds.h'.
+	* Added 'RDFeed::create()', 'RDFeed::remove()' and 'RDFeed:tableName()'
+	methods in 'lib/rdfeed.cpp' and 'lib/rdfeed.h'.
+2016-08-27 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/add_feed.cpp' and
+	'rdadmin/add_feed.h'.
+	* Removed Qt3Support components from 'rdadmin/edit_feed.cpp' and
+	'rdadmin/edit_feed.h'.
+2016-08-27 Fred Gleason <fredg@paravelsystems.com>
+	* Removed forced main window placement in 'rdadmin/rdadmin.cpp'.
+2016-08-27 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/list_schedcodes.cpp' and
+	'rdadmin/list_schedcodes.h'.
+	* Removed Qt3Support components from 'rdadmin/add_schedcode.cpp' and
+	'rdadmin/add_schedcode.h'.
+	* Removed Qt3Support components from 'rdadmin/edit_schedcode.cpp' and
+	'rdadmin/edit_schedcode.h'.
+2016-08-27 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/list_stations.cpp' and
+	'rdadmin/list_stations.h'.
+	* Removed Qt3Support components from 'rdadmin/add_station.cpp' and
+	'rdadmin/add_station.h'.
+	* Removed Qt3Support components from 'rdadmin/edit_station.cpp' and
+	'rdadmin/edit_station.h'.
+2016-08-27 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/edit_rdlibrary.cpp' and
+	'rdadmin/edit_rdlibrary.h'.
+	* Added 'RDCombBox::currentData()' and 'RDComboBox::inserItem()'
+	methods in 'lib/rdcombobox.cpp' and 'lib/rdcombobox.h'.
+	* Removed Qt3Support components from 'rdadmin/edit_rddeck.cpp' and
+	'rdadmin/edit_rddeck.h'.
+	* Removed Qt3Support components from 'rdadmin/edit_rdrdairplay.cpp' and
+	'rdadmin/edit_rdrdairplay.h'.
+2016-08-27 Fred Gleason <fredg@paravelsystems.com>
+	* Restore wire frame around service controls in
+	'rdadmin/edit_station.cpp'.
+2016-08-27 Fred Gleason <fredg@paravelsystems.com>
+	* Adjusted dimensions of audio card controls in
+	'lib/rdcardselector.cpp' and 'lib/rdcardselector.h'.
+	* Removed Qt3Support components from 'lib/rdcartselector.cpp' and
+	'lib/rdcardselector.h'.
+2016-08-31 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/edit_now_next.cpp' and
+	'rdadmin/edit_now_next.h'.
+	* Removed Qt3Support components from
+	'rdadmin/edit_nownextplugin.cpp' and
+	'rdadmin/edit_nownextplugin.h'.
+	* Removed Qt3Support components from 'lib/rdlist_logs.cpp' and
+	'lib/rdlist_logs.h'.
+	* Removed Qt3Support components from 'rdadmin/edit_channelgpios.cpp' and
+	'rdadmin/edit_channelgpios.h'.
+	* Removed Qt3Support components from 'rdadmin/edit_hotkeys.cpp' and
+	'rdadmin/edit_hotkeys.h'.
+2016-08-31 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/edit_rdpanel.cpp' and
+	'rdadmin/edit_rdpanel.h'.
+2016-08-31 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/edit_rdlogedit.cpp' and
+	'rdadmin/edit_rdlogedit.h'.
+2016-08-31 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/edit_rdcartslots.cpp' and
+	'rdadmin/edit_rdcartslots.h'
+2016-09-01 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/list_groups.cpp' and
+	'rdadmin/list_groups.h'
+2016-09-01 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/list_dropboxes.cpp' and
+	'rdadmin/list_dropboxes.h'
+2016-09-01 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/edit_dropbox.cpp' and
+	'rdadmin/edit_dropbox.h'
+	* Removed Qt3Support components from 'rdadmin/rdschedcodes_dialog.cpp'
+	and 'rdadmin/rdschedcodes_dialog.h'
+2016-09-01 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDHostVariable' class in 'lib/rdhostvariable.cpp' and
+	'lib/rdhostvariable.h'.
+	* Removed Qt3Support components from 'rdadmin/edit_hostvar.cpp' and
+	'rdadmin/edit_hostvar.h'
+	* Removed Qt3Support components from 'rdadmin/list_hostvars.cpp' and
+	'rdadmin/list_hostvars.h'
+2016-09-01 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/edit_audios.cpp' and
+	'rdadmin/edit_audios.h'
+	* Removed Qt3Support components from 'rdadmin/help_audios.cpp' and
+	'rdadmin/help_audios.h'
+2016-09-02 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/edit_ttys.cpp' and
+	'rdadmin/edit_ttys.h'
+2016-09-02 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/view_adapters.cpp' and
+	'rdadmin/view_adapters.h'
+2016-09-02 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDSqlQuery::run()' method in 'lib/rddb.cpp' and
+	'lib/rddb.h'.
+	* Removed Qt3Support components from 'rdadmin/edit_jack.cpp' and
+	'rdadmin/edit_jack.h'
+	* Removed Qt3Support components from 'rdadmin/edit_jack_client.cpp' and
+	'rdadmin/edit_jack_client.h'
+2016-09-02 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/edit_backup.cpp' and
+	'rdadmin/edit_backup.h'
+2016-09-06 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/list_matrices.cpp' and
+	'rdadmin/list_matrices.h'
+	* Removed Qt3Support components from 'rdadmin/add_matrix.cpp' and
+	'rdadmin/add_matrix.h'
+	* Removed Qt3Support components from 'rdadmin/edit_matrix.cpp' and
+	'rdadmin/edit_matrix.h'
+	* Added an 'RDEndPoint' accessor class in 'lib/rdendpoint.cpp' and
+	'lib/rdendpoint.h'.
+	* Removed Qt3Support components from 'rdadmin/list_endpoints.cpp' and
+	'rdadmin/list_endpoints.h'
+	* Removed Qt3Support components from 'rdadmin/edit_endpoint.cpp' and
+	'rdadmin/edit_endpoint.h'
+	* Added an 'RDVguestResource' accessor class in
+	'lib/rdvguestresource.cpp' and 'lib/rdvguestresource.h'.
+	* Removed Qt3Support components from
+	'rdadmin/list_vguest_resources.cpp' and
+	'rdadmin/list_vguest_resources.h'
+	* Removed Qt3Support components from
+	'rdadmin/edit_vguest_resource.cpp' and
+	'rdadmin/edit_vguest_resource.h'
+	* Removed Qt3Support components from
+	'rdadmin/list_sas_resources.cpp' and
+	'rdadmin/list_sas_resources.h'
+	* Removed Qt3Support components from
+	'rdadmin/edit_sas_resource.cpp' and
+	'rdadmin/edit_sas_resource.h'
+2016-09-07 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/list_gpis.cpp' and
+	'rdadmin/list_gpis.h'
+	* Removed Qt3Support components from 'rdadmin/edit_gpi.cpp' and
+	'rdadmin/edit_gpi.h'
+2016-09-07 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/list_nodes.cpp' and
+	'rdadmin/list_nodes.h'
+	* Removed Qt3Support components from 'rdadmin/edit_node.cpp' and
+	'rdadmin/edit_node.h'
+	* Removed Qt3Support components from 'lib/rdlivewire.cpp' and
+	'lib/rdlivewire.h'.
+	* Removed Qt3Support components from 'rdadmin/view_node_info.cpp' and
+	'rdadmin/view_node_info.h'
+2016-09-07 Fred Gleason <fredg@paravelsystems.com>
+	* Removed 'rdadmin/mysql_login.cpp' and 'rdadmin/mysql_login.h'.
+2016-09-07 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/list_livewiregpios.cpp'
+	and 'rdadmin/list_livewiregpios.h'
+	* Removed Qt3Support components from 'rdadmin/edit_livewiregpio.cpp'
+	and 'rdadmin/edit_livewiregpio.h'
+2016-09-07 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/info_dialog.cpp'
+	and 'rdadmin/info_dialog.h'
+2016-09-07 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/list_matrices.cpp'
+	and 'rdadmin/list_matrices.h'
+2016-09-09 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/test_import.cpp'
+	and 'rdadmin/test_import.h'
+2016-09-09 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/edit_feed.cpp'
+	and 'rdadmin/edit_feed.h'
+2016-09-09 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3Support components from 'rdadmin/list_aux_fields.cpp'
+	and 'rdadmin/list_aux_fields.h'
+	* Removed Qt3Support components from 'rdadmin/add_aux_field.cpp'
+	and 'rdadmin/add_aux_field.h'
+	* Removed Qt3Support components from 'rdadmin/edit_aux_field.cpp'
+	and 'rdadmin/edit_aux_field.h'
+2016-09-09 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Qt3 convienence methods in 'rdadmin/'.
+2016-09-10 Fred Gleason <fredg@paravelsystems.com>
+	* Documented the interface for inserting inline traffic breaks
+	in 'docs/scheduler_formats.ods'.
+	* Documented the interface for inserting voice track markers
+	in 'docs/scheduler_formats.ods'.
+	* Added examples for adding inline traffic breaks and voice track
+	markers to the sample files in 'docs/examples/'.
+2016-09-13 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'lib/rdwavefile.cpp' that caused RDXL
+	chunks to be written with odd chunk lengths.

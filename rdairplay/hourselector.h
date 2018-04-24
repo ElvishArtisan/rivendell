@@ -2,9 +2,7 @@
 //
 // Hour Selector widget for RDAirPlay
 //
-//   (C) Copyright 2012 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: hourselector.h,v 1.1.2.1 2012/11/13 23:45:13 cvs Exp $
+//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,6 +24,8 @@
 #include <qwidget.h>
 #include <qpushbutton.h>
 #include <qtimer.h>
+//Added by qt3to4:
+#include <QResizeEvent>
 
 #include <rdairplay_conf.h>
 #include <rdlistview.h>
@@ -37,7 +37,7 @@ class HourSelector : public QWidget
 {
  Q_OBJECT
  public:
-  HourSelector(QWidget *parent=0,const char *name=0);
+  HourSelector(QWidget *parent=0);
   QSizePolicy sizePolicy() const;
   void setTimeMode(RDAirPlayConf::TimeMode mode);
   void updateHours(bool states[24]);

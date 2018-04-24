@@ -2,7 +2,7 @@
 //
 // Rivendell web service portal -- Export service
 //
-//   (C) Copyright 2010,2014 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,6 +24,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
+#include <rdapplication.h>
 #include <rdformpost.h>
 #include <rdweb.h>
 #include <rdcart.h>
@@ -31,7 +32,7 @@
 #include <rdsettings.h>
 #include <rdconf.h>
 
-#include <rdxport.h>
+#include "rdxport.h"
 
 void Xport::Export()
 {
@@ -95,14 +96,26 @@ void Xport::Export()
   //
   // Verify User Perms
   //
-  if(!xport_user->cartAuthorized(cartnum)) {
+  if(!rda->user()->cartAuthorized(cartnum)) {
     XmlExit("No such cart",404);
   }
+
+  //
+  // Audio Settings
+  //
+  RDSettings *settings=new RDSettings();
+  settings->setFormat((RDSettings::Format)format);
+  settings->setChannels(channels);
+  settings->setSampleRate(sample_rate);
+  settings->setBitRate(bit_rate);
+  settings->setQuality(quality);
+  settings->setNormalizationLevel(normalization_level);
 
   //
   // Generate Metadata
   //
   RDWaveData *wavedata=NULL;
+  QString rdxl;
   float speed_ratio=1.0;
   if(enable_metadata!=0) {
     wavedata=new RDWaveData();
@@ -115,6 +128,7 @@ void Xport::Export()
     if(cart->enforceLength()) {
       speed_ratio=(float)cut->length()/(float)cart->forcedLength();
     }
+    rdxl=cart->xml(true,start_point<0,settings,cutnum);
     delete cut;
     delete cart;
   }
@@ -127,24 +141,19 @@ void Xport::Export()
   uint8_t data[2048];
   QString tmpdir=RDTempDir();
   QString tmpfile=tmpdir+"/exported_audio";
-  RDSettings *settings=new RDSettings();
-  settings->setFormat((RDSettings::Format)format);
-  settings->setChannels(channels);
-  settings->setSampleRate(sample_rate);
-  settings->setBitRate(bit_rate);
-  settings->setQuality(quality);
-  settings->setNormalizationLevel(normalization_level);
-  RDAudioConvert *conv=new RDAudioConvert(xport_config->stationName());
+  RDAudioConvert *conv=new RDAudioConvert(rda->config()->stationName());
   conv->setSourceFile(RDCut::pathName(cartnum,cutnum));
   conv->setDestinationFile(tmpfile);
   conv->setDestinationSettings(settings);
   conv->setDestinationWaveData(wavedata);
+  conv->setDestinationRdxl(rdxl);
   conv->setRange(start_point,end_point);
   conv->setSpeedRatio(speed_ratio);
   switch(conv_err=conv->convert()) {
   case RDAudioConvert::ErrorOk:
     switch(settings->format()) {
     case RDSettings::Pcm16:
+    case RDSettings::Pcm24:
       printf("Content-type: audio/x-wav\n\n");
       break;
 
@@ -181,6 +190,9 @@ void Xport::Export()
     break;
 
   case RDAudioConvert::ErrorNoSource:
+    resp_code=403;
+    break;
+
   case RDAudioConvert::ErrorNoDestination:
   case RDAudioConvert::ErrorInvalidSource:
   case RDAudioConvert::ErrorNoSpace:
@@ -199,5 +211,10 @@ void Xport::Export()
   }
   unlink(tmpfile);
   rmdir(tmpdir);
-  Exit(resp_code);
+  if(resp_code==200) {
+    Exit(200);
+  }
+  else {
+    XmlExit(RDAudioConvert::errorText(conv_err),resp_code,conv_err);
+  }
 }

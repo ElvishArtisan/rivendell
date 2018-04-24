@@ -2,9 +2,7 @@
 //
 // Rivendell Interprocess Communication Daemon
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: ripcd_socket.cpp,v 1.9 2010/07/29 19:32:38 cvs Exp $
+//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,7 +21,7 @@
 
 #include <qapplication.h>
 #include <qobject.h>
-#include <qserversocket.h>
+#include <q3serversocket.h>
 #include <qhostaddress.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -34,16 +32,15 @@
 
 #include <ripcd_socket.h>
 
-RipcdSocket::RipcdSocket(Q_UINT16 port,int backlog,QObject *parent,
-		     const char *name) 
-  : QServerSocket(port,0,parent,name)
+RipcdSocket::RipcdSocket(Q_UINT16 port,int backlog,QObject *parent)
+  : Q3ServerSocket(port,0,parent)
 {
 }
 
 
 RipcdSocket::RipcdSocket(const QHostAddress &address,Q_UINT16 port,int backlog,
-			 QObject *parent,const char *name) 
-  : QServerSocket(address,port,0,parent,name)
+			 QObject *parent) 
+  : Q3ServerSocket(address,port,0,parent)
 {
 }
 

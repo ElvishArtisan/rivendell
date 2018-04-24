@@ -2,9 +2,7 @@
 //
 // Execute a list of RML commands asynchronously.
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdevent_player.cpp,v 1.6.8.1 2012/12/13 22:33:44 cvs Exp $
+//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,8 +21,8 @@
 #include <rdevent_player.h>
 
 
-RDEventPlayer::RDEventPlayer(RDRipc *ripc,QObject *parent,const char *name)
-  : QObject(parent,name)
+RDEventPlayer::RDEventPlayer(RDRipc *ripc,QObject *parent)
+  : QObject(parent)
 {
   player_ripc=ripc;
 

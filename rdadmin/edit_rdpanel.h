@@ -2,9 +2,7 @@
 //
 // Edit an RDPanel Configuration
 //
-//   (C) Copyright 2002-2007 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_rdpanel.h,v 1.6.8.2 2013/12/23 18:35:15 cvs Exp $
+//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,15 +21,12 @@
 #ifndef EDIT_RDPANEL_H
 #define EDIT_RDPANEL_H
 
-#include <qdialog.h>
-#include <qsqldatabase.h>
-#include <qlineedit.h>
-#include <qcombobox.h>
-#include <qspinbox.h>
-#include <qdatetimeedit.h>
-#include <qlabel.h>
-#include <qcheckbox.h>
-#include <qbuttongroup.h>
+#include <QCheckBox>
+#include <QComboBox>
+#include <QDialog>
+#include <QLabel>
+#include <QLineEdit>
+#include <QSpinBox>
 
 #include <rd.h>
 #include <rdairplay_conf.h>
@@ -48,8 +43,7 @@ class EditRDPanel : public QDialog
 {
  Q_OBJECT
  public:
-  EditRDPanel(RDStation *station,RDStation *cae_station,
-	      QWidget *parent=0,const char *name=0);
+  EditRDPanel(RDStation *station,RDStation *cae_station,QWidget *parent=0);
   ~EditRDPanel();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;

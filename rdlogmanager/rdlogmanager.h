@@ -2,9 +2,7 @@
 //
 // The Log Manager Utility for Rivendell.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdlogmanager.h,v 1.14.6.2.2.1 2014/05/20 14:01:51 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,17 +18,17 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-
 #ifndef RDLOGMANAGER_H
 #define RDLOGMANAGER_H
 
 #include <qwidget.h>
 #include <qsize.h>
 #include <qsizepolicy.h>
-#include <qsqldatabase.h>
-#include <qlistview.h>
+#include <q3listview.h>
 #include <qpushbutton.h>
 #include <qpixmap.h>
+//Added by qt3to4:
+#include <QLabel>
 
 #include <rduser.h>
 #include <rdripc.h>
@@ -50,12 +48,11 @@ extern int RunReportOperation(int argc,char *argv[],const QString &rptname,
 			      bool protect_existing,int start_offset,
 			      int end_offset);
 
-
 class MainWidget : public QWidget
 {
  Q_OBJECT
  public:
-  MainWidget(QWidget *parent=0,const char *name=0);
+  MainWidget(QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
   
@@ -70,7 +67,6 @@ class MainWidget : public QWidget
 
  private:
   void LoadConfig();
-  QSqlDatabase *log_db;
   QString log_filename;
   QLabel *log_user_label;
   QPushButton *log_events_button;

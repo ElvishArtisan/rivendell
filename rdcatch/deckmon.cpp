@@ -2,9 +2,7 @@
 //
 // Monitor a Rivendell RDCatch Deck
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: deckmon.cpp,v 1.25 2010/07/29 19:32:36 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,14 +22,18 @@
 #include <rdcut.h>
 #include <rdcart.h>
 #include <rddb.h>
-#include <deckmon.h>
-#include <colors.h>
-#include <globals.h>
+#include <rdescape_string.h>
 
+#include "colors.h"
+#include "deckmon.h"
+#include "globals.h"
+//Added by qt3to4:
+#include <QResizeEvent>
+#include <Q3Frame>
+#include <QLabel>
 
-DeckMon::DeckMon(QString station,unsigned channel,
-		 QWidget *parent,const char *name)
-  : QFrame(parent,name)
+DeckMon::DeckMon(QString station,unsigned channel,QWidget *parent)
+  : Q3Frame(parent)
 {
   mon_station=station;
   mon_channel=channel;
@@ -47,11 +49,24 @@ DeckMon::DeckMon(QString station,unsigned channel,
   small_font.setPixelSize(6);
   QFont label_font("Helvetica",12,QFont::Normal);
   label_font.setPixelSize(12);
+  QFont event_font("Helvetica",12,QFont::Bold);
+  event_font.setPixelSize(12);
+
+  //
+  // Generate Palettes
+  //
+  mon_red_palette=palette();
+  mon_red_palette.setColor(QColorGroup::Background,Qt::darkRed);
+  mon_red_palette.setColor(QColorGroup::Foreground,Qt::white);
+  mon_dark_palette=palette();
+  mon_dark_palette.
+    setColor(QColorGroup::Background,palette().color(QPalette::Active,QColorGroup::Mid));
+  mon_dark_palette.setColor(QColorGroup::Foreground,Qt::white);
 
   //
   // Station/Channel
   //
-  mon_station_label=new QLabel(this,"mon_station_label");
+  mon_station_label=new QLabel(this);
   mon_station_label->setFont(label_font);
   if((mon_channel>0)&&(mon_channel<(MAX_DECKS+1))) {
     mon_station_label->
@@ -67,7 +82,7 @@ DeckMon::DeckMon(QString station,unsigned channel,
   //
   // Monitor Button
   //
-  mon_monitor_button=new QPushButton(this,"mon_monitor_button");
+  mon_monitor_button=new QPushButton(this);
   mon_monitor_button->setFont(small_font);
   mon_monitor_button->setText(tr("MON"));
   mon_monitor_palette=new QPalette(QColor(BUTTON_MONITOR_FLASHING_COLOR),
@@ -81,7 +96,7 @@ DeckMon::DeckMon(QString station,unsigned channel,
   //
   // Abort Button
   //
-  mon_abort_button=new QPushButton(this,"mon_abort_button");
+  mon_abort_button=new QPushButton(this);
   mon_abort_button->setFont(small_font);
   mon_abort_button->setText(tr("ABORT"));
   mon_abort_button->setDisabled(true);
@@ -90,25 +105,37 @@ DeckMon::DeckMon(QString station,unsigned channel,
   //
   // Cut
   //
-  mon_cut_label=new QLabel(this,"mon_cut_label");
+  mon_cut_label=new QLabel(this);
   mon_cut_label->setFont(label_font);
+
+  //
+  // Event Indicator
+  //
+  mon_event_label=new QLabel(this);
+  mon_event_label->setFont(event_font);
+  mon_event_label->setAlignment(Qt::AlignCenter);
+  mon_event_label->setFrameStyle(Q3Frame::Panel|Q3Frame::Sunken);
+  mon_event_label->setPalette(mon_dark_palette);
+  mon_event_label->setText("--");
+  mon_event_timer=new QTimer(this);
+  connect(mon_event_timer,SIGNAL(timeout()),this,SLOT(eventResetData()));
 
   //
   // Status
   //
-  mon_status_label=new QLabel(tr("OFFLINE"),this,"mon_status_label");
+  mon_status_label=new QLabel(tr("OFFLINE"),this);
   mon_status_label->setFont(label_font);
 
   //
   // Audio Meter
   //
-  mon_left_meter=new RDPlayMeter(RDSegMeter::Right,this,"mon_left_meter");
+  mon_left_meter=new RDPlayMeter(RDSegMeter::Right,this);
   mon_left_meter->setMode(RDSegMeter::Peak);
   mon_left_meter->setRange(-4600,-800);
   mon_left_meter->setHighThreshold(-1600);
   mon_left_meter->setClipThreshold(-1100);
   mon_left_meter->setLabel(tr("L"));
-  mon_right_meter=new RDPlayMeter(RDSegMeter::Right,this,"mon_right_meter");
+  mon_right_meter=new RDPlayMeter(RDSegMeter::Right,this);
   mon_right_meter->setMode(RDSegMeter::Peak);
   mon_right_meter->setRange(-4600,-800);
   mon_right_meter->setHighThreshold(-1600);
@@ -142,7 +169,7 @@ void DeckMon::enableMonitorButton(bool state)
 
 void DeckMon::setGeometry(int x,int y,int w,int h)
 {
-  QFrame::setGeometry(x,y,w,h);
+  Q3Frame::setGeometry(x,y,w,h);
 }
 
 
@@ -174,49 +201,58 @@ void DeckMon::setStatus(RDDeck::Status status,int id,const QString &cutname)
     return;
   }
   switch(status) {
-      case RDDeck::Offline:
-	mon_status_label->setText(tr("OFFLINE"));
-	SetCutInfo(0,"");
-	mon_left_meter->setPeakBar(-10000);
-	mon_right_meter->setPeakBar(-10000);
-	mon_abort_button->setDisabled(true);
-	break;
+  case RDDeck::Offline:
+    mon_status_label->setText(tr("OFFLINE"));
+    SetCutInfo(0,"");
+    mon_left_meter->setPeakBar(-10000);
+    mon_right_meter->setPeakBar(-10000);
+    mon_abort_button->setDisabled(true);
+    break;
 
-      case RDDeck::Idle:
-	mon_status_label->setText(tr("IDLE"));
-	SetCutInfo(0,"");
-	mon_left_meter->setPeakBar(-10000);
-	mon_right_meter->setPeakBar(-10000);
-	mon_abort_button->setDisabled(true);
-	break;
+  case RDDeck::Idle:
+    mon_status_label->setText(tr("IDLE"));
+    SetCutInfo(0,"");
+    mon_left_meter->setPeakBar(-10000);
+    mon_right_meter->setPeakBar(-10000);
+    mon_abort_button->setDisabled(true);
+    break;
 
-      case RDDeck::Ready:
-	mon_status_label->setText(tr("READY"));
-	SetCutInfo(id,"");
-	mon_left_meter->setPeakBar(-10000);
-	mon_right_meter->setPeakBar(-10000);
-	mon_abort_button->setEnabled(true);
-	break;
+  case RDDeck::Ready:
+    mon_status_label->setText(tr("READY"));
+    SetCutInfo(id,"");
+    mon_left_meter->setPeakBar(-10000);
+    mon_right_meter->setPeakBar(-10000);
+    mon_abort_button->setEnabled(true);
+    break;
 
-      case RDDeck::Waiting:
-	mon_status_label->setText(tr("WAITING"));
-	SetCutInfo(id,"");
-	mon_left_meter->setPeakBar(-10000);
-	mon_right_meter->setPeakBar(-10000);
-	mon_abort_button->setEnabled(true);
-	break;
+  case RDDeck::Waiting:
+    mon_status_label->setText(tr("WAITING"));
+    SetCutInfo(id,"");
+    mon_left_meter->setPeakBar(-10000);
+    mon_right_meter->setPeakBar(-10000);
+    mon_abort_button->setEnabled(true);
+    break;
 
-      case RDDeck::Recording:
-	if((mon_channel>0)&&(mon_channel<(MAX_DECKS+1))) {
-	  mon_status_label->setText(tr("RECORDING"));
-	}
-	if((mon_channel>128)&&(mon_channel<(MAX_DECKS+129))) {
-	  mon_status_label->setText(tr("PLAYING"));
-	}
-	SetCutInfo(id,cutname);
-	mon_abort_button->setEnabled(true);
-	break;
+  case RDDeck::Recording:
+    if((mon_channel>0)&&(mon_channel<(MAX_DECKS+1))) {
+      mon_status_label->setText(tr("RECORDING"));
+    }
+    if((mon_channel>128)&&(mon_channel<(MAX_DECKS+129))) {
+      mon_status_label->setText(tr("PLAYING"));
+    }
+    SetCutInfo(id,cutname);
+    mon_abort_button->setEnabled(true);
+    break;
   }
+  mon_event_label->setText("--");
+}
+
+
+void DeckMon::setEvent(int number)
+{
+  mon_event_label->setText(QString().sprintf("%d",number));
+  mon_event_label->setPalette(mon_red_palette);
+  mon_event_timer->start(1000,true);
 }
 
 
@@ -244,16 +280,23 @@ void DeckMon::abortButtonData()
 }
 
 
+void DeckMon::eventResetData()
+{
+  mon_event_label->setPalette(mon_dark_palette);
+}
+
+
 void DeckMon::resizeEvent(QResizeEvent *e)
 {
-  mon_station_label->setGeometry(10,10,150,12);
+  mon_station_label->setGeometry(10,6,140,18);
   mon_monitor_button->setGeometry(155,5,40,20);
   mon_abort_button->setGeometry(200,5,40,20);
-  mon_cut_label->setGeometry(260,10,e->size().width()-580,12);
-  mon_status_label->setGeometry(e->size().width()-320,10,80,12);
+  mon_cut_label->setGeometry(245,6,e->size().width()-595,18);
+  mon_event_label->setGeometry(e->size().width()-345,6,20,18);
+  mon_status_label->setGeometry(e->size().width()-320,6,80,18);
   mon_left_meter->setGeometry(e->size().width()-235,6,225,10);
   mon_right_meter->setGeometry(e->size().width()-235,16,225,10);
-  QFrame::resizeEvent(e);
+  Q3Frame::resizeEvent(e);
 }
 
 
@@ -278,11 +321,12 @@ void DeckMon::SetCutInfo(int id,const QString &cutname)
       mon_cut_label->setText(tr("[unknown cut]"));
     }
     else {
-      sql=QString().sprintf("select CART.TITLE,CUTS.DESCRIPTION from \
-                             CART left join CUTS \
-                             on CART.NUMBER=CUTS.CART_NUMBER \
-                             where CUTS.CUT_NAME=\"%s\"",
-			    (const char *)cutname);
+      sql=QString("select ")+
+	"CART.TITLE,"+
+	"CUTS.DESCRIPTION "+
+	"from CART left join CUTS "+
+	"on CART.NUMBER=CUTS.CART_NUMBER where "+
+	"CUTS.CUT_NAME=\""+RDEscapeString(cutname)+"\"";
       q1=new RDSqlQuery(sql);
       if(q1->first()) {
 	mon_cut_label->

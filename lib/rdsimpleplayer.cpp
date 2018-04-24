@@ -2,9 +2,7 @@
 //
 // A naively simple player for Rivendell Carts.
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdsimpleplayer.cpp,v 1.14 2010/07/29 19:32:34 cvs Exp $
+//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,17 +18,14 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <rddb.h>
+#include <rdapplication.h>
 #include <rdsimpleplayer.h>
 #include <rdcart.h>
 
-RDSimplePlayer::RDSimplePlayer(RDCae *cae,RDRipc *ripc,int card,int port,
-			       unsigned start_cart,unsigned end_cart,
-			       QWidget *parent,const char *name)
-  : QWidget(parent,name)
+RDSimplePlayer::RDSimplePlayer(int card,int port,unsigned start_cart,
+			       unsigned end_cart,QWidget *parent)
+  : QWidget(parent)
 {
-  play_cae=cae;
-  play_ripc=ripc;
   play_card=card;
   play_port=port;
   play_start_cart=start_cart;
@@ -42,27 +37,25 @@ RDSimplePlayer::RDSimplePlayer(RDCae *cae,RDRipc *ripc,int card,int port,
   //
   // RDCae Connections
   //
-  connect(play_cae,SIGNAL(playing(int)),this,SLOT(playingData(int)));
-  connect(play_cae,SIGNAL(playStopped(int)),this,SLOT(playStoppedData(int)));
+  connect(rda->cae(),SIGNAL(playing(int)),this,SLOT(playingData(int)));
+  connect(rda->cae(),SIGNAL(playStopped(int)),this,SLOT(playStoppedData(int)));
 
   //
   // Event Player
   //
-  play_event_player=new RDEventPlayer(play_ripc,this,"play_event_player");
+  play_event_player=new RDEventPlayer(rda->ripc(),this);
 
   //
   //  Start Button
   //
-  play_start_button=
-    new RDTransportButton(RDTransportButton::Play,parent,"play_start_button");
+  play_start_button=new RDTransportButton(RDTransportButton::Play,parent);
   play_start_button->setEnabled((play_card>=0)&&(play_port>=0));
   connect(play_start_button,SIGNAL(clicked()),this,SLOT(play()));
 
   //
   //  Stop Button
   //
-  play_stop_button=
-    new RDTransportButton(RDTransportButton::Stop,parent,"play_stop_button");
+  play_stop_button=new RDTransportButton(RDTransportButton::Stop,parent);
   play_stop_button->on();
   play_stop_button->setEnabled((play_card>=0)&&(play_port>=0));
   connect(play_stop_button,SIGNAL(clicked()),this,SLOT(stop()));
@@ -118,28 +111,31 @@ void RDSimplePlayer::play(int start_pos)
   QString cut = "";
   RDCart *cart=new RDCart(play_cart);
   if (cart->selectCut(&cut)) {
-    play_cae->
-      loadPlay(play_card,cut,&play_stream,&handle);
+    rda->cae()->loadPlay(play_card,cut,&play_stream,&handle);
 
     if(play_stream<0) {
       return;
     }
 
-    sql=QString().sprintf("select START_POINT,END_POINT,PLAY_GAIN \
-                          from CUTS where CUT_NAME='%s'", (const char *)cut);
+    sql=QString("select ")+
+      "START_POINT,"+
+      "END_POINT,"+
+      "PLAY_GAIN "+
+      "from CUTS where "+
+      "CUT_NAME=\""+cut+"\"";
     q=new RDSqlQuery(sql);
     if(q->first()) {
       play_cut_gain=q->value(2).toInt(); 
       play_handles.push(handle);
       for(int i=0;i<RD_MAX_PORTS;i++) {
-        play_cae->setOutputVolume(play_card,play_stream,i,RD_MUTE_DEPTH);
+        rda->cae()->setOutputVolume(play_card,play_stream,i,RD_MUTE_DEPTH);
       }
-      play_cae->setOutputVolume(play_card,play_stream,play_port,0+play_cut_gain);
-      play_cae->positionPlay(play_handles.back(),q->value(0).toUInt()+start_pos);
-      play_cae->play(play_handles.back(),
+      rda->cae()->setOutputVolume(play_card,play_stream,play_port,0+play_cut_gain);
+      rda->cae()->positionPlay(play_handles.back(),q->value(0).toUInt()+start_pos);
+      rda->cae()->play(play_handles.back(),
                      q->value(1).toUInt()-(q->value(0).toUInt()+start_pos),
                      RD_TIMESCALE_DIVISOR,false);
-      play_cae->setPlayPortActive(play_card,play_port,play_stream);
+      rda->cae()->setPlayPortActive(play_card,play_port,play_stream);
     }
     delete q;
   }
@@ -152,7 +148,7 @@ void RDSimplePlayer::stop()
   if(!play_is_playing) {
     return;
   }
-  play_cae->stopPlay(play_handles.back());
+  rda->cae()->stopPlay(play_handles.back());
 }
 
 
@@ -180,7 +176,7 @@ void RDSimplePlayer::playStoppedData(int handle)
   if(handle!=play_handles.front()) {
     return;
   }
-  play_cae->unloadPlay(play_handles.front());
+  rda->cae()->unloadPlay(play_handles.front());
   play_event_player->exec(play_end_cart);
   play_start_button->off();
   play_stop_button->on();

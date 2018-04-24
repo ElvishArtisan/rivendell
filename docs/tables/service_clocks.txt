@@ -1,0 +1,12 @@
+                SERVICE_CLOCKS Table Layout for Rivendell
+
+The SERVICE_CLOCKS table holds data concerning which clock is assigned
+to a given hour on a service's grid.
+
+
+FIELD NAME              TYPE               REMARKS
+---------------------------------------------------------------
+ID                      int(11) signed     Primary Key
+SERVICE_NAME            char(10)           From SERVICES.NAME
+HOUR                    int(11) signed
+CLOCK_NAME              char(64)           From CLOCKS.NAME

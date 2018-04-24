@@ -2,9 +2,7 @@
 //
 // The audio cart editor for RDLibrary.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: audio_cart.cpp,v 1.57.6.9.2.2 2014/05/22 14:30:45 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,21 +18,22 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qpixmap.h>
 #include <unistd.h>
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <qlistview.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <qbuttongroup.h>
-#include <qapplication.h>
 
+#include <Q3ButtonGroup>
+#include <Q3ListView>
+#include <Q3ListBox>
+#include <Q3TextEdit>
+#include <QCheckBox>
+#include <QDialog>
+#include <QEvent>
+#include <QMessageBox>
+#include <QPainter>
+#include <QPixmap>
+#include <QPushButton>
+#include <QString>
+
+#include <rdapplication.h>
 #include <rdcut.h>
 #include <rdcddbrecord.h>
 #include <rddb.h>
@@ -57,9 +56,8 @@ bool import_active=false;
 
 
 AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
-		     bool select_cut,bool profile_rip,
-		     QWidget *parent,const char *name)
-  : QWidget(parent,name)
+		     bool select_cut,bool profile_rip,QWidget *parent)
+  : QWidget(parent)
 {
   rdcart_import_metadata=true;
   rdcart_controls=controls;
@@ -67,7 +65,7 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   rdcart_import_path=path;
   rdcart_select_cut=select_cut;
   rdcart_profile_rip=profile_rip;
-  rdcart_modification_allowed=lib_user->editAudio()&&cart->owner().isEmpty();
+  rdcart_modification_allowed=rda->user()->editAudio()&&cart->owner().isEmpty();
 
   setCaption(QString().sprintf("%u",rdcart_cart->number())+" - "+
     rdcart_cart->title());
@@ -84,7 +82,7 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   //
   // Progress Dialog
   //
-  rdcart_progress_dialog=new QProgressDialog(this);
+  rdcart_progress_dialog=new Q3ProgressDialog(this);
   rdcart_progress_dialog->setLabelText(tr("Copying audio..."));
   rdcart_progress_dialog->setCancelButton(NULL);
   rdcart_progress_dialog->setTotalSteps(10);
@@ -93,7 +91,7 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   //
   // Add Cut Button
   //
-  QPushButton *add_cut_button=new QPushButton(this,"add_cut_button");
+  QPushButton *add_cut_button=new QPushButton(this);
   add_cut_button->setGeometry(10,0,80,50);
   add_cut_button->setFont(button_font);
   add_cut_button->setText(tr("Add"));
@@ -102,7 +100,7 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   //
   // Delete Cut Button
   //
-  QPushButton *delete_cut_button=new QPushButton(this,"delete_cut_button");
+  QPushButton *delete_cut_button=new QPushButton(this);
   delete_cut_button->setGeometry(10,60,80,50);
   delete_cut_button->setFont(button_font);
   delete_cut_button->setText(tr("Delete"));
@@ -111,7 +109,7 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   //
   // Copy Cut Button
   //
-  QPushButton *copy_cut_button=new QPushButton(this,"copy_cut_button");
+  QPushButton *copy_cut_button=new QPushButton(this);
   copy_cut_button->setGeometry(10,120,80,50);
   copy_cut_button->setFont(button_font);
   copy_cut_button->setText(tr("Copy"));
@@ -120,7 +118,7 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   //
   // Paste Cut Button
   //
-  paste_cut_button=new QPushButton(this,"paste_cut_button");
+  paste_cut_button=new QPushButton(this);
   paste_cut_button->setGeometry(10,180,80,50);
   paste_cut_button->setFont(button_font);
   paste_cut_button->setText(tr("Paste"));
@@ -129,16 +127,16 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   //
   // Cart Cut List
   //
-  rdcart_cut_list=new RDListView(this,"rdcart_cut_list");
+  rdcart_cut_list=new RDListView(this);
   rdcart_cut_list->setGeometry(100,0,430,sizeHint().height());
   rdcart_cut_list->setAllColumnsShowFocus(true);
-  rdcart_cut_list->setSelectionMode(QListView::Extended);
+  rdcart_cut_list->setSelectionMode(Q3ListView::Extended);
   rdcart_cut_list->setItemMargin(5);
   rdcart_cut_list->setSorting(11);
   connect(rdcart_cut_list,
-	  SIGNAL(doubleClicked(QListViewItem *,const QPoint &,int)),
+	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,
-	  SLOT(doubleClickedData(QListViewItem *,const QPoint &,int)));
+	  SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
 
   rdcart_cut_list->addColumn(tr("WT"));
   rdcart_cut_list->setColumnAlignment(0,Qt::AlignHCenter);
@@ -189,11 +187,10 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   p->setPen(QColor(system_button_text_color));
   p->setFont(button_font);
   p->drawText((80-m->width(tr("Cut Info")))/2,20,tr("Cut Info"));
-  p->moveTo(10,24);
-  p->lineTo(70,24);
+  p->drawLine(10,24,70,24);
   p->drawText((80-m->width(tr("Record")))/2,38,tr("Record"));
   p->end();
-  QPushButton *record_cut_button=new QPushButton(this,"record_cut_button");
+  QPushButton *record_cut_button=new QPushButton(this);
   record_cut_button->setGeometry(550,0,80,50);
   record_cut_button->setPixmap(*pix);
   connect(record_cut_button,SIGNAL(clicked()),this,SLOT(recordCutData()));
@@ -201,16 +198,15 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   //
   // Send to (external) Editor Button (ex: Audacity)
   //
-  QPushButton *ext_editor_cut_button=
-    new QPushButton(this,"ext_editor_cut_button");
+  QPushButton *ext_editor_cut_button=new QPushButton(this);
   ext_editor_cut_button->setGeometry(550,60,80,50);
   ext_editor_cut_button->setFont(button_font);
   ext_editor_cut_button->setText(tr("Edit\nAudio"));
   connect(ext_editor_cut_button,SIGNAL(clicked()),
 	  this,SLOT(extEditorCutData()));
   int yoffset=60;
-  if((!rdlibrary_conf->enableEditor())||
-     rdstation_conf->editorPath().isEmpty()) {
+  if((!rda->libraryConf()->enableEditor())||
+     rda->station()->editorPath().isEmpty()) {
     ext_editor_cut_button->hide();
     yoffset=0;
   }
@@ -218,7 +214,7 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   //
   // Edit Cut Button
   //
-  QPushButton *edit_cut_button=new QPushButton(this,"edit_cut_button");
+  QPushButton *edit_cut_button=new QPushButton(this);
   edit_cut_button->setGeometry(550,60+yoffset,80,50);
   edit_cut_button->setFont(button_font);
   edit_cut_button->setText(tr("Edit\nMarkers"));
@@ -233,11 +229,10 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   p->setPen(QColor(system_button_text_color));
   p->setFont(button_font);
   p->drawText((80-m->width(tr("Import")))/2,20,tr("Import"));
-  p->moveTo(10,24);
-  p->lineTo(70,24);
+  p->drawLine(10,24,70,24);
   p->drawText((80-m->width(tr("Export")))/2,38,tr("Export"));
   p->end();
-  QPushButton *import_cut_button=new QPushButton(this,"import_cut_button");
+  QPushButton *import_cut_button=new QPushButton(this);
   import_cut_button->setPixmap(*pix);
   import_cut_button->setGeometry(550,120+yoffset,80,50);
   connect(import_cut_button,SIGNAL(clicked()),this,SLOT(importCutData()));
@@ -245,7 +240,7 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   //
   // Rip Cut Button
   //
-  QPushButton *rip_cut_button=new QPushButton(this,"rip_cut_button");
+  QPushButton *rip_cut_button=new QPushButton(this);
   rip_cut_button->setGeometry(550,180+yoffset,80,50);
   rip_cut_button->setFont(button_font);
   rip_cut_button->setText(tr("Rip CD"));
@@ -277,12 +272,37 @@ QSizePolicy AudioCart::sizePolicy() const
 }
 
 
+void AudioCart::changeCutScheduling(int sched)
+{
+  QString sql;
+  RDSqlQuery *q;
+
+  RDListViewItem *item=(RDListViewItem *)rdcart_cut_list->firstChild();
+  while(item!=NULL) {
+    sql=QString("select PLAY_ORDER,WEIGHT from CUTS where ")+
+      "CUT_NAME=\""+item->text(11)+"\"";
+    q=new RDSqlQuery(sql);
+    if(q->first()) {
+      item->setText(0,QString().sprintf("%d",q->value(sched).toInt()));
+    }
+    item=(RDListViewItem *)item->nextSibling();
+  }
+  if(sched) {
+    rdcart_cut_list->setColumnText(0,tr("WT"));
+  }
+  else {
+    rdcart_cut_list->setColumnText(0,tr("ORD"));
+  }
+  rdcart_use_weighting=sched!=0;
+}
+
+
 void AudioCart::addCutData()
 {
   QString next_name=RDCut::cutName(rdcart_cart->number(),
-		 rdcart_cart->addCut(rdlibrary_conf->defaultFormat(),
-				     rdlibrary_conf->defaultBitrate(),
-				     rdlibrary_conf->defaultChannels()));
+		 rdcart_cart->addCut(rda->libraryConf()->defaultFormat(),
+				     rda->libraryConf()->defaultBitrate(),
+				     rda->libraryConf()->defaultChannels()));
   if(next_name.isEmpty()) {
     QMessageBox::warning(this,tr("RDLibrary - Edit Cart"),
 			 tr("This cart cannot contain any additional cuts!"));
@@ -321,7 +341,7 @@ void AudioCart::deleteCutData()
 				 QMessageBox::Yes,QMessageBox::No)) {
 
     case QMessageBox::No:
-    case QMessageBox::NoButton:
+    case Qt::NoButton:
       return;
       
     default:
@@ -375,8 +395,7 @@ void AudioCart::deleteCutData()
   // Delete Cuts
   //
   for(unsigned i=0;i<cutnames.size();i++) {
-    if(!rdcart_cart->removeCut(rdstation_conf,lib_user,cutnames[i],
-			       lib_config)) {
+    if(!rdcart_cart->removeCut(cutnames[i])) {
       QMessageBox::warning(this,tr("RDLibrary"),
 			   tr("Unable to delete audio for cut")+
 			   QString().sprintf(" %d!",RDCut::cutNumber(cutnames[i])));
@@ -437,7 +456,7 @@ void AudioCart::extEditorCutData()
     return;
   }
 
-  QString cmd=rdstation_conf->editorPath();
+  QString cmd=rda->station()->editorPath();
   cmd.replace("%f",RDCut::pathName(rdcart_cut_list->currentItem()->text(11)));
   // FIXME: other replace commands to match: lib/rdcart_dialog.cpp editorData()
   //        These substitions should be documented (maybe a text file),
@@ -477,7 +496,7 @@ void AudioCart::pasteCutData()
     }
   }
   cut_clipboard->connect(this,SLOT(copyProgressData(const QVariant &)));
-  cut_clipboard->copyTo(rdstation_conf,lib_user,item->text(11),lib_config);
+  cut_clipboard->copyTo(rda->station(),rda->user(),item->text(11),rda->config());
   cut_clipboard->disconnect(this,SLOT(copyProgressData(const QVariant &)));
   rdcart_cart->updateLength(rdcart_controls->enforce_length_box->isChecked(),
 			    QTime().msecsTo(rdcart_controls->
@@ -503,10 +522,10 @@ void AudioCart::editCutData()
     return;
   }
   RDEditAudio *edit=
-    new RDEditAudio(rdcart_cart,cutname,rdcae,lib_user,rdstation_conf,
-		    lib_config,rdlibrary_conf->outputCard(),
-		    rdlibrary_conf->outputPort(),rdlibrary_conf->tailPreroll(),
-		    rdlibrary_conf->trimThreshold(),this);
+    new RDEditAudio(rdcart_cart,cutname,rda->cae(),rda->user(),rda->station(),
+		    rda->config(),rda->libraryConf()->outputCard(),
+		    rda->libraryConf()->outputPort(),rda->libraryConf()->tailPreroll(),
+		    rda->libraryConf()->trimThreshold(),this);
   if(edit->exec()!=-1) {
     emit cartDataChanged();
     rdcart_cart->updateLength(rdcart_controls->enforce_length_box->isChecked(),
@@ -526,7 +545,7 @@ void AudioCart::recordCutData()
     return;
   }
   QString cutname=item->text(11);
-  RecordCut *cut=new RecordCut(rdcart_cart,cutname,this,"cut");
+  RecordCut *cut=new RecordCut(rdcart_cart,cutname,rdcart_use_weighting,this);
   cut->exec();
   delete cut;
   if(cut_clipboard==NULL) {
@@ -556,7 +575,7 @@ void AudioCart::ripCutData()
   }
   cutname=item->text(11);
   RDCddbRecord *rec=new RDCddbRecord();
-  CdRipper *ripper=new CdRipper(cutname,rec,rdlibrary_conf,rdcart_profile_rip);
+  CdRipper *ripper=new CdRipper(cutname,rec,rda->libraryConf(),rdcart_profile_rip);
   if((track=ripper->exec(&title,&artist,&album))>=0) {
     if((rdcart_controls->title_edit->text().isEmpty()||
 	(rdcart_controls->title_edit->text()==tr("[new cart]")))&&
@@ -594,16 +613,16 @@ void AudioCart::importCutData()
   }
   cutname=item->text(11);
   RDSettings settings;
-  rdlibrary_conf->getSettings(&settings);
+  rda->libraryConf()->getSettings(&settings);
   RDImportAudio *import=new RDImportAudio(cutname,rdcart_import_path,
 					  &settings,&rdcart_import_metadata,
 					  &wavedata,cut_clipboard,
-					  rdstation_conf,lib_user,
-					  &import_active,lib_config);
-  import->enableAutotrim(rdlibrary_conf->defaultTrimState());
-  import->setAutotrimLevel(rdlibrary_conf->trimThreshold());
-  import->enableNormalization(rdlibrary_conf->ripperLevel()!=0);
-  import->setNormalizationLevel(rdlibrary_conf->ripperLevel());
+					  rda->station(),rda->user(),
+					  &import_active,rda->config());
+  import->enableAutotrim(rda->libraryConf()->defaultTrimState());
+  import->setAutotrimLevel(rda->libraryConf()->trimThreshold());
+  import->enableNormalization(rda->libraryConf()->ripperLevel()!=0);
+  import->setNormalizationLevel(rda->libraryConf()->ripperLevel());
   if(import->exec(true,true)==0) {
     if(rdcart_controls->title_edit->text().isEmpty()||
        (rdcart_controls->title_edit->text()==tr("[new cart]"))) {
@@ -639,9 +658,6 @@ void AudioCart::importCutData()
     if(rdcart_controls->user_defined_edit->text().isEmpty()) {
       rdcart_controls->user_defined_edit->setText(wavedata.userDefined());
     }
-    RDCut *cut=new RDCut(cutname);
-    cut->setMetadata(&wavedata);
-    delete cut;
   }
   if(cut_clipboard==NULL) {
     paste_cut_button->setDisabled(true);
@@ -656,7 +672,7 @@ void AudioCart::importCutData()
 }
 
 
-void AudioCart::doubleClickedData(QListViewItem *,const QPoint &,int)
+void AudioCart::doubleClickedData(Q3ListViewItem *,const QPoint &,int)
 {
   recordCutData();
 }
@@ -704,16 +720,17 @@ void AudioCart::RefreshList()
   q=new RDSqlQuery(sql);
   while(q->next()) {
     l=new RDListViewItem(rdcart_cut_list);
-    l->setText(0,q->value(0).toString());
-    l->setText(1,q->value(1).toString());
-    l->setText(2,RDGetTimeLength(q->value(2).toUInt()));
-    if (q->value(0) == 0){// zero weight
+    //    l->setText(0,q->value(0).toString());
+    l->setText(1,q->value(2).toString());
+    l->setText(2,RDGetTimeLength(q->value(3).toUInt()));
+    if(rdcart_use_weighting&&(q->value(1).toInt()==0)){// zero weight
       l->setBackgroundColor(RD_CART_ERROR_COLOR);
       if(pass==0) {
 	err=true;
       }
-    } else {
-      switch(ValidateCut(q,9,RDCart::NeverValid,current_datetime)) {
+    } 
+    else {
+      switch(ValidateCut(q,10,RDCart::NeverValid,current_datetime)) {
       case RDCart::NeverValid:
 	l->setBackgroundColor(RD_CART_ERROR_COLOR);
 	if(pass==0) {
@@ -722,8 +739,8 @@ void AudioCart::RefreshList()
 	break;
 	
       case RDCart::ConditionallyValid:
-	if((!q->value(10).isNull())&&
-	   (q->value(10).toDateTime()<current_datetime)) {
+	if((!q->value(11).isNull())&&
+	   (q->value(11).toDateTime()<current_datetime)) {
 	  l->setBackgroundColor(RD_CART_ERROR_COLOR);
 	}
 	else {
@@ -752,40 +769,40 @@ void AudioCart::RefreshList()
 	break;
       }
     }
-    if(q->value(4).toUInt()>0) {
-      l->setText(3,q->value(3).toDateTime().toString("M/d/yy"));
+    if(q->value(5).toUInt()>0) {
+      l->setText(3,q->value(4).toDateTime().toString("M/d/yy"));
     }
     else {
       l->setText(3,tr("Never"));
     }
-    l->setText(4,q->value(4).toString());
-    if(!q->value(5).toDateTime().isNull()) {
-      l->setText(5,q->value(6).toString()+" - "+
-		 q->value(5).toDateTime().toString("M/d/yy hh:mm:ss"));
+    l->setText(4,q->value(5).toString());
+    if(!q->value(6).toDateTime().isNull()) {
+      l->setText(5,q->value(7).toString()+" - "+
+		 q->value(6).toDateTime().toString("M/d/yy hh:mm:ss"));
     }
-    l->setText(6,q->value(7).toString());
-    if(!q->value(11).toDateTime().isNull()) {
-      l->setText(7,q->value(11).toDateTime().toString("M/d/yyyy hh:mm:ss"));
+    l->setText(6,q->value(8).toString());
+    if(!q->value(12).toDateTime().isNull()) {
+      l->setText(7,q->value(12).toDateTime().toString("M/d/yyyy hh:mm:ss"));
     }
     else {
       l->setText(7,tr("None"));
     }
-    if(!q->value(12).toDateTime().isNull()) {
-      l->setText(8,q->value(12).toDateTime().toString("M/d/yyyy hh:mm:ss"));
+    if(!q->value(13).toDateTime().isNull()) {
+      l->setText(8,q->value(13).toDateTime().toString("M/d/yyyy hh:mm:ss"));
     }
     else {
       l->setText(8,tr("None"));
     }
-    if(!q->value(14).isNull()) {
-      l->setText(9,q->value(13).toTime().toString("hh:mm:ss"));
-      l->setText(10,q->value(14).toTime().toString("hh:mm:ss"));
+    if(!q->value(15).isNull()) {
+      l->setText(9,q->value(15).toTime().toString("hh:mm:ss"));
+      l->setText(10,q->value(15).toTime().toString("hh:mm:ss"));
     }
     else {
       l->setText(9,tr("None"));
       l->setText(10,tr("None"));
     }
-    l->setText(11,q->value(8).toString());
-    total_length+=q->value(2).toUInt();
+    l->setText(11,q->value(9).toString());
+    total_length+=q->value(3).toUInt();
     pass++;
   }
   if(q->size()>0) {
@@ -815,20 +832,21 @@ void AudioCart::RefreshLine(RDListViewItem *item)
     "(CUT_NAME=\""+RDEscapeString(cut_name)+"\")";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
-    item->setText(0,q->value(0).toString());
-    item->setText(1,q->value(1).toString());
-    item->setText(2,RDGetTimeLength(q->value(2).toUInt()));
-    if (q->value(0) == 0){ //zero weight
-      	  item->setBackgroundColor(RD_CART_ERROR_COLOR);
-    } else {
-      switch(ValidateCut(q,9,RDCart::NeverValid,current_datetime)) {
+    item->setText(0,q->value(rdcart_use_weighting).toString());
+    item->setText(1,q->value(2).toString());
+    item->setText(2,RDGetTimeLength(q->value(3).toUInt()));
+    if(rdcart_use_weighting&&(q->value(1).toInt()==0)){ //zero weight
+      item->setBackgroundColor(RD_CART_ERROR_COLOR);
+    } 
+    else {
+      switch(ValidateCut(q,10,RDCart::NeverValid,current_datetime)) {
       case RDCart::NeverValid:
 	item->setBackgroundColor(RD_CART_ERROR_COLOR);
 	break;
 	
       case RDCart::ConditionallyValid:
-	if((!q->value(11).isNull())&&
-	   (q->value(11).toDateTime()<current_datetime)) {
+	if((!q->value(12).isNull())&&
+	   (q->value(12).toDateTime()<current_datetime)) {
 	  item->setBackgroundColor(RD_CART_ERROR_COLOR);
 	}
 	else {
@@ -849,40 +867,40 @@ void AudioCart::RefreshLine(RDListViewItem *item)
 	break;
       }
     }
-    if(q->value(4).toUInt()>0) {
-      item->setText(3,q->value(3).toDateTime().toString("M/d/yy"));
+    if(q->value(5).toUInt()>0) {
+      item->setText(3,q->value(4).toDateTime().toString("M/d/yy"));
     }
     else {
       item->setText(3,tr("Never"));
     }
-    item->setText(4,q->value(4).toString());
-    if(!q->value(5).toDateTime().isNull()) {
-      item->setText(5,q->value(6).toString()+" - "+
-		 q->value(5).toDateTime().toString("M/d/yy hh:mm:ss"));
+    item->setText(4,q->value(5).toString());
+    if(!q->value(6).toDateTime().isNull()) {
+      item->setText(5,q->value(7).toString()+" - "+
+		 q->value(6).toDateTime().toString("M/d/yy hh:mm:ss"));
     }
-    item->setText(6,q->value(7).toString());
-    if(!q->value(11).toDateTime().isNull()) {
-      item->setText(7,q->value(11).toDateTime().toString("M/d/yyyy hh:mm:ss"));
+    item->setText(6,q->value(8).toString());
+    if(!q->value(12).toDateTime().isNull()) {
+      item->setText(7,q->value(12).toDateTime().toString("M/d/yyyy hh:mm:ss"));
     }
     else {
       item->setText(7,tr("None"));
     }
-    if(!q->value(12).toDateTime().isNull()) {
-      item->setText(8,q->value(12).toDateTime().toString("M/d/yyyy hh:mm:ss"));
+    if(!q->value(13).toDateTime().isNull()) {
+      item->setText(8,q->value(13).toDateTime().toString("M/d/yyyy hh:mm:ss"));
     }
     else {
       item->setText(8,tr("None"));
     }
-    if(!q->value(14).isNull()) {
-      item->setText(9,q->value(13).toTime().toString("hh:mm:ss"));
-      item->setText(10,q->value(14).toTime().toString("hh:mm:ss"));
+    if(!q->value(15).isNull()) {
+      item->setText(9,q->value(14).toTime().toString("hh:mm:ss"));
+      item->setText(10,q->value(15).toTime().toString("hh:mm:ss"));
     }
     else {
       item->setText(9,tr("None"));
       item->setText(10,tr("None"));
     }
-    item->setText(11,q->value(8).toString());
-    total_length+=q->value(2).toUInt();
+    item->setText(11,q->value(9).toString());
+    total_length+=q->value(3).toUInt();
   }
   if(q->size()>0) {
     rdcart_average_length=total_length/q->size();

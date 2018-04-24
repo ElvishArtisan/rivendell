@@ -2,9 +2,7 @@
 //
 // Abstract a Rivendell Log Manager Clock
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdclock.h,v 1.17.10.1 2014/06/24 18:27:03 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,7 +18,6 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-
 #ifndef RDCLOCK_H
 #define RDCLOCK_H
 
@@ -29,9 +26,6 @@
 #include <qsqldatabase.h>
 
 #include <rdevent_line.h>
-
-using namespace std;
-
 
 class RDClock
 {
@@ -69,7 +63,7 @@ class RDClock
    QString clock_short_name;
    QColor clock_color;
    QString clock_remarks;
-   vector<RDEventLine> clock_events;
+   std::vector<RDEventLine> clock_events;
    unsigned artistsep;
    bool rules_modified;
 };

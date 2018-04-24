@@ -2,9 +2,7 @@
 //
 // A Rivendell switcher driver for the BroadcastTools SRC-16
 //
-//   (C) Copyright 2002-2005,2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id:
+//   (C) Copyright 2002-2005,2010,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,9 +25,8 @@
 #include <globals.h>
 #include <btsrc16.h>
 
-
-BtSrc16::BtSrc16(RDMatrix *matrix,QObject *parent,const char *name)
-  : Switcher(matrix,parent,name)
+BtSrc16::BtSrc16(RDMatrix *matrix,QObject *parent)
+  : Switcher(matrix,parent)
 {
   //
   // Initialize Data Structures
@@ -50,14 +47,14 @@ BtSrc16::BtSrc16(RDMatrix *matrix,QObject *parent,const char *name)
   //
   // Initialize the TTY Port
   //
-  RDTty *tty=new RDTty(rdstation->name(),matrix->port(RDMatrix::Primary));
+  RDTty *tty=new RDTty(rda->station()->name(),matrix->port(RDMatrix::Primary));
   bt_device=new RDTTYDevice();
   if(tty->active()) {
     bt_device->setName(tty->port());
     bt_device->setSpeed(tty->baudRate());
     bt_device->setWordLength(tty->dataBits());
     bt_device->setParity(tty->parity());
-    bt_device->open(IO_Raw|IO_ReadWrite);
+    bt_device->open(QIODevice::Unbuffered|QIODevice::ReadWrite);
   }
   delete tty;
 
@@ -118,7 +115,7 @@ bool BtSrc16::secondaryTtyActive()
 
 void BtSrc16::processCommand(RDMacro *cmd)
 {
-  char str[9];
+  char str[20];
 
   switch(cmd->command()) {
       case RDMacro::GO:

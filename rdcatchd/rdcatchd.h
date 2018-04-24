@@ -2,9 +2,7 @@
 //
 // The Rivendell Netcatcher.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcatchd.h,v 1.56 2010/09/16 19:52:08 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,8 +21,6 @@
 #ifndef RDCATCHD_H
 #define RDCATCHD_H
 
-
-//#define RDCATCHD_TEMP_DIR "/tmp"
 #define XLOAD_UPDATE_INTERVAL 1000
 #define RDCATCHD_USAGE "[-d][--event-id=<id>]\n\nOptions:\n\n-d\n     Set 'debug' mode, causing rdcatchd(8) to stay in the foreground\n     and print debugging info on standard output.\n\n--event-id=<id>\n     Execute event <id> and then exit.\n\n" 
 
@@ -33,7 +29,7 @@
 
 #include <qobject.h>
 #include <qstring.h>
-#include <qserversocket.h>
+#include <q3serversocket.h>
 #include <qsqldatabase.h>
 #include <qtimer.h>
 #include <qhostaddress.h>
@@ -42,13 +38,9 @@
 #include <rdsocket.h>
 #include <rdtimeengine.h>
 #include <rd.h>
-#include <rdcae.h>
 #include <rdcart.h>
 #include <rddeck.h>
 #include <rdtty.h>
-#include <rdripc.h>
-#include <rdsystem.h>
-#include <rdstation.h>
 #include <rdmacro_event.h>
 #include <rdconfig.h>
 #include <rdcatch_conf.h>
@@ -57,7 +49,8 @@
 #include <rdcatch_connect.h>
 #include <rdsettings.h>
 
-#include <catch_event.h>
+#include "catch_event.h"
+#include "event_player.h"
 
 //
 // Global RDCATCHD Definitions
@@ -70,7 +63,7 @@
 #define RDCATCHD_FREE_EVENTS_INTERVAL 1000
 #define RDCATCHD_HEARTBEAT_INTERVAL 10000
 #define RDCATCHD_ERROR_ID_OFFSET 1000000
-extern RDConfig *catch_config;
+//extern RDConfig *catch_config;
 
 //
 // Function Prototypes
@@ -82,7 +75,7 @@ class MainObject : public QObject
 {
   Q_OBJECT
  public:
-  MainObject(QObject *parent=0,const char *name=0);
+  MainObject(QObject *parent=0);
 
  public slots:
   void newConnection(int fd);
@@ -107,6 +100,7 @@ class MainObject : public QObject
   void playingData(int handle);
   void playStoppedData(int handle);
   void playUnloadedData(int handle);
+  void runCartData(int chan,int number,unsigned cartnum);
   void meterData();
   void eventFinishedData(int id);
   void freeEventsData();
@@ -147,6 +141,7 @@ class MainObject : public QObject
   bool ExecuteMacroCart(RDCart *cart,int id=-1,int event=-1);
   void SendFullStatus(int ch);
   void SendMeterLevel(int deck,short levels[2]);
+  void SendDeckEvent(int deck,int number);
   void ParseCommand(int);
   void DispatchCommand(int);
   void KillSocket(int);
@@ -187,17 +182,12 @@ class MainObject : public QObject
   void StartRmlRecording(int chan,int cartnum,int cutnum,int maxlen);
   void StartBatch(int id);
   QString GetTempRecordingName(int id) const;
-  QSqlDatabase *catch_db;
-  RDSystem *catch_system;
-  RDStation *catch_rdstation;
-  RDRipc *catch_ripc;
   QString catch_default_user;
   QString catch_host;
   bool debug;
   RDTimeEngine *catch_engine;
-  RDCae *catch_cae;
   Q_INT16 tcp_port;
-  QServerSocket *server;
+  Q3ServerSocket *server;
   RDCatchConnect *catch_connect;
   RDSocket *socket[RDCATCHD_MAX_CONNECTIONS];
   char args[RDCATCHD_MAX_CONNECTIONS][RDCATCHD_MAX_ARGS][RDCATCHD_MAX_LENGTH];
@@ -228,6 +218,7 @@ class MainObject : public QObject
   int catch_playout_event_id[MAX_DECKS];
   int catch_playout_id[MAX_DECKS];
   QString catch_playout_name[MAX_DECKS];
+  EventPlayer *catch_playout_event_player[MAX_DECKS];
 
   int catch_monitor_port[MAX_DECKS];
   bool catch_monitor_state[MAX_DECKS];

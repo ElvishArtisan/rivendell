@@ -2,9 +2,7 @@
 //
 // The post counter widget for Rivendell
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: stop_counter.h,v 1.11 2010/07/29 19:32:36 cvs Exp $
+//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -32,7 +30,7 @@ class StopCounter : public QPushButton
 {
  Q_OBJECT
  public:
-  StopCounter(QWidget *parent=0,const char *name=0);
+  StopCounter(QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
   void setState(bool state);

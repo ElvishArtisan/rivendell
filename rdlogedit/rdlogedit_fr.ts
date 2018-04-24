@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>AddMeta</name>
     <message>
@@ -392,6 +394,14 @@ for the selected service!</source>
         <source>EXT DATA</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Link Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Len</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditLogLine</name>
@@ -693,10 +703,6 @@ group for the specified service!</source>
 <context>
     <name>MainWidget</name>
     <message>
-        <source>Can&apos;t Connect</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>LOG NAME</source>
         <translation type="unfinished"></translation>
     </message>
@@ -820,15 +826,6 @@ Continue?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>RDLogEdit -- Database Skew</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>This version of RDLogEdit is incompatible with the version installed on the server.
-See your system administrator for an update!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Host</source>
         <translation type="unfinished"></translation>
     </message>
@@ -850,6 +847,10 @@ See your system administrator for an update!</source>
     </message>
     <message>
         <source>Clear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show Only Recent Logs</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

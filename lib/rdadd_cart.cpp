@@ -2,9 +2,7 @@
 //
 // Add a Rivendell Cart
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdadd_cart.cpp,v 1.8.10.1 2014/05/19 19:31:15 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,14 +23,16 @@
 #include <qdialog.h>
 #include <qstring.h>
 #include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
+#include <q3listbox.h>
+#include <q3textedit.h>
 #include <qlabel.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
+//Added by qt3to4:
+#include <QCloseEvent>
 
 #include <rdsystem.h>
 #include <rddb.h>
@@ -44,8 +44,8 @@
 
 RDAddCart::RDAddCart(QString *group,RDCart::Type *type,QString *title,
 		     const QString &username,RDSystem *system,
-		     QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+		     QWidget *parent)
+  : QDialog(parent,"",true)
 {
   QString sql;
   RDSqlQuery *q;
@@ -79,11 +79,13 @@ RDAddCart::RDAddCart(QString *group,RDCart::Type *type,QString *title,
     new QLabel(cart_group_box,tr("&Group:"),this,
 	       "cart_group_label");
   cart_group_label->setGeometry(10,11,130,19);
-  cart_group_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  cart_group_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   cart_group_label->setFont(label_font);
-  sql=QString().sprintf("select GROUP_NAME from USER_PERMS \
-                         where USER_NAME=\"%s\" order by GROUP_NAME",
-			(const char *)username);
+  sql=QString("select ")+
+    "GROUP_NAME "+
+    "from USER_PERMS where "+
+    "USER_NAME=\""+RDEscapeString(username)+"\" "+
+    "order by GROUP_NAME";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     cart_group_box->insertItem(q->value(0).toString());
@@ -109,7 +111,7 @@ RDAddCart::RDAddCart(QString *group,RDCart::Type *type,QString *title,
 				       "cart_number_label");
   cart_number_label->setGeometry(10,32,130,19);
   cart_number_label->setFont(label_font);
-  cart_number_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  cart_number_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Cart Type
@@ -121,7 +123,7 @@ RDAddCart::RDAddCart(QString *group,RDCart::Type *type,QString *title,
 				       "cart_type_label");
   cart_type_label->setGeometry(10,53,130,19);
   cart_type_label->setFont(label_font);
-  cart_type_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  cart_type_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   if((*cart_type==RDCart::All)||(*cart_type==RDCart::Audio)) {
     cart_type_box->insertItem(tr("Audio"));
   }
@@ -129,10 +131,10 @@ RDAddCart::RDAddCart(QString *group,RDCart::Type *type,QString *title,
     cart_type_box->insertItem(tr("Macro"));
   }
   if(*cart_type==RDCart::All) {
-    sql=
-      QString().sprintf("select DEFAULT_CART_TYPE from GROUPS\
-                         where NAME=\"%s\"",
-			(const char *)*cart_group);
+    sql=QString("select ")+
+      "DEFAULT_CART_TYPE "+
+      "from GROUPS where "+
+      "NAME=\""+RDEscapeString(*cart_group)+"\"";
     q=new RDSqlQuery(sql);
     if(q->first()) {
       cart_type_box->setCurrentItem(q->value(0).toUInt()-1);
@@ -153,7 +155,7 @@ RDAddCart::RDAddCart(QString *group,RDCart::Type *type,QString *title,
 				       "cart_title_label");
   cart_title_label->setGeometry(10,73,130,19);
   cart_title_label->setFont(label_font);
-  cart_title_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  cart_title_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   //  Ok Button
@@ -229,8 +231,10 @@ void RDAddCart::okData()
   }
   RDSystem *system=new RDSystem();
   if(!system->allowDuplicateCartTitles()) {
-    sql=QString().sprintf("select NUMBER from CART where TITLE=\"%s\"",
-			 (const char *)RDEscapeString(cart_title_edit->text()));
+    sql=QString("select ")+
+      "NUMBER "+
+      "from CART where "+
+      "TITLE=\""+RDEscapeString(cart_title_edit->text())+"\"";
     q=new RDSqlQuery(sql);
     if(q->first()) {
       QMessageBox::warning(this,tr("Duplicate Title"),

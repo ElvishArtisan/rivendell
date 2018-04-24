@@ -2,9 +2,7 @@
 //
 // Create a new, empty Rivendell log table.
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcreateauxfieldstable.cpp,v 1.4 2010/07/29 19:32:33 cvs Exp $
+//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,9 +23,8 @@
 void RDCreateAuxFieldsTable(QString keyname)
 {
   keyname.replace(" ","_");
-  QString sql=QString().sprintf("create table if not exists %s_FIELDS (\
-                                 CAST_ID int unsigned not null primary key)",
-				(const char *)keyname);
+  QString sql=QString("create table if not exists `")+keyname+"_FIELDS` "+
+    "(CAST_ID int unsigned not null primary key)";
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
 }

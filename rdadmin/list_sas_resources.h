@@ -2,9 +2,7 @@
 //
 // List SAS Resources
 //
-//   (C) Copyright 2002-2005,2011 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_sas_resources.h,v 1.1 2011/05/07 00:32:29 cvs Exp $
+//   (C) Copyright 2002-2005,2011,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,37 +21,40 @@
 #ifndef LIST_SAS_RESOURCES_H
 #define LIST_SAS_RESOURCES_H
 
-#include <qdialog.h>
-#include <qsqldatabase.h>
-#include <qlabel.h>
-#include <qpushbutton.h>
-#include <qlistview.h>
+#include <QDialog>
+#include <QLabel>
+#include <QPushButton>
 
-#include <rduser.h>
 #include <rdmatrix.h>
-
+#include <rdsqltablemodel.h>
+#include <rdtableview.h>
 
 class ListSasResources : public QDialog
 {
  Q_OBJECT
  public:
- ListSasResources(RDMatrix *matrix,int size,
-		      QWidget *parent=0,const char *name=0);
+ ListSasResources(RDMatrix *matrix,int size,QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 
  private slots:
   void editData();
-  void doubleClickedData(QListViewItem *item,const QPoint &pt,int col);
+  void doubleClickedData(const QModelIndex &index);
   void okData();
   void cancelData();
 
+ protected:
+  void resizeEvent(QResizeEvent *e);
+
  private:
-  void RefreshList();
   RDMatrix *list_matrix;
-  QListView *list_list_view;
+  RDSqlTableModel *list_model;
+  QLabel *list_label;
+  RDTableView *list_view;
   int list_size;
   QString list_table;
+  QPushButton *list_edit_button;
+  QPushButton *list_close_button;
 };
 
 

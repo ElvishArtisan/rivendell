@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>AddMeta</name>
     <message>
@@ -401,6 +403,14 @@ jež jsou pro vybranou službu zakázány!</translation>
         <source>EXT DATA</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Link Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Len</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditLogLine</name>
@@ -713,7 +723,7 @@ vybrané služby!</translation>
     </message>
     <message>
         <source>Can&apos;t Connect</source>
-        <translation>Nelze spojit</translation>
+        <translation type="obsolete">Nelze spojit</translation>
     </message>
     <message>
         <source>LOG NAME</source>
@@ -843,12 +853,12 @@ Pokračovat?</translation>
     </message>
     <message>
         <source>RDLogEdit -- Database Skew</source>
-        <translation>RDLogEdit - Nesouměrnost v databázi</translation>
+        <translation type="obsolete">RDLogEdit - Nesouměrnost v databázi</translation>
     </message>
     <message>
         <source>This version of RDLogEdit is incompatible with the version installed on the server.
 See your system administrator for an update!</source>
-        <translation>Tato verze RDLogEdit je neslučitelná s verzí nainstalovanou na serveru.
+        <translation type="obsolete">Tato verze RDLogEdit je neslučitelná s verzí nainstalovanou na serveru.
 Vyhledejte svého správce systému kvůli aktualizaci!</translation>
     </message>
     <message>
@@ -873,6 +883,10 @@ Vyhledejte svého správce systému kvůli aktualizaci!</translation>
     </message>
     <message>
         <source>Clear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show Only Recent Logs</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

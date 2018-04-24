@@ -2,9 +2,7 @@
 //
 // Rivendell Now & Next Implementation
 //
-//   (C) Copyright 2008 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdnownext.cpp,v 1.3.8.5 2014/01/07 18:18:29 cvs Exp $
+//   (C) Copyright 2008,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -34,7 +32,7 @@ void RDResolveNowNextDateTime(QString *str,const QString &code,
   std::vector<QString> dts;
 
   while((ptr=str->find(code,ptr))>=0) {
-    for(unsigned i=ptr+3;i<str->length();i++) {
+    for(int i=ptr+3;i<str->length();i++) {
       if(str->at(i)==')') {
 	dts.push_back(str->mid(ptr+3,i-ptr-3));
 	ptr+=(i-ptr-3);

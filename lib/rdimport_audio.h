@@ -2,9 +2,7 @@
 //
 // Audio File Importation Dialog for Rivendell.
 //
-//   (C) Copyright 2002-2003,2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdimport_audio.h,v 1.10 2010/07/29 19:32:33 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,18 +24,21 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <qdialog.h>
-#include <qlistview.h>
+#include <q3listview.h>
 #include <qlabel.h>
 #include <qlineedit.h>
-#include <qprogressbar.h>
+#include <q3progressbar.h>
 #include <qtimer.h>
 #include <qfile.h>
 #include <qspinbox.h>
 #include <qcombobox.h>
 #include <qcheckbox.h>
-#include <qtextedit.h>
-#include <qbuttongroup.h>
+#include <q3textedit.h>
+#include <q3buttongroup.h>
 #include <qradiobutton.h>
+//Added by qt3to4:
+#include <QCloseEvent>
+#include <QPaintEvent>
 
 #include <rdbusybar.h>
 #include <rdwavedata.h>
@@ -63,7 +64,7 @@ class RDImportAudio : public QDialog
  RDImportAudio(QString cutname,QString *path,RDSettings *settings,
 	       bool *import_metadata,RDWaveData *wavedata,
 	       RDCut *clipboard,RDStation *station,RDUser *user,bool *running,
-	       RDConfig *config,QWidget *parent=0,const char *name=0);
+	       RDConfig *config,QWidget *parent=0);
   ~RDImportAudio();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -102,7 +103,7 @@ class RDImportAudio : public QDialog
   RDUser *import_user;
   RDCut *import_clipboard;
   bool *import_running;
-  QButtonGroup *import_mode_group;
+  Q3ButtonGroup *import_mode_group;
   QRadioButton *import_importmode_button;
   QRadioButton *import_exportmode_button;
   QLabel *import_in_filename_label;

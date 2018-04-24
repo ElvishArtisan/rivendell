@@ -2,9 +2,7 @@
 //
 //   A QListViewItem class for RDLogEdit.
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_listviewitem.h,v 1.5 2010/07/29 19:32:37 cvs Exp $
+//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,21 +17,19 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-//
 
 #ifndef LIST_LISTVIEWITEM_H
 #define LIST_LISTVIEWITEM_H
 
-#include <qlistview.h>
+#include <q3listview.h>
 #include <qpixmap.h>
 
-#include <qlistview.h>
+#include <q3listview.h>
 
-
-class ListListViewItem : public QListViewItem
+class ListListViewItem : public Q3ListViewItem
 {
  public:
-  ListListViewItem(QListView *parent);
+  ListListViewItem(Q3ListView *parent);
   int trackColumn() const;
   void setTrackColumn(int col);
   int tracks() const;
@@ -50,7 +46,7 @@ class ListListViewItem : public QListViewItem
   QPixmap *list_whiteball_map;
   QPixmap *list_redball_map;
   QPixmap *list_greenball_map;
-  QListView *list_parent;
+  Q3ListView *list_parent;
 };
 
 

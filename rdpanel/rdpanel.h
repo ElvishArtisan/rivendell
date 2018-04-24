@@ -2,9 +2,7 @@
 //
 // A Dedicated Cart Wall Utility for Rivendell.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdpanel.h,v 1.16.4.1 2013/12/30 21:11:59 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,19 +18,17 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-
 #ifndef RDPANEL_H
 #define RDPANEL_H
 
 #include <qwidget.h>
-#include <qsqldatabase.h>
 #include <qtimer.h>
 #include <qpixmap.h>
+//Added by qt3to4:
+#include <QCloseEvent>
 
 #include <rdstereometer.h>
-#include <rdcae.h>
 #include <rdmacro.h>
-#include <rdconfig.h>
 #include <rdsound_panel.h>
 #include <rdevent_player.h>
 #include <rdemptycart.h>
@@ -50,7 +46,7 @@ class MainWidget : public QWidget
 {
   Q_OBJECT
  public:
-  MainWidget(QWidget *parent=0,const char *name=0);
+  MainWidget(QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 
@@ -66,8 +62,6 @@ class MainWidget : public QWidget
  private:
   void RunLocalMacros(RDMacro *rml);
   void SetCaption();
-  RDConfig *panel_config;
-  QSqlDatabase *panel_db;
   QTimer *panel_master_timer;
   RDCae *panel_cae;
   RDStereoMeter *panel_stereo_meter;

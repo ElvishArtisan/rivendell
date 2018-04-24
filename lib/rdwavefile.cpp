@@ -1,10 +1,8 @@
 //   rdwavefile.cpp
 //
-//   A class for handling Microsoft WAV files.
+//   A class for handling audio files.
 //
-//   (C) Copyright 2002-2008 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdwavefile.cpp,v 1.24.6.5.2.3 2014/07/15 20:02:23 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -33,6 +31,8 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <errno.h>
+#include <assert.h>
+#include <arpa/inet.h>
 
 #include <id3/tag.h>
 #include <id3/misc_support.h>
@@ -43,10 +43,18 @@
 #include <qobject.h>
 #include <qstring.h>
 #include <qdatetime.h>
+//Added by qt3to4:
+#include <Q3CString>
 
 #include <rd.h>
+#include <rdcart.h>
 #include <rdwavefile.h>
 #include <rdconf.h>
+#include <rdmp4.h>
+
+#ifdef HAVE_MP4_LIBS
+#include <mp4v2/mp4v2.h>
+#endif
 
 RDWaveFile::RDWaveFile(QString file_name)
 {
@@ -162,13 +170,14 @@ RDWaveFile::RDWaveFile(QString file_name)
   levl_block_size=DEFAULT_LEVL_BLOCK_SIZE;
   cook_buffer=NULL;
   cook_buffer_size=0;
-  cook_encoding=RDWaveFile::Raw;
   wave_type=RDWaveFile::Unknown;
   encode_quality=5.0f;
   serial_number=-1;
   atx_offset=0;
   scot_chunk=false;
   av10_chunk=false;
+  rdxl_chunk=false;
+  ptr_offset_msecs=0;
 }
 
 
@@ -207,7 +216,7 @@ bool RDWaveFile::openWave(RDWaveData *data)
   unsigned char tmc_buffer[4];
 
   wave_data=data;
-  if(!wave_file.open(IO_ReadOnly)) {
+  if(!wave_file.open(QIODevice::ReadOnly)) {
     return false;
   }
 
@@ -280,6 +289,7 @@ bool RDWaveFile::openWave(RDWaveData *data)
     GetScot(wave_file.handle());
     GetAv10(wave_file.handle());
     GetAir1(wave_file.handle());
+    GetRdxl(wave_file.handle());
     break;
 
   case RDWaveFile::Aiff:
@@ -321,6 +331,75 @@ bool RDWaveFile::openWave(RDWaveData *data)
     wave_type=RDWaveFile::Mpeg;
     ReadId3Metadata();
     break;
+
+  case RDWaveFile::M4A:
+    {
+#ifdef HAVE_MP4_LIBS   
+
+      // MP4 libs must already be loaded by now for file to have that type.
+      assert(dlmp4.load());
+      format_tag=WAVE_FORMAT_M4A;
+
+      MP4FileHandle f = dlmp4.MP4Read(getName());
+      if(f == MP4_INVALID_FILE_HANDLE)
+	return false;
+
+      // Find an audio track, and populate sample rate, bits/sample etc.
+      MP4TrackId audioTrack = dlmp4.getMP4AACTrack(f);
+
+      if(audioTrack == MP4_INVALID_TRACK_ID) {
+	dlmp4.MP4Close(f, 0);
+	return false;
+      }
+
+      // Found audio track. Get audio data:
+      avg_bytes_per_sec = dlmp4.MP4GetTrackBitRate(f, audioTrack);
+      channels = dlmp4.MP4GetTrackAudioChannels(f, audioTrack);
+
+      MP4Duration trackDuration = dlmp4.MP4GetTrackDuration(f, audioTrack);
+      ext_time_length = (unsigned)dlmp4.MP4ConvertFromTrackDuration(f, audioTrack, trackDuration, 
+								    MP4_MSECS_TIME_SCALE);
+      time_length = ext_time_length / 1000;
+      samples_per_sec = dlmp4.MP4GetTrackTimeScale(f, audioTrack);
+      bits_per_sample = 16;
+      data_start = 0;
+      sample_length = dlmp4.MP4GetTrackNumberOfSamples(f, audioTrack);
+      data_length = sample_length * 2 * channels;
+      data_chunk = true;
+      format_chunk = true;
+      wave_type = RDWaveFile::M4A;
+
+      // Now extract metadata (title, artist, etc)
+
+      if(wave_data) {
+
+	const MP4Tags* tags = dlmp4.MP4TagsAlloc();
+	dlmp4.MP4TagsFetch(tags, f);
+	
+	wave_data->setMetadataFound(true);
+	
+	if(tags->name)
+	  wave_data->setTitle(tags->name);
+	if(tags->artist)
+	  wave_data->setArtist(tags->artist);
+	if(tags->composer)
+	  wave_data->setComposer(tags->composer);
+	if(tags->album)
+	  wave_data->setAlbum(tags->album);
+
+	dlmp4.MP4TagsFree(tags);
+
+      }
+
+      dlmp4.MP4Close(f, 0);
+
+      return true;
+
+#else
+      return false;
+#endif
+      break;
+    }
 
   case RDWaveFile::Ogg:
 #ifdef HAVE_VORBIS
@@ -420,11 +499,12 @@ bool RDWaveFile::openWave(RDWaveData *data)
 }
 
 
-bool RDWaveFile::createWave(RDWaveData *data)
+bool RDWaveFile::createWave(RDWaveData *data,unsigned ptr_offset)
 {
   mode_t prev_mask;
   bool rc;
   wave_data=data;
+  ptr_offset_msecs=ptr_offset;
   if(wave_data!=NULL) {
     cart_title=wave_data->title();
     cart_artist=wave_data->artist();
@@ -460,7 +540,7 @@ bool RDWaveFile::createWave(RDWaveData *data)
 	  return false;
 	}
         prev_mask = umask(0113);      // Set umask so files are user and group writable.
-        rc=wave_file.open(IO_ReadWrite|IO_Truncate);
+        rc=wave_file.open(QIODevice::ReadWrite|QIODevice::Truncate);
 	unlink((wave_file.name()+".energy").ascii());
         umask(prev_mask);
 	if(rc==false) {
@@ -473,7 +553,7 @@ bool RDWaveFile::createWave(RDWaveData *data)
 	  write(wave_file.handle(),"fact\4\0\0\0\0\0\0\0",12);
 	}
 	if(cart_chunk) {
-	  MakeCart();
+	  MakeCart(ptr_offset);
 	  WriteChunk(wave_file.handle(),"cart",cart_chunk_data,
 		     CART_CHUNK_SIZE);
 	}
@@ -486,6 +566,9 @@ bool RDWaveFile::createWave(RDWaveData *data)
 	  MakeMext();
 	  WriteChunk(wave_file.handle(),"mext",mext_chunk_data,
 		     MEXT_CHUNK_SIZE);
+	}
+	if(!rdxl_contents.isEmpty()) {
+	  WriteChunk(wave_file.handle(),"rdxl",rdxl_contents);
 	}
 	wave_type=RDWaveFile::Wave;
 	write(wave_file.handle(),"data\0\0\0\0",8);
@@ -504,7 +587,7 @@ bool RDWaveFile::createWave(RDWaveData *data)
 	vorbis_encode_ctl(&vorbis_inf,OV_ECTL_RATEMANAGE_SET,NULL);
 
         prev_mask = umask(0113);      // Set umask so files are user and group writable.
-	    rc=wave_file.open(IO_ReadWrite|IO_Truncate);
+	    rc=wave_file.open(QIODevice::ReadWrite|QIODevice::Truncate);
         umask(prev_mask);
 	if(rc==false) {
 	  vorbis_info_clear(&vorbis_inf);
@@ -573,13 +656,13 @@ void RDWaveFile::closeWave(int samples)
 	    MakeLevl();
 	    lseek(wave_file.handle(),0,SEEK_END);
 	    write(wave_file.handle(),"levl",4);
-	    lsize=LEVL_CHUNK_SIZE+energy_data.size()*2;
+	    lsize=LEVL_CHUNK_SIZE+energy_data.size()*2-8;
 	    size_buf[0]=lsize&0xff;
 	    size_buf[1]=(lsize>>8)&0xff;
 	    size_buf[2]=(lsize>>16)&0xff;
 	    size_buf[3]=(lsize>>24)&0xff;
 	    write(wave_file.handle(),size_buf,4);
-	    write(wave_file.handle(),levl_chunk_data,LEVL_CHUNK_SIZE-4);
+	    write(wave_file.handle(),levl_chunk_data,LEVL_CHUNK_SIZE-8);
 	    // Fixup the endianness
 	    unsigned char * sbuf = new unsigned char [2 * energy_data.size()];
 	    for (unsigned int i=0; i < energy_data.size(); i++){
@@ -593,7 +676,7 @@ void RDWaveFile::closeWave(int samples)
 	  //
 	  // Update file size
 	  //
-	  cptr=lseek(wave_file.handle(),0,SEEK_END)-12;
+	  cptr=lseek(wave_file.handle(),0,SEEK_END)-8;
 	  size_buf[0]=cptr&0xff;
 	  size_buf[1]=(cptr>>8)&0xff;
 	  size_buf[2]=(cptr>>16)&0xff;
@@ -637,7 +720,7 @@ void RDWaveFile::closeWave(int samples)
 	  // Update Cart Chunk
 	  //
 	  if(cart_chunk) {
-	    MakeCart();
+	    MakeCart(ptr_offset_msecs);
 	    WriteChunk(wave_file.handle(),"cart",cart_chunk_data,CART_CHUNK_SIZE);
 	  }
 	  
@@ -800,11 +883,11 @@ void RDWaveFile::closeWave(int samples)
   free(cook_buffer);
   cook_buffer=NULL;
   cook_buffer_size=0;
-  cook_encoding=RDWaveFile::Raw;
   encode_quality=5.0f;
   serial_number=-1;
   atx_offset=0;
   av10_chunk=false;
+  rdxl_chunk=false;
 }
 
 
@@ -866,18 +949,6 @@ bool RDWaveFile::getDataChunk() const
 unsigned RDWaveFile::getDataLength() const
 {
   return data_length;
-}
-
-
-RDWaveFile::Encoding RDWaveFile::encoding() const
-{
-  return cook_encoding;
-}
-
-
-void RDWaveFile::setEncoding(RDWaveFile::Encoding code)
-{
-  cook_encoding=code;
 }
 
 
@@ -944,115 +1015,182 @@ int RDWaveFile::writeWave(void *buf,int count)
     return -1;
   }
   switch(format_tag) {
-      case WAVE_FORMAT_PCM:
-	if(levl_chunk) {
-	  for(int i=0;i<count;i++) {
-	    switch(levl_istate) {
-		case 0:   // Left Channel, LSB
-		  levl_accum=((char *)buf)[i]&0xff;
-		  levl_istate=1;
-		  break;
+  case WAVE_FORMAT_PCM:
+    switch(bits_per_sample) {
+    case 16:
+      if(levl_chunk) {
+	for(int i=0;i<count;i++) {
+	  switch(levl_istate) {
+	  case 0:   // Left Channel, LSB
+	    levl_accum=((char *)buf)[i]&0xff;
+	    levl_istate=1;
+	    break;
 
-		case 1:   // Left Channel, MSB
-		  levl_accum|=((((char *)buf)[i]&0xff)<<8);
-		  switch(channels) {
-		      case 1:
-			if(levl_accum>energy_data[energy_data.size()-1]) {
-			  energy_data[energy_data.size()-1]=levl_accum;
-			}
-			if(++levl_block_ptr==1152) {
-			  energy_data.push_back(0);
-			  levl_block_ptr=0;
-			}
-			levl_istate=0;
-			break;
-
-		      case 2:
-			if(levl_accum>energy_data[energy_data.size()-2]) {
-			  energy_data[energy_data.size()-2]=levl_accum;
-			}
-			levl_istate=2;
-			break;
-		  }
-		  break;
-
-		case 2:   // Right Channel, LSB
-		  levl_accum=((char *)buf)[i]&0xff;
-		  levl_istate=3;
-		  break;
-
-		case 3:   // Right Channel, MSB
-		  levl_accum|=((((char *)buf)[i]&0xff)<<8);
-		  if(levl_accum>energy_data[energy_data.size()-1]) {
-		    energy_data[energy_data.size()-1]=levl_accum;
-		  }
-		  if(++levl_block_ptr==1152) {
-		    energy_data.push_back(0);
-		    energy_data.push_back(0);
-		    levl_block_ptr=0;
-		  }
-		  levl_istate=0;
-		  break;
-	    }
-	  }
-	}
-	lseek(wave_file.handle(),0,SEEK_END);
-	data_length+=count;
-	// Fixup the buffer for big endian hosts (Wav is defined as LE).
-	if (htonl (1l) == 1l){ // Big endian host
-	  for(int i = 0; i < count/2; i++) {
-	    unsigned short s = ((unsigned short*)buf)[i];
-	    WriteSword((unsigned char *)buf,2*i,s);
-	  }
-	}
-	return write(wave_file.handle(),buf,count);
-
-      case WAVE_FORMAT_MPEG:
-	if(levl_chunk&&(head_layer==2)) {
-	  for(int i=0;i<count;i++) {
-	    if(levl_block_ptr==(block_align-5)) {  // Right Channel, MSB
-	      if(channels==2) {
-		levl_accum=((((char *)buf)[i]&0xff)<<8);
+	  case 1:   // Left Channel, MSB
+	    levl_accum|=((((char *)buf)[i]&0xff)<<8);
+	    switch(channels) {
+	    case 1:
+	      if(levl_accum>energy_data[energy_data.size()-1]) {
+		energy_data[energy_data.size()-1]=levl_accum;
 	      }
+	      if(++levl_block_ptr==1152) {
+		energy_data.push_back(0);
+		levl_block_ptr=0;
+	      }
+	      levl_istate=0;
+	      break;
+
+	    case 2:
+	      if(levl_accum>energy_data[energy_data.size()-2]) {
+		energy_data[energy_data.size()-2]=levl_accum;
+	      }
+	      levl_istate=2;
+	      break;
+	    }
+	    break;
+
+	  case 2:   // Right Channel, LSB
+	    levl_accum=((char *)buf)[i]&0xff;
+	    levl_istate=3;
+	    break;
+
+	  case 3:   // Right Channel, MSB
+	    levl_accum|=((((char *)buf)[i]&0xff)<<8);
+	    if(levl_accum>energy_data[energy_data.size()-1]) {
+	      energy_data[energy_data.size()-1]=levl_accum;
+	    }
+	    if(++levl_block_ptr==1152) {
+	      energy_data.push_back(0);
+	      energy_data.push_back(0);
+	      levl_block_ptr=0;
+	    }
+	    levl_istate=0;
+	    break;
+	  }
+	}
+      }
+      lseek(wave_file.handle(),0,SEEK_END);
+      data_length+=count;
+      // Fixup the buffer for big endian hosts (Wav is defined as LE).
+      if (htonl (1l) == 1l){ // Big endian host
+	for(int i = 0; i < count/2; i++) {
+	  unsigned short s = ((unsigned short*)buf)[i];
+	  WriteSword((unsigned char *)buf,2*i,s);
+	}
+      }
+      return write(wave_file.handle(),buf,count);
+
+    case 24:
+      if(levl_chunk) {
+	for(int i=0;i<count;i++) {
+	  switch(levl_istate) {
+	  case 0:   // Left Channel LSB
+	    levl_istate=1;
+	    break;
+
+	  case 1:   // Left Channel, Middle Byte
+	    levl_accum=((char *)buf)[i]&0xff;
+	    levl_istate=2;
+	    break;
+
+	  case 2:   // Left Channel, MSB
+	    levl_accum|=((((char *)buf)[i]&0xff)<<8);
+	    switch(channels) {
+	    case 1:
+	      if(levl_accum>energy_data[energy_data.size()-1]) {
+		energy_data[energy_data.size()-1]=levl_accum;
+	      }
+	      if(++levl_block_ptr==1152) {
+		energy_data.push_back(0);
+		levl_block_ptr=0;
+	      }
+	      levl_istate=0;
+	      break;
+
+	    case 2:
+	      if(levl_accum>energy_data[energy_data.size()-2]) {
+		energy_data[energy_data.size()-2]=levl_accum;
+	      }
+	      levl_istate=3;
+	      break;
+	    }
+	    break;
+
+	  case 3:  // Right Channel, LSB
+	    levl_istate=4;
+	    break;
+
+	  case 4:   // Right Channel, Middle
+	    levl_accum=((char *)buf)[i]&0xff;
+	    levl_istate=5;
+	    break;
+
+	  case 5:   // Right Channel, MSB
+	    levl_accum|=((((char *)buf)[i]&0xff)<<8);
+	    if(levl_accum>energy_data[energy_data.size()-1]) {
+	      energy_data[energy_data.size()-1]=levl_accum;
+	    }
+	    if(++levl_block_ptr==1152) {
+	      energy_data.push_back(0);
+	      energy_data.push_back(0);
+	      levl_block_ptr=0;
+	    }
+	    levl_istate=0;
+	    break;
+	  }
+	}
+      }
+      lseek(wave_file.handle(),0,SEEK_END);
+      data_length+=count;
+      return write(wave_file.handle(),buf,count);
+    }
+
+  case WAVE_FORMAT_MPEG:
+    if(levl_chunk&&(head_layer==2)) {
+      for(int i=0;i<count;i++) {
+	if(levl_block_ptr==(block_align-5)) {  // Right Channel, MSB
+	  if(channels==2) {
+	    levl_accum=((((char *)buf)[i]&0xff)<<8);
+	  }
+	  levl_block_ptr++;
+	}
+	else {
+	  if(levl_block_ptr==(block_align-4)) {  // Right Channel, LSB
+	    if(channels==2) {
+	      levl_accum|=((char *)buf)[i]&0xff;
+	      energy_data[energy_data.size()-1]=levl_accum;
+	    }
+	    levl_block_ptr++;
+	  }
+	  else {
+	    if(levl_block_ptr==(block_align-2)) { // Left Channel, MSB
+	      levl_accum=((((char *)buf)[i]&0xff)<<8);
 	      levl_block_ptr++;
 	    }
 	    else {
-	      if(levl_block_ptr==(block_align-4)) {  // Right Channel, LSB
-		if(channels==2) {
-		  levl_accum|=((char *)buf)[i]&0xff;
-		  energy_data[energy_data.size()-1]=levl_accum;
+	      if(levl_block_ptr==(block_align-1)) {  // Left Channel, LSB
+		levl_accum|=((char *)buf)[i]&0xff;
+		energy_data[energy_data.size()-channels]=levl_accum;
+		for(unsigned j=0;j<channels;j++) {
+		  energy_data.push_back(0);
 		}
-		levl_block_ptr++;
+		levl_block_ptr=0;
 	      }
 	      else {
-		if(levl_block_ptr==(block_align-2)) { // Left Channel, MSB
-		  levl_accum=((((char *)buf)[i]&0xff)<<8);
-		  levl_block_ptr++;
-		}
-		else {
-		  if(levl_block_ptr==(block_align-1)) {  // Left Channel, LSB
-		    levl_accum|=((char *)buf)[i]&0xff;
-		    energy_data[energy_data.size()-channels]=levl_accum;
-		    for(unsigned j=0;j<channels;j++) {
-		      energy_data.push_back(0);
-		    }
-		    levl_block_ptr=0;
-		  }
-		  else {
-		    levl_block_ptr++;
-		  }
-		}
+		levl_block_ptr++;
 	      }
 	    }
 	  }
 	}
-	lseek(wave_file.handle(),0,SEEK_END);
-	data_length+=count;
-	return write(wave_file.handle(),buf,count);
+      }
+    }
+    lseek(wave_file.handle(),0,SEEK_END);
+    data_length+=count;
+    return write(wave_file.handle(),buf,count);
 
-      case WAVE_FORMAT_VORBIS:
-	WriteOggBuffer((char *)buf,count);
-	break;
+  case WAVE_FORMAT_VORBIS:
+    WriteOggBuffer((char *)buf,count);
+    break;
   }
   return 0;
 }
@@ -1135,6 +1273,7 @@ void RDWaveFile::getSettings(RDSettings *settings)
   switch(type()) {
   case RDWaveFile::Pcm8:
   case RDWaveFile::Aiff:
+  case RDWaveFile::M4A:
     // FIXME
     break;
 
@@ -1615,14 +1754,14 @@ QString RDWaveFile::getCartTimerLabel(int index) const
   return QString("");
 }
 
-
+/*
 void RDWaveFile::setCartTimerLabel(int index,QString label)
 {
   if(index<MAX_TIMERS) {
     cart_timer_label[index]=label;
   }
 }
-
+*/
 
 unsigned RDWaveFile::getCartTimerSample(int index) const
 {
@@ -1632,14 +1771,14 @@ unsigned RDWaveFile::getCartTimerSample(int index) const
   return 0;
 }
 
-
+/*
 void RDWaveFile::setCartTimerSample(int index,unsigned sample)
 {
   if(index<MAX_TIMERS) {
     cart_timer_sample[index]=sample;
   }
 }
-
+*/
 
 QString RDWaveFile::getCartURL() const
 {
@@ -1999,6 +2138,31 @@ bool RDWaveFile::getAIR1Chunk() const
 }
 
 
+bool RDWaveFile::getRdxlChunk() const
+{
+  return rdxl_chunk;
+}
+
+
+QString RDWaveFile::getRdxlContents() const
+{
+  return rdxl_contents;
+}
+
+
+void RDWaveFile::setRdxlContents(const QString &xml)
+{
+  rdxl_contents=xml;
+
+  //
+  // Make sure that the RDXL chunk is of even length.
+  // (To avoid goosing a bug in CoolEdit Pro 2003).
+  //
+  if((rdxl_contents.length()%2)!=0) {
+    rdxl_contents+=" ";
+  }
+}
+
 
 RDWaveFile::Type RDWaveFile::GetType(int fd)
 {
@@ -2019,6 +2183,9 @@ RDWaveFile::Type RDWaveFile::GetType(int fd)
   }
   if(IsOgg(fd)) {
     return RDWaveFile::Ogg;
+  }
+  if(IsM4A(fd)) {
+    return RDWaveFile::M4A;
   }
   if(IsMpeg(fd)) {
     return RDWaveFile::Mpeg;
@@ -2161,7 +2328,7 @@ bool RDWaveFile::IsFlac(int fd)
 #ifdef HAVE_FLAC
   char buffer[5];
 
-  ID3_Tag id3_tag(QCString().sprintf("%s",(const char *)wave_file.name().utf8()));
+  ID3_Tag id3_tag(Q3CString().sprintf("%s",(const char *)wave_file.name().utf8()));
   lseek(fd,id3_tag.GetPrependedBytes(),SEEK_SET);
   if(read(fd,buffer,4)!=4) {
     return false;
@@ -2211,6 +2378,20 @@ bool RDWaveFile::IsAiff(int fd)
   return true;
 }
 
+bool RDWaveFile::IsM4A(int fd)
+{
+#ifdef HAVE_MP4_LIBS
+  if(!dlmp4.load())
+    return false;
+  MP4FileHandle f = dlmp4.MP4Read(getName());
+  bool ret = f != MP4_INVALID_FILE_HANDLE;
+  if(ret)
+    dlmp4.MP4Close(f, 0);
+  return ret;
+#else
+  return false;
+#endif
+}
 
 off_t RDWaveFile::FindChunk(int fd,const char *chunk_name,unsigned *chunk_size,
 			    bool big_end)
@@ -2294,6 +2475,22 @@ void RDWaveFile::WriteChunk(int fd,const char *cname,unsigned char *buf,
     return;
   }
   //printf("WARNING: Updated chunk size mismatch!  Update not written.\n");
+}
+
+
+void RDWaveFile::WriteChunk(int fd,const char *cname,const QString &contents)
+{
+  syslog(LOG_NOTICE,"writing %s: %d",cname,contents.length());
+  unsigned char size_buf[4];
+  size_buf[0]=contents.length()&0xff;
+  size_buf[1]=(contents.length()>>8)&0xff;
+  size_buf[2]=(contents.length()>>16)&0xff;
+  size_buf[3]=(contents.length()>>24)&0xff;
+
+  lseek(fd,0,SEEK_END);
+  write(fd,cname,4);
+  write(fd,size_buf,4);
+  write(fd,contents,contents.length());
 }
 
 
@@ -2883,6 +3080,33 @@ bool RDWaveFile::GetAir1(int fd)
 }
 
 
+bool RDWaveFile::GetRdxl(int fd)
+{
+  off_t pos;
+  unsigned chunk_size=0;
+  char *chunk=NULL;
+
+  if((pos=FindChunk(fd,"rdxl",&chunk_size))<0) {
+    return false;
+  }
+  lseek(fd,SEEK_SET,pos);
+  chunk=new char[chunk_size+1];
+  memset(chunk,0,chunk_size+1);
+  read(fd,chunk,chunk_size);
+  rdxl_contents=QString(chunk);
+  delete chunk;
+
+  if(wave_data!=NULL) {
+    std::vector<RDWaveData> wavedatas;
+    if(RDCart::readXml(&wavedatas,rdxl_contents)>1) {
+      *wave_data=wavedatas[1];
+    }
+  }
+
+  return true;
+}
+
+
 bool RDWaveFile::GetComm(int fd)
 {
   unsigned chunk_size;
@@ -3085,7 +3309,7 @@ void RDWaveFile::ReadTmcTag(const QString tag,const QString value)
     wave_data->setMetadataFound(true);
   }
   if(tag=="END") {
-    wave_data->setEndType((RDWaveData::EndType)((char)value[0]));
+    wave_data->setEndType((RDWaveData::EndType)(value.at(0).cell()));
     wave_data->setMetadataFound(true);
   }
   if(tag=="TMCIREF") {
@@ -3135,48 +3359,63 @@ void RDWaveFile::ReadId3Metadata()
     return;
   }
   ID3_Frame *frame=NULL;
-  ID3_Tag id3_tag(QCString().sprintf("%s",(const char *)wave_file.name().utf8()));
-  if((frame=id3_tag.Find(ID3FID_TITLE))!=NULL) {
-    wave_data->setTitle(ID3_GetString(frame,ID3FN_TEXT));
-    wave_data->setMetadataFound(true);
+  ID3_Tag id3_tag(Q3CString().sprintf("%s",(const char *)wave_file.name().utf8()));
+  if((frame=id3_tag.Find(ID3FID_USERTEXT,ID3FN_DESCRIPTION,"rdxl"))!=NULL) {
+    rdxl_contents=ID3_GetString(frame,ID3FN_TEXT);
+    if(wave_data!=NULL) {
+      std::vector<RDWaveData> wavedatas;
+      if(RDCart::readXml(&wavedatas,rdxl_contents)>1) {
+	*wave_data=wavedatas[1];
+      }
+    }
   }
-  if((frame=id3_tag.Find(ID3FID_BPM))!=NULL) {
-    wave_data->
-      setBeatsPerMinute(QString(ID3_GetString(frame,ID3FN_TEXT)).toInt());
-    wave_data->setMetadataFound(true);
-  }
-  if((frame=id3_tag.Find(ID3FID_ALBUM))!=NULL) {
-    wave_data->setAlbum(ID3_GetString(frame,ID3FN_TEXT));
-    wave_data->setMetadataFound(true);
-  }
-  if((frame=id3_tag.Find(ID3FID_COMPOSER))!=NULL) {
-    wave_data->setComposer(ID3_GetString(frame,ID3FN_TEXT));
-    wave_data->setMetadataFound(true);
-  }
-  if((frame=id3_tag.Find(ID3FID_COPYRIGHT))!=NULL) {
-    wave_data->setCopyrightNotice(ID3_GetString(frame,ID3FN_TEXT));
-    wave_data->setMetadataFound(true);
-  }
-  if((frame=id3_tag.Find(ID3FID_ORIGARTIST))!=NULL) {
-    wave_data->setArtist(ID3_GetString(frame,ID3FN_TEXT));
-    wave_data->setMetadataFound(true);
-  }
-  if((frame=id3_tag.Find(ID3FID_LEADARTIST))!=NULL) {
-    wave_data->setArtist(ID3_GetString(frame,ID3FN_TEXT));
-    wave_data->setMetadataFound(true);
-  }
-  if((frame=id3_tag.Find(ID3FID_PUBLISHER))!=NULL) {
-    wave_data->setPublisher(ID3_GetString(frame,ID3FN_TEXT));
-    wave_data->setMetadataFound(true);
-  }
-  if((frame=id3_tag.Find(ID3FID_ISRC))!=NULL) {
-    wave_data->setIsrc(ID3_GetString(frame,ID3FN_TEXT));
-    wave_data->setMetadataFound(true);
-  }
-  if((frame=id3_tag.Find(ID3FID_YEAR))!=NULL) {
-    wave_data->
-      setReleaseYear(QString(ID3_GetString(frame,ID3FN_TEXT)).toInt());
-    wave_data->setMetadataFound(true);
+  else {
+    if((frame=id3_tag.Find(ID3FID_TITLE))!=NULL) {
+      wave_data->setTitle(ID3_GetString(frame,ID3FN_TEXT));
+      wave_data->setMetadataFound(true);
+    }
+    if((frame=id3_tag.Find(ID3FID_BPM))!=NULL) {
+      wave_data->
+	setBeatsPerMinute(QString(ID3_GetString(frame,ID3FN_TEXT)).toInt());
+      wave_data->setMetadataFound(true);
+    }
+    if((frame=id3_tag.Find(ID3FID_ALBUM))!=NULL) {
+      wave_data->setAlbum(ID3_GetString(frame,ID3FN_TEXT));
+      wave_data->setMetadataFound(true);
+    }
+    if((frame=id3_tag.Find(ID3FID_COMPOSER))!=NULL) {
+      wave_data->setComposer(ID3_GetString(frame,ID3FN_TEXT));
+      wave_data->setMetadataFound(true);
+    }
+    if((frame=id3_tag.Find(ID3FID_COPYRIGHT))!=NULL) {
+      wave_data->setCopyrightNotice(ID3_GetString(frame,ID3FN_TEXT));
+      wave_data->setMetadataFound(true);
+    }
+    if((frame=id3_tag.Find(ID3FID_ORIGARTIST))!=NULL) {
+      wave_data->setArtist(ID3_GetString(frame,ID3FN_TEXT));
+      wave_data->setMetadataFound(true);
+    }
+    if((frame=id3_tag.Find(ID3FID_LEADARTIST))!=NULL) {
+      wave_data->setArtist(ID3_GetString(frame,ID3FN_TEXT));
+      wave_data->setMetadataFound(true);
+    }
+    if((frame=id3_tag.Find(ID3FID_CONDUCTOR))!=NULL) {
+      wave_data->setConductor(ID3_GetString(frame,ID3FN_TEXT));
+      wave_data->setMetadataFound(true);
+    }
+    if((frame=id3_tag.Find(ID3FID_PUBLISHER))!=NULL) {
+      wave_data->setPublisher(ID3_GetString(frame,ID3FN_TEXT));
+      wave_data->setMetadataFound(true);
+    }
+    if((frame=id3_tag.Find(ID3FID_ISRC))!=NULL) {
+      wave_data->setIsrc(ID3_GetString(frame,ID3FN_TEXT));
+      wave_data->setMetadataFound(true);
+    }
+    if((frame=id3_tag.Find(ID3FID_YEAR))!=NULL) {
+      wave_data->
+	setReleaseYear(QString(ID3_GetString(frame,ID3FN_TEXT)).toInt());
+      wave_data->setMetadataFound(true);
+    }
   }
 }
 
@@ -3752,7 +3991,7 @@ bool RDWaveFile::GetFlacStreamInfo()
 {
 #if HAVE_FLAC
   FLAC__StreamMetadata sinfo;
-  if(!FLAC__metadata_get_streaminfo(QCString().sprintf("%s",(const char *)wave_file.name().utf8()),&sinfo)) {
+  if(!FLAC__metadata_get_streaminfo(Q3CString().sprintf("%s",(const char *)wave_file.name().utf8()),&sinfo)) {
     return false;
   }
   samples_per_sec=sinfo.data.stream_info.sample_rate;
@@ -3774,7 +4013,7 @@ void RDWaveFile::ReadFlacMetadata()
   QString artist;
   QString composer;
   FLAC__StreamMetadata* tags;
-  if(!FLAC__metadata_get_tags(QCString().
+  if(!FLAC__metadata_get_tags(Q3CString().
 	    sprintf("%s",(const char *)wave_file.name().utf8()),&tags)) {
     return;
   }
@@ -3932,7 +4171,7 @@ bool RDWaveFile::MakeFmt()
 }
 
 
-bool RDWaveFile::MakeCart()
+bool RDWaveFile::MakeCart(unsigned ptr_offset)
 {
   for(int i=0;i<CART_CHUNK_SIZE;i++) {
     cart_chunk_data[i]=0;
@@ -3992,11 +4231,40 @@ bool RDWaveFile::MakeCart()
 	    (const char *)cart_user_def.left(64));
   }
   WriteDword(cart_chunk_data,680,cart_level_ref);
-  for(int i=0;i<MAX_TIMERS;i++) {
-    if(!cart_timer_label[i].isEmpty()) {
-      sprintf((char *)cart_chunk_data+684+i*MAX_TIMERS,"%4s",
-	      (const char *)cart_timer_label[i].left(4));
-      WriteDword(cart_chunk_data,688+i*MAX_TIMERS,cart_timer_sample[i]);
+  if(wave_data!=NULL) {
+    int timer=0;
+    if((wave_data->segueStartPos()>=0)&&
+       (wave_data->segueEndPos()>wave_data->segueStartPos())) {
+      sprintf((char *)cart_chunk_data+684+timer*MAX_TIMERS,"SEGs");
+      WriteDword(cart_chunk_data,688+timer*MAX_TIMERS,
+		 FrameOffset(wave_data->segueStartPos()-ptr_offset_msecs));
+      timer++;
+      sprintf((char *)cart_chunk_data+684+timer*MAX_TIMERS,"SEGe");
+      WriteDword(cart_chunk_data,688+timer*MAX_TIMERS,
+		 FrameOffset(wave_data->segueEndPos()-ptr_offset_msecs));
+      timer++;
+    }
+    if((wave_data->introStartPos()>=0)&&
+       (wave_data->introEndPos()>wave_data->introStartPos())) {
+      sprintf((char *)cart_chunk_data+684+timer*MAX_TIMERS,"INTs");
+      WriteDword(cart_chunk_data,688+timer*MAX_TIMERS,
+		 FrameOffset(wave_data->introStartPos()-ptr_offset_msecs));
+      timer++;
+      sprintf((char *)cart_chunk_data+684+timer*MAX_TIMERS,"INTe");
+      WriteDword(cart_chunk_data,688+timer*MAX_TIMERS,
+		 FrameOffset(wave_data->introEndPos()-ptr_offset_msecs));
+      timer++;
+    }
+    if((wave_data->startPos()>=0)&&
+       (wave_data->endPos()>wave_data->startPos())) {
+      sprintf((char *)cart_chunk_data+684+timer*MAX_TIMERS,"AUDs");
+      WriteDword(cart_chunk_data,688+timer*MAX_TIMERS,
+		 FrameOffset(wave_data->startPos()-ptr_offset_msecs));
+      timer++;
+      sprintf((char *)cart_chunk_data+684+timer*MAX_TIMERS,"AUDe");
+      WriteDword(cart_chunk_data,688+timer*MAX_TIMERS,
+		 FrameOffset(wave_data->endPos()-ptr_offset_msecs));
+      timer++;
     }
   }
   if(!cart_url.isEmpty()) {
@@ -4095,7 +4363,7 @@ bool RDWaveFile::MakeLevl()
   WriteDword(levl_chunk_data,16,levl_channels);    // Channels
   WriteDword(levl_chunk_data,20,levl_frames);      // Total Peak Values
   WriteDword(levl_chunk_data,24,levl_peak_offset); // Offset to Peak-of-Peaks
-  WriteDword(levl_chunk_data,28,128);              // Offset to Peak Data
+  WriteDword(levl_chunk_data,28,132);              // Offset to Peak Data
   sprintf((char *)levl_chunk_data+32,"%s",
 	  (const char *)levl_timestamp.toString("yyyy:MM:dd:hh:mm:ss:000"));
 
@@ -4231,86 +4499,114 @@ unsigned RDWaveFile::LoadEnergy()
   energy_size=getSampleLength()*getChannels()/1152;
   seekWave(0,SEEK_SET);
   switch(format_tag) {
-      case WAVE_FORMAT_MPEG:
-	if((head_layer==2)&&(mext_left_energy||mext_right_energy)) {
-	  while(i<energy_size) {
-	    lseek(wave_file.handle(),block_align-5,SEEK_CUR);
-	    if(read(wave_file.handle(),block,5)<5) {
-	      has_energy=true;
-	      return i;
-	    }
-	    if(mext_left_energy) {
-	      energy_data.push_back(block[4]+256*block[3]);
-	      i++;
-	    }
-	    if(mext_right_energy) {
-	      energy_data.push_back(block[1]+256*block[0]);
-	      i++;
-	    }
-	  }
+  case WAVE_FORMAT_MPEG:
+    if((head_layer==2)&&(mext_left_energy||mext_right_energy)) {
+      while(i<energy_size) {
+	lseek(wave_file.handle(),block_align-5,SEEK_CUR);
+	if(read(wave_file.handle(),block,5)<5) {
 	  has_energy=true;
 	  return i;
 	}
-	else {
-	  has_energy=false;
-	  return 0;
+	if(mext_left_energy) {
+	  energy_data.push_back(block[4]+256*block[3]);
+	  i++;
 	}
-	break;
+	if(mext_right_energy) {
+	  energy_data.push_back(block[1]+256*block[0]);
+	  i++;
+	}
+      }
+      has_energy=true;
+      return i;
+    }
+    else {
+      has_energy=false;
+      return 0;
+    }
+    break;
 
-      case WAVE_FORMAT_PCM:
-	block_size=2304*channels;
-	while(i<energy_size) {
-	  if(read(wave_file.handle(),pcm,block_size)!=block_size) {
-	    has_energy=true;
-	    return i;
-	  }
-	  for(int j=0;j<channels;j++) {
-	    energy_data.push_back(0);
-	    for(int k=0;k<1152;k++) {
-	      offset=2*k*channels+2*j;
-	      if((pcm[offset]+256*pcm[offset+1])>energy_data[i]) {
-		energy_data[i]=pcm[offset]+256*pcm[offset+1];
-	      }
-	    }
-	    i++;
-	  }
+  case WAVE_FORMAT_PCM:
+    switch(bits_per_sample) {
+    case 16:
+      block_size=2304*channels;
+      while(i<energy_size) {
+	if(read(wave_file.handle(),pcm,block_size)!=block_size) {
+	  has_energy=true;
+	  return i;
 	}
+	for(int j=0;j<channels;j++) {
+	  energy_data.push_back(0);
+	  for(int k=0;k<1152;k++) {
+	    offset=2*k*channels+2*j;
+	    if((pcm[offset]+256*pcm[offset+1])>energy_data[i]) {
+	      energy_data[i]=pcm[offset]+256*pcm[offset+1];
+	    }
+	  }
+	  i++;
+	}
+      }
+      has_energy=true;
+      return i;
+
+    case 24:
+      block_size=3456*channels;
+      while(i<energy_size) {
+	if(read(wave_file.handle(),pcm,block_size)!=block_size) {
+	  has_energy=true;
+	  return i;
+	}
+	for(int j=0;j<channels;j++) {
+	  energy_data.push_back(0);
+	  for(int k=0;k<1152;k++) {
+	    offset=3*k*channels+3*j;
+	    if((pcm[offset]+256*pcm[offset+1])>energy_data[i]) {
+	      energy_data[i]=pcm[offset]+256*pcm[offset+1];
+	    }
+	  }
+	  i++;
+	}
+      }
+      has_energy=true;
+      return i;
+    }
+    break;
+
+  case WAVE_FORMAT_VORBIS:
+    block_size=2304*channels;
+    while(i<energy_size) {
+      if(readWave(pcm,block_size)!=block_size) {
 	has_energy=true;
 	return i;
-	break;
-
-      case WAVE_FORMAT_VORBIS:
-	block_size=2304*channels;
-	while(i<energy_size) {
-	  if(readWave(pcm,block_size)!=block_size) {
-	    has_energy=true;
-	    return i;
-	  }
-	  for(int j=0;j<channels;j++) {
-	    energy_data.push_back(0);
-	    for(int k=0;k<1152;k++) {
-	      offset=2*k*channels+2*j;
-	      if((pcm[offset]+256*pcm[offset+1])>energy_data[i]) {
-		energy_data[i]=pcm[offset]+256*pcm[offset+1];
-	      }
-	    }
-	    i++;
+      }
+      for(int j=0;j<channels;j++) {
+	energy_data.push_back(0);
+	for(int k=0;k<1152;k++) {
+	  offset=2*k*channels+2*j;
+	  if((pcm[offset]+256*pcm[offset+1])>energy_data[i]) {
+	    energy_data[i]=pcm[offset]+256*pcm[offset+1];
 	  }
 	}
-	has_energy=true;
-	return i;
-	break;
+	i++;
+      }
+    }
+    has_energy=true;
+    return i;
+    break;
 
-      default:
-	has_energy=false;
-	return 0;
-	break;
+  default:
+    has_energy=false;
+    return 0;
+    break;
   }
+  return 0;
 }
 
 
 bool RDWaveFile::ReadEnergyFile(QString wave_file_name)
 {
+  /*
+   * This can probably be removed!
+   *
   if(has_energy && energy_loaded) return true;
 
   QFile energy_file;
@@ -4318,13 +4614,13 @@ bool RDWaveFile::ReadEnergyFile(QString wave_file_name)
   unsigned char frame[50];
 
   energy_file.setName(wave_file_name+".energy");
-  if(!energy_file.open(IO_ReadOnly)) 
+  if(!energy_file.open(QIODevice::ReadOnly)) 
     return false;
-  if(energy_file.readLine(str,20) <= 0)
+  if(energy_file.readLine((const char *)str.toUtf8(),20).isNull())
      return false;
   normalize_level=str.toDouble();
   energy_file.close();
-  if(!energy_file.open(IO_ReadOnly)) 
+  if(!energy_file.open(QIODevice::ReadOnly)) 
     return false;
   read(energy_file.handle(),frame,str.length());
   int i=0;
@@ -4338,22 +4634,29 @@ bool RDWaveFile::ReadEnergyFile(QString wave_file_name)
   energy_loaded=true;
   has_energy=true;
   return true;
+  */
+  return false;
 }
 
 
 bool RDWaveFile::ReadNormalizeLevel(QString wave_file_name)
 {
+  /*
+   * This can probably be removed!
+   *
   QFile energy_file;
   QString str;
 
   energy_file.setName(wave_file_name+".energy");
-  if(!energy_file.open(IO_ReadOnly)) 
+  if(!energy_file.open(QIODevice::ReadOnly)) 
     return false;
   if(energy_file.readLine(str,20) <= 0)
      return false;
   normalize_level=str.toDouble();
   energy_file.close();
   return true;
+  */
+  return false;
 }
 
 
@@ -4446,4 +4749,13 @@ int RDWaveFile::WriteOggBuffer(char *buf,int size)
   }
 #endif  // HAVE_VORBIS
   return 0;
+}
+
+
+unsigned RDWaveFile::FrameOffset(int msecs) const
+{
+  if(msecs<0) {
+    return 0;
+  }
+  return (unsigned)((double)msecs*(double)samples_per_sec/1000.0);
 }

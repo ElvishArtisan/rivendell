@@ -2,10 +2,7 @@
 //
 // A Library import filter for the Airforce Wings system
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: wings_filter.cpp,v 1.13 2010/07/29 19:32:33 cvs Exp $
-//      $Date: 2010/07/29 19:32:33 $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,33 +24,18 @@
 #include <string.h>
 #include <ctype.h>
 
-#include <qapplication.h>
+#include <QCoreApplication>
 
-#include <rddb.h>
+#include <rdapplication.h>
+#include <rdescape_string.h>
 #include <rd.h>
-#include <rdconfig.h>
-#include <rdcmd_switch.h>
 #include <rdcut.h>
 #include <wings_filter.h>
 
-
-//
-// Global Variables
-//
-RDConfig *rdconfig;
-
-
-MainObject::MainObject(QObject *parent,const char *name)
-  : QObject(parent,name)
+MainObject::MainObject(QObject *parent)
+  : QObject(parent)
 {
-  //
-  // Read Command Options
-  //
-  RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"wings_filter",
-		    WINGS_FILTER_USAGE);
-  delete cmd;
-
+  new RDApplication(RDApplication::Console,"wings_filter",WINGS_FILTER_USAGE);
   WingsRecord wr;
   QString audioname;
   bool found;
@@ -63,59 +45,28 @@ MainObject::MainObject(QObject *parent,const char *name)
   QString groupname;
   RDWaveFile *wavefile=NULL;
 
-  rdconfig=new RDConfig(RD_CONF_FILE);
-  rdconfig->load();
-
-  //
-  // Open Database
-  //
-
-
-  filter_db=QSqlDatabase::addDatabase(rdconfig->mysqlDriver());
-  if(!filter_db) {
-    fprintf(stderr,"wings_filter: can't open mySQL database\n");
-    exit(1);
-  }
-  filter_db->setDatabaseName(rdconfig->mysqlDbname());
-  filter_db->setUserName(rdconfig->mysqlUsername());
-  filter_db->setPassword(rdconfig->mysqlPassword());
-  filter_db->setHostName(rdconfig->mysqlHostname());
-  if(!filter_db->open()) {
-    fprintf(stderr,"wings_filter: unable to connect to mySQL Server\n");
-    filter_db->removeDatabase(rdconfig->mysqlDbname());
-    exit(1);
-  }
-
-  //
-  // RIPCD Connection
-  //
-  filter_ripc=new RDRipc("");
-  filter_ripc->connectHost("localhost",RIPCD_TCP_PORT,rdconfig->password());
-
-  //
-  // Station Configuration
-  //
-  filter_rdstation=new RDStation(rdconfig->stationName());
+  rda->
+    ripc()->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 
   //
   // Read Arguments
   //
-  for(int i=1;i<(qApp->argc()-1);i+=2) {
+  for(unsigned i=1;i<(rda->cmdSwitch()->keys()-1);i+=2) {
     found=false;
-    if(!strcmp("-d",qApp->argv()[i])) {
-      dbname=qApp->argv()[i+1];
+    if(!strcmp("-d",rda->cmdSwitch()->key(i))) {
+      dbname=rda->cmdSwitch()->key(i+1);
       found=true;
     }
-    if(!strcmp("-A",qApp->argv()[i])) {
-      audiodir=qApp->argv()[i+1];
+    if(!strcmp("-A",rda->cmdSwitch()->key(i))) {
+      audiodir=rda->cmdSwitch()->key(i+1);
       found=true;
     }
-    if(!strcmp("-g",qApp->argv()[i])) {
-      groupname=qApp->argv()[i+1];
+    if(!strcmp("-g",rda->cmdSwitch()->key(i))) {
+      groupname=rda->cmdSwitch()->key(i+1);
       found=true;
     }
-    if(!strcmp("-e",qApp->argv()[i])) {
-      audio_extension=qApp->argv()[i+1];
+    if(!strcmp("-e",rda->cmdSwitch()->key(i))) {
+      audio_extension=rda->cmdSwitch()->key(i+1);
       found=true;
     }
     if(!found) {
@@ -238,31 +189,33 @@ bool MainObject::ImportCut(RDGroup *group,struct WingsRecord *rec,
   printf("Importing %s - %s to cart %u, group %s\n",
 	 rec->filename,rec->title,cartnum,(const char *)group->name());
   
-  sql=QString().sprintf("insert into CART set NUMBER=%u,GROUP_NAME=\"%s\",\
-                         TITLE=\"%s\",ARTIST=\"%s\",ALBUM=\"%s\",\
-                         CUT_QUANTITY=1,TYPE=%d,FORCED_LENGTH=%u,\
-                         AVERAGE_LENGTH=%u,USER_DEFINED=\"%s.%s\"",
-			cartnum,(const char *)group->name(),
-			rec->title,rec->artist,rec->album,
-			RDCart::Audio,wavefile->getExtTimeLength(),
-			wavefile->getExtTimeLength(),
-			rec->filename,rec->extension);
+  sql=QString("insert into CART set ")+
+    QString().sprintf("NUMBER=%u,",cartnum)+
+    "GROUP_NAME=\""+RDEscapeString(group->name())+"\","+
+    "TITLE=\""+RDEscapeString(rec->title)+"\","+
+    "ARTIST=\""+RDEscapeString(rec->album)+"\","+
+    "ALBUM=\""+RDEscapeString(rec->album)+"\","+
+    QString().sprintf("CUT_QUANTITY=1,TYPE=%d,",RDCart::Audio)+
+    QString().sprintf("FORCED_LENGTH=%u,",wavefile->getExtTimeLength())+
+    QString().sprintf("AVERAGE_LENGTH=%u,",wavefile->getExtTimeLength())+
+    "USER_DEFINED=\""+QString(rec->filename)+"."+QString(rec->extension)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
-  sql=QString().sprintf("insert into CUTS set CUT_NAME=\"%06u_001\",\
-                         CART_NUMBER=%u,DESCRIPTION=\"%s\",\
-                         ORIGIN_DATETIME=\"%s\",ORIGIN_NAME=\"%s\",\
-                         CODING_FORMAT=%d,SAMPLE_RATE=%u,CHANNELS=%d,\
-                         BIT_RATE=%d,LENGTH=%u,START_POINT=0,\
-                         END_POINT=%d",
-			cartnum,cartnum,(const char *)rec->title,
-			(const char *)QDateTime::currentDateTime().
-			toString("yyyy-MM-dd hh:mm:ss"),
-			(const char *)rdconfig->stationName(),format,
-			wavefile->getSamplesPerSec(),
-			wavefile->getChannels(),wavefile->getHeadBitRate(),
-			wavefile->getExtTimeLength(),
-			wavefile->getExtTimeLength());
+  sql=QString("insert into CUTS set ")+
+    QString().sprintf("CUT_NAME=\""+RDCut::cutName(cartnum,1))+"\","+
+    QString().sprintf("CART_NUMBER=%u,",cartnum)+
+    "DESCRIPTION=\""+RDEscapeString(rec->title)+"\","+
+    "ORIGIN_DATETIME=\""+RDEscapeString(QDateTime::currentDateTime().
+					toString("yyyy-MM-dd hh:mm:ss"))+"\","+
+    "ORIGIN_NAME=\""+
+    RDEscapeString(rda->config()->stationName())+"\","+
+    QString().sprintf("CODING_FORMAT=%d,",format)+
+    QString().sprintf("SAMPLE_RATE=%u,",wavefile->getSamplesPerSec())+
+    QString().sprintf("CHANNELS=%d,",wavefile->getChannels())+
+    QString().sprintf("BIT_RATE=%d,",wavefile->getHeadBitRate())+
+    QString().sprintf("LENGTH=%u,",wavefile->getExtTimeLength())+
+    "START_POINT=0,"+
+    QString().sprintf("END_POINT=%d",wavefile->getExtTimeLength());
   q=new RDSqlQuery(sql);
   delete q;
 
@@ -323,7 +276,7 @@ void MainObject::TrimSpaces(char *str)
 
 int main(int argc,char *argv[])
 {
-  QApplication a(argc,argv,false);
-  new MainObject(NULL,"main");
+  QCoreApplication a(argc,argv);
+  new MainObject(NULL);
   return a.exec();
 }

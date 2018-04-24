@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>EditCast</name>
     <message>
@@ -240,6 +242,10 @@ Continuar deletando cast?</translation>
         <source>Continue deleting cast?</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MainWidget</name>
@@ -253,7 +259,7 @@ Continuar deletando cast?</translation>
     </message>
     <message>
         <source>Can&apos;t Connect</source>
-        <translation>Não foi possível conectar</translation>
+        <translation type="obsolete">Não foi possível conectar</translation>
     </message>
     <message>
         <source>Key Name</source>

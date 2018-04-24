@@ -2,9 +2,7 @@
 //
 // List Rivendell Feeds
 //
-//   (C) Copyright 2002-2007 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_feeds.h,v 1.3 2010/07/29 19:32:34 cvs Exp $
+//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,20 +21,18 @@
 #ifndef LIST_FEEDS_H
 #define LIST_FEEDS_H
 
-#include <qdialog.h>
-#include <qpixmap.h>
-#include <qradiobutton.h>
-#include <qsqldatabase.h>
-#include <qpushbutton.h>
+#include <QDialog>
+#include <QPushButton>
+#include <QResizeEvent>
 
-#include <rdlistviewitem.h>
-
+#include <rdtableview.h>
+#include <rdsqltablemodel.h>
 
 class ListFeeds : public QDialog
 {
   Q_OBJECT
  public:
-  ListFeeds(QWidget *parent=0,const char *name=0);
+  ListFeeds(QWidget *parent=0);
   ~ListFeeds();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -45,16 +41,15 @@ class ListFeeds : public QDialog
   void addData();
   void editData();
   void deleteData();
-  void doubleClickedData(QListViewItem *item,const QPoint &pt,int col);
+  void doubleClickedData(const QModelIndex &index);
   void closeData();
 
  protected:
   void resizeEvent(QResizeEvent *e);
 
  private:
-  void RefreshList();
-  void RefreshItem(RDListViewItem *item);
-  RDListView *list_feeds_view;
+  RDTableView *list_view;
+  RDSqlTableModel *list_model;
   QPushButton *list_add_button;
   QPushButton *list_edit_button;
   QPushButton *list_delete_button;

@@ -2,9 +2,7 @@
 ##
 ## Automake.am for rivendell/ios/rmlsend
 ##
-##   (C) Copyright 2011 Fred Gleason <fredg@paravelsystems.com>
-##
-##      $Id: Makefile.am,v 1.1.6.1 2012/11/29 01:37:35 cvs Exp $
+##   (C) Copyright 2011,2016 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License as

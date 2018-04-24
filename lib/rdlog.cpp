@@ -2,9 +2,7 @@
 //
 // Abstract a Rivendell Log.
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdlog.cpp,v 1.23.4.7.2.3 2014/06/24 18:27:04 cvs Exp $
+//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,6 +17,7 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
+
 #include <rddb.h>
 #include <rdconf.h>
 #include <rdlog.h>
@@ -37,15 +36,16 @@ RDLog::RDLog(const QString &name,bool create)
   log_name=name;
 
   if(create) {
-    sql=QString().sprintf("select NAME from LOGS where \
-(NAME=\"%s\")",(const char *)RDEscapeString(log_name));
+    sql=QString("select NAME from LOGS where ")+
+      "NAME=\""+RDEscapeString(log_name)+"\"";
     q=new RDSqlQuery(sql);
     if(q->size()!=1) {
       delete q;
-      sql=QString().
-        sprintf("INSERT INTO LOGS SET NAME=\"%s\",ORIGIN_DATETIME=NOW(),\
-                 LINK_DATETIME=NOW(),MODIFIED_DATETIME=now()",
-		(const char *)RDEscapeString(log_name));
+      sql=QString("insert into LOGS set ")+
+	"NAME=\""+RDEscapeString(log_name)+"\","+
+	"ORIGIN_DATETIME=now(),"+
+	"LINK_DATETIME=now(),"+
+	"MODIFIED_DATETIME=now()";
       q=new RDSqlQuery(sql);
       delete q;
     }
@@ -64,8 +64,8 @@ QString RDLog::name() const
 
 bool RDLog::exists() const
 {
-  QString sql=QString().sprintf("select NAME from LOGS where NAME=\"%s\"",
-				(const char *)RDEscapeString(log_name));
+  QString sql=QString("select NAME from LOGS where ")+
+    "NAME=\""+RDEscapeString(log_name)+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     delete q;
@@ -352,10 +352,15 @@ bool RDLog::isReady() const
   RDSqlQuery *q;
   bool ret=false;
 
-  sql=QString().sprintf("select MUSIC_LINKS,MUSIC_LINKED,TRAFFIC_LINKS,\
-                         TRAFFIC_LINKED,SCHEDULED_TRACKS,COMPLETED_TRACKS \
-                         from LOGS where NAME=\"%s\"",
-			(const char *)RDEscapeString(log_name));
+  sql=QString("select ")+
+    "MUSIC_LINKS,"+
+    "MUSIC_LINKED,"+
+    "TRAFFIC_LINKS,"+
+    "TRAFFIC_LINKED,"+
+    "SCHEDULED_TRACKS,"+
+    "COMPLETED_TRACKS "+
+    "from LOGS where "+
+    "NAME=\""+RDEscapeString(log_name)+"\"";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     ret=((q->value(0).toInt()==0)||(q->value(1).toString()=="Y"))&&
@@ -377,11 +382,12 @@ bool RDLog::remove(RDStation *station,RDUser *user,RDConfig *config) const
   if(removeTracks(station,user,config)<0) {
     return false;
   }
-  sql=QString().sprintf("drop table `%s_LOG`",(const char *)name);
+  sql=QString("drop table `")+name+"_LOG`";
   q=new RDSqlQuery(sql);
   delete q;
-  sql=QString().sprintf("delete from LOGS where (NAME=\"%s\" && TYPE=0)",
-			(const char *)RDEscapeString(log_name));
+  sql=QString("delete from LOGS where ")+
+    "(NAME=\""+RDEscapeString(log_name)+"\")&&"+
+    "(TYPE=0)";
   q=new RDSqlQuery(sql);
   delete q;
   return true;
@@ -395,8 +401,10 @@ void RDLog::updateTracks()
   unsigned scheduled=0;
   unsigned completed=0;
 
-  sql=QString().sprintf("select NUMBER from CART where OWNER=\"%s\"",
-			(const char *)RDEscapeString(log_name));
+  sql=QString("select ")+
+    "NUMBER "+
+    "from CART where "+
+    "OWNER=\""+RDEscapeString(log_name)+"\"";
   q=new RDSqlQuery(sql);
   completed=q->size();
   delete q;
@@ -407,10 +415,10 @@ void RDLog::updateTracks()
   scheduled=q->size()+completed;
   delete q;
 
-  sql=QString().sprintf("update LOGS set SCHEDULED_TRACKS=%d,\
-                         COMPLETED_TRACKS=%u where NAME=\"%s\"",
-			scheduled,completed,
-			(const char *)RDEscapeString(log_name));
+  sql=QString("update LOGS set ")+
+    QString().sprintf("SCHEDULED_TRACKS=%d,",scheduled)+
+    QString().sprintf("COMPLETED_TRACKS=%u ",completed)+
+    "where NAME=\""+RDEscapeString(log_name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -425,12 +433,14 @@ int RDLog::removeTracks(RDStation *station,RDUser *user,RDConfig *config) const
 
   QString owner=log_name;
   owner.replace(" ","_");
-  sql=QString().sprintf("select NUMBER from CART where OWNER=\"%s\"",
-			(const char *)owner);
+  sql=QString("select ")+
+    "NUMBER "+
+    "from CART where "+
+    "OWNER=\""+RDEscapeString(owner)+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     cart=new RDCart(q->value(0).toUInt());
-    if(!cart->remove(station,user,config)) {
+    if(!cart->remove()) {
       delete cart;
       return -1;
     }
@@ -458,11 +468,26 @@ QString RDLog::xml() const
   RDSqlQuery *q;
   QString ret;
 #ifndef WIN32
-  sql=QString("select NAME,SERVICE,DESCRIPTION,ORIGIN_USER,")+
-    "ORIGIN_DATETIME,LINK_DATETIME,MODIFIED_DATETIME,"+
-    "AUTO_REFRESH,START_DATE,END_DATE,SCHEDULED_TRACKS,COMPLETED_TRACKS,"+
-    "MUSIC_LINKS,MUSIC_LINKED,TRAFFIC_LINKS,TRAFFIC_LINKED,NEXT_ID "+
-    "from LOGS where NAME=\""+RDEscapeString(log_name)+"\"";
+  sql=QString("select ")+
+    "NAME,"+               // 00
+    "SERVICE,"+            // 01
+    "DESCRIPTION,"+        // 02
+    "ORIGIN_USER,"+        // 03
+    "ORIGIN_DATETIME,"+    // 04
+    "LINK_DATETIME,"+      // 05
+    "MODIFIED_DATETIME,"+  // 06
+    "AUTO_REFRESH,"+       // 07
+    "START_DATE,"+         // 08
+    "END_DATE,"+           // 09
+    "SCHEDULED_TRACKS,"+   // 10
+    "COMPLETED_TRACKS,"+   // 11
+    "MUSIC_LINKS,"+        // 12
+    "MUSIC_LINKED,"+       // 13
+    "TRAFFIC_LINKS,"+      // 14
+    "TRAFFIC_LINKED,"+     // 15
+    "NEXT_ID "+            // 16
+    "from LOGS where "+
+    "NAME=\""+RDEscapeString(log_name)+"\"";
 
   q=new RDSqlQuery(sql);
   if(q->first()) {
@@ -521,9 +546,8 @@ int RDLog::GetIntValue(const QString &field) const
   RDSqlQuery *q;
   int accum;
   
-  sql=QString().sprintf("select %s from LOGS where NAME=\"%s\"",
-			(const char *)field,
-			(const char *)RDEscapeString(log_name));
+  sql=QString("select ")+field+" from LOGS where "+
+    "NAME=\""+RDEscapeString(log_name)+"\"";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     accum=q->value(0).toInt();
@@ -541,9 +565,8 @@ unsigned RDLog::GetUnsignedValue(const QString &field) const
   RDSqlQuery *q;
   unsigned accum;
   
-  sql=QString().sprintf("select %s from LOGS where NAME=\"%s\"",
-			(const char *)field,
-			(const char *)RDEscapeString(log_name));
+  sql=QString("select ")+field+" from LOGS where "+
+    "NAME=\""+RDEscapeString(log_name)+"\"";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     accum=q->value(0).toUInt();
@@ -561,9 +584,8 @@ QString RDLog::GetStringValue(const QString &field) const
   RDSqlQuery *q;
   QString accum;
   
-  sql=QString().sprintf("select %s from LOGS where NAME=\"%s\"",
-			(const char *)field,
-			(const char *)RDEscapeString(log_name));
+  sql=QString("select ")+field+" from LOGS where "+
+    "NAME=\""+RDEscapeString(log_name)+"\"",
   q=new RDSqlQuery(sql);
   if(q->first()) {
     accum=q->value(0).toString();
@@ -581,9 +603,8 @@ QDate RDLog::GetDateValue(const QString &field) const
   RDSqlQuery *q;
   QDate accum;
   
-  sql=QString().sprintf("select %s from LOGS where NAME=\"%s\"",
-			(const char *)field,
-			(const char *)RDEscapeString(log_name));
+  sql=QString("select ")+field+" from LOGS where "+
+    "NAME=\""+RDEscapeString(log_name)+"\"";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     accum=q->value(0).toDate();
@@ -601,9 +622,8 @@ QDateTime RDLog::GetDatetimeValue(const QString &field) const
   RDSqlQuery *q;
   QDateTime accum;
   
-  sql=QString().sprintf("select %s from LOGS where NAME=\"%s\"",
-			(const char *)field,
-			(const char *)RDEscapeString(log_name));
+  sql=QString("select ")+field+" from LOGS where "+
+    "NAME=\""+RDEscapeString(log_name)+"\"";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     accum=q->value(0).toDateTime();
@@ -620,10 +640,9 @@ void RDLog::SetRow(const QString &param,int value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE LOGS SET %s=%d WHERE NAME=\"%s\"",
-			(const char *)param,
-			value,
-			(const char *)RDEscapeString(log_name));
+  sql=QString("update LOGS set ")+
+    param+QString().sprintf("=%d where ",value)+
+    "NAME=\""+RDEscapeString(log_name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -634,10 +653,9 @@ void RDLog::SetRow(const QString &param,unsigned value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE LOGS SET %s=%u WHERE NAME=\"%s\"",
-			(const char *)param,
-			value,
-			(const char *)RDEscapeString(log_name));
+  sql=QString("update LOGS set ")+
+    param+QString().sprintf("=%u where ",value)+
+    "NAME=\""+RDEscapeString(log_name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -648,10 +666,9 @@ void RDLog::SetRow(const QString &param,const QString &value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE LOGS SET %s=\"%s\" WHERE NAME=\"%s\"",
-			(const char *)param,
-			(const char *)RDEscapeString(value),
-			(const char *)RDEscapeString(log_name));
+  sql=QString("update LOGS set ")+
+    param+"=\""+RDEscapeString(value)+"\" where "+
+    "NAME=\""+RDEscapeString(log_name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -662,10 +679,9 @@ void RDLog::SetRow(const QString &param,const QDate &value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE LOGS SET %s=\"%s\" WHERE NAME=\"%s\"",
-			(const char *)param,
-			(const char *)value.toString("yyyy/MM/dd"),
-			(const char *)RDEscapeString(log_name));
+  sql=QString("update LOGS set ")+
+    param+"="+RDCheckDateTime(value,"yyyy-MM-dd")+" where "+
+    "NAME=\""+RDEscapeString(log_name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -676,10 +692,9 @@ void RDLog::SetRow(const QString &param,const QDateTime &value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE LOGS SET %s=\"%s\" WHERE NAME=\"%s\"",
-			(const char *)param,
-			(const char *)value.toString("yyyy-MM-dd hh:mm:ss"),
-			(const char *)RDEscapeString(log_name));
+  sql=QString("update LOGS set ")+
+    param+"="+RDCheckDateTime(value,"yyyy-MM-dd hh:mm:ss")+" where "+
+    "NAME=\""+RDEscapeString(log_name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }

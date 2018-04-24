@@ -2,9 +2,7 @@
 //
 //   A contiguous-selection only QListView widget for Rivendell
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdlistview.cpp,v 1.12 2011/09/06 17:35:07 cvs Exp $
+//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,15 +24,14 @@
 #include <rdlistview.h>
 #include <rdlistviewitem.h>
 
-
-RDListView::RDListView(QWidget *parent,const char *name)
-  : QListView(parent,name)
+RDListView::RDListView(QWidget *parent)
+  : Q3ListView(parent)
 {
   list_hard_sort_column=-1;
   connect(this,
-	  SIGNAL(mouseButtonClicked(int,QListViewItem *,const QPoint &,int)),
+	  SIGNAL(mouseButtonClicked(int,Q3ListViewItem *,const QPoint &,int)),
 	  this,
-	 SLOT(mouseButtonClickedData(int,QListViewItem *,const QPoint &,int)));
+	 SLOT(mouseButtonClickedData(int,Q3ListViewItem *,const QPoint &,int)));
 }
 
 
@@ -65,15 +62,15 @@ void RDListView::setColumnSortType(int column,SortType type)
 int RDListView::addColumn(const QString &label,int width)
 {
   sort_type.push_back(RDListView::NormalSort);
-  return QListView::addColumn(label,width);
+  return Q3ListView::addColumn(label,width);
 }
 
 
-int RDListView::addColumn(const QIconSet &iconset,const QString &label,
+int RDListView::addColumn(const QIcon &iconset,const QString &label,
 			  int width)
 {
   sort_type.push_back(RDListView::NormalSort);
-  return QListView::addColumn(iconset,label,width);
+  return Q3ListView::addColumn(iconset,label,width);
 }
 
 
@@ -90,13 +87,13 @@ void RDListView::selectLine(int line)
 }
 
 
-void RDListView::mouseButtonClickedData(int button,QListViewItem *item,
+void RDListView::mouseButtonClickedData(int button,Q3ListViewItem *item,
 					const QPoint &pt,int col)
 {
-  QListViewItem *l;
+  Q3ListViewItem *l;
   bool contiguous;
 
-  if((selectionMode()!=QListView::Extended)||(item==NULL)||(button!=1)) {
+  if((selectionMode()!=Q3ListView::Extended)||(item==NULL)||(button!=1)) {
     return;
   }
 

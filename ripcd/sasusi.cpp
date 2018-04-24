@@ -1,10 +1,8 @@
 // sasusi.cpp
 //
-// A Rivendell switcher driver for the SAS User Serial Interface Protocol
+// A Rivendell switcher driver for the SAS USI Protocol
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: sasusi.cpp,v 1.24 2011/12/28 18:59:19 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,10 +21,13 @@
 #include <stdlib.h>
 #include <rddb.h>
 #include <globals.h>
-#include <sasusi.h>
 
-SasUsi::SasUsi(RDMatrix *matrix,QObject *parent,const char *name)
-  : Switcher(matrix,parent,name)
+#include <rdescape_string.h>
+
+#include "sasusi.h"
+
+SasUsi::SasUsi(RDMatrix *matrix,QObject *parent)
+  : Switcher(matrix,parent)
 {
   QString sql;
   RDSqlQuery *q;
@@ -51,12 +52,14 @@ SasUsi::SasUsi(RDMatrix *matrix,QObject *parent,const char *name)
   //
   // Load Switch Table
   //
-  sql=QString().
-    sprintf("select ENGINE_NUM,DEVICE_NUM,RELAY_NUM \
-             from VGUEST_RESOURCES where (STATION_NAME=\"%s\")&&\
-             (MATRIX_NUM=%d) order by NUMBER",
-	    (const char *)ripcd_config->stationName(),
-	    matrix->matrix());
+  sql=QString("select ")+
+    "ENGINE_NUM,"+
+    "DEVICE_NUM,"+
+    "RELAY_NUM "+
+    "from VGUEST_RESOURCES where "+
+    "(STATION_NAME=\""+RDEscapeString(rda->config()->stationName())+"\")&&"+
+    QString().sprintf("(MATRIX_NUM=%d) ",matrix->matrix())+
+    "order by NUMBER";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     sas_console_numbers.push_back(q->value(0).toInt());
@@ -68,7 +71,7 @@ SasUsi::SasUsi(RDMatrix *matrix,QObject *parent,const char *name)
   //
   // Reconnection Timer
   //
-  sas_reconnect_timer=new QTimer(this,"sas_reconnect_timer");
+  sas_reconnect_timer=new QTimer(this);
   connect(sas_reconnect_timer,SIGNAL(timeout()),this,SLOT(ipConnect()));
 
   //
@@ -76,19 +79,19 @@ SasUsi::SasUsi(RDMatrix *matrix,QObject *parent,const char *name)
   //
   switch(sas_porttype) {
   case RDMatrix::TtyPort:
-    tty=new RDTty(rdstation->name(),matrix->port(RDMatrix::Primary));
+    tty=new RDTty(rda->station()->name(),matrix->port(RDMatrix::Primary));
     sas_device=new RDTTYDevice();
     if(tty->active()) {
       sas_device->setName(tty->port());
       sas_device->setSpeed(tty->baudRate());
       sas_device->setWordLength(tty->dataBits());
       sas_device->setParity(tty->parity());
-      sas_device->open(IO_Raw|IO_ReadWrite);
+      sas_device->open(QIODevice::Unbuffered|QIODevice::ReadWrite);
     }
     delete tty;
 
   case RDMatrix::TcpPort:
-    sas_socket=new QSocket(this,"sas_socket");
+    sas_socket=new Q3Socket(this);
     connect(sas_socket,SIGNAL(connected()),this,SLOT(connectedData()));
     connect(sas_socket,SIGNAL(connectionClosed()),
 	    this,SLOT(connectionClosedData()));
@@ -260,7 +263,7 @@ void SasUsi::processCommand(RDMacro *cmd)
 	  emit rmlEcho(cmd);
 	  return;
 	}
-	snprintf(str,256,"%c%03d%03d\x0D\x0A",20,
+	snprintf(str,256,"%cT%04d%04d\x0D\x0A",5,
 		cmd->arg(1).toInt(),cmd->arg(2).toInt());
 	SendCommand(str);
 	cmd->acknowledge(true);
@@ -290,10 +293,11 @@ void SasUsi::processCommand(RDMacro *cmd)
 	  }
 	  cmd_byte=0x01;
 	}
-	if(cmd->arg(2).toUInt()<sas_relay_numbers.size()) {
+	if(cmd->arg(2).toUInt()<=sas_relay_numbers.size()) {
 	  if(sas_relay_numbers[cmd->arg(2).toUInt()-1]>=0) {
 	    snprintf(str,256,"\x05R%d%04d\x0D\x0A",cmd_byte,
 		    sas_relay_numbers[cmd->arg(2).toUInt()-1]);
+	    syslog(LOG_NOTICE,"USI: %s",(const char *)PrettifyCommand(str));
 	    SendCommand(str);
 	    cmd->acknowledge(true);
 	    emit rmlEcho(cmd);
@@ -383,8 +387,8 @@ void SasUsi::readyReadData()
 
 void SasUsi::errorData(int err)
 {
-  switch((QSocket::Error)err) {
-      case QSocket::ErrConnectionRefused:
+  switch((Q3Socket::Error)err) {
+      case Q3Socket::ErrConnectionRefused:
 	LogLine(RDConfig::LogNotice,QString().sprintf(
 	  "Connection to SasUsi device at %s:%d refused, attempting reconnect",
 		  (const char *)sas_ipaddress.toString(),
@@ -392,14 +396,14 @@ void SasUsi::errorData(int err)
 	sas_reconnect_timer->start(SASUSI_RECONNECT_INTERVAL,true);
 	break;
 
-      case QSocket::ErrHostNotFound:
+      case Q3Socket::ErrHostNotFound:
 	LogLine(RDConfig::LogWarning,QString().sprintf(
 	  "Error on connection to SasUsi device at %s:%d: Host Not Found",
 		  (const char *)sas_ipaddress.toString(),
 		  sas_ipport));
 	break;
 
-      case QSocket::ErrSocketRead:
+      case Q3Socket::ErrSocketRead:
 	LogLine(RDConfig::LogWarning,QString().sprintf(
 	  "Error on connection to SasUsi device at %s:%d: Socket Read Error",
 				  (const char *)sas_ipaddress.toString(),
@@ -484,26 +488,24 @@ void SasUsi::DispatchCommand()
     if(sscanf(sas_buffer+1,"%u",&input)!=1) {
       return;
     }
-    sql=QString().sprintf("select NUMBER from INPUTS where \
-                           (STATION_NAME=\"%s\")&&	   \
-                           (MATRIX=%d)&&(NUMBER=%d)",
-			  (const char *)rdstation->name(),
-			  sas_matrix,input);
+    sql=QString("select NUMBER from INPUTS where ")+
+      "(STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\")&&"+
+      QString().sprintf("(MATRIX=%d)&&",sas_matrix)+
+      QString().sprintf("(NUMBER=%d)",input);
     q=new RDSqlQuery(sql);
     if(q->first()) {
-      sql=QString().sprintf("update INPUTS set NAME=\"%s\" where \
-                            (STATION_NAME=\"%s\")&&\
-                            (MATRIX=%d)&&(NUMBER=%d)",
-			    (const char *)label,
-			    (const char *)rdstation->name(),
-			    sas_matrix,input);
+      sql=QString("update INPUTS set ")+
+	"NAME=\""+RDEscapeString(label)+"\" where "+
+	"(STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\")&&"+
+	QString().sprintf("(MATRIX=%d)&&",sas_matrix)+
+	QString().sprintf("(NUMBER=%d)",input);
     }
     else {
-      sql=QString().sprintf("insert into INPUTS set NAME=\"%s\",\
-                            STATION_NAME=\"%s\",MATRIX=%d,NUMBER=%d",
-			    (const char *)label,
-			    (const char *)rdstation->name(),
-				sas_matrix,input);
+      sql=QString("insert into INPUTS set ")+
+	"NAME=\""+RDEscapeString(label)+"\","+
+	"STATION_NAME=\""+RDEscapeString(label)+"\","+
+	QString().sprintf("MATRIX=%d,",sas_matrix)+
+	QString().sprintf("NUMBER=%d",input);
     }
     delete q;
     q=new RDSqlQuery(sql);
@@ -519,26 +521,24 @@ void SasUsi::DispatchCommand()
     if(sscanf(sas_buffer+1,"%u",&output)!=1) {
       return;
     }
-    sql=QString().sprintf("select NUMBER from OUTPUTS where \
-                           (STATION_NAME=\"%s\")&&\
-                           (MATRIX=%d)&&(NUMBER=%d)",
-			  (const char *)rdstation->name(),
-			  sas_matrix,output);
+    sql=QString("select NUMBER from OUTPUTS where ")+
+      "(STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\")&&"+
+      QString().sprintf("(MATRIX=%d)&&",sas_matrix)+
+      QString().sprintf("(NUMBER=%d)",output);
     q=new RDSqlQuery(sql);
     if(q->first()) {
-      sql=QString().sprintf("update OUTPUTS set NAME=\"%s\" where \
-                             (STATION_NAME=\"%s\")&&\
-                             (MATRIX=%d)&&(NUMBER=%d)",
-			    (const char *)label,
-			    (const char *)rdstation->name(),
-			    sas_matrix,output);
+      sql=QString("update OUTPUTS set ")+
+	"NAME=\""+RDEscapeString(label)+"\" where "+
+	"(STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\")&&"+
+	QString().sprintf("(MATRIX=%d)&&",sas_matrix)+
+	QString().sprintf("(NUMBER=%d)",output);
     }
     else {
-      sql=QString().sprintf("insert into OUTPUTS set NAME=\"%s\",\
-                             STATION_NAME=\"%s\",MATRIX=%d,NUMBER=%d",
-			    (const char *)label,
-			    (const char *)rdstation->name(),
-			    sas_matrix,output);
+      sql=QString("insert into OUTPUTS set ")+
+	"NAME=\""+RDEscapeString(label)+"\","+
+	"STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\","+
+	QString().sprintf("MATRIX=%d,",sas_matrix)+
+	QString().sprintf("NUMBER=%d",output);
     }
     delete q;
     q=new RDSqlQuery(sql);
@@ -620,7 +620,7 @@ void SasUsi::ExecuteMacroCart(unsigned cartnum)
   RDMacro rml;
   rml.setRole(RDMacro::Cmd);
   rml.setCommand(RDMacro::EX);
-  rml.setAddress(rdstation->address());
+  rml.setAddress(rda->station()->address());
   rml.setEchoRequested(false);
   rml.setArgQuantity(1);
   rml.setArg(0,cartnum);

@@ -2,9 +2,7 @@
 //
 // Edit Rivendell CartSlot Configuration
 //
-//   (C) Copyright 2012 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_cartslots.cpp,v 1.1.2.7 2013/12/23 18:47:22 cvs Exp $
+//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,18 +18,21 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qmessagebox.h>
+#include <QCloseEvent>
+#include <QLabel>
+#include <QMessageBox>
 
 #include <rd.h>
-#include <rdslotoptions.h>
+#include <rdapplication.h>
 #include <rdcart_dialog.h>
 #include <rdescape_string.h>
+#include <rdslotoptions.h>
 
-#include <globals.h>
-#include <edit_cartslots.h>
+#include "edit_cartslots.h"
+#include "globals.h"
 
 EditCartSlots::EditCartSlots(RDStation *station,RDStation *cae_station,
-			     QWidget *parent,const char *name)
+			     QWidget *parent)
   : QDialog(parent)
 {
   QString sql;
@@ -44,12 +45,10 @@ EditCartSlots::EditCartSlots(RDStation *station,RDStation *cae_station,
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
-  setCaption(tr("RDAdmin - Edit CartSlots"));
+  setWindowTitle("RDAdmin - "+tr("Edit CartSlots"));
 
   //
   // Fonts
@@ -67,7 +66,7 @@ EditCartSlots::EditCartSlots(RDStation *station,RDStation *cae_station,
   QLabel *label=new QLabel(tr("Global Settings"),this);
   label->setGeometry(10,10,sizeHint().width()-20,20);
   label->setFont(title_font);
-  label->setAlignment(AlignCenter);  
+  label->setAlignment(Qt::AlignCenter);  
 
   //
   // Slot Columns
@@ -80,7 +79,7 @@ EditCartSlots::EditCartSlots(RDStation *station,RDStation *cae_station,
   label=new QLabel(edit_slot_columns_spin,tr("Slot Columns:"),this);
   label->setGeometry(10,32,112,20);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Slot Rows
@@ -93,7 +92,7 @@ EditCartSlots::EditCartSlots(RDStation *station,RDStation *cae_station,
   label=new QLabel(edit_slot_rows_spin,tr("Slot Rows:"),this);
   label->setGeometry(10,54,112,20);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Slot Selector
@@ -117,7 +116,7 @@ EditCartSlots::EditCartSlots(RDStation *station,RDStation *cae_station,
   label=new QLabel(tr("Channel Assignments"),this);
   label->setGeometry(10,123,sizeHint().width()-20,20);
   label->setFont(label_font);
-  label->setAlignment(AlignCenter);  
+  label->setAlignment(Qt::AlignCenter);  
 
   //
   // Card Selector
@@ -131,7 +130,7 @@ EditCartSlots::EditCartSlots(RDStation *station,RDStation *cae_station,
   label=new QLabel(edit_card_spin,tr("Card:"),this);
   label->setGeometry(10,145,112,20);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Input Port Selector
@@ -143,7 +142,7 @@ EditCartSlots::EditCartSlots(RDStation *station,RDStation *cae_station,
   label=new QLabel(edit_input_spin,tr("Input Port:"),this);
   label->setGeometry(10,167,112,20);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Output Port Selector
@@ -155,7 +154,7 @@ EditCartSlots::EditCartSlots(RDStation *station,RDStation *cae_station,
   label=new QLabel(edit_output_spin,tr("Output Port:"),this);
   label->setGeometry(10,189,112,20);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Default Settings
@@ -163,7 +162,7 @@ EditCartSlots::EditCartSlots(RDStation *station,RDStation *cae_station,
   label=new QLabel(tr("Default Settings"),this);
   label->setGeometry(10,218,sizeHint().width()-20,20);
   label->setFont(label_font);
-  label->setAlignment(AlignCenter);
+  label->setAlignment(Qt::AlignCenter);
 
   //
   // Service
@@ -363,7 +362,7 @@ void EditCartSlots::cartSelectData()
   int cartnum=edit_cart_edit->text().toInt();
 
   if(admin_cart_dialog->exec(&cartnum,RDCart::All,NULL,0,
-			     admin_user->name(),admin_user->password())==0) {
+			     rda->user()->name(),rda->user()->password())==0) {
     edit_cart_edit->setText(QString().sprintf("%06d",cartnum));
   }
 }
@@ -395,10 +394,17 @@ void EditCartSlots::ReadSlot(unsigned slotnum)
   RDSlotOptions *opts=new RDSlotOptions(edit_station->name(),slotnum);
   delete opts;
 
-  sql=QString("select CARD,INPUT_PORT,OUTPUT_PORT,DEFAULT_MODE,")+
+  sql=QString("select ")+
+    "CARD,"+
+    "INPUT_PORT,"+
+    "OUTPUT_PORT,"+
+    "DEFAULT_MODE,"+
     "DEFAULT_HOOK_MODE,"+
-    "DEFAULT_STOP_ACTION,DEFAULT_CART_NUMBER,SERVICE_NAME from CARTSLOTS "+
-    "where (STATION_NAME=\""+RDEscapeString(edit_station->name())+"\")&&"+
+    "DEFAULT_STOP_ACTION,"+
+    "DEFAULT_CART_NUMBER,"+
+    "SERVICE_NAME "+
+    "from CARTSLOTS where "+
+    "(STATION_NAME=\""+RDEscapeString(edit_station->name())+"\")&&"+
     QString().sprintf("(SLOT_NUMBER=%u)",slotnum);
   q=new RDSqlQuery(sql);
   if(q->first()) {

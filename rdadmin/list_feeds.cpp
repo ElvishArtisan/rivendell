@@ -2,9 +2,7 @@
 //
 // List Rivendell Feeds
 //
-//   (C) Copyright 2002-2007 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_feeds.cpp,v 1.9 2010/07/29 19:32:34 cvs Exp $
+//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,44 +18,30 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <math.h>
-#include <unistd.h>
-#include <stdlib.h>
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qbuttongroup.h>
-#include <qprogressdialog.h>
-#include <qapplication.h>
+#include <QMessageBox>
 
-#include <rddb.h>
+#include <rdapplication.h>
 #include <rdcart.h>
-#include <rdtextfile.h>
-#include <rdpodcast.h>
+#include <rdescape_string.h>
 #include <rdfeedlog.h>
+#include <rdpodcast.h>
+#include <rdtextfile.h>
 
-#include <list_feeds.h>
-#include <edit_feed.h>
-#include <add_feed.h>
-#include <globals.h>
+#include "add_feed.h"
+#include "edit_feed.h"
+#include "globals.h"
+#include "list_feeds.h"
 
-ListFeeds::ListFeeds(QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+ListFeeds::ListFeeds(QWidget *parent)
+  : QDialog(parent)
 {
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
 
-  setCaption(tr("Rivendell Feed List"));
+  setWindowTitle("RDAdmin - "+tr("Rivendell Feed List"));
 
   //
   // Create Fonts
@@ -72,7 +56,7 @@ ListFeeds::ListFeeds(QWidget *parent,const char *name)
   //
   //  Add Button
   //
-  list_add_button=new QPushButton(this,"list_add_button");
+  list_add_button=new QPushButton(this);
   list_add_button->setFont(font);
   list_add_button->setText(tr("&Add"));
   connect(list_add_button,SIGNAL(clicked()),this,SLOT(addData()));
@@ -80,7 +64,7 @@ ListFeeds::ListFeeds(QWidget *parent,const char *name)
   //
   //  Edit Button
   //
-  list_edit_button=new QPushButton(this,"list_edit_button");
+  list_edit_button=new QPushButton(this);
   list_edit_button->setFont(font);
   list_edit_button->setText(tr("&Edit"));
   connect(list_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
@@ -88,7 +72,7 @@ ListFeeds::ListFeeds(QWidget *parent,const char *name)
   //
   //  Delete Button
   //
-  list_delete_button=new QPushButton(this,"list_delete_button");
+  list_delete_button=new QPushButton(this);
   list_delete_button->setFont(font);
   list_delete_button->setText(tr("&Delete"));
   connect(list_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
@@ -96,38 +80,39 @@ ListFeeds::ListFeeds(QWidget *parent,const char *name)
   //
   //  Close Button
   //
-  list_close_button=new QPushButton(this,"list_close_button");
+  list_close_button=new QPushButton(this);
   list_close_button->setDefault(true);
   list_close_button->setFont(font);
   list_close_button->setText(tr("&Close"));
   connect(list_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 
   //
-  // Group List
+  // Feed List
   //
-  list_feeds_view=new RDListView(this,"list_feeds_view");
-  list_feeds_view->setFont(list_font);
-  list_feeds_view->setAllColumnsShowFocus(true);
-  list_feeds_view->addColumn(tr("Key"));
-  list_feeds_view->setColumnAlignment(0,AlignCenter);
-  list_feeds_view->addColumn(tr("Title"));
-  list_feeds_view->setColumnAlignment(1,AlignVCenter|AlignLeft);
-  list_feeds_view->addColumn(tr("AutoPost"));
-  list_feeds_view->setColumnAlignment(2,AlignVCenter|AlignLeft);
-  list_feeds_view->addColumn(tr("Keep Metadata"));
-  list_feeds_view->setColumnAlignment(3,AlignVCenter|AlignLeft);
-  list_feeds_view->addColumn(tr("Creation Date"));
-  list_feeds_view->setColumnAlignment(4,AlignCenter);
-  QLabel *list_box_label=new QLabel(list_feeds_view,tr("&Feeds:"),
-				    this,"list_box_label");
+  list_model=new RDSqlTableModel(this);
+  QString sql=QString("select ")+
+    "ID,"+
+    "KEY_NAME,"+
+    "CHANNEL_TITLE,"+
+    "ENABLE_AUTOPOST,"+
+    "KEEP_METADATA,"+
+    "ORIGIN_DATETIME from FEEDS "+
+    "order by KEY_NAME";
+  list_model->setQuery(sql);
+  list_model->setHeaderData(0,Qt::Horizontal,tr("Id"));
+  list_model->setHeaderData(1,Qt::Horizontal,tr("Key"));
+  list_model->setHeaderData(2,Qt::Horizontal,tr("Title"));
+  list_model->setHeaderData(3,Qt::Horizontal,tr("AutoPost"));
+  list_model->setHeaderData(4,Qt::Horizontal,tr("Keep Metadata"));
+  list_model->setHeaderData(5,Qt::Horizontal,tr("Creation Date"));
+  list_view=new RDTableView(this);
+  list_view->setModel(list_model);
+  list_view->hideColumn(0);
+  connect(list_view,SIGNAL(doubleClicked(const QModelIndex &)),
+	  this,SLOT(doubleClickedData(const QModelIndex &)));
+  QLabel *list_box_label=new QLabel(list_view,tr("&Feeds:"),this);
   list_box_label->setFont(font);
   list_box_label->setGeometry(14,11,85,19);
-  connect(list_feeds_view,
-	  SIGNAL(doubleClicked(QListViewItem *,const QPoint &,int)),
-	  this,
-	  SLOT(doubleClickedData(QListViewItem *,const QPoint &,int)));
-
-  RefreshList();
 }
 
 
@@ -138,7 +123,7 @@ ListFeeds::~ListFeeds()
 
 QSize ListFeeds::sizeHint() const
 {
-  return QSize(400,280);
+  return QSize(600,280);
 } 
 
 
@@ -152,10 +137,8 @@ void ListFeeds::addData()
 {
   QString feed;
   unsigned id;
-  QString sql;
-  RDSqlQuery *q;
 
-  AddFeed *add_feed=new AddFeed(&id,&feed,this,"add_feed");
+  AddFeed *add_feed=new AddFeed(&id,&feed,this);
   if(add_feed->exec()<0) {
     delete add_feed;
     return;
@@ -165,138 +148,51 @@ void ListFeeds::addData()
 
   EditFeed *edit_feed=new EditFeed(feed,this);
   if(edit_feed->exec()<0) {
-    sql=QString().sprintf("delete from FEED_PERMS where KEY_NAME=\"%s\"",
-			  (const char *)feed);
-    q=new RDSqlQuery(sql);
-    delete q;
-    sql=QString().sprintf("delete from FEEDS where KEY_NAME=\"%s\"",
-			  (const char *)feed);
-    q=new RDSqlQuery(sql);
-    delete q;
-    RDDeleteFeedLog(feed);
-    feed.replace(" ","_");
-    sql=QString().sprintf("drop table %s_FIELDS",(const char *)feed);
-    q=new RDSqlQuery(sql);
-    delete q;
-    delete edit_feed;
+    RDFeed::remove(feed);
     return;
   }
   delete edit_feed;
-  RDListViewItem *item=new RDListViewItem(list_feeds_view);
-  item->setId(id);
-  item->setText(0,feed);
-  RefreshItem(item);
-  item->setSelected(true);
-  list_feeds_view->setCurrentItem(item);
-  list_feeds_view->ensureItemVisible(item);
+  list_model->update();
 }
 
 
 void ListFeeds::editData()
 {
-  RDListViewItem *item=(RDListViewItem *)list_feeds_view->selectedItem();
-  if(item==NULL) {
-    return;
+  QItemSelectionModel *s=list_view->selectionModel();
+  if(s->hasSelection()) {
+    doubleClickedData(list_model->index(s->selectedRows()[0].row(),1));
   }
-  EditFeed *edit_feed=new EditFeed(item->text(0),this,"edit_feed");
-  edit_feed->exec();
-  delete edit_feed;
-  RefreshItem(item);
 }
 
 
 void ListFeeds::deleteData()
 {
-  RDListViewItem *item=(RDListViewItem *)list_feeds_view->selectedItem();
-  if(item==NULL) {
-    return;
+  QString err_str;
+  QItemSelectionModel *s=list_view->selectionModel();
+  if(s->hasSelection()) {
+    QString keyname=list_model->data(s->selectedRows()[0].row(),1).toString();
+    if(QMessageBox::question(this,"RDAdmin - "+tr("Delete RSS Feed"),
+			     tr("Are you sure you want to delete feed")+
+			     " \""+keyname+"\"?",
+			     QMessageBox::Yes,QMessageBox::No)!=
+       QMessageBox::Yes) {
+      return;
+    }
+    RDFeed::remove(keyname,&err_str);
+    if(!err_str.isEmpty()) {
+      QMessageBox::warning(this,"RDAdmin - "+tr("Feed Removal"),err_str);
+    }
+    list_model->update();
   }
-
-  QString sql;
-  RDSqlQuery *q;
-  QString warning;
-  QString str;
-  RDFeed *feed;
-  QString errs;
-
-  QString feedname=item->text(0);
-  if(feedname.isEmpty()) {
-    return;
-  }
-  str=QString(tr("Are you sure you want to delete feed"));
-  warning+=QString().sprintf("%s %s?",(const char *)str,
-			     (const char *)feedname);
-  switch(QMessageBox::warning(this,tr("Delete Feed"),warning,
-			      QMessageBox::Yes,QMessageBox::No)) {
-      case QMessageBox::No:
-      case QMessageBox::NoButton:
-	return;
-
-      default:
-	break;
-  }
-  feed=new RDFeed(feedname);
-
-  //
-  // Delete Casts
-  //
-  // First, Delete Remote Audio
-  //
-  RDPodcast *cast;
-  sql=QString().sprintf("select ID from PODCASTS where FEED_ID=%d",item->id());
-  q=new RDSqlQuery(sql);
-  QProgressDialog *pd=new QProgressDialog(tr("Deleting Audio..."),tr("Cancel"),
-					  q->size()+1,this);
-  pd->setCaption(tr("Deleting"));
-  pd->setProgress(0);
-  qApp->processEvents();
-  sleep(1);
-  while(q->next()) {
-    pd->setProgress(pd->progress()+1);
-    qApp->processEvents();
-    cast=new RDPodcast(q->value(0).toUInt());
-    cast->removeAudio(feed,&errs,admin_config->logXloadDebugData());
-    delete cast;
-  }
-  delete q;
-
-  //
-  // Delete Cast Entries
-  //
-  sql=QString().sprintf("delete from PODCASTS where FEED_ID=%d",item->id());
-  q=new RDSqlQuery(sql);
-  delete q;
-
-  //
-  // Delete Feed
-  //
-  sql=QString().sprintf("delete from FEED_PERMS where KEY_NAME=\"%s\"",
-			(const char *)feedname);
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString().sprintf("delete from FEEDS where KEY_NAME=\"%s\"",
-			(const char *)feedname);
-  q=new RDSqlQuery(sql);
-  delete q;
-  RDDeleteFeedLog(feedname);
-  feedname.replace(" ","_");
-  sql=QString().sprintf("drop table %s_FIELDS",(const char *)feedname);
-  q=new RDSqlQuery(sql);
-  delete q;
-  item->setSelected(false);
-
-  pd->reset();
-
-  delete pd;
-  delete feed;
-  delete item;
 }
 
-
-void ListFeeds::doubleClickedData(QListViewItem *item,const QPoint &pt,
-				   int col)
+void ListFeeds::doubleClickedData(const QModelIndex &index)
 {
-  editData();
+  EditFeed *edit_feed=
+    new EditFeed(list_model->data(index.row(),1).toString(),this);
+  edit_feed->exec();
+  delete edit_feed;
+  list_model->update();
 }
 
 
@@ -312,48 +208,5 @@ void ListFeeds::resizeEvent(QResizeEvent *e)
   list_edit_button->setGeometry(size().width()-90,90,80,50);
   list_delete_button->setGeometry(size().width()-90,150,80,50);
   list_close_button->setGeometry(size().width()-90,size().height()-60,80,50);
-  list_feeds_view->setGeometry(10,30,size().width()-120,size().height()-40);
-}
-
-
-void ListFeeds::RefreshList()
-{
-  QString sql;
-  RDSqlQuery *q;
-  RDListViewItem *item;
-
-  list_feeds_view->clear();
-  q=new 
-    RDSqlQuery("select ID,KEY_NAME,CHANNEL_TITLE,ENABLE_AUTOPOST,\
-                KEEP_METADATA,ORIGIN_DATETIME from FEEDS");
-  while (q->next()) {
-    item=new RDListViewItem(list_feeds_view);
-    item->setId(q->value(0).toInt());
-    item->setText(0,q->value(1).toString());
-    item->setText(1,q->value(2).toString());
-    item->setText(2,q->value(3).toString());
-    item->setText(3,q->value(4).toString());
-    item->setText(4,q->value(5).toDateTime().toString("MM/dd/yyyy"));
-  }
-  delete q;
-}
-
-
-void ListFeeds::RefreshItem(RDListViewItem *item)
-{
-  QString sql;
-  RDSqlQuery *q;
-
-  sql=QString().sprintf("select KEY_NAME,CHANNEL_TITLE,ENABLE_AUTOPOST,\
-                         KEEP_METADATA,ORIGIN_DATETIME from FEEDS \
-                         where ID=%d",item->id());
-  q=new RDSqlQuery(sql);
-  if(q->next()) {
-    item->setText(0,q->value(0).toString());
-    item->setText(1,q->value(1).toString());
-    item->setText(2,q->value(2).toString());
-    item->setText(3,q->value(3).toString());
-    item->setText(4,q->value(4).toDateTime().toString("MM/dd/yyyy"));
-  }
-  delete q;
+  list_view->setGeometry(10,30,size().width()-120,size().height()-40);
 }

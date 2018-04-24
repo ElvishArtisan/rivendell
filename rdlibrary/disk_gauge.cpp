@@ -2,9 +2,7 @@
 //
 // Disk Gauge Widget for RDLibrary.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: disk_gauge.cpp,v 1.7.8.1 2014/01/08 02:08:38 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,15 +21,19 @@
 #include <sys/vfs.h>
 
 #include <qfontmetrics.h>
+//Added by qt3to4:
+#include <QResizeEvent>
+#include <QLabel>
 
 #include <globals.h>
 #include <rd.h>
-#include <disk_gauge.h>
-#include <rdconfig.h>
+#include <rdapplication.h>
 #include <rdaudiostore.h>
 
-DiskGauge::DiskGauge(int samp_rate,int chans,QWidget *parent,const char *name)
-  : QWidget(parent,name)
+#include <disk_gauge.h>
+
+DiskGauge::DiskGauge(int samp_rate,int chans,QWidget *parent)
+  : QWidget(parent)
 {
   disk_sample_rate=samp_rate;
   disk_channels=chans;
@@ -45,17 +47,17 @@ DiskGauge::DiskGauge(int samp_rate,int chans,QWidget *parent,const char *name)
   disk_label=new QLabel("Free:",this);
   disk_label->setGeometry(0,0,50,sizeHint().height());
   disk_label->setFont(label_font);
-  disk_label->setAlignment(AlignRight|AlignVCenter);
+  disk_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   disk_label->setDisabled(true);
 
-  disk_bar=new QProgressBar(this);
+  disk_bar=new Q3ProgressBar(this);
   disk_bar->setPercentageVisible(false);
   disk_bar->setGeometry(55,0,sizeHint().width()-55,sizeHint().height());
   disk_bar->setDisabled(true);
 
   disk_space_label=new QLabel(this);
   disk_space_label->setFont(label_font);
-  disk_space_label->setAlignment(AlignCenter);
+  disk_space_label->setAlignment(Qt::AlignCenter);
   disk_space_label->setDisabled(true);
 
   /*
@@ -82,12 +84,12 @@ QSizePolicy DiskGauge::sizePolicy() const
 
 void DiskGauge::update()
 {
-  if(lib_user==NULL) {
+  if(rda->user()==NULL) {
     return;
   }
   RDAudioStore::ErrorCode conv_err;
-  RDAudioStore *conv=new RDAudioStore(rdstation_conf,lib_config,this);
-  if((conv_err=conv->runStore(lib_user->name(),lib_user->password()))==
+  RDAudioStore *conv=new RDAudioStore(rda->station(),rda->config(),this);
+  if((conv_err=conv->runStore(rda->user()->name(),rda->user()->password()))==
      RDAudioStore::ErrorOk) {
     uint64_t free_min=GetMinutes(conv->freeBytes());
     uint64_t total_min=GetMinutes(conv->totalBytes());
@@ -121,14 +123,14 @@ unsigned DiskGauge::GetMinutes(uint64_t bytes)
 {
   unsigned ret=0;
 
-  switch(rdlibrary_conf->defaultFormat()) {
+  switch(rda->libraryConf()->defaultFormat()) {
   case 1:   // MPEG Layer 2
-    ret=bytes*2/(rdlibrary_conf->defaultChannels()*
-		 rdlibrary_conf->defaultBitrate()*15);
+    ret=bytes*2/(rda->libraryConf()->defaultChannels()*
+		 rda->libraryConf()->defaultBitrate()*15);
     break;
 
   default:  // PCM16
-    ret=bytes/(rdlibrary_conf->defaultChannels()*2*lib_system->sampleRate()*60);
+    ret=bytes/(rda->libraryConf()->defaultChannels()*2*rda->system()->sampleRate()*60);
     break;
   }
   return ret;

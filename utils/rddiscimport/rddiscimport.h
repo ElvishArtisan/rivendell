@@ -2,9 +2,7 @@
 //
 // A Qt-based application for importing TM Century GoldDisc CDs
 //
-//   (C) Copyright 2013 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rddiscimport.h,v 1.1.2.4 2013/12/04 22:15:21 cvs Exp $
+//   (C) Copyright 2013,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -35,20 +33,15 @@
 #include <qlineedit.h>
 #include <qpushbutton.h>
 #include <qspinbox.h>
-#include <qprogressbar.h>
+#include <q3progressbar.h>
+//Added by qt3to4:
+#include <QResizeEvent>
 
 #include <rdcdplayer.h>
 #include <rdcdripper.h>
 #include <rdaudioimport.h>
-#include <rdconfig.h>
-#include <rddb.h>
 #include <rdgroup.h>
 #include <rdlistview.h>
-#include <rdlibrary_conf.h>
-#include <rdsystem.h>
-#include <rdstation.h>
-#include <rduser.h>
-#include <rdripc.h>
 #include <rdtransportbutton.h>
 
 #include <metalibrary.h>
@@ -59,14 +52,14 @@ class MainWidget : public QWidget
 {
   Q_OBJECT
  public:
-  MainWidget(QWidget *parent=0,const char *name=0);
+  MainWidget(QWidget *parent=0);
   QSize sizeHint() const;
 
  private slots:
   void indexFileSelectedData();
   void groupActivatedData(int);
   void autotrimCheckData(bool state);
-  void trackDoubleClickedData(QListViewItem *item,const QPoint &pt,int row);
+  void trackDoubleClickedData(Q3ListViewItem *item,const QPoint &pt,int row);
   void ripData();
   void normalizeCheckData(bool state);
   void mediaChangedData();
@@ -92,9 +85,9 @@ class MainWidget : public QWidget
   QLineEdit *dg_userdef_edit;
   RDListView *dg_track_list;
   QLabel *dg_disc_label;
-  QProgressBar *dg_disc_bar;
+  Q3ProgressBar *dg_disc_bar;
   QLabel *dg_track_label;
-  QProgressBar *dg_track_bar;
+  Q3ProgressBar *dg_track_bar;
   QLabel *dg_discid_label;
   QLineEdit *dg_discid_edit;
   QPushButton *dg_rip_button;
@@ -115,13 +108,6 @@ class MainWidget : public QWidget
   RDCdRipper *dg_ripper;
   RDAudioImport *dg_importer;
   RDGroup *dg_group;
-  RDRipc *dg_ripc;
-  RDUser *dg_user;
-  RDSystem *dg_system;
-  RDStation *dg_station;
-  RDLibraryConf *dg_library_conf;
-  QSqlDatabase *dg_db;
-  RDConfig *dg_config;
   QString dg_group_name;
   QString dg_tempfile;
   std::vector<bool> dg_rip_enableds;

@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell Report
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_report.cpp,v 1.21.8.1.2.1 2014/05/22 01:21:36 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,30 +18,22 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <qbuttongroup.h>
+#include <QCheckBox>
+#include <QLabel>
+#include <QPainter>
+#include <QPushButton>
 
-#include <rddb.h>
 #include <rd.h>
+#include <rdescape_string.h>
 #include <rdtextvalidator.h>
 
-#include <edit_report.h>
-#include <test_import.h>
-#include <autofill_carts.h>
-#include <edit_svc_perms.h>
+#include "edit_report.h"
+#include "test_import.h"
+#include "autofill_carts.h"
+#include "edit_svc_perms.h"
 
-
-EditReport::EditReport(QString rptname,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+EditReport::EditReport(QString rptname,QWidget *parent)
+  : QDialog(parent)
 {
   QString sql;
   RDSqlQuery *q;
@@ -53,15 +43,11 @@ EditReport::EditReport(QString rptname,QWidget *parent,const char *name)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   edit_report=new RDReport(rptname);
-  str=QString(tr("Edit Report"));
-  setCaption(QString().sprintf("%s - %s",(const char *)str,
-			       (const char *)rptname));
+  setWindowTitle("RDAdmin - "+tr("Edit Report")+" - "+rptname);
 
   //
   // Create Fonts
@@ -88,7 +74,7 @@ EditReport::EditReport(QString rptname,QWidget *parent,const char *name)
     new QLabel(edit_description_edit,tr("&Report Description:"),this);
   label->setGeometry(10,10,155,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::ShowPrefix);
 
   //
   // Export Filter Type
@@ -102,7 +88,7 @@ EditReport::EditReport(QString rptname,QWidget *parent,const char *name)
   label=new QLabel(edit_description_edit,tr("Export &Filter:"),this);
   label->setGeometry(10,31,155,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::ShowPrefix);
 
   //
   // Station ID
@@ -114,7 +100,7 @@ EditReport::EditReport(QString rptname,QWidget *parent,const char *name)
   label=new QLabel(edit_stationid_edit,tr("Station ID:"),this);
   label->setGeometry(10,52,155,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::ShowPrefix);
 
   //
   // Cart Number Parameters
@@ -122,18 +108,16 @@ EditReport::EditReport(QString rptname,QWidget *parent,const char *name)
   label=new QLabel(tr("Cart Number Parameters:"),this);
   label->setGeometry(10,73,155,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::ShowPrefix);
   
   edit_cartzeros_box=new QCheckBox(this);
   edit_cartzeros_box->setGeometry(170,75,15,15);
   connect(edit_cartzeros_box,SIGNAL(toggled(bool)),
 	  this,SLOT(leadingZerosToggled(bool)));
-  label=new QLabel(edit_cartzeros_box,
-		   tr("Use Leading Zeros"),this,
-		   "edit_cartzeros_label");
+  label=new QLabel(edit_cartzeros_box,tr("Use Leading Zeros"),this);
   label->setGeometry(187,73,120,19);
   label->setFont(check_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::ShowPrefix);
 
   edit_cartdigits_spin=new QSpinBox(this);
   edit_cartdigits_spin->setGeometry(350,73,40,19);
@@ -141,7 +125,7 @@ EditReport::EditReport(QString rptname,QWidget *parent,const char *name)
   edit_cartdigits_label=new QLabel(edit_cartdigits_spin,tr("Digits:"),this);
   edit_cartdigits_label->setGeometry(300,73,45,19);
   edit_cartdigits_label->setFont(check_font);
-  edit_cartdigits_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  edit_cartdigits_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::ShowPrefix);
 
   //
   // Station Type
@@ -155,7 +139,7 @@ EditReport::EditReport(QString rptname,QWidget *parent,const char *name)
   label=new QLabel(edit_stationtype_box,tr("Station Type:"),this);
   label->setGeometry(10,94,155,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::ShowPrefix);
 
   //
   // Lines Per Page
@@ -166,7 +150,7 @@ EditReport::EditReport(QString rptname,QWidget *parent,const char *name)
   label=new QLabel(edit_linesperpage_spin,tr("Lines per Page:"),this);
   label->setGeometry(255,94,100,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::ShowPrefix);
   edit_linesperpage_spin->hide();
   label->hide();
 
@@ -179,7 +163,7 @@ EditReport::EditReport(QString rptname,QWidget *parent,const char *name)
   label=new QLabel(edit_servicename_edit,tr("Ser&vice Name:"),this);
   label->setGeometry(10,115,155,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::ShowPrefix);
 
   //
   // Station Format
@@ -190,7 +174,7 @@ EditReport::EditReport(QString rptname,QWidget *parent,const char *name)
   label=new QLabel(edit_stationformat_edit,tr("Station &Format:"),this);
   label->setGeometry(10,136,155,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::ShowPrefix);
 
   //
   // Linux Export Path
@@ -202,7 +186,7 @@ EditReport::EditReport(QString rptname,QWidget *parent,const char *name)
   label=new QLabel(edit_path_edit,tr("Linux Export Path:"),this);
   label->setGeometry(10,157,155,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::ShowPrefix);
 
   //
   // Linux Post Export Command
@@ -213,7 +197,7 @@ EditReport::EditReport(QString rptname,QWidget *parent,const char *name)
   label=new QLabel(edit_path_edit,tr("Linux Post Export Cmd:"),this);
   label->setGeometry(10,178,155,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::ShowPrefix);
 
   //
   // Windows Export Path
@@ -224,7 +208,7 @@ EditReport::EditReport(QString rptname,QWidget *parent,const char *name)
   label=new QLabel(edit_winpath_edit,tr("Windows Export Path:"),this);
   label->setGeometry(10,199,155,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::ShowPrefix);
 
   //
   // Windows Post Export Command
@@ -235,7 +219,7 @@ EditReport::EditReport(QString rptname,QWidget *parent,const char *name)
   label=new QLabel(edit_path_edit,tr("Windows Post Export Cmd:"),this);
   label->setGeometry(10,219,155,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::ShowPrefix);
 
   //
   // Type Selectors
@@ -243,28 +227,28 @@ EditReport::EditReport(QString rptname,QWidget *parent,const char *name)
   label=new QLabel(tr("Export Event Types:"),this);
   label->setGeometry(10,240,155,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::ShowPrefix);
 
   edit_traffic_box=new QCheckBox(this);
   edit_traffic_box->setGeometry(170,242,15,15);
   edit_traffic_label=new QLabel(tr("Traffic"),this);
   edit_traffic_label->setGeometry(187,241,80,19);
   edit_traffic_label->setFont(check_font);
-  edit_traffic_label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  edit_traffic_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::ShowPrefix);
   
   edit_music_box=new QCheckBox(this);
   edit_music_box->setGeometry(270,243,15,15);
   edit_music_label=new QLabel(tr("Music"),this);
   edit_music_label->setGeometry(287,241,80,19);
   edit_music_label->setFont(check_font);
-  edit_music_label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  edit_music_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::ShowPrefix);
 
   edit_generic_box=new QCheckBox(this);
   edit_generic_box->setGeometry(370,243,15,15);
   label=new QLabel(tr("All"),this);
   label->setGeometry(387,241,80,19);
   label->setFont(check_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::ShowPrefix);
   connect(edit_generic_box,SIGNAL(toggled(bool)),
 	  this,SLOT(genericEventsToggledData(bool)));
 
@@ -274,21 +258,21 @@ EditReport::EditReport(QString rptname,QWidget *parent,const char *name)
   label=new QLabel(tr("Export Events From:"),this);
   label->setGeometry(10,262,155,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::ShowPrefix);
 
   edit_forcetraffic_box=new QCheckBox(this);
   edit_forcetraffic_box->setGeometry(170,264,15,15);
   label=new QLabel(tr("Traffic Log"),this);
   label->setGeometry(187,262,80,19);
   label->setFont(check_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::ShowPrefix);
   
   edit_forcemusic_box=new QCheckBox(this);
   edit_forcemusic_box->setGeometry(270,264,15,15);
   label=new QLabel(tr("Music Log"),this);
   label->setGeometry(287,262,80,19);
   label->setFont(check_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::ShowPrefix);
 
   //
   // Include Only On Air Events
@@ -300,7 +284,7 @@ EditReport::EditReport(QString rptname,QWidget *parent,const char *name)
   label=new QLabel(edit_onairflag_box,tr("Include Only OnAir Events:"),this);
   label->setGeometry(10,283,155,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::ShowPrefix);
 
   //
   // Daypart Filter
@@ -311,21 +295,23 @@ EditReport::EditReport(QString rptname,QWidget *parent,const char *name)
     new QLabel(edit_daypart_check,tr("Filter by Daypart"),this);
   edit_daypart_label->setGeometry(edit_daypart_check->geometry().x()+20,313,155,19);
   edit_daypart_label->setFont(font);
-  edit_daypart_label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  edit_daypart_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::ShowPrefix);
 
-  edit_starttime_edit=new QTimeEdit(this);
+  edit_starttime_edit=new QDateTimeEdit(this);
   edit_starttime_edit->setGeometry(150,334,80,20);
+  edit_starttime_edit->setDisplayFormat("hh:mm:ss");
   edit_starttime_label=new QLabel(edit_starttime_edit,tr("Start Time:"),this);
   edit_starttime_label->setGeometry(65,334,80,20);
   edit_starttime_label->setFont(font);
-  edit_starttime_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  edit_starttime_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::ShowPrefix);
 
-  edit_endtime_edit=new QTimeEdit(this);
+  edit_endtime_edit=new QDateTimeEdit(this);
   edit_endtime_edit->setGeometry(335,334,80,20);
+  edit_endtime_edit->setDisplayFormat("hh:mm:ss");
   edit_endtime_label=new QLabel(edit_endtime_edit,tr("End Time:"),this);
   edit_endtime_label->setGeometry(250,334,80,20);
   edit_endtime_label->setFont(font);
-  edit_endtime_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  edit_endtime_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::ShowPrefix);
 
   connect(edit_daypart_check,SIGNAL(toggled(bool)),
   	  edit_starttime_label,SLOT(setEnabled(bool)));
@@ -374,7 +360,7 @@ EditReport::EditReport(QString rptname,QWidget *parent,const char *name)
   label=new QLabel(edit_group_box,tr("Filter by Groups"),this);
   label->setGeometry(edit_group_box->geometry().x()+20,573,155,19);
   label->setFont(font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::ShowPrefix);
   connect(edit_group_box,SIGNAL(toggled(bool)),
 	  edit_group_sel,SLOT(setEnabled(bool)));
 
@@ -442,16 +428,15 @@ EditReport::EditReport(QString rptname,QWidget *parent,const char *name)
   edit_endtime_edit->setDisabled(ok);
   edit_daypart_check->setChecked(!ok);
 
-  sql=QString().sprintf("select SERVICE_NAME from REPORT_SERVICES \
-                         where REPORT_NAME=\"%s\"",
-			(const char *)edit_report->name());
+  sql=QString("select SERVICE_NAME from REPORT_SERVICES where ")+
+    "REPORT_NAME=\""+RDEscapeString(edit_report->name())+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     edit_service_sel->destInsertItem(q->value(0).toString());
   }
   delete q;
 
-  sql=QString().sprintf("select NAME from SERVICES");
+  sql=QString("select NAME from SERVICES");
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(edit_service_sel->destFindItem(q->value(0).toString())==0) {
@@ -460,16 +445,15 @@ EditReport::EditReport(QString rptname,QWidget *parent,const char *name)
   }
   delete q;
 
-  sql=QString().sprintf("select STATION_NAME from REPORT_STATIONS \
-                         where REPORT_NAME=\"%s\"",
-			(const char *)edit_report->name());
+  sql=QString("select STATION_NAME from REPORT_STATIONS where ")+
+    "REPORT_NAME=\""+RDEscapeString(edit_report->name())+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     edit_station_sel->destInsertItem(q->value(0).toString());
   }
   delete q;
 
-  sql=QString().sprintf("select NAME from STATIONS");
+  sql=QString("select NAME from STATIONS");
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(edit_station_sel->destFindItem(q->value(0).toString())==0) {
@@ -480,16 +464,15 @@ EditReport::EditReport(QString rptname,QWidget *parent,const char *name)
 
   edit_group_box->setChecked(edit_report->filterGroups());
   edit_group_sel->setEnabled(edit_report->filterGroups());
-  sql=QString().sprintf("select GROUP_NAME from REPORT_GROUPS \
-                         where REPORT_NAME=\"%s\"",
-			(const char *)edit_report->name());
+  sql=QString("select GROUP_NAME from REPORT_GROUPS where ")+
+    "REPORT_NAME=\""+RDEscapeString(edit_report->name())+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     edit_group_sel->destInsertItem(q->value(0).toString());
   }
   delete q;
 
-  sql=QString().sprintf("select NAME from GROUPS");
+  sql=QString("select NAME from GROUPS");
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(edit_group_sel->destFindItem(q->value(0).toString())==0) {
@@ -580,18 +563,15 @@ void EditReport::okData()
   // Add New Services
   //
   for(unsigned i=0;i<edit_service_sel->destCount();i++) {
-    sql=QString().sprintf("select SERVICE_NAME from REPORT_SERVICES \
-where REPORT_NAME=\"%s\" && SERVICE_NAME=\"%s\"",
-			  (const char *)edit_report->name(),
-			  (const char *)edit_service_sel->destText(i));
+    sql=QString("select SERVICE_NAME from REPORT_SERVICES where ")+
+      "(REPORT_NAME=\""+RDEscapeString(edit_report->name())+"\")&&"+
+      "(SERVICE_NAME=\""+RDEscapeString(edit_service_sel->destText(i))+"\")";
     q=new RDSqlQuery(sql);
     if(q->size()==0) {
       delete q;
-      sql=QString().
-	sprintf("insert into REPORT_SERVICES (REPORT_NAME,SERVICE_NAME) \
-                 values (\"%s\",\"%s\")",
-			    (const char *)edit_report->name(),
-			    (const char *)edit_service_sel->destText(i));
+      sql=QString("insert into REPORT_SERVICES set ")+
+	"REPORT_NAME=\""+RDEscapeString(edit_report->name())+"\","+
+	"SERVICE_NAME=\""+RDEscapeString(edit_service_sel->destText(i))+"\"";
       q=new RDSqlQuery(sql);
     }
     delete q;
@@ -600,11 +580,11 @@ where REPORT_NAME=\"%s\" && SERVICE_NAME=\"%s\"",
   //
   // Delete Old Services
   //
-  sql=QString().sprintf("delete from REPORT_SERVICES where REPORT_NAME=\"%s\"",
-			(const char *)edit_report->name());
+  sql=QString("delete from REPORT_SERVICES where ")+
+    "(REPORT_NAME=\""+RDEscapeString(edit_report->name())+"\")";
   for(unsigned i=0;i<edit_service_sel->destCount();i++) {
-    sql+=QString().sprintf(" && SERVICE_NAME<>\"%s\"",
-			   (const char *)edit_service_sel->destText(i));
+    sql+=QString("&&(SERVICE_NAME<>")+"\""+
+      RDEscapeString(edit_service_sel->destText(i))+"\")";
   }
   q=new RDSqlQuery(sql);
   delete q;
@@ -613,18 +593,15 @@ where REPORT_NAME=\"%s\" && SERVICE_NAME=\"%s\"",
   // Add New Stations
   //
   for(unsigned i=0;i<edit_station_sel->destCount();i++) {
-    sql=QString().sprintf("select STATION_NAME from REPORT_STATIONS \
-where REPORT_NAME=\"%s\" && STATION_NAME=\"%s\"",
-			  (const char *)edit_report->name(),
-			  (const char *)edit_station_sel->destText(i));
+    sql=QString("select STATION_NAME from REPORT_STATIONS where ")+
+      "(REPORT_NAME=\""+RDEscapeString(edit_report->name())+"\")&&"+
+      "(STATION_NAME=\""+RDEscapeString(edit_station_sel->destText(i))+"\")";
     q=new RDSqlQuery(sql);
     if(q->size()==0) {
       delete q;
-      sql=QString().
-	sprintf("insert into REPORT_STATIONS (REPORT_NAME,STATION_NAME) \
-                 values (\"%s\",\"%s\")",
-			    (const char *)edit_report->name(),
-			    (const char *)edit_station_sel->destText(i));
+      sql=QString("insert into REPORT_STATIONS set ")+
+	"REPORT_NAME=\""+RDEscapeString(edit_report->name())+"\","+
+	"STATION_NAME=\""+RDEscapeString(edit_station_sel->destText(i))+"\"";
       q=new RDSqlQuery(sql);
     }
     delete q;
@@ -633,11 +610,11 @@ where REPORT_NAME=\"%s\" && STATION_NAME=\"%s\"",
   //
   // Delete Old Stations
   //
-  sql=QString().sprintf("delete from REPORT_STATIONS where REPORT_NAME=\"%s\"",
-			(const char *)edit_report->name());
+  sql=QString("delete from REPORT_STATIONS where ")+
+    "(REPORT_NAME=\""+RDEscapeString(edit_report->name())+"\")";
   for(unsigned i=0;i<edit_station_sel->destCount();i++) {
-    sql+=QString().sprintf(" && STATION_NAME<>\"%s\"",
-			   (const char *)edit_station_sel->destText(i));
+    sql+=QString("&&(STATION_NAME<>")+"\""+
+      RDEscapeString(edit_station_sel->destText(i))+"\"";
   }
   q=new RDSqlQuery(sql);
   delete q;
@@ -646,18 +623,15 @@ where REPORT_NAME=\"%s\" && STATION_NAME=\"%s\"",
   // Add New Groups
   //
   for(unsigned i=0;i<edit_group_sel->destCount();i++) {
-    sql=QString().sprintf("select GROUP_NAME from REPORT_GROUPS \
-where REPORT_NAME=\"%s\" && GROUP_NAME=\"%s\"",
-			  (const char *)edit_report->name(),
-			  (const char *)edit_group_sel->destText(i));
+    sql=QString("select GROUP_NAME from REPORT_GROUPS where ")+
+      "(REPORT_NAME=\""+RDEscapeString(edit_report->name())+"\")&&"+
+      "(GROUP_NAME=\""+RDEscapeString(edit_group_sel->destText(i))+"\")";
     q=new RDSqlQuery(sql);
     if(q->size()==0) {
       delete q;
-      sql=QString().
-	sprintf("insert into REPORT_GROUPS (REPORT_NAME,GROUP_NAME) \
-                 values (\"%s\",\"%s\")",
-			    (const char *)edit_report->name(),
-			    (const char *)edit_group_sel->destText(i));
+      sql=QString("insert into REPORT_GROUPS set ")+
+	"REPORT_NAME=\""+RDEscapeString(edit_report->name())+"\","+
+	"GROUP_NAME=\""+RDEscapeString(edit_group_sel->destText(i))+"\"";
       q=new RDSqlQuery(sql);
     }
     delete q;
@@ -666,11 +640,11 @@ where REPORT_NAME=\"%s\" && GROUP_NAME=\"%s\"",
   //
   // Delete Old Groups
   //
-  sql=QString().sprintf("delete from REPORT_GROUPS where REPORT_NAME=\"%s\"",
-			(const char *)edit_report->name());
+  sql=QString("delete from REPORT_GROUPS where ")+
+    "(REPORT_NAME=\""+RDEscapeString(edit_report->name())+"\")";
   for(unsigned i=0;i<edit_group_sel->destCount();i++) {
-    sql+=QString().sprintf(" && GROUP_NAME<>\"%s\"",
-			   (const char *)edit_group_sel->destText(i));
+    sql+=QString("&&(GROUP_NAME<>")+"\""+
+      RDEscapeString(edit_group_sel->destText(i))+"\")";
   }
   q=new RDSqlQuery(sql);
   delete q;

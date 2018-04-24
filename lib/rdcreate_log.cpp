@@ -2,9 +2,7 @@
 //
 // Create a new, empty Rivendell log table.
 //
-//   (C) Copyright 2002-2014 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcreate_log.cpp,v 1.38.8.1.2.2 2014/06/24 18:27:04 cvs Exp $
+//   (C) Copyright 2002-2014,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -45,7 +43,7 @@ QString RDCreateLogTableSql(QString name)
     "SOURCE INT NOT NULL,"+
     "START_TIME int,"+
     "GRACE_TIME int default 0,"+
-    "CART_NUMBER INT UNSIGNED NOT NULL,"+
+    "CART_NUMBER INT UNSIGNED NOT NULL default 0,"+
     "TIME_TYPE INT NOT NULL,"+
     "POST_POINT enum('N','Y') default 'N',"+
     "TRANS_TYPE INT NOT NULL,"+
@@ -114,6 +112,8 @@ QString RDCreateReconciliationTableSql(QString name)
     "LABEL char(64),"+
     "CONDUCTOR char(64),"+
     "USAGE_CODE int,"+
+    "DESCRIPTION char(64),"+
+    "OUTCUE char(64),"+
     "ISRC char(12),"+
     "ISCI char(32),"+
     "STATION_NAME char(64),"+
@@ -139,12 +139,12 @@ QString RDCreateReconciliationTableSql(QString name)
 QString RDCreateStackTableSql(QString name)
 {
   QString sql;
-  sql=QString().sprintf("create table if not exists `%s_STACK` (\
-                         SCHED_STACK_ID int unsigned not null primary key,\
-                         CART int unsigned not null,\
-                         ARTIST varchar(255),\
-                         SCHED_CODES varchar(255),\
-                         SCHEDULED_AT datetime default '1000-01-01 00:00:00')",
-			(const char *)name.replace(" ","_"));
+  sql=QString("create table if not exists `")+
+    name.replace(" ","_")+"_STACK` ("+
+    "SCHED_STACK_ID int unsigned not null primary key,"+
+    "CART int unsigned not null,"+
+    "ARTIST varchar(255),"+
+    "SCHED_CODES varchar(255),"+
+    "SCHEDULED_AT datetime default '1000-01-01 00:00:00')";
   return sql;
 }

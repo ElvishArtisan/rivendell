@@ -2,9 +2,7 @@
 //
 // Convert Audio File Formats
 //
-//   (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdaudioconvert.cpp,v 1.14.2.3.2.1 2014/05/15 16:30:00 cvs Exp $
+//   (C) Copyright 2010-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,14 +18,17 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <stdint.h>
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/wait.h>
 #include <fcntl.h>
 #include <unistd.h>
 #include <math.h>
 #include <dlfcn.h>
 #include <errno.h>
+#include <unistd.h>
 
 #include <sndfile.h>
 #include <samplerate.h>
@@ -40,20 +41,25 @@
 #include <FLAC++/encoder.h>
 #include <rdflacdecode.h>
 #endif  // HAVE_FLAC
+#ifdef HAVE_MP4_LIBS
+#include <mp4v2/mp4v2.h>
+#include <neaacdec.h>
+#endif // HAVE_MP4_LIBS
 #include <id3/tag.h>
-#include <qfile.h>
+
+#include <QFile>
 
 #include <rd.h>
 #include <rdaudioconvert.h>
 #include <rdlibrary_conf.h>
+#include <rdcart.h>
 #include <rdconf.h>
 
 #define STAGE2_XFER_SIZE 2048
 #define STAGE2_BUFFER_SIZE 49152
 
-RDAudioConvert::RDAudioConvert(const QString &station_name,
-			       QObject *parent,const char *name)
-  : QObject(parent,name)
+RDAudioConvert::RDAudioConvert(const QString &station_name,QObject *parent)
+  : QObject(parent)
 {
   conv_start_point=-1;
   conv_end_point=-1;
@@ -62,7 +68,7 @@ RDAudioConvert::RDAudioConvert(const QString &station_name,
   conv_settings=NULL;
   conv_src_wavedata=new RDWaveData();
   conv_dst_wavedata=NULL;
-  RDLibraryConf *conf=new RDLibraryConf(station_name,0);
+  RDLibraryConf *conf=new RDLibraryConf(station_name);
   conv_src_converter=conf->srcConverter();
   delete conf;
 
@@ -105,9 +111,21 @@ RDWaveData *RDAudioConvert::sourceWaveData() const
 }
 
 
+QString RDAudioConvert::sourceRdxl() const
+{
+  return conv_src_rdxl;
+}
+
+
 void RDAudioConvert::setDestinationWaveData(RDWaveData *wavedata)
 {
   conv_dst_wavedata=wavedata;
+}
+
+
+void RDAudioConvert::setDestinationRdxl(const QString &xml)
+{
+  conv_dst_rdxl=xml;
 }
 
 
@@ -304,6 +322,11 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage1Convert(const QString &srcfile,
 
     case RDWaveFile::Flac:
       err=Stage1Flac(dstfile,wave);
+      delete wave;
+      return err;
+
+    case RDWaveFile::M4A:
+      err=Stage1M4A(dstfile,wave);
       delete wave;
       return err;
 
@@ -673,6 +696,165 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage1Mpeg(const QString &dstfile,
 #endif  // HAVE_MAD
 }
 
+// Based on libfaad's frontend/main.c, but using libmp4v2 for MP4 access.
+RDAudioConvert::ErrorCode RDAudioConvert::Stage1M4A(const QString &dstfile,
+						    RDWaveFile *wave) 
+{
+#ifdef HAVE_MP4_LIBS
+  SNDFILE *sf_dst=NULL;
+  SF_INFO sf_dst_info;
+  MP4FileHandle f;
+  MP4TrackId audioTrack;
+  MP4SampleId firstSample, lastSample;
+  uint32_t aacBufSize, aacConfigSize;
+  uint8_t *aacBuf, *aacConfigBuffer;
+  NeAACDecHandle hDecoder;
+  NeAACDecConfigurationPtr config;
+  unsigned long foundSampleRate;
+  unsigned char foundChannels;
+  RDAudioConvert::ErrorCode ret = RDAudioConvert::ErrorOk;
+
+  if(!dlmp4.load()) {
+    return RDAudioConvert::ErrorFormatNotSupported;
+  }
+
+  //
+  // Open source
+  //
+  f = dlmp4.MP4Read(wave->getName());
+  if(f == MP4_INVALID_FILE_HANDLE)
+    return RDAudioConvert::ErrorNoSource;
+
+  audioTrack = dlmp4.getMP4AACTrack(f);
+  firstSample = 1;
+  lastSample = dlmp4.MP4GetTrackNumberOfSamples(f, audioTrack);
+  if(conv_start_point > 0) {
+    
+    double startsecs = ((double)conv_start_point) / 1000;
+    MP4Timestamp startts = (MP4Timestamp)(startsecs * wave->getSamplesPerSec());
+    firstSample = dlmp4.MP4GetSampleIdFromTime(f, audioTrack, startts, /*need_sync=*/false);
+    if(firstSample == MP4_INVALID_SAMPLE_ID) {
+      ret = RDAudioConvert::ErrorInvalidSource;
+      goto out_mp4;
+    }
+
+  }
+
+  if(conv_end_point > 0) {
+
+    double stopsecs = ((double)conv_end_point) / 1000;
+    MP4Timestamp stopts = (MP4Timestamp)(stopsecs * wave->getSamplesPerSec());
+    lastSample = dlmp4.MP4GetSampleIdFromTime(f, audioTrack, stopts, /*need_sync=*/false);
+    if(lastSample == MP4_INVALID_SAMPLE_ID) {
+      ret = RDAudioConvert::ErrorInvalidSource;
+      goto out_mp4;
+    }
+
+  }
+
+  aacBufSize = dlmp4.MP4GetTrackMaxSampleSize(f, audioTrack);
+  aacBuf = (uint8_t*)malloc(aacBufSize);
+  if(!aacBufSize || !aacBuf) {
+    // Probably the source's fault for specifying a massive buffer.
+    ret = RDAudioConvert::ErrorInvalidSource;
+    goto out_mp4;
+  }
+
+  dlmp4.MP4GetTrackESConfiguration(f, audioTrack, &aacConfigBuffer, &aacConfigSize);
+  if(!aacConfigBuffer) {
+    ret = RDAudioConvert::ErrorInvalidSource;
+    goto out_mp4_buf;
+  }
+
+  //
+  // Open Destination
+  //
+  
+  memset(&sf_dst_info,0,sizeof(sf_dst_info));
+  sf_dst_info.format=SF_FORMAT_WAV|SF_FORMAT_FLOAT;
+  sf_dst_info.channels=wave->getChannels();
+  sf_dst_info.samplerate=wave->getSamplesPerSec();
+  if((sf_dst=sf_open(dstfile,SFM_WRITE,&sf_dst_info))==NULL) {
+    ret = RDAudioConvert::ErrorNoDestination;
+    goto out_mp4_configbuf;
+  }
+  sf_command(sf_dst,SFC_SET_NORM_DOUBLE,NULL,SF_FALSE);
+  
+  //
+  // Initialize Decoder
+  //
+  hDecoder = dlmp4.NeAACDecOpen();
+
+  config = dlmp4.NeAACDecGetCurrentConfiguration(hDecoder);
+  config->outputFormat = FAAD_FMT_FLOAT;
+  config->downMatrix = 1; // Downmix >2 channels to stereo.
+  if(!dlmp4.NeAACDecSetConfiguration(hDecoder, config)) {
+    ret = RDAudioConvert::ErrorInvalidSource;
+    goto out_decoder;
+  }
+
+  if(dlmp4.NeAACDecInit2(hDecoder, aacConfigBuffer, aacConfigSize, &foundSampleRate, &foundChannels) < 0) {
+    ret = RDAudioConvert::ErrorInvalidSource;
+    goto out_decoder;
+  }
+
+  if(foundSampleRate != wave->getSamplesPerSec() || foundChannels != wave->getChannels()) {
+    fprintf(stderr, "M4A header information inconsistent with actual file? Header: %u/%u; file: %lu/%u\n",
+	    wave->getSamplesPerSec(), (unsigned)wave->getChannels(), foundSampleRate, (unsigned)foundChannels);
+    ret = RDAudioConvert::ErrorInvalidSource;
+    goto out_decoder;
+  }
+
+  //
+  // Decode
+  //
+  for(MP4SampleId i = firstSample; i <= lastSample; ++i) {
+
+    uint32_t aacBytes = aacBufSize;
+    if(!dlmp4.MP4ReadSample(f, audioTrack, i, &aacBuf, &aacBytes, 0, 0, 0, 0)) {
+      ret = RDAudioConvert::ErrorInvalidSource;
+      break;
+    }
+
+    NeAACDecFrameInfo frameInfo;
+    // The library docs are not clear about the lifetime or cleanup of sample_buffer.
+    // I hope it lives until the next NeAACDecDecode call, and is cleaned up by NeAACDecClose
+    void* sample_buffer = dlmp4.NeAACDecDecode(hDecoder, &frameInfo, aacBuf, aacBytes);
+    if(!sample_buffer) {
+      ret = RDAudioConvert::ErrorInvalidSource;
+      break;
+    }
+
+    UpdatePeak((const float*)sample_buffer, frameInfo.samples);
+    
+    if(sf_write_float(sf_dst, (const float*)sample_buffer, frameInfo.samples) != (sf_count_t)frameInfo.samples) {
+      ret = RDAudioConvert::ErrorInternal;
+      break;
+    }
+
+  }
+
+  //
+  // Cleanup
+  //
+
+ out_decoder:
+  dlmp4.NeAACDecClose(hDecoder);
+  // out_sf: 
+  sf_close(sf_dst);
+ out_mp4_configbuf:
+  free(aacConfigBuffer);
+ out_mp4_buf:
+  free(aacBuf);
+ out_mp4:
+  dlmp4.MP4Close(f, 0);
+
+  return ret;
+  
+#else
+  return RDAudioConvert::ErrorFormatNotSupported;
+#endif
+}
 
 RDAudioConvert::ErrorCode RDAudioConvert::Stage1SndFile(const QString &dstfile,
 							SNDFILE *sf_src,
@@ -962,6 +1144,10 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage3Convert(const QString &srcfile,
   switch(conv_settings->format()) {
   case RDSettings::Pcm16:
     ret=Stage3Pcm16(src_sf,&src_sf_info,dstfile);
+    break;
+
+  case RDSettings::Pcm24:
+    ret=Stage3Pcm24(src_sf,&src_sf_info,dstfile);
     break;
 
   case RDSettings::MpegL2:
@@ -1430,8 +1616,9 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage3Layer2Wav(SNDFILE *src_sf,
   wave->setMextChunk(true);
   wave->setCartChunk(conv_dst_wavedata!=NULL);
   wave->setLevlChunk(true);
+  wave->setRdxlContents(conv_dst_rdxl);
   unlink(dstfile);
-  if(!wave->createWave(conv_dst_wavedata)) {
+  if(!wave->createWave(conv_dst_wavedata,conv_start_point)) {
     return RDAudioConvert::ErrorNoDestination;
   }
 
@@ -1612,12 +1799,12 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage3Pcm16(SNDFILE *src_sf,
 
   RDWaveFile *wave=new RDWaveFile(dstfile);
   wave->setFormatTag(WAVE_FORMAT_PCM);
-  wave->setEncoding(RDWaveFile::Signed16Int);
   wave->setChannels(src_sf_info->channels);
   wave->setSamplesPerSec(src_sf_info->samplerate);
   wave->setBitsPerSample(16);
   wave->setBextChunk(true);
   wave->setCartChunk(conv_dst_wavedata!=NULL);
+  wave->setRdxlContents(conv_dst_rdxl);
   if((conv_dst_wavedata!=NULL)&&(conv_settings->normalizationLevel()!=0)) {
     wave->setCartLevelRef(32768*
 	      exp10((double)conv_settings->normalizationLevel()/20.0));
@@ -1625,7 +1812,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage3Pcm16(SNDFILE *src_sf,
   wave->setLevlChunk(true);
   sf_buffer=new int16_t[2048*src_sf_info->channels];
   unlink(dstfile);
-  if(!wave->createWave(conv_dst_wavedata)) {
+  if(!wave->createWave(conv_dst_wavedata,conv_start_point)) {
     return RDAudioConvert::ErrorNoDestination;
   }
   while((n=sf_readf_short(src_sf,sf_buffer,2048))>0) {
@@ -1645,54 +1832,127 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage3Pcm16(SNDFILE *src_sf,
 }
 
 
+RDAudioConvert::ErrorCode RDAudioConvert::Stage3Pcm24(SNDFILE *src_sf,
+						      SF_INFO *src_sf_info,
+						      const QString &dstfile)
+{
+  int *sf_buffer=NULL;
+  uint8_t *pcm24=NULL;
+  ssize_t n;
+
+  RDWaveFile *wave=new RDWaveFile(dstfile);
+  wave->setFormatTag(WAVE_FORMAT_PCM);
+  wave->setChannels(src_sf_info->channels);
+  wave->setSamplesPerSec(src_sf_info->samplerate);
+  wave->setBitsPerSample(24);
+  wave->setBextChunk(true);
+  wave->setCartChunk(conv_dst_wavedata!=NULL);
+  wave->setRdxlContents(conv_dst_rdxl);
+  if((conv_dst_wavedata!=NULL)&&(conv_settings->normalizationLevel()!=0)) {
+    wave->setCartLevelRef(32768*
+	      exp10((double)conv_settings->normalizationLevel()/20.0));
+  }
+  wave->setLevlChunk(true);
+  sf_buffer=new int[2048*src_sf_info->channels];
+  pcm24=new uint8_t[2048*src_sf_info->channels*sizeof(int)];
+  unlink(dstfile);
+  if(!wave->createWave(conv_dst_wavedata,conv_start_point)) {
+    return RDAudioConvert::ErrorNoDestination;
+  }
+  while((n=sf_readf_int(src_sf,sf_buffer,2048))>0) {
+    for(ssize_t i=0;i<(n*src_sf_info->channels);i++) {
+      pcm24[3*i]=0xFF&(sf_buffer[i]>>8);
+      pcm24[3*i+1]=0xFF&(sf_buffer[i]>>16);
+      pcm24[3*i+2]=0xFF&(sf_buffer[i]>>24);
+    }
+    if((unsigned)wave->writeWave(pcm24,n*3*src_sf_info->channels)!=
+       (n*3*src_sf_info->channels)) {
+      delete sf_buffer;
+      delete pcm24;
+      wave->closeWave();
+      delete wave;
+      return RDAudioConvert::ErrorNoSpace;
+    }
+  }
+  delete sf_buffer;
+  delete pcm24;
+  wave->closeWave();
+  delete wave;
+  return RDAudioConvert::ErrorOk;
+}
+
+
 void RDAudioConvert::ApplyId3Tag(const QString &filename,RDWaveData *wavedata)
 {
   ID3_Tag *tag=new ID3_Tag(filename);
   ID3_Frame *frame=new ID3_Frame(ID3FID_TITLE);
-  frame->GetField(ID3FN_TEXT)->Set(wavedata->title());
+  frame->GetField(ID3FN_TEXT)->Set((const char *)wavedata->title().toUtf8());
   tag->AddNewFrame(frame);
 
   if(wavedata->beatsPerMinute()>0) {
     frame=new ID3_Frame(ID3FID_BPM);
-    frame->GetField(ID3FN_TEXT)->
-      Set(QString().sprintf("%d",wavedata->beatsPerMinute()));
+    frame->GetField(ID3FN_TEXT)->Set((const char *)QString().
+		       sprintf("%d",wavedata->beatsPerMinute()).toUtf8());
     tag->AddNewFrame(frame);
   }
   if(!wavedata->album().isEmpty()) {
     frame=new ID3_Frame(ID3FID_ALBUM);
-    frame->GetField(ID3FN_TEXT)->Set(wavedata->album());
+    frame->GetField(ID3FN_TEXT)->Set((const char *)wavedata->album().toUtf8());
     tag->AddNewFrame(frame);
   }
   if(!wavedata->composer().isEmpty()) {
     frame=new ID3_Frame(ID3FID_COMPOSER);
-    frame->GetField(ID3FN_TEXT)->Set(wavedata->composer());
+    frame->GetField(ID3FN_TEXT)->
+      Set((const char *)wavedata->composer().toUtf8());
     tag->AddNewFrame(frame);
   }
   if(!wavedata->copyrightNotice().isEmpty()) {
     frame=new ID3_Frame(ID3FID_COPYRIGHT);
-    frame->GetField(ID3FN_TEXT)->Set(wavedata->copyrightNotice());
+    frame->GetField(ID3FN_TEXT)->
+      Set((const char *)wavedata->copyrightNotice().toUtf8());
     tag->AddNewFrame(frame);
   }
   if(!wavedata->artist().isEmpty()) {
     frame=new ID3_Frame(ID3FID_LEADARTIST);
-    frame->GetField(ID3FN_TEXT)->Set(wavedata->artist());
+    frame->GetField(ID3FN_TEXT)->
+      Set((const char *)wavedata->artist().toUtf8());
     tag->AddNewFrame(frame);
   }
   if(!wavedata->publisher().isEmpty()) {
     frame=new ID3_Frame(ID3FID_PUBLISHER);
-    frame->GetField(ID3FN_TEXT)->Set(wavedata->publisher());
+    frame->GetField(ID3FN_TEXT)->
+      Set((const char *)wavedata->publisher().toUtf8());
+    tag->AddNewFrame(frame);
+  }
+  if(!wavedata->conductor().isEmpty()) {
+    frame=new ID3_Frame(ID3FID_CONDUCTOR);
+    frame->GetField(ID3FN_TEXT)->
+      Set((const char *)wavedata->conductor().toUtf8());
     tag->AddNewFrame(frame);
   }
   if(!wavedata->isrc().isEmpty()) {
     frame=new ID3_Frame(ID3FID_ISRC);
-    frame->GetField(ID3FN_TEXT)->Set(wavedata->isrc());
+    frame->GetField(ID3FN_TEXT)->
+      Set((const char *)wavedata->isrc().toUtf8());
     tag->AddNewFrame(frame);
   }
   if(wavedata->releaseYear()>0) {
     frame=new ID3_Frame(ID3FID_YEAR);
     frame->GetField(ID3FN_TEXT)->
-      Set(QString().sprintf("%d",wavedata->releaseYear()));
+      Set((const char *)QString().
+	  sprintf("%d",wavedata->releaseYear()).toUtf8());
     tag->AddNewFrame(frame);
+  }
+  RDCart *cart=new RDCart(wavedata->cartNumber());
+  if(cart->exists()) {
+    QString xml=
+      cart->xml(true,conv_start_point<0,conv_settings,wavedata->cutNumber());
+    frame=new ID3_Frame(ID3FID_USERTEXT);
+    frame->GetField(ID3FN_DESCRIPTION)->Set("rdxl");
+    frame->GetField(ID3FN_TEXTENC)->Set(ID3TE_NONE);
+    frame->GetField(ID3FN_TEXT)->Set((const char *)xml.toUtf8());
+    tag->AddNewFrame(frame);
+    delete cart;
   }
   tag->Update();
   delete tag;

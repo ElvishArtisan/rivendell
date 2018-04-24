@@ -2,9 +2,7 @@
 //
 // A Rivendell switcher driver for the Logitek vGuest Protocol
 //
-//   (C) Copyright 2002-2005 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: vguest.cpp,v 1.36.8.3 2013/11/07 23:00:00 cvs Exp $
+//   (C) Copyright 2002-2005,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,12 +23,14 @@
 #include <qsignalmapper.h>
 
 #include <rddb.h>
-#include <globals.h>
-#include <vguest.h>
+#include <rdescape_string.h>
+
+#include "globals.h"
+#include "vguest.h"
 
 
-VGuest::VGuest(RDMatrix *matrix,QObject *parent,const char *name)
-  : Switcher(matrix,parent,name)
+VGuest::VGuest(RDMatrix *matrix,QObject *parent)
+  : Switcher(matrix,parent)
 {
   RDTty *tty;
   QString sql;
@@ -73,9 +73,14 @@ VGuest::VGuest(RDMatrix *matrix,QObject *parent,const char *name)
   //
   // Load Engine Data - Inputs
   //
-  sql=QString().sprintf("select NUMBER,ENGINE_NUM,DEVICE_NUM from INPUTS where\
-                         (STATION_NAME=\"%s\")&&(MATRIX=%d) order by NUMBER",
-			(const char *)matrix->station(),matrix->matrix());
+  sql=QString("select ")+
+    "NUMBER,"+
+    "ENGINE_NUM,"+
+    "DEVICE_NUM "+
+    "from INPUTS where "+
+    "(STATION_NAME=\""+RDEscapeString(matrix->station())+"\")&&"+
+    QString().sprintf("(MATRIX=%d) ",matrix->matrix())+
+    "order by NUMBER";
   q=new RDSqlQuery(sql);
   n=1;
   while(q->next()) {
@@ -93,10 +98,14 @@ VGuest::VGuest(RDMatrix *matrix,QObject *parent,const char *name)
   //
   // Load Engine Data - Outputs
   //
-  sql=
-    QString().sprintf("select NUMBER,ENGINE_NUM,DEVICE_NUM from OUTPUTS where\
-                       (STATION_NAME=\"%s\")&&(MATRIX=%d) order by NUMBER",
-		      (const char *)matrix->station(),matrix->matrix());
+sql=QString("select ")+
+  "NUMBER,"+
+  "ENGINE_NUM,"+
+  "DEVICE_NUM "+
+  "from OUTPUTS where "+
+  "(STATION_NAME=\""+RDEscapeString(matrix->station())+"\")&&"+
+  QString().sprintf("(MATRIX=%d) ",matrix->matrix())+
+  "order by NUMBER";
   q=new RDSqlQuery(sql);
   n=1;
   while(q->next()) {
@@ -114,13 +123,17 @@ VGuest::VGuest(RDMatrix *matrix,QObject *parent,const char *name)
   //
   // Load Engine Data - Relays
   //
-  sql=
-    QString().sprintf("select NUMBER,ENGINE_NUM,DEVICE_NUM,SURFACE_NUM,\
-                       RELAY_NUM from VGUEST_RESOURCES where\
-                       (STATION_NAME=\"%s\")&&(MATRIX_NUM=%d)&&\
-                       (VGUEST_TYPE=%d) order by NUMBER",
-		      (const char *)matrix->station(),matrix->matrix(),
-		      RDMatrix::VguestTypeRelay);
+sql=QString("select ")+
+  "NUMBER,"+
+  "ENGINE_NUM,"+
+  "DEVICE_NUM,"+
+  "SURFACE_NUM,"+
+  "RELAY_NUM "+
+  "from VGUEST_RESOURCES where "+
+  "(STATION_NAME=\""+RDEscapeString(matrix->station())+"\")&&",
+  QString().sprintf("(MATRIX_NUM=%d)&&",matrix->matrix())+
+  QString().sprintf("(VGUEST_TYPE=%d) ",RDMatrix::VguestTypeRelay)+
+  "order by NUMBER";
   q=new RDSqlQuery(sql);
   n=1;
   while(q->next()) {
@@ -142,13 +155,16 @@ VGuest::VGuest(RDMatrix *matrix,QObject *parent,const char *name)
   //
   // Load Engine Data - Displays
   //
-  sql=
-    QString().sprintf("select NUMBER,ENGINE_NUM,DEVICE_NUM,SURFACE_NUM\
-                       from VGUEST_RESOURCES where\
-                       (STATION_NAME=\"%s\")&&(MATRIX_NUM=%d)&&\
-                       (VGUEST_TYPE=%d) order by NUMBER",
-		      (const char *)matrix->station(),matrix->matrix(),
-		      RDMatrix::VguestTypeDisplay);
+  sql=QString("select ")+
+    "NUMBER,"+
+    "ENGINE_NUM,"+
+    "DEVICE_NUM,"+
+    "SURFACE_NUM "+
+    "from VGUEST_RESOURCES where "+
+    "(STATION_NAME=\""+RDEscapeString(matrix->station())+"\")&&"+
+    QString().sprintf("(MATRIX_NUM=%d)&&",matrix->matrix())+
+    QString().sprintf("(VGUEST_TYPE=%d) ",RDMatrix::VguestTypeDisplay)+
+    "order by NUMBER";
   q=new RDSqlQuery(sql);
   n=1;
   while(q->next()) {
@@ -210,14 +226,14 @@ VGuest::VGuest(RDMatrix *matrix,QObject *parent,const char *name)
   //
   for(int i=0;i<2;i++) {
     if(vguest_porttype[i]==RDMatrix::TtyPort) {
-      tty=new RDTty(rdstation->name(),matrix->port((RDMatrix::Role)i));
+      tty=new RDTty(rda->station()->name(),matrix->port((RDMatrix::Role)i));
       vguest_device[i]=new RDTTYDevice();
       if(tty->active()) {
 	vguest_device[i]->setName(tty->port());
 	vguest_device[i]->setSpeed(tty->baudRate());
 	vguest_device[i]->setWordLength(tty->dataBits());
 	vguest_device[i]->setParity(tty->parity());
-	vguest_device[i]->open(IO_Raw|IO_ReadWrite);
+	vguest_device[i]->open(QIODevice::Unbuffered|QIODevice::ReadWrite);
       }
       delete tty;
     }
@@ -519,8 +535,8 @@ void VGuest::errorData(int err,int id)
 {
   int interval=VGUEST_RECONNECT_MIN_INTERVAL;
 
-  switch((QSocket::Error)err) {
-      case QSocket::ErrConnectionRefused:
+  switch((Q3Socket::Error)err) {
+      case Q3Socket::ErrConnectionRefused:
 	interval=GetHoldoff();
 	if(!vguest_error_notified[id]) {
 	  LogLine(RDConfig::LogNotice,QString().sprintf(
@@ -532,7 +548,7 @@ void VGuest::errorData(int err,int id)
 	vguest_reconnect_timer[id]->start(interval,true);
 	break;
 
-      case QSocket::ErrHostNotFound:
+      case Q3Socket::ErrHostNotFound:
 	if(!vguest_error_notified[id]) {
 	  LogLine(RDConfig::LogWarning,QString().sprintf(
 	    "Error on connection to vGuest device at %s:%d: Host Not Found",
@@ -542,7 +558,7 @@ void VGuest::errorData(int err,int id)
 	}
 	break;
 
-      case QSocket::ErrSocketRead:
+      case Q3Socket::ErrSocketRead:
 	if(!vguest_error_notified[id]) {
 	  LogLine(RDConfig::LogWarning,QString().sprintf(
 	    "Error on connection to vGuest device at %s:%d: Socket Read Error",
@@ -756,7 +772,7 @@ QString VGuest::PadString(QString str,unsigned len)
 {
   QString out;
   out=str.left(len);
-  while(out.length()<len) {
+  while(out.length()<(int)len) {
     out+=" ";
   }
   return out;
@@ -808,7 +824,7 @@ void VGuest::ExecuteMacroCart(unsigned cartnum)
   RDMacro rml;
   rml.setRole(RDMacro::Cmd);
   rml.setCommand(RDMacro::EX);
-  rml.setAddress(rdstation->address());
+  rml.setAddress(rda->station()->address());
   rml.setEchoRequested(false);
   rml.setArgQuantity(1);
   rml.setArg(0,cartnum);

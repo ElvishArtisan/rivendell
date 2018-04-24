@@ -2,9 +2,7 @@
 //
 // A Rivendell switcher driver for the BroadcastTools SRC-16
 //
-//   (C) Copyright 2002-2005,2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: btsrc16.h,v 1.3 2010/08/03 23:39:25 cvs Exp $
+//   (C) Copyright 2002-2005,2010,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -35,12 +33,11 @@
 #define BTSRC16_POLL_INTERVAL 100
 #define BTSRC16_GPIO_PINS 16
 
-
 class BtSrc16 : public Switcher
 {
  Q_OBJECT
  public:
-  BtSrc16(RDMatrix *matrix,QObject *parent=0,const char *name=0);
+  BtSrc16(RDMatrix *matrix,QObject *parent=0);
   ~BtSrc16();
   RDMatrix::Type type();
   unsigned gpiQuantity();

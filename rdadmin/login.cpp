@@ -2,9 +2,7 @@
 //
 // Login widget for RDAdmin.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: login.cpp,v 1.14 2010/07/29 19:32:35 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,37 +18,22 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <math.h>
+#include <QPushButton>
+#include <QLabel>
+#include <QMessageBox>
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <qradiobutton.h>
-#include <qlineedit.h>
-#include <qtextedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qbuttongroup.h>
+#include "login.h"
 
-#include <rdtextvalidator.h>
-
-#include <login.h>
-
-
-Login::Login(QString *username,QString *password,QWidget *parent,
-	     const char *name)  : QDialog(parent,name,true)
+Login::Login(QString *username,QString *password,QWidget *parent)
+  : QDialog(parent)
 {
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
-  setCaption(tr("Login"));
+  setWindowTitle("RDAdmin - "+tr("Login"));
   login_name=username;
   login_password=password;
 
@@ -61,14 +44,9 @@ Login::Login(QString *username,QString *password,QWidget *parent,
   font.setPixelSize(12);
 
   //
-  // Text Validator
-  //
-  RDTextValidator *validator=new RDTextValidator(this,"validator");
-
-  //
   // OK Button
   //
-  QPushButton *ok_button=new QPushButton(this,"ok_button");
+  QPushButton *ok_button=new QPushButton(this);
   ok_button->setGeometry(10,60,100,55);
   ok_button->setFont(font);
   ok_button->setText(tr("&OK"));
@@ -76,9 +54,9 @@ Login::Login(QString *username,QString *password,QWidget *parent,
   connect(ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
-  // CANCEL Button
+  // Cancel Button
   //
-  QPushButton *cancel_button=new QPushButton(this,"cancel_button");
+  QPushButton *cancel_button=new QPushButton(this);
   cancel_button->setGeometry(120,60,100,55);
   cancel_button->setFont(font);
   cancel_button->setText(tr("&Cancel"));
@@ -87,30 +65,27 @@ Login::Login(QString *username,QString *password,QWidget *parent,
   //
   // Login Name
   //
-  login_name_edit=new QLineEdit(this,"login_name_edit");
+  login_name_edit=new QLineEdit(this);
   login_name_edit->setGeometry(100,10,100,19);
   login_name_edit->setMaxLength(16);
   login_name_edit->setFocus();
-  login_name_edit->setValidator(validator);
-  QLabel *login_name_label=new QLabel(login_name_edit,tr("User &Name:"),this,
-				       "login_name_label");
+  QLabel *login_name_label=new QLabel(login_name_edit,tr("User &Name:"),this);
   login_name_label->setGeometry(10,10,85,19);
   login_name_label->setFont(font);
-  login_name_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  login_name_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Login Password
   //
-  login_password_edit=new QLineEdit(this,"login_password_edit");
+  login_password_edit=new QLineEdit(this);
   login_password_edit->setGeometry(100,31,100,19);
   login_password_edit->setMaxLength(16);
   login_password_edit->setEchoMode(QLineEdit::Password);
-  login_password_edit->setValidator(validator);
-  QLabel *login_password_label=new QLabel(login_password_edit,tr("&Password:"),
-					  this,"login_password_label");
+  QLabel *login_password_label=
+    new QLabel(login_password_edit,tr("&Password:"),this);
   login_password_label->setGeometry(10,31,85,19);
   login_password_label->setFont(font);
-  login_password_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  login_password_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
 }
 
@@ -145,12 +120,4 @@ void Login::okData()
 void Login::cancelData()
 {
   done(1);
-}
-
-
-void Login::paintEvent(QPaintEvent *paintevent)
-{
-  QPainter *p=new QPainter(this);
-    
-  p->end();
 }

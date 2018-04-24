@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>AddMeta</name>
     <message>
@@ -401,6 +403,14 @@ die für den gewählten Service ungültig sind!</translation>
         <source>EXT DATA</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Link Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Len</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditLogLine</name>
@@ -713,7 +723,7 @@ Gruppe des ausgewählten Service!</translation>
     </message>
     <message>
         <source>Can&apos;t Connect</source>
-        <translation>Kann nicht verbinden</translation>
+        <translation type="obsolete">Kann nicht verbinden</translation>
     </message>
     <message>
         <source>LOG NAME</source>
@@ -842,15 +852,6 @@ Fortfahren?</translation>
         <translation>Kann Logdatei nicht löschen, Audiolöschfehler!</translation>
     </message>
     <message>
-        <source>RDLogEdit -- Database Skew</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>This version of RDLogEdit is incompatible with the version installed on the server.
-See your system administrator for an update!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Host</source>
         <translation type="unfinished"></translation>
     </message>
@@ -872,6 +873,10 @@ See your system administrator for an update!</source>
     </message>
     <message>
         <source>Clear</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show Only Recent Logs</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

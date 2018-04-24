@@ -2,9 +2,7 @@
 //
 // A utility for sending RML Commands
 //
-//   (C) Copyright 2002-2005 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rmlsend.cpp,v 1.7.8.4 2014/01/21 21:59:34 cvs Exp $
+//   (C) Copyright 2002-2005,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -32,11 +30,11 @@
 #include <qpushbutton.h>
 #include <qlineedit.h>
 #include <qfont.h>
-#include <qsocketdevice.h>
+#include <q3socketdevice.h>
 #include <qhostaddress.h>
 #include <qmessagebox.h>
 #include <qtimer.h>
-#include <qtextstream.h>
+#include <q3textstream.h>
 #include <qrect.h>
 #include <qpoint.h>
 #include <qpainter.h>
@@ -45,6 +43,8 @@
 #include <qtextcodec.h>
 #include <qtranslator.h>
 #include <qsettings.h>
+//Added by qt3to4:
+#include <QPixmap>
 
 #include <rdcmd_switch.h>
 
@@ -72,9 +72,8 @@
 //
 RDCmdSwitch *rdcmdswitch=NULL;
 
-
-MainWidget::MainWidget(QWidget *parent,const char *name)
-  :QMainWindow(parent,name)
+MainWidget::MainWidget(QWidget *parent)
+  :Q3MainWindow(parent)
 {
   //
   // Set Window Size
@@ -109,7 +108,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   QLabel *label=new QLabel(host,"Sent To:",this,"host_label");
   label->setGeometry(10,16,65,14);
   label->setFont(label_font);
-  label->setAlignment(AlignRight);
+  label->setAlignment(Qt::AlignRight);
   for(unsigned i=0;i<rdcmdswitch->keys();i++) {
     if(rdcmdswitch->key(i)=="--to-host") {
       rdcmdswitch->setProcessed(i,true);
@@ -123,7 +122,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   label=new QLabel(port_box,"Dest:",this,"port_label");
   label->setGeometry(270,16,30,14);
   label->setFont(label_font);
-  label->setAlignment(AlignRight);
+  label->setAlignment(Qt::AlignRight);
   port_box->insertItem(tr("RML"));
   port_box->insertItem(tr("RML (no echo)"));
   port_box->insertItem(tr("Set Port"));
@@ -137,7 +136,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   port_edit_label=new QLabel(port_edit,tr("UDP Port:"),this,"port_edit_label");
   port_edit_label->setGeometry(sizeHint().width()-130,16,65,14);
   port_edit_label->setFont(label_font);
-  port_edit_label->setAlignment(AlignRight);
+  port_edit_label->setAlignment(Qt::AlignRight);
   port_edit_label->setDisabled(true);
 
   command=new QLineEdit(this,"command");
@@ -146,7 +145,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   label=new QLabel(command,tr("Command:"),this,"host_label");
   label->setGeometry(10,46,65,14);
   label->setFont(label_font);
-  label->setAlignment(AlignRight);
+  label->setAlignment(Qt::AlignRight);
 
   response=new QLineEdit(this,"response");
   response->setGeometry(80,70,sizeHint().width()-90,25);
@@ -154,7 +153,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   response_label=new QLabel(response,tr("Response:"),this,"response_label");
   response_label->setGeometry(10,76,65,14);
   response_label->setFont(label_font);
-  response_label->setAlignment(AlignRight);
+  response_label->setAlignment(Qt::AlignRight);
 
   send=new QPushButton(tr("&Send Command"),this,"send");
   send->setGeometry(10,sizeHint().height()-50,120,40);
@@ -167,9 +166,9 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   quit->setDefault(true);
   connect(quit,SIGNAL(clicked()),qApp,SLOT(quit()));
 
-  udp_command=new QSocketDevice(QSocketDevice::Datagram);
+  udp_command=new Q3SocketDevice(Q3SocketDevice::Datagram);
 
-  udp_response=new QSocketDevice(QSocketDevice::Datagram);
+  udp_response=new Q3SocketDevice(Q3SocketDevice::Datagram);
   udp_response->bind(QHostAddress(),RD_RML_REPLY_PORT);
   udp_response->setBlocking(false);
 
@@ -457,7 +456,7 @@ bool MainObject::GetNextChar(char *c)
 void MainObject::ProcessCommands()
 {
   char c;
-  QSocketDevice *udp_command=new QSocketDevice(QSocketDevice::Datagram);
+  Q3SocketDevice *udp_command=new Q3SocketDevice(Q3SocketDevice::Datagram);
   char rml[RD_RML_MAX_LENGTH];
   unsigned ptr=0;
   bool active=false;
@@ -512,7 +511,7 @@ int main(int argc,char *argv[])
   if(cli_mode) {
 #ifndef WIN32
     QApplication a(argc,argv,false);
-    new MainObject(NULL,"main");
+    new MainObject();
     return a.exec();
 #endif  // WIN32
   }
@@ -522,6 +521,7 @@ int main(int argc,char *argv[])
     //
     // Load Translations
     //
+    /*
     QString tr_path;
     QString qt_path;
 #ifdef WIN32
@@ -550,11 +550,11 @@ int main(int argc,char *argv[])
     QTranslator tr(0);
     tr.load(tr_path+QString("rmlsend_")+QTextCodec::locale(),".");
     a.installTranslator(&tr);
-
+    */
     //
     // Start Event Loop
     //
-    MainWidget *w=new MainWidget(NULL,"main");
+    MainWidget *w=new MainWidget();
     a.setMainWidget(w);
     w->show();
     return a.exec();

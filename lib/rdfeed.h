@@ -2,9 +2,7 @@
 //
 // Abstract a Rivendell RSS Feed
 //
-//   (C) Copyright 2002-2007 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdfeed.h,v 1.9.4.1 2013/11/13 23:36:33 cvs Exp $
+//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,6 +18,9 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#ifndef RDFEED_H
+#define RDFEED_H
+
 #include <qsqldatabase.h>
 #include <qobject.h>
 
@@ -28,8 +29,12 @@
 #include <rdstation.h>
 #include <rdsettings.h>
 
-#ifndef RDFEED_H
-#define RDFEED_H
+//
+// Default XML Templates
+//
+#define DEFAULT_HEADER_XML "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n<rss version=\"2.0\">"
+#define DEFAULT_CHANNEL_XML "<title>%TITLE%</title>\n<description>%DESCRIPTION%</description>\n<category>%CATEGORY%</category>\n<link>%LINK%</link>\n<language>%LANGUAGE%</language>\n<copyright>%COPYRIGHT%</copyright>\n<lastBuildDate>%BUILD_DATE%</lastBuildDate>\n<pubDate>%PUBLISH_DATE%</pubDate>\n<webMaster>%WEBMASTER%</webMaster>\n<generator>%GENERATOR%</generator>"
+#define DEFAULT_ITEM_XML "<title>%ITEM_TITLE%</title>\n<link>%ITEM_LINK%</link>\n<guid isPermaLink=\"false\">%ITEM_GUID%</guid>\n<description>%ITEM_DESCRIPTION%</description>\n<author>%ITEM_AUTHOR%</author>\n<comments>%ITEM_COMMENTS%</comments>\n<source url=\"%ITEM_SOURCE_URL%\">%ITEM_SOURCE_TEXT%</source>\n<enclosure url=\"%ITEM_AUDIO_URL%\" length=\"%ITEM_AUDIO_LENGTH%\"  type=\"audio/mpeg\" />\n<category>%ITEM_CATEGORY%</category>\n<pubDate>%ITEM_PUBLISH_DATE%</pubDate>"
 
 #define RDFEED_TOTAL_POST_STEPS 4
 
@@ -40,8 +45,8 @@ class RDFeed : public QObject
   enum Error {ErrorOk=0,ErrorNoFile=1,ErrorCannotOpenFile=2,
 	      ErrorUnsupportedType=3,ErrorUploadFailed=4,ErrorGeneral=5};
   enum MediaLinkMode {LinkNone=0,LinkDirect=1,LinkCounted=2};
-  RDFeed(const QString &keyname,QObject *parent=0,const char *name=0);
-  RDFeed(unsigned id,QObject *parent=0,const char *name=0);
+  RDFeed(const QString &keyname,QObject *parent=0);
+  RDFeed(unsigned id,QObject *parent=0);
   QString keyName() const;
   unsigned id() const;
   bool exists() const;
@@ -115,7 +120,10 @@ class RDFeed : public QObject
   unsigned postFile(RDStation *station,const QString &srcfile,Error *err,
 		    bool log_debug,RDConfig *config);
   int totalPostSteps() const;
+  static int create(const QString &keyname,bool allow_all_users);
+  static void remove(const QString &keyname,QString *errs=NULL);
   static QString errorString(RDFeed::Error err);
+  static QString tableName(const QString &keyname);
 
  signals:
   void postProgressChanged(int step);
@@ -125,6 +133,8 @@ class RDFeed : public QObject
   QString GetTempFilename() const;
   void SetRow(const QString &param,int value) const;
   void SetRow(const QString &param,const QString &value) const;
+  void SetRow(const QString &param,const QDateTime &value,
+              const QString &format) const;
   QString feed_keyname;
   unsigned feed_id;
 };

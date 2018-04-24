@@ -2,9 +2,7 @@
 //
 // A utility for sending RML Commands
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdsoftkeys.h,v 1.5 2010/07/29 19:32:40 cvs Exp $
+//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,11 +23,13 @@
 
 #include <vector>
 
-#include <qmainwindow.h>
+#include <q3mainwindow.h>
 #include <qsize.h>
 #include <qsizepolicy.h>
 #include <qpixmap.h>
-#include <qsocketdevice.h>
+#include <q3socketdevice.h>
+//Added by qt3to4:
+#include <QCloseEvent>
 
 #include <rdmacro.h>
 
@@ -39,11 +39,11 @@
 #define RDSOFTKEYS_USAGE "[--map-file=<filename>]\n\nWhere <filename> is the name of the file load soft key definitions from.\nThe default value is master Rivendell configuration file.\n"
 #define RDSOFTKEYS_DEFAULT_COLUMNS 1
 
-class MainWidget : public QMainWindow
+class MainWidget : public Q3MainWindow
 {
   Q_OBJECT
  public:
-  MainWidget(QWidget *parent=0,const char *name=0);
+  MainWidget(QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
   
@@ -54,7 +54,7 @@ class MainWidget : public QMainWindow
  private:
   QString WrapText(QWidget *w,const QString &text);
   QPixmap *key_icon_map;
-  QSocketDevice *key_socket;
+  Q3SocketDevice *key_socket;
   unsigned key_columns;
   unsigned key_ysize;
   std::vector<QString> key_macros;

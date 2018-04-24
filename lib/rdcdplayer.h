@@ -2,9 +2,7 @@
 //
 // Abstract a Linux CDROM Device.
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdcdplayer.h,v 1.4.8.2 2014/01/10 18:52:24 cvs Exp $
+//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -50,7 +48,7 @@ class RDCdPlayer : public QObject
 		Xa21=CDS_XA_2_1,Xa22=CDS_XA_2_2,Mixed=CDS_MIXED};
    enum State {NoStateInfo=0,Stopped=1,Playing=2,Paused=3};
    enum PlayMode {Single=0,Continuous=1};
-   RDCdPlayer(FILE *profile_msgs,QWidget *parent=0,const char *name=0);
+   RDCdPlayer(FILE *profile_msgs,QWidget *parent=0);
    ~RDCdPlayer();
    QString device() const;
    void setDevice(QString device);

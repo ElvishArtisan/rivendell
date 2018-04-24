@@ -2,9 +2,7 @@
 //
 //   An label widget with word wrap.
 //
-//   (C) Copyright 2002 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdlabel.h,v 1.3 2010/07/29 19:32:33 cvs Exp $
+//   (C) Copyright 2002,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -26,22 +24,20 @@
 
 #include <qwidget.h>
 #include <qlabel.h>
-#include <qrangecontrol.h>
+#include <q3rangecontrol.h>
 #include <qcolor.h>
 #include <qpalette.h>
 #include <qsize.h>
 #include <qpixmap.h>
-
 
 class RDLabel : public QLabel
 {
   Q_OBJECT
 
  public:
-  RDLabel(QWidget *parent=0,const char *name=0,WFlags f=0);
-  RDLabel(const QString &text,QWidget *parent,const char *name,WFlags f=0);
-  RDLabel(QWidget *buddy,const QString &text,QWidget *parent,const char *name,
-	  WFlags f=0);
+  RDLabel(QWidget *parent=0,Qt::WFlags f=0);
+  RDLabel(const QString &text,QWidget *parent,Qt::WFlags f=0);
+  RDLabel(QWidget *buddy,const QString &text,QWidget *parent,Qt::WFlags f=0);
   QString text() const;
   void setFont(const QFont &font);
   bool wordWrapEnabled() const;

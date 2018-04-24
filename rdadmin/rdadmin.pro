@@ -1,29 +1,26 @@
-// rdadmin.pro
-//
-// The QMake project file for RDAdmin.
-//
-// (C) Copyright 2003-2005 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdadmin.pro,v 1.14.2.5 2013/02/21 02:46:25 cvs Exp $
-//
-//   This program is free software; you can redistribute it and/or modify
-//   it under the terms of the GNU General Public License version 2 as
-//   published by the Free Software Foundation.
-//
-//   This program is distributed in the hope that it will be useful,
-//   but WITHOUT ANY WARRANTY; without even the implied warranty of
-//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//   GNU General Public License for more details.
-//
-//   You should have received a copy of the GNU General Public
-//   License along with this program; if not, write to the Free Software
-//   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+# rdadmin.pro
+#
+# The QMake project file for RDAdmin.
+#
+# (C) Copyright 2003-2005,2016 Fred Gleason <fredg@paravelsystems.com>
+#
+#   This program is free software; you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License version 2 as
+#   published by the Free Software Foundation.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public
+#   License along with this program; if not, write to the Free Software
+#   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 TEMPLATE = app
 
 x11 {
   SOURCES += add_aux_field.cpp
-  SOURCES += add_encoder.cpp
   SOURCES += add_feed.cpp
   SOURCES += add_group.cpp
   SOURCES += add_hostvar.cpp
@@ -41,7 +38,6 @@ x11 {
   SOURCES += edit_cartslots.cpp
   SOURCES += edit_decks.cpp
   SOURCES += edit_dropbox.cpp
-  SOURCES += edit_encoder.cpp
   SOURCES += edit_endpoint.cpp
   SOURCES += edit_feed.cpp
   SOURCES += edit_feed_perms.cpp
@@ -72,7 +68,6 @@ x11 {
   SOURCES += info_dialog.cpp
   SOURCES += list_aux_fields.cpp
   SOURCES += list_dropboxes.cpp
-  SOURCES += list_encoders.cpp
   SOURCES += list_endpoints.cpp
   SOURCES += list_feeds.cpp
   SOURCES += list_gpis.cpp
@@ -99,7 +94,6 @@ x11 {
 
 x11 {
   HEADERS += add_aux_field.h
-  HEADERS += add_encoder.h
   HEADERS += add_feed.h
   HEADERS += add_group.h
   HEADERS += add_hostvar.h
@@ -117,7 +111,6 @@ x11 {
   HEADERS += edit_cartslots.h
   HEADERS += edit_decks.h
   HEADERS += edit_dropbox.h
-  HEADERS += edit_encoder.h
   HEADERS += edit_endpoint.h
   HEADERS += edit_feed.h
   HEADERS += edit_feed_perms.h
@@ -148,7 +141,6 @@ x11 {
   HEADERS += info_dialog.h
   HEADERS += list_aux_fields.h
   HEADERS += list_dropboxes.h
-  HEADERS += list_encoders.h
   HEADERS += list_endpoints.h
   HEADERS += list_feeds.h
   HEADERS += list_gpis.h

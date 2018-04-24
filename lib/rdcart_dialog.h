@@ -2,9 +2,7 @@
 //
 // A widget to select a Rivendell Cart.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcart_dialog.h,v 1.21.4.3 2014/02/11 23:46:25 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,13 +25,13 @@
 #include <qlineedit.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
-#include <qprogressdialog.h>
+#include <q3progressdialog.h>
 #include <qcheckbox.h>
+//Added by qt3to4:
+#include <QPixmap>
+#include <QResizeEvent>
+#include <QCloseEvent>
 
-#include <rdcae.h>
-#include <rdconfig.h>
-#include <rdripc.h>
-#include <rdsystem.h>
 #include <rdsimpleplayer.h>
 #include <rdlistviewitem.h>
 #include <rdcart.h>
@@ -48,9 +46,8 @@ class RDCartDialog : public QDialog
 {
  Q_OBJECT
  public:
-  RDCartDialog(QString *filter,QString *group,QString *schedcode,
-	       RDCae *cae,RDRipc *ripc,RDStation *station,RDSystem *system,
-	       RDConfig *config,QWidget *parent=0);
+ RDCartDialog(QString *filter,QString *group,QString *schedcode,
+	      QWidget *parent=0);
 
   ~RDCartDialog();
   QSize sizeHint() const;
@@ -68,8 +65,8 @@ class RDCartDialog : public QDialog
   void groupActivatedData(const QString &group);
   void schedcodeActivatedData(const QString &schedcode);
   void limitChangedData(int state);
-  void clickedData(QListViewItem *item);
-  void doubleClickedData(QListViewItem *,const QPoint &,int);
+  void clickedData(Q3ListViewItem *item);
+  void doubleClickedData(Q3ListViewItem *,const QPoint &,int);
   void editorData();
   void loadFileData();
   void okData();
@@ -114,13 +111,10 @@ class RDCartDialog : public QDialog
   QString *cart_service;
   int cart_service_quan;
   RDStation::FilterMode cart_filter_mode;
-  QProgressDialog *cart_progress_dialog;
+  Q3ProgressDialog *cart_progress_dialog;
   QString cart_import_path;
   QString cart_import_file_filter;
   bool *cart_temp_allowed;
-  RDStation *cart_station;
-  RDSystem *cart_system;
-  RDConfig *cart_config;
   QString cart_user_name;
   QString cart_user_password;
   RDBusyDialog *cart_busy_dialog;

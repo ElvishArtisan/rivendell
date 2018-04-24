@@ -1,0 +1,10 @@
+                   CUT_EVENTS Table Layout for Rivendell
+
+The CUT_EVENTS table holds data concerning per-cut meta events.
+
+FIELD NAME           TYPE              REMARKS
+------------------------------------------------------------------------------
+ID                   int(11)           Primary key, auto increment
+CUT_NAME             char(12)          From CUTS.CUT_NAME
+NUMBER               int(11) signed
+POINT                int(11) signed    mS from audio start

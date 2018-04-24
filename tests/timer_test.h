@@ -2,9 +2,7 @@
 //
 // Test QTimer Accuracy
 //
-//   (C) Copyright 2013 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: timer_test.h,v 1.1.2.1 2013/02/07 18:22:06 cvs Exp $
+//   (C) Copyright 2013,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -32,7 +30,7 @@ class MainObject : public QObject
 {
   Q_OBJECT;
  public:
-  MainObject(QObject *parent=0,const char *name=0);
+  MainObject(QObject *parent=0);
 
  private slots:
   void timeoutData();

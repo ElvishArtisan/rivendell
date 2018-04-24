@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell RDCatch Deck Configuration
 //
-//   (C) Copyright 2002-2004,2014 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,39 +18,31 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <qtextedit.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <qbuttongroup.h>
-#include <qstringlist.h>
+#include <QCheckBox>
+#include <QLabel>
+#include <QMessageBox>
+#include <QPainter>
 
 #include <rd.h>
-#include <rddb.h>
 #include <rdescape_string.h>
 #include <rdlivewire.h>
 #include <rdmatrix.h>
 
-#include <edit_decks.h>
-
+#include "edit_decks.h"
+#include "globals.h"
 
 EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
   setMaximumHeight(sizeHint().height());
 
   edit_station=station;
 
-  setCaption(tr("Configure RDCatch"));
+  setWindowTitle("RDAdmin - "+tr("Configure RDCatch"));
 
   //
   // Create Fonts
@@ -70,13 +62,13 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   //
   edit_record_deck_box=new QComboBox(this);
   edit_record_deck_box->setGeometry(140,10,60,24);
-  edit_record_deck_box->setInsertionPolicy(QComboBox::NoInsertion);
+  edit_record_deck_box->setInsertionPolicy(QComboBox::NoInsert);
   connect(edit_record_deck_box,SIGNAL(activated(int)),
 	  this,SLOT(recordDeckActivatedData(int)));
   QLabel *label=new QLabel(edit_record_deck_box,tr("Record Deck"),this);
   label->setFont(small_font);
   label->setGeometry(35,14,100,22);
-  label->setAlignment(AlignRight);
+  label->setAlignment(Qt::AlignRight);
 
   //
   // Settings Label
@@ -104,7 +96,7 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
 	  this,SLOT(monitorPortChangedData(int)));
   edit_monitor_label=new QLabel(edit_monitor_box,tr("Monitor Port:"),this);
   edit_monitor_label->setGeometry(10,112,112,19);
-  edit_monitor_label->setAlignment(AlignRight|AlignVCenter);
+  edit_monitor_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   edit_default_on_box=new QComboBox(this);
   edit_default_on_box->setGeometry(305,112,60,19);
@@ -113,52 +105,52 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   edit_default_on_label=
     new QLabel(edit_default_on_box,tr("Monitor defaults to"),this);
   edit_default_on_label->setGeometry(195,112,105,19);
-  edit_default_on_label->setAlignment(AlignRight|AlignVCenter);
+  edit_default_on_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Format
   //
   edit_format_box=new QComboBox(this);
   edit_format_box->setGeometry(125,136,150,24);
-  edit_format_box->setInsertionPolicy(QComboBox::NoInsertion);
+  edit_format_box->setInsertionPolicy(QComboBox::NoInsert);
   connect(edit_format_box,SIGNAL(activated(int)),
 	  this,SLOT(formatActivatedData(int)));
   label=new QLabel(edit_format_box,tr("Format:"),this);
   label->setGeometry(10,136,110,24);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Bit Rate
   //
   edit_bitrate_box=new QComboBox(this,"edit_bitrate_box");
   edit_bitrate_box->setGeometry(125,160,140,24);
-  edit_bitrate_box->setInsertionPolicy(QComboBox::NoInsertion);
+  edit_bitrate_box->setInsertionPolicy(QComboBox::NoInsert);
   edit_bitrate_label=new QLabel(edit_bitrate_box,tr("Bit Rate:"),this);
   edit_bitrate_label->setGeometry(10,160,110,24);
-  edit_bitrate_label->setAlignment(AlignRight|AlignVCenter);
+  edit_bitrate_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Switcher Station
   //
   edit_swstation_box=new QComboBox(this);
   edit_swstation_box->setGeometry(125,190,250,24);
-  edit_swstation_box->setInsertionPolicy(QComboBox::NoInsertion);
+  edit_swstation_box->setInsertionPolicy(QComboBox::NoInsert);
   edit_swstation_label=new QLabel(edit_swstation_box,tr("Switcher Host:"),this);
   edit_swstation_label->setGeometry(10,190,110,24);
-  edit_swstation_label->setAlignment(AlignRight|AlignVCenter);
+  edit_swstation_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   connect(edit_swstation_box,SIGNAL(activated(const QString &)),
 	  this,SLOT(stationActivatedData(const QString &)));
 
   //
   // Switcher Matrix
   //
-  edit_swmatrix_box=new QComboBox(this);
+  edit_swmatrix_box=new RDComboBox(this);
   edit_swmatrix_box->setGeometry(125,214,250,24);
-  edit_swmatrix_box->setInsertionPolicy(QComboBox::NoInsertion);
+  edit_swmatrix_box->setInsertionPolicy(QComboBox::NoInsert);
   edit_swmatrix_box->setDisabled(true);
   edit_swmatrix_label=new QLabel(edit_swmatrix_box,tr("Switcher Matrix:"),this);
   edit_swmatrix_label->setGeometry(10,214,110,24);
-  edit_swmatrix_label->setAlignment(AlignRight|AlignVCenter);
+  edit_swmatrix_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   edit_swmatrix_label->setDisabled(true);
   connect(edit_swmatrix_box,SIGNAL(activated(const QString &)),
 	  this,SLOT(matrixActivatedData(const QString &)));
@@ -168,11 +160,11 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   //
   edit_swoutput_box=new QComboBox(this);
   edit_swoutput_box->setGeometry(125,238,250,24);
-  edit_swoutput_box->setInsertionPolicy(QComboBox::NoInsertion);
+  edit_swoutput_box->setInsertionPolicy(QComboBox::NoInsert);
   edit_swoutput_box->setDisabled(true);
   edit_swoutput_label=new QLabel(edit_swoutput_box,tr("Switcher Output:"),this);
   edit_swoutput_label->setGeometry(10,238,110,24);
-  edit_swoutput_label->setAlignment(AlignRight|AlignVCenter);
+  edit_swoutput_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   edit_swoutput_label->setDisabled(true);
 
   //
@@ -184,11 +176,11 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   edit_swdelay_box->setDisabled(true);
   edit_swdelay_label=new QLabel(edit_swdelay_box,tr("Switcher Delay:"),this);
   edit_swdelay_label->setGeometry(10,262,110,24);
-  edit_swdelay_label->setAlignment(AlignRight|AlignVCenter);
+  edit_swdelay_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   edit_swdelay_label->setDisabled(true);
   edit_swdelay_unit=new QLabel(edit_swdelay_box,tr("1/10 sec"),this);
   edit_swdelay_unit->setGeometry(170,262,60,24);
-  edit_swdelay_unit->setAlignment(AlignLeft|AlignVCenter);
+  edit_swdelay_unit->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   edit_swdelay_unit->setDisabled(true);
   edit_swdelay_box->hide();
   edit_swdelay_label->hide();
@@ -206,10 +198,10 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   //
   edit_channels_box=new QComboBox(this);
   edit_channels_box->setGeometry(125,300,60,24);
-  edit_channels_box->setInsertionPolicy(QComboBox::NoInsertion);
+  edit_channels_box->setInsertionPolicy(QComboBox::NoInsert);
   label=new QLabel(edit_channels_box,tr("Channels:"),this);
   label->setGeometry(10,300,110,24);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Default Autotrim Threshold
@@ -220,7 +212,7 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   edit_threshold_box->setRange(-100,0);
   label=new QLabel(edit_threshold_box,tr("Trim Threshold:"),this);
   label->setGeometry(10,324,110,24);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Host-Wide Settings Label
@@ -233,26 +225,56 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   edit_errorrml_edit->setGeometry(125,393,248,24);
   label=new QLabel(edit_errorrml_edit,tr("Error RML:"),this);
   label->setGeometry(10,393,110,24);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Play Deck Selector
   //
   edit_play_deck_box=new QComboBox(this);
   edit_play_deck_box->setGeometry(475,10,60,24);
-  edit_play_deck_box->setInsertionPolicy(QComboBox::NoInsertion);
+  edit_play_deck_box->setInsertionPolicy(QComboBox::NoInsert);
   connect(edit_play_deck_box,SIGNAL(activated(int)),
 	  this,SLOT(playDeckActivatedData(int)));
   label=new QLabel(edit_play_deck_box,tr("Play Deck"),this);
   label->setFont(small_font);
   label->setGeometry(390,14,80,22);
-  label->setAlignment(AlignRight);
+  label->setAlignment(Qt::AlignRight);
 
   //
   // Play Deck Card Selector
   //
   edit_play_selector=new RDCardSelector(this);
-  edit_play_selector->setGeometry(387,42,120,10);
+  edit_play_selector->setGeometry(392,37,120,10);
+  connect(edit_play_selector,SIGNAL(settingsChanged(int,int,int)),
+	  this,SLOT(playSettingsChangedData(int,int,int)));
+
+  //
+  // Deck Event Carts
+  //
+  edit_event_section_label=new QLabel(tr("Event Carts"),this);
+  edit_event_section_label->setGeometry(395,99,100,24);
+  edit_event_section_label->setFont(big_font);
+
+  QSignalMapper *mapper=new QSignalMapper(this);
+  connect(mapper,SIGNAL(mapped(int)),this,SLOT(eventCartSelectedData(int)));
+  for(unsigned i=0;i<RD_CUT_EVENT_ID_QUAN;i+=2) {
+    for(unsigned j=0;j<2;j++) {
+      edit_event_labels[i+j]=new QLabel(QString().sprintf("%u:",i+j+1),this);
+      edit_event_labels[i+j]->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+      edit_event_labels[i+j]->setGeometry(387+165*j,126+14*i,20,20);
+
+      edit_event_edits[i+j]=new QLineEdit(this);
+      edit_event_edits[i+j]->setGeometry(412+165*j,126+14*i,60,20);
+      edit_event_edits[i+j]->
+	setValidator(new QIntValidator(1,RD_MAX_CART_NUMBER,this));
+
+      edit_event_buttons[i+j]=new QPushButton(tr("Select"),this);
+      edit_event_buttons[i+j]->setGeometry(477+165*j,124+14*i,60,24);
+      mapper->setMapping(edit_event_buttons[i+j],i+j);
+      connect(edit_event_buttons[i+j],SIGNAL(clicked()),
+	      mapper,SLOT(map()));
+    }
+  }
 
   //
   //  Close Button
@@ -295,6 +317,7 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   edit_record_channel=edit_record_deck_box->currentItem()+1;
   edit_play_channel=edit_play_deck_box->currentItem()+129;
   edit_format_box->insertItem(tr("PCM16"));
+  edit_format_box->insertItem(tr("PCM24"));
   edit_format_box->insertItem(tr("MPEG Layer 2"));
   edit_channels_box->insertItem("1");
   edit_channels_box->insertItem("2");
@@ -339,7 +362,7 @@ EditDecks::~EditDecks()
 
 QSize EditDecks::sizeHint() const
 {
-  return QSize(560,454);
+  return QSize(710,454);
 } 
 
 
@@ -395,13 +418,13 @@ void EditDecks::monitorPortChangedData(int port)
 
 void EditDecks::formatActivatedData(int index)
 {
-  if(index==0) {
-    edit_bitrate_label->setDisabled(true);
-    edit_bitrate_box->setDisabled(true);
-  }
-  else {
+  if(index==2) {
     edit_bitrate_label->setEnabled(true);
     edit_bitrate_box->setEnabled(true);
+  }
+  else {
+    edit_bitrate_label->setDisabled(true);
+    edit_bitrate_box->setDisabled(true);
   }
 }
 
@@ -428,11 +451,14 @@ void EditDecks::stationActivatedData(const QString &str)
 
   edit_swmatrix_box->clear();
   edit_swmatrix_box->insertStringList(GetActiveOutputMatrices());
+  /*
   for(unsigned i=0;i<edit_matrix_ids.size();i++) {
     if(edit_matrix_ids[i]==edit_record_deck->switchMatrix()) {
       edit_swmatrix_box->setCurrentItem(i);
     }
   }
+  */
+  edit_swmatrix_box->setCurrentData(edit_record_deck->switchMatrix());
   matrixActivatedData(edit_swmatrix_box->currentText());
 }
 
@@ -457,20 +483,47 @@ void EditDecks::matrixActivatedData(const QString &str)
   edit_swdelay_box->setEnabled(true);
 
   edit_swoutput_box->clear();
+  /*
   if(edit_swmatrix_box->currentItem()>=(int)edit_matrix_ids.size()) {
     return;
   }
-  int matrix=edit_matrix_ids[edit_swmatrix_box->currentItem()];
+  */
+  //  int matrix=edit_matrix_ids[edit_swmatrix_box->currentItem()];
   sql=QString("select NAME from OUTPUTS where ")+
     "(STATION_NAME=\""+RDEscapeString(edit_swstation_box->currentText())+
     "\")&&"+
-    QString().sprintf("(MATRIX=%d)&&",matrix)+
+    QString().sprintf("(MATRIX=%d)&&",edit_swmatrix_box->currentData().toInt())+
     "(NAME!=\"\")";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     edit_swoutput_box->insertItem(q->value(0).toString());
   }
   delete q;
+}
+
+
+void EditDecks::playSettingsChangedData(int id,int card,int port)
+{
+  edit_event_section_label->setEnabled((card>=0)&&(port>=0));
+  for(unsigned i=0;i<RD_CUT_EVENT_ID_QUAN;i++) {
+    edit_event_labels[i]->setEnabled((card>=0)&&(port>=0));
+    edit_event_edits[i]->setEnabled((card>=0)&&(port>=0));
+    edit_event_buttons[i]->setEnabled((card>=0)&&(port>=0));
+  }
+}
+
+
+void EditDecks::eventCartSelectedData(int n)
+{
+  int cartnum=edit_event_edits[n]->text().toInt();
+  if(admin_cart_dialog->exec(&cartnum,RDCart::Macro,NULL,0,"","")==0) {
+    if(cartnum==0) {
+      edit_event_edits[n]->setText("");
+    }
+    else {
+      edit_event_edits[n]->setText(QString().sprintf("%06d",cartnum));
+    }
+  }
 }
 
 
@@ -487,15 +540,17 @@ void EditDecks::closeData()
 void EditDecks::paintEvent(QPaintEvent *e)
 {
   QPainter *p=new QPainter(this);
-  p->setPen(QColor(black));
-  p->moveTo(385,10);
-  p->lineTo(385,sizeHint().height()-10);
+  p->setPen(QColor(Qt::black));
+  p->drawLine(385,10,385,sizeHint().height()-10);
   p->end();
 }
 
 
 void EditDecks::ReadRecord(int chan)
 {
+  QString sql;
+  RDSqlQuery *q;
+
   if(chan==0) {  // Audition Deck
     if(edit_audition_deck==NULL) {
       edit_audition_deck=new RDDeck(edit_station->name(),0,true);
@@ -529,9 +584,14 @@ void EditDecks::ReadRecord(int chan)
 	  edit_bitrate_box->setDisabled(true);
 	  break;
 
+	case RDSettings::Pcm24:
+	  edit_format_box->setCurrentItem(1);
+	  edit_bitrate_box->setDisabled(true);
+	  break;
+
 	case RDSettings::MpegL2:
 	case RDSettings::MpegL2Wav:
-	  edit_format_box->setCurrentItem(1);
+	  edit_format_box->setCurrentItem(2);
 	  edit_bitrate_box->setEnabled(true);
 	  break;
 
@@ -611,12 +671,35 @@ void EditDecks::ReadRecord(int chan)
     edit_swdelay_box->setValue(edit_record_deck->switchDelay()/100);
     edit_threshold_box->setValue(-edit_record_deck->defaultThreshold()/100);
   }
+
+  if(chan>128) {
+    sql=QString("select NUMBER,CART_NUMBER from DECK_EVENTS where ")+
+      "(STATION_NAME=\""+RDEscapeString(edit_station->name())+"\")&&"+
+      QString().sprintf("(CHANNEL=%d)",chan);
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      if((q->value(0).toInt()-1)<RD_CUT_EVENT_ID_QUAN) {
+	if(q->value(1).toUInt()==0) {
+	  edit_event_edits[q->value(0).toInt()-1]->setText("");
+	}
+	else {
+	  edit_event_edits[q->value(0).toInt()-1]->
+	    setText(QString().sprintf("%06u",q->value(1).toUInt()));
+	}
+      }
+    }
+    playSettingsChangedData(0,edit_play_selector->card(),
+			    edit_play_selector->port());
+  }
 }
 
 
 void EditDecks::WriteRecord(int chan)
 {
   int temp;
+  QString sql;
+  RDSqlQuery *q;
+  unsigned cartnum=0;
 
   if((chan>128)&&(chan<(MAX_DECKS+129))) { // Play Deck
     edit_play_deck->setCardNumber(edit_play_selector->card());
@@ -638,12 +721,17 @@ void EditDecks::WriteRecord(int chan)
       }
     }
     switch(edit_format_box->currentItem()) {
-	case 0:
-	  edit_record_deck->setDefaultFormat(RDSettings::Pcm16);
-	  break;
-	case 1:
-	  edit_record_deck->setDefaultFormat(RDSettings::MpegL2);
-	  break;
+    case 0:
+      edit_record_deck->setDefaultFormat(RDSettings::Pcm16);
+      break;
+
+    case 1:
+      edit_record_deck->setDefaultFormat(RDSettings::Pcm24);
+      break;
+
+    case 2:
+      edit_record_deck->setDefaultFormat(RDSettings::MpegL2);
+      break;
     }
     edit_record_deck->setDefaultChannels(edit_channels_box->currentItem()+1);
     sscanf((const char *)edit_bitrate_box->currentText(),"%d",&temp);
@@ -654,15 +742,39 @@ void EditDecks::WriteRecord(int chan)
     edit_record_deck->setSwitchDelay(100*edit_swdelay_box->value());
     edit_record_deck->setDefaultThreshold(-edit_threshold_box->value()*100);
   }
+
+  if(chan>128) {
+    for(unsigned i=0;i<RD_CUT_EVENT_ID_QUAN;i++) {
+      if(edit_event_edits[i]->text().isEmpty()) {
+	cartnum=0;
+      }
+      else {
+	cartnum=edit_event_edits[i]->text().toUInt();
+      }
+      sql=QString("update DECK_EVENTS set ")+
+	QString().sprintf("CART_NUMBER=%u ",cartnum)+
+	"where (STATION_NAME=\""+RDEscapeString(edit_station->name())+"\")&&"+
+	QString().sprintf("(CHANNEL=%d)&&",chan)+
+	QString().sprintf("(NUMBER=%u)",i+1);
+      q=new RDSqlQuery(sql);
+      delete q;
+    }
+  }
 }
 
 
 int EditDecks::GetMatrix()
 {
+  return edit_swmatrix_box->currentData().toInt();
+  /*
   if(edit_swmatrix_box->currentItem()<(int)edit_matrix_ids.size()) {
+    printf("ITEM: %d  SIZE: %lu\n",edit_swmatrix_box->currentItem(),
+	   edit_matrix_ids.size());
     return edit_matrix_ids[edit_swmatrix_box->currentItem()];
+    //    return edit_matrix_ids[edit_swmatrix_box->currentIndex()];
   }
   return -1;
+  */
 }
 
 
@@ -670,12 +782,11 @@ int EditDecks::GetOutput()
 {
   int output=-1;
 
-  QString sql=QString().sprintf("select NUMBER from OUTPUTS where \
-                               (STATION_NAME=\"%s\")&&(MATRIX=%d)&&\
-                               (NAME=\"%s\")",
-			       (const char *)edit_swstation_box->currentText(),
-				GetMatrix(),
-			       (const char *)edit_swoutput_box->currentText());
+  QString sql=QString("select NUMBER from OUTPUTS where ")+
+    "(STATION_NAME=\""+RDEscapeString(edit_swstation_box->currentText())+
+    "\")&&"+
+    QString().sprintf("(MATRIX=%d)&&",GetMatrix())+
+    "(NAME=\""+RDEscapeString(edit_swoutput_box->currentText())+"\")";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     output=q->value(0).toInt();
@@ -692,7 +803,7 @@ QStringList EditDecks::GetActiveOutputMatrices()
   RDSqlQuery *q;
   RDSqlQuery *q1;
   
-  edit_matrix_ids.clear();
+  //  edit_matrix_ids.clear();
   sql=QString("select TYPE,NAME,OUTPUTS,MATRIX from MATRICES where ")+
     "STATION_NAME=\""+RDEscapeString(edit_station->name())+"\"";
   q=new RDSqlQuery(sql);
@@ -716,19 +827,29 @@ QStringList EditDecks::GetActiveOutputMatrices()
 	  delete lw;
 	  return ret;
 	}
-	ret.push_back(q->value(1).toString()+
-	   " ["+RDMatrix::typeString((RDMatrix::Type)q->value(0).toInt())+"]");
+	edit_swmatrix_box->
+	  insertItem(q->value(1).toString()+" ["+
+		 RDMatrix::typeString((RDMatrix::Type)q->value(0).toInt())+"]",
+		     false,q->value(3));
+	//	ret.push_back(q->value(1).toString()+
+	//	   " ["+RDMatrix::typeString((RDMatrix::Type)q->value(0).toInt())+"]");
 	delete lw;
-	edit_matrix_ids.push_back(q->value(3).toInt());
+	//	edit_matrix_ids.push_back(q->value(3).toInt());
       }
       delete q1;
       break;
 
     default:
       if(q->value(2).toInt()>0) {
+	edit_swmatrix_box->
+	  insertItem(q->value(1).toString()+
+	    " ["+RDMatrix::typeString((RDMatrix::Type)q->value(0).toInt())+"]",
+		     false,q->value(3));
+	/*
 	ret.push_back(q->value(1).toString()+
 	   " ["+RDMatrix::typeString((RDMatrix::Type)q->value(0).toInt())+"]");
 	edit_matrix_ids.push_back(q->value(3).toInt());
+	*/
       }
       break;
     }

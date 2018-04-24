@@ -2,9 +2,7 @@
 //
 //   An audio transport button widget.
 //
-//   (C) Copyright 2002 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdtransportbutton.h,v 1.3.10.1 2014/05/27 22:49:45 cvs Exp $
+//   (C) Copyright 2002,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -19,7 +17,6 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-//
 
 #ifndef RDTRANSPORTBUTTON_H
 #define RDTRANSPORTBUTTON_H
@@ -28,10 +25,10 @@
 #include <qpushbutton.h>
 #include <qpixmap.h>
 #include <qcolor.h>
+//Added by qt3to4:
+#include <QResizeEvent>
 
-
-#define RDTRANSPORTBUTTON_DEFAULT_ON_COLOR green
-
+#define RDTRANSPORTBUTTON_DEFAULT_ON_COLOR Qt::green
 
 class RDTransportButton : public QPushButton
 {
@@ -41,8 +38,7 @@ class RDTransportButton : public QPushButton
 		  Pause=6,PlayFrom=7,PlayBetween=8,Loop=9,Up=10,Down=11,
 		  PlayTo=12};
   enum TransState {On=0,Off=1,Flashing=2}; 
-  RDTransportButton(RDTransportButton::TransType type,QWidget *parent=0,
-		    const char *name=0);
+  RDTransportButton(RDTransportButton::TransType type,QWidget *parent=0);
   RDTransportButton::TransType getType() const;
   void setType(RDTransportButton::TransType type);
   QColor onColor() const;

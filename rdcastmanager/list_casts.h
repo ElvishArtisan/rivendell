@@ -2,9 +2,7 @@
 //
 // List Rivendell Casts
 //
-//   (C) Copyright 2002-2007 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_casts.h,v 1.9 2010/07/29 19:32:36 cvs Exp $
+//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -31,17 +29,18 @@
 #include <qlineedit.h>
 #include <qcheckbox.h>
 #include <qlabel.h>
-#include <qprogressdialog.h>
+#include <q3progressdialog.h>
+//Added by qt3to4:
+#include <QResizeEvent>
 
 #include <rdfeed.h>
 #include <rdlistviewitem.h>
-
 
 class ListCasts : public QDialog
 {
   Q_OBJECT
  public:
-  ListCasts(unsigned feed_id,QWidget *parent=0,const char *name=0);
+  ListCasts(unsigned feed_id,QWidget *parent=0);
   ~ListCasts();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -52,7 +51,7 @@ class ListCasts : public QDialog
   void editData();
   void deleteData();
   void reportData();
-  void doubleClickedData(QListViewItem *item,const QPoint &pt,int col);
+  void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
   void userChangedData();
   void filterChangedData(const QString &str);
   void notexpiredToggledData(bool state);
@@ -85,7 +84,7 @@ class ListCasts : public QDialog
   QCheckBox *list_unexpired_check;
   QLabel *list_active_label;
   QCheckBox *list_active_check;
-  QProgressDialog *list_progress_dialog;
+  Q3ProgressDialog *list_progress_dialog;
   RDFeed *list_feed;
 };
 

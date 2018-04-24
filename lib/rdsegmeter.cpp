@@ -2,9 +2,7 @@
 //
 //   An audio meter display widget.
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdsegmeter.cpp,v 1.3 2010/07/29 19:32:33 cvs Exp $
+//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -19,7 +17,6 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-//
 
 #include <qwidget.h>
 #include <qstring.h>
@@ -27,19 +24,22 @@
 #include <qpainter.h>
 #include <qpushbutton.h>
 #include <qsize.h>
+//Added by qt3to4:
+#include <QPixmap>
+#include <QPaintEvent>
 #include <stdio.h>
 #include <qslider.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 #include <qsizepolicy.h>
 #include <qmessagebox.h>
 
 #include <rdsegmeter.h>
 
-RDSegMeter::RDSegMeter(RDSegMeter::Orientation o,QWidget *parent,const char *name)
-  : QWidget(parent,name)
+RDSegMeter::RDSegMeter(RDSegMeter::Orientation o,QWidget *parent)
+  : QWidget(parent)
 {
   orient=o;
-  setBackgroundColor(black);
+  setBackgroundColor(Qt::black);
   dark_low_color=QColor(DEFAULT_DARK_LOW_COLOR);
   dark_high_color=QColor(DEFAULT_DARK_HIGH_COLOR);
   dark_clip_color=QColor(DEFAULT_DARK_CLIP_COLOR);

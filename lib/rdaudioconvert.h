@@ -2,9 +2,7 @@
 //
 // Convert Audio File Formats
 //
-//   (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdaudioconvert.h,v 1.4.4.1 2012/09/06 19:47:15 cvs Exp $
+//   (C) Copyright 2010-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -33,7 +31,10 @@
 #ifdef HAVE_MAD
 #include <mad.h>
 #endif  // HAVE_MAD
-#include <qobject.h>
+
+#include <rdmp4.h>
+
+#include <QObject>
 
 #include <rdwavedata.h>
 #include <rdsettings.h>
@@ -47,14 +48,15 @@ class RDAudioConvert : public QObject
 		  ErrorNoDestination=3,ErrorInvalidSource=4,ErrorInternal=5,
 		  ErrorFormatNotSupported=6,ErrorNoDisc=7,ErrorNoTrack=8,
 		  ErrorInvalidSpeed=9,ErrorFormatError=10,ErrorNoSpace=11};
-  RDAudioConvert(const QString &station_name,
-		 QObject *parent=0,const char *name=0);
+  RDAudioConvert(const QString &station_name,QObject *parent=0);
   ~RDAudioConvert();
   void setSourceFile(const QString &filename);
   void setDestinationFile(const QString &filename);
   void setDestinationSettings(RDSettings *settings);
   RDWaveData *sourceWaveData() const;
+  QString sourceRdxl() const;
   void setDestinationWaveData(RDWaveData *wavedata);
+  void setDestinationRdxl(const QString &xml);
   void setRange(int start_pt,int end_pt);
   void setSpeedRatio(float ratio);
   RDAudioConvert::ErrorCode convert();
@@ -70,6 +72,8 @@ class RDAudioConvert : public QObject
 					 RDWaveFile *wave);
   RDAudioConvert::ErrorCode Stage1Mpeg(const QString &dstfile,
 				       RDWaveFile *wave);
+  RDAudioConvert::ErrorCode Stage1M4A(const QString &dstfile,
+				      RDWaveFile *wave);
   RDAudioConvert::ErrorCode Stage1SndFile(const QString &dstfile,
 					  SNDFILE *sf_src,
 					  SF_INFO *sf_src_info);
@@ -90,6 +94,8 @@ class RDAudioConvert : public QObject
 					 const QString &dstfile);
   RDAudioConvert::ErrorCode Stage3Pcm16(SNDFILE *src_sf,SF_INFO *src_sf_info,
 					const QString &dstfile);
+  RDAudioConvert::ErrorCode Stage3Pcm24(SNDFILE *src_sf,SF_INFO *src_sf_info,
+					const QString &dstfile);
   void ApplyId3Tag(const QString &filename,RDWaveData *wavedata);
   void UpdatePeak(const float data[],ssize_t len);
   void UpdatePeak(const double data[],ssize_t len);
@@ -104,6 +110,8 @@ class RDAudioConvert : public QObject
   RDSettings *conv_settings;
   RDWaveData *conv_src_wavedata;
   RDWaveData *conv_dst_wavedata;
+  QString conv_src_rdxl;
+  QString conv_dst_rdxl;
   float conv_peak_sample;
   int conv_src_converter;
   void *conv_mad_handle;
@@ -150,6 +158,9 @@ class RDAudioConvert : public QObject
   int (*lame_encode_flush)(lame_global_flags *,unsigned char *,int);
   int (*lame_set_bWriteVbrTag)(lame_global_flags *, int);
 #endif  // HAVE_LAME
+#ifdef HAVE_MP4_LIBS
+  DLMP4 dlmp4;
+#endif
 };
 
 

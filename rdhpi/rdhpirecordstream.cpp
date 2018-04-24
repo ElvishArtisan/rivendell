@@ -2,9 +2,7 @@
 //
 //   A class for recording Microsoft WAV files.
 //
-//   (C) Copyright 2002-2007 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdhpirecordstream.cpp,v 1.7 2011/05/19 22:16:54 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,7 +16,6 @@
 //   You should have received a copy of the GNU General Public
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-//
 //
 
 #include <stdlib.h>
@@ -35,10 +32,8 @@
 
 #include <rdhpirecordstream.h>
 
-
-RDHPIRecordStream::RDHPIRecordStream(RDHPISoundCard *card,
-			     QWidget *parent,const char *name) 
-  :QObject(parent,name),RDWaveFile()
+RDHPIRecordStream::RDHPIRecordStream(RDHPISoundCard *card,QWidget *parent) 
+  :QObject(parent),RDWaveFile()
 { 
   int quan;
   uint16_t type[HPI_MAX_ADAPTERS];
@@ -219,6 +214,13 @@ bool RDHPIRecordStream::formatSupported(RDWaveFile::Format format)
 	state=HPI_InStreamQueryFormat(NULL,histream,&hformat);
 	break;
 
+      case RDWaveFile::Pcm24:
+	LogHpi(HPI_FormatCreate(&hformat,getChannels(),
+				HPI_FORMAT_PCM24_SIGNED,
+				getSamplesPerSec(),getHeadBitRate(),0));
+	state=HPI_InStreamQueryFormat(NULL,histream,&hformat);
+	break;
+
       case RDWaveFile::MpegL1:
 	LogHpi(HPI_FormatCreate(&hformat,getChannels(),HPI_FORMAT_MPEG_L1,
 				getSamplesPerSec(),getHeadBitRate(),0));
@@ -262,6 +264,10 @@ bool RDHPIRecordStream::formatSupported()
 
 	    case 16:
 	      return formatSupported(RDWaveFile::Pcm16);
+	      break;
+
+	    case 24:
+	      return formatSupported(RDWaveFile::Pcm24);
 	      break;
 
 	    default:
@@ -399,98 +405,110 @@ bool RDHPIRecordStream::recordReady()
       return false;
     }
     switch(getFormatTag()) {
-	case WAVE_FORMAT_PCM:
-	  if(debug) {
-	    printf("RDHPIRecordStream: using PCM%d format\n",
-		   getBitsPerSample());
-	  }
-	  switch(getBitsPerSample()) {
-	      case 8:
-		hpi_error=HPI_FormatCreate(&format,getChannels(),
-				 HPI_FORMAT_PCM8_UNSIGNED,getSamplesPerSec(),
-				 0,0);
-		break;
-	      case 16:
-		hpi_error=HPI_FormatCreate(&format,getChannels(),
+    case WAVE_FORMAT_PCM:
+      if(debug) {
+	printf("RDHPIRecordStream: using PCM%d format\n",
+	       getBitsPerSample());
+      }
+      switch(getBitsPerSample()) {
+      case 8:
+	hpi_error=HPI_FormatCreate(&format,getChannels(),
+				   HPI_FORMAT_PCM8_UNSIGNED,getSamplesPerSec(),
+				   0,0);
+	break;
+
+      case 16:
+	hpi_error=HPI_FormatCreate(&format,getChannels(),
+				   HPI_FORMAT_PCM16_SIGNED,getSamplesPerSec(),
+				   0,0);
+	break;
+
+      case 24:
+	hpi_error=HPI_FormatCreate(&format,getChannels(),
+				   HPI_FORMAT_PCM24_SIGNED,getSamplesPerSec(),
+				   0,0);
+	break;
+
+      case 32:
+	hpi_error=HPI_FormatCreate(&format,getChannels(),
+				   HPI_FORMAT_PCM32_SIGNED,getSamplesPerSec(),
+				   0,0);
+	break;
+
+      default:
+	if(debug) {
+	  printf("RDHPIRecordStream: unsupported sample size\n");
+	}
+	return false;
+      }
+      break;
+
+    case WAVE_FORMAT_MPEG:
+      if(debug) {
+	printf("RDHPIRecordStream: using MPEG-1 Layer %d\n",getHeadLayer());
+      }
+      switch(getHeadLayer()) {
+      case 1:
+	hpi_error=HPI_FormatCreate(&format,getChannels(),
+				   HPI_FORMAT_MPEG_L1,getSamplesPerSec(),
+				   getHeadBitRate(),getHeadFlags());
+	break;
+
+      case 2:
+	hpi_error=HPI_FormatCreate(&format,getChannels(),
+				   HPI_FORMAT_MPEG_L2,getSamplesPerSec(),
+				   getHeadBitRate(),getHeadFlags());
+	break;
+
+      case 3:
+	hpi_error=HPI_FormatCreate(&format,getChannels(),
+				   HPI_FORMAT_MPEG_L3,getSamplesPerSec(),
+				   getHeadBitRate(),getHeadFlags());
+	break;
+
+      default:
+	hpi_error=HPI_AdapterClose(NULL,card_index[card_number]);
+	if(debug) {
+	  printf("RDHPIRecordStream: invalid MPEG-1 layer\n");
+	}
+	return false;
+      }
+      if(getMextChunk()) {
+	setMextHomogenous(true);
+	setMextPaddingUsed(false);
+	setMextHackedBitRate(true);
+	setMextFreeFormat(false);
+	setMextFrameSize(144*getHeadBitRate()/getSamplesPerSec());
+	setMextAncillaryLength(5);
+	setMextLeftEnergyPresent(true);
+	if(getChannels()>1) {
+	  setMextRightEnergyPresent(true);
+	}
+	else {
+	  setMextRightEnergyPresent(false);
+	}
+	setMextPrivateDataPresent(false);
+      }
+      break;
+
+    case WAVE_FORMAT_VORBIS:
+      if(debug) {
+	printf("RDHPIRecordStream: using OggVorbis\n");
+      }
+      hpi_error=HPI_FormatCreate(&format,getChannels(),
 				 HPI_FORMAT_PCM16_SIGNED,getSamplesPerSec(),
 				 0,0);
-		break;
-	      case 32:
-		hpi_error=HPI_FormatCreate(&format,getChannels(),
-				 HPI_FORMAT_PCM32_SIGNED,getSamplesPerSec(),
-				 0,0);
-		break;
-	      default:
-		if(debug) {
-		  printf("RDHPIRecordStream: unsupported sample size\n");
-		}
-		return false;
-	  }
-	  break;
+      break;
 
-	case WAVE_FORMAT_MPEG:
-	  if(debug) {
-	    printf("RDHPIRecordStream: using MPEG-1 Layer %d\n",getHeadLayer());
-	  }
-	  switch(getHeadLayer()) {
-	      case 1:
-		hpi_error=HPI_FormatCreate(&format,getChannels(),
-				 HPI_FORMAT_MPEG_L1,getSamplesPerSec(),
-				 getHeadBitRate(),getHeadFlags());
-		break;
-	      case 2:
-		hpi_error=HPI_FormatCreate(&format,getChannels(),
-				 HPI_FORMAT_MPEG_L2,getSamplesPerSec(),
-				 getHeadBitRate(),getHeadFlags());
-		break;
-	      case 3:
-		hpi_error=HPI_FormatCreate(&format,getChannels(),
-				 HPI_FORMAT_MPEG_L3,getSamplesPerSec(),
-				 getHeadBitRate(),getHeadFlags());
-		break;
-	      default:
-		hpi_error=HPI_AdapterClose(NULL,card_index[card_number]);
-		if(debug) {
-		  printf("RDHPIRecordStream: invalid MPEG-1 layer\n");
-		}
-		return false;
-	  }
-	  if(getMextChunk()) {
-	    setMextHomogenous(true);
-	    setMextPaddingUsed(false);
-	    setMextHackedBitRate(true);
-	    setMextFreeFormat(false);
-	    setMextFrameSize(144*getHeadBitRate()/getSamplesPerSec());
-	    setMextAncillaryLength(5);
-	    setMextLeftEnergyPresent(true);
-	    if(getChannels()>1) {
-	      setMextRightEnergyPresent(true);
-	    }
-	    else {
-	      setMextRightEnergyPresent(false);
-	    }
-	    setMextPrivateDataPresent(false);
-	  }
-	  break;
-
-	case WAVE_FORMAT_VORBIS:
-	  if(debug) {
-	    printf("RDHPIRecordStream: using OggVorbis\n");
-	  }
-	  hpi_error=HPI_FormatCreate(&format,getChannels(),
-			   HPI_FORMAT_PCM16_SIGNED,getSamplesPerSec(),
-			   0,0);
-	  break;
-
-	default:
-	  if(debug) {
-	    printf("RDHPIRecordStream: invalid format tag\n");
-	  }
-	  return false;
-	  break;
+    default:
+      if(debug) {
+	printf("RDHPIRecordStream: invalid format tag\n");
+      }
+      return false;
+      break;
     }
     if((hpi_error=HPI_InStreamQueryFormat(NULL,hpi_stream,
-			       &format))!=0) {
+					  &format))!=0) {
       if(debug) {
 	HPI_GetErrorText(hpi_error,hpi_text);
 	printf("Num: %d\n",hpi_error);

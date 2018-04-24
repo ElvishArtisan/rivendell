@@ -2,9 +2,7 @@
 //
 // Abstract a Rivendell User
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rduser.h,v 1.22.8.1 2013/12/03 23:34:34 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -101,6 +99,8 @@ class RDUser
    * @return QStringList with all the services associated with the user.
    */
   QStringList services() const;
+  static bool create(const QString &login_name);
+  static void remove(const QString &login_name);
 
  private:
   void SetRow(const QString &param,const QString &value) const;

@@ -2,9 +2,7 @@
 //
 //   A Qt class for accessing the FreeDB CD Database.
 //
-//   (C) Copyright 2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdcddblookup.h,v 1.3.8.2 2014/01/14 17:35:31 cvs Exp $
+//   (C) Copyright 2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -27,7 +25,7 @@
 #include <stdio.h>
 
 #include <qobject.h>
-#include <qsocket.h>
+#include <q3socket.h>
 #include <rdcddbrecord.h>
 
 //
@@ -51,7 +49,7 @@ class RDCddbLookup : public QObject
   public:
    enum Result {ExactMatch=0,PartialMatch=1,NoMatch=2,
 		ProtocolError=3,NetworkError=4};
-   RDCddbLookup(FILE *profile_msgs,QObject *parent=0,const char *name=0);
+   RDCddbLookup(FILE *profile_msgs,QObject *parent=0);
    ~RDCddbLookup();
    void setCddbRecord(RDCddbRecord *);
    void lookupRecord(const QString &cdda_dir,const QString &cdda_dev,
@@ -79,7 +77,7 @@ class RDCddbLookup : public QObject
    void SendToServer(const QString &msg);
    void Profile(const QString &msg);
    RDCddbRecord *lookup_record;
-   QSocket *lookup_socket;
+   Q3Socket *lookup_socket;
    int lookup_state;
    QString lookup_username;
    QString lookup_appname;

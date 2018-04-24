@@ -2,9 +2,7 @@
 //
 // Abstract a Rivendell Cut
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcut.h,v 1.44.6.2.2.1 2014/05/22 14:30:45 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,9 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qsqldatabase.h>
-#include <qsignal.h>
-#include <qobject.h>
+#include <Q3Signal>
+#include <QObject>
 
 #include <rdconfig.h>
 #include <rdwavedata.h>
@@ -39,8 +36,8 @@ class RDCut
   enum AudioEnd {AudioBoth=0,AudioHead=1,AudioTail=2};
   enum IsrcFormat {RawIsrc=0,FormattedIsrc=1};
   enum Validity {NeverValid=0,ConditionallyValid=1,AlwaysValid=2,FutureValid=3};
-  RDCut(const QString &name,bool create=false,QSqlDatabase *db=0);
-  RDCut(unsigned cartnum,int cutnum,bool create=false,QSqlDatabase *db=0);
+  RDCut(const QString &name,bool create=false);
+  RDCut(unsigned cartnum,int cutnum,bool create=false);
   ~RDCut();
   bool exists() const;
   bool isValid() const;
@@ -78,6 +75,8 @@ class RDCut
   void setOriginName(const QString &name) const;
   unsigned weight() const;
   void setWeight(int value) const;
+  int playOrder() const;
+  void setPlayOrder(int order) const;
   QDateTime lastPlayDatetime(bool *valid) const;
   void setLastPlayDatetime(const QDateTime &datetime,bool valid) const;
   QDateTime uploadDatetime(bool *valid) const;
@@ -127,7 +126,7 @@ class RDCut
 	      RDConfig *config) const;
   void getMetadata(RDWaveData *data) const;
   void setMetadata(RDWaveData *data) const;
-  QString xml() const;
+  QString xml(bool absolute,RDSettings *settings=NULL) const;
   bool checkInRecording(const QString &stationname,RDSettings *settings,
 			unsigned msecs) const;
   void autoTrim(RDCut::AudioEnd end,int level);
@@ -153,8 +152,7 @@ class RDCut
   void SetRow(const QString &param,const QDate &value) const;
   void SetRow(const QString &param,const QTime &value) const;
   void SetRow(const QString &param) const;
-  QSignal *cut_signal;
-  QSqlDatabase *cut_db;
+  Q3Signal *cut_signal;
   QString cut_name;
   unsigned cart_number;
   unsigned cut_number;

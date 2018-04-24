@@ -2,14 +2,11 @@
 //
 //   The Import Carts ListView widget for RDLogManager.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: import_listview.cpp,v 1.21.8.2 2013/12/30 19:56:13 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
 //   published by the Free Software Foundation.
-//
 //
 //   This program is distributed in the hope that it will be useful,
 //   but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -20,10 +17,16 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-//
 
-#include <qdragobject.h>
-#include <qheader.h>
+#include <q3dragobject.h>
+#include <q3header.h>
+//Added by qt3to4:
+#include <QDropEvent>
+#include <QFocusEvent>
+#include <QPixmap>
+#include <QMouseEvent>
+#include <Q3PopupMenu>
+#include <QDragEnterEvent>
 
 #include <rdcart.h>
 #include <rdconf.h>
@@ -42,9 +45,8 @@
 #include "../icons/mic16.xpm"
 #include "../icons/notemarker.xpm"
 
-
-ImportListView::ImportListView(QWidget *parent,const char *name)
-  : QListView(parent,name)
+ImportListView::ImportListView(QWidget *parent)
+  : Q3ListView(parent)
 {
   import_parent=parent;
 
@@ -59,7 +61,7 @@ ImportListView::ImportListView(QWidget *parent,const char *name)
   //
   // Right Button Menu
   //
-  import_menu=new QPopupMenu(this,"import_menu");
+  import_menu=new Q3PopupMenu(this);
   connect(import_menu,SIGNAL(aboutToShow()),this,SLOT(aboutToShowData()));
   import_menu->
     insertItem(tr("Insert Log Note"),this,SLOT(insertNoteMenuData()),0,0);
@@ -117,15 +119,14 @@ RDLogEvent *ImportListView::logEvent()
 
 void ImportListView::refreshList(int line)
 {
-  QListViewItem *item;
-  QListViewItem *select_item=NULL;
-  QString sql;
+  Q3ListViewItem *item;
+  Q3ListViewItem *select_item=NULL;
   RDLogLine *logline;
   int total_len=0;
 
   clear();
   for(int i=import_log->size()-1;i>=0;i--) {
-    item=new QListViewItem(this);
+    item=new Q3ListViewItem(this);
     if((logline=import_log->logLine(i))!=NULL) {
       switch(logline->type()) {
 	  case RDLogLine::Cart:
@@ -296,7 +297,7 @@ void ImportListView::aboutToShowData()
 void ImportListView::insertNoteMenuData()
 {
   QString note;
-  EditNote *note_dialog=new EditNote(&note,this,"note_dialog");
+  EditNote *note_dialog=new EditNote(&note,this);
   if(note_dialog->exec()<0) {
     delete note_dialog;
     return;
@@ -319,7 +320,7 @@ void ImportListView::insertNoteMenuData()
 void ImportListView::editNoteMenuData()
 {
   QString text=import_log->logLine(import_menu_line)->markerComment();
-  EditNote *edit_dialog=new EditNote(&text,this,"edit_dialog");
+  EditNote *edit_dialog=new EditNote(&text,this);
   if(edit_dialog->exec()<0) {
     delete edit_dialog;
     return;
@@ -331,7 +332,7 @@ void ImportListView::editNoteMenuData()
 void ImportListView::insertTrackMenuData()
 {
   QString note;
-  EditTrack *track_dialog=new EditTrack(&note,this,"track_dialog");
+  EditTrack *track_dialog=new EditTrack(&note,this);
   if(track_dialog->exec()<0) {
     delete track_dialog;
     return;
@@ -354,7 +355,7 @@ void ImportListView::insertTrackMenuData()
 void ImportListView::editTrackMenuData()
 {
   QString text=import_log->logLine(import_menu_line)->markerComment();
-  EditTrack *edit_dialog=new EditTrack(&text,this,"edit_dialog");
+  EditTrack *edit_dialog=new EditTrack(&text,this);
   if(edit_dialog->exec()<0) {
     delete edit_dialog;
     return;
@@ -395,7 +396,7 @@ void ImportListView::deleteMenuData()
 
 void ImportListView::contentsMousePressEvent(QMouseEvent *e)
 {
-  QListView::contentsMousePressEvent(e);
+  Q3ListView::contentsMousePressEvent(e);
   import_menu_item=selectedItem();
   if(import_menu_item==NULL) {
     import_menu_logline=NULL;
@@ -407,7 +408,7 @@ void ImportListView::contentsMousePressEvent(QMouseEvent *e)
     }
   }
   switch(e->button()) {
-      case QMouseEvent::RightButton:
+      case Qt::RightButton:
 	import_menu->setGeometry(import_parent->geometry().x()+
 				 geometry().x()+e->pos().x()+2,
 				 import_parent->geometry().y()+
@@ -427,7 +428,7 @@ void ImportListView::contentsMousePressEvent(QMouseEvent *e)
 
 void ImportListView::contentsMouseDoubleClickEvent(QMouseEvent *e)
 {
-  QListView::contentsMouseDoubleClickEvent(e);
+  Q3ListView::contentsMouseDoubleClickEvent(e);
   import_menu_item=selectedItem();
   if(import_menu_item==NULL) {
     return;
@@ -441,7 +442,7 @@ void ImportListView::contentsMouseDoubleClickEvent(QMouseEvent *e)
 
 void ImportListView::focusOutEvent(QFocusEvent *e)
 {
-  QListViewItem *item=selectedItem();
+  Q3ListViewItem *item=selectedItem();
   if(item==NULL) {
     return;
   }
@@ -457,7 +458,7 @@ void ImportListView::dragEnterEvent(QDragEnterEvent *e)
 
 void ImportListView::dropEvent(QDropEvent *e)
 {
-  QListViewItem *item;
+  Q3ListViewItem *item;
   unsigned cartnum;
   int line=0;
   QPoint pos(e->pos().x(),e->pos().y()-header()->sectionRect(0).height());

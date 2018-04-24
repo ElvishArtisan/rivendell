@@ -2,9 +2,7 @@
 //
 // A Painter Class for Drawing Audio Waveforms
 //
-//   (C) Copyright 2002-2005 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdwavepainter.h,v 1.10.6.1 2013/11/13 23:36:34 cvs Exp $
+//   (C) Copyright 2002-2005,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -35,13 +33,13 @@ class RDWavePainter : public QPainter
 {
  public:
   enum Channel {Mono=0,Left=1,Right=2};
-  RDWavePainter(const QPaintDevice *pd,RDCut *cut,RDStation *station,
+  RDWavePainter(QPaintDevice *pd,RDCut *cut,RDStation *station,
 		RDUser *user,RDConfig *config);
   RDWavePainter(RDStation *station,RDUser *user,RDConfig *config);
   ~RDWavePainter();
   void nameWave(RDCut *cut);
-  bool begin(const QPaintDevice *pd,RDCut *cut);
-  bool begin(const QPaintDevice *pd);
+  bool begin(QPaintDevice *pd,RDCut *cut);
+  bool begin(QPaintDevice *pd);
   void drawWaveBySamples(int x,int w,int startsamp,int endsamp,int gain,
 			 Channel channel,const QColor &color,
 			 int startclip=-1,int endclip=-1);

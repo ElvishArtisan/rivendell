@@ -2,9 +2,7 @@
 //
 // Edit a List of Autofill Carts
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: autofill_carts.cpp,v 1.16.8.1 2012/11/26 20:19:37 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,46 +18,34 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <qbuttongroup.h>
+#include <QDialog>
+#include <QPushButton>
 
-#include <rddb.h>
-#include <rdconf.h>
 #include <rd.h>
-#include <rduser.h>
+#include <rdapplication.h>
 #include <rdcart_dialog.h>
+#include <rdconf.h>
+#include <rdescape_string.h>
+#include <rduser.h>
 
-#include <globals.h>
-#include <autofill_carts.h>
+#include "autofill_carts.h"
+#include "globals.h"
 
-
-AutofillCarts::AutofillCarts(RDSvc *svc,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+AutofillCarts::AutofillCarts(RDSvc *svc,QWidget *parent)
+  : QDialog(parent)
 {
   QString str;
 
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   svc_svc=svc;
 
-  str=QString(tr("Autofill Carts - Service:"));
-  setCaption(QString().sprintf("%s %s",(const char *)str,
-			       (const char *)svc_svc->name()));
+  setWindowTitle("RDAdmin - "+tr("Autofill Carts")+" - "+tr("Service")+": "+
+		 svc_svc->name());
 
   //
   // Create Fonts
@@ -72,25 +58,32 @@ AutofillCarts::AutofillCarts(RDSvc *svc,QWidget *parent,const char *name)
   //
   // Cart List
   //
-  svc_cart_list=new QListView(this,"svc_cart_list");
-  svc_cart_list->
+  svc_cart_model=new RDSqlTableModel(this);
+  QString sql=QString("select ")+
+    "AUTOFILLS.CART_NUMBER,"+
+    "CART.FORCED_LENGTH,"+
+    "CART.TITLE,"+
+    "CART.ARTIST "+
+    "from AUTOFILLS left join CART "+
+    "on AUTOFILLS.CART_NUMBER=CART.NUMBER where "+
+    "SERVICE=\""+RDEscapeString(svc_svc->name())+"\"";
+  svc_cart_model->setQuery(sql);
+  svc_cart_model->setHeaderData(0,Qt::Horizontal,tr("Cart"),Qt::DisplayRole);
+  svc_cart_model->setFieldType(0,RDSqlTableModel::CartNumberType);
+  svc_cart_model->setHeaderData(1,Qt::Horizontal,tr("Length"),Qt::DisplayRole);
+  svc_cart_model->setFieldType(1,RDSqlTableModel::LengthType);
+  svc_cart_model->setHeaderData(2,Qt::Horizontal,tr("Title"),Qt::DisplayRole);
+  svc_cart_model->setHeaderData(3,Qt::Horizontal,tr("Artist"),Qt::DisplayRole);
+  svc_cart_view=new RDTableView(this);
+  svc_cart_view->
     setGeometry(10,10,sizeHint().width()-20,sizeHint().height()-110);
-  svc_cart_list->setAllColumnsShowFocus(true);
-  svc_cart_list->setItemMargin(5);
-  svc_cart_list->addColumn(tr("Cart"));
-  svc_cart_list->setColumnAlignment(0,AlignCenter);
-  svc_cart_list->addColumn(tr("Length"));
-  svc_cart_list->setColumnAlignment(1,AlignRight);
-  svc_cart_list->addColumn(tr("Title"));
-  svc_cart_list->setColumnAlignment(2,AlignLeft);
-  svc_cart_list->addColumn(tr("Artist"));
-  svc_cart_list->setColumnAlignment(3,AlignLeft);
-  svc_cart_list->setSortColumn(1);
+  svc_cart_view->setModel(svc_cart_model);
+  svc_cart_view->resizeColumnsToContents();
 
   //
   // Add Button
   //
-  QPushButton *button=new QPushButton(this,"add_button");
+  QPushButton *button=new QPushButton(this);
   button->setGeometry(20,sizeHint().height()-90,60,40);
   button->setFont(font);
   button->setText(tr("&Add"));
@@ -99,7 +92,7 @@ AutofillCarts::AutofillCarts(RDSvc *svc,QWidget *parent,const char *name)
   //
   // Delete Button
   //
-  button=new QPushButton(this,"delete_button");
+  button=new QPushButton(this);
   button->setGeometry(90,sizeHint().height()-90,60,40);
   button->setFont(font);
   button->setText(tr("&Delete"));
@@ -108,7 +101,7 @@ AutofillCarts::AutofillCarts(RDSvc *svc,QWidget *parent,const char *name)
   //
   //  Ok Button
   //
-  button=new QPushButton(this,"ok_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
   button->setFont(font);
@@ -118,14 +111,12 @@ AutofillCarts::AutofillCarts(RDSvc *svc,QWidget *parent,const char *name)
   //
   //  Cancel Button
   //
-  button=new QPushButton(this,"cancel_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   button->setFont(font);
   button->setText(tr("&Cancel"));
   connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
-
-  RefreshList();
 }
 
 
@@ -148,48 +139,46 @@ QSizePolicy AutofillCarts::sizePolicy() const
 
 void AutofillCarts::addData()
 {
-  int cart=0;
-  if(admin_cart_dialog->exec(&cart,RDCart::Audio,NULL,0,
-			     admin_user->name(),admin_user->password())<0) {
+  int cartnum=0;
+  if(admin_cart_dialog->exec(&cartnum,RDCart::Audio,NULL,0,
+			     rda->user()->name(),rda->user()->password())<0) {
     return;
   }
-  RDCart *rdcart=new RDCart(cart);
-  QListViewItem *item=new QListViewItem(svc_cart_list);
-  item->setText(0,QString().sprintf("%06d",cart));
-  item->setText(1,RDGetTimeLength(rdcart->forcedLength(),false,true));
-  item->setText(2,rdcart->title());
-  item->setText(3,rdcart->artist());
-  svc_cart_list->setSelected(item,true);
-  svc_cart_list->ensureItemVisible(item);
-  delete rdcart;
+  QString sql=QString("select ")+
+    "NUMBER,"+
+    "FORCED_LENGTH,"+
+    "TITLE,"+
+    "ARTIST "+
+    "from CART where "+
+    QString().sprintf("NUMBER=%u",cartnum);
+  svc_cart_model->insertRows(0,sql);
+  svc_cart_view->select(0,cartnum);
 }
 
 
 void AutofillCarts::deleteData()
 {
-  QListViewItem *item=svc_cart_list->selectedItem();
-  if(item==NULL) {
-    return;
+  QItemSelectionModel *s=svc_cart_view->selectionModel();
+  if(s->hasSelection()) {
+    svc_cart_model->removeRow(s->selectedRows()[0].row());
   }
-  delete item;
 }
 
 
 void AutofillCarts::okData()
 {
-  QString sql=QString().sprintf("delete from AUTOFILLS where SERVICE=\"%s\"",
-				(const char *)svc_svc->name());
+  QString sql=QString("delete from AUTOFILLS where ")+
+    "SERVICE=\""+RDEscapeString(svc_svc->name())+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
-  QListViewItem *item=svc_cart_list->firstChild();
-  while(item!=NULL) {
-    sql=QString().sprintf("insert into AUTOFILLS set SERVICE=\"%s\",\
-                           CART_NUMBER=%u",(const char *)svc_svc->name(),
-			  item->text(0).toUInt());
+  for(int i=0;i<svc_cart_model->rowCount();i++) {
+    sql=QString("insert into AUTOFILLS set ")+
+      "SERVICE=\""+RDEscapeString(svc_svc->name())+"\","+
+      QString().sprintf("CART_NUMBER=%u",svc_cart_model->data(i,0).toUInt());
     q=new RDSqlQuery(sql);
     delete q;
-    item=item->nextSibling();
   }
+
   done(0);
 }
 
@@ -197,27 +186,4 @@ void AutofillCarts::okData()
 void AutofillCarts::cancelData()
 {
   done(1);
-}
-
-
-void AutofillCarts::RefreshList()
-{
-  QListViewItem *item;
-
-  svc_cart_list->clear();
-  QString sql=QString().sprintf("select AUTOFILLS.CART_NUMBER,\
-                                 CART.FORCED_LENGTH,CART.TITLE,CART.ARTIST\
-                                 from AUTOFILLS left join CART\
-                                 on AUTOFILLS.CART_NUMBER=CART.NUMBER\
-                                 where SERVICE=\"%s\"",
-				(const char *)svc_svc->name());
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  while(q->next()) {
-    item=new QListViewItem(svc_cart_list);
-    item->setText(0,QString().sprintf("%06u",q->value(0).toUInt()));
-    item->setText(1,RDGetTimeLength(q->value(1).toInt(),false,true));
-    item->setText(2,q->value(2).toString());
-    item->setText(3,q->value(3).toString());
-  }
-  delete q;
 }

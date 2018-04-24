@@ -1,10 +1,8 @@
 // add_report.cpp
 //
-// Edit a Rivendell Report
+// Add a Rivendell Report
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: add_report.cpp,v 1.9 2010/07/29 19:32:34 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,41 +18,29 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <qbuttongroup.h>
+#include <QCheckBox>
+#include <QLabel>
+#include <QMessageBox>
+#include <QPushButton>
 
-#include <rddb.h>
 #include <rd.h>
-#include <rdtextvalidator.h>
+#include <rdescape_string.h>
 
-#include <add_report.h>
-#include <test_import.h>
-#include <autofill_carts.h>
-#include <edit_svc_perms.h>
+#include "add_report.h"
+#include "autofill_carts.h"
+#include "edit_svc_perms.h"
+#include "test_import.h"
 
-
-AddReport::AddReport(QString *rptname,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+AddReport::AddReport(QString *rptname,QWidget *parent)
+  : QDialog(parent)
 {
-
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
-  setCaption(tr("Add Report"));
+  setWindowTitle("RDAdmin  - "+tr("Add Report"));
   add_name=rptname;
 
   //
@@ -66,27 +52,20 @@ AddReport::AddReport(QString *rptname,QWidget *parent,const char *name)
   section_font.setPixelSize(14);
 
   //
-  // Text Validator
-  //
-  RDTextValidator *validator=new RDTextValidator(this,"validator");
-
-  //
   // Report Description
   //
-  add_name_edit=new QLineEdit(this,"add_name_edit");
+  add_name_edit=new QLineEdit(this);
   add_name_edit->setGeometry(170,10,sizeHint().width()-180,19);
   add_name_edit->setMaxLength(64);
-  add_name_edit->setValidator(validator);
-  QLabel *label=new QLabel(add_name_edit,tr("&Report Name:"),this,
-			   "add_name_label");
+  QLabel *label=new QLabel(add_name_edit,tr("&Report Name:"),this);
   label->setGeometry(10,10,155,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   //  Ok Button
   //
-  QPushButton *button=new QPushButton(this,"ok_button");
+  QPushButton *button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
   button->setFont(font);
@@ -96,7 +75,7 @@ AddReport::AddReport(QString *rptname,QWidget *parent,const char *name)
   //
   //  Cancel Button
   //
-  button=new QPushButton(this,"cancel_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   button->setFont(font);
@@ -127,8 +106,8 @@ void AddReport::okData()
 			 tr("You must provide a report name!"));
     return;
   }
-  sql=QString().sprintf("select NAME from REPORTS where NAME=\"%s\"",
-			(const char *)add_name_edit->text());
+  sql=QString("select NAME from REPORTS where ")+
+    "NAME=\""+RDEscapeString(add_name_edit->text())+"\"";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     QMessageBox::warning(this,tr("Report Exists"),
@@ -137,8 +116,8 @@ void AddReport::okData()
     return;
   }
   delete q;
-  sql=QString().sprintf("insert into REPORTS set NAME=\"%s\"",
-			(const char *)add_name_edit->text());
+  sql=QString("insert into REPORTS set ")+
+    "NAME=\""+RDEscapeString(add_name_edit->text())+"\"";
   q=new RDSqlQuery(sql);
   delete q;
   *add_name=add_name_edit->text();

@@ -2,9 +2,7 @@
 //
 // Edit Cart Notes.
 //
-//   (C) Copyright 2009 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_notes.cpp,v 1.3.4.1 2014/03/19 22:12:59 cvs Exp $
+//   (C) Copyright 2009,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,9 +22,11 @@
 #include <rdescape_string.h>
 
 #include <edit_notes.h>
+//Added by qt3to4:
+#include <QResizeEvent>
 
-EditNotes::EditNotes(RDCart *cart,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+EditNotes::EditNotes(RDCart *cart,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   notes_cart=cart;
   setCaption("RDLibrary - "+tr("Notes for cart")+
@@ -47,14 +47,14 @@ EditNotes::EditNotes(RDCart *cart,QWidget *parent,const char *name)
   //
   // Variable Name
   //
-  notes_view=new QTextView(this,"notes_view");
-  notes_view->setTextFormat(QTextView::PlainText);
+  notes_view=new Q3TextView(this);
+  notes_view->setTextFormat(Qt::PlainText);
   notes_view->setReadOnly(false);
 
   //
   //  Ok Button
   //
-  notes_ok_button=new QPushButton(this,"notes_ok_button");
+  notes_ok_button=new QPushButton(this);
   notes_ok_button->setDefault(true);
   notes_ok_button->setFont(button_font);
   notes_ok_button->setText(tr("&OK"));
@@ -64,7 +64,7 @@ EditNotes::EditNotes(RDCart *cart,QWidget *parent,const char *name)
   //
   //  Cancel Button
   //
-  notes_cancel_button=new QPushButton(this,"notes_cancel_button");
+  notes_cancel_button=new QPushButton(this);
   notes_cancel_button->setFont(button_font);
   notes_cancel_button->setText(tr("&Cancel"));
   connect(notes_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));

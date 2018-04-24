@@ -2,9 +2,7 @@
 //
 // Process Rivendell Command-Line Switches
 //
-//   (C) Copyright 2002-2005 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcmd_switch.cpp,v 1.13.8.1 2012/05/10 23:12:42 cvs Exp $
+//   (C) Copyright 2002-2005,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,9 +22,11 @@
 #include <syslog.h>
 #endif  // WIN32
 
+#include <QMessageBox>
+
+#include <stdio.h>
 #include <stdlib.h>
 #include <rdcmd_switch.h>
-#include <qmessagebox.h>
 
 RDCmdSwitch::RDCmdSwitch(int argc,char *argv[],const char *modname,
 			 const char *usage)

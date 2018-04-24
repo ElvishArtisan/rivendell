@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>AddClock</name>
     <message>
@@ -1140,10 +1142,6 @@ Data</source>
 <context>
     <name>MainWidget</name>
     <message>
-        <source>Can&apos;t Connect</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>RDLogManager</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1177,15 +1175,6 @@ Data</source>
     </message>
     <message>
         <source>RDLogManager - User: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>RDLogEdit -- Database Skew</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>This version of RDLogManager is incompatible with the version installed on the server.
-See your system administrator for an update!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

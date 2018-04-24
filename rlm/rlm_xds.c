@@ -162,7 +162,6 @@ void rlm_xds_RLMStart(void *ptr,const char *arg)
     rlm_xds_handles=realloc(rlm_xds_handles,(rlm_xds_devs+1)*sizeof(int));
     rlm_xds_handles[rlm_xds_devs]=-1;
     tty_speed=RLMGetIntegerValue(ptr,arg,section,"TtySpeed",9600);
-    printf("speed: %d\n",tty_speed);
     rlm_xds_handles[rlm_xds_devs]=
       RLMOpenSerial(ptr,RLMGetStringValue(ptr,arg,section,"TtyDevice",""),
 		    tty_speed,RLM_PARITY_NONE,1);

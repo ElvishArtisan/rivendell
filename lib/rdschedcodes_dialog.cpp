@@ -2,11 +2,9 @@
 //
 // Scheduler code editor dialog
 //
-//  (C) Copyright 2014 Fred Gleason <fredg@paravelsystems.com>
+//  (C) Copyright 2014,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   Based on original code by Stefan Gabriel <stg@st-gabriel.de>
-//
-//     $Id: rdschedcodes_dialog.cpp,v 1.1.2.1 2014/05/28 21:21:40 cvs Exp $
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,16 +20,16 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qpainter.h>
-#include <qmessagebox.h>
+#include <QPainter>
+#include <QPaintEvent>
 
 #include <rddb.h>
 #include "rdschedcodes_dialog.h"
 
-RDSchedCodesDialog::RDSchedCodesDialog(QWidget *parent)
-  : QDialog(parent,"",true)
+RDSchedCodesDialog::RDSchedCodesDialog(const QString &caption,QWidget *parent)
+  : QDialog(parent)
 {
-  setCaption(tr("Select Scheduler Codes"));
+  setWindowTitle(caption+" - "+tr("Select Scheduler Codes"));
 
   //
   // Create Fonts
@@ -124,11 +122,11 @@ int RDSchedCodesDialog::exec(QStringList *sched_codes,QStringList *remove_codes)
     remove_codes_sel->show();
   }
 
-  for(unsigned i=0;i<edit_sched_codes->size();i++) {
+  for(int i=0;i<edit_sched_codes->size();i++) {
     codes_sel->destInsertItem((*edit_sched_codes)[i]);
   } 
   if(edit_remove_codes!=NULL) {
-    for(unsigned i=0;i<edit_remove_codes->size();i++) {
+    for(int i=0;i<edit_remove_codes->size();i++) {
       remove_codes_sel->destInsertItem((*remove_codes)[i]);
     } 
   }
@@ -154,9 +152,8 @@ int RDSchedCodesDialog::exec(QStringList *sched_codes,QStringList *remove_codes)
 void RDSchedCodesDialog::paintEvent(QPaintEvent *e)
 {
   QPainter *p=new QPainter(this);
-  p->setPen(QColor(black));
-  p->moveTo(sizeHint().width(),10);
-  p->lineTo(sizeHint().width(),210);
+  p->setPen(QColor(Qt::black));
+  p->drawLine(sizeHint().width(),10,sizeHint().width(),210);
   p->end();
 }
 

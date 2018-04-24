@@ -2,9 +2,7 @@
 //
 // Edit RDLibrary Settings
 //
-//   (C) Copyright 2002 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdexport_settings_dialog.cpp,v 1.12.8.1 2012/12/13 22:33:44 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,12 +21,14 @@
 #include <qdialog.h>
 #include <qstring.h>
 #include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
+#include <q3listbox.h>
+#include <q3textedit.h>
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
+//Added by qt3to4:
+#include <QLabel>
 #include <math.h>
 
 #include <rdexport_settings_dialog.h>
@@ -36,9 +36,8 @@
 
 RDExportSettingsDialog::RDExportSettingsDialog(RDSettings *settings,
 					       RDStation *station,
-					       QWidget *parent,
-					       const char *name)
-  : QDialog(parent,name,true)
+					       QWidget *parent)
+  : QDialog(parent,"",true)
 {
   lib_settings=settings;
   lib_station=station;
@@ -55,73 +54,63 @@ RDExportSettingsDialog::RDExportSettingsDialog(RDSettings *settings,
   setCaption(tr("Edit Export Settings"));
 
   //
-  // Custom Encoders
-  //
-  lib_encoders=new RDEncoderList(station->name());
-
-  //
   // Default Format
   //
-  lib_format_box=new QComboBox(this,"lib_format_box");
+  lib_format_box=new QComboBox(this);
   lib_format_box->setGeometry(100,10,150,19);
   connect(lib_format_box,SIGNAL(activated(const QString &)),
 	  this,SLOT(formatData(const QString &)));
-  QLabel *lib_format_label=new QLabel(lib_format_box,"Format:",this,
-				       "lib_format_label");
+  QLabel *lib_format_label=new QLabel(lib_format_box,"Format:",this);
   lib_format_label->setGeometry(25,10,70,19);
-  lib_format_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  lib_format_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Default Channels
   //
-  lib_channels_box=new QComboBox(this,"lib_channels_box");
+  lib_channels_box=new QComboBox(this);
   lib_channels_box->setGeometry(100,32,60,19);
   QLabel *lib_channels_label=
-    new QLabel(lib_channels_box,tr("&Channels:"),this,
-	       "lib_channels_label");
+    new QLabel(lib_channels_box,tr("&Channels:"),this);
   lib_channels_label->setGeometry(25,32,70,19);
-  lib_channels_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  lib_channels_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Default Sample Rate
   //
-  lib_samprate_box=new QComboBox(this,"lib_samprate_box");
+  lib_samprate_box=new QComboBox(this);
   lib_samprate_box->setGeometry(100,54,100,19);
   connect(lib_samprate_box,SIGNAL(activated(const QString &)),
 	  this,SLOT(samprateData(const QString &)));
   QLabel *lib_samprate_label=
-    new QLabel(lib_samprate_box,tr("&Sample Rate:"),this,
-	       "lib_samprate_label");
+    new QLabel(lib_samprate_box,tr("&Sample Rate:"),this);
   lib_samprate_label->setGeometry(25,54,75,19);
-  lib_samprate_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  lib_samprate_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Default Bitrate
   //
-  lib_bitrate_box=new QComboBox(this,"lib_bitrate_box");
+  lib_bitrate_box=new QComboBox(this);
   lib_bitrate_box->setGeometry(100,76,100,19);
   connect(lib_bitrate_box,SIGNAL(activated(const QString &)),
 	  this,SLOT(bitrateData(const QString &)));
-  lib_bitrate_label=new QLabel(lib_bitrate_box,tr("&Bitrate:"),this,
-			       "lib_bitrate_label");
+  lib_bitrate_label=new QLabel(lib_bitrate_box,tr("&Bitrate:"),this);
   lib_bitrate_label->setGeometry(25,76,70,19);
-  lib_bitrate_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  lib_bitrate_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Quality
   //
-  lib_quality_spin=new QSpinBox(this,"lib_quality_box");
+  lib_quality_spin=new QSpinBox(this);
   lib_quality_spin->setGeometry(100,98,50,19);
   lib_quality_spin->setRange(0,10);
-  lib_quality_label=new QLabel(lib_quality_spin,tr("&Quality:"),this,
-			       "lib_quality_label");
+  lib_quality_label=new QLabel(lib_quality_spin,tr("&Quality:"),this);
   lib_quality_label->setGeometry(25,98,70,19);
-  lib_quality_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  lib_quality_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   //  Ok Button
   //
-  QPushButton *ok_button=new QPushButton(this,"ok_button");
+  QPushButton *ok_button=new QPushButton(this);
   ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   ok_button->setDefault(true);
   ok_button->setFont(button_font);
@@ -131,7 +120,7 @@ RDExportSettingsDialog::RDExportSettingsDialog(RDSettings *settings,
   //
   //  Cancel Button
   //
-  QPushButton *cancel_button=new QPushButton(this,"cancel_button");
+  QPushButton *cancel_button=new QPushButton(this);
   cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   cancel_button->setFont(button_font);
@@ -143,6 +132,10 @@ RDExportSettingsDialog::RDExportSettingsDialog(RDSettings *settings,
   //
   lib_format_box->insertItem(tr("PCM16"));
   if(settings->format()==RDSettings::Pcm16) {
+    lib_format_box->setCurrentItem(lib_format_box->count()-1);
+  }
+  lib_format_box->insertItem(tr("PCM24"));
+  if(settings->format()==RDSettings::Pcm24) {
     lib_format_box->setCurrentItem(lib_format_box->count()-1);
   }
   if(station->haveCapability(RDStation::HaveFlac)) {
@@ -167,12 +160,6 @@ RDExportSettingsDialog::RDExportSettingsDialog(RDSettings *settings,
       lib_format_box->setCurrentItem(lib_format_box->count()-1);
     }
   }
-  for(unsigned i=0;i<lib_encoders->encoderQuantity();i++) {
-    lib_format_box->insertItem(lib_encoders->encoder(i)->name());
-    if(settings->format()==lib_encoders->encoder(i)->id()) {
-      lib_format_box->setCurrentItem(lib_format_box->count()-1);
-    }
-  }
   lib_channels_box->insertItem("1");
   lib_channels_box->insertItem("2");
   lib_channels_box->setCurrentItem(lib_settings->channels()-1);
@@ -194,7 +181,6 @@ RDExportSettingsDialog::RDExportSettingsDialog(RDSettings *settings,
 
 RDExportSettingsDialog::~RDExportSettingsDialog()
 {
-  delete lib_encoders;
   delete lib_channels_box;
   delete lib_samprate_box;
   delete lib_bitrate_box;
@@ -251,16 +237,16 @@ void RDExportSettingsDialog::okData()
   lib_settings->setSampleRate(lib_samprate_box->currentText().toInt());
   switch(lib_settings->format()) {
     case RDSettings::Pcm16:
+    case RDSettings::Pcm24:
       lib_settings->setBitRate(0);
       lib_settings->setQuality(0);
       break;
       
     case RDSettings::MpegL1:
     case RDSettings::MpegL2:
+    case RDSettings::MpegL2Wav:
     case RDSettings::MpegL3:
-      if (lib_bitrate_box && lib_bitrate_box->currentText()){
-	sscanf(lib_bitrate_box->currentText(),"%d",&rate);
-      }
+      rate=lib_bitrate_box->currentText().toInt();
       if(rate!=0) {
 	lib_settings->setBitRate(1000*rate);
 	lib_settings->setQuality(0);
@@ -283,38 +269,6 @@ void RDExportSettingsDialog::okData()
       lib_settings->setQuality(lib_quality_spin->value());
       break;
       
-    default:   // Custom format
-      for(unsigned i=0;i<lib_encoders->encoderQuantity();i++) {
-	if(lib_encoders->encoder(i)->id()==lib_settings->format()) {
-	  lib_settings->setFormatName(lib_encoders->encoder(i)->name());
-	  lib_settings->
-	    setCustomCommandLine(lib_encoders->encoder(i)->commandLine());
-	}
-      }
-      if(lib_channels_box->isEnabled()) {
-	lib_settings->setChannels(lib_channels_box->currentText().toUInt());
-      }
-      else {
-	lib_settings->setChannels(0);
-      }
-      if(lib_samprate_box->isEnabled()) {
-	lib_settings->setSampleRate(lib_samprate_box->currentText().toUInt());
-      }
-      else {
-	lib_settings->setSampleRate(0);
-      }
-      if(lib_bitrate_box->isEnabled()) {
-	sscanf(lib_bitrate_box->currentText(),"%d",&rate);
-      }
-      if(rate!=0) {
-	lib_settings->setBitRate(1000*rate);
-	lib_settings->setQuality(0);
-      }
-      else {
-	lib_settings->setBitRate(0);
-      }
-      
-      break;
   }
   done(0);
 }
@@ -330,8 +284,6 @@ void RDExportSettingsDialog::ShowBitRates(RDSettings::Format fmt,
 					  int new_samprate,
 					  int bitrate,int qual)
 {
-  RDEncoder *encoder;
-
   int samprate=lib_samprate_box->currentText().toInt();
   int channels=lib_channels_box->currentText().toInt();
   lib_channels_box->clear();
@@ -339,6 +291,7 @@ void RDExportSettingsDialog::ShowBitRates(RDSettings::Format fmt,
   lib_bitrate_box->clear();
   switch(fmt) {
       case RDSettings::Pcm16:  // PCM16
+      case RDSettings::Pcm24:  // PCM16
 	lib_channels_box->insertItem("1");
 	lib_channels_box->insertItem("2");
 	lib_samprate_box->insertItem("32000");
@@ -471,6 +424,7 @@ void RDExportSettingsDialog::ShowBitRates(RDSettings::Format fmt,
 	break;
 
       case RDSettings::MpegL2:  // MPEG-1 Layer 2
+  case RDSettings::MpegL2Wav:
 	lib_channels_box->insertItem("1");
 	lib_channels_box->insertItem("2");
 	lib_samprate_box->insertItem("16000");
@@ -850,49 +804,6 @@ void RDExportSettingsDialog::ShowBitRates(RDSettings::Format fmt,
 	lib_quality_spin->setRange(-1,10);
 	lib_quality_spin->setValue(qual);
 	break;
-
-    default:   // Custom format
-      lib_channels_box->clear();
-      lib_samprate_box->clear();
-      lib_bitrate_box->clear();
-      for(unsigned i=0;i<lib_encoders->encoderQuantity();i++) {
-	encoder=lib_encoders->encoder(i);
-	if(encoder->id()==fmt) {
-	  if(encoder->allowedChannelsQuantity()==0) {
-	    lib_channels_box->setDisabled(true);
-	  }
-	  else {
-	    lib_channels_box->setEnabled(true);
-	    for(int j=0;j<encoder->allowedChannelsQuantity();j++) {
-	      lib_channels_box->
-		insertItem(QString().sprintf("%d",encoder->allowedChannel(j)));
-	    }
-	  }
-	  if(encoder->allowedSampleratesQuantity()==0) {
-	    lib_samprate_box->setDisabled(true);
-	  }
-	  else {
-	    lib_samprate_box->setEnabled(true);
-	    for(int j=0;j<encoder->allowedSampleratesQuantity();j++) {
-	      lib_samprate_box->
-		insertItem(QString().sprintf("%d",
-					     encoder->allowedSamplerate(j)));
-	    }
-	  }
-	  if(encoder->allowedBitratesQuantity()==0) {
-	    lib_bitrate_box->setDisabled(true);
-	  }
-	  else {
-	    lib_bitrate_box->setEnabled(true);
-	    for(int j=0;j<encoder->allowedBitratesQuantity();j++) {
-	      lib_bitrate_box->
-		insertItem(QString().sprintf("%d kbps",
-					     encoder->allowedBitrate(j)));
-	    }
-	  }
-	}
-      }
-      break;
   }
   SetCurrentItem(lib_channels_box,channels);
   SetCurrentItem(lib_samprate_box,samprate);
@@ -914,6 +825,9 @@ RDSettings::Format RDExportSettingsDialog::GetFormat(QString str)
   if(str==tr("PCM16")) {
     return RDSettings::Pcm16;
   }
+  if(str==tr("PCM24")) {
+    return RDSettings::Pcm24;
+  }
   if(str==tr("FLAC")) {
     return RDSettings::Flac;
   }
@@ -925,11 +839,6 @@ RDSettings::Format RDExportSettingsDialog::GetFormat(QString str)
   }
   if(str==tr("OggVorbis")) {
     return RDSettings::OggVorbis;
-  }
-  for(unsigned i=0;i<lib_encoders->encoderQuantity();i++) {
-    if(str==lib_encoders->encoder(i)->name()) {
-      return (RDSettings::Format)lib_encoders->encoder(i)->id();
-    }
   }
   return RDSettings::Pcm16;
 }

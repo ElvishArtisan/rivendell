@@ -2,9 +2,7 @@
 //
 // CD Ripper Dialog for Rivendell.
 //
-//   (C) Copyright 2002-2003, 2009 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: cdripper.cpp,v 1.41.4.6.2.2 2014/05/20 15:45:08 cvs Exp $
+//   (C) Copyright 2002-2003,2009,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,12 +27,17 @@
 #include <math.h>
 #include <linux/cdrom.h>
 #include <qpushbutton.h>
-#include <qfiledialog.h>
+#include <q3filedialog.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
 #include <qstringlist.h>
+//Added by qt3to4:
+#include <QLabel>
+#include <QResizeEvent>
+#include <QCloseEvent>
 
 #include <rd.h>
+#include <rdapplication.h>
 #include <rdconf.h>
 #include <rdwavefile.h>
 #include <rdcut.h>
@@ -50,10 +53,9 @@
 //
 bool ripper_running;
 
-
 CdRipper::CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
-		   bool profile_rip,QWidget *parent,const char *name) 
-  : QDialog(parent,name)
+		   bool profile_rip,QWidget *parent) 
+  : QDialog(parent)
 {
   rip_profile_rip=profile_rip;
   rip_isrc_read=false;
@@ -119,10 +121,10 @@ CdRipper::CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
   // CDDB Stuff
   //
   if(rip_profile_rip) {
-    rip_cddb_lookup=new RDCddbLookup(stdout,this,"rip_cddb_lookup");
+    rip_cddb_lookup=new RDCddbLookup(stdout,this);
   }
   else {
-    rip_cddb_lookup=new RDCddbLookup(NULL,this,"rip_cddb_lookup");
+    rip_cddb_lookup=new RDCddbLookup(NULL,this);
   }
   connect(rip_cddb_lookup,SIGNAL(done(RDCddbLookup::Result)),
 	  this,SLOT(cddbDoneData(RDCddbLookup::Result)));
@@ -132,7 +134,7 @@ CdRipper::CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
   //
   rip_title_label=new QLabel(tr("Title:"),this);
   rip_title_label->setFont(label_font);
-  rip_title_label->setAlignment(AlignRight|AlignVCenter);
+  rip_title_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   rip_title_box=new QComboBox(this);
   rip_title_box->insertItem(tr("[none]"));
 
@@ -141,36 +143,36 @@ CdRipper::CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
   //
   rip_artist_label=new QLabel(tr("Artist:"),this);
   rip_artist_label->setFont(label_font);
-  rip_artist_label->setAlignment(AlignRight|AlignVCenter);
-  rip_artist_edit=new QLineEdit(this,"rip_artist_edit");
+  rip_artist_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  rip_artist_edit=new QLineEdit(this);
 
   //
   // Album Edit
   //
   rip_album_label=new QLabel(tr("Album:"),this);
   rip_album_label->setFont(label_font);
-  rip_album_label->setAlignment(AlignRight|AlignVCenter);
-  rip_album_edit=new QLineEdit(this,"rip_album_edit");
+  rip_album_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  rip_album_edit=new QLineEdit(this);
 
   //
   // Other Edit
   //
   rip_other_label=new QLabel(tr("Other:"),this);
   rip_other_label->setFont(label_font);
-  rip_other_label->setAlignment(AlignRight);
-  rip_other_edit=new QTextEdit(this,"rip_other_edit");
+  rip_other_label->setAlignment(Qt::AlignRight);
+  rip_other_edit=new Q3TextEdit(this);
   rip_other_edit->setReadOnly(true);
 
   //
   // Apply FreeDB Check Box
   //
-  rip_apply_box=new QCheckBox(this,"rip_apply_box");
+  rip_apply_box=new QCheckBox(this);
   rip_apply_box->setChecked(true);
   rip_apply_box->setDisabled(true);
-  rip_apply_label=new QLabel(rip_apply_box,tr("Apply FreeDB Values to Cart"),
-		   this,"rip_apply_label");
+  rip_apply_label=
+    new QLabel(rip_apply_box,tr("Apply FreeDB Values to Cart"),this);
   rip_apply_label->setFont(label_font);
-  rip_apply_label->setAlignment(AlignLeft);
+  rip_apply_label->setAlignment(Qt::AlignLeft);
   rip_apply_box->setChecked(false);
   rip_apply_label->setDisabled(true);
 
@@ -179,7 +181,7 @@ CdRipper::CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
   //
   rip_track_list=new RDListView(this);
   rip_track_list->setAllColumnsShowFocus(true);
-  rip_track_list->setSelectionMode(QListView::Extended);
+  rip_track_list->setSelectionMode(Q3ListView::Extended);
   rip_track_list->setItemMargin(5);
   rip_track_list->setSorting(-1);
   connect(rip_track_list,SIGNAL(selectionChanged()),
@@ -200,35 +202,32 @@ CdRipper::CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
   //
   // Progress Bar
   //
-  rip_bar=new QProgressBar(this,"rip_bar");
+  rip_bar=new Q3ProgressBar(this);
 
   //
   // Eject Button
   //
-  rip_eject_button=new RDTransportButton(RDTransportButton::Eject,
-					this,"close_button");
+  rip_eject_button=new RDTransportButton(RDTransportButton::Eject,this);
   connect(rip_eject_button,SIGNAL(clicked()),this,SLOT(ejectButtonData()));
   
   //
   // Play Button
   //
-  rip_play_button=new RDTransportButton(RDTransportButton::Play,
-					this,"close_button");
+  rip_play_button=new RDTransportButton(RDTransportButton::Play,this);
   connect(rip_play_button,SIGNAL(clicked()),this,SLOT(playButtonData()));
   
   //
   // Stop Button
   //
-  rip_stop_button=new RDTransportButton(RDTransportButton::Stop,
-					this,"close_button");
-  rip_stop_button->setOnColor(red);
+  rip_stop_button=new RDTransportButton(RDTransportButton::Stop,this);
+  rip_stop_button->setOnColor(Qt::red);
   rip_stop_button->on();
   connect(rip_stop_button,SIGNAL(clicked()),this,SLOT(stopButtonData()));
   
   //
   // Rip Track Button
   //
-  rip_rip_button=new QPushButton(tr("&Rip\nTrack"),this,"rip_track_button");
+  rip_rip_button=new QPushButton(tr("&Rip\nTrack"),this);
   rip_rip_button->setFont(button_font);
   rip_rip_button->setDisabled(true);
   connect(rip_rip_button,SIGNAL(clicked()),this,SLOT(ripTrackButtonData()));
@@ -240,22 +239,21 @@ CdRipper::CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
   rip_normalize_box->setChecked(true);
   rip_normalize_box_label=new QLabel(rip_normalize_box,tr("Normalize"),this);
   rip_normalize_box_label->setFont(label_font);
-  rip_normalize_box_label->setAlignment(AlignLeft|AlignVCenter);
+  rip_normalize_box_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   connect(rip_normalize_box,SIGNAL(toggled(bool)),
 	  this,SLOT(normalizeCheckData(bool)));
 
   //
   // Normalize Level
   //
-  rip_normalize_spin=new QSpinBox(this,"rip_normalize_spin");
+  rip_normalize_spin=new QSpinBox(this);
   rip_normalize_spin->setRange(-30,0);
-  rip_normalize_label=new QLabel(rip_normalize_spin,tr("Level:"),
-				 this,"normalize_spin_label");
+  rip_normalize_label=new QLabel(rip_normalize_spin,tr("Level:"),this);
   rip_normalize_label->setFont(label_font);
-  rip_normalize_label->setAlignment(AlignRight|AlignVCenter);
-  rip_normalize_unit=new QLabel(tr("dBFS"),this,"normalize_unit_label");
+  rip_normalize_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  rip_normalize_unit=new QLabel(tr("dBFS"),this);
   rip_normalize_unit->setFont(label_font);
-  rip_normalize_unit->setAlignment(AlignLeft|AlignVCenter);
+  rip_normalize_unit->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Autotrim Check Box
@@ -264,22 +262,21 @@ CdRipper::CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
   rip_autotrim_box->setChecked(true);
   rip_autotrim_box_label=new QLabel(rip_autotrim_box,tr("Autotrim"),this);
   rip_autotrim_box_label->setFont(label_font);
-  rip_autotrim_box_label->setAlignment(AlignLeft|AlignVCenter);
+  rip_autotrim_box_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   connect(rip_autotrim_box,SIGNAL(toggled(bool)),
 	  this,SLOT(autotrimCheckData(bool)));
 
   //
   // Autotrim Level
   //
-  rip_autotrim_spin=new QSpinBox(this,"rip_autotrim_spin");
+  rip_autotrim_spin=new QSpinBox(this);
   rip_autotrim_spin->setRange(-99,0);
-  rip_autotrim_label=new QLabel(rip_autotrim_spin,tr("Level:"),
-				 this,"autotrim_spin_label");
+  rip_autotrim_label=new QLabel(rip_autotrim_spin,tr("Level:"),this);
   rip_autotrim_label->setFont(label_font);
-  rip_autotrim_label->setAlignment(AlignRight|AlignVCenter);
-  rip_autotrim_unit=new QLabel(tr("dBFS"),this,"autotrim_unit_label");
+  rip_autotrim_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  rip_autotrim_unit=new QLabel(tr("dBFS"),this);
   rip_autotrim_unit->setFont(label_font);
-  rip_autotrim_unit->setAlignment(AlignLeft|AlignVCenter);
+  rip_autotrim_unit->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Channels
@@ -287,12 +284,12 @@ CdRipper::CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
   rip_channels_box=new QComboBox(this);
   rip_channels_label=new QLabel(rip_channels_box,tr("Channels:"),this);
   rip_channels_label->setFont(label_font);
-  rip_channels_label->setAlignment(AlignRight|AlignVCenter);
+  rip_channels_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Close Button
   //
-  rip_close_button=new QPushButton("&Close",this,"close_button");
+  rip_close_button=new QPushButton("&Close",this);
   rip_close_button->setFont(button_font);
   connect(rip_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 
@@ -311,7 +308,7 @@ CdRipper::CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
 CdRipper::~CdRipper()
 {
   QStringList files=rip_cdda_dir.entryList();
-  for(unsigned i=0;i<files.size();i++) {
+  for(int i=0;i<files.size();i++) {
     if((files[i]!=".")&&(files[i]!="..")) {
       rip_cdda_dir.remove(files[i]);
     }
@@ -353,7 +350,7 @@ int CdRipper::exec(QString *title,QString *artist,QString *album)
 
 void CdRipper::trackSelectionChangedData()
 {
-  QListViewItem *item=rip_track_list->firstChild();
+  Q3ListViewItem *item=rip_track_list->firstChild();
   QStringList titles;
 
   while(item!=NULL) {
@@ -374,7 +371,7 @@ void CdRipper::trackSelectionChangedData()
 
   default:
     rip_title_box->insertItem(titles.join(" / "));
-    for(unsigned i=0;i<titles.size();i++) {
+    for(int i=0;i<titles.size();i++) {
       rip_title_box->insertItem(titles[i]);
     }
     break;
@@ -418,7 +415,7 @@ void CdRipper::ripTrackButtonData()
 				tr("This will overwrite the existing recording.\nDo you want to proceed?"),
 				QMessageBox::Yes,QMessageBox::No)) {
     case QMessageBox::No:
-    case QMessageBox::NoButton:
+    case Qt::NoButton:
       return;
       
     default:
@@ -432,7 +429,7 @@ void CdRipper::ripTrackButtonData()
 				  QMessageBox::Yes,
 				  QMessageBox::No)) {
       case QMessageBox::No:
-      case QMessageBox::NoButton:
+      case Qt::NoButton:
 	return;
 
       default:
@@ -461,7 +458,9 @@ void CdRipper::ripTrackButtonData()
   // Read ISRCs
   //
   if(!rip_isrc_read) {
-    rip_cddb_lookup->readIsrc(rip_cdda_dir.path(),rip_conf->ripperDevice());
+    if(rda->libraryConf()->readIsrc()) {
+      rip_cddb_lookup->readIsrc(rip_cdda_dir.path(),rip_conf->ripperDevice());
+    }
     rip_isrc_read=true;
   }
 
@@ -491,7 +490,7 @@ void CdRipper::ripTrackButtonData()
 
   rip_track[0]=-1;
   rip_track[1]=-1;
-  QListViewItem *item=rip_track_list->firstChild();
+  Q3ListViewItem *item=rip_track_list->firstChild();
   while(item!=NULL) {
     if(item->isSelected()) {
       if(rip_track[0]<0) {
@@ -503,21 +502,21 @@ void CdRipper::ripTrackButtonData()
   }
   switch((ripper_err=ripper->rip(rip_track[0],rip_track[1]))) {
   case RDCdRipper::ErrorOk:
-    conv=new RDAudioImport(rdstation_conf,lib_config,this);
+    conv=new RDAudioImport(rda->station(),rda->config(),this);
     conv->setSourceFile(tmpfile);
     conv->setCartNumber(rip_cut->cartNumber());
     conv->setCutNumber(rip_cut->cutNumber());
     conv->setUseMetadata(false);
     settings=new RDSettings();
-    if(rdlibrary_conf->defaultFormat()==1) {
+    if(rda->libraryConf()->defaultFormat()==1) {
       settings->setFormat(RDSettings::MpegL2Wav);
     }
     else {
       settings->setFormat(RDSettings::Pcm16);
     }
     settings->setChannels(rip_channels_box->currentText().toInt());
-    settings->setSampleRate(lib_system->sampleRate());
-    settings->setBitRate(rdlibrary_conf->defaultBitrate());
+    settings->setSampleRate(rda->system()->sampleRate());
+    settings->setBitRate(rda->libraryConf()->defaultBitrate());
     if(rip_normalize_box->isChecked()) {
       settings->setNormalizationLevel(rip_normalize_spin->value());
     }
@@ -526,7 +525,7 @@ void CdRipper::ripTrackButtonData()
     }
     conv->setDestinationSettings(settings);
     switch((conv_err=conv->
-	  runImport(lib_user->name(),lib_user->password(),&audio_conv_err))) {
+	  runImport(rda->user()->name(),rda->user()->password(),&audio_conv_err))) {
     case RDAudioImport::ErrorOk:
       QMessageBox::information(this,tr("Rip Complete"),tr("Rip complete!"));
       break;
@@ -582,14 +581,14 @@ void CdRipper::ejectedData()
 
 void CdRipper::mediaChangedData()
 {
-  QListViewItem *l;
+  Q3ListViewItem *l;
 
   rip_isrc_read=false;
   rip_track_list->clear();
   rip_track[0]=-1;
   rip_track[1]=-1;
   for(int i=rip_cdrom->tracks();i>0;i--) {
-    l=new QListViewItem(rip_track_list);
+    l=new Q3ListViewItem(rip_track_list);
     l->setText(0,QString().sprintf("%d",i));
     if(rip_cdrom->isAudio(i)) {
       l->setText(4,tr("Audio Track"));

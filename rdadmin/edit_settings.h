@@ -2,9 +2,7 @@
 //
 // Edit Rivendell System-wide Settings.
 //
-//   (C) Copyright 2009 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_settings.h,v 1.4.8.1 2012/11/26 20:19:38 cvs Exp $
+//   (C) Copyright 2009,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,23 +23,22 @@
 
 #include <map>
 
-#include <qdialog.h>
-#include <qcheckbox.h>
-#include <qlistview.h>
-#include <qspinbox.h>
-#include <qpushbutton.h>
-#include <qlineedit.h>
-#include <qcombobox.h>
+#include <QComboBox>
+#include <QCheckBox>
+#include <QDialog>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QSpinBox>
 
 #include <rdlabel.h>
 #include <rdsystem.h>
-#include <rdaudiosettings.h>
+#include <rdtablewidget.h>
 
 class EditSettings : public QDialog
 {
   Q_OBJECT
   public:
-   EditSettings(QWidget *parent=0,const char *name=0);
+   EditSettings(QWidget *parent=0);
    ~EditSettings();
    QSize sizeHint() const;
    QSizePolicy sizePolicy() const;
@@ -59,7 +56,7 @@ class EditSettings : public QDialog
    RDLabel *edit_duplicate_label;
    QLineEdit *edit_isci_path_edit;
    QComboBox *edit_temp_cart_group_box;
-   QListView *edit_duplicate_list;
+   RDTableWidget *edit_duplicate_list;
    QPushButton *edit_settings_button;
    QPushButton *edit_save_button;
    QPushButton *edit_ok_button;

@@ -2,9 +2,7 @@
 //
 // Rivendell switcher driver for the BroadcastTools Sentinel4Web AES switcher
 //
-//   (C) Copyright 2002-2013 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: btsentinel4web.cpp,v 1.1.2.1 2014/02/17 02:19:03 cvs Exp $
+//   (C) Copyright 2002-2013,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,9 +23,8 @@
 #include <globals.h>
 #include <btsentinel4web.h>
 
-
-BtSentinel4Web::BtSentinel4Web(RDMatrix *matrix,QObject *parent,const char *name)
-  : Switcher(matrix,parent,name)
+BtSentinel4Web::BtSentinel4Web(RDMatrix *matrix,QObject *parent)
+  : Switcher(matrix,parent)
 {
   bt_address=matrix->ipAddress(RDMatrix::Primary);
   bt_port=matrix->ipPort(RDMatrix::Primary);
@@ -35,7 +32,7 @@ BtSentinel4Web::BtSentinel4Web(RDMatrix *matrix,QObject *parent,const char *name
   //
   // Socket
   //
-  bt_socket=new QSocket(this);
+  bt_socket=new Q3Socket(this);
   connect(bt_socket,SIGNAL(connected()),this,SLOT(connectedData()));
   connect(bt_socket,SIGNAL(error(int)),this,SLOT(errorData(int)));
   connect(bt_socket,SIGNAL(readyRead()),this,SLOT(readyReadData()));
@@ -133,7 +130,7 @@ void BtSentinel4Web::processCommand(RDMacro *cmd)
 void BtSentinel4Web::connectedData()
 {
   bt_socket->writeBlock("*0U",3);
-  ripcd_config->log("ripcd",RDConfig::LogInfo,"connected to BT Sentinel4Web device at "+
+  rda->config()->log("ripcd",RDConfig::LogInfo,"connected to BT Sentinel4Web device at "+
 		    bt_socket->peerAddress().toString());
 }
 
@@ -157,7 +154,7 @@ void BtSentinel4Web::readyReadData()
 
 void BtSentinel4Web::watchdogData()
 {
-  ripcd_config->log("ripcd",RDConfig::LogWarning,"lost connection to BT Sentinel4Web device at "+
+  rda->config()->log("ripcd",RDConfig::LogWarning,"lost connection to BT Sentinel4Web device at "+
 		    bt_socket->peerAddress().toString());
   bt_watchdog_reset_timer->start(BTSENTINEL4WEB_WATCHDOG_INTERVAL,true);
 }
@@ -166,7 +163,7 @@ void BtSentinel4Web::watchdogData()
 void BtSentinel4Web::watchdogResetData()
 {
   delete bt_socket;
-  bt_socket=new QSocket(this);
+  bt_socket=new Q3Socket(this);
   connect(bt_socket,SIGNAL(connected()),this,SLOT(connectedData()));
   connect(bt_socket,SIGNAL(error(int)),this,SLOT(errorData(int)));
   connect(bt_socket,SIGNAL(readyRead()),this,SLOT(readyReadData()));

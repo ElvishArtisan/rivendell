@@ -2,9 +2,7 @@
 //
 // Rivendell switcher driver for the Sine Systems ACU-1 (Prophet)
 //
-//   (C) Copyright 2012 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: acu1p.cpp,v 1.1.2.2 2012/12/13 03:14:00 cvs Exp $
+//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,9 +23,8 @@
 #include <globals.h>
 #include <acu1p.h>
 
-
-Acu1p::Acu1p(RDMatrix *matrix,QObject *parent,const char *name)
-  : Switcher(matrix,parent,name)
+Acu1p::Acu1p(RDMatrix *matrix,QObject *parent)
+  : Switcher(matrix,parent)
 {
   char str[9];
 
@@ -43,16 +40,16 @@ Acu1p::Acu1p(RDMatrix *matrix,QObject *parent,const char *name)
   //
   // Initialize the TTY Port
   //
-  RDTty *tty=new RDTty(rdstation->name(),matrix->port(RDMatrix::Primary));
+  RDTty *tty=new RDTty(rda->station()->name(),matrix->port(RDMatrix::Primary));
   bt_device=new RDTTYDevice();
   if(tty->active()) {
     bt_device->setName(tty->port());
     bt_device->setSpeed(tty->baudRate());
     bt_device->setWordLength(tty->dataBits());
     bt_device->setParity(tty->parity());
-    bt_device->open(IO_Raw|IO_ReadWrite);
+    bt_device->open(QIODevice::Unbuffered|QIODevice::ReadWrite);
   }
-  bt_notify=new QSocketNotifier(bt_device->socket(),QSocketNotifier::Read,this);
+  bt_notify=new QSocketNotifier(bt_device->fileDescriptor(),QSocketNotifier::Read,this);
   connect(bt_notify,SIGNAL(activated(int)),this,SLOT(readyReadData(int)));
   delete tty;
 

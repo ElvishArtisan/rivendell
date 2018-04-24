@@ -2,9 +2,7 @@
 //
 // A wall-clock widget with date.
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: wall_clock.cpp,v 1.21 2011/01/11 12:20:31 cvs Exp $
+//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,19 +25,22 @@
 #include <qfontmetrics.h>
 #include <qsize.h>
 #include <qevent.h>
+//Added by qt3to4:
+#include <QKeyEvent>
 #include <stdio.h>
 #include <string.h>
 
+#include <rdapplication.h>
 #include <rdconf.h>
 
 #include <colors.h>
 #include <wall_clock.h>
 #include <globals.h>
 
-WallClock::WallClock(QWidget *parent,const char *name)
-  :QPushButton(parent,name)
+WallClock::WallClock(QWidget *parent)
+  :QPushButton(parent)
 {
-  time_offset=rdstation_conf->timeOffset();
+  time_offset=rda->station()->timeOffset();
   previous_time=QTime::currentTime().addMSecs(time_offset);
   time_mode=RDAirPlayConf::TwentyFourHour;
   previous_time_mode = RDAirPlayConf::TwentyFourHour;
@@ -152,7 +153,7 @@ void WallClock::tickClock()
   QPainter p(pix);
   if(flash_state) {
     p.fillRect(0,0,width(),height(),BUTTON_TIME_SYNC_LOST_COLOR);
-    p.setPen(QColor(color1));
+    p.setPen(QColor(Qt::color1));
   }
   else {
     p.fillRect(0,0,width(),height(),backgroundColor());

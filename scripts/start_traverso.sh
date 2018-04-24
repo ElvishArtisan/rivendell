@@ -5,9 +5,7 @@
 # Load an audio file into the traverso audio DAW using OSC.
 # If traverso is not already running, it is first started.
 #
-# (C) Copyright 2008 Fred Gleason <fredg@paravelsystems.com>
-#
-#      $Id: start_traverso.sh,v 1.3 2010/07/29 19:32:38 cvs Exp $
+# (C) Copyright 2008,2016 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as

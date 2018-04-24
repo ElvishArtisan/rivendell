@@ -2,9 +2,7 @@
 //
 //   The Clock ListView widget for RDLogManager.
 //
-//   (C) Copyright 2002-2005 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: clock_listview.h,v 1.5 2010/07/29 19:32:37 cvs Exp $
+//   (C) Copyright 2002-2005,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,9 +22,11 @@
 #ifndef CLOCK_LISTVIEW_H
 #define CLOCK_LISTVIEW_H
 
-#include <qlistview.h>
+#include <q3listview.h>
 #include <qpixmap.h>
-#include <qpopupmenu.h>
+#include <q3popupmenu.h>
+//Added by qt3to4:
+#include <QMouseEvent>
 
 #include <rdlistview.h>
 #include <rdlog_event.h>
@@ -36,7 +36,7 @@ class ClockListView : public RDListView
   Q_OBJECT
 
  public:
-  ClockListView(QWidget *parent,const char *name=0);
+  ClockListView(QWidget *parent);
 
  signals:
   void editLine(int count);
@@ -49,7 +49,7 @@ class ClockListView : public RDListView
   void contentsMousePressEvent(QMouseEvent *e);
 
  private:
-  QPopupMenu *clock_menu;
+  Q3PopupMenu *clock_menu;
   RDListViewItem *clock_menu_item;
   QWidget *clock_parent;
 };

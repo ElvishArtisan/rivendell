@@ -2,9 +2,7 @@
 //
 // GPIO Pin selector widget for Rivendell
 //
-//   (C) Copyright 2002 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdgpioselector.cpp,v 1.8 2010/07/29 19:32:33 cvs Exp $
+//   (C) Copyright 2002,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,20 +25,20 @@
 #include <qpushbutton.h>
 #include <qradiobutton.h>
 #include <qlineedit.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qlabel.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 
 
 #include <rd.h>
 #include <rdgpioselector.h>
 
 
-RDGpioSelector::RDGpioSelector(QWidget *parent,const char *name)
-  : QWidget(parent,name)
+RDGpioSelector::RDGpioSelector(QWidget *parent)
+  : QWidget(parent)
 {
   //
   // Pin
@@ -55,7 +53,7 @@ RDGpioSelector::RDGpioSelector(QWidget *parent,const char *name)
   QLabel *gpio_pin_label=new QLabel(gpio_pin_box,tr("Pin:"),this,
 				       "gpio_pin_label");
   gpio_pin_label->setGeometry(0,24,55,19);
-  gpio_pin_label->setAlignment(AlignRight|ShowPrefix);
+  gpio_pin_label->setAlignment(Qt::AlignRight|Qt::TextShowMnemonic);
 }
 
 

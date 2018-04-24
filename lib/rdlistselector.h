@@ -2,9 +2,7 @@
 //
 //   An listselector widget with word wrap.
 //
-//   (C) Copyright 2002 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdlistselector.h,v 1.5 2010/07/29 19:32:33 cvs Exp $
+//   (C) Copyright 2002,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -19,25 +17,23 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-//
 
 #ifndef RDLISTSELECTOR_H
 #define RDLISTSELECTOR_H
 
-#include <qwidget.h>
-#include <qlabel.h>
-#include <qhbox.h>
-#include <qcolor.h>
-#include <qlistbox.h>
-#include <qpushbutton.h>
+#include <Q3HBox>
+#include <Q3ListBox>
+#include <QColor>
+#include <QLabel>
+#include <QPushButton>
+#include <QWidget>
 
-
-class RDListSelector : public QHBox
+class RDListSelector : public Q3HBox
 {
   Q_OBJECT
 
  public:
-  RDListSelector(QWidget *parent=0,const char *name=0);
+  RDListSelector(QWidget *parent=0);
   uint sourceCount() const;
   uint destCount() const;
   void sourceSetLabel(QString label);
@@ -58,10 +54,10 @@ class RDListSelector : public QHBox
   QString destCurrentText() const;
   void sourceSetCurrentItem(int item);
   void destSetCurrentItem(int item);
-  QListBoxItem *sourceFindItem(const QString &text,
-			       ComparisonFlags compare=ExactMatch) const;
-  QListBoxItem *destFindItem(const QString &text,
-			     ComparisonFlags compare=ExactMatch) const;
+  Q3ListBoxItem *sourceFindItem(const QString &text,
+				Q3ListBox::ComparisonFlags compare=Q3ListBox::ExactMatch) const;
+  Q3ListBoxItem *destFindItem(const QString &text,
+			      Q3ListBox::ComparisonFlags compare=Q3ListBox::ExactMatch) const;
   void clear();
   
  private slots:
@@ -70,9 +66,9 @@ class RDListSelector : public QHBox
 
  private:
   void CheckButtons();
-  QListBox *list_source_box;
+  Q3ListBox *list_source_box;
   QLabel *list_source_label;
-  QListBox *list_dest_box;
+  Q3ListBox *list_dest_box;
   QLabel *list_dest_label;
   QPushButton *list_add_button;
   QPushButton *list_remove_button;

@@ -2,9 +2,7 @@
 //
 // Escape non-valid characters in a string.
 //
-//   (C) Copyright 2002-2005 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdescape_string.cpp,v 1.17.10.2 2014/06/24 18:27:04 cvs Exp $
+//   (C) Copyright 2002-2005,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,82 +21,86 @@
 #include <vector>
 
 #include <rdescape_string.h>
+#include <qdatetime.h>
+
+/**
+ * RDCheckDateTime - Checks for QTime.isValid 
+ * @param time - QTime object
+ * @param format - QString representing time format e.g. HH:MM
+ * @return QString, "NULL" if not Valid else formatted Time String
+ */
+QString RDCheckDateTime(QTime const &time, QString const &format)
+{
+  QString checkedValue = "NULL";
+  
+  if(time.isValid())
+    checkedValue = "\"" + time.toString(format) + "\"";
+  
+  return checkedValue;
+  
+}
+
+/**
+ * RDCheckDateTime - Checks for QDateTime.isValid 
+ * @param datetime - QDateTime object
+ * @param format - QString representing date time format e.g. yyyy-mm-dd HH:MM
+ * @return QString, "NULL" if not Valid else formatted DateTime String
+ */
+QString RDCheckDateTime(QDateTime const &datetime, QString const &format)
+{
+  QString checkedValue = "NULL";
+  
+  if(datetime.isValid())
+    checkedValue = "\"" + datetime.toString(format) + "\"";
+  
+  return checkedValue;
+  
+}
+
+/**
+ * RDCheckDateTime - Checks for QDate.isValid 
+ * @param date - QDate object
+ * @param format - QString representing date format e.g. yyyy-mm-dd
+ * @return QString, "NULL" if not Valid else formatted Date String
+ */
+QString RDCheckDateTime(QDate const &date, QString const &format)
+{
+  QString checkedValue = "NULL";
+  
+  if(date.isValid())
+    checkedValue = "\"" + date.toString(format) + "\"";
+  
+  return checkedValue;
+  
+}
 
 QString RDEscapeString(QString const &str)
 {
   QString res;
 
-  for(unsigned i=0;i<str.length();i++) {
-    switch(((const char *)str)[i]) {
-	case '(':
-	  res+=QString("\\\(");
-	  break;
-
-	case ')':
-	  res+=QString("\\)");
-	  break;
-
-	case '{':
-	  res+=QString("\\\{");
-	  break;
-
-	case '"':
-	  res+=QString("\\\"");
-	  break;
-
-	case '`':
-	  res+=QString("\\`");
-	  break;
-
-	case '[':
-	  res+=QString("\\\[");
-	  break;
-
-	case '\'':
-	  res+=QString("\\\'");
-	  break;
-
-	case '\\':
-	  res+=QString("\\");
-	  res+=QString("\\");
-	  break;
-
-	case '?':
-	  res+=QString("\\\?");
-	  break;
-
-	case ' ':
-	  res+=QString("\\ ");
-	  break;
-
-	case '&':
-	  res+=QString("\\&");
-	  break;
-
-        case ';':
-	  res+=QString("\\;");
-	  break;
-
-        case '<':
-	  res+=QString("\\<");
-	  break;
-
-        case '>':
-	  res+=QString("\\>");
-	  break;
-
-        case '|':
-	  res+=QString("\\|");
-	  break;
-
-	default:
-	  res+=((const char *)str)[i];
-	  break;
+  for(int i=0;i<str.length();i++) {
+    bool sub=false;
+    if(str.at(i)==QChar('"')) {
+      res+=QChar('\\');
+      res+=QChar('"');
+      sub=true;
+    }
+    if(str.at(i)==QChar('\'')) {
+      res+=QChar('\\');
+      res+=QChar('\'');
+      sub=true;
+    }
+    if(str.at(i)==QChar('\\')) {
+      res+=QChar('\\');
+      res+=QChar('\\');
+      sub=true;
+    }
+    if(!sub) {
+      res+=str.at(i);
     }
   }
-
   /*
-  for(unsigned i=0;i<str.length();i++) {
+  for(int i=0;i<str.length();i++) {
     switch(((const char *)str)[i]) {
 	case '(':
 	  res+=QString("\\\(");
@@ -114,10 +116,6 @@ QString RDEscapeString(QString const &str)
 
 	case '"':
 	  res+=QString("\\\"");
-	  break;
-
-	case '´':
-	  res+=QString("\\´");
 	  break;
 
 	case '`':
@@ -171,6 +169,5 @@ QString RDEscapeString(QString const &str)
     }
   }
   */
-
   return res;
 }

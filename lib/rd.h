@@ -2,9 +2,7 @@
 //
 // System-Wide Values for Rivendell
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rd.h,v 1.194.6.14.2.1 2014/05/22 14:30:44 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -65,6 +63,9 @@
 #define DEFAULT_MYSQL_USERNAME "rduser"
 #define DEFAULT_MYSQL_PASSWORD "letmein"
 #define DEFAULT_MYSQL_DRIVER "QMYSQL3"
+#define DEFAULT_MYSQL_ENGINE "InnoDB"
+#define DEFAULT_MYSQL_CHARSET "utf8mb4"
+#define DEFAULT_MYSQL_COLLATION "utf8mb4_general_ci"
 #define DEFAULT_MYSQL_HEARTBEAT_INTERVAL 360
 #define MYSQL_BUILTIN_DATABASE "mysql"
 #define POSTGRESQL_BUILTIN_DATABASE "template1"
@@ -157,7 +158,7 @@
 /*
  * Max number of inputs or outputs in a switcher
  */
-#define MAX_ENDPOINTS 1024
+#define MAX_ENDPOINTS 2048
 
 /*
  * Max number of attached switcher matrices per workstation
@@ -424,9 +425,9 @@
 /*
  * Cue Editor Colors
  */
-#define RD_CUEEDITOR_KNOB_COLOR blue
-#define RD_CUEEDITOR_PLAY_MARKER black
-#define RD_CUEEDITOR_START_MARKER red
+#define RD_CUEEDITOR_KNOB_COLOR Qt::blue
+#define RD_CUEEDITOR_PLAY_MARKER Qt::black
+#define RD_CUEEDITOR_START_MARKER Qt::red
 #define RD_CUEEDITOR_BUTTON_FLASH_PERIOD 200
 #define RD_CUEEDITOR_AUDITION_PREROLL 5000
 
@@ -450,7 +451,7 @@
 /*
  * Audio File Filter for QFileDialog
  */
-#define RD_AUDIO_FILE_FILTER "Sound Files (*.mp* *.MP* *.wav *.WAV *.ogg *.OGG *.flac *.FLAC *.atx *.ATX *.tmc *.TMC *.aif* *.AIF*)\nAIFF Files (*.aif* *.AIF*)\nATX Files (*.atx *.ATX)\nMPEG Files (*.mp* *.MP*)\nOggVorbis Files (*.ogg *.OGG)\nFLAC Files (*.flac *.FLAC)\nTM Century GoldDrive Files (*.tmc *.TMC)\nWAV Files (*.wav *.WAV)\nAll Files (*.*)"
+#define RD_AUDIO_FILE_FILTER "Sound Files (*.mp* *.MP* *.wav *.WAV *.ogg *.OGG *.flac *.FLAC *.atx *.ATX *.tmc *.TMC *.aif* *.AIF* *.m4a *.M4A *.aac *.AAC)\nAIFF Files (*.aif* *.AIF*)\nATX Files (*.atx *.ATX)\nMPEG Files (*.mp* *.MP*)\nOggVorbis Files (*.ogg *.OGG)\nFLAC Files (*.flac *.FLAC)\nTM Century GoldDrive Files (*.tmc *.TMC)\nWAV Files (*.wav *.WAV)\nAll Files (*.*)"
 
 /*
  * Image File Filter for QFileDialog
@@ -562,9 +563,19 @@
 #define RDCARTSLOTS_MAX_COLUMNS 4
 
 /*
+ * RDLogEdit Log Listing Limit Quantity
+ */
+#define RDLOGEDIT_LIMIT_QUAN 14
+
+/*
  * Custom MIME Types (for Drag and Drop)
  */
 #define RDMIMETYPE_CART "application/rivendell-cart"
+
+/*
+ * Number of Cut Event IDs
+ */
+#define RD_CUT_EVENT_ID_QUAN 16
 
 
 #endif  // RD_H

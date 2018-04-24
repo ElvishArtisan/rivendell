@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell Jack Configuration
 //
-//   (C) Copyright 2002-2011 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_jack.h,v 1.2.4.4 2012/11/15 19:27:13 cvs Exp $
+//   (C) Copyright 2002-2011,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,17 +21,16 @@
 #ifndef EDIT_JACK_H
 #define EDIT_JACK_H
 
-#include <qdialog.h>
-#include <qlistview.h>
-#include <qtextedit.h>
-#include <qpixmap.h>
-#include <qcheckbox.h>
-#include <qlineedit.h>
-#include <qpushbutton.h>
-#include <qlabel.h>
+#include <QCheckBox>
+#include <QDialog>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QResizeEvent>
 
 #include <rdstation.h>
-#include <rdlistview.h>
+#include <rdsqltablemodel.h>
+#include <rdtableview.h>
 
 #define EDITJACK_DEFAULT_SERVERNAME QObject::tr("(default)")
 
@@ -41,7 +38,7 @@ class EditJack : public QDialog
 {
  Q_OBJECT
  public:
-  EditJack(RDStation *station,QWidget *parent=0,const char *name=0);
+  EditJack(RDStation *station,QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 
@@ -50,7 +47,7 @@ class EditJack : public QDialog
   void addData();
   void editData();
   void deleteData();
-  void doubleClickedData(QListViewItem *item,const QPoint &pt,int col);
+  void doubleClickedData(const QModelIndex &index);
   void okData();
   void cancelData();
   
@@ -58,7 +55,7 @@ class EditJack : public QDialog
   void resizeEvent(QResizeEvent *e);
 
  private:
-  void RefreshList();
+  //  void RefreshList();
   QLabel *edit_start_jack_label;
   QCheckBox *edit_start_jack_box;
   QLabel *edit_jack_server_name_label;
@@ -66,7 +63,9 @@ class EditJack : public QDialog
   QLabel *edit_jack_command_line_label;
   QLineEdit *edit_jack_command_line_edit;
   QLabel *edit_jack_client_label;
-  RDListView *edit_jack_client_view;
+  //  RDListView *edit_jack_client_view;
+  RDSqlTableModel *edit_model;
+  RDTableView *edit_view;
   RDStation *edit_station;
   QPushButton *edit_add_button;
   QPushButton *edit_edit_button;

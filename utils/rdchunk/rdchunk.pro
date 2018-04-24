@@ -2,9 +2,7 @@
 #
 # The utils/rdchunk/ QMake project file for Rivendell
 #
-# (C) Copyright 2003-2006,2008 Fred Gleason <fredg@paravelsystems.com>
-#
-#      $Id: rdchunk.pro,v 1.2 2010/08/04 23:07:02 cvs Exp $
+# (C) Copyright 2003-2006,2008,2016 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as

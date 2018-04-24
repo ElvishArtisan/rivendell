@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell Cast
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_cast.h,v 1.8 2011/09/09 20:23:28 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,12 +24,12 @@
 #include <vector>
 
 #include <qdialog.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qspinbox.h>
 #include <qlineedit.h>
 #include <qsqldatabase.h>
 #include <qcombobox.h>
-#include <qdatetimeedit.h>
+#include <q3datetimeedit.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
 #include <qbuttongroup.h>
@@ -39,12 +37,11 @@
 #include <rdfeed.h>
 #include <rdpodcast.h>
 
-
 class EditCast : public QDialog
 {
  Q_OBJECT
  public:
-  EditCast(unsigned cast_id,QWidget *parent=0,const char *name=0);
+  EditCast(unsigned cast_id,QWidget *parent=0);
   ~EditCast();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -64,7 +61,7 @@ class EditCast : public QDialog
   QLineEdit *cast_item_title_edit;
   QLineEdit *cast_item_author_edit;
   QLineEdit *cast_item_origin_edit;
-  QTextEdit *cast_item_description_edit;
+  Q3TextEdit *cast_item_description_edit;
   QLineEdit *cast_item_category_edit;
   QLineEdit *cast_item_comments_edit;
   QLineEdit *cast_item_sourcetext_edit;
@@ -73,8 +70,8 @@ class EditCast : public QDialog
   QComboBox *cast_item_expiration_box;
   QLabel *cast_item_expiration_label;
   QPushButton *cast_item_expiration_button;
-  QDateEdit *cast_item_expiration_edit;
-  QDateTimeEdit *cast_item_effective_edit;
+  Q3DateEdit *cast_item_expiration_edit;
+  Q3DateTimeEdit *cast_item_effective_edit;
   QButtonGroup *cast_item_status_group;
   std::vector<QString> cast_aux_varnames;
   std::vector<QLineEdit *> cast_aux_edits;

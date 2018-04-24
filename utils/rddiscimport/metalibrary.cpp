@@ -2,9 +2,7 @@
 //
 // Abstract a library of metadata.
 //
-//   (C) Copyright 2013 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: metalibrary.cpp,v 1.1.2.3 2013/12/04 22:22:49 cvs Exp $
+//   (C) Copyright 2013,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -124,7 +122,7 @@ void MetaLibrary::LoadLine(const QStringList fields)
 {
   MetaRecord *m=new MetaRecord();
   meta_tracks.push_back(m);
-  for(unsigned i=0;i<fields.size();i++) {
+  for(int i=0;i<fields.size();i++) {
     if(meta_headers[i]=="disc") {
       m->setDiscId(fields[i]);
     }
@@ -195,8 +193,8 @@ QStringList MetaLibrary::Split(const QString &sep,const QString &str)
   QStringList ret;
   bool quoted=false;
 
-  for(unsigned i=0;i<str.length();i++) {
-    switch(str[i]) {
+  for(int i=0;i<str.length();i++) {
+    switch(str.at(i).cell()) {
     case ',':
       if(quoted) {
 	buf+=str[i];

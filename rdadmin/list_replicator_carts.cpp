@@ -1,10 +1,8 @@
 // list_replicator_carts.cpp
 //
-// List Rivendell Replicators
+// List Rivendell Replicator Carts
 //
-//   (C) Copyright 2002-2008 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_replicator_carts.cpp,v 1.1 2011/10/17 18:48:40 cvs Exp $
+//   (C) Copyright 2002-2008,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,40 +18,27 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <math.h>
-
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qbuttongroup.h>
-#include <rddb.h>
+#include <QResizeEvent>
 
 #include <rdcart.h>
-#include <rdtextfile.h>
 #include <rdescape_string.h>
 #include <rdreplicator.h>
+#include <rdtextfile.h>
 
-#include <list_replicator_carts.h>
-#include <edit_replicator.h>
-#include <add_replicator.h>
+#include "edit_replicator.h"
+#include "add_replicator.h"
+#include "list_replicator_carts.h"
 
 #include "../icons/play.xpm"
 #include "../icons/rml5.xpm"
 
-ListReplicatorCarts::ListReplicatorCarts(QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+ListReplicatorCarts::ListReplicatorCarts(QWidget *parent)
+  : QDialog(parent)
 {
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
 
   //
   // Create Fonts
@@ -80,7 +65,7 @@ ListReplicatorCarts::ListReplicatorCarts(QWidget *parent,const char *name)
   //
   //  Repost Button
   //
-  list_repost_button=new QPushButton(this,"list_repost_button");
+  list_repost_button=new QPushButton(this);
   list_repost_button->setFont(font);
   list_repost_button->setText(tr("&Repost"));
   connect(list_repost_button,SIGNAL(clicked()),this,SLOT(repostData()));
@@ -88,7 +73,7 @@ ListReplicatorCarts::ListReplicatorCarts(QWidget *parent,const char *name)
   //
   //  Repost All Button
   //
-  list_repost_all_button=new QPushButton(this,"list_repost_button");
+  list_repost_all_button=new QPushButton(this);
   list_repost_all_button->setFont(font);
   list_repost_all_button->setText(tr("Repost\n&All"));
   connect(list_repost_all_button,SIGNAL(clicked()),this,SLOT(repostAllData()));
@@ -96,7 +81,7 @@ ListReplicatorCarts::ListReplicatorCarts(QWidget *parent,const char *name)
   //
   //  Close Button
   //
-  list_close_button=new QPushButton(this,"list_close_button");
+  list_close_button=new QPushButton(this);
   list_close_button->setDefault(true);
   list_close_button->setFont(font);
   list_close_button->setText(tr("&Close"));
@@ -105,7 +90,7 @@ ListReplicatorCarts::ListReplicatorCarts(QWidget *parent,const char *name)
   //
   // Replicator List
   //
-  list_view=new RDListView(this,"list_view");
+  list_view=new RDListView(this);
   list_view->setFont(list_font);
   list_view->setAllColumnsShowFocus(true);
   list_view->setItemMargin(5);
@@ -114,8 +99,7 @@ ListReplicatorCarts::ListReplicatorCarts(QWidget *parent,const char *name)
   list_view->addColumn(tr("TITLE"));
   list_view->addColumn(tr("LAST POSTED"));
   list_view->addColumn(tr("POSTED FILENAME"));
-  QLabel *list_box_label=new QLabel(list_view,tr("&Active Carts:"),
-				    this,"list_box_label");
+  QLabel *list_box_label=new QLabel(list_view,tr("&Active Carts:"),this);
   list_box_label->setFont(font);
   list_box_label->setGeometry(14,11,85,19);
 }
@@ -141,7 +125,7 @@ QSizePolicy ListReplicatorCarts::sizePolicy() const
 int ListReplicatorCarts::exec(const QString &replname)
 {
   list_replicator_name=replname;
-  setCaption(replname+tr(" Replicator Carts"));
+  setWindowTitle("RDAdmin - "+replname+tr(" Replicator Carts"));
   RefreshList();
   list_refresh_timer->start(5000,true);
   return QDialog::exec();
@@ -169,9 +153,9 @@ void ListReplicatorCarts::repostAllData()
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString().sprintf("update REPL_CART_STATE set REPOST=\"Y\" \
-                         where REPLICATOR_NAME=\"%s\"",
-			(const char *)list_replicator_name);
+  sql=QString("update REPL_CART_STATE set ")+
+    "REPOST=\"Y\" where "+
+    "REPLICATOR_NAME=\""+RDEscapeString(list_replicator_name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -190,9 +174,11 @@ void ListReplicatorCarts::refreshTimeoutData()
   RDSqlQuery *q;
   RDListViewItem *item;
 
-  sql=QString().sprintf("select ID,ITEM_DATETIME from REPL_CART_STATE \
-                         where REPLICATOR_NAME=\"%s\"",
-			(const char *)RDEscapeString(list_replicator_name));
+  sql=QString("select ")+
+    "ID,"+
+    "ITEM_DATETIME "+
+    "from REPL_CART_STATE where "+
+    "REPLICATOR_NAME=\""+RDEscapeString(list_replicator_name)+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     item=(RDListViewItem *)list_view->firstChild();
@@ -226,15 +212,16 @@ void ListReplicatorCarts::RefreshList()
   RDListViewItem *item;
 
   list_view->clear();
-  sql=QString().sprintf("select REPL_CART_STATE.ID,\
-                         CART.TYPE,REPL_CART_STATE.CART_NUMBER,\
-                         CART.TITLE,\
-                         REPL_CART_STATE.ITEM_DATETIME,\
-                         REPL_CART_STATE.POSTED_FILENAME \
-                         from REPL_CART_STATE left join CART \
-                         on REPL_CART_STATE.CART_NUMBER=CART.NUMBER \
-                         where REPLICATOR_NAME=\"%s\"",
-			(const char *)RDEscapeString(list_replicator_name));
+  sql=QString("select ")+
+    "REPL_CART_STATE.ID,"+
+    "CART.TYPE,"+
+    "REPL_CART_STATE.CART_NUMBER,"+
+    "CART.TITLE,"+
+    "REPL_CART_STATE.ITEM_DATETIME,"+
+    "REPL_CART_STATE.POSTED_FILENAME "+
+    "from REPL_CART_STATE left join CART "+
+    "on REPL_CART_STATE.CART_NUMBER=CART.NUMBER where "+
+    "REPLICATOR_NAME=\""+RDEscapeString(list_replicator_name)+"\"";
   q=new RDSqlQuery(sql);
   while (q->next()) {
     item=new RDListViewItem(list_view);

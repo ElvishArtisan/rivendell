@@ -2,9 +2,7 @@
 #
 # The QMake project file for RDCatch.
 #
-# (C) Copyright 2003-2005 Fred Gleason <fredg@paravelsystems.com>
-#
-#      $Id: rdcatch.pro,v 1.9.8.1 2013/01/01 21:36:30 cvs Exp $
+# (C) Copyright 2003-2005,2016 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as

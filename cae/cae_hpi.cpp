@@ -2,9 +2,7 @@
 //
 // The HPI Driver for the Core Audio Engine component of Rivendell
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: cae_hpi.cpp,v 1.38.6.2 2012/11/30 16:14:58 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,6 +20,7 @@
 
 #include <cae.h>
 
+#include <rdapplication.h>
 #include <rddebug.h>
 
 void MainObject::hpiInit(RDStation *station)
@@ -33,7 +32,7 @@ void MainObject::hpiInit(RDStation *station)
       play[i][j]=NULL;
     }
   }
-  sound_card=new RDHPISoundCard(this,"sound_card");
+  sound_card=new RDHPISoundCard(this);
   sound_card->setFadeProfile(RD_FADE_TYPE);
   for(int i=0;i<sound_card->getCardQuantity();i++) {
     cae_driver[i]=RDStation::Hpi;
@@ -176,6 +175,7 @@ bool MainObject::hpiLoadRecord(int card,int stream,int coding,int chans,
 			       int samprate,int bitrate,QString wavename)
 {
 #ifdef HPI
+  syslog(LOG_NOTICE,"card: %d  coding: %d\n",card,coding);
   record[card][stream]=new RDHPIRecordStream(sound_card);
   connect(record[card][stream],SIGNAL(stateChanged(int,int,int)),
 	  this,SLOT(stateRecordUpdate(int,int,int)));
@@ -188,7 +188,7 @@ bool MainObject::hpiLoadRecord(int card,int stream,int coding,int chans,
     record[card][stream]->setFormatTag(WAVE_FORMAT_PCM);
     record[card][stream]->setBitsPerSample(16);
   }
-  if((coding>=1)&&(coding<=2)) {  // MPEG-1
+  if((coding==1)||(coding==2)) {  // MPEG-1
     record[card][stream]->setFormatTag(WAVE_FORMAT_MPEG);
     record[card][stream]->setHeadLayer(coding);
     record[card][stream]->setHeadBitRate(bitrate);
@@ -207,7 +207,11 @@ bool MainObject::hpiLoadRecord(int card,int stream,int coding,int chans,
     }
     record[card][stream]->setHeadFlags(ACM_MPEG_ID_MPEG1);
   }
-  if(coding>2) {
+  if(coding==4) {                 // PCM24
+    record[card][stream]->setFormatTag(WAVE_FORMAT_PCM);
+    record[card][stream]->setBitsPerSample(24);
+  }
+  if(coding>4) {
     delete record[card][stream];
     record[card][stream]=NULL;
     return false;
@@ -220,7 +224,7 @@ bool MainObject::hpiLoadRecord(int card,int stream,int coding,int chans,
     record[card][stream]=NULL;
     return false;
   }
-  chown((const char *)wavename,rd_config->uid(),rd_config->gid());
+  chown((const char *)wavename,rda->config()->uid(),rda->config()->gid());
   if(!record[card][stream]->recordReady()) {
     delete record[card][stream];
     record[card][stream]=NULL;
@@ -477,7 +481,7 @@ bool MainObject::hpiGetInputMeters(int card,int port,short levels[2])
 bool MainObject::hpiGetOutputMeters(int card,int port,short levels[2])
 {
 #ifdef HPI
-  if(rd_config->useStreamMeters()) {
+  if(rda->config()->useStreamMeters()) {
     //
     //  This is UGLY, but needed to semi-support cards (like the ASI4215)
     //  that lack output port metering.

@@ -2,9 +2,7 @@
 //
 // The Log Editor Utility for Rivendell.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdlogmanager.cpp,v 1.43.4.4.2.1 2014/05/20 14:01:50 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,22 +25,24 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #endif  // WIN32
-#include <qapplication.h>
-#include <qwindowsstyle.h>
-#include <qwidget.h>
-#include <qpainter.h>
-#include <qsqldatabase.h>
-#include <qsqlpropertymap.h>
-#include <qmessagebox.h>
-#include <qpushbutton.h>
-#include <qlabel.h>
-#include <qsettings.h>
-#include <qlabel.h>
-#include <qlistview.h>
-#include <qtextcodec.h>
-#include <qtranslator.h>
+
+#include <Q3ListView>
+#include <Q3SqlPropertyMap>
+#include <QApplication>
+#include <QCoreApplication>
+#include <QLabel>
+#include <QMessageBox>
+#include <QPainter>
+#include <QPixmap>
+#include <QPushButton>
+#include <QTextCodec>
+#include <QTranslator>
+#include <QSettings>
+#include <QWindowsStyle>
+#include <QWidget>
 
 #include <rd.h>
+#include <rdapplication.h>
 #include <rduser.h>
 #include <rdripc.h>
 #include <rdstation.h>
@@ -72,15 +72,8 @@
 //
 // Global Resources
 //
-RDStation *rdstation_conf;
-RDUser *rduser;
-RDRipc *rdripc;
-RDCae *rdcae;
-RDConfig *log_config;
 QString *event_filter;
 QString *clock_filter;
-bool skip_db_check=false;
-
 
 #ifndef WIN32
 void SigHandler(int signo)
@@ -100,10 +93,10 @@ void SigHandler(int signo)
 #endif  // WIN32
 
 
-MainWidget::MainWidget(QWidget *parent,const char *name)
-  :QWidget(parent,name)
+MainWidget::MainWidget(QWidget *parent)
+  :QWidget(parent)
 {
-  unsigned schema=0;
+  new RDApplication(RDApplication::Gui,"rdlogmanager",RDLOGMANAGER_USAGE);
 
   //
   // Fix the Window Size
@@ -120,59 +113,21 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   RDInitializeDaemons();
 #endif  // WIN32
 
-  //
-  // Load Local Configs
-  //
-  log_config=new RDConfig();
-  log_config->load();
   setCaption(tr("RDLogManager"));
 
-  //
-  // Open Database
-  //
-  QString err;
-  log_db=RDInitDb(&schema,&err);
-  if(!log_db) {
-    QMessageBox::warning(this,tr("Can't Connect"),err);
-    exit(0);
-  }
-  if((schema!=RD_VERSION_DATABASE)&&(!skip_db_check)) {
-#ifdef WIN32
-	    QMessageBox::warning(this,tr("RDLogEdit -- Database Skew"),
-				 tr("This version of RDLogManager is incompatible with the version installed on the server.\nSee your system administrator for an update!"));
-#else
-    fprintf(stderr,
-	    "rdlogmanager: database version mismatch, should be %u, is %u\n",
-	    RD_VERSION_DATABASE,schema);
-#endif  // WIN32
-    exit(256);
-  }
-  new RDDbHeartbeat(log_config->mysqlHeartbeatInterval(),this);
-
-  //
-  // Allocate Global Resources
-  //
-  rdstation_conf=new RDStation(log_config->stationName());
-   
   //
   // CAE Connection
   //
 #ifndef WIN32
-  rdcae=new RDCae(rdstation_conf,log_config,parent,name);
-  rdcae->connectHost();
+  rda->cae()->connectHost();
 #endif  // WIN32
 
   //
   // RIPC Connection
   //
-  rdripc=new RDRipc(log_config->stationName());
-  connect(rdripc,SIGNAL(userChanged()),this,SLOT(userData()));
-  rdripc->connectHost("localhost",RIPCD_TCP_PORT,log_config->password());
-
-  //
-  // User
-  //
-  rduser=NULL;
+  connect(rda->ripc(),SIGNAL(userChanged()),this,SLOT(userData()));
+  rda->
+    ripc()->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 
   //
   // Generate Fonts
@@ -202,19 +157,19 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   // Title Label
   //
-  QLabel *label=new QLabel(tr("RDLogManager"),this,"title_label");
+  QLabel *label=new QLabel(tr("RDLogManager"),this);
   label->setGeometry(0,5,sizeHint().width(),32);
   label->setFont(label_font);
-  label->setAlignment(AlignHCenter);
-  label=new QLabel(tr("Select an operation:"),this,"instruction_label");
+  label->setAlignment(Qt::AlignHCenter);
+  label=new QLabel(tr("Select an operation:"),this);
   label->setGeometry(0,25,sizeHint().width(),16);
   label->setFont(day_font);
-  label->setAlignment(AlignCenter);
+  label->setAlignment(Qt::AlignCenter);
 
   //
   //  Edit Events Button
   //
-  log_events_button=new QPushButton(this,"events_button");
+  log_events_button=new QPushButton(this);
   log_events_button->setGeometry(10,45,sizeHint().width()-20,50);
   log_events_button->setFont(button_font);
   log_events_button->setText(tr("Edit &Events"));
@@ -223,7 +178,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   //  Edit Clocks Button
   //
-  log_clocks_button=new QPushButton(this,"clocks_button");
+  log_clocks_button=new QPushButton(this);
   log_clocks_button->setGeometry(10,95,sizeHint().width()-20,50);
   log_clocks_button->setFont(button_font);
   log_clocks_button->setText(tr("Edit C&locks"));
@@ -232,7 +187,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   //  Edit Grids Button
   //
-  log_grids_button=new QPushButton(this,"grid_button");
+  log_grids_button=new QPushButton(this);
   log_grids_button->setGeometry(10,145,sizeHint().width()-20,50);
   log_grids_button->setFont(button_font);
   log_grids_button->setText(tr("Edit G&rids"));
@@ -241,7 +196,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   //  Generate Logs Button
   //
-  log_logs_button=new QPushButton(this,"logs_button");
+  log_logs_button=new QPushButton(this);
   log_logs_button->setGeometry(10,195,sizeHint().width()-20,50);
   log_logs_button->setFont(button_font);
   log_logs_button->setText(tr("&Generate Logs"));
@@ -250,7 +205,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   //  Generate Reports Button
   //
-  log_reports_button=new QPushButton(this,"reports_button");
+  log_reports_button=new QPushButton(this);
   log_reports_button->setGeometry(10,245,sizeHint().width()-20,50);
   log_reports_button->setFont(button_font);
   log_reports_button->setText(tr("Manage &Reports"));
@@ -259,7 +214,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   //
   //  Close Button
   //
-  log_close_button=new QPushButton(this,"close_button");
+  log_close_button=new QPushButton(this);
   log_close_button->setGeometry(10,sizeHint().height()-60,
 				sizeHint().width()-20,50);
   log_close_button->setFont(button_font);
@@ -289,19 +244,16 @@ void MainWidget::userData()
 {
   QString str1=tr("RDLogManager - User: ");
   setCaption(QString().sprintf("%s%s",(const char *)str1,
-			       (const char *)rdripc->user()));
+			       (const char *)rda->ripc()->user()));
 
-  if(rduser!=NULL) {
-    delete rduser;
-  }
-  rduser=new RDUser(rdripc->user());
+  rda->setUser(rda->ripc()->user());
 
   //
   // Set Control Perms
   //
-  bool templates_allowed=rduser->modifyTemplate();
-  bool creation_allowed=rduser->createLog();
-  bool rec_allowed=rduser->deleteRec();
+  bool templates_allowed=rda->user()->modifyTemplate();
+  bool creation_allowed=rda->user()->createLog();
+  bool rec_allowed=rda->user()->deleteRec();
   log_events_button->setEnabled(templates_allowed);
   log_clocks_button->setEnabled(templates_allowed);
   log_grids_button->setEnabled(templates_allowed);
@@ -312,7 +264,7 @@ void MainWidget::userData()
 
 void MainWidget::eventsData()
 {
-  ListEvents *events=new ListEvents(NULL,this,"list_events");
+  ListEvents *events=new ListEvents(NULL,this);
   events->exec();
   delete events;
 }
@@ -320,7 +272,7 @@ void MainWidget::eventsData()
 
 void MainWidget::clocksData()
 {
-  ListClocks *clocks=new ListClocks(NULL,this,"list_clocks");
+  ListClocks *clocks=new ListClocks(NULL,this);
   clocks->exec();
   delete clocks;
 }
@@ -328,7 +280,7 @@ void MainWidget::clocksData()
 
 void MainWidget::gridsData()
 {
-  ListGrids *grids=new ListGrids(this,"list_grids");
+  ListGrids *grids=new ListGrids(this);
   grids->exec();
   delete grids;
 }
@@ -336,7 +288,7 @@ void MainWidget::gridsData()
 
 void MainWidget::generateData()
 {
-  GenerateLog *generatelog=new GenerateLog(this,"list_grids");
+  GenerateLog *generatelog=new GenerateLog(this);
   generatelog->exec();
   delete generatelog;
 }
@@ -344,7 +296,7 @@ void MainWidget::generateData()
 
 void MainWidget::reportsData()
 {
-  ListSvcs *recs=new ListSvcs(this,"list_recs");
+  ListSvcs *recs=new ListSvcs(this);
   recs->exec();
   delete recs;
 }
@@ -352,7 +304,6 @@ void MainWidget::reportsData()
 
 void MainWidget::quitMainWidget()
 {
-  log_db->removeDatabase(log_config->mysqlDbname());
   exit(0);
 }
 
@@ -364,6 +315,7 @@ int gui_main(int argc,char *argv[])
   //
   // Load Translations
   //
+  /*
   QString tr_path;
   QString qt_path;
 #ifdef WIN32
@@ -392,11 +344,12 @@ int gui_main(int argc,char *argv[])
   QTranslator tr(0);
   tr.load(tr_path+QString("rdlogmanager_")+QTextCodec::locale(),".");
   a.installTranslator(&tr);
+  */
 
   //
   // Start Event Loop
   //
-  MainWidget *w=new MainWidget(NULL,"main");
+  MainWidget *w=new MainWidget();
   a.setMainWidget(w);
   w->setGeometry(QRect(QPoint(w->geometry().x(),w->geometry().y()),
 		       w->sizeHint()));
@@ -433,10 +386,6 @@ int main(int argc,char *argv[])
     }
     if (cmd->key(i)=="-t") {
       cmd_merge_traffic = true;
-      cmd->setProcessed(i,true);
-    }
-    if(cmd->key(i)=="--skip-db-check") {
-      skip_db_check=true;
       cmd->setProcessed(i,true);
     }
     if (cmd->key(i)=="-s") {
@@ -489,11 +438,13 @@ int main(int argc,char *argv[])
   }
 
   if(cmd_generate||cmd_merge_traffic||cmd_merge_music) {
+    QCoreApplication a(argc,argv);
     return RunLogOperation(argc,argv,cmd_service,cmd_start_offset,
 			   cmd_protect_existing,cmd_generate,
 			   cmd_merge_music,cmd_merge_traffic);
   }
   if(!cmd_report.isEmpty()) {
+    QCoreApplication a(argc,argv);
     return RunReportOperation(argc,argv,cmd_report,cmd_protect_existing,
 			      cmd_start_offset,cmd_end_offset);
   }

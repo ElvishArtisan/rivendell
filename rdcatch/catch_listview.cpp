@@ -2,14 +2,11 @@
 //
 //   Events List Widget for RDCatch
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: catch_listview.cpp,v 1.5.6.1 2013/11/13 23:36:35 cvs Exp $
+//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
 //   published by the Free Software Foundation.
-//
 //
 //   This program is distributed in the hope that it will be useful,
 //   but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -20,10 +17,13 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-//
 
-#include <qheader.h>
+#include <q3header.h>
+//Added by qt3to4:
+#include <QMouseEvent>
+#include <Q3PopupMenu>
 
+#include <rdapplication.h>
 #include <rdcart.h>
 #include <rdrecording.h>
 #include <rdedit_audio.h>
@@ -31,16 +31,15 @@
 #include <globals.h>
 #include <catch_listview.h>
 
-
-CatchListView::CatchListView(QWidget *parent,const char *name)
-  : RDListView(parent,name)
+CatchListView::CatchListView(QWidget *parent)
+  : RDListView(parent)
 {
   catch_parent=parent;
 
   //
   // Right-Click Menu
   //
-  catch_menu=new QPopupMenu(NULL,"catch_menu");
+  catch_menu=new Q3PopupMenu(NULL);
   connect(catch_menu,SIGNAL(aboutToShow()),this,SLOT(aboutToShowData()));
   catch_menu->
     insertItem(tr("Edit Cue Markers"),this,SLOT(editAudioMenuData()),0,0);
@@ -57,8 +56,8 @@ void CatchListView::editAudioMenuData()
 {
   RDCart *rdcart=new RDCart(catch_cutname.left(6).toUInt());
   RDEditAudio *edit=
-    new RDEditAudio(rdcart,catch_cutname,catch_cae,catch_user,rdstation_conf,
-		    catch_config,catch_audition_card,catch_audition_port,
+    new RDEditAudio(rdcart,catch_cutname,rda->cae(),rda->user(),rda->station(),
+		    rda->config(),catch_audition_card,catch_audition_port,
 		    1500,-400,this);
   if(edit->exec()!=-1) {
     rdcart->updateLength();
@@ -70,8 +69,8 @@ void CatchListView::editAudioMenuData()
 
 void CatchListView::contentsMousePressEvent(QMouseEvent *e)
 {
-  QListView::contentsMousePressEvent(e);
-  QListView::contentsMousePressEvent(e);
+  Q3ListView::contentsMousePressEvent(e);
+  Q3ListView::contentsMousePressEvent(e);
   catch_menu_item=selectedItem();
   if(catch_menu_item==NULL) {
     catch_cutname="";
@@ -92,7 +91,7 @@ void CatchListView::contentsMousePressEvent(QMouseEvent *e)
     }
   }
   switch(e->button()) {
-      case QMouseEvent::RightButton:
+      case Qt::RightButton:
 	catch_menu->setGeometry(e->globalX(),e->globalY(),
 				catch_menu->sizeHint().width(),
 				catch_menu->sizeHint().height());
@@ -108,5 +107,5 @@ void CatchListView::contentsMousePressEvent(QMouseEvent *e)
 
 void CatchListView::contentsMouseDoubleClickEvent(QMouseEvent *e)
 {
-  QListView::contentsMouseDoubleClickEvent(e);
+  Q3ListView::contentsMouseDoubleClickEvent(e);
 }

@@ -2,9 +2,7 @@
 //
 // Functions for manipulating RSS feed log tables.
 //
-//   (C) Copyright 2007 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdfeedlog.cpp,v 1.4 2010/07/29 19:32:33 cvs Exp $
+//   (C) Copyright 2007,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,20 +24,18 @@
 #include <rddb.h>
 #include <rdfeedlog.h>
 
-
 void RDCreateFeedLog(QString keyname)
 {
   QString sql;
   RDSqlQuery *q;
 
   keyname.replace(" ","_");
-  sql=QString().sprintf("create table if not exists %s_FLG (\
-                         ID int unsigned primary key auto_increment,\
-                         CAST_ID int unsigned,\
-                         ACCESS_DATE date,\
-                         ACCESS_COUNT int unsigned default 0,\
-                         index CAST_ID_IDX(CAST_ID,ACCESS_DATE))",
-			(const char *)keyname);
+  sql=QString("create table if not exists `")+keyname+"_FLG` ("+
+    "ID int unsigned primary key auto_increment,"+
+    "CAST_ID int unsigned,"+
+    "ACCESS_DATE date,"+
+    "ACCESS_COUNT int unsigned default 0,"+
+    "index CAST_ID_IDX(CAST_ID,ACCESS_DATE))";
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -51,7 +47,7 @@ void RDDeleteFeedLog(QString keyname)
   RDSqlQuery *q;
 
   keyname.replace(" ","_");
-  sql=QString().sprintf("drop table %s_FLG",(const char *)keyname);
+  sql=QString("drop table `")+keyname+"_FLG`";
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -63,8 +59,8 @@ void RDDeleteCastCount(QString keyname,unsigned cast_id)
   RDSqlQuery *q;
 
   keyname.replace(" ","_");
-  sql=QString().sprintf("delete from %s_FLG where CAST_ID=%u",
-			(const char *)keyname,cast_id);
+  sql=QString("delete from `")+keyname+"_FLG` where "+
+    QString().sprintf("CAST_ID=%u",cast_id);
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -104,27 +100,21 @@ void RDIncrementCastCount(QString keyname,unsigned cast_id)
   q=new RDSqlQuery(sql);
   delete q;
 */
-  sql=QString().sprintf("select ACCESS_COUNT from %s_FLG where \
-                         (CAST_ID=%u)&&(ACCESS_DATE=\"%s\")",
-			(const char *)keyname,
-			cast_id,
-			(const char *)current_date.toString("yyyy-MM-dd"));
+  sql=QString("select ACCESS_COUNT from `")+keyname+"_FLG` where "+
+    QString().sprintf("(CAST_ID=%u)&&",cast_id)+
+    "(ACCESS_DATE=\""+current_date.toString("yyyy-MM-dd")+"\")";
   q=new RDSqlQuery(sql);
   if(q->first()) {
-    sql=QString().sprintf("update %s_FLG set ACCESS_COUNT=%u where \
-                         (CAST_ID=%u)&&(ACCESS_DATE=\"%s\")",
-			  (const char *)keyname,
-			  q->value(0).toUInt()+1,cast_id,
-			  (const char *)current_date.toString("yyyy-MM-dd"));
+    sql=QString("update `")+keyname+"_FLG` set "+
+      QString().sprintf("ACCESS_COUNT=%u where ",q->value(0).toUInt()+1)+
+      QString().sprintf("(CAST_ID=%u)&&",cast_id)+
+      "(ACCESS_DATE=\""+current_date.toString("yyyy-MM-dd")+"\")";
   }
   else {
-    sql=QString().sprintf("insert into %s_FLG set \
-                           CAST_ID=%u,\
-                           ACCESS_DATE=\"%s\",\
-                           ACCESS_COUNT=1",
-			  (const char *)keyname,
-			  cast_id,
-			  (const char *)current_date.toString("yyyy-MM-dd"));
+    sql=QString("insert into `")+keyname+"_FLG` set "+
+      QString().sprintf("CAST_ID=%u,",cast_id)+
+      "ACCESS_DATE=\""+current_date.toString("yyyy-MM-dd")+"\","+
+      "ACCESS_COUNT=1";
   }
   delete q;
   q=new RDSqlQuery(sql);

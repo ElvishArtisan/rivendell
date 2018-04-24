@@ -2,9 +2,7 @@
 //
 // Display System Information for Rivendell
 //
-//   (C) Copyright 2002-2014 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: info_dialog.cpp,v 1.17.8.1 2014/01/06 22:35:13 cvs Exp $
+//   (C) Copyright 2002-2014,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,24 +18,14 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <qtextedit.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <qbuttongroup.h>
-#include <qsqldatabase.h>
-#include <qimage.h>
+#include <QPushButton>
 
+#include <dbversion.h>
+#include <rd.h>
 #include <rdlabel.h>
 #include <rdlicense.h>
-#include <rdstation.h>
-#include <rd.h>
-#include <dbversion.h>
 
-#include <info_dialog.h>
+#include "info_dialog.h"
 
 //
 // This is a kludge, but apparently needed to get the bitmap data
@@ -47,20 +35,18 @@
 #include <xpm_info_banner1.cpp>
 #include <xpm_info_banner2.cpp>
 
-InfoDialog::InfoDialog(QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+InfoDialog::InfoDialog(QWidget *parent)
+  : QDialog(parent)
 {
   QString str;
 
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
-  setCaption(tr("System Information"));
+  setWindowTitle("RDAdmin - "+tr("System Information"));
 
   //
   // Create Fonts
@@ -82,7 +68,7 @@ InfoDialog::InfoDialog(QWidget *parent,const char *name)
   QImage *image=new QImage(460,35,16);
   image->loadFromData(xpm_info_banner1,strlen((const char *)xpm_info_banner1),
 		      "XPM");
-  QLabel *label=new QLabel(this,"top_banner");
+  QLabel *label=new QLabel(this);
   QPixmap pix(460,35);
   pix.convertFromImage(*image);
   label->setGeometry(0,0,460,35);
@@ -90,7 +76,7 @@ InfoDialog::InfoDialog(QWidget *parent,const char *name)
 
   image->loadFromData(xpm_info_banner2,strlen((const char *)xpm_info_banner2),
 		      "XPM");
-  label=new QLabel(this,"bottom_banner");
+  label=new QLabel(this);
   pix.convertFromImage(*image);
   label->setGeometry(0,sizeHint().height()-35,460,35);
   label->setPixmap(pix);
@@ -98,48 +84,46 @@ InfoDialog::InfoDialog(QWidget *parent,const char *name)
   //
   // Title
   //
-  label=new QLabel(tr("Rivendell"),this,"title_label");
+  label=new QLabel(tr("Rivendell"),this);
   label->setGeometry(10,41,120,36);
   label->setFont(title_font);
 
   //
   // Slogan
   //
-  label=new QLabel(tr("A Radio Automation System"),this,"title_label");
+  label=new QLabel(tr("A Radio Automation System"),this);
   label->setGeometry(130,52,200,18);
-  label->setAlignment(AlignVCenter|AlignRight);
+  label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   label->setFont(slogan_font);
 
   //
   // Version
   //
   str=QString(tr("Version"));
-  label=new QLabel(QString().sprintf("%s %s",(const char *)str,VERSION),
-		   this,"title_label");
+  label=new QLabel(QString().sprintf("%s %s",(const char *)str,VERSION),this);
   label->setGeometry(10,73,200,14);
   label->setFont(font);
 
   str=QString(tr("Database Schema"));
   label=new QLabel(QString().sprintf("%s %d",(const char *)str,
-				     RD_VERSION_DATABASE),
-		   this,"title_label");
+				     RD_VERSION_DATABASE),this);
   label->setGeometry(210,73,120,14);
-  label->setAlignment(AlignVCenter|AlignRight);
+  label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   label->setFont(font);
 
   //
   // Signature
   //
-  str=QString(tr("Copyright 2002-2014"));
+  str=QString(tr("Copyright 2002-2016"));
   label=new QLabel(QString().sprintf("%s %s",(const char *)str,
-				     PACKAGE_BUGREPORT),this,"title_label");
+				     PACKAGE_BUGREPORT),this);
   label->setGeometry(10,87,sizeHint().width()-20,14);
   label->setFont(font);
 
   //
   // Disclaimer
   //
-  label=new RDLabel(this,"title_label");
+  label=new RDLabel(this);
   label->setGeometry(10,104,sizeHint().width()-20,60);
   label->setFont(font);
   label->setText(tr("This program is free software, and comes with ABSOLUTELY NO WARRANTY,\nnot even the implied warranties of MERCHANTIBILITY or FITNESS FOR A\nPARTICULAR PURPOSE.  Touch the \"View License\" button for details."));
@@ -147,7 +131,7 @@ InfoDialog::InfoDialog(QWidget *parent,const char *name)
   //
   // License Button
   //
-  QPushButton *button=new QPushButton(this,"license_button");
+  QPushButton *button=new QPushButton(this);
   button->setGeometry(sizeHint().width()/2-45,174,80,50);
   button->setFont(button_font);
   button->setText(tr("View\n&License"));
@@ -156,7 +140,7 @@ InfoDialog::InfoDialog(QWidget *parent,const char *name)
   //
   //  Close Button
   //
-  button=new QPushButton(this,"close_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-90,
 			    80,50);
   button->setFont(button_font);
@@ -180,7 +164,7 @@ QSizePolicy InfoDialog::sizePolicy() const
 
 void InfoDialog::viewLicenseData()
 {
-  RDLicense *lic=new RDLicense(this,"license_dialog");
+  RDLicense *lic=new RDLicense(this);
   lic->exec(RDLicense::GplV2);
   delete lic;
 }

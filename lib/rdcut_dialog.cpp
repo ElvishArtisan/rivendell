@@ -2,9 +2,7 @@
 //
 // A widget to select a Rivendell Cut.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcut_dialog.cpp,v 1.31.4.2 2013/11/15 18:24:08 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,15 +26,19 @@
 #include <qsqlquery.h>
 #include <qapplication.h>
 #include <qeventloop.h>
+//Added by qt3to4:
+#include <QCloseEvent>
+#include <QPixmap>
 
+#include <rdapplication.h>
 #include <rdcut_dialog.h>
 #include <rdcart_search_text.h>
+#include <rdescape_string.h>
 #include <rdtextvalidator.h>
 #include <rdadd_cart.h>
 #include <rdprofile.h>
 #include <rddb.h>
 #include <rdconf.h>
-
 
 //
 // Icons
@@ -45,11 +47,10 @@
 #include "../icons/rml5.xpm"
 
 
-RDCutDialog::RDCutDialog(QString *cutname,RDStation *station,RDSystem *system,
-			 QString *filter,QString *group,QString *schedcode,
-			 QString username,bool show_clear,bool allow_add,
-			 bool exclude_tracks,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+RDCutDialog::RDCutDialog(QString *cutname,QString *filter,QString *group,
+			 QString *schedcode,QString username,bool show_clear,
+			 bool allow_add,bool exclude_tracks,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   cut_cutname=cutname;
   cut_exclude_tracks=exclude_tracks;
@@ -57,8 +58,7 @@ RDCutDialog::RDCutDialog(QString *cutname,RDStation *station,RDSystem *system,
   cut_schedcode=schedcode;
   cut_username=username;
   cut_allow_clear=show_clear;
-  cut_filter_mode=station->filterMode();
-  cut_system=system;
+  cut_filter_mode=rda->station()->filterMode();
 
   if(filter==NULL) {
     cut_filter=new QString();
@@ -97,12 +97,12 @@ RDCutDialog::RDCutDialog(QString *cutname,RDStation *station,RDSystem *system,
   // Progress Dialog
   //
   cut_progress_dialog=
-    new QProgressDialog(tr("Please Wait..."),"Cancel",10,this,
+    new Q3ProgressDialog(tr("Please Wait..."),"Cancel",10,this,
 			"cut_progress_dialog",false,
 			Qt::WStyle_Customize|Qt::WStyle_NormalBorder);
   cut_progress_dialog->setCaption(" ");
   QLabel *label=new QLabel(tr("Please Wait..."),cut_progress_dialog);
-  label->setAlignment(AlignCenter);
+  label->setAlignment(Qt::AlignCenter);
   label->setFont(progress_font);
   cut_progress_dialog->setLabel(label);
   cut_progress_dialog->setCancelButton(NULL);
@@ -111,10 +111,10 @@ RDCutDialog::RDCutDialog(QString *cutname,RDStation *station,RDSystem *system,
   //
   // Filter Selector
   //
-  cut_filter_edit=new QLineEdit(this,"cut_filter_edit");
-  label=new QLabel(cut_filter_edit,tr("Cart Filter:"),this,"cut_filter_label");
+  cut_filter_edit=new QLineEdit(this);
+  label=new QLabel(cut_filter_edit,tr("Cart Filter:"),this);
   label->setGeometry(10,10,85,20);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   label->setFont(label_font);
   connect(cut_filter_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(filterChangedData(const QString &)));
@@ -122,7 +122,7 @@ RDCutDialog::RDCutDialog(QString *cutname,RDStation *station,RDSystem *system,
   //
   // Filter Search Button
   //
-  cut_search_button=new QPushButton(this,"cut_search_button");
+  cut_search_button=new QPushButton(this);
   cut_search_button->setGeometry(sizeHint().width()-140,8,60,24);
   cut_search_button->setText(tr("&Search"));
   cut_search_button->setFont(label_font);
@@ -131,7 +131,7 @@ RDCutDialog::RDCutDialog(QString *cutname,RDStation *station,RDSystem *system,
   //
   // Filter Clear Button
   //
-  cut_clear_button=new QPushButton(this,"cut_clear_button");
+  cut_clear_button=new QPushButton(this);
   cut_clear_button->setGeometry(sizeHint().width()-70,8,60,24);
   cut_clear_button->setFont(label_font);
   cut_clear_button->setText(tr("C&lear"));
@@ -140,11 +140,11 @@ RDCutDialog::RDCutDialog(QString *cutname,RDStation *station,RDSystem *system,
   //
   // Group Selector
   //
-  cut_group_box=new QComboBox(this,"cut_clear_box");
+  cut_group_box=new QComboBox(this);
   cut_group_box->setGeometry(100,40,140,20);
-  label=new QLabel(cut_filter_edit,tr("Group:"),this,"cut_group_label");
+  label=new QLabel(cut_filter_edit,tr("Group:"),this);
   label->setGeometry(10,40,85,20);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   label->setFont(label_font);
   connect(cut_group_box,SIGNAL(activated(const QString &)),
 	  this,SLOT(groupActivatedData(const QString &)));
@@ -152,12 +152,11 @@ RDCutDialog::RDCutDialog(QString *cutname,RDStation *station,RDSystem *system,
   //
   // Scheduler Code Selector
   //
-  cut_schedcode_box=new QComboBox(this,"cut_schedcode_box");
+  cut_schedcode_box=new QComboBox(this);
   cut_schedcode_box->setGeometry(380,40,sizeHint().width()-390,20);
-  cut_schedcode_label=new QLabel(cut_schedcode_box,tr("Scheduler Code:"),
-			   this,"cut_schedcode_label");
+  cut_schedcode_label=new QLabel(cut_schedcode_box,tr("Scheduler Code:"),this);
   cut_schedcode_label->setGeometry(260,40,115,20);
-  cut_schedcode_label->setAlignment(AlignRight|AlignVCenter);
+  cut_schedcode_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   cut_schedcode_label->setFont(label_font);
   connect(cut_schedcode_box,SIGNAL(activated(const QString &)),
 	  this,SLOT(groupActivatedData(const QString &)));
@@ -165,15 +164,14 @@ RDCutDialog::RDCutDialog(QString *cutname,RDStation *station,RDSystem *system,
   //
   // Search Limit Checkbox
   //
-  cart_limit_box=new QCheckBox(this,"cart_limit_box");
+  cart_limit_box=new QCheckBox(this);
   cart_limit_box->setGeometry(100,72,15,15);
   cart_limit_box->setChecked(true);
   label=new QLabel(cart_limit_box,tr("Show Only First")+
 		   QString().sprintf(" %d ",
-		   RD_LIMITED_CART_SEARCH_QUANTITY)+tr("Matches"),
-		   this,"cart_limit_label");
+				     RD_LIMITED_CART_SEARCH_QUANTITY)+tr("Matches"),this);
   label->setGeometry(120,70,300,20);
-  label->setAlignment(AlignLeft|AlignVCenter);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   label->setFont(label_font);
   connect(cart_limit_box,SIGNAL(stateChanged(int)),
 	  this,SLOT(limitChangedData(int)));
@@ -181,15 +179,15 @@ RDCutDialog::RDCutDialog(QString *cutname,RDStation *station,RDSystem *system,
   //
   // Cart List
   //
-  cut_cart_list=new RDListView(this,"cut_cart_list");
+  cut_cart_list=new RDListView(this);
   cut_cart_list->setGeometry(10,120,300,200);
   cut_cart_list->setAllColumnsShowFocus(true);
   cut_cart_list->setItemMargin(5);
   connect(cut_cart_list,SIGNAL(selectionChanged()),
 	  this,SLOT(selectionChangedData()));
-  connect(cut_cart_list,SIGNAL(clicked(QListViewItem *)),
-	  this,SLOT(cartClickedData(QListViewItem *)));
-  label=new QLabel(cut_cart_list,tr("Carts"),this,"cut_cart_label");
+  connect(cut_cart_list,SIGNAL(clicked(Q3ListViewItem *)),
+	  this,SLOT(cartClickedData(Q3ListViewItem *)));
+  label=new QLabel(cut_cart_list,tr("Carts"),this);
   label->setGeometry(15,100,100,20);
   label->setFont(label_font);
   cut_cart_list->addColumn("");
@@ -206,11 +204,11 @@ RDCutDialog::RDCutDialog(QString *cutname,RDStation *station,RDSystem *system,
   //
   // Cut List
   //
-  cut_cut_list=new QListView(this,"cut_cut_list");
+  cut_cut_list=new Q3ListView(this);
   cut_cut_list->setGeometry(320,120,sizeHint().width()-330,200);
   cut_cut_list->setAllColumnsShowFocus(true);
   cut_cut_list->setItemMargin(5);
-  label=new QLabel(cut_cut_list,tr("Cuts"),this,"cut_cut_label");
+  label=new QLabel(cut_cut_list,tr("Cuts"),this);
   label->setGeometry(325,100,100,20);
   label->setFont(label_font);
   cut_cut_list->addColumn(tr("DESCRIPTION"));
@@ -225,7 +223,7 @@ RDCutDialog::RDCutDialog(QString *cutname,RDStation *station,RDSystem *system,
   //
   // Add Button
   //
-  button=new QPushButton(tr("&Add New\nCart"),this,"add_button");
+  button=new QPushButton(tr("&Add New\nCart"),this);
   button->setGeometry(10,sizeHint().height()-60,80,50);
   button->setFont(label_font);
   connect(button,SIGNAL(clicked()),this,SLOT(addButtonData()));
@@ -236,7 +234,7 @@ RDCutDialog::RDCutDialog(QString *cutname,RDStation *station,RDSystem *system,
   //
   // Clear Button
   //
-  button=new QPushButton(tr("&Clear"),this,"clear_button");
+  button=new QPushButton(tr("&Clear"),this);
   button->setFont(label_font);
   connect(button,SIGNAL(clicked()),this,SLOT(clearButtonData()));
   if(!show_clear) {
@@ -252,7 +250,7 @@ RDCutDialog::RDCutDialog(QString *cutname,RDStation *station,RDSystem *system,
   //
   // OK Button
   //
-  cut_ok_button=new QPushButton(tr("&OK"),this,"ok_button");
+  cut_ok_button=new QPushButton(tr("&OK"),this);
   cut_ok_button->
     setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   cut_ok_button->setFont(label_font);
@@ -262,7 +260,7 @@ RDCutDialog::RDCutDialog(QString *cutname,RDStation *station,RDSystem *system,
   //
   // Cancel Button
   //
-  cut_cancel_button=new QPushButton(tr("&Cancel"),this,"cancel_button");
+  cut_cancel_button=new QPushButton(tr("&Cancel"),this);
   cut_cancel_button->
     setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   cut_cancel_button->setFont(label_font);
@@ -353,7 +351,7 @@ void RDCutDialog::limitChangedData(int state)
 }
 
 
-void RDCutDialog::cartClickedData(QListViewItem *)
+void RDCutDialog::cartClickedData(Q3ListViewItem *)
 {
   cut_ok_button->setEnabled(true);
 }
@@ -401,21 +399,22 @@ void RDCutDialog::addButtonData()
   int cart_num=-1;
 
   RDAddCart *add_cart=new RDAddCart(&cart_group,&cart_type,&cart_title,
-				    cut_username,cut_system,this);
+				    cut_username,rda->system(),this);
   if((cart_num=add_cart->exec())<0) {
     delete add_cart;
     return;
   }
-  sql=QString().sprintf("insert into CART set \
-                         NUMBER=%d,TYPE=%d,GROUP_NAME=\"%s\",TITLE=\"%s\"",
-			cart_num,cart_type,
-			(const char *)cart_group,
-			(const char *)cart_title);
+  sql=QString("insert into CART set ")+
+    QString().sprintf("NUMBER=%d,",cart_num)+
+    QString().sprintf("TYPE=%d,",cart_type)+
+    "GROUP_NAME=\""+RDEscapeString(cart_group)+"\","+
+    "TITLE=\""+RDEscapeString(cart_title)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
-  sql=QString().sprintf("insert into CUTS set CUT_NAME=\"%06d_001\",\
-                         CART_NUMBER=%d,DESCRIPTION=\"Cut 001\"",
-			cart_num,cart_num);
+  sql=QString("insert into CUTS set ")+
+    "CUT_NAME=\""+RDCut::cutName(cart_num,1)+"\","+
+    QString().sprintf("CART_NUMBER=%d,",cart_num)+
+    "DESCRIPTION=\"Cut 001\"";
   q=new RDSqlQuery(sql);
   delete q;
 
@@ -434,7 +433,7 @@ void RDCutDialog::addButtonData()
 void RDCutDialog::okData()
 {
   RDListViewItem *cart_item=(RDListViewItem *)cut_cart_list->selectedItem();
-  QListViewItem *cut_item=cut_cut_list->selectedItem();
+  Q3ListViewItem *cut_item=cut_cut_list->selectedItem();
   if((cart_item==NULL)||(cut_item==NULL)) {
     if(cut_allow_clear) {
       *cut_cutname="";
@@ -495,14 +494,16 @@ void RDCutDialog::RefreshCarts()
   if(cut_schedcode_box->currentText()!=tr("ALL")) {
     schedcode=cut_schedcode_box->currentText();
   }
-  sql=QString().sprintf("select CART.NUMBER,CART.TITLE,CART.GROUP_NAME,\
-                         GROUPS.COLOR,CART.TYPE from CART left join GROUPS \
-                         on CART.GROUP_NAME=GROUPS.NAME \
-                         where (%s)&&((CART.TYPE=%u))",
-			(const char *)RDCartSearchText(cut_filter_edit->text(),
-						       group,schedcode.utf8(),
-						       false),
-			RDCart::Audio);
+  sql=QString("select ")+
+    "CART.NUMBER,"+
+    "CART.TITLE,"+
+    "CART.GROUP_NAME,"+
+    "GROUPS.COLOR,"+
+    "CART.TYPE "+
+    "from CART left join GROUPS "+
+    "on CART.GROUP_NAME=GROUPS.NAME where "+
+    "("+RDCartSearchText(cut_filter_edit->text(),group,schedcode,false)+")&&"+
+    QString().sprintf("((CART.TYPE=%u))",RDCart::Audio);
   if(cut_exclude_tracks) {
     sql+="&&(CART.OWNER is null)";
   }
@@ -533,7 +534,7 @@ void RDCutDialog::RefreshCarts()
     if(count++>RDCUT_DIALOG_STEP_SIZE) {
       cut_progress_dialog->setProgress(++step);
       count=0;
-      qApp->eventLoop()->processEvents(QEventLoop::ExcludeUserInput);
+      qApp->processEvents(QEventLoop::ExcludeUserInput);
     }
   }
   cut_progress_dialog->reset();
@@ -548,18 +549,21 @@ void RDCutDialog::RefreshCuts()
 {
   QString sql;
   RDSqlQuery *q;
-  QListViewItem *l;
-  QListViewItem *cart_item=cut_cart_list->selectedItem();
+  Q3ListViewItem *l;
+  Q3ListViewItem *cart_item=cut_cart_list->selectedItem();
 
   cut_cut_list->clear();
   if(cart_item==NULL) {
     return;
   }
-  sql=QString().sprintf("select DESCRIPTION,CUT_NAME from CUTS where \
-                         CART_NUMBER=%s",(const char *)cart_item->text(1));
+  sql=QString("select ")+
+    "DESCRIPTION,"+
+    "CUT_NAME "+
+    "from CUTS where "+
+    "CART_NUMBER="+cart_item->text(1);
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    l=new QListViewItem(cut_cut_list);
+    l=new Q3ListViewItem(cut_cut_list);
     l->setText(0,q->value(0).toString());     // Description
     l->setText(1,QString().sprintf("%03u",    // Cut Number
 				   q->value(1).toString().right(3).toUInt()));
@@ -572,7 +576,7 @@ void RDCutDialog::SelectCut(QString cutname)
 {
   QString cart=cutname.left(6);
   QString cut=cutname.right(3);
-  QListViewItem *item=cut_cart_list->findItem(cart,1);
+  Q3ListViewItem *item=cut_cart_list->findItem(cart,1);
   if(item!=NULL) {
     cut_cart_list->setSelected(item,true);
     cut_cart_list->ensureItemVisible(item);
@@ -596,9 +600,9 @@ void RDCutDialog::BuildGroupList()
     sql="select NAME from GROUPS order by NAME desc";
   }
   else {
-    sql=QString().sprintf("select GROUP_NAME from USER_PERMS\
-                           where USER_NAME=\"%s\" order by GROUP_NAME desc",
-			  (const char *)cut_username);
+    sql=QString("select GROUP_NAME from USER_PERMS where ")+
+      "USER_NAME=\""+RDEscapeString(cut_username)+"\" "+
+      "order by GROUP_NAME desc";
   }
   q=new RDSqlQuery(sql);
   while(q->next()) {
@@ -655,15 +659,15 @@ QString RDCutDialog::StateFile() {
 
 void RDCutDialog::LoadState()
 {
-  QString state_file = StateFile();
-  if (state_file == NULL) {
+  QString state_file=StateFile();
+  if(state_file.isNull()) {
     return;
   }
 
   RDProfile *p=new RDProfile();
   p->setSource(state_file);
 
-  bool value_read = false;
+  bool value_read=false;
   cart_limit_box->setChecked(p->boolValue("RDCartDialog", "LimitSearch", true, &value_read));
 
   delete p;
@@ -674,8 +678,8 @@ void RDCutDialog::SaveState()
 {
   FILE *f=NULL;
 
-  QString state_file = StateFile();
-  if (state_file == NULL) {
+  QString state_file=StateFile();
+  if(state_file.isNull()) {
     return;
   }
 

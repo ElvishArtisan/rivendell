@@ -2,9 +2,7 @@
 //
 // Abstract a Rivendell Podcast
 //
-//   (C) Copyright 2002-2007 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdpodcast.cpp,v 1.11 2010/11/24 16:57:38 cvs Exp $
+//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -55,10 +53,10 @@ RDPodcast::RDPodcast(unsigned id)
   QString sql;
 
   podcast_id=id;
-  sql=QString().sprintf("select FEEDS.KEY_NAME from \
-                         PODCASTS left join FEEDS \
-                         on (PODCASTS.FEED_ID=FEEDS.ID) \
-                         where PODCASTS.ID=%u",id);
+  sql=QString("select FEEDS.KEY_NAME from ")+
+    "PODCASTS left join FEEDS "+
+    "on (PODCASTS.FEED_ID=FEEDS.ID) where "+
+    QString().sprintf("PODCASTS.ID=%u",id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     podcast_keyname=q->value(0).toString();
@@ -211,7 +209,7 @@ QDateTime RDPodcast::originDateTime() const
 
 void RDPodcast::setOriginDateTime(const QDateTime &datetime) const
 {
-  SetRow("ORIGIN_DATETIME",datetime.toString("yyyy-MM-dd hh:mm:ss"));
+  SetRow("ORIGIN_DATETIME",datetime,"yyyy-MM-dd hh:mm:ss");
 }
 
 
@@ -224,7 +222,7 @@ QDateTime RDPodcast::effectiveDateTime() const
 
 void RDPodcast::setEffectiveDateTime(const QDateTime &datetime) const
 {
-  SetRow("EFFECTIVE_DATETIME",datetime.toString("yyyy-MM-dd hh:mm:ss"));
+  SetRow("EFFECTIVE_DATETIME",datetime,"yyyy-MM-dd hh:mm:ss");
 }
 
 
@@ -298,7 +296,7 @@ bool RDPodcast::removeAudio(RDFeed *feed,QString *err_text,bool log_debug) const
   CURL *curl=NULL;
   struct curl_slist *cmds=NULL;
   CURLcode err;
-  QUrl *url;
+  Q3Url *url;
   bool ret=true;
   QString currentdir;
   char urlstr[1024];
@@ -308,7 +306,7 @@ bool RDPodcast::removeAudio(RDFeed *feed,QString *err_text,bool log_debug) const
     syslog(LOG_ERR,"unable to initialize curl library\n");
     return false;
   }
-  url=new QUrl(feed->purgeUrl());
+  url=new Q3Url(feed->purgeUrl());
   strncpy(urlstr,(const char *)(url->protocol()+"://"+url->host()+"/"),1024);
   curl_easy_setopt(curl,CURLOPT_URL,urlstr);
   strncpy(userpwd,(const char *)QString().
@@ -379,10 +377,9 @@ void RDPodcast::SetRow(const QString &param,int value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE PODCASTS SET %s=%d WHERE ID=%u",
-			(const char *)param,
-			value,
-			podcast_id);
+  sql=QString("update PODCASTS set ")+
+    param+QString().sprintf("=%d where ",value)+
+    QString().sprintf("ID=%u",podcast_id);
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -393,10 +390,23 @@ void RDPodcast::SetRow(const QString &param,const QString &value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE PODCASTS SET %s=\"%s\" WHERE ID=%u",
-			(const char *)param,
-			(const char *)RDEscapeString(value),
-			podcast_id);
+  sql=QString().sprintf("update PODCASTS set ")+
+    param+"=\""+RDEscapeString(value)+"\" where "+
+    QString().sprintf("ID=%u",podcast_id);
+  q=new RDSqlQuery(sql);
+  delete q;
+}
+
+
+void RDPodcast::SetRow(const QString &param,const QDateTime &value,
+                       const QString &format) const
+{
+  RDSqlQuery *q;
+  QString sql;
+
+  sql=QString("update PODCASTS set ")+
+    param+"="+RDCheckDateTime(value,format)+" where "+
+    QString().sprintf("ID=%u",podcast_id);
   q=new RDSqlQuery(sql);
   delete q;
 }

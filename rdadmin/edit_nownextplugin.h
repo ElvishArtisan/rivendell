@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell Now & Next Plugin Configuration
 //
-//   (C) Copyright 2008 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_nownextplugin.h,v 1.4 2010/07/29 19:32:34 cvs Exp $
+//   (C) Copyright 2008,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,16 +21,14 @@
 #ifndef EDIT_NOWNEXTPLUGIN_H
 #define EDIT_NOWNEXTPLUGIN_H
 
-#include <qdialog.h>
-#include <qlineedit.h>
-
+#include <QDialog>
+#include <QLineEdit>
 
 class EditNowNextPlugin : public QDialog
 {
   Q_OBJECT
  public:
-  EditNowNextPlugin(QString *path,QString *arg,
-		    QWidget *parent=0,const char *name=0);
+  EditNowNextPlugin(QString *path,QString *arg,QWidget *parent=0);
   ~EditNowNextPlugin();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;

@@ -2,9 +2,7 @@
 //
 // A drag source for an empty cart.
 //
-//   (C) Copyright 2013 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdemptycart.cpp,v 1.1.2.2 2014/01/20 19:13:29 cvs Exp $
+//   (C) Copyright 2013,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -20,16 +18,19 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-
 #include <rdemptycart.h>
 
 //
 // Icons
 //
 #include "../icons/trashcan-32x32.xpm"
+//Added by qt3to4:
+#include <QPixmap>
+#include <QLabel>
+#include <QMouseEvent>
 
-RDEmptyCart::RDEmptyCart(QWidget *parent,const char *name)
-  : QWidget(parent,name)
+RDEmptyCart::RDEmptyCart(QWidget *parent)
+  : QWidget(parent)
 {
   empty_label=new QLabel(this);
   empty_label->setPixmap(QPixmap(trashcan_xpm));

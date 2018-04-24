@@ -2,9 +2,7 @@
 #
 # The rdcastmanager/ QMake project file for Rivendell
 #
-# (C) Copyright 2003-2004 Fred Gleason <fredg@paravelsystems.com>
-#
-#      $Id: rdcastmanager.pro,v 1.5.2.1 2013/01/01 21:36:30 cvs Exp $
+# (C) Copyright 2003-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as

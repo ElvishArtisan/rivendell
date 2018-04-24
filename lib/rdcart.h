@@ -2,9 +2,7 @@
 //
 // Abstract a Rivendell Cart
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcart.h,v 1.39.6.5.2.5 2014/05/30 00:26:28 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,8 +18,12 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#ifndef RDCART_H
+#define RDCART_H
+
 #include <qdatetime.h>
 #include <qstringlist.h>
+#include <qvariant.h>
 
 #include <rdconfig.h>
 #include <rdwavedata.h>
@@ -30,9 +32,6 @@
 #include <rddb.h>
 #include <rduser.h>
 #include <rdstation.h>
-
-#ifndef RDCART_H
-#define RDCART_H
 
 #define MAX_SERVICES 16
 
@@ -66,8 +65,9 @@ class RDCart
   QString schedCodes() const;
   void setSchedCodes(const QString &sched_codes) const;
   QStringList schedCodesList() const;
-  void setSchedCodesList(const QStringList &codes);
-  void addSchedCode(const QString &code);
+  void setSchedCodesList(const QStringList &codes) const;
+  void addSchedCode(const QString &code) const;
+  void removeSchedCode(const QString &code) const;
   void updateSchedCodes(const QString &add_codes,
 			const QString &remove_codes) const;
   QString conductor() const;
@@ -119,6 +119,8 @@ class RDCart
   void setEndDateTime();
   bool enforceLength() const;
   void setEnforceLength(bool state);
+  bool useWeighting() const;
+  void setUseWeighting(bool state);
   bool preservePitch() const;
   void setPreservePitch(bool state) const;
   bool asyncronous() const;
@@ -134,31 +136,29 @@ class RDCart
   bool validateLengths(int len) const;
   void getMetadata(RDWaveData *data) const;
   void setMetadata(const RDWaveData *data);
-  QString xml(bool include_cuts) const;
+  QString xml(bool include_cuts,bool absolute,
+	      RDSettings *settings=NULL,int cutnum=-1) const;
   void updateLength();
   void updateLength(bool enforce_length,unsigned length);
   void resetRotation() const;
   void writeTimestamp();
   int addCut(unsigned format,unsigned bitrate,unsigned chans,
 	     const QString &isci="",QString desc="");
-  bool removeAllCuts(RDStation *station,RDUser *user,RDConfig *config);
-  bool removeCut(RDStation *station,RDUser *user,const QString &cutname,
-		 RDConfig *config);
-  bool removeCutAudio(RDStation *station,RDUser *user,
-		      const QString &cutname,RDConfig *config);
+  bool removeAllCuts();
+  bool removeCut(const QString &cutname,bool bypass_rdxport=false);
   bool create(const QString &groupname,RDCart::Type type);
-  bool remove(RDStation *station,RDUser *user,RDConfig *config) const;
+  bool remove(bool bypass_rdxport=false) const;
   static bool exists(unsigned cartnum);
   static QString playOrderText(RDCart::PlayOrder order);
   static QString usageText(RDCart::UsageCode usage);
   static QString typeText(RDCart::Type type);
-  static bool removeCart(unsigned cart_num,RDStation *station,RDUser *user,
-			 RDConfig *config);
-  static bool removeCutAudio(RDStation *station,RDUser *user,unsigned cart_num,
-			     const QString &cutname,RDConfig *config);
+  static bool removeCart(unsigned cart_num,bool bypass_rdxport=false);
+  static bool removeCutAudio(const QString &cutname,bool bypass_rdxport=false);
   static void removePending(RDStation *station,RDUser *user,RDConfig *config);
+  static unsigned readXml(std::vector<RDWaveData> *data,const QString &xml);
   
  private:
+  static QVariant GetXmlValue(const QString &tag,const QString &line);
   QString GetNextCut(RDSqlQuery *q) const;
   int GetNextFreeCut() const;
   RDCut::Validity ValidateCut(RDSqlQuery *q,bool enforce_length,

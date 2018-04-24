@@ -2,9 +2,7 @@
 //
 // A Qt-based application for testing General Purpose Outputs (GPO).
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rddatepicker.cpp,v 1.3.8.1 2013/01/22 18:33:38 cvs Exp $
+//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -25,15 +23,16 @@
 #include <qstring.h>
 #include <qlabel.h>
 #include <qpalette.h>
+//Added by qt3to4:
+#include <QMouseEvent>
 
 #include <rddatepicker.h>
 
 //
 // Global Classes
 //
-RDDatePicker::RDDatePicker(int low_year,int high_year,
-			 QWidget *parent,const char *name)
-  :QWidget(parent,name)
+RDDatePicker::RDDatePicker(int low_year,int high_year,QWidget *parent)
+  :QWidget(parent)
 {
   pick_low_year=low_year;
   pick_high_year=high_year;
@@ -93,44 +92,44 @@ RDDatePicker::RDDatePicker(int low_year,int high_year,
   QLabel *label=new QLabel(tr("Mo"),this,"monday_label");
   label->setGeometry(RDDATEPICKER_X_ORIGIN,30,30,30);
   label->setFont(header_font);
-  label->setAlignment(AlignCenter);
+  label->setAlignment(Qt::AlignCenter);
 
   label=new QLabel(tr("Tu"),this,"tuesday_label");
   label->setGeometry(RDDATEPICKER_X_ORIGIN+RDDATEPICKER_X_INTERVAL,
 		     RDDATEPICKER_Y_ORIGIN,30,30);
   label->setFont(header_font);
-  label->setAlignment(AlignCenter);
+  label->setAlignment(Qt::AlignCenter);
 
   label=new QLabel(tr("We"),this,"wednesday_label");
   label->setGeometry(RDDATEPICKER_X_ORIGIN+RDDATEPICKER_X_INTERVAL*2,
 		     RDDATEPICKER_Y_ORIGIN,30,30);
   label->setFont(header_font);
-  label->setAlignment(AlignCenter);
+  label->setAlignment(Qt::AlignCenter);
 
   label=new QLabel(tr("Th"),this,"thursday_label");
   label->setGeometry(RDDATEPICKER_X_ORIGIN+RDDATEPICKER_X_INTERVAL*3,
 		     RDDATEPICKER_Y_ORIGIN,30,30);
   label->setFont(header_font);
-  label->setAlignment(AlignCenter);
+  label->setAlignment(Qt::AlignCenter);
 
   label=new QLabel(tr("Fr"),this,"friday_label");
   label->setGeometry(RDDATEPICKER_X_ORIGIN+RDDATEPICKER_X_INTERVAL*4,
 		     RDDATEPICKER_Y_ORIGIN,30,30);
   label->setFont(header_font);
-  label->setAlignment(AlignCenter);
+  label->setAlignment(Qt::AlignCenter);
 
   label=new QLabel(tr("Sa"),this,"saturday_label");
   label->setGeometry(RDDATEPICKER_X_ORIGIN+RDDATEPICKER_X_INTERVAL*5,
 		     RDDATEPICKER_Y_ORIGIN,30,30);
   label->setFont(header_font);
-  label->setAlignment(AlignCenter);
+  label->setAlignment(Qt::AlignCenter);
   label->setPalette(weekend_palette);
 
   label=new QLabel(tr("Su"),this,"sunday_label");
   label->setGeometry(RDDATEPICKER_X_ORIGIN+RDDATEPICKER_X_INTERVAL*6,
 		     RDDATEPICKER_Y_ORIGIN,30,30);
   label->setFont(header_font);
-  label->setAlignment(AlignCenter);
+  label->setAlignment(Qt::AlignCenter);
   label->setPalette(weekend_palette);
 
 

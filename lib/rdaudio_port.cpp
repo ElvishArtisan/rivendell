@@ -2,9 +2,7 @@
 //
 // Abstract a Rivendell Audio Port.
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdaudio_port.cpp,v 1.12.8.1 2012/08/03 16:52:39 cvs Exp $
+//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,9 +17,10 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
+
 #include <rddb.h>
 #include <rdaudio_port.h>
-
+#include <rdescape_string.h>
 
 //
 // Global Classes
@@ -35,14 +34,17 @@ RDAudioPort::RDAudioPort(QString station,int card,bool create)
   port_card=card;
 
   if(create) {
-    sql=QString().sprintf("select ID from AUDIO_PORTS where \
-(STATION_NAME=\"%s\")&&(CARD_NUMBER=%d)",(const char *)port_station,port_card);
+    sql=QString("select ")+
+      "ID "+
+      "from AUDIO_PORTS where "+
+      "(STATION_NAME=\""+RDEscapeString(port_station)+"\")&&"+
+      QString().sprintf("(CARD_NUMBER=%d)",port_card);
     q=new RDSqlQuery(sql);
     if(q->size()!=1) {
       delete q;
-      sql=QString().sprintf("INSERT INTO AUDIO_PORTS SET STATION_NAME=\"%s\",\
-CARD_NUMBER=%d",
-			    (const char *)port_station,port_card);
+      sql=QString("insert into AUDIO_PORTS set ")+
+	"STATION_NAME=\""+RDEscapeString(port_station)+"\","+
+	QString().sprintf("CARD_NUMBER=%d",port_card);
       q=new RDSqlQuery(sql);
       delete q;
     }
@@ -157,9 +159,9 @@ int RDAudioPort::GetIntValue(QString field)
   RDSqlQuery *q;
   int accum;
 
-  sql=QString().sprintf("select %s from AUDIO_PORTS where \
-(STATION_NAME=\"%s\")&&(CARD_NUMBER=%d)",(const char *)field,
-			(const char *)port_station,port_card);
+  sql=QString("select ")+field+" from AUDIO_PORTS where "+
+    "(STATION_NAME=\""+RDEscapeString(port_station)+"\")&&"+
+    QString().sprintf("(CARD_NUMBER=%d)",port_card);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     accum=q->value(0).toInt();
@@ -176,12 +178,10 @@ void RDAudioPort::SetRow(QString param,int value)
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE AUDIO_PORTS SET %s=%d \
-WHERE (STATION_NAME=\"%s\")&&(CARD_NUMBER=%d)",
-			(const char *)param,
-			value,
-			(const char *)port_station,
-			port_card);
+  sql=QString("update AUDIO_PORTS set ")+
+    param+QString().sprintf("=%d where ",value)+
+    "(STATION_NAME=\""+RDEscapeString(port_station)+"\")&&"+
+    QString().sprintf("(CARD_NUMBER=%d)",port_card);
   q=new RDSqlQuery(sql);
   delete q;
 }

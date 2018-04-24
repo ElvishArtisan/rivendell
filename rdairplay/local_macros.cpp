@@ -2,9 +2,7 @@
 //
 // Local RML Macros for the Rivendell's RDAirPlay
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: local_macros.cpp,v 1.31.6.3.2.2 2014/05/22 19:37:45 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,6 +20,7 @@
 
 #include <qfontmetrics.h>
 
+#include <rdapplication.h>
 #include <rdmacro.h>
 #include <rdairplay.h>
 #include <rdescape_string.h>
@@ -36,7 +35,6 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
   QString logname;
   RDAirPlayConf::PanelType panel_type;
   int panel_number;
-  QString sql;
   QPalette pal;
   bool ret=false;
   int fade;
@@ -59,16 +57,16 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
       }
       str+=rml->arg(rml->argQuantity()-1).toString();
       pal=air_message_label->palette();
-      pal.setColor(QPalette::Active,QColorGroup::Foreground,QColor(black));
+      pal.setColor(QPalette::Active,QColorGroup::Foreground,QColor(Qt::black));
       pal.setColor(QPalette::Inactive,QColorGroup::Foreground,
-		   QColor(black));
+		   QColor(Qt::black));
       air_message_label->setPalette(pal);
       air_message_label->setFont(MessageFont(str));
       air_message_label->setText(str);
     }
     if(rml->echoRequested()) {
       rml->acknowledge(true);
-      rdripc->sendRml(rml);
+      rda->ripc()->sendRml(rml);
     }   
     break;
 
@@ -79,7 +77,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     else {
       QColor color(rml->arg(0).toString());
       if(!color.isValid()) {
-	color=QColor(black);
+	color=QColor(Qt::black);
       }
       for(int i=1;i<(rml->argQuantity()-1);i++) {
 	str+=(rml->arg(i).toString()+" ");
@@ -94,7 +92,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     }
     if(rml->echoRequested()) {
       rml->acknowledge(true);
-      rdripc->sendRml(rml);
+      rda->ripc()->sendRml(rml);
     }   
     break;
 
@@ -102,14 +100,14 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     if((rml->argQuantity()<1)||(rml->argQuantity()>3)) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
     if((rml->arg(0).toInt()<1)||(rml->arg(0).toInt()>3)) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
@@ -121,7 +119,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
       if(!RDLog::exists(logname)) {
 	if(rml->echoRequested()) {
 	  rml->acknowledge(false);
-	  rdripc->sendRml(rml);
+	  rda->ripc()->sendRml(rml);
 	}
 	return;
       }
@@ -163,7 +161,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     }
     if(rml->echoRequested()) {
       rml->acknowledge(true);
-      rdripc->sendRml(rml);
+      rda->ripc()->sendRml(rml);
     }   
     break;
 
@@ -171,14 +169,14 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     if(rml->argQuantity()!=2) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
     if((rml->arg(0).toInt()<1)||(rml->arg(0).toInt()>3)) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
@@ -186,7 +184,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     if(!RDLog::exists(logname)) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
@@ -197,14 +195,14 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     if(rml->argQuantity()!=2) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
     if((rml->arg(0).toInt()<1)||(rml->arg(0).toInt()>3)) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
@@ -212,14 +210,14 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
        (rml->arg(1).toInt()>=air_log[rml->arg(0).toInt()-1]->size())) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
     air_log[rml->arg(0).toInt()-1]->makeNext(rml->arg(1).toInt());
     if(rml->echoRequested()) {
       rml->acknowledge(true);
-      rdripc->sendRml(rml);
+      rda->ripc()->sendRml(rml);
     }   
     break;
 
@@ -227,7 +225,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     if(rml->argQuantity()!=1) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
@@ -235,14 +233,14 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
        (rml->arg(0).toInt()>BUTTON_TOTAL_BUTTONS)) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
 	return;
       }
     }
     air_button_list->startButton(rml->arg(0).toInt()-1);
     if(rml->echoRequested()) {
       rml->acknowledge(true);
-      rdripc->sendRml(rml);
+      rda->ripc()->sendRml(rml);
     }   
     break;
 
@@ -250,14 +248,14 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     if(rml->argQuantity()<5) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
     if(!GetPanel(rml->arg(0).toString(),&panel_type,&panel_number)) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
@@ -267,7 +265,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
        (rml->arg(2).toInt()>AIR_PANEL_BUTTON_ROWS)) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
@@ -282,7 +280,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
 			rml->arg(rml->argQuantity()-1).toString());
     if(rml->echoRequested()) {
       rml->acknowledge(true);
-      rdripc->sendRml(rml);
+      rda->ripc()->sendRml(rml);
     }   
     break;
 
@@ -290,14 +288,14 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     if(rml->argQuantity()!=4) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
     if(!GetPanel(rml->arg(0).toString(),&panel_type,&panel_number)) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
@@ -308,7 +306,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
        (rml->arg(3).toUInt()>999999)) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
@@ -316,7 +314,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
 			 rml->arg(1).toInt()-1,rml->arg(3).toUInt());
     if(rml->echoRequested()) {
       rml->acknowledge(true);
-      rdripc->sendRml(rml);
+      rda->ripc()->sendRml(rml);
     }   
     break;
 
@@ -324,14 +322,14 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     if(rml->argQuantity()!=2) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
     if((rml->arg(0).toInt()<1)||(rml->arg(0).toInt()>3)) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
@@ -339,7 +337,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
        (rml->arg(1).toInt()>=air_log[rml->arg(0).toInt()-1]->size())) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
@@ -348,14 +346,14 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
 					       RDLogLine::StartMacro)) {
 	if(rml->echoRequested()) {
 	  rml->acknowledge(false);
-	  rdripc->sendRml(rml);
+	  rda->ripc()->sendRml(rml);
 	}
 	return;
       }
     }
     if(rml->echoRequested()) {
       rml->acknowledge(true);
-      rdripc->sendRml(rml);
+      rda->ripc()->sendRml(rml);
     }   
     break;
 
@@ -363,7 +361,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     if((rml->argQuantity()!=1)&&(rml->argQuantity()!=2)) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
@@ -372,7 +370,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
       if((mach<0)||(mach>RDAIRPLAY_LOG_QUANTITY)) {
 	if(rml->echoRequested()) {
 	  rml->acknowledge(false);
-	  rdripc->sendRml(rml);
+	  rda->ripc()->sendRml(rml);
 	}
 	return;
       }
@@ -393,13 +391,13 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     default:
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
 	return;
       }
     }
     if(rml->echoRequested()) {
       rml->acknowledge(true);
-      rdripc->sendRml(rml);
+      rda->ripc()->sendRml(rml);
     }   
     break;
 
@@ -407,14 +405,14 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     if((rml->argQuantity()<1)||(rml->argQuantity()>3)) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
     if((rml->arg(0).toInt()<1)||(rml->arg(0).toInt()>3)) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
@@ -422,7 +420,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
       if((rml->arg(1).toInt()<1)||(rml->arg(1).toInt()>2)) {
 	if(rml->echoRequested()) {
 	  rml->acknowledge(false);
-	  rdripc->sendRml(rml);
+	  rda->ripc()->sendRml(rml);
 	}
 	return;
       }
@@ -430,7 +428,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
 	if((rml->arg(2).toInt()<0)||(rml->arg(2).toInt()>1)) {
 	  if(rml->echoRequested()) {
 	    rml->acknowledge(false);
-	    rdripc->sendRml(rml);
+	    rda->ripc()->sendRml(rml);
 	  }
 	  return;
 	}
@@ -458,7 +456,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     }
     if(rml->echoRequested()) {
       rml->acknowledge(true);
-      rdripc->sendRml(rml);
+      rda->ripc()->sendRml(rml);
     }   
     break;
 
@@ -466,14 +464,14 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     if(rml->argQuantity()<3 || rml->argQuantity()>5) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
     if(!GetPanel(rml->arg(0).toString(),&panel_type,&panel_number)) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
@@ -483,7 +481,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
        (rml->arg(2).toInt()>AIR_PANEL_BUTTON_ROWS)) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
@@ -515,7 +513,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     }
     if(rml->echoRequested()) {
       rml->acknowledge(true);
-      rdripc->sendRml(rml);
+      rda->ripc()->sendRml(rml);
     }   
     break;
 
@@ -523,14 +521,14 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     if(rml->argQuantity()<1 || rml->argQuantity()>3) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
     if((rml->arg(0).toInt()<0)||(rml->arg(0).toInt()>3)) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
@@ -558,7 +556,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     }
     if(rml->echoRequested()) {
       rml->acknowledge(true);
-      rdripc->sendRml(rml);
+      rda->ripc()->sendRml(rml);
     }   
     break;
 
@@ -566,14 +564,14 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     if(rml->argQuantity()<3 || rml->argQuantity()>4) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
     if((rml->arg(0).toInt()<0)||(rml->arg(0).toInt()>3)) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
@@ -598,7 +596,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     }
     if(rml->echoRequested()) {
       rml->acknowledge(true);
-      rdripc->sendRml(rml);
+      rda->ripc()->sendRml(rml);
     }   
     break;
 
@@ -606,14 +604,14 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     if(rml->argQuantity()<3 || rml->argQuantity()>6) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
     if(!GetPanel(rml->arg(0).toString(),&panel_type,&panel_number)) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
@@ -623,7 +621,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
        (rml->arg(2).toInt()>AIR_PANEL_BUTTON_ROWS)) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
@@ -667,7 +665,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     }
     if(rml->echoRequested()) {
       rml->acknowledge(true);
-      rdripc->sendRml(rml);
+      rda->ripc()->sendRml(rml);
     }   
     break;
 
@@ -675,14 +673,14 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     if(rml->argQuantity()<3 || rml->argQuantity()>4) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
     if(!GetPanel(rml->arg(0).toString(),&panel_type,&panel_number)) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
@@ -692,7 +690,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
        (rml->arg(2).toInt()>AIR_PANEL_BUTTON_ROWS)) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
@@ -706,7 +704,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     }
     if(rml->echoRequested()) {
       rml->acknowledge(ret);
-      rdripc->sendRml(rml);
+      rda->ripc()->sendRml(rml);
     }   
     break;
 
@@ -714,14 +712,14 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     if(rml->argQuantity()<5 || rml->argQuantity()>6) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
     if(!GetPanel(rml->arg(0).toString(),&panel_type,&panel_number)) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
@@ -731,7 +729,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
        (rml->arg(2).toInt()>AIR_PANEL_BUTTON_ROWS)) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
@@ -746,7 +744,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     }
     if(rml->echoRequested()) {
       rml->acknowledge(true);
-      rdripc->sendRml(rml);
+      rda->ripc()->sendRml(rml);
     }   
     break;
 
@@ -755,14 +753,14 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     if(rml->argQuantity()!=1) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
     if((rml->arg(0).toInt()<0)||(rml->arg(0).toInt()>3)) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
@@ -779,7 +777,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     }
     if(rml->echoRequested()) {
       rml->acknowledge(true);
-      rdripc->sendRml(rml);
+      rda->ripc()->sendRml(rml);
     }   
     break;
 
@@ -787,7 +785,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     if(rml->argQuantity()!=2) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
@@ -795,7 +793,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
        (rml->arg(1).toUInt()>999999)) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
@@ -813,7 +811,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     }
     if(rml->echoRequested()) {
       rml->acknowledge(true);
-      rdripc->sendRml(rml);
+      rda->ripc()->sendRml(rml);
     }   
     break;
 
@@ -821,27 +819,27 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     if(rml->argQuantity()!=1) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
     if((rml->arg(0).toInt()<1)||(rml->arg(0).toInt()>3)) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
     if(!air_log[rml->arg(0).toInt()-1]->refresh()) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
     if(rml->echoRequested()) {
       rml->acknowledge(true);
-      rdripc->sendRml(rml);
+      rda->ripc()->sendRml(rml);
     }   
     break;
 
@@ -849,7 +847,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     if(rml->argQuantity()!=3) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
@@ -857,21 +855,21 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
        (rml->arg(0).toString().lower()!="next")) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
     if((rml->arg(1).toInt()<1)||(rml->arg(1).toInt()>3)) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
     if(rml->arg(2).toUInt()>999999) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
-	rdripc->sendRml(rml);
+	rda->ripc()->sendRml(rml);
       }
       return;
     }
@@ -883,7 +881,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     }
     if(rml->echoRequested()) {
       rml->acknowledge(true);
-      rdripc->sendRml(rml);
+      rda->ripc()->sendRml(rml);
     }   
     break;
 
@@ -932,7 +930,7 @@ bool MainWidget::GetPanel(QString str,RDAirPlayConf::PanelType *type,
   if(sscanf(((const char *)str)+1,"%d",panel)!=1) {
     return false;
   }
-  if((*panel<=0)||(*panel>rdairplay_conf->panels(*type))) {
+  if((*panel<=0)||(*panel>rda->airplayConf()->panels(*type))) {
     return false;
   }
   (*panel)--;

@@ -2,9 +2,7 @@
 //
 // Load Switcher drivers for ripcd(8)
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: loaddrivers.cpp,v 1.1.8.9 2014/02/17 02:19:03 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -32,12 +30,14 @@
 #include <bt16x2.h>
 #include <bt8x2.h>
 #include <btacs82.h>
+#include <btadms4422.h>
 #include <btgpi16.h>
 #include <btsentinel4web.h>
 #include <btsrc16.h>
 #include <btsrc8iii.h>
 #include <btss124.h>
 #include <btss164.h>
+#include <btss41mlr.h>
 #include <btss42.h>
 #include <btss44.h>
 #include <btss82.h>
@@ -47,18 +47,22 @@
 #include <livewire_mcastgpio.h>
 #include <local_audio.h>
 #include <local_gpio.h>
+#include <modemlines.h>
 #include <quartz1.h>
+#include <rossnkscp.h>
+#include <sas16000.h>
 #include <sas32000.h>
 #include <sas64000.h>
 #include <sas64000gpi.h>
 #include <sasusi.h>
 #include <starguide3.h>
+#include <swauthority.h>
 #include <unity4000.h>
 #include <vguest.h>
 
 bool MainObject::LoadSwitchDriver(int matrix_num)
 {
-  RDMatrix *matrix=new RDMatrix(rdstation->name(),matrix_num);
+  RDMatrix *matrix=new RDMatrix(rda->station()->name(),matrix_num);
 
   switch(matrix->type()) {
   case RDMatrix::Acu1p:
@@ -89,6 +93,10 @@ bool MainObject::LoadSwitchDriver(int matrix_num)
     ripcd_switcher[matrix_num]=new BtAcs82(matrix,this);
     break;
 
+  case RDMatrix::BtAdms4422:
+    ripcd_switcher[matrix_num]=new BtAdms4422(matrix,this);
+    break;
+
   case RDMatrix::BtGpi16:
     ripcd_switcher[matrix_num]=new BtGpi16(matrix,this);
     break;
@@ -111,6 +119,10 @@ bool MainObject::LoadSwitchDriver(int matrix_num)
 
   case RDMatrix::BtSs164:
     ripcd_switcher[matrix_num]=new BtSs164(matrix,this);
+    break;
+
+  case RDMatrix::BtSs41Mlr:
+    ripcd_switcher[matrix_num]=new BtSs41Mlr(matrix,this);
     break;
 
   case RDMatrix::BtSs42:
@@ -153,8 +165,20 @@ bool MainObject::LoadSwitchDriver(int matrix_num)
     ripcd_switcher[matrix_num]=new VGuest(matrix,this);
     break;
 
+  case RDMatrix::ModemLines:
+    ripcd_switcher[matrix_num]=new ModemLines(matrix,this);
+    break;
+
   case RDMatrix::Quartz1:
     ripcd_switcher[matrix_num]=new Quartz1(matrix,this);
+    break;
+
+  case RDMatrix::RossNkScp:
+    ripcd_switcher[matrix_num]=new RossNkScp(matrix,this);
+    break;
+
+  case RDMatrix::Sas16000:
+    ripcd_switcher[matrix_num]=new Sas16000(matrix,this);
     break;
 
   case RDMatrix::Sas32000:
@@ -171,6 +195,10 @@ bool MainObject::LoadSwitchDriver(int matrix_num)
 
   case RDMatrix::SasUsi:
     ripcd_switcher[matrix_num]=new SasUsi(matrix,this);
+    break;
+
+  case RDMatrix::SoftwareAuthority:
+    ripcd_switcher[matrix_num]=new SoftwareAuthority(matrix,this);
     break;
 
   case RDMatrix::StarGuideIII:

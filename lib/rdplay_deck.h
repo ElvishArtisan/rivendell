@@ -2,9 +2,7 @@
 //
 // Abstract a Rivendell Playback Deck
 //
-//   (C) Copyright 2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdplay_deck.h,v 1.36.8.1 2013/05/21 19:04:44 cvs Exp $
+//   (C) Copyright 2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -44,7 +42,7 @@ class RDPlayDeck : public QObject
 
  public:
   enum State {Stopped=0,Stopping=1,Playing=2,Paused=3,Finished=4};
-  RDPlayDeck(RDCae *cae,int id,QObject *parent=0,const char *name=0);
+  RDPlayDeck(RDCae *cae,int id,QObject *parent=0);
   ~RDPlayDeck();
   int id() const;
   void setId(int id);

@@ -2,9 +2,7 @@
 //
 // The pie counter widget for Rivendell
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: pie_counter.cpp,v 1.39 2010/10/06 19:24:02 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,14 +21,17 @@
 #include <qtimer.h>
 #include <qpixmap.h>
 #include <qpainter.h>
+//Added by qt3to4:
+#include <QPaintEvent>
+#include <QLabel>
 
 #include <rd.h>
 
 #include <pie_counter.h>
 #include <colors.h>
 
-PieCounter::PieCounter(int count_length,QWidget *parent,const char *name)
-  : QWidget(parent,name)
+PieCounter::PieCounter(int count_length,QWidget *parent)
+  : QWidget(parent)
 {
   pie_length=0;
   pie_time=0;
@@ -50,7 +51,7 @@ PieCounter::PieCounter(int count_length,QWidget *parent,const char *name)
   pie_time_label->
     setGeometry(PIE_X_PADDING+ring+25,PIE_Y_PADDING+ring+32,48,36);
   pie_time_label->setFont(font);
-  pie_time_label->setAlignment(AlignCenter);
+  pie_time_label->setAlignment(Qt::AlignCenter);
   pie_time_label->hide();
 
   pie_talk_label=new QLabel(":00",this,"pie_talk_label");
@@ -61,7 +62,7 @@ PieCounter::PieCounter(int count_length,QWidget *parent,const char *name)
     setColor(QPalette::Active,QColorGroup::Foreground,QColor(PIE_TALK_COLOR));
   pie_talk_label->setPalette(pal);
   pie_talk_label->setFont(font);
-  pie_talk_label->setAlignment(AlignCenter);
+  pie_talk_label->setAlignment(Qt::AlignCenter);
   pie_talk_label->hide();
   onair_off_color=backgroundColor();
   pie_logline=NULL;
@@ -247,7 +248,7 @@ void PieCounter::paintEvent(QPaintEvent *e)
     (int)(1440.0-5760.0*(double)pie_talk_start/(double)pie_length);
   int talk_angle=(int)
     (-5760.0*((double)pie_talk_end-(double)pie_talk_start)/(double)pie_length);
-  QPainter *p=new QPainter(&pix,false);
+  QPainter *p=new QPainter(&pix);
   double ring_angle = ((pie_length < (pie_count_length) ? pie_length :  pie_count_length) - 
 	  ((pie_time >  pie_count_length)  ? pie_count_length : pie_time));
   if (pie_count_length)

@@ -2,9 +2,7 @@
 //
 // Select a Set of Dates for a Rivendell Report
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: pick_report_dates.cpp,v 1.5 2011/09/07 13:44:59 cvs Exp $
+//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -36,10 +34,9 @@
 #include <globals.h>
 #include <pick_report_dates.h>
 
-
 PickReportDates::PickReportDates(unsigned feed_id,unsigned cast_id,
-				 QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+				 QWidget *parent)
+  : QDialog(parent,"",true)
 {
   QString sql;
   RDSqlQuery *q;
@@ -75,15 +72,14 @@ PickReportDates::PickReportDates(unsigned feed_id,unsigned cast_id,
   //
   // Start Date
   //
-  edit_startdate_edit=new QDateEdit(this,"edit_startdate_edit");
+  edit_startdate_edit=new Q3DateEdit(this);
   edit_startdate_edit->setGeometry(150,10,100,20);
   edit_startdate_edit->setDate(yesterday_date.addMonths(-1));
-  QLabel *label=new QLabel(edit_startdate_edit,tr("&Start Date:"),
-			   this,"edit_startdate_label");
+  QLabel *label=new QLabel(edit_startdate_edit,tr("&Start Date:"),this);
   label->setGeometry(75,10,70,20);
   label->setFont(bold_font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
-  QPushButton *button=new QPushButton(this,"startdate_button");
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  QPushButton *button=new QPushButton(this);
   button->setGeometry(260,7,50,27);
   button->setFont(font);
   button->setText(tr("&Select"));
@@ -92,15 +88,14 @@ PickReportDates::PickReportDates(unsigned feed_id,unsigned cast_id,
   //
   // End Date
   //
-  edit_enddate_edit=new QDateEdit(this,"edit_enddate_edit");
+  edit_enddate_edit=new Q3DateEdit(this);
   edit_enddate_edit->setGeometry(150,40,100,20);
   edit_enddate_edit->setDate(yesterday_date);
-  label=new QLabel(edit_enddate_edit,tr("&End Date:"),
-				      this,"edit_enddate_label");
+  label=new QLabel(edit_enddate_edit,tr("&End Date:"),this);
   label->setGeometry(75,40,70,20);
   label->setFont(bold_font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
-  button=new QPushButton(this,"enddate_button");
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  button=new QPushButton(this);
   button->setGeometry(260,37,50,27);
   button->setFont(font);
   button->setText(tr("&Select"));
@@ -109,7 +104,7 @@ PickReportDates::PickReportDates(unsigned feed_id,unsigned cast_id,
   //
   //  Generate Button
   //
-  button=new QPushButton(this,"list_purge_button");
+  button=new QPushButton(this);
   button->setGeometry(10,sizeHint().height()-60,80,50);
   button->setFont(bold_font);
   button->setText(tr("&Generate\nReport"));
@@ -118,7 +113,7 @@ PickReportDates::PickReportDates(unsigned feed_id,unsigned cast_id,
   //
   //  Close Button
   //
-  button=new QPushButton(this,"close_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   button->setDefault(true);
   button->setFont(bold_font);
@@ -206,7 +201,7 @@ void PickReportDates::GenerateSubscriptionReport(const QString &keyname,
   //
   *rpt+="                      Rivendell Podcast Subscription Report\n";
   QString title=feed->channelTitle();
-  for(unsigned i=0;i<((80-title.length())/2);i++) {
+  for(int i=0;i<((80-title.length())/2);i++) {
     *rpt+=" ";
   }
   *rpt+=title;
@@ -220,14 +215,15 @@ void PickReportDates::GenerateSubscriptionReport(const QString &keyname,
   //
   QString keyname_esc=keyname;
   keyname_esc.replace(" ","_");
-  sql=QString().sprintf("select ACCESS_DATE,ACCESS_COUNT,CAST_ID from %s_FLG \
-                         where (ACCESS_DATE>=\"%s\")&&(ACCESS_DATE<=\"%s\") \
-                         order by ACCESS_DATE,CAST_ID desc",
-			(const char *)keyname_esc,
-			(const char *)edit_startdate_edit->date().
-			toString("yyyy-MM-dd"),
-			(const char *)edit_enddate_edit->date().
-			toString("yyyy-MM-dd"));
+  sql=QString("select ")+
+    "ACCESS_DATE,"+
+    "ACCESS_COUNT,"+
+    "CAST_ID "+
+    "from `"+keyname_esc+"_FLG` where "+
+    "(ACCESS_DATE>=\""+
+    edit_startdate_edit->date().toString("yyyy-MM-dd")+"\")&&"+
+    "(ACCESS_DATE<=\""+edit_enddate_edit->date().toString("yyyy-MM-dd")+"\") "+
+    "order by ACCESS_DATE,CAST_ID desc";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(q->value(2).toUInt()==0) {
@@ -266,13 +262,13 @@ void PickReportDates::GenerateEpisodeReport(const QString &keyname,
   //
   *rpt+="                       Rivendell Podcast Episode Report\n";
   QString channel_title=feed->channelTitle();
-  for(unsigned i=0;i<((80-channel_title.length())/2);i++) {
+  for(int i=0;i<((80-channel_title.length())/2);i++) {
     *rpt+=" ";
   }
   *rpt+=channel_title;
   *rpt+="\n";
   QString item_title=cast->itemTitle();
-  for(unsigned i=0;i<((80-item_title.length())/2);i++) {
+  for(int i=0;i<((80-item_title.length())/2);i++) {
     *rpt+=" ";
   }
   *rpt+=item_title;
@@ -291,15 +287,15 @@ void PickReportDates::GenerateEpisodeReport(const QString &keyname,
   unsigned total=0;
   QString keyname_esc=keyname;
   keyname_esc.replace(" ","_");
-  sql=QString().sprintf("select ACCESS_DATE,ACCESS_COUNT from %s_FLG \
-                         where (ACCESS_DATE>=\"%s\")&&(ACCESS_DATE<=\"%s\")&& \
-                         (CAST_ID=%u) order by ACCESS_DATE",
-			(const char *)keyname_esc,
-			(const char *)edit_startdate_edit->date().
-			toString("yyyy-MM-dd"),
-			(const char *)edit_enddate_edit->date().
-			toString("yyyy-MM-dd"),
-			cast_id);
+  sql=QString("select ")+
+    "ACCESS_DATE,"+
+    "ACCESS_COUNT "+
+    "from `"+keyname_esc+"_FLG` where "+
+    "(ACCESS_DATE>=\""+
+    edit_startdate_edit->date().toString("yyyy-MM-dd")+"\")&&"+
+    "(ACCESS_DATE<=\""+edit_enddate_edit->date().toString("yyyy-MM-dd")+"\")&&"+
+    QString().sprintf("(CAST_ID=%u) ",cast_id)+
+    "order by ACCESS_DATE";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     *rpt+=QString().sprintf("                       %s             %9u\n",

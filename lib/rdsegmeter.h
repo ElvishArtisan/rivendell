@@ -2,9 +2,7 @@
 //
 //   An audio meter display widget.
 //
-//   (C) Copyright 2002-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdsegmeter.h,v 1.3 2010/07/29 19:32:33 cvs Exp $
+//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -19,7 +17,6 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-//
 
 #ifndef RDSEGMETER_H
 #define RDSEGMETER_H
@@ -30,15 +27,17 @@
 #include <qsize.h>
 #include <qsizepolicy.h>
 #include <qtimer.h>
+//Added by qt3to4:
+#include <QPaintEvent>
 
 /*
  * Default Colors
  */
-#define DEFAULT_LOW_COLOR green
+#define DEFAULT_LOW_COLOR Qt::green
 #define DEFAULT_DARK_LOW_COLOR 0,80,0
-#define DEFAULT_HIGH_COLOR yellow
+#define DEFAULT_HIGH_COLOR Qt::yellow
 #define DEFAULT_DARK_HIGH_COLOR 75,75,0
-#define DEFAULT_CLIP_COLOR red
+#define DEFAULT_CLIP_COLOR Qt::red
 #define DEFAULT_DARK_CLIP_COLOR 85,0,0
 
 /*
@@ -53,7 +52,7 @@ class RDSegMeter : public QWidget
  public:
   enum Mode {Independent=0,Peak=1};
   enum Orientation {Left=0,Right=1,Up=2,Down=3};
-  RDSegMeter(RDSegMeter::Orientation o,QWidget *parent=0,const char *name=0);
+  RDSegMeter(RDSegMeter::Orientation o,QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
   void setRange(int min,int max);

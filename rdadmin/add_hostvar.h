@@ -2,9 +2,7 @@
 //
 // Add a Rivendell Host Variable
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: add_hostvar.h,v 1.6 2010/07/29 19:32:34 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,26 +21,16 @@
 #ifndef ADD_HOSTVAR_H
 #define ADD_HOSTVAR_H
 
-#include <qdialog.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
-#include <qpixmap.h>
-#include <qcheckbox.h>
-#include <qsqldatabase.h>
-#include <qlineedit.h>
-#include <qcombobox.h>
-#include <qspinbox.h>
-
-#include <rdstation.h>
-#include <rdcatch_connect.h>
-
+#include <QDialog>
+#include <QLabel>
+#include <QLineEdit>
+#include <QPushButton>
 
 class AddHostvar : public QDialog
 {
   Q_OBJECT
  public:
-  AddHostvar(QString station,QString *var,QString *varvalue,QString *remark,
-	       QWidget *parent=0,const char *name=0);
+  AddHostvar(QString station,int *id,QWidget *parent=0);
   ~AddHostvar();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -51,15 +39,17 @@ class AddHostvar : public QDialog
   void okData();
   void cancelData();
 
+ protected:
+  void resizeEvent(QResizeEvent *e);
+
  private:
+  QLabel *add_name_label;
   QLineEdit *add_name_edit;
-  QLineEdit *add_varvalue_edit;
-  QLineEdit *add_remark_edit;
-  QString *add_name;
-  QString *add_varvalue;
-  QString *add_remark;
+  QPushButton *add_ok_button;
+  QPushButton *add_cancel_button;
+  QString add_station_name;
+  int *add_id;
 };
 
 
-#endif
-
+#endif  // ADD_HOSTVAR_H

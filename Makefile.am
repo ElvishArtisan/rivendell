@@ -4,9 +4,7 @@
 ##
 ## Use automake to process this into a Makefile.in
 ##
-##   (C) Copyright 2002-2010 Fred Gleason <fredg@paravelsystems.com>
-##
-##      $Id: Makefile.am,v 1.65.6.6 2013/01/14 16:35:58 cvs Exp $
+##   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -22,15 +20,13 @@
 ##   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 
-if PAM_RD_AM
-  PAM_RD_OPT = pam_rd
-endif
 if HPI_RD_AM
   HPI_RD_OPT = rdhpi
 endif
 if ALSA_RD_AM
   ALSACONFIG_RD_OPT = rdalsaconfig
 endif
+
 SUBDIRS = icons\
           helpers\
           lib\
@@ -117,7 +113,7 @@ doxygen:
 EXTRA_DIST = autogen.sh\
              build_win32.bat\
              CODINGSTYLE\
-             get_distro.sh\
+             get_distro.pl\
              get_target.sh\
              install-init.sh\
              make_slack.in\

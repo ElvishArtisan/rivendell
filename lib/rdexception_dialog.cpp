@@ -2,9 +2,7 @@
 //
 // A dialog for displaying exception reports.
 //
-//   (C) Copyright 2002-2005 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdexception_dialog.cpp,v 1.8 2010/07/29 19:32:33 cvs Exp $
+//   (C) Copyright 2002-2005,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,16 +19,15 @@
 //
 
 #include <qpushbutton.h>
-#include <qfiledialog.h>
+#include <q3filedialog.h>
 #include <qmessagebox.h>
 
 #include <rdconf.h>
 #include <rdexception_dialog.h>
 
 
-RDExceptionDialog::RDExceptionDialog(QString report,
-				     QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+RDExceptionDialog::RDExceptionDialog(QString report,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   setCaption(tr("Rivendell Exception Report"));
 
@@ -43,7 +40,7 @@ RDExceptionDialog::RDExceptionDialog(QString report,
   //
   // Report Viewer
   //
-  report_view=new QTextView(this,"report_view");
+  report_view=new Q3TextView(this,"report_view");
   report_view->setGeometry(10,10,sizeHint().width()-20,sizeHint().height()-80);
   report_view->setText(report);
 
@@ -90,7 +87,7 @@ void RDExceptionDialog::saveData()
 {
   QString str1;
   QString str2;
-  QString filename=QFileDialog::getSaveFileName(RDGetHomeDir(),
+  QString filename=Q3FileDialog::getSaveFileName(RDGetHomeDir(),
 				   tr("Text (*.txt *.TXT)\nAll Files (*.*)"),
 						this,tr("Export File"));
   if(filename.isEmpty()) {

@@ -2,9 +2,7 @@
 //
 // Prompt for a password.
 //
-//   (C) Copyright 2006-2007 Fred Gleason <fredg@salemradiolabs.com>
-//
-//      $Id: rdgetpasswd.cpp,v 1.3 2010/07/29 19:32:33 cvs Exp $
+//   (C) Copyright 2006-2007,2016 Fred Gleason <fredg@salemradiolabs.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,9 +25,8 @@
 
 #include <rdgetpasswd.h>
 
-
-RDGetPasswd::RDGetPasswd(QString *passwd,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+RDGetPasswd::RDGetPasswd(QString *passwd,QWidget *parent)
+  : QDialog(parent,"",true)
 {
   pw_password=passwd;
 
@@ -54,7 +51,7 @@ RDGetPasswd::RDGetPasswd(QString *passwd,QWidget *parent,const char *name)
   //
   QLabel *label=new QLabel(tr("Enter password"),this);
   label->setGeometry(0,5,sizeHint().width(),20);
-  label->setAlignment(AlignCenter);
+  label->setAlignment(Qt::AlignCenter);
 
   //
   // Password

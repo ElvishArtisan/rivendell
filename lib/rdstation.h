@@ -2,9 +2,7 @@
 //
 // Abstract a Rivendell Workstation
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdstation.h,v 1.24.4.7 2014/02/11 23:46:26 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -32,17 +30,8 @@ class RDStation
 {
  public:
   enum AudioDriver {None=0,Hpi=1,Jack=2,Alsa=3};
-  /**
-   * Enum to track the state of the broadcast applications security model.
-   * @see setBroadcastSecurity()
-   * @see broadcastSecurity()
-   */
-  enum BroadcastSecurityMode {
-        HostSec=0, /**< HostSec - original host (or no) security. */
-        UserSec=1  /**< UserSec - user based security. */
-      };
   enum Capability {HaveOggenc=0,HaveOgg123=1,HaveFlac=2,
-		   HaveLame=3,HaveMpg321=4,HaveTwoLame=5};
+		   HaveLame=3,HaveMpg321=4,HaveTwoLame=5,HaveMp4Decode=6};
   enum FilterMode {FilterSynchronous=0,FilterAsynchronous=1};
   RDStation(const QString &name,bool create=false);
   ~RDStation();
@@ -69,21 +58,6 @@ class RDStation
   void setBackupPath(QString path) const;
   int backupLife() const;
   void setBackupLife(int days) const;
-
-  /**
-   * Set the Broadcast applications (rdairplay, rdlogedit, rdlogmanager)
-   * security mode.
-   *
-   * @param mode An enum with the desired mode.
-   */
-  void setBroadcastSecurity(BroadcastSecurityMode mode);
-
-  /**
-   * Get the Broadcast applicaitons security mode.
-   *
-   * @return An enum with the current mode.
-   */
-  BroadcastSecurityMode broadcastSecurity() const;
   unsigned heartbeatCart() const;
   void setHeartbeatCart(unsigned cartnum) const;
   unsigned heartbeatInterval() const;
@@ -133,6 +107,8 @@ class RDStation
   void setCardInputs(int cardnum,int inputs) const;
   int cardOutputs(int cardnum) const;
   void setCardOutputs(int cardnum,int outputs) const;
+  static bool create(const QString &name="");
+  static void remove(const QString &name);
 
  private:
   void SetRow(const QString &param,const QString &value) const;

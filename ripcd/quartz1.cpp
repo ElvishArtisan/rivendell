@@ -2,9 +2,7 @@
 //
 // A Rivendell switcher driver for the Quartz Type 1 Switcher Protocol
 //
-//   (C) Copyright 2002-2004,2008 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: quartz1.cpp,v 1.11 2010/08/03 23:39:26 cvs Exp $
+//   (C) Copyright 2002-2004,2008,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,8 +26,8 @@
 #include <globals.h>
 #include <quartz1.h>
 
-Quartz1::Quartz1(RDMatrix *matrix,QObject *parent,const char *name)
-  : Switcher(matrix,parent,name)
+Quartz1::Quartz1(RDMatrix *matrix,QObject *parent)
+  : Switcher(matrix,parent)
 {
   RDTty *tty;
   sas_matrix=matrix->matrix();
@@ -73,19 +71,19 @@ Quartz1::Quartz1(RDMatrix *matrix,QObject *parent,const char *name)
   for(int i=0;i<2;i++) {
       switch(sas_porttype[i]) {
 	  case RDMatrix::TtyPort:
-	      tty=new RDTty(rdstation->name(),sas_port[i]);
+	      tty=new RDTty(rda->station()->name(),sas_port[i]);
 	      sas_device[i]=new RDTTYDevice();
 	      if(tty->active()) {
 		  sas_device[i]->setName(tty->port());
 		  sas_device[i]->setSpeed(tty->baudRate());
 		  sas_device[i]->setWordLength(tty->dataBits());
 		  sas_device[i]->setParity(tty->parity());
-		  sas_device[i]->open(IO_Raw|IO_ReadWrite);
+		  sas_device[i]->open(QIODevice::Unbuffered|QIODevice::ReadWrite);
 	      }
 	      delete tty;
 	      
 	  case RDMatrix::TcpPort:
-	      sas_socket[i]=new QSocket(this,"sas_socket");
+	      sas_socket[i]=new Q3Socket(this,"sas_socket");
 	      connected_mapper->setMapping(sas_socket[i],i);
 	      connect(sas_socket[i],SIGNAL(connected()),
 		      connected_mapper,SLOT(map()));
@@ -211,8 +209,8 @@ void Quartz1::connectionClosedData(int conn)
 
 void Quartz1::errorData(int conn,int err)
 {
-  switch((QSocket::Error)err) {
-      case QSocket::ErrConnectionRefused:
+  switch((Q3Socket::Error)err) {
+      case Q3Socket::ErrConnectionRefused:
 	LogLine(RDConfig::LogNotice,QString().sprintf(
 	  "Connection to Quartz1 device at %s:%d refused, attempting reconnect",
 				  (const char *)sas_ipaddress[conn].toString(),
@@ -220,14 +218,14 @@ void Quartz1::errorData(int conn,int err)
 	sas_reconnect_timer[conn]->start(QUARTZ1_RECONNECT_INTERVAL,true);
 	break;
 
-      case QSocket::ErrHostNotFound:
+      case Q3Socket::ErrHostNotFound:
 	LogLine(RDConfig::LogWarning,QString().sprintf(
 	  "Error on connection to Quartz1 device at %s:%d: Host Not Found",
 				  (const char *)sas_ipaddress[conn].toString(),
 				  sas_ipport[conn]));
 	break;
 
-      case QSocket::ErrSocketRead:
+      case Q3Socket::ErrSocketRead:
 	LogLine(RDConfig::LogWarning,QString().sprintf(
 	  "Error on connection to Quartz1 device at %s:%d: Socket Read Error",
 				  (const char *)sas_ipaddress[conn].toString(),

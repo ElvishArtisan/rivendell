@@ -2,9 +2,7 @@
 //
 // Audio card selector widget for Rivendell
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcardselector.cpp,v 1.21.8.1 2013/03/22 15:11:50 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,26 +18,10 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <math.h>
+#include "rdcardselector.h"
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <qradiobutton.h>
-#include <qlineedit.h>
-#include <qtextedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qbuttongroup.h>
-
-
-#include <rdcardselector.h>
-
-
-RDCardSelector::RDCardSelector(QWidget *parent,const char *name)
-  : QWidget(parent,name)
+RDCardSelector::RDCardSelector(QWidget *parent)
+  : QWidget(parent)
 {
   card_id=-1;
   yoffset=0;
@@ -57,17 +39,15 @@ RDCardSelector::RDCardSelector(QWidget *parent,const char *name)
   //
   // Title
   //
-  card_title=new QLabel(this,"card_title");
-  card_title->setGeometry(0,0,geometry().width(),19);
+  card_title=new QLabel(this);
   card_title->setFont(QFont("Helvetica",12,QFont::Bold));
-  card_title->setAlignment(AlignHCenter);
+  card_title->setAlignment(Qt::AlignCenter);
   card_title->hide();
 
   //
   // Card
   //
-  card_card_box=new QSpinBox(this,"card_card_box");
-  card_card_box->setGeometry(60,yoffset,50,19);
+  card_card_box=new QSpinBox(this);
   card_card_box->setSpecialValueText("None");
   card_card_box->setMinValue(-1);
   card_card_box->setMaxValue(RD_MAX_CARDS-1);
@@ -75,23 +55,19 @@ RDCardSelector::RDCardSelector(QWidget *parent,const char *name)
   connect(card_card_box,SIGNAL(valueChanged(int)),this,SLOT(cardData(int)));
   card_card_label=new QLabel(card_card_box,tr("Card:"),this,
 				       "card_card_label");
-  card_card_label->setGeometry(0,yoffset+2,55,19);
-  card_card_label->setAlignment(AlignRight|ShowPrefix);
+  card_card_label->setAlignment(Qt::AlignRight|Qt::TextShowMnemonic);
 
   //
   // Port
   //
-  card_port_box=new QSpinBox(this,"card_port_box");
-  card_port_box->setGeometry(60,yoffset+22,50,19);
+  card_port_box=new QSpinBox(this);
   card_port_box->setSpecialValueText("None");
   card_port_box->setMinValue(-1);
   card_port_box->setMaxValue(RD_MAX_PORTS-1);
   card_port_box->setValue(-1);
   connect(card_port_box,SIGNAL(valueChanged(int)),this,SLOT(portData(int)));
-  card_port_label=new QLabel(card_port_box,tr("Port:"),this,
-				       "card_port_label");
-  card_port_label->setGeometry(0,yoffset+24,55,19);
-  card_port_label->setAlignment(AlignRight|ShowPrefix);
+  card_port_label=new QLabel(card_port_box,tr("Port:"),this);
+  card_port_label->setAlignment(Qt::AlignRight|Qt::TextShowMnemonic);
   for(int i=0;i<RD_MAX_CARDS;i++) {
     card_max_ports[i] = 0;
     cardData(i);
@@ -110,7 +86,7 @@ RDCardSelector::~RDCardSelector()
 
 QSize RDCardSelector::sizeHint() const
 {
-  return QSize(110,41+yoffset);
+  return QSize(120,41+yoffset);
 }
 
 
@@ -155,9 +131,9 @@ void RDCardSelector::setTitle(QString title)
     yoffset=22;
     card_title->show();
   }
-  card_card_box->setGeometry(60,yoffset,50,19);
+  card_card_box->setGeometry(80,yoffset,50,19);
   card_card_label->setGeometry(0,yoffset+2,55,19);
-  card_port_box->setGeometry(60,yoffset+44,50,19);
+  card_port_box->setGeometry(80,yoffset+44,50,19);
   card_port_label->setGeometry(0,yoffset+46,55,19);
 }
 
@@ -248,3 +224,16 @@ void RDCardSelector::portData(int port)
   emit portChanged(port);
   emit settingsChanged(card_id,card_card_box->value(),port);
 }
+
+
+void RDCardSelector::resizeEvent(QResizeEvent *e)
+{
+  card_title->setGeometry(0,0,size().width(),19);
+
+  card_card_label->setGeometry(0,yoffset+2,55,19);
+  card_card_box->setGeometry(60,yoffset,size().width()-60,19);
+
+  card_port_label->setGeometry(0,yoffset+24,55,19);
+  card_port_box->setGeometry(60,yoffset+22,size().width()-60,19);
+}
+

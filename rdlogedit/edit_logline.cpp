@@ -2,9 +2,7 @@
 //
 // Edit a Rivendell Log Entry
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: edit_logline.cpp,v 1.40.8.1 2012/11/26 20:19:41 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,8 +21,12 @@
 #include <qpushbutton.h>
 #include <qmessagebox.h>
 #include <qradiobutton.h>
+//Added by qt3to4:
+#include <QCloseEvent>
+#include <QLabel>
 
 #include <rd.h>
+#include <rdapplication.h>
 #include <rdcart.h>
 #include <rdcart_dialog.h>
 
@@ -32,10 +34,10 @@
 #include <edit_logline.h>
 
 EditLogLine::EditLogLine(RDLogLine *line,QString *filter,QString *group,
-			 QString svcname,RDGroupList *grplist,
-			 RDLogEvent *log,int lineno,
-			 QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+			 QString *schedcode,QString svcname,
+			 RDGroupList *grplist,RDLogEvent *log,int lineno,
+			 QWidget *parent)
+  : QDialog(parent,"",true)
 {
   //
   // Fix the Window Size
@@ -50,6 +52,7 @@ EditLogLine::EditLogLine(RDLogLine *line,QString *filter,QString *group,
   edit_logline=line;
   edit_filter=filter;
   edit_group=group;
+  edit_schedcode=schedcode;
   edit_service=svcname;
   edit_group_list=grplist;
   edit_log_event=log;
@@ -68,20 +71,24 @@ EditLogLine::EditLogLine(RDLogLine *line,QString *filter,QString *group,
   radio_font.setPixelSize(10);
 
   //
+  // Cart Picker
+  //
+  edit_cart_dialog=new RDCartDialog(edit_filter,edit_group,edit_schedcode,this);
+
+  //
   // Time Type
   //
-  edit_timetype_box=new QCheckBox(this,"edit_timetype_box");
+  edit_timetype_box=new QCheckBox(this);
   edit_timetype_box->setGeometry(10,22,15,15);
-  edit_timetype_label=new QLabel(edit_timetype_box,tr("Start at:"),
-			   this,"edit_timetype_label");
+  edit_timetype_label=new QLabel(edit_timetype_box,tr("Start at:"),this);
   edit_timetype_label->setGeometry(30,21,80,17);
   edit_timetype_label->setFont(label_font);
-  edit_timetype_label->setAlignment(AlignLeft|AlignVCenter);
+  edit_timetype_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Start Time
   //
-  edit_time_edit=new RDTimeEdit(this,"edit_time_edit");
+  edit_time_edit=new RDTimeEdit(this);
   edit_time_edit->setGeometry(85,19,85,20);
   edit_time_edit->setDisplay(RDTimeEdit::Hours|RDTimeEdit::Minutes|
 			     RDTimeEdit::Seconds|RDTimeEdit::Tenths);
@@ -92,9 +99,8 @@ EditLogLine::EditLogLine(RDLogLine *line,QString *filter,QString *group,
   // Grace Time
   //
   edit_grace_group
-    =new QButtonGroup(1,Qt::Vertical,
-		      tr("Action If Previous Event Still Playing"),
-		      this,"edit_grace_group");
+    =new Q3ButtonGroup(1,Qt::Vertical,
+		      tr("Action If Previous Event Still Playing"),this);
   edit_grace_group->setGeometry(175,11,435,50);
   edit_grace_group->setFont(label_font);
   edit_grace_group->setRadioButtonExclusive(true);
@@ -109,7 +115,7 @@ EditLogLine::EditLogLine(RDLogLine *line,QString *filter,QString *group,
   edit_grace_group->insert(radio_button);
   radio_button->setFont(radio_font);
 
-  edit_grace_edit=new RDTimeEdit(this,"edit_grace_edit");
+  edit_grace_edit=new RDTimeEdit(this);
   edit_grace_edit->setGeometry(538,31,65,20);
   edit_grace_edit->
     setDisplay(RDTimeEdit::Minutes|RDTimeEdit::Seconds|RDTimeEdit::Tenths);
@@ -121,59 +127,58 @@ EditLogLine::EditLogLine(RDLogLine *line,QString *filter,QString *group,
   //
   // Transition Type
   //
-  edit_transtype_box=new QComboBox(this,"edit_transtype_box");
+  edit_transtype_box=new QComboBox(this);
   edit_transtype_box->setGeometry(485,68,110,26);
   edit_transtype_box->insertItem(tr("Play"));
   edit_transtype_box->insertItem(tr("Segue"));
   edit_transtype_box->insertItem(tr("Stop"));  
-  edit_time_label=new QLabel(edit_transtype_box,tr("Transition Type:"),
-			     this,"edit_transtype_label");
+  edit_time_label=new QLabel(edit_transtype_box,tr("Transition Type:"),this);
   edit_time_label->setGeometry(190,68,290,26);
   edit_time_label->setFont(label_font);
-  edit_time_label->setAlignment(AlignRight|AlignVCenter);
+  edit_time_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   // Overlap Box
-  edit_overlap_box=new QCheckBox(this,"edit_overlap_box");
+  edit_overlap_box=new QCheckBox(this);
   edit_overlap_box->setGeometry(30,72,15,15);
-  edit_overlap_label=new QLabel(edit_overlap_box,tr("No Fade on Segue Out"),
-				this,"edit_overlap_label");
+  edit_overlap_label=
+    new QLabel(edit_overlap_box,tr("No Fade on Segue Out"),this);
   edit_overlap_label->setGeometry(50,68,130,26);
   edit_overlap_label->setFont(button_font);
-  edit_overlap_label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  edit_overlap_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
   
   //
   // Cart Number
   //
-  edit_cart_edit=new QLineEdit(this,"edit_cart_edit");
+  edit_cart_edit=new QLineEdit(this);
   edit_cart_edit->setGeometry(10,116,60,18);
-  QLabel *label=new QLabel(tr("Cart"),this,"cart_label");
+  QLabel *label=new QLabel(tr("Cart"),this);
   label->setFont(label_font);
   label->setGeometry(12,100,60,14);
 
   //
   // Title 
   //
-  edit_title_edit=new QLineEdit(this,"edit_title_edit");
+  edit_title_edit=new QLineEdit(this);
   edit_title_edit->setGeometry(75,116,260,18);
   edit_title_edit->setReadOnly(true);
-  label=new QLabel(tr("Title"),this,"title_label");
+  label=new QLabel(tr("Title"),this);
   label->setFont(label_font);
   label->setGeometry(77,100,110,14);
 
   //
   // Artist 
   //
-  edit_artist_edit=new QLineEdit(this,"edit_artist_edit");
+  edit_artist_edit=new QLineEdit(this);
   edit_artist_edit->setGeometry(340,116,sizeHint().width()-350,18);
   edit_artist_edit->setReadOnly(true);
-  label=new QLabel(tr("Artist"),this,"artist_label");
+  label=new QLabel(tr("Artist"),this);
   label->setFont(label_font);
   label->setGeometry(342,100,110,14);
 
   //
   // Cart Button
   //
-  QPushButton *button=new QPushButton(this,"cart_button");
+  QPushButton *button=new QPushButton(this);
   button->setGeometry(20,144,80,50);
   button->setFont(button_font);
   button->setText(tr("Select\nCart"));
@@ -182,7 +187,7 @@ EditLogLine::EditLogLine(RDLogLine *line,QString *filter,QString *group,
   //
   //  Ok Button
   //
-  button=new QPushButton(this,"ok_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
   button->setFont(button_font);
@@ -192,7 +197,7 @@ EditLogLine::EditLogLine(RDLogLine *line,QString *filter,QString *group,
   //
   //  Cancel Button
   //
-  button=new QPushButton(this,"cancel_button");
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   button->setFont(button_font);
@@ -252,6 +257,7 @@ EditLogLine::EditLogLine(RDLogLine *line,QString *filter,QString *group,
 
 EditLogLine::~EditLogLine()
 {
+  delete edit_cart_dialog;
 }
 
 
@@ -274,8 +280,8 @@ void EditLogLine::selectCartData()
   if(!ok) {
     cartnum=-1;
   }
-  if(log_cart_dialog->exec(&cartnum,RDCart::All,&edit_service,1,
-			   rduser->name(),rduser->password())==0) {
+  if(edit_cart_dialog->exec(&cartnum,RDCart::All,&edit_service,1,
+			   rda->user()->name(),rda->user()->password())==0) {
     FillCart(cartnum);
   }
 }

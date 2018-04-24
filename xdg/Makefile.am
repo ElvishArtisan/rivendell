@@ -4,8 +4,6 @@
 ##
 ##   (C) Copyright 2002-2005 Fred Gleason <fredg@paravelsystems.com>
 ##
-##      $Id: Makefile.am,v 1.11.2.8 2013/12/27 00:04:04 cvs Exp $
-##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
 ##   published by the Free Software Foundation.
@@ -31,7 +29,7 @@ install-exec-am:
 	cp rivendell-rddgimport.desktop $(DESTDIR)@prefix@/share/applications/
 	cp rivendell-rddiscimport.desktop $(DESTDIR)@prefix@/share/applications/
 	cp rivendell-rdgpimon.desktop $(DESTDIR)@prefix@/share/applications/
-	cp rivendell-rdhpiinfo-root.desktop $(DESTDIR)@prefix@/share/applications/
+	if test -f ../rdhpi/.libs/librdhpi-@VERSION@.so ; then cp rivendell-rdhpiinfo-root.desktop $(DESTDIR)@prefix@/share/applications/ ; fi
 	cp rivendell-rdlibrary.desktop $(DESTDIR)@prefix@/share/applications/
 	cp rivendell-rdlogedit.desktop $(DESTDIR)@prefix@/share/applications/
 	cp rivendell-rdlogin.desktop $(DESTDIR)@prefix@/share/applications/
@@ -55,9 +53,9 @@ install-exec-am:
 	rm -f $(DESTDIR)$(prefix)/bin/rdalsaconfig-root
 	ln -s /usr/bin/consolehelper $(DESTDIR)$(prefix)/bin/rdalsaconfig-root
 	rm -f $(DESTDIR)$(prefix)/bin/rdhpiinfo-root
-	ln -s /usr/bin/consolehelper $(DESTDIR)$(prefix)/bin/rdhpiinfo-root
+	if test -f ../rdhpi/.libs/librdhpi-@VERSION@.so ; then ln -s /usr/bin/consolehelper $(DESTDIR)$(prefix)/bin/rdhpiinfo-root ; fi
 
-uninstall:	
+uninstall-local:	
 	rm -f $(DESTDIR)@prefix@/share/applications/rivendell-*.desktop
 	rm -f $(DESTDIR)@prefix@/share/desktop-directories/rivendell-*.directory
 	rm -f $(DESTDIR)/etc/xdg/menus/applications-merged/rivendell-*.menu

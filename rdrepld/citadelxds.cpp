@@ -2,9 +2,7 @@
 //
 // Replicator implementation for the Citadel XDS Portal
 //
-//   (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: citadelxds.cpp,v 1.6 2012/03/02 22:33:51 cvs Exp $
+//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,9 +23,11 @@
 #include <stdio.h>
 #include <errno.h>
 
-#include <qfileinfo.h>
-#include <qdatetime.h>
+#include <QDateTime>
+#include <QFileInfo>
+#include <QUrl>
 
+#include <rdapplication.h>
 #include <rddb.h>
 #include <rdconf.h>
 #include <rdaudioconvert.h>
@@ -70,9 +70,10 @@ bool CitadelXds::processCart(const unsigned cartnum)
   RDSqlQuery *q;
   bool ret=false;
 
-  sql=QString().sprintf("select FILENAME from ISCI_XREFERENCE \
-                         where (CART_NUMBER=%u)&&(LATEST_DATE>=now())&&\
-                         ((TYPE=\"R\")||(TYPE=\"B\"))",cartnum);
+  sql=QString("select FILENAME from ISCI_XREFERENCE where ")+
+    QString().sprintf("(CART_NUMBER=%u)&&",cartnum)+
+    "(LATEST_DATE>=now())&&"+
+    "((TYPE=\"R\")||(TYPE=\"B\"))";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     ret=PostCut(RDCut::cutName(cartnum,1),q->value(0).toString());
@@ -87,10 +88,10 @@ void CitadelXds::CheckIsciXreference()
   QString sql;
   RDSqlQuery *q;
 
-  QFileInfo *fi=new QFileInfo(rdsystem->isciXreferencePath());
+  QFileInfo *fi=new QFileInfo(rda->system()->isciXreferencePath());
   if(fi->exists()) {
     if(fi->lastModified()>xds_isci_datetime) {
-      if(LoadIsciXreference(rdsystem->isciXreferencePath())) {
+      if(LoadIsciXreference(rda->system()->isciXreferencePath())) {
 	sql="update VERSION set LAST_ISCI_XREFERENCE=now()";
 	q=new RDSqlQuery(sql);
 	delete q;
@@ -100,9 +101,9 @@ void CitadelXds::CheckIsciXreference()
     }
   }
   else {
-    rdconfig->log("rdrepld",RDConfig::LogErr,
+    rda->config()->log("rdrepld",RDConfig::LogErr,
 	  QString().sprintf("unable to load ISCI cross reference file \"%s\"",
-			    (const char *)rdsystem->isciXreferencePath()));
+			    (const char *)rda->system()->isciXreferencePath()));
   }
   delete fi;
 }
@@ -122,9 +123,9 @@ bool CitadelXds::LoadIsciXreference(const QString &filename)
   unsigned linenum=3;
 
   if((f=fopen(filename,"r"))==NULL) {
-    rdconfig->log("rdrepld",RDConfig::LogErr,
+    rda->config()->log("rdrepld",RDConfig::LogErr,
       QString().sprintf("unable to load ISCI cross reference file \"%s\" [%s]",
-			(const char *)rdsystem->isciXreferencePath(),
+			(const char *)rda->system()->isciXreferencePath(),
 			strerror(errno)));
     return false;
   }
@@ -148,7 +149,7 @@ bool CitadelXds::LoadIsciXreference(const QString &filename)
   while(fgets(line,1024,f)!=NULL) {
     fields=fields.split(",",line,"\"");
     if(fields.size()==9) {
-      for(unsigned i=0;i<fields.size();i++) {
+      for(int i=0;i<fields.size();i++) {
 	fields[i]=fields[i].replace("\"","").stripWhiteSpace();
       }
       cartnum=fields[3].right(fields[3].length()-1).toUInt(&ok);
@@ -173,31 +174,31 @@ bool CitadelXds::LoadIsciXreference(const QString &filename)
 	      delete q;
 	    }
 	    else {
-	      rdconfig->log("rdrepld",RDConfig::LogWarning,QString().
+	      rda->config()->log("rdrepld",RDConfig::LogWarning,QString().
 			    sprintf("invalid date in line %d of \"%s\"",
 				    linenum,(const char *)filename));
 	    }
 	  }
 	  else {
-	    rdconfig->log("rdrepld",RDConfig::LogWarning,QString().
+	    rda->config()->log("rdrepld",RDConfig::LogWarning,QString().
 	      sprintf("invalid FILENAME field \"%s\" in line %d of \"%s\"",
 		      (const char *)fields[8],linenum,(const char *)filename));
 	  }
 	}
 	else {
-	  rdconfig->log("rdrepld",RDConfig::LogWarning,QString().
+	  rda->config()->log("rdrepld",RDConfig::LogWarning,QString().
 			sprintf("invalid date in line %d of \"%s\"",
 				linenum,(const char *)filename));
 	}
       }
       else {
-	rdconfig->log("rdrepld",RDConfig::LogDebug,QString().
+	rda->config()->log("rdrepld",RDConfig::LogDebug,QString().
 		  sprintf("missing/invalid cart number in line %d of \"%s\"",
 			      linenum,(const char *)filename));
       }
     }
     else {
-      rdconfig->log("rdrepld",RDConfig::LogWarning,QString().
+      rda->config()->log("rdrepld",RDConfig::LogWarning,QString().
 		    sprintf("line %d malformed in \"%s\"",
 			    linenum,(const char *)filename));
     }
@@ -207,9 +208,9 @@ bool CitadelXds::LoadIsciXreference(const QString &filename)
   //
   // Clean Up
   //
-  rdconfig->log("rdrepld",RDConfig::LogInfo,
+  rda->config()->log("rdrepld",RDConfig::LogInfo,
 		QString().sprintf("loaded ISCI cross reference file \"%s\"",
-			      (const char *)rdsystem->isciXreferencePath()));
+			      (const char *)rda->system()->isciXreferencePath()));
   fclose(f);
   return true;
 }
@@ -260,59 +261,50 @@ void CitadelXds::CheckCarts()
   //
   // Generate Update List
   //
-  sql="select CART_NUMBER,FILENAME from ISCI_XREFERENCE \
-       where (LATEST_DATE>=now())&&((TYPE=\"R\")||(TYPE=\"B\"))";
+  sql=QString("select ")+
+    "CART_NUMBER,"+
+    "FILENAME "+
+    "from ISCI_XREFERENCE where "+
+    "(LATEST_DATE>=now())&&"+
+    "((TYPE=\"R\")||(TYPE=\"B\"))";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    sql=QString().sprintf("select REPL_CART_STATE.ID from \
-                           REPL_CART_STATE left join CUTS \
-                           on REPL_CART_STATE.CART_NUMBER=CUTS.CART_NUMBER \
-                           where (CUTS.ORIGIN_DATETIME<REPL_CART_STATE.ITEM_DATETIME)&&\
-                           (REPL_CART_STATE.REPLICATOR_NAME=\"%s\")&&\
-                           (REPL_CART_STATE.CART_NUMBER=%u)&&\
-                           (REPL_CART_STATE.POSTED_FILENAME=\"%s\")&&\
-                           (REPL_CART_STATE.ITEM_DATETIME>\"%s\")&&\
-                           (REPL_CART_STATE.REPOST=\"N\")",
-			  (const char *)RDEscapeString(config()->name()),
-			  q->value(0).toUInt(),
-			  (const char *)RDEscapeString(q->value(1).toString()),
-			  (const char *)now);
+    sql=QString("select REPL_CART_STATE.ID ")+
+      "from REPL_CART_STATE left join CUTS "+
+      "on REPL_CART_STATE.CART_NUMBER=CUTS.CART_NUMBER where "+
+      "(CUTS.ORIGIN_DATETIME<REPL_CART_STATE.ITEM_DATETIME)&&"+
+      "(REPL_CART_STATE.REPLICATOR_NAME=\""+
+      RDEscapeString(config()->name())+"\")&&"+
+      QString().sprintf("(REPL_CART_STATE.CART_NUMBER=%u)&&",
+			q->value(0).toUInt())+
+      "(REPL_CART_STATE.POSTED_FILENAME=\""+
+      RDEscapeString(q->value(1).toString())+"\")&&"+
+      "(REPL_CART_STATE.ITEM_DATETIME>\""+now+"\")&&"+
+      "(REPL_CART_STATE.REPOST=\"N\")";
     q1=new RDSqlQuery(sql);
     if(!q1->first()) {
       if(PostCut(RDCut::cutName(q->value(0).toUInt(),1),
 		 q->value(1).toString())) {
-	sql=QString().sprintf("select ID from REPL_CART_STATE where \
-                               (REPLICATOR_NAME=\"%s\")&&\
-                               (CART_NUMBER=%u)&&\
-                               (POSTED_FILENAME=\"%s\")",
-			      (const char *)RDEscapeString(config()->name()),
-			      q->value(0).toUInt(),
-			      (const char *)RDEscapeString(q->value(1).
-							   toString()));
+	sql=QString("select ID from REPL_CART_STATE where ")+
+	  "(REPLICATOR_NAME=\""+RDEscapeString(config()->name())+"\")&&"+
+	  QString().sprintf("(CART_NUMBER=%u)&&",q->value(0).toInt())+
+	  "(POSTED_FILENAME=\""+RDEscapeString(q->value(1).toString())+"\")";
 	q2=new RDSqlQuery(sql);
 	if(q2->first()) {
-	  sql=QString().sprintf("update REPL_CART_STATE set\
-                                 ITEM_DATETIME=now(),\
-                                 REPOST=\"N\" where \
-                                 (REPLICATOR_NAME=\"%s\")&&\
-                                 (CART_NUMBER=%u)&&\
-                                 (POSTED_FILENAME=\"%s\")",
-				(const char *)RDEscapeString(config()->name()),
-				q->value(0).toUInt(),
-				(const char *)RDEscapeString(q->value(1).
-							     toString()));
+	  sql=QString("update REPL_CART_STATE set ")+
+	    "ITEM_DATETIME=now(),"+
+	    "REPOST=\"N\" where "+
+	    "(REPLICATOR_NAME=\""+RDEscapeString(config()->name())+"\")&&"+
+	    QString().sprintf("(CART_NUMBER=%u)&&",q->value(0).toUInt())+
+	    "(POSTED_FILENAME=\""+RDEscapeString(q->value(1).toString())+"\")";
 	}
 	else {
-	  sql=QString().sprintf("insert into REPL_CART_STATE set \
-                                 ITEM_DATETIME=now(),\
-                                 REPOST=\"N\",\
-                                 REPLICATOR_NAME=\"%s\",\
-                                 CART_NUMBER=%u,\
-                                 POSTED_FILENAME=\"%s\"",
-				(const char *)RDEscapeString(config()->name()),
-				q->value(0).toUInt(),
-				(const char *)RDEscapeString(q->value(1).
-							     toString()));
+	  sql=QString("insert into REPL_CART_STATE set ")+
+	    "ITEM_DATETIME=now(),"+
+	    "REPOST=\"N\","+
+	    "REPLICATOR_NAME=\""+RDEscapeString(config()->name())+"\","+
+	    QString().sprintf("CART_NUMBER=%u,",q->value(0).toUInt())+
+	    "POSTED_FILENAME=\""+RDEscapeString(q->value(1).toString())+"\"";
 	}
 	delete q2;
 	q2=new RDSqlQuery(sql);
@@ -348,7 +340,7 @@ bool CitadelXds::PostCut(const QString &cutname,const QString &filename)
   }
   RDSettings *settings=new RDSettings();
   QString tempfile=RDTempDir()+"/"+filename;
-  RDAudioConvert *conv=new RDAudioConvert(rdconfig->stationName());
+  RDAudioConvert *conv=new RDAudioConvert(rda->config()->stationName());
   conv->setSourceFile(RDCut::pathName(cutname));
   conv->setDestinationFile(tempfile);
   conv->setRange(cut->startPoint(),cut->endPoint());
@@ -367,7 +359,7 @@ bool CitadelXds::PostCut(const QString &cutname,const QString &filename)
     break;
 
   default:
-    rdconfig->log("rdrepld",RDConfig::LogErr,
+    rda->config()->log("rdrepld",RDConfig::LogErr,
       QString().sprintf("CitadelXds: audio conversion failed: %s, cutname: %s",
 			(const char *)RDAudioConvert::errorText(conv_err),
 			(const char *)cutname));
@@ -381,17 +373,17 @@ bool CitadelXds::PostCut(const QString &cutname,const QString &filename)
   //
   // Upload File
   //
-  RDUpload *upload=new RDUpload(rdconfig->stationName());
+  RDUpload *upload=new RDUpload(rda->config()->stationName());
   upload->setSourceFile(tempfile);
   upload->setDestinationUrl(config()->url()+"/"+filename);
   switch(upload_err=upload->runUpload(config()->urlUsername(),
 				      config()->urlPassword(),
-				      rdconfig->logXloadDebugData())) {
+				      rda->config()->logXloadDebugData())) {
   case RDUpload::ErrorOk:
     break;
 
   default:
-    rdconfig->log("rdrepld",RDConfig::LogErr,
+    rda->config()->log("rdrepld",RDConfig::LogErr,
 		  QString().sprintf("CitadelXds: audio upload failed: %s",
 			       (const char *)RDUpload::errorText(upload_err)));
     unlink(tempfile);
@@ -400,7 +392,7 @@ bool CitadelXds::PostCut(const QString &cutname,const QString &filename)
   }
   unlink(tempfile);
   delete upload;
-  rdconfig->log("rdrepld",RDConfig::LogInfo,
+  rda->config()->log("rdrepld",RDConfig::LogInfo,
 		QString().sprintf("CitadelXds: uploaded cut %s to %s/%s",
 				  (const char *)cutname,
 				  (const char *)config()->url(),
@@ -419,14 +411,15 @@ void CitadelXds::PurgeCuts()
   RDDelete *conv;
   RDDelete::ErrorCode conv_err;
 
-  sql=QString().sprintf("select ID,POSTED_FILENAME from REPL_CART_STATE \
-                         where REPLICATOR_NAME=\"%s\"",
-			(const char *)RDEscapeString(config()->name()));
+  sql=QString("select ")+
+    "ID,"+
+    "POSTED_FILENAME "+
+    "from REPL_CART_STATE where "+
+    "REPLICATOR_NAME=\""+RDEscapeString(config()->name())+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    sql=QString().
-      sprintf("select ID from ISCI_XREFERENCE where FILENAME=\"%s\"",
-	      (const char *)RDEscapeString(q->value(1).toString()));
+    sql=QString("select ID from ISCI_XREFERENCE where ")+
+      "FILENAME=\""+RDEscapeString(q->value(1).toString())+"\"";
     q1=new RDSqlQuery(sql);
     if(!q1->first()) {
       QString path=config()->url();
@@ -438,23 +431,21 @@ void CitadelXds::PurgeCuts()
       conv->setTargetUrl(url);
       if((conv_err=conv->runDelete(config()->urlUsername(),
 				   config()->urlPassword(),
-				   rdconfig->logXloadDebugData()))==
+				   rda->config()->logXloadDebugData()))==
 	 RDDelete::ErrorOk) {
 	sql=QString().sprintf("delete from REPL_CART_STATE where ID=%d",
 			      q->value(0).toInt());
 	q2=new RDSqlQuery(sql);
 	delete q2;
-	rdconfig->log("rdrepld",RDConfig::LogInfo,
-		      QString().sprintf("purged \"%s\" for replicator \"%s\"",
-					(const char *)url.toString(),
-					(const char *)config()->name()));
+	rda->config()->
+	  log("rdrepld",RDConfig::LogInfo,QString("purged \"")+url.toString()+
+	      "\" for replicator \""+config()->name()+"\"");
       }
       else {
-	rdconfig->log("rdrepld",RDConfig::LogErr,
-	 QString().sprintf("unable to delete \"%s\" for replicator \"%s\" [%s]",
-			       (const char *)url.toString(),
-			       (const char *)config()->name(),
-			       (const char *)RDDelete::errorText(conv_err)));
+	rda->config()->
+	  log("rdrepld",RDConfig::LogErr,QString("unable to delete \"")+
+	      url.toString()+"\" for replicator \""+config()->name()+
+	      "\" ["+RDDelete::errorText(conv_err)+"]");
       }
       delete conv;
     }

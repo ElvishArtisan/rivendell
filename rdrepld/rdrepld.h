@@ -2,9 +2,7 @@
 //
 // The Rivendell Replicator Daemon
 //
-//   (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdrepld.h,v 1.2 2010/07/29 19:32:37 cvs Exp $
+//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,8 +27,6 @@
 #include <qtimer.h>
 
 #include <rdcheck_daemons.h>
-#include <rdsystem.h>
-#include <rdstation.h>
 #include <rdconfig.h>
 
 #include <replfactory.h>
@@ -43,7 +39,7 @@ class MainObject : public QObject
 {
   Q_OBJECT
  public:
-  MainObject(QObject *parent=0,const char *name=0);
+  MainObject(QObject *parent=0);
 
  private slots:
   void mainLoop();
@@ -55,8 +51,6 @@ class MainObject : public QObject
   void FreeReplicators();
   QTimer *repl_loop_timer;
   QString repl_temp_dir;
-  RDStation *repl_station;
-  QSqlDatabase *repl_db;
   std::vector<ReplFactory *> repl_replicators;
   bool debug;
 };

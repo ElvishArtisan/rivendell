@@ -1,10 +1,8 @@
 // sasusi.h
 //
-// A Rivendell switcher driver for the SAS User Serial Interface Protocol
+// A Rivendell switcher driver for the SAS USI Protocol
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: sasusi.h,v 1.16 2011/05/26 21:20:37 cvs Exp $
+//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,7 +23,7 @@
 
 #include <vector>
 
-#include <qsocket.h>
+#include <q3socket.h>
 #include <qhostaddress.h>
 #include <qtimer.h>
 
@@ -43,7 +41,7 @@ class SasUsi : public Switcher
 {
  Q_OBJECT
  public:
-  SasUsi(RDMatrix *matrix,QObject *parent=0,const char *name=0);
+  SasUsi(RDMatrix *matrix,QObject *parent=0);
   RDMatrix::Type type();
   unsigned gpiQuantity();
   unsigned gpoQuantity();
@@ -64,7 +62,7 @@ class SasUsi : public Switcher
   void ExecuteMacroCart(unsigned cartnum);
   QString PrettifyCommand(const char *cmd) const;
   RDTTYDevice *sas_device;
-  QSocket *sas_socket;
+  Q3Socket *sas_socket;
   char sas_buffer[SASUSI_MAX_LENGTH];
   unsigned sas_ptr;
   QHostAddress sas_ipaddress;

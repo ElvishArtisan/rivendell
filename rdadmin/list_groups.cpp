@@ -2,9 +2,7 @@
 //
 // List Rivendell Groups
 //
-//   (C) Copyright 2002 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_groups.cpp,v 1.27.6.1 2013/11/13 23:36:34 cvs Exp $
+//   (C) Copyright 2002,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,41 +18,31 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <math.h>
+#include <QLabel>
+#include <QMessageBox>
+#include <QPushButton>
+#include <QResizeEvent>
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qbuttongroup.h>
-#include <rddb.h>
-
+#include <rdapplication.h>
 #include <rdcart.h>
-#include <rdtextfile.h>
 #include <rdescape_string.h>
+#include <rdtextfile.h>
 
-#include <globals.h>
-#include <list_groups.h>
-#include <edit_group.h>
-#include <add_group.h>
-#include <rename_group.h>
+#include "add_group.h"
+#include "edit_group.h"
+#include "globals.h"
+#include "list_groups.h"
+#include "rename_group.h"
 
-
-ListGroups::ListGroups(QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+ListGroups::ListGroups(QWidget *parent)
+  : QDialog(parent)
 {
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
 
-  setCaption(tr("Rivendell Group List"));
+  setWindowTitle("RDAdmin - "+tr("Rivendell Group List"));
 
   //
   // Create Fonts
@@ -69,7 +57,7 @@ ListGroups::ListGroups(QWidget *parent,const char *name)
   //
   //  Add Button
   //
-  list_add_button=new QPushButton(this,"list_add_button");
+  list_add_button=new QPushButton(this);
   list_add_button->setFont(font);
   list_add_button->setText(tr("&Add"));
   connect(list_add_button,SIGNAL(clicked()),this,SLOT(addData()));
@@ -77,7 +65,7 @@ ListGroups::ListGroups(QWidget *parent,const char *name)
   //
   //  Edit Button
   //
-  list_edit_button=new QPushButton(this,"list_edit_button");
+  list_edit_button=new QPushButton(this);
   list_edit_button->setFont(font);
   list_edit_button->setText(tr("&Edit"));
   connect(list_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
@@ -85,7 +73,7 @@ ListGroups::ListGroups(QWidget *parent,const char *name)
   //
   //  Rename Button
   //
-  list_rename_button=new QPushButton(this,"list_rename_button");
+  list_rename_button=new QPushButton(this);
   list_rename_button->setFont(font);
   list_rename_button->setText(tr("&Rename"));
   connect(list_rename_button,SIGNAL(clicked()),this,SLOT(renameData()));
@@ -93,7 +81,7 @@ ListGroups::ListGroups(QWidget *parent,const char *name)
   //
   //  Delete Button
   //
-  list_delete_button=new QPushButton(this,"list_delete_button");
+  list_delete_button=new QPushButton(this);
   list_delete_button->setFont(font);
   list_delete_button->setText(tr("&Delete"));
   connect(list_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
@@ -101,7 +89,7 @@ ListGroups::ListGroups(QWidget *parent,const char *name)
   //
   //  Report Button
   //
-  list_report_button=new QPushButton(this,"list_report_button");
+  list_report_button=new QPushButton(this);
   list_report_button->setFont(font);
   list_report_button->setText(tr("Generate\n&Report"));
   connect(list_report_button,SIGNAL(clicked()),this,SLOT(reportData()));
@@ -109,7 +97,7 @@ ListGroups::ListGroups(QWidget *parent,const char *name)
   //
   //  Close Button
   //
-  list_close_button=new QPushButton(this,"list_close_button");
+  list_close_button=new QPushButton(this);
   list_close_button->setDefault(true);
   list_close_button->setFont(font);
   list_close_button->setText(tr("&Close"));
@@ -118,35 +106,38 @@ ListGroups::ListGroups(QWidget *parent,const char *name)
   //
   // Group List
   //
-  list_groups_view=new RDListView(this,"list_groups_view");
-  list_groups_view->setFont(list_font);
-  list_groups_view->setAllColumnsShowFocus(true);
-  list_groups_view->addColumn(tr("NAME"));
-  list_groups_view->addColumn(tr("DESCRIPTION"));
-  list_groups_view->addColumn(tr("START CART"));
-  list_groups_view->setColumnAlignment(2,Qt::AlignCenter);
-  list_groups_view->addColumn(tr("END CART"));
-  list_groups_view->setColumnAlignment(3,Qt::AlignHCenter);
-  list_groups_view->addColumn(tr("ENFORCE RANGE"));
-  list_groups_view->setColumnAlignment(4,Qt::AlignHCenter);
-  list_groups_view->addColumn(tr("DEFAULT TYPE"));
-  list_groups_view->setColumnAlignment(5,Qt::AlignHCenter);
-  list_groups_view->addColumn(tr("TRAFFIC REPORT"));
-  list_groups_view->setColumnAlignment(6,Qt::AlignHCenter);
-  list_groups_view->addColumn(tr("MUSIC REPORT"));
-  list_groups_view->setColumnAlignment(7,Qt::AlignHCenter);
-  list_groups_view->addColumn(tr("NOW & NEXT"));
-  list_groups_view->setColumnAlignment(8,Qt::AlignHCenter);
-  QLabel *list_box_label=new QLabel(list_groups_view,tr("&Groups:"),
-				    this,"list_box_label");
+  QLabel *list_box_label=new QLabel(tr("&Groups:"),this);
   list_box_label->setFont(font);
   list_box_label->setGeometry(14,11,85,19);
-  connect(list_groups_view,
-	  SIGNAL(doubleClicked(QListViewItem *,const QPoint &,int)),
-	  this,
-	  SLOT(doubleClickedData(QListViewItem *,const QPoint &,int)));
-
-  RefreshList();
+  list_model=new RDSqlTableModel(this);
+  QString sql=QString("select ")+
+    "NAME,"+                   // 00
+    "DESCRIPTION,"+            // 01
+    "DEFAULT_LOW_CART,"+       // 02
+    "DEFAULT_HIGH_CART,"+      // 03
+    "ENFORCE_CART_RANGE,"+     // 04
+    "DEFAULT_CART_TYPE,"+      // 05
+    "REPORT_TFC,"+             // 06
+    "REPORT_MUS,"+             // 07
+    "ENABLE_NOW_NEXT,"+        // 08
+    "COLOR "+                  // 09
+    "from GROUPS";
+  list_model->setQuery(sql);
+  list_model->setHeaderData(0,Qt::Horizontal,tr("Name"));
+  list_model->setFieldType(0,RDSqlTableModel::ColorTextType,9);
+  list_model->setHeaderData(1,Qt::Horizontal,tr("Description"));
+  list_model->setHeaderData(2,Qt::Horizontal,tr("Start Cart"));
+  list_model->setHeaderData(3,Qt::Horizontal,tr("End Cart"));
+  list_model->setHeaderData(4,Qt::Horizontal,tr("Enforce Range"));
+  list_model->setHeaderData(5,Qt::Horizontal,tr("Default Type"));
+  list_model->setHeaderData(6,Qt::Horizontal,tr("Traffic Report"));
+  list_model->setHeaderData(7,Qt::Horizontal,tr("Music Report"));
+  list_model->setHeaderData(8,Qt::Horizontal,tr("Now & Next"));
+  list_view=new RDTableView(this);
+  list_view->setModel(list_model);
+  list_view->hideColumn(9);
+  connect(list_view,SIGNAL(doubleClicked(const QModelIndex &)),
+	  this,SLOT(doubleClickedData(const QModelIndex &)));
 }
 
 
@@ -171,136 +162,71 @@ void ListGroups::addData()
 {
   QString group;
 
-  AddGroup *add_group=new AddGroup(&group,this,"add_group");
-  if(add_group->exec()<0) {
-    delete add_group;
-    return;
+  AddGroup *add_group=new AddGroup(&group,this);
+  if(add_group->exec()==0) {
+    list_model->update();
   }
   delete add_group;
-  add_group=NULL;
-  RDListViewItem *item=new RDListViewItem(list_groups_view);
-  item->setText(0,group);
-  RefreshItem(item);
-  item->setSelected(true);
-  list_groups_view->setCurrentItem(item);
-  list_groups_view->ensureItemVisible(item);
 }
 
 
 void ListGroups::editData()
 {
-  RDListViewItem *item=(RDListViewItem *)list_groups_view->selectedItem();
-  if(item==NULL) {
-    return;
+  QItemSelectionModel *s=list_view->selectionModel();
+  if(s->hasSelection()) {
+    EditGroup *edit_group=
+      new EditGroup(s->selectedRows()[0].data().toString(),this);
+    edit_group->exec();
+    delete edit_group;
+    list_model->update();
   }
-  EditGroup *edit_group=new EditGroup(item->text(0),this,"edit_group");
-  edit_group->exec();
-  delete edit_group;
-  edit_group=NULL;
-  RefreshItem(item);
 }
 
 
 void ListGroups::renameData()
 {
-  RDListViewItem *item=(RDListViewItem *)list_groups_view->selectedItem();
-  if(item==NULL) {
-    return;
+  QItemSelectionModel *s=list_view->selectionModel();
+  if(s->hasSelection()) {
+    RenameGroup *rename_group=
+      new RenameGroup(s->selectedRows()[0].data().toString(),this);
+    rename_group->exec();
+    delete rename_group;
+    list_model->update();
   }
-
-  QString groupname=item->text(0);
-  RenameGroup *rename_group=new RenameGroup(groupname,this,"rename_group");
-  rename_group->exec();
-  delete rename_group;
-  rename_group=NULL;
-  RefreshList();
 }
 
 
 void ListGroups::deleteData()
 {
-  RDListViewItem *item=(RDListViewItem *)list_groups_view->selectedItem();
-  if(item==NULL) {
-    return;
-  }
+  unsigned carts=0;
 
-  QString sql;
-  RDSqlQuery *q;
-  QString warning;
-  int carts=0;
-  QString str;
-
-  QString groupname=item->text(0);
-  if(groupname.isEmpty()) {
-    return;
-  }
-  sql=QString().sprintf("select NUMBER from CART where GROUP_NAME=\"%s\"",
-			(const char *)groupname);
-  q=new RDSqlQuery(sql);
-  if((carts=q->size())>0) {
-    str=QString(tr("member carts will be deleted along with group"));
-    warning=QString().
-      sprintf("%d %s %s!\n",
-	      carts,(const char *)str,(const char *)groupname);
-  }
-  str=QString(tr("Are you sure you want to delete group"));
-  warning+=QString().sprintf("%s %s?",(const char *)str,
-			     (const char *)groupname);
-  switch(QMessageBox::warning(this,tr("Delete Group"),warning,
-			      QMessageBox::Yes,QMessageBox::No)) {
-      case QMessageBox::No:
-      case QMessageBox::NoButton:
-	delete q;
+  QItemSelectionModel *s=list_view->selectionModel();
+  if(s->hasSelection()) {
+    QString groupname=s->selectedRows()[0].data().toString();
+    if((carts=RDGroup::cartQuantity(groupname))>0) {
+      if(QMessageBox::warning(this,"RDAdmin - "+tr("Delete Group"),
+			      QString().sprintf("%u ",carts)+
+			      tr("member carts will deleted along with group")+
+			      " \""+groupname+"\" !\n"+
+			      tr("Are you sure you want to delete group")+
+			      " \""+groupname+"\" ?",
+			      QMessageBox::Yes,QMessageBox::No)!=
+	 QMessageBox::Yes) {
 	return;
-
-      default:
-	break;
+      }
+    }
+    else {
+      if(QMessageBox::warning(this,"RDAdmin - "+tr("Delete Group"),
+			      tr("Are you sure you want to delete group")+
+			      " \""+groupname+"\" ?",
+			      QMessageBox::Yes,QMessageBox::No)!=
+	 QMessageBox::Yes) {
+	return;
+      }
+    }
+    RDGroup::remove(groupname);
+    list_model->update();
   }
-
-  //
-  // Delete Member Carts
-  //
-  RDCart *cart;
-  while(q->next()) {
-    cart=new RDCart(q->value(0).toUInt());
-    cart->remove(admin_station,admin_user,admin_config);
-    delete cart;
-  }
-  delete q;
-  
-  //
-  // Delete Member Audio Perms
-  //
-  sql=QString().sprintf("delete from AUDIO_PERMS where GROUP_NAME=\"%s\"",
-			(const char *)RDEscapeString(groupname));
-  q=new RDSqlQuery(sql);
-  delete q;
-  
-  //
-  // Delete Member User Perms
-  //
-  sql=QString().sprintf("delete from USER_PERMS where GROUP_NAME=\"%s\"",
-			(const char *)RDEscapeString(groupname));
-  q=new RDSqlQuery(sql);
-  delete q;
-  
-  //
-  // Delete Replicator Map Records
-  //
-  sql=QString().sprintf("delete from REPLICATOR_MAP where GROUP_NAME=\"%s\"",
-			(const char *)RDEscapeString(groupname));
-  q=new RDSqlQuery(sql);
-  delete q;
-  
-  //
-  // Delete from Group List
-  //
-  sql=QString().sprintf("delete from GROUPS where NAME=\"%s\"",
-			(const char *)RDEscapeString(groupname));
-  q=new RDSqlQuery(sql);
-  delete q;
-  item->setSelected(false);
-  delete item;
 }
 
 
@@ -324,9 +250,16 @@ void ListGroups::reportData()
   //
   // Generate Body
   //
-  sql="select NAME,DESCRIPTION,DEFAULT_LOW_CART,DEFAULT_HIGH_CART,\
-       ENFORCE_CART_RANGE,DEFAULT_CART_TYPE,REPORT_MUS,REPORT_TFC,\
-       ENABLE_NOW_NEXT from GROUPS order by NAME";
+  sql=QString("select ")+
+    "NAME,"+                   // 00
+    "DESCRIPTION,"+            // 01
+    "DEFAULT_LOW_CART,"+       // 02
+    "DEFAULT_HIGH_CART,"+      // 03
+    "ENFORCE_CART_RANGE,"+     // 04
+    "DEFAULT_CART_TYPE,"+      // 05
+    "REPORT_MUS,REPORT_TFC,"+  // 06
+    "ENABLE_NOW_NEXT "+        // 07
+    "from GROUPS order by NAME";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     //
@@ -401,8 +334,7 @@ void ListGroups::reportData()
 }
 
 
-void ListGroups::doubleClickedData(QListViewItem *item,const QPoint &pt,
-				   int col)
+void ListGroups::doubleClickedData(const QModelIndex &index)
 {
   editData();
 }
@@ -422,75 +354,5 @@ void ListGroups::resizeEvent(QResizeEvent *e)
   list_delete_button->setGeometry(size().width()-90,210,80,50);
   list_report_button->setGeometry(size().width()-90,300,80,50);
   list_close_button->setGeometry(size().width()-90,size().height()-60,80,50);
-  list_groups_view->setGeometry(10,30,size().width()-120,size().height()-40);
-}
-
-
-void ListGroups::RefreshList()
-{
-  QString sql;
-  RDSqlQuery *q;
-  RDListViewItem *item;
-
-  list_groups_view->clear();
-  q=new RDSqlQuery("select NAME,DESCRIPTION,DEFAULT_LOW_CART,DEFAULT_HIGH_CART,\
-                   ENFORCE_CART_RANGE,DEFAULT_CART_TYPE,REPORT_TFC,REPORT_MUS,\
-                   ENABLE_NOW_NEXT,COLOR from GROUPS",
-		  0);
-  while (q->next()) {
-    item=new RDListViewItem(list_groups_view);
-    WriteItem(item,q);
-  }
-  delete q;
-}
-
-
-void ListGroups::RefreshItem(RDListViewItem *item)
-{
-  QString sql;
-  RDSqlQuery *q;
-
-  sql=QString().sprintf("select NAME,DESCRIPTION,DEFAULT_LOW_CART,\
-                         DEFAULT_HIGH_CART,ENFORCE_CART_RANGE,\
-                         DEFAULT_CART_TYPE,REPORT_TFC,REPORT_MUS,\
-                         ENABLE_NOW_NEXT,COLOR from GROUPS where NAME=\"%s\"",
-			(const char *)item->text(0));
-  q=new RDSqlQuery(sql);
-  if(q->next()) {
-    WriteItem(item,q);
-  }
-  delete q;
-}
-
-
-void ListGroups::WriteItem(RDListViewItem *item,RDSqlQuery *q)
-{
-  item->setText(0,q->value(0).toString());
-  item->setTextColor(0,q->value(9).toString(),QFont::Bold);
-  item->setText(1,q->value(1).toString());
-  if(q->value(2).toUInt()>0) {
-    item->setText(2,QString().sprintf("%06u",q->value(2).toUInt()));
-    item->setText(3,QString().sprintf("%06u",q->value(3).toUInt()));
-  }
-  else {
-    item->setText(2,"[none]");
-    item->setText(3,"[none]");
-  }
-  item->setText(4,q->value(4).toString());
-  switch((RDCart::Type)q->value(5).toUInt()) {
-      case RDCart::Audio:
-	item->setText(5,"Audio");
-	break;
-	
-      case RDCart::Macro:
-	item->setText(5,"Macro");
-	break;
-	
-      default:	
-	item->setText(5,"[none]");
-	break;
-  }
-  item->setText(6,q->value(6).toString());
-  item->setText(7,q->value(7).toString());
-  item->setText(8,q->value(8).toString());
+  list_view->setGeometry(10,30,size().width()-120,size().height()-40); 
 }

@@ -2,9 +2,7 @@
 //
 // The Rivendell Replicator Daemon
 //
-//   (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdrepld.cpp,v 1.4 2011/06/21 22:20:44 cvs Exp $
+//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,8 +22,9 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-#include <qapplication.h>
+#include <QCoreApplication>
 
+#include <rdapplication.h>
 #include <rddb.h>
 #include <rdconf.h>
 #include <rdcmd_switch.h>
@@ -33,13 +32,8 @@
 #include <rdcart.h>
 #include <dbversion.h>
 
-#include <globals.h>
 #include <citadelxds.h>
 #include <rdrepld.h>
-
-
-RDConfig *rdconfig;
-RDSystem *rdsystem;
 
 void SigHandler(int signum)
 {
@@ -63,28 +57,10 @@ void SigHandler(int signum)
 }
 
 
-MainObject::MainObject(QObject *parent,const char *name)
-  :QObject(parent,name)
+MainObject::MainObject(QObject *parent)
+  :QObject(parent)
 {
-  bool skip_db_check=false;
-  unsigned schema=0;
-
-  //
-  // Load the config
-  //
-  rdconfig=new RDConfig();
-  rdconfig->load();
-
-  //
-  // Read Command Options
-  //
-  RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdrepld",RDREPLD_USAGE);
-  for(unsigned i=0;i<cmd->keys();i++) {
-    if(cmd->key(i)=="--skip-db-check") {
-      skip_db_check=true;
-    }
-  }
+  new RDApplication(RDApplication::Console,"rdrepld",RDREPLD_USAGE);
 
   //
   // Make sure we're the only instance running
@@ -105,38 +81,10 @@ MainObject::MainObject(QObject *parent,const char *name)
   repl_temp_dir=RDTempDir();
 
   //
-  // Open Database
-  //
-  QString err (tr("ERROR rdrepld aborting - "));
-
-  repl_db=RDInitDb(&schema,&err);
-  if(!repl_db) {
-    printf(err.ascii());
-    exit(1);
-  }
-  if((schema!=RD_VERSION_DATABASE)&&(!skip_db_check)) {
-    fprintf(stderr,"rdrepld: database version mismatch, should be %u, is %u\n",
-	    RD_VERSION_DATABASE,schema);
-    exit(256);
-  }
-  connect (RDDbStatus(),SIGNAL(logText(RDConfig::LogPriority,const QString &)),
-	   this,SLOT(log(RDConfig::LogPriority,const QString &)));
-
-  //
-  // System Configuration
-  //
-  rdsystem=new RDSystem();
-
-  //
-  // Station Configuration
-  //
-  repl_station=new RDStation(rdconfig->stationName());
-
-  //
   // Detach
   //
   if(qApp->argc()==1) {
-    RDDetach(rdconfig->logCoreDumpDirectory());
+    RDDetach(rda->config()->logCoreDumpDirectory());
   }
   else {
     debug=true;
@@ -153,11 +101,11 @@ MainObject::MainObject(QObject *parent,const char *name)
   //
   // Start the Main Loop
   //
-  repl_loop_timer=new QTimer(this,"repl_loop_timer");
+  repl_loop_timer=new QTimer(this);
   connect(repl_loop_timer,SIGNAL(timeout()),this,SLOT(mainLoop()));
   repl_loop_timer->start(RD_RDREPL_SCAN_INTERVAL,true);
 
-  rdconfig->log("rdrepld",RDConfig::LogNotice,"started");
+  rda->config()->log("rdrepld",RDConfig::LogNotice,"started");
 }
 
 
@@ -172,7 +120,7 @@ void MainObject::mainLoop()
 
 void MainObject::log(RDConfig::LogPriority prio,const QString &msg)
 {
-  rdconfig->log("rdrepld",prio,msg);
+  rda->config()->log("rdrepld",prio,msg);
 }
 
 
@@ -189,28 +137,28 @@ void MainObject::ProcessCarts()
   for(unsigned i=0;i<repl_replicators.size();i++) {
     where="";
     repl_name=repl_replicators[i]->config()->name();
-    sql=QString().
-      sprintf("select GROUP_NAME from REPLICATOR_MAP \
-                           where REPLICATOR_NAME=\"%s\"",
-	      (const char *)RDEscapeString(repl_name));
+    sql=QString("select GROUP_NAME from REPLICATOR_MAP where ")+
+      "REPLICATOR_NAME=\""+RDEscapeString(repl_name)+"\"";
     q=new RDSqlQuery(sql);
     while(q->next()) {
-      where+=QString().
-	sprintf("(GROUP_NAME=\"%s\")||",
-		(const char *)RDEscapeString(q->value(0).toString()));
+      where+=QString("(GROUP_NAME=\"")+RDEscapeString(q->value(0).toString())+
+	"\")||";
     }
     delete q;
     where=where.left(where.length()-2);
-    sql=QString().sprintf("select NUMBER,TYPE,METADATA_DATETIME \
-                           from CART where %s",
-			  (const char *)where);
+    sql=QString("select ")+
+      "NUMBER,"+
+      "TYPE,"+
+      "METADATA_DATETIME "+
+      "from CART where "+where;
     q=new RDSqlQuery(sql);
     while(q->next()) {
-      sql=QString().sprintf("select ID,ITEM_DATETIME from REPL_CART_STATE \
-                             where (REPLICATOR_NAME=\"%s\")&&\
-                             (CART_NUMBER=%u)",
-			    (const char *)RDEscapeString(repl_name),
-			    q->value(0).toUInt());
+      sql=QString("select ")+
+	"ID,"+
+	"ITEM_DATETIME "+
+	"from REPL_CART_STATE where "+
+	"(REPLICATOR_NAME=\""+RDEscapeString(repl_name)+"\")&&"+
+	QString().sprintf("(CART_NUMBER=%u)",q->value(0).toUInt());
       q1=new RDSqlQuery(sql);
       if(q1->first()) {
 	stale=q->value(2).toDateTime()>q1->value(1).toDateTime();
@@ -221,17 +169,15 @@ void MainObject::ProcessCarts()
       if(stale) {
 	if(repl_replicators[i]->processCart(q->value(0).toUInt())) {
 	  if(q1->isValid()) {
-	    sql=QString().sprintf("update REPL_CART_STATE set \
-                                   ITEM_DATETIME=now() where ID=%u",
-				  q1->value(0).toUInt());
+	    sql=QString("update REPL_CART_STATE set ")+
+	      "ITEM_DATETIME=now() where "+
+	      QString().sprintf("ID=%u",q1->value(0).toUInt());
 	  }
 	  else {
-	    sql=QString().sprintf("insert into REPL_CART_STATE set \
-                                   REPLICATOR_NAME=\"%s\",\
-                                   CART_NUMBER=%u,\
-                                   ITEM_DATETIME=now()",
-				  (const char *)RDEscapeString(repl_name),
-				  q->value(0).toUInt());
+	    sql=QString("insert into REPL_CART_STATE set ")+
+	      "REPLICATOR_NAME=\""+RDEscapeString(repl_name)+"\","+
+	      QString().sprintf("CART_NUMBER=%u,",q->value(0).toUInt())+
+	      "ITEM_DATETIME=now()";
 	  }
 	  q2=new RDSqlQuery(sql);
 	  delete q2;
@@ -250,12 +196,21 @@ void MainObject::LoadReplicators()
   RDSqlQuery *q;
   ReplConfig *config;
 
-  sql=QString().
-    sprintf("select NAME,TYPE_ID,FORMAT,CHANNELS,SAMPRATE,\
-             BITRATE,QUALITY,URL,URL_USERNAME,URL_PASSWORD,\
-             ENABLE_METADATA,NORMALIZATION_LEVEL from \
-             REPLICATORS where STATION_NAME=\"%s\"",
-	    (const char *)RDEscapeString(rdconfig->stationName()));
+  sql=QString("select ")+
+    "NAME,"+                 // 00
+    "TYPE_ID,"+              // 01
+    "FORMAT,"+               // 02
+    "CHANNELS,"+             // 03
+    "SAMPRATE,"+             // 04
+    "BITRATE,"+              // 05
+    "QUALITY,"+              // 06
+    "URL,"+                  // 07
+    "URL_USERNAME,"+         // 08
+    "URL_PASSWORD,"+         // 09
+    "ENABLE_METADATA,"+      // 10 
+    "NORMALIZATION_LEVEL "+  // 11
+    "from REPLICATORS where "+
+    "STATION_NAME=\""+RDEscapeString(rda->config()->stationName())+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     config=new ReplConfig();
@@ -295,7 +250,7 @@ void MainObject::FreeReplicators()
 
 int main(int argc,char *argv[])
 {
-  QApplication a(argc,argv,false);
-  new MainObject(NULL,"main");
+  QCoreApplication a(argc,argv);
+  new MainObject();
   return a.exec();
 }

@@ -2,9 +2,7 @@
 //
 // List and Generate RDCatch Reports
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: list_reports.cpp,v 1.8 2010/07/29 19:32:36 cvs Exp $
+//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,15 +27,15 @@
 #include <rdtextfile.h>
 #include <rdcart_search_text.h>
 #include <rdcart.h>
+#include <rdescape_string.h>
 #include <rdrecording.h>
 
 #include <globals.h>
 #include <list_reports.h>
 
-
 ListReports::ListReports(bool today_only,bool active_only,int dow,
-			 QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+			 QWidget *parent)
+  : QDialog(parent,"",true)
 {
   list_today_only=today_only;
   list_active_only=active_only;
@@ -62,21 +60,20 @@ ListReports::ListReports(bool today_only,bool active_only,int dow,
   //
   // Reports List
   //
-  list_reports_box=new QComboBox(this,"list_reports_box");
+  list_reports_box=new QComboBox(this);
   list_reports_box->setGeometry(50,10,sizeHint().width()-60,19);
   list_reports_box->insertItem(tr("Event Report"));
   list_reports_box->insertItem(tr("Upload/Download Report"));
   QLabel *list_reports_label=
-    new QLabel(list_reports_box,tr("Type:"),
-	       this,"list_reports_label");
+    new QLabel(list_reports_box,tr("Type:"),this);
   list_reports_label->setGeometry(10,10,35,19);
   list_reports_label->setFont(font);
-  list_reports_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  list_reports_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   //  Generate Button
   //
-  QPushButton *generate_button=new QPushButton(this,"generate_button");
+  QPushButton *generate_button=new QPushButton(this);
   generate_button->
     setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   generate_button->setDefault(true);
@@ -87,7 +84,7 @@ ListReports::ListReports(bool today_only,bool active_only,int dow,
   //
   //  Close Button
   //
-  QPushButton *close_button=new QPushButton(this,"close_button");
+  QPushButton *close_button=new QPushButton(this);
   close_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
   close_button->setFont(font);
@@ -161,10 +158,28 @@ void ListReports::GenerateEventReport(QString *report)
   //
   // Generate Rows
   //
-  sql="select TYPE,START_TYPE,START_TIME,END_TYPE,END_TIME,LENGTH,SUN,MON,\
-       TUE,WED,THU,FRI,SAT,STATION_NAME,CHANNEL,CUT_NAME,URL,MACRO_CART,\
-       SWITCH_INPUT,SWITCH_OUTPUT,DESCRIPTION \
-       from RECORDINGS order by START_TIME";
+  sql=QString("select ")+
+    "TYPE,"+            // 00
+    "START_TYPE,"+      // 01
+    "START_TIME,"+      // 02
+    "END_TYPE,"+        // 03
+    "END_TIME,"+        // 04
+    "LENGTH,"+          // 05
+    "SUN,"+             // 06
+    "MON,"+             // 07
+    "TUE,"+             // 08
+    "WED,"+             // 09
+    "THU,"+             // 10
+    "FRI,"+             // 11
+    "SAT,"+             // 12
+    "STATION_NAME,"+    // 13
+    "CHANNEL,"+         // 14
+    "CUT_NAME,"+        // 15
+    "URL,MACRO_CART,"+  // 16
+    "SWITCH_INPUT,"+    // 17
+    "SWITCH_OUTPUT,"+   // 18
+    "DESCRIPTION "+     // 19
+    "from RECORDINGS order by START_TIME";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     //
@@ -333,11 +348,12 @@ void ListReports::GenerateEventReport(QString *report)
     //
     switch((RDRecording::Type)q->value(0).toInt()) {
 	case RDRecording::Recording:
-	  sql=QString().sprintf("select SWITCH_STATION,SWITCH_MATRIX\
-                                 from DECKS where \
-                                 (STATION_NAME=\"%s\")&&(CHANNEL=%d)",
-				(const char *)q->value(13).toString(),
-				q->value(14).toInt());
+	  sql=QString("select ")+
+	    "SWITCH_STATION,"+
+	    "SWITCH_MATRIX "+
+	    "from DECKS where "+
+	    "(STATION_NAME=\""+RDEscapeString(q->value(13).toString())+"\")&&"+
+	    QString().sprintf("(CHANNEL=%d)",q->value(14).toInt());
 	  q1=new RDSqlQuery(sql);
 	  if(q1->first()) {
 	    *report+=QString().sprintf("%-20s ",
@@ -426,10 +442,25 @@ void ListReports::GenerateXloadReport(QString *report)
   //
   // Generate Rows
   //
-  sql=QString().sprintf("select TYPE,START_TIME,SUN,MON,TUE,WED,THU,FRI,SAT,\
-       STATION_NAME,CUT_NAME,URL,URL_USERNAME,DESCRIPTION \
-       from RECORDINGS where (TYPE=%d)||(TYPE=%d) order by START_TIME",
-			RDRecording::Upload,RDRecording::Download);
+  sql=QString("select ")+
+    "TYPE,"+
+    "START_TIME,"+
+    "SUN,"+
+    "MON,"+
+    "TUE,"+
+    "WED,"+
+    "THU,"+
+    "FRI,"+
+    "SAT,"+
+    "STATION_NAME,"+
+    "CUT_NAME,"+
+    "URL,"+
+    "URL_USERNAME,"+
+    "DESCRIPTION "+
+    "from RECORDINGS where "+
+    QString().sprintf("(TYPE=%d)||",RDRecording::Upload)+
+    QString().sprintf("(TYPE=%d) ",RDRecording::Download)+
+    "order by START_TIME";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     //
@@ -552,11 +583,10 @@ void ListReports::GenerateXloadReport(QString *report)
 QString ListReports::GetSourceName(const QString &station,int matrix,int input)
 {
   QString input_name;
-  QString sql=QString().sprintf("select NAME from INPUTS where \
-                                 (STATION_NAME=\"%s\")&&\
-                                 (MATRIX=%d)&&(NUMBER=%d)",
-				(const char *)station,
-				matrix,input);
+  QString sql=QString("select NAME from INPUTS where ")+
+    "(STATION_NAME=\""+RDEscapeString(station)+"\")&&"+
+    QString().sprintf("(MATRIX=%d)&&",matrix)+
+    QString().sprintf("(NUMBER=%d)",input);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     input_name=q->value(0).toString();
@@ -570,11 +600,10 @@ QString ListReports::GetDestinationName(const QString &station,int matrix,
 					int output)
 {
   QString output_name;
-  QString sql=QString().sprintf("select NAME from OUTPUTS where \
-                                 (STATION_NAME=\"%s\")&&\
-                                 (MATRIX=%d)&&(NUMBER=%d)",
-				(const char *)station,
-				matrix,output);
+  QString sql=QString("select NAME from OUTPUTS where ")+
+    "(STATION_NAME=\""+RDEscapeString(station)+"\")&&"+
+    QString().sprintf("(MATRIX=%d)&&",matrix)+
+    QString().sprintf("(NUMBER=%d)",output);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     output_name=q->value(0).toString();

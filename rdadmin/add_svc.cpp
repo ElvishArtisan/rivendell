@@ -2,9 +2,7 @@
 //
 // Add a Rivendell Service
 //
-//   (C) Copyright 2002 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: add_svc.cpp,v 1.20.8.1 2014/01/10 15:58:28 cvs Exp $
+//   (C) Copyright 2002,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,39 +18,28 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <qbuttongroup.h>
+#include <QLabel>
+#include <QMessageBox>
+#include <QPushButton>
 
-#include <rddb.h>
-#include <edit_svc.h>
-#include <add_svc.h>
-#include <rdpasswd.h>
+#include <rdapplication.h>
 #include <rdtextvalidator.h>
 
+#include "add_svc.h"
+#include "edit_svc.h"
 
-AddSvc::AddSvc(QString *svcname,QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+AddSvc::AddSvc(QString *svcname,QWidget *parent)
+  : QDialog(parent)
 {
   svc_name=svcname;
 
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
-  setCaption(tr("Add Service"));
+  setWindowTitle("RDAdmin - "+tr("Add Service"));
 
   //
   // Create Fonts
@@ -76,7 +63,7 @@ AddSvc::AddSvc(QString *svcname,QWidget *parent,const char *name)
     new QLabel(svc_name_edit,tr("&New Service Name:"),this);
   svc_name_label->setGeometry(10,11,140,19);
   svc_name_label->setFont(font);
-  svc_name_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  svc_name_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Exemplar
@@ -87,7 +74,7 @@ AddSvc::AddSvc(QString *svcname,QWidget *parent,const char *name)
     new QLabel(svc_exemplar_box,tr("Base Service On:"),this);
   svc_exemplar_label->setGeometry(10,36,140,19);
   svc_exemplar_label->setFont(font);
-  svc_exemplar_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  svc_exemplar_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   //  Ok Button
@@ -148,7 +135,7 @@ void AddSvc::okData()
     return;
   }
 
-  RDSvc *svc=new RDSvc(svc_name_edit->text(),this,"svc");
+  RDSvc *svc=new RDSvc(svc_name_edit->text(),this);
   if(svc->exists()) {
     QMessageBox::warning(this,tr("Service Exists"),
 			 tr("Service Already Exists!"));
@@ -164,7 +151,7 @@ void AddSvc::okData()
   delete svc;
   *svc_name=svc_name_edit->text();
 
-  EditSvc *edit_svc=new EditSvc(svc_name_edit->text(),this,"svc");
+  EditSvc *edit_svc=new EditSvc(svc_name_edit->text(),this);
   if(edit_svc->exec()<0) {
     delete edit_svc;
     done(-1);

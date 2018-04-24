@@ -2,9 +2,7 @@
 //
 // A Rivendell switcher driver for the BroadcastTools SS 4.4
 //
-//   (C) Copyright 2002-2005,2009 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: btss44.cpp,v 1.3.8.1 2014/03/02 03:15:23 cvs Exp $
+//   (C) Copyright 2002-2005,2009,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,8 +25,8 @@
 #include <globals.h>
 #include <btss44.h>
 
-BtSs44::BtSs44(RDMatrix *matrix,QObject *parent,const char *name)
-  : Switcher(matrix,parent,name)
+BtSs44::BtSs44(RDMatrix *matrix,QObject *parent)
+  : Switcher(matrix,parent)
 {
   //
   // Initialize Data Structures
@@ -51,14 +49,14 @@ BtSs44::BtSs44(RDMatrix *matrix,QObject *parent,const char *name)
   //
   // Initialize the TTY Port
   //
-  RDTty *tty=new RDTty(rdstation->name(),matrix->port(RDMatrix::Primary));
+  RDTty *tty=new RDTty(rda->station()->name(),matrix->port(RDMatrix::Primary));
   bt_device=new RDTTYDevice();
   if(tty->active()) {
     bt_device->setName(tty->port());
     bt_device->setSpeed(tty->baudRate());
     bt_device->setWordLength(tty->dataBits());
     bt_device->setParity(tty->parity());
-    bt_device->open(IO_Raw|IO_ReadWrite);
+    bt_device->open(QIODevice::Unbuffered|QIODevice::ReadWrite);
   }
   delete tty;
 

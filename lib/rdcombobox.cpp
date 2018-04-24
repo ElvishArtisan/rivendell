@@ -2,9 +2,7 @@
 //
 // A Combo Box widget for Rivendell.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdcombobox.cpp,v 1.8 2011/05/18 18:57:54 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,23 +19,44 @@
 //
 
 #include <rdcombobox.h>
+//Added by qt3to4:
+#include <QMouseEvent>
+#include <QKeyEvent>
 
 
-RDComboBox::RDComboBox(QWidget *parent,const char *name)
-  : QComboBox(parent,name)
+RDComboBox::RDComboBox(QWidget *parent)
+  : QComboBox(parent)
 {
   combo_setup_mode=false;
 }
 
 
-void RDComboBox::insertItem(const QString &str,bool unique)
+void RDComboBox::insertItem(const QString &str,bool unique,const QVariant &data)
 {
   if(unique) {
     if(!IsItemUnique(str)) {
       return;
     }
   }
-  QComboBox::insertItem(str);
+  QComboBox::insertItem(count(),str,data);
+}
+
+
+QVariant RDComboBox::currentData()
+{
+  return itemData(currentIndex());
+}
+
+
+bool RDComboBox::setCurrentData(const QVariant &data)
+{
+  for(int i=0;i<count();i++) {
+    if(data==itemData(i)) {
+      setCurrentIndex(i);
+      return true;
+    }
+  }
+  return false;
 }
 
 

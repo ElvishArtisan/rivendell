@@ -2,9 +2,7 @@
 //
 // Handle POST data from an HTML form.
 //
-//   (C) Copyright 2009 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdformpost.h,v 1.2 2010/07/29 19:32:33 cvs Exp $
+//   (C) Copyright 2009,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -42,12 +40,12 @@ class RDFormPost
   RDFormPost::Error error() const;
   QStringList names() const;
   QVariant value(const QString &name,bool *ok=NULL);
-  bool getValue(const QString &name,QHostAddress *addr);
-  bool getValue(const QString &name,QString *str);
-  bool getValue(const QString &name,int *n);
-  bool getValue(const QString &name,long *n);
-  bool getValue(const QString &name,QDateTime *datetime);
-  bool getValue(const QString &name,QTime *time);
+  bool getValue(const QString &name,QHostAddress *addr,bool *ok=NULL);
+  bool getValue(const QString &name,QString *str,bool *ok=NULL);
+  bool getValue(const QString &name,int *n,bool *ok=NULL);
+  bool getValue(const QString &name,long *n,bool *ok=NULL);
+  bool getValue(const QString &name,QDateTime *datetime,bool *ok=NULL);
+  bool getValue(const QString &name,QTime *time,bool *ok=NULL);
   bool isFile(const QString &name);
   QString tempDir() const;
   void dump();

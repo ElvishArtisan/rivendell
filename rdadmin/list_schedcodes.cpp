@@ -2,9 +2,8 @@
 //
 // The scheduler codes dialog for rdadmin
 //
-//   Stefan Gabriel <stg@st-gabriel.de>
-//
-//   
+//   by Stefan Gabriel <stg@st-gabriel.de>
+//   Modifications for Qt4 (C) 2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,36 +19,24 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <QMessageBox>
+#include <QResizeEvent>
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qbuttongroup.h>
+#include <rdschedcode.h>
 
-#include <rddb.h>
-#include <rdcart.h>
-#include <rdescape_string.h>
-#include <rdtextfile.h>
+#include "add_schedcodes.h"
+#include "edit_schedcodes.h"
+#include "list_schedcodes.h"
 
-#include <edit_schedcodes.h>
-#include <add_schedcodes.h>
-#include <list_schedcodes.h>
-
-ListSchedCodes::ListSchedCodes(QWidget *parent,const char *name)
-  : QDialog(parent,name,true)
+ListSchedCodes::ListSchedCodes(QWidget *parent)
+  : QDialog(parent)
 {
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
 
-  setCaption(tr("Rivendell Scheduler Codes List"));
+  setWindowTitle("RDAdmin - "+tr("Rivendell Scheduler Codes List"));
 
   //
   // Create Fonts
@@ -95,20 +82,23 @@ ListSchedCodes::ListSchedCodes(QWidget *parent,const char *name)
   //
   // Group List
   //
-  list_schedCodes_view=new QListView(this);
-  list_schedCodes_view->setAllColumnsShowFocus(true);
-  list_schedCodes_view->addColumn(tr("CODE"));
-  list_schedCodes_view->addColumn(tr("DESCRIPTION"));
-  QLabel *list_box_label=
-    new QLabel(list_schedCodes_view,tr("Scheduler Codes:"),this);
-  list_box_label->setFont(font);
-  list_box_label->setGeometry(14,11,200,19);
-  connect(list_schedCodes_view,
-	  SIGNAL(doubleClicked(QListViewItem *,const QPoint &,int)),
-	  this,
-	  SLOT(doubleClickedData(QListViewItem *,const QPoint &,int)));
+  list_model=new RDSqlTableModel(this);
+  QString sql=QString("select ")+
+    "CODE,"+
+    "DESCRIPTION "+
+    "from SCHED_CODES "+
+    "order by CODE";
+  list_model->setQuery(sql);
+  list_model->setHeaderData(0,Qt::Horizontal,tr("Code"),Qt::DisplayRole);
+  list_model->setHeaderData(1,Qt::Horizontal,tr("Description"),Qt::DisplayRole);
+  list_view=new RDTableView(this);
+  list_view->setModel(list_model);
+  list_view->resizeColumnsToContents();
+  connect(list_view,SIGNAL(doubleClicked(const QModelIndex &)),
+	  this,SLOT(doubleClickedData(const QModelIndex &)));
 
-  RefreshList();
+  list_box_label=new QLabel(tr("Scheduler Codes:"),this);
+  list_box_label->setFont(font);
 }
 
 
@@ -140,73 +130,46 @@ void ListSchedCodes::addData()
   }
   delete add_schedCode;
   add_schedCode=NULL;
-  QListViewItem *item=new QListViewItem(list_schedCodes_view);
-  item->setText(0,schedCode);
-  RefreshItem(item);
-  item->setSelected(true);
-  list_schedCodes_view->setCurrentItem(item);
-  list_schedCodes_view->ensureItemVisible(item);
+  list_model->update();
 }
 
 
 void ListSchedCodes::editData()
 {
-  QListViewItem *item=list_schedCodes_view->selectedItem();
-  if(item==NULL) {
-    return;
+  QItemSelectionModel *s=list_view->selectionModel();
+  if(s->hasSelection()) {
+    doubleClickedData(list_model->index(s->selectedRows()[0].row(),0));
   }
-  EditSchedCode *edit_schedCode=
-    new EditSchedCode(item->text(0),item->text(1),this);
-  edit_schedCode->exec();
-  delete edit_schedCode;
-  edit_schedCode=NULL;
-  RefreshItem(item);
 }
 
 
 void ListSchedCodes::deleteData()
 {
-  QListViewItem *item=list_schedCodes_view->selectedItem();
-  if(item==NULL) {
-    return;
+  QItemSelectionModel *s=list_view->selectionModel();
+  if(s->hasSelection()) {
+    QString code=list_model->data(s->selectedRows()[0].row(),0).toString();
+    if(QMessageBox::question(this,"RDAdmin - "+tr("Delete Scheduler Code"),
+	      tr("This operation will delete the selected scheduler code and all of its associated data.")+" "+
+			     tr("This operation cannot be undone!")+"\n\n"+
+			     tr("Delete scheduler code")+" \""+code+"\"?",
+			     QMessageBox::Yes,QMessageBox::No)!=
+       QMessageBox::Yes) {
+      return;
+    }
+    RDSchedCode::remove(code);
+    list_model->update();
   }
-
-  QString sql;
-  RDSqlQuery *q;
-  QString warning;
-  QString str;
-
-  QString codename=item->text(0);
-  if(codename.isEmpty()) {
-    return;
-  }
-  if(QMessageBox::question(this,"RDAdmin - "+tr("Delete Scheduler Code"),
-			   tr("This operation will delete the selected scheduler code and")+
-			   "\n"+tr("all of its associated data.")+" "+
-			   tr("This operation cannot be undone.")+"\n\n"+
-			   tr("Delete scheduler code")+" \""+codename+"\"?",
-			   QMessageBox::Yes,QMessageBox::No)!=QMessageBox::Yes) {
-    return;
-  }
-
-  sql=QString("delete from DROPBOX_SCHED_CODES where ")+
-    "SCHED_CODE=\""+RDEscapeString(codename)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
-
-  sql=QString("delete from SCHED_CODES where ")+
-    "CODE=\""+RDEscapeString(codename)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
-  item->setSelected(false);
-  delete item;
 }
 
 
-void ListSchedCodes::doubleClickedData(QListViewItem *item,const QPoint &pt,
-				   int col)
+void ListSchedCodes::doubleClickedData(const QModelIndex &index)
 {
-  editData();
+  EditSchedCode *edit_schedCode=
+    new EditSchedCode(list_model->data(index.row(),0).toString(),
+		      list_model->data(index.row(),1).toString(),this);
+  edit_schedCode->exec();
+  delete edit_schedCode;
+  list_model->update();
 }
 
 
@@ -218,48 +181,10 @@ void ListSchedCodes::closeData()
 
 void ListSchedCodes::resizeEvent(QResizeEvent *e)
 {
+  list_box_label->setGeometry(14,11,200,19);
   list_add_button->setGeometry(size().width()-90,30,80,50);
   list_edit_button->setGeometry(size().width()-90,90,80,50);
   list_delete_button->setGeometry(size().width()-90,210,80,50);
   list_close_button->setGeometry(size().width()-90,size().height()-60,80,50);
-  list_schedCodes_view->setGeometry(10,30,size().width()-120,size().height()-40);
+  list_view->setGeometry(10,30,size().width()-120,size().height()-40);
 }
-
-
-void ListSchedCodes::RefreshList()
-{
-  QString sql;
-  RDSqlQuery *q;
-  QListViewItem *item;
-
-  list_schedCodes_view->clear();
-  q=new RDSqlQuery("select CODE,DESCRIPTION from SCHED_CODES",0);
-  while (q->next()) {
-    item=new QListViewItem(list_schedCodes_view);
-    WriteItem(item,q);
-  }
-  delete q;
-}
-
-
-void ListSchedCodes::RefreshItem(QListViewItem *item)
-{
-  QString sql;
-  RDSqlQuery *q;
-
-  sql=QString().sprintf("select CODE,DESCRIPTION from SCHED_CODES where CODE=\"%s\"",
-			(const char *)item->text(0));
-  q=new RDSqlQuery(sql);
-  if(q->next()) {
-    WriteItem(item,q);
-  }
-  delete q;
-}
-
-
-void ListSchedCodes::WriteItem(QListViewItem *item,RDSqlQuery *q)
-{
-  item->setText(0,q->value(0).toString());
-  item->setText(1,q->value(1).toString());
-}
-

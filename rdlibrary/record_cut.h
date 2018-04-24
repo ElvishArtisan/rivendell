@@ -2,9 +2,7 @@
 //
 // Record a Rivendell cut.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: record_cut.h,v 1.33.6.1 2012/08/02 20:37:58 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,10 +28,13 @@
 #include <qtimer.h>
 #include <qlabel.h>
 #include <qcombobox.h>
-#include <qdatetimeedit.h>
+#include <q3datetimeedit.h>
 #include <qradiobutton.h>
 #include <qspinbox.h>
 #include <qcheckbox.h>
+//Added by qt3to4:
+#include <QCloseEvent>
+#include <QPaintEvent>
 
 #include <rdtransportbutton.h>
 #include <rdstereometer.h>
@@ -45,12 +46,11 @@
 
 #include <globals.h>
 
-
 class RecordCut : public QDialog
 {
   Q_OBJECT
   public:
-   RecordCut(RDCart *cart,QString cut,QWidget *parent=0,const char *name=0);
+   RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent=0);
    ~RecordCut();
    QSize sizeHint() const;
    QSizePolicy sizePolicy() const;
@@ -99,9 +99,9 @@ class RecordCut : public QDialog
    QRadioButton *cut_startdatetime_enable_button;
    QRadioButton *cut_startdatetime_disable_button;
    QLabel *cut_startdatetime_label;
-   QDateTimeEdit *cut_startdatetime_edit;
+   Q3DateTimeEdit *cut_startdatetime_edit;
    QLabel *cut_enddatetime_label;
-   QDateTimeEdit *cut_enddatetime_edit;
+   Q3DateTimeEdit *cut_enddatetime_edit;
    QLabel *cut_daypart_label;
    QRadioButton *cut_starttime_enable_button;
    QRadioButton *cut_starttime_disable_button;
@@ -141,6 +141,7 @@ class RecordCut : public QDialog
    bool is_closing;
    QCheckBox *rec_evergreen_box;
    QLabel *rec_evergreen_label;
+   bool rec_use_weighting;
 };
 
 

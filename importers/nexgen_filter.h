@@ -4,8 +4,6 @@
 //
 //   (C) Copyright 2012 Fred Gleason <fredg@paravelsystems.com>
 //
-//      $Id: nexgen_filter.h,v 1.1.2.5 2013/06/20 20:24:45 cvs Exp $
-//
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
 //   published by the Free Software Foundation.
@@ -26,13 +24,10 @@
 #include <stdio.h>
 
 #include <qobject.h>
-#include <qapplication.h>
 #include <qsqldatabase.h>
 #include <qdatetime.h>
 #include <qdir.h>
 
-#include <rdstation.h>
-#include <rdripc.h>
 #include <rdgroup.h>
 #include <rdwavedata.h>
 
@@ -42,7 +37,7 @@ class MainObject : public QObject
 {
   Q_OBJECT
  public:
-  MainObject(QObject *parent=0,const char *name=0);
+  MainObject(QObject *parent=0);
 
  private:
   void ProcessArchive(const QString &filename);
@@ -67,9 +62,9 @@ class MainObject : public QObject
   int filter_cart_offset;
   bool filter_delete_cuts;
   int filter_normalization_level;
-  RDStation *filter_rdstation;
-  RDRipc *filter_ripc;
-  QSqlDatabase *filter_db;
+  //  RDStation *filter_rdstation;
+  //  RDRipc *filter_ripc;
+  //  QSqlDatabase *filter_db;
   bool filter_verbose;
 };
 

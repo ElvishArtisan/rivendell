@@ -2,9 +2,7 @@
 //
 // A LiveWire Node Driver for Rivendell
 //
-//   (C) Copyright 2007 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdlivewire.h,v 1.5 2010/07/29 19:32:33 cvs Exp $
+//   (C) Copyright 2007,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,9 +23,10 @@
 
 #include <vector>
 
-#include <qobject.h>
-#include <qsocket.h>
-#include <qtimer.h>
+#include <QObject>
+#include <QStringList>
+#include <QTcpSocket>
+#include <QTimer>
 
 #include <rd.h>
 #include <rdlivewiresource.h>
@@ -38,11 +37,21 @@
 #define RDLIVEWIRE_RECONNECT_MIN_INTERVAL 5000
 #define RDLIVEWIRE_RECONNECT_MAX_INTERVAL 30000
 
+class AString : public QString
+{
+ public:
+  AString();
+  AString(const AString &lhs);
+  AString(const QString &lhs);  
+  QStringList split(const QString &sep,const QString &esc="") const;
+};
+
+
 class RDLiveWire : public QObject
 {
   Q_OBJECT
  public:
-  RDLiveWire(unsigned id,QObject *parent=0,const char *name=0);
+  RDLiveWire(unsigned id,QObject *parent=0);
   unsigned id() const;
   QString hostname() const;
   Q_UINT16 tcpPort() const;
@@ -68,6 +77,7 @@ class RDLiveWire : public QObject
   void gpoSet(int slot,int line,unsigned interval=0);
   void gpoReset(int slot,int line,unsigned interval=0);
   void setRoute(int src_num,int dest_slot) const;
+  static QString gpioLineText(int slot);
 
  signals:
   void connected(unsigned id);
@@ -82,7 +92,7 @@ class RDLiveWire : public QObject
   void connectedData();
   void connectionClosedData();
   void readyReadData();
-  void errorData(int err);
+  void errorData(QAbstractSocket::SocketError err);
   void gpiTimeoutData(int id);
   void gpoTimeoutData(int id);
   void watchdogData();
@@ -92,14 +102,13 @@ class RDLiveWire : public QObject
 
  private:
   void DespatchCommand(const QString &cmd);
+  void SendCommand(const QString &cmd) const;
   void ReadVersion(const QString &cmd);
   void ReadSources(const QString &cmd);
   void ReadDestinations(const QString &cmd);
   void ReadGpis(const QString &cmd);
   void ReadGpos(const QString &cmd);
   void ReadGpioConfig(const QString &cmd);
-  int ParseString(const QString &str,int ptr,QString *tag,
-		  QString *value) const;
   QString PruneUrl(const QString &str);
   void ResetConnection();
   int GetHoldoff();
@@ -122,7 +131,7 @@ class RDLiveWire : public QObject
   std::vector<QTimer *>live_gpi_timers;
   std::vector<QTimer *>live_gpo_timers;
   int live_gpos;
-  QSocket *live_socket;
+  QTcpSocket *live_socket;
   char live_buf[RD_LIVEWIRE_MAX_CMD_LENGTH];
   int live_ptr;
   bool live_connected;

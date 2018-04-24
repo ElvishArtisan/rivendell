@@ -2,9 +2,7 @@
 //
 // Delete a file from the audio store via the Rivendell Web Service
 //
-//   (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rddelete.cpp,v 1.3 2011/12/23 23:07:00 cvs Exp $
+//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -69,8 +67,8 @@ int DeleteErrorCallback(CURL *curl,curl_infotype type,char *msg,size_t size,
 }
 
 
-RDDelete::RDDelete(QObject *parent,const char *name)
-  : QObject(parent,name)
+RDDelete::RDDelete(QObject *parent)
+  : QObject(parent)
 {
 }
 

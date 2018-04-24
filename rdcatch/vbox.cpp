@@ -2,9 +2,7 @@
 //
 // A QVBox widget with dynamic horizontal resizing.
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: vbox.cpp,v 1.5 2010/07/29 19:32:36 cvs Exp $
+//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,12 +18,11 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qobjectlist.h>
+#include <qobject.h>
 
 #include <vbox.h>
 
-
-VBox::VBox(QWidget *parent,const char *name,WFlags f)
+VBox::VBox(QWidget *parent,const char *name,Qt::WFlags f)
   : QWidget(parent,name,f)
 {
   box_spacing=0;

@@ -2,9 +2,7 @@
 //
 // A Batch Importer for Rivendell.
 //
-//   (C) Copyright 2002-2009 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdimport.h,v 1.17.6.3.2.3 2014/07/15 00:45:17 cvs Exp $
+//   (C) Copyright 2002-2009,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,7 +18,6 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-
 #ifndef RDIMPORT_H
 #define RDIMPORT_H
 
@@ -34,15 +31,9 @@
 
 #include <rdwavedata.h>
 #include <rdwavefile.h>
-#include <rdconfig.h>
-#include <rdcmd_switch.h>
 #include <rdgroup.h>
 #include <rdcart.h>
 #include <rdcut.h>
-#include <rdripc.h>
-#include <rduser.h>
-#include <rdsystem.h>
-#include <rdstation.h>
 
 #include "markerset.h"
 
@@ -57,7 +48,7 @@ class MainObject : public QObject
 {
   Q_OBJECT;
  public:
-  MainObject(QObject *parent=0,const char *name=0);
+  MainObject(QObject *parent=0);
 
  private slots:
   void userData();
@@ -81,12 +72,9 @@ class MainObject : public QObject
   QDateTime GetCachedTimestamp(const QString &filename);
   void WriteTimestampCache(const QString &filename,const QDateTime &dt);
   bool SchedulerCodeExists(const QString &code) const;
-  RDConfig *import_config;
-  RDCmdSwitch *import_cmd;
+  void ReadXmlFile(const QString &basename,RDWaveData *wavedata) const;
   unsigned import_file_key;
   RDGroup *import_group;
-  RDRipc *import_ripc;
-  RDUser *import_user;
   bool import_verbose;
   bool import_log_mode;
   bool import_use_cartchunk_cutid;
@@ -110,6 +98,7 @@ class MainObject : public QObject
   bool import_clear_dayparts;
   bool import_fix_broken_formats;
   int import_persistent_dropbox_id;
+  bool import_xml;
   unsigned import_format;
   unsigned import_samprate;
   unsigned import_bitrate;
@@ -145,8 +134,6 @@ class MainObject : public QObject
   };
   std::list<DropboxList *> import_dropbox_list;
   QString import_temp_fix_filename;
-  RDSystem *import_system;
-  RDStation *import_station;
   MarkerSet *import_cut_markers;
   MarkerSet *import_talk_markers;
   MarkerSet *import_hook_markers;

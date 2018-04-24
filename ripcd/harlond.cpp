@@ -2,9 +2,7 @@
 //
 // A Rivendell switcher driver for the Harlond Virtual Mixer
 //
-//   (C) Copyright 2002-2012 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: harlond.cpp,v 1.2.2.2 2012/08/06 00:12:07 cvs Exp $
+//   (C) Copyright 2002-2012,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -58,7 +56,7 @@ Harlond::Harlond(RDMatrix *matrix,QObject *parent)
   //
   // Initialize TCP/IP Connection
   //
-  bt_socket=new QSocket(this);
+  bt_socket=new Q3Socket(this);
   connect(bt_socket,SIGNAL(connected()),this,SLOT(socketConnectedData()));
   connect(bt_socket,SIGNAL(disconnected()),this,SLOT(socketDisconnectedData()));
   connect(bt_socket,SIGNAL(readyRead()),this,SLOT(socketReadyReadData()));
@@ -235,7 +233,7 @@ void Harlond::socketErrorData(int err)
 {
   bt_watchdog_timer->start(HARLOND_RECONNECT_INTERVAL,true);
   switch(err) {
-  case QSocket::ErrConnectionRefused:
+  case Q3Socket::ErrConnectionRefused:
   LogLine(RDConfig::LogWarning,tr("connection to harlond device at ")+
 	  bt_ip_address.toString()+QString().sprintf(":%d ",bt_tcp_port)+
 	  tr("refused, attempting reconnect"));
@@ -253,7 +251,7 @@ void Harlond::socketErrorData(int err)
 
 void Harlond::watchdogTimeoutData()
 {
-  if(bt_socket->state()!=QSocket::Connected) {
+  if(bt_socket->state()!=Q3Socket::Connected) {
     bt_socket->connectToHost(bt_ip_address.toString(),bt_tcp_port);
   }
 }

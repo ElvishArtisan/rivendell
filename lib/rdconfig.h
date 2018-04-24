@@ -2,9 +2,7 @@
 //
 // A container class for a Rivendell Base Configuration
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdconfig.h,v 1.18.8.7 2013/11/13 23:36:32 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -33,7 +31,7 @@
 #include <qstring.h>
 
 #include <rd.h>
-
+#include <rdcmd_switch.h>
 
 class RDConfig
 {
@@ -49,8 +47,8 @@ class RDConfig
 		    LogInfo=LOG_INFO,LogDebug=LOG_DEBUG};
 
 #endif  // WIN32
-  RDConfig();
-  RDConfig(QString filename);
+  RDConfig(RDCmdSwitch *cmd=0);
+  RDConfig(QString filename,RDCmdSwitch *cmd=0);
   QString filename() const;
   void setFilename(QString filename);
   QString mysqlHostname() const;
@@ -58,7 +56,11 @@ class RDConfig
   QString mysqlDbname() const;
   QString mysqlPassword() const;
   QString mysqlDriver() const;
+  QString mysqlEngine() const;
+  QString mysqlCharset() const;
+  QString mysqlCollation() const;
   int mysqlHeartbeatInterval() const;
+  QString createTablePostfix() const;
   RDConfig::LogFacility logFacility() const;
   QString logDirectory() const;
   QString logCoreDumpDirectory() const;
@@ -113,6 +115,9 @@ class RDConfig
   QString conf_mysql_dbname;
   QString conf_mysql_password;
   QString conf_mysql_driver;
+  QString conf_mysql_engine;
+  QString conf_mysql_charset;
+  QString conf_mysql_collation;
   int conf_mysql_heartbeat_interval;
   RDConfig::LogFacility conf_log_facility;
   QString conf_log_directory;
@@ -155,8 +160,8 @@ class RDConfig
   unsigned conf_sas_base_cart;
   QString conf_sas_tty_device;
   std::vector<QString> conf_destinations;
+  RDCmdSwitch *conf_cmd;
 };
 
-RDConfig *RDConfiguration(void); 
 
 #endif  // RDCONFIG_H

@@ -15,7 +15,7 @@ CAE_STATION          char(64)           From STATIONS.NAME
 TIME_OFFSET          int(11)
 BACKUP_DIR           char(255)
 BACKUP_LIFE          int(11)
-BROADCAST_SECURITY   int(10) unsigned   0=HostSec, 1=UserSec
+BROADCAST_SECURITY   int(10) unsigned   0=HostSec, 1=UserSec *** RETIRED ***
 HEARTBEAT_CART       int(10) unsigned
 HEARTBEAT_INTERVAL   int(10) unsigned
 STARTUP_CART         int(10) unsigned
@@ -40,6 +40,7 @@ HAVE_FLAC            enum('N','Y')
 HAVE_TWOLAME         enum('N','Y')
 HAVE_LAME            enum('N','Y')
 HAVE_MPG321          enum('N','Y')
+HAVE_MP4_DECODE      enum('N','Y')
 HPI_VERSION          char(16)
 JACK_VERSION         char(16)
 ALSA_VERSION         char(16)

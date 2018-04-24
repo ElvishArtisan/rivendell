@@ -2,9 +2,7 @@
 //
 //   A selection widget for audio devices.
 //
-//   (C) Copyright 2002-2007 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdhpisoundselector.h,v 1.4 2011/05/18 14:38:13 cvs Exp $
+//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,7 +17,6 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-//
 
 #ifndef RDHPISOUNDSELECTOR_H
 #define RDHPISOUNDSELECTOR_H
@@ -32,7 +29,7 @@
 #include <qstring.h>
 #include <qdatetime.h>
 #include <qtimer.h>
-#include <qlistbox.h>
+#include <q3listbox.h>
 
 #include <rdhpisoundcard.h>
 
@@ -44,13 +41,12 @@
 #include <jack/jack.h>
 #endif  // JACK
 
-class RDHPISoundSelector : public QListBox
+class RDHPISoundSelector : public Q3ListBox
 {
   Q_OBJECT
 
  public:
-  RDHPISoundSelector(RDHPISoundCard::DeviceClass dev_class,
-		     QWidget *parent=0,const char *name=0);
+  RDHPISoundSelector(RDHPISoundCard::DeviceClass dev_class,QWidget *parent=0);
 
  signals:
   void changed(int card,int port);

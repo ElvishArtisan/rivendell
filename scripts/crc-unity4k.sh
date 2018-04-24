@@ -5,9 +5,7 @@
 # Create a Unity4000 Switcher Configuration for the
 # Christian Radio Consortium (CRC) Network
 #
-#   (C) Copyright 2004 Fred Gleason <fredg@paravelsystems.com>
-#
-#      $Id: crc-unity4k.sh,v 1.3 2007/02/14 21:59:12 fredg Exp $
+#   (C) Copyright 2004,2016 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as

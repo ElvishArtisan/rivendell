@@ -2,9 +2,7 @@
 #
 # The rdhpi/ QMake project file for Rivendell.
 #
-# (C) Copyright 2003-2007 Fred Gleason <fredg@paravelsystems.com>
-#
-#      $Id: rdhpi.pro,v 1.4.8.1 2013/01/01 21:36:31 cvs Exp $
+# (C) Copyright 2003-2007,2016 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as

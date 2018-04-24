@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>EditCast</name>
     <message>
@@ -286,6 +288,10 @@ Podcast trotzdem löschen?</translation>
         <source>Continue deleting cast?</source>
         <translation>Pokračovat v mazání podcastu?</translation>
     </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MainWidget</name>
@@ -299,7 +305,7 @@ Podcast trotzdem löschen?</translation>
     </message>
     <message>
         <source>Can&apos;t Connect</source>
-        <translation>Nelze spojit</translation>
+        <translation type="obsolete">Nelze spojit</translation>
     </message>
     <message>
         <source>Key Name</source>

@@ -2,9 +2,7 @@
 //
 // The audio cart editor for RDLibrary.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: audio_cart.h,v 1.19.8.2.2.1 2014/03/19 22:12:58 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,16 +25,16 @@
 
 #include <qwidget.h>
 #include <qlabel.h>
-#include <qlistbox.h>
+#include <q3listbox.h>
 #include <qcombobox.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qpixmap.h>
 #include <qcheckbox.h>
 #include <qsqldatabase.h>
 #include <qlineedit.h>
 #include <qcheckbox.h>
 #include <qpushbutton.h>
-#include <qprogressdialog.h>
+#include <q3progressdialog.h>
 
 #include <rdcart.h>
 #include <rdlibrary_conf.h>
@@ -53,9 +51,12 @@ class AudioCart : public QWidget
   Q_OBJECT
  public:
   AudioCart(AudioControls *controls,RDCart *cart,QString *path,bool select_cut,
-	    bool profile_rip,QWidget *parent=0,const char *name=0);
+	    bool profile_rip,QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
+
+ public slots:
+  void changeCutScheduling(int sched);
 
  private slots:
   void addCutData();
@@ -72,7 +73,7 @@ class AudioCart : public QWidget
    * cut of audio.
    **/
   void extEditorCutData();
-  void doubleClickedData(QListViewItem *,const QPoint &,int);
+  void doubleClickedData(Q3ListViewItem *,const QPoint &,int);
   void copyProgressData(const QVariant &step);
   
  signals:
@@ -91,10 +92,11 @@ class AudioCart : public QWidget
   bool rdcart_select_cut;
   AudioControls *rdcart_controls;
   QPushButton *paste_cut_button;
-  QProgressDialog *rdcart_progress_dialog;
+  Q3ProgressDialog *rdcart_progress_dialog;
   bool rdcart_modification_allowed;
   bool rdcart_import_metadata;
   bool rdcart_profile_rip;
+  bool rdcart_use_weighting;
 };
 
 

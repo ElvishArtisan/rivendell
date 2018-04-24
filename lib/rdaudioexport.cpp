@@ -2,9 +2,7 @@
 //
 // Export an Audio File using the RdXport Web Service
 //
-//   (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdaudioexport.cpp,v 1.8.4.1 2013/11/13 23:36:30 cvs Exp $
+//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -54,8 +52,8 @@ int ExportProgressCallback(void *clientp,double dltotal,double dlnow,
 
 
 RDAudioExport::RDAudioExport(RDStation *station,RDConfig *config,
-			     QObject *parent,const char *name)
-  : QObject(parent,name)
+			     QObject *parent)
+  : QObject(parent)
 {
   conv_station=station;
   conv_config=config;
@@ -69,9 +67,21 @@ RDAudioExport::RDAudioExport(RDStation *station,RDConfig *config,
 }
 
 
+unsigned RDAudioExport::cartNumber() const
+{
+  return conv_cart_number;
+}
+
+
 void RDAudioExport::setCartNumber(unsigned cartnum)
 {
   conv_cart_number=cartnum;
+}
+
+
+unsigned RDAudioExport::cutNumber() const
+{
+  return conv_cut_number;
 }
 
 
@@ -81,9 +91,21 @@ void RDAudioExport::setCutNumber(unsigned cutnum)
 }
 
 
+QString RDAudioExport::destinationFile() const
+{
+  return conv_dst_filename;
+}
+
+
 void RDAudioExport::setDestinationFile(const QString &filename)
 {
   conv_dst_filename=filename;
+}
+
+
+RDSettings *RDAudioExport::destinationSettings() const
+{
+  return conv_settings;
 }
 
 

@@ -2,9 +2,7 @@
 //
 // Rivendell web service portal -- Import service
 //
-//   (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: import.cpp,v 1.12.2.2 2014/01/15 19:56:32 cvs Exp $
+//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,15 +23,15 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
+#include <rdapplication.h>
 #include <rdformpost.h>
 #include <rdweb.h>
 #include <rdcart.h>
 #include <rdaudioconvert.h>
 #include <rdsettings.h>
 #include <rdconf.h>
-#include <rdlibrary_conf.h>
 
-#include <rdxport.h>
+#include "rdxport.h"
 
 void Xport::Import()
 {
@@ -85,10 +83,10 @@ void Xport::Import()
   //
   // Verify User Perms
   //
-  if(!xport_user->cartAuthorized(cartnum)) {
+  if(!rda->user()->cartAuthorized(cartnum)) {
     XmlExit("No such cart",404);
   }
-  if(!xport_user->editAudio()) {
+  if(!rda->user()->editAudio()) {
     XmlExit("Unauthorized",401);
   }
 
@@ -97,9 +95,9 @@ void Xport::Import()
   //
   RDCart *cart=new RDCart(cartnum);
   RDCut *cut=new RDCut(cartnum,cutnum);
-  RDLibraryConf *conf=new RDLibraryConf(xport_config->stationName(),0);
+  //  RDLibraryConf *conf=new RDLibraryConf(rda->config()->stationName(),0);
   RDSettings *settings=new RDSettings();
-  switch(conf->defaultFormat()) {
+  switch(rda->libraryConf()->defaultFormat()) {
   case 0:
     settings->setFormat(RDSettings::Pcm16);
     break;
@@ -107,10 +105,14 @@ void Xport::Import()
   case 1:
     settings->setFormat(RDSettings::MpegL2Wav);
     break;
+
+  case 2:
+    settings->setFormat(RDSettings::Pcm24);
+    break;
   }
   settings->setChannels(channels);
-  settings->setSampleRate(xport_system->sampleRate());
-  settings->setBitRate(channels*conf->defaultBitrate());
+  settings->setSampleRate(rda->system()->sampleRate());
+  settings->setBitRate(channels*rda->libraryConf()->defaultBitrate());
   settings->setNormalizationLevel(normalization_level);
   RDWaveFile *wave=new RDWaveFile(filename);
   if(!wave->openWave()) {
@@ -119,17 +121,20 @@ void Xport::Import()
   }
   msecs=wave->getExtTimeLength();
   delete wave;
-  RDAudioConvert *conv=new RDAudioConvert(xport_config->stationName());
+  RDAudioConvert *conv=new RDAudioConvert(rda->config()->stationName());
   conv->setSourceFile(filename);
   conv->setDestinationFile(RDCut::pathName(cartnum,cutnum));
   conv->setDestinationSettings(settings);
   RDAudioConvert::ErrorCode conv_err=conv->convert();
   switch(conv_err) {
   case RDAudioConvert::ErrorOk:
-    cut->checkInRecording(xport_config->stationName(),settings,msecs);
+    cut->checkInRecording(rda->config()->stationName(),settings,msecs);
     if(use_metadata>0) {
       cart->setMetadata(conv->sourceWaveData());
       cut->setMetadata(conv->sourceWaveData());
+      syslog(LOG_NOTICE,"SOURCE: title: %s  startDateTime: %s %s",
+	     (const char *)conv->sourceWaveData()->title(),
+	     (const char *)conv->sourceWaveData()->startDate().toString("yyyy-MM-dd"),(const char *)conv->sourceWaveData()->startTime().toString("hh:mm:ss"));
     }
     if(autotrim_level!=0) {
       cut->autoTrim(RDCut::AudioBoth,100*autotrim_level);
@@ -163,7 +168,6 @@ void Xport::Import()
   }
   delete conv;
   delete settings;
-  delete conf;
   delete cut;
   delete cart;
   XmlExit(RDAudioConvert::errorText(conv_err),resp_code,conv_err);

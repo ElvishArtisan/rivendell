@@ -1,11 +1,8 @@
-// rconf.c
-// A small library for handling common configuration file tasks
+// rdconf.cpp
+//
+//  Small library for handling common configuration file tasks
 // 
-// Adopted from conflib
-//
 //   (C) Copyright 1996-2003 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdconf.cpp,v 1.15.4.7.2.1 2014/06/24 18:27:04 cvs Exp $
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -28,10 +25,11 @@
 #include <fcntl.h>
 #include <string.h>
 
-#include <qhostaddress.h>
-#include <qvariant.h>
-#include <qmessagebox.h>
-#include <qdir.h>
+#include <QHostAddress>
+#include <QVariant>
+#include <QMessageBox>
+#include <QDir>
+
 #ifdef WIN32
 #define RDCONF_FILE_SEPARATOR '\\'
 #else
@@ -523,14 +521,14 @@ QString RDGetDisplay(bool strip_point)
 
 
 bool RDDoesRowExist(const QString &table,const QString &name,
-		    const QString &test,QSqlDatabase *db)
+		    const QString &test)
 {
   RDSqlQuery *q;
   QString sql;
 
   sql="select `"+name+"` from `"+table+"` where `"+name+"`="+
     "\""+RDEscapeString(test)+"\"";
-  q=new RDSqlQuery(sql,db);
+  q=new RDSqlQuery(sql);
   if(q->first()) {
     delete q;
     return true;
@@ -540,15 +538,14 @@ bool RDDoesRowExist(const QString &table,const QString &name,
 }
 
 
-bool RDDoesRowExist(const QString &table,const QString &name,unsigned test,
-		    QSqlDatabase *db)
+bool RDDoesRowExist(const QString &table,const QString &name,unsigned test)
 {
   RDSqlQuery *q;
   QString sql;
 
   sql="select `"+name+"` from `"+table+"` where `"+name+"`="+
     QString().sprintf("%d",test);
-  q=new RDSqlQuery(sql,db);
+  q=new RDSqlQuery(sql);
   if(q->size()>0) {
     delete q;
     return true;
@@ -559,8 +556,7 @@ bool RDDoesRowExist(const QString &table,const QString &name,unsigned test,
 
 
 QVariant RDGetSqlValue(const QString &table,const QString &name,
-		       const QString &test,const QString &param,
-		       QSqlDatabase *db,bool *valid)
+		       const QString &test,const QString &param,bool *valid)
 {
   RDSqlQuery *q;
   QString sql;
@@ -568,7 +564,7 @@ QVariant RDGetSqlValue(const QString &table,const QString &name,
 
   sql="select `"+param+"` from `"+table+"` where `"+name+"`="+
     "\""+RDEscapeString(test)+"\"";
-  q=new RDSqlQuery(sql,db);
+  q=new RDSqlQuery(sql);
   if(q->isActive()) {
     q->first();
     v=q->value(0);
@@ -587,7 +583,7 @@ QVariant RDGetSqlValue(const QString &table,
 		       const QString &name1,const QString &test1,
 		       const QString &name2,const QString &test2,
                        const QString &name3,const QString &test3,
-		       const QString &param,QSqlDatabase *db,bool *valid)
+		       const QString &param,bool *valid)
 {
   RDSqlQuery *q;
   QString sql;
@@ -597,7 +593,7 @@ QVariant RDGetSqlValue(const QString &table,
     "(`"+name1+"`=\""+RDEscapeString(test1)+"\")&&"+
     "(`"+name2+"`=\""+RDEscapeString(test1)+"\")&&"+
     "(`"+name3+"`=\""+RDEscapeString(test1)+"\")";
-  q=new RDSqlQuery(sql,db);
+  q=new RDSqlQuery(sql);
   if(q->isActive()) {
     q->first();
     v=q->value(0);
@@ -613,14 +609,14 @@ QVariant RDGetSqlValue(const QString &table,
 
 
 bool RDIsSqlNull(const QString &table,const QString &name,const QString &test,
-		 const QString &param,QSqlDatabase *db)
+		 const QString &param)
 {
   RDSqlQuery *q;
   QString sql;
 
   sql="select `"+param+"` from `"+table+"` where `"+name+"`="+
     "\""+RDEscapeString(test)+"\"";
-  q=new RDSqlQuery(sql,db);
+  q=new RDSqlQuery(sql);
   if(q->isActive()) {
     q->first();
     if(q->isNull(0)) {
@@ -638,14 +634,14 @@ bool RDIsSqlNull(const QString &table,const QString &name,const QString &test,
 
 
 bool RDIsSqlNull(const QString &table,const QString &name,unsigned test,
-		 const QString &param,QSqlDatabase *db)
+		 const QString &param)
 {
   RDSqlQuery *q;
   QString sql;
 
   sql="select `"+param+"` from `"+table+"` where `"+name+"`="+
     QString().sprintf("%d",test);
-  q=new RDSqlQuery(sql,db);
+  q=new RDSqlQuery(sql);
   if(q->isActive()) {
     q->first();
     if(q->isNull(0)) {
@@ -663,7 +659,7 @@ bool RDIsSqlNull(const QString &table,const QString &name,unsigned test,
 
 
 QVariant RDGetSqlValue(const QString &table,const QString &name,unsigned test,
-		       const QString &param,QSqlDatabase *db,bool *valid)
+		       const QString &param,bool *valid)
 {
   RDSqlQuery *q;
   QString sql;
@@ -671,7 +667,7 @@ QVariant RDGetSqlValue(const QString &table,const QString &name,unsigned test,
 
   sql="select `"+param+"` from `"+table+"` where `"+name+"`="+
     QString().sprintf("%u",test);
-  q=new RDSqlQuery(sql,db);
+  q=new RDSqlQuery(sql);
   if(q->first()) {
     v=q->value(0);
     if(valid!=NULL) {
@@ -740,7 +736,7 @@ int RDSetTimeLength(const QString &str)
   if(str.isEmpty()) {
     return -1;
   }
-  for(unsigned i=0;i<str.length();i++) {
+  for(int i=0;i<str.length();i++) {
     if(str.at(i)==':') {
       istate--;
     }
@@ -748,7 +744,7 @@ int RDSetTimeLength(const QString &str)
   if(istate<0) {
     return -1;
   }
-  for(unsigned i=0;i<str.length();i++) {
+  for(int i=0;i<str.length();i++) {
     if(str.at(i).isNumber()) {
       field+=str.at(i);
     }
@@ -939,7 +935,7 @@ QString RDTruncateAfterWord(QString str,int word,bool add_dots)
   int quan=0;
   int point;
 
-  for(unsigned i=0;i<simple.length();i++) {
+  for(int i=0;i<simple.length();i++) {
     if(simple.at(i).isSpace()) {
       quan++;
       point=i;
@@ -968,7 +964,10 @@ QString RDHomeDir()
 
 QString RDTempDir()
 {
-  QString conf_temp_directory = RDConfiguration()->tempDirectory();
+  QString conf_temp_directory("/tmp");
+  if(getenv("TEMP")!=NULL) {
+    conf_temp_directory=getenv("TEMP");
+  }
   if (!conf_temp_directory.isEmpty()) {
     return conf_temp_directory;
   }
@@ -1128,7 +1127,7 @@ bool RDProcessActive(const QStringList &cmds)
 
   proc_dir->setFilter(QDir::Dirs);
   dirs=proc_dir->entryList();
-  for(unsigned i=0;i<dirs.size();i++) {
+  for(int i=0;i<dirs.size();i++) {
     dirs[i].toInt(&ok);
     if(ok) {
       if((f=fopen(QString("/proc/")+dirs[i]+"/cmdline","r"))!=NULL) {
@@ -1136,7 +1135,7 @@ bool RDProcessActive(const QStringList &cmds)
 	  QStringList f1=f1.split(" ",QString(line));
 	  QStringList f2=f2.split("/",f1[0]);
 	  cmdline=f2[f2.size()-1];
-	  for(unsigned j=0;j<cmds.size();j++) {
+	  for(int j=0;j<cmds.size();j++) {
 	    if(cmdline==cmds[j]) {
 	      fclose(f);
 	      return true;
@@ -1172,7 +1171,7 @@ bool RDModulesActive()
   return RDProcessActive(cmds);
 }
 
-
+/*
 QByteArray RDStringToData(const QString &str)
 {
   QByteArray ret;
@@ -1180,7 +1179,7 @@ QByteArray RDStringToData(const QString &str)
   int istate=0;
   QString hexcode="";
 
-  for(unsigned i=0;i<str.length();i++) {
+  for(int i=0;i<str.length();i++) {
     switch(istate) {
     case 0:
       if((str.at(i)=='%')&&(i<(str.length()-2))) {
@@ -1213,3 +1212,4 @@ QByteArray RDStringToData(const QString &str)
 #endif  // WIN32
   return ret;
 }
+*/

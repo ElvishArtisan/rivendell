@@ -20,8 +20,8 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -DQTDIR=\"@QT_DIR@\" @QT_CXXFLAGS@ -I$(top_srcdir)/lib
-LIBS = @QT_LIBS@ -L$(top_srcdir)/lib
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -I$(top_srcdir)/lib @QT4_CFLAGS@ -DQT3_SUPPORT -I/usr/include/Qt3Support
+LIBS = -L$(top_srcdir)/lib
 MOC = @QT_MOC@
 
 # The dependency for qt's Meta Object Compiler (moc)
@@ -38,10 +38,12 @@ dist_ripcd_SOURCES = acu1p.cpp acu1p.h\
                      bt16x2.cpp bt16x2.h\
                      bt8x2.cpp bt8x2.h\
                      btacs82.cpp btacs82.h\
+                     btadms4422.cpp btadms4422.h\
                      btgpi16.cpp btgpi16.h\
                      btsentinel4web.cpp btsentinel4web.h\
                      btss124.cpp btss124.h\
                      btss164.cpp btss164.h\
+                     btss41mlr.cpp btss41mlr.h\
                      btss42.cpp btss42.h\
                      btss44.cpp btss44.h\
                      btss82.cpp btss82.h\
@@ -55,16 +57,20 @@ dist_ripcd_SOURCES = acu1p.cpp acu1p.h\
                      local_gpio.cpp local_gpio.h\
                      local_macros.cpp maint_routines.cpp\
                      loaddrivers.cpp\
+                     modemlines.cpp modemlines.h\
                      quartz1.cpp quartz1.h\
                      ripcd.cpp ripcd.h globals.h\
                      ripcd_connection.cpp ripcd_connection.h\
                      ripcd_socket.cpp ripcd_socket.h\
+                     rossnkscp.cpp rossnkscp.h\
                      sas32000.cpp sas32000.h\
                      sas64000.cpp sas64000.h\
                      sas64000gpi.cpp sas64000gpi.h\
+                     sas16000.cpp sas16000.h\
                      sasusi.cpp sasusi.h\
                      starguide3.cpp starguide3.h\
                      starguide_feed.cpp starguide_feed.h\
+                     swauthority.cpp swauthority.h\
                      switcher.cpp switcher.h\
                      unity4000.cpp unity4000.h\
                      unity_feed.cpp unity_feed.h\
@@ -77,12 +83,14 @@ nodist_ripcd_SOURCES = moc_am16.cpp\
                        moc_bt16x2.cpp\
                        moc_bt8x2.cpp\
                        moc_btacs82.cpp\
+                       moc_btadms4422.cpp\
                        moc_btgpi16.cpp\
                        moc_btsentinel4web.cpp\
                        moc_btsrc16.cpp\
                        moc_btsrc8iii.cpp\
                        moc_btss124.cpp\
                        moc_btss164.cpp\
+                       moc_btss41mlr.cpp\
                        moc_btss42.cpp\
                        moc_btss44.cpp\
                        moc_btss82.cpp\
@@ -92,19 +100,23 @@ nodist_ripcd_SOURCES = moc_am16.cpp\
                        moc_livewire_mcastgpio.cpp\
                        moc_local_audio.cpp\
                        moc_local_gpio.cpp\
+                       moc_modemlines.cpp\
                        moc_quartz1.cpp\
                        moc_ripcd.cpp\
                        moc_ripcd_socket.cpp\
+                       moc_rossnkscp.cpp\
                        moc_sas32000.cpp\
                        moc_sas64000.cpp\
                        moc_sas64000gpi.cpp\
+                       moc_sas16000.cpp\
                        moc_sasusi.cpp\
                        moc_starguide3.cpp\
+                       moc_swauthority.cpp\
                        moc_switcher.cpp\
                        moc_unity4000.cpp\
                        moc_vguest.cpp
 
-ripcd_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
+ripcd_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
 
 EXTRA_DIST = ripcd.pro
 

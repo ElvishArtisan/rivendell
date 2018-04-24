@@ -1,11 +1,8 @@
-
 // globals.h
 //
 // Global Variable Declarations for RDAirPlay
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: globals.h,v 1.12.14.1 2012/11/26 20:19:40 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,31 +21,18 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
-#include <rdstation.h>
-#include <rdsystem.h>
-#include <rdairplay_conf.h>
 #include <rdaudio_port.h>
-#include <rduser.h>
-#include <rdripc.h>
-#include <rdcae.h>
 #include <rdevent_player.h>
 #include <rdcart_dialog.h>
-#include <rdconfig.h>
 
 //
 // Global Resources
 //
-extern RDStation *rdstation_conf;
-extern RDSystem *rdsystem_conf;
-extern RDAirPlayConf *rdairplay_conf;
 extern RDAudioPort *rdaudioport_conf;
-extern RDUser *rduser;
-extern RDRipc *rdripc;
-extern RDCae *rdcae;
 extern RDEventPlayer *rdevent_player;
 extern RDCartDialog *rdcart_dialog;
 extern void LogLine(RDConfig::LogPriority prio,const QString &line);
 extern QString logfile;
-extern RDConfig *air_config;
+
 
 #endif  // GLOBALS_H

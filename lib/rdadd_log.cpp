@@ -2,9 +2,7 @@
 //
 // Create a Rivendell Log
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdadd_log.cpp,v 1.15.10.2 2014/05/21 20:29:01 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,24 +22,27 @@
 
 #include <qdialog.h>
 #include <qstring.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
+#include <q3listbox.h>
+#include <q3textedit.h>
 #include <qlabel.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 #include <qsqldatabase.h>
+//Added by qt3to4:
+#include <QCloseEvent>
+
 #include <rddb.h>
+#include <rdescape_string.h>
 #include <rdidvalidator.h>
 #include <rdadd_log.h>
 
 
 RDAddLog::RDAddLog(QString *logname,QString *svcname,RDStation *station,
-		   QString caption,QWidget *parent,const char *name, 
-                   RDUser *rduser)
-  : QDialog(parent,name,true)
+		   QString caption,QWidget *parent,RDUser *rduser)
+  : QDialog(parent,"",true)
 {
   QStringList services_list;
   log_name=logname;
@@ -80,7 +81,7 @@ RDAddLog::RDAddLog(QString *logname,QString *svcname,RDStation *station,
   QLabel *label=new QLabel(add_name_edit,tr("&New Log Name:"),this);
   label->setGeometry(10,13,100,19);
   label->setFont(button_font);
-  label->setAlignment(AlignRight|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::TextShowMnemonic);
   connect(add_name_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(nameChangedData(const QString &)));
 
@@ -92,7 +93,7 @@ RDAddLog::RDAddLog(QString *logname,QString *svcname,RDStation *station,
   label=new QLabel(add_name_edit,tr("&Service:"),this);
   label->setGeometry(10,33,100,19);
   label->setFont(button_font);
-  label->setAlignment(AlignRight|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::TextShowMnemonic);
 
   //
   //  Ok Button
@@ -126,9 +127,11 @@ RDAddLog::RDAddLog(QString *logname,QString *svcname,RDStation *station,
       sql="select NAME from SERVICES order by NAME";
     }
     else {
-      sql=QString().sprintf("select SERVICE_NAME from SERVICE_PERMS \
-                             where STATION_NAME=\"%s\" order by SERVICE_NAME",
-  			    (const char *)station->name());
+      sql=QString("select ")+
+	"SERVICE_NAME "+
+	"from SERVICE_PERMS where "+
+	"STATION_NAME=\""+RDEscapeString(station->name())+"\" "+
+	"order by SERVICE_NAME";
     }
     RDSqlQuery *q=new RDSqlQuery(sql);
     while(q->next()) {

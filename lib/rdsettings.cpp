@@ -1,10 +1,8 @@
 // rdsettings.cpp
 //
-// RDLibrary Settings
+// Audio Format Settings
 //
-//   (C) Copyright 2002 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdsettings.cpp,v 1.11.8.1 2012/12/13 22:33:44 cvs Exp $
+//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,6 +17,8 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
+
+#include <QVariant>
 
 #include <rdsettings.h>
 #include <rddb.h>
@@ -282,24 +282,25 @@ QString RDSettings::defaultExtension(const QString &stationname,
 				     RDSettings::Format fmt)
 {
   switch(fmt) {
-      case RDSettings::Pcm16:
-      case RDSettings::MpegL2Wav:
-	return QString("wav");
+  case RDSettings::Pcm16:
+  case RDSettings::Pcm24:
+  case RDSettings::MpegL2Wav:
+    return QString("wav");
 
-      case RDSettings::MpegL1:
-	return QString("mp1");
+  case RDSettings::MpegL1:
+    return QString("mp1");
 
-      case RDSettings::MpegL2:
-	return QString("mp2");
+  case RDSettings::MpegL2:
+    return QString("mp2");
 
-      case RDSettings::MpegL3:
-	return QString("mp3");
+  case RDSettings::MpegL3:
+    return QString("mp3");
 
-      case RDSettings::Flac:
-	return QString("flac");
+  case RDSettings::Flac:
+    return QString("flac");
 
-      case RDSettings::OggVorbis:
-	return QString("ogg");
+  case RDSettings::OggVorbis:
+    return QString("ogg");
   }
 
   //
@@ -309,9 +310,9 @@ QString RDSettings::defaultExtension(const QString &stationname,
   RDSqlQuery *q;
   QString ret;
 
-  sql=QString().sprintf("select DEFAULT_EXTENSION from ENCODERS \
-                         where (ID=%d)&&(STATION_NAME=\"%s\")",
-			fmt,(const char *)RDEscapeString(stationname));
+  sql=QString("select DEFAULT_EXTENSION from ENCODERS where ")+
+    QString().sprintf("(ID=%d)&&",fmt)+
+    "(STATION_NAME=\""+RDEscapeString(stationname)+"\")";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     ret=q->value(0).toString();

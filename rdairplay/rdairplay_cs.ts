@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>EditEvent</name>
     <message>
@@ -397,6 +399,10 @@ poslechu</translation>
         <source>ALBUM</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>log</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListLogs</name>
@@ -512,7 +518,7 @@ poslechu</translation>
     </message>
     <message>
         <source>Database Error</source>
-        <translation>Chyba databáze</translation>
+        <translation type="obsolete">Chyba databáze</translation>
     </message>
     <message>
         <source>ADD</source>

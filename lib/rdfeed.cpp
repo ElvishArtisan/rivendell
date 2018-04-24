@@ -2,9 +2,7 @@
 //
 // Abstract a Rivendell RSS Feed
 //
-//   (C) Copyright 2002-2007,2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdfeed.cpp,v 1.17.2.2 2013/11/13 23:36:33 cvs Exp $
+//   (C) Copyright 2002-2007,2010,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,14 +21,17 @@
 #include <math.h>
 
 #include <qfile.h>
-#include <qurl.h>
+#include <q3url.h>
 #include <qapplication.h>
 
+#include <rdapplication.h>
 #include <rddb.h>
 #include <rdfeed.h>
 #include <rdconf.h>
 #include <rdlibrary_conf.h>
 #include <rdescape_string.h>
+#include <rdcreateauxfieldstable.h>
+#include <rdfeedlog.h>
 #include <rdwavefile.h>
 #include <rdpodcast.h>
 #include <rdcart.h>
@@ -39,16 +40,16 @@
 #include <rdaudioconvert.h>
 #include <rdupload.h>
 
-RDFeed::RDFeed(const QString &keyname,QObject *parent,const char *name)
-  : QObject(parent,name)
+RDFeed::RDFeed(const QString &keyname,QObject *parent)
+  : QObject(parent)
 {
   RDSqlQuery *q;
   QString sql;
 
   feed_keyname=keyname;
 
-  sql=QString().sprintf("select ID from FEEDS where KEY_NAME=\"%s\"",
-			(const char *)RDEscapeString(keyname));
+  sql=QString("select ID from FEEDS where ")+
+    "KEY_NAME=\""+RDEscapeString(keyname)+"\"";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     feed_id=q->value(0).toUInt();
@@ -57,8 +58,8 @@ RDFeed::RDFeed(const QString &keyname,QObject *parent,const char *name)
 }
 
 
-RDFeed::RDFeed(unsigned id,QObject *parent,const char *name)
-  : QObject(parent,name)
+RDFeed::RDFeed(unsigned id,QObject *parent)
+  : QObject(parent)
 {
   RDSqlQuery *q;
   QString sql;
@@ -322,7 +323,7 @@ QDateTime RDFeed::lastBuildDateTime() const
 
 void RDFeed::setLastBuildDateTime(const QDateTime &datetime) const
 {
-  SetRow("LAST_BUILD_DATETIME",datetime.toString("yyyy-MM-dd hh:mm:ss"));
+  SetRow("LAST_BUILD_DATETIME",datetime,"yyyy-MM-dd hh:mm:ss");
 }
 
 
@@ -335,7 +336,7 @@ QDateTime RDFeed::originDateTime() const
 
 void RDFeed::setOriginDateTime(const QDateTime &datetime) const
 {
-  SetRow("ORIGIN_DATETIME",datetime.toString("yyyy-MM-dd hh:mm:ss"));
+  SetRow("ORIGIN_DATETIME",datetime,"yyyy-MM-dd hh:mm:ss");
 }
 
 
@@ -499,7 +500,7 @@ void RDFeed::setMediaLinkMode(RDFeed::MediaLinkMode mode) const
 QString RDFeed::audioUrl(RDFeed::MediaLinkMode mode,
 			 const QString &cgi_hostname,unsigned cast_id)
 {
-  QUrl url(baseUrl());
+  Q3Url url(baseUrl());
   QString ret;
   RDPodcast *cast;
 
@@ -759,6 +760,128 @@ int RDFeed::totalPostSteps() const
 }
 
 
+int RDFeed::create(const QString &keyname,bool allow_all_users)
+{
+  QString sql;
+  RDSqlQuery *q;
+  RDSqlQuery *q1;
+  int new_id=-1;
+
+  sql=QString("select KEY_NAME from FEEDS where ")+
+    "KEY_NAME=\""+RDEscapeString(keyname)+"\"";
+  q=new RDSqlQuery(sql);
+  if(q->first()) {
+    delete q;
+    return -1;
+  }
+  delete q;
+
+  //
+  // Create Default Feed Perms
+  //
+  if(allow_all_users) {
+    sql=QString("select ")+
+      "LOGIN_NAME "+
+      "from USERS where "+
+      "(ADMIN_USERS_PRIV='N')&&"+
+      "(ADMIN_CONFIG_PRIV='N')";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("insert into FEED_PERMS set ")+
+	"USER_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	"KEY_NAME=\""+RDEscapeString(keyname)+"\"";
+      q1=new RDSqlQuery(sql);
+      delete q1;
+    }
+    delete q;
+  }
+
+  //
+  // Create Feed
+  //
+  sql=QString("insert into FEEDS set ")+
+    "KEY_NAME=\""+RDEscapeString(keyname)+"\","+
+    "ORIGIN_DATETIME=now(),"+
+    "HEADER_XML=\""+RDEscapeString(DEFAULT_HEADER_XML)+"\","+
+    "CHANNEL_XML=\""+RDEscapeString(DEFAULT_CHANNEL_XML)+"\","+
+    "ITEM_XML=\""+RDEscapeString(DEFAULT_ITEM_XML)+"\"";
+  q=new RDSqlQuery(sql);
+  new_id=q->lastInsertId().toInt();
+  delete q;
+  RDCreateFeedLog(keyname);
+  RDCreateAuxFieldsTable(keyname);
+
+  return new_id;
+}
+
+
+void RDFeed::remove(const QString &keyname,QString *errs)
+{
+  QString sql;
+  RDSqlQuery *q;
+  RDFeed *feed=NULL;
+  int feed_id=-1;
+
+  //
+  // Get Feed ID
+  //
+  sql=QString("select ")+
+    "ID "+
+    "from FEEDS where "+
+    "KEY_NAME=\""+RDEscapeString(keyname)+"\"";
+  q=new RDSqlQuery(sql);
+  if(q->first()) {
+    feed_id=q->value(0).toInt();
+    delete q;
+  }
+
+  //
+  // Delete Casts
+  //
+  // First, Delete Remote Audio
+  //
+  RDPodcast *cast;
+  sql=QString("select ")+
+    "ID "+
+    "from PODCASTS where "+
+    QString().sprintf("FEED_ID=%d",feed_id);
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    cast=new RDPodcast(q->value(0).toUInt());
+    cast->removeAudio(feed,errs,rda->config()->logXloadDebugData());
+    delete cast;
+  }
+  delete q;
+
+  //
+  // Delete Cast Entries
+  //
+  sql=QString("delete ")+
+    "from PODCASTS where "+
+    QString().sprintf("FEED_ID=%d",feed_id);
+  q=new RDSqlQuery(sql);
+  delete q;
+
+  //
+  // Delete Feed
+  //
+  sql=QString("delete ")+
+    "from FEED_PERMS where "+
+    "KEY_NAME=\""+RDEscapeString(keyname)+"\"";
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString("delete from FEEDS where ")+
+    "KEY_NAME=\""+RDEscapeString(keyname)+"\"";
+  q=new RDSqlQuery(sql);
+  delete q;
+  RDDeleteFeedLog(keyname);
+  sql=QString("drop table `")+RDFeed::tableName(keyname)+"`";
+  q=new RDSqlQuery(sql);
+  delete q;
+  delete feed;
+}
+
+
 QString RDFeed::errorString(RDFeed::Error err)
 {
   QString ret="Unknown Error";
@@ -792,6 +915,15 @@ QString RDFeed::errorString(RDFeed::Error err)
 }
 
 
+QString RDFeed::tableName(const QString &keyname)
+{
+  QString ret=keyname;
+  
+  ret.replace(" ","_");
+
+  return ret+"_FIELDS";
+}
+
 unsigned RDFeed::CreateCast(QString *filename,int bytes,int msecs) const
 {
   QString sql;
@@ -812,21 +944,15 @@ unsigned RDFeed::CreateCast(QString *filename,int bytes,int msecs) const
   //
   // Create Entry
   //
-  sql=QString().sprintf("insert into PODCASTS set \
-                         FEED_ID=%u,\
-                         ITEM_TITLE=\"%s\",\
-                         ITEM_DESCRIPTION=\"%s\",\
-                         ITEM_CATEGORY=\"%s\",\
-                         ITEM_LINK=\"%s\",\
-                         SHELF_LIFE=%d,\
-                         EFFECTIVE_DATETIME=UTC_TIMESTAMP(),\
-                         ORIGIN_DATETIME=UTC_TIMESTAMP()",
-			feed_id,
-			(const char *)RDEscapeString(q->value(0).toString()),
-			(const char *)RDEscapeString(q->value(1).toString()),
-			(const char *)RDEscapeString(q->value(2).toString()),
-			(const char *)RDEscapeString(q->value(3).toString()),
-			q->value(4).toInt());
+  sql=QString("insert into PODCASTS set ")+
+    QString().sprintf("FEED_ID=%u,",feed_id)+
+    "ITEM_TITLE=\""+RDEscapeString(q->value(0).toString())+"\","+
+    "ITEM_DESCRIPTION=\""+RDEscapeString(q->value(1).toString())+"\","+
+    "ITEM_CATEGORY=\""+RDEscapeString(q->value(2).toString())+"\","+
+    "ITEM_LINK=\""+RDEscapeString(q->value(3).toString())+"\","+
+    QString().sprintf("SHELF_LIFE=%d,",q->value(4).toInt())+
+    "EFFECTIVE_DATETIME=UTC_TIMESTAMP(),"+
+    "ORIGIN_DATETIME=UTC_TIMESTAMP()";
   q1=new RDSqlQuery(sql);
   delete q1;
 
@@ -847,11 +973,11 @@ unsigned RDFeed::CreateCast(QString *filename,int bytes,int msecs) const
     sprintf("%s.%s",
 	    (const char *)QString().sprintf("%06u_%06u",feed_id,cast_id),
 	    (const char *)q->value(6).toString());
-  sql=QString().sprintf("update PODCASTS set AUDIO_FILENAME=\"%s\",\
-                         AUDIO_LENGTH=%d,\
-                         AUDIO_TIME=%d where ID=%u",
-			(const char *)(*filename),
-			bytes,msecs,cast_id);
+  sql=QString("update PODCASTS set ")+
+    "AUDIO_FILENAME=\""+RDEscapeString(*filename)+"\","+
+    QString().sprintf("AUDIO_LENGTH=%d,",bytes)+
+    QString().sprintf("AUDIO_TIME=%d where ",msecs)+
+    QString().sprintf("ID=%u",cast_id);
   q1=new RDSqlQuery(sql);
   delete q1;
   delete q;
@@ -877,10 +1003,9 @@ void RDFeed::SetRow(const QString &param,int value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE FEEDS SET %s=%d WHERE KEY_NAME=\"%s\"",
-			(const char *)param,
-			value,
-			(const char *)feed_keyname);
+  sql=QString("update FEEDS set ")+
+    param+QString().sprintf("=%d where ",value)+
+    "KEY_NAME=\""+RDEscapeString(feed_keyname)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -891,10 +1016,22 @@ void RDFeed::SetRow(const QString &param,const QString &value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE FEEDS SET %s=\"%s\" WHERE KEY_NAME=\"%s\"",
-			(const char *)param,
-			(const char *)RDEscapeString(value),
-			(const char *)feed_keyname);
+  sql=QString("update FEEDS set ")+
+    param+"=\""+RDEscapeString(value)+"\" where "+
+    "KEY_NAME=\""+RDEscapeString(feed_keyname)+"\"";
+  q=new RDSqlQuery(sql);
+  delete q;
+}
+
+void RDFeed::SetRow(const QString &param,const QDateTime &value,
+                    const QString &format) const
+{
+  RDSqlQuery *q;
+  QString sql;
+
+  sql=QString("update FEEDS set ")+
+    param+"="+RDCheckDateTime(value,format)+" where "+
+    "KEY_NAME=\""+feed_keyname+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }

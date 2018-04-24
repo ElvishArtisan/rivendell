@@ -2,7 +2,7 @@
 //
 // A Qt-based application for testing General Purpose Input (GPI) devices.
 //
-//   (C) Copyright 2002-2014 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2014,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,44 +20,41 @@
 
 #include <stdlib.h>
 
-#include <qapplication.h>
-#include <qwindowsstyle.h>
-#include <qwidget.h>
-#include <qpushbutton.h>
-#include <qrect.h>
-#include <qpoint.h>
-#include <qpainter.h>
-#include <qstring.h>
-#include <qmessagebox.h>
-#include <qlineedit.h>
-#include <qtextcodec.h>
-#include <qtranslator.h>
+#include <QApplication>
+#include <QLabel>
+#include <QLineEdit>
+#include <QMessageBox>
+#include <QPainter>
+#include <QPixmap>
+#include <QPoint>
+#include <QPushButton>
+#include <QRect>
+#include <QString>
+#include <QTextCodec>
+#include <QTranslator>
+#include <QWidget>
+#include <QWindowsStyle>
 
-#include <rddb.h>
-#include <rdgpimon.h>
-#include <rdcmd_switch.h>
+#include <rdapplication.h>
 #include <rddbheartbeat.h>
 #include <rdescape_string.h>
 #include <rdlistviewitem.h>
 #include <rdtextfile.h>
+
+#include "rdgpimon.h"
 
 //
 // Icons
 //
 #include "../icons/rivendell-22x22.xpm"
 
-
-MainWidget::MainWidget(QWidget *parent,const char *name)
-  :QWidget(parent,name)
+MainWidget::MainWidget(QWidget *parent)
+  :QWidget(parent)
 {
+  new RDApplication(RDApplication::Gui,"rdgpimon","RDGPIMON_USAGE");
+
   gpi_scroll_mode=false;
   
-  //
-  // Read Command Options
-  //
-  RDCmdSwitch *cmd=new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdgpimon","\n");
-  delete cmd;
-
   //
   // Set Window Size
   //
@@ -86,56 +83,23 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   setIcon(*gpi_rivendell_map);
 
   //
-  // Load Local Configs
-  //
-  gpi_config=new RDConfig();
-  gpi_config->load();
-
-  //
-  // Open Database
-  //
-  gpi_db=QSqlDatabase::addDatabase(gpi_config->mysqlDriver());
-  if(!gpi_db) {
-    QMessageBox::warning(this,tr("Database Error"),
-		    tr("Can't Connect","Unable to connect to mySQL Server!"));
-    exit(0);
-  }
-  gpi_db->setDatabaseName(gpi_config->mysqlDbname());
-  gpi_db->setUserName(gpi_config->mysqlUsername());
-  gpi_db->setPassword(gpi_config->mysqlPassword());
-  gpi_db->setHostName(gpi_config->mysqlHostname());
-  if(!gpi_db->open()) {
-    QMessageBox::warning(this,tr("Can't Connect"),
-			 tr("Unable to connect to mySQL Server!"));
-    gpi_db->removeDatabase(gpi_config->mysqlDbname());
-    exit(0);
-  }
-  new RDDbHeartbeat(gpi_config->mysqlHeartbeatInterval(),this);
-
-  //
   // RIPC Connection
   //
-  gpi_ripc=new RDRipc(gpi_config->stationName());
-  gpi_ripc->setIgnoreMask(true);
-  connect(gpi_ripc,SIGNAL(userChanged()),this,SLOT(userData()));
-  connect(gpi_ripc,SIGNAL(gpiStateChanged(int,int,bool)),
+  rda->ripc()->setIgnoreMask(true);
+  connect(rda->ripc(),SIGNAL(userChanged()),this,SLOT(userData()));
+  connect(rda->ripc(),SIGNAL(gpiStateChanged(int,int,bool)),
 	  this,SLOT(gpiStateChangedData(int,int,bool)));
-  connect(gpi_ripc,SIGNAL(gpoStateChanged(int,int,bool)),
+  connect(rda->ripc(),SIGNAL(gpoStateChanged(int,int,bool)),
 	  this,SLOT(gpoStateChangedData(int,int,bool)));
-  connect(gpi_ripc,SIGNAL(gpiMaskChanged(int,int,bool)),
+  connect(rda->ripc(),SIGNAL(gpiMaskChanged(int,int,bool)),
 	  this,SLOT(gpiMaskChangedData(int,int,bool)));
-  connect(gpi_ripc,SIGNAL(gpoMaskChanged(int,int,bool)),
+  connect(rda->ripc(),SIGNAL(gpoMaskChanged(int,int,bool)),
 	  this,SLOT(gpoMaskChangedData(int,int,bool)));
-  connect(gpi_ripc,SIGNAL(gpiCartChanged(int,int,int,int)),
+  connect(rda->ripc(),SIGNAL(gpiCartChanged(int,int,int,int)),
 	  this,SLOT(gpiCartChangedData(int,int,int,int)));
-  connect(gpi_ripc,SIGNAL(gpoCartChanged(int,int,int,int)),
+  connect(rda->ripc(),SIGNAL(gpoCartChanged(int,int,int,int)),
 	  this,SLOT(gpoCartChangedData(int,int,int,int)));
-  gpi_ripc->connectHost("localhost",RIPCD_TCP_PORT,gpi_config->password());
-
-  //
-  // RDStation
-  //
-  gpi_station=new RDStation(gpi_config->stationName());
+  rda->ripc()->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 
   //
   // RDMatrix;
@@ -152,7 +116,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   QLabel *label=new QLabel(gpi_type_box,tr("Show:"),this);
   label->setGeometry(20,10,55,21);
   label->setFont(main_font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   connect(gpi_type_box,SIGNAL(activated(int)),
 	  this,SLOT(matrixActivatedData(int)));
 
@@ -167,7 +131,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   label=new QLabel(gpi_matrix_box,tr("Matrix:"),this);
   label->setGeometry(220,10,55,21);
   label->setFont(main_font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   connect(gpi_matrix_box,SIGNAL(activated(int)),
 	  this,SLOT(matrixActivatedData(int)));
 
@@ -207,20 +171,20 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   label=new QLabel(tr("Green = ON Cart"),this);
   label->setGeometry(200,370,300,12);
   label->setFont(main_font);
-  label->setAlignment(AlignLeft|AlignVCenter);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   QPalette p=palette();
-  p.setColor(QPalette::Active,QColorGroup::Foreground,darkGreen);
-  p.setColor(QPalette::Inactive,QColorGroup::Foreground,darkGreen);
-  p.setColor(QPalette::Disabled,QColorGroup::Foreground,darkGreen);
+  p.setColor(QPalette::Active,QColorGroup::Foreground,Qt::darkGreen);
+  p.setColor(QPalette::Inactive,QColorGroup::Foreground,Qt::darkGreen);
+  p.setColor(QPalette::Disabled,QColorGroup::Foreground,Qt::darkGreen);
   label->setPalette(p);
 
   label=new QLabel(tr("Red = OFF Cart"),this);
   label->setGeometry(200,392,300,12);
   label->setFont(main_font);
-  label->setAlignment(AlignLeft|AlignVCenter);
-  p.setColor(QPalette::Active,QColorGroup::Foreground,darkRed);
-  p.setColor(QPalette::Inactive,QColorGroup::Foreground,darkRed);
-  p.setColor(QPalette::Disabled,QColorGroup::Foreground,darkRed);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
+  p.setColor(QPalette::Active,QColorGroup::Foreground,Qt::darkRed);
+  p.setColor(QPalette::Inactive,QColorGroup::Foreground,Qt::darkRed);
+  p.setColor(QPalette::Disabled,QColorGroup::Foreground,Qt::darkRed);
   label->setPalette(p);
 
   //
@@ -231,7 +195,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   label->setAlignment(Qt::AlignCenter);
   label->setGeometry(110,423,sizeHint().width()-220,30);
 
-  gpi_events_date_edit=new QDateEdit(this);
+  gpi_events_date_edit=new Q3DateEdit(this);
   gpi_events_date_edit->setGeometry(155,453,90,20);
   gpi_events_date_edit->setDate(QDate::currentDate());
   connect(gpi_events_date_edit,SIGNAL(valueChanged(const QDate &)),
@@ -257,7 +221,7 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   gpi_events_list->setFont(main_font);
   gpi_events_list->setGeometry(110,480,sizeHint().width()-220,230);
   gpi_events_list->setItemMargin(5);
-  gpi_events_list->setSelectionMode(QListView::NoSelection);
+  gpi_events_list->setSelectionMode(Q3ListView::NoSelection);
 
   gpi_events_list->addColumn("Time");
   gpi_events_list->setColumnAlignment(0,Qt::AlignHCenter);
@@ -281,13 +245,13 @@ MainWidget::MainWidget(QWidget *parent,const char *name)
   gpi_scroll_color.setColor(QPalette::Active,QColorGroup::Button,
 			    Qt::blue);
   gpi_scroll_color.setColor(QPalette::Active,QColorGroup::Background,
-			    lightGray);
+			    Qt::lightGray);
   gpi_scroll_color.setColor(QPalette::Inactive,QColorGroup::ButtonText,
 			    Qt::white);
   gpi_scroll_color.setColor(QPalette::Inactive,QColorGroup::Button,
 			    Qt::blue);
   gpi_scroll_color.setColor(QPalette::Inactive,QColorGroup::Background,
-			    lightGray);
+			    Qt::lightGray);
 
   gpi_events_report_button=new QPushButton(tr("Report"),this);
   gpi_events_report_button->setGeometry(sizeHint().width()-100,570,80,50);
@@ -326,7 +290,7 @@ void MainWidget::userData()
   QString str;
 
   str=QString("RDGpiMon")+" v"+VERSION+" - "+tr("User")+":";
-  setCaption(str+" "+gpi_ripc->user());
+  setCaption(str+" "+rda->ripc()->user());
 }
 
 
@@ -341,20 +305,20 @@ void MainWidget::matrixActivatedData(int index)
     delete gpi_matrix;
   }
   gpi_matrix=
-    new RDMatrix(gpi_config->stationName(),gpi_matrix_box->currentItem());
+    new RDMatrix(rda->config()->stationName(),gpi_matrix_box->currentItem());
   UpdateLabelsDown(0);
   gpi_up_button->setDisabled(true);
   switch((RDMatrix::GpioType)gpi_type_box->currentItem()) {
     case RDMatrix::GpioInput:
-      gpi_ripc->sendGpiStatus(gpi_matrix_box->currentItem());
-      gpi_ripc->sendGpiMask(gpi_matrix_box->currentItem());
-      gpi_ripc->sendGpiCart(gpi_matrix_box->currentItem());
+      rda->ripc()->sendGpiStatus(gpi_matrix_box->currentItem());
+      rda->ripc()->sendGpiMask(gpi_matrix_box->currentItem());
+      rda->ripc()->sendGpiCart(gpi_matrix_box->currentItem());
       break;
 
     case RDMatrix::GpioOutput:
-      gpi_ripc->sendGpoStatus(gpi_matrix_box->currentItem());
-      gpi_ripc->sendGpoMask(gpi_matrix_box->currentItem());
-      gpi_ripc->sendGpoCart(gpi_matrix_box->currentItem());
+      rda->ripc()->sendGpoStatus(gpi_matrix_box->currentItem());
+      rda->ripc()->sendGpoMask(gpi_matrix_box->currentItem());
+      rda->ripc()->sendGpoCart(gpi_matrix_box->currentItem());
       break;
   }
   RefreshEventsList();
@@ -404,13 +368,13 @@ void MainWidget::eventsReportData()
 
   report="                          Rivendell GPIO Event Report\n";
   report+="     Date: "+gpi_events_date_edit->date().toString("MM/dd/yyyy")+
-    "       Station/Matrix: "+gpi_station->name()+":"+
+    "       Station/Matrix: "+rda->station()->name()+":"+
     QString().sprintf("%d     ",gpi_matrix_box->currentItem())+
     " State Filter: "+gpi_events_state_box->currentText()+"\n";
   report+="\n";
 
   sql=QString("select EVENT_DATETIME,NUMBER,EDGE from GPIO_EVENTS where ")+
-    "(STATION_NAME=\""+RDEscapeString(gpi_station->name())+"\")&&"+
+    "(STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\")&&"+
     QString().sprintf("(MATRIX=%d)&&",gpi_matrix_box->currentItem())+
     QString().sprintf("(TYPE=%d)&&",gpi_type_box->currentItem())+
     "(EVENT_DATETIME>=\""+gpi_events_date_edit->date().toString("yyyy-MM-dd")+
@@ -609,13 +573,15 @@ void MainWidget::UpdateLabelsUp(int last_line)
       tablename="GPOS";
       break;
   }
-  sql=QString().sprintf("select NUMBER,OFF_MACRO_CART,MACRO_CART from %s \
-                         where (STATION_NAME=\"%s\")&&\
-                         (MATRIX=%d)&&\
-                         (NUMBER<=%d) order by NUMBER desc",
-			(const char *)tablename,
-			(const char *)gpi_station->name(),
-			gpi_matrix->matrix(),last_line);
+  sql=QString("select ")+
+    "NUMBER,"+
+    "OFF_MACRO_CART,"+
+    "MACRO_CART "+
+    "from "+tablename+" where "+
+    "(STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\")&&"+
+    QString().sprintf("(MATRIX=%d)&&",gpi_matrix->matrix())+
+    QString().sprintf("(NUMBER<=%d) ",last_line)+
+    "order by NUMBER desc";
   q=new RDSqlQuery(sql);
   if(q->size()<count_limit) {
     count_limit=q->size();
@@ -657,13 +623,15 @@ void MainWidget::UpdateLabelsDown(int first_line)
       tablename="GPOS";
       break;
   }
-  sql=QString().sprintf("select NUMBER,OFF_MACRO_CART,MACRO_CART from %s \
-                         where (STATION_NAME=\"%s\")&&\
-                         (MATRIX=%d)&&\
-                         (NUMBER>=%d) order by NUMBER",
-			(const char *)tablename,
-			(const char *)gpi_station->name(),
-			gpi_matrix->matrix(),first_line);
+  sql=QString("select ")+
+    "NUMBER,"+
+    "OFF_MACRO_CART,"+
+    "MACRO_CART "+
+    "from "+tablename+" where "+
+    "(STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\")&&"+
+    QString().sprintf("(MATRIX=%d)&&",gpi_matrix->matrix())+
+    QString().sprintf("(NUMBER>=%d) ",first_line)+
+    "order by NUMBER";
   q=new RDSqlQuery(sql);
   while(q->next()&&(count<(GPIMON_ROWS*GPIMON_COLS))) {
     gpi_labels[count]->setLine(q->value(0).toInt()-1);
@@ -687,7 +655,7 @@ void MainWidget::RefreshEventsList()
   RDSqlQuery *q;
 
   sql=QString("select EVENT_DATETIME,NUMBER,EDGE from GPIO_EVENTS where ")+
-    "(STATION_NAME=\""+RDEscapeString(gpi_station->name())+"\")&&"+
+    "(STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\")&&"+
     QString().sprintf("(MATRIX=%d)&&",gpi_matrix_box->currentItem())+
     QString().sprintf("(TYPE=%d)&&",gpi_type_box->currentItem())+
     "(EVENT_DATETIME>=\""+gpi_events_date_edit->date().toString("yyyy-MM-dd")+
@@ -758,6 +726,7 @@ int main(int argc,char *argv[])
   //
   // Load Translations
   //
+  /*
   QTranslator qt(0);
   qt.load(QString(QTDIR)+QString("/translations/qt_")+QTextCodec::locale(),
 	  ".");
@@ -777,11 +746,12 @@ int main(int argc,char *argv[])
   tr.load(QString(PREFIX)+QString("/share/rivendell/rdgpimon_")+
 	     QTextCodec::locale(),".");
   a.installTranslator(&tr);
+  */
 
   //
   // Start Event Loop
   //
-  MainWidget *w=new MainWidget(NULL,"main");
+  MainWidget *w=new MainWidget();
   a.setMainWidget(w);
   w->setGeometry(QRect(QPoint(0,0),w->sizeHint()));
   w->show();

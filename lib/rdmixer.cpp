@@ -2,9 +2,7 @@
 //
 // Mixer Functions for Rivendell.
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdmixer.cpp,v 1.13.8.2 2012/08/03 16:52:39 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,7 +22,6 @@
 #include <rd.h>
 
 #include <rdmixer.h>
-
 
 void RDSetMixerPorts(QString station,RDCae *cae)
 {

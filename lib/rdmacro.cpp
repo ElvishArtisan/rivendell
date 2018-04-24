@@ -2,9 +2,7 @@
 //
 // A container class for a Rivendell Macro Language Command
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: rdmacro.cpp,v 1.37.4.2.2.1 2014/05/22 19:37:44 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -166,7 +164,9 @@ bool RDMacro::parseString(const char *str,int n)
       case RDMacro::AL:
       case RDMacro::BO:
       case RDMacro::CC:
+      case RDMacro::CE:
       case RDMacro::CL:
+      case RDMacro::CP:
       case RDMacro::DB:
       case RDMacro::DL:
       case RDMacro::DP:

@@ -2,9 +2,7 @@
 //
 //   A Container Class for Audio Meta Data.
 //
-//   (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
-//
-//    $Id: rdwavedata.cpp,v 1.4.8.3.2.2 2014/07/15 20:02:23 cvs Exp $
+//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -19,10 +17,11 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
-//
 
+#include <qobject.h>
+
+#include <rdconf.h>
 #include <rdwavedata.h>
-
 
 RDWaveData::RDWaveData()
 {
@@ -39,6 +38,54 @@ bool RDWaveData::metadataFound() const
 void RDWaveData::setMetadataFound(bool state)
 {
   data_metadata_found=state;
+}
+
+
+unsigned RDWaveData::cartNumber() const
+{
+  return data_cart_number;
+}
+
+
+void RDWaveData::setCartNumber(unsigned cartnum)
+{
+  data_cart_number=cartnum;
+}
+
+
+int RDWaveData::cutNumber() const
+{
+  return data_cut_number;
+}
+
+
+void RDWaveData::setCutNumber(int cutnum)
+{
+  data_cut_number=cutnum;
+}
+
+
+QString RDWaveData::cutName() const
+{
+  return data_cutname;
+}
+
+
+void RDWaveData::setCutName(const QString &str)
+{
+  data_cutname=str;
+}
+
+
+RDWaveData::CartType RDWaveData::cartType() const
+{
+  return data_cart_type;
+}
+
+
+void RDWaveData::setCartType(RDWaveData::CartType type)
+{
+  data_cart_type=type;
 }
 
 
@@ -162,13 +209,13 @@ void RDWaveData::setPublisher(const QString &str)
 }
 
 
-int RDWaveData::usageCode() const
+RDWaveData::UsageCode RDWaveData::usageCode() const
 {
   return data_usage_code;
 }
 
 
-void RDWaveData::setUsageCode(int code)
+void RDWaveData::setUsageCode(RDWaveData::UsageCode code)
 {
   data_usage_code=code;
 }
@@ -390,6 +437,198 @@ void RDWaveData::setEndType(RDWaveData::EndType type)
 }
 
 
+int RDWaveData::forcedLength() const
+{
+  return data_forced_length;
+}
+
+
+void RDWaveData::setForcedLength(int msecs)
+{
+  data_forced_length=msecs;
+}
+
+
+int RDWaveData::averageLength() const
+{
+  return data_average_length;
+}
+
+
+void RDWaveData::setAverageLength(int msecs)
+{
+  data_average_length=msecs;
+}
+
+
+int RDWaveData::lengthDeviation() const
+{
+  return data_length_deviation;
+}
+
+
+void RDWaveData::setLengthDeviation(int msecs)
+{
+  data_length_deviation=msecs;
+}
+
+
+int RDWaveData::averageSegueLength() const
+{
+  return data_average_segue_length;
+}
+
+
+void RDWaveData::setAverageSegueLength(int msecs)
+{
+  data_average_segue_length=msecs;
+}
+
+
+int RDWaveData::averageHookLength() const
+{
+  return data_average_hook_length;
+}
+
+
+void RDWaveData::setAverageHookLength(int msecs)
+{
+  data_average_hook_length=msecs;
+}
+
+
+int RDWaveData::cutQuantity() const
+{
+  return data_cut_quantity;
+}
+
+
+void RDWaveData::setCutQuantity(int n)
+{
+  data_cut_quantity=n;
+}
+
+
+int RDWaveData::lastCutPlayed() const
+{
+  return data_last_cut_played;
+}
+
+
+void RDWaveData::setLastCutPlayed(int cutnum)
+{
+  data_last_cut_played=cutnum;
+}
+
+
+QDateTime RDWaveData::lastPlayDatetime() const
+{
+  return data_last_play_datetime;
+}
+
+
+void RDWaveData::setLastPlayDatetime(const QDateTime &dt)
+{
+  data_last_play_datetime=dt;
+}
+
+
+int RDWaveData::length() const
+{
+  return data_length;
+}
+
+
+void RDWaveData::setLength(int msecs)
+{
+  data_length=msecs;
+}
+
+
+bool RDWaveData::enforceLength() const
+{
+  return data_enforce_length;
+}
+
+
+void RDWaveData::setEnforceLength(bool state)
+{
+  data_enforce_length=state;
+}
+
+
+bool RDWaveData::asyncronous() const
+{
+  return data_asyncronous;
+}
+
+
+void RDWaveData::setAsyncronous(bool state)
+{
+  data_asyncronous=state;
+}
+
+
+QString RDWaveData::owner() const
+{
+  return data_owner;
+}
+
+
+void RDWaveData::setOwner(const QString &str)
+{
+  data_owner=str;
+}
+
+
+QDateTime RDWaveData::metadataDatetime() const
+{
+  return data_metadata_datetime;
+}
+
+
+void RDWaveData::setMetadataDatetime(const QDateTime &dt)
+{
+  data_metadata_datetime=dt;
+}
+
+
+bool RDWaveData::dayOfWeek(int dow) const
+{
+  return data_day_of_week[dow-1];
+}
+
+
+void RDWaveData::setDayOfWeek(int dow,bool state)
+{
+  data_day_of_week[dow-1]=state;
+}
+
+
+int RDWaveData::weight() const
+{
+  return data_weight;
+}
+
+
+void RDWaveData::setWeight(int weight)
+{
+  data_weight=weight;
+}
+
+
+bool RDWaveData::evergreen() const
+{
+  return data_evergreen;
+}
+
+
+void RDWaveData::setEvergreen(bool state)
+{
+  data_evergreen=state;
+}
+
+
 int RDWaveData::introStartPos() const
 {
   return data_intro_start_pos;
@@ -435,6 +674,18 @@ int RDWaveData::segueEndPos() const
 void RDWaveData::setSegueEndPos(int msec)
 {
   data_segue_end_pos=msec;
+}
+
+
+int RDWaveData::segueGain() const
+{
+  return data_segue_gain;
+}
+
+
+void RDWaveData::setSegueGain(int lvl)
+{
+  data_segue_gain=lvl;
 }
 
 
@@ -630,9 +881,189 @@ void RDWaveData::setDaypartEndTime(const QTime &time)
 }
 
 
+unsigned RDWaveData::playCounter() const
+{
+  return data_play_counter;
+}
+
+
+void RDWaveData::setPlayCounter(unsigned count)
+{
+  data_play_counter=count;
+}
+
+
+RDSettings RDWaveData::audioSettings() const
+{
+  return data_settings;
+}
+
+
+void RDWaveData::setAudioSettings(const RDSettings &settings)
+{
+  data_settings=settings;
+}
+
+
+int RDWaveData::playGain() const
+{
+  return data_play_gain;
+}
+
+
+void RDWaveData::setPlayGain(int lvl)
+{
+  data_play_gain=lvl;
+}
+
+
+QString RDWaveData::dump() const
+{
+  QString ret="";
+
+  //
+  // Cart-level attributes
+  //
+  ret+=QString().sprintf("cartNumber: %06u\n",cartNumber());
+  ret+="cartType: "+RDWaveData::cartTypeText(cartType())+"\n";
+  ret+="category: "+category()+"\n";
+  ret+="title: "+title()+"\n";
+  ret+="artist: "+artist()+"\n";
+  ret+="album: "+album()+"\n";
+  ret+="label: "+label()+"\n";
+  ret+="agency: "+agency()+"\n";
+  ret+="client: "+client()+"\n";
+  ret+="composer: "+composer()+"\n";
+  ret+="publisher: "+publisher()+"\n";
+  ret+="conductor: "+conductor()+"\n";
+  ret+="userDefined: "+userDefined()+"\n";
+  if(releaseYear()>0) {
+    ret+=QString().sprintf("year: %d\n",releaseYear());
+  }
+  else {
+    ret+="year:\n";
+  }
+  ret+="usageCode: "+RDWaveData::usageText(usageCode())+"\n";
+  ret+="forcedLength: "+RDGetTimeLength(forcedLength(),true,true)+"\n";
+  ret+="averageLength: "+RDGetTimeLength(averageLength(),true,true)+"\n";
+  ret+="lengthDeviation: "+RDGetTimeLength(lengthDeviation(),true,true)+"\n";
+  ret+=
+    "averageSegueLength: "+RDGetTimeLength(averageSegueLength(),true,true)+"\n";
+  ret+="averageHookLength: "+RDGetTimeLength(averageHookLength(),true,true)+"\n";
+  ret+=QString().sprintf("cutQuantity: %d\n",cutQuantity());
+  ret+=QString().sprintf("lastCutPlayed: %d\n",lastCutPlayed());
+  if(enforceLength()) {
+    ret+="enforceLength: true\n";
+  }
+  else {
+    ret+="enforceLength: false\n";
+  }
+  if(asyncronous()) {
+    ret+="asyncronous: true\n";
+  }
+  else {
+    ret+="asyncronous: false\n";
+  }
+  ret+="owner: "+owner()+"\n";
+  ret+="metadataDatetime: "+
+    metadataDatetime().toString("yyyy-MM-dd hh:mm:ss")+"\n";
+
+  //
+  // Cut-level attributes
+  //
+  ret+="cutName: "+cutName()+"\n";
+  ret+=QString().sprintf("cutNumber: %d\n",cutNumber());
+  ret+="description: "+description()+"\n";
+  ret+="outcue: "+outCue()+"\n";
+  if(evergreen()) {
+    ret+="evergreen: true\n";
+  }
+  else {
+    ret+="evergreen: false\n";
+  }
+  ret+="isrc: "+isrc()+"\n";
+  ret+="isci: "+isci()+"\n";
+  ret+=QString().sprintf("length: %d\n",length());
+  ret+="originator: "+originator()+"\n";
+  ret+="originationDate: "+originationDate().toString("yyyy-MM-dd")+"\n";
+  ret+="originationTime: "+originationTime().toString("hh:mm:ss")+"\n";
+  ret+="startDate: ";
+  if(startDate().isValid()) {
+    ret+=startDate().toString("yyyy-MM-dd");
+  }
+  ret+="\n";
+  ret+="startTime: ";
+  if(startDate().isValid()&&startTime().isValid()) {
+    ret+=startTime().toString("hh:mm:ss");
+  }
+  ret+="\n";
+  ret+="endDate: ";
+  if(endDate().isValid()) {
+    ret+=endDate().toString("yyyy-MM-dd");
+  }
+  ret+="\n";
+  ret+="endTime: ";
+  if(endDate().isValid()&&endTime().isValid()) {
+    ret+=endTime().toString("hh:mm:ss");
+  }
+  ret+="\n";
+  for(int i=1;i<8;i++) {
+    if(dayOfWeek(i)) {
+      ret+=QDate::longDayName(i)+": true\n";
+    }
+    else {
+      ret+=QDate::longDayName(i)+": false\n";
+    }
+  }
+  ret+="daypartStartTime: ";
+  if(daypartStartTime().isValid()&&(daypartStartTime()!=daypartEndTime())) {
+    ret+=daypartStartTime().toString("hh:mm:ss");
+  }
+  ret+="\n";
+  ret+="daypartEndTime: ";
+  if(daypartEndTime().isValid()&&(daypartStartTime()!=daypartEndTime())) {
+    ret+=daypartEndTime().toString("hh:mm:ss");
+  }
+  ret+="\n";
+  ret+="lastPlayDatetime: ";
+  if(lastPlayDatetime().isValid()) {
+    ret+=lastPlayDatetime().toString("yyyy-MM-dd hh:mm:ss");
+  }
+  ret+="\n";
+  ret+=QString().sprintf("weight: %d\n",weight());
+  ret+=QString().sprintf("playCounter: %d\n",playCounter());
+  ret+=QString().sprintf("audioSettings::format: %u\n",
+			 audioSettings().format());
+  ret+=QString().sprintf("audioSettings::sampleRate: %u\n",
+			 audioSettings().sampleRate());
+  ret+=QString().sprintf("audioSettings::bitRate: %u\n",
+			 audioSettings().bitRate());
+  ret+=QString().sprintf("audioSettings::channels: %u\n",
+			 audioSettings().channels());
+  ret+=QString().sprintf("playGain: %d\n",playGain());
+  ret+=QString().sprintf("startPos: %d\n",startPos());
+  ret+=QString().sprintf("endPos: %d\n",endPos());
+  ret+=QString().sprintf("segueStartPos: %d\n",segueStartPos());
+  ret+=QString().sprintf("segueEndPos: %d\n",segueEndPos());
+  ret+=QString().sprintf("segueGain: %d\n",segueGain());
+  ret+=QString().sprintf("introStartPos: %d\n",introStartPos());
+  ret+=QString().sprintf("introEndPos: %d\n",introEndPos());
+  ret+=QString().sprintf("hookStartPos: %d\n",hookStartPos());
+  ret+=QString().sprintf("hookEndPos: %d\n",hookEndPos());
+  ret+=QString().sprintf("fadeUpPos: %d\n",fadeUpPos());
+  ret+=QString().sprintf("fadeDownPos: %d\n",fadeDownPos());
+  ret+="\n";
+
+  return ret;
+}
+
 void RDWaveData::clear()
 {
   data_metadata_found=false;
+  data_cart_number=0;
+  data_cart_type=RDWaveData::AudioType;
+  data_cut_number=0;
+  data_cutname="";
   data_title="";
   data_artist="";
   data_album="";
@@ -643,7 +1074,7 @@ void RDWaveData::clear()
   data_agency="";
   data_composer="";
   data_publisher="";
-  data_usage_code=0;
+  data_usage_code=RDWaveData::UsageFeature;
   data_sched_codes.clear();
   data_licensing_organization="";
   data_copyright_notice="";
@@ -660,11 +1091,33 @@ void RDWaveData::clear()
   data_isci="";
   data_mcn="";
   data_out_cue="";
+  data_release_year=0;
   data_end_type=RDWaveData::UnknownEnd;
+
+  data_length=0;
+  data_forced_length=-1;
+  data_average_length=-1;
+  data_length_deviation=0;
+  data_average_segue_length=0;
+  data_average_hook_length=0;
+  data_cut_quantity=0;
+  data_last_cut_played=0;
+  data_last_play_datetime=QDateTime();
+  data_enforce_length=false;
+  data_asyncronous=false;
+  data_owner="";
+  data_metadata_datetime=QDateTime();
+
+  for(int i=0;i<7;i++) {
+    data_day_of_week[i]=true;
+  }
+  data_weight=1;
+  data_evergreen=false;
   data_intro_start_pos=-1;
   data_intro_end_pos=-1;
   data_segue_start_pos=-1;
   data_segue_end_pos=-1;
+  data_segue_gain=-3000;
   data_start_pos=-1;
   data_end_pos=-1;
   data_hook_start_pos=-1;
@@ -681,4 +1134,83 @@ void RDWaveData::clear()
   data_end_time=QTime();
   data_daypart_start_time=QTime();
   data_daypart_end_time=QTime();
+  data_play_counter=0;
+  data_play_gain=0;
+}
+
+
+QString RDWaveData::endTypeText(EndType type)
+{
+  QString ret=QObject::tr("unknown");
+
+  switch(type) {
+  case UnknownEnd:
+    ret=QObject::tr("unknown");
+    break;
+
+  case ColdEnd:
+    ret=QObject::tr("cold");
+    break;
+
+  case FadeEnd:
+    ret=QObject::tr("fade");
+    break;
+  }
+
+  return ret;
+}
+
+
+QString RDWaveData::cartTypeText(CartType type)
+{
+  QString ret=QObject::tr("unknown");
+
+  switch(type) {
+  case RDWaveData::AudioType:
+    ret="audio";
+    break;
+
+  case RDWaveData::MacroType:
+    ret="macro";
+    break;
+  }
+
+  return ret;
+}
+
+
+QString RDWaveData::usageText(UsageCode code)
+{
+  QString ret=QObject::tr("unknown");
+
+  switch(code) {
+  case UsageFeature:
+    ret=QObject::tr("feature");
+    break;
+
+  case UsageOpen:
+    ret=QObject::tr("open");
+    break;
+
+  case UsageClose:
+    ret=QObject::tr("close");
+    break;
+
+  case UsageTheme:
+    ret=QObject::tr("theme");
+    break;
+
+  case UsageBackground:
+    ret=QObject::tr("background");
+    break;
+
+  case UsagePromo:
+    ret=QObject::tr("promo");
+    break;
+
+  case UsageLast:
+    break;
+  }
+
+  return ret;
 }

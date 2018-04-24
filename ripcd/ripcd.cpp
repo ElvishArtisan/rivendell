@@ -2,9 +2,7 @@
 //
 // Rivendell Interprocess Communication Daemon
 //
-//   (C) Copyright 2002-2007,2010 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: ripcd.cpp,v 1.77.4.3 2013/11/17 04:27:06 cvs Exp $
+//   (C) Copyright 2002-2007,2010,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,13 +18,13 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-
-#include <qapplication.h>
-#include <qobject.h>
-#include <qtimer.h>
-#include <qdir.h>
-#include <qsessionmanager.h>
-#include <qsignalmapper.h>
+#include <QApplication>
+#include <QCoreApplication>
+#include <QDir>
+#include <QObject>
+#include <QSessionManager>
+#include <QSignalMapper>
+#include <QTimer>
 
 #include <unistd.h>
 #include <stdio.h>
@@ -41,24 +39,15 @@
 #include <sys/wait.h>
 
 #include <rd.h>
+#include <rdapplication.h>
 #include <rdconf.h>
-#include <rdstation.h>
 #include <rdcheck_daemons.h>
-#include <rdcmd_switch.h>
 #include <rddb.h>
-#include <dbversion.h>
+#include <rdescape_string.h>
 
-#include <globals.h>
-#include <ripcd_socket.h>
-#include <ripcd.h>
-
-//
-// Global Objects
-//
-RDConfig *ripcd_config;
-RDCae *rdcae;
-RDStation *rdstation;
-
+#include "globals.h"
+#include "ripcd_socket.h"
+#include "ripcd.h"
 
 void SigHandler(int signo)
 {
@@ -90,28 +79,10 @@ void SigHandler(int signo)
 }
 
 
-MainObject::MainObject(QObject *parent,const char *name)
-  :QObject(parent,name)
+MainObject::MainObject(QObject *parent)
+  :QObject(parent)
 {
-  bool skip_db_check=false;
-
-  //
-  // Read Command Options
-  //
-  RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"ripcd",RIPCD_USAGE);
-  for(unsigned i=0;i<cmd->keys();i++) {
-    if(cmd->key(i)=="--skip-db-check") {
-      skip_db_check=true;
-    }
-  }
-  delete cmd;
-
-  //
-  // Load Local Configs
-  //
-  ripcd_config=new RDConfig(RD_CONF_FILE);
-  ripcd_config->load();
+  new RDApplication(RDApplication::Console,"ripcd",RIPCD_USAGE);
 
   //
   // Make sure we're the only instance running
@@ -135,7 +106,7 @@ MainObject::MainObject(QObject *parent,const char *name)
   }
   ripc_onair_flag=false;
 
-  server=new RipcdSocket(RIPCD_TCP_PORT,0,this,"socket");
+  server=new RipcdSocket(RIPCD_TCP_PORT,0,this);
   if(!server->ok()) {
     exit(1);
   }
@@ -144,7 +115,7 @@ MainObject::MainObject(QObject *parent,const char *name)
   //
   // Macro Timers
   //
-  QSignalMapper *mapper=new QSignalMapper(this,"macro_timer_mapper");
+  QSignalMapper *mapper=new QSignalMapper(this);
   connect(mapper,SIGNAL(mapped(int)),this,SLOT(macroTimerData(int)));
   for(int i=0;i<RD_MAX_MACRO_TIMERS;i++) {
     ripc_macro_cart[i]=0;
@@ -156,36 +127,22 @@ MainObject::MainObject(QObject *parent,const char *name)
   //
   // Open Database
   //
-  unsigned schema=0;
-  QString err (tr("ripcd: "));
-  ripcd_db = RDInitDb (&schema,&err);
-  if(!ripcd_db) {
-    printf ("%s\n",err.ascii());
-    exit (1);
-  }
-  if((schema!=RD_VERSION_DATABASE)&&(!skip_db_check)) {
-    fprintf(stderr,"database version mismatch, should be %u, is %u",
-	    RD_VERSION_DATABASE,schema);
-    exit(256);
-  }
-  connect (RDDbStatus(),SIGNAL(logText(RDConfig::LogPriority,const QString &)),
-	   this,SLOT(log(RDConfig::LogPriority,const QString &)));
+  //  connect (RDDbStatus(),SIGNAL(logText(RDConfig::LogPriority,const QString &)),
+  //	   this,SLOT(log(RDConfig::LogPriority,const QString &)));
 
   //
   // Station 
   //
-  rdstation=new RDStation(ripcd_config->stationName());
-  rdstation->setUserName(rdstation->defaultName());
-  ripcd_host_addr=rdstation->address();
+  rda->station()->setUserName(rda->station()->defaultName());
+  ripcd_host_addr=rda->station()->address();
 
   //
   // CAE Connection
   //
-  rdcae=new RDCae(rdstation,ripcd_config,parent,name);
-  rdcae->connectHost();
+  rda->cae()->connectHost();
 
   if(qApp->argc()==1) {
-    RDDetach(ripcd_config->logCoreDumpDirectory());
+    RDDetach(rda->config()->logCoreDumpDirectory());
   }
   else {
     debug=true;
@@ -193,7 +150,7 @@ MainObject::MainObject(QObject *parent,const char *name)
   ::signal(SIGCHLD,SigHandler);
   ::signal(SIGTERM,SigHandler);
   ::signal(SIGINT,SigHandler);
-  if(!RDWritePid(RD_PID_DIR,"ripcd.pid",ripcd_config->uid())) {
+  if(!RDWritePid(RD_PID_DIR,"ripcd.pid",rda->config()->uid())) {
     printf("ripcd: can't write pid file\n");
     exit(1);
   }
@@ -201,17 +158,17 @@ MainObject::MainObject(QObject *parent,const char *name)
   //
   // The RML Sockets
   //
-  ripcd_rml_send=new QSocketDevice(QSocketDevice::Datagram);
+  ripcd_rml_send=new Q3SocketDevice(Q3SocketDevice::Datagram);
 
-  ripcd_rml_echo=new QSocketDevice(QSocketDevice::Datagram);
+  ripcd_rml_echo=new Q3SocketDevice(Q3SocketDevice::Datagram);
   ripcd_rml_echo->bind(QHostAddress(),RD_RML_ECHO_PORT);
   ripcd_rml_echo->setBlocking(false);
 
-  ripcd_rml_noecho=new QSocketDevice(QSocketDevice::Datagram);
+  ripcd_rml_noecho=new Q3SocketDevice(Q3SocketDevice::Datagram);
   ripcd_rml_noecho->bind(QHostAddress(),RD_RML_NOECHO_PORT);
   ripcd_rml_noecho->setBlocking(false);
 
-  ripcd_rml_reply=new QSocketDevice(QSocketDevice::Datagram);
+  ripcd_rml_reply=new Q3SocketDevice(Q3SocketDevice::Datagram);
   ripcd_rml_reply->bind(QHostAddress(),RD_RML_REPLY_PORT);
   ripcd_rml_reply->setBlocking(false);
 
@@ -225,7 +182,7 @@ MainObject::MainObject(QObject *parent,const char *name)
   //
   // Start RML Polling
   //
-  QTimer *timer=new QTimer(this,"timer");
+  QTimer *timer=new QTimer(this);
   timer->changeInterval(RIPCD_RML_READ_INTERVAL);
   connect(timer,SIGNAL(timeout()),this,SLOT(readRml()));
   timer->start(true);
@@ -234,7 +191,7 @@ MainObject::MainObject(QObject *parent,const char *name)
   // Database Backup Timer
   //
   databaseBackup();
-  ripcd_backup_timer=new QTimer(this,"ripcd_backup_timer");
+  ripcd_backup_timer=new QTimer(this);
   connect(ripcd_backup_timer,SIGNAL(timeout()),this,SLOT(databaseBackup()));
   ripcd_backup_timer->start(86400000);
 
@@ -242,10 +199,10 @@ MainObject::MainObject(QObject *parent,const char *name)
   // Maintenance Routine Timer
   //
   srandom(QTime::currentTime().msec());
-  ripcd_maint_timer=new QTimer(this,"ripcd_maint_timer");
+  ripcd_maint_timer=new QTimer(this);
   connect(ripcd_maint_timer,SIGNAL(timeout()),this,SLOT(checkMaintData()));
   int interval=GetMaintInterval();
-  if(!ripcd_config->disableMaintChecks()) {
+  if(!rda->config()->disableMaintChecks()) {
     ripcd_maint_timer->start(interval);
   }
   else {
@@ -328,20 +285,20 @@ void MainObject::databaseBackup()
   QDateTime datetime=QDateTime::currentDateTime();
   int life;
 
-  if((life=rdstation->backupLife())<=0) {
+  if((life=rda->station()->backupLife())<=0) {
     return;
   }
   if(fork()==0) {
     cmd=QString().sprintf("find %s -name *.sql -ctime +%d -exec rm \\{\\} \\;",
-			  (const char *)rdstation->backupPath(),
-			  rdstation->backupLife());
+			  (const char *)rda->station()->backupPath(),
+			  rda->station()->backupLife());
     system((const char *)cmd);
     cmd=QString().
 	sprintf("mysqldump -c Rivendell -h %s -u %s -p%s > %s/%s.sql",
-		(const char *)ripcd_config->mysqlHostname(),
-		(const char *)ripcd_config->mysqlUsername(),
-		(const char *)ripcd_config->mysqlPassword(),
-		(const char *)rdstation->backupPath(),
+		(const char *)rda->config()->mysqlHostname(),
+		(const char *)rda->config()->mysqlUsername(),
+		(const char *)rda->config()->mysqlPassword(),
+		(const char *)rda->station()->backupPath(),
 		(const char *)datetime.date().toString("yyyyMMdd"));
     system((const char *)cmd);
     exit(0);
@@ -374,7 +331,7 @@ void MainObject::checkMaintData()
   //
   // Should we try to run system maintenance?
   //
-  if(!rdstation->systemMaint()) {
+  if(!rda->station()->systemMaint()) {
     return;
   }
 
@@ -413,7 +370,7 @@ void MainObject::macroTimerData(int num)
 
 void MainObject::SetUser(QString username)
 {
-    rdstation->setUserName(username);
+    rda->station()->setUserName(username);
     BroadcastCommand(QString().sprintf("RU %s!",(const char *)username));
 }
 
@@ -486,7 +443,7 @@ void MainObject::DispatchCommand(int ch)
     return;
   }
   if(!strcmp(conn->args[0],"PW")) {  // Password Authenticate
-    if(!strcmp(conn->args[1],ripcd_config->password())) {
+    if(!strcmp(conn->args[1],rda->config()->password())) {
       conn->auth=true;
       EchoCommand(ch,"PW +!");
       return;
@@ -509,7 +466,7 @@ void MainObject::DispatchCommand(int ch)
 
   if(!strcmp(conn->args[0],"RU")) {  // Request User
     EchoCommand(ch,(const char *)QString().
-		sprintf("RU %s!",(const char *)rdstation->userName()));
+		sprintf("RU %s!",(const char *)rda->station()->userName()));
     return;
   }
 
@@ -542,7 +499,7 @@ void MainObject::DispatchCommand(int ch)
 */
 
     if(!macro.address().isNull()) {
-      if(macro.address()==rdstation->address()&&
+      if(macro.address()==rda->station()->address()&&
 	 ((macro.port()==RD_RML_ECHO_PORT)||
 	  (macro.port()==RD_RML_NOECHO_PORT))) {  // Local Loopback
 	macro.generateString(buffer,RD_RML_MAX_LENGTH);
@@ -576,7 +533,7 @@ void MainObject::DispatchCommand(int ch)
     addr.setAddress(conn->args[1]);
     macro.setAddress(addr);
     macro.setRole(RDMacro::Reply); 
-    if(macro.address()==rdstation->address()) {  // Local Loopback
+    if(macro.address()==rda->station()->address()) {  // Local Loopback
       macro.generateString(buffer,RD_RML_MAX_LENGTH);
       sprintf(cmd,"ME %s 0 %s",(const char *)macro.address().toString(),
 	      buffer);
@@ -642,7 +599,7 @@ void MainObject::KillSocket(int ch)
 
 void MainObject::EchoCommand(int ch,const char *command)
 {
-  if(ripcd_conns[ch]->socket->state()==QSocket::Connection) {
+  if(ripcd_conns[ch]->socket->state()==Q3Socket::Connection) {
     ripcd_conns[ch]->socket->writeBlock(command,strlen(command));
   }
 }
@@ -676,7 +633,7 @@ void MainObject::EchoArgs(int ch,const char append)
 }
 
 
-void MainObject::ReadRmlSocket(QSocketDevice *dev,RDMacro::Role role,
+void MainObject::ReadRmlSocket(Q3SocketDevice *dev,RDMacro::Role role,
 			       bool echo)
 {
   char buffer[RD_RML_MAX_LENGTH];
@@ -741,10 +698,13 @@ void MainObject::LoadGpiTable()
       }
     }
   }
-  QString sql=QString().sprintf("select MATRIX,NUMBER,OFF_MACRO_CART,\
-                                 MACRO_CART from GPIS \
-                                 where STATION_NAME=\"%s\"",
-				(const char *)ripcd_config->stationName());
+  QString sql=QString("select ")+
+    "MATRIX,"+
+    "NUMBER,"+
+    "OFF_MACRO_CART,"+
+    "MACRO_CART "+
+    "from GPIS where "+
+    "STATION_NAME=\""+RDEscapeString(rda->config()->stationName())+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
     ripcd_gpi_macro[q->value(0).toInt()][q->value(1).toInt()-1][0]=
@@ -754,9 +714,13 @@ void MainObject::LoadGpiTable()
   }
   delete q;
 
-  sql=QString().sprintf("select MATRIX,NUMBER,OFF_MACRO_CART,MACRO_CART \
-                         from GPOS where STATION_NAME=\"%s\"",
-			(const char *)ripcd_config->stationName());
+  sql=QString("select ")+
+    "MATRIX,"+
+    "NUMBER,"+
+    "OFF_MACRO_CART,"+
+    "MACRO_CART "+
+    "from GPOS where "+
+    "STATION_NAME=\""+RDEscapeString(rda->config()->stationName())+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     ripcd_gpo_macro[q->value(0).toInt()][q->value(1).toInt()-1][0]=
@@ -848,18 +812,18 @@ void LogLine(RDConfig::LogPriority prio,const QString &line)
 {
   FILE *logfile;
 
-  ripcd_config->log("ripcd",prio,line);
+  rda->config()->log("ripcd",prio,line);
 
-  if((!ripcd_config) || ripcd_config->ripcdLogname().isEmpty()) {
+  if((!rda->config()) || rda->config()->ripcdLogname().isEmpty()) {
     return;
   }
 
   QDateTime current=QDateTime::currentDateTime();
-  logfile=fopen(ripcd_config->ripcdLogname(),"a");
+  logfile=fopen(rda->config()->ripcdLogname(),"a");
   if(logfile==NULL) {
     return;
   }
-  chmod(ripcd_config->ripcdLogname(),S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH);
+  chmod(rda->config()->ripcdLogname(),S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH);
   fprintf(logfile,"%02d/%02d/%4d - %02d:%02d:%02d.%03d : %s\n",
 	  current.date().month(),
 	  current.date().day(),
@@ -882,7 +846,7 @@ void QApplication::saveState(QSessionManager &sm) {
 
 int main(int argc,char *argv[])
 {
-  QApplication a(argc,argv,false);
-  new MainObject(NULL,"main");
+  QCoreApplication a(argc,argv);
+  new MainObject();
   return a.exec();
 }

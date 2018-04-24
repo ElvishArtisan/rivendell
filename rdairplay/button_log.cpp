@@ -2,9 +2,7 @@
 //
 // The button log widget for RDAirPlay
 //
-//   (C) Copyright 2002-2004 Fred Gleason <fredg@paravelsystems.com>
-//
-//      $Id: button_log.cpp,v 1.46.6.3 2014/02/06 20:43:50 cvs Exp $
+//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,18 +22,20 @@
 #include <qpixmap.h>
 #include <qpainter.h>
 
+#include <rdapplication.h>
 #include <rdlistviewitem.h>
 
 #include <button_log.h>
 #include <colors.h>
 #include <globals.h>
 
-ButtonLog::ButtonLog(LogPlay *log,int id,RDAirPlayConf *conf,bool allow_pause,
-		     QWidget *parent,const char *name)
-  : QWidget(parent,name)
+ButtonLog::ButtonLog(LogPlay *log,RDCae *cae,int id,RDAirPlayConf *conf,
+		     bool allow_pause,QWidget *parent)
+  : QWidget(parent)
 {
   log_id=id;
   log_log=log;
+  log_cae=cae;
   log_action_mode=RDAirPlayConf::Normal;
   log_op_mode=RDAirPlayConf::LiveAssist;
   log_time_mode=RDAirPlayConf::TwentyFourHour;
@@ -58,19 +58,19 @@ ButtonLog::ButtonLog(LogPlay *log,int id,RDAirPlayConf *conf,bool allow_pause,
   //
   // Edit Event Dialog
   //
-  log_event_edit=new EditEvent(log_log,this,"list_event_edit");
+  log_event_edit=new EditEvent(log_log,log_cae,this);
 
   //
   // Line Boxes / Start Buttons
   //
-  QSignalMapper *mapper=new QSignalMapper(this,"start_button_mapper");
+  QSignalMapper *mapper=new QSignalMapper(this);
   connect(mapper,SIGNAL(mapped(int)),
 	  this,SLOT(startButton(int)));
   for(int i=0;i<BUTTON_PLAY_BUTTONS;i++) {
     log_line_box[i]=new LogLineBox(conf,this);
     log_line_box[i]->setMode(LogLineBox::Full);
-    log_line_box[i]->setAcceptDrops(rdstation_conf->enableDragdrop());
-    log_line_box[i]->setAllowDrags(rdstation_conf->enableDragdrop());
+    log_line_box[i]->setAcceptDrops(rda->station()->enableDragdrop());
+    log_line_box[i]->setAllowDrags(rda->station()->enableDragdrop());
     log_line_box[i]->setGeometry(10+log_line_box[i]->sizeHint().height(),
 			       (log_line_box[i]->sizeHint().height()+12)*i,
 			       log_line_box[i]->sizeHint().width(),
@@ -92,8 +92,8 @@ ButtonLog::ButtonLog(LogPlay *log,int id,RDAirPlayConf *conf,bool allow_pause,
   for(int i=BUTTON_PLAY_BUTTONS;i<BUTTON_TOTAL_BUTTONS;i++) {
     log_line_box[i]=new LogLineBox(conf,this);
     log_line_box[i]->setMode(LogLineBox::Half);
-    log_line_box[i]->setAcceptDrops(rdstation_conf->enableDragdrop());
-    log_line_box[i]->setAllowDrags(rdstation_conf->enableDragdrop());
+    log_line_box[i]->setAcceptDrops(rda->station()->enableDragdrop());
+    log_line_box[i]->setAllowDrags(rda->station()->enableDragdrop());
     log_line_box[i]->setGeometry(10+log_line_box[0]->sizeHint().height(),
 			       (log_line_box[0]->sizeHint().height()+12)*3+
 			       (log_line_box[i]->sizeHint().height()+12)*(i-3),
