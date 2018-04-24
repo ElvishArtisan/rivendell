@@ -1063,7 +1063,7 @@ bool MainObject::jackSetInputVolume(int card,int stream,int level)
   }
   if(level>-10000) {
     jack_input_volume[stream]=
-      (jack_default_audio_sample_t)pow10((double)level/2000.0);
+      (jack_default_audio_sample_t)pow(10.0,(double)level/2000.0);
     jack_input_volume_db[stream]=level;
   }
   else {
@@ -1086,7 +1086,7 @@ bool MainObject::jackSetOutputVolume(int card,int stream,int port,int level)
   }
   if(level>-10000) {
     jack_output_volume[port][stream]=
-      (jack_default_audio_sample_t)pow10((double)level/2000.0);
+      (jack_default_audio_sample_t)pow(10.0,(double)level/2000.0);
     jack_output_volume_db[port][stream]=level;
   }
   else {
@@ -1307,7 +1307,7 @@ bool MainObject::jackSetPassthroughLevel(int card,int in_port,int out_port,
   }
   if(level>-10000) {
     jack_passthrough_volume[in_port][out_port]=
-      (jack_default_audio_sample_t)pow10((double)level/2000.0);
+      (jack_default_audio_sample_t)pow(10.0,(double)level/2000.0);
     jack_passthrough_volume_db[in_port][out_port]=level;
   }
   else {
