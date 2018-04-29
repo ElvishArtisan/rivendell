@@ -635,10 +635,9 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
       }
       delete q;
       
-      sql=QString("select SCHED_STACK_ID from `")+svcname_rp+"_STACK` "+
-	"order by SCHED_STACK_ID";
+      sql=QString("SELECT MAX(SCHED_STACK_ID) from `"+svcname_rp+"_STACK`");
       q=new RDSqlQuery(sql);
-      if (q->last())
+      if (q->next())
       { 
 	stackid=q->value(0).toUInt();
       }
@@ -651,6 +650,36 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
       
       
       // Add deconflicting rules here		  
+      // Reduce schedCL to match requested scheduler code
+      if(event_have_code!="") {
+	schedCL->save();		  
+	for(counter=0;counter<schedCL->getNumberOfItems();counter++) { 
+	  if(!schedCL->itemHasCode(counter,event_have_code)) {
+	    schedCL->removeItem(counter);
+	    counter--;
+	  }
+	}
+	if(schedCL->getNumberOfItems()==0) {
+	  *errors+=QString().sprintf("%s Rule broken: Must have code %s\n",(const char *)time.toString("hh:mm:ss"),(const char*)event_have_code);
+	}
+	schedCL->restore();
+      }
+
+      // Reduce schedCL to match second requested scheduler code
+      if(event_have_code2!="") {
+	schedCL->save();
+	for(counter=0;counter<schedCL->getNumberOfItems();counter++) {
+	  if(!schedCL->itemHasCode(counter,event_have_code2)) {
+	    schedCL->removeItem(counter);
+	    counter--;
+	  }
+	}
+	if(schedCL->getNumberOfItems()==0) {
+	  *errors+=QString().sprintf("%s Rule broken: Must have second code %s\n",(const char *)time.toString("hh:mm:ss"),(const char*)event_have_code2);
+	}
+	schedCL->restore();
+      }
+
       // Title separation 
       schedCL->save();		  
       sql=QString("select CART from `")+svcname_rp+"_STACK` where "+
@@ -689,36 +718,6 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
       }
       schedCL->restore();
       
-      // Must have scheduler code
-      if(event_have_code!="") {
-	schedCL->save();		  
-	for(counter=0;counter<schedCL->getNumberOfItems();counter++) { 
-	  if(!schedCL->itemHasCode(counter,event_have_code)) {
-	    schedCL->removeItem(counter);
-	    counter--;
-	  }
-	}
-	if(schedCL->getNumberOfItems()==0) {
-	  *errors+=QString().sprintf("%s Rule broken: Must have code %s\n",(const char *)time.toString("hh:mm:ss"),(const char*)event_have_code);
-	}
-	schedCL->restore();
-      }
-
-      // Must have second scheduler code
-      if(event_have_code2!="") {
-	schedCL->save();
-	for(counter=0;counter<schedCL->getNumberOfItems();counter++) {
-	  if(!schedCL->itemHasCode(counter,event_have_code2)) {
-	    schedCL->removeItem(counter);
-	    counter--;
-	  }
-	}
-	if(schedCL->getNumberOfItems()==0) {
-	  *errors+=QString().sprintf("%s Rule broken: Must have second code %s\n",(const char *)time.toString("hh:mm:ss"),(const char*)event_have_code2);
-	}
-	schedCL->restore();
-      }
-
       // Scheduler Codes
       sql=QString().sprintf("select CODE,MAX_ROW,MIN_WAIT,NOT_AFTER, OR_AFTER,OR_AFTER_II from %s_RULES",(const char *)clockname);
       q=new RDSqlQuery(sql);
