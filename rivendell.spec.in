@@ -151,6 +151,7 @@ cp scripts/rd_mysql_enable_host.sh $RPM_BUILD_ROOT/@DOC_PATH@/scripts/
 cp scripts/rd_backup_system.sh $RPM_BUILD_ROOT/@DOC_PATH@/scripts/
 cp scripts/rd_restore_system.sh $RPM_BUILD_ROOT/@DOC_PATH@/scripts/
 cp scripts/engine_conv.py $RPM_BUILD_ROOT/@DOC_PATH@
+cp scripts/init_template_host.py $RPM_BUILD_ROOT/@DOC_PATH@
 
 
 %post

@@ -36,6 +36,7 @@ bin_SCRIPTS = crc-unity4k.sh\
 
 EXTRA_DIST = crc-unity4k.sh\
              engine_conv.py\
+             init_template_host.py\
              kill_rd\
              rd_audio_sync\
              rd_backup\

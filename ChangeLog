@@ -16783,3 +16783,5 @@
 	the core library.
 	* Moved the 'RLMHost' class in rdairplay(1) to 'RDRLMHost' in
 	the core library.
+2018-04-30 Fred Gleason <fredg@paravelsystems.com>
+	* Added a script in 'scripts/init_template_host.py'.
