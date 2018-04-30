@@ -16785,3 +16785,9 @@
 	the core library.
 2018-04-30 Fred Gleason <fredg@paravelsystems.com>
 	* Added a script in 'scripts/init_template_host.py'.
+2018-04-30 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug that caused the 'SERVICES.TRACK_GROUP',
+	'SERVICES./AUTOSPOT_GROUP', 'SERVICES.DEFAULT_LOG_SHELFLIFE',
+	'SERVICES.LOG_SHELFLIFE_ORIGIN', 'SERVICES.TFC_IMPORT_TEMPLATE' and
+	'SERVICE.MUS_IMPORT_TEMPLATE field values to fail to be cloned from
+	the exemplar when creating a new Service.
