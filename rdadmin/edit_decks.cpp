@@ -806,7 +806,7 @@ QStringList EditDecks::GetActiveOutputMatrices()
   
   edit_matrix_ids.clear();
   sql=QString("select TYPE,NAME,OUTPUTS,MATRIX from MATRICES where ")+
-    "STATION_NAME=\""+RDEscapeString(edit_station->name())+"\"";
+    "STATION_NAME=\""+RDEscapeString(edit_swstation_box->currentText())+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     switch((RDMatrix::Type)q->value(0).toInt()) {
