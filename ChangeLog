@@ -16644,3 +16644,6 @@
 	'Switcher Output' dropdowns to populate incorrect values when
 	selecting a non-local 'Switcher Host' in the 'Configure RDCatch'
 	dialog in rdadmin(1).
+2018-05-05 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'NEWS'.
+	* Incremented the package version to 2.19.2int00.
