@@ -341,6 +341,7 @@ bool CreateDb(QString name,QString pwd,RDConfig *config)
     "DELETE_CARTS_PRIV enum('N','Y') not null default 'N',"+
     "MODIFY_CARTS_PRIV enum('N','Y') not null default 'N',"+
     "EDIT_AUDIO_PRIV enum('N','Y') not null default 'N',"+
+    "WEBGET_LOGIN_PRIV enum('N','Y') not null default 'N',"+
     "ASSIGN_CART_PRIV enum('N','Y') not null default 'N',"+
     "CREATE_LOG_PRIV enum('N','Y') not null default 'N',"+
     "DELETE_LOG_PRIV enum('N','Y') not null default 'N',"+
@@ -8034,6 +8035,13 @@ int UpdateDb(int ver,RDConfig *config)
     delete q;
   }
 
+  if(ver<277) {
+    sql=QString("alter table USERS ")+
+      "add column WEBGET_LOGIN_PRIV enum('N','Y') not null default 'N' "+
+      "after EDIT_AUDIO_PRIV";
+    q=new RDSqlQuery(sql,false);
+    delete q;
+  }
 
   //
   // Maintainer's Note:

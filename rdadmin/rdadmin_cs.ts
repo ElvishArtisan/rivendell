@@ -4291,6 +4291,10 @@ Permissions</source>
         <source>Allow Web Login</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Allow &amp;WebGet Login</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditUserPerms</name>

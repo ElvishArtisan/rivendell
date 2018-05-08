@@ -21,6 +21,7 @@ CREATE_CARTS_PRIV    enum('N','Y')
 DELETE_CARTS_PRIV    enum('N','Y')
 MODIFY_CARTS_PRIV    enum('N','Y')
 EDIT_AUDIO_PRIV      enum('N','Y')
+WEBGET_LOGIN_PRIV    enum('N','Y')
 ASSIGN_CART_PRIV     enum('N','Y')    Retired
 CREATE_LOG_PRIV      enum('N','Y')
 DELETE_LOG_PRIV      enum('N','Y')

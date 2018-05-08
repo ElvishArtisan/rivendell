@@ -59,6 +59,8 @@ class RDUser
   void setModifyCarts(bool priv) const;
   bool editAudio() const;
   void setEditAudio(bool priv) const;
+  bool webgetLogin() const;
+  void setWebgetLogin(bool priv) const;
   bool createLog() const;
   void setCreateLog(bool priv) const;
   bool deleteLog() const;

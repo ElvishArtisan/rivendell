@@ -263,6 +263,10 @@ void MainObject::Revert(int schema) const
   case 276:
     Revert276();
     break;
+
+  case 277:
+    Revert277();
+    break;
   }
 }
 
@@ -842,6 +846,19 @@ void MainObject::Revert276() const
 }
 
 
+void MainObject::Revert277() const
+{
+  QString sql;
+  RDSqlQuery *q;
+
+  sql=QString("alter table USERS drop column WEBGET_LOGIN_PRIV");
+  q=new RDSqlQuery(sql,false);
+  delete q;
+
+  SetVersion(276);
+}
+
+
 int MainObject::GetVersion() const
 {
   QString sql;
@@ -888,7 +905,7 @@ int MainObject::MapSchema(const QString &ver)
   version_map["2.17"]=268;
   version_map["2.18"]=272;
   version_map["2.19"]=275;
-  version_map["2.20"]=276;
+  version_map["2.20"]=277;
 
   //
   // Normalize String

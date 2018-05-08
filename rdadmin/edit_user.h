@@ -77,6 +77,7 @@ class EditUser : public QDialog
   QCheckBox *user_modify_carts_button;
   QCheckBox *user_edit_audio_button;
   QCheckBox *user_voicetrack_log_button;
+  QCheckBox *user_webget_login_button;
   QCheckBox *user_create_log_button;
   QCheckBox *user_delete_log_button;
   QCheckBox *user_delete_rec_button;
@@ -111,6 +112,7 @@ class EditUser : public QDialog
   QLabel *user_edit_podcast_label;
   QLabel *user_delete_podcast_label;
   QLabel *user_voicetrack_log_label;
+  QLabel *user_webget_login_label;
   RDUser *user_user;
 };
 

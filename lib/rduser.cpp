@@ -265,6 +265,19 @@ void RDUser::setEditAudio(bool priv) const
 }
 
 
+bool RDUser::webgetLogin() const
+{
+  return RDBool(RDGetSqlValue("USERS","LOGIN_NAME",user_name,
+			    "WEBGET_LOGIN_PRIV").toString());
+}
+
+
+void RDUser::setWebgetLogin(bool priv) const
+{
+  SetRow("WEBGET_LOGIN_PRIV",priv);
+}
+
+
 bool RDUser::createLog() const
 {
   return RDBool(RDGetSqlValue("USERS","LOGIN_NAME",user_name,

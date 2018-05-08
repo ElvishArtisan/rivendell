@@ -200,7 +200,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   // Production Group Priviledges
   //
   user_prod_group=new QButtonGroup(tr("Production Rights"),this);
-  user_prod_group->setGeometry(10,225,355,85);
+  user_prod_group->setGeometry(10,225,355,106);
   user_prod_group->setFont(font);
 
   user_create_carts_button=new QCheckBox(user_prod_group);
@@ -235,6 +235,15 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   user_edit_audio_label->setFont(small_font);
   user_edit_audio_label->setAlignment(AlignLeft|ShowPrefix);
 
+  user_webget_login_button=new QCheckBox(user_prod_group);
+  user_webget_login_button->setGeometry(10,84,15,15);
+  user_webget_login_label=
+    new QLabel(user_webget_login_button,tr("Allow &WebGet Login"),
+	       user_prod_group);
+  user_webget_login_label->setGeometry(30,83,150,19);
+  user_webget_login_label->setFont(small_font);
+  user_webget_login_label->setAlignment(AlignLeft|ShowPrefix);
+
   user_edit_catches_button=new QCheckBox(user_prod_group);
   user_edit_catches_button->setGeometry(172,42,15,15);
   user_edit_catches_label=
@@ -257,7 +266,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   // Traffic Group Priviledges
   //
   user_traffic_group=new QButtonGroup(tr("Traffic Rights"),this);
-  user_traffic_group->setGeometry(10,320,355,66);
+  user_traffic_group->setGeometry(10,341,355,66);
   user_traffic_group->setFont(font);
 
   user_create_log_button=new QCheckBox(user_traffic_group);
@@ -298,7 +307,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   // OnAir Group Priviledges
   //
   user_onair_group=new QButtonGroup(tr("OnAir Rights"),this);
-  user_onair_group->setGeometry(10,396,355,85);
+  user_onair_group->setGeometry(10,417,355,85);
   user_onair_group->setFont(font);
 
   user_playout_log_button=new QCheckBox(user_onair_group);
@@ -348,7 +357,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   // Podcast Group Priviledges
   //
   user_podcast_group=new QButtonGroup(tr("Podcasting Rights"),this);
-  user_podcast_group->setGeometry(10,491,355,66);
+  user_podcast_group->setGeometry(10,512,355,66);
   user_podcast_group->setFont(font);
 
   user_add_podcast_button=new QCheckBox(user_podcast_group);
@@ -389,7 +398,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   //  Group Permissions Button
   //
   user_assign_perms_button=new QPushButton(this);
-  user_assign_perms_button->setGeometry(10,561,sizeHint().width()/3-20,50);
+  user_assign_perms_button->setGeometry(10,582,sizeHint().width()/3-20,50);
   user_assign_perms_button->setFont(font);
   user_assign_perms_button->setText(tr("Group\nPermissions"));
   connect(user_assign_perms_button,SIGNAL(clicked()),this,SLOT(groupsData()));
@@ -398,7 +407,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   //  Services Permissions Button
   //
   user_assign_svcs_button=new QPushButton(this);
-  user_assign_svcs_button->setGeometry(sizeHint().width()/3+10,561,sizeHint().width()/3-20,50);
+  user_assign_svcs_button->setGeometry(sizeHint().width()/3+10,582,sizeHint().width()/3-20,50);
   user_assign_svcs_button->setFont(font);
   user_assign_svcs_button->setText(tr("Service\nPermissions"));
   connect(user_assign_svcs_button,SIGNAL(clicked()),this,SLOT(servicesData()));
@@ -408,7 +417,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   //
   user_assign_feeds_button=new QPushButton(this);
   user_assign_feeds_button->
-    setGeometry(2*sizeHint().width()/3+10,561,sizeHint().width()/3-20,50);
+    setGeometry(2*sizeHint().width()/3+10,582,sizeHint().width()/3-20,50);
   user_assign_feeds_button->setFont(font);
   user_assign_feeds_button->setText(tr("Podcast Feed\nPermissions"));
   connect(user_assign_feeds_button,SIGNAL(clicked()),this,SLOT(feedsData()));
@@ -457,6 +466,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
     user_edit_audio_button->setChecked(user_user->editAudio());
     user_edit_catches_button->setChecked(user_user->editCatches());
     user_voicetrack_log_button->setChecked(user_user->voicetrackLog());
+    user_webget_login_button->setChecked(user_user->webgetLogin());
     
     user_create_log_button->setChecked(user_user->createLog());
     user_delete_log_button->setChecked(user_user->deleteLog());
@@ -499,7 +509,7 @@ EditUser::~EditUser()
 
 QSize EditUser::sizeHint() const
 {
-  return QSize(375,681);
+  return QSize(375,702);
 } 
 
 
@@ -572,6 +582,7 @@ void EditUser::adminToggledData(bool state)
   user_modify_template_button->setDisabled(state);
   user_edit_catches_button->setDisabled(state);
   user_voicetrack_log_button->setDisabled(state);
+  user_webget_login_button->setDisabled(state);
   user_add_podcast_button->setDisabled(state);
   user_edit_podcast_button->setDisabled(state);
   user_delete_podcast_button->setDisabled(state);
@@ -593,6 +604,7 @@ void EditUser::adminToggledData(bool state)
   user_edit_podcast_label->setDisabled(state);
   user_delete_podcast_label->setDisabled(state);
   user_voicetrack_log_label->setDisabled(state);
+  user_webget_login_label->setDisabled(state);
   user_assign_perms_button->setDisabled(state);
   user_assign_feeds_button->setDisabled(state);
 }
@@ -614,6 +626,7 @@ void EditUser::okData()
   user_user->setEditAudio(user_edit_audio_button->isChecked());
   user_user->setEditCatches(user_edit_catches_button->isChecked());
   user_user->setVoicetrackLog(user_voicetrack_log_button->isChecked());
+  user_user->setWebgetLogin(user_webget_login_button->isChecked());
   user_user->setCreateLog(user_create_log_button->isChecked());
   user_user->setDeleteLog(user_delete_log_button->isChecked());
   user_user->setDeleteRec(user_delete_rec_button->isChecked());
