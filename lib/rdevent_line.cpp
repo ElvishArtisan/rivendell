@@ -929,6 +929,14 @@ bool RDEventLine::linkLog(RDLogEvent *e,const QString &svcname,
   logline=NULL;
 
   //
+  // Clear Leading Event Values
+  //
+  time_type=RDLogLine::Relative;
+  trans_type=event_default_transtype;
+  //  time=time.addMSecs(length);
+  grace_time=-1;
+
+  //
   // Calculate Event Time Boundaries
   //
   int start_start_hour=link_logline->linkStartTime().hour();
@@ -1104,15 +1112,17 @@ bool RDEventLine::linkLog(RDLogEvent *e,const QString &svcname,
 	logline->setCartNumber(q->value(0).toUInt());
       }
     }
-
+    /*
     //
     // Clear Leading Event Values
     //
     time_type=RDLogLine::Relative;
     trans_type=event_default_transtype;
+    */
     time=time.addMSecs(length);
+    /*
     grace_time=-1;
-
+    */
   }
   delete q;
 
