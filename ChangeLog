@@ -16653,3 +16653,6 @@
 	to be applied to both the parent log link and the first imported
 	event when the 'PRE-IMPORT CARTS' list was empty and no Timed Start
 	was enabled.
+2018-05-08 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'NEWS'.
+	* Incremented the package version to 2.19.2int01.

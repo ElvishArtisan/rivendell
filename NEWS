@@ -1,13 +1,19 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v2.19.2int00 -- 5/5/2018
+v2.19.2int01 -- 5/8/2018
 
 Changes:
    Fixed a bug that caused the 'Switcher Matrix' and
    'Switcher Output' dropdowns to populate incorrect values when
    selecting a non-local 'Switcher Host' in the 'Configure RDCatch'
    dialog in rdadmin(1).
+
+   Fixed a bug in rdlogmanager(1) that caused the initial transition
+   type specified in the 'IMPORT' section of the 'Editing Event' dialog
+   to be applied to both the parent log link and the first imported
+   event when the 'PRE-IMPORT CARTS' list was empty and no Timed Start
+   was enabled.
 
 Database Update:
    This version of Rivendell uses database schema version 275, and will
