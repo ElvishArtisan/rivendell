@@ -1,6 +1,22 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
+v2.19.2int00 -- 5/5/2018
+
+Changes:
+   Fixed a bug that caused the 'Switcher Matrix' and
+   'Switcher Output' dropdowns to populate incorrect values when
+   selecting a non-local 'Switcher Host' in the 'Configure RDCatch'
+   dialog in rdadmin(1).
+
+Database Update:
+   This version of Rivendell uses database schema version 275, and will
+   automatically upgrade any earlier versions.  To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   As always, be sure to run RDAdmin immediately after upgrading to allow 
+   any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
 v2.19.2 -- 4/14/2018
 
 Changes:

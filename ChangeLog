@@ -16779,6 +16779,8 @@
 2018-04-14 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up spurious HPI error messages being sent to the syslog.
 2018-04-14 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'NEWS'.
+	* Incremented the package version to 2.19.2.
 	* Moved the 'LogPlay' class in rdairplay(1) to 'RDLogPlay' in
 	the core library.
 	* Moved the 'RLMHost' class in rdairplay(1) to 'RDRLMHost' in
@@ -16791,6 +16793,11 @@
 	'SERVICES.LOG_SHELFLIFE_ORIGIN', 'SERVICES.TFC_IMPORT_TEMPLATE' and
 	'SERVICE.MUS_IMPORT_TEMPLATE field values to fail to be cloned from
 	the exemplar when creating a new Service.
+2018-05-05 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug that caused the 'Switcher Matrix' and
+	'Switcher Output' dropdowns to populate incorrect values when
+	selecting a non-local 'Switcher Host' in the 'Configure RDCatch'
+	dialog in rdadmin(1).
 2018-05-07 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'USERS.WEBGET_LOGIN_PRIV' field to the database.
 	* Incremented the database version to 277.
