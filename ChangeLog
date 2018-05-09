@@ -16805,3 +16805,5 @@
 	methods.
 	* Added a 'Allow WebGet Login' control in the 'Production Rights'
 	section of the 'User' dialog in rdadmin(1).
+2018-05-09 Fred Gleason <fredg@paravelsystems.com>
+	* Added rdvairplay(1).

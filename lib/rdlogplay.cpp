@@ -21,6 +21,8 @@
 #include <unistd.h>
 #include <syslog.h>
 
+#include <qapplication.h>
+
 #include "rdapplication.h"
 #include "rdconf.h"
 #include "rddb.h"
@@ -33,8 +35,8 @@
 #include "rdsvc.h"
 
 RDLogPlay::RDLogPlay(int id,RDEventPlayer *player,QSocketDevice *nn_sock,
-		 QString logname,std::vector<RDRLMHost *> *rlm_hosts,
-		 QObject *parent)
+		     QString logname,std::vector<RDRLMHost *> *rlm_hosts,
+		     QObject *parent)
   : QObject(parent),RDLogEvent(logname)
 {
   //
@@ -125,7 +127,8 @@ RDLogPlay::RDLogPlay(int id,RDEventPlayer *player,QSocketDevice *nn_sock,
   //
   play_audition_line=-1;
   if((rda->station()->cueCard()>=0)&&
-     (rda->station()->cuePort()>=0)) {
+     (rda->station()->cuePort()>=0)&&
+     (qApp->type()!=QApplication::Tty)) {
     play_audition_player=
       new RDSimplePlayer(play_cae,rda->ripc(),rda->station()->cueCard(),
 			 rda->station()->cuePort(),0,0);

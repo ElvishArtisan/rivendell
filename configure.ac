@@ -563,6 +563,7 @@ AC_CONFIG_FILES([rivendell.spec \
     rdselect/Makefile \
     rdmonitor/Makefile \
     rdrepld/Makefile \
+    rdvairplay/Makefile \
     tests/Makefile \
     importers/Makefile \
     ios/Makefile \

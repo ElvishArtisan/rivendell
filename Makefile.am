@@ -56,6 +56,7 @@ SUBDIRS = icons\
           rdpanel\
           rdrepld\
           rdselect\
+          rdvairplay\
           ripcd\
           tests\
           utils\

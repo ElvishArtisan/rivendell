@@ -55,6 +55,7 @@ class RDApplication : public QObject
   RDStation *station();
   RDSystem *system();
   RDUser *user();
+  void log(RDConfig::LogPriority prio,const QString &msg);
 
  private slots:
   void userChangedData();

@@ -219,6 +219,12 @@ RDUser *RDApplication::user()
 }
 
 
+void RDApplication::log(RDConfig::LogPriority prio,const QString &msg)
+{
+  app_config->log(app_module_name,prio,msg);
+}
+
+
 void RDApplication::userChangedData()
 {
   app_user->setName(app_ripc->user());
