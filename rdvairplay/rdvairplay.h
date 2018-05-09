@@ -26,12 +26,11 @@
 
 #include <rdevent_player.h>
 #include <rdinstancelock.h>
+#include <rd.h>
 #include <rdlogplay.h>
 #include <rdmacro.h>
 #include <rdrlmhost.h>
 
-#define RD_RDVAIRPLAY_LOG_BASE 100
-#define RD_RDVAIRPLAY_LOG_QUAN 1
 #define RDVAIRPLAY_USAGE "[options]\n"
 
 class MainObject : public QObject

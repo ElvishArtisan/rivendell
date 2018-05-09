@@ -533,55 +533,108 @@ void RDAirPlayConf::setDescriptionTemplate(const QString &str)
 QHostAddress RDAirPlayConf::udpAddress(int logno) const
 {
   QHostAddress addr;
-  QString str(RDGetSqlValue(air_tablename,"ID",air_id,
-			   QString().sprintf("UDP_ADDR%d",logno)).toString());
-  addr.setAddress(str);
+  QString sql=QString("select UDP_ADDR ")+
+    "from LOG_MACHINES where STATION_NAME=\""+
+    RDEscapeString(air_station)+"\" && "+
+    QString().sprintf("MACHINE=%d",logno);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(q->first()) {
+    addr.setAddress(q->value(0).toString());
+  }
+  delete q;
   return addr;
 }
 
 
 void RDAirPlayConf::setUdpAddress(int logno,QHostAddress addr) const
 {
-  SetRow(QString().sprintf("UDP_ADDR%d",logno),addr.toString());
+  QString sql=QString("update LOG_MACHINES set ")+
+    "UDP_ADDR=\""+RDEscapeString(addr.toString())+"\" where "+
+    "STATION_NAME=\""+RDEscapeString(air_station)+"\" &&"+
+    QString().sprintf("MACHINE=%d",logno);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  delete q;
 }
 
 
 Q_UINT16 RDAirPlayConf::udpPort(int logno) const
 {
-  return (Q_UINT16)RDGetSqlValue(air_tablename,"ID",air_id,QString().
-				sprintf("UDP_PORT%d",logno)).toInt();
+  Q_UINT16 ret=0;
+  QString sql=QString("select UDP_PORT ")+
+    "from LOG_MACHINES where STATION_NAME=\""+
+    RDEscapeString(air_station)+"\" && "+
+    QString().sprintf("MACHINE=%d",logno);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(q->first()) {
+    ret=q->value(0).toUInt();
+  }
+  delete q;
+  return ret;
 }
 
 
 void RDAirPlayConf::setUdpPort(int logno,Q_UINT16 port) const
 {
-  SetRow(QString().sprintf("UDP_PORT%d",logno),(int)port);
+  QString sql=QString("update LOG_MACHINES set ")+
+    QString().sprintf("UDP_PORT=%u ",port)+"where "+
+    "STATION_NAME=\""+RDEscapeString(air_station)+"\" &&"+
+    QString().sprintf("MACHINE=%d",logno);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  delete q;
 }
 
 
 QString RDAirPlayConf::udpString(int logno) const
 {
-  return RDGetSqlValue(air_tablename,"ID",air_id,
-		      QString().sprintf("UDP_STRING%d",logno)).toString();
+  QString ret;
+  QString sql=QString("select UDP_STRING ")+
+    "from LOG_MACHINES where STATION_NAME=\""+
+    RDEscapeString(air_station)+"\" && "+
+    QString().sprintf("MACHINE=%d",logno);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(q->first()) {
+    ret=q->value(0).toString();
+  }
+  delete q;
+  return ret;
 }
 
 
 void RDAirPlayConf::setUdpString(int logno,const QString &str) const
 {
-  SetRow(QString().sprintf("UDP_STRING%d",logno),str);
+  QString sql=QString("update LOG_MACHINES set ")+
+    "UDP_STRING=\""+RDEscapeString(str)+"\" where "+
+    "STATION_NAME=\""+RDEscapeString(air_station)+"\" &&"+
+    QString().sprintf("MACHINE=%d",logno);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  delete q;
 }
 
 
 QString RDAirPlayConf::logRml(int logno) const
 {
-  return RDGetSqlValue(air_tablename,"ID",air_id,
-		      QString().sprintf("LOG_RML%d",logno)).toString();
+  QString ret;
+  QString sql=QString("select LOG_RML ")+
+    "from LOG_MACHINES where STATION_NAME=\""+
+    RDEscapeString(air_station)+"\" && "+
+    QString().sprintf("MACHINE=%d",logno);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(q->first()) {
+    ret=q->value(0).toString();
+  }
+  delete q;
+  return ret;
 }
 
 
 void RDAirPlayConf::setLogRml(int logno,const QString &str) const
 {
-  SetRow(QString().sprintf("LOG_RML%d",logno),str);
+  QString sql=QString("update LOG_MACHINES set ")+
+    "LOG_RML=\""+RDEscapeString(str)+"\" where "+
+    "STATION_NAME=\""+RDEscapeString(air_station)+"\" &&"+
+    QString().sprintf("MACHINE=%d",logno);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  delete q;
 }
 
 
@@ -671,121 +724,244 @@ void RDAirPlayConf::setAuditionPreroll(int msecs) const
 
 RDAirPlayConf::StartMode RDAirPlayConf::startMode(int lognum) const
 {
-  return (RDAirPlayConf::StartMode)
-    RDGetSqlValue(air_tablename,"ID",
-		 air_id,QString().sprintf("LOG%d_START_MODE",lognum)).toInt();
+  RDAirPlayConf::StartMode ret=RDAirPlayConf::StartEmpty;
+  QString sql=QString("select START_MODE ")+
+    "from LOG_MACHINES where STATION_NAME=\""+
+    RDEscapeString(air_station)+"\" && "+
+    QString().sprintf("MACHINE=%d",lognum);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(q->first()) {
+    ret=(RDAirPlayConf::StartMode)q->value(0).toInt();
+  }
+  delete q;
+  return ret;
 }
 
 
 void RDAirPlayConf::setStartMode(int lognum,RDAirPlayConf::StartMode mode) const
 {
-  SetRow(QString().sprintf("LOG%d_START_MODE",lognum),(int)mode);
+  QString sql=QString("update LOG_MACHINES set ")+
+    QString().sprintf("START_MODE=%d ",mode)+" where "+
+    "STATION_NAME=\""+RDEscapeString(air_station)+"\" &&"+
+    QString().sprintf("MACHINE=%d",lognum);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  delete q;
 }
 
 
 bool RDAirPlayConf::autoRestart(int lognum) const
 {
-  return RDBool(RDGetSqlValue(air_tablename,"ID",air_id,
-			    QString().sprintf("LOG%d_AUTO_RESTART",lognum)).
-			    toString());
+  bool ret=false;
+  QString sql=QString("select AUTO_RESTART ")+
+    "from LOG_MACHINES where STATION_NAME=\""+
+    RDEscapeString(air_station)+"\" && "+
+    QString().sprintf("MACHINE=%d",lognum);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(q->first()) {
+    ret=q->value(0).toString()=="Y";
+  }
+  delete q;
+  return ret;
 }
 
 
 void RDAirPlayConf::setAutoRestart(int lognum,bool state) const
 {
-  SetRow(QString().sprintf("LOG%d_AUTO_RESTART",lognum),RDYesNo(state));
+  QString sql=QString("update LOG_MACHINES set ")+
+    "AUTO_RESTART=\""+RDYesNo(state)+"\" where "+
+    "STATION_NAME=\""+RDEscapeString(air_station)+"\" &&"+
+    QString().sprintf("MACHINE=%d",lognum);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  delete q;
 }
 
 
 QString RDAirPlayConf::logName(int lognum) const
 {
-  return RDGetSqlValue(air_tablename,"ID",air_id,QString().
-		      sprintf("LOG%d_LOG_NAME",lognum)).toString();
+  QString ret;
+  QString sql=QString("select LOG_NAME ")+
+    "from LOG_MACHINES where STATION_NAME=\""+
+    RDEscapeString(air_station)+"\" && "+
+    QString().sprintf("MACHINE=%d",lognum);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(q->first()) {
+    ret=q->value(0).toString();
+  }
+  delete q;
+  return ret;
 }
 
 
 void RDAirPlayConf::setLogName(int lognum,const QString &name) const
 {
-  SetRow(QString().sprintf("LOG%d_LOG_NAME",lognum),name);
+  QString sql=QString("update LOG_MACHINES set ")+
+    "LOG_NAME=\""+RDEscapeString(name)+"\" where "+
+    "STATION_NAME=\""+RDEscapeString(air_station)+"\" &&"+
+    QString().sprintf("MACHINE=%d",lognum);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  delete q;
 }
 
 
 QString RDAirPlayConf::currentLog(int lognum) const
 {
-  return RDGetSqlValue(air_tablename,"ID",air_id,QString().
-		      sprintf("LOG%d_CURRENT_LOG",lognum)).toString();
+  QString ret;
+  QString sql=QString("select CURRENT_LOG ")+
+    "from LOG_MACHINES where STATION_NAME=\""+
+    RDEscapeString(air_station)+"\" && "+
+    QString().sprintf("MACHINE=%d",lognum);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(q->first()) {
+    ret=q->value(0).toString();
+  }
+  delete q;
+  return ret;
 }
 
 
 void RDAirPlayConf::setCurrentLog(int lognum,const QString &name) const
 {
-  SetRow(QString().sprintf("LOG%d_CURRENT_LOG",lognum),name);
+  QString sql=QString("update LOG_MACHINES set ")+
+    "CURRENT_LOG=\""+RDEscapeString(name)+"\" where "+
+    "STATION_NAME=\""+RDEscapeString(air_station)+"\" &&"+
+    QString().sprintf("MACHINE=%d",lognum);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  delete q;
 }
 
 
 bool RDAirPlayConf::logRunning(int lognum) const
 {
-  return RDBool(RDGetSqlValue(air_tablename,"ID",air_id,
-			    QString().sprintf("LOG%d_RUNNING",lognum)).
-			    toString());
+  bool ret=false;
+  QString sql=QString("select RUNNING ")+
+    "from LOG_MACHINES where STATION_NAME=\""+
+    RDEscapeString(air_station)+"\" && "+
+    QString().sprintf("MACHINE=%d",lognum);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(q->first()) {
+    ret=q->value(0).toString()=="Y";
+  }
+  delete q;
+  return ret;
 }
 
 
 void RDAirPlayConf::setLogRunning(int lognum,bool state) const
 {
-  SetRow(QString().sprintf("LOG%d_RUNNING",lognum),RDYesNo(state));
+  QString sql=QString("update LOG_MACHINES set ")+
+    "RUNNING=\""+RDYesNo(state)+"\" where "+
+    "STATION_NAME=\""+RDEscapeString(air_station)+"\" &&"+
+    QString().sprintf("MACHINE=%d",lognum);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  delete q;
 }
 
 
 int RDAirPlayConf::logId(int lognum) const
 {
-  return RDGetSqlValue(air_tablename,"ID",air_id,QString().
-		      sprintf("LOG%d_LOG_ID",lognum)).toInt();
+  int ret=-1;
+  QString sql=QString("select LOG_ID ")+
+    "from LOG_MACHINES where STATION_NAME=\""+
+    RDEscapeString(air_station)+"\" && "+
+    QString().sprintf("MACHINE=%d",lognum);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(q->first()) {
+    ret=q->value(0).toInt();
+  }
+  delete q;
+  return ret;
 }
 
 
 void RDAirPlayConf::setLogId(int lognum,int id) const
 {
-  SetRow(QString().sprintf("LOG%d_LOG_ID",lognum),id);
+  QString sql=QString("update LOG_MACHINES set ")+
+    QString().sprintf("LOG_ID=%d ",id)+" where "+
+    "STATION_NAME=\""+RDEscapeString(air_station)+"\" &&"+
+    QString().sprintf("MACHINE=%d",lognum);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  delete q;
 }
 
 
 int RDAirPlayConf::logCurrentLine(int lognum) const
 {
-  return RDGetSqlValue(air_tablename,"ID",air_id,QString().
-		      sprintf("LOG%d_LOG_LINE",lognum)).toInt();
+  int ret=-1;
+  QString sql=QString("select LOG_LINE ")+
+    "from LOG_MACHINES where STATION_NAME=\""+
+    RDEscapeString(air_station)+"\" && "+
+    QString().sprintf("MACHINE=%d",lognum);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(q->first()) {
+    ret=q->value(0).toInt();
+  }
+  delete q;
+  return ret;
 }
 
 
 void RDAirPlayConf::setLogCurrentLine(int lognum,int line) const
 {
-  SetRow(QString().sprintf("LOG%d_LOG_LINE",lognum),line);
+  QString sql=QString("update LOG_MACHINES set ")+
+    QString().sprintf("LOG_LINE=%d ",line)+" where "+
+    "STATION_NAME=\""+RDEscapeString(air_station)+"\" &&"+
+    QString().sprintf("MACHINE=%d",lognum);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  delete q;
 }
 
 
 unsigned RDAirPlayConf::logNowCart(int lognum) const
 {
-  return RDGetSqlValue(air_tablename,"ID",air_id,QString().
-		      sprintf("LOG%d_NOW_CART",lognum)).toUInt();
+  unsigned ret=0;
+  QString sql=QString("select NOW_CART ")+
+    "from LOG_MACHINES where STATION_NAME=\""+
+    RDEscapeString(air_station)+"\" && "+
+    QString().sprintf("MACHINE=%d",lognum);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(q->first()) {
+    ret=q->value(0).toUInt();
+  }
+  delete q;
+  return ret;
 }
 
 
 void RDAirPlayConf::setLogNowCart(int lognum,unsigned cartnum) const
 {
-  SetRow(QString().sprintf("LOG%d_NOW_CART",lognum),cartnum);
+  QString sql=QString("update LOG_MACHINES set ")+
+    QString().sprintf("NOW_CART=%u ",cartnum)+" where "+
+    "STATION_NAME=\""+RDEscapeString(air_station)+"\" &&"+
+    QString().sprintf("MACHINE=%d",lognum);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  delete q;
 }
 
 
 unsigned RDAirPlayConf::logNextCart(int lognum) const
 {
-  return RDGetSqlValue(air_tablename,"ID",air_id,QString().
-		      sprintf("LOG%d_NEXT_CART",lognum)).toUInt();
+  unsigned ret=0;
+  QString sql=QString("select NEXT_CART ")+
+    "from LOG_MACHINES where STATION_NAME=\""+
+    RDEscapeString(air_station)+"\" && "+
+    QString().sprintf("MACHINE=%d",lognum);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(q->first()) {
+    ret=q->value(0).toUInt();
+  }
+  delete q;
+  return ret;
 }
 
 
 void RDAirPlayConf::setLogNextCart(int lognum,unsigned cartnum) const
 {
-  SetRow(QString().sprintf("LOG%d_NEXT_CART",lognum),cartnum);
+  QString sql=QString("update LOG_MACHINES set ")+
+    QString().sprintf("NEXT_CART=%u ",cartnum)+" where "+
+    "STATION_NAME=\""+RDEscapeString(air_station)+"\" &&"+
+    QString().sprintf("MACHINE=%d",lognum);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  delete q;
 }
 
 

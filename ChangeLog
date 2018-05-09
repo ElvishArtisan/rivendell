@@ -16807,3 +16807,6 @@
 	section of the 'User' dialog in rdadmin(1).
 2018-05-09 Fred Gleason <fredg@paravelsystems.com>
 	* Added rdvairplay(1).
+2018-05-09 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'LOG_MACHINES' table to the database.
+	* Incremented the database version to 278.

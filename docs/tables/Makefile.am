@@ -48,6 +48,7 @@ EXTRA_DIST = audio_perms.txt\
              jack_clients.txt\
              livewire_gpio_slots.txt\
              log_format.txt\
+             log_machines.txt\
              log_modes.txt\
              logs.txt\
              nownext_plugins.txt\
