@@ -8132,13 +8132,19 @@ int UpdateDb(int ver,RDConfig *config)
       }
       delete q;
     }
-    for(int i=RD_RDVAIRPLAY_LOG_BASE;i<(RD_RDVAIRPLAY_LOG_BASE+RD_RDVAIRPLAY_LOG_QUAN);i++) {
-      sql=QString("insert into LOG_MACHINES set ")+
-	"STATION_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
-	QString().sprintf("MACHINE=%d",i);
-      q=new RDSqlQuery(sql);
-      delete q;
+
+    sql=QString("select NAME from STATIONS");
+    q=new RDSqlQuery(sql,false);
+    while(q->next()) {
+      for(int i=RD_RDVAIRPLAY_LOG_BASE;i<(RD_RDVAIRPLAY_LOG_BASE+RD_RDVAIRPLAY_LOG_QUAN);i++) {
+	sql=QString("insert into LOG_MACHINES set ")+
+	  "STATION_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	  QString().sprintf("MACHINE=%d",i);
+	q1=new RDSqlQuery(sql);
+	delete q1;
+      }
     }
+    delete q;
 
     for(int i=0;i<3;i++) {
       sql=QString().sprintf("alter table RDAIRPLAY drop column UDP_ADDR%d",i);

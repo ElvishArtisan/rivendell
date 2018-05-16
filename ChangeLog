@@ -16810,3 +16810,6 @@
 2018-05-09 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'LOG_MACHINES' table to the database.
 	* Incremented the database version to 278.
+2018-05-16 Fred Gleason <fredg@paravelsystems.com>
+	* Added virtual logs to the 'Start/Stop Settings' section of
+	the 'Configure RDAirPlay' dialog in rdadmin(1).

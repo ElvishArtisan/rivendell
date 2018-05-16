@@ -586,7 +586,7 @@
  * RDVAirPlay Values
  */
 #define RD_RDVAIRPLAY_LOG_BASE 100
-#define RD_RDVAIRPLAY_LOG_QUAN 1
+#define RD_RDVAIRPLAY_LOG_QUAN 20
 
 
 #endif  // RD_H

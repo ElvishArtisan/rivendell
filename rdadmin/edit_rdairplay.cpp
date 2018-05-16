@@ -660,6 +660,9 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   for(unsigned i=1;i<RDAIRPLAY_LOG_QUANTITY;i++) {
     air_logmachine_box->insertItem(QString().sprintf("Aux %d Log",i));
   }
+  for(unsigned i=0;i<RD_RDVAIRPLAY_LOG_QUAN;i++) {
+    air_logmachine_box->insertItem(QString().sprintf("vLog %d",i+RD_RDVAIRPLAY_LOG_BASE+1));
+  }
   connect(air_logmachine_box,SIGNAL(activated(int)),
 	  this,SLOT(logActivatedData(int)));
 
@@ -887,16 +890,25 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   }
   air_modecontrol_box->setCurrentItem((int)air_conf->opModeStyle());
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
-    air_startmode[i]=air_conf->startMode(i);
-    air_startlog[i]=air_conf->logName(i);
-    air_autorestart[i]=air_conf->autoRestart(i);
+    air_startmodes[i]=air_conf->startMode(i);
+    air_startlogs[i]=air_conf->logName(i);
+    air_autorestarts[i]=air_conf->autoRestart(i);
     air_logstartmode_box[i]->setCurrentItem(air_conf->logStartMode(i));
   }
-  air_startmode_box->setCurrentItem((int)air_startmode[air_logmachine]);
-  air_startlog_edit->setText(air_startlog[air_logmachine]);
-  air_autorestart_box->setChecked(air_autorestart[air_logmachine]);
+  for(int i=0;i<RD_RDVAIRPLAY_LOG_QUAN;i++) {
+    air_startmodes[i+RD_RDVAIRPLAY_LOG_BASE]=
+      air_conf->startMode(i+RD_RDVAIRPLAY_LOG_BASE);
+    air_startlogs[i+RD_RDVAIRPLAY_LOG_BASE]=
+      air_conf->logName(i+RD_RDVAIRPLAY_LOG_BASE);
+    air_autorestarts[i+RD_RDVAIRPLAY_LOG_BASE]=
+      air_conf->autoRestart(i+RD_RDVAIRPLAY_LOG_BASE);
+    //    air_logstartmode_boxs[i]->setCurrentItem(air_conf->logStartMode(i));
+  }
+  air_startmode_box->setCurrentItem((int)air_startmodes[air_logmachine]);
+  air_startlog_edit->setText(air_startlogs[air_logmachine]);
+  air_autorestart_box->setChecked(air_autorestarts[air_logmachine]);
   air_skin_edit->setText(air_conf->skinPath());
-  startModeChangedData(air_startmode[air_logmachine]);
+  startModeChangedData(air_startmodes[air_logmachine]);
 
   for(unsigned i=0;i<RDAirPlayConf::LastChannel;i++) {
     audioSettingsChangedData(i,air_card_sel[i]->card(),air_card_sel[i]->port());
@@ -968,16 +980,20 @@ void EditRDAirPlay::exitPasswordChangedData(const QString &str)
 
 void EditRDAirPlay::logActivatedData(int lognum)
 {
-  air_startmode[air_logmachine]=
+  air_startmodes[air_logmachine]=
     (RDAirPlayConf::StartMode)air_startmode_box->currentItem();
-  air_startlog[air_logmachine]=air_startlog_edit->text();
-  air_autorestart[air_logmachine]=air_autorestart_box->isChecked();
+  air_startlogs[air_logmachine]=air_startlog_edit->text();
+  air_autorestarts[air_logmachine]=air_autorestart_box->isChecked();
 
   air_logmachine=lognum;
-  air_startmode_box->setCurrentItem((int)air_startmode[lognum]);
-  air_startlog_edit->setText(air_startlog[lognum]);
-  air_autorestart_box->setChecked(air_autorestart[lognum]);
-  startModeChangedData((int)air_startmode[lognum]);
+  if(lognum>2) {
+    air_logmachine=lognum+RD_RDVAIRPLAY_LOG_BASE-3;
+  }
+
+  air_startmode_box->setCurrentItem((int)air_startmodes[air_logmachine]);
+  air_startlog_edit->setText(air_startlogs[air_logmachine]);
+  air_autorestart_box->setChecked(air_autorestarts[air_logmachine]);
+  startModeChangedData((int)air_startmodes[air_logmachine]);
 }
 
 
@@ -1120,19 +1136,27 @@ void EditRDAirPlay::okData()
   if(air_exitpasswd_changed) {
     air_conf->setExitPassword(air_exitpasswd_edit->text());
   }
-  air_startmode[air_logmachine]=
+  air_startmodes[air_logmachine]=
     (RDAirPlayConf::StartMode)air_startmode_box->currentItem();
-  air_startlog[air_logmachine]=air_startlog_edit->text();
-  air_autorestart[air_logmachine]=air_autorestart_box->isChecked();
+  air_startlogs[air_logmachine]=air_startlog_edit->text();
+  air_autorestarts[air_logmachine]=air_autorestart_box->isChecked();
   air_conf->setOpModeStyle((RDAirPlayConf::OpModeStyle)
 			   air_modecontrol_box->currentItem());
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
-    air_conf->setStartMode(i,air_startmode[i]);
-    air_conf->setLogName(i,air_startlog[i]);
-    air_conf->setAutoRestart(i,air_autorestart[i]);
+    air_conf->setStartMode(i,air_startmodes[i]);
+    air_conf->setLogName(i,air_startlogs[i]);
+    air_conf->setAutoRestart(i,air_autorestarts[i]);
     air_conf->
       setLogStartMode(i,(RDAirPlayConf::OpMode)air_logstartmode_box[i]->
 		      currentItem());
+  }
+  for(int i=0;i<RD_RDVAIRPLAY_LOG_QUAN;i++) {
+    air_conf->setStartMode(i+RD_RDVAIRPLAY_LOG_BASE,
+			   air_startmodes[i+RD_RDVAIRPLAY_LOG_BASE]);
+    air_conf->setLogName(i+RD_RDVAIRPLAY_LOG_BASE,
+			 air_startlogs[i+RD_RDVAIRPLAY_LOG_BASE]);
+    air_conf->setAutoRestart(i+RD_RDVAIRPLAY_LOG_BASE,
+			     air_autorestarts[i+RD_RDVAIRPLAY_LOG_BASE]);
   }
   air_conf->setSkinPath(air_skin_edit->text());
   done(0);
