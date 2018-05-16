@@ -2402,6 +2402,14 @@ bool InitDb(QString name,QString pwd,QString station_name,RDConfig *config)
       return false;
     }
   }
+  for(unsigned i=0;i<RD_RDVAIRPLAY_LOG_QUAN;i++) {
+    sql=QString("insert into RDAIRPLAY_CHANNELS set ")+
+      "STATION_NAME=\""+RDEscapeString(station_name)+"\","+
+      QString().sprintf("INSTANCE=%u",i+RD_RDVAIRPLAY_LOG_BASE);
+    if(!RunQuery(sql)) {
+      return false;
+    }
+  }
   for(unsigned i=0;i<10;i++) {
     sql=QString("insert into RDPANEL_CHANNELS set ")+
       "STATION_NAME=\""+RDEscapeString(station_name)+"\","+
@@ -8200,6 +8208,22 @@ int UpdateDb(int ver,RDConfig *config)
       delete q;
    }
   }
+
+  if(ver<279) {
+    sql=QString("select NAME from STATIONS");
+    q=new RDSqlQuery(sql,false);
+    while(q->next()) {
+      for(unsigned i=0;i<RD_RDVAIRPLAY_LOG_QUAN;i++) {
+	sql=QString("insert into RDAIRPLAY_CHANNELS set ")+
+	  "STATION_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	  QString().sprintf("INSTANCE=%u",i+RD_RDVAIRPLAY_LOG_BASE);
+	q1=new RDSqlQuery(sql,false);
+	delete q1;
+      }
+    }
+    delete q;
+  }
+
 
 
   //

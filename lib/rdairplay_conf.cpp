@@ -112,6 +112,114 @@ void RDAirPlayConf::setStopRml(RDAirPlayConf::Channel chan,QString str) const
 }
 
 
+int RDAirPlayConf::virtualCard(int mach) const
+{
+  int ret=-1;
+  QString sql=QString("select CARD from RDAIRPLAY_CHANNELS where ")+
+    "STATION_NAME=\""+RDEscapeString(air_station)+"\" && "+
+    QString().sprintf("INSTANCE=%d",mach);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(q->first()) {
+    ret=q->value(0).toInt();
+  }
+  delete q;
+
+  return ret;
+}
+
+
+void RDAirPlayConf::setVirtualCard(int mach,int card) const
+{
+  QString sql=QString("update RDAIRPLAY_CHANNELS set ")+
+    QString().sprintf("CARD=%d where ",card)+
+    "STATION_NAME=\""+RDEscapeString(air_station)+"\" && "+
+    QString().sprintf("INSTANCE=%d",mach);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  delete q;
+}
+
+
+int RDAirPlayConf::virtualPort(int mach) const
+{
+  int ret=-1;
+  QString sql=QString("select PORT from RDAIRPLAY_CHANNELS where ")+
+    "STATION_NAME=\""+RDEscapeString(air_station)+"\" && "+
+    QString().sprintf("INSTANCE=%d",mach);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(q->first()) {
+    ret=q->value(0).toInt();
+  }
+  delete q;
+
+  return ret;
+}
+
+
+void RDAirPlayConf::setVirtualPort(int mach,int port) const
+{
+  QString sql=QString("update RDAIRPLAY_CHANNELS set ")+
+    QString().sprintf("PORT=%d where ",port)+
+    "STATION_NAME=\""+RDEscapeString(air_station)+"\" && "+
+    QString().sprintf("INSTANCE=%d",mach);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  delete q;
+}
+
+
+QString RDAirPlayConf::virtualStartRml(int mach) const
+{
+  QString ret;
+  QString sql=QString("select START_RML from RDAIRPLAY_CHANNELS where ")+
+    "STATION_NAME=\""+RDEscapeString(air_station)+"\" && "+
+    QString().sprintf("INSTANCE=%d",mach);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(q->first()) {
+    ret=q->value(0).toString();
+  }
+  delete q;
+
+  return ret;
+}
+
+
+void RDAirPlayConf::setVirtualStartRml(int mach,QString str) const
+{
+  QString sql=QString("update RDAIRPLAY_CHANNELS set ")+
+    "START_RML=\""+RDEscapeString(str)+"\" where "+
+    "STATION_NAME=\""+RDEscapeString(air_station)+"\" && "+
+    QString().sprintf("INSTANCE=%d",mach);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  delete q;
+}
+
+
+QString RDAirPlayConf::virtualStopRml(int mach) const
+{
+  QString ret;
+  QString sql=QString("select STOP_RML from RDAIRPLAY_CHANNELS where ")+
+    "STATION_NAME=\""+RDEscapeString(air_station)+"\" && "+
+    QString().sprintf("INSTANCE=%d",mach);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(q->first()) {
+    ret=q->value(0).toString();
+  }
+  delete q;
+
+  return ret;
+}
+
+
+void RDAirPlayConf::setVirtualStopRml(int mach,QString str) const
+{
+  QString sql=QString("update RDAIRPLAY_CHANNELS set ")+
+    "STOP_RML=\""+RDEscapeString(str)+"\" where "+
+    "STATION_NAME=\""+RDEscapeString(air_station)+"\" && "+
+    QString().sprintf("INSTANCE=%d",mach);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  delete q;
+}
+
+
 RDAirPlayConf::GpioType RDAirPlayConf::gpioType(RDAirPlayConf::Channel chan)
   const
 {

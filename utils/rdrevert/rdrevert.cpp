@@ -271,6 +271,10 @@ void MainObject::Revert(int schema) const
   case 278:
     Revert278();
     break;
+
+  case 279:
+    Revert279();
+    break;
   }
 }
 
@@ -1005,6 +1009,19 @@ void MainObject::Revert278() const
 }
 
 
+void MainObject::Revert279() const
+{
+  QString sql;
+  RDSqlQuery *q;
+
+  sql=QString("delete from RDAIRPLAY_CHANNELS where INSTANCE>=100");
+  q=new RDSqlQuery(sql,false);
+  delete q;
+
+  SetVersion(278);
+}
+
+
 int MainObject::GetVersion() const
 {
   QString sql;
@@ -1051,7 +1068,7 @@ int MainObject::MapSchema(const QString &ver)
   version_map["2.17"]=268;
   version_map["2.18"]=272;
   version_map["2.19"]=275;
-  version_map["2.20"]=278;
+  version_map["2.20"]=279;
 
   //
   // Normalize String
