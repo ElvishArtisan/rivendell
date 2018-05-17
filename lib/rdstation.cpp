@@ -718,6 +718,13 @@ bool RDStation::create(const QString &name,QString *err_msg,
       q=new RDSqlQuery(sql);
       delete q;
     }
+    for(int i=0;i<RD_RDVAIRPLAY_LOG_QUAN;i++) {
+      sql=QString("insert into RDAIRPLAY_CHANNELS set ")+
+	"STATION_NAME=\""+RDEscapeString(name)+"\","+
+	QString().sprintf("INSTANCE=%u",i+RD_RDVAIRPLAY_LOG_BASE);
+      q=new RDSqlQuery(sql);
+      delete q;
+    }
     for(unsigned i=0;i<RD_CUT_EVENT_ID_QUAN;i++) {
       for(unsigned j=0;j<MAX_DECKS;j++) {
 	sql=QString("insert into DECK_EVENTS set ")+
@@ -736,6 +743,13 @@ bool RDStation::create(const QString &name,QString *err_msg,
       sql=QString().sprintf("insert into LOG_MODES set ")+
 	"STATION_NAME=\""+RDEscapeString(name)+"\","+
 	QString().sprintf("MACHINE=%d",i);
+      q=new RDSqlQuery(sql);
+      delete q;
+    }
+    for(int i=0;i<RD_RDVAIRPLAY_LOG_QUAN;i++) {
+      sql=QString().sprintf("insert into LOG_MODES set ")+
+	"STATION_NAME=\""+RDEscapeString(name)+"\","+
+	QString().sprintf("MACHINE=%d",i+RD_RDVAIRPLAY_LOG_BASE);
       q=new RDSqlQuery(sql);
       delete q;
     }
@@ -1744,8 +1758,8 @@ bool RDStation::create(const QString &name,QString *err_msg,
       "UDP_PORT,"+       // 11
       "UDP_STRING,"+     // 12
       "LOG_RML "+        // 13
-      "from LOG_MACHINES where ";
-    "STATION_NAME=\""+RDEscapeString(exemplar)+"\"";
+      "from LOG_MACHINES where "+
+      "STATION_NAME=\""+RDEscapeString(exemplar)+"\"";
     q=new RDSqlQuery(sql,false);
     while(q->next()) {
       sql=QString("insert into LOG_MACHINES set ")+

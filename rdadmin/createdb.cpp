@@ -2426,6 +2426,14 @@ bool InitDb(QString name,QString pwd,QString station_name,RDConfig *config)
       return false;
     }
   }
+  for(unsigned i=0;i<RD_RDVAIRPLAY_LOG_QUAN;i++) {
+    sql=QString("insert into LOG_MODES set ")+
+      "STATION_NAME=\""+RDEscapeString(station_name)+"\","+
+      QString().sprintf("MACHINE=%u",i+RD_RDVAIRPLAY_LOG_BASE);
+    if(!RunQuery(sql)) {
+      return false;
+    }
+  }
   for(unsigned i=0;i<RD_CUT_EVENT_ID_QUAN;i++) {
     for(unsigned j=0;j<MAX_DECKS;j++) {
       sql=QString("insert into DECK_EVENTS set ")+
@@ -8222,6 +8230,20 @@ int UpdateDb(int ver,RDConfig *config)
       }
     }
     delete q;
+  }
+
+  if(ver<280) {
+    sql=QString("select NAME from STATIONS");
+    q=new RDSqlQuery(sql,false);
+    while(q->next()) {
+      for(unsigned i=0;i<RD_RDVAIRPLAY_LOG_QUAN;i++) {
+	sql=QString("insert into LOG_MODES set ")+
+	  "STATION_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	  QString().sprintf("MACHINE=%u",i+RD_RDVAIRPLAY_LOG_BASE);
+	q1=new RDSqlQuery(sql,false);
+	delete q1;
+      }
+    }
   }
 
 

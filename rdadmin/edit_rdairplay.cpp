@@ -53,6 +53,7 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   air_exitpasswd_changed=false;
   air_logmachine=0;
   air_virtual_logmachine=0;
+  air_virtual_logstartmachine=0;
 
   //
   // Fix the Window Size
@@ -842,6 +843,24 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   air_logstartmode_label[1]->setText(tr("Aux 1 Log Startup Mode:"));
   air_logstartmode_label[2]->setText(tr("Aux 2 Log Startup Mode:"));
 
+  air_virtual_logstartsel_box=new QComboBox(this);
+  air_virtual_logstartsel_box->setGeometry(435,638,120,20);
+  connect(air_virtual_logstartsel_box,SIGNAL(activated(int)),
+	  this,SLOT(virtualModeActivatedData(int)));
+  for(int i=0;i<RD_RDVAIRPLAY_LOG_QUAN;i++) {
+    air_virtual_logstartsel_box->
+      insertItem(QString().sprintf("vLog %d",i+RD_RDVAIRPLAY_LOG_BASE+1));
+  }
+  label=new QLabel(":",this);
+  label->setGeometry(555,638,5,20);
+  label->setAlignment(Qt::AlignCenter|Qt::AlignVCenter);
+  air_virtual_logstartmode_box=new QComboBox(this);
+  air_virtual_logstartmode_box->setGeometry(565,638,110,20);
+  air_virtual_logstartmode_box->insertItem(tr("Previous"));
+  air_virtual_logstartmode_box->insertItem(tr("LiveAssist"));
+  air_virtual_logstartmode_box->insertItem(tr("Automatic"));
+  air_virtual_logstartmode_box->insertItem(tr("Manual"));
+
   //
   //  Ok Button
   //
@@ -944,11 +963,13 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
       air_conf->logName(i+RD_RDVAIRPLAY_LOG_BASE);
     air_autorestarts[i+RD_RDVAIRPLAY_LOG_BASE]=
       air_conf->autoRestart(i+RD_RDVAIRPLAY_LOG_BASE);
-    //    air_logstartmode_boxs[i]->setCurrentItem(air_conf->logStartMode(i));
-    air_virtual_cards[i]=air_conf->virtualCard(i);
-    air_virtual_ports[i]=air_conf->virtualPort(i);
-    air_virtual_start_rmls[i]=air_conf->virtualStartRml(i);
-    air_virtual_stop_rmls[i]=air_conf->virtualStopRml(i);
+    air_virtual_cards[i]=air_conf->virtualCard(i+RD_RDVAIRPLAY_LOG_BASE);
+    air_virtual_ports[i]=air_conf->virtualPort(i+RD_RDVAIRPLAY_LOG_BASE);
+    air_virtual_start_rmls[i]=
+      air_conf->virtualStartRml(i+RD_RDVAIRPLAY_LOG_BASE);
+    air_virtual_stop_rmls[i]=air_conf->virtualStopRml(i+RD_RDVAIRPLAY_LOG_BASE);
+    air_virtual_opmodes[i]=air_conf->opMode(i+RD_RDVAIRPLAY_LOG_BASE);
+    air_virtual_logstartmode_box->setCurrentItem((int)air_virtual_opmodes[0]);
   }
   air_virtual_card_sel->setCard(air_virtual_cards[air_virtual_logmachine]);
   air_virtual_card_sel->setPort(air_virtual_ports[air_virtual_logmachine]);
@@ -975,7 +996,7 @@ EditRDAirPlay::~EditRDAirPlay()
 
 QSize EditRDAirPlay::sizeHint() const
 {
-  return QSize(1010,660);
+  return QSize(1010,680);
 } 
 
 
@@ -1065,6 +1086,16 @@ void EditRDAirPlay::virtualLogActivatedData(int vlognum)
     setText(air_virtual_start_rmls[air_virtual_logmachine]);
   air_virtual_stop_rml_edit->
     setText(air_virtual_stop_rmls[air_virtual_logmachine]);
+}
+
+
+void EditRDAirPlay::virtualModeActivatedData(int vlognum)
+{
+  air_virtual_opmodes[air_virtual_logstartmachine]=
+    (RDAirPlayConf::OpMode)air_virtual_logstartmode_box->currentItem();
+  air_virtual_logstartmachine=vlognum;
+  air_virtual_logstartmode_box->
+    setCurrentItem((int)air_virtual_opmodes[air_virtual_logstartmachine]);
 }
 
 
@@ -1229,10 +1260,14 @@ void EditRDAirPlay::okData()
 			 air_startlogs[i+RD_RDVAIRPLAY_LOG_BASE]);
     air_conf->setAutoRestart(i+RD_RDVAIRPLAY_LOG_BASE,
 			     air_autorestarts[i+RD_RDVAIRPLAY_LOG_BASE]);
-    air_conf->setVirtualCard(i,air_virtual_cards[i]);
-    air_conf->setVirtualPort(i,air_virtual_ports[i]);
-    air_conf->setVirtualStartRml(i,air_virtual_start_rmls[i]);
-    air_conf->setVirtualStopRml(i,air_virtual_stop_rmls[i]);
+    air_conf->setVirtualCard(i+RD_RDVAIRPLAY_LOG_BASE,air_virtual_cards[i]);
+    air_conf->setVirtualPort(i+RD_RDVAIRPLAY_LOG_BASE,air_virtual_ports[i]);
+    air_conf->
+      setVirtualStartRml(i+RD_RDVAIRPLAY_LOG_BASE,air_virtual_start_rmls[i]);
+    air_conf->
+      setVirtualStopRml(i+RD_RDVAIRPLAY_LOG_BASE,air_virtual_stop_rmls[i]);
+    virtualModeActivatedData(air_virtual_logstartmachine);
+    air_conf->setOpMode(i+RD_RDVAIRPLAY_LOG_BASE,air_virtual_opmodes[i]);
   }
   air_conf->setSkinPath(air_skin_edit->text());
   done(0);

@@ -57,6 +57,7 @@ class EditRDAirPlay : public QDialog
   void exitPasswordChangedData(const QString &str);
   void logActivatedData(int lognum);
   void virtualLogActivatedData(int vlognum);
+  void virtualModeActivatedData(int vlognum);
   void startModeChangedData(int mode);
   void selectData();
   void nownextData();
@@ -145,6 +146,10 @@ class EditRDAirPlay : public QDialog
   QComboBox *air_modecontrol_box;
   QLabel *air_logstartmode_label[RDAIRPLAY_LOG_QUANTITY];
   QComboBox *air_logstartmode_box[RDAIRPLAY_LOG_QUANTITY];
+  QComboBox *air_virtual_logstartsel_box;
+  QComboBox *air_virtual_logstartmode_box;
+  int air_virtual_logstartmachine;
+  RDAirPlayConf::OpMode air_virtual_opmodes[RD_RDVAIRPLAY_LOG_QUAN];
 };
 
 

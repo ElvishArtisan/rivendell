@@ -275,6 +275,10 @@ void MainObject::Revert(int schema) const
   case 279:
     Revert279();
     break;
+
+  case 280:
+    Revert280();
+    break;
   }
 }
 
@@ -1022,6 +1026,19 @@ void MainObject::Revert279() const
 }
 
 
+void MainObject::Revert280() const
+{
+  QString sql;
+  RDSqlQuery *q;
+
+  sql=QString("delete from LOG_MODES where MACHINE>=100");
+  q=new RDSqlQuery(sql,false);
+  delete q;
+
+  SetVersion(279);
+}
+
+
 int MainObject::GetVersion() const
 {
   QString sql;
@@ -1068,7 +1085,7 @@ int MainObject::MapSchema(const QString &ver)
   version_map["2.17"]=268;
   version_map["2.18"]=272;
   version_map["2.19"]=275;
-  version_map["2.20"]=279;
+  version_map["2.20"]=280;
 
   //
   // Normalize String
