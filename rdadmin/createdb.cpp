@@ -1087,51 +1087,13 @@ bool CreateDb(QString name,QString pwd,RDConfig *config)
     "ARTIST_TEMPLATE char(64) default '%a',"+
     "OUTCUE_TEMPLATE char(64) default '%o',"+
     "DESCRIPTION_TEMPLATE char(64) default '%i',"+
-    "UDP_ADDR0 char(255),"+
-    "UDP_PORT0 int unsigned,"+
-    "UDP_STRING0 char(255),"+
-    "LOG_RML0 char(255),"+
-    "UDP_ADDR1 char(255),"+
-    "UDP_PORT1 int unsigned,"+
-    "UDP_STRING1 char(255),"+
-    "LOG_RML1 char(255),"+
-    "UDP_ADDR2 char(255),"+
-    "UDP_PORT2 int unsigned,"+
-    "UDP_STRING2 char(255),"+
-    "LOG_RML2 char(255),"+
     "EXIT_CODE int default 0,"+
+    "VIRTUAL_EXIT_CODE int default 0,"+
     "EXIT_PASSWORD char(41) default \"\","+
     "SKIN_PATH char(255) default \""+
     RDEscapeString(RD_DEFAULT_RDAIRPLAY_SKIN)+"\","+
     "SHOW_COUNTERS enum('N','Y') default 'N',"+
     "AUDITION_PREROLL int default 10000,"+
-    "LOG0_START_MODE int default 0,"+
-    "LOG0_AUTO_RESTART enum('N','Y') default 'N',"+
-    "LOG0_LOG_NAME char(64),"+
-    "LOG0_CURRENT_LOG char(64),"+
-    "LOG0_RUNNING enum('N','Y') default 'N',"+
-    "LOG0_LOG_ID int default -1,"+
-    "LOG0_LOG_LINE int default -1,"+
-    "LOG0_NOW_CART int unsigned default 0,"+
-    "LOG0_NEXT_CART int unsigned default 0,"+
-    "LOG1_START_MODE int default 0,"+
-    "LOG1_AUTO_RESTART enum('N','Y') default 'N',"+
-    "LOG1_LOG_NAME char(64),"+
-    "LOG1_CURRENT_LOG char(64),"+
-    "LOG1_RUNNING enum('N','Y') default 'N',"+
-    "LOG1_LOG_ID int default -1,"+
-    "LOG1_LOG_LINE int default -1,"+
-    "LOG1_NOW_CART int unsigned default 0,"+
-    "LOG1_NEXT_CART int unsigned default 0,"+
-    "LOG2_START_MODE int default 0,"+
-    "LOG2_AUTO_RESTART enum('N','Y') default 'N',"+
-    "LOG2_LOG_NAME char(64),"+
-    "LOG2_CURRENT_LOG char(64),"+
-    "LOG2_RUNNING enum('N','Y') default 'N',"+
-    "LOG2_LOG_ID int default -1,"+
-    "LOG2_LOG_LINE int default -1,"+
-    "LOG2_NOW_CART int unsigned default 0,"+
-    "LOG2_NEXT_CART int unsigned default 0,"+
     "index STATION_IDX (STATION))"+
     config->createTablePostfix();
   if(!RunQuery(sql)) {
@@ -8246,6 +8208,12 @@ int UpdateDb(int ver,RDConfig *config)
     }
   }
 
+  if(ver<281) {
+    sql=QString("alter table RDAIRPLAY add column ")+
+      "VIRTUAL_EXIT_CODE int default 0 after EXIT_CODE";
+    q=new RDSqlQuery(sql,false);
+    delete q;
+  }
 
 
   //

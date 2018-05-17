@@ -139,6 +139,8 @@ class RDAirPlayConf
   void setLogRml(int logno,const QString &str) const;
   RDAirPlayConf::ExitCode exitCode() const;
   void setExitCode(RDAirPlayConf::ExitCode code) const;
+  RDAirPlayConf::ExitCode virtualExitCode() const;
+  void setVirtualExitCode(RDAirPlayConf::ExitCode code) const;
   bool exitPasswordValid(const QString &passwd) const;
   void setExitPassword(const QString &passwd) const;
   QString skinPath() const;

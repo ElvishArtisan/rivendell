@@ -759,6 +759,19 @@ void RDAirPlayConf::setExitCode(RDAirPlayConf::ExitCode code) const
 }
 
 
+RDAirPlayConf::ExitCode RDAirPlayConf::virtualExitCode() const
+{
+  return (RDAirPlayConf::ExitCode)
+    RDGetSqlValue(air_tablename,"ID",air_id,"VIRTUAL_EXIT_CODE").toInt();
+}
+
+
+void RDAirPlayConf::setVirtualExitCode(RDAirPlayConf::ExitCode code) const
+{
+  SetRow("VIRTUAL_EXIT_CODE",(int)code);
+}
+
+
 bool RDAirPlayConf::exitPasswordValid(const QString &passwd) const
 {
   QString sql;

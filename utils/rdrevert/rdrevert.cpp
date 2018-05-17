@@ -279,6 +279,10 @@ void MainObject::Revert(int schema) const
   case 280:
     Revert280();
     break;
+
+  case 281:
+    Revert281();
+    break;
   }
 }
 
@@ -1039,6 +1043,19 @@ void MainObject::Revert280() const
 }
 
 
+void MainObject::Revert281() const
+{
+  QString sql;
+  RDSqlQuery *q;
+
+  sql=QString("alter table RDAIRPLAY drop column VIRTUAL_EXIT_CODE");
+  q=new RDSqlQuery(sql,false);
+  delete q;
+
+  SetVersion(280);
+}
+
+
 int MainObject::GetVersion() const
 {
   QString sql;
@@ -1085,7 +1102,7 @@ int MainObject::MapSchema(const QString &ver)
   version_map["2.17"]=268;
   version_map["2.18"]=272;
   version_map["2.19"]=275;
-  version_map["2.20"]=280;
+  version_map["2.20"]=281;
 
   //
   // Normalize String

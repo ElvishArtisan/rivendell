@@ -29,12 +29,26 @@
 #include <rdapplication.h>
 #include <rdcheck_daemons.h>
 #include <rdconf.h>
+#include <rddatedecode.h>
 #include <rddbheartbeat.h>
 #include <rdescape_string.h>
 #include <rdmixer.h>
 #include <rdweb.h>
 
 #include "rdvairplay.h"
+
+bool global_exiting=false;
+
+void SigHandler(int signo)
+{
+  switch(signo) {
+  case SIGINT:
+  case SIGTERM:
+    global_exiting=true;
+    break;
+  }
+}
+
 
 MainObject::MainObject(QObject *parent)
   :QObject(parent)
@@ -57,6 +71,11 @@ MainObject::MainObject(QObject *parent)
   RDInitializeDaemons();
 
   //
+  // Startup DateTime
+  //
+  air_startup_datetime=QDateTime::currentDateTime();
+
+  //
   // Open the Database
   //
   rda=new RDApplication("rdvairplay","rdvairplay",RDVAIRPLAY_USAGE,this);
@@ -64,6 +83,8 @@ MainObject::MainObject(QObject *parent)
     fprintf(stderr,"rdvairplay: %s\n",(const char *)err_msg);
     exit(1);
   }
+  air_previous_exit_code=rda->airplayConf()->virtualExitCode();
+  rda->airplayConf()->setVirtualExitCode(RDAirPlayConf::ExitDirty);
 
   //
   // Read Command Options
@@ -90,7 +111,8 @@ MainObject::MainObject(QObject *parent)
   //
   // RIPC Connection
   //
-  //  connect(rda->ripc(),SIGNAL(connected(bool)),this,SLOT(ripcConnected(bool)));
+  connect(rda->ripc(),SIGNAL(connected(bool)),
+	  this,SLOT(ripcConnectedData(bool)));
   connect(rda,SIGNAL(userChanged()),this,SLOT(userData()));
   connect(rda->ripc(),SIGNAL(rmlReceived(RDMacro *)),
 	  this,SLOT(rmlReceivedData(RDMacro *)));
@@ -115,7 +137,6 @@ MainObject::MainObject(QObject *parent)
   QSignalMapper *reload_mapper=new QSignalMapper(this);
   connect(reload_mapper,SIGNAL(mapped(int)),this,SLOT(logReloadedData(int)));
   QSignalMapper *rename_mapper=new QSignalMapper(this);
-  //  connect(rename_mapper,SIGNAL(mapped(int)),this,SLOT(logRenamedData(int)));
   QString default_svcname=rda->airplayConf()->defaultSvc();
   for(int i=0;i<RD_RDVAIRPLAY_LOG_QUAN;i++) {
     air_logs[i]=new RDLogPlay(i+RD_RDVAIRPLAY_LOG_BASE,air_event_player,
@@ -182,17 +203,161 @@ MainObject::MainObject(QObject *parent)
     }
   }
   delete q;
+
+  //
+  // Exit Timer
+  //
+  air_exit_timer=new QTimer(this);
+  connect(air_exit_timer, SIGNAL(timeout()),this,SLOT(exitData()));
+  air_exit_timer->start(100);
+  ::signal(SIGINT,SigHandler);
+  ::signal(SIGTERM,SigHandler);
+}
+
+
+void MainObject::ripcConnectedData(bool state)
+{
+  QHostAddress addr;
+  QString sql;
+  RDSqlQuery *q;
+  RDMacro rml;
+  rml.setRole(RDMacro::Cmd);
+  addr.setAddress("127.0.0.1");
+  rml.setAddress(addr);
+  rml.setEchoRequested(false);
+
+  //
+  // Get Onair Flag State
+  //
+  rda->ripc()->sendOnairFlag();
+
+  //
+  // Load Initial Logs
+  //
+  for(unsigned i=0;i<RD_RDVAIRPLAY_LOG_QUAN;i++) {
+    int mach=i+RD_RDVAIRPLAY_LOG_BASE;
+    switch(rda->airplayConf()->startMode(mach)) {
+    case RDAirPlayConf::StartEmpty:
+      break;
+	    
+    case RDAirPlayConf::StartPrevious:
+      air_start_lognames[i]=RDDateTimeDecode(rda->airplayConf()->currentLog(mach),
+			    air_startup_datetime,rda->station(),rda->config());
+      if(!air_start_lognames[i].isEmpty()) {
+	if(air_previous_exit_code==RDAirPlayConf::ExitDirty) {
+	  if((air_start_lines[i]=rda->airplayConf()->logCurrentLine(mach))>=0) {
+	    air_start_starts[i]=rda->airplayConf()->autoRestart(mach)&&
+	      rda->airplayConf()->logRunning(mach);
+	  }
+	}
+	else {
+	  air_start_lines[i]=0;
+	  air_start_starts[i]=false;
+	}
+      }
+      break;
+
+    case RDAirPlayConf::StartSpecified:
+      air_start_lognames[i]=RDDateTimeDecode(rda->airplayConf()->logName(mach),
+			       air_startup_datetime,rda->station(),
+			       rda->config());
+      if(!air_start_lognames[i].isEmpty()) {
+	if(air_previous_exit_code==RDAirPlayConf::ExitDirty) {
+	  if(air_start_lognames[i]==rda->airplayConf()->currentLog(mach)) {
+	    if((air_start_lines[i]=rda->airplayConf()->logCurrentLine(mach))>=0) {
+	      air_start_starts[i]=rda->airplayConf()->autoRestart(mach)&&
+		rda->airplayConf()->logRunning(mach);
+	    }
+	    else {
+	      air_start_lines[i]=0;
+	      air_start_starts[i]=false;
+	    }
+	  }
+	}
+      }
+      break;
+    }
+    if(!air_start_lognames[i].isEmpty()) {
+      sql=QString("select NAME from LOGS where ")+
+	"NAME=\""+RDEscapeString(air_start_lognames[i])+"\"";
+      q=new RDSqlQuery(sql);
+      if(q->first()) {
+	rml.setCommand(RDMacro::LL);  // Load Log
+	rml.setArgQuantity(2);
+	rml.setArg(0,mach+1);
+	rml.setArg(1,air_start_lognames[i]);
+	rda->ripc()->sendRml(&rml);
+      }
+      else {
+	rda->log(RDConfig::LogWarning,QString().sprintf("vlog %d: ",mach+1)+
+		 "log \""+air_start_lognames[i]+"\" doesn't exist");
+      }
+      delete q;
+    }
+  }
 }
 
 
 void MainObject::userData()
 {
-  printf("User connected!\n");
+  //  printf("User connected!\n");
 }
 
 
 void MainObject::logReloadedData(int log)
 {
+  QHostAddress addr;
+  int mach=log+RD_RDVAIRPLAY_LOG_BASE;
+
+  //
+  // Load Initial Log
+  //
+  if(air_start_lognames[log].isEmpty()) {
+    return;
+  }
+  RDMacro rml;
+  rml.setRole(RDMacro::Cmd);
+  addr.setAddress("127.0.0.1");
+  rml.setAddress(addr);
+  rml.setEchoRequested(false);
+
+  if(air_start_lines[log]<air_logs[log]->size()) {
+    rml.setCommand(RDMacro::MN);  // Make Next
+    rml.setArgQuantity(2);
+    rml.setArg(0,mach+1);
+    rml.setArg(1,air_start_lines[log]);
+    rda->ripc()->sendRml(&rml);
+    
+    if(air_start_starts[log]) {
+      rml.setCommand(RDMacro::PN);  // Start Next
+      rml.setArgQuantity(1);
+      rml.setArg(0,mach+1);
+      rda->ripc()->sendRml(&rml);
+    }
+  }
+  else {
+    rda->log(RDConfig::LogWarning,QString().sprintf("vlog %d: ",mach+1)+
+	     QString().sprintf("line %d doesn't exist ",air_start_lines[log])+
+	     "in log \""+air_start_lognames[log]+"\"");
+  }
+  air_start_lognames[log]="";
+}
+
+
+void MainObject::exitData()
+{
+  if(global_exiting) {
+    for(unsigned i=0;i<air_plugin_hosts.size();i++) {
+      air_plugin_hosts[i]->unload();
+    }
+    for(int i=0;i<RD_RDVAIRPLAY_LOG_QUAN;i++) {
+      delete air_logs[i];
+    }
+    rda->airplayConf()->setVirtualExitCode(RDAirPlayConf::ExitClean);
+    rda->log(RDConfig::LogInfo,"RDVAirPlay exiting");
+    air_lock->unlock();
+    exit(0);
+  }
 }
 
 
@@ -207,22 +372,7 @@ void MainObject::SetAutoMode(int index)
 
 void MainObject::SetLiveAssistMode(int index)
 {
-  /*
-  if(mach==0) {
-    air_pie_counter->setOpMode(RDAirPlayConf::LiveAssist);
-  }
-  air_mode_display->setOpMode(mach,RDAirPlayConf::LiveAssist);
-  air_op_mode[mach]=RDAirPlayConf::LiveAssist;
-  rda->airplayConf()->setOpMode(mach,RDAirPlayConf::LiveAssist);
-  */
   air_logs[index]->setOpMode(RDAirPlayConf::LiveAssist);
-  /*
-  air_log_list[mach]->setOpMode(RDAirPlayConf::LiveAssist);
-  if(mach==0) {
-    air_button_list->setOpMode(RDAirPlayConf::LiveAssist); 
-    air_post_counter->setDisabled(true);
-  }
-  */
   rda->log(RDConfig::LogInfo,
 	   QString().sprintf("log machine %d mode set to LIVE ASSIST",
 			     index+RD_RDVAIRPLAY_LOG_BASE+1));

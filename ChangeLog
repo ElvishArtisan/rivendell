@@ -16838,3 +16838,9 @@
 	* Added an 'RLM_VLOG_QUANTITY' define to 'rlm.h'.
 	* Updated 'RLM_VERSION' to 18 in 'rlm.h'.
 	* Updated the 'rlm_icecast2' plug-in to support vlogs.
+2018-05-17 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'RDAIRPLAY.VIRTUAL_EXIT_CODE' field to the database.
+	* Incremented the database version to 281.
+	* Added 'RDAirPlayConf::virtualExitCode()' and
+	'RDAirPlayConf::setVirtualExitCode()' methods.
+	* Implemented Start/Stop settings for vlogs.
