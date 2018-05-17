@@ -16834,3 +16834,7 @@
 	* Fixed a bug in rdvairplay(1) that broke log chain-to events.
 	* Enabled RLMs in rdvairplay(1).
 	* Modified the 'rlm_test' RLM to support vLogs.
+2018-05-17 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RLM_VLOG_QUANTITY' define to 'rlm.h'.
+	* Updated 'RLM_VERSION' to 18 in 'rlm.h'.
+	* Updated the 'rlm_icecast2' plug-in to support vlogs.
