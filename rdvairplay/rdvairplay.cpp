@@ -30,6 +30,7 @@
 #include <rdcheck_daemons.h>
 #include <rdconf.h>
 #include <rddbheartbeat.h>
+#include <rdescape_string.h>
 #include <rdmixer.h>
 #include <rdweb.h>
 
@@ -117,9 +118,12 @@ MainObject::MainObject(QObject *parent)
   //  connect(rename_mapper,SIGNAL(mapped(int)),this,SLOT(logRenamedData(int)));
   QString default_svcname=rda->airplayConf()->defaultSvc();
   for(int i=0;i<RD_RDVAIRPLAY_LOG_QUAN;i++) {
-    air_logs[i]=new RDLogPlay(i,air_event_player,air_nownext_socket,"",
-			     &air_plugin_hosts);
+    air_logs[i]=new RDLogPlay(i+RD_RDVAIRPLAY_LOG_BASE,air_event_player,
+			      air_nownext_socket,"",&air_plugin_hosts);
     air_logs[i]->setDefaultServiceName(default_svcname);
+    //
+    // FIXME: Add the ability to specify default carts for vLogs!
+    //
     air_logs[i]->setNowCart(rda->airplayConf()->logNowCart(i));
     air_logs[i]->setNextCart(rda->airplayConf()->logNextCart(i));
     reload_mapper->setMapping(air_logs[i],i);
@@ -132,15 +136,52 @@ MainObject::MainObject(QObject *parent)
     //	    this,SLOT(logChannelStartedData(int,int,int,int)));
     //    connect(air_logs[i],SIGNAL(channelStopped(int,int,int,int)),
     //	    this,SLOT(logChannelStoppedData(int,int,int,int)));
-    int chans[2]={0,0};
+    int cards[2]={0,0};
+    cards[0]=rda->airplayConf()->virtualCard(i+RD_RDVAIRPLAY_LOG_BASE);
+    cards[1]=rda->airplayConf()->virtualCard(i+RD_RDVAIRPLAY_LOG_BASE);
     int ports[2]={0,0};
+    ports[0]=rda->airplayConf()->virtualPort(i+RD_RDVAIRPLAY_LOG_BASE);
+    ports[1]=rda->airplayConf()->virtualPort(i+RD_RDVAIRPLAY_LOG_BASE);
     QString start_rml[2]={"",""};
+    start_rml[0]=rda->airplayConf()->virtualStartRml(i+RD_RDVAIRPLAY_LOG_BASE);
+    start_rml[1]=rda->airplayConf()->virtualStartRml(i+RD_RDVAIRPLAY_LOG_BASE);
     QString stop_rml[2]={"",""};
-    air_logs[i]->setChannels(chans,ports,start_rml,stop_rml);
+    stop_rml[0]=rda->airplayConf()->virtualStopRml(i+RD_RDVAIRPLAY_LOG_BASE);
+    stop_rml[1]=rda->airplayConf()->virtualStopRml(i+RD_RDVAIRPLAY_LOG_BASE);
+    air_logs[i]->setChannels(cards,ports,start_rml,stop_rml);
+    air_logs[i]->
+      setOpMode(rda->airplayConf()->opMode(i+RD_RDVAIRPLAY_LOG_BASE));
   }
   //  connect(air_logs[0],SIGNAL(transportChanged()),
   //	  this,SLOT(transportChangedData()));
   
+  //
+  // Load Plugins
+  //
+  QString sql;
+  RDSqlQuery *q;
+
+  sql=QString("select ")+
+    "PLUGIN_PATH,"+
+    "PLUGIN_ARG "+
+    "from NOWNEXT_PLUGINS where "+
+    "(STATION_NAME=\""+RDEscapeString(rda->config()->stationName())+"\")&&"+
+    "(LOG_MACHINE=0)";
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    air_plugin_hosts.
+      push_back(new RDRLMHost(q->value(0).toString(),q->value(1).toString(),
+			      air_nownext_socket,this));
+    rda->log(RDConfig::LogInfo,QString().
+	     sprintf("Loading RLM \"%s\"",
+		     (const char *)q->value(0).toString()));
+    if(!air_plugin_hosts.back()->load()) {
+      rda->log(RDConfig::LogWarning,QString().
+	       sprintf("Failed to load RLM \"%s\"",
+		       (const char *)q->value(0).toString()));
+    }
+  }
+  delete q;
 }
 
 

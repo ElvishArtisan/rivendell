@@ -34,6 +34,12 @@
 #include "rdnownext.h"
 #include "rdsvc.h"
 
+//
+// Debug Settings
+//
+//#define SHOW_SLOTS
+//#define SHOW_METER_SLOTS
+
 RDLogPlay::RDLogPlay(int id,RDEventPlayer *player,QSocketDevice *nn_sock,
 		     QString logname,std::vector<RDRLMHost *> *rlm_hosts,
 		     QObject *parent)

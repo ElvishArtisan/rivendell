@@ -87,17 +87,22 @@ void rlm_test_RLMPadDataSent(void *ptr,const struct rlm_svc *svc,
     break;
   }
   switch(log->log_mach) {
-    case 0:
-      printf(" -- On Main Log ---------------------------------------------\n");
-      break;
+  case 0:
+    printf(" -- On Main Log ---------------------------------------------\n");
+    break;
 
-    case 1:
-      printf(" -- On Aux 1 Log --------------------------------------------\n");
-      break;
+  case 1:
+    printf(" -- On Aux 1 Log --------------------------------------------\n");
+    break;
 
-    case 2:
-      printf(" -- On Aux 2 Log --------------------------------------------\n");
-      break;
+  case 2:
+    printf(" -- On Aux 2 Log --------------------------------------------\n");
+    break;
+
+  default:
+    printf(" -- On vLog %d --------------------------------------------\n",
+	   log->log_mach+1);
+    break;
   }
   printf("Playing NOW\n");
   printf("    Cart number: %06u\n",now->rlm_cartnum);

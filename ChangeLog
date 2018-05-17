@@ -16830,3 +16830,7 @@
 	* Incremented the database version to 280.
 	* Added a control for setting vLog start modes to the 'Log Mode
 	Control' section of the 'Configure RDAirPlay' dialog in rdadmin(1).
+2018-05-17 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdvairplay(1) that broke log chain-to events.
+	* Enabled RLMs in rdvairplay(1).
+	* Modified the 'rlm_test' RLM to support vLogs.
