@@ -16844,3 +16844,5 @@
 	* Added 'RDAirPlayConf::virtualExitCode()' and
 	'RDAirPlayConf::setVirtualExitCode()' methods.
 	* Implemented Start/Stop settings for vlogs.
+2018-05-17 Fred Gleason <fredg@paravelsystems.com>
+	* Added rdvairplay(1) to the 'rivendell' service.

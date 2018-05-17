@@ -78,6 +78,7 @@ function StartDaemons {
 
 function StopDaemons {
   killall rdimport > /dev/null 2> /dev/null
+  killall rdvairplay > /dev/null 2> /dev/null
   if [ -f /var/run/rivendell/rdcatchd.pid ] ; then
     kill `cat /var/run/rivendell/rdcatchd.pid` > /dev/null 2> /dev/null
   fi
