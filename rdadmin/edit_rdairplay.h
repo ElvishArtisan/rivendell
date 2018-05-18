@@ -2,7 +2,7 @@
 //
 // Edit an RDAirPlay Configuration
 //
-//   (C) Copyright 2002-2010,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2010,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -56,6 +56,8 @@ class EditRDAirPlay : public QDialog
   void editGpiosData(int num);
   void exitPasswordChangedData(const QString &str);
   void logActivatedData(int lognum);
+  void virtualLogActivatedData(int vlognum);
+  void virtualModeActivatedData(int vlognum);
   void startModeChangedData(int mode);
   void selectData();
   void nownextData();
@@ -77,8 +79,16 @@ class EditRDAirPlay : public QDialog
   QLabel *air_stop_rml_label[RDAirPlayConf::LastChannel];
   QLineEdit *air_stop_rml_edit[RDAirPlayConf::LastChannel];
   QPushButton *air_channel_button[RDAirPlayConf::LastChannel];
-  //  QLabel *air_startup_label;
-  //  QComboBox *air_startup_box;
+  QComboBox *air_virtual_machine_box;
+  RDCardSelector *air_virtual_card_sel;
+  QLabel *air_virtual_start_rml_label;
+  QLineEdit *air_virtual_start_rml_edit;
+  QLabel *air_virtual_stop_rml_label;
+  QLineEdit *air_virtual_stop_rml_edit;
+  int air_virtual_cards[RD_RDVAIRPLAY_LOG_QUAN];
+  int air_virtual_ports[RD_RDVAIRPLAY_LOG_QUAN];
+  QString air_virtual_start_rmls[RD_RDVAIRPLAY_LOG_QUAN];
+  QString air_virtual_stop_rmls[RD_RDVAIRPLAY_LOG_QUAN];
   QLabel *air_segue_label;
   QLineEdit *air_segue_edit;
   QLabel *air_trans_label;
@@ -117,15 +127,16 @@ class EditRDAirPlay : public QDialog
   QLineEdit *air_exitpasswd_edit;
   bool air_exitpasswd_changed;
   int air_logmachine;
+  int air_virtual_logmachine;
   QComboBox *air_logmachine_box;
   QComboBox *air_startmode_box;
-  RDAirPlayConf::StartMode air_startmode[RDAIRPLAY_LOG_QUANTITY];
+  QMap<int,RDAirPlayConf::StartMode> air_startmodes;
   QLineEdit *air_startlog_edit;
   QLabel *air_startlog_label;
   QPushButton *air_startlog_button;
-  QString air_startlog[RDAIRPLAY_LOG_QUANTITY];
+  QMap<int,QString> air_startlogs;
   QCheckBox *air_autorestart_box;
-  bool air_autorestart[RDAIRPLAY_LOG_QUANTITY];
+  QMap<int,bool> air_autorestarts;
   QLabel *air_autorestart_label;
   QLineEdit *air_skin_edit;
   QLineEdit *air_title_template_edit;
@@ -135,6 +146,10 @@ class EditRDAirPlay : public QDialog
   QComboBox *air_modecontrol_box;
   QLabel *air_logstartmode_label[RDAIRPLAY_LOG_QUANTITY];
   QComboBox *air_logstartmode_box[RDAIRPLAY_LOG_QUANTITY];
+  QComboBox *air_virtual_logstartsel_box;
+  QComboBox *air_virtual_logstartmode_box;
+  int air_virtual_logstartmachine;
+  RDAirPlayConf::OpMode air_virtual_opmodes[RD_RDVAIRPLAY_LOG_QUAN];
 };
 
 

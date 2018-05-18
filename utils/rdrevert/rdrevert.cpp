@@ -267,6 +267,22 @@ void MainObject::Revert(int schema) const
   case 277:
     Revert277();
     break;
+
+  case 278:
+    Revert278();
+    break;
+
+  case 279:
+    Revert279();
+    break;
+
+  case 280:
+    Revert280();
+    break;
+
+  case 281:
+    Revert281();
+    break;
   }
 }
 
@@ -859,6 +875,187 @@ void MainObject::Revert277() const
 }
 
 
+void MainObject::Revert278() const
+{
+  QString sql;
+  RDSqlQuery *q;
+  RDSqlQuery *q1;
+
+  for(int i=2;i>=0;i--) {
+    sql=QString("alter table RDAIRPLAY add column ")+
+      QString().sprintf("LOG_RML%d char(255) after DESCRIPTION_TEMPLATE",i);
+    q=new RDSqlQuery(sql,false);
+    delete q;
+
+    sql=QString("alter table RDAIRPLAY add column ")+
+      QString().sprintf("UDP_STRING%d char(255) after DESCRIPTION_TEMPLATE",i);
+    q=new RDSqlQuery(sql,false);
+    delete q;
+
+    sql=QString("alter table RDAIRPLAY add column ")+
+      QString().sprintf("UDP_PORT%d int unsigned after DESCRIPTION_TEMPLATE",i);
+    q=new RDSqlQuery(sql,false);
+    delete q;
+
+    sql=QString("alter table RDAIRPLAY add column ")+
+      QString().sprintf("UDP_ADDR%d char(255) after DESCRIPTION_TEMPLATE",i);
+    q=new RDSqlQuery(sql,false);
+    delete q;
+
+    sql=QString("alter table RDAIRPLAY add column ")+
+      QString().sprintf("LOG%d_START_MODE int default 0 ",i)+
+      "after AUDITION_PREROLL";
+    q=new RDSqlQuery(sql,false);
+    delete q;
+
+    sql=QString("alter table RDAIRPLAY add column ")+
+      QString().sprintf("LOG%d_NEXT_CART int unsigned default 0 ",i)+
+      "after AUDITION_PREROLL";
+    q=new RDSqlQuery(sql,false);
+    delete q;
+
+    sql=QString("alter table RDAIRPLAY add column ")+
+      QString().sprintf("LOG%d_NOW_CART int unsigned default 0 ",i)+
+      "after AUDITION_PREROLL";
+    q=new RDSqlQuery(sql,false);
+    delete q;
+
+    sql=QString("alter table RDAIRPLAY add column ")+
+      QString().sprintf("LOG%d_LOG_LINE int default -1 ",i)+
+      "after AUDITION_PREROLL";
+    q=new RDSqlQuery(sql,false);
+    delete q;
+
+    sql=QString("alter table RDAIRPLAY add column ")+
+      QString().sprintf("LOG%d_LOG_ID int default -1 ",i)+
+      "after AUDITION_PREROLL";
+    q=new RDSqlQuery(sql,false);
+    delete q;
+
+    sql=QString("alter table RDAIRPLAY add column ")+
+      QString().sprintf("LOG%d_RUNNING enum('N','Y') default 'N' ",i)+
+      "after AUDITION_PREROLL";
+    q=new RDSqlQuery(sql,false);
+    delete q;
+
+    sql=QString("alter table RDAIRPLAY add column ")+
+      QString().sprintf("LOG%d_CURRENT_LOG char(64) ",i)+
+      "after AUDITION_PREROLL";
+    q=new RDSqlQuery(sql,false);
+    delete q;
+
+    sql=QString("alter table RDAIRPLAY add column ")+
+      QString().sprintf("LOG%d_LOG_NAME char(64) ",i)+
+      "after AUDITION_PREROLL";
+    q=new RDSqlQuery(sql,false);
+    delete q;
+
+    sql=QString("alter table RDAIRPLAY add column ")+
+      QString().sprintf("LOG%d_AUTO_RESTART enum('N','Y') default 'N' ",i)+
+      "after AUDITION_PREROLL";
+    q=new RDSqlQuery(sql,false);
+    delete q;
+  }
+
+  sql=QString("select ")+
+    "STATION_NAME,"+   // 00
+    "MACHINE,"+        // 01
+    "START_MODE,"+     // 02
+    "AUTO_RESTART,"+   // 03
+    "LOG_NAME,"+       // 04
+    "CURRENT_LOG,"+    // 05
+    "RUNNING,"+        // 06
+    "LOG_ID,"+         // 07
+    "LOG_LINE,"+       // 08
+    "NOW_CART,"+       // 09
+    "NEXT_CART,"+      // 10
+    "UDP_ADDR,"+       // 11
+    "UDP_PORT,"+       // 12
+    "UDP_STRING,"+     // 13
+    "LOG_RML "+        // 14
+    "from LOG_MACHINES";
+  q=new RDSqlQuery(sql,false);
+  while(q->next()) {
+    sql=QString("update RDAIRPLAY set ")+
+      QString().sprintf("UDP_ADDR%d=\"",q->value(1).toInt())+
+      RDEscapeString(q->value(11).toString())+"\","+
+      QString().sprintf("UDP_PORT%d=%u,",
+			q->value(1).toInt(),q->value(12).toUInt())+
+      QString().sprintf("UDP_STRING%d=\"",q->value(1).toInt())+
+      RDEscapeString(q->value(13).toString())+"\","+
+      QString().sprintf("LOG_RML%d=\"",q->value(1).toInt())+
+      RDEscapeString(q->value(14).toString())+"\","+
+      QString().sprintf("LOG%d_START_MODE=%d,",
+			q->value(1).toInt(),q->value(2).toInt())+
+      QString().sprintf("LOG%d_AUTO_RESTART=\"",q->value(1).toInt())+
+      RDEscapeString(q->value(3).toString())+"\","+
+      QString().sprintf("LOG%d_LOG_NAME=\"",q->value(1).toInt())+
+      RDEscapeString(q->value(4).toString())+"\","+
+      QString().sprintf("LOG%d_CURRENT_LOG=\"",q->value(1).toInt())+
+      RDEscapeString(q->value(5).toString())+"\","+
+      QString().sprintf("LOG%d_RUNNING=\"",q->value(1).toInt())+
+      RDEscapeString(q->value(6).toString())+"\","+
+      QString().sprintf("LOG%d_LOG_ID=%d,",
+			q->value(1).toInt(),q->value(7).toInt())+
+      QString().sprintf("LOG%d_LOG_LINE=%d,",
+			q->value(1).toInt(),q->value(8).toInt())+
+      QString().sprintf("LOG%d_NOW_CART=%d,",
+			q->value(1).toInt(),q->value(9).toInt())+
+      QString().sprintf("LOG%d_NEXT_CART=%d ",
+			q->value(1).toInt(),q->value(10).toInt())+
+      "where STATION=\""+RDEscapeString(q->value(0).toString())+"\"";
+    q1=new RDSqlQuery(sql,false);
+    delete q1;
+  }
+  delete q;
+
+  sql=QString("drop table LOG_MACHINES");
+  q=new RDSqlQuery(sql,false);
+  delete q;
+
+  SetVersion(277);
+}
+
+
+void MainObject::Revert279() const
+{
+  QString sql;
+  RDSqlQuery *q;
+
+  sql=QString("delete from RDAIRPLAY_CHANNELS where INSTANCE>=100");
+  q=new RDSqlQuery(sql,false);
+  delete q;
+
+  SetVersion(278);
+}
+
+
+void MainObject::Revert280() const
+{
+  QString sql;
+  RDSqlQuery *q;
+
+  sql=QString("delete from LOG_MODES where MACHINE>=100");
+  q=new RDSqlQuery(sql,false);
+  delete q;
+
+  SetVersion(279);
+}
+
+
+void MainObject::Revert281() const
+{
+  QString sql;
+  RDSqlQuery *q;
+
+  sql=QString("alter table RDAIRPLAY drop column VIRTUAL_EXIT_CODE");
+  q=new RDSqlQuery(sql,false);
+  delete q;
+
+  SetVersion(280);
+}
+
+
 int MainObject::GetVersion() const
 {
   QString sql;
@@ -905,7 +1102,7 @@ int MainObject::MapSchema(const QString &ver)
   version_map["2.17"]=268;
   version_map["2.18"]=272;
   version_map["2.19"]=275;
-  version_map["2.20"]=277;
+  version_map["2.20"]=281;
 
   //
   // Normalize String

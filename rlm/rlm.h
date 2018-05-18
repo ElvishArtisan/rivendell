@@ -2,7 +2,7 @@
  *
  * The Rivendell Loadable Module Interface
  *
- *   (C) Copyright 2008-2013 Fred Gleason <fredg@paravelsystems.com>
+ *   (C) Copyright 2008-2018 Fred Gleason <fredg@paravelsystems.com>
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License version 2 as
@@ -80,7 +80,7 @@ extern "C" {
 /*
  * RLM Interface Version
  */
-#define RLM_VERSION 17
+#define RLM_VERSION 18
 
 /*
  * Available Timers
@@ -127,6 +127,12 @@ extern "C" {
 #define RLM_ENCODE_URL 2
 
 /*
+ * Virtual Logs
+ *
+ */
+#define RLM_VLOG_QUANTITY 20
+
+/*
  * Service data structure
  */
   struct rlm_svc {
@@ -140,7 +146,8 @@ extern "C" {
  */
   struct rlm_log {
     char log_name[65];         /* Log name */
-    uint32_t log_mach;         /* Log machine number, 0=Main, 1=Aux 1, 2=Aux2 */
+    uint32_t log_mach;         /* Log machine number, 0=Main, 1=Aux 1, 2=Aux2,
+			        * 100 - 119=vLogs */
     char log_onair;            /* On-air flag, 0=False, 1=True */
     uint32_t log_mode;         /* Log machine mode, 1=LiveAssist, 2=Automatic, 3=Manual */
     char reserved[1974];       /* Reserved for future use */

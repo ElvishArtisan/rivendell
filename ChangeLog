@@ -16811,3 +16811,48 @@
 	to be applied to both the parent log link and the first imported
 	event when the 'PRE-IMPORT CARTS' list was empty and no Timed Start
 	was enabled.
+2018-05-09 Fred Gleason <fredg@paravelsystems.com>
+	* Added rdvairplay(1).
+2018-05-09 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'LOG_MACHINES' table to the database.
+	* Incremented the database version to 278.
+2018-05-16 Fred Gleason <fredg@paravelsystems.com>
+	* Added virtual logs to the 'Start/Stop Settings' section of
+	the 'Configure RDAirPlay' dialog in rdadmin(1).
+2018-05-16 Fred Gleason <fredg@paravelsystems.com>
+	* Added virtual log entries to the 'RDAIRPLAY_CHANNELS' table.
+	* Incremented the database version to 279.
+	* Added 'RDAirPlayConf::virtualCard()', 'RDAirPlay::setVirtualCard()',
+	'RDAirPlayConf::virtualPort()', 'RDAirPlay::setVirtualPort()',
+	'RDAirPlayConf::virtualStartRml()',
+	'RDAirPlayConf::setVirtualStartRml()',
+	'RDAirPlayConf::virtualStopRml()',
+	'RDAirPlayConf::setVirtualStopRml()' methods.
+	* Added a 'Virtual Log Outputs' subsection to the
+	'Channel Assignments' section of the 'Configure RDAirPlay' dialog
+	in rdadmin(1).
+2018-05-17 Fred Gleason <fredg@paravelsystems.com>
+	* Added virtual log entries to the 'LOG_MODES' table.
+	* Incremented the database version to 280.
+	* Added a control for setting vLog start modes to the 'Log Mode
+	Control' section of the 'Configure RDAirPlay' dialog in rdadmin(1).
+2018-05-17 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdvairplay(1) that broke log chain-to events.
+	* Enabled RLMs in rdvairplay(1).
+	* Modified the 'rlm_test' RLM to support vLogs.
+2018-05-17 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RLM_VLOG_QUANTITY' define to 'rlm.h'.
+	* Updated 'RLM_VERSION' to 18 in 'rlm.h'.
+	* Updated the 'rlm_icecast2' plug-in to support vlogs.
+2018-05-17 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'RDAIRPLAY.VIRTUAL_EXIT_CODE' field to the database.
+	* Incremented the database version to 281.
+	* Added 'RDAirPlayConf::virtualExitCode()' and
+	'RDAirPlayConf::setVirtualExitCode()' methods.
+	* Implemented Start/Stop settings for vlogs.
+2018-05-17 Fred Gleason <fredg@paravelsystems.com>
+	* Added rdvairplay(1) to the 'rivendell' service.
+2018-05-17 Fred Gleason <fredg@paravelsystems.com>
+	* Added rdvairplay(1) to the 'rivendell' package.
+2018-05-18 Fred Gleason <fredg@paravelsystems.com>
+	* Renamed rdvairplay(1) to rdvairplayd(8).

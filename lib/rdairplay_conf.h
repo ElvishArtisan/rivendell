@@ -2,7 +2,7 @@
 //
 // Abstract RDAirPlay Configuration
 //
-//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2003,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,7 +25,6 @@
 #include <qhostaddress.h>
 
 #include <rdlog_line.h>         
-
 
 class RDAirPlayConf
 {
@@ -57,6 +56,14 @@ class RDAirPlayConf
   void setStartRml(Channel chan,QString str) const;
   QString stopRml(Channel chan) const;
   void setStopRml(Channel chan,QString str) const;
+  int virtualCard(int mach) const;
+  void setVirtualCard(int mach,int card) const;
+  int virtualPort(int mach) const;
+  void setVirtualPort(int mach,int port) const;
+  QString virtualStartRml(int mach) const;
+  void setVirtualStartRml(int mach,QString str) const;
+  QString virtualStopRml(int mach) const;
+  void setVirtualStopRml(int mach,QString str) const;
   RDAirPlayConf::GpioType gpioType(RDAirPlayConf::Channel chan) const;
   void setGpioType(RDAirPlayConf::Channel chan,RDAirPlayConf::GpioType type) 
     const;
@@ -132,6 +139,8 @@ class RDAirPlayConf
   void setLogRml(int logno,const QString &str) const;
   RDAirPlayConf::ExitCode exitCode() const;
   void setExitCode(RDAirPlayConf::ExitCode code) const;
+  RDAirPlayConf::ExitCode virtualExitCode() const;
+  void setVirtualExitCode(RDAirPlayConf::ExitCode code) const;
   bool exitPasswordValid(const QString &passwd) const;
   void setExitPassword(const QString &passwd) const;
   QString skinPath() const;

@@ -582,5 +582,11 @@
  */
 #define RD_NOTIFICATION_PORT 20539
 
+/*
+ * RDVAirPlay Values
+ */
+#define RD_RDVAIRPLAY_LOG_BASE 100
+#define RD_RDVAIRPLAY_LOG_QUAN 20
+
 
 #endif  // RD_H

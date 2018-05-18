@@ -1087,51 +1087,13 @@ bool CreateDb(QString name,QString pwd,RDConfig *config)
     "ARTIST_TEMPLATE char(64) default '%a',"+
     "OUTCUE_TEMPLATE char(64) default '%o',"+
     "DESCRIPTION_TEMPLATE char(64) default '%i',"+
-    "UDP_ADDR0 char(255),"+
-    "UDP_PORT0 int unsigned,"+
-    "UDP_STRING0 char(255),"+
-    "LOG_RML0 char(255),"+
-    "UDP_ADDR1 char(255),"+
-    "UDP_PORT1 int unsigned,"+
-    "UDP_STRING1 char(255),"+
-    "LOG_RML1 char(255),"+
-    "UDP_ADDR2 char(255),"+
-    "UDP_PORT2 int unsigned,"+
-    "UDP_STRING2 char(255),"+
-    "LOG_RML2 char(255),"+
     "EXIT_CODE int default 0,"+
+    "VIRTUAL_EXIT_CODE int default 0,"+
     "EXIT_PASSWORD char(41) default \"\","+
     "SKIN_PATH char(255) default \""+
     RDEscapeString(RD_DEFAULT_RDAIRPLAY_SKIN)+"\","+
     "SHOW_COUNTERS enum('N','Y') default 'N',"+
     "AUDITION_PREROLL int default 10000,"+
-    "LOG0_START_MODE int default 0,"+
-    "LOG0_AUTO_RESTART enum('N','Y') default 'N',"+
-    "LOG0_LOG_NAME char(64),"+
-    "LOG0_CURRENT_LOG char(64),"+
-    "LOG0_RUNNING enum('N','Y') default 'N',"+
-    "LOG0_LOG_ID int default -1,"+
-    "LOG0_LOG_LINE int default -1,"+
-    "LOG0_NOW_CART int unsigned default 0,"+
-    "LOG0_NEXT_CART int unsigned default 0,"+
-    "LOG1_START_MODE int default 0,"+
-    "LOG1_AUTO_RESTART enum('N','Y') default 'N',"+
-    "LOG1_LOG_NAME char(64),"+
-    "LOG1_CURRENT_LOG char(64),"+
-    "LOG1_RUNNING enum('N','Y') default 'N',"+
-    "LOG1_LOG_ID int default -1,"+
-    "LOG1_LOG_LINE int default -1,"+
-    "LOG1_NOW_CART int unsigned default 0,"+
-    "LOG1_NEXT_CART int unsigned default 0,"+
-    "LOG2_START_MODE int default 0,"+
-    "LOG2_AUTO_RESTART enum('N','Y') default 'N',"+
-    "LOG2_LOG_NAME char(64),"+
-    "LOG2_CURRENT_LOG char(64),"+
-    "LOG2_RUNNING enum('N','Y') default 'N',"+
-    "LOG2_LOG_ID int default -1,"+
-    "LOG2_LOG_LINE int default -1,"+
-    "LOG2_NOW_CART int unsigned default 0,"+
-    "LOG2_NEXT_CART int unsigned default 0,"+
     "index STATION_IDX (STATION))"+
     config->createTablePostfix();
   if(!RunQuery(sql)) {
@@ -2289,6 +2251,32 @@ bool CreateDb(QString name,QString pwd,RDConfig *config)
      return false;
   }
 
+  //
+  // Create LOG_MACHINES table
+  //
+  sql=QString("create table if not exists LOG_MACHINES (")+
+    "ID int auto_increment not null primary key,"+
+    "STATION_NAME char(64) not null,"+
+    "MACHINE int not null,"+
+    "START_MODE int not null default 0,"+
+    "AUTO_RESTART enum('N','Y') not null default 'N',"+
+    "LOG_NAME char(64),"+
+    "CURRENT_LOG char(64),"+
+    "RUNNING enum('N','Y') not null default 'N',"+
+    "LOG_ID int not null default -1,"+
+    "LOG_LINE int not null default -1,"+
+    "NOW_CART int unsigned not null default 0,"+
+    "NEXT_CART int unsigned not null default 0,"+
+    "UDP_ADDR char(255),"+
+    "UDP_PORT int unsigned,"+
+    "UDP_STRING char(255),"+
+    "LOG_RML char(255),"+
+    "index STATION_NAME_IDX(STATION_NAME,MACHINE))"+
+    config->createTablePostfix();
+  if(!RunQuery(sql)) {
+     return false;
+  }
+
   return true;
 }
 
@@ -2376,6 +2364,14 @@ bool InitDb(QString name,QString pwd,QString station_name,RDConfig *config)
       return false;
     }
   }
+  for(unsigned i=0;i<RD_RDVAIRPLAY_LOG_QUAN;i++) {
+    sql=QString("insert into RDAIRPLAY_CHANNELS set ")+
+      "STATION_NAME=\""+RDEscapeString(station_name)+"\","+
+      QString().sprintf("INSTANCE=%u",i+RD_RDVAIRPLAY_LOG_BASE);
+    if(!RunQuery(sql)) {
+      return false;
+    }
+  }
   for(unsigned i=0;i<10;i++) {
     sql=QString("insert into RDPANEL_CHANNELS set ")+
       "STATION_NAME=\""+RDEscapeString(station_name)+"\","+
@@ -2388,6 +2384,14 @@ bool InitDb(QString name,QString pwd,QString station_name,RDConfig *config)
     sql=QString("insert into LOG_MODES set ")+
       "STATION_NAME=\""+RDEscapeString(station_name)+"\","+
       QString().sprintf("MACHINE=%u",i);
+    if(!RunQuery(sql)) {
+      return false;
+    }
+  }
+  for(unsigned i=0;i<RD_RDVAIRPLAY_LOG_QUAN;i++) {
+    sql=QString("insert into LOG_MODES set ")+
+      "STATION_NAME=\""+RDEscapeString(station_name)+"\","+
+      QString().sprintf("MACHINE=%u",i+RD_RDVAIRPLAY_LOG_BASE);
     if(!RunQuery(sql)) {
       return false;
     }
@@ -8042,6 +8046,175 @@ int UpdateDb(int ver,RDConfig *config)
     q=new RDSqlQuery(sql,false);
     delete q;
   }
+
+  if(ver<278) {
+    sql=QString("create table if not exists LOG_MACHINES (")+
+      "ID int auto_increment not null primary key,"+
+      "STATION_NAME char(64) not null,"+
+      "MACHINE int not null,"+
+      "START_MODE int not null default 0,"+
+      "AUTO_RESTART enum('N','Y') not null default 'N',"+
+      "LOG_NAME char(64),"+
+      "CURRENT_LOG char(64),"+
+      "RUNNING enum('N','Y') not null default 'N',"+
+      "LOG_ID int not null default -1,"+
+      "LOG_LINE int not null default -1,"+
+      "NOW_CART int unsigned not null default 0,"+
+      "NEXT_CART int unsigned not null default 0,"+
+      "UDP_ADDR char(255),"+
+      "UDP_PORT int unsigned,"+
+      "UDP_STRING char(255),"+
+      "LOG_RML char(255),"+
+      "index STATION_NAME_IDX(STATION_NAME,MACHINE))"+
+      config->createTablePostfix();
+    q=new RDSqlQuery(sql,false);
+    delete q;
+
+    for(int i=0;i<3;i++) {
+      sql=QString("select ")+
+	"STATION,"+                                  // 00
+	QString().sprintf("LOG%d_START_MODE,",i)+    // 01
+	QString().sprintf("LOG%d_AUTO_RESTART,",i)+  // 02
+	QString().sprintf("LOG%d_LOG_NAME,",i)+      // 03
+	QString().sprintf("LOG%d_CURRENT_LOG,",i)+   // 04
+	QString().sprintf("LOG%d_RUNNING,",i)+       // 05
+	QString().sprintf("LOG%d_LOG_ID,",i)+        // 06
+	QString().sprintf("LOG%d_LOG_LINE,",i)+      // 07
+	QString().sprintf("LOG%d_NOW_CART,",i)+      // 08
+	QString().sprintf("LOG%d_NEXT_CART,",i)+     // 09
+	QString().sprintf("UDP_ADDR%d,",i)+          // 10
+	QString().sprintf("UDP_PORT%d,",i)+          // 11
+	QString().sprintf("UDP_STRING%d,",i)+        // 12
+	QString().sprintf("LOG_RML%d ",i)+           // 13
+	"from RDAIRPLAY order by STATION";
+      q=new RDSqlQuery(sql,false);
+      while(q->next()) {
+	sql=QString("insert into LOG_MACHINES set ")+
+	  "STATION_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	  QString().sprintf("MACHINE=%d,",i)+
+	  QString().sprintf("START_MODE=%d,",q->value(1).toInt())+
+	  "AUTO_RESTART=\""+q->value(2).toString()+"\","+
+	  "LOG_NAME=\""+RDEscapeString(q->value(3).toString())+"\","+
+	  "CURRENT_LOG=\""+RDEscapeString(q->value(4).toString())+"\","+
+	  "RUNNING=\""+q->value(5).toString()+"\","+
+	  QString().sprintf("LOG_ID=%d,",q->value(6).toInt())+
+	  QString().sprintf("LOG_LINE=%d,",q->value(7).toInt())+
+	  QString().sprintf("NOW_CART=%u,",q->value(8).toUInt())+
+	  QString().sprintf("NEXT_CART=%u,",q->value(9).toUInt())+
+	  "UDP_ADDR=\""+RDEscapeString(q->value(10).toString())+"\","+
+	  QString().sprintf("UDP_PORT=%u,",q->value(11).toUInt())+
+	  "UDP_STRING=\""+RDEscapeString(q->value(12).toString())+"\","+
+	  "LOG_RML=\""+RDEscapeString(q->value(13).toString())+"\"";
+	q1=new RDSqlQuery(sql,false);
+	delete q1;
+      }
+      delete q;
+    }
+
+    sql=QString("select NAME from STATIONS");
+    q=new RDSqlQuery(sql,false);
+    while(q->next()) {
+      for(int i=RD_RDVAIRPLAY_LOG_BASE;i<(RD_RDVAIRPLAY_LOG_BASE+RD_RDVAIRPLAY_LOG_QUAN);i++) {
+	sql=QString("insert into LOG_MACHINES set ")+
+	  "STATION_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	  QString().sprintf("MACHINE=%d",i);
+	q1=new RDSqlQuery(sql);
+	delete q1;
+      }
+    }
+    delete q;
+
+    for(int i=0;i<3;i++) {
+      sql=QString().sprintf("alter table RDAIRPLAY drop column UDP_ADDR%d",i);
+      q=new RDSqlQuery(sql,false);
+      delete q;
+
+      sql=QString().sprintf("alter table RDAIRPLAY drop column UDP_PORT%d",i);
+      q=new RDSqlQuery(sql,false);
+      delete q;
+
+      sql=QString().sprintf("alter table RDAIRPLAY drop column UDP_STRING%d",i);
+      q=new RDSqlQuery(sql,false);
+      delete q;
+
+      sql=QString().sprintf("alter table RDAIRPLAY drop column LOG_RML%d",i);
+      q=new RDSqlQuery(sql,false);
+      delete q;
+
+      sql=QString().sprintf("alter table RDAIRPLAY drop column LOG%d_START_MODE",i);
+      q=new RDSqlQuery(sql,false);
+      delete q;
+
+      sql=QString().sprintf("alter table RDAIRPLAY drop column LOG%d_AUTO_RESTART",i);
+      q=new RDSqlQuery(sql,false);
+      delete q;
+
+      sql=QString().sprintf("alter table RDAIRPLAY drop column LOG%d_LOG_NAME",i);
+      q=new RDSqlQuery(sql,false);
+      delete q;
+
+      sql=QString().sprintf("alter table RDAIRPLAY drop column LOG%d_CURRENT_LOG",i);
+      q=new RDSqlQuery(sql,false);
+      delete q;
+
+      sql=QString().sprintf("alter table RDAIRPLAY drop column LOG%d_RUNNING",i);
+      q=new RDSqlQuery(sql,false);
+      delete q;
+
+      sql=QString().sprintf("alter table RDAIRPLAY drop column LOG%d_LOG_ID",i);
+      q=new RDSqlQuery(sql,false);
+      delete q;
+
+      sql=QString().sprintf("alter table RDAIRPLAY drop column LOG%d_LOG_LINE",i);
+      q=new RDSqlQuery(sql,false);
+      delete q;
+
+      sql=QString().sprintf("alter table RDAIRPLAY drop column LOG%d_NOW_CART",i);
+      q=new RDSqlQuery(sql,false);
+      delete q;
+
+      sql=QString().sprintf("alter table RDAIRPLAY drop column LOG%d_NEXT_CART",i);
+      q=new RDSqlQuery(sql,false);
+      delete q;
+   }
+  }
+
+  if(ver<279) {
+    sql=QString("select NAME from STATIONS");
+    q=new RDSqlQuery(sql,false);
+    while(q->next()) {
+      for(unsigned i=0;i<RD_RDVAIRPLAY_LOG_QUAN;i++) {
+	sql=QString("insert into RDAIRPLAY_CHANNELS set ")+
+	  "STATION_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	  QString().sprintf("INSTANCE=%u",i+RD_RDVAIRPLAY_LOG_BASE);
+	q1=new RDSqlQuery(sql,false);
+	delete q1;
+      }
+    }
+    delete q;
+  }
+
+  if(ver<280) {
+    sql=QString("select NAME from STATIONS");
+    q=new RDSqlQuery(sql,false);
+    while(q->next()) {
+      for(unsigned i=0;i<RD_RDVAIRPLAY_LOG_QUAN;i++) {
+	sql=QString("insert into LOG_MODES set ")+
+	  "STATION_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	  QString().sprintf("MACHINE=%u",i+RD_RDVAIRPLAY_LOG_BASE);
+	q1=new RDSqlQuery(sql,false);
+	delete q1;
+      }
+    }
+  }
+
+  if(ver<281) {
+    sql=QString("alter table RDAIRPLAY add column ")+
+      "VIRTUAL_EXIT_CODE int default 0 after EXIT_CODE";
+    q=new RDSqlQuery(sql,false);
+    delete q;
+  }
+
 
   //
   // Maintainer's Note:

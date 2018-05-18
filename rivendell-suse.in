@@ -2,7 +2,7 @@
 ##
 ##    Rivendell init script for LSB and chkconfig(8) compliant Linux systems.
 ##
-##    (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
+##    (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##    This program is free software; you can redistribute it and/or modify
 ##    it under the terms of version 2 of the GNU General Public License as
@@ -78,6 +78,7 @@ function StartDaemons {
 
 function StopDaemons {
   killall rdimport > /dev/null 2> /dev/null
+  killall rdvairplayd > /dev/null 2> /dev/null
   if [ -f /var/run/rivendell/rdcatchd.pid ] ; then
     kill `cat /var/run/rivendell/rdcatchd.pid` > /dev/null 2> /dev/null
   fi

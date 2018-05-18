@@ -718,6 +718,13 @@ bool RDStation::create(const QString &name,QString *err_msg,
       q=new RDSqlQuery(sql);
       delete q;
     }
+    for(int i=0;i<RD_RDVAIRPLAY_LOG_QUAN;i++) {
+      sql=QString("insert into RDAIRPLAY_CHANNELS set ")+
+	"STATION_NAME=\""+RDEscapeString(name)+"\","+
+	QString().sprintf("INSTANCE=%u",i+RD_RDVAIRPLAY_LOG_BASE);
+      q=new RDSqlQuery(sql);
+      delete q;
+    }
     for(unsigned i=0;i<RD_CUT_EVENT_ID_QUAN;i++) {
       for(unsigned j=0;j<MAX_DECKS;j++) {
 	sql=QString("insert into DECK_EVENTS set ")+
@@ -734,6 +741,31 @@ bool RDStation::create(const QString &name,QString *err_msg,
     //
     for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
       sql=QString().sprintf("insert into LOG_MODES set ")+
+	"STATION_NAME=\""+RDEscapeString(name)+"\","+
+	QString().sprintf("MACHINE=%d",i);
+      q=new RDSqlQuery(sql);
+      delete q;
+    }
+    for(int i=0;i<RD_RDVAIRPLAY_LOG_QUAN;i++) {
+      sql=QString().sprintf("insert into LOG_MODES set ")+
+	"STATION_NAME=\""+RDEscapeString(name)+"\","+
+	QString().sprintf("MACHINE=%d",i+RD_RDVAIRPLAY_LOG_BASE);
+      q=new RDSqlQuery(sql);
+      delete q;
+    }
+
+    //
+    // Log Machine Parameters
+    //
+    for(int i=0;i<3;i++) {
+      sql=QString("insert into LOG_MACHINES set ")+
+	"STATION_NAME=\""+RDEscapeString(name)+"\","+
+	QString().sprintf("MACHINE=%d",i);
+      q=new RDSqlQuery(sql);
+      delete q;
+    }
+    for(int i=RD_RDVAIRPLAY_LOG_BASE;i<(RD_RDVAIRPLAY_LOG_BASE+RD_RDVAIRPLAY_LOG_QUAN);i++) {
+      sql=QString("insert into LOG_MACHINES set ")+
 	"STATION_NAME=\""+RDEscapeString(name)+"\","+
 	QString().sprintf("MACHINE=%d",i);
       q=new RDSqlQuery(sql);
@@ -1046,21 +1078,9 @@ bool RDStation::create(const QString &name,QString *err_msg,
       "ARTIST_TEMPLATE,"+        // 22
       "OUTCUE_TEMPLATE,"+        // 23
       "DESCRIPTION_TEMPLATE,"+   // 24
-      "UDP_ADDR0,"+              // 25
-      "UDP_PORT0,"+              // 26
-      "UDP_STRING0,"+            // 27
-      "LOG_RML0,"+               // 28
-      "UDP_ADDR1,"+              // 29
-      "UDP_PORT1,"+              // 30
-      "UDP_STRING1,"+            // 31
-      "LOG_RML1,"+               // 32
-      "UDP_ADDR2,"+              // 33
-      "UDP_PORT2,"+              // 34
-      "UDP_STRING2,"+            // 35
-      "LOG_RML2,"+               // 36
-      "EXIT_PASSWORD,"+          // 37
-      "SKIN_PATH,"+              // 38
-      "SHOW_COUNTERS "+          // 39
+      "EXIT_PASSWORD,"+          // 25
+      "SKIN_PATH,"+              // 26
+      "SHOW_COUNTERS "+          // 27
       "from RDAIRPLAY where "+
       "STATION=\""+RDEscapeString(exemplar)+"\"";
     q=new RDSqlQuery(sql);
@@ -1093,21 +1113,9 @@ bool RDStation::create(const QString &name,QString *err_msg,
 	"ARTIST_TEMPLATE=\""+RDEscapeString(q->value(22).toString())+"\","+
 	"OUTCUE_TEMPLATE=\""+RDEscapeString(q->value(23).toString())+"\","+
 	"DESCRIPTION_TEMPLATE=\""+RDEscapeString(q->value(24).toString())+"\","+
-	"UDP_ADDR0=\""+RDEscapeString(q->value(25).toString())+"\","+
-	QString().sprintf("UDP_PORT0=%u,",q->value(26).toUInt())+
-	"UDP_STRING0=\""+RDEscapeString(q->value(27).toString())+"\","+
-	"LOG_RML0=\""+RDEscapeString(q->value(28).toString())+"\","+
-	"UDP_ADDR1=\""+RDEscapeString(q->value(29).toString())+"\","+
-	QString().sprintf("UDP_PORT1=%u,",q->value(30).toUInt())+
-	"UDP_STRING1=\""+RDEscapeString(q->value(31).toString())+"\","+
-	"LOG_RML1=\""+RDEscapeString(q->value(32).toString())+"\","+
-	"UDP_ADDR2=\""+RDEscapeString(q->value(33).toString())+"\","+
-	QString().sprintf("UDP_PORT2=%u,",q->value(34).toUInt())+
-	"UDP_STRING2=\""+RDEscapeString(q->value(35).toString())+"\","+
-	"LOG_RML2=\""+RDEscapeString(q->value(36).toString())+"\","+
-	"EXIT_PASSWORD=\""+RDEscapeString(q->value(37).toString())+"\","+
-	"SKIN_PATH=\""+RDEscapeString(q->value(38).toString())+"\","+
-	"SHOW_COUNTERS=\","+RDEscapeString(q->value(39).toString())+"\","+
+	"EXIT_PASSWORD=\""+RDEscapeString(q->value(25).toString())+"\","+
+	"SKIN_PATH=\""+RDEscapeString(q->value(26).toString())+"\","+
+	"SHOW_COUNTERS=\","+RDEscapeString(q->value(27).toString())+"\","+
 	"STATION=\""+RDEscapeString(name)+"\"";
       q1=new RDSqlQuery(sql);
       delete q1;
@@ -1731,6 +1739,49 @@ bool RDStation::create(const QString &name,QString *err_msg,
       delete q1;
     }
     delete q;
+
+    //
+    // Log Machine Parameters
+    //
+    sql=QString("select ")+
+      "MACHINE,"+        // 00
+      "START_MODE,"+     // 01
+      "AUTO_RESTART,"+   // 02
+      "LOG_NAME,"+       // 03
+      "CURRENT_LOG,"+    // 04
+      "RUNNING,"+        // 05
+      "LOG_ID,"+         // 06
+      "LOG_LINE,"+       // 07
+      "NOW_CART,"+       // 08
+      "NEXT_CART,"+      // 09
+      "UDP_ADDR,"+       // 10
+      "UDP_PORT,"+       // 11
+      "UDP_STRING,"+     // 12
+      "LOG_RML "+        // 13
+      "from LOG_MACHINES where "+
+      "STATION_NAME=\""+RDEscapeString(exemplar)+"\"";
+    q=new RDSqlQuery(sql,false);
+    while(q->next()) {
+      sql=QString("insert into LOG_MACHINES set ")+
+	"STATION_NAME=\""+RDEscapeString(name)+"\","+
+	QString().sprintf("MACHINE=%d,",q->value(0).toInt())+
+	QString().sprintf("START_MODE=%d,",q->value(1).toInt())+
+	"AUTO_RESTART=\""+q->value(2).toString()+"\","+
+	"LOG_NAME=\""+RDEscapeString(q->value(3).toString())+"\","+
+	"CURRENT_LOG=\""+RDEscapeString(q->value(4).toString())+"\","+
+	"RUNNING=\""+q->value(5).toString()+"\","+
+	QString().sprintf("LOG_ID=%d,",q->value(6).toInt())+
+	QString().sprintf("LOG_LINE=%d,",q->value(7).toInt())+
+	QString().sprintf("NOW_CART=%u,",q->value(8).toUInt())+
+	QString().sprintf("NEXT_CART=%u,",q->value(9).toUInt())+
+	"UDP_ADDR=\""+RDEscapeString(q->value(10).toString())+"\","+
+	QString().sprintf("UDP_PORT=%u,",q->value(11).toUInt())+
+	"UDP_STRING=\""+RDEscapeString(q->value(12).toString())+"\","+
+	"LOG_RML=\""+RDEscapeString(q->value(13).toString())+"\"";
+      q1=new RDSqlQuery(sql,false);
+      delete q1;
+    }
+    delete q;
   }
   return true;
 }
@@ -1884,6 +1935,11 @@ void RDStation::remove(const QString &name)
   delete q;
 
   sql=QString("delete from JACK_CLIENTS where ")+
+    "STATION_NAME=\""+RDEscapeString(name)+"\"";
+  q=new RDSqlQuery(sql);
+  delete q;
+
+  sql=QString("delete from LOG_MACHINES where ")+
     "STATION_NAME=\""+RDEscapeString(name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;

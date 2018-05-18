@@ -305,6 +305,15 @@ MainObject::MainObject(QObject *parent)
   }
   delete q;
 
+  //
+  // Start Subprocesses
+  //
+  if(fork()==0) {
+    execl(QString(RD_PREFIX)+"/sbin/rdvairplayd","rdvairplayd",(char *)NULL);
+    rda->log(RDConfig::LogWarning,QString("failed to start rdvairplayd(1) [")+
+	     strerror(errno)+"]");
+    exit(1);
+  }
   StartDropboxes();
 
   //

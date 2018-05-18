@@ -2357,6 +2357,14 @@ GPIOs</source>
         <source>User Panels:</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Virtual Log Outputs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Log Machine</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditRDLibrary</name>

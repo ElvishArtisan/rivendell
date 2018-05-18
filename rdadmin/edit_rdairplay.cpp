@@ -2,7 +2,7 @@
 //
 // Edit an RDAirPlay Configuration
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -52,6 +52,8 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
 
   air_exitpasswd_changed=false;
   air_logmachine=0;
+  air_virtual_logmachine=0;
+  air_virtual_logstartmachine=0;
 
   //
   // Fix the Window Size
@@ -214,6 +216,42 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
 	  this,SLOT(audioSettingsChangedData(int,int,int)));
 
   //
+  // Virtual Log Output
+  //
+  label=new QLabel(tr("Virtual Log Outputs"),this);
+  label->setFont(small_font);
+  label->setGeometry(25,309,190,20);
+  air_virtual_machine_box=new QComboBox(this);
+  air_virtual_machine_box->setGeometry(270,309,100,20);
+  for(int i=0;i<RD_RDVAIRPLAY_LOG_QUAN;i++) {
+    air_virtual_machine_box->
+      insertItem(QString().sprintf("vLog %d",i+RD_RDVAIRPLAY_LOG_BASE+1));
+  }
+  connect(air_virtual_machine_box,SIGNAL(activated(int)),
+	  this,SLOT(virtualLogActivatedData(int)));
+  label=new QLabel(air_virtual_machine_box,tr("Log Machine")+":",this);
+  label->setFont(small_font);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  label->setGeometry(165,309,100,20);
+  air_virtual_card_sel=new RDCardSelector(this);
+  air_virtual_card_sel->setGeometry(20,332,120,117);
+  air_virtual_start_rml_edit=new QLineEdit(this);
+  air_virtual_start_rml_edit->setGeometry(210,332,95,19);
+  air_virtual_start_rml_edit->setValidator(validator);
+  air_virtual_start_rml_label=
+    new QLabel(air_virtual_start_rml_edit,tr("Start RML:"),this);
+  air_virtual_start_rml_label->setGeometry(140,332,65,19);
+  air_virtual_start_rml_label->setAlignment(AlignVCenter|AlignRight);
+  air_virtual_stop_rml_edit=new QLineEdit(this);
+  air_virtual_stop_rml_edit->setGeometry(210,353,95,19);
+  air_virtual_stop_rml_edit->setValidator(validator);
+  air_virtual_stop_rml_label=
+    new QLabel(air_virtual_start_rml_edit,tr("Stop RML:"),this);
+  air_virtual_stop_rml_label->setGeometry(140,353,65,19);
+  air_virtual_stop_rml_label->setAlignment(AlignVCenter|AlignRight);
+
+  // **** INACTIVE INACTIVE INACTIVE ****
+  //
   // Audition/Cue Output
   //
   air_card_sel[3]=new RDCardSelector(this);
@@ -240,12 +278,13 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   air_start_rml_label[3]->hide();
   air_stop_rml_edit[3]->hide();
   air_stop_rml_label[3]->hide();
+  // **** INACTIVE INACTIVE INACTIVE ****
 
   //
   // HotKeys Configuration Button
   //
   QPushButton *button=new QPushButton(this);
-  button->setGeometry(10,310,180,50);
+  button->setGeometry(10,385,180,50);
   button->setFont(small_font);
   button->setText(tr("Configure Hot Keys"));
   connect(button,SIGNAL(clicked()),this,SLOT(editHotKeys()));
@@ -254,7 +293,7 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   // Now & Next Button
   //
   button=new QPushButton(this);
-  button->setGeometry(200,310,180,50);
+  button->setGeometry(200,385,180,50);
   button->setFont(small_font);
   button->setText(tr("Configure Now && Next\nParameters"));
   connect(button,SIGNAL(clicked()),this,SLOT(nownextData()));
@@ -636,17 +675,17 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   //
   label=new QLabel(tr("Start/Stop Settings"),this);
   label->setFont(big_font);
-  label->setGeometry(10,381,200,16);
+  label->setGeometry(10,451,200,16);
 
   //
   // Exit Password
   //
   air_exitpasswd_edit=new QLineEdit(this);
-  air_exitpasswd_edit->setGeometry(100,404,sizeHint().width()-905,20);
+  air_exitpasswd_edit->setGeometry(100,474,sizeHint().width()-905,20);
   air_exitpasswd_edit->setEchoMode(QLineEdit::Password);
   air_exitpasswd_edit->setText("******");
   label=new QLabel(air_exitpasswd_edit,tr("Exit Password:"),this);
-  label->setGeometry(0,404,95,20);
+  label->setGeometry(0,474,95,20);
   label->setAlignment(AlignRight|AlignVCenter);
   connect(air_exitpasswd_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(exitPasswordChangedData(const QString &)));
@@ -655,10 +694,13 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   // Log Machine Selector
   //
   air_logmachine_box=new QComboBox(this);
-  air_logmachine_box->setGeometry(45,429,100,20);
+  air_logmachine_box->setGeometry(45,499,100,20);
   air_logmachine_box->insertItem(tr("Main Log"));
   for(unsigned i=1;i<RDAIRPLAY_LOG_QUANTITY;i++) {
     air_logmachine_box->insertItem(QString().sprintf("Aux %d Log",i));
+  }
+  for(unsigned i=0;i<RD_RDVAIRPLAY_LOG_QUAN;i++) {
+    air_logmachine_box->insertItem(QString().sprintf("vLog %d",i+RD_RDVAIRPLAY_LOG_BASE+1));
   }
   connect(air_logmachine_box,SIGNAL(activated(int)),
 	  this,SLOT(logActivatedData(int)));
@@ -667,12 +709,12 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   // Startup Mode
   //
   air_startmode_box=new QComboBox(this);
-  air_startmode_box->setGeometry(100,454,240,20);
+  air_startmode_box->setGeometry(100,524,240,20);
   air_startmode_box->insertItem(tr("start with empty log"));
   air_startmode_box->insertItem(tr("load previous log"));
   air_startmode_box->insertItem(tr("load specified log"));
   label=new QLabel(air_exitpasswd_edit,tr("At Startup:"),this);
-  label->setGeometry(30,454,65,20);
+  label->setGeometry(30,524,65,20);
   label->setAlignment(AlignRight|AlignVCenter);
   connect(air_startmode_box,SIGNAL(activated(int)),
 	  this,SLOT(startModeChangedData(int)));
@@ -681,27 +723,27 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   // Auto Restart Checkbox
   //
   air_autorestart_box=new QCheckBox(this);
-  air_autorestart_box->setGeometry(105,479,15,15);
+  air_autorestart_box->setGeometry(105,549,15,15);
   air_autorestart_label=
     new QLabel(air_autorestart_box,
 	       tr("Restart Log After Unclean Shutdown"),this);
-  air_autorestart_label->setGeometry(125,479,250,15);
+  air_autorestart_label->setGeometry(125,549,250,15);
   air_autorestart_label->setAlignment(AlignLeft|AlignVCenter);
 
   //
   // Startup Log
   //
   air_startlog_edit=new QLineEdit(this);
-  air_startlog_edit->setGeometry(100,499,240,20);
+  air_startlog_edit->setGeometry(100,569,240,20);
   air_startlog_label=new QLabel(air_startlog_edit,tr("Log:"),this);
-  air_startlog_label->setGeometry(30,499,65,20);
+  air_startlog_label->setGeometry(30,569,65,20);
   air_startlog_label->setAlignment(AlignRight|AlignVCenter);
 
   //
   //  Log Select Button
   //
   air_startlog_button=new QPushButton(this);
-  air_startlog_button->setGeometry(350,497,50,24);
+  air_startlog_button->setGeometry(350,567,50,24);
   air_startlog_button->setFont(small_font);
   air_startlog_button->setText(tr("&Select"));
   connect(air_startlog_button,SIGNAL(clicked()),this,SLOT(selectData()));
@@ -801,6 +843,24 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   air_logstartmode_label[1]->setText(tr("Aux 1 Log Startup Mode:"));
   air_logstartmode_label[2]->setText(tr("Aux 2 Log Startup Mode:"));
 
+  air_virtual_logstartsel_box=new QComboBox(this);
+  air_virtual_logstartsel_box->setGeometry(435,638,120,20);
+  connect(air_virtual_logstartsel_box,SIGNAL(activated(int)),
+	  this,SLOT(virtualModeActivatedData(int)));
+  for(int i=0;i<RD_RDVAIRPLAY_LOG_QUAN;i++) {
+    air_virtual_logstartsel_box->
+      insertItem(QString().sprintf("vLog %d",i+RD_RDVAIRPLAY_LOG_BASE+1));
+  }
+  label=new QLabel(":",this);
+  label->setGeometry(555,638,5,20);
+  label->setAlignment(Qt::AlignCenter|Qt::AlignVCenter);
+  air_virtual_logstartmode_box=new QComboBox(this);
+  air_virtual_logstartmode_box->setGeometry(565,638,110,20);
+  air_virtual_logstartmode_box->insertItem(tr("Previous"));
+  air_virtual_logstartmode_box->insertItem(tr("LiveAssist"));
+  air_virtual_logstartmode_box->insertItem(tr("Automatic"));
+  air_virtual_logstartmode_box->insertItem(tr("Manual"));
+
   //
   //  Ok Button
   //
@@ -829,6 +889,10 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
       for(int j=0;j<air_card_sel[i]->maxCards();j++) {
 	air_card_sel[i]->setMaxPorts(j,cae_station->cardOutputs(j));
       }
+    }
+    air_virtual_card_sel->setMaxCards(cae_station->cards());
+    for(int j=0;j<air_virtual_card_sel->maxCards();j++) {
+      air_virtual_card_sel->setMaxPorts(j,cae_station->cardOutputs(j));
     }
   }
   else {
@@ -887,16 +951,37 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   }
   air_modecontrol_box->setCurrentItem((int)air_conf->opModeStyle());
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
-    air_startmode[i]=air_conf->startMode(i);
-    air_startlog[i]=air_conf->logName(i);
-    air_autorestart[i]=air_conf->autoRestart(i);
+    air_startmodes[i]=air_conf->startMode(i);
+    air_startlogs[i]=air_conf->logName(i);
+    air_autorestarts[i]=air_conf->autoRestart(i);
     air_logstartmode_box[i]->setCurrentItem(air_conf->logStartMode(i));
   }
-  air_startmode_box->setCurrentItem((int)air_startmode[air_logmachine]);
-  air_startlog_edit->setText(air_startlog[air_logmachine]);
-  air_autorestart_box->setChecked(air_autorestart[air_logmachine]);
+  for(int i=0;i<RD_RDVAIRPLAY_LOG_QUAN;i++) {
+    air_startmodes[i+RD_RDVAIRPLAY_LOG_BASE]=
+      air_conf->startMode(i+RD_RDVAIRPLAY_LOG_BASE);
+    air_startlogs[i+RD_RDVAIRPLAY_LOG_BASE]=
+      air_conf->logName(i+RD_RDVAIRPLAY_LOG_BASE);
+    air_autorestarts[i+RD_RDVAIRPLAY_LOG_BASE]=
+      air_conf->autoRestart(i+RD_RDVAIRPLAY_LOG_BASE);
+    air_virtual_cards[i]=air_conf->virtualCard(i+RD_RDVAIRPLAY_LOG_BASE);
+    air_virtual_ports[i]=air_conf->virtualPort(i+RD_RDVAIRPLAY_LOG_BASE);
+    air_virtual_start_rmls[i]=
+      air_conf->virtualStartRml(i+RD_RDVAIRPLAY_LOG_BASE);
+    air_virtual_stop_rmls[i]=air_conf->virtualStopRml(i+RD_RDVAIRPLAY_LOG_BASE);
+    air_virtual_opmodes[i]=air_conf->opMode(i+RD_RDVAIRPLAY_LOG_BASE);
+    air_virtual_logstartmode_box->setCurrentItem((int)air_virtual_opmodes[0]);
+  }
+  air_virtual_card_sel->setCard(air_virtual_cards[air_virtual_logmachine]);
+  air_virtual_card_sel->setPort(air_virtual_ports[air_virtual_logmachine]);
+  air_virtual_start_rml_edit->
+    setText(air_virtual_start_rmls[air_virtual_logmachine]);
+  air_virtual_stop_rml_edit->
+    setText(air_virtual_stop_rmls[air_virtual_logmachine]);
+  air_startmode_box->setCurrentItem((int)air_startmodes[air_logmachine]);
+  air_startlog_edit->setText(air_startlogs[air_logmachine]);
+  air_autorestart_box->setChecked(air_autorestarts[air_logmachine]);
   air_skin_edit->setText(air_conf->skinPath());
-  startModeChangedData(air_startmode[air_logmachine]);
+  startModeChangedData(air_startmodes[air_logmachine]);
 
   for(unsigned i=0;i<RDAirPlayConf::LastChannel;i++) {
     audioSettingsChangedData(i,air_card_sel[i]->card(),air_card_sel[i]->port());
@@ -911,7 +996,7 @@ EditRDAirPlay::~EditRDAirPlay()
 
 QSize EditRDAirPlay::sizeHint() const
 {
-  return QSize(1010,660);
+  return QSize(1010,680);
 } 
 
 
@@ -968,16 +1053,49 @@ void EditRDAirPlay::exitPasswordChangedData(const QString &str)
 
 void EditRDAirPlay::logActivatedData(int lognum)
 {
-  air_startmode[air_logmachine]=
+  air_startmodes[air_logmachine]=
     (RDAirPlayConf::StartMode)air_startmode_box->currentItem();
-  air_startlog[air_logmachine]=air_startlog_edit->text();
-  air_autorestart[air_logmachine]=air_autorestart_box->isChecked();
+  air_startlogs[air_logmachine]=air_startlog_edit->text();
+  air_autorestarts[air_logmachine]=air_autorestart_box->isChecked();
 
   air_logmachine=lognum;
-  air_startmode_box->setCurrentItem((int)air_startmode[lognum]);
-  air_startlog_edit->setText(air_startlog[lognum]);
-  air_autorestart_box->setChecked(air_autorestart[lognum]);
-  startModeChangedData((int)air_startmode[lognum]);
+  if(lognum>2) {
+    air_logmachine=lognum+RD_RDVAIRPLAY_LOG_BASE-3;
+  }
+
+  air_startmode_box->setCurrentItem((int)air_startmodes[air_logmachine]);
+  air_startlog_edit->setText(air_startlogs[air_logmachine]);
+  air_autorestart_box->setChecked(air_autorestarts[air_logmachine]);
+  startModeChangedData((int)air_startmodes[air_logmachine]);
+}
+
+
+void EditRDAirPlay::virtualLogActivatedData(int vlognum)
+{
+  air_virtual_cards[air_virtual_logmachine]=air_virtual_card_sel->card();
+  air_virtual_ports[air_virtual_logmachine]=air_virtual_card_sel->port();
+  air_virtual_start_rmls[air_virtual_logmachine]=
+    air_virtual_start_rml_edit->text();
+  air_virtual_stop_rmls[air_virtual_logmachine]=
+    air_virtual_stop_rml_edit->text();
+
+  air_virtual_logmachine=vlognum;
+  air_virtual_card_sel->setCard(air_virtual_cards[air_virtual_logmachine]);
+  air_virtual_card_sel->setPort(air_virtual_ports[air_virtual_logmachine]);
+  air_virtual_start_rml_edit->
+    setText(air_virtual_start_rmls[air_virtual_logmachine]);
+  air_virtual_stop_rml_edit->
+    setText(air_virtual_stop_rmls[air_virtual_logmachine]);
+}
+
+
+void EditRDAirPlay::virtualModeActivatedData(int vlognum)
+{
+  air_virtual_opmodes[air_virtual_logstartmachine]=
+    (RDAirPlayConf::OpMode)air_virtual_logstartmode_box->currentItem();
+  air_virtual_logstartmachine=vlognum;
+  air_virtual_logstartmode_box->
+    setCurrentItem((int)air_virtual_opmodes[air_virtual_logstartmachine]);
 }
 
 
@@ -1120,19 +1238,36 @@ void EditRDAirPlay::okData()
   if(air_exitpasswd_changed) {
     air_conf->setExitPassword(air_exitpasswd_edit->text());
   }
-  air_startmode[air_logmachine]=
+  air_startmodes[air_logmachine]=
     (RDAirPlayConf::StartMode)air_startmode_box->currentItem();
-  air_startlog[air_logmachine]=air_startlog_edit->text();
-  air_autorestart[air_logmachine]=air_autorestart_box->isChecked();
+  air_startlogs[air_logmachine]=air_startlog_edit->text();
+  air_autorestarts[air_logmachine]=air_autorestart_box->isChecked();
   air_conf->setOpModeStyle((RDAirPlayConf::OpModeStyle)
 			   air_modecontrol_box->currentItem());
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
-    air_conf->setStartMode(i,air_startmode[i]);
-    air_conf->setLogName(i,air_startlog[i]);
-    air_conf->setAutoRestart(i,air_autorestart[i]);
+    air_conf->setStartMode(i,air_startmodes[i]);
+    air_conf->setLogName(i,air_startlogs[i]);
+    air_conf->setAutoRestart(i,air_autorestarts[i]);
     air_conf->
       setLogStartMode(i,(RDAirPlayConf::OpMode)air_logstartmode_box[i]->
 		      currentItem());
+  }
+  virtualLogActivatedData(air_virtual_logmachine);
+  for(int i=0;i<RD_RDVAIRPLAY_LOG_QUAN;i++) {
+    air_conf->setStartMode(i+RD_RDVAIRPLAY_LOG_BASE,
+			   air_startmodes[i+RD_RDVAIRPLAY_LOG_BASE]);
+    air_conf->setLogName(i+RD_RDVAIRPLAY_LOG_BASE,
+			 air_startlogs[i+RD_RDVAIRPLAY_LOG_BASE]);
+    air_conf->setAutoRestart(i+RD_RDVAIRPLAY_LOG_BASE,
+			     air_autorestarts[i+RD_RDVAIRPLAY_LOG_BASE]);
+    air_conf->setVirtualCard(i+RD_RDVAIRPLAY_LOG_BASE,air_virtual_cards[i]);
+    air_conf->setVirtualPort(i+RD_RDVAIRPLAY_LOG_BASE,air_virtual_ports[i]);
+    air_conf->
+      setVirtualStartRml(i+RD_RDVAIRPLAY_LOG_BASE,air_virtual_start_rmls[i]);
+    air_conf->
+      setVirtualStopRml(i+RD_RDVAIRPLAY_LOG_BASE,air_virtual_stop_rmls[i]);
+    virtualModeActivatedData(air_virtual_logstartmachine);
+    air_conf->setOpMode(i+RD_RDVAIRPLAY_LOG_BASE,air_virtual_opmodes[i]);
   }
   air_conf->setSkinPath(air_skin_edit->text());
   done(0);
@@ -1149,7 +1284,7 @@ void EditRDAirPlay::paintEvent(QPaintEvent *e)
 {
   QPainter *p=new QPainter(this);
   p->setPen(black);
-  p->drawRect(25,415,395,95);
+  p->drawRect(25,485,395,95);
   p->end();
   delete p;
 }

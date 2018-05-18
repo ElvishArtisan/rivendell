@@ -49,12 +49,6 @@
 #define LOGPLAY_RESCAN_INTERVAL 5000
 #define LOGPLAY_RESCAN_SIZE 30
 
-//
-// Debug Settings
-//
-//#define SHOW_SLOTS
-//#define SHOW_METER_SLOTS
-
 class RDLogPlay : public QObject,public RDLogEvent
 {
  Q_OBJECT
