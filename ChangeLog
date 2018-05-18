@@ -16805,3 +16805,9 @@
 	methods.
 	* Added a 'Allow WebGet Login' control in the 'Production Rights'
 	section of the 'User' dialog in rdadmin(1).
+2018-05-08 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdlogmanager(1) that caused the initial transition
+	type specified in the 'IMPORT' section of the 'Editing Event' dialog
+	to be applied to both the parent log link and the first imported
+	event when the 'PRE-IMPORT CARTS' list was empty and no Timed Start
+	was enabled.
