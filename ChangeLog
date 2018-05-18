@@ -16852,3 +16852,5 @@
 	* Renamed rdvairplay(1) to rdvairplayd(8).
 2018-05-18 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.19.2headless00.
+2018-05-18 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.19.2vlog00.
