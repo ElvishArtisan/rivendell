@@ -1,6 +1,6 @@
 /* rlm_xds.c
  *
- *   (C) Copyright 2010 Fred Gleason <fredg@paravelsystems.com>
+ *   (C) Copyright 2010-2018 Fred Gleason <fredg@paravelsystems.com>
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License version 2
@@ -40,6 +40,26 @@ char *rlm_xds_tty_buffers;
 int *rlm_xds_masters;
 int *rlm_xds_aux1s;
 int *rlm_xds_aux2s;
+int *rlm_xds_vlog101s;
+int *rlm_xds_vlog102s;
+int *rlm_xds_vlog103s;
+int *rlm_xds_vlog104s;
+int *rlm_xds_vlog105s;
+int *rlm_xds_vlog106s;
+int *rlm_xds_vlog107s;
+int *rlm_xds_vlog108s;
+int *rlm_xds_vlog109s;
+int *rlm_xds_vlog110s;
+int *rlm_xds_vlog111s;
+int *rlm_xds_vlog112s;
+int *rlm_xds_vlog113s;
+int *rlm_xds_vlog114s;
+int *rlm_xds_vlog115s;
+int *rlm_xds_vlog116s;
+int *rlm_xds_vlog117s;
+int *rlm_xds_vlog118s;
+int *rlm_xds_vlog119s;
+int *rlm_xds_vlog120s;
 
 unsigned rlm_xds_GetChecksum(const char *pack)
 {
@@ -142,6 +162,26 @@ void rlm_xds_RLMStart(void *ptr,const char *arg)
   rlm_xds_masters=NULL;
   rlm_xds_aux1s=NULL;
   rlm_xds_aux2s=NULL;
+  rlm_xds_vlog101s=NULL;
+  rlm_xds_vlog102s=NULL;
+  rlm_xds_vlog103s=NULL;
+  rlm_xds_vlog104s=NULL;
+  rlm_xds_vlog105s=NULL;
+  rlm_xds_vlog106s=NULL;
+  rlm_xds_vlog107s=NULL;
+  rlm_xds_vlog108s=NULL;
+  rlm_xds_vlog109s=NULL;
+  rlm_xds_vlog110s=NULL;
+  rlm_xds_vlog111s=NULL;
+  rlm_xds_vlog112s=NULL;
+  rlm_xds_vlog113s=NULL;
+  rlm_xds_vlog114s=NULL;
+  rlm_xds_vlog115s=NULL;
+  rlm_xds_vlog116s=NULL;
+  rlm_xds_vlog117s=NULL;
+  rlm_xds_vlog118s=NULL;
+  rlm_xds_vlog119s=NULL;
+  rlm_xds_vlog120s=NULL;
 
   sprintf(section,"Udp%d",i++);
   strncpy(address,RLMGetStringValue(ptr,arg,section,"IpAddress",""),15);
@@ -179,6 +219,107 @@ void rlm_xds_RLMStart(void *ptr,const char *arg)
 			  (rlm_xds_devs+1)*sizeof(int));
     rlm_xds_aux2s[rlm_xds_devs]=
       rlm_xds_GetLogStatus(ptr,arg,section,"Aux2Log");
+
+    rlm_xds_vlog101s=realloc(rlm_xds_vlog101s,
+			  (rlm_xds_devs+1)*sizeof(int));
+    rlm_xds_vlog101s[rlm_xds_devs]=
+      rlm_xds_GetLogStatus(ptr,arg,section,"VLog101");
+
+    rlm_xds_vlog102s=realloc(rlm_xds_vlog102s,
+			  (rlm_xds_devs+1)*sizeof(int));
+    rlm_xds_vlog102s[rlm_xds_devs]=
+      rlm_xds_GetLogStatus(ptr,arg,section,"VLog102");
+
+    rlm_xds_vlog103s=realloc(rlm_xds_vlog103s,
+			  (rlm_xds_devs+1)*sizeof(int));
+    rlm_xds_vlog103s[rlm_xds_devs]=
+      rlm_xds_GetLogStatus(ptr,arg,section,"VLog103");
+
+    rlm_xds_vlog104s=realloc(rlm_xds_vlog104s,
+			  (rlm_xds_devs+1)*sizeof(int));
+    rlm_xds_vlog104s[rlm_xds_devs]=
+      rlm_xds_GetLogStatus(ptr,arg,section,"VLog104");
+
+    rlm_xds_vlog105s=realloc(rlm_xds_vlog105s,
+			  (rlm_xds_devs+1)*sizeof(int));
+    rlm_xds_vlog105s[rlm_xds_devs]=
+      rlm_xds_GetLogStatus(ptr,arg,section,"VLog105");
+
+    rlm_xds_vlog106s=realloc(rlm_xds_vlog106s,
+			  (rlm_xds_devs+1)*sizeof(int));
+    rlm_xds_vlog106s[rlm_xds_devs]=
+      rlm_xds_GetLogStatus(ptr,arg,section,"VLog106");
+
+    rlm_xds_vlog107s=realloc(rlm_xds_vlog107s,
+			  (rlm_xds_devs+1)*sizeof(int));
+    rlm_xds_vlog107s[rlm_xds_devs]=
+      rlm_xds_GetLogStatus(ptr,arg,section,"VLog107");
+
+    rlm_xds_vlog108s=realloc(rlm_xds_vlog108s,
+			  (rlm_xds_devs+1)*sizeof(int));
+    rlm_xds_vlog108s[rlm_xds_devs]=
+      rlm_xds_GetLogStatus(ptr,arg,section,"VLog108");
+
+    rlm_xds_vlog109s=realloc(rlm_xds_vlog109s,
+			  (rlm_xds_devs+1)*sizeof(int));
+    rlm_xds_vlog109s[rlm_xds_devs]=
+      rlm_xds_GetLogStatus(ptr,arg,section,"VLog109");
+
+    rlm_xds_vlog110s=realloc(rlm_xds_vlog110s,
+			  (rlm_xds_devs+1)*sizeof(int));
+    rlm_xds_vlog110s[rlm_xds_devs]=
+      rlm_xds_GetLogStatus(ptr,arg,section,"VLog110");
+
+    rlm_xds_vlog111s=realloc(rlm_xds_vlog111s,
+			  (rlm_xds_devs+1)*sizeof(int));
+    rlm_xds_vlog111s[rlm_xds_devs]=
+      rlm_xds_GetLogStatus(ptr,arg,section,"VLog111");
+
+    rlm_xds_vlog112s=realloc(rlm_xds_vlog112s,
+			  (rlm_xds_devs+1)*sizeof(int));
+    rlm_xds_vlog112s[rlm_xds_devs]=
+      rlm_xds_GetLogStatus(ptr,arg,section,"VLog112");
+
+    rlm_xds_vlog113s=realloc(rlm_xds_vlog113s,
+			  (rlm_xds_devs+1)*sizeof(int));
+    rlm_xds_vlog113s[rlm_xds_devs]=
+      rlm_xds_GetLogStatus(ptr,arg,section,"VLog113");
+
+    rlm_xds_vlog114s=realloc(rlm_xds_vlog114s,
+			  (rlm_xds_devs+1)*sizeof(int));
+    rlm_xds_vlog114s[rlm_xds_devs]=
+      rlm_xds_GetLogStatus(ptr,arg,section,"VLog114");
+
+    rlm_xds_vlog115s=realloc(rlm_xds_vlog115s,
+			  (rlm_xds_devs+1)*sizeof(int));
+    rlm_xds_vlog115s[rlm_xds_devs]=
+      rlm_xds_GetLogStatus(ptr,arg,section,"VLog115");
+
+    rlm_xds_vlog116s=realloc(rlm_xds_vlog116s,
+			  (rlm_xds_devs+1)*sizeof(int));
+    rlm_xds_vlog116s[rlm_xds_devs]=
+      rlm_xds_GetLogStatus(ptr,arg,section,"VLog116");
+
+    rlm_xds_vlog117s=realloc(rlm_xds_vlog117s,
+			  (rlm_xds_devs+1)*sizeof(int));
+    rlm_xds_vlog117s[rlm_xds_devs]=
+      rlm_xds_GetLogStatus(ptr,arg,section,"VLog117");
+
+    rlm_xds_vlog118s=realloc(rlm_xds_vlog118s,
+			  (rlm_xds_devs+1)*sizeof(int));
+    rlm_xds_vlog118s[rlm_xds_devs]=
+      rlm_xds_GetLogStatus(ptr,arg,section,"VLog118");
+
+    rlm_xds_vlog119s=realloc(rlm_xds_vlog119s,
+			  (rlm_xds_devs+1)*sizeof(int));
+    rlm_xds_vlog119s[rlm_xds_devs]=
+      rlm_xds_GetLogStatus(ptr,arg,section,"VLog119");
+
+    rlm_xds_vlog120s=realloc(rlm_xds_vlog120s,
+			  (rlm_xds_devs+1)*sizeof(int));
+    rlm_xds_vlog120s[rlm_xds_devs]=
+      rlm_xds_GetLogStatus(ptr,arg,section,"VLog120");
+
     if(rlm_xds_handles[rlm_xds_devs]<0) {
       sprintf(errtext,"rlm_xds: configured destination \"%s:%d\"",address,
 	      rlm_xds_ports[rlm_xds_devs]);
@@ -213,6 +354,26 @@ void rlm_xds_RLMFree(void *ptr)
   free(rlm_xds_masters);
   free(rlm_xds_aux1s);
   free(rlm_xds_aux2s);
+  free(rlm_xds_vlog101s);
+  free(rlm_xds_vlog102s);
+  free(rlm_xds_vlog103s);
+  free(rlm_xds_vlog104s);
+  free(rlm_xds_vlog105s);
+  free(rlm_xds_vlog106s);
+  free(rlm_xds_vlog107s);
+  free(rlm_xds_vlog108s);
+  free(rlm_xds_vlog109s);
+  free(rlm_xds_vlog110s);
+  free(rlm_xds_vlog111s);
+  free(rlm_xds_vlog112s);
+  free(rlm_xds_vlog113s);
+  free(rlm_xds_vlog114s);
+  free(rlm_xds_vlog115s);
+  free(rlm_xds_vlog116s);
+  free(rlm_xds_vlog117s);
+  free(rlm_xds_vlog118s);
+  free(rlm_xds_vlog119s);
+  free(rlm_xds_vlog120s);
 }
 
 
@@ -232,17 +393,97 @@ void rlm_xds_RLMPadDataSent(void *ptr,const struct rlm_svc *svc,
   }
   for(i=0;i<rlm_xds_devs;i++) {
     switch(log->log_mach) {
-      case 0:
-	flag=rlm_xds_masters[i];
-	break;
+    case 0:
+      flag=rlm_xds_masters[i];
+      break;
 
-      case 1:
-	flag=rlm_xds_aux1s[i];
-	break;
+    case 1:
+      flag=rlm_xds_aux1s[i];
+      break;
 
-      case 2:
-	flag=rlm_xds_aux2s[i];
-	break;
+    case 2:
+      flag=rlm_xds_aux2s[i];
+      break;
+
+    case 100:
+      flag=rlm_xds_vlog101s[i];
+      break;
+
+    case 101:
+      flag=rlm_xds_vlog102s[i];
+      break;
+
+    case 102:
+      flag=rlm_xds_vlog103s[i];
+      break;
+
+    case 103:
+      flag=rlm_xds_vlog104s[i];
+      break;
+
+    case 104:
+      flag=rlm_xds_vlog105s[i];
+      break;
+
+    case 105:
+      flag=rlm_xds_vlog106s[i];
+      break;
+
+    case 106:
+      flag=rlm_xds_vlog107s[i];
+      break;
+
+    case 107:
+      flag=rlm_xds_vlog108s[i];
+      break;
+
+    case 108:
+      flag=rlm_xds_vlog109s[i];
+      break;
+
+    case 109:
+      flag=rlm_xds_vlog110s[i];
+      break;
+
+    case 110:
+      flag=rlm_xds_vlog111s[i];
+      break;
+
+    case 111:
+      flag=rlm_xds_vlog112s[i];
+      break;
+
+    case 112:
+      flag=rlm_xds_vlog113s[i];
+      break;
+
+    case 113:
+      flag=rlm_xds_vlog114s[i];
+      break;
+
+    case 114:
+      flag=rlm_xds_vlog115s[i];
+      break;
+
+    case 115:
+      flag=rlm_xds_vlog116s[i];
+      break;
+
+    case 116:
+      flag=rlm_xds_vlog117s[i];
+      break;
+
+    case 117:
+      flag=rlm_xds_vlog118s[i];
+      break;
+
+    case 118:
+      flag=rlm_xds_vlog119s[i];
+      break;
+
+    case 119:
+      flag=rlm_xds_vlog120s[i];
+      break;
     }
     if((flag==1)||((flag==2)&&(log->log_onair!=0))) {
       packet[0]=0;

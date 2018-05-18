@@ -255,6 +255,7 @@ void rlm_icecast2_RLMStart(void *ptr,const char *arg)
 			  (rlm_icecast2_devs+1)*sizeof(int));
     rlm_icecast2_aux2s[rlm_icecast2_devs]=
       rlm_icecast2_GetLogStatus(ptr,arg,section,"Aux2Log");
+
     rlm_icecast2_vlog101s=realloc(rlm_icecast2_vlog101s,
 			  (rlm_icecast2_devs+1)*sizeof(int));
     rlm_icecast2_vlog101s[rlm_icecast2_devs]=

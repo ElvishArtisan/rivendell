@@ -16856,3 +16856,19 @@
 	* Added rdvairplay(1) to the 'rivendell' package.
 2018-05-18 Fred Gleason <fredg@paravelsystems.com>
 	* Renamed rdvairplay(1) to rdvairplayd(8).
+2018-05-18 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the 'rlm_ando' plug-in to support vlogs.
+	* Updated the 'rlm_filewrite' plug-in to support vlogs.
+	* Updated the 'rlm_inno713' plug-in to support vlogs.
+	* Updated the 'rlm_liqcomp' plug-in to support vlogs.
+	* Updated the 'rlm_live365' plug-in to support vlogs.
+	* Updated the 'rlm_padpoint' plug-in to support vlogs.
+	* Updated the 'rlm_serial' plug-in to support vlogs.
+	* Updated the 'rlm_shoutcast1' plug-in to support vlogs.
+	* Updated the 'rlm_spinitron_plus' plug-in to support vlogs.
+	* Updated the 'rlm_spottrap_plus' plug-in to support vlogs.
+	* Updated the 'rlm_tagstation_plus' plug-in to support vlogs.
+	* Updated the 'rlm_udp' plug-in to support vlogs.
+	* Updated the 'rlm_urlwrite' plug-in to support vlogs.
+	* Updated the 'rlm_xds' plug-in to support vlogs.
+	* Updated the 'rlm_xmpad' plug-in to support vlogs.
