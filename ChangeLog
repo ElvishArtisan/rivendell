@@ -16850,3 +16850,5 @@
 	* Added rdvairplay(1) to the 'rivendell' package.
 2018-05-18 Fred Gleason <fredg@paravelsystems.com>
 	* Renamed rdvairplay(1) to rdvairplayd(8).
+2018-05-18 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.19.2headless00.
