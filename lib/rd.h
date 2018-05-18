@@ -128,7 +128,7 @@
 /*
  * Max number of possible audio adapters
  */
-#define RD_MAX_CARDS 8
+#define RD_MAX_CARDS 24
 
 /*
  * Max number of possible audio streams/card/type
@@ -138,7 +138,7 @@
 /*
  * Max number of possible audio ports/card/type
  */
-#define RD_MAX_PORTS 8
+#define RD_MAX_PORTS 24
 
 /*
  * Max number of possible TTYs

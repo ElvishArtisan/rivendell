@@ -16872,3 +16872,6 @@
 	* Updated the 'rlm_urlwrite' plug-in to support vlogs.
 	* Updated the 'rlm_xds' plug-in to support vlogs.
 	* Updated the 'rlm_xmpad' plug-in to support vlogs.
+2018-05-18 Fred Gleason <fredg@paravelsystems.com>
+	* Changed RD_MAX_CARDS from '8' to '24'.
+	* Changed RD_MAX_PORTS from '8' to '24'.
