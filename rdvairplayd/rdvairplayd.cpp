@@ -1,6 +1,6 @@
-// rdvairplay.cpp
+// rdvairplayd.cpp
 //
-// Headless RDAirPlay
+// Headless log player
 //
 //   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
 //
@@ -35,7 +35,7 @@
 #include <rdmixer.h>
 #include <rdweb.h>
 
-#include "rdvairplay.h"
+#include "rdvairplayd.h"
 
 bool global_exiting=false;
 
@@ -56,16 +56,6 @@ MainObject::MainObject(QObject *parent)
   QString err_msg;
 
   //
-  // Ensure Single Instance
-  //
-  air_lock=new RDInstanceLock(QString().sprintf("%s/.rdvairplaylock",
-					       (const char *)RDHomeDir()));
-  if(!air_lock->lock()) {
-    fprintf(stderr,"rdvairplay: multiple instances not allowed\n");
-    exit(1);
-  }
-
-  //
   // Ensure that system daemons are running
   //
   RDInitializeDaemons();
@@ -78,9 +68,9 @@ MainObject::MainObject(QObject *parent)
   //
   // Open the Database
   //
-  rda=new RDApplication("rdvairplay","rdvairplay",RDVAIRPLAY_USAGE,this);
+  rda=new RDApplication("rdvairplayd","rdvairplayd",RDVAIRPLAYD_USAGE,this);
   if(!rda->open(&err_msg)) {
-    fprintf(stderr,"rdvairplay: %s\n",(const char *)err_msg);
+    fprintf(stderr,"rdvairplayd: %s\n",(const char *)err_msg);
     exit(1);
   }
   air_previous_exit_code=rda->airplayConf()->virtualExitCode();
@@ -91,7 +81,7 @@ MainObject::MainObject(QObject *parent)
   //
   for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
     if(!rda->cmdSwitch()->processed(i)) {
-      fprintf(stderr,"rdvairplay: unknown command option \"%s\"\n",
+      fprintf(stderr,"rdvairplayd: unknown command option \"%s\"\n",
 	      (const char *)rda->cmdSwitch()->key(i));
       exit(2);
     }
@@ -354,8 +344,7 @@ void MainObject::exitData()
       delete air_logs[i];
     }
     rda->airplayConf()->setVirtualExitCode(RDAirPlayConf::ExitClean);
-    rda->log(RDConfig::LogInfo,"RDVAirPlay exiting");
-    air_lock->unlock();
+    rda->log(RDConfig::LogInfo,"exiting");
     exit(0);
   }
 }

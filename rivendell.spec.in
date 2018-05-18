@@ -1,7 +1,7 @@
 ## rivendell.spec.in
 ##
 ##    The Rivendell Radio Automation System
-##    Copyright (C) 2002-2016  Fred Gleason <fredg@paravelsystems.com>
+##    Copyright (C) 2002-2018  Fred Gleason <fredg@paravelsystems.com>
 ##
 ##    This program is free software; you can redistribute it and/or modify
 ##    it under the terms of version 2 of the GNU General Public License as
@@ -251,7 +251,6 @@ rm -rf $RPM_BUILD_ROOT
 @LOCAL_PREFIX@/@RD_LIB_PATH@/rivendell/*.rlm
 @LOCAL_PREFIX@/bin/rdadmin
 @LOCAL_PREFIX@/bin/rdairplay
-@LOCAL_PREFIX@/bin/rdvairplay
 @LOCAL_PREFIX@/bin/rdpanel
 @LOCAL_PREFIX@/bin/rdcartslots
 @LOCAL_PREFIX@/bin/rdcatch
@@ -414,6 +413,7 @@ rm -rf $RPM_BUILD_ROOT
 @LOCAL_PREFIX@/@RD_LIB_PATH@/librd.la
 @LOCAL_PREFIX@/@RD_LIB_PATH@/librd.so
 %attr(4755,root,root) @LOCAL_PREFIX@/bin/caed
+@LOCAL_PREFIX@/sbin/rdvairplayd
 /etc/init.d/rivendell
 %config /etc/sysconfig/rivendell
 @HPI_FILE1@

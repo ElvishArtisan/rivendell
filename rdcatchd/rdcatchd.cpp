@@ -309,8 +309,8 @@ MainObject::MainObject(QObject *parent)
   // Start Subprocesses
   //
   if(fork()==0) {
-    execl(QString(RD_PREFIX)+"/bin/rdvairplay","rdvairplay",(char *)NULL);
-    rda->log(RDConfig::LogWarning,QString("failed to start rdvairplay(1) [")+
+    execl(QString(RD_PREFIX)+"/sbin/rdvairplayd","rdvairplayd",(char *)NULL);
+    rda->log(RDConfig::LogWarning,QString("failed to start rdvairplayd(1) [")+
 	     strerror(errno)+"]");
     exit(1);
   }

@@ -1,6 +1,6 @@
 ## Makefile.am
 ##
-## Makefile for rdvairplay(1)
+## Makefile for rdvairplayd(8)
 ##
 ##   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
 ##
@@ -27,14 +27,14 @@ MOC = @QT_MOC@
 moc_%.cpp:	%.h
 	$(MOC) $< -o $@
 
-bin_PROGRAMS = rdvairplay
+sbin_PROGRAMS = rdvairplayd
 
-dist_rdvairplay_SOURCES = local_macros.cpp\
-                          rdvairplay.cpp rdvairplay.h
+dist_rdvairplayd_SOURCES = local_macros.cpp\
+                          rdvairplayd.cpp rdvairplayd.h
 
-nodist_rdvairplay_SOURCES = moc_rdvairplay.cpp
+nodist_rdvairplayd_SOURCES = moc_rdvairplayd.cpp
 
-rdvairplay_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
+rdvairplayd_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
 
 CLEANFILES = *~\
              *.idb\

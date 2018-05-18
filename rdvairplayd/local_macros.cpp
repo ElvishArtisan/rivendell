@@ -1,6 +1,6 @@
 // local_macros.cpp
 //
-// Local RML Macros for the Rivendell's RDvAirPlay
+// Local RML Macros for rdvairplayd(8)
 //
 //   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
@@ -25,7 +25,7 @@
 #include <rdescape_string.h>
 #include <rdmacro.h>
 
-#include "rdvairplay.h"
+#include "rdvairplayd.h"
 
 void MainObject::rmlReceivedData(RDMacro *rml)
 {

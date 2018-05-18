@@ -16848,3 +16848,5 @@
 	* Added rdvairplay(1) to the 'rivendell' service.
 2018-05-17 Fred Gleason <fredg@paravelsystems.com>
 	* Added rdvairplay(1) to the 'rivendell' package.
+2018-05-18 Fred Gleason <fredg@paravelsystems.com>
+	* Renamed rdvairplay(1) to rdvairplayd(8).

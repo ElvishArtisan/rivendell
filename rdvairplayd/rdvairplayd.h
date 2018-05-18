@@ -1,6 +1,6 @@
-// rdvairplay.h
+// rdvairplayd.h
 //
-// Headless RDAirPlay
+// Headless log player
 //
 //   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
 //
@@ -18,20 +18,19 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef RDVAIRPLAY_H
-#define RDVAIRPLAY_H
+#ifndef RDVAIRPLAYD_H
+#define RDVAIRPLAYD_H
 
 #include <qobject.h>
 #include <qsocketdevice.h>
 
 #include <rdevent_player.h>
-#include <rdinstancelock.h>
 #include <rd.h>
 #include <rdlogplay.h>
 #include <rdmacro.h>
 #include <rdrlmhost.h>
 
-#define RDVAIRPLAY_USAGE "[options]\n"
+#define RDVAIRPLAYD_USAGE "[options]\n"
 
 class MainObject : public QObject
 {
@@ -56,7 +55,6 @@ class MainObject : public QObject
   int air_start_lines[RD_RDVAIRPLAY_LOG_QUAN];
   bool air_start_starts[RD_RDVAIRPLAY_LOG_QUAN];
   std::vector<RDRLMHost *> air_plugin_hosts;
-  RDInstanceLock *air_lock;
   RDEventPlayer *air_event_player;
   QSocketDevice *air_nownext_socket;
   QDateTime air_startup_datetime;
@@ -65,4 +63,4 @@ class MainObject : public QObject
 };
 
 
-#endif  // RDVAIRPLAY_H
+#endif  // RDVAIRPLAYD_H
