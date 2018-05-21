@@ -672,7 +672,7 @@ a záloha původní databáze uložena v </translation>
     <name>EditAudioPorts</name>
     <message>
         <source>Edit Audio Ports</source>
-        <translation>Upravit přípojky zvuku</translation>
+        <translation type="obsolete">Upravit přípojky zvuku</translation>
     </message>
     <message>
         <source>Clock Source:</source>
@@ -764,6 +764,10 @@ a záloha původní databáze uložena v </translation>
     </message>
     <message>
         <source>Ref. Level:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit AudioScience Audio Ports</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3656,7 +3660,7 @@ zvuku</translation>
     <message>
         <source>Audio
 Ports</source>
-        <translation>Zvukové
+        <translation type="obsolete">Zvukové
 přípojky</translation>
     </message>
     <message>
@@ -3792,6 +3796,11 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
     </message>
     <message>
         <source>Short Name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ASI Audio
+Ports</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

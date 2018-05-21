@@ -16875,3 +16875,19 @@
 2018-05-18 Fred Gleason <fredg@paravelsystems.com>
 	* Changed RD_MAX_CARDS from '8' to '24'.
 	* Changed RD_MAX_PORTS from '8' to '24'.
+2018-05-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'AUDIO_CARDS' table to the database.
+	* Dropped the 'STATIONS.CARD<n>_DRIVER', 'STATIONS.CARD<n>NAME',
+	'STATIONS.CARD<n>_INPUTS' and 'STATIONS.CARD<n>OUTPUTS' fields
+	from the database.
+	* Incremented the database version to 282.
+	* Added an 'AUDIO_CARDS.CLOCK_SOURCE' field to the database.
+	* Added an 'AUDIO_INPUTS' table to the database.
+	* Added an 'AUDIO_OUTPUTS' table to the database.
+	* Dropped the 'AUDIO_PORTS' table from the database.
+	* Incremented the database version to 283.
+	* Changed the legend on the 'Audio Ports' button to 'ASI Audio Ports'
+	on the 'Edit Host' dialog in rdadmin(1).
+	* Changed the title of the 'Configure Audio Ports' dialog to
+	'Configure AudioScience Audio Ports' on the 'Edit Host' dialog
+	in rdadmin(1).

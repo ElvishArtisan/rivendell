@@ -540,21 +540,12 @@ int RDStation::cards() const
 {
   int n=0;
 
-  QString sql=QString().sprintf("select CARD0_DRIVER,CARD1_DRIVER,\
-                                 CARD2_DRIVER,CARD3_DRIVER,CARD4_DRIVER,\
-                                 CARD5_DRIVER,CARD6_DRIVER,CARD7_DRIVER\
-                                 from STATIONS where NAME=\"%s\"",
-				(const char *)station_name);
+  QString sql=QString("select DRIVER from AUDIO_CARDS where ")+
+    "STATION_NAME=\""+RDEscapeString(station_name)+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
-  if(q->first()) {
-    for(int i=0;i<RD_MAX_CARDS;i++) {
-      if((RDStation::AudioDriver)q->value(i).toInt()!=RDStation::None) {
-	n++;
-      }
-      else {
-	delete q;
-	return n;
-      }
+  while(q->next()) {
+    if((RDStation::AudioDriver)q->value(0).toInt()!=RDStation::None) {
+      n++;
     }
   }
   delete q;
@@ -565,16 +556,28 @@ int RDStation::cards() const
 
 RDStation::AudioDriver RDStation::cardDriver(int cardnum) const
 {
-  return (RDStation::AudioDriver)
-    RDGetSqlValue("STATIONS","NAME",station_name,
-		 QString().sprintf("CARD%d_DRIVER",cardnum)).
-    toInt();
+  RDStation::AudioDriver ret=RDStation::None;
+  QString sql=QString("select DRIVER from AUDIO_CARDS where ")+
+    "STATION_NAME=\""+RDEscapeString(station_name)+"\" && "+
+    QString().sprintf("CARD_NUMBER=%d",cardnum);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(q->first()) {
+    ret=(RDStation::AudioDriver)q->value(0).toInt();
+  }
+  delete q;
+
+  return ret;
 }
 
 
 void RDStation::setCardDriver(int cardnum,AudioDriver driver) const
 {
-  SetRow(QString().sprintf("CARD%d_DRIVER",cardnum),(int)driver);
+  QString sql=QString("update AUDIO_CARDS set ")+
+    QString().sprintf("DRIVER=%d where ",driver)+
+    "STATION_NAME=\""+RDEscapeString(station_name)+"\" && "+
+    QString().sprintf("CARD_NUMBER=%d",cardnum);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  delete q;
 }
 
 
@@ -623,40 +626,82 @@ void RDStation::setDriverVersion(AudioDriver driver,QString ver) const
 
 QString RDStation::cardName(int cardnum) const
 {
-  return RDGetSqlValue("STATIONS","NAME",station_name,
-		      QString().sprintf("CARD%d_NAME",cardnum)).toString();
+  QString ret;
+  QString sql=QString("select NAME from AUDIO_CARDS where ")+
+    "STATION_NAME=\""+RDEscapeString(station_name)+"\" && "+
+    QString().sprintf("CARD_NUMBER=%d",cardnum);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(q->first()) {
+    ret=q->value(0).toString();
+  }
+  delete q;
+
+  return ret;
 }
 
 
 void RDStation::setCardName(int cardnum,QString name) const
 {
-  SetRow(QString().sprintf("CARD%d_NAME",cardnum),name);
+  QString sql=QString("update AUDIO_CARDS set ")+
+    "NAME=\""+RDEscapeString(name)+"\" where "+
+    "STATION_NAME=\""+RDEscapeString(station_name)+"\" && "+
+    QString().sprintf("CARD_NUMBER=%d",cardnum);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  delete q;
 }
 
 
 int RDStation::cardInputs(int cardnum) const
 {
-  return RDGetSqlValue("STATIONS","NAME",station_name,
-		      QString().sprintf("CARD%d_INPUTS",cardnum)).toInt();
+  int ret=-1;
+  QString sql=QString("select INPUTS from AUDIO_CARDS where ")+
+    "STATION_NAME=\""+RDEscapeString(station_name)+"\" && "+
+    QString().sprintf("CARD_NUMBER=%d",cardnum);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(q->first()) {
+    ret=q->value(0).toInt();
+  }
+  delete q;
+
+  return ret;
 }
 
 
 void RDStation::setCardInputs(int cardnum,int inputs) const
 {
-  SetRow(QString().sprintf("CARD%d_INPUTS",cardnum),inputs);
+  QString sql=QString("update AUDIO_CARDS set ")+
+    QString().sprintf("INPUTS=%d where ",inputs)+
+    "STATION_NAME=\""+RDEscapeString(station_name)+"\" && "+
+    QString().sprintf("CARD_NUMBER=%d",cardnum);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  delete q;
 }
 
 
 int RDStation::cardOutputs(int cardnum) const
 {
-  return RDGetSqlValue("STATIONS","NAME",station_name,
-		      QString().sprintf("CARD%d_OUTPUTS",cardnum)).toInt();
+  int ret=-1;
+  QString sql=QString("select OUTPUTS from AUDIO_CARDS where ")+
+    "STATION_NAME=\""+RDEscapeString(station_name)+"\" && "+
+    QString().sprintf("CARD_NUMBER=%d",cardnum);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(q->first()) {
+    ret=q->value(0).toInt();
+  }
+  delete q;
+
+  return ret;
 }
 
 
 void RDStation::setCardOutputs(int cardnum,int outputs) const
 {
-  SetRow(QString().sprintf("CARD%d_OUTPUTS",cardnum),outputs);
+  QString sql=QString("update AUDIO_CARDS set ")+
+    QString().sprintf("OUTPUTS=%d where ",outputs)+
+    "STATION_NAME=\""+RDEscapeString(station_name)+"\" && "+
+    QString().sprintf("CARD_NUMBER=%d",cardnum);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  delete q;
 }
 
 
@@ -670,6 +715,38 @@ bool RDStation::create(const QString &name,QString *err_msg,
 
   if(addr.isNull()) {
     addr.setAddress("127.0.0.1");
+  }
+
+  //
+  // Add Audio Cards
+  //
+  for(int i=0;i<RD_MAX_CARDS;i++) {
+    sql=QString("insert into AUDIO_CARDS set ")+
+      "STATION_NAME=\""+RDEscapeString(name)+"\","+
+      QString().sprintf("CARD_NUMBER=%d",i);
+    q=new RDSqlQuery(sql);
+    delete q;
+  }
+
+  //
+  // Add Audio Inputs / Outputs
+  //
+  for(int i=0;i<RD_MAX_CARDS;i++) {
+    for(int j=0;j<RD_MAX_PORTS;j++) {
+      sql=QString("insert into AUDIO_INPUTS set ")+
+	"STATION_NAME=\""+RDEscapeString(name)+"\","+
+	QString().sprintf("CARD_NUMBER=%d,",i)+
+	QString().sprintf("PORT_NUMBER=%d",i);
+      q=new RDSqlQuery(sql);
+      delete q;
+
+      sql=QString("insert into AUDIO_OUTPUTS set ")+
+	"STATION_NAME=\""+RDEscapeString(name)+"\","+
+	QString().sprintf("CARD_NUMBER=%d,",i)+
+	QString().sprintf("PORT_NUMBER=%d",i);
+      q=new RDSqlQuery(sql);
+      delete q;
+    }
   }
 
   if(exemplar.isEmpty()) {  // Create Blank Host Config
@@ -1254,41 +1331,6 @@ bool RDStation::create(const QString &name,QString *err_msg,
     delete q;
 
     //
-    // Clone Audio Port Settings
-    //
-    sql=QString("select ")+
-      "CARD_NUMBER,"    // 00
-      "CLOCK_SOURCE,";  // 01
-    for(int i=0;i<RD_MAX_PORTS;i++) {
-      sql+=QString().sprintf("INPUT_%d_LEVEL,",i)+
-	QString().sprintf("INPUT_%d_MODE,",i)+
-	QString().sprintf("INPUT_%d_TYPE,",i)+
-	QString().sprintf("OUTPUT_%d_LEVEL,",i);
-    }
-    sql=sql.left(sql.length()-1);
-    sql+=QString(" from AUDIO_PORTS where ")+
-      "STATION_NAME=\""+RDEscapeString(exemplar)+"\"";
-    q=new RDSqlQuery(sql);
-    while(q->next()) {
-      sql=QString("insert into AUDIO_PORTS set ")+
-	QString().sprintf("CARD_NUMBER=%u,",q->value(0).toUInt())+
-	QString().sprintf("CLOCK_SOURCE=%d,",q->value(1).toInt())+
-	"STATION_NAME=\""+RDEscapeString(name)+"\",";
-      for(int i=0;i<RD_MAX_PORTS;i++) {
-	sql+=QString().sprintf("INPUT_%d_LEVEL=%d,INPUT_%d_MODE=%d,\
-                                INPUT_%d_TYPE=%d,OUTPUT_%d_LEVEL=%d,",
-			       i,q->value(2+3*i).toInt(),
-			       i,q->value(3+3*i).toInt(),
-			       i,q->value(4+3*i).toInt(),
-			       i,q->value(5+3*i).toInt());
-      }
-      sql=sql.left(sql.length()-1);
-      q1=new RDSqlQuery(sql);
-      delete q1;
-    }
-    delete q;
-
-    //
     // Clone the Serial Setups
     //
     sql=QString("select ")+
@@ -1760,7 +1802,7 @@ bool RDStation::create(const QString &name,QString *err_msg,
       "LOG_RML "+        // 13
       "from LOG_MACHINES where "+
       "STATION_NAME=\""+RDEscapeString(exemplar)+"\"";
-    q=new RDSqlQuery(sql,false);
+    q=new RDSqlQuery(sql);
     while(q->next()) {
       sql=QString("insert into LOG_MACHINES set ")+
 	"STATION_NAME=\""+RDEscapeString(name)+"\","+
@@ -1778,10 +1820,72 @@ bool RDStation::create(const QString &name,QString *err_msg,
 	QString().sprintf("UDP_PORT=%u,",q->value(11).toUInt())+
 	"UDP_STRING=\""+RDEscapeString(q->value(12).toString())+"\","+
 	"LOG_RML=\""+RDEscapeString(q->value(13).toString())+"\"";
-      q1=new RDSqlQuery(sql,false);
+      q1=new RDSqlQuery(sql);
       delete q1;
     }
     delete q;
+
+    //
+    // Clone Audio Cards
+    //
+    sql=QString("select CARD_NUMBER,CLOCK_SOURCE from AUDIO_CARDS where ")+
+      "STATION_NAME=\""+RDEscapeString(exemplar)+"\"";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("update AUDIO_CARDS set ")+
+	QString().sprintf("CLOCK_SOURCE=%d where ",q->value(1).toInt())+
+	"STATION_NAME=\""+RDEscapeString(name)+"\" && "+
+	QString().sprintf("CARD_NUMBER=%d",q->value(0).toInt());
+      q1=new RDSqlQuery(sql);
+      delete q1;
+    }
+    delete q;
+
+    //
+    // Clone Audio Inputs
+    //
+    sql=QString("select ")+
+      "CARD_NUMBER,"+  // 00
+      "PORT_NUMBER,"+  // 01
+      "LEVEL,"+        // 02
+      "TYPE,"+         // 03
+      "MODE "+         // 04
+      "from AUDIO_INPUTS where "+
+      "STATION_NAME=\""+RDEscapeString(exemplar)+"\"";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("update AUDIO_INPUTS set ")+
+	QString().sprintf("LEVEL=%d,",q->value(2).toInt())+
+	QString().sprintf("TYPE=%d,",q->value(3).toInt())+
+	QString().sprintf("MODE=%d where ",q->value(4).toInt())+
+	"STATION_NAME=\""+RDEscapeString(name)+"\" && "+
+	QString().sprintf("CARD_NUMBER=%d && ",q->value(0).toInt())+
+	QString().sprintf("PORT_NUMBER=%d",q->value(1).toInt());
+      q1=new RDSqlQuery(sql);
+      delete q1;
+    }
+    delete q;
+  
+    //
+    // Clone Audio Outputs
+    //
+    sql=QString("select ")+
+      "CARD_NUMBER,"+  // 00
+      "PORT_NUMBER,"+  // 01
+      "LEVEL "+        // 02
+      "from AUDIO_OUTPUTS where "+
+      "STATION_NAME=\""+RDEscapeString(exemplar)+"\"";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("update AUDIO_OUTPUTS set ")+
+	QString().sprintf("LEVEL=%d where ",q->value(2).toInt())+
+	"STATION_NAME=\""+RDEscapeString(name)+"\" && "+
+	QString().sprintf("CARD_NUMBER=%d && ",q->value(0).toInt())+
+	QString().sprintf("PORT_NUMBER=%d",q->value(1).toInt());
+      q1=new RDSqlQuery(sql);
+      delete q1;
+    }
+    delete q;  
   }
   return true;
 }
@@ -1805,10 +1909,7 @@ void RDStation::remove(const QString &name)
 			(const char *)RDEscapeString(name));
   q=new RDSqlQuery(sql);
   delete q;
-  sql=QString().sprintf("delete from AUDIO_PORTS where STATION_NAME=\"%s\"",
-			(const char *)RDEscapeString(name));
-  q=new RDSqlQuery(sql);
-  delete q;
+
   sql=QString().sprintf("delete from RECORDINGS where STATION_NAME=\"%s\"",
 			(const char *)RDEscapeString(name));
   q=new RDSqlQuery(sql);
@@ -1940,6 +2041,16 @@ void RDStation::remove(const QString &name)
   delete q;
 
   sql=QString("delete from LOG_MACHINES where ")+
+    "STATION_NAME=\""+RDEscapeString(name)+"\"";
+  q=new RDSqlQuery(sql);
+  delete q;
+
+  sql=QString("delete from AUDIO_INPUT where ")+
+    "STATION_NAME=\""+RDEscapeString(name)+"\"";
+  q=new RDSqlQuery(sql);
+  delete q;
+
+  sql=QString("delete from AUDIO_OUTPUTS where ")+
     "STATION_NAME=\""+RDEscapeString(name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;

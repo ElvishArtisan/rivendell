@@ -1,0 +1,12 @@
+                  AUDIO_OUTPUTS Table Layout for Rivendell
+
+The AUDIO_PORTS table holds data concerning which configuration of the 
+physical audio outputs.
+
+FIELD NAME           TYPE              REMARKS
+---------------------------------------------------------------
+ID                   int(10) unsigned  Primary key, auto increment
+STATION_NAME	     char(64)
+CARD_NUMBER	     int(11) signed
+PORT_NUMBER          int(11) signed
+LEVEL                int(11) signed    Gain offset, in 1/100 dB

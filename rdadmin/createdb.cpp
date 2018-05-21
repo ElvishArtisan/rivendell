@@ -407,38 +407,6 @@ bool CreateDb(QString name,QString pwd,RDConfig *config)
     "HPI_VERSION char(16),"+
     "JACK_VERSION char(16),"+
     "ALSA_VERSION char(16),"+
-    "CARD0_DRIVER int(11) default 0,"+
-    "CARD0_NAME char(64),"+
-    "CARD0_INPUTS int default -1,"+
-    "CARD0_OUTPUTS int default -1,"+
-    "CARD1_DRIVER int(11) default 0,"+
-    "CARD1_NAME char(64),"+
-    "CARD1_INPUTS int default -1,"+
-    "CARD1_OUTPUTS int default -1,"+
-    "CARD2_DRIVER int(11) default 0,"+
-    "CARD2_NAME char(64),"+
-    "CARD2_INPUTS int default -1,"+
-    "CARD2_OUTPUTS int default -1,"+
-    "CARD3_DRIVER int(11) default 0,"+
-    "CARD3_NAME char(64),"+
-    "CARD3_INPUTS int default -1,"+
-    "CARD3_OUTPUTS int default -1,"+
-    "CARD4_DRIVER int(11) default 0,"+
-    "CARD4_NAME char(64),"+
-    "CARD4_INPUTS int default -1,"+
-    "CARD4_OUTPUTS int default -1,"+
-    "CARD5_DRIVER int(11) default 0,"+
-    "CARD5_NAME char(64),"+
-    "CARD5_INPUTS int default -1,"+
-    "CARD5_OUTPUTS int default -1,"+
-    "CARD6_DRIVER int(11) default 0,"+
-    "CARD6_NAME char(64),"+
-    "CARD6_INPUTS int default -1,"+
-    "CARD6_OUTPUTS int default -1,"+
-    "CARD7_DRIVER int(11) default 0,"+
-    "CARD7_NAME char(64),"+
-    "CARD7_INPUTS int default -1,"+
-    "CARD7_OUTPUTS int default -1,"+
     "INDEX DESCRIPTION_IDX (DESCRIPTION),"+
     "index IPV4_ADDRESS_IDX (IPV4_ADDRESS))"+
     config->createTablePostfix();
@@ -917,6 +885,7 @@ bool CreateDb(QString name,QString pwd,RDConfig *config)
   //
   // Create AUDIO_PORTS table
   //
+  /*
   sql=QString("create table if not exists AUDIO_PORTS (")+
     "ID int unsigned not null primary key AUTO_INCREMENT,"+
     "STATION_NAME char(64) not null,"+
@@ -960,7 +929,7 @@ bool CreateDb(QString name,QString pwd,RDConfig *config)
   if(!RunQuery(sql)) {
     return false;
   }
-
+  */
   //
   // Create LOGS table
   //
@@ -2273,6 +2242,53 @@ bool CreateDb(QString name,QString pwd,RDConfig *config)
     "LOG_RML char(255),"+
     "index STATION_NAME_IDX(STATION_NAME,MACHINE))"+
     config->createTablePostfix();
+  if(!RunQuery(sql)) {
+     return false;
+  }
+
+  //
+  // Create AUDIO_CARDS table
+  //
+  sql=QString("create table if not exists AUDIO_CARDS (")+
+    "ID int auto_increment not null primary key,"+
+    "STATION_NAME char(64) not null,"+
+    "CARD_NUMBER int not null,"+
+    "DRIVER int not null default 0,"+
+    "NAME char(64),"+
+    "INPUTS int not null default -1,"+
+    "OUTPUTS int not null default -1,"+
+    "CLOCK_SOURCE int not null default 0,"+
+    "unique index STATION_NAME_IDX(STATION_NAME,CARD_NUMBER))";
+  if(!RunQuery(sql)) {
+     return false;
+  }
+
+  //
+  // Create AUDIO_INPUTS table
+  //
+  sql=QString("create table if not exists AUDIO_INPUTS (")+
+    "ID int auto_increment not null primary key,"+
+    "STATION_NAME char(64) not null,"+
+    "CARD_NUMBER int not null,"+
+    "PORT_NUMBER int not null,"+
+    "LEVEL int not null default 0,"+
+    "TYPE int not null default 0,"
+    "MODE int not null default 0,"+
+    "unique index STATION_NAME_IDX(STATION_NAME,CARD_NUMBER,PORT_NUMBER))";
+  if(!RunQuery(sql)) {
+     return false;
+  }
+
+  //
+  // Create AUDIO_OUTPUTS table
+  //
+  sql=QString("create table if not exists AUDIO_OUTPUTS (")+
+    "ID int auto_increment not null primary key,"+
+    "STATION_NAME char(64) not null,"+
+    "CARD_NUMBER int not null,"+
+    "PORT_NUMBER int not null,"+
+    "LEVEL int not null default 0,"+
+    "unique index STATION_NAME_IDX(STATION_NAME,CARD_NUMBER,PORT_NUMBER))";
   if(!RunQuery(sql)) {
      return false;
   }
@@ -8214,6 +8230,173 @@ int UpdateDb(int ver,RDConfig *config)
     q=new RDSqlQuery(sql,false);
     delete q;
   }
+
+  if(ver<282) {
+    sql=QString("create table if not exists AUDIO_CARDS (")+
+      "ID int auto_increment not null primary key,"+
+      "STATION_NAME char(64) not null,"+
+      "CARD_NUMBER int not null,"+
+      "DRIVER int not null default 0,"+
+      "NAME char(64),"+
+      "INPUTS int not null default -1,"+
+      "OUTPUTS int not null default -1,"+
+      "unique index STATION_NAME_IDX(STATION_NAME,CARD_NUMBER))";
+    q=new RDSqlQuery(sql,false);
+    delete q;
+
+    sql=QString("select NAME from STATIONS");
+    q=new RDSqlQuery(sql,false);
+    while(q->next()) {
+      for(int i=0;i<RD_MAX_CARDS;i++) {
+	sql=QString("insert into AUDIO_CARDS set ")+
+	  "STATION_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	  QString().sprintf("CARD_NUMBER=%d",i);
+	q1=new RDSqlQuery(sql,false);
+	delete q1;
+      }
+    }
+    delete q;
+
+    for(int i=0;i<8;i++) {
+      sql=QString("alter table STATIONS drop column ")+
+	QString().sprintf("CARD%d_DRIVER",i);
+      q=new RDSqlQuery(sql,false);
+      delete q;
+
+      sql=QString("alter table STATIONS drop column ")+
+	QString().sprintf("CARD%d_NAME",i);
+      q=new RDSqlQuery(sql,false);
+      delete q;
+
+      sql=QString("alter table STATIONS drop column ")+
+	QString().sprintf("CARD%d_INPUTS",i);
+      q=new RDSqlQuery(sql,false);
+      delete q;
+
+      sql=QString("alter table STATIONS drop column ")+
+	QString().sprintf("CARD%d_OUTPUTS",i);
+      q=new RDSqlQuery(sql,false);
+      delete q;
+    }
+  }
+
+  if(ver<283) {
+    sql=QString("alter table AUDIO_CARDS add column ")+
+      "CLOCK_SOURCE int not null default 0 after OUTPUTS";
+    q=new RDSqlQuery(sql,false);
+    delete q;
+
+    sql=QString("select ")+
+      "STATION_NAME,"+
+      "CARD_NUMBER,"+
+      "CLOCK_SOURCE "+
+      "from AUDIO_PORTS";
+    q=new RDSqlQuery(sql,false);
+    while(q->next()) {
+      sql=QString("update AUDIO_CARDS set ")+
+	QString().sprintf("CLOCK_SOURCE=%d where ",q->value(2).toInt())+
+	"STATION_NAME=\""+RDEscapeString(q->value(0).toString())+"\" && "+
+	QString().sprintf("CARD_NUMBER=%d",q->value(1).toInt());
+      q1=new RDSqlQuery(sql,false);
+      delete q1;
+    }
+
+    sql=QString("create table if not exists AUDIO_INPUTS (")+
+      "ID int auto_increment not null primary key,"+
+      "STATION_NAME char(64) not null,"+
+      "CARD_NUMBER int not null,"+
+      "PORT_NUMBER int not null,"+
+      "LEVEL int not null default 0,"+
+      "TYPE int not null default 0,"
+      "MODE int not null default 0,"+
+      "unique index STATION_NAME_IDX(STATION_NAME,CARD_NUMBER,PORT_NUMBER))";
+    q=new RDSqlQuery(sql,false);
+    delete q;
+    sql=QString("select NAME from STATIONS");
+    q=new RDSqlQuery(sql,false);
+    while(q->next()) {
+      for(int i=0;i<24;i++) {
+	for(int j=0;j<24;j++) {
+	  sql=QString("insert into AUDIO_INPUTS set ")+
+	    "STATION_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	    QString().sprintf("CARD_NUMBER=%d,",i)+
+	    QString().sprintf("PORT_NUMBER=%d",j);
+	  q1=new RDSqlQuery(sql,false);
+	  delete q1;
+	}
+      }
+    }
+    delete q;
+    for(int i=0;i<8;i++) {
+      sql=QString("select ")+
+	"STATION_NAME,"+                        // 00
+	"CARD_NUMBER,"+                         // 01
+	QString().sprintf("INPUT_%d_LEVEL,",i)+  // 02
+	QString().sprintf("INPUT_%d_TYPE,",i)+   // 03
+	QString().sprintf("INPUT_%d_MODE ",i)+   // 04
+	"from AUDIO_PORTS";
+      q=new RDSqlQuery(sql,false);
+      while(q->next()) {
+	sql=QString("update AUDIO_INPUTS set ")+
+	  QString().sprintf("LEVEL=%d,",q->value(2).toInt())+
+	  QString().sprintf("TYPE=%d,",q->value(3).toInt())+
+	  QString().sprintf("MODE=%d where ",q->value(4).toInt())+
+	  "STATION_NAME=\""+RDEscapeString(q->value(0).toString())+"\" && "+
+	  QString().sprintf("CARD_NUMBER=%d && ",q->value(1).toInt())+
+	  QString().sprintf("PORT_NUMBER=%d",i);
+	q1=new RDSqlQuery(sql,false);
+	delete q1;
+      }
+      delete q;
+    }
+
+    sql=QString("create table if not exists AUDIO_OUTPUTS (")+
+      "ID int auto_increment not null primary key,"+
+      "STATION_NAME char(64) not null,"+
+      "CARD_NUMBER int not null,"+
+      "PORT_NUMBER int not null,"+
+      "LEVEL int not null default 0,"+
+      "unique index STATION_NAME_IDX(STATION_NAME,CARD_NUMBER,PORT_NUMBER))";
+    q=new RDSqlQuery(sql,false);
+    delete q;
+    sql=QString("select NAME from STATIONS");
+    q=new RDSqlQuery(sql,false);
+    while(q->next()) {
+      for(int i=0;i<24;i++) {
+	for(int j=0;j<24;j++) {
+	  sql=QString("insert into AUDIO_OUTPUTS set ")+
+	    "STATION_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	    QString().sprintf("CARD_NUMBER=%d,",i)+
+	    QString().sprintf("PORT_NUMBER=%d",j);
+	  q1=new RDSqlQuery(sql,false);
+	  delete q1;
+	}
+      }
+    }
+    for(int i=0;i<8;i++) {
+      sql=QString("select ")+
+	"STATION_NAME,"+                          // 00
+	"CARD_NUMBER,"+                           // 01
+	QString().sprintf("OUTPUT_%d_LEVEL ",i)+  // 02
+	"from AUDIO_PORTS";
+      q=new RDSqlQuery(sql,false);
+      while(q->next()) {
+	sql=QString("update AUDIO_OUTPUTS set ")+
+	  QString().sprintf("LEVEL=%d where ",q->value(2).toInt())+
+	  "STATION_NAME=\""+RDEscapeString(q->value(0).toString())+"\" && "+
+	  QString().sprintf("CARD_NUMBER=%d && ",q->value(1).toInt())+
+	  QString().sprintf("PORT_NUMBER=%d",i);
+	q1=new RDSqlQuery(sql,false);
+	delete q1;
+      }
+      delete q;
+    }
+
+    sql=QString("drop table AUDIO_PORTS");
+    q=new RDSqlQuery(sql,false);
+    delete q;
+  }
+
 
 
   //

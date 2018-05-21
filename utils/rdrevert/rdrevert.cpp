@@ -283,6 +283,14 @@ void MainObject::Revert(int schema) const
   case 281:
     Revert281();
     break;
+
+  case 282:
+    Revert282();
+    break;
+
+  case 283:
+    Revert283();
+    break;
   }
 }
 
@@ -1056,6 +1064,170 @@ void MainObject::Revert281() const
 }
 
 
+void MainObject::Revert282() const
+{
+  QString sql;
+  RDSqlQuery *q;
+
+  for(int i=7;i>=0;i--) {
+    sql=QString("alter table STATIONS add column ")+
+      QString().sprintf("CARD%d_OUTPUTS int default -1 after ALSA_VERSION",i);
+    q=new RDSqlQuery(sql,false);
+    delete q;
+
+    sql=QString("alter table STATIONS add column ")+
+      QString().sprintf("CARD%d_INPUTS int default -1 after ALSA_VERSION",i);
+    q=new RDSqlQuery(sql,false);
+    delete q;
+
+    sql=QString("alter table STATIONS add column ")+
+      QString().sprintf("CARD%d_NAME char(64) after ALSA_VERSION",i);
+    q=new RDSqlQuery(sql,false);
+    delete q;
+
+    sql=QString("alter table STATIONS add column ")+
+      QString().sprintf("CARD%d_DRIVER int default 0 after ALSA_VERSION",i);
+    q=new RDSqlQuery(sql,false);
+    delete q;
+  }
+
+  sql=QString("drop table AUDIO_CARDS");
+  q=new RDSqlQuery(sql,false);
+  delete q;
+
+  SetVersion(281);
+}
+
+
+void MainObject::Revert283() const
+{
+  QString sql;
+  RDSqlQuery *q;
+  RDSqlQuery *q1;
+
+  sql=QString("create table if not exists AUDIO_PORTS (")+
+    "ID int unsigned not null primary key AUTO_INCREMENT,"+
+    "STATION_NAME char(64) not null,"+
+    "CARD_NUMBER int not null,"+
+    "CLOCK_SOURCE int default 0,"+
+    "INPUT_0_LEVEL int default 0,"+
+    "INPUT_0_TYPE int default 0,"+
+    "INPUT_0_MODE int default 0,"+
+    "INPUT_1_LEVEL int default 0,"+
+    "INPUT_1_TYPE int default 0,"+
+    "INPUT_1_MODE int default 0,"+
+    "INPUT_2_LEVEL int default 0,"+
+    "INPUT_2_TYPE int default 0,"+
+    "INPUT_2_MODE int default 0,"+
+    "INPUT_3_LEVEL int default 0,"+
+    "INPUT_3_TYPE int default 0,"+
+    "INPUT_3_MODE int default 0,"+
+    "INPUT_4_LEVEL int default 0,"+
+    "INPUT_4_TYPE int default 0,"+
+    "INPUT_4_MODE int default 0,"+
+    "INPUT_5_LEVEL int default 0,"+
+    "INPUT_5_TYPE int default 0,"+
+    "INPUT_5_MODE int default 0,"+
+    "INPUT_6_LEVEL int default 0,"+
+    "INPUT_6_TYPE int default 0,"+
+    "INPUT_6_MODE int default 0,"+
+    "INPUT_7_LEVEL int default 0,"+
+    "INPUT_7_TYPE int default 0,"+
+    "INPUT_7_MODE int default 0,"+
+    "OUTPUT_0_LEVEL int default 0,"+
+    "OUTPUT_1_LEVEL int default 0,"+
+    "OUTPUT_2_LEVEL int default 0,"+
+    "OUTPUT_3_LEVEL int default 0,"+
+    "OUTPUT_4_LEVEL int default 0,"+
+    "OUTPUT_5_LEVEL int default 0,"+
+    "OUTPUT_6_LEVEL int default 0,"+
+    "OUTPUT_7_LEVEL int default 0,"+
+    "index STATION_NAME_IDX (STATION_NAME),"+
+    "index CARD_NUMBER_IDX (CARD_NUMBER))"+
+    rev_config->createTablePostfix();
+  q=new RDSqlQuery(sql,false);
+  delete q;
+  sql=QString("select NAME from STATIONS");
+  q=new RDSqlQuery(sql,false);
+  while(q->next()) {
+    for(int i=0;i<8;i++) {
+      sql=QString("insert into AUDIO_PORTS set ")+
+	"STATION_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	QString().sprintf("CARD_NUMBER=%d",i);
+      q1=new RDSqlQuery(sql,false);
+      delete q1;
+    }
+  }
+  delete q;
+  sql=QString("select ")+
+    "STATION_NAME,"+  // 00
+    "CARD_NUMBER,"+   // 01
+    "PORT_NUMBER,"+   // 02
+    "LEVEL,"+         // 03
+    "TYPE,"+          // 04
+    "MODE "+          // 05
+    "from AUDIO_INPUTS where PORT_NUMBER<8";
+  q=new RDSqlQuery(sql,false);
+  while(q->next()) {
+    sql=QString("update AUDIO_PORTS set ")+
+      QString().sprintf("INPUT_%d_LEVEL=%d,",
+			q->value(2).toInt(),q->value(3).toInt())+
+      QString().sprintf("INPUT_%d_TYPE=%d,",
+			q->value(2).toInt(),q->value(4).toInt())+
+      QString().sprintf("INPUT_%d_MODE=%d  where ",
+			q->value(2).toInt(),q->value(5).toInt())+
+      "STATION_NAME=\""+RDEscapeString(q->value(0).toString())+"\" && "+
+      QString().sprintf("CARD_NUMBER=%d",q->value(1).toInt());
+  }
+  delete q;
+  sql=QString("drop table AUDIO_INPUTS");
+  q=new RDSqlQuery(sql,false);
+  delete q;
+
+  sql=QString("select ")+
+    "STATION_NAME,"+  // 00
+    "CARD_NUMBER,"+   // 01
+    "PORT_NUMBER,"+   // 02
+    "LEVEL "+         // 03
+    "from AUDIO_OUTPUTS where PORT_NUMBER<8";
+  q=new RDSqlQuery(sql,false);
+  while(q->next()) {
+    sql=QString("update AUDIO_PORTS set ")+
+      QString().sprintf("OUTPUT_%d_LEVEL=%d where ",
+			q->value(2).toInt(),q->value(3).toInt())+
+      "STATION_NAME=\""+RDEscapeString(q->value(0).toString())+"\" && "+
+      QString().sprintf("CARD_NUMBER=%d",q->value(1).toInt());
+    q1=new RDSqlQuery(sql,false);
+    delete q1;
+  }
+  delete q;
+  sql=QString("drop table AUDIO_OUTPUTS");
+  q=new RDSqlQuery(sql,false);
+  delete q;
+
+  sql=QString("select ")+
+    "STATION_NAME,"+  // 00
+    "CARD_NUMBER,"+   // 01
+    "CLOCK_SOURCE "+  // 02
+    "from AUDIO_CARDS where CARD_NUMBER<8";
+  q=new RDSqlQuery(sql,false);
+  while(q->next()) {
+    sql=QString("update AUDIO_PORTS set ")+
+      QString().sprintf("CLOCK_SOURCE=%d where ",q->value(2).toInt())+
+      "STATION_NAME=\""+RDEscapeString(q->value(0).toString())+"\" && "+
+      QString().sprintf("CARD_NUMBER=%d",q->value(1).toInt());
+    q1=new RDSqlQuery(sql,false);
+    delete q1;
+  }
+  delete q;
+  sql=QString("alter table AUDIO_CARDS drop column CLOCK_SOURCE");
+  q=new RDSqlQuery(sql,false);
+  delete q;
+
+  SetVersion(282);
+}
+
+
 int MainObject::GetVersion() const
 {
   QString sql;
@@ -1102,7 +1274,7 @@ int MainObject::MapSchema(const QString &ver)
   version_map["2.17"]=268;
   version_map["2.18"]=272;
   version_map["2.19"]=275;
-  version_map["2.20"]=281;
+  version_map["2.20"]=283;
 
   //
   // Normalize String

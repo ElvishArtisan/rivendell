@@ -620,7 +620,7 @@ oppdatert til versjon </translation>
     <name>EditAudioPorts</name>
     <message>
         <source>Edit Audio Ports</source>
-        <translation>Rediger lydportar</translation>
+        <translation type="obsolete">Rediger lydportar</translation>
     </message>
     <message>
         <source>Clock Source:</source>
@@ -712,6 +712,10 @@ oppdatert til versjon </translation>
     </message>
     <message>
         <source>Ref. Level:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit AudioScience Audio Ports</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3606,7 +3610,7 @@ Resources</source>
     <message>
         <source>Audio
 Ports</source>
-        <translation>Lydportar</translation>
+        <translation type="obsolete">Lydportar</translation>
     </message>
     <message>
         <source>Serial
@@ -3719,6 +3723,11 @@ configured to run the CAE service in order to populate the audio resources datab
     </message>
     <message>
         <source>Short Name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ASI Audio
+Ports</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

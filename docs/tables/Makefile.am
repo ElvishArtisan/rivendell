@@ -2,7 +2,7 @@
 ##
 ## docs/tables/automake.am for Rivendell
 ##
-## (C) Copyright 2002-2016 Fred Gleason <fredg@salemradiolabs.com>
+## (C) Copyright 2002-2018 Fred Gleason <fredg@salemradiolabs.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -20,8 +20,10 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-EXTRA_DIST = audio_perms.txt\
-             audio_ports.txt\
+EXTRA_DIST = audio_cards.txt\
+             audio_inputs.txt\
+             audio_outputs.txt\
+             audio_perms.txt\
              cart.txt\
              cartslots.txt\
              clipboard.txt\

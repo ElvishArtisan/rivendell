@@ -45,35 +45,3 @@ HAVE_MP4_DECODE      enum('N','Y')
 HPI_VERSION          char(16)
 JACK_VERSION         char(16)
 ALSA_VERSION         char(16)
-CARD0_DRIVER         int(11) signed     0=None, 1=Hpi, 2=Jack, 3=ALSA
-CARD0_NAME           char(64)
-CARD0_INPUTS         int(11) signed
-CARD0_OUTPUTS        int(11) signed
-CARD1_DRIVER         int(11) signed     0=None, 1=Hpi, 2=Jack, 3=ALSA
-CARD1_NAME           char(64)
-CARD1_INPUTS         int(11) signed
-CARD1_OUTPUTS        int(11) signed
-CARD2_DRIVER         int(11) signed     0=None, 1=Hpi, 2=Jack, 3=ALSA
-CARD2_NAME           char(64)
-CARD2_INPUTS         int(11) signed
-CARD2_OUTPUTS        int(11) signed
-CARD3_DRIVER         int(11) signed     0=None, 1=Hpi, 2=Jack, 3=ALSA
-CARD3_NAME           char(64)
-CARD3_INPUTS         int(11) signed
-CARD3_OUTPUTS        int(11) signed
-CARD4_DRIVER         int(11) signed     0=None, 1=Hpi, 2=Jack, 3=ALSA
-CARD4_NAME           char(64)
-CARD4_INPUTS         int(11) signed
-CARD4_OUTPUTS        int(11) signed
-CARD5_DRIVER         int(11) signed     0=None, 1=Hpi, 2=Jack, 3=ALSA
-CARD5_NAME           char(64)
-CARD5_INPUTS         int(11) signed
-CARD5_OUTPUTS        int(11) signed
-CARD6_DRIVER         int(11) signed     0=None, 1=Hpi, 2=Jack, 3=ALSA
-CARD6_NAME           char(64)
-CARD6_INPUTS         int(11) signed
-CARD6_OUTPUTS        int(11) signed
-CARD7_DRIVER         int(11) signed     0=None, 1=Hpi, 2=Jack, 3=ALSA
-CARD7_NAME           char(64)
-CARD7_INPUTS         int(11) signed
-CARD7_OUTPUTS        int(11) signed

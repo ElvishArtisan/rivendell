@@ -402,7 +402,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   //
   station_audioports_button=new QPushButton(this);
   station_audioports_button->setFont(font);
-  station_audioports_button->setText(tr("Audio\nPorts"));
+  station_audioports_button->setText(tr("ASI Audio\nPorts"));
   connect(station_audioports_button,SIGNAL(clicked()),
 	  this,SLOT(editAudioData()));
 

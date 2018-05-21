@@ -48,7 +48,7 @@ EditAudioPorts::EditAudioPorts(QString station,QWidget *parent)
   edit_card=NULL;
   rdstation=NULL;
 
-  setCaption(tr("Edit Audio Ports"));
+  setCaption(tr("Edit AudioScience Audio Ports"));
 
   //
   // Create Fonts
@@ -91,7 +91,8 @@ EditAudioPorts::EditAudioPorts(QString station,QWidget *parent)
   edit_clock_label->setFont(font);
   edit_clock_label->setAlignment(AlignRight);
 
-  for(int j=0;j<RD_MAX_CARDS/4;j++) {
+  //  for(int j=0;j<RD_MAX_PORTS/4;j++) {
+  for(int j=0;j<8/4;j++) {
     for(int i=0;i<4;i++) {
       //
       // Input Port Controls
@@ -177,7 +178,8 @@ EditAudioPorts::EditAudioPorts(QString station,QWidget *parent)
   //
   // Populate Data
   //
-  for(int i=0;i<RD_MAX_CARDS;i++) {
+  //  for(int i=0;i<RD_MAX_PORTS;i++) {
+  for(int i=0;i<8;i++) {
     edit_card_box->insertItem(QString().sprintf("%d",i));
   }
   edit_clock_box->insertItem(tr("Internal"));
@@ -246,12 +248,17 @@ void EditAudioPorts::closeData()
 }
 
 
+void EditAudioPorts::resizeEvent(QResizeEvent *e)
+{
+}
+
+
 void EditAudioPorts::ReadRecord(int card)
 {
   if(edit_card!=NULL) {
     delete edit_card;
   }
-  edit_card=new RDAudioPort(edit_station,card,true);
+  edit_card=new RDAudioPort(edit_station,card);
   if(rdstation!=NULL) {
     delete rdstation;
   }
@@ -264,7 +271,8 @@ void EditAudioPorts::ReadRecord(int card)
         card_driver_edit->setText("AudioScience HPI");
         edit_clock_box->setEnabled(true);
         edit_clock_label->setEnabled(true);
-        for (int i=0;i<RD_MAX_CARDS;i++) {
+	//        for (int i=0;i<RD_MAX_PORTS;i++) {
+        for (int i=0;i<8;i++) {
           edit_type_label[i]->setEnabled(true);
           edit_type_box[i]->setEnabled(true);
           edit_mode_label[i]->setEnabled(true);
@@ -279,7 +287,8 @@ void EditAudioPorts::ReadRecord(int card)
         card_driver_edit->setText("JACK");
         edit_clock_box->setDisabled(true);
         edit_clock_label->setDisabled(true);
-        for (int i=0;i<RD_MAX_CARDS;i++) {
+	//        for (int i=0;i<RD_MAX_PORTS;i++) {
+        for (int i=0;i<8;i++) {
           edit_type_label[i]->setDisabled(true);
           edit_type_box[i]->setDisabled(true);
           edit_mode_label[i]->setEnabled(true);
@@ -294,7 +303,8 @@ void EditAudioPorts::ReadRecord(int card)
         card_driver_edit->setText("ALSA");
         edit_clock_box->setDisabled(true);
         edit_clock_label->setDisabled(true);
-        for (int i=0;i<RD_MAX_CARDS;i++) {
+	//        for (int i=0;i<RD_MAX_PORTS;i++) {
+        for (int i=0;i<8;i++) {
           edit_type_label[i]->setDisabled(true);
           edit_type_box[i]->setDisabled(true);
           edit_mode_label[i]->setDisabled(true);
@@ -310,7 +320,8 @@ void EditAudioPorts::ReadRecord(int card)
         card_driver_edit->setText("UNKNOWN");
         edit_clock_box->setDisabled(true);
         edit_clock_label->setDisabled(true);
-        for (int i=0;i<RD_MAX_CARDS;i++) {
+	//        for (int i=0;i<RD_MAX_PORTS;i++) {
+        for (int i=0;i<8;i++) {
           edit_type_label[i]->setDisabled(true);
           edit_type_box[i]->setDisabled(true);
           edit_mode_label[i]->setDisabled(true);
@@ -323,7 +334,8 @@ void EditAudioPorts::ReadRecord(int card)
         break;
   }
   edit_clock_box->setCurrentItem(edit_card->clockSource());
-  for(int i=0;i<RD_MAX_PORTS;i++) {
+  //  for(int i=0;i<RD_MAX_PORTS;i++) {
+  for(int i=0;i<8;i++) {
     edit_type_box[i]->setCurrentItem((int)edit_card->inputPortType(i));
     if( (rdstation->cardDriver(card)==RDStation::Hpi) &&
         ((RDAudioPort::PortType)edit_type_box[i]->currentItem()==
@@ -346,7 +358,8 @@ void EditAudioPorts::WriteRecord()
 {
   edit_card->
     setClockSource((RDCae::ClockSource)edit_clock_box->currentItem());
-  for(int i=0;i<RD_MAX_PORTS;i++) {
+  //  for(int i=0;i<RD_MAX_PORTS;i++) {
+  for(int i=0;i<8;i++) {
     edit_card->setInputPortType(i,
 		 (RDAudioPort::PortType)edit_type_box[i]->currentItem());
     edit_card->setInputPortMode(i,

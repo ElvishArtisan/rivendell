@@ -621,7 +621,7 @@ atualizada para a Versão</translation>
     <name>EditAudioPorts</name>
     <message>
         <source>Edit Audio Ports</source>
-        <translation>Editar Portas de Áudio</translation>
+        <translation type="obsolete">Editar Portas de Áudio</translation>
     </message>
     <message>
         <source>Clock Source:</source>
@@ -713,6 +713,10 @@ atualizada para a Versão</translation>
     </message>
     <message>
         <source>Ref. Level:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit AudioScience Audio Ports</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3622,7 +3626,7 @@ do Cliente</translation>
     <message>
         <source>Audio
 Ports</source>
-        <translation>Portas de 
+        <translation type="obsolete">Portas de 
 Áudio</translation>
     </message>
     <message>
@@ -3734,6 +3738,11 @@ configured to run the CAE service in order to populate the audio resources datab
     </message>
     <message>
         <source>Short Name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ASI Audio
+Ports</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

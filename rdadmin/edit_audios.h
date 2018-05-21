@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Audio Port Configuration
 //
-//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2003,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -38,40 +38,43 @@
 class EditAudioPorts : public QDialog
 {
   Q_OBJECT
-  public:
-   EditAudioPorts(QString station,QWidget *parent=0);
-   ~EditAudioPorts();
-   QSize sizeHint() const;
-   QSizePolicy sizePolicy() const;
+ public:
+  EditAudioPorts(QString station,QWidget *parent=0);
+  ~EditAudioPorts();
+  QSize sizeHint() const;
+  QSizePolicy sizePolicy() const;
 
-  private slots:
-   void cardSelectedData(int);
-   void inputMapData(int);
-   void helpData();
-   void closeData();
+ private slots:
+  void cardSelectedData(int);
+  void inputMapData(int);
+  void helpData();
+  void closeData();
 
-  private:
-   void ReadRecord(int card);
-   void WriteRecord();
-   void SetEnable(bool state);
-   int edit_card_num;
-   RDAudioPort *edit_card;
-   RDStation *rdstation;
-   QString edit_station;
-   QComboBox *edit_card_box;
-   QLineEdit *card_driver_edit;
-   QComboBox *edit_clock_box;
-   QLabel *edit_clock_label;
-   QComboBox *edit_type_box[RD_MAX_PORTS];
-   QLabel *edit_type_label[RD_MAX_PORTS];
-   QComboBox *edit_mode_box[RD_MAX_PORTS];
-   QLabel *edit_mode_label[RD_MAX_PORTS];
-   QSpinBox *edit_input_box[RD_MAX_PORTS];
-   QLabel *edit_input_label[RD_MAX_PORTS];
-   QSpinBox *edit_output_box[RD_MAX_PORTS];
-   QLabel *edit_output_label[RD_MAX_PORTS];
+ protected:
+  void resizeEvent(QResizeEvent *e);
+
+ private:
+  void ReadRecord(int card);
+  void WriteRecord();
+  void SetEnable(bool state);
+  int edit_card_num;
+  RDAudioPort *edit_card;
+  RDStation *rdstation;
+  QString edit_station;
+  QComboBox *edit_card_box;
+  QLineEdit *card_driver_edit;
+  QComboBox *edit_clock_box;
+  QLabel *edit_clock_label;
+  QComboBox *edit_type_box[RD_MAX_PORTS];
+  QLabel *edit_type_label[RD_MAX_PORTS];
+  QComboBox *edit_mode_box[RD_MAX_PORTS];
+  QLabel *edit_mode_label[RD_MAX_PORTS];
+  QSpinBox *edit_input_box[RD_MAX_PORTS];
+  QLabel *edit_input_label[RD_MAX_PORTS];
+  QSpinBox *edit_output_box[RD_MAX_PORTS];
+  QLabel *edit_output_label[RD_MAX_PORTS];
 };
 
 
-#endif
+#endif  // EDIT_AUDIO_H
 

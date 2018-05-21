@@ -1,0 +1,16 @@
+                  AUDIO_CARD Table Layout for Rivendell
+
+The AUDIO_PORTS table holds data concerning configuration of the 
+physical audio interfaces.
+
+FIELD NAME           TYPE              REMARKS
+---------------------------------------------------------------
+ID                   int(10) unsigned  Primary key, auto increment
+STATION_NAME	     char(64)
+CARD_NUMBER	     int(11) signed
+DRIVER               int(11) signed
+NAME                 char(64)
+INPUTS               int(11) signed
+OUTPUTS              int(11) signed
+CLOCK_SOURCE         int(11) signed    0 = Internal, 1 = AES/EBU, 
+                                       2 = SP/DIFF, 3 = Word Clock
