@@ -16891,3 +16891,6 @@
 	* Changed the title of the 'Configure Audio Ports' dialog to
 	'Configure AudioScience Audio Ports' on the 'Edit Host' dialog
 	in rdadmin(1).
+2018-05-22 Fred Gleason <fredg@paravelsystems.com>
+	* Increased 'RD_MAX_STREAMS' to 48.
+	* Modified caed(8) to start JACK clients after a 5 second delay.

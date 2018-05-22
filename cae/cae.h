@@ -220,6 +220,7 @@ class MainObject : public QObject
   void jackStopTimerData(int stream);
   void jackFadeTimerData(int stream);
   void jackRecordTimerData(int stream);
+  void jackClientStartData();
 
  private:
   void jackInit(RDStation *station);
@@ -285,6 +286,7 @@ class MainObject : public QObject
   QTimer *jack_fade_timer[RD_MAX_STREAMS];
   QTimer *jack_stop_timer[RD_MAX_STREAMS];
   QTimer *jack_record_timer[RD_MAX_PORTS];
+  QTimer *jack_client_start_timer;
   int jack_offset[RD_MAX_STREAMS];
   int jack_clock_phase;
   unsigned jack_samples_recorded[RD_MAX_STREAMS];

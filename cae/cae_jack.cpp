@@ -414,11 +414,34 @@ void MainObject::jackRecordTimerData(int stream)
 }
 
 
+void MainObject::jackClientStartData()
+{
+  QString sql=QString("select DESCRIPTION,COMMAND_LINE from JACK_CLIENTS where ")+
+    "STATION_NAME=\""+RDEscapeString(rd_config->stationName())+"\"";
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  while(q->next()) {
+    QStringList fields=QStringList().split(" ",q->value(1).toString());
+    jack_clients.push_back(new QProcess(fields,this));
+    if(jack_clients.back()->start()) {
+      LogLine(RDConfig::LogDebug,"started JACK Client \""+
+	      q->value(0).toString()+"\"");
+    }
+    else {
+      LogLine(RDConfig::LogWarning,"failed to start JACK Client \""+
+	      q->value(0).toString()+"\" ["+
+	      q->value(1).toString()+"]");
+    }
+    sleep(1);
+  }
+  delete q;
+}
+
+
 void MainObject::jackInit(RDStation *station)
 {
 #ifdef JACK
-  QString sql;
-  RDSqlQuery *q;
+  //  QString sql;
+  //  RDSqlQuery *q;
   jack_options_t jackopts=JackNullOption;
   jack_status_t jackstat=JackFailure;
   RDConfig::LogPriority prio=RDConfig::LogDebug;
@@ -540,24 +563,10 @@ void MainObject::jackInit(RDStation *station)
   //
   // Start JACK Clients
   //
-  sql=QString("select DESCRIPTION,COMMAND_LINE from JACK_CLIENTS where ")+
-    "STATION_NAME=\""+RDEscapeString(station->name())+"\"";
-  q=new RDSqlQuery(sql);
-  while(q->next()) {
-    QStringList fields=QStringList().split(" ",q->value(1).toString());
-    jack_clients.push_back(new QProcess(fields,this));
-    if(jack_clients.back()->start()) {
-      LogLine(RDConfig::LogDebug,"started JACK Client \""+
-	      q->value(0).toString()+"\"");
-    }
-    else {
-      LogLine(RDConfig::LogWarning,"failed to start JACK Client \""+
-	      q->value(0).toString()+"\" ["+
-	      q->value(1).toString()+"]");
-    }
-    sleep(1);
-  }
-  delete q;
+  jack_client_start_timer=new QTimer(this);
+  connect(jack_client_start_timer,SIGNAL(timeout()),
+	  this,SLOT(jackClientStartData()));
+  jack_client_start_timer->start(6000,true);
 
   //
   // Tell the database about us
