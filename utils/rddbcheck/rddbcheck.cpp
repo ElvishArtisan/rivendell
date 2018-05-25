@@ -283,7 +283,7 @@ void MainObject::CheckOrphanedTracks()
   while(q->next()) {
     logname=q->value(2).toString()+"_LOG";
     logname.replace(" ","_");
-    sql=QString().sprintf("select ID from %s where CART_NUMBER=%u",
+    sql=QString().sprintf("select ID from `%s` where CART_NUMBER=%u",
 			  (const char *)logname,q->value(0).toUInt());
     q1=new QSqlQuery(sql);
     if(!q1->first()) {
