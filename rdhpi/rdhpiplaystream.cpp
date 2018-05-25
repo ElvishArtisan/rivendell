@@ -789,15 +789,14 @@ int RDHPIPlayStream::GetStream()
 #ifdef RDHPIPLAYSTREAM_USE_LOCAL_MUTEX
   for(int i=0;i<sound_card->getCardOutputStreams(card_number);i++) {
     if(++stream_mutex[card_number][i]==1) {
-      LogHpi(HPI_OutStreamOpen(NULL,card_index[card_number],i,&hpi_stream),
-	     __LINE__);
-      if(HPI_OutStreamHostBufferAllocate(NULL,hpi_stream,dma_buffer_size));
-      stream_number=i;
-      return stream_number;
+      if(LogHpi(HPI_OutStreamOpen(NULL,card_index[card_number],i,&hpi_stream),
+		__LINE__)==0) {
+	if(HPI_OutStreamHostBufferAllocate(NULL,hpi_stream,dma_buffer_size));
+	stream_number=i;
+	return stream_number;
+      }
     }
-    else {
-      stream_mutex[card_number][i]--;
-    }
+    stream_mutex[card_number][i]--;
   }
   return -1;
 #else
