@@ -16901,3 +16901,5 @@
 2018-05-25 Fred Gleason <fredg@paravelsystems.com>
 	* Merged pull request #000209, "Prioritize scheduler code over
 	artist/title separation".
+2018-05-25 Fred Gleason <fredg@paravelsystems.com>
+	* Merged pull request #000205, "Makefile fixes".
