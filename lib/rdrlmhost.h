@@ -99,7 +99,7 @@ class RDRLMHost : public QObject
 				       const char *section,const char *label,
 				       const char *default_value);
   friend const char *RLMDateTimeDecode(void *ptr, const char *format,
-				const char *svc_name);
+				       const char *svc_name);
   char plugin_value_string[1024];
 };
 
