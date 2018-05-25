@@ -16896,3 +16896,5 @@
 	* Modified caed(8) to start JACK clients after a 5 second delay.
 2018-05-22 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.19.2vlog01.
+2018-05-24 Fred Gleason <fredg@paravelsystems.com>
+	* Added a WebGet web service.

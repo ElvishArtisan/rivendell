@@ -28,6 +28,8 @@ install-exec-am:
 	cp redball.png $(DESTDIR)@libexecdir@
 	cp whiteball.png $(DESTDIR)@libexecdir@
 	cp progressbar.gif $(DESTDIR)@libexecdir@
+	mkdir -p $(DESTDIR)@libexecdir@/logos
+	cp webget_logo.png $(DESTDIR)@libexecdir@/logos/
 	mkdir -p $(DESTDIR)@prefix@/share/icons/hicolor/16x16/apps
 	cp rivendell-16x16.png $(DESTDIR)@prefix@/share/icons/hicolor/16x16/apps/rivendell.png
 	mkdir -p $(DESTDIR)@prefix@/share/icons/hicolor/22x22/apps
@@ -190,6 +192,7 @@ uninstall-local:
 	rm -f $(DESTDIR)@libexecdir@/redball.png
 	rm -f $(DESTDIR)@libexecdir@/whiteball.png
 	rm -f $(DESTDIR)@libexecdir@/progressbar.gif
+	rm -f $(DESTDIR)@libexecdir@/logos/webget_logo.png
 	rm -f $(DESTDIR)@prefix@/share/icons/hicolor/16x16/apps/rivendell.png
 	rm -f $(DESTDIR)@prefix@/share/icons/hicolor/22x22/apps/rivendell.png
 	rm -f $(DESTDIR)@prefix@/share/icons/hicolor/32x32/apps/rivendell.png
@@ -470,6 +473,7 @@ EXTRA_DIST = admin.xpm\
              trashcan-32x32.xpm\
              upload.xpm\
              user.xpm\
+             webget_logo.png\
              whiteball.png\
              whiteball.xpm
 

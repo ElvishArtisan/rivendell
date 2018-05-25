@@ -112,11 +112,13 @@ mkdir $RPM_BUILD_ROOT/.qt
 touch $RPM_BUILD_ROOT/.qt/qt
 rm -f $RPM_BUILD_ROOT/lib/security/pam_rd.la
 rm -f $RPM_BUILD_ROOT/lib64/security/pam_rd.la
+rm -rf $RPM_BUILD_ROOT/@libexecdir@/logos
 if test "@WIN32_SOURCE@" ; then
   mkdir -p $RPM_BUILD_ROOT/var/win32
   cp @WIN32_SOURCE@ $RPM_BUILD_ROOT/var/win32/
 fi
-mkdir -p $RPM_BUILD_ROOT/@DOC_PATH@
+mkdir -p $RPM_BUILD_ROOT/@DOC_PATH@/logos
+cp icons/webget_logo.png $RPM_BUILD_ROOT/@DOC_PATH@/logos/
 cp AUTHORS $RPM_BUILD_ROOT/@DOC_PATH@/
 cp ChangeLog $RPM_BUILD_ROOT/@DOC_PATH@/
 cp COPYING $RPM_BUILD_ROOT/@DOC_PATH@/
@@ -219,6 +221,12 @@ if test "@DISTRO@" = "redhat" ; then
 fi
 if [ -x %{_bindir}/gtk-update-icon-cache ] ; then
   %{_bindir}/gtk-update-icon-cache -f --quiet %{_datadir}/icons/hicolor || :
+fi
+if test ! -e @libexecdir@/logos ; then
+    mkdir -p @libexecdir@/logos
+fi
+if test ! -f @libexecdir@/logos/webget_logo.png ; then
+    cp @DOC_PATH@/logos/webget_logo.png @libexecdir@/logos/webget_logo.png
 fi
 exit 0
 
@@ -389,6 +397,7 @@ rm -rf $RPM_BUILD_ROOT
 /.qt/qt
 @libexecdir@/*
 %attr(6755,root,root) @libexecdir@/rdxport.cgi
+%attr(6755,root,root) @libexecdir@/webget.cgi
 @sysconfdir@/rd-bin.conf
 @WIN32_PATH@
 /etc/pam.d/rivendell
