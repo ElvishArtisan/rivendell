@@ -16903,3 +16903,6 @@
 	artist/title separation".
 2018-05-25 Fred Gleason <fredg@paravelsystems.com>
 	* Merged pull request #000205, "Makefile fixes".
+2018-05-25 Fred Gleason <fredg@paravelsystems.com>
+	* Merged pull request #000195, "Fixed bug where CheckOrphanedTracks()
+	would remove valid voice tracks".
