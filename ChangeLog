@@ -16909,3 +16909,6 @@
 2018-05-25 Fred Gleason <fredg@paravelsystems.com>
 	* Merged pull request #000191, "Add RLM to update metadata on TuneIn."
 	* Updated the 'rlm_tunein' plug-in to support vlogs.
+2018-05-25 Fred Gleason <fredg@paravelsystems.com>
+	* Merged pull request #000194, "Fixed bug in GetStream() where
+	return value from HPI_OutStreamOpen was ignored".
