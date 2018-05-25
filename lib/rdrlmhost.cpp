@@ -528,3 +528,15 @@ const char *RLMGetStringValue(void *ptr,const char *filename,
   delete p;
   return host->plugin_value_string;
 }
+
+
+const char *RLMDateTimeDecode(void *ptr, const char *format,
+				const char *svc_name)
+{
+  RLMHost *host=(RLMHost *)ptr;
+  strncpy(host->plugin_value_string,
+	RDDateTimeDecode(format,QDateTime::currentDateTime(),
+        rdstation_conf,air_config,
+        svc_name),1024);
+  return host->plugin_value_string;
+}
