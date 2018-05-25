@@ -29,7 +29,7 @@ moc_%.cpp:	%.h
 	$(MOC) $< -o $@
 
 # I18N Stuff
-install-exec-local:	
+install-exec-hook:
 	mkdir -p $(DESTDIR)$(prefix)/share/rivendell
 	cp rdselect_*.qm $(DESTDIR)$(prefix)/share/rivendell
 	chmod 4755 $(DESTDIR)$(prefix)/bin/rdselect
