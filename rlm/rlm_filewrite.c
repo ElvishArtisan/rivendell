@@ -36,6 +36,7 @@
 int rlm_filewrite_devs;
 char *rlm_filewrite_filenames;
 int *rlm_filewrite_appends;
+int *rlm_filewrite_eventlengths;
 char *rlm_filewrite_formats;
 int *rlm_filewrite_encodings;
 int *rlm_filewrite_masters;
@@ -172,6 +173,10 @@ void rlm_filewrite_RLMStart(void *ptr,const char *arg)
 			    (rlm_filewrite_devs+1)*sizeof(int));
     rlm_filewrite_appends[rlm_filewrite_devs]=
       RLMGetIntegerValue(ptr,arg,section,"Append",0);
+    rlm_filewrite_eventlengths=realloc(rlm_filewrite_eventlengths,
+			    (rlm_filewrite_devs+1)*sizeof(int));
+    rlm_filewrite_eventlengths[rlm_filewrite_devs]=
+      RLMGetIntegerValue(ptr,arg,section,"EventLength",0);
     rlm_filewrite_formats=realloc(rlm_filewrite_formats,(rlm_filewrite_devs+1)*8192);
     strncpy(rlm_filewrite_formats+8192*rlm_filewrite_devs,
 	    RLMGetStringValue(ptr,arg,section,"FormatString",""),8192);
@@ -338,16 +343,22 @@ void rlm_filewrite_RLMFree(void *ptr)
 
 void rlm_filewrite_RLMPadDataSent(void *ptr,const struct rlm_svc *svc,
 				const struct rlm_log *log,
-				const struct rlm_pad *now,
-				const struct rlm_pad *next)
+				const struct rlm_pad *orig_now,
+				const struct rlm_pad *orig_next)
 {
   int i;
   int flag=0;
   char str[8192];
   char msg[1500];
   FILE *f;
+  struct rlm_pad tmp_now;
+  struct rlm_pad tmp_next;
+  const struct rlm_pad *now;
+  const struct rlm_pad *next;
 
   for(i=0;i<rlm_filewrite_devs;i++) {
+    now=orig_now;
+    next=orig_next;
     switch(log->log_mach) {
       case 0:
 	flag=rlm_filewrite_masters[i];
@@ -442,6 +453,17 @@ void rlm_filewrite_RLMPadDataSent(void *ptr,const struct rlm_svc *svc,
       break;
     }
     if((flag==1)||((flag==2)&&(log->log_onair!=0))) {
+      switch(rlm_filewrite_eventlengths[i]) {
+	// Covert from milliseconds to seconds
+        case 1:
+          memcpy(&tmp_now, now, sizeof(struct rlm_pad));
+          memcpy(&tmp_next, next, sizeof(struct rlm_pad));
+          tmp_now.rlm_len=tmp_now.rlm_len/1000;
+          tmp_next.rlm_len=tmp_next.rlm_len/1000;
+	  now=&tmp_now;
+          next=&tmp_next;
+          break;
+      }
       strncpy(str,RLMResolveNowNextEncoded(ptr,now,next,
 					   rlm_filewrite_formats+8192*i,
 					   rlm_filewrite_encodings[i]),8192);
