@@ -50,6 +50,7 @@ EXTRA_DIST = asound.conf-sample\
              rlm_spinitron_plus.conf\
              rlm_spottrap.conf\
              rlm_tagstation.conf\
+             rlm_tunein.conf\
              rlm_twitter.conf\
              rlm_udp.conf\
              rlm_urlwrite.conf\
