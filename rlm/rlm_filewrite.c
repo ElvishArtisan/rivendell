@@ -346,6 +346,7 @@ void rlm_filewrite_RLMPadDataSent(void *ptr,const struct rlm_svc *svc,
   char str[8192];
   char msg[1500];
   FILE *f;
+  const char *filename;
 
   for(i=0;i<rlm_filewrite_devs;i++) {
     switch(log->log_mach) {
@@ -446,22 +447,26 @@ void rlm_filewrite_RLMPadDataSent(void *ptr,const struct rlm_svc *svc,
 					   rlm_filewrite_formats+8192*i,
 					   rlm_filewrite_encodings[i]),8192);
       rlm_filewrite_ProcessString(str);
+      if ((filename=RLMDateTimeDecode(ptr,rlm_filewrite_filenames+256*i,svc->svc_name))==NULL) {
+        RLMLog(ptr,LOG_WARNING,"rlm_filewrite: RLMDateTimeDecode failure");
+        return;
+      }
       if(rlm_filewrite_appends[i]==0) {
-	f=fopen(rlm_filewrite_filenames+256*i,"w");
+	f=fopen(filename,"w");
       }
       else {
-	f=fopen(rlm_filewrite_filenames+256*i,"a");
+	f=fopen(filename,"a");
       }
       if(f!=NULL) {
 	snprintf(msg,1500,"rlm_filewrite: sending pad update: \"%s\" to \"%s\"",
-		 str,rlm_filewrite_filenames+256*i);
+		 str,filename);
 	fprintf(f,"%s",str);
 	fclose(f);
 	RLMLog(ptr,LOG_INFO,msg);
       }
       else {
 	snprintf(msg,1500,"rlm_filewrite: unable to open file \"%s\"",
-		 rlm_filewrite_filenames+256*i);
+		 filename);
 	RLMLog(ptr,LOG_WARNING,msg);
       }
     }

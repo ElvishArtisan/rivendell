@@ -16912,3 +16912,6 @@
 2018-05-25 Fred Gleason <fredg@paravelsystems.com>
 	* Merged pull request #000194, "Fixed bug in GetStream() where
 	return value from HPI_OutStreamOpen was ignored".
+2018-05-25 Fred Gleason <fredg@paravelsystems.com>
+	* Merged pull request #000197, "Issue 195 rlm_filewrite filename
+	wildcards".
