@@ -16906,3 +16906,6 @@
 2018-05-25 Fred Gleason <fredg@paravelsystems.com>
 	* Merged pull request #000195, "Fixed bug where CheckOrphanedTracks()
 	would remove valid voice tracks".
+2018-05-25 Fred Gleason <fredg@paravelsystems.com>
+	* Merged pull request #000191, "Add RLM to update metadata on TuneIn."
+	* Updated the 'rlm_tunein' plug-in to support vlogs.

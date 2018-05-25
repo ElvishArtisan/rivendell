@@ -46,6 +46,26 @@ char *rlm_tunein_albums;
 int *rlm_tunein_masters;
 int *rlm_tunein_aux1s;
 int *rlm_tunein_aux2s;
+int *rlm_tunein_vlog101s;
+int *rlm_tunein_vlog102s;
+int *rlm_tunein_vlog103s;
+int *rlm_tunein_vlog104s;
+int *rlm_tunein_vlog105s;
+int *rlm_tunein_vlog106s;
+int *rlm_tunein_vlog107s;
+int *rlm_tunein_vlog108s;
+int *rlm_tunein_vlog109s;
+int *rlm_tunein_vlog110s;
+int *rlm_tunein_vlog111s;
+int *rlm_tunein_vlog112s;
+int *rlm_tunein_vlog113s;
+int *rlm_tunein_vlog114s;
+int *rlm_tunein_vlog115s;
+int *rlm_tunein_vlog116s;
+int *rlm_tunein_vlog117s;
+int *rlm_tunein_vlog118s;
+int *rlm_tunein_vlog119s;
+int *rlm_tunein_vlog120s;
 
 
 int rlm_tunein_BufferDiff(char *sString,int dOrigin,int dDiff,int dMaxSize)
@@ -171,6 +191,26 @@ void rlm_tunein_RLMStart(void *ptr,const char *arg)
   rlm_tunein_masters=NULL;
   rlm_tunein_aux1s=NULL;
   rlm_tunein_aux2s=NULL;
+  rlm_tunein_vlog101s=NULL;
+  rlm_tunein_vlog102s=NULL;
+  rlm_tunein_vlog103s=NULL;
+  rlm_tunein_vlog104s=NULL;
+  rlm_tunein_vlog105s=NULL;
+  rlm_tunein_vlog106s=NULL;
+  rlm_tunein_vlog107s=NULL;
+  rlm_tunein_vlog108s=NULL;
+  rlm_tunein_vlog109s=NULL;
+  rlm_tunein_vlog110s=NULL;
+  rlm_tunein_vlog111s=NULL;
+  rlm_tunein_vlog112s=NULL;
+  rlm_tunein_vlog113s=NULL;
+  rlm_tunein_vlog114s=NULL;
+  rlm_tunein_vlog115s=NULL;
+  rlm_tunein_vlog116s=NULL;
+  rlm_tunein_vlog117s=NULL;
+  rlm_tunein_vlog118s=NULL;
+  rlm_tunein_vlog119s=NULL;
+  rlm_tunein_vlog120s=NULL;
 
   sprintf(section,"Station%d",i++);
   strncpy(stationid,RLMGetStringValue(ptr,arg,section,"StationID",""),255);
@@ -213,6 +253,107 @@ void rlm_tunein_RLMStart(void *ptr,const char *arg)
       rlm_tunein_GetLogStatus(ptr,arg,section,"Aux1Log");
     rlm_tunein_aux2s=realloc(rlm_tunein_aux2s,
 			  (rlm_tunein_devs+1)*sizeof(int));
+
+    rlm_tunein_vlog101s=realloc(rlm_tunein_vlog101s,
+			  (rlm_tunein_devs+1)*sizeof(int));
+    rlm_tunein_vlog101s[rlm_tunein_devs]=
+      rlm_tunein_GetLogStatus(ptr,arg,section,"VLog101");
+
+    rlm_tunein_vlog102s=realloc(rlm_tunein_vlog102s,
+			  (rlm_tunein_devs+1)*sizeof(int));
+    rlm_tunein_vlog102s[rlm_tunein_devs]=
+      rlm_tunein_GetLogStatus(ptr,arg,section,"VLog102");
+
+    rlm_tunein_vlog103s=realloc(rlm_tunein_vlog103s,
+			  (rlm_tunein_devs+1)*sizeof(int));
+    rlm_tunein_vlog103s[rlm_tunein_devs]=
+      rlm_tunein_GetLogStatus(ptr,arg,section,"VLog103");
+
+    rlm_tunein_vlog104s=realloc(rlm_tunein_vlog104s,
+			  (rlm_tunein_devs+1)*sizeof(int));
+    rlm_tunein_vlog104s[rlm_tunein_devs]=
+      rlm_tunein_GetLogStatus(ptr,arg,section,"VLog104");
+
+    rlm_tunein_vlog105s=realloc(rlm_tunein_vlog105s,
+			  (rlm_tunein_devs+1)*sizeof(int));
+    rlm_tunein_vlog105s[rlm_tunein_devs]=
+      rlm_tunein_GetLogStatus(ptr,arg,section,"VLog105");
+
+    rlm_tunein_vlog106s=realloc(rlm_tunein_vlog106s,
+			  (rlm_tunein_devs+1)*sizeof(int));
+    rlm_tunein_vlog106s[rlm_tunein_devs]=
+      rlm_tunein_GetLogStatus(ptr,arg,section,"VLog106");
+
+    rlm_tunein_vlog107s=realloc(rlm_tunein_vlog107s,
+			  (rlm_tunein_devs+1)*sizeof(int));
+    rlm_tunein_vlog107s[rlm_tunein_devs]=
+      rlm_tunein_GetLogStatus(ptr,arg,section,"VLog107");
+
+    rlm_tunein_vlog108s=realloc(rlm_tunein_vlog108s,
+			  (rlm_tunein_devs+1)*sizeof(int));
+    rlm_tunein_vlog108s[rlm_tunein_devs]=
+      rlm_tunein_GetLogStatus(ptr,arg,section,"VLog108");
+
+    rlm_tunein_vlog109s=realloc(rlm_tunein_vlog109s,
+			  (rlm_tunein_devs+1)*sizeof(int));
+    rlm_tunein_vlog109s[rlm_tunein_devs]=
+      rlm_tunein_GetLogStatus(ptr,arg,section,"VLog109");
+
+    rlm_tunein_vlog110s=realloc(rlm_tunein_vlog110s,
+			  (rlm_tunein_devs+1)*sizeof(int));
+    rlm_tunein_vlog110s[rlm_tunein_devs]=
+      rlm_tunein_GetLogStatus(ptr,arg,section,"VLog110");
+
+    rlm_tunein_vlog111s=realloc(rlm_tunein_vlog111s,
+			  (rlm_tunein_devs+1)*sizeof(int));
+    rlm_tunein_vlog111s[rlm_tunein_devs]=
+      rlm_tunein_GetLogStatus(ptr,arg,section,"VLog111");
+
+    rlm_tunein_vlog112s=realloc(rlm_tunein_vlog112s,
+			  (rlm_tunein_devs+1)*sizeof(int));
+    rlm_tunein_vlog112s[rlm_tunein_devs]=
+      rlm_tunein_GetLogStatus(ptr,arg,section,"VLog112");
+
+    rlm_tunein_vlog113s=realloc(rlm_tunein_vlog113s,
+			  (rlm_tunein_devs+1)*sizeof(int));
+    rlm_tunein_vlog113s[rlm_tunein_devs]=
+      rlm_tunein_GetLogStatus(ptr,arg,section,"VLog113");
+
+    rlm_tunein_vlog114s=realloc(rlm_tunein_vlog114s,
+			  (rlm_tunein_devs+1)*sizeof(int));
+    rlm_tunein_vlog114s[rlm_tunein_devs]=
+      rlm_tunein_GetLogStatus(ptr,arg,section,"VLog114");
+
+    rlm_tunein_vlog115s=realloc(rlm_tunein_vlog115s,
+			  (rlm_tunein_devs+1)*sizeof(int));
+    rlm_tunein_vlog115s[rlm_tunein_devs]=
+      rlm_tunein_GetLogStatus(ptr,arg,section,"VLog115");
+
+    rlm_tunein_vlog116s=realloc(rlm_tunein_vlog116s,
+			  (rlm_tunein_devs+1)*sizeof(int));
+    rlm_tunein_vlog116s[rlm_tunein_devs]=
+      rlm_tunein_GetLogStatus(ptr,arg,section,"VLog116");
+
+    rlm_tunein_vlog117s=realloc(rlm_tunein_vlog117s,
+			  (rlm_tunein_devs+1)*sizeof(int));
+    rlm_tunein_vlog117s[rlm_tunein_devs]=
+      rlm_tunein_GetLogStatus(ptr,arg,section,"VLog117");
+
+    rlm_tunein_vlog118s=realloc(rlm_tunein_vlog118s,
+			  (rlm_tunein_devs+1)*sizeof(int));
+    rlm_tunein_vlog118s[rlm_tunein_devs]=
+      rlm_tunein_GetLogStatus(ptr,arg,section,"VLog118");
+
+    rlm_tunein_vlog119s=realloc(rlm_tunein_vlog119s,
+			  (rlm_tunein_devs+1)*sizeof(int));
+    rlm_tunein_vlog119s[rlm_tunein_devs]=
+      rlm_tunein_GetLogStatus(ptr,arg,section,"VLog119");
+
+    rlm_tunein_vlog120s=realloc(rlm_tunein_vlog120s,
+			  (rlm_tunein_devs+1)*sizeof(int));
+    rlm_tunein_vlog120s[rlm_tunein_devs]=
+      rlm_tunein_GetLogStatus(ptr,arg,section,"VLog120");
+
     rlm_tunein_aux2s[rlm_tunein_devs]=
       rlm_tunein_GetLogStatus(ptr,arg,section,"Aux2Log");
     sprintf(errtext,"rlm_tunein: configured station \"%s\"",
@@ -237,6 +378,26 @@ void rlm_tunein_RLMFree(void *ptr)
   free(rlm_tunein_masters);
   free(rlm_tunein_aux1s);
   free(rlm_tunein_aux2s);
+  free(rlm_tunein_vlog101s);
+  free(rlm_tunein_vlog102s);
+  free(rlm_tunein_vlog103s);
+  free(rlm_tunein_vlog104s);
+  free(rlm_tunein_vlog105s);
+  free(rlm_tunein_vlog106s);
+  free(rlm_tunein_vlog107s);
+  free(rlm_tunein_vlog108s);
+  free(rlm_tunein_vlog109s);
+  free(rlm_tunein_vlog110s);
+  free(rlm_tunein_vlog111s);
+  free(rlm_tunein_vlog112s);
+  free(rlm_tunein_vlog113s);
+  free(rlm_tunein_vlog114s);
+  free(rlm_tunein_vlog115s);
+  free(rlm_tunein_vlog116s);
+  free(rlm_tunein_vlog117s);
+  free(rlm_tunein_vlog118s);
+  free(rlm_tunein_vlog119s);
+  free(rlm_tunein_vlog120s);
 }
 
 
@@ -258,17 +419,97 @@ void rlm_tunein_RLMPadDataSent(void *ptr,const struct rlm_svc *svc,
 
   for(i=0;i<rlm_tunein_devs;i++) {
     switch(log->log_mach) {
-      case 0:
-	flag=rlm_tunein_masters[i];
-	break;
+    case 0:
+      flag=rlm_tunein_masters[i];
+      break;
 
-      case 1:
-	flag=rlm_tunein_aux1s[i];
-	break;
+    case 1:
+      flag=rlm_tunein_aux1s[i];
+      break;
 
-      case 2:
-	flag=rlm_tunein_aux2s[i];
-	break;
+    case 2:
+      flag=rlm_tunein_aux2s[i];
+      break;
+
+    case 100:
+      flag=rlm_tunein_vlog101s[i];
+      break;
+
+    case 101:
+      flag=rlm_tunein_vlog102s[i];
+      break;
+
+    case 102:
+      flag=rlm_tunein_vlog103s[i];
+      break;
+
+    case 103:
+      flag=rlm_tunein_vlog104s[i];
+      break;
+
+    case 104:
+      flag=rlm_tunein_vlog105s[i];
+      break;
+
+    case 105:
+      flag=rlm_tunein_vlog106s[i];
+      break;
+
+    case 106:
+      flag=rlm_tunein_vlog107s[i];
+      break;
+
+    case 107:
+      flag=rlm_tunein_vlog108s[i];
+      break;
+
+    case 108:
+      flag=rlm_tunein_vlog109s[i];
+      break;
+
+    case 109:
+      flag=rlm_tunein_vlog110s[i];
+      break;
+
+    case 110:
+      flag=rlm_tunein_vlog111s[i];
+      break;
+
+    case 111:
+      flag=rlm_tunein_vlog112s[i];
+      break;
+
+    case 112:
+      flag=rlm_tunein_vlog113s[i];
+      break;
+
+    case 113:
+      flag=rlm_tunein_vlog114s[i];
+      break;
+
+    case 114:
+      flag=rlm_tunein_vlog115s[i];
+      break;
+
+    case 115:
+      flag=rlm_tunein_vlog116s[i];
+      break;
+
+    case 116:
+      flag=rlm_tunein_vlog117s[i];
+      break;
+
+    case 117:
+      flag=rlm_tunein_vlog118s[i];
+      break;
+
+    case 118:
+      flag=rlm_tunein_vlog119s[i];
+      break;
+
+    case 119:
+      flag=rlm_tunein_vlog120s[i];
+      break;
     }
     if((flag==1)||((flag==2)&&(log->log_onair!=0))) {
       strncpy(stationid,RLMResolveNowNext(ptr,now,next,
