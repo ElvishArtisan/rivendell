@@ -11,7 +11,6 @@ INPUT_CARD           int(11)           None=-1
 OUTPUT_CARD          int(11)           None=-1
 OUTPUT_PORT          int(11)
 FORMAT               int(10) unsigned  0 = PCM16, 1 = Layer-2, 2 = Layer-3
-SAMPRATE             int(10) unsigned  RETIRED
 LAYER                int(10) unsigned
 BITRATE              int(10) unsigned
 ENABLE_SECOND_START  enum('N','Y')

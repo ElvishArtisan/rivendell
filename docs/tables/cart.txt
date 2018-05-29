@@ -13,7 +13,6 @@ TITLE                char(255)         Index
 ARTIST               char(255)         Index
 ALBUM                char(255)         Name of release album
 YEAR                 date              Year of release
-ISRC                 char(12)          RETIRED as of DB v100
 CONDUCTOR            char(64)
 LABEL                char(64)          Release Record Label 
 CLIENT               char(64)          Index

@@ -425,7 +425,6 @@ bool CreateDb(QString name,QString pwd,RDConfig *config)
     "ARTIST char(255),"+
     "ALBUM char(255),"+
     "YEAR date,"+
-    "ISRC char(12),"+
     "CONDUCTOR char(64),"+
     "LABEL char(64),"+
     "CLIENT char(64),"+
@@ -612,8 +611,6 @@ bool CreateDb(QString name,QString pwd,RDConfig *config)
     "TFC_CART_LENGTH int,"+
     "TFC_TITLE_OFFSET int,"+
     "TFC_TITLE_LENGTH int,"+
-    "TFC_START_OFFSET int,"+
-    "TFC_START_LENGTH int,"+
     "TFC_HOURS_OFFSET int,"+
     "TFC_HOURS_LENGTH int,"+
     "TFC_MINUTES_OFFSET int,"+
@@ -647,8 +644,6 @@ bool CreateDb(QString name,QString pwd,RDConfig *config)
     "MUS_CART_LENGTH int,"+
     "MUS_TITLE_OFFSET int,"+
     "MUS_TITLE_LENGTH int,"+
-    "MUS_START_OFFSET int,"+
-    "MUS_START_LENGTH int,"+
     "MUS_HOURS_OFFSET int,"+
     "MUS_HOURS_LENGTH int,"+
     "MUS_MINUTES_OFFSET int,"+
@@ -721,20 +716,14 @@ bool CreateDb(QString name,QString pwd,RDConfig *config)
     "STATION char(40) not null,"+
     "INSTANCE int unsigned not null,"+
     "INPUT_CARD int default 0,"+
-    "INPUT_STREAM int default 0,"+
     "INPUT_PORT int default 0,"+
     "INPUT_TYPE enum('A','D') default 'A',"+
     "OUTPUT_CARD int default 0,"+
-    "OUTPUT_STREAM int default 0,"+
     "OUTPUT_PORT int default 0,"+
     "VOX_THRESHOLD int default -5000,"+
     "TRIM_THRESHOLD int default 0,"+
-    "RECORD_GPI int default -1,"+
-    "PLAY_GPI int default -1,"+
-    "STOP_GPI int default -1,"+
     "DEFAULT_FORMAT int unsigned default 0,"+
     "DEFAULT_CHANNELS int unsigned default 2,"+
-    "DEFAULT_SAMPRATE int unsigned default 44100,"+
     "DEFAULT_LAYER int unsigned default 0,"+
     "DEFAULT_BITRATE int unsigned default 0,"+
     "DEFAULT_RECORD_MODE int unsigned default 0,"+
@@ -807,7 +796,6 @@ bool CreateDb(QString name,QString pwd,RDConfig *config)
     "PORT_TYPE enum('A','D') default 'A',"+
     "DEFAULT_FORMAT int default 0,"+
     "DEFAULT_CHANNELS int default 2,"+
-    "DEFAULT_SAMPRATE int default 44100,"+
     "DEFAULT_BITRATE int default 0,"+
     "DEFAULT_THRESHOLD int default 0,"+
     "SWITCH_STATION char(64),"+
@@ -862,7 +850,6 @@ bool CreateDb(QString name,QString pwd,RDConfig *config)
     "EVENTDATE_OFFSET int default 0,"+
     "FORMAT int default 0,"+
     "CHANNELS int default 2,"+
-    "SAMPRATE int default 44100,"+
     "BITRATE int default 0,"+
     "QUALITY int default 0,"+
     "MACRO_CART int default -1,"+
@@ -1383,7 +1370,6 @@ bool CreateDb(QString name,QString pwd,RDConfig *config)
     "OUTPUT_CARD int default -1,"+
     "OUTPUT_PORT int default 0,"+
     "FORMAT int unsigned default 0,"+
-    "SAMPRATE int unsigned default 44100,"+
     "LAYER int unsigned default 0,"+
     "BITRATE int unsigned default 0,"+
     "ENABLE_SECOND_START enum('N','Y') default 'Y',"+
@@ -8443,8 +8429,63 @@ int UpdateDb(int ver,RDConfig *config)
     delete q;
   }
 
+  if(ver<285) {
+    sql=QString("alter table CART drop column ISRC");
+    q=new RDSqlQuery(sql,false);
+    delete q;
 
+    sql=QString("alter table DECKS drop column DEFAULT_SAMPRATE");
+    q=new RDSqlQuery(sql,false);
+    delete q;
 
+    sql=QString("alter table RDLIBRARY drop column INPUT_STREAM");
+    q=new RDSqlQuery(sql,false);
+    delete q;
+
+    sql=QString("alter table RDLIBRARY drop column OUTPUT_STREAM");
+    q=new RDSqlQuery(sql,false);
+    delete q;
+
+    sql=QString("alter table RDLIBRARY drop column RECORD_GPI");
+    q=new RDSqlQuery(sql,false);
+    delete q;
+
+    sql=QString("alter table RDLIBRARY drop column PLAY_GPI");
+    q=new RDSqlQuery(sql,false);
+    delete q;
+
+    sql=QString("alter table RDLIBRARY drop column STOP_GPI");
+    q=new RDSqlQuery(sql,false);
+    delete q;
+
+    sql=QString("alter table RDLIBRARY drop column DEFAULT_SAMPRATE");
+    q=new RDSqlQuery(sql,false);
+    delete q;
+
+    sql=QString("alter table RDLOGEDIT drop column SAMPRATE");
+    q=new RDSqlQuery(sql,false);
+    delete q;
+
+    sql=QString("alter table RECORDINGS drop column SAMPRATE");
+    q=new RDSqlQuery(sql,false);
+    delete q;
+
+    sql=QString("alter table SERVICES drop column TFC_START_OFFSET");
+    q=new RDSqlQuery(sql,false);
+    delete q;
+
+    sql=QString("alter table SERVICES drop column TFC_START_LENGTH");
+    q=new RDSqlQuery(sql,false);
+    delete q;
+
+    sql=QString("alter table SERVICES drop column MUS_START_OFFSET");
+    q=new RDSqlQuery(sql,false);
+    delete q;
+
+    sql=QString("alter table SERVICES drop column MUS_START_LENGTH");
+    q=new RDSqlQuery(sql,false);
+    delete q;
+  }
 
 
 

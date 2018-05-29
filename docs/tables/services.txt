@@ -29,8 +29,6 @@ TFC_CART_OFFSET         int(11)
 TFC_CART_LENGTH         int(11)
 TFC_TITLE_OFFSET        int(11)
 TFC_TITLE_LENGTH        int(11)
-TFC_START_OFFSET        int(11)            RETIRED as of DB v119
-TFC_START_LENGTH        int(11)            RETIRED as of DB v119
 TFC_HOURS_OFFSET        int(11)
 TFC_HOURS_LENGTH        int(11)
 TFC_MINUTES_OFFSET      int(11)
@@ -64,8 +62,6 @@ MUS_CART_OFFSET         int(11)
 MUS_CART_LENGTH         int(11)
 MUS_TITLE_OFFSET        int(11)
 MUS_TITLE_LENGTH        int(11)
-MUS_START_OFFSET        int(11)            RETIRED as of DB v119
-MUS_START_LENGTH        int(11)            RETIRED as of DB v119
 MUS_HOURS_OFFSET        int(11)
 MUS_HOURS_LENGTH        int(11)
 MUS_MINUTES_OFFSET      int(11)

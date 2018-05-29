@@ -295,6 +295,10 @@ void MainObject::Revert(int schema) const
   case 284:
     Revert284();
     break;
+
+  case 285:
+    Revert285();
+    break;
   }
 }
 
@@ -1274,8 +1278,6 @@ void MainObject::Revert284() const
   q=new RDSqlQuery(sql,false);
   delete q;
 
-
-
   sql=QString("alter table RDPANEL add column INSTANCE int unsigned ")+
     "not null default 0 after STATION";
   q=new RDSqlQuery(sql,false);
@@ -1356,6 +1358,84 @@ void MainObject::Revert284() const
 }
 
 
+void MainObject::Revert285() const
+{
+  QString sql;
+  RDSqlQuery *q;
+
+  sql=QString("alter table CART add column ISRC char(12) after YEAR");
+  q=new RDSqlQuery(sql,false);
+  delete q;
+
+  sql=QString("alter table DECKS add ")+
+    "column DEFAULT_SAMPRATE int default 44100 after DEFAULT_CHANNELS";
+  q=new RDSqlQuery(sql,false);
+  delete q;
+
+  sql=QString("alter table RDLIBRARY add ")+
+    "column INPUT_STREAM int default 0 after INPUT_CARD";
+  q=new RDSqlQuery(sql,false);
+  delete q;
+
+  sql=QString("alter table RDLIBRARY add ")+
+    "column OUTPUT_STREAM int default 0 after OUTPUT_CARD";
+  q=new RDSqlQuery(sql,false);
+  delete q;
+
+  sql=QString("alter table RDLIBRARY add ")+
+    "column RECORD_GPI int default -1 after TRIM_THRESHOLD";
+  q=new RDSqlQuery(sql,false);
+  delete q;
+
+  sql=QString("alter table RDLIBRARY add ")+
+    "column PLAY_GPI int default -1 after RECORD_GPI";
+  q=new RDSqlQuery(sql,false);
+  delete q;
+
+  sql=QString("alter table RDLIBRARY add ")+
+    "column STOP_GPI int default -1 after PLAY_GPI";
+  q=new RDSqlQuery(sql,false);
+  delete q;
+
+  sql=QString("alter table RDLIBRARY add ")+
+    "column DEFAULT_SAMPRATE int default 44100 after DEFAULT_CHANNELS";
+  q=new RDSqlQuery(sql,false);
+  delete q;
+
+  sql=QString("alter table RDLOGEDIT add ")+
+    "column SAMPRATE int unsigned default 44100 after FORMAT";
+  q=new RDSqlQuery(sql,false);
+  delete q;
+
+  sql=QString("alter table RECORDINGS add ")+
+    "column SAMPRATE int unsigned default 44100 after CHANNELS";
+  q=new RDSqlQuery(sql,false);
+  delete q;
+
+  sql=QString("alter table SERVICES add ")+
+    "column TFC_START_OFFSET int after TFC_TITLE_LENGTH";
+  q=new RDSqlQuery(sql,false);
+  delete q;
+
+  sql=QString("alter table SERVICES add ")+
+    "column TFC_START_LENGTH int after TFC_START_OFFSET";
+  q=new RDSqlQuery(sql,false);
+  delete q;
+
+  sql=QString("alter table SERVICES add ")+
+    "column MUS_START_OFFSET int after MUS_TITLE_LENGTH";
+  q=new RDSqlQuery(sql,false);
+  delete q;
+
+  sql=QString("alter table SERVICES add ")+
+    "column MUS_START_LENGTH int after MUS_START_OFFSET";
+  q=new RDSqlQuery(sql,false);
+  delete q;
+
+  SetVersion(284);
+}
+
+
 int MainObject::GetVersion() const
 {
   QString sql;
@@ -1402,7 +1482,7 @@ int MainObject::MapSchema(const QString &ver)
   version_map["2.17"]=268;
   version_map["2.18"]=272;
   version_map["2.19"]=275;
-  version_map["2.20"]=284;
+  version_map["2.20"]=285;
 
   //
   // Normalize String

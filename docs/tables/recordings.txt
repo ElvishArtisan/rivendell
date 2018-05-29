@@ -47,7 +47,6 @@ ENDDATE_OFFSET	     int(10) unsigned
 EVENTDATE_OFFSET     int(11)
 FORMAT               int(11) signed    0 = PCM16, 2 = Layer 2, 3 = Layer 3
 CHANNELS             int(11) signed
-SAMPRATE             int(11) signed    RETIRED
 BITRATE              int(11) signed
 QUALITY              int(11) signed
 MACRO_CART	     int(10) unsigned

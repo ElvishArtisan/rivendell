@@ -16944,3 +16944,19 @@
 	names in SQL calls.
 	* Fixed a bug in 'RDLog::create()' that failed to initialize
 	the modified datetime correctly.
+2018-05-29 Fred Gleason <fredg@paravelsystems.com>
+	* Dropped the 'CART.ISRC' field from the database.
+	* Dropped the 'DECKS.DEFAULT_SAMPRATE' field from the database.
+	* Dropped the 'RDLIBRARY.INPUT_STREAM' field from the database.
+	* Dropped the 'RDLIBRARY.OUTPUT_STREAM' field from the database.
+	* Dropped the 'RDLIBRARY.RECORD_GPI' field from the database.
+	* Dropped the 'RDLIBRARY.PLAY_GPI' field from the database.
+	* Dropped the 'RDLIBRARY.STOP_GPI' field from the database.
+	* Dropped the 'RDLIBRARY.DEFAULT_SAMPRATE' field from the database.
+	* Dropped the 'RECORDINGS.DEFAULT_SAMPRATE' field from the database.
+	* Dropped the 'RDLOGEDIT.SAMPRATE' field from the database.
+	* Dropped the 'SERVICES.TFC_START_OFFSET' field from the database.
+	* Dropped the 'SERVICES.TFC_START_LENGTH' field from the database.
+	* Dropped the 'SERVICES.MUS_START_OFFSET' field from the database.
+	* Dropped the 'SERVICES.MUS_START_LENGTH' field from the database.
+	* Incremented the database version to 285.

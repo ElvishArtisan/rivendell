@@ -1,8 +1,7 @@
                    DECKS Table Layout for Rivendell
 
 The DECKS table holds data concerning each configured netcatcher
-recording interface on the system.  Following is the layout of a
-record in the DECKS table:
+recording interface on the system.
 
 FIELD NAME           TYPE              REMARKS
 ------------------------------------------------------------------
@@ -17,7 +16,6 @@ MON_PORT_NUMBER      int(11) signed
 DEFAULT_MONITOR_ON   enum('N','Y')
 DEFAULT_FORMAT       int(10) signed
 DEFAULT_CHANNELS     int(10) signed
-DEFAULT_SAMPRATE     int(10) signed    RETIRED
 DEFAULT_BITRATE      int(10) signed
 DEFAULT_THRESHOLD    int(10) signed
 SWITCH_STATION       char(64)          From OUTPUTS.STATION_NAME
