@@ -16915,3 +16915,5 @@
 2018-05-25 Fred Gleason <fredg@paravelsystems.com>
 	* Merged pull request #000197, "Issue 195 rlm_filewrite filename
 	wildcards".
+2018-05-29 Fred Gleason <fredg@paravelsystems.com>
+	* Merged pull request #000212, "Patches for building on Ubuntu 18.04".
