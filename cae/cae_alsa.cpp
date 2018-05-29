@@ -1140,7 +1140,7 @@ bool MainObject::alsaSetInputVolume(int card,int stream,int level)
 {
 #ifdef ALSA
   if(level>-10000) {
-    alsa_input_volume[card][stream]=pow10((double)level/2000.0);
+    alsa_input_volume[card][stream]=pow(10.0,(double)level/2000.0);
     alsa_input_volume_db[card][stream]=level;
   }
   else {
@@ -1158,7 +1158,7 @@ bool MainObject::alsaSetOutputVolume(int card,int stream,int port,int level)
 {
 #ifdef ALSA
   if(level>-10000) {
-    alsa_output_volume[card][port][stream]=pow10((double)level/2000.0);
+    alsa_output_volume[card][port][stream]=pow(10.0,(double)level/2000.0);
     alsa_output_volume_db[card][port][stream]=level;
   }
   else {
@@ -1366,7 +1366,7 @@ bool MainObject::alsaSetPassthroughLevel(int card,int in_port,int out_port,
 #ifdef ALSA
   if(level>-10000) {
     alsa_passthrough_volume[card][in_port][out_port]=
-      pow10((double)level/2000.0);
+      pow(10.0,(double)level/2000.0);
     alsa_passthrough_volume_db[card][in_port][out_port]=level;
   }
   else {
