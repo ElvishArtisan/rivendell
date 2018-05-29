@@ -16917,3 +16917,6 @@
 	wildcards".
 2018-05-29 Fred Gleason <fredg@paravelsystems.com>
 	* Merged pull request #000212, "Patches for building on Ubuntu 18.04".
+2018-05-29 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression that caused meters to fail when rdvairplayd(8)
+	was operated with invalid channel assignments.

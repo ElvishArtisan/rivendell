@@ -27,8 +27,6 @@ x11 {
   SOURCES += list_log.cpp
   SOURCES += list_logs.cpp
   SOURCES += local_macros.cpp
-  SOURCES += log_play.cpp
-  SOURCES += log_traffic.cpp
   SOURCES += loglinebox.cpp
   SOURCES += mode_display.cpp
   SOURCES += pie_counter.cpp
@@ -47,8 +45,6 @@ x11 {
   HEADERS += lib_listview.h
   HEADERS += list_log.h
   HEADERS += list_logs.h
-  HEADERS += log_play.h
-  HEADERS += log_traffic.h
   HEADERS += loglinebox.h
   HEADERS += mode_display.h
   HEADERS += pie_counter.h

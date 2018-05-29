@@ -150,9 +150,17 @@ MainObject::MainObject(QObject *parent)
     int cards[2]={0,0};
     cards[0]=rda->airplayConf()->virtualCard(i+RD_RDVAIRPLAY_LOG_BASE);
     cards[1]=rda->airplayConf()->virtualCard(i+RD_RDVAIRPLAY_LOG_BASE);
+    if(rda->station()->cardDriver(cards[0])==RDStation::None) {
+      cards[0]=-1;
+      cards[1]=-1;
+    }
     int ports[2]={0,0};
     ports[0]=rda->airplayConf()->virtualPort(i+RD_RDVAIRPLAY_LOG_BASE);
     ports[1]=rda->airplayConf()->virtualPort(i+RD_RDVAIRPLAY_LOG_BASE);
+    if((cards[0]<0)||(ports[0]>=rda->station()->cardOutputs(cards[0]))) {
+      ports[0]=-1;
+      ports[1]=-1;
+    }
     QString start_rml[2]={"",""};
     start_rml[0]=rda->airplayConf()->virtualStartRml(i+RD_RDVAIRPLAY_LOG_BASE);
     start_rml[1]=rda->airplayConf()->virtualStartRml(i+RD_RDVAIRPLAY_LOG_BASE);
@@ -199,7 +207,7 @@ MainObject::MainObject(QObject *parent)
   //
   air_exit_timer=new QTimer(this);
   connect(air_exit_timer, SIGNAL(timeout()),this,SLOT(exitData()));
-  air_exit_timer->start(100);
+  air_exit_timer->start(1000);
   ::signal(SIGINT,SigHandler);
   ::signal(SIGTERM,SigHandler);
 }

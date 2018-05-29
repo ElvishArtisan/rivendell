@@ -61,6 +61,7 @@ class RDLogPlay : public QObject,public RDLogEvent
   void setDefaultServiceName(const QString &svcname);
   int card(int channum) const;
   int port(int channum) const;
+  bool channelsValid() const;
   RDAirPlayConf::OpMode mode() const;
   void setOpMode(RDAirPlayConf::OpMode mode);
   void setLogName(QString name);

@@ -80,10 +80,21 @@ void MainObject::rmlReceivedData(RDMacro *rml)
     if(rml->argQuantity()==3) { // Start Log
       if(rml->arg(2).toInt()<air_logs[index]->size()) {
 	if(rml->arg(2).toInt()>=0) {  // Unconditional start
-	  air_logs[index]->play(rml->arg(2).toInt(),RDLogLine::StartMacro);
-	  rda->log(RDConfig::LogInfo,QString().
-		   sprintf("started log machine %d at line %d",
-			   rml->arg(0).toInt(),rml->arg(2).toInt()));
+	  if(air_logs[index]->play(rml->arg(2).toInt(),RDLogLine::StartMacro)) {	
+	    rda->log(RDConfig::LogInfo,QString().
+		     sprintf("started log machine %d at line %d",
+			     rml->arg(0).toInt(),rml->arg(2).toInt()));
+	  }
+	  else {
+	    rda->log(RDConfig::LogWarning,QString().
+		     sprintf("1 log machine %d failed to start",
+			     rml->arg(0).toInt()));
+	    if(rml->echoRequested()) {
+	      rml->acknowledge(false);
+	      rda->ripc()->sendRml(rml);
+	    }   
+	    return;
+  }
 	}
 	if(rml->arg(2).toInt()==-2) {  // Start if trans type allows
 	  // Find first non-running event
@@ -100,10 +111,21 @@ void MainObject::rmlReceivedData(RDMacro *rml)
 	    switch(logline->transType()) {
 	    case RDLogLine::Play:
 	    case RDLogLine::Segue:
-	      air_logs[index]->play(0,RDLogLine::StartMacro);
-	      rda->log(RDConfig::LogInfo,QString().
-		       sprintf("started log machine %d at line 0",
-			       rml->arg(0).toInt()));
+	      if(air_logs[index]->play(0,RDLogLine::StartMacro)) {
+		rda->log(RDConfig::LogInfo,QString().
+			 sprintf("started log machine %d at line 0",
+				 rml->arg(0).toInt()));
+	      }
+	      else {
+		rda->log(RDConfig::LogWarning,QString().
+			 sprintf("2 log machine %d failed to start",
+				 rml->arg(0).toInt()));
+		if(rml->echoRequested()) {
+		  rml->acknowledge(false);
+		  rda->ripc()->sendRml(rml);
+		}
+		return;
+	      }
 	      break;
 	      
 	    case RDLogLine::Stop:
@@ -205,11 +227,19 @@ void MainObject::rmlReceivedData(RDMacro *rml)
       return;
     }
     if(!air_logs[index]->running()) {
-      if(!air_logs[index]->play(rml->arg(1).toInt(),RDLogLine::StartMacro)) {
+      if(air_logs[index]->play(rml->arg(1).toInt(),RDLogLine::StartMacro)) {
+	rda->log(RDConfig::LogInfo,QString().
+		 sprintf("started log machine %d at line %d",
+			 rml->arg(0).toInt(),rml->arg(2).toInt()));
+      }
+      else {
+	rda->log(RDConfig::LogWarning,QString().
+		 sprintf("3 log machine %d failed to start",
+			 rml->arg(0).toInt()));
 	if(rml->echoRequested()) {
 	  rml->acknowledge(false);
 	  rda->ripc()->sendRml(rml);
-	}
+	}   
 	return;
       }
     }
@@ -313,18 +343,46 @@ void MainObject::rmlReceivedData(RDMacro *rml)
     next_line=air_logs[index]->nextLine();
     if(air_logs[index]->nextLine()>=0) {
       if(rml->argQuantity()==1) {
-	air_logs[index]->
-	  play(air_logs[index]->nextLine(),RDLogLine::StartMacro);
+	if(!air_logs[index]->
+	   play(air_logs[index]->nextLine(),RDLogLine::StartMacro)) {
+	  rda->log(RDConfig::LogWarning,QString().
+		   sprintf("4 log machine %d failed to start",
+			   rml->arg(0).toInt()));
+	  if(rml->echoRequested()) {
+	    rml->acknowledge(false);
+	    rda->ripc()->sendRml(rml);
+	  }   
+	  return;
+	}
       }
       else {
 	if(rml->argQuantity()==2) {
-	  air_logs[index]->play(air_logs[index]->nextLine(),
-				RDLogLine::StartMacro,rml->arg(1).toInt()-1);
+	  if(!air_logs[index]->play(air_logs[index]->nextLine(),
+				    RDLogLine::StartMacro,
+				    rml->arg(1).toInt()-1)) {
+	    rda->log(RDConfig::LogWarning,QString().
+		     sprintf("5 log machine %d failed to start",
+			     rml->arg(0).toInt()));
+	    if(rml->echoRequested()) {
+	      rml->acknowledge(false);
+	      rda->ripc()->sendRml(rml);
+	    }   
+	    return;
+	  }
 	}
 	else {
-	  air_logs[index]->
-	    play(air_logs[index]->nextLine(),RDLogLine::StartMacro,
-		 rml->arg(1).toInt()-1,rml->arg(2).toInt());
+	  if(!air_logs[index]->
+	     play(air_logs[index]->nextLine(),RDLogLine::StartMacro,
+		  rml->arg(1).toInt()-1,rml->arg(2).toInt())) {
+	    rda->log(RDConfig::LogWarning,QString().
+		     sprintf("6 log machine %d failed to start",
+			     rml->arg(0).toInt()));
+	    if(rml->echoRequested()) {
+	      rml->acknowledge(false);
+	      rda->ripc()->sendRml(rml);
+	    }   
+	    return;
+	  }
 	}
       }
       rda->log(RDConfig::LogInfo,QString().

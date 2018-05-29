@@ -378,7 +378,7 @@ MainWidget::MainWidget(QWidget *parent)
     start_rmls[i]=rda->airplayConf()->startRml((RDAirPlayConf::Channel)i);
     stop_rmls[i]=rda->airplayConf()->stopRml((RDAirPlayConf::Channel)i);
   }
-  if(air_meter_card[1]<0) {  // Fixup disabled main log port 2 playout
+  if((air_meter_card[1]<0)||(air_meter_port[1]<0)) {  // Fixup disabled main log port 2 playout
     air_meter_card[1]=air_meter_card[0];
     air_meter_port[1]=air_meter_port[0];
     cards[1]=cards[0];
@@ -753,11 +753,13 @@ MainWidget::MainWidget(QWidget *parent)
   }
   air_log_button[0]->setText(tr("Main Log\n[--]"));
     air_log_button[1]->setText(tr("Aux 1 Log\n[--]"));
-  if(!rda->airplayConf()->showAuxButton(0)) {
+    if((!rda->airplayConf()->showAuxButton(0))||
+       (!air_log[1]->channelsValid())) {
     air_log_button[1]->hide();
   }
     air_log_button[2]->setText(tr("Aux 2 Log\n[--]"));
-  if(!rda->airplayConf()->showAuxButton(1)) {
+    if((!rda->airplayConf()->showAuxButton(1))||
+       (!air_log[2]->channelsValid())) {
     air_log_button[2]->hide();
   }
 
@@ -923,6 +925,14 @@ void MainWidget::ripcConnected(bool state)
   addr.setAddress("127.0.0.1");
   rml.setAddress(addr);
   rml.setEchoRequested(false);
+
+  //
+  // Check Channel Assignments
+  //
+  if(!air_log[0]->channelsValid()) {
+    QMessageBox::warning(this,"RDAirPlay - "+tr("Warning"),
+			 tr("Main Log channel assignments are invalid!"));
+  }
 
   //
   // Get Onair Flag State

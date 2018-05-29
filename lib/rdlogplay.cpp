@@ -200,6 +200,13 @@ int RDLogPlay::port(int channum) const
 }
 
 
+bool RDLogPlay::channelsValid() const
+{
+  return (play_card[0]>=0)&&(play_card[1]>=0)&&
+    (play_port[0]>=0)&&(play_port[1]>=0);
+}
+
+
 RDAirPlayConf::OpMode RDLogPlay::mode() const
 {
   return play_op_mode;
@@ -305,10 +312,13 @@ void RDLogPlay::auditionStop()
 
 
 bool RDLogPlay::play(int line,RDLogLine::StartSource src,
-		   int mport,bool skip_meta)
+		     int mport,bool skip_meta)
 {
   QTime current_time=QTime::currentTime();
   RDLogLine *logline;
+  if(!channelsValid()) {
+    return false;
+  }
   if((logline=logLine(line))==NULL) {
     return false;
   }
@@ -1760,7 +1770,8 @@ void RDLogPlay::notificationReceivedData(RDNotification *notify)
 
 
 bool RDLogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
-			 int trans_length,RDLogLine::StartSource src,int mport,int duck_length)
+			   int trans_length,RDLogLine::StartSource src,
+			   int mport,int duck_length)
 {
   int running;
   int lines[TRANSPORT_QUANTITY];
@@ -1772,6 +1783,9 @@ bool RDLogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
   int aport;
   bool was_paused=false;
 
+  if(!channelsValid()) {
+    return false;
+  }
   if((logline=logLine(line))==NULL) {
     return false;
   }
@@ -2498,10 +2512,12 @@ void RDLogPlay::SetTransTimer(QTime current_time,bool stop)
   RDLogLine *logline;
 
   if(play_trans_timer->isActive()) {
-    if(stop)
-	    play_trans_timer->stop();
-    else
+    if(stop) {
+      play_trans_timer->stop();
+    }
+    else {
       return;
+    }
   }
   play_trans_line=-1;
   for(int i=0;i<size();i++) {
