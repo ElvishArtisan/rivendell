@@ -40,6 +40,7 @@
 #include <rdripc.h>
 #include <rdlibrary_conf.h>
 #include <rdlistviewitem.h>
+#include <rdsimpleplayer.h>
 
 #include <rdconfig.h>
 
@@ -82,6 +83,7 @@ class MainWidget : public QWidget
   void reportsData();
   void cartOnItemData(QListViewItem *item);
   void cartClickedData(QListViewItem *item);
+  void cartClickedPlayback(QListViewItem *item);
   void cartDoubleclickedData(QListViewItem *,const QPoint &,int);
   void audioChangedData(int state);
   void macroChangedData(int state);
@@ -130,6 +132,9 @@ class MainWidget : public QWidget
   QPushButton *lib_rip_button;
   QPushButton *lib_reports_button;
   QPushButton *lib_close_button;
+  RDSimplePlayer *lib_player;
+  int lib_output_card;
+  int lib_output_port;
   QCheckBox *lib_allowdrag_box;
   QLabel *lib_allowdrag_label;
   QCheckBox *lib_showaudio_box;
