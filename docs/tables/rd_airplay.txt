@@ -6,11 +6,8 @@ Following is the layout of a record in the RDAIRPLAY table:
 FIELD NAME           TYPE              REMARKS
 ------------------------------------------------------------------------------
 ID                     int(10) unsigned  * Primary key, Auto Increment
-STATION                char(40)          Workstation, Indexed
 SEGUE_LENGTH           int(11)
 TRANS_LENGTH           int(11)
-OP_MODE                int(11)           *** RETIRED @ DB v233 ***
-START_MODE             int(11)           *** RETIRED @ DB v233 ***
 LOG_MODE_STYLE         int(11)           0=Unified, 1=Independent
 PIE_COUNT_LENGTH       int(11)
 PIE_COUNT_ENDPOINT     int(11)           0=EOF, 1=Segue Point

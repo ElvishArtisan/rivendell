@@ -48,6 +48,7 @@
 #include <rddb.h>
 #include <rddeck.h>
 #include <rdedit_audio.h>
+#include <rdescape_string.h>
 #include <rdmixer.h>
 #include <rdripc.h>
 #include <rdsettings.h>
@@ -291,9 +292,13 @@ MainWidget::MainWidget(QWidget *parent)
     catch_connect.back()->connector()->
       connectHost(q->value(1).toString(),RDCATCHD_TCP_PORT,
 		  rda->config()->password());
-    sql=QString().sprintf("select CHANNEL,MON_PORT_NUMBER from DECKS \
-where (CARD_NUMBER!=-1)&&(PORT_NUMBER!=-1)&&(CHANNEL>0)&&(STATION_NAME=\"%s\") \
-order by CHANNEL",(const char *)q->value(0).toString().lower());
+    sql=QString("select ")+
+      "CHANNEL,"+          // 00
+      "MON_PORT_NUMBER "+  // 01
+      "from DECKS where "+
+      "(CARD_NUMBER!=-1)&&(PORT_NUMBER!=-1)&&(CHANNEL>0)&&"+
+      "(STATION_NAME=\""+RDEscapeString(q->value(0).toString().lower())+"\") "+
+      "order by CHANNEL";
     q1=new RDSqlQuery(sql);
     while(q1->next()) {
       catch_connect.back()->chan.push_back(q1->value(0).toUInt());
@@ -1585,7 +1590,9 @@ int MainWidget::AddRecord()
     n=1;
   }
   delete q;
-  sql=QString().sprintf("insert into RECORDINGS set ID=%d",n);
+  sql=QString("insert into RECORDINGS set ")+
+    QString().sprintf("ID=%d,",n)+
+    "STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\"";
   q=new RDSqlQuery(sql);
   delete q;
   return n;
@@ -1846,11 +1853,12 @@ void MainWidget::RefreshList()
       l->setText(6,QString().
 		 sprintf("%s %s",(const char *)str,
 			 (const char *)q->value(5).toString()));
-      sql=QString().sprintf("select SWITCH_STATION,SWITCH_MATRIX\
-                                 from DECKS where			\
-                                 (STATION_NAME=\"%s\")&&(CHANNEL=%d)",
-			    (const char *)q->value(2).toString(),
-			    q->value(23).toInt());
+      sql=QString("select ")+
+	"SWITCH_STATION,"+  // 00
+	"SWITCH_MATRIX "+   // 01
+	"from DECKS where "+
+	"(STATION_NAME=\""+RDEscapeString(q->value(2).toString())+"\")&&"+
+	QString().sprintf("(CHANNEL=%d)",q->value(23).toInt());
       q1=new RDSqlQuery(sql);
       if(q1->first()) {  // Source
 	l->setText(5,GetSourceName(q1->value(0).toString(),  
@@ -2224,11 +2232,12 @@ void MainWidget::RefreshLine(RDListViewItem *item)
 			      q->value(38).toInt()));
 	break;
       }	
-      sql=QString().sprintf("select SWITCH_STATION,SWITCH_MATRIX\
-                                 from DECKS where			\
-                                 (STATION_NAME=\"%s\")&&(CHANNEL=%d)",
-			    (const char *)q->value(2).toString(),
-			    q->value(23).toInt());
+      sql=QString("select ")+
+	"SWITCH_STATION,"+  // 00
+	"SWITCH_MATRIX "+   // 01
+	"from DECKS where "+
+	"(STATION_NAME=\""+RDEscapeString(q->value(2).toString())+"\")&&"+
+	QString().sprintf("(CHANNEL=%d)",q->value(23).toInt());
       q1=new RDSqlQuery(sql);
       if(q1->first()) {
 	item->setText(5,GetSourceName(q1->value(0).toString(),
@@ -2481,11 +2490,10 @@ void MainWidget::DisplayExitCode(RDListViewItem *item,
 QString MainWidget::GetSourceName(QString station,int matrix,int input)
 {
   QString input_name;
-  QString sql=QString().sprintf("select NAME from INPUTS where \
-                                 (STATION_NAME=\"%s\")&&\
-                                 (MATRIX=%d)&&(NUMBER=%d)",
-				(const char *)station,
-				matrix,input);
+  QString sql=QString("select NAME from INPUTS where ")+
+    "(STATION_NAME=\""+RDEscapeString(station)+"\")&&"+
+    QString().sprintf("(MATRIX=%d)&&",matrix)+
+    QString().sprintf("(NUMBER=%d)",input);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     input_name=q->value(0).toString();
@@ -2498,11 +2506,10 @@ QString MainWidget::GetSourceName(QString station,int matrix,int input)
 QString MainWidget::GetDestinationName(QString station,int matrix,int output)
 {
   QString output_name;
-  QString sql=QString().sprintf("select NAME from OUTPUTS where \
-                                 (STATION_NAME=\"%s\")&&\
-                                 (MATRIX=%d)&&(NUMBER=%d)",
-				(const char *)station,
-				matrix,output);
+  QString sql=QString("select NAME from OUTPUTS where ")+
+    "(STATION_NAME=\""+RDEscapeString(station)+"\")&&"+
+    QString().sprintf("(MATRIX=%d)&&",matrix)+
+    QString().sprintf("(NUMBER=%d)",output);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     output_name=q->value(0).toString();

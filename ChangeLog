@@ -16920,3 +16920,27 @@
 2018-05-29 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression that caused meters to fail when rdvairplayd(8)
 	was operated with invalid channel assignments.
+2018-05-29 Fred Gleason <fredg@paravelsystems.com>
+	* Dropped the 'RDAIRPLAY.INSTANCE' field from the database.
+	* Dropped the 'RDAIRPLAY.CARD<n>' fields from the database.
+	* Dropped the 'RDAIRPLAY.PORT<n>' fields from the database.
+	* Dropped the 'RDAIRPLAY.START_RML<n>' fields from the database.
+	* Dropped the 'RDAIRPLAY.STOP_RML<n>' fields from the database.
+	* Dropped the 'RDAIRPLAY.OP_MODE' field from the database.
+	* Dropped the 'RDAIRPLAY.START_MODE' field from the database.
+	* Dropped the 'RDPANEL.INSTANCE' field from the database.
+	* Dropped the 'RDPANEL.CARD<n>' fields from the database.
+	* Dropped the 'RDPANEL.PORT<n>' fields from the database.
+	* Dropped the 'RDPANEL.START_RML<n>' fields from the database.
+	* Dropped the 'RDPANEL.STOP_RML<n>' fields from the database.
+	* Altered the default value of the 'MATRICES.PORT field to 0.
+	* Altered the default value of the 'MATRICES.PORT_2 field to 0.
+	* Altered the default value of the 'MATRICES.INPUTS field to 0.
+	* Altered the default value of the 'MATRICES.OUTPUTS field to 0.
+	* Altered the default value of the 'MATRICES.GPIS field to 0.
+	* Altered the default value of the 'MATRICES.GPOS field to 0.
+	* Incremented the database version to 284.
+	* Fixed bugs in rdcatch(1) that incorrectly escaped host
+	names in SQL calls.
+	* Fixed a bug in 'RDLog::create()' that failed to initialize
+	the modified datetime correctly.

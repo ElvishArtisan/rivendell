@@ -520,6 +520,7 @@ bool RDLog::create(const QString &name,const QString &svc_name,
     "DESCRIPTION=\""+RDEscapeString(name)+" log \","+
     "ORIGIN_USER=\""+RDEscapeString(user_name)+"\","+
     "ORIGIN_DATETIME=now(),"+
+    "MODIFIED_DATETIME=now(),"+
     "LINK_DATETIME=now(),"+
     "SERVICE=\""+RDEscapeString(svc_name)+"\"";
   if(shelflife>=0) {
