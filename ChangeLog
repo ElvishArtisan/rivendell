@@ -16965,3 +16965,6 @@
 	the STACK".
 2018-05-30 Fred Gleason <fredg@paravelsystems.com>
 	* Implemented '%v/%V' metadata wildcards for event length (seconds).
+2018-05-30 Patrick Linstruth <patrick@deltecent.com>
+	* Implemented purging of STACK_* tables for RDMaint(1) in
+        'utils/rdmaint/rdmaint.cpp' and 'utils/rdmaint/rdmaint.h'.

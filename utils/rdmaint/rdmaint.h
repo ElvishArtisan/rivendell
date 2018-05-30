@@ -39,6 +39,7 @@ class MainObject : public QObject
   void PurgeDropboxes();
   void PurgeGpioEvents();
   void PurgeWebapiAuths();
+  void PurgeStacks();
   void RehashCuts();
   bool maint_verbose;
   bool maint_system;
