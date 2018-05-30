@@ -16967,3 +16967,6 @@
 	* Implemented '%v/%V' metadata wildcards for event length (seconds).
 2018-05-30 Fred Gleason <fredg@paravelsystems.com>
 	* Updated 'AUTHORS'.
+2018-05-30 Fred Gleason <fredg@paravelsystems.com>
+	* Merged pull request #000062, "Optimize CPU usage in caed alsa
+	playback (fixed version)".
