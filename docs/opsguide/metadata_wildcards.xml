@@ -36,7 +36,7 @@
 	  <row><entry><userinput>%s</userinput></entry><entry><userinput>%S</userinput></entry><entry>Song ID</entry></row>
 	  <row><entry><userinput>%t</userinput></entry><entry><userinput>%T</userinput></entry><entry>Title</entry></row>
 	  <row><entry><userinput>%u</userinput></entry><entry><userinput>%U</userinput></entry><entry>User Definied</entry></row>
-	  <row><entry><userinput>%v</userinput></entry><entry><userinput>%V</userinput></entry><entry>[Unassigned]</entry></row>
+	  <row><entry><userinput>%v</userinput></entry><entry><userinput>%V</userinput></entry><entry>Event length (seconds, rounded down)</entry></row>
 	  <row><entry><userinput>%w</userinput></entry><entry><userinput>%W</userinput></entry><entry>[Unassigned]</entry></row>
 	  <row><entry><userinput>%x</userinput></entry><entry><userinput>%X</userinput></entry><entry>[Unassigned]</entry></row>
 	  <row><entry><userinput>%y</userinput></entry><entry><userinput>%Y</userinput></entry><entry>Release Year</entry></row>

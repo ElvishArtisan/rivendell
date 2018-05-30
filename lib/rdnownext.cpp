@@ -81,6 +81,8 @@ void RDResolveNowNext(QString *str,RDLogLine **loglines,int encoding)
   if(loglines[0]!=NULL) {
     str->replace("%n",QString().sprintf("%06u",loglines[0]->cartNumber()));
     str->replace("%h",QString().sprintf("%d",loglines[0]->effectiveLength()));
+    str->replace("%v",
+		 QString().sprintf("%d",loglines[0]->effectiveLength()/1000));
     str->replace("%g",RDResolveNowNextEncode(loglines[0]->groupName(),
 					     encoding));
     str->replace("%t",
@@ -107,6 +109,7 @@ void RDResolveNowNext(QString *str,RDLogLine **loglines,int encoding)
   else {   // No NOW PLAYING Event
     str->replace("%n","");
     str->replace("%h","");
+    str->replace("%v","");
     str->replace("%g","");
     str->replace("%t","");
     str->replace("%a","");
@@ -131,6 +134,8 @@ void RDResolveNowNext(QString *str,RDLogLine **loglines,int encoding)
   if(loglines[1]!=NULL) {
     str->replace("%N",QString().sprintf("%06u",loglines[1]->cartNumber()));
     str->replace("%H",QString().sprintf("%d",loglines[1]->effectiveLength()));
+    str->replace("%V",
+		 QString().sprintf("%d",loglines[1]->effectiveLength()/1000));
     str->replace("%G",RDResolveNowNextEncode(loglines[1]->groupName(),
 					     encoding));
     str->replace("%T",RDResolveNowNextEncode(loglines[1]->title(),encoding));
@@ -156,6 +161,7 @@ void RDResolveNowNext(QString *str,RDLogLine **loglines,int encoding)
   else {   // No NEXT Event
     str->replace("%N","");
     str->replace("%H","");
+    str->replace("%V","");
     str->replace("%G","");
     str->replace("%T","");
     str->replace("%A","");
