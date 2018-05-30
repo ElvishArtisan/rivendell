@@ -16965,3 +16965,5 @@
 	the STACK".
 2018-05-30 Fred Gleason <fredg@paravelsystems.com>
 	* Implemented '%v/%V' metadata wildcards for event length (seconds).
+2018-05-30 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'AUTHORS'.
