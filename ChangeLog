@@ -16960,3 +16960,6 @@
 	* Dropped the 'SERVICES.MUS_START_OFFSET' field from the database.
 	* Dropped the 'SERVICES.MUS_START_LENGTH' field from the database.
 	* Incremented the database version to 285.
+2018-05-30 Fred Gleason <fredg@paravelsystems.com>
+	* Merged pull request #000200, "Set SCHEDULED_AT when adding to
+	the STACK".
