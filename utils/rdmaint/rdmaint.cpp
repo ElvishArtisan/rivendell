@@ -329,7 +329,7 @@ void MainObject::PurgeStacks()
         q2=new RDSqlQuery(sql);
         delete q2;
 
-        sql=QString().sprintf("UPDATE `%s` SET SCHED_STACK_ID=SCHED_STACK_ID-%d", (const char*)tablename, stacksize-1);
+        sql=QString().sprintf("UPDATE `%s` SET SCHED_STACK_ID=SCHED_STACK_ID-%d", (const char*)tablename, stackid-stacksize);
         q2=new RDSqlQuery(sql);
         delete q2;
       }
