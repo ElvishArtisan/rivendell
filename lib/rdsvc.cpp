@@ -20,6 +20,7 @@
 
 #include <qmessagebox.h>
 
+#include <rdapplication.h>
 #include <rdclock.h>
 #include <rdconf.h>
 #include <rdcreate_log.h>
@@ -1464,13 +1465,9 @@ void RDSvc::remove(const QString &name)
 
   QString tablename=name;
   tablename.replace(" ","_");
-  sql=QString().sprintf("drop table `%s_SRT`",(const char *)tablename);
-  q=new RDSqlQuery(sql);
-  delete q;
 
-  sql=QString().sprintf("drop table `%s_STACK`",(const char *)tablename);
-  q=new RDSqlQuery(sql);
-  delete q;
+  rda->dropTable(tablename+"_SRT");
+  rda->dropTable(tablename+"_STACK");
 
   sql=QString("delete from LOGS where ")+
     "SERVICE=\""+RDEscapeString(name)+"\"";

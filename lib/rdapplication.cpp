@@ -225,6 +225,25 @@ void RDApplication::log(RDConfig::LogPriority prio,const QString &msg)
 }
 
 
+bool RDApplication::dropTable(const QString &tbl_name)
+{
+  bool ret=false;
+
+  QString sql=QString("show tables where ")+
+    "Tables_in_"+config()->mysqlDbname()+"=\""+tbl_name+"\"";
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(q->first()) {
+    sql=QString("drop table `")+tbl_name+"`";
+    RDSqlQuery *q1=new RDSqlQuery(sql);
+    delete q1;
+    ret=true;
+  }
+  delete q;
+
+  return ret;
+}
+
+
 void RDApplication::userChangedData()
 {
   app_user->setName(app_ripc->user());

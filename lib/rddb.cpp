@@ -118,6 +118,8 @@ RDSqlQuery::RDSqlQuery(const QString &query,bool reconnect):
     }
   }
 }
+
+
 void RDSqlDatabaseStatus::sendRecon()
 {
   if (discon){

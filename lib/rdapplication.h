@@ -56,6 +56,7 @@ class RDApplication : public QObject
   RDSystem *system();
   RDUser *user();
   void log(RDConfig::LogPriority prio,const QString &msg);
+  bool dropTable(const QString &tbl_name);
 
  private slots:
   void userChangedData();
