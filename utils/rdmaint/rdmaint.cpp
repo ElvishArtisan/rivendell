@@ -127,6 +127,7 @@ void MainObject::RunSystemMaintenance()
   PurgeElr();
   PurgeGpioEvents();
   PurgeWebapiAuths();
+  PurgeStacks();
   RehashCuts();
 }
 
@@ -282,6 +283,59 @@ void MainObject::PurgeWebapiAuths()
 
   sql=QString("delete from WEBAPI_AUTHS where EXPIRATION_DATETIME<now()");
   q=new RDSqlQuery(sql);
+  delete q;
+}
+
+
+void MainObject::PurgeStacks()
+{
+  QString sql;
+  RDSqlQuery *q;
+  RDSqlQuery *q1;
+  RDSqlQuery *q2;
+  int stackid;
+  int stacksize;
+  int artistsep=50000;
+  int titlesep=50000;
+
+  sql="select MAX(ARTISTSEP) from CLOCKS";
+  q=new RDSqlQuery(sql);
+  if(q->next()) {
+    artistsep=q->value(0).toInt();
+  }
+  delete q;
+
+  sql="select MAX(TITLE_SEP) from EVENTS";
+  q=new RDSqlQuery(sql);
+  if(q->next()) {
+    titlesep=q->value(0).toInt();
+  }
+  delete q;
+
+  stacksize=(artistsep<titlesep)?titlesep:artistsep;
+
+  sql="select NAME from SERVICES";
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    QString tablename=q->value(0).toString()+"_STACK";
+    tablename.replace(" ","_");
+    sql=QString().sprintf("SELECT MAX(SCHED_STACK_ID) from %s",(const char*)tablename);
+    q1=new RDSqlQuery(sql);
+    if (q1->next())
+    { 
+      stackid=q1->value(0).toUInt();
+      if (stackid-stacksize > 0) {
+        sql=QString().sprintf("DELETE from `%s` where SCHED_STACK_ID <= %d", (const char*)tablename, stackid-stacksize);
+        q2=new RDSqlQuery(sql);
+        delete q2;
+
+        sql=QString().sprintf("UPDATE `%s` SET SCHED_STACK_ID=SCHED_STACK_ID-%d", (const char*)tablename, stackid-stacksize);
+        q2=new RDSqlQuery(sql);
+        delete q2;
+      }
+    }
+    delete q1;
+  }
   delete q;
 }
 
