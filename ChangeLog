@@ -16983,3 +16983,12 @@
 2018-05-31 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdrevert(8) that threw SQL errors when reverting
 	schema change 278.
+2018-05-31 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdadmin(1) that caused 'Length' parameters in
+	custom log import settings to fail to be copied correctly when
+	cloning a new service.
+	* Dropped the 'SERVICES.TFC_LENGTH_OFFSET' field from the database.
+	* Dropped the 'SERVICES.TFC_LENGTH_LENGTH' field from the database.
+	* Dropped the 'SERVICES.MUS_LENGTH_OFFSET' field from the database.
+	* Dropped the 'SERVICES.MUS_LENGTH_LENGTH' field from the database.
+	* Incremented the database version to 286.

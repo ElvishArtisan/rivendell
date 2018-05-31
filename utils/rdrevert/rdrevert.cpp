@@ -2,7 +2,7 @@
 //
 // Revert the Rivendell database schema to an earlier version.
 //
-//   (C) Copyright 2016-2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -298,6 +298,10 @@ void MainObject::Revert(int schema) const
 
   case 285:
     Revert285();
+    break;
+
+  case 286:
+    Revert286();
     break;
   }
 }
@@ -1432,6 +1436,35 @@ void MainObject::Revert285() const
 }
 
 
+void MainObject::Revert286() const
+{
+  QString sql;
+  RDSqlQuery *q;
+
+  sql=QString("alter table SERVICES add ")+
+    "column TFC_LENGTH_OFFSET int after TFC_LEN_SECONDS_LENGTH";
+  q=new RDSqlQuery(sql,false);
+  delete q;
+
+  sql=QString("alter table SERVICES add ")+
+    "column TFC_LENGTH_LENGTH int after TFC_LENGTH_OFFSET";
+  q=new RDSqlQuery(sql,false);
+  delete q;
+
+  sql=QString("alter table SERVICES add ")+
+    "column MUS_LENGTH_OFFSET int after MUS_LEN_SECONDS_LENGTH";
+  q=new RDSqlQuery(sql,false);
+  delete q;
+
+  sql=QString("alter table SERVICES add ")+
+    "column MUS_LENGTH_LENGTH int after MUS_LENGTH_OFFSET";
+  q=new RDSqlQuery(sql,false);
+  delete q;
+
+  SetVersion(285);
+}
+
+
 int MainObject::GetVersion() const
 {
   QString sql;
@@ -1478,7 +1511,7 @@ int MainObject::MapSchema(const QString &ver)
   version_map["2.17"]=268;
   version_map["2.18"]=272;
   version_map["2.19"]=275;
-  version_map["2.20"]=285;
+  version_map["2.20"]=286;
 
   //
   // Normalize String

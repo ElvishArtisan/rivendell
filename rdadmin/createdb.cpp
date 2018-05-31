@@ -623,8 +623,8 @@ bool CreateDb(QString name,QString pwd,RDConfig *config)
     "TFC_LEN_MINUTES_LENGTH int,"+
     "TFC_LEN_SECONDS_OFFSET int,"+
     "TFC_LEN_SECONDS_LENGTH int,"+
-    "TFC_LENGTH_OFFSET int,"+
-    "TFC_LENGTH_LENGTH int,"+
+    //    "TFC_LENGTH_OFFSET int,"+
+    //    "TFC_LENGTH_LENGTH int,"+
     "TFC_DATA_OFFSET int,"+
     "TFC_DATA_LENGTH int,"+
     "TFC_EVENT_ID_OFFSET int,"+
@@ -656,8 +656,8 @@ bool CreateDb(QString name,QString pwd,RDConfig *config)
     "MUS_LEN_MINUTES_LENGTH int,"+
     "MUS_LEN_SECONDS_OFFSET int,"+
     "MUS_LEN_SECONDS_LENGTH int,"+
-    "MUS_LENGTH_OFFSET int,"+
-    "MUS_LENGTH_LENGTH int,"+
+    //    "MUS_LENGTH_OFFSET int,"+
+    //    "MUS_LENGTH_LENGTH int,"+
     "MUS_DATA_OFFSET int,"+
     "MUS_DATA_LENGTH int,"+
     "MUS_EVENT_ID_OFFSET int,"+
@@ -8484,6 +8484,23 @@ int UpdateDb(int ver,RDConfig *config)
     delete q;
   }
 
+  if(ver<286) {
+    sql=QString("alter table SERVICES drop column TFC_LENGTH_OFFSET");
+    q=new RDSqlQuery(sql,false);
+    delete q;
+
+    sql=QString("alter table SERVICES drop column TFC_LENGTH_LENGTH");
+    q=new RDSqlQuery(sql,false);
+    delete q;
+
+    sql=QString("alter table SERVICES drop column MUS_LENGTH_OFFSET");
+    q=new RDSqlQuery(sql,false);
+    delete q;
+
+    sql=QString("alter table SERVICES drop column MUS_LENGTH_LENGTH");
+    q=new RDSqlQuery(sql,false);
+    delete q;
+  }
 
 
   //
