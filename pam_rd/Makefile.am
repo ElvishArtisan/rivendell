@@ -31,7 +31,8 @@ moc_%.cpp:	%.h
 
 inst_prefix_dir=$(DESTDIR)
 inst_lib_LTLIBRARIES = pam_rd.la
-inst_libdir=$(prefix)/@RD_LIB_PATH@/security
+##inst_libdir=$(prefix)/@RD_LIB_PATH@/security
+inst_libdir=/@RD_LIB_PATH@/security
 dist_pam_rd_la_SOURCES = pam_rd.cpp
 pam_rd_la_LDFLAGS = -module -shared -Xlinker -x -avoid-version -export-dynamic
 pam_rd_la_LIBADD = @LIB_RDLIBS@ -lpam @LIBVORBIS@
