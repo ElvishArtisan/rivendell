@@ -2019,7 +2019,7 @@ void MainObject::LoadEvent(RDSqlQuery *q,CatchEvent *e,bool add)
     break;
   }
   e->setChannels(q->value(20).toInt());
-  e->setSampleRate(rda->system()->sampleRate());
+  e->setSampleRate(q->value(21).toUInt());
   e->setBitrate(q->value(22).toInt());
   e->setMacroCart(q->value(23).toInt());
   e->setSwitchInput(q->value(24).toInt());

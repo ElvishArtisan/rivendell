@@ -16995,3 +16995,6 @@
 2018-05-31 Patrick Linstruth <patrick@deltecent.com>
 	* Implemented purging of STACK_* tables for RDMaint(1) in
         'utils/rdmaint/rdmaint.cpp' and 'utils/rdmaint/rdmaint.h'.
+2018-05-31 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdcatchd(8) that caused Upload events to
+	be generated with the incorrect sample rate.
