@@ -32,11 +32,11 @@
 #include <rddb.h>
 #include <rdevent.h>
 
-#include <list_events.h>
-#include <add_event.h>
-#include <edit_event.h>
-#include <globals.h>
-#include <rename_item.h>
+#include "add_event.h"
+#include "edit_event.h"
+#include "globals.h"
+#include "list_events.h"
+#include "rename_item.h"
 
 ListEvents::ListEvents(QString *eventname,QWidget *parent)
   : QDialog(parent,"",true)
@@ -598,11 +598,8 @@ void ListEvents::DeleteEvent(QString event_name)
 			(const char *)event_name);
   q=new RDSqlQuery(sql);
   delete q;
-  sql=QString().sprintf("drop table %s_PRE",(const char *)base_name);
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString().sprintf("drop table %s_POST",(const char *)base_name);
-  q=new RDSqlQuery(sql);
+  rda->dropTable(base_name+"_PRE");
+  rda->dropTable(base_name+"_POST");
 }
 
 

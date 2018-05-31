@@ -771,9 +771,7 @@ void EditClock::AbandonClock(QString name)
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
 
-  sql=QString("drop table `")+RDClock::tableName(name)+"`";
-  q=new RDSqlQuery(sql);
-  delete q;
+  rda->dropTable(RDClock::tableName(name));
 }
 
 

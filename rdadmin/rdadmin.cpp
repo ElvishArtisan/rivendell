@@ -512,15 +512,10 @@ void MainWidget::quitMainWidget()
 
 void MainWidget::ClearTables()
 {
-  RDSqlQuery *q1;
-
   QString sql="show tables";
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
-    sql=QString().sprintf("drop table %s",
-			  (const char *)q->value(0).toString());
-    q1=new RDSqlQuery(sql);
-    delete q1;
+    rda->dropTable(q->value(0).toString());
   }
   delete q;
 }

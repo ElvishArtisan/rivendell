@@ -245,10 +245,7 @@ void TestImport::importData()
   }
   delete q;
   // printf("IMPORT TABLE: %s_TEST_IMP\n",(const char *)test_svc->name());
-  sql=QString().sprintf("drop table `%s_TEST_IMP`",
-			(const char *)test_svc->name());
-  q=new RDSqlQuery(sql);
-  delete q;
+  rda->dropTable(test_svc->name()+"_TEST_IMP");
 }
 
 

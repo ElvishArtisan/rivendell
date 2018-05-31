@@ -251,9 +251,7 @@ void ListClocks::addData()
     clockname_esc=clockname;
     clockname_esc.replace(" ","_");
     clockname_esc+="_CLK";
-    sql=QString().sprintf("drop table %s",(const char *)clockname_esc);
-    q=new RDSqlQuery(sql);
-    delete q;
+    rda->dropTable(clockname_esc);
     sql=QString().sprintf("delete from CLOCKS where NAME=\"%s\"",
 			  (const char *)clockname);
     q=new RDSqlQuery(sql);
@@ -633,12 +631,8 @@ void ListClocks::DeleteClock(QString clockname)
 				(const char *)clockname);
   q=new RDSqlQuery(sql);
   delete q;
-  sql=QString().sprintf("drop table %s_CLK",(const char *)base_name);
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString().sprintf("drop table %s_RULES",(const char *)base_name);
-  q=new RDSqlQuery(sql);
-  delete q;
+  rda->dropTable(base_name+"_CLK");
+  rda->dropTable(base_name+"_RULES");
 }
 
 

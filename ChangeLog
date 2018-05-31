@@ -17000,3 +17000,5 @@
 	be generated with the incorrect sample rate.
 2018-05-31 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up SQL errors in rdadmin(1).
+2018-05-31 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored table drops to use 'RDApplication::dropTable()'.

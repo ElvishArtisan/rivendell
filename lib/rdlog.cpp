@@ -20,6 +20,7 @@
 
 #include <qobject.h>
 
+#include "rdapplication.h"
 #include "rddb.h"
 #include "rdconf.h"
 #include "rdcreate_log.h"
@@ -354,9 +355,9 @@ bool RDLog::remove(RDStation *station,RDUser *user,RDConfig *config) const
   if(removeTracks(station,user,config)<0) {
     return false;
   }
-  sql=QString("drop table `")+RDLog::tableName(log_name)+"`";
-  q=new RDSqlQuery(sql);
-  delete q;
+
+  rda->dropTable(RDLog::tableName(log_name));
+
   sql=QString().sprintf("delete from LOGS where (NAME=\"%s\" && TYPE=0)",
 			(const char *)RDEscapeString(log_name));
   q=new RDSqlQuery(sql);

@@ -19,6 +19,7 @@
 //
 
 #include <map>
+#include <rdapplication.h>
 #include <rddb.h>
 #include <rdconf.h>
 #include <rdlog.h>
@@ -150,9 +151,7 @@ void RDLogEvent::save(RDConfig *config,bool update_tracks,int line)
   }
   if(line<0) {
     if(exists()) {
-      sql=QString().sprintf("drop table `%s`",(const char *)log_name);
-      q=new RDSqlQuery(sql);
-      delete q;
+      rda->dropTable(log_name);
     }
     RDCreateLogTable(log_name,config);
     if (log_line.size() > 0) {

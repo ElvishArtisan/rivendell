@@ -2,7 +2,7 @@
 //
 // Functions for manipulating RSS feed log tables.
 //
-//   (C) Copyright 2007,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2007,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,9 +20,11 @@
 
 #include <qdatetime.h>
 
-#include <rdweb.h>
+#include <rdapplication.h>
 #include <rddb.h>
-#include <rdfeedlog.h>
+#include <rdweb.h>
+
+#include "rdfeedlog.h"
 
 void RDCreateFeedLog(QString keyname)
 {
@@ -44,13 +46,8 @@ void RDCreateFeedLog(QString keyname)
 
 void RDDeleteFeedLog(QString keyname)
 {
-  QString sql;
-  RDSqlQuery *q;
-
   keyname.replace(" ","_");
-  sql=QString().sprintf("drop table %s_FLG",(const char *)keyname);
-  q=new RDSqlQuery(sql);
-  delete q;
+  rda->dropTable(keyname+"_FLG");
 }
 
 

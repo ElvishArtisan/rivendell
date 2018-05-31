@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Report Descriptor
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,14 +23,13 @@
 #include <qfile.h>
 #include <qobject.h>
 
-#include <rdconf.h>
-#include <rdreport.h>
-#include <rdcreate_log.h>
-#include <rdlog_line.h>
-#include <rdescape_string.h>
-#include <rddb.h>
-#include <rdescape_string.h>
-#include <rddatedecode.h>
+#include "rdapplication.h"
+#include "rdconf.h"
+#include "rdcreate_log.h"
+#include "rddatedecode.h"
+#include "rdescape_string.h"
+#include "rdlog_line.h"
+#include "rdreport.h"
 
 RDReport::RDReport(const QString &rptname,RDStation *station,RDConfig *config,
 		   QObject *parent)
@@ -437,10 +436,7 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
   // Create Table
   //
   QString mixname="MIXDOWN"+station->name();
-  sql=QString("drop table `")+mixname+"_SRT`";
-  QSqlQuery *p;
-  p=new QSqlQuery(sql);
-  delete p;
+  rda->dropTable(mixname+"_SRT");
   sql=RDCreateReconciliationTableSql(mixname+"_SRT",report_config);
   q=new RDSqlQuery(sql);
   delete q;
@@ -696,9 +692,7 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
 #endif
   system(post_cmd);
   //  printf("MIXDOWN TABLE: %s_SRT\n",(const char *)mixname);
-  sql=QString().sprintf("drop table `%s_SRT`",(const char *)mixname);
-  q=new RDSqlQuery(sql);
-  delete q;
+  rda->dropTable(mixname+"_SRT");
 
   return ret;
 }

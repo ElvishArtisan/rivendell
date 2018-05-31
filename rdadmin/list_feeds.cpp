@@ -173,9 +173,7 @@ void ListFeeds::addData()
     delete q;
     RDDeleteFeedLog(feed);
     feed.replace(" ","_");
-    sql=QString().sprintf("drop table %s_FIELDS",(const char *)feed);
-    q=new RDSqlQuery(sql);
-    delete q;
+    rda->dropTable(feed+"_FIELDS");
     delete edit_feed;
     return;
   }
@@ -278,9 +276,7 @@ void ListFeeds::deleteData()
   delete q;
   RDDeleteFeedLog(feedname);
   feedname.replace(" ","_");
-  sql=QString().sprintf("drop table %s_FIELDS",(const char *)feedname);
-  q=new RDSqlQuery(sql);
-  delete q;
+  rda->dropTable(feedname+"_FIELDS");
   item->setSelected(false);
 
   pd->reset();
