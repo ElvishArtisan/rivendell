@@ -23,6 +23,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <ctype.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <openssl/sha.h>
