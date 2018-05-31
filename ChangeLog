@@ -16980,3 +16980,6 @@
 	* Cleaned up SQL calls in 'RDLogLine'.
 	* Cleaned up SQL calls in 'RDSvc'.
 	* Cleaned up SQL calls in rivendell_filter(1).
+2018-05-31 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdrevert(8) that threw SQL errors when reverting
+	schema change 278.

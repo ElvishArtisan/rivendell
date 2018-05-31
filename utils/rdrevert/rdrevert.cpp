@@ -989,7 +989,8 @@ void MainObject::Revert278() const
     "UDP_PORT,"+       // 12
     "UDP_STRING,"+     // 13
     "LOG_RML "+        // 14
-    "from LOG_MACHINES";
+    "from LOG_MACHINES where "+
+    "MACHINE<3";
   q=new RDSqlQuery(sql,false);
   while(q->next()) {
     sql=QString("update RDAIRPLAY set ")+
