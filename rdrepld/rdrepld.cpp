@@ -224,12 +224,21 @@ void MainObject::LoadReplicators()
   RDSqlQuery *q;
   ReplConfig *config;
 
-  sql=QString().
-    sprintf("select NAME,TYPE_ID,FORMAT,CHANNELS,SAMPRATE,\
-             BITRATE,QUALITY,URL,URL_USERNAME,URL_PASSWORD,\
-             ENABLE_METADATA,NORMALIZATION_LEVEL from \
-             REPLICATORS where STATION_NAME=\"%s\"",
-	    (const char *)RDEscapeString(rda->config()->stationName()));
+  sql=QString("select ")+
+    "NAME,"+                 // 00
+    "TYPE_ID,"+              // 01
+    "FORMAT,"+               // 02
+    "CHANNELS,"+             // 03
+    "SAMPRATE,"+             // 04
+    "BITRATE,"+              // 05
+    "QUALITY,"+              // 06
+    "URL,"+                  // 07
+    "URL_USERNAME,"+         // 08
+    "URL_PASSWORD,"+         // 09
+    "ENABLE_METADATA,"+      // 10
+    "NORMALIZATION_LEVEL "+  // 11
+    "from REPLICATORS where "+
+    "STATION_NAME=\""+RDEscapeString(rda->config()->stationName())+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     config=new ReplConfig();

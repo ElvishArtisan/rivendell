@@ -16970,3 +16970,13 @@
 2018-05-30 Fred Gleason <fredg@paravelsystems.com>
 	* Merged pull request #000062, "Optimize CPU usage in caed alsa
 	playback (fixed version)".
+2018-05-30 Fred Gleason <fredg@paravelsystems.com>
+	* Removed drop of the 'RECORDINGS.SAMPRATE' field from schema
+	change 285.
+	* Cleaned up SQL calls in rdcatchd(8).
+	* Cleaned up SQL calls in 'RDStation'.
+	* Cleaned up SQL calls in 'RDLibraryConf'.
+	* Cleaned up SQL calls in 'RDLogeditConf'.
+	* Cleaned up SQL calls in 'RDLogLine'.
+	* Cleaned up SQL calls in 'RDSvc'.
+	* Cleaned up SQL calls in rivendell_filter(1).

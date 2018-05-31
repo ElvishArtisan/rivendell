@@ -1814,23 +1814,39 @@ RDLogLine::State RDLogLine::setEvent(int mach,RDLogLine::TransType next_type,
 void RDLogLine::loadCart(int cartnum,RDLogLine::TransType next_type,int mach,
 			 bool timescale,RDLogLine::TransType type,int len)
 {
-  QString sql=QString().sprintf("select CART.TYPE,CART.GROUP_NAME,CART.TITLE,\
-                                 CART.ARTIST,CART.ALBUM,CART.YEAR,CART.ISRC,\
-                                 CART.LABEL,CART.CLIENT,CART.AGENCY,\
-                                 CART.USER_DEFINED,CART.CONDUCTOR,CART.SONG_ID,\
-                                 CART.FORCED_LENGTH,\
-                                 CART.CUT_QUANTITY,CART.LAST_CUT_PLAYED,\
-                                 CART.PLAY_ORDER,CART.START_DATETIME,\
-                                 CART.END_DATETIME,CART.ENFORCE_LENGTH,\
-                                 CART.PRESERVE_PITCH,GROUPS.ENABLE_NOW_NEXT,\
-                                 CART.ASYNCRONOUS,CART.PUBLISHER,\
-                                 CART.COMPOSER,CART.USAGE_CODE,\
-                                 CART.AVERAGE_SEGUE_LENGTH,CART.NOTES,\
-                                 GROUPS.COLOR \
-                                 from CART left join GROUPS on\
-                                 CART.GROUP_NAME=GROUPS.NAME\
-                                 where (CART.NUMBER=%d)",
-				cartnum);
+  QString sql=QString("select ")+
+    "CART.TYPE,"+                  // 00
+    "CART.GROUP_NAME,"+            // 01
+    "CART.TITLE,"+                 // 02
+    "CART.ARTIST,"+                // 03
+    "CART.ALBUM,"+                 // 04
+    "CART.YEAR,"+                  // 05
+    //    "CART.ISRC,"+                  // 06
+    "CART.LABEL,"+                 // 06
+    "CART.CLIENT,"+                // 07
+    "CART.AGENCY,"+                // 08
+    "CART.USER_DEFINED,"+          // 09
+    "CART.CONDUCTOR,"+             // 10
+    "CART.SONG_ID,"+               // 11
+    "CART.FORCED_LENGTH,"+         // 12
+    "CART.CUT_QUANTITY,"+          // 13
+    "CART.LAST_CUT_PLAYED,"+       // 14
+    "CART.PLAY_ORDER,"+            // 15
+    "CART.START_DATETIME,"+        // 16
+    "CART.END_DATETIME,"+          // 17
+    "CART.ENFORCE_LENGTH,"+        // 18
+    "CART.PRESERVE_PITCH,"+        // 19
+    "GROUPS.ENABLE_NOW_NEXT,"+     // 20
+    "CART.ASYNCRONOUS,"+           // 21
+    "CART.PUBLISHER,"+             // 22
+    "CART.COMPOSER,"+              // 23
+    "CART.USAGE_CODE,"+            // 24
+    "CART.AVERAGE_SEGUE_LENGTH,"+  // 25
+    "CART.NOTES,"+                 // 26
+    "GROUPS.COLOR "+               // 27
+    "from CART left join GROUPS "+
+    "on CART.GROUP_NAME=GROUPS.NAME where "+
+    QString().sprintf("(CART.NUMBER=%d)",cartnum);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;
@@ -1856,35 +1872,35 @@ void RDLogLine::loadCart(int cartnum,RDLogLine::TransType next_type,int mach,
   log_artist=q->value(3).toString();
   log_album=q->value(4).toString();
   log_year=q->value(5).toDate();
-  log_isrc=q->value(6).toString();
-  log_label=q->value(7).toString();
-  log_client=q->value(8).toString();
-  log_agency=q->value(9).toString();
-  log_user_defined=q->value(10).toString();
-  log_conductor=q->value(11).toString();
-  log_song_id=q->value(12).toString();
-  log_cut_quantity=q->value(14).toUInt();
-  log_last_cut_played=q->value(15).toUInt();
-  log_play_order=(RDCart::PlayOrder)q->value(16).toInt();
-  log_start_datetime=q->value(17).toDateTime();
-  log_end_datetime=q->value(18).toDateTime();
-  log_preserve_pitch=RDBool(q->value(20).toString());
+  //  log_isrc=q->value(6).toString();
+  log_label=q->value(6).toString();
+  log_client=q->value(7).toString();
+  log_agency=q->value(8).toString();
+  log_user_defined=q->value(9).toString();
+  log_conductor=q->value(10).toString();
+  log_song_id=q->value(11).toString();
+  log_cut_quantity=q->value(13).toUInt();
+  log_last_cut_played=q->value(14).toUInt();
+  log_play_order=(RDCart::PlayOrder)q->value(15).toInt();
+  log_start_datetime=q->value(16).toDateTime();
+  log_end_datetime=q->value(17).toDateTime();
+  log_preserve_pitch=RDBool(q->value(19).toString());
   if(len<0) {
-    log_forced_length=q->value(13).toUInt();
-    log_enforce_length=RDBool(q->value(19).toString());
+    log_forced_length=q->value(12).toUInt();
+    log_enforce_length=RDBool(q->value(18).toString());
   }
   else {
     log_forced_length=len;
     log_enforce_length=true;
   }
-  log_now_next_enabled=RDBool(q->value(21).toString());
-  log_asyncronous=RDBool(q->value(22).toString());
-  log_publisher=q->value(23).toString();
-  log_composer=q->value(24).toString();
-  log_usage_code=(RDCart::UsageCode)q->value(25).toInt();
-  log_average_segue_length=q->value(26).toInt();
-  log_cart_notes=q->value(27).toString();
-  log_group_color=QColor(q->value(28).toString());
+  log_now_next_enabled=RDBool(q->value(20).toString());
+  log_asyncronous=RDBool(q->value(21).toString());
+  log_publisher=q->value(22).toString();
+  log_composer=q->value(23).toString();
+  log_usage_code=(RDCart::UsageCode)q->value(24).toInt();
+  log_average_segue_length=q->value(25).toInt();
+  log_cart_notes=q->value(26).toString();
+  log_group_color=QColor(q->value(27).toString());
   log_play_source=RDLogLine::UnknownSource;
   if(type!=RDLogLine::NoTrans) {
     log_trans_type=type;
@@ -1903,13 +1919,19 @@ void RDLogLine::refreshPointers()
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString().sprintf("select START_POINT,END_POINT,\
-                         SEGUE_START_POINT,SEGUE_END_POINT,\
-                         TALK_START_POINT,TALK_END_POINT,\
-                         FADEUP_POINT,FADEDOWN_POINT,\
-                         HOOK_START_POINT,HOOK_END_POINT from CUTS\
-                         where CUT_NAME=\"%s\"",
-			(const char *)log_cut_name);
+  sql=QString("select ")+
+    "START_POINT,"+        // 00
+    "END_POINT,"+          // 01
+    "SEGUE_START_POINT,"+  // 02
+    "SEGUE_END_POINT,"+    // 03
+    "TALK_START_POINT,"+   // 04
+    "TALK_END_POINT,"+     // 05
+    "FADEUP_POINT,"+       // 06
+    "FADEDOWN_POINT,"+     // 07
+    "HOOK_START_POINT,"+   // 08
+    "HOOK_END_POINT "+     // 09
+    "from CUTS where "+
+    "CUT_NAME=\""+RDEscapeString(log_cut_name)+"\"";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     log_start_point[RDLogLine::CartPointer]=q->value(0).toInt();

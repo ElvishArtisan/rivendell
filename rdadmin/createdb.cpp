@@ -849,6 +849,7 @@ bool CreateDb(QString name,QString pwd,RDConfig *config)
     "ENDDATE_OFFSET int unsigned default 0,"+
     "EVENTDATE_OFFSET int default 0,"+
     "FORMAT int default 0,"+
+    "SAMPRATE int unsigned default 44100,"+
     "CHANNELS int default 2,"+
     "BITRATE int default 0,"+
     "QUALITY int default 0,"+
@@ -8463,10 +8464,6 @@ int UpdateDb(int ver,RDConfig *config)
     delete q;
 
     sql=QString("alter table RDLOGEDIT drop column SAMPRATE");
-    q=new RDSqlQuery(sql,false);
-    delete q;
-
-    sql=QString("alter table RECORDINGS drop column SAMPRATE");
     q=new RDSqlQuery(sql,false);
     delete q;
 

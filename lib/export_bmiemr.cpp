@@ -59,15 +59,15 @@ bool RDReport::ExportBmiEmr(const QString &filename,const QDate &startdate,
     report_error_code=RDReport::ErrorCantOpen;
     return false;
   }
-  /*
-  sql=QString().sprintf("select EVENT_DATETIME,TITLE,ARTIST,COMPOSER,\
-                         LENGTH,ISRC,USAGE_CODE from `%s_SRT` \
-                         order by EVENT_DATETIME",
-			(const char *)mixtable);
-  */
-  sql=QString("select EVENT_DATETIME,TITLE,ARTIST,COMPOSER,")+
-    "LENGTH,ISRC,USAGE_CODE from `"+
-    mixtable+"_SRT` order by EVENT_DATETIME"; 
+  sql=QString("select ")+
+    "EVENT_DATETIME,"+  // 00
+    "TITLE,"+           // 01
+    "ARTIST,"+          // 02
+    "COMPOSER,"+        // 03
+    "LENGTH,"+          // 04
+    "ISRC,"+            // 05
+    "USAGE_CODE "+      // 06
+    "from `"+mixtable+"_SRT` order by EVENT_DATETIME"; 
   q=new RDSqlQuery(sql);
 
   //

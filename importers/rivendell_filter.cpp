@@ -210,16 +210,38 @@ MainObject::MainObject(QObject *parent)
   //
   // Transfer Loop
   //
-  sql=QString().sprintf("select NUMBER,TYPE,GROUP_NAME,TITLE,ARTIST,ALBUM,\
-                         YEAR,ISRC,LABEL,CLIENT,AGENCY,PUBLISHER,COMPOSER,\
-                         USER_DEFINED,USAGE_CODE,FORCED_LENGTH,AVERAGE_LENGTH,\
-                         LENGTH_DEVIATION,AVERAGE_SEGUE_LENGTH,\
-                         AVERAGE_HOOK_LENGTH,CUT_QUANTITY,LAST_CUT_PLAYED,\
-                         PLAY_ORDER,VALIDITY,\
-                         ENFORCE_LENGTH,PRESERVE_PITCH,ASYNCRONOUS,\
-                         OWNER,MACROS,SCHED_CODES from CART \
-                         where (NUMBER>=%u)&&(NUMBER<=%u)",
-			start_cartnum,end_cartnum);
+  sql=QString().sprintf("select ")+
+    "NUMBER,"+                // 00
+    "TYPE,"+                  // 01
+    "GROUP_NAME,"+            // 02
+    "TITLE,"+                 // 03
+    "ARTIST,"+                // 04
+    "ALBUM,"+                 // 05
+    "YEAR,"+                  // 06
+    "LABEL,"+                 // 08
+    "CLIENT,"+                // 09
+    "AGENCY,"+                // 10
+    "PUBLISHER,"+             // 11
+    "COMPOSER,"+              // 12
+    "USER_DEFINED,"+          // 13
+    "USAGE_CODE,"+            // 14
+    "FORCED_LENGTH,"+         // 15
+    "AVERAGE_LENGTH,"+        // 16
+    "LENGTH_DEVIATION,"+      // 17
+    "AVERAGE_SEGUE_LENGTH,"+  // 18
+    "AVERAGE_HOOK_LENGTH,"+   // 19
+    "CUT_QUANTITY,"+          // 20
+    "LAST_CUT_PLAYED,"+       // 21
+    "PLAY_ORDER,"+            // 22
+    "VALIDITY,"+              // 23
+    "ENFORCE_LENGTH,"+        // 24
+    "PRESERVE_PITCH,"+        // 25
+    "ASYNCRONOUS,"+           // 26
+    "OWNER,"+                 // 27
+    "MACROS,"+                // 28
+    "SCHED_CODES "+           // 29
+    "from CART where "+
+    QString().sprintf("(NUMBER>=%u)&&(NUMBER<=%u)",start_cartnum,end_cartnum);
   q=new QSqlQuery(sql,ext_db);
   while(q->next()) {
     printf("Transferring cart %06u [%s]...",q->value(0).toUInt(),
@@ -262,86 +284,84 @@ MainObject::MainObject(QObject *parent)
     //
     // Create new entries
     //
-    if(q->value(27).isNull()) {
+    if(q->value(26).isNull()) {
       owner="null";
     }
     else {
       owner=QString().sprintf("\"%s\"",
-	       (const char *)RDEscapeString(q->value(27).toString()));
+	       (const char *)RDEscapeString(q->value(26).toString()));
     }
-    sql=QString().sprintf("insert into CART set NUMBER=%u,\
-                           TYPE=%u,\
-                           GROUP_NAME=\"%s\",\
-                           TITLE=\"%s\",\
-                           ARTIST=\"%s\",\
-                           ALBUM=\"%s\",\
-                           YEAR=%s,\
-                           ISRC=\"%s\",\
-                           LABEL=\"%s\",\
-                           CLIENT=\"%s\",\
-                           AGENCY=\"%s\",\
-                           PUBLISHER=\"%s\",\
-                           COMPOSER=\"%s\",\
-                           USER_DEFINED=\"%s\",\
-                           USAGE_CODE=\"%s\",\
-                           FORCED_LENGTH=%u,\
-                           AVERAGE_LENGTH=%u,\
-                           LENGTH_DEVIATION=%u,\
-                           AVERAGE_SEGUE_LENGTH=%u,\
-                           AVERAGE_HOOK_LENGTH=%u,\
-                           CUT_QUANTITY=%u,\
-                           LAST_CUT_PLAYED=%u,\
-                           PLAY_ORDER=%u,\
-                           VALIDITY=%u,\
-                           ENFORCE_LENGTH=\"%s\",\
-                           PRESERVE_PITCH=\"%s\",\
-                           ASYNCRONOUS=\"%s\",\
-                           OWNER=%s,\
-                           MACROS=\"%s\",\
-                           SCHED_CODES=\"%s\"",
-			  q->value(0).toUInt(),
-			  q->value(1).toUInt(),
-			  (const char *)RDEscapeString(group),
-			  (const char *)RDEscapeString(q->value(3).toString()),
-			  (const char *)RDEscapeString(q->value(4).toString()),
-			  (const char *)RDEscapeString(q->value(5).toString()),
-			  (const char *)RDCheckDateTime(q->value(6).toDate(),"yyyy-MM-dd"),
-			  (const char *)RDEscapeString(q->value(7).toString()),
-			  (const char *)RDEscapeString(q->value(8).toString()),
-			  (const char *)RDEscapeString(q->value(9).toString()),
-			  (const char *)RDEscapeString(q->value(10).toString()),
-			  (const char *)RDEscapeString(q->value(11).toString()),
-			  (const char *)RDEscapeString(q->value(12).toString()),
-			  (const char *)RDEscapeString(q->value(13).toString()),
-			  (const char *)RDEscapeString(q->value(14).toString()),
-			  q->value(15).toUInt(),
-			  q->value(16).toUInt(),
-			  q->value(17).toUInt(),
-			  q->value(18).toUInt(),
-			  q->value(19).toUInt(),
-			  q->value(20).toUInt(),
-			  q->value(21).toUInt(),
-			  q->value(22).toUInt(),
-			  q->value(23).toUInt(),
-			  (const char *)RDEscapeString(q->value(24).toString()),
-			  (const char *)RDEscapeString(q->value(25).toString()),
-			  (const char *)RDEscapeString(q->value(26).toString()),
-			  (const char *)owner,
-			  (const char *)RDEscapeString(q->value(28).toString()),
-			  (const char *)RDEscapeString(q->value(29).
-						       toString()));
+    sql=QString("insert into CART set ")+
+      QString().sprintf("NUMBER=%u,",q->value(0).toUInt())+
+      QString().sprintf("TYPE=%u,",q->value(1).toUInt())+
+      "GROUP_NAME=\""+RDEscapeString(group)+"\","+
+      "TITLE=\""+RDEscapeString(q->value(3).toString())+"\","+
+      "ARTIST=\""+RDEscapeString(q->value(4).toString())+"\","+
+      "ALBUM=\""+RDEscapeString(q->value(5).toString())+"\","+
+      "YEAR=%s,"+RDCheckDateTime(q->value(6).toDate(),"yyyy-MM-dd")+","+
+      "LABEL=\""+RDEscapeString(q->value(7).toString())+"\","+
+      "CLIENT=\""+RDEscapeString(q->value(8).toString())+"\","+
+      "AGENCY=\""+RDEscapeString(q->value(9).toString())+"\","+
+      "PUBLISHER=\""+RDEscapeString(q->value(10).toString())+"\","+
+      "COMPOSER=\""+RDEscapeString(q->value(11).toString())+"\","+
+      "USER_DEFINED=\""+RDEscapeString(q->value(12).toString())+"\","+
+      "USAGE_CODE=\""+RDEscapeString(q->value(13).toString())+"\","+
+      QString().sprintf("FORCED_LENGTH=%u,",q->value(14).toUInt())+
+      QString().sprintf("AVERAGE_LENGTH=%u,",q->value(15).toUInt())+
+      QString().sprintf("LENGTH_DEVIATION=%u,",q->value(16).toUInt())+
+      QString().sprintf("AVERAGE_SEGUE_LENGTH=%u,",q->value(17).toUInt())+
+      QString().sprintf("AVERAGE_HOOK_LENGTH=%u,",q->value(18).toUInt())+
+      QString().sprintf("CUT_QUANTITY=%u,",q->value(19).toUInt())+
+      QString().sprintf("LAST_CUT_PLAYED=%u,",q->value(20).toUInt())+
+      QString().sprintf("PLAY_ORDER=%u,",q->value(21).toUInt())+
+      QString().sprintf("VALIDITY=%u,",q->value(22).toUInt())+
+      "ENFORCE_LENGTH=\""+RDEscapeString(q->value(23).toString())+"\","+
+      "PRESERVE_PITCH=\""+RDEscapeString(q->value(24).toString())+"\","+
+      "ASYNCRONOUS=\""+RDEscapeString(q->value(25).toString())+"\","+
+      "OWNER="+owner+","+
+      "MACROS=\""+RDEscapeString(q->value(27).toString())+"\","+
+      "SCHED_CODES=\""+RDEscapeString(q->value(28).toString())+"\"";
     q1=new QSqlQuery(sql,filter_db);
     delete q1;
-    sql=QString().sprintf("select CUT_NAME,EVERGREEN,DESCRIPTION,OUTCUE,ISRC,\
-                           LENGTH,ORIGIN_DATETIME,START_DATETIME,END_DATETIME,\
-                           SUN,MON,TUE,WED,THU,FRI,SAT,START_DAYPART,\
-                           END_DAYPART,ORIGIN_NAME,WEIGHT,VALIDITY,\
-                           CODING_FORMAT,SAMPLE_RATE,BIT_RATE,CHANNELS,\
-                           PLAY_GAIN,START_POINT,END_POINT,FADEUP_POINT,\
-                           FADEDOWN_POINT,SEGUE_START_POINT,SEGUE_END_POINT,\
-                           SEGUE_GAIN,HOOK_START_POINT,HOOK_END_POINT,\
-                           TALK_START_POINT,TALK_END_POINT from CUTS \
-                           where CART_NUMBER=%u",q->value(0).toUInt());
+    sql=QString("select ")+
+      "CUT_NAME,"+           // 00
+      "EVERGREEN,"+          // 01
+      "DESCRIPTION,"+        // 02
+      "OUTCUE,"+             // 03
+      "ISRC,"+               // 04
+      "LENGTH,"+             // 05
+      "ORIGIN_DATETIME,"+    // 06
+      "START_DATETIME,"+     // 07
+      "END_DATETIME,"+       // 08
+      "SUN,"+                // 09
+      "MON,"+                // 10
+      "TUE,"+                // 11
+      "WED,"+                // 12
+      "THU,"+                // 13
+      "FRI,"+                // 14
+      "SAT,"+                // 15
+      "START_DAYPART,"+      // 16
+      "END_DAYPART,"+        // 17
+      "ORIGIN_NAME,"+        // 18
+      "WEIGHT,"+             // 19
+      "VALIDITY,"+           // 20
+      "CODING_FORMAT,"+      // 21
+      "BIT_RATE,"+           // 22
+      "CHANNELS,"+           // 23
+      "PLAY_GAIN,"+          // 24
+      "START_POINT,"+        // 25
+      "END_POINT,"+          // 26
+      "FADEUP_POINT,"+       // 27
+      "FADEDOWN_POINT,"+     // 28
+      "SEGUE_START_POINT,"+  // 29
+      "SEGUE_END_POINT,"+    // 30
+      "SEGUE_GAIN,"+         // 31
+      "HOOK_START_POINT,"+   // 32
+      "HOOK_END_POINT,"+     // 33
+      "TALK_START_POINT,"+   // 34
+      "TALK_END_POINT "+     // 35
+      "from CUTS where "+
+      QString().sprintf("CART_NUMBER=%u",q->value(0).toUInt());
     q1=new QSqlQuery(sql,ext_db);
     while(q1->next()) {
       if(q1->value(7).isNull()) {
@@ -399,21 +419,20 @@ MainObject::MainObject(QObject *parent)
 	QString().sprintf("WEIGHT=%u,",q1->value(19).toUInt())+
 	QString().sprintf("VALIDITY=%u,",q1->value(20).toUInt())+
 	QString().sprintf("CODING_FORMAT=%u,",q1->value(21).toUInt())+
-	QString().sprintf("SAMPLE_RATE=%u,",q1->value(22).toUInt())+
-	QString().sprintf("BIT_RATE=%u,",q1->value(23).toUInt())+
-	QString().sprintf("CHANNELS=%u,",q1->value(24).toUInt())+
-	QString().sprintf("PLAY_GAIN=%d,",q1->value(25).toInt())+
-	QString().sprintf("START_POINT=%d,",q1->value(26).toInt())+
-	QString().sprintf("END_POINT=%d,",q1->value(27).toInt())+
-	QString().sprintf("FADEUP_POINT=%d,",q1->value(28).toInt())+
-	QString().sprintf("FADEDOWN_POINT=%d,",q1->value(29).toInt())+
-	QString().sprintf("SEGUE_START_POINT=%d,",q1->value(30).toInt())+
-	QString().sprintf("SEGUE_END_POINT=%d,",q1->value(31).toInt())+
-	QString().sprintf("SEGUE_GAIN=%d,",q1->value(32).toInt())+
-	QString().sprintf("HOOK_START_POINT=%d,",q1->value(33).toInt())+
-	QString().sprintf("HOOK_END_POINT=%d,",q1->value(34).toInt())+
-	QString().sprintf("TALK_START_POINT=%d,",q1->value(35).toInt())+
-	QString().sprintf("TALK_END_POINT=%d where ",q1->value(36).toInt())+
+	QString().sprintf("BIT_RATE=%u,",q1->value(22).toUInt())+
+	QString().sprintf("CHANNELS=%u,",q1->value(23).toUInt())+
+	QString().sprintf("PLAY_GAIN=%d,",q1->value(24).toInt())+
+	QString().sprintf("START_POINT=%d,",q1->value(25).toInt())+
+	QString().sprintf("END_POINT=%d,",q1->value(26).toInt())+
+	QString().sprintf("FADEUP_POINT=%d,",q1->value(27).toInt())+
+	QString().sprintf("FADEDOWN_POINT=%d,",q1->value(28).toInt())+
+	QString().sprintf("SEGUE_START_POINT=%d,",q1->value(29).toInt())+
+	QString().sprintf("SEGUE_END_POINT=%d,",q1->value(30).toInt())+
+	QString().sprintf("SEGUE_GAIN=%d,",q1->value(31).toInt())+
+	QString().sprintf("HOOK_START_POINT=%d,",q1->value(32).toInt())+
+	QString().sprintf("HOOK_END_POINT=%d,",q1->value(33).toInt())+
+	QString().sprintf("TALK_START_POINT=%d,",q1->value(34).toInt())+
+	QString().sprintf("TALK_END_POINT=%d where ",q1->value(35).toInt())+
 	"CUT_NAME=\""+RDEscapeString(q1->value(0).toString())+"\"";
       q2=new QSqlQuery(sql,filter_db);
       delete q2;

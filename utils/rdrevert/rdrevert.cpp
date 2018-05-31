@@ -1407,11 +1407,6 @@ void MainObject::Revert285() const
   q=new RDSqlQuery(sql,false);
   delete q;
 
-  sql=QString("alter table RECORDINGS add ")+
-    "column SAMPRATE int unsigned default 44100 after CHANNELS";
-  q=new RDSqlQuery(sql,false);
-  delete q;
-
   sql=QString("alter table SERVICES add ")+
     "column TFC_START_OFFSET int after TFC_TITLE_LENGTH";
   q=new RDSqlQuery(sql,false);

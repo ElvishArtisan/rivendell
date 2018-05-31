@@ -280,17 +280,19 @@ void RDLogeditConf::getSettings(RDSettings *s) const
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString().sprintf("select DEFAULT_CHANNELS,SAMPRATE,\
-                         FORMAT,BITRATE,RIPPER_LEVEL,\
-                         TRIM_THRESHOLD from RDLOGEDIT \
-                         where STATION=\"%s\"",
-			(const char *)RDEscapeString(lib_station));
+  sql=QString("select ")+
+    "DEFAULT_CHANNELS,"+  // 00
+    "FORMAT,"+            // 02
+    "BITRATE,"+           // 03
+    "RIPPER_LEVEL,"+      // 04
+    "TRIM_THRESHOLD "+    // 05
+    "from RDLOGEDIT where "+
+    "STATION=\""+RDEscapeString(lib_station)+"\"";
   q=new RDSqlQuery(sql);
   s->clear();
   if(q->first()) {
     s->setChannels(q->value(0).toUInt());
-    s->setSampleRate(q->value(1).toUInt());
-    switch(q->value(2).toInt()) {
+    switch(q->value(1).toInt()) {
 	case 0:
 	  s->setFormat(RDSettings::Pcm16);
 	  break;
@@ -299,9 +301,15 @@ void RDLogeditConf::getSettings(RDSettings *s) const
 	  s->setFormat(RDSettings::MpegL2);
 	  break;
     }
-    s->setBitRate(q->value(3).toUInt());
-    s->setNormalizationLevel(q->value(4).toUInt());
-    s->setAutotrimLevel(q->value(5).toUInt());
+    s->setBitRate(q->value(2).toUInt());
+    s->setNormalizationLevel(q->value(3).toUInt());
+    s->setAutotrimLevel(q->value(4).toUInt());
+  }
+  delete q;
+  sql=QString("select SAMPLE_RATE from SYSTEM");
+  q=new RDSqlQuery(sql);
+  if(q->first()) {
+    s->setSampleRate(q->value(0).toUInt());
   }
   delete q;
 }

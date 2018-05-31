@@ -237,7 +237,6 @@ class MainObject : public QObject
   unsigned catch_heartbeat_cart;
 
   int catch_default_format;
-  int catch_default_samplerate;
   int catch_default_channels;
   int catch_default_layer;
   int catch_default_bitrate;

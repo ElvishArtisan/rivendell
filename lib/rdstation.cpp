@@ -954,22 +954,21 @@ bool RDStation::create(const QString &name,QString *err_msg,
       "TRIM_THRESHOLD,"+       // 06
       "DEFAULT_FORMAT,"+       // 07
       "DEFAULT_CHANNELS,"+     // 08
-      "DEFAULT_SAMPRATE,"+     // 09
-      "DEFAULT_LAYER,"+        // 10
-      "DEFAULT_BITRATE,"+      // 11
-      "DEFAULT_RECORD_MODE,"+  // 12
-      "DEFAULT_TRIM_STATE,"+   // 13
-      "MAXLENGTH,"+            // 14
-      "TAIL_PREROLL,"+         // 15
-      "RIPPER_DEVICE,"+        // 16
-      "PARANOIA_LEVEL,"+       // 17
-      "RIPPER_LEVEL,"+         // 18
-      "CDDB_SERVER,"+          // 19
-      "READ_ISRC,"+            // 20
-      "ENABLE_EDITOR,"+        // 21
-      "SRC_CONVERTER,"+        // 22
-      "LIMIT_SEARCH,"+         // 23
-      "SEARCH_LIMITED "+       // 24
+      "DEFAULT_LAYER,"+        // 09
+      "DEFAULT_BITRATE,"+      // 10
+      "DEFAULT_RECORD_MODE,"+  // 11
+      "DEFAULT_TRIM_STATE,"+   // 12
+      "MAXLENGTH,"+            // 13
+      "TAIL_PREROLL,"+         // 14
+      "RIPPER_DEVICE,"+        // 15
+      "PARANOIA_LEVEL,"+       // 16
+      "RIPPER_LEVEL,"+         // 17
+      "CDDB_SERVER,"+          // 18
+      "READ_ISRC,"+            // 19
+      "ENABLE_EDITOR,"+        // 20
+      "SRC_CONVERTER,"+        // 21
+      "LIMIT_SEARCH,"+         // 22
+      "SEARCH_LIMITED "+       // 23
       "from RDLIBRARY where "+
       "(STATION=\""+RDEscapeString(exemplar)+"\")&&"+
       "(INSTANCE=0)";
@@ -985,22 +984,21 @@ bool RDStation::create(const QString &name,QString *err_msg,
 	QString().sprintf("TRIM_THRESHOLD=%d,",q->value(6).toInt())+
 	QString().sprintf("DEFAULT_FORMAT=%u,",q->value(7).toUInt())+
 	QString().sprintf("DEFAULT_CHANNELS=%u,",q->value(8).toUInt())+
-	QString().sprintf("DEFAULT_SAMPRATE=%u,",q->value(9).toUInt())+
-	QString().sprintf("DEFAULT_LAYER=%u,",q->value(10).toUInt())+
-	QString().sprintf("DEFAULT_BITRATE=%u,",q->value(11).toUInt())+
-	QString().sprintf("DEFAULT_RECORD_MODE=%u,",q->value(12).toUInt())+
-	"DEFAULT_TRIM_STATE=\""+RDEscapeString(q->value(13).toString())+"\","+
-	QString().sprintf("MAXLENGTH=%d,",q->value(14).toInt())+
-	QString().sprintf("TAIL_PREROLL=%u,",q->value(15).toUInt())+
-	"RIPPER_DEVICE=\""+RDEscapeString(q->value(16).toString())+"\","+
-	QString().sprintf("PARANOIA_LEVEL=%d,",q->value(17).toInt())+
-	QString().sprintf("RIPPER_LEVEL=%d,",q->value(18).toInt())+
-	"CDDB_SERVER=\""+RDEscapeString(q->value(19).toString())+"\","+
-	"READ_ISRC=\""+RDEscapeString(q->value(20).toString())+"\","+
-	"ENABLE_EDITOR=\""+RDEscapeString(q->value(21).toString())+"\","+
-	QString().sprintf("SRC_CONVERTER=%d,",q->value(22).toInt())+
-	QString().sprintf("LIMIT_SEARCH=%d,",q->value(23).toInt())+
-	"SEARCH_LIMITED=\""+RDEscapeString(q->value(24).toString())+"\","+
+	QString().sprintf("DEFAULT_LAYER=%u,",q->value(9).toUInt())+
+	QString().sprintf("DEFAULT_BITRATE=%u,",q->value(10).toUInt())+
+	QString().sprintf("DEFAULT_RECORD_MODE=%u,",q->value(11).toUInt())+
+	"DEFAULT_TRIM_STATE=\""+RDEscapeString(q->value(12).toString())+"\","+
+	QString().sprintf("MAXLENGTH=%d,",q->value(13).toInt())+
+	QString().sprintf("TAIL_PREROLL=%u,",q->value(14).toUInt())+
+	"RIPPER_DEVICE=\""+RDEscapeString(q->value(15).toString())+"\","+
+	QString().sprintf("PARANOIA_LEVEL=%d,",q->value(16).toInt())+
+	QString().sprintf("RIPPER_LEVEL=%d,",q->value(17).toInt())+
+	"CDDB_SERVER=\""+RDEscapeString(q->value(18).toString())+"\","+
+	"READ_ISRC=\""+RDEscapeString(q->value(19).toString())+"\","+
+	"ENABLE_EDITOR=\""+RDEscapeString(q->value(20).toString())+"\","+
+	QString().sprintf("SRC_CONVERTER=%d,",q->value(21).toInt())+
+	QString().sprintf("LIMIT_SEARCH=%d,",q->value(22).toInt())+
+	"SEARCH_LIMITED=\""+RDEscapeString(q->value(23).toString())+"\","+
 	"STATION=\""+RDEscapeString(name)+"\"";
       q1=new RDSqlQuery(sql);
       delete q1;
@@ -1017,19 +1015,18 @@ bool RDStation::create(const QString &name,QString *err_msg,
       "OUTPUT_PORT,"+         // 03
       "FORMAT,"+              // 04
       "DEFAULT_CHANNELS,"+    // 05
-      "SAMPRATE,"+            // 06
-      "LAYER,"+               // 07
-      "BITRATE,"+             // 08
-      "MAXLENGTH,"+           // 09
-      "TAIL_PREROLL,"+        // 10
-      "START_CART,"+          // 11
-      "END_CART,"+            // 12
-      "REC_START_CART,"+      // 13
-      "REC_END_CART,"+        // 14
-      "TRIM_THRESHOLD,"+      // 15
-      "RIPPER_LEVEL,"+        // 16
-      "DEFAULT_TRANS_TYPE,"+  // 17
-      "ENABLE_SECOND_START "+ // 18
+      "LAYER,"+               // 06
+      "BITRATE,"+             // 07
+      "MAXLENGTH,"+           // 08
+      "TAIL_PREROLL,"+        // 09
+      "START_CART,"+          // 10
+      "END_CART,"+            // 11
+      "REC_START_CART,"+      // 12
+      "REC_END_CART,"+        // 13
+      "TRIM_THRESHOLD,"+      // 14
+      "RIPPER_LEVEL,"+        // 15
+      "DEFAULT_TRANS_TYPE,"+  // 16
+      "ENABLE_SECOND_START "+ // 17
       "from RDLOGEDIT where "+
       "STATION=\""+RDEscapeString(exemplar)+"\"";
     q=new RDSqlQuery(sql);
@@ -1041,20 +1038,19 @@ bool RDStation::create(const QString &name,QString *err_msg,
 	QString().sprintf("OUTPUT_PORT=%d,",q->value(3).toInt())+
 	QString().sprintf("FORMAT=%u,",q->value(4).toUInt())+
 	QString().sprintf("DEFAULT_CHANNELS=%u,",q->value(5).toUInt())+
-	QString().sprintf("SAMPRATE=%u,",q->value(6).toUInt())+
-	QString().sprintf("LAYER=%u,",q->value(7).toUInt())+
-	QString().sprintf("BITRATE=%u,",q->value(8).toUInt())+
-	QString().sprintf("MAXLENGTH=%d,",q->value(9).toInt())+
-	QString().sprintf("TAIL_PREROLL=%u,",q->value(10).toUInt())+
+	QString().sprintf("LAYER=%u,",q->value(6).toUInt())+
+	QString().sprintf("BITRATE=%u,",q->value(7).toUInt())+
+	QString().sprintf("MAXLENGTH=%d,",q->value(8).toInt())+
+	QString().sprintf("TAIL_PREROLL=%u,",q->value(9).toUInt())+
 	"STATION=\""+RDEscapeString(name)+"\","+
-	QString().sprintf("START_CART=%u,",q->value(11).toUInt())+
-	QString().sprintf("END_CART=%u,",q->value(12).toUInt())+
-	QString().sprintf("REC_START_CART=%u,",q->value(13).toUInt())+
-	QString().sprintf("REC_END_CART=%u,",q->value(14).toUInt())+
-	QString().sprintf("TRIM_THRESHOLD=%d,",q->value(15).toInt())+
-	QString().sprintf("RIPPER_LEVEL=%d,",q->value(16).toInt())+
-	QString().sprintf("DEFAULT_TRANS_TYPE=%d,",q->value(17).toInt())+
-	"ENABLE_SECOND_START=\""+RDEscapeString(q->value(18).toString())+"\"";
+	QString().sprintf("START_CART=%u,",q->value(10).toUInt())+
+	QString().sprintf("END_CART=%u,",q->value(11).toUInt())+
+	QString().sprintf("REC_START_CART=%u,",q->value(12).toUInt())+
+	QString().sprintf("REC_END_CART=%u,",q->value(13).toUInt())+
+	QString().sprintf("TRIM_THRESHOLD=%d,",q->value(14).toInt())+
+	QString().sprintf("RIPPER_LEVEL=%d,",q->value(15).toInt())+
+	QString().sprintf("DEFAULT_TRANS_TYPE=%d,",q->value(16).toInt())+
+	"ENABLE_SECOND_START=\""+RDEscapeString(q->value(17).toString())+"\"";
       q1=new RDSqlQuery(sql);
       delete q1;
     }
@@ -1072,13 +1068,12 @@ bool RDStation::create(const QString &name,QString *err_msg,
       "PORT_TYPE,"+           // 05
       "DEFAULT_FORMAT,"+      // 06
       "DEFAULT_CHANNELS,"+    // 07
-      "DEFAULT_SAMPRATE,"+    // 08
-      "DEFAULT_BITRATE,"+     // 09
-      "DEFAULT_THRESHOLD,"+   // 10
-      "SWITCH_STATION,"+      // 11
-      "SWITCH_MATRIX,"+       // 12
-      "SWITCH_OUTPUT,"+       // 13
-      "SWITCH_DELAY "+        // 14
+      "DEFAULT_BITRATE,"+     // 08
+      "DEFAULT_THRESHOLD,"+   // 09
+      "SWITCH_STATION,"+      // 10
+      "SWITCH_MATRIX,"+       // 11
+      "SWITCH_OUTPUT,"+       // 12
+      "SWITCH_DELAY "+        // 13
       "from DECKS where "+
       "STATION_NAME=\""+RDEscapeString(exemplar)+"\"";
     q=new RDSqlQuery(sql);
@@ -1092,13 +1087,12 @@ bool RDStation::create(const QString &name,QString *err_msg,
 	"PORT_TYPE=\""+RDEscapeString(q->value(5).toString())+"\","+
 	QString().sprintf("DEFAULT_FORMAT=%d,",q->value(6).toInt())+
 	QString().sprintf("DEFAULT_CHANNELS=%d,",q->value(7).toInt())+
-	QString().sprintf("DEFAULT_SAMPRATE=%d,",q->value(8).toInt())+
-	QString().sprintf("DEFAULT_BITRATE=%d,",q->value(9).toInt())+
-	QString().sprintf("DEFAULT_THRESHOLD=%d,",q->value(10).toInt())+
-	"SWITCH_STATION=\""+RDEscapeString(q->value(11).toString())+"\","+
-	QString().sprintf("SWITCH_MATRIX=%d,",q->value(12).toInt())+
-	QString().sprintf("SWITCH_OUTPUT=%d,",q->value(13).toInt())+
-	QString().sprintf("SWITCH_DELAY=%d,",q->value(14).toInt())+
+	QString().sprintf("DEFAULT_BITRATE=%d,",q->value(8).toInt())+
+	QString().sprintf("DEFAULT_THRESHOLD=%d,",q->value(9).toInt())+
+	"SWITCH_STATION=\""+RDEscapeString(q->value(10).toString())+"\","+
+	QString().sprintf("SWITCH_MATRIX=%d,",q->value(11).toInt())+
+	QString().sprintf("SWITCH_OUTPUT=%d,",q->value(12).toInt())+
+	QString().sprintf("SWITCH_DELAY=%d,",q->value(13).toInt())+
 	"STATION_NAME=\""+RDEscapeString(name)+"\"";
       q1=new RDSqlQuery(sql);
       delete q1;
