@@ -17002,3 +17002,5 @@
 	* Cleaned up SQL errors in rdadmin(1).
 2018-05-31 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored table drops to use 'RDApplication::dropTable()'.
+2018-05-31 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.19.2vlog02.
