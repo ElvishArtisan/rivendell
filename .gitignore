@@ -117,6 +117,7 @@ utils/rdsoftkeys/rdsoftkeys
 utils/rddbcheck/rddbcheck
 utils/rdalsaconfig/rdalsaconfig
 utils/rdpopup/rdpopup
+utils/rddbmgr/rddbmgr
 utils/rddelete/rddelete
 utils/rdgpimon/rdgpimon
 utils/rdimport/rdimport

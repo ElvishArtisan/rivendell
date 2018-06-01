@@ -1,13 +1,12 @@
-## automake.am
+## Makefile.am
 ##
-## Automake.am for rivendell/utils
+## MAkefile.am for rivendell/utils/rddbmgr
 ##
-##   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
+##   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
-##   it under the terms of the GNU General Public License as
-##   published by the Free Software Foundation; either version 2 of
-##   the License, or (at your option) any later version.
+##   it under the terms of the GNU General Public License version 2 as
+##   published by the Free Software Foundation.
 ##
 ##   This program is distributed in the hope that it will be useful,
 ##   but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -20,35 +19,6 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-if ALSA_RD_AM
-  ALSACONFIG_RD_OPT = rdalsaconfig
-endif
-SUBDIRS = $(ALSACONFIG_RD_OPT)\
-          rddbcheck\
-          rddgimport\
-          rdcheckcuts\
-          rdchunk\
-          rdcleandirs\
-          rdclilogedit\
-          rdcollect\
-          rdconvert\
-          rddbmgr\
-          rddelete\
-          rddiscimport\
-          rdexport\
-          rdgen\
-          rdgpimon\
-          rdimport\
-          rdmaint\
-          rdmarkerset\
-          rdpopup\
-          rdpurgecasts\
-          rdrender\
-          rdrevert\
-          rdsoftkeys\
-          rmlsend\
-          sas_shim
-
 AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -DQTDIR=\"@QT_DIR@\" @QT_CXXFLAGS@ -I$(top_srcdir)/lib
 LIBS = @QT_LIBS@ -L$(top_srcdir)/lib
 MOC = @QT_MOC@
@@ -57,9 +27,17 @@ MOC = @QT_MOC@
 moc_%.cpp:	%.h
 	$(MOC) $< -o $@
 
-EXTRA_DIST = utils.pro
+sbin_PROGRAMS = rddbmgr
+
+dist_rddbmgr_SOURCES = check.cpp\
+                       create.cpp\
+                       modify.cpp\
+                       rddbmgr.cpp rddbmgr.h
+
+rddbmgr_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
 
 CLEANFILES = *~\
+             *.exe\
              *.idb\
              *ilk\
              *.obj\

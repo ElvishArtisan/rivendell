@@ -736,14 +736,14 @@ bool RDStation::create(const QString &name,QString *err_msg,
       sql=QString("insert into AUDIO_INPUTS set ")+
 	"STATION_NAME=\""+RDEscapeString(name)+"\","+
 	QString().sprintf("CARD_NUMBER=%d,",i)+
-	QString().sprintf("PORT_NUMBER=%d",i);
+	QString().sprintf("PORT_NUMBER=%d",j);
       q=new RDSqlQuery(sql);
       delete q;
 
       sql=QString("insert into AUDIO_OUTPUTS set ")+
 	"STATION_NAME=\""+RDEscapeString(name)+"\","+
 	QString().sprintf("CARD_NUMBER=%d,",i)+
-	QString().sprintf("PORT_NUMBER=%d",i);
+	QString().sprintf("PORT_NUMBER=%d",j);
       q=new RDSqlQuery(sql);
       delete q;
     }

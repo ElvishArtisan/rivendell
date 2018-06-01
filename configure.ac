@@ -511,6 +511,7 @@ AC_CONFIG_FILES([rivendell.spec \
     utils/rdcollect/Makefile \
     utils/rdconvert/Makefile \
     utils/rddbcheck/Makefile \
+    utils/rddbmgr/Makefile \
     utils/rddelete/Makefile \
     utils/rddgimport/Makefile \
     utils/rddiscimport/Makefile \

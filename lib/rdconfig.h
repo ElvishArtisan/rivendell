@@ -119,6 +119,9 @@ class RDConfig
   void load();
   void clear();
   static QString userAgent(const QString &modname);
+  static QString createTablePostfix(const QString &engine,
+				    const QString &charset,
+				    const QString &collation);
 
  private:
   QString conf_filename;

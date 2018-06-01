@@ -587,9 +587,14 @@ void RDConfig::load()
     profile->stringValue("mySQL","Charset",DEFAULT_MYSQL_CHARSET);
   conf_mysql_collation=
     profile->stringValue("mySQL","Collation",DEFAULT_MYSQL_COLLATION);
+  /*
   conf_create_table_postfix=QString(" engine ")+conf_mysql_engine+" "+
     "character set "+conf_mysql_charset+" "+
     "collate "+conf_mysql_collation;
+  */
+  conf_create_table_postfix=
+    RDConfig::createTablePostfix(conf_mysql_engine,conf_mysql_charset,
+				 conf_mysql_collation);
 
   facility=profile->stringValue("Logs","Facility",DEFAULT_LOG_FACILITY).lower();
   if(facility=="syslog") {
@@ -758,4 +763,13 @@ QString RDConfig::userAgent(const QString &modname)
     return QString("Mozilla/5.0")+" rivendell/"+VERSION;
   }
   return QString("Mozilla/5.0 rivendell/")+VERSION+" ("+modname+")";
+}
+
+
+QString RDConfig::createTablePostfix(const QString &engine,
+				     const QString &charset,
+				     const QString &collation)
+{
+  return QString(" engine ")+engine+" "+"character set "+charset+" "+
+    "collate "+collation;
 }

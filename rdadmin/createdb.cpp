@@ -1463,7 +1463,7 @@ bool CreateDb(QString name,QString pwd,RDConfig *config)
     "DEFAULT_SERVICE char(10),"+
     "SKIN_PATH char(255) default \""+
     RDEscapeString(RD_DEFAULT_RDPANEL_SKIN)+"\","+
-    "index STATION_IDX (STATION,INSTANCE))"+
+    "index STATION_IDX (STATION))"+
     config->createTablePostfix();
   if(!RunQuery(sql)) {
     return false;

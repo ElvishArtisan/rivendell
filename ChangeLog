@@ -17010,3 +17010,9 @@
 	* Incremented the package version to 2.19.2vlog03.
 2018-05-31 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug that broke the build on RHEL 6.
+2018-06-01 Fred Gleason <fredg@paravelsystems.com>
+	* Stubbed out rddbmgr(8).
+	* Implemented the '--create' command in rddbmgr(8).
+	* Fixed a bug in 'RDStation::create()' that generated corrupt records
+	in the 'AUDIO_INPUT' and 'AUDIO_OUTPUTS' tables when creating a
+	new host with no exemplar.

@@ -120,6 +120,38 @@ RDSqlQuery::RDSqlQuery(const QString &query,bool reconnect):
 }
 
 
+QVariant RDSqlQuery::run(const QString &sql,bool *ok)
+{
+  QVariant ret;
+
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(ok!=NULL) {
+    *ok=q->isActive();
+  }
+  delete q;
+
+  q=new RDSqlQuery("select LAST_INSERT_ID()",false);
+  if(q->first()) {
+    ret=q->value(0);
+  }
+  delete q;
+
+  return ret;
+}
+
+
+int RDSqlQuery::rows(const QString &sql)
+{
+  int ret=0;
+
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  ret=q->size();
+  delete q;
+
+  return ret;
+}
+
+
 void RDSqlDatabaseStatus::sendRecon()
 {
   if (discon){
