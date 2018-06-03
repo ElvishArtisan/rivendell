@@ -1,4 +1,4 @@
-// rdlibrary.cpp
+//
 //
 // The Library Utility for Rivendell.
 //
@@ -443,6 +443,22 @@ MainWidget::MainWidget(QWidget *parent)
   lib_close_button->setText(tr("&Close"));
   connect(lib_close_button,SIGNAL(clicked()),this,SLOT(quitMainWidget()));
 
+  //
+  // Load Output Assignment
+  //
+  lib_output_card=rda->libraryConf()->outputCard();
+  lib_output_port=rda->libraryConf()->outputPort();
+
+  //
+  // Cart Player
+  //
+  lib_player=
+    new RDSimplePlayer(rda->cae(),rda->ripc(),lib_output_card,lib_output_port,
+                       0,0,this);
+  lib_player->playButton()->setEnabled(false);
+  lib_player->stopButton()->setEnabled(false);
+  lib_player->stopButton()->setOnColor(red);
+
   // 
   // Setup Signal Handling 
   //
@@ -580,6 +596,8 @@ void MainWidget::addData()
 
   LockUser();
 
+  lib_player->stop();
+
   RDAddCart *add_cart=new RDAddCart(&lib_default_group,&cart_type,&cart_title,
 				    rda->user()->name(),rda->system(),this);
   if((cart_num=add_cart->exec())<0) {
@@ -614,6 +632,16 @@ void MainWidget::addData()
     }
     lib_cart_list->setSelected(item,true);
     lib_cart_list->ensureItemVisible(item);
+    if (item->text(16).toUInt()==1) {
+      lib_player->setCart(item->text(1).toUInt());
+      lib_player->playButton()->setEnabled(true);
+      lib_player->stopButton()->setEnabled(true);
+    }
+    else {
+      lib_player->setCart(0);
+      lib_player->playButton()->setEnabled(false);
+      lib_player->stopButton()->setEnabled(false);
+    }
   }
   delete cart;
 
@@ -628,6 +656,8 @@ void MainWidget::editData()
   QListViewItemIterator *it;
 
   LockUser();
+
+  lib_player->stop();
 
   it=new QListViewItemIterator(lib_cart_list);
   while(it->current()) {
@@ -694,6 +724,8 @@ void MainWidget::deleteData()
   bool del_flag;
 
   LockUser();
+
+  lib_player->stop();
 
   it=new QListViewItemIterator(lib_cart_list);
   while(it->current()) {
@@ -778,6 +810,9 @@ Do you still want to delete it?"),item->text(1).toUInt());
 void MainWidget::ripData()
 {
   LockUser();
+
+  lib_player->stop();
+
   QString group=lib_group_box->currentText();
   QString schedcode=lib_codes_box->currentText();
   DiskRipper *dialog=new DiskRipper(&lib_filter_text,&group,&schedcode,
@@ -801,6 +836,9 @@ void MainWidget::ripData()
 void MainWidget::reportsData()
 {
   LockUser();
+
+  lib_player->stop();
+
   ListReports *lr=
     new ListReports(lib_filter_edit->text(),GetTypeFilter(),
 		    lib_group_box->currentText(),lib_codes_box->currentText(),
@@ -820,12 +858,13 @@ void MainWidget::cartOnItemData(QListViewItem *item)
     setCartNumber(lib_cart_list->itemRect(item),item->text(1).toUInt());
 }
 
-
 void MainWidget::cartClickedData(QListViewItem *item)
 {
   int del_count=0;
   int sel_count=0;
   QListViewItemIterator *it;
+
+  lib_player->stop();
 
   it=new QListViewItemIterator(lib_cart_list);
   while(it->current()) {
@@ -852,9 +891,24 @@ void MainWidget::cartClickedData(QListViewItem *item)
     else {
       lib_edit_button->setEnabled(rda->user()->modifyCarts());
     }
+
+    lib_player->setCart(0);
+    lib_player->playButton()->setEnabled(false);
+    lib_player->stopButton()->setEnabled(false);
   } 
   else {
     lib_edit_button->setEnabled(true);
+
+    if (item->text(16).toUInt()==1) {
+      lib_player->setCart(item->text(1).toUInt());
+      lib_player->playButton()->setEnabled(true);
+      lib_player->stopButton()->setEnabled(true);
+    }
+    else {
+      lib_player->setCart(0);
+      lib_player->playButton()->setEnabled(false);
+      lib_player->stopButton()->setEnabled(false);
+    }
   }
 }
 
@@ -953,6 +1007,8 @@ void MainWidget::quitMainWidget()
 
 void MainWidget::closeEvent(QCloseEvent *e)
 {
+  lib_player->stop();
+
   quitMainWidget();
 }
 
@@ -991,8 +1047,8 @@ void MainWidget::resizeEvent(QResizeEvent *e)
     lib_add_button->setGeometry(10,e->size().height()-60,80,50);
     lib_edit_button->setGeometry(100,e->size().height()-60,80,50);
     lib_delete_button->setGeometry(190,e->size().height()-60,80,50);
-    disk_gauge->setGeometry(285,e->size().height()-55,
-			    e->size().width()-585,
+    disk_gauge->setGeometry(475,e->size().height()-55,
+			    e->size().width()-775,
 			    disk_gauge->sizeHint().height());
     lib_rip_button->
       setGeometry(e->size().width()-290,e->size().height()-60,80,50);
@@ -1000,6 +1056,8 @@ void MainWidget::resizeEvent(QResizeEvent *e)
       setGeometry(e->size().width()-200,e->size().height()-60,80,50);
     lib_close_button->setGeometry(e->size().width()-90,e->size().height()-60,
 				  80,50);
+    lib_player->playButton()->setGeometry(290,e->size().height()-60,80,50);
+    lib_player->stopButton()->setGeometry(380,e->size().height()-60,80,50);
   }
 }
 
@@ -1014,6 +1072,9 @@ void MainWidget::RefreshList()
   unsigned cartnum=0;
   RDCart::Validity validity=RDCart::NeverValid;
   QDateTime end_datetime;
+
+  lib_player->stop();
+  lib_player->setCart(0);
 
   lib_cart_list->clear();
 
