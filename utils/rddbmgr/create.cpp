@@ -64,6 +64,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
   // Create a Rivendell DB of schema number 286
   //
   QString sql;
+  bool ok=false;
 
   //
   // Create USERS table
@@ -102,7 +103,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "DELETE_PODCAST_PRIV enum('N','Y') not null default 'N',"+
     "INDEX FULL_NAME_IDX (FULL_NAME))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -153,7 +154,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "INDEX DESCRIPTION_IDX (DESCRIPTION),"+
     "index IPV4_ADDRESS_IDX (IPV4_ADDRESS))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -220,7 +221,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "index PENDING_PID_IDX(PENDING_STATION,PENDING_PID),"+
     "index PENDING_DATETIME_IDX(PENDING_DATETIME))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -284,7 +285,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "index ISCI_IDX (ISCI),"+
     "index ISRC_IDX (ISRC))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -321,7 +322,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "index DESCRIPTION_IDX (DESCRIPTION),"+
     "index OUTCUE_IDX (OUTCUE))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -408,7 +409,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "MUS_ANNC_TYPE_OFFSET int,"+
     "MUS_ANNC_TYPE_LENGTH int)"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -433,7 +434,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "index IDX_REPORT_TFC (REPORT_TFC),"+
     "index IDX_REPORT_MUS (REPORT_MUS))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -447,7 +448,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "index GROUP_IDX (GROUP_NAME),"+
     "index SERVICE_IDX (SERVICE_NAME))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -484,7 +485,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "SEARCH_LIMITED enum('N','Y') default 'Y',"+
     "index STATION_IDX (STATION,INSTANCE))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -498,7 +499,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "OFFSET int unsigned,"+
     "index CUT_NAME_IDX (CUT_NAME))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -520,7 +521,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "index ACTIVE_IDX (ACTIVE),"+
     "index PORT_ID_IDX (PORT_ID))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -548,7 +549,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "index STATION_NAME_IDX (STATION_NAME),"+
     "index CHANNEL_IDX (CHANNEL))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -609,7 +610,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "FEED_ID int default -1,"+
     "index STATION_NAME_IDX (STATION_NAME))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -652,7 +653,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "index TYPE_IDX(TYPE,LOG_EXISTS),"+
     "index LOCK_GUID_IDX(LOCK_GUID))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -664,7 +665,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "LAST_MAINT_DATETIME datetime default \"1970-01-01 00:00:00\","+
     "LAST_ISCI_XREFERENCE datetime default \"1970-01-01 00:00:00\")"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -706,7 +707,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "AUDITION_PREROLL int default 10000,"+
     "index STATION_IDX (STATION))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -726,7 +727,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "index LOAD_IDX (TYPE,OWNER,PANEL_NO),"+
     "index SAVE_IDX (TYPE,OWNER,PANEL_NO,ROW_NO,COLUMN_NO))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -766,7 +767,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "DISPLAYS int default 0,"+
     "index MATRIX_IDX (STATION_NAME,MATRIX))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -789,7 +790,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "index MATRIX_IDX (STATION_NAME,MATRIX,NUMBER),"+
     "index NODE_IDX (STATION_NAME,MATRIX,NUMBER,NODE_HOSTNAME,NODE_TCP_PORT))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -810,7 +811,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "index MATRIX_IDX (STATION_NAME,MATRIX,NUMBER),"+
     "index NODE_IDX (STATION_NAME,MATRIX,NUMBER,NODE_HOSTNAME,NODE_TCP_PORT))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -826,7 +827,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "OFF_MACRO_CART int default 0,"+
     "index MATRIX_IDX (STATION_NAME,MATRIX,NUMBER))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -860,7 +861,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "NESTED_EVENT char(64),"+
     "REMARKS char(255))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -874,7 +875,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "COLOR char(7),"+
     "REMARKS char(255))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -887,7 +888,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "CART_NUMBER int unsigned,"+
     "index SERVICE_IDX (SERVICE))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -902,7 +903,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "REMARK char(255),"+
     "index NAME_IDX (STATION_NAME))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -916,7 +917,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "index STATION_IDX (STATION_NAME),"+
     "index SERVICE_IDX (SERVICE_NAME))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -950,7 +951,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "END_TIME time,"+
     "index IDX_NAME (NAME))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -963,7 +964,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "SERVICE_NAME char(10),"+
     "index IDX_REPORT_NAME (REPORT_NAME))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -976,7 +977,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "STATION_NAME char(64),"+
     "index IDX_REPORT_NAME (REPORT_NAME))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -989,7 +990,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "GROUP_NAME char(10),"+
     "index IDX_REPORT_NAME (REPORT_NAME))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -1003,7 +1004,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "index STATION_IDX (CLOCK_NAME),"+
     "index SERVICE_IDX (SERVICE_NAME))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -1017,7 +1018,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "index STATION_IDX (EVENT_NAME),"+
     "index SERVICE_IDX (SERVICE_NAME))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -1031,7 +1032,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "index USER_IDX (USER_NAME),"+
     "index GROUP_IDX (GROUP_NAME))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -1051,7 +1052,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "BUSS_NUM int default -1,"+
     "index STATION_MATRIX_IDX (STATION_NAME,MATRIX_NUM,VGUEST_TYPE))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -1081,7 +1082,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "DEFAULT_TRANS_TYPE int default 0,"+
     "index STATION_IDX (STATION))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -1094,7 +1095,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "ERROR_RML char(255),"+
     "index STATION_IDX (STATION))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -1105,7 +1106,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "(CODE varchar(10) not null primary key,"+
     "DESCRIPTION varchar(255))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -1139,7 +1140,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "SET_USER_DEFINED char(255),"+
     "index STATION_NAME_IDX (STATION_NAME))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -1160,7 +1161,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     RDEscapeString(RD_DEFAULT_RDPANEL_SKIN)+"\","+
     "index STATION_IDX (STATION))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -1180,7 +1181,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "index LOAD_IDX (TYPE,OWNER,PANEL_NO),"+
     "index SAVE_IDX (TYPE,OWNER,PANEL_NO,ROW_NO,COLUMN_NO))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -1195,7 +1196,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "NAME char(64),"+
     "index LOAD_IDX (TYPE,OWNER,PANEL_NO))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -1210,7 +1211,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "NAME char(64),"+
     "index LOAD_IDX (TYPE,OWNER,PANEL_NO))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -1252,7 +1253,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "MEDIA_LINK_MODE int default 0,"+
     "index KEY_NAME_IDX(KEY_NAME))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -1279,7 +1280,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "EFFECTIVE_DATETIME datetime,"+
     "index FEED_ID_IDX(FEED_ID,ORIGIN_DATETIME))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -1293,7 +1294,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "CAPTION char(64),"+
     "index FEED_ID_IDX(FEED_ID))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -1307,7 +1308,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "index USER_IDX (USER_NAME),"+
     "index KEYNAME_IDX (KEY_NAME))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -1320,7 +1321,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "IP_ADDRESS char(16),"+
     "TIME_STAMP datetime)"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -1338,7 +1339,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "DESCRIPTION char(255),"+
     "index STATION_IDX (STATION_NAME,MATRIX))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -1353,16 +1354,22 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "DEFAULT_EXTENSION char(16),"+
     "index NAME_IDX(NAME,STATION_NAME))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
+    return false;
+  }
+  RDSqlQuery::run(sql,&ok);
+  if(!ok) {
     return false;
   }
   // Ensure that dynamic format IDs start after 100
   sql=QString("insert into ENCODERS set ID=100,NAME=\"dummy\"");
-  if(!RunQuery(sql)) {
+  RDSqlQuery::run(sql,&ok);
+  if(!ok) {
     return false;
   }
   sql=QString("delete from ENCODERS where ID=100");
-  if(!RunQuery(sql)) {
+  RDSqlQuery::run(sql,&ok);
+  if(!ok) {
     return false;
   }
 
@@ -1375,7 +1382,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "BITRATES int not null,"+
     "index ENCODER_ID_IDX(ENCODER_ID))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -1388,7 +1395,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "CHANNELS int not null,"+
     "index ENCODER_ID_IDX(ENCODER_ID))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -1401,7 +1408,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "SAMPLERATES int not null,"+
     "index ENCODER_ID_IDX(ENCODER_ID))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -1417,7 +1424,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "OFF_MACRO_CART int default 0,"+
     "index MATRIX_IDX (STATION_NAME,MATRIX,NUMBER))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -1431,7 +1438,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "FILE_DATETIME datetime,"+
     "index FILE_PATH_IDX (DROPBOX_ID,FILE_PATH))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -1446,7 +1453,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "PLUGIN_ARG char(255),"+
     "index STATION_IDX (STATION_NAME,LOG_MACHINE))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -1466,7 +1473,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "SHOW_USER_LIST enum('N','Y') not null default 'Y',"+
     "NOTIFICATION_ADDRESS char(15) default \""+RD_NOTIFICATION_ADDRESS+"\")"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -1500,10 +1507,12 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "ANNC_TYPE_OFFSET int,"+
     "ANNC_TYPE_LENGTH int)"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
-  InsertImportFormats();
+  if(!InsertImportFormats(err_msg)) {
+    return false;
+  }
 
   //
   // Create REPLICATORS Table
@@ -1526,7 +1535,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "NORMALIZATION_LEVEL int default 0,"+
     "index TYPE_ID_IDX (TYPE_ID))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -1540,7 +1549,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "index REPLICATOR_NAME_IDX(REPLICATOR_NAME),"+
     "index GROUP_NAME_IDX(GROUP_NAME))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -1556,7 +1565,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "REPOST enum('N','Y') default 'N',"+
     "unique REPLICATOR_NAME_IDX(REPLICATOR_NAME,CART_NUMBER,POSTED_FILENAME))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -1570,7 +1579,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "ITEM_DATETIME datetime not null,"+
     "unique REPLICATOR_NAME_IDX(REPLICATOR_NAME,CUT_NAME))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -1592,7 +1601,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "index TYPE_IDX(TYPE,LATEST_DATE),"+
     "index LATEST_DATE_IDX(LATEST_DATE))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -1607,8 +1616,8 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "KEY_VALUE            char(64),"+
     "KEY_LABEL            char(64))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
-     return false;
+  if(!RDSqlQuery::apply(sql,err_msg)) {
+    return false;
   }
 
   //
@@ -1621,8 +1630,8 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "COMMAND_LINE text not null,"+
     "index IDX_STATION_NAME (STATION_NAME))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
-     return false;
+  if(!RDSqlQuery::apply(sql,err_msg)) {
+    return false;
   }
 
   //
@@ -1646,8 +1655,8 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "OUTPUT_PORT int not null default 0,"+
     "index STATION_NAME_IDX(STATION_NAME,SLOT_NUMBER))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
-     return false;
+  if(!RDSqlQuery::apply(sql,err_msg)) {
+    return false;
   }
 
   //
@@ -1662,8 +1671,8 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "SOURCE_NUMBER int,"+
     "index STATION_NAME_IDX(STATION_NAME,MATRIX))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
-     return false;
+  if(!RDSqlQuery::apply(sql,err_msg)) {
+    return false;
   }
 
   //
@@ -1688,8 +1697,8 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "STOP_GPO_LINE int not null default -1,"+
     "index STATION_NAME_IDX(STATION_NAME,INSTANCE))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
-     return false;
+  if(!RDSqlQuery::apply(sql,err_msg)) {
+    return false;
   }
 
   //
@@ -1714,8 +1723,8 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "STOP_GPO_LINE int not null default -1,"+
     "index STATION_NAME_IDX(STATION_NAME,INSTANCE))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
-     return false;
+  if(!RDSqlQuery::apply(sql,err_msg)) {
+    return false;
   }
 
   //
@@ -1729,8 +1738,8 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "OP_MODE int not null default 2,"+
     "index STATION_NAME_IDX(STATION_NAME,MACHINE))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
-     return false;
+  if(!RDSqlQuery::apply(sql,err_msg)) {
+    return false;
   }
 
   //
@@ -1743,8 +1752,8 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "index DROPBOX_ID_IDX(DROPBOX_ID),"+
     "index SCHED_CODE_IDX(SCHED_CODE))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
-     return false;
+  if(!RDSqlQuery::apply(sql,err_msg)) {
+    return false;
   }
 
   //
@@ -1760,8 +1769,8 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "EVENT_DATETIME datetime not null,"+
     "index STATION_NAME_IDX(STATION_NAME,MATRIX,TYPE,EVENT_DATETIME,EDGE))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
-     return false;
+  if(!RDSqlQuery::apply(sql,err_msg)) {
+    return false;
   }
 
   //
@@ -1774,8 +1783,8 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "POINT int not null,"+
     "index CUT_NAME_IDX(CUT_NAME))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
-     return false;
+  if(!RDSqlQuery::apply(sql,err_msg)) {
+    return false;
   }
 
   //
@@ -1789,8 +1798,8 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "CART_NUMBER int unsigned not null default 0,"+
     "index STATION_NAME_IDX(STATION_NAME,CHANNEL))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
-     return false;
+  if(!RDSqlQuery::apply(sql,err_msg)) {
+    return false;
   }
 
   //
@@ -1804,8 +1813,8 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "index SERVICE_NAME_IDX(SERVICE_NAME,HOUR),"+
     "index CLOCK_NAME_IDX(CLOCK_NAME))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
-     return false;
+  if(!RDSqlQuery::apply(sql,err_msg)) {
+    return false;
   }
 
   //
@@ -1818,8 +1827,8 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "EXPIRATION_DATETIME datetime not null,"+
     "index TICKET_IDX(TICKET,IPV4_ADDRESS,EXPIRATION_DATETIME))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
-     return false;
+  if(!RDSqlQuery::apply(sql,err_msg)) {
+    return false;
   }
 
   //
@@ -1831,8 +1840,8 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "SERVICE_NAME char(10) not null,"+
     "index USER_NAME_IDX(USER_NAME))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
-     return false;
+  if(!RDSqlQuery::apply(sql,err_msg)) {
+    return false;
   }
 
   //
@@ -1857,8 +1866,8 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "LOG_RML char(255),"+
     "index STATION_NAME_IDX(STATION_NAME,MACHINE))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
-     return false;
+  if(!RDSqlQuery::apply(sql,err_msg)) {
+    return false;
   }
 
   //
@@ -1875,8 +1884,8 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "CLOCK_SOURCE int not null default 0,"+
     "unique index STATION_NAME_IDX(STATION_NAME,CARD_NUMBER))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
-     return false;
+  if(!RDSqlQuery::apply(sql,err_msg)) {
+    return false;
   }
 
   //
@@ -1890,9 +1899,10 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "LEVEL int not null default 0,"+
     "TYPE int not null default 0,"
     "MODE int not null default 0,"+
-    "unique index STATION_NAME_IDX(STATION_NAME,CARD_NUMBER,PORT_NUMBER))";
-  if(!RunQuery(sql)) {
-     return false;
+    "unique index STATION_NAME_IDX(STATION_NAME,CARD_NUMBER,PORT_NUMBER))"+
+    db_table_create_postfix;
+  if(!RDSqlQuery::apply(sql,err_msg)) {
+    return false;
   }
 
   //
@@ -1904,9 +1914,10 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "CARD_NUMBER int not null,"+
     "PORT_NUMBER int not null,"+
     "LEVEL int not null default 0,"+
-    "unique index STATION_NAME_IDX(STATION_NAME,CARD_NUMBER,PORT_NUMBER))";
-  if(!RunQuery(sql)) {
-     return false;
+    "unique index STATION_NAME_IDX(STATION_NAME,CARD_NUMBER,PORT_NUMBER))"+
+    db_table_create_postfix;
+  if(!RDSqlQuery::apply(sql,err_msg)) {
+    return false;
   }
   
   return true;
@@ -1918,7 +1929,6 @@ bool MainObject::InititalizeNewDb(const QString &station_name,bool gen_audio,
 {
   QString sql;
   RDSqlQuery *q;
-  RDSqlQuery *q1;
 
   //
   // Create Default Admin Account
@@ -1930,7 +1940,7 @@ bool MainObject::InititalizeNewDb(const QString &station_name,bool gen_audio,
     "DESCRIPTION=\""+RDEscapeString(RDA_DESCRIPTION)+"\","+
     "ADMIN_USERS_PRIV=\"Y\","+
     "ADMIN_CONFIG_PRIV=\"Y\"";
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -1961,7 +1971,7 @@ bool MainObject::InititalizeNewDb(const QString &station_name,bool gen_audio,
     "ADD_PODCAST_PRIV=\"Y\","+
     "EDIT_PODCAST_PRIV=\"Y\","+
     "DELETE_PODCAST_PRIV=\"Y\"";
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -1969,7 +1979,7 @@ bool MainObject::InititalizeNewDb(const QString &station_name,bool gen_audio,
   // Create Default System-wide Settings Record
   //
   sql="insert into SYSTEM set ID=1";
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -1983,8 +1993,9 @@ bool MainObject::InititalizeNewDb(const QString &station_name,bool gen_audio,
     sql=QString("insert into AUDIO_CARDS set ")+
       "STATION_NAME=\""+RDEscapeString(station_name)+"\","+
       QString().sprintf("CARD_NUMBER=%d",i);
-    q=new RDSqlQuery(sql);
-    delete q;
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
   }
 
   //
@@ -1996,15 +2007,17 @@ bool MainObject::InititalizeNewDb(const QString &station_name,bool gen_audio,
 	"STATION_NAME=\""+RDEscapeString(station_name)+"\","+
 	QString().sprintf("CARD_NUMBER=%d,",i)+
 	QString().sprintf("PORT_NUMBER=%d",j);
-      q=new RDSqlQuery(sql);
-      delete q;
+      if(!RDSqlQuery::apply(sql,err_msg)) {
+	return false;
+      }
 
       sql=QString("insert into AUDIO_OUTPUTS set ")+
 	"STATION_NAME=\""+RDEscapeString(station_name)+"\","+
 	QString().sprintf("CARD_NUMBER=%d,",i)+
 	QString().sprintf("PORT_NUMBER=%d",j);
-      q=new RDSqlQuery(sql);
-      delete q;
+      if(!RDSqlQuery::apply(sql,err_msg)) {
+	return false;
+      }
     }
   }
 
@@ -2029,6 +2042,66 @@ bool MainObject::InititalizeNewDb(const QString &station_name,bool gen_audio,
   delete q;
 
   //
+  // Create Default Service
+  //
+  sql=QString("insert into SERVICES set NAME=\"")+
+    RDEscapeString(RD_SERVICE_NAME)+"\","+
+    "NAME_TEMPLATE=\""+RDEscapeString(RD_SERVICE_NAME)+"-%m%d\","+
+    "DESCRIPTION_TEMPLATE=\""+RDEscapeString(RD_SERVICE_NAME)+" log for %d/%m/%Y\"";
+  if(!RDSqlQuery::apply(sql,err_msg)) {
+    return false;
+  }
+
+  // Create Group Audio Perms
+  sql="select NAME from GROUPS";
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    sql=QString("insert into AUDIO_PERMS set ")+
+      "GROUP_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+      "SERVICE_NAME=\""+RDEscapeString(RD_SERVICE_NAME)+"\"";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+  }
+  delete q;
+
+  // Create Station Perms
+  sql="select NAME from STATIONS";
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    sql=QString("insert into SERVICE_PERMS set ")+
+      "STATION_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+      "SERVICE_NAME=\""+RDEscapeString(RD_SERVICE_NAME)+"\"";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+  }
+  delete q;
+
+  // Create User Perms
+  sql=QString("insert into USER_SERVICE_PERMS set ")+
+    "USER_NAME=\""+RDEscapeString(RD_USER_LOGIN_NAME)+"\","+
+    "SERVICE_NAME=\""+RDEscapeString(RD_SERVICE_NAME)+"\"";
+  if(!RDSqlQuery::apply(sql,err_msg)) {
+    return false;
+  }
+
+  // Populate RDLogManager Grid
+  for(int i=0;i<168;i++) {
+    sql=QString("insert into SERVICE_CLOCKS set ")+
+      "SERVICE_NAME=\""+RDEscapeString(RD_SERVICE_NAME)+"\","+
+      QString().sprintf("HOUR=%d,",i)+
+      "CLOCK_NAME=null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+  }
+
+  if(!CreateReconciliationTable(RD_SERVICE_NAME,err_msg)) {
+    return false;
+  }
+
+  //
   // Create Service Perms
   //
   sql=QString("select NAME from SERVICES");
@@ -2037,8 +2110,9 @@ bool MainObject::InititalizeNewDb(const QString &station_name,bool gen_audio,
     sql=QString("insert into SERVICE_PERMS set ")+
       "SERVICE_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
       "STATION_NAME=\""+RDEscapeString(station_name)+"\"";
-    q1=new RDSqlQuery(sql);
-    delete q1;
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
   }
   delete q;
 
@@ -2049,21 +2123,24 @@ bool MainObject::InititalizeNewDb(const QString &station_name,bool gen_audio,
     sql=QString("insert into RDAIRPLAY_CHANNELS set ")+
       "STATION_NAME=\""+RDEscapeString(station_name)+"\","+
       QString().sprintf("INSTANCE=%u",i);
-    q=new RDSqlQuery(sql);
-    delete q;
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
 
     sql=QString("insert into RDPANEL_CHANNELS set ")+
       "STATION_NAME=\""+RDEscapeString(station_name)+"\","+
       QString().sprintf("INSTANCE=%u",i);
-    q=new RDSqlQuery(sql);
-    delete q;
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
   }
   for(int i=0;i<RD_RDVAIRPLAY_LOG_QUAN;i++) {
     sql=QString("insert into RDAIRPLAY_CHANNELS set ")+
       "STATION_NAME=\""+RDEscapeString(station_name)+"\","+
       QString().sprintf("INSTANCE=%u",i+RD_RDVAIRPLAY_LOG_BASE);
-    q=new RDSqlQuery(sql);
-    delete q;
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
   }
   for(unsigned i=0;i<RD_CUT_EVENT_ID_QUAN;i++) {
     for(unsigned j=0;j<MAX_DECKS;j++) {
@@ -2071,8 +2148,9 @@ bool MainObject::InititalizeNewDb(const QString &station_name,bool gen_audio,
 	"STATION_NAME=\""+RDEscapeString(station_name)+"\","+
 	QString().sprintf("CHANNEL=%u,",j+129)+
 	QString().sprintf("NUMBER=%u",i+1);
-      q=new RDSqlQuery(sql);
-      delete q;
+      if(!RDSqlQuery::apply(sql,err_msg)) {
+	return false;
+      }
     }
   }
 
@@ -2083,15 +2161,17 @@ bool MainObject::InititalizeNewDb(const QString &station_name,bool gen_audio,
     sql=QString().sprintf("insert into LOG_MODES set ")+
       "STATION_NAME=\""+RDEscapeString(station_name)+"\","+
       QString().sprintf("MACHINE=%d",i);
-    q=new RDSqlQuery(sql);
-    delete q;
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
   }
   for(int i=0;i<RD_RDVAIRPLAY_LOG_QUAN;i++) {
     sql=QString().sprintf("insert into LOG_MODES set ")+
       "STATION_NAME=\""+RDEscapeString(station_name)+"\","+
       QString().sprintf("MACHINE=%d",i+RD_RDVAIRPLAY_LOG_BASE);
-    q=new RDSqlQuery(sql);
-    delete q;
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
   }
 
   //
@@ -2101,84 +2181,19 @@ bool MainObject::InititalizeNewDb(const QString &station_name,bool gen_audio,
     sql=QString("insert into LOG_MACHINES set ")+
       "STATION_NAME=\""+RDEscapeString(station_name)+"\","+
       QString().sprintf("MACHINE=%d",i);
-    q=new RDSqlQuery(sql);
-    delete q;
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
   }
   for(int i=RD_RDVAIRPLAY_LOG_BASE;i<(RD_RDVAIRPLAY_LOG_BASE+RD_RDVAIRPLAY_LOG_QUAN);i++) {
     sql=QString("insert into LOG_MACHINES set ")+
       "STATION_NAME=\""+RDEscapeString(station_name)+"\","+
       QString().sprintf("MACHINE=%d",i);
-    q=new RDSqlQuery(sql);
-    delete q;
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
   }
 
-  /*
-  sql=QString("insert into STATIONS set ")+
-    "NAME=\""+RDEscapeString(station_name)+"\","+
-    "DESCRIPTION=\""+RDEscapeString(RD_STATION_DESCRIPTION)+"\","+
-    "USER_NAME=\""+RDEscapeString(RD_USER_LOGIN_NAME)+"\","+
-    "DEFAULT_NAME=\""+RDEscapeString(RD_USER_LOGIN_NAME)+"\"";
-  struct hostent *hostent=gethostbyname((const char *)station_name);
-  if(hostent!=NULL) {
-    sql+=QString().sprintf(",IPV4_ADDRESS=\"%d.%d.%d.%d\"",
-			   0xFF&hostent->h_addr[0],0xFF&hostent->h_addr[1],
-			   0xFF&hostent->h_addr[2],0xFF&hostent->h_addr[3]);
-  }
-  if(!RunQuery(sql)) {
-    return false;
-  }
-  for(unsigned i=0;i<10;i++) {
-    sql=QString("insert into RDAIRPLAY_CHANNELS set ")+
-      "STATION_NAME=\""+RDEscapeString(station_name)+"\","+
-      QString().sprintf("INSTANCE=%u",i);
-    if(!RunQuery(sql)) {
-      return false;
-    }
-  }
-  for(unsigned i=0;i<RD_RDVAIRPLAY_LOG_QUAN;i++) {
-    sql=QString("insert into RDAIRPLAY_CHANNELS set ")+
-      "STATION_NAME=\""+RDEscapeString(station_name)+"\","+
-      QString().sprintf("INSTANCE=%u",i+RD_RDVAIRPLAY_LOG_BASE);
-    if(!RunQuery(sql)) {
-      return false;
-    }
-  }
-  for(unsigned i=0;i<10;i++) {
-    sql=QString("insert into RDPANEL_CHANNELS set ")+
-      "STATION_NAME=\""+RDEscapeString(station_name)+"\","+
-      QString().sprintf("INSTANCE=%u",i);
-    if(!RunQuery(sql)) {
-      return false;
-    }
-  }
-  for(unsigned i=0;i<3;i++) {
-    sql=QString("insert into LOG_MODES set ")+
-      "STATION_NAME=\""+RDEscapeString(station_name)+"\","+
-      QString().sprintf("MACHINE=%u",i);
-    if(!RunQuery(sql)) {
-      return false;
-    }
-  }
-  for(unsigned i=0;i<RD_RDVAIRPLAY_LOG_QUAN;i++) {
-    sql=QString("insert into LOG_MODES set ")+
-      "STATION_NAME=\""+RDEscapeString(station_name)+"\","+
-      QString().sprintf("MACHINE=%u",i+RD_RDVAIRPLAY_LOG_BASE);
-    if(!RunQuery(sql)) {
-      return false;
-    }
-  }
-  for(unsigned i=0;i<RD_CUT_EVENT_ID_QUAN;i++) {
-    for(unsigned j=0;j<MAX_DECKS;j++) {
-      sql=QString("insert into DECK_EVENTS set ")+
-	"STATION_NAME=\""+RDEscapeString(station_name)+"\","+
-	QString().sprintf("CHANNEL=%u,",j+129)+
-	QString().sprintf("NUMBER=%u",i+1);
-      if(!RunQuery(sql)) {
-	return false;
-      }
-    }
-  }
-  */
   //
   // Create Test Tone Cart
   //
@@ -2191,7 +2206,7 @@ bool MainObject::InititalizeNewDb(const QString &station_name,bool gen_audio,
     "CUT_QUANTITY=1,"+
     "FORCED_LENGTH=10000,"+
     "METADATA_DATETIME=now()";
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -2211,7 +2226,7 @@ bool MainObject::InititalizeNewDb(const QString &station_name,bool gen_audio,
     "END_POINT=10000,"+
     "ORIGIN_DATETIME=now(),"+
     "ORIGIN_NAME=\"+RDGen\"";
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -2222,19 +2237,9 @@ bool MainObject::InititalizeNewDb(const QString &station_name,bool gen_audio,
     "CUT_NAME=\"clip\","+
     "CART_NUMBER=0,"+
     "DESCRIPTION=\""+RDEscapeString("Default Clipboard")+"\"";
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
-
-  //
-  // Create Default Service
-  //
-  sql=QString("insert into SERVICES set NAME=\"")+
-    RDEscapeString(RD_SERVICE_NAME)+"\","+
-    "NAME_TEMPLATE=\""+RDEscapeString(RD_SERVICE_NAME)+"-%m%d\","+
-    "DESCRIPTION_TEMPLATE=\""+RDEscapeString(RD_SERVICE_NAME)+" log for %d/%m/%Y\"";
-  q=new RDSqlQuery(sql);
-  delete q;
 
   //
   // Create Group Audio Perms
@@ -2247,8 +2252,9 @@ bool MainObject::InititalizeNewDb(const QString &station_name,bool gen_audio,
 			  (const char *)
 			  RDEscapeString(q->value(0).toString()),
 			  (const char *)RDEscapeString(RD_SERVICE_NAME));
-    q1=new RDSqlQuery(sql);
-    delete q1;
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
   }
   delete q;
   
@@ -2263,8 +2269,9 @@ bool MainObject::InititalizeNewDb(const QString &station_name,bool gen_audio,
 			  (const char *)
 			  RDEscapeString(q->value(0).toString()),
 			  (const char *)RDEscapeString(RD_SERVICE_NAME));
-    q1=new RDSqlQuery(sql);
-    delete q1;
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
   }
   delete q;
 
@@ -2273,13 +2280,14 @@ bool MainObject::InititalizeNewDb(const QString &station_name,bool gen_audio,
       "SERVICE_NAME=\""+RDEscapeString(RD_SERVICE_NAME)+"\","+
       QString().sprintf("HOUR=%d,",i)+
       "CLOCK_NAME=null";
-    q=new RDSqlQuery(sql);
-    delete q;
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
   }
   sql=QString("update SERVICES set ")+
     "DESCRIPTION=\""+RDEscapeString(RD_SERVICE_DESCRIPTION)+"\" where "+
     "NAME=\""+RDEscapeString(RD_SERVICE_NAME)+"\"";
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -2322,21 +2330,21 @@ bool MainObject::InititalizeNewDb(const QString &station_name,bool gen_audio,
       "REPORT_TFC=\""+RDYesNo(g->rpt_traffic)+"\","+
       "REPORT_MUS=\""+RDYesNo(g->rpt_music)+"\","+
       "ENABLE_NOW_NEXT=\""+RDYesNo(g->now_next)+"\"";
-    if(!RunQuery(sql)) {
+    if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }
     // Add it to the user permissions table for the default user
     sql=QString("insert into USER_PERMS set ")+
       "USER_NAME=\""+RDEscapeString(RD_USER_LOGIN_NAME)+"\","+
       "GROUP_NAME=\""+RDEscapeString(g->group)+"\"";
-    if(!RunQuery(sql)) {
+    if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }
     // Add it to the audio permsmissions table
     sql=QString("insert into AUDIO_PERMS set ")+
       "GROUP_NAME=\""+RDEscapeString(g->group)+"\","+
       "SERVICE_NAME=\""+RDEscapeString(RD_SERVICE_NAME)+"\"";
-    if(!RunQuery(sql)) {
+    if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }
   }
@@ -2388,7 +2396,7 @@ bool MainObject::InititalizeNewDb(const QString &station_name,bool gen_audio,
     "index CART_NUMBER_IDX (CART_NUMBER),"+
     "index LABEL_IDX (LABEL))"+
     db_table_create_postfix;
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
   sql=QString("insert into LOGS set ")+
@@ -2398,14 +2406,14 @@ bool MainObject::InititalizeNewDb(const QString &station_name,bool gen_audio,
     "ORIGIN_USER=\""+RDEscapeString(RD_USER_LOGIN_NAME)+"\","+
     "ORIGIN_DATETIME=now(),"
     "MODIFIED_DATETIME=now()";
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
   //
   // Generate Hotkey Definitions
   //
-  if(!InsertRDAirplayHotkeys(station_name)) {
+  if(!InsertRDAirplayHotkeys(station_name,err_msg)) {
     return false;
   }
 
@@ -2413,7 +2421,7 @@ bool MainObject::InititalizeNewDb(const QString &station_name,bool gen_audio,
   // Generate Version Number
   //
   sql=QString("insert into VERSION set DB=286");
-  if(!RunQuery(sql)) {
+  if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }
 
@@ -2439,24 +2447,9 @@ bool MainObject::InititalizeNewDb(const QString &station_name,bool gen_audio,
 }
 
 
-bool MainObject::RunQuery(QString sql) const
-{
-  RDSqlQuery *q=new RDSqlQuery(sql,false);
-  if(!q->isActive()) {
-    fprintf(stderr,"SQL: %s\n",(const char *)sql);
-    fprintf(stderr,"SQL Error: %s\n",(const char *)q->lastError().databaseText());
-    delete q;
-    return false;
-  }
-  delete q;
-  return true;
-}
-
-
-void MainObject::InsertImportFormats() const
+bool MainObject::InsertImportFormats(QString *err_msg) const
 {
   QString sql;
-  RDSqlQuery *q;
 
   sql=QString("insert into IMPORT_TEMPLATES set ")+
     "NAME=\"Rivendell Standard Import\","+
@@ -2478,8 +2471,9 @@ void MainObject::InsertImportFormats() const
     "LEN_SECONDS_LENGTH=2,"+
     "DATA_OFFSET=69,"+
     "DATA_LENGTH=32";
-  q=new RDSqlQuery(sql,false);
-  delete q;
+  if(!RDSqlQuery::apply(sql,err_msg)) {
+    return false;
+  }
 
   sql=QString("insert into IMPORT_TEMPLATES set ")+
     "NAME=\"PowerGold Music Scheduling\","+
@@ -2501,8 +2495,9 @@ void MainObject::InsertImportFormats() const
     "LEN_SECONDS_LENGTH=2,"+
     "DATA_OFFSET=69,"+
     "DATA_LENGTH=32";
-  q=new RDSqlQuery(sql,false);
-  delete q;
+  if(!RDSqlQuery::apply(sql,err_msg)) {
+    return false;
+  }
 
   sql=QString("insert into IMPORT_TEMPLATES set ")+
     "NAME=\"RadioTraffic.com\","+
@@ -2524,8 +2519,9 @@ void MainObject::InsertImportFormats() const
     "LEN_SECONDS_LENGTH=2,"+
     "DATA_OFFSET=69,"+
     "DATA_LENGTH=32";
-  q=new RDSqlQuery(sql,false);
-  delete q;
+  if(!RDSqlQuery::apply(sql,err_msg)) {
+    return false;
+  }
 
   sql=QString("insert into IMPORT_TEMPLATES set ")+
     "NAME=\"CounterPoint Traffic\","+
@@ -2549,8 +2545,9 @@ void MainObject::InsertImportFormats() const
     "EVENT_ID_LENGTH=32,"+
     "DATA_OFFSET=102,"+
     "DATA_LENGTH=32";
-  q=new RDSqlQuery(sql,false);
-  delete q;
+  if(!RDSqlQuery::apply(sql,err_msg)) {
+    return false;
+  }
 
   sql=QString("insert into IMPORT_TEMPLATES set ")+
     "NAME=\"WideOrbit Traffic\","+
@@ -2574,8 +2571,9 @@ void MainObject::InsertImportFormats() const
     "EVENT_ID_LENGTH=32,"+
     "DATA_OFFSET=102,"+
     "DATA_LENGTH=32";
-  q=new RDSqlQuery(sql,false);
-  delete q;
+  if(!RDSqlQuery::apply(sql,err_msg)) {
+    return false;
+  }
 
   sql=QString("insert into IMPORT_TEMPLATES set ")+
     "NAME=\"Visual Traffic\","+
@@ -2599,8 +2597,9 @@ void MainObject::InsertImportFormats() const
     "EVENT_ID_LENGTH=0,"+
     "DATA_OFFSET=0,"+
     "DATA_LENGTH=0";
-  q=new RDSqlQuery(sql,false);
-  delete q;
+  if(!RDSqlQuery::apply(sql,err_msg)) {
+    return false;
+  }
 
   sql=QString("insert into IMPORT_TEMPLATES set ")+
     "NAME=\"Music 1\","+
@@ -2622,8 +2621,9 @@ void MainObject::InsertImportFormats() const
     "LEN_SECONDS_LENGTH=2,"+
     "DATA_OFFSET=69,"+
     "DATA_LENGTH=32";
-  q=new RDSqlQuery(sql,false);
-  delete q;
+  if(!RDSqlQuery::apply(sql,err_msg)) {
+    return false;
+  }
 
   sql=QString("insert into IMPORT_TEMPLATES set ")+
     "NAME=\"NaturalLog\","+
@@ -2645,12 +2645,16 @@ void MainObject::InsertImportFormats() const
     "LEN_SECONDS_LENGTH=2,"+
     "DATA_OFFSET=0,"+
     "DATA_LENGTH=0";
-  q=new RDSqlQuery(sql,false);
-  delete q;
+  if(!RDSqlQuery::apply(sql,err_msg)) {
+    return false;
+  }
+
+  return true;
 }
 
 
-bool MainObject::InsertRDAirplayHotkeys(const QString &station_name) const
+bool MainObject::InsertRDAirplayHotkeys(const QString &station_name,
+					QString *err_msg) const
 {
   QString sql;
   QStringList labels;
@@ -2691,9 +2695,59 @@ bool MainObject::InsertRDAirplayHotkeys(const QString &station_name) const
       "MODULE_NAME=\"airplay\","+
       QString().sprintf("KEY_ID=%u,",i+1)+
       "KEY_LABEL=\""+RDEscapeString(labels[i])+"\"";
-    if(!RunQuery(sql)) {
+    if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }
   }
+  return true;
+}
+
+
+bool MainObject::CreateReconciliationTable(const QString &svc_name,
+					   QString *err_msg) const
+{
+  QString tablename=svc_name;
+  tablename.replace(" ","_");
+  QString sql=QString("create table `")+tablename+"_SRT` ("+
+    "ID int unsigned auto_increment primary key,"+
+    "LENGTH int,"+
+    "LOG_NAME char(64),"+
+    "LOG_ID int,"+
+    "CART_NUMBER int unsigned,"+
+    "CUT_NUMBER int,"+
+    "TITLE char(255),"+
+    "ARTIST char(255),"+
+    "PUBLISHER char(64),"+
+    "COMPOSER char(64),"+
+    "USER_DEFINED char(255),"+
+    "SONG_ID char(32),"+
+    "ALBUM char(255),"+
+    "LABEL char(64),"+
+    "CONDUCTOR char(64),"+
+    "USAGE_CODE int,"+
+    "DESCRIPTION char(64),"+
+    "OUTCUE char(64),"+
+    "ISRC char(12),"+
+    "ISCI char(32),"+
+    "STATION_NAME char(64),"+
+    "EVENT_DATETIME datetime,"+
+    "SCHEDULED_TIME time,"+
+    "EVENT_TYPE int,"+
+    "EVENT_SOURCE int,"+
+    "PLAY_SOURCE int,"+
+    "START_SOURCE int default 0,"+
+    "ONAIR_FLAG enum('N','Y') default 'N',"+
+    "EXT_START_TIME time,"+
+    "EXT_LENGTH int,"+
+    "EXT_CART_NAME char(32),"+
+    "EXT_DATA char(32),"+
+    "EXT_EVENT_ID char(8),"+
+    "EXT_ANNC_TYPE char(8),"+
+    "index EVENT_DATETIME_IDX(EVENT_DATETIME))"+
+    db_table_create_postfix;
+  if(!RDSqlQuery::apply(sql,err_msg)) {
+    return false;
+  }
+
   return true;
 }

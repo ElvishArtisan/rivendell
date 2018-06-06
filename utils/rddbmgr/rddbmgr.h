@@ -34,16 +34,50 @@ class MainObject : public QObject
   MainObject(QObject *parent=0);
 
  private:
+  //
+  // check.cpp
+  //
   bool Check(QString *err_msg) const;
+
+  //
+  // create.cpp
+  //
   bool Create(const QString &station_name,bool gen_audio,
 	      QString *err_msg) const;
   bool CreateNewDb(QString *err_msg) const;
   bool InititalizeNewDb(const QString &station_name,bool gen_audio,
 			QString *err_msg) const;
-  bool RunQuery(QString sql) const;
-  void InsertImportFormats() const;
-  bool InsertRDAirplayHotkeys(const QString &station_name) const;
+  bool InsertImportFormats(QString *err_msg) const;
+  bool InsertRDAirplayHotkeys(const QString &station_name,
+			      QString *err_msg) const;
+  bool CreateReconciliationTable(const QString &svc_name,
+				 QString *err_msg) const;
+
+  //
+  // modify.cpp
+  //
   bool Modify(QString *err_msg,int set_schema,const QString &set_version) const;
+  int GetCurrentSchema() const;
+  int GetVersionSchema(const QString &ver) const;
+
+  //
+  // updateschema.cpp
+  //
+  bool UpdateSchema(int cur_schema,int set_schema,QString *err_msg) const;
+  void AverageCuts89(unsigned cartnum) const;
+  void TotalMacros89(unsigned cartnum) const;
+  void CreateAuxFieldsTable143(const QString &key_name) const;
+  void CreateFeedLog151(const QString &key_name) const;
+  bool UpdateLogTable186(const QString &table,QString *err_msg) const;
+  bool ConvertTimeField186(const QString &table,const QString &field,
+			   QString *err_msg) const;
+
+  //
+  // revertschema.cpp
+  //
+  bool RevertSchema(int cur_schema,int set_schema,QString *err_msg) const;
+
+
   Command db_command;
   QString db_mysql_hostname;
   QString db_mysql_loginname;

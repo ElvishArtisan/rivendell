@@ -17016,3 +17016,5 @@
 	* Fixed a bug in 'RDStation::create()' that generated corrupt records
 	in the 'AUDIO_INPUT' and 'AUDIO_OUTPUTS' tables when creating a
 	new host with no exemplar.
+2018-06-05 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented the '--modify' command in rddbmgr(8).

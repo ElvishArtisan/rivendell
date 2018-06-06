@@ -140,6 +140,21 @@ QVariant RDSqlQuery::run(const QString &sql,bool *ok)
 }
 
 
+bool RDSqlQuery::apply(const QString &sql,QString *err_msg)
+{
+  bool ret=false;
+
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  ret=q->isActive();
+  if(!ret) {
+    *err_msg="sql error: "+q->lastError().text()+" query: "+sql;
+  }
+  delete q;
+
+  return ret;
+}
+
+
 int RDSqlQuery::rows(const QString &sql)
 {
   int ret=0;
