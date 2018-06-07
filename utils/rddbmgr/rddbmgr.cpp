@@ -24,11 +24,14 @@
 #include <sys/types.h>
 
 #include <qapplication.h>
+#include <qfileinfo.h>
 #include <qsqldatabase.h>
 #include <qstringlist.h>
 
 #include <dbversion.h>
 #include <rdcmd_switch.h>
+#include <rddb.h>
+#include <rdescape_string.h>
 
 #include "rddbmgr.h"
 
@@ -43,6 +46,11 @@ MainObject::MainObject(QObject *parent)
   QString station_name;
   bool generate_audio=false;
   db_verbose=false;
+
+  db_yes=false;
+  db_no=false;
+  db_relink_audio="";
+  db_relink_audio_move=false;
 
   //
   // Check that we're 'root'
@@ -174,6 +182,32 @@ MainObject::MainObject(QObject *parent)
       db_verbose=true;
       cmd->setProcessed(i,true);
     }
+
+    //
+    // --check options
+    //
+    if(cmd->key(i)=="--yes") {
+      db_yes=true;
+    }
+    if(cmd->key(i)=="--no") {
+      db_no=true;
+    }
+    if(cmd->key(i)=="--orphan-group") {
+      db_orphan_group_name=cmd->value(i);
+    }
+    if(cmd->key(i)=="--dump-cuts-dir") {
+      db_dump_cuts_dir=cmd->value(i);
+    }
+    if(cmd->key(i)=="--relink-audio") {
+      db_relink_audio=cmd->value(i);
+    }
+    if(cmd->key(i)=="--relink-audio-move") {
+      db_relink_audio_move=true;
+    }
+    if(cmd->key(i)=="--rehash") {
+      db_rehash=cmd->value(i);
+    }
+
     if(!cmd->processed(i)) {
       fprintf(stderr,"rddbmgr: unrecognized option \"%s\"\n",
 	      (const char *)cmd->key(i));
@@ -205,7 +239,50 @@ MainObject::MainObject(QObject *parent)
       }
     }
   }
+  if(db_yes&&db_no) {
+    fprintf(stderr,"rddbmgr: '--yes' and '--no' are mutually exclusive\n");
+    exit(1);
+  }
   delete cmd;
+
+  //
+  // Sanity Checks for --check
+  //
+  if(db_command==MainObject::CheckCommand) {
+    // Check for dump cuts directory
+    if(!db_dump_cuts_dir.isEmpty()) {
+      QFileInfo file(db_dump_cuts_dir);
+      if(!file.exists()) {
+	fprintf(stderr,"rddbmgr: directory \"%s\" does not exist.\n",
+		(const char *)db_dump_cuts_dir);
+	exit(1);
+      }
+      if(!file.isDir()) {
+	fprintf(stderr,"rddbmgr: \"%s\" is not a directory.\n",
+		(const char *)db_dump_cuts_dir);
+	exit(1);
+      }
+      if(!file.isWritable()) {
+	fprintf(stderr,"rddbmgr: \"%s\" is not writable.\n",
+		(const char *)db_dump_cuts_dir);
+	exit(1);
+      }
+    }
+
+    // Check that Orphan group exists
+    if(!db_orphan_group_name.isEmpty()) {
+      QString sql=QString("select NAME from GROUPS where ")+
+	"NAME=\""+RDEscapeString(db_orphan_group_name)+"\"";
+      RDSqlQuery *q=new RDSqlQuery(sql,false);
+      if(!q->first()) {
+	fprintf(stderr,"rddbmgr: invalid group \"%s\"\n",
+		(const char *)db_orphan_group_name);
+	delete q;
+	exit(1);
+      }
+      delete q;
+    }
+  }
 
   if(db_verbose) {
     fprintf(stderr,"Using DB Credentials:\n");

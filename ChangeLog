@@ -17019,3 +17019,5 @@
 	* Implemented the '--modify' command in rddbmgr(8).
 2018-06-07 Fred Gleason <fredg@paravelsystems.com>
 	* Implemented show database status in rddbmgr(8).
+2018-06-07 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented the '--check' command in rddbmgr(8).

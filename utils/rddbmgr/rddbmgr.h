@@ -24,6 +24,7 @@
 #include <qobject.h>
 
 #include <rdconfig.h>
+#include <rdstation.h>
 
 #define RDDBMGR_USAGE "[options]\n"
 
@@ -38,6 +39,29 @@ class MainObject : public QObject
   // check.cpp
   //
   bool Check(QString *err_msg) const;
+  void RelinkAudio(const QString &srcdir) const;
+  void CheckOrphanedTracks() const;
+  void CheckClocks() const;
+  void CheckEvents() const;
+  void CheckOrphanedTables() const;
+  void CheckCutCounts() const;
+  void CheckPendingCarts() const;
+  void CheckOrphanedCarts() const;
+  void CheckOrphanedCuts() const;
+  void CheckOrphanedAudio() const;
+  void ValidateAudioLengths() const;
+  void Rehash(const QString &arg) const;
+  void RehashCart(unsigned cartnum) const;
+  void RehashCut(const QString &cutnum) const;
+  void SetCutLength(const QString &cutname,int len) const;
+  void CleanTables(const QString &ext,QSqlQuery *table_q,
+		   QSqlQuery *name_q) const;
+  void CleanTables(const QString &ext,QSqlQuery *table_q) const;
+  bool IsTableLinked(QSqlQuery *name_q,const QString &ext,
+		     const QString &table) const;
+  void RemoveCart(unsigned cartnum);
+  bool CopyFile(const QString &destfile,const QString &srcfile) const;
+  bool UserResponse() const;
 
   //
   // create.cpp
@@ -98,6 +122,13 @@ class MainObject : public QObject
   QString db_mysql_charset;
   QString db_mysql_collation;
   bool db_verbose;
+  bool db_yes;
+  bool db_no;
+  QString db_orphan_group_name;
+  QString db_dump_cuts_dir;
+  QString db_rehash;
+  QString db_relink_audio;
+  bool db_relink_audio_move;
   QString db_table_create_postfix;
   RDConfig *db_config;
 };
