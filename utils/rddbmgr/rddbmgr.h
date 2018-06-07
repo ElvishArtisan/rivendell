@@ -56,9 +56,8 @@ class MainObject : public QObject
   //
   // modify.cpp
   //
-  bool Modify(QString *err_msg,int set_schema,const QString &set_version) const;
+  bool Modify(QString *err_msg,int set_schema) const;
   int GetCurrentSchema() const;
-  int GetVersionSchema(const QString &ver) const;
 
   //
   // updateschema.cpp
@@ -77,6 +76,17 @@ class MainObject : public QObject
   //
   bool RevertSchema(int cur_schema,int set_schema,QString *err_msg) const;
 
+  //
+  // schemamap.cpp
+  //
+  void InitializeSchemaMap();
+  int GetVersionSchema(const QString &ver) const;
+  QString GetSchemaVersion(int schema) const;
+
+  //
+  // printstatus.cpp
+  //
+  bool PrintStatus(QString *err_msg) const;
 
   Command db_command;
   QString db_mysql_hostname;

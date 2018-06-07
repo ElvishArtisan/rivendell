@@ -32,8 +32,10 @@ sbin_PROGRAMS = rddbmgr
 dist_rddbmgr_SOURCES = check.cpp\
                        create.cpp\
                        modify.cpp\
+                       printstatus.cpp\
                        rddbmgr.cpp rddbmgr.h\
                        revertschema.cpp\
+                       schemamap.cpp\
                        updateschema.cpp
 
 rddbmgr_LDADD = @LIB_RDLIBS@ @LIBVORBIS@

@@ -10914,8 +10914,7 @@
 	'rdairplay/list_log.h' to display hard times to 1/10 second.
 	* Modified the ButtonLog widget in 'rdairplay/loglinebox.cpp' and
 	'rdairplay/loglinebox.h' to display hard times to 1/10 second.
-	* Modified the Edit Event dialog in 'rdairplay/edit_event.cpp' and
-	'rdairplay/edit_event.h' to display hard times to 1/10 second.
+	* Modified the Edit Event dialog in 'rdairplay/edit_event.cpp' and 'rdairplay/edit_event.h' to display hard times to 1/10 second.
 	* Modified the Edit Clock dialog in 'rdlogmanager/edit_clock.cpp'
 	to display Start and End times to 1/10 second.
 	* Modified the Edit Event Assignment dialog in
@@ -17018,3 +17017,5 @@
 	new host with no exemplar.
 2018-06-05 Fred Gleason <fredg@paravelsystems.com>
 	* Implemented the '--modify' command in rddbmgr(8).
+2018-06-07 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented show database status in rddbmgr(8).

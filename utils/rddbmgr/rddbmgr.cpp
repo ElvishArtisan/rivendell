@@ -27,6 +27,7 @@
 #include <qsqldatabase.h>
 #include <qstringlist.h>
 
+#include <dbversion.h>
 #include <rdcmd_switch.h>
 
 #include "rddbmgr.h"
@@ -65,6 +66,8 @@ MainObject::MainObject(QObject *parent)
   db_mysql_charset=db_config->mysqlCharset();
   db_mysql_collation=db_config->mysqlCollation();
   station_name=db_config->stationName();
+
+  InitializeSchemaMap();
 
   //
   // Process Command Switches
@@ -177,15 +180,32 @@ MainObject::MainObject(QObject *parent)
       exit(1);
     }
   }
-  delete cmd;
 
   //
   // Sanity Checks
   //
-  if(db_command==MainObject::NoCommand) {
+  if((cmd->keys()>0)&&(db_command==MainObject::NoCommand)) {
     fprintf(stderr,"rddbmgr: exactly one command must be specified\n");
     exit(1);
   }
+  if(set_schema>0) {
+    if((set_schema<242)||(set_schema>RD_VERSION_DATABASE)) {
+      fprintf(stderr,"rddbmgr: unsupported schema\n");
+      exit(1);
+    }
+  }
+  else {
+    if(set_version.isEmpty()) {
+      set_schema=RD_VERSION_DATABASE;
+    }
+    else {
+      if((set_schema=GetVersionSchema(set_version))==0) {
+	fprintf(stderr,"invalid/unsupported Rivendell version\n");
+	exit(1);
+      }
+    }
+  }
+  delete cmd;
 
   if(db_verbose) {
     fprintf(stderr,"Using DB Credentials:\n");
@@ -231,14 +251,17 @@ MainObject::MainObject(QObject *parent)
     break;
 
   case MainObject::CreateCommand:
-    ok=Create(station_name,generate_audio,&err_msg);
+    if((ok=Create(station_name,generate_audio,&err_msg))) {
+      ok=Modify(&err_msg,set_schema);
+    }
     break;
 
   case MainObject::ModifyCommand:
-    ok=Modify(&err_msg,set_schema,set_version);
+    ok=Modify(&err_msg,set_schema);
     break;
 
   case MainObject::NoCommand:
+    ok=PrintStatus(&err_msg);
     break;
   }
 
