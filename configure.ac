@@ -510,7 +510,6 @@ AC_CONFIG_FILES([rivendell.spec \
     utils/rdclilogedit/Makefile \
     utils/rdcollect/Makefile \
     utils/rdconvert/Makefile \
-    utils/rddbcheck/Makefile \
     utils/rddbmgr/Makefile \
     utils/rddelete/Makefile \
     utils/rddgimport/Makefile \
@@ -524,7 +523,6 @@ AC_CONFIG_FILES([rivendell.spec \
     utils/rdpopup/Makefile \
     utils/rdpurgecasts/Makefile \
     utils/rdrender/Makefile \
-    utils/rdrevert/Makefile \
     utils/rdsoftkeys/Makefile \
     utils/rmlsend/Makefile \
     utils/sas_shim/Makefile \

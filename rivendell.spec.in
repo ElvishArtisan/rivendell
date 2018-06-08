@@ -294,10 +294,9 @@ rm -rf $RPM_BUILD_ROOT
 @LOCAL_PREFIX@/bin/rdrender
 %attr(4755,root,root)@LOCAL_PREFIX@/bin/ripcd
 @LOCAL_PREFIX@/sbin/sas_shim
-@LOCAL_PREFIX@/sbin/rddbcheck
 @LOCAL_PREFIX@/sbin/rdmarkerset
 @LOCAL_PREFIX@/sbin/rdcleandirs
-@LOCAL_PREFIX@/sbin/rdrevert
+@LOCAL_PREFIX@/sbin/rddbmgr
 @LOCAL_PREFIX@/share/rivendell/*
 /etc/init.d/rdrepld
 @LOCAL_PREFIX@/share/icons/hicolor/16x16/apps/rivendell.png
@@ -409,9 +408,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/rdimport.1.gz
 %{_mandir}/man1/rdrender.1.gz
 %{_mandir}/man1/rmlsend.1.gz
-%{_mandir}/man8/rddbcheck.8.gz
+%{_mandir}/man8/rddbmgr.8.gz
 %{_mandir}/man8/rdmarkerset.8.gz
-%{_mandir}/man8/rdrevert.8.gz
 @DOC_PATH@/*
 
 

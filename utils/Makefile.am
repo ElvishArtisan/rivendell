@@ -24,7 +24,6 @@ if ALSA_RD_AM
   ALSACONFIG_RD_OPT = rdalsaconfig
 endif
 SUBDIRS = $(ALSACONFIG_RD_OPT)\
-          rddbcheck\
           rddgimport\
           rdcheckcuts\
           rdchunk\
@@ -44,7 +43,6 @@ SUBDIRS = $(ALSACONFIG_RD_OPT)\
           rdpopup\
           rdpurgecasts\
           rdrender\
-          rdrevert\
           rdsoftkeys\
           rmlsend\
           sas_shim

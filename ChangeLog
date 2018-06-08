@@ -17023,3 +17023,6 @@
 	* Implemented the '--check' command in rddbmgr(8).
 2018-06-08 Fred Gleason <fredg@paravelsystems.com>
 	* Added an rddbmgr(8) man page.
+2018-06-08 Fred Gleason <fredg@paravelsystems.com>
+	* Removed rddbcheck(8).
+	* Removed rdrevert(8).
