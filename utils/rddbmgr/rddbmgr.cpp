@@ -222,23 +222,6 @@ MainObject::MainObject(QObject *parent)
     fprintf(stderr,"rddbmgr: exactly one command must be specified\n");
     exit(1);
   }
-  if(set_schema>0) {
-    if((set_schema<242)||(set_schema>RD_VERSION_DATABASE)) {
-      fprintf(stderr,"rddbmgr: unsupported schema\n");
-      exit(1);
-    }
-  }
-  else {
-    if(set_version.isEmpty()) {
-      set_schema=RD_VERSION_DATABASE;
-    }
-    else {
-      if((set_schema=GetVersionSchema(set_version))==0) {
-	fprintf(stderr,"invalid/unsupported Rivendell version\n");
-	exit(1);
-      }
-    }
-  }
   if(db_yes&&db_no) {
     fprintf(stderr,"rddbmgr: '--yes' and '--no' are mutually exclusive\n");
     exit(1);
@@ -317,6 +300,36 @@ MainObject::MainObject(QObject *parent)
   db_table_create_postfix=
     RDConfig::createTablePostfix(db_mysql_engine,db_mysql_charset,
 				 db_mysql_collation);  
+
+  //
+  // Resolve Target Schema
+  //
+  int schema=GetCurrentSchema();
+  if(schema>RD_VERSION_DATABASE) {
+    fprintf(stderr,"rddbmgr: unknown current schema [%d]\n",schema);
+    exit(1);
+  }
+  if(set_schema>0) {
+    if((set_schema<242)||(set_schema>RD_VERSION_DATABASE)) {
+      fprintf(stderr,"rddbmgr: unsupported schema\n");
+      exit(1);
+    }
+  }
+  else {
+    if(set_version.isEmpty()) {
+      if(set_schema<schema) {
+	fprintf(stderr,"rddbmgr: reversion implied, you must explicitly specify the target schema\n");
+	exit(1);
+      }
+      set_schema=RD_VERSION_DATABASE;
+    }
+    else {
+      if((set_schema=GetVersionSchema(set_version))==0) {
+	fprintf(stderr,"invalid/unsupported Rivendell version\n");
+	exit(1);
+      }
+    }
+  }
 
   //
   // Run the Command

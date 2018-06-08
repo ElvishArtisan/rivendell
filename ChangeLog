@@ -17033,3 +17033,8 @@
 	* Removed the 'Backup Database' and 'Restore Database' buttons
 	from rdadmin(1).
 	* Removed the database creation and updater code from rdadmin(1).
+2018-06-08 Fred Gleason <fredg@paravelsystems.com>
+	* Added a sanity check to rddbmgr(8) to prevent reverting from an
+	unknown schema.
+	* Added a sanity check to rddbmgr(8) to prevent inadvertent
+	reversion to an	implied schema.
