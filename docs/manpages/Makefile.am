@@ -34,16 +34,18 @@
 all-local:	rdclilogedit.1\
                 rdconvert.1\
                 rddbcheck.8\
+                rddbmgr.8\
+                rdexport.1\
+                rdimport.1\
                 rdmarkerset.8\
                 rdrender.1\
                 rdrevert.8\
-                rdexport.1\
-                rdimport.1\
                 rmlsend.1
 
 man_MANS = rdclilogedit.1\
            rdconvert.1\
            rddbcheck.8\
+           rddbmgr.8\
            rdexport.1\
            rdimport.1\
            rdmarkerset.8\
@@ -57,16 +59,18 @@ EXTRA_DIST = rdclilogedit.1\
              rdconvert.xml\
              rddbcheck.8\
              rddbcheck.xml\
+             rddbmgr.8\
+             rddbmgr.xml\
+             rdexport.1\
+             rdexport.xml\
+             rdimport.1\
+             rdimport.xml\
              rdmarkerset.8\
              rdmarkerset.xml\
              rdrender.1\
              rdrender.xml\
              rdrevert.8\
              rdrevert.xml\
-             rdexport.1\
-             rdexport.xml\
-             rdimport.1\
-             rdimport.xml\
              rmlsend.1\
              rmlsend.xml
 

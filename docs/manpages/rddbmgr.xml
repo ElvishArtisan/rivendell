@@ -1,0 +1,499 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry id="stdin" xmlns="http://docbook.org/ns/docbook" version="5.0">
+  <!--
+      Header
+  -->
+  <refmeta>
+    <refentrytitle>rddbmgr</refentrytitle>
+    <manvolnum>8</manvolnum>
+    <refmiscinfo class='source'>June 2018</refmiscinfo>
+    <refmiscinfo class='manual'>Linux Audio Manual</refmiscinfo>
+  </refmeta>
+  <refnamediv>
+    <refname>rddbmgr</refname>
+    <refpurpose>Tool for managing Rivendell databases</refpurpose>
+  </refnamediv>
+  <info>
+    <author>
+      <personname>
+	<firstname>Fred</firstname>
+	<surname>Gleason</surname>
+	<email>fredg@paravelsystems.com</email>
+      </personname>
+      <contrib>Application Author</contrib>
+    </author>
+  </info>
+
+  <!--
+      Body
+  -->
+  <refsynopsisdiv id='synopsis'>
+    <cmdsynopsis>
+      <command>rddbmgr</command>
+      <arg choice='opt'><replaceable>OPTIONS</replaceable></arg>
+      <sbr/>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+
+  <refsect1 id='description'><title>Description</title>
+  <para>
+    <command>rddbmgr</command><manvolnum>8</manvolnum> is a command-line
+    tool used for managing (creating, modifying and checking) Rivendell
+    databases. When invoked without any options,
+    <command>rddbmgr</command><manvolnum>8</manvolnum> will attempt to connect
+    to the database specified in
+    <command>rd.conf</command><manvolnum>5</manvolnum>, print a single
+    line summary of its status to standard output and then exit.
+  </para>
+  <para>
+    <command>rddbmgr</command><manvolnum>8</manvolnum> can be invoked with
+    one of three primary modes, as follows:
+  </para>
+  <variablelist>
+    <varlistentry>
+      <term><option>--check</option></term>
+      <listitem>
+	<para>
+	  Check an existing Rivendell database for errors and inconsistencies.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term><option>--create</option></term>
+      <listitem>
+	<para>
+	  Initialize a new Rivendell database in an empty database container.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term><option>--modify</option></term>
+      <listitem>
+	<para>
+	  Modify the schema of an existing Rivendell database.
+	</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+  </refsect1>
+  
+  <refsect1 id='general_options'><title>General Options</title>
+  <para>
+    The following options can be used with any of the commands:
+  </para>
+  <variablelist>
+    <varlistentry>
+      <term><option>--mysql-hostname=</option><replaceable>hostname</replaceable></term>
+      <listitem>
+	<para>
+	  Connect to the database on <replaceable>hostname</replaceable>.
+	  Default is to use the corresponding value found in the 
+	  <userinput>[mySQL]</userinput> section of
+	  <command>rd.conf</command><manvolnum>5</manvolnum>.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term><option>--mysql-loginname=</option><replaceable>username</replaceable></term>
+      <listitem>
+	<para>
+	  Connect to the database as user <replaceable>username</replaceable>.
+	  Default is to use the corresponding value found in the 
+	  <userinput>[mySQL]</userinput> section of
+	  <command>rd.conf</command><manvolnum>5</manvolnum>.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term><option>--mysql-password=</option><replaceable>password</replaceable></term>
+      <listitem>
+	<para>
+	  Connect to the database using password
+	  <replaceable>hostname</replaceable>.
+	  Default is to use the corresponding value found in the 
+	  <userinput>[mySQL]</userinput> section of
+	  <command>rd.conf</command><manvolnum>5</manvolnum>.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term><option>--mysql-database=</option><replaceable>dbname</replaceable></term>
+      <listitem>
+	<para>
+	  Connect to the database named <replaceable>dbname</replaceable>.
+	  Default is to use the corresponding value found in the 
+	  <userinput>[mySQL]</userinput> section of
+	  <command>rd.conf</command><manvolnum>5</manvolnum>.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term><option>--mysql-driver=</option><replaceable>driver</replaceable></term>
+      <listitem>
+	<para>
+	  Connect to the database using the <replaceable>driver</replaceable>
+	  Qt driver.
+	  Default is to use the corresponding value found in the 
+	  <userinput>[mySQL]</userinput> section of
+	  <command>rd.conf</command><manvolnum>5</manvolnum>.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term><option>--mysql-engine=</option><replaceable>engine</replaceable></term>
+      <listitem>
+	<para>
+	  Use table engine <replaceable>engine</replaceable> when
+	  creating new DB tables.
+	  Default is to use the corresponding value found in the 
+	  <userinput>[mySQL]</userinput> section of
+	  <command>rd.conf</command><manvolnum>5</manvolnum>.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term><option>--mysql-charset=</option><replaceable>charset</replaceable></term>
+      <listitem>
+	<para>
+	  Configure new tables to use character set
+	  <replaceable>charset</replaceable>.
+	  Default is to use the corresponding value found in the 
+	  <userinput>[mySQL]</userinput> section of
+	  <command>rd.conf</command><manvolnum>5</manvolnum>.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term><option>--mysql-collation=</option><replaceable>collation</replaceable></term>
+      <listitem>
+	<para>
+	  Configure new tables to use collation
+	  <replaceable>collation</replaceable>.
+	  Default is to use the corresponding value found in the 
+	  <userinput>[mySQL]</userinput> section of
+	  <command>rd.conf</command><manvolnum>5</manvolnum>.
+	</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+  </refsect1>
+
+  <refsect1 id='consistency_checking_and_audio_recovery'><title>Consistency Checking and Audio Recovery</title>
+  <para>
+    The <option>--check</option> switch causes
+    <command>rddbmgr</command><manvolnum>8</manvolnum> to run a series of
+    consistency checks of an existing database and audio store. The database
+    to be checked must at the native schema of the installed Rivendell version.
+  </para>
+  <para>
+    The following options can be used in conjunction with
+    <option>--check</option>:
+  </para>
+  <variablelist remap='TP'>
+    <varlistentry>
+      <term>
+	<option>--dump-cuts-dir=</option><replaceable>dir-name</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Move any &quot;orphaned&quot; audio files found to the
+	  <replaceable>dir-name</replaceable> directory.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--no</option>
+      </term>
+      <listitem>
+	<para>
+	  Automatically answer all interactive prompts with
+	  <userinput>No</userinput>.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--orphan-group=</option><replaceable>grp-name</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Move carts with missing/invalid GROUP information to the
+	  <replaceable>grp-name</replaceable> group.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--rehash=</option><replaceable>target</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Generate SHA-1 hashes from the specified files in the audio store
+	  and validate them against the values stored in the database. This
+	  is an inherently expensive operation that may require a
+	  significant amount of time to complete as each audio
+	  file to be checked must be opened and read in its entirety.
+	</para>
+	<para>
+	  The <replaceable>target</replaceable> value can be one of the
+	  following:
+	</para>
+	<variablelist>
+	  <varlistentry>
+	    <term>
+	      Cart number --e.g. <userinput>123456</userinput>
+	    </term>
+	    <listitem>
+	      <para>
+		Check hashs for all cuts within the specified cart.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>
+	      Cart/cut specification --e.g. <userinput>123456_001</userinput>
+	    </term>
+	    <listitem>
+	      <para>
+		Check the hash for the specified cut.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>
+	      <userinput>ALL</userinput>
+	    </term>
+	    <listitem>
+	      <para>
+		Check hashes for all cuts in the audio store.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	</variablelist>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--relink-audio=</option><replaceable>dir-name</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Scan the files in the directory <replaceable>dir-name</replaceable>
+	  and copy/rename them into the Rivendell audio store if their SHA-1
+	  hash matches that for one or more Rivendell cuts.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--relink-audio-move</option>
+      </term>
+      <listitem>
+	<para>
+	  When given along with <option>--relink-audio</option>, move the
+	  audio data to the Rivendell audio store rather than copying it
+	  --i.e. copy the audio data, then delete the original.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--yes</option>
+      </term>
+      <listitem>
+	<para>
+	  Automatically answer all interactive prompts with
+	  <userinput>Yes</userinput>.
+	</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+  </refsect1>
+
+  <refsect1 id='database_creation'><title>Database Creation</title>
+  <para>
+    The <option>--create</option> switch causes
+    <command>rddbmgr</command><manvolnum>8</manvolnum> to initialize a new
+    Rivendell database at the location specified by
+    <command>rd.conf</command><manvolnum>5</manvolnum> and/or the relevant
+    general options (see above). The location so specified must contain an
+    empty database, otherwise
+    <command>rddbmgr</command><manvolnum>8</manvolnum> will exit
+    with an error.
+  </para>
+  <para>
+    When creating an empty database for initialization by
+    <command>rddbmgr</command><manvolnum>8</manvolnum>, the following
+    permissions should be enabled:
+  </para>
+  <itemizedlist spacing="compact">
+    <listitem>
+      <para>
+	Select
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+	Insert
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+	Update
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+	Delete
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+	Create
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+	Drop
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+	References
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+	Index
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+	Alter
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+	Create Temporary Tables
+      </para>
+    </listitem>
+    <listitem>
+      <para>
+	Lock Tables
+      </para>
+    </listitem>
+  </itemizedlist>
+  <para>
+    The following options can be used in conjunction with
+    <option>--create</option>:
+  </para>
+  <variablelist remap='TP'>
+    <varlistentry>
+      <term>
+	<option>--generate-audio</option>
+      </term>
+      <listitem>
+	<para>
+	  In addition to initializing a database, also generate the audio
+	  for the test-tone cart in the audio store.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<option>--set-schema=</option><replaceable>schema</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Create a database with a schema of
+	  <replaceable>schema</replaceable> [integer], which must be
+	  between <userinput>243</userinput> and the native schema (inclusive).
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<option>--set-version=</option><replaceable>version</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Create a database with a schema appropriate for Rivendell version
+	  <replaceable>version</replaceable> [X.Y.Z], which must be
+	  between <userinput>2.10.0</userinput> and the native Rivendell
+	  version (inclusive).
+	</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+  <para>
+    If neither <option>--set-schema</option> nor <option>--set-version</option>
+    options are given, the database created will have the native schema of
+    the installed version of Rivendell.
+  </para>
+  </refsect1>
+
+  <refsect1 id='database_modification'><title>Database Modification</title>
+  <para>
+    The <option>--modify</option> switch causes
+    <command>rddbmgr</command><manvolnum>8</manvolnum> to modify the
+    schema of the indicated database, in accordance with the following
+    options:
+  </para>
+  <variablelist>
+    <varlistentry>
+      <term>
+	<option>--set-schema=</option><replaceable>schema</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Change the database schema to
+	  <replaceable>schema</replaceable> [integer], which must be
+	  between <userinput>243</userinput> and the native schema (inclusive).
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<option>--set-version=</option><replaceable>version</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Change the database schema to that appropriate for Rivendell version
+	  <replaceable>version</replaceable> [X.Y.Z], which must be
+	  between <userinput>2.10.0</userinput> and the native Rivendell
+	  version (inclusive).
+	</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+  <para>
+    If neither <option>--set-schema</option> nor <option>--set-version</option>
+    options are given, the database will be changed to native schema of
+    the installed version of Rivendell.
+  </para>
+  <warning>
+    <para>
+      When reverting the schema of a database, the contents of fields that
+      do not exist in the reverted schema will be irrecoverably lost!
+    </para>
+  </warning>
+  </refsect1>
+
+  <refsect1 id='see_also'><title>See Also</title>
+  <para>
+  <citerefentry>
+    <refentrytitle>rdmarkerset</refentrytitle><manvolnum>8</manvolnum>
+  </citerefentry>
+  </para>
+  </refsect1>
+
+
+</refentry>
+
