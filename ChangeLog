@@ -17038,3 +17038,5 @@
 	unknown schema.
 	* Added a sanity check to rddbmgr(8) to prevent inadvertent
 	reversion to an	implied schema.
+2018-06-08 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed typos in the rddbmgr(8) man page.

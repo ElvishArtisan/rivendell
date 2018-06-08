@@ -414,7 +414,7 @@
 	<para>
 	  Create a database with a schema of
 	  <replaceable>schema</replaceable> [integer], which must be
-	  between <userinput>243</userinput> and the native schema (inclusive).
+	  between <userinput>242</userinput> and the native schema (inclusive).
 	</para>
       </listitem>
     </varlistentry>
@@ -455,7 +455,7 @@
 	<para>
 	  Change the database schema to
 	  <replaceable>schema</replaceable> [integer], which must be
-	  between <userinput>243</userinput> and the native schema (inclusive).
+	  between <userinput>242</userinput> and the native schema (inclusive).
 	</para>
       </listitem>
     </varlistentry>
