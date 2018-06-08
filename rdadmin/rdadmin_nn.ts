@@ -5440,13 +5440,13 @@ kodar</translation>
     <message>
         <source>&amp;Backup
 Database</source>
-        <translation>S&amp;ikringskopier
+        <translation type="obsolete">S&amp;ikringskopier
 databasen</translation>
     </message>
     <message>
         <source>&amp;Restore
 Database</source>
-        <translation>Gjenopp&amp;rett
+        <translation type="obsolete">Gjenopp&amp;rett
 databasen</translation>
     </message>
     <message>
@@ -5455,50 +5455,50 @@ databasen</translation>
     </message>
     <message>
         <source>Rivendell Database Backup (*.sql)</source>
-        <translation>Rivendell databasesikring (*.sql)</translation>
+        <translation type="obsolete">Rivendell databasesikring (*.sql)</translation>
     </message>
     <message>
         <source>Backup Error</source>
-        <translation>Feil under sikring</translation>
+        <translation type="obsolete">Feil under sikring</translation>
     </message>
     <message>
         <source>Unable to create backup!</source>
-        <translation>Greidde ikkje laga sikringskopi!</translation>
+        <translation type="obsolete">Greidde ikkje laga sikringskopi!</translation>
     </message>
     <message>
         <source>Backup Complete</source>
-        <translation>Sikringa ferdig</translation>
+        <translation type="obsolete">Sikringa ferdig</translation>
     </message>
     <message>
         <source>Backup completed successfully.</source>
-        <translation>Tok sikringskopi utan vanskar.</translation>
+        <translation type="obsolete">Tok sikringskopi utan vanskar.</translation>
     </message>
     <message>
         <source>Restore Database</source>
-        <translation>Gjenopprett database</translation>
+        <translation type="obsolete">Gjenopprett database</translation>
     </message>
     <message>
         <source>WARNING: This operation will COMPLETELY
 OVERWRITE the existing Rivendell Database!
 Do you want to continue?</source>
-        <translation>ÅTVARING: Dette vil OVERSKRIVA Rivendell-
+        <translation type="obsolete">ÅTVARING: Dette vil OVERSKRIVA Rivendell-
 databasen heilt! Er du sikker på at du vil halda fram?</translation>
     </message>
     <message>
         <source>Restore Error</source>
-        <translation>Gjenopprettingsfeil</translation>
+        <translation type="obsolete">Gjenopprettingsfeil</translation>
     </message>
     <message>
         <source>Unable to restore backup!</source>
-        <translation>Greidde ikkje gjenoppretta sikringskopien!</translation>
+        <translation type="obsolete">Greidde ikkje gjenoppretta sikringskopien!</translation>
     </message>
     <message>
         <source>Restore Complete</source>
-        <translation>Gjennoppretting fullført</translation>
+        <translation type="obsolete">Gjennoppretting fullført</translation>
     </message>
     <message>
         <source>Restore completed successfully.</source>
-        <translation>Gjenopprettinga vart fullført utan vanskar.</translation>
+        <translation type="obsolete">Gjenopprettinga vart fullført utan vanskar.</translation>
     </message>
     <message>
         <source>System
@@ -5514,28 +5514,32 @@ Replicators</source>
         <source>RDAdmin</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MySqlLogin</name>
     <message>
         <source>mySQL Admin</source>
-        <translation>mySQL-admin</translation>
+        <translation type="obsolete">mySQL-admin</translation>
     </message>
     <message>
         <source>User &amp;Name:</source>
-        <translation>Br&amp;ukarnamn:</translation>
+        <translation type="obsolete">Br&amp;ukarnamn:</translation>
     </message>
     <message>
         <source>&amp;Password:</source>
-        <translation>&amp;Passord:</translation>
+        <translation type="obsolete">&amp;Passord:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Avbryt</translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
     </message>
 </context>
 <context>
@@ -5545,50 +5549,42 @@ Replicators</source>
 Please enter a login for an account with
 administrative rights on the mySQL server,
 and we will try to get this straightened out.</source>
-        <translation type="unfinished">Greier ikkje kopla til Rivendell-databasen!
+        <translation type="obsolete">Greier ikkje kopla til Rivendell-databasen!
 Skriv inn eit brukarnamn til ein konto som har
 rettar til å administrera mySQL-tenaren,
 så prøver me å ordna opp i dette.</translation>
     </message>
     <message>
         <source>Wrong access permissions for accessing mySQL!</source>
-        <translation type="unfinished">Feil tilgangsrettar for å kopla til mySQL!</translation>
+        <translation type="obsolete">Feil tilgangsrettar for å kopla til mySQL!</translation>
     </message>
     <message>
         <source>Unable to connect to mySQL!</source>
-        <translation type="unfinished">Greier ikkje kopla til mySQL!</translation>
+        <translation type="obsolete">Greier ikkje kopla til mySQL!</translation>
     </message>
     <message>
         <source>Unable to create a Rivendell Database!</source>
-        <translation type="unfinished">Greier ikkje laga ein Rivendell-database!</translation>
+        <translation type="obsolete">Greier ikkje laga ein Rivendell-database!</translation>
     </message>
     <message>
         <source>Unable to connect to new Rivendell Database!</source>
-        <translation type="unfinished">Greier ikkje kopla til den nye Rivendell-databasen!</translation>
+        <translation type="obsolete">Greier ikkje kopla til den nye Rivendell-databasen!</translation>
     </message>
     <message>
         <source>Unable to create Rivendell Database!</source>
-        <translation type="unfinished">Greier ikkje laga ein Rivendell-database!</translation>
+        <translation type="obsolete">Greier ikkje laga ein Rivendell-database!</translation>
     </message>
     <message>
         <source>Unable to connect to Rivendell Database!</source>
-        <translation type="unfinished">Greier ikkje kopla til Rivendell-databasen!</translation>
+        <translation type="obsolete">Greier ikkje kopla til Rivendell-databasen!</translation>
     </message>
     <message>
         <source>Unable to initialize Rivendell Database!</source>
-        <translation type="unfinished">Greier ikkje setja opp Rivendell-databasen!</translation>
-    </message>
-    <message>
-        <source>RDAdmin</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Greier ikkje setja opp Rivendell-databasen!</translation>
     </message>
     <message>
         <source>New Rivendell Database Created!</source>
-        <translation type="unfinished">Du har laga ein ny Rivendell-database.</translation>
-    </message>
-    <message>
-        <source>Unable to upgrade database</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Du har laga ein ny Rivendell-database.</translation>
     </message>
     <message>
         <source>The Rivendell Database is too old to be upgraded,
@@ -5596,7 +5592,7 @@ and so must be replaced.  This will DESTROY any
 existing audio and data!  If you want to do this,
 enter a username and password for a mySQL account
 with administrative privledges, otherwise hit cancel.</source>
-        <translation type="unfinished">Rivendell-databasen er for gamal til å oppgradera,
+        <translation type="obsolete">Rivendell-databasen er for gamal til å oppgradera,
 så han må bytast ut. Dette VIL ØYDELEGGJA alle
 lyd- og datafiler! Viss du vil gjera dette, skriv du inn
 eit brukarnamn og passord med administrasjons-
@@ -5604,57 +5600,29 @@ rettar for mySQL-kontoen. Viss ikkje, trykk avbryt.</translation>
     </message>
     <message>
         <source>Unable to log into Administrator account!</source>
-        <translation type="unfinished">Greier ikkje logga på Administrator-kontoen!</translation>
+        <translation type="obsolete">Greier ikkje logga på Administrator-kontoen!</translation>
     </message>
     <message>
         <source>Unable to authorize a Rivendell Database!</source>
-        <translation type="unfinished">Greier ikkje godkjenna Rivendell-databasen!</translation>
+        <translation type="obsolete">Greier ikkje godkjenna Rivendell-databasen!</translation>
     </message>
     <message>
         <source>Update Needed</source>
-        <translation type="unfinished">Treng oppdatering</translation>
+        <translation type="obsolete">Treng oppdatering</translation>
     </message>
     <message>
         <source>The Rivendell Database needs to be updated.
 All audio and settings will be preserved, but
 this will STOP any audio playout or recording
 on this machine for a few seconds.  Continue?</source>
-        <translation type="unfinished">Rivendell-databasen treng ei oppdatering.
+        <translation type="obsolete">Rivendell-databasen treng ei oppdatering.
 Alle lydfiler og innstillingar blir tekne vare på,
 men dette VIL STOPPA alt opptak eller avspeling
 på denne maskina i nokre sekund. Halda fram?</translation>
     </message>
     <message>
-        <source>Unable to update Rivendell Database:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>
-Database backup failed!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>
-Schema modification failed!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>
-Unknown/unspecified error!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The Rivendell Database has been updated to version</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>
-and a backup of the original database saved in </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Database Updated</source>
-        <translation type="unfinished">Databasen oppdatert</translation>
+        <translation type="obsolete">Databasen oppdatert</translation>
     </message>
     <message>
         <source>RDAdmin Error</source>
@@ -5665,120 +5633,16 @@ and a backup of the original database saved in </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Start Line 1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Stop Line 1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Pause Line 1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start Line 2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Stop Line 2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Pause Line 2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start Line 3</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Stop Line 3</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Pause Line 3</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start Line 4</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Stop Line 4</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Pause Line 4</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start Line 5</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Stop Line 5</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Pause Line 5</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start Line 6</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Stop Line 6</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Pause Line 6</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start Line 7</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Stop Line 7</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Pause Line 7</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Copy</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Move</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Sound Panel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Main Log</source>
-        <translation type="unfinished">Hovudlogg</translation>
+        <translation type="obsolete">Hovudlogg</translation>
     </message>
     <message>
         <source>Aux Log 1</source>
-        <translation type="unfinished">Hjelpelogg 1</translation>
+        <translation type="obsolete">Hjelpelogg 1</translation>
     </message>
     <message>
         <source>Aux Log 2</source>
-        <translation type="unfinished">Hjelpelogg 2</translation>
+        <translation type="obsolete">Hjelpelogg 2</translation>
     </message>
 </context>
 <context>

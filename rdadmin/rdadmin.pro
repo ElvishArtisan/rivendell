@@ -32,7 +32,6 @@ x11 {
   SOURCES += add_svc.cpp
   SOURCES += add_user.cpp
   SOURCES += autofill_carts.cpp
-  SOURCES += createdb.cpp
   SOURCES += edit_audios.cpp
   SOURCES += edit_aux_field.cpp
   SOURCES += edit_backup.cpp
@@ -85,8 +84,6 @@ x11 {
   SOURCES += list_svcs.cpp
   SOURCES += list_users.cpp
   SOURCES += login.cpp
-  SOURCES += mysql_login.cpp
-  SOURCES += opendb.cpp
   SOURCES += rdadmin.cpp
   SOURCES += rename_group.cpp
   SOURCES += test_import.cpp
@@ -108,7 +105,6 @@ x11 {
   HEADERS += add_svc.h
   HEADERS += add_user.h
   HEADERS += autofill_carts.h
-  HEADERS += createdb.h
   HEADERS += edit_audios.h
   HEADERS += edit_aux_field.h
   HEADERS += edit_backup.h
@@ -161,8 +157,6 @@ x11 {
   HEADERS += list_svcs.h
   HEADERS += list_users.h
   HEADERS += login.h
-  HEADERS += mysql_login.h
-  HEADERS += opendb.h
   HEADERS += rdadmin.h
   HEADERS += rename_group.h
   HEADERS += test_import.h

@@ -193,7 +193,7 @@ if test -f /usr/lib/systemd/system/mariadb.service ; then
   systemctl start mariadb.service
   MYSQL_INIT="systemctl start mariadb.service"
 fi
-@LOCAL_PREFIX@/bin/rdadmin --check-db --mysql-admin-user=root --mysql-admin-password
+@LOCAL_PREFIX@/sbin/rddbmgr --modify
 /etc/init.d/rivendell restart
 if test "@DISTRO@" = "suse" ; then
   /etc/init.d/apache2 restart

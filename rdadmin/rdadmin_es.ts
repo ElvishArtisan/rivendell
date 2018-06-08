@@ -5475,13 +5475,13 @@ musicalizar</translation>
     <message>
         <source>&amp;Backup
 Database</source>
-        <translation>&amp;Respaldar
+        <translation type="obsolete">&amp;Respaldar
 Base datos</translation>
     </message>
     <message>
         <source>&amp;Restore
 Database</source>
-        <translation>&amp;Restaurar
+        <translation type="obsolete">&amp;Restaurar
 base datos</translation>
     </message>
     <message>
@@ -5490,51 +5490,51 @@ base datos</translation>
     </message>
     <message>
         <source>Rivendell Database Backup (*.sql)</source>
-        <translation>Respaldo de la base de datos (*.sql)</translation>
+        <translation type="obsolete">Respaldo de la base de datos (*.sql)</translation>
     </message>
     <message>
         <source>Backup Error</source>
-        <translation>Error en el respaldo</translation>
+        <translation type="obsolete">Error en el respaldo</translation>
     </message>
     <message>
         <source>Unable to create backup!</source>
-        <translation>¡No pude crear el respaldo!</translation>
+        <translation type="obsolete">¡No pude crear el respaldo!</translation>
     </message>
     <message>
         <source>Backup Complete</source>
-        <translation>Respaldo completado</translation>
+        <translation type="obsolete">Respaldo completado</translation>
     </message>
     <message>
         <source>Backup completed successfully.</source>
-        <translation>Respaldo completado exitosamente.</translation>
+        <translation type="obsolete">Respaldo completado exitosamente.</translation>
     </message>
     <message>
         <source>Restore Database</source>
-        <translation>Restaurar base de datos</translation>
+        <translation type="obsolete">Restaurar base de datos</translation>
     </message>
     <message>
         <source>WARNING: This operation will COMPLETELY
 OVERWRITE the existing Rivendell Database!
 Do you want to continue?</source>
-        <translation>ADVERTENCIA: Esta operación SOBREESCRIBIRÁ
+        <translation type="obsolete">ADVERTENCIA: Esta operación SOBREESCRIBIRÁ
 COMPLETAMENTE la base de datos existente.
 ¿Desea continuar?</translation>
     </message>
     <message>
         <source>Restore Error</source>
-        <translation>Error en la restauración</translation>
+        <translation type="obsolete">Error en la restauración</translation>
     </message>
     <message>
         <source>Unable to restore backup!</source>
-        <translation>¡No pude restaurar la base de datos!</translation>
+        <translation type="obsolete">¡No pude restaurar la base de datos!</translation>
     </message>
     <message>
         <source>Restore Complete</source>
-        <translation>Restauración finalizada</translation>
+        <translation type="obsolete">Restauración finalizada</translation>
     </message>
     <message>
         <source>Restore completed successfully.</source>
-        <translation>La restauración fue completada exitosamente.</translation>
+        <translation type="obsolete">La restauración fue completada exitosamente.</translation>
     </message>
     <message>
         <source>Manage
@@ -5558,28 +5558,32 @@ Replicadores</translation>
         <source>RDAdmin</source>
         <translation type="unfinished">RDAdmin</translation>
     </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MySqlLogin</name>
     <message>
         <source>mySQL Admin</source>
-        <translation>Admin. MySQL</translation>
+        <translation type="obsolete">Admin. MySQL</translation>
     </message>
     <message>
         <source>User &amp;Name:</source>
-        <translation>&amp;Usuario:</translation>
+        <translation type="obsolete">&amp;Usuario:</translation>
     </message>
     <message>
         <source>&amp;Password:</source>
-        <translation>&amp;Contraseña:</translation>
+        <translation type="obsolete">&amp;Contraseña:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;Aceptar</translation>
+        <translation type="obsolete">&amp;Aceptar</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
 </context>
 <context>
@@ -5589,50 +5593,50 @@ Replicadores</translation>
 Please enter a login for an account with
 administrative rights on the mySQL server,
 and we will try to get this straightened out.</source>
-        <translation>¡No se pudo acceder a la base de datos Rivendell!
+        <translation type="obsolete">¡No se pudo acceder a la base de datos Rivendell!
 Si desea crear una NUEVA base de datos, ingrese 
 el login y la clave de una cuenta Mysql con 
 derechos administrativos.</translation>
     </message>
     <message>
         <source>Wrong access permissions for accessing mySQL!</source>
-        <translation>¡Permisología errónea al acceder a la base de datos MySQL!</translation>
+        <translation type="obsolete">¡Permisología errónea al acceder a la base de datos MySQL!</translation>
     </message>
     <message>
         <source>Unable to connect to mySQL!</source>
-        <translation>¡No es posible conectarse con la base de datos MySQL!</translation>
+        <translation type="obsolete">¡No es posible conectarse con la base de datos MySQL!</translation>
     </message>
     <message>
         <source>Unable to create a Rivendell Database!</source>
-        <translation>¡No pude crear la base de datos Rivendell!</translation>
+        <translation type="obsolete">¡No pude crear la base de datos Rivendell!</translation>
     </message>
     <message>
         <source>Unable to connect to new Rivendell Database!</source>
-        <translation>¡No pude conectarme a la nueva base de datos Rivendell!</translation>
+        <translation type="obsolete">¡No pude conectarme a la nueva base de datos Rivendell!</translation>
     </message>
     <message>
         <source>Unable to create Rivendell Database!</source>
-        <translation>¡No pude crear la base de datos Rivendell!</translation>
+        <translation type="obsolete">¡No pude crear la base de datos Rivendell!</translation>
     </message>
     <message>
         <source>Unable to connect to Rivendell Database!</source>
-        <translation>¡No pude conectarme a la base de datos Rivendell!</translation>
+        <translation type="obsolete">¡No pude conectarme a la base de datos Rivendell!</translation>
     </message>
     <message>
         <source>Unable to initialize Rivendell Database!</source>
-        <translation>¡No fue posible inicializar la base de datos Rivendell!</translation>
+        <translation type="obsolete">¡No fue posible inicializar la base de datos Rivendell!</translation>
     </message>
     <message>
         <source>RDAdmin</source>
-        <translation>RDAdmin</translation>
+        <translation type="obsolete">RDAdmin</translation>
     </message>
     <message>
         <source>New Rivendell Database Created!</source>
-        <translation>¡Se ha creado una nueva base de datos!</translation>
+        <translation type="obsolete">¡Se ha creado una nueva base de datos!</translation>
     </message>
     <message>
         <source>Unable to upgrade database</source>
-        <translation>No fue posible actualizar la base de datos</translation>
+        <translation type="obsolete">No fue posible actualizar la base de datos</translation>
     </message>
     <message>
         <source>The Rivendell Database is too old to be upgraded,
@@ -5640,7 +5644,7 @@ and so must be replaced.  This will DESTROY any
 existing audio and data!  If you want to do this,
 enter a username and password for a mySQL account
 with administrative privledges, otherwise hit cancel.</source>
-        <translation>La base de datos Rivendell es muy antigua y no
+        <translation type="obsolete">La base de datos Rivendell es muy antigua y no
 puede ser actualizada, por lo que será reemplazada.
 ¡Esto DESTRUIRÁ todo audio y datos existentes! 
 Si desea continuar, introduzca el usuario y la clave
@@ -5649,61 +5653,61 @@ o de lo contrario seleccione CANCELAR.</translation>
     </message>
     <message>
         <source>Unable to log into Administrator account!</source>
-        <translation>¡No pudo ingresar a una cuenta administrativa!</translation>
+        <translation type="obsolete">¡No pudo ingresar a una cuenta administrativa!</translation>
     </message>
     <message>
         <source>Unable to authorize a Rivendell Database!</source>
-        <translation>¡No puedo autorizar la base de datos Rivendell!</translation>
+        <translation type="obsolete">¡No puedo autorizar la base de datos Rivendell!</translation>
     </message>
     <message>
         <source>Update Needed</source>
-        <translation>Se necesita actualizar</translation>
+        <translation type="obsolete">Se necesita actualizar</translation>
     </message>
     <message>
         <source>The Rivendell Database needs to be updated.
 All audio and settings will be preserved, but
 this will STOP any audio playout or recording
 on this machine for a few seconds.  Continue?</source>
-        <translation>La base de datos requiere ser actualizada. Todo el audio 
+        <translation type="obsolete">La base de datos requiere ser actualizada. Todo el audio 
 y la configuración se van a preservar, pero hay  que 
 DETENER las reproducciones y grabaciones por unos
 segundos. ¿Desea continuar?</translation>
     </message>
     <message>
         <source>Unable to update Rivendell Database:</source>
-        <translation>No fue posible actualizar la base de datos:</translation>
+        <translation type="obsolete">No fue posible actualizar la base de datos:</translation>
     </message>
     <message>
         <source>
 Database backup failed!</source>
-        <translation>
+        <translation type="obsolete">
 ¡No se pudo respaldar la base de datos!</translation>
     </message>
     <message>
         <source>
 Schema modification failed!</source>
-        <translation>
+        <translation type="obsolete">
 ¡Falló la modificación del esquema!</translation>
     </message>
     <message>
         <source>
 Unknown/unspecified error!</source>
-        <translation>
+        <translation type="obsolete">
 ¡Error desconocido/no especificado!</translation>
     </message>
     <message>
         <source>The Rivendell Database has been updated to version</source>
-        <translation>La base de datos de Rivendell ha sido actualizada a la versión </translation>
+        <translation type="obsolete">La base de datos de Rivendell ha sido actualizada a la versión </translation>
     </message>
     <message>
         <source>
 and a backup of the original database saved in </source>
-        <translation>
+        <translation type="obsolete">
 y un respaldo de la base de datos se guardó en </translation>
     </message>
     <message>
         <source>Database Updated</source>
-        <translation>Base de datos actualizada</translation>
+        <translation type="obsolete">Base de datos actualizada</translation>
     </message>
     <message>
         <source>RDAdmin Error</source>
@@ -5715,119 +5719,119 @@ y un respaldo de la base de datos se guardó en </translation>
     </message>
     <message>
         <source>Start Line 1</source>
-        <translation>Iniciar Línea 1</translation>
+        <translation type="obsolete">Iniciar Línea 1</translation>
     </message>
     <message>
         <source>Stop Line 1</source>
-        <translation>Detener Línea 1</translation>
+        <translation type="obsolete">Detener Línea 1</translation>
     </message>
     <message>
         <source>Pause Line 1</source>
-        <translation>Pausar Línea 1</translation>
+        <translation type="obsolete">Pausar Línea 1</translation>
     </message>
     <message>
         <source>Start Line 2</source>
-        <translation>Iniciar Línea 2</translation>
+        <translation type="obsolete">Iniciar Línea 2</translation>
     </message>
     <message>
         <source>Stop Line 2</source>
-        <translation>Detener Línea 2</translation>
+        <translation type="obsolete">Detener Línea 2</translation>
     </message>
     <message>
         <source>Pause Line 2</source>
-        <translation>Pausar Línea 2</translation>
+        <translation type="obsolete">Pausar Línea 2</translation>
     </message>
     <message>
         <source>Start Line 3</source>
-        <translation>Iniciar Línea 3</translation>
+        <translation type="obsolete">Iniciar Línea 3</translation>
     </message>
     <message>
         <source>Stop Line 3</source>
-        <translation>Detener Línea 3</translation>
+        <translation type="obsolete">Detener Línea 3</translation>
     </message>
     <message>
         <source>Pause Line 3</source>
-        <translation>Pausar Línea 3</translation>
+        <translation type="obsolete">Pausar Línea 3</translation>
     </message>
     <message>
         <source>Start Line 4</source>
-        <translation>Iniciar Línea 4</translation>
+        <translation type="obsolete">Iniciar Línea 4</translation>
     </message>
     <message>
         <source>Stop Line 4</source>
-        <translation>Detener Línea 4</translation>
+        <translation type="obsolete">Detener Línea 4</translation>
     </message>
     <message>
         <source>Pause Line 4</source>
-        <translation>Pausar Línea 4</translation>
+        <translation type="obsolete">Pausar Línea 4</translation>
     </message>
     <message>
         <source>Start Line 5</source>
-        <translation>Iniciar Línea 5</translation>
+        <translation type="obsolete">Iniciar Línea 5</translation>
     </message>
     <message>
         <source>Stop Line 5</source>
-        <translation>Detener Línea 5</translation>
+        <translation type="obsolete">Detener Línea 5</translation>
     </message>
     <message>
         <source>Pause Line 5</source>
-        <translation>Pausar Línea 5</translation>
+        <translation type="obsolete">Pausar Línea 5</translation>
     </message>
     <message>
         <source>Start Line 6</source>
-        <translation>Iniciar Línea 6</translation>
+        <translation type="obsolete">Iniciar Línea 6</translation>
     </message>
     <message>
         <source>Stop Line 6</source>
-        <translation>Detener Línea 6</translation>
+        <translation type="obsolete">Detener Línea 6</translation>
     </message>
     <message>
         <source>Pause Line 6</source>
-        <translation>Pausar Línea 6</translation>
+        <translation type="obsolete">Pausar Línea 6</translation>
     </message>
     <message>
         <source>Start Line 7</source>
-        <translation>Iniciar Línea 7</translation>
+        <translation type="obsolete">Iniciar Línea 7</translation>
     </message>
     <message>
         <source>Stop Line 7</source>
-        <translation>Detener Línea 7</translation>
+        <translation type="obsolete">Detener Línea 7</translation>
     </message>
     <message>
         <source>Pause Line 7</source>
-        <translation>Pausar Línea 7</translation>
+        <translation type="obsolete">Pausar Línea 7</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation>Añadir</translation>
+        <translation type="obsolete">Añadir</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Borrar</translation>
+        <translation type="obsolete">Borrar</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation>Copiar</translation>
+        <translation type="obsolete">Copiar</translation>
     </message>
     <message>
         <source>Move</source>
-        <translation>Mover</translation>
+        <translation type="obsolete">Mover</translation>
     </message>
     <message>
         <source>Sound Panel</source>
-        <translation>Panel de sonidos</translation>
+        <translation type="obsolete">Panel de sonidos</translation>
     </message>
     <message>
         <source>Main Log</source>
-        <translation>Lista Ppal</translation>
+        <translation type="obsolete">Lista Ppal</translation>
     </message>
     <message>
         <source>Aux Log 1</source>
-        <translation>Lista aux. 1</translation>
+        <translation type="obsolete">Lista aux. 1</translation>
     </message>
     <message>
         <source>Aux Log 2</source>
-        <translation>Lista aux. 2</translation>
+        <translation type="obsolete">Lista aux. 2</translation>
     </message>
 </context>
 <context>

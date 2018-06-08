@@ -5523,13 +5523,13 @@ rozvrhovače</translation>
     <message>
         <source>&amp;Backup
 Database</source>
-        <translation>&amp;Záložní
+        <translation type="obsolete">&amp;Záložní
 databáze</translation>
     </message>
     <message>
         <source>&amp;Restore
 Database</source>
-        <translation>O&amp;bnovit
+        <translation type="obsolete">O&amp;bnovit
 databázi</translation>
     </message>
     <message>
@@ -5538,51 +5538,51 @@ databázi</translation>
     </message>
     <message>
         <source>Rivendell Database Backup (*.sql)</source>
-        <translation>Záloha databáze Rivendell (*.sql)</translation>
+        <translation type="obsolete">Záloha databáze Rivendell (*.sql)</translation>
     </message>
     <message>
         <source>Backup Error</source>
-        <translation>Chyba při zálohování</translation>
+        <translation type="obsolete">Chyba při zálohování</translation>
     </message>
     <message>
         <source>Unable to create backup!</source>
-        <translation>Nelze vytvořit zálohu!</translation>
+        <translation type="obsolete">Nelze vytvořit zálohu!</translation>
     </message>
     <message>
         <source>Backup Complete</source>
-        <translation>Záloha hotova</translation>
+        <translation type="obsolete">Záloha hotova</translation>
     </message>
     <message>
         <source>Backup completed successfully.</source>
-        <translation>Záloha úspěšně dokončena.</translation>
+        <translation type="obsolete">Záloha úspěšně dokončena.</translation>
     </message>
     <message>
         <source>Restore Database</source>
-        <translation>Obnovit databázi</translation>
+        <translation type="obsolete">Obnovit databázi</translation>
     </message>
     <message>
         <source>WARNING: This operation will COMPLETELY
 OVERWRITE the existing Rivendell Database!
 Do you want to continue?</source>
-        <translation>VAROVÁNÍ: Tato operace zcela přepíše stávající
+        <translation type="obsolete">VAROVÁNÍ: Tato operace zcela přepíše stávající
 databázi Rivendell!
 Chcete pokračovat?</translation>
     </message>
     <message>
         <source>Restore Error</source>
-        <translation>Chyba při obnově</translation>
+        <translation type="obsolete">Chyba při obnově</translation>
     </message>
     <message>
         <source>Unable to restore backup!</source>
-        <translation>Nelze obnovit zálohu!</translation>
+        <translation type="obsolete">Nelze obnovit zálohu!</translation>
     </message>
     <message>
         <source>Restore Complete</source>
-        <translation>Obnova hotova</translation>
+        <translation type="obsolete">Obnova hotova</translation>
     </message>
     <message>
         <source>Restore completed successfully.</source>
-        <translation>Obnova úspěšně dokončena.</translation>
+        <translation type="obsolete">Obnova úspěšně dokončena.</translation>
     </message>
     <message>
         <source>System
@@ -5600,147 +5600,151 @@ zopakování</translation>
         <source>RDAdmin</source>
         <translation type="unfinished">RDAdmin</translation>
     </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MySqlLogin</name>
     <message>
         <source>mySQL Admin</source>
-        <translation>Správce mySQL</translation>
+        <translation type="obsolete">Správce mySQL</translation>
     </message>
     <message>
         <source>User &amp;Name:</source>
-        <translation>&amp;Uživatelské jméno:</translation>
+        <translation type="obsolete">&amp;Uživatelské jméno:</translation>
     </message>
     <message>
         <source>&amp;Password:</source>
-        <translation>He&amp;slo:</translation>
+        <translation type="obsolete">He&amp;slo:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
 </context>
 <context>
     <name>QObject</name>
     <message>
         <source>Start Line 1</source>
-        <translation>Spustit řádek 1</translation>
+        <translation type="obsolete">Spustit řádek 1</translation>
     </message>
     <message>
         <source>Stop Line 1</source>
-        <translation>Zastavit řádek 1</translation>
+        <translation type="obsolete">Zastavit řádek 1</translation>
     </message>
     <message>
         <source>Pause Line 1</source>
-        <translation>Pozastavit řádek 1</translation>
+        <translation type="obsolete">Pozastavit řádek 1</translation>
     </message>
     <message>
         <source>Start Line 2</source>
-        <translation>Spustit řádek 2</translation>
+        <translation type="obsolete">Spustit řádek 2</translation>
     </message>
     <message>
         <source>Stop Line 2</source>
-        <translation>Zastavit řádek 2</translation>
+        <translation type="obsolete">Zastavit řádek 2</translation>
     </message>
     <message>
         <source>Pause Line 2</source>
-        <translation>Pozastavit řádek 2</translation>
+        <translation type="obsolete">Pozastavit řádek 2</translation>
     </message>
     <message>
         <source>Start Line 3</source>
-        <translation>Spustit řádek 3</translation>
+        <translation type="obsolete">Spustit řádek 3</translation>
     </message>
     <message>
         <source>Stop Line 3</source>
-        <translation>Zastavit řádek 3</translation>
+        <translation type="obsolete">Zastavit řádek 3</translation>
     </message>
     <message>
         <source>Pause Line 3</source>
-        <translation>Pozastavit řádek 3</translation>
+        <translation type="obsolete">Pozastavit řádek 3</translation>
     </message>
     <message>
         <source>Start Line 4</source>
-        <translation>Spustit řádek 4</translation>
+        <translation type="obsolete">Spustit řádek 4</translation>
     </message>
     <message>
         <source>Stop Line 4</source>
-        <translation>Zastavit řádek 4</translation>
+        <translation type="obsolete">Zastavit řádek 4</translation>
     </message>
     <message>
         <source>Pause Line 4</source>
-        <translation>Pozastavit řádek 4</translation>
+        <translation type="obsolete">Pozastavit řádek 4</translation>
     </message>
     <message>
         <source>Start Line 5</source>
-        <translation>Spustit řádek 5</translation>
+        <translation type="obsolete">Spustit řádek 5</translation>
     </message>
     <message>
         <source>Stop Line 5</source>
-        <translation>Zastavit řádek 5</translation>
+        <translation type="obsolete">Zastavit řádek 5</translation>
     </message>
     <message>
         <source>Pause Line 5</source>
-        <translation>Pozastavit řádek 5</translation>
+        <translation type="obsolete">Pozastavit řádek 5</translation>
     </message>
     <message>
         <source>Start Line 6</source>
-        <translation>Spustit řádek 6</translation>
+        <translation type="obsolete">Spustit řádek 6</translation>
     </message>
     <message>
         <source>Stop Line 6</source>
-        <translation>Zastavit řádek 6</translation>
+        <translation type="obsolete">Zastavit řádek 6</translation>
     </message>
     <message>
         <source>Pause Line 6</source>
-        <translation>Pozastavit řádek 6</translation>
+        <translation type="obsolete">Pozastavit řádek 6</translation>
     </message>
     <message>
         <source>Start Line 7</source>
-        <translation>Spustit řádek 7</translation>
+        <translation type="obsolete">Spustit řádek 7</translation>
     </message>
     <message>
         <source>Stop Line 7</source>
-        <translation>Zastavit řádek 7</translation>
+        <translation type="obsolete">Zastavit řádek 7</translation>
     </message>
     <message>
         <source>Pause Line 7</source>
-        <translation>Pozastavit řádek 7</translation>
+        <translation type="obsolete">Pozastavit řádek 7</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation>Přidat</translation>
+        <translation type="obsolete">Přidat</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Smazat</translation>
+        <translation type="obsolete">Smazat</translation>
     </message>
     <message>
         <source>Copy</source>
-        <translation>Kopírovat</translation>
+        <translation type="obsolete">Kopírovat</translation>
     </message>
     <message>
         <source>Move</source>
-        <translation>Posunout</translation>
+        <translation type="obsolete">Posunout</translation>
     </message>
     <message>
         <source>Sound Panel</source>
-        <translation>Zvukový panel</translation>
+        <translation type="obsolete">Zvukový panel</translation>
     </message>
     <message>
         <source>Main Log</source>
-        <translation>Hlavní zápis</translation>
+        <translation type="obsolete">Hlavní zápis</translation>
     </message>
     <message>
         <source>Aux Log 1</source>
-        <translation>Pomocný zápis 1</translation>
+        <translation type="obsolete">Pomocný zápis 1</translation>
     </message>
     <message>
         <source>Aux Log 2</source>
-        <translation>Pomocný zápis 2</translation>
+        <translation type="obsolete">Pomocný zápis 2</translation>
     </message>
     <message>
         <source>(default)</source>
@@ -5751,50 +5755,50 @@ zopakování</translation>
 Please enter a login for an account with
 administrative rights on the mySQL server,
 and we will try to get this straightened out.</source>
-        <translation>Nelze přistupovat k databázi Rivendell!
+        <translation type="obsolete">Nelze přistupovat k databázi Rivendell!
 Zadejte, prosím, přihlašovací údaje k účtu s
 administrátorskými právy k mySQL serveru
 a my se pokusíme toto opravit.</translation>
     </message>
     <message>
         <source>Wrong access permissions for accessing mySQL!</source>
-        <translation>Špatná přístupová práva pro přístup k mySQL!</translation>
+        <translation type="obsolete">Špatná přístupová práva pro přístup k mySQL!</translation>
     </message>
     <message>
         <source>Unable to connect to mySQL!</source>
-        <translation>Nelze se spojit s mySQL!</translation>
+        <translation type="obsolete">Nelze se spojit s mySQL!</translation>
     </message>
     <message>
         <source>Unable to create a Rivendell Database!</source>
-        <translation>Nelze vytvořit databázi Rivendell!</translation>
+        <translation type="obsolete">Nelze vytvořit databázi Rivendell!</translation>
     </message>
     <message>
         <source>Unable to connect to new Rivendell Database!</source>
-        <translation>Nelze se spojit s novou databází Rivendell!</translation>
+        <translation type="obsolete">Nelze se spojit s novou databází Rivendell!</translation>
     </message>
     <message>
         <source>Unable to create Rivendell Database!</source>
-        <translation>Nelze vytvořit databázi Rivendell!</translation>
+        <translation type="obsolete">Nelze vytvořit databázi Rivendell!</translation>
     </message>
     <message>
         <source>Unable to connect to Rivendell Database!</source>
-        <translation>Nelze se spojit s databází Rivendell!</translation>
+        <translation type="obsolete">Nelze se spojit s databází Rivendell!</translation>
     </message>
     <message>
         <source>Unable to initialize Rivendell Database!</source>
-        <translation>Nelze spustit databází Rivendell!</translation>
+        <translation type="obsolete">Nelze spustit databází Rivendell!</translation>
     </message>
     <message>
         <source>RDAdmin</source>
-        <translation>RDAdmin</translation>
+        <translation type="obsolete">RDAdmin</translation>
     </message>
     <message>
         <source>New Rivendell Database Created!</source>
-        <translation>Nová databáze Rivendell vytvořena!</translation>
+        <translation type="obsolete">Nová databáze Rivendell vytvořena!</translation>
     </message>
     <message>
         <source>Unable to upgrade database</source>
-        <translation>Aktualizace databáze není možná</translation>
+        <translation type="obsolete">Aktualizace databáze není možná</translation>
     </message>
     <message>
         <source>The Rivendell Database is too old to be upgraded,
@@ -5802,7 +5806,7 @@ and so must be replaced.  This will DESTROY any
 existing audio and data!  If you want to do this,
 enter a username and password for a mySQL account
 with administrative privledges, otherwise hit cancel.</source>
-        <translation>Databáze Rivendell je příliš stará na to, aby byla povýšena a
+        <translation type="obsolete">Databáze Rivendell je příliš stará na to, aby byla povýšena a
 musí se nahradit. Toto SMAŽE všechny stávající nahrávky
 a data! Pokud to chcete udělat, zadejte uživatelské jméno
 a heslo k účtu mySQL se správcovskými právy, jinak klepněte na
@@ -5810,61 +5814,61 @@ zrušit.</translation>
     </message>
     <message>
         <source>Unable to log into Administrator account!</source>
-        <translation>Nelze se přihlásit k správcovskému účtu!</translation>
+        <translation type="obsolete">Nelze se přihlásit k správcovskému účtu!</translation>
     </message>
     <message>
         <source>Unable to authorize a Rivendell Database!</source>
-        <translation>Nelze povolit databází Rivendell!</translation>
+        <translation type="obsolete">Nelze povolit databází Rivendell!</translation>
     </message>
     <message>
         <source>Update Needed</source>
-        <translation>Aktualizace potřeba</translation>
+        <translation type="obsolete">Aktualizace potřeba</translation>
     </message>
     <message>
         <source>The Rivendell Database needs to be updated.
 All audio and settings will be preserved, but
 this will STOP any audio playout or recording
 on this machine for a few seconds.  Continue?</source>
-        <translation>Databázi Rivendell je potřeba obnovit.
+        <translation type="obsolete">Databázi Rivendell je potřeba obnovit.
 Všechny nahrávky a nastavení budou uloženy, ale toto
 ZASTAVÍ všechna přehrávání zvuku nebo nahrávání
 na tomto počítači na několik sekund. Pokračovat?</translation>
     </message>
     <message>
         <source>Unable to update Rivendell Database:</source>
-        <translation>Nelze obnovit databázi Rivendell:</translation>
+        <translation type="obsolete">Nelze obnovit databázi Rivendell:</translation>
     </message>
     <message>
         <source>
 Database backup failed!</source>
-        <translation>
+        <translation type="obsolete">
 Záloha databáze se nezdařila!</translation>
     </message>
     <message>
         <source>
 Schema modification failed!</source>
-        <translation>
+        <translation type="obsolete">
 Změna schématu se nezdařila!</translation>
     </message>
     <message>
         <source>
 Unknown/unspecified error!</source>
-        <translation>
+        <translation type="obsolete">
 Neznámá/blíže neurčená chyba!</translation>
     </message>
     <message>
         <source>The Rivendell Database has been updated to version</source>
-        <translation>Databáze Rivendell byla zaktualizována na verzi</translation>
+        <translation type="obsolete">Databáze Rivendell byla zaktualizována na verzi</translation>
     </message>
     <message>
         <source>
 and a backup of the original database saved in </source>
-        <translation>
+        <translation type="obsolete">
 a záloha původní databáze uložena v </translation>
     </message>
     <message>
         <source>Database Updated</source>
-        <translation>Databáze obnovena</translation>
+        <translation type="obsolete">Databáze obnovena</translation>
     </message>
     <message>
         <source>RDAdmin Error</source>

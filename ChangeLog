@@ -17026,3 +17026,10 @@
 2018-06-08 Fred Gleason <fredg@paravelsystems.com>
 	* Removed rddbcheck(8).
 	* Removed rdrevert(8).
+2018-06-08 Fred Gleason <fredg@paravelsystems.com>
+	* Removed support for the '--admin-username', '--admin-password',
+	'--admin-hostname', '--admin-dbname', '--create-db-hostname',
+	'--skip-backup' and '--backup-filename' switches from rdadmin(1).
+	* Removed the 'Backup Database' and 'Restore Database' buttons
+	from rdadmin(1).
+	* Removed the database creation and updater code from rdadmin(1).

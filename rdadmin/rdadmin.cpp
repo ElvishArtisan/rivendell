@@ -44,7 +44,6 @@
 #include <rddbheartbeat.h>
 #include <rdescape_string.h>
 
-#include "createdb.h"
 #include "edit_settings.h"
 #include "globals.h"
 #include "info_dialog.h"
@@ -57,7 +56,6 @@
 #include "list_stations.h"
 #include "list_users.h"
 #include "login.h"
-#include "opendb.h"
 #include "rdadmin.h"
 
 //
@@ -70,13 +68,6 @@
 //
 RDCartDialog *admin_cart_dialog;
 bool exiting=false;
-QString admin_admin_username;
-QString admin_admin_password;
-QString admin_admin_hostname;
-QString admin_admin_dbname;
-QString admin_create_db_hostname;
-bool admin_skip_backup=false;
-QString admin_backup_filename="";
 
 void SigHandler(int signo)
 {
@@ -109,6 +100,8 @@ MainWidget::MainWidget(QWidget *parent)
   :QWidget(parent)
 {
   QString str;
+  QString err_msg;
+
 
   //
   // Fix the Window Size
@@ -134,26 +127,17 @@ MainWidget::MainWidget(QWidget *parent)
   setIcon(*admin_rivendell_map);
 
   //
-  // Load Configs
+  // Open the Database
   //
-  RDConfig *config=new RDConfig(RD_CONF_FILE);
-  config->load();
-  config->setModuleName("RDAdmin");
-
+  rda=new RDApplication("RDAdmin","rdadmin",RDADMIN_USAGE,this);
+  if(!rda->open(&err_msg)) {
+    QMessageBox::critical(this,"RDAdmin - "+tr("Error"),err_msg);
+    exit(1);
+  }
   str=QString(tr("RDAdmin")+" v"+VERSION+" - Host:");
   setCaption(QString().
 	     sprintf("%s %s",(const char *)str,
-		     (const char *)config->stationName()));
-
-  //
-  // Open Database
-  //
-  if(!OpenDb(config->mysqlDbname(),config->mysqlUsername(),
-	     config->mysqlPassword(),config->mysqlHostname(),
-	     config->stationName(),true,config)) {
-    exit(1);
-  }
-  new RDDbHeartbeat(rda->config()->mysqlHeartbeatInterval());
+		     (const char *)rda->config()->stationName()));
 
   //
   // Check (and possibly start) daemons
@@ -164,13 +148,7 @@ MainWidget::MainWidget(QWidget *parent)
     exit(1);
   }
 
-  //
-  // Initialize Global Classes
-  //
-  char temp[256];
-  GetPrivateProfileString(RD_CONF_FILE,"Identity","Password",
-			  temp,"",255);
-  rda->ripc()->connectHost("localhost",RIPCD_TCP_PORT,temp);
+  rda->ripc()->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 
   //
   // Log In
@@ -289,7 +267,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Manage Replicators Button
   //
   QPushButton *repl_button=new QPushButton(this);
-  repl_button->setGeometry(10,190,80,60);
+  repl_button->setGeometry(100,190,80,60);
   repl_button->setFont(font);
   repl_button->setText(tr("Manage\nReplicators"));
   connect(repl_button,SIGNAL(clicked()),this,SLOT(manageReplicatorsData()));
@@ -298,29 +276,11 @@ MainWidget::MainWidget(QWidget *parent)
   // System Info Button
   //
   QPushButton *info_button=new QPushButton(this);
-  info_button->setGeometry(100,190,80,60);
+  info_button->setGeometry(190,190,80,60);
   info_button->setFont(font);
   info_button->setText(tr("System\nInfo"));
   connect(info_button,SIGNAL(clicked()),this,SLOT(systemInfoData()));
 
-  //
-  // Backup Database Button
-  //
-  QPushButton *backup_button=new QPushButton(this);
-  backup_button->setGeometry(190,190,80,60);
-  backup_button->setFont(font);
-  backup_button->setText(tr("&Backup\nDatabase"));
-  connect(backup_button,SIGNAL(clicked()),this,SLOT(backupData()));
-
-  //
-  // Restore Database Button
-  //
-  QPushButton *restore_button=new QPushButton(this);
-  restore_button->setGeometry(280,190,80,60);
-  restore_button->setFont(font);
-  restore_button->setText(tr("&Restore\nDatabase"));
-  connect(restore_button,SIGNAL(clicked()),this,SLOT(restoreData()));
-  
   //
   // Quit Button
   //
@@ -392,86 +352,6 @@ void MainWidget::systemSettingsData()
 }
 
 
-void MainWidget::backupData()
-{
-  QString filename;
-  QString cmd;
-  int status;
-
-  filename=QFileDialog::getSaveFileName(RDGetHomeDir(),
-				      tr("Rivendell Database Backup (*.sql)"),
-					this);
-  if(filename.isEmpty()) {
-    return;
-  }
-  if(filename.right(4)!=QString(".sql")) {
-    filename+=".sql";
-  }
-  cmd=QString().sprintf("mysqldump -c %s -h %s -u %s -p%s > %s",
-			(const char *)rda->config()->mysqlDbname(),
-			(const char *)rda->config()->mysqlHostname(),
-			(const char *)rda->config()->mysqlUsername(),
-			(const char *)rda->config()->mysqlPassword(),
-			(const char *)filename);
-  status=system((const char *)cmd);
-  if(WEXITSTATUS(status)!=0) {
-    unlink((const char *)filename);
-    QMessageBox::warning(this,tr("Backup Error"),
-			 tr("Unable to create backup!"));
-    return;
-  }
-  QMessageBox::information(this,tr("Backup Complete"),
-			   tr("Backup completed successfully."));
-}
-
-
-void MainWidget::restoreData()
-{
-  QString filename;
-  QString cmd;
-  int status;
-  RDSqlQuery *q;
-  int ver=RD_VERSION_DATABASE;
-
-  if(QMessageBox::warning(NULL,tr("Restore Database"),
-			  tr("WARNING: This operation will COMPLETELY\nOVERWRITE the existing Rivendell Database!\nDo you want to continue?"),
-			  QMessageBox::Yes,QMessageBox::No)!=
-     QMessageBox::Yes) {
-    return;
-  }      
-  filename=QFileDialog::getOpenFileName(RDGetHomeDir(),
-				    tr("Rivendell Database Backup (*.sql)"),
-					this);
-  if(filename.isEmpty()) {
-    return;
-  }
-  RDKillDaemons();
-  ClearTables();
-  cmd=QString().sprintf("cat %s | mysql %s -h %s -u %s -p%s",
-			(const char *)filename,
-			(const char *)rda->config()->mysqlDbname(),
-			(const char *)rda->config()->mysqlHostname(),
-			(const char *)rda->config()->mysqlUsername(),
-			(const char *)rda->config()->mysqlPassword());
-  status=system((const char *)cmd);
-  if(WEXITSTATUS(status)!=0) {
-    QMessageBox::warning(this,tr("Restore Error"),
-			 tr("Unable to restore backup!"));
-    return;
-  }
-  q=new RDSqlQuery("select DB from VERSION");
-  if(q->first()) {
-    ver=q->value(0).toInt();
-  }
-  delete q;
-  admin_skip_backup=true;
-  UpdateDb(ver,rda->config());
-  QMessageBox::information(this,tr("Restore Complete"),
-			   tr("Restore completed successfully."));
-  RDStartDaemons();
-}
-
-
 void MainWidget::manageReplicatorsData()
 {
   ListReplicators *d=new ListReplicators(this);
@@ -521,21 +401,19 @@ void MainWidget::ClearTables()
 }
 
 
-int gui_main(int argc,char *argv[])
+int main(int argc,char *argv[])
 {
   QApplication a(argc,argv);
-
+  
   //
   // Load Translations
   //
   QTranslator qt(0);
-  qt.load(QString(QTDIR)+QString("/translations/qt_")+QTextCodec::locale(),
-	  ".");
+  qt.load(QString(QTDIR)+QString("/translations/qt_")+QTextCodec::locale(),".");
   a.installTranslator(&qt);
-
   QTranslator rd(0);
   rd.load(QString(PREFIX)+QString("/share/rivendell/librd_")+
-	  QTextCodec::locale(),".");
+	     QTextCodec::locale(),".");
   a.installTranslator(&rd);
 
   QTranslator rdhpi(0);
@@ -545,95 +423,12 @@ int gui_main(int argc,char *argv[])
 
   QTranslator tr(0);
   tr.load(QString(PREFIX)+QString("/share/rivendell/rdadmin_")+
-	  QTextCodec::locale(),".");
+	     QTextCodec::locale(),".");
   a.installTranslator(&tr);
 
-  //
-  // Start Event Loop
-  //
   MainWidget *w=new MainWidget();
-  if(exiting) {
-      exit(0);
-  }
   a.setMainWidget(w);
   w->setGeometry(QRect(QPoint(0,0),w->sizeHint()));
   w->show();
   return a.exec();
-}
-
-
-int cmdline_main(int argc,char *argv[])
-{
-  QApplication a(argc,argv,false);
-  
-  //
-  // Load Configs
-  //
-  RDConfig *config=new RDConfig();
-  config->load();
-
-  //
-  // Open Database
-  //
-  QString station_name=config->stationName();
-  if(!admin_create_db_hostname.isEmpty()) {
-    station_name=admin_create_db_hostname;
-  }
-  if(!OpenDb(config->mysqlDbname(),config->mysqlUsername(),
-	     config->mysqlPassword(),config->mysqlHostname(),
-	     station_name,false,config)) {
-    return 1;
-  }
-
-  return 0;
-}
-
-
-int main(int argc,char *argv[])
-{
-  int ret;
-  bool found_check_db=false;
-
-  RDCmdSwitch *cmd=new RDCmdSwitch(argc,argv,"rdadmin",RDADMIN_USAGE);
-  for(unsigned i=0;i<cmd->keys();i++) {
-    if(cmd->key(i)=="--check-db") {
-      found_check_db=true;
-      cmd->setProcessed(i,true);
-    }
-    if(cmd->key(i)=="--mysql-admin-user") {
-      admin_admin_username=cmd->value(i);
-      cmd->setProcessed(i,true);
-    }
-    if(cmd->key(i)=="--mysql-admin-password") {
-      admin_admin_password=cmd->value(i);
-      cmd->setProcessed(i,true);
-    }
-    if(cmd->key(i)=="--mysql-admin-hostname") {
-      admin_admin_hostname=cmd->value(i);
-      cmd->setProcessed(i,true);
-    }
-    if(cmd->key(i)=="--mysql-admin-dbname") {
-      admin_admin_dbname=cmd->value(i);
-      cmd->setProcessed(i,true);
-    }
-    if(cmd->key(i)=="--create-db-hostname") {
-      admin_create_db_hostname=cmd->value(i);
-      cmd->setProcessed(i,true);
-    }
-    if(cmd->key(i)=="--backup-filename") {
-      admin_backup_filename=cmd->value(i);
-      cmd->setProcessed(i,true);
-    }
-    if(cmd->key(i)=="--skip-backup") {
-      admin_skip_backup=true;
-      cmd->setProcessed(i,true);
-    }
-  }
-  if(found_check_db) {
-    ret=cmdline_main(argc,argv);
-  }
-  else {
-    ret=gui_main(argc,argv);
-  }
-  return ret;
 }
