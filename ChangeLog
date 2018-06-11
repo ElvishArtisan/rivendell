@@ -17040,3 +17040,6 @@
 	reversion to an	implied schema.
 2018-06-08 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed typos in the rddbmgr(8) man page.
+2018-06-11 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rddbmgr(8) that broke --modify when using an
+	implied schema.

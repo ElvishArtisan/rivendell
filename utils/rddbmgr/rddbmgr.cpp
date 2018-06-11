@@ -317,11 +317,11 @@ MainObject::MainObject(QObject *parent)
   }
   else {
     if(set_version.isEmpty()) {
+      set_schema=RD_VERSION_DATABASE;
       if(set_schema<schema) {
 	fprintf(stderr,"rddbmgr: reversion implied, you must explicitly specify the target schema\n");
 	exit(1);
       }
-      set_schema=RD_VERSION_DATABASE;
     }
     else {
       if((set_schema=GetVersionSchema(set_version))==0) {
