@@ -416,6 +416,7 @@ void MainObject::jackRecordTimerData(int stream)
 
 void MainObject::jackClientStartData()
 {
+#ifdef JACK
   QString sql=QString("select DESCRIPTION,COMMAND_LINE from JACK_CLIENTS where ")+
     "STATION_NAME=\""+RDEscapeString(rd_config->stationName())+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
@@ -434,6 +435,7 @@ void MainObject::jackClientStartData()
     sleep(1);
   }
   delete q;
+#endif  // JACK
 }
 
 

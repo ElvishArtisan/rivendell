@@ -17043,3 +17043,5 @@
 2018-06-11 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rddbmgr(8) that broke --modify when using an
 	implied schema.
+2018-06-11 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug that broke the build when JACK support was disabled.
