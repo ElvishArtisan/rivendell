@@ -25,6 +25,7 @@ FILTER_MODE          int(11)            0=Synchronous, 1=Asynchronous
 START_JACK           enum('Y','N')
 JACK_SERVER_NAME     char(64)
 JACK_COMMAND_LINE    char(255)
+JACK_PORTS           int(11) signed
 CUE_CARD             int(11) signed
 CUE_PORT             int(11) signed
 CUE_START_CART       int(10) unsigned

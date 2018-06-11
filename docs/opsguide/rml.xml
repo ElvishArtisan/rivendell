@@ -171,6 +171,36 @@
 
 <sect1 xml:id="sect.rml.commands">
   <title>Commands</title>
+  <sect2 xml:id="sect.rml.activate_jack_port__ja_">
+    <title>Activate Jack Port [JA]</title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>caed</command><manvolnum>8</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>JA</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Activate an audio port to the JACK processing graph.
+    </para>
+    <para>
+      <userinput>JA</userinput>
+      <replaceable>num</replaceable>!
+    </para>
+    <para>
+      Activate port <replaceable>num</replaceable> in the JACK graph, causing
+      new playout and captures ports corresponding to
+      <replaceable>num</replaceable> to be added to the JACK graph.
+      <replaceable>num</replaceable> must be an integer between
+      <userinput>1</userinput> and <userinput>24</userinput> inclusive.
+    </para>
+  </sect2>
+
   <sect2 xml:id="sect.rml.air_gate__ag_">
     <title>Air Gate [AG]</title>
     <para>
@@ -1356,6 +1386,36 @@
     <para>
       Refresh the log currently loaded in log machine
       <replaceable>mach</replaceable>. 
+    </para>
+  </sect2>
+
+  <sect2 xml:id="sect.rml.remove_jack_port__jr_">
+    <title>Remove Jack Port [JR]</title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>caed</command><manvolnum>8</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>JR</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Remove an audio port from the JACK processing graph.
+      <replaceable>num</replaceable> must be an integer between
+      <userinput>1</userinput> and <userinput>24</userinput> inclusive.
+    </para>
+    <para>
+      <userinput>JR</userinput>
+      <replaceable>num</replaceable>!
+    </para>
+    <para>
+      Deactivate port <replaceable>num</replaceable> in the JACK graph, causing
+      new playout and captures ports corresponding to
+      <replaceable>num</replaceable> to be removed from the JACK graph.
     </para>
   </sect2>
 

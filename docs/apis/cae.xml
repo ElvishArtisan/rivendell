@@ -1386,6 +1386,31 @@
 <sect1>
   <title>JACK Operations</title>
   <sect2>
+    <title><command>Activate Port</command></title>
+    <para>
+      Add a complementary pair of JACK ports (input and output) to the
+      JACK graph, at the port position indicated by
+      <replaceable>port</replaceable>. If the ports are already active, do
+      nothing.
+    </para>
+    <para>
+      <userinput>JA <replaceable>num</replaceable>!</userinput>
+    </para>
+    <variablelist>
+      <varlistentry>
+	<term>
+	  <replaceable>num</replaceable>
+	</term>
+	<listitem>
+	  <para>
+	    The port position to which to associate the added port.
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+  </sect2>
+
+  <sect2>
     <title><command>Connect Ports</command></title>
     <para>
       Connect a JACK input port to an output port. If the connection was
@@ -1447,6 +1472,31 @@
 	<listitem>
 	  <para>
 	    The name of the JACK input port, in format CLIENTNAME:PORTNAME.
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+  </sect2>
+
+  <sect2>
+    <title><command>Remove Port</command></title>
+    <para>
+      Remove a complementary pair of JACK ports (input and output) from the
+      JACK graph, at the port position indicated by
+      <replaceable>port</replaceable>. If the ports are not active, do
+      nothing.
+    </para>
+    <para>
+      <userinput>JR <replaceable>num</replaceable>!</userinput>
+    </para>
+    <variablelist>
+      <varlistentry>
+	<term>
+	  <replaceable>num</replaceable>
+	</term>
+	<listitem>
+	  <para>
+	    The port position to which to associate the added port.
 	  </para>
 	</listitem>
       </varlistentry>

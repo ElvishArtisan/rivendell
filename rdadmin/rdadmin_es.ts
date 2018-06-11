@@ -1928,6 +1928,10 @@ Do you still want to save?</source>
         <source>Are you sure you want to delete JACK Client</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Initial Audio Ports</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditJackClient</name>
