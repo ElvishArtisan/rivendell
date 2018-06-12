@@ -17041,7 +17041,7 @@
 2018-06-08 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed typos in the rddbmgr(8) man page.
 2018-06-11 Fred Gleason <fredg@paravelsystems.com>
-	* Added a 'STATIONS.JACK_PORT' field to the database.
+	* Added a 'STATIONS.JACK_PORTS' field to the database.
 	* Incremented the database version to 287.
 	* Added an 'Initial Audio Ports' control to the 'JACK Configuration'
 	dialog in rdadmin(1).
