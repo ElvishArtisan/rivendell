@@ -49,6 +49,7 @@ class MainWidget : public QWidget
   QSizePolicy sizePolicy() const;
 
  private slots:
+  void caeConnectedData(bool state);
   void userData();
   void masterTimerData();
   void meterData();

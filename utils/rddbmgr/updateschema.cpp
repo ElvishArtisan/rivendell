@@ -7157,6 +7157,17 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
     cur_schema++;
   }
 
+  if((cur_schema<287)&&(set_schema>cur_schema)) { 
+    sql=QString("alter table STATIONS add column ")+
+      "JACK_PORTS int not null default 8 after JACK_COMMAND_LINE";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    cur_schema++;
+  }
+
+
 
   //
   // Maintainer's Note:

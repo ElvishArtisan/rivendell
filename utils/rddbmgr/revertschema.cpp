@@ -30,6 +30,25 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
   QString tablename;
 
   //
+  // Maintainer's Note:
+  //
+  // When adding a schema reversion here, be sure also to implement the
+  // corresponding update in updateschema.cpp!
+  //
+
+  //
+  // Revert 287
+  //
+  if((cur_schema==287)&&(set_schema<cur_schema)) {
+    sql=QString("alter table STATIONS drop column JACK_PORTS");
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    cur_schema--;
+  }
+
+  //
   // Revert 286
   //
   if((cur_schema==286)&&(set_schema<cur_schema)) {

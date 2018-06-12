@@ -76,6 +76,8 @@ class RDStation
   void setJackServerName(const QString &str) const;
   QString jackCommandLine() const;
   void setJackCommandLine(const QString &str) const;
+  int jackPorts() const;
+  void setJackPorts(int ports) const;
   int cueCard() const;
   void setCueCard(int card);
   int cuePort() const;

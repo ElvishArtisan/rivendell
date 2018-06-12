@@ -171,6 +171,9 @@ MainObject::MainObject(QObject *parent,const char *name)
     argnum[i]=0;
     argptr[i]=0;
     auth[i]=false;
+    for(int j=0;j<RD_MAX_CARDS;j++) {
+      update_meters[j][i]=false;
+    }
   }
   for(int i=0;i<RD_MAX_CARDS;i++) {
     cae_driver[i]=RDStation::None;
@@ -1808,6 +1811,15 @@ void MainObject::DispatchCommand(int ch)
       return;
     }
     meter_port[ch]=port;
+    for(int i=2;i<argnum[ch];i++) {
+      sscanf(args[ch][i],"%d",&card);
+      if((card<0)||(card>=RD_MAX_CARDS)) {
+	EchoArgs(ch,'-');
+	return;
+      }
+      update_meters[card][ch]=true;
+    }
+
     EchoArgs(ch,'+');
     SendMeterOutputStatusUpdate();
     return;
@@ -1885,6 +1897,7 @@ void MainObject::KillSocket(int ch)
   auth[ch]=false;
   meter_port[ch]=0;
   for(int i=0;i<RD_MAX_CARDS;i++) {
+    update_meters[i][ch]=false;
     for(int j=0;j<RD_MAX_STREAMS;j++) {
       if(record_owner[i][j]==ch) {
 	unsigned len=0;
@@ -2307,30 +2320,35 @@ void MainObject::FreeMadDecoder(int card,int stream)
 void MainObject::SendMeterLevelUpdate(const QString &type,int cardnum,
 				      int portnum,short levels[])
 {
-  char msg[1500];
-  int n=snprintf(msg,1500,"ML %s %d %d %d %d",
-		 (const char *)type,cardnum,portnum,levels[0],levels[1]);
-  SendMeterUpdate(msg,n);
+  for(int l=0;l<CAE_MAX_CONNECTIONS;l++) {
+    if((meter_port[l]>0)&&update_meters[cardnum][l]) {
+      SendMeterUpdate(QString().sprintf("ML %s %d %d %d %d",
+	       (const char *)type,cardnum,portnum,levels[0],levels[1]),l);
+    }
+  }
 }
 
 
 void MainObject::SendStreamMeterLevelUpdate(int cardnum,int streamnum,
 					    short levels[])
 {
-  char msg[1500];
-  int n=snprintf(msg,1500,"MO %d %d %d %d",
-		 cardnum,streamnum,levels[0],levels[1]);
-  SendMeterUpdate(msg,n);
+  for(int l=0;l<CAE_MAX_CONNECTIONS;l++) {
+    if((meter_port[l]>0)&&update_meters[cardnum][l]) {
+      SendMeterUpdate(QString().sprintf("MO %d %d %d %d",
+		  cardnum,streamnum,levels[0],levels[1]),l);
+    }
+  }
 }
 
 
 void MainObject::SendMeterPositionUpdate(int cardnum,unsigned pos[])
 {
-  char msg[1500];
-  int n;
-  for(unsigned i=0;i<RD_MAX_STREAMS;i++) {
-    n=snprintf(msg,1500,"MP %d %d %d",cardnum,i,pos[i]);
-    SendMeterUpdate(msg,n);
+  for(unsigned k=0;k<RD_MAX_STREAMS;k++) {
+    for(int l=0;l<CAE_MAX_CONNECTIONS;l++) {
+      if((meter_port[l]>0)&&update_meters[cardnum][l]) {
+	SendMeterUpdate(QString().sprintf("MP %d %d %d",cardnum,k,pos[k]),l);
+      }
+    }
   }
 }
 
@@ -2341,7 +2359,12 @@ void MainObject::SendMeterOutputStatusUpdate()
     if(cae_driver[i]!=RDStation::None) {
       for(unsigned j=0;j<RD_MAX_PORTS;j++) {
 	for(unsigned k=0;k<RD_MAX_STREAMS;k++) {
-	  SendMeterOutputStatusUpdate(i,j,k);
+	  for(unsigned l=0;l<CAE_MAX_CONNECTIONS;l++) {
+	    if((meter_port[l]>0)&&update_meters[i][l]) {
+	      SendMeterUpdate(QString().sprintf("MS %d %d %d %d",i,j,k,
+					  output_status_flag[i][j][k]),l);
+	    }
+	  }
 	}
       }
     }
@@ -2351,21 +2374,18 @@ void MainObject::SendMeterOutputStatusUpdate()
 
 void MainObject::SendMeterOutputStatusUpdate(int card,int port,int stream)
 {
-  char msg[1500];
-  int n;
-  n=snprintf(msg,1500,"MS %d %d %d %d",card,port,stream,
-	     output_status_flag[card][port][stream]);
-  SendMeterUpdate(msg,n);
-}
-
-
-void MainObject::SendMeterUpdate(const char *msg,unsigned len)
-{
-  for(unsigned i=0;i<CAE_MAX_CONNECTIONS;i++) {
-    if(meter_port[i]>0) {
-      meter_socket->writeBlock(msg,len,socket[i]->peerAddress(),meter_port[i]);
+  for(unsigned l=0;l<CAE_MAX_CONNECTIONS;l++) {
+    if((meter_port[l]>0)&&update_meters[card][l]) {
+      SendMeterUpdate(QString().sprintf("MS %d %d %d %d",card,port,stream,
+				  output_status_flag[card][port][stream]),l);
     }
   }
+}
+
+void MainObject::SendMeterUpdate(const QString &msg,int conn_id)
+{
+  meter_socket->writeBlock(msg,msg.length(),socket[conn_id]->peerAddress(),
+			   meter_port[conn_id]);
 }
 
 

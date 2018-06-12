@@ -56,6 +56,7 @@ class MainWidget : public QWidget
   QSizePolicy sizePolicy() const;
 
  private slots:
+  void caeConnectedData(bool state);
   void userData();
   void rmlReceivedData(RDMacro *rml);
 
@@ -66,12 +67,6 @@ class MainWidget : public QWidget
  private:
   void RunLocalMacros(RDMacro *rml);
   void SetCaption();
-  //  RDConfig *panel_config;
-  //  RDCae *panel_cae;
-  //  RDRipc *panel_ripc;
-  //  RDUser *panel_user;
-  //  RDStation *panel_station;
-  //  RDSystem *panel_system;
   RDEventPlayer *panel_player;
   QPixmap *lib_rivendell_map;
   QString panel_filter;

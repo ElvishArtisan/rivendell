@@ -21,17 +21,18 @@
 #ifndef EDIT_JACK_H
 #define EDIT_JACK_H
 
-#include <qdialog.h>
-#include <qlistview.h>
-#include <qtextedit.h>
-#include <qpixmap.h>
 #include <qcheckbox.h>
-#include <qlineedit.h>
-#include <qpushbutton.h>
+#include <qdialog.h>
 #include <qlabel.h>
+#include <qlineedit.h>
+#include <qlistview.h>
+#include <qpixmap.h>
+#include <qpushbutton.h>
+#include <qspinbox.h>
+#include <qtextedit.h>
 
-#include <rdstation.h>
 #include <rdlistview.h>
+#include <rdstation.h>
 
 #define EDITJACK_DEFAULT_SERVERNAME QObject::tr("(default)")
 
@@ -63,6 +64,8 @@ class EditJack : public QDialog
   QLineEdit *edit_jack_server_name_edit;
   QLabel *edit_jack_command_line_label;
   QLineEdit *edit_jack_command_line_edit;
+  QLabel *edit_jack_audio_ports_label;
+  QSpinBox *edit_jack_audio_ports_spin;
   QLabel *edit_jack_client_label;
   RDListView *edit_jack_client_view;
   RDStation *edit_station;

@@ -142,7 +142,7 @@ class MainObject : public QObject
   void SendMeterPositionUpdate(int cardnum,unsigned pos[]);
   void SendMeterOutputStatusUpdate();
   void SendMeterOutputStatusUpdate(int card,int port,int stream);
-  void SendMeterUpdate(const char *msg,unsigned len);
+  void SendMeterUpdate(const QString &msg,int conn_id);
   bool debug;
   unsigned system_sample_rate;
   Q_INT16 tcp_port;
@@ -165,6 +165,7 @@ class MainObject : public QObject
   bool play_pitch[RD_MAX_CARDS][RD_MAX_STREAMS];
   bool port_status[RD_MAX_CARDS][RD_MAX_PORTS];
   bool output_status_flag[RD_MAX_CARDS][RD_MAX_PORTS][RD_MAX_STREAMS];
+  bool update_meters[RD_MAX_CARDS][CAE_MAX_CONNECTIONS];
   struct {
     int card;
     int stream;

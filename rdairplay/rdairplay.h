@@ -98,7 +98,8 @@ class MainWidget : public QWidget
 
  private slots:
   void logLine(RDConfig::LogPriority prio,const QString &msg);
-  void ripcConnected(bool state);
+  void caeConnectedData(bool state);
+  void ripcConnectedData(bool state);
   void rmlReceivedData(RDMacro *rml);
   void gpiStateChangedData(int matrix,int line,bool state);
   void logChannelStartedData(int id,int mport,int card,int port);

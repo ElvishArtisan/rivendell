@@ -96,6 +96,16 @@ EditJack::EditJack(RDStation *station,QWidget *parent)
     setAlignment(AlignRight|AlignVCenter|ShowPrefix);
 
   //
+  // Active Audio Ports
+  //
+  edit_jack_audio_ports_spin=new QSpinBox(this);
+  edit_jack_audio_ports_spin->setRange(0,24);
+  edit_jack_audio_ports_label=
+    new QLabel(edit_jack_audio_ports_spin,tr("Active Audio Ports")+":",this);
+  edit_jack_audio_ports_label->setFont(font);
+  edit_jack_audio_ports_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+
+  //
   // JACK Client List
   //
   edit_jack_client_view=new RDListView(this);
@@ -159,6 +169,7 @@ EditJack::EditJack(RDStation *station,QWidget *parent)
   edit_start_jack_box->setChecked(edit_station->startJack());
   edit_jack_server_name_edit->setText(edit_station->jackServerName());
   edit_jack_command_line_edit->setText(edit_station->jackCommandLine());
+  edit_jack_audio_ports_spin->setValue(edit_station->jackPorts());
   if(edit_jack_server_name_edit->text().isEmpty()) {
     edit_jack_server_name_edit->setText(EDITJACK_DEFAULT_SERVERNAME);
   }
@@ -170,7 +181,7 @@ EditJack::EditJack(RDStation *station,QWidget *parent)
 
 QSize EditJack::sizeHint() const
 {
-  return QSize(450,330);
+  return QSize(450,352);
 } 
 
 
@@ -279,6 +290,7 @@ void EditJack::okData()
     edit_station->setJackServerName(edit_jack_server_name_edit->text());
   }
   edit_station->setJackCommandLine(edit_jack_command_line_edit->text());
+  edit_station->setJackPorts(edit_jack_audio_ports_spin->value());
   item=(RDListViewItem *)edit_jack_client_view->firstChild();
   while(item!=NULL) {
     sql=QString("update JACK_CLIENTS set DESCRIPTION=\"")+
@@ -311,9 +323,12 @@ void EditJack::resizeEvent(QResizeEvent *e)
   edit_jack_command_line_label->setGeometry(10,54,130,20);
   edit_jack_command_line_edit->setGeometry(145,54,size().width()-155,20);
 
-  edit_jack_client_label->setGeometry(15,80,sizeHint().width()-28,20);
+  edit_jack_audio_ports_label->setGeometry(10,76,130,20);
+  edit_jack_audio_ports_spin->setGeometry(145,76,50,20);
+
+  edit_jack_client_label->setGeometry(15,103,sizeHint().width()-28,20);
   edit_jack_client_view->
-    setGeometry(10,102,size().width()-20,size().height()-170);
+    setGeometry(10,124,size().width()-20,size().height()-192);
 
   edit_add_button->setGeometry(15,size().height()-60,50,30);
   edit_edit_button->setGeometry(75,size().height()-60,50,30);

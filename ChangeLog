@@ -17045,3 +17045,18 @@
 	implied schema.
 2018-06-11 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug that broke the build when JACK support was disabled.
+	* Added a 'STATIONS.JACK_PORTS' field to the database.
+	* Incremented the database version to 287.
+	* Added an 'Initial Audio Ports' control to the 'JACK Configuration'
+	dialog in rdadmin(1).
+2018-06-12 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the name of the 'Initial Audio Ports' control to
+	'Active Audio Ports' in the 'Configure JACK' dialog in rdadmin(1).
+2018-06-12 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'card-num' parameter to the 'Meter Enable' ['ME'] command
+	in caed(8).
+	* Added an 'RDCae::enableMetering()' method.
+	* Modified rdairplay(1) to enable metering explicitly.
+	* Modified rdcartslots(1) to enable metering explicitly.
+	* Modified rdlibrary(1) to enable metering explicitly.
+	* Modified rdpanel(1) to enable metering explicitly.

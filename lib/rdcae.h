@@ -45,6 +45,7 @@ class RDCae : public QObject
   RDCae(RDStation *station,RDConfig *config,QObject *parent=0);
   ~RDCae();
   void connectHost();
+  void enableMetering(std::vector<int> *cards);
   bool loadPlay(int card,QString name,int *stream,int *handle);
   void unloadPlay(int handle);
   void positionPlay(int handle,int pos);
@@ -127,4 +128,4 @@ class RDCae : public QObject
 };
 
 
-#endif 
+#endif  // RDCAE_H

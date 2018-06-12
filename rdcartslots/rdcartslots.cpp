@@ -37,6 +37,7 @@
 #include <rdapplication.h>
 #include <rdcheck_daemons.h>
 #include <rddbheartbeat.h>
+#include <rdescape_string.h>
 
 #include "rdcartslots.h"
 
@@ -92,6 +93,8 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // CAE Connection
   //
+  connect(rda->cae(),SIGNAL(isConnected(bool)),
+	  this,SLOT(caeConnectedData(bool)));
   rda->cae()->connectHost();
 
   //
@@ -163,6 +166,22 @@ QSize MainWidget::sizeHint() const
 	       (10+panel_slots[0]->size().width()),
 	       10+rda->station()->cartSlotRows()*
 	       (5+panel_slots[0]->size().height()));
+}
+
+
+void MainWidget::caeConnectedData(bool state)
+{
+  std::vector<int> cards;
+
+  QString sql=QString("select CARD from CARTSLOTS where ")+
+    "STATION_NAME=\""+RDEscapeString(rda->config()->stationName())+"\"";
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  while(q->next()) {
+   cards.push_back(q->value(0).toInt());
+  }
+  delete q;
+
+  rda->cae()->enableMetering(&cards);
 }
 
 

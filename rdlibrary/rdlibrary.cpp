@@ -190,6 +190,8 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // CAE Connection
   //
+  connect(rda->cae(),SIGNAL(isConnected(bool)),
+	  this,SLOT(caeConnectedData(bool)));
   rda->cae()->connectHost();
 
   //
@@ -480,6 +482,17 @@ QSize MainWidget::sizeHint() const
 QSizePolicy MainWidget::sizePolicy() const
 {
   return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
+}
+
+
+void MainWidget::caeConnectedData(bool state)
+{
+  if(state) {
+    std::vector<int> cards;
+    cards.push_back(rda->libraryConf()->inputCard());
+    cards.push_back(rda->libraryConf()->outputCard());
+    rda->cae()->enableMetering(&cards);
+  }
 }
 
 

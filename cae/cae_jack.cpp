@@ -41,8 +41,6 @@ jack_client_t *jack_client;
 RDMeterAverage *jack_input_meter[RD_MAX_PORTS][2];
 RDMeterAverage *jack_output_meter[RD_MAX_PORTS][2];
 RDMeterAverage *jack_stream_output_meter[RD_MAX_STREAMS][2];
-//volatile jack_default_audio_sample_t jack_input_meter[RD_MAX_PORTS][2];
-//volatile jack_default_audio_sample_t jack_output_meter[RD_MAX_PORTS][2];
 volatile jack_default_audio_sample_t 
   jack_input_volume[RD_MAX_PORTS];
 volatile jack_default_audio_sample_t 
@@ -87,10 +85,14 @@ int JackProcess(jack_nframes_t nframes, void *arg)
   //
   for(int i=0;i<RD_MAX_PORTS;i++) {
     for(int j=0;j<2;j++) {
-      jack_input_buffer[i][j]=(jack_default_audio_sample_t *)
-	jack_port_get_buffer(jack_input_port[i][j],nframes);
-      jack_output_buffer[i][j]=(jack_default_audio_sample_t *)
-	jack_port_get_buffer(jack_output_port[i][j],nframes);
+      if(jack_input_port[i][j]!=NULL) {
+	jack_input_buffer[i][j]=(jack_default_audio_sample_t *)
+	  jack_port_get_buffer(jack_input_port[i][j],nframes);
+      }
+      if(jack_output_port[i][j]!=NULL) {
+	jack_output_buffer[i][j]=(jack_default_audio_sample_t *)
+	  jack_port_get_buffer(jack_output_port[i][j],nframes);
+      }
     }
   }
 
@@ -99,8 +101,10 @@ int JackProcess(jack_nframes_t nframes, void *arg)
   //
   for(int i=0;i<RD_MAX_PORTS;i++) {
     for(int j=0;j<2;j++) {
-      for(unsigned k=0;k<nframes;k++) {
-	jack_output_buffer[i][j][k]=0.0;
+      if(jack_output_port[i][j]!=NULL) {
+	for(unsigned k=0;k<nframes;k++) {
+	  jack_output_buffer[i][j][k]=0.0;
+	}
       }
     } 
   }
@@ -112,9 +116,11 @@ int JackProcess(jack_nframes_t nframes, void *arg)
     for(int j=0;j<RD_MAX_PORTS;j++) {
       if(jack_passthrough_volume[i][j]>0.0) {
 	for(int k=0;k<2;k++) {
-	  for(unsigned l=0;l<nframes;l++) {
-	    jack_output_buffer[j][k][l]+=
-	      jack_input_buffer[i][k][l]*jack_passthrough_volume[i][j];
+	  if((jack_output_port[j][k]!=NULL)&&(jack_input_port[i][k]!=NULL)) {
+	    for(unsigned l=0;l<nframes;l++) {
+	      jack_output_buffer[j][k][l]+=
+		jack_input_buffer[i][k][l]*jack_passthrough_volume[i][j];
+	    }
 	  }
 	}
       }
@@ -125,68 +131,70 @@ int JackProcess(jack_nframes_t nframes, void *arg)
   // Process Input Streams
   //
   for(int i=0;i<RD_MAX_PORTS;i++) {
-    if(jack_recording[i]) {
-      switch(jack_input_channels[i]) {
-      case 1: // mono
-	for(unsigned j=0;j<nframes;j++) {
-	  switch(jack_input_mode[jack_card_process][i]) {
-	  case 3: // R only
-	    jack_callback_buffer[j]=jack_input_volume[i]*
-	      jack_input_buffer[i][1][j];
-	    break;
-	  case 2: // L only
-	    jack_callback_buffer[j]=jack_input_volume[i]*
-	      jack_input_buffer[i][0][j];
-	    break;
-	  case 1: // swap, sum R+L
-	  case 0: // normal, sum L+R
-	  default:
-	    jack_callback_buffer[j]=jack_input_volume[i]*
-	      (jack_input_buffer[i][0][j]+jack_input_buffer[i][1][j]);
-	    break;
-	  }
-	} // for nframes
-	n=jack_record_ring[i]->
-	  write((char *)jack_callback_buffer,
-		nframes*sizeof(jack_default_audio_sample_t))/
-	  sizeof(jack_default_audio_sample_t);
-	break;
+    if(jack_input_port[i][0]!=NULL) {
+      if(jack_recording[i]) {
+	switch(jack_input_channels[i]) {
+	case 1: // mono
+	  for(unsigned j=0;j<nframes;j++) {
+	    switch(jack_input_mode[jack_card_process][i]) {
+	    case 3: // R only
+	      jack_callback_buffer[j]=jack_input_volume[i]*
+		jack_input_buffer[i][1][j];
+	      break;
+	    case 2: // L only
+	      jack_callback_buffer[j]=jack_input_volume[i]*
+		jack_input_buffer[i][0][j];
+	      break;
+	    case 1: // swap, sum R+L
+	    case 0: // normal, sum L+R
+	    default:
+	      jack_callback_buffer[j]=jack_input_volume[i]*
+		(jack_input_buffer[i][0][j]+jack_input_buffer[i][1][j]);
+	      break;
+	    }
+	  } // for nframes
+	  n=jack_record_ring[i]->
+	    write((char *)jack_callback_buffer,
+		  nframes*sizeof(jack_default_audio_sample_t))/
+	    sizeof(jack_default_audio_sample_t);
+	  break;
 
-      case 2: // stereo
-	for(unsigned j=0;j<nframes;j++) {
-	  switch(jack_input_mode[jack_card_process][i]) {
-	  case 3: // R only
-	    memset(&jack_callback_buffer[2*j],0,
-		   sizeof(jack_input_buffer[i][0][j]));
-	    jack_callback_buffer[2*j+1]=jack_input_volume[i]*
-	      jack_input_buffer[i][1][j];
-	    break;
-	  case 2: // L only
-	    jack_callback_buffer[2*j]=jack_input_volume[i]*
-	      jack_input_buffer[i][0][j];
-	    memset(&jack_callback_buffer[2*j+1],0,
-		   sizeof(jack_input_buffer[i][1][j]));
-	    break;
-	  case 1: // swap
-	    jack_callback_buffer[2*j]=jack_input_volume[i]*
-	      jack_input_buffer[i][1][j];
-	    jack_callback_buffer[2*j+1]=jack_input_volume[i]*
-	      jack_input_buffer[i][0][j];
-	    break;
-	  case 0: // normal
-	  default:
-	    jack_callback_buffer[2*j]=jack_input_volume[i]*
-	      jack_input_buffer[i][0][j];
-	    jack_callback_buffer[2*j+1]=jack_input_volume[i]*
-	      jack_input_buffer[i][1][j];
-	    break;
-	  }
-	} // for nframes
-	n=jack_record_ring[i]->
-	  write((char *)jack_callback_buffer,
-		2*nframes*sizeof(jack_default_audio_sample_t))/
-	  (2*sizeof(jack_default_audio_sample_t));
-	break;
+	case 2: // stereo
+	  for(unsigned j=0;j<nframes;j++) {
+	    switch(jack_input_mode[jack_card_process][i]) {
+	    case 3: // R only
+	      memset(&jack_callback_buffer[2*j],0,
+		     sizeof(jack_input_buffer[i][0][j]));
+	      jack_callback_buffer[2*j+1]=jack_input_volume[i]*
+		jack_input_buffer[i][1][j];
+	      break;
+	    case 2: // L only
+	      jack_callback_buffer[2*j]=jack_input_volume[i]*
+		jack_input_buffer[i][0][j];
+	      memset(&jack_callback_buffer[2*j+1],0,
+		     sizeof(jack_input_buffer[i][1][j]));
+	      break;
+	    case 1: // swap
+	      jack_callback_buffer[2*j]=jack_input_volume[i]*
+		jack_input_buffer[i][1][j];
+	      jack_callback_buffer[2*j+1]=jack_input_volume[i]*
+		jack_input_buffer[i][0][j];
+	      break;
+	    case 0: // normal
+	    default:
+	      jack_callback_buffer[2*j]=jack_input_volume[i]*
+		jack_input_buffer[i][0][j];
+	      jack_callback_buffer[2*j+1]=jack_input_volume[i]*
+		jack_input_buffer[i][1][j];
+	      break;
+	    }
+	  } // for nframes
+	  n=jack_record_ring[i]->
+	    write((char *)jack_callback_buffer,
+		  2*nframes*sizeof(jack_default_audio_sample_t))/
+	    (2*sizeof(jack_default_audio_sample_t));
+	  break;
+	}
       }
     }
   }
@@ -229,37 +237,39 @@ int JackProcess(jack_nframes_t nframes, void *arg)
 	break;
       }
       for(int j=0;j<RD_MAX_PORTS;j++) {
-	if(jack_output_volume[j][i]>0.0) {
-	  switch(jack_output_channels[i]) {
-	  case 1:
-	    for(unsigned k=0;k<n;k++) {
-	      jack_output_buffer[j][0][k]=
-		jack_output_buffer[j][0][k]+jack_output_volume[j][i]*
-		jack_callback_buffer[k];
-	      jack_output_buffer[j][1][k]=
-		jack_output_buffer[j][1][k]+jack_output_volume[j][i]*
-		jack_callback_buffer[k];
-	    }
-	    if(n!=nframes && jack_eof[i]) {
-	      jack_stopping[i]=true;
-	      jack_playing[i]=false;
-	    }
-	    break;
+	if(jack_output_port[j][0]!=NULL) {
+	  if(jack_output_volume[j][i]>0.0) {
+	    switch(jack_output_channels[i]) {
+	    case 1:
+	      for(unsigned k=0;k<n;k++) {
+		jack_output_buffer[j][0][k]=
+		  jack_output_buffer[j][0][k]+jack_output_volume[j][i]*
+		  jack_callback_buffer[k];
+		jack_output_buffer[j][1][k]=
+		  jack_output_buffer[j][1][k]+jack_output_volume[j][i]*
+		  jack_callback_buffer[k];
+	      }
+	      if(n!=nframes && jack_eof[i]) {
+		jack_stopping[i]=true;
+		jack_playing[i]=false;
+	      }
+	      break;
 
-	  case 2:
-	    for(unsigned k=0;k<n;k++) {
-	      jack_output_buffer[j][0][k]=
-		jack_output_buffer[j][0][k]+jack_output_volume[j][i]*
-		jack_callback_buffer[k*2];
-	      jack_output_buffer[j][1][k]=
-		jack_output_buffer[j][1][k]+jack_output_volume[j][i]*
-		jack_callback_buffer[k*2+1];
+	    case 2:
+	      for(unsigned k=0;k<n;k++) {
+		jack_output_buffer[j][0][k]=
+		  jack_output_buffer[j][0][k]+jack_output_volume[j][i]*
+		  jack_callback_buffer[k*2];
+		jack_output_buffer[j][1][k]=
+		  jack_output_buffer[j][1][k]+jack_output_volume[j][i]*
+		  jack_callback_buffer[k*2+1];
+	      }
+	      if(n!=nframes && jack_eof[i]) {
+		jack_stopping[i]=true;
+		jack_playing[i]=false;
+	      }
+	      break;
 	    }
-	    if(n!=nframes && jack_eof[i]) {
-	      jack_stopping[i]=true;
-	      jack_playing[i]=false;
-	    }
-	    break;
 	  }
 	}
       }
@@ -272,47 +282,49 @@ int JackProcess(jack_nframes_t nframes, void *arg)
   // Process Meters
   //
   for(int i=0;i<RD_MAX_PORTS;i++) {
-    // input meters (taking input mode into account)
-    in_meter[0]=0.0;
-    in_meter[1]=0.0;
-    for(unsigned k=0;k<nframes;k++) {
-      switch(jack_input_mode[jack_card_process][i]) {
-      case 3: // R only
-	if(jack_input_buffer[i][1][k]>in_meter[1]) 
-	  in_meter[1]=jack_input_buffer[i][1][k];
-	break;
-      case 2: // L only
-	if(jack_input_buffer[i][0][k]>in_meter[0]) 
-	  in_meter[0]=jack_input_buffer[i][0][k];
-	break;
-      case 1: // swap
-	if(jack_input_buffer[i][0][k]>in_meter[1]) 
-	  in_meter[1]=jack_input_buffer[i][0][k];
-	if(jack_input_buffer[i][1][k]>in_meter[0]) 
-	  in_meter[0]=jack_input_buffer[i][1][k];
-	break;
-      case 0: // normal
-      default:
-	if(jack_input_buffer[i][0][k]>in_meter[0]) 
-	  in_meter[0]=jack_input_buffer[i][0][k];
-	if(jack_input_buffer[i][1][k]>in_meter[1]) 
-	  in_meter[1]=jack_input_buffer[i][1][k];
-	break;
-      }
-    } // for nframes
-    jack_input_meter[i][0]->addValue(in_meter[0]);
-    jack_input_meter[i][1]->addValue(in_meter[1]);
-
-    // output meters
-    for(int j=0;j<2;j++) {
-      out_meter[j]=0.0;
+    if(jack_input_port[i][0]!=NULL) {
+      // input meters (taking input mode into account)
+      in_meter[0]=0.0;
+      in_meter[1]=0.0;
       for(unsigned k=0;k<nframes;k++) {
-	if(jack_output_buffer[i][j][k]>out_meter[j]) 
-	  out_meter[j]=jack_output_buffer[i][j][k];
-      }
-      jack_output_meter[i][j]->addValue(out_meter[j]);
+	switch(jack_input_mode[jack_card_process][i]) {
+	case 3: // R only
+	  if(jack_input_buffer[i][1][k]>in_meter[1]) 
+	    in_meter[1]=jack_input_buffer[i][1][k];
+	  break;
+	case 2: // L only
+	  if(jack_input_buffer[i][0][k]>in_meter[0]) 
+	    in_meter[0]=jack_input_buffer[i][0][k];
+	  break;
+	case 1: // swap
+	  if(jack_input_buffer[i][0][k]>in_meter[1]) 
+	    in_meter[1]=jack_input_buffer[i][0][k];
+	  if(jack_input_buffer[i][1][k]>in_meter[0]) 
+	    in_meter[0]=jack_input_buffer[i][1][k];
+	  break;
+	case 0: // normal
+	default:
+	  if(jack_input_buffer[i][0][k]>in_meter[0]) 
+	    in_meter[0]=jack_input_buffer[i][0][k];
+	  if(jack_input_buffer[i][1][k]>in_meter[1]) 
+	    in_meter[1]=jack_input_buffer[i][1][k];
+	  break;
+	}
+      } // for nframes
+      jack_input_meter[i][0]->addValue(in_meter[0]);
+      jack_input_meter[i][1]->addValue(in_meter[1]);
     }
-
+    if(jack_output_port[i][0]!=NULL) {
+      // output meters
+      for(int j=0;j<2;j++) {
+	out_meter[j]=0.0;
+	for(unsigned k=0;k<nframes;k++) {
+	  if(jack_output_buffer[i][j][k]>out_meter[j]) 
+	    out_meter[j]=jack_output_buffer[i][j][k];
+	}
+	jack_output_meter[i][j]->addValue(out_meter[j]);
+      }
+    }
   } // for RD_MAX_PORTS
   return 0;
 }
@@ -631,6 +643,12 @@ void MainObject::jackInit(RDStation *station)
   // Register Ports
   //
   for(int i=0;i<RD_MAX_PORTS;i++) {
+    for(int j=0;j<2;j++) {
+      jack_output_port[i][j]=NULL;
+      jack_input_port[i][j]=NULL;
+    }
+  }
+  for(int i=0;i<station->jackPorts();i++) {
     name=QString().sprintf("playout_%dL",i);
     jack_output_port[i][0]=
       jack_port_register(jack_client,(const char *)name,
