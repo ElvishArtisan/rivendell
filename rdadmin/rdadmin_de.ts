@@ -1898,7 +1898,7 @@ Do you still want to save?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Initial Audio Ports</source>
+        <source>Active Audio Ports</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

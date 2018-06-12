@@ -96,12 +96,12 @@ EditJack::EditJack(RDStation *station,QWidget *parent)
     setAlignment(AlignRight|AlignVCenter|ShowPrefix);
 
   //
-  // Initial Audio Ports
+  // Active Audio Ports
   //
   edit_jack_audio_ports_spin=new QSpinBox(this);
   edit_jack_audio_ports_spin->setRange(0,24);
   edit_jack_audio_ports_label=
-    new QLabel(edit_jack_audio_ports_spin,tr("Initial Audio Ports")+":",this);
+    new QLabel(edit_jack_audio_ports_spin,tr("Active Audio Ports")+":",this);
   edit_jack_audio_ports_label->setFont(font);
   edit_jack_audio_ports_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
 

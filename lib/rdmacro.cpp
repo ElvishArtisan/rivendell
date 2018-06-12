@@ -178,10 +178,8 @@ bool RDMacro::parseString(const char *str,int n)
       case RDMacro::GE:
       case RDMacro::GI:
       case RDMacro::GO:
-      case RDMacro::JA:
       case RDMacro::JC:
       case RDMacro::JD:
-      case RDMacro::JR:
       case RDMacro::LB:
       case RDMacro::LC:
       case RDMacro::LL:

@@ -17045,5 +17045,6 @@
 	* Incremented the database version to 287.
 	* Added an 'Initial Audio Ports' control to the 'JACK Configuration'
 	dialog in rdadmin(1).
-	* Implemented 'Activate JACK Port' ['JA'] and 'Remove JACK Port' ['JR']
-	RMLs.
+2018-06-12 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the name of the 'Initial Audio Ports' control to
+	'Active Audio Ports' in the 'Configure JACK' dialog in rdadmin(1).
