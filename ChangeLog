@@ -17060,3 +17060,5 @@
 	* Modified rdcartslots(1) to enable metering explicitly.
 	* Modified rdlibrary(1) to enable metering explicitly.
 	* Modified rdpanel(1) to enable metering explicitly.
+2018-06-12 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to v2.19.2vlog04.
