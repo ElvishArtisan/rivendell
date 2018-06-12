@@ -70,6 +70,7 @@ class MainWidget : public QWidget
   QSizePolicy sizePolicy() const;
 
  private slots:
+  void caeConnectedData(bool state);
   void userData();
   void filterChangedData(const QString &str);
   void searchClickedData();

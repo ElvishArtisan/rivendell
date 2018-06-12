@@ -118,9 +118,29 @@ void RDCae::connectHost()
 	SendCommand(QString().sprintf("IS %d %d!",i,j));
       }
     }
-    SendCommand(QString().sprintf("ME %u!",cae_meter_socket->port()));
   }
 }
+
+
+void RDCae::enableMetering(std::vector<int> *cards)
+{
+  QString cmd=QString().sprintf("ME %u",cae_meter_socket->port());
+  for(unsigned i=0;i<cards->size();i++) {
+    if(cards->at(i)>=0) {
+      bool found=false;
+      for(unsigned j=0;j<i;j++) {
+	if(cards->at(i)==cards->at(j)) {
+	  found=true;
+	}
+      }
+      if(!found) {
+	cmd+=QString().sprintf(" %d",cards->at(i));
+      }
+    }
+  }
+  SendCommand(cmd+"!");
+}
+
 
 bool RDCae::loadPlay(int card,QString name,int *stream,int *handle)
 {

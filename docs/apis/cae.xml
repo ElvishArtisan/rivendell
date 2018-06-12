@@ -1459,11 +1459,14 @@
   <sect2>
     <title><command>Meter Enable</command></title>
     <para>
-      Set UDP port to whcih to send meter update messages.
+      Set UDP port to which to send meter update messages for the specified
+      card(s).
     </para>
     <para>
       <userinput>ME
-      <replaceable>udp-port</replaceable>!</userinput>
+      <replaceable>udp-port</replaceable>
+      <replaceable>card0</replaceable>
+      <replaceable>..</replaceable>!</userinput>
     </para>
     <variablelist>
       <varlistentry>
@@ -1473,6 +1476,16 @@
 	<listitem>
 	  <para>
 	    UDP port number.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>
+	  <replaceable>card0</replaceable>
+	</term>
+	<listitem>
+	  <para>
+	    Audio card number for which to send updates.
 	  </para>
 	</listitem>
       </varlistentry>

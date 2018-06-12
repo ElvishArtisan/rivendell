@@ -145,6 +145,8 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // CAE Connection
   //
+  connect(rda->cae(),SIGNAL(isConnected(bool)),
+	  this,SLOT(caeConnectedData(bool)));
   rda->cae()->connectHost();
 
   //
@@ -339,6 +341,19 @@ void MainWidget::rmlReceivedData(RDMacro *rml)
 QSizePolicy MainWidget::sizePolicy() const
 {
   return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
+}
+
+
+void MainWidget::caeConnectedData(bool state)
+{
+  std::vector<int> cards;
+
+  cards.push_back(rda->airplayConf()->card(RDAirPlayConf::SoundPanel1Channel));
+  cards.push_back(rda->airplayConf()->card(RDAirPlayConf::SoundPanel2Channel));
+  cards.push_back(rda->airplayConf()->card(RDAirPlayConf::SoundPanel3Channel));
+  cards.push_back(rda->airplayConf()->card(RDAirPlayConf::SoundPanel4Channel));
+  cards.push_back(rda->airplayConf()->card(RDAirPlayConf::SoundPanel5Channel));
+  rda->cae()->enableMetering(&cards);
 }
 
 

@@ -304,6 +304,8 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // CAE Connection
   //
+  connect(rda->cae(),SIGNAL(isConnected(bool)),
+	  this,SLOT(caeConnectedData(bool)));
   rda->cae()->connectHost();
 
   //
@@ -315,7 +317,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // RIPC Connection
   //
-  connect(rda->ripc(),SIGNAL(connected(bool)),this,SLOT(ripcConnected(bool)));
+  connect(rda->ripc(),SIGNAL(connected(bool)),this,SLOT(ripcConnectedData(bool)));
   connect(rda,SIGNAL(userChanged()),this,SLOT(userData()));
   connect(rda->ripc(),SIGNAL(rmlReceived(RDMacro *)),
 	  this,SLOT(rmlReceivedData(RDMacro *)));
@@ -914,7 +916,24 @@ QSizePolicy MainWidget::sizePolicy() const
 }
 
 
-void MainWidget::ripcConnected(bool state)
+void MainWidget::caeConnectedData(bool state)
+{
+  std::vector<int> cards;
+
+  cards.push_back(rda->airplayConf()->card(RDAirPlayConf::MainLog1Channel));
+  cards.push_back(rda->airplayConf()->card(RDAirPlayConf::MainLog2Channel));
+  cards.push_back(rda->airplayConf()->card(RDAirPlayConf::AuxLog1Channel));
+  cards.push_back(rda->airplayConf()->card(RDAirPlayConf::AuxLog2Channel));
+  cards.push_back(rda->airplayConf()->card(RDAirPlayConf::SoundPanel1Channel));
+  cards.push_back(rda->airplayConf()->card(RDAirPlayConf::SoundPanel2Channel));
+  cards.push_back(rda->airplayConf()->card(RDAirPlayConf::SoundPanel3Channel));
+  cards.push_back(rda->airplayConf()->card(RDAirPlayConf::SoundPanel4Channel));
+  cards.push_back(rda->airplayConf()->card(RDAirPlayConf::SoundPanel5Channel));
+  rda->cae()->enableMetering(&cards);
+}
+
+
+void MainWidget::ripcConnectedData(bool state)
 {
   QString logname;
   QHostAddress addr;
