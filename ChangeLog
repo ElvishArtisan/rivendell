@@ -17062,3 +17062,6 @@
 	* Modified rdpanel(1) to enable metering explicitly.
 2018-06-12 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to v2.19.2vlog04.
+2018-06-13 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rddbmgr(8) that caused incorrect version strings
+	to be generated when displaying current database status.

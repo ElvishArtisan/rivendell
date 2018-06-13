@@ -18,14 +18,90 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <qmap.h>
 #include <qstringlist.h>
 
 #include "rddbmgr.h"
 
+class VersionString : public QString
+{
+ public:
+  VersionString();
+  VersionString(const char *str);
+  int major() const;
+  int minor() const;
+  int point() const;
+  bool operator<(const VersionString &rhs) const;
+
+private:
+  int ver_major;
+  int ver_minor;
+  int ver_point;
+};
+
+
+VersionString::VersionString()
+  : QString()
+{
+  ver_major=0;
+  ver_minor=0;
+  ver_point=0;
+}
+
+
+VersionString::VersionString(const char *str)
+  : QString(str)
+{
+  QStringList f0=f0.split(".",str);
+  ver_major=f0[0].toInt();
+  ver_minor=f0[1].toInt();
+  ver_point=f0[2].toInt();
+}
+
+
+int VersionString::major() const
+{
+  return ver_major;
+}
+
+
+int VersionString::minor() const
+{
+  return ver_minor;
+}
+
+
+int VersionString::point() const
+{
+  return ver_point;
+}
+
+
+bool VersionString::operator<(const VersionString &rhs) const
+{
+  if(major()<rhs.major()) {
+    return true;
+  }
+  if(major()>rhs.major()) {
+    return false;
+  }
+  if(minor()<rhs.minor()) {
+    return true;
+  }
+  if(minor()>rhs.minor()) {
+    return false;
+  }
+  if(point()<rhs.point()) {
+    return true;
+  }
+  return false;
+}
+
+
 //
 // Version -> Schema Map
 //
-std::map<QString,int> global_version_map;
+QMap<VersionString,int> global_version_map;
 
 void MainObject::InitializeSchemaMap() {
   global_version_map["1.0"]=159;
@@ -85,11 +161,11 @@ int MainObject::GetVersionSchema(const QString &ver) const
   //
   // Lookup Schema
   //
-  if(global_version_map.count(f0[0]+"."+f0[1])==0) {
+  if(global_version_map.count(VersionString(f0[0]+"."+f0[1]))==0) {
     return 0;
   }
 
-  return global_version_map[f0[0]+"."+f0[1]];
+  return global_version_map[VersionString(f0[0]+"."+f0[1])];
 }
 
 
@@ -97,16 +173,16 @@ QString MainObject::GetSchemaVersion(int schema) const
 {
   QString prev_version="_preproduction";
 
-  for(std::map<QString,int>::const_iterator it=global_version_map.begin();
+  for(QMap<VersionString,int>::const_iterator it=global_version_map.begin();
       it!=global_version_map.end();it++) {
-    if(it->second==schema) {
-      return "v"+it->first+".x";
+    if(it.data()==schema) {
+      return "v"+it.key()+".x";
     }
-    if(it->second>schema) {
+    if(it.data()>schema) {
       return tr("between")+" v"+prev_version+".x "+tr("and")+
-	" v"+it->first+".x";
+	" v"+it.key()+".x";
     } 
-    prev_version=it->first;
+    prev_version=it.key();
   }
   return QString("after")+" v"+prev_version+".x";
 }
