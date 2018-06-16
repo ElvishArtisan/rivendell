@@ -58,9 +58,10 @@
 #define STAGE2_XFER_SIZE 2048
 #define STAGE2_BUFFER_SIZE 49152
 
-RDAudioConvert::RDAudioConvert(const QString &station_name,QObject *parent)
+RDAudioConvert::RDAudioConvert(RDConfig *config,QObject *parent)
   : QObject(parent)
 {
+  conv_config=config;
   conv_start_point=-1;
   conv_end_point=-1;
   conv_speed_ratio=1.0;
@@ -68,7 +69,7 @@ RDAudioConvert::RDAudioConvert(const QString &station_name,QObject *parent)
   conv_settings=NULL;
   conv_src_wavedata=new RDWaveData();
   conv_dst_wavedata=NULL;
-  RDLibraryConf *conf=new RDLibraryConf(station_name,0);
+  RDLibraryConf *conf=new RDLibraryConf(config->stationName(),0);
   conv_src_converter=conf->srcConverter();
   delete conf;
 
@@ -658,7 +659,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage1Mpeg(const QString &dstfile,
       return RDAudioConvert::ErrorFormatError;
     }
     memmove(buffer,mad_stream.next_frame,left_over);
-
+    usleep(conv_config->transcodingDelay());
   }
   memset(buffer+left_over,0,MAD_BUFFER_GUARD);
   mad_stream_buffer(&mad_stream,buffer,MAD_BUFFER_GUARD+left_over);
@@ -888,6 +889,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage1SndFile(const QString &dstfile,
     if((end-start)<buffer_size) {
       buffer_size=end-start;
     }
+    usleep(conv_config->transcodingDelay());
   }
   delete buffer;
   sf_close(sf_dst);
@@ -1076,6 +1078,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage2Convert(const QString &srcfile,
       sf_close(dst_sf);
       return RDAudioConvert::ErrorNoSpace;
     }
+    usleep(conv_config->transcodingDelay());
   }
 
   //
@@ -1099,6 +1102,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage2Convert(const QString &srcfile,
 	sf_close(dst_sf);
 	return RDAudioConvert::ErrorNoSpace;
       }
+      usleep(conv_config->transcodingDelay());
     }
     delete st_conv;
   }
@@ -1511,6 +1515,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage3Layer3(SNDFILE *src_sf,
 	  return RDAudioConvert::ErrorNoSpace;
 	}
       }
+      usleep(conv_config->transcodingDelay());
     }
   }
   else {
@@ -1521,6 +1526,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage3Layer3(SNDFILE *src_sf,
 	  ::close(dst_fd);
 	  return RDAudioConvert::ErrorNoSpace;
 	}
+	usleep(conv_config->transcodingDelay());
       }
     }
   }
@@ -1650,6 +1656,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage3Layer2Wav(SNDFILE *src_sf,
     else {
       fprintf(stderr,"TwoLAME encode error\n");
     }
+    usleep(conv_config->transcodingDelay());
   }
   if((s=twolame_encode_flush(lameopts,mpeg,2048))>=0) {
     if(wave->writeWave(mpeg,s)!=s) {
@@ -1752,6 +1759,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage3Layer2(SNDFILE *src_sf,
     else {
       fprintf(stderr,"TwoLAME encode error\n");
     }
+    usleep(conv_config->transcodingDelay());
   }
   if((s=twolame_encode_flush(lameopts,mpeg,2048))>=0) {
     if(write(dst_fd,mpeg,s)!=s) {
@@ -1818,6 +1826,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage3Pcm16(SNDFILE *src_sf,
       delete wave;
       return RDAudioConvert::ErrorNoSpace;
     }
+    usleep(conv_config->transcodingDelay());
   }
   delete sf_buffer;
   wave->closeWave();
@@ -1867,6 +1876,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage3Pcm24(SNDFILE *src_sf,
       delete wave;
       return RDAudioConvert::ErrorNoSpace;
     }
+    usleep(conv_config->transcodingDelay());
   }
   delete sf_buffer;
   delete pcm24;

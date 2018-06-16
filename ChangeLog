@@ -16656,3 +16656,6 @@
 2018-05-08 Fred Gleason <fredg@paravelsystems.com>
 	* Updated 'NEWS'.
 	* Incremented the package version to 2.19.2int01.
+2018-06-16 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'TranscodingDelay=' parameter to the '[Tuning]' section
+	of rd.conf(5).
