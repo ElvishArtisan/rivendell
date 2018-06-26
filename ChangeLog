@@ -17013,7 +17013,7 @@
 	* Stubbed out rddbmgr(8).
 	* Implemented the '--create' command in rddbmgr(8).
 	* Fixed a bug in 'RDStation::create()' that generated corrupt records
-	in the 'AUDIO_INPUT' and 'AUDIO_OUTPUTS' tables when creating a
+	in the 'AUDIO_INPUTS' and 'AUDIO_OUTPUTS' tables when creating a
 	new host with no exemplar.
 2018-06-05 Fred Gleason <fredg@paravelsystems.com>
 	* Implemented the '--modify' command in rddbmgr(8).
