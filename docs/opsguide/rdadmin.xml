@@ -2221,6 +2221,8 @@
 	automatically each time the Rivendell service is [re]started by
 	adding the appropriate command-line invocation to the
 	<computeroutput>JACK Clients to Start</computeroutput> list.
+	<link linkend="sect.filepath_wildcards.definition">Filepath
+	wildcards</link> can used in the command-line field.
 	The clients will be run under the same user as that of the
 	caed(8) daemon (user 'root' [UID 0] with sstock Rivendell).
 	Port connections between JACK clients can be managed by use

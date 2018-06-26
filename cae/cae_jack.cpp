@@ -25,6 +25,7 @@
 #include <qsignalmapper.h>
 
 #include <rd.h>
+#include <rddatedecode.h>
 #include <rddb.h>
 #include <rdescape_string.h>
 #include <rdringbuffer.h>
@@ -433,7 +434,10 @@ void MainObject::jackClientStartData()
     "STATION_NAME=\""+RDEscapeString(rd_config->stationName())+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
-    QStringList fields=QStringList().split(" ",q->value(1).toString());
+    QString cmd=RDDateDecode(q->value(1).toString(),QDate::currentDate(),
+			     cae_station,rd_config,
+			     rd_config->provisioningServiceName(rd_config->stationName()));
+    QStringList fields=QStringList().split(" ",cmd);
     jack_clients.push_back(new QProcess(fields,this));
     if(jack_clients.back()->start()) {
       LogLine(RDConfig::LogDebug,"started JACK Client \""+
@@ -454,8 +458,6 @@ void MainObject::jackClientStartData()
 void MainObject::jackInit(RDStation *station)
 {
 #ifdef JACK
-  //  QString sql;
-  //  RDSqlQuery *q;
   jack_options_t jackopts=JackNullOption;
   jack_status_t jackstat=JackFailure;
   RDConfig::LogPriority prio=RDConfig::LogDebug;

@@ -254,27 +254,29 @@ MainObject::MainObject(QObject *parent,const char *name)
   //
   // Start Up the Drivers
   //
-  RDStation *station=new RDStation(rd_config->stationName());
+  cae_station=new RDStation(rd_config->stationName());
   RDSystem *sys=new RDSystem();
   system_sample_rate=sys->sampleRate();
   delete sys;
-  hpiInit(station);
-  alsaInit(station);
-  jackInit(station);
-  ClearDriverEntries(station);
+  hpiInit(cae_station);
+  alsaInit(cae_station);
+  jackInit(cae_station);
+  ClearDriverEntries(cae_station);
 
   //
   // Probe Capabilities
   //
-  ProbeCaps(station);
+  ProbeCaps(cae_station);
 
   //
   // Close Database Connection
   //
-  station->setScanned(true);
-  delete station;
+  cae_station->setScanned(true);
+  /*
+  delete cae_station;
+  cae_station=NULL;
   db->removeDatabase(rd_config->mysqlDbname());
-
+  */
   //
   // Initialize Mixers
   //

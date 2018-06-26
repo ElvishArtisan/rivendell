@@ -172,6 +172,7 @@ class MainObject : public QObject
     int owner;
   } play_handle[256];
   int next_play_handle;
+  RDStation *cae_station;
 
   //
   // HPI Driver

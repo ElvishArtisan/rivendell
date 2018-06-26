@@ -17065,3 +17065,6 @@
 2018-06-13 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rddbmgr(8) that caused incorrect version strings
 	to be generated when displaying current database status.
+2018-06-26 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for filepath wildcards to the JACK client command
+	lines.
