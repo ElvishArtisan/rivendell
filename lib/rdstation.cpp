@@ -1140,32 +1140,30 @@ bool RDStation::create(const QString &name,QString *err_msg,
     sql=QString("select ")+
       "SEGUE_LENGTH,"+           // 00
       "TRANS_LENGTH,"+           // 01
-      "OP_MODE,"+                // 02
-      "START_MODE,"+             // 03
-      "LOG_MODE_STYLE,"+         // 04
-      "PIE_COUNT_LENGTH,"+       // 05
-      "PIE_COUNT_ENDPOINT,"+     // 06
-      "CHECK_TIMESYNC,"+         // 07
-      "STATION_PANELS,"+         // 08
-      "USER_PANELS,"             // 09
-      "SHOW_AUX_1,"+             // 10
-      "SHOW_AUX_2,"+             // 11
-      "CLEAR_FILTER,"+           // 12
-      "DEFAULT_TRANS_TYPE,"+     // 13
-      "BAR_ACTION,"+             // 14
-      "FLASH_PANEL,"+            // 15
-      "PANEL_PAUSE_ENABLED,"+    // 16
-      "BUTTON_LABEL_TEMPLATE,"+  // 17
-      "PAUSE_ENABLED,"+          // 18
-      "DEFAULT_SERVICE,"+        // 19
-      "HOUR_SELECTOR_ENABLED,"+  // 20
-      "TITLE_TEMPLATE,"+         // 21
-      "ARTIST_TEMPLATE,"+        // 22
-      "OUTCUE_TEMPLATE,"+        // 23
-      "DESCRIPTION_TEMPLATE,"+   // 24
-      "EXIT_PASSWORD,"+          // 25
-      "SKIN_PATH,"+              // 26
-      "SHOW_COUNTERS "+          // 27
+      "LOG_MODE_STYLE,"+         // 02
+      "PIE_COUNT_LENGTH,"+       // 03
+      "PIE_COUNT_ENDPOINT,"+     // 04
+      "CHECK_TIMESYNC,"+         // 05
+      "STATION_PANELS,"+         // 06
+      "USER_PANELS,"             // 07
+      "SHOW_AUX_1,"+             // 08
+      "SHOW_AUX_2,"+             // 09
+      "CLEAR_FILTER,"+           // 10
+      "DEFAULT_TRANS_TYPE,"+     // 11
+      "BAR_ACTION,"+             // 12
+      "FLASH_PANEL,"+            // 13
+      "PANEL_PAUSE_ENABLED,"+    // 14
+      "BUTTON_LABEL_TEMPLATE,"+  // 15
+      "PAUSE_ENABLED,"+          // 16
+      "DEFAULT_SERVICE,"+        // 17
+      "HOUR_SELECTOR_ENABLED,"+  // 18
+      "TITLE_TEMPLATE,"+         // 19
+      "ARTIST_TEMPLATE,"+        // 20
+      "OUTCUE_TEMPLATE,"+        // 21
+      "DESCRIPTION_TEMPLATE,"+   // 22
+      "EXIT_PASSWORD,"+          // 23
+      "SKIN_PATH,"+              // 24
+      "SHOW_COUNTERS "+          // 25
       "from RDAIRPLAY where "+
       "STATION=\""+RDEscapeString(exemplar)+"\"";
     q=new RDSqlQuery(sql);
@@ -1173,34 +1171,32 @@ bool RDStation::create(const QString &name,QString *err_msg,
       sql=QString("insert into RDAIRPLAY set ")+
 	QString().sprintf("SEGUE_LENGTH=%d,",q->value(0).toInt())+
 	QString().sprintf("TRANS_LENGTH=%d,",q->value(1).toInt())+
-	QString().sprintf("OP_MODE=%d,",q->value(2).toInt())+
-	QString().sprintf("START_MODE=%d,",q->value(3).toInt())+
-	QString().sprintf("LOG_MODE_STYLE=%d,",q->value(4).toInt())+
-	QString().sprintf("PIE_COUNT_LENGTH=%d,",q->value(5).toInt())+
-	QString().sprintf("PIE_COUNT_ENDPOINT=%d,",q->value(6).toInt())+
-	"CHECK_TIMESYNC=\""+RDEscapeString(q->value(7).toString())+"\","+
-	QString().sprintf("STATION_PANELS=%d,",q->value(8).toInt())+
-	QString().sprintf("USER_PANELS=%d,",q->value(9).toInt())+
-	"SHOW_AUX_1=\""+RDEscapeString(q->value(10).toString())+"\","+
-	"SHOW_AUX_2=\""+RDEscapeString(q->value(11).toString())+"\","+
-	"CLEAR_FILTER=\""+RDEscapeString(q->value(12).toString())+"\","+
-	QString().sprintf("DEFAULT_TRANS_TYPE=%u,",q->value(13).toUInt())+
-	QString().sprintf("BAR_ACTION=%u,",q->value(14).toUInt())+
-	"FLASH_PANEL=\""+RDEscapeString(q->value(15).toString())+"\","+
-	"PANEL_PAUSE_ENABLED=\""+RDEscapeString(q->value(16).toString())+"\","+
-	"BUTTON_LABEL_TEMPLATE=\""+RDEscapeString(q->value(17).toString())+
+	QString().sprintf("LOG_MODE_STYLE=%d,",q->value(2).toInt())+
+	QString().sprintf("PIE_COUNT_LENGTH=%d,",q->value(3).toInt())+
+	QString().sprintf("PIE_COUNT_ENDPOINT=%d,",q->value(4).toInt())+
+	"CHECK_TIMESYNC=\""+RDEscapeString(q->value(5).toString())+"\","+
+	QString().sprintf("STATION_PANELS=%d,",q->value(6).toInt())+
+	QString().sprintf("USER_PANELS=%d,",q->value(7).toInt())+
+	"SHOW_AUX_1=\""+RDEscapeString(q->value(8).toString())+"\","+
+	"SHOW_AUX_2=\""+RDEscapeString(q->value(9).toString())+"\","+
+	"CLEAR_FILTER=\""+RDEscapeString(q->value(10).toString())+"\","+
+	QString().sprintf("DEFAULT_TRANS_TYPE=%u,",q->value(11).toUInt())+
+	QString().sprintf("BAR_ACTION=%u,",q->value(12).toUInt())+
+	"FLASH_PANEL=\""+RDEscapeString(q->value(13).toString())+"\","+
+	"PANEL_PAUSE_ENABLED=\""+RDEscapeString(q->value(14).toString())+"\","+
+	"BUTTON_LABEL_TEMPLATE=\""+RDEscapeString(q->value(15).toString())+
 	"\","+
-	"PAUSE_ENABLED=\""+RDEscapeString(q->value(18).toString())+"\","+
-	"DEFAULT_SERVICE=\""+RDEscapeString(q->value(19).toString())+"\","+
-	"HOUR_SELECTOR_ENABLED=\""+RDEscapeString(q->value(20).toString())+
+	"PAUSE_ENABLED=\""+RDEscapeString(q->value(16).toString())+"\","+
+	"DEFAULT_SERVICE=\""+RDEscapeString(q->value(17).toString())+"\","+
+	"HOUR_SELECTOR_ENABLED=\""+RDEscapeString(q->value(18).toString())+
 	"\","+
-	"TITLE_TEMPLATE=\""+RDEscapeString(q->value(21).toString())+"\","+
-	"ARTIST_TEMPLATE=\""+RDEscapeString(q->value(22).toString())+"\","+
-	"OUTCUE_TEMPLATE=\""+RDEscapeString(q->value(23).toString())+"\","+
-	"DESCRIPTION_TEMPLATE=\""+RDEscapeString(q->value(24).toString())+"\","+
-	"EXIT_PASSWORD=\""+RDEscapeString(q->value(25).toString())+"\","+
-	"SKIN_PATH=\""+RDEscapeString(q->value(26).toString())+"\","+
-	"SHOW_COUNTERS=\","+RDEscapeString(q->value(27).toString())+"\","+
+	"TITLE_TEMPLATE=\""+RDEscapeString(q->value(19).toString())+"\","+
+	"ARTIST_TEMPLATE=\""+RDEscapeString(q->value(20).toString())+"\","+
+	"OUTCUE_TEMPLATE=\""+RDEscapeString(q->value(21).toString())+"\","+
+	"DESCRIPTION_TEMPLATE=\""+RDEscapeString(q->value(22).toString())+"\","+
+	"EXIT_PASSWORD=\""+RDEscapeString(q->value(23).toString())+"\","+
+	"SKIN_PATH=\""+RDEscapeString(q->value(24).toString())+"\","+
+	"SHOW_COUNTERS=\","+RDEscapeString(q->value(25).toString())+"\","+
 	"STATION=\""+RDEscapeString(name)+"\"";
       q1=new RDSqlQuery(sql);
       delete q1;
@@ -2049,6 +2045,11 @@ void RDStation::remove(const QString &name)
   delete q;
 
   sql=QString("delete from LOG_MACHINES where ")+
+    "STATION_NAME=\""+RDEscapeString(name)+"\"";
+  q=new RDSqlQuery(sql);
+  delete q;
+
+  sql=QString("delete from AUDIO_CARDS where ")+
     "STATION_NAME=\""+RDEscapeString(name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;

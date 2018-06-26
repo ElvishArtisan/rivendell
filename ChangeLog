@@ -17071,3 +17071,6 @@
 2018-06-26 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'RDStation::remove()' where the 'AUDIO_INPUTS'
 	was failed to be purged of stale host entries.
+	* Fixed a bug in 'RDStation::remove()' where the 'AUDIO_CARDS'
+	was failed to be purged of stale host entries.
+	* Fixed a bug in 'RDStation::create()' that threw SQL errors.
