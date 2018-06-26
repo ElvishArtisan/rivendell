@@ -17074,3 +17074,5 @@
 	* Fixed a bug in 'RDStation::remove()' where the 'AUDIO_CARDS'
 	was failed to be purged of stale host entries.
 	* Fixed a bug in 'RDStation::create()' that threw SQL errors.
+2018-06-26 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to v2.19.2vlog05.
