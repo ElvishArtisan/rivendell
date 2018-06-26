@@ -17068,3 +17068,6 @@
 2018-06-26 Fred Gleason <fredg@paravelsystems.com>
 	* Added support for filepath wildcards to the JACK client command
 	lines.
+2018-06-26 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'RDStation::remove()' where the 'AUDIO_INPUTS'
+	was failed to be purged of stale host entries.

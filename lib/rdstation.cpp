@@ -2053,7 +2053,7 @@ void RDStation::remove(const QString &name)
   q=new RDSqlQuery(sql);
   delete q;
 
-  sql=QString("delete from AUDIO_INPUT where ")+
+  sql=QString("delete from AUDIO_INPUTS where ")+
     "STATION_NAME=\""+RDEscapeString(name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
