@@ -167,12 +167,13 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
   // Revert 284
   //
   if((cur_schema==284)&&(set_schema<cur_schema)) {
+    /*
     sql=QString("alter table RDAIRPLAY add column INSTANCE int unsigned ")+
       "not null default 0 after STATION";
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }
-
+    */
     for(int i=9;i>=0;i--) {
       sql=QString("alter table RDAIRPLAY add column ")+
 	QString().sprintf("STOP_RML%d char(255) after INSTANCE",i);

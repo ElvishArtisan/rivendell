@@ -6939,11 +6939,12 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
   }
 
   if((cur_schema<284)&&(set_schema>cur_schema)) { 
+    /*
     sql=QString("alter table RDAIRPLAY drop column INSTANCE");
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }
-
+    */
     for(int i=0;i<10;i++) {
       sql=QString("alter table RDAIRPLAY ")+
 	QString().sprintf("drop column CARD%d",i);
