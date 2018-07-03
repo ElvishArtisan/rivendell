@@ -25,14 +25,14 @@
 #include <rdsvc.h>
 #include <rd.h>
 
-
+/*
 void RDCreateLogTable(const QString &name,RDConfig *config)
 {
   QString sql=RDCreateLogTableSql(name,config);
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
 }
-
+*/
 
 QString RDCreateLogTableSql(QString name,RDConfig *config)
 {

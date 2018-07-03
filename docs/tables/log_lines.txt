@@ -1,12 +1,11 @@
-              Log Format Table Layout for Rivendell
+              Log Lines Table Layout for Rivendell
 
-This is the generic layout of all log tables.  Each of these tables
-will be have a name ending in '_LOG' and be listed in the 'LOGS'
-table.
+The LOG_LINES table holds the per-line data for all Rivendell logs.
 
 FIELD NAME           TYPE               REMARKS
 ------------------------------------------------------------------------
 ID                   int(11) signed     Primary key, auto-increment
+LOG_NAME             char(64)           From LOGS.NAME
 COUNT                int(11) signed     Order of records
 TYPE                 int(11) signed     0=Cart, 1=Marker, 2=OpenBracket,
                                         3=CloseBracket, 4=Link

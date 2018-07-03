@@ -23,7 +23,7 @@
 #ifndef RDCREATE_LOG_H
 #define RDCREATE_LOG_H
 
-void RDCreateLogTable(const QString &name,RDConfig *config);
+//void RDCreateLogTable(const QString &name,RDConfig *config);
 QString RDCreateLogTableSql(QString name,RDConfig *config);
 QString RDCreateClockTableSql(QString name,RDConfig *config);
 QString RDCreateReconciliationTableSql(QString name,RDConfig *config);

@@ -64,7 +64,7 @@ class RDLogPlay : public QObject,public RDLogEvent
   bool channelsValid() const;
   RDAirPlayConf::OpMode mode() const;
   void setOpMode(RDAirPlayConf::OpMode mode);
-  void setLogName(QString name);
+  //  void setLogName(QString name);
   void setChannels(int cards[2],int ports[2],
 		   const QString start_rml[2],const QString stop_rml[2]);
   void setSegueLength(int len);

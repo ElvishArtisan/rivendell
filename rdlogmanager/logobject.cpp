@@ -119,8 +119,7 @@ void LogObject::userData()
       //
       // Generate Exception Report
       //
-      RDLogEvent *event=
-	new RDLogEvent(QString().sprintf("%s_LOG",(const char *)logname));
+      RDLogEvent *event=new RDLogEvent(logname);
       event->load();
       if((event->validate(&report,start_date)!=0)||
 	 (!unused_report.isEmpty())) {

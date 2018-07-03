@@ -862,7 +862,7 @@ void ListLog::loadButtonData()
 
   switch((ListLogs::Operation)list_logs_dialog->exec(&name,&svcname,&log_lock)) {
   case ListLogs::Load:
-    list_log->setLogName(RDLog::tableName(name));
+    list_log->setLogName(name);
     list_log->load();
     break;
 
@@ -880,7 +880,7 @@ void ListLog::loadButtonData()
       return;
     }
     list_log->setServiceName(svcname);
-    list_log->setLogName(RDLog::tableName(name));
+    list_log->setLogName(name);
     list_log->save();
     break;
 

@@ -124,7 +124,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
 	}
 	return;
       }
-      air_log[rml->arg(0).toInt()-1]->setLogName(RDLog::tableName(logname));
+      air_log[rml->arg(0).toInt()-1]->setLogName(logname);
       air_log[rml->arg(0).toInt()-1]->load();
     }
     if(rml->argQuantity()==3) { // Start Log

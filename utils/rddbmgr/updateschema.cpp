@@ -7168,6 +7168,175 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
     cur_schema++;
   }
 
+  if((cur_schema<288)&&(set_schema>cur_schema)) {
+    sql=QString("create table if not exists LOG_LINES (")+
+      "ID int auto_increment not null primary key,"+
+      "LOG_NAME char(64) not null,"+
+      "LINE_ID int not null,"+
+      "COUNT int not null,"+
+      "TYPE int default 0,"+
+      "SOURCE int not null,"+
+      "START_TIME int,"+
+      "GRACE_TIME int default 0,"+
+      "CART_NUMBER int UNSIGNED not null default 0,"+
+      "TIME_TYPE int not null,"+
+      "POST_POINT enum('N','Y') default 'N',"+
+      "TRANS_TYPE int not null,"+
+      "START_POINT int not null default -1,"+
+      "END_POINT int not null default -1,"+
+      "FADEUP_POINT int default -1,"+
+      QString().sprintf("FADEUP_GAIN int default %d,",RD_FADE_DEPTH)+
+      "FADEDOWN_POINT int default -1,"+
+      QString().sprintf("FADEDOWN_GAIN int default %d,",RD_FADE_DEPTH)+
+      "SEGUE_START_POINT int not null default -1,"+
+      "SEGUE_END_POINT int not null default -1,"+
+      QString().sprintf("SEGUE_GAIN int default %d,",RD_FADE_DEPTH)+
+      "DUCK_UP_GAIN int default 0,"+
+      "DUCK_DOWN_GAIN int default 0,"+
+      "COMMENT CHAR(255),"+
+      "LABEL CHAR(64),"+
+      "ORIGIN_USER char(255),"+
+      "ORIGIN_DATETIME datetime,"+
+      "EVENT_LENGTH int default -1,"+
+      "LINK_EVENT_NAME char(64),"+
+      "LINK_START_TIME int,"+
+      "LINK_LENGTH int default 0,"+
+      "LINK_START_SLOP int default 0,"+
+      "LINK_END_SLOP int default 0,"+
+      "LINK_ID int default -1,"+
+      "LINK_EMBEDDED enum('N','Y') default 'N',"+
+      "EXT_START_TIME time,"+
+      "EXT_LENGTH int,"+
+      "EXT_CART_NAME char(32),"+
+      "EXT_DATA char(32),"+
+      "EXT_EVENT_ID char(32),"+
+      "EXT_ANNC_TYPE char(8),"+
+      "unique index LOG_NAME_IDX (LOG_NAME,COUNT),"+
+      "index CART_NUMBER_IDX (CART_NUMBER),"+
+      "index LABEL_IDX (LABEL))"+
+      db_table_create_postfix;
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("select NAME from LOGS");
+    q=new RDSqlQuery(sql,false);
+    while(q->next()) {
+      QString tablename=q->value(0).toString()+"_LOG";
+      tablename.replace(" ","_");
+      sql=QString("select ")+
+	"ID,"+                 // 00
+	"COUNT,"+              // 01
+	"TYPE,"+               // 02
+	"SOURCE,"+             // 03
+	"START_TIME,"+         // 04
+	"GRACE_TIME,"+         // 05
+	"CART_NUMBER,"+        // 06
+	"TIME_TYPE,"+          // 07
+	"POST_POINT,"+         // 08
+	"TRANS_TYPE,"+         // 09
+	"START_POINT,"+        // 10
+	"END_POINT,"+          // 11
+	"FADEUP_POINT,"+       // 12
+	"FADEUP_GAIN,"+        // 13
+	"FADEDOWN_POINT,"+     // 14
+	"FADEDOWN_GAIN,"+      // 15
+	"SEGUE_START_POINT,"+  // 16
+	"SEGUE_END_POINT,"+    // 17
+	"SEGUE_GAIN,"+         // 18
+	"DUCK_UP_GAIN,"+       // 19
+	"DUCK_DOWN_GAIN,"+     // 20
+	"COMMENT,"+            // 21
+	"LABEL,"+              // 22
+	"ORIGIN_USER,"+        // 23
+	"ORIGIN_DATETIME,"+    // 24
+	"EVENT_LENGTH,"+       // 25
+	"LINK_EVENT_NAME,"+    // 26
+	"LINK_START_TIME,"+    // 27
+	"LINK_LENGTH,"+        // 28
+	"LINK_START_SLOP,"+    // 29
+	"LINK_END_SLOP,"+      // 30
+	"LINK_ID,"+            // 31
+	"LINK_EMBEDDED,"+      // 32
+	"EXT_START_TIME,"+     // 33
+	"EXT_LENGTH,"+         // 34
+	"EXT_CART_NAME,"+      // 35
+	"EXT_DATA,"+           // 36
+	"EXT_EVENT_ID,"+       // 37
+	"EXT_ANNC_TYPE "+      // 38
+	"from `"+tablename+"` order by COUNT";
+      q1=new RDSqlQuery(sql);
+      while(q1->next()) {
+	sql=QString("insert into LOG_LINES set ")+
+	  "LOG_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	  QString().sprintf("LINE_ID=%d,",q1->value(0).toInt())+
+	  QString().sprintf("COUNT=%d,",q1->value(1).toInt())+
+	  QString().sprintf("TYPE=%d,",q1->value(2).toInt())+
+	  QString().sprintf("SOURCE=%d,",q1->value(3).toInt())+
+	  QString().sprintf("START_TIME=%d,",q1->value(4).toInt())+
+	  QString().sprintf("GRACE_TIME=%d,",q1->value(5).toInt())+
+	  QString().sprintf("CART_NUMBER=%u,",q1->value(6).toUInt())+
+	  QString().sprintf("TIME_TYPE=%d,",q1->value(7).toInt())+
+	  "POST_POINT=\""+RDEscapeString(q1->value(8).toString())+"\","+
+	  QString().sprintf("TRANS_TYPE=%d,",q1->value(9).toInt())+
+	  QString().sprintf("START_POINT=%d,",q1->value(10).toInt())+
+	  QString().sprintf("END_POINT=%d,",q1->value(11).toInt())+
+	  QString().sprintf("FADEUP_POINT=%d,",q1->value(12).toInt())+
+	  QString().sprintf("FADEUP_GAIN=%d,",q1->value(13).toInt())+
+	  QString().sprintf("FADEDOWN_POINT=%d,",q1->value(14).toInt())+
+	  QString().sprintf("FADEDOWN_GAIN=%d,",q1->value(15).toInt())+
+	  QString().sprintf("SEGUE_START_POINT=%d,",q1->value(16).toInt())+
+	  QString().sprintf("SEGUE_END_POINT=%d,",q1->value(17).toInt())+
+	  QString().sprintf("SEGUE_GAIN=%d,",q1->value(18).toInt())+
+	  QString().sprintf("DUCK_UP_GAIN=%d,",q1->value(19).toInt())+
+	  QString().sprintf("DUCK_DOWN_GAIN=%d,",q1->value(20).toInt())+
+	  "COMMENT=\""+RDEscapeString(q1->value(21).toString())+"\","+
+	  "LABEL=\""+RDEscapeString(q1->value(22).toString())+"\","+
+	  "ORIGIN_USER=\""+RDEscapeString(q1->value(23).toString())+"\","+
+	  "ORIGIN_DATETIME=\""+q1->value(24).toDateTime().
+	  toString("yyyy-MM-dd hh:mm:ss")+"\","+
+	  QString().sprintf("EVENT_LENGTH=%d,",q1->value(25).toInt())+
+	  "LINK_EVENT_NAME=\""+RDEscapeString(q1->value(26).toString())+"\","+
+	  QString().sprintf("LINK_START_TIME=%d,",q1->value(27).toInt())+
+	  QString().sprintf("LINK_LENGTH=%d,",q1->value(28).toInt())+
+	  QString().sprintf("LINK_START_SLOP=%d,",q1->value(29).toInt())+
+	  QString().sprintf("LINK_END_SLOP=%d,",q1->value(30).toInt())+
+	  QString().sprintf("LINK_ID=%d,",q1->value(31).toInt())+
+	  "LINK_EMBEDDED=\""+RDEscapeString(q1->value(32).toString())+"\","+
+	  "EXT_START_TIME=\""+q1->value(33).toTime().toString("hh:mm:ss")+"\","+
+	  QString().sprintf("EXT_LENGTH=%d,",q1->value(34).toInt())+
+	  "EXT_CART_NAME=\""+RDEscapeString(q1->value(35).toString())+"\","+
+	  "EXT_DATA=\""+RDEscapeString(q1->value(36).toString())+"\","+
+	  "EXT_EVENT_ID=\""+RDEscapeString(q1->value(37).toString())+"\","+
+	  "EXT_ANNC_TYPE=\""+RDEscapeString(q1->value(38).toString())+"\"";
+	if(!RDSqlQuery::apply(sql,err_msg)) {
+	  return false;
+	}
+      }
+      delete q1;
+      sql=QString("drop table `")+tablename+"`";
+      if(!RDSqlQuery::apply(sql,err_msg)) {
+	return false;
+      }
+    }
+    delete q;
+
+    //
+    // Delete orphaned log tables
+    //
+    sql=QString("show tables where ")+
+      "Tables_in_"+db_config->mysqlDbname()+" like \"%_LOG\"";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("drop table `")+q->value(0).toString()+"`";
+      if(!RDSqlQuery::apply(sql,err_msg)) {
+	return false;
+      }
+    }
+    delete q;
+
+    cur_schema++;
+  }
 
 
   //

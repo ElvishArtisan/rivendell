@@ -292,7 +292,7 @@ void Xport::SaveLog()
   //
   // Logline Data
   //
-  RDLogEvent *logevt=new RDLogEvent(RDLog::tableName(log_name));
+  RDLogEvent *logevt=new RDLogEvent(log_name);
   for(int i=0;i<line_quantity;i++) {
     logevt->insert(i,1);
     RDLogLine *ll=logevt->logLine(i);

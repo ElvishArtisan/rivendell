@@ -464,7 +464,7 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
   QTime time=event_start_time;
   QTime fill_start_time;
   int count=0;
-  logname.replace(" ","_");
+  //  logname.replace(" ","_");
   RDLogLine *logline;
   QString import_table;
   int postimport_length=0;
@@ -478,17 +478,19 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
   //
   // Get Current Count and Link ID
   //
-  sql=QString().sprintf("select COUNT from `%s_LOG` order by COUNT desc",
-			(const char *)logname);
+  sql=QString("select COUNT from LOG_LINES where ")+
+    "LOG_NAME=\""+RDEscapeString(logname)+"\" "+
+    "order by COUNT desc";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     count=q->value(0).toInt()+1;
   }
   delete q;
 
-  sql=QString().sprintf("select LINK_ID from `%s_LOG` where LINK_ID>=0 \
-                         order by LINK_ID desc",
-			(const char *)logname);
+  sql=QString("select LINK_ID from LOG_LINES where ")+
+    "LOG_NAME=\""+RDEscapeString(logname)+"\" && "+
+    "LINK_ID>=0 "+
+    "order by LINK_ID desc";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     link_id=q->value(0).toInt()+1;
@@ -514,8 +516,9 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
   //
   for(int i=0;i<event_preimport_log->size();i++) {
     if((logline=event_preimport_log->logLine(i))!=NULL) {
-      sql=QString("insert into `")+logname+"_LOG` set "+
-	QString().sprintf("ID=%d,",count)+
+      sql=QString("insert into LOG_LINES set ")+
+	"LOG_NAME=\""+RDEscapeString(logname)+"\","+
+	QString().sprintf("LINE_ID=%d,",count)+
 	QString().sprintf("COUNT=%d,",count)+
 	QString().sprintf("TYPE=%d,",logline->type())+
 	QString().sprintf("SOURCE=%d,",RDLogLine::Template)+
@@ -564,8 +567,9 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
     }
     QTime end_start_time=event_start_time.addMSecs(event_length);
 
-    sql=QString("insert into `")+logname+"_LOG` set "+
-      QString().sprintf("ID=%d,",count)+
+    sql=QString("insert into LOG_LINES set ")+
+      "LOG_NAME=\""+RDEscapeString(logname)+"\","+
+      QString().sprintf("LINE_ID=%d,",count)+
       QString().sprintf("COUNT=%d,",count)+
       QString().sprintf("TYPE=%d,",link_type)+
       QString().sprintf("SOURCE=%d,",RDLogLine::Template)+
@@ -818,8 +822,9 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 // end of deconflicting rules
       
       int schedpos=rand()%schedCL->getNumberOfItems();
-      sql=QString("insert into `")+logname+"_LOG` set "+
-	QString().sprintf("ID=%d,",count)+
+      sql=QString("insert into LOG_LINES set ")+
+	"LOG_NAME=\""+RDEscapeString(logname)+"\","+
+	QString().sprintf("LINE_ID=%d,",count)+
 	QString().sprintf("COUNT=%d,",count)+
 	QString().sprintf("TYPE=%d,",RDLogLine::Cart)+
 	QString().sprintf("SOURCE=%d,",source)+
@@ -858,8 +863,9 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
   //
   for(int i=0;i<event_postimport_log->size();i++) {
     if((logline=event_postimport_log->logLine(i))!=NULL) {
-      sql=QString("insert into `")+logname+"_LOG` set "+
-	QString().sprintf("ID=%d,",count)+
+      sql=QString("insert into LOG_LINES set ")+
+	"LOG_NAME=\""+RDEscapeString(logname)+"\","+
+	QString().sprintf("LINE_ID=%d,",count)+
 	QString().sprintf("COUNT=%d,",count)+
 	QString().sprintf("TYPE=%d,",logline->type())+
 	QString().sprintf("SOURCE=%d,",RDLogLine::Template)+

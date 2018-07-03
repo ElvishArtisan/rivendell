@@ -256,27 +256,29 @@ void RDLog::updateLinkQuantity(RDLog::Source src) const
   QString sql;
   RDSqlQuery *q;
   switch(src) {
-      case RDLog::SourceMusic:
-	sql=QString("select ID from `")+RDLog::tableName(log_name)+
-	  "` where "+QString().sprintf("TYPE=%d",RDLogLine::MusicLink);
-	q=new RDSqlQuery(sql);
-	sql=QString("update LOGS set ")+
-	  QString().sprintf("MUSIC_LINKS=%d ",q->size())+
-	  "where NAME=\""+RDEscapeString(log_name)+"\"";
-	break;
+  case RDLog::SourceMusic:
+    sql=QString("select LINE_ID from LOG_LINES where ")+
+      "LOG_NAME=\""+RDEscapeString(log_name)+"\" && "+
+      QString().sprintf("TYPE=%d",RDLogLine::MusicLink);
+    q=new RDSqlQuery(sql);
+    sql=QString("update LOGS set ")+
+      QString().sprintf("MUSIC_LINKS=%d ",q->size())+
+      "where NAME=\""+RDEscapeString(log_name)+"\"";
+    break;
 
-      case RDLog::SourceTraffic:
-	sql=QString("select ID from `")+RDLog::tableName(log_name)+
-	  "` where "+QString().sprintf("TYPE=%d",RDLogLine::TrafficLink);
-	q=new RDSqlQuery(sql);
+  case RDLog::SourceTraffic:
+    sql=QString("select LINE_ID from LOG_LINES where ")+
+      "LOG_NAME=\""+RDEscapeString(log_name)+"\" && "+
+      QString().sprintf("TYPE=%d",RDLogLine::TrafficLink);
+    q=new RDSqlQuery(sql);
 
-	sql=QString("update LOGS set ")+
-	  QString().sprintf("TRAFFIC_LINKS=%d ",q->size())+
-	  "where NAME=\""+RDEscapeString(log_name)+"\"";
-	break;
+    sql=QString("update LOGS set ")+
+      QString().sprintf("TRAFFIC_LINKS=%d ",q->size())+
+      "where NAME=\""+RDEscapeString(log_name)+"\"";
+    break;
 
-      default:
-	return;
+  default:
+    return;
   }
   delete q;
   q=new RDSqlQuery(sql);
@@ -356,7 +358,9 @@ bool RDLog::remove(RDStation *station,RDUser *user,RDConfig *config) const
     return false;
   }
 
-  rda->dropTable(RDLog::tableName(log_name));
+  sql=QString("delete from LOG_LINES where ")+
+    "LOG_NAME=\""+RDEscapeString(log_name)+"\"";
+  RDSqlQuery::apply(sql);
 
   sql=QString().sprintf("delete from LOGS where (NAME=\"%s\" && TYPE=0)",
 			(const char *)RDEscapeString(log_name));
@@ -373,16 +377,18 @@ void RDLog::updateTracks()
   unsigned scheduled=0;
   unsigned completed=0;
 
-  sql=QString("select `")+RDLog::tableName(log_name)+"`.ID from "+
-    "`"+RDLog::tableName(log_name)+"` left join CART "+
-    "on `"+RDLog::tableName(log_name)+"`.CART_NUMBER=CART.NUMBER where "+
+  sql=QString("select LOG_LINES.LINE_ID from ")+
+    "LOG_LINES left join CART "+
+    "on LOG_LINES.CART_NUMBER=CART.NUMBER where "+
+    "LOG_NAME=\""+RDEscapeString(log_name)+"\" && "+
     "CART.OWNER is not null";
   q=new RDSqlQuery(sql);
   completed=q->size();
   delete q;
 
-  sql=QString("select ID from `")+RDLog::tableName(log_name)+
-    "` where "+QString().sprintf("TYPE=%d",RDLogLine::Track);
+  sql=QString("select LINE_ID from LOG_LINES where ")+
+    "LOG_NAME=\""+RDEscapeString(log_name)+"\" && "+
+    QString().sprintf("TYPE=%d",RDLogLine::Track);
   q=new RDSqlQuery(sql);
   scheduled=q->size()+completed;
   delete q;
@@ -425,9 +431,7 @@ int RDLog::removeTracks(RDStation *station,RDUser *user,RDConfig *config) const
 
 RDLogEvent *RDLog::createLogEvent() const
 {
-  QString logname=name()+"_LOG";
-  logname.replace(" ","_");
-  return new RDLogEvent(logname);
+  return new RDLogEvent(name());
 }
 
 
@@ -546,7 +550,6 @@ bool RDLog::create(const QString &name,const QString &svc_name,
     return false;
   }
   delete q;
-  RDCreateLogTable(RDLog::tableName(name),config);
   *err_msg=QObject::tr("OK");
   return true;
 }
@@ -577,14 +580,6 @@ bool RDLog::remove(const QString &name,RDStation *station,RDUser *user,
   ret=log->remove(station,user,config);
   delete log;
   return ret;
-}
-
-
-QString RDLog::tableName(const QString &log_name)
-{
-  QString ret=log_name;
-  ret.replace(" ","_");
-  return ret+"_LOG";
 }
 
 

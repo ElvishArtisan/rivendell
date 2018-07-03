@@ -151,7 +151,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   // Log Data Structures
   //
   edit_log_lock=new RDLogLock(edit_logname,rda->user(),rda->station(),this);
-  edit_log_event=new RDLogEvent(RDLog::tableName(edit_logname));
+  edit_log_event=new RDLogEvent(edit_logname);
   edit_log_event->load(true);
 
   //
@@ -1158,8 +1158,7 @@ void EditLog::saveasData()
     delete edit_log;
     edit_newlogs->push_back(logname);
     edit_log=new RDLog(logname);
-    RDCreateLogTable(RDLog::tableName(logname),rda->config());
-    edit_log_event->setLogName(RDLog::tableName(logname));
+    edit_log_event->setLogName(logname);
     for(int i=0;i<edit_service_box->count();i++) {
       if(edit_service_box->text(i)==svcname) {
 	edit_service_box->setCurrentItem(i);

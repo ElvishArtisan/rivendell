@@ -146,7 +146,7 @@ bool RDSqlQuery::apply(const QString &sql,QString *err_msg)
 
   RDSqlQuery *q=new RDSqlQuery(sql);
   ret=q->isActive();
-  if(!ret) {
+  if((err_msg!=NULL)&&(!ret)) {
     *err_msg="sql error: "+q->lastError().text()+" query: "+sql;
   }
   delete q;

@@ -210,16 +210,14 @@ void MainObject::RelinkAudio(const QString &srcdir) const
 
 void MainObject::CheckOrphanedTracks() const
 {
-  QString logname;
   QString sql="select NUMBER,TITLE,OWNER from CART where OWNER!=\"\"";
   QSqlQuery *q=new QSqlQuery(sql);
   QSqlQuery *q1;
 
   while(q->next()) {
-    logname=q->value(2).toString()+"_LOG";
-    logname.replace(" ","_");
-    sql=QString().sprintf("select ID from `%s` where CART_NUMBER=%u",
-			  (const char *)logname,q->value(0).toUInt());
+    sql=QString("select LINE_ID from LOG_LINES where ")+
+      "LOG_NAME=\""+RDEscapeString(q->value(2).toString())+"\" && "+
+      QString().sprintf("CART_NUMBER=%u",q->value(0).toUInt());
     q1=new QSqlQuery(sql);
     if(!q1->first()) {
       printf("  Found orphaned track %u - \"%s\".  Delete? (y/N) ",

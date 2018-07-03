@@ -289,7 +289,7 @@ void MainObject::userData()
     fprintf(stderr,"rdrender: no such log\n");
     exit(1);
   }
-  RDLogEvent *log_event=new RDLogEvent(RDLog::tableName(render_logname));
+  RDLogEvent *log_event=new RDLogEvent(render_logname);
   log_event->load();
 
   //

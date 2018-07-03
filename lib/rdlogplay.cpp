@@ -222,7 +222,7 @@ void RDLogPlay::setOpMode(RDAirPlayConf::OpMode mode)
   UpdateStartTimes(play_line_counter);
 }
 
-
+/*
 void RDLogPlay::setLogName(QString name)
 {
   if(logName()!=name) {
@@ -231,7 +231,7 @@ void RDLogPlay::setLogName(QString name)
     rda->airplayConf()->setCurrentLog(play_id,name.left(name.length()-4));
   }
 }
-
+*/
 
 void RDLogPlay::setChannels(int cards[2],int ports[2],
 			  const QString start_rml[2],const QString stop_rml[2])
@@ -588,7 +588,7 @@ void RDLogPlay::append(const QString &log_name)
   int old_size=size();
 
   if(size()==0) {
-    setLogName(RDLog::tableName(log_name));
+    //    setLogName(RDLog::tableName(log_name));
     load();
     return;
   }
@@ -2834,8 +2834,9 @@ void RDLogPlay::ClearChannel(int deckid)
 RDLogLine::TransType RDLogPlay::GetTransType(const QString &logname,int line)
 {
   RDLogLine::TransType trans=RDLogLine::Stop;
-  QString sql=QString("select TRANS_TYPE from `")+
-    RDLog::tableName(logname)+"` where "+QString().sprintf("COUNT=%d",line);
+  QString sql=QString("select TRANS_TYPE from LOG_LINES where ")+
+    "LOG_NAME=\""+RDEscapeString(logname)+"\" && "+
+    QString().sprintf("COUNT=%d",line);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     trans=(RDLogLine::TransType)q->value(0).toUInt();

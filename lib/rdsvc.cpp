@@ -784,7 +784,9 @@ bool RDSvc::generateLog(const QDate &date,const QString &logname,
   // Get Current Count
   //
   int count;
-  sql=QString("select COUNT from `")+RDLog::tableName(logname)+"` order by COUNT desc";
+  sql=QString("select COUNT from LOG_LINES where ")+
+    "LOG_NAME=\""+RDEscapeString(logname)+"\" "+
+    "order by COUNT desc";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     count=q->value(0).toInt()+1;
@@ -798,10 +800,13 @@ bool RDSvc::generateLog(const QDate &date,const QString &logname,
   // Log Chain To
   //
   if(chainto()) {
-    sql=QString("insert into `")+RDLog::tableName(logname)+"` set "+
-      QString().sprintf("ID=%d,COUNT=%d,TYPE=%d,",count,count,RDLogLine::Chain)+
-      QString().sprintf("SOURCE=%d,TRANS_TYPE=%d,",RDLogLine::Template,
-			RDLogLine::Segue)+
+    sql=QString("insert into LOG_LINES set ")+
+      "LOG_NAME=\""+RDEscapeString(logname)+"\","+
+      QString().sprintf("LINE_ID=%d,",count)+
+      QString().sprintf("COUNT=%d,",count)+
+      QString().sprintf("TYPE=%d,",RDLogLine::Chain)+
+      QString().sprintf("SOURCE=%d,",RDLogLine::Template)+
+      QString().sprintf("TRANS_TYPE=%d,",RDLogLine::Segue)+
       "LABEL=\""+RDEscapeString(nextname)+"\"";
     q=new RDSqlQuery(sql);
     delete q;
@@ -881,8 +886,8 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
   //
   // Iterate Through the Log
   //
-  RDLogEvent *src_event=new RDLogEvent(RDLog::tableName(logname));
-  RDLogEvent *dest_event=new RDLogEvent(RDLog::tableName(logname));
+  RDLogEvent *src_event=new RDLogEvent(logname);
+  RDLogEvent *dest_event=new RDLogEvent(logname);
   src_event->load();
   RDLogLine *logline=NULL;
   for(int i=0;i<src_event->size();i++) {
@@ -1000,8 +1005,8 @@ bool RDSvc::clearLogLinks(RDSvc::ImportSource src,const QString &logname,
 	break;
   }
 
-  RDLogEvent *src_event=new RDLogEvent(RDLog::tableName(logname));
-  RDLogEvent *dest_event=new RDLogEvent(RDLog::tableName(logname));
+  RDLogEvent *src_event=new RDLogEvent(logname);
+  RDLogEvent *dest_event=new RDLogEvent(logname);
   src_event->load();
   RDLogLine *logline=NULL;
   for(int i=0;i<src_event->size();i++) {
@@ -1446,9 +1451,11 @@ void RDSvc::remove(const QString &name)
     "SERVICE=\""+RDEscapeString(name)+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
+    sql=QString("delete from LOG_LINES where ")+
+      "LOG_NAME=\""+RDEscapeString(q->value(0).toString())+"\"";
+    RDSqlQuery::apply(sql);
     logname=q->value(0).toString();
     logname.replace(" ","_");
-    rda->dropTable(RDLog::tableName(logname));
     rda->dropTable(logname+"_REC");
   }
   delete q;

@@ -72,7 +72,8 @@ class RDLogEvent
    QString xml() const;
 
   private:
-   int LoadLines(const QString &log_table,int id_offset,bool track_ptrs);
+   //   int LoadLines(const QString &log_table,int id_offset,bool track_ptrs);
+   int LoadLines(int id_offset,bool track_ptrs);
    void SaveLine(int line);
    void InsertLines(QString values);
    void InsertLineValues(QString *query, int line);

@@ -251,7 +251,7 @@ void MainObject::Load(QString logname)
 
   edit_log=new RDLog(logname);
   if(edit_log->exists()) {
-    edit_log_event=new RDLogEvent(RDLog::tableName(logname));
+    edit_log_event=new RDLogEvent(logname);
     edit_log_event->load();
     edit_description=edit_log->description();
     edit_service=edit_log->service();
@@ -363,7 +363,7 @@ void MainObject::New(const QString &logname)
   }
   edit_log=new RDLog(logname);
   if(!edit_log->exists()) {
-    edit_log_event=new RDLogEvent(RDLog::tableName(logname));
+    edit_log_event=new RDLogEvent(logname);
     edit_description=logname+" log";
     sql=QString("select NAME from SERVICES");
     q=new RDSqlQuery(sql);
@@ -435,8 +435,7 @@ void MainObject::Saveas(const QString &logname)
       "SERVICE=\""+RDEscapeString(edit_service)+"\"";
     q=new RDSqlQuery(sql);
     delete q;
-    RDCreateLogTable(RDLog::tableName(logname),rda->config());
-    edit_log_event->setLogName(RDLog::tableName(logname));
+    edit_log_event->setLogName(logname);
     edit_log_event->save(rda->config());
     delete edit_log;
     edit_log=log;

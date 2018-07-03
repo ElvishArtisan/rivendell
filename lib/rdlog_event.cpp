@@ -49,20 +49,7 @@ RDLogEvent::~RDLogEvent()
 
 bool RDLogEvent::exists()
 {
-  if(log_name.isEmpty()) {
-    return false;
-  }
-  QString sql="show tables";
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  while(q->next()) {
-    if(q->value(0).toString()==log_name) {
-      delete q;
-      return true;
-    }
-  }
-  delete q;
-
-  return false;
+  return RDLog::exists(log_name);
 }
 
 
@@ -115,19 +102,19 @@ int RDLogEvent::load(bool track_ptrs)
   //
   // Get the service name
   //
-  sql=QString().sprintf("select SERVICE from LOGS where NAME=\"%s\"",
-	     (const char *)RDEscapeString(log_name.left(log_name.length()-4)));
+  sql=QString("select SERVICE from LOGS where ")+
+    "NAME=\""+RDEscapeString(log_name)+"\"";
   q=new RDSqlQuery(sql);
   if(q->next()) {
     log_service_name=q->value(0).toString();
   }
   delete q;
 
-  RDLog *log=new RDLog(log_name.left(log_name.length()-4));
+  RDLog *log=new RDLog(log_name);
   log_max_id=log->nextId();
   delete log;
 
-  LoadLines(log_name,0,track_ptrs);
+  LoadLines(0,track_ptrs);
 
   return log_line.size();
 }
@@ -151,9 +138,10 @@ void RDLogEvent::save(RDConfig *config,bool update_tracks,int line)
   }
   if(line<0) {
     if(exists()) {
-      rda->dropTable(log_name);
+      sql=QString("delete from LOG_LINES where ")+
+	"LOG_NAME=\""+RDEscapeString(log_name)+"\"";
+      RDSqlQuery::apply(sql);
     }
-    RDCreateLogTable(log_name,config);
     if (log_line.size() > 0) {
        QString values = "";
        for(unsigned i=0;i<log_line.size();i++) {
@@ -166,15 +154,16 @@ void RDLogEvent::save(RDConfig *config,bool update_tracks,int line)
     }
   }
   else {
-    sql=QString().sprintf("delete from `%s` where COUNT=%d",
-			  (const char *)log_name,line);
+    sql=QString("delete from LOG_LINES where ")+
+      "LOG_NAME=\""+RDEscapeString(log_name)+"\" && "+
+      QString().sprintf("COUNT=%d",line);
     q=new RDSqlQuery(sql);
     delete q;
     SaveLine(line);
     // BPM - Clear the modified flag
     log_line[line]->clearModified();
   }
-  RDLog *log=new RDLog(log_name.left(log_name.length()-4));
+  RDLog *log=new RDLog(log_name);
   if(log->nextId()<nextId()) {
     log->setNextId(nextId());
   }
@@ -187,7 +176,7 @@ void RDLogEvent::save(RDConfig *config,bool update_tracks,int line)
 
 int RDLogEvent::append(const QString &logname,bool track_ptrs)
 {
-  return LoadLines(RDLog::tableName(logname),log_max_id,track_ptrs);
+  return LoadLines(log_max_id,track_ptrs);
 }
 
 
@@ -215,8 +204,7 @@ int RDLogEvent::validate(QString *report,const QDate &date)
     sprintf("Generated at: %s - %s\n",
 	    (const char *)QDate::currentDate().toString("MM/dd/yyyy"),
 	    (const char *)QTime::currentTime().toString("hh:mm:ss"));
-  *report+=QString().sprintf("Log: %s\n",
-			     (const char *)log_name.left(log_name.length()-4));
+  *report+=QString().sprintf("Log: %s\n",(const char *)log_name);
   *report+=QString().sprintf("Effective Airdate: %s\n",
 			     (const char *)date.toString("MM/dd/yyyy"));
   *report+="\n";
@@ -311,32 +299,46 @@ void RDLogEvent::refresh(int line)
   if(log_name.isEmpty()||log_line[line]->cartNumber()==0) {
     return;
   }
-  QString sql=QString().sprintf("select CART.TYPE,CART.GROUP_NAME,CART.TITLE,\
-                                 CART.ARTIST,CART.ALBUM,CART.YEAR,CART.LABEL,\
-                                 CART.CLIENT,CART.AGENCY,CART.USER_DEFINED,\
-                                 CART.FORCED_LENGTH,CART.CUT_QUANTITY,\
-                                 CART.LAST_CUT_PLAYED,CART.PLAY_ORDER,\
-                                 CART.ENFORCE_LENGTH,CART.PRESERVE_PITCH,\
-                                 CART.PUBLISHER,CART.COMPOSER,CART.USAGE_CODE,\
-                                 CART.AVERAGE_SEGUE_LENGTH,CART.VALIDITY,\
-                                 CART.NOTES,GROUPS.COLOR from CART \
-                                 left join GROUPS \
-                                 on CART.GROUP_NAME=GROUPS.NAME \
-                                 where CART.NUMBER=%u",
-				log_line[line]->cartNumber());
+  QString sql=QString("select ")+
+    "CART.TYPE,"+                  // 00
+    "CART.GROUP_NAME,"+            // 01
+    "CART.TITLE,"+                 // 02
+    "CART.ARTIST,"+                // 03
+    "CART.ALBUM,"+                 // 04
+    "CART.YEAR,"+                  // 05
+    "CART.LABEL,"+                 // 06
+    "CART.CLIENT,"+                // 07
+    "CART.AGENCY,"+                // 08
+    "CART.USER_DEFINED,"+          // 09
+    "CART.FORCED_LENGTH,"+         // 10
+    "CART.CUT_QUANTITY,"+          // 11
+    "CART.LAST_CUT_PLAYED,"+       // 12
+    "CART.PLAY_ORDER,"+            // 13
+    "CART.ENFORCE_LENGTH,"+        // 14
+    "CART.PRESERVE_PITCH,"+        // 15
+    "CART.PUBLISHER,"+             // 16
+    "CART.COMPOSER,"+              // 17
+    "CART.USAGE_CODE,"+            // 18
+    "CART.AVERAGE_SEGUE_LENGTH,"+  // 19
+    "CART.VALIDITY,"+              // 20
+    "CART.NOTES,"+                 // 21
+    "GROUPS.COLOR "+               // 22
+    "from CART left join GROUPS "+
+    "on CART.GROUP_NAME=GROUPS.NAME where "+
+    QString().sprintf("CART.NUMBER=%u",log_line[line]->cartNumber());
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     switch((RDCart::Type)q->value(0).toInt()) {
-	case RDCart::Audio:
-	  log_line[line]->setType(RDLogLine::Cart);
-	  break;
+    case RDCart::Audio:
+      log_line[line]->setType(RDLogLine::Cart);
+      break;
 	  
-	case RDCart::Macro:
-	  log_line[line]->setType(RDLogLine::Macro);
-	  break;
+    case RDCart::Macro:
+      log_line[line]->setType(RDLogLine::Macro);
+      break;
 	  
-	default:
-	  break;
+    default:
+      break;
     }	
     log_line[line]->
       setCartType((RDCart::Type)q->value(0).toInt());        // Cart Type
@@ -797,7 +799,7 @@ QString RDLogEvent::xml() const
   return ret;
 }
 
-
+/*
 int RDLogEvent::LoadLines(const QString &log_table,int id_offset,
 			  bool track_ptrs)
 {
@@ -1115,16 +1117,368 @@ from `%s` left join CART on `%s`.CART_NUMBER=CART.NUMBER order by COUNT",
     else {
       prev_custom=false;
     }
-/*    
-    printf("LINE: %u  START: %d  END: %d  S_START: %d  S_END: %d  FD_UP: %d  FD_DN: %d\n",
-	   log_line.size(),
-	   q->value(5).toInt(),
-	   q->value(6).toInt(),
-	   q->value(7).toInt(),
-	   q->value(8).toInt(),
-	   q->value(38).toInt(),
-	   q->value(40).toInt());
+
+//    printf("LINE: %u  START: %d  END: %d  S_START: %d  S_END: %d  FD_UP: %d  FD_DN: %d\n",
+//	   log_line.size(),
+//	   q->value(5).toInt(),
+//	   q->value(6).toInt(),
+//	   q->value(7).toInt(),
+//	   q->value(8).toInt(),
+//	   q->value(38).toInt(),
+//	   q->value(40).toInt());
+
+    line.clearModified();
+    log_line.push_back(new RDLogLine(line));
+  }
+  delete q;
+
+  LoadNowNext(start_line);
+
+  if(track_ptrs) {
+    //
+    // Load default cart pointers for "representative" cuts.  This is
+    // really only useful when setting up a voice tracker.
+    //
+    for(int i=start_line;i<size();i++) {
+      RDLogLine *ll=logLine(i);
+      if(ll->cartType()==RDCart::Audio) {
+	sql=QString("select START_POINT,END_POINT,")+
+	  "SEGUE_START_POINT,SEGUE_END_POINT,"+
+	  "TALK_START_POINT,TALK_END_POINT,"
+	  "HOOK_START_POINT,HOOK_END_POINT,"+
+	  "FADEUP_POINT,FADEDOWN_POINT,CUT_NAME,"+
+	  "ORIGIN_NAME,ORIGIN_DATETIME from CUTS "+
+	  QString().sprintf("where CART_NUMBER=%u ",ll->cartNumber())+
+	  "order by CUT_NAME";
+	q=new RDSqlQuery(sql);
+	if(q->first()) {
+	  ll->setStartPoint(q->value(0).toInt(),RDLogLine::CartPointer);
+	  ll->setEndPoint(q->value(1).toInt(),RDLogLine::CartPointer);
+	  ll->setSegueStartPoint(q->value(2).toInt(),RDLogLine::CartPointer);
+	  ll->setSegueEndPoint(q->value(3).toInt(),RDLogLine::CartPointer);
+	  ll->setTalkStartPoint(q->value(4).toInt());
+	  ll->setTalkEndPoint(q->value(5).toInt());
+	  ll->setHookStartPoint(q->value(6).toInt());
+	  ll->setHookEndPoint(q->value(7).toInt());
+	  ll->setFadeupPoint(q->value(8).toInt(),RDLogLine::CartPointer);
+	  ll->setFadedownPoint(q->value(9).toInt(),RDLogLine::CartPointer);
+	  ll->setCutNumber(RDCut::cutNumber(q->value(10).toString()));
+	  ll->setOriginUser(q->value(11).toString());
+	  ll->setOriginDateTime(q->value(12).toDateTime());
+	}
+	delete q;
+      }
+    }
+  }
+
+  return lines;
+}
 */
+
+
+int RDLogEvent::LoadLines(int id_offset,bool track_ptrs)
+{
+  RDLogLine line;
+  RDSqlQuery *q1;
+  QString sql;
+  RDSqlQuery *q;
+  bool prev_custom=false;
+  unsigned lines=0;
+  unsigned start_line=log_line.size();
+
+  //
+  // Load the group color table
+  //
+  std::map<QString,QColor> group_colors;
+  sql="select NAME,COLOR from GROUPS";
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    group_colors[q->value(0).toString()]=QColor(q->value(1).toString());
+  }
+  delete q;
+
+  //
+  // Load log lines
+  //
+  sql=QString("select ")+
+    "LOG_LINES.LINE_ID,"+            // 00
+    "LOG_LINES.CART_NUMBER,"+        // 01
+    "LOG_LINES.START_TIME,"+         // 02
+    "LOG_LINES.TIME_TYPE,"+          // 03
+    "LOG_LINES.TRANS_TYPE,"+         // 04
+    "LOG_LINES.START_POINT,"+        // 05
+    "LOG_LINES.END_POINT,"+          // 06
+    "LOG_LINES.SEGUE_START_POINT,"+  // 07
+    "LOG_LINES.SEGUE_END_POINT,"+    // 08
+    "CART.TYPE,"+                    // 09
+    "CART.GROUP_NAME,"+              // 10
+    "CART.TITLE,"+                   // 11
+    "CART.ARTIST,"+                  // 12
+    "CART.ALBUM,"+                   // 13
+    "CART.YEAR,"+                    // 14
+    "CART.LABEL,"+                   // 15
+    "CART.CLIENT,"+                  // 16
+    "CART.AGENCY,"+                  // 17
+    "CART.USER_DEFINED,"+            // 18
+    "CART.CONDUCTOR,"+               // 19
+    "CART.SONG_ID,"+                 // 20
+    "CART.FORCED_LENGTH,"+           // 21
+    "CART.CUT_QUANTITY,"+            // 22
+    "CART.LAST_CUT_PLAYED,"+         // 23
+    "CART.PLAY_ORDER,"+              // 24
+    "CART.ENFORCE_LENGTH,"+          // 25
+    "CART.PRESERVE_PITCH ,"+         // 26
+    "LOG_LINES.TYPE,"+               // 27
+    "LOG_LINES.COMMENT,"+            // 28
+    "LOG_LINES.LABEL,"+              // 29
+    "LOG_LINES.GRACE_TIME,"+         // 30
+    "LOG_LINES.POST_POINT,"+         // 31
+    "LOG_LINES.SOURCE,"+             // 32
+    "LOG_LINES.EXT_START_TIME,"+     // 33
+    "LOG_LINES.EXT_LENGTH,"+         // 34
+    "LOG_LINES.EXT_DATA,"+           // 35
+    "LOG_LINES.EXT_EVENT_ID,"+       // 36
+    "LOG_LINES.EXT_ANNC_TYPE,"+      // 37
+    "LOG_LINES.EXT_CART_NAME,"+      // 38
+    "CART.ASYNCRONOUS,"+             // 39
+    "LOG_LINES.FADEUP_POINT,"+       // 40
+    "LOG_LINES.FADEUP_GAIN,"+        // 41
+    "LOG_LINES.FADEDOWN_POINT,"+     // 42
+    "LOG_LINES.FADEDOWN_GAIN,"+      // 43
+    "LOG_LINES.SEGUE_GAIN,"+         // 44
+    "CART.PUBLISHER,"+               // 45
+    "CART.COMPOSER,"+                // 46
+    "CART.USAGE_CODE,"+              // 47
+    "CART.AVERAGE_SEGUE_LENGTH,"+    // 48
+    "LOG_LINES.LINK_EVENT_NAME,"+    // 49
+    "LOG_LINES.LINK_START_TIME,"+    // 50
+    "LOG_LINES.LINK_LENGTH,"+        // 51
+    "LOG_LINES.LINK_ID,"+            // 52
+    "LOG_LINES.LINK_EMBEDDED,"+      // 53
+    "LOG_LINES.ORIGIN_USER,"+        // 54
+    "LOG_LINES.ORIGIN_DATETIME,"+    // 55
+    "CART.VALIDITY,"+                // 56
+    "LOG_LINES.LINK_START_SLOP,"+    // 57
+    "LOG_LINES.LINK_END_SLOP,"+      // 58
+    "LOG_LINES.DUCK_UP_GAIN,"+       // 59
+    "LOG_LINES.DUCK_DOWN_GAIN,"+     // 60
+    "CART.START_DATETIME,"+          // 61
+    "CART.END_DATETIME,"+            // 62
+    "LOG_LINES.EVENT_LENGTH,"+       // 63
+    "CART.USE_EVENT_LENGTH,"+        // 64
+    "CART.NOTES	"+                   // 65
+    "from LOG_LINES left join CART "+
+    "on LOG_LINES.CART_NUMBER=CART.NUMBER where "+
+    "LOG_LINES.LOG_NAME=\""+RDEscapeString(log_name)+"\" "+
+    "order by COUNT";
+   q=new RDSqlQuery(sql);
+  if(q->size()<=0) {
+    delete q;
+    return 0;
+  }
+  for(int i=0;i<q->size();i++) {
+    lines++;
+    line.clear();
+    q->next();
+    line.setType((RDLogLine::Type)q->value(27).toInt());       // Type
+    line.setId(q->value(0).toInt()+id_offset);                 // Log Line ID
+    if((q->value(0).toInt()+id_offset)>log_max_id) {
+      log_max_id=q->value(0).toInt()+id_offset;
+    }
+    line.setStartTime(RDLogLine::Imported,
+		      QTime().addMSecs(q->value(2).toInt())); // Start Time
+    line.setStartTime(RDLogLine::Logged,
+		      QTime().addMSecs(q->value(2).toInt()));
+    line.
+      setTimeType((RDLogLine::TimeType)q->value(3).toInt());   // Time Type
+    if((line.timeType()==RDLogLine::Hard)&&
+       (q->value(31).toString()==QString("Y"))) {              // Post Point
+    }
+    line.
+      setTransType((RDLogLine::TransType)q->value(4).toInt()); // Trans Type
+    line.setMarkerComment(q->value(28).toString());         // Comment
+    line.setMarkerLabel(q->value(29).toString());           // Label
+    line.setGraceTime(q->value(30).toInt());                // Grace Time
+    line.setUseEventLength(RDBool(q->value(64).toString())); // Use Event Length
+    line.setEventLength(q->value(63).toInt());              // Event Length
+    line.setSource((RDLogLine::Source)q->value(32).toUInt());
+    line.setLinkEventName(q->value(49).toString());         // Link Event Name
+    line.setLinkStartTime(QTime().addMSecs(q->value(50).toInt()));   // Link Start Time
+    line.setLinkLength(q->value(51).toInt());               // Link Length
+    line.setLinkStartSlop(q->value(57).toInt());            // Link Start Slop
+    line.setLinkEndSlop(q->value(58).toInt());              // Link End Slop
+    line.setLinkId(q->value(52).toInt());                   // Link ID
+    line.setLinkEmbedded(RDBool(q->value(53).toString()));   // Link Embedded
+    line.setOriginUser(q->value(54).toString());            // Origin User
+    line.setOriginDateTime(q->value(55).toDateTime());      // Origin DateTime
+    switch(line.type()) {
+    case RDLogLine::Cart:
+      line.setCartNumber(q->value(1).toUInt());          // Cart Number
+      line.setStartPoint(q->value(5).toInt(),RDLogLine::LogPointer);
+      line.setEndPoint(q->value(6).toInt(),RDLogLine::LogPointer);
+      line.setSegueStartPoint(q->value(7).toInt(),RDLogLine::LogPointer);
+      line.setSegueEndPoint(q->value(8).toInt(),RDLogLine::LogPointer);
+      line.setCartType((RDCart::Type)q->value(9).toInt());  // Cart Type
+      line.setGroupName(q->value(10).toString());       // Group Name
+      line.setGroupColor(group_colors[q->value(10).toString()]);
+      line.setTitle(q->value(11).toString());           // Title
+      line.setArtist(q->value(12).toString());          // Artist
+      line.setPublisher(q->value(45).toString());       // Publisher
+      line.setComposer(q->value(46).toString());        // Composer
+      line.setAlbum(q->value(13).toString());           // Album
+      line.setYear(q->value(14).toDate());              // Year
+      line.setLabel(q->value(15).toString());           // Label
+      line.setClient(q->value(16).toString());          // Client
+      line.setAgency(q->value(17).toString());          // Agency
+      line.setUserDefined(q->value(18).toString());     // User Defined
+      line.setCartNotes(q->value(65).toString());       // Cart Notes
+      line.setConductor(q->value(19).toString());       // Conductor
+      line.setSongId(q->value(20).toString());          // Song ID
+      line.setUsageCode((RDCart::UsageCode)q->value(47).toInt());
+      line.setForcedLength(q->value(21).toUInt());      // Forced Length
+      if(q->value(7).toInt()<0) {
+	line.setAverageSegueLength(q->value(48).toInt());
+      }
+      else {
+	line.
+	  setAverageSegueLength(q->value(7).toInt()-q->value(5).toInt());
+      }
+      line.setCutQuantity(q->value(22).toUInt());       // Cut Quantity
+      line.setLastCutPlayed(q->value(23).toUInt());     // Last Cut Played
+      line.
+	setPlayOrder((RDCart::PlayOrder)q->value(24).toUInt()); // Play Ord
+      line.
+	setEnforceLength(RDBool(q->value(25).toString())); // Enforce Length
+      line.
+	setPreservePitch(RDBool(q->value(26).toString())); // Preserve Pitch
+      if(!q->value(33).isNull()) {                      // Ext Start Time
+	line.setExtStartTime(q->value(33).toTime());
+      }
+      if(!q->value(34).isNull()) {                      // Ext Length
+	line.setExtLength(q->value(34).toInt());
+      }
+      if(!q->value(35).isNull()) {                      // Ext Data
+	line.setExtData(q->value(35).toString());
+      }
+      if(!q->value(36).isNull()) {                      // Ext Event ID
+	line.setExtEventId(q->value(36).toString());
+      }
+      if(!q->value(37).isNull()) {                      // Ext Annc. Type
+	line.setExtAnncType(q->value(37).toString());
+      }
+      if(!q->value(38).isNull()) {                      // Ext Cart Name
+	line.setExtCartName(q->value(38).toString());
+      }
+      if(!q->value(40).isNull()) {                      // FadeUp Point
+	line.setFadeupPoint(q->value(40).toInt(),RDLogLine::LogPointer);
+      }
+      if(!q->value(41).isNull()) {                      // FadeUp Gain
+	line.setFadeupGain(q->value(41).toInt());
+      }
+      if(!q->value(42).isNull()) {                      // FadeDown Point
+	line.setFadedownPoint(q->value(42).toInt(),RDLogLine::LogPointer);
+      }
+      if(!q->value(43).isNull()) {                      // FadeDown Gain
+	line.setFadedownGain(q->value(43).toInt());
+      }
+      if(!q->value(44).isNull()) {                      // Segue Gain
+	line.setSegueGain(q->value(44).toInt());
+      }
+      if(!q->value(59).isNull()) {                      // Duck Up Gain
+	line.setDuckUpGain(q->value(59).toInt());
+      }
+      if(!q->value(60).isNull()) {                      // Duck Down Gain
+	line.setDuckDownGain(q->value(60).toInt());
+      }
+      if(!q->value(61).isNull()) {                      // Start Datetime
+	line.setStartDatetime(q->value(61).toDateTime());
+      }
+      if(!q->value(62).isNull()) {                      // End Datetime
+	line.setEndDatetime(q->value(62).toDateTime());
+      }
+      line.setValidity((RDCart::Validity)q->value(56).toInt()); // Validity
+      break;
+
+    case RDLogLine::Macro:
+      line.setCartNumber(q->value(1).toUInt());          // Cart Number
+      line.setCartType((RDCart::Type)q->value(9).toInt());  // Cart Type
+      line.setGroupName(q->value(10).toString());       // Group Name
+      line.setGroupColor(group_colors[q->value(10).toString()]);
+      line.setTitle(q->value(11).toString());           // Title
+      line.setArtist(q->value(12).toString());          // Artist
+      line.setPublisher(q->value(45).toString());       // Publisher
+      line.setComposer(q->value(46).toString());        // Composer
+      line.setAlbum(q->value(13).toString());           // Album
+      line.setYear(q->value(14).toDate());              // Year
+      line.setLabel(q->value(15).toString());           // Label
+      line.setClient(q->value(16).toString());          // Client
+      line.setAgency(q->value(17).toString());          // Agency
+      line.setUserDefined(q->value(18).toString());     // User Defined
+      line.setCartNotes(q->value(65).toString());       // Cart Notes
+      line.setForcedLength(q->value(21).toUInt());      // Forced Length
+      line.setAverageSegueLength(q->value(21).toInt());
+      if(!q->value(33).isNull()) {                      // Ext Start Time
+	line.setExtStartTime(q->value(33).toTime());
+      }
+      if(!q->value(34).isNull()) {                      // Ext Length
+	line.setExtLength(q->value(34).toInt());
+      }
+      if(!q->value(35).isNull()) {                      // Ext Data
+	line.setExtData(q->value(35).toString());
+      }
+      if(!q->value(36).isNull()) {                      // Ext Event ID
+	line.setExtEventId(q->value(36).toString());
+      }
+      if(!q->value(37).isNull()) {                      // Ext Annc. Type
+	line.setExtAnncType(q->value(37).toString());
+      }
+      if(!q->value(38).isNull()) {                      // Ext Cart Name
+	line.setExtCartName(q->value(38).toString());
+      }
+      if(!q->value(39).isNull()) {                      // Asyncronous
+	line.setAsyncronous(RDBool(q->value(39).toString()));
+      }
+      break;
+
+    case RDLogLine::Marker:
+      break;
+
+    case RDLogLine::Track:
+      break;
+
+    case RDLogLine::Chain:
+      sql=
+	QString().sprintf("select DESCRIPTION from LOGS where NAME=\"%s\"",
+			  (const char *)line.markerLabel());
+      q1=new RDSqlQuery(sql);
+      if(q1->first()) {
+	line.setMarkerComment(q1->value(0).toString());
+      }
+      delete q1;
+      break;
+
+    default:
+      break;
+    }
+
+    line.setHasCustomTransition(prev_custom||(q->value(5).toInt()>=0)||\
+				(q->value(40).toInt()>=0));
+    if(line.type()==RDLogLine::Cart) {
+      prev_custom=(q->value(6).toInt()>=0)||(q->value(7).toInt()>=0)||
+	(q->value(8).toInt()>=0)||(q->value(42).toInt()>=0);
+    }
+    else {
+      prev_custom=false;
+    }
+
+//    printf("LINE: %u  START: %d  END: %d  S_START: %d  S_END: %d  FD_UP: %d  FD_DN: %d\n",
+//	   log_line.size(),
+//	   q->value(5).toInt(),
+//	   q->value(6).toInt(),
+//	   q->value(7).toInt(),
+//	   q->value(8).toInt(),
+//	   q->value(38).toInt(),
+//	   q->value(40).toInt());
 
     line.clearModified();
     log_line.push_back(new RDLogLine(line));
@@ -1174,21 +1528,51 @@ from `%s` left join CART on `%s`.CART_NUMBER=CART.NUMBER order by COUNT",
 }
 
 
-
 void RDLogEvent::InsertLines(QString values) {
   QString sql;
   RDSqlQuery *q;
 
-  sql = QString().sprintf("insert into `%s` (ID,COUNT,CART_NUMBER,START_TIME,TIME_TYPE,\
-  TRANS_TYPE,START_POINT,END_POINT,SEGUE_START_POINT,SEGUE_END_POINT,TYPE, \
-  COMMENT,LABEL,GRACE_TIME,SOURCE,EXT_START_TIME,                       \
-  EXT_LENGTH,EXT_DATA,EXT_EVENT_ID,EXT_ANNC_TYPE,EXT_CART_NAME,         \
-  FADEUP_POINT,FADEUP_GAIN,FADEDOWN_POINT,FADEDOWN_GAIN,SEGUE_GAIN,     \
-  LINK_EVENT_NAME,LINK_START_TIME,LINK_LENGTH,LINK_ID,LINK_EMBEDDED,    \
-  ORIGIN_USER,ORIGIN_DATETIME,LINK_START_SLOP,LINK_END_SLOP,            \
-  DUCK_UP_GAIN,DUCK_DOWN_GAIN,EVENT_LENGTH) values %s",
-                          (const char *)log_name,
-                          (const char *)values);
+  sql = QString("insert into LOG_LINES (")+
+    "LOG_NAME,"+           // 00
+    "LINE_ID,"+            // 01
+    "COUNT,"+              // 02
+    "CART_NUMBER,"+        // 03
+    "START_TIME,"+         // 04
+    "TIME_TYPE,"+          // 05
+    "TRANS_TYPE,"+         // 06
+    "START_POINT,"+        // 07
+    "END_POINT,"+          // 08
+    "SEGUE_START_POINT,"+  // 09
+    "SEGUE_END_POINT,"+    // 10
+    "TYPE,"+               // 11
+    "COMMENT,"+            // 12
+    "LABEL,"+              // 13
+    "GRACE_TIME,"+         // 14
+    "SOURCE,"+             // 15
+    "EXT_START_TIME,"+     // 16
+    "EXT_LENGTH,"+         // 17
+    "EXT_DATA,"+           // 18
+    "EXT_EVENT_ID,"+       // 19
+    "EXT_ANNC_TYPE,"+      // 20
+    "EXT_CART_NAME,"+      // 21
+    "FADEUP_POINT,"+       // 22
+    "FADEUP_GAIN,"+        // 23
+    "FADEDOWN_POINT,"+     // 24
+    "FADEDOWN_GAIN,"+      // 25
+    "SEGUE_GAIN,"+         // 26
+    "LINK_EVENT_NAME,"+    // 27
+    "LINK_START_TIME,"+    // 28
+    "LINK_LENGTH,"+        // 29
+    "LINK_ID,"+            // 30
+    "LINK_EMBEDDED,"+      // 31
+    "ORIGIN_USER,"+        // 32
+    "ORIGIN_DATETIME,"+    // 33
+    "LINK_START_SLOP,"+    // 34
+    "LINK_END_SLOP,"+      // 35
+    "DUCK_UP_GAIN,"+       // 36
+    "DUCK_DOWN_GAIN,"+     // 37
+    "EVENT_LENGTH) "+      // 38
+    "values "+values;
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -1197,6 +1581,48 @@ void RDLogEvent::InsertLines(QString values) {
 void RDLogEvent::InsertLineValues(QString *query, int line)
 {
   // one line to save query space
+  RDLogLine *ll=log_line[line];
+  QString sql=QString("(")+
+    "\""+RDEscapeString(log_name)+"\","+
+    QString().sprintf("%d,",ll->id())+
+    QString().sprintf("%d,",line)+
+    QString().sprintf("%u,",ll->cartNumber())+
+    QString().sprintf("%d,",QTime().msecsTo(ll->startTime(RDLogLine::Logged)))+
+    QString().sprintf("%d,",ll->timeType())+
+    QString().sprintf("%d,",ll->transType())+
+    QString().sprintf("%d,",ll->startPoint(RDLogLine::LogPointer))+
+    QString().sprintf("%d,",ll->endPoint(RDLogLine::LogPointer))+
+    QString().sprintf("%d,",ll->segueStartPoint(RDLogLine::LogPointer))+
+    QString().sprintf("%d,",ll->segueEndPoint(RDLogLine::LogPointer))+
+    QString().sprintf("%d,",ll->type())+
+    "\""+RDEscapeString(ll->markerComment())+"\","+
+    "\""+RDEscapeString(ll->markerLabel())+"\","+
+    QString().sprintf("%d,",ll->graceTime())+
+    QString().sprintf("%d,",ll->source())+
+    RDCheckDateTime(ll->extStartTime(),"hh:mm:ss")+","+
+    QString().sprintf("%d,",ll->extLength())+
+    "\""+RDEscapeString(ll->extData())+"\","+
+    "\""+RDEscapeString(ll->extEventId())+"\","+
+    "\""+RDEscapeString(ll->extAnncType())+"\","+
+    "\""+RDEscapeString(ll->extCartName())+"\","+
+    QString().sprintf("%d,",ll->fadeupPoint(RDLogLine::LogPointer))+
+    QString().sprintf("%d,",ll->fadeupGain())+
+    QString().sprintf("%d,",ll->fadedownPoint(RDLogLine::LogPointer))+
+    QString().sprintf("%d,",ll->fadedownGain())+
+    QString().sprintf("%d,",ll->segueGain())+
+    "\""+RDEscapeString(ll->linkEventName())+"\","+
+    QString().sprintf("%d,",QTime().msecsTo(ll->linkStartTime()))+
+    QString().sprintf("%d,",ll->linkLength())+
+    QString().sprintf("%d,",ll->linkId())+
+    "\""+RDYesNo(ll->linkEmbedded())+"\","+
+    "\""+RDEscapeString(ll->originUser())+"\","+
+    RDCheckDateTime(ll->originDateTime(),"yyyy-MM-dd hh:mm:ss")+","+
+    QString().sprintf("%d,",ll->linkStartSlop())+
+    QString().sprintf("%d,",ll->linkEndSlop())+
+    QString().sprintf("%d,",ll->duckUpGain())+
+    QString().sprintf("%d,",ll->duckDownGain())+
+    QString().sprintf("%d)",ll->eventLength());
+  /*
   QString sql=QString().sprintf("(%d,%d,%u,%d,%d,%d,%d,%d,%d,%d,%d,\"%s\",\"%s\",%d,%d,%s,%d,\"%s\",\"%s\",\"%s\",\"%s\",%d,%d,%d,%d,%d,\"%s\",%d,%d,%d,\"%s\",\"%s\",%s,%d,%d,%d,%d,%d)",
                         log_line[line]->id(),
                         line,
@@ -1246,6 +1672,7 @@ void RDLogEvent::InsertLineValues(QString *query, int line)
                         log_line[line]->duckUpGain(),
                         log_line[line]->duckDownGain(),
                         log_line[line]->eventLength());
+  */
   *query += sql;
 }
 

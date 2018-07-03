@@ -17079,3 +17079,7 @@
 2018-07-02 Fred Gleason <fredg@paravelsystems.com>
 	* Removed 'RDAIRPLAY.INSTANCE' field from schema update/reversion
 	284 in rddbmgr(8).
+2018-07-03 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'LOG_LINES' table to the database.
+	* Incremented the database version to 288.
+	* Removed the 'RDLog::tableName()' method.

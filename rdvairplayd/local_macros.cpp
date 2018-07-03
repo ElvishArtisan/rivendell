@@ -72,7 +72,7 @@ void MainObject::rmlReceivedData(RDMacro *rml)
 	}
 	return;
       }
-      air_logs[index]->setLogName(RDLog::tableName(logname));
+      air_logs[index]->setLogName(logname);
       air_logs[index]->load();
       rda->log(RDConfig::LogInfo,"loaded log \""+logname+"\" into log machine"+
 	       QString().sprintf(" %d",rml->arg(0).toInt()));
