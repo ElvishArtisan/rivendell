@@ -1,12 +1,11 @@
-          Reconciliation Format Table Layout for Rivendell
+                  ELR_LINES Table Layout for Rivendell
 
-This is the generic layout of all reconciliation tables.  Each of 
-these tables will be have a name ending in '_SRT' and be listed in 
-the 'SERVICES' table.
+The ELR_LINES table hold information for electronic log reconciliation.
 
 FIELD NAME           TYPE               REMARKS
 ------------------------------------------------------------------------
 ID                   int(10) unsigned   Primary key, auto-increment
+SERVICE_NAME         char(10)           From SERVICES.NAME
 LENGTH               int(11) signed
 LOG_NAME             char(64)           From LOGS.NAME
 LOG_ID               int(11) signed     From *_LOG.ID

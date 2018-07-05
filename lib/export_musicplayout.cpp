@@ -2,7 +2,7 @@
 //
 // Export a Rivendell Report to an ASCII Text File.
 //
-//   (C) Copyright 2012,2016-2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,11 +22,13 @@
 
 #include <qfile.h>
 #include <qmessagebox.h>
-#include <rddb.h>
-#include <rdlog_line.h>
+
 #include <rdairplay_conf.h>
 #include <rdconf.h>
 #include <rddatedecode.h>
+#include <rddb.h>
+#include <rdescape_string.h>
+#include <rdlog_line.h>
 #include <rdreport.h>
 
 bool RDReport::ExportMusicPlayout(const QString &filename,
@@ -52,29 +54,20 @@ bool RDReport::ExportMusicPlayout(const QString &filename,
   else {
     cart_fmt="%6u";
   }
-  sql=QString().sprintf("select `%s_SRT`.LENGTH,\
-                         `%s_SRT`.CART_NUMBER,\
-                         `%s_SRT`.EVENT_DATETIME,\
-                         `%s_SRT`.EXT_EVENT_ID,\
-                         `%s_SRT`.TITLE,\
-                         `%s_SRT`.CUT_NUMBER,\
-                         `%s_SRT`.ARTIST,\
-                         `%s_SRT`.ALBUM,\
-                         `%s_SRT`.LABEL \
-                         from `%s_SRT` left join CART on\
-                         `%s_SRT`.CART_NUMBER=CART.NUMBER\
-                         order by EVENT_DATETIME",
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable);
+  sql=QString("select ")+
+    "ELR_LINES.LENGTH,"+
+    "ELR_LINES.CART_NUMBER,"+
+    "ELR_LINES.EVENT_DATETIME,"+
+    "ELR_LINES.EXT_EVENT_ID,"+
+    "ELR_LINES.TITLE,"+
+    "ELR_LINES.CUT_NUMBER,"+
+    "ELR_LINES.ARTIST,"+
+    "ELR_LINES.ALBUM,"+
+    "ELR_LINES.LABEL "+
+    "from ELR_LINES left join CART "+
+    "on ELR_LINES.CART_NUMBER=CART.NUMBER where "+
+    "SERVICE_NAME=\""+RDEscapeString(mixtable)+"\" "+
+    "order by EVENT_DATETIME";
   q=new RDSqlQuery(sql);
 
   //

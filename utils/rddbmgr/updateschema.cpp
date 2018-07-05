@@ -7338,6 +7338,144 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
     cur_schema++;
   }
 
+  if((cur_schema<289)&&(set_schema>cur_schema)) {
+    sql=QString("create table if not exists ELR_LINES (")+
+      "ID int unsigned auto_increment primary key,"+
+      "SERVICE_NAME char(10) not null,"+
+      "EVENT_DATETIME datetime not null,"+
+      "LENGTH int,"+
+      "LOG_NAME char(64),"+
+      "LOG_ID int,"+
+      "CART_NUMBER int unsigned,"+
+      "CUT_NUMBER int,"+
+      "TITLE char(255),"+
+      "ARTIST char(255),"+
+      "PUBLISHER char(64),"+
+      "COMPOSER char(64),"+
+      "USER_DEFINED char(255),"+
+      "SONG_ID char(32),"+
+      "ALBUM char(255),"+
+      "LABEL char(64),"+
+      "CONDUCTOR char(64),"+
+      "USAGE_CODE int,"+
+      "DESCRIPTION char(64),"+
+      "OUTCUE char(64),"+
+      "ISRC char(12),"+
+      "ISCI char(32),"+
+      "STATION_NAME char(64),"+
+      "SCHEDULED_TIME time,"+
+      "EVENT_TYPE int,"+
+      "EVENT_SOURCE int,"+
+      "PLAY_SOURCE int,"+
+      "START_SOURCE int default 0,"+
+      "ONAIR_FLAG enum('N','Y') default 'N',"+
+      "EXT_START_TIME time,"+
+      "EXT_LENGTH int,"+
+      "EXT_CART_NAME char(32),"+
+      "EXT_DATA char(32),"+
+      "EXT_EVENT_ID char(8),"+
+      "EXT_ANNC_TYPE char(8),"+
+      "index SERVICE_NAME_EVENT_DATETIME_IDX(SERVICE_NAME,EVENT_DATETIME))"+
+      db_table_create_postfix;
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("select NAME from SERVICES");
+    q=new RDSqlQuery(sql,false);
+    while(q->next()) {
+      QString tablename=q->value(0).toString()+"_SRT";
+      tablename.replace(" ","_");
+      sql=QString("select ")+
+	"LENGTH,"+          // 00
+	"LOG_NAME,"+        // 01
+	"LOG_ID,"+          // 02
+	"CART_NUMBER,"+     // 03
+	"CUT_NUMBER,"+      // 04
+	"TITLE,"+           // 05
+	"ARTIST,"+          // 06
+	"PUBLISHER,"+       // 07
+	"COMPOSER,"+        // 08
+	"USER_DEFINED,"+    // 09
+	"SONG_ID,"+         // 10
+	"ALBUM,"+           // 11
+	"LABEL,"+           // 12
+	"CONDUCTOR,"+       // 13
+	"USAGE_CODE,"+      // 14
+	"DESCRIPTION,"+     // 15
+	"OUTCUE,"+          // 16
+	"ISRC,"+            // 17
+	"ISCI,"+            // 18
+	"STATION_NAME,"+    // 19
+	"EVENT_DATETIME,"+  // 20
+	"SCHEDULED_TIME,"+  // 21
+	"EVENT_TYPE,"+      // 22
+	"EVENT_SOURCE,"+    // 23
+	"PLAY_SOURCE,"+     // 24
+	"START_SOURCE,"+    // 25
+	"ONAIR_FLAG,"+      // 26
+	"EXT_START_TIME,"+  // 27
+	"EXT_LENGTH,"+      // 28
+	"EXT_CART_NAME,"+   // 29
+	"EXT_DATA,"+        // 30
+	"EXT_EVENT_ID,"+    // 31
+	"EXT_ANNC_TYPE "+   // 32
+	"from `"+tablename+"`";
+      q1=new RDSqlQuery(sql,false);
+      while(q1->next()) {
+	sql=QString("insert into ELR_LINES set ")+
+	  "SERVICE_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	  QString().sprintf("LENGTH=%d,",q1->value(0).toInt())+
+	  "LOG_NAME=\""+RDEscapeString(q1->value(1).toString())+"\","+
+	  QString().sprintf("LOG_ID=%d,",q1->value(2).toInt())+
+	  QString().sprintf("CART_NUMBER=%u,",q1->value(3).toUInt())+
+	  QString().sprintf("CUT_NUMBER=%d,",q1->value(4).toInt())+
+	  "TITLE=\""+RDEscapeString(q1->value(5).toString())+"\","+
+	  "ARTIST=\""+RDEscapeString(q1->value(6).toString())+"\","+
+	  "PUBLISHER=\""+RDEscapeString(q1->value(7).toString())+"\","+
+	  "COMPOSER=\""+RDEscapeString(q1->value(8).toString())+"\","+
+	  "USER_DEFINED=\""+RDEscapeString(q1->value(9).toString())+"\","+
+	  "SONG_ID=\""+RDEscapeString(q1->value(10).toString())+"\","+
+	  "ALBUM=\""+RDEscapeString(q1->value(11).toString())+"\","+
+	  "LABEL=\""+RDEscapeString(q1->value(12).toString())+"\","+
+	  "CONDUCTOR=\""+RDEscapeString(q1->value(13).toString())+"\","+
+	  "USAGE_CODE=\""+RDEscapeString(q1->value(14).toString())+"\","+
+	  "DESCRIPTIONS=\""+RDEscapeString(q1->value(15).toString())+"\","+
+	  "OUTCUE=\""+RDEscapeString(q1->value(16).toString())+"\","+
+	  "ISRC=\""+RDEscapeString(q1->value(17).toString())+"\","+
+	  "ISCI=\""+RDEscapeString(q1->value(18).toString())+"\","+
+	  "STATION_NAME=\""+RDEscapeString(q1->value(19).toString())+"\","+
+	  "EVENT_DATETIME=\""+RDEscapeString(q1->value(20).toDateTime().
+				     toString("yyyy-MM-dd hh:mm:ss"))+"\","+
+	  "SCHEDULED_TIME=\""+RDEscapeString(q1->value(21).toTime().
+					     toString("hh:mm:ss"))+"\","+
+	  QString().sprintf("EVENT_TYPE=%d,",q1->value(22).toInt())+
+	  QString().sprintf("EVENT_SOURCE=%d,",q1->value(23).toInt())+
+	  QString().sprintf("PLAY_SOURCE=%d,",q1->value(24).toInt())+
+	  QString().sprintf("START_SOURCE=%d,",q1->value(25).toInt())+
+	  "ONAIR_FLAG=\""+RDEscapeString(q1->value(26).toString())+"\","+
+	  "EXT_START_TIME=\""+RDEscapeString(q1->value(27).toTime().
+					     toString("hh:mm:ss"))+"\","+
+	  QString().sprintf("EXT_LENGTH=%d,",q1->value(28).toInt())+
+	  "EXT_CART_NAME=\""+RDEscapeString(q1->value(29).toString())+"\","+
+	  "EXT_DATA=\""+RDEscapeString(q1->value(30).toString())+"\","+
+	  "EXT_EVENT_ID=\""+RDEscapeString(q1->value(31).toString())+"\","+
+	  "EXT_ANNC_TYPE=\""+RDEscapeString(q1->value(32).toString())+"\"";
+	if(!RDSqlQuery::apply(sql,err_msg)) {
+	  return false;
+	}
+      }
+      delete q1;
+      sql=QString("drop table `")+tablename+"`";
+      if(!RDSqlQuery::apply(sql,err_msg)) {
+	return false;
+      }
+    }
+    delete q;
+
+    cur_schema++;
+  }
+
 
   //
   // Maintainer's Note:

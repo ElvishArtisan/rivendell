@@ -2,7 +2,7 @@
 //
 // Export a Rivendell SoundExchange Report to an ASCII Text File.
 //
-//   (C) Copyright 2002-2006,2016-2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2006,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,12 +22,14 @@
 
 #include <qfile.h>
 #include <qmessagebox.h>
-#include <rddb.h>
-#include <rdlog_line.h>
+
 #include <rdairplay_conf.h>
 #include <rddatedecode.h>
-#include <rdreport.h>
+#include <rddb.h>
+#include <rdescape_string.h>
 #include <rdget_ath.h>
+#include <rdlog_line.h>
+#include <rdreport.h>
 
 bool RDReport::ExportSoundEx(const QString &filename,const QDate &startdate,
 			     const QDate &enddate,const QString &mixtable)
@@ -76,7 +78,9 @@ bool RDReport::ExportSoundEx(const QString &filename,const QDate &startdate,
     "ISRC,"+         // 03
     "ALBUM,"+        // 04
     "LABEL "+        // 05
-    "from `"+mixtable+"_SRT` order by CART_NUMBER";
+    "from ELR_LINES where "+
+    "SERVICE_NAME=\""+RDEscapeString(mixtable)+"\" "+
+    "order by CART_NUMBER";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(q->value(0).toUInt()==cartnum) {

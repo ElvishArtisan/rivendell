@@ -679,20 +679,18 @@ void RDCartSlot::LogPlayout(RDPlayDeck::State state)
           slot_logline->startTime(RDLogLine::Actual));
     QString svctablename=slot_svcname;
     svctablename.replace(" ","_");
-    sql=QString("insert into `")+svctablename+"_SRT` set "+
-      QString().sprintf("LENGTH=%d,LOG_ID=%d,CART_NUMBER=%u,EVENT_TYPE=%d,\
-                       EVENT_SOURCE=%d,EXT_LENGTH=%d,PLAY_SOURCE=%d,	\
-                       CUT_NUMBER=%d,USAGE_CODE=%d,START_SOURCE=%d,",
-			length,
-			slot_number+1,
-			slot_logline->cartNumber(),
-			action,
-			slot_logline->source(),
-			slot_logline->extLength(),
-			RDLogLine::CartSlot,
-			slot_logline->cutNumber(),
-			slot_logline->usageCode(),
-			slot_logline->startSource())+
+    sql=QString("insert into ELR_LINES set ")+
+      "SERVICE_NAME=\""+RDEscapeString(slot_svcname)+"\","+
+      QString().sprintf("LENGTH=%d,",length)+
+      QString().sprintf("LOG_ID=%d,",slot_number+1)+
+      QString().sprintf("CART_NUMBER=%u,",slot_logline->cartNumber())+
+      QString().sprintf("EVENT_TYPE=%d,",action)+
+      QString().sprintf("EVENT_SOURCE=%d,",slot_logline->source())+
+      QString().sprintf("EXT_LENGTH=%d,",slot_logline->extLength())+
+      QString().sprintf("PLAY_SOURCE=%d,",RDLogLine::CartSlot)+
+      QString().sprintf("CUT_NUMBER=%d,",slot_logline->cutNumber())+
+      QString().sprintf("USAGE_CODE=%d,",slot_logline->usageCode())+
+      QString().sprintf("START_SOURCE=%d,",slot_logline->startSource())+
       "STATION_NAME=\""+RDEscapeString(slot_station->name())+"\","+
       "EVENT_DATETIME="+RDCheckDateTime(eventDateTime,"yyyy-MM-dd hh:mm:ss")+
       ","+

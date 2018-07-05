@@ -2,7 +2,7 @@
 //
 // Export a Rivendell Spin Count Report to an ASCII Text File.
 //
-//   (C) Copyright 2015,2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2015,2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,11 +24,13 @@
 
 #include <qfile.h>
 #include <qmessagebox.h>
-#include <rddb.h>
-#include <rdlog_line.h>
+
 #include <rdairplay_conf.h>
 #include <rdconf.h>
 #include <rddatedecode.h>
+#include <rddb.h>
+#include <rdescape_string.h>
+#include <rdlog_line.h>
 #include <rdreport.h>
 
 bool RDReport::ExportSpinCount(const QString &filename,const QDate &startdate,
@@ -62,8 +64,14 @@ bool RDReport::ExportSpinCount(const QString &filename,const QDate &startdate,
   //
   // Generate Spin Counts
   //
-  sql=QString("select CART_NUMBER,TITLE,ARTIST,ALBUM,LABEL ")+
-    "from `"+mixtable+"_SRT` order by TITLE";
+  sql=QString("select ")+
+    "CART_NUMBER,"+
+    "TITLE,"+
+    "ARTIST,"+
+    "ALBUM,LABEL "+
+    "from ELR_LINES where "+
+    "SERVICE_NAME=\""+RDEscapeString(mixtable)+"\" "+
+    "order by TITLE";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     carts[q->value(0).toInt()]++;

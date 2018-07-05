@@ -94,7 +94,7 @@ QString RDCreateClockTableSql(QString name,RDConfig *config)
     config->createTablePostfix();
 }
 
-
+/*
 QString RDCreateReconciliationTableSql(QString name,RDConfig *config)
 {
   QString sql=QString("create table `")+name+"` ("+
@@ -137,7 +137,7 @@ QString RDCreateReconciliationTableSql(QString name,RDConfig *config)
 
   return sql;
 }
-
+*/
 
 QString RDCreateStackTableSql(QString name,RDConfig *config)
 {

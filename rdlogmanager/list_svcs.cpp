@@ -2,7 +2,7 @@
 //
 // List Rivendell Services and Report Ages
 //
-//   (C) Copyright 2002-2005,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2005,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,12 +21,14 @@
 #include <qmessagebox.h>
 #include <qdatetime.h>
 
-#include <rdlog.h>
 #include <rddb.h>
-#include <list_svcs.h>
-#include <svc_rec_dialog.h>
-#include <pick_report_dates.h>
-#include <globals.h>
+#include <rdescape_string.h>
+#include <rdlog.h>
+
+#include "globals.h"
+#include "list_svcs.h"
+#include "svc_rec_dialog.h"
+#include "pick_report_dates.h"
 
 ListSvcs::ListSvcs(QWidget *parent)
   : QDialog(parent,"",true)
@@ -153,7 +155,6 @@ void ListSvcs::resizeEvent(QResizeEvent *e)
 void ListSvcs::RefreshList()
 {
   RDSqlQuery *q1;
-  QString tablename;
   QListViewItem *item;
   list_log_list->clear();
   QString sql="select NAME from SERVICES order by NAME";
@@ -162,10 +163,9 @@ void ListSvcs::RefreshList()
   while(q->next()) {
     item=new QListViewItem(list_log_list);
     item->setText(0,q->value(0).toString());
-    tablename=q->value(0).toString();
-    tablename.replace(" ","_");
-    sql=QString().sprintf("select EVENT_DATETIME from `%s_SRT` \
-                           order by EVENT_DATETIME",(const char *)tablename);
+    sql=QString("select EVENT_DATETIME from ELR_LINES where ")+
+      "SERVICE_NAME=\""+RDEscapeString(q->value(0).toString())+"\" "+
+      "order by EVENT_DATETIME";
     q1=new RDSqlQuery(sql);
     if(q1->first()) {
       item->setText(1,q1->value(0).toDate().toString("MM/dd/yyyy"));
@@ -183,10 +183,9 @@ void ListSvcs::RefreshLine(QListViewItem *item)
 {
   QString sql;
   RDSqlQuery *q;
-  QString tablename=item->text(0);
-    tablename.replace(" ","_");
-    sql=QString().sprintf("select EVENT_DATETIME from `%s_SRT` \
-                           order by EVENT_DATETIME",(const char *)tablename);
+    sql=QString("select EVENT_DATETIME from ELR_LINES where ")+
+      "SERVICE_NAME=\""+RDEscapeString(item->text(0))+"\" "+
+      "order by EVENT_DATETIME";
     q=new RDSqlQuery(sql);
     if(q->first()) {
       item->setText(1,q->value(0).toDate().toString("MM/dd/yyyy"));

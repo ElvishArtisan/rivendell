@@ -36,6 +36,7 @@ EXTRA_DIST = audio_cards.txt\
              dropboxes.txt\
              dropbox_paths.txt\
              dropbox_sched_codes.txt\
+             elr_lines.txt\
              encoder_bitrates.txt\
              encoder_channels.txt\
              encoder_samplerates.txt\
@@ -72,7 +73,6 @@ EXTRA_DIST = audio_cards.txt\
              services.txt\
              sources.txt\
              stations.txt\
-             svc_rec_format.txt\
              system.txt\
              triggers.txt\
              ttys.txt\

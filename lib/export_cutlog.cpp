@@ -22,11 +22,13 @@
 
 #include <qfile.h>
 #include <qmessagebox.h>
-#include <rddb.h>
-#include <rdlog_line.h>
+
 #include <rdairplay_conf.h>
 #include <rdconf.h>
 #include <rddatedecode.h>
+#include <rddb.h>
+#include <rdescape_string.h>
+#include <rdlog_line.h>
 #include <rdreport.h>
 
 bool RDReport::ExportCutLog(const QString &filename,const QDate &startdate,
@@ -52,22 +54,23 @@ bool RDReport::ExportCutLog(const QString &filename,const QDate &startdate,
     cart_fmt="%6u";
   }
   sql=QString("select ")+
-    "`"+mixtable+"_SRT`.LENGTH,"+          // 00
-    "`"+mixtable+"_SRT`.CART_NUMBER,"+     // 01
-    "`"+mixtable+"_SRT`.EVENT_DATETIME,"+  // 02
-    "`"+mixtable+"_SRT`.EVENT_TYPE,"+      // 03
-    "`"+mixtable+"_SRT`.EXT_START_TIME,"+  // 04
-    "`"+mixtable+"_SRT`.EXT_LENGTH,"+      // 05
-    "`"+mixtable+"_SRT`.EXT_DATA,"+        // 06
-    "`"+mixtable+"_SRT`.EXT_EVENT_ID,"+    // 07
-    "`"+mixtable+"_SRT`.TITLE,"+           // 08
+    "ELR_LINES.LENGTH,"+          // 00
+    "ELR_LINES.CART_NUMBER,"+     // 01
+    "ELR_LINES.EVENT_DATETIME,"+  // 02
+    "ELR_LINES.EVENT_TYPE,"+      // 03
+    "ELR_LINES.EXT_START_TIME,"+  // 04
+    "ELR_LINES.EXT_LENGTH,"+      // 05
+    "ELR_LINES.EXT_DATA,"+        // 06
+    "ELR_LINES.EXT_EVENT_ID,"+    // 07
+    "ELR_LINES.TITLE,"+           // 08
     "CART.FORCED_LENGTH,"+                 // 09
-    "`"+mixtable+"_SRT`.STATION_NAME,"+    // 10
-    "`"+mixtable+"_SRT`.PLAY_SOURCE,"+     // 11
-    "`"+mixtable+"_SRT`.CUT_NUMBER,"+      // 12
-    "`"+mixtable+"_SRT`.DESCRIPTION "+     // 13
-    "from `"+mixtable+"_SRT` left join CART "+
-    "on `"+mixtable+"_SRT`.CART_NUMBER=CART.NUMBER "+
+    "ELR_LINES.STATION_NAME,"+    // 10
+    "ELR_LINES.PLAY_SOURCE,"+     // 11
+    "ELR_LINES.CUT_NUMBER,"+      // 12
+    "ELR_LINES.DESCRIPTION "+     // 13
+    "from ELR_LINES left join CART "+
+    "on ELR_LINES.CART_NUMBER=CART.NUMBER where "+
+    "SERVICE_NAME=\""+RDEscapeString(mixtable)+"\" "+
     "order by EVENT_DATETIME";
   q=new RDSqlQuery(sql);
 

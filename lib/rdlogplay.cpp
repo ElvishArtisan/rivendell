@@ -553,7 +553,7 @@ void RDLogPlay::load()
     }
   }
   RefreshEvents(0,size());
-  RDLog *log=new RDLog(logName().left(logName().length()-4));
+  RDLog *log=new RDLog(logName());
   play_svc_name=log->service();
   delete log;
   play_line_counter=0;
@@ -573,7 +573,7 @@ void RDLogPlay::load()
   if(play_log!=NULL) {
     delete play_log;
   }
-  play_log=new RDLog(logName().left(logName().length()-4));
+  play_log=new RDLog(logName());
   play_link_datetime=play_log->linkDatetime();
   play_modified_datetime=play_log->modifiedDatetime();
   if(play_refreshable) {
@@ -776,7 +776,7 @@ void RDLogPlay::save(int line)
   if(play_log!=NULL) {
     delete play_log;
   }
-  play_log=new RDLog(logName().left(logName().length()-4));
+  play_log=new RDLog(logName());
   QDateTime current_datetime=
     QDateTime(QDate::currentDate(),QTime::currentTime());
   play_log->setModifiedDatetime(current_datetime);
@@ -1562,9 +1562,8 @@ void RDLogPlay::segueEndData(int id)
     ((RDPlayDeck *)logline->playDeck())->stop();
     CleanupEvent(id);
     UpdateStartTimes(line);
-    LogTraffic(serviceName(),logName().left(logName().length()-4),logline,
-	       (RDLogLine::PlaySource)(play_id+1),
-	       RDAirPlayConf::TrafficFinish,play_onair_flag);
+   LogTraffic(logline,(RDLogLine::PlaySource)(play_id+1),
+	      RDAirPlayConf::TrafficFinish,play_onair_flag);
     emit stopped(line);
     emit transportChanged();
   }
@@ -1637,9 +1636,8 @@ void RDLogPlay::macroFinishedData()
   RDLogLine *logline;
   if((logline=logLine(line))!=NULL) {
     logline->setStatus(RDLogLine::Finished);
-    LogTraffic(serviceName(),logName().left(logName().length()-4),logline,
-	       (RDLogLine::PlaySource)(play_id+1),RDAirPlayConf::TrafficMacro,
-	       play_onair_flag);
+   LogTraffic(logline,(RDLogLine::PlaySource)(play_id+1),
+	      RDAirPlayConf::TrafficMacro,play_onair_flag);
   }
   play_macro_running=false;
   UpdatePostPoint();
@@ -1661,9 +1659,8 @@ void RDLogPlay::macroStoppedData()
   RDLogLine *logline;
   if((logline=logLine(line))!=NULL) {
     logline->setStatus(RDLogLine::Finished);
-    LogTraffic(serviceName(),logName().left(logName().length()-4),logline,
-	       (RDLogLine::PlaySource)(play_id+1),RDAirPlayConf::TrafficMacro,
-	       play_onair_flag);
+   LogTraffic(logline,(RDLogLine::PlaySource)(play_id+1),
+	      RDAirPlayConf::TrafficMacro,play_onair_flag);
   }
   UpdatePostPoint();
   emit transportChanged();
@@ -1991,9 +1988,8 @@ bool RDLogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
 	  emit played(line);
 	  logline->setStartTime(RDLogLine::Actual,QTime::currentTime());
 	  logline->setStatus(RDLogLine::Finished);
-	  LogTraffic(serviceName(),logName().left(logName().length()-4),
-		     logline,(RDLogLine::PlaySource)(play_id+1),
-		     RDAirPlayConf::TrafficMacro,play_onair_flag);
+	 LogTraffic(logline,(RDLogLine::PlaySource)(play_id+1),
+		    RDAirPlayConf::TrafficMacro,play_onair_flag);
 	  FinishEvent(line);
 	  emit transportChanged();
 	  rda->config()->log("log engine",RDConfig::LogInfo,QString().
@@ -2742,9 +2738,8 @@ void RDLogPlay::Paused(int id)
   UpdateStartTimes(line);
   emit paused(line);
   UpdatePostPoint();
-  LogTraffic(serviceName(),logName().left(logName().length()-4),logLine(line),
-	     (RDLogLine::PlaySource)(play_id+1),RDAirPlayConf::TrafficPause,
-	     play_onair_flag);
+ LogTraffic(logLine(line),(RDLogLine::PlaySource)(play_id+1),
+	    RDAirPlayConf::TrafficPause,play_onair_flag);
   emit transportChanged();
 }
 
@@ -2766,9 +2761,8 @@ void RDLogPlay::Stopped(int id)
   if(runningEvents(lines)==0) {
     next_channel=0;
   }
-  LogTraffic(serviceName(),logName().left(logName().length()-4),logLine(line),
-	     (RDLogLine::PlaySource)(play_id+1),RDAirPlayConf::TrafficStop,
-	     play_onair_flag);
+ LogTraffic(logLine(line),(RDLogLine::PlaySource)(play_id+1),
+	    RDAirPlayConf::TrafficStop,play_onair_flag);
   emit transportChanged();
 }
 
@@ -2797,9 +2791,8 @@ void RDLogPlay::Finished(int id)
   if(runningEvents(lines)==0) {
     next_channel=0;
   }
-  LogTraffic(serviceName(),logName().left(logName().length()-4),logline,
-	     (RDLogLine::PlaySource)(play_id+1),RDAirPlayConf::TrafficFinish,
-	     play_onair_flag);
+ LogTraffic(logline,(RDLogLine::PlaySource)(play_id+1),
+	    RDAirPlayConf::TrafficFinish,play_onair_flag);
   emit transportChanged();
 }
 
@@ -2954,8 +2947,7 @@ void RDLogPlay::SendNowNext()
   }
   for(unsigned i=0;i<play_rlm_hosts->size();i++) {
     play_rlm_hosts->at(i)->
-      sendEvent(svcname,logName().left(logName().length()-4),play_id,logline,
-		play_onair_flag,play_op_mode);
+      sendEvent(svcname,logName(),play_id,logline,play_onair_flag,play_op_mode);
   }
   RDResolveNowNext(&cmd,logline,0);
   play_nownext_socket->
@@ -2977,13 +2969,11 @@ void RDLogPlay::SendNowNext()
 }
 
 
-void RDLogPlay::LogTraffic(const QString &svcname,const QString &logname,
-			   RDLogLine *logline,RDLogLine::PlaySource src,
+void RDLogPlay::LogTraffic(RDLogLine *logline,RDLogLine::PlaySource src,
 			   RDAirPlayConf::TrafficAction action,bool onair_flag)
   const
 {
   QString sql;
-  RDSqlQuery *q;
   QDateTime datetime=QDateTime(QDate::currentDate(),QTime::currentTime());
   int length=logline->startTime(RDLogLine::Actual).msecsTo(datetime.time());
   if(length<0) {  // Event crossed midnight!
@@ -2991,7 +2981,7 @@ void RDLogPlay::LogTraffic(const QString &svcname,const QString &logname,
     datetime.setDate(datetime.date().addDays(-1));
   }
 
-  if((logline==NULL)||(svcname.isEmpty())) {
+  if((logline==NULL)||(serviceName().isEmpty())) {
     return;
   }
 
@@ -3001,12 +2991,13 @@ void RDLogPlay::LogTraffic(const QString &svcname,const QString &logname,
     eventDateTimeSQL = RDCheckDateTime(QDateTime(datetime.date(),
           logline->startTime(RDLogLine::Actual)), "yyyy-MM-dd hh:mm:ss");
 
-  sql=QString("insert into `")+RDSvc::svcTableName(svcname)+"` set "+
+  sql=QString("insert into ELR_LINES set ")+
+    "SERVICE_NAME=\""+RDEscapeString(serviceName())+"\","+
     QString().sprintf("LENGTH=%d,",length)+
-    "LOG_NAME=\""+RDEscapeString(logname.utf8())+"\","+
+    "LOG_NAME=\""+RDEscapeString(logName())+"\","+
     QString().sprintf("LOG_ID=%d,",logline->id())+
     QString().sprintf("CART_NUMBER=%u,",logline->cartNumber())+
-    "STATION_NAME=\""+RDEscapeString(rda->station()->name().utf8())+"\","+
+    "STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\","+
     "EVENT_DATETIME="+eventDateTimeSQL+","+
     QString().sprintf("EVENT_TYPE=%d,",action)+
     QString().sprintf("EVENT_SOURCE=%d,",logline->source())+
@@ -3017,26 +3008,24 @@ void RDLogPlay::LogTraffic(const QString &svcname,const QString &logname,
     "EXT_ANNC_TYPE=\""+RDEscapeString(logline->extAnncType())+"\","+
     QString().sprintf("PLAY_SOURCE=%d,",src)+
     QString().sprintf("CUT_NUMBER=%d,",logline->cutNumber())+
-    "EXT_CART_NAME=\""+RDEscapeString(logline->extCartName().utf8())+"\","+
-    "TITLE=\""+RDEscapeString(logline->title().utf8())+"\","+
-    "ARTIST=\""+RDEscapeString(logline->artist().utf8())+"\","+
+    "EXT_CART_NAME=\""+RDEscapeString(logline->extCartName())+"\","+
+    "TITLE=\""+RDEscapeString(logline->title())+"\","+
+    "ARTIST=\""+RDEscapeString(logline->artist())+"\","+
     "SCHEDULED_TIME="+RDCheckDateTime(logline->startTime(RDLogLine::Logged),
 				       "hh:mm:ss")+","+
-    "ISRC=\""+RDEscapeString(logline->isrc().utf8())+"\","+
-    "PUBLISHER=\""+RDEscapeString(logline->publisher().utf8())+"\","+
-    "COMPOSER=\""+RDEscapeString(logline->composer().utf8())+"\","+
+    "ISRC=\""+RDEscapeString(logline->isrc())+"\","+
+    "PUBLISHER=\""+RDEscapeString(logline->publisher())+"\","+
+    "COMPOSER=\""+RDEscapeString(logline->composer())+"\","+
     QString().sprintf("USAGE_CODE=%d,",logline->usageCode())+
     QString().sprintf("START_SOURCE=%d,",logline->startSource())+
     "ONAIR_FLAG=\""+RDYesNo(onair_flag)+"\","+
-    "ALBUM=\""+RDEscapeString(logline->album().utf8())+"\","+
-    "LABEL=\""+RDEscapeString(logline->label().utf8())+"\","+
-    "USER_DEFINED=\""+RDEscapeString(logline->userDefined().utf8())+"\","+
-    "CONDUCTOR=\""+RDEscapeString(logline->conductor().utf8())+"\","+
-    "SONG_ID=\""+RDEscapeString(logline->songId().utf8())+"\","+
-    "DESCRIPTION=\""+RDEscapeString(logline->description().utf8())+"\","+
-    "OUTCUE=\""+RDEscapeString(logline->outcue().utf8())+"\","+
-    "ISCI=\""+RDEscapeString(logline->isci().utf8())+"\"";
-
-  q=new RDSqlQuery(sql);
-  delete q;
+    "ALBUM=\""+RDEscapeString(logline->album())+"\","+
+    "LABEL=\""+RDEscapeString(logline->label())+"\","+
+    "USER_DEFINED=\""+RDEscapeString(logline->userDefined())+"\","+
+    "CONDUCTOR=\""+RDEscapeString(logline->conductor())+"\","+
+    "SONG_ID=\""+RDEscapeString(logline->songId())+"\","+
+    "DESCRIPTION=\""+RDEscapeString(logline->description())+"\","+
+    "OUTCUE=\""+RDEscapeString(logline->outcue())+"\","+
+    "ISCI=\""+RDEscapeString(logline->isci())+"\"";
+  RDSqlQuery::apply(sql);
 }

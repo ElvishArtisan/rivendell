@@ -22,11 +22,13 @@
 
 #include <qfile.h>
 #include <qmessagebox.h>
-#include <rddb.h>
-#include <rdlog_line.h>
+
 #include <rdairplay_conf.h>
 #include <rdconf.h>
 #include <rddatedecode.h>
+#include <rddb.h>
+#include <rdescape_string.h>
+#include <rdlog_line.h>
 #include <rdreport.h>
 
 bool RDReport::ExportMusicClassical(const QString &filename,
@@ -52,25 +54,18 @@ bool RDReport::ExportMusicClassical(const QString &filename,
   else {
     cart_fmt="%6u";
   }
-  sql=QString().sprintf("select `%s_SRT`.LENGTH,\
-                         `%s_SRT`.CART_NUMBER,\
-                         `%s_SRT`.EVENT_DATETIME,\
-                         `%s_SRT`.TITLE,\
-                         `%s_SRT`.ALBUM,\
-                         `%s_SRT`.COMPOSER,\
-                         `%s_SRT`.USER_DEFINED \
-                         from `%s_SRT` left join CART on\
-                         `%s_SRT`.CART_NUMBER=CART.NUMBER\
-                         order by EVENT_DATETIME",
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable);
+  sql=QString("select ")+
+    "ELR_LINES.LENGTH,"+
+    "ELR_LINES.CART_NUMBER,"+
+    "ELR_LINES.EVENT_DATETIME,"+
+    "ELR_LINES.TITLE,"+
+    "ELR_LINES.ALBUM,"+
+    "ELR_LINES.COMPOSER,"+
+    "ELR_LINES.USER_DEFINED "+
+    "from ELR_LINES left join CART "+
+    "on ELR_LINES.CART_NUMBER=CART.NUMBER where "+
+    "SERVICE_NAME=\""+RDEscapeString(mixtable)+"\" "+
+    "order by EVENT_DATETIME";
   q=new RDSqlQuery(sql);
 
   //

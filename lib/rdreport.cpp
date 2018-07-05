@@ -331,7 +331,7 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
   RDSqlQuery *q1;
   RDSqlQuery *q2;
   RDSvc *svc;
-  QString rec_name;
+  //  QString rec_name;
   QString daypart_sql;
   QString station_sql;
   QString group_sql;
@@ -431,29 +431,19 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
   }
   
   //
-  // Generate Mixdown Table
+  // Generate Mixdown ID
   //
-  // Create Table
-  //
-  QString mixname="MIXDOWN"+station->name();
-  rda->dropTable(mixname+"_SRT");
-  sql=RDCreateReconciliationTableSql(mixname+"_SRT",report_config);
-  q=new RDSqlQuery(sql);
-  delete q;
+  QString mixname=QString().sprintf("MIX-%d",getpid());
 
   //
   // Iterate Selected Services
   //
-  sql=QString().sprintf("select SERVICE_NAME from REPORT_SERVICES \
-                         where REPORT_NAME=\"%s\"",
-			(const char *)name());
+  sql=QString("select SERVICE_NAME from REPORT_SERVICES where ")+
+    "REPORT_NAME=\""+RDEscapeString(name())+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     svc=new RDSvc(q->value(0).toString(),report_station,report_config);
     if(svc->exists()) {
-      rec_name=q->value(0).toString();
-      rec_name.replace(" ","_");
-
       //
       // Generate Type Filters
       //
@@ -461,14 +451,12 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
       if(!exportTypeEnabled(RDReport::Generic)) {
 	if(exportTypeForced(RDReport::Traffic)||
 	   exportTypeEnabled(RDReport::Traffic)) {
-	  force_sql+=QString().sprintf("(`%s_SRT`.EVENT_SOURCE=%d)||",
-				       (const char *)rec_name,
+	  force_sql+=QString().sprintf("(ELR_LINES.EVENT_SOURCE=%d)||",
 				       RDLogLine::Traffic);
 	}
 	if(exportTypeForced(RDReport::Music)||
 	   exportTypeEnabled(RDReport::Music)) {
-	  force_sql+=QString().sprintf("(`%s_SRT`.EVENT_SOURCE=%d)||",
-				       (const char *)rec_name,
+	  force_sql+=QString().sprintf("(ELR_LINES.EVENT_SOURCE=%d)||",
 				       RDLogLine::Music);
 	}
 	force_sql=force_sql.left(force_sql.length()-2);
@@ -491,28 +479,29 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
 	"EXT_ANNC_TYPE,"+                    // 10
 	"PLAY_SOURCE,"+                      // 11
 	"CUT_NUMBER,"+                       // 12
-	"EVENT_SOURCE,"+                     // 13
-	"EXT_CART_NAME,"+                    // 14
-	"LOG_NAME,"+                         // 15
-	"`"+rec_name+"_SRT`.TITLE,"+         // 16
-	"`"+rec_name+"_SRT`.ARTIST,"+        // 17
-	"SCHEDULED_TIME,"+                   // 18
-	"START_SOURCE,"+                     // 19
-	"`"+rec_name+"_SRT`.PUBLISHER,"+     // 20
-	"`"+rec_name+"_SRT`.COMPOSER,"+      // 21
-	"`"+rec_name+"_SRT`.ALBUM,"+         // 22
-	"`"+rec_name+"_SRT`.LABEL,"+         // 23
-	"`"+rec_name+"_SRT`.ISRC,"+          // 24
-	"`"+rec_name+"_SRT`.USAGE_CODE,"+    // 25
-	"`"+rec_name+"_SRT`.ONAIR_FLAG,"+    // 26
-	"`"+rec_name+"_SRT`.ISCI,"+          // 27
-	"`"+rec_name+"_SRT`.CONDUCTOR,"+     // 28
-	"`"+rec_name+"_SRT`.USER_DEFINED,"+  // 29
-	"`"+rec_name+"_SRT`.SONG_ID,"+       // 30
-	"`"+rec_name+"_SRT`.DESCRIPTION,"+   // 31
-	"`"+rec_name+"_SRT`.OUTCUE "+        // 32
-	"from `"+rec_name+"_SRT` left join CART "+
-	"on `"+rec_name+"_SRT`.CART_NUMBER=CART.NUMBER where ";
+	"EVENT_SOURCE,"+            // 13
+	"EXT_CART_NAME,"+           // 14
+	"LOG_NAME,"+                // 15
+	"ELR_LINES.TITLE,"+         // 16
+	"ELR_LINES.ARTIST,"+        // 17
+	"SCHEDULED_TIME,"+          // 18
+	"START_SOURCE,"+            // 19
+	"ELR_LINES.PUBLISHER,"+     // 20
+	"ELR_LINES.COMPOSER,"+      // 21
+	"ELR_LINES.ALBUM,"+         // 22
+	"ELR_LINES.LABEL,"+         // 23
+	"ELR_LINES.ISRC,"+          // 24
+	"ELR_LINES.USAGE_CODE,"+    // 25
+	"ELR_LINES.ONAIR_FLAG,"+    // 26
+	"ELR_LINES.ISCI,"+          // 27
+	"ELR_LINES.CONDUCTOR,"+     // 28
+	"ELR_LINES.USER_DEFINED,"+  // 29
+	"ELR_LINES.SONG_ID,"+       // 30
+	"ELR_LINES.DESCRIPTION,"+   // 31
+	"ELR_LINES.OUTCUE "+        // 32
+	"from ELR_LINES left join CART "+
+	"on ELR_LINES.CART_NUMBER=CART.NUMBER where "+
+	"SERVICE_NAME=\""+RDEscapeString(q->value(0).toString())+"\" && ";
 
       //
       // OnAir Flag Filter
@@ -552,11 +541,12 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
       sql+=")";
       q1=new RDSqlQuery(sql);
       while(q1->next()) {
-	sql=QString("insert into `")+mixname+"_SRT` "+
-	  "set "+QString().sprintf("LENGTH=%d,LOG_ID=%u,CART_NUMBER=%u,",
-				   q1->value(0).toInt(),
-				   q1->value(1).toUInt(),
-				   q1->value(2).toInt())+
+	sql=QString("insert into ELR_LINES set ")+
+	  "SERVICE_NAME=\""+RDEscapeString(mixname)+"\","+
+	  QString().sprintf("LENGTH=%d,LOG_ID=%u,CART_NUMBER=%u,",
+			    q1->value(0).toInt(),
+			    q1->value(1).toUInt(),
+			    q1->value(2).toInt())+
 	  "STATION_NAME=\""+RDEscapeString(q1->value(3).toString())+"\","+
 	  "EVENT_DATETIME="+RDCheckDateTime(q1->value(4).toDateTime(),
 				     "yyyy-MM-dd hh:mm:ss")+","+
@@ -692,7 +682,9 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
 #endif
   system(post_cmd);
   //  printf("MIXDOWN TABLE: %s_SRT\n",(const char *)mixname);
-  rda->dropTable(mixname+"_SRT");
+  sql=QString("delete from ELR_LINES where ")+
+    "SERVICE_NAME=\""+RDEscapeString(mixname)+"\"";
+  RDSqlQuery::apply(sql);
 
   return ret;
 }

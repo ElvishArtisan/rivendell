@@ -19,11 +19,12 @@
 //
 
 #include <stdio.h>
+
+#include <rdcart.h>
 #include <rddb.h>
 #include <rddatedecode.h>
+#include <rdescape_string.h>
 #include <rdreport.h>
-#include <rdcart.h>
-
 
 bool RDReport::ExportBmiEmr(const QString &filename,const QDate &startdate,
 			    const QDate &enddate,const QString &mixtable)
@@ -67,7 +68,9 @@ bool RDReport::ExportBmiEmr(const QString &filename,const QDate &startdate,
     "LENGTH,"+          // 04
     "ISRC,"+            // 05
     "USAGE_CODE "+      // 06
-    "from `"+mixtable+"_SRT` order by EVENT_DATETIME"; 
+    "from ELR_LINES where "+
+    "SERVICE_NAME=\""+RDEscapeString(mixtable)+"\" "+
+    "order by EVENT_DATETIME"; 
   q=new RDSqlQuery(sql);
 
   //

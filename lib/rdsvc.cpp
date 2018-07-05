@@ -1384,13 +1384,6 @@ bool RDSvc::create(const QString &name,QString *err_msg,
     delete q;
   }
 
-  //
-  // Create Service Reconciliation Table
-  //
-  sql=RDCreateReconciliationTableSql(RDSvc::svcTableName(name),config);
-  q=new RDSqlQuery(sql);
-  delete q;
-
   return true;
 }
 
@@ -1462,23 +1455,15 @@ void RDSvc::remove(const QString &name)
 
   QString tablename=name;
   tablename.replace(" ","_");
-
-  rda->dropTable(tablename+"_SRT");
   rda->dropTable(tablename+"_STACK");
+
+  sql=QString("delete from ELR_LINES where ")+
+    "SERVICE_NAME=\""+RDEscapeString(name)+"\"";
+  RDSqlQuery::apply(sql);
 
   sql=QString("delete from LOGS where ")+
     "SERVICE=\""+RDEscapeString(name)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
-}
-
-
-QString RDSvc::svcTableName(const QString &svc_name)
-{
-  QString ret=svc_name;
-  ret.replace(" ","_");
-
-  return ret+"_SRT";
+  RDSqlQuery::apply(sql);
 }
 
 

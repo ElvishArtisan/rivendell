@@ -223,16 +223,18 @@ void MainObject::PurgeElr()
   RDSqlQuery *q1;
   QDateTime dt=QDateTime(QDate::currentDate(),QTime::currentTime());
 
-  sql="select NAME,ELR_SHELFLIFE from SERVICES where ELR_SHELFLIFE>=0";
+  sql=QString("select ")+
+    "NAME,"+
+    "ELR_SHELFLIFE "+
+    "from SERVICES where "+
+    "ELR_SHELFLIFE>=0";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    QString tablename=q->value(0).toString()+"_SRT";
-    tablename.replace(" ","_");
-    sql=QString("delete from `")+tablename+"` where "+
+    sql=QString("delete from ELR_LINES where ")+
+      "SERVICE_NAME=\""+RDEscapeString(q->value(0).toString())+"\" && "+
       "EVENT_DATETIME<\""+
       dt.addDays(-q->value(1).toInt()).toString("yyyy-MM-dd")+" 00:00:00\"";
-    q1=new RDSqlQuery(sql);
-    delete q1;
+    RDSqlQuery::apply(sql);
   }
   delete q;
 }

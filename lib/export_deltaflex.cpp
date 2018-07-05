@@ -2,7 +2,7 @@
 //
 // Export a Rivendell Report to CBSI DeltaFlex
 //
-//   (C) Copyright 2002-2005,2016-2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2005,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,10 +29,11 @@
 
 #include <qfile.h>
 #include <qmessagebox.h>
-#include <rddb.h>
-#include <rddatedecode.h>
-#include <rdreport.h>
 
+#include <rddatedecode.h>
+#include <rddb.h>
+#include <rdescape_string.h>
+#include <rdreport.h>
 
 bool RDReport::ExportDeltaflex(const QString &filename,const QDate &startdate,
 			       const QDate &enddate,const QString &mixtable)
@@ -54,28 +55,22 @@ bool RDReport::ExportDeltaflex(const QString &filename,const QDate &startdate,
   else {
     air_fmt="%u";
   }
-  sql=QString().sprintf("select `%s_SRT`.LENGTH,`%s_SRT`.CART_NUMBER,\
-                         `%s_SRT`.EVENT_DATETIME,`%s_SRT`.EVENT_TYPE,\
-                         `%s_SRT`.EXT_START_TIME,`%s_SRT`.EXT_LENGTH,\
-                         `%s_SRT`.EXT_DATA,`%s_SRT`.EXT_EVENT_ID,\
-                         `%s_SRT`.EXT_ANNC_TYPE,`%s_SRT`.TITLE,\
-                         `%s_SRT`.EXT_CART_NAME from `%s_SRT` \
-                         left join CART on\
-                         `%s_SRT`.CART_NUMBER=CART.NUMBER\
-                         order by EVENT_DATETIME",
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable,
-			(const char *)mixtable);
+  sql=QString("select ")+
+    "ELR_LINES.LENGTH,"+
+    "ELR_LINES.CART_NUMBER,"+
+    "ELR_LINES.EVENT_DATETIME,"+
+    "ELR_LINES.EVENT_TYPE,"+
+    "ELR_LINES.EXT_START_TIME,"+
+    "ELR_LINES.EXT_LENGTH,"+
+    "ELR_LINES.EXT_DATA,"+
+    "ELR_LINES.EXT_EVENT_ID,"+
+    "ELR_LINES.EXT_ANNC_TYPE,"+
+    "ELR_LINES.TITLE,"+
+    "ELR_LINES.EXT_CART_NAME "+
+    "from ELR_LINES left join CART "+
+    "on ELR_LINES.CART_NUMBER=CART.NUMBER where "+
+    "SERVICE_NAME=\""+RDEscapeString(mixtable)+"\" "+
+    "order by EVENT_DATETIME";
   q=new RDSqlQuery(sql);
 
   //

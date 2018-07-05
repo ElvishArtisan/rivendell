@@ -188,8 +188,7 @@ class RDLogPlay : public QObject,public RDLogEvent
   RDLogLine::TransType GetTransType(const QString &logname,int line);
   bool ClearBlock(int start_line);
   void SendNowNext();
-  void LogTraffic(const QString &svcname,const QString &logname,
-		  RDLogLine *logline,RDLogLine::PlaySource src,
+  void LogTraffic(RDLogLine *logline,RDLogLine::PlaySource src,
 		  RDAirPlayConf::TrafficAction action,bool onair_flag) const;
   RDCae *play_cae;
   RDAirPlayConf::OpMode play_op_mode;

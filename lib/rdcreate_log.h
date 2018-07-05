@@ -26,7 +26,7 @@
 //void RDCreateLogTable(const QString &name,RDConfig *config);
 QString RDCreateLogTableSql(QString name,RDConfig *config);
 QString RDCreateClockTableSql(QString name,RDConfig *config);
-QString RDCreateReconciliationTableSql(QString name,RDConfig *config);
+//QString RDCreateReconciliationTableSql(QString name,RDConfig *config);
 QString RDCreateStackTableSql(QString name,RDConfig *config);
 
 #endif 

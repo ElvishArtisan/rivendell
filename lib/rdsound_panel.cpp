@@ -1488,7 +1488,8 @@ void RDSoundPanel::LogTraffic(RDPanelButton *button)
       eventDateTimeSQL = RDCheckDateTime(QDateTime(datetime.date(),
             button->startTime()), "yyyy-MM-dd hh:mm:ss");
 
-    sql=QString("insert into `")+panel_svcname+"_SRT` set "+
+    sql=QString("insert into ELR_LINES set ")+
+      "SERVICE_NAME=\""+RDEscapeString(panel_svcname)+"\","+
       QString().sprintf("LENGTH=%d,",button->startTime().
 			msecsTo(datetime.time()))+
       QString().sprintf("CART_NUMBER=%u,",button->cart())+
@@ -1532,7 +1533,8 @@ void RDSoundPanel::LogTrafficMacro(RDPanelButton *button)
     QString().sprintf("NUMBER=%u",button->cart());
   q=new RDSqlQuery(sql);
   if(q->first()) {
-    sql=QString("insert into `")+panel_svcname+"_SRT` set "+
+    sql=QString("insert into ELR_LINES set ")+
+      "SERVICE_NAME=\""+RDEscapeString(panel_svcname)+"\","+
       QString().sprintf("LENGTH=%d,",q->value(5).toUInt())+
       QString().sprintf("CART_NUMBER=%u,",button->cart())+
       "STATION_NAME=\""+RDEscapeString(rda->station()->name().utf8())+"\","+

@@ -105,7 +105,6 @@ class RDSvc : public QObject
   static void remove(const QString &name);
   static bool exists(const QString &name);
   static QString timeString(int hour,int secs);
-  static QString svcTableName(const QString &svc_name);
 
  signals:
   void generationProgress(int step);

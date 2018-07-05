@@ -75,7 +75,6 @@ class SvcRec : public QWidget
   QSpinBox *pick_year_spin;
   QLabel *pick_date_label[6][7];
   QDate pick_date;
-  QString pick_tablename;
   int pick_low_year;
   int pick_high_year;
   bool pick_active_days[31];
