@@ -7489,7 +7489,8 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "CART_NUMBER int unsigned,"+
       "TRANS_TYPE int not null,"+
       "MARKER_COMMENT char(255),"+
-      "unique index EVENT_NAME_TYPE_COUNT_IDX (EVENT_NAME,TYPE,COUNT))";
+      "unique index EVENT_NAME_TYPE_COUNT_IDX (EVENT_NAME,TYPE,COUNT))"+
+      db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }

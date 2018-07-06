@@ -17098,3 +17098,7 @@
 	incorrect engine type when using '--modify'.
 	* Updated the 'init_template_host.py' script to work with
 	schema version 287.
+2018-07-07 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rddbmgr(8) that caused the 'EVENT_LINES'
+	table to be created with the incorrect engine type when using
+	'--modify'.
