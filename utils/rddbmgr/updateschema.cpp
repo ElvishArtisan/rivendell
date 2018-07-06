@@ -7566,6 +7566,51 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
     }
     delete q;
 
+    cur_schema++;
+  }
+
+  if((cur_schema<291)&&(set_schema>cur_schema)) {
+    sql=QString("create table if not exists CLOCK_LINES (")+
+      "ID int unsigned auto_increment not null primary key,"+
+      "CLOCK_NAME char(64) not null,"+
+      "EVENT_NAME char(64) not null,"+
+      "START_TIME int not null,"+
+      "LENGTH int not null,"+
+      "unique index CLOCK_NAME_START_TIME_IDX (CLOCK_NAME,START_TIME))"+
+      db_table_create_postfix;
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("select NAME from CLOCKS");
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      QString tablename=q->value(0).toString()+"_CLK";
+      tablename.replace(" ","_");
+      sql=QString("select ")+
+	"EVENT_NAME,"+  // 00
+	"START_TIME,"+  // 01
+	"LENGTH "+      // 02
+	"from `"+tablename+"` "+
+	"order by START_TIME";
+      q1=new RDSqlQuery(sql);
+      while(q1->next()) {
+	sql=QString("insert into CLOCK_LINES set ")+
+	  "CLOCK_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	  "EVENT_NAME=\""+RDEscapeString(q1->value(0).toString())+"\","+
+	  QString().sprintf("START_TIME=%d,",q1->value(1).toInt())+
+	  QString().sprintf("LENGTH=%d",q1->value(2).toInt());
+	if(!RDSqlQuery::apply(sql,err_msg)) {
+	  return false;
+	}
+      }
+      delete q1;
+      sql=QString("drop table `")+tablename+"`";
+      if(!RDSqlQuery::apply(sql,err_msg)) {
+	return false;
+      }
+    }
+    delete q;
 
     cur_schema++;
   }

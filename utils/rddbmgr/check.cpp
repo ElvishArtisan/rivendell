@@ -242,6 +242,10 @@ void MainObject::CheckOrphanedTracks() const
 
 void MainObject::CheckClocks() const
 {
+  //
+  // FIXME: This entire check needs to be rewritten!
+  //
+  /*
   QString sql;
   QSqlQuery *q;
   QSqlQuery *q1;
@@ -299,11 +303,16 @@ void MainObject::CheckClocks() const
     delete q1;
   }
   delete q;
+  */
 }
 
 
 void MainObject::CheckEvents() const
 {
+  //
+  // FIXME: This whole check needs to be rewritten!
+  //
+  /*
   QString sql;
   QSqlQuery *q;
   QSqlQuery *q1;
@@ -351,6 +360,7 @@ void MainObject::CheckEvents() const
     delete q1;
   }
   delete q;
+  */
 }
 
 

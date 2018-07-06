@@ -499,10 +499,6 @@ void EditClock::saveAsData()
   }
   delete q;
   edit_clock->setName(clockname);
-  sql=RDCreateClockTableSql(RDClock::tableName(clockname),rda->config());
-  q=new RDSqlQuery(sql);
-  delete q;
-
 
   Save();
   edit_new_clocks->push_back(clockname);
@@ -766,12 +762,12 @@ void EditClock::AbandonClock(QString name)
   if(name==edit_name) {
     return;
   }
-  QString sql=QString().sprintf("delete from CLOCKS where NAME=\"%s\"",
-				(const char *)name);
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  delete q;
-
-  rda->dropTable(RDClock::tableName(name));
+  QString sql=QString("delete from CLOCKS where ")+
+    "NAME=\""+RDEscapeString(name)+"\"";
+  RDSqlQuery::apply(sql);
+  sql=QString("delete from CLOCK_LINES where ")+
+    "CLOCK_NAME=\""+RDEscapeString(name)+"\"";
+  RDSqlQuery::apply(sql);
 }
 
 

@@ -345,11 +345,10 @@ void ListEvents::renameData()
   while(q->next()) {
     clock_name_esc=q->value(0).toString();
     clock_name_esc.replace(" ","_");
-    sql=QString().sprintf("update %s_CLK set EVENT_NAME=\"%s\"\
-                           where EVENT_NAME=\"%s\"",
-			  (const char *)clock_name_esc,
-			  (const char *)new_name,
-			  (const char *)item->text(0));
+    sql=QString("update CLOCK_LINES set ")+
+      "CLOCK_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+      "EVENT_NAME=\""+RDEscapeString(new_name)+"\" where "+
+      "EVENT_NAME=\""+RDEscapeString(item->text(0))+"\"";
     q1=new RDSqlQuery(sql);
     delete q1;
   }
@@ -527,16 +526,13 @@ int ListEvents::ActiveEvents(QString event_name,QString *clock_list)
   int n=0;
   QString sql;
   RDSqlQuery *q,*q1;
-  QString clockname;
 
   sql="select NAME from CLOCKS";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    clockname=q->value(0).toString();
-    clockname.replace(" ","_");
-    sql=QString().sprintf("select EVENT_NAME from %s_CLK\
-                           where EVENT_NAME=\"%s\"",(const char *)clockname,
-			  (const char *)event_name);
+    sql=QString("select EVENT_NAME from CLOCK_LINES where ")+
+      "CLOCK_NAME=\""+RDEscapeString(q->value(0).toString())+"\" && "+
+      "EVENT_NAME=\""+RDEscapeString(event_name)+"\"";
     q1=new RDSqlQuery(sql);
     if(q1->first()) {
       *clock_list+=
@@ -554,7 +550,6 @@ void ListEvents::DeleteEvent(QString event_name)
 {
   QString sql;
   RDSqlQuery *q,*q1;
-  QString clockname;
   QString base_name=event_name;
   base_name.replace(" ","_");
 
@@ -564,11 +559,9 @@ void ListEvents::DeleteEvent(QString event_name)
   sql="select NAME from CLOCKS";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    clockname=q->value(0).toString();
-    clockname.replace(" ","_");
-    sql=QString().sprintf("delete from %s_CLK\
-                           where EVENT_NAME=\"%s\"",(const char *)clockname,
-			  (const char *)event_name);
+    sql=QString("delete from CLOCK_LINES where ")+
+      "CLOCK_NAME=\""+RDEscapeString(q->value(0).toString())+"\" && "+
+      "EVENT_NAME=\""+RDEscapeString(event_name)+"\"";
     q1=new RDSqlQuery(sql);
     delete q1;
   }

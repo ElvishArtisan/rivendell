@@ -214,8 +214,7 @@ QSizePolicy ListClocks::sizePolicy() const
 
 void ListClocks::addData()
 {
-  QString clockname;
-  QString clockname_esc;
+  QString clockname;  
   QString sql;
   RDSqlQuery *q;
   RDSqlQuery *q1;
@@ -243,15 +242,11 @@ void ListClocks::addData()
     "ARTISTSEP=15";
   q=new RDSqlQuery(sql);
   delete q;
-  sql=RDCreateClockTableSql(RDClock::tableName(clockname),rda->config());
-  q=new RDSqlQuery(sql);
-  delete q;
   EditClock *clock_dialog=new EditClock(clockname,true,&new_clocks,this);
   if(clock_dialog->exec()<0) {
-    clockname_esc=clockname;
-    clockname_esc.replace(" ","_");
-    clockname_esc+="_CLK";
-    rda->dropTable(clockname_esc);
+    sql=QString("delete from CLOCK_LINES where ")+
+      "CLOCK_NAME=\""+RDEscapeString(clockname)+"\"";
+    RDSqlQuery::apply(sql);
     sql=QString().sprintf("delete from CLOCKS where NAME=\"%s\"",
 			  (const char *)clockname);
     q=new RDSqlQuery(sql);
@@ -383,15 +378,15 @@ void ListClocks::renameData()
   //
   // Rename Meta Table
   //
+  sql=QString("update CLOCK_LINES set ")+
+    "CLOCK_NAME=\""+RDEscapeString(new_name)+"\" where "+
+    "CLOCK_NAME=\""+RDEscapeString(item->text(0))+"\"";
+  q=new RDSqlQuery(sql);
+  delete q;
   QString old_name_esc=item->text(0);
   old_name_esc.replace(" ","_");
   QString new_name_esc=new_name;
   new_name_esc.replace(" ","_");
-  sql=QString().sprintf("alter table %s_CLK rename to %s_CLK",
-			(const char *)old_name_esc,
-			(const char *)new_name_esc);
-  q=new RDSqlQuery(sql);
-  delete q;
   sql=QString().sprintf("alter table %s_RULES rename to %s_RULES",
 			(const char *)old_name_esc,
 			(const char *)new_name_esc);
@@ -629,9 +624,10 @@ void ListClocks::DeleteClock(QString clockname)
   //
   sql=QString().sprintf("delete from CLOCKS where NAME=\"%s\"",
 				(const char *)clockname);
-  q=new RDSqlQuery(sql);
-  delete q;
-  rda->dropTable(base_name+"_CLK");
+  RDSqlQuery::apply(sql);
+  sql=QString("delete from CLOCK_LINES where ")+
+    "CLOCK_NAME=\""+RDEscapeString(clockname)+"\"";
+  RDSqlQuery::apply(sql);
   rda->dropTable(base_name+"_RULES");
 }
 

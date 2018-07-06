@@ -39,6 +39,55 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
 
 
   //
+  // Revert 291
+  //
+  if((cur_schema==291)&&(set_schema<cur_schema)) {
+    sql=QString("select NAME from CLOCKS");
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      QString tablename=q->value(0).toString()+"_CLK";
+      tablename.replace(" ","_");
+      sql=QString("create table `")+tablename+"` ("+
+	"ID int unsigned auto_increment not null primary key,"+
+	"EVENT_NAME char(64) not null,"+
+	"START_TIME int not null,"+
+	"LENGTH int not null,"+
+	"INDEX EVENT_NAME_IDX (EVENT_NAME))"+
+	db_table_create_postfix;
+      if(!RDSqlQuery::apply(sql,err_msg)) {
+	return false;
+      }
+
+      sql=QString("select ")+
+	"EVENT_NAME,"+  // 00
+	"START_TIME,"+  // 01
+	"LENGTH "+      // 02
+	"from CLOCK_LINES where "+
+	"CLOCK_NAME=\""+RDEscapeString(q->value(0).toString())+"\" "+
+	"order by START_TIME";
+      q1=new RDSqlQuery(sql);
+      while(q1->next()) {
+	sql=QString("insert into `")+tablename+"` set "+
+	  "EVENT_NAME=\""+RDEscapeString(q1->value(0).toString())+"\","+
+	  QString().sprintf("START_TIME=%d,",q1->value(1).toInt())+
+	  QString().sprintf("LENGTH=%d",q1->value(2).toInt());
+	if(!RDSqlQuery::apply(sql,err_msg)) {
+	  return false;
+	}
+      }
+      delete q1;
+    }
+    delete q;
+
+    sql=QString("drop table CLOCK_LINES");
+    RDSqlQuery::apply(sql);
+
+    cur_schema--;
+  }
+
+
+
+  //
   // Revert 290
   //
   if((cur_schema==290)&&(set_schema<cur_schema)) {
@@ -202,7 +251,6 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }
-      
 
     cur_schema--;
   }

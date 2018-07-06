@@ -17102,3 +17102,7 @@
 	* Fixed a bug in rddbmgr(8) that caused the 'EVENT_LINES'
 	table to be created with the incorrect engine type when using
 	'--modify'.
+2018-07-07 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'CLOCK_LINES' table to the database.
+	* Incremented the database version to 291.
+	* Removed the 'RDClock::tableName()' method.

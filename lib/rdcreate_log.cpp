@@ -33,7 +33,7 @@ void RDCreateLogTable(const QString &name,RDConfig *config)
   delete q;
 }
 */
-
+/*
 QString RDCreateLogTableSql(QString name,RDConfig *config)
 {
   return QString("create table if not exists `")+name+"`"+
@@ -81,8 +81,8 @@ QString RDCreateLogTableSql(QString name,RDConfig *config)
     "index LABEL_IDX (LABEL))"+
     config->createTablePostfix();
 }
-
-
+*/
+/*
 QString RDCreateClockTableSql(QString name,RDConfig *config)
 {
   return QString("create table `")+name+"` ("+
@@ -93,7 +93,7 @@ QString RDCreateClockTableSql(QString name,RDConfig *config)
     "INDEX EVENT_NAME_IDX (EVENT_NAME))"+
     config->createTablePostfix();
 }
-
+*/
 /*
 QString RDCreateReconciliationTableSql(QString name,RDConfig *config)
 {

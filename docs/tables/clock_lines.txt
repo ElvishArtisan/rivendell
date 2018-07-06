@@ -1,0 +1,12 @@
+                  CLOCK_LINES Table Layout for Rivendell
+
+The CLOCK_PERMS table holds per-line data for clocks in RDLogManager.
+
+
+FIELD NAME           TYPE              REMARKS
+---------------------------------------------------------------
+ID                   int(10) unsigned  Primary key, auto increment
+CLOCK_NAME           char(64)          From CLOCKS.NAME
+EVENT_NAME           char(64)          From EVENTS.NAME
+START_TIME           int(11)
+LENGTH               int(11)

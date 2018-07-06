@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Log Manager Clock
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -55,11 +55,9 @@ class RDClock
    bool validate(const QTime &start_time,int length,int except_line=-1);
    bool generateLog(int hour,const QString &logname,const QString &svc_name,
 		    QString *errors);
-   static QString tableName(const QString &name);
 
   private:
    QString clock_name;
-   QString clock_name_esc;
    QString clock_short_name;
    QColor clock_color;
    QString clock_remarks;
@@ -68,4 +66,4 @@ class RDClock
    bool rules_modified;
 };
 
-#endif 
+#endif  // RDCLOCK_H
