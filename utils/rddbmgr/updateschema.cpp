@@ -6766,7 +6766,8 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "NAME char(64),"+
       "INPUTS int not null default -1,"+
       "OUTPUTS int not null default -1,"+
-      "unique index STATION_NAME_IDX(STATION_NAME,CARD_NUMBER))";
+      "unique index STATION_NAME_IDX(STATION_NAME,CARD_NUMBER))"+
+      db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }
@@ -6841,7 +6842,8 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "LEVEL int not null default 0,"+
       "TYPE int not null default 0,"
       "MODE int not null default 0,"+
-      "unique index STATION_NAME_IDX(STATION_NAME,CARD_NUMBER,PORT_NUMBER))";
+      "unique index STATION_NAME_IDX(STATION_NAME,CARD_NUMBER,PORT_NUMBER))"+
+      db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }
@@ -6891,7 +6893,8 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "CARD_NUMBER int not null,"+
       "PORT_NUMBER int not null,"+
       "LEVEL int not null default 0,"+
-      "unique index STATION_NAME_IDX(STATION_NAME,CARD_NUMBER,PORT_NUMBER))";
+      "unique index STATION_NAME_IDX(STATION_NAME,CARD_NUMBER,PORT_NUMBER))"+
+      db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }
