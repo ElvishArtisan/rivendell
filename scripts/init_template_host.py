@@ -3,7 +3,7 @@
 # init_template_host.py
 #
 # Initialize a template-only host profile so it can be used as a
-# template.
+# template. (Requires the 'mysql-connector-python' package).
 #
 # (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
 #
@@ -90,13 +90,19 @@ if(len(q.fetchall()) != 1):
 q.close()
 
 #
-# Write host record
+# Write host records
 #
+sql='update AUDIO_CARDS set '
+sql+='DRIVER=2,'
+sql+='NAME="Dummy Template Card",'
+sql+='INPUTS='+str(inputs)+','
+sql+='OUTPUTS='+str(outputs)
+sql+=' where STATION_NAME="'+args.host+'" && CARD_NUMBER='+str(cardnum)
+q=db.cursor()
+q.execute(sql)
+q.close()
+
 sql='update STATIONS set '
-sql+='CARD'+str(cardnum)+'_DRIVER=2,'
-sql+='CARD'+str(cardnum)+'_NAME="Dummy Template Card",'
-sql+='CARD'+str(cardnum)+'_INPUTS='+str(inputs)+','
-sql+='CARD'+str(cardnum)+'_OUTPUTS='+str(outputs)+','
 sql+='STATION_SCANNED="Y" where '
 sql+='NAME="'+args.host+'"'
 q=db.cursor()
