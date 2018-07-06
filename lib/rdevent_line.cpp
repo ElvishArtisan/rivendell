@@ -20,18 +20,19 @@
 
 #include <qtextstream.h>
 
-#include <rdconf.h>
-#include <rdcart.h>
-#include <rdevent.h>
-#include <rdevent_line.h>
-#include <schedcartlist.h>
-#include <rddb.h>
-#include <rdescape_string.h>
+#include "rdconf.h"
+#include "rdcart.h"
+#include "rddb.h"
+#include "rdescape_string.h"
+#include "rdevent.h"
+#include "rdevent_line.h"
+#include "rdeventimportlist.h"
+#include "schedcartlist.h"
 
 RDEventLine::RDEventLine()
 {
-  event_preimport_log=new RDLogEvent();
-  event_postimport_log=new RDLogEvent();
+  event_preimport_list=new RDEventImportList();
+  event_postimport_list=new RDEventImportList();
   clear();
 }
 
@@ -45,8 +46,10 @@ QString RDEventLine::name() const
 void RDEventLine::setName(const QString &name)
 {
   event_name=name;
-  event_preimport_log->setLogName(RDEvent::preimportTableName(event_name));
-  event_postimport_log->setLogName(RDEvent::postimportTableName(event_name));
+  event_preimport_list->setEventName(event_name);
+  event_preimport_list->setType(RDEventImportList::PreImport);
+  event_postimport_list->setEventName(event_name);
+  event_postimport_list->setType(RDEventImportList::PostImport);
 }
 
 
@@ -264,19 +267,6 @@ void RDEventLine::setTitleSep(unsigned titlesep)
 }
 
 
-
-RDLogEvent *RDEventLine::preimportCarts()
-{
-  return event_preimport_log;
-}
-
-
-RDLogEvent *RDEventLine::postimportCarts()
-{
-  return event_postimport_log;
-}
-
-
 QTime RDEventLine::startTime() const
 {
   return event_start_time;
@@ -317,8 +307,8 @@ void RDEventLine::clear()
    event_first_transtype=RDLogLine::Segue;
    event_default_transtype=RDLogLine::Segue;
    event_color=QColor();
-   event_preimport_log->clear();
-   event_postimport_log->clear();
+   event_preimport_list->clear();
+   event_postimport_list->clear();
    event_start_time=QTime();
    event_length=0;
    event_autofill_slop=-1;
@@ -387,8 +377,8 @@ bool RDEventLine::load()
   event_have_code2=q->value(18).toString();
 
   delete q;
-  event_preimport_log->load();
-  event_postimport_log->load();
+  event_preimport_list->load();
+  event_postimport_list->load();
   return true;
 }
 
@@ -448,8 +438,8 @@ bool RDEventLine::save(RDConfig *config)
     return false;
   }
   delete q;
-  event_preimport_log->save(config);
-  event_postimport_log->save(config);
+  event_preimport_list->save();
+  event_postimport_list->save();
   return true;
 }
 
@@ -464,8 +454,6 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
   QTime time=event_start_time;
   QTime fill_start_time;
   int count=0;
-  //  logname.replace(" ","_");
-  RDLogLine *logline;
   QString import_table;
   int postimport_length=0;
   RDLogLine::TransType trans_type=event_first_transtype;
@@ -514,39 +502,32 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
   //
   // Pre-Import Carts
   //
-  for(int i=0;i<event_preimport_log->size();i++) {
-    if((logline=event_preimport_log->logLine(i))!=NULL) {
-      sql=QString("insert into LOG_LINES set ")+
-	"LOG_NAME=\""+RDEscapeString(logname)+"\","+
-	QString().sprintf("LINE_ID=%d,",count)+
-	QString().sprintf("COUNT=%d,",count)+
-	QString().sprintf("TYPE=%d,",logline->type())+
-	QString().sprintf("SOURCE=%d,",RDLogLine::Template)+
-	QString().sprintf("START_TIME=%d,",QTime().msecsTo(time))+
-	QString().sprintf("GRACE_TIME=%d,",grace_time)+
-	QString().sprintf("CART_NUMBER=%u,",logline->cartNumber())+
-	QString().sprintf("TIME_TYPE=%d,",time_type)+
-	"POST_POINT=\""+RDYesNo(post_point)+"\","+
-	QString().sprintf("TRANS_TYPE=%d,",logline->transType())+
-	"COMMENT=\""+RDEscapeString(logline->markerComment())+"\","+
-	QString().sprintf("EVENT_LENGTH=%d",event_length);
-      q=new RDSqlQuery(sql);
-      delete q;
-      count++;
-      time=time.addMSecs(GetLength(logline->cartNumber()));
-      trans_type=event_default_transtype;
-      time_type=RDLogLine::Relative;
-      post_point=false;
-      grace_time=-1;
-    }
-  }
+  postimport_length=0;
+  for(int i=0;i<event_preimport_list->size();i++) {
+    RDEventImportItem *i_item=event_preimport_list->item(i);
+    sql=QString("insert into LOG_LINES set ")+
+      "LOG_NAME=\""+RDEscapeString(logname)+"\","+
+      QString().sprintf("LINE_ID=%d,",count)+
+      QString().sprintf("COUNT=%d,",count)+
+      QString().sprintf("TYPE=%d,",i_item->eventType())+
+      QString().sprintf("SOURCE=%d,",RDLogLine::Template)+
+      QString().sprintf("START_TIME=%d,",QTime().msecsTo(time))+
+      QString().sprintf("GRACE_TIME=%d,",grace_time)+
+      QString().sprintf("CART_NUMBER=%u,",i_item->cartNumber())+
+      QString().sprintf("TIME_TYPE=%d,",time_type)+
+      "POST_POINT=\""+RDYesNo(post_point)+"\","+
+      QString().sprintf("TRANS_TYPE=%d,",i_item->transType())+
+      "COMMENT=\""+RDEscapeString(i_item->markerComment())+"\","+
+      QString().sprintf("EVENT_LENGTH=%d",event_length);
+    RDSqlQuery::apply(sql);
+    count++;
+    time=time.addMSecs(GetLength(q->value(2).toUInt()));
+    trans_type=event_default_transtype;
+    time_type=RDLogLine::Relative;
+    post_point=false;
+    grace_time=-1;
 
-  //
-  // Calculate Post Import Length
-  //
-  for(int i=0;i<event_postimport_log->size();i++) {
-    postimport_length+=
-      GetLength(event_postimport_log->logLine(i)->cartNumber());
+    postimport_length+=GetLength(q->value(2).toUInt());
   }
 
   //
@@ -861,31 +842,29 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
   //
   // Post-Import Carts
   //
-  for(int i=0;i<event_postimport_log->size();i++) {
-    if((logline=event_postimport_log->logLine(i))!=NULL) {
-      sql=QString("insert into LOG_LINES set ")+
-	"LOG_NAME=\""+RDEscapeString(logname)+"\","+
-	QString().sprintf("LINE_ID=%d,",count)+
-	QString().sprintf("COUNT=%d,",count)+
-	QString().sprintf("TYPE=%d,",logline->type())+
-	QString().sprintf("SOURCE=%d,",RDLogLine::Template)+
-	QString().sprintf("START_TIME=%d,",QTime().msecsTo(time))+
-	QString().sprintf("GRACE_TIME=%d,",grace_time)+
-	QString().sprintf("CART_NUMBER=%u,",logline->cartNumber())+
-	QString().sprintf("TIME_TYPE=%d,",time_type)+
-	"POST_POINT=\""+RDYesNo(post_point)+"\","+
-	QString().sprintf("TRANS_TYPE=%d,",logline->transType())+
-	"COMMENT=\""+RDEscapeString(logline->markerComment())+"\","+
-	QString().sprintf("EVENT_LENGTH=%d",event_length);
-      q=new RDSqlQuery(sql);
-      delete q;
-      count++;
-      time=time.addMSecs(GetLength(logline->cartNumber()));
-      time_type=RDLogLine::Relative;
-      trans_type=event_default_transtype;
-      post_point=false;
-      grace_time=-1;
-    }
+  for(int i=0;i<event_postimport_list->size();i++) {
+    RDEventImportItem *i_item=event_postimport_list->item(i);
+    sql=QString("insert into LOG_LINES set ")+
+      "LOG_NAME=\""+RDEscapeString(logname)+"\","+
+      QString().sprintf("LINE_ID=%d,",count)+
+      QString().sprintf("COUNT=%d,",count)+
+      QString().sprintf("TYPE=%d,",i_item->eventType())+
+      QString().sprintf("SOURCE=%d,",RDLogLine::Template)+
+      QString().sprintf("START_TIME=%d,",QTime().msecsTo(time))+
+      QString().sprintf("GRACE_TIME=%d,",grace_time)+
+      QString().sprintf("CART_NUMBER=%u,",i_item->cartNumber())+
+      QString().sprintf("TIME_TYPE=%d,",time_type)+
+      "POST_POINT=\""+RDYesNo(post_point)+"\","+
+      QString().sprintf("TRANS_TYPE=%d,",i_item->transType())+
+      "COMMENT=\""+RDEscapeString(i_item->markerComment())+"\","+
+      QString().sprintf("EVENT_LENGTH=%d",event_length);
+    RDSqlQuery::apply(sql);
+    count++;
+    time=time.addMSecs(GetLength(q->value(2).toUInt()));
+    time_type=RDLogLine::Relative;
+    trans_type=event_default_transtype;
+    post_point=false;
+    grace_time=-1;
   }
 
   return true;

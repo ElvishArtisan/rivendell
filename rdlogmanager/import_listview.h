@@ -25,7 +25,8 @@
 #include <qpixmap.h>
 #include <qpopupmenu.h>
 
-#include <rdlog_event.h>
+#include <rdeventimportlist.h>
+//#include <rdlog_event.h>
 
 class ImportListView : public QListView
 {
@@ -36,7 +37,10 @@ class ImportListView : public QListView
   void setForceTrans(RDLogLine::TransType trans);
   void setAllowStop(bool state);
   void setAllowFirstTrans(bool state);
-  RDLogEvent *logEvent();
+  void move(int from_line,int to_line);
+  void setEventName(const QString &str);
+  bool load(const QString &event_name,RDEventImportList::ImportType type);
+  void save();
   void refreshList(int line=-1);
   void validateTransitions();
 
@@ -63,14 +67,14 @@ class ImportListView : public QListView
   void dropEvent(QDropEvent *e);
 
  private:
-  RDLogEvent *import_log;
+  RDEventImportList *import_list;
   QPixmap *import_playout_map;
   QPixmap *import_macro_map;
   QPixmap *import_notemarker_map;
   QPixmap *import_mic16_map;
   QPopupMenu *import_menu;
   int import_menu_line;
-  RDLogLine *import_menu_logline;
+  RDEventImportItem *import_menu_i_item;
   QListViewItem *import_menu_item;
   RDLogLine::TransType import_force_trans;
   bool import_allow_stop;

@@ -1,0 +1,16 @@
+              Event Lines Table Layout for Rivendell
+
+The EVENT_LINES table holds the per-line data for rdlogmanager(1) pre- and
+post-import events.
+
+FIELD NAME           TYPE               REMARKS
+------------------------------------------------------------------------
+ID                   int(11) signed     Primary key, auto-increment
+EVENT_NAME           char(64)           From EVENT.NAME
+TYPE                 int(11) signed     0=PreImport, 1=PostImport
+COUNT                int(11) signed     Order of records
+EVENT_TYPE           int(11) signed     0=Cart, 1=Marker, 2=OpenBracket,
+                                        3=CloseBracket, 4=Link
+CART_NUMBER          int(10) unsigned   From CART.NUMBER
+TRANS_TYPE           int(11) signed     0 = Play, 1 = Stop, 2 = Segue
+MARKER_COMMENT       char(255)

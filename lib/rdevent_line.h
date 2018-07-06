@@ -25,6 +25,7 @@
 #include <qdatetime.h>
 
 #include <rdlog_event.h>
+#include <rdeventimportlist.h>
 #include <rdlog_line.h>
 
 class RDEventLine
@@ -71,8 +72,6 @@ class RDEventLine
   void setHaveCode2(QString str);
   unsigned titleSep() const;
   void setTitleSep(unsigned titlesep);
-  RDLogEvent *preimportCarts();
-  RDLogEvent *postimportCarts();
   QTime startTime() const;
   void setStartTime(const QTime &time);
   int length() const;
@@ -103,8 +102,8 @@ class RDEventLine
   RDLogLine::TransType event_first_transtype;
   RDLogLine::TransType event_default_transtype;
   QColor event_color;
-  RDLogEvent *event_preimport_log;
-  RDLogEvent *event_postimport_log;
+  RDEventImportList *event_preimport_list;
+  RDEventImportList *event_postimport_list;
   QTime event_start_time;
   int event_length;
   int event_autofill_slop;

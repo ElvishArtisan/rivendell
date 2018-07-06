@@ -7440,7 +7440,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
 	  "LABEL=\""+RDEscapeString(q1->value(12).toString())+"\","+
 	  "CONDUCTOR=\""+RDEscapeString(q1->value(13).toString())+"\","+
 	  "USAGE_CODE=\""+RDEscapeString(q1->value(14).toString())+"\","+
-	  "DESCRIPTIONS=\""+RDEscapeString(q1->value(15).toString())+"\","+
+	  "DESCRIPTION=\""+RDEscapeString(q1->value(15).toString())+"\","+
 	  "OUTCUE=\""+RDEscapeString(q1->value(16).toString())+"\","+
 	  "ISRC=\""+RDEscapeString(q1->value(17).toString())+"\","+
 	  "ISCI=\""+RDEscapeString(q1->value(18).toString())+"\","+
@@ -7475,6 +7475,97 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
 
     cur_schema++;
   }
+
+  if((cur_schema<290)&&(set_schema>cur_schema)) {
+    sql=QString("create table if not exists EVENT_LINES (")+
+      "ID int unsigned auto_increment primary key,"+
+      "EVENT_NAME char(64) not null,"+
+      "TYPE int not null,"+
+      "COUNT int not null,"+
+      "EVENT_TYPE int not null,"+
+      "CART_NUMBER int unsigned,"+
+      "TRANS_TYPE int not null,"+
+      "MARKER_COMMENT char(255),"+
+      "unique index EVENT_NAME_TYPE_COUNT_IDX (EVENT_NAME,TYPE,COUNT))";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("select NAME from EVENTS");
+    q=new RDSqlQuery(sql,false);
+    while(q->next()) {
+      //
+      // PreImport Events
+      //
+      QString tablename=q->value(0).toString()+"_PRE";
+      tablename.replace(" ","_");
+      sql=QString("select ")+
+	"COUNT,"+        // 00
+	"TYPE,"+         // 01
+	"CART_NUMBER,"+  // 02
+	"TRANS_TYPE,"+   // 03
+	"COMMENT "+      // 05
+	"from `"+tablename+"`"+
+	"order by COUNT";
+      q1=new RDSqlQuery(sql,false);
+      while(q1->next()) {
+	sql=QString("insert into EVENT_LINES set ")+
+	  "EVENT_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	  "TYPE=0,"+
+	  QString().sprintf("COUNT=%d,",q1->value(0).toInt())+
+	  QString().sprintf("EVENT_TYPE=%d,",q1->value(1).toInt())+
+	  QString().sprintf("CART_NUMBER=%u,",q1->value(2).toUInt())+
+	  QString().sprintf("TRANS_TYPE=%d,",q1->value(3).toInt())+
+	  "MARKER_COMMENT=\""+RDEscapeString(q1->value(4).toString())+"\"";
+	if(!RDSqlQuery::apply(sql,err_msg)) {
+	  return false;
+	}
+      }
+      delete q1;
+      sql="drop table `"+tablename+"`";
+      if(!RDSqlQuery::apply(sql,err_msg)) {
+	return false;
+      }
+
+      //
+      // PostImport Events
+      //
+      tablename=q->value(0).toString()+"_POST";
+      tablename.replace(" ","_");
+      sql=QString("select ")+
+	"COUNT,"+        // 00
+	"TYPE,"+         // 01
+	"CART_NUMBER,"+  // 02
+	"TRANS_TYPE,"+   // 03
+	"COMMENT "+      // 05
+	"from `"+tablename+"`"+
+	"order by COUNT";
+      q1=new RDSqlQuery(sql,false);
+      while(q1->next()) {
+	sql=QString("insert into EVENT_LINES set ")+
+	  "EVENT_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	  "TYPE=1,"+
+	  QString().sprintf("COUNT=%d,",q1->value(0).toInt())+
+	  QString().sprintf("EVENT_TYPE=%d,",q1->value(1).toInt())+
+	  QString().sprintf("CART_NUMBER=%u,",q1->value(2).toUInt())+
+	  QString().sprintf("TRANS_TYPE=%d,",q1->value(3).toInt())+
+	  "MARKER_COMMENT=\""+RDEscapeString(q1->value(4).toString())+"\"";
+	if(!RDSqlQuery::apply(sql,err_msg)) {
+	  return false;
+	}
+      }
+      delete q1;
+      sql="drop table `"+tablename+"`";
+      if(!RDSqlQuery::apply(sql,err_msg)) {
+	return false;
+      }
+    }
+    delete q;
+
+
+    cur_schema++;
+  }
+
 
 
   //

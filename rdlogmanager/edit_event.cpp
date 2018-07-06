@@ -32,6 +32,7 @@
 #include <rdconf.h>
 #include <rddb.h>
 #include <rdescape_string.h>
+#include <rdeventimportlist.h>
 
 #include "add_event.h"
 #include "edit_event.h"
@@ -391,9 +392,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
 				    sizeHint().width()-CENTER_LINE-75,125);
   event_preimport_list->setAllColumnsShowFocus(true);
   event_preimport_list->setItemMargin(5);
-  event_preimport_list->logEvent()->
-    setLogName(QString().sprintf("%s_PRE",(const char *)event_name).
-	       replace(' ',"_"));
+  event_preimport_list->load(event_name,RDEventImportList::PreImport);
   event_preimport_list->setSortColumn(-1);
   connect(event_preimport_list,SIGNAL(sizeChanged(int)),
 	  this,SLOT(preimportChangedData(int)));
@@ -628,9 +627,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   event_postimport_list->setItemMargin(5);
   event_postimport_list->setSortColumn(-1);
   event_postimport_list->setAllowStop(false);
-  event_postimport_list->logEvent()->
-    setLogName(QString().sprintf("%s_POST",(const char *)event_name).
-	       replace(' ',"_"));
+  event_postimport_list->load(event_name,RDEventImportList::PostImport);
   event_postimport_list->addColumn("");
   event_postimport_list->addColumn(tr("CART"));
   event_postimport_list->addColumn(tr("GROUP"));
@@ -798,9 +795,9 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   delete q;
 
   if(!new_event) {
-    event_preimport_list->logEvent()->load();
+    event_preimport_list->load(event_name,RDEventImportList::PreImport);
     event_preimport_list->refreshList();
-    event_postimport_list->logEvent()->load();
+    event_postimport_list->load(event_name,RDEventImportList::PostImport);
     event_postimport_list->refreshList();
   }
 
@@ -1092,7 +1089,7 @@ void EditEvent::preimportUpData()
     event_preimport_list->ensureItemVisible(item);
     return;
   }
-  event_preimport_list->logEvent()->move(line,line-1);
+  event_preimport_list->move(line,line-1);
   event_preimport_list->validateTransitions();
   event_preimport_list->refreshList(line-1);
 }
@@ -1110,9 +1107,10 @@ void EditEvent::preimportDownData()
     event_preimport_list->ensureItemVisible(item);
     return;
   }
-  event_preimport_list->logEvent()->move(line,line+1);
+  event_preimport_list->move(line,line+1);
   event_preimport_list->validateTransitions();
   event_preimport_list->refreshList(line+1);
+  event_preimport_list->ensureItemVisible(item);
 }
 
 
@@ -1128,7 +1126,7 @@ void EditEvent::postimportUpData()
     event_postimport_list->ensureItemVisible(item);
     return;
   }
-  event_postimport_list->logEvent()->move(line,line-1);
+  event_postimport_list->move(line,line-1);
   event_postimport_list->validateTransitions();
   event_postimport_list->refreshList(line-1);
 }
@@ -1146,7 +1144,7 @@ void EditEvent::postimportDownData()
     event_postimport_list->ensureItemVisible(item);
     return;
   }
-  event_postimport_list->logEvent()->move(line,line+1);
+  event_postimport_list->move(line,line+1);
   event_postimport_list->validateTransitions();
   event_postimport_list->refreshList(line+1);
 }
@@ -1388,7 +1386,6 @@ void EditEvent::SetPostTransition()
 void EditEvent::Save()
 {
   QString properties;
-  QString listname;
 
   event_event->setRemarks(event_remarks_edit->text());
   if(event_position_box->isChecked()) {
@@ -1402,31 +1399,18 @@ void EditEvent::Save()
     event_event->setPostPoint(event_post_box->isChecked());
     event_event->setFirstTransType((RDLogLine::TransType)
 				   event_transtype_box->currentItem());
-    switch((RDLogLine::TransType)event_transtype_box->currentItem()) {
-	case RDLogLine::Play:
-	  break;
-
-	case RDLogLine::Segue:
-	  break;
-
-	case RDLogLine::Stop:
-	  break;
-
-	default:
-	  break;
-    }
     switch(event_grace_group->selectedId()) {
-	case 0:
-	  event_event->setGraceTime(0);
-	  break;
+    case 0:
+      event_event->setGraceTime(0);
+      break;
 
-	case 1:
-	  event_event->setGraceTime(-1);
-	  break;
+    case 1:
+      event_event->setGraceTime(-1);
+      break;
 
-	default:
-	  event_event->setGraceTime(QTime().msecsTo(event_grace_edit->time()));
-	  break;	  
+    default:
+      event_event->setGraceTime(QTime().msecsTo(event_grace_edit->time()));
+      break;	  
     }
   }
   else {
@@ -1445,20 +1429,6 @@ void EditEvent::Save()
     event_event->setAutofillSlop(-1);
   }
   event_event->setUseTimescale(event_timescale_box->isChecked());
-
-  switch((RDEventLine::ImportSource)event_source_group->selectedId()) {
-      case RDEventLine::Traffic:
-	break;
-
-      case RDEventLine::Music:
-	break;
-
-      case RDEventLine::Scheduler:
-	break;
-
-      default:
-	break;
-  }
   event_event->
     setImportSource((RDEventLine::ImportSource)event_source_group->selectedId());
   event_event->setStartSlop(QTime().msecsTo(event_startslop_edit->time()));
@@ -1467,19 +1437,6 @@ void EditEvent::Save()
     event_event->
       setFirstTransType((RDLogLine::TransType)event_firsttrans_box->
 			currentItem());
-    switch((RDLogLine::TransType)event_firsttrans_box->currentItem()) {
-	case RDLogLine::Play:
-	  break;
-
-	case RDLogLine::Segue:
-	  break;
-
-	case RDLogLine::Stop:
-	  break;
-
-	default:
-	  break;
-    }
   }
   event_event->
     setDefaultTransType((RDLogLine::TransType)event_defaulttrans_box->
@@ -1502,14 +1459,12 @@ void EditEvent::Save()
     event_event->setHaveCode(event_have_code2_box->currentText());
     event_event->setHaveCode2(QString(""));
   }
-  listname=event_name;
-  listname.replace(" ","_");
-  event_preimport_list->logEvent()->
-    setLogName(QString().sprintf("%s_PRE",(const char *)listname));
-  event_preimport_list->logEvent()->save(rda->config(),false);
-  event_postimport_list->logEvent()->
-    setLogName(QString().sprintf("%s_POST",(const char *)listname));
-  event_postimport_list->logEvent()->save(rda->config(),false);
+
+  event_preimport_list->setEventName(event_name);
+  event_preimport_list->save();
+  event_postimport_list->setEventName(event_name);
+  event_postimport_list->save();
+
   event_saved=true;
 }
 
@@ -1550,38 +1505,38 @@ QString EditEvent::GetProperties()
     }
   }
   switch(trans_type) {
-      case RDLogLine::Play:
-	properties+=tr("PLAY");
-	break;
+  case RDLogLine::Play:
+    properties+=tr("PLAY");
+    break;
 
-      case RDLogLine::Segue:
-	properties+=tr("SEGUE");
-	break;
+  case RDLogLine::Segue:
+    properties+=tr("SEGUE");
+    break;
 
-      case RDLogLine::Stop:
-	properties+=tr("STOP");
-	break;
+  case RDLogLine::Stop:
+    properties+=tr("STOP");
+    break;
 
-      default:
-	break;
+  default:
+    break;
   }
 
   if(event_timetype_box->isChecked()) {
     switch(event_grace_group->selectedId()) {
-	case 0:
-	  properties+=tr(", Timed(Start)");
-	  break;
+    case 0:
+      properties+=tr(", Timed(Start)");
+      break;
 
-	case 1:
-	  properties+=tr(", Timed(MakeNext)");
-	  break;
+    case 1:
+      properties+=tr(", Timed(MakeNext)");
+      break;
 
-	default:
-	  str=QString(tr("Timed(Wait"));
-	  properties+=
-	    QString().sprintf(", %s %s)",(const char *)str,(const char *)
-			      event_grace_edit->time().toString("mm:ss"));
-	  break;
+    default:
+      str=QString(tr("Timed(Wait"));
+      properties+=
+	QString().sprintf(", %s %s)",(const char *)str,(const char *)
+			  event_grace_edit->time().toString("mm:ss"));
+      break;
     }
     if(event_post_box->isChecked()) {
       properties+=tr(", Post");
@@ -1594,21 +1549,20 @@ QString EditEvent::GetProperties()
     properties+=tr(", Scale");
   }
   switch((RDEventLine::ImportSource)event_source_group->selectedId()) {
-      case RDEventLine::Traffic:
-	properties+=tr(", Traffic");
-	break;
+  case RDEventLine::Traffic:
+    properties+=tr(", Traffic");
+    break;
 
-      case RDEventLine::Music:
-	properties+=tr(", Music");
-	break;
+  case RDEventLine::Music:
+    properties+=tr(", Music");
+    break;
 
-      case RDEventLine::Scheduler:
-	properties+=tr(", Scheduler");
-	break;
+  case RDEventLine::Scheduler:
+    properties+=tr(", Scheduler");
+    break;
 
-
-      default:
-	break;
+  default:
+    break;
   }
   if(event_nestevent_box->currentItem()>0) {
     properties+=tr(", Inline Traffic");
@@ -1655,6 +1609,7 @@ void EditEvent::AbandonEvent(QString name)
   q=new RDSqlQuery(sql);
   delete q;
 
-  rda->dropTable(RDEvent::preimportTableName(name));
-  rda->dropTable(RDEvent::postimportTableName(name));
+  sql=QString("delete from EVENT_LINES where ")+
+    "EVENT_NAME=\""+RDEscapeString(name)+"\"";
+  RDSqlQuery::apply(sql);
 }

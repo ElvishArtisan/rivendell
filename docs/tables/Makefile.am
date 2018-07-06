@@ -41,6 +41,7 @@ EXTRA_DIST = audio_cards.txt\
              encoder_channels.txt\
              encoder_samplerates.txt\
              encoders.txt\
+             event_lines.txt\
              extended_panel_names.txt\
              feed_perms.txt\
              gpio_events.txt\

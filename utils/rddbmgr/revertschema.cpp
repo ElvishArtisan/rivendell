@@ -39,6 +39,175 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
 
 
   //
+  // Revert 290
+  //
+  if((cur_schema==290)&&(set_schema<cur_schema)) {
+    sql=QString("select NAME from EVENTS");
+    q=new RDSqlQuery(sql,false);
+    while(q->next()) {
+      //
+      // PreImport Events
+      //
+      QString tablename=q->value(0).toString()+"_PRE";
+      tablename.replace(" ","_");
+      sql=QString("create table if not exists `")+tablename+"` ("+
+      "ID int not null primary key,"+
+      "COUNT int not null,"+
+      "TYPE int default 0,"+
+      "SOURCE int not null,"+
+      "START_TIME int,"+
+      "GRACE_TIME int default 0,"+
+      "CART_NUMBER int UNSIGNED not null default 0,"+
+      "TIME_TYPE int not null,"+
+      "POST_POINT enum('N','Y') default 'N',"+
+      "TRANS_TYPE int not null,"+
+      "START_POINT int not null default -1,"+
+      "END_POINT int not null default -1,"+
+      "FADEUP_POINT int default -1,"+
+      QString().sprintf("FADEUP_GAIN int default %d,",RD_FADE_DEPTH)+
+      "FADEDOWN_POINT int default -1,"+
+      QString().sprintf("FADEDOWN_GAIN int default %d,",RD_FADE_DEPTH)+
+      "SEGUE_START_POINT int not null default -1,"+
+      "SEGUE_END_POINT int not null default -1,"+
+      QString().sprintf("SEGUE_GAIN int default %d,",RD_FADE_DEPTH)+
+      "DUCK_UP_GAIN int default 0,"+
+      "DUCK_DOWN_GAIN int default 0,"+
+      "COMMENT CHAR(255),"+
+      "LABEL CHAR(64),"+
+      "ORIGIN_USER char(255),"+
+      "ORIGIN_DATETIME datetime,"+
+      "EVENT_LENGTH int default -1,"+
+      "LINK_EVENT_NAME char(64),"+
+      "LINK_START_TIME int,"+
+      "LINK_LENGTH int default 0,"+
+      "LINK_START_SLOP int default 0,"+
+      "LINK_END_SLOP int default 0,"+
+      "LINK_ID int default -1,"+
+      "LINK_EMBEDDED enum('N','Y') default 'N',"+
+      "EXT_START_TIME time,"+
+      "EXT_LENGTH int,"+
+      "EXT_CART_NAME char(32),"+
+      "EXT_DATA char(32),"+
+      "EXT_EVENT_ID char(32),"+
+      "EXT_ANNC_TYPE char(8),"+
+      "index COUNT_IDX (COUNT),"+
+      "index CART_NUMBER_IDX (CART_NUMBER),"+
+      "index LABEL_IDX (LABEL))"+
+      db_table_create_postfix;
+      if(!RDSqlQuery::apply(sql,err_msg)) {
+	return false;
+      }
+      sql=QString("select ")+
+	"COUNT,"+           // 00
+	"EVENT_TYPE,"+      // 01
+	"CART_NUMBER,"+     // 02
+	"TRANS_TYPE,"+      // 03
+	"MARKER_COMMENT "+  // 04
+	"from EVENT_LINES where "+
+	"EVENT_NAME=\""+RDEscapeString(q->value(0).toString())+"\" && "+
+	"TYPE=0";
+      q1=new RDSqlQuery(sql,false);
+      while(q1->next()) {
+	sql=QString("insert into `")+tablename+"` set "+
+	  QString().sprintf("ID=%d,",1+q1->value(0).toInt())+
+	  QString().sprintf("COUNT=%d,",q1->value(0).toInt())+
+	  QString().sprintf("TYPE=%d,",q1->value(1).toInt())+
+	  QString().sprintf("CART_NUMBER=%u,",q1->value(2).toUInt())+
+	  QString().sprintf("TRANS_TYPE=%d,",q1->value(3).toInt())+
+	  "COMMENT=\""+RDEscapeString(q1->value(4).toString())+"\"";
+	if(!RDSqlQuery::apply(sql,err_msg)) {
+	  return false;
+	}
+      }
+      delete q1;
+
+      //
+      // PostImport Events
+      //
+      tablename=q->value(0).toString()+"_POST";
+      tablename.replace(" ","_");
+      sql=QString("create table if not exists `")+tablename+"` ("+
+      "ID int not null primary key,"+
+      "COUNT int not null,"+
+      "TYPE int default 0,"+
+      "SOURCE int not null,"+
+      "START_TIME int,"+
+      "GRACE_TIME int default 0,"+
+      "CART_NUMBER int UNSIGNED not null default 0,"+
+      "TIME_TYPE int not null,"+
+      "POST_POINT enum('N','Y') default 'N',"+
+      "TRANS_TYPE int not null,"+
+      "START_POINT int not null default -1,"+
+      "END_POINT int not null default -1,"+
+      "FADEUP_POINT int default -1,"+
+      QString().sprintf("FADEUP_GAIN int default %d,",RD_FADE_DEPTH)+
+      "FADEDOWN_POINT int default -1,"+
+      QString().sprintf("FADEDOWN_GAIN int default %d,",RD_FADE_DEPTH)+
+      "SEGUE_START_POINT int not null default -1,"+
+      "SEGUE_END_POINT int not null default -1,"+
+      QString().sprintf("SEGUE_GAIN int default %d,",RD_FADE_DEPTH)+
+      "DUCK_UP_GAIN int default 0,"+
+      "DUCK_DOWN_GAIN int default 0,"+
+      "COMMENT CHAR(255),"+
+      "LABEL CHAR(64),"+
+      "ORIGIN_USER char(255),"+
+      "ORIGIN_DATETIME datetime,"+
+      "EVENT_LENGTH int default -1,"+
+      "LINK_EVENT_NAME char(64),"+
+      "LINK_START_TIME int,"+
+      "LINK_LENGTH int default 0,"+
+      "LINK_START_SLOP int default 0,"+
+      "LINK_END_SLOP int default 0,"+
+      "LINK_ID int default -1,"+
+      "LINK_EMBEDDED enum('N','Y') default 'N',"+
+      "EXT_START_TIME time,"+
+      "EXT_LENGTH int,"+
+      "EXT_CART_NAME char(32),"+
+      "EXT_DATA char(32),"+
+      "EXT_EVENT_ID char(32),"+
+      "EXT_ANNC_TYPE char(8),"+
+      "index COUNT_IDX (COUNT),"+
+      "index CART_NUMBER_IDX (CART_NUMBER),"+
+      "index LABEL_IDX (LABEL))"+
+      db_table_create_postfix;
+      if(!RDSqlQuery::apply(sql,err_msg)) {
+	return false;
+      }
+      sql=QString("select ")+
+	"COUNT,"+           // 00
+	"EVENT_TYPE,"+      // 01
+	"CART_NUMBER,"+     // 02
+	"TRANS_TYPE,"+      // 03
+	"MARKER_COMMENT "+  // 04
+	"from EVENT_LINES where "+
+	"EVENT_NAME=\""+RDEscapeString(q->value(0).toString())+"\" && "+
+	"TYPE=1";
+      q1=new RDSqlQuery(sql,false);
+      while(q1->next()) {
+	sql=QString("insert into `")+tablename+"` set "+
+	  QString().sprintf("ID=%d,",1+q1->value(0).toInt())+
+	  QString().sprintf("COUNT=%d,",q1->value(0).toInt())+
+	  QString().sprintf("TYPE=%d,",q1->value(1).toInt())+
+	  QString().sprintf("CART_NUMBER=%u,",q1->value(2).toUInt())+
+	  QString().sprintf("TRANS_TYPE=%d,",q1->value(3).toInt())+
+	  "COMMENT=\""+RDEscapeString(q1->value(4).toString())+"\"";
+	if(!RDSqlQuery::apply(sql,err_msg)) {
+	  return false;
+	}
+      }
+      delete q1;
+    }
+    delete q;
+    sql=QString("drop table EVENT_LINES");
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+      
+
+    cur_schema--;
+  }
+
+  //
   // Revert 289
   //
   if((cur_schema==289)&&(set_schema<cur_schema)) {

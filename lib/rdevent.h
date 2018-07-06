@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Log Manager Event
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -75,8 +75,6 @@ class RDEvent
   void setHaveCode2(QString str);
   unsigned titleSep();
   void setTitleSep(unsigned titlesep);
-  static QString preimportTableName(const QString event_name);
-  static QString postimportTableName(const QString event_name);
   
  private:
   int GetIntValue(const QString &field) const;

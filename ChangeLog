@@ -17087,3 +17087,8 @@
 	* Added an 'ELR_LINES' table to the database.
 	* Incremented the database version to 289.
 	* Removed the 'RDSvc::serviceTableName()' method.
+2018-07-06 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'EVENT_LINES' table to the database.
+	* Incremented the database version to 290.
+	* Removed the 'RDEvent::preimportTableName()' method.
+	* Removed the 'RDEvent::postimportTableName()' method.

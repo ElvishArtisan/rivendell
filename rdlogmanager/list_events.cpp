@@ -30,6 +30,7 @@
 #include <rdapplication.h>
 #include <rdcreate_log.h>
 #include <rddb.h>
+#include <rdescape_string.h>
 #include <rdevent.h>
 
 #include "add_event.h"
@@ -355,22 +356,12 @@ void ListEvents::renameData()
   delete q;
 
   //
-  // Rename Meta Tables
+  // Rename Event Data
   //
-  QString old_name_esc=item->text(0);
-  old_name_esc.replace(" ","_");
-  QString new_name_esc=new_name;
-  new_name_esc.replace(" ","_");
-  sql=QString().sprintf("alter table %s_PRE rename to %s_PRE",
-			(const char *)old_name_esc,
-			(const char *)new_name_esc);
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString().sprintf("alter table %s_POST rename to %s_POST",
-			(const char *)old_name_esc,
-			(const char *)new_name_esc);
-  q=new RDSqlQuery(sql);
-  delete q;
+  sql=QString("update EVENT_LINES set ")+
+    "EVENT_NAME=\""+RDEscapeString(new_name)+"\" where "+
+    "EVENT_NAME=\""+RDEscapeString(item->text(0))+"\"";
+  RDSqlQuery::apply(sql);
 
   //
   // Rename Service Permissions
@@ -596,10 +587,10 @@ void ListEvents::DeleteEvent(QString event_name)
   //
   sql=QString().sprintf("delete from EVENTS where NAME=\"%s\"",
 			(const char *)event_name);
-  q=new RDSqlQuery(sql);
-  delete q;
-  rda->dropTable(base_name+"_PRE");
-  rda->dropTable(base_name+"_POST");
+  RDSqlQuery::apply(sql);
+  sql=QString("delete from EVENT_LINES where ")+
+    "EVENT_NAME=\""+RDEscapeString(event_name)+"\"";
+  RDSqlQuery::apply(sql);
 }
 
 

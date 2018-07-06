@@ -44,6 +44,11 @@ ImportListView::ImportListView(QWidget *parent)
   import_parent=parent;
 
   //
+  // Import List
+  //
+  import_list=new RDEventImportList();
+
+  //
   // Create Icons
   //
   import_playout_map=new QPixmap(play_xpm);
@@ -79,7 +84,6 @@ ImportListView::ImportListView(QWidget *parent)
   import_force_trans=RDLogLine::NoTrans;
   import_allow_stop=true;
   import_allow_first_trans=true;
-  import_log=new RDLogEvent();
 
   setAcceptDrops(true);
 }
@@ -104,9 +108,31 @@ void ImportListView::setAllowFirstTrans(bool state)
 }
 
 
-RDLogEvent *ImportListView::logEvent()
+void ImportListView::move(int from_line,int to_line)
 {
-  return import_log;
+  import_list->moveItem(from_line,to_line);
+}
+
+
+void ImportListView::setEventName(const QString &str)
+{
+  import_list->setEventName(str);
+}
+
+
+bool ImportListView::load(const QString &event_name,
+			  RDEventImportList::ImportType type)
+{
+  import_list->setEventName(event_name);
+  import_list->setType(type);
+  import_list->load();
+  return true;
+}
+
+
+void ImportListView::save()
+{
+  import_list->save();
 }
 
 
@@ -115,64 +141,75 @@ void ImportListView::refreshList(int line)
   QListViewItem *item;
   QListViewItem *select_item=NULL;
   QString sql;
-  RDLogLine *logline;
+  RDEventImportItem *i_item;
   int total_len=0;
+  RDCart *cart=NULL;
 
   clear();
-  for(int i=import_log->size()-1;i>=0;i--) {
+  for(int i=import_list->size()-1;i>=0;i--) {
     item=new QListViewItem(this);
-    if((logline=import_log->logLine(i))!=NULL) {
-      switch(logline->type()) {
-	  case RDLogLine::Cart:
-	    item->setPixmap(0,*import_playout_map);
-	    item->setText(1,QString().sprintf("%06u",logline->cartNumber()));
-	    item->setText(2,logline->groupName());
-	    item->setText(4,logline->title());
-	    break;
-	    
-	  case RDLogLine::Macro:
-	    item->setPixmap(0,*import_macro_map);
-	    item->setText(1,QString().sprintf("%06u",logline->cartNumber()));
-	    item->setText(2,logline->groupName());
-	    item->setText(4,logline->title());
-	    break;
-
-	  case RDLogLine::Marker:
-	    item->setPixmap(0,*import_notemarker_map);
-	    item->setText(2,tr("Marker"));
-	    item->setText(4,tr("[Log Note]"));
-	    break;
-
-	  case RDLogLine::Track:
-	    item->setPixmap(0,*import_mic16_map);
-	    item->setText(2,tr("Track"));
-	    item->setText(4,tr("[Voice Track]"));
-	    break;
-
-	  default:
-	    break;
+    if((i_item=import_list->item(i))!=NULL) {
+      if((i_item->eventType()==RDLogLine::Cart)||
+	 (i_item->eventType()==RDLogLine::Macro)) {
+	cart=new RDCart(i_item->cartNumber());
       }
-      item->setText(3,RDGetTimeLength(logline->forcedLength(),false,false));
-      total_len+=logline->forcedLength();
-      switch(logline->transType()) {
-	  case RDLogLine::Play:
-	    item->setText(5,tr("PLAY"));
-	    break;
+      switch(i_item->eventType()) {
+      case RDLogLine::Cart:
+	item->setPixmap(0,*import_playout_map);
+	item->setText(1,QString().sprintf("%06u",i_item->cartNumber()));
+	item->setText(2,cart->groupName());
+	item->setText(3,RDGetTimeLength(cart->forcedLength(),false,false));
+	item->setText(4,cart->title());
+	total_len+=cart->forcedLength();
+	break;
+	    
+      case RDLogLine::Macro:
+	item->setPixmap(0,*import_macro_map);
+	item->setText(1,QString().sprintf("%06u",i_item->cartNumber()));
+	item->setText(2,cart->groupName());
+	item->setText(3,RDGetTimeLength(cart->forcedLength(),false,false));
+	item->setText(4,cart->title());
+	total_len+=cart->forcedLength();
+	break;
 
-	  case RDLogLine::Segue:
-	    item->setText(5,tr("SEGUE"));
-	    break;
+      case RDLogLine::Marker:
+	item->setPixmap(0,*import_notemarker_map);
+	item->setText(2,tr("Marker"));
+	item->setText(4,tr("[Log Note]"));
+	break;
 
-	  case RDLogLine::Stop:
-	    item->setText(5,tr("STOP"));
-	    break;
+      case RDLogLine::Track:
+	item->setPixmap(0,*import_mic16_map);
+	item->setText(2,tr("Track"));
+	item->setText(4,tr("[Voice Track]"));
+	break;
 
-	  default:
-	    break;
+      default:
+	break;
+      }
+      switch(i_item->transType()) {
+      case RDLogLine::Play:
+	item->setText(5,tr("PLAY"));
+	break;
+
+      case RDLogLine::Segue:
+	item->setText(5,tr("SEGUE"));
+	break;
+
+      case RDLogLine::Stop:
+	item->setText(5,tr("STOP"));
+	break;
+
+      default:
+	break;
       }
       item->setText(6,QString().sprintf("%d",i));
       if(i==line) {
 	select_item=item;
+      }
+      if(cart!=NULL) {
+	delete cart;
+	cart=NULL;
       }
     }
   }
@@ -186,20 +223,20 @@ void ImportListView::refreshList(int line)
 
 void ImportListView::validateTransitions()
 {
-  if(logEvent()->size()>0) {
+  if(import_list->size()>0) {
     if(import_force_trans!=RDLogLine::NoTrans) {
-      logEvent()->logLine(0)->setTransType(import_force_trans);
+      import_list->item(0)->setTransType(import_force_trans);
     }
     else {
-      if((logEvent()->logLine(0)->transType()==RDLogLine::Stop)&&
+      if((import_list->item(0)->transType()==RDLogLine::Stop)&&
 	 (!import_allow_stop)) {
-	logEvent()->logLine(0)->setTransType(RDLogLine::Segue);
+	import_list->item(0)->setTransType(RDLogLine::Segue);
       }
     }
   }
-  for(int i=1;i<logEvent()->size();i++) {
-    if(logEvent()->logLine(i)->transType()==RDLogLine::Stop) {
-      logEvent()->logLine(1)->setTransType(RDLogLine::Segue);
+  for(int i=1;i<import_list->size();i++) {
+    if(import_list->item(i)->transType()==RDLogLine::Stop) {
+      import_list->item(1)->setTransType(RDLogLine::Segue);
     }
   }
 }
@@ -228,13 +265,13 @@ void ImportListView::aboutToShowData()
     import_menu->setItemEnabled(8,false);
     return;
   }
-  if(import_menu_logline->type()==RDLogLine::Marker) {
+  if(import_menu_i_item->eventType()==RDLogLine::Marker) {
     import_menu->setItemEnabled(1,true);
   }
   else {
     import_menu->setItemEnabled(1,false);
   }
-  if(import_menu_logline->type()==RDLogLine::Track) {
+  if(import_menu_i_item->eventType()==RDLogLine::Track) {
     import_menu->setItemEnabled(3,true);
   }
   else {
@@ -268,21 +305,21 @@ void ImportListView::aboutToShowData()
       import_menu->setItemEnabled(6,false);
     }
   }
-  switch(import_menu_logline->transType()) {
-      case RDLogLine::Play:
-	import_menu->setItemChecked(4,true);
-	break;
+  switch(import_menu_i_item->transType()) {
+  case RDLogLine::Play:
+    import_menu->setItemChecked(4,true);
+    break;
 
-      case RDLogLine::Segue:
-	import_menu->setItemChecked(5,true);
-	break;
+  case RDLogLine::Segue:
+    import_menu->setItemChecked(5,true);
+    break;
 
-      case RDLogLine::Stop:
-	import_menu->setItemChecked(6,true);
-	break;
+  case RDLogLine::Stop:
+    import_menu->setItemChecked(6,true);
+    break;
 
-      default:
-	break;
+  default:
+    break;
   }
   import_menu->setItemEnabled(8,true);
 }
@@ -300,11 +337,11 @@ void ImportListView::insertNoteMenuData()
   if(import_menu_item==NULL) {
     import_menu_line=0;
   }
-  import_log->insert(import_menu_line,1);
-  import_log->logLine(import_menu_line)->setType(RDLogLine::Marker);
-  import_log->logLine(import_menu_line)->setMarkerComment(note);
-  import_log->logLine(import_menu_line)->setTitle(tr("[Log Note]"));
-  import_log->logLine(import_menu_line)->setTransType(RDLogLine::Segue);
+  RDEventImportItem *i_item=new RDEventImportItem();
+  i_item->setEventType(RDLogLine::Marker);
+  i_item->setMarkerComment(note);
+  i_item->setTransType(RDLogLine::Segue);
+  import_list->takeItem(1,i_item);
   validateTransitions();
   refreshList(import_menu_line);
   emit sizeChanged(childCount());
@@ -313,13 +350,13 @@ void ImportListView::insertNoteMenuData()
 
 void ImportListView::editNoteMenuData()
 {
-  QString text=import_log->logLine(import_menu_line)->markerComment();
+  QString text=import_list->item(import_menu_line)->markerComment();
   EditNote *edit_dialog=new EditNote(&text,this);
   if(edit_dialog->exec()<0) {
     delete edit_dialog;
     return;
   }
-  import_log->logLine(import_menu_line)->setMarkerComment(text);  
+  import_list->item(import_menu_line)->setMarkerComment(text);  
 }
 
 
@@ -335,11 +372,11 @@ void ImportListView::insertTrackMenuData()
   if(import_menu_item==NULL) {
     import_menu_line=0;
   }
-  import_log->insert(import_menu_line,1);
-  import_log->logLine(import_menu_line)->setType(RDLogLine::Track);
-  import_log->logLine(import_menu_line)->setMarkerComment(note);
-  import_log->logLine(import_menu_line)->setTitle(tr("[Voice Track]"));
-  import_log->logLine(import_menu_line)->setTransType(RDLogLine::Segue);
+  RDEventImportItem *i_item=new RDEventImportItem();
+  i_item->setEventType(RDLogLine::Track);
+  i_item->setMarkerComment(note);
+  i_item->setTransType(RDLogLine::Segue);
+  import_list->takeItem(import_menu_line,i_item);
   validateTransitions();
   refreshList(import_menu_line);
   emit sizeChanged(childCount());
@@ -348,40 +385,40 @@ void ImportListView::insertTrackMenuData()
 
 void ImportListView::editTrackMenuData()
 {
-  QString text=import_log->logLine(import_menu_line)->markerComment();
+  QString text=import_list->item(import_menu_line)->markerComment();
   EditTrack *edit_dialog=new EditTrack(&text,this);
   if(edit_dialog->exec()<0) {
     delete edit_dialog;
     return;
   }
-  import_log->logLine(import_menu_line)->setMarkerComment(text);  
+  import_list->item(import_menu_line)->setMarkerComment(text);  
 }
 
 
 void ImportListView::playMenuData()
 {
-  import_menu_logline->setTransType(RDLogLine::Play);
+  import_menu_i_item->setTransType(RDLogLine::Play);
   import_menu_item->setText(5,tr("PLAY"));
 }
 
 
 void ImportListView::segueMenuData()
 {
-  import_menu_logline->setTransType(RDLogLine::Segue);
+  import_menu_i_item->setTransType(RDLogLine::Segue);
   import_menu_item->setText(5,tr("SEGUE"));
 }
 
 
 void ImportListView::stopMenuData()
 {
-  import_menu_logline->setTransType(RDLogLine::Stop);
+  import_menu_i_item->setTransType(RDLogLine::Stop);
   import_menu_item->setText(5,tr("STOP"));
 }
 
 
 void ImportListView::deleteMenuData()
 {
-  import_log->remove(import_menu_item->text(6).toInt(),1);
+  import_list->removeItem(import_menu_item->text(6).toInt());
   validateTransitions();
   refreshList();
   emit sizeChanged(childCount());
@@ -393,11 +430,11 @@ void ImportListView::contentsMousePressEvent(QMouseEvent *e)
   QListView::contentsMousePressEvent(e);
   import_menu_item=selectedItem();
   if(import_menu_item==NULL) {
-    import_menu_logline=NULL;
+    import_menu_i_item=NULL;
   }
   else {
-    if((import_menu_logline=import_log->
-	logLine(import_menu_line=import_menu_item->text(6).toInt()))==NULL) {
+    if((import_menu_i_item=import_list->
+	item(import_menu_line=import_menu_item->text(6).toInt()))==NULL) {
       return;
     }
   }
@@ -427,8 +464,8 @@ void ImportListView::contentsMouseDoubleClickEvent(QMouseEvent *e)
   if(import_menu_item==NULL) {
     return;
   }
-  if(import_log->
-     logLine(import_menu_item->text(6).toInt())->type()==RDLogLine::Marker) {
+  if(import_list->
+     item(import_menu_item->text(6).toInt())->eventType()==RDLogLine::Marker) {
     editNoteMenuData();
   }
 }
@@ -462,7 +499,7 @@ void ImportListView::dropEvent(QDropEvent *e)
       if((item=itemAt(pos))==NULL) {
 	return;
       }
-      import_log->remove(item->text(6).toInt(),1);
+      import_list->removeItem(item->text(6).toInt());
     }
     else {
       if((item=itemAt(pos))==NULL) {
@@ -471,10 +508,18 @@ void ImportListView::dropEvent(QDropEvent *e)
       else {
 	line=item->text(6).toInt();
       }
-      import_log->insert(line,1);
-      import_log->logLine(line)->
-	loadCart(cartnum,RDLogLine::Segue,0,false);
-      import_log->logLine(line)->setTransType(RDLogLine::Segue);
+      RDEventImportItem *i_item=new RDEventImportItem();
+      RDCart *cart=new RDCart(cartnum);
+      i_item->setCartNumber(cartnum);
+      if(cart->type()==RDCart::Audio) {
+	i_item->setEventType(RDLogLine::Cart);
+      }
+      else {
+	i_item->setEventType(RDLogLine::Macro);
+      }
+      i_item->setTransType(RDLogLine::Segue);
+      import_list->takeItem(line,i_item);
+      delete cart;
     }
   }
   validateTransitions();
