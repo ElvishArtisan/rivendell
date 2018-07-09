@@ -363,6 +363,37 @@ MainObject::MainObject(QObject *parent)
 }
 
 
+void MainObject::WriteSchemaVersion(int ver) const
+{
+  QString sql=QString("update VERSION set ")+
+    QString().sprintf("DB=%d",ver);
+  RDSqlQuery::apply(sql);
+}
+
+
+bool MainObject::DropTable(const QString &tbl_name,QString *err_msg) const
+{
+  QString sql;
+  RDSqlQuery *q;
+  bool ret=false;
+
+  sql=QString("show tables where ")+
+    "Tables_in_"+db_config->mysqlDbname()+"=\""+RDEscapeString(tbl_name)+"\"";
+  q=new RDSqlQuery(sql,false);
+  if(q->first()) {
+    sql=QString("drop table `")+q->value(0).toString()+"`";
+    ret=RDSqlQuery::apply(sql,err_msg);
+  }
+  else {
+    if(err_msg!=NULL) {
+      *err_msg="no such table";
+    }
+  }
+  delete q;
+  return ret;
+}
+
+
 int main(int argc,char *argv[])
 {
   QApplication a(argc,argv,false);

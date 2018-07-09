@@ -79,13 +79,12 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
     }
     delete q;
 
-    sql=QString("drop table CLOCK_LINES");
-    RDSqlQuery::apply(sql);
+    if(!DropTable("CLOCK_LINES",err_msg)) {
+      return false;
+    }
 
-    cur_schema--;
+    WriteSchemaVersion(--cur_schema);
   }
-
-
 
   //
   // Revert 290
@@ -247,12 +246,11 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
       delete q1;
     }
     delete q;
-    sql=QString("drop table EVENT_LINES");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
+    if(!DropTable("EVENT_LINES",err_msg)) {
       return false;
     }
 
-    cur_schema--;
+    WriteSchemaVersion(--cur_schema);
   }
 
   //
@@ -389,12 +387,11 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
     }
     delete q;
 
-    sql=QString("drop table ELR_LINES");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
+    if(!DropTable("ELR_LINES",err_msg)) {
       return false;
     }
 
-    cur_schema--;
+    WriteSchemaVersion(--cur_schema);
   }
 
   //
@@ -548,12 +545,11 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
     }
     delete q;
 
-    sql=QString("drop table LOG_LINES");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
+    if(!DropTable("LOG_LINES",err_msg)) {
       return false;
     }
 
-    cur_schema--;
+    WriteSchemaVersion(--cur_schema);
   }
 
   //
@@ -565,7 +561,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
       return false;
     }
 
-    cur_schema--;
+    WriteSchemaVersion(--cur_schema);
   }
 
   //
@@ -596,7 +592,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
       return false;
     }
 
-    cur_schema--;
+    WriteSchemaVersion(--cur_schema);
   }
 
   //
@@ -680,7 +676,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
       return false;
     }
 
-    cur_schema--;
+    WriteSchemaVersion(--cur_schema);
   }
 
   //
@@ -825,7 +821,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
       return false;
     }
 
-    cur_schema--;
+    WriteSchemaVersion(--cur_schema);
   }
 
   //
@@ -909,8 +905,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
 	QString().sprintf("CARD_NUMBER=%d",q->value(1).toInt());
     }
     delete q;
-    sql=QString("drop table AUDIO_INPUTS");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
+    if(!DropTable("AUDIO_INPUTS",err_msg)) {
       return false;
     }
 
@@ -932,8 +927,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
       }
     }
     delete q;
-    sql=QString("drop table AUDIO_OUTPUTS");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
+    if(!DropTable("AUDIO_OUTPUTS",err_msg)) {
       return false;
     }
 
@@ -958,7 +952,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
       return false;
     }
 
-    cur_schema--;
+    WriteSchemaVersion(--cur_schema);
   }
 
   //
@@ -991,12 +985,11 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
       }
     }
 
-    sql=QString("drop table AUDIO_CARDS");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
+    if(!DropTable("AUDIO_CARDS",err_msg)) {
       return false;
     }
 
-    cur_schema--;
+    WriteSchemaVersion(--cur_schema);
   }
 
   //
@@ -1008,7 +1001,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
       return false;
     }
 
-    cur_schema--;
+    WriteSchemaVersion(--cur_schema);
   }
 
   //
@@ -1020,7 +1013,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
       return false;
     }
 
-    cur_schema--;
+    WriteSchemaVersion(--cur_schema);
   }
 
   //
@@ -1032,7 +1025,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
       return false;
     }
 
-    cur_schema--;
+    WriteSchemaVersion(--cur_schema);
   }
 
   //
@@ -1182,12 +1175,11 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
     }
     delete q;
 
-    sql=QString("drop table LOG_MACHINES");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
+    if(!DropTable("LOG_MACHINES")) {
       return false;
     }
 
-    cur_schema--;
+    WriteSchemaVersion(--cur_schema);
   }
 
   //
@@ -1199,7 +1191,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
       return false;
     }
 
-    cur_schema--;
+    WriteSchemaVersion(--cur_schema);
   }
 
   //
@@ -1211,7 +1203,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
       return false;
     }
 
-    cur_schema--;
+    WriteSchemaVersion(--cur_schema);
   }
 
   //
@@ -1223,7 +1215,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
       return false;
     }
 
-    cur_schema--;
+    WriteSchemaVersion(--cur_schema);
   }
 
   //
@@ -1240,7 +1232,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
       return false;
     }
 
-    cur_schema--;
+    WriteSchemaVersion(--cur_schema);
   }
 
   //
@@ -1267,19 +1259,18 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
       return false;
     }
 
-    cur_schema--;
+    WriteSchemaVersion(--cur_schema);
   }
 
   //
   // Revert 272
   //
   if((cur_schema==272)&&(set_schema<cur_schema)) {
-    sql=QString("drop table USER_SERVICE_PERMS");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
+    if(!DropTable("USER_SERVICE_PERMS",err_msg)) {
       return false;
     }
 
-    cur_schema--;
+    WriteSchemaVersion(--cur_schema);
   }
 
   //
@@ -1292,7 +1283,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
       return false;
     }
 
-    cur_schema--;
+    WriteSchemaVersion(--cur_schema);
   }
 
   //
@@ -1304,7 +1295,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
       return false;
     }  
 
-    cur_schema--;
+    WriteSchemaVersion(--cur_schema);
   }
 
   //
@@ -1316,7 +1307,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
       return false;
     }  
 
-    cur_schema--;
+    WriteSchemaVersion(--cur_schema);
   }
 
   //
@@ -1328,7 +1319,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
       return false;
     }  
 
-    cur_schema--;
+    WriteSchemaVersion(--cur_schema);
   }
 
   //
@@ -1345,7 +1336,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
       return false;
     }  
 
-    cur_schema--;
+    WriteSchemaVersion(--cur_schema);
   }
 
   //
@@ -1354,7 +1345,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
   if((cur_schema==266)&&(set_schema<cur_schema)) {
     // Nothing to do here as this is a pseudo-schema change.
 
-    cur_schema--;
+    WriteSchemaVersion(--cur_schema);
   }
 
   //
@@ -1366,7 +1357,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
       return false;
     }  
 
-    cur_schema--;
+    WriteSchemaVersion(--cur_schema);
   }
 
   //
@@ -1378,7 +1369,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
       return false;
     }  
 
-    cur_schema--;
+    WriteSchemaVersion(--cur_schema);
   }
 
   //
@@ -1387,7 +1378,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
   if((cur_schema==263)&&(set_schema<cur_schema)) {
     // Nothing to do here as this is a pseudo-schema change.
 
-    cur_schema--;
+    WriteSchemaVersion(--cur_schema);
   }
 
   //
@@ -1409,7 +1400,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
       return false;
     }  
 
-    cur_schema--;
+    WriteSchemaVersion(--cur_schema);
   }
 
   //
@@ -1421,7 +1412,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
       return false;
     }
 
-    cur_schema--;
+    WriteSchemaVersion(--cur_schema);
   }
 
   //
@@ -1433,12 +1424,11 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
       return false;
     }
 
-    sql=QString("drop table WEBAPI_AUTHS");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
+    if(!DropTable("WEBAPI_AUTHS",err_msg)) {
       return false;
     }
 
-    cur_schema--;
+    WriteSchemaVersion(--cur_schema);
   }
 
   //
@@ -1470,12 +1460,11 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
     }
     delete q;
 
-    sql=QString("drop table SERVICE_CLOCKS");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
+    if(!DropTable("SERVICE_CLOCKS",err_msg)) {
       return false;
     }
 
-    cur_schema--;
+    WriteSchemaVersion(--cur_schema);
   }
 
   //
@@ -1496,7 +1485,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
     }
     delete q;
 
-    cur_schema--;
+    WriteSchemaVersion(--cur_schema);
   }
 
   //
@@ -1518,24 +1507,22 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
       return false;
     }
 
-    cur_schema--;
+    WriteSchemaVersion(--cur_schema);
   }
 
   //
   // Revert 256
   //
   if((cur_schema==256)&&(set_schema<cur_schema)) {
-    sql=QString("drop table CUT_EVENTS");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
+    if(!DropTable("CUT_EVENTS",err_msg)) {
       return false;
     }
 
-    sql=QString("drop table DECK_EVENTS");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
+    if(!DropTable("DECK_EVENTS",err_msg)) {
       return false;
     }
 
-    cur_schema--;
+    WriteSchemaVersion(--cur_schema);
   }
 
   //
@@ -1559,7 +1546,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
     }
     delete q;
 
-    cur_schema--;
+    WriteSchemaVersion(--cur_schema);
   }
 
   //
@@ -1576,7 +1563,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
       return false;
     }
 
-    cur_schema--;
+    WriteSchemaVersion(--cur_schema);
   }
 
   //
@@ -1585,7 +1572,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
   if((cur_schema==253)&&(set_schema<cur_schema)) {
     // Unimplemented reversion
 
-    cur_schema--;
+    WriteSchemaVersion(--cur_schema);
   }
 
   //
@@ -1594,7 +1581,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
   if((cur_schema==252)&&(set_schema<cur_schema)) {
     // Unimplemented reversion
 
-    cur_schema--;
+    WriteSchemaVersion(--cur_schema);
   }
 
   //
@@ -1603,7 +1590,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
   if((cur_schema==251)&&(set_schema<cur_schema)) {
     // Unimplemented reversion
 
-    cur_schema--;
+    WriteSchemaVersion(--cur_schema);
   }
 
   //
@@ -1612,7 +1599,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
   if((cur_schema==250)&&(set_schema<cur_schema)) {
     // Unimplemented reversion
 
-    cur_schema--;
+    WriteSchemaVersion(--cur_schema);
   }
 
   //
@@ -1621,7 +1608,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
   if((cur_schema==249)&&(set_schema<cur_schema)) {
     // Unimplemented reversion
 
-    cur_schema--;
+    WriteSchemaVersion(--cur_schema);
   }
 
   //
@@ -1630,7 +1617,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
   if((cur_schema==248)&&(set_schema<cur_schema)) {
     // Unimplemented reversion
 
-    cur_schema--;
+    WriteSchemaVersion(--cur_schema);
   }
 
   //
@@ -1639,7 +1626,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
   if((cur_schema==247)&&(set_schema<cur_schema)) {
     // Unimplemented reversion
 
-    cur_schema--;
+    WriteSchemaVersion(--cur_schema);
   }
 
   //
@@ -1648,7 +1635,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
   if((cur_schema==246)&&(set_schema<cur_schema)) {
     // Unimplemented reversion
 
-    cur_schema--;
+    WriteSchemaVersion(--cur_schema);
   }
 
   //
@@ -1660,7 +1647,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
       return false;
     }
 
-    cur_schema--;
+    WriteSchemaVersion(--cur_schema);
   }
 
   //
@@ -1673,7 +1660,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
       return false;
     }
 
-    cur_schema--;
+    WriteSchemaVersion(--cur_schema);
   }
 
   //
@@ -1685,15 +1672,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
       return false;
     }
 
-    cur_schema--;
-  }
-
-  //
-  // Write the new schema version
-  //
-  sql=QString().sprintf("update VERSION set DB=%d",cur_schema);
-  if(!RDSqlQuery::apply(sql,err_msg)) {
-    return false;
+    WriteSchemaVersion(--cur_schema);
   }
 
   *err_msg="ok";
