@@ -17092,17 +17092,17 @@
 	* Incremented the database version to 290.
 	* Removed the 'RDEvent::preimportTableName()' method.
 	* Removed the 'RDEvent::postimportTableName()' method.
-2018-07-07 Fred Gleason <fredg@paravelsystems.com>
+2018-07-06 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rddbmgr(8) that caused the 'AUDIO_CARDS',
 	'AUDIO_INPUTS' and 'AUDIO_OUTPUTS' table to be created with the
 	incorrect engine type when using '--modify'.
 	* Updated the 'init_template_host.py' script to work with
 	schema version 287.
-2018-07-07 Fred Gleason <fredg@paravelsystems.com>
+2018-07-06 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rddbmgr(8) that caused the 'EVENT_LINES'
 	table to be created with the incorrect engine type when using
 	'--modify'.
-2018-07-07 Fred Gleason <fredg@paravelsystems.com>
+2018-07-06 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'CLOCK_LINES' table to the database.
 	* Incremented the database version to 291.
 	* Removed the 'RDClock::tableName()' method.
