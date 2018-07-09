@@ -39,18 +39,20 @@
 #include <qsqldatabase.h>
 #include <qsessionmanager.h>
 
-#include <rdsocket.h>
-#include <rdconf.h>
-#include <rdcheck_daemons.h>
-#include <rddb.h>
-#include <rdescape_string.h>
-#include <rddebug.h>
 #include <rdcmd_switch.h>
+#include <rdconf.h>
+#include <rddatedecode.h>
+#include <rddb.h>
+#include <rddebug.h>
+#include <rdescape_string.h>
+#include <rdrunprocess.h>
+#include <rdcheck_daemons.h>
+#include <rdsocket.h>
 #include <rdsvc.h>
 #include <rdsystem.h>
 
-#include <cae_socket.h>
-#include <cae.h>
+#include "cae_socket.h"
+#include "cae.h"
 
 volatile bool exiting=false;
 RDConfig *rd_config;
@@ -628,15 +630,42 @@ void MainObject::InitProvisioning() const
 	"NAME=\""+RDEscapeString(svcname)+"\"";
       q=new RDSqlQuery(sql);
       if(!q->first()) {
+	QString grid_exemplar="";
+	if(!rd_config->provisioningServiceGridTemplateCommand().isEmpty()) {
+	  RDRunProcess *proc=new RDRunProcess();
+	  if(!proc->start(RDNameDecode(rd_config->provisioningServiceGridTemplateCommand(),rd_config->stationName(),"",""))) {
+	    syslog(LOG_ERR,"unable to start ProvisioningServiceGridTemplateCommand \"%s\", exiting",
+		   (const char *)rd_config->provisioningServiceGridTemplateCommand());
+	    exit(1);
+	  }
+	  proc->waitForFinished();
+	  if(proc->exitStatus()!=RDRunProcess::NormalExit) {
+	    syslog(LOG_ERR,
+		   "ProvisioningServiceGridTemplateCommand \"%s\" crashed, exiting",
+		   (const char *)rd_config->provisioningServiceGridTemplateCommand());
+	    exit(1);
+	  }
+	  if(proc->exitCode()==0) {
+	    grid_exemplar=
+	      QString(proc->readAllStandardOutput()).stripWhiteSpace();
+	  }
+	  else {
+	    syslog(LOG_ERR," \"%s\" returned non-zero exit status \"%d\", exiting",
+		   (const char *)rd_config->provisioningServiceGridTemplateCommand(),proc->exitCode());
+	    exit(1);
+	  }
+	  delete proc;
+	}
 	if(RDSvc::create(svcname,&err_msg,
-			 rd_config->provisioningServiceTemplate(),rd_config)) {
+			 rd_config->provisioningServiceTemplate(),grid_exemplar,
+			 rd_config)) {
 	  syslog(LOG_INFO,"created new service entry \"%s\"",
 		 (const char *)svcname);
 	}
 	else {
-	  fprintf(stderr,"caed: unable to provision service [%s]\n",
+	  syslog(LOG_ERR,"unable to provision service [%s], exiting\n",
 		  (const char *)err_msg);
-	  exit(256);
+	  exit(1);
 	}
       }
       delete q;

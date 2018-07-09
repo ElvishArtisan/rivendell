@@ -33,8 +33,8 @@ class RDRunProcess : public QObject
   enum ExitStatus {NormalExit=0,CrashExit=1}; 
   RDRunProcess(QObject *parent=0);
   ~RDRunProcess();
-  void start(const QString &cmdstr);
-  void start(const QString &cmd,const QStringList &args);
+  bool start(const QString &cmdstr);
+  bool start(const QString &cmd,const QStringList &args);
   bool waitForStarted(int msecs=30000);
   bool waitForFinished(int msecs=30000);
   QByteArray readAllStandardError();

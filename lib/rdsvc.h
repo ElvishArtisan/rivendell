@@ -101,7 +101,8 @@ class RDSvc : public QObject
   void remove() const;
   QString xml() const;
   static bool create(const QString &name,QString *err_msg,
-		     const QString &exemplar,RDConfig *config);
+		     const QString &exemplar,const QString &grid_exemplar,
+		     RDConfig *config);
   static void remove(const QString &name);
   static bool exists(const QString &name);
   static QString timeString(int hour,int secs);

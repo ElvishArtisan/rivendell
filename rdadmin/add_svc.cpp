@@ -154,26 +154,10 @@ void AddSvc::okData()
   if(svc_exemplar_box->currentItem()>0) {
     exemplar=svc_exemplar_box->currentText();
   }
-  if(!RDSvc::create(svc_name_edit->text(),&err_msg,exemplar,rda->config())) {
+  if(!RDSvc::create(svc_name_edit->text(),&err_msg,exemplar,"",rda->config())) {
     QMessageBox::warning(this,"RDAdmin - "+tr("Error"),err_msg);
     return;
   }
-  /*
-  RDSvc *svc=new RDSvc(svc_name_edit->text(),admin_station,admin_config,this);
-  if(svc->exists()) {
-    QMessageBox::warning(this,tr("Service Exists"),
-			 tr("Service Already Exists!"));
-    delete svc;
-    return;
-  }
-  if(svc_exemplar_box->currentItem()==0) {  // Create Empty Service
-    svc->create("",admin_config);
-  }
-  else {
-    svc->create(svc_exemplar_box->currentText(),admin_config);
-  }
-  delete svc;
-  */
   *svc_name=svc_name_edit->text();
 
   EditSvc *edit_svc=new EditSvc(svc_name_edit->text(),this);

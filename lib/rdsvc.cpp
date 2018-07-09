@@ -1074,7 +1074,8 @@ QString RDSvc::xml() const
 
 
 bool RDSvc::create(const QString &name,QString *err_msg,
-		   const QString &exemplar,RDConfig *config)
+		   const QString &exemplar,const QString &grid_exemplar,
+		   RDConfig *config)
 {
   QString sql;
   RDSqlQuery *q;
@@ -1139,6 +1140,11 @@ bool RDSvc::create(const QString &name,QString *err_msg,
     }
   }
   else {    // Base on Existing Service
+    if((!grid_exemplar.isEmpty())&&(!RDSvc::exists(grid_exemplar))) {
+      *err_msg=QObject::tr("grid template service")+" \""+grid_exemplar+"\" "+
+	QObject::tr("does not exist");
+      return false;
+    }
     sql=QString("select ")+
       "NAME_TEMPLATE,"+          // 00
       "DESCRIPTION_TEMPLATE,"+   // 01
@@ -1266,8 +1272,13 @@ bool RDSvc::create(const QString &name,QString *err_msg,
       delete q;
       q=new RDSqlQuery(sql);
       delete q;
-      sql=QString("select HOUR,CLOCK_NAME from SERVICE_CLOCKS where ")+
-	"SERVICE_NAME=\""+RDEscapeString(exemplar)+"\"";
+      sql=QString("select HOUR,CLOCK_NAME from SERVICE_CLOCKS where ");
+      if(grid_exemplar.isEmpty()) {
+	sql+="SERVICE_NAME=\""+RDEscapeString(exemplar)+"\"";
+      }
+      else {
+	sql+="SERVICE_NAME=\""+RDEscapeString(grid_exemplar)+"\"";
+      }
       q=new RDSqlQuery(sql);
       while(q->next()) {
 	sql=QString("insert into SERVICE_CLOCKS set ")+

@@ -77,6 +77,7 @@ class RDConfig
   QString provisioningHostShortName(const QString &hostname) const;
   bool provisioningCreateService() const;
   QString provisioningServiceTemplate() const;
+  QString provisioningServiceGridTemplateCommand() const;
   QString provisioningServiceNameCommand() const;
   QString provisioningServiceName(const QString &hostname) const;
   int alsaPeriodQuantity() const;
@@ -150,6 +151,7 @@ class RDConfig
   unsigned conf_provisioning_host_short_name_group;
   bool conf_provisioning_create_service;
   QString conf_provisioning_service_template;
+  QString conf_provisioning_service_grid_template_command;
   QString conf_provisioning_service_command;
   QString conf_provisioning_service_name_regex;
   unsigned conf_provisioning_service_name_group;

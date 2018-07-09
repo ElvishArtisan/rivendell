@@ -321,8 +321,12 @@ QString RDConfig::provisioningHostShortName(const QString &hostname) const
     return texts[conf_provisioning_host_short_name_group];
   }
   RDRunProcess *proc=new RDRunProcess();
-  proc->start(RDNameDecode(conf_provisioning_host_short_name_command,
-			   stationName(),"",""));
+  if(!proc->start(RDNameDecode(conf_provisioning_host_short_name_command,
+			       stationName(),"",""))) {
+    syslog(LOG_ERR,"unable to start NewHostShortNameCommand \"%s\", exiting",
+	   (const char *)conf_provisioning_host_short_name_command);
+    exit(1);
+  }
   proc->waitForFinished();
   if(proc->exitStatus()==RDRunProcess::NormalExit) {
     if(proc->exitCode()==0) {
@@ -341,19 +345,6 @@ QString RDConfig::provisioningHostShortName(const QString &hostname) const
   }
   delete proc;
   return ret;
-
-
-
-  /*
-  QRegExp exp(conf_provisioning_host_short_name_regex);
-
-  exp.search(hostname);
-  QStringList texts=exp.capturedTexts();
-  if(texts.size()<conf_provisioning_host_short_name_group) {
-    return QString();
-  }
-  return texts[conf_provisioning_host_short_name_group];
-  */
 }
 
 
@@ -366,6 +357,12 @@ bool RDConfig::provisioningCreateService() const
 QString RDConfig::provisioningServiceTemplate() const
 {
   return conf_provisioning_service_template;
+}
+
+
+QString RDConfig::provisioningServiceGridTemplateCommand() const
+{
+  return conf_provisioning_service_grid_template_command;
 }
 
 
@@ -390,7 +387,11 @@ QString RDConfig::provisioningServiceName(const QString &hostname) const
     return texts[conf_provisioning_service_name_group];
   }
   RDRunProcess *proc=new RDRunProcess();
-  proc->start(RDNameDecode(conf_provisioning_service_command,stationName(),"",""));
+  if(!proc->start(RDNameDecode(conf_provisioning_service_command,stationName(),"",""))) {
+    syslog(LOG_ERR,"unable to start NewServiceNameCommand \"%s\", exiting",
+	   (const char *)conf_provisioning_service_command);
+    exit(1);
+  }
   proc->waitForFinished();
   if(proc->exitStatus()==RDRunProcess::NormalExit) {
     if(proc->exitCode()==0) {
@@ -640,6 +641,8 @@ void RDConfig::load()
     profile->boolValue("Provisioning","CreateService");
   conf_provisioning_service_template=
     profile->stringValue("Provisioning","NewServiceTemplate");
+  conf_provisioning_service_grid_template_command=
+    profile->stringValue("Provisioning","NewServiceGridTemplateCommand");
   conf_provisioning_service_command=
     profile->stringValue("Provisioning","NewServiceNameCommand");
   conf_provisioning_service_name_regex=
@@ -799,6 +802,7 @@ void RDConfig::clear()
   conf_provisioning_host_short_name_group=0;
   conf_provisioning_create_service=false;
   conf_provisioning_service_template="";
+  conf_provisioning_service_grid_template_command="";
   conf_provisioning_service_command="";
   conf_alsa_period_quantity=RD_ALSA_DEFAULT_PERIOD_QUANTITY;
   conf_alsa_period_size=RD_ALSA_DEFAULT_PERIOD_SIZE;

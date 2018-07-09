@@ -22,6 +22,7 @@
 #include <unistd.h>
 
 #include <qapplication.h>
+#include <qfileinfo.h>
 
 #include "rdrunprocess.h"
 
@@ -41,7 +42,7 @@ RDRunProcess::~RDRunProcess()
 }
 
 
-void RDRunProcess::start(const QString &cmdstr)
+bool RDRunProcess::start(const QString &cmdstr)
 {
   QStringList cmds=cmds.split(" ",cmdstr);
   QString cmd=cmds[0];
@@ -49,16 +50,23 @@ void RDRunProcess::start(const QString &cmdstr)
   for(unsigned i=1;i<cmds.size();i++) {
     args.push_back(cmds[i]);
   }
-  start(cmd,args);
+  return start(cmd,args);
 }
 
 
-void RDRunProcess::start(const QString &cmd,const QStringList &args)
+bool RDRunProcess::start(const QString &cmd,const QStringList &args)
 {
   QStringList cmdstr=args;
+  QFileInfo fi(cmd);
+
+  if((!fi.isFile())||(!fi.isExecutable())) {
+    return false;
+  }
   cmdstr.push_front(cmd);
   run_process->setArguments(cmdstr);
   run_process->start();
+
+  return true;
 }
 
 

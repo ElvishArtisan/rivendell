@@ -551,6 +551,10 @@
         <source>Database version mismatch, should be</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>grid template service</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddCart</name>
