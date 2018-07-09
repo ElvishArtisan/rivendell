@@ -17095,3 +17095,5 @@
 2018-07-08 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'NewServiceGridTemplateCommand=' parameter to the
 	'[Provisioning]' section of rd.conf(5).
+2018-07-08 Fred Gleason <fredg@paravelsystems.com>
+	* Added the 'RDRunProcess' sources to 'lib/lib.pro'.

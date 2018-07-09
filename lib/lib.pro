@@ -171,6 +171,7 @@ x11 {
   SOURCES += rdrehash.cpp
   SOURCES += rdrenderer.cpp
   SOURCES += rdrlmhost.cpp
+  SOURCES += rdrunprocess.cpp
   SOURCES += rdsimpleplayer.cpp
   SOURCES += rdsound_panel.cpp
   SOURCES += rdstatus.cpp
@@ -316,6 +317,7 @@ x11 {
   HEADERS += rdrehash.h
   HEADERS += rdrenderer.h
   HEADERS += rdrlmhost.h
+  HEADERS += rdrunprocess.h
   HEADERS += rdsimpleplayer.h
   HEADERS += rdsound_panel.h
   HEADERS += rdstatus.h
