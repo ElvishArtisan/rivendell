@@ -57,11 +57,20 @@ NewHostShortNameGroup=0
 ; If CreateService=Yes, a Service entry will be automatically created in the DB
 ; when the 'rivendell' system service is started, using the Service definition
 ; specified in NewServiceTemplate= as the template. The new service's name
-; is determined by the NewServiceNameRegex= parameter, which takes a Perl-style
-; regex to capture the required text from the full host name, using the
-; captured group from the regex specified in 'NewServiceNameGroup='.
+; is determined by either the 'NewServiceNameCommand=' or
+; 'NewServiceNameRegex=' and 'NewServiceNameGroup=' parameters (see below).
 CreateService=No
 NewServiceTemplate=some_service_entry
+
+; Use the string written to standard output of the specified script
+; as the name of the service to create.
+;NewServiceNameCommand=/usr/local/bin/foobar.sh args
+
+; If 'NewServiceNameCommand=' paramater is not defined, then get the
+; name of the service to create by using the 
+; NewServiceNameRegex= parameter, which takes a Perl-style
+; regex to capture the required text from the full host name, using the
+; captured group from the regex specified in 'NewServiceNameGroup='.
 NewServiceNameRegex=[^*]*
 NewServiceNameGroup=0
 

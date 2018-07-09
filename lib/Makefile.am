@@ -207,6 +207,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdringbuffer.cpp rdringbuffer.h\
                         rdripc.cpp rdripc.h\
                         rdrlmhost.cpp rdrlmhost.h\
+                        rdrunprocess.cpp rdrunprocess.h\
                         rdschedcode.cpp rdschedcode.h\
                         rdschedcodes_dialog.cpp rdschedcodes_dialog.h\
                         rdsegmeter.cpp rdsegmeter.h\
@@ -328,6 +329,7 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdsimpleplayer.cpp\
                           moc_rdrehash.cpp\
                           moc_rdrenderer.cpp\
+                          moc_rdrunprocess.cpp\
                           moc_rdslider.cpp\
                           moc_rdsocket.cpp\
                           moc_rdsound_panel.cpp\

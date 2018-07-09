@@ -17085,3 +17085,7 @@
 	incorrect engine type when using '--modify'.
 	* Updated the 'init_template_host.py' script to work with
 	schema version 287.
+2018-07-08 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDRunCommand' class.
+	* Added a 'NewServiceNameCommand=' parameter to the '[Provisioning]'
+	section of rd.conf(5).

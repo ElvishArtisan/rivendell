@@ -19,6 +19,7 @@
 //
 
 #ifndef WIN32
+#include <stdlib.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <pwd.h>
@@ -30,12 +31,14 @@
 #endif  // WIN32
 
 #include <qmessagebox.h>
+#include <qprocess.h>
 #include <qregexp.h>
 #include <qsettings.h>
 #include <qstringlist.h>
 
-#include <rdprofile.h>
-#include <rdconfig.h>
+#include "rdconfig.h"
+#include "rdprofile.h"
+#include "rdrunprocess.h"
 
 RDConfig *RDConfiguration(void) 
 {
@@ -321,16 +324,46 @@ QString RDConfig::provisioningServiceTemplate() const
 }
 
 
+QString RDConfig::provisioningServiceNameCommand() const
+{
+  return conf_provisioning_service_command;
+}
+
+
 QString RDConfig::provisioningServiceName(const QString &hostname) const
 {
-  QRegExp exp(conf_provisioning_service_name_regex);
+  QString ret;
 
-  exp.search(hostname);
-  QStringList texts=exp.capturedTexts();
-  if(texts.size()<conf_provisioning_service_name_group) {
-    return QString();
+  if(conf_provisioning_service_command.isEmpty()) {
+    QRegExp exp(conf_provisioning_service_name_regex);
+
+    exp.search(hostname);
+    QStringList texts=exp.capturedTexts();
+    if(texts.size()<conf_provisioning_service_name_group) {
+      return QString();
+    }
+    return texts[conf_provisioning_service_name_group];
   }
-  return texts[conf_provisioning_service_name_group];
+  RDRunProcess *proc=new RDRunProcess();
+  proc->start(conf_provisioning_service_command);
+  proc->waitForFinished();
+  if(proc->exitStatus()==RDRunProcess::NormalExit) {
+    if(proc->exitCode()==0) {
+      ret=QString(proc->readAllStandardOutput()).stripWhiteSpace();
+    }
+    else {
+      syslog(LOG_ERR,"ServiceNameCommand \"%s\" returned non-zero exit status \"%d\", exiting",
+	     (const char *)conf_provisioning_service_command,proc->exitCode());
+      exit(1);
+    }
+  }
+  else {
+    syslog(LOG_ERR,"ServiceNameCommand \"%s\" crashed, exiting",
+	   (const char *)conf_provisioning_service_command);
+    exit(1);
+  }
+  delete proc;
+  return ret;
 }
 
 
@@ -560,6 +593,8 @@ void RDConfig::load()
     profile->boolValue("Provisioning","CreateService");
   conf_provisioning_service_template=
     profile->stringValue("Provisioning","NewServiceTemplate");
+  conf_provisioning_service_command=
+    profile->stringValue("Provisioning","NewServiceNameCommand");
   conf_provisioning_service_name_regex=
     profile->stringValue("Provisioning","NewServiceNameRegex","[^*]*");
   conf_provisioning_service_name_group=
@@ -716,6 +751,7 @@ void RDConfig::clear()
   conf_provisioning_host_short_name_group=0;
   conf_provisioning_create_service=false;
   conf_provisioning_service_template="";
+  conf_provisioning_service_command="";
   conf_alsa_period_quantity=RD_ALSA_DEFAULT_PERIOD_QUANTITY;
   conf_alsa_period_size=RD_ALSA_DEFAULT_PERIOD_SIZE;
   conf_alsa_channels_per_pcm=-1;
