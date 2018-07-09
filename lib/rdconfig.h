@@ -73,6 +73,7 @@ class RDConfig
   bool provisioningCreateHost() const;
   QString provisioningHostTemplate() const;
   QHostAddress provisioningHostIpAddress() const;
+  QString provisioningHostShortNameCommand() const;
   QString provisioningHostShortName(const QString &hostname) const;
   bool provisioningCreateService() const;
   QString provisioningServiceTemplate() const;
@@ -144,6 +145,7 @@ class RDConfig
   bool conf_provisioning_create_host;
   QString conf_provisioning_host_template;
   QHostAddress conf_provisioning_host_ip_address;
+  QString conf_provisioning_host_short_name_command;
   QString conf_provisioning_host_short_name_regex;
   unsigned conf_provisioning_host_short_name_group;
   bool conf_provisioning_create_service;

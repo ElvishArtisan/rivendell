@@ -17089,3 +17089,6 @@
 	* Added an 'RDRunCommand' class.
 	* Added a 'NewServiceNameCommand=' parameter to the '[Provisioning]'
 	section of rd.conf(5).
+2018-07-08 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'NewHostShortNameCommand=' parameter to the '[Provisioning]'
+	section of rd.conf(5).

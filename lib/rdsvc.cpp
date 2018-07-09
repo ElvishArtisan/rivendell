@@ -353,8 +353,8 @@ QString RDSvc::importFilename(ImportSource src,const QDate &date) const
   QString ret;
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
-    ret=RDDateDecode(q->value(0).toString(),date,svc_station,svc_config,
-		     svc_name);
+    ret=RDDateDecode(q->value(0).toString(),date,svc_config->stationName(),
+		     svc_station->shortName(),svc_name);
   }
   delete q;
   return ret;
@@ -435,7 +435,8 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
   // Open Source File
   //
   if((infile=
-     fopen(RDDateDecode(infilename,date,svc_station,svc_config,svc_name),"r"))==
+      fopen(RDDateDecode(infilename,date,svc_config->stationName(),
+			 svc_station->shortName(),svc_name),"r"))==
      NULL) {
     return false;
   }
@@ -444,7 +445,8 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
   // Run Preimport Command
   //
   if(!preimport_cmd.isEmpty()) {
-    system(RDDateDecode(preimport_cmd,date,svc_station,svc_config,svc_name));
+    system(RDDateDecode(preimport_cmd,date,svc_config->stationName(),
+			svc_station->shortName(),svc_name));
   }
 
   QString parser_table;
@@ -755,8 +757,9 @@ bool RDSvc::generateLog(const QDate &date,const QString &logname,
     return false;
   }
   log=new RDLog(logname);
-  log->setDescription(RDDateDecode(descriptionTemplate(),date,svc_station,
-				   svc_config,svc_name));
+  log->setDescription(RDDateDecode(descriptionTemplate(),date,
+				   svc_config->stationName(),
+				   svc_station->shortName(),svc_name));
 
   emit generationProgress(1);
 

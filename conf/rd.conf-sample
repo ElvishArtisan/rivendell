@@ -48,9 +48,29 @@ XportHostname=
 ; populated using the NewHostShortName= parameter, which takes a Perl-style
 ; regex to capture the required text from the full host name, using the
 ; captured group from the regex specified in 'NewHostShortNameGroup='.
+
+
+; If CreateHost=Yes, a Host entry will be automatically created in the DB
+; when the 'rivendell' system service is started, using the Host definition
+; specified in NewHostTemplate= as the template. The new host entry will be
+; assigned the IP address bound to the network interface specified by
+; NewHostIpAddress= ('lo' by default). The new host's Short Name
+; is determined by either the 'NewHostShortNameCommand=' or
+; 'NewHostShortNameRegex=' and 'NewHostShortNameGroup=' parameters (see below).
 CreateHost=No
 NewHostTemplate=some_host_entry
 NewHostIpAddress=lo
+
+; Use the string written to standard output of the specified script
+; as the short name of the newly created host. The '%r' (hostname) wildcard
+; can be used in the argument.
+;NewHostShortNameCommand=/usr/local/bin/foobar.sh args
+
+; If 'NewHostShortNameCommand=' paramater is not defined, then get the
+; name of the new host's short name by using the 
+; NewHostShortNameRegex= parameter, which takes a Perl-style
+; regex to capture the required text from the full host name, using the
+; captured group from the regex specified in 'NewHostShortNameGroup='.
 NewHostShortNameRegex=[^*]*
 NewHostShortNameGroup=0
 
@@ -63,7 +83,8 @@ CreateService=No
 NewServiceTemplate=some_service_entry
 
 ; Use the string written to standard output of the specified script
-; as the name of the service to create.
+; as the name of the service to create. The '%r' (hostname) wildcard
+; can be used in the argument.
 ;NewServiceNameCommand=/usr/local/bin/foobar.sh args
 
 ; If 'NewServiceNameCommand=' paramater is not defined, then get the

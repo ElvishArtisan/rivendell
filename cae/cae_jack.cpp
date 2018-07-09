@@ -435,7 +435,7 @@ void MainObject::jackClientStartData()
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
     QString cmd=RDDateDecode(q->value(1).toString(),QDate::currentDate(),
-			     cae_station,rd_config,
+			     rd_config->stationName(),cae_station->shortName(),
 			     rd_config->provisioningServiceName(rd_config->stationName()));
     QStringList fields=QStringList().split(" ",cmd);
     jack_clients.push_back(new QProcess(fields,this));

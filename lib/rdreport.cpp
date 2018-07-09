@@ -312,13 +312,9 @@ RDReport::ErrorCode RDReport::errorCode() const
 bool RDReport::outputExists(const QDate &startdate)
 {
   QString out_path;
-#ifdef WIN32
-  out_path=RDDateDecode(exportPath(RDReport::Windows),startdate,report_station,
-			report_config,serviceName());
-#else
-  out_path=RDDateDecode(exportPath(RDReport::Linux),startdate,report_station,
-			report_config,serviceName());
-#endif
+  out_path=RDDateDecode(exportPath(RDReport::Linux),startdate,
+			report_config->stationName(),
+			report_station->shortName(),serviceName());
   return QFile::exists(out_path);
 }
 
@@ -600,13 +596,9 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
   delete q;
 
   bool ret=false;
-#ifdef WIN32
-  QString filename=RDDateDecode(exportPath(RDReport::Windows),startdate,
-				report_station,report_config,serviceName());
-#else
   QString filename=RDDateDecode(exportPath(RDReport::Linux),startdate,
-				report_station,report_config,serviceName());
-#endif
+				report_config->stationName(),
+				report_station->shortName(),serviceName());
 
   switch(filter()) {
   case RDReport::CbsiDeltaFlex:
@@ -685,10 +677,12 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
   QString post_cmd=RDDateDecode(postExportCommand(RDReport::Windows),startdate,
 				report_station,report_config,serviceName());
 #else
-  *out_path=RDDateDecode(exportPath(RDReport::Linux),startdate,report_station,
-			 report_config,serviceName());
+  *out_path=RDDateDecode(exportPath(RDReport::Linux),startdate,
+			 report_config->stationName(),
+			 report_station->shortName(),serviceName());
   QString post_cmd=RDDateDecode(postExportCommand(RDReport::Linux),startdate,
-				report_station,report_config,serviceName());
+				report_config->stationName(),
+				report_station->shortName(),serviceName());
 #endif
   system(post_cmd);
   //  printf("MIXDOWN TABLE: %s_SRT\n",(const char *)mixname);

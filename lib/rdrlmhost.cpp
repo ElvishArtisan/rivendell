@@ -38,8 +38,11 @@ RDRLMHost::RDRLMHost(const QString &path,const QString &arg,
 		 QSocketDevice *udp_socket,QObject *parent)
   : QObject(parent)
 {
-  plugin_path=RDDateDecode(path,QDate::currentDate(),rda->station(),rda->config());
-  plugin_arg=RDDateDecode(arg,QDate::currentDate(),rda->station(),rda->config());
+  plugin_path=RDDateDecode(path,QDate::currentDate(),
+			   rda->config()->stationName(),
+			   rda->station()->shortName());
+  plugin_arg=RDDateDecode(arg,QDate::currentDate(),rda->config()->stationName(),
+			  rda->station()->shortName());
   plugin_udp_socket=udp_socket;
   plugin_handle=NULL;
   plugin_start_sym=NULL;
@@ -536,7 +539,7 @@ const char *RLMDateTimeDecode(void *ptr, const char *format,
   RDRLMHost *host=(RDRLMHost *)ptr;
   strncpy(host->plugin_value_string,
 	  RDDateTimeDecode(format,QDateTime::currentDateTime(),
-			   rda->station(),rda->config(),
-			   svc_name),1024);
+			   rda->config()->stationName(),
+			   rda->station()->shortName(),svc_name),1024);
   return host->plugin_value_string;
 }

@@ -1,8 +1,8 @@
 // rddatedecode.cpp
 //
-// Decode Rivendell Date Macros
+// Decode Rivendell Filepath Macros
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,8 +22,78 @@
 
 #include <rddatedecode.h>
 
-QString RDDateDecode(QString str,const QDate &date,RDStation *station,
-		     RDConfig *config,const QString &svcname)
+QString RDNameDecode(QString str,const QString &station_name,
+		     const QString &short_station_name,
+		     const QString &svcname)
+{
+  QString string;
+  bool upper_case=false;
+  bool initial_case=false;
+  QString field;
+  int offset=0;
+
+  for(unsigned i=0;i<str.length();i++) {
+    field="";
+    offset=0;
+    if(str.at(i)!='%') {
+      string+=str.at(i);
+    }
+    else {
+      i++;
+      offset++;
+      if(((const char *)str)[i]=='^') {
+	upper_case=true;
+	i++;
+	offset++;
+      }
+      else {
+	upper_case=false;
+      }
+      if(((const char *)str)[i]=='$') {
+	initial_case=true;
+	i++;
+	offset++;
+      }
+      else {
+	initial_case=false;
+      }
+      switch(((const char *)str)[i]) {
+      case 'r':   // Rivendell Host Name
+	field=station_name;
+	break;
+
+      case 'R':   // Rivendell Host Short Name
+	field=short_station_name;
+	break;
+
+      case 's':   // Service name
+	if(!svcname.isEmpty()) {
+	  field=svcname;
+	}
+	break;
+
+      default:   // No recognized wildcard, rollback!
+	i-=offset;
+	field=str.at(i);
+	break;
+      }
+      if(upper_case) {
+	field=field.upper();
+      }
+      if(initial_case) {
+	field=field.left(1).upper()+field.right(field.length()-1);
+      }
+      string+=field;
+    }
+  }
+
+  return string;
+}
+
+
+QString RDDateDecode(QString str,const QDate &date,const QString &station_name,
+		     const QString &short_station_name,
+		     const QString &svcname)
 {
   QString string;
   int yearnum;
@@ -32,6 +102,8 @@ QString RDDateDecode(QString str,const QDate &date,RDStation *station,
   bool initial_case=false;
   QString field;
   int offset=0;
+
+  str=RDNameDecode(str,station_name,short_station_name,svcname);
 
   for(unsigned i=0;i<str.length();i++) {
     field="";
@@ -118,20 +190,6 @@ QString RDDateDecode(QString str,const QDate &date,RDStation *station,
 	field=QString().sprintf("%02d",date.month());
 	break;
 
-      case 'r':   // Rivendell Host Name
-	field=config->stationName();
-	break;
-
-      case 'R':   // Rivendell Host Short Name
-	field=station->shortName();
-	break;
-
-      case 's':   // Service name
-	if(!svcname.isEmpty()) {
-	  field=svcname;
-	}
-	break;
-
       case 'u':   // Day of week (numeric, 1..7, 1=Monday)
 	field=QString().sprintf("%d",date.dayOfWeek());
 	break;
@@ -180,7 +238,8 @@ QString RDDateDecode(QString str,const QDate &date,RDStation *station,
 
 
 QString RDDateTimeDecode(QString str,const QDateTime &datetime,
-			 RDStation *station,RDConfig *config,
+			 const QString &station_name,
+			 const QString &short_station_name,
 			 const QString &svcname)
 {
   QString string;
@@ -190,6 +249,8 @@ QString RDDateTimeDecode(QString str,const QDateTime &datetime,
   bool initial_case=false;
   QString field;
   int offset=0;
+
+  str=RDNameDecode(str,station_name,short_station_name,svcname);
 
   for(unsigned i=0;i<str.length();i++) {
     field="";
@@ -303,23 +364,9 @@ QString RDDateTimeDecode(QString str,const QDateTime &datetime,
       case 'p':   // AM/PM string
 	field=datetime.time().toString("ap");
 	break;
-	    
-      case 'r':   // Rivendell Host Name
-	field=config->stationName();
-	break;
-
-      case 'R':   // Rivendell Host Short Name
-	field=station->shortName();
-	break;
 
       case 'S':   // Second (SS)
 	field=QString().sprintf("%02d",datetime.time().second());
-	break;
-
-      case 's':   // Service name
-	if(!svcname.isEmpty()) {
-	  field=svcname;
-	}
 	break;
 
       case 'u':   // Day of week (numeric, 1..7, 1=Monday)

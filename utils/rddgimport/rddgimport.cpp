@@ -370,8 +370,8 @@ bool MainWidget::WriteTrafficFile()
   // Open Output File
   //
   outname=RDDateDecode(dg_svc->importPath(RDSvc::Traffic,RDSvc::Linux),
-		       dg_date_edit->date(),rda->station(),
-		       rda->config(),dg_svc->name());
+		       dg_date_edit->date(),rda->config()->stationName(),
+		       rda->station()->shortName(),dg_svc->name());
   if((f=fopen(outname,"w"))==NULL) {
     LogMessage(tr("WARNING: Unable to open traffic output file")+" \""+
 	       outname+"\" ["+strerror(errno)+"].");

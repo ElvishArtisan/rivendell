@@ -240,7 +240,9 @@ void MainObject::ripcConnectedData(bool state)
 	    
     case RDAirPlayConf::StartPrevious:
       air_start_lognames[i]=RDDateTimeDecode(rda->airplayConf()->currentLog(mach),
-			    air_startup_datetime,rda->station(),rda->config());
+					     air_startup_datetime,
+					     rda->config()->stationName(),
+					     rda->station()->shortName());
       if(!air_start_lognames[i].isEmpty()) {
 	if(air_previous_exit_code==RDAirPlayConf::ExitDirty) {
 	  if((air_start_lines[i]=rda->airplayConf()->logCurrentLine(mach))>=0) {
@@ -257,8 +259,9 @@ void MainObject::ripcConnectedData(bool state)
 
     case RDAirPlayConf::StartSpecified:
       air_start_lognames[i]=RDDateTimeDecode(rda->airplayConf()->logName(mach),
-			       air_startup_datetime,rda->station(),
-			       rda->config());
+					     air_startup_datetime,
+					     rda->config()->stationName(),
+					     rda->station()->shortName());
       if(!air_start_lognames[i].isEmpty()) {
 	if(air_previous_exit_code==RDAirPlayConf::ExitDirty) {
 	  if(air_start_lognames[i]==rda->airplayConf()->currentLog(mach)) {

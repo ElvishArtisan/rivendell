@@ -662,8 +662,9 @@ void CatchEvent::resolveUrl(int time_offset)
     date=date.addDays(1);
   }
   setResolvedUrl(RDDateTimeDecode(url(),QDateTime(date.addDays(eventdateOffset()),
-						  current_time),catch_station,
-				  catch_config));
+						  current_time),
+				  catch_config->stationName(),
+				  catch_station->shortName()));
 }
 
 

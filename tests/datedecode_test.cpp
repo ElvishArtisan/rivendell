@@ -27,6 +27,7 @@
 #include <rdcmd_switch.h>
 #include <rddatedecode.h>
 #include <rddb.h>
+#include <rdstation.h>
 
 #include "datedecode_test.h"
 
@@ -97,13 +98,16 @@ MainObject::MainObject(QObject *parent)
   //
   if(!date.isEmpty()) {
     printf("%s\n",
-	   (const char *)RDDateDecode(date,QDate::currentDate(),station,config,
-				      service));
+	   (const char *)RDDateDecode(date,QDate::currentDate(),
+				      config->stationName(),
+				      station->shortName(),service));
   }
   if(!datetime.isEmpty()) {
     printf("%s\n",(const char *)RDDateTimeDecode(datetime,
-		  QDateTime(QDate::currentDate(),QTime::currentTime()),station,
-						 config,service));
+		  QDateTime(QDate::currentDate(),QTime::currentTime()),
+						 config->stationName(),
+						 station->shortName(),
+						 service));
   }
   exit(0);
 }

@@ -37,6 +37,7 @@
 #include <qstringlist.h>
 
 #include "rdconfig.h"
+#include "rddatedecode.h"
 #include "rdprofile.h"
 #include "rdrunprocess.h"
 
@@ -299,8 +300,51 @@ QHostAddress RDConfig::provisioningHostIpAddress() const
 }
 
 
+QString RDConfig::provisioningHostShortNameCommand() const
+{
+  return conf_provisioning_host_short_name_command;
+}
+
+
 QString RDConfig::provisioningHostShortName(const QString &hostname) const
 {
+  QString ret;
+
+  if(conf_provisioning_host_short_name_command.isEmpty()) {
+    QRegExp exp(conf_provisioning_host_short_name_regex);
+
+    exp.search(hostname);
+    QStringList texts=exp.capturedTexts();
+    if(texts.size()<conf_provisioning_host_short_name_group) {
+      return QString();
+    }
+    return texts[conf_provisioning_host_short_name_group];
+  }
+  RDRunProcess *proc=new RDRunProcess();
+  proc->start(RDNameDecode(conf_provisioning_host_short_name_command,
+			   stationName(),"",""));
+  proc->waitForFinished();
+  if(proc->exitStatus()==RDRunProcess::NormalExit) {
+    if(proc->exitCode()==0) {
+      ret=QString(proc->readAllStandardOutput()).stripWhiteSpace();
+    }
+    else {
+      syslog(LOG_ERR,"NewHostShortNameCommand \"%s\" returned non-zero exit status \"%d\", exiting",
+	     (const char *)conf_provisioning_host_short_name_command,proc->exitCode());
+      exit(1);
+    }
+  }
+  else {
+    syslog(LOG_ERR,"NewHostShortNameCommand \"%s\" crashed, exiting",
+	   (const char *)conf_provisioning_host_short_name_command);
+    exit(1);
+  }
+  delete proc;
+  return ret;
+
+
+
+  /*
   QRegExp exp(conf_provisioning_host_short_name_regex);
 
   exp.search(hostname);
@@ -309,6 +353,7 @@ QString RDConfig::provisioningHostShortName(const QString &hostname) const
     return QString();
   }
   return texts[conf_provisioning_host_short_name_group];
+  */
 }
 
 
@@ -345,20 +390,20 @@ QString RDConfig::provisioningServiceName(const QString &hostname) const
     return texts[conf_provisioning_service_name_group];
   }
   RDRunProcess *proc=new RDRunProcess();
-  proc->start(conf_provisioning_service_command);
+  proc->start(RDNameDecode(conf_provisioning_service_command,stationName(),"",""));
   proc->waitForFinished();
   if(proc->exitStatus()==RDRunProcess::NormalExit) {
     if(proc->exitCode()==0) {
       ret=QString(proc->readAllStandardOutput()).stripWhiteSpace();
     }
     else {
-      syslog(LOG_ERR,"ServiceNameCommand \"%s\" returned non-zero exit status \"%d\", exiting",
+      syslog(LOG_ERR,"NewServiceNameCommand \"%s\" returned non-zero exit status \"%d\", exiting",
 	     (const char *)conf_provisioning_service_command,proc->exitCode());
       exit(1);
     }
   }
   else {
-    syslog(LOG_ERR,"ServiceNameCommand \"%s\" crashed, exiting",
+    syslog(LOG_ERR,"NewServiceNameCommand \"%s\" crashed, exiting",
 	   (const char *)conf_provisioning_service_command);
     exit(1);
   }
@@ -585,6 +630,8 @@ void RDConfig::load()
   conf_provisioning_host_template=
     profile->stringValue("Provisioning","NewHostTemplate");
   iface=profile->stringValue("Provisioning","NewHostIpAddress","lo");
+  conf_provisioning_host_short_name_command=
+    profile->stringValue("Provisioning","NewHostShortNameCommand");
   conf_provisioning_host_short_name_regex=
     profile->stringValue("Provisioning","NewHostShortNameRegex","[^*]*");
   conf_provisioning_host_short_name_group=
@@ -747,6 +794,7 @@ void RDConfig::clear()
   conf_provisioning_create_host=false;
   conf_provisioning_host_template="";
   conf_provisioning_host_ip_address.setAddress("127.0.0.2");
+  conf_provisioning_host_short_name_command="";
   conf_provisioning_host_short_name_regex="[^%]*";
   conf_provisioning_host_short_name_group=0;
   conf_provisioning_create_service=false;

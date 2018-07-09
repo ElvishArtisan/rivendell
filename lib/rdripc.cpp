@@ -172,7 +172,8 @@ void RDRipc::sendRml(RDMacro *macro)
     rmlline.replace(q->value(0).toString(),q->value(1).toString());
   }
   delete q;
-  rmlline=RDDateTimeDecode(rmlline,now,ripc_station,ripc_config);
+  rmlline=RDDateTimeDecode(rmlline,now,ripc_config->stationName(),
+			   ripc_station->shortName());
   switch(macro->role()) {
       case RDMacro::Cmd:
 	sprintf(cmd,"MS %s %d %s",(const char *)macro->address().toString(),

@@ -80,8 +80,8 @@ void LogObject::userData()
     }
     QDate start_date=QDate::currentDate().addDays(1+log_start_offset);
     QString logname=
-      RDDateDecode(svc->nameTemplate(),start_date,rda->station(),rda->config(),
-		   svc->name());
+      RDDateDecode(svc->nameTemplate(),start_date,rda->config()->stationName(),
+		   rda->station()->shortName(),svc->name());
     RDLog *log=new RDLog(logname);
 
     //
@@ -106,9 +106,14 @@ void LogObject::userData()
       delete q;
       if(!svc->generateLog(start_date,
 			   RDDateDecode(svc->nameTemplate(),start_date,
-				   rda->station(),rda->config(),svc->name()),
-			   RDDateDecode(svc->nameTemplate(),start_date.addDays(1),
-				   rda->station(),rda->config(),svc->name()),
+					rda->config()->stationName(),
+					rda->station()->shortName(),
+					svc->name()),
+			   RDDateDecode(svc->nameTemplate(),
+					start_date.addDays(1),
+					rda->config()->stationName(),
+					rda->station()->shortName(),
+					svc->name()),
 			   &unused_report,rda->user(),&err_msg)) {
 	fprintf(stderr,"rdlogmanager: %s\n",(const char *)err_msg);
 	exit(256);

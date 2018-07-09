@@ -164,7 +164,8 @@ MainWidget::MainWidget(QWidget *parent)
 	    air_start_logname[i]=
 	      RDDateTimeDecode(rda->cmdSwitch()->value(j).left(k),
 			       air_startup_datetime,
-			       rda->station(),rda->config());
+			       rda->config()->stationName(),
+			       rda->station()->shortName());
 	    lineno=rda->cmdSwitch()->value(j).right(rda->cmdSwitch()->value(j).
 						    length()-(k+1));
 	    if(lineno.right(1)=="+") {
@@ -970,7 +971,9 @@ void MainWidget::ripcConnectedData(bool state)
 	  case RDAirPlayConf::StartPrevious:
 	    air_start_logname[i]=
 	      RDDateTimeDecode(rda->airplayConf()->currentLog(i),
-			       air_startup_datetime,rda->station(),rda->config());
+			       air_startup_datetime,
+			       rda->config()->stationName(),
+			       rda->station()->shortName());
 	    if(!air_start_logname[i].isEmpty()) {
 	      if(rdairplay_previous_exit_code==RDAirPlayConf::ExitDirty) {
 		if((air_start_line[i]=rda->airplayConf()->logCurrentLine(i))>=0) {
@@ -988,7 +991,9 @@ void MainWidget::ripcConnectedData(bool state)
 	  case RDAirPlayConf::StartSpecified:
 	    air_start_logname[i]=
 	      RDDateTimeDecode(rda->airplayConf()->logName(i),
-			       air_startup_datetime,rda->station(),rda->config());
+			       air_startup_datetime,
+			       rda->config()->stationName(),
+			       rda->station()->shortName());
 	    if(!air_start_logname[i].isEmpty()) {
 	      if(rdairplay_previous_exit_code==RDAirPlayConf::ExitDirty) {
 		if(air_start_logname[i]==rda->airplayConf()->currentLog(i)) {

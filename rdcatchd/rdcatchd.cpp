@@ -812,7 +812,8 @@ void MainObject::engineData(int id)
     catch_events[event].
       setResolvedUrl(RDDateTimeDecode(catch_events[event].url(),
 	       QDateTime(date.addDays(catch_events[event].eventdateOffset()),
-			 current_time),rda->station(),RDConfiguration()));
+			 current_time),rda->config()->stationName(),
+				      rda->station()->shortName()));
 	StartDownloadEvent(event);
 	break;
 
