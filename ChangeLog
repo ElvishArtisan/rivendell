@@ -17097,3 +17097,5 @@
 	'[Provisioning]' section of rd.conf(5).
 2018-07-09 Fred Gleason <fredg@paravelsystems.com>
 	* Added the 'RDRunProcess' sources to 'lib/lib.pro'.
+2018-07-09 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.19.2vlog06.
