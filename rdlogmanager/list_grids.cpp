@@ -27,11 +27,10 @@
 #include <rddb.h>
 #include <rd.h>
 #include <rdevent.h>
-#include <rdcreate_log.h>
 
-#include <list_grids.h>
-#include <edit_grid.h>
-#include <globals.h>
+#include "edit_grid.h"
+#include "globals.h"
+#include "list_grids.h"
 
 ListGrids::ListGrids(QWidget *parent)
   : QDialog(parent,"",true)

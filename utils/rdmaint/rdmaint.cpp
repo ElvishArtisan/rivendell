@@ -220,7 +220,6 @@ void MainObject::PurgeElr()
 {
   QString sql;
   RDSqlQuery *q;
-  RDSqlQuery *q1;
   QDateTime dt=QDateTime(QDate::currentDate(),QTime::currentTime());
 
   sql=QString("select ")+
@@ -319,19 +318,21 @@ void MainObject::PurgeStacks()
   sql="select NAME from SERVICES";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    QString tablename=q->value(0).toString()+"_STACK";
-    tablename.replace(" ","_");
-    sql=QString().sprintf("SELECT MAX(SCHED_STACK_ID) from %s",(const char*)tablename);
+    sql=QString().sprintf("select MAX(SCHED_STACK_ID) from STACK_LINES where ")+
+      "SERVICE_NAME=\""+RDEscapeString(q->value(0).toString())+"\"";
     q1=new RDSqlQuery(sql);
-    if (q1->next())
-    { 
+    if (q1->next()) {
       stackid=q1->value(0).toUInt();
       if (stackid-stacksize > 0) {
-        sql=QString().sprintf("DELETE from `%s` where SCHED_STACK_ID <= %d", (const char*)tablename, stackid-stacksize);
-        q2=new RDSqlQuery(sql);
-        delete q2;
+        sql=QString("delete from STACK_LINES where ")+
+	  "SERVICE_NAME=\""+RDEscapeString(q->value(0).toString())+"\" && "+
+	  QString().sprintf("SCHED_STACK_ID<=%d",stackid-stacksize);
+	RDSqlQuery::apply(sql);
 
-        sql=QString().sprintf("UPDATE `%s` SET SCHED_STACK_ID=SCHED_STACK_ID-%d", (const char*)tablename, stackid-stacksize);
+        sql=QString("update STACK_LINES set ")+
+	  QString().sprintf("SCHED_STACK_ID=SCHED_STACK_ID-%d where ",
+			    stackid-stacksize)+
+	  "SERVICE_NAME=\""+RDEscapeString(q->value(0).toString())+"\"";
         q2=new RDSqlQuery(sql);
         delete q2;
       }

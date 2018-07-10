@@ -7722,6 +7722,77 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<293)&&(set_schema>cur_schema)) {
+    sql=QString("create table if not exists STACK_LINES (")+
+      "ID int unsigned not null auto_increment primary key,"+
+      "SCHED_STACK_ID int unsigned not null,"+
+      "SERVICE_NAME char(10) not null,"+
+      "CART int unsigned not null,"+
+      "ARTIST varchar(255),"+
+      "SCHED_CODES varchar(255),"+
+      "SCHEDULED_AT datetime default '1752-09-14 00:00:00',"+
+      "index SERVICE_NAME_IDX(SERVICE_NAME),"+
+      "index SCHED_STACK_ID_IDX(SERVICE_NAME,SCHED_STACK_ID,SCHED_CODES))"+
+      db_table_create_postfix;
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("select NAME from SERVICES");
+    q=new RDSqlQuery(sql,false);
+    while(q->next()) {
+      QString tablename=q->value(0).toString()+"_STACK";
+      tablename.replace(" ","_");
+      //
+      // 9/14/1752 is the earliest valid QDate
+      //
+      sql=QString("update `")+tablename+"` set "+
+	"SCHEDULED_AT=\"1752-09-14 00:00:00\" where "+
+	"SCHEDULED_AT<\"1752-09-14 00:00:00\"";
+      if(!RDSqlQuery::apply(sql,err_msg)) {
+	return false;
+      }
+      sql=QString("select ")+
+	"SCHED_STACK_ID,"+  // 00
+	"CART,"+            // 01
+	"ARTIST,"+          // 02
+	"SCHED_CODES,"+     // 03
+	"SCHEDULED_AT "+    // 04
+	"from `"+tablename+"` "+
+	"order by SCHEDULED_AT";
+      q1=new RDSqlQuery(sql,false);
+      while(q1->next()) {	
+	sql=QString("insert into STACK_LINES set ")+
+	  "SERVICE_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	  QString().sprintf("SCHED_STACK_ID=%u,",q1->value(0).toUInt())+
+	  QString().sprintf("CART=%u,",q1->value(1).toUInt())+
+	  "ARTIST=\""+RDEscapeString(q1->value(2).toString())+"\","+
+	  "SCHED_CODES=\""+RDEscapeString(q1->value(3).toString())+"\","+
+	  "SCHEDULED_AT=\""+RDEscapeString(q1->value(4).toDateTime().
+					  toString("yyyy-MM-dd hh:mm:ss"))+"\"";
+	if(!RDSqlQuery::apply(sql,err_msg)) {
+	  return false;
+	}
+      }
+      delete q1;
+      if(!DropTable(tablename,err_msg)) {
+	return false;
+      }
+    }
+    delete q;
+
+    sql=QString("show tables where ")+
+      "Tables_in_"+db_config->mysqlDbname()+" like \"%_STACK\"";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      if(DropTable(q->value(0).toString(),err_msg)) {
+	fprintf(stderr,"rddbmgr: dropping orphaned STACK table \"%s\"\n",
+		(const char *)q->value(0).toString());
+      }
+    }
+    delete q;
+
+    WriteSchemaVersion(++cur_schema);
+  }
 
 
 

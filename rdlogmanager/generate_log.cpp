@@ -29,7 +29,6 @@
 
 #include <rd.h>
 #include <rdapplication.h>
-#include <rdcreate_log.h>
 #include <rddatedecode.h>
 #include <rddb.h>
 #include <rddatedialog.h>
@@ -48,7 +47,6 @@
 #include "../icons/whiteball.xpm"
 #include "../icons/greenball.xpm"
 #include "../icons/redball.xpm"
-
 
 GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
 			 QDate *cmd_date)
@@ -348,18 +346,6 @@ void GenerateLog::createData()
   RDSqlQuery *q;
 
   srand(QTime::currentTime().msec());
-  sql=RDCreateStackTableSql(gen_service_box->currentText().replace(" ","_"),
-			    rda->config()); 
-
-  q=new RDSqlQuery(sql);
-  if(!q->isActive()) {
-    fprintf(stderr,"SQL: %s\n",(const char *)sql);
-    fprintf(stderr,"SQL Error: %s\n",
-	    (const char *)q->lastError().databaseText());
-    delete q;
-  }
-  delete q;
-
   connect(svc,SIGNAL(generationProgress(int)),
 	  gen_progress_dialog,SLOT(setProgress(int)));
   if(!svc->generateLog(gen_date_edit->date(),

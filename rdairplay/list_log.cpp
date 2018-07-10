@@ -25,7 +25,6 @@
 
 #include <rdapplication.h>
 #include <rdconf.h>
-#include <rdcreate_log.h>
 #include <rddb.h>
 #include <rddebug.h>
 #include <rdlistviewitem.h>
@@ -44,7 +43,6 @@
 #include "../icons/notemarker.xpm"
 #include "../icons/traffic.xpm"
 #include "../icons/music.xpm"
-
 
 ListLog::ListLog(RDLogPlay *log,RDCae *cae,int id,bool allow_pause,
 		 QWidget *parent)

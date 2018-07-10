@@ -30,7 +30,6 @@
 #include <dbversion.h>
 #include <rdcart.h>
 #include <rdclock.h>
-#include <rdcreate_log.h>
 #include <rdcut.h>
 #include <rddb.h>
 #include <rdescape_string.h>

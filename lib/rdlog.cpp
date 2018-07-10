@@ -23,7 +23,6 @@
 #include "rdapplication.h"
 #include "rddb.h"
 #include "rdconf.h"
-#include "rdcreate_log.h"
 #include "rdescape_string.h"
 #include "rdlog.h"
 #include "rdlog_line.h"

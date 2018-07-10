@@ -39,6 +39,62 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
 
 
   //
+  // Revert 293
+  //
+  if((cur_schema==293)&&(set_schema<cur_schema)) {
+    sql=QString("select NAME from SERVICES");
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      QString tablename=q->value(0).toString()+"_STACK";
+      tablename.replace(" ","_");
+      sql=QString("create table `")+tablename+"` ("+
+	"SCHED_STACK_ID int unsigned not null primary key,"+
+	"CART int unsigned not null,"+
+	"ARTIST varchar(255),"+
+	"SCHED_CODES varchar(255),"+
+	"SCHEDULED_AT datetime default '1000-01-01 00:00:00')"+
+	db_table_create_postfix;
+      if(!RDSqlQuery::apply(sql,err_msg)) {
+	return false;
+      }
+      sql=QString("select ")+
+	"SCHED_STACK_ID,"+  // 00
+	"CART,"+            // 01
+	"ARTIST,"+          // 02
+	"SCHED_CODES,"+     // 03
+	"SCHEDULED_AT "+    // 04
+	"from STACK_LINES where "+
+	"SERVICE_NAME=\""+RDEscapeString(q->value(0).toString())+"\"";
+      q1=new RDSqlQuery(sql,false);
+      while(q1->next()) {
+	sql=QString("insert into `")+tablename+"` set "+
+	  QString().sprintf("SCHED_STACK_ID=%u,",q1->value(0).toUInt())+
+	  QString().sprintf("CART=%u,",q1->value(1).toUInt())+
+	  "ARTIST=\""+RDEscapeString(q1->value(2).toString())+"\","+
+	  "SCHED_CODES=\""+RDEscapeString(q1->value(3).toString())+"\","+
+	  "SCHEDULED_AT=\""+RDEscapeString(q1->value(4).toDateTime().
+					  toString("yyyy-MM-dd hh:mm:ss"))+"\"";
+	if(!RDSqlQuery::apply(sql,err_msg)) {
+	  return false;
+	}
+      }
+      sql=QString("update `")+tablename+"` set "+
+	"SCHEDULED_AT=\"1000-01-01 00:00:00\" where "+
+	"SCHEDULED_AT=\"1752-09-14 00:00:00\"";
+      if(!RDSqlQuery::apply(sql,err_msg)) {
+	return false;
+      }
+    }
+    delete q;
+
+    if(!DropTable("STACK_LINES",err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 292
   //
   if((cur_schema==292)&&(set_schema<cur_schema)) {

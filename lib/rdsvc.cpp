@@ -23,7 +23,6 @@
 #include "rdapplication.h"
 #include "rdclock.h"
 #include "rdconf.h"
-#include "rdcreate_log.h"
 #include "rddatedecode.h"
 #include "rddb.h"
 #include "rd.h"
@@ -32,9 +31,6 @@
 #include "rdsvc.h"
 #include "rdweb.h"
 
-//
-// Global Classes
-//
 RDSvc::RDSvc(QString svcname,RDStation *station,RDConfig *config,QObject *parent)
   : QObject(parent)
 {
@@ -1453,9 +1449,9 @@ void RDSvc::remove(const QString &name)
   }
   delete q;
 
-  QString tablename=name;
-  tablename.replace(" ","_");
-  rda->dropTable(tablename+"_STACK");
+  sql=QString("delete from STACK_LINES where ")+
+    "SERVICE_NAME=\""+RDEscapeString(name)+"\"";
+  RDSqlQuery::apply(sql);
 
   sql=QString("delete from ELR_LINES where ")+
     "SERVICE_NAME=\""+RDEscapeString(name)+"\"";

@@ -23,7 +23,6 @@
 #include <qapplication.h>
 
 #include <rdapplication.h>
-#include <rdcreate_log.h>
 #include <rddatedecode.h>
 #include <rdlog.h>
 #include <rdsvc.h>
@@ -62,8 +61,6 @@ LogObject::LogObject(const QString &svcname,int start_offset,
 void LogObject::userData()
 {
   QString err_msg;
-  QString sql;
-  RDSqlQuery *q;
   QString report;
   QString unused_report;
   QString svcname_table=log_service_name;
@@ -96,14 +93,6 @@ void LogObject::userData()
       SendNotification(RDNotification::DeleteAction,log->name());
       log->removeTracks(rda->station(),rda->user(),rda->config());
       srand(QTime::currentTime().msec());
-      sql=RDCreateStackTableSql(svcname_table,rda->config());
-      q=new RDSqlQuery(sql);
-      if(!q->isActive()) {
-	fprintf(stderr,"SQL: %s\n",(const char *)sql);
-	fprintf(stderr,"SQL Error: %s\n",
-		(const char *)q->lastError().databaseText());
-      }
-      delete q;
       if(!svc->generateLog(start_date,
 			   RDDateDecode(svc->nameTemplate(),start_date,
 				   rda->station(),rda->config(),svc->name()),

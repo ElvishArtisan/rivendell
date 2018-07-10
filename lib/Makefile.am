@@ -103,7 +103,6 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdconf.cpp rdconf.h\
                         rdconfig.cpp rdconfig.h\
                         rdcopyaudio.cpp rdcopyaudio.h\
-                        rdcreate_log.cpp rdcreate_log.h\
                         rdcreateauxfieldstable.cpp rdcreateauxfieldstable.h\
                         rdcueedit.cpp rdcueedit.h\
                         rdcueeditdialog.cpp rdcueeditdialog.h\

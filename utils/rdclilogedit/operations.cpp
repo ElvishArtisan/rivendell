@@ -20,7 +20,6 @@
 
 #include <rdapplication.h>
 #include <rdconf.h>
-#include <rdcreate_log.h>
 #include <rdescape_string.h>
 #include <rdsvc.h>
 

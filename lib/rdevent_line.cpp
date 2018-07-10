@@ -620,7 +620,10 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
       }
       delete q;
       
-      sql=QString("SELECT MAX(SCHED_STACK_ID) from `"+svcname_rp+"_STACK`");
+      sql=QString("select ")+
+	"MAX(SCHED_STACK_ID) "+
+	"from STACK_LINES where "+
+	"SERVICE_NAME=\""+RDEscapeString(svcname)+"\"";
       q=new RDSqlQuery(sql);
       if (q->next())
       { 
@@ -667,10 +670,10 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 
       // Title separation 
       schedCL->save();		  
-      sql=QString("select CART from `")+svcname_rp+"_STACK` where "+
+      sql=QString("select CART from STACK_LINES where ")+
+	"SERVICE_NAME=\""+RDEscapeString(svcname)+"\" && "+
 	QString().sprintf("SCHED_STACK_ID >= %d",stackid-titlesep);
       q=new RDSqlQuery(sql);
-      
       while (q->next())	{
 	for(counter=0;counter<schedCL->getNumberOfItems();counter++) { 
 	  if(q->value(0).toUInt()==schedCL->getItemCartnumber(counter)) {
@@ -686,7 +689,8 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
       
       // Artist separation
       schedCL->save();		  
-      sql=QString("select ARTIST from `")+svcname_rp+"_STACK` where "+
+      sql=QString("select ARTIST from STACK_LINES where ")+
+	"SERVICE_NAME=\""+RDEscapeString(svcname)+"\" && "+
 	QString().sprintf("SCHED_STACK_ID >= %d",stackid-artistsep);
       q=new RDSqlQuery(sql);
       while (q->next()) {
@@ -722,8 +726,9 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 	QString wstr=q->value(0).toString();
 	wstr+="          ";
 	wstr=wstr.left(11);
-	sql=QString("select CART from `")+svcname_rp+"_STACK` where "+
-	  QString().sprintf("SCHED_STACK_ID > %d and ",stackid-range)+
+	sql=QString("select CART from STACK_LINES where ")+
+	  "SERVICE_NAME=\""+RDEscapeString(svcname)+"\" && "+
+	  QString().sprintf("SCHED_STACK_ID > %d && ",stackid-range)+
 	  "SCHED_CODES like \"%%"+RDEscapeString(wstr)+"%%\"";
 	q1=new RDSqlQuery(sql);
 	if(q1->size()>=allowed || allowed==0) {
@@ -744,8 +749,10 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 	  QString wstr=q->value(3).toString();
 	  wstr+="          ";
 	  wstr=wstr.left(11);
-	  sql=QString().sprintf("select CART from %s_STACK \
-			  where SCHED_STACK_ID = %d and SCHED_CODES like \"%%%s%%\"",(const char*)svcname_rp,(stackid-1),(const char *)wstr);
+	  sql=QString("select CART from STACK_LINES where ")+
+	    "SERVICE_NAME=\""+RDEscapeString(svcname)+"\" && "+
+	    QString().sprintf("SCHED_STACK_ID=%d && ",stackid-1)+
+	    "SCHED_CODES like \"%"+RDEscapeString(wstr)+"%\"";
 	  q1=new RDSqlQuery(sql);
 	  if(q1->size()>0) {
 	    for(counter=0;counter<schedCL->getNumberOfItems();counter++) {
@@ -766,8 +773,9 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 	  QString wstr=q->value(4).toString();
 	  wstr+="          ";
 	  wstr=wstr.left(11);
-	  sql=QString().sprintf("select CART from %s_STACK \
-			  where SCHED_STACK_ID = %d and SCHED_CODES like \"%%%s%%\"",(const char*)svcname_rp,(stackid-1),(const char *)wstr);
+	  sql=QString("select CART from STACK_LINES where ")+
+	    QString().sprintf("SCHED_STACK_ID=%d && ",stackid-1)+
+	    "SCHED_CODES like \"%"+RDEscapeString(wstr)+"%\"";
 	  q1=new RDSqlQuery(sql);
 	  if(q1->size()>0) {	
 	    for(counter=0;counter<schedCL->getNumberOfItems();counter++) {
@@ -788,8 +796,9 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 	  QString wstr=q->value(5).toString();
 	  wstr+="          ";
 	  wstr=wstr.left(11);
-	  sql=QString().sprintf("select CART from %s_STACK \
-			  where SCHED_STACK_ID = %d and SCHED_CODES like \"%%%s%%\"",(const char*)svcname_rp,(stackid-1),(const char *)wstr);
+	  sql=QString("select CART from STACK_LINES where ")+
+	    QString().sprintf("SCHED_STACK_ID=%d && ",stackid-1)+
+	    "SCHED_CODES like \"%"+RDEscapeString(wstr)+"%\"";
 	  q1=new RDSqlQuery(sql);
 	  if(q1->size()>0) {
 	    for(counter=0;counter<schedCL->getNumberOfItems();counter++) {
@@ -830,7 +839,8 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 
       count++;
 
-      sql=QString("insert into `")+svcname_rp+"_STACK` set "+
+      sql=QString("insert into STACK_LINES set ")+
+	"SERVICE_NAME=\""+RDEscapeString(svcname)+"\","+
 	"SCHEDULED_AT=now(),"+
 	QString().sprintf("SCHED_STACK_ID=%u,",stackid)+
 	QString().sprintf("CART=%u,",schedCL->getItemCartnumber(schedpos))+

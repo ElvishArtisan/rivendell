@@ -34,7 +34,6 @@
 #include <rd.h>
 #include <rdapplication.h>
 #include <rdconf.h>
-#include <rdcreate_log.h>
 #include <rddb.h>
 #include <rdescape_string.h>
 #include <rdevent.h>

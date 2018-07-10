@@ -25,7 +25,6 @@
 
 #include <dbversion.h>
 #include <rdapplication.h>
-#include <rdcreate_log.h>
 #include <rddatedecode.h>
 #include <rdlog.h>
 #include <rdlog_event.h>

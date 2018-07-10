@@ -2,7 +2,7 @@
 //
 // Edit Rivendell Log Eventline
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,15 +25,13 @@
 #include <qmessagebox.h>
 #include <qpushbutton.h>
 
-#include <rddb.h>
 #include <rd.h>
+#include <rddb.h>
 #include <rdevent.h>
-#include <rdcreate_log.h>
 #include <rdtextvalidator.h>
 
 #include <list_events.h>
 #include <edit_eventline.h>
-
 
 EditEventLine::EditEventLine(RDEventLine *eventline,RDClock *clock,int line,
 			     QWidget *parent)

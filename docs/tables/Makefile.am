@@ -75,6 +75,7 @@ EXTRA_DIST = audio_cards.txt\
              service_clocks.txt\
              services.txt\
              sources.txt\
+             stack_lines.txt\
              stations.txt\
              system.txt\
              triggers.txt\

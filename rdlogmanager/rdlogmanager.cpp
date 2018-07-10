@@ -43,7 +43,6 @@
 #include <rd.h>
 #include <rdapplication.h>
 #include <rdcheck_daemons.h>
-#include <rdcreate_log.h>
 #include <rdcmd_switch.h>
 #include <rddatedecode.h>
 #include <rddbheartbeat.h>
