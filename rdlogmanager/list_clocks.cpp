@@ -383,15 +383,11 @@ void ListClocks::renameData()
     "CLOCK_NAME=\""+RDEscapeString(item->text(0))+"\"";
   q=new RDSqlQuery(sql);
   delete q;
-  QString old_name_esc=item->text(0);
-  old_name_esc.replace(" ","_");
-  QString new_name_esc=new_name;
-  new_name_esc.replace(" ","_");
-  sql=QString().sprintf("alter table %s_RULES rename to %s_RULES",
-			(const char *)old_name_esc,
-			(const char *)new_name_esc);
-  q=new RDSqlQuery(sql);
-  delete q;
+
+  sql=QString("update RULE_LINES set ")+
+    "CLOCK_NAME=\""+RDEscapeString(new_name)+"\" where "+
+    "CLOCK_NAME=\""+RDEscapeString(item->text(0))+"\"";
+  RDSqlQuery::apply(sql);
 
   //
   // Rename Service Permissions
@@ -628,7 +624,10 @@ void ListClocks::DeleteClock(QString clockname)
   sql=QString("delete from CLOCK_LINES where ")+
     "CLOCK_NAME=\""+RDEscapeString(clockname)+"\"";
   RDSqlQuery::apply(sql);
-  rda->dropTable(base_name+"_RULES");
+
+  sql=QString("delete from RULE_LINES where ")+
+    "CLOCK_NAME=\""+RDEscapeString(clockname)+"\"";
+  RDSqlQuery::apply(sql);
 }
 
 

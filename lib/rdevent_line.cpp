@@ -704,7 +704,15 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
       schedCL->restore();
       
       // Scheduler Codes
-      sql=QString().sprintf("select CODE,MAX_ROW,MIN_WAIT,NOT_AFTER, OR_AFTER,OR_AFTER_II from %s_RULES",(const char *)clockname);
+      sql=QString("select ")+
+	"CODE,"+         // 00
+	"MAX_ROW,"+      // 01
+	"MIN_WAIT,"+     // 02
+	"NOT_AFTER,"+    // 03
+	"OR_AFTER,"+     // 04
+	"OR_AFTER_II "+  // 05
+	"from RULE_LINES where "+
+	"CLOCK_NAME=\""+RDEscapeString(clockname)+"\"";
       q=new RDSqlQuery(sql);
       while (q->next()) {
 	// max in a row, min wait

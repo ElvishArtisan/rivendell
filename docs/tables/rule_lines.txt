@@ -1,0 +1,14 @@
+              Rules Lines Table Layout for Rivendell
+
+The RULE_LINES table holds the music scheduler rules for each clock.
+
+FIELD NAME           TYPE               REMARKS
+------------------------------------------------------------------------
+ID                   int(11) signed     Primary key, auto-increment
+CLOCK_NAME           char(64)           From CLOCKS.NAME
+CODE                 varchar(10)        from SCHED_CODES.CODE
+MAX_ROW              int(10) unsigned
+MIN_WAIT             int(10) unsigned
+NOT_AFTER            varchar(10)
+OR_AFTER             varchar(10)
+OR_AFTER_II          varchar(10)

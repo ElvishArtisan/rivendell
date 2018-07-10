@@ -7328,7 +7328,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
     q=new RDSqlQuery(sql);
     while(q->next()) {
       if(DropTable(q->value(0).toString(),err_msg)) {
-	fprintf(stderr,"rddbmgr: dropping orphaned log table \"%s\"\n",
+	fprintf(stderr,"rddbmgr: dropping orphaned LOG table \"%s\"\n",
 		(const char *)q->value(0).toString());
       }
     }
@@ -7581,7 +7581,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
     q=new RDSqlQuery(sql);
     while(q->next()) {
       if(DropTable(q->value(0).toString(),err_msg)) {
-	fprintf(stderr,"rddbmgr: dropping orphaned preimport event table \"%s\"\n",
+	fprintf(stderr,"rddbmgr: dropping orphaned PRE table \"%s\"\n",
 		(const char *)q->value(0).toString());
       }
     }
@@ -7592,7 +7592,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
     q=new RDSqlQuery(sql);
     while(q->next()) {
       if(DropTable(q->value(0).toString(),err_msg)) {
-	fprintf(stderr,"rddbmgr: dropping orphaned postimport event table \"%s\"\n",
+	fprintf(stderr,"rddbmgr: dropping orphaned POST table \"%s\"\n",
 		(const char *)q->value(0).toString());
       }
     }
@@ -7648,7 +7648,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
     q=new RDSqlQuery(sql);
     while(q->next()) {
       if(DropTable(q->value(0).toString(),err_msg)) {
-	fprintf(stderr,"rddbmgr: dropping orphaned clock table \"%s\"\n",
+	fprintf(stderr,"rddbmgr: dropping orphaned CLK table \"%s\"\n",
 		(const char *)q->value(0).toString());
       }
     }
@@ -7656,6 +7656,72 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
 
     WriteSchemaVersion(++cur_schema);
   }
+
+  if((cur_schema<292)&&(set_schema>cur_schema)) {
+    sql=QString("create table if not exists RULE_LINES (")+
+      "ID int unsigned auto_increment primary key,"+
+      "CLOCK_NAME char(64) not null,"+
+      "CODE varchar(10) not null,"+
+      "MAX_ROW int unsigned,"+
+      "MIN_WAIT int unsigned,"+
+      "NOT_AFTER varchar(10),"+
+      "OR_AFTER varchar(10),"+
+      "OR_AFTER_II varchar(10),"+
+      "unique index CLOCK_NAME_CODE_IDX(CLOCK_NAME,CODE))"+
+      db_table_create_postfix;
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("select NAME from CLOCKS");
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      QString tablename=q->value(0).toString()+"_RULES";
+      tablename.replace(" ","_");
+      sql=QString("select ")+
+	"CODE,"+         // 00
+	"MAX_ROW,"+      // 01
+	"MIN_WAIT,"+     // 02
+	"NOT_AFTER,"+    // 03
+	"OR_AFTER,"+     // 04
+	"OR_AFTER_II "+  // 05
+	"from `"+tablename+"` "+
+	"order by CODE";
+      q1=new RDSqlQuery(sql);
+      while(q1->next()) {
+	sql=QString("insert into RULE_LINES set ")+
+	  "CLOCK_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	  "CODE=\""+RDEscapeString(q1->value(0).toString())+"\","+
+	  QString().sprintf("MAX_ROW=%u,",q1->value(1).toUInt())+
+	  QString().sprintf("MIN_WAIT=%u,",q1->value(2).toUInt())+
+	  "NOT_AFTER=\""+RDEscapeString(q1->value(3).toString())+"\","+
+	  "OR_AFTER=\""+RDEscapeString(q1->value(4).toString())+"\","+
+	  "OR_AFTER_II=\""+RDEscapeString(q1->value(5).toString())+"\"";
+	if(!RDSqlQuery::apply(sql,err_msg)) {
+	  return false;
+	}
+      }
+      delete q1;
+      if(!DropTable(tablename,err_msg)) {
+	return false;
+      }
+    }
+    delete q;
+
+    sql=QString("show tables where ")+
+      "Tables_in_"+db_config->mysqlDbname()+" like \"%_RULES\"";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      if(DropTable(q->value(0).toString(),err_msg)) {
+	fprintf(stderr,"rddbmgr: dropping orphaned RULES table \"%s\"\n",
+		(const char *)q->value(0).toString());
+      }
+    }
+    delete q;
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
 
 
 

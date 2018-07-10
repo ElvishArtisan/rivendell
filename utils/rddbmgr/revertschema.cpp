@@ -39,6 +39,61 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
 
 
   //
+  // Revert 292
+  //
+  if((cur_schema==292)&&(set_schema<cur_schema)) {
+    sql=QString("select NAME from CLOCKS");
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      QString tablename=q->value(0).toString()+"_RULES";
+      tablename.replace(" ","_");
+      sql=QString("create table `")+tablename+"` ("+
+	"CODE varchar(10) not null primary key,"+
+	"MAX_ROW int unsigned,"+
+	"MIN_WAIT int unsigned,"+
+	"NOT_AFTER varchar(10),"+
+	"OR_AFTER varchar(10),"+
+	"OR_AFTER_II varchar(10))"+
+	db_table_create_postfix;
+      if(!RDSqlQuery::apply(sql,err_msg)) {
+	return false;
+      }
+
+      sql=QString("select ")+
+	"CODE,"+         // 00
+	"MAX_ROW,"+      // 01
+	"MIN_WAIT,"+     // 02
+	"NOT_AFTER,"+    // 03
+	"OR_AFTER,"+     // 04
+	"OR_AFTER_II "+  // 05
+	"from RULE_LINES where "+
+	"CLOCK_NAME=\""+RDEscapeString(q->value(0).toString())+"\" "+
+	"order by CODE";
+      q1=new RDSqlQuery(sql,false);
+      while(q1->next()) {
+	sql=QString("insert into `")+tablename+"` set "+
+	  "CODE=\""+RDEscapeString(q1->value(0).toString())+"\","+
+	  QString().sprintf("MAX_ROW=%u,",q1->value(1).toUInt())+
+	  QString().sprintf("MIN_WAIT=%u,",q1->value(2).toUInt())+
+	  "NOT_AFTER=\""+RDEscapeString(q1->value(3).toString())+"\","+
+	  "OR_AFTER=\""+RDEscapeString(q1->value(4).toString())+"\","+
+	  "OR_AFTER_II=\""+RDEscapeString(q1->value(5).toString())+"\"";
+	if(!RDSqlQuery::apply(sql,err_msg)) {
+	  return false;
+	}
+      }
+      delete q1;
+    }
+
+    if(!DropTable("RULE_LINES",err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+
+  //
   // Revert 291
   //
   if((cur_schema==291)&&(set_schema<cur_schema)) {
