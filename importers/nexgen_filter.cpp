@@ -387,9 +387,9 @@ void MainObject::ProcessXmlFile(const QString &xml,const QString &wavname,
   cart=new RDCart(cartnum);
   cart->setMetadata(&data);
   delete cart;
-  sql=
-    QString().sprintf("select CUT_NAME from CUTS where CART_NUMBER=%d",cartnum)+
-    " order by ORIGIN_DATETIME desc";
+  sql=QString("select CUT_NAME from CUTS where ")+
+    QString().sprintf("CART_NUMBER=%d ",cartnum)+
+    "order by ORIGIN_DATETIME desc";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     cut=new RDCut(q->value(0).toString());

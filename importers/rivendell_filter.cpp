@@ -251,8 +251,8 @@ MainObject::MainObject(QObject *parent)
     //
     // Validate Group
     //
-    sql=QString().sprintf("select NAME from GROUPS where NAME=\"%s\"",
-			  (const char *)RDEscapeString(q->value(2).toString()));
+    sql=QString("select NAME from GROUPS where ")+
+      "NAME=\""+RDEscapeString(q->value(2).toString())+"\"";
     q1=new QSqlQuery(sql,filter_db);
     if(q1->first()) {
       group=q->value(2).toString();
@@ -288,8 +288,7 @@ MainObject::MainObject(QObject *parent)
       owner="null";
     }
     else {
-      owner=QString().sprintf("\"%s\"",
-	       (const char *)RDEscapeString(q->value(26).toString()));
+      owner=QString("\"")+RDEscapeString(q->value(26).toString())+"\"";
     }
     sql=QString("insert into CART set ")+
       QString().sprintf("NUMBER=%u,",q->value(0).toUInt())+
@@ -436,9 +435,7 @@ MainObject::MainObject(QObject *parent)
 	"CUT_NAME=\""+RDEscapeString(q1->value(0).toString())+"\"";
       q2=new QSqlQuery(sql,filter_db);
       delete q2;
-      ok=RDCopy(QString().sprintf("%s%s.%s",(const char *)ext_audiodir,
-				  (const char *)q1->value(0).toString(),
-				  RD_AUDIO_EXTENSION),
+      ok=RDCopy(ext_audiodir+q1->value(0).toString()+"."+RD_AUDIO_EXTENSION,
 		RDCut::pathName(q1->value(0).toString()));
       if(!ok) {
 	printf("[WARNING -- NO AUDIO FOUND]...");

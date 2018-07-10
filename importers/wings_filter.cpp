@@ -202,15 +202,18 @@ bool MainObject::ImportCut(RDGroup *group,struct WingsRecord *rec,
   printf("Importing %s - %s to cart %u, group %s\n",
 	 rec->filename,rec->title,cartnum,(const char *)group->name());
   
-  sql=QString().sprintf("insert into CART set NUMBER=%u,GROUP_NAME=\"%s\",\
-                         TITLE=\"%s\",ARTIST=\"%s\",ALBUM=\"%s\",\
-                         CUT_QUANTITY=1,TYPE=%d,FORCED_LENGTH=%u,\
-                         AVERAGE_LENGTH=%u,USER_DEFINED=\"%s.%s\"",
-			cartnum,(const char *)group->name(),
-			rec->title,rec->artist,rec->album,
-			RDCart::Audio,wavefile->getExtTimeLength(),
-			wavefile->getExtTimeLength(),
-			rec->filename,rec->extension);
+  sql=QString("insert into CART set ")+
+    QString().sprintf("NUMBER=%u,",cartnum)+
+    "GROUP_NAME=\""+RDEscapeString(group->name())+"\","+
+    "TITLE=\""+RDEscapeString(rec->title)+"\","+
+    "ARTIST=\""+RDEscapeString(rec->artist)+"\","+
+    "ALBUM=\""+RDEscapeString(rec->album)+"\","+
+    "CUT_QUANTITY=1,"+
+    QString().sprintf("TYPE=%d,",RDCart::Audio)+
+    QString().sprintf("FORCED_LENGTH=%u,",wavefile->getExtTimeLength())+
+    QString().sprintf("AVERAGE_LENGTH=%u,",wavefile->getExtTimeLength())+
+    "USER_DEFINED=\""+RDEscapeString(rec->filename)+"."+
+    RDEscapeString(rec->extension)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
   RDCut::create(cartnum,1);

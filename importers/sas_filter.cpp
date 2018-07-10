@@ -31,6 +31,7 @@
 #include <rd.h>
 #include <rdapplication.h>
 #include <rddb.h>
+#include <rdescape_string.h>
 
 #include "sas_filter.h"
 
@@ -124,10 +125,9 @@ void MainObject::InjectLine(char *line)
   //
   // Initialize the SQL clause
   //
-  QString base_sql=QString().sprintf("insert into RECORDINGS set\
-                                      STATION_NAME=\"%s\",CHANNEL=%d,",
-				     (const char *)rda->config()->sasStation(),
-				     rda->config()->sasMatrix());
+  QString base_sql=QString("insert into RECORDINGS set ")+
+    "STATION_NAME=\""+RDEscapeString(rda->config()->sasStation())+"\","+
+    QString().sprintf("CHANNEL=%d,",rda->config()->sasMatrix());
 
   //
   // Day of the week fields

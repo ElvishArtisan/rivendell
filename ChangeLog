@@ -17117,3 +17117,5 @@
 	* Incremented the database version to 293.
 2018-07-10 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up SQL quieries to ensure UTF-8 compatibility in caed(8).
+2018-07-10 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up SQL quieries in importersto ensure UTF-8 compatibility.

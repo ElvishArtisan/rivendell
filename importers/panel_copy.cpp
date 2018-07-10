@@ -23,12 +23,14 @@
 #include <unistd.h>
 
 #include <qapplication.h>
-#include <rddb.h>
-#include <rd.h>
-#include <dbversion.h>
-#include <panel_copy.h>
-#include <rdcmd_switch.h>
 
+#include <dbversion.h>
+#include <rd.h>
+#include <rdcmd_switch.h>
+#include <rddb.h>
+#include <rdescape_string.h>
+
+#include "panel_copy.h"
 
 MainObject::MainObject(QObject *parent)
   : QObject(parent)
@@ -131,11 +133,10 @@ MainObject::MainObject(QObject *parent)
   //
   // Check Database Versions
   //
-  sql="select DB from VERSION";
+  sql=QString("select DB from VERSION");
   q=new RDSqlQuery(sql,src_db);
   if(!q->first()) {
-    fprintf(stderr,
-	    "panel_copy: unable to read source database version\n");
+    fprintf(stderr,"panel_copy: unable to read source database version\n");
     exit(256);
   }
   if(q->value(0).toInt()!=RD_VERSION_DATABASE) {
@@ -178,27 +179,27 @@ MainObject::MainObject(QObject *parent)
   //
   // Copy Entries
   //
-  sql="select TYPE,OWNER,PANEL_NO,ROW_NO,COLUMN_NO,LABEL,CART,DEFAULT_COLOR\
-       from PANELS";
+  sql=QString("select ")+
+    "TYPE,"+           // 00
+    "OWNER,"+          // 01
+    "PANEL_NO,"+       // 02
+    "ROW_NO,"+         // 03
+    "COLUMN_NO,"+      // 04
+    "LABEL,"+          // 05
+    "CART,"+           // 06
+    "DEFAULT_COLOR "+  // 07
+    "from PANELS";
   q=new RDSqlQuery(sql,src_db);
   while(q->next()) {
-    sql=QString().sprintf("insert into PANELS set \
-                           TYPE=%d,\
-                           OWNER=\"%s\",\
-                           PANEL_NO=%d,\
-                           ROW_NO=%d,\
-                           COLUMN_NO=%d,\
-                           LABEL=\"%s\",\
-                           CART=%d,\
-                           DEFAULT_COLOR=\"%s\"",
-			  q->value(0).toInt(),
-			  (const char *)q->value(1).toString(),
-			  q->value(2).toInt(),
-			  q->value(3).toInt(),
-			  q->value(4).toInt(),
-			  (const char *)q->value(5).toString(),
-			  q->value(6).toInt(),
-			  (const char *)q->value(7).toString());
+    sql=QString("insert into PANELS set ")+
+      QString().sprintf("TYPE=%d,",q->value(0).toInt())+
+      "OWNER=\""+RDEscapeString(q->value(1).toString())+"\","+
+      QString().sprintf("PANEL_NO=%d,",q->value(2).toInt())+
+      QString().sprintf("ROW_NO=%d,",q->value(3).toInt())+
+      QString().sprintf("COLUMN_NO=%d,",q->value(4).toInt())+
+      "LABEL=\""+RDEscapeString(q->value(5).toString())+"\","+
+      QString().sprintf("CART=%d,",q->value(6).toInt())+
+      "DEFAULT_COLOR=\""+RDEscapeString(q->value(7).toString())+"\"";
     q1=new RDSqlQuery(sql,dest_db);
     delete q1;
   }
