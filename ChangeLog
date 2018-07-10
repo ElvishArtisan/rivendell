@@ -17109,6 +17109,6 @@
 2018-07-09 Fred Gleason <fredg@paravelsystems.com>
 	* Added code in rddbmgr(8) to update the registered schema number
 	in the DB after each schema modification.
-2018-07-09 Fred Gleason <fredg@paravelsystems.com>
+2018-07-10 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'RULE_LINES' table to the database.
 	* Incremented the database version to 292.
