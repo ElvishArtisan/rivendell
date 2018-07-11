@@ -469,7 +469,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
 	  "LABEL=\""+RDEscapeString(q1->value(12).toString())+"\","+
 	  "CONDUCTOR=\""+RDEscapeString(q1->value(13).toString())+"\","+
 	  "USAGE_CODE=\""+RDEscapeString(q1->value(14).toString())+"\","+
-	  "DESCRIPTIONS=\""+RDEscapeString(q1->value(15).toString())+"\","+
+	  "DESCRIPTION=\""+RDEscapeString(q1->value(15).toString())+"\","+
 	  "OUTCUE=\""+RDEscapeString(q1->value(16).toString())+"\","+
 	  "ISRC=\""+RDEscapeString(q1->value(17).toString())+"\","+
 	  "ISCI=\""+RDEscapeString(q1->value(18).toString())+"\","+
