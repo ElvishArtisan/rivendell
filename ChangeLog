@@ -17118,6 +17118,6 @@
 2018-07-10 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up SQL quieries to ensure UTF-8 compatibility in caed(8).
 2018-07-10 Fred Gleason <fredg@paravelsystems.com>
-	* Cleaned up SQL quieries in importersto ensure UTF-8 compatibility.
+	* Cleaned up SQL quieries in importers to ensure UTF-8 compatibility.
 2018-07-11 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rddbmgr(8) that caused reversion 289 to fail.
