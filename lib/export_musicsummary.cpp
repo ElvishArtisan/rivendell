@@ -48,9 +48,9 @@ bool RDReport::ExportMusicSummary(const QString &filename,
     return false;
   }
   sql=QString("select ")+
-    "ELR_LINES.ARTIST,"+
-    "ELR_LINES.TITLE,"+
-    "ELR_LINES.ALBUM "+
+    "ELR_LINES.ARTIST,"+  // 00
+    "ELR_LINES.TITLE,"+   // 01
+    "ELR_LINES.ALBUM "+   // 02
     "from ELR_LINES left join CART "+
     "on ELR_LINES.CART_NUMBER=CART.NUMBER where "+
     "SERVICE_NAME=\""+RDEscapeString(mixtable)+"\" "+

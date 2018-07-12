@@ -28,9 +28,12 @@ RDEncoderList::RDEncoderList(const QString &stationname)
   RDSqlQuery *q;
   RDSqlQuery *q1;
 
-  sql=QString().sprintf("select ID,NAME,DEFAULT_EXTENSION,COMMAND_LINE \
-                        from ENCODERS where STATION_NAME=\"%s\"",
-			(const char *)RDEscapeString(stationname));
+  sql=QString("select ")+
+    "ID,"+
+    "NAME,"+
+    "DEFAULT_EXTENSION,"+
+    "COMMAND_LINE "+
+    "from ENCODERS where STATION_NAME=\""+RDEscapeString(stationname)+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     list_encoders.push_back(new RDEncoder());

@@ -343,9 +343,9 @@ QString RDSettings::defaultExtension(const QString &stationname,
   RDSqlQuery *q;
   QString ret;
 
-  sql=QString().sprintf("select DEFAULT_EXTENSION from ENCODERS \
-                         where (ID=%d)&&(STATION_NAME=\"%s\")",
-			fmt,(const char *)RDEscapeString(stationname));
+  sql=QString("select DEFAULT_EXTENSION from ENCODERS where ")+
+    QString().sprintf("ID=%d)&&",fmt)+
+    "(STATION_NAME=\""+RDEscapeString(stationname)+"\")";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     ret=q->value(0).toString();

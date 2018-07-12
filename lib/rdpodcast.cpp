@@ -311,9 +311,7 @@ bool RDPodcast::removeAudio(RDFeed *feed,QString *err_text,bool log_debug) const
   url=new QUrl(feed->purgeUrl());
   strncpy(urlstr,(const char *)(url->protocol()+"://"+url->host()+"/"),1024);
   curl_easy_setopt(curl,CURLOPT_URL,urlstr);
-  strncpy(userpwd,(const char *)QString().
-		   sprintf("%s:%s",(const char *)feed->purgeUsername(),
-			   (const char *)feed->purgePassword()),256);
+  strncpy(userpwd,feed->purgeUsername()+":"+feed->purgePassword(),256);
   curl_easy_setopt(curl,CURLOPT_USERPWD,userpwd);
   curl_easy_setopt(curl,CURLOPT_HTTPAUTH,CURLAUTH_ANY);
   curl_easy_setopt(curl,CURLOPT_USERAGENT,
@@ -362,17 +360,14 @@ bool RDPodcast::removeAudio(RDFeed *feed,QString *err_text,bool log_debug) const
 QString RDPodcast::guid(const QString &url,const QString &filename,
 			unsigned feed_id,unsigned cast_id)
 {
-  return QString().sprintf("%s/%s_%06u_%06u",
-			   (const char *)url,(const char *)filename,
-			   feed_id,cast_id);
+  return url+"/"+filename+QString().sprintf("_%06u_%06u",feed_id,cast_id);
 }
 
 
 QString RDPodcast::guid(const QString &full_url,unsigned feed_id,
 			unsigned cast_id)
 {
-  return QString().sprintf("%s_%06u_%06u",
-			   (const char *)full_url,feed_id,cast_id);
+  return full_url+QString().sprintf("_%06u_%06u",feed_id,cast_id);
 }
 
 
@@ -381,10 +376,9 @@ void RDPodcast::SetRow(const QString &param,int value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE PODCASTS SET %s=%d WHERE ID=%u",
-			(const char *)param,
-			value,
-			podcast_id);
+  sql=QString("update PODCASTS set ")+
+    param+QString().sprintf("=%d where ",value)+
+    QString().sprintf("ID=%u",podcast_id);
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -395,10 +389,9 @@ void RDPodcast::SetRow(const QString &param,const QString &value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE PODCASTS SET %s=\"%s\" WHERE ID=%u",
-			(const char *)param,
-			(const char *)RDEscapeString(value),
-			podcast_id);
+  sql=QString("update PODCASTS set ")+
+    param+"=\""+RDEscapeString(value)+"\" where "+
+    QString().sprintf("ID=%u",podcast_id);
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -410,10 +403,9 @@ void RDPodcast::SetRow(const QString &param,const QDateTime &value,
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE PODCASTS SET %s=%s WHERE ID=%u",
-			(const char *)param,
-			(const char *)RDCheckDateTime(value, format),
-			podcast_id);
+  sql=QString("update PODCASTS set ")+
+    param+"="+RDCheckDateTime(value, format)+" where "+
+    QString().sprintf("ID=%u",podcast_id);
   q=new RDSqlQuery(sql);
   delete q;
 }

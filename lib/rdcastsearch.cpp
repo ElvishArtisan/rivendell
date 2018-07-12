@@ -29,22 +29,15 @@ QString RDCastSearchString(const QString &filter,bool unexp_only,
 {
   QString ret;
   if(!filter.isEmpty()) {
-    ret+=QString().sprintf("&&((PODCASTS.ITEM_TITLE like \"%%%s%%\")||\
-                              (PODCASTS.ITEM_DESCRIPTION like \"%%%s%%\")||\
-                              (PODCASTS.ITEM_CATEGORY like \"%%%s%%\")||\
-                              (PODCASTS.ITEM_LINK like \"%%%s%%\")||\
-                              (PODCASTS.ITEM_COMMENTS like \"%%%s%%\")||\
-                              (PODCASTS.ITEM_AUTHOR like \"%%%s%%\")||\
-                              (PODCASTS.ITEM_SOURCE_TEXT like \"%%%s%%\")||\
-                              (PODCASTS.ITEM_SOURCE_URL like \"%%%s%%\"))",
-			   (const char *)filter,
-			   (const char *)filter,
-			   (const char *)filter,
-			   (const char *)filter,
-			   (const char *)filter,
-			   (const char *)filter,
-			   (const char *)filter,
-			   (const char *)filter);
+    QString fil=RDEscapeString(filter);
+    ret+=QString("&&((PODCASTS.ITEM_TITLE like \"%")+fil+"%\")||"+
+      "(PODCASTS.ITEM_DESCRIPTION like \"%"+fil+"%\")||"+
+      "(PODCASTS.ITEM_CATEGORY like \"%"+fil+"%\")||"+
+      "(PODCASTS.ITEM_LINK like \"%"+fil+"%\")||"+
+      "(PODCASTS.ITEM_COMMENTS like \"%"+fil+"%\")||"+
+      "(PODCASTS.ITEM_AUTHOR like \"%"+fil+"%\")||"+
+      "(PODCASTS.ITEM_SOURCE_TEXT like \"%"+fil+"%\")||"+
+      "(PODCASTS.ITEM_SOURCE_URL like \"%"+fil+"%\"))";
   }
   if(unexp_only) {
     ret+=QString().sprintf("&&(STATUS!=%d)",RDPodcast::StatusExpired);
@@ -68,8 +61,8 @@ QString RDCastSearch(int feed_id,const QString &filter,bool unexp_only,
 QString RDCastSearch(const QString &keyname,const QString &filter,
 		     bool unexp_only,bool active_only)
 {
-  QString ret=QString().sprintf("where (KEY_NAME=\"%s\")",
-				(const char *)RDEscapeString(keyname));
+  QString ret=QString("where (KEY_NAME=\"")+
+    RDEscapeString(keyname)+"\")";
   ret+=RDCastSearchString(filter,unexp_only,active_only);
 
   return ret;

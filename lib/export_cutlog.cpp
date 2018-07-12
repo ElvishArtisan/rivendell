@@ -63,7 +63,7 @@ bool RDReport::ExportCutLog(const QString &filename,const QDate &startdate,
     "ELR_LINES.EXT_DATA,"+        // 06
     "ELR_LINES.EXT_EVENT_ID,"+    // 07
     "ELR_LINES.TITLE,"+           // 08
-    "CART.FORCED_LENGTH,"+                 // 09
+    "CART.FORCED_LENGTH,"+        // 09
     "ELR_LINES.STATION_NAME,"+    // 10
     "ELR_LINES.PLAY_SOURCE,"+     // 11
     "ELR_LINES.CUT_NUMBER,"+      // 12

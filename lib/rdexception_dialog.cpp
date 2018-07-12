@@ -101,10 +101,8 @@ void RDExceptionDialog::saveData()
     str1=QString(tr("The file"));
     str2=QString(tr("already exists!\nOverwrite?"));
     if(QMessageBox::question(this,tr("File Exists"),
-			     QString().sprintf("%s \'%s\' %s",
-					       (const char *)str1,
-					       (const char *)filename,
-					       (const char *)str2),
+			     tr("The file")+" \""+filename+"\" "+
+			     tr("already exists!")+"\n"+tr("Overwrite?"),
 			     QMessageBox::Yes,QMessageBox::No)==
        QMessageBox::No) {
       return;
@@ -115,9 +113,8 @@ void RDExceptionDialog::saveData()
     str1=QString(tr("Unable to open file"));
     str2=QString(tr("for writing!"));
     QMessageBox::
-      warning(this,tr("File Error"),QString().
-	      sprintf("%s \'%s\' %s!",(const char *)str1,
-		      (const char *)filename,(const char *)str2));
+      warning(this,tr("File Error"),tr("Unable to open file")+
+	      " \""+filename+"\" "+tr("for writing!")); 
     return;
   }
   fprintf(fh,(const char *)report_view->text());

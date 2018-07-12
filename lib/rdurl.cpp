@@ -44,9 +44,7 @@ QString RDUrl::smbShare() const
   if((offset=path().right(path().length()-1).find("/"))<0) {
     offset=path().length();
   }
-  return QString().sprintf("//%s%s",
-			   (const char *)host(),
-			   (const char *)path().left(offset+1));
+  return QString("//")+host()+path().left(offset+1);
 }
 
 

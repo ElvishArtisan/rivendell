@@ -2,7 +2,7 @@
 //
 // A widget to select a Rivendell Group.
 //
-//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2006,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,8 +23,8 @@
 #include <rddb.h>
 #include <qdatetime.h>
 
+#include <rdescape_string.h>
 #include <rdlist_groups.h>
-
 
 RDListGroups::RDListGroups(QString *groupname,const QString &username,
 			   QWidget *parent)
@@ -147,11 +147,12 @@ void RDListGroups::BuildGroupList(const QString &username)
   QListViewItem *cur_item=NULL;
 
   group_group_list->clear();
-  sql=QString().sprintf("select USER_PERMS.GROUP_NAME,GROUPS.DESCRIPTION\
-                         from USER_PERMS left join GROUPS\
-                         on USER_PERMS.GROUP_NAME=GROUPS.NAME\
-                         where USER_NAME=\"%s\"",
-			(const char *)username);
+  sql=QString("select ")+
+    "USER_PERMS.GROUP_NAME,"+  // 00
+    "GROUPS.DESCRIPTION "+     // 01
+    "from USER_PERMS left join GROUPS "+
+    "on USER_PERMS.GROUP_NAME=GROUPS.NAME where "+
+    "USER_NAME=\""+RDEscapeString(username)+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     item=new QListViewItem(group_group_list);

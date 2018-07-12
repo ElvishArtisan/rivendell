@@ -48,10 +48,9 @@ QString RDReport::name() const
 
 bool RDReport::exists() const
 {
-  RDSqlQuery *q=new RDSqlQuery(QString().sprintf("select NAME from REPORTS\
-                                                where NAME=\"%s\"",
-						 (const char *)
-						 RDEscapeString(report_name)));
+  QString sql=QString("select NAME from REPORTS where ")+
+    "NAME=\""+RDEscapeString(report_name)+"\"";
+  RDSqlQuery *q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;
     return false;
@@ -374,13 +373,13 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
   //
   // Generate the Station List
   //
-  sql=QString().sprintf("select STATION_NAME from REPORT_STATIONS \
-                         where REPORT_NAME=\"%s\"",
-			(const char *)name());
+  sql=QString("select STATION_NAME from REPORT_STATIONS where ")+
+    "REPORT_NAME=\""+RDEscapeString(name())+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    station_sql+=QString().sprintf("(STATION_NAME=\"%s\")||",
-				   (const char *)q->value(0).toString());
+    station_sql+=
+      QString("(STATION_NAME=\"")+
+      RDEscapeString(q->value(0).toString())+"\")||";
   }
   delete q;
   station_sql=station_sql.left(station_sql.length()-2);
@@ -403,25 +402,23 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
     }
   }
   if(filterGroups()) {
-    QString sql2=QString().sprintf("select GROUP_NAME from REPORT_GROUPS \
-                                    where REPORT_NAME=\"%s\"",
-				   (const char *)RDEscapeString(name()));
+    QString sql2=QString("select GROUP_NAME from REPORT_GROUPS where ")+
+      "REPORT_NAME=\""+RDEscapeString(name())+"\"";
     q=new RDSqlQuery(sql2);
     while(q->next()) {
       if(!where) {
 	sql+="where ";
 	where=true;
       }
-      sql+=QString().sprintf("(NAME=\"%s\")||",
-		     (const char *)RDEscapeString(q->value(0).toString()));
+      sql+=QString("(NAME=\"")+RDEscapeString(q->value(0).toString())+"\")||";
     }
     delete q;
   }
   sql=sql.left(sql.length()-2);
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    group_sql+=QString().sprintf("(CART.GROUP_NAME=\"%s\")||",
-				 (const char *)q->value(0).toString());
+    group_sql+=QString("(CART.GROUP_NAME=\"")+
+      RDEscapeString(q->value(0).toString())+"\")||";
   }
   delete q;
   group_sql=group_sql.left(group_sql.length()-2);
@@ -680,7 +677,6 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
 				report_station,report_config,serviceName());
 #endif
   system(post_cmd);
-  //  printf("MIXDOWN TABLE: %s_SRT\n",(const char *)mixname);
   sql=QString("delete from ELR_LINES where ")+
     "SERVICE_NAME=\""+RDEscapeString(mixname)+"\"";
   RDSqlQuery::apply(sql);
@@ -869,10 +865,9 @@ void RDReport::SetRow(const QString &param,const QString &value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE REPORTS SET %s=\"%s\" WHERE NAME=\"%s\"",
-			(const char *)param,
-			(const char *)RDEscapeString(value),
-			(const char *)report_name);
+  sql=QString("update REPORTS set ")+
+    param+"=\""+RDEscapeString(value)+"\" where "+
+    "NAME=\""+RDEscapeString(report_name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -883,10 +878,9 @@ void RDReport::SetRow(const QString &param,int value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE REPORTS SET %s=%d WHERE NAME=\"%s\"",
-			(const char *)param,
-			value,
-			(const char *)report_name);
+  sql=QString("update REPORTS set ")+
+    param+QString().sprintf("=%d where ",value)+
+    "NAME=\""+RDEscapeString(report_name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -897,10 +891,9 @@ void RDReport::SetRow(const QString &param,unsigned value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE REPORTS SET %s=%u WHERE NAME=\"%s\"",
-			(const char *)param,
-			value,
-			(const char *)report_name);
+  sql=QString("update REPORTS set ")+
+    param+QString().sprintf("=%u where ",value)+
+    "NAME=\""+RDEscapeString(report_name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -911,10 +904,9 @@ void RDReport::SetRow(const QString &param,bool value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE REPORTS SET %s=\"%s\" WHERE NAME=\"%s\"",
-			(const char *)param,
-			(const char *)RDYesNo(value),
-			(const char *)report_name);
+  sql=QString("update REPORTS set ")+
+    param+"=\""+RDYesNo(value)+"\" where "+
+    "NAME=\""+RDEscapeString(report_name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -925,10 +917,9 @@ void RDReport::SetRow(const QString &param,const QTime &value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE REPORTS SET %s=%s WHERE NAME=\"%s\"",
-			(const char *)param,
-			(const char *)RDCheckDateTime(value, "hh:mm:ss"),
-			(const char *)report_name);
+  sql=QString("update REPORTS set ")+
+    param+"="+RDCheckDateTime(value, "hh:mm:ss")+" where "+
+    "NAME=\""+RDEscapeString(report_name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }

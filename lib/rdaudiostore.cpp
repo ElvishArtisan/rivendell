@@ -78,10 +78,9 @@ RDAudioStore::ErrorCode RDAudioStore::runStore(const QString &username,
   //
   // Generate POST Data
   //
-  QString post=QString().sprintf("COMMAND=%d&LOGIN_NAME=%s&PASSWORD=%s",
-				 RDXPORT_COMMAND_AUDIOSTORE,
-				 (const char *)RDFormPost::urlEncode(username),
-				 (const char *)RDFormPost::urlEncode(password));
+  QString post=QString().sprintf("COMMAND=%d&",RDXPORT_COMMAND_AUDIOSTORE)+
+    "LOGIN_NAME="+RDFormPost::urlEncode(username)+"&"+
+    "PASSWORD="+RDFormPost::urlEncode(password);
   if((curl=curl_easy_init())==NULL) {
     return RDAudioStore::ErrorInternal;
   }

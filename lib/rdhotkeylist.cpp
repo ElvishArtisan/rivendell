@@ -67,7 +67,7 @@ void RDHotKeyList::BuildKeyList( )
     }
     if (p != NULL) {
       while ( ( fgets(line,256,hkeyfile) != NULL) && (!(strstr(line,"}")) ) ) {
-	QString buf = cleanStrings(QString().sprintf("%s",line));
+	QString buf = cleanStrings(line);
 	int acomment = buf.find("//");
 	int eqsign = buf.find("=");
 	if ((eqsign != -1) && (acomment != 0) ) {

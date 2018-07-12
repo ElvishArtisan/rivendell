@@ -96,14 +96,11 @@ RDPeaksExport::ErrorCode RDPeaksExport::runExport(const QString &username,
   //
   // Generate POST Data
   //
-  QString post=QString().
-    sprintf("COMMAND=%d&LOGIN_NAME=%s&PASSWORD=%s&CART_NUMBER=%u&CUT_NUMBER=%u",
-	    RDXPORT_COMMAND_EXPORT_PEAKS,
-	    (const char *)RDFormPost::urlEncode(username),
-	    (const char *)RDFormPost::urlEncode(password),
-	    conv_cart_number,
-	    conv_cut_number);
-
+  QString post=QString().sprintf("COMMAND=%d&",RDXPORT_COMMAND_EXPORT_PEAKS)+
+    "LOGIN_NAME="+RDFormPost::urlEncode(username)+"&"+
+    "PASSWORD="+RDFormPost::urlEncode(password)+"&"+
+    QString().sprintf("CART_NUMBER=%u&",conv_cart_number)+
+    QString().sprintf("CUT_NUMBER=%u",conv_cut_number);
   if((curl=curl_easy_init())==NULL) {
     return RDPeaksExport::ErrorInternal;
   }

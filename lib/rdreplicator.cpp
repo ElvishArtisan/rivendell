@@ -216,9 +216,9 @@ QString RDReplicator::typeString(RDReplicator::Type type)
 QVariant RDReplicator::GetValue(const QString &field) const
 {
   QVariant ret;
-  QString sql=QString().sprintf("select %s from REPLICATORS where NAME=\"%s\"",
-				(const char *)field,
-				(const char *)RDEscapeString(replicator_name));
+  QString sql=QString("select ")+
+    field+" from REPLICATORS where "+
+    "NAME=\""+RDEscapeString(replicator_name)+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     ret=q->value(0);
@@ -233,11 +233,10 @@ void RDReplicator::SetRow(const QString &param,QString value) const
   RDSqlQuery *q;
   QString sql;
 
-  value.replace("\\","\\\\");  // Needed to preserve Windows pathnames
-  sql=QString().sprintf("update REPLICATORS set %s=\"%s\" where NAME=\"%s\"",
-			(const char *)param,
-			(const char *)RDEscapeString(value),
-			(const char *)RDEscapeString(replicator_name));
+  //  value.replace("\\","\\\\");  // Needed to preserve Windows pathnames
+  sql=QString("update REPLICATORS set ")+
+    param+"=\""+RDEscapeString(value)+"\" where "+
+    "NAME=\""+RDEscapeString(replicator_name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -248,10 +247,9 @@ void RDReplicator::SetRow(const QString &param,int value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("update REPLICATORS set %s=%d where NAME=\"%s\"",
-			(const char *)param,
-			value,
-			(const char *)RDEscapeString(replicator_name));
+  sql=QString("update REPLICATORS set ")+
+    param+QString().sprintf("=%d where ",value)+
+    "NAME=\""+RDEscapeString(replicator_name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -262,10 +260,9 @@ void RDReplicator::SetRow(const QString &param,unsigned value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("update REPLICATORS set %s=%u where NAME=\"%s\"",
-			(const char *)param,
-			value,
-			(const char *)RDEscapeString(replicator_name));
+  sql=QString("update REPLICATORS set ")+
+    param+QString().sprintf("=%u where ",value)+
+    "NAME=\""+RDEscapeString(replicator_name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }

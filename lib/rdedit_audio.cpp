@@ -1570,15 +1570,13 @@ void RDEditAudio::gainDownPressedData()
 void RDEditAudio::gainChangedData()
 {
   int gain;
-  QString str;
 
   if(sscanf((const char *)edit_gain_edit->text(),"%d",&gain)==1) {
     edit_gain_control->setValue(gain*100);
   }
-  str=QString(tr("dB"));
-  edit_gain_edit->setText(QString().sprintf("%4.1f %s",
-			  (double)edit_gain_control->value()/100.0,
-			  (const char *)str));
+  edit_gain_edit->
+    setText(QString().sprintf("%4.1f ",
+		     (double)edit_gain_control->value()/100.0)+tr("dB"));
   DrawMaps();
   repaint(false);
 }
@@ -1594,8 +1592,6 @@ void RDEditAudio::gainReleasedData()
 
 void RDEditAudio::gainTimerData()
 {
-  QString str;
-
   switch(edit_gain_mode) {
       case RDEditAudio::GainUp:
 	edit_gain_control->addLine();
@@ -1614,10 +1610,9 @@ void RDEditAudio::gainTimerData()
       default:
 	break;
   }
-  str=QString(tr("dB"));
-  edit_gain_edit->setText(QString().sprintf("%4.1f %s",
-			     (double)edit_gain_control->value()/100.0,
-			     (const char *)str));
+  edit_gain_edit->
+    setText(QString().sprintf("%4.1f ",
+		      (double)edit_gain_control->value()/100.0)+tr("dB"));
   DrawMaps();
   repaint(false);
 }

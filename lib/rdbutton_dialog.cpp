@@ -241,20 +241,10 @@ void RDButtonDialog::DisplayCart(int cartnum)
   if(cart->exists()) {
     edit_cart_edit->
       setText(QString().sprintf("%06u - ",cart->number())+cart->title());
-    /*
-    edit_cart_edit->setText(QString().sprintf("%06u - %s",
-					      cart->number(),
-					      (const char *)cart->title()));
-    */
   }
   else {
     edit_cart_edit->setText(QString().sprintf("%06u - [",cart->number())+"] "+
 			    tr("NOT FOUND"));
-    /*
-    edit_cart_edit->
-      setText(QString().sprintf("%06u - [%s]",cart->number(),
-				(const char *)str));
-    */
   }
   delete cart;
 }

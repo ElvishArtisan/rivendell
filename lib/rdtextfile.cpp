@@ -49,8 +49,8 @@ bool RDTextFile(const QString &data)
     editor=getenv("VISUAL");
   }
 #ifdef WIN32
-  QString tempfile=QString().sprintf("%s\\rd-%s",(const char *)RDTempDirectory::basePath(),
-	           (const char *)QTime::currentTime().toString("hhmmsszzz"));
+  QString tempfile=RDTempDirectory::basePath()+"\\rd-"+
+    QTime::currentTime().toString("hhmmsszzz"));
   FILE *f=fopen(tempfile,"w");
   if(f==NULL) {
     QMessageBox::warning(NULL,"File Error","Unable to create temporary file");
@@ -75,7 +75,7 @@ bool RDTextFile(const QString &data)
     write(fd,data,data.length());
     ::close(fd);
     if(fork()==0) {
-      system(QString().sprintf("%s %s",(const char *)editor,tmpfile));
+      system(editor+" "+tmpfile);
       unlink(tmpfile);
       exit(0);
     }

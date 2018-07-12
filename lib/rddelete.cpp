@@ -100,9 +100,7 @@ RDDelete::ErrorCode RDDelete::runDelete(const QString &username,
   strncpy(urlstr,(const char *)(conv_target_url.protocol()+"://"+
 				conv_target_url.host()+"/"),1024);
   curl_easy_setopt(curl,CURLOPT_URL,urlstr);
-  strncpy(userpwd,(const char *)QString().
-		   sprintf("%s:%s",(const char *)username,
-			   (const char *)password),256);
+  strncpy(userpwd,QString(username)+":"+password,256);
   curl_easy_setopt(curl,CURLOPT_USERPWD,userpwd);
   curl_easy_setopt(curl,CURLOPT_HTTPAUTH,CURLAUTH_ANY);
   curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,DeleteWriteCallback);

@@ -130,9 +130,13 @@ int RDClock::size() const
 
 bool RDClock::load()
 {
-  QString sql=QString().sprintf("select SHORT_NAME,COLOR,ARTISTSEP,REMARKS from\
-                                 CLOCKS where NAME=\"%s\"",
-				(const char *)clock_name);
+  QString sql=QString("select ")+
+    "SHORT_NAME,"+  // 00
+    "COLOR,"+       // 01
+    "ARTISTSEP,"+   // 02
+    "REMARKS "+     // 03
+    "from CLOCKS where "+
+    "NAME=\""+RDEscapeString(clock_name)+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;
@@ -174,18 +178,17 @@ bool RDClock::save()
   if(clock_short_name.isEmpty()) {
     clock_short_name=clock_name.left(3);
   }
-  QString sql=QString().sprintf("select NAME from CLOCKS where NAME=\"%s\"",
-				(const char *)clock_name);
+  QString sql=QString("select NAME from CLOCKS where ")+
+    "NAME=\""+RDEscapeString(clock_name)+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     delete q;
-    sql=QString().sprintf("update CLOCKS set SHORT_NAME=\"%s\",COLOR=\"%s\",\
-                           ARTISTSEP=%d,REMARKS=\"%s\" where NAME=\"%s\"",
-			  (const char *)clock_short_name,
-			  (const char *)clock_color.name(),
-                          artistsep,
-			  (const char *)RDEscapeString(clock_remarks),
-			  (const char *)clock_name);
+    sql=QString("update CLOCKS set ")+
+      "SHORT_NAME=\""+RDEscapeString(clock_short_name)+"\","+
+      "COLOR=\""+RDEscapeString(clock_color.name())+"\","+
+      QString().sprintf("ARTISTSEP=%d,",artistsep)+
+      "REMARKS=\""+RDEscapeString(clock_remarks)+"\" "+
+      "where NAME=\""+RDEscapeString(clock_name)+"\"";
     q=new RDSqlQuery(sql);
     delete q;
     sql=QString("delete from CLOCK_LINES where ")+
@@ -195,15 +198,12 @@ bool RDClock::save()
   }
   else {
     delete q;
-    sql=QString().sprintf("insert into CLOCKS set NAME=\"%s\",\
-                           SHORT_NAME=\"%s\",COLOR=\"%s\",ARTISTSEP=%d,\
-                           REMARKS=\"%s\"",
-			  (const char *)clock_name,
-			  (const char *)clock_short_name,
-			  (const char *)clock_color.name(),
-                          artistsep,
-			  (const char *)RDEscapeString(clock_remarks));
-    
+    sql=QString("insert into CLOCKS set ")+
+      "NAME=\""+RDEscapeString(clock_name)+"\","+
+      "SHORT_NAME=\""+RDEscapeString(clock_short_name)+"\","+
+      "COLOR=\""+RDEscapeString(clock_color.name())+"\","+
+      QString().sprintf("ARTISTSEP=%d,",artistsep)+
+      "REMARKS=\""+RDEscapeString(clock_remarks)+"\"";
     q=new RDSqlQuery(sql);
     delete q;
   }
@@ -226,8 +226,8 @@ bool RDClock::save()
 
 bool RDClock::insert(const QString &event_name,int line)
 {
-  QString sql=QString().sprintf("select NAME from EVENTS where NAME=\"%s\"",
-				(const char *)event_name);
+  QString sql=QString("select NAME from EVENTS where ")+
+    "NAME=\""+RDEscapeString(event_name)+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;

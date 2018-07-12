@@ -525,6 +525,50 @@
         <source>Database version mismatch, should be</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Rule broken: Must have code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rule broken: Must have second code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rule broken: Title Separation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rule broken: Artist Separation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rule broken: Max. in a Row/Min. Wait for </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rule broken: Do not schedule </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>after</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rule broken: Do not schedule</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is overscheduled by</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is underscheduled by</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is not playable</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddCart</name>
@@ -1332,6 +1376,14 @@ Overwrite?</source>
     </message>
     <message>
         <source>File Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>already exists!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Overwrite?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

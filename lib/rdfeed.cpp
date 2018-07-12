@@ -47,8 +47,8 @@ RDFeed::RDFeed(const QString &keyname,RDConfig *config,QObject *parent)
   feed_keyname=keyname;
   feed_config=config;
 
-  sql=QString().sprintf("select ID from FEEDS where KEY_NAME=\"%s\"",
-			(const char *)RDEscapeString(keyname));
+  sql=QString("select ID from FEEDS where ")+
+    "KEY_NAME=\""+RDEscapeString(keyname)+"\"";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     feed_id=q->value(0).toUInt();
@@ -511,19 +511,14 @@ QString RDFeed::audioUrl(RDFeed::MediaLinkMode mode,
 
     case RDFeed::LinkDirect:
       cast=new RDPodcast(feed_config,cast_id);
-      ret=QString().sprintf("%s/%s",
-			    (const char *)baseUrl(),
-			    (const char *)cast->audioFilename());
+      ret=baseUrl()+"/"+cast->audioFilename();
       delete cast;
       break;
 
     case RDFeed::LinkCounted:
-      ret=QString().sprintf("http://%s%s/rd-bin/rdfeed.%s?%s&cast_id=%d",
-			    (const char *)basePreamble(),
-			    (const char *)cgi_hostname,
-			    (const char *)uploadExtension(),
-			    (const char *)keyName(),
-			    cast_id);
+      ret=QString("http://")+basePreamble()+cgi_hostname+
+	"/rd-bin/rdfeed."+uploadExtension()+"?"+keyName()+
+	QString().sprintf("&cast_id=%d",cast_id);
       break;
   }
   return ret;
@@ -745,7 +740,7 @@ unsigned RDFeed::postFile(RDStation *station,const QString &srcfile,Error *err,
   }
   delete upload;
   delete cast;
-  unlink(QString().sprintf("%s.wav",(const char *)tmpfile));
+  unlink(QString(tmpfile)+".wav");
   unlink(tmpfile);
   emit postProgressChanged(totalPostSteps());
 
@@ -813,21 +808,15 @@ unsigned RDFeed::CreateCast(QString *filename,int bytes,int msecs) const
   //
   // Create Entry
   //
-  sql=QString().sprintf("insert into PODCASTS set \
-                         FEED_ID=%u,\
-                         ITEM_TITLE=\"%s\",\
-                         ITEM_DESCRIPTION=\"%s\",\
-                         ITEM_CATEGORY=\"%s\",\
-                         ITEM_LINK=\"%s\",\
-                         SHELF_LIFE=%d,\
-                         EFFECTIVE_DATETIME=UTC_TIMESTAMP(),\
-                         ORIGIN_DATETIME=UTC_TIMESTAMP()",
-			feed_id,
-			(const char *)RDEscapeString(q->value(0).toString()),
-			(const char *)RDEscapeString(q->value(1).toString()),
-			(const char *)RDEscapeString(q->value(2).toString()),
-			(const char *)RDEscapeString(q->value(3).toString()),
-			q->value(4).toInt());
+  sql=QString("insert into PODCASTS set ")+
+    QString().sprintf("FEED_ID=%u,",feed_id)+
+    "ITEM_TITLE=\""+RDEscapeString(q->value(0).toString())+"\","+
+    "ITEM_DESCRIPTION=\""+RDEscapeString(q->value(1).toString())+"\","+
+    "ITEM_CATEGORY=\""+RDEscapeString(q->value(2).toString())+"\","+
+    "ITEM_LINK=\""+RDEscapeString(q->value(3).toString())+"\","+
+    QString().sprintf("SHELF_LIFE=%d,",q->value(4).toInt())+
+    "EFFECTIVE_DATETIME=UTC_TIMESTAMP(),"+
+    "ORIGIN_DATETIME=UTC_TIMESTAMP()";
   q1=new RDSqlQuery(sql);
   delete q1;
 
@@ -844,15 +833,13 @@ unsigned RDFeed::CreateCast(QString *filename,int bytes,int msecs) const
   //
   // Generate the Filename
   //
-  *filename=QString().
-    sprintf("%s.%s",
-	    (const char *)QString().sprintf("%06u_%06u",feed_id,cast_id),
-	    (const char *)q->value(6).toString());
-  sql=QString().sprintf("update PODCASTS set AUDIO_FILENAME=\"%s\",\
-                         AUDIO_LENGTH=%d,\
-                         AUDIO_TIME=%d where ID=%u",
-			(const char *)(*filename),
-			bytes,msecs,cast_id);
+  *filename=
+    QString().sprintf("%06u_%06u",feed_id,cast_id)+"."+q->value(6).toString();
+  sql=QString("update PODCASTS set ")+
+    "AUDIO_FILENAME=\""+RDEscapeString(*filename)+"\","+
+    QString().sprintf("AUDIO_LENGTH=%d,",bytes)+
+    QString().sprintf("AUDIO_TIME=%d where ",msecs)+
+    QString().sprintf("ID=%u",cast_id);
   q1=new RDSqlQuery(sql);
   delete q1;
   delete q;
@@ -878,10 +865,9 @@ void RDFeed::SetRow(const QString &param,int value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE FEEDS SET %s=%d WHERE KEY_NAME=\"%s\"",
-			(const char *)param,
-			value,
-			(const char *)feed_keyname);
+  sql=QString("update FEEDS set ")+
+    param+QString().sprintf("=%d where ",value)+
+    "KEY_NAME=\""+RDEscapeString(feed_keyname)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -892,10 +878,9 @@ void RDFeed::SetRow(const QString &param,const QString &value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE FEEDS SET %s=\"%s\" WHERE KEY_NAME=\"%s\"",
-			(const char *)param,
-			(const char *)RDEscapeString(value),
-			(const char *)feed_keyname);
+  sql=QString("update FEEDS set ")+
+    param+"=\""+RDEscapeString(value)+"\" where "+
+    "KEY_NAME=\""+RDEscapeString(feed_keyname)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -906,10 +891,9 @@ void RDFeed::SetRow(const QString &param,const QDateTime &value,
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("UPDATE FEEDS SET %s=%s WHERE KEY_NAME=\"%s\"",
-			(const char *)param,
-			(const char *)RDCheckDateTime(value, format),
-			(const char *)feed_keyname);
+  sql=QString().sprintf("update FEEDS set ")+
+    param+"="+RDCheckDateTime(value,format)+" where "+
+    "KEY_NAME=\""+RDEscapeString(feed_keyname)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }

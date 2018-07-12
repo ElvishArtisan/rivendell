@@ -24,105 +24,83 @@
 
 QString RDBaseSearchText(QString filter,bool incl_cuts)
 {
-QString edit_filter=filter;
-QString return_string="";
-QString search_string="";
-int pos=0;
-char find;
+  QString edit_filter=filter;
+  QString ret="";
+  QString str="";
+  int pos=0;
+  char find;
 
-edit_filter=edit_filter.stripWhiteSpace();
-if(edit_filter.isEmpty()) {
-      return_string=QString().sprintf(" ((CART.TITLE like \"%%%s%%\")||\
-      (CART.ARTIST like \"%%%s%%\")||(CART.CLIENT like \"%%%s%%\")||\
-      (CART.AGENCY like \"%%%s%%\")||(CART.ALBUM like \"%%%s%%\")||\
-      (CART.LABEL like \"%%%s%%\")||(CART.NUMBER like \"%%%s%%\")||\
-      (CART.PUBLISHER like \"%%%s%%\")||(CART.COMPOSER like \"%%%s%%\")||\
-      (CART.CONDUCTOR like \"%%%s%%\")||(CART.SONG_ID like \"%%%s%%\")||\
-      (CART.USER_DEFINED like \"%%%s%%\")",
-  			   (const char *)search_string.utf8(),
-			   (const char *)search_string.utf8(),
-			   (const char *)search_string.utf8(),
-			   (const char *)search_string.utf8(),
-			   (const char *)search_string.utf8(),
-			   (const char *)search_string.utf8(),
-			   (const char *)search_string.utf8(),
-			   (const char *)search_string.utf8(),
-			   (const char *)search_string.utf8(),
-			   (const char *)search_string.utf8(),
-			   (const char *)search_string.utf8(),
-			   (const char *)search_string.utf8());
+  edit_filter=edit_filter.stripWhiteSpace();
+  if(edit_filter.isEmpty()) {
+    ret=QString(" ((CART.TITLE like \"%%\")||")+
+      "(CART.ARTIST like \"%%\")||"+
+      "(CART.CLIENT like \"%%\")||"+
+      "(CART.AGENCY like \"%%\")||"+
+      "(CART.ALBUM like \"%%\")||"+
+      "(CART.LABEL like \"%%\")||"+
+      "(CART.NUMBER like \"%%\")||"+
+      "(CART.PUBLISHER like \"%%\")||"+
+      "(CART.COMPOSER like \"%%\")||"+
+      "(CART.CONDUCTOR like \"%%\")||"+
+      "(CART.SONG_ID like \"%%\")||"+
+      "(CART.USER_DEFINED like \"%%\")";
     if(incl_cuts) {
-      return_string+=QString().sprintf("||(CUTS.ISCI like \"%%%s%%\")\
-                                        ||(CUTS.ISRC like \"%%%s%%\")\
-                                        ||(CUTS.DESCRIPTION like \"%%%s%%\")\
-                                        ||(CUTS.OUTCUE like \"%%%s%%\")",
-				       (const char *)search_string.utf8(),
-				       (const char *)search_string.utf8(),
-				       (const char *)search_string.utf8(),
-				       (const char *)search_string.utf8());
+      ret+=QString("||(CUTS.ISCI like \"%%\")")+
+	"||(CUTS.ISRC like \"%%\")"+
+	"||(CUTS.DESCRIPTION like \"%%\")"+
+	"||(CUTS.OUTCUE like \"%%\")";
     }
-    return_string+=")";
+    ret+=")";
   }
-else {
-  while(!edit_filter.isEmpty()) {
-    if(edit_filter.startsWith("\"") && edit_filter.length()>1) {
-      edit_filter=edit_filter.remove(0,1);
-      find='\"';
-    }
-    else {
-      find=' '; 
-    }
-    pos=edit_filter.find(find);
-    if(pos>=0) {
-      search_string=edit_filter.left(pos);
-      edit_filter=edit_filter.remove(0,pos);
-      if(find=='\"') {
+  else {
+    while(!edit_filter.isEmpty()) {
+      if(edit_filter.startsWith("\"") && edit_filter.length()>1) {
 	edit_filter=edit_filter.remove(0,1);
+	find='\"';
       }
-      edit_filter=edit_filter.stripWhiteSpace();
+      else {
+	find=' '; 
+      }
+      pos=edit_filter.find(find);
+      if(pos>=0) {
+	str=edit_filter.left(pos);
+	edit_filter=edit_filter.remove(0,pos);
+	if(find=='\"') {
+	  edit_filter=edit_filter.remove(0,1);
+	}
+	edit_filter=edit_filter.stripWhiteSpace();
+      }
+      else {
+	str=edit_filter;
+	edit_filter=edit_filter.remove(0,edit_filter.length());
+      }
+      if(!ret.isEmpty()) {
+	ret=ret+" AND ";
+      }
+      QString search=RDEscapeString(str);
+      ret=ret+QString(" ((CART.TITLE like \"%")+search+"%\")||"+
+	"(CART.ARTIST like \"%"+search+"%\")||"+
+	"(CART.CLIENT like \"%"+search+"%\")||"+
+	"(CART.AGENCY like \"%"+search+"%\")||"+
+	"(CART.ALBUM like \"%"+search+"%\")||"+
+	"(CART.LABEL like \"%"+search+"%\")||"+
+	"(CART.NUMBER like \"%"+search+"%\")||"+
+	"(CART.PUBLISHER like \"%"+search+"%\")||"+
+	"(CART.COMPOSER like \"%"+search+"%\")||"+
+	"(CART.CONDUCTOR like \"%"+search+"%\")||"+
+	"(CART.SONG_ID like \"%"+search+"%\")||"+
+	"(CART.USER_DEFINED like \"%"+search+"%\")";
+      if(incl_cuts) {
+	ret+=QString("||(CUTS.ISCI like \"%")+search+"%\")"+
+	  "||(CUTS.ISRC like \"%"+search+"%\")"+
+	  "||(CUTS.DESCRIPTION like \"%"+search+"%\")"+
+	  "||(CUTS.OUTCUE like \"%"+search+"%\")";
+      }
+      ret+=") ";
     }
-    else {
-      search_string=edit_filter;
-      edit_filter=edit_filter.remove(0,edit_filter.length());
-    }
-    if(!return_string.isEmpty()) {
-      return_string=return_string+" AND ";
-    }
-    QString search=RDEscapeString(search_string);
-    return_string=return_string+QString().sprintf(" ((CART.TITLE like \"%%%s%%\")||\
-      (CART.ARTIST like \"%%%s%%\")||(CART.CLIENT like \"%%%s%%\")||	\
-      (CART.AGENCY like \"%%%s%%\")||(CART.ALBUM like \"%%%s%%\")||	\
-      (CART.LABEL like \"%%%s%%\")||(CART.NUMBER like \"%%%s%%\")||	\
-      (CART.PUBLISHER like \"%%%s%%\")||(CART.COMPOSER like \"%%%s%%\")|| \
-      (CART.CONDUCTOR like \"%%%s%%\")||(CART.SONG_ID like \"%%%s%%\")|| \
-      (CART.USER_DEFINED like \"%%%s%%\")",
-				    (const char *)search.utf8(),
-				    (const char *)search.utf8(),
-				    (const char *)search.utf8(),
-				    (const char *)search.utf8(),
-				    (const char *)search.utf8(),
-				    (const char *)search.utf8(),
-				    (const char *)search.utf8(),
-				    (const char *)search.utf8(),
-				    (const char *)search.utf8(),
-				    (const char *)search.utf8(),
-				    (const char *)search.utf8(),
-				    (const char *)search.utf8());
-    if(incl_cuts) {
-      return_string+=QString().sprintf("||(CUTS.ISCI like \"%%%s%%\")\
-                                        ||(CUTS.ISRC like \"%%%s%%\")\
-                                        ||(CUTS.DESCRIPTION like \"%%%s%%\")\
-                                        ||(CUTS.OUTCUE like \"%%%s%%\")",
-				       (const char *)search.utf8(),
-				       (const char *)search.utf8(),
-				       (const char *)search.utf8(),
-				       (const char *)search.utf8());
-    }
-    return_string+=")";
+   
   }
-  
- }
- return return_string;
+  return ret;
 }
 
 
@@ -137,10 +115,9 @@ QString RDCartSearchText(QString filter,const QString &group,
   if(!schedcode.isEmpty()) {
     QString code=schedcode+"          ";
     code=code.left(11);
-    ret+=QString().sprintf("&&(SCHED_CODES like \"%%%s%%\")",
-			   (const char *)code);
+    ret+=QString("&&(SCHED_CODES like \"%")+RDEscapeString(code)+"%\")";
   }
-  return ret.utf8();
+  return ret;
 }
 
 
@@ -151,13 +128,12 @@ QString RDAllCartSearchText(const QString &filter,const QString &schedcode,
   RDSqlQuery *q;
   QString search="(";
 
-  sql=QString().sprintf("select GROUP_NAME from USER_PERMS\
-                         where USER_NAME=\"%s\"",
-			(const char *)user);
+  sql=QString("select GROUP_NAME from USER_PERMS where ")+
+    "USER_NAME=\""+RDEscapeString(user)+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    search+=QString().sprintf("(CART.GROUP_NAME=\"%s\")||",
-			      (const char *)q->value(0).toString());
+    search+=QString("(CART.GROUP_NAME=\"")+
+      RDEscapeString(q->value(0).toString())+"\")||";
   }
   delete q;
   search=search.left(search.length()-2)+QString(")");
@@ -166,8 +142,7 @@ QString RDAllCartSearchText(const QString &filter,const QString &schedcode,
   if(!schedcode.isEmpty()) {
     QString code=schedcode+"          ";
     code=code.left(11);
-    search+=QString().sprintf("&&(SCHED_CODES like \"%%%s%%\")",
-			      (const char *)code);
+    search+=QString("&&(SCHED_CODES like \"%%")+RDEscapeString(code)+"%%\")";
   }
 
   return search;

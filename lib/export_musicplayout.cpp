@@ -55,15 +55,15 @@ bool RDReport::ExportMusicPlayout(const QString &filename,
     cart_fmt="%6u";
   }
   sql=QString("select ")+
-    "ELR_LINES.LENGTH,"+
-    "ELR_LINES.CART_NUMBER,"+
-    "ELR_LINES.EVENT_DATETIME,"+
-    "ELR_LINES.EXT_EVENT_ID,"+
-    "ELR_LINES.TITLE,"+
-    "ELR_LINES.CUT_NUMBER,"+
-    "ELR_LINES.ARTIST,"+
-    "ELR_LINES.ALBUM,"+
-    "ELR_LINES.LABEL "+
+    "ELR_LINES.LENGTH,"+          // 00
+    "ELR_LINES.CART_NUMBER,"+     // 01
+    "ELR_LINES.EVENT_DATETIME,"+  // 02
+    "ELR_LINES.EXT_EVENT_ID,"+    // 03
+    "ELR_LINES.TITLE,"+           // 04
+    "ELR_LINES.CUT_NUMBER,"+      // 05
+    "ELR_LINES.ARTIST,"+          // 06
+    "ELR_LINES.ALBUM,"+           // 07
+    "ELR_LINES.LABEL "+           // 08
     "from ELR_LINES left join CART "+
     "on ELR_LINES.CART_NUMBER=CART.NUMBER where "+
     "SERVICE_NAME=\""+RDEscapeString(mixtable)+"\" "+

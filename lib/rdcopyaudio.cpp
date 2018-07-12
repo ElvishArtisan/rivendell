@@ -81,14 +81,14 @@ RDCopyAudio::ErrorCode RDCopyAudio::runCopy(const QString &username,
   //
   // Generate POST Data
   //
-  QString post=QString().sprintf("COMMAND=%d&LOGIN_NAME=%s&PASSWORD=%s&SOURCE_CART_NUMBER=%u&SOURCE_CUT_NUMBER=%u&DESTINATION_CART_NUMBER=%u&DESTINATION_CUT_NUMBER=%u",
-				 RDXPORT_COMMAND_COPYAUDIO,
-				 (const char *)RDFormPost::urlEncode(username),
-				 (const char *)RDFormPost::urlEncode(password),
-				 conv_source_cart_number,
-				 conv_source_cut_number,
-				 conv_destination_cart_number,
-				 conv_destination_cut_number);
+  QString post=QString().sprintf("COMMAND=%d&",RDXPORT_COMMAND_COPYAUDIO)+
+    "LOGIN_NAME="+RDFormPost::urlEncode(username)+"&"+
+    "PASSWORD="+RDFormPost::urlEncode(password)+"&"+
+    QString().sprintf("SOURCE_CART_NUMBER=%u&",conv_source_cart_number)+
+    QString().sprintf("SOURCE_CUT_NUMBER=%u&",conv_source_cut_number)+
+    QString().sprintf("DESTINATION_CART_NUMBER=%u&",
+		      conv_destination_cart_number)+
+    QString().sprintf("DESTINATION_CUT_NUMBER=%u",conv_destination_cut_number);
   if((curl=curl_easy_init())==NULL) {
     return RDCopyAudio::ErrorInternal;
   }

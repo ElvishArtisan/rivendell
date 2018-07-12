@@ -32,6 +32,7 @@ class RDHotkeys
   QString GetRowLabel(const QString &station,const QString &value,const QString &module) const;
 
  private:
+  void InsertHotkeys() const;
   QString station_hotkeys;
   QString module_name;
 };

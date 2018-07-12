@@ -385,8 +385,8 @@ bool RDEventLine::load()
 
 bool RDEventLine::save(RDConfig *config)
 {
-  QString sql=QString().sprintf("select NAME from EVENTS where NAME=\"%s\"",
-				(const char *)event_name);
+  QString sql=QString("select NAME from EVENTS where ")+
+    "NAME=\""+RDEscapeString(event_name)+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     sql=QString("update EVENTS set ")+
@@ -648,7 +648,8 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 	  }
 	}
 	if(schedCL->getNumberOfItems()==0) {
-	  *errors+=QString().sprintf("%s Rule broken: Must have code %s\n",(const char *)time.toString("hh:mm:ss"),(const char*)event_have_code);
+	  *errors+=time.toString("hh:mm:ss")+
+	    " "+QObject::tr("Rule broken: Must have code")+" "+event_have_code+"\n";
 	}
 	schedCL->restore();
       }
@@ -663,7 +664,9 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 	  }
 	}
 	if(schedCL->getNumberOfItems()==0) {
-	  *errors+=QString().sprintf("%s Rule broken: Must have second code %s\n",(const char *)time.toString("hh:mm:ss"),(const char*)event_have_code2);
+	  *errors+=time.toString("hh:mm:ss")+" "+
+	    QObject::tr("Rule broken: Must have second code")+" "+
+	    event_have_code2+"\n";
 	}
 	schedCL->restore();
       }
@@ -684,7 +687,8 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
       }
       delete q;
       if(schedCL->getNumberOfItems()==0)
-	*errors+=QString().sprintf("%s Rule broken: Title Separation\n",(const char *)time.toString("hh:mm:ss"));
+	*errors+=time.toString("hh:mm:ss")+" "+
+	  QObject::tr("Rule broken: Title Separation")+"\n";
       schedCL->restore();
       
       // Artist separation
@@ -703,7 +707,8 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
       }          
       delete q;
       if(schedCL->getNumberOfItems()==0) {
-	*errors+=QString().sprintf("%s Rule broken: Artist Separation\n",(const char *)time.toString("hh:mm:ss"));
+	*errors+=time.toString("hh:mm:ss")+" "+
+	  QObject::tr("Rule broken: Artist Separation")+"\n";
       }
       schedCL->restore();
       
@@ -740,7 +745,9 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 	}
 	delete q1;
 	if(schedCL->getNumberOfItems()==0) {
-	  *errors+=QString().sprintf("%s Rule broken: Max. in a Row/Min. Wait for %s\n",(const char *)time.toString("hh:mm:ss"),(const char *)q->value(0).toString());
+	  *errors+=time.toString("hh:mm:ss")+" "+
+	    QObject::tr("Rule broken: Max. in a Row/Min. Wait for ")+
+	    q->value(0).toString()+"\n";
 	}
 	schedCL->restore();
 	// do not play after
@@ -763,7 +770,10 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 	  }
 	  delete q1;
 	  if(schedCL->getNumberOfItems()==0) {
-	    *errors+=QString().sprintf("%s Rule broken: Do not schedule %s after %s\n",(const char *)time.toString("hh:mm:ss"),(const char *)q->value(0).toString(),(const char *)q->value(3).toString());
+	    *errors+=time.toString("hh:mm:ss")+" "+
+	      QObject::tr("Rule broken: Do not schedule ")+
+	      q->value(0).toString()+" "+QObject::tr("after")+" "+
+	      q->value(3).toString()+"\n";
 	  }
 	  schedCL->restore();
 	}
@@ -786,7 +796,10 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 	  }
 	  delete q1;
 	  if(schedCL->getNumberOfItems()==0) {
-	    *errors+=QString().sprintf("%s Rule broken: Do not schedule %s after %s\n",(const char *)time.toString("hh:mm:ss"),(const char *)q->value(0).toString(),(const char *)q->value(4).toString());
+	    *errors+=time.toString("hh:mm:ss")+" "+
+	      QObject::tr("Rule broken: Do not schedule")+" "+
+	      q->value(0).toString()+" "+QObject::tr("after")+" "+
+	      q->value(4).toString()+"\n";
 	  }
 	  schedCL->restore();
 	}
@@ -809,7 +822,10 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 	  }
 	  delete q1;
 	  if(schedCL->getNumberOfItems()==0) {
-	    *errors+=QString().sprintf("%s Rule broken: Do not schedule %s after %s\n",(const char *)time.toString("hh:mm:ss"),(const char *)q->value(0).toString(),(const char *)q->value(5).toString());
+	    *errors+=time.toString("hh:mm:ss")+" "+
+	      QObject::tr("Rule broken: Do not schedule")+" "+
+	      q->value(0).toString()+" "+QObject::tr("after")+" "+
+	      q->value(5).toString()+"\n";
 	  }
 	  schedCL->restore();
 	}
@@ -1198,20 +1214,14 @@ bool RDEventLine::linkLog(RDLogEvent *e,const QString &svcname,
     int slop=QTime().msecsTo(end_time)-QTime().msecsTo(time);
     if(abs(slop)>=event_autofill_slop) {
       if(slop>0) {
-	*errors+=QString().
-	  sprintf("  %s -- \"%s\" is underscheduled by %s.\n",
-		  (const char *)time.toString("hh:mm:ss"),
-		  (const char *)event_name,
-		  (const char *)QTime().addMSecs(slop).
-		  toString("hh:mm:ss"));
+	*errors+=QString("  ")+time.toString("hh:mm:ss")+
+	  " -- \""+event_name+"\" "+QObject::tr("is underscheduled by")+" "+
+	  QTime().addMSecs(slop).toString("hh:mm:ss")+".\n";
       }
       else {
-	*errors+=QString().
-	  sprintf("  %s -- \"%s\" is overscheduled by %s.\n",
-		  (const char *)time.toString("hh:mm:ss"),
-		  (const char *)event_name,
-		  (const char *)QTime().addMSecs(-slop).
-		  toString("hh:mm:ss"));
+	*errors+=QString("  ")+time.toString("hh:mm:ss")+
+	  " -- \""+event_name+"\" "+QObject::tr("is overscheduled by")+" "+
+	  QTime().addMSecs(-slop).toString("hh:mm:ss")+".\n";
       }
     }
   }

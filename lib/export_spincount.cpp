@@ -65,10 +65,10 @@ bool RDReport::ExportSpinCount(const QString &filename,const QDate &startdate,
   // Generate Spin Counts
   //
   sql=QString("select ")+
-    "CART_NUMBER,"+
-    "TITLE,"+
-    "ARTIST,"+
-    "ALBUM,LABEL "+
+    "CART_NUMBER,"+  // 00
+    "TITLE,"+        // 01
+    "ARTIST,"+       // 02
+    "ALBUM,LABEL "+  // 03
     "from ELR_LINES where "+
     "SERVICE_NAME=\""+RDEscapeString(mixtable)+"\" "+
     "order by TITLE";

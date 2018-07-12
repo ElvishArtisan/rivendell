@@ -642,8 +642,8 @@ void RDRecording::setFeedId(int id) const
 
 void RDRecording::setFeedId(const QString &keyname) const
 {
-  QString sql=QString().sprintf("select ID from FEEDS where KEY_NAME=\"%s\"",
-				(const char *)keyname);
+  QString sql=QString("select ID from FEEDS where ")+
+    "KEY_NAME=\""+RDEscapeString(keyname)+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     setFeedId(q->value(0).toInt());
@@ -781,8 +781,9 @@ int RDRecording::GetIntValue(QString field) const
   RDSqlQuery *q;
   int accum;
   
-  sql=QString().sprintf("select %s from RECORDINGS where ID=%d",
-			(const char *)field,rec_id);
+  sql=QString("select ")+
+    field+" from RECORDINGS where "+
+    QString().sprintf("ID=%d",rec_id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     accum=q->value(0).toInt();
@@ -800,8 +801,9 @@ unsigned RDRecording::GetUIntValue(QString field) const
   RDSqlQuery *q;
   int accum;
   
-  sql=QString().sprintf("select %s from RECORDINGS where ID=%d",
-			(const char *)field,rec_id);
+  sql=QString("select ")+
+    field+" from RECORDINGS where "+
+    QString().sprintf("ID=%d",rec_id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     accum=q->value(0).toUInt();
@@ -819,8 +821,9 @@ bool RDRecording::GetBoolValue(QString field) const
   RDSqlQuery *q;
   bool state;
 
-  sql=QString().sprintf("select %s from RECORDINGS where ID=%d",
-			(const char *)field,rec_id);
+  sql=QString("select ")+
+    field+" from RECORDINGS where "+
+    QString().sprintf("ID=%d",rec_id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     state=RDBool(q->value(0).toString());
@@ -838,8 +841,9 @@ QString RDRecording::GetStringValue(QString field) const
   RDSqlQuery *q;
   QString accum;
 
-  sql=QString().sprintf("select %s from RECORDINGS where ID=%d",
-			(const char *)field,rec_id);
+  sql=QString("select ")+
+    field+" from RECORDINGS where "+
+    QString().sprintf("ID=%d",rec_id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     accum=q->value(0).toString();
@@ -857,8 +861,9 @@ QTime RDRecording::GetTimeValue(QString field) const
   RDSqlQuery *q;
   QTime accum;
 
-  sql=QString().sprintf("select %s from RECORDINGS where ID=%d",
-			(const char *)field,rec_id);
+  sql=QString("select ")+
+    field+" from RECORDINGS where "+
+    QString().sprintf("ID=%d",rec_id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     accum=q->value(0).toTime();
@@ -897,8 +902,9 @@ void RDRecording::SetRow(const QString &param,int value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("update RECORDINGS set %s=%d where ID=%d",
-			(const char *)param,value,rec_id);
+  sql=QString("update RECORDINGS set ")+
+    param+QString().sprintf("=%d where ",value)+
+    QString().sprintf("ID=%d",rec_id);
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -909,8 +915,9 @@ void RDRecording::SetRow(const QString &param,unsigned value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("update RECORDINGS set %s=%u where ID=%d",
-			(const char *)param,value,rec_id);
+  sql=QString("update RECORDINGS set ")+
+    param+QString().sprintf("=%u where ",value)+
+    QString().sprintf("ID=%d",rec_id);
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -921,9 +928,9 @@ void RDRecording::SetRow(const QString &param,bool value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("update RECORDINGS set %s=\'%s\' where ID=%d",
-			(const char *)param,(const char *)RDYesNo(value),
-			rec_id);
+  sql=QString("update RECORDINGS set ")+
+    param+"=\""+RDYesNo(value)+"\" where "+
+    QString().sprintf("ID=%d",rec_id);
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -934,10 +941,9 @@ void RDRecording::SetRow(const QString &param,const QString &value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("update RECORDINGS set %s=\"%s\" where ID=%d",
-			(const char *)param,
-			(const char *)RDEscapeString(value),
-			rec_id);
+  sql=QString("update RECORDINGS set ")+
+    param+"=\""+RDEscapeString(value)+"\" where "+
+    QString().sprintf("ID=%d",rec_id);
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -948,9 +954,9 @@ void RDRecording::SetRow(const QString &param,const QTime &value) const
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("update RECORDINGS set %s=%s where ID=%d",
-			(const char *)param,
-			(const char *)RDCheckDateTime(value,"hh:mm:ss"),rec_id);
+  sql=QString("update RECORDINGS set ")+
+    param+"="+RDCheckDateTime(value,"hh:mm:ss")+" where "+
+    QString().sprintf("ID=%d",rec_id);
   q=new RDSqlQuery(sql);
   delete q;
 }

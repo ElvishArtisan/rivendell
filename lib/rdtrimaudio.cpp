@@ -2,7 +2,7 @@
 //
 // Get the trim points for an audio cut.
 //
-//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -98,13 +98,12 @@ RDTrimAudio::ErrorCode RDTrimAudio::runTrim(const QString &username,
   //
   // Generate POST Data
   //
-  QString post=QString().sprintf("COMMAND=%d&LOGIN_NAME=%s&PASSWORD=%s&CART_NUMBER=%u&CUT_NUMBER=%u&TRIM_LEVEL=%d",
-				 RDXPORT_COMMAND_TRIMAUDIO,
-				 (const char *)RDFormPost::urlEncode(username),
-				 (const char *)RDFormPost::urlEncode(password),
-				 conv_cart_number,
-				 conv_cut_number,
-				 conv_trim_level);
+  QString post=QString().sprintf("COMMAND=%d&",RDXPORT_COMMAND_TRIMAUDIO)+
+    "LOGIN_NAME="+RDFormPost::urlEncode(username)+"&"+
+    "PASSWORD="+RDFormPost::urlEncode(password)+"&"+
+    QString().sprintf("CART_NUMBER=%u&",conv_cart_number)+
+    QString().sprintf("CUT_NUMBER=%u&",conv_cut_number)+
+    QString().sprintf("TRIM_LEVEL=%d",conv_trim_level);
   if((curl=curl_easy_init())==NULL) {
     return RDTrimAudio::ErrorInternal;
   }

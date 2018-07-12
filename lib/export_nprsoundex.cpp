@@ -65,12 +65,12 @@ bool RDReport::ExportNprSoundEx(const QString &filename,const QDate &startdate,
   // Roll Up Records
   //
   sql=QString("select ")+
-    "EVENT_DATETIME,"+
-    "LENGTH,"+
-    "TITLE,"+
-    "ARTIST,"+
-    "ALBUM,"+
-    "LABEL "+
+    "EVENT_DATETIME,"+  // 00
+    "LENGTH,"+          // 01
+    "TITLE,"+           // 02
+    "ARTIST,"+          // 03
+    "ALBUM,"+           // 04
+    "LABEL "+           // 05
     "from ELR_LINES where "+
     "SERVICE_NAME=\""+RDEscapeString(mixtable)+"\" "+
     "order by EVENT_DATETIME";

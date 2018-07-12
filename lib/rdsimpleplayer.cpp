@@ -18,9 +18,10 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <rddb.h>
-#include <rdsimpleplayer.h>
-#include <rdcart.h>
+#include "rdcart.h"
+#include "rddb.h"
+#include "rdescape_string.h"
+#include "rdsimpleplayer.h"
 
 RDSimplePlayer::RDSimplePlayer(RDCae *cae,RDRipc *ripc,int card,int port,
 			       unsigned start_cart,unsigned end_cart,
@@ -124,8 +125,12 @@ void RDSimplePlayer::play(int start_pos)
       return;
     }
 
-    sql=QString().sprintf("select START_POINT,END_POINT,PLAY_GAIN \
-                          from CUTS where CUT_NAME='%s'", (const char *)cut);
+    sql=QString("select ")+
+      "START_POINT,"+  // 00
+      "END_POINT,"+    // 01
+      "PLAY_GAIN "+    // 02
+      "from CUTS where "+
+      "CUT_NAME=\""+RDEscapeString(cut)+"\"";
     q=new RDSqlQuery(sql);
     if(q->first()) {
       play_cut_gain=q->value(2).toInt(); 

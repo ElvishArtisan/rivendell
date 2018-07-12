@@ -140,22 +140,22 @@ RDAudioExport::ErrorCode RDAudioExport::runExport(const QString &username,
   //
   // Generate POST Data
   //
-  QString post=QString().sprintf("COMMAND=%d&LOGIN_NAME=%s&PASSWORD=%s&CART_NUMBER=%u&CUT_NUMBER=%u&FORMAT=%d&CHANNELS=%d&SAMPLE_RATE=%d&BIT_RATE=%d&QUALITY=%d&START_POINT=%d&END_POINT=%d&NORMALIZATION_LEVEL=%d&ENABLE_METADATA=%d",
-				 RDXPORT_COMMAND_EXPORT,
-				 (const char *)RDFormPost::urlEncode(username),
-				 (const char *)RDFormPost::urlEncode(password),
-				 conv_cart_number,
-				 conv_cut_number,
-				 conv_settings->format(),
-				 conv_settings->channels(),
-				 conv_settings->sampleRate(),
-				 conv_settings->bitRate(),
-				 conv_settings->quality(),
-				 conv_start_point,
-				 conv_end_point,
-				 conv_settings->normalizationLevel(),
-				 conv_enable_metadata);
 
+  QString post=QString().sprintf("COMMAND=%d&",RDXPORT_COMMAND_EXPORT)+
+    "LOGIN_NAME=RDFormPost::urlEncode(username)&"+
+    "PASSWORD=RDFormPost::urlEncode(password)&"+
+    QString().sprintf("CART_NUMBER=%u&",conv_cart_number)+
+    QString().sprintf("CUT_NUMBER=%u&",conv_cut_number)+
+    QString().sprintf("FORMAT=%d&",conv_settings->format())+
+    QString().sprintf("CHANNELS=%d&",conv_settings->channels())+
+    QString().sprintf("SAMPLE_RATE=%d&",conv_settings->sampleRate())+
+    QString().sprintf("BIT_RATE=%d&",conv_settings->bitRate())+
+    QString().sprintf("QUALITY=%d&",conv_settings->quality())+
+    QString().sprintf("START_POINT=%d&",conv_start_point)+
+    QString().sprintf("END_POINT=%d&",conv_end_point)+
+    QString().sprintf("NORMALIZATION_LEVEL=%d&",
+		      conv_settings->normalizationLevel())+
+    QString().sprintf("ENABLE_METADATA=%d",conv_enable_metadata);
   if((curl=curl_easy_init())==NULL) {
     return RDAudioExport::ErrorInternal;
   }
