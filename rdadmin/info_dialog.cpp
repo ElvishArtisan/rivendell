@@ -48,8 +48,6 @@
 InfoDialog::InfoDialog(QWidget *parent)
   : QDialog(parent,"",true)
 {
-  QString str;
-
   //
   // Fix the Window Size
   //
@@ -111,14 +109,12 @@ InfoDialog::InfoDialog(QWidget *parent)
   //
   // Version
   //
-  str=QString(tr("Version"));
-  label=new QLabel(QString().sprintf("%s %s",(const char *)str,VERSION),this);
+  label=new QLabel(tr("Version")+" "+VERSION,this);
   label->setGeometry(10,73,200,14);
   label->setFont(font);
 
-  str=QString(tr("Database Schema"));
-  label=new QLabel(QString().sprintf("%s %d",(const char *)str,
-				     RD_VERSION_DATABASE),this);
+  label=new QLabel(tr("Database Schema")+
+		   QString().sprintf(" %d",RD_VERSION_DATABASE),this);
   label->setGeometry(210,73,120,14);
   label->setAlignment(AlignVCenter|AlignRight);
   label->setFont(font);
@@ -126,9 +122,7 @@ InfoDialog::InfoDialog(QWidget *parent)
   //
   // Signature
   //
-  str=QString(tr("Copyright 2002-2018"));
-  label=new QLabel(QString().sprintf("%s %s",(const char *)str,
-				     PACKAGE_BUGREPORT),this);
+  label=new QLabel(tr("Copyright 2002-2018")+" "+PACKAGE_BUGREPORT,this);
   label->setGeometry(10,87,sizeHint().width()-20,14);
   label->setFont(font);
 

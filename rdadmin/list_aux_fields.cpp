@@ -176,8 +176,8 @@ void ListAuxFields::deleteData()
     delete q;
     keyname.replace(" ","_");
     QString varname=item->text(0).mid(1,item->text(0).length()-2);
-    sql=QString().sprintf("alter table %s_FIELDS drop column %s",
-			  (const char *)keyname,(const char *)varname);
+    sql=QString("alter table `")+
+      keyname+"_FIELDS` drop column "+varname;
     q=new RDSqlQuery(sql);
   }
   delete q;

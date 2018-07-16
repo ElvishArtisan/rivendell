@@ -2,7 +2,7 @@
 //
 // List Rivendell Workstations
 //
-//   (C) Copyright 2002-2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,12 +29,13 @@
 #include <qmessagebox.h>
 #include <qbuttongroup.h>
 
+#include <rddb.h>
 #include <rdairplay_conf.h>
 #include <rdescape_string.h>
-#include <rddb.h>
-#include <list_stations.h>
-#include <edit_station.h>
-#include <add_station.h>
+
+#include "add_station.h"
+#include "edit_station.h"
+#include "list_stations.h"
 
 ListStations::ListStations(QWidget *parent)
   : QDialog(parent,"",true)
@@ -155,15 +156,10 @@ void ListStations::editData()
 
 void ListStations::deleteData()
 {
-  QString str;
-
-  str=QString(tr("Are you sure you want to delete host"));
-  if(QMessageBox::warning(this,tr("Delete Station"),
-			  QString().sprintf(
-			    "%s %s?",(const char *)str,
-			    (const char *)list_box->currentText()),
-			  QMessageBox::Yes,QMessageBox::No)==
-     QMessageBox::Yes) {
+  if(QMessageBox::warning(this,"RDAdmin - "+tr("Delete Station"),
+			    tr("Are you sure you want to delete host")+
+			    " \""+list_box->currentText()+"\"?",
+			  QMessageBox::Yes,QMessageBox::No)==QMessageBox::Yes) {
     RDStation::remove(list_box->currentText());
     list_box->removeItem(list_box->currentItem());
     if(list_box->currentItem()>=0) {

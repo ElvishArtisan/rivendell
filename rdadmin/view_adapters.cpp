@@ -2,7 +2,7 @@
 //
 // Display Audio Adapter Information
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -31,9 +31,6 @@
 ViewAdapters::ViewAdapters(RDStation *rdstation,QWidget *parent)
   : QDialog(parent,"",true)
 {
-  QString str1;
-  QString str2;
-
   //
   // Fix the Window Size
   //
@@ -42,7 +39,7 @@ ViewAdapters::ViewAdapters(RDStation *rdstation,QWidget *parent)
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  setCaption(tr("Audio Resource Information"));
+  setCaption("RDADmin - "+tr("Audio Resource Information"));
 
   //
   // Create Fonts
@@ -55,11 +52,7 @@ ViewAdapters::ViewAdapters(RDStation *rdstation,QWidget *parent)
   //
   // Title
   //
-  str1=tr("Audio Resources on");
-  QLabel *label=
-    new QLabel(QString().sprintf("%s %s",(const char *)str1,
-				 (const char *)rdstation->name()),
-				 this,"title_label");
+  QLabel *label=new QLabel(tr("Audio Resources on")+" "+rdstation->name(),this);
   label->setGeometry(15,10,sizeHint().width()-20,16);
   label->setFont(font);
 
@@ -73,16 +66,16 @@ ViewAdapters::ViewAdapters(RDStation *rdstation,QWidget *parent)
   if(rdstation->scanned()) {
     text+=tr("SUPPORTED AUDIO DRIVERS\n");
     if(!rdstation->driverVersion(RDStation::Hpi).isEmpty()) {
-      text+=QString().sprintf("  AudioScience HPI [%s]\n",
-			      (const char *)rdstation->driverVersion(RDStation::Hpi));
+      text+=QString("  AudioScience HPI [")+
+	rdstation->driverVersion(RDStation::Hpi)+"]\n";
     }
     if(!rdstation->driverVersion(RDStation::Jack).isEmpty()) {
-      text+=QString().sprintf("  JACK Audio Connection Kit [%s]\n",
-			      (const char *)rdstation->driverVersion(RDStation::Jack));
+      text+=QString("  JACK Audio Connection Kit [")+
+	rdstation->driverVersion(RDStation::Jack)+"]\n";
     }
     if(!rdstation->driverVersion(RDStation::Alsa).isEmpty()) {
-      text+=QString().sprintf("  Advanced Linux Sound Architecture (ALSA) [%s]\n",
-			      (const char *)rdstation->driverVersion(RDStation::Alsa));
+      text+=QString("  Advanced Linux Sound Architecture (ALSA) [")+
+	rdstation->driverVersion(RDStation::Alsa)+"]\n";
     }
     text+="\n";
     
@@ -129,39 +122,34 @@ ViewAdapters::ViewAdapters(RDStation *rdstation,QWidget *parent)
     
     text+=tr("AUDIO ADAPTERS\n");
     for(int i=0;i<RD_MAX_CARDS;i++) {
-      str1=QString(tr("Card"));
-      str2=QString(tr("Not present"));
       if(rdstation->cardName(i).isEmpty()) {
-	text+=QString().sprintf("  %s %d: %s\n\n",(const char *)str1,i,
-				(const char *)str2);
+	text+=QString("  ")+tr("Card")+QString().sprintf(" %d: ",i)+
+	  tr("Not present");
       }
       else {
-	text+=QString().sprintf("  %s %d: %s\n",(const char *)str1,i,
-				(const char *)rdstation->cardName(i));
+	text+=QString("  ")+tr("Card")+QString().sprintf(" %d: ",i)+
+	  rdstation->cardName(i);
 	switch(rdstation->cardDriver(i)) {
-	    case RDStation::Hpi:
-	      text+=QString(tr("      Driver: AudioScience HPI\n"));
-	      break;
+	case RDStation::Hpi:
+	  text+=tr("      Driver: AudioScience HPI\n");
+	  break;
 	      
-	    case RDStation::Jack:
-	      text+=QString(tr("      Driver: JACK Audio Connection Kit\n"));
-	      break;
+	case RDStation::Jack:
+	  text+=tr("      Driver: JACK Audio Connection Kit\n");
+	  break;
 	      
-	    case RDStation::Alsa:
-	      text+=QString(
-		tr("      Driver: Advanced Linux Sound Architecture (ALSA)\n"));
-	      break;
+	case RDStation::Alsa:
+	  text+=tr("      Driver: Advanced Linux Sound Architecture (ALSA)\n");
+	break;
 	      
-	    case RDStation::None:
-	      text+=QString(tr("      Driver: UNKNOWN\n"));
-	      break;
+	case RDStation::None:
+	  text+=tr("      Driver: UNKNOWN\n");
+	  break;
 	}
-	str1=QString(tr("Inputs:"));
-	text+=QString().sprintf("      %s %d\n",(const char *)str1,
-				rdstation->cardInputs(i));
-	str1=QString(tr("Outputs:"));
-	text+=QString().sprintf("      %s %d\n\n",(const char *)str1,
-				rdstation->cardOutputs(i));
+	text+=QString("      ")+tr("Inputs")+
+	  QString().sprintf(" %d\n",rdstation->cardInputs(i));
+	text+=QString("      ")+tr("Outputs")+
+	  QString().sprintf(" %d\n",rdstation->cardOutputs(i));
       }
     }
   }

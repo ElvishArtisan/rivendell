@@ -575,7 +575,6 @@ void EditDropbox::resetData()
   }
   QString sql=QString("delete from DROPBOX_PATHS where ")+
     QString().sprintf("DROPBOX_ID=%d",box_dropbox->id());
-  printf("SQL: %s\n",(const char *)sql);
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
   QMessageBox::information(this,"RDAdmin - "+tr("Reset Dropbox"),

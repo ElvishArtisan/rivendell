@@ -39,8 +39,6 @@
 EditTtys::EditTtys(QString station,QWidget *parent)
   : QDialog(parent,"",true)
 {
-  QString str;
-
   //
   // Fix the Window Size
   //
@@ -169,9 +167,8 @@ EditTtys::EditTtys(QString station,QWidget *parent)
   //
   // Populate Data
   //
-  str=QString(tr("Serial"));
   for(int i=0;i<MAX_TTYS;i++) {
-    edit_port_box->insertItem(QString().sprintf("%s%d",(const char *)str,i));
+    edit_port_box->insertItem(tr("Serial")+QString().sprintf("%d",i));
   }
   edit_baudrate_box->insertItem("50");
   edit_baudrate_box->insertItem("75");

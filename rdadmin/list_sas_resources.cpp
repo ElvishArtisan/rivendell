@@ -206,40 +206,31 @@ void ListSasResources::okData()
     if(!item->text(3).isEmpty()) {
       relay_num=item->text(3).toInt();
     }
-    sql=QString().sprintf("select ID from VGUEST_RESOURCES where\
-                           (STATION_NAME=\"%s\")&&\
-                           (MATRIX_NUM=%d)&&\
-                           (NUMBER=%d)",
-			  (const char *)list_matrix->station(),
-			  list_matrix->matrix(),item->text(0).toInt());
+    sql=QString("select ID from VGUEST_RESOURCES where" )+
+      "(STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\")&&"+
+      QString().sprintf("(MATRIX_NUM=%d)&&",list_matrix->matrix())+
+      QString().sprintf("(NUMBER=%d)",item->text(0).toInt());
     q=new RDSqlQuery(sql);
     if(q->first()) {
-      sql=QString().sprintf("update VGUEST_RESOURCES set\
-                             ENGINE_NUM=%d,DEVICE_NUM=%d,\
-                             SURFACE_NUM=%d,RELAY_NUM=%d\
-                             where\
-                             (STATION_NAME=\"%s\")&&\
-                             (MATRIX_NUM=%d)&&\
-                             (NUMBER=%d)",
-			    engine_num,device_num,surface_num,
-			    relay_num,
-			    (const char *)list_matrix->station(),
-			    list_matrix->matrix(),
-			    item->text(0).toInt());
+      sql=QString("update VGUEST_RESOURCES set ")+
+	QString().sprintf("ENGINE_NUM=%d,",engine_num)+
+	QString().sprintf("DEVICE_NUM=%d,",device_num)+
+	QString().sprintf("SURFACE_NUM=%d,",surface_num)+
+	QString().sprintf("RELAY_NUM=%d where ",relay_num)+
+	"(STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\")&&"+
+	QString().sprintf("(MATRIX_NUM=%d)&&",list_matrix->matrix())+
+	QString().sprintf("(NUMBER=%d)",item->text(0).toInt());
     }
     else {
-      sql=QString().sprintf("insert into VGUEST_RESOURCES set\
-                             STATION_NAME=\"%s\",MATRIX_NUM=%d,\
-                             NUMBER=%d,\
-                             ENGINE_NUM=%d,DEVICE_NUM=%d,\
-                             SURFACE_NUM=%d,RELAY_NUM=%d",
-			    (const char *)list_matrix->station(),
-			    list_matrix->matrix(),
-			    item->text(0).toInt(),
-			    engine_num,device_num,surface_num,
-			    relay_num);
+      sql=QString("insert into VGUEST_RESOURCES set ")+
+	"STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\","+
+	QString().sprintf("MATRIX_NUM=%d,",list_matrix->matrix())+
+	QString().sprintf("NUMBER=%d,",item->text(0).toInt())+
+	QString().sprintf("ENGINE_NUM=%d,",engine_num)+
+	QString().sprintf("DEVICE_NUM=%d,",device_num)+
+	QString().sprintf("SURFACE_NUM=%d,",surface_num)+
+	QString().sprintf("RELAY_NUM=%d",relay_num);
     }
-    delete q;
     q=new RDSqlQuery(sql);
     delete q;
     item=item->nextSibling();
@@ -266,10 +257,9 @@ void ListSasResources::RefreshList()
   //
   // Populate Resource Records
   //
-  sql=QString().sprintf("select GPIS from MATRICES \
-                         where (STATION_NAME=\"%s\")&&(MATRIX=%d)",
-			(const char *)RDEscapeString(list_matrix->station()),
-			list_matrix->matrix());
+  sql=QString("select GPIS from MATRICES where ")+
+    "(STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\")&&"+
+    QString().sprintf("(MATRIX=%d)",list_matrix->matrix());
   q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;
@@ -278,33 +268,31 @@ void ListSasResources::RefreshList()
   gpis=q->value(0).toInt();
   delete q;
   for(int i=0;i<gpis;i++) {
-    sql=QString().sprintf("select NUMBER from VGUEST_RESOURCES \
-                           where (STATION_NAME=\"%s\")&&(MATRIX_NUM=%d)&&\
-                           (NUMBER=%d)",
-			  (const char *)RDEscapeString(list_matrix->station()),
-			  list_matrix->matrix(),
-			  i+1);
+    sql=QString("select NUMBER from VGUEST_RESOURCES where ")+
+      "(STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\")&&"+
+      QString().sprintf("(MATRIX_NUM=%d)&&",list_matrix->matrix())+
+      QString().sprintf("(NUMBER=%d)",i+1);
     q=new RDSqlQuery(sql);
     if(!q->first()) {
-      sql=QString().sprintf("insert into VGUEST_RESOURCES set \
-                             NUMBER=%d,\
-                             STATION_NAME=\"%s\",\
-                             MATRIX_NUM=%d",
-			    i+1,
-			   (const char *)RDEscapeString(list_matrix->station()),
-			    list_matrix->matrix());
+      sql=QString("insert into VGUEST_RESOURCES set ")+
+	QString().sprintf("NUMBER=%d,",i+1)+
+	"STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\","+
+	QString().sprintf("MATRIX_NUM=%d",list_matrix->matrix());
       q1=new RDSqlQuery(sql);
       delete q1;
     }
     delete q;
   }
 
-  sql=QString().sprintf("select NUMBER,ENGINE_NUM,DEVICE_NUM,RELAY_NUM \
-                         from VGUEST_RESOURCES where\
-                         (STATION_NAME=\"%s\")&&(MATRIX_NUM=%d) \
-                         order by NUMBER",
-			(const char *)RDEscapeString(list_matrix->station()),
-			list_matrix->matrix());
+  sql=QString("select ")+
+    "NUMBER,"+
+    "ENGINE_NUM,"+
+    "DEVICE_NUM,"+
+    "RELAY_NUM "+
+    "from VGUEST_RESOURCES where "+
+    "(STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\")&&"+
+    QString().sprintf("(MATRIX_NUM=%d)",list_matrix->matrix())+
+    "order by NUMBER";
   q=new RDSqlQuery(sql);
   list_list_view->clear();
   while(q->next()) {

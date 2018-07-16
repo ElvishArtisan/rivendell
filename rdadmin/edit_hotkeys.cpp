@@ -2,7 +2,7 @@
 //
 // Edit the Hot Key Configuration for a Rivendell Workstation.
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,9 +25,12 @@
 #include <qsqldatabase.h>
 #include <qmessagebox.h>
 #include <qlistbox.h>
+
+#include <rdescape_string.h>
 #include <rdhotkeylist.h>
-#include <edit_hotkeys.h>
-#include <globals.h>
+
+#include "edit_hotkeys.h"
+#include "globals.h"
 
 
 EditHotkeys::EditHotkeys(const QString &station,const QString &module,
@@ -201,8 +204,7 @@ void EditHotkeys::save()
       stringlist[i++][0] = QString("");
     }
     else  {
-      stringlist[i++][0] = QString().sprintf("%s",
-					     (const char *) start->current()->text(1));
+      stringlist[i++][0]=start->current()->text(1);
     }
     ++(*start);
   }
@@ -212,9 +214,8 @@ void EditHotkeys::save()
     for (cur = top + 1; cur < i; cur ++) {
       if ( (strcmp(stringlist[top][0],stringlist[cur][0]) == 0)  &&
 	   (!(stringlist[top][0].isEmpty()) ) ){
-	QString str = tr(QString().sprintf(				\
-					   "Duplicate Hotkey defined %s\n No Duplicates allowed.",
-					   (const char *)stringlist[cur][0] ));
+	QString str=tr("Duplicate Hotkey defined")+" "+stringlist[cur][0]+"\n "+
+	  tr("No Duplicates allowed.");
 	QMessageBox::warning(this,tr("Duplicate Entries"),str);
 	return;
       }
@@ -223,15 +224,12 @@ void EditHotkeys::save()
 
   start = new QListViewItemIterator(list_view);
     
-  while (start->current()) {
-    sql = QString().sprintf("UPDATE RDHOTKEYS  SET KEY_VALUE = \"%s\" \
-               WHERE KEY_LABEL = \"%s\" AND			      \
-               STATION_NAME = \"%s\" AND			      \
-               MODULE_NAME = \"%s\"",
-			    (const char *)start->current()->text(1),              
-			    (const char *)start->current()->text(0),              
-			    (const char *)hotkey_conf,
-			    (const char *)hotkey_module);
+  while(start->current()) {
+    sql=QString("update RDHOTKEYS set ")+
+      "KEY_VALUE=\""+RDEscapeString(start->current()->text(1))+"\" where "+
+      "KEY_LABEL=\""+RDEscapeString(start->current()->text(0))+"\" && "+
+      "STATION_NAME=\""+RDEscapeString(hotkey_conf)+"\" && "+
+      "MODULE_NAME=\""+RDEscapeString(hotkey_module)+"\"";
     q=new RDSqlQuery(sql);
     delete q;
     ++(*start);
@@ -374,11 +372,11 @@ void EditHotkeys::keyReleaseEvent (QKeyEvent *e)
       CtrlKeyHit = false;
       if (keystrokecount > 0) keystrokecount--;
     }
-    keystroke->setText(QString().sprintf("%s",(const char *)hotkeystrokes));
+    keystroke->setText(hotkeystrokes);
     return;
   }
   if (keystrokecount > 2)  {
-    keystroke->setText(QString().sprintf("%s",(const char *)hotkeystrokes));
+    keystroke->setText(hotkeystrokes);
     return;
   }
   
@@ -401,7 +399,7 @@ void EditHotkeys::keyReleaseEvent (QKeyEvent *e)
     }
 
     hotkeystrokes += mystring;
-    keystroke->setText(QString().sprintf("%s",(const char *)hotkeystrokes));
+    keystroke->setText(hotkeystrokes);
     keystrokecount = 0;
     return;
   }
@@ -420,13 +418,13 @@ void EditHotkeys::RefreshList()
 
   //  Build Rows of List View  I do this in reverse...
 
-  sql=QString().sprintf("select KEY_LABEL , KEY_VALUE from RDHOTKEYS \
-                           where STATION_NAME = \"%s\" AND	     \
-                           MODULE_NAME = \"%s\"			     \
-                           ORDER BY KEY_ID DESC",
-			(const char *)hotkey_conf,
-			(const char *)hotkey_module);
-
+  sql=QString("select ")+
+    "KEY_LABEL,"+  // 00
+    "KEY_VALUE "+  // 01
+    "from RDHOTKEYS where "+
+    "STATION_NAME=\""+RDEscapeString(hotkey_conf)+"\" && "+
+    "MODULE_NAME=\""+RDEscapeString(hotkey_module)+"\" "+
+    "order by KEY_ID DESC";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     l=new QListViewItem(list_view);
@@ -441,19 +439,19 @@ void EditHotkeys::Clone_RefreshList(const QString& clone_station)
   QString sql;
   RDSqlQuery *q;
 
-  QString tmp_hotkey_conf = QString().sprintf("%s",
-					      (const char *)clone_station);
+  QString tmp_hotkey_conf=clone_station;
   RDHotkeys *tmp_station_hotkeys= new RDHotkeys(tmp_hotkey_conf,hotkey_module);
   keyupdated = true;
   QListViewItem *l;
   list_view->clear();
 
-  sql=QString().sprintf("select KEY_LABEL , KEY_VALUE from RDHOTKEYS \
-                           where STATION_NAME = \"%s\" AND	     \
-                           MODULE_NAME = \"%s\"			     \
-                           ORDER BY ID DESC",
-			(const char *)tmp_hotkey_conf,
-			(const char *)hotkey_module);
+  sql=QString("select ")+
+    "KEY_LABEL,"+  // 00
+    "KEY_VALUE "+  // 01
+    "from RDHOTKEYS where "+
+    "STATION_NAME=\""+RDEscapeString(tmp_hotkey_conf)+"\" && "+
+    "MODULE_NAME=\""+RDEscapeString(hotkey_module)+"\" "+
+    "order by ID DESC";
 
   q=new RDSqlQuery(sql);
   while(q->next()) {
@@ -463,7 +461,7 @@ void EditHotkeys::Clone_RefreshList(const QString& clone_station)
   }
   delete q;
   hotkeystrokes = QString ("");
-  keystroke->setText(QString().sprintf("%s",(const char *)hotkeystrokes));
+  keystroke->setText(hotkeystrokes);
   delete tmp_station_hotkeys;
 }
 

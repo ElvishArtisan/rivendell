@@ -157,10 +157,9 @@ void EditEncoder::okData()
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString().
-    sprintf("update ENCODERS set DEFAULT_EXTENSION=\"%s\",COMMAND_LINE=\"%s\"",
-	    (const char *)RDEscapeString(edit_extension_edit->text()),
-	    (const char *)RDEscapeString(edit_commandline_edit->text()));
+  sql=QString("update ENCODERS set ")+
+    "DEFAULT_EXTENSION=\""+RDEscapeString(edit_extension_edit->text())+"\","+
+    "COMMAND_LINE=\""+RDEscapeString(edit_commandline_edit->text())+"\"";
   q=new RDSqlQuery(sql);
   delete q;
   SaveList("CHANNELS",edit_channel_edit);
@@ -183,12 +182,10 @@ void EditEncoder::LoadList(const QString &paramname,RDIntegerEdit *edit)
   RDSqlQuery *q;
   std::vector<int> values;
 
-  sql=QString().sprintf("select %s from ENCODER_%s where ENCODER_ID=%d\
-                         order by %s",
-			(const char *)paramname,
-			(const char *)paramname,
-			edit_encoder_id,
-			(const char *)paramname);
+  sql=QString("select ")+
+    paramname+" from `ENCODER_"+paramname+"` where "+
+    QString().sprintf("ENCODER_ID=%d ",edit_encoder_id)+
+    "order by "+paramname;
   q=new RDSqlQuery(sql);
   while(q->next()) {
     values.push_back(q->value(0).toInt());
@@ -204,17 +201,15 @@ void EditEncoder::SaveList(const QString &paramname,RDIntegerEdit *edit)
   RDSqlQuery *q;
   std::vector<int> values;
 
-  sql=QString().sprintf("delete from ENCODER_%s where ENCODER_ID=%d",
-			(const char *)paramname,edit_encoder_id);
+  sql=QString("delete from `ENCODER_")+paramname+"` where "+
+    QString().sprintf("ENCODER_ID=%d",edit_encoder_id);
   q=new RDSqlQuery(sql);
   delete q;
   edit->values(&values);
   for(unsigned i=0;i<values.size();i++) {
-    sql=QString().sprintf("insert into ENCODER_%s set ENCODER_ID=%d,%s=%d",
-			  (const char *)paramname,
-			  edit_encoder_id,
-			  (const char *)paramname,
-			  values[i]);
+    sql=QString("insert into `ENCODER_")+paramname+"` set "+
+      QString().sprintf("ENCODER_ID=%d,",edit_encoder_id)+
+      paramname+QString().sprintf("=%d",values[i]);
     q=new RDSqlQuery(sql);
     delete q;
   }

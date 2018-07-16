@@ -33,6 +33,7 @@
 #include <rd.h>
 #include <rdapplication.h>
 #include <rddb.h>
+#include <rdescape_string.h>
 #include <rdtextvalidator.h>
 
 #include "autofill_carts.h"
@@ -46,7 +47,6 @@ EditReport::EditReport(QString rptname,QWidget *parent)
 {
   QString sql;
   RDSqlQuery *q;
-  QString str;
   bool ok=false;
 
   //
@@ -58,9 +58,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   setMaximumHeight(sizeHint().height());
 
   edit_report=new RDReport(rptname,rda->station(),rda->config());
-  str=QString(tr("Edit Report"));
-  setCaption(QString().sprintf("%s - %s",(const char *)str,
-			       (const char *)rptname));
+  setCaption(tr("Edit Report")+" "+rptname);
 
   //
   // Create Fonts
@@ -439,9 +437,8 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   edit_endtime_edit->setDisabled(ok);
   edit_daypart_check->setChecked(!ok);
 
-  sql=QString().sprintf("select SERVICE_NAME from REPORT_SERVICES \
-                         where REPORT_NAME=\"%s\"",
-			(const char *)edit_report->name());
+  sql=QString("select SERVICE_NAME from REPORT_SERVICES where ")+
+    "REPORT_NAME=\""+RDEscapeString(edit_report->name())+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     edit_service_sel->destInsertItem(q->value(0).toString());
@@ -457,9 +454,8 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   }
   delete q;
 
-  sql=QString().sprintf("select STATION_NAME from REPORT_STATIONS \
-                         where REPORT_NAME=\"%s\"",
-			(const char *)edit_report->name());
+  sql=QString("select STATION_NAME from REPORT_STATIONS where ")+
+    "REPORT_NAME=\""+RDEscapeString(edit_report->name())+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     edit_station_sel->destInsertItem(q->value(0).toString());
@@ -477,9 +473,8 @@ EditReport::EditReport(QString rptname,QWidget *parent)
 
   edit_group_box->setChecked(edit_report->filterGroups());
   edit_group_sel->setEnabled(edit_report->filterGroups());
-  sql=QString().sprintf("select GROUP_NAME from REPORT_GROUPS \
-                         where REPORT_NAME=\"%s\"",
-			(const char *)edit_report->name());
+  sql=QString("select GROUP_NAME from REPORT_GROUPS where ")+
+    "REPORT_NAME=\""+RDEscapeString(edit_report->name())+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     edit_group_sel->destInsertItem(q->value(0).toString());
@@ -577,18 +572,15 @@ void EditReport::okData()
   // Add New Services
   //
   for(unsigned i=0;i<edit_service_sel->destCount();i++) {
-    sql=QString().sprintf("select SERVICE_NAME from REPORT_SERVICES \
-where REPORT_NAME=\"%s\" && SERVICE_NAME=\"%s\"",
-			  (const char *)edit_report->name(),
-			  (const char *)edit_service_sel->destText(i));
+    sql=QString("select SERVICE_NAME from REPORT_SERVICES where ")+
+      "REPORT_NAME=\""+RDEscapeString(edit_report->name())+"\" && "+
+      "SERVICE_NAME=\""+RDEscapeString(edit_service_sel->destText(i))+"\"";
     q=new RDSqlQuery(sql);
     if(q->size()==0) {
       delete q;
-      sql=QString().
-	sprintf("insert into REPORT_SERVICES (REPORT_NAME,SERVICE_NAME) \
-                 values (\"%s\",\"%s\")",
-			    (const char *)edit_report->name(),
-			    (const char *)edit_service_sel->destText(i));
+      sql=QString("insert into REPORT_SERVICES (REPORT_NAME,SERVICE_NAME) ")+
+	"values (\""+RDEscapeString(edit_report->name())+"\","+
+	"\""+RDEscapeString(edit_service_sel->destText(i))+"\")";
       q=new RDSqlQuery(sql);
     }
     delete q;
@@ -597,11 +589,11 @@ where REPORT_NAME=\"%s\" && SERVICE_NAME=\"%s\"",
   //
   // Delete Old Services
   //
-  sql=QString().sprintf("delete from REPORT_SERVICES where REPORT_NAME=\"%s\"",
-			(const char *)edit_report->name());
+  sql=QString("delete from REPORT_SERVICES where ")+
+    "REPORT_NAME=\""+RDEscapeString(edit_report->name())+"\"";
   for(unsigned i=0;i<edit_service_sel->destCount();i++) {
-    sql+=QString().sprintf(" && SERVICE_NAME<>\"%s\"",
-			   (const char *)edit_service_sel->destText(i));
+    sql+=QString(" && SERVICE_NAME<>\"")+
+      RDEscapeString(edit_service_sel->destText(i))+"\"";
   }
   q=new RDSqlQuery(sql);
   delete q;
@@ -610,18 +602,15 @@ where REPORT_NAME=\"%s\" && SERVICE_NAME=\"%s\"",
   // Add New Stations
   //
   for(unsigned i=0;i<edit_station_sel->destCount();i++) {
-    sql=QString().sprintf("select STATION_NAME from REPORT_STATIONS \
-where REPORT_NAME=\"%s\" && STATION_NAME=\"%s\"",
-			  (const char *)edit_report->name(),
-			  (const char *)edit_station_sel->destText(i));
+    sql=QString("select STATION_NAME from REPORT_STATIONS where ")+
+      "REPORT_NAME=\""+RDEscapeString(edit_report->name())+"\" && "+
+      "STATION_NAME=\""+RDEscapeString(edit_station_sel->destText(i))+"\"";
     q=new RDSqlQuery(sql);
     if(q->size()==0) {
       delete q;
-      sql=QString().
-	sprintf("insert into REPORT_STATIONS (REPORT_NAME,STATION_NAME) \
-                 values (\"%s\",\"%s\")",
-			    (const char *)edit_report->name(),
-			    (const char *)edit_station_sel->destText(i));
+      sql=QString("insert into REPORT_STATIONS (REPORT_NAME,STATION_NAME) ")+
+	"values (\""+RDEscapeString(edit_report->name())+"\","+
+	"\""+RDEscapeString(edit_station_sel->destText(i))+"\")";
       q=new RDSqlQuery(sql);
     }
     delete q;
@@ -630,11 +619,11 @@ where REPORT_NAME=\"%s\" && STATION_NAME=\"%s\"",
   //
   // Delete Old Stations
   //
-  sql=QString().sprintf("delete from REPORT_STATIONS where REPORT_NAME=\"%s\"",
-			(const char *)edit_report->name());
+  sql=QString("delete from REPORT_STATIONS where ")+
+    "REPORT_NAME=\""+RDEscapeString(edit_report->name())+"\"";
   for(unsigned i=0;i<edit_station_sel->destCount();i++) {
-    sql+=QString().sprintf(" && STATION_NAME<>\"%s\"",
-			   (const char *)edit_station_sel->destText(i));
+    sql+=QString(" && STATION_NAME<>\"")+
+      RDEscapeString(edit_station_sel->destText(i))+"\"";
   }
   q=new RDSqlQuery(sql);
   delete q;
@@ -643,18 +632,15 @@ where REPORT_NAME=\"%s\" && STATION_NAME=\"%s\"",
   // Add New Groups
   //
   for(unsigned i=0;i<edit_group_sel->destCount();i++) {
-    sql=QString().sprintf("select GROUP_NAME from REPORT_GROUPS \
-where REPORT_NAME=\"%s\" && GROUP_NAME=\"%s\"",
-			  (const char *)edit_report->name(),
-			  (const char *)edit_group_sel->destText(i));
+    sql=QString("select GROUP_NAME from REPORT_GROUPS where ")+
+      "REPORT_NAME=\""+RDEscapeString(edit_report->name())+"\" && "+
+      "GROUP_NAME=\""+RDEscapeString(edit_group_sel->destText(i))+"\"";
     q=new RDSqlQuery(sql);
     if(q->size()==0) {
       delete q;
-      sql=QString().
-	sprintf("insert into REPORT_GROUPS (REPORT_NAME,GROUP_NAME) \
-                 values (\"%s\",\"%s\")",
-			    (const char *)edit_report->name(),
-			    (const char *)edit_group_sel->destText(i));
+      sql=QString("insert into REPORT_GROUPS (REPORT_NAME,GROUP_NAME) ")+
+	"values (\""+RDEscapeString(edit_report->name())+"\","+
+	"\""+RDEscapeString(edit_group_sel->destText(i))+"\")";
       q=new RDSqlQuery(sql);
     }
     delete q;
@@ -663,11 +649,11 @@ where REPORT_NAME=\"%s\" && GROUP_NAME=\"%s\"",
   //
   // Delete Old Groups
   //
-  sql=QString().sprintf("delete from REPORT_GROUPS where REPORT_NAME=\"%s\"",
-			(const char *)edit_report->name());
+  sql=QString("delete from REPORT_GROUPS where ")+
+    "REPORT_NAME=\""+RDEscapeString(edit_report->name())+"\"";
   for(unsigned i=0;i<edit_group_sel->destCount();i++) {
-    sql+=QString().sprintf(" && GROUP_NAME<>\"%s\"",
-			   (const char *)edit_group_sel->destText(i));
+    sql+=QString(" && GROUP_NAME<>\"")+
+      RDEscapeString(edit_group_sel->destText(i))+"\"";
   }
   q=new RDSqlQuery(sql);
   delete q;

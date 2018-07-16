@@ -30,14 +30,15 @@
 #include <qcheckbox.h>
 #include <qbuttongroup.h>
 
-#include <rddb.h>
 #include <rd.h>
+#include <rddb.h>
+#include <rdescape_string.h>
 #include <rdtextvalidator.h>
 
-#include <add_report.h>
-#include <test_import.h>
-#include <autofill_carts.h>
-#include <edit_svc_perms.h>
+#include "add_report.h"
+#include "test_import.h"
+#include "autofill_carts.h"
+#include "edit_svc_perms.h"
 
 AddReport::AddReport(QString *rptname,QWidget *parent)
   : QDialog(parent,"",true)
@@ -122,8 +123,8 @@ void AddReport::okData()
 			 tr("You must provide a report name!"));
     return;
   }
-  sql=QString().sprintf("select NAME from REPORTS where NAME=\"%s\"",
-			(const char *)add_name_edit->text());
+  sql=QString("select NAME from REPORTS where ")+
+    "NAME=\""+RDEscapeString(add_name_edit->text())+"\"";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     QMessageBox::warning(this,tr("Report Exists"),
@@ -132,8 +133,8 @@ void AddReport::okData()
     return;
   }
   delete q;
-  sql=QString().sprintf("insert into REPORTS set NAME=\"%s\"",
-			(const char *)add_name_edit->text());
+  sql=QString("insert into REPORTS set ")+
+    "NAME=\""+RDEscapeString(add_name_edit->text())+"\"";
   q=new RDSqlQuery(sql);
   delete q;
   *add_name=add_name_edit->text();

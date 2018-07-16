@@ -1859,6 +1859,14 @@ Stále ještě chcete uložit?</translation>
         <source>Please Select an Item From the List</source>
         <translation>Vyberte, prosím, položku ze seznamu</translation>
     </message>
+    <message>
+        <source>Duplicate Hotkey defined</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No Duplicates allowed.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditJack</name>
@@ -4564,6 +4572,10 @@ Jste si jistý, že chcete pokračovat?</translation>
         <source>User Defined</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Rivendell Dropbox Configurations on</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListEncoders</name>
@@ -4992,6 +5004,14 @@ Stále ještě jej chcete smazat?</translation>
         <source>&amp;Cancel</source>
         <translation>Z&amp;rušit</translation>
     </message>
+    <message>
+        <source>Delete Host Variable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete the variable</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListLiveWireGpios</name>
@@ -5360,12 +5380,20 @@ vozíky</translation>
     <message>
         <source>logs owned by this service that will also be deleted.
 Do you still want to proceed?</source>
-        <translation>zápisy náležející této službě, které budou taktéž smazány.
+        <translation type="obsolete">zápisy náležející této službě, které budou taktéž smazány.
 Stále ještě chcete pokračovat?</translation>
     </message>
     <message>
         <source>Logs Exist</source>
         <translation>Zápisy existují</translation>
+    </message>
+    <message>
+        <source>logs owned by this service that will also be deleted.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you still want to proceed?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -5602,11 +5630,19 @@ zopakování</translation>
     </message>
     <message>
         <source>RDAdmin</source>
-        <translation type="unfinished">RDAdmin</translation>
+        <translation type="obsolete">RDAdmin</translation>
     </message>
     <message>
         <source>Error</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Host</source>
+        <translation type="unfinished">Server</translation>
+    </message>
+    <message>
+        <source>User</source>
+        <translation type="unfinished">Uživatel</translation>
     </message>
 </context>
 <context>
@@ -5916,12 +5952,20 @@ a záloha původní databáze uložena v </translation>
     <message>
         <source>group already exists.
 Do you want to combine the two?</source>
-        <translation>skupina již existuje.
+        <translation type="obsolete">skupina již existuje.
 Chcete obě spojit?</translation>
     </message>
     <message>
         <source>Group Exists</source>
         <translation>Skupina existuje</translation>
+    </message>
+    <message>
+        <source>Do you want to combine the two?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>group already exists.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -6108,11 +6152,11 @@ Prověřte, prosím, svá nastavení a zkuste to znovu.</translation>
     </message>
     <message>
         <source>Inputs:</source>
-        <translation>Vstupy:</translation>
+        <translation type="obsolete">Vstupy:</translation>
     </message>
     <message>
         <source>Outputs:</source>
-        <translation>Výstupy:</translation>
+        <translation type="obsolete">Výstupy:</translation>
     </message>
     <message>
         <source>NO DATA AVAILABLE
@@ -6141,6 +6185,14 @@ pro naplnění databáze zdroji zvuku.</translation>
 </source>
         <translation type="unfinished">   PCM 24 Linear
 </translation>
+    </message>
+    <message>
+        <source>Inputs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Outputs</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

@@ -2,7 +2,7 @@
 //
 // Add scheduler codes dialog
 //
-//   Stefan Gabriel <stg@st-gabriel.de>
+//   Copyright 2005-2018 Stefan Gabriel <stg@st-gabriel.de>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -31,11 +31,12 @@
 #include <qbuttongroup.h>
 
 #include <rddb.h>
+#include <rdescape_string.h>
 #include <rdpasswd.h>
 #include <rdtextvalidator.h>
 
-#include <edit_schedcodes.h>
-#include <add_schedcodes.h>
+#include "edit_schedcodes.h"
+#include "add_schedcodes.h"
 
 AddSchedCode::AddSchedCode(QString *schedCode,QWidget *parent)
   : QDialog(parent,"",true)
@@ -128,9 +129,8 @@ void AddSchedCode::okData()
     return;
   }
 
-  sql=QString().sprintf("insert into SCHED_CODES set CODE=\"%s\"",
-			(const char *)schedCode_name_edit->text());
-
+  sql=QString("insert into SCHED_CODES set ")+
+    "CODE=\""+RDEscapeString(schedCode_name_edit->text())+"\"";
   q=new RDSqlQuery(sql);
   if(!q->isActive()) {
     QMessageBox::warning(this,tr("Code Exists"),tr("Code Already Exists!"),

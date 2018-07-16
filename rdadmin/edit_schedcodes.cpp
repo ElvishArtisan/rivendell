@@ -3,6 +3,7 @@
 // Edit scheduler codes dialog
 //
 //   Stefan Gabriel <stg@st-gabriel.de>
+//   (C) Copyright 2005-2018
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,12 +28,14 @@
 #include <qmessagebox.h>
 #include <qbuttongroup.h>
 
-#include <rduser.h>
+#include <rddb.h>
+#include <rdescape_string.h>
 #include <rdpasswd.h>
 #include <rdtextvalidator.h>
-#include <rddb.h>
-#include <edit_group.h>
-#include <edit_schedcodes.h>
+#include <rduser.h>
+
+#include "edit_group.h"
+#include "edit_schedcodes.h"
 
 EditSchedCode::EditSchedCode(QString schedCode,QString description,
 			     QWidget *parent)
@@ -140,8 +143,9 @@ void EditSchedCode::okData()
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("update SCHED_CODES set DESCRIPTION=\"%s\" where CODE=\"%s\"",(const char *)schedCode_description_edit->text(),(const char *)schedCode_name_edit->text());
-
+  sql=QString("update SCHED_CODES set ")+
+    "DESCRIPTION=\""+RDEscapeString(schedCode_description_edit->text())+"\" "+
+    "where CODE=\""+RDEscapeString(schedCode_name_edit->text())+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 

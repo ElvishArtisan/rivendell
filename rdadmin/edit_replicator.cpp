@@ -251,9 +251,8 @@ EditReplicator::EditReplicator(const QString &repl_name,QWidget *parent)
     repl_normalize_box->setChecked(true);
     repl_normalize_spin->setValue(repl_replicator->normalizeLevel()/1000);
   }
-  sql=QString().sprintf("select GROUP_NAME from REPLICATOR_MAP \
-                         where REPLICATOR_NAME=\"%s\"",
-			(const char *)RDEscapeString(repl_name_edit->text()));
+  sql=QString("select GROUP_NAME from REPLICATOR_MAP where ")+
+    "REPLICATOR_NAME=\""+RDEscapeString(repl_name_edit->text())+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     repl_groups_sel->destInsertItem(q->value(0).toString());
@@ -334,17 +333,15 @@ void EditReplicator::okData()
   // Add New Groups
   //
   for(unsigned i=0;i<repl_groups_sel->destCount();i++) {
-    sql=QString().sprintf("select GROUP_NAME from REPLICATOR_MAP \
-where REPLICATOR_NAME=\"%s\" && GROUP_NAME=\"%s\"",
-			  (const char *)RDEscapeString(repl_name_edit->text()),
-			  (const char *)RDEscapeString(repl_groups_sel->destText(i)));
+    sql=QString("select GROUP_NAME from REPLICATOR_MAP where ")+
+      "REPLICATOR_NAME=\""+RDEscapeString(repl_name_edit->text())+"\" && "+
+      "GROUP_NAME=\""+RDEscapeString(repl_groups_sel->destText(i))+"\"";
     q=new RDSqlQuery(sql);
     if(q->size()==0) {
       delete q;
-      sql=QString().sprintf("insert into REPLICATOR_MAP (REPLICATOR_NAME,GROUP_NAME) \
-values (\"%s\",\"%s\")",
-			    (const char *)RDEscapeString(repl_name_edit->text()),
-			    (const char *)RDEscapeString(repl_groups_sel->destText(i)));
+      sql=QString("insert into REPLICATOR_MAP (REPLICATOR_NAME,GROUP_NAME) ")+
+	"values (\""+RDEscapeString(repl_name_edit->text())+"\","+
+	"\""+RDEscapeString(repl_groups_sel->destText(i))+"\")";
       q=new RDSqlQuery(sql);
     }
     delete q;
@@ -353,11 +350,11 @@ values (\"%s\",\"%s\")",
   //
   // Delete Old Groups
   //
-  sql=QString().sprintf("delete from REPLICATOR_MAP where REPLICATOR_NAME=\"%s\"",
-			(const char *)RDEscapeString(repl_name_edit->text()));
+  sql=QString("delete from REPLICATOR_MAP where ")+
+    "REPLICATOR_NAME=\""+RDEscapeString(repl_name_edit->text())+"\"";
   for(unsigned i=0;i<repl_groups_sel->destCount();i++) {
-    sql+=QString().sprintf(" && GROUP_NAME<>\"%s\"",
-			   (const char *)RDEscapeString(repl_groups_sel->destText(i)));
+    sql+=QString(" && GROUP_NAME<>\"")+
+      RDEscapeString(repl_groups_sel->destText(i))+"\"";
   }
   q=new RDSqlQuery(sql);
   delete q;

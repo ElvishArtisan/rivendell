@@ -782,12 +782,10 @@ int EditDecks::GetOutput()
 {
   int output=-1;
 
-  QString sql=QString().sprintf("select NUMBER from OUTPUTS where \
-                               (STATION_NAME=\"%s\")&&(MATRIX=%d)&&\
-                               (NAME=\"%s\")",
-			       (const char *)edit_swstation_box->currentText(),
-				GetMatrix(),
-			       (const char *)edit_swoutput_box->currentText());
+  QString sql=QString("select NUMBER from OUTPUTS where ")+
+    "(STATION_NAME=\""+RDEscapeString(edit_swstation_box->currentText())+"\")&&"+
+    QString().sprintf("(MATRIX=%d)&&",GetMatrix())+
+    "(NAME=\""+RDEscapeString(edit_swoutput_box->currentText())+"\")";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     output=q->value(0).toInt();

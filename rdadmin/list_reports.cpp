@@ -2,7 +2,7 @@
 //
 // List Rivendell Reports
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,9 +30,11 @@
 #include <qbuttongroup.h>
 
 #include <rddb.h>
-#include <list_reports.h>
-#include <edit_report.h>
-#include <add_report.h>
+#include <rdescape_string.h>
+
+#include "add_report.h"
+#include "edit_report.h"
+#include "list_reports.h"
 
 ListReports::ListReports(QWidget *parent)
   : QDialog(parent,"",true)
@@ -158,16 +160,12 @@ void ListReports::editData()
 
 void ListReports::deleteData()
 {
-  QString str;
-
   if(list_box->currentText().isEmpty()) {
     return;
   }
-  str=QString(tr("Are you sure you want to delete report"));
-  if(QMessageBox::warning(this,tr("Delete Report"),
-			  QString().sprintf(
-			    "%s \"%s\"?",(const char *)str,
-			    (const char *)list_box->currentText()),
+  if(QMessageBox::warning(this,"RDAdmin - "+tr("Delete Report"),
+			  tr("Are you sure you want to delete report")+
+			  " \""+list_box->currentText()+"\"?",
 			  QMessageBox::Yes,QMessageBox::No)==
      QMessageBox::Yes) {
     DeleteReport(list_box->currentText());
@@ -197,16 +195,16 @@ void ListReports::DeleteReport(QString rptname)
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString().sprintf("delete from REPORTS where NAME=\"%s\"",
-			(const char *)rptname);
+  sql=QString("delete from REPORTS where ")+
+    "NAME=\""+RDEscapeString(rptname)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
-  sql=QString().sprintf("delete from REPORT_SERVICES where \
-                         REPORT_NAME=\"%s\"",(const char *)rptname);
+  sql=QString("delete from REPORT_SERVICES where ")+
+    "REPORT_NAME=\""+RDEscapeString(rptname)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
-  sql=QString().sprintf("delete from REPORT_STATIONS where \
-                         REPORT_NAME=\"%s\"",(const char *)rptname);
+  sql=QString("delete from REPORT_STATIONS where ")+
+    "REPORT_NAME=\""+RDEscapeString(rptname)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 }

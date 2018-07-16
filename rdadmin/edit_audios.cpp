@@ -98,7 +98,7 @@ EditAudioPorts::EditAudioPorts(QString station,QWidget *parent)
       // Input Port Controls
       //
       str=QString(tr("Input Port"));
-      label=new QLabel(QString().sprintf("%s %d",(const char *)str,j*4+i),this);
+      label=new QLabel(str+QString().sprintf(" %d",j*4+i),this);
       label->setGeometry(50+170*i,55+j*180,170,22);
       label->setFont(font);
       label->setAlignment(AlignHCenter);  
@@ -140,7 +140,7 @@ EditAudioPorts::EditAudioPorts(QString station,QWidget *parent)
       // Output Port Controls
       //
       str=QString(tr("Output Port"));
-      label=new QLabel(QString().sprintf("%s %d",(const char *)str,j*4+i),this);
+      label=new QLabel(str+QString().sprintf(" %d",j*4+i),this);
       label->setGeometry(50+170*i,170+j*180,170,22);
       label->setFont(font);
       label->setAlignment(AlignHCenter);  

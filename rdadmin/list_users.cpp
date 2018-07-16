@@ -205,8 +205,8 @@ void ListUsers::deleteData()
   //
   // Check for default user assignments
   //
-  sql=QString().sprintf("select NAME from STATIONS where DEFAULT_NAME=\"%s\"",
-			(const char *)username);
+  sql=QString("select NAME from STATIONS where ")+
+    "DEFAULT_NAME=\""+RDEscapeString(username)+"\"";
   q=new RDSqlQuery(sql);
   if(q->size()>0) {
     str=tr("This user is set as the default user for the following hosts:\n\n");
@@ -222,47 +222,46 @@ void ListUsers::deleteData()
   delete q;
 
   str=QString(tr("Are you sure you want to delete user"));
-  warning+=QString().sprintf("%s \"%s\"?",(const char *)str,
-			     (const char *)item->text(1));
-  switch(QMessageBox::warning(this,tr("Delete User"),warning,
+  warning+=str+" \""+item->text(1)+"\"?";
+  switch(QMessageBox::warning(this,"RDAdmin - "+tr("Delete User"),warning,
 			      QMessageBox::Yes,QMessageBox::No)) {
-      case QMessageBox::No:
-      case QMessageBox::NoButton:
-	return;
+  case QMessageBox::No:
+  case QMessageBox::NoButton:
+    return;
 
-      default:
-	break;
+  default:
+    break;
   }
 
   //
   // Delete RSS Feed Perms
   //
-  sql=QString().sprintf("delete from FEED_PERMS where USER_NAME=\"%s\"",
-			(const char *)username);
+  sql=QString("delete from FEED_PERMS where ")+
+    "USER_NAME=\""+RDEscapeString(username)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
   
   //
   // Delete Member User Perms
   //
-  sql=QString().sprintf("delete from USER_PERMS where USER_NAME=\"%s\"",
-			(const char *)username);
+  sql=QString("delete from USER_PERMS where ")+
+    "USER_NAME=\""+RDEscapeString(username)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
   
   //
   // Delete from User List
   //
-  sql=QString().sprintf("delete from USERS where LOGIN_NAME=\"%s\"",
-			(const char *)username);
+  sql=QString("delete from USERS where ")+
+    "LOGIN_NAME=\""+RDEscapeString(username)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 
   //
   // Delete from Cached Web Connections
   //
-  sql=QString().sprintf("delete from WEB_CONNECTIONS where LOGIN_NAME=\"%s\"",
-			(const char *)username);
+  sql=QString("delete from WEB_CONNECTIONS where ")+
+    "LOGIN_NAME=\""+RDEscapeString(username)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 
@@ -324,9 +323,12 @@ void ListUsers::RefreshItem(RDListViewItem *item)
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString().sprintf("select ADMIN_CONFIG_PRIV,FULL_NAME,DESCRIPTION \
-                         from USERS where LOGIN_NAME=\"%s\"",
-			(const char *)RDEscapeString(item->text(1)));
+  sql=QString("select ")+
+    "ADMIN_CONFIG_PRIV,"+  // 00
+    "FULL_NAME,"+          // 01
+    "DESCRIPTION "+        // 02
+    "from USERS where "+
+    "LOGIN_NAME=\""+RDEscapeString(item->text(1))+"\"";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     if(q->value(0).toString()=="Y") {

@@ -17123,3 +17123,5 @@
 	* Fixed a bug in rddbmgr(8) that caused reversion 289 to fail.
 2018-07-12 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up SQL quieries in 'lib/' ensure UTF-8 compatibility.
+2018-07-16 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up SQL quieries in 'rdadmin/' ensure UTF-8 compatibility.

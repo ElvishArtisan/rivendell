@@ -1809,6 +1809,14 @@ Vil du framleis lagra?</translation>
         <source>Hot Key Configuration for</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Duplicate Hotkey defined</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No Duplicates allowed.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditJack</name>
@@ -4485,6 +4493,10 @@ Are you sure you want to continue?</source>
         <source>User Defined</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Rivendell Dropbox Configurations on</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListEncoders</name>
@@ -4917,6 +4929,14 @@ Do you still want to delete it?</source>
         <source>&amp;Cancel</source>
         <translation>&amp;Avbryt</translation>
     </message>
+    <message>
+        <source>Delete Host Variable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete the variable</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListLiveWireGpios</name>
@@ -5275,12 +5295,20 @@ Carts</source>
     <message>
         <source>logs owned by this service that will also be deleted.
 Do you still want to proceed?</source>
-        <translation>loggar som òg vil bli sletta.
+        <translation type="obsolete">loggar som òg vil bli sletta.
 Er du sikker på at du vil halda fram?</translation>
     </message>
     <message>
         <source>Logs Exist</source>
         <translation>Loggen eksisterer</translation>
+    </message>
+    <message>
+        <source>logs owned by this service that will also be deleted.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you still want to proceed?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -5515,11 +5543,15 @@ Replicators</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>RDAdmin</source>
+        <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Error</source>
+        <source>Host</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5686,12 +5718,20 @@ på denne maskina i nokre sekund. Halda fram?</translation>
     <message>
         <source>group already exists.
 Do you want to combine the two?</source>
-        <translation>gruppe eksisterer frå før.
+        <translation type="obsolete">gruppe eksisterer frå før.
 Vil du kombinera desse to?</translation>
     </message>
     <message>
         <source>Group Exists</source>
         <translation>Gruppa eksisterer</translation>
+    </message>
+    <message>
+        <source>Do you want to combine the two?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>group already exists.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -5878,11 +5918,11 @@ Sjekk oppsettet ditt og prøv att.</translation>
     </message>
     <message>
         <source>Inputs:</source>
-        <translation>Inngangar:</translation>
+        <translation type="obsolete">Inngangar:</translation>
     </message>
     <message>
         <source>Outputs:</source>
-        <translation>Utgangar:</translation>
+        <translation type="obsolete">Utgangar:</translation>
     </message>
     <message>
         <source>NO DATA AVAILABLE
@@ -5909,6 +5949,14 @@ Sjekk oppsettet ditt og prøv att.</translation>
         <source>    PCM24 Linear
 </source>
         <translation type="unfinished">Lineær PCM24</translation>
+    </message>
+    <message>
+        <source>Inputs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Outputs</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

@@ -2,7 +2,7 @@
 //
 // List Rivendell Dropboxes
 //
-//   (C) Copyright 2002,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002,2016-2018 Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,9 +30,10 @@
 #include <qbuttongroup.h>
 
 #include <rddb.h>
-#include <list_dropboxes.h>
-#include <edit_dropbox.h>
+#include <rdescape_string.h>
 
+#include "edit_dropbox.h"
+#include "list_dropboxes.h"
 
 ListDropboxes::ListDropboxes(const QString &stationname,QWidget *parent)
   : QDialog(parent,"",true)
@@ -45,8 +46,7 @@ ListDropboxes::ListDropboxes(const QString &stationname,QWidget *parent)
   setMinimumWidth(sizeHint().width());
   setMinimumHeight(sizeHint().height());
 
-  setCaption(QString().sprintf("Rivendell Dropbox Configurations on %s",
-			       (const char *)stationname));
+  setCaption(tr("Rivendell Dropbox Configurations on")+" "+stationname);
 
   //
   // Create Fonts
@@ -229,17 +229,22 @@ void ListDropboxes::RefreshList()
   RDListViewItem *item;
 
   list_dropboxes_view->clear();
-  sql=QString().sprintf("select DROPBOXES.ID,DROPBOXES.GROUP_NAME,\
-                         DROPBOXES.PATH,DROPBOXES.NORMALIZATION_LEVEL,\
-                         DROPBOXES.AUTOTRIM_LEVEL,\
-                         DROPBOXES.TO_CART,DROPBOXES.USE_CARTCHUNK_ID,\
-                         DROPBOXES.DELETE_CUTS,DROPBOXES.METADATA_PATTERN,\
-                         DROPBOXES.FIX_BROKEN_FORMATS,\
-                         DROPBOXES.SET_USER_DEFINED,GROUPS.COLOR \
-                         from DROPBOXES left join GROUPS on \
-                         DROPBOXES.GROUP_NAME=GROUPS.NAME \
-                         where DROPBOXES.STATION_NAME=\"%s\"",
-			(const char *)list_stationname);
+  sql=QString("select ")+
+    "DROPBOXES.ID,"+                   // 00
+    "DROPBOXES.GROUP_NAME,"+           // 01
+    "DROPBOXES.PATH,"+                 // 02
+    "DROPBOXES.NORMALIZATION_LEVEL,"+  // 03
+    "DROPBOXES.AUTOTRIM_LEVEL,"+       // 04
+    "DROPBOXES.TO_CART,"+              // 05
+    "DROPBOXES.USE_CARTCHUNK_ID,"+     // 06
+    "DROPBOXES.DELETE_CUTS,"+          // 07
+    "DROPBOXES.METADATA_PATTERN,"+     // 08
+    "DROPBOXES.FIX_BROKEN_FORMATS,"+   // 09
+    "DROPBOXES.SET_USER_DEFINED,"+     // 10
+    "GROUPS.COLOR "+                   // 11
+    "from DROPBOXES left join GROUPS "+
+    "on DROPBOXES.GROUP_NAME=GROUPS.NAME where "+
+    "DROPBOXES.STATION_NAME=\""+RDEscapeString(list_stationname)+"\"";
   q=new RDSqlQuery(sql);
   while (q->next()) {
     item=new RDListViewItem(list_dropboxes_view);

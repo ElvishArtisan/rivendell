@@ -143,10 +143,9 @@ void ListEncoders::addData()
 
   AddEncoder *ad=new AddEncoder(&name,list_stationname,this);
   if(ad->exec()==0) {
-    sql=QString().sprintf("select ID from ENCODERS \
-                           where (NAME=\"%s\")&&(STATION_NAME=\"%s\")",
-			  (const char *)RDEscapeString(name),
-			  (const char *)RDEscapeString(list_stationname));
+    sql=QString("select ID from ENCODERS where ")+
+      "(NAME=\""+RDEscapeString(name)+"\")&&"+
+      "(STATION_NAME=\""+RDEscapeString(list_stationname)+"\")";
     q=new RDSqlQuery(sql);
     if(q->first()) {
       EditEncoder *ee=new EditEncoder(q->value(0).toInt());
@@ -158,10 +157,9 @@ void ListEncoders::addData()
 	list_list_view->ensureItemVisible(item);
       }
       else {
-	sql=QString().sprintf("delete from ENCODERS \
-                              where (NAME=\"%s\")&&(STATION_NAME=\"%s\")",
-			      (const char *)RDEscapeString(name),
-			      (const char *)RDEscapeString(list_stationname));
+	sql=QString("delete from ENCODERS where ")+
+	  "(NAME=\""+RDEscapeString(name)+"\")&&"+
+	  "(STATION_NAME=\""+RDEscapeString(list_stationname)+"\")";
 	q1=new RDSqlQuery(sql);
 	delete q1;
       }
@@ -170,10 +168,9 @@ void ListEncoders::addData()
     delete q;
   }
   else {
-    sql=QString().sprintf("delete from ENCODERS \
-                          where (NAME=\"%s\")&&(STATION_NAME=\"%s\")",
-			  (const char *)RDEscapeString(name),
-			  (const char *)RDEscapeString(list_stationname));
+    sql=QString("delete from ENCODERS where ")+
+      "(NAME=\""+RDEscapeString(name)+"\")&&"+
+      "(STATION_NAME=\""+RDEscapeString(list_stationname)+"\")";
     q1=new RDSqlQuery(sql);
     delete q1;
   }
@@ -252,9 +249,8 @@ void ListEncoders::RefreshList()
   RDSqlQuery *q;
   RDListViewItem *item=NULL;
 
-  sql=QString().sprintf("select ID,NAME,COMMAND_LINE from ENCODERS\
-                         where STATION_NAME=\"%s\"",
-			(const char *)RDEscapeString(list_stationname));
+  sql=QString("select ID,NAME,COMMAND_LINE from ENCODERS where ")+
+    "STATION_NAME=\""+RDEscapeString(list_stationname)+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     item=new RDListViewItem(list_list_view);
@@ -289,12 +285,10 @@ QString ListEncoders::BuildList(int encoder_id,const QString &paramname)
   RDSqlQuery *q;
   QString ret;
 
-  sql=QString().sprintf("select %s from ENCODER_%s where ENCODER_ID=%d\
-                         order by %s",
-			(const char *)paramname,
-			(const char *)paramname,
-			encoder_id,
-			(const char *)paramname);
+  sql=QString("select ")+
+    paramname+" from `ENCODER_"+paramname+"` where "+
+    QString().sprintf("ENCODER_ID=%d",encoder_id)+
+    "order by "+paramname;
   q=new RDSqlQuery(sql);
   while(q->next()) {
     ret=ret+QString().sprintf("%d,",q->value(0).toInt());

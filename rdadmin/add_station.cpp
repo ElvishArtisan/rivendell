@@ -2,7 +2,7 @@
 //
 // Add a Rivendell Workstation
 //
-//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -33,11 +33,11 @@
 #include <rddb.h>
 #include <rdairplay_conf.h>
 #include <rdescape_string.h>
-
-#include <edit_station.h>
-#include <add_station.h>
 #include <rdpasswd.h>
 #include <rdtextvalidator.h>
+
+#include "add_station.h"
+#include "edit_station.h"
 
 AddStation::AddStation(QString *stationname,QWidget *parent)
   : QDialog(parent,"",true)
@@ -185,17 +185,14 @@ void AddStation::CloneEncoderValues(const QString &paramname,
   RDSqlQuery *q;
   RDSqlQuery *q1;
 
-  sql=QString().sprintf("select %s from ENCODER_%s where ENCODER_ID=%d",
-			(const char *)RDEscapeString(paramname),
-			(const char *)RDEscapeString(paramname),
-			src_id);
+sql=QString("select ")+
+  paramname+" from `ENCODER_"+paramname+"` where "+
+  QString().sprintf("ENCODER_ID=%d",src_id);
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    sql=QString().sprintf("insert into ENCODER_%s set %s=%d,ENCODER_ID=%d",
-			  (const char *)RDEscapeString(paramname),
-			  (const char *)RDEscapeString(paramname),
-			  q->value(0).toInt(),
-			  dest_id);
+    sql=QString("insert into `ENCODER_")+
+      paramname+"` set "+paramname+
+      QString().sprintf("=%d,ENCODER_ID=%d",q->value(0).toInt(),dest_id);
     q1=new RDSqlQuery(sql);
     delete q1;
   }

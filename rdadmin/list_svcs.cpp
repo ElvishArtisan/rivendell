@@ -31,6 +31,7 @@
 
 #include <rdapplication.h>
 #include <rddb.h>
+#include <rdescape_string.h>
 
 #include "add_svc.h"
 #include "edit_svc.h"
@@ -155,31 +156,22 @@ void ListSvcs::editData()
 
 void ListSvcs::deleteData()
 {
-  QString str1;
-  QString str2;
   QString sql;
   RDSqlQuery *q;
 
-  str1=QString(tr("Are you sure you want to delete service"));
-  if(QMessageBox::warning(this,tr("Delete Service"),
-			  QString().sprintf(
-			    "%s %s?",(const char *)str1,
-			    (const char *)list_box->currentText()),
-			  QMessageBox::Yes,QMessageBox::No)!=
-     QMessageBox::Yes) {
+  if(QMessageBox::warning(this,"RDAdmin- "+tr("Delete Service"),
+			  tr("Are you sure you want to delete service")+
+			  " \""+list_box->currentText()+"\"?",
+			  QMessageBox::Yes,QMessageBox::No)!=QMessageBox::Yes) {
     return;
   }
-  sql=QString().sprintf("select NAME from LOGS where SERVICE=\"%s\"",
-			(const char *)list_box->currentText());
+  sql=QString("select NAME from LOGS where ")+
+    "SERVICE=\""+RDEscapeString(list_box->currentText())+"\"";
   q=new RDSqlQuery(sql);
   if(q->first()) {
-    str1=tr("There are");
-    str2=tr("logs owned by this service that will also be deleted.\nDo you still want to proceed?");
-    if(QMessageBox::warning(this,tr("Logs Exist"),
-			 QString().sprintf("%s %d %s",
-					   (const char *)str1,
-					   q->size(),
-					   (const char *)str2),
+    if(QMessageBox::warning(this,"RDAdmin - "+tr("Logs Exist"),
+			    tr("There are")+QString().sprintf(" %d ",q->size())+
+			    tr("logs owned by this service that will also be deleted.")+"\n"+tr("Do you still want to proceed?"),
 			    QMessageBox::Yes,QMessageBox::No)!=
        QMessageBox::Yes) {
       delete q;

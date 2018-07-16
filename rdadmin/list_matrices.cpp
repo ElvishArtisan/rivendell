@@ -29,9 +29,9 @@
 #include <qmessagebox.h>
 #include <qbuttongroup.h>
 
-//#include <rdstation.h>
 #include <rdapplication.h>
 #include <rddb.h>
+#include <rdescape_string.h>
 
 #include "add_matrix.h"
 #include "edit_matrix.h"
@@ -190,25 +190,15 @@ void ListMatrices::editData()
 
 void ListMatrices::deleteData()
 {
-  QString str1;
-  QString str2;
-  QString str3;
-
   if(list_view->currentItem()==NULL) {
     return;
   }
   int matrix=list_view->currentItem()->text(0).toInt();
-  QString desc=list_view->currentItem()->text(1);
-  str1=QString(tr("Are you sure you want to delete switcher"));
-  str2=QString(tr("on"));
-  str3=QString(tr("ALL references to this switcher will be deleted!"));
-  QString msg=QString().sprintf("%s \"%d:%s\" %s \"%s\"?\n%s",
-				(const char *)str1,
-				matrix,
-				(const char *)desc,
-				(const char *)str2,
-				(const char *)list_station,
-				(const char *)str3);
+
+  QString msg=tr("Are you sure you want to delete switcher")+
+    " \""+list_view->currentItem()->text(0)+":"+list_view->currentItem()->text(1)+"\" "+
+    tr("on")+" \""+list_station+"\"?"+"\n"+
+    tr("ALL references to this switcher will be deleted!");
   if(QMessageBox::warning(this,tr("Deleting Switcher"),msg,
 			  QMessageBox::Yes,QMessageBox::No)!=
      QMessageBox::Yes) {
@@ -251,46 +241,39 @@ void ListMatrices::closeData()
 
 void ListMatrices::DeleteMatrix(int matrix)
 {
-  QString sql=QString().sprintf("delete from MATRICES where \
-                               STATION_NAME=\"%s\" && MATRIX=%d",
-				(const char *)list_station,
-				matrix);
+  QString sql=QString("delete from MATRICES where ")+
+    "STATION_NAME=\""+RDEscapeString(list_station)+"\" && "+
+    QString().sprintf("MATRIX=%d",matrix);
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
-  sql=QString().sprintf("delete from INPUTS where \
-                         STATION_NAME=\"%s\" && MATRIX=%d",
-			(const char *)list_station,
-			matrix);
+  sql=QString("delete from INPUTS where ")+
+    "STATION_NAME=\""+RDEscapeString(list_station)+"\" && "+
+    QString().sprintf("MATRIX=%d",matrix);
   q=new RDSqlQuery(sql);
   delete q;
-  sql=QString().sprintf("delete from OUTPUTS where \
-                         STATION_NAME=\"%s\" && MATRIX=%d",
-			(const char *)list_station,
-			matrix);
+  sql=QString("delete from OUTPUTS where ")+
+    "STATION_NAME=\""+RDEscapeString(list_station)+"\" && "+
+    QString().sprintf("MATRIX=%d",matrix);
   q=new RDSqlQuery(sql);
   delete q;
-  sql=QString().sprintf("delete from SWITCHER_NODES where \
-                         STATION_NAME=\"%s\" && MATRIX=%d",
-			(const char *)list_station,
-			matrix);
+  sql=QString("delete from SWITCHER_NODES where ")+
+    "STATION_NAME=\""+RDEscapeString(list_station)+"\" && "+
+    QString().sprintf("MATRIX=%d",matrix);
   q=new RDSqlQuery(sql);
   delete q;
-  sql=QString().sprintf("delete from GPIS where \
-                         STATION_NAME=\"%s\" && MATRIX=%d",
-			(const char *)list_station,
-			matrix);
+sql=QString("delete from GPIS where ")+
+  "STATION_NAME=\""+RDEscapeString(list_station)+"\" && "+
+  QString().sprintf("MATRIX=%d",matrix);
   q=new RDSqlQuery(sql);
   delete q;
-  sql=QString().sprintf("delete from GPOS where \
-                         STATION_NAME=\"%s\" && MATRIX=%d",
-			(const char *)list_station,
-			matrix);
+sql=QString("delete from GPOS where ")+
+  "STATION_NAME=\""+RDEscapeString(list_station)+"\" && "+
+  QString().sprintf("MATRIX=%d",matrix);
   q=new RDSqlQuery(sql);
   delete q;
-  sql=QString().sprintf("delete from VGUEST_RESOURCES where \
-                         STATION_NAME=\"%s\" && MATRIX_NUM=%d",
-			(const char *)list_station,
-			matrix);
+sql=QString("delete from VGUEST_RESOURCES where ")+
+  "STATION_NAME=\""+RDEscapeString(list_station)+"\" && "+
+  QString().sprintf("MATRIX_NUM=%d",matrix);
   q=new RDSqlQuery(sql);
   delete q;
 }
@@ -301,9 +284,13 @@ void ListMatrices::RefreshList()
   QListViewItem *l;
 
   list_view->clear();
-  QString sql=QString().sprintf("select MATRIX,NAME,TYPE from MATRICES \
-                                 where STATION_NAME=\"%s\" order by MATRIX",
-				(const char *)list_station);
+  QString sql=QString("select ")+
+    "MATRIX,"+  // 00
+    "NAME,"+    // 01
+    "TYPE "+    // 02
+    "from MATRICES where "+
+    "STATION_NAME=\""+RDEscapeString(list_station)+"\" "+
+    "order by MATRIX";
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
     l=new QListViewItem(list_view);

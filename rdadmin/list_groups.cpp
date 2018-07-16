@@ -225,33 +225,27 @@ void ListGroups::deleteData()
   RDSqlQuery *q;
   QString warning;
   int carts=0;
-  QString str;
 
   QString groupname=item->text(0);
   if(groupname.isEmpty()) {
     return;
   }
-  sql=QString().sprintf("select NUMBER from CART where GROUP_NAME=\"%s\"",
-			(const char *)groupname);
+  sql=QString("select NUMBER from CART where ")+
+    "GROUP_NAME=\""+RDEscapeString(groupname)+"\"";
   q=new RDSqlQuery(sql);
   if((carts=q->size())>0) {
-    str=QString(tr("member carts will be deleted along with group"));
-    warning=QString().
-      sprintf("%d %s %s!\n",
-	      carts,(const char *)str,(const char *)groupname);
+    warning=QString().sprintf("%d ",carts)+tr("member carts will be deleted along with group")+" \""+groupname+"\"!";
   }
-  str=QString(tr("Are you sure you want to delete group"));
-  warning+=QString().sprintf("%s %s?",(const char *)str,
-			     (const char *)groupname);
+  warning+=tr("Are you sure you want to delete group")+" \""+groupname+"\"?";
   switch(QMessageBox::warning(this,tr("Delete Group"),warning,
 			      QMessageBox::Yes,QMessageBox::No)) {
-      case QMessageBox::No:
-      case QMessageBox::NoButton:
-	delete q;
-	return;
+  case QMessageBox::No:
+  case QMessageBox::NoButton:
+    delete q;
+    return;
 
-      default:
-	break;
+  default:
+    break;
   }
 
   //
@@ -268,32 +262,32 @@ void ListGroups::deleteData()
   //
   // Delete Member Audio Perms
   //
-  sql=QString().sprintf("delete from AUDIO_PERMS where GROUP_NAME=\"%s\"",
-			(const char *)RDEscapeString(groupname));
+  sql=QString("delete from AUDIO_PERMS where ")+
+    "GROUP_NAME=\""+RDEscapeString(groupname)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
   
   //
   // Delete Member User Perms
   //
-  sql=QString().sprintf("delete from USER_PERMS where GROUP_NAME=\"%s\"",
-			(const char *)RDEscapeString(groupname));
+  sql=QString("delete from USER_PERMS where ")+
+    "GROUP_NAME=\""+RDEscapeString(groupname)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
   
   //
   // Delete Replicator Map Records
   //
-  sql=QString().sprintf("delete from REPLICATOR_MAP where GROUP_NAME=\"%s\"",
-			(const char *)RDEscapeString(groupname));
+  sql=QString("delete from REPLICATOR_MAP where ")+
+    "GROUP_NAME=\""+RDEscapeString(groupname)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
   
   //
   // Delete from Group List
   //
-  sql=QString().sprintf("delete from GROUPS where NAME=\"%s\"",
-			(const char *)RDEscapeString(groupname));
+  sql=QString("delete from GROUPS where ")+
+    "NAME=\""+RDEscapeString(groupname)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
   item->setSelected(false);
@@ -311,19 +305,25 @@ void ListGroups::reportData()
   // Generate Header
   //
   report="                                  Rivendell Group Report\n";
-  report+=QString().sprintf("Generated: %s\n",
-			    (const char *)QDateTime(QDate::currentDate(),
-						    QTime::currentTime()).
-			    toString("MM/dd/yyyy - hh:mm:ss"));
+  report+=QString("Generated: ")+
+    QDateTime::currentDateTime().toString("MM/dd/yyyy - hh:mm:ss")+"\n";
   report+="\n";
   report+="-Name----- -Description-------------------------------- -Cart Range---- Enf DefType Mus Tfc N&N\n";
 
   //
   // Generate Body
   //
-  sql="select NAME,DESCRIPTION,DEFAULT_LOW_CART,DEFAULT_HIGH_CART,\
-       ENFORCE_CART_RANGE,DEFAULT_CART_TYPE,REPORT_MUS,REPORT_TFC,\
-       ENABLE_NOW_NEXT from GROUPS order by NAME";
+  sql=QString("select ")+
+    "NAME,"+                // 00
+    "DESCRIPTION,"+         // 01
+    "DEFAULT_LOW_CART,"+    // 02
+    "DEFAULT_HIGH_CART,"+   // 03
+    "ENFORCE_CART_RANGE,"+  // 04
+    "DEFAULT_CART_TYPE,"+   // 05
+    "REPORT_MUS,"+          // 06
+    "REPORT_TFC,"+          // 07
+    "ENABLE_NOW_NEXT "+     // 08
+    "from GROUPS order by NAME";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     //
@@ -356,17 +356,17 @@ void ListGroups::reportData()
     // Default Cart Type
     //
     switch((RDCart::Type)q->value(5).toInt()) {
-	case RDCart::Audio:
-	  report+="Audio   ";
-	  break;
+    case RDCart::Audio:
+      report+="Audio   ";
+      break;
 
-	case RDCart::Macro:
-	  report+="Macro   ";
-	  break;
+    case RDCart::Macro:
+      report+="Macro   ";
+      break;
 
-	default:
-	  report+="Unknown ";
-	  break;
+    default:
+      report+="Unknown ";
+      break;
     }
 
     //
@@ -430,10 +430,19 @@ void ListGroups::RefreshList()
   RDListViewItem *item;
 
   list_groups_view->clear();
-  q=new RDSqlQuery("select NAME,DESCRIPTION,DEFAULT_LOW_CART,DEFAULT_HIGH_CART,\
-                   ENFORCE_CART_RANGE,DEFAULT_CART_TYPE,REPORT_TFC,REPORT_MUS,\
-                   ENABLE_NOW_NEXT,COLOR from GROUPS",
-		  0);
+  sql=QString("select ")+
+    "NAME,"+                // 00
+    "DESCRIPTION,"+         // 01
+    "DEFAULT_LOW_CART,"+    // 02
+    "DEFAULT_HIGH_CART,"+   // 03
+    "ENFORCE_CART_RANGE,"+  // 04
+    "DEFAULT_CART_TYPE,"+   // 05
+    "REPORT_TFC,"+          // 06
+    "REPORT_MUS,"+          // 07
+    "ENABLE_NOW_NEXT,"+     // 08
+    "COLOR "+               // 09
+    "from GROUPS";
+  q=new RDSqlQuery(sql);
   while (q->next()) {
     item=new RDListViewItem(list_groups_view);
     WriteItem(item,q);
@@ -447,11 +456,19 @@ void ListGroups::RefreshItem(RDListViewItem *item)
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString().sprintf("select NAME,DESCRIPTION,DEFAULT_LOW_CART,\
-                         DEFAULT_HIGH_CART,ENFORCE_CART_RANGE,\
-                         DEFAULT_CART_TYPE,REPORT_TFC,REPORT_MUS,\
-                         ENABLE_NOW_NEXT,COLOR from GROUPS where NAME=\"%s\"",
-			(const char *)item->text(0));
+  sql=QString("select ")+
+    "NAME,"+                // 00
+    "DESCRIPTION,"+         // 01
+    "DEFAULT_LOW_CART,"+    // 02
+    "DEFAULT_HIGH_CART,"+   // 03
+    "ENFORCE_CART_RANGE,"+  // 04
+    "DEFAULT_CART_TYPE,"+   // 05
+    "REPORT_TFC,"+          // 06
+    "REPORT_MUS,"+          // 07
+    "ENABLE_NOW_NEXT,"+     // 08
+    "COLOR "+               // 09
+    "from GROUPS where "+
+    "NAME=\""+RDEscapeString(item->text(0))+"\"";
   q=new RDSqlQuery(sql);
   if(q->next()) {
     WriteItem(item,q);
@@ -475,17 +492,17 @@ void ListGroups::WriteItem(RDListViewItem *item,RDSqlQuery *q)
   }
   item->setText(4,q->value(4).toString());
   switch((RDCart::Type)q->value(5).toUInt()) {
-      case RDCart::Audio:
-	item->setText(5,"Audio");
-	break;
+  case RDCart::Audio:
+    item->setText(5,"Audio");
+    break;
 	
-      case RDCart::Macro:
-	item->setText(5,"Macro");
-	break;
+  case RDCart::Macro:
+    item->setText(5,"Macro");
+    break;
 	
-      default:	
-	item->setText(5,"[none]");
-	break;
+  default:	
+    item->setText(5,"[none]");
+    break;
   }
   item->setText(6,q->value(6).toString());
   item->setText(7,q->value(7).toString());

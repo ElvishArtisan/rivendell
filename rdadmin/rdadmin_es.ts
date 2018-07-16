@@ -1853,6 +1853,14 @@ Do you still want to save?</source>
         <source>Hot Key Configuration for</source>
         <translation>Atajos de teclado para</translation>
     </message>
+    <message>
+        <source>Duplicate Hotkey defined</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No Duplicates allowed.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditJack</name>
@@ -4519,6 +4527,10 @@ Are you sure you want to continue?</source>
         <source>User Defined</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Rivendell Dropbox Configurations on</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListEncoders</name>
@@ -4947,6 +4959,14 @@ Do you still want to delete it?</source>
         <source>&amp;Cancel</source>
         <translation>&amp;Cancelar</translation>
     </message>
+    <message>
+        <source>Delete Host Variable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete the variable</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListLiveWireGpios</name>
@@ -5318,12 +5338,20 @@ Cartuchos</translation>
     <message>
         <source>logs owned by this service that will also be deleted.
 Do you still want to proceed?</source>
-        <translation>PlayLists pertenecientes a este servicio que serán eliminados.
+        <translation type="obsolete">PlayLists pertenecientes a este servicio que serán eliminados.
 ¿Desea continuar y eliminarlos?</translation>
     </message>
     <message>
         <source>Logs Exist</source>
         <translation>El PlayList ya existe</translation>
+    </message>
+    <message>
+        <source>logs owned by this service that will also be deleted.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do you still want to proceed?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -5560,11 +5588,19 @@ Replicadores</translation>
     </message>
     <message>
         <source>RDAdmin</source>
-        <translation type="unfinished">RDAdmin</translation>
+        <translation type="obsolete">RDAdmin</translation>
     </message>
     <message>
         <source>Error</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Host</source>
+        <translation type="unfinished">Equipo</translation>
+    </message>
+    <message>
+        <source>User</source>
+        <translation type="unfinished">Usuario</translation>
     </message>
 </context>
 <context>
@@ -5875,12 +5911,20 @@ y un respaldo de la base de datos se guardó en </translation>
     <message>
         <source>group already exists.
 Do you want to combine the two?</source>
-        <translation>ya existe.
+        <translation type="obsolete">ya existe.
 ¿Desea combinar ambos?</translation>
     </message>
     <message>
         <source>Group Exists</source>
         <translation>El grupo ya existe</translation>
+    </message>
+    <message>
+        <source>Do you want to combine the two?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>group already exists.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -6061,11 +6105,11 @@ Revise los parámetros e intente de nuevo.</translation>
     </message>
     <message>
         <source>Inputs:</source>
-        <translation>Entradas:</translation>
+        <translation type="obsolete">Entradas:</translation>
     </message>
     <message>
         <source>Outputs:</source>
-        <translation>Salidas:</translation>
+        <translation type="obsolete">Salidas:</translation>
     </message>
     <message>
         <source>NO DATA AVAILABLE
@@ -6092,6 +6136,14 @@ Revise los parámetros e intente de nuevo.</translation>
         <source>    PCM24 Linear
 </source>
         <translation type="unfinished">PCM24 lineal</translation>
+    </message>
+    <message>
+        <source>Inputs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Outputs</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

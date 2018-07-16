@@ -134,8 +134,8 @@ void AddFeed::okData()
   RDSqlQuery *q;
   RDSqlQuery *q1;
 
-  sql=QString().sprintf("select KEY_NAME from FEEDS where KEY_NAME=\"%s\"",
-			(const char *)feed_keyname_edit->text());
+  sql=QString("select KEY_NAME from FEEDS where ")+
+    "KEY_NAME=\""+RDEscapeString(feed_keyname_edit->text())+"\"";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     QMessageBox::warning(this,tr("Add Feed Error"),
@@ -149,14 +149,13 @@ void AddFeed::okData()
   // Create Default Feed Perms
   //
   if(feed_users_box->isChecked()) {
-    sql="select LOGIN_NAME from USERS \
-         where (ADMIN_USERS_PRIV='N')&&(ADMIN_CONFIG_PRIV='N')";
+    sql=QString("select LOGIN_NAME from USERS where ")+
+      "(ADMIN_USERS_PRIV='N')&&(ADMIN_CONFIG_PRIV='N')";
     q=new RDSqlQuery(sql);
     while(q->next()) {
-      sql=QString().sprintf("insert into FEED_PERMS set USER_NAME=\"%s\",\
-                             KEY_NAME=\"%s\"",
-			    (const char *)q->value(0).toString(),
-			    (const char *)feed_keyname_edit->text());
+      sql=QString("insert into FEED_PERMS set ")+
+	"USER_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	"KEY_NAME=\""+RDEscapeString(feed_keyname_edit->text())+"\"";
       q1=new RDSqlQuery(sql);
       delete q1;
     }
@@ -166,23 +165,18 @@ void AddFeed::okData()
   //
   // Create Feed
   //
-  sql=QString().sprintf("insert into FEEDS set KEY_NAME=\"%s\",\
-                         ORIGIN_DATETIME=\"%s %s\",HEADER_XML=\"%s\",\
-                         CHANNEL_XML=\"%s\",ITEM_XML=\"%s\"",
-			(const char *)feed_keyname_edit->text(),
-			(const char *)QDate::currentDate().
-			toString("yyyy-MM-dd"),
-			(const char *)QTime::currentTime().
-			toString("hh:mm:ss"),
-			(const char *)RDEscapeString(DEFAULT_HEADER_XML),
-			(const char *)RDEscapeString(DEFAULT_CHANNEL_XML),
-			(const char *)RDEscapeString(DEFAULT_ITEM_XML));
+  sql=QString("insert into FEEDS set ")+
+    "KEY_NAME=\""+RDEscapeString(feed_keyname_edit->text())+"\","+
+    "ORIGIN_DATETIME=now(),"+
+    "HEADER_XML=\""+RDEscapeString(DEFAULT_HEADER_XML)+"\","+
+    "CHANNEL_XML=\""+RDEscapeString(DEFAULT_CHANNEL_XML)+"\","+
+    "ITEM_XML=\""+RDEscapeString(DEFAULT_ITEM_XML)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
   RDCreateFeedLog(feed_keyname_edit->text());
   RDCreateAuxFieldsTable(feed_keyname_edit->text(),rda->config());
-  sql=QString().sprintf("select ID from FEEDS where KEY_NAME=\"%s\"",
-			(const char *)feed_keyname_edit->text());
+  sql=QString("select ID from FEEDS where ")+
+    "KEY_NAME=\""+RDEscapeString(feed_keyname_edit->text())+"\"";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     *feed_id=q->value(0).toUInt();

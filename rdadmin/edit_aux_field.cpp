@@ -123,10 +123,9 @@ void EditAuxField::okData()
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString().sprintf("update AUX_METADATA set CAPTION=\"%s\" \
-                         where ID=%u",
-		       (const char *)RDEscapeString(edit_caption_edit->text()),
-		       edit_field_id);
+  sql=QString("update AUX_METADATA set ")+
+    "CAPTION=\""+RDEscapeString(edit_caption_edit->text())+"\" where "+
+    QString().sprintf("ID=%u",edit_field_id);
   q=new RDSqlQuery(sql);
   delete q;
 

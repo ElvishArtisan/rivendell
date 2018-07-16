@@ -38,6 +38,7 @@
 #include <rdapplication.h>
 #include <rdcart.h>
 #include <rddb.h>
+#include <rdescape_string.h>
 #include <rdfeedlog.h>
 #include <rdpodcast.h>
 #include <rdtextfile.h>
@@ -163,12 +164,12 @@ void ListFeeds::addData()
 
   EditFeed *edit_feed=new EditFeed(feed,this);
   if(edit_feed->exec()<0) {
-    sql=QString().sprintf("delete from FEED_PERMS where KEY_NAME=\"%s\"",
-			  (const char *)feed);
+    sql=QString("delete from FEED_PERMS where ")+
+      "KEY_NAME=\""+RDEscapeString(feed)+"\"";
     q=new RDSqlQuery(sql);
     delete q;
-    sql=QString().sprintf("delete from FEEDS where KEY_NAME=\"%s\"",
-			  (const char *)feed);
+    sql=QString("delete from FEEDS where ")+
+      "KEY_NAME=\""+RDEscapeString(feed)+"\"";
     q=new RDSqlQuery(sql);
     delete q;
     RDDeleteFeedLog(feed);
@@ -219,9 +220,7 @@ void ListFeeds::deleteData()
   if(feedname.isEmpty()) {
     return;
   }
-  str=QString(tr("Are you sure you want to delete feed"));
-  warning+=QString().sprintf("%s %s?",(const char *)str,
-			     (const char *)feedname);
+  warning+=tr("Are you sure you want to delete feed")+" \""+feedname+"\"?";
   switch(QMessageBox::warning(this,tr("Delete Feed"),warning,
 			      QMessageBox::Yes,QMessageBox::No)) {
       case QMessageBox::No:
@@ -266,12 +265,12 @@ void ListFeeds::deleteData()
   //
   // Delete Feed
   //
-  sql=QString().sprintf("delete from FEED_PERMS where KEY_NAME=\"%s\"",
-			(const char *)feedname);
+  sql=QString("delete from FEED_PERMS where ")+
+    "KEY_NAME=\""+RDEscapeString(feedname)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
-  sql=QString().sprintf("delete from FEEDS where KEY_NAME=\"%s\"",
-			(const char *)feedname);
+  sql=QString("delete from FEEDS where ")+
+    "KEY_NAME=\""+RDEscapeString(feedname)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
   RDDeleteFeedLog(feedname);

@@ -188,51 +188,46 @@ void ListReplicators::deleteData()
   QString sql;
   RDSqlQuery *q;
   QString warning;
-  QString str;
 
   QString name=RDEscapeString(item->text(0));
 
-  str=QString(tr("Are you sure you want to delete replicator"));
-  warning+=QString().sprintf("%s \"%s\"?",(const char *)str,
-			     (const char *)item->text(0));
+  warning+=tr("Are you sure you want to delete replicator")+
+    " \""+item->text(0)+"\"?";
   switch(QMessageBox::warning(this,tr("Delete Replicator"),warning,
 			      QMessageBox::Yes,QMessageBox::No)) {
-      case QMessageBox::No:
-      case QMessageBox::NoButton:
-	return;
+  case QMessageBox::No:
+  case QMessageBox::NoButton:
+    return;
 
-      default:
-	break;
+  default:
+    break;
   }
 
   //
   // Delete Group Assignments
   //
-  sql=QString().sprintf("delete from REPLICATOR_MAP \
-                         where REPLICATOR_NAME=\"%s\"",
-			(const char *)name);
+  sql=QString("delete from REPLICATOR_MAP  where ")+
+    "REPLICATOR_NAME=\""+RDEscapeString(name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
   
   //
   // Delete State Records
   //
-  sql=QString().sprintf("delete from REPL_CART_STATE \
-                         where REPLICATOR_NAME=\"%s\"",
-			(const char *)name);
+  sql=QString("delete from REPL_CART_STATE where ")+
+    "REPLICATOR_NAME=\""+RDEscapeString(name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
-  sql=QString().sprintf("delete from REPL_CUT_STATE \
-                         where REPLICATOR_NAME=\"%s\"",
-			(const char *)name);
+  sql=QString("delete from REPL_CUT_STATE where ")+
+    "REPLICATOR_NAME=\""+RDEscapeString(name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 
   //
   // Delete from Replicator List
   //
-  sql=QString().sprintf("delete from REPLICATORS where NAME=\"%s\"",
-			(const char *)name);
+  sql=QString("delete from REPLICATORS where ")+
+    "NAME=\""+RDEscapeString(name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
   delete item;
@@ -301,9 +296,12 @@ void ListReplicators::RefreshItem(RDListViewItem *item)
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString().sprintf("select TYPE_ID,DESCRIPTION,STATION_NAME \
-                         from REPLICATORS where NAME=\"%s\"",
-			(const char *)RDEscapeString(item->text(0)));
+  sql=QString("select ")+
+    "TYPE_ID,"+       // 00
+    "DESCRIPTION,"+   // 01
+    "STATION_NAME "+  // 02
+    "from REPLICATORS where "+
+    "NAME=\""+RDEscapeString(item->text(0))+"\"";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     item->setText(1,

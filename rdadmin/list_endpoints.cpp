@@ -2,7 +2,7 @@
 //
 // List a Rivendell Endpoints
 //
-//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2003,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,11 +25,13 @@
 #include <qmessagebox.h>
 
 #include <rd.h>
-#include <rdpasswd.h>
 #include <rddb.h>
-#include <edit_user.h>
-#include <list_endpoints.h>
-#include <edit_endpoint.h>
+#include <rdescape_string.h>
+#include <rdpasswd.h>
+
+#include "edit_user.h"
+#include "list_endpoints.h"
+#include "edit_endpoint.h"
 
 ListEndpoints::ListEndpoints(RDMatrix *matrix,RDMatrix::Endpoint endpoint,
 			     QWidget *parent)
@@ -186,68 +188,83 @@ ListEndpoints::ListEndpoints(RDMatrix *matrix,RDMatrix::Endpoint endpoint,
   switch(list_matrix->type()) {
       case RDMatrix::Unity4000:
 	if(list_endpoint==RDMatrix::Input) {
-	  sql=QString().sprintf("select NUMBER,NAME,FEED_NAME,CHANNEL_MODE\
-                                 from %s where STATION_NAME=\"%s\" && \
-                                 MATRIX=%d order by NUMBER",
-				(const char *)list_table,
-				(const char *)list_matrix->station(),
-				list_matrix->matrix());
+	  sql=QString("select ")+
+	    "NUMBER,"+        // 00
+	    "NAME,"+          // 01
+	    "FEED_NAME,"+     // 02
+	    "CHANNEL_MODE "+  // 03
+	    "from `"+list_table+"` where "+
+	    "STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\" && "+
+	    QString().sprintf("MATRIX=%d ",list_matrix->matrix())+
+	    "order by NUMBER";
 	}
 	else {
-	  sql=QString().sprintf("select NUMBER,NAME from %s\
-                                 where STATION_NAME=\"%s\" && \
-                                 MATRIX=%d order by NUMBER",
-				(const char *)list_table,
-				(const char *)list_matrix->station(),
-				list_matrix->matrix());
+	  sql=QString("select ")+
+	    "NUMBER,"+  // 00
+	    "NAME "+    // 01
+	    "from `"+list_table+"` where "+
+	    "STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\" && "+
+	    QString().sprintf("MATRIX=%d ",list_matrix->matrix())+
+	    "order by NUMBER";
 	}
 	break;
 
       case RDMatrix::LogitekVguest:
-	sql=QString().sprintf("select NUMBER,NAME,ENGINE_NUM,DEVICE_NUM\
-                               from %s where (STATION_NAME=\"%s\")&&\
-                               MATRIX=%d order by NUMBER",
-			      (const char *)list_table,
-			      (const char *)list_matrix->station(),
-			      list_matrix->matrix());
+	sql=QString("select ")+
+	  "NUMBER,"+      // 00
+	  "NAME,"+        // 01
+	  "ENGINE_NUM,"+  // 02
+	  "DEVICE_NUM "+  // 03
+	  "from `"+list_table+"` where "+
+	  "(STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\")&&"+
+	  QString().sprintf("MATRIX=%d ",list_matrix->matrix())+
+	  "order by NUMBER";
 	break;
 
       case RDMatrix::StarGuideIII:
 	if(list_endpoint==RDMatrix::Input) {
-	  sql=QString().sprintf("select NUMBER,NAME,ENGINE_NUM,DEVICE_NUM,\
-                                 CHANNEL_MODE\
-                                 from %s where (STATION_NAME=\"%s\")&&\
-                                 MATRIX=%d order by NUMBER",
-				(const char *)list_table,
-				(const char *)list_matrix->station(),
-				list_matrix->matrix());
+	  sql=QString("select ")+
+	    "NUMBER,"+        // 00
+	    "NAME,"+          // 01
+	    "ENGINE_NUM,"+    // 02
+	    "DEVICE_NUM,"+    // 03
+	    "CHANNEL_MODE "+  // 04
+	    "from `"+list_table+"` where "+
+	    "(STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\")&&"+
+	    QString().sprintf("MATRIX=%d ",list_matrix->matrix())+
+	    "order by NUMBER";
 	}
 	else {
-	  sql=QString().sprintf("select NUMBER,NAME from %s\
-                                 where STATION_NAME=\"%s\" && \
-                                 MATRIX=%d order by NUMBER",
-				(const char *)list_table,
-				(const char *)list_matrix->station(),
-				list_matrix->matrix());
+	  sql=QString("select ")+
+	    "NUMBER,"+  // 00
+	    "NAME "+    // 01
+	    "from `"+list_table+"` where "+
+	    "STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\" && "+
+	    QString().sprintf("MATRIX=%d ",list_matrix->matrix())+
+	    "order by NUMBER";
 	}
 	break;
 
     case RDMatrix::LiveWireLwrpAudio:
-	sql=QString().sprintf("select NUMBER,NAME,NODE_HOSTNAME,NODE_SLOT \
-                               from %s where STATION_NAME=\"%s\" && \
-                               MATRIX=%d order by NUMBER",
-			      (const char *)list_table,
-			      (const char *)list_matrix->station(),
-			      list_matrix->matrix());
+      sql=QString("select ")+
+	"NUMBER,"+         // 00
+	"NAME,"+           // 01
+	"NODE_HOSTNAME,"+  // 02
+	"NODE_SLOT "+      // 03
+	"from `"+list_table+"` where "+
+	"STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\" && "+
+	QString().sprintf("MATRIX=%d ",list_matrix->matrix())+
+	"order by NUMBER";
 	break;
 
       default:
-	sql=QString().sprintf("select NUMBER,NAME from %s\
-                               where STATION_NAME=\"%s\" && \
-                               MATRIX=%d order by NUMBER",
-			      (const char *)list_table,
-			      (const char *)list_matrix->station(),
-			      list_matrix->matrix());
+	sql=QString("select ")+
+	  "NUMBER,"+  // 00
+	  "NAME "+    // 01
+	  "from `"+list_table+"` where "+
+	  "STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\" && "+
+	  QString().sprintf("MATRIX=%d ",list_matrix->matrix())+
+	  "order by NUMBER";
 	break;
   }
   q=new RDSqlQuery(sql);
@@ -268,92 +285,92 @@ ListEndpoints::ListEndpoints(RDMatrix *matrix,RDMatrix::Endpoint endpoint,
       if(q->isValid()&&(q->value(0).toInt()==(i+1))){
 	l->setText(1,q->value(1).toString());
 	switch(list_matrix->type()) {
-	  case RDMatrix::Unity4000:
-	    if(list_endpoint==RDMatrix::Input) {
-	      l->setText(2,q->value(2).toString());
-	      switch((RDMatrix::Mode)q->value(3).toInt()) {
-		case RDMatrix::Stereo:
-		  l->setText(3,tr("Stereo"));
-		  break;
+	case RDMatrix::Unity4000:
+	  if(list_endpoint==RDMatrix::Input) {
+	    l->setText(2,q->value(2).toString());
+	    switch((RDMatrix::Mode)q->value(3).toInt()) {
+	    case RDMatrix::Stereo:
+	      l->setText(3,tr("Stereo"));
+	      break;
 		  
-		case RDMatrix::Left:
-		  l->setText(3,tr("Left"));
-		  break;
+	    case RDMatrix::Left:
+	      l->setText(3,tr("Left"));
+	      break;
 		  
-		case RDMatrix::Right:
-		  l->setText(3,tr("Right"));
-		  break;
-	      }
+	    case RDMatrix::Right:
+	      l->setText(3,tr("Right"));
+	      break;
 	    }
-	    break;
+	  }
+	  break;
 	    
-	  case RDMatrix::LogitekVguest:
+	case RDMatrix::LogitekVguest:
+	  if(q->value(2).toInt()>=0) {
+	    l->setText(2,QString().sprintf("%04X",q->value(2).toInt()));
+	  }
+	  else {
+	    l->setText(2,"");
+	  }
+	  if(q->value(3).toInt()>=0) {
+	    l->setText(3,QString().sprintf("%04X",q->value(3).toInt()));
+	  }
+	  else {
+	    l->setText(3,"");
+	  }
+	  break;
+	    
+	case RDMatrix::StarGuideIII:
+	  if(list_endpoint==RDMatrix::Input) {
 	    if(q->value(2).toInt()>=0) {
-	      l->setText(2,QString().sprintf("%04X",q->value(2).toInt()));
-	    }
-	    else {
-	      l->setText(2,"");
+	      l->setText(2,q->value(2).toString());
 	    }
 	    if(q->value(3).toInt()>=0) {
-	      l->setText(3,QString().sprintf("%04X",q->value(3).toInt()));
+	      l->setText(3,q->value(3).toString());
 	    }
-	    else {
-	      l->setText(3,"");
-	    }
-	    break;
-	    
-	  case RDMatrix::StarGuideIII:
-	    if(list_endpoint==RDMatrix::Input) {
-	      if(q->value(2).toInt()>=0) {
-		l->setText(2,q->value(2).toString());
-	      }
-	      if(q->value(3).toInt()>=0) {
-		l->setText(3,q->value(3).toString());
-	      }
-	      switch((RDMatrix::Mode)q->value(4).toInt()) {
-		case RDMatrix::Stereo:
-		  l->setText(4,tr("Stereo"));
-		  break;
+	    switch((RDMatrix::Mode)q->value(4).toInt()) {
+	    case RDMatrix::Stereo:
+	      l->setText(4,tr("Stereo"));
+	      break;
 		  
-		case RDMatrix::Left:
-		  l->setText(4,tr("Left"));
-		  break;
+	    case RDMatrix::Left:
+	      l->setText(4,tr("Left"));
+	      break;
 		  
-		case RDMatrix::Right:
-		  l->setText(4,tr("Right"));
-		  break;
-	      }
+	    case RDMatrix::Right:
+	      l->setText(4,tr("Right"));
+	      break;
 	    }
-	    break;
+	  }
+	  break;
 	    
-	  default:
-	    break;
+	default:
+	  break;
 	}
 	q->next();
       }
       else {
 	switch(list_endpoint) {
-	  case RDMatrix::Input:
-	    str=QString(tr("Input"));
-	    l->setText(1,QString().sprintf("%s %03d",(const char *)str,i+1));
-	    switch(list_matrix->type()) {
-	      case RDMatrix::Unity4000:
-		l->setText(3,tr("Stereo"));
-		break;
-		
-	      case RDMatrix::StarGuideIII:
-		l->setText(4,tr("Stereo"));
-		break;
-		
-	      default:
-		break;
-	    }
+	case RDMatrix::Input:
+	  str=QString(tr("Input"));
+	  l->setText(1,str+QString().sprintf(" %03d",i+1));
+	  switch(list_matrix->type()) {
+	  case RDMatrix::Unity4000:
+	    l->setText(3,tr("Stereo"));
 	    break;
+		
+	  case RDMatrix::StarGuideIII:
+	    l->setText(4,tr("Stereo"));
+	    break;
+		
+	  default:
+	    break;
+	  }
+	  break;
 	    
-	  case RDMatrix::Output:
-	    str=QString(tr("Output"));
-	    l->setText(1,QString().sprintf("%s %03d",(const char *)str,i+1));
-	    break;
+	case RDMatrix::Output:
+	  str=QString(tr("Output"));
+	  l->setText(1,str+QString().sprintf(" %03d",i+1));
+	  break;
 	}
       }
     }
@@ -546,74 +563,66 @@ void ListEndpoints::okData()
       if(item->text(modecol).lower()==QString(tr("right"))) {
 	mode=RDMatrix::Right;
       }
-      sql=QString().sprintf("select ID from %s where\
-                             STATION_NAME=\"%s\" && \
-                             MATRIX=%d && \
-                             NUMBER=%d",
-			    (const char *)list_table,
-			    (const char *)list_matrix->station(),
-			    list_matrix->matrix(),
-			    i+1);
+      sql=QString("select ID from `")+
+	list_table+"` where "+
+	"STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\" && "+
+	QString().sprintf("MATRIX=%d && ",list_matrix->matrix())+
+	QString().sprintf("NUMBER=%d",i+1);
       q=new RDSqlQuery(sql);
       if(!q->first()) {
 	delete q;
-	sql=QString().sprintf("insert into %s set STATION_NAME=\"%s\",\
-                               MATRIX=%d,\
-                               NUMBER=%d,\
-                               NAME=\"%s\"",
-			      (const char *)list_table,
-			      (const char *)list_matrix->station(),
-			      list_matrix->matrix(),
-			      i+1,
-			      (const char *)item->text(1));
+	sql=QString("insert into `")+list_table+"` set "+
+	  "STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\","+
+	  QString().sprintf("MATRIX=%d,",list_matrix->matrix())+
+	  QString().sprintf("NUMBER=%d,",i+1)+
+	  "NAME=\""+RDEscapeString(item->text(1))+"\"";
 	switch(list_matrix->type()) {
-	  case RDMatrix::Unity4000:
-	    if(list_endpoint==RDMatrix::Input) {
-	      sql+=QString().sprintf(",FEED_NAME=\"%s\",CHANNEL_MODE=%d",
-				     (const char *)item->text(2),
-				     mode);
-	    }
-	    break;
+	case RDMatrix::Unity4000:
+	  if(list_endpoint==RDMatrix::Input) {
+	    sql+=QString(",FEED_NAME=\"")+RDEscapeString(item->text(2))+"\","+
+	      QString().sprintf("CHANNEL_MODE=%d",mode);
+	  }
+	  break;
 	    
-	  case RDMatrix::LogitekVguest:
-	    if(item->text(2).isEmpty()) {
-	      sql+=",ENGINE_NUM=-1";
-	    }
-	    else {
-	      sql+=QString().sprintf(",ENGINE_NUM=%d",
-				     item->text(2).toInt(NULL,16));
-	    }
-	    if(item->text(3).isEmpty()) {
-	      sql+=",DEVICE_NUM=-1";
-	    }
-	    else {
-	      sql+=QString().sprintf(",DEVICE_NUM=%d",
-				     item->text(3).toInt(NULL,16));
-	    }
-	    break;
+	case RDMatrix::LogitekVguest:
+	  if(item->text(2).isEmpty()) {
+	    sql+=",ENGINE_NUM=-1";
+	  }
+	  else {
+	    sql+=QString().sprintf(",ENGINE_NUM=%d",
+				   item->text(2).toInt(NULL,16));
+	  }
+	  if(item->text(3).isEmpty()) {
+	    sql+=",DEVICE_NUM=-1";
+	  }
+	  else {
+	    sql+=QString().sprintf(",DEVICE_NUM=%d",
+				   item->text(3).toInt(NULL,16));
+	  }
+	  break;
 	    
-	  case RDMatrix::StarGuideIII:
-	    if(item->text(2).isEmpty()) {
-	      sql+=",ENGINE_NUM=-1";
-	    }
-	    else {
-	      sql+=QString().sprintf(",ENGINE_NUM=%d",
-				     item->text(2).toInt());
-	    }
-	    if(item->text(3).isEmpty()) {
-	      sql+=",DEVICE_NUM=-1";
-	    }
-	    else {
-	      sql+=QString().sprintf(",DEVICE_NUM=%d",
-				     item->text(3).toInt());
-	    }
-	    if(list_endpoint==RDMatrix::Input) {
-	      sql+=QString().sprintf(",CHANNEL_MODE=%d",mode);
-	    }
-	    break;
-	    
-	  default:
-	    break;
+	case RDMatrix::StarGuideIII:
+	  if(item->text(2).isEmpty()) {
+	    sql+=",ENGINE_NUM=-1";
+	  }
+	  else {
+	    sql+=QString().sprintf(",ENGINE_NUM=%d",
+				   item->text(2).toInt());
+	  }
+	  if(item->text(3).isEmpty()) {
+	    sql+=",DEVICE_NUM=-1";
+	  }
+	  else {
+	    sql+=QString().sprintf(",DEVICE_NUM=%d",
+				   item->text(3).toInt());
+	  }
+	  if(list_endpoint==RDMatrix::Input) {
+	    sql+=QString().sprintf(",CHANNEL_MODE=%d",mode);
+	  }
+	  break;
+	  
+	default:
+	  break;
 	}
 	q=new RDSqlQuery(sql);
 	delete q;
@@ -621,104 +630,79 @@ void ListEndpoints::okData()
       else {
 	delete q;
 	switch(list_matrix->type()) {
-	  case RDMatrix::Unity4000:
-	    if(list_endpoint==RDMatrix::Input) {
-	      sql=QString().sprintf("update %s set NAME=\"%s\",\
-                                     FEED_NAME=\"%s\",\
-                                     CHANNEL_MODE=%d where\
-                                     STATION_NAME=\"%s\" && \
-                                     MATRIX=%d && \
-                                     NUMBER=%d",
-				    (const char *)list_table,
-				    (const char *)item->text(1),
-				    (const char *)item->text(2),
-				    mode,
-				    (const char *)list_matrix->station(),
-				    list_matrix->matrix(),
-				    i+1);
-	    }
-	    else {
-	      sql=QString().sprintf("update %s set NAME=\"%s\" where \
-                                     STATION_NAME=\"%s\" && \
-                                     MATRIX=%d && \
-                                     NUMBER=%d",
-				    (const char *)list_table,
-				    (const char *)item->text(1),
-				    (const char *)list_matrix->station(),
-				    list_matrix->matrix(),
-				    i+1);
-	    }
-	    break;
+	case RDMatrix::Unity4000:
+	  if(list_endpoint==RDMatrix::Input) {
+	    sql=QString("update `")+list_table+"` set "+
+	      "NAME=\""+RDEscapeString(item->text(1))+"\","+
+	      "FEED_NAME=\""+RDEscapeString(item->text(2))+"\","+
+	      QString().sprintf("CHANNEL_MODE=%d where ",mode)+
+	      "STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\" && "+
+	      QString().sprintf("MATRIX=%d && ",list_matrix->matrix())+
+	      QString().sprintf("NUMBER=%d",i+1);
+	  }
+	  else {
+	    sql=QString("update `")+list_table+"` set "+
+	      "NAME=\""+RDEscapeString(item->text(1))+"\" where "+
+	      "STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\" && "+
+	      QString().sprintf("MATRIX=%d &&	",list_matrix->matrix())+
+	      QString().sprintf("NUMBER=%d",i+1);
+	  }
+	  break;
+ 
+	case RDMatrix::LogitekVguest:
+	  if(item->text(2).isEmpty()) {
+	    enginenum=-1;
+	  }
+	  else {
+	    enginenum=item->text(2).toInt(NULL,16);
+	  }
+	  if(item->text(3).isEmpty()) {
+	    devicenum=-1;
+	  }
+	  else {
+	    devicenum=item->text(3).toInt(NULL,16);
+	  }
+	  sql=QString("update `")+list_table+"` set "+
+	    "NAME=\""+RDEscapeString(item->text(1))+"\","+
+	    QString().sprintf("ENGINE_NUM=%d,",enginenum)+
+	    QString().sprintf("DEVICE_NUM=%d where ",devicenum)+
+	    "STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\" && "+
+	    QString().sprintf("MATRIX=%d && ",list_matrix->matrix())+
+	    QString().sprintf("NUMBER=%d",i+1);
+	  break;
 	    
-	  case RDMatrix::LogitekVguest:
+	case RDMatrix::StarGuideIII:
+	  if(list_endpoint==RDMatrix::Input) {
 	    if(item->text(2).isEmpty()) {
 	      enginenum=-1;
 	    }
 	    else {
-	      enginenum=item->text(2).toInt(NULL,16);
+	      enginenum=item->text(2).toInt(NULL);
 	    }
 	    if(item->text(3).isEmpty()) {
 	      devicenum=-1;
 	    }
 	    else {
-	      devicenum=item->text(3).toInt(NULL,16);
+	      devicenum=item->text(3).toInt(NULL);
 	    }
-	    sql=QString().sprintf("update %s set NAME=\"%s\",\
-                                   ENGINE_NUM=%d,DEVICE_NUM=%d where\
-                                   STATION_NAME=\"%s\" && \
-                                   MATRIX=%d && \
-                                   NUMBER=%d",
-				  (const char *)list_table,
-				  (const char *)item->text(1),
-				  enginenum,
-				  devicenum,
-				  (const char *)list_matrix->station(),
-				  list_matrix->matrix(),
-				  i+1);
-	    break;
+	    sql=QString("update `")+list_table+"` set "+
+	      "NAME=\""+RDEscapeString(item->text(1))+"\","+
+	      QString().sprintf("ENGINE_NUM=%d,",enginenum)+
+	      QString().sprintf("DEVICE_NUM=%d,",devicenum)+
+	      QString().sprintf("CHANNEL_MODE=%d where ",mode)+
+	      "STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\" && "+
+	      QString().sprintf("MATRIX=%d && ",list_matrix->matrix())+
+	      QString().sprintf("NUMBER=%d",i+1);
+	  }
+	  break;
 	    
-	  case RDMatrix::StarGuideIII:
-	    if(list_endpoint==RDMatrix::Input) {
-	      if(item->text(2).isEmpty()) {
-		enginenum=-1;
-	      }
-	      else {
-		enginenum=item->text(2).toInt(NULL);
-	      }
-	      if(item->text(3).isEmpty()) {
-		devicenum=-1;
-	      }
-	      else {
-		devicenum=item->text(3).toInt(NULL);
-	      }
-	      sql=QString().sprintf("update %s set NAME=\"%s\",\
-                                     ENGINE_NUM=%d,DEVICE_NUM=%d,\
-                                     CHANNEL_MODE=%d where\
-                                     STATION_NAME=\"%s\" && \
-                                     MATRIX=%d && \
-                                     NUMBER=%d",
-				    (const char *)list_table,
-				    (const char *)item->text(1),
-				    enginenum,
-				    devicenum,
-				    mode,
-				    (const char *)list_matrix->station(),
-				    list_matrix->matrix(),
-				    i+1);
-	    }
-	    break;
-	    
-	  default:
-	    sql=QString().sprintf("update %s set NAME=\"%s\" where\
-                                   STATION_NAME=\"%s\" && \
-                                   MATRIX=%d && \
-                                   NUMBER=%d",
-				  (const char *)list_table,
-				  (const char *)item->text(1),
-				  (const char *)list_matrix->station(),
-				  list_matrix->matrix(),
-				  i+1);
-	    break;
+	default:
+	  sql=QString("update `")+list_table+"` set "+
+	    "NAME=\""+RDEscapeString(item->text(1))+"\" where "+
+	    "STATION_NAME=\""+RDEscapeString(list_matrix->station())+"\" && "+
+	    QString().sprintf("MATRIX=%d && ",list_matrix->matrix())+
+	    QString().sprintf("NUMBER=%d",i+1);
+	  break;
 	}
 	q=new RDSqlQuery(sql);
 	delete q;

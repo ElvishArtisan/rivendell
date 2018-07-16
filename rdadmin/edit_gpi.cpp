@@ -32,15 +32,12 @@ EditGpi::EditGpi(int gpi,int *oncart,QString *ondesc,
 		 int *offcart,QString *offdesc,QWidget *parent)
   : QDialog(parent,"",true)
 {
-  QString str;
-
   edit_gpi=gpi;
   edit_oncart=oncart;
   edit_offcart=offcart;
   edit_ondescription=ondesc;
   edit_offdescription=offdesc;
-  str=QString(tr("Edit GPI"));
-  setCaption(QString().sprintf("%s %d",(const char *)str,gpi));
+  setCaption(tr("Edit GPI")+QString().sprintf(" %d",gpi));
 
   //
   // Fix the Window Size

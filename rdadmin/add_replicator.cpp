@@ -2,7 +2,7 @@
 //
 // Add a Rivendell Replicator Configuration
 //
-//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -31,10 +31,12 @@
 #include <qbuttongroup.h>
 #include <rddb.h>
 
-#include <edit_replicator.h>
-#include <add_replicator.h>
+#include <rdescape_string.h>
 #include <rdpasswd.h>
 #include <rdtextvalidator.h>
+
+#include "edit_replicator.h"
+#include "add_replicator.h"
 
 AddReplicator::AddReplicator(QString *rname,QWidget *parent)
   : QDialog(parent,"",true)
@@ -126,9 +128,8 @@ void AddReplicator::okData()
     return;
   }
 
-  sql=QString().sprintf("insert into REPLICATORS set NAME=\"%s\"",
-			(const char *)repl_name_edit->text());
-
+  sql=QString("insert into REPLICATORS set ")+
+    "NAME=\""+RDEscapeString(repl_name_edit->text())+"\"";
   q=new RDSqlQuery(sql);
   if(!q->isActive()) {
     QMessageBox::warning(this,tr("Replicator Exists"),tr("A replicator with that name already exists!"));
@@ -139,8 +140,8 @@ void AddReplicator::okData()
 
   EditReplicator *replicator=new EditReplicator(repl_name_edit->text(),this);
   if(replicator->exec()<0) {
-    sql=QString().sprintf("delete from REPLICATORS where NAME=\"%s\"",
-			  (const char *)repl_name_edit->text());
+    sql=QString("delete from REPLICATORS where ")+
+      "NAME=\""+RDEscapeString(repl_name_edit->text())+"\"";
     q=new RDSqlQuery(sql);
     delete q;
     delete replicator;

@@ -1,8 +1,8 @@
 // add_encoder.cpp
 //
-// Add a Rivendell Service
+// Add a Rivendell Encoder
 //
-//   (C) Copyright 2002,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -113,10 +113,9 @@ void AddEncoder::okData()
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString().sprintf("select NAME from ENCODERS \
-                         where (NAME=\"%s\")&&(STATION_NAME=\"%s\")",
-			(const char *)RDEscapeString(encoder_name_edit->text()),
-			(const char *)RDEscapeString(encoder_stationname));
+  sql=QString("select NAME from ENCODERS where ")+
+    "(NAME=\""+RDEscapeString(encoder_name_edit->text())+"\")&&"+
+    "(STATION_NAME=\""+RDEscapeString(encoder_stationname)+"\")";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     QMessageBox::warning(this,tr("Add Encoder Error"),
@@ -129,10 +128,9 @@ void AddEncoder::okData()
   //
   // Create Encoder
   //
-  sql=QString().sprintf("insert into ENCODERS set NAME=\"%s\",\
-                         STATION_NAME=\"%s\"",
-			(const char *)RDEscapeString(encoder_name_edit->text()),
-			(const char *)RDEscapeString(encoder_stationname));
+  sql=QString("insert into ENCODERS set ")+
+    "NAME=\""+RDEscapeString(encoder_name_edit->text())+"\""+
+    "STATION_NAME=\""+RDEscapeString(encoder_stationname)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
   *encoder_name=encoder_name_edit->text();

@@ -542,9 +542,8 @@ EditStation::EditStation(QString sname,QWidget *parent)
 
   station_http_station_box->insertItem("localhost");
   station_cae_station_box->insertItem("localhost");
-  sql=QString().sprintf("select NAME from STATIONS \
-                         where NAME!=\"%s\" order by NAME",
-			(const char *)RDEscapeString(sname));
+  sql=QString("select NAME from STATIONS where ")+
+    "NAME!=\""+RDEscapeString(sname)+"\" order by NAME";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     station_http_station_box->insertItem(q->value(0).toString());
@@ -658,9 +657,9 @@ void EditStation::okData()
   RDSqlQuery *q;
 
   if(!station_maint_box->isChecked()) {
-    sql=QString().sprintf("select NAME from STATIONS where \
-                         (NAME!=\"%s\")&&(SYSTEM_MAINT=\"Y\")",
-			(const char *)RDEscapeString(station_station->name()));
+    sql=QString("select NAME from STATIONS where ")+
+      "(NAME!=\""+RDEscapeString(station_station->name())+"\")&&"+
+      "(SYSTEM_MAINT=\"Y\")";
     q=new RDSqlQuery(sql);
     if(!q->first()) {
       QMessageBox::warning(this,tr("System Maintenance"),

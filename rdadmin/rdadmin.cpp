@@ -134,10 +134,7 @@ MainWidget::MainWidget(QWidget *parent)
     QMessageBox::critical(this,"RDAdmin - "+tr("Error"),err_msg);
     exit(1);
   }
-  str=QString(tr("RDAdmin")+" v"+VERSION+" - Host:");
-  setCaption(QString().
-	     sprintf("%s %s",(const char *)str,
-		     (const char *)rda->config()->stationName()));
+  setCaption(QString("RDAdmin v")+VERSION+" - "+tr("Host")+": "+rda->config()->stationName());
 
   //
   // Check (and possibly start) daemons
@@ -183,7 +180,7 @@ MainWidget::MainWidget(QWidget *parent)
   name_label->setGeometry(0,5,sizeHint().width(),20);
   name_label->setAlignment(Qt::AlignVCenter|Qt::AlignCenter);
   name_label->setFont(font);
-  name_label->setText(QString().sprintf("USER: %s",(const char *)rda->user()->name()));
+  name_label->setText(tr("User")+": "+rda->user()->name());
 
   QLabel *description_label=new QLabel(this);
   description_label->setGeometry(0,24,sizeHint().width(),14);

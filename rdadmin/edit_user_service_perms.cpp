@@ -125,10 +125,9 @@ void EditUserServicePerms::okData()
   // Add New Groups
   //
   for(unsigned i=0;i<user_host_sel->destCount();i++) {
-    sql=QString().sprintf("select SERVICE_NAME from USER_SERVICE_PERMS \
-                           where USER_NAME=\"%s\" && SERVICE_NAME=\"%s\"",
-			  (const char *)user_user->name(),
-			  (const char *)user_host_sel->destText(i));
+    sql=QString("select SERVICE_NAME from USER_SERVICE_PERMS where ")+
+      "USER_NAME=\""+RDEscapeString(user_user->name())+"\" && "+
+      "SERVICE_NAME=\""+RDEscapeString(user_host_sel->destText(i))+"\"";
     q=new RDSqlQuery(sql);
     if(q->size()==0) {
       delete q;

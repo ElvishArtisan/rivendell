@@ -208,8 +208,7 @@ void TestImport::importData()
 	item->setLine(next_line++);
 	item->setText(0,RDSvc::timeString(q->value(0).toInt(),
 					  q->value(1).toInt()));
-	item->setText(1,QString().
-		      sprintf("[%s]",(const char *)q->value(11).toString()));
+	item->setText(1,"["+q->value(11).toString()+"]");
       }
     }
     else {
@@ -218,8 +217,7 @@ void TestImport::importData()
 	item->setLine(next_line++);
 	item->setText(0,RDSvc::timeString(q->value(0).toInt(),
 					  q->value(1).toInt()));
-	item->setText(1,QString().
-		      sprintf("[%s]",(const char *)q->value(11).toString()));
+	item->setText(1,"["+q->value(11).toString()+"]");
       }
       if(q->value(7).toString()=="Y") {
 	item=new RDListViewItem(test_events_list);
