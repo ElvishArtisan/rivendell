@@ -143,15 +143,13 @@ void PostCounter::UpdateDisplay()
 
     if(post_offset_valid) {
       if(offset<-POST_COUNTER_MARGIN) {
-	state=QString().sprintf("-%s",(const char *)
-				QTime().addMSecs(-offset).toString());
+	state="-"+QTime().addMSecs(-offset).toString();
 	setPalette(post_early_palette);
 	color=POSTPOINT_EARLY_COLOR;
       }
       else {
 	if(offset>POST_COUNTER_MARGIN) {
-	  state=QString().sprintf("+%s",(const char *)
-				  QTime().addMSecs(offset).toString());
+	  state="+"+QTime().addMSecs(offset).toString();
 	  setPalette(post_late_palette);
 	  color=POSTPOINT_LATE_COLOR;
 	}

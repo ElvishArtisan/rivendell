@@ -505,7 +505,7 @@ Final</translation>
     </message>
     <message>
         <source>T</source>
-        <translation>T</translation>
+        <translation type="obsolete">T</translation>
     </message>
     <message>
         <source>TRACK</source>

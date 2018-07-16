@@ -87,9 +87,7 @@ void StopCounter::setState(bool state)
       UpdateTime();
       stop_running=true;
       str=QString(tr("Next Stop"));
-      stop_text=
-	QString().sprintf("%s [%s]",(const char *)str,
-			  (const char *)stop_time.toString(time_format));
+      stop_text=tr("Next Stop")+" ["+stop_time.toString(time_format)+"]";
     }
   }
   else {
@@ -110,11 +108,10 @@ void StopCounter::setTime(QTime time)
     stop_time=time;
     setState(true);
     str=QString(tr("Next Stop"));
-    stop_text=QString().sprintf("%s [%s]",(const char *)str,
-				(const char *)stop_time.toString(time_format));
+    stop_text=tr("Next Stop")+" ["+stop_time.toString(time_format)+"]";
   }
   else {
-	  setState(false);
+    setState(false);
   }
   UpdateTime();
 }

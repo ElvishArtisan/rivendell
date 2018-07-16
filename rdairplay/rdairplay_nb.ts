@@ -535,7 +535,7 @@ Tail</source>
     </message>
     <message>
         <source>T</source>
-        <translation>S</translation>
+        <translation type="obsolete">S</translation>
     </message>
 </context>
 <context>

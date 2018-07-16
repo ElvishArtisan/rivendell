@@ -529,12 +529,10 @@ void LogLineBox::setEvent(int line,RDLogLine::TransType next_type,
 	    setText(RDResolveNowNext(line_title_template,line_logline));
 	}
 	else {
-	  line_title_label->setText(QString().
-				    sprintf("%s -- %s %s",
-					    (const char *)line_logline->title(),
-					    (const char *)line_logline->originUser(),
-					    (const char *)line_logline->originDateTime().
-					    toString("M/d hh:mm")));
+	  line_title_label->setText(line_logline->title()+" -- "+
+				    line_logline->originUser()+" "+
+				    line_logline->originDateTime().
+				    toString("M/d hh:mm"));
 	}
 	line_description_label->
 	  setText(RDResolveNowNext(line_description_template,line_logline));
@@ -896,28 +894,22 @@ void LogLineBox::UpdateCountdown()
 
 void LogLineBox::PrintTime()
 {
-  QString str;
-  
   if(line_logline==NULL) {
     return;
   }
   switch(line_logline->timeType()) {
       case RDLogLine::Hard:
 	line_time_label->setFont(line_bold_font);
-	str=QString(tr("T"));
-	line_time_label->setText(QString().sprintf("%s%s",(const char *)str,
-		     (const char *)TimeString(line_logline->
-					      startTime(RDLogLine::Logged))));
+	line_time_label->setText("T"+TimeString(line_logline->
+						startTime(RDLogLine::Logged)));
 	line_time_label->setPalette(line_hard_palette);
 	break;
 
       default:
 	line_time_label->setFont(line_font);
 	if(!line_logline->startTime(RDLogLine::Logged).isNull()) {
-	  line_time_label->
-	    setText(QString().sprintf("%s",
-				      (const char *)TimeString(line_logline->
-					   startTime(RDLogLine::Logged))));
+	  line_time_label->setText(TimeString(line_logline->
+					      startTime(RDLogLine::Logged)));
 	}
 	else {
 	  line_time_label->setText("");

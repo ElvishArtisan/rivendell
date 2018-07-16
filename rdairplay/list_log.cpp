@@ -1219,12 +1219,8 @@ void ListLog::RefreshItem(RDListViewItem *l,int line)
 	  l->setText(5,log_line->title());
 	}
 	else {
-	  l->setText(5,QString().
-		     sprintf("%s -- %s %s",
-			     (const char *)log_line->title(),
-			     (const char *)log_line->originUser(),
-			     (const char *)log_line->originDateTime().
-			     toString("M/d hh:mm")));
+	  l->setText(5,log_line->title()+" -- "+log_line->originUser()+" "+
+		     log_line->originDateTime().toString("M/d hh:mm"));
 	}
 	l->setText(6,log_line->artist());
 	l->setText(7,log_line->groupName());

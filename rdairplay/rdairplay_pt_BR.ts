@@ -526,7 +526,7 @@ Log</source>
     </message>
     <message>
         <source>T</source>
-        <translation>T</translation>
+        <translation type="obsolete">T</translation>
     </message>
 </context>
 <context>

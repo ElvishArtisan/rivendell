@@ -110,8 +110,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Ensure Single Instance
   //
-  air_lock=new RDInstanceLock(QString().sprintf("%s/.rdairplaylock",
-					       (const char *)RDHomeDir()));
+  air_lock=new RDInstanceLock(RDHomeDir()+"/.rdairplaylock");
   if(!air_lock->lock()) {
     QMessageBox::information(this,tr("RDAirPlay"),
 			     tr("Multiple instances not allowed!"));
@@ -852,22 +851,20 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Load Plugins
   //
-  sql=QString().sprintf("select PLUGIN_PATH,PLUGIN_ARG from NOWNEXT_PLUGINS \
-                         where (STATION_NAME=\"%s\")&&(LOG_MACHINE=0)",
-			(const char *)
-			RDEscapeString(rda->config()->stationName()));
+  sql=QString("select ")+
+    "PLUGIN_PATH,"+  // 00
+    "PLUGIN_ARG "+   // 01
+    "from NOWNEXT_PLUGINS where "+
+    "(STATION_NAME=\""+RDEscapeString(rda->config()->stationName())+"\")&&"+
+     "(LOG_MACHINE=0)";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     air_plugin_hosts.
       push_back(new RDRLMHost(q->value(0).toString(),q->value(1).toString(),
 			      air_nownext_socket,this));
-    LogLine(RDConfig::LogInfo,QString().
-	    sprintf("Loading RLM \"%s\"",
-		    (const char *)q->value(0).toString()));
+    LogLine(RDConfig::LogInfo,"Loading RLM \""+q->value(0).toString()+"\"");
     if(!air_plugin_hosts.back()->load()) {
-      LogLine(RDConfig::LogWarning,QString().
-	      sprintf("Failed to load RLM \"%s\"",
-		      (const char *)q->value(0).toString()));
+      LogLine(RDConfig::LogWarning,"Failed to load RLM \""+q->value(0).toString()+"\"");
     }
   }
   delete q;
@@ -1008,8 +1005,8 @@ void MainWidget::ripcConnectedData(bool state)
       }
     }
     if(!air_start_logname[i].isEmpty()) {
-      sql=QString().sprintf("select NAME from LOGS where NAME=\"%s\"",
-			    (const char *)air_start_logname[i]);
+      sql=QString("select NAME from LOGS where ")+
+	"NAME=\""+RDEscapeString(air_start_logname[i])+"\"";
       q=new RDSqlQuery(sql);
       if(q->first()) {
 	rml.setCommand(RDMacro::LL);  // Load Log
@@ -1335,37 +1332,27 @@ void MainWidget::panelChannelStoppedData(int mport,int card,int port)
 void MainWidget::logRenamedData(int log)
 {
   QString str;
-  QString logname=
-    air_log[log]->logName().left(air_log[log]->logName().length()-4);
+  QString logname=air_log[log]->logName();
   QString labelname=logname;
   if(logname.isEmpty()) {
     labelname="--";
   }
   switch(log) {
-      case 0:
-	str=QString(tr("Main Log"));
-	air_log_button[0]->
-	  setText(QString().sprintf("%s\n[%s]",(const char *)str,
-				    (const char *)labelname));
-	SetCaption();
-	if(air_panel) {
-	  air_panel->setLogName(logname);
-	}
-	break;
+  case 0:
+    air_log_button[0]->setText(tr("Main Log")+"\n["+labelname+"]");
+    SetCaption();
+    if(air_panel) {
+      air_panel->setLogName(logname);
+    }
+    break;
 
-      case 1:
-	str=QString(tr("Aux 1 Log"));
-	air_log_button[1]->
-	  setText(QString().sprintf("%s\n[%s]",(const char *)str,
-				    (const char *)labelname));
-	break;
+  case 1:
+    air_log_button[1]->setText(tr("Aux 1 Log")+"\n["+labelname+"]");
+    break;
 	
-      case 2:
-	str=QString(tr("Aux 2 Log"));
-	air_log_button[2]->
-	  setText(QString().sprintf("%s\n[%s]",(const char *)str,
-				    (const char *)labelname));
-	break;
+  case 2:
+    air_log_button[2]->setText(tr("Aux 2 Log")+"\n["+labelname+"]");
+    break;
   }
 }
 
@@ -1374,55 +1361,36 @@ void MainWidget::logReloadedData(int log)
 {
   QString str;
   QHostAddress addr;
-  QString labelname=
-    air_log[log]->logName().left(air_log[log]->logName().length()-4);
+  QString labelname=air_log[log]->logName();
   if(labelname.isEmpty()) {
     labelname="--";
   }
 
   switch(log) {
-      case 0:
-	str=QString(tr("Main Log"));
-	air_log_button[0]->
-	  setText(QString().sprintf("%s\n[%s]",(const char *)str,
-				    (const char *)labelname));
-	LogLine(RDConfig::LogInfo,QString().
-		sprintf("loaded log '%s' in Main Log",
-			(const char *)air_log[0]->logName().
-			left(air_log[0]->logName().length()-4)));
-	if(air_log[0]->logName().isEmpty()) {
-	  if(air_panel!=NULL) {
-	    air_panel->setSvcName(rda->airplayConf()->defaultSvc());
-	  }
-	}
-	else {
-	  if(air_panel!=NULL) {
-	    air_panel->setSvcName(air_log[0]->serviceName());
-	  }
-	}
-	break;
+  case 0:
+    air_log_button[0]->setText(tr("Main Log")+"\n["+labelname+"]");
+    LogLine(RDConfig::LogInfo,"loaded log '"+air_log[0]->logName()+"' in Main Log");
+    if(air_log[0]->logName().isEmpty()) {
+      if(air_panel!=NULL) {
+	air_panel->setSvcName(rda->airplayConf()->defaultSvc());
+      }
+    }
+    else {
+      if(air_panel!=NULL) {
+	air_panel->setSvcName(air_log[0]->serviceName());
+      }
+    }
+    break;
 
-      case 1:
-	str=QString(tr("Aux 1 Log"));
-	air_log_button[1]->
-	  setText(QString().sprintf("%s\n[%s]",(const char *)str,
-				    (const char *)labelname));
-	LogLine(RDConfig::LogInfo,QString().
-		sprintf("loaded log '%s' in Aux 1 Log",
-			(const char *)air_log[1]->logName().
-			left(air_log[1]->logName().length()-4)));
-	break;
+  case 1:
+    air_log_button[1]->setText(tr("Aux 1 Log")+"\n["+labelname+"]");
+    LogLine(RDConfig::LogInfo,"loaded log '"+air_log[1]->logName()+"' in Aux 1 Log");
+    break;
 	
-      case 2:
-	str=QString(tr("Aux 2 Log"));
-	air_log_button[2]->
-	  setText(QString().sprintf("%s\n[%s]",(const char *)str,
-				    (const char *)labelname));
-	LogLine(RDConfig::LogInfo,QString().
-		sprintf("loaded log '%s' in Aux 2 Log",
-			(const char *)air_log[2]->logName().
-			left(air_log[2]->logName().length()-4)));
-	break;
+  case 2:
+    air_log_button[2]->setText(tr("Aux 2 Log")+"\n["+labelname+"]");
+    LogLine(RDConfig::LogInfo,"loaded log '"+air_log[2]->logName()+"' in Aux 2 Log");
+    break;
   }
   SetCaption();
 
@@ -1462,8 +1430,7 @@ void MainWidget::logReloadedData(int log)
 
 void MainWidget::userData()
 {
-  LogLine(RDConfig::LogInfo,QString().
-	  sprintf("user changed to '%s'",(const char *)rda->ripc()->user()));
+  LogLine(RDConfig::LogInfo,"user changed to '"+rda->ripc()->user()+"'");
   SetCaption();
 
   //
@@ -2377,9 +2344,8 @@ void MainWidget::SetActionMode(StartButton::Mode mode)
 	  }
 	}
 	if(svc_quan==0) {
-	  sql=QString().sprintf("select SERVICE_NAME from SERVICE_PERMS \
-                                   where STATION_NAME=\"%s\"",
-				(const char *)rda->station()->name());
+	  sql=QString("select SERVICE_NAME from SERVICE_PERMS where ")+
+	    "STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\"";
 	  q=new RDSqlQuery(sql);
 	  while(q->next()) {
 	    services_list.append( q->value(0).toString() );

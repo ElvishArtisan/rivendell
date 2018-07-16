@@ -17125,3 +17125,5 @@
 	* Cleaned up SQL quieries in 'lib/' ensure UTF-8 compatibility.
 2018-07-16 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up SQL quieries in 'rdadmin/' ensure UTF-8 compatibility.
+2018-07-16 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up SQL quieries in 'rdairplay/' ensure UTF-8 compatibility.

@@ -242,9 +242,9 @@ int EditEvent::exec(int line)
   else {
     edit_time_edit->setTime(QTime());
   }
-  setCaption(QString().sprintf("%d - %s",
-			      edit_logline->cartNumber(),
-			      (const char *)edit_logline->title()));
+  setCaption("RDAirPlay - "+
+	     QString().sprintf("%d - ",edit_logline->cartNumber())+
+	     edit_logline->title());
   edit_cart_notes_text->setText(edit_logline->cartNotes());
   switch(edit_logline->type()) {
   case RDLogLine::Cart:
@@ -344,11 +344,9 @@ void EditEvent::timeChangedData(const QTime &time)
   QString str;
 
   if(edit_timetype_box->isChecked()) {
-    str=QString(tr("Transition If Previous Cart Ends Before"));
-    edit_time_label->
-      setText(QString().sprintf("%s %s:",(const char *)str,
-				(const char *)edit_time_edit->time().
-				toString("hh:mm:ss.zzz").left(10)));
+    edit_time_label->setText(tr("Transition If Previous Cart Ends Before")+
+			     " "+edit_time_edit->time().
+			     toString("hh:mm:ss.zzz").left(10)+":");
   }
 }
 
@@ -361,11 +359,9 @@ void EditEvent::timeToggledData(bool state)
   edit_grace_group->setEnabled(state);
   if(state) {
     graceClickedData(edit_grace_group->selectedId());
-    str=QString(tr("Transition If Previous Cart Ends Before"));
-    edit_time_label->
-      setText(QString().sprintf("%s %s:",(const char *)str,
-	     (const char *)edit_time_edit->time().
-				toString("hh:mm:ss.zzz").left(10)));
+    edit_time_label->setText(tr("Transition If Previous Cart Ends Before")+
+			     " "+edit_time_edit->time().
+			     toString("hh:mm:ss.zzz").left(10)+":");
   }
   else {
     edit_grace_edit->setDisabled(true);
