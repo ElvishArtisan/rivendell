@@ -2,7 +2,7 @@
 //
 // Select a Set of Dates for a Rivendell Report
 //
-//   (C) Copyright 2002-2006,2016-2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2006,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,6 +27,7 @@
 #include <rddb.h>
 #include <rddatedecode.h>
 #include <rddatedialog.h>
+#include <rdescape_string.h>
 #include <rdfeed.h>
 #include <rdpodcast.h>
 #include <rdreport.h>
@@ -216,14 +217,16 @@ void PickReportDates::GenerateSubscriptionReport(const QString &keyname,
   //
   QString keyname_esc=keyname;
   keyname_esc.replace(" ","_");
-  sql=QString().sprintf("select ACCESS_DATE,ACCESS_COUNT,CAST_ID from %s_FLG \
-                         where (ACCESS_DATE>=\"%s\")&&(ACCESS_DATE<=\"%s\") \
-                         order by ACCESS_DATE,CAST_ID desc",
-			(const char *)keyname_esc,
-			(const char *)edit_startdate_edit->date().
-			toString("yyyy-MM-dd"),
-			(const char *)edit_enddate_edit->date().
-			toString("yyyy-MM-dd"));
+  sql=QString("select ")+
+    "ACCESS_DATE,"+   // 00
+    "ACCESS_COUNT,"+  // 01
+    "CAST_ID "+       // 02
+    "from "+keyname_esc+"_FLG where "+
+    "(ACCESS_DATE>=\""+RDEscapeString(edit_startdate_edit->date().
+				      toString("yyyy-MM-dd"))+"\")&&"+
+    "(ACCESS_DATE<=\""+RDEscapeString(edit_enddate_edit->date().
+				      toString("yyyy-MM-dd"))+"\") "+
+    "order by ACCESS_DATE,CAST_ID desc";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(q->value(2).toUInt()==0) {
@@ -287,15 +290,16 @@ void PickReportDates::GenerateEpisodeReport(const QString &keyname,
   unsigned total=0;
   QString keyname_esc=keyname;
   keyname_esc.replace(" ","_");
-  sql=QString().sprintf("select ACCESS_DATE,ACCESS_COUNT from %s_FLG \
-                         where (ACCESS_DATE>=\"%s\")&&(ACCESS_DATE<=\"%s\")&& \
-                         (CAST_ID=%u) order by ACCESS_DATE",
-			(const char *)keyname_esc,
-			(const char *)edit_startdate_edit->date().
-			toString("yyyy-MM-dd"),
-			(const char *)edit_enddate_edit->date().
-			toString("yyyy-MM-dd"),
-			cast_id);
+  sql=QString("select ")+
+    "ACCESS_DATE,"+
+    "ACCESS_COUNT "+
+    "from "+keyname_esc+"_FLG where "+
+    "(ACCESS_DATE>=\""+RDEscapeString(edit_startdate_edit->date().
+				      toString("yyyy-MM-dd"))+"\")&&"+
+    "(ACCESS_DATE<=\""+RDEscapeString(edit_enddate_edit->date().
+				      toString("yyyy-MM-dd"))+"\")&&"+
+    QString().sprintf("(CAST_ID=%u) ",cast_id)+
+    "order by ACCESS_DATE";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     *rpt+=QString().sprintf("                       %s             %9u\n",

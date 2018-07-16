@@ -243,9 +243,12 @@ void MainWidget::RefreshItem(RDListViewItem *item)
   int active=0;
   int total=0;
 
-  sql=QString().sprintf("select CHANNEL_TITLE,CHANNEL_DESCRIPTION,ID \
-                         from FEEDS where KEY_NAME=\"%s\"",
-			(const char *)item->text(1));
+  sql=QString("select ")+
+    "CHANNEL_TITLE,"+        // 00
+    "CHANNEL_DESCRIPTION,"+  // 01
+    "ID "+                   // 02
+    "from FEEDS where "+
+    "KEY_NAME=\""+RDEscapeString(item->text(1))+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     sql=QString().sprintf("select STATUS from PODCASTS where FEED_ID=%u",
@@ -298,8 +301,7 @@ void MainWidget::RefreshList()
   }
   sql="select ID,KEY_NAME from FEEDS where ";
   while(q->next()) {
-    sql+=QString().sprintf("(KEY_NAME=\"%s\")||",
-			   (const char *)q->value(0).toString());
+    sql+=QString("(KEY_NAME=\"")+RDEscapeString(q->value(0).toString())+"\")||";
   }
   delete q;
   sql=sql.left(sql.length()-2);
@@ -333,9 +335,7 @@ int main(int argc,char *argv[])
 #ifdef WIN32
   QSettings settings;
   settings.insertSearchPath(QSettings::Windows,"/SalemRadioLabs");
-  tr_path=QString().sprintf("%s\\",
-			    (const char *)settings.
-			    readEntry("/Rivendell/InstallDir"));
+  tr_path=settings.readEntry("/Rivendell/InstallDir")+"\"";
   qt_path=tr_path;
 #else
   tr_path=QString(PREFIX)+QString("/share/rivendell/");

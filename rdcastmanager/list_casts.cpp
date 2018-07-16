@@ -450,11 +450,11 @@ void ListCasts::RefreshList()
   RDListViewItem *item;
 
   list_casts_view->clear();
-  sql=QString().sprintf("select ID from PODCASTS %s \
-                         order by ORIGIN_DATETIME",
-       (const char *)RDCastSearch(list_feed_id,list_filter_edit->text(),
-				  list_unexpired_check->isChecked(),
-				  list_active_check->isChecked()));
+  sql=QString("select ID from PODCASTS ")+
+    RDCastSearch(list_feed_id,list_filter_edit->text(),
+		 list_unexpired_check->isChecked(),
+		 list_active_check->isChecked())+
+		 " order by ORIGIN_DATETIME";
   q=new RDSqlQuery(sql);
   while (q->next()) {
     item=new RDListViewItem(list_casts_view);
@@ -523,10 +523,9 @@ void ListCasts::GetEncoderId()
   sql=QString().sprintf("select NAME from ENCODERS where ID=%d",format);
   q=new RDSqlQuery(sql);
   if(q->first()) {
-    sql=QString().sprintf("select ID from ENCODERS \
-                           where (NAME=\"%s\")&&(STATION_NAME=\"%s\")",
-			  (const char *)RDEscapeString(q->value(0).toString()),
-			  (const char *)RDEscapeString(rda->station()->name()));
+    sql=QString("select ID from ENCODERS where ")+
+      "(NAME=\""+RDEscapeString(q->value(0).toString())+"\")&&"+
+      "(STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\")";
     delete q;
     q=new RDSqlQuery(sql);
     if(q->first()) {
