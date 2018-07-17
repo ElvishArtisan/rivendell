@@ -862,7 +862,6 @@ void MainWidget::editData()
 
 void MainWidget::deleteData()
 {
-  QString str;
   QString warning;
   QString filename;
   QString sql;
@@ -875,15 +874,12 @@ void MainWidget::deleteData()
   }
   EnableScroll(false);
   if(item->text(1).isEmpty()) {
-    str=QString(tr("Are you sure you want to delete event"));
-    warning=QString().
-      sprintf("%s\n at %s?",(const char *)str,(const char *)item->text(3));
+    warning=tr("Are you sure you want to delete event")+"\n"+
+      tr("at")+" "+item->text(3);
   }
   else {
-    str=QString(tr("Are you sure you want to delete event"));
-    warning=QString().
-      sprintf("Are you sure you want to delete event\n\"%s\" at %s?",
-	      (const char *)item->text(1),(const char *)item->text(3));
+    warning=tr("Are you sure you want to delete event")+
+      "\n\""+item->text(3)+"\"?";
   }
   if(QMessageBox::warning(this,tr("Delete Event"),warning,
 			  QMessageBox::Yes,QMessageBox::No)!=
@@ -896,8 +892,8 @@ void MainWidget::deleteData()
     return;
   }
   catch_connect[conn]->connector()->removeEvent(item->text(28).toInt());
-  sql=QString().sprintf("delete from RECORDINGS where ID=%s",
-			(const char *)item->text(28));
+  sql=QString("delete from RECORDINGS where ")+
+    "ID="+item->text(28);
   q=new RDSqlQuery(sql);
   delete q;
   RDListViewItem *next=(RDListViewItem *)item->nextSibling();
@@ -1257,9 +1253,9 @@ void MainWidget::heartbeatFailedData(int id)
   QString str;
 
   str=QString(tr("Control connection timed out to host"));
-  QString msg=QString().sprintf("%s '%s'!",(const char *)str,
-				(const char *)catch_connect[id]->stationName());
-  QMessageBox::warning(this,"RDCatch",msg);
+  QString msg=tr("Control connection timed out to host")+
+    " `"+catch_connect[id]->stationName()+"'?";
+  QMessageBox::warning(this,"RDCatch - "+tr("Connection Error"),msg);
 }
 
 
@@ -1533,20 +1529,24 @@ int MainWidget::ShowNextEvents(int day,QTime time,QTime *next)
   QString sql;
   int count=0;
   if(time.isNull()) {
-    sql=QString().sprintf("select ID,START_TIME from RECORDINGS \
-                           where (IS_ACTIVE=\"Y\")&& \
-                           (%s=\"Y\") \
-                           order by START_TIME",
-			  (const char *)RDGetShortDayNameEN(day).upper());
+    sql=QString("select ")+
+      "ID,"+          // 00
+      "START_TIME "+  // 01
+      "from RECORDINGS where "+
+      "(IS_ACTIVE=\"Y\")&&"+
+      "("+RDGetShortDayNameEN(day).upper()+"=\"Y\") "+
+      "order by START_TIME";
   }
   else {
-    sql=QString().sprintf("select ID,START_TIME from RECORDINGS \
-                           where (IS_ACTIVE=\"Y\")&& \
-                           (time_to_sec(START_TIME)>time_to_sec(\"%s\"))&& \
-                           (%s=\"Y\") \
-                           order by START_TIME",
-			  (const char *)time.toString("hh:mm:ss"),
-			  (const char *)RDGetShortDayNameEN(day).upper());
+    sql=QString("select ")+
+      "ID,"+
+      "START_TIME "+
+      "from RECORDINGS where "+
+      "(IS_ACTIVE=\"Y\")&&"+
+      "(time_to_sec(START_TIME)>time_to_sec(\""+
+      RDEscapeString(time.toString("hh:mm:ss"))+"\"))&&"+
+      "("+RDGetShortDayNameEN(day).upper()+"=\"Y\")"+
+      "order by START_TIME";
   }
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(!q->first()) {
@@ -1681,46 +1681,56 @@ void MainWidget::RefreshList()
   QString str;
 
   catch_recordings_list->clear();
-  sql=QString("select RECORDINGS.DESCRIPTION,RECORDINGS.IS_ACTIVE,\
-               RECORDINGS.STATION_NAME,RECORDINGS.START_TIME,\
-               RECORDINGS.LENGTH,RECORDINGS.CUT_NAME,RECORDINGS.SUN,\
-               RECORDINGS.MON,RECORDINGS.TUE,RECORDINGS.WED,RECORDINGS.THU,\
-               RECORDINGS.FRI,RECORDINGS.SAT,RECORDINGS.SWITCH_INPUT,\
-               RECORDINGS.START_GPI,RECORDINGS.END_GPI,\
-               RECORDINGS.TRIM_THRESHOLD,RECORDINGS.STARTDATE_OFFSET,\
-               RECORDINGS.ENDDATE_OFFSET,RECORDINGS.FORMAT,\
-               RECORDINGS.CHANNELS,RECORDINGS.SAMPRATE,RECORDINGS.BITRATE,\
-               RECORDINGS.CHANNEL,RECORDINGS.MACRO_CART,RECORDINGS.ID,\
-               RECORDINGS.TYPE,RECORDINGS.SWITCH_OUTPUT,RECORDINGS.EXIT_CODE,\
-               RECORDINGS.ONE_SHOT,RECORDINGS.START_TYPE,\
-               RECORDINGS.START_LENGTH,RECORDINGS.START_MATRIX,\
-               RECORDINGS.START_LINE,RECORDINGS.START_OFFSET,\
-               RECORDINGS.END_TYPE,RECORDINGS.END_TIME,RECORDINGS.END_LENGTH,\
-               RECORDINGS.END_MATRIX,RECORDINGS.END_LINE,CUTS.ORIGIN_NAME,\
-               CUTS.ORIGIN_DATETIME,RECORDINGS.URL,RECORDINGS.QUALITY,\
-               FEEDS.KEY_NAME,EXIT_TEXT from RECORDINGS left join CUTS\
-               on (RECORDINGS.CUT_NAME=CUTS.CUT_NAME) left join FEEDS \
-               on (RECORDINGS.FEED_ID=FEEDS.ID)");
-  // Field Offsets:
-  //
-  //  0 - REC.DESCRIPTION       18 - REC.ENDDATE_OFFSET 36 - REC.END_TIME
-  //  1 - REC.IS_ACTIVE         19 - REC.FORMAT         37 - REC.END_LENGTH
-  //  2 - REC.STATION_NAME      20 - REC.CHANNELS       38 - REC.END_MATRIX
-  //  3 - REC.START_TIME        21 - REC.SAMPRATE       39 - REC.END_LINE
-  //  4 - REC.LENGTH            22 - REC.BITRATE        40 - CUTS.ORIGIN_NAME
-  //  5 - REC.CUT_NAME          23 - REC.CHANNEL        41 - CUTS.ORIGIN_DATETIME
-  //  6 - REC.SUN               24 - REC.MACRO_CART     42 - REC.URL
-  //  7 - REC.MON               25 - REC.ID             43 - REC.QUALITY
-  //  8 - REC.TUE               26 - REC.TYPE           44 - FEEDS.KEY_NAME
-  //  9 - REC.WED               27 - REC.SWITCH_OUTPUT  45 - REC.EXIT_TEXT
-  // 10 - REC.THU               28 - REC.EXIT_CODE
-  // 11 - REC.FRI               29 - REC.ONE_SHOT
-  // 12 - REC.SAT               30 - REC.START_TYPE
-  // 13 - REC.SWITCH_INPUT      31 - REC.START_LENGTH
-  // 14 - REC.START_GPI         32 - REC.START_MATRIX
-  // 15 - REC.END_GPI           33 - REC.START_LINE
-  // 16 - REC.TRIM_THRESHOLD    34 - REC.START_OFFSET
-  // 17 - REC.STARTDATE_OFFSET  35 - REC.END_TYPE
+  sql=QString("select ")+
+    "RECORDINGS.DESCRIPTION,"+       // 00
+    "RECORDINGS.IS_ACTIVE,"+         // 01
+    "RECORDINGS.STATION_NAME,"+      // 02
+    "RECORDINGS.START_TIME,"+        // 03
+    "RECORDINGS.LENGTH,"+            // 04
+    "RECORDINGS.CUT_NAME,"+          // 05
+    "RECORDINGS.SUN,"+               // 06
+    "RECORDINGS.MON,"+               // 07
+    "RECORDINGS.TUE,"+               // 08
+    "RECORDINGS.WED,"+               // 09
+    "RECORDINGS.THU,"+               // 10
+    "RECORDINGS.FRI,"+               // 11
+    "RECORDINGS.SAT,"+               // 12
+    "RECORDINGS.SWITCH_INPUT,"+      // 13
+    "RECORDINGS.START_GPI,"+         // 14
+    "RECORDINGS.END_GPI,"+           // 15
+    "RECORDINGS.TRIM_THRESHOLD,"+    // 16
+    "RECORDINGS.STARTDATE_OFFSET,"+  // 17
+    "RECORDINGS.ENDDATE_OFFSET,"+    // 18
+    "RECORDINGS.FORMAT,"+            // 19
+    "RECORDINGS.CHANNELS,"+          // 20
+    "RECORDINGS.SAMPRATE,"+          // 21
+    "RECORDINGS.BITRATE,"+           // 22
+    "RECORDINGS.CHANNEL,"+           // 23
+    "RECORDINGS.MACRO_CART,"+        // 24
+    "RECORDINGS.ID,"+                // 25
+    "RECORDINGS.TYPE,"+              // 26
+    "RECORDINGS.SWITCH_OUTPUT,"+     // 27
+    "RECORDINGS.EXIT_CODE,"+         // 28
+    "RECORDINGS.ONE_SHOT,"+          // 29
+    "RECORDINGS.START_TYPE,"+        // 30
+    "RECORDINGS.START_LENGTH,"+      // 31
+    "RECORDINGS.START_MATRIX,"+      // 32
+    "RECORDINGS.START_LINE,"+        // 33
+    "RECORDINGS.START_OFFSET,"+      // 34
+    "RECORDINGS.END_TYPE,"+          // 35
+    "RECORDINGS.END_TIME,"+          // 36
+    "RECORDINGS.END_LENGTH,"+        // 37
+    "RECORDINGS.END_MATRIX,"+        // 38
+    "RECORDINGS.END_LINE,"+          // 39
+    "CUTS.ORIGIN_NAME,"+             // 40
+    "CUTS.ORIGIN_DATETIME,"+         // 41
+    "RECORDINGS.URL,"+               // 42
+    "RECORDINGS.QUALITY,"+           // 43
+    "FEEDS.KEY_NAME,"+               // 44
+    "EXIT_TEXT "+                    // 45
+    "from RECORDINGS left join CUTS "+
+    "on (RECORDINGS.CUT_NAME=CUTS.CUT_NAME) left join FEEDS "+
+    "on (RECORDINGS.FEED_ID=FEEDS.ID)";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     l=new RDListViewItem(catch_recordings_list);
@@ -1769,8 +1779,8 @@ void MainWidget::RefreshList()
     }
     l->setText(16,q->value(29).toString());   // One Shot
     str=QString(tr("dB"));
-    l->setText(17,QString().sprintf("%d %s",  // Trim Threshold
-				    -q->value(17).toInt(),(const char *)str));
+    l->setText(17,QString().sprintf("%d ",  // Trim Threshold
+				    -q->value(16).toInt())+tr("dB"));
     l->setText(18,q->value(17).toString());   // Startdate Offset
     l->setText(19,q->value(18).toString());   // Enddate Offset
     l->setText(24,q->value(2).toString());    // Station
@@ -1788,71 +1798,41 @@ void MainWidget::RefreshList()
     l->setPixmap(0,*(catch_type_maps[q->value(26).toInt()]));
     switch((RDRecording::Type)q->value(26).toInt()) {
     case RDRecording::Recording:
-      l->setText(2,QString().sprintf("%s : %dR",
-				     (const char *)q->value(2).toString(),
-				     q->value(23).toInt()));
+      l->setText(2,q->value(2).toString()+
+		 QString().sprintf(" : %dR",q->value(23).toInt()));
       switch((RDRecording::StartType)q->value(30).toUInt()) {
       case RDRecording::HardStart:
-	str=QString(tr("Hard"));
-	l->setText(3,q->value(3).toTime().
-		   toString(QString().sprintf("%s: hh:mm:ss",
-					      (const char *)str)));
+	l->setText(3,tr("Hard")+": "+q->value(3).toTime().toString("hh:mm:ss"));
 	break;
 
       case RDRecording::GpiStart:
-	str=QString(tr("Gpi"));
-	l->setText(3,QString().
-		   sprintf("%s: %s,%s,%d:%d,%s",
-			   (const char *)str,
-			   (const char *)q->value(3).
-			   toTime().toString("hh:mm:ss"),
-			   (const char *)q->value(3).toTime().
-			   addMSecs(q->value(31).toInt()).
-			   toString("hh:mm:ss"),
-			   q->value(32).toInt(),
-			   q->value(33).toInt(),
-			   (const char *)QTime().
-			   addMSecs(q->value(34).toUInt()).
-			   toString("mm:ss")));
+	l->setText(3,tr("Gpi")+": "+q->value(3).toTime().toString("hh:mm:ss")+
+		   ","+q->value(3).toTime().addMSecs(q->value(31).toInt()).
+		   toString("hh:mm:ss")+","+
+		   QString().sprintf("%d:%d,",q->value(32).toInt(),q->value(33).toInt())+
+		   QTime().addMSecs(q->value(34).toUInt()).toString("mm:ss"));
 	break;
       }
       switch((RDRecording::EndType)q->value(35).toUInt()) {
       case RDRecording::LengthEnd:
-	str=QString(tr("Len"));
-	l->setText(4,QString().sprintf("%s: %s",
-				       (const char *)str,
-				       (const char *)
-				       RDGetTimeLength(q->value(4).toUInt(),
-						       false,false)));
+	l->setText(4,tr("Len")+": "+
+		   RDGetTimeLength(q->value(4).toUInt(),false,false));
 	break;
 
       case RDRecording::HardEnd:
-	str=QString(tr("Hard"));
-	l->setText(4,QString().sprintf("%s: %s",
-				       (const char *)str,
-				       (const char *)
-				       q->value(36).toTime().
-				       toString("hh:mm:ss")));
+	l->setText(4,tr("Hard")+": "+
+		   q->value(36).toTime().toString("hh:mm:ss"));
 	break;
 
       case RDRecording::GpiEnd:
-	str=QString(tr("Gpi"));
-	l->setText(4,QString().
-		   sprintf("%s: %s,%s,%d:%d",
-			   (const char *)str,
-			   (const char *)q->value(36).
-			   toTime().toString("hh:mm:ss"),
-			   (const char *)q->value(36).toTime().
-			   addMSecs(q->value(37).toInt()).
-			   toString("hh:mm:ss"),
-			   q->value(38).toInt(),
-			   q->value(39).toInt()));
+	l->setText(4,tr("Gpi")+": "+q->value(36).toTime().toString("hh:mm:ss")+
+		   ","+q->value(36).toTime().addMSecs(q->value(37).toInt()).
+		   toString("hh:mm:ss")+
+		   QString().sprintf(",%d:%d",q->value(38).toInt(),
+				     q->value(39).toInt()));
 	break;
       }
-      str=QString(tr("Cut"));
-      l->setText(6,QString().
-		 sprintf("%s %s",(const char *)str,
-			 (const char *)q->value(5).toString()));
+      l->setText(6,tr("Cut")+" "+q->value(5).toString());
       sql=QString("select ")+
 	"SWITCH_STATION,"+  // 00
 	"SWITCH_MATRIX "+   // 01
@@ -1902,39 +1882,27 @@ void MainWidget::RefreshList()
       break;
 
     case RDRecording::Playout:
-      l->setText(2,QString().sprintf("%s : %dP",
-				     (const char *)q->value(2).toString(),
+      l->setText(2,q->value(2).toString()+QString().sprintf(" : %dP",
 				     q->value(23).toInt()-128));
-      l->setText(3,q->value(3).toTime().toString("Hard: hh:mm:ss"));
+      l->setText(3,tr("Hard")+": "+q->value(3).toTime().toString("hh:mm:ss"));
       cut=new RDCut(q->value(5).toString());
-      str=QString(tr("Len"));
       if(cut->exists()) {
-	l->setText(4,QString().sprintf("%s: %s",(const char *)str,
-				       (const char *)RDGetTimeLength(cut->length(),false,false)));
+	l->setText(4,tr("Len")+": "+RDGetTimeLength(cut->length(),false,false));
       }
       delete cut;
-      str=QString(tr("Cut"));
-      l->setText(5,QString().
-		 sprintf("%s %s",(const char *)str,
-			 (const char *)q->value(5).toString()));
+      l->setText(5,tr("Cut")+" "+q->value(5).toString());
       break;
 
     case RDRecording::MacroEvent:
       l->setText(2,q->value(2).toString());
-      str=QString(tr("Hard"));
-      l->setText(3,q->value(3).toTime().
-		 toString(QString().
-			  sprintf("%s: hh:mm:ss",(const char *)str)));
-      str=QString(tr("Cart"));
-      l->setText(5,QString().sprintf("%s %06d",(const char *)str,
-				     q->value(24).toInt()));
+      l->setText(3,tr("Hard")+": "+q->value(3).toTime().
+		 toString(QString().sprintf("hh:mm:ss")));
+      l->setText(5,tr("Cart")+QString().sprintf(" %06d",q->value(24).toInt()));
       break;
 
     case RDRecording::SwitchEvent:
       l->setText(2,q->value(2).toString());
-      str=QString(tr("Hard"));
-      l->setText(3,q->value(3).toTime().
-		 toString(QString().sprintf("%s: hh:mm:ss",(const char *)str)));
+      l->setText(3,tr("Hard")+": "+q->value(3).toTime().toString("hh:mm:ss"));
       l->setText(5,GetSourceName(q->value(2).toString(),  // Source
 				 q->value(23).toInt(),
 				 q->value(13).toInt()));
@@ -1945,27 +1913,15 @@ void MainWidget::RefreshList()
 
     case RDRecording::Download:
       l->setText(2,q->value(2).toString());
-      str=QString(tr("Hard"));
-      l->setText(3,q->value(3).toTime().
-		 toString(QString().
-			  sprintf("%s: hh:mm:ss",(const char *)str)));
-      str=QString(tr("Cut"));
+      l->setText(3,tr("Hard")+": "+q->value(3).toTime().toString("hh:mm:ss"));
       l->setText(5,q->value(42).toString());
-      l->setText(6,QString().
-		 sprintf("%s %s",(const char *)str,
-			 (const char *)q->value(5).toString()));
+      l->setText(6,tr("Cut")+" "+q->value(5).toString());
       break;
 
     case RDRecording::Upload:
       l->setText(2,q->value(2).toString());
-      str=QString(tr("Hard"));
-      l->setText(3,q->value(3).toTime().
-		 toString(QString().
-			  sprintf("%s: hh:mm:ss",(const char *)str)));
-      str=QString(tr("Cut"));
-      l->setText(5,QString().
-		 sprintf("%s %s",(const char *)str,
-			 (const char *)q->value(5).toString()));
+      l->setText(3,tr("Hard")+": "+q->value(3).toTime().toString("hh:mm:ss"));
+      l->setText(5,tr("Cut")+" "+q->value(5).toString());
       l->setText(6,q->value(42).toString());
       switch((RDSettings::Format)q->value(19).toInt()) {    // Format
       case RDSettings::Pcm16:
@@ -2033,55 +1989,56 @@ void MainWidget::RefreshLine(RDListViewItem *item)
   QString str;
 
   int id=item->text(28).toInt();
-  sql=QString().sprintf("select RECORDINGS.DESCRIPTION,\
-                                RECORDINGS.IS_ACTIVE,\
-                                RECORDINGS.STATION_NAME,\
-                                RECORDINGS.START_TIME,\
-                                RECORDINGS.LENGTH,\
-                                RECORDINGS.CUT_NAME,\
-                                RECORDINGS.SUN,\
-                                RECORDINGS.MON,\
-                                RECORDINGS.TUE,\
-                                RECORDINGS.WED,\
-                                RECORDINGS.THU,\
-                                RECORDINGS.FRI,\
-                                RECORDINGS.SAT,\
-                                RECORDINGS.SWITCH_INPUT,\
-                                RECORDINGS.START_GPI,\
-                                RECORDINGS.END_GPI,\
-                                RECORDINGS.TRIM_THRESHOLD,\
-                                RECORDINGS.STARTDATE_OFFSET,\
-                                RECORDINGS.ENDDATE_OFFSET,\
-                                RECORDINGS.FORMAT,\
-                                RECORDINGS.CHANNELS,\
-                                RECORDINGS.SAMPRATE,\
-                                RECORDINGS.BITRATE,\
-                                RECORDINGS.CHANNEL,\
-                                RECORDINGS.MACRO_CART,\
-                                RECORDINGS.TYPE,\
-                                RECORDINGS.SWITCH_OUTPUT,\
-                                RECORDINGS.EXIT_CODE,\
-                                RECORDINGS.ONE_SHOT,\
-                                RECORDINGS.START_TYPE,\
-                                RECORDINGS.START_LENGTH,\
-                                RECORDINGS.START_MATRIX,\
-                                RECORDINGS.START_LINE,\
-                                RECORDINGS.START_OFFSET,\
-                                RECORDINGS.END_TYPE,\
-                                RECORDINGS.END_TIME,\
-                                RECORDINGS.END_LENGTH,\
-                                RECORDINGS.END_MATRIX,\
-                                RECORDINGS.END_LINE,\
-                                CUTS.ORIGIN_NAME,\
-                                CUTS.ORIGIN_DATETIME,\
-                                RECORDINGS.URL,\
-                                RECORDINGS.QUALITY,\
-                                FEEDS.KEY_NAME,\
-                                RECORDINGS.EXIT_TEXT \
-                         from RECORDINGS left join CUTS \
-                        on (RECORDINGS.CUT_NAME=CUTS.CUT_NAME) left join FEEDS\
-                        on (RECORDINGS.FEED_ID=FEEDS.ID) \
-                        where RECORDINGS.ID=%d",id);
+  sql=QString("select ")+
+    "RECORDINGS.DESCRIPTION,"+       // 00
+    "RECORDINGS.IS_ACTIVE,"+         // 01
+    "RECORDINGS.STATION_NAME,"+      // 02
+    "RECORDINGS.START_TIME,"+        // 03
+    "RECORDINGS.LENGTH,"+            // 04
+    "RECORDINGS.CUT_NAME,"+          // 05
+    "RECORDINGS.SUN,"+               // 06
+    "RECORDINGS.MON,"+               // 07
+    "RECORDINGS.TUE,"+               // 08
+    "RECORDINGS.WED,"+               // 09
+    "RECORDINGS.THU,"+               // 10
+    "RECORDINGS.FRI,"+               // 11
+    "RECORDINGS.SAT,"+               // 12
+    "RECORDINGS.SWITCH_INPUT,"+      // 13
+    "RECORDINGS.START_GPI,"+         // 14
+    "RECORDINGS.END_GPI,"+           // 15
+    "RECORDINGS.TRIM_THRESHOLD,"+    // 16
+    "RECORDINGS.STARTDATE_OFFSET,"+  // 17
+    "RECORDINGS.ENDDATE_OFFSET,"+    // 18
+    "RECORDINGS.FORMAT,"+            // 19
+    "RECORDINGS.CHANNELS,"+          // 20
+    "RECORDINGS.SAMPRATE,"+          // 21
+    "RECORDINGS.BITRATE,"+           // 22
+    "RECORDINGS.CHANNEL,"+           // 23
+    "RECORDINGS.MACRO_CART,"+        // 24
+    "RECORDINGS.TYPE,"+              // 25
+    "RECORDINGS.SWITCH_OUTPUT,"+     // 26
+    "RECORDINGS.EXIT_CODE,"+         // 27
+    "RECORDINGS.ONE_SHOT,"+          // 28
+    "RECORDINGS.START_TYPE,"+        // 29
+    "RECORDINGS.START_LENGTH,"+      // 30
+    "RECORDINGS.START_MATRIX,"+      // 31
+    "RECORDINGS.START_LINE,"+        // 32
+    "RECORDINGS.START_OFFSET,"+      // 33
+    "RECORDINGS.END_TYPE,"+          // 34
+    "RECORDINGS.END_TIME,"+          // 35
+    "RECORDINGS.END_LENGTH,"+        // 36
+    "RECORDINGS.END_MATRIX,"+        // 37
+    "RECORDINGS.END_LINE,"+          // 38
+    "CUTS.ORIGIN_NAME,"+             // 39
+    "CUTS.ORIGIN_DATETIME,"+         // 40
+    "RECORDINGS.URL,"+               // 41
+    "RECORDINGS.QUALITY,"+           // 42
+    "FEEDS.KEY_NAME,"+               // 43
+    "RECORDINGS.EXIT_TEXT "+         // 44
+    "from RECORDINGS left join CUTS "+
+    "on (RECORDINGS.CUT_NAME=CUTS.CUT_NAME) left join FEEDS "+
+    "on (RECORDINGS.FEED_ID=FEEDS.ID) where "+
+    QString().sprintf("RECORDINGS.ID=%d",id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     if(RDBool(q->value(1).toString())) {

@@ -599,9 +599,6 @@ QSizePolicy EditRecording::sizePolicy() const
 
 void EditRecording::activateStationData(int id,bool use_temp)
 {
-  char station[65];
-  char gunk[3];
-  int chan;
   QString sql;
   RDSqlQuery *q;
   
@@ -609,12 +606,11 @@ void EditRecording::activateStationData(int id,bool use_temp)
     return;
   }
   QString temp=edit_source_box->currentText();
-  sscanf((const char *)edit_station_box->currentText(),"%s%s%d",
-	 station,gunk,&chan);
+  QStringList f0=f0.split(":",edit_station_box->currentText());
   if(edit_deck!=NULL) {
     delete edit_deck;
   }
-  edit_deck=new RDDeck(station,chan);
+  edit_deck=new RDDeck(f0[0],f0[2].toInt());
   if(edit_channels_box->count()>0) {
     edit_channels_box->setCurrentItem(edit_deck->defaultChannels()-1);
   }
@@ -713,9 +709,7 @@ void EditRecording::selectCutData()
   case 0:
     edit_description_edit->setText(RDCutPath(edit_cutname));
     str=QString(tr("Cut"));
-    edit_destination_edit->
-      setText(QString().sprintf("%s %s",(const char *)str,
-				(const char *)edit_cutname));
+    edit_destination_edit->setText(tr("Cut")+" "+edit_cutname);
     break;
   }
   delete cut;
@@ -801,13 +795,19 @@ void EditRecording::PopulateDecks(QComboBox *box)
   int count=0;
 
   box->clear();
-  QString sql=QString("select STATION_NAME,CHANNEL from DECKS \
-where (CARD_NUMBER!=-1)&&(PORT_NUMBER!=-1)&&(CHANNEL!=0) \
-&&(CHANNEL<9) order by STATION_NAME,CHANNEL");
+  QString sql=QString("select ")+
+    "STATION_NAME,"+  // 00
+    "CHANNEL "+       // 01
+    "from DECKS where "+
+    "(CARD_NUMBER!=-1)&&"+
+    "(PORT_NUMBER!=-1)&&"+
+    "(CHANNEL!=0)&&"+
+    "(CHANNEL<9) "+
+    "order by STATION_NAME,CHANNEL";
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
-    box->insertItem(QString().sprintf("%s : %dR",
-		   (const char *)q->value(0).toString(),q->value(1).toInt()));
+    box->insertItem(q->value(0).toString()+
+		    QString().sprintf(" : %dR",q->value(1).toInt()));
     if((q->value(0).toString()==edit_recording->station())&&
        (q->value(1).toUInt()==edit_recording->channel())) {
       box->setCurrentItem(count);
@@ -826,25 +826,19 @@ where (CARD_NUMBER!=-1)&&(PORT_NUMBER!=-1)&&(CHANNEL!=0) \
  }
   delete q;
   if(box->count()==0) {  // In case the deck has been disabled
-    box->insertItem(QString().sprintf("%s : %dR",
-				      (const char *)edit_recording->station(),
-				      edit_recording->channel()));
+    box->insertItem(edit_recording->station()+
+		    QString().sprintf(" : %dR",edit_recording->channel()));
   }
 }
 
 
 void EditRecording::Save()
 {
-  char station[65];
-  char gunk[3];
-  int chan;
-
-  sscanf((const char *)edit_station_box->currentText(),"%s%s%d",
-	 station,gunk,&chan);
+  QStringList f0=f0.split(":",edit_station_box->currentText());
   edit_recording->setIsActive(edit_active_button->isChecked());
-  edit_recording->setStation(station);
+  edit_recording->setStation(f0[0]);
   edit_recording->setType(RDRecording::Recording);
-  edit_recording->setChannel(chan);
+  edit_recording->setChannel(f0[2].toInt());
   edit_recording->setDescription(edit_description_edit->text());
   edit_recording->setCutName(edit_cutname);
   edit_recording->setMon(edit_mon_button->isChecked());
@@ -951,9 +945,11 @@ void EditRecording::Save()
 
 bool EditRecording::CheckEvent(bool include_myself)
 {
+  /*
   char station[65];
   char gunk[3];
   int chan;
+  */
   QTime start;
   QTime finish;
   QTime begin;
@@ -1046,11 +1042,12 @@ bool EditRecording::CheckEvent(bool include_myself)
   //
   // Verify that the GPI values are valid
   //
-  sscanf((const char *)edit_station_box->currentText(),"%s%s%d",
-	 station,gunk,&chan);
+  //  sscanf((const char *)edit_station_box->currentText(),"%s%s%d",
+  //	 station,gunk,&chan);
+  QStringList f0=f0.split(":",edit_station_box->currentText());
   switch((RDRecording::StartType)edit_starttype_group->selectedId()) {
       case RDRecording::GpiStart:
-	matrix=new RDMatrix(station,edit_startmatrix_spin->value());
+	matrix=new RDMatrix(f0[0],edit_startmatrix_spin->value());
 	if(!matrix->exists()) {
 	  QMessageBox::warning(this,tr("Record Parameter Error"),
 		     tr("The start GPI matrix doesn't exist!"));
@@ -1072,7 +1069,7 @@ bool EditRecording::CheckEvent(bool include_myself)
   }
   switch((RDRecording::EndType)edit_endtype_group->selectedId()) {
       case RDRecording::GpiEnd:
-	matrix=new RDMatrix(station,edit_endmatrix_spin->value());
+	matrix=new RDMatrix(f0[0],edit_endmatrix_spin->value());
 	if(!matrix->exists()) {
 	  QMessageBox::warning(this,tr("Record Parameter Error"),
 		     tr("The end GPI matrix doesn't exist!"));
@@ -1092,14 +1089,11 @@ bool EditRecording::CheckEvent(bool include_myself)
 	break;
   }
 
-  QString sql=
-    QString().sprintf("select ID from RECORDINGS \
-                       where (STATION_NAME=\"%s\")&&\
-                       (TYPE=%d)&&(START_TIME=\"%s\")&&\
-                       (CHANNEL=%d)",
-		      station,RDRecording::Recording,
-		      (const char *)edit_starttime_edit->time().
-		      toString("hh:mm:ss"),chan);
+  QString sql=QString("select ID from RECORDINGS where ")+
+    "(STATION_NAME=\""+RDEscapeString(f0[0])+"\")&&"+
+    QString().sprintf("(TYPE=%d)&&",RDRecording::Recording)+
+    "(START_TIME=\""+RDEscapeString(edit_starttime_edit->time().toString("hh:mm:ss"))+"\")&&"+
+    QString().sprintf("(CHANNEL=%d)",f0[2].toInt());
   switch((RDRecording::StartType)edit_starttype_group->selectedId()) {
       case RDRecording::HardStart:
 	break;
@@ -1152,11 +1146,10 @@ QString EditRecording::GetSourceName(int input)
     return QString("[unknown]");
   }
   QString input_name;
-  QString sql=QString().sprintf("select NAME from INPUTS where \
-                                 (STATION_NAME=\"%s\")&&\
-                                 (MATRIX=%d)&&(NUMBER=%d)",
-				(const char *)edit_deck->switchStation(),
-				edit_deck->switchMatrix(),input);
+  QString sql=QString("select NAME from INPUTS where ")+
+    "(STATION_NAME=\""+RDEscapeString(edit_deck->switchStation())+"\")&&"+
+    QString().sprintf("(MATRIX=%d)&&",edit_deck->switchMatrix())+
+    QString().sprintf("(NUMBER=%d)",input);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     input_name=q->value(0).toString();
@@ -1170,12 +1163,10 @@ int EditRecording::GetSource()
 {
   int source=-1;
 
-  QString sql=QString().sprintf("select NUMBER from INPUTS where \
-                               (STATION_NAME=\"%s\")&&(MATRIX=%d)&&\
-                               (NAME=\"%s\")",
-			       (const char *)edit_deck->switchStation(),
-				edit_deck->switchMatrix(),
-			       (const char *)edit_source_box->currentText());
+  QString sql=QString("select NUMBER from INPUTS where ")+
+    "(STATION_NAME=\""+RDEscapeString(edit_deck->switchStation())+"\")&&"+
+    QString().sprintf("(MATRIX=%d)&&",edit_deck->switchMatrix())+
+    "(NAME=\""+RDEscapeString(edit_source_box->currentText())+"\")";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     source=q->value(0).toInt();

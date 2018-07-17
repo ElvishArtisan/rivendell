@@ -2,7 +2,7 @@
 //
 // Monitor a Rivendell RDCatch Deck
 //
-//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,9 +22,11 @@
 #include <rdcut.h>
 #include <rdcart.h>
 #include <rddb.h>
-#include <deckmon.h>
-#include <colors.h>
-#include <globals.h>
+#include <rdescape_string.h>
+
+#include "colors.h"
+#include "deckmon.h"
+#include "globals.h"
 
 DeckMon::DeckMon(QString station,unsigned channel,QWidget *parent)
   : QFrame(parent)
@@ -64,13 +66,11 @@ DeckMon::DeckMon(QString station,unsigned channel,QWidget *parent)
   mon_station_label->setFont(label_font);
   if((mon_channel>0)&&(mon_channel<(MAX_DECKS+1))) {
     mon_station_label->
-      setText(QString().
-	      sprintf("%s : %uR",(const char *)mon_station,mon_channel));
+      setText(mon_station+QString().sprintf(" : %uR",mon_channel));
   }
   if((mon_channel>128)&&(mon_channel<(MAX_DECKS+129))) {
     mon_station_label->
-      setText(QString().
-	      sprintf("%s : %uP",(const char *)mon_station,mon_channel-128));
+      setText(mon_station+QString().sprintf(" : %uP",mon_channel-128));
   }
 
   //
@@ -315,11 +315,12 @@ void DeckMon::SetCutInfo(int id,const QString &cutname)
       mon_cut_label->setText(tr("[unknown cut]"));
     }
     else {
-      sql=QString().sprintf("select CART.TITLE,CUTS.DESCRIPTION from \
-                             CART left join CUTS \
-                             on CART.NUMBER=CUTS.CART_NUMBER \
-                             where CUTS.CUT_NAME=\"%s\"",
-			    (const char *)cutname);
+      sql=QString("select ")+
+	"CART.TITLE,"+        // 00
+	"CUTS.DESCRIPTION "+  // 01
+	"from CART left join CUTS "+
+	"on CART.NUMBER=CUTS.CART_NUMBER where "+
+	"CUTS.CUT_NAME=\""+RDEscapeString(cutname)+"\"";
       q1=new RDSqlQuery(sql);
       if(q1->first()) {
 	mon_cut_label->

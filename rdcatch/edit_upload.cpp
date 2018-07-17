@@ -493,13 +493,11 @@ void EditUpload::selectCartData()
 
   RDCutDialog *cut=new RDCutDialog(&edit_cutname,edit_filter);
   switch(cut->exec()) {
-      case 0:
-	edit_description_edit->setText(RDCutPath(edit_cutname));
-	str=QString(tr("Cut"));
-	edit_destination_edit->
-	  setText(QString().sprintf("%s %s",(const char *)str,
-				    (const char *)edit_cutname));
-	break;
+  case 0:
+    edit_description_edit->setText(RDCutPath(edit_cutname));
+    str=QString(tr("Cut"));
+    edit_destination_edit->setText(tr("Cut")+" "+edit_cutname);
+    break;
   }
   delete cut;
 }
@@ -647,12 +645,9 @@ bool EditUpload::CheckFormat()
 
   QString sql;
   RDSqlQuery *q;
-  sql=QString().sprintf("select STATION_NAME from ENCODERS \
-                         where (NAME=\"%s\")&&(STATION_NAME=\"%s\")",
-			(const char *)RDEscapeString(edit_settings.
-						     formatName()),
-			(const char *)RDEscapeString(edit_station_box->
-						     currentText()));
+  sql=QString("select STATION_NAME from ENCODERS where ")+
+    "(NAME=\""+RDEscapeString(edit_settings.formatName())+"\")&&"+
+    "(STATION_NAME=\""+RDEscapeString(edit_station_box->currentText())+"\")";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     res=true;
@@ -701,17 +696,13 @@ void EditUpload::Save()
 
 bool EditUpload::CheckEvent(bool include_myself)
 {
-  QString sql=
-    QString().sprintf("select ID from RECORDINGS \
-                       where (STATION_NAME=\"%s\")&&\
-                       (TYPE=%d)&&(START_TIME=\"%s\")&&\
-                       (URL=\"%s\")&&(CUT_NAME=\"%s\")",
-		      (const char *)edit_station_box->currentText(),
-		      RDRecording::Upload,
-		      (const char *)edit_starttime_edit->time().
-		      toString("hh:mm:ss"),
-		      (const char *)edit_url_edit->text(),
-		      (const char *)edit_destination_edit->text().right(10));
+  QString sql=QString("select ID from RECORDINGS where ")+
+    "(STATION_NAME=\""+RDEscapeString(edit_station_box->currentText())+"\")&&"+
+    QString().sprintf("(TYPE=%d)&&",RDRecording::Upload)+
+    "(START_TIME=\""+edit_starttime_edit->time().toString("hh:mm:ss")+"\")&&"+
+    "(URL=\""+RDEscapeString(edit_url_edit->text())+"\")&&"+
+    "(CUT_NAME=\""+RDEscapeString(edit_destination_edit->text().right(10))+
+    "\")";
   if(edit_sun_button->isChecked()) {
     sql+="&&(SUN=\"Y\")";
   }

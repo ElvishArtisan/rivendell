@@ -1261,5 +1261,13 @@ New</source>
         <source>Unknown command option</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>at</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Connection Error</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

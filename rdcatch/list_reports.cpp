@@ -2,7 +2,7 @@
 //
 // List and Generate RDCatch Reports
 //
-//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2006,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,15 +22,16 @@
 #include <qpushbutton.h>
 #include <qlabel.h>
 
-#include <rddb.h>
-#include <rdconf.h>
-#include <rdtextfile.h>
 #include <rdcart_search_text.h>
 #include <rdcart.h>
+#include <rdconf.h>
+#include <rddb.h>
+#include <rdescape_string.h>
 #include <rdrecording.h>
+#include <rdtextfile.h>
 
-#include <globals.h>
-#include <list_reports.h>
+#include "globals.h"
+#include "list_reports.h"
 
 ListReports::ListReports(bool today_only,bool active_only,int dow,
 			 QWidget *parent)
@@ -329,11 +330,12 @@ void ListReports::GenerateEventReport(QString *report)
     //
     switch((RDRecording::Type)q->value(0).toInt()) {
     case RDRecording::Recording:
-      sql=QString().sprintf("select SWITCH_STATION,SWITCH_MATRIX\
-                                 from DECKS where			\
-                                 (STATION_NAME=\"%s\")&&(CHANNEL=%d)",
-			    (const char *)q->value(13).toString(),
-			    q->value(14).toInt());
+      sql=QString("select ")+
+	"SWITCH_STATION,"+  // 00
+	"SWITCH_MATRIX "+   // 01
+	"from DECKS where "+
+	"(STATION_NAME=\""+RDEscapeString(q->value(13).toString())+"\")&&"+
+	QString().sprintf("(CHANNEL=%d)",q->value(14).toInt());
       q1=new RDSqlQuery(sql);
       if(q1->first()) {
 	*report+=QString().sprintf("%-20s ",
@@ -393,8 +395,7 @@ void ListReports::GenerateEventReport(QString *report)
     //
     // Description
     //
-    *report+=QString().sprintf("%s",
-			       (const char *)q->value(20).toString().left(29));
+    *report+=q->value(20).toString().left(29);
 
     //
     // End of Line
@@ -551,11 +552,10 @@ void ListReports::GenerateXloadReport(QString *report)
 QString ListReports::GetSourceName(const QString &station,int matrix,int input)
 {
   QString input_name;
-  QString sql=QString().sprintf("select NAME from INPUTS where \
-                                 (STATION_NAME=\"%s\")&&\
-                                 (MATRIX=%d)&&(NUMBER=%d)",
-				(const char *)station,
-				matrix,input);
+  QString sql=QString("select NAME from INPUTS where ")+
+    "(STATION_NAME=\""+RDEscapeString(station)+"\")&&"+
+    QString().sprintf("(MATRIX=%d)&&",matrix)+
+    QString().sprintf("(NUMBER=%d)",input);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     input_name=q->value(0).toString();
@@ -569,11 +569,10 @@ QString ListReports::GetDestinationName(const QString &station,int matrix,
 					int output)
 {
   QString output_name;
-  QString sql=QString().sprintf("select NAME from OUTPUTS where \
-                                 (STATION_NAME=\"%s\")&&\
-                                 (MATRIX=%d)&&(NUMBER=%d)",
-				(const char *)station,
-				matrix,output);
+  QString sql=QString("select NAME from OUTPUTS where ")+
+    "(STATION_NAME=\""+RDEscapeString(station)+"\")&&"+
+    QString().sprintf("(MATRIX=%d)&&",matrix)+
+    QString().sprintf("(NUMBER=%d)",output);
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     output_name=q->value(0).toString();

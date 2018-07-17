@@ -301,19 +301,14 @@ QSizePolicy EditPlayout::sizePolicy() const
 
 void EditPlayout::activateStationData(int id,bool use_temp)
 {
-  char station[65];
-  char gunk[3];
-  int chan;
-  
   if(edit_station_box->currentText().isEmpty()) {
     return;
   }
-  sscanf((const char *)edit_station_box->currentText(),"%s%s%d",
-	 station,gunk,&chan);
+  QStringList f0=f0.split(":",edit_station_box->currentText());
   if(edit_deck!=NULL) {
     delete edit_deck;
   }
-  edit_deck=new RDDeck(station,chan);
+  edit_deck=new RDDeck(f0[0],f0[2].toInt());
 }
 
 
@@ -388,13 +383,14 @@ void EditPlayout::PopulateDecks(QComboBox *box)
   int count=0;
 
   box->clear();
-  QString sql=QString("select STATION_NAME,CHANNEL from DECKS \
-where (CARD_NUMBER!=-1)&&(PORT_NUMBER!=-1)&&\
-(CHANNEL>128) order by STATION_NAME,CHANNEL");
+  QString sql=QString("select STATION_NAME,CHANNEL from DECKS where ")+
+    "(CARD_NUMBER!=-1)&&"+
+    "(PORT_NUMBER!=-1)&&"+
+    "(CHANNEL>128) order by STATION_NAME,CHANNEL";
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
-    box->insertItem(QString().sprintf("%s : %dP",
-	      (const char *)q->value(0).toString(),q->value(1).toInt()-128));
+    box->insertItem(q->value(0).toString()+
+		    QString().sprintf(" : %dP",q->value(1).toInt()-128));
     if((q->value(0).toString()==edit_recording->station())&&
        (q->value(1).toUInt()==edit_recording->channel())) {
       box->setCurrentItem(count);
@@ -414,16 +410,11 @@ where (CARD_NUMBER!=-1)&&(PORT_NUMBER!=-1)&&\
 
 void EditPlayout::Save()
 {
-  char station[65];
-  char gunk[3];
-  int chan;
-
-  sscanf((const char *)edit_station_box->currentText(),"%s%s%d",
-	 station,gunk,&chan);
+  QStringList f0=f0.split(":",edit_station_box->currentText());
   edit_recording->setIsActive(edit_active_button->isChecked());
-  edit_recording->setStation(station);
+  edit_recording->setStation(f0[0]);
   edit_recording->setType(RDRecording::Playout);
-  edit_recording->setChannel(chan+128);
+  edit_recording->setChannel(f0[2].toInt()+128);
   if(edit_starttime_edit->time().isNull()) {
     edit_recording->setStartTime(edit_starttime_edit->time().addMSecs(1));
   }

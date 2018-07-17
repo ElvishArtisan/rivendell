@@ -35,6 +35,7 @@
 #include <rdcut_path.h>
 #include <rddb.h>
 #include <rddeck.h>
+#include <rdescape_string.h>
 #include <rdtextvalidator.h>
 #include <rdurl.h>
 
@@ -474,17 +475,12 @@ void EditDownload::urlChangedData(const QString &str)
 
 void EditDownload::selectCartData()
 {
-  QString str;
-
   RDCutDialog *cut=
     new RDCutDialog(&edit_cutname,edit_filter,NULL,NULL,false,true);
   switch(cut->exec()) {
       case 0:
 	edit_description_edit->setText(RDCutPath(edit_cutname));
-	str=QString(tr("Cut"));
-	edit_destination_edit->
-	  setText(QString().sprintf("%s %s",(const char *)str,
-				    (const char *)edit_cutname));
+	edit_destination_edit->setText(tr("Cut")+" "+edit_cutname);
 	break;
   }
   delete cut;
@@ -626,17 +622,13 @@ void EditDownload::Save()
 
 bool EditDownload::CheckEvent(bool include_myself)
 {
-  QString sql=
-    QString().sprintf("select ID from RECORDINGS \
-                       where (STATION_NAME=\"%s\")&&\
-                       (TYPE=%d)&&(START_TIME=\"%s\")&&\
-                       (URL=\"%s\")&&(CUT_NAME=\"%s\")",
-		      (const char *)edit_station_box->currentText(),
-		      RDRecording::Download,
-		      (const char *)edit_starttime_edit->time().
-		      toString("hh:mm:ss"),
-		      (const char *)edit_url_edit->text(),
-		      (const char *)edit_destination_edit->text().right(10));
+  QString sql=QString("select ID from RECORDINGS where ")+
+    "(STATION_NAME=\""+RDEscapeString(edit_station_box->currentText())+"\")&&"+
+    QString().sprintf("(TYPE=%d)&&",RDRecording::Download)+
+    "(START_TIME=\""+RDEscapeString(edit_starttime_edit->time().
+				    toString("hh:mm:ss"))+"\")&&"+
+    "(URL=\""+RDEscapeString(edit_url_edit->text())+"\")&&"+
+    "(CUT_NAME=\""+RDEscapeString(edit_destination_edit->text().right(10))+"\")";
   if(edit_sun_button->isChecked()) {
     sql+="&&(SUN=\"Y\")";
   }

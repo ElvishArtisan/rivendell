@@ -33,6 +33,7 @@
 #include <rdcart_dialog.h>
 #include <rdcut_path.h>
 #include <rddb.h>
+#include <rdescape_string.h>
 #include <rdtextvalidator.h>
 
 #include "edit_cartevent.h"
@@ -423,15 +424,12 @@ void EditCartEvent::Save()
 
 bool EditCartEvent::CheckEvent(bool include_myself)
 {
-  QString sql=
-    QString().sprintf("select ID from RECORDINGS \
-                       where (STATION_NAME=\"%s\")&&\
-                       (TYPE=%d)&&(START_TIME=\"%s\")&&(MACRO_CART=%u)",
-		      (const char *)edit_station_box->currentText(),
-		      RDRecording::MacroEvent,
-		      (const char *)edit_starttime_edit->time().
-		      toString("hh:mm:ss"),edit_destination_edit->text().
-		      toUInt());
+  QString sql=QString("select ID from RECORDINGS where ")+
+    "(STATION_NAME=\""+RDEscapeString(edit_station_box->currentText())+"\")&&"+
+    QString().sprintf("(TYPE=%d)&&",RDRecording::MacroEvent)+
+    "START_TIME=\""+RDEscapeString(edit_starttime_edit->time().
+				   toString("hh:mm:ss"))+"\")&&"+
+    QString().sprintf("(MACRO_CART=%u)",edit_destination_edit->text().toUInt());
   if(edit_sun_button->isChecked()) {
     sql+="&&(SUN=\"Y\")";
   }
