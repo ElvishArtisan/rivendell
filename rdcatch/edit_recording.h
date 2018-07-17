@@ -68,6 +68,7 @@ class EditRecording : public QDialog
   bool CheckEvent(bool include_myself);
   QString GetSourceName(int input);
   int GetSource();
+  QString GetLocation(int *chan) const;
   RDDeck *edit_deck;
   RDRecording *edit_recording;
   QCheckBox *edit_active_button;

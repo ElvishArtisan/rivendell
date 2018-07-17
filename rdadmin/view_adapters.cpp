@@ -124,11 +124,11 @@ ViewAdapters::ViewAdapters(RDStation *rdstation,QWidget *parent)
     for(int i=0;i<RD_MAX_CARDS;i++) {
       if(rdstation->cardName(i).isEmpty()) {
 	text+=QString("  ")+tr("Card")+QString().sprintf(" %d: ",i)+
-	  tr("Not present");
+	  tr("Not present")+"\n";
       }
       else {
 	text+=QString("  ")+tr("Card")+QString().sprintf(" %d: ",i)+
-	  rdstation->cardName(i);
+	  rdstation->cardName(i)+"\n";
 	switch(rdstation->cardDriver(i)) {
 	case RDStation::Hpi:
 	  text+=tr("      Driver: AudioScience HPI\n");
@@ -151,6 +151,7 @@ ViewAdapters::ViewAdapters(RDStation *rdstation,QWidget *parent)
 	text+=QString("      ")+tr("Outputs")+
 	  QString().sprintf(" %d\n",rdstation->cardOutputs(i));
       }
+      text+="\n";
     }
   }
   else {

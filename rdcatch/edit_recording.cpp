@@ -485,43 +485,43 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   edit_description_edit->setText(edit_recording->description());
   edit_starttype_group->setButton((int)edit_recording->startType());
   switch((RDRecording::StartType)edit_starttype_group->selectedId()) {
-      case RDRecording::HardStart:
-	edit_starttime_edit->setTime(edit_recording->startTime());
-	break;
+  case RDRecording::HardStart:
+    edit_starttime_edit->setTime(edit_recording->startTime());
+    break;
 
-      case RDRecording::GpiStart:
-	edit_start_startwindow_edit->setTime(edit_recording->startTime());
-	edit_start_endwindow_edit->
-	  setTime(edit_start_startwindow_edit->time().
-		  addMSecs(edit_recording->startLength()));
-	edit_startmatrix_spin->setValue(edit_recording->startMatrix());
-	edit_startline_spin->setValue(edit_recording->startLine());
-	edit_startoffset_edit->
-	  setTime(QTime().addMSecs(edit_recording->startOffset()));
-	edit_multirec_box->
-	  setChecked(edit_recording->allowMultipleRecordings());
-	break;
+  case RDRecording::GpiStart:
+    edit_start_startwindow_edit->setTime(edit_recording->startTime());
+    edit_start_endwindow_edit->
+      setTime(edit_start_startwindow_edit->time().
+	      addMSecs(edit_recording->startLength()));
+    edit_startmatrix_spin->setValue(edit_recording->startMatrix());
+    edit_startline_spin->setValue(edit_recording->startLine());
+    edit_startoffset_edit->
+      setTime(QTime().addMSecs(edit_recording->startOffset()));
+    edit_multirec_box->
+      setChecked(edit_recording->allowMultipleRecordings());
+    break;
   }
   startTypeClickedData(edit_starttype_group->selectedId());
   edit_endtype_group->setButton((int)edit_recording->endType());
   switch((RDRecording::EndType)edit_endtype_group->selectedId()) {
-      case RDRecording::LengthEnd:
-	edit_endlength_edit->
-	  setTime(QTime().addMSecs(edit_recording->length()));
-	break;
+  case RDRecording::LengthEnd:
+    edit_endlength_edit->
+      setTime(QTime().addMSecs(edit_recording->length()));
+    break;
 
-      case RDRecording::HardEnd:
-	edit_endtime_edit->setTime(edit_recording->endTime());
-	break;
+  case RDRecording::HardEnd:
+    edit_endtime_edit->setTime(edit_recording->endTime());
+    break;
 
-      case RDRecording::GpiEnd:
-	edit_end_startwindow_edit->setTime(edit_recording->endTime());
-	edit_end_endwindow_edit->
-	  setTime(edit_end_startwindow_edit->time().
-		  addMSecs(edit_recording->endLength()));
-	edit_endmatrix_spin->setValue(edit_recording->endMatrix());
-	edit_endline_spin->setValue(edit_recording->endLine());
-	break;
+  case RDRecording::GpiEnd:
+    edit_end_startwindow_edit->setTime(edit_recording->endTime());
+    edit_end_endwindow_edit->
+      setTime(edit_end_startwindow_edit->time().
+	      addMSecs(edit_recording->endLength()));
+    edit_endmatrix_spin->setValue(edit_recording->endMatrix());
+    edit_endline_spin->setValue(edit_recording->endLine());
+    break;
   }
   edit_maxlength_edit->
     setTime(QTime().addMSecs(edit_recording->maxGpiRecordingLength()));
@@ -834,11 +834,12 @@ void EditRecording::PopulateDecks(QComboBox *box)
 
 void EditRecording::Save()
 {
-  QStringList f0=f0.split(":",edit_station_box->currentText());
+  int chan=-1;
+  QString station=GetLocation(&chan);
   edit_recording->setIsActive(edit_active_button->isChecked());
-  edit_recording->setStation(f0[0]);
+  edit_recording->setStation(station);
   edit_recording->setType(RDRecording::Recording);
-  edit_recording->setChannel(f0[2].toInt());
+  edit_recording->setChannel(chan);
   edit_recording->setDescription(edit_description_edit->text());
   edit_recording->setCutName(edit_cutname);
   edit_recording->setMon(edit_mon_button->isChecked());
@@ -1173,4 +1174,13 @@ int EditRecording::GetSource()
   }
   delete q;
   return source;
+}
+
+
+QString EditRecording::GetLocation(int *chan) const
+{
+  QStringList f0=f0.split(":",edit_station_box->currentText());
+  *chan=
+    f0[1].stripWhiteSpace().left(f0[1].stripWhiteSpace().length()-1).toInt();
+  return f0[0].stripWhiteSpace();
 }

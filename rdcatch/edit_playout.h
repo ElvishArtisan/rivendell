@@ -59,6 +59,7 @@ class EditPlayout : public QDialog
  private:
   void PopulateDecks(QComboBox *box);
   void Save();
+  QString GetLocation(int *chan) const;
   RDDeck *edit_deck;
   RDRecording *edit_recording;
   QCheckBox *edit_active_button;

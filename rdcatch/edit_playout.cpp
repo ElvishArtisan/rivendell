@@ -410,11 +410,12 @@ void EditPlayout::PopulateDecks(QComboBox *box)
 
 void EditPlayout::Save()
 {
-  QStringList f0=f0.split(":",edit_station_box->currentText());
+  int chan=-1;
+  QString station=GetLocation(&chan);
   edit_recording->setIsActive(edit_active_button->isChecked());
-  edit_recording->setStation(f0[0]);
+  edit_recording->setStation(station);
   edit_recording->setType(RDRecording::Playout);
-  edit_recording->setChannel(f0[2].toInt()+128);
+  edit_recording->setChannel(chan+128);
   if(edit_starttime_edit->time().isNull()) {
     edit_recording->setStartTime(edit_starttime_edit->time().addMSecs(1));
   }
@@ -431,4 +432,13 @@ void EditPlayout::Save()
   edit_recording->setSat(edit_sat_button->isChecked());
   edit_recording->setSun(edit_sun_button->isChecked());
   edit_recording->setOneShot(edit_oneshot_box->isChecked());
+}
+
+
+QString EditPlayout::GetLocation(int *chan) const
+{
+  QStringList f0=f0.split(":",edit_station_box->currentText());
+  *chan=
+    f0[1].stripWhiteSpace().left(f0[1].stripWhiteSpace().length()-1).toInt();
+  return f0[0].stripWhiteSpace();
 }
