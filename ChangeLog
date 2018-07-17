@@ -17136,3 +17136,6 @@
 2018-07-17 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rddgmgr(8) that would cause an abort if a '_STACK'
 	table was found missing when updating to schema 293.
+2018-07-17 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored rdcatch(1) to use a single SQL field list for building
+	the event UI.

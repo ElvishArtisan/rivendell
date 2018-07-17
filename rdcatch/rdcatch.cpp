@@ -45,7 +45,6 @@
 #include <rdconf.h>
 #include <rdcut.h>
 #include <rdcut_path.h>
-#include <rddb.h>
 #include <rddeck.h>
 #include <rdedit_audio.h>
 #include <rdescape_string.h>
@@ -1671,43 +1670,35 @@ void MainWidget::UpdateScroll()
 }
 
 
-void MainWidget::RefreshList()
+QString MainWidget::RefreshSql() const
 {
-  QString sql;
-  RDSqlQuery *q;
-  RDSqlQuery *q1;
-  RDListViewItem *l;
-  RDCut *cut;
-  QString str;
-
-  catch_recordings_list->clear();
-  sql=QString("select ")+
-    "RECORDINGS.DESCRIPTION,"+       // 00
-    "RECORDINGS.IS_ACTIVE,"+         // 01
-    "RECORDINGS.STATION_NAME,"+      // 02
-    "RECORDINGS.START_TIME,"+        // 03
-    "RECORDINGS.LENGTH,"+            // 04
-    "RECORDINGS.CUT_NAME,"+          // 05
-    "RECORDINGS.SUN,"+               // 06
-    "RECORDINGS.MON,"+               // 07
-    "RECORDINGS.TUE,"+               // 08
-    "RECORDINGS.WED,"+               // 09
-    "RECORDINGS.THU,"+               // 10
-    "RECORDINGS.FRI,"+               // 11
-    "RECORDINGS.SAT,"+               // 12
-    "RECORDINGS.SWITCH_INPUT,"+      // 13
-    "RECORDINGS.START_GPI,"+         // 14
-    "RECORDINGS.END_GPI,"+           // 15
-    "RECORDINGS.TRIM_THRESHOLD,"+    // 16
-    "RECORDINGS.STARTDATE_OFFSET,"+  // 17
-    "RECORDINGS.ENDDATE_OFFSET,"+    // 18
-    "RECORDINGS.FORMAT,"+            // 19
-    "RECORDINGS.CHANNELS,"+          // 20
-    "RECORDINGS.SAMPRATE,"+          // 21
-    "RECORDINGS.BITRATE,"+           // 22
-    "RECORDINGS.CHANNEL,"+           // 23
-    "RECORDINGS.MACRO_CART,"+        // 24
-    "RECORDINGS.ID,"+                // 25
+  QString sql=QString("select ")+
+    "RECORDINGS.ID,"+                // 00
+    "RECORDINGS.DESCRIPTION,"+       // 01
+    "RECORDINGS.IS_ACTIVE,"+         // 02
+    "RECORDINGS.STATION_NAME,"+      // 03
+    "RECORDINGS.START_TIME,"+        // 04
+    "RECORDINGS.LENGTH,"+            // 05
+    "RECORDINGS.CUT_NAME,"+          // 06
+    "RECORDINGS.SUN,"+               // 07
+    "RECORDINGS.MON,"+               // 08
+    "RECORDINGS.TUE,"+               // 09
+    "RECORDINGS.WED,"+               // 10
+    "RECORDINGS.THU,"+               // 11
+    "RECORDINGS.FRI,"+               // 12
+    "RECORDINGS.SAT,"+               // 13
+    "RECORDINGS.SWITCH_INPUT,"+      // 14
+    "RECORDINGS.START_GPI,"+         // 15
+    "RECORDINGS.END_GPI,"+           // 16
+    "RECORDINGS.TRIM_THRESHOLD,"+    // 17
+    "RECORDINGS.STARTDATE_OFFSET,"+  // 18
+    "RECORDINGS.ENDDATE_OFFSET,"+    // 19
+    "RECORDINGS.FORMAT,"+            // 20
+    "RECORDINGS.CHANNELS,"+          // 21
+    "RECORDINGS.SAMPRATE,"+          // 22
+    "RECORDINGS.BITRATE,"+           // 23
+    "RECORDINGS.CHANNEL,"+           // 24
+    "RECORDINGS.MACRO_CART,"+        // 25
     "RECORDINGS.TYPE,"+              // 26
     "RECORDINGS.SWITCH_OUTPUT,"+     // 27
     "RECORDINGS.EXIT_CODE,"+         // 28
@@ -1730,251 +1721,273 @@ void MainWidget::RefreshList()
     "EXIT_TEXT "+                    // 45
     "from RECORDINGS left join CUTS "+
     "on (RECORDINGS.CUT_NAME=CUTS.CUT_NAME) left join FEEDS "+
-    "on (RECORDINGS.FEED_ID=FEEDS.ID)";
+    "on (RECORDINGS.FEED_ID=FEEDS.ID) ";
+
+  return sql;
+}
+
+
+void MainWidget::RefreshRow(RDSqlQuery *q,RDListViewItem *item)
+{
+  RDCut *cut=NULL;
+  QString sql;
+  RDSqlQuery *q1;
+
+  item->setBackgroundColor(catch_recordings_list->palette().color(QPalette::Active,QColorGroup::Base));
+  if(RDBool(q->value(2).toString())) {
+    item->setTextColor(QColor(EVENT_ACTIVE_TEXT_COLOR));
+  }
+  else {
+    item->setTextColor(QColor(EVENT_INACTIVE_TEXT_COLOR));
+  }
+  item->setText(1,q->value(1).toString());     // Description
+  if(RDBool(q->value(7).toString())) {       // Sun
+    item->setText(7,tr("Su"));
+  }
+  if(RDBool(q->value(8).toString())) {       // Mon
+    item->setText(8,tr("Mo"));
+  }
+  if(RDBool(q->value(9).toString())) {       // Tue
+    item->setText(9,tr("Tu"));
+  }
+  if(RDBool(q->value(10).toString())) {       // Wed
+    item->setText(10,tr("We"));
+  }
+  if(RDBool(q->value(11).toString())) {      // Thu
+    item->setText(11,tr("Th"));
+  }
+  if(RDBool(q->value(12).toString())) {      // Fri
+    item->setText(12,tr("Fr"));
+  }
+  if(RDBool(q->value(13).toString())) {      // Sat
+    item->setText(13,tr("Sa"));
+  }
+  switch((RDRecording::Type)q->value(26).toInt()) {
+  case RDRecording::Recording:
+  case RDRecording::Playout:
+  case RDRecording::Download:
+  case RDRecording::Upload:
+    item->setText(15,q->value(40).toString()+" - "+
+	       q->value(41).toDateTime().
+	       toString("M/dd/yyyy hh:mm:ss"));
+    break;
+    
+  default:
+    item->setText(15,"");
+    break;
+  }
+  item->setText(16,q->value(29).toString());   // One Shot
+  item->setText(17,QString().sprintf("%d ",  // Trim Threshold
+				     -q->value(17).toInt())+tr("dB"));
+  item->setText(18,q->value(18).toString());   // Startdate Offset
+  item->setText(19,q->value(19).toString());   // Enddate Offset
+  item->setText(24,q->value(3).toString());    // Station
+  item->setText(25,q->value(24).toString());   // Deck
+  item->setText(26,q->value(6).toString());    // Cut Name
+  if(q->value(24).toInt()>=0) {
+    item->setText(27,q->value(25).toString()); // Macro Cart
+  }
+  else {
+    item->setText(27,"");
+  }
+  item->setText(28,q->value(0).toString());   // Id
+  item->setText(29,q->value(26).toString());   // Type
+  item->setText(32,QString().sprintf("%u",RDDeck::Idle));
+  item->setPixmap(0,*(catch_type_maps[q->value(26).toInt()]));
+  switch((RDRecording::Type)q->value(26).toInt()) {
+  case RDRecording::Recording:
+    item->setText(2,q->value(3).toString()+
+	       QString().sprintf(" : %dR",q->value(24).toInt()));
+    switch((RDRecording::StartType)q->value(30).toUInt()) {
+    case RDRecording::HardStart:
+      item->setText(3,tr("Hard")+": "+q->value(4).toTime().toString("hh:mm:ss"));
+      break;
+
+    case RDRecording::GpiStart:
+      item->setText(3,tr("Gpi")+": "+q->value(4).toTime().toString("hh:mm:ss")+
+		 ","+q->value(4).toTime().addMSecs(q->value(31).toInt()).
+		 toString("hh:mm:ss")+","+
+		 QString().sprintf("%d:%d,",q->value(32).toInt(),q->value(33).toInt())+
+		 QTime().addMSecs(q->value(34).toUInt()).toString("mm:ss"));
+      break;
+    }
+    switch((RDRecording::EndType)q->value(35).toUInt()) {
+    case RDRecording::LengthEnd:
+      item->setText(4,tr("Len")+": "+
+		 RDGetTimeLength(q->value(5).toUInt(),false,false));
+      break;
+
+    case RDRecording::HardEnd:
+      item->setText(4,tr("Hard")+": "+
+		 q->value(36).toTime().toString("hh:mm:ss"));
+      break;
+
+    case RDRecording::GpiEnd:
+      item->setText(4,tr("Gpi")+": "+q->value(36).toTime().toString("hh:mm:ss")+
+		 ","+q->value(36).toTime().addMSecs(q->value(37).toInt()).
+		 toString("hh:mm:ss")+
+		 QString().sprintf(",%d:%d",q->value(38).toInt(),
+				   q->value(39).toInt()));
+      break;
+    }
+    item->setText(6,tr("Cut")+" "+q->value(6).toString());
+    sql=QString("select ")+
+      "SWITCH_STATION,"+  // 00
+      "SWITCH_MATRIX "+   // 01
+      "from DECKS where "+
+      "(STATION_NAME=\""+RDEscapeString(q->value(3).toString())+"\")&&"+
+      QString().sprintf("(CHANNEL=%d)",q->value(24).toInt());
+    q1=new RDSqlQuery(sql);
+    if(q1->first()) {  // Source
+      item->setText(5,GetSourceName(q1->value(0).toString(),  
+				 q1->value(1).toInt(),
+				 q->value(14).toInt()));
+    }
+    delete q1;
+    switch((RDSettings::Format)q->value(20).toInt()) {    // Format
+    case RDSettings::Pcm16:
+      item->setText(20,tr("PCM16"));
+      break;
+
+    case RDSettings::Pcm24:
+      item->setText(20,tr("PCM24"));
+      break;
+
+    case RDSettings::MpegL1:
+      item->setText(20,tr("MPEG Layer 1"));
+      break;
+
+    case RDSettings::MpegL2:
+    case RDSettings::MpegL2Wav:
+      item->setText(20,tr("MPEG Layer 2"));
+      break;
+
+    case RDSettings::MpegL3:
+      item->setText(20,tr("MPEG Layer 3"));
+      break;
+
+    case RDSettings::Flac:
+      item->setText(20,tr("FLAC"));
+      break;
+
+    case RDSettings::OggVorbis:
+      item->setText(20,tr("OggVorbis"));
+      break;
+    }
+    item->setText(21,q->value(21).toString());   // Channels
+    item->setText(22,q->value(22).toString());   // Sample Rate
+    item->setText(23,q->value(23).toString());   // Bit Rate
+    break;
+
+  case RDRecording::Playout:
+    item->setText(2,q->value(3).toString()+QString().sprintf(" : %dP",
+							  q->value(24).toInt()-128));
+    item->setText(3,tr("Hard")+": "+q->value(4).toTime().toString("hh:mm:ss"));
+    cut=new RDCut(q->value(6).toString());
+    if(cut->exists()) {
+      item->setText(4,tr("Len")+": "+RDGetTimeLength(cut->length(),false,false));
+    }
+    delete cut;
+    item->setText(5,tr("Cut")+" "+q->value(6).toString());
+    break;
+
+  case RDRecording::MacroEvent:
+    item->setText(2,q->value(3).toString());
+    item->setText(3,tr("Hard")+": "+q->value(4).toTime().
+	       toString(QString().sprintf("hh:mm:ss")));
+    item->setText(5,tr("Cart")+QString().sprintf(" %06d",q->value(25).toInt()));
+    break;
+
+  case RDRecording::SwitchEvent:
+    item->setText(2,q->value(3).toString());
+    item->setText(3,tr("Hard")+": "+q->value(4).toTime().toString("hh:mm:ss"));
+    item->setText(5,GetSourceName(q->value(3).toString(),  // Source
+			       q->value(24).toInt(),
+			       q->value(14).toInt()));
+    item->setText(6,GetDestinationName(q->value(3).toString(),  // Dest
+				    q->value(24).toInt(),
+				    q->value(27).toInt()));
+    break;
+
+  case RDRecording::Download:
+    item->setText(2,q->value(3).toString());
+    item->setText(3,tr("Hard")+": "+q->value(4).toTime().toString("hh:mm:ss"));
+    item->setText(5,q->value(42).toString());
+    item->setText(6,tr("Cut")+" "+q->value(6).toString());
+    break;
+
+  case RDRecording::Upload:
+    item->setText(2,q->value(3).toString());
+    item->setText(3,tr("Hard")+": "+q->value(4).toTime().toString("hh:mm:ss"));
+    item->setText(5,tr("Cut")+" "+q->value(6).toString());
+    item->setText(6,q->value(42).toString());
+    switch((RDSettings::Format)q->value(20).toInt()) {    // Format
+    case RDSettings::Pcm16:
+      item->setText(20,tr("PCM16"));
+      break;
+
+    case RDSettings::Pcm24:
+      item->setText(20,tr("PCM24"));
+      break;
+
+    case RDSettings::MpegL1:
+      item->setText(20,tr("MPEG Layer 1"));
+      break;
+
+    case RDSettings::MpegL2:
+    case RDSettings::MpegL2Wav:
+      item->setText(20,tr("MPEG Layer 2"));
+      break;
+
+    case RDSettings::MpegL3:
+      item->setText(20,tr("MPEG Layer 3"));
+      break;
+
+    case RDSettings::Flac:
+      item->setText(20,tr("FLAC"));
+      break;
+
+    case RDSettings::OggVorbis:
+      item->setText(20,tr("OggVorbis"));
+      break;
+    }
+    if(q->value(44).toString().isEmpty()) {
+      item->setText(14,tr("[none]"));
+    }
+    else {
+      item->setText(14,q->value(44).toString());    // Feed Key Name
+    }
+    item->setText(21,q->value(21).toString());   // Channels
+    item->setText(22,q->value(22).toString());   // Sample Rate
+    if(q->value(23).toInt()==0) {     // Bit Rate/Quality
+      item->setText(23,QString().sprintf("Qual %d",q->value(43).toInt()));
+    }
+    else {
+      item->setText(23,QString().sprintf("%d kb/sec",
+				      q->value(23).toInt()/1000));
+    }
+    break;
+
+  case RDRecording::LastType:
+    break;
+  }
+  DisplayExitCode(item,(RDRecording::ExitCode)q->value(28).toInt(),
+		  q->value(45).toString());
+}
+
+
+void MainWidget::RefreshList()
+{
+  QString sql;
+  RDSqlQuery *q;
+  RDListViewItem *l;
+
+  catch_recordings_list->clear();
+  sql=RefreshSql();
   q=new RDSqlQuery(sql);
   while(q->next()) {
     l=new RDListViewItem(catch_recordings_list);
-    l->setBackgroundColor(catch_recordings_list->palette().color(QPalette::Active,QColorGroup::Base));
-    if(RDBool(q->value(1).toString())) {
-      l->setTextColor(QColor(EVENT_ACTIVE_TEXT_COLOR));
-    }
-    else {
-      l->setTextColor(QColor(EVENT_INACTIVE_TEXT_COLOR));
-    }
-    l->setText(1,q->value(0).toString());     // Description
-    if(RDBool(q->value(6).toString())) {       // Sun
-      l->setText(7,tr("Su"));
-    }
-    if(RDBool(q->value(7).toString())) {       // Mon
-      l->setText(8,tr("Mo"));
-    }
-    if(RDBool(q->value(8).toString())) {       // Tue
-      l->setText(9,tr("Tu"));
-    }
-    if(RDBool(q->value(9).toString())) {       // Wed
-      l->setText(10,tr("We"));
-    }
-    if(RDBool(q->value(10).toString())) {      // Thu
-      l->setText(11,tr("Th"));
-    }
-    if(RDBool(q->value(11).toString())) {      // Fri
-      l->setText(12,tr("Fr"));
-    }
-    if(RDBool(q->value(12).toString())) {      // Sat
-      l->setText(13,tr("Sa"));
-    }
-    switch((RDRecording::Type)q->value(26).toInt()) {
-	case RDRecording::Recording:
-	case RDRecording::Playout:
-	case RDRecording::Download:
-	case RDRecording::Upload:
-	  l->setText(15,q->value(40).toString()+" - "+
-		     q->value(41).toDateTime().
-		     toString("M/dd/yyyy hh:mm:ss"));
-	  break;
- 
-	default:
-	  l->setText(15,"");
-	  break;
-    }
-    l->setText(16,q->value(29).toString());   // One Shot
-    str=QString(tr("dB"));
-    l->setText(17,QString().sprintf("%d ",  // Trim Threshold
-				    -q->value(16).toInt())+tr("dB"));
-    l->setText(18,q->value(17).toString());   // Startdate Offset
-    l->setText(19,q->value(18).toString());   // Enddate Offset
-    l->setText(24,q->value(2).toString());    // Station
-    l->setText(25,q->value(23).toString());   // Deck
-    l->setText(26,q->value(5).toString());    // Cut Name
-    if(q->value(24).toInt()>=0) {
-      l->setText(27,q->value(24).toString()); // Macro Cart
-    }
-    else {
-      l->setText(27,"");
-    }
-    l->setText(28,q->value(25).toString());   // Id
-    l->setText(29,q->value(26).toString());   // Type
-    l->setText(32,QString().sprintf("%u",RDDeck::Idle));
-    l->setPixmap(0,*(catch_type_maps[q->value(26).toInt()]));
-    switch((RDRecording::Type)q->value(26).toInt()) {
-    case RDRecording::Recording:
-      l->setText(2,q->value(2).toString()+
-		 QString().sprintf(" : %dR",q->value(23).toInt()));
-      switch((RDRecording::StartType)q->value(30).toUInt()) {
-      case RDRecording::HardStart:
-	l->setText(3,tr("Hard")+": "+q->value(3).toTime().toString("hh:mm:ss"));
-	break;
-
-      case RDRecording::GpiStart:
-	l->setText(3,tr("Gpi")+": "+q->value(3).toTime().toString("hh:mm:ss")+
-		   ","+q->value(3).toTime().addMSecs(q->value(31).toInt()).
-		   toString("hh:mm:ss")+","+
-		   QString().sprintf("%d:%d,",q->value(32).toInt(),q->value(33).toInt())+
-		   QTime().addMSecs(q->value(34).toUInt()).toString("mm:ss"));
-	break;
-      }
-      switch((RDRecording::EndType)q->value(35).toUInt()) {
-      case RDRecording::LengthEnd:
-	l->setText(4,tr("Len")+": "+
-		   RDGetTimeLength(q->value(4).toUInt(),false,false));
-	break;
-
-      case RDRecording::HardEnd:
-	l->setText(4,tr("Hard")+": "+
-		   q->value(36).toTime().toString("hh:mm:ss"));
-	break;
-
-      case RDRecording::GpiEnd:
-	l->setText(4,tr("Gpi")+": "+q->value(36).toTime().toString("hh:mm:ss")+
-		   ","+q->value(36).toTime().addMSecs(q->value(37).toInt()).
-		   toString("hh:mm:ss")+
-		   QString().sprintf(",%d:%d",q->value(38).toInt(),
-				     q->value(39).toInt()));
-	break;
-      }
-      l->setText(6,tr("Cut")+" "+q->value(5).toString());
-      sql=QString("select ")+
-	"SWITCH_STATION,"+  // 00
-	"SWITCH_MATRIX "+   // 01
-	"from DECKS where "+
-	"(STATION_NAME=\""+RDEscapeString(q->value(2).toString())+"\")&&"+
-	QString().sprintf("(CHANNEL=%d)",q->value(23).toInt());
-      q1=new RDSqlQuery(sql);
-      if(q1->first()) {  // Source
-	l->setText(5,GetSourceName(q1->value(0).toString(),  
-				   q1->value(1).toInt(),
-				   q->value(13).toInt()));
-      }
-      delete q1;
-      switch((RDSettings::Format)q->value(19).toInt()) {    // Format
-      case RDSettings::Pcm16:
-	l->setText(20,tr("PCM16"));
-	break;
-
-      case RDSettings::Pcm24:
-	l->setText(20,tr("PCM24"));
-	break;
-
-      case RDSettings::MpegL1:
-	l->setText(20,tr("MPEG Layer 1"));
-	break;
-
-      case RDSettings::MpegL2:
-      case RDSettings::MpegL2Wav:
-	l->setText(20,tr("MPEG Layer 2"));
-	break;
-
-      case RDSettings::MpegL3:
-	l->setText(20,tr("MPEG Layer 3"));
-	break;
-
-      case RDSettings::Flac:
-	l->setText(20,tr("FLAC"));
-	break;
-
-      case RDSettings::OggVorbis:
-	l->setText(20,tr("OggVorbis"));
-	break;
-      }
-      l->setText(21,q->value(20).toString());   // Channels
-      l->setText(22,q->value(21).toString());   // Sample Rate
-      l->setText(23,q->value(22).toString());   // Bit Rate
-      break;
-
-    case RDRecording::Playout:
-      l->setText(2,q->value(2).toString()+QString().sprintf(" : %dP",
-				     q->value(23).toInt()-128));
-      l->setText(3,tr("Hard")+": "+q->value(3).toTime().toString("hh:mm:ss"));
-      cut=new RDCut(q->value(5).toString());
-      if(cut->exists()) {
-	l->setText(4,tr("Len")+": "+RDGetTimeLength(cut->length(),false,false));
-      }
-      delete cut;
-      l->setText(5,tr("Cut")+" "+q->value(5).toString());
-      break;
-
-    case RDRecording::MacroEvent:
-      l->setText(2,q->value(2).toString());
-      l->setText(3,tr("Hard")+": "+q->value(3).toTime().
-		 toString(QString().sprintf("hh:mm:ss")));
-      l->setText(5,tr("Cart")+QString().sprintf(" %06d",q->value(24).toInt()));
-      break;
-
-    case RDRecording::SwitchEvent:
-      l->setText(2,q->value(2).toString());
-      l->setText(3,tr("Hard")+": "+q->value(3).toTime().toString("hh:mm:ss"));
-      l->setText(5,GetSourceName(q->value(2).toString(),  // Source
-				 q->value(23).toInt(),
-				 q->value(13).toInt()));
-      l->setText(6,GetDestinationName(q->value(2).toString(),  // Dest
-				      q->value(23).toInt(),
-				      q->value(27).toInt()));
-      break;
-
-    case RDRecording::Download:
-      l->setText(2,q->value(2).toString());
-      l->setText(3,tr("Hard")+": "+q->value(3).toTime().toString("hh:mm:ss"));
-      l->setText(5,q->value(42).toString());
-      l->setText(6,tr("Cut")+" "+q->value(5).toString());
-      break;
-
-    case RDRecording::Upload:
-      l->setText(2,q->value(2).toString());
-      l->setText(3,tr("Hard")+": "+q->value(3).toTime().toString("hh:mm:ss"));
-      l->setText(5,tr("Cut")+" "+q->value(5).toString());
-      l->setText(6,q->value(42).toString());
-      switch((RDSettings::Format)q->value(19).toInt()) {    // Format
-      case RDSettings::Pcm16:
-	l->setText(20,tr("PCM16"));
-	break;
-
-      case RDSettings::Pcm24:
-	l->setText(20,tr("PCM24"));
-	break;
-
-      case RDSettings::MpegL1:
-	l->setText(20,tr("MPEG Layer 1"));
-	break;
-
-      case RDSettings::MpegL2:
-      case RDSettings::MpegL2Wav:
-	l->setText(20,tr("MPEG Layer 2"));
-	break;
-
-      case RDSettings::MpegL3:
-	l->setText(20,tr("MPEG Layer 3"));
-	break;
-
-      case RDSettings::Flac:
-	l->setText(20,tr("FLAC"));
-	break;
-
-      case RDSettings::OggVorbis:
-	l->setText(20,tr("OggVorbis"));
-	break;
-      }
-      if(q->value(44).toString().isEmpty()) {
-	l->setText(14,tr("[none]"));
-      }
-      else {
-	l->setText(14,q->value(44).toString());    // Feed Key Name
-      }
-      l->setText(21,q->value(20).toString());   // Channels
-      l->setText(22,q->value(21).toString());   // Sample Rate
-      if(q->value(22).toInt()==0) {     // Bit Rate/Quality
-	l->setText(23,QString().sprintf("Qual %d",q->value(43).toInt()));
-      }
-      else {
-	l->setText(23,QString().sprintf("%d kb/sec",
-					q->value(22).toInt()/1000));
-      }
-      break;
-
-    case RDRecording::LastType:
-      break;
-    }
-    DisplayExitCode(l,(RDRecording::ExitCode)q->value(28).toInt(),
-		    q->value(45).toString());
+    RefreshRow(q,l);
   }
   delete q;
 }
@@ -1984,397 +1997,13 @@ void MainWidget::RefreshLine(RDListViewItem *item)
 {
   QString sql;
   RDSqlQuery *q;
-  RDSqlQuery *q1;
-  RDCut *cut;
-  QString str;
 
   int id=item->text(28).toInt();
-  sql=QString("select ")+
-    "RECORDINGS.DESCRIPTION,"+       // 00
-    "RECORDINGS.IS_ACTIVE,"+         // 01
-    "RECORDINGS.STATION_NAME,"+      // 02
-    "RECORDINGS.START_TIME,"+        // 03
-    "RECORDINGS.LENGTH,"+            // 04
-    "RECORDINGS.CUT_NAME,"+          // 05
-    "RECORDINGS.SUN,"+               // 06
-    "RECORDINGS.MON,"+               // 07
-    "RECORDINGS.TUE,"+               // 08
-    "RECORDINGS.WED,"+               // 09
-    "RECORDINGS.THU,"+               // 10
-    "RECORDINGS.FRI,"+               // 11
-    "RECORDINGS.SAT,"+               // 12
-    "RECORDINGS.SWITCH_INPUT,"+      // 13
-    "RECORDINGS.START_GPI,"+         // 14
-    "RECORDINGS.END_GPI,"+           // 15
-    "RECORDINGS.TRIM_THRESHOLD,"+    // 16
-    "RECORDINGS.STARTDATE_OFFSET,"+  // 17
-    "RECORDINGS.ENDDATE_OFFSET,"+    // 18
-    "RECORDINGS.FORMAT,"+            // 19
-    "RECORDINGS.CHANNELS,"+          // 20
-    "RECORDINGS.SAMPRATE,"+          // 21
-    "RECORDINGS.BITRATE,"+           // 22
-    "RECORDINGS.CHANNEL,"+           // 23
-    "RECORDINGS.MACRO_CART,"+        // 24
-    "RECORDINGS.TYPE,"+              // 25
-    "RECORDINGS.SWITCH_OUTPUT,"+     // 26
-    "RECORDINGS.EXIT_CODE,"+         // 27
-    "RECORDINGS.ONE_SHOT,"+          // 28
-    "RECORDINGS.START_TYPE,"+        // 29
-    "RECORDINGS.START_LENGTH,"+      // 30
-    "RECORDINGS.START_MATRIX,"+      // 31
-    "RECORDINGS.START_LINE,"+        // 32
-    "RECORDINGS.START_OFFSET,"+      // 33
-    "RECORDINGS.END_TYPE,"+          // 34
-    "RECORDINGS.END_TIME,"+          // 35
-    "RECORDINGS.END_LENGTH,"+        // 36
-    "RECORDINGS.END_MATRIX,"+        // 37
-    "RECORDINGS.END_LINE,"+          // 38
-    "CUTS.ORIGIN_NAME,"+             // 39
-    "CUTS.ORIGIN_DATETIME,"+         // 40
-    "RECORDINGS.URL,"+               // 41
-    "RECORDINGS.QUALITY,"+           // 42
-    "FEEDS.KEY_NAME,"+               // 43
-    "RECORDINGS.EXIT_TEXT "+         // 44
-    "from RECORDINGS left join CUTS "+
-    "on (RECORDINGS.CUT_NAME=CUTS.CUT_NAME) left join FEEDS "+
-    "on (RECORDINGS.FEED_ID=FEEDS.ID) where "+
+  sql=RefreshSql()+"where "+
     QString().sprintf("RECORDINGS.ID=%d",id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
-    if(RDBool(q->value(1).toString())) {
-      item->setTextColor(QColor(EVENT_ACTIVE_TEXT_COLOR));
-    }
-    else {
-      item->setTextColor(QColor(EVENT_INACTIVE_TEXT_COLOR));
-    }
-    item->setText(1,q->value(0).toString());     // Description
-    if(q->value(25).toInt()==RDRecording::Recording) {
-      item->setText(2,q->value(2).toString()+QString(" : ")+ // Station : Deck
-		    q->value(23).toString());     
-    }
-    else {
-      item->setText(2,q->value(2).toString());
-    }
-    item->setText(4,RDGetTimeLength(q->value(4).toUInt()));        // Length
-    if(RDBool(q->value(6).toString())) {       // Sun
-      item->setText(7,tr("Su"));
-    }
-    else {
-      item->setText(7,"");
-    }
-    if(RDBool(q->value(7).toString())) {       // Mon
-      item->setText(8,tr("Mo"));
-    }
-    else {
-      item->setText(8,"");
-    }
-    if(RDBool(q->value(8).toString())) {       // Tue
-      item->setText(9,tr("Tu"));
-    }
-    else {
-      item->setText(9,"");
-    }
-    if(RDBool(q->value(9).toString())) {       // Wed
-      item->setText(10,tr("We"));
-    }
-    else {
-      item->setText(10,"");
-    }
-    if(RDBool(q->value(10).toString())) {      // Thu
-      item->setText(11,tr("Th"));
-    }
-    else {
-      item->setText(11,"");
-    }
-    if(RDBool(q->value(11).toString())) {      // Fri
-      item->setText(12,tr("Fr"));
-    }
-    else {
-      item->setText(12,"");
-    }
-    if(RDBool(q->value(12).toString())) {      // Sat
-      item->setText(13,tr("Sa"));
-    }
-    else {
-      item->setText(13,"");
-    }
-    switch((RDRecording::Type)q->value(25).toInt()) {
-	case RDRecording::Recording:
-	case RDRecording::Playout:
-	case RDRecording::Download:
-	case RDRecording::Upload:
-	  item->setText(15,q->value(39).toString()+" - "+
-			q->value(40).toDateTime().
-			toString("M/dd/yyyy hh:mm:ss"));
-	  break;
-
-	default:
-	  item->setText(15,"");
-    }
-    item->setText(16,q->value(28).toString());   // One Shot
-    str=QString(tr("dB"));
-    item->setText(17,QString().sprintf("%d %s",  // Trim Threshold
-				    -q->value(17).toInt(),(const char *)str));
-    item->setText(18,q->value(17).toString());   // Startdate Offset
-    item->setText(19,q->value(18).toString());   // Enddate Offset
-    item->setText(24,q->value(2).toString());    // Station
-    item->setText(25,q->value(23).toString());   // Deck
-    item->setText(26,q->value(5).toString());    // Cut Name
-    if(q->value(24).toInt()>0) {
-      item->setText(27,q->value(24).toString()); // Macro Cart
-    }
-    else {
-      item->setText(27,"");
-    }
-    item->setText(29,q->value(25).toString());   // Type
-    item->setPixmap(0,*(catch_type_maps[q->value(25).toInt()]));
-    switch((RDRecording::Type)q->value(25).toInt()) {   // Source
-    case RDRecording::Recording:
-      item->setText(2,QString().sprintf("%s : %dR",
-					(const char *)q->value(2).toString(),
-					q->value(23).toInt()));
-      switch((RDRecording::StartType)q->value(29).toUInt()) {
-      case RDRecording::HardStart:
-	str=QString(tr("Hard"));
-	item->
-	  setText(3,q->value(3).toTime().
-		  toString(QString().
-			   sprintf("%s: hh:mm:ss",(const char *)str)));
-	break;
-
-      case RDRecording::GpiStart:
-	str=QString(tr("Gpi"));
-	item->setText(3,QString().
-		      sprintf("%s: %s,%s,%d:%d,%s",
-			      (const char *)str,
-			      (const char *)q->value(3).
-			      toTime().toString("hh:mm:ss"),
-			      (const char *)q->value(3).toTime().
-			      addMSecs(q->value(30).toInt()).
-			      toString("hh:mm:ss"),
-			      q->value(31).toInt(),
-			      q->value(32).toInt(),
-			      (const char *)QTime().
-			      addMSecs(q->value(33).toUInt()).
-			      toString("mm:ss")));
-	break;
-      }
-      switch((RDRecording::EndType)q->value(34).toUInt()) {
-      case RDRecording::LengthEnd:
-	str=QString(tr("Len"));
-	item->setText(4,QString().sprintf("%s: %s",(const char *)str,
-					  (const char *)
-       					  RDGetTimeLength(q->value(4).toUInt(),
-							  false,false)));
-	break;
-
-      case RDRecording::HardEnd:
-	str=QString(tr("Hard"));
-	item->setText(4,QString().sprintf("%s: %s",(const char *)str,
-					  (const char *)
-					  q->value(35).toTime().
-					  toString("hh:mm:ss")));
-	break;
-
-      case RDRecording::GpiEnd:
-	str=QString(tr("Gpi"));
-	item->setText(4,QString().
-		      sprintf("%s: %s,%s,%d:%d",(const char *)str,
-			      (const char *)q->value(35).
-			      toTime().toString("hh:mm:ss"),
-			      (const char *)q->value(35).toTime().
-			      addMSecs(q->value(36).toInt()).
-			      toString("hh:mm:ss"),
-			      q->value(37).toInt(),
-			      q->value(38).toInt()));
-	break;
-      }	
-      sql=QString("select ")+
-	"SWITCH_STATION,"+  // 00
-	"SWITCH_MATRIX "+   // 01
-	"from DECKS where "+
-	"(STATION_NAME=\""+RDEscapeString(q->value(2).toString())+"\")&&"+
-	QString().sprintf("(CHANNEL=%d)",q->value(23).toInt());
-      q1=new RDSqlQuery(sql);
-      if(q1->first()) {
-	item->setText(5,GetSourceName(q1->value(0).toString(),
-				      q1->value(1).toInt(),
-				      q->value(13).toInt()));
-      }
-      delete q1;
-      item->setText(6,QString().
-		    sprintf("Cut %s",(const char *)q->value(5).toString()));
-      switch((RDSettings::Format)q->value(19).toInt()) {   // Format
-      case RDSettings::Pcm16:
-	item->setText(20,tr("PCM16"));
-	break;
-
-      case RDSettings::Pcm24:
-	item->setText(20,tr("PCM24"));
-	break;
-
-      case RDSettings::MpegL1:
-	item->setText(20,tr("MPEG Layer 1"));
-	break;
-
-      case RDSettings::MpegL2:
-      case RDSettings::MpegL2Wav:
-	item->setText(20,tr("MPEG Layer 2"));
-	break;
-
-      case RDSettings::MpegL3:
-	item->setText(20,tr("MPEG Layer 3"));
-	break;
-
-      case RDSettings::Flac:
-	item->setText(20,tr("FLAC"));
-	break;
-
-      case RDSettings::OggVorbis:
-	item->setText(20,tr("OggVorbis"));
-	break;
-      }
-      item->setText(21,q->value(20).toString());   // Channels
-      item->setText(22,q->value(21).toString());   // Sample Rate
-      item->setText(23,q->value(22).toString());   // Bit Rate
-      break;
-	  
-    case RDRecording::Playout:
-      item->setText(2,QString().sprintf("%s : %dP",
-					(const char *)q->value(2).toString(),
-					q->value(23).toInt()-128));
-      item->setText(3,q->value(3).toTime().toString("Hard: hh:mm:ss"));
-      cut=new RDCut(q->value(5).toString());
-      if(cut->exists()) {
-	str=QString(tr("Len"));
-	item->setText(4,QString().sprintf("%s: %s",(const char *)str,
-					  (const char *)RDGetTimeLength(cut->length(),false,false)));
-      }
-      else {
-	item->setText(4,"");
-      }
-      delete cut;
-      str=QString(tr("Cut"));
-      item->setText(5,QString().
-		    sprintf("%s %s",(const char *)str,
-			    (const char *)q->value(5).toString()));
-      item->setText(20,"");
-      item->setText(21,"");
-      item->setText(22,"");
-      item->setText(23,"");
-      break;
-	  
-    case RDRecording::MacroEvent:
-      str=QString(tr("Hard"));
-      item->setText(3,q->value(3).toTime().
-		    toString(QString().
-			     sprintf("%s: hh:mm:ss",(const char *)str)));
-      item->setText(4,"");
-      item->setText(5,QString().sprintf("Cart %06d",q->value(24).toInt()));
-      item->setText(20,"");
-      item->setText(21,"");
-      item->setText(22,"");
-      item->setText(23,"");
-      break;
-
-    case RDRecording::SwitchEvent:
-      str=QString(tr("Hard"));
-      item->setText(3,q->value(3).toTime().
-		    toString(QString().
-			     sprintf("%s: hh:mm:ss",(const char *)str)));
-      item->setText(4,"");
-      item->setText(5,GetSourceName(q->value(2).toString(),
-				    q->value(23).toInt(),
-				    q->value(13).toInt()));
-      item->setText(6,GetDestinationName(q->value(2).toString(),  // Dest
-					 q->value(23).toInt(),
-					 q->value(26).toInt()));
-      item->setText(20,"");
-      item->setText(21,"");
-      item->setText(22,"");
-      item->setText(23,"");
-      break;
-
-    case RDRecording::Download:
-      str=QString(tr("Hard"));
-      item->setText(2,q->value(2).toString());
-      item->setText(3,q->value(3).toTime().
-		    toString(QString().
-			     sprintf("%s: hh:mm:ss",(const char *)str)));
-      item->setText(4,"");
-      item->setText(5,q->value(41).toString());
-      item->setText(6,QString().
-		    sprintf("Cut %s",(const char *)q->value(5).toString()));
-      item->setText(20,"");
-      item->setText(21,"");
-      item->setText(22,"");
-      item->setText(23,"");
-      break;
-
-    case RDRecording::Upload:
-      str=QString(tr("Hard"));
-      item->setText(2,q->value(2).toString());
-      item->setText(3,q->value(3).toTime().
-		    toString(QString().
-			     sprintf("%s: hh:mm:ss",(const char *)str)));
-      item->setText(4,"");
-      item->setText(5,QString().
-		    sprintf("Cut %s",(const char *)q->value(5).toString()));
-      item->setText(6,q->value(41).toString());
-      if(q->value(43).toString().isEmpty()) {
-	item->setText(14,tr("[none]"));
-      }
-      else {
-	item->setText(14,q->value(43).toString());
-      }
-      switch((RDSettings::Format)q->value(19).toInt()) {   // Format
-      case RDSettings::Pcm16:
-	item->setText(20,tr("PCM16"));
-	break;
-
-      case RDSettings::Pcm24:
-	item->setText(20,tr("PCM24"));
-	break;
-
-      case RDSettings::MpegL1:
-	item->setText(20,tr("MPEG Layer 1"));
-	break;
-
-      case RDSettings::MpegL2:
-      case RDSettings::MpegL2Wav:
-	item->setText(20,tr("MPEG Layer 2"));
-	break;
-
-      case RDSettings::MpegL3:
-	item->setText(20,tr("MPEG Layer 3"));
-	break;
-
-      case RDSettings::Flac:
-	item->setText(20,tr("FLAC"));
-	break;
-
-      case RDSettings::OggVorbis:
-	item->setText(20,tr("OggVorbis"));
-	break;
-      }
-      item->setText(21,q->value(20).toString());   // Channels
-      item->setText(22,q->value(21).toString());   // Sample Rate
-      item->setText(23,q->value(22).toString());   // Bit Rate
-      if(q->value(22).toInt()==0) {     // Bit Rate/Quality
-	item->setText(23,QString().sprintf("Qual %d",
-					   q->value(42).toInt()));
-      }
-      else {
-	item->setText(23,QString().sprintf("%d kb/sec",
-					   q->value(22).toInt()/1000));
-      }
-      break;
-
-    case RDRecording::LastType:
-      break;
-    }
-    DisplayExitCode(item,(RDRecording::ExitCode)q->value(27).toInt(),
-		    q->value(44).toString());
+    RefreshRow(q,item);
   }
   else {  // Event removed
     delete item;

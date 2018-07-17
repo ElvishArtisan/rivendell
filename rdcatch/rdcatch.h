@@ -37,6 +37,7 @@
 #include <rd.h>
 #include <rdcatch_connect.h>
 #include <rdconfig.h>
+#include <rddb.h>
 #include <rddeck.h>
 #include <rdlistviewitem.h>
 #include <rdtransportbutton.h>
@@ -124,6 +125,8 @@ class MainWidget : public QWidget
   void ProcessNewRecords(std::vector<int> *adds);
   void EnableScroll(bool state);
   void UpdateScroll();
+  QString RefreshSql() const;
+  void RefreshRow(RDSqlQuery *q,RDListViewItem *item);
   void RefreshList();
   void RefreshLine(RDListViewItem *item);
   void UpdateExitCode(RDListViewItem *item);
