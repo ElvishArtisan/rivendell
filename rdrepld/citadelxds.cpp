@@ -264,55 +264,41 @@ void CitadelXds::CheckCarts()
        where (LATEST_DATE>=now())&&((TYPE=\"R\")||(TYPE=\"B\"))";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    sql=QString().sprintf("select REPL_CART_STATE.ID from \
-                           REPL_CART_STATE left join CUTS \
-                           on REPL_CART_STATE.CART_NUMBER=CUTS.CART_NUMBER \
-                           where (CUTS.ORIGIN_DATETIME<REPL_CART_STATE.ITEM_DATETIME)&&\
-                           (REPL_CART_STATE.REPLICATOR_NAME=\"%s\")&&\
-                           (REPL_CART_STATE.CART_NUMBER=%u)&&\
-                           (REPL_CART_STATE.POSTED_FILENAME=\"%s\")&&\
-                           (REPL_CART_STATE.ITEM_DATETIME>\"%s\")&&\
-                           (REPL_CART_STATE.REPOST=\"N\")",
-			  (const char *)RDEscapeString(config()->name()),
-			  q->value(0).toUInt(),
-			  (const char *)RDEscapeString(q->value(1).toString()),
-			  (const char *)now);
+    sql=QString("select REPL_CART_STATE.ID from ")+
+      "REPL_CART_STATE left join CUTS "+
+      "on REPL_CART_STATE.CART_NUMBER=CUTS.CART_NUMBER where "+
+      "(CUTS.ORIGIN_DATETIME<REPL_CART_STATE.ITEM_DATETIME)&&"+
+      "(REPL_CART_STATE.REPLICATOR_NAME=\""+
+      RDEscapeString(config()->name())+"\")&&"+
+      QString().sprintf("(REPL_CART_STATE.CART_NUMBER=%u)&&",q->value(0).toUInt())+
+      "(REPL_CART_STATE.POSTED_FILENAME=\""+
+      RDEscapeString(q->value(1).toString())+"\")&&"+
+      "(REPL_CART_STATE.ITEM_DATETIME>\""+RDEscapeString(now)+"\")&&"+
+      "(REPL_CART_STATE.REPOST=\"N\")";
     q1=new RDSqlQuery(sql);
     if(!q1->first()) {
       if(PostCut(RDCut::cutName(q->value(0).toUInt(),1),
 		 q->value(1).toString())) {
-	sql=QString().sprintf("select ID from REPL_CART_STATE where \
-                               (REPLICATOR_NAME=\"%s\")&&\
-                               (CART_NUMBER=%u)&&\
-                               (POSTED_FILENAME=\"%s\")",
-			      (const char *)RDEscapeString(config()->name()),
-			      q->value(0).toUInt(),
-			      (const char *)RDEscapeString(q->value(1).
-							   toString()));
+	sql=QString("select ID from REPL_CART_STATE where ")+
+	  "(REPLICATOR_NAME=\""+RDEscapeString(config()->name())+"\")&&"+
+	  QString().sprintf("(CART_NUMBER=%u)&&",q->value(0).toUInt())+
+	  "(POSTED_FILENAME=\""+RDEscapeString(q->value(1).toString())+"\")";
 	q2=new RDSqlQuery(sql);
 	if(q2->first()) {
-	  sql=QString().sprintf("update REPL_CART_STATE set\
-                                 ITEM_DATETIME=now(),\
-                                 REPOST=\"N\" where \
-                                 (REPLICATOR_NAME=\"%s\")&&\
-                                 (CART_NUMBER=%u)&&\
-                                 (POSTED_FILENAME=\"%s\")",
-				(const char *)RDEscapeString(config()->name()),
-				q->value(0).toUInt(),
-				(const char *)RDEscapeString(q->value(1).
-							     toString()));
+	  sql=QString("update REPL_CART_STATE set ")+
+	    "ITEM_DATETIME=now(),"+
+	    "REPOST=\"N\" where "+
+	    "(REPLICATOR_NAME=\""+RDEscapeString(config()->name())+"\")&&"+
+	    QString().sprintf("(CART_NUMBER=%u)&&",q->value(0).toUInt())+
+	    "(POSTED_FILENAME=\""+RDEscapeString(q->value(1).toString())+"\")";
 	}
 	else {
-	  sql=QString().sprintf("insert into REPL_CART_STATE set \
-                                 ITEM_DATETIME=now(),\
-                                 REPOST=\"N\",\
-                                 REPLICATOR_NAME=\"%s\",\
-                                 CART_NUMBER=%u,\
-                                 POSTED_FILENAME=\"%s\"",
-				(const char *)RDEscapeString(config()->name()),
-				q->value(0).toUInt(),
-				(const char *)RDEscapeString(q->value(1).
-							     toString()));
+	  sql=QString("insert into REPL_CART_STATE set ")+
+	    "ITEM_DATETIME=now(),"+
+	    "REPOST=\"N\","+
+	    "REPLICATOR_NAME=\""+RDEscapeString(config()->name())+"\","+
+	    QString().sprintf("CART_NUMBER=%u,",q->value(0).toUInt())+
+	    "POSTED_FILENAME=\""+RDEscapeString(q->value(1).toString())+"\"";
 	}
 	delete q2;
 	q2=new RDSqlQuery(sql);
@@ -419,14 +405,15 @@ void CitadelXds::PurgeCuts()
   RDDelete *conv;
   RDDelete::ErrorCode conv_err;
 
-  sql=QString().sprintf("select ID,POSTED_FILENAME from REPL_CART_STATE \
-                         where REPLICATOR_NAME=\"%s\"",
-			(const char *)RDEscapeString(config()->name()));
+  sql=QString("select ")+
+    "ID,"+               // 00
+    "POSTED_FILENAME "+  // 01
+    "from REPL_CART_STATE where "+
+    "REPLICATOR_NAME=\""+RDEscapeString(config()->name())+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    sql=QString().
-      sprintf("select ID from ISCI_XREFERENCE where FILENAME=\"%s\"",
-	      (const char *)RDEscapeString(q->value(1).toString()));
+    sql=QString("select ID from ISCI_XREFERENCE where ")+
+      "FILENAME=\""+RDEscapeString(q->value(1).toString())+"\"";
     q1=new RDSqlQuery(sql);
     if(!q1->first()) {
       QString path=config()->url();
