@@ -7742,40 +7742,43 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
     while(q->next()) {
       QString tablename=q->value(0).toString()+"_STACK";
       tablename.replace(" ","_");
-      //
-      // 9/14/1752 is the earliest valid QDate
-      //
-      sql=QString("update `")+tablename+"` set "+
-	"SCHEDULED_AT=\"1752-09-14 00:00:00\" where "+
-	"SCHEDULED_AT<\"1752-09-14 00:00:00\"";
-      if(!RDSqlQuery::apply(sql,err_msg)) {
-	return false;
-      }
-      sql=QString("select ")+
-	"SCHED_STACK_ID,"+  // 00
-	"CART,"+            // 01
-	"ARTIST,"+          // 02
-	"SCHED_CODES,"+     // 03
-	"SCHEDULED_AT "+    // 04
-	"from `"+tablename+"` "+
-	"order by SCHEDULED_AT";
-      q1=new RDSqlQuery(sql,false);
-      while(q1->next()) {	
-	sql=QString("insert into STACK_LINES set ")+
-	  "SERVICE_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
-	  QString().sprintf("SCHED_STACK_ID=%u,",q1->value(0).toUInt())+
-	  QString().sprintf("CART=%u,",q1->value(1).toUInt())+
-	  "ARTIST=\""+RDEscapeString(q1->value(2).toString())+"\","+
-	  "SCHED_CODES=\""+RDEscapeString(q1->value(3).toString())+"\","+
-	  "SCHEDULED_AT=\""+RDEscapeString(q1->value(4).toDateTime().
-					  toString("yyyy-MM-dd hh:mm:ss"))+"\"";
+
+      if(TableExists(tablename)) {
+	//
+	// 9/14/1752 is the earliest valid QDate
+	//
+	sql=QString("update `")+tablename+"` set "+
+	  "SCHEDULED_AT=\"1752-09-14 00:00:00\" where "+
+	  "SCHEDULED_AT<\"1752-09-14 00:00:00\"";
 	if(!RDSqlQuery::apply(sql,err_msg)) {
 	  return false;
 	}
-      }
-      delete q1;
-      if(!DropTable(tablename,err_msg)) {
-	return false;
+	sql=QString("select ")+
+	  "SCHED_STACK_ID,"+  // 00
+	  "CART,"+            // 01
+	  "ARTIST,"+          // 02
+	  "SCHED_CODES,"+     // 03
+	  "SCHEDULED_AT "+    // 04
+	  "from `"+tablename+"` "+
+	  "order by SCHEDULED_AT";
+	q1=new RDSqlQuery(sql,false);
+	while(q1->next()) {	
+	  sql=QString("insert into STACK_LINES set ")+
+	    "SERVICE_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	    QString().sprintf("SCHED_STACK_ID=%u,",q1->value(0).toUInt())+
+	    QString().sprintf("CART=%u,",q1->value(1).toUInt())+
+	    "ARTIST=\""+RDEscapeString(q1->value(2).toString())+"\","+
+	    "SCHED_CODES=\""+RDEscapeString(q1->value(3).toString())+"\","+
+	    "SCHEDULED_AT=\""+RDEscapeString(q1->value(4).toDateTime().
+					  toString("yyyy-MM-dd hh:mm:ss"))+"\"";
+	  if(!RDSqlQuery::apply(sql,err_msg)) {
+	    return false;
+	  }
+	}
+	delete q1;
+	if(!DropTable(tablename,err_msg)) {
+	  return false;
+	}
       }
     }
     delete q;

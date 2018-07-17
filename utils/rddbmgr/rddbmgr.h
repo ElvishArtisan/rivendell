@@ -113,6 +113,7 @@ class MainObject : public QObject
   bool PrintStatus(QString *err_msg) const;
 
   void WriteSchemaVersion(int ver) const;
+  bool TableExists(const QString &tbl_name) const;
   bool DropTable(const QString &tbl_name,QString *err_msg=NULL) const;
   Command db_command;
   QString db_mysql_hostname;

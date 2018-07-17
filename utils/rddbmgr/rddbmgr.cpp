@@ -371,6 +371,22 @@ void MainObject::WriteSchemaVersion(int ver) const
 }
 
 
+bool MainObject::TableExists(const QString &tbl_name) const
+{
+  QString sql;
+  RDSqlQuery *q;
+  bool ret=false;
+
+  sql=QString("show tables where ")+
+    "Tables_in_"+db_config->mysqlDbname()+"=\""+RDEscapeString(tbl_name)+"\"";
+  q=new RDSqlQuery(sql,false);
+  ret=q->first();
+  delete q;
+
+  return ret;
+}
+
+
 bool MainObject::DropTable(const QString &tbl_name,QString *err_msg) const
 {
   QString sql;

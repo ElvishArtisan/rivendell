@@ -17133,3 +17133,6 @@
 2018-07-16 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up SQL quieries in 'rdcatch/' ensure UTF-8
 	compatibility.
+2018-07-17 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rddgmgr(8) that would cause an abort if a '_STACK'
+	table was found missing when updating to schema 293.
