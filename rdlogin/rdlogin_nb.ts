@@ -41,7 +41,7 @@ brukar</translation>
     </message>
     <message>
         <source>Current User:</source>
-        <translation>Brukarnamn no:</translation>
+        <translation type="obsolete">Brukarnamn no:</translation>
     </message>
     <message>
         <source>RDLogin</source>
@@ -61,6 +61,10 @@ brukar</translation>
     </message>
     <message>
         <source>Unknown command option</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Current User</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

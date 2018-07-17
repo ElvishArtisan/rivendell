@@ -42,7 +42,7 @@ Padrão</translation>
     </message>
     <message>
         <source>Current User:</source>
-        <translation>Usuário Atual:</translation>
+        <translation type="obsolete">Usuário Atual:</translation>
     </message>
     <message>
         <source>RDLogin</source>
@@ -62,6 +62,10 @@ Padrão</translation>
     </message>
     <message>
         <source>Unknown command option</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Current User</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

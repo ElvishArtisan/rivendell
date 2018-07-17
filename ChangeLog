@@ -17152,3 +17152,6 @@
 2018-07-17 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up SQL quieries in 'rdlogedit/' to ensure UTF-8
 	compatibility.
+2018-07-17 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up SQL quieries in 'rdlogin/' to ensure UTF-8
+	compatibility.

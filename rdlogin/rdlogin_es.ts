@@ -11,7 +11,7 @@
     </message>
     <message>
         <source>Current User:</source>
-        <translation>Usuario actual:</translation>
+        <translation type="obsolete">Usuario actual:</translation>
     </message>
     <message>
         <source>RDLogin</source>
@@ -61,6 +61,10 @@ User</source>
     </message>
     <message>
         <source>Unknown command option</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Current User</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

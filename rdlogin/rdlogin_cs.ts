@@ -41,7 +41,7 @@ uživatel</translation>
     </message>
     <message>
         <source>Current User:</source>
-        <translation>Nynější uživatel:</translation>
+        <translation type="obsolete">Nynější uživatel:</translation>
     </message>
     <message>
         <source>RDLogin</source>
@@ -61,6 +61,10 @@ uživatel</translation>
     </message>
     <message>
         <source>Unknown command option</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Current User</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

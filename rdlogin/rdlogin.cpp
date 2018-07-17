@@ -225,11 +225,7 @@ void MainWidget::connectedData(bool state)
 
 void MainWidget::userData()
 {
-  QString str;
-
-  str=QString(tr("Current User:"));
-  login_label->setText(QString().sprintf("%s %s",(const char *)str,
-					 (const char *)rda->ripc()->user()));
+  login_label->setText(tr("Current User")+": "+rda->ripc()->user());
   resizeEvent(NULL);
 }
 
