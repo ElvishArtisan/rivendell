@@ -17144,3 +17144,5 @@
 	to be mal-formatted.
 	* Fixed a bug in rdcatch(1) that caused Record and Playout events
 	to be saved to the incorrect Location.
+2018-07-17 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'RDDeck' that threw a SQL error.

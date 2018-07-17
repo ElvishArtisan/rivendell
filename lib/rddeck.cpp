@@ -249,7 +249,7 @@ QString RDDeck::switchOutputName() const
   sql=QString("select NAME from OUTPUTS where ")+
     "(STATION_NAME=\""+RDEscapeString(switchStation())+"\")&&"+
     QString().sprintf("(MATRIX=%d)&&",switchMatrix())+
-    QString().sprintf("NUMBER=%d)",switchOutput());
+    QString().sprintf("(NUMBER=%d)",switchOutput());
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     output_name=q->value(0).toString();
