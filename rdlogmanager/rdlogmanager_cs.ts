@@ -48,7 +48,7 @@
     <name>EditClock</name>
     <message>
         <source>Edit Clock:</source>
-        <translation>Upravit hodiny:</translation>
+        <translation type="obsolete">Upravit hodiny:</translation>
     </message>
     <message>
         <source>Code:</source>
@@ -192,6 +192,14 @@ Chcete je uložit?</translation>
     <message>
         <source>Are you sure you want to delete
 </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Clock</source>
+        <translation type="unfinished">Upravit hodiny</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -479,7 +487,7 @@ Chcete ji přepsat?</translation>
     </message>
     <message>
         <source>Timed(Wait</source>
-        <translation>Načasovaný (Čekat</translation>
+        <translation type="obsolete">Načasovaný (Čekat</translation>
     </message>
     <message>
         <source>, Post</source>
@@ -527,6 +535,10 @@ Chcete ji přepsat?</translation>
     </message>
     <message>
         <source>and code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Timed(Wait)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -587,7 +599,7 @@ existující událostí.</translation>
     <name>EditGrid</name>
     <message>
         <source>Edit Grid:</source>
-        <translation>Upravit mřížku:</translation>
+        <translation type="obsolete">Upravit mřížku:</translation>
     </message>
     <message>
         <source>Edit Clock</source>
@@ -616,6 +628,10 @@ existující událostí.</translation>
     </message>
     <message>
         <source>This operation cannot be undone!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Grid</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -800,7 +816,7 @@ Chcete je uložit?</translation>
 will remove any merged Music or Traffic events.
 
 Recreate?</source>
-        <translation>již existuje. Jeho znovuvytvoření odstraní
+        <translation type="obsolete">již existuje. Jeho znovuvytvoření odstraní
 jakékoli události sloučené hudby nebo přenosu.
 
 Vytvořit znovu?</translation>
@@ -816,7 +832,7 @@ Vytvořit znovu?</translation>
     <message>
         <source>voice tracks associated with this log.
 Continue?</source>
-        <translation>stopy hlasů spojených s tímto zápisem.
+        <translation type="obsolete">stopy hlasů spojených s tímto zápisem.
 Pokračovat?</translation>
     </message>
     <message>
@@ -834,7 +850,7 @@ Pokračovat?</translation>
     <message>
         <source>already contains merged music and/or traffic data.
 Remerging it will remove this data.  Remerge?</source>
-        <translation>již obsahuje sloučená data hudby a/nebo přenosu.
+        <translation type="obsolete">již obsahuje sloučená data hudby a/nebo přenosu.
 Opětovné sloučení tato data smaže. Sloučit znovu?</translation>
     </message>
     <message>
@@ -844,7 +860,7 @@ Opětovné sloučení tato data smaže. Sloučit znovu?</translation>
     <message>
         <source>already contains merged traffic data.  Remerging it
 will remove this data.  Remerge?</source>
-        <translation>již obsahuje sloučená data přenosu.
+        <translation type="obsolete">již obsahuje sloučená data přenosu.
 Opětovné sloučení tato data smaže. Sloučit znovu?</translation>
     </message>
     <message>
@@ -853,7 +869,7 @@ Opětovné sloučení tato data smaže. Sloučit znovu?</translation>
     </message>
     <message>
         <source>Generate Log - User: </source>
-        <translation>Vytvořit zápis - Uživatel: </translation>
+        <translation type="obsolete">Vytvořit zápis - Uživatel: </translation>
     </message>
     <message>
         <source>Error</source>
@@ -877,6 +893,42 @@ Opětovné sloučení tato data smaže. Sloučit znovu?</translation>
     </message>
     <message>
         <source>Unable to link traffic log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Generate Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>already exists.  Recreating it</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>will remove any merged Music or Traffic events.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Recreate?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>voice tracks associated with this log.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Continue?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>already contains merged music and/or traffic data.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remerging it will remove this data.  Remerge?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>already contains merged traffic data.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1012,7 +1064,7 @@ Opětovné sloučení tato data smaže. Sloučit znovu?</translation>
     <message>
         <source>Are you sure you want to
 delete</source>
-        <translation>Jste si jistý, že chcete smazat</translation>
+        <translation type="obsolete">Jste si jistý, že chcete smazat</translation>
     </message>
     <message>
         <source>Delete Clock</source>
@@ -1020,7 +1072,7 @@ delete</source>
     </message>
     <message>
         <source>is in use in the following grid(s):</source>
-        <translation>se používá následující mřížkou(ami):</translation>
+        <translation type="obsolete">se používá následující mřížkou(ami):</translation>
     </message>
     <message>
         <source>Do you still want to delete it?</source>
@@ -1032,7 +1084,19 @@ delete</source>
     </message>
     <message>
         <source>Log Clocks - User: </source>
-        <translation>Zápis - Uživatel hodin:</translation>
+        <translation type="obsolete">Zápis - Uživatel hodin:</translation>
+    </message>
+    <message>
+        <source>Log Clocks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is in use in the following grid(s)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1100,7 +1164,7 @@ delete</source>
     <message>
         <source>Are you sure you want to
 delete</source>
-        <translation>Jste si jistý, že chcete smazat</translation>
+        <translation type="obsolete">Jste si jistý, že chcete smazat</translation>
     </message>
     <message>
         <source>Delete Event</source>
@@ -1108,7 +1172,7 @@ delete</source>
     </message>
     <message>
         <source>is in use in the following clocks:</source>
-        <translation>se používá následujícími hodinami:</translation>
+        <translation type="obsolete">se používá následujícími hodinami:</translation>
     </message>
     <message>
         <source>Do you still want to delete it?</source>
@@ -1120,7 +1184,19 @@ delete</source>
     </message>
     <message>
         <source>Log Events - User: </source>
-        <translation>Zápis - Události - Uživatel:</translation>
+        <translation type="obsolete">Zápis - Události - Uživatel:</translation>
+    </message>
+    <message>
+        <source>Log Events</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is in use in the following clocks</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1221,7 +1297,7 @@ data</translation>
     </message>
     <message>
         <source>RDLogManager - User: </source>
-        <translation>RDLogManager - Uživatel: </translation>
+        <translation type="obsolete">RDLogManager - Uživatel: </translation>
     </message>
     <message>
         <source>RDLogEdit -- Database Skew</source>

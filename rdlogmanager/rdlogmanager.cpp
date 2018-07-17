@@ -246,9 +246,7 @@ QSizePolicy MainWidget::sizePolicy() const
 
 void MainWidget::userData()
 {
-  QString str1=tr("RDLogManager - User: ");
-  setCaption(QString().sprintf("%s%s",(const char *)str1,
-			       (const char *)rda->ripc()->user()));
+  setCaption("RDLogManager");
 
   //
   // Set Control Perms

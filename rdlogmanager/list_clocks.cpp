@@ -42,9 +42,7 @@ ListClocks::ListClocks(QString *clockname,QWidget *parent)
   : QDialog(parent,"",true)
 {
   QStringList services_list;
-  QString str1=tr("Log Clocks - User: ");
-  setCaption(QString().sprintf("%s%s",(const char *)str1,
-			       (const char *)rda->ripc()->user()));
+  setCaption("RDLogManager - "+tr("Log Clocks"));
   edit_clockname=clockname;
 
   //
@@ -246,8 +244,8 @@ void ListClocks::addData()
     sql=QString("delete from CLOCK_LINES where ")+
       "CLOCK_NAME=\""+RDEscapeString(clockname)+"\"";
     RDSqlQuery::apply(sql);
-    sql=QString().sprintf("delete from CLOCKS where NAME=\"%s\"",
-			  (const char *)clockname);
+    sql=QString("delete from CLOCKS where ")+
+      "NAME=\""+RDEscapeString(clockname)+"\"";
     q=new RDSqlQuery(sql);
     delete q;
   }
@@ -256,23 +254,18 @@ void ListClocks::addData()
       sql="select NAME from SERVICES";
       q=new RDSqlQuery(sql);
       while(q->next()) {
-        // FIXME: not sure if the usersec service filter should be applied
-        // here, or if all services should be brought over and later filtered
-        // by edit_perms.cpp dialog.
-	sql=QString().sprintf("insert into CLOCK_PERMS set\
-                               CLOCK_NAME=\"%s\",SERVICE_NAME=\"%s\"",
-			      (const char *)clockname,
-			      (const char *)q->value(0).toString());
+	sql=QString("insert into CLOCK_PERMS set ")+
+	  "CLOCK_NAME=\""+RDEscapeString(clockname)+"\","+
+	  "SERVICE_NAME=\""+RDEscapeString(q->value(0).toString())+"\"";
 	q1=new RDSqlQuery(sql);
 	delete q1;
       }
       delete q;
     }
     else {
-      sql=QString().sprintf("insert into CLOCK_PERMS set\
-                             CLOCK_NAME=\"%s\",SERVICE_NAME=\"%s\"",
-			    (const char *)clockname,
-			    (const char *)edit_filter_box->currentText());
+      sql=QString("insert into CLOCK_PERMS set ")+
+	"CLOCK_NAME=\""+RDEscapeString(clockname)+"\","+
+	"SERVICE_NAME=\""+RDEscapeString(edit_filter_box->currentText())+"\"";
       q=new RDSqlQuery(sql);
       delete q;
     }
@@ -304,31 +297,25 @@ void ListClocks::editData()
 
 void ListClocks::deleteData()
 {
-  QString str1;
-  QString str2;
   int n;
   QString svc_list;
   QListViewItem *item=edit_clocks_list->selectedItem();
   if(item==NULL) {
     return;
   }
-  str1=QString(tr("Are you sure you want to\ndelete"));
-  if(QMessageBox::question(this,tr("Delete Clock"),
-			   QString().sprintf("%s \'%s\'?",(const char *)str1,
-			 (const char *)item->text(0)),
+  if(QMessageBox::question(this,"RDLogManager - "+tr("Delete Clock"),
+			   tr("Are you sure you want to delete")+" \""+
+			   item->text(0)+"\"?",
 			  QMessageBox::Yes,QMessageBox::No)
      !=QMessageBox::Yes) {
     return;
   }
   if((n=ActiveClocks(item->text(0),&svc_list))>0) {
-    str1=QString(tr("is in use in the following grid(s):"));
-    str2=QString(tr("Do you still want to delete it?"));
-    if(QMessageBox::warning(this,tr("Clock In Use"),
-			 QString().sprintf("\'%s\' %s:\n\n%s\n%s",
-					   (const char *)item->text(0),
-					   (const char *)str1,
-					   (const char *)svc_list,
-					   (const char *)str2),
+    if(QMessageBox::warning(this,"RDLogManager - "+tr("Clock In Use"),
+			    "\""+item->text(0)+"\" "+
+			    tr("is in use in the following grid(s)")+":\n\n"+
+			    svc_list+"\n"+
+			    tr("Do you still want to delete it?"),
 			    QMessageBox::Yes,
 			    QMessageBox::No)!=QMessageBox::Yes) {
       return;
@@ -391,19 +378,18 @@ void ListClocks::renameData()
   //
   // Rename Service Permissions
   //
-  sql=QString().sprintf("update CLOCK_PERMS set CLOCK_NAME=\"%s\"\
-                         where CLOCK_NAME=\"%s\"",
-			(const char *)new_name,
-			(const char *)item->text(0));
+  sql=QString("update CLOCK_PERMS set ")+
+    "CLOCK_NAME=\""+RDEscapeString(new_name)+"\" where "+
+    "CLOCK_NAME=\""+RDEscapeString(item->text(0))+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 
   //
   // Rename Primary Key
   //
-  sql=QString().sprintf("update CLOCKS set NAME=\"%s\" where NAME=\"%s\"",
-			(const char *)new_name,
-			(const char *)item->text(0));
+  sql=QString("update CLOCKS set ")+
+    "NAME=\""+RDEscapeString(new_name)+"\" where "+
+    "NAME=\""+RDEscapeString(item->text(0))+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 
@@ -505,8 +491,11 @@ void ListClocks::RefreshList()
   }
 
   edit_clocks_list->clear();
-  QString sql=QString().sprintf("select NAME,SHORT_NAME,COLOR from CLOCKS %s",
-				(const char *)filter);
+  QString sql=QString("select ")+
+    "NAME,"+        // 00
+    "SHORT_NAME,"+  // 01
+    "COLOR "+       // 02
+    "from CLOCKS "+filter;
   RDSqlQuery *q=new RDSqlQuery(sql);
   QListViewItem *item=NULL;
   while(q->next()) {
@@ -536,8 +525,12 @@ void ListClocks::RefreshItem(QListViewItem *item,
 
 void ListClocks::UpdateItem(QListViewItem *item,QString name)
 {
-  QString sql=QString().sprintf("select NAME,SHORT_NAME,COLOR from CLOCKS\
-                                 where NAME=\"%s\"",(const char *)name);
+  QString sql=QString("select ")+
+    "NAME,"+        // 00
+    "SHORT_NAME,"+  // 01
+    "COLOR "+       // 02
+    "from CLOCKS where "+
+    "NAME=\""+RDEscapeString(name)+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->next()) {
     item->setText(0,name);
@@ -609,16 +602,16 @@ void ListClocks::DeleteClock(QString clockname)
   //
   // Delete Service Associations
   //
-  sql=QString().sprintf("delete from CLOCK_PERMS where CLOCK_NAME=\"%s\"",
-			(const char *)clockname);
+  sql=QString("delete from CLOCK_PERMS where ")+
+    "CLOCK_NAME=\""+RDEscapeString(clockname)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
 
   //
   // Delete Clock Definition
   //
-  sql=QString().sprintf("delete from CLOCKS where NAME=\"%s\"",
-				(const char *)clockname);
+  sql=QString("delete from CLOCKS where ")+
+    "NAME=\""+RDEscapeString(clockname)+"\"";
   RDSqlQuery::apply(sql);
   sql=QString("delete from CLOCK_LINES where ")+
     "CLOCK_NAME=\""+RDEscapeString(clockname)+"\"";
@@ -633,14 +626,13 @@ void ListClocks::DeleteClock(QString clockname)
 QString ListClocks::GetClockFilter(QString svc_name)
 {
   QString filter="where ";
-  QString sql=QString().sprintf("select CLOCK_NAME from CLOCK_PERMS\
-                                 where SERVICE_NAME=\"%s\"",
-				(const char *)svc_name);
+  QString sql=QString("select CLOCK_NAME from CLOCK_PERMS where ")+
+    "SERVICE_NAME=\""+RDEscapeString(svc_name)+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->size()>0) {
     while(q->next()) {
-      filter+=QString().sprintf("(NAME=\"%s\")||",
-				(const char *)q->value(0).toString());
+      filter+=QString("(NAME=\"")+
+	RDEscapeString(q->value(0).toString())+"\")||";
     }
     filter=filter.left(filter.length()-2);
   }
@@ -665,8 +657,7 @@ QString ListClocks::GetNoneFilter()
     filter="where ";
   }
   while(q->next()) {
-    filter+=QString().sprintf("(NAME!=\"%s\")&&",
-			      (const char *)q->value(0).toString());
+    filter+=QString("(NAME!=\"")+RDEscapeString(q->value(0).toString())+"\")&&";
   }
   if(q->size()>0) {
     filter=filter.left(filter.length()-2);

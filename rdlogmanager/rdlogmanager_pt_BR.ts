@@ -48,7 +48,7 @@
     <name>EditClock</name>
     <message>
         <source>Edit Clock:</source>
-        <translation>Editar Relogio:</translation>
+        <translation type="obsolete">Editar Relogio:</translation>
     </message>
     <message>
         <source>Code:</source>
@@ -194,6 +194,14 @@ Você quer salvar?</translation>
     <message>
         <source>Are you sure you want to delete
 </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Clock</source>
+        <translation type="unfinished">Editar Relógio</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -489,7 +497,7 @@ Você quer sobreescrêve-lo?</translation>
     </message>
     <message>
         <source>Timed(Wait</source>
-        <translation>Hora Certa(Esperar)</translation>
+        <translation type="obsolete">Hora Certa(Esperar)</translation>
     </message>
     <message>
         <source>, Post</source>
@@ -529,6 +537,10 @@ Você quer sobreescrêve-lo?</translation>
     </message>
     <message>
         <source>and code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Timed(Wait)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -589,7 +601,7 @@ evento existente.</translation>
     <name>EditGrid</name>
     <message>
         <source>Edit Grid:</source>
-        <translation>Editar Grade:</translation>
+        <translation type="obsolete">Editar Grade:</translation>
     </message>
     <message>
         <source>Edit Clock</source>
@@ -618,6 +630,10 @@ evento existente.</translation>
     </message>
     <message>
         <source>This operation cannot be undone!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Grid</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -747,7 +763,7 @@ Você quer salvar?</translation>
     <name>GenerateLog</name>
     <message>
         <source>Generate Log - User: </source>
-        <translation>Gerar Lista - Usuário: </translation>
+        <translation type="obsolete">Gerar Lista - Usuário: </translation>
     </message>
     <message>
         <source>Generating Log...</source>
@@ -806,7 +822,7 @@ Você quer salvar?</translation>
 will remove any merged Music or Traffic events.
 
 Recreate?</source>
-        <translation>já Existe.  Recriando-a
+        <translation type="obsolete">já Existe.  Recriando-a
 removerá todos os Eventos de Tráfego e Música.
 
 Recriar?</translation>
@@ -822,7 +838,7 @@ Recriar?</translation>
     <message>
         <source>voice tracks associated with this log.
 Continue?</source>
-        <translation>Faixas de voz associadas a esta lista.
+        <translation type="obsolete">Faixas de voz associadas a esta lista.
 Continue</translation>
     </message>
     <message>
@@ -840,7 +856,7 @@ Continue</translation>
     <message>
         <source>already contains merged music and/or traffic data.
 Remerging it will remove this data.  Remerge?</source>
-        <translation>já contém dados de músicas e/ou tráfego agregados.
+        <translation type="obsolete">já contém dados de músicas e/ou tráfego agregados.
 Re-agregar removerá estes dados.  Re-agregar? </translation>
     </message>
     <message>
@@ -850,7 +866,7 @@ Re-agregar removerá estes dados.  Re-agregar? </translation>
     <message>
         <source>already contains merged traffic data.  Remerging it
 will remove this data.  Remerge?</source>
-        <translation>já contém dados de tráfego agregados.
+        <translation type="obsolete">já contém dados de tráfego agregados.
 Re-agregar removerá estes dados.  Re-agregar? </translation>
     </message>
     <message>
@@ -879,6 +895,42 @@ Re-agregar removerá estes dados.  Re-agregar? </translation>
     </message>
     <message>
         <source>Unable to link traffic log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Generate Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>already exists.  Recreating it</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>will remove any merged Music or Traffic events.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Recreate?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>voice tracks associated with this log.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Continue?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>already contains merged music and/or traffic data.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remerging it will remove this data.  Remerge?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>already contains merged traffic data.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -949,7 +1001,7 @@ Re-agregar removerá estes dados.  Re-agregar? </translation>
     <name>ListClocks</name>
     <message>
         <source>Log Clocks - User: </source>
-        <translation>Relógios - Usuário: </translation>
+        <translation type="obsolete">Relógios - Usuário: </translation>
     </message>
     <message>
         <source>Filter:</source>
@@ -1018,7 +1070,7 @@ Re-agregar removerá estes dados.  Re-agregar? </translation>
     <message>
         <source>Are you sure you want to
 delete</source>
-        <translation>Tem certeza que quer 
+        <translation type="obsolete">Tem certeza que quer 
 deletar</translation>
     </message>
     <message>
@@ -1027,7 +1079,7 @@ deletar</translation>
     </message>
     <message>
         <source>is in use in the following grid(s):</source>
-        <translation>está em uso nas seguintes grade(s): </translation>
+        <translation type="obsolete">está em uso nas seguintes grade(s): </translation>
     </message>
     <message>
         <source>Do you still want to delete it?</source>
@@ -1037,12 +1089,24 @@ deletar</translation>
         <source>Clock In Use</source>
         <translation>Relógio em Uso</translation>
     </message>
+    <message>
+        <source>Log Clocks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is in use in the following grid(s)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListEvents</name>
     <message>
         <source>Log Events - User: </source>
-        <translation>Eventos - Usuário: </translation>
+        <translation type="obsolete">Eventos - Usuário: </translation>
     </message>
     <message>
         <source>Filter:</source>
@@ -1107,7 +1171,7 @@ deletar</translation>
     <message>
         <source>Are you sure you want to
 delete</source>
-        <translation>Tem certeza que quer 
+        <translation type="obsolete">Tem certeza que quer 
 deletar</translation>
     </message>
     <message>
@@ -1116,7 +1180,7 @@ deletar</translation>
     </message>
     <message>
         <source>is in use in the following clocks:</source>
-        <translation>está em uso nas seguintes relógio(s): </translation>
+        <translation type="obsolete">está em uso nas seguintes relógio(s): </translation>
     </message>
     <message>
         <source>Do you still want to delete it?</source>
@@ -1125,6 +1189,18 @@ deletar</translation>
     <message>
         <source>Event In Use</source>
         <translation>Evento em Uso</translation>
+    </message>
+    <message>
+        <source>Log Events</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is in use in the following clocks</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1225,7 +1301,7 @@ Dados</translation>
     </message>
     <message>
         <source>RDLogManager - User: </source>
-        <translation>RDControle - Usuario: </translation>
+        <translation type="obsolete">RDControle - Usuario: </translation>
     </message>
     <message>
         <source>Error</source>

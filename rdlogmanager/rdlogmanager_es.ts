@@ -48,7 +48,7 @@
     <name>EditClock</name>
     <message>
         <source>Edit Clock:</source>
-        <translation>Editar Torta:</translation>
+        <translation type="obsolete">Editar Torta:</translation>
     </message>
     <message>
         <source>Code:</source>
@@ -194,6 +194,14 @@ horario</translation>
     <message>
         <source>Are you sure you want to delete
 </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Clock</source>
+        <translation type="unfinished">Editar Torta</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -443,7 +451,7 @@ List</source>
     </message>
     <message>
         <source>Timed(Wait</source>
-        <translation>Tiempo(Esperar</translation>
+        <translation type="obsolete">Tiempo(Esperar</translation>
     </message>
     <message>
         <source>, Post</source>
@@ -531,6 +539,10 @@ Do you want to overwrite it?</source>
         <source>and code</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Timed(Wait)</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditEventLine</name>
@@ -589,7 +601,7 @@ un evento ya existente.</translation>
     <name>EditGrid</name>
     <message>
         <source>Edit Grid:</source>
-        <translation>Editar Parrilla:</translation>
+        <translation type="obsolete">Editar Parrilla:</translation>
     </message>
     <message>
         <source>&amp;Close</source>
@@ -618,6 +630,10 @@ un evento ya existente.</translation>
     </message>
     <message>
         <source>This operation cannot be undone!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Grid</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -792,7 +808,7 @@ Do you want to save?</source>
     <message>
         <source>voice tracks associated with this log.
 Continue?</source>
-        <translation>pistas de voz asociadas a esta lista.
+        <translation type="obsolete">pistas de voz asociadas a esta lista.
 ¿Continuar?</translation>
     </message>
     <message>
@@ -816,7 +832,7 @@ Continue?</source>
 will remove any merged Music or Traffic events.
 
 Recreate?</source>
-        <translation>ya existe.  Al recrearlo
+        <translation type="obsolete">ya existe.  Al recrearlo
 se eliminará cualquier evento de Música o Tráfico fusionados.
 
 ¿Recrear?</translation>
@@ -832,13 +848,13 @@ se eliminará cualquier evento de Música o Tráfico fusionados.
     <message>
         <source>already contains merged music and/or traffic data.
 Remerging it will remove this data.  Remerge?</source>
-        <translation>ya contiene datos de música o tráfico fusionados.
+        <translation type="obsolete">ya contiene datos de música o tráfico fusionados.
 Remezclarlos removerá estos datos.  ¿Remezclar?</translation>
     </message>
     <message>
         <source>already contains merged traffic data.  Remerging it
 will remove this data.  Remerge?</source>
-        <translation>ya contiene datos de tráfico fusionados.  Remezclarlos
+        <translation type="obsolete">ya contiene datos de tráfico fusionados.  Remezclarlos
 removerá estos datos.  ¿Remezclar?</translation>
     </message>
     <message>
@@ -855,7 +871,7 @@ removerá estos datos.  ¿Remezclar?</translation>
     </message>
     <message>
         <source>Generate Log - User: </source>
-        <translation>Generar lista - Usuario: </translation>
+        <translation type="obsolete">Generar lista - Usuario: </translation>
     </message>
     <message>
         <source>Error</source>
@@ -879,6 +895,42 @@ removerá estos datos.  ¿Remezclar?</translation>
     </message>
     <message>
         <source>Unable to link traffic log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Generate Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>already exists.  Recreating it</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>will remove any merged Music or Traffic events.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Recreate?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>voice tracks associated with this log.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Continue?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>already contains merged music and/or traffic data.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remerging it will remove this data.  Remerge?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>already contains merged traffic data.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1006,7 +1058,7 @@ removerá estos datos.  ¿Remezclar?</translation>
     <message>
         <source>Are you sure you want to
 delete</source>
-        <translation>Realmente desea 
+        <translation type="obsolete">Realmente desea 
 eliminar</translation>
     </message>
     <message>
@@ -1015,7 +1067,7 @@ eliminar</translation>
     </message>
     <message>
         <source>is in use in the following grid(s):</source>
-        <translation>está en uso en las siguiente(s) parrilla(s):</translation>
+        <translation type="obsolete">está en uso en las siguiente(s) parrilla(s):</translation>
     </message>
     <message>
         <source>Do you still want to delete it?</source>
@@ -1035,7 +1087,19 @@ eliminar</translation>
     </message>
     <message>
         <source>Log Clocks - User: </source>
-        <translation>Tortas - Usuario: </translation>
+        <translation type="obsolete">Tortas - Usuario: </translation>
+    </message>
+    <message>
+        <source>Log Clocks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is in use in the following grid(s)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1095,7 +1159,7 @@ eliminar</translation>
     <message>
         <source>Are you sure you want to
 delete</source>
-        <translation>Realmente desea
+        <translation type="obsolete">Realmente desea
 eliminar</translation>
     </message>
     <message>
@@ -1104,7 +1168,7 @@ eliminar</translation>
     </message>
     <message>
         <source>is in use in the following clocks:</source>
-        <translation>está en uso en las siguientes tortas:</translation>
+        <translation type="obsolete">está en uso en las siguientes tortas:</translation>
     </message>
     <message>
         <source>Do you still want to delete it?</source>
@@ -1124,7 +1188,19 @@ eliminar</translation>
     </message>
     <message>
         <source>Log Events - User: </source>
-        <translation>Eventos - Usuario: </translation>
+        <translation type="obsolete">Eventos - Usuario: </translation>
+    </message>
+    <message>
+        <source>Log Events</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is in use in the following clocks</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1224,7 +1300,7 @@ Reportes</translation>
     </message>
     <message>
         <source>RDLogManager - User: </source>
-        <translation>RDLogManager - Usuario: </translation>
+        <translation type="obsolete">RDLogManager - Usuario: </translation>
     </message>
     <message>
         <source>RDLogEdit -- Database Skew</source>

@@ -43,11 +43,8 @@ EditGrid::EditGrid(QString servicename,QWidget *parent)
   : QDialog(parent,"",true)
 {
   QString sql;
-  QString str;
 
-  str=QString(tr("Edit Grid:"));
-  setCaption(QString().sprintf("%s %s",(const char *)str,
-			       (const char *)servicename));
+  setCaption("RDLogManager - "+tr("Edit Grid")+": "+servicename);
   edit_servicename=servicename;
 
   //
@@ -314,9 +311,11 @@ void EditGrid::LabelButton(int dayofweek,int hour,QString clockname)
   QString code=QString("---");
   QColor color=backgroundColor();
 
-  QString sql=QString().sprintf("select SHORT_NAME,COLOR from CLOCKS\
-                                 where NAME=\"%s\"",
-				(const char *)clockname);
+  QString sql=QString("select ")+
+    "SHORT_NAME,"+  // 00
+    "COLOR "+       // 01
+    "from CLOCKS where "+
+    "NAME=\""+RDEscapeString(clockname)+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     code=q->value(0).toString();
@@ -325,7 +324,7 @@ void EditGrid::LabelButton(int dayofweek,int hour,QString clockname)
     }
   }
   edit_hour_button[dayofweek-1][hour]->
-    setText(QString().sprintf("%02d-%02d\n%s",hour,hour+1,(const char *)code));
+    setText(QString().sprintf("%02d-%02d\n",hour,hour+1)+code);
   edit_hour_button[dayofweek-1][hour]->
     setPalette(QPalette(color,backgroundColor()));
 }

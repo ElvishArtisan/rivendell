@@ -48,7 +48,7 @@
     <name>EditClock</name>
     <message>
         <source>Edit Clock:</source>
-        <translation>Rediger klokke:</translation>
+        <translation type="obsolete">Rediger klokke:</translation>
     </message>
     <message>
         <source>Code:</source>
@@ -193,6 +193,14 @@ Vil du lagra?</translation>
     <message>
         <source>Are you sure you want to delete
 </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Clock</source>
+        <translation type="unfinished">Rediger klokke</translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -488,7 +496,7 @@ Vil du byta henne ut?</translation>
     </message>
     <message>
         <source>Timed(Wait</source>
-        <translation>Tidlagt (Vent</translation>
+        <translation type="obsolete">Tidlagt (Vent</translation>
     </message>
     <message>
         <source>, Post</source>
@@ -536,6 +544,10 @@ Vil du byta henne ut?</translation>
     </message>
     <message>
         <source>and code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Timed(Wait)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -596,7 +608,7 @@ ei anna hending som finst frå før.</translation>
     <name>EditGrid</name>
     <message>
         <source>Edit Grid:</source>
-        <translation>Rediger gitter:</translation>
+        <translation type="obsolete">Rediger gitter:</translation>
     </message>
     <message>
         <source>Edit Clock</source>
@@ -625,6 +637,10 @@ ei anna hending som finst frå før.</translation>
     </message>
     <message>
         <source>This operation cannot be undone!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Grid</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -754,7 +770,7 @@ Vil du lagra?</translation>
     <name>GenerateLog</name>
     <message>
         <source>Generate Log</source>
-        <translation type="obsolete">Lag logg</translation>
+        <translation type="unfinished">Lag logg</translation>
     </message>
     <message>
         <source>Generating Log...</source>
@@ -813,7 +829,7 @@ Vil du lagra?</translation>
 will remove any merged Music or Traffic events.
 
 Recreate?</source>
-        <translation>finst alt. Om du lagar han på nytt,
+        <translation type="obsolete">finst alt. Om du lagar han på nytt,
 vil det fjerna alle innfletta Musikk- eller Trafikk-hendingar.
 
 Lag på nytt?</translation>
@@ -829,7 +845,7 @@ Lag på nytt?</translation>
     <message>
         <source>voice tracks associated with this log.
 Continue?</source>
-        <translation>røystspor som er kopla til denne loggen.
+        <translation type="obsolete">røystspor som er kopla til denne loggen.
 Hald fram?</translation>
     </message>
     <message>
@@ -847,7 +863,7 @@ Hald fram?</translation>
     <message>
         <source>already contains merged music and/or traffic data.
 Remerging it will remove this data.  Remerge?</source>
-        <translation>inneheld alt fletta musikk- og/eller trafikkdata.
+        <translation type="obsolete">inneheld alt fletta musikk- og/eller trafikkdata.
 Flettar du på nytt, vil du fjerna desse dataa. Flett på nytt?</translation>
     </message>
     <message>
@@ -857,16 +873,12 @@ Flettar du på nytt, vil du fjerna desse dataa. Flett på nytt?</translation>
     <message>
         <source>already contains merged traffic data.  Remerging it
 will remove this data.  Remerge?</source>
-        <translation>inneheld alt fletta trafikkdata.
+        <translation type="obsolete">inneheld alt fletta trafikkdata.
 Flettar du på nytt, vil du fjerna desse dataa. Flett på nytt?</translation>
     </message>
     <message>
         <source>Traffic Exists</source>
         <translation>Trafikken eksisterer</translation>
-    </message>
-    <message>
-        <source>Generate Log - User: </source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Error</source>
@@ -890,6 +902,38 @@ Flettar du på nytt, vil du fjerna desse dataa. Flett på nytt?</translation>
     </message>
     <message>
         <source>Unable to link traffic log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>already exists.  Recreating it</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>will remove any merged Music or Traffic events.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Recreate?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>voice tracks associated with this log.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Continue?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>already contains merged music and/or traffic data.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Remerging it will remove this data.  Remerge?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>already contains merged traffic data.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -968,7 +1012,7 @@ Flettar du på nytt, vil du fjerna desse dataa. Flett på nytt?</translation>
     <name>ListClocks</name>
     <message>
         <source>Log Clocks</source>
-        <translation type="obsolete">Loggklokker</translation>
+        <translation type="unfinished">Loggklokker</translation>
     </message>
     <message>
         <source>Filter:</source>
@@ -1037,7 +1081,7 @@ Flettar du på nytt, vil du fjerna desse dataa. Flett på nytt?</translation>
     <message>
         <source>Are you sure you want to
 delete</source>
-        <translation>Er du sikker på at du vil 
+        <translation type="obsolete">Er du sikker på at du vil 
 sletta</translation>
     </message>
     <message>
@@ -1046,7 +1090,7 @@ sletta</translation>
     </message>
     <message>
         <source>is in use in the following grid(s):</source>
-        <translation>er i bruk av desse gitra:</translation>
+        <translation type="obsolete">er i bruk av desse gitra:</translation>
     </message>
     <message>
         <source>Do you still want to delete it?</source>
@@ -1057,7 +1101,11 @@ sletta</translation>
         <translation>Klokka er i bruk</translation>
     </message>
     <message>
-        <source>Log Clocks - User: </source>
+        <source>Are you sure you want to delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is in use in the following grid(s)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1065,7 +1113,7 @@ sletta</translation>
     <name>ListEvents</name>
     <message>
         <source>Log Events</source>
-        <translation type="obsolete">Logghendingar</translation>
+        <translation type="unfinished">Logghendingar</translation>
     </message>
     <message>
         <source>Filter:</source>
@@ -1130,7 +1178,7 @@ sletta</translation>
     <message>
         <source>Are you sure you want to
 delete</source>
-        <translation>Er du sikker på at du vil
+        <translation type="obsolete">Er du sikker på at du vil
 sletta</translation>
     </message>
     <message>
@@ -1139,7 +1187,7 @@ sletta</translation>
     </message>
     <message>
         <source>is in use in the following clocks:</source>
-        <translation>er i bruk av desse klokkene:</translation>
+        <translation type="obsolete">er i bruk av desse klokkene:</translation>
     </message>
     <message>
         <source>Do you still want to delete it?</source>
@@ -1150,7 +1198,11 @@ sletta</translation>
         <translation>Hendinga er i bruk</translation>
     </message>
     <message>
-        <source>Log Events - User: </source>
+        <source>Are you sure you want to delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>is in use in the following clocks</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1249,10 +1301,6 @@ data</translation>
     <message>
         <source>&amp;Close</source>
         <translation>&amp;Lukk</translation>
-    </message>
-    <message>
-        <source>RDLogManager - User: </source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Error</source>

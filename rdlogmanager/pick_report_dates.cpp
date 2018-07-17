@@ -27,6 +27,7 @@
 #include <rdapplication.h>
 #include <rddatedialog.h>
 #include <rddatedecode.h>
+#include <rdescape_string.h>
 #include <rdreport.h>
 
 #include "globals.h"
@@ -67,9 +68,9 @@ PickReportDates::PickReportDates(const QString &svcname,QWidget *parent)
   label->setGeometry(10,11,60,19);
   label->setFont(bold_font);
   label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
-  sql=QString().sprintf("select REPORT_NAME from REPORT_SERVICES\
-                         where SERVICE_NAME=\"%s\" order by REPORT_NAME",
-			(const char *)svcname);
+  sql=QString("select REPORT_NAME from REPORT_SERVICES where ")+
+    "SERVICE_NAME=\""+RDEscapeString(svcname)+"\" "+
+    "order by REPORT_NAME";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     edit_report_box->insertItem(q->value(0).toString());

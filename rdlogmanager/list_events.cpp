@@ -42,9 +42,7 @@ ListEvents::ListEvents(QString *eventname,QWidget *parent)
   : QDialog(parent,"",true)
 {
   QStringList services_list;
-  QString str1=tr("Log Events - User: ");
-  setCaption(QString().sprintf("%s%s",(const char *)str1,
-			       (const char *)rda->ripc()->user()));
+  setCaption("RDLogManager - "+tr("Log Events"));
   edit_eventname=eventname;
 
   //
@@ -283,30 +281,24 @@ void ListEvents::deleteData()
 {
   int n;
   QString clock_list;
-  QString str1;
-  QString str2;
 
   QListViewItem *item=edit_events_list->selectedItem();
   if(item==NULL) {
     return;
   }
-  str1=QString(tr("Are you sure you want to\ndelete"));
-  if(QMessageBox::question(this,tr("Delete Event"),
-			   QString().sprintf("%s \'%s\'?",(const char *)str1,
-					     (const char *)item->text(0)),
+  if(QMessageBox::question(this,"RDLogManager - "+tr("Delete Event"),
+			   tr("Are you sure you want to delete")+" \""+
+			   item->text(0)+"\"?",
 			  QMessageBox::Yes,QMessageBox::No)
      !=QMessageBox::Yes) {
     return;
   }
   if((n=ActiveEvents(item->text(0),&clock_list))>0) {
-    str1=QString(tr("is in use in the following clocks:"));
-    str2=QString(tr("Do you still want to delete it?"));
-    if(QMessageBox::warning(this,tr("Event In Use"),
-			 QString().sprintf("\'%s\' %s\n\n%s\n%s",
-					   (const char *)item->text(0),
-					   (const char *)str1,
-					   (const char *)clock_list,
-					   (const char *)str2),
+    if(QMessageBox::warning(this,"RDLogManager - "+tr("Event In Use"),
+			    "\""+item->text(0)+"\" "+
+			    tr("is in use in the following clocks")+":\n\n"+
+			    clock_list+"\n"+
+			    tr("Do you still want to delete it?"),
 			    QMessageBox::Yes,QMessageBox::No)!=
        QMessageBox::Yes) {
       return;

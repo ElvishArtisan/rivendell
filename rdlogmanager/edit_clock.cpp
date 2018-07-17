@@ -53,9 +53,7 @@ EditClock::EditClock(QString clockname,bool new_clock,
 {
   QString str;
 
-  str=QString(tr("Edit Clock:"));
-  setCaption(QString().sprintf("%s %s",(const char *)str,
-			       (const char *)clockname));
+  setCaption("RDLogManager - "+tr("Edit Clock")+": "+clockname);
   edit_name=clockname;
   edit_new_clock=new_clock;
   edit_new_clocks=new_clocks;
@@ -378,10 +376,9 @@ void EditClock::deleteData()
     return;
   }
   str=QString(tr("Are you sure you want to delete\n"));
-  if(QMessageBox::question(this,tr("Delete Event"),
-			   QString().sprintf("%s \'(%s) %s\'?",(const char *)str,
-			 (const char *)item->text(0),
-			 (const char *)item->text(2)),
+  if(QMessageBox::question(this,"RDLogManager - "+tr("Delete Event"),
+			   tr("Are you sure you want to delete")+
+			   "\n \"("+item->text(0)+") "+item->text(2)+"\"?",
 			  QMessageBox::Yes,QMessageBox::No)!=
      QMessageBox::Yes) {
     return;
@@ -442,7 +439,6 @@ void EditClock::saveAsData()
   QString clockname=edit_name;
   QString sql;
   RDSqlQuery *q;
-  QString str;
 
   if(!ValidateCode()) {
     return;
@@ -467,9 +463,8 @@ void EditClock::saveAsData()
     return;
   }
   sql=
-    QString().sprintf("select SHORT_NAME from CLOCKS where SHORT_NAME=\"%s\"",
-		      (const char *)
-		      RDEscapeString(edit_shortname_edit->text()));
+    QString("select SHORT_NAME from CLOCKS where ")+
+    "SHORT_NAME=\""+RDEscapeString(edit_shortname_edit->text())+"\"";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     QMessageBox::warning(this,tr("Code Exists"),
@@ -486,8 +481,8 @@ void EditClock::saveAsData()
   }
   delete addclock;
   edit_name=clockname;
-  sql=QString().sprintf("select NAME from CLOCKS where NAME=\"%s\"",
-			(const char *)clockname);
+  sql=QString("select NAME from CLOCKS where ")+
+    "NAME=\""+RDEscapeString(clockname)+"\"";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     if(QMessageBox::question(this,tr("Clock Exists"),
@@ -507,9 +502,7 @@ void EditClock::saveAsData()
   }
   edit_clockname_label->setText(clockname);
   UpdateClock();
-  str=QString(tr("Edit Clock:"));
-  setCaption(QString().sprintf("%s %s",(const char *)str,
-			       (const char *)edit_name));
+  setCaption("RDLogManager - "+tr("Edit Clock")+": "+edit_name);
 }
 
 
@@ -635,9 +628,7 @@ void EditClock::RefreshList(int select_line)
 		    addMSecs(eventline->length()).toString("mm:ss.zzz").
 		    left(7));
       item->setText(3,RDGetTimeLength(eventline->length(),false,true));
-      item->setText(2,QString().sprintf("%s [%s]",
-		    (const char *)eventline->name(),
-		    (const char *)eventline->properties()));
+      item->setText(2,eventline->name()+" ["+eventline->properties()+"]");
       item->setText(4,QString().sprintf("%d",i));
       if(eventline->color().isValid()) {
 	item->setBackgroundColor(eventline->color());
@@ -659,15 +650,11 @@ void EditClock::RefreshNames()
   while(item!=NULL) {
     if(!item->text(4).isEmpty()) {
       if((eventline=edit_clock->eventLine(item->text(4).toInt()))!=NULL) {
-	sql=QString().sprintf("select PROPERTIES from EVENTS\
-                               where NAME=\"%s\"",
-			      (const char *)RDEscapeString(eventline->name()));
+	sql=QString("select PROPERTIES from EVENTS where ")+
+	  "NAME=\""+RDEscapeString(eventline->name())+"\"";
 	q=new RDSqlQuery(sql);
 	if(q->next()) {
-	  item->
-	    setText(2,QString().sprintf("%s [%s]",
-					(const char *)eventline->name(),
-					(const char *)q->value(0).toString()));
+	  item->setText(2,eventline->name()+" ["+q->value(0).toString()+"]");
 	}
 	delete q;
       }
@@ -740,15 +727,13 @@ void EditClock::CopyClockPerms(QString old_name,QString new_name)
   RDSqlQuery *q;
   RDSqlQuery *q1;
 
-  sql=QString().sprintf("select SERVICE_NAME from CLOCK_PERMS where\
-                         CLOCK_NAME=\"%s\"",
-			(const char *)RDEscapeString(old_name));
+  sql=QString("select SERVICE_NAME from CLOCK_PERMS where ")+
+    "CLOCK_NAME=\""+RDEscapeString(old_name)+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    sql=QString().sprintf("insert into CLOCK_PERMS set\
-                          CLOCK_NAME=\"%s\",SERVICE_NAME=\"%s\"",
-			  (const char *)RDEscapeString(new_name),
-			  (const char *)RDEscapeString(q->value(0).toString()));
+    sql=QString("insert into CLOCK_PERMS set ")+
+      "CLOCK_NAME=\""+RDEscapeString(new_name)+"\","+
+      "SERVICE_NAME=\""+RDEscapeString(q->value(0).toString())+"\"";
     q1=new RDSqlQuery(sql);
     delete q1;
   }
@@ -773,20 +758,16 @@ void EditClock::AbandonClock(QString name)
 bool EditClock::ValidateCode()
 {
   if(edit_shortname_edit->text().isEmpty()) {
-    QMessageBox::information(this,tr("Invalid Code"),
+    QMessageBox::information(this,"RDLogManager - "+tr("Invalid Code"),
 			     tr("You must provide a clock code!"));
     return false;
   }
-  RDSqlQuery *q=
-    new RDSqlQuery(QString().
-		  sprintf("select SHORT_NAME from CLOCKS\
-                                     where (SHORT_NAME=\"%s\")&&\
-                                     (NAME!=\"%s\")",
-			  (const char *)
-			  RDEscapeString(edit_shortname_edit->text()),
-			  (const char *)RDEscapeString(edit_name)));
+  QString sql=QString("select SHORT_NAME from CLOCKS where ")+
+    "(SHORT_NAME=\""+RDEscapeString(edit_shortname_edit->text())+"\")&&"+
+    "(NAME!=\""+RDEscapeString(edit_name)+"\")";
+  RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->next()) {
-    QMessageBox::information(this,tr("Duplicate Code"),
+    QMessageBox::information(this,"RDLogManager - "+tr("Duplicate Code"),
 			     tr("That code is already in use!"));
     delete q;
     return false;

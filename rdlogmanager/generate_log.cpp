@@ -58,9 +58,7 @@ GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
   cmdservice = cmd_service;
   cmddate = cmd_date;
 
-  QString str1=tr("Generate Log - User: ");
-  setCaption(QString().sprintf("%s%s",(const char *)str1,
-			       (const char *)rda->ripc()->user()));
+  setCaption("RDLogManager - "+tr("Generate Log"));
 
   gen_music_enabled=false;
   gen_traffic_enabled=false;
@@ -294,8 +292,6 @@ void GenerateLog::createData()
 {
   QString report;
   QString unused_report;
-  QString str1;
-  QString str2;
   unsigned tracks=0;
   QString err_msg;
 
@@ -308,12 +304,12 @@ void GenerateLog::createData()
 			       rda->station(),rda->config(),svc->name());
   RDLog *log=new RDLog(logname);
   if(log->exists()) {
-    str1=QString(tr("The log for"));
-    str2=QString(tr("already exists.  Recreating it\nwill remove any merged Music or Traffic events.\n\nRecreate?"));
-    if(QMessageBox::question(this,tr("Log Exists"),
-			     QString().sprintf("%s %s %s",(const char *)str1,
-		 (const char *)gen_date_edit->date().toString("MM/dd/yyyy"),
-					       (const char *)str2),
+    if(QMessageBox::question(this,"RDLogManager - "+tr("Log Exists"),
+			     tr("The log for")+" "+
+			     gen_date_edit->date().toString("MM/dd/yyyy")+" "+
+			     tr("already exists.  Recreating it")+"\n"+
+			     tr("will remove any merged Music or Traffic events.")+
+			     "\n\n"+tr("Recreate?"),
 			     QMessageBox::Yes,QMessageBox::No)!=
        QMessageBox::Yes) {
       delete log;
@@ -321,13 +317,11 @@ void GenerateLog::createData()
       return;
     }
     if((tracks=log->completedTracks())>0) {
-      str1=QString(tr("This will also delete the"));
-      str2=QString(tr("voice tracks associated with this log.\nContinue?"));
-      if(QMessageBox::warning(this,tr("Tracks Exist"),
-			      QString().sprintf("%s %u %s",
-						(const char *)str1,
-						tracks,
-						(const char *)str2),
+      if(QMessageBox::warning(this,"RDLogManager - "+tr("Tracks Exist"),
+			      tr("This will also delete the")+
+			      QString().sprintf(" %u ",tracks)+
+			      tr("voice tracks associated with this log.")+
+			      "\n"+tr("Continue?"),
 			      QMessageBox::Yes,QMessageBox::No)!=
 	 QMessageBox::Yes) {
 	delete log;
@@ -342,9 +336,6 @@ void GenerateLog::createData()
   //
   // Scheduler
   //
-  QString sql;
-  RDSqlQuery *q;
-
   srand(QTime::currentTime().msec());
   connect(svc,SIGNAL(generationProgress(int)),
 	  gen_progress_dialog,SLOT(setProgress(int)));
@@ -370,8 +361,7 @@ void GenerateLog::createData()
   //
   // Generate Exception Report
   //
-  RDLogEvent *event=
-    new RDLogEvent(QString().sprintf("%s_LOG",(const char *)logname));
+  RDLogEvent *event=new RDLogEvent(logname);
   event->load();
   if((event->validate(&report,gen_date_edit->date())==0)&&
      unused_report.isEmpty()) {
@@ -398,12 +388,11 @@ void GenerateLog::musicData()
   RDLog *log=new RDLog(logname);
   if(((log->linkState(RDLog::SourceMusic)==RDLog::LinkDone)||
       (log->linkState(RDLog::SourceTraffic)==RDLog::LinkDone))) {
-    QString str1=QString(tr("The log for"));
-    QString str2=QString(tr("already contains merged music and/or traffic data.\nRemerging it will remove this data.  Remerge?"));
-    if(QMessageBox::question(this,tr("Music Exists"),
-			     QString().sprintf("%s %s %s",(const char *)str1,
-		 (const char *)gen_date_edit->date().toString("MM/dd/yyyy"),
-					       (const char *)str2),
+    if(QMessageBox::question(this,"RDLogManager - "+tr("Music Exists"),
+			     tr("The log for")+" "+
+			     gen_date_edit->date().toString("MM/dd/yyyy")+" "+
+			     tr("already contains merged music and/or traffic data.")+"\n"+
+			     tr("Remerging it will remove this data.  Remerge?"),
 			     QMessageBox::Yes,QMessageBox::No)!=
        QMessageBox::Yes) {
       delete log;
@@ -411,13 +400,11 @@ void GenerateLog::musicData()
       return;
     }
     if((tracks=log->completedTracks())>0) {
-      str1=QString(tr("This will also delete the"));
-      str2=QString(tr("voice tracks associated with this log.\nContinue?"));
-      if(QMessageBox::warning(this,tr("Tracks Exist"),
-			      QString().sprintf("%s %u %s",
-						(const char *)str1,
-						tracks,
-						(const char *)str2),
+      if(QMessageBox::warning(this,"RDLogManager - "+tr("Tracks Exist"),
+			      tr("This will also delete the")+
+			      QString().sprintf(" %u ",tracks)+
+			      tr("voice tracks associated with this log.")+
+			      "\n"+tr("Continue?"),
 			      QMessageBox::Yes,QMessageBox::No)!=
 	 QMessageBox::Yes) {
 	delete log;
@@ -472,12 +459,11 @@ void GenerateLog::trafficData()
 			       rda->station(),rda->config(),svc->name());
   RDLog *log=new RDLog(logname);
   if((log->linkState(RDLog::SourceTraffic)==RDLog::LinkDone)) {
-    QString str1=QString(tr("The log for"));
-    QString str2=QString(tr("already contains merged traffic data.  Remerging it\nwill remove this data.  Remerge?"));
-    if(QMessageBox::question(this,tr("Traffic Exists"),
-			     QString().sprintf("%s %s %s",(const char *)str1,
-		 (const char *)gen_date_edit->date().toString("MM/dd/yyyy"),
-					       (const char *)str2),
+    if(QMessageBox::question(this,"RDLogManager - "+tr("Traffic Exists"),
+			     tr("The log for")+" "+
+			     gen_date_edit->date().toString("MM/dd/yyyy")+" "+
+			     tr("already contains merged traffic data.")+"\n"+
+			     tr("Remerging it will remove this data.  Remerge?"),
 			     QMessageBox::Yes,QMessageBox::No)!=
        QMessageBox::Yes) {
       delete log;

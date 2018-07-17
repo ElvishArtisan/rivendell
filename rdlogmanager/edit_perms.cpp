@@ -2,7 +2,7 @@
 //
 // Edit RDLogManager Service Associations
 //
-//   (C) Copyright 2002-2005,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2005,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,11 +30,12 @@
 #include <qcheckbox.h>
 #include <qbuttongroup.h>
 
-#include <rduser.h>
-#include <rdpasswd.h>
 #include <rddb.h>
-#include <edit_perms.h>
+#include <rdescape_string.h>
+#include <rdpasswd.h>
+#include <rduser.h>
 
+#include "edit_perms.h"
 
 EditPerms::EditPerms(QString object_name,ObjectType type,QWidget *parent)
   : QDialog(parent,"",true)
@@ -55,8 +56,7 @@ EditPerms::EditPerms(QString object_name,ObjectType type,QWidget *parent)
   setMaximumHeight(sizeHint().height());
 
   str=QString(tr("Service Associations"));
-  setCaption(QString().sprintf("%s - %s",
-			       (const char *)sel_name,(const char *)str));
+  setCaption("RDLogManager - "+sel_name+" - "+tr("Service Associations"));
 
   //
   // Create Fonts
@@ -96,20 +96,17 @@ EditPerms::EditPerms(QString object_name,ObjectType type,QWidget *parent)
   // Populate Fields
   //
   switch(sel_type) {
-      case EditPerms::ObjectEvent:
-	object_type="EVENT";
-	break;
+  case EditPerms::ObjectEvent:
+    object_type="EVENT";
+    break;
 
-      case EditPerms::ObjectClock:
-	object_type="CLOCK";
-	break;
+  case EditPerms::ObjectClock:
+    object_type="CLOCK";
+    break;
   }
-  // FIXME: should this be filtered based on the user if usersec is enabled?
-  sql=QString().sprintf("select SERVICE_NAME from %s_PERMS \
-                         where %s_NAME=\"%s\"",
-			(const char *)object_type,
-			(const char *)object_type,
-			(const char *)object_name);
+  sql=QString("select ")+
+    "SERVICE_NAME from "+object_type+"_PERMS where "+
+    object_type+"_NAME=\""+RDEscapeString(object_name)+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     svc_object_sel->destInsertItem(q->value(0).toString());
@@ -152,23 +149,17 @@ void EditPerms::okData()
   // Add New Objects
   //
   for(unsigned i=0;i<svc_object_sel->destCount();i++) {
-    sql=QString().sprintf("select %s_NAME from %s_PERMS \
-                           where SERVICE_NAME=\"%s\" && %s_NAME=\"%s\"",
-			  (const char *)object_type,
-			  (const char *)object_type,
-			  (const char *)svc_object_sel->destText(i),
-			  (const char *)object_type,
-			  (const char *)sel_name);
+    sql=QString("select ")+object_type+"_NAME from "+
+      object_type+"_PERMS where "+
+      "SERVICE_NAME=\""+RDEscapeString(svc_object_sel->destText(i))+"\" && "+
+      object_type+"_NAME=\""+RDEscapeString(sel_name)+"\"";
     q=new RDSqlQuery(sql);
     if(q->size()==0) {
       delete q;
-      sql=QString().
-	sprintf("insert into %s_PERMS (SERVICE_NAME,%s_NAME) \
-                 values (\"%s\",\"%s\")",
-		(const char *)object_type,
-		(const char *)object_type,
-		(const char *)svc_object_sel->destText(i),
-		(const char *)sel_name);
+      sql=QString("insert into ")+object_type+"_PERMS "+
+	"(SERVICE_NAME,"+object_type+"_NAME) "+
+	"values (\""+RDEscapeString(svc_object_sel->destText(i))+"\","+
+	"\""+RDEscapeString(sel_name)+"\")";
       q=new RDSqlQuery(sql);
     }
     delete q;
@@ -177,13 +168,12 @@ void EditPerms::okData()
   //
   // Delete Old Hosts
   //
-  sql=QString().sprintf("delete from %s_PERMS where %s_NAME=\"%s\"",
-			(const char *)object_type,
-			(const char *)object_type,
-			(const char *)sel_name);
+  sql=QString("delete from ")+
+    object_type+"_PERMS where "+
+    object_type+"_NAME=\""+RDEscapeString(sel_name)+"\"";
   for(unsigned i=0;i<svc_object_sel->destCount();i++) {
-    sql+=QString().sprintf(" && SERVICE_NAME<>\"%s\"",
-			   (const char *)svc_object_sel->destText(i));
+    sql+=QString(" && SERVICE_NAME<>\"")+
+      RDEscapeString(svc_object_sel->destText(i))+"\"";
   }
   q=new RDSqlQuery(sql);
   delete q;

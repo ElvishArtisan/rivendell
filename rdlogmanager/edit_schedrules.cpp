@@ -30,6 +30,7 @@
 #include <rd.h>
 #include <rdapplication.h>
 #include <rddb.h>
+#include <rdescape_string.h>
 #include <rdlistviewitem.h>
 
 #include "edit_schedrules.h"
@@ -241,7 +242,8 @@ void EditSchedRules::importData()
     }
   delete import_list;
 
-  sql=QString().sprintf("select ARTISTSEP from CLOCKS where NAME=\"%s\"",(const char *)clockname); 
+  sql=QString("select ARTISTSEP from CLOCKS where ")+
+    "NAME=\""+RDEscapeString(clockname)+"\"";
   q=new RDSqlQuery(sql);
   if (q->first())
     {
