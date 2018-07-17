@@ -191,31 +191,23 @@ QSizePolicy EditTrack::sizePolicy() const
 
 void EditTrack::timeChangedData(const QTime &time)
 {
-  QString str;
-
   if(edit_timetype_box->isChecked()) {
-    str=QString(tr("Transition If Previous Cart Ends Before"));
     edit_time_label->
-      setText(QString().sprintf("%s %s:",(const char *)str,
-		  (const char *)edit_time_edit->time().
-				toString("hh:mm:ss.zzz").left(10)));
+      setText(tr("Transition If Previous Cart Ends Before")+" "+
+	      edit_time_edit->time().toString("hh:mm:ss.zzz").left(10)+":");
   }
 }
 
 
 void EditTrack::timeToggledData(bool state)
 {
-  QString str;
-
   edit_time_edit->setEnabled(state);
   edit_grace_group->setEnabled(state);
   if(state) {
     graceClickedData(edit_grace_group->selectedId());
-    str=QString(tr("Transition If Previous Cart Ends Before"));
     edit_time_label->
-      setText(QString().sprintf("%s %s:",(const char *)str,
-		  (const char *)edit_time_edit->time().
-				toString("hh:mm:ss.zzz").left(10)));
+      setText(tr("Transition If Previous Cart Ends Before")+" "+
+	      edit_time_edit->time().toString("hh:mm:ss.zzz").left(10)+":");
   }
   else {
     edit_grace_box->setDisabled(true);

@@ -2550,12 +2550,8 @@ void VoiceTracker::RefreshLine(RDListViewItem *item)
 	item->setText(6,logline->title());
       }
       else {
-	item->setText(6,QString().
-		      sprintf("%s -- %s %s",
-			      (const char *)logline->title(),
-			      (const char *)logline->originUser(),
-			      (const char *)logline->originDateTime().
-			      toString("M/d hh:mm")));
+	item->setText(6,logline->title()+" -- "+logline->originUser()+" "+
+		      logline->originDateTime().toString("M/d hh:mm"));
       }
     }
     item->setText(7,logline->artist());
@@ -3145,9 +3141,8 @@ void VoiceTracker::DrawTrackMap(int trackno)
         }	    
       }
       wpg[0]->setPen(TRACKER_TEXT_COLOR);
-      wpg[0]->drawText(5,14,QString().sprintf("%s - %s",
-					      (const char *)edit_logline[0]->title(),
-					      (const char *)edit_logline[0]->artist()));
+      wpg[0]->drawText(5,14,edit_logline[0]->title()+" - "+
+		       edit_logline[0]->artist());
       wpg[0]->end();
     }
     break;
@@ -3171,8 +3166,8 @@ void VoiceTracker::DrawTrackMap(int trackno)
       if(track_start_time>QTime(0,0,0)) {
         p->setFont(QFont("Helvetica",12,QFont::Bold));
 	p->setPen(TRACKER_TEXT_COLOR);
-        p->drawText(550,75,QString().sprintf("Start %s", 
-					     (const char*)track_start_time.toString("h:mm:ss")));
+        p->drawText(550,75,tr("Start")+" "+
+		    track_start_time.toString("h:mm:ss"));
       }           
       p->end();
       delete p;
@@ -3204,8 +3199,7 @@ void VoiceTracker::DrawTrackMap(int trackno)
 	  track_time=track_start_time;
 	  track_time=track_time.addMSecs(
 					 track_time_remaining_start-track_time_counter);
-          p->drawText(550,75,QString().sprintf("Time %s", 
-					       (const char*)track_time.toString("h:mm:ss")));
+          p->drawText(550,75,tr("Time")+" "+track_time.toString("h:mm:ss"));
         }                  
 	p->end();
 	delete p;
@@ -3298,8 +3292,8 @@ void VoiceTracker::DrawTrackMap(int trackno)
 	  wpg[1]->drawText(5,14,edit_logline[1]->title());
 	}
         if(track_start_time>QTime(0,0,0)) {
-	  wpg[1]->drawText(550,75,QString().sprintf("Start %s", 
-						    (const char*)track_start_time.toString("h:mm:ss")));
+	  wpg[1]->drawText(550,75,tr("Start")+" "+
+			   track_start_time.toString("h:mm:ss"));
         }
 	wpg[1]->end();
 	break;
@@ -3415,9 +3409,8 @@ void VoiceTracker::DrawTrackMap(int trackno)
 	DrawRubberBand(wpg[2],2);
       }
       wpg[2]->setPen(TRACKER_TEXT_COLOR);
-      wpg[2]->drawText(5,14,QString().sprintf("%s - %s",
-					      (const char *)edit_logline[2]->title(),
-					      (const char *)edit_logline[2]->artist()));
+      wpg[2]->drawText(5,14,edit_logline[2]->title()+" - "+
+		       edit_logline[2]->artist());
       if(track_recording && (edit_deck[2]->state()==RDPlayDeck::Playing ||
 			     edit_deck[2]->state()==RDPlayDeck::Stopping)) {
 	int talk_len=edit_logline[2]->talkLength();
@@ -3426,12 +3419,12 @@ void VoiceTracker::DrawTrackMap(int trackno)
 	  talk_len-=edit_deck[2]->currentPosition()-
 	    edit_logline[2]->talkStartPoint();
 	}
-	wpg[2]->drawText(550,75,QString().sprintf("Talk :%d", 
-						  (talk_len+500)/1000));
+	wpg[2]->drawText(550,75,tr("Talk")+
+			 QString().sprintf(" :%d",(talk_len+500)/1000));
       }
       else {
-	wpg[2]->drawText(550,75,QString().sprintf("Talk :%d", 
-						  (edit_logline[2]->talkLength()+500)/1000));
+	wpg[2]->drawText(550,75,tr("Talk")+QString().
+		  sprintf(" :%d",(edit_logline[2]->talkLength()+500)/1000));
       }
 
       wpg[2]->end();
@@ -3920,9 +3913,7 @@ void VoiceTracker::UpdateRemaining()
   edit_tracks_remaining_label->setText(QString().sprintf("%d",track_tracks));
   if(track_block_valid) {
     edit_time_remaining_label->
-      setText(QString().sprintf("%s",(const char *)
-				RDGetTimeLength(track_time_remaining,
-					       true,true)));
+      setText(RDGetTimeLength(track_time_remaining,true,true));
     if(track_time_remaining>=0) {
       edit_time_remaining_label->setPalette(edit_time_remaining_palette[0]);
     }

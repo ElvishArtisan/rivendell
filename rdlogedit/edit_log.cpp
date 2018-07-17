@@ -1509,12 +1509,8 @@ void EditLog::RefreshLine(RDListViewItem *item)
 	item->setText(6,logline->title());
       }
       else {
-	item->setText(6,QString().
-		      sprintf("%s -- %s %s",
-			      (const char *)logline->title(),
-			      (const char *)logline->originUser(),
-			      (const char *)logline->originDateTime().
-			      toString("M/d hh:mm")));
+	item->setText(6,logline->title()+" -- "+logline->originUser()+
+		      " "+logline->originDateTime().toString("M/d hh:mm"));
       }
     }
     item->

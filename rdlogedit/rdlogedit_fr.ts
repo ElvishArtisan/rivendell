@@ -88,6 +88,10 @@
         <source>Transition If Previous Cart Ends Before</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Transition Type</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditLog</name>
@@ -512,6 +516,10 @@ group for the specified service!</source>
         <source>An event is already scheduled with this start time!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Transition Type</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditMarker</name>
@@ -572,7 +580,7 @@ group for the specified service!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Transition Type:</source>
+        <source>Transition Type</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -832,10 +840,6 @@ Report</source>
     </message>
     <message>
         <source>audio deletion error!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Windows</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1179,6 +1183,10 @@ therefore only existing transitions will be editable.</source>
     </message>
     <message>
         <source>Log already being edited by</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Talk</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

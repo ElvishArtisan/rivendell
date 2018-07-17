@@ -92,6 +92,10 @@
         <source>Transition If Previous Cart Ends Before</source>
         <translation>Overgang viss førre korg endar før</translation>
     </message>
+    <message>
+        <source>Transition Type</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditLog</name>
@@ -554,6 +558,10 @@ som er skrudd av for denne tenesta!</translation>
         <source>An event is already scheduled with this start time!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Transition Type</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditMarker</name>
@@ -619,7 +627,11 @@ som er skrudd av for denne tenesta!</translation>
     </message>
     <message>
         <source>Transition Type:</source>
-        <translation>Overgangstype:</translation>
+        <translation type="obsolete">Overgangstype:</translation>
+    </message>
+    <message>
+        <source>Transition Type</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -941,10 +953,6 @@ Vil du halda fram?</translation>
     </message>
     <message>
         <source>audio deletion error!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Windows</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1288,6 +1296,10 @@ therefore only existing transitions will be editable.</source>
     </message>
     <message>
         <source>Log already being edited by</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Talk</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

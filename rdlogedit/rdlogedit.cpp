@@ -99,8 +99,6 @@ void SigHandler(int signo)
 MainWidget::MainWidget(QWidget *parent)
   :QMainWindow(parent)
 {
-  QString str1;
-  QString str2;
   QString err_msg;
 
   log_resize=false;
@@ -294,20 +292,17 @@ MainWidget::MainWidget(QWidget *parent)
   log_close_button->setText(tr("&Close"));
   connect(log_close_button,SIGNAL(clicked()),this,SLOT(quitMainWidget()));
 
-  str1=QString("RDLogEdit")+"v"+VERSION+" - "+tr("Host");
 #ifdef WIN32
   RefreshList();
-  str2=tr("User")+": ["+tr("Windows")+"]";
 #else
   // 
   // Setup Signal Handling 
   //
   ::signal(SIGCHLD,SigHandler);
-  str2=tr("User")+": ["+tr("Unknown")+"]";
 #endif  // WIN32
-  setCaption(QString().sprintf("%s: %s, %s",(const char *)str1,
-			       (const char *)rda->config()->stationName(),
-			       (const char *)str2));
+  setCaption(QString("RDLogEdit")+"v"+VERSION+" - "+tr("Host")+": "+
+	     rda->config()->stationName()+", "+
+	     tr("User")+": ["+tr("Unknown")+"]");
 
   log_resize=true;
 }
@@ -771,13 +766,26 @@ void MainWidget::RefreshItem(ListListViewItem *item)
   RDSqlQuery *q;
   QString sql;
 
-  sql=QString().sprintf("select DESCRIPTION,SERVICE,START_DATE,END_DATE,\
-                         ORIGIN_USER,ORIGIN_DATETIME,COMPLETED_TRACKS,\
-                         SCHEDULED_TRACKS,MUSIC_LINKS,MUSIC_LINKED,\
-                         TRAFFIC_LINKS,TRAFFIC_LINKED,LINK_DATETIME,\
-                         MODIFIED_DATETIME,AUTO_REFRESH from LOGS\
-                         where (TYPE=0)&&(LOG_EXISTS=\"Y\")&&(NAME=\"%s\")",
-			(const char *)item->text(1));
+  sql=QString("select ")+
+    "DESCRIPTION,"+        // 00
+    "SERVICE,"+            // 01
+    "START_DATE,"+         // 02
+    "END_DATE,"+           // 03
+    "ORIGIN_USER,"+        // 04
+    "ORIGIN_DATETIME,"+    // 05
+    "COMPLETED_TRACKS,"+   // 06
+    "SCHEDULED_TRACKS,"+   // 07
+    "MUSIC_LINKS,"+        // 08
+    "MUSIC_LINKED,"+       // 09
+    "TRAFFIC_LINKS,"+      // 10
+    "TRAFFIC_LINKED,"+     // 11
+    "LINK_DATETIME,"+      // 12
+    "MODIFIED_DATETIME,"+  // 13
+    "AUTO_REFRESH "+       // 14
+    "from LOGS where "+
+    "(TYPE=0)&&"+        
+    "(LOG_EXISTS=\"Y\")&&"+
+    "(NAME=\""+RDEscapeString(item->text(1))+"\")";
   q=new RDSqlQuery(sql);
   if(q->next()) {
     item->setText(2,q->value(0).toString());

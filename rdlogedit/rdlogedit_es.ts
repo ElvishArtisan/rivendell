@@ -88,6 +88,10 @@
         <source>Transition If Previous Cart Ends Before</source>
         <translation>Transic. si cart. previo termina antes de</translation>
     </message>
+    <message>
+        <source>Transition Type</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditLog</name>
@@ -540,6 +544,10 @@ desactivado para el servicio especificado!</translation>
         <source>An event is already scheduled with this start time!</source>
         <translation>¡Se programó un evento para esta misma hora de inicio!</translation>
     </message>
+    <message>
+        <source>Transition Type</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditMarker</name>
@@ -601,7 +609,11 @@ desactivado para el servicio especificado!</translation>
     </message>
     <message>
         <source>Transition Type:</source>
-        <translation>Tipo de transición:</translation>
+        <translation type="obsolete">Tipo de transición:</translation>
+    </message>
+    <message>
+        <source>Transition Type</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -929,10 +941,6 @@ See your system administrator for an update!</source>
     </message>
     <message>
         <source>audio deletion error!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Windows</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1282,6 +1290,10 @@ sólo podrás editar transiciones ya existentes.</translation>
     </message>
     <message>
         <source>Log already being edited by</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Talk</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

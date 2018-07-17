@@ -89,6 +89,10 @@ Ação se Evento anterior estiver sendo executado</translation>
         <source>Transition If Previous Cart Ends Before</source>
         <translation>Transição de Cartão anterior terminar antes</translation>
     </message>
+    <message>
+        <source>Transition Type</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditLog</name>
@@ -541,6 +545,10 @@ para o Serviço especificado!</translation>
         <source>An event is already scheduled with this start time!</source>
         <translation>Um evento já foi agendado para esta hora!</translation>
     </message>
+    <message>
+        <source>Transition Type</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditMarker</name>
@@ -602,7 +610,11 @@ para o Serviço especificado!</translation>
     </message>
     <message>
         <source>Transition Type:</source>
-        <translation>Tipo de Transição:</translation>
+        <translation type="obsolete">Tipo de Transição:</translation>
+    </message>
+    <message>
+        <source>Transition Type</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -920,10 +932,6 @@ Continuar?</translation>
     </message>
     <message>
         <source>audio deletion error!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Windows</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1274,6 +1282,10 @@ Assim sendo, somente transições existentes serão editáveis.</translation>
     </message>
     <message>
         <source>Log already being edited by</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Talk</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

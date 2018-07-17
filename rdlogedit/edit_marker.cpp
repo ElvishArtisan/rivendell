@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Log Marker Entry
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,7 +21,7 @@
 #include <qpushbutton.h>
 #include <qmessagebox.h>
 
-#include <edit_marker.h>
+#include "edit_marker.h"
 
 EditMarker::EditMarker(RDLogLine *line,QWidget *parent)
   : QDialog(parent,"",true)
@@ -202,35 +202,27 @@ QSizePolicy EditMarker::sizePolicy() const
 
 void EditMarker::timeChangedData(const QTime &time)
 {
-  QString str;
-
   if(edit_timetype_box->isChecked()) {
-    str=QString(tr("Transition If Previous Cart Ends Before"));
     edit_time_label->
-      setText(QString().sprintf("%s %s:",(const char *)str,
-				(const char *)edit_time_edit->time().
-				toString("hh:mm:ss.zzz").left(10)));
+      setText(tr("Transition If Previous Cart Ends Before")+" "+
+	      edit_time_edit->time().toString("hh:mm:ss.zzz").left(10)+":");
   }
 }
 
 
 void EditMarker::timeToggledData(bool state)
 {
-  QString str;
-
   edit_time_edit->setEnabled(state);
   edit_grace_group->setEnabled(state);
   if(state) {
     graceClickedData(edit_grace_group->selectedId());
-    str=QString(tr("Transition If Previous Cart Ends Before"));
     edit_time_label->
-      setText(QString().sprintf("%s %s:",(const char *)str,
-		  (const char *)edit_time_edit->time().
-				toString("hh:mm:ss.zzz").left(10)));
+      setText(tr("Transition If Previous Cart Ends Before")+" "+
+	      edit_time_edit->time().toString("hh:mm:ss.zzz").left(10)+":");
   }
   else {
     edit_grace_box->setDisabled(true);
-    edit_time_label->setText(tr("Transition Type:"));
+    edit_time_label->setText(tr("Transition Type")+":");
   }
 }
 
