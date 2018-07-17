@@ -17146,3 +17146,6 @@
 	to be saved to the incorrect Location.
 2018-07-17 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'RDDeck' that threw a SQL error.
+2018-07-17 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up SQL quieries in 'rdcatchd/' ensure UTF-8
+	compatibility.
