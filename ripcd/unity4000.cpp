@@ -22,6 +22,7 @@
 
 #include <rdapplication.h>
 #include <rddb.h>
+#include <rdescape_string.h>
 
 #include "globals.h"
 #include "unity4000.h"
@@ -41,11 +42,14 @@ Unity4000::Unity4000(RDMatrix *matrix,QObject *parent)
   //
   // Load Feed Data
   //
-  sql=QString().sprintf("select NUMBER,FEED_NAME,CHANNEL_MODE from INPUTS \
-                         where STATION_NAME=\"%s\" && MATRIX=%d \
-                         order by NUMBER",
-			(const char *)rda->station()->name(),
-			matrix->matrix());
+  sql=QString("select ")+
+    "NUMBER,"+        // 00
+    "FEED_NAME,"+     // 01
+    "CHANNEL_MODE "+  // 02
+    "from INPUTS where "+
+    "STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\" && "+
+    QString().sprintf("MATRIX=%d ",matrix->matrix())+
+    "order by NUMBER";
   q=new RDSqlQuery(sql);
   q->first();
   for(int i=0;i<unity_inputs;i++) {

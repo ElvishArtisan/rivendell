@@ -2,7 +2,7 @@
 //
 // Rivendell Interprocess Communication Daemon
 //
-//   (C) Copyright 2002-2007,2010,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2007,2010,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -41,6 +41,7 @@
 #include <rdapplication.h>
 #include <rdconf.h>
 #include <rdcheck_daemons.h>
+#include <rdescape_string.h>
 #include <rdnotification.h>
 
 #include "globals.h"
@@ -772,10 +773,13 @@ void MainObject::LoadGpiTable()
       }
     }
   }
-  QString sql=QString().sprintf("select MATRIX,NUMBER,OFF_MACRO_CART,\
-                                 MACRO_CART from GPIS \
-                                 where STATION_NAME=\"%s\"",
-				(const char *)rda->config()->stationName());
+  QString sql=QString("select ")+
+    "MATRIX,"+          // 00
+    "NUMBER,"+          // 01
+    "OFF_MACRO_CART,"+  // 02
+    "MACRO_CART "+      // 03
+    "from GPIS where "+
+    "STATION_NAME=\""+RDEscapeString(rda->config()->stationName())+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
     ripcd_gpi_macro[q->value(0).toInt()][q->value(1).toInt()-1][0]=
@@ -785,9 +789,13 @@ void MainObject::LoadGpiTable()
   }
   delete q;
 
-  sql=QString().sprintf("select MATRIX,NUMBER,OFF_MACRO_CART,MACRO_CART \
-                         from GPOS where STATION_NAME=\"%s\"",
-			(const char *)rda->config()->stationName());
+  sql=QString("select ")+
+    "MATRIX,"+          // 00
+    "NUMBER,"+          // 01
+    "OFF_MACRO_CART,"+  // 02
+    "MACRO_CART "+      // 03
+    "from GPOS where "+
+    "STATION_NAME=\""+RDEscapeString(rda->config()->stationName())+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     ripcd_gpo_macro[q->value(0).toInt()][q->value(1).toInt()-1][0]=

@@ -310,26 +310,24 @@ void SoftwareAuthority::DispatchCommand()
     if(f0.size()>=7) {
       name=f0[6]+": "+f0[2];
     }
-    sql=QString().sprintf("select NUMBER from INPUTS where \
-                           (STATION_NAME=\"%s\")&&	   \
-                           (MATRIX=%d)&&(NUMBER=%d)",
-			  (const char *)rda->station()->name(),
-			  swa_matrix,f0[0].toInt());
+    sql=QString("select NUMBER from INPUTS where ")+
+      "(STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\")&&"+
+      QString().sprintf("(MATRIX=%d)&&",swa_matrix)+
+      QString().sprintf("(NUMBER=%d)",f0[0].toInt());
     q=new RDSqlQuery(sql);
     if(q->first()) {
-      sql=QString().sprintf("update INPUTS set NAME=\"%s\" where \
-                            (STATION_NAME=\"%s\")&&\
-                            (MATRIX=%d)&&(NUMBER=%d)",
-			    (const char *)name,
-			    (const char *)rda->station()->name(),
-			    swa_matrix,f0[0].toInt());
+      sql=QString("update INPUTS set ")+
+	"NAME=\""+RDEscapeString(name)+"\" where "+
+	"(STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\")&&"+
+	QString().sprintf("(MATRIX=%d)&&",swa_matrix)+
+	QString().sprintf("(NUMBER=%d)",f0[0].toInt());
     }
     else {
-      sql=QString().sprintf("insert into INPUTS set NAME=\"%s\",\
-                            STATION_NAME=\"%s\",MATRIX=%d,NUMBER=%d",
-			    (const char *)name,
-			    (const char *)rda->station()->name(),
-			    swa_matrix,f0[0].toInt());
+      sql=QString("insert into INPUTS set ")+
+	"NAME=\""+RDEscapeString(name)+"\","+
+	"STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\","+
+	QString().sprintf("MATRIX=%d,",swa_matrix)+
+	QString().sprintf("NUMBER=%d",f0[0].toInt());
     }
     delete q;
     q=new RDSqlQuery(sql);
@@ -364,26 +362,24 @@ void SoftwareAuthority::DispatchCommand()
     if(f0.size()>=6) {
       name=f0[3]+"/"+f0[5]+": "+f0[2];
     }
-    sql=QString().sprintf("select NUMBER from OUTPUTS where \
-                           (STATION_NAME=\"%s\")&&\
-                           (MATRIX=%d)&&(NUMBER=%d)",
-			  (const char *)rda->station()->name(),
-			  swa_matrix,f0[0].toInt());
+    sql=QString("select NUMBER from OUTPUTS where ")+
+      "(STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\")&&"+
+      QString().sprintf("(MATRIX=%d)&&",swa_matrix)+
+      QString().sprintf("(NUMBER=%d)",f0[0].toInt());
     q=new RDSqlQuery(sql);
     if(q->first()) {
-      sql=QString().sprintf("update OUTPUTS set NAME=\"%s\" where \
-                             (STATION_NAME=\"%s\")&&\
-                             (MATRIX=%d)&&(NUMBER=%d)",
-			    (const char *)name,
-			    (const char *)rda->station()->name(),
-			    swa_matrix,f0[0].toInt());
+      sql=QString("update OUTPUTS set ")+
+	"NAME=\""+RDEscapeString(name)+"\" where "+
+	"(STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\")&&"+
+	QString().sprintf("(MATRIX=%d)&&",swa_matrix)+
+	QString().sprintf("(NUMBER=%d)",f0[0].toInt());
     }
     else {
-      sql=QString().sprintf("insert into OUTPUTS set NAME=\"%s\",\
-                             STATION_NAME=\"%s\",MATRIX=%d,NUMBER=%d",
-			    (const char *)name,
-			    (const char *)rda->station()->name(),
-			    swa_matrix,f0[0].toInt());
+      sql=QString("insert into OUTPUTS set ")+
+	"NAME=\""+RDEscapeString(name)+"\","+
+	"STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\","+
+	QString().sprintf("MATRIX=%d,",swa_matrix)+
+	QString().sprintf("NUMBER=%d",f0[0].toInt());
     }
     delete q;
     q=new RDSqlQuery(sql);

@@ -17161,3 +17161,6 @@
 2018-07-17 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up SQL quieries in 'rdrepld/' to ensure UTF-8
 	compatibility.
+2018-07-18 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up SQL quieries in 'ripcd/' to ensure UTF-8
+	compatibility.
