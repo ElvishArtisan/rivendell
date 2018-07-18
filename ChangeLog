@@ -17166,3 +17166,6 @@
 	compatibility.
 2018-07-18 Fred Gleason <fredg@paravelsystems.com>
 	* Removed 'sas_switch_torture' and 'sas_torture' from 'tests/'.
+2018-07-18 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up SQL quieries in 'utils/rdgpimon/' to ensure UTF-8
+	compatibility.
