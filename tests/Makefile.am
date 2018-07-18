@@ -37,8 +37,6 @@ noinst_PROGRAMS = audio_convert_test\
                   mcast_recv_test\
                   rdxml_parse_test\
                   reserve_carts_test\
-                  sas_switch_torture\
-                  sas_torture\
                   stringcode_test\
                   test_hash\
                   test_pam\
@@ -74,14 +72,6 @@ rdxml_parse_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
 
 dist_reserve_carts_test_SOURCES = reserve_carts_test.cpp reserve_carts_test.h
 reserve_carts_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
-
-dist_sas_switch_torture_SOURCES = sas_switch_torture.cpp sas_switch_torture.h
-nodist_sas_switch_torture_SOURCES = moc_sas_switch_torture.cpp
-sas_switch_torture_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
-
-dist_sas_torture_SOURCES = sas_torture.cpp sas_torture.h
-nodist_sas_torture_SOURCES = moc_sas_torture.cpp
-sas_torture_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
 
 dist_stringcode_test_SOURCES = stringcode_test.cpp stringcode_test.h
 stringcode_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
