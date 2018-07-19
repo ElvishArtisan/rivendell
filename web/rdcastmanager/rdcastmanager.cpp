@@ -341,17 +341,16 @@ void MainObject::ServeListFeeds()
   line_colors[1]=RD_WEB_LINE_COLOR2;
   int current_color=0;
 
-  sql=QString().sprintf("select FEED_PERMS.KEY_NAME from \
-                         FEED_PERMS left join WEB_CONNECTIONS \
-                         on(FEED_PERMS.USER_NAME=WEB_CONNECTIONS.LOGIN_NAME) \
-                         where WEB_CONNECTIONS.SESSION_ID=%ld",
-			cast_session_id);
+  sql=QString("select ")+
+    "FEED_PERMS.KEY_NAME "+  // 00
+    "from FEED_PERMS left join WEB_CONNECTIONS "+
+    "on(FEED_PERMS.USER_NAME=WEB_CONNECTIONS.LOGIN_NAME) where "+
+    QString().sprintf("WEB_CONNECTIONS.SESSION_ID=%ld",cast_session_id);
   q=new RDSqlQuery(sql);
   sql=QString().sprintf("select ID,KEY_NAME,CHANNEL_TITLE from FEEDS \
                          where ");
   while(q->next()) {
-    sql+=QString().sprintf("(KEY_NAME=\"%s\")||",
-			   (const char *)q->value(0).toString());
+    sql+=QString("(KEY_NAME=\"")+RDEscapeString(q->value(0).toString())+"\")||";
   }
   delete q;
   if(sql.right(2)=="||") {
@@ -362,8 +361,8 @@ void MainObject::ServeListFeeds()
       total=0;
       active=0;
       printf("<tr>\n");
-      sql=QString().sprintf("select STATUS from PODCASTS where FEED_ID=%u",
-			    q->value(0).toUInt());
+      sql=QString("select STATUS from PODCASTS where ")+
+	QString().sprintf("FEED_ID=%u",q->value(0).toUInt());
       q1=new RDSqlQuery(sql);
       while(q1->next()) {
 	total++;
@@ -1127,10 +1126,12 @@ void MainObject::ServePlay()
     Exit(0);
   }
 
-  sql=QString().sprintf("select FEEDS.BASE_URL,PODCASTS.AUDIO_FILENAME \
-                         from FEEDS left join PODCASTS \
-                         on FEEDS.ID=PODCASTS.FEED_ID \
-                         where PODCASTS.ID=%d",cast_cast_id);
+  sql=QString("select ")+
+    "FEEDS.BASE_URL,"+           // 00
+    "PODCASTS.AUDIO_FILENAME "+  // 01
+    "from FEEDS left join PODCASTS "+
+    "on FEEDS.ID=PODCASTS.FEED_ID where "+
+    QString().sprintf("PODCASTS.ID=%d",cast_cast_id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     printf("Content-type: audio/x-mpeg\n");
@@ -1282,37 +1283,27 @@ void MainObject::CommitCast()
   QDateTime 
     effective_datetime(QDate(effective_year,effective_month,effective_day),
 		      QTime(effective_hour,effective_minute,effective_second));
-  sql=QString().sprintf("update PODCASTS set \
-                         STATUS=%d,\
-                         ITEM_TITLE=\"%s\",\
-                         ITEM_DESCRIPTION=\"%s\",\
-                         ITEM_CATEGORY=\"%s\",\
-                         ITEM_LINK=\"%s\",\
-                         ITEM_COMMENTS=\"%s\",\
-                         ITEM_AUTHOR=\"%s\",\
-                         ITEM_SOURCE_TEXT=\"%s\",\
-                         ITEM_SOURCE_URL=\"%s\",\
-                         SHELF_LIFE=%d,\
-                         EFFECTIVE_DATETIME=%s \
-                         where ID=%d",
-			status,
-			(const char *)RDEscapeString(item_title),
-			(const char *)RDEscapeString(item_description),
-			(const char *)RDEscapeString(item_category),
-			(const char *)RDEscapeString(item_link),
-			(const char *)RDEscapeString(item_comments),
-			(const char *)RDEscapeString(item_author),
-			(const char *)RDEscapeString(item_source_text),
-			(const char *)RDEscapeString(item_source_url),
-			shelf_life,
-			(const char *)RDCheckDateTime(RDLocalToUtc(effective_datetime),
-			    "yyyy-MM-dd hh:mm:ss"),
-			cast_cast_id);
+  sql=QString("update PODCASTS set ")+
+    QString().sprintf("STATUS=%d,",status)+
+    "ITEM_TITLE=\""+RDEscapeString(item_title)+"\","+
+    "ITEM_DESCRIPTION=\""+RDEscapeString(item_description)+"\","+
+    "ITEM_CATEGORY=\""+RDEscapeString(item_category)+"\","+
+    "ITEM_LINK=\""+RDEscapeString(item_link)+"\","+
+    "ITEM_COMMENTS=\""+RDEscapeString(item_comments)+"\","+
+    "ITEM_AUTHOR=\""+RDEscapeString(item_author)+"\","+
+    "ITEM_SOURCE_TEXT=\""+RDEscapeString(item_source_text)+"\","+
+    "ITEM_SOURCE_URL=\""+RDEscapeString(item_source_url)+"\","+
+    QString().sprintf("SHELF_LIFE=%d,",shelf_life)+
+    "EFFECTIVE_DATETIME="+
+    RDCheckDateTime(RDLocalToUtc(effective_datetime),"yyyy-MM-dd hh:mm:ss")+
+    " where "+
+    QString().sprintf("ID=%d",cast_cast_id);
   q=new RDSqlQuery(sql);
   delete q;
 
-  sql=QString().sprintf("update FEEDS set LAST_BUILD_DATETIME=UTC_TIMESTAMP()\
-                         where ID=%d",cast_feed_id);
+  sql=QString("update FEEDS set ")+
+    "LAST_BUILD_DATETIME=UTC_TIMESTAMP() where "+
+    QString().sprintf("ID=%d",cast_feed_id);
   q=new RDSqlQuery(sql);
   delete q;
 
