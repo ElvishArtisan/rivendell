@@ -537,6 +537,7 @@ unsigned RDFeed::postCut(RDUser *user,RDStation *station,
   RDUpload *upload=NULL;
   RDUpload::ErrorCode upload_err;
   RDAudioConvert::ErrorCode audio_conv_err;
+  RDAudioExport::ErrorCode export_err;
 
   emit postProgressChanged(0);
   emit postProgressChanged(1);
@@ -563,7 +564,7 @@ unsigned RDFeed::postCut(RDUser *user,RDStation *station,
   settings->setBitRate(uploadBitRate());
   settings->setNormalizationLevel(normalizeLevel()/100);
   conv->setDestinationSettings(settings);
-  switch(conv->runExport(user->name(),user->password(),&audio_conv_err)) {
+  switch((export_err=conv->runExport(user->name(),user->password(),&audio_conv_err))) {
   case RDAudioExport::ErrorOk:
     break;
 
@@ -728,7 +729,6 @@ unsigned RDFeed::postFile(RDStation *station,const QString &srcfile,Error *err,
   default:
     emit postProgressChanged(totalPostSteps());
     *err=RDFeed::ErrorUploadFailed;
-    printf("Upload Error: %s\n",(const char *)RDUpload::errorText(upload_err));
     sql=QString().sprintf("delete from PODCASTS where ID=%u",cast_id);
     q=new RDSqlQuery(sql);
     delete q;

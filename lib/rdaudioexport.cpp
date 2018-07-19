@@ -142,8 +142,8 @@ RDAudioExport::ErrorCode RDAudioExport::runExport(const QString &username,
   //
 
   QString post=QString().sprintf("COMMAND=%d&",RDXPORT_COMMAND_EXPORT)+
-    "LOGIN_NAME=RDFormPost::urlEncode(username)&"+
-    "PASSWORD=RDFormPost::urlEncode(password)&"+
+    "LOGIN_NAME="+RDFormPost::urlEncode(username)+"&"+
+    "PASSWORD="+RDFormPost::urlEncode(password)+"&"+
     QString().sprintf("CART_NUMBER=%u&",conv_cart_number)+
     QString().sprintf("CUT_NUMBER=%u&",conv_cut_number)+
     QString().sprintf("FORMAT=%d&",conv_settings->format())+

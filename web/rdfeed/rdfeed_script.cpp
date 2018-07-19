@@ -113,20 +113,6 @@ MainObject::MainObject(QObject *parent)
     exit(0);
   }
 
-  //
-  // Read Command Options
-  //
-  for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
-    if(!rda->cmdSwitch()->processed(i)) {
-      printf("Content-type: text/html\n");
-      printf("Status: 500\n");
-      printf("\n");
-      printf("rdfeed.xml: unknown command option \"%s\"\n",
-	     (const char *)rda->cmdSwitch()->key(i));
-      exit(0);
-    }
-  }
-
   if(cast_id<0) {
     ServeRss(keyname,count);
   }
@@ -219,7 +205,8 @@ void MainObject::ServeRss(const char *keyname,bool count)
     "ID "+                  // 12
     "from PODCASTS where "+
     QString().sprintf("(FEED_ID=%d)&&",q->value(13).toUInt())+
-    QString().sprintf("(STATUS=%d)",RDPodcast::StatusActive);
+    QString().sprintf("(STATUS=%d) ",RDPodcast::StatusActive)+
+    "order by ORIGIN_DATETIME";
   if(q->value(15).toString()=="N") {
     sql+=" desc";
   }
@@ -231,7 +218,7 @@ void MainObject::ServeRss(const char *keyname,bool count)
 			       getenv("QUERY_STRING"),
 			       q->value(13).toUInt(),
 			       q1->value(7).toUInt()));
-//    printf("%s\n",(const char *)ResolveItemWildcards(q1,q));
+    //printf("%s\n",(const char *)ResolveItemWildcards(q1,q));
     printf("</item>\n");
   }
   delete q1;

@@ -17187,3 +17187,10 @@
 2018-07-19 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'RDEncoder' class.
 	* Removed the 'RDEncoderList' class.
+2018-07-19 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdadmin(1) that caused the credentials fields to
+	be greyed out when configuring a podcast feed to use SFTP uploads.
+	* Fixed a bug in 'RDExport' that caused encoding of credentials
+	to be corrupt.
+	* Fixed a regression in the RDFeed service that caused detection
+	of feed	names to fail.

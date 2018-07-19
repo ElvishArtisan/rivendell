@@ -508,7 +508,7 @@ void EditFeed::purgeUrlChangedData(const QString &str)
 {
   QUrl url(str);
   QString protocol=url.protocol();
-  if(((protocol=="ftp")||(protocol=="smb"))&&
+  if(((protocol=="ftp")||(protocol=="sftp"))&&
      (!feed_redirect_check->isChecked())) {
     feed_purge_username_label->setEnabled(true);
     feed_purge_username_edit->setEnabled(true);
