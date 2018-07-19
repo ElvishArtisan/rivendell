@@ -173,7 +173,6 @@ void AddFeed::okData()
     "ITEM_XML=\""+RDEscapeString(DEFAULT_ITEM_XML)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
-  RDCreateFeedLog(feed_keyname_edit->text());
   RDCreateAuxFieldsTable(feed_keyname_edit->text(),rda->config());
   sql=QString("select ID from FEEDS where ")+
     "KEY_NAME=\""+RDEscapeString(feed_keyname_edit->text())+"\"";

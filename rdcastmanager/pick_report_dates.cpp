@@ -215,13 +215,12 @@ void PickReportDates::GenerateSubscriptionReport(const QString &keyname,
   //
   // Data Rows
   //
-  QString keyname_esc=keyname;
-  keyname_esc.replace(" ","_");
   sql=QString("select ")+
     "ACCESS_DATE,"+   // 00
     "ACCESS_COUNT,"+  // 01
     "CAST_ID "+       // 02
-    "from "+keyname_esc+"_FLG where "+
+    "from CAST_DOWNLOADS where "+
+    "FEED_KEY_NAME=\""+RDEscapeString(keyname)+"\" && "+
     "(ACCESS_DATE>=\""+RDEscapeString(edit_startdate_edit->date().
 				      toString("yyyy-MM-dd"))+"\")&&"+
     "(ACCESS_DATE<=\""+RDEscapeString(edit_enddate_edit->date().
@@ -288,12 +287,11 @@ void PickReportDates::GenerateEpisodeReport(const QString &keyname,
   // Data Rows
   //
   unsigned total=0;
-  QString keyname_esc=keyname;
-  keyname_esc.replace(" ","_");
   sql=QString("select ")+
-    "ACCESS_DATE,"+
-    "ACCESS_COUNT "+
-    "from "+keyname_esc+"_FLG where "+
+    "ACCESS_DATE,"+   // 00
+    "ACCESS_COUNT "+  // 01
+    "from CAST_DOWNLOADS where "+
+    "FEED_KEY_NAME=\""+RDEscapeString(keyname)+"\" && "+
     "(ACCESS_DATE>=\""+RDEscapeString(edit_startdate_edit->date().
 				      toString("yyyy-MM-dd"))+"\")&&"+
     "(ACCESS_DATE<=\""+RDEscapeString(edit_enddate_edit->date().

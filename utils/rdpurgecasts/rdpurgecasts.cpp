@@ -143,10 +143,9 @@ void MainObject::PurgeCast(unsigned id)
       delete q1;
     }
     else {
-      QString keyname=q->value(2).toString();
-      keyname.replace(" ","_");
-      sql=QString().sprintf("delete from %s_FLG where CAST_ID=%d",
-			    (const char *)keyname,id);
+      sql=QString("delete from CAST_DOWNLOADS where ")+
+	"FEED_KEY_NAME=\""+RDEscapeString(q->value(2).toString())+"\" && "+
+	QString().sprintf("CAST_ID=%d",id);
       q1=new RDSqlQuery(sql);
       delete q1;
 

@@ -39,6 +39,53 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
 
 
   //
+  // Revert 294
+  //
+  if((cur_schema==294)&&(set_schema<cur_schema)) {
+    sql=QString("select KEY_NAME from FEEDS");
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      QString tablename=q->value(0).toString()+"_FLG";
+      tablename.replace(" ","_");
+      sql=QString("create table if not exists `")+tablename+"` ("+
+	"ID int unsigned primary key auto_increment,"+
+	"CAST_ID int unsigned,"+
+	"ACCESS_DATE date,"+
+	"ACCESS_COUNT int unsigned default 0,"+
+	"index CAST_ID_IDX(CAST_ID,ACCESS_DATE))";
+      if(!RDSqlQuery::apply(sql,err_msg)) {
+	return false;
+      }
+
+      sql=QString("select ")+
+	"CAST_ID,"+       // 00
+	"ACCESS_DATE,"+   // 01
+	"ACCESS_COUNT "+  // 02
+	"from CAST_DOWNLOADS where "+
+	"FEED_KEY_NAME=\""+RDEscapeString(q->value(0).toString())+"\" "+
+	"order by CAST_ID,ACCESS_DATE";
+      q1=new RDSqlQuery(sql,false);
+      while(q1->next()) {
+	sql=QString("insert into `")+tablename+"` set "+
+	  QString().sprintf("CAST_ID=%u,",q1->value(0).toUInt())+
+	  "ACCESS_DATE=\""+
+	  RDEscapeString(q1->value(1).toDate().toString("yyyy-MM-dd"))+"\","+
+	  QString().sprintf("ACCESS_COUNT=%u",q1->value(2).toUInt());
+	if(!RDSqlQuery::apply(sql,err_msg)) {
+	  return false;
+	}
+      }
+      delete q1;
+    }
+
+    if(!DropTable("CAST_DOWNLOADS",err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 293
   //
   if((cur_schema==293)&&(set_schema<cur_schema)) {

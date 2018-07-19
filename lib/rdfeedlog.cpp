@@ -22,45 +22,27 @@
 
 #include <rdapplication.h>
 #include <rddb.h>
+#include <rdescape_string.h>
 #include <rdweb.h>
 
 #include "rdfeedlog.h"
 
-void RDCreateFeedLog(QString keyname)
-{
-  QString sql;
-  RDSqlQuery *q;
-
-  keyname.replace(" ","_");
-  sql=QString().sprintf("create table if not exists %s_FLG (\
-                         ID int unsigned primary key auto_increment,\
-                         CAST_ID int unsigned,\
-                         ACCESS_DATE date,\
-                         ACCESS_COUNT int unsigned default 0,\
-                         index CAST_ID_IDX(CAST_ID,ACCESS_DATE))",
-			(const char *)keyname);
-  q=new RDSqlQuery(sql);
-  delete q;
-}
-
-
 void RDDeleteFeedLog(QString keyname)
 {
-  keyname.replace(" ","_");
-  rda->dropTable(keyname+"_FLG");
+  QString sql=QString("delete from CAST_DOWNLOADS where ")+
+    "FEED_KEY_NAME=\""+RDEscapeString(keyname)+"\"";
+  RDSqlQuery::apply(sql);
 }
 
 
 void RDDeleteCastCount(QString keyname,unsigned cast_id)
 {
   QString sql;
-  RDSqlQuery *q;
 
-  keyname.replace(" ","_");
-  sql=QString().sprintf("delete from %s_FLG where CAST_ID=%u",
-			(const char *)keyname,cast_id);
-  q=new RDSqlQuery(sql);
-  delete q;
+  sql=QString("delete from CAST_DOWNLOADS where ")+
+    "FEED_KEY_NAME=\""+RDEscapeString(keyname)+"\" && "+
+    QString().sprintf("CAST_ID=%u",cast_id);
+  RDSqlQuery::apply(sql);
 }
 
 
@@ -88,45 +70,25 @@ void RDIncrementCastCount(QString keyname,unsigned cast_id)
 {
   QString sql;
   RDSqlQuery *q;
-  QDate current_date=QDate::currentDate();
+  QDate now=QDate::currentDate();
 
-  keyname.replace(" ","_");
-/*
-  FIXME: Table locking kills updates.  Why?
-
-  sql=QString().sprintf("lock tables %s_FLG read",(const char *)keyname);
-  q=new RDSqlQuery(sql);
-  delete q;
-*/
-  sql=QString().sprintf("select ACCESS_COUNT from %s_FLG where \
-                         (CAST_ID=%u)&&(ACCESS_DATE=\"%s\")",
-			(const char *)keyname,
-			cast_id,
-			(const char *)current_date.toString("yyyy-MM-dd"));
+  sql=QString("select ACCESS_COUNT from CAST_DOWNLOADS where ")+
+    "FEED_KEY_NAME=\""+RDEscapeString(keyname)+"\" && "+
+    QString().sprintf("(CAST_ID=%u)&&",cast_id)+
+    "(ACCESS_DATE=\""+RDEscapeString(now.toString("yyyy-MM-dd"))+"\")";
   q=new RDSqlQuery(sql);
   if(q->first()) {
-    sql=QString().sprintf("update %s_FLG set ACCESS_COUNT=%u where \
-                         (CAST_ID=%u)&&(ACCESS_DATE=\"%s\")",
-			  (const char *)keyname,
-			  q->value(0).toUInt()+1,cast_id,
-			  (const char *)current_date.toString("yyyy-MM-dd"));
+    sql=QString("update CAST_DOWNLOADS set ")+
+      QString().sprintf("ACCESS_COUNT=%u where ",q->value(0).toUInt()+1)+
+      QString().sprintf("(CAST_ID=%u)&&",cast_id)+
+      "(ACCESS_DATE=\""+RDEscapeString(now.toString("yyyy-MM-dd"))+"\")";
   }
   else {
-    sql=QString().sprintf("insert into %s_FLG set \
-                           CAST_ID=%u,\
-                           ACCESS_DATE=\"%s\",\
-                           ACCESS_COUNT=1",
-			  (const char *)keyname,
-			  cast_id,
-			  (const char *)current_date.toString("yyyy-MM-dd"));
+    sql=QString("insert into CAST_DOWNLOADS set ")+
+      QString().sprintf("CAST_ID=%u,",cast_id)+
+      "ACCESS_DATE=\""+RDEscapeString(now.toString("yyyy-MM-dd"))+"\","+
+      "ACCESS_COUNT=1";
   }
+  RDSqlQuery::apply(sql);
   delete q;
-  q=new RDSqlQuery(sql);
-  delete q;
-
-/*
-  sql="unlock tables";
-  q=new RDSqlQuery(sql);
-  delete q;
-*/
 }

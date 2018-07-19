@@ -7797,6 +7797,54 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<294)&&(set_schema>cur_schema)) {
+    sql=QString("create table if not exists CAST_DOWNLOADS (")+
+      "ID int unsigned not null auto_increment primary key,"+
+      "FEED_KEY_NAME char(8) not null,"+
+      "CAST_ID int unsigned not null,"+
+      "ACCESS_DATE date not null,"+
+      "ACCESS_COUNT int unsigned not null default 0,"+
+      "unique index KEY_NAME_CAST_ID_DATE_IDX(FEED_KEY_NAME,CAST_ID,ACCESS_DATE))"+
+      db_table_create_postfix;
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("select KEY_NAME from FEEDS");
+    q=new RDSqlQuery(sql,false);
+    while(q->next()) {
+      QString tablename=q->value(0).toString()+"_FLG";
+      tablename.replace(" ","_");
+      sql=QString("select ")+
+	"CAST_ID,"+       // 00
+	"ACCESS_DATE,"+   // 01
+	"ACCESS_COUNT "+  // 02
+	"from `"+tablename+"` "+
+	"order by ACCESS_DATE";
+      q1=new RDSqlQuery(sql,false);
+      while(q1->next()) {
+	sql=QString("insert into CAST_DOWNLOADS set ")+
+	  "FEED_KEY_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	  QString().sprintf("CAST_ID=%u,",q1->value(0).toUInt())+
+	  "ACCESS_DATE=\""+
+	  RDEscapeString(q1->value(1).toDate().toString("yyyy-MM-dd"))+"\","+
+	  QString().sprintf("ACCESS_COUNT=%u",q1->value(2).toUInt());
+	if(!RDSqlQuery::apply(sql,err_msg)) {
+	  return false;
+	}
+      }
+      delete q1;
+      if(!DropTable(tablename,err_msg)) {
+	return false;
+      }
+    }
+    delete q;
+
+
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
 
 
   //

@@ -17194,3 +17194,6 @@
 	to be corrupt.
 	* Fixed a regression in the RDFeed service that caused detection
 	of feed	names to fail.
+2018-07-19 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'CAST_DOWNLOADS' table to the database.
+	* Incremented the database version to 294.

@@ -1493,15 +1493,16 @@ void MainObject::ServeSubscriptionReport()
   line_colors[0]=RD_WEB_LINE_COLOR1;
   line_colors[1]=RD_WEB_LINE_COLOR2;
   int current_color=0;
-  QString keyname_esc=cast_key_name;
-  keyname_esc.replace(" ","_");
-  sql=QString().sprintf("select ACCESS_DATE,ACCESS_COUNT,CAST_ID from %s_FLG \
-                         where (ACCESS_DATE>=\"%s\")&&\
-                         (ACCESS_DATE<=\"%s\") \
-                         order by ACCESS_DATE,CAST_ID desc",
-			(const char *)keyname_esc,
-			(const char *)cast_start_date.toString("yyyy-MM-dd"),
-			(const char *)cast_end_date.toString("yyyy-MM-dd"));
+  sql=QString("select ")+
+    "ACCESS_DATE,"+   // 00
+    "ACCESS_COUNT,"+  // 01
+    "CAST_ID "+       // 02
+    "from CAST_DOWNLOADS where "+
+    "(ACCESS_DATE>=\""+
+    RDEscapeString(cast_start_date.toString("yyyy-MM-dd"))+"\")&&"+
+    "(ACCESS_DATE<=\""+
+    RDEscapeString(cast_end_date.toString("yyyy-MM-dd"))+"\" "+
+    "order by ACCESS_DATE,CAST_ID desc";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(q->value(2).toUInt()==0) {
@@ -1660,16 +1661,17 @@ void MainObject::ServeEpisodeReport()
   line_colors[0]=RD_WEB_LINE_COLOR1;
   line_colors[1]=RD_WEB_LINE_COLOR2;
   int current_color=0;
-  QString keyname_esc=cast_key_name;
-  keyname_esc.replace(" ","_");
-  sql=QString().sprintf("select ACCESS_DATE,ACCESS_COUNT from %s_FLG \
-                         where (ACCESS_DATE>=\"%s\")&&\
-                         (ACCESS_DATE<=\"%s\")&& \
-                         (CAST_ID=%d) order by ACCESS_DATE",
-			(const char *)keyname_esc,
-			(const char *)cast_start_date.toString("yyyy-MM-dd"),
-			(const char *)cast_end_date.toString("yyyy-MM-dd"),
-			cast_cast_id);
+  sql=QString("select ")+
+    "ACCESS_DATE,"+   // 00
+    "ACCESS_COUNT "+  // 01
+    "from CAST_DOWNLOADS where "+
+    "FEED_KEY_NAME=\""+RDEscapeString(cast_key_name)+"\" && "+
+    "(ACCESS_DATE>=\""+
+    RDEscapeString(cast_start_date.toString("yyyy-MM-dd"))+"\")&&"+
+    "(ACCESS_DATE<=\""+
+    RDEscapeString(cast_end_date.toString("yyyy-MM-dd"))+"\")&&"+
+    QString().sprintf("(CAST_ID=%d) ",cast_cast_id)+
+    "order by ACCESS_DATE";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     printf("<tr><td align=\"center\" bgcolor=\"%s\">%s</td>\n",
