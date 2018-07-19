@@ -1919,10 +1919,9 @@ QDateTime MainObject::GetCachedTimestamp(const QString &filename)
   if(import_persistent_dropbox_id<0) {
     return dt;
   }
-  sql=QString().sprintf("select FILE_DATETIME from DROPBOX_PATHS \
-                         where (DROPBOX_ID=%d)&&(FILE_PATH=\"%s\")",
-			import_persistent_dropbox_id,
-			(const char *)RDEscapeString(filename));
+  sql=QString().sprintf("select FILE_DATETIME from DROPBOX_PATHS where ")+
+    QString().sprintf("(DROPBOX_ID=%d)&&",import_persistent_dropbox_id)+
+    "(FILE_PATH=\""+RDEscapeString(filename)+"\")";
   q=new RDSqlQuery(sql);
   if(q->first()) {
     dt=q->value(0).toDateTime();
@@ -1941,20 +1940,16 @@ void MainObject::WriteTimestampCache(const QString &filename,
     return;
   }
   if(GetCachedTimestamp(filename).isNull()) {
-    sql=QString().sprintf("insert into DROPBOX_PATHS set \
-                           DROPBOX_ID=%d,\
-                           FILE_PATH=\"%s\",\
-                           FILE_DATETIME=%s",
-			  import_persistent_dropbox_id,
-			  (const char *)RDEscapeString(filename),
-			  (const char *)RDCheckDateTime(dt,"yyyy-MM-dd hh:mm:ss"));
+    sql=QString("insert into DROPBOX_PATHS set ")+
+      QString().sprintf("DROPBOX_ID=%d,",import_persistent_dropbox_id)+
+      "FILE_PATH=\""+RDEscapeString(filename)+"\","+
+      "FILE_DATETIME="+RDCheckDateTime(dt,"yyyy-MM-dd hh:mm:ss");
   }
   else {
-    sql=QString().sprintf("update DROPBOX_PATHS set FILE_DATETIME=%s \
-                           where (DROPBOX_ID=%d)&&(FILE_PATH=\"%s\")",
-			  (const char *)RDCheckDateTime(dt,"yyyy-MM-dd hh:mm:ss"),
-			  import_persistent_dropbox_id,
-			  (const char *)RDEscapeString(filename));
+    sql=QString("update DROPBOX_PATHS set ")+
+      "FILE_DATETIME="+RDCheckDateTime(dt,"yyyy-MM-dd hh:mm:ss")+" where "+
+      QString().sprintf("(DROPBOX_ID=%d)&&",import_persistent_dropbox_id)+
+      "(FILE_PATH=\""+RDEscapeString(filename)+"\")";
   }
   q=new RDSqlQuery(sql);
   delete q;

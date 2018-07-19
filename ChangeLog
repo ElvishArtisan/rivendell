@@ -17169,3 +17169,6 @@
 2018-07-18 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up SQL quieries in 'utils/rdgpimon/' to ensure UTF-8
 	compatibility.
+2018-07-19 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up SQL quieries in 'utils/rdimport/' to ensure UTF-8
+	compatibility.
