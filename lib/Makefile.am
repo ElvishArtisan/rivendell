@@ -122,8 +122,6 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdedit_audio.cpp rdedit_audio.h\
                         rdedit_panel_name.cpp rdedit_panel_name.h\
                         rdemptycart.cpp rdemptycart.h\
-                        rdencoder.cpp rdencoder.h\
-                        rdencoderlist.cpp rdencoderlist.h\
                         rdescape_string.cpp rdescape_string.h\
                         rdevent.cpp rdevent.h\
                         rdevent_line.cpp rdevent_line.h\

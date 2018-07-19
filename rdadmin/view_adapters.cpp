@@ -23,10 +23,8 @@
 #include <qlabel.h>
 
 #include <rd.h>
-#include <rdencoderlist.h>
 
-#include <view_adapters.h>
-
+#include "view_adapters.h"
 
 ViewAdapters::ViewAdapters(RDStation *rdstation,QWidget *parent)
   : QDialog(parent,"",true)
@@ -112,11 +110,6 @@ ViewAdapters::ViewAdapters(RDStation *rdstation,QWidget *parent)
     }
     text+=tr("    PCM16 Linear\n");
     text+=tr("    PCM24 Linear\n");
-    RDEncoderList *encoders=new RDEncoderList(rdstation->name());
-    for(unsigned i=0;i<encoders->encoderQuantity();i++) {
-      text+="    "+encoders->encoder(i)->name()+" [Custom]\n";
-    }
-    delete encoders;
 
     text+="\n";
     

@@ -28,7 +28,6 @@
 #include <qlabel.h>
 
 #include <rdsettings.h>
-#include <rdencoderlist.h>
 
 class RDExportSettingsDialog : public QDialog
 {
@@ -50,7 +49,6 @@ class RDExportSettingsDialog : public QDialog
    void ShowBitRates(RDSettings::Format fmt,int samprate,int bitrate,int qual);
    void SetCurrentItem(QComboBox *box,int value);
    RDSettings::Format GetFormat(QString str);
-   RDEncoderList *lib_encoders;
    RDSettings *lib_settings;
    QComboBox *lib_format_box;
    QComboBox *lib_channels_box;
