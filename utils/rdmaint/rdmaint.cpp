@@ -146,18 +146,23 @@ void MainObject::PurgeCuts()
   RDSqlQuery *q2;
   QDateTime dt=QDateTime(QDate::currentDate(),QTime::currentTime());
 
-  sql=QString("select NAME,CUT_SHELFLIFE,DELETE_EMPTY_CARTS from GROUPS ")+
-    "where CUT_SHELFLIFE>=0";
+  sql=QString("select ")+
+    "NAME,"+                // 00
+    "CUT_SHELFLIFE,"+       // 01
+    "DELETE_EMPTY_CARTS "+  // 02
+    "from GROUPS where "+
+    "CUT_SHELFLIFE>=0";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    sql=QString().sprintf("select CART.NUMBER,CUTS.CUT_NAME \
-                           from CUTS left join CART \
-                           on CUTS.CART_NUMBER=CART.NUMBER \
-                           where (CART.GROUP_NAME=\"%s\")&&\
-                           (CUTS.END_DATETIME<\"%s 00:00:00\")",
-			  (const char *)RDEscapeString(q->value(0).toString()),
-			  (const char *)dt.addDays(-q->value(1).toInt()).
-			  toString("yyyy-MM-dd"));
+    sql=QString("select ")+
+      "CART.NUMBER,"+    // 00
+      "CUTS.CUT_NAME "+  // 01
+      "from CUTS left join CART "+
+      "on CUTS.CART_NUMBER=CART.NUMBER where "+
+      "(CART.GROUP_NAME=\""+RDEscapeString(q->value(0).toString())+"\")&&"+
+      "(CUTS.END_DATETIME<\""+
+      RDEscapeString(dt.addDays(-q->value(1).toInt()).toString("yyyy-MM-dd"))+
+      " 00:00:00\")";
     q1=new RDSqlQuery(sql);
     while(q1->next()) {
       RDCart *cart=new RDCart(q1->value(0).toUInt());
@@ -174,8 +179,8 @@ void MainObject::PurgeCuts()
 		      (const char *)q1->value(1).toString()));
       }
       if(q->value(2).toString()=="Y") {  // Delete Empty Cart
-	sql=QString().sprintf("select CUT_NAME from CUTS where CART_NUMBER=%u",
-			      q1->value(0).toUInt());
+	sql=QString("select CUT_NAME from CUTS where ")+
+	  QString().sprintf("CART_NUMBER=%u",q1->value(0).toUInt());
 	q2=new RDSqlQuery(sql);
 	if(!q2->first()) {
 	  cart->remove(rda->station(),rda->user(),rda->config());
@@ -245,17 +250,18 @@ void MainObject::PurgeDropboxes()
   RDSqlQuery *q;
   RDSqlQuery *q1;
 
-  sql=QString().sprintf("select DROPBOX_PATHS.FILE_PATH,DROPBOX_PATHS.ID from \
-                         DROPBOXES left join DROPBOX_PATHS \
-                         on (DROPBOXES.ID=DROPBOX_PATHS.DROPBOX_ID) \
-                         where DROPBOXES.STATION_NAME=\"%s\"",
-			(const char *)RDEscapeString(rda->config()->
-						     stationName()));
+  sql=QString("select ")+
+    "DROPBOX_PATHS.FILE_PATH,"+  // 00
+    "DROPBOX_PATHS.ID "+         // 01
+    "from DROPBOXES left join DROPBOX_PATHS "+
+    "on (DROPBOXES.ID=DROPBOX_PATHS.DROPBOX_ID) where "+
+    "DROPBOXES.STATION_NAME=\""+RDEscapeString(rda->config()->stationName())+
+    "\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(!QFile::exists(q->value(0).toString())) {
-      sql=QString().sprintf("delete from DROPBOX_PATHS where ID=%d",
-			    q->value(1).toInt());
+      sql=QString("delete from DROPBOX_PATHS where ")+
+	QString().sprintf("ID=%d",q->value(1).toInt());
       q1=new RDSqlQuery(sql);
       delete q1;
     }
