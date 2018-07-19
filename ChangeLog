@@ -17181,3 +17181,6 @@
 2018-07-19 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up SQL quieries in 'web/rdcastmanager/' to ensure UTF-8
 	compatibility.
+2018-07-19 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up SQL quieries in 'web/rdfeed/' to ensure UTF-8
+	compatibility.
