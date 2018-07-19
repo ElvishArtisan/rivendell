@@ -118,10 +118,13 @@ void MainObject::PurgeCast(unsigned id)
   RDPodcast *cast=NULL;
   QString errs;
 
-  sql=QString().sprintf("select FEEDS.ID,FEEDS.KEEP_METADATA,FEEDS.KEY_NAME \
-                         from PODCASTS left join FEEDS \
-                         on(PODCASTS.FEED_ID=FEEDS.ID) \
-                         where PODCASTS.ID=%u",id);
+  sql=QString("select ")+
+    "FEEDS.ID,"+             // 00
+    "FEEDS.KEEP_METADATA,"+  // 01
+    "FEEDS.KEY_NAME "+       // 02
+    "from PODCASTS left join FEEDS "+
+    "on(PODCASTS.FEED_ID=FEEDS.ID) where "+
+    QString().sprintf("PODCASTS.ID=%u",id);
   q=new RDSqlQuery(sql);
   while(q->next()) {
     feed=new RDFeed(q->value(0).toUInt(),rda->config());
@@ -133,9 +136,9 @@ void MainObject::PurgeCast(unsigned id)
     delete cast;
     delete feed;
     if(RDBool(q->value(1).toString())) {
-      sql=QString().sprintf("update PODCASTS set STATUS=%u \
-                             where ID=%u",
-			    RDPodcast::StatusExpired,id);
+      sql=QString("update PODCASTS set ")+
+	QString().sprintf("STATUS=%u where ",RDPodcast::StatusExpired)+
+	QString().sprintf("ID=%u",id);
       q1=new RDSqlQuery(sql);
       delete q1;
     }
@@ -147,15 +150,16 @@ void MainObject::PurgeCast(unsigned id)
       q1=new RDSqlQuery(sql);
       delete q1;
 
-      sql=QString().sprintf("delete from PODCASTS where ID=%d",id);
+      sql=QString("delete from PODCASTS where ")+
+	QString().sprintf("ID=%d",id);
       q1=new RDSqlQuery(sql);
       delete q1;
     }
-    sql=QString().sprintf("update FEEDS set LAST_BUILD_DATETIME=\"%s\" \
-                           where ID=%u",
-			  (const char *)current_datetime.
-			  toString("yyyy-MM-dd hh:mm:ss"),
-			  q->value(0).toUInt());
+    sql=QString("update FEEDS set ")+
+      "LAST_BUILD_DATETIME=\""+
+      RDEscapeString(current_datetime.toString("yyyy-MM-dd hh:mm:ss"))+
+      "\" where "+
+      QString().sprintf("ID=%u",q->value(0).toUInt());
     q1=new RDSqlQuery(sql);
     delete q1;
 
