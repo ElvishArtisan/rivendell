@@ -43,7 +43,6 @@
 #include "edit_cartslots.h"
 #include "edit_decks.h"
 #include "list_dropboxes.h"
-#include "list_encoders.h"
 #include "list_hostvars.h"
 #include "edit_jack.h"
 #include "list_matrices.h"

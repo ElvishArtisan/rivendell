@@ -1,71 +1,5 @@
 <!DOCTYPE TS><TS>
 <context>
-    <name>AddAuxField</name>
-    <message>
-        <source>Add Aux Field</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Variable Name: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%AUX_</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>%</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Caption: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Name Exists</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>That variable name already exists!</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>AddEncoder</name>
-    <message>
-        <source>Add Encoder</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;New Encoder Name:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add Encoder Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>A encoder with that name already exists!</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>AddFeed</name>
     <message>
         <source>Add Feed</source>
@@ -527,29 +461,6 @@
     </message>
     <message>
         <source>Edit AudioScience Audio Ports</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>EditAuxField</name>
-    <message>
-        <source>Edit Auxiliary Metadata Fields</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Variable Name: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Caption: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1041,45 +952,6 @@ files, causing any whose files remain to be imported again.</source>
     </message>
 </context>
 <context>
-    <name>EditEncoder</name>
-    <message>
-        <source>RDAdmin - Edit Encoder</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Name:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Allow Channels</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Allow Sample Rates</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Allow Bit Rates</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Default Extension:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Command Line:</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>EditEndpoint</name>
     <message>
         <source>Edit Input</source>
@@ -1306,11 +1178,6 @@ files, causing any whose files remain to be imported again.</source>
     </message>
     <message>
         <source>Item XML:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Define Auxiliary
-Metadata Fields</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3930,46 +3797,6 @@ PARTICULAR PURPOSE.  Touch the &quot;View License&quot; button for details.</sou
     </message>
 </context>
 <context>
-    <name>ListAuxFields</name>
-    <message>
-        <source>Auxiliary Metadata Fields</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Var Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Caption</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Add</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Edit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Delete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Close</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Warning</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>This will delete all data associated with this field!
-Are you sure you want to continue?</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>ListDropboxes</name>
     <message>
         <source>&amp;Add</source>
@@ -4041,77 +3868,6 @@ Are you sure you want to continue?</source>
     </message>
     <message>
         <source>Rivendell Dropbox Configurations on</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>ListEncoders</name>
-    <message>
-        <source>RDAdmin - List Encoders</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Format Name</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Valid Channels</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Valid Sample Rates</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Valid Bit Rates</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Edit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Close</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>[none]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Add</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Delete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>RDAdmin - Delete Encoder</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete this encoder?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Extension</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>This encoder is in use by the following RSS feeds:
-
-</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>
-
-Do you still want to delete it?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Encoders on</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

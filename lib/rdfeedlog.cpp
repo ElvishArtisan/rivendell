@@ -76,19 +76,23 @@ void RDIncrementCastCount(QString keyname,unsigned cast_id)
     "FEED_KEY_NAME=\""+RDEscapeString(keyname)+"\" && "+
     QString().sprintf("(CAST_ID=%u)&&",cast_id)+
     "(ACCESS_DATE=\""+RDEscapeString(now.toString("yyyy-MM-dd"))+"\")";
+  printf("SQL1: %s\n",(const char *)sql);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     sql=QString("update CAST_DOWNLOADS set ")+
       QString().sprintf("ACCESS_COUNT=%u where ",q->value(0).toUInt()+1)+
+      "FEED_KEY_NAME=\""+RDEscapeString(keyname)+"\" && "+
       QString().sprintf("(CAST_ID=%u)&&",cast_id)+
       "(ACCESS_DATE=\""+RDEscapeString(now.toString("yyyy-MM-dd"))+"\")";
   }
   else {
     sql=QString("insert into CAST_DOWNLOADS set ")+
+      "FEED_KEY_NAME=\""+RDEscapeString(keyname)+"\","+
       QString().sprintf("CAST_ID=%u,",cast_id)+
       "ACCESS_DATE=\""+RDEscapeString(now.toString("yyyy-MM-dd"))+"\","+
       "ACCESS_COUNT=1";
   }
+  printf("SQL2: %s\n",(const char *)sql);
   RDSqlQuery::apply(sql);
   delete q;
 }

@@ -38,8 +38,6 @@ class MainObject : public QObject
   QString ResolveChannelWildcards(RDSqlQuery *chan_q);
   QString ResolveItemWildcards(const QString &keyname,
 			       RDSqlQuery *item_q,RDSqlQuery *chan_q);
-  QString ResolveAuxWildcards(QString xml,QString keyname,unsigned feed_id,
-			      unsigned cast_id);
   bool ShouldCount(const QString &hdr);
   void Redirect(const QString &url);
 };

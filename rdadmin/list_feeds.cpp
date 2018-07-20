@@ -173,8 +173,6 @@ void ListFeeds::addData()
     q=new RDSqlQuery(sql);
     delete q;
     RDDeleteFeedLog(feed);
-    feed.replace(" ","_");
-    rda->dropTable(feed+"_FIELDS");
     delete edit_feed;
     return;
   }
@@ -274,8 +272,6 @@ void ListFeeds::deleteData()
   q=new RDSqlQuery(sql);
   delete q;
   RDDeleteFeedLog(feedname);
-  feedname.replace(" ","_");
-  rda->dropTable(feedname+"_FIELDS");
   item->setSelected(false);
 
   pd->reset();

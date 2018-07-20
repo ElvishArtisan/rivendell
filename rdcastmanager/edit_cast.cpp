@@ -41,9 +41,6 @@
 EditCast::EditCast(unsigned cast_id,QWidget *parent)
   : QDialog(parent,"",true)
 {
-  QString sql;
-  RDSqlQuery *q;
-  RDSqlQuery *q1;
   int ypos=0;
 
   cast_cast=new RDPodcast(rda->config(),cast_id);
@@ -177,43 +174,7 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   cast_item_comments_label->setFont(font);
   cast_item_comments_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
 
-  //
-  // Auxiliary Fields
-  //
   cast_ypos=233+ypos;
-  QString keyname=cast_cast->keyName();
-  keyname.replace(" ","_");
-  QLabel *label;
-  sql=QString("select ")+
-    "VAR_NAME,"+
-    "CAPTION "+
-    "from AUX_METADATA where "+
-    QString().sprintf("FEED_ID=%u ",cast_cast->feedId())+
-    "order by VAR_NAME";
-  q=new RDSqlQuery(sql);
-  while(q->next()) {
-    cast_aux_varnames.push_back(q->value(0).toString().
-				mid(1,q->value(0).toString().length()-2));
-    cast_aux_edits.push_back(new QLineEdit(this));
-    cast_aux_edits.back()->
-      setGeometry(115,cast_ypos,sizeHint().width()-125,20);
-    cast_aux_edits.back()->setMaxLength(255);
-    sql=QString("select ")+
-      cast_aux_varnames.back()+" from `"+keyname+"_FIELDS where "+
-      QString().sprintf("CAST_ID=%u",cast_cast->id());
-    q1=new RDSqlQuery(sql);
-    if(q1->first()) {
-      cast_aux_edits.back()->setText(q1->value(0).toString());
-    }
-    delete q1;
-    label=new QLabel(cast_aux_edits.back(),q->value(1).toString()+":",this);
-    label->setGeometry(20,cast_ypos,90,20);
-    label->setFont(font);
-    label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
-    cast_ypos+=22;
-  }
-  delete q;
-  cast_ypos+=3;
 
   //
   // Effective DateTime
@@ -221,7 +182,7 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   cast_item_effective_edit=new QDateTimeEdit(this);
   cast_item_effective_edit->
     setGeometry(115,cast_ypos,165,20);
-  label=new QLabel(cast_item_effective_edit,tr("Air Date/Time:"),this);
+  QLabel *label=new QLabel(cast_item_effective_edit,tr("Air Date/Time:"),this);
   label->setGeometry(20,cast_ypos,90,20);
   label->setFont(font);
   label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
@@ -374,17 +335,17 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
 	    addDays(cast_cast->shelfLife()));
   expirationSelectedData(cast_item_expiration_box->currentItem());
   switch(cast_status) {
-      case RDPodcast::StatusActive:
-	cast_item_status_group->setButton(1);
-	break;
+  case RDPodcast::StatusActive:
+    cast_item_status_group->setButton(1);
+    break;
 
-      case RDPodcast::StatusPending:
-	cast_item_status_group->setButton(0);
-	break;
+  case RDPodcast::StatusPending:
+    cast_item_status_group->setButton(0);
+    break;
 
-    case RDPodcast::StatusExpired:
-      cast_item_status_group->setDisabled(true);
-      break;
+  case RDPodcast::StatusExpired:
+    cast_item_status_group->setDisabled(true);
+    break;
   }
 
   //
@@ -465,9 +426,6 @@ void EditCast::reportData()
 
 void EditCast::okData()
 {
-  QString sql;
-  RDSqlQuery *q;
-
   cast_cast->setItemTitle(cast_item_title_edit->text());
   cast_cast->setItemAuthor(cast_item_author_edit->text());
   cast_cast->setItemCategory(cast_item_category_edit->text());
@@ -499,17 +457,6 @@ void EditCast::okData()
 	cast_cast->setStatus(RDPodcast::StatusActive);
 	break;
     }
-  }
-
-  QString keyname=cast_cast->keyName();
-  keyname.replace(" ","_");
-  for(unsigned i=0;i<cast_aux_varnames.size();i++) {
-    sql=QString("update `")+keyname+"_FIELDS` set "+
-      cast_aux_varnames[i]+
-      "=\"RDEscapeString(cast_aux_edits[i]->text()\" where "+
-      QString().sprintf("CAST_ID=%u",cast_cast->id());
-    q=new RDSqlQuery(sql);
-    delete q;
   }
 
   cast_feed->

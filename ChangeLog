@@ -17197,3 +17197,7 @@
 2018-07-19 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'CAST_DOWNLOADS' table to the database.
 	* Incremented the database version to 294.
+2018-07-20 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the Auxiliary Fields from the podcasting system.
+	* Fixed a regression in the RDFeed system that caused segfaults
+	when accessing channel XML.

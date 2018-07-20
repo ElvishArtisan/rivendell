@@ -43,9 +43,7 @@ all:
 
 bin_PROGRAMS = rdadmin
 
-dist_rdadmin_SOURCES = add_aux_field.cpp add_aux_field.h\
-                       add_encoder.cpp add_encoder.h\
-                       add_feed.cpp add_feed.h\
+dist_rdadmin_SOURCES = add_feed.cpp add_feed.h\
                        add_group.cpp add_group.h\
                        add_hostvar.cpp add_hostvar.h\
                        add_matrix.cpp add_matrix.h\
@@ -57,13 +55,11 @@ dist_rdadmin_SOURCES = add_aux_field.cpp add_aux_field.h\
                        add_user.cpp add_user.h\
                        autofill_carts.cpp autofill_carts.h\
                        edit_audios.cpp edit_audios.h\
-                       edit_aux_field.cpp edit_aux_field.h\
                        edit_backup.cpp edit_backup.h\
                        edit_cartslots.cpp edit_cartslots.h\
                        edit_channelgpios.cpp edit_channelgpios.h\
                        edit_decks.cpp edit_decks.h\
                        edit_dropbox.cpp edit_dropbox.h\
-                       edit_encoder.cpp edit_encoder.h\
                        edit_endpoint.cpp edit_endpoint.h\
                        edit_feed.cpp edit_feed.h\
                        edit_feed_perms.cpp edit_feed_perms.h\
@@ -99,9 +95,7 @@ dist_rdadmin_SOURCES = add_aux_field.cpp add_aux_field.h\
                        help_audios.cpp help_audios.h\
                        importfields.cpp importfields.h\
                        info_dialog.cpp info_dialog.h\
-                       list_aux_fields.cpp list_aux_fields.h\
                        list_dropboxes.cpp list_dropboxes.h\
-                       list_encoders.cpp list_encoders.h\
                        list_endpoints.cpp list_endpoints.h\
                        list_feeds.cpp list_feeds.h\
                        list_gpis.cpp list_gpis.h\
@@ -126,9 +120,7 @@ dist_rdadmin_SOURCES = add_aux_field.cpp add_aux_field.h\
                        view_adapters.cpp view_adapters.h\
                        view_node_info.cpp view_node_info.h
 
-nodist_rdadmin_SOURCES = moc_add_aux_field.cpp\
-                         moc_add_encoder.cpp\
-                         moc_add_feed.cpp\
+nodist_rdadmin_SOURCES = moc_add_feed.cpp\
                          moc_add_group.cpp\
                          moc_add_hostvar.cpp\
                          moc_add_matrix.cpp\
@@ -140,13 +132,11 @@ nodist_rdadmin_SOURCES = moc_add_aux_field.cpp\
                          moc_add_user.cpp\
                          moc_autofill_carts.cpp\
                          moc_edit_audios.cpp\
-                         moc_edit_aux_field.cpp\
                          moc_edit_backup.cpp\
                          moc_edit_cartslots.cpp\
                          moc_edit_channelgpios.cpp\
                          moc_edit_decks.cpp\
                          moc_edit_dropbox.cpp\
-                         moc_edit_encoder.cpp\
                          moc_edit_endpoint.cpp\
                          moc_edit_feed.cpp\
                          moc_edit_feed_perms.cpp\
@@ -181,9 +171,7 @@ nodist_rdadmin_SOURCES = moc_add_aux_field.cpp\
                          moc_help_audios.cpp\
                          moc_importfields.cpp\
                          moc_info_dialog.cpp\
-                         moc_list_aux_fields.cpp\
                          moc_list_dropboxes.cpp\
-                         moc_list_encoders.cpp\
                          moc_list_endpoints.cpp\
                          moc_list_feeds.cpp\
                          moc_list_gpis.cpp\

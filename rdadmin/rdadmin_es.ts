@@ -165,66 +165,58 @@ y un respaldo de la base de datos se guardó en </translation>
     <name>AddAuxField</name>
     <message>
         <source>Add Aux Field</source>
-        <translation>Añadir Campo Aux</translation>
+        <translation type="obsolete">Añadir Campo Aux</translation>
     </message>
     <message>
         <source>Variable Name: </source>
-        <translation>Nombre:</translation>
-    </message>
-    <message>
-        <source>%AUX_</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>%</source>
-        <translation></translation>
+        <translation type="obsolete">Nombre:</translation>
     </message>
     <message>
         <source>Caption: </source>
-        <translation>Texto:</translation>
+        <translation type="obsolete">Texto:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;Aceptar</translation>
+        <translation type="obsolete">&amp;Aceptar</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>Name Exists</source>
-        <translation>El nombre existe</translation>
+        <translation type="obsolete">El nombre existe</translation>
     </message>
     <message>
         <source>That variable name already exists!</source>
-        <translation>¡Una variable con ese nombre ya existe!</translation>
+        <translation type="obsolete">¡Una variable con ese nombre ya existe!</translation>
     </message>
 </context>
 <context>
     <name>AddEncoder</name>
     <message>
         <source>Add Encoder</source>
-        <translation>Agregar Codificador</translation>
+        <translation type="obsolete">Agregar Codificador</translation>
     </message>
     <message>
         <source>&amp;New Encoder Name:</source>
-        <translation>&amp;Nombre:</translation>
+        <translation type="obsolete">&amp;Nombre:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;Aceptar</translation>
+        <translation type="obsolete">&amp;Aceptar</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>Add Encoder Error</source>
-        <translation>Error añadiendo Codificador</translation>
+        <translation type="obsolete">Error añadiendo Codificador</translation>
     </message>
     <message>
         <source>A encoder with that name already exists!</source>
-        <translation>¡Un codificador con ese nombre ya existe!</translation>
+        <translation type="obsolete">¡Un codificador con ese nombre ya existe!</translation>
     </message>
 </context>
 <context>
@@ -775,23 +767,23 @@ y un respaldo de la base de datos se guardó en </translation>
     <name>EditAuxField</name>
     <message>
         <source>Edit Auxiliary Metadata Fields</source>
-        <translation>Editar campos de metadatos auxiliares</translation>
+        <translation type="obsolete">Editar campos de metadatos auxiliares</translation>
     </message>
     <message>
         <source>Variable Name: </source>
-        <translation>Variable: </translation>
+        <translation type="obsolete">Variable: </translation>
     </message>
     <message>
         <source>Caption: </source>
-        <translation>Texto: </translation>
+        <translation type="obsolete">Texto: </translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;Aceptar</translation>
+        <translation type="obsolete">&amp;Aceptar</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
 </context>
 <context>
@@ -1303,39 +1295,39 @@ files, causing any whose files remain to be imported again.</source>
     <name>EditEncoder</name>
     <message>
         <source>RDAdmin - Edit Encoder</source>
-        <translation>RDAdmin - Editar Codificador</translation>
+        <translation type="obsolete">RDAdmin - Editar Codificador</translation>
     </message>
     <message>
         <source>Name:</source>
-        <translation>Nombre:</translation>
+        <translation type="obsolete">Nombre:</translation>
     </message>
     <message>
         <source>Allow Channels</source>
-        <translation>Canales permitidos</translation>
+        <translation type="obsolete">Canales permitidos</translation>
     </message>
     <message>
         <source>Allow Sample Rates</source>
-        <translation>Tasas muest permit</translation>
+        <translation type="obsolete">Tasas muest permit</translation>
     </message>
     <message>
         <source>Allow Bit Rates</source>
-        <translation>Tasas bit permitidas</translation>
+        <translation type="obsolete">Tasas bit permitidas</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;Aceptar</translation>
+        <translation type="obsolete">&amp;Aceptar</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>Default Extension:</source>
-        <translation>Extensión por omisión:</translation>
+        <translation type="obsolete">Extensión por omisión:</translation>
     </message>
     <message>
         <source>Command Line:</source>
-        <translation>Línea de comandos:</translation>
+        <translation type="obsolete">Línea de comandos:</translation>
     </message>
 </context>
 <context>
@@ -1566,7 +1558,7 @@ files, causing any whose files remain to be imported again.</source>
     <message>
         <source>&amp;Define Auxiliary
 Metadata Fields</source>
-        <translation>&amp;Definir campos de
+        <translation type="obsolete">&amp;Definir campos de
 metadatos auxiliares</translation>
     </message>
     <message>
@@ -4420,40 +4412,40 @@ PARA UN PROPÓSITO PARTICULAR.  Oprima el botón &quot;Ver licencia&quot; para d
     <name>ListAuxFields</name>
     <message>
         <source>Auxiliary Metadata Fields</source>
-        <translation>Campos de metadatos auxiliares</translation>
+        <translation type="obsolete">Campos de metadatos auxiliares</translation>
     </message>
     <message>
         <source>Var Name</source>
-        <translation>Nombre</translation>
+        <translation type="obsolete">Nombre</translation>
     </message>
     <message>
         <source>Caption</source>
-        <translation>Texto</translation>
+        <translation type="obsolete">Texto</translation>
     </message>
     <message>
         <source>&amp;Add</source>
-        <translation>&amp;Añadir</translation>
+        <translation type="obsolete">&amp;Añadir</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation>&amp;Editar</translation>
+        <translation type="obsolete">&amp;Editar</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation>E&amp;liminar</translation>
+        <translation type="obsolete">E&amp;liminar</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Cerrar</translation>
+        <translation type="obsolete">&amp;Cerrar</translation>
     </message>
     <message>
         <source>Warning</source>
-        <translation>Advertencia</translation>
+        <translation type="obsolete">Advertencia</translation>
     </message>
     <message>
         <source>This will delete all data associated with this field!
 Are you sure you want to continue?</source>
-        <translation>¡Esto eliminará todos los datos asociados con este campo!
+        <translation type="obsolete">¡Esto eliminará todos los datos asociados con este campo!
 ¿Está seguro de continuar?</translation>
     </message>
 </context>
@@ -4536,61 +4528,61 @@ Are you sure you want to continue?</source>
     <name>ListEncoders</name>
     <message>
         <source>RDAdmin - List Encoders</source>
-        <translation>RDAdmin - Lista de codificadores</translation>
+        <translation type="obsolete">RDAdmin - Lista de codificadores</translation>
     </message>
     <message>
         <source>Format Name</source>
-        <translation>Nombre del formato</translation>
+        <translation type="obsolete">Nombre del formato</translation>
     </message>
     <message>
         <source>Valid Channels</source>
-        <translation>Canales válidos</translation>
+        <translation type="obsolete">Canales válidos</translation>
     </message>
     <message>
         <source>Valid Sample Rates</source>
-        <translation>Tasas muestra válidas</translation>
+        <translation type="obsolete">Tasas muestra válidas</translation>
     </message>
     <message>
         <source>Valid Bit Rates</source>
-        <translation>Tasas de bit válidas</translation>
+        <translation type="obsolete">Tasas de bit válidas</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation>&amp;Editar</translation>
+        <translation type="obsolete">&amp;Editar</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Cerrar</translation>
+        <translation type="obsolete">&amp;Cerrar</translation>
     </message>
     <message>
         <source>[none]</source>
-        <translation>[ninguna]</translation>
+        <translation type="obsolete">[ninguna]</translation>
     </message>
     <message>
         <source>&amp;Add</source>
-        <translation>&amp;Agregar</translation>
+        <translation type="obsolete">&amp;Agregar</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation>E&amp;liminar</translation>
+        <translation type="obsolete">E&amp;liminar</translation>
     </message>
     <message>
         <source>RDAdmin - Delete Encoder</source>
-        <translation>RDAdmin - Eliminar codificador</translation>
+        <translation type="obsolete">RDAdmin - Eliminar codificador</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this encoder?</source>
-        <translation>¿Está seguro de querer eliminar este codificador?</translation>
+        <translation type="obsolete">¿Está seguro de querer eliminar este codificador?</translation>
     </message>
     <message>
         <source>Extension</source>
-        <translation>Extensión</translation>
+        <translation type="obsolete">Extensión</translation>
     </message>
     <message>
         <source>This encoder is in use by the following RSS feeds:
 
 </source>
-        <translation>Este codificador está siendo usado por las fuentes RSS:
+        <translation type="obsolete">Este codificador está siendo usado por las fuentes RSS:
 
 </translation>
     </message>
@@ -4598,13 +4590,13 @@ Are you sure you want to continue?</source>
         <source>
 
 Do you still want to delete it?</source>
-        <translation>
+        <translation type="obsolete">
 
 ¿Aún desea eliminarlo?</translation>
     </message>
     <message>
         <source>Encoders on</source>
-        <translation>Codificad. en</translation>
+        <translation type="obsolete">Codificad. en</translation>
     </message>
 </context>
 <context>

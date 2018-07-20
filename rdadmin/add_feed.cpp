@@ -27,7 +27,6 @@
 
 #include <rddb.h>
 #include <rdapplication.h>
-#include <rdcreateauxfieldstable.h>
 #include <rdescape_string.h>
 #include <rdfeedlog.h>
 #include <rdtextvalidator.h>
@@ -173,7 +172,6 @@ void AddFeed::okData()
     "ITEM_XML=\""+RDEscapeString(DEFAULT_ITEM_XML)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
-  RDCreateAuxFieldsTable(feed_keyname_edit->text(),rda->config());
   sql=QString("select ID from FEEDS where ")+
     "KEY_NAME=\""+RDEscapeString(feed_keyname_edit->text())+"\"";
   q=new RDSqlQuery(sql);

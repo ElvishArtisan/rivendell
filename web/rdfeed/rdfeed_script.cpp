@@ -213,12 +213,7 @@ void MainObject::ServeRss(const char *keyname,bool count)
   q1=new RDSqlQuery(sql);
   while(q1->next()) {
     printf("<item>\n");
-    printf("%s\n",(const char *)
-	   ResolveAuxWildcards(ResolveItemWildcards(keyname,q1,q),
-			       getenv("QUERY_STRING"),
-			       q->value(13).toUInt(),
-			       q1->value(7).toUInt()));
-    //printf("%s\n",(const char *)ResolveItemWildcards(q1,q));
+    printf("%s\n",(const char *)ResolveItemWildcards(keyname,q1,q));
     printf("</item>\n");
   }
   delete q1;
@@ -313,43 +308,6 @@ QString MainObject::ResolveItemWildcards(const QString &keyname,
 					    item_q->value(12).toUInt()));
   delete feed;
   return ret;
-}
-
-
-QString MainObject::ResolveAuxWildcards(QString xml,QString keyname,
-					unsigned feed_id,unsigned cast_id)
-{
-  QString sql;
-  RDSqlQuery *q;
-  RDSqlQuery *q1;
-
-  keyname.replace(" ","_");
-  sql=QString("select VAR_NAME from AUX_METADATA where ")+
-    QString().sprintf("FEED_ID=%u",feed_id);
-  q=new RDSqlQuery(sql);
-  if(q->size()==0) {
-    delete q;
-    return xml;
-  }
-  sql="select ";
-  while(q->next()) {
-    sql+=q->value(0).toString().mid(1,q->value(0).toString().length()-2);
-    sql+=",";
-  }
-  sql=sql.left(sql.length()-1);
-  sql+=QString().sprintf(" from %s_FIELDS where CAST_ID=%u",
-			 (const char *)keyname,cast_id);
-  q->seek(-1);
-  q1=new RDSqlQuery(sql);
-  while(q1->next()) {
-    q->next();
-    xml.replace(q->value(0).toString(),
-		RDXmlEscape(q1->value(0).toString()));
-  }
-  delete q1;
-  delete q;
-
-  return xml;
 }
 
 

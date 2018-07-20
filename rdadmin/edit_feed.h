@@ -48,7 +48,6 @@ class EditFeed : public QDialog
   void purgeUsernameChangedData(const QString &username);
   void setFormatData();
   void normalizeCheckData(bool state);
-  void editData();
   void redirectToggledData(bool state);
   void okData();
   void cancelData();
@@ -92,8 +91,6 @@ class EditFeed : public QDialog
   QLabel *feed_redirect_label;
   QLineEdit *feed_redirect_edit;
   QPushButton *feed_format_button;
-  QPushButton *feed_metadata_button;
-
   QLabel *feed_channel_title_label;
   QLabel *feed_channel_category_label;
   QLabel *feed_channel_link_label;

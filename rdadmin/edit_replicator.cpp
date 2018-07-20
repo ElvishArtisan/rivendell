@@ -34,7 +34,6 @@
 
 #include "edit_replicator.h"
 #include "globals.h"
-#include "list_aux_fields.h"
 
 EditReplicator::EditReplicator(const QString &repl_name,QWidget *parent)
   : QDialog(parent,"",true)

@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Cast
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -73,8 +73,6 @@ class EditCast : public QDialog
   QDateEdit *cast_item_expiration_edit;
   QDateTimeEdit *cast_item_effective_edit;
   QButtonGroup *cast_item_status_group;
-  std::vector<QString> cast_aux_varnames;
-  std::vector<QLineEdit *> cast_aux_edits;
   int cast_ypos;
   RDPodcast::Status cast_status;
 };

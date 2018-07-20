@@ -33,7 +33,6 @@
 
 #include "edit_feed.h"
 #include "globals.h"
-#include "list_aux_fields.h"
 
 EditFeed::EditFeed(const QString &feed,QWidget *parent)
   : QDialog(parent,"",true)
@@ -406,23 +405,12 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   // Item XML
   //
   feed_item_xml_edit=new QTextEdit(this);
-  feed_item_xml_edit->
-    setGeometry(615,270,365,176);
+  feed_item_xml_edit->setGeometry(615,270,365,250);
   feed_item_xml_label=new QLabel(feed_item_xml_edit,tr("Item XML:"),this);
   feed_item_xml_label->setGeometry(520,270,90,19);
   feed_item_xml_label->setFont(font);
   feed_item_xml_label->
     setAlignment(AlignRight|AlignVCenter|ShowPrefix);
-
-  //
-  //  Metadata Button
-  //
-  feed_metadata_button=new QPushButton(this);
-  feed_metadata_button->setGeometry(615,460,150,50);
-  feed_metadata_button->setDefault(true);
-  feed_metadata_button->setFont(font);
-  feed_metadata_button->setText(tr("&Define Auxiliary\nMetadata Fields"));
-  connect(feed_metadata_button,SIGNAL(clicked()),this,SLOT(editData()));
 
   //
   //  Ok Button
@@ -549,15 +537,6 @@ void EditFeed::normalizeCheckData(bool state)
   feed_normalize_unit_label->setEnabled(state);
 }
 
-
-void EditFeed::editData()
-{
-  ListAuxFields *lf=new ListAuxFields(feed_feed->id(),this);
-  lf->exec();
-  delete lf;
-}
-
-
 void EditFeed::redirectToggledData(bool state)
 {
   if(state) {
@@ -669,7 +648,6 @@ void EditFeed::RedirectChanged(bool state)
   feed_extension_edit->setDisabled(state);
   feed_castorder_box->setDisabled(state);
   feed_format_button->setDisabled(state);
-  feed_metadata_button->setDisabled(state);
   feed_channel_title_label->setDisabled(state);
   feed_channel_category_label->setDisabled(state);
   feed_channel_link_label->setDisabled(state);

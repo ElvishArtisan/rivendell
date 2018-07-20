@@ -164,66 +164,50 @@ a záloha původní databáze uložena v </translation>
     <name>AddAuxField</name>
     <message>
         <source>Add Aux Field</source>
-        <translation>Přidat pomocné pole</translation>
+        <translation type="obsolete">Přidat pomocné pole</translation>
     </message>
     <message>
         <source>Variable Name: </source>
-        <translation>Název proměnné: </translation>
+        <translation type="obsolete">Název proměnné: </translation>
     </message>
     <message>
         <source>%AUX_</source>
-        <translation>%AUX_</translation>
+        <translation type="obsolete">%AUX_</translation>
     </message>
     <message>
         <source>%</source>
-        <translation>%</translation>
+        <translation type="obsolete">%</translation>
     </message>
     <message>
         <source>Caption: </source>
-        <translation>Popisek: </translation>
+        <translation type="obsolete">Popisek: </translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>Name Exists</source>
-        <translation>Název existuje</translation>
+        <translation type="obsolete">Název existuje</translation>
     </message>
     <message>
         <source>That variable name already exists!</source>
-        <translation>Proměnná s tímto názvem již existuje!</translation>
+        <translation type="obsolete">Proměnná s tímto názvem již existuje!</translation>
     </message>
 </context>
 <context>
     <name>AddEncoder</name>
     <message>
-        <source>Add Encoder</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;New Encoder Name:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">Z&amp;rušit</translation>
-    </message>
-    <message>
-        <source>Add Encoder Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>A encoder with that name already exists!</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
 </context>
 <context>
@@ -775,23 +759,23 @@ a záloha původní databáze uložena v </translation>
     <name>EditAuxField</name>
     <message>
         <source>Edit Auxiliary Metadata Fields</source>
-        <translation>Upravit pole pomocných popisných dat</translation>
+        <translation type="obsolete">Upravit pole pomocných popisných dat</translation>
     </message>
     <message>
         <source>Variable Name: </source>
-        <translation>Název proměnné: </translation>
+        <translation type="obsolete">Název proměnné: </translation>
     </message>
     <message>
         <source>Caption: </source>
-        <translation>Popisek: </translation>
+        <translation type="obsolete">Popisek: </translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
 </context>
 <context>
@@ -1309,39 +1293,39 @@ files, causing any whose files remain to be imported again.</source>
     <name>EditEncoder</name>
     <message>
         <source>RDAdmin - Edit Encoder</source>
-        <translation>RDAdmin - Upravit kodér</translation>
+        <translation type="obsolete">RDAdmin - Upravit kodér</translation>
     </message>
     <message>
         <source>Name:</source>
-        <translation>Název:</translation>
+        <translation type="obsolete">Název:</translation>
     </message>
     <message>
         <source>Allow Channels</source>
-        <translation>Povolit kanály</translation>
+        <translation type="obsolete">Povolit kanály</translation>
     </message>
     <message>
         <source>Allow Sample Rates</source>
-        <translation>Povolit vzorkovací kmitočty</translation>
+        <translation type="obsolete">Povolit vzorkovací kmitočty</translation>
     </message>
     <message>
         <source>Allow Bit Rates</source>
-        <translation>Povolit datové toky</translation>
+        <translation type="obsolete">Povolit datové toky</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>Default Extension:</source>
-        <translation>Výchozí přípona:</translation>
+        <translation type="obsolete">Výchozí přípona:</translation>
     </message>
     <message>
         <source>Command Line:</source>
-        <translation>Příkazový řádek:</translation>
+        <translation type="obsolete">Příkazový řádek:</translation>
     </message>
 </context>
 <context>
@@ -1576,7 +1560,7 @@ files, causing any whose files remain to be imported again.</source>
     <message>
         <source>&amp;Define Auxiliary
 Metadata Fields</source>
-        <translation>&amp;Vymezit pomocná
+        <translation type="obsolete">&amp;Vymezit pomocná
 pole popisných dat</translation>
     </message>
     <message>
@@ -4465,40 +4449,40 @@ GNU Library General Public License. Klepněte na tlačítko pro zobrazení povol
     <name>ListAuxFields</name>
     <message>
         <source>Auxiliary Metadata Fields</source>
-        <translation>Pomocná pole s popisnými daty</translation>
+        <translation type="obsolete">Pomocná pole s popisnými daty</translation>
     </message>
     <message>
         <source>Var Name</source>
-        <translation>Název proměnné</translation>
+        <translation type="obsolete">Název proměnné</translation>
     </message>
     <message>
         <source>Caption</source>
-        <translation>Popisek</translation>
+        <translation type="obsolete">Popisek</translation>
     </message>
     <message>
         <source>&amp;Add</source>
-        <translation>&amp;Přidat</translation>
+        <translation type="obsolete">&amp;Přidat</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation>&amp;Upravit</translation>
+        <translation type="obsolete">&amp;Upravit</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation>S&amp;mazat</translation>
+        <translation type="obsolete">S&amp;mazat</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Zavřít</translation>
+        <translation type="obsolete">&amp;Zavřít</translation>
     </message>
     <message>
         <source>Warning</source>
-        <translation>Varování</translation>
+        <translation type="obsolete">Varování</translation>
     </message>
     <message>
         <source>This will delete all data associated with this field!
 Are you sure you want to continue?</source>
-        <translation>Toto smaže všechna data spojená s tímto polem!
+        <translation type="obsolete">Toto smaže všechna data spojená s tímto polem!
 Jste si jistý, že chcete pokračovat?</translation>
     </message>
 </context>
@@ -4581,61 +4565,61 @@ Jste si jistý, že chcete pokračovat?</translation>
     <name>ListEncoders</name>
     <message>
         <source>RDAdmin - List Encoders</source>
-        <translation>RDAdmin - Zobrazit kodéry</translation>
+        <translation type="obsolete">RDAdmin - Zobrazit kodéry</translation>
     </message>
     <message>
         <source>Format Name</source>
-        <translation>Název formátu</translation>
+        <translation type="obsolete">Název formátu</translation>
     </message>
     <message>
         <source>Valid Channels</source>
-        <translation>Platné kanály</translation>
+        <translation type="obsolete">Platné kanály</translation>
     </message>
     <message>
         <source>Valid Sample Rates</source>
-        <translation>Platné vzorkovací kmitočty</translation>
+        <translation type="obsolete">Platné vzorkovací kmitočty</translation>
     </message>
     <message>
         <source>Valid Bit Rates</source>
-        <translation>Platné datové toky</translation>
+        <translation type="obsolete">Platné datové toky</translation>
     </message>
     <message>
         <source>&amp;Edit</source>
-        <translation>&amp;Upravit</translation>
+        <translation type="obsolete">&amp;Upravit</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Zavřít</translation>
+        <translation type="obsolete">&amp;Zavřít</translation>
     </message>
     <message>
         <source>[none]</source>
-        <translation>[žádný]</translation>
+        <translation type="obsolete">[žádný]</translation>
     </message>
     <message>
         <source>&amp;Add</source>
-        <translation>&amp;Přidat</translation>
+        <translation type="obsolete">&amp;Přidat</translation>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation>S&amp;mazat</translation>
+        <translation type="obsolete">S&amp;mazat</translation>
     </message>
     <message>
         <source>RDAdmin - Delete Encoder</source>
-        <translation>RDAdmin - Smazat kodér</translation>
+        <translation type="obsolete">RDAdmin - Smazat kodér</translation>
     </message>
     <message>
         <source>Are you sure you want to delete this encoder?</source>
-        <translation>Opravdu chcete smazat tento kodér?</translation>
+        <translation type="obsolete">Opravdu chcete smazat tento kodér?</translation>
     </message>
     <message>
         <source>Extension</source>
-        <translation>Rozšíření</translation>
+        <translation type="obsolete">Rozšíření</translation>
     </message>
     <message>
         <source>This encoder is in use by the following RSS feeds:
 
 </source>
-        <translation>Tento kodér je používán následujícími přívody RSS:
+        <translation type="obsolete">Tento kodér je používán následujícími přívody RSS:
 
 </translation>
     </message>
@@ -4643,13 +4627,13 @@ Jste si jistý, že chcete pokračovat?</translation>
         <source>
 
 Do you still want to delete it?</source>
-        <translation>
+        <translation type="obsolete">
 
 Stále ještě jej chcete smazat?</translation>
     </message>
     <message>
         <source>Encoders on</source>
-        <translation>Kodéry na</translation>
+        <translation type="obsolete">Kodéry na</translation>
     </message>
 </context>
 <context>
