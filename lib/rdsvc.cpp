@@ -356,7 +356,7 @@ QString RDSvc::importFilename(ImportSource src,const QDate &date) const
 
 
 bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
-		   const QString &track_str,const QString &dest_table) const
+		   const QString &track_str) const
 {
   FILE *infile;
   QString src_str;
@@ -383,13 +383,13 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
   // Set Import Source
   //
   switch(src) {
-      case RDSvc::Traffic:
-	src_str="TFC";
-	break;
+  case RDSvc::Traffic:
+    src_str="TFC";
+    break;
 
-      case RDSvc::Music:
-	src_str="MUS";
-	break;
+  case RDSvc::Music:
+    src_str="MUS";
+    break;
   }
 
   //
@@ -505,30 +505,10 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
   //
   // Setup Data Source and Destination
   //
-  rda->dropTable(dest_table);
-  sql=QString("create table ")+
-    "`"+dest_table+"` ("+
-    "ID int primary key,"+
-    "START_HOUR int not null,"+
-    "START_SECS int not null,"+
-    "CART_NUMBER int unsigned,"+
-    "TITLE char(255),"+
-    "LENGTH int,"+
-    "INSERT_BREAK enum('N','Y') default 'N',"+
-    "INSERT_TRACK enum('N','Y') default 'N',"+
-    "INSERT_FIRST int unsigned default 0,"+
-    "TRACK_STRING char(255),"+
-    "EXT_DATA char(32),"+
-    "EXT_EVENT_ID char(32),"+
-    "EXT_ANNC_TYPE char(8),"+
-    "EXT_CART_NAME char(32),"+
-    "LINK_START_TIME time default NULL,"+
-    "LINK_LENGTH int default NULL,"+
-    "EVENT_USED enum('N','Y') default 'N',"+
-    "INDEX START_TIME_IDX (START_HOUR,START_SECS)) "+
-    svc_config->createTablePostfix();
-  q=new RDSqlQuery(sql);
-  delete q;
+  sql=QString("delete from IMPORTER_LINES where ")+
+    "STATION_NAME=\""+RDEscapeString(svc_station->name())+"\" && "+
+    QString().sprintf("PROCESS_ID=%u",getpid());
+  RDSqlQuery::apply(sql);
 
   //
   // Parse and Save
@@ -601,9 +581,10 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
     if(start_time_ok&&(cart_ok||
 		       ((!label_cart.isEmpty())&&(cartname==label_cart))||
 		       ((!track_cart.isEmpty())&&(cartname==track_cart)))) {
-      sql=QString("insert into ")+
-	"`"+dest_table+"`	set "+
-	QString().sprintf("ID=%d,",line_id++)+
+      sql=QString("insert into IMPORTER_LINES set ")+
+	"STATION_NAME=\""+RDEscapeString(svc_station->name())+"\","+
+	QString().sprintf("PROCESS_ID=%d,",getpid())+
+	QString().sprintf("LINE_ID=%d,",line_id++)+
 	QString().sprintf("START_HOUR=%d,",start_hour)+
 	QString().sprintf("START_SECS=%d,",
 			  60*start_minutes+start_seconds)+
@@ -620,7 +601,7 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
       // Insert Break
       //
       if(insert_break) {
-	sql=QString("update ")+"`"+dest_table+"` set "+
+	sql=QString("update IMPORTER_LINES set ")+
 	  "INSERT_BREAK=\"Y\"";
 	if(break_first) {
 	  sql+=QString().sprintf(",INSERT_FIRST=%d",
@@ -632,7 +613,10 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
 	    QString().sprintf(",LINK_LENGTH=%d",
 			      link_length);
 	}
-	sql+=QString().sprintf(" where ID=%d",line_id-1);
+	sql+=QString(" where ")+
+	  "STATION_NAME=\""+RDEscapeString(svc_station->name())+"\" && "+
+	  QString().sprintf("PROCESS_ID=%u && ",getpid())+
+	  QString().sprintf("LINE_ID=%d",line_id-1);
 	q=new RDSqlQuery(sql);
 	delete q;
       }
@@ -641,19 +625,23 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
       //
       if(insert_track) {
 	if(track_first) {
-	  sql=QString("update ")+
-	    "`"+dest_table+"` set "+
+	  sql=QString("update IMPORTER_LINES set ")+
 	    "INSERT_TRACK=\"Y\","+
 	    "TRACK_STRING=\""+RDEscapeString(track_label)+"\","+
 	    QString().sprintf("INSERT_FIRST=%d ",RDEventLine::InsertTrack)+
-	    QString().sprintf("where ID=%d",line_id-1);
+	    QString("where ")+
+	    "STATION_NAME=\""+RDEscapeString(svc_station->name())+"\" && "+
+	    QString().sprintf("PROCESS_ID=%u && ",getpid())+
+	    QString().sprintf("LINE_ID=%d",line_id-1);
 	}
 	else {
-	  sql=QString("update ")+
-	    "`"+dest_table+"` set "+
+	  sql=QString("update IMPORTER_LINES set ")+
 	    "INSERT_TRACK=\"Y\","+
 	    "TRACK_STRING=\""+RDEscapeString(track_label)+"\" "+
-	    QString().sprintf("where ID=%d",line_id-1);
+	    QString("where ")+
+	    "STATION_NAME=\""+RDEscapeString(svc_station->name())+"\" && "+
+	    QString().sprintf("PROCESS_ID=%u && ",getpid())+
+	    QString().sprintf("LINE_ID=%d",line_id-1);
 	}
 	q=new RDSqlQuery(sql);
 	delete q;
@@ -714,8 +702,7 @@ bool RDSvc::generateLog(const QDate &date,const QString &logname,
 {
   QString sql;
   RDSqlQuery *q;
-  RDClock clock;
-  //  QString err_msg;
+  RDClock clock(svc_station);
   RDLog *log=NULL;
   RDLogLock *log_lock=NULL;
 
@@ -843,10 +830,7 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
   //
   // Import File
   //
-  QString import_name=QString("IMPORT_")+svc_name+"_"+date.toString("yyyyMMdd");
-
-  import_name.replace(" ","_");
-  if(!import(src,date,breakString(),trackString(src),import_name)) {
+  if(!import(src,date,breakString(),trackString(src))) {
     *err_msg=tr("Import failed");
     delete log_lock;
     return false;
@@ -858,15 +842,15 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
   RDLogLine::Type src_type=RDLogLine::UnknownType;
   RDLog::Source link_src=RDLog::SourceMusic;
   switch(src) {
-      case RDSvc::Music:
-	src_type=RDLogLine::MusicLink;
-	link_src=RDLog::SourceMusic;
-	break;
+  case RDSvc::Music:
+    src_type=RDLogLine::MusicLink;
+    link_src=RDLog::SourceMusic;
+    break;
 
-      case RDSvc::Traffic:
-	src_type=RDLogLine::TrafficLink;
-	link_src=RDLog::SourceTraffic;
-	break;
+  case RDSvc::Traffic:
+    src_type=RDLogLine::TrafficLink;
+    link_src=RDLog::SourceTraffic;
+    break;
   }
   RDLog *log=new RDLog(logname);
   int current_link=0;
@@ -882,11 +866,11 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
   for(int i=0;i<src_event->size();i++) {
     logline=src_event->logLine(i);
     if(logline->type()==src_type) {
-      RDEventLine *e=new RDEventLine();
+      RDEventLine *e=new RDEventLine(svc_station);
       e->setName(logline->linkEventName());
       e->load();
       e->linkLog(dest_event,svc_name,logline,track_str,label_cart,track_cart,
-		 import_name,&autofill_errors);
+		 &autofill_errors);
       delete e;
       emit generationProgress(1+(24*current_link++)/total_links);
     }
@@ -919,13 +903,17 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
   dest_event->validate(&missing_report,date);
   bool event=false;
   QString link_report=tr("The following events were not placed:\n");
-  sql=QString().sprintf("select `%s`.START_HOUR,`%s`.START_SECS,\
-                         `%s`.CART_NUMBER,CART.TITLE from `%s` LEFT JOIN CART\
-                         ON `%s`.CART_NUMBER=CART.NUMBER \
-                         where `%s`.EVENT_USED=\"N\"",
-			(const char *)import_name,(const char *)import_name,
-			(const char *)import_name,(const char *)import_name,
-			(const char *)import_name,(const char *)import_name);
+  sql=QString("select ")+
+    "IMPORTER_LINES.START_HOUR,"+   // 00
+    "IMPORTER_LINES.START_SECS,"+   // 01
+    "IMPORTER_LINES.CART_NUMBER,"+  // 02
+    "CART.TITLE "+                  // 03
+    "from IMPORTER_LINES left join CART "+
+    "on IMPORTER_LINES.CART_NUMBER=CART.NUMBER where "+
+    "IMPORTER_LINES.STATION_NAME=\""+
+    RDEscapeString(svc_station->name())+"\" && "+
+    QString().sprintf("IMPORTER_LINES.PROCESS_ID=%u && ",getpid())+
+    "IMPORTER_LINES.EVENT_USED=\"N\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     event=true;
@@ -963,8 +951,11 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
   delete src_event;
   delete dest_event;
 
-  //  printf("Import Table: %s\n",(const char *)import_name);
-  rda->dropTable(import_name);
+  sql=QString("delete from IMPORTER_LINES where ")+
+    "STATION_NAME=\""+RDEscapeString(svc_station->name())+"\" && "+
+    QString().sprintf("PROCESS_ID=%u",getpid());
+  //  printf("Importer Table Cleanup SQL: %s\n",(const char *)sql);
+  RDSqlQuery::apply(sql);
   delete log_lock;
 
   return true;

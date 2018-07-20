@@ -25,8 +25,9 @@
 //
 // Global Classes
 //
-RDClock::RDClock()
+RDClock::RDClock(RDStation *station)
 {
+  clock_station=station;
   clear();
 }
 
@@ -162,7 +163,7 @@ bool RDClock::load()
     "order by START_TIME";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    clock_events.push_back(RDEventLine());
+    clock_events.push_back(RDEventLine(clock_station));
     clock_events.back().setName(q->value(0).toString());
     clock_events.back().setStartTime(QTime().addMSecs(q->value(1).toInt()));
     clock_events.back().setLength(q->value(2).toInt());
@@ -235,11 +236,11 @@ bool RDClock::insert(const QString &event_name,int line)
   }
   delete q;
   if(line>=size()) {
-    clock_events.push_back(RDEventLine());
+    clock_events.push_back(RDEventLine(clock_station));
   }
   else {
     std::vector<RDEventLine>::iterator it=clock_events.begin()+line;
-    clock_events.insert(it,1,RDEventLine());
+    clock_events.insert(it,1,RDEventLine(clock_station));
   }
   clock_events[line].setName(event_name);
   clock_events[line].load();
@@ -307,7 +308,7 @@ bool RDClock::generateLog(int hour,const QString &logname,
 {
   QString sql;
   RDSqlQuery *q;
-  RDEventLine eventline;
+  RDEventLine eventline(clock_station);
 
   sql=QString("select ")+
     "EVENT_NAME,"+  // 00

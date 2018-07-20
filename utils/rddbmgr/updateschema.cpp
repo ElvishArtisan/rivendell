@@ -7840,7 +7840,37 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
     }
     delete q;
 
+    WriteSchemaVersion(++cur_schema);
+  }
 
+  if((cur_schema<295)&&(set_schema>cur_schema)) {
+    sql=QString("create table IMPORTER_LINES (")+
+      "ID int not null primary key auto_increment,"+
+      "STATION_NAME char(64) not null,"+
+      "PROCESS_ID int unsigned not null,"
+      "LINE_ID int unsigned not null,"+
+      "START_HOUR int not null,"+
+      "START_SECS int not null,"+
+      "CART_NUMBER int unsigned,"+
+      "TITLE char(255),"+
+      "LENGTH int,"+
+      "INSERT_BREAK enum('N','Y') default 'N',"+
+      "INSERT_TRACK enum('N','Y') default 'N',"+
+      "INSERT_FIRST int unsigned default 0,"+
+      "TRACK_STRING char(255),"+
+      "EXT_DATA char(32),"+
+      "EXT_EVENT_ID char(32),"+
+      "EXT_ANNC_TYPE char(8),"+
+      "EXT_CART_NAME char(32),"+
+      "LINK_START_TIME time default NULL,"+
+      "LINK_LENGTH int default NULL,"+
+      "EVENT_USED enum('N','Y') default 'N',"+
+      "index STATION_NAME_PROCESS_ID_IDX (STATION_NAME,PROCESS_ID),"+
+      "unique index START_TIME_IDX (STATION_NAME,PROCESS_ID,START_HOUR,START_SECS,LINE_ID)) "+
+      db_table_create_postfix;
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
 
     WriteSchemaVersion(++cur_schema);
   }

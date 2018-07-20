@@ -23,14 +23,13 @@
 
 #include <vector>
 
-#include <qsqldatabase.h>
-
 #include <rdevent_line.h>
+#include <rdstation.h>
 
 class RDClock
 {
   public:
-   RDClock();
+   RDClock(RDStation *station);
    QString name() const;
    void setName(const QString &name);
    QString shortName() const;
@@ -64,6 +63,7 @@ class RDClock
    std::vector<RDEventLine> clock_events;
    unsigned artistsep;
    bool rules_modified;
+   RDStation *clock_station;
 };
 
 #endif  // RDCLOCK_H

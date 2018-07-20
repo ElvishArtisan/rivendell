@@ -21,19 +21,19 @@
 #ifndef RDEVENT_LINE_H
 #define RDEVENT_LINE_H
 
-#include <qsqldatabase.h>
 #include <qdatetime.h>
 
 #include <rdlog_event.h>
 #include <rdeventimportlist.h>
 #include <rdlog_line.h>
+#include <rdstation.h>
 
 class RDEventLine
 {
  public:
   enum ImportSource {None=0,Traffic=1,Music=2,Scheduler=3};
   enum InsertFirst {InsertNone=0,InsertBreak=1,InsertTrack=2};
-  RDEventLine();
+  RDEventLine(RDStation *station);
   QString name() const;
   void setName(const QString &name);
   QString properties() const;
@@ -84,7 +84,7 @@ class RDEventLine
   bool linkLog(RDLogEvent *e,const QString &svcname,
 	       RDLogLine *link_logline,const QString &track_str,
 	       const QString &label_cart,const QString &track_cart,
-	       const QString &import_table,QString *errors);
+	       QString *errors);
   
  private:
   int GetLength(unsigned cartnum,int def_length=0);
@@ -112,6 +112,7 @@ class RDEventLine
   QString event_have_code;
   QString event_have_code2;
   unsigned event_title_sep;
+  RDStation *event_station;
 };
 
-#endif 
+#endif  // RDEVENT_LINE_H

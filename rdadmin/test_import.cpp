@@ -27,6 +27,7 @@
 #include <rddatedecode.h>
 #include <rddatedialog.h>
 #include <rddb.h>
+#include <rdescape_string.h>
 #include <rdevent_line.h>
 #include <rdlistviewitem.h>
 #include <rdpasswd.h>
@@ -180,18 +181,27 @@ void TestImport::importData()
 
   test_events_list->clear();
   if(!test_svc->import(test_src,test_date_edit->date(),test_svc->breakString(),
-		       test_svc->trackString(test_src),QString().
-		       sprintf("%s_TEST_IMP",
-			       (const char *)test_svc->name()))) {
+		       test_svc->trackString(test_src))) {
     QMessageBox::information(this,tr("Import Error"),
 			     tr("There was an error during import\nplease check your settings and try again."));
     return;
   }
-  QString sql=QString().sprintf("select START_HOUR,START_SECS,EXT_CART_NAME,\
-                                 LENGTH,EXT_DATA,EXT_EVENT_ID,EXT_ANNC_TYPE,\
-                                 INSERT_BREAK,INSERT_TRACK,INSERT_FIRST,TITLE,\
-                                 TRACK_STRING from `%s_TEST_IMP`",
-				(const char *)test_svc->name());
+  QString sql=QString("select ")+
+    "START_HOUR,"+     // 00
+    "START_SECS,"+     // 01
+    "EXT_CART_NAME,"+  // 02
+    "LENGTH,"+         // 03
+    "EXT_DATA,"+       // 04
+    "EXT_EVENT_ID,"+   // 05
+    "EXT_ANNC_TYPE,"+  // 06
+    "INSERT_BREAK,"+   // 07
+    "INSERT_TRACK,"+   // 08
+    "INSERT_FIRST,"+   // 09
+    "TITLE,"+          // 10
+    "TRACK_STRING "+   // 11
+    "from IMPORTER_LINES where "+
+    "STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\" && "+
+    QString().sprintf("PROCESS_ID=%u",getpid());
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
     if(q->value(9).toUInt()==RDEventLine::InsertBreak) {
@@ -242,8 +252,12 @@ void TestImport::importData()
     item->setText(6,q->value(6).toString());
   }
   delete q;
-  // printf("IMPORT TABLE: %s_TEST_IMP\n",(const char *)test_svc->name());
-  rda->dropTable(test_svc->name()+"_TEST_IMP");
+
+  sql=QString("delete from IMPORTER_LINES where ")+
+    "STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\" && "+
+    QString().sprintf("PROCESS_ID=%u",getpid());
+  //  printf("IMPORTER_LINES cleanup SQL: %s\n",(const char *)sql);
+  RDSqlQuery::apply(sql);
 }
 
 

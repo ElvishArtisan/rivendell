@@ -20,12 +20,13 @@
 
 #include <rdgrid.h>
 
-RDGrid::RDGrid(QString svc_name)
+RDGrid::RDGrid(QString svc_name,RDStation *station)
 {
   grid_name=svc_name;
+  grid_station=station;
   for(int i=0;i<7;i++) {
     for(int j=0;j<24;j++) {
-      grid_clocks[i][j]=new RDClock();
+      grid_clocks[i][j]=new RDClock(grid_station);
     }
   }
 }

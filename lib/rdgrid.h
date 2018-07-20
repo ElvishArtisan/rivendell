@@ -24,11 +24,12 @@
 #include <qsqldatabase.h>
 
 #include <rdclock.h>
+#include <rdstation.h>
 
 class RDGrid
 {
   public:
-   RDGrid(QString svc_name);
+  RDGrid(QString svc_name,RDStation *station);
    QString serviceName() const;
    void setServiceName(QString name);
    RDClock *clock(int dayofweek,int hour);
@@ -40,6 +41,7 @@ class RDGrid
   private:
    QString grid_name;
    RDClock *grid_clocks[7][24];
+   RDStation *grid_station;
 };
 
 

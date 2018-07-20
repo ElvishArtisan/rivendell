@@ -1,0 +1,27 @@
+                 IMPORTER_LINES Layout for Rivendell
+
+The IMPORTER_LINES table holds ephemeral data use for log
+importation.
+
+FIELD NAME           TYPE              REMARKS
+----------------------------------------------------------------
+ID                   int(10) unsigned  Primary key, auto increment
+STATION_NAME         char(64)          From STATIONS.NAME
+PROCESS_ID           int unsigned
+LINE_ID              int(10) unsigned
+START_HOUR           int (11) signed
+START_SECS           int(11) signed
+CART_NUMBER          int (10) unsigned
+TITLE                char(255)
+LENGTH               int (11) signed
+INSERT_BREAK         enum('N','Y')
+INSERT_TRACK         enum('N','Y')
+INSERT_FIRST         int (10) unsigned
+TRACK_STRING         char(255)
+EXT_DATA             char(32)
+EXT_EVENT_ID         char(32)
+EXT_ANNC_TYPE        char(8)
+EXT_CART_NAME        char(32)
+LINK_START_TIME      time
+LINK_LENGTH          int (11) signed
+EVENT_USED           enum('N','Y')

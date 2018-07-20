@@ -39,6 +39,17 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
 
 
   //
+  // Revert 295
+  //
+  if((cur_schema==295)&&(set_schema<cur_schema)) {
+    if(!DropTable("IMPORTER_LINES",err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 294
   //
   if((cur_schema==294)&&(set_schema<cur_schema)) {

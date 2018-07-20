@@ -29,8 +29,9 @@
 #include "rdeventimportlist.h"
 #include "schedcartlist.h"
 
-RDEventLine::RDEventLine()
+RDEventLine::RDEventLine(RDStation *station)
 {
+  event_station=station;
   event_preimport_list=new RDEventImportList();
   event_postimport_list=new RDEventImportList();
   clear();
@@ -908,7 +909,7 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 bool RDEventLine::linkLog(RDLogEvent *e,const QString &svcname,
 			  RDLogLine *link_logline,const QString &track_str,
 			  const QString &label_cart,const QString &track_cart,
-			  const QString &import_table,QString *errors)
+			  QString *errors)
 {
   QString sql;
   RDSqlQuery *q;
@@ -993,11 +994,13 @@ bool RDEventLine::linkLog(RDLogEvent *e,const QString &svcname,
     "TRACK_STRING,"+    // 11
     "LINK_START_TIME,"+ // 12
     "LINK_LENGTH "+     // 13
-    "from `"+import_table+"` where "+
+    "from IMPORTER_LINES where "+
+    "STATION_NAME=\""+RDEscapeString(event_station->name())+"\" && "+
+    QString().sprintf("PROCESS_ID=%u && ",getpid())+
     QString().sprintf("(START_HOUR=%d)&&",start_start_hour)+
     QString().sprintf("(START_SECS>=%d)&&",start_start_secs/1000)+
     QString().sprintf("(START_SECS<=%d)&&",end_start_secs/1000)+
-    "(EVENT_USED=\"N\") order by ID";
+    "(EVENT_USED=\"N\") order by LINE_ID";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     int length=GetLength(q->value(0).toUInt(),q->value(2).toInt());
@@ -1148,8 +1151,10 @@ bool RDEventLine::linkLog(RDLogEvent *e,const QString &svcname,
   //
   // Mark Events as Used
   //
-  sql=QString("update `")+import_table+"` set "+
+  sql=QString("update IMPORTER_LINES set ")+
     "EVENT_USED=\"Y\" where "+
+    "STATION_NAME=\""+RDEscapeString(event_station->name())+"\" && "+
+    QString().sprintf("PROCESS_ID=%u && ",getpid())+
     QString().sprintf("(START_HOUR=%d)&&",start_start_hour)+
     QString().sprintf("(START_SECS>=%d)&&",start_start_secs/1000)+
     QString().sprintf("(START_SECS<=%d)&&",end_start_secs/1000)+
@@ -1164,8 +1169,11 @@ bool RDEventLine::linkLog(RDLogEvent *e,const QString &svcname,
     addMSecs(link_logline->linkLength());
   if(event_use_autofill&&(event_start_time<=time)) {
     QTime fill_start_time=time;
-    sql=QString("select AUTOFILLS.CART_NUMBER,CART.FORCED_LENGTH from ")+
-      "AUTOFILLS left join CART on AUTOFILLS.CART_NUMBER=CART.NUMBER where "+
+    sql=QString("select ")+
+      "AUTOFILLS.CART_NUMBER,"+  // 00
+      "CART.FORCED_LENGTH "+     // 01
+      "from AUTOFILLS left join CART "+
+      "on AUTOFILLS.CART_NUMBER=CART.NUMBER where "+
       "(AUTOFILLS.SERVICE=\""+RDEscapeString(svcname)+"\")&&"+
       QString().sprintf("(CART.FORCED_LENGTH<=%d)&&",time.msecsTo(end_time))+
       "(CART.FORCED_LENGTH>0) "+

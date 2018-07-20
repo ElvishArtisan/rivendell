@@ -239,7 +239,7 @@ EditClock::EditClock(QString clockname,bool new_clock,
   // Populate Data
   //
   sched_rules_list = new SchedRulesList(clockname,rda->config());
-  edit_clock=new RDClock();
+  edit_clock=new RDClock(rda->station());
   edit_clock->setName(clockname);
   edit_clock->load();
   edit_shortname_edit->setText(edit_clock->shortName());
@@ -283,7 +283,7 @@ void EditClock::selectionChangedData(QListViewItem *l)
 void EditClock::addData()
 {
   int line=0;
-  RDEventLine eventline;
+  RDEventLine eventline(rda->station());
 
   RDListViewItem *item=(RDListViewItem *)edit_clocks_list->selectedItem();
   if(item!=NULL) {
@@ -344,7 +344,7 @@ void EditClock::cloneData()
   
   RDEventLine *selectedEventLine = edit_clock->eventLine(line);
 
-  RDEventLine eventline;
+  RDEventLine eventline(rda->station());
   eventline.setName(selectedEventLine->name());
   eventline.setStartTime(selectedEventLine->startTime().addMSecs(selectedEventLine->length()));
   eventline.setLength(selectedEventLine->length());

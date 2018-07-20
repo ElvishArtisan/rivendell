@@ -50,6 +50,7 @@ EXTRA_DIST = audio_cards.txt\
              gpis.txt\
              gpos.txt\
              groups.txt\
+             importer_lines.txt\
              isci_xreference.txt\
              jack_clients.txt\
              livewire_gpio_slots.txt\
