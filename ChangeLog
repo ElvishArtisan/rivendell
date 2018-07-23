@@ -17210,3 +17210,5 @@
 	* Fixed a buffer overflow vulnerability in the 'RDCddbLookup' class.
 2018-07-23 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up CDDA calls to ensure UTF-8 compatibility.
+2018-07-23 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up RDConf calls to ensure UTF-8 compatibility.

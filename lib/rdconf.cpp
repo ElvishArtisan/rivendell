@@ -2,7 +2,7 @@
 //
 //  Small library for handling common configuration file tasks
 // 
-//   (C) Copyright 1996-2003 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 1996-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -500,8 +500,7 @@ QString RDGetDisplay(bool strip_point)
   int l;
 
   if(getenv("DISPLAY")[0]==':') {
-    display=QString().sprintf("%s%s",(const char *)RDGetHostAddr().toString(),
-			     getenv("DISPLAY"));
+    display=RDGetHostAddr().toString()+getenv("DISPLAY");
   }
   else {
     display=QString(getenv("DISPLAY"));
@@ -702,29 +701,30 @@ QString RDGetTimeLength(int mseconds,bool leadzero,bool tenths)
   tenthsecs=mseconds/100;
   if(leadzero) {
     if(tenths) {
-     return QString().sprintf("%s%d:%02d:%02d.%d",negative,hour,min,seconds,
-			      tenthsecs);
+      return QString(negative)+
+	QString().sprintf("%d:%02d:%02d.%d",hour,min,seconds,tenthsecs);
     }
-    return QString().sprintf("%s%d:%02d:%02d",negative,hour,min,seconds);
+    return QString(negative)+
+      QString().sprintf("%d:%02d:%02d",hour,min,seconds);
   }
   if((hour==0)&&(min==0)) {
     if(tenths) {
-      return QString().sprintf("%s:%02d.%d",negative,seconds,tenthsecs);
+      return QString(negative)+QString().sprintf(":%02d.%d",seconds,tenthsecs);
     }
-    return QString().sprintf("%s:%02d",negative,seconds);
+    return QString(negative)+QString().sprintf(":%02d",seconds);
   }
   if(hour==0) {
     if(tenths) {
-      return QString().sprintf("%s%2d:%02d.%d",negative,min,seconds,
-			       tenthsecs);
+      return QString(negative)+
+	QString().sprintf("%2d:%02d.%d",min,seconds,tenthsecs);
     }
-    return QString().sprintf("%s%2d:%02d",negative,min,seconds);
+    return QString(negative)+QString().sprintf("%2d:%02d",min,seconds);
   }
   if(tenths) {
-    return QString().sprintf("%s%2d:%02d:%02d.%d",negative,hour,min,seconds,
-			     tenthsecs);
+    return QString(negative)+
+      QString().sprintf("%2d:%02d:%02d.%d",hour,min,seconds,tenthsecs);
   }
-  return QString().sprintf("%s%2d:%02d:%02d",negative,hour,min,seconds);
+  return QString(negative)+QString().sprintf("%2d:%02d:%02d",hour,min,seconds);
 }
 
 
@@ -848,9 +848,7 @@ bool RDWritePid(const QString &dirname,const QString &filename,int owner,
 {
   FILE *file;
   mode_t prev_mask;
-  QString pathname=QString().sprintf("%s/%s",
-				     (const char *)dirname,
-				     (const char *)filename);
+  QString pathname=dirname+"/"+filename;
 
   prev_mask = umask(0113);      // Set umask so pid files are user and group writable.
   file=fopen((const char *)pathname,"w");
@@ -868,9 +866,7 @@ bool RDWritePid(const QString &dirname,const QString &filename,int owner,
 
 void RDDeletePid(const QString &dirname,const QString &filename)
 {
-  QString pid=QString().sprintf("%s/%s",
-				(const char *)dirname,
-				(const char *)filename);
+  QString pid=dirname+"/"+filename;
   unlink((const char *)pid);
 }
 
