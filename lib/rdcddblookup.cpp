@@ -362,8 +362,7 @@ bool RDCddbLookup::ReadCdText(const QString &cdda_dir,const QString &cdda_dev)
   // Read the Track Title Data File
   //
   for(int i=0;i<lookup_record->tracks();i++) {
-    title_profile->setSource(QString().sprintf("%s/audio_%02d.inf",
-					 (const char *)cdda_dir,i+1));
+    title_profile->setSource(cdda_dir+QString().sprintf("/audio_%02d.inf",i+1));
     str=title_profile->stringValue("","Albumtitle","");
     str.remove("'");
     if((!str.isEmpty())&&(str!="''")) {
@@ -408,9 +407,9 @@ bool RDCddbLookup::ReadIsrcs(const QString &cdda_dir,const QString &cdda_dev)
   //
   // Write the ISRC Data to a Temp File
   //
-  cmd=QString().sprintf("CURDIR=`pwd`;cd %s;cdda2wav -D %s --info-only -v trackid 2> /dev/null;cd $CURDIR",
-				(const char *)cdda_dir,
-				(const char *)cdda_dev);
+  cmd=QString("CURDIR=`pwd`;cd ")+
+    cdda_dir+";cdda2wav -D "+cdda_dev+
+    " --info-only -v trackid 2> /dev/null;cd $CURDIR";
   if((err=system(cmd))!=0) {
     return false;
   }
@@ -419,8 +418,7 @@ bool RDCddbLookup::ReadIsrcs(const QString &cdda_dir,const QString &cdda_dev)
   // Read the ISRC Data File
   //
   for(int i=0;i<lookup_record->tracks();i++) {
-    isrc_profile->setSource(QString().sprintf("%s/audio_%02d.inf",
-					      (const char *)cdda_dir,i+1));
+    isrc_profile->setSource(cdda_dir+QString().sprintf("/audio_%02d.inf",i+1));
     str=isrc_profile->stringValue("","ISRC","");
     str.remove("'");
     str.remove("-");
