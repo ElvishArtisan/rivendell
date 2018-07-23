@@ -17206,3 +17206,5 @@
 	* Incremented the database version to 295.
 	* Refactored the log importer code to use the static 'IMPORTER_LINES'
 	table.
+2018-07-23 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a buffer overflow vulnerability in the 'RDCddbLookup' class.

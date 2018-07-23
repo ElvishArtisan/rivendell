@@ -138,7 +138,7 @@ void RDCddbLookup::readyReadData()
     switch(lookup_state) {
     case 0:    // Login Banner
       if((code==200)||(code==201)) {
-	sprintf(buffer,"cddb hello %s %s %s %s",
+	snprintf(buffer,2048,"cddb hello %s %s %s %s",
 		(const char *)lookup_username,
 		(const char *)lookup_hostname,
 		(const char *)lookup_appname,
@@ -153,13 +153,13 @@ void RDCddbLookup::readyReadData()
 
     case 1:    // Handshake Response
       if((code==200)||(code==402)) {
-	sprintf(buffer,"cddb query %08x %d",
+	snprintf(buffer,2048,"cddb query %08x %d",
 		lookup_record->discId(),lookup_record->tracks());
 	for(int i=0;i<lookup_record->tracks();i++) {
-	  sprintf(offset," %d",lookup_record->trackOffset(i));
+	  snprintf(offset,256," %d",lookup_record->trackOffset(i));
 	  strcat(buffer,offset);
 	}
-	sprintf(offset," %d",lookup_record->discLength()/75);
+	snprintf(offset,256," %d",lookup_record->discLength()/75);
 	strcat(buffer,offset);
 	SendToServer(buffer);
 	lookup_state=2;
@@ -182,7 +182,7 @@ void RDCddbLookup::readyReadData()
 	  start+=9;
 	}
 	lookup_record->setDiscTitle((const char *)line+start);
-	sprintf(buffer,"cddb read %s %08x\n",
+	snprintf(buffer,2048,"cddb read %s %08x\n",
 		(const char *)lookup_record->discGenre(),
 		lookup_record->discId());
 	SendToServer(buffer);
