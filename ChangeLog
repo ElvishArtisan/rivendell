@@ -17212,3 +17212,5 @@
 	* Cleaned up CDDA calls to ensure UTF-8 compatibility.
 2018-07-23 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up RDConf calls to ensure UTF-8 compatibility.
+2018-07-23 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a buffer overflow vulnerability in the 'RDWaveFile' class.

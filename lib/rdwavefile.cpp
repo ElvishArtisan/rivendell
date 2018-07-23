@@ -4220,10 +4220,8 @@ bool RDWaveFile::MakeCart(unsigned ptr_offset)
 	  cart_end_time.hour(),
 	  cart_end_time.minute(),
 	  cart_end_time.second());
-  sprintf((char *)cart_chunk_data+488,"%s",
-	  (const char *)PACKAGE);
-  sprintf((char *)cart_chunk_data+552,"%s",
-	  (const char *)VERSION);
+  snprintf((char *)cart_chunk_data+488,64,"%s",PACKAGE);
+  snprintf((char *)cart_chunk_data+552,64,"%s",VERSION);
   if(!cart_user_def.isEmpty()) {
     sprintf((char *)cart_chunk_data+616,"%s",
 	    (const char *)cart_user_def.left(64));
