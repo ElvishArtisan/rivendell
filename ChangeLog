@@ -17224,3 +17224,6 @@
 	* Added a 'db_charset_test' test harness.
 2018-07-25 Fred Gleason <fredg@paravelsystems.com>
 	* Removed debugging printfs from 'lib/rdfeedlog.cpp'.
+2018-07-25 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed bug in the rdfeed script that caused corruption when
+	generating UTF-8 strings.

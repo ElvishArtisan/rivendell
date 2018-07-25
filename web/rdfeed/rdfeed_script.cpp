@@ -109,9 +109,30 @@ MainObject::MainObject(QObject *parent)
     printf("Content-type: text/html\n");
     printf("Status: 500\n");
     printf("\n");
-    printf("rdfeed.xml: %s\n",(const char *)err_msg);
+    printf("rdfeed.xml: %s\n",(const char *)err_msg.utf8());
     exit(0);
   }
+
+  /*
+  printf("Content-type: text/html\n\n");
+  QString sql;
+  RDSqlQuery *q;
+  sql=QString("show variables like '%character_set%'");
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    printf("%s: %s<br>\n",(const char *)q->value(0).toString(),
+	   (const char *)q->value(1).toString());
+  }
+  delete q;
+  sql=QString("show variables like '%collation%'");
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    printf("%s: %s<br>\n",(const char *)q->value(0).toString(),
+	   (const char *)q->value(1).toString());
+  }
+  delete q;
+  exit(0);
+  */
 
   if(cast_id<0) {
     ServeRss(keyname,count);
@@ -173,18 +194,18 @@ void MainObject::ServeRss(const char *keyname,bool count)
   //
   // Generate CGI Header
   //
-  printf("Content-type: application/rss+xml\n\n");
-
+  printf("Content-type: application/rss+xml; charset=UTF-8\n\n");
+  
   //
   // Render Header XML
   //
-  printf("%s\n",(const char *)q->value(9).toString());
+  printf("%s\n",(const char *)q->value(9).toString().utf8());
 
   //
   // Render Channel XML
   //
   printf("<channel>\n");
-  printf("%s\n",(const char *)ResolveChannelWildcards(q));
+  printf("%s\n",(const char *)ResolveChannelWildcards(q).utf8());
 
   //
   // Render Item XML
@@ -213,7 +234,7 @@ void MainObject::ServeRss(const char *keyname,bool count)
   q1=new RDSqlQuery(sql);
   while(q1->next()) {
     printf("<item>\n");
-    printf("%s\n",(const char *)ResolveItemWildcards(keyname,q1,q));
+    printf("%s\n",(const char *)ResolveItemWildcards(keyname,q1,q).utf8());
     printf("</item>\n");
   }
   delete q1;
@@ -248,7 +269,7 @@ void MainObject::ServeLink(const char *keyname,int cast_id,bool count)
   }
   printf("Content-type: audio/x-mpeg\n");
   printf("Location: %s/%s\n\n",(const char *)q->value(0).toString(),
-	 (const char *)q->value(1).toString());
+	 (const char *)q->value(1).toString().utf8());
   delete q;
 
   exit(0);
@@ -258,6 +279,7 @@ void MainObject::ServeLink(const char *keyname,int cast_id,bool count)
 QString MainObject::ResolveChannelWildcards(RDSqlQuery *chan_q)
 {
   QString ret=chan_q->value(10).toString();
+  //  ret.replace("%TITLE%",chan_q->value(0).toString());
   ret.replace("%TITLE%",RDXmlEscape(chan_q->value(0).toString()));
   ret.replace("%DESCRIPTION%",RDXmlEscape(chan_q->value(1).toString()));
   ret.replace("%CATEGORY%",RDXmlEscape(chan_q->value(2).toString()));
@@ -269,7 +291,7 @@ QString MainObject::ResolveChannelWildcards(RDSqlQuery *chan_q)
 	      toString("ddd, d MMM yyyy hh:mm:ss ")+"GMT");
   ret.replace("%PUBLISH_DATE%",chan_q->value(8).toDateTime().
 	      toString("ddd, d MMM yyyy hh:mm:ss ")+"GMT");
-  ret.replace("%GENERATOR%",QString().sprintf("Rivendell %s",VERSION));
+  ret.replace("%GENERATOR%",QString("Rivendell ")+VERSION);
 
   return ret;
 }
@@ -342,10 +364,10 @@ bool MainObject::ShouldCount(const QString &hdr)
 void MainObject::Redirect(const QString &url)
 {
   printf("Status: 301 Moved Permanently\n");
-  printf("Location: %s\n",(const char *)url);
+  printf("Location: %s\n",(const char *)url.utf8());
   printf("Content-type: text/html\n");
   printf("\n");
-  printf("The feed has been relocated to %s.\n",(const char *)url);
+  printf("The feed has been relocated to %s.\n",(const char *)url.utf8());
 }
 
 
