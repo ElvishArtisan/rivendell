@@ -17222,3 +17222,5 @@
 	* Fixed a bug that caused the incorrect character set to be used
 	when opening a DB connection.
 	* Added a 'db_charset_test' test harness.
+2018-07-25 Fred Gleason <fredg@paravelsystems.com>
+	* Removed debugging printfs from 'lib/rdfeedlog.cpp'.
