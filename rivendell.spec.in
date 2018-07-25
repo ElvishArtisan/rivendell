@@ -108,6 +108,7 @@ make
 %install
 rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
+rm -f $RPM_BUILD_ROOT/@LOCAL_PREFIX@/@RD_LIB_PATH@/libqmysqlutf*
 mkdir $RPM_BUILD_ROOT/.qt
 touch $RPM_BUILD_ROOT/.qt/qt
 rm -f $RPM_BUILD_ROOT/lib/security/pam_rd.la
@@ -257,6 +258,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(-,root,root)
 @LOCAL_PREFIX@/@RD_LIB_PATH@/rivendell/*.rlm
+@LOCAL_PREFIX@/@RD_LIB_PATH@/qt-3.3/plugins/sqldrivers/libqmysqlutf.so
 @LOCAL_PREFIX@/bin/rdadmin
 @LOCAL_PREFIX@/bin/rdairplay
 @LOCAL_PREFIX@/bin/rdpanel

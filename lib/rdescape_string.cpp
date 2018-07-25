@@ -76,74 +76,32 @@ QString RDCheckDateTime(QDate const &date, QString const &format)
 
 QString RDEscapeString(QString const &str)
 {
+  QString orig=str;
   QString res;
 
   for(unsigned i=0;i<str.length();i++) {
-    switch(((const char *)str)[i]) {
-	case '(':
-	  res+=QString("\\\(");
-	  break;
+    QChar c=orig.ref(i);
+    switch(c) {
+    case '"':
+      res+=QString("\\\"");
+      break;
 
-	case ')':
-	  res+=QString("\\)");
-	  break;
+    case '`':
+      res+=QString("\\`");
+      break;
 
-	case '{':
-	  res+=QString("\\\{");
-	  break;
+    case '\'':
+      res+=QString("\\\'");
+      break;
 
-	case '"':
-	  res+=QString("\\\"");
-	  break;
+    case '\\':
+      res+=QString("\\");
+      res+=QString("\\");
+      break;
 
-	case '`':
-	  res+=QString("\\`");
-	  break;
-
-	case '[':
-	  res+=QString("\\\[");
-	  break;
-
-	case '\'':
-	  res+=QString("\\\'");
-	  break;
-
-	case '\\':
-	  res+=QString("\\");
-	  res+=QString("\\");
-	  break;
-
-	case '?':
-	  res+=QString("\\\?");
-	  break;
-
-	case ' ':
-	  res+=QString("\\ ");
-	  break;
-
-	case '&':
-	  res+=QString("\\&");
-	  break;
-
-        case ';':
-	  res+=QString("\\;");
-	  break;
-
-        case '<':
-	  res+=QString("\\<");
-	  break;
-
-        case '>':
-	  res+=QString("\\>");
-	  break;
-
-        case '|':
-	  res+=QString("\\|");
-	  break;
-
-	default:
-	  res+=((const char *)str)[i];
-	  break;
+    default:
+      res+=c;
+      break;
     }
   }
 

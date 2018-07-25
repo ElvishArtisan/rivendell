@@ -38,6 +38,7 @@ SUBDIRS = icons\
           conf\
           debian\
           docs\
+          drivers\
           xdg\
           cae\
           importers\

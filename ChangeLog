@@ -17214,3 +17214,7 @@
 	* Cleaned up RDConf calls to ensure UTF-8 compatibility.
 2018-07-23 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a buffer overflow vulnerability in the 'RDWaveFile' class.
+2018-07-25 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'RDEscapeString' function that caused corruption
+	in UTF-8 strings.
+	* Added a UTF-8 complaint MySQL driver in 'drivers/qt3-mysql-utf/'.

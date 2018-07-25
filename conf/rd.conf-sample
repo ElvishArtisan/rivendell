@@ -24,7 +24,8 @@ Hostname=localhost
 Loginname=rduser
 Password=letmein
 Database=Rivendell
-Driver=QMYSQL3
+Driver=QMYSQL3      ; Stock Latin1-capable driver supplied by TrollTech
+;Driver=QNYSQLUTF8  ; UTF-8-capable driver packaged within Rivendell
 
 ; The following three settings control the attributes of new DB tables
 ; created by Rivendell.

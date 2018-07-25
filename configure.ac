@@ -214,6 +214,11 @@ AC_CHECK_HEADER(security/pam_appl.h,[],[AC_MSG_ERROR([*** PAM not found ***])])
 AC_CHECK_HEADER(soundtouch/SoundTouch.h,[],[AC_MSG_ERROR([*** SoundTouch not found ***])])
 
 #
+# Check for MySQL client libraries
+#
+MYSQL_CLIENT()
+
+#
 # Check for FLAC
 #
 if test -z $FLAC_DISABLED ; then
@@ -495,6 +500,8 @@ AC_CONFIG_FILES([rivendell.spec \
     rivendell-suse \
     rdrepld-suse \
     conf/rd-bin.conf \
+    drivers/Makefile \
+    drivers/qt3-mysql-utf/Makefile \
     icons/Makefile \
     helpers/Makefile \
     lib/rdpaths.h \
