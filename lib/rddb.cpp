@@ -63,14 +63,16 @@ QSqlDatabase *RDInitDb (unsigned *schema,QString *error)
       return NULL;
     }
   }
+  
+  QString sql=QString("set charset '")+cf->mysqlCharset()+"'";
+  QSqlQuery *q=new QSqlQuery(sql);
+  delete q;
+
   if (firsttime){
     new RDDbHeartbeat(cf->mysqlHeartbeatInterval());
     firsttime = false;
   }
-  //  QSqlQuery *q=new QSqlQuery("set character_set_results='utf8'");
-  //  delete q;
-
-  QSqlQuery *q=new QSqlQuery("select DB from VERSION");
+  q=new QSqlQuery("select DB from VERSION");
   if(q->first()) {
     *schema=q->value(0).toUInt();
   }

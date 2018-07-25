@@ -916,7 +916,6 @@ void EditCart::okData()
     rdcart_cart->setPublisher(rdcart_controls.publisher_edit->text());
     rdcart_cart->setConductor(rdcart_controls.conductor_edit->text());
     rdcart_cart->setComposer(rdcart_controls.composer_edit->text());
-    printf("USERDEF: %s\n",(const char *)rdcart_controls.user_defined_edit->text());
     rdcart_cart->setUserDefined(rdcart_controls.user_defined_edit->text());
     rdcart_cart->
       setUsageCode((RDCart::UsageCode)rdcart_usage_box->currentItem());

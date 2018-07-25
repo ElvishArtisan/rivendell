@@ -17218,3 +17218,7 @@
 	* Fixed a bug in the 'RDEscapeString' function that caused corruption
 	in UTF-8 strings.
 	* Added a UTF-8 complaint MySQL driver in 'drivers/qt3-mysql-utf/'.
+2018-07-25 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug that caused the incorrect character set to be used
+	when opening a DB connection.
+	* Added a 'db_charset_test' test harness.
