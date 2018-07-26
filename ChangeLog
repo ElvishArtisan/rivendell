@@ -17227,3 +17227,6 @@
 2018-07-25 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed bug in the rdfeed script that caused corruption when
 	generating UTF-8 strings.
+2018-07-26 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed incorrect justification of fields in the 'List Feeds'
+	dialog. in rdadmin(1).
