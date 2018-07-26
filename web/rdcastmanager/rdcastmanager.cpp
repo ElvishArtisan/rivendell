@@ -66,7 +66,7 @@ MainObject::MainObject(QObject *parent)
     printf("Content-type: text/html\n");
     printf("Status: 500\n");
     printf("\n");
-    printf("rdcastmanager.cgi: %s\n",(const char *)err_msg);
+    printf("rdcastmanager.cgi: %s\n",(const char *)err_msg.utf8());
     Exit(0);
   }
 
@@ -79,7 +79,7 @@ MainObject::MainObject(QObject *parent)
       printf("Status: 500\n");
       printf("\n");
       printf("rdcastmanager.cgi: unknown command option \"%s\"\n",
-	     (const char *)rda->cmdSwitch()->key(i));
+	     (const char *)rda->cmdSwitch()->key(i).utf8());
       Exit(0);
     }
   }
@@ -347,8 +347,11 @@ void MainObject::ServeListFeeds()
     "on(FEED_PERMS.USER_NAME=WEB_CONNECTIONS.LOGIN_NAME) where "+
     QString().sprintf("WEB_CONNECTIONS.SESSION_ID=%ld",cast_session_id);
   q=new RDSqlQuery(sql);
-  sql=QString().sprintf("select ID,KEY_NAME,CHANNEL_TITLE from FEEDS \
-                         where ");
+  sql=QString("select ")+
+    "ID,"+             // 00
+    "KEY_NAME,"+       // 01
+    "CHANNEL_TITLE "+  // 02
+    "from FEEDS where ";
   while(q->next()) {
     sql+=QString("(KEY_NAME=\"")+RDEscapeString(q->value(0).toString())+"\")||";
   }
@@ -386,10 +389,10 @@ void MainObject::ServeListFeeds()
       }
       printf("<td align=\"center\" bgcolor=\"%s\">%s</td>\n"
 	     ,(const char *)line_colors[current_color],
-	     (const char *)q->value(1).toString());
+	     (const char *)q->value(1).toString().utf8());
       printf("<td bgcolor=\"%s\">%s</td>\n",
 	     (const char *)line_colors[current_color],
-	     (const char *)q->value(2).toString());
+	     (const char *)q->value(2).toString().utf8());
       printf("<td align=\"center\" bgcolor=\"%s\">%d / %d</td>\n",
 	     (const char *)line_colors[current_color],active,total);
       printf("<form action=\"rdcastmanager.cgi\" method=\"post\" enctype=\"multipart/form-data\">\n");
@@ -398,7 +401,7 @@ void MainObject::ServeListFeeds()
       printf("<input type=\"hidden\" name=\"FEED_ID\" value=\"%d\">\n",
 	     q->value(0).toInt());
       printf("<input type=\"hidden\" name=\"KEY_NAME\" value=\"%s\">\n",
-	     (const char *)q->value(1).toString());
+	     (const char *)q->value(1).toString().utf8());
       printf("<input type=\"submit\" value=\"View Feed\">\n");
       printf("</td>\n");
       printf("</form>\n");
@@ -441,7 +444,7 @@ void MainObject::ServeListCasts()
 {
   QString sql;
   RDSqlQuery *q;
-  QString filter;
+  QString filter="";
   bool unexp_only;
   bool active_only;
 
@@ -458,7 +461,6 @@ void MainObject::ServeListCasts()
 
   GetUserPerms();
 
-  filter[0]=0;
   cast_post->getValue("FILTER",&filter);
   unexp_only=(cast_post->value("ONLY_NOT_EXPIRED").toString().lower()=="yes");
   active_only=(cast_post->value("ONLY_ACTIVE").toString().lower()=="yes");
@@ -484,7 +486,7 @@ void MainObject::ServeListCasts()
   // Title Section
   //
   printf("<form action=\"rdcastmanager.cgi\" method=\"post\" enctype=\"multipart/form-data\">\n");
-  printf("<tr><td align=\"center\" colspan=\"9\"><big><big>%s Podcasts</big></big></td></tr>\n",(const char *)cast_key_name);
+  printf("<tr><td align=\"center\" colspan=\"9\"><big><big>%s Podcasts</big></big></td></tr>\n",(const char *)cast_key_name.utf8());
   SetContext(RDCASTMANAGER_COMMAND_LIST_CASTS);
 
   //
@@ -493,7 +495,7 @@ void MainObject::ServeListCasts()
   printf("<tr>\n");
   printf("<td bgcolor=\"%s\">&nbsp;</td>\n",RD_WEB_LINE_COLOR2);
   printf("<td colspan=\"7\" align=\"left\" bgcolor=\"%s\"><strong>Filter:</strong>\n",RD_WEB_LINE_COLOR2);
-  printf("<input type=\"text\" name=\"FILTER\" value=\"%s\" size=\"70\" maxlength=\"255\">\n",(const char *)filter);
+  printf("<input type=\"text\" name=\"FILTER\" value=\"%s\" size=\"70\" maxlength=\"255\">\n",(const char *)filter.utf8());
   printf("</td>\n");
   printf("<td bgcolor=\"%s\"><input type=\"submit\" value=\"Refresh\"></td>\n",RD_WEB_LINE_COLOR2);
   printf("</tr>\n");
@@ -549,11 +551,17 @@ void MainObject::ServeListCasts()
   line_colors[0]=RD_WEB_LINE_COLOR1;
   line_colors[1]=RD_WEB_LINE_COLOR2;
   int current_color=0;
-  sql="select ID,STATUS,ITEM_TITLE,ORIGIN_DATETIME,SHELF_LIFE,ITEM_CATEGORY,\
-       AUDIO_TIME from PODCASTS "+
+  sql=QString("select ")+
+    "ID,"+               // 00
+    "STATUS,"+           // 01
+    "ITEM_TITLE,"+       // 02
+    "ORIGIN_DATETIME,"+  // 03
+    "SHELF_LIFE,"+       // 04
+    "ITEM_CATEGORY,"+    // 05
+    "AUDIO_TIME "+       // 06
+    "from PODCASTS "+
     RDCastSearch(cast_feed_id,filter,unexp_only,active_only)+
     " order by ORIGIN_DATETIME desc";
-
   q=new RDSqlQuery(sql);
   while(q->next()) {
     printf("<tr>\n");
@@ -572,7 +580,7 @@ void MainObject::ServeListCasts()
     }
     printf("<td bgcolor=\"%s\">%s</td>\n",
 	   (const char *)line_colors[current_color],
-	   (const char *)q->value(2).toString());
+	   (const char *)q->value(2).toString().utf8());
     printf("<td align=\"center\" bgcolor=\"%s\">%s</td>\n",
 	   (const char *)line_colors[current_color],
 	   (const char *)RDUtcToLocal(q->value(3).toDateTime()).
@@ -791,7 +799,7 @@ void MainObject::ServeEditCast(int cast_id)
   printf("<html>\n");
   printf("<head>\n");
   printf("<title>Rivendell RDCastManager -- Editing \"%s\"</title>\n",
-	 (const char *)q->value(0).toString());
+	 (const char *)q->value(0).toString().utf8());
   printf("</head>\n");
 
   printf("<body bgcolor=\"%s\">\n",RD_WEB_BACKGROUND_COLOR);
@@ -812,7 +820,7 @@ void MainObject::ServeEditCast(int cast_id)
     printf("<td bgcolor=\"%s\" align=\"left\" colspan=\"2\">\n",
 	   RD_WEB_LINE_COLOR1);
     printf("%s\n",(const char *)feed->audioUrl(feed->mediaLinkMode(),
-					       server_name,cast_cast_id));
+					       server_name,cast_cast_id).utf8());
     printf("</td>\n");
     printf("</tr>\n");
     
@@ -835,7 +843,7 @@ void MainObject::ServeEditCast(int cast_id)
 	 RD_WEB_LINE_COLOR1);
   printf("<td bgcolor=\"%s\" align=\"left\" colspan=\"2\">\n",
 	 RD_WEB_LINE_COLOR1);
-  printf("<input type=\"text\" name=\"ITEM_TITLE\" value=\"%s\" size=\"50\" maxlength=\"255\">\n",(const char *)q->value(0).toString());
+  printf("<input type=\"text\" name=\"ITEM_TITLE\" value=\"%s\" size=\"50\" maxlength=\"255\">\n",(const char *)q->value(0).toString().utf8());
   printf("</td>\n");
   printf("</tr>\n");
 
@@ -847,7 +855,7 @@ void MainObject::ServeEditCast(int cast_id)
 	 RD_WEB_LINE_COLOR1);
   printf("<td bgcolor=\"%s\" align=\"left\" colspan=\"2\">\n",
 	 RD_WEB_LINE_COLOR1);
-  printf("<input type=\"text\" name=\"ITEM_AUTHOR\" value=\"%s\" size=\"50\" maxlength=\"255\">\n",(const char *)q->value(1).toString());
+  printf("<input type=\"text\" name=\"ITEM_AUTHOR\" value=\"%s\" size=\"50\" maxlength=\"255\">\n",(const char *)q->value(1).toString().utf8());
   printf("</td>\n");
   printf("</tr>\n");
 
@@ -859,7 +867,7 @@ void MainObject::ServeEditCast(int cast_id)
 	 RD_WEB_LINE_COLOR1);
   printf("<td bgcolor=\"%s\" align=\"left\" colspan=\"2\">\n",
 	 RD_WEB_LINE_COLOR1);
-  printf("<input type=\"text\" name=\"ITEM_CATEGORY\" value=\"%s\" size=\"50\" maxlength=\"255\">\n",(const char *)q->value(2).toString());
+  printf("<input type=\"text\" name=\"ITEM_CATEGORY\" value=\"%s\" size=\"50\" maxlength=\"255\">\n",(const char *)q->value(2).toString().utf8());
   printf("</td>\n");
   printf("</tr>\n");
 
@@ -871,7 +879,7 @@ void MainObject::ServeEditCast(int cast_id)
 	 RD_WEB_LINE_COLOR1);
   printf("<td bgcolor=\"%s\" align=\"left\" colspan=\"2\">\n",
 	 RD_WEB_LINE_COLOR1);
-  printf("<input type=\"text\" name=\"ITEM_LINK\" value=\"%s\" size=\"50\" maxlength=\"255\">\n",(const char *)q->value(3).toString());
+  printf("<input type=\"text\" name=\"ITEM_LINK\" value=\"%s\" size=\"50\" maxlength=\"255\">\n",(const char *)q->value(3).toString().utf8());
   printf("</td>\n");
   printf("</tr>\n");
 
@@ -883,7 +891,7 @@ void MainObject::ServeEditCast(int cast_id)
 	 RD_WEB_LINE_COLOR1);
   printf("<td bgcolor=\"%s\" align=\"left\" colspan=\"2\">\n",
 	 RD_WEB_LINE_COLOR1);
-  printf("<textarea name=\"ITEM_DESCRIPTION\" rows=\"4\" cols=\"50\">%s</textarea>\n",(const char *)q->value(4).toString());
+  printf("<textarea name=\"ITEM_DESCRIPTION\" rows=\"4\" cols=\"50\">%s</textarea>\n",(const char *)q->value(4).toString().utf8());
   printf("</td>\n");
   printf("</tr>\n");
 
@@ -896,7 +904,7 @@ void MainObject::ServeEditCast(int cast_id)
   printf("<td bgcolor=\"%s\" align=\"left\" colspan=\"2\">\n",
 	 RD_WEB_LINE_COLOR1);
   printf("<input type=\"text\" name=\"ITEM_SOURCE_TEXT\" value=\"%s\" size=\"50\" maxlength=\"255\">\n",
-	 (const char *)q->value(6).toString());
+	 (const char *)q->value(6).toString().utf8());
   printf("</td>\n");
   printf("</tr>\n");
 
@@ -909,7 +917,7 @@ void MainObject::ServeEditCast(int cast_id)
   printf("<td bgcolor=\"%s\" align=\"left\" colspan=\"2\">\n",
 	 RD_WEB_LINE_COLOR1);
   printf("<input type=\"text\" name=\"ITEM_SOURCE_URL\" value=\"%s\" size=\"50\" maxlength=\"255\">\n",
-	 (const char *)q->value(7).toString());
+	 (const char *)q->value(7).toString().utf8());
   printf("</td>\n");
   printf("</tr>\n");
 
@@ -921,7 +929,7 @@ void MainObject::ServeEditCast(int cast_id)
 	 RD_WEB_LINE_COLOR1);
   printf("<td bgcolor=\"%s\" align=\"left\" colspan=\"2\">\n",
 	 RD_WEB_LINE_COLOR1);
-  printf("<input type=\"text\" name=\"ITEM_COMMENTS\" value=\"%s\" size=\"50\" maxlength=\"255\">\n",(const char *)q->value(5).toString());
+  printf("<input type=\"text\" name=\"ITEM_COMMENTS\" value=\"%s\" size=\"50\" maxlength=\"255\">\n",(const char *)q->value(5).toString().utf8());
   printf("</td>\n");
   printf("</tr>\n");
 
@@ -1135,8 +1143,8 @@ void MainObject::ServePlay()
   q=new RDSqlQuery(sql);
   if(q->first()) {
     printf("Content-type: audio/x-mpeg\n");
-    printf("Location: %s/%s\n\n",(const char *)q->value(0).toString(),
-	   (const char *)q->value(1).toString());
+    printf("Location: %s/%s\n\n",(const char *)q->value(0).toString().utf8(),
+	   (const char *)q->value(1).toString().utf8());
   }
   else {
     printf("Status: 500 Internal Server Error\n");
@@ -1354,7 +1362,7 @@ void MainObject::ConfirmDeleteCast()
   printf("<tr>\n");
   printf("<td bgcolor=\"%s\" >Are you sure you want to delete cast \"%s\", posted on %s at %s?</td>\n",
 	 RD_WEB_LINE_COLOR2,
-	 (const char *)q->value(0).toString(),
+	 (const char *)q->value(0).toString().utf8(),
 	 (const char *)q->value(1).toDateTime().toString("MM/dd/yyyy"),
 	 (const char *)q->value(1).toDateTime().toString("hh:mm:ss"));
   printf("</tr>\n");
@@ -1473,7 +1481,7 @@ void MainObject::ServeSubscriptionReport()
   printf("<tr>\n");
   printf("<td align=\"center\" colspan=\"2\">\n");
   printf("<big><big><strong>Subscription Report for \"%s\"</strong></big></big>\n",
-	 (const char *)feed->channelTitle());
+	 (const char *)feed->channelTitle().utf8());
   printf("</td></tr>\n");
 
   //
@@ -1788,7 +1796,7 @@ void MainObject::TitleSection(const QString &title,int cmd,int colspan) const
   printf("<tr>\n");
   printf("<td>&nbsp;</td>\n");
   printf("<td align=\"center\" colspan=\"%d\"><big><big>%s</big></big></td>\n",
-	 colspan,(const char *)title);
+	 colspan,(const char *)title.utf8());
   printf("<td><table cellpadding=\"3\" cellspacing=\"3\" border=\"0\">\n");
   //
   // Refresh Button
@@ -1872,7 +1880,7 @@ void MainObject::SetContext(int cmd) const
 	 cast_session_id);
   if(!cast_key_name.isEmpty()) {
     printf("<input type=\"hidden\" name=\"KEY_NAME\" value=\"%s\">\n",
-	   (const char *)cast_key_name);
+	   (const char *)cast_key_name.utf8());
   }
   if(cast_feed_id>=0) {
     printf("<input type=\"hidden\" name=\"FEED_ID\" value=\"%d\">\n",

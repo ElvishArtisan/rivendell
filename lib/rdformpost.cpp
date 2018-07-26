@@ -336,9 +336,9 @@ void RDFormPost::dump()
   for(std::map<QString,QVariant>::const_iterator ci=post_values.begin();
       ci!=post_values.end();ci++) {
     printf("<tr>\n");
-    printf("<td align=\"left\">|%s|</td>\n",(const char *)ci->first);
+    printf("<td align=\"left\">|%s|</td>\n",(const char *)ci->first.utf8());
     printf("<td align=\"left\">|%s|</td>\n",
-	   (const char *)ci->second.toString());
+	   (const char *)ci->second.toString().utf8());
     if(post_filenames[ci->first]) {
       printf("<td align=\"center\">Yes</td>\n");
     }

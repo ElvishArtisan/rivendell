@@ -28,7 +28,7 @@ QString RDCastSearchString(const QString &filter,bool unexp_only,
 			   bool active_only)
 {
   QString ret;
-  if(!filter.isEmpty()) {
+  if(!filter.stripWhiteSpace().isEmpty()) {
     QString fil=RDEscapeString(filter);
     ret+=QString("&&((PODCASTS.ITEM_TITLE like \"%")+fil+"%\")||"+
       "(PODCASTS.ITEM_DESCRIPTION like \"%"+fil+"%\")||"+
