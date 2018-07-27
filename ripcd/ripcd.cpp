@@ -436,7 +436,9 @@ void MainObject::ParseCommand(int ch)
       }
       if(buf[i]=='!') {
 	conn->args[conn->argnum++][conn->argptr]=0;
-	DispatchCommand(ch);
+	if(!DispatchCommand(ch)) {  // Connection closed?
+	  return;
+	}
 	conn->argnum=0;
 	conn->argptr=0;
 	if(conn->socket==NULL) {
@@ -460,7 +462,7 @@ void MainObject::ParseCommand(int ch)
 }
 
 
-void MainObject::DispatchCommand(int ch)
+bool MainObject::DispatchCommand(int ch)
 {
   QString default_name;
   char str[RD_RML_MAX_LENGTH];
@@ -479,18 +481,18 @@ void MainObject::DispatchCommand(int ch)
   if(!strcmp(conn->args[0],"DC")) {  // Drop Connection
     conn->socket->close();
     KillSocket(ch);
-    return;
+    return false;
   }
   if(!strcmp(conn->args[0],"PW")) {  // Password Authenticate
     if(!strcmp(conn->args[1],rda->config()->password())) {
       conn->auth=true;
       EchoCommand(ch,"PW +!");
-      return;
+      return true;
     }
     else {
       conn->auth=false;
       EchoCommand(ch,"PW -!");
-      return;
+      return true;
     }
   }
 
@@ -500,13 +502,13 @@ void MainObject::DispatchCommand(int ch)
   //
   if(!conn->auth) {
     EchoArgs(ch,'-');
-    return;
+    return true;
   }
 
   if(!strcmp(conn->args[0],"RU")) {  // Request User
     EchoCommand(ch,(const char *)QString().
 		sprintf("RU %s!",(const char *)rda->station()->userName()));
-    return;
+    return true;
   }
 
   if(!strcmp(conn->args[0],"SU")) {  // Set User
@@ -515,7 +517,7 @@ void MainObject::DispatchCommand(int ch)
 
   if(!strcmp(conn->args[0],"MS")) {  // Send RML Command
     if(conn->argnum<4) {
-      return;
+      return true;
     }
     strcpy(str,conn->args[3]);
     for(int i=4;i<conn->argnum;i++) {
@@ -558,7 +560,7 @@ void MainObject::DispatchCommand(int ch)
 
   if(!strcmp(conn->args[0],"ME")) {  // Send RML Reply
     if(conn->argnum<4) {
-      return;
+      return true;
     }
     strcpy(str,conn->args[3]);
     for(int i=4;i<conn->argnum;i++) {
@@ -633,7 +635,7 @@ void MainObject::DispatchCommand(int ch)
     if(!notify->read(msg)) {
       LogLine(RDConfig::LogWarning,"invalid notification processed");
       delete notify;
-      return;
+      return true;
     }
     BroadcastCommand("ON "+msg+"!",ch);
     ripcd_notification_mcaster->
@@ -644,6 +646,7 @@ void MainObject::DispatchCommand(int ch)
   if(!strcmp(conn->args[0],"TA")) {  // Send Onair Flag State
     EchoCommand(ch,QString().sprintf("TA %d!",ripc_onair_flag));
   }
+  return true;
 }
 
 

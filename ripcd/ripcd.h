@@ -86,7 +86,7 @@ class MainObject : public QObject
   void ExecCart(int cartnum);
   void LogGpioEvent(int matrix,int line,RDMatrix::GpioType type,bool state);
   void ParseCommand(int);
-  void DispatchCommand(int);
+  bool DispatchCommand(int);
   void KillSocket(int);
   void EchoCommand(int,const char *);
   void BroadcastCommand(const char *,int except_ch=-1);

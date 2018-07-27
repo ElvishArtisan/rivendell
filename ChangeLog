@@ -17235,3 +17235,6 @@
 	passed a filter string consisting of pure whitespace.
 	* Fixed bugs in 'rdcastmanager.cgi' that caused corruption when
 	displaying UTF-8 strings.
+2018-07-27 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in ripcd(8) that threw a segfault when executing
+	'DC!'.
