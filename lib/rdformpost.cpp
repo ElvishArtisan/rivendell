@@ -481,19 +481,6 @@ void RDFormPost::LoadUrlEncoding(char first)
   }
 
   post_data[post_content_length]=0;
-
-  /*
-   * Uncomment this to dump the raw post data to "/tmp/output.dat".
-   */
-  /*
-  int out=open("/tmp/output.dat",O_WRONLY|O_CREAT);
-  write(out,post_data,post_content_length);
-  ::close(out);
-  printf("Content-type: text/html\n\n");
-  printf("POST DUMPED TO \"/tmp/output.dat\"!\n");
-  exit(0);
-  */
-
   lines=lines.split("&",post_data);
   for(unsigned i=0;i<lines.size();i++) {
     line=line.split("=",lines[i]);
@@ -516,108 +503,111 @@ void RDFormPost::LoadUrlEncoding(char first)
 
 void RDFormPost::LoadMultipartEncoding(char first)
 {
-  std::map<QString,QString> headers;
-  bool header=true;
-  post_data=NULL;
-  FILE *f=NULL;
-  ssize_t n=0;
-  QString sep;
-  QString name;
-  QString filename;
-  QString tempdir;
-  int fd=-1;
-
-  if((f=fdopen(0,"r"))==NULL) {
+  //
+  // Create Stream Readers
+  //
+  if((post_stream=fdopen(0,"r"))==NULL) {
     post_error=RDFormPost::ErrorInternal;
     return;
   }
-
-  /*
-   * Uncomment this to dump the raw post data to "/tmp/output.dat".
-   */
-  /*
-  int out=open("/tmp/output.dat",O_WRONLY|O_CREAT);
-  while((n=getline(&post_data,(size_t *)&n,f))>0) {
-    write(out,post_data,n);
-  }
-  ::close(out);
-  printf("Content-type: text/html\n\n");
-  printf("POST DUMPED TO \"/tmp/output.dat\"!\n");
-  exit(0);
-  */
-
-  if((n=getline(&post_data,(size_t *)&n,f))<=0) {
-    post_error=RDFormPost::ErrorMalformedData;
+  QFile *file=new QFile();
+  if(!file->open(IO_ReadOnly,post_stream)) {
+    delete file;
+    post_error=RDFormPost::ErrorInternal;
     return;
   }
-  sep=QString(post_data).simplifyWhiteSpace();
+  post_text_reader=new QTextStream(file);
+  post_text_reader->setEncoding(QTextStream::UnicodeUTF8);
 
   //
-  // Get message parts
+  // Get Separator Line
   //
-  while((n=getline(&post_data,(size_t *)&n,f))>0) {
-    if(QString(post_data).simplifyWhiteSpace().contains(sep)>0) {  // End of part
-      if(fd>=0) {
-	ftruncate(fd,lseek(fd,0,SEEK_CUR)-2);  // Remove extraneous final CR/LF
-	::close(fd);
-	fd=-1;
-      }
-      name="";
-      filename="";
-      headers.clear();
-      header=true;
-      continue;
-    }
-    if(header) {  // Read header
-      if(QString(post_data).simplifyWhiteSpace().isEmpty()) {
-	if(!headers["content-disposition"].isNull()) {
-	  QStringList fields;
-	  fields=fields.split(";",headers["content-disposition"]);
-	  if(fields.size()>0) {
-	    if(fields[0].lower().simplifyWhiteSpace()=="form-data") {
-	      for(unsigned i=1;i<fields.size();i++) {
-		QStringList pairs;
-		pairs=pairs.split("=",fields[i]);
-		if(pairs[0].lower().simplifyWhiteSpace()=="name") {
-		  name=pairs[1].simplifyWhiteSpace();
-		  name.replace("\"","");
-		}
-		if(pairs[0].lower().simplifyWhiteSpace()=="filename") {
-		  filename=post_tempdir->path()+"/"+
-		    pairs[1].simplifyWhiteSpace();
-		  filename.replace("\"","");
-		  fd=open(filename,O_WRONLY|O_CREAT,S_IRUSR|S_IWUSR);
-		}
-	      }
+  post_separator=first+post_text_reader->readLine();
+
+  //
+  // Read Mime Parts
+  //
+  QString name;
+  QString value;
+  bool is_file;
+  bool again=false;
+
+  do {
+    again=GetMimePart(&name,&value,&is_file);
+    post_values[name]=value;
+    post_filenames[name]=is_file;
+  } while(again);
+
+  delete post_text_reader;
+  delete file;
+
+  post_error=RDFormPost::ErrorOk;
+}
+
+
+bool RDFormPost::GetMimePart(QString *name,QString *value,bool *is_file)
+{
+  QString line;
+  int fd=-1;
+
+  *name="";
+  *value="";
+  *is_file=false;
+
+  //
+  // Headers
+  //
+  do {
+    line=post_text_reader->readLine();
+    QStringList f0=f0.split(":",line);
+    if(f0.size()==2) {
+      if(f0[0].lower()=="content-disposition") {
+	QStringList f1=f1.split(";",f0[1]);
+	for(unsigned i=0;i<f1.size();i++) {
+	  QStringList f2=f2.split("=",f1[i].stripWhiteSpace());
+	  if(f2.size()==2) {
+	    if(f2[0]=="name") {
+	      *name=f2[1].replace("\"","");
+	    }
+	    if(f2[0]=="filename") {
+	      *value=post_tempdir->path()+"/"+f2[1].replace("\"","");
+	      fd=open(value->utf8(),O_WRONLY|O_CREAT,S_IRUSR|S_IWUSR);
+	      *is_file=true;
 	    }
 	  }
 	}
-	header=false;
-      }
-      else {
-	QStringList hdr;
-	hdr=hdr.split(":",QString(post_data).simplifyWhiteSpace());
-	// Reconcaternate trailing sections so we don't split on the 
-	// useless M$ drive letter supplied by IE
-	for(unsigned i=2;i<hdr.size();i++) {
-	  hdr[1]+=hdr[i];
-	}
-	headers[hdr[0].lower()]=hdr[1];
       }
     }
-    else {  // Read data
-      if(filename.isEmpty()) {
-	QString str=post_values[name].toString();
-	str+=QString(post_data);
-	post_filenames[name]=false;
-	post_values[name]=str.simplifyWhiteSpace();
-      }
-      else {
-	post_filenames[name]=true;
-	post_values[name]=filename;
-	write(fd,post_data,n);
-      }
+  } while(!line.stripWhiteSpace().isEmpty());
+
+  //
+  // Value
+  //
+  if(*is_file) {
+    char *data=NULL;
+    size_t n=0;
+
+    n=getline(&data,&n,post_stream);
+    line=QString(data).stripWhiteSpace();
+    while(!line.contains(post_separator)) {
+      write(fd,data,n);
+      n=getline(&data,&n,post_stream);
+      line=QString(data).stripWhiteSpace();
+    }
+    free(data);
+  }
+  else {
+    line=post_text_reader->readLine();
+    while(!line.contains(post_separator)) {
+      *value+=line;
+      line=post_text_reader->readLine();
     }
   }
-  post_error=RDFormPost::ErrorOk;
+
+  if(fd>=0) {
+    ftruncate(fd,lseek(fd,0,SEEK_CUR)-2);  // Remove extraneous final CR/LF
+    close(fd);
+  }
+
+  return line.right(2)!="--";
 }

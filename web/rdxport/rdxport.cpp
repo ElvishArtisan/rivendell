@@ -56,7 +56,7 @@ Xport::Xport(QObject *parent)
     printf("Content-type: text/html\n");
     printf("Status: 500\n");
     printf("\n");
-    printf("rdxport.cgi: %s\n",(const char *)err_msg);
+    printf("rdxport.cgi: %s\n",(const char *)err_msg.utf8());
     Exit(0);
   }
 
@@ -69,7 +69,7 @@ Xport::Xport(QObject *parent)
       printf("Status: 500\n");
       printf("\n");
       printf("rdxport.cgi: unknown command option \"%s\"\n",
-	     (const char *)rda->cmdSwitch()->key(i));
+	     (const char *)rda->cmdSwitch()->key(i).utf8());
       Exit(0);
     }
   }
@@ -120,7 +120,11 @@ Xport::Xport(QObject *parent)
 	    LINE_NUMBER);
     Exit(0);
   }
-
+  /*
+  printf("Content-type: text/html; charset=UTF-8\n\n");
+  xport_post->dump();
+  exit(0);
+  */
   //
   // Authenticate Connection
   //
@@ -282,6 +286,14 @@ void Xport::ripcConnectedData(bool state)
     Rehash();
     break;
 
+  case RDXPORT_COMMAND_SAVESTRING:
+    SaveString();
+    break;
+
+  case RDXPORT_COMMAND_SAVEFILE:
+    SaveFile();
+    break;
+
   default:
     printf("Content-type: text/html\n\n");
     printf("rdxport: missing/invalid command\n");
@@ -400,9 +412,9 @@ void Xport::TryCreateTicket(const QString &name)
       printf("Content-type: application/xml\n\n");
       printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
       printf("<ticketInfo>\n");
-      printf("  %s\n",(const char *)RDXmlField("ticket",ticket));
+      printf("  %s\n",(const char *)RDXmlField("ticket",ticket).utf8());
       printf("  %s\n",(const char *)
-	  RDXmlField("expires",now.addSecs(rda->user()->webapiAuthTimeout())));
+	     RDXmlField("expires",now.addSecs(rda->user()->webapiAuthTimeout())).utf8());
       printf("</ticketInfo>\n");
       exit(0);
     }

@@ -17238,3 +17238,8 @@
 2018-07-27 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in ripcd(8) that threw a segfault when executing
 	'DC!'.
+2018-07-27 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'SaveFile' test method to the web API.
+	* Added a 'SaveString' test method to the web API.
+	* Refactored the multipart-mime parser in 'RDFormPost' to process
+	UTF-8 strings correctly.

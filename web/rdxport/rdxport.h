@@ -86,6 +86,8 @@ class Xport : public QObject
   QString LogLockXml(bool result,const QString &log_name,const QString &guid,
 		     const QString &username,const QString &stationname,
 		     const QHostAddress addr) const;
+  void SaveString();
+  void SaveFile();
   void SendNotification(RDNotification::Type type,RDNotification::Action action,
 			const QVariant &id);
   void Exit(int code);

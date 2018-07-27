@@ -55,7 +55,9 @@ install-exec-am:
 	cp rehash.html $(DESTDIR)@libexecdir@
 	cp removecart.html $(DESTDIR)@libexecdir@
 	cp removecut.html $(DESTDIR)@libexecdir@
+	cp savefile.html $(DESTDIR)@libexecdir@
 	cp savelog.html $(DESTDIR)@libexecdir@
+	cp savestring.html $(DESTDIR)@libexecdir@
 	cp trimaudio.html $(DESTDIR)@libexecdir@
 	cp unassignschedcode.html $(DESTDIR)@libexecdir@
 	cp utils.js $(DESTDIR)@libexecdir@
@@ -94,7 +96,9 @@ uninstall-local:
 	rm -f $(DESTDIR)@libexecdir@/rehash.html
 	rm -f $(DESTDIR)@libexecdir@/removecart.html
 	rm -f $(DESTDIR)@libexecdir@/removecut.html
+	rm -f $(DESTDIR)@libexecdir@/savefile.html
 	rm -f $(DESTDIR)@libexecdir@/savelog.html
+	rm -f $(DESTDIR)@libexecdir@/savestring.html
 	rm -f $(DESTDIR)@libexecdir@/trimaudio.html
 	rm -f $(DESTDIR)@libexecdir@/unassignschedcode.html
 	rm -f $(DESTDIR)@libexecdir@/utils.js
@@ -132,7 +136,9 @@ EXTRA_DIST = addcart.html\
              rehash.html\
              removecart.html\
              removecut.html\
+             savefile.html\
              savelog.html\
+             savestring.html\
              trimaudio.html\
              unassignschedcode.html\
              utils.js

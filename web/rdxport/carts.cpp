@@ -107,7 +107,7 @@ void Xport::AddCart()
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   printf("<cartAdd>\n");
   if(cart->exists()) {
-    printf("%s",(const char *)cart->xml(false,true));
+    printf("%s",(const char *)cart->xml(false,true).utf8());
     SendNotification(RDNotification::CartType,RDNotification::AddAction,
 		     QVariant(cart->number()));
   }
@@ -151,11 +151,9 @@ void Xport::ListCarts()
     where=RDAllCartSearchText(filter,"",rda->user()->name(),false);
   }
   else {
-    sql=QString().
-      sprintf("select GROUP_NAME from USER_PERMS \
-               where (GROUP_NAME=\"%s\")&&(USER_NAME=\"%s\")",
-	      (const char *)RDEscapeString(group_name),
-	      (const char *)RDEscapeString(rda->user()->name()));
+    sql=QString("select GROUP_NAME from USER_PERMS where ")+
+      "(GROUP_NAME=\""+RDEscapeString(group_name)+"\")&&"+
+      "(USER_NAME=\""+RDEscapeString(rda->user()->name())+"\")";
     q=new RDSqlQuery(sql);
     if(!q->first()) {
       delete q;
@@ -176,7 +174,7 @@ void Xport::ListCarts()
   printf("Status: 200\n\n");
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   printf("<cartList>\n");
-  printf("%s\n",(const char *)RDCart::xml(q,include_cuts,true)); 
+  printf("%s\n",(const char *)RDCart::xml(q,include_cuts,true).utf8()); 
   printf("</cartList>\n");
   delete q;
   Exit(0);
@@ -215,7 +213,7 @@ void Xport::ListCart()
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   printf("<cartList>\n");
   cart=new RDCart(cart_number);
-  printf("%s",(const char *)cart->xml(include_cuts,true));
+  printf("%s",(const char *)cart->xml(include_cuts,true).utf8());
   delete cart;
   printf("</cartList>\n");
 
@@ -395,7 +393,7 @@ void Xport::EditCart()
   printf("Status: 200\n\n");
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   printf("<cartList>\n");
-  printf("%s",(const char *)cart->xml(include_cuts,true));
+  printf("%s",(const char *)cart->xml(include_cuts,true).utf8());
   SendNotification(RDNotification::CartType,RDNotification::ModifyAction,
 		   QVariant(cart->number()));
   delete cart;
@@ -488,7 +486,8 @@ void Xport::AddCut()
   printf("<cutAdd>\n");
   cut=new RDCut(cart_number,cut_number);
   if(cut->exists()) {
-    printf("%s",(const char *)RDCart::cutXml(cart_number,cut_number,true));
+    printf("%s",
+	   (const char *)RDCart::cutXml(cart_number,cut_number,true).utf8());
     SendNotification(RDNotification::CartType,RDNotification::ModifyAction,
 		     QVariant(cart->number()));
   }
@@ -531,7 +530,7 @@ void Xport::ListCuts()
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   printf("<cutList>\n");
   while(q->next()) {
-    printf("%s\n",(const char *)RDCut::xml(q,false));
+    printf("%s\n",(const char *)RDCut::xml(q,false).utf8());
   }
   printf("</cutList>\n");
   delete q;
@@ -575,7 +574,7 @@ void Xport::ListCut()
   printf("Status: 200\n\n");
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   printf("<cutList>\n");
-  printf("%s",(const char *)RDCart::cutXml(cart_number,cut_number,true));
+  printf("%s",(const char *)RDCart::cutXml(cart_number,cut_number,true).utf8());
   printf("</cutList>\n");
   delete cut;
 
@@ -849,7 +848,7 @@ void Xport::EditCut()
   printf("Status: 200\n\n");
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
   printf("<cutList>\n");
-  printf("%s",(const char *)RDCart::cutXml(cart_number,cut_number,true));
+  printf("%s",(const char *)RDCart::cutXml(cart_number,cut_number,true).utf8());
   printf("</cutList>\n");
   SendNotification(RDNotification::CartType,RDNotification::ModifyAction,
 		   QVariant(cut->cartNumber()));

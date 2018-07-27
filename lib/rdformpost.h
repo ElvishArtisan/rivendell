@@ -23,8 +23,10 @@
 
 #include <map>
 
+#include <qdatastream.h>
 #include <qstring.h>
 #include <qstringlist.h>
+#include <qtextstream.h>
 #include <qvariant.h>
 #include <qhostaddress.h>
 
@@ -64,6 +66,7 @@ class RDFormPost
  private:
   void LoadUrlEncoding(char first);
   void LoadMultipartEncoding(char first);
+  bool GetMimePart(QString *name,QString *value,bool *is_file);
   QHostAddress post_client_address;
   RDFormPost::Encoding post_encoding;
   RDFormPost::Error post_error;
@@ -74,6 +77,10 @@ class RDFormPost
   unsigned post_content_length;
   QString post_content_type;
   char *post_data;
+
+  QString post_separator;
+  FILE *post_stream;
+  QTextStream *post_text_reader;
 };
 
 

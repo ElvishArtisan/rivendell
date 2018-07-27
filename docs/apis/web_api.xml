@@ -2916,6 +2916,66 @@
   </table>
 </sect1>
 
+<sect1>
+  <title>SaveFile</title>
+  <subtitle>
+    Write a specified file to the '/tmp' directory. (Test only)
+  </subtitle>
+  <para>
+    Command Code: <code>RDXPORT_COMMAND_SAVEFILE</code>
+  </para>
+  <para>
+        Required User Permissions: none
+  </para>
+  <para>
+    NOTE: The method must be called with 'multipart/form-data' encoding.
+  </para>
+  <table xml:id="ex.savefile" frame="all">
+    <title>SaveString Call Fields</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+	<row>
+	  <entry>
+	    FIELD NAME
+	  </entry>
+	  <entry>
+	    MEANING
+	  </entry>
+	  <entry>
+	    REMARKS
+	  </entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>
+	    COMMAND
+	  </entry>
+	  <entry>
+	    36
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    FILENAME
+	  </entry>
+	  <entry>
+	    Binary file data
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect1>
 
 <sect1>
   <title>SaveLog</title>
@@ -3459,6 +3519,64 @@
 	  </entry>
 	  <entry>
 	    Mandatory. String, max length 8.
+	  </entry>
+	</row>
+      </tbody>
+    </tgroup>
+  </table>
+</sect1>
+
+<sect1>
+  <title>SaveString</title>
+  <subtitle>
+    Write a specified string to the syslog. (Test only)
+  </subtitle>
+  <para>
+    Command Code: <code>RDXPORT_COMMAND_SAVESTRING</code>
+  </para>
+  <para>
+        Required User Permissions: none
+  </para>
+  <table xml:id="ex.savestring" frame="all">
+    <title>SaveString Call Fields</title>
+    <tgroup cols="3" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+	<row>
+	  <entry>
+	    FIELD NAME
+	  </entry>
+	  <entry>
+	    MEANING
+	  </entry>
+	  <entry>
+	    REMARKS
+	  </entry>
+	</row>
+      </thead>
+      <tbody>
+	<row>
+	  <entry>
+	    COMMAND
+	  </entry>
+	  <entry>
+	    35
+	  </entry>
+	  <entry>
+	    Mandatory
+	  </entry>
+	</row>
+	<row>
+	  <entry>
+	    STRING
+	  </entry>
+	  <entry>
+	    UTF-8 String
+	  </entry>
+	  <entry>
+	    Mandatory
 	  </entry>
 	</row>
       </tbody>

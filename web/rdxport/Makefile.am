@@ -44,6 +44,7 @@ dist_rdxport_cgi_SOURCES = audioinfo.cpp\
                            logs.cpp\
                            rdxport.cpp rdxport.h\
                            rehash.cpp\
+                           tests.cpp\
                            schedcodes.cpp\
                            services.cpp\
                            systemsettings.cpp\
