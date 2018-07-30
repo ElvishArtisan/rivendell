@@ -22,17 +22,39 @@
 
 RipcdConnection::RipcdConnection(int id,int fd)
 {
-  socket=NULL;
-  istate=0;
-  argnum=0;
-  argptr=0;
-  auth=false;
-  socket=new RDSocket(id);
-  socket->setSocket(fd);
+  ripcd_id=id;
+  ripcd_authenticated=false;
+  accum="";
+  ripcd_socket=new QSocket();
+  ripcd_socket->setSocket(fd);
 }
 
 
 RipcdConnection::~RipcdConnection()
 {
-  delete socket;
+  delete ripcd_socket;
+}
+
+
+int RipcdConnection::id() const
+{
+  return ripcd_id;
+}
+
+
+QSocket *RipcdConnection::socket() const
+{
+  return ripcd_socket;
+}
+
+
+bool RipcdConnection::isAuthenticated() const
+{
+  return ripcd_authenticated;
+}
+
+
+void RipcdConnection::setAuthenticated(bool state)
+{
+  ripcd_authenticated=state;
 }

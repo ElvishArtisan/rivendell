@@ -28,7 +28,7 @@
 #include <qobject.h>
 #include <qstring.h>
 #include <qserversocket.h>
-#include <qsqldatabase.h>
+#include <qsignalmapper.h>
 #include <qsocketdevice.h>
 #include <qtimer.h>
 
@@ -76,21 +76,19 @@ class MainObject : public QObject
   void ttyScanData();
   void databaseBackup();
   void macroTimerData(int num);
-  void socketData(int);
-  void socketKill(int);
+  void readyReadData(int conn_id);
+  void killData(int conn_id);
   void checkMaintData();
   void exitTimerData();
+  void garbageData();
   
  private:
   void SetUser(QString username);
   void ExecCart(int cartnum);
   void LogGpioEvent(int matrix,int line,RDMatrix::GpioType type,bool state);
-  void ParseCommand(int);
-  bool DispatchCommand(int);
-  void KillSocket(int);
-  void EchoCommand(int,const char *);
-  void BroadcastCommand(const char *,int except_ch=-1);
-  void EchoArgs(int,const char);
+  bool DispatchCommand(RipcdConnection *conn);
+  void EchoCommand(int,const QString &cmd);
+  void BroadcastCommand(const QString &cmd,int except_ch=-1);
   void ReadRmlSocket(QSocketDevice *dev,RDMacro::Role role,bool echo);
   QString StripPoint(QString);
   void LoadLocalMacros();
@@ -112,6 +110,8 @@ class MainObject : public QObject
   bool debug;
   QServerSocket *server;
   std::vector<RipcdConnection *> ripcd_conns;
+  QSignalMapper *ripcd_ready_mapper;
+  QSignalMapper *ripcd_kill_mapper;
   QSocketDevice *ripcd_rml_send;
   QSocketDevice *ripcd_rml_echo;
   QSocketDevice *ripcd_rml_noecho;
@@ -135,6 +135,7 @@ class MainObject : public QObject
   unsigned ripc_macro_cart[RD_MAX_MACRO_TIMERS];
   QTimer *ripcd_maint_timer;
   RDMulticaster *ripcd_notification_mcaster;
+  QTimer *ripcd_garbage_timer;
 };
 
 

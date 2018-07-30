@@ -37,9 +37,10 @@ RDRipc::RDRipc(RDStation *station,RDConfig *config,QObject *parent)
   ripc_config=config;
   ripc_onair_flag=false;
   ripc_ignore_mask=false;
+  ripc_accum="";
   debug=false;
-  argnum=0;
-  argptr=0;
+  //  argnum=0;
+  //  argptr=0;
 
   ripc_connected=false;
 
@@ -79,7 +80,7 @@ bool RDRipc::onairFlag() const
 
 void RDRipc::setUser(QString user)
 {
-  SendCommand(QString().sprintf("SU %s!",(const char *)user));
+  SendCommand(QString("SU ")+user+"!");
 }
 
 
@@ -98,7 +99,7 @@ void RDRipc::connectHost(QString hostname,Q_UINT16 hostport,QString password)
 
 void RDRipc::connectedData()
 {
-  SendCommand(QString().sprintf("PW %s!",(const char *)ripc_password));
+  SendCommand(QString("PW ")+ripc_password+"!");
 }
 
 
@@ -176,12 +177,12 @@ void RDRipc::sendRml(RDMacro *macro)
   switch(macro->role()) {
       case RDMacro::Cmd:
 	sprintf(cmd,"MS %s %d %s",(const char *)macro->address().toString(),
-		port,(const char *)rmlline);
+		port,(const char *)rmlline.utf8());
 	break;
 	
       case RDMacro::Reply:
 	sprintf(cmd,"ME %s %d %s",(const char *)macro->address().toString(),
-		port,(const char *)rmlline);
+		port,(const char *)rmlline.utf8());
 	break;
 
       default:
@@ -204,6 +205,27 @@ void RDRipc::errorData(int errorcode)
 
 void RDRipc::readyData()
 {
+  char data[1501];
+  int n;
+
+  while((n=ripc_socket->readBlock(data,1500))>0) {
+    data[n]=0;
+    QString line=QString::fromUtf8(data);
+    for(unsigned i=0;i<line.length();i++) {
+      QChar c=line.ref(i);
+      if(c=="!") {
+	DispatchCommand();
+	ripc_accum="";
+      }
+      else {
+	if((c!="\r")&&(c!="\n")) {
+	  ripc_accum+=c;
+	}
+      }
+    }
+  }
+
+  /*
   char buf[255];
   int c;
 
@@ -244,28 +266,32 @@ void RDRipc::readyData()
       }
     }
   }
+  */
 }
 
 
-void RDRipc::SendCommand(QString cmd)
+void RDRipc::SendCommand(const QString &cmd)
 {
-  // printf("RDRipc::SendCommand(%s)\n",(const char *)cmd);
-  ripc_socket->writeBlock((const char *)cmd,cmd.length());
+  //  printf("RDRipc::SendCommand(%s)\n",(const char *)cmd.utf8());
+  ripc_socket->writeBlock((const char *)cmd.utf8(),cmd.utf8().length());
 }
 
 
 void RDRipc::DispatchCommand()
 {
   RDMacro macro;
-  char str[RD_RML_MAX_LENGTH];
+  QString str;
+  //  char str[RD_RML_MAX_LENGTH];
 
-  if(!strcmp(args[0],"PW")) {   // Password Response
-    SendCommand(QString("RU!"));
+  QStringList cmds=cmds.split(" ",ripc_accum);
+  
+  if(cmds[0]=="PW") {  // Password Response
+    SendCommand("RU!");
   }
 
-  if(!strcmp(args[0],"RU")) {   // User Identity
-    if(QString(args[1])!=ripc_user) {
-      ripc_user=QString(args[1]);
+  if((cmds[0]=="RU")&&(cmds.size()==2)) {  // User Identity
+    if(cmds[1]!=ripc_user) {
+      ripc_user=cmds[1];
       if(!ripc_connected) {
 	ripc_connected=true;
 	emit connected(true);
@@ -274,20 +300,19 @@ void RDRipc::DispatchCommand()
     }
   }
 
-  if(!strcmp(args[0],"MS")) {   // Macro Sent
-    if(argnum<4) {
+  if(cmds[0]=="MS") {  // Macro Sent
+    if(cmds.size()<4) {
       return;
     }
-    strcpy(str,args[3]);
-    for(int i=4;i<argnum;i++) {
-      strcat(str," ");
-      strcat(str,args[i]);
+    str=cmds[3];
+    for(unsigned i=4;i<cmds.size();i++) {
+      str+=" "+cmds[i];
     }
-    strcat(str,"!");
-    if(macro.parseString(str,strlen(str))) {
+    str+="!";
+    if(macro.parseString(str,str.length())) {
       QHostAddress addr;
-      addr.setAddress(args[1]);
-      if(args[2][0]=='1') {
+      addr.setAddress(cmds[1]);
+      if(cmds[2].left(0)=="1") {
 	macro.setEchoRequested(true);
       }
       macro.setAddress(addr);
@@ -297,36 +322,32 @@ void RDRipc::DispatchCommand()
     return;
   }
 
-  if(!strcmp(args[0],"ME")) {   // Macro Echoed
-    if(argnum<4) {
+  if(cmds[0]=="ME") {  // Macro Echoed
+    if(cmds.size()<4) {
       return;
     }
-    strcpy(str,args[3]);
-    for(int i=4;i<argnum;i++) {
-      strcat(str," ");
-      strcat(str,args[i]);
+    str=cmds[3];
+    for(unsigned i=4;i<cmds.size();i++) {
+      str+=" "+cmds[i];
     }
-    strcat(str,"!");
-    if(macro.parseString(str,strlen(str))) {
-      macro.setAddress(QHostAddress().setAddress(args[1]));
+    str+="!";
+    if(macro.parseString(str,str.length())) {
+      macro.setAddress(QHostAddress().setAddress(cmds[1]));
       macro.setRole(RDMacro::Reply);
       emit rmlReceived(&macro);
     }
     return;
   }
 
-  if(!strcmp(args[0],"GI")) {   // GPI State Changed
-    if(argnum<4) {
+  if(cmds[0]=="GI") {   // GPI State Changed
+    if(cmds.size()<4) {
       return;
     }
-    int matrix;
-    int line;
-    int mask;
-    sscanf(args[1],"%d",&matrix);
-    sscanf(args[2],"%d",&line);
-    sscanf(args[4],"%d",&mask);
+    int matrix=cmds[1].toInt();
+    int line=cmds[2].toInt();
+    int mask=cmds[4].toInt();
     if((mask>0)||ripc_ignore_mask) {
-      if(args[3][0]=='0') {
+      if(cmds[3].left(0)=="0") {
 	emit gpiStateChanged(matrix,line,false);
       }
       else {
@@ -335,18 +356,15 @@ void RDRipc::DispatchCommand()
     }
   }
 
-  if(!strcmp(args[0],"GO")) {   // GPO State Changed
-    if(argnum<4) {
+  if(cmds[0]=="GO") {   // GPO State Changed
+    if(cmds.size()<4) {
       return;
     }
-    int matrix;
-    int line;
-    int mask;
-    sscanf(args[1],"%d",&matrix);
-    sscanf(args[2],"%d",&line);
-    sscanf(args[4],"%d",&mask);
+    int matrix=cmds[1].toInt();
+    int line=cmds[2].toInt();
+    int mask=cmds[4].toInt();
     if((mask>0)||ripc_ignore_mask) {
-      if(args[3][0]=='0') {
+      if(cmds[3].left(0)=="0") {
 	emit gpoStateChanged(matrix,line,false);
       }
       else {
@@ -355,15 +373,13 @@ void RDRipc::DispatchCommand()
     }
   }
 
-  if(!strcmp(args[0],"GM")) {   // GPI Mask Changed
-    if(argnum<4) {
+  if(cmds[0]=="GM") {   // GPI Mask Changed
+    if(cmds.size()<4) {
       return;
     }
-    int matrix;
-    int line;
-    sscanf(args[1],"%d",&matrix);
-    sscanf(args[2],"%d",&line);
-    if(args[3][0]=='0') {
+    int matrix=cmds[1].toInt();
+    int line=cmds[2].toInt();
+    if(cmds[3].left(0)=="0") {
       emit gpiMaskChanged(matrix,line,false);
     }
     else {
@@ -371,15 +387,13 @@ void RDRipc::DispatchCommand()
     }
   }
 
-  if(!strcmp(args[0],"GN")) {   // GPO Mask Changed
-    if(argnum<4) {
+  if(cmds[0]=="GN") {   // GPO Mask Changed
+    if(cmds.size()<4) {
       return;
     }
-    int matrix;
-    int line;
-    sscanf(args[1],"%d",&matrix);
-    sscanf(args[2],"%d",&line);
-    if(args[3][0]=='0') {
+    int matrix=cmds[1].toInt();
+    int line=cmds[2].toInt();
+    if(cmds[3].left(0)=="0") {
       emit gpoMaskChanged(matrix,line,false);
     }
     else {
@@ -387,58 +401,43 @@ void RDRipc::DispatchCommand()
     }
   }
 
-  if(!strcmp(args[0],"GC")) {   // GPI Cart Changed
-    if(argnum<5) {
+  if(cmds[0]=="GC") {   // GPI Cart Changed
+    if(cmds.size()<5) {
       return;
     }
-    int matrix;
-    int line;
-    unsigned off_cartnum; 
-    unsigned on_cartnum; 
-    sscanf(args[1],"%d",&matrix);
-    sscanf(args[2],"%d",&line);
-    sscanf(args[3],"%d",&off_cartnum);
-    sscanf(args[4],"%d",&on_cartnum);
+    int matrix=cmds[1].toInt();
+    int line=cmds[2].toInt();
+    unsigned off_cartnum=cmds[3].toUInt();
+    unsigned on_cartnum=cmds[4].toUInt();
     emit gpiCartChanged(matrix,line,off_cartnum,on_cartnum);
   }
 
-  if(!strcmp(args[0],"GD")) {   // GPO Cart Changed
-    if(argnum<5) {
+  if(cmds[0]=="GD") {   // GPO Cart Changed
+    if(cmds.size()<5) {
       return;
     }
-    int matrix;
-    int line;
-    unsigned off_cartnum; 
-    unsigned on_cartnum; 
-    sscanf(args[1],"%d",&matrix);
-    sscanf(args[2],"%d",&line);
-    sscanf(args[3],"%d",&off_cartnum);
-    sscanf(args[4],"%d",&on_cartnum);
+    int matrix=cmds[1].toInt();
+    int line=cmds[2].toInt();
+    unsigned off_cartnum=cmds[3].toUInt();
+    unsigned on_cartnum=cmds[4].toUInt();
     emit gpoCartChanged(matrix,line,off_cartnum,on_cartnum);
   }
 
-  if(!strcmp(args[0],"TA")) {   // On Air Flag Changed
-    if(argnum!=2) {
+  if(cmds[0]=="TA") {   // On Air Flag Changed
+    if(cmds.size()!=2) {
       return;
     }
-    emit onairFlagChanged(args[1][0]=='1');
-  }
-
-  if(!strcmp(args[0],"TA")) {   // On Air Flag Changed
-    if(argnum!=2) {
-      return;
-    }
-    ripc_onair_flag=args[1][0]=='1';
+    ripc_onair_flag=cmds[1].left(0)=="1";
     emit onairFlagChanged(ripc_onair_flag);
   }
 
-  if(!strcmp(args[0],"ON")) {   // Notification Received
-    if(argnum<4) {
+  if(cmds[0]=="ON") {   // Notification Received
+    if(cmds.size()<4) {
       return;
     }
     QString msg;
-    for(int i=1;i<argnum;i++) {
-      msg+=QString(args[i])+" ";
+    for(unsigned i=1;i<cmds.size();i++) {
+      msg+=QString(cmds[i])+" ";
     }
     msg=msg.left(msg.length()-1);
     RDNotification *notify=new RDNotification();

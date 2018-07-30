@@ -79,7 +79,7 @@ class RDRipc : public QObject
   void readyData();
 
  private:
-  void SendCommand(QString cmd);
+  void SendCommand(const QString &cmd);
   void DispatchCommand();
   QSocket *ripc_socket;
   QString ripc_user;
@@ -90,9 +90,12 @@ class RDRipc : public QObject
   bool ripc_onair_flag;
   bool ripc_ignore_mask;
   bool debug;
+  QString ripc_accum;
+  /*
   char args[RIPC_MAX_ARGS][RIPC_MAX_LENGTH];
   int argnum;
   int argptr;
+  */
   bool ripc_connected;
 };
 

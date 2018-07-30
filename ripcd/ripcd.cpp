@@ -80,7 +80,7 @@ MainObject::MainObject(QObject *parent)
 
   rda=new RDApplication("ripcd","ripcd",RIPCD_USAGE,this);
   if(!rda->open(&err_msg)) {
-    fprintf(stderr,"ripcd: %s\n",(const char *)err_msg);
+    fprintf(stderr,"ripcd: %s\n",(const char *)err_msg.utf8());
     exit(1);
   }
 
@@ -106,6 +106,14 @@ MainObject::MainObject(QObject *parent)
   }
   ripc_onair_flag=false;
 
+  //
+  // Client Connections
+  //
+  ripcd_ready_mapper=new QSignalMapper(this);
+  connect(ripcd_ready_mapper,SIGNAL(mapped(int)),this,SLOT(readyReadData(int)));
+
+  ripcd_kill_mapper=new QSignalMapper(this);
+  connect(ripcd_kill_mapper,SIGNAL(mapped(int)),this,SLOT(killData(int)));
   server=new RipcdSocket(RIPCD_TCP_PORT,0,this);
   if(!server->ok()) {
     exit(1);
@@ -218,6 +226,12 @@ MainObject::MainObject(QObject *parent)
   connect(timer,SIGNAL(timeout()),this,SLOT(exitTimerData()));
   timer->start(200);
 
+  //
+  // Garbage Timer
+  //
+  ripcd_garbage_timer=new QTimer(this);
+  connect(ripcd_garbage_timer,SIGNAL(timeout()),this,SLOT(garbageData()));
+
   LogLine(RDConfig::LogInfo,"started");
 }
 
@@ -247,10 +261,12 @@ void MainObject::newConnection(int fd)
   else {
     ripcd_conns[i]=new RipcdConnection(i,fd);
   }
-  connect(ripcd_conns[i]->socket,SIGNAL(readyReadID(int)),
-	  this,SLOT(socketData(int)));
-  connect(ripcd_conns[i]->socket,SIGNAL(connectionClosedID(int)),
-	  this,SLOT(socketKill(int)));
+  ripcd_ready_mapper->setMapping(ripcd_conns[i]->socket(),i);
+  connect(ripcd_conns[i]->socket(),SIGNAL(readyRead()),
+	  ripcd_ready_mapper,SLOT(map()));
+  ripcd_kill_mapper->setMapping(ripcd_conns[i]->socket(),i);
+  connect(ripcd_conns[i]->socket(),SIGNAL(connectionClosed()),
+	  ripcd_kill_mapper,SLOT(map()));
 }
 
 
@@ -330,15 +346,38 @@ void MainObject::databaseBackup()
 }
 
 
-void MainObject::socketData(int ch)
+void MainObject::readyReadData(int conn_id)
 {
-  ParseCommand(ch);
+  char data[1501];
+  int n;
+  RipcdConnection *conn=ripcd_conns[conn_id];
+  QChar c;
+
+  while((n=conn->socket()->readBlock(data,1500))>0) {
+    data[n]=0;
+    QString line=QString::fromUtf8(data);
+    for(unsigned i=0;i<line.length();i++) {
+      QChar c=line.ref(i);
+      if(c=="!") {
+	if(!DispatchCommand(conn)) {
+	  return;
+	}
+	conn->accum="";
+      }
+      else {
+	if((c!="\r")&&(c!="\n")) {
+	  conn->accum+=c;
+	}
+      }
+    }
+  }
 }
 
 
-void MainObject::socketKill(int ch)
+void MainObject::killData(int conn_id)
 {
-  KillSocket(ch);
+  ripcd_conns[conn_id]->socket()->close();
+  ripcd_garbage_timer->start(1,true);
 }
 
 
@@ -407,91 +446,56 @@ void MainObject::exitTimerData()
 }
 
 
-void MainObject::SetUser(QString username)
+void MainObject::garbageData()
 {
-    rda->station()->setUserName(username);
-    BroadcastCommand(QString().sprintf("RU %s!",(const char *)username));
-}
-
-
-void MainObject::ParseCommand(int ch)
-{
-  char buf[256];
-  int c;
-  RipcdConnection *conn=ripcd_conns[ch];
-
-  while((c=conn->socket->readBlock(buf,256))>0) {
-    buf[c]=0;
-    for(int i=0;i<c;i++) {
-      if(buf[i]==' ') {
-	if(conn->argnum<RD_RML_MAX_ARGS) {
-	  conn->args[conn->argnum][conn->argptr]=0;
-	  conn->argnum++;
-	  conn->argptr=0;
-	}
-	else {
-	  LogLine(RDConfig::LogWarning,QString().
-		  sprintf("*** ParseCommand1: argument list truncated.  LocalBuffer: %s ***",buf));
-	}
-      }
-      if(buf[i]=='!') {
-	conn->args[conn->argnum++][conn->argptr]=0;
-	if(!DispatchCommand(ch)) {  // Connection closed?
-	  return;
-	}
-	conn->argnum=0;
-	conn->argptr=0;
-	if(conn->socket==NULL) {
-	  return;
-	}
-      }
-      if((isgraph(buf[i]))&&(buf[i]!='!')) {
-	if(conn->argptr<RIPCD_MAX_LENGTH) {
-	  conn->args[conn->argnum][conn->argptr]=buf[i];
-	  conn->argptr++;
-	}
-	else {
-	  if(debug) {
-	    LogLine(RDConfig::LogWarning,QString().
-		    sprintf("*** ParseCommand2: argument list truncated.  LocalBuffer: %s ***",buf));
-	  }
-	}
+  for(unsigned i=0;i<ripcd_conns.size();i++) {
+    if(ripcd_conns[i]!=NULL) {
+      if(ripcd_conns[i]->socket()->state()==QSocket::Idle) {
+	delete ripcd_conns[i];
+	ripcd_conns[i]=NULL;
       }
     }
   }
 }
 
 
-bool MainObject::DispatchCommand(int ch)
+void MainObject::SetUser(QString username)
 {
-  QString default_name;
-  char str[RD_RML_MAX_LENGTH];
+  rda->station()->setUserName(username);
+  BroadcastCommand(QString("RU ")+username+"!");
+}
+
+
+bool MainObject::DispatchCommand(RipcdConnection *conn)
+{
+  QString str;
   RDMacro macro;
   char buffer[RD_RML_MAX_LENGTH];
   char cmd[RD_RML_MAX_LENGTH+4];
   int echo=0;
   QHostAddress addr;
-  RipcdConnection *conn=ripcd_conns[ch];
-  unsigned port;
+
+  QStringList cmds=cmds.split(" ",conn->accum);
 
   //
   // Common Commands
   // Authentication not required to execute these!
   //
-  if(!strcmp(conn->args[0],"DC")) {  // Drop Connection
-    conn->socket->close();
-    KillSocket(ch);
+  if(cmds[0]=="DC") {  // Drop Connection
+    conn->socket()->close();
+    killData(conn->id());
     return false;
   }
-  if(!strcmp(conn->args[0],"PW")) {  // Password Authenticate
-    if(!strcmp(conn->args[1],rda->config()->password())) {
-      conn->auth=true;
-      EchoCommand(ch,"PW +!");
+
+  if((cmds[0]=="PW")&&(cmds.size()==2)) {  // Password Authenticate
+    if(cmds[1]==rda->config()->password()) {
+      conn->setAuthenticated(true);
+      EchoCommand(conn->id(),"PW +!");
       return true;
     }
     else {
-      conn->auth=false;
-      EchoCommand(ch,"PW -!");
+      conn->setAuthenticated(false);
+      EchoCommand(conn->id(),"PW -!");
       return true;
     }
   }
@@ -500,44 +504,34 @@ bool MainObject::DispatchCommand(int ch)
   // Priviledged Commands
   // Authentication required to execute these!
   //
-  if(!conn->auth) {
-    EchoArgs(ch,'-');
+  if(!conn->isAuthenticated()) {
+    EchoCommand(conn->id(),cmds.join(" ")+"-!");
+    return true;
+  }
+  if(cmds[0]=="RU") {  // Request User
+    EchoCommand(conn->id(),(const char *)QString("RU ")+rda->station()->userName()+"!");
     return true;
   }
 
-  if(!strcmp(conn->args[0],"RU")) {  // Request User
-    EchoCommand(ch,(const char *)QString().
-		sprintf("RU %s!",(const char *)rda->station()->userName()));
-    return true;
+  if((cmds[0]=="SU")&&(cmds.size()==2)) {  // Set User
+    SetUser(cmds[1]);
   }
 
-  if(!strcmp(conn->args[0],"SU")) {  // Set User
-    SetUser(conn->args[1]);
-  }
-
-  if(!strcmp(conn->args[0],"MS")) {  // Send RML Command
-    if(conn->argnum<4) {
+  if(cmds[0]=="MS") {  // Send RML Command
+    if(cmds.size()<4) {
       return true;
     }
-    strcpy(str,conn->args[3]);
-    for(int i=4;i<conn->argnum;i++) {
-      strcat(str," ");
-      strcat(str,conn->args[i]);
+    str=cmds[3];
+    for(unsigned i=4;i<cmds.size();i++) {
+      str+=" "+cmds[i];
     }
-    strcat(str,"!");
+    str+="!";
   }
-  if(macro.parseString(str,strlen(str))) {
-    addr.setAddress(conn->args[1]);
+  if(macro.parseString(str,str.length())) {
+    addr.setAddress(cmds[1]);
     macro.setAddress(addr);
-    sscanf(conn->args[2],"%u",&port);
-    macro.setPort(port);
+    macro.setPort(cmds[2].toInt());
     macro.setRole(RDMacro::Cmd);
-
-/*
-  char temp[RD_RML_MAX_LENGTH];
-  macro.generateString(temp,RD_RML_MAX_LENGTH);
-  LogLine(QString().sprintf("RECEIVED: %s  ADDR: %s\n",temp,(const char *)macro.address().toString()));
-*/
 
     if(!macro.address().isNull()) {
       if(macro.address()==rda->station()->address()&&
@@ -558,20 +552,19 @@ bool MainObject::DispatchCommand(int ch)
     }
   }
 
-  if(!strcmp(conn->args[0],"ME")) {  // Send RML Reply
-    if(conn->argnum<4) {
+  if(cmds[0]=="ME") {  // Send RML Reply
+    if(cmds.size()<4) {
       return true;
     }
-    strcpy(str,conn->args[3]);
-    for(int i=4;i<conn->argnum;i++) {
-      strcat(str," ");
-      strcat(str,conn->args[i]);
+    str=cmds[3];
+    for(unsigned i=4;i<cmds.size();i++) {
+      str+=" "+cmds[i];
     }
-    strcat(str,"!");
+    str+="!";
   }
-  if(macro.parseString(str,strlen(str))) {
+  if(macro.parseString(str,str.length())) {
     QHostAddress addr;
-    addr.setAddress(conn->args[1]);
+    addr.setAddress(cmds[1]);
     macro.setAddress(addr);
     macro.setRole(RDMacro::Reply); 
     if(macro.address()==rda->station()->address()) {  // Local Loopback
@@ -585,50 +578,38 @@ bool MainObject::DispatchCommand(int ch)
     }
   }
 
-  if(!strcmp(conn->args[0],"RG")) {  // Reload the GPI Table
+  if(cmds[0]=="RG") {  // Reload the GPI Table
     LoadGpiTable();
   }
 
-  if(!strcmp(conn->args[0],"GI")) {  // Send Complete GPI Status
-    int matrix;
-    sscanf(conn->args[1],"%d",&matrix);
-    SendGpi(ch,matrix);
+  if((cmds[0]=="GI")&&(cmds.size()==2)) {  // Send Complete GPI Status
+    SendGpi(conn->id(),cmds[1].toInt());
   }
 
-  if(!strcmp(conn->args[0],"GO")) {  // Send Complete GPO Status
-    int matrix;
-    sscanf(conn->args[1],"%d",&matrix);
-    SendGpo(ch,matrix);
+  if((cmds[0]=="GO")&&(cmds.size()==2)) {  // Send Complete GPO Status
+    SendGpo(conn->id(),cmds[1].toInt());
   }
 
-  if(!strcmp(conn->args[0],"GM")) {  // Send Complete GPI Mask States
-    int matrix;
-    sscanf(conn->args[1],"%d",&matrix);
-    SendGpiMask(ch,matrix);
+  if((cmds[0]=="GM")&&(cmds.size()==2)) {  // Send Complete GPI Mask States
+    SendGpiMask(conn->id(),cmds[1].toInt());
   }
 
-  if(!strcmp(conn->args[0],"GN")) {  // Send Complete GPI Mask States
-    int matrix;
-    sscanf(conn->args[1],"%d",&matrix);
-    SendGpoMask(ch,matrix);
+  if((cmds[0]=="GN")&&(cmds.size()==2)) {  // Send Complete GPO Mask States
+    SendGpoMask(conn->id(),cmds[1].toInt());
   }
 
-  if(!strcmp(conn->args[0],"GC")) {  // Send Complete GPI Cart Assignments
-    int matrix;
-    sscanf(conn->args[1],"%d",&matrix);
-    SendGpiCart(ch,matrix);
+  if((cmds[0]=="GC")&&(cmds.size()==2)) {  // Send Complete GPI Cart Assignments
+    SendGpiCart(conn->id(),cmds[1].toInt());
   }
 
-  if(!strcmp(conn->args[0],"GD")) {  // Send Complete GPO Cart Assignments
-    int matrix;
-    sscanf(conn->args[1],"%d",&matrix);
-    SendGpoCart(ch,matrix);
+  if((cmds[0]=="GD")&&(cmds.size()==2)) {  // Send Complete GPO Cart Assignments
+    SendGpoCart(conn->id(),cmds[1].toInt());
   }
 
-  if(!strcmp(conn->args[0],"ON")) {  // Send Notification
+  if(cmds[0]=="ON") {  // Send Notification
     QString msg;
-    for(int i=1;i<conn->argnum;i++) {
-      msg+=QString(conn->args[i])+" ";
+    for(unsigned i=1;i<cmds.size();i++) {
+      msg+=QString(cmds[i])+" ";
     }
     msg=msg.left(msg.length()-1);
     RDNotification *notify=new RDNotification();
@@ -637,61 +618,38 @@ bool MainObject::DispatchCommand(int ch)
       delete notify;
       return true;
     }
-    BroadcastCommand("ON "+msg+"!",ch);
+    BroadcastCommand("ON "+msg+"!",conn->id());
     ripcd_notification_mcaster->
       send(msg,rda->system()->notificationAddress(),RD_NOTIFICATION_PORT);
     delete notify;
   }
 
-  if(!strcmp(conn->args[0],"TA")) {  // Send Onair Flag State
-    EchoCommand(ch,QString().sprintf("TA %d!",ripc_onair_flag));
+  if(cmds[0]=="TA") {  // Send Onair Flag State
+    EchoCommand(conn->id(),QString().sprintf("TA %d!",ripc_onair_flag));
   }
+
   return true;
 }
 
 
-void MainObject::KillSocket(int ch)
+void MainObject::EchoCommand(int ch,const QString &cmd)
 {
-  delete ripcd_conns[ch];
-  ripcd_conns[ch]=NULL;
-}
-
-
-void MainObject::EchoCommand(int ch,const char *command)
-{
-  if(ripcd_conns[ch]->socket->state()==QSocket::Connection) {
-    ripcd_conns[ch]->socket->writeBlock(command,strlen(command));
+  //  printf("EchoCommand(%d,%s)\n",ch,(const char *)cmd.utf8());
+  if(ripcd_conns[ch]->socket()->state()==QSocket::Connected) {
+    ripcd_conns[ch]->socket()->writeBlock(cmd.utf8(),cmd.utf8().length());
   }
 }
 
 
-void MainObject::BroadcastCommand(const char *command,int except_ch)
+void MainObject::BroadcastCommand(const QString &cmd,int except_ch)
 {
   for(unsigned i=0;i<ripcd_conns.size();i++) {
     if((int)i!=except_ch) {
       if(ripcd_conns[i]!=NULL) {
-	EchoCommand(i,command);
+	EchoCommand(i,cmd);
       }
     }
   }
-}
-
-
-void MainObject::EchoArgs(int ch,const char append)
-{
-  char command[RIPCD_MAX_LENGTH+2];
-  int l;
-
-  command[0]=0;
-  for(int i=0;i<ripcd_conns[ch]->argnum;i++) {
-    strcat(command,ripcd_conns[ch]->args[i]);
-    strcat(command," ");
-  }
-  l=strlen(command);
-  command[l]=append;
-  command[l+1]='!';
-  command[l+2]=0;
-  EchoCommand(ch,command);
 }
 
 
@@ -910,7 +868,7 @@ void LogLine(RDConfig::LogPriority prio,const QString &line)
 	  current.time().minute(),
 	  current.time().second(),
 	  current.time().msec(),
-	  (const char *)line);
+	  (const char *)line.utf8());
   fclose(logfile);
 }
 
