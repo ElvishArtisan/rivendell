@@ -334,6 +334,9 @@ void Xport::EditCart()
       cart->setYear(number);
     }
   }
+  if(xport_post->getValue("SONG_ID",&value)) {
+    cart->setSongId(value);
+  }
   if(xport_post->getValue("LABEL",&value)) {
     cart->setLabel(value);
   }
@@ -348,6 +351,9 @@ void Xport::EditCart()
   }
   if(xport_post->getValue("COMPOSER",&value)) {
     cart->setComposer(value);
+  }
+  if(xport_post->getValue("CONDUCTOR",&value)) {
+    cart->setConductor(value);
   }
   if(xport_post->getValue("USER_DEFINED",&value)) {
     cart->setUserDefined(value);

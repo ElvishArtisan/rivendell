@@ -17248,3 +17248,8 @@
 	correctly.
 	* Modified the 'editcut.html' test harness to process UTF-8 strings
 	correctly.
+2018-07-30 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'EditCart' web API call that caused updates to
+	the 'SongID' field to be ignored.
+	* Fixed a bug in the 'EditCart' web API call that caused updates to
+	the 'Conductor' field to be ignored.
