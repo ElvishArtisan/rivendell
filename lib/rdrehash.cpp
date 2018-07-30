@@ -2,7 +2,7 @@
 //
 // Generate a SHA-1 hash of an audio file and write it to the database.
 //
-//   (C) Copyright 2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -70,15 +70,28 @@ RDRehash::ErrorCode RDRehash::runRehash(const QString &username,
   CURL *curl=NULL;
   char url[1024];
   CURLcode curl_err;
+  struct curl_httppost *first=NULL;
+  struct curl_httppost *last=NULL;
 
   //
   // Generate POST Data
   //
-  QString post=QString().sprintf("COMMAND=%d&",RDXPORT_COMMAND_REHASH)+
-    "LOGIN_NAME="+RDFormPost::urlEncode(username)+"&"+
-    "PASSWORD="+RDFormPost::urlEncode(password)+"&"+
-    QString().sprintf("CART_NUMBER=%u&",conv_cart_number)+
-    QString().sprintf("CUT_NUMBER=%u",conv_cut_number);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
+	       CURLFORM_COPYCONTENTS,
+	       (const char *)QString().sprintf("%u",RDXPORT_COMMAND_REHASH),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
+	       CURLFORM_COPYCONTENTS,(const char *)username,CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"PASSWORD",
+	       CURLFORM_COPYCONTENTS,(const char *)password,CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"CART_NUMBER",
+	       CURLFORM_COPYCONTENTS,
+	       (const char *)QString().sprintf("%u",conv_cart_number),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"CUT_NUMBER",
+	       CURLFORM_COPYCONTENTS,
+	       (const char *)QString().sprintf("%u",conv_cut_number),
+	       CURLFORM_END);
   if((curl=curl_easy_init())==NULL) {
     return RDRehash::ErrorInternal;
   }
@@ -91,8 +104,7 @@ RDRehash::ErrorCode RDRehash::runRehash(const QString &username,
   strncpy(url,conv_station->webServiceUrl(conv_config),1024);
   curl_easy_setopt(curl,CURLOPT_URL,url);
   curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,__RDRehashCallback);
-  curl_easy_setopt(curl,CURLOPT_POST,1);
-  curl_easy_setopt(curl,CURLOPT_POSTFIELDS,(const char *)post);
+  curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
   curl_easy_setopt(curl,CURLOPT_USERAGENT,
 		   (const char *)conv_config->userAgent());
   curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
