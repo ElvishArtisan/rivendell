@@ -17253,3 +17253,5 @@
 	the 'SongID' field to be ignored.
 	* Fixed a bug in the 'EditCart' web API call that caused updates to
 	the 'Conductor' field to be ignored.
+2018-07-30 Fred Gleason <fredg@paravelsystems.com>
+	* Modified 'RDAudioExport' to use multipart-mime encoding.

@@ -134,28 +134,67 @@ RDAudioExport::ErrorCode RDAudioExport::runExport(const QString &username,
   CURL *curl=NULL;
   FILE *f=NULL;
   char url[1024];
+  struct curl_httppost *first=NULL;
+  struct curl_httppost *last=NULL;
   RDAudioExport::ErrorCode ret;
   RDWebResult web_result;
 
   //
   // Generate POST Data
   //
-
-  QString post=QString().sprintf("COMMAND=%d&",RDXPORT_COMMAND_EXPORT)+
-    "LOGIN_NAME="+RDFormPost::urlEncode(username)+"&"+
-    "PASSWORD="+RDFormPost::urlEncode(password)+"&"+
-    QString().sprintf("CART_NUMBER=%u&",conv_cart_number)+
-    QString().sprintf("CUT_NUMBER=%u&",conv_cut_number)+
-    QString().sprintf("FORMAT=%d&",conv_settings->format())+
-    QString().sprintf("CHANNELS=%d&",conv_settings->channels())+
-    QString().sprintf("SAMPLE_RATE=%d&",conv_settings->sampleRate())+
-    QString().sprintf("BIT_RATE=%d&",conv_settings->bitRate())+
-    QString().sprintf("QUALITY=%d&",conv_settings->quality())+
-    QString().sprintf("START_POINT=%d&",conv_start_point)+
-    QString().sprintf("END_POINT=%d&",conv_end_point)+
-    QString().sprintf("NORMALIZATION_LEVEL=%d&",
-		      conv_settings->normalizationLevel())+
-    QString().sprintf("ENABLE_METADATA=%d",conv_enable_metadata);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
+	       CURLFORM_COPYCONTENTS,
+	       (const char *)QString().sprintf("%u",RDXPORT_COMMAND_EXPORT),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
+	       CURLFORM_COPYCONTENTS,(const char *)username,CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"PASSWORD",
+	       CURLFORM_COPYCONTENTS,(const char *)password,CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"CART_NUMBER",
+	       CURLFORM_COPYCONTENTS,
+	       (const char *)QString().sprintf("%u",conv_cart_number),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"CUT_NUMBER",
+	       CURLFORM_COPYCONTENTS,
+	       (const char *)QString().sprintf("%u",conv_cut_number),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"FORMAT",
+	       CURLFORM_COPYCONTENTS,
+	       (const char *)QString().sprintf("%u",conv_settings->format()),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"CHANNELS",
+	       CURLFORM_COPYCONTENTS,
+	       (const char *)QString().sprintf("%u",conv_settings->channels()),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"SAMPLE_RATE",
+	       CURLFORM_COPYCONTENTS,
+	       (const char *)QString().sprintf("%u",conv_settings->sampleRate()),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"BIT_RATE",
+	       CURLFORM_COPYCONTENTS,
+	       (const char *)QString().sprintf("%u",conv_settings->bitRate()),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"QUALITY",
+	       CURLFORM_COPYCONTENTS,
+	       (const char *)QString().sprintf("%u",conv_settings->quality()),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"START_POINT",
+	       CURLFORM_COPYCONTENTS,
+	       (const char *)QString().sprintf("%d",conv_start_point),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"END_POINT",
+	       CURLFORM_COPYCONTENTS,
+	       (const char *)QString().sprintf("%d",conv_end_point),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"NORMALIZATION_LEVEL",
+	       CURLFORM_COPYCONTENTS,
+	       (const char *)QString().sprintf("%d",conv_settings->
+					       normalizationLevel()),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"ENABLE_METADATA",
+	       CURLFORM_COPYCONTENTS,
+	       (const char *)QString().sprintf("%u",conv_enable_metadata),
+	       CURLFORM_END);
   if((curl=curl_easy_init())==NULL) {
     return RDAudioExport::ErrorInternal;
   }
@@ -170,9 +209,10 @@ RDAudioExport::ErrorCode RDAudioExport::runExport(const QString &username,
   //
   strncpy(url,rda->station()->webServiceUrl(rda->config()),1024);
   curl_easy_setopt(curl,CURLOPT_URL,url);
+  curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
   curl_easy_setopt(curl,CURLOPT_WRITEDATA,f);
-  curl_easy_setopt(curl,CURLOPT_POST,1);
-  curl_easy_setopt(curl,CURLOPT_POSTFIELDS,(const char *)post);
+  //  curl_easy_setopt(curl,CURLOPT_POST,1);
+  //  curl_easy_setopt(curl,CURLOPT_POSTFIELDS,(const char *)post);
   curl_easy_setopt(curl,CURLOPT_USERAGENT,
 		   (const char *)rda->config()->userAgent());
   curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
