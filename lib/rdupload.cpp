@@ -134,20 +134,20 @@ RDUpload::ErrorCode RDUpload::runUpload(const QString &username,
   // otherwise some versions of LibCurl will throw a 'bad/illegal format' 
   // error.
   //
-  strncpy(url,conv_dst_url.toString(conv_dst_url.protocol().lower()=="http"),
+  strncpy(url,conv_dst_url.toString(conv_dst_url.protocol().lower()=="http").utf8(),
 	  1024);
   curl_easy_setopt(curl,CURLOPT_URL,url);
   curl_easy_setopt(curl,CURLOPT_UPLOAD,1);
   curl_easy_setopt(curl,CURLOPT_READDATA,f);
   curl_easy_setopt(curl,CURLOPT_INFILESIZE,(long)conv_src_size);
-  strncpy(userpwd,(username+":"+password),256);
+  strncpy(userpwd,(username+":"+password).utf8(),256);
   curl_easy_setopt(curl,CURLOPT_USERPWD,userpwd);
   curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
   curl_easy_setopt(curl,CURLOPT_PROGRESSFUNCTION,UploadProgressCallback);
   curl_easy_setopt(curl,CURLOPT_PROGRESSDATA,this);
   curl_easy_setopt(curl,CURLOPT_NOPROGRESS,0);
   curl_easy_setopt(curl,CURLOPT_USERAGENT,
-		   (const char *)rda->config()->userAgent());
+		   (const char *)rda->config()->userAgent().utf8());
   if(log_debug) {
     curl_easy_setopt(curl,CURLOPT_VERBOSE,1);
     curl_easy_setopt(curl,CURLOPT_DEBUGFUNCTION,UploadErrorCallback);

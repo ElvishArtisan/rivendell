@@ -196,6 +196,7 @@ RDAudioExport::ErrorCode RDAudioExport::runExport(const QString &username,
 	       (const char *)QString().sprintf("%u",conv_enable_metadata),
 	       CURLFORM_END);
   if((curl=curl_easy_init())==NULL) {
+    curl_formfree(first);
     return RDAudioExport::ErrorInternal;
   }
   if((f=fopen(conv_dst_filename,"w"))==NULL) {
@@ -226,6 +227,7 @@ RDAudioExport::ErrorCode RDAudioExport::runExport(const QString &username,
 
   case CURLE_ABORTED_BY_CALLBACK:
     curl_easy_cleanup(curl);
+    curl_formfree(first);
     unlink(conv_dst_filename);
     return RDAudioExport::ErrorAborted;
 
@@ -240,6 +242,7 @@ RDAudioExport::ErrorCode RDAudioExport::runExport(const QString &username,
   case CURLE_HTTP_POST_ERROR:
   default:
     curl_easy_cleanup(curl);
+    curl_formfree(first);
     return RDAudioExport::ErrorInternal;
 
   case CURLE_URL_MALFORMAT:
@@ -247,6 +250,7 @@ RDAudioExport::ErrorCode RDAudioExport::runExport(const QString &username,
   case CURLE_COULDNT_CONNECT:
   case 9:  // CURLE_REMOTE_ACCESS_DENIED:
     curl_easy_cleanup(curl);
+    curl_formfree(first);
     return RDAudioExport::ErrorUrlInvalid;
   }
   curl_easy_getinfo(curl,CURLINFO_RESPONSE_CODE,&response_code);
@@ -255,6 +259,8 @@ RDAudioExport::ErrorCode RDAudioExport::runExport(const QString &username,
 
   if(response_code==200) {
     *conv_err=RDAudioConvert::ErrorOk;
+    curl_easy_cleanup(curl);
+    curl_formfree(first);
     return RDAudioExport::ErrorOk;
   }
 
@@ -274,6 +280,8 @@ RDAudioExport::ErrorCode RDAudioExport::runExport(const QString &username,
   default:
     ret=RDAudioExport::ErrorConverter;
   }
+  curl_easy_cleanup(curl);
+  curl_formfree(first);
   unlink(conv_dst_filename);
 
   return ret;

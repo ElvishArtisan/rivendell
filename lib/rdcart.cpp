@@ -1681,6 +1681,7 @@ bool RDCart::removeCutAudio(RDStation *station,RDUser *user,unsigned cart_num,
 		 (const char *)QString().sprintf("%u",RDCut::cutNumber(cutname)),
 		 CURLFORM_END);
     if((curl=curl_easy_init())==NULL) {
+      curl_formfree(first);
       return false;
     }
     //
@@ -1700,6 +1701,7 @@ bool RDCart::removeCutAudio(RDStation *station,RDUser *user,unsigned cart_num,
     curl_easy_getinfo(curl,CURLINFO_RESPONSE_CODE,&response_code);
     ret&=response_code==200;
     curl_easy_cleanup(curl);
+    curl_formfree(first);
   }
 #endif  // WIN32
   return ret;

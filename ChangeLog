@@ -17269,3 +17269,9 @@
 	* Modified 'RDRehash' to use multipart-mime encoding.
 2018-07-30 Fred Gleason <fredg@paravelsystems.com>
 	* Modified 'RDTrimAudio' to use multipart-mime encoding.
+2018-07-30 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up memory leaks in 'RDAudioExport', 'RDAudioImport',
+	'RDAudioStore', 'RDCart', 'RDCopyAudio', 'RDPeakExport',
+	'RDRehash', and 'RDTrimAudio'.
+	* Modified Xload operations in 'RDDelete', 'RDDownload' and
+	'RDUpload' to work properly with credentials using UTF-8 strings.

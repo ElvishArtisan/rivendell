@@ -93,6 +93,7 @@ RDRehash::ErrorCode RDRehash::runRehash(const QString &username,
 	       (const char *)QString().sprintf("%u",conv_cut_number),
 	       CURLFORM_END);
   if((curl=curl_easy_init())==NULL) {
+    curl_formfree(first);
     return RDRehash::ErrorInternal;
   }
 
@@ -123,6 +124,7 @@ RDRehash::ErrorCode RDRehash::runRehash(const QString &username,
   case CURLE_OPERATION_TIMEDOUT:
   case CURLE_HTTP_POST_ERROR:
     curl_easy_cleanup(curl);
+    curl_formfree(first);
     fprintf(stderr,"curl error: %d\n",curl_err);
     return RDRehash::ErrorInternal;
 
@@ -131,6 +133,7 @@ RDRehash::ErrorCode RDRehash::runRehash(const QString &username,
   case CURLE_COULDNT_CONNECT:
   case 9:   // CURLE_REMOTE_ACCESS_DENIED
     curl_easy_cleanup(curl);
+    curl_formfree(first);
     return RDRehash::ErrorUrlInvalid;
 
   default:
@@ -139,6 +142,7 @@ RDRehash::ErrorCode RDRehash::runRehash(const QString &username,
   }
   curl_easy_getinfo(curl,CURLINFO_RESPONSE_CODE,&response_code);
   curl_easy_cleanup(curl);
+  curl_formfree(first);
 
   switch(response_code) {
   case 200:

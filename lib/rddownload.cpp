@@ -133,10 +133,10 @@ RDDownload::ErrorCode RDDownload::runDownload(const QString &username,
   // error.
   //
   strncpy(url,conv_src_url.
-	  toString(conv_src_url.protocol().lower().left(4)=="http"),1024);
+	  toString(conv_src_url.protocol().lower().left(4)=="http").utf8(),1024);
   curl_easy_setopt(curl,CURLOPT_URL,url);
   curl_easy_setopt(curl,CURLOPT_WRITEDATA,f);
-  strncpy(userpwd,username+":"+password,256);
+  strncpy(userpwd,(username+":"+password).utf8(),256);
   curl_easy_setopt(curl,CURLOPT_USERPWD,userpwd);
   curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
   curl_easy_setopt(curl,CURLOPT_FOLLOWLOCATION,1);
@@ -144,7 +144,7 @@ RDDownload::ErrorCode RDDownload::runDownload(const QString &username,
   curl_easy_setopt(curl,CURLOPT_PROGRESSDATA,this);
   curl_easy_setopt(curl,CURLOPT_NOPROGRESS,0);
   curl_easy_setopt(curl,CURLOPT_USERAGENT,
-		   (const char *)conv_config->userAgent());
+		   (const char *)conv_config->userAgent().utf8());
   if(log_debug) {
     curl_easy_setopt(curl,CURLOPT_VERBOSE,1);
     curl_easy_setopt(curl,CURLOPT_DEBUGFUNCTION,DownloadErrorCallback);

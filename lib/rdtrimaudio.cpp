@@ -121,6 +121,7 @@ RDTrimAudio::ErrorCode RDTrimAudio::runTrim(const QString &username,
 	       (const char *)QString().sprintf("%u",conv_trim_level),
 	       CURLFORM_END);
   if((curl=curl_easy_init())==NULL) {
+    curl_formfree(first);
     return RDTrimAudio::ErrorInternal;
   }
 
@@ -155,6 +156,7 @@ RDTrimAudio::ErrorCode RDTrimAudio::runTrim(const QString &username,
     //fprintf(stderr,"CURL Error: %s [%d]\n",curl_easy_strerror(curl_err),
     //curl_err);
     curl_easy_cleanup(curl);
+    curl_formfree(first);
     return RDTrimAudio::ErrorInternal;
 
   case CURLE_URL_MALFORMAT:
@@ -162,10 +164,12 @@ RDTrimAudio::ErrorCode RDTrimAudio::runTrim(const QString &username,
   case CURLE_COULDNT_CONNECT:
   case 9:   // CURLE_REMOTE_ACCESS_DENIED
     curl_easy_cleanup(curl);
+    curl_formfree(first);
     return RDTrimAudio::ErrorUrlInvalid;
   }
   curl_easy_getinfo(curl,CURLINFO_RESPONSE_CODE,&response_code);
   curl_easy_cleanup(curl);
+  curl_formfree(first);
 
   switch(response_code) {
   case 200:

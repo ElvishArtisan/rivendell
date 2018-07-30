@@ -115,6 +115,7 @@ RDPeaksExport::ErrorCode RDPeaksExport::runExport(const QString &username,
 	       (const char *)QString().sprintf("%u",conv_cut_number),
 	       CURLFORM_END);
   if((curl=curl_easy_init())==NULL) {
+    curl_formfree(first);
     return RDPeaksExport::ErrorInternal;
   }
   curl_easy_setopt(curl,CURLOPT_WRITEDATA,this);
@@ -140,6 +141,7 @@ RDPeaksExport::ErrorCode RDPeaksExport::runExport(const QString &username,
 
   case CURLE_ABORTED_BY_CALLBACK:
     curl_easy_cleanup(curl);
+    curl_formfree(first);
     return RDPeaksExport::ErrorAborted;
 
   case CURLE_UNSUPPORTED_PROTOCOL:
@@ -153,6 +155,7 @@ RDPeaksExport::ErrorCode RDPeaksExport::runExport(const QString &username,
   case CURLE_HTTP_POST_ERROR:
   default:
     curl_easy_cleanup(curl);
+    curl_formfree(first);
     return RDPeaksExport::ErrorInternal;
 
   case CURLE_URL_MALFORMAT:
@@ -160,10 +163,12 @@ RDPeaksExport::ErrorCode RDPeaksExport::runExport(const QString &username,
   case CURLE_COULDNT_CONNECT:
   case 9:  // CURLE_REMOTE_ACCESS_DENIED
     curl_easy_cleanup(curl);
+    curl_formfree(first);
     return RDPeaksExport::ErrorUrlInvalid;
   }
   curl_easy_getinfo(curl,CURLINFO_RESPONSE_CODE,&response_code);
   curl_easy_cleanup(curl);
+    curl_formfree(first);
 
   switch(response_code) {
   case 200:

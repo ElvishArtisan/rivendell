@@ -163,6 +163,7 @@ RDAudioImport::ErrorCode RDAudioImport::runImport(const QString &username,
   // Set up the transfer
   //
   if((curl=curl_easy_init())==NULL) {
+    curl_formfree(first);
     return RDAudioImport::ErrorInternal;
   }
   curl_easy_setopt(curl,CURLOPT_WRITEDATA,stdout);
@@ -192,6 +193,7 @@ RDAudioImport::ErrorCode RDAudioImport::runImport(const QString &username,
 
   case CURLE_ABORTED_BY_CALLBACK:
     curl_easy_cleanup(curl);
+    curl_formfree(first);
     return RDAudioImport::ErrorAborted;
 
   case CURLE_UNSUPPORTED_PROTOCOL:
@@ -203,8 +205,9 @@ RDAudioImport::ErrorCode RDAudioImport::runImport(const QString &username,
   case CURLE_OUT_OF_MEMORY:
   case CURLE_OPERATION_TIMEDOUT:
   case CURLE_HTTP_POST_ERROR:
-    curl_easy_cleanup(curl);
   default:
+    curl_easy_cleanup(curl);
+    curl_formfree(first);
     return RDAudioImport::ErrorInternal;
 
   case CURLE_URL_MALFORMAT:
@@ -212,6 +215,7 @@ RDAudioImport::ErrorCode RDAudioImport::runImport(const QString &username,
   case CURLE_COULDNT_CONNECT:
   case 9:   // CURLE_REMOTE_ACCESS_DENIED:
     curl_easy_cleanup(curl);
+    curl_formfree(first);
     return RDAudioImport::ErrorUrlInvalid;
   }
   /*

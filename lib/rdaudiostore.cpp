@@ -89,6 +89,7 @@ RDAudioStore::ErrorCode RDAudioStore::runStore(const QString &username,
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"PASSWORD",
 	       CURLFORM_COPYCONTENTS,(const char *)password,CURLFORM_END);
   if((curl=curl_easy_init())==NULL) {
+    curl_formfree(first);
     return RDAudioStore::ErrorInternal;
   }
 
@@ -120,6 +121,7 @@ RDAudioStore::ErrorCode RDAudioStore::runStore(const QString &username,
   case CURLE_OPERATION_TIMEDOUT:
   case CURLE_HTTP_POST_ERROR:
     curl_easy_cleanup(curl);
+    curl_formfree(first);
     fprintf(stderr,"curl error: %d\n",curl_err);
     return RDAudioStore::ErrorInternal;
 
@@ -128,14 +130,17 @@ RDAudioStore::ErrorCode RDAudioStore::runStore(const QString &username,
   case CURLE_COULDNT_CONNECT:
   case 9:   // CURLE_REMOTE_ACCESS_DENIED
     curl_easy_cleanup(curl);
+    curl_formfree(first);
     return RDAudioStore::ErrorUrlInvalid;
 
   default:
     curl_easy_cleanup(curl);
+    curl_formfree(first);
     return RDAudioStore::ErrorService;
   }
   curl_easy_getinfo(curl,CURLINFO_RESPONSE_CODE,&response_code);
   curl_easy_cleanup(curl);
+  curl_formfree(first);
 
   switch(response_code) {
   case 200:

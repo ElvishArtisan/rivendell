@@ -309,13 +309,14 @@ bool RDPodcast::removeAudio(RDFeed *feed,QString *err_text,bool log_debug) const
     return false;
   }
   url=new QUrl(feed->purgeUrl());
-  strncpy(urlstr,(const char *)(url->protocol()+"://"+url->host()+"/"),1024);
+  strncpy(urlstr,(const char *)(url->protocol()+"://"+url->host()+"/").utf8(),
+	  1024);
   curl_easy_setopt(curl,CURLOPT_URL,urlstr);
-  strncpy(userpwd,feed->purgeUsername()+":"+feed->purgePassword(),256);
+  strncpy(userpwd,(feed->purgeUsername()+":"+feed->purgePassword()).utf8(),256);
   curl_easy_setopt(curl,CURLOPT_USERPWD,userpwd);
   curl_easy_setopt(curl,CURLOPT_HTTPAUTH,CURLAUTH_ANY);
   curl_easy_setopt(curl,CURLOPT_USERAGENT,
-		   (const char *)podcast_config->userAgent());
+		   (const char *)podcast_config->userAgent().utf8());
   if(log_debug) {
     curl_easy_setopt(curl,CURLOPT_VERBOSE,1);
     curl_easy_setopt(curl,CURLOPT_DEBUGFUNCTION,PodcastErrorCallback);

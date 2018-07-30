@@ -98,15 +98,15 @@ RDDelete::ErrorCode RDDelete::runDelete(const QString &username,
     return RDDelete::ErrorInternal;
   }
   strncpy(urlstr,(const char *)(conv_target_url.protocol()+"://"+
-				conv_target_url.host()+"/"),1024);
+				conv_target_url.host()+"/").utf8(),1024);
   curl_easy_setopt(curl,CURLOPT_URL,urlstr);
-  strncpy(userpwd,QString(username)+":"+password,256);
+  strncpy(userpwd,(QString(username)+":"+password).utf8(),256);
   curl_easy_setopt(curl,CURLOPT_USERPWD,userpwd);
   curl_easy_setopt(curl,CURLOPT_HTTPAUTH,CURLAUTH_ANY);
   curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,DeleteWriteCallback);
   curl_easy_setopt(curl,CURLOPT_WRITEDATA,&xml);
   curl_easy_setopt(curl,CURLOPT_USERAGENT,
-		   (const char *)conv_config->userAgent());
+		   (const char *)conv_config->userAgent().utf8());
   if(log_debug) {
     curl_easy_setopt(curl,CURLOPT_VERBOSE,1);
     curl_easy_setopt(curl,CURLOPT_DEBUGFUNCTION,DeleteErrorCallback);

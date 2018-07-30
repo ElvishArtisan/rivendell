@@ -138,6 +138,7 @@ RDAudioInfo::ErrorCode RDAudioInfo::runInfo(const QString &username,
 	       (const char *)QString().sprintf("%u",conv_cut_number),
 	       CURLFORM_END);
   if((curl=curl_easy_init())==NULL) {
+    curl_formfree(first);
     return RDAudioInfo::ErrorInternal;
   }
   //
@@ -168,6 +169,7 @@ RDAudioInfo::ErrorCode RDAudioInfo::runInfo(const QString &username,
   case CURLE_OPERATION_TIMEDOUT:
   case CURLE_HTTP_POST_ERROR:
     curl_easy_cleanup(curl);
+    curl_formfree(first);
     fprintf(stderr,"curl error: %d\n",curl_err);
     return RDAudioInfo::ErrorInternal;
 
@@ -176,14 +178,17 @@ RDAudioInfo::ErrorCode RDAudioInfo::runInfo(const QString &username,
   case CURLE_COULDNT_CONNECT:
   case 9:   // CURLE_REMOTE_ACCESS_DENIED
     curl_easy_cleanup(curl);
+    curl_formfree(first);
     return RDAudioInfo::ErrorUrlInvalid;
 
   default:
     curl_easy_cleanup(curl);
+    curl_formfree(first);
     return RDAudioInfo::ErrorService;
   }
   curl_easy_getinfo(curl,CURLINFO_RESPONSE_CODE,&response_code);
   curl_easy_cleanup(curl);
+  curl_formfree(first);
 
   switch(response_code) {
   case 200:

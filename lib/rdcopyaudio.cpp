@@ -108,6 +108,7 @@ RDCopyAudio::ErrorCode RDCopyAudio::runCopy(const QString &username,
 	       (const char *)QString().sprintf("%u",conv_destination_cut_number),
 	       CURLFORM_END);
   if((curl=curl_easy_init())==NULL) {
+    curl_formfree(first);
     return RDCopyAudio::ErrorInternal;
   }
 
@@ -138,6 +139,7 @@ RDCopyAudio::ErrorCode RDCopyAudio::runCopy(const QString &username,
   case CURLE_HTTP_POST_ERROR:
   default:
     curl_easy_cleanup(curl);
+    curl_formfree(first);
     return RDCopyAudio::ErrorInternal;
 
   case CURLE_URL_MALFORMAT:
@@ -145,10 +147,12 @@ RDCopyAudio::ErrorCode RDCopyAudio::runCopy(const QString &username,
   case CURLE_COULDNT_CONNECT:
   case 9:   // CURLE_REMOTE_ACCESS_DENIED:
     curl_easy_cleanup(curl);
+    curl_formfree(first);
     return RDCopyAudio::ErrorUrlInvalid;
   }
   curl_easy_getinfo(curl,CURLINFO_RESPONSE_CODE,&response_code);
   curl_easy_cleanup(curl);
+  curl_formfree(first);
 
   switch(response_code) {
   case 200:
