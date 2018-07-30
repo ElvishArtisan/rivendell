@@ -94,16 +94,32 @@ RDTrimAudio::ErrorCode RDTrimAudio::runTrim(const QString &username,
   CURL *curl=NULL;
   char url[1024];
   CURLcode curl_err;
+  struct curl_httppost *first=NULL;
+  struct curl_httppost *last=NULL;
 
   //
   // Generate POST Data
   //
-  QString post=QString().sprintf("COMMAND=%d&",RDXPORT_COMMAND_TRIMAUDIO)+
-    "LOGIN_NAME="+RDFormPost::urlEncode(username)+"&"+
-    "PASSWORD="+RDFormPost::urlEncode(password)+"&"+
-    QString().sprintf("CART_NUMBER=%u&",conv_cart_number)+
-    QString().sprintf("CUT_NUMBER=%u&",conv_cut_number)+
-    QString().sprintf("TRIM_LEVEL=%d",conv_trim_level);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
+	       CURLFORM_COPYCONTENTS,
+	       (const char *)QString().sprintf("%u",RDXPORT_COMMAND_TRIMAUDIO),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
+	       CURLFORM_COPYCONTENTS,(const char *)username,CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"PASSWORD",
+	       CURLFORM_COPYCONTENTS,(const char *)password,CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"CART_NUMBER",
+	       CURLFORM_COPYCONTENTS,
+	       (const char *)QString().sprintf("%u",conv_cart_number),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"CUT_NUMBER",
+	       CURLFORM_COPYCONTENTS,
+	       (const char *)QString().sprintf("%u",conv_cut_number),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"TRIM_LEVEL",
+	       CURLFORM_COPYCONTENTS,
+	       (const char *)QString().sprintf("%u",conv_trim_level),
+	       CURLFORM_END);
   if((curl=curl_easy_init())==NULL) {
     return RDTrimAudio::ErrorInternal;
   }
@@ -117,8 +133,7 @@ RDTrimAudio::ErrorCode RDTrimAudio::runTrim(const QString &username,
   curl_easy_setopt(curl,CURLOPT_URL,url);
   curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,RDTrimAudioCallback);
   curl_easy_setopt(curl,CURLOPT_WRITEDATA,&conv_xml);
-  curl_easy_setopt(curl,CURLOPT_POST,1);
-  curl_easy_setopt(curl,CURLOPT_POSTFIELDS,(const char *)post);
+  curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
   curl_easy_setopt(curl,CURLOPT_USERAGENT,
 		   (const char *)conv_config->userAgent());
   curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
