@@ -2,7 +2,7 @@
 //
 // Script for selecting cart label elements for the EditCart web method
 //
-//   (C) Copyright 2015 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2015-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,10 +18,10 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-function EditCart_Field(field)
+function EditCart_Field(field,sep)
 {
     if(document.getElementById("USE_"+field).checked) {
-	return '&'+field+'='+UrlEncode(document.getElementById(field).value);
+	return AddMimePart(field,document.getElementById(field).value,sep,false);
     }
     return '';
 }
@@ -29,38 +29,38 @@ function EditCart_Field(field)
 
 function EditCart_MakePost()
 {
-    var form='COMMAND=14';
-    form+='&LOGIN_NAME='+document.getElementById("LOGIN_NAME").value;
-    form+='&PASSWORD='+document.getElementById("PASSWORD").value;
-    form+='&TICKET='+document.getElementById("TICKET").value;
-    form+='&CART_NUMBER='+document.getElementById("CART_NUMBER").value;
+    var sep=MakeMimeSeparator();
+    form=sep+"\r\n";
+
+    form+=EditCart_Field('ASYNCHRONOUS',sep);
+    form+=EditCart_Field('ENFORCE_LENGTH',sep);
+    form+=EditCart_Field('GROUP_NAME',sep);
+    form+=EditCart_Field('TITLE',sep);
+    form+=EditCart_Field('ARTIST',sep);
+    form+=EditCart_Field('YEAR',sep);
+    form+=EditCart_Field('SONG_ID',sep);
+    form+=EditCart_Field('ALBUM',sep);
+    form+=EditCart_Field('LABEL',sep);
+    form+=EditCart_Field('CLIENT',sep);
+    form+=EditCart_Field('AGENCY',sep);
+    form+=EditCart_Field('PUBLISHER',sep);
+    form+=EditCart_Field('COMPOSER',sep);
+    form+=EditCart_Field('CONDUCTOR',sep);
+    form+=EditCart_Field('USER_DEFINED',sep);
+    form+=EditCart_Field('OWNER',sep);
+    form+=EditCart_Field('NOTES',sep);
+    form+=AddMimePart('LOGIN_NAME',document.getElementById('LOGIN_NAME').value,sep,false);
+    form+=AddMimePart('PASSWORD',document.getElementById('PASSWORD').value,sep,false);
+    form+=AddMimePart('TICKET',document.getElementById('TICKET').value,sep,false);
+    form+=AddMimePart('CART_NUMBER',document.getElementById('CART_NUMBER').value,sep,false);
     if(document.getElementById("INCLUDE_CUTS").value.length==0) {
-	form+="&INCLUDE_CUTS=0";
+	form+=AddMimePart('INCLUDE_CUTS',document.getElementById('INCLUDE_CUTS').value,sep,false);
     }
-    else {
-	form+="&INCLUDE_CUTS="+document.getElementById("INCLUDE_CUTS").value;
-    }
-    form+=EditCart_Field("ASYNCHRONOUS");
-    form+=EditCart_Field("ENFORCE_LENGTH");
-    form+=EditCart_Field("FORCED_LENGTH");
-    form+=EditCart_Field("GROUP_NAME");
-    form+=EditCart_Field("TITLE");
-    form+=EditCart_Field("ARTIST");
-    form+=EditCart_Field("YEAR");
-    form+=EditCart_Field("SONG_ID");
-    form+=EditCart_Field("ALBUM");
-    form+=EditCart_Field("LABEL");
-    form+=EditCart_Field("CLIENT");
-    form+=EditCart_Field("AGENCY");
-    form+=EditCart_Field("PUBLISHER");
-    form+=EditCart_Field("COMPOSER");
-    form+=EditCart_Field("CONDUCTOR");
-    form+=EditCart_Field("USER_DEFINED");
-    form+=EditCart_Field("OWNER");
-    form+=EditCart_Field("NOTES");
+    form+=AddMimePart('COMMAND','14',sep,true);
 
     return form;
 }
+
 
 function EditCart_ShowPost()
 {

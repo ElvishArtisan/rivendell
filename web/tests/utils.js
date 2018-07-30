@@ -42,6 +42,32 @@ function PostForm(form,url)
 }
 
 
+function MakeMimeSeparator()
+{
+    sep='----------------------------';
+    for(var i=0;i<27;i++) {
+	num=Math.floor(Math.random()*10);
+	sep+=num.toString();
+    }
+    return sep;
+}
+
+
+function AddMimePart(name,value,sep,is_last)
+{
+    var form='Content-Disposition: form-data; name="'+name+'"\r\n';
+    form+='\r\n';
+    form+=value+'\r\n';
+    form+=sep;
+    if(is_last) {
+	form+='--';
+    }
+    form+='\r\n';
+
+    return form;
+}
+
+
 function UrlEncode(str) {
     var ret=new String;
 
