@@ -17263,3 +17263,5 @@
 	* Modified 'RDCart' to use multipart-mime encoding.
 2018-07-30 Fred Gleason <fredg@paravelsystems.com>
 	* Modified 'RDCopyAudio' to use multipart-mime encoding.
+2018-07-30 Fred Gleason <fredg@paravelsystems.com>
+	* Modified 'RDPeakExport' to use multipart-mime encoding.
