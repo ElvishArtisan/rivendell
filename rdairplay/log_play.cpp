@@ -298,6 +298,7 @@ void LogPlay::auditionStop()
 bool LogPlay::play(int line,RDLogLine::StartSource src,
 		   int mport,bool skip_meta)
 {
+  syslog(LOG_NOTICE,"LogPlay::play() - 1");
   QTime current_time=QTime::currentTime();
   RDLogLine *logline;
   if((logline=logLine(line))==NULL) {
@@ -1718,6 +1719,7 @@ bool LogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
   int aport;
   bool was_paused=false;
 
+  syslog(LOG_NOTICE,"LogPlay::StartEvent() - 1");
   if((logline=logLine(line))==NULL) {
     return false;
   }
@@ -1787,6 +1789,7 @@ bool LogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
     }
   }
 
+  syslog(LOG_NOTICE,"LogPlay::StartEvent() - 2");
   //
   // Clear Unplayed Custom Transition
   //
@@ -2009,6 +2012,7 @@ bool LogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
       default:
 	break;
   }
+  syslog(LOG_NOTICE,"LogPlay::StartEvent() - 3");
   while((play_next_line<size())&&((logline=logLine(play_next_line))!=NULL)) {
     if((logline->state()==RDLogLine::Ok)||
        (logline->state()==RDLogLine::NoCart)||
@@ -2018,6 +2022,7 @@ bool LogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
     }
     play_next_line++;
   }
+  syslog(LOG_NOTICE,"LogPlay::StartEvent() - 4");
   play_next_line=-1;
   rdairplay_conf->setLogCurrentLine(play_id,nextLine());
   return true;
@@ -2026,6 +2031,7 @@ bool LogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
 
 bool LogPlay::StartAudioEvent(int line)
 {
+  syslog(LOG_NOTICE,"LogPlay::StartAudioEvent() - 1");
   RDLogLine *logline;
   RDPlayDeck *playdeck=NULL;
 
@@ -2047,6 +2053,7 @@ bool LogPlay::StartAudioEvent(int line)
   else {
     playdeck=(RDPlayDeck *)logline->playDeck();
   }
+  syslog(LOG_NOTICE,"LogPlay::StartAudioEvent() - 2");
 
   //
   // Assign Mappings
@@ -2064,6 +2071,7 @@ bool LogPlay::StartAudioEvent(int line)
   connect(playdeck,SIGNAL(talkEnd(int)),
 	  this,SLOT(talkEndData(int)));
 
+  syslog(LOG_NOTICE,"LogPlay::StartAudioEvent() - 4");
   return true;
 }
 
