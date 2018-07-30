@@ -77,18 +77,36 @@ RDCopyAudio::ErrorCode RDCopyAudio::runCopy(const QString &username,
   long response_code;
   CURL *curl=NULL;
   char url[1024];
+  struct curl_httppost *first=NULL;
+  struct curl_httppost *last=NULL;
 
   //
   // Generate POST Data
   //
-  QString post=QString().sprintf("COMMAND=%d&",RDXPORT_COMMAND_COPYAUDIO)+
-    "LOGIN_NAME="+RDFormPost::urlEncode(username)+"&"+
-    "PASSWORD="+RDFormPost::urlEncode(password)+"&"+
-    QString().sprintf("SOURCE_CART_NUMBER=%u&",conv_source_cart_number)+
-    QString().sprintf("SOURCE_CUT_NUMBER=%u&",conv_source_cut_number)+
-    QString().sprintf("DESTINATION_CART_NUMBER=%u&",
-		      conv_destination_cart_number)+
-    QString().sprintf("DESTINATION_CUT_NUMBER=%u",conv_destination_cut_number);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
+	       CURLFORM_COPYCONTENTS,
+	       (const char *)QString().sprintf("%u",RDXPORT_COMMAND_COPYAUDIO),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
+	       CURLFORM_COPYCONTENTS,(const char *)username,CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"PASSWORD",
+	       CURLFORM_COPYCONTENTS,(const char *)password,CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"SOURCE_CART_NUMBER",
+	       CURLFORM_COPYCONTENTS,
+	       (const char *)QString().sprintf("%u",conv_source_cart_number),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"SOURCE_CUT_NUMBER",
+	       CURLFORM_COPYCONTENTS,
+	       (const char *)QString().sprintf("%u",conv_source_cut_number),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"DESTINATION_CART_NUMBER",
+	       CURLFORM_COPYCONTENTS,
+	       (const char *)QString().sprintf("%u",conv_destination_cart_number),
+	       CURLFORM_END);
+  curl_formadd(&first,&last,CURLFORM_PTRNAME,"DESTINATION_CUT_NUMBER",
+	       CURLFORM_COPYCONTENTS,
+	       (const char *)QString().sprintf("%u",conv_destination_cut_number),
+	       CURLFORM_END);
   if((curl=curl_easy_init())==NULL) {
     return RDCopyAudio::ErrorInternal;
   }
@@ -100,8 +118,7 @@ RDCopyAudio::ErrorCode RDCopyAudio::runCopy(const QString &username,
   //
   strncpy(url,conv_station->webServiceUrl(conv_config),1024);
   curl_easy_setopt(curl,CURLOPT_URL,url);
-  curl_easy_setopt(curl,CURLOPT_POST,1);
-  curl_easy_setopt(curl,CURLOPT_POSTFIELDS,(const char *)post);
+  curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
   curl_easy_setopt(curl,CURLOPT_USERAGENT,
 		   (const char *)conv_config->userAgent());
   curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
