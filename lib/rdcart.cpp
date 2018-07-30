@@ -1668,9 +1668,9 @@ bool RDCart::removeCutAudio(RDStation *station,RDUser *user,unsigned cart_num,
 		 (const char *)QString().sprintf("%u",RDXPORT_COMMAND_DELETEAUDIO),
 	       CURLFORM_END);
     curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
-		 CURLFORM_COPYCONTENTS,(const char *)user->name(),CURLFORM_END);
+		 CURLFORM_COPYCONTENTS,(const char *)user->name().utf8(),CURLFORM_END);
     curl_formadd(&first,&last,CURLFORM_PTRNAME,"PASSWORD",
-		 CURLFORM_COPYCONTENTS,(const char *)user->password(),
+		 CURLFORM_COPYCONTENTS,(const char *)user->password().utf8(),
 		 CURLFORM_END);
     curl_formadd(&first,&last,CURLFORM_PTRNAME,"CART_NUMBER",
 		 CURLFORM_COPYCONTENTS,

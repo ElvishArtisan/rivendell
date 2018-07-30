@@ -17277,4 +17277,9 @@
 	'RDUpload' to work properly with credentials using UTF-8 strings.
 2018-07-30 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored ripcd(8) to process UTF-8 strings correctly.
-	* Fixed bugs in 'RDRip' that caused corruption of UTF-8 strings.
+	* Fixed bugs in 'RDRipc' that caused corruption of UTF-8 strings.
+2018-07-30 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'RDAudioExport', 'RDAudioImport',
+	'RDAudioStore', 'RDCart', 'RDCopyAudio', 'RDPeakExport',
+	'RDRehash', and 'RDTrimAudio' that caused credentials encoded in
+	UTF-8 to be corrupted.

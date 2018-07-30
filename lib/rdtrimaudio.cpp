@@ -105,9 +105,9 @@ RDTrimAudio::ErrorCode RDTrimAudio::runTrim(const QString &username,
 	       (const char *)QString().sprintf("%u",RDXPORT_COMMAND_TRIMAUDIO),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
-	       CURLFORM_COPYCONTENTS,(const char *)username,CURLFORM_END);
+	       CURLFORM_COPYCONTENTS,(const char *)username.utf8(),CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"PASSWORD",
-	       CURLFORM_COPYCONTENTS,(const char *)password,CURLFORM_END);
+	       CURLFORM_COPYCONTENTS,(const char *)password.utf8(),CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"CART_NUMBER",
 	       CURLFORM_COPYCONTENTS,
 	       (const char *)QString().sprintf("%u",conv_cart_number),

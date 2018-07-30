@@ -85,9 +85,9 @@ RDAudioStore::ErrorCode RDAudioStore::runStore(const QString &username,
 	       (const char *)QString().sprintf("%u",RDXPORT_COMMAND_AUDIOSTORE),
 	       CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
-	       CURLFORM_COPYCONTENTS,(const char *)username,CURLFORM_END);
+	       CURLFORM_COPYCONTENTS,(const char *)username.utf8(),CURLFORM_END);
   curl_formadd(&first,&last,CURLFORM_PTRNAME,"PASSWORD",
-	       CURLFORM_COPYCONTENTS,(const char *)password,CURLFORM_END);
+	       CURLFORM_COPYCONTENTS,(const char *)password.utf8(),CURLFORM_END);
   if((curl=curl_easy_init())==NULL) {
     curl_formfree(first);
     return RDAudioStore::ErrorInternal;
