@@ -1644,6 +1644,8 @@ bool RDCart::removeCutAudio(RDStation *station,RDUser *user,unsigned cart_num,
 #ifndef WIN32
   CURL *curl=NULL;
   long response_code=0;
+  struct curl_httppost *first=NULL;
+  struct curl_httppost *last=NULL;
   char url[1024];
   QString xml="";
   QString sql;
@@ -1661,11 +1663,23 @@ bool RDCart::removeCutAudio(RDStation *station,RDUser *user,unsigned cart_num,
     //
     // Generate POST Data
     //
-    QString post=QString().sprintf("COMMAND=%d&",RDXPORT_COMMAND_DELETEAUDIO)+
-      "LOGIN_NAME="+RDFormPost::urlEncode(user->name())+"&"+
-      "PASSWORD="+RDFormPost::urlEncode(user->password())+"&"+
-      QString().sprintf("CART_NUMBER=%u&",cart_num)+
-      QString().sprintf("CUT_NUMBER=%u",RDCut::cutNumber(cutname));
+    curl_formadd(&first,&last,CURLFORM_PTRNAME,"COMMAND",
+		 CURLFORM_COPYCONTENTS,
+		 (const char *)QString().sprintf("%u",RDXPORT_COMMAND_DELETEAUDIO),
+	       CURLFORM_END);
+    curl_formadd(&first,&last,CURLFORM_PTRNAME,"LOGIN_NAME",
+		 CURLFORM_COPYCONTENTS,(const char *)user->name(),CURLFORM_END);
+    curl_formadd(&first,&last,CURLFORM_PTRNAME,"PASSWORD",
+		 CURLFORM_COPYCONTENTS,(const char *)user->password(),
+		 CURLFORM_END);
+    curl_formadd(&first,&last,CURLFORM_PTRNAME,"CART_NUMBER",
+		 CURLFORM_COPYCONTENTS,
+		 (const char *)QString().sprintf("%u",cart_num),
+		 CURLFORM_END);
+    curl_formadd(&first,&last,CURLFORM_PTRNAME,"CUT_NUMBER",
+		 CURLFORM_COPYCONTENTS,
+		 (const char *)QString().sprintf("%u",RDCut::cutNumber(cutname)),
+		 CURLFORM_END);
     if((curl=curl_easy_init())==NULL) {
       return false;
     }
@@ -1676,8 +1690,7 @@ bool RDCart::removeCutAudio(RDStation *station,RDUser *user,unsigned cart_num,
     //
     strncpy(url,station->webServiceUrl(config),1024);
     curl_easy_setopt(curl,CURLOPT_URL,url);
-    curl_easy_setopt(curl,CURLOPT_POST,1);
-    curl_easy_setopt(curl,CURLOPT_POSTFIELDS,(const char *)post);
+    curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
     curl_easy_setopt(curl,CURLOPT_USERAGENT,
 		     (const char *)RDConfig::userAgent(""));
     curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
