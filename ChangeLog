@@ -17257,3 +17257,5 @@
 	* Modified 'RDAudioExport' to use multipart-mime encoding.
 2018-07-30 Fred Gleason <fredg@paravelsystems.com>
 	* Modified 'RDAudioInfo' to use multipart-mime encoding.
+2018-07-30 Fred Gleason <fredg@paravelsystems.com>
+	* Modified 'RDAudioStore' to use multipart-mime encoding.
