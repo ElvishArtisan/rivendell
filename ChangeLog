@@ -16658,3 +16658,5 @@
 	* Incremented the package version to 2.19.2int01.
 2018-07-30 Fred Gleason <fredg@paravelsystems.com>
 	* Instrumented 'rdairplay/log_play.cpp'.
+2018-07-30 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.19.2wavatest00.
