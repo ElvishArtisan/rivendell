@@ -46,7 +46,7 @@ class RDMacroEvent : public QObject
   RDMacro *command(int line);
   int size() const;
   unsigned length() const;
-  bool load(QString str);
+  bool load(const QString &str);
   bool load(unsigned cartnum);
   QString save();
   void insert(int line,const RDMacro *cmd);

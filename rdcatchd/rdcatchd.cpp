@@ -1253,20 +1253,14 @@ bool MainObject::StartRecording(int event)
     rml->setRole(RDMacro::Cmd);
     rml->setAddress(catch_swaddress[deck-1]);
     rml->setEchoRequested(false);
-    rml->setArgQuantity(3);
     rml->setCommand(RDMacro::ST);
-    rml->setArg(0,catch_swmatrix[deck-1]);
-    rml->setArg(1,catch_events[event].switchInput());
-    rml->setArg(2,catch_swoutput[deck-1]);
-    char str[RD_RML_MAX_LENGTH];
-    if(rml->generateString(str,RD_RML_MAX_LENGTH)) {
-      rda->ripc()->sendRml(rml);
-      LogLine(RDConfig::LogDebug,QString().
-	      sprintf("sending switcher command: %s",str));
-    }
-    else {
-      LogLine(RDConfig::LogNotice,"switcher command is malformed!");
-    }
+    rml->addArg(catch_swmatrix[deck-1]);
+    rml->addArg(catch_events[event].switchInput());
+    rml->addArg(catch_swoutput[deck-1]);
+    QString str;
+    str=rml->toString();
+    rda->ripc()->sendRml(rml);
+    LogLine(RDConfig::LogDebug,QString("sending switcher command: ")+str);
     delete rml;
   }
 
@@ -1457,20 +1451,16 @@ void MainObject::StartMacroEvent(int event)
 
 void MainObject::StartSwitchEvent(int event)
 {
-  char cmd[RD_RML_MAX_LENGTH];
-
   RDMacro *rml=new RDMacro();
   rml->setAddress(rda->station()->address());
   rml->setRole(RDMacro::Cmd);
   rml->setEchoRequested(false);
   rml->setCommand(RDMacro::ST);
-  rml->setArgQuantity(3);
-  rml->setArg(0,catch_events[event].channel());
-  rml->setArg(1,catch_events[event].switchInput());
-  rml->setArg(2,catch_events[event].switchOutput());
-  rml->generateString(cmd,RD_RML_MAX_LENGTH);
-  LogLine(RDConfig::LogInfo,QString().
-	  sprintf("sent switch event, rml: %s",cmd));
+  rml->addArg(catch_events[event].channel());
+  rml->addArg(catch_events[event].switchInput());
+  rml->addArg(catch_events[event].switchOutput());
+  QString str=rml->toString();
+  LogLine(RDConfig::LogInfo,QString("sent switch event, rml: ")+str);
   rda->ripc()->sendRml(rml);
   delete rml;
   if(catch_events[event].oneShot()) {

@@ -77,9 +77,7 @@ EditMacro::EditMacro(RDMacro *cmd,bool highlight,QWidget *parent)
   edit_cancel_button->setText(tr("&Cancel"));
   connect(edit_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
-  char cmdstr[RD_RML_MAX_LENGTH];
-  edit_macro->generateString(cmdstr,RD_RML_MAX_LENGTH);
-  edit_macro_edit->setText(cmdstr);
+  edit_macro_edit->setText(edit_macro->toString());
   if(highlight) {
     edit_macro_edit->selectAll();
   }
@@ -100,8 +98,7 @@ QSizePolicy EditMacro::sizePolicy() const
 
 void EditMacro::okData()
 {
-  edit_macro->parseString((const char *)edit_macro_edit->text(),
-			  edit_macro_edit->text().length());
+  *edit_macro=RDMacro::fromString(edit_macro_edit->text());
   done(0);
 }
 

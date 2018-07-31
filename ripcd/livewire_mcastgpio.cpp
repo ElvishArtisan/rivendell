@@ -217,14 +217,14 @@ void LiveWireMcastGpio::processCommand(RDMacro *cmd)
 	if((cmd->argQuantity()!=5)||
 	   (cmd->arg(2).toInt()<1)||
 	   (cmd->arg(2).toInt()>(int)livewire_gpios)||
-	   ((cmd->arg(1).toString().lower()!="i")&&
-	    (cmd->arg(1).toString().lower()!="o"))) {
+	   ((cmd->arg(1).lower()!="i")&&
+	    (cmd->arg(1).lower()!="o"))) {
 	  cmd->acknowledge(false);
 	  emit rmlEcho(cmd);
 	  return;
 	}
 
-	if(cmd->arg(1).toString().lower()=="i") {
+	if(cmd->arg(1).lower()=="i") {
 	  slot=(cmd->arg(2).toInt()-1)/5;
 	  line=(cmd->arg(2).toInt()-1)%5;
 	  if(livewire_source_numbers[slot]<=0) {
@@ -239,7 +239,7 @@ void LiveWireMcastGpio::processCommand(RDMacro *cmd)
 	  ProcessGpoIn(livewire_source_numbers[slot],line,cmd->arg(3).toInt());
 	  livewire_gpo_in_states[cmd->arg(2).toInt()-1]=cmd->arg(3).toInt();
 	}
-	if(cmd->arg(1).toString().lower()=="o") {
+	if(cmd->arg(1).lower()=="o") {
 	  slot=(cmd->arg(2).toInt()-1)/5;
 	  line=(cmd->arg(2).toInt()-1)%5;
 	  if(livewire_source_numbers[slot]<=0) {

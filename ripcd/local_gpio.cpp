@@ -108,8 +108,8 @@ void LocalGpio::processCommand(RDMacro *cmd)
   switch(cmd->command()) {
       case RDMacro::GO:
 	if((!gpio_open)||(cmd->argQuantity()!=5)||
-	   ((cmd->arg(1).toString().lower()!="i")&&
-	    (cmd->arg(1).toString().lower()!="o"))||
+	   ((cmd->arg(1).lower()!="i")&&
+	    (cmd->arg(1).lower()!="o"))||
 	   (cmd->arg(2).toInt()<1)||(cmd->arg(2).toInt()>gpio_gpos)||
 	   ((cmd->arg(3).toInt()!=1)&&(cmd->arg(3).toInt()!=0)&&
 	    (cmd->arg(3).toInt()!=-1))||(cmd->arg(4).toInt()<0)) {
@@ -117,7 +117,7 @@ void LocalGpio::processCommand(RDMacro *cmd)
 	  emit rmlEcho(cmd);
 	  return;
 	}
-	if(cmd->arg(1).toString().lower()=="i") {
+	if(cmd->arg(1).lower()=="i") {
 	  if(cmd->arg(3).toInt()==0) {
 	    emit gpiChanged(gpio_matrix,cmd->arg(2).toInt()-1,false);
 	    gpio_gpi_mask[cmd->arg(2).toInt()-1]=true;
@@ -143,7 +143,7 @@ void LocalGpio::processCommand(RDMacro *cmd)
 	  emit rmlEcho(cmd);
 	  return;
 	}
-	if(cmd->arg(1).toString().lower()=="o") {
+	if(cmd->arg(1).lower()=="o") {
 	  if(cmd->arg(3).toInt()==0) {
 	    gpio_gpio->gpoReset(cmd->arg(2).toInt()-1,cmd->arg(4).toInt());
 	  }

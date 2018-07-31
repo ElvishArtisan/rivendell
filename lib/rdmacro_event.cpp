@@ -108,29 +108,24 @@ unsigned RDMacroEvent::length() const
 }
 
 
-bool RDMacroEvent::load(QString str)
+bool RDMacroEvent::load(const QString &str)
 {
-  char buffer[RD_RML_MAX_LENGTH];
   RDMacro cmd;
-  int ptr=0;
-  char c;
+  QString rmlstr="";
 
   for(unsigned i=0;i<str.length();i++) {
-    if((c=str.ascii()[i])=='!') {
-      buffer[ptr++]=c;
-      if(!cmd.parseString(buffer,ptr)) {
+    QChar c=str.at(i);
+    rmlstr+=c;
+    if(c=='!') {
+      cmd=RDMacro::fromString(rmlstr,RDMacro::Cmd);
+      if(cmd.isNull()) {
 	clear();
 	return false;
       }
-      cmd.setRole(RDMacro::Cmd);
       cmd.setAddress(event_address);
       cmd.setEchoRequested(false);
       event_cmds.push_back(new RDMacro(cmd));
-      ptr=0;
-      cmd.clear();
-    }
-    else {
-      buffer[ptr++]=c;
+      rmlstr="";
     }
   }
   return true;
@@ -155,12 +150,10 @@ bool RDMacroEvent::load(unsigned cartnum)
 
 QString RDMacroEvent::save()
 {
-  QString str;
-  char buffer[RD_RML_MAX_LENGTH];
+  QString str="";
 
   for(unsigned i=0;i<event_cmds.size();i++) {
-    event_cmds[i]->generateString(buffer,RD_RML_MAX_LENGTH-1);
-    str+=QString(buffer);
+    str+=event_cmds[i]->toString();
   }
   return str;
 }
@@ -235,64 +228,61 @@ void RDMacroEvent::exec(int line)
   RDMacro::Command cmd;
   emit started(line);
   switch(event_cmds[line]->command()) {
-      case RDMacro::SP:   // Sleep
-	event_sleeping_line=line;
-	event_sleep_timer->start(event_cmds[line]->arg(0).toInt(),true);
-	break;
+  case RDMacro::SP:   // Sleep
+    event_sleeping_line=line;
+    event_sleep_timer->start(event_cmds[line]->arg(0).toInt(),true);
+    break;
 
-      case RDMacro::CC:   // Send Command
-	args=args.split(":",event_cmds[line]->arg(0).toString());
-	stationname=args[0];
-	if(args.size()==2) {
-	  port=args[1].toUInt();
-	}
-	if(stationname.lower()=="localhost") {
-	  addr.setAddress("127.0.0.2");
-	  rml.setAddress(addr);
-	}
-	else {
-	  sql=QString("select VARVALUE from HOSTVARS where ")+
-	    "(STATION_NAME=\""+RDEscapeString(event_ripc->station())+"\")&&"+
-	    "(NAME=\""+RDEscapeString(stationname)+"\")";
-	  q=new RDSqlQuery(sql);
-	  if(q->first()) {
-	    stationname=q->value(0).toString();
-	  }
-	  delete q;
-	  station=new RDStation(stationname);
-	  if(station->exists()) {
-	    rml.setAddress(station->address());
-	  }
-	  else {
-	    addr.setAddress(stationname);
-	    if(addr.isNull()) {
-	      emit finished(line);
-	      delete station;
-	      return;
-	    }
-	    rml.setAddress(addr);
-	  }
+  case RDMacro::CC:   // Send Command
+    args=args.split(":",event_cmds[line]->arg(0));
+    stationname=args[0];
+    if(args.size()==2) {
+      port=args[1].toUInt();
+    }
+    if(stationname.lower()=="localhost") {
+      addr.setAddress("127.0.0.2");
+      rml.setAddress(addr);
+    }
+    else {
+      sql=QString("select VARVALUE from HOSTVARS where ")+
+	"(STATION_NAME=\""+RDEscapeString(event_ripc->station())+"\")&&"+
+	"(NAME=\""+RDEscapeString(stationname)+"\")";
+      q=new RDSqlQuery(sql);
+      if(q->first()) {
+	stationname=q->value(0).toString();
+      }
+      delete q;
+      station=new RDStation(stationname);
+      if(station->exists()) {
+	rml.setAddress(station->address());
+      }
+      else {
+	addr.setAddress(stationname);
+	if(addr.isNull()) {
+	  emit finished(line);
 	  delete station;
+	  return;
 	}
-	rml.setArgQuantity(event_cmds[line]->argQuantity()-2);
-	cmd=
-	  (RDMacro::Command)(256*event_cmds[line]->arg(1).toString().ascii()[0]+
-			     event_cmds[line]->arg(1).toString().ascii()[1]);
-	rml.setCommand(cmd);
-	for(int i=0;i<rml.argQuantity();i++) {
-	  rml.setArg(i,event_cmds[line]->arg(i+2));
-	}
-	rml.setRole(RDMacro::Cmd);
-	rml.setPort(port);
-	rml.setEchoRequested(event_cmds[line]->echoRequested());
-	event_ripc->sendRml(&rml);
-	emit finished(line);
-	break;
+	rml.setAddress(addr);
+      }
+      delete station;
+    }
+    cmd=event_cmds[line]->command();
+    rml.setCommand(cmd);
+    for(int i=0;i<rml.argQuantity();i++) {
+      rml.addArg(event_cmds[line]->arg(i+2));
+    }
+    rml.setRole(RDMacro::Cmd);
+    rml.setPort(port);
+    rml.setEchoRequested(event_cmds[line]->echoRequested());
+    event_ripc->sendRml(&rml);
+    emit finished(line);
+    break;
 
-      default:
-	event_ripc->sendRml(event_cmds[line]);
-	emit finished(line);
-	break;
+  default:
+    event_ripc->sendRml(event_cmds[line]);
+    emit finished(line);
+    break;
   }
 }
 
@@ -328,14 +318,13 @@ void RDMacroEvent::ExecList(int line)
   }
   for(unsigned i=line;i<event_cmds.size();i++) {
     switch(event_cmds[i]->command()) {
-	case RDMacro::SP:  // Sleep
-	  exec(i);
-	  return;
-	  break;
+    case RDMacro::SP:  // Sleep
+      exec(i);
+      return;
 
-	default:
-	  exec(i);
-	  break;
+    default:
+      exec(i);
+      break;
     }
   }
   event_whole_list=false;

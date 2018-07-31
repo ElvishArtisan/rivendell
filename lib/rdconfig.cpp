@@ -243,36 +243,36 @@ void RDConfig::log(const QString &module,LogPriority prio,const QString &msg)
   FILE *f=NULL;
 
   switch(conf_log_facility) {
-    case RDConfig::LogSyslog:
-      syslog((int)prio,"%s",(const char *)msg);
-      break;
+  case RDConfig::LogSyslog:
+    syslog((int)prio,"%s",(const char *)msg.utf8());
+    break;
 
-    case RDConfig::LogFile:
-      if(conf_log_directory.isEmpty()||conf_log_pattern.isEmpty()) {
-	return;
-      }
-      filename=QString().sprintf("%s/%s",(const char *)conf_log_directory,
-				 (const char *)conf_log_pattern);
-      dt=QDateTime(QDate::currentDate(),QTime::currentTime());
-      filename.replace("%n",module);
-      filename.replace("%d",dt.date().toString("dd"));
-      filename.replace("%M",dt.date().toString("MM"));
-      filename.replace("%Y",dt.date().toString("yyyy"));
-      filename.replace("%h",dt.time().toString("hh"));
-      filename.replace("%m",dt.time().toString("mm"));
-      filename.replace("%s",dt.time().toString("ss"));
-      if((f=fopen(filename,"a"))!=NULL) {
-	fprintf(f,"%s: %s\n",(const char *)dt.
-		toString("dd/MM/yyyy - hh:mm:ss.zzz "),
-		(const char *)msg);
-	fclose(f);
-      }
-      chmod(filename,S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH);
-      chown(filename,uid(),gid());
-      break;
+  case RDConfig::LogFile:
+    if(conf_log_directory.isEmpty()||conf_log_pattern.isEmpty()) {
+      return;
+    }
+    filename=QString().sprintf("%s/%s",(const char *)conf_log_directory,
+			       (const char *)conf_log_pattern);
+    dt=QDateTime(QDate::currentDate(),QTime::currentTime());
+    filename.replace("%n",module);
+    filename.replace("%d",dt.date().toString("dd"));
+    filename.replace("%M",dt.date().toString("MM"));
+    filename.replace("%Y",dt.date().toString("yyyy"));
+    filename.replace("%h",dt.time().toString("hh"));
+    filename.replace("%m",dt.time().toString("mm"));
+    filename.replace("%s",dt.time().toString("ss"));
+    if((f=fopen(filename,"a"))!=NULL) {
+      fprintf(f,"%s: %s\n",(const char *)dt.
+	      toString("dd/MM/yyyy - hh:mm:ss.zzz "),
+	      (const char *)msg);
+      fclose(f);
+    }
+    chmod(filename,S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH);
+    chown(filename,uid(),gid());
+    break;
 
-    case RDConfig::LogNone:
-      break;
+  case RDConfig::LogNone:
+    break;
   }
 #endif  // WIN32
 }

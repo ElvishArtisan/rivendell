@@ -291,16 +291,15 @@ void ListGpis::okData()
   RDStation *station=new RDStation(list_matrix->station());
   rml.setCommand(RDMacro::GI);
   rml.setRole(RDMacro::Cmd);
-  rml.setArgQuantity(5);
-  rml.setArg(0,list_matrix->matrix());
+  rml.addArg(list_matrix->matrix());
   switch(list_type) {
-    case RDMatrix::GpioInput:
-      rml.setArg(1,"I");
-      break;
+  case RDMatrix::GpioInput:
+    rml.addArg("I");
+    break;
 
-    case RDMatrix::GpioOutput:
-      rml.setArg(1,"O");
-      break;
+  case RDMatrix::GpioOutput:
+    rml.addArg("O");
+    break;
   }
   rml.setAddress(station->address());
   rml.setEchoRequested(false);
@@ -316,9 +315,9 @@ void ListGpis::okData()
       QString().sprintf("OFF_MACRO_CART=%d",item->text(3).toInt());
     q=new RDSqlQuery(sql);
     delete q;
-    rml.setArg(2,item->text(0).toInt());
-    rml.setArg(3,true);
-    rml.setArg(4,item->text(1).toInt());
+    rml.addArg(item->text(0).toInt());
+    rml.addArg(true);
+    rml.addArg(item->text(1).toInt());
     rda->ripc()->sendRml(&rml);
     rml.setArg(3,false);
     rml.setArg(4,item->text(3).toInt());

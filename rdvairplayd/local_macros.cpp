@@ -64,7 +64,7 @@ void MainObject::rmlReceivedData(RDMacro *rml)
 						   rml->arg(0).toInt()));
     }
     else {  // Load Log
-      logname=rml->arg(1).toString();
+      logname=rml->arg(1);
       if(!RDLog::exists(logname)) {
 	if(rml->echoRequested()) {
 	  rml->acknowledge(false);
@@ -157,7 +157,7 @@ void MainObject::rmlReceivedData(RDMacro *rml)
       }
       return;
     }
-    logname=rml->arg(1).toString();
+    logname=rml->arg(1);
     if(!RDLog::exists(logname)) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
@@ -562,8 +562,8 @@ void MainObject::rmlReceivedData(RDMacro *rml)
       }
       return;
     }
-    if((rml->arg(0).toString().lower()!="now")&&
-       (rml->arg(0).toString().lower()!="next")) {
+    if((rml->arg(0).lower()!="now")&&
+       (rml->arg(0).lower()!="next")) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
 	rda->ripc()->sendRml(rml);
@@ -584,7 +584,7 @@ void MainObject::rmlReceivedData(RDMacro *rml)
       }
       return;
     }
-    if(rml->arg(0).toString().lower()=="now") {
+    if(rml->arg(0).lower()=="now") {
       air_logs[index]->setNowCart(rml->arg(2).toUInt());
       rda->log(RDConfig::LogInfo,QString().
 	       sprintf("set default \"now\" cart to %06u on log machine %d",

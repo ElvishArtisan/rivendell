@@ -133,7 +133,7 @@ void Harlond::processCommand(RDMacro *cmd)
       emit rmlEcho(cmd);
       return;
     }
-    if(!ProcessGpo(cmd->arg(2).toInt(),cmd->arg(3).toBool(),
+    if(!ProcessGpo(cmd->arg(2).toInt(),cmd->arg(3).toInt(),
 		   cmd->arg(4).toInt())) {
       cmd->acknowledge(false);
       emit rmlEcho(cmd);

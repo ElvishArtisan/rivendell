@@ -1010,9 +1010,8 @@ void MainWidget::ripcConnectedData(bool state)
       q=new RDSqlQuery(sql);
       if(q->first()) {
 	rml.setCommand(RDMacro::LL);  // Load Log
-	rml.setArgQuantity(2);
-	rml.setArg(0,i+1);
-	rml.setArg(1,air_start_logname[i]);
+	rml.addArg(i+1);
+	rml.addArg(air_start_logname[i]);
 	rda->ripc()->sendRml(&rml);
       }
       else {
@@ -1408,15 +1407,18 @@ void MainWidget::logReloadedData(int log)
 
   if(air_start_line[log]<air_log[log]->size()) {
     rml.setCommand(RDMacro::MN);  // Make Next
-    rml.setArgQuantity(2);
-    rml.setArg(0,log+1);
-    rml.setArg(1,air_start_line[log]);
+    rml.addArg(log+1);
+    rml.addArg(air_start_line[log]);
     rda->ripc()->sendRml(&rml);
     
     if(air_start_start[log]) {
+      rml.clear();
+      rml.setRole(RDMacro::Cmd);
+      addr.setAddress("127.0.0.1");
+      rml.setAddress(addr);
+      rml.setEchoRequested(false);
       rml.setCommand(RDMacro::PN);  // Start Next
-      rml.setArgQuantity(1);
-      rml.setArg(0,log+1);
+      rml.addArg(log+1);
       rda->ripc()->sendRml(&rml);
     }
   }

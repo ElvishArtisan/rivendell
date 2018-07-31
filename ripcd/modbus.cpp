@@ -113,14 +113,14 @@ void Modbus::processCommand(RDMacro *cmd)
   switch(cmd->command()) {
   case RDMacro::GO:
     if((cmd->argQuantity()!=5)||
-       ((cmd->arg(1).toString().lower()!="i")&&
-	(cmd->arg(1).toString().lower()!="o"))||
+       ((cmd->arg(1).lower()!="i")&&
+	(cmd->arg(1).lower()!="o"))||
        (cmd->arg(2).toInt()<1)||(cmd->arg(3).toInt()>modbus_gpos)||
        (cmd->arg(2).toInt()>modbus_gpos)||
        ((cmd->arg(3).toInt()!=1)&&(cmd->arg(3).toInt()!=0)&&
-	(cmd->arg(1).toString().lower()!="i"))||
+	(cmd->arg(1).lower()!="i"))||
        ((cmd->arg(3).toInt()!=1)&&(cmd->arg(3).toInt()!=0)&&
-	(cmd->arg(3).toInt()!=-1)&&(cmd->arg(1).toString().lower()=="i"))||
+	(cmd->arg(3).toInt()!=-1)&&(cmd->arg(1).lower()=="i"))||
        (cmd->arg(4).toInt()<0)) {
       cmd->acknowledge(false);
       emit rmlEcho(cmd);
@@ -128,7 +128,7 @@ void Modbus::processCommand(RDMacro *cmd)
     }
     if(cmd->arg(3).toInt()==0) {  // Turn OFF
       if(cmd->arg(4).toInt()==0) {
-	if(cmd->arg(1).toString().lower()=="o") {
+	if(cmd->arg(1).lower()=="o") {
 	  SetCoil(cmd->arg(2).toInt()-1,false);
 	  emit gpoChanged(matrixNumber(),cmd->arg(2).toInt()-1,false);
 	}
@@ -143,13 +143,13 @@ void Modbus::processCommand(RDMacro *cmd)
     }
     else {
       if(cmd->arg(4).toInt()==0) {  // Turn ON
-	if(cmd->arg(1).toString().lower()=="o") {
+	if(cmd->arg(1).lower()=="o") {
 	  SetCoil(cmd->arg(2).toInt()-1,true);
 	  emit gpoChanged(matrixNumber(),cmd->arg(2).toInt()-1,true);
 	}
       }
       else {  // Pulse
-	if(cmd->arg(1).toString().lower()=="o") {
+	if(cmd->arg(1).lower()=="o") {
 	  SetCoil(cmd->arg(2).toInt()-1,cmd->arg(3).toInt()!=0);
 	  modbus_reset_states[cmd->arg(2).toInt()-1]=cmd->arg(3).toInt()==0;
 	  modbus_reset_timers[cmd->arg(2).toInt()-1]->

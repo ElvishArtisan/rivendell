@@ -17287,3 +17287,5 @@
 	* Fixed bugs in 'RDCmdSwitch' that caused corruption in UTF-8
 	strings.
 	* Refactored rmlsend(1) to handle UTF-8 strings correctly.
+2018-07-31 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored 'RDMacro' to handle UTF-8 strings correctly.

@@ -203,10 +203,9 @@ void MainObject::DispatchRml(int input,int output)
   rml.setRole(RDMacro::Cmd);
   rml.setAddress(shim_address);
   rml.setEchoRequested(false);
-  rml.setArgQuantity(3);
-  rml.setArg(0,rda->config()->sasMatrix());
-  rml.setArg(1,input);
-  rml.setArg(2,output);
+  rml.addArg(rda->config()->sasMatrix());
+  rml.addArg(input);
+  rml.addArg(output);
   rda->ripc()->sendRml(&rml);
 }
 

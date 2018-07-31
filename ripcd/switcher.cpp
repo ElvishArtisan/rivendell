@@ -70,8 +70,7 @@ void Switcher::executeMacroCart(unsigned cartnum)
   rml.setCommand(RDMacro::EX);
   rml.setAddress(rda->station()->address());
   rml.setEchoRequested(false);
-  rml.setArgQuantity(1);
-  rml.setArg(0,cartnum);
+  rml.addArg(cartnum);
   emit rmlEcho(&rml);
 }
 

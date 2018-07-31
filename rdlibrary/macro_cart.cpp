@@ -308,25 +308,21 @@ void MacroCart::doubleClickedData(QListViewItem *,const QPoint &,int)
 void MacroCart::RefreshList()
 {
   QListViewItem *item;
-  char cmdstr[RD_RML_MAX_LENGTH];
 
   item=new QListViewItem(rdcart_macro_list);
   item->setText(1,tr("--- End of cart ---"));
   for(int i=0;i<rdcart_events->size();i++) {
     item=new QListViewItem(rdcart_macro_list);
-    rdcart_events->command(i)->generateString(cmdstr,RD_RML_MAX_LENGTH);
     item->setText(0,QString().sprintf("%03d",i+1));
-    item->setText(1,cmdstr);
+    item->setText(1,rdcart_events->command(i)->toString());
   }
 }
 
 
 void MacroCart::RefreshLine(QListViewItem *item)
 {
-  char cmdstr[RD_RML_MAX_LENGTH];
   int line=item->text(0).toInt()-1;
-  rdcart_events->command(line)->generateString(cmdstr,RD_RML_MAX_LENGTH);
-  item->setText(1,cmdstr);
+  item->setText(1,rdcart_events->command(line)->toString());
 }
 
 

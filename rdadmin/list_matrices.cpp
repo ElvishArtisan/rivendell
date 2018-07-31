@@ -226,11 +226,10 @@ void ListMatrices::closeData()
   macro.setCommand(RDMacro::SZ);
   macro.setRole(RDMacro::Cmd);
   macro.setEchoRequested(false);
-  macro.setArgQuantity(1);
   for(int i=0;i<MAX_MATRICES;i++) {
     if(list_matrix_modified[i]) {
       macro.setAddress(rmt_station->address());
-      macro.setArg(0,i);
+      macro.addArg(i);
       rda->ripc()->sendRml(&macro);
     }
   }

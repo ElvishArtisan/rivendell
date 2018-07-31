@@ -1063,8 +1063,7 @@ void RDSoundPanel::PlayMacro(RDPanelButton *button,RDCart *cart)
   rml.setAddress(rda->station()->address());
   rml.setEchoRequested(false);
   rml.setCommand(RDMacro::EX);
-  rml.setArgQuantity(1);
-  rml.setArg(0,cart->number());
+  rml.addArg(cart->number());
   rda->ripc()->sendRml(&rml);
   if(!panel_svcname.isEmpty()) {
     LogTrafficMacro(button);

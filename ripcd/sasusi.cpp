@@ -154,9 +154,9 @@ void SasUsi::processCommand(RDMacro *cmd)
 	  return;
 	}
 	for(int i=3;i<(cmd->argQuantity()-1);i++) {
-	  label+=(cmd->arg(i).toString()+" ");
+	  label+=(cmd->arg(i)+" ");
 	}
-	label+=cmd->arg(cmd->argQuantity()-1).toString();
+	label+=cmd->arg(cmd->argQuantity()-1);
 	if(label.length()>8) {
 	  label=label.left(8);
 	}
@@ -272,7 +272,7 @@ void SasUsi::processCommand(RDMacro *cmd)
 	break;
 
       case RDMacro::GO:
-	if((cmd->arg(1).toString().lower()!="o")||
+	if((cmd->arg(1).lower()!="o")||
 	   (cmd->arg(2).toInt()<1)||(cmd->arg(2).toInt()>sas_gpos)) {
 	  cmd->acknowledge(false);
 	  emit rmlEcho(cmd);
@@ -623,8 +623,7 @@ void SasUsi::ExecuteMacroCart(unsigned cartnum)
   rml.setCommand(RDMacro::EX);
   rml.setAddress(rda->station()->address());
   rml.setEchoRequested(false);
-  rml.setArgQuantity(1);
-  rml.setArg(0,cartnum);
+  rml.addArg(cartnum);
   emit rmlEcho(&rml);
 }
 

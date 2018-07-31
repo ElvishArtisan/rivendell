@@ -120,14 +120,14 @@ void SoftwareAuthority::processCommand(RDMacro *cmd)
 	break;
 
       case RDMacro::GO:
-	if(((cmd->arg(1).toString().lower()!="i")&&
-	    (cmd->arg(1).toString().lower()!="o"))||
+	if(((cmd->arg(1).lower()!="i")&&
+	    (cmd->arg(1).lower()!="o"))||
 	   (cmd->arg(2).toInt()<1)||(cmd->arg(2).toInt()>swa_gpos)) {
 	  cmd->acknowledge(false);
 	  emit rmlEcho(cmd);
 	  return;
 	}
-	if(cmd->arg(1).toString().lower()=="i") {
+	if(cmd->arg(1).lower()=="i") {
 	  str="triggergpi";
 	}
 	else {
@@ -445,8 +445,7 @@ void SoftwareAuthority::ExecuteMacroCart(unsigned cartnum)
   rml.setCommand(RDMacro::EX);
   rml.setAddress(rda->station()->address());
   rml.setEchoRequested(false);
-  rml.setArgQuantity(1);
-  rml.setArg(0,cartnum);
+  rml.addArg(cartnum);
   emit rmlEcho(&rml);
 }
 

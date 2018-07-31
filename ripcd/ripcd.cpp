@@ -287,26 +287,27 @@ void MainObject::notificationReceivedData(const QString &msg,
 
 void MainObject::sendRml(RDMacro *rml)
 {
-  char buf[RD_RML_MAX_LENGTH];
-  int n;
+  QString str;
 
-  if((n=rml->generateString(buf,RD_RML_MAX_LENGTH))<0) {
+  if(rml->isNull()) {
     return;
   }
-  buf[n]=0;
+  str=rml->toString();
   switch(rml->role()) {
-      case RDMacro::Cmd:
-	ripcd_rml_send->writeBlock(buf,n,rml->address(),rml->port());
-	break;
+  case RDMacro::Cmd:
+    ripcd_rml_send->writeBlock(str.utf8(),str.utf8().length(),
+			       rml->address(),rml->port());
+    break;
 
-      case RDMacro::Reply:
-	if(!(ripcd_host_addr==rml->address())) {
-	  ripcd_rml_send->writeBlock(buf,n,rml->address(),RD_RML_REPLY_PORT);
-	}
-	break;
+  case RDMacro::Reply:
+    if(!(ripcd_host_addr==rml->address())) {
+      ripcd_rml_send->writeBlock(str.utf8(),str.utf8().length(),
+				 rml->address(),RD_RML_REPLY_PORT);
+    }
+    break;
 
-      default:
-	break;
+  default:
+    break;
   }
 }
 
@@ -470,8 +471,6 @@ bool MainObject::DispatchCommand(RipcdConnection *conn)
 {
   QString str;
   RDMacro macro;
-  char buffer[RD_RML_MAX_LENGTH];
-  char cmd[RD_RML_MAX_LENGTH+4];
   int echo=0;
   QHostAddress addr;
 
@@ -527,7 +526,8 @@ bool MainObject::DispatchCommand(RipcdConnection *conn)
     }
     str+="!";
   }
-  if(macro.parseString(str,str.length())) {
+  macro=RDMacro::fromString(str);
+  if(!macro.isNull()) {
     addr.setAddress(cmds[1]);
     macro.setAddress(addr);
     macro.setPort(cmds[2].toInt());
@@ -537,14 +537,12 @@ bool MainObject::DispatchCommand(RipcdConnection *conn)
       if(macro.address()==rda->station()->address()&&
 	 ((macro.port()==RD_RML_ECHO_PORT)||
 	  (macro.port()==RD_RML_NOECHO_PORT))) {  // Local Loopback
-	macro.generateString(buffer,RD_RML_MAX_LENGTH);
 	if(macro.echoRequested()) {
 	  echo=1;
 	}
-	sprintf(cmd,"MS %s %d %s",(const char *)macro.address().toString(),
-		echo,buffer);
 	RunLocalMacros(&macro);
-	BroadcastCommand(cmd);
+	BroadcastCommand(QString("MS ")+macro.address().toString()+
+			 QString().sprintf(" %d ",echo)+macro.toString());
       }
       else {
 	sendRml(&macro);
@@ -562,16 +560,14 @@ bool MainObject::DispatchCommand(RipcdConnection *conn)
     }
     str+="!";
   }
-  if(macro.parseString(str,str.length())) {
+  macro=RDMacro::fromString(str,RDMacro::Reply);
+  if(!macro.isNull()) {
     QHostAddress addr;
     addr.setAddress(cmds[1]);
     macro.setAddress(addr);
-    macro.setRole(RDMacro::Reply); 
     if(macro.address()==rda->station()->address()) {  // Local Loopback
-      macro.generateString(buffer,RD_RML_MAX_LENGTH);
-      sprintf(cmd,"ME %s 0 %s",(const char *)macro.address().toString(),
-	      buffer);
-      BroadcastCommand(cmd);
+      BroadcastCommand(QString("ME ")+macro.address().toString()+" 0 "+
+		       macro.toString());
     }
     else {
       sendRml(&macro);
@@ -656,22 +652,23 @@ void MainObject::BroadcastCommand(const QString &cmd,int except_ch)
 void MainObject::ReadRmlSocket(QSocketDevice *dev,RDMacro::Role role,
 			       bool echo)
 {
-  char buffer[RD_RML_MAX_LENGTH];
-  char cmd[RD_RML_MAX_LENGTH+4];
+  char buffer[1501];
   QString output;
   int n;
   QHostAddress peer_addr;
   RDMacro macro;
 
-  while((n=dev->readBlock(buffer,RD_RML_MAX_LENGTH))>0) {
+  while((n=dev->readBlock(buffer,1501))>0) {
     buffer[n]=0;
-    if(macro.parseString(buffer,n)) {
+    macro=RDMacro::fromString(QString::fromUtf8(buffer));
+    if(!macro.isNull()) {
       if(macro.command()==RDMacro::AG) {
 	if(ripc_onair_flag) {
-	  QStringList f0=f0.split(" ",buffer);
+	  QStringList f0=f0.split(" ",QString::fromUtf8(buffer));
 	  f0.pop_front();
 	  QString rmlstr=f0.join(" ");
-	  if(!macro.parseString(rmlstr,rmlstr.length())) {
+	  macro=RDMacro::fromString(rmlstr);
+	  if(macro.isNull()) {
 	    break;
 	  }
 	}
@@ -685,22 +682,16 @@ void MainObject::ReadRmlSocket(QSocketDevice *dev,RDMacro::Role role,
       macro.setRole(role);
       macro.setAddress(dev->peerAddress());
       macro.setEchoRequested(echo);
-      macro.generateString(buffer,RD_RML_MAX_LENGTH);
       switch(role) {
-	  case RDMacro::Cmd:
-	    sprintf(cmd,"MS %s %d %s",(const char *)macro.address().toString(),
-		    echo,buffer);
-	    RunLocalMacros(&macro);
-	    BroadcastCommand(cmd);
-	    break;
+      case RDMacro::Cmd:
+	RunLocalMacros(&macro);
+	BroadcastCommand(QString("MS ")+macro.address().toString()+
+			 QString().sprintf(" %d ",echo)+
+			 macro.toString());
+	break;
 
-	  case RDMacro::Reply:
-	    sprintf(cmd,"ME %s %d %s",(const char *)macro.address().toString(),
-		    echo,buffer);
-	    break;
-
-	  default:
-	    break;
+      default:
+	break;
       }
     }
     else {
@@ -712,8 +703,7 @@ void MainObject::ReadRmlSocket(QSocketDevice *dev,RDMacro::Role role,
       if(echo) {
 	macro.setRole(RDMacro::Reply);
 	macro.setCommand(RDMacro::NN);
-	macro.setArg(0,"-");
-	macro.setArgQuantity(1);
+	macro.addArg("-");
 	macro.setAddress(dev->peerAddress());
 	sendRml(&macro);
       }

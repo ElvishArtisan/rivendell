@@ -1981,8 +1981,7 @@ bool RDLogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
 	  rml->setAddress(addr);
 	  rml->setRole(RDMacro::Cmd);
 	  rml->setEchoRequested(false);
-	  rml->setArgQuantity(1);
-	  rml->setArg(0,logline->cartNumber());
+	  rml->addArg(logline->cartNumber());  // Arg 0
 	  rda->ripc()->sendRml(rml);
 	  delete rml;
 	  emit played(line);

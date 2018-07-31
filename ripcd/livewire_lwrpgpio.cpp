@@ -101,15 +101,15 @@ void LiveWireLwrpGpio::processCommand(RDMacro *cmd)
   case RDMacro::GO:
     if((cmd->argQuantity()!=5)||
        (cmd->arg(2).toInt()<1)||
-       ((cmd->arg(1).toString().lower()!="i")&&
-	(cmd->arg(1).toString().lower()!="o"))) {
+       ((cmd->arg(1).lower()!="i")&&
+	(cmd->arg(1).lower()!="o"))) {
       cmd->acknowledge(false);
       emit rmlEcho(cmd);
       return;
     }
-    if(((cmd->arg(1).toString().lower()=="i")&&
+    if(((cmd->arg(1).lower()=="i")&&
 	(cmd->arg(2).toUInt()>gpio_gpi_limit))||
-       ((cmd->arg(1).toString().lower()=="o")&&
+       ((cmd->arg(1).lower()=="o")&&
 	(cmd->arg(2).toUInt()>gpio_gpo_limit))) {
       cmd->acknowledge(false);
       emit rmlEcho(cmd);
@@ -117,7 +117,7 @@ void LiveWireLwrpGpio::processCommand(RDMacro *cmd)
     }
     slot=(cmd->arg(2).toInt()-1)/5;
     line=(cmd->arg(2).toInt()-1)%5;
-    if(cmd->arg(1).toString().lower()=="i") {
+    if(cmd->arg(1).lower()=="i") {
       if(cmd->arg(3).toInt()==0) {
 	if(gpio_is_virtual) {
 	  gpio_livewire->gpoReset(slot,line,cmd->arg(4).toInt());
@@ -135,7 +135,7 @@ void LiveWireLwrpGpio::processCommand(RDMacro *cmd)
 	}
       }
     }
-    if(cmd->arg(1).toString().lower()=="o") {
+    if(cmd->arg(1).lower()=="o") {
       if(cmd->arg(3).toInt()==0) {
 	if(gpio_is_virtual) {
 	  gpio_livewire->gpiReset(slot,line,cmd->arg(4).toInt());

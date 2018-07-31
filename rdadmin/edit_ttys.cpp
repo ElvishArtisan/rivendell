@@ -276,18 +276,17 @@ void EditTtys::closeData()
   macro.setCommand(RDMacro::SY);
   macro.setRole(RDMacro::Cmd);
   macro.setEchoRequested(false);
-  macro.setArgQuantity(1);
   for(int i=0;i<MAX_TTYS;i++) {
     if(edit_port_modified[i]) {
       sql=QString().sprintf("select MATRIX from MATRICES where PORT=%d",i);
       q=new RDSqlQuery(sql);
       if(q->first()) {
 	macro.setCommand(RDMacro::SZ);
-	macro.setArg(0,q->value(0).toInt());
+	macro.addArg(q->value(0).toInt());
       }
       else {
 	macro.setCommand(RDMacro::SY);
-	macro.setArg(0,i);
+	macro.addArg(i);
       }
       macro.setAddress(rmt_station->address());
       rda->ripc()->sendRml(&macro);

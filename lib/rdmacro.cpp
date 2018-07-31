@@ -2,7 +2,7 @@
 //
 // A container class for a Rivendell Macro Language Command
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,8 +19,9 @@
 //
 
 #include <ctype.h>
+#include <stdint.h>
 
-#include <rdmacro.h>
+#include "rdmacro.h"
 
 RDMacro::RDMacro()
 {
@@ -88,259 +89,214 @@ void RDMacro::setEchoRequested(bool state)
 }
 
 
-QVariant RDMacro::arg(int n) const
+QString RDMacro::arg(int n) const
 {
-  if(n>=RD_RML_MAX_ARGS) {
-    return QVariant();
-  }
-  return rml_arg[n];
+  return rml_args[n];
 }
 
 
-void RDMacro::setArg(int n,QVariant arg)
+int RDMacro::addArg(const QString &arg)
 {
-  if(n>=RD_RML_MAX_ARGS) {
-    return;
-  }
-  rml_arg[n]=arg;
+  rml_args.push_back(arg);
+  return rml_args.size()-1;
+}
+
+
+int RDMacro::addArg(int arg)
+{
+  rml_args.push_back(QString().sprintf("%d",arg));
+  return rml_args.size()-1;
+}
+
+
+int RDMacro::addArg(unsigned arg)
+{
+  rml_args.push_back(QString().sprintf("%u",arg));
+  return rml_args.size()-1;
+}
+
+
+void RDMacro::setArg(int n,const QString &arg)
+{
+  rml_args[n]=arg;
+}
+
+
+void RDMacro::setArg(int n,int arg)
+{
+  rml_args[n]=QString().sprintf("%d",arg);
+}
+
+
+void RDMacro::setArg(int n,unsigned arg)
+{
+  rml_args[n]=QString().sprintf("%u",arg);
 }
 
 
 int RDMacro::argQuantity() const
 {
-  return rml_arg_quantity;
+  return rml_args.size();
 }
 
 
 void RDMacro::acknowledge(bool state)
 {
   rml_role=RDMacro::Reply;
-  if(rml_arg_quantity<RD_RML_MAX_ARGS) {
-    if(state) {
-      rml_arg[rml_arg_quantity]=QString("+");
-      rml_arg_quantity++;
-    }
-    else {
-      rml_arg[rml_arg_quantity]=QString("-");
-      rml_arg_quantity++;
-    }
+  if(state) {
+    rml_args.push_back("+");
   }
-}
-
-
-void RDMacro::setArgQuantity(int n)
-{
-  rml_arg_quantity=n;
+  else {
+    rml_args.push_back("-");
+  }
 }
 
 
 QString RDMacro::rollupArgs(int n)
 {
-  QString str;
-  for(int i=n;i<rml_arg_quantity;i++) {
-    str=(str+" "+rml_arg[i].toString());
-  }
-  return str.right(str.length()-1);
+  return rml_args.join(" ");
 }
 
 
-bool RDMacro::parseString(const char *str,int n)
+QString RDMacro::toString() const
 {
-  int argnum=0;
-  int argptr=0;
-  char arg[RD_RML_MAX_LENGTH];
-  bool quoted=false;
-  bool escaped=false;
+  QString ret=QChar(((uint16_t)rml_cmd)>>8);
+  ret+=+QChar(0xFF&((uint16_t)rml_cmd));
+  ret+=" ";
+  ret+=rml_args.join(" ");
+  ret+="!";
 
-  if(n<3) {
-    return false;
-  }
-
-  //
-  // Command Mneumonic
-  //
-  rml_cmd=(RDMacro::Command)((str[0]<<8)+str[1]);
-  switch(rml_cmd) {
-      case RDMacro::AG:
-      case RDMacro::AL:
-      case RDMacro::BO:
-      case RDMacro::CC:
-      case RDMacro::CE:
-      case RDMacro::CL:
-      case RDMacro::CP:
-      case RDMacro::DB:
-      case RDMacro::DL:
-      case RDMacro::DP:
-      case RDMacro::DS:
-      case RDMacro::DX:
-      case RDMacro::EX:
-      case RDMacro::FS:
-      case RDMacro::GE:
-      case RDMacro::GI:
-      case RDMacro::GO:
-      case RDMacro::JC:
-      case RDMacro::JD:
-      case RDMacro::LB:
-      case RDMacro::LC:
-      case RDMacro::LL:
-      case RDMacro::LO:
-      case RDMacro::MB:
-      case RDMacro::MD:
-      case RDMacro::MN:
-      case RDMacro::MT:
-      case RDMacro::NN:
-      case RDMacro::PB:
-      case RDMacro::PC:
-      case RDMacro::PE:
-      case RDMacro::PL:
-      case RDMacro::PM:
-      case RDMacro::PN:
-      case RDMacro::PP:
-      case RDMacro::PS:
-      case RDMacro::PT:
-      case RDMacro::PU:
-      case RDMacro::PW:
-      case RDMacro::PX:
-      case RDMacro::RL:
-      case RDMacro::RS:
-      case RDMacro::RR:
-      case RDMacro::RN:
-      case RDMacro::SN:
-      case RDMacro::ST:
-      case RDMacro::SA:
-      case RDMacro::SC:
-      case RDMacro::SD:
-      case RDMacro::SG:
-      case RDMacro::SI:
-      case RDMacro::SO:
-      case RDMacro::SP:
-      case RDMacro::SR:
-      case RDMacro::SL:
-      case RDMacro::SX:
-      case RDMacro::SY:
-      case RDMacro::SZ:
-      case RDMacro::TA:
-      case RDMacro::UO:
-      case RDMacro::PD:
-	break;
-	
-      default:
-	return false;
-  }
-  if(str[2]=='!') {
-    rml_arg_quantity=0;
-    return true;
-  }
-  if(!isblank(str[2])) {
-    rml_arg_quantity=0;
-    rml_cmd=RDMacro::NN;
-    return false;
-  }
-
-  //
-  // Arguments
-  //
-  for(int i=3;i<n;i++) {
-    if(quoted||escaped) {
-      arg[argptr]=str[i];
-      if(quoted&&((arg[argptr]==0x22)||(arg[argptr]==0x27))) {
-	quoted=false;
-      }
-      if(escaped) {
-	escaped=false;
-      }
-      argptr++;
-    }
-    else {
-      switch(str[i]) {
-	case ' ':
-	  arg[argptr]=0;
-	  rml_arg[argnum++]=QVariant(QString(arg));
-	  argptr=0;
-	  break;
-	  
-	case '!':
-	  arg[argptr]=0;
-	  rml_arg[argnum++]=QVariant(QString(arg));
-	  rml_arg_quantity=argnum;
-	  return true;
-	  
-	case '\\':
-	  escaped=true;
-	  break;
-
-	default:
-	  arg[argptr]=str[i];
-	  if((arg[argptr]==0x22)||(arg[argptr]==0x27)) {
-	    quoted=true;
-	  }
-	  argptr++;
-	  break;
-      }
-    }
-    if((argnum>=RD_RML_MAX_ARGS)||(argptr>=RD_RML_MAX_LENGTH)) {
-      rml_arg_quantity=0;
-      rml_cmd=RDMacro::NN;
-      for(int j=0;j<RD_RML_MAX_ARGS;j++) {
-	rml_arg[j].clear();
-      }
-      return false;
-    }
-  }
-  rml_arg_quantity=0;
-  rml_cmd=RDMacro::NN;
-  for(int i=0;i<RD_RML_MAX_ARGS;i++) {
-    rml_arg[i].clear();
-  }
-  return false;
-}
-
-
-int RDMacro::generateString(char *str,int n) const
-{
-  int len=3;
-
-  for(int i=0;i<rml_arg_quantity;i++) {
-    len+=(rml_arg[i].toString().length()+1);
-  }
-  if(len>=n) {
-    return -1;
-  }
-  sprintf(str,"%c%c",rml_cmd>>8,rml_cmd&0xFF);
-  for(int i=0;i<rml_arg_quantity;i++) {
-    strcat(str," ");
-    strcat(str,(const char *)rml_arg[i].toString());
-  }
-  strcat(str,"!");
-  return len;
+  return ret;
 }
 
 
 unsigned RDMacro::length() const
 {
-  switch(rml_cmd) {
-      case RDMacro::SP:
-	if(rml_arg_quantity==1) {
-	  return rml_arg[0].toUInt();
-	}
-	return 0;
-
-      default:
-	return 0;
+  if((rml_cmd==RDMacro::SP)&&(rml_args.size()==1)) {
+    return rml_args[0].toUInt();
   }
   return 0;
+}
+
+
+bool RDMacro::isNull() const
+{
+  return rml_cmd==RDMacro::NN;
 }
 
 
 void RDMacro::clear()
 {
   rml_role=RDMacro::Invalid;
-  rml_cmd=RDMacro::NN;
   rml_addr=QHostAddress();
   rml_port=RD_RML_NOECHO_PORT;
   rml_echo_requested=false;
-  for(int i=0;i<RD_RML_MAX_ARGS;i++) {
-    rml_arg[i].clear();
+  rml_cmd=RDMacro::NN;
+  rml_args.clear();
+}
+
+
+RDMacro RDMacro::fromString(const QString &str,RDMacro::Role role)
+{
+  RDMacro ret;
+  RDMacro::Command cmd=RDMacro::NN;
+
+  ret.setRole(role);
+
+  //
+  // Check for bang
+  //
+  QString str2=str.stripWhiteSpace();
+  if(str2.right(1)!="!") {
+    ret.setCommand(RDMacro::NN);
+    return ret;
   }
-  rml_arg_quantity=0;
+
+  //
+  // Get Command
+  //
+  QStringList f0=f0.split(" ",str2.left(str2.length()-1).stripWhiteSpace());  
+  if(f0[0].length()!=2) {
+    ret.setCommand(RDMacro::NN);
+    return ret;
+  }
+  cmd=(RDMacro::Command)((f0[0].at(0).latin1()<<8)+f0[0].at(1).latin1());
+  switch(cmd) {
+  case RDMacro::AG:
+  case RDMacro::AL:
+  case RDMacro::BO:
+  case RDMacro::CC:
+  case RDMacro::CE:
+  case RDMacro::CL:
+  case RDMacro::CP:
+  case RDMacro::DB:
+  case RDMacro::DL:
+  case RDMacro::DP:
+  case RDMacro::DS:
+  case RDMacro::DX:
+  case RDMacro::EX:
+  case RDMacro::FS:
+  case RDMacro::GE:
+  case RDMacro::GI:
+  case RDMacro::GO:
+  case RDMacro::JC:
+  case RDMacro::JD:
+  case RDMacro::LB:
+  case RDMacro::LC:
+  case RDMacro::LL:
+  case RDMacro::LO:
+  case RDMacro::MB:
+  case RDMacro::MD:
+  case RDMacro::MN:
+  case RDMacro::MT:
+  case RDMacro::NN:
+  case RDMacro::PB:
+  case RDMacro::PC:
+  case RDMacro::PE:
+  case RDMacro::PL:
+  case RDMacro::PM:
+  case RDMacro::PN:
+  case RDMacro::PP:
+  case RDMacro::PS:
+  case RDMacro::PT:
+  case RDMacro::PU:
+  case RDMacro::PW:
+  case RDMacro::PX:
+  case RDMacro::RL:
+  case RDMacro::RS:
+  case RDMacro::RR:
+  case RDMacro::RN:
+  case RDMacro::SN:
+  case RDMacro::ST:
+  case RDMacro::SA:
+  case RDMacro::SC:
+  case RDMacro::SD:
+  case RDMacro::SG:
+  case RDMacro::SI:
+  case RDMacro::SO:
+  case RDMacro::SP:
+  case RDMacro::SR:
+  case RDMacro::SL:
+  case RDMacro::SX:
+  case RDMacro::SY:
+  case RDMacro::SZ:
+  case RDMacro::TA:
+  case RDMacro::UO:
+  case RDMacro::PD:
+    ret.setCommand(cmd);
+    break;
+	
+  default:
+    ret.setCommand(RDMacro::NN);
+    return ret;
+  }
+
+  //
+  // Get Arguments
+  //
+  for(unsigned i=1;i<f0.size();i++) {
+    ret.addArg(f0[i]);
+  }
+
+  return ret;
 }

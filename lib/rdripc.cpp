@@ -153,8 +153,8 @@ void RDRipc::sendOnairFlag()
 
 void RDRipc::sendRml(RDMacro *macro)
 {
-  char buffer[RD_RML_MAX_LENGTH];
-  char cmd[RD_RML_MAX_LENGTH+4];
+  //  char buffer[RD_RML_MAX_LENGTH];
+  QString cmd;
   Q_UINT16 port=RD_RML_NOECHO_PORT;
   QDateTime now=QDateTime::currentDateTime();
 
@@ -164,8 +164,7 @@ void RDRipc::sendRml(RDMacro *macro)
   if(macro->port()>0) {
     port=macro->port();
   }
-  macro->generateString(buffer,RD_RML_MAX_LENGTH-1);
-  QString rmlline(buffer);
+  QString rmlline=macro->toString();
   QString sql=QString("select NAME,VARVALUE from HOSTVARS where ")+
     "STATION_NAME=\""+RDEscapeString(ripc_station->name())+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
@@ -175,18 +174,18 @@ void RDRipc::sendRml(RDMacro *macro)
   delete q;
   rmlline=RDDateTimeDecode(rmlline,now,ripc_station,ripc_config);
   switch(macro->role()) {
-      case RDMacro::Cmd:
-	sprintf(cmd,"MS %s %d %s",(const char *)macro->address().toString(),
-		port,(const char *)rmlline.utf8());
-	break;
+  case RDMacro::Cmd:
+    cmd=QString("MS ")+macro->address().toString()+
+      QString().sprintf(" %d ",port)+rmlline;
+    break;
 	
-      case RDMacro::Reply:
-	sprintf(cmd,"ME %s %d %s",(const char *)macro->address().toString(),
-		port,(const char *)rmlline.utf8());
-	break;
+  case RDMacro::Reply:
+    cmd=QString("ME ")+macro->address().toString()+
+      QString().sprintf(" %d ",port)+rmlline;
+    break;
 
-      default:
-	break;
+  default:
+    break;
   }
   SendCommand(cmd);
 }
@@ -309,14 +308,14 @@ void RDRipc::DispatchCommand()
       str+=" "+cmds[i];
     }
     str+="!";
-    if(macro.parseString(str,str.length())) {
+    macro=RDMacro::fromString(str,RDMacro::Cmd);
+    if(!macro.isNull()) {
       QHostAddress addr;
       addr.setAddress(cmds[1]);
       if(cmds[2].left(0)=="1") {
 	macro.setEchoRequested(true);
       }
       macro.setAddress(addr);
-      macro.setRole(RDMacro::Cmd);
       emit rmlReceived(&macro);
     }
     return;
@@ -331,7 +330,8 @@ void RDRipc::DispatchCommand()
       str+=" "+cmds[i];
     }
     str+="!";
-    if(macro.parseString(str,str.length())) {
+    macro=RDMacro::fromString(str,RDMacro::Reply);
+    if(!macro.isNull()) {
       macro.setAddress(QHostAddress().setAddress(cmds[1]));
       macro.setRole(RDMacro::Reply);
       emit rmlReceived(&macro);

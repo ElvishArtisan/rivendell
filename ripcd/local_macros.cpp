@@ -119,8 +119,7 @@ void MainObject::ExecCart(int cartnum)
   rml.setCommand(RDMacro::EX);
   rml.setAddress(rda->station()->address());
   rml.setEchoRequested(false);
-  rml.setArgQuantity(1);
-  rml.setArg(0,cartnum);
+  rml.addArg(cartnum);
   sendRml(&rml);
 }
 
@@ -222,7 +221,7 @@ void MainObject::LoadLocalMacros()
 }
 
 
-void MainObject::RunLocalMacros(RDMacro *rml)
+void MainObject::RunLocalMacros(RDMacro *rml_in)
 {
   int matrix_num;
   int gpi;
@@ -234,17 +233,18 @@ void MainObject::RunLocalMacros(RDMacro *rml)
   RDSqlQuery *q;
   QHostAddress addr;
   RDUser *rduser;
-  char logstr[RD_RML_MAX_LENGTH];
+  QString logstr;
   char bin_buf[RD_RML_MAX_LENGTH];
   int d;
   RDMatrix::GpioType gpio_type;
   QByteArray data;
 
-  rml->generateString(logstr,RD_RML_MAX_LENGTH-1);
-  LogLine(RDConfig::LogInfo,QString().sprintf("received rml: \'%s\' from %s",
-	  (const char *)logstr,(const char *)rml->address().toString()));
+  rda->log(RDConfig::LogInfo,QString("received rml: \'")+rml_in->toString()+
+	   "\' from "+rml_in->address().toString());
 
-  ForwardConvert(rml);
+  RDMacro *rml=new RDMacro();
+  *rml=ForwardConvert(*rml_in);
+  //  ForwardConvert(rml);
 
   switch(rml->command()) {
   case RDMacro::BO:
@@ -262,7 +262,7 @@ void MainObject::RunLocalMacros(RDMacro *rml)
       return;
     }
     for(int i=1;i<(rml->argQuantity());i++) {
-      sscanf((const char *)rml->arg(i).toString(),"%x",&d);
+      sscanf((const char *)rml->arg(i),"%x",&d);
       bin_buf[i-1]=0xFF&d;
     }
     ripcd_tty_dev[tty_port]->writeBlock(bin_buf,rml->argQuantity()-1);
@@ -284,7 +284,7 @@ void MainObject::RunLocalMacros(RDMacro *rml)
 			    (const char *)rda->config()->mysqlHostname(),
 			    (const char *)rda->config()->mysqlUsername(),
 			    (const char *)rda->config()->mysqlPassword(),
-			    (const char *)rml->arg(0).toString());
+			    (const char *)rml->arg(0));
       system((const char *)cmd);
       exit(0);
     }
@@ -303,11 +303,11 @@ void MainObject::RunLocalMacros(RDMacro *rml)
       return;
     }
     matrix_num=rml->arg(0).toInt();
-    if(rml->arg(1).toString().lower()=="i") {
+    if(rml->arg(1).lower()=="i") {
       gpio_type=RDMatrix::GpioInput;
     }
     else {
-      if(rml->arg(1).toString().lower()=="o") {
+      if(rml->arg(1).lower()=="o") {
 	gpio_type=RDMatrix::GpioOutput;
       }
       else {
@@ -364,11 +364,11 @@ void MainObject::RunLocalMacros(RDMacro *rml)
       return;
     }
     matrix_num=rml->arg(0).toInt();
-    if(rml->arg(1).toString().lower()=="i") {
+    if(rml->arg(1).lower()=="i") {
       gpio_type=RDMatrix::GpioInput;
     }
     else {
-      if(rml->arg(1).toString().lower()=="o") {
+      if(rml->arg(1).lower()=="o") {
 	gpio_type=RDMatrix::GpioOutput;
       }
       else {
@@ -427,7 +427,7 @@ void MainObject::RunLocalMacros(RDMacro *rml)
       }
       return;
     }
-    rda->cae()->connectJackPorts(rml->arg(0).toString(),rml->arg(1).toString());
+    rda->cae()->connectJackPorts(rml->arg(0),rml->arg(1));
     if(rml->echoRequested()) {
       rml->acknowledge(true);
       sendRml(rml);
@@ -442,7 +442,7 @@ void MainObject::RunLocalMacros(RDMacro *rml)
       }
       return;
     }
-    rda->cae()->disconnectJackPorts(rml->arg(0).toString(),rml->arg(1).toString());
+    rda->cae()->disconnectJackPorts(rml->arg(0),rml->arg(1));
     if(rml->echoRequested()) {
       rml->acknowledge(true);
       sendRml(rml);
@@ -461,7 +461,7 @@ void MainObject::RunLocalMacros(RDMacro *rml)
       rduser=new RDUser(rda->station()->defaultName());
     }
     else {
-      rduser=new RDUser(rml->arg(0).toString());
+      rduser=new RDUser(rml->arg(0));
       if(!rduser->exists()) {
 	if(rml->echoRequested()) {
 	  rml->acknowledge(false);
@@ -470,7 +470,7 @@ void MainObject::RunLocalMacros(RDMacro *rml)
 	delete rduser;
 	return;
       }
-      if(!rduser->checkPassword(rml->arg(1).toString(),false)) {
+      if(!rduser->checkPassword(rml->arg(1),false)) {
 	if(rml->echoRequested()) {
 	  rml->acknowledge(false);
 	  sendRml(rml);
@@ -526,8 +526,8 @@ void MainObject::RunLocalMacros(RDMacro *rml)
       }
       if(system(QString().
 		sprintf("rdpopup -display %s %s %s",
-			(const char *)rml->arg(0).toString(),
-			(const char *)rml->arg(1).toString(),
+			(const char *)rml->arg(0),
+			(const char *)rml->arg(1),
 			(const char *)RDEscapeString(rml->rollupArgs(2))))<0) {
 	LogLine(RDConfig::LogWarning,"RDPopup returned an error");
       }
@@ -585,9 +585,9 @@ void MainObject::RunLocalMacros(RDMacro *rml)
       return;
     }
     if(fork()==0) {
-      QString cmd=rml->arg(0).toString();
+      QString cmd=rml->arg(0);
       for(int i=1;i<=rml->argQuantity();i++) {
-	cmd+=" "+rml->arg(i).toString();
+	cmd+=" "+rml->arg(i);
       }
       if(getuid()==0) {
 	if(setgid(rda->config()->gid())<0) {
@@ -633,9 +633,9 @@ void MainObject::RunLocalMacros(RDMacro *rml)
       return;
     }
     for(int i=2;i<(rml->argQuantity()-1);i++) {
-      str+=(rml->arg(i).toString()+" ");
+      str+=(rml->arg(i)+" ");
     }
-    str+=rml->arg(rml->argQuantity()-1).toString();
+    str+=rml->arg(rml->argQuantity()-1);
     ripcd_tty_trap[tty_port]->addTrap(rml->arg(1).toInt(),
 				      str,str.length());
     rml->acknowledge(true);
@@ -678,8 +678,8 @@ void MainObject::RunLocalMacros(RDMacro *rml)
 	  
     case 3:
       ripcd_tty_trap[tty_port]->removeTrap(rml->arg(1).toInt(),
-					   (const char *)rml->arg(2).toString(),
-					   rml->arg(2).toString().length());
+					   (const char *)rml->arg(2),
+					   rml->arg(2).length());
       if(rml->echoRequested()) {
 	rml->acknowledge(true);
 	sendRml(rml);
@@ -711,9 +711,9 @@ void MainObject::RunLocalMacros(RDMacro *rml)
       return;
     }
     for(int i=1;i<(rml->argQuantity()-1);i++) {
-      str+=(rml->arg(i).toString()+" ");
+      str+=(rml->arg(i)+" ");
     }
-    str+=rml->arg(rml->argQuantity()-1).toString();
+    str+=rml->arg(rml->argQuantity()-1);
     switch(ripcd_tty_term[tty_port]) {
     case RDTty::CrTerm:
       str+=QString().sprintf("\x0d");
@@ -888,7 +888,7 @@ void MainObject::RunLocalMacros(RDMacro *rml)
       }
       return;
     }
-    if(!addr.setAddress(rml->arg(0).toString())) {
+    if(!addr.setAddress(rml->arg(0))) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
 	sendRml(rml);
@@ -903,9 +903,9 @@ void MainObject::RunLocalMacros(RDMacro *rml)
       return;
     }
     for(int i=2;i<(rml->argQuantity()-1);i++) {
-      str+=(rml->arg(i).toString()+" ");
+      str+=(rml->arg(i)+" ");
     }
-    str+=rml->arg(rml->argQuantity()-1).toString();
+    str+=rml->arg(rml->argQuantity()-1);
     LogLine(RDConfig::LogDebug,QString().
 	    sprintf("Sending \"%s\" to %s:%d",(const char *)str,
 		    (const char *)addr.toString(),rml->arg(1).toInt()));
@@ -920,12 +920,81 @@ void MainObject::RunLocalMacros(RDMacro *rml)
  
   default:
 //	LogLine(RDConfig::LogDebug,QString().sprintf("unhandled rml: \'%s\' from %s",
-//	       (const char *)logstr,(const char *)rml->address().toString()));
+//	       (const char *)logstr,(const char *)rml->address()));
     break;
   }
 }
 
 
+RDMacro MainObject::ForwardConvert(const RDMacro &rml) const
+{
+  RDMacro ret;
+
+  ret.setCommand(rml.command());
+  ret.setRole(rml.role());
+  ret.setAddress(rml.address());
+  ret.setEchoRequested(rml.echoRequested());
+
+  //
+  // Convert old RML syntax to current forms
+  //
+  switch(rml.command()) {
+  case RDMacro::GE:
+    if(rml.argQuantity()==3) {
+      ret.addArg(rml.arg(0));
+      ret.addArg("I");
+      ret.addArg(rml.arg(1));
+      ret.addArg(rml.arg(2));
+    }
+    else {
+      ret=rml;
+    }
+    break;
+
+  case RDMacro::GI:
+    if(rml.argQuantity()==3) {
+      ret.addArg(rml.arg(0));
+      ret.addArg("I");
+      ret.addArg(rml.arg(1));
+      ret.addArg(rml.arg(2));
+      ret.addArg(0);
+    }
+    else {
+      if(rml.argQuantity()==4) {
+	ret.addArg(rml.arg(0));
+	ret.addArg("I");
+	ret.addArg(rml.arg(1));
+	ret.addArg(rml.arg(2));
+	ret.addArg(rml.arg(3));
+      }
+      else {
+	ret=rml;
+      }
+    }
+    break;
+
+  case RDMacro::GO:
+    if(rml.argQuantity()==4) {
+      ret.addArg(rml.arg(0));
+      ret.addArg("O");
+      ret.addArg(rml.arg(1));
+      ret.addArg(rml.arg(2));
+      ret.addArg(rml.arg(3));
+    }
+    else {
+      ret=rml;
+    }
+    break;
+
+  default:
+    break;
+  }
+
+  return ret;
+}
+
+
+/*
 void MainObject::ForwardConvert(RDMacro *rml) const
 {
   //
@@ -970,3 +1039,4 @@ void MainObject::ForwardConvert(RDMacro *rml) const
       break;
   }
 }
+*/

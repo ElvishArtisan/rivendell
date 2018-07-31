@@ -106,14 +106,14 @@ void WheatnetLio::processCommand(RDMacro *cmd)
   switch(cmd->command()) {
   case RDMacro::GO:
     if((cmd->argQuantity()!=5)||
-       ((cmd->arg(1).toString().lower()!="i")&&
-	(cmd->arg(1).toString().lower()!="o"))||
+       ((cmd->arg(1).lower()!="i")&&
+	(cmd->arg(1).lower()!="o"))||
        (cmd->arg(2).toInt()<1)||(cmd->arg(3).toInt()>lio_gpios)||
        (cmd->arg(2).toInt()>lio_gpios)||
        ((cmd->arg(3).toInt()!=1)&&(cmd->arg(3).toInt()!=0)&&
-	(cmd->arg(1).toString().lower()!="i"))||
+	(cmd->arg(1).lower()!="i"))||
        ((cmd->arg(3).toInt()!=1)&&(cmd->arg(3).toInt()!=0)&&
-	(cmd->arg(3).toInt()!=-1)&&(cmd->arg(1).toString().lower()=="i"))||
+	(cmd->arg(3).toInt()!=-1)&&(cmd->arg(1).lower()=="i"))||
        (cmd->arg(4).toInt()<0)) {
       cmd->acknowledge(false);
       emit rmlEcho(cmd);
@@ -121,7 +121,7 @@ void WheatnetLio::processCommand(RDMacro *cmd)
     }
     if(cmd->arg(3).toInt()==0) {  // Turn OFF
       if(cmd->arg(4).toInt()==0) {
-	if(cmd->arg(1).toString().lower()=="o") {
+	if(cmd->arg(1).lower()=="o") {
 	  SendCommand(QString().sprintf("<LIO:%d|LVL:0>",
 					cmd->arg(2).toInt()-1));
 	  emit gpoChanged(matrixNumber(),cmd->arg(2).toInt()-1,false);
@@ -137,14 +137,14 @@ void WheatnetLio::processCommand(RDMacro *cmd)
     }
     else {
       if(cmd->arg(4).toInt()==0) {  // Turn ON
-	if(cmd->arg(1).toString().lower()=="o") {
+	if(cmd->arg(1).lower()=="o") {
 	  SendCommand(QString().sprintf("<LIO:%d|LVL:1>",
 					cmd->arg(2).toInt()-1));
 	  emit gpoChanged(matrixNumber(),cmd->arg(2).toInt()-1,true);
 	}
       }
       else {  // Pulse
-	if(cmd->arg(1).toString().lower()=="o") {
+	if(cmd->arg(1).lower()=="o") {
 	  SendCommand(QString().sprintf("<LIO:%d|LVL:%d>",
 					cmd->arg(2).toInt()-1,
 					cmd->arg(3).toInt()!=0));

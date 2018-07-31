@@ -123,7 +123,7 @@ void Sas64000Gpi::processCommand(RDMacro *cmd)
 	break;
 
       case RDMacro::GO:
-	if((cmd->arg(1).toString().lower()!="o")||
+	if((cmd->arg(1).lower()!="o")||
 	   (cmd->arg(2).toInt()<1)||(cmd->arg(2).toInt()>sas_gpos)) {
 	  cmd->acknowledge(false);
 	  emit rmlEcho(cmd);

@@ -103,7 +103,7 @@ class MainObject : public QObject
   void RunSystemMaintRoutine();
   void RunLocalMaintRoutine();
   int GetMaintInterval() const;
-  void ForwardConvert(RDMacro *rml) const;
+  RDMacro ForwardConvert(const RDMacro &rml) const;
   bool LoadSwitchDriver(int matrix_num);
   QSqlDatabase *ripcd_db;
   QString ripcd_host;
