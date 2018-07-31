@@ -29,38 +29,35 @@
 RDCmdSwitch::RDCmdSwitch(int argc,char *argv[],const char *modname,
 			 const char *usage)
 {
-  unsigned l=0;
-  bool handled=false;
   bool debug=false;
 
   for(int i=1;i<argc;i++) {
+    QString value=QString::fromUtf8(argv[i]);
 #ifndef WIN32
-    if(!strcmp(argv[i],"--version")) {
+    if(value=="--version") {
       printf("Rivendell v%s [%s]\n",VERSION,modname);
       exit(0);
     }
 #endif  // WIN32
-    if(!strcmp(argv[i],"--help")) {
+    if(value=="--help") {
       printf("\n%s %s\n",modname,usage);
       exit(0);
     }
-    if(!strcmp(argv[i],"-d")) {
+    if(value=="-d") {
       debug=true;
     }
-    l=strlen(argv[i]);
-    handled=false;
-    for(unsigned j=0;j<l;j++) {
-      if(argv[i][j]=='=') {
-	switch_keys.push_back(QString(argv[i]).left(j));
-	switch_values.push_back(QString(argv[i]).right(l-(j+1)));
-	switch_processed.push_back(false);
-	j=l;
-	handled=true;
+    QStringList f0=f0.split("=",value,true);
+    if(f0.size()>=2) {
+      switch_keys.push_back(f0[0]);
+      for(unsigned i=2;i<f0.size();i++) {
+	f0[1]+="="+f0[i];
       }
+      switch_values.push_back(f0[1]);
+      switch_processed.push_back(false);
     }
-    if(!handled) {
-      switch_keys.push_back(QString(argv[i]));
-      switch_values.push_back(QString(""));
+    else {
+      switch_keys.push_back(value);
+      switch_values.push_back("");
       switch_processed.push_back(false);
     }
   }

@@ -2,7 +2,7 @@
 //
 // A utility for sending RML Commands
 //
-//   (C) Copyright 2002-2005,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2005,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -100,10 +100,10 @@ MainWidget::MainWidget(QWidget *parent)
 
   setCaption(QString("RMLSend")+" v"+VERSION+" - "+tr("Macro Command Utility"));
 
-  host=new QLineEdit(this,"host");
+  host=new QLineEdit(this);
   host->setGeometry(80,10,180,25);
   host->setFont(main_font);
-  QLabel *label=new QLabel(host,"Sent To:",this,"host_label");
+  QLabel *label=new QLabel(host,"Sent To:",this);
   label->setGeometry(10,16,65,14);
   label->setFont(label_font);
   label->setAlignment(AlignRight);
@@ -114,10 +114,10 @@ MainWidget::MainWidget(QWidget *parent)
     }
   }
 
-  port_box=new QComboBox(this,"port_box");
+  port_box=new QComboBox(this);
   port_box->setGeometry(305,10,130,25);
   port_box->setEditable(false);
-  label=new QLabel(port_box,"Dest:",this,"port_label");
+  label=new QLabel(port_box,"Dest:",this);
   label->setGeometry(270,16,30,14);
   label->setFont(label_font);
   label->setAlignment(AlignRight);
@@ -127,33 +127,33 @@ MainWidget::MainWidget(QWidget *parent)
   port_box->setCurrentItem(1);
   connect(port_box,SIGNAL(activated(int)),this,SLOT(destChangedData(int)));
 
-  port_edit=new QLineEdit(this,"port_edit");
+  port_edit=new QLineEdit(this);
   port_edit->setGeometry(sizeHint().width()-60,10,50,25);
   port_edit->setFont(main_font);
   port_edit->setDisabled(true);
-  port_edit_label=new QLabel(port_edit,tr("UDP Port:"),this,"port_edit_label");
+  port_edit_label=new QLabel(port_edit,tr("UDP Port:"),this);
   port_edit_label->setGeometry(sizeHint().width()-130,16,65,14);
   port_edit_label->setFont(label_font);
   port_edit_label->setAlignment(AlignRight);
   port_edit_label->setDisabled(true);
 
-  command=new QLineEdit(this,"command");
+  command=new QLineEdit(this);
   command->setGeometry(80,40,sizeHint().width()-90,25);
   command->setFont(main_font);
-  label=new QLabel(command,tr("Command:"),this,"host_label");
+  label=new QLabel(command,tr("Command:"),this);
   label->setGeometry(10,46,65,14);
   label->setFont(label_font);
   label->setAlignment(AlignRight);
 
-  response=new QLineEdit(this,"response");
+  response=new QLineEdit(this);
   response->setGeometry(80,70,sizeHint().width()-90,25);
   response->setFont(main_font);
-  response_label=new QLabel(response,tr("Response:"),this,"response_label");
+  response_label=new QLabel(response,tr("Response:"),this);
   response_label->setGeometry(10,76,65,14);
   response_label->setFont(label_font);
   response_label->setAlignment(AlignRight);
 
-  send=new QPushButton(tr("&Send Command"),this,"send");
+  send=new QPushButton(tr("&Send Command"),this);
   send->setGeometry(10,sizeHint().height()-50,120,40);
   send->setFont(main_font);
   connect(send,SIGNAL(clicked()),this,SLOT(sendCommand()));
@@ -186,18 +186,18 @@ MainWidget::MainWidget(QWidget *parent)
       port=rdcmdswitch->value(i).toUInt(&ok);
       if(ok&&(port<0xFFFF)) {
 	switch(rdcmdswitch->value(i).toUInt()) {
-	    case RD_RML_ECHO_PORT:
-	      port_box->setCurrentItem(0);
-	      break;
+	case RD_RML_ECHO_PORT:
+	  port_box->setCurrentItem(0);
+	  break;
 	      
-	    case RD_RML_NOECHO_PORT:
-	      port_box->setCurrentItem(1);
-	      break;
+	case RD_RML_NOECHO_PORT:
+	  port_box->setCurrentItem(1);
+	  break;
 	      
-	    default:
-	      port_box->setCurrentItem(2);
-	      port_edit->setText(rdcmdswitch->value(i));
-	      break;
+	default:
+	  port_box->setCurrentItem(2);
+	  port_edit->setText(rdcmdswitch->value(i));
+	  break;
 	}
       }
     }
@@ -225,22 +225,21 @@ void MainWidget::sendCommand()
   bool ok=true;
 
   switch((MainWidget::DestMode)port_box->currentItem()) {
-      case MainWidget::Rml:
-	port=RD_RML_ECHO_PORT;
-	break;
+  case MainWidget::Rml:
+    port=RD_RML_ECHO_PORT;
+    break;
 
-      case MainWidget::RmlNoEcho:
-	port=RD_RML_NOECHO_PORT;
-	break;
+  case MainWidget::RmlNoEcho:
+    port=RD_RML_NOECHO_PORT;
+    break;
 
-      case MainWidget::Manual:
-	port=port_edit->text().toInt(&ok);
-	if((!ok)||(port>0xFFFF)) {
-	  QMessageBox::information(this,tr("RMLSend"),
-				   tr("Invalid Port Number!"));
-	  return;
-	}
-	break;
+  case MainWidget::Manual:
+    port=port_edit->text().toInt(&ok);
+    if((!ok)||(port>0xFFFF)) {
+      QMessageBox::information(this,tr("RMLSend"),tr("Invalid Port Number!"));
+      return;
+    }
+    break;
   }
   response->setText("");
 #ifndef WIN32 
@@ -261,7 +260,7 @@ void MainWidget::sendCommand()
   host_addr.setAddress(host->text());
 #endif  // WIN32
   dcl_command=command->text();
-  if(!udp_command->writeBlock(dcl_command,dcl_command.length(),
+  if(!udp_command->writeBlock(dcl_command.utf8(),dcl_command.utf8().length(),
 			      host_addr,(Q_UINT16)port)) {
     QMessageBox::warning(this,tr("RMLSend"),tr("Connection Failed!"));
     return;
@@ -299,31 +298,31 @@ void MainWidget::readResponse()
 void MainWidget::destChangedData(int id)
 {
   switch((MainWidget::DestMode)id) {
-      case MainWidget::Rml:
-	port_edit->setDisabled(true);
-	port_edit_label->setDisabled(true);
-	response->setEnabled(true);
-	response_label->setEnabled(true);
-	timer->start(100);
-	break;
+  case MainWidget::Rml:
+    port_edit->setDisabled(true);
+    port_edit_label->setDisabled(true);
+    response->setEnabled(true);
+    response_label->setEnabled(true);
+    timer->start(100);
+    break;
 
-      case MainWidget::RmlNoEcho:
-	port_edit->setDisabled(true);
-	port_edit_label->setDisabled(true);
-	response->setText("");
-	response->setDisabled(true);
-	response_label->setDisabled(true);
-	timer->stop();
-	break;
+  case MainWidget::RmlNoEcho:
+    port_edit->setDisabled(true);
+    port_edit_label->setDisabled(true);
+    response->setText("");
+    response->setDisabled(true);
+    response_label->setDisabled(true);
+    timer->stop();
+    break;
 
-      case MainWidget::Manual:
-	port_edit->setEnabled(true);
-	port_edit_label->setEnabled(true);
-	response->setText("");
-	response->setDisabled(true);
-	response_label->setDisabled(true);
-	timer->stop();
-	break;
+  case MainWidget::Manual:
+    port_edit->setEnabled(true);
+    port_edit_label->setEnabled(true);
+    response->setText("");
+    response->setDisabled(true);
+    response_label->setDisabled(true);
+    timer->stop();
+    break;
   }
 }
 
@@ -331,6 +330,7 @@ void MainWidget::destChangedData(int id)
 MainObject::MainObject(QObject *parent,const char *name)
 {
   input_fd=-1;
+  input_stream=NULL;
   dest_hostname=RMLSEND_DEFAULT_ADDR;
   dest_port=RMLSEND_DEFAULT_PORT;
   rml_ptr=0;
@@ -380,13 +380,6 @@ void MainObject::ReadSwitches()
     rdcmdswitch->setProcessed(rdcmdswitch->keys()-1,true);
     rml_cmd=rdcmdswitch->key(rdcmdswitch->keys()-1);
   }
-
-  for(unsigned i=0;i<rdcmdswitch->keys();i++) {
-    if(!rdcmdswitch->processed(i)) {
-      printf("\nrmlsend %s\n",RMLSEND_USAGE);
-      exit(256);
-    }
-  }
 }
 
 
@@ -411,18 +404,22 @@ void MainObject::ResolveName()
 
 void MainObject::InitStream()
 {
-  if(!rml_cmd.isNull()) {
+  FILE *f=NULL;
+
+  if(!rml_cmd.isEmpty()) {
     return;
   }
   if(input_file=="-") {
-    input_fd=0;
+    f=stdin;
   }
   else {
-    if((input_fd=open(input_file,O_RDONLY))<0) {
+    if((f=fopen(input_file,"r"))==NULL) {
       perror("rmlsend");
-      exit(256);
+      exit(1);
     }
   }
+  input_stream=new QTextStream(f,IO_ReadOnly);
+  input_stream->setEncoding(QTextStream::UnicodeUTF8);
 }
 
 
@@ -434,52 +431,55 @@ void MainObject::CloseStream()
 }
 
 
-bool MainObject::GetNextChar(char *c)
+bool MainObject::GetNextChar(QChar *c)
 {
+  if(input_stream!=NULL) {
+    if(input_stream->atEnd()) {
+      return true;
+    }
+    *input_stream >> *c; 
+   return false;
+  }
 
+  /*
   if(rml_cmd.isNull()) {
     if(read(input_fd,c,1)<=0) {
       return true;
     }
     return false;
   }
+  */
   if(rml_ptr>=rml_cmd.length()) {
     return true;
   }
-  *c=rml_cmd.at(rml_ptr++).latin1();
+  *c=rml_cmd.at(rml_ptr++);
   return false;
 }
 
 
 void MainObject::ProcessCommands()
 {
-  char c;
+  QChar c;
   QSocketDevice *udp_command=new QSocketDevice(QSocketDevice::Datagram);
-  char rml[RD_RML_MAX_LENGTH];
-  unsigned ptr=0;
+  QString rml="";
   bool active=false;
 
   while(!GetNextChar(&c)) {
     if(active) {
       if(c=='!') {
-	rml[ptr++]=c;
-	rml[ptr]=0;
-	udp_command->writeBlock(rml,ptr,*dest_addr,dest_port);
-	ptr=0;
+	rml+=c;
+	udp_command->writeBlock(rml.utf8(),rml.utf8().length(),
+				*dest_addr,dest_port);
+	rml="";
 	active=false;
       }
       else {
-	rml[ptr++]=c;
-      }
-      if(ptr==RD_RML_MAX_LENGTH) {
-	fprintf(stderr,"rmlsend: rml command too long\n");
-	CloseStream();
-	exit(256);
+	rml+=c;
       }
     }
     else {
-      if(isalpha(c)) {
-	rml[ptr++]=c;
+      if(c.isLetterOrNumber()) {
+	rml+=c;
 	active=true;
       }
     }

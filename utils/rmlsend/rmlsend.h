@@ -21,14 +21,15 @@
 #ifndef RMLSEND_H
 #define RMLSEND_H
 
+#include <qcombobox.h>
+#include <qlabel.h>
+#include <qlineedit.h>
 #include <qmainwindow.h>
+#include <qpushbutton.h>
 #include <qsize.h>
 #include <qsizepolicy.h>
-#include <qpushbutton.h>
-#include <qlineedit.h>
-#include <qcombobox.h>
 #include <qsocketdevice.h>
-#include <qlabel.h>
+#include <qtextstream.h>
 #include <qtimer.h>
 
 #include <rd.h>
@@ -82,10 +83,11 @@ class MainObject : public QObject
   void ResolveName();
   void InitStream();
   void CloseStream();
-  bool GetNextChar(char *c);
+  bool GetNextChar(QChar *c);
   void ProcessCommands();
   int input_fd;
   QString input_file;
+  QTextStream *input_stream;
   QString dest_hostname;
   QHostAddress *dest_addr;
   unsigned dest_port;

@@ -17283,3 +17283,7 @@
 	'RDAudioStore', 'RDCart', 'RDCopyAudio', 'RDPeakExport',
 	'RDRehash', and 'RDTrimAudio' that caused credentials encoded in
 	UTF-8 to be corrupted.
+2018-07-31 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed bugs in 'RDCmdSwitch' that caused corruption in UTF-8
+	strings.
+	* Refactored rmlsend(1) to handle UTF-8 strings correctly.
