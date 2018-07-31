@@ -98,7 +98,6 @@ void src_float_to_int_array (const float *in, int *out, int len);
 //
 // Function Prototypes
 //
-void LogLine(RDConfig::LogPriority prio,const QString &line);
 void SigHandler(int signum);
 extern RDConfig *rd_config;
 

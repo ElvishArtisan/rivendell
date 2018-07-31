@@ -76,7 +76,7 @@ void AlsaCapture2Callback(struct alsa_format *alsa_format)
 	(!alsa_format->exiting))||(s<0)) {
       snd_pcm_drop (alsa_format->pcm);
       snd_pcm_prepare(alsa_format->pcm);
-      LogLine(RDConfig::LogNotice,QString().
+      rd_config->log("caed",RDConfig::LogNotice,QString().
 	      sprintf("****** ALSA Capture Xrun - Card: %d ******",
 		      alsa_format->card));
     }
@@ -532,11 +532,11 @@ void AlsaPlay2Callback(struct alsa_format *alsa_format)
     int s=snd_pcm_writei(alsa_format->pcm,alsa_format->card_buffer,n);
     if(s!=n) {
       if(s<0) {
-        LogLine(RDConfig::LogNotice,
+        rd_config->log("caed",RDConfig::LogNotice,
                 QString().sprintf("*** alsa error %d: %s",-s,snd_strerror(s)));
       }
       else {
-        LogLine(RDConfig::LogNotice,
+        rd_config->log("caed",RDConfig::LogNotice,
                 QString().sprintf("period size mismatch - wrote %d\n",s));
       }
     }
@@ -544,7 +544,7 @@ void AlsaPlay2Callback(struct alsa_format *alsa_format)
        (!alsa_format->exiting)) {
       snd_pcm_drop (alsa_format->pcm);
       snd_pcm_prepare(alsa_format->pcm);
-      LogLine(RDConfig::LogNotice,QString().
+      rd_config->log("caed",RDConfig::LogNotice,QString().
               sprintf("****** ALSA Playout Xrun - Card: %d ******",
                       alsa_format->card));
     }
@@ -610,7 +610,7 @@ void MainObject::AlsaInitCallback()
 
 void MainObject::alsaStopTimerData(int cardstream)
 {
-  LogLine(RDConfig::LogErr,QString().sprintf("alsaStopTimerData(%d)",cardstream));
+  rd_config->log("caed",RDConfig::LogErr,QString().sprintf("alsaStopTimerData(%d)",cardstream));
 #ifdef ALSA
   int card=cardstream/RD_MAX_STREAMS;
   int stream=cardstream-card*RD_MAX_STREAMS;
@@ -643,7 +643,7 @@ void MainObject::alsaFadeTimerData(int cardstream)
       alsa_fade_timer[card][stream]->stop();
     }
   }
-  LogLine(RDConfig::LogDebug,QString().sprintf("FadeLevel: %d",level));
+  rd_config->log("caed",RDConfig::LogDebug,QString().sprintf("FadeLevel: %d",level));
   alsaSetOutputVolume(card,stream,alsa_fade_port[card][stream],level);
 #endif  // ALSA
 }
@@ -763,7 +763,7 @@ void MainObject::alsaInit(RDStation *station)
       if(cae_driver[i]==RDStation::Alsa) {
 	station->setCardDriver(i,RDStation::Alsa);
 	if(snd_ctl_open(&snd_ctl,dev,0)<0) {
-	  LogLine(RDConfig::LogNotice,QString().
+	  rd_config->log("caed",RDConfig::LogNotice,QString().
 		  sprintf("no control device found for %s",
 			  (const char *)dev));
 	  station->
@@ -823,7 +823,7 @@ bool MainObject::alsaLoadPlayback(int card,QString wavename,int *stream)
 {
 #ifdef ALSA
   if(alsa_play_format[card].exiting||((*stream=GetAlsaOutputStream(card))<0)) {
-    LogLine(RDConfig::LogErr,QString().sprintf(
+    rd_config->log("caed",RDConfig::LogErr,QString().sprintf(
             "Error: alsaLoadPlayback(%s) GetAlsaOutputStream():%d < 0",
             (const char *) wavename,
             *stream) );
@@ -831,7 +831,7 @@ bool MainObject::alsaLoadPlayback(int card,QString wavename,int *stream)
   }
   alsa_play_wave[card][*stream]=new RDWaveFile(wavename);
   if(!alsa_play_wave[card][*stream]->openWave()) {
-    LogLine(RDConfig::LogErr,QString().sprintf(
+    rd_config->log("caed",RDConfig::LogErr,QString().sprintf(
             "Error: alsaLoadPlayback(%s)   openWave() failed to open file",
             (const char *) wavename) );
     delete alsa_play_wave[card][*stream];
@@ -850,7 +850,7 @@ bool MainObject::alsaLoadPlayback(int card,QString wavename,int *stream)
     break;
 
   default:
-    LogLine(RDConfig::LogErr,QString().sprintf(
+    rd_config->log("caed",RDConfig::LogErr,QString().sprintf(
 	   "Error: alsaLoadPlayback(%s)   getFormatTag()%d || getBistsPerSample()%d failed",
 	   (const char *) wavename,
 	   alsa_play_wave[card][*stream]->getFormatTag(),
@@ -1038,7 +1038,7 @@ bool MainObject::alsaLoadRecord(int card,int stream,int coding,int chans,
       break;
 
     default:
-      LogLine(RDConfig::LogErr,QString().
+      rd_config->log("caed",RDConfig::LogErr,QString().
 	sprintf("requested unsupported channel count %d, card: %d, stream: %d",
 		chans,card,stream));
       delete alsa_record_wave[card][stream];
@@ -1066,7 +1066,7 @@ bool MainObject::alsaLoadRecord(int card,int stream,int coding,int chans,
     break;
 
   default:
-    LogLine(RDConfig::LogErr,QString().
+    rd_config->log("caed",RDConfig::LogErr,QString().
 	    sprintf("requested invalid audio encoding %d, card: %d, stream: %d",
 		    coding,card,stream));
     delete alsa_record_wave[card][stream];
@@ -1406,7 +1406,7 @@ bool MainObject::AlsaStartCaptureDevice(QString &dev,int card,snd_pcm_t *pcm)
   snd_pcm_hw_params_alloca(&hwparams);
   snd_pcm_hw_params_any(pcm,hwparams);
 
-  LogLine(RDConfig::LogInfo,QString().
+  rd_config->log("caed",RDConfig::LogInfo,QString().
 	  sprintf("Starting ALSA Capture Device %s:",
 		  (const char *)dev));
 
@@ -1415,8 +1415,8 @@ bool MainObject::AlsaStartCaptureDevice(QString &dev,int card,snd_pcm_t *pcm)
   //
   if(snd_pcm_hw_params_test_access(pcm,hwparams,
 				   SND_PCM_ACCESS_RW_INTERLEAVED)<0) {
-    LogLine(RDConfig::LogErr,"  Interleaved access not supported,");
-    LogLine(RDConfig::LogErr,"  aborting initialization of device.");
+    rd_config->log("caed",RDConfig::LogErr,"  Interleaved access not supported,");
+    rd_config->log("caed",RDConfig::LogErr,"  aborting initialization of device.");
     return false;
   }
   snd_pcm_hw_params_set_access(pcm,hwparams,SND_PCM_ACCESS_RW_INTERLEAVED);
@@ -1426,17 +1426,17 @@ bool MainObject::AlsaStartCaptureDevice(QString &dev,int card,snd_pcm_t *pcm)
   //
   if(snd_pcm_hw_params_test_format(pcm,hwparams,SND_PCM_FORMAT_S32_LE)==0) {
     alsa_capture_format[card].format=SND_PCM_FORMAT_S32_LE;
-    LogLine(RDConfig::LogDebug,"  Format = 32 bit little-endian");
+    rd_config->log("caed",RDConfig::LogDebug,"  Format = 32 bit little-endian");
   }
   else {
     if(snd_pcm_hw_params_test_format(pcm,hwparams,SND_PCM_FORMAT_S16_LE)==0) {
       alsa_capture_format[card].format=SND_PCM_FORMAT_S16_LE;
-      LogLine(RDConfig::LogDebug,"  Format = 16 bit little-endian");
+      rd_config->log("caed",RDConfig::LogDebug,"  Format = 16 bit little-endian");
     }
     else {
-      LogLine(RDConfig::LogErr,
+      rd_config->log("caed",RDConfig::LogErr,
 	      "  Neither 16 nor 32 bit little-endian formats available,");
-      LogLine(RDConfig::LogErr,
+      rd_config->log("caed",RDConfig::LogErr,
 	      "  aborting initialization of device.");
       return false;
     }
@@ -1455,14 +1455,14 @@ bool MainObject::AlsaStartCaptureDevice(QString &dev,int card,snd_pcm_t *pcm)
   snd_pcm_hw_params_set_rate_near(pcm,hwparams,&sr,&dir);
   if((sr<(system_sample_rate-RD_ALSA_SAMPLE_RATE_TOLERANCE))||
      (sr>(system_sample_rate+RD_ALSA_SAMPLE_RATE_TOLERANCE))) {
-    LogLine(RDConfig::LogErr,
+    rd_config->log("caed",RDConfig::LogErr,
 	    QString().sprintf("  Asked for sample rate %u, got %u",
 			      system_sample_rate,sr));
-    LogLine(RDConfig::LogErr,"  Sample rate unsupported by device");
+    rd_config->log("caed",RDConfig::LogErr,"  Sample rate unsupported by device");
     return false;
   }
   alsa_capture_format[card].sample_rate=sr;
-  LogLine(RDConfig::LogNotice,QString().sprintf("  SampleRate = %u",sr));
+  rd_config->log("caed",RDConfig::LogNotice,QString().sprintf("  SampleRate = %u",sr));
 
   //
   // Channels
@@ -1476,7 +1476,7 @@ bool MainObject::AlsaStartCaptureDevice(QString &dev,int card,snd_pcm_t *pcm)
   snd_pcm_hw_params_set_channels_near(pcm,hwparams,
 				      &alsa_capture_format[card].channels);
   alsa_play_format[card].capture_channels=alsa_capture_format[card].channels;
-  LogLine(RDConfig::LogDebug,QString().
+  rd_config->log("caed",RDConfig::LogDebug,QString().
 	  sprintf("  Aggregate Channels = %u",
 		  alsa_capture_format[card].channels));
 
@@ -1486,25 +1486,25 @@ bool MainObject::AlsaStartCaptureDevice(QString &dev,int card,snd_pcm_t *pcm)
   alsa_capture_format[card].periods=rd_config->alsaPeriodQuantity();
   snd_pcm_hw_params_set_periods_near(pcm,hwparams,
 				     &alsa_capture_format[card].periods,&dir);
-  LogLine(RDConfig::LogDebug,QString().sprintf("  Periods = %u",
+  rd_config->log("caed",RDConfig::LogDebug,QString().sprintf("  Periods = %u",
 		  alsa_capture_format[card].periods));
   alsa_capture_format[card].buffer_size=
     alsa_capture_format[card].periods*rd_config->alsaPeriodSize();
   snd_pcm_hw_params_set_buffer_size_near(pcm,hwparams,
 	       			 &alsa_capture_format[card].buffer_size);
-  LogLine(RDConfig::LogDebug,QString().sprintf("  BufferSize = %u frames",
+  rd_config->log("caed",RDConfig::LogDebug,QString().sprintf("  BufferSize = %u frames",
 	    (unsigned)alsa_capture_format[card].buffer_size));
 
   //
   // Fire It Up
   //
   if((err=snd_pcm_hw_params(pcm,hwparams))<0) {
-    LogLine(RDConfig::LogErr,QString().sprintf("  Device Error: %s,",
+    rd_config->log("caed",RDConfig::LogErr,QString().sprintf("  Device Error: %s,",
 			      (const char *)snd_strerror(err)));
-    LogLine(RDConfig::LogErr,"  aborting initialization of device.");
+    rd_config->log("caed",RDConfig::LogErr,"  aborting initialization of device.");
     return false;
   }
-  LogLine(RDConfig::LogNotice,"  Device started successfully");
+  rd_config->log("caed",RDConfig::LogNotice,"  Device started successfully");
   switch(alsa_capture_format[card].format) {
       case SND_PCM_FORMAT_S16_LE:
 	alsa_capture_format[card].card_buffer_size=
@@ -1534,7 +1534,7 @@ bool MainObject::AlsaStartCaptureDevice(QString &dev,int card,snd_pcm_t *pcm)
   snd_pcm_sw_params_current(pcm,swparams);
   snd_pcm_sw_params_set_avail_min(pcm,swparams,rd_config->alsaPeriodSize());
   if((err=snd_pcm_sw_params(pcm,swparams))<0) {
-    LogLine(RDConfig::LogErr,QString().sprintf("ALSA Device %s: %s",
+    rd_config->log("caed",RDConfig::LogErr,QString().sprintf("ALSA Device %s: %s",
 			      (const char *)dev,
 			      (const char *)snd_strerror(err)));
     return false;
@@ -1570,7 +1570,7 @@ bool MainObject::AlsaStartPlayDevice(QString &dev,int card,snd_pcm_t *pcm)
   snd_pcm_hw_params_alloca(&hwparams);
   snd_pcm_hw_params_any(pcm,hwparams);
 
-  LogLine(RDConfig::LogNotice,QString().sprintf("Starting ALSA Play Device %s:",
+  rd_config->log("caed",RDConfig::LogNotice,QString().sprintf("Starting ALSA Play Device %s:",
 						(const char *)dev));
 
   //
@@ -1578,8 +1578,8 @@ bool MainObject::AlsaStartPlayDevice(QString &dev,int card,snd_pcm_t *pcm)
   //
   if(snd_pcm_hw_params_test_access(pcm,hwparams,
 				   SND_PCM_ACCESS_RW_INTERLEAVED)<0) {
-    LogLine(RDConfig::LogErr,"  Interleaved access not supported,");
-    LogLine(RDConfig::LogErr,"  aborting initialization of device.");
+    rd_config->log("caed",RDConfig::LogErr,"  Interleaved access not supported,");
+    rd_config->log("caed",RDConfig::LogErr,"  aborting initialization of device.");
     return false;
   }
   snd_pcm_hw_params_set_access(pcm,hwparams,SND_PCM_ACCESS_RW_INTERLEAVED);
@@ -1589,17 +1589,17 @@ bool MainObject::AlsaStartPlayDevice(QString &dev,int card,snd_pcm_t *pcm)
   //
   if(snd_pcm_hw_params_test_format(pcm,hwparams,SND_PCM_FORMAT_S32_LE)==0) {
     alsa_play_format[card].format=SND_PCM_FORMAT_S32_LE;
-    LogLine(RDConfig::LogDebug,"  Format = 32 bit little-endian");
+    rd_config->log("caed",RDConfig::LogDebug,"  Format = 32 bit little-endian");
   }
   else {
     if(snd_pcm_hw_params_test_format(pcm,hwparams,SND_PCM_FORMAT_S16_LE)==0) {
       alsa_play_format[card].format=SND_PCM_FORMAT_S16_LE;
-      LogLine(RDConfig::LogDebug,"  Format = 16 bit little-endian");
+      rd_config->log("caed",RDConfig::LogDebug,"  Format = 16 bit little-endian");
     }
     else {
-      LogLine(RDConfig::LogErr,
+      rd_config->log("caed",RDConfig::LogErr,
 	      "  Neither 16 nor 32 bit little-endian formats available,");
-      LogLine(RDConfig::LogErr,"  aborting initialization of device.");
+      rd_config->log("caed",RDConfig::LogErr,"  aborting initialization of device.");
       return false;
     }
   }
@@ -1612,14 +1612,14 @@ bool MainObject::AlsaStartPlayDevice(QString &dev,int card,snd_pcm_t *pcm)
   snd_pcm_hw_params_set_rate_near(pcm,hwparams,&sr,&dir);
   if((sr<(system_sample_rate-RD_ALSA_SAMPLE_RATE_TOLERANCE))||
      (sr>(system_sample_rate+RD_ALSA_SAMPLE_RATE_TOLERANCE))) {
-    LogLine(RDConfig::LogErr,
+    rd_config->log("caed",RDConfig::LogErr,
 	    QString().sprintf("  Asked for sample rate %u, got %u",
 			      system_sample_rate,sr));
-    LogLine(RDConfig::LogErr,"  Sample rate unsupported by device");
+    rd_config->log("caed",RDConfig::LogErr,"  Sample rate unsupported by device");
     return false;
   }
   alsa_play_format[card].sample_rate=sr;
-  LogLine(RDConfig::LogDebug,QString().sprintf("  SampleRate = %u",sr));
+  rd_config->log("caed",RDConfig::LogDebug,QString().sprintf("  SampleRate = %u",sr));
 
   //
   // Channels
@@ -1632,7 +1632,7 @@ bool MainObject::AlsaStartPlayDevice(QString &dev,int card,snd_pcm_t *pcm)
   }
   snd_pcm_hw_params_set_channels_near(pcm,hwparams,
 				      &alsa_play_format[card].channels);
-  LogLine(RDConfig::LogDebug,QString().sprintf("  Aggregate Channels = %u",
+  rd_config->log("caed",RDConfig::LogDebug,QString().sprintf("  Aggregate Channels = %u",
 			    alsa_play_format[card].channels));
 
   //
@@ -1641,13 +1641,13 @@ bool MainObject::AlsaStartPlayDevice(QString &dev,int card,snd_pcm_t *pcm)
   alsa_play_format[card].periods=rd_config->alsaPeriodQuantity();
   snd_pcm_hw_params_set_periods_near(pcm,hwparams,
 				     &alsa_play_format[card].periods,&dir);
-  LogLine(RDConfig::LogDebug,QString().sprintf("  Periods = %u",
+  rd_config->log("caed",RDConfig::LogDebug,QString().sprintf("  Periods = %u",
 					       alsa_play_format[card].periods));
   alsa_play_format[card].buffer_size=
     alsa_play_format[card].periods*rd_config->alsaPeriodSize();
   snd_pcm_hw_params_set_buffer_size_near(pcm,hwparams,
 					 &alsa_play_format[card].buffer_size);
-  LogLine(RDConfig::LogDebug,QString().
+  rd_config->log("caed",RDConfig::LogDebug,QString().
        sprintf("  BufferSize = %u frames",
 	       (unsigned)alsa_play_format[card].buffer_size));
 
@@ -1655,12 +1655,12 @@ bool MainObject::AlsaStartPlayDevice(QString &dev,int card,snd_pcm_t *pcm)
   // Fire It Up
   //
   if((err=snd_pcm_hw_params(pcm,hwparams))<0) {
-    LogLine(RDConfig::LogErr,QString().sprintf("  Device Error: %s,",
+    rd_config->log("caed",RDConfig::LogErr,QString().sprintf("  Device Error: %s,",
 			      (const char *)snd_strerror(err)));
-    LogLine(RDConfig::LogErr,"  aborting initialization of device.");
+    rd_config->log("caed",RDConfig::LogErr,"  aborting initialization of device.");
     return false;
   }
-  LogLine(RDConfig::LogNotice,"  Device started successfully");
+  rd_config->log("caed",RDConfig::LogNotice,"  Device started successfully");
   switch(alsa_play_format[card].format) {
       case SND_PCM_FORMAT_S16_LE:
 	alsa_play_format[card].card_buffer_size=
@@ -1689,7 +1689,7 @@ bool MainObject::AlsaStartPlayDevice(QString &dev,int card,snd_pcm_t *pcm)
   snd_pcm_sw_params_current(pcm,swparams);
   snd_pcm_sw_params_set_avail_min(pcm,swparams,rd_config->alsaPeriodSize());
   if((err=snd_pcm_sw_params(pcm,swparams))<0) {
-    LogLine(RDConfig::LogErr,QString().sprintf("ALSA Device %s: %s",
+    rd_config->log("caed",RDConfig::LogErr,QString().sprintf("ALSA Device %s: %s",
 					       (const char *)dev,
 					    (const char *)snd_strerror(err)));
     return false;
@@ -1781,7 +1781,7 @@ void MainObject::WriteAlsaBuffer(int card,int stream,int16_t *buffer,unsigned le
 	alsa_record_wave[card][stream]->writeWave(mpeg,s);
       }
       else {
-	LogLine(RDConfig::LogErr,QString().
+	rd_config->log("caed",RDConfig::LogErr,QString().
 	   sprintf("TwoLAME encode error, card: %d, stream: %d",card,stream));
       }
     }

@@ -76,7 +76,7 @@ bool MainObject::hpiLoadPlayback(int card,QString wavename,int *stream)
   RDHPIPlayStream *playstream=new RDHPIPlayStream(sound_card);
   playstream->setCard(card);
   if(playstream->openWave(wavename)!=RDHPIPlayStream::Ok) {
-    LogLine(RDConfig::LogNotice,QString().sprintf(
+    rd_config->log("caed",RDConfig::LogNotice,QString().sprintf(
             "Error: hpiLoadPlayback(%s)   openWave() failed to open file",
             (const char *) wavename) );
     delete playstream;
@@ -174,7 +174,6 @@ bool MainObject::hpiLoadRecord(int card,int stream,int coding,int chans,
 			       int samprate,int bitrate,QString wavename)
 {
 #ifdef HPI
-  syslog(LOG_NOTICE,"card: %d  coding: %d\n",card,coding);
   record[card][stream]=new RDHPIRecordStream(sound_card);
   connect(record[card][stream],SIGNAL(stateChanged(int,int,int)),
 	  this,SLOT(stateRecordUpdate(int,int,int)));
