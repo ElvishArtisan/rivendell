@@ -18,18 +18,17 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <stdio.h>
-
 #include <qfile.h>
 #include <qmessagebox.h>
+#include <qtextstream.h>
 
-#include <rdairplay_conf.h>
-#include <rddatedecode.h>
-#include <rddb.h>
-#include <rdescape_string.h>
-#include <rdget_ath.h>
-#include <rdlog_line.h>
-#include <rdreport.h>
+#include "rdairplay_conf.h"
+#include "rddatedecode.h"
+#include "rddb.h"
+#include "rdescape_string.h"
+#include "rdget_ath.h"
+#include "rdlog_line.h"
+#include "rdreport.h"
 
 //
 // This implements a National Public Radio (NPR) standard.
@@ -42,7 +41,6 @@ bool RDReport::ExportNprSoundEx(const QString &filename,const QDate &startdate,
 {
   QString sql;
   RDSqlQuery *q;
-  FILE *f=NULL;
   QString artist;
   QString title;
   QString album;
@@ -51,15 +49,19 @@ bool RDReport::ExportNprSoundEx(const QString &filename,const QDate &startdate,
   QString trans_category=stationFormat();
   QString channel_name=stationId();
 
-  if((f=fopen(filename,"wb"))==NULL) {
+  QFile *file=new QFile(filename);
+  if(!file->open(IO_WriteOnly|IO_Truncate)) {
     report_error_code=RDReport::ErrorCantOpen;
+    delete file;
     return false;
   }
+  QTextStream *strm=new QTextStream(file);
+  strm->setEncoding(QTextStream::UnicodeUTF8);
 
   //
   // Generate Header
   //
-  fprintf(f,"Start Time\tEnd Time\tTitle\tArtist\tAlbum\tLabel\x0d\x0a");
+  *strm << QString("Start Time\tEnd Time\tTitle\tArtist\tAlbum\tLabel\x0d\x0a");
 
   //
   // Roll Up Records
@@ -76,17 +78,17 @@ bool RDReport::ExportNprSoundEx(const QString &filename,const QDate &startdate,
     "order by EVENT_DATETIME";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    fprintf(f,"%s\t",(const char *)q->value(0).toDateTime().
-	    toString("MM/dd/yyyy hh:mm:ss"));
-    fprintf(f,"%s\t",(const char *)q->value(0).toDateTime().
-	    addSecs(q->value(1).toInt()/1000).
-	    toString("MM/dd/yyyy hh:mm:ss"));
-    fprintf(f,"%s\t",(const char *)StringField(q->value(2).toString()));
-    fprintf(f,"%s\t",(const char *)StringField(q->value(3).toString()));
-    fprintf(f,"%s\t",(const char *)StringField(q->value(4).toString()));
-    fprintf(f,"%s\x0d\x0a",(const char *)StringField(q->value(5).toString()));
+    *strm << q->value(0).toDateTime().toString("MM/dd/yyyy hh:mm:ss")+"\t";
+    *strm << q->value(0).toDateTime().addSecs(q->value(1).toInt()/1000).
+      toString("MM/dd/yyyy hh:mm:ss")+"\t";
+    *strm << q->value(2).toString()+"\t";
+    *strm << q->value(3).toString()+"\t";
+    *strm << q->value(4).toString()+"\t";
+    *strm << q->value(5).toString()+"\x0d\x0a";
   }
-  fclose(f);
+  delete q;
+  delete strm;
+  delete file;
   report_error_code=RDReport::ErrorOk;
   return true;
 }

@@ -17291,3 +17291,5 @@
 	* Refactored 'RDMacro' to handle UTF-8 strings correctly.
 2018-07-31 Fred Gleason <fredg@paravelsystems.com>
 	* Modified logging in caed(8) to use 'RDConfig::log()' method.
+2018-08-01 Fred Gleason <fredg@paravelsystems.com>
+	* Modified as-played reports to work correctly with UTF-8 strings.

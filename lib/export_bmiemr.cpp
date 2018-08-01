@@ -20,6 +20,9 @@
 
 #include <stdio.h>
 
+#include <qfile.h>
+#include <qtextstream.h>
+
 #include <rdcart.h>
 #include <rddb.h>
 #include <rddatedecode.h>
@@ -31,13 +34,21 @@ bool RDReport::ExportBmiEmr(const QString &filename,const QDate &startdate,
 {
   QString sql;
   RDSqlQuery *q;
-  FILE *f;
   int records=0;
   QDateTime current_datetime=
     QDateTime(QDate::currentDate(),QTime::currentTime());
   QString type_code;
   QString usage_code;
   QString station_format=stationFormat();
+
+  QFile *file=new QFile(filename);
+  if(!file->open(IO_WriteOnly|IO_Truncate)) {
+    report_error_code=RDReport::ErrorCantOpen;
+    delete file;
+    return false;
+  }
+  QTextStream *strm=new QTextStream(file);
+  strm->setEncoding(QTextStream::UnicodeUTF8);
 
   //
   // Station Type
@@ -56,10 +67,6 @@ bool RDReport::ExportBmiEmr(const QString &filename,const QDate &startdate,
 	break;
   }
 
-  if((f=fopen((const char *)filename,"wb"))==NULL) {
-    report_error_code=RDReport::ErrorCantOpen;
-    return false;
-  }
   sql=QString("select ")+
     "EVENT_DATETIME,"+  // 00
     "TITLE,"+           // 01
@@ -76,9 +83,9 @@ bool RDReport::ExportBmiEmr(const QString &filename,const QDate &startdate,
   //
   // Write HEDR Record
   //
-  fprintf(f,"HEDRSTA%-25s%22sFMDT                                                   \x0d\x0a",
-	  (const char *)stationId().utf8(),
-	  (const char *)current_datetime.toString("yyyyMMddhhmmssyyyyMMdd"));
+  *strm << QString("HEDRSTA")+LeftJustify(stationId(),25)+
+    LeftJustify(current_datetime.toString("yyyyMMddhhmmssyyyyMMdd"),22)+
+    "FMDT                                                   \x0d\x0a";
   records++;
 
   //
@@ -86,48 +93,47 @@ bool RDReport::ExportBmiEmr(const QString &filename,const QDate &startdate,
   //
   while(q->next()) {
     switch((RDCart::UsageCode)q->value(6).toInt()) {
-	case RDCart::UsageFeature:
-	  usage_code="F1";
-	  break;
+    case RDCart::UsageFeature:
+      usage_code="F1";
+      break;
 
-	case RDCart::UsageOpen:
-	  usage_code="TO";
-	  break;
+    case RDCart::UsageOpen:
+      usage_code="TO";
+      break;
 
-	case RDCart::UsageClose:
-	  usage_code="TC";
-	  break;
+    case RDCart::UsageClose:
+      usage_code="TC";
+      break;
 
-	case RDCart::UsageTheme:
-	  usage_code="TT";
-	  break;
+    case RDCart::UsageTheme:
+      usage_code="TT";
+      break;
 
-	case RDCart::UsageBackground:
-	  usage_code="B ";
-	  break;
+    case RDCart::UsageBackground:
+      usage_code="B ";
+      break;
 
-	case RDCart::UsagePromo:
-	  usage_code="JP";
-	  break;
+    case RDCart::UsagePromo:
+      usage_code="JP";
+      break;
 
-	default:
-	  usage_code="F1";
-	  break;
+    default:
+      usage_code="F1";
+      break;
     }
-    fprintf(f,"FMDT%-40s%2s%-25s%6s01%14s000000001%-40s%-40s%-40s%8s           %12s%2s                      \x0d\x0a",
-	    (const char *)stationId().utf8(),
-	    (const char *)type_code.utf8(),
-	    (const char *)station_format.utf8(),
-	    (const char *)startdate.toString("yyyyMM"),
-	    (const char *)q->value(0).toDateTime().
-	    toString("yyyyMMddhh:mm:ss"),
-	    (const char *)q->value(1).toString().utf8(),
-	    (const char *)q->value(2).toString().utf8(),
-	    (const char *)q->value(3).toString().utf8(),
-	    (const char *)QTime().addMSecs(q->value(4).toInt()).
-	    toString("hh:mm:ss"),
-	    (const char *)q->value(5).toString().utf8(),
-	    (const char *)usage_code.utf8());
+    *strm << QString("FMDT")+
+      LeftJustify(stationId(),40)+
+      type_code+
+      LeftJustify(station_format,25)+
+      startdate.toString("yyyyMM")+"01"+
+      LeftJustify(q->value(0).toDateTime().toString("yyyyMMddhh:mm:ss"),16)+
+      "000000001"+
+      LeftJustify(q->value(1).toString(),40)+
+      LeftJustify(q->value(2).toString(),40)+
+      LeftJustify(q->value(3).toString(),40)+
+      QTime().addMSecs(q->value(4).toInt()).toString("hh:mm:ss")+"           "+
+      RightJustify(q->value(5).toString(),12)+
+      usage_code+"                      \x0d\x0a";
     records++;
   }
   delete q;
@@ -135,9 +141,11 @@ bool RDReport::ExportBmiEmr(const QString &filename,const QDate &startdate,
   //
   // Write TRLR Record
   //
-  fprintf(f,"TRLR%012d                       \x0d\x0a",++records);
+  *strm << QString("TRLR")+
+    QString().sprintf("%012d                       \x0d\x0a",++records);
 
-  fclose(f);
+  delete strm;
+  delete file;
   report_error_code=RDReport::ErrorOk;
   return true;
 }

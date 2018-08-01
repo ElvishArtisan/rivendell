@@ -18,18 +18,15 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <stdio.h>
-
 #include <qfile.h>
-#include <qmessagebox.h>
+#include <qtextstream.h>
 
-#include <rdairplay_conf.h>
-#include <rdconf.h>
-#include <rddatedecode.h>
-#include <rddb.h>
-#include <rdescape_string.h>
-#include <rdlog_line.h>
-#include <rdreport.h>
+#include "rdairplay_conf.h"
+#include "rdconf.h"
+#include "rddb.h"
+#include "rdescape_string.h"
+#include "rdlog_line.h"
+#include "rdreport.h"
 
 bool RDReport::ExportTechnical(const QString &filename,const QDate &startdate,
 			       const QDate &enddate,bool incl_hdr,bool incl_crs,
@@ -37,7 +34,6 @@ bool RDReport::ExportTechnical(const QString &filename,const QDate &startdate,
 {
   QString sql;
   RDSqlQuery *q;
-  FILE *f;
   QString cut;
   QString str;
   QString cart_fmt;
@@ -48,11 +44,14 @@ bool RDReport::ExportTechnical(const QString &filename,const QDate &startdate,
     strcpy(eol,"\r\n");
   }
 
-  QFile file(filename);
-  if((f=fopen((const char *)filename,"w"))==NULL) {
+  QFile *file=new QFile(filename);
+  if(!file->open(IO_WriteOnly|IO_Truncate)) {
     report_error_code=RDReport::ErrorCantOpen;
+    delete file;
     return false;
   }
+  QTextStream *strm=new QTextStream(file);
+  strm->setEncoding(QTextStream::UnicodeUTF8);
   if(useLeadingZeros()) {
     cart_fmt=QString().sprintf("%%0%uu",cartDigits());
   }
@@ -86,21 +85,16 @@ bool RDReport::ExportTechnical(const QString &filename,const QDate &startdate,
   //
   if(incl_hdr) {
     if(startdate==enddate) {
-      fprintf(f,"           Rivendell RDAirPlay Technical Playout Report for %s%s",
-	      (const char *)startdate.toString("MM/dd/yyyy"),eol);
+      *strm << Center("Rivendell RDAirPlay Technical Playout Report for "+
+		      startdate.toString("MM/dd/yyyy"),96)+eol;
     }
     else {
-      fprintf(f,"      Rivendell RDAirPlay Technical Playout Report for %s - %s%s",
-	      (const char *)startdate.toString("MM/dd/yyyy"),
-	      (const char *)enddate.toString("MM/dd/yyyy"),eol);
+      *strm << Center("Rivendell RDAirPlay Technical Playout Report for "+
+		      startdate.toString("MM/dd/yyyy")+" - "+
+		      enddate.toString("MM/dd/yyyy"),96)+eol;
     }
-    str=QString().sprintf("%s -- %s%s",(const char *)name(),
-			  (const char *)description(),eol);
-    for(unsigned i=0;i<(80-str.length())/2;i++) {
-      fprintf(f," ");
-    }
-    fprintf(f,"%s%s",(const char *)str,eol);
-    fprintf(f,"--Time--  -Cart-  Cut  --Title----------------  A-Len  N-Len  --Host----  Srce  StartedBy  OnAir%s",eol);
+    *strm << Center(name()+" -- "+description(),96)+eol;
+    *strm << QString("--Time--  -Cart-  Cut  --Title----------------  A-Len  N-Len  --Host----  Srce  StartedBy  OnAir")+eol;
   }
 
   //
@@ -120,53 +114,51 @@ bool RDReport::ExportTechnical(const QString &filename,const QDate &startdate,
       }
     }
     cart_num=QString().sprintf(cart_fmt,q->value(1).toUInt());
-    fprintf(f,"%8s  %6s  %3s  %-23s  %5s  %5s  %-10s  ",
-	    (const char *)q->value(2).toTime().toString("hh:mm:ss"),
-	    (const char *)cart_num,
-	    (const char *)cut,
-	    (const char *)q->value(8).toString().left(23),
-	    (const char *)RDGetTimeLength(q->value(0).toInt(),true,false).
-	    right(5),
-	    (const char *)RDGetTimeLength(q->value(9).toInt(),true,false).
-	    right(5),
-	    (const char *)q->value(10).toString());
+    *strm << q->value(2).toTime().toString("hh:mm:ss")+"  ";
+    *strm << cart_num+"  ";
+    *strm << cut+"  ";
+    *strm << LeftJustify(q->value(8).toString(),23)+"  ";
+    *strm << RDGetTimeLength(q->value(0).toInt(),true,false).right(5)+"  ";
+    *strm << RDGetTimeLength(q->value(9).toInt(),true,false).right(5)+"  ";
+    *strm << LeftJustify(q->value(10).toString(),10)+"  ";
     switch((RDLogLine::PlaySource)q->value(11).toInt()) {
-	case RDLogLine::MainLog:
-	  fprintf(f,"Main   ");
-	  break;
+    case RDLogLine::MainLog:
+      *strm << "Main   ";
+      break;
 
-	case RDLogLine::AuxLog1:
-	  fprintf(f,"Aux1   ");
-	  break;
+    case RDLogLine::AuxLog1:
+      *strm << "Aux1   ";
+      break;
 
-	case RDLogLine::AuxLog2:
-	  fprintf(f,"Aux2   ");
-	  break;
+    case RDLogLine::AuxLog2:
+      *strm << "Aux2   ";
+      break;
 
-	case RDLogLine::SoundPanel:
-	  fprintf(f,"SPnl   ");
-	  break;
+    case RDLogLine::SoundPanel:
+      *strm << "SPnl    ";
+      break;
 
-	case RDLogLine::CartSlot:
-	  fprintf(f,"Slot   ");
-	  break;
+    case RDLogLine::CartSlot:
+      *strm << "Slot   ";
+      break;
 
-	default:
-	  fprintf(f,"       ");
-	  break;
+    default:
+      *strm << "       ";
+      break;
     }
-    fprintf(f,"%-7s  ",(const char *)RDLogLine::
-	    startSourceText((RDLogLine::StartSource)q->value(13).toInt()));
+    *strm << LeftJustify(RDLogLine::startSourceText((RDLogLine::StartSource)q->value(13).toInt()),7)+"  ";
     if(q->value(14).toString()=="Y") {
-      fprintf(f,"  Yes ");
+      *strm << "  Yes ";
     }
     else {
-      fprintf(f,"  No  ");
+      *strm << "  No  ";
     }
-    fprintf(f,"%s",eol);
+    *strm << eol;
   }
   delete q;
-  fclose(f);
+
+  delete strm;
+  delete file;
   report_error_code=RDReport::ErrorOk;
   return true;
 }

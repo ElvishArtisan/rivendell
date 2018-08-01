@@ -18,19 +18,17 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <stdio.h>
-
 #include <qfile.h>
 #include <qmessagebox.h>
+#include <qtextstream.h>
 
-#include <rdairplay_conf.h>
-#include <rdconf.h>
-#include <rddatedecode.h>
-#include <rddb.h>
-#include <rdescape_string.h>
-#include <rdlog_line.h>
-#include <rdreport.h>
-
+#include "rdairplay_conf.h"
+#include "rdconf.h"
+#include "rddatedecode.h"
+#include "rddb.h"
+#include "rdescape_string.h"
+#include "rdlog_line.h"
+#include "rdreport.h"
 
 bool RDReport::ExportMusicSummary(const QString &filename,
 				  const QDate &startdate,const QDate &enddate,
@@ -38,15 +36,17 @@ bool RDReport::ExportMusicSummary(const QString &filename,
 {
   QString sql;
   RDSqlQuery *q;
-  FILE *f;
   QString cut;
   QString str;
 
-  QFile file(filename);
-  if((f=fopen((const char *)filename,"w"))==NULL) {
+  QFile *file=new QFile(filename);
+  if(!file->open(IO_WriteOnly|IO_Truncate)) {
     report_error_code=RDReport::ErrorCantOpen;
+    delete file;
     return false;
   }
+  QTextStream *strm=new QTextStream(file);
+  strm->setEncoding(QTextStream::UnicodeUTF8);
   sql=QString("select ")+
     "ELR_LINES.ARTIST,"+  // 00
     "ELR_LINES.TITLE,"+   // 01
@@ -61,36 +61,32 @@ bool RDReport::ExportMusicSummary(const QString &filename,
   // Write File Header
   //
   if(startdate==enddate) {
-    fprintf(f,"            Rivendell RDAirPlay Music Summary Report for %s\n",
-	    (const char *)startdate.toString("MM/dd/yyyy"));
+    *strm << Center(QString("Rivendell RDAirPlay Music Summary Report for ")+
+		    startdate.toString("MM/dd/yyyy"),75)+"\n";
   }
   else {
-    fprintf(f,"       Rivendell RDAirPlay Music Summary Report for %s - %s\n",
-	    (const char *)startdate.toString("MM/dd/yyyy"),
-	    (const char *)enddate.toString("MM/dd/yyyy"));
+    *strm << Center(QString("Rivendell RDAirPlay Music Summary Report for ")+
+		    startdate.toString("MM/dd/yyyy")+" - "+
+		    enddate.toString("MM/dd/yyyy"),75)+"\n";
   }
-  str=QString().sprintf("%s -- %s\n",(const char *)name(),
-			(const char *)description());
-  for(unsigned i=0;i<(80-str.length())/2;i++) {
-    fprintf(f," ");
-  }
-  fprintf(f,"%s\n",(const char *)str);
+  *strm << Center(name()+" -- "+description(),75)+"\n";
 
   //
   // Write Data Rows
   //
   while(q->next()) {
     if(!q->value(0).toString().isEmpty()) {
-      fprintf(f,"%s - ",(const char *)q->value(0).toString());
+      *strm << q->value(0).toString()+" - ";
     }
-    fprintf(f,"%s",(const char *)q->value(1).toString());
+    *strm << q->value(1).toString();
     if(!q->value(2).toString().isEmpty()) {
-      fprintf(f," [%s]",(const char *)q->value(2).toString());
+      *strm << QString("[")+q->value(2).toString()+"]";
     }
-    fprintf(f,"\n");
+    *strm << "\n";
   }
   delete q;
-  fclose(f);
+  delete strm;
+  delete file;
   report_error_code=RDReport::ErrorOk;
   return true;
 }

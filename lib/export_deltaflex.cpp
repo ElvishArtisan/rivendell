@@ -25,30 +25,30 @@
 #define CBSI_STATION_ID 1
 #define CBSI_SCHED_FLAG "C"
 
-#include <stdio.h>
-
 #include <qfile.h>
 #include <qmessagebox.h>
+#include <qtextstream.h>
 
-#include <rddatedecode.h>
-#include <rddb.h>
-#include <rdescape_string.h>
-#include <rdreport.h>
+#include "rddatedecode.h"
+#include "rddb.h"
+#include "rdescape_string.h"
+#include "rdreport.h"
 
 bool RDReport::ExportDeltaflex(const QString &filename,const QDate &startdate,
 			       const QDate &enddate,const QString &mixtable)
 {
   QString sql;
   RDSqlQuery *q;
-  FILE *f;
   QString air_fmt;
 
-  QFile file(filename);
-  if((f=fopen((const char *)filename,"wb"))==NULL) {
+  QFile *file=new QFile(filename);
+  if(!file->open(IO_WriteOnly|IO_Truncate)) {
     report_error_code=RDReport::ErrorCantOpen;
+    delete file;
     return false;
   }
-
+  QTextStream *strm=new QTextStream(file);
+  strm->setEncoding(QTextStream::UnicodeUTF8);
   if(useLeadingZeros()) {
     air_fmt=QString().sprintf("%%0%uu",cartDigits());
   }
@@ -80,12 +80,12 @@ bool RDReport::ExportDeltaflex(const QString &filename,const QDate &startdate,
   if(station_id>99) {
     station_id=0;
   }
-  fprintf(f,"Air Log for CBSI %03d|%s|%02u|%05d|%s|\x0d\x0a",
-	  CBSI_DELTAFLEX_VERSION,
-	  (const char *)startdate.toString("yy/MM/dd"),
-	  station_id,
-	  q->size(),
-	  CBSI_SCHED_FLAG);
+  *strm << QString("Air Log for CBSI ");
+  *strm << QString().sprintf("%03d|",CBSI_DELTAFLEX_VERSION);
+  *strm << startdate.toString("yy/MM/dd");
+  *strm << QString().sprintf("|%02u|",station_id);
+  *strm << QString().sprintf("%05d|",q->size());
+  *strm << QString(CBSI_SCHED_FLAG)+"|\x0d\x0a";
 
   //
   // Write Data Rows
@@ -151,21 +151,21 @@ bool RDReport::ExportDeltaflex(const QString &filename,const QDate &startdate,
     air_cartnum=QString().sprintf(air_fmt,q->value(1).toUInt());
     tfc_cartnum=q->value(10).toString();
 
-    fprintf(f,"%s|%4s|%-29s|%-12s|%-12s|%s|%s|%8s|%-3s|  |                |%4s|\x0d\x0a",
-	    (const char *)q->value(2).toDateTime().toString("hhmm"),
-	    (const char *)tfc_time,
-	    (const char *)cart_title,
-	    (const char *)air_cartnum,
-	    (const char *)tfc_cartnum,
-	    (const char *)play_length,
-	    (const char *)tfc_length,
-	    (const char *)ext_data,
-	    (const char *)q->value(8).toString(),
-	    (const char *)q->value(7).toString());
+    *strm << q->value(2).toDateTime().toString("hhmm")+"|";
+    *strm << LeftJustify(tfc_time,4)+"|";
+    *strm << LeftJustify(cart_title,29)+"|";
+    *strm << LeftJustify(air_cartnum,12)+"|";
+    *strm << LeftJustify(tfc_cartnum,12)+"|";
+    *strm << play_length+"|";
+    *strm << tfc_length+"|";
+    *strm << LeftJustify(ext_data,8)+"|";
+    *strm << LeftJustify(q->value(8).toString(),3)+"|  |                |";
+    *strm << LeftJustify(q->value(7).toString(),4)+"|\x0d\x0a";
   }
 
   delete q;
-  fclose(f);
+  delete strm;
+  delete file;
   report_error_code=RDReport::ErrorOk;
   return true;
 }

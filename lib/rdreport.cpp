@@ -848,14 +848,38 @@ QString RDReport::errorText(RDReport::ErrorCode code)
 }
 
 
-QString RDReport::StringField(const QString &str,const QString &null_text) const
+QString RDReport::LeftJustify(const QString &str,int width) const
 {
-  QString ret=null_text;
+  QString ret=str.left(width);
 
-  if(!str.isEmpty()) {
-    ret=str;
+  while(ret.length()<(unsigned)width) {
+    ret+=" ";
   }
 
+  return ret;
+}
+
+
+QString RDReport::RightJustify(const QString &str,int width) const
+{
+  QString ret=str.left(width);
+
+  while(ret.length()<(unsigned)width) {
+    ret=" "+ret;
+  }
+
+  return ret;
+}
+
+
+QString RDReport::Center(const QString &str,int width) const
+{
+  QString ret=str.left(width);
+
+  int margin=(width-ret.length())/2;
+  for(int i=0;i<margin;i++) {
+    ret=" "+ret;
+  }
   return ret;
 }
 

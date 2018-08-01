@@ -18,27 +18,25 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <stdio.h>
-
 #include <map>
 
 #include <qfile.h>
 #include <qmessagebox.h>
+#include <qtextstream.h>
 
-#include <rdairplay_conf.h>
-#include <rdconf.h>
-#include <rddatedecode.h>
-#include <rddb.h>
-#include <rdescape_string.h>
-#include <rdlog_line.h>
-#include <rdreport.h>
+#include "rdairplay_conf.h"
+#include "rdconf.h"
+#include "rddatedecode.h"
+#include "rddb.h"
+#include "rdescape_string.h"
+#include "rdlog_line.h"
+#include "rdreport.h"
 
 bool RDReport::ExportSpinCount(const QString &filename,const QDate &startdate,
 			       const QDate &enddate,const QString &mixtable)
 {
   QString sql;
   RDSqlQuery *q;
-  FILE *f;
   QString cut;
   QString str;
   QString cart_fmt;
@@ -49,11 +47,14 @@ bool RDReport::ExportSpinCount(const QString &filename,const QDate &startdate,
   std::map<unsigned,QString> labels;
   std::map<unsigned,QString> albums;
 
-  QFile file(filename);
-  if((f=fopen((const char *)filename,"w"))==NULL) {
+  QFile *file=new QFile(filename);
+  if(!file->open(IO_WriteOnly|IO_Truncate)) {
     report_error_code=RDReport::ErrorCantOpen;
+    delete file;
     return false;
   }
+  QTextStream *strm=new QTextStream(file);
+  strm->setEncoding(QTextStream::UnicodeUTF8);
   if(useLeadingZeros()) {
     cart_fmt=QString().sprintf("%%0%uu",cartDigits());
   }
@@ -86,36 +87,31 @@ bool RDReport::ExportSpinCount(const QString &filename,const QDate &startdate,
   // Write File Header
   //
   if(startdate==enddate) {
-    fprintf(f,"                                          Rivendell Spin Count Report for %s\n",
-	    (const char *)startdate.toString("MM/dd/yyyy"));
+    *strm << Center(QString("Rivendell Spin Count Report for ")+
+		    startdate.toString("MM/dd/yyyy"),132)+"\n";
   }
   else {
-    fprintf(f,"                                     Rivendell Spin Count Report for %s - %s\n",
-	    (const char *)startdate.toString("MM/dd/yyyy"),
-	    (const char *)enddate.toString("MM/dd/yyyy"));
+    *strm << Center(QString("Rivendell Spin Count Report for ")+
+		    startdate.toString("MM/dd/yyyy")+" - "+
+		    enddate.toString("MM/dd/yyyy"),132)+"\n";
   }
-  str=QString().sprintf("%s -- %s\n",(const char *)name(),
-			(const char *)description());
-  for(unsigned i=0;i<(132-str.length())/2;i++) {
-    fprintf(f," ");
-  }
-  fprintf(f,"%s\n",(const char *)str);
-  //  fprintf(f,"------------------------------------------------------------------------------------------------------------------------------------\n");
-  fprintf(f,"--Title------------------------ --Artist----------------------- --Album------------------------ --Label----------------------- Spins\n");
+  *strm << Center(name()+" -- "+description(),132)+"\n";
+  *strm << "--Title------------------------ --Artist----------------------- --Album------------------------ --Label----------------------- Spins\n";
 
   //
   // Write Data Rows
   //
   for(std::map<unsigned,unsigned>::const_iterator it=carts.begin();
       it!=carts.end();it++) {
-    fprintf(f,"%-30s  %-30s  %-30s  %-29s  %5u\n",
-	    (const char *)titles[it->first],
-	    (const char *)artists[it->first],
-	    (const char *)albums[it->first],
-	    (const char *)labels[it->first],
-	    it->second);
+    *strm << LeftJustify(titles[it->first],30)+"  ";
+    *strm << LeftJustify(artists[it->first],30)+"  ";
+    *strm << LeftJustify(albums[it->first],30)+"  ";
+    *strm << LeftJustify(labels[it->first],29)+"  ";
+    *strm << QString().sprintf("%5u",it->second);
+    *strm << "\n";
   }
-  fclose(f);
+  delete strm;
+  delete file;
   report_error_code=RDReport::ErrorOk;
   return true;
 }

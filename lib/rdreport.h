@@ -95,6 +95,9 @@ class RDReport
   static QString errorText(RDReport::ErrorCode code);
 
  private:
+  QString LeftJustify(const QString &str,int width) const;
+  QString RightJustify(const QString &str,int width) const;
+  QString Center(const QString &str,int width) const;
   bool ExportDeltaflex(const QString &filename,const QDate &startdate,
 		       const QDate &enddate,const QString &mixtable);
   bool ExportTextLog(const QString &filename,const QDate &startdate,
@@ -120,7 +123,6 @@ class RDReport
 		       const QDate &enddate,const QString &mixtable);
   bool ExportCutLog(const QString &filename,const QDate &startdate,
 		    const QDate &enddate,const QString &mixtable);
-  QString StringField(const QString &str,const QString &null_text="") const;
   void SetRow(const QString &param,const QString &value) const;
   void SetRow(const QString &param,int value) const;
   void SetRow(const QString &param,unsigned value) const;

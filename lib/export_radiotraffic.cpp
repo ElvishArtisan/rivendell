@@ -18,16 +18,15 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <stdio.h>
-
 #include <qfile.h>
 #include <qmessagebox.h>
+#include <qtextstream.h>
 
-#include <rddb.h>
-#include <rdconf.h>
-#include <rddatedecode.h>
-#include <rdescape_string.h>
-#include <rdreport.h>
+#include "rddb.h"
+#include "rdconf.h"
+#include "rddatedecode.h"
+#include "rdescape_string.h"
+#include "rdreport.h"
 
 bool RDReport::ExportRadioTraffic(const QString &filename,
 				  const QDate &startdate,const QDate &enddate,
@@ -35,15 +34,16 @@ bool RDReport::ExportRadioTraffic(const QString &filename,
 {
   QString sql;
   RDSqlQuery *q;
-  FILE *f;
   QString air_fmt;
 
-  QFile file(filename);
-  if((f=fopen((const char *)filename,"wb"))==NULL) {
+  QFile *file=new QFile(filename);
+  if(!file->open(IO_WriteOnly|IO_Truncate)) {
     report_error_code=RDReport::ErrorCantOpen;
+    delete file;
     return false;
   }
-
+  QTextStream *strm=new QTextStream(file);
+  strm->setEncoding(QTextStream::UnicodeUTF8);
   if(useLeadingZeros()) {
     air_fmt=QString().sprintf("%%0%uu ",cartDigits());
   }
@@ -72,37 +72,29 @@ bool RDReport::ExportRadioTraffic(const QString &filename,
   // Write Data Rows
   //
   while(q->next()) {
-    fprintf(f,"%s ",(const char *)q->value(4).toTime().toString("hh:mm:ss"));
-    fprintf(f,"%s ",(const char *)q->value(2).toDateTime().
-	    toString("hh:mm:ss"));
+    *strm << q->value(4).toTime().toString("hh:mm:ss")+" ";
+    *strm << q->value(2).toDateTime().toString("hh:mm:ss")+" ";
     if(q->value(5).toInt()>0) {
-      fprintf(f,"0%s ",(const char *)RDGetTimeLength(q->value(5).toInt(),
-						     true,false));
+      *strm << RDGetTimeLength(q->value(5).toInt(),true,false)+" ";
     }
     else {
-      fprintf(f,"00:00:00 ");
+      *strm << "00:00:00 ";
     }
     if(q->value(0).toInt()>0) {
-      fprintf(f,"0%s ",(const char *)RDGetTimeLength(q->value(0).toInt(),
-						     true,false));
+      *strm << QString("0")+RDGetTimeLength(q->value(0).toInt(),true,false)+" ";
     }
     else {
-      fprintf(f,"00:00:00 ");
+      *strm << "00:00:00 ";
     }
-    fprintf(f,air_fmt,q->value(1).toUInt());
-    fprintf(f,"%-34s ",(const char *)q->value(9).toString().left(34));
-    if(q->value(6).toString().isEmpty()) {
-      fprintf(f,"                                ");
-    }
-    else {
-      fprintf(f,"%-32s",(const char *)q->value(6).toString().left(32).
-	      stripWhiteSpace());
-    }
-    fprintf(f,"\x0d\x0a");
+    *strm << QString().sprintf(air_fmt,q->value(1).toUInt());
+    *strm << LeftJustify(q->value(9).toString(),34)+" ";
+    *strm << LeftJustify(q->value(6).toString(),32);
+    *strm << "\x0d\x0a";
   }
 
   delete q;
-  fclose(f);
+  delete strm;
+  delete file;
   report_error_code=RDReport::ErrorOk;
 
   return true;

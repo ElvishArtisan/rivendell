@@ -18,25 +18,23 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <stdio.h>
-
 #include <qfile.h>
 #include <qmessagebox.h>
+#include <qtextstream.h>
 
-#include <rdairplay_conf.h>
-#include <rddatedecode.h>
-#include <rddb.h>
-#include <rdescape_string.h>
-#include <rdget_ath.h>
-#include <rdlog_line.h>
-#include <rdreport.h>
+#include "rdairplay_conf.h"
+#include "rddatedecode.h"
+#include "rddb.h"
+#include "rdescape_string.h"
+#include "rdget_ath.h"
+#include "rdlog_line.h"
+#include "rdreport.h"
 
 bool RDReport::ExportSoundEx(const QString &filename,const QDate &startdate,
 			     const QDate &enddate,const QString &mixtable)
 {
   QString sql;
   RDSqlQuery *q;
-  FILE *f;
   unsigned cartnum=0;
   QString artist;
   QString title;
@@ -58,15 +56,19 @@ bool RDReport::ExportSoundEx(const QString &filename,const QDate &startdate,
     return false;
   }
 
-  if((f=fopen((const char *)filename,"w"))==NULL) {
+  QFile *file=new QFile(filename);
+  if(!file->open(IO_WriteOnly|IO_Truncate)) {
     report_error_code=RDReport::ErrorCantOpen;
+    delete file;
     return false;
   }
+  QTextStream *strm=new QTextStream(file);
+  strm->setEncoding(QTextStream::UnicodeUTF8);
 
   //
   // Generate Header
   //
-  fprintf(f,"\"NAME_OF_SERVICE\",\"TRANSMISSION_CATEGORY\",\"FEATURED_ARTIST\",\"SOUND_RECORDING_TITLE\",\"ISRC\",\"ALBUM_TITLE\",\"MARKETING_LABEL\",\"ACTUAL_TOTAL_PERFORMANCES\",\"AGGREGATE_TUNING_HOURS\",\"CHANNEL_OR_PROGRAM_NAME\",\"PLAY_FREQUENCY\"\r\n");
+  *strm << "\"NAME_OF_SERVICE\",\"TRANSMISSION_CATEGORY\",\"FEATURED_ARTIST\",\"SOUND_RECORDING_TITLE\",\"ISRC\",\"ALBUM_TITLE\",\"MARKETING_LABEL\",\"ACTUAL_TOTAL_PERFORMANCES\",\"AGGREGATE_TUNING_HOURS\",\"CHANNEL_OR_PROGRAM_NAME\",\"PLAY_FREQUENCY\"\r\n";
 
   //
   // Roll Up Records
@@ -88,18 +90,17 @@ bool RDReport::ExportSoundEx(const QString &filename,const QDate &startdate,
     }
     else {
       if(cartnum!=0) {
-	fprintf(f,
-	 "\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",,%9.2lf,\"%s\",%d\n",
-		(const char *)service_name,
-		(const char *)trans_category,
-		(const char *)artist,
-		(const char *)title,
-		(const char *)isrc,
-		(const char *)album,
-		(const char *)label,
-		ath,
-		(const char *)channel_name,
-		plays);
+	*strm << QString("\"")+service_name+"\",";
+	*strm << QString("\"")+trans_category+"\",";
+	*strm << QString("\"")+artist+"\",";
+	*strm << QString("\"")+title+"\",";
+	*strm << QString("\"")+isrc+"\",";
+	*strm << QString("\"")+album+"\",";
+	*strm << QString("\"")+label+"\",,";
+	*strm << QString().sprintf("%9.2f,",ath);
+	*strm << QString("\"")+channel_name+"\",";
+	*strm << QString().sprintf("%d",plays);
+	*strm << "\n";
       }
       plays=1;
       if(q->value(1).isNull()) {
@@ -132,20 +133,20 @@ bool RDReport::ExportSoundEx(const QString &filename,const QDate &startdate,
   }
   delete q;
   if(cartnum!=0) {
-    fprintf(f,
-	"\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",,%9.2lf,\"%s\",%d\n",
-	    (const char *)service_name,
-	    (const char *)trans_category,
-	    (const char *)artist,
-	    (const char *)title,
-	    (const char *)isrc,
-	    (const char *)album,
-	    (const char *)label,
-	    ath,
-	    (const char *)channel_name,
-	    plays);
+    *strm << QString("\"")+service_name+"\",";
+    *strm << QString("\"")+trans_category+"\",";
+    *strm << QString("\"")+artist+"\",";
+    *strm << QString("\"")+title+"\",";
+    *strm << QString("\"")+isrc+"\",";
+    *strm << QString("\"")+album+"\",";
+    *strm << QString("\"")+label+"\",,";
+    *strm << QString().sprintf("%9.2f,",ath);
+    *strm << QString("\"")+channel_name+"\",";
+    *strm << QString().sprintf("%d",plays);
+    *strm << "\n";
   }
-  fclose(f);
+  delete strm;
+  delete file;
   report_error_code=RDReport::ErrorOk;
   return true;
 }
