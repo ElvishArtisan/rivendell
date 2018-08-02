@@ -35,6 +35,7 @@
 #include <rdcart.h>
 #include <rddb.h>
 #include <rdescape_string.h>
+#include <rdreport.h>
 #include <rdtextfile.h>
 
 #include "add_group.h"
@@ -304,7 +305,7 @@ void ListGroups::reportData()
   //
   // Generate Header
   //
-  report="                                  Rivendell Group Report\n";
+  report=RDReport::center("Rivendell Group Report",94)+"\n";
   report+=QString("Generated: ")+
     QDateTime::currentDateTime().toString("MM/dd/yyyy - hh:mm:ss")+"\n";
   report+="\n";
@@ -329,12 +330,12 @@ void ListGroups::reportData()
     //
     // Group Name
     //
-    report+=QString().sprintf("%-10s ",(const char *)q->value(0).toString());
+    report+=RDReport::leftJustify(q->value(0).toString(),10)+" ";
 
     //
     // Group Description
     //
-    report+=QString().sprintf("%-44s ",(const char *)q->value(1).toString());
+    report+=RDReport::leftJustify(q->value(1).toString(),44)+" ";
 
     //
     // Cart Range
@@ -350,7 +351,7 @@ void ListGroups::reportData()
     //
     // Enforce Range
     //
-    report+=QString().sprintf(" %s  ",(const char *)q->value(4).toString());
+    report+=QString(" ")+q->value(4).toString()+"  ";
 
     //
     // Default Cart Type
@@ -372,17 +373,17 @@ void ListGroups::reportData()
     //
     // Music Reports
     //
-    report+=QString().sprintf(" %s  ",(const char *)q->value(6).toString());
+    report+=QString(" ")+q->value(6).toString()+"  ";
     
     //
     // Traffic Reports
     //
-    report+=QString().sprintf(" %s  ",(const char *)q->value(7).toString());
+    report+=QString(" ")+q->value(7).toString()+"  ";
     
     //
     // Now & Next
     //
-    report+=QString().sprintf(" %s",(const char *)q->value(8).toString());
+    report+=QString(" ")+q->value(8).toString();
 
     //
     // End of Line
