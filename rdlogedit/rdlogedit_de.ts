@@ -706,7 +706,7 @@ Gruppe des ausgewählten Service!</translation>
     <name>ListReports</name>
     <message>
         <source>RDLibrary Reports</source>
-        <translation>RDLibrary Reports</translation>
+        <translation type="obsolete">RDLibrary Reports</translation>
     </message>
     <message>
         <source>Log Listing</source>
@@ -747,6 +747,10 @@ Gruppe des ausgewählten Service!</translation>
     <message>
         <source>&amp;Select</source>
         <translation>Au&amp;swählen</translation>
+    </message>
+    <message>
+        <source>Reports</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

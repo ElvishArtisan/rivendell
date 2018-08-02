@@ -2,7 +2,7 @@
 //
 // List and Generate Log Reports
 //
-//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2006,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,18 +18,15 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qpushbutton.h>
-#include <qlabel.h>
-#include <qsqldatabase.h>
 #include <qmessagebox.h>
 
 #include <rdconf.h>
-#include <rdtextfile.h>
 #include <rddatedialog.h>
+#include <rdreport.h>
+#include <rdtextfile.h>
 
-#include <globals.h>
-#include <list_reports.h>
+#include "globals.h"
+#include "list_reports.h"
 
 ListReports::ListReports(const QString &logname,const QString &description,
 			 const QString service_name,const QDate &start_date,
@@ -53,7 +50,7 @@ ListReports::ListReports(const QString &logname,const QString &description,
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  setCaption(tr("RDLibrary Reports"));
+  setCaption("RDLogEdit - "+tr("Reports"));
 
   //
   // Create Fonts
@@ -187,18 +184,16 @@ void ListReports::GenerateLogReport(QString *report)
   if(!list_end_date.isNull()) {
     end_date=list_end_date.toString("MM/dd/yyyy");
   }
-  *report="                                                     Rivendell Log Listing\n";
-  *report+=QString().
-    sprintf("Generated: %s                        Log: %-30s  Description: %s\n",
-	    (const char *)QDateTime(QDate::currentDate(),QTime::currentTime()).
-	    toString("MM/dd/yyyy - hh:mm:ss"),
-	    (const char *)list_log_name.left(30),
-	    (const char *)list_description.left(27));
-  *report+=QString().
-    sprintf("Service: %-10s          AutoRefresh Enabled: %-3s   Start Date: %-10s               End Date: %s\n",
-	    (const char *)list_service_name,
-	    (const char *)refresh,
-	    (const char *)start_date,(const char *)end_date);
+  *report=RDReport::center("Rivendell Log Listing",132)+"\n";
+  //  *report="                                                     Rivendell Log Listing\n";
+  *report+=QString("Generated: ")+
+    QDateTime::currentDateTime().toString("MM/dd/yyyy")+"                        Log: "+
+    RDReport::leftJustify(list_log_name,30)+
+    "  Description: "+RDReport::leftJustify(list_description,27)+"\n";
+  *report+=QString("Service: ")+RDReport::leftJustify(list_service_name,10)+
+    "          AutoRefresh Enabled: "+RDReport::leftJustify(refresh,3)+"   "+
+    RDReport::leftJustify(start_date,10)+"               "+end_date+"\n";
+
   *report+="\n";
   *report+="-Type-- -Time---- Trans -Cart- -Group---- -Length- -Title--------------------------- -Artist----------------------- -Source----- Line\n";
 
@@ -212,8 +207,7 @@ void ListReports::GenerateLogReport(QString *report)
     //
     // Type
     //
-    *report+=QString().sprintf("%-7s ",
-	       (const char *)RDLogLine::typeText(logline->type()));
+    *report+=RDReport::leftJustify(RDLogLine::typeText(logline->type()),7)+" ";
 
     //
     // Time
@@ -225,10 +219,7 @@ void ListReports::GenerateLogReport(QString *report)
       *report+=" ";
     }
     if(!logline->startTime(RDLogLine::Imported).isNull()) {
-      *report+=QString().sprintf("%-8s ",
-				 (const char *)logline->
-				 startTime(RDLogLine::Logged).
-				 toString("hh:mm:ss"));
+      *report+=RDReport::leftJustify(logline->startTime(RDLogLine::Logged).toString("hh:mm:ss"),8)+" ";
     }
     else {
       *report+="         ";
@@ -237,24 +228,16 @@ void ListReports::GenerateLogReport(QString *report)
     //
     // Transition Type
     //
-    *report+=QString().sprintf("%-5s ",
-	  (const char *)RDLogLine::transText(logline->transType()).left(5));
+    *report+=RDReport::leftJustify(RDLogLine::transText(logline->transType()).left(5),5)+" ";
 
     switch(logline->type()) {
     case RDLogLine::Cart:
     case RDLogLine::Macro:
       *report+=QString().sprintf("%06u ",logline->cartNumber());
-      *report+=QString().sprintf("%-10s ",
-				 (const char *)logline->groupName());
-      *report+=QString().sprintf("%8s ",(const char *)
-				 RDGetTimeLength(logline->forcedLength(),
-						 false,false));
-      *report+=
-	QString().sprintf("%-33s ",
-			  (const char *)logline->title().left(33));
-      *report+=
-	QString().sprintf("%-30s ",
-			  (const char *)logline->artist().left(30));
+      *report+=RDReport::leftJustify(logline->groupName(),10)+" ";
+      *report+=RDReport::rightJustify(RDGetTimeLength(logline->forcedLength(),false,false),8)+" ";
+      *report+=RDReport::leftJustify(logline->title(),33)+" ";
+      *report+=RDReport::leftJustify(logline->artist(),30)+" ";
       break;
 
     case RDLogLine::Marker:
@@ -262,9 +245,7 @@ void ListReports::GenerateLogReport(QString *report)
       *report+="       ";
       *report+="           ";
       *report+="     :00 ";
-      *report+=
-	QString().sprintf("%-30s ",
-			  (const char *)logline->markerComment().left(30));
+      *report+=RDReport::leftJustify(logline->markerComment(),30)+" ";
       *report+="                               ";
       break;
 
@@ -289,10 +270,7 @@ void ListReports::GenerateLogReport(QString *report)
       *report+="       ";
       *report+="           ";
       *report+="         ";
-      *report+=
-	QString().sprintf("%-30s ",
-			  (const char *)logline->markerLabel().left(30));
-      *report+="                               ";
+      *report+=RDReport::leftJustify(logline->markerLabel(),30)+" ";
       break;
 
     case RDLogLine::OpenBracket:
@@ -304,8 +282,7 @@ void ListReports::GenerateLogReport(QString *report)
     //
     // Source
     //
-    *report+=QString().sprintf("%-12s ",
-		(const char *)RDLogLine::sourceText(logline->source()));
+    *report+=RDReport::leftJustify(RDLogLine::sourceText(logline->source()),12)+" ";
 
     //
     // Line

@@ -51,6 +51,7 @@
 #include <rdescape_string.h>
 #include <rdloglock.h>
 #include <rdmixer.h>
+#include <rdreport.h>
 #include <rdstation.h>
 #include <rdtextfile.h>
 
@@ -548,20 +549,28 @@ void MainWidget::reportData()
   //
   // Generate Header
   //
-  report="                                                     Rivendell Log Listing\n";
-  report+=QString().
-    sprintf("Generated: %s\n",
-	    (const char *)QDateTime(QDate::currentDate(),QTime::currentTime()).
-	    toString("MM/dd/yyyy - hh:mm:ss"));
+  report=RDReport::center("Rivendell Log Listing",132)+"\n";
+  report+=QString("Generated: ")+QDateTime::currentDateTime().toString("MM/dd/yyyy - hh:mm:ss")+"\n";
   report+="\n";
   report+="Rdy -Log Name-------------------- -Description----------------- -Service------------ Mus Tfc Tracks- Start Date -End Date- -Mod Date-\n";
 
   //
   // Report Body
   //
-  sql="select NAME,DESCRIPTION,SERVICE,MUSIC_LINKS,MUSIC_LINKED,\
-       TRAFFIC_LINKS,TRAFFIC_LINKED,COMPLETED_TRACKS,SCHEDULED_TRACKS,\
-       START_DATE,END_DATE,MODIFIED_DATETIME from LOGS order by NAME";
+  sql=QString("select ")+
+    "NAME,"+               // 00
+    "DESCRIPTION,"+        // 01
+    "SERVICE,"+            // 02
+    "MUSIC_LINKS,"+        // 03
+    "MUSIC_LINKED,"+       // 04
+    "TRAFFIC_LINKS,"+      // 05
+    "TRAFFIC_LINKED,"+     // 06
+    "COMPLETED_TRACKS,"+   // 07
+    "SCHEDULED_TRACKS,"+   // 08
+    "START_DATE,"+         // 09
+    "END_DATE,"+           // 10
+    "MODIFIED_DATETIME "+  // 11
+    "from LOGS order by NAME ";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     //
@@ -579,27 +588,23 @@ void MainWidget::reportData()
     //
     // Log Name
     //
-    report+=QString().sprintf("%-29s ",
-			      (const char *)q->value(0).toString().left(29));
+    report+=RDReport::leftJustify(q->value(0).toString(),29)+" ";
     
     //
     // Description
     //
-    report+=QString().sprintf("%-29s ",
-			      (const char *)q->value(1).toString().left(29));
+    report+=RDReport::leftJustify(q->value(1).toString(),29)+" ";
 
     //
     // Service
     //
-    report+=QString().sprintf("%-20s ",
-			      (const char *)q->value(2).toString().left(20));
+    report+=RDReport::leftJustify(q->value(2).toString(),20)+" ";
 
     //
     // Music Linked
     //
     if(q->value(3).toInt()>0) {
-      report+=QString().sprintf(" %s  ",
-				(const char *)q->value(4).toString());
+      report+=QString(" ")+q->value(4).toString()+"  ";
     }
     else {
       report+="n/a ";
@@ -609,8 +614,7 @@ void MainWidget::reportData()
     // Traffic Linked
     //
     if(q->value(5).toInt()>0) {
-      report+=QString().sprintf(" %s  ",
-				(const char *)q->value(6).toString());
+      report+=QString(" ")+q->value(6).toString()+"  ";
     }
     else {
       report+="n/a ";
@@ -629,8 +633,7 @@ void MainWidget::reportData()
       report+="[none]     ";
     }
     else {
-      report+=QString().sprintf("%s ",
-		(const char *)q->value(9).toDate().toString("MM/dd/yyyy"));
+      report+=q->value(9).toDate().toString("MM/dd/yyyy")+" ";
     }
     
     //
@@ -640,6 +643,7 @@ void MainWidget::reportData()
       report+="[none]     ";
     }
     else {
+      report+=q->value(10).toDate().toString("MM/dd/yyyy")+" ";
       report+=QString().sprintf("%s ",
 	(const char *)q->value(10).toDate().toString("MM/dd/yyyy"));
     }
@@ -647,8 +651,7 @@ void MainWidget::reportData()
     //
     // Last Modified Date
     //
-    report+=QString().sprintf("%s",
-	      (const char *)q->value(11).toDate().toString("MM/dd/yyyy"));
+    report+=q->value(11).toDate().toString("MM/dd/yyyy");
 
     //
     // End of Line

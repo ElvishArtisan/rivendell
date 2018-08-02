@@ -708,7 +708,7 @@ Ação se Evento anterior estiver sendo executado</translation>
     <name>ListReports</name>
     <message>
         <source>RDLibrary Reports</source>
-        <translation>Relatórios da RDBiblio</translation>
+        <translation type="obsolete">Relatórios da RDBiblio</translation>
     </message>
     <message>
         <source>Log Listing</source>
@@ -749,6 +749,10 @@ Ação se Evento anterior estiver sendo executado</translation>
     <message>
         <source>No exceptions found.</source>
         <translation>Exceções não Encontradas.</translation>
+    </message>
+    <message>
+        <source>Reports</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

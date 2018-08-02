@@ -646,10 +646,6 @@ group for the specified service!</source>
 <context>
     <name>ListReports</name>
     <message>
-        <source>RDLibrary Reports</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Log Listing</source>
         <translation type="unfinished"></translation>
     </message>
@@ -687,6 +683,10 @@ group for the specified service!</source>
     </message>
     <message>
         <source>&amp;Select</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reports</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

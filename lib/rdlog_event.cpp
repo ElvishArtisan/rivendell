@@ -28,6 +28,7 @@
 #include "rdescape_string.h"
 #include "rdlog.h"
 #include "rdlog_event.h"
+#include "rdreport.h"
 
 //
 // Global Classes
@@ -199,14 +200,11 @@ int RDLogEvent::validate(QString *report,const QDate &date)
   // Report Header
   //
   *report="Rivendell Log Exception Report\n";
-  *report+=
-    QString().
-    sprintf("Generated at: %s - %s\n",
-	    (const char *)QDate::currentDate().toString("MM/dd/yyyy"),
-	    (const char *)QTime::currentTime().toString("hh:mm:ss"));
-  *report+=QString().sprintf("Log: %s\n",(const char *)log_name);
-  *report+=QString().sprintf("Effective Airdate: %s\n",
-			     (const char *)date.toString("MM/dd/yyyy"));
+  *report=QString("Generated at: ")+
+    QDate::currentDate().toString("MM/dd/yyyy")+" - "+
+    QTime::currentTime().toString("hh:mm:ss")+"\n";
+  *report+=QString("Log: ")+log_name+"\n";
+  *report+=QString("Effective Airdate: ")+date.toString("MM/dd/yyyy")+"\n";
   *report+="\n";
 
   //
@@ -214,15 +212,17 @@ int RDLogEvent::validate(QString *report,const QDate &date)
   //
   for(int i=0;i<size();i++) {
     if(logLine(i)->cartNumber()>0) {
-      sql=QString().sprintf("select TYPE,TITLE from CART where NUMBER=%d",
-			    logLine(i)->cartNumber());
+      sql=QString("select ")+
+	"TYPE,"+   // 00
+	"TITLE "+  // 01
+	"from CART where "+
+	QString().sprintf("NUMBER=%d",logLine(i)->cartNumber());
       q=new RDSqlQuery(sql);
       if(!q->first()) {
-	*report+=QString().
-	  sprintf(" %s - missing cart %06d\n",
-		  (const char *)logLine(i)->startTime(RDLogLine::Logged).
-		  toString("hh:mm:ss"),
-		  logLine(i)->cartNumber());
+	*report+=QString(" ")+
+	  logLine(i)->startTime(RDLogLine::Logged).toString("hh:mm:ss")+
+	  QString().sprintf(" - missing cart %06d",logLine(i)->cartNumber())+
+	  "\n";
 	errs++;
       }
       else {

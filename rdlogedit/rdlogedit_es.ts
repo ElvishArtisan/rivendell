@@ -706,7 +706,7 @@ desactivado para el servicio especificado!</translation>
     <name>ListReports</name>
     <message>
         <source>RDLibrary Reports</source>
-        <translation>Reportes de RDLibrary</translation>
+        <translation type="obsolete">Reportes de RDLibrary</translation>
     </message>
     <message>
         <source>Log Listing</source>
@@ -747,6 +747,10 @@ desactivado para el servicio especificado!</translation>
     <message>
         <source>&amp;Select</source>
         <translation>&amp;Seleccionar</translation>
+    </message>
+    <message>
+        <source>Reports</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

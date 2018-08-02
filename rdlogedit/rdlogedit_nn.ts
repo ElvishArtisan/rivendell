@@ -728,7 +728,7 @@ som er skrudd av for denne tenesta!</translation>
     <name>ListReports</name>
     <message>
         <source>RDLibrary Reports</source>
-        <translation>RDLibrary-rapportar</translation>
+        <translation type="obsolete">RDLibrary-rapportar</translation>
     </message>
     <message>
         <source>Log Listing</source>
@@ -768,6 +768,10 @@ som er skrudd av for denne tenesta!</translation>
     </message>
     <message>
         <source>&amp;Select</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Reports</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

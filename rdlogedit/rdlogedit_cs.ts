@@ -706,7 +706,7 @@ vybrané služby!</translation>
     <name>ListReports</name>
     <message>
         <source>RDLibrary Reports</source>
-        <translation>Zprávy RDLibrary</translation>
+        <translation type="obsolete">Zprávy RDLibrary</translation>
     </message>
     <message>
         <source>Log Listing</source>
@@ -747,6 +747,10 @@ vybrané služby!</translation>
     <message>
         <source>&amp;Select</source>
         <translation>&amp;Vybrat</translation>
+    </message>
+    <message>
+        <source>Reports</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
