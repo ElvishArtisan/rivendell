@@ -383,7 +383,10 @@ void EditPlayout::PopulateDecks(QComboBox *box)
   int count=0;
 
   box->clear();
-  QString sql=QString("select STATION_NAME,CHANNEL from DECKS where ")+
+  QString sql=QString("select ")+
+    "STATION_NAME,"+  // 00
+    "CHANNEL "+       // 01
+    "from DECKS where "+
     "(CARD_NUMBER!=-1)&&"+
     "(PORT_NUMBER!=-1)&&"+
     "(CHANNEL>128) order by STATION_NAME,CHANNEL";

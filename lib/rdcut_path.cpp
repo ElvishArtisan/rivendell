@@ -31,21 +31,20 @@ QString RDCutPath(QString cutname)
   RDCut *cut=new RDCut(cutname); 
   if(!cut->exists()) {
     delete cut;
-    return QString(QObject::tr("UNKNOWN CUT"));
+    return QObject::tr("UNKNOWN CUT");
   }
   RDCart *cart=new RDCart(cut->cartNumber());
 
   if(!cart->exists()) {
     delete cart;
     delete cut;
-    return QString("UNKNOWN CUT");
+    return QObject::tr("UNKNOWN CUT");
   }
   if((cart->title().isEmpty())&&(cut->description().isEmpty())) {
     path=QString();
   }
   else {
-    path=QString().sprintf("%s->%s",(const char *)cart->title(),
-			   (const char *)cut->description());
+    path=cart->title()+"->"+cut->description();
   }
   delete cart;
   delete cut;
