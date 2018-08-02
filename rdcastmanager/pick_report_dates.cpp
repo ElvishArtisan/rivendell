@@ -201,13 +201,9 @@ void PickReportDates::GenerateSubscriptionReport(const QString &keyname,
   //
   // Header
   //
-  *rpt+="                      Rivendell Podcast Subscription Report\n";
-  QString title=feed->channelTitle();
-  for(unsigned i=0;i<((80-title.length())/2);i++) {
-    *rpt+=" ";
-  }
-  *rpt+=title;
-  *rpt+="\n\n";
+  *rpt=RDReport::center("Rivendell Podcast Subscription Report",76)+"\n";
+  *rpt+=RDReport::center(feed->channelTitle(),75)+"\n";
+  *rpt+="\n";
   *rpt+="                                          ----- Downloads -----\n";
   *rpt+="                  Date                    RSS             Audio\n";
   *rpt+="                  ---------------------------------------------\n";
@@ -262,19 +258,9 @@ void PickReportDates::GenerateEpisodeReport(const QString &keyname,
   //
   // Header
   //
-  *rpt+="                       Rivendell Podcast Episode Report\n";
-  QString channel_title=feed->channelTitle();
-  for(unsigned i=0;i<((80-channel_title.length())/2);i++) {
-    *rpt+=" ";
-  }
-  *rpt+=channel_title;
-  *rpt+="\n";
-  QString item_title=cast->itemTitle();
-  for(unsigned i=0;i<((80-item_title.length())/2);i++) {
-    *rpt+=" ";
-  }
-  *rpt+=item_title;
-  *rpt+="\n";
+  *rpt=RDReport::center("Rivendell Podcast Episode Report",76)+"\n";
+  *rpt+=RDReport::center(feed->channelTitle(),76)+"\n";
+  *rpt+=RDReport::center(cast->itemTitle(),76)+"\n";
   *rpt+=QString().sprintf("                       Posted on %s at %s\n\n",
 			  (const char *)cast->originDateTime().
 			  toString("MM/dd/yyyy"),
