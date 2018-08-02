@@ -75,15 +75,15 @@ bool RDReport::ExportMusicPlayout(const QString &filename,
   // Write File Header
   //
   if(startdate==enddate) {
-    *strm << Center(QString("Rivendell RDAirPlay Music Playout Report for ")+
+    *strm << RDReport::center(QString("Rivendell RDAirPlay Music Playout Report for ")+
 		    startdate.toString("MM/dd/yyyy"),144)+"\n";
   }
   else {
-    *strm << Center(QString("Rivendell RDAirPlay Music Playout Report for ")+
+    *strm << RDReport::center(QString("Rivendell RDAirPlay Music Playout Report for ")+
 		    startdate.toString("MM/dd/yyyy")+" - "+
 		    enddate.toString("MM/dd/yyyy"),144)+"\n";
   }
-  *strm << Center(name()+" -- "+description(),144)+"\n";
+  *strm << RDReport::center(name()+" -- "+description(),144)+"\n";
   *strm << "--Time--  -Cart-  Cut  A-Len  --Title-----------------------   --Artist----------------------   --Album------------------   --Label-------------\n";
 
   //
@@ -107,10 +107,10 @@ bool RDReport::ExportMusicPlayout(const QString &filename,
     *strm << cart_num+"  ";
     *strm << cut+"  ";
     *strm << RDGetTimeLength(q->value(0).toInt(),true,false).right(5)+"  ";
-    *strm << LeftJustify(q->value(4).toString(),30)+"   ";
-    *strm << LeftJustify(q->value(6).toString(),30)+"   ";
-    *strm << LeftJustify(q->value(7).toString(),25)+"   ";
-    *strm << LeftJustify(q->value(8).toString(),20)+"\n";
+    *strm << RDReport::leftJustify(q->value(4).toString(),30)+"   ";
+    *strm << RDReport::leftJustify(q->value(6).toString(),30)+"   ";
+    *strm << RDReport::leftJustify(q->value(7).toString(),25)+"   ";
+    *strm << RDReport::leftJustify(q->value(8).toString(),20)+"\n";
   }
   delete q;
   delete strm;

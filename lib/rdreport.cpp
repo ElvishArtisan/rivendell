@@ -848,7 +848,7 @@ QString RDReport::errorText(RDReport::ErrorCode code)
 }
 
 
-QString RDReport::LeftJustify(const QString &str,int width) const
+QString RDReport::leftJustify(const QString &str,int width)
 {
   QString ret=str.left(width);
 
@@ -860,7 +860,7 @@ QString RDReport::LeftJustify(const QString &str,int width) const
 }
 
 
-QString RDReport::RightJustify(const QString &str,int width) const
+QString RDReport::rightJustify(const QString &str,int width)
 {
   QString ret=str.left(width);
 
@@ -872,7 +872,7 @@ QString RDReport::RightJustify(const QString &str,int width) const
 }
 
 
-QString RDReport::Center(const QString &str,int width) const
+QString RDReport::center(const QString &str,int width)
 {
   QString ret=str.left(width);
 

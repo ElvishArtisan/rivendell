@@ -87,8 +87,8 @@ bool RDReport::ExportRadioTraffic(const QString &filename,
       *strm << "00:00:00 ";
     }
     *strm << QString().sprintf(air_fmt,q->value(1).toUInt());
-    *strm << LeftJustify(q->value(9).toString(),34)+" ";
-    *strm << LeftJustify(q->value(6).toString(),32);
+    *strm << RDReport::leftJustify(q->value(9).toString(),34)+" ";
+    *strm << RDReport::leftJustify(q->value(6).toString(),32);
     *strm << "\x0d\x0a";
   }
 

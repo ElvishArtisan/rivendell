@@ -2,7 +2,7 @@
 //
 // List RDLibrary Reports
 //
-//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2006,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,12 +22,13 @@
 #include <qpushbutton.h>
 #include <qstringlist.h>
 
-#include <rddb.h>
 #include <rdapplication.h>
-#include <rdconf.h>
-#include <rdtextfile.h>
-#include <rdcart_search_text.h>
 #include <rdcart.h>
+#include <rdcart_search_text.h>
+#include <rdconf.h>
+#include <rddb.h>
+#include <rdreport.h>
+#include <rdtextfile.h>
 
 #include "globals.h"
 #include "list_reports.h"
@@ -140,24 +141,24 @@ void ListReports::generateData()
   QString report;
 
   switch(list_reports_box->currentItem()) {
-      case 0:  // Cart Report
-	GenerateCartReport(&report);
-	break;
+  case 0:  // Cart Report
+    GenerateCartReport(&report);
+    break;
 
-      case 1:  // Cut Report
-	GenerateCutReport(&report);
-	break;
+  case 1:  // Cut Report
+    GenerateCutReport(&report);
+    break;
 
-      case 2:  // Cart Data Dump (fixed)
-	GenerateCartDumpFixed(&report,list_fieldnames_check->isChecked());
-	break;
+  case 2:  // Cart Data Dump (fixed)
+    GenerateCartDumpFixed(&report,list_fieldnames_check->isChecked());
+    break;
 
-      case 3:  // Cart Data Dump (CSV)
-	GenerateCartDumpCsv(&report,list_fieldnames_check->isChecked());
-	break;
+  case 3:  // Cart Data Dump (CSV)
+    GenerateCartDumpCsv(&report,list_fieldnames_check->isChecked());
+    break;
 
-      default:
-	return;
+  default:
+    return;
   }
   RDTextFile(report);
 }
@@ -186,13 +187,9 @@ void ListReports::GenerateCartReport(QString *report)
   if(list_filter.isEmpty()) {
     filter="[none]";
   }
-  *report="                                                        Rivendell Cart Report\n";
-  *report+=QString().
-    sprintf("Generated: %s     Group: %-10s      Filter: %s\n",
-	    (const char *)QDateTime(QDate::currentDate(),QTime::currentTime()).
-	    toString("MM/dd/yyyy - hh:mm:ss"),
-	    (const char *)list_group.utf8(),(const char *)filter.utf8());
-  *report+="\n";
+  *report=RDReport::center("Rivendell Cart Report",132)+"\n";
+  *report+=RDReport::center(QString("Generated: ")+
+			    QDateTime::currentDateTime().toString("MM/dd/yyyy - hh:mm:ss")+"     Group: "+list_group+"     Filter: "+filter,132)+"\n";
   *report+="Type -Cart- -Group---- -Len- -Title------------------------- -Artist----------------------- Cuts Rot Enf -LenDev -Owner--------------\n";
 
   //
@@ -201,10 +198,20 @@ void ListReports::GenerateCartReport(QString *report)
   if(list_type_filter.isEmpty()) {
     return;
   }
-  sql=QString("select CART.TYPE,CART.NUMBER,CART.GROUP_NAME,")+
-    "CART.FORCED_LENGTH,CART.TITLE,CART.ARTIST,CART.CUT_QUANTITY,"+
-    "CART.PLAY_ORDER,CART.ENFORCE_LENGTH,CART.LENGTH_DEVIATION,CART.OWNER "+
-    "from CART left join CUTS on CART.NUMBER=CUTS.CART_NUMBER";
+  sql=QString("select ")+
+    "CART.TYPE,"+              // 00
+    "CART.NUMBER,"+            // 01
+    "CART.GROUP_NAME,"+        // 02
+    "CART.FORCED_LENGTH,"+     // 03
+    "CART.TITLE,"+             // 04
+    "CART.ARTIST,"+            // 05
+    "CART.CUT_QUANTITY,"+      // 06
+    "CART.PLAY_ORDER,"+        // 07
+    "CART.ENFORCE_LENGTH,"+    // 08
+    "CART.LENGTH_DEVIATION,"+  // 09
+    "CART.OWNER "+             // 10
+    "from CART left join CUTS on "+
+    "CART.NUMBER=CUTS.CART_NUMBER ";
   if(list_group==QString("ALL")) {
     sql+=QString(" where ")+
       RDAllCartSearchText(list_filter,schedcode,rda->user()->name(),true)+" && "+
@@ -221,17 +228,17 @@ void ListReports::GenerateCartReport(QString *report)
     // Cart Type
     //
     switch((RDCart::Type)q->value(0).toInt()) {
-	case RDCart::Audio:
-	  *report+="  A  ";
-	  break;
+    case RDCart::Audio:
+      *report+="  A  ";
+      break;
 
-	case RDCart::Macro:
-	  *report+="  M  ";
-	  break;
+    case RDCart::Macro:
+      *report+="  M  ";
+      break;
 
-	default:
-	  *report+="  ?  ";
-	  break;
+    default:
+      *report+="  ?  ";
+      break;
     }
 
     //
@@ -242,27 +249,22 @@ void ListReports::GenerateCartReport(QString *report)
     //
     // Group
     //
-    *report+=
-      QString().sprintf("%-10s ",(const char *)q->value(2).toString().utf8());
+    *report+=RDReport::leftJustify(q->value(2).toString(),10)+" ";
 
     //
     // Length
     //
-    *report+=
-      QString().sprintf("%5s ",
-	       (const char *)RDGetTimeLength(q->value(3).toInt(),false,false));
+    *report+=RDReport::rightJustify(RDGetTimeLength(q->value(3).toInt(),false,false),5)+" ";
 
     //
     // Title
     //
-    *report+=QString().sprintf("%-31s ",(const char *)q->value(4).toString().
-			       utf8().left(31));
+    *report+=RDReport::leftJustify(q->value(4).toString(),31)+" ";
 
     //
     // Artist
     //
-    *report+=QString().sprintf("%-30s ",(const char *)q->value(5).toString().
-			       utf8().left(30));
+    *report+=RDReport::leftJustify(q->value(5).toString(),30)+" ";
 
     //
     // Cut Quantity
@@ -273,17 +275,17 @@ void ListReports::GenerateCartReport(QString *report)
     // Play Order
     //
     switch((RDCart::PlayOrder)q->value(7).toInt()) {
-	case RDCart::Sequence:
-	  *report+="SEQ ";
-	  break;
+    case RDCart::Sequence:
+      *report+="SEQ ";
+      break;
 
-	case RDCart::Random:
-	  *report+="RND ";
-	  break;
+    case RDCart::Random:
+      *report+="RND ";
+      break;
 
-	default:
-	  *report+="???";
-	  break;
+    default:
+      *report+="??? ";
+      break;
     }
 
     //
@@ -299,19 +301,16 @@ void ListReports::GenerateCartReport(QString *report)
     //
     // Length Deviation
     //
-    *report+=
-      QString().sprintf("%7s ",
-	       (const char *)RDGetTimeLength(q->value(9).toInt(),false,true));
+    *report+=RDReport::rightJustify(RDGetTimeLength(q->value(9).toInt(),false,true),7)+" ";
 
     //
     // Owner
     //
     if(q->value(10).toString().isEmpty()) {
-      *report+="[none]";
+      *report+="[none]    ";
     }
     else {
-      *report+=QString().sprintf("%s",(const char *)q->value(10).toString().
-				 utf8().left(20));
+      *report+=RDReport::leftJustify(q->value(10).toString(),20);
     }
 
     //
@@ -341,13 +340,9 @@ void ListReports::GenerateCutReport(QString *report)
   if(list_filter.isEmpty()) {
     filter="[none]";
   }
-  *report="                                                        Rivendell Cut Report\n";
-  *report+=QString().
-    sprintf("Generated: %s     Group: %-10s      Filter: %s\n",
-	    (const char *)QDateTime(QDate::currentDate(),QTime::currentTime()).
-	    toString("MM/dd/yyyy - hh:mm:ss"),
-	    (const char *)list_group.utf8(),(const char *)filter.utf8());
-  *report+="\n";
+  *report=RDReport::center("Rivendell Cut Report",132)+"\n";
+  *report+=RDReport::center(QString("Generated: ")+
+			    QDateTime::currentDateTime().toString("MM/dd/yyyy - hh:mm:ss")+"     Group: "+list_group+"     Filter: "+filter,132)+"\n";
   *report+="-Cart- Cut Wht -Cart Title-------------- -Description--- -Len- Last Play Plays Start Date End Date -Days of Week- -Daypart-----------\n";
 
   //
@@ -356,11 +351,28 @@ void ListReports::GenerateCutReport(QString *report)
   if(list_type_filter.isEmpty()) {
     return;
   }
-  sql="select CART.NUMBER,CUTS.CUT_NAME,CUTS.WEIGHT,CART.TITLE,\
-       CUTS.DESCRIPTION,CUTS.LENGTH,CUTS.LAST_PLAY_DATETIME,CUTS.PLAY_COUNTER,\
-       CUTS.START_DATETIME,CUTS.END_DATETIME,SUN,MON,TUE,WED,THU,FRI,SAT,\
-       CUTS.START_DAYPART,CUTS.END_DAYPART from CART join CUTS \
-       on CART.NUMBER=CUTS.CART_NUMBER";
+  sql=QString("select ")+
+    "CART.NUMBER,"+              // 00
+    "CUTS.CUT_NAME,"+            // 01
+    "CUTS.WEIGHT,"+              // 02
+    "CART.TITLE,"+               // 03
+    "CUTS.DESCRIPTION,"+         // 04
+    "CUTS.LENGTH,"+              // 05
+    "CUTS.LAST_PLAY_DATETIME,"+  // 06
+    "CUTS.PLAY_COUNTER,"+        // 07
+    "CUTS.START_DATETIME,"+      // 08
+    "CUTS.END_DATETIME,"+        // 09
+    "CUTS.SUN,"+                 // 10
+    "CUTS.MON,"+                 // 11
+    "CUTS.TUE,"+                 // 12
+    "CUTS.WED,"+                 // 13
+    "CUTS.THU,"+                 // 14
+    "CUTS.FRI,"+                 // 15
+    "CUTS.SAT,"+                 // 16
+    "CUTS.START_DAYPART,"+       // 17
+    "CUTS.END_DAYPART "+         // 18
+    "from CART join CUTS "+
+    "on CART.NUMBER=CUTS.CART_NUMBER ";
   if(list_group==QString("ALL")) {
     sql+=QString(" where ")+
       RDAllCartSearchText(list_filter,schedcode,rda->user()->name(),true)+" && "+
@@ -398,8 +410,7 @@ void ListReports::GenerateCutReport(QString *report)
     // Title
     //
     if(q->value(0).toUInt()!=current_cart) {
-      *report+=QString().sprintf("%-25s ",(const char *)q->value(3).toString().
-				 utf8().left(25));
+      *report+=RDReport::leftJustify(q->value(3).toString(),25)+" ";
     }
     else {
       *report+="                          ";
@@ -408,15 +419,13 @@ void ListReports::GenerateCutReport(QString *report)
     //
     // Description
     //
-    *report+=QString().sprintf("%-15s ",(const char *)q->value(4).toString().
-			       utf8().left(15));
+    *report+=RDReport::leftJustify(q->value(4).toString(),15)+" ";
 
     //
     // Length
     //
-    *report+=
-      QString().sprintf("%5s ",
-	       (const char *)RDGetTimeLength(q->value(5).toInt(),false,false));
+    *report+=RDReport::rightJustify(RDGetTimeLength(q->value(5).toInt(),
+						    false,false),5)+" ";
 
     //
     // Last Play
@@ -425,8 +434,7 @@ void ListReports::GenerateCutReport(QString *report)
       *report+="  [none]   ";
     }
     else {
-      *report+=QString().sprintf(" %8s  ",
-		    (const char *)q->value(6).toDate().toString("MM/dd/yy"));
+      *report+=RDReport::center(q->value(6).toDate().toString("MM/dd/yy"),10)+"  ";
     }
 
     //
@@ -441,8 +449,7 @@ void ListReports::GenerateCutReport(QString *report)
       *report+="  [none]  ";
     }
     else {
-      *report+=QString().sprintf(" %8s ",
-	       (const char *)q->value(8).toDateTime().toString("MM/dd/yy"));
+      *report+=RDReport::center(q->value(8).toDateTime().toString("MM/dd/yy"),10)+" ";
     }
 
     //
@@ -452,8 +459,7 @@ void ListReports::GenerateCutReport(QString *report)
       *report+="   TFN    ";
     }
     else {
-      *report+=QString().sprintf(" %8s ",
-		(const char *)q->value(9).toDateTime().toString("MM/dd/yy"));
+      *report+=RDReport::center(q->value(9).toDateTime().toString("MM/dd/yy"),10)+" ";
     }
 
     //
@@ -509,9 +515,8 @@ void ListReports::GenerateCutReport(QString *report)
       *report+="[none]";
     }
     else {
-      *report+=QString().sprintf("%8s - %8s",
-	       (const char *)q->value(17).toTime().toString("hh:mm:ss"),
-	       (const char *)q->value(18).toTime().toString("hh:mm:ss"));
+      *report+=q->value(17).toTime().toString("hh:mm:ss")+" - "+
+	q->value(18).toTime().toString("hh:mm:ss");
     }
 
     //
@@ -562,10 +567,23 @@ void ListReports::GenerateCartDumpFixed(QString *report,bool prepend_names)
   if(list_type_filter.isEmpty()) {
     return;
   }
-  sql="select CUTS.CUT_NAME,CART.GROUP_NAME,CART.TITLE,CART.ARTIST,CART.ALBUM,\
-       CART.YEAR,CUTS.ISRC,CART.LABEL,CART.CLIENT,CART.AGENCY,CART.PUBLISHER,\
-       CART.COMPOSER,CART.USER_DEFINED,CUTS.LENGTH from CART \
-       join CUTS on CART.NUMBER=CUTS.CART_NUMBER";
+  sql=QString("select ")+
+    "CUTS.CUT_NAME,"+      // 00
+    "CART.GROUP_NAME,"+    // 01
+    "CART.TITLE,"+         // 02
+    "CART.ARTIST,"+        // 03
+    "CART.ALBUM,"+         // 04
+    "CART.YEAR,"+          // 05
+    "CUTS.ISRC,"+          // 06
+    "CART.LABEL,"+         // 07
+    "CART.CLIENT,"+        // 08
+    "CART.AGENCY,"+        // 09
+    "CART.PUBLISHER,"+     // 10
+    "CART.COMPOSER,"+      // 11
+    "CART.USER_DEFINED,"+  // 12
+    "CUTS.LENGTH "+        // 13
+    "from CART join CUTS "+
+    "on CART.NUMBER=CUTS.CART_NUMBER ";
   if(list_group==QString("ALL")) {
     sql+=QString(" where ")+
       RDAllCartSearchText(list_filter,schedcode,rda->user()->name(),true)+" && "+
@@ -700,18 +718,40 @@ void ListReports::GenerateCartDumpCsv(QString *report,bool prepend_names)
   if(list_type_filter.isEmpty()) {
     return;
   }
-  sql=QString("select CART.NUMBER,CART.TYPE,CUTS.CUT_NAME,CART.GROUP_NAME,CART.TITLE,CART.ARTIST,")+
-    "CART.ALBUM,CART.YEAR,CUTS.ISRC,CUTS.ISCI,CART.LABEL,CART.CLIENT,"+
-    "CART.AGENCY,CART.PUBLISHER,CART.COMPOSER,CART.CONDUCTOR,CART.SONG_ID,"+
-    "CART.USER_DEFINED,CUTS.DESCRIPTION,CUTS.OUTCUE,"+
-    "CUTS.LENGTH,"+
-    "CUTS.START_POINT,CUTS.END_POINT,"+
-    "CUTS.SEGUE_START_POINT,CUTS.SEGUE_END_POINT,"+
-    "CUTS.HOOK_START_POINT,CUTS.HOOK_END_POINT,"+
-    "CUTS.TALK_START_POINT,CUTS.TALK_END_POINT,"+
-    "CUTS.FADEUP_POINT,CUTS.FADEDOWN_POINT,"+
-    "SCHED_CODES from CART "+
-    "left join CUTS on CART.NUMBER=CUTS.CART_NUMBER";
+  sql=QString("select ")+
+    "CART.NUMBER,"+             // 00
+    "CART.TYPE,"+               // 01
+    "CUTS.CUT_NAME,"+           // 02
+    "CART.GROUP_NAME,"+         // 03
+    "CART.TITLE,CART.ARTIST,"+  // 04
+    "CART.ALBUM,"+              // 05
+    "CART.YEAR,"+               // 06
+    "CUTS.ISRC,"+               // 07
+    "CUTS.ISCI,"+               // 08
+    "CART.LABEL,"+              // 09
+    "CART.CLIENT,"+             // 10
+    "CART.AGENCY,"+             // 11
+    "CART.PUBLISHER,"+          // 12
+    "CART.COMPOSER,"+           // 13
+    "CART.CONDUCTOR,"+          // 14
+    "CART.SONG_ID,"+            // 15
+    "CART.USER_DEFINED,"+       // 16
+    "CUTS.DESCRIPTION,"+        // 17
+    "CUTS.OUTCUE,"+             // 18
+    "CUTS.LENGTH,"+             // 19
+    "CUTS.START_POINT,"+        // 20
+    "CUTS.END_POINT,"+          // 21
+    "CUTS.SEGUE_START_POINT,"+  // 22
+    "CUTS.SEGUE_END_POINT,"+    // 23
+    "CUTS.HOOK_START_POINT,"+   // 24
+    "CUTS.HOOK_END_POINT,"+     // 25
+    "CUTS.TALK_START_POINT,"+   // 26
+    "CUTS.TALK_END_POINT,"+     // 27
+    "CUTS.FADEUP_POINT,"+       // 28
+    "CUTS.FADEDOWN_POINT,"+     // 29
+    "SCHED_CODES "+             // 30
+    "from CART left join CUTS "+
+    "on CART.NUMBER=CUTS.CART_NUMBER ";
   if(list_group==QString("ALL")) {
     sql+=QString(" where ")+
       RDAllCartSearchText(list_filter,schedcode,rda->user()->name(),true)+" && "+
@@ -739,17 +779,39 @@ void ListReports::GenerateCartDumpCsv(QString *report,bool prepend_names)
   // Prepend Field Names
   //
   if(prepend_names) {
-    *report="CART,CUT,TYPE,GROUP_NAME,TITLE,ARTIST,ALBUM,YEAR,ISRC,ISCI,LABEL,";
-    *report+="CLIENT,AGENCY,PUBLISHER,COMPOSER,CONDUCTOR,SONG_ID,USER_DEFINED,";
-    *report+="DESCRIPTION,OUTCUE,";
-    *report+="FILENAME,LENGTH,";
-    *report+="START_POINT,END_POINT,";
-    *report+="SEGUE_START_POINT,SEGUE_END_POINT,";
-    *report+="HOOK_START_POINT,HOOK_END_POINT,";
-    *report+="TALK_START_POINT,TALK_END_POINT,";
-    *report+="FADEUP_POINT,FADEDOWN_POINT,";
+    *report=QString("CART,")+
+      "CUT,"+                // 00
+      "TYPE,"+               // 01
+      "GROUP_NAME,"+         // 02
+      "TITLE,"+              // 03
+      "ARTIST,"+             // 04
+      "ALBUM,"+              // 05
+      "YEAR,"+               // 06
+      "ISRC,"+               // 07
+      "ISCI,"+               // 08
+      "LABEL,"+              // 09
+      "CLIENT,"+             // 10
+      "AGENCY,"+             // 11
+      "PUBLISHER,"+          // 12
+      "COMPOSER,"+           // 13
+      "CONDUCTOR,"+          // 14
+      "SONG_ID,"+            // 15
+      "USER_DEFINED,"+       // 16
+      "DESCRIPTION,"+        // 17
+      "OUTCUE,"+             // 18
+      "FILENAME,LENGTH,"+    // 19
+      "START_POINT,"+        // 20
+      "END_POINT,"+          // 21
+      "SEGUE_START_POINT,"+  // 22
+      "SEGUE_END_POINT,"+    // 23
+      "HOOK_START_POINT,"+   // 24
+      "HOOK_END_POINT,"+     // 25
+      "TALK_START_POINT,"+   // 26
+      "TALK_END_POINT,"+     // 27
+      "FADEUP_POINT,"+       // 28
+      "FADEDOWN_POINT,";     // 29
     for(int i=0;i<code_quan;i++) {
-      *report+=QString().sprintf("SCHED_CODE%u,",i+1);
+      *report+=QString().sprintf("SCHED_CODE%u,",i+1);  // 30
     } 
     *report=report->left(report->length()-1);
     *report+="\n";

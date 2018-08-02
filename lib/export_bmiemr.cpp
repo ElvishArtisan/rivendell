@@ -83,8 +83,8 @@ bool RDReport::ExportBmiEmr(const QString &filename,const QDate &startdate,
   //
   // Write HEDR Record
   //
-  *strm << QString("HEDRSTA")+LeftJustify(stationId(),25)+
-    LeftJustify(current_datetime.toString("yyyyMMddhhmmssyyyyMMdd"),22)+
+  *strm << QString("HEDRSTA")+RDReport::leftJustify(stationId(),25)+
+    RDReport::leftJustify(current_datetime.toString("yyyyMMddhhmmssyyyyMMdd"),22)+
     "FMDT                                                   \x0d\x0a";
   records++;
 
@@ -122,17 +122,17 @@ bool RDReport::ExportBmiEmr(const QString &filename,const QDate &startdate,
       break;
     }
     *strm << QString("FMDT")+
-      LeftJustify(stationId(),40)+
+      RDReport::leftJustify(stationId(),40)+
       type_code+
-      LeftJustify(station_format,25)+
+      RDReport::leftJustify(station_format,25)+
       startdate.toString("yyyyMM")+"01"+
-      LeftJustify(q->value(0).toDateTime().toString("yyyyMMddhh:mm:ss"),16)+
+      RDReport::leftJustify(q->value(0).toDateTime().toString("yyyyMMddhh:mm:ss"),16)+
       "000000001"+
-      LeftJustify(q->value(1).toString(),40)+
-      LeftJustify(q->value(2).toString(),40)+
-      LeftJustify(q->value(3).toString(),40)+
+      RDReport::leftJustify(q->value(1).toString(),40)+
+      RDReport::leftJustify(q->value(2).toString(),40)+
+      RDReport::leftJustify(q->value(3).toString(),40)+
       QTime().addMSecs(q->value(4).toInt()).toString("hh:mm:ss")+"           "+
-      RightJustify(q->value(5).toString(),12)+
+      RDReport::rightJustify(q->value(5).toString(),12)+
       usage_code+"                      \x0d\x0a";
     records++;
   }

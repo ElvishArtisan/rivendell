@@ -152,15 +152,15 @@ bool RDReport::ExportDeltaflex(const QString &filename,const QDate &startdate,
     tfc_cartnum=q->value(10).toString();
 
     *strm << q->value(2).toDateTime().toString("hhmm")+"|";
-    *strm << LeftJustify(tfc_time,4)+"|";
-    *strm << LeftJustify(cart_title,29)+"|";
-    *strm << LeftJustify(air_cartnum,12)+"|";
-    *strm << LeftJustify(tfc_cartnum,12)+"|";
+    *strm << RDReport::leftJustify(tfc_time,4)+"|";
+    *strm << RDReport::leftJustify(cart_title,29)+"|";
+    *strm << RDReport::leftJustify(air_cartnum,12)+"|";
+    *strm << RDReport::leftJustify(tfc_cartnum,12)+"|";
     *strm << play_length+"|";
     *strm << tfc_length+"|";
-    *strm << LeftJustify(ext_data,8)+"|";
-    *strm << LeftJustify(q->value(8).toString(),3)+"|  |                |";
-    *strm << LeftJustify(q->value(7).toString(),4)+"|\x0d\x0a";
+    *strm << RDReport::leftJustify(ext_data,8)+"|";
+    *strm << RDReport::leftJustify(q->value(8).toString(),3)+"|  |                |";
+    *strm << RDReport::leftJustify(q->value(7).toString(),4)+"|\x0d\x0a";
   }
 
   delete q;

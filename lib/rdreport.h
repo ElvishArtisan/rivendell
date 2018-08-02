@@ -93,11 +93,11 @@ class RDReport
   static bool multipleDaysAllowed(RDReport::ExportFilter filter);
   static bool multipleMonthsAllowed(RDReport::ExportFilter filter);
   static QString errorText(RDReport::ErrorCode code);
+  static QString leftJustify(const QString &str,int width);
+  static QString rightJustify(const QString &str,int width);
+  static QString center(const QString &str,int width);
 
  private:
-  QString LeftJustify(const QString &str,int width) const;
-  QString RightJustify(const QString &str,int width) const;
-  QString Center(const QString &str,int width) const;
   bool ExportDeltaflex(const QString &filename,const QDate &startdate,
 		       const QDate &enddate,const QString &mixtable);
   bool ExportTextLog(const QString &filename,const QDate &startdate,

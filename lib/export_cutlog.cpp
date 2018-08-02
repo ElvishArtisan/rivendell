@@ -80,15 +80,15 @@ bool RDReport::ExportCutLog(const QString &filename,const QDate &startdate,
   // Write File Header
   //
   if(startdate==enddate) {
-    *strm << Center(QString("Rivendell RDAirPlay Cut Report for ")+
+    *strm << RDReport::center(QString("Rivendell RDAirPlay Cut Report for ")+
 		    startdate.toString("MM/dd/yyyy"),75);
   }
   else {
-    *strm << Center(QString("Rivendell RDAirPlay Cut Report for ")+
+    *strm << RDReport::center(QString("Rivendell RDAirPlay Cut Report for ")+
 		    startdate.toString("MM/dd/yyyy")+" - "+
 		    enddate.toString("MM/dd/yyyy"),75)+"\n";
   }
-  *strm << Center(name()+" -- "+description(),75)+"\n";
+  *strm << RDReport::center(name()+" -- "+description(),75)+"\n";
   *strm << "--Time--  -Cart-  --Title----------------  Cut  --Description-------  -Len-\n";
 
   //
@@ -114,9 +114,9 @@ bool RDReport::ExportCutLog(const QString &filename,const QDate &startdate,
     }
     *strm << q->value(2).toTime().toString("hh:mm:ss")+"  ";
     *strm << cart_num+"  ";
-    *strm << LeftJustify(q->value(8).toString(),23)+"  ";
+    *strm << RDReport::leftJustify(q->value(8).toString(),23)+"  ";
     *strm << cut+"  ";
-    *strm << LeftJustify(desc,20)+"  ";
+    *strm << RDReport::leftJustify(desc,20)+"  ";
     *strm << RDGetTimeLength(q->value(9).toInt(),true,false).right(5);
     *strm << "\n";
   }

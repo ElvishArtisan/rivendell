@@ -24,6 +24,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include <qfile.h>
 #include <qmessagebox.h>
 #include <qprocess.h>
 
@@ -50,13 +51,13 @@ bool RDTextFile(const QString &data)
   }
 #ifdef WIN32
   QString tempfile=RDTempDirectory::basePath()+"\\rd-"+
-    QTime::currentTime().toString("hhmmsszzz"));
+    QTime::currentTime().toString("hhmmsszzz");
   FILE *f=fopen(tempfile,"w");
   if(f==NULL) {
     QMessageBox::warning(NULL,"File Error","Unable to create temporary file");
     return false;
   }
-  fprintf(f,"%s",(const char *)data);
+  fprintf(f,"%s",(const char *)data.utf8());
   fclose(f);
   QStringList args;
   args+=editor;
@@ -71,14 +72,12 @@ bool RDTextFile(const QString &data)
     QMessageBox::warning(NULL,"File Error","Unable to create temporary file");
     return false;
   }
-  else {
-    write(fd,data,data.length());
-    ::close(fd);
-    if(fork()==0) {
-      system(editor+" "+tmpfile);
-      unlink(tmpfile);
-      exit(0);
-    }
+  write(fd,data.utf8(),data.utf8().length());
+  ::close(fd);
+  if(fork()==0) {
+    system(editor+" "+tmpfile);
+    unlink(tmpfile);
+    exit(0);
   }
 #endif  // WIN32
   return true;

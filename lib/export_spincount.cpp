@@ -87,15 +87,15 @@ bool RDReport::ExportSpinCount(const QString &filename,const QDate &startdate,
   // Write File Header
   //
   if(startdate==enddate) {
-    *strm << Center(QString("Rivendell Spin Count Report for ")+
+    *strm << RDReport::center(QString("Rivendell Spin Count Report for ")+
 		    startdate.toString("MM/dd/yyyy"),132)+"\n";
   }
   else {
-    *strm << Center(QString("Rivendell Spin Count Report for ")+
+    *strm << RDReport::center(QString("Rivendell Spin Count Report for ")+
 		    startdate.toString("MM/dd/yyyy")+" - "+
 		    enddate.toString("MM/dd/yyyy"),132)+"\n";
   }
-  *strm << Center(name()+" -- "+description(),132)+"\n";
+  *strm << RDReport::center(name()+" -- "+description(),132)+"\n";
   *strm << "--Title------------------------ --Artist----------------------- --Album------------------------ --Label----------------------- Spins\n";
 
   //
@@ -103,10 +103,10 @@ bool RDReport::ExportSpinCount(const QString &filename,const QDate &startdate,
   //
   for(std::map<unsigned,unsigned>::const_iterator it=carts.begin();
       it!=carts.end();it++) {
-    *strm << LeftJustify(titles[it->first],30)+"  ";
-    *strm << LeftJustify(artists[it->first],30)+"  ";
-    *strm << LeftJustify(albums[it->first],30)+"  ";
-    *strm << LeftJustify(labels[it->first],29)+"  ";
+    *strm << RDReport::leftJustify(titles[it->first],30)+"  ";
+    *strm << RDReport::leftJustify(artists[it->first],30)+"  ";
+    *strm << RDReport::leftJustify(albums[it->first],30)+"  ";
+    *strm << RDReport::leftJustify(labels[it->first],29)+"  ";
     *strm << QString().sprintf("%5u",it->second);
     *strm << "\n";
   }

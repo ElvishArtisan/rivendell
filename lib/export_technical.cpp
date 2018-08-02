@@ -85,15 +85,15 @@ bool RDReport::ExportTechnical(const QString &filename,const QDate &startdate,
   //
   if(incl_hdr) {
     if(startdate==enddate) {
-      *strm << Center("Rivendell RDAirPlay Technical Playout Report for "+
+      *strm << RDReport::center("Rivendell RDAirPlay Technical Playout Report for "+
 		      startdate.toString("MM/dd/yyyy"),96)+eol;
     }
     else {
-      *strm << Center("Rivendell RDAirPlay Technical Playout Report for "+
+      *strm << RDReport::center("Rivendell RDAirPlay Technical Playout Report for "+
 		      startdate.toString("MM/dd/yyyy")+" - "+
 		      enddate.toString("MM/dd/yyyy"),96)+eol;
     }
-    *strm << Center(name()+" -- "+description(),96)+eol;
+    *strm << RDReport::center(name()+" -- "+description(),96)+eol;
     *strm << QString("--Time--  -Cart-  Cut  --Title----------------  A-Len  N-Len  --Host----  Srce  StartedBy  OnAir")+eol;
   }
 
@@ -117,10 +117,10 @@ bool RDReport::ExportTechnical(const QString &filename,const QDate &startdate,
     *strm << q->value(2).toTime().toString("hh:mm:ss")+"  ";
     *strm << cart_num+"  ";
     *strm << cut+"  ";
-    *strm << LeftJustify(q->value(8).toString(),23)+"  ";
+    *strm << RDReport::leftJustify(q->value(8).toString(),23)+"  ";
     *strm << RDGetTimeLength(q->value(0).toInt(),true,false).right(5)+"  ";
     *strm << RDGetTimeLength(q->value(9).toInt(),true,false).right(5)+"  ";
-    *strm << LeftJustify(q->value(10).toString(),10)+"  ";
+    *strm << RDReport::leftJustify(q->value(10).toString(),10)+"  ";
     switch((RDLogLine::PlaySource)q->value(11).toInt()) {
     case RDLogLine::MainLog:
       *strm << "Main   ";
@@ -146,7 +146,7 @@ bool RDReport::ExportTechnical(const QString &filename,const QDate &startdate,
       *strm << "       ";
       break;
     }
-    *strm << LeftJustify(RDLogLine::startSourceText((RDLogLine::StartSource)q->value(13).toInt()),7)+"  ";
+    *strm << RDReport::leftJustify(RDLogLine::startSourceText((RDLogLine::StartSource)q->value(13).toInt()),7)+"  ";
     if(q->value(14).toString()=="Y") {
       *strm << "  Yes ";
     }

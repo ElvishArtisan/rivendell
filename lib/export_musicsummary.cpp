@@ -61,15 +61,15 @@ bool RDReport::ExportMusicSummary(const QString &filename,
   // Write File Header
   //
   if(startdate==enddate) {
-    *strm << Center(QString("Rivendell RDAirPlay Music Summary Report for ")+
+    *strm << RDReport::center(QString("Rivendell RDAirPlay Music Summary Report for ")+
 		    startdate.toString("MM/dd/yyyy"),75)+"\n";
   }
   else {
-    *strm << Center(QString("Rivendell RDAirPlay Music Summary Report for ")+
+    *strm << RDReport::center(QString("Rivendell RDAirPlay Music Summary Report for ")+
 		    startdate.toString("MM/dd/yyyy")+" - "+
 		    enddate.toString("MM/dd/yyyy"),75)+"\n";
   }
-  *strm << Center(name()+" -- "+description(),75)+"\n";
+  *strm << RDReport::center(name()+" -- "+description(),75)+"\n";
 
   //
   // Write Data Rows
