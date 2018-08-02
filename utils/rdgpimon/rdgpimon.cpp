@@ -37,6 +37,7 @@
 #include <rddb.h>
 #include <rdescape_string.h>
 #include <rdlistviewitem.h>
+#include <rdreport.h>
 #include <rdtextfile.h>
 
 #include "rdgpimon.h"
@@ -385,14 +386,21 @@ void MainWidget::eventsReportData()
   QString sql;
   RDSqlQuery *q;
 
-  report="                          Rivendell GPIO Event Report\n";
-  report+="     Date: "+gpi_events_date_edit->date().toString("MM/dd/yyyy")+
-    "       Station/Matrix: "+rda->station()->name()+":"+
-    QString().sprintf("%d     ",gpi_matrix_box->currentItem())+
-    " State Filter: "+gpi_events_state_box->currentText()+"\n";
+  report=RDReport::center("Rivendell GPIO Event Report",78)+"\n";
+  report+=
+    RDReport::center(QString("Date: ")+
+		     gpi_events_date_edit->date().toString("MM/dd/yyyy")+
+		     "       "+rda->station()->name()+":"+
+		     QString().sprintf("%d     ",gpi_matrix_box->currentItem())+
+		     " State Filter: "+
+		     gpi_events_state_box->currentText(),78)+"\n";
   report+="\n";
 
-  sql=QString("select EVENT_DATETIME,NUMBER,EDGE from GPIO_EVENTS where ")+
+  sql=QString("select ")+
+    "EVENT_DATETIME,"+  // 00
+    "NUMBER,"+          // 01
+    "EDGE "+            // 02
+    "from GPIO_EVENTS where "+
     "(STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\")&&"+
     QString().sprintf("(MATRIX=%d)&&",gpi_matrix_box->currentItem())+
     QString().sprintf("(TYPE=%d)&&",gpi_type_box->currentItem())+

@@ -17308,3 +17308,6 @@
 2018-08-02 Fred Gleason <fredg@paravelsystems.com>
 	* Modified reports in rdcastmanager(1) to display UTF-8 strings
 	correctly.
+2018-08-02 Fred Gleason <fredg@paravelsystems.com>
+	* Modified reports in rdgpimon(1) to display UTF-8 strings
+	correctly.
