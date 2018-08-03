@@ -25,6 +25,7 @@
 #include <qregexp.h>
 #include <qdatetime.h>
 #include <qprocess.h>
+#include <qstringlist.h>
 
 #include <rdcddblookup.h>
 #include <rdprofile.h>
@@ -128,21 +129,21 @@ void RDCddbLookup::readyReadData()
   int code;
   char buffer[2048];
   char offset[256];
-  int hex;
-  int start;
+  QStringList f0;
+  bool ok=false;
 
   while(lookup_socket->canReadLine()) {
-    line=lookup_socket->readLine();
+    line=QString::fromUtf8(lookup_socket->readLine());
     Profile("recevied from server: \""+line+"\"");
     sscanf((const char *)line,"%d",&code);
     switch(lookup_state) {
     case 0:    // Login Banner
       if((code==200)||(code==201)) {
 	snprintf(buffer,2048,"cddb hello %s %s %s %s",
-		(const char *)lookup_username,
-		(const char *)lookup_hostname,
-		(const char *)lookup_appname,
-		(const char *)lookup_appver);
+		 (const char *)lookup_username.utf8(),
+		 (const char *)lookup_hostname.utf8(),
+		 (const char *)lookup_appname.utf8(),
+		 (const char *)lookup_appver.utf8());
 	SendToServer(buffer);
 	lookup_state=1;
       }
@@ -172,21 +173,26 @@ void RDCddbLookup::readyReadData()
     case 2:    // Query Response
       switch(code) {
       case 200:   // Exact Match
-	start=4;
-	if(sscanf((const char *)line+start,"%s",offset)==1) {
-	  lookup_record->setDiscGenre(offset);
-	  start+=lookup_record->discGenre().length()+1;
+	f0=f0.split(" ",line,true);
+	if(f0.size()>=4) {
+	  lookup_record->setDiscId(f0[2].toInt(&ok,16));
+	  if(!ok) {
+	    FinishCddbLookup(RDCddbLookup::ProtocolError);
+	  }
+	  lookup_record->setDiscGenre(f0[1]);
+	  f0.erase(f0.begin());
+	  f0.erase(f0.begin());
+	  f0.erase(f0.begin());
+	  lookup_record->setDiscTitle(f0.join(" "));
+	  snprintf(buffer,2048,"cddb read %s %08x\n",
+		   (const char *)lookup_record->discGenre().utf8(),
+		   lookup_record->discId());
+	  SendToServer(buffer);
+	  lookup_state=3;		
 	}
-	if(sscanf((const char *)line+start,"%x",&hex)==1) {
-	  lookup_record->setDiscId(hex);
-	  start+=9;
+	else {
+	  FinishCddbLookup(RDCddbLookup::ProtocolError);
 	}
-	lookup_record->setDiscTitle((const char *)line+start);
-	snprintf(buffer,2048,"cddb read %s %08x\n",
-		(const char *)lookup_record->discGenre(),
-		lookup_record->discId());
-	SendToServer(buffer);
-	lookup_state=3;		
 	break;
 
       case 211:   // Inexact Match
@@ -277,7 +283,7 @@ QString RDCddbLookup::DecodeString(QString &str)
   QChar ch;
 
   for(unsigned i=0;i<str.length();i++) {
-    if((ch=str.at(i).latin1())=='\\') {
+    if((ch=str.at(i))=='\\') {
       outstr+=QString("\n");
       i++;
     }

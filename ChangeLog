@@ -17311,3 +17311,6 @@
 2018-08-02 Fred Gleason <fredg@paravelsystems.com>
 	* Modified reports in rdgpimon(1) to display UTF-8 strings
 	correctly.
+2018-08-03 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed bugs in CDDB lookup code that caused corruption when processing
+	UTF-8 strings.
