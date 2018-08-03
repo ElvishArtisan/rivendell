@@ -1141,14 +1141,14 @@ void RDCart::updateLength(bool enforce_length,unsigned length)
   }
   else {
     sql+=QString("START_DATETIME=")+
-      RDCheckDateTime(start_datetime,"yyyy-MM-dd hh:mm:ss");
+      RDCheckDateTime(start_datetime,"yyyy-MM-dd hh:mm:ss")+",";
   }
   if(end_datetime.isNull()||(!dates_valid)) {
     sql+="END_DATETIME=NULL,";
   }
   else {
     sql+=QString("END_DATETIME=")+
-      RDCheckDateTime(end_datetime,"yyyy-MM-dd hh:mm:ss");
+      RDCheckDateTime(end_datetime,"yyyy-MM-dd hh:mm:ss")+",";
   }
   sql+=QString().sprintf("VALIDITY=%u where NUMBER=%u",
 			 cart_validity,cart_number);
