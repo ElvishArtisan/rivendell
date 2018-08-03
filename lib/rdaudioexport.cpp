@@ -201,6 +201,7 @@ RDAudioExport::ErrorCode RDAudioExport::runExport(const QString &username,
   }
   if((f=fopen(conv_dst_filename,"w"))==NULL) {
     curl_easy_cleanup(curl);
+    curl_formfree(first);
     return RDAudioExport::ErrorNoDestination;
   }
   //
@@ -212,8 +213,6 @@ RDAudioExport::ErrorCode RDAudioExport::runExport(const QString &username,
   curl_easy_setopt(curl,CURLOPT_URL,url);
   curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
   curl_easy_setopt(curl,CURLOPT_WRITEDATA,f);
-  //  curl_easy_setopt(curl,CURLOPT_POST,1);
-  //  curl_easy_setopt(curl,CURLOPT_POSTFIELDS,(const char *)post);
   curl_easy_setopt(curl,CURLOPT_USERAGENT,
 		   (const char *)rda->config()->userAgent());
   curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
@@ -255,12 +254,11 @@ RDAudioExport::ErrorCode RDAudioExport::runExport(const QString &username,
   }
   curl_easy_getinfo(curl,CURLINFO_RESPONSE_CODE,&response_code);
   curl_easy_cleanup(curl);
+  curl_formfree(first);
   fclose(f);
 
   if(response_code==200) {
     *conv_err=RDAudioConvert::ErrorOk;
-    curl_easy_cleanup(curl);
-    curl_formfree(first);
     return RDAudioExport::ErrorOk;
   }
 
@@ -280,8 +278,6 @@ RDAudioExport::ErrorCode RDAudioExport::runExport(const QString &username,
   default:
     ret=RDAudioExport::ErrorConverter;
   }
-  curl_easy_cleanup(curl);
-  curl_formfree(first);
   unlink(conv_dst_filename);
 
   return ret;

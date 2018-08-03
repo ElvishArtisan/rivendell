@@ -17314,3 +17314,5 @@
 2018-08-03 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed bugs in CDDB lookup code that caused corruption when processing
 	UTF-8 strings.
+2018-08-03 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'RDAudioExport' that caused a segfault.
