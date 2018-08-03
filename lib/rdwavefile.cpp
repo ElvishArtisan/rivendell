@@ -2478,17 +2478,16 @@ void RDWaveFile::WriteChunk(int fd,const char *cname,unsigned char *buf,
 
 void RDWaveFile::WriteChunk(int fd,const char *cname,const QString &contents)
 {
-  syslog(LOG_NOTICE,"writing %s: %d",cname,contents.length());
   unsigned char size_buf[4];
-  size_buf[0]=contents.length()&0xff;
-  size_buf[1]=(contents.length()>>8)&0xff;
-  size_buf[2]=(contents.length()>>16)&0xff;
-  size_buf[3]=(contents.length()>>24)&0xff;
+  size_buf[0]=contents.utf8().length()&0xff;
+  size_buf[1]=(contents.utf8().length()>>8)&0xff;
+  size_buf[2]=(contents.utf8().length()>>16)&0xff;
+  size_buf[3]=(contents.utf8().length()>>24)&0xff;
 
   lseek(fd,0,SEEK_END);
   write(fd,cname,4);
   write(fd,size_buf,4);
-  write(fd,contents,contents.length());
+  write(fd,contents.utf8(),contents.utf8().length());
 }
 
 
@@ -3091,7 +3090,7 @@ bool RDWaveFile::GetRdxl(int fd)
   chunk=new char[chunk_size+1];
   memset(chunk,0,chunk_size+1);
   read(fd,chunk,chunk_size);
-  rdxl_contents=QString(chunk);
+  rdxl_contents=QString::fromUtf8(chunk);
   delete chunk;
 
   if(wave_data!=NULL) {

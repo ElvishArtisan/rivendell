@@ -1130,12 +1130,14 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
       if(import_string_title.isNull()) {
 	printf(" Importing file \"%s\" [%s] to cart %06u ... ",
 	       (const char *)RDGetBasePart(filename).utf8(),
-	       (const char *)wavedata->title().stripWhiteSpace(),*cartnum);
+	       (const char *)wavedata->title().stripWhiteSpace().utf8(),
+	       *cartnum);
       }
       else {
 	printf(" Importing file \"%s\" [%s] to cart %06u ... ",
 	       (const char *)RDGetBasePart(filename).utf8(),
-	       (const char *)import_string_title.stripWhiteSpace(),*cartnum);
+	       (const char *)import_string_title.stripWhiteSpace().utf8(),
+	       *cartnum);
       }
     }
     fflush(stdout);
