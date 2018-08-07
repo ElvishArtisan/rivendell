@@ -2,7 +2,7 @@
 //
 // Rivendell Interprocess Communication Daemon
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,10 +27,10 @@
 
 #include <qobject.h>
 #include <qstring.h>
-#include <q3serversocket.h>
 #include <qsignalmapper.h>
-#include <q3socketdevice.h>
+#include <qtcpserver.h>
 #include <qtimer.h>
+#include <qudpsocket.h>
 
 #include <rdsocket.h>
 #include <rdttydevice.h>
@@ -60,14 +60,14 @@ class MainObject : public QObject
   MainObject(QObject *parent=0);
   ~MainObject();
 
- public slots:
-  void newConnection(int fd);
-
  private slots:
+  void newConnectionData();
   void notificationReceivedData(const QString &msg,const QHostAddress &addr);
   void log(RDConfig::LogPriority prio,const QString &msg);
   void sendRml(RDMacro *rml);
-  void readRml();
+  void rmlEchoData();
+  void rmlNoechoData();
+  void rmlReplyData();
   void gpiChangedData(int matrix,int line,bool state);
   void gpoChangedData(int matrix,int line,bool state);
   void gpiStateData(int matrix,unsigned line,bool state);
@@ -89,7 +89,7 @@ class MainObject : public QObject
   bool DispatchCommand(RipcdConnection *conn);
   void EchoCommand(int,const QString &cmd);
   void BroadcastCommand(const QString &cmd,int except_ch=-1);
-  void ReadRmlSocket(Q3SocketDevice *dev,RDMacro::Role role,bool echo);
+  void ReadRmlSocket(QUdpSocket *sock,RDMacro::Role role,bool echo);
   QString StripPoint(QString);
   void LoadLocalMacros();
   void RunLocalMacros(RDMacro *rml);
@@ -108,14 +108,14 @@ class MainObject : public QObject
   QSqlDatabase *ripcd_db;
   QString ripcd_host;
   bool debug;
-  Q3ServerSocket *server;
+  QTcpServer *server;
   std::vector<RipcdConnection *> ripcd_conns;
   QSignalMapper *ripcd_ready_mapper;
   QSignalMapper *ripcd_kill_mapper;
-  Q3SocketDevice *ripcd_rml_send;
-  Q3SocketDevice *ripcd_rml_echo;
-  Q3SocketDevice *ripcd_rml_noecho;
-  Q3SocketDevice *ripcd_rml_reply;
+  QUdpSocket *ripcd_rml_send;
+  QUdpSocket *ripcd_rml_echo;
+  QUdpSocket *ripcd_rml_noecho;
+  QUdpSocket *ripcd_rml_reply;
   QHostAddress ripcd_host_addr;
   Switcher *ripcd_switcher[MAX_MATRICES];
   bool ripcd_gpi_state[MAX_MATRICES][MAX_GPIO_PINS];

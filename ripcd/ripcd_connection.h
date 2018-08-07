@@ -22,7 +22,7 @@
 #define RIPCD_CONNECTION_H
 
 #include <qobject.h>
-#include <q3socket.h>
+#include <qtcpsocket.h>
 #include <qstring.h>
 
 #include <rd.h>
@@ -30,31 +30,22 @@
 class RipcdConnection
 {
   public:
-   RipcdConnection(int id,int fd);
+   RipcdConnection(int id,QTcpSocket *sock);
    ~RipcdConnection();
    int id() const;
-   Q3Socket *socket() const;
+   QTcpSocket *socket() const;
    bool isAuthenticated() const;
    void setAuthenticated(bool state);
+   bool isClosing() const;
+   void close();
    QString accum;
+
+ private:
    int ripcd_id;
    bool ripcd_authenticated;
-   Q3Socket *ripcd_socket;
+   QTcpSocket *ripcd_socket;
+   bool ripcd_closing;
 };
 
-/*
-class RipcdConnection
-{
-  public:
-  RipcdConnection(int id,int fd);
-   ~RipcdConnection();
-   RDSocket *socket;
-   char args[RD_RML_MAX_ARGS][RD_RML_MAX_LENGTH];
-   int istate;
-   int argnum;
-   int argptr;
-   bool auth;
-};
-*/
 
 #endif  // RIPCD_CONNECTION_H

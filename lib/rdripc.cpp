@@ -2,7 +2,7 @@
 //
 // Connection to the Rivendell Interprocess Communication Daemon
 //
-//   (C) Copyright 2002-2003,2016-2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2003,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,12 +24,12 @@
 #include <qapplication.h>
 #include <qdatetime.h>
 
+#include "rdapplication.h"
 #include "rddatedecode.h"
 #include "rddb.h"
 #include "rdescape_string.h"
 #include "rdripc.h"
 
-//RDRipc::RDRipc(QString stationname,QObject *parent)
 RDRipc::RDRipc(RDStation *station,RDConfig *config,QObject *parent)
   : QObject(parent)
 {
@@ -39,17 +39,16 @@ RDRipc::RDRipc(RDStation *station,RDConfig *config,QObject *parent)
   ripc_ignore_mask=false;
   ripc_accum="";
   debug=false;
-  //  argnum=0;
-  //  argptr=0;
 
   ripc_connected=false;
 
   //
   // TCP Connection
   //
-  ripc_socket=new Q3Socket(this);
+  ripc_socket=new QTcpSocket(this);
   connect(ripc_socket,SIGNAL(connected()),this,SLOT(connectedData()));
-  connect(ripc_socket,SIGNAL(error(int)),this,SLOT(errorData(int)));
+  connect(ripc_socket,SIGNAL(error(QAbstractSocket::SocketError)),
+	  this,SLOT(errorData(QAbstractSocket::SocketError)));
   connect(ripc_socket,SIGNAL(readyRead()),this,SLOT(readyData()));
 }
 
@@ -153,7 +152,6 @@ void RDRipc::sendOnairFlag()
 
 void RDRipc::sendRml(RDMacro *macro)
 {
-  //  char buffer[RD_RML_MAX_LENGTH];
   QString cmd;
   Q_UINT16 port=RD_RML_NOECHO_PORT;
   QDateTime now=QDateTime::currentDateTime();
@@ -197,8 +195,10 @@ void RDRipc::reloadHeartbeat()
 }
 
 
-void RDRipc::errorData(int errorcode)
+void RDRipc::errorData(QAbstractSocket::SocketError err)
 {
+  rda->log(RDConfig::LogWarning,
+	   QString().sprintf("received socket error %d",err));
 }
 
 
@@ -207,11 +207,11 @@ void RDRipc::readyData()
   char data[1501];
   int n;
 
-  while((n=ripc_socket->readBlock(data,1500))>0) {
+  while((n=ripc_socket->read(data,1500))>0) {
     data[n]=0;
     QString line=QString::fromUtf8(data);
     for(int i=0;i<line.length();i++) {
-      QChar c=line.ref(i);
+      QChar c=line.at(i);
       if(c.ascii()=='!') {
 	DispatchCommand();
 	ripc_accum="";
@@ -228,8 +228,8 @@ void RDRipc::readyData()
 
 void RDRipc::SendCommand(const QString &cmd)
 {
-  //  printf("RDRipc::SendCommand(%s)\n",(const char *)cmd.utf8());
-  ripc_socket->writeBlock((const char *)cmd.utf8(),cmd.utf8().length());
+  //  printf("RDRipc::SendCommand(%s)\n",(const char *)cmd.toUtf8());
+  ripc_socket->write(cmd.toUtf8());
 }
 
 
@@ -237,8 +237,8 @@ void RDRipc::DispatchCommand()
 {
   RDMacro macro;
   QString str;
-  //  char str[RD_RML_MAX_LENGTH];
 
+  //  printf("RDRipc::DispatchCommand: %s\n",(const char *)ripc_accum.toUtf8());
   QStringList cmds=cmds.split(" ",ripc_accum);
   
   if(cmds[0]=="PW") {  // Password Response

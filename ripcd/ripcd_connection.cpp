@@ -20,13 +20,13 @@
 
 #include <ripcd_connection.h>
 
-RipcdConnection::RipcdConnection(int id,int fd)
+RipcdConnection::RipcdConnection(int id,QTcpSocket *sock)
 {
   ripcd_id=id;
   ripcd_authenticated=false;
   accum="";
-  ripcd_socket=new Q3Socket();
-  ripcd_socket->setSocket(fd);
+  ripcd_socket=sock;
+  ripcd_closing=false;
 }
 
 
@@ -42,7 +42,7 @@ int RipcdConnection::id() const
 }
 
 
-Q3Socket *RipcdConnection::socket() const
+QTcpSocket *RipcdConnection::socket() const
 {
   return ripcd_socket;
 }
@@ -57,4 +57,16 @@ bool RipcdConnection::isAuthenticated() const
 void RipcdConnection::setAuthenticated(bool state)
 {
   ripcd_authenticated=state;
+}
+
+
+bool RipcdConnection::isClosing() const
+{
+  return ripcd_closing;
+}
+
+
+void RipcdConnection::close()
+{
+  ripcd_closing=true;
 }

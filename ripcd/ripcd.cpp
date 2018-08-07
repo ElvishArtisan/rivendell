@@ -2,7 +2,7 @@
 //
 // Rivendell Interprocess Communication Daemon
 //
-//   (C) Copyright 2002-2007,2010,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -45,7 +45,6 @@
 #include <rdnotification.h>
 
 #include "globals.h"
-#include "ripcd_socket.h"
 #include "ripcd.h"
 
 bool global_exiting=false;
@@ -114,11 +113,12 @@ MainObject::MainObject(QObject *parent)
 
   ripcd_kill_mapper=new QSignalMapper(this);
   connect(ripcd_kill_mapper,SIGNAL(mapped(int)),this,SLOT(killData(int)));
-  server=new RipcdSocket(RIPCD_TCP_PORT,0,this);
-  if(!server->ok()) {
+  server=new QTcpServer(this);
+  if(!server->listen(QHostAddress::Any,RIPCD_TCP_PORT)) {
+    rda->log(RDConfig::LogErr,"unable to bind ripc port");
     exit(1);
   }
-  connect(server,SIGNAL(connection(int)),this,SLOT(newConnection(int)));
+  connect(server,SIGNAL(newConnection()),this,SLOT(newConnectionData()));
 
   //
   // Macro Timers
@@ -149,26 +149,26 @@ MainObject::MainObject(QObject *parent)
   ::signal(SIGTERM,SigHandler);
   ::signal(SIGINT,SigHandler);
   if(!RDWritePid(RD_PID_DIR,"ripcd.pid",rda->config()->uid())) {
-    printf("ripcd: can't write pid file\n");
+    fprintf(stderr,"ripcd: can't write pid file\n");
     exit(1);
   }
 
   //
   // The RML Sockets
   //
-  ripcd_rml_send=new Q3SocketDevice(Q3SocketDevice::Datagram);
+  ripcd_rml_send=new QUdpSocket(this);
 
-  ripcd_rml_echo=new Q3SocketDevice(Q3SocketDevice::Datagram);
-  ripcd_rml_echo->bind(QHostAddress(),RD_RML_ECHO_PORT);
-  ripcd_rml_echo->setBlocking(false);
+  ripcd_rml_echo=new QUdpSocket(this);
+  ripcd_rml_echo->bind(QHostAddress::Any,RD_RML_ECHO_PORT);
+  connect(ripcd_rml_echo,SIGNAL(readyRead()),this,SLOT(rmlEchoData()));
 
-  ripcd_rml_noecho=new Q3SocketDevice(Q3SocketDevice::Datagram);
-  ripcd_rml_noecho->bind(QHostAddress(),RD_RML_NOECHO_PORT);
-  ripcd_rml_noecho->setBlocking(false);
+  ripcd_rml_noecho=new QUdpSocket(this);
+  ripcd_rml_noecho->bind(QHostAddress::Any,RD_RML_NOECHO_PORT);
+  connect(ripcd_rml_noecho,SIGNAL(readyRead()),this,SLOT(rmlNoechoData()));
 
-  ripcd_rml_reply=new Q3SocketDevice(Q3SocketDevice::Datagram);
-  ripcd_rml_reply->bind(QHostAddress(),RD_RML_REPLY_PORT);
-  ripcd_rml_reply->setBlocking(false);
+  ripcd_rml_reply=new QUdpSocket(this);
+  ripcd_rml_reply->bind(QHostAddress::Any,RD_RML_REPLY_PORT);
+  connect(ripcd_rml_reply,SIGNAL(readyRead()),this,SLOT(rmlReplyData()));
 
   LoadGpiTable();
 
@@ -188,14 +188,6 @@ MainObject::MainObject(QObject *parent)
 	  SLOT(notificationReceivedData(const QString &,const QHostAddress &)));
   ripcd_notification_mcaster->bind(RD_NOTIFICATION_PORT);
   ripcd_notification_mcaster->subscribe(rda->system()->notificationAddress());
-
-  //
-  // Start RML Polling
-  //
-  QTimer *timer=new QTimer(this);
-  timer->changeInterval(RIPCD_RML_READ_INTERVAL);
-  connect(timer,SIGNAL(timeout()),this,SLOT(readRml()));
-  timer->start(true);
 
   //
   // Database Backup Timer
@@ -222,7 +214,7 @@ MainObject::MainObject(QObject *parent)
   //
   // Exit Timer
   //
-  timer=new QTimer(this);
+  QTimer *timer=new QTimer(this);
   connect(timer,SIGNAL(timeout()),this,SLOT(exitTimerData()));
   timer->start(200);
 
@@ -248,18 +240,19 @@ void MainObject::log(RDConfig::LogPriority prio,const QString &msg)
 }
 
 
-void MainObject::newConnection(int fd)
+void MainObject::newConnectionData()
 {
   unsigned i=0;
 
+  QTcpSocket *sock=server->nextPendingConnection();
   while((i<ripcd_conns.size())&&(ripcd_conns[i]!=NULL)) {
     i++;
   }
   if(i==ripcd_conns.size()) {      // Table full, create a new slot
-    ripcd_conns.push_back(new RipcdConnection(i,fd));
+    ripcd_conns.push_back(new RipcdConnection(i,sock));
   }
   else {
-    ripcd_conns[i]=new RipcdConnection(i,fd);
+    ripcd_conns[i]=new RipcdConnection(i,sock);
   }
   ripcd_ready_mapper->setMapping(ripcd_conns[i]->socket(),i);
   connect(ripcd_conns[i]->socket(),SIGNAL(readyRead()),
@@ -267,6 +260,7 @@ void MainObject::newConnection(int fd)
   ripcd_kill_mapper->setMapping(ripcd_conns[i]->socket(),i);
   connect(ripcd_conns[i]->socket(),SIGNAL(connectionClosed()),
 	  ripcd_kill_mapper,SLOT(map()));
+  rda->log(RDConfig::LogDebug,QString().sprintf("added new connection %d",i));
 }
 
 
@@ -295,14 +289,14 @@ void MainObject::sendRml(RDMacro *rml)
   str=rml->toString();
   switch(rml->role()) {
   case RDMacro::Cmd:
-    ripcd_rml_send->writeBlock(str.utf8(),str.utf8().length(),
-			       rml->address(),rml->port());
+    ripcd_rml_send->writeDatagram(str.utf8(),str.utf8().length(),
+				  rml->address(),rml->port());
     break;
 
   case RDMacro::Reply:
     if(!(ripcd_host_addr==rml->address())) {
-      ripcd_rml_send->writeBlock(str.utf8(),str.utf8().length(),
-				 rml->address(),RD_RML_REPLY_PORT);
+      ripcd_rml_send->writeDatagram(str.utf8(),str.utf8().length(),
+				    rml->address(),RD_RML_REPLY_PORT);
     }
     break;
 
@@ -312,10 +306,20 @@ void MainObject::sendRml(RDMacro *rml)
 }
 
 
-void MainObject::readRml()
+void MainObject::rmlEchoData()
 {
   ReadRmlSocket(ripcd_rml_echo,RDMacro::Cmd,true);
+}
+
+
+void MainObject::rmlNoechoData()
+{
   ReadRmlSocket(ripcd_rml_noecho,RDMacro::Cmd,false);
+}
+
+
+void MainObject::rmlReplyData()
+{
   ReadRmlSocket(ripcd_rml_reply,RDMacro::Reply,false);
 }
 
@@ -358,7 +362,7 @@ void MainObject::readyReadData(int conn_id)
     data[n]=0;
     QString line=QString::fromUtf8(data);
     for(int i=0;i<line.length();i++) {
-      QChar c=line.ref(i);
+      QChar c=line.at(i);
       if(c.toAscii()=='!') {
 	if(!DispatchCommand(conn)) {
 	  return;
@@ -377,8 +381,10 @@ void MainObject::readyReadData(int conn_id)
 
 void MainObject::killData(int conn_id)
 {
-  ripcd_conns[conn_id]->socket()->close();
+  ripcd_conns[conn_id]->close();
   ripcd_garbage_timer->start(1,true);
+  rda->log(RDConfig::LogDebug,QString().sprintf("closed connection %d",
+						conn_id));
 }
 
 
@@ -451,9 +457,11 @@ void MainObject::garbageData()
 {
   for(unsigned i=0;i<ripcd_conns.size();i++) {
     if(ripcd_conns[i]!=NULL) {
-      if(ripcd_conns[i]->socket()->state()==Q3Socket::Idle) {
+      if(ripcd_conns[i]->isClosing()) {
 	delete ripcd_conns[i];
 	ripcd_conns[i]=NULL;
+	rda->log(RDConfig::LogDebug,
+		 QString().sprintf("cleaned up connection %d",i));
       }
     }
   }
@@ -474,6 +482,7 @@ bool MainObject::DispatchCommand(RipcdConnection *conn)
   int echo=0;
   QHostAddress addr;
 
+  //printf("DispatchCommand(%s)\n",(const char *)conn->accum.toUtf8());
   QStringList cmds=cmds.split(" ",conn->accum);
 
   //
@@ -481,7 +490,6 @@ bool MainObject::DispatchCommand(RipcdConnection *conn)
   // Authentication not required to execute these!
   //
   if(cmds[0]=="DC") {  // Drop Connection
-    conn->socket()->close();
     killData(conn->id());
     return false;
   }
@@ -631,7 +639,7 @@ bool MainObject::DispatchCommand(RipcdConnection *conn)
 void MainObject::EchoCommand(int ch,const QString &cmd)
 {
   //  printf("EchoCommand(%d,%s)\n",ch,(const char *)cmd.utf8());
-  if(ripcd_conns[ch]->socket()->state()==Q3Socket::Connected) {
+  if(ripcd_conns[ch]->socket()->state()==QAbstractSocket::ConnectedState) {
     ripcd_conns[ch]->socket()->writeBlock(cmd.utf8(),cmd.utf8().length());
   }
 }
@@ -649,7 +657,7 @@ void MainObject::BroadcastCommand(const QString &cmd,int except_ch)
 }
 
 
-void MainObject::ReadRmlSocket(Q3SocketDevice *dev,RDMacro::Role role,
+void MainObject::ReadRmlSocket(QUdpSocket *sock,RDMacro::Role role,
 			       bool echo)
 {
   char buffer[1501];
@@ -658,7 +666,7 @@ void MainObject::ReadRmlSocket(Q3SocketDevice *dev,RDMacro::Role role,
   QHostAddress peer_addr;
   RDMacro macro;
 
-  while((n=dev->readBlock(buffer,1501))>0) {
+  while((n=sock->readDatagram(buffer,1501,&peer_addr))>0) {
     buffer[n]=0;
     macro=RDMacro::fromString(QString::fromUtf8(buffer));
     if(!macro.isNull()) {
@@ -680,7 +688,7 @@ void MainObject::ReadRmlSocket(Q3SocketDevice *dev,RDMacro::Role role,
 	}
       }
       macro.setRole(role);
-      macro.setAddress(dev->peerAddress());
+      macro.setAddress(peer_addr);
       macro.setEchoRequested(echo);
       switch(role) {
       case RDMacro::Cmd:
@@ -698,13 +706,13 @@ void MainObject::ReadRmlSocket(Q3SocketDevice *dev,RDMacro::Role role,
       LogLine(RDConfig::LogWarning,
 	      QString().sprintf("received malformed rml: \"%s\" from %s:%u",
 				buffer,
-				(const char *)dev->peerAddress().toString(),
-				dev->peerPort()));
+				(const char *)sock->peerAddress().toString(),
+				sock->peerPort()));
       if(echo) {
 	macro.setRole(RDMacro::Reply);
 	macro.setCommand(RDMacro::NN);
 	macro.addArg("-");
-	macro.setAddress(dev->peerAddress());
+	macro.setAddress(peer_addr);
 	sendRml(&macro);
       }
     }

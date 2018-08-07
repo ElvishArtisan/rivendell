@@ -20,7 +20,7 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -I$(top_srcdir)/lib @QT4_CFLAGS@ -DQT3_SUPPORT -I/usr/include/Qt3Support
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -I$(top_srcdir)/lib @QT4_CFLAGS@ -I/usr/include/Qt3Support
 LIBS = -L$(top_srcdir)/lib
 MOC = @QT_MOC@
 
@@ -64,7 +64,6 @@ dist_ripcd_SOURCES = acu1p.cpp acu1p.h\
                      quartz1.cpp quartz1.h\
                      ripcd.cpp ripcd.h globals.h\
                      ripcd_connection.cpp ripcd_connection.h\
-                     ripcd_socket.cpp ripcd_socket.h\
                      rossnkscp.cpp rossnkscp.h\
                      sas32000.cpp sas32000.h\
                      sas64000.cpp sas64000.h\
@@ -111,7 +110,6 @@ nodist_ripcd_SOURCES = moc_am16.cpp\
                        moc_modemlines.cpp\
                        moc_quartz1.cpp\
                        moc_ripcd.cpp\
-                       moc_ripcd_socket.cpp\
                        moc_rossnkscp.cpp\
                        moc_sas32000.cpp\
                        moc_sas64000.cpp\

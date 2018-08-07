@@ -21,9 +21,9 @@
 #include <qsqldatabase.h>
 #include <qstring.h>
 #include <qobject.h>
-#include <q3socket.h>
 #include <qlabel.h>
 #include <qtimer.h>
+#include <qtcpsocket.h>
 
 #include <rdconfig.h>
 #include <rdmacro.h>
@@ -75,29 +75,23 @@ class RDRipc : public QObject
   
  private slots:
   void connectedData();
-  void errorData(int errorcode);
+  void errorData(QAbstractSocket::SocketError err);
   void readyData();
 
  private:
   void SendCommand(const QString &cmd);
   void DispatchCommand();
-  Q3Socket *ripc_socket;
+  QTcpSocket *ripc_socket;
   QString ripc_user;
   QString ripc_password;
-  //  QString ripc_stationname;
   RDStation *ripc_station;
   RDConfig *ripc_config;
   bool ripc_onair_flag;
   bool ripc_ignore_mask;
   bool debug;
   QString ripc_accum;
-  /*
-  char args[RIPC_MAX_ARGS][RIPC_MAX_LENGTH];
-  int argnum;
-  int argptr;
-  */
   bool ripc_connected;
 };
 
 
-#endif 
+#endif  // RDRIPC_H
