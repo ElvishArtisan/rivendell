@@ -24,8 +24,8 @@
 #include <rdconf.h>
 #include <rdlistviewitem.h>
 
-RDListViewItem::RDListViewItem(QListView *parent) 
-  : QListViewItem(parent)
+RDListViewItem::RDListViewItem(Q3ListView *parent) 
+  : Q3ListViewItem(parent)
 {
   item_line=-1;
   item_id=-1;
@@ -130,10 +130,10 @@ void RDListViewItem::paintCell(QPainter *p,const QColorGroup &cg,int column,
       }
     }
     x=listView()->itemMargin();
-    if(((align&AlignHCenter)!=0)||((align&AlignCenter)!=0)) {
+    if(((align&Qt::AlignHCenter)!=0)||((align&Qt::AlignCenter)!=0)) {
       x=(width-p->fontMetrics().width(text(column)))/2;
     }
-    if((align&AlignRight)!=0) {
+    if((align&Qt::AlignRight)!=0) {
       x=width-p->fontMetrics().width(text(column))-listView()->itemMargin();
     }
     p->setPen(text_color);
@@ -142,10 +142,10 @@ void RDListViewItem::paintCell(QPainter *p,const QColorGroup &cg,int column,
   else {
     x=listView()->itemMargin();
     y=(height()-pixmap(column)->height())/2;
-    if((align&AlignRight)!=0) {
+    if((align&Qt::AlignRight)!=0) {
       x=width-pixmap(column)->width()-listView()->itemMargin();
     }
-    if(((align&AlignHCenter)!=0)||((align&AlignCenter)!=0)) {
+    if(((align&Qt::AlignHCenter)!=0)||((align&Qt::AlignCenter)!=0)) {
       x=(width-pixmap(column)->width())/2;
     }
     p->drawPixmap(x,y,*pixmap(column));
@@ -153,7 +153,7 @@ void RDListViewItem::paintCell(QPainter *p,const QColorGroup &cg,int column,
 }
 
 
-int RDListViewItem::compare(QListViewItem *i,int col,bool ascending) const
+int RDListViewItem::compare(Q3ListViewItem *i,int col,bool ascending) const
 {
   int hard_column;
   int prev_length;
@@ -195,7 +195,7 @@ int RDListViewItem::compare(QListViewItem *i,int col,bool ascending) const
 	  return 0;
 
 	case RDListView::NormalSort:
-	  return QListViewItem::compare(i,col,ascending);
+	  return Q3ListViewItem::compare(i,col,ascending);
     }
   }
   if(ascending) {

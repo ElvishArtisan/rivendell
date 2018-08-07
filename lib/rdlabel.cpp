@@ -33,14 +33,14 @@
 #include <rdlabel.h>
 
 
-RDLabel::RDLabel(QWidget *parent,WFlags f)
+RDLabel::RDLabel(QWidget *parent,Qt::WFlags f)
   : QLabel(parent,"",f)
 {
   label_wrap=false;
 }
 
 
-RDLabel::RDLabel(const QString &text,QWidget *parent=0,WFlags f)
+RDLabel::RDLabel(const QString &text,QWidget *parent=0,Qt::WFlags f)
   : QLabel(text,parent,"",f)
 {
   label_wrap=false;
@@ -49,7 +49,7 @@ RDLabel::RDLabel(const QString &text,QWidget *parent=0,WFlags f)
 }
 
 
-RDLabel::RDLabel(QWidget *buddy,const QString &text,QWidget *parent,WFlags f)
+RDLabel::RDLabel(QWidget *buddy,const QString &text,QWidget *parent,Qt::WFlags f)
   : QLabel(buddy,text,parent,"",f)
 {
   label_wrap=false;

@@ -26,6 +26,8 @@
 #include <qradiobutton.h>
 #include <qsqldatabase.h>
 #include <qpushbutton.h>
+//Added by qt3to4:
+#include <QResizeEvent>
 
 #include <rdlistviewitem.h>
 #include <rddb.h>
@@ -45,7 +47,7 @@ class ListGroups : public QDialog
   void renameData();
   void deleteData();
   void reportData();
-  void doubleClickedData(QListViewItem *item,const QPoint &pt,int col);
+  void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
   void closeData();
 
  protected:

@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name></name>
     <message>
@@ -17,11 +19,11 @@
     <name>QObject</name>
     <message>
         <source>Couldn&apos;t initialize QSql driver!</source>
-        <translation>¡No pude inicializar el driver QSql!</translation>
+        <translation type="obsolete">¡No pude inicializar el driver QSql!</translation>
     </message>
     <message>
         <source>Couldn&apos;t open mySQL connection!</source>
-        <translation>¡No pude abrir la conexión mySQL!</translation>
+        <translation type="obsolete">¡No pude abrir la conexión mySQL!</translation>
     </message>
     <message>
         <source>Sequentially</source>
@@ -591,6 +593,14 @@
         <source>is not playable</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Couldn&apos;t initialize MySql driver!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t open MySQL connection on</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddCart</name>
@@ -882,7 +892,7 @@ Color</translation>
     </message>
     <message>
         <source>ARTIST</source>
-        <translation>ARTISTA<byte value="x9"/></translation>
+        <translation>ARTISTA	</translation>
     </message>
     <message>
         <source>CLIENT</source>
@@ -2453,11 +2463,11 @@ please try again!</source>
     <name>RDSqlDatabaseStatus</name>
     <message>
         <source>Database connection restored.</source>
-        <translation>Se recuperó la conexión a la base de datos.</translation>
+        <translation type="obsolete">Se recuperó la conexión a la base de datos.</translation>
     </message>
     <message>
         <source>Database connection failed : </source>
-        <translation>Falló la conexión a la base de datos : </translation>
+        <translation type="obsolete">Falló la conexión a la base de datos : </translation>
     </message>
 </context>
 <context>

@@ -83,7 +83,7 @@ MainObject::MainObject(QObject *parent)
   // Process Data
   //
   QStringList src_lines;
-  for(unsigned i=0;i<source_files.size();i++) {
+  for(int i=0;i<source_files.size();i++) {
     QStringList src_dirs=GetDirectoryList(source_files[i]);
     LoadSourceFiles(RDGetBasePart(source_files[i]),src_dirs,&src_lines);
   }
@@ -112,7 +112,7 @@ QStringList MainObject::GetDirectoryList(const QString &src_file)
 void MainObject::LoadSourceFiles(const QString &src_name,
 				 const QStringList &dirs,QStringList *lines)
 {
-  for(unsigned i=0;i<dirs.size();i++) {
+  for(int i=0;i<dirs.size();i++) {
     LoadSourceFile(dirs[i]+"/"+src_name,lines);
   }
 }
@@ -121,13 +121,13 @@ void MainObject::LoadSourceFiles(const QString &src_name,
 void MainObject::LoadSourceFile(const QString &filename,QStringList *lines)
 {
   Q_LONG n;
-  QString line;
+  char line[1025];
   QFile file(filename);
-  if(!file.open(IO_ReadOnly|IO_Translate)) {
+  if(!file.open(QIODevice::ReadOnly|QIODevice::Text)) {
     return;
   }
   while((n=file.readLine(line,1024))>0) {
-    lines->push_back(line.left(line.length()-1));
+    lines->push_back(QString(line).left(strlen(line)-1));
   }
   file.close();
 }
@@ -140,7 +140,7 @@ void MainObject::SortLines(QStringList *lines,std::vector<unsigned> *index)
   //
   // Initialize Index
   //
-  for(unsigned i=0;i<lines->size();i++) {
+  for(int i=0;i<lines->size();i++) {
     index->push_back(i);
     start_times.push_back(ReadTime((*lines)[i]));
   }
@@ -151,7 +151,7 @@ void MainObject::SortLines(QStringList *lines,std::vector<unsigned> *index)
   bool modified=true;
   while(modified) {
     modified=false;
-    for(unsigned i=1;i<lines->size();i++) {
+    for(int i=1;i<lines->size();i++) {
       if(start_times[i-1]>start_times[i]) {
 	QTime time=start_times[i-1];
 	start_times[i-1]=start_times[i];
@@ -174,7 +174,7 @@ int MainObject::WriteOutputFile(const QString &filename,
   if((f=fopen(filename,"w"))==NULL) {
     return errno;
   }
-  for(unsigned i=0;i<lines.size();i++) {
+  for(int i=0;i<lines.size();i++) {
     fprintf(f,"%s\n",(const char *)lines[index->at(i)]);
   }
   fclose(f);
@@ -187,7 +187,7 @@ void MainObject::AddDirs(const QString &path,QStringList *dirs)
   QDir dir(path);
   dir.setFilter(QDir::Dirs);
   QStringList list=dir.entryList();
-  for(unsigned i=0;i<list.size();i++) {
+  for(int i=0;i<list.size();i++) {
     if((list[i]!=".")&&(list[i]!="..")) {
       dirs->push_back(path+"/"+list[i]);
       AddDirs(path+"/"+list[i],dirs);

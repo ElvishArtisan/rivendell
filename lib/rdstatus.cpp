@@ -25,6 +25,8 @@
 
 #include <qstringlist.h>
 #include <qsqldatabase.h>
+//Added by qt3to4:
+#include <QSqlQuery>
 
 #include "rdstatus.h"
 
@@ -67,23 +69,21 @@ bool RDDbValid(RDConfig *config,int *schema)
   QSqlQuery *q;
   bool ret=false;
 
-  QSqlDatabase *db=QSqlDatabase::addDatabase(config->mysqlDriver());
-  if(db) {
-    db->setDatabaseName(config->mysqlDbname());
-    db->setUserName(config->mysqlUsername());
-    db->setPassword(config->mysqlPassword());
-    db->setHostName(config->mysqlHostname());
-    if(db->open()) {
-      ret=true;
-      sql="select DB from VERSION";
-      q=new QSqlQuery(sql);
-      if(q->first()) {
-	*schema=q->value(0).toInt();
-      }
-      delete q;
-      db->close();
+  QSqlDatabase db=QSqlDatabase::addDatabase(config->mysqlDriver());
+  db.setDatabaseName(config->mysqlDbname());
+  db.setUserName(config->mysqlUsername());
+  db.setPassword(config->mysqlPassword());
+  db.setHostName(config->mysqlHostname());
+  if(db.open()) {
+    ret=true;
+    sql="select DB from VERSION";
+    q=new QSqlQuery(sql);
+    if(q->first()) {
+      *schema=q->value(0).toInt();
     }
-    QSqlDatabase::removeDatabase(db);
+    delete q;
+    db.close();
   }
+
   return ret;
 }

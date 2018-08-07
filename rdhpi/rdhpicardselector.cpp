@@ -23,12 +23,12 @@
 #include <qpushbutton.h>
 #include <qradiobutton.h>
 #include <qlineedit.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qlabel.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 
 #include <rdhpisoundcard.h>
 #include <rdhpicardselector.h>
@@ -53,7 +53,7 @@ RDHPICardSelector::RDHPICardSelector(QWidget *parent)
   card_title=new QLabel(this);
   card_title->setGeometry(0,0,geometry().width(),19);
   card_title->setFont(font);
-  card_title->setAlignment(AlignHCenter);
+  card_title->setAlignment(Qt::AlignHCenter);
   card_title->hide();
 
   //
@@ -68,7 +68,7 @@ RDHPICardSelector::RDHPICardSelector(QWidget *parent)
   connect(card_card_box,SIGNAL(valueChanged(int)),this,SLOT(cardData(int)));
   card_card_label=new QLabel(card_card_box,"Card:",this);
   card_card_label->setGeometry(0,yoffset+2,55,19);
-  card_card_label->setAlignment(AlignRight|ShowPrefix);
+  card_card_label->setAlignment(Qt::AlignRight|Qt::TextShowMnemonic);
 
   //
   // Port
@@ -81,7 +81,7 @@ RDHPICardSelector::RDHPICardSelector(QWidget *parent)
   connect(card_port_box,SIGNAL(valueChanged(int)),this,SLOT(portData(int)));
   card_port_label=new QLabel(card_port_box,"Port:",this);
   card_port_label->setGeometry(0,yoffset+24,55,19);
-  card_port_label->setAlignment(AlignRight|ShowPrefix);
+  card_port_label->setAlignment(Qt::AlignRight|Qt::TextShowMnemonic);
 }
 
 

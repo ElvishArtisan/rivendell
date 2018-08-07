@@ -34,7 +34,7 @@ bool RDTtyOut(const QString &station,unsigned port_id,const QString &str)
   tty_device->setSpeed(tty_entry->baudRate());
   tty_device->setWordLength(tty_entry->dataBits());
   tty_device->setParity(tty_entry->parity());
-  if(!tty_device->open(IO_Raw|IO_WriteOnly)) {
+  if(!tty_device->open(QIODevice::Unbuffered|QIODevice::WriteOnly)) {
     delete tty_device;
     delete tty_entry;
     return false;

@@ -41,7 +41,7 @@ Modbus::Modbus(RDMatrix *matrix,QObject *parent)
   modbus_ip_address=matrix->ipAddress(RDMatrix::Primary);
   modbus_ip_port=matrix->ipPort(RDMatrix::Primary);
 
-  modbus_socket=new QSocket(this);
+  modbus_socket=new Q3Socket(this);
   connect(modbus_socket,SIGNAL(connected()),this,SLOT(connectedData()));
   connect(modbus_socket,SIGNAL(readyRead()),this,SLOT(readyReadData()));
   connect(modbus_socket,SIGNAL(error(int)),this,SLOT(errorData(int)));

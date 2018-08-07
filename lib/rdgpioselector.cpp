@@ -25,12 +25,12 @@
 #include <qpushbutton.h>
 #include <qradiobutton.h>
 #include <qlineedit.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qlabel.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 
 
 #include <rd.h>
@@ -53,7 +53,7 @@ RDGpioSelector::RDGpioSelector(QWidget *parent)
   QLabel *gpio_pin_label=new QLabel(gpio_pin_box,tr("Pin:"),this,
 				       "gpio_pin_label");
   gpio_pin_label->setGeometry(0,24,55,19);
-  gpio_pin_label->setAlignment(AlignRight|ShowPrefix);
+  gpio_pin_label->setAlignment(Qt::AlignRight|Qt::TextShowMnemonic);
 }
 
 

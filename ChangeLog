@@ -17321,3 +17321,7 @@
 2018-08-03 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed bugs in 'RDWaveFile' that caused corruption of UTF-8
 	strings in RDXL chunks.
+2018-08-07 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'pam_rd' plug-in.
+	* Removed rdchunk(1).
+	* Upgraded Qt3 to Qt4.

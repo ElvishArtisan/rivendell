@@ -26,7 +26,7 @@
 #include <qobject.h>
 #include <qsignalmapper.h>
 #include <qtimer.h>
-#include <qsocketdevice.h>
+#include <q3socketdevice.h>
 #include <qdatetime.h>
 
 #include <rd.h>
@@ -53,7 +53,7 @@ class RDLogPlay : public QObject,public RDLogEvent
 {
  Q_OBJECT
  public:
-  RDLogPlay(int id,RDEventPlayer *player,QSocketDevice *nn_sock,QString logname,
+  RDLogPlay(int id,RDEventPlayer *player,Q3SocketDevice *nn_sock,QString logname,
 	  std::vector<RDRLMHost *> *rlm_hosts,QObject *parent=0);
   QString serviceName() const;
   void setServiceName(const QString &svcname);
@@ -220,7 +220,7 @@ class RDLogPlay : public QObject,public RDLogEvent
   RDPlayDeck *play_deck[RD_MAX_STREAMS];
   bool play_deck_active[RD_MAX_STREAMS];
   int next_channel;
-  QSocketDevice *play_nownext_socket;
+  Q3SocketDevice *play_nownext_socket;
   QString play_nownext_string;
   QHostAddress play_nownext_address;
   Q_UINT16 play_nownext_port;

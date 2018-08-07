@@ -21,13 +21,15 @@
 #include <qdialog.h>
 #include <qstring.h>
 #include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
+#include <q3listbox.h>
+#include <q3textedit.h>
 #include <qlabel.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
+//Added by qt3to4:
+#include <QResizeEvent>
 
 #include <rddb.h>
 #include <rdescape_string.h>
@@ -118,9 +120,9 @@ ListDropboxes::ListDropboxes(const QString &stationname,QWidget *parent)
   list_dropboxes_view->addColumn(tr("User Defined"));
   list_dropboxes_view->setColumnAlignment(9,Qt::AlignVCenter|Qt::AlignLeft);
   connect(list_dropboxes_view,
-	  SIGNAL(doubleClicked(QListViewItem *,const QPoint &,int)),
+	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,
-	  SLOT(doubleClickedData(QListViewItem *,const QPoint &,int)));
+	  SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
 
   RefreshList();
 }
@@ -198,7 +200,7 @@ void ListDropboxes::deleteData()
 }
 
 
-void ListDropboxes::doubleClickedData(QListViewItem *item,const QPoint &pt,
+void ListDropboxes::doubleClickedData(Q3ListViewItem *item,const QPoint &pt,
 				   int col)
 {
   editData();

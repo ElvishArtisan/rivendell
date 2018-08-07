@@ -25,6 +25,8 @@
 #include <qfontmetrics.h>
 #include <qsize.h>
 #include <qevent.h>
+//Added by qt3to4:
+#include <QKeyEvent>
 #include <stdio.h>
 #include <string.h>
 
@@ -151,7 +153,7 @@ void WallClock::tickClock()
   QPainter p(pix);
   if(flash_state) {
     p.fillRect(0,0,width(),height(),BUTTON_TIME_SYNC_LOST_COLOR);
-    p.setPen(QColor(color1));
+    p.setPen(Qt::color1);
   }
   else {
     p.fillRect(0,0,width(),height(),backgroundColor());

@@ -67,7 +67,7 @@ class RDEvent
   void setNestedEvent(const QString &eventname);
   QString remarks() const;
   void setRemarks(const QString &str) const;
-  QString SchedGroup();
+  QString schedGroup();
   void setSchedGroup(QString str);
   QString HaveCode();
   void setHaveCode(QString str);

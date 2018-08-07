@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>AddClock</name>
     <message>
@@ -232,35 +234,35 @@ Vil du lagra?</translation>
     </message>
     <message>
         <source>CART</source>
-        <translation>KORG</translation>
+        <translation type="obsolete">KORG</translation>
     </message>
     <message>
         <source>GROUP</source>
-        <translation>GRUPPE</translation>
+        <translation type="obsolete">GRUPPE</translation>
     </message>
     <message>
         <source>LENGTH</source>
-        <translation>LENGD</translation>
+        <translation type="obsolete">LENGD</translation>
     </message>
     <message>
         <source>TITLE</source>
-        <translation>TITTEL</translation>
+        <translation type="obsolete">TITTEL</translation>
     </message>
     <message>
         <source>ARTIST</source>
-        <translation>ARTIST</translation>
+        <translation type="obsolete">ARTIST</translation>
     </message>
     <message>
         <source>START</source>
-        <translation>START</translation>
+        <translation type="obsolete">START</translation>
     </message>
     <message>
         <source>END</source>
-        <translation>SLUTT</translation>
+        <translation type="obsolete">SLUTT</translation>
     </message>
     <message>
         <source>TYPE</source>
-        <translation>TYPE</translation>
+        <translation type="obsolete">TYPE</translation>
     </message>
     <message>
         <source>ALL</source>
@@ -348,11 +350,11 @@ Vil du lagra?</translation>
     </message>
     <message>
         <source>TRANSITION</source>
-        <translation>OVERGANG</translation>
+        <translation type="obsolete">OVERGANG</translation>
     </message>
     <message>
         <source>COUNT</source>
-        <translation>TELLING</translation>
+        <translation type="obsolete">TELLING</translation>
     </message>
     <message>
         <source>None</source>
@@ -549,6 +551,46 @@ Vil du byta henne ut?</translation>
     <message>
         <source>Timed(Wait)</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="unfinished">Lengd</translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Artist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start</source>
+        <translation type="unfinished">Start</translation>
+    </message>
+    <message>
+        <source>End</source>
+        <translation type="unfinished">Slutt</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Count</source>
+        <translation type="unfinished">Tellign</translation>
     </message>
 </context>
 <context>

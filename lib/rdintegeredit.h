@@ -25,7 +25,7 @@
 
 #include <qwidget.h>
 #include <qlabel.h>
-#include <qlistbox.h>
+#include <q3listbox.h>
 #include <qpushbutton.h>
 
 class RDIntegerEdit : public QWidget
@@ -46,9 +46,9 @@ class RDIntegerEdit : public QWidget
   void deleteData();
 
  private:
-  QListBoxItem *GetItem(int value);
+  Q3ListBoxItem *GetItem(int value);
   QLabel *edit_label;
-  QListBox *edit_values_box;
+  Q3ListBox *edit_values_box;
   QPushButton *edit_add_button;
   QPushButton *edit_delete_button;
   int edit_low;

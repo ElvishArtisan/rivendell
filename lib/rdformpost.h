@@ -26,7 +26,7 @@
 #include <qdatastream.h>
 #include <qstring.h>
 #include <qstringlist.h>
-#include <qtextstream.h>
+#include <q3textstream.h>
 #include <qvariant.h>
 #include <qhostaddress.h>
 
@@ -80,7 +80,7 @@ class RDFormPost
 
   QString post_separator;
   FILE *post_stream;
-  QTextStream *post_text_reader;
+  Q3TextStream *post_text_reader;
 };
 
 

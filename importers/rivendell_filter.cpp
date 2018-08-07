@@ -26,6 +26,8 @@
 
 #include <qapplication.h>
 #include <qdir.h>
+//Added by qt3to4:
+#include <QSqlQuery>
 
 #include <rddb.h>
 #include <rd.h>
@@ -54,8 +56,8 @@ MainObject::MainObject(QObject *parent)
   QString default_group;
   unsigned start_cartnum=0;
   unsigned end_cartnum=0;
-  QSqlDatabase *filter_db;
-  QSqlDatabase *ext_db;
+  QSqlDatabase filter_db;
+  QSqlDatabase ext_db;
   bool ok=false;
   bool found;
   QString start_datetime;
@@ -85,18 +87,13 @@ MainObject::MainObject(QObject *parent)
   // Open Local Database
   //
   filter_db=QSqlDatabase::addDatabase(rdconfig->mysqlDriver(),"LOCAL_DB");
-  if(!filter_db) {
-    fprintf(stderr,"rivendell_filter: can't open local mySQL database\n");
-    exit(1);
-  }
-  filter_db->setDatabaseName(rdconfig->mysqlDbname());
-  filter_db->setUserName(rdconfig->mysqlUsername());
-  filter_db->setPassword(rdconfig->mysqlPassword());
-  filter_db->setHostName(rdconfig->mysqlHostname());
-  if(!filter_db->open()) {
+  filter_db.setDatabaseName(rdconfig->mysqlDbname());
+  filter_db.setUserName(rdconfig->mysqlUsername());
+  filter_db.setPassword(rdconfig->mysqlPassword());
+  filter_db.setHostName(rdconfig->mysqlHostname());
+  if(!filter_db.open()) {
     fprintf(stderr,
 	    "rivendell_filter: unable to connect to local mySQL Server\n");
-    filter_db->removeDatabase(rdconfig->mysqlDbname());
     exit(1);
   }
 
@@ -180,18 +177,13 @@ MainObject::MainObject(QObject *parent)
   // Open Remote Database
   //
   ext_db=QSqlDatabase::addDatabase(rdconfig->mysqlDriver(),"REMOTE_DB");
-  if(!ext_db) {
-    fprintf(stderr,"rivendell_filter: can't open remote mySQL database\n");
-    exit(1);
-  }
-  ext_db->setDatabaseName(rdconfig->mysqlDbname());
-  ext_db->setUserName(ext_username);
-  ext_db->setPassword(ext_password);
-  ext_db->setHostName(ext_hostname);
-  if(!ext_db->open()) {
+  ext_db.setDatabaseName(rdconfig->mysqlDbname());
+  ext_db.setUserName(ext_username);
+  ext_db.setPassword(ext_password);
+  ext_db.setHostName(ext_hostname);
+  if(!ext_db.open()) {
     fprintf(stderr,
 	    "rivendell_filter: unable to connect to remote mySQL Server\n");
-    ext_db->removeDatabase(rdconfig->mysqlDbname());
     exit(1);
   }
 

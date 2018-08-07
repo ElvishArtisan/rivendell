@@ -35,7 +35,7 @@ WheatnetLio::WheatnetLio(RDMatrix *matrix,QObject *parent)
   lio_ip_port=matrix->ipPort(RDMatrix::Primary);
   lio_card=matrix->card();
 
-  lio_socket=new QSocket(this);
+  lio_socket=new Q3Socket(this);
   connect(lio_socket,SIGNAL(connected()),this,SLOT(connectedData()));
   connect(lio_socket,SIGNAL(readyRead()),this,SLOT(readyReadData()));
   connect(lio_socket,SIGNAL(error(int)),this,SLOT(errorData(int)));

@@ -26,6 +26,8 @@
 #include <sys/types.h>
 
 #include <qdir.h>
+//Added by qt3to4:
+#include <QSqlQuery>
 
 #include <dbversion.h>
 #include <rdcart.h>
@@ -141,7 +143,7 @@ void MainObject::RelinkAudio(const QString &srcdir) const
 
   QDir dir(srcdir);
   QStringList files=dir.entryList(QDir::Files|QDir::Readable|QDir::Hidden);
-  for(unsigned i=0;i<files.size();i++) {
+  for(int i=0;i<files.size();i++) {
     QString filename=dir.path()+"/"+files[i];
     QString hash=RDSha1Hash(filename);
     QString firstdest;
@@ -596,7 +598,7 @@ void MainObject::CheckOrphanedAudio() const
 {
   QDir dir(db_config->audioRoot());
   QStringList list=dir.entryList("??????_???.wav",QDir::Files);
-  for(unsigned i=0;i<list.size();i++) {
+  for(int i=0;i<list.size();i++) {
     bool ok=false;
     list[i].left(6).toUInt(&ok);
     if(ok) {

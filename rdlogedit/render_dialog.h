@@ -23,11 +23,14 @@
 
 #include <qcheckbox.h>
 #include <qcombobox.h>
-#include <qdatetimeedit.h>
+#include <q3datetimeedit.h>
 #include <qdialog.h>
 #include <qlabel.h>
 #include <qlineedit.h>
-#include <qprogressdialog.h>
+#include <q3progressdialog.h>
+//Added by qt3to4:
+#include <QResizeEvent>
+#include <QCloseEvent>
 
 #include <rdbusybar.h>
 #include <rdconfig.h>
@@ -78,14 +81,14 @@ class RenderDialog : public QDialog
   int render_first_line;
   int render_last_line;
   RDSettings *render_settings;
-  QProgressDialog *render_progress_dialog;
+  Q3ProgressDialog *render_progress_dialog;
   QLabel *render_to_label;
   QComboBox *render_to_box;
   QLabel *render_filename_label;
   QLineEdit *render_filename_edit;
   QLabel *render_starttime_label;
   QComboBox *render_starttime_box;
-  QTimeEdit *render_starttime_edit;
+  Q3TimeEdit *render_starttime_edit;
   QLabel *render_audiosettings_label;
   QLineEdit *render_audiosettings_edit;
   QPushButton *render_audiosettings_button;

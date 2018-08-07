@@ -21,14 +21,14 @@
 #include <qdialog.h>
 #include <qstring.h>
 #include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
+#include <q3listbox.h>
+#include <q3textedit.h>
 #include <qlabel.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 
 #include <rddb.h>
 #include <rdescape_string.h>
@@ -104,7 +104,7 @@ EditFeedPerms::EditFeedPerms(RDUser *user,QWidget *parent)
   sql=QString().sprintf("select KEY_NAME from FEEDS");
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    if(feed_host_sel->destFindItem(q->value(0).toString(),ExactMatch)==0) {
+    if(feed_host_sel->destFindItem(q->value(0).toString(),Q3ListBox::ExactMatch)==0) {
       feed_host_sel->sourceInsertItem(q->value(0).toString());
     }
   }

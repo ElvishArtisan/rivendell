@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>AddMeta</name>
     <message>
@@ -153,55 +155,55 @@
     </message>
     <message>
         <source>TIME</source>
-        <translation>TID</translation>
+        <translation type="obsolete">TID</translation>
     </message>
     <message>
         <source>TRANS</source>
-        <translation>OVERG</translation>
+        <translation type="obsolete">OVERG</translation>
     </message>
     <message>
         <source>CART</source>
-        <translation>KORG</translation>
+        <translation type="obsolete">KORG</translation>
     </message>
     <message>
         <source>GROUP</source>
-        <translation>GRUPPE</translation>
+        <translation type="obsolete">GRUPPE</translation>
     </message>
     <message>
         <source>LENGTH</source>
-        <translation>LENGD</translation>
+        <translation type="obsolete">LENGD</translation>
     </message>
     <message>
         <source>TITLE</source>
-        <translation>TITTEL</translation>
+        <translation type="obsolete">TITTEL</translation>
     </message>
     <message>
         <source>ARTIST</source>
-        <translation>ARTIST</translation>
+        <translation type="obsolete">ARTIST</translation>
     </message>
     <message>
         <source>CLIENT</source>
-        <translation>KLIENT</translation>
+        <translation type="obsolete">KLIENT</translation>
     </message>
     <message>
         <source>AGENCY</source>
-        <translation>AGENT</translation>
+        <translation type="obsolete">AGENT</translation>
     </message>
     <message>
         <source>LABEL</source>
-        <translation>SELSKAP</translation>
+        <translation type="obsolete">SELSKAP</translation>
     </message>
     <message>
         <source>SOURCE</source>
-        <translation>KJELDE</translation>
+        <translation type="obsolete">KJELDE</translation>
     </message>
     <message>
         <source>LINE ID</source>
-        <translation>LINE-ID</translation>
+        <translation type="obsolete">LINE-ID</translation>
     </message>
     <message>
         <source>COUNT</source>
-        <translation>TELLING</translation>
+        <translation type="obsolete">TELLING</translation>
     </message>
     <message>
         <source>Insert
@@ -409,10 +411,6 @@ skrudd av for denne tenesta!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>EXT DATA</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Link Start</source>
         <translation type="unfinished"></translation>
     </message>
@@ -446,6 +444,62 @@ skrudd av for denne tenesta!</translation>
     </message>
     <message>
         <source>Log already being edited by</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trans</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cart</source>
+        <translation type="unfinished">Korg</translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished">Tittel</translation>
+    </message>
+    <message>
+        <source>Artist</source>
+        <translation type="unfinished">Artist</translation>
+    </message>
+    <message>
+        <source>Client</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Agency</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation type="unfinished">Selskap</translation>
+    </message>
+    <message>
+        <source>Source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ext Data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Line ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Count</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -791,51 +845,51 @@ som er skrudd av for denne tenesta!</translation>
     </message>
     <message>
         <source>LOG NAME</source>
-        <translation>LOGGNAMN</translation>
+        <translation type="obsolete">LOGGNAMN</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation>SKILDRING</translation>
+        <translation type="obsolete">SKILDRING</translation>
     </message>
     <message>
         <source>SERVICE</source>
-        <translation>TENEST</translation>
+        <translation type="obsolete">TENEST</translation>
     </message>
     <message>
         <source>MUSIC</source>
-        <translation>MUSIKK</translation>
+        <translation type="obsolete">MUSIKK</translation>
     </message>
     <message>
         <source>TRAFFIC</source>
-        <translation>TRAFIKK</translation>
+        <translation type="obsolete">TRAFIKK</translation>
     </message>
     <message>
         <source>TRACKS</source>
-        <translation>SPOR</translation>
+        <translation type="obsolete">SPOR</translation>
     </message>
     <message>
         <source>VALID FROM</source>
-        <translation>GYLDIG FRÅ</translation>
+        <translation type="obsolete">GYLDIG FRÅ</translation>
     </message>
     <message>
         <source>VALID TO</source>
-        <translation>GYLDIG TIL</translation>
+        <translation type="obsolete">GYLDIG TIL</translation>
     </message>
     <message>
         <source>AUTO REFRESH</source>
-        <translation>AUTO-OPPDATER</translation>
+        <translation type="obsolete">AUTO-OPPDATER</translation>
     </message>
     <message>
         <source>ORIGIN</source>
-        <translation>OPPHAV</translation>
+        <translation type="obsolete">OPPHAV</translation>
     </message>
     <message>
         <source>LAST LINKED</source>
-        <translation>SIST LENKA</translation>
+        <translation type="obsolete">SIST LENKA</translation>
     </message>
     <message>
         <source>LAST MODIFIED</source>
-        <translation>SIST ENDRA</translation>
+        <translation type="obsolete">SIST ENDRA</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -969,6 +1023,54 @@ Vil du halda fram?</translation>
     </message>
     <message>
         <source>Unknown command option</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Log Name</source>
+        <translation type="unfinished">Loggnamn</translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Music</source>
+        <translation type="unfinished">Musikk</translation>
+    </message>
+    <message>
+        <source>Traffic</source>
+        <translation type="unfinished">Trafikk</translation>
+    </message>
+    <message>
+        <source>Tracks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Valid From</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Valid To</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Auto Refresh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Origin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last Linked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last Modified</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1133,31 +1235,31 @@ Track</source>
     </message>
     <message>
         <source>TIME</source>
-        <translation type="unfinished">TID</translation>
+        <translation type="obsolete">TID</translation>
     </message>
     <message>
         <source>TRANS</source>
-        <translation type="unfinished">OVERG</translation>
+        <translation type="obsolete">OVERG</translation>
     </message>
     <message>
         <source>CART</source>
-        <translation type="unfinished">KORG</translation>
+        <translation type="obsolete">KORG</translation>
     </message>
     <message>
         <source>GROUP</source>
-        <translation type="unfinished">GRUPPE</translation>
+        <translation type="obsolete">GRUPPE</translation>
     </message>
     <message>
         <source>LENGTH</source>
-        <translation type="unfinished">LENGD</translation>
+        <translation type="obsolete">LENGD</translation>
     </message>
     <message>
         <source>TITLE</source>
-        <translation type="unfinished">TITTEL</translation>
+        <translation type="obsolete">TITTEL</translation>
     </message>
     <message>
         <source>ARTIST</source>
-        <translation type="unfinished">ARTIST</translation>
+        <translation type="obsolete">ARTIST</translation>
     </message>
     <message>
         <source>Do Over</source>
@@ -1287,12 +1389,8 @@ therefore only existing transitions will be editable.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>ALBUM</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>LABEL</source>
-        <translation type="unfinished">SELSKAP</translation>
+        <translation type="obsolete">SELSKAP</translation>
     </message>
     <message>
         <source>Log Locked</source>
@@ -1305,6 +1403,38 @@ therefore only existing transitions will be editable.</source>
     <message>
         <source>Talk</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trans</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cart</source>
+        <translation type="unfinished">Korg</translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished">Tittel</translation>
+    </message>
+    <message>
+        <source>Artist</source>
+        <translation type="unfinished">Artist</translation>
+    </message>
+    <message>
+        <source>Album</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation type="unfinished">Selskap</translation>
     </message>
 </context>
 </TS>

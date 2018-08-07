@@ -23,15 +23,15 @@
 
 #include <vector>
 
-#include <qlistview.h>
+#include <q3listview.h>
 #include <qpixmap.h>
 
 #include <rdlistview.h>
 
-class RDListViewItem : public QListViewItem
+class RDListViewItem : public Q3ListViewItem
 {
  public:
-  RDListViewItem(QListView *parent);
+  RDListViewItem(Q3ListView *parent);
   int line() const;
   void setLine(int line);
   int id() const;
@@ -43,7 +43,7 @@ class RDListViewItem : public QListViewItem
   void setTextColor(int column,QColor color,int weight);
   void paintCell(QPainter *p,const QColorGroup &cg,int column,
 		 int width,int align);
-  int compare(QListViewItem *i,int col,bool ascending) const;
+  int compare(Q3ListViewItem *i,int col,bool ascending) const;
 
  private:
   int item_line;

@@ -24,7 +24,7 @@
 #include <qdialog.h>
 #include <qsqldatabase.h>
 #include <qcombobox.h>
-#include <qdatetimeedit.h>
+#include <q3datetimeedit.h>
 
 class PickReportDates : public QDialog
 {
@@ -43,8 +43,8 @@ class PickReportDates : public QDialog
 
  private:
   QComboBox *edit_report_box;
-  QDateEdit *edit_startdate_edit;
-  QDateEdit *edit_enddate_edit;
+  Q3DateEdit *edit_startdate_edit;
+  Q3DateEdit *edit_enddate_edit;
   QString edit_svcname;
 };
 

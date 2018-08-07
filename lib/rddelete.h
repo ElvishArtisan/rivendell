@@ -22,7 +22,7 @@
 #define RDDELETE_H
 
 #include <qobject.h>
-#include <qurl.h>
+#include <q3url.h>
 
 #include <rdconfig.h>
 
@@ -44,7 +44,7 @@ class RDDelete : public QObject
   static QString errorText(RDDelete::ErrorCode err);
 
  private:
-  QUrl conv_target_url;
+  Q3Url conv_target_url;
   RDConfig *conv_config;
 };
 

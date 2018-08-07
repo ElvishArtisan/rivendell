@@ -22,14 +22,16 @@
 #define EDIT_CHAIN_H
 
 #include <qdialog.h>
-#include <qdatetimeedit.h>
+#include <q3datetimeedit.h>
 #include <qcombobox.h>
 #include <qlineedit.h>
 #include <qlabel.h>
 #include <qcheckbox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 #include <qradiobutton.h>
 #include <qspinbox.h>
+//Added by qt3to4:
+#include <QCloseEvent>
 
 #include <rdlog_line.h>
 #include <rdtimeedit.h>
@@ -66,9 +68,9 @@ class EditChain : public QDialog
   QComboBox *edit_transtype_box;
   QLineEdit *edit_comment_edit;
   QLineEdit *edit_label_edit;
-  QButtonGroup *edit_grace_group;
+  Q3ButtonGroup *edit_grace_group;
   QFont normal_font;
-  QTimeEdit *edit_grace_box;
+  Q3TimeEdit *edit_grace_box;
 };
 
 

@@ -29,6 +29,8 @@
 #include <qapplication.h>
 #include <qdir.h>
 #include <qfileinfo.h>
+//Added by qt3to4:
+#include <QSqlQuery>
 
 #include <rd.h>
 #include <rdapplication.h>

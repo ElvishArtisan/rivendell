@@ -20,7 +20,7 @@
 
 #include <qdialog.h>
 #include <qstring.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qpainter.h>
 #include <qmessagebox.h>
 
@@ -56,7 +56,7 @@ ListGrids::ListGrids(QWidget *parent)
   //
   // Grids List
   //
-  edit_grids_list=new QListView(this);
+  edit_grids_list=new Q3ListView(this);
   edit_grids_list->setGeometry(10,10,
 				sizeHint().width()-20,sizeHint().height()-80);
   edit_grids_list->setAllColumnsShowFocus(true);
@@ -64,8 +64,8 @@ ListGrids::ListGrids(QWidget *parent)
   edit_grids_list->addColumn(tr("Name"));
   edit_grids_list->addColumn(tr("Description"));
   connect(edit_grids_list,
-	  SIGNAL(doubleClicked(QListViewItem *,const QPoint &,int)),
-	  this,SLOT(doubleClickedData(QListViewItem *,const QPoint &,int)));
+	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
+	  this,SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
 
   //
   //  Edit Button
@@ -104,7 +104,7 @@ QSizePolicy ListGrids::sizePolicy() const
 
 void ListGrids::editData()
 {
-  QListViewItem *item=edit_grids_list->selectedItem();
+  Q3ListViewItem *item=edit_grids_list->selectedItem();
   if(item==NULL) {
     return;
   }
@@ -114,7 +114,7 @@ void ListGrids::editData()
 }
 
 
-void ListGrids::doubleClickedData(QListViewItem *item,const QPoint &,int)
+void ListGrids::doubleClickedData(Q3ListViewItem *item,const QPoint &,int)
 {
   editData();
 }
@@ -128,14 +128,14 @@ void ListGrids::closeData()
 
 void ListGrids::RefreshList()
 {
-  QListViewItem *prev_item=edit_grids_list->selectedItem();
+  Q3ListViewItem *prev_item=edit_grids_list->selectedItem();
   QString sql="select NAME,DESCRIPTION from SERVICES";
 
   edit_grids_list->clear();
   RDSqlQuery *q=new RDSqlQuery(sql);
-  QListViewItem *item=NULL;
+  Q3ListViewItem *item=NULL;
   while(q->next()) {
-    item=new QListViewItem(edit_grids_list);
+    item=new Q3ListViewItem(edit_grids_list);
     item->setText(0,q->value(0).toString());
     item->setText(1,q->value(1).toString());
   }

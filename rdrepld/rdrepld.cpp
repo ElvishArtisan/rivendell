@@ -102,9 +102,9 @@ MainObject::MainObject(QObject *parent)
   //
   repl_temp_dir=RDTempDirectory::basePath();
 
-  connect(RDDbStatus(),
-	  SIGNAL(logText(RDConfig::LogPriority,const QString &)),
-	  this,SLOT(log(RDConfig::LogPriority,const QString &)));
+  //  connect(RDDbStatus(),
+  //	  SIGNAL(logText(RDConfig::LogPriority,const QString &)),
+  //	  this,SLOT(log(RDConfig::LogPriority,const QString &)));
 
   //
   // Detach

@@ -21,7 +21,7 @@
 
 #include <qapplication.h>
 #include <qobject.h>
-#include <qserversocket.h>
+#include <q3serversocket.h>
 #include <qhostaddress.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -33,14 +33,14 @@
 #include <ripcd_socket.h>
 
 RipcdSocket::RipcdSocket(Q_UINT16 port,int backlog,QObject *parent)
-  : QServerSocket(port,0,parent)
+  : Q3ServerSocket(port,0,parent)
 {
 }
 
 
 RipcdSocket::RipcdSocket(const QHostAddress &address,Q_UINT16 port,int backlog,
 			 QObject *parent) 
-  : QServerSocket(address,port,0,parent)
+  : Q3ServerSocket(address,port,0,parent)
 {
 }
 

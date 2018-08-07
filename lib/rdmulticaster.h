@@ -27,7 +27,7 @@
 
 #include <qhostaddress.h>
 #include <qobject.h>
-#include <qsocketdevice.h>
+#include <q3socketdevice.h>
 #include <qsocketnotifier.h>
 
 class RDMulticaster : public QObject
@@ -51,7 +51,7 @@ class RDMulticaster : public QObject
 
  private:
   void GetInterfaces();
-  QSocketDevice *multi_socket;
+  Q3SocketDevice *multi_socket;
   QSocketNotifier *multi_notifier;
   std::vector<QHostAddress> multi_iface_addresses;
 };

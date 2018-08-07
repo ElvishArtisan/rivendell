@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name></name>
     <message>
@@ -17,11 +19,11 @@
     <name>QObject</name>
     <message>
         <source>Couldn&apos;t initialize QSql driver!</source>
-        <translation>Nepodařilo se inicializovat ovladač QSql!</translation>
+        <translation type="obsolete">Nepodařilo se inicializovat ovladač QSql!</translation>
     </message>
     <message>
         <source>Couldn&apos;t open mySQL connection!</source>
-        <translation>Nepodařilo se vytvořit žádné spojení se serverem mySQL-Server!</translation>
+        <translation type="obsolete">Nepodařilo se vytvořit žádné spojení se serverem mySQL-Server!</translation>
     </message>
     <message>
         <source>Sequentially</source>
@@ -593,6 +595,14 @@
     </message>
     <message>
         <source>is not playable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t initialize MySql driver!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t open MySQL connection on</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2472,11 +2482,11 @@ Zkuste to, prosím, znovu!</translation>
     <name>RDSqlDatabaseStatus</name>
     <message>
         <source>Database connection restored.</source>
-        <translation>Databázové spojení obnoveno.</translation>
+        <translation type="obsolete">Databázové spojení obnoveno.</translation>
     </message>
     <message>
         <source>Database connection failed : </source>
-        <translation>Databázové spojení se nezdařilo:</translation>
+        <translation type="obsolete">Databázové spojení se nezdařilo:</translation>
     </message>
 </context>
 <context>

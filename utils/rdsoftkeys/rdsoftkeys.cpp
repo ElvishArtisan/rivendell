@@ -2,7 +2,7 @@
 //
 // A utility for sending RML Commands
 //
-//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2006,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -34,6 +34,9 @@
 #include <qpushbutton.h>
 #include <qmessagebox.h>
 #include <qsettings.h>
+//Added by qt3to4:
+#include <QCloseEvent>
+#include <QPixmap>
 
 #include <rdprofile.h>
 #include <rd.h>
@@ -48,7 +51,7 @@
 #include "../icons/rivendell-22x22.xpm"
 
 MainWidget::MainWidget(QWidget *parent)
-  : QMainWindow(parent)
+  : Q3MainWindow(parent)
 {
   key_ysize=70;
 
@@ -86,7 +89,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // RML Send Socket
   //
-  key_socket=new QSocketDevice(QSocketDevice::Datagram);
+  key_socket=new Q3SocketDevice(Q3SocketDevice::Datagram);
 
   //
   // Create Buttons
@@ -112,7 +115,7 @@ MainWidget::MainWidget(QWidget *parent)
   unsigned row=0;
   while(!(rmlcmd=profile->stringValue("SoftKeys",QString().
 				   sprintf("Command%d",n+1),"")).isEmpty()) {
-    for(unsigned i=0;i<rmlcmd.length();i++) {
+    for(int i=0;i<rmlcmd.length();i++) {
       if(rmlcmd.at(i)==':') {
 	key_macros.push_back(rmlcmd.right(rmlcmd.length()-(i+1)));
 	key_addrs.push_back(rmlcmd.left(i));
@@ -295,14 +298,14 @@ int main(int argc,char *argv[])
   qt_path=tr_path;
 #else
   tr_path=QString(PREFIX)+QString("/share/srlabs/");
-  qt_path=QString(QTDIR)+QString("/translation/");
+  qt_path=QString("/usr/share/qt4/translation/");
 #endif  // WIN32
   QTranslator qt(0);
   qt.load(qt_path+QString("qt_")+QTextCodec::locale(),".");
   a.installTranslator(&qt);
 
   QTranslator libradio(0);
-  libradio.load(tr_path+QString("libradio_")+QTextCodec::locale(),".");
+  libradio.load(tr_path+QString("librd_")+QTextCodec::locale(),".");
   a.installTranslator(&libradio);
 
   QTranslator tests(0);

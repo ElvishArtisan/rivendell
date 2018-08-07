@@ -21,13 +21,13 @@
 #include <rdurl.h>
 
 RDUrl::RDUrl()
-  : QUrl()
+  : Q3Url()
 {
 }
 
 
 RDUrl::RDUrl(const QString &url)
-  : QUrl(url)
+  : Q3Url(url)
 {
 }
 

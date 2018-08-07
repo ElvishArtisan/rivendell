@@ -74,13 +74,13 @@ PickReportDates::PickReportDates(unsigned feed_id,unsigned cast_id,
   //
   // Start Date
   //
-  edit_startdate_edit=new QDateEdit(this);
+  edit_startdate_edit=new Q3DateEdit(this);
   edit_startdate_edit->setGeometry(150,10,100,20);
   edit_startdate_edit->setDate(yesterday_date.addMonths(-1));
   QLabel *label=new QLabel(edit_startdate_edit,tr("&Start Date:"),this);
   label->setGeometry(75,10,70,20);
   label->setFont(bold_font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   QPushButton *button=new QPushButton(this);
   button->setGeometry(260,7,50,27);
   button->setFont(font);
@@ -90,13 +90,13 @@ PickReportDates::PickReportDates(unsigned feed_id,unsigned cast_id,
   //
   // End Date
   //
-  edit_enddate_edit=new QDateEdit(this);
+  edit_enddate_edit=new Q3DateEdit(this);
   edit_enddate_edit->setGeometry(150,40,100,20);
   edit_enddate_edit->setDate(yesterday_date);
   label=new QLabel(edit_enddate_edit,tr("&End Date:"),this);
   label->setGeometry(75,40,70,20);
   label->setFont(bold_font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   button=new QPushButton(this);
   button->setGeometry(260,37,50,27);
   button->setFont(font);

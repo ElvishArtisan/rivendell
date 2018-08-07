@@ -21,9 +21,11 @@
 #include <qpushbutton.h>
 #include <qpainter.h>
 #include <qpixmap.h>
-#include <qpointarray.h>
+#include <q3pointarray.h>
 #include <qtimer.h>
 #include <qpalette.h>
+//Added by qt3to4:
+#include <QMouseEvent>
 
 #include <rdpushbutton.h>
 
@@ -41,7 +43,7 @@ RDPushButton::RDPushButton(const QString &text,QWidget *parent)
   Init();
 }
 
-RDPushButton::RDPushButton(const QIconSet &icon,const QString &text,
+RDPushButton::RDPushButton(const QIcon &icon,const QString &text,
 			   QWidget *parent)
   : QPushButton(text,parent)
 {
@@ -123,15 +125,15 @@ void RDPushButton::setPalette(const QPalette &pal)
 void RDPushButton::mousePressEvent(QMouseEvent *e)
 {
   switch(e->button()) {
-      case QMouseEvent::LeftButton:
+      case Qt::LeftButton:
 	QPushButton::mousePressEvent(e);
 	break;
 	
-      case QMouseEvent::MidButton:
+      case Qt::MidButton:
 	emit centerPressed();
 	break;
 	
-      case QMouseEvent::RightButton:
+      case Qt::RightButton:
 	emit rightPressed();
 	break;
 
@@ -144,11 +146,11 @@ void RDPushButton::mousePressEvent(QMouseEvent *e)
 void RDPushButton::mouseReleaseEvent(QMouseEvent *e)
 {
   switch(e->button()) {
-      case QMouseEvent::LeftButton:
+      case Qt::LeftButton:
 	QPushButton::mouseReleaseEvent(e);
 	break;
 	
-      case QMouseEvent::MidButton:
+      case Qt::MidButton:
 	e->accept();
 	emit centerReleased();
 	if((e->x()>=0)&&(e->x()<geometry().width())&&
@@ -158,7 +160,7 @@ void RDPushButton::mouseReleaseEvent(QMouseEvent *e)
 	}
 	break;
 	
-      case QMouseEvent::RightButton:
+      case Qt::RightButton:
 	e->accept();
 	emit rightReleased();
 	if((e->x()>=0)&&(e->x()<geometry().width())&&

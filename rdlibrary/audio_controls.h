@@ -22,7 +22,7 @@
 #define AUDIO_CONTROLS_H
 
 #include <qcheckbox.h>
-#include <qdatetimeedit.h>
+#include <q3datetimeedit.h>
 #include <qlineedit.h>
 #include <qspinbox.h>
 

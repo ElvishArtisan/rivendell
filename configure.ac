@@ -24,7 +24,6 @@ AM_INIT_AUTOMAKE
 AC_SUBST(RPM_RELEASE,1)
 m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
 AC_CONFIG_MACRO_DIR([m4])
-PKG_VERSION=m4_esyscmd(cat PACKAGE_VERSION)
 
 #
 # Some Fully Resolved Install Paths
@@ -71,8 +70,6 @@ AC_ARG_ENABLE(docbook,[  --disable-docbook       disable building of documentati
 
 AC_ARG_ENABLE(gpio,[  --disable-gpio          disable General Purpose Input/Output GPIO support],
 		      [GPIO_DISABLED=yes],[])
-AC_ARG_ENABLE(pam,[  --disable-pam           disable Rivendell PAM pam_rd.so support],
-		      [PAM_DISABLED=yes],[])
 AC_ARG_ENABLE(mad,[  --disable-mad           disable MPEG decode support],
 		      [MAD_DISABLED=yes],[])
 AC_ARG_ENABLE(twolame,[  --disable-twolame       disable MPEG Layer 2 encode support],
@@ -86,13 +83,14 @@ AC_ARG_ENABLE(mp4v2,[  --disable-mp4           disable M4A decode support],
 AC_ARG_ENABLE(rdxport-debug,[  --enable-rdxport-debug  enable DEBUG support for RDXport services],
 		      [RDXPORT_DEBUG_ENABLED=yes],[])
 
+
 #
-# Check for Qt
+# Check for Qt4 (Mandatory)
 #
-BNV_HAVE_QT
-if test $have_qt = "no" ; then
-  AC_MSG_ERROR([*** Qt toolkit not found, unable to continue ***])
-fi
+PKG_CHECK_MODULES(QT4,QtCore QtGui QtNetwork QtSql QtXml Qt3Support,,[AC_MSG_ERROR([*** Qt4 not found ***])])
+AC_CHECK_PROG(MOC_NAME,moc-qt4,[moc-qt4],[moc])
+AC_SUBST(QT_MOC,$MOC_NAME)
+
 
 #
 # Determine the target architecture
@@ -125,8 +123,7 @@ if test $ar_gcc_distro = suse ; then
 else
   AC_SUBST(APACHE_PKG,"httpd")
   AC_SUBST(APACHE_CONFIG_DIR,"/etc/httpd/conf.d")
-#  AC_SUBST(CONSOLEHELPER_RDALSACONFIG,"/usr/bin/rdalsaconfig-root")
-  AC_SUBST(DOC_PATH,"/usr/share/doc/rivendell-$PKG_VERSION")
+  AC_SUBST(DOC_PATH,"/usr/share/doc/rivendell-$PACKAGE_VERSION")
   if test $ar_distro_major -ge 7 ; then
     AC_SUBST(USERMODE_PKG,"usermode usermode-gtk")
     AC_SUBST(MYSQL_PKG,"mariadb")
@@ -269,7 +266,7 @@ fi
 #
 # Set Hard Library Dependencies
 #
-AC_SUBST(LIB_RDLIBS,"-lm -lpthread -lqui -lrd -lcurl -lid3 $FLAC_LIBS -lsndfile -lsamplerate -lcdda_interface -lcdda_paranoia -lcrypt -ldl -lpam -lSoundTouch -lcrypto")
+AC_SUBST(LIB_RDLIBS,"-lm -lpthread -lrd -lcurl -lid3 $FLAC_LIBS -lsndfile -lsamplerate -lcdda_interface -lcdda_paranoia -lcrypt -ldl -lpam -lSoundTouch -lcrypto")
 
 #
 # Setup MPEG Dependencies
@@ -412,17 +409,6 @@ else
 fi
 
 #
-# pam_rd hooks
-#
-if test -z $PAM_DISABLED ; then
-  AC_CHECK_HEADERS([security/pam_modules.h security/_pam_macros.h],[PAM_FOUND=yes],[PAM_FOUND=no;break])
-  if test $PAM_FOUND = yes ; then
-    USING_PAM=yes
-  fi
-fi
-AM_CONDITIONAL([PAM_RD_AM], [test "$USING_PAM" = yes])
-
-#
 # Distro-Specific Stuff
 #
 if test -f /etc/gentoo-release ; then
@@ -500,8 +486,6 @@ AC_CONFIG_FILES([rivendell.spec \
     rivendell-suse \
     rdrepld-suse \
     conf/rd-bin.conf \
-    drivers/Makefile \
-    drivers/qt3-mysql-utf/Makefile \
     icons/Makefile \
     helpers/Makefile \
     lib/rdpaths.h \
@@ -512,7 +496,6 @@ AC_CONFIG_FILES([rivendell.spec \
     utils/Makefile \
     utils/rdalsaconfig/Makefile \
     utils/rdcheckcuts/Makefile \
-    utils/rdchunk/Makefile \
     utils/rdcleandirs/Makefile \
     utils/rdclilogedit/Makefile \
     utils/rdcollect/Makefile \
@@ -577,7 +560,7 @@ AC_CONFIG_FILES([rivendell.spec \
     ios/rmlsend/Makefile \
     ios/rmlsend/Classes/Makefile \
     ios/rmlsend/RMLSend.xcodeproj/Makefile \
-    pam_rd/Makefile ])
+    ])
 AC_OUTPUT()
 chmod 755 make_slack
 chmod 755 rivendell-suse
@@ -637,13 +620,6 @@ if test -z $MP4V2_FOUND ; then
 AC_MSG_NOTICE("|                      M4A Decoding Support ... No    |")
 else
 AC_MSG_NOTICE("|                      M4A Decoding Support ... Yes   |")
-fi
-AC_MSG_NOTICE("|                                                     |")
-AC_MSG_NOTICE("| Optional Components:                                |")
-if test -z $USING_PAM ; then
-AC_MSG_NOTICE("|           Rivendell PAM pam_rd.so Support ... No    |")
-else
-AC_MSG_NOTICE("|           Rivendell PAM pam_rd.so Support ... Yes   |")
 fi
 AC_MSG_NOTICE("|-----------------------------------------------------|")
 AC_MSG_NOTICE()

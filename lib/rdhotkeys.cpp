@@ -105,7 +105,7 @@ void RDHotkeys::InsertHotkeys() const
   labels.push_back(QObject::tr("Aux Log 1"));
   labels.push_back(QObject::tr("Aux Log 2"));
 
-  for(unsigned i=0;i<labels.size();i++) {
+  for(int i=0;i<labels.size();i++) {
     sql=QString("insert into RDHOTKEYS set ")+
       "STATION_NAME=\""+RDEscapeString(station_hotkeys)+"\","+
       "MODULE_NAME=\"airplay\","+

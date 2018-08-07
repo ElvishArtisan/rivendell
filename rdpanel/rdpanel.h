@@ -24,6 +24,8 @@
 #include <qwidget.h>
 #include <qtimer.h>
 #include <qpixmap.h>
+//Added by qt3to4:
+#include <QCloseEvent>
 
 #include <rdemptycart.h>
 #include <rdevent_player.h>

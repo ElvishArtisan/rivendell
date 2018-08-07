@@ -95,7 +95,7 @@ RDApplication::~RDApplication()
 
 bool RDApplication::open(QString *err_msg)
 {
-  unsigned schema=0;
+  int schema=0;
   QString db_err;
   bool skip_db_check=false;
 
@@ -121,8 +121,7 @@ bool RDApplication::open(QString *err_msg)
   //
   // Open Database
   //
-  QSqlDatabase *db=RDInitDb(&schema,&db_err);
-  if(!db) {
+  if(!RDOpenDb(&schema,&db_err,app_config)) {
     *err_msg=QObject::tr("Unable to open database")+" ["+db_err+"]";
     return false;
   }

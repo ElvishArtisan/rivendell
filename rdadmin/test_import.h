@@ -24,9 +24,12 @@
 #include <qdialog.h>
 #include <qsqldatabase.h>
 #include <qpushbutton.h>
-#include <qdatetimeedit.h>
+#include <q3datetimeedit.h>
 #include <qlabel.h>
 #include <qlineedit.h>
+//Added by qt3to4:
+#include <QPaintEvent>
+#include <QResizeEvent>
 
 #include <rdsvc.h>
 #include <rdlistview.h>
@@ -54,7 +57,7 @@ class TestImport : public QDialog
   RDSvc *test_svc;
   RDSvc::ImportSource test_src;
   QLabel *test_date_label;
-  QDateEdit *test_date_edit;
+  Q3DateEdit *test_date_edit;
   QPushButton *test_import_button;
   QLabel *test_events_label;
   RDListView *test_events_list;

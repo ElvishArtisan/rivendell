@@ -23,14 +23,14 @@
 #include <qdialog.h>
 #include <qstring.h>
 #include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
+#include <q3listbox.h>
+#include <q3textedit.h>
 #include <qlabel.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 #include <qsqldatabase.h>
 
 #include <rd.h>
@@ -78,7 +78,7 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   QLabel *label=new QLabel(lib_input_card,tr("INPUT"),this);
   label->setGeometry(10,10,110,19);
   label->setFont(big_font);
-  label->setAlignment(AlignCenter);
+  label->setAlignment(Qt::AlignCenter);
 
   //
   // Output Configuration
@@ -88,7 +88,7 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   label=new QLabel(lib_output_card,tr("OUTPUT"),this);
   label->setGeometry(170,10,110,19);
   label->setFont(big_font);
-  label->setAlignment(AlignCenter);
+  label->setAlignment(Qt::AlignCenter);
 
   //
   // Settings
@@ -96,17 +96,17 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   QLabel *setting_label=new QLabel(tr("Settings"),this);
   setting_label->setGeometry(25,79,120,19);
   setting_label->setFont(big_font);
-  setting_label->setAlignment(AlignRight|ShowPrefix);
+  setting_label->setAlignment(Qt::AlignRight|Qt::TextShowMnemonic);
 
   //
   // Maximum Record Length
   //
-  lib_maxlength_time=new QTimeEdit(this);
+  lib_maxlength_time=new Q3TimeEdit(this);
   lib_maxlength_time->setGeometry(160,100,85,19);
   QLabel *lib_maxlength_label=
     new QLabel(lib_maxlength_time,tr("&Max Record Time:"),this);
   lib_maxlength_label->setGeometry(25,101,130,19);
-  lib_maxlength_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  lib_maxlength_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // VOX threshold
@@ -118,10 +118,10 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   QLabel *lib_vox_spin_label=
     new QLabel(lib_vox_spin,tr("&VOX Threshold:"),this);
   lib_vox_spin_label->setGeometry(25,122,130,19);
-  lib_vox_spin_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  lib_vox_spin_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   QLabel *lib_vox_spin_unit=new QLabel(tr("dbFS"),this);
   lib_vox_spin_unit->setGeometry(205,122,120,19);
-  lib_vox_spin_unit->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  lib_vox_spin_unit->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // AutoTrim threshold
@@ -133,10 +133,10 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   QLabel *lib_trim_spin_label=
     new QLabel(lib_trim_spin,tr("&AutoTrim Threshold:"),this);
   lib_trim_spin_label->setGeometry(25,144,130,19);
-  lib_trim_spin_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  lib_trim_spin_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   QLabel *lib_trim_spin_unit=new QLabel(tr("dbFS"),this);
   lib_trim_spin_unit->setGeometry(205,144,120,19);
-  lib_trim_spin_unit->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  lib_trim_spin_unit->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Tail Preroll
@@ -149,10 +149,10 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   QLabel *lib_preroll_spin_label=
     new QLabel(lib_preroll_spin,tr("&Tail Preroll:"),this);
   lib_preroll_spin_label->setGeometry(25,166,130,19);
-  lib_preroll_spin_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  lib_preroll_spin_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   QLabel *lib_preroll_spin_unit=new QLabel(tr("milliseconds"),this);
   lib_preroll_spin_unit->setGeometry(215,166,120,19);
-  lib_preroll_spin_unit->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  lib_preroll_spin_unit->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Ripper Device
@@ -163,7 +163,7 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   QLabel *lib_ripdev_label=
     new QLabel(lib_ripdev_edit,tr("&Ripper Device:"),this);
   lib_ripdev_label->setGeometry(25,188,130,19);
-  lib_ripdev_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  lib_ripdev_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Paranoia Level
@@ -173,7 +173,7 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   QLabel *lib_paranoia_label=
     new QLabel(lib_paranoia_box,tr("&Paranoia Level:"),this);
   lib_paranoia_label->setGeometry(25,210,130,19);
-  lib_paranoia_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  lib_paranoia_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Read ISRC
@@ -183,7 +183,7 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   QLabel *lib_isrc_label=
     new QLabel(lib_isrc_box,tr("&Read ISRCs from CD:"),this);
   lib_isrc_label->setGeometry(25,232,130,19);
-  lib_isrc_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  lib_isrc_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // FreeDB Server
@@ -193,7 +193,7 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   lib_cddb_edit->setValidator(validator);
   QLabel *lib_cddb_label=new QLabel(lib_cddb_edit,tr("&FreeDB Server:"),this);
   lib_cddb_label->setGeometry(25,254,130,19);
-  lib_cddb_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  lib_cddb_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Format
@@ -204,7 +204,7 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   QLabel *lib_format_label=new QLabel(lib_format_box,tr("&Format:"),this);
 
   lib_format_label->setGeometry(25,278,130,19);
-  lib_format_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  lib_format_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Bitrate
@@ -213,7 +213,7 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   lib_bitrate_box->setGeometry(160,302,130,19);
   QLabel *lib_bitrate_label=new QLabel(lib_bitrate_box,tr("&Bitrate:"),this);
   lib_bitrate_label->setGeometry(25,302,130,19);
-  lib_bitrate_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  lib_bitrate_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Enable Editor
@@ -225,7 +225,7 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   QLabel *lib_editor_label=
     new QLabel(lib_editor_box,tr("Allow E&xternal Editing:"),this);
   lib_editor_label->setGeometry(25,326,130,19);
-  lib_editor_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  lib_editor_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Sample Rate Converter
@@ -239,7 +239,7 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   QLabel *lib_converter_label=
     new QLabel(lib_converter_box,tr("Sample Rate Converter:"),this);
   lib_converter_label->setGeometry(10,350,145,19);
-  lib_converter_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  lib_converter_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Limit Searches at Startup
@@ -252,7 +252,7 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   QLabel *lib_limit_search_label=
     new QLabel(lib_limit_search_box,tr("Limit Searches at Startup")+":",this);
   lib_limit_search_label->setGeometry(10,374,145,19);
-  lib_limit_search_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  lib_limit_search_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Defaults
@@ -260,7 +260,7 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   QLabel *default_label=new QLabel(tr("Defaults"),this);
   default_label->setGeometry(25,408,120,19);
   default_label->setFont(big_font);
-  default_label->setAlignment(AlignRight|ShowPrefix);
+  default_label->setAlignment(Qt::AlignRight|Qt::TextShowMnemonic);
 
   //
   // Default Channels
@@ -269,7 +269,7 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   lib_channels_box->setGeometry(160,430,60,19);
   QLabel *lib_channels_label=new QLabel(lib_channels_box,tr("&Channels:"),this);
   lib_channels_label->setGeometry(25,430,130,19);
-  lib_channels_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  lib_channels_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Default Record Mode
@@ -278,7 +278,7 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   lib_recmode_box->setGeometry(160,454,100,19);
   QLabel *lib_recmode_label=new QLabel(lib_recmode_box,tr("Record Mode:"),this);
   lib_recmode_label->setGeometry(25,454,130,19);
-  lib_recmode_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  lib_recmode_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Default Trim State
@@ -288,7 +288,7 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   QLabel *lib_trimstate_label=
     new QLabel(lib_trimstate_box,tr("AutoTrim:"),this);
   lib_trimstate_label->setGeometry(25,478,130,19);
-  lib_trimstate_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  lib_trimstate_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Normalization Level
@@ -300,10 +300,10 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   QLabel *lib_riplevel_spin_label=
     new QLabel(lib_riplevel_spin,tr("Normalization Level:"),this);
   lib_riplevel_spin_label->setGeometry(25,502,130,19);
-  lib_riplevel_spin_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  lib_riplevel_spin_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   QLabel *lib_riplevel_spin_unit=new QLabel(tr("dbFS"),this);
   lib_riplevel_spin_unit->setGeometry(205,502,120,19);
-  lib_riplevel_spin_unit->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  lib_riplevel_spin_unit->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   //  Ok Button

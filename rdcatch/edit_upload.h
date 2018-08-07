@@ -26,11 +26,15 @@
 #include <qdialog.h>
 #include <qsqldatabase.h>
 #include <qlineedit.h>
-#include <qdatetimeedit.h>
+#include <q3datetimeedit.h>
 #include <qcombobox.h>
 #include <qcheckbox.h>
 #include <qspinbox.h>
 #include <qlabel.h>
+//Added by qt3to4:
+#include <QKeyEvent>
+#include <QCloseEvent>
+#include <QPaintEvent>
 
 #include <rdrecording.h>
 #include <rddeck.h>
@@ -70,7 +74,7 @@ class EditUpload : public QDialog
   RDSettings edit_settings;
   QCheckBox *edit_active_button;
   QComboBox *edit_station_box;
-  QTimeEdit *edit_starttime_edit;
+  Q3TimeEdit *edit_starttime_edit;
   QComboBox *edit_feed_box;
   QLineEdit *edit_description_edit;
   QLineEdit *edit_url_edit;

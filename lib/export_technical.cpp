@@ -19,7 +19,7 @@
 //
 
 #include <qfile.h>
-#include <qtextstream.h>
+#include <q3textstream.h>
 
 #include "rdairplay_conf.h"
 #include "rdconf.h"
@@ -45,13 +45,13 @@ bool RDReport::ExportTechnical(const QString &filename,const QDate &startdate,
   }
 
   QFile *file=new QFile(filename);
-  if(!file->open(IO_WriteOnly|IO_Truncate)) {
+  if(!file->open(QIODevice::WriteOnly|QIODevice::Truncate)) {
     report_error_code=RDReport::ErrorCantOpen;
     delete file;
     return false;
   }
-  QTextStream *strm=new QTextStream(file);
-  strm->setEncoding(QTextStream::UnicodeUTF8);
+  Q3TextStream *strm=new Q3TextStream(file);
+  strm->setEncoding(Q3TextStream::UnicodeUTF8);
   if(useLeadingZeros()) {
     cart_fmt=QString().sprintf("%%0%uu",cartDigits());
   }
@@ -86,15 +86,19 @@ bool RDReport::ExportTechnical(const QString &filename,const QDate &startdate,
   if(incl_hdr) {
     if(startdate==enddate) {
       *strm << RDReport::center("Rivendell RDAirPlay Technical Playout Report for "+
-		      startdate.toString("MM/dd/yyyy"),96)+eol;
+				 startdate.toString("MM/dd/yyyy"),96);
+      *strm << eol;
     }
     else {
       *strm << RDReport::center("Rivendell RDAirPlay Technical Playout Report for "+
 		      startdate.toString("MM/dd/yyyy")+" - "+
-		      enddate.toString("MM/dd/yyyy"),96)+eol;
+		      enddate.toString("MM/dd/yyyy"),96);
+      *strm << eol;
     }
-    *strm << RDReport::center(name()+" -- "+description(),96)+eol;
-    *strm << QString("--Time--  -Cart-  Cut  --Title----------------  A-Len  N-Len  --Host----  Srce  StartedBy  OnAir")+eol;
+    *strm << RDReport::center(name()+" -- "+description(),96);
+    *strm << eol;
+    *strm << "--Time--  -Cart-  Cut  --Title----------------  A-Len  N-Len  --Host----  Srce  StartedBy  OnAir";
+    *strm << eol;
   }
 
   //

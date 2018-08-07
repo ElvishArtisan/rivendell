@@ -24,7 +24,7 @@
 #include <vector>
 
 #include <qsignalmapper.h>
-#include <qsocket.h>
+#include <q3socket.h>
 #include <qtimer.h>
 
 #include <rd.h>
@@ -63,7 +63,7 @@ class BtU41MlrWeb : public Switcher
  private:
   void ProcessCommand(const QString &cmd);
   void SendCommand(const QString &cmd);
-  QSocket *bt_socket;
+  Q3Socket *bt_socket;
   QTimer *bt_watchdog_timer;
   bool bt_watchdog_active;
   QHostAddress bt_ip_address;

@@ -22,7 +22,7 @@
 #define RIPCD_CONNECTION_H
 
 #include <qobject.h>
-#include <qsocket.h>
+#include <q3socket.h>
 #include <qstring.h>
 
 #include <rd.h>
@@ -33,13 +33,13 @@ class RipcdConnection
    RipcdConnection(int id,int fd);
    ~RipcdConnection();
    int id() const;
-   QSocket *socket() const;
+   Q3Socket *socket() const;
    bool isAuthenticated() const;
    void setAuthenticated(bool state);
    QString accum;
    int ripcd_id;
    bool ripcd_authenticated;
-   QSocket *ripcd_socket;
+   Q3Socket *ripcd_socket;
 };
 
 /*

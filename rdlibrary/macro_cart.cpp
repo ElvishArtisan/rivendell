@@ -19,17 +19,19 @@
 //
 
 #include <qbitmap.h>
+//Added by qt3to4:
+#include <QLabel>
 #include <unistd.h>
 #include <qdialog.h>
 #include <qstring.h>
-#include <qlistview.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
+#include <q3listview.h>
+#include <q3listbox.h>
+#include <q3textedit.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 #include <qsqldatabase.h>
 
 #include <rd.h>
@@ -103,15 +105,15 @@ MacroCart::MacroCart(RDCart *cart,QWidget *parent)
   rdcart_events=new RDMacroEvent(rda->station()->address(),rda->ripc(),this);
   rdcart_events->load(rdcart_cart->macros());
 
-  rdcart_macro_list=new QListView(this);
+  rdcart_macro_list=new Q3ListView(this);
   rdcart_macro_list->setGeometry(100,0,430,sizeHint().height());
   rdcart_macro_list->setAllColumnsShowFocus(true);
   rdcart_macro_list->setItemMargin(5);
   rdcart_macro_list->setSorting(0);
   connect(rdcart_macro_list,
-	  SIGNAL(doubleClicked(QListViewItem *,const QPoint &,int)),
+	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,
-	  SLOT(doubleClickedData(QListViewItem *,const QPoint &,int)));
+	  SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
 
   rdcart_macro_list->addColumn(tr("LINE"));
   rdcart_macro_list->setColumnAlignment(0,Qt::AlignHCenter);
@@ -190,7 +192,7 @@ void MacroCart::save()
 
 void MacroCart::addMacroData()
 {
-  QListViewItem *item=rdcart_macro_list->selectedItem();
+  Q3ListViewItem *item=rdcart_macro_list->selectedItem();
   RDMacro cmd;
   unsigned line;
 
@@ -214,7 +216,7 @@ void MacroCart::addMacroData()
 
 void MacroCart::deleteMacroData()
 {
-  QListViewItem *item=rdcart_macro_list->selectedItem();
+  Q3ListViewItem *item=rdcart_macro_list->selectedItem();
 
   if((item==NULL)||(item->text(0).isEmpty())) {
     return;
@@ -226,7 +228,7 @@ void MacroCart::deleteMacroData()
 
 void MacroCart::copyMacroData()
 {
-  QListViewItem *item=rdcart_macro_list->selectedItem();
+  Q3ListViewItem *item=rdcart_macro_list->selectedItem();
 
   if((item==NULL)||(item->text(0).isEmpty())) {
     return;
@@ -238,7 +240,7 @@ void MacroCart::copyMacroData()
 
 void MacroCart::pasteMacroData()
 {
-  QListViewItem *item=rdcart_macro_list->selectedItem();
+  Q3ListViewItem *item=rdcart_macro_list->selectedItem();
   unsigned line;
 
   if(item==NULL) {
@@ -257,7 +259,7 @@ void MacroCart::pasteMacroData()
 
 void MacroCart::editMacroData()
 {
-  QListViewItem *item=rdcart_macro_list->selectedItem();
+  Q3ListViewItem *item=rdcart_macro_list->selectedItem();
 
   if((item==NULL)||(item->text(0).isEmpty())) {
     return;
@@ -274,7 +276,7 @@ void MacroCart::editMacroData()
 
 void MacroCart::runLineMacroData()
 {
-  QListViewItem *item=rdcart_macro_list->selectedItem();
+  Q3ListViewItem *item=rdcart_macro_list->selectedItem();
 
   if((item==NULL)||(item->text(0).isEmpty())) {
     return;
@@ -290,10 +292,10 @@ void MacroCart::runCartMacroData()
 }
 
 
-void MacroCart::doubleClickedData(QListViewItem *,const QPoint &,int)
+void MacroCart::doubleClickedData(Q3ListViewItem *,const QPoint &,int)
 {
   if(rdcart_allow_modification) {
-    QListViewItem *item=rdcart_macro_list->selectedItem();
+    Q3ListViewItem *item=rdcart_macro_list->selectedItem();
 
     if((item==NULL)||(item->text(0).isEmpty())) {
       addMacroData();
@@ -307,19 +309,19 @@ void MacroCart::doubleClickedData(QListViewItem *,const QPoint &,int)
 
 void MacroCart::RefreshList()
 {
-  QListViewItem *item;
+  Q3ListViewItem *item;
 
-  item=new QListViewItem(rdcart_macro_list);
+  item=new Q3ListViewItem(rdcart_macro_list);
   item->setText(1,tr("--- End of cart ---"));
   for(int i=0;i<rdcart_events->size();i++) {
-    item=new QListViewItem(rdcart_macro_list);
+    item=new Q3ListViewItem(rdcart_macro_list);
     item->setText(0,QString().sprintf("%03d",i+1));
     item->setText(1,rdcart_events->command(i)->toString());
   }
 }
 
 
-void MacroCart::RefreshLine(QListViewItem *item)
+void MacroCart::RefreshLine(Q3ListViewItem *item)
 {
   int line=item->text(0).toInt()-1;
   item->setText(1,rdcart_events->command(line)->toString());
@@ -330,7 +332,7 @@ void MacroCart::AddLine(unsigned line,RDMacro *cmd)
 {
   unsigned curr_line;
 
-  QListViewItem *item=rdcart_macro_list->firstChild();
+  Q3ListViewItem *item=rdcart_macro_list->firstChild();
   for(int i=0;i<rdcart_macro_list->childCount();i++) {
     if(((curr_line=(item->text(0).toUInt()-1))>=line)&&
       (!item->text(0).isEmpty())) {
@@ -339,21 +341,21 @@ void MacroCart::AddLine(unsigned line,RDMacro *cmd)
     item=item->nextSibling();
   }
   rdcart_events->insert(line,cmd);
-  item=new QListViewItem(rdcart_macro_list);
+  item=new Q3ListViewItem(rdcart_macro_list);
   item->setText(0,QString().sprintf("%03u",line+1));
   RefreshLine(item);
   rdcart_macro_list->setSelected(item,true);
 }
 
 
-void MacroCart::DeleteLine(QListViewItem *item)
+void MacroCart::DeleteLine(Q3ListViewItem *item)
 {
   unsigned line=item->text(0).toUInt()-1;
   unsigned curr_line;
-  QListViewItem *next=item->nextSibling();
+  Q3ListViewItem *next=item->nextSibling();
   rdcart_macro_list->removeItem(item);
   rdcart_events->remove(line);
-  QListViewItem *l=rdcart_macro_list->firstChild();
+  Q3ListViewItem *l=rdcart_macro_list->firstChild();
   for(int i=0;i<rdcart_macro_list->childCount();i++) {
     if(((curr_line=(l->text(0).toUInt()-1))>line)&&
       (!l->text(0).isEmpty())) {

@@ -22,7 +22,7 @@
 #define VOICE_TRACKER_H
 
 #include <qdialog.h>
-#include <qlistview.h>
+#include <q3listview.h>
 #include <qpixmap.h>
 #include <qradiobutton.h>
 #include <qsqldatabase.h>
@@ -32,7 +32,12 @@
 #include <qpixmap.h>
 #include <qtimer.h>
 #include <qcursor.h>
-#include <qpopupmenu.h>
+#include <q3popupmenu.h>
+//Added by qt3to4:
+#include <QKeyEvent>
+#include <QMouseEvent>
+#include <QPaintEvent>
+#include <QWheelEvent>
 
 #include <rdcart.h>
 #include <rdcut.h>
@@ -53,13 +58,13 @@
 //
 // Widget Settings
 //
-#define TRACKER_TEXT_COLOR red
-#define TRACKER_RUBBERBAND_COLOR "#008000"
-#define TRACKER_RECORD_COLOR green
-#define TRACKER_RECORD_BUTTON_COLOR red
-#define TRACKER_START_BUTTON_COLOR green
-#define TRACKER_ABORT_BUTTON_COLOR red
-#define TRACKER_DONE_BUTTON_COLOR blue
+#define TRACKER_TEXT_COLOR Qt::red
+#define TRACKER_RUBBERBAND_COLOR QColor("#008000")
+#define TRACKER_RECORD_COLOR Qt::green
+#define TRACKER_RECORD_BUTTON_COLOR Qt::red
+#define TRACKER_START_BUTTON_COLOR Qt::green
+#define TRACKER_ABORT_BUTTON_COLOR Qt::red
+#define TRACKER_DONE_BUTTON_COLOR Qt::blue
 #define TRACKER_START_WIDTH 19633
 #define TRACKER_MSECS_PER_PIXEL 29
 //#define TRACKER_MB_PER_PIXEL 141
@@ -115,7 +120,7 @@ class VoiceTracker : public QDialog
   void stateChangedData(int id,RDPlayDeck::State state);
   void positionData(int id,int msecs);
   void segueStartData(int id);
-  void logClickedData(QListViewItem *item,const QPoint &pt,int col);
+  void logClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
   void transitionChangedData(int line,RDLogLine::TransType trans);
   void meterData();
   void recordLoadedData(int card,int stream);
@@ -278,7 +283,7 @@ class VoiceTracker : public QDialog
   QPalette track_record_palette;
   QPalette track_done_palette;
   QPalette track_abort_palette;
-  QPopupMenu *track_menu;
+  Q3PopupMenu *track_menu;
   int menu_clicked_point;
   QString *edit_import_path;
   RDSettings *edit_settings;

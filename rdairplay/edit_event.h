@@ -24,13 +24,16 @@
 #include <qdialog.h>
 #include <qcombobox.h>
 #include <qlabel.h>
-#include <qdatetimeedit.h>
+#include <q3datetimeedit.h>
 #include <qradiobutton.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 #include <qcheckbox.h>
 #include <qspinbox.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qtimer.h>
+//Added by qt3to4:
+#include <QResizeEvent>
+#include <QCloseEvent>
 
 #include <rdcae.h>
 #include <rdcueedit.h>
@@ -73,7 +76,7 @@ class EditEvent : public QDialog
   bool edit_time_changed;
   QCheckBox *edit_timetype_box;
   QLabel *edit_timetype_label;
-  QButtonGroup *edit_grace_group;
+  Q3ButtonGroup *edit_grace_group;
   RDTimeEdit *edit_grace_edit;
   QLabel *edit_time_label;
   QComboBox *edit_transtype_box;
@@ -83,7 +86,7 @@ class EditEvent : public QDialog
   RDCueEdit *edit_cue_edit;
   QFont normal_font;
   QLabel *edit_cart_notes_label;
-  QTextEdit *edit_cart_notes_text;
+  Q3TextEdit *edit_cart_notes_text;
   QPushButton *edit_ok_button;
   QPushButton *edit_cancel_button;
   QLabel *edit_horizrule_label;

@@ -27,10 +27,14 @@
 #include <math.h>
 
 #include <qpushbutton.h>
-#include <qfiledialog.h>
+#include <q3filedialog.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
 #include <qpainter.h>
+//Added by qt3to4:
+#include <QCloseEvent>
+#include <QPaintEvent>
+#include <QLabel>
 
 #include "rd.h"
 #include "rdapplication.h"
@@ -81,7 +85,7 @@ RDImportAudio::RDImportAudio(QString cutname,QString *path,
   //
   // Mode Group
   //
-  import_mode_group=new QButtonGroup(this);
+  import_mode_group=new Q3ButtonGroup(this);
   import_mode_group->hide();
   connect(import_mode_group,SIGNAL(clicked(int)),
 	  this,SLOT(modeClickedData(int)));
@@ -106,7 +110,7 @@ RDImportAudio::RDImportAudio(QString cutname,QString *path,
     new QLabel(import_in_filename_edit,tr("Filename:"),this);
   import_in_filename_label->setGeometry(10,30,70,20);
   import_in_filename_label->setFont(label_font);
-  import_in_filename_label->setAlignment(AlignVCenter|AlignRight);
+  import_in_filename_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
 
   //
   // Input File Selector Button
@@ -133,7 +137,7 @@ RDImportAudio::RDImportAudio(QString cutname,QString *path,
     new QLabel(import_channels_box,tr("Channels:"),this);
   import_channels_label->setGeometry(230,54,75,20);
   import_channels_label->setFont(label_font);
-  import_channels_label->setAlignment(AlignRight|AlignVCenter);
+  import_channels_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Autotrim Check Box
@@ -154,11 +158,11 @@ RDImportAudio::RDImportAudio(QString cutname,QString *path,
   import_autotrim_label=new QLabel(import_autotrim_spin,tr("Level:"),this);
   import_autotrim_label->setGeometry(185,80,45,20);
   import_autotrim_label->setFont(label_font);
-  import_autotrim_label->setAlignment(AlignRight|AlignVCenter);
+  import_autotrim_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   import_autotrim_unit=new QLabel(tr("dBFS"),this);
   import_autotrim_unit->setGeometry(280,80,40,20);
   import_autotrim_unit->setFont(label_font);
-  import_autotrim_unit->setAlignment(AlignLeft|AlignVCenter);
+  import_autotrim_unit->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Output Mode Button
@@ -180,7 +184,7 @@ RDImportAudio::RDImportAudio(QString cutname,QString *path,
     new QLabel(import_out_filename_edit,tr("Filename:"),this);
   import_out_filename_label->setGeometry(10,140,70,20);
   import_out_filename_label->setFont(label_font);
-  import_out_filename_label->setAlignment(AlignVCenter|AlignRight);
+  import_out_filename_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
 
   //
   // Output File Selector Button
@@ -208,7 +212,7 @@ RDImportAudio::RDImportAudio(QString cutname,QString *path,
   import_format_label=new QLabel(import_out_filename_edit,tr("Format:"),this);
   import_format_label->setGeometry(10,181,70,20);
   import_format_label->setFont(label_font);
-  import_format_label->setAlignment(AlignVCenter|AlignRight);
+  import_format_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
 
   //
   // Output Format Selector Button
@@ -243,11 +247,11 @@ RDImportAudio::RDImportAudio(QString cutname,QString *path,
   import_normalize_label=new QLabel(import_normalize_spin,tr("Level:"),this);
   import_normalize_label->setGeometry(110,260,45,20);
   import_normalize_label->setFont(label_font);
-  import_normalize_label->setAlignment(AlignRight|AlignVCenter);
+  import_normalize_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   import_normalize_unit=new QLabel(tr("dBFS"),this);
   import_normalize_unit->setGeometry(205,260,40,20);
   import_normalize_unit->setFont(label_font);
-  import_normalize_unit->setAlignment(AlignLeft|AlignVCenter);
+  import_normalize_unit->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Import Button
@@ -414,12 +418,12 @@ void RDImportAudio::selectInputFileData()
 
   if(import_in_filename_edit->text().isEmpty()) {
     filename=
-      QFileDialog::getOpenFileName(*import_path,
+      Q3FileDialog::getOpenFileName(*import_path,
 				   import_file_filter,this);
   }
   else {
     filename=
-      QFileDialog::getOpenFileName(import_in_filename_edit->text(),
+      Q3FileDialog::getOpenFileName(import_in_filename_edit->text(),
 				   import_file_filter,this);
   }
   if(!filename.isEmpty()) {
@@ -438,10 +442,10 @@ void RDImportAudio::selectOutputFileData()
 
   if(import_out_filename_edit->text().isEmpty()) {
     filename=
-      QFileDialog::getSaveFileName(*import_path,filter,this);
+      Q3FileDialog::getSaveFileName(*import_path,filter,this);
   }
   else {
-    filename=QFileDialog::getSaveFileName(import_out_filename_edit->text(),
+    filename=Q3FileDialog::getSaveFileName(import_out_filename_edit->text(),
 					  filter,this);
   }
   if(!filename.isEmpty()) {
@@ -495,13 +499,10 @@ void RDImportAudio::cancelData()
 void RDImportAudio::paintEvent(QPaintEvent *e)
 {
   QPainter *p=new QPainter(this);
-  p->setPen(QColor(black));
-  p->moveTo(10,110);
-  p->lineTo(sizeHint().width()-10,110);
-  p->moveTo(0,215);
-  p->lineTo(sizeHint().width(),215);
-  p->moveTo(0,216);
-  p->lineTo(sizeHint().width(),216);  
+  p->setPen(QColor(Qt::black));
+  p->drawLine(10,110,sizeHint().width()-10,110);
+  p->drawLine(0,215,sizeHint().width(),215);
+  p->drawLine(0,216,sizeHint().width(),216);  
   p->end();
   delete p;
 }

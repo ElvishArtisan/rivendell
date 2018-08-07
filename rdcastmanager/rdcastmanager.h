@@ -23,12 +23,14 @@
 
 #include <vector>
 
-#include <qmainwindow.h>
+#include <q3mainwindow.h>
 #include <qsize.h>
 #include <qsizepolicy.h>
 #include <qsqldatabase.h>
 #include <qpushbutton.h>
 #include <qpixmap.h>
+//Added by qt3to4:
+#include <QResizeEvent>
 
 #include <rdlistview.h>
 #include <rduser.h>
@@ -39,7 +41,7 @@
 
 #define RDCASTMANAGER_USAGE "\n"
 
-class MainWidget : public QMainWindow
+class MainWidget : public Q3MainWindow
 {
  Q_OBJECT
  public:
@@ -50,7 +52,7 @@ class MainWidget : public QMainWindow
  private slots:
   void openData();
   void userChangedData();
-  void feedDoubleclickedData(QListViewItem *item,const QPoint &pt,int col);
+  void feedDoubleclickedData(Q3ListViewItem *item,const QPoint &pt,int col);
   void quitMainWidget();
 
  protected:

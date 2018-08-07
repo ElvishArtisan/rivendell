@@ -23,7 +23,7 @@
 #define EDIT_REPLICATOR_H
 
 #include <qdialog.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qspinbox.h>
 #include <qlineedit.h>
 #include <qsqldatabase.h>

@@ -22,13 +22,18 @@
 
 #include <qdialog.h>
 #include <qstring.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
+#include <q3listbox.h>
+#include <q3textedit.h>
 #include <qlabel.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
+//Added by qt3to4:
+#include <QResizeEvent>
+#include <QPixmap>
+#include <QCloseEvent>
+#include <QPaintEvent>
 
 #include <rd.h>
 #include <rdadd_log.h>
@@ -168,24 +173,24 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   edit_modified_label->setFont(modified_font);
   edit_logname_label=new QLabel(logname,this);
   edit_logname_label->setBackgroundColor(QColor(system_mid_color));
-  edit_logname_label->setAlignment(AlignLeft|AlignVCenter);
+  edit_logname_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   edit_logname_label->setFont(title_font);
   edit_logname_label_label=new QLabel(tr("Log Name:"),this);
   edit_logname_label_label->setBackgroundColor(QColor(system_mid_color));
   edit_logname_label_label->setFont(label_font);
-  edit_logname_label_label->setAlignment(AlignRight|AlignVCenter);
+  edit_logname_label_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Track Counts
   //
   edit_track_label=new QLabel(this);
   edit_track_label->setBackgroundColor(QColor(system_mid_color));
-  edit_track_label->setAlignment(AlignLeft|AlignVCenter);
+  edit_track_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   edit_track_label->setFont(title_font);
   edit_track_label_label=new QLabel(tr("Tracks:"),this);
   edit_track_label_label->setBackgroundColor(QColor(system_mid_color));
   edit_track_label_label->setFont(label_font);
-  edit_track_label_label->setAlignment(AlignRight|AlignVCenter);
+  edit_track_label_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Log Origin
@@ -195,12 +200,12 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
 	       edit_log->originDatetime().toString("MM/dd/yyyy - hh:mm:ss"),
 	       this);
   edit_origin_label->setBackgroundColor(QColor(system_mid_color));
-  edit_origin_label->setAlignment(AlignLeft|AlignVCenter);
+  edit_origin_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   edit_origin_label->setFont(title_font);
   edit_origin_label_label=new QLabel(tr("Origin:"),this);
   edit_origin_label_label->setBackgroundColor(QColor(system_mid_color));
   edit_origin_label_label->setFont(label_font);
-  edit_origin_label_label->setAlignment(AlignRight|AlignVCenter);
+  edit_origin_label_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Description
@@ -212,7 +217,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   edit_description_label=
     new QLabel(edit_description_edit,tr("Description:"),this);
   edit_description_label->setFont(label_font);
-  edit_description_label->setAlignment(AlignRight|AlignVCenter);
+  edit_description_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Purge Date
@@ -220,8 +225,8 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   edit_purgedate_box=new QCheckBox(this);
   edit_purgedate_label=new QLabel(edit_purgedate_box,tr("Delete on"),this);
   edit_purgedate_label->setFont(label_font);
-  edit_purgedate_label->setAlignment(AlignRight|AlignVCenter);
-  edit_purgedate_edit=new QDateEdit(this);
+  edit_purgedate_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  edit_purgedate_edit=new Q3DateEdit(this);
   edit_purgedate_button=new QPushButton(tr("Select"),this);
   edit_purgedate_button->setFont(label_font);
   connect(edit_purgedate_box,SIGNAL(toggled(bool)),
@@ -243,7 +248,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   edit_service_edit->setReadOnly(true);
   edit_service_label=new QLabel(edit_service_box,tr("Service:"),this);
   edit_service_label->setFont(label_font);
-  edit_service_label->setAlignment(AlignRight|AlignVCenter);  
+  edit_service_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);  
   connect(edit_service_box,SIGNAL(activated(const QString &)),
 	  this,SLOT(serviceActivatedData(const QString &)));
 
@@ -258,17 +263,17 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   edit_autorefresh_label=
     new QLabel(edit_autorefresh_box,tr("Enable AutoRefresh:"),this);
   edit_autorefresh_label->setFont(label_font);
-  edit_autorefresh_label->setAlignment(AlignRight|AlignVCenter);  
+  edit_autorefresh_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);  
   connect(edit_autorefresh_box,SIGNAL(activated(int)),
 	  this,SLOT(autorefreshChangedData(int)));
 
   //
   // Start Date
   //
-  edit_startdate_edit=new QDateEdit(this);
+  edit_startdate_edit=new Q3DateEdit(this);
   edit_startdate_label=new QLabel(edit_startdate_edit,tr("Start Date:"),this);
   edit_startdate_label->setFont(label_font);
-  edit_startdate_label->setAlignment(AlignRight|AlignVCenter);  
+  edit_startdate_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);  
   connect(edit_startdate_edit,SIGNAL(valueChanged(const QDate &)),
 	  this,SLOT(dateValueChangedData(const QDate &)));
 
@@ -276,10 +281,10 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   //
   // End Date
   //
-  edit_enddate_edit=new QDateEdit(this);
+  edit_enddate_edit=new Q3DateEdit(this);
   edit_enddate_label=new QLabel(edit_startdate_edit,tr("End Date:"),this);
   edit_enddate_label->setFont(label_font);
-  edit_enddate_label->setAlignment(AlignRight|AlignVCenter);  
+  edit_enddate_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);  
   connect(edit_enddate_edit,SIGNAL(valueChanged(const QDate &)),
 	  this,SLOT(dateValueChangedData(const QDate &)));
 
@@ -292,7 +297,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   edit_startdate_box_label=
     new QLabel(edit_startdate_box,tr("Start Date Enabled"),this);
   edit_startdate_box_label->setFont(label_font);
-  edit_startdate_box_label->setAlignment(AlignLeft|AlignVCenter);
+  edit_startdate_box_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // End Date Checkbox
@@ -303,14 +308,14 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   edit_enddate_box_label=
     new QLabel(edit_enddate_box,tr("End Date Enabled"),this);
   edit_enddate_box_label->setFont(label_font);
-  edit_enddate_box_label->setAlignment(AlignLeft|AlignVCenter);  
+  edit_enddate_box_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);  
 
   //
   // Time Counter Section
   //
   edit_time_label=new QLabel(tr("Run Length"),this);
   edit_time_label->setFont(label_font);
-  edit_time_label->setAlignment(AlignCenter);  
+  edit_time_label->setAlignment(Qt::AlignCenter);  
 
   //
   // Stop Time Counter
@@ -318,7 +323,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   edit_stoptime_edit=new QLineEdit(this);
   edit_stoptime_label=new QLabel(edit_stoptime_edit,tr("Next Stop:"),this);
   edit_stoptime_label->setFont(label_font);
-  edit_stoptime_label->setAlignment(AlignRight|AlignVCenter);  
+  edit_stoptime_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);  
 
   //
   // End Time Counter
@@ -326,55 +331,55 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   edit_endtime_edit=new QLineEdit(this);
   edit_endtime_label=new QLabel(edit_endtime_edit,tr("Log End:"),this);
   edit_endtime_label->setFont(label_font);
-  edit_endtime_label->setAlignment(AlignRight|AlignVCenter);  
+  edit_endtime_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);  
 
   //
   // Log Event List
   //
   edit_log_list=new DropListView(this);
   edit_log_list->setAllColumnsShowFocus(true);
-  edit_log_list->setSelectionMode(QListView::Extended);
+  edit_log_list->setSelectionMode(Q3ListView::Extended);
   edit_log_list->setItemMargin(5);
   edit_log_list->addColumn("");
   edit_log_list->setColumnAlignment(0,Qt::AlignHCenter);
-  edit_log_list->addColumn(tr("TIME"));
+  edit_log_list->addColumn(tr("Time"));
   edit_log_list->setColumnAlignment(1,Qt::AlignRight);
-  edit_log_list->addColumn(tr("TRANS"));
+  edit_log_list->addColumn(tr("Trans"));
   edit_log_list->setColumnAlignment(2,Qt::AlignHCenter);
-  edit_log_list->addColumn(tr("CART"));
+  edit_log_list->addColumn(tr("Cart"));
   edit_log_list->setColumnAlignment(3,Qt::AlignHCenter);
-  edit_log_list->addColumn(tr("GROUP"));
+  edit_log_list->addColumn(tr("Group"));
   edit_log_list->setColumnAlignment(4,Qt::AlignHCenter);
-  edit_log_list->addColumn(tr("LENGTH"));
+  edit_log_list->addColumn(tr("Length"));
   edit_log_list->setColumnAlignment(5,Qt::AlignRight);
-  edit_log_list->addColumn(tr("TITLE"));
+  edit_log_list->addColumn(tr("Title"));
   edit_log_list->setColumnAlignment(6,Qt::AlignLeft);
-  edit_log_list->addColumn(tr("ARTIST"));
+  edit_log_list->addColumn(tr("Artist"));
   edit_log_list->setColumnAlignment(7,Qt::AlignLeft);
-  edit_log_list->addColumn(tr("CLIENT"));
+  edit_log_list->addColumn(tr("Client"));
   edit_log_list->setColumnAlignment(8,Qt::AlignLeft);
-  edit_log_list->addColumn(tr("AGENCY"));
+  edit_log_list->addColumn(tr("Agency"));
   edit_log_list->setColumnAlignment(9,Qt::AlignLeft);
-  edit_log_list->addColumn(tr("LABEL"));
+  edit_log_list->addColumn(tr("Label"));
   edit_log_list->setColumnAlignment(10,Qt::AlignHCenter);
-  edit_log_list->addColumn(tr("SOURCE"));
+  edit_log_list->addColumn(tr("Source"));
   edit_log_list->setColumnAlignment(11,Qt::AlignHCenter);
-  edit_log_list->addColumn(tr("EXT DATA"));
+  edit_log_list->addColumn(tr("Ext Data"));
   edit_log_list->setColumnAlignment(12,Qt::AlignHCenter);
-  edit_log_list->addColumn(tr("LINE ID"));
+  edit_log_list->addColumn(tr("Line ID"));
   edit_log_list->setColumnAlignment(13,Qt::AlignHCenter);
-  edit_log_list->addColumn(tr("COUNT"));
+  edit_log_list->addColumn(tr("Count"));
   edit_log_list->setColumnAlignment(14,Qt::AlignHCenter);
   edit_log_list->setHardSortColumn(14);
   edit_log_list->setColumnSortType(14,RDListView::LineSort);
   if(editing_allowed) {
-    connect(edit_log_list,SIGNAL(doubleClicked(QListViewItem *)),
-	    this,SLOT(doubleClickData(QListViewItem *)));
+    connect(edit_log_list,SIGNAL(doubleClicked(Q3ListViewItem *)),
+	    this,SLOT(doubleClickData(Q3ListViewItem *)));
     connect(edit_log_list,SIGNAL(cartDropped(int,RDLogLine *)),
 	    this,SLOT(cartDroppedData(int,RDLogLine *)));
   }
-  connect(edit_log_list,SIGNAL(clicked(QListViewItem *)),
-  	  this,SLOT(clickedData(QListViewItem *)));
+  connect(edit_log_list,SIGNAL(clicked(Q3ListViewItem *)),
+  	  this,SLOT(clickedData(Q3ListViewItem *)));
   connect(edit_log_list,SIGNAL(selectionChanged()),
   	  this,SLOT(selectionChangedData()));
 
@@ -501,7 +506,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   edit_player=
     new RDSimplePlayer(rda->cae(),rda->ripc(),edit_output_card,edit_output_port,
 		       edit_start_macro,edit_end_macro,this);
-  edit_player->stopButton()->setOnColor(red);
+  edit_player->stopButton()->setOnColor(Qt::red);
 #endif  // WIN32
 
   //
@@ -747,7 +752,7 @@ void EditLog::insertCartButtonData()
   int line;
   int id;
 
-  QListViewItem *item=SingleSelection();
+  Q3ListViewItem *item=SingleSelection();
   if(item==NULL || (line=item->text(14).toInt())<0) {
     line=edit_log_event->size();
     id=END_MARKER_ID;
@@ -788,7 +793,7 @@ void EditLog::insertMarkerButtonData()
   EditTrack *edit_track;
   EditChain *edit_chain;
 
-  QListViewItem *item=SingleSelection();
+  Q3ListViewItem *item=SingleSelection();
   if(item==NULL) {
     return;
   }
@@ -853,7 +858,7 @@ void EditLog::insertMarkerButtonData()
 }
 
 
-void EditLog::clickedData(QListViewItem *item)
+void EditLog::clickedData(Q3ListViewItem *item)
 {
 #ifndef WIN32
   RDListViewItem *rditem=SingleSelection();
@@ -874,7 +879,7 @@ void EditLog::selectionChangedData()
 }
 
 
-void EditLog::doubleClickData(QListViewItem *item)
+void EditLog::doubleClickData(Q3ListViewItem *item)
 {
   if(item->text(13).toInt()==END_MARKER_ID) {
     insertCartButtonData();
@@ -952,7 +957,7 @@ void EditLog::deleteButtonData()
 {
   int count=0;
 
-  QListViewItem *next=edit_log_list->firstChild();
+  Q3ListViewItem *next=edit_log_list->firstChild();
   int line=0;
 
   while(next!=NULL) {
@@ -972,7 +977,7 @@ void EditLog::deleteButtonData()
 
 void EditLog::upButtonData()
 {
-  QListViewItem *item=SingleSelection();
+  Q3ListViewItem *item=SingleSelection();
   if((item==NULL)||(item->text(14).toInt()==0)||
      (item->text(13).toInt()==END_MARKER_ID)) {
     return;
@@ -990,7 +995,7 @@ void EditLog::upButtonData()
 
 void EditLog::downButtonData()
 {
-  QListViewItem *item=SingleSelection();
+  Q3ListViewItem *item=SingleSelection();
 
   if((item==NULL)||(item->text(14).toInt()==(edit_log_list->childCount()-2))||
      (item->text(13).toInt()==END_MARKER_ID)) {
@@ -1023,7 +1028,7 @@ void EditLog::copyButtonData()
 
 void EditLog::pasteButtonData()
 {
-  QListViewItem *item=SingleSelection();
+  Q3ListViewItem *item=SingleSelection();
   if((item==NULL)||(edit_clipboard->size()==0)) {
     return;
   }
@@ -1182,7 +1187,7 @@ void EditLog::renderasData()
   int first_line=-1;
   int last_line=-1;
 
-  QListViewItem *next=edit_log_list->firstChild();
+  Q3ListViewItem *next=edit_log_list->firstChild();
   while(next!=NULL) {
     if(edit_log_list->isSelected(next)) {
       if(next->text(13).toInt()!=END_MARKER_ID) {
@@ -1357,13 +1362,12 @@ void EditLog::paintEvent(QPaintEvent *e)
   p->fillRect(9,size().height()-130,size().width()-20,60,
 	      QColor(system_mid_color));
 
-  p->setPen(black);
-  p->setBrush(black);
-  p->moveTo(624,70);
-  p->lineTo(760,70);
-  p->lineTo(760,124);
-  p->lineTo(624,124);
-  p->lineTo(624,70);
+  p->setPen(Qt::black);
+  p->setBrush(Qt::black);
+  p->drawLine(624,70,760,70);
+  p->drawLine(760,70,760,124);
+  p->drawLine(760,124,624,124);
+  p->drawLine(624,124,624,70);
 
   p->end();
   delete p;
@@ -1644,7 +1648,7 @@ void EditLog::UpdateSelection()
   if(rditem==NULL) {  // Multiple items selected?
     edit_endtime_edit->setText("");
     edit_stoptime_label->setText(tr("Selected:"));
-    QListViewItem *next=edit_log_list->firstChild();
+    Q3ListViewItem *next=edit_log_list->firstChild();
     int start_line=-1;
     int end_line=-1;
     while(next!=NULL) {
@@ -1740,8 +1744,8 @@ bool EditLog::UpdateColor(RDListViewItem *item,RDLogLine *logline)
 
 void EditLog::RenumberList(int line)
 {
-  QListViewItem *prev=NULL;
-  QListViewItem *item=edit_log_list->firstChild();
+  Q3ListViewItem *prev=NULL;
+  Q3ListViewItem *item=edit_log_list->firstChild();
   if(item==NULL) {
     return;
   }
@@ -1759,7 +1763,7 @@ void EditLog::RenumberList(int line)
 
 void EditLog::SelectRecord(int id)
 {
-  QListViewItem *item=edit_log_list->firstChild();
+  Q3ListViewItem *item=edit_log_list->firstChild();
 
   while(item!=NULL) {
     if(item->text(13).toInt()==id) {
@@ -1844,7 +1848,7 @@ bool EditLog::DeleteTracks()
 
 void EditLog::LoadClipboard(bool clear_ext)
 {
-  QListViewItem *next=edit_log_list->firstChild();
+  Q3ListViewItem *next=edit_log_list->firstChild();
 
   edit_clipboard->clear();
   while(next!=NULL) {

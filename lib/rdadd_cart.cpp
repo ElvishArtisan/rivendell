@@ -23,14 +23,16 @@
 #include <qdialog.h>
 #include <qstring.h>
 #include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
+#include <q3listbox.h>
+#include <q3textedit.h>
 #include <qlabel.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
+//Added by qt3to4:
+#include <QCloseEvent>
 
 #include <rdsystem.h>
 #include <rddb.h>
@@ -77,7 +79,7 @@ RDAddCart::RDAddCart(QString *group,RDCart::Type *type,QString *title,
     new QLabel(cart_group_box,tr("&Group:"),this,
 	       "cart_group_label");
   cart_group_label->setGeometry(10,11,130,19);
-  cart_group_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  cart_group_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   cart_group_label->setFont(label_font);
   sql=QString("select GROUP_NAME from USER_PERMS where ")+
     "USER_NAME=\""+RDEscapeString(username)+"\" order by GROUP_NAME";
@@ -106,7 +108,7 @@ RDAddCart::RDAddCart(QString *group,RDCart::Type *type,QString *title,
 				       "cart_number_label");
   cart_number_label->setGeometry(10,32,130,19);
   cart_number_label->setFont(label_font);
-  cart_number_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  cart_number_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Cart Type
@@ -118,7 +120,7 @@ RDAddCart::RDAddCart(QString *group,RDCart::Type *type,QString *title,
 				       "cart_type_label");
   cart_type_label->setGeometry(10,53,130,19);
   cart_type_label->setFont(label_font);
-  cart_type_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  cart_type_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   if((*cart_type==RDCart::All)||(*cart_type==RDCart::Audio)) {
     cart_type_box->insertItem(tr("Audio"));
   }
@@ -148,7 +150,7 @@ RDAddCart::RDAddCart(QString *group,RDCart::Type *type,QString *title,
 				       "cart_title_label");
   cart_title_label->setGeometry(10,73,130,19);
   cart_title_label->setFont(label_font);
-  cart_title_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  cart_title_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   //  Ok Button

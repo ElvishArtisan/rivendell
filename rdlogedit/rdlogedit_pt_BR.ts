@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>AddMeta</name>
     <message>
@@ -170,55 +172,55 @@ Ação se Evento anterior estiver sendo executado</translation>
     </message>
     <message>
         <source>TIME</source>
-        <translation>HORA</translation>
+        <translation type="obsolete">HORA</translation>
     </message>
     <message>
         <source>TRANS</source>
-        <translation>TRANS</translation>
+        <translation type="obsolete">TRANS</translation>
     </message>
     <message>
         <source>CART</source>
-        <translation>CARTÃO</translation>
+        <translation type="obsolete">CARTÃO</translation>
     </message>
     <message>
         <source>GROUP</source>
-        <translation>GRUPO</translation>
+        <translation type="obsolete">GRUPO</translation>
     </message>
     <message>
         <source>LENGTH</source>
-        <translation>DURAÇÃO</translation>
+        <translation type="obsolete">DURAÇÃO</translation>
     </message>
     <message>
         <source>TITLE</source>
-        <translation>TÍTULO</translation>
+        <translation type="obsolete">TÍTULO</translation>
     </message>
     <message>
         <source>ARTIST</source>
-        <translation>ARTISTA</translation>
+        <translation type="obsolete">ARTISTA</translation>
     </message>
     <message>
         <source>CLIENT</source>
-        <translation>CLIENTE</translation>
+        <translation type="obsolete">CLIENTE</translation>
     </message>
     <message>
         <source>AGENCY</source>
-        <translation>AGÊNCIA</translation>
+        <translation type="obsolete">AGÊNCIA</translation>
     </message>
     <message>
         <source>LABEL</source>
-        <translation>SELO</translation>
+        <translation type="obsolete">SELO</translation>
     </message>
     <message>
         <source>SOURCE</source>
-        <translation>FONTE</translation>
+        <translation type="obsolete">FONTE</translation>
     </message>
     <message>
         <source>LINE ID</source>
-        <translation>ID DE LINHA</translation>
+        <translation type="obsolete">ID DE LINHA</translation>
     </message>
     <message>
         <source>COUNT</source>
-        <translation>CONTADOR</translation>
+        <translation type="obsolete">CONTADOR</translation>
     </message>
     <message>
         <source>Insert
@@ -404,10 +406,6 @@ para o serviço selecionado!</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>EXT DATA</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Link Start</source>
         <translation type="unfinished"></translation>
     </message>
@@ -417,7 +415,7 @@ para o serviço selecionado!</translation>
     </message>
     <message>
         <source>Save</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Salvar</translation>
     </message>
     <message>
         <source>As</source>
@@ -441,6 +439,62 @@ para o serviço selecionado!</translation>
     </message>
     <message>
         <source>Log already being edited by</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Time</source>
+        <translation type="unfinished">Tempo</translation>
+    </message>
+    <message>
+        <source>Trans</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cart</source>
+        <translation type="unfinished">Cartão</translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished">Título</translation>
+    </message>
+    <message>
+        <source>Artist</source>
+        <translation type="unfinished">Artista</translation>
+    </message>
+    <message>
+        <source>Client</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Agency</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation type="unfinished">Selo</translation>
+    </message>
+    <message>
+        <source>Source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ext Data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Line ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Count</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -771,51 +825,51 @@ Ação se Evento anterior estiver sendo executado</translation>
     </message>
     <message>
         <source>LOG NAME</source>
-        <translation>NOME DA LISTA</translation>
+        <translation type="obsolete">NOME DA LISTA</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation>DESCRIÇÃO</translation>
+        <translation type="obsolete">DESCRIÇÃO</translation>
     </message>
     <message>
         <source>SERVICE</source>
-        <translation>SERVIÇO</translation>
+        <translation type="obsolete">SERVIÇO</translation>
     </message>
     <message>
         <source>MUSIC</source>
-        <translation>MÚSICAS</translation>
+        <translation type="obsolete">MÚSICAS</translation>
     </message>
     <message>
         <source>TRAFFIC</source>
-        <translation>TRÁFEGO</translation>
+        <translation type="obsolete">TRÁFEGO</translation>
     </message>
     <message>
         <source>TRACKS</source>
-        <translation>FAIXAS</translation>
+        <translation type="obsolete">FAIXAS</translation>
     </message>
     <message>
         <source>VALID FROM</source>
-        <translation>VÁLIDO A PARTIR DE</translation>
+        <translation type="obsolete">VÁLIDO A PARTIR DE</translation>
     </message>
     <message>
         <source>VALID TO</source>
-        <translation>VÁLIDO ATÉ</translation>
+        <translation type="obsolete">VÁLIDO ATÉ</translation>
     </message>
     <message>
         <source>AUTO REFRESH</source>
-        <translation>AUTO ATUALIZAÇÃO</translation>
+        <translation type="obsolete">AUTO ATUALIZAÇÃO</translation>
     </message>
     <message>
         <source>ORIGIN</source>
-        <translation>ORIGEM</translation>
+        <translation type="obsolete">ORIGEM</translation>
     </message>
     <message>
         <source>LAST LINKED</source>
-        <translation>ÚLTIMO LINKADO</translation>
+        <translation type="obsolete">ÚLTIMO LINKADO</translation>
     </message>
     <message>
         <source>LAST MODIFIED</source>
-        <translation>ÚLTIMO MODIFICADO</translation>
+        <translation type="obsolete">ÚLTIMO MODIFICADO</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -948,6 +1002,54 @@ Continuar?</translation>
     </message>
     <message>
         <source>Unknown command option</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Log Name</source>
+        <translation type="unfinished">Nome da Lista</translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Music</source>
+        <translation type="unfinished">Músicas</translation>
+    </message>
+    <message>
+        <source>Traffic</source>
+        <translation type="unfinished">Tráfego</translation>
+    </message>
+    <message>
+        <source>Tracks</source>
+        <translation type="unfinished">Faixas</translation>
+    </message>
+    <message>
+        <source>Valid From</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Valid To</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Auto Refresh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Origin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last Linked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last Modified</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1110,31 +1212,31 @@ Faixa</translation>
     </message>
     <message>
         <source>TIME</source>
-        <translation type="unfinished">HORA</translation>
+        <translation type="obsolete">HORA</translation>
     </message>
     <message>
         <source>TRANS</source>
-        <translation type="unfinished">TRANS</translation>
+        <translation type="obsolete">TRANS</translation>
     </message>
     <message>
         <source>CART</source>
-        <translation type="unfinished">CARTÃO</translation>
+        <translation type="obsolete">CARTÃO</translation>
     </message>
     <message>
         <source>GROUP</source>
-        <translation type="unfinished">GRUPO</translation>
+        <translation type="obsolete">GRUPO</translation>
     </message>
     <message>
         <source>LENGTH</source>
-        <translation type="unfinished">DURAÇÃO</translation>
+        <translation type="obsolete">DURAÇÃO</translation>
     </message>
     <message>
         <source>TITLE</source>
-        <translation type="unfinished">TÍTULO</translation>
+        <translation type="obsolete">TÍTULO</translation>
     </message>
     <message>
         <source>ARTIST</source>
-        <translation type="unfinished">ARTISTA</translation>
+        <translation type="obsolete">ARTISTA</translation>
     </message>
     <message>
         <source>Do Over</source>
@@ -1273,12 +1375,8 @@ Assim sendo, somente transições existentes serão editáveis.</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>ALBUM</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>LABEL</source>
-        <translation type="unfinished">SELO</translation>
+        <translation type="obsolete">SELO</translation>
     </message>
     <message>
         <source>Log Locked</source>
@@ -1291,6 +1389,38 @@ Assim sendo, somente transições existentes serão editáveis.</translation>
     <message>
         <source>Talk</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trans</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cart</source>
+        <translation type="unfinished">Cartão</translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished">Título</translation>
+    </message>
+    <message>
+        <source>Artist</source>
+        <translation type="unfinished">Artista</translation>
+    </message>
+    <message>
+        <source>Album</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation type="unfinished">Selo</translation>
     </message>
 </context>
 </TS>

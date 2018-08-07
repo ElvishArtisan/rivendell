@@ -20,7 +20,7 @@
 
 #include <qapplication.h>
 #include <qobject.h>
-#include <qserversocket.h>
+#include <q3serversocket.h>
 #include <qhostaddress.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -30,14 +30,14 @@
 #include <rdcatchd_socket.h>
 
 RDCatchdSocket::RDCatchdSocket(Q_UINT16 port,int backlog,QObject *parent)
-  : QServerSocket(port,0,parent)
+  : Q3ServerSocket(port,0,parent)
 {
 }
 
 
 RDCatchdSocket::RDCatchdSocket(const QHostAddress &address,Q_UINT16 port,int backlog,
 		     QObject *parent,const char *name) 
-  : QServerSocket(address,port,0,parent,name)
+  : Q3ServerSocket(address,port,0,parent,name)
 {
 }
 

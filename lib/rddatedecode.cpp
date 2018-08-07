@@ -33,7 +33,7 @@ QString RDDateDecode(QString str,const QDate &date,RDStation *station,
   QString field;
   int offset=0;
 
-  for(unsigned i=0;i<str.length();i++) {
+  for(int i=0;i<str.length();i++) {
     field="";
     offset=0;
     if(str.at(i)!='%') {
@@ -191,7 +191,7 @@ QString RDDateTimeDecode(QString str,const QDateTime &datetime,
   QString field;
   int offset=0;
 
-  for(unsigned i=0;i<str.length();i++) {
+  for(int i=0;i<str.length();i++) {
     field="";
     offset=0;
     if(str.at(i)!='%') {

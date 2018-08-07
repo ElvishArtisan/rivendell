@@ -362,7 +362,7 @@ void RDEvent::SetRow(const QString &param,const QString &value,bool ok) const
 }
 
 
-QString RDEvent::SchedGroup()
+QString RDEvent::schedGroup()
 {
   bool ok;
   return GetStringValue("SCHED_GROUP",&ok);

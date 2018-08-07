@@ -318,7 +318,7 @@ void MainObject::userData()
     }
   }
   QStringList warnings=r->warnings();
-  for(unsigned i=0;i<warnings.size();i++) {
+  for(int i=0;i<warnings.size();i++) {
     fprintf(stderr,"%s: %s\n",(const char *)tr("WARNING"),
 	    (const char *)warnings[i]);
   }

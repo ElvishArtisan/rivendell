@@ -1,8 +1,6 @@
-## automake.am
+## Makefile.am
 ##
-## rdrepld/ Makefile.am for Rivendell
-##
-## (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2010,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -20,8 +18,8 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall @QT_CXXFLAGS@ -I$(top_srcdir)/lib
-LIBS = @QT_LIBS@ -L$(top_srcdir)/lib
+AM_CPPFLAGS = -Wall -I$(top_srcdir)/lib @QT4_CFLAGS@ -DQT3_SUPPORT -I/usr/include/Qt3Support
+LIBS = -L$(top_srcdir)/lib
 MOC = @QT_MOC@
 
 # QT's Meta Object Compiler (moc)
@@ -34,7 +32,7 @@ dist_rdrepld_SOURCES = rdrepld.cpp rdrepld.h \
                        replfactory.cpp replfactory.h\
                        citadelxds.cpp citadelxds.h
 nodist_rdrepld_SOURCES = moc_rdrepld.cpp
-rdrepld_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
+rdrepld_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
 
 CLEANFILES = *~ moc_*
 DISTCLEANFILES = moc_*

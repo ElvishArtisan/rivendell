@@ -25,11 +25,13 @@
 
 #include <qdialog.h>
 #include <qcheckbox.h>
-#include <qlistview.h>
+#include <q3listview.h>
 #include <qspinbox.h>
 #include <qpushbutton.h>
 #include <qlineedit.h>
 #include <qcombobox.h>
+//Added by qt3to4:
+#include <QLabel>
 
 #include <rdlabel.h>
 #include <rdsystem.h>
@@ -61,7 +63,7 @@ class EditSettings : public QDialog
    QLineEdit *edit_isci_path_edit;
    QComboBox *edit_temp_cart_group_box;
    QCheckBox *edit_show_user_list_box;
-   QListView *edit_duplicate_list;
+   Q3ListView *edit_duplicate_list;
    QLineEdit *edit_notification_address_edit;
    QPushButton *edit_settings_button;
    QPushButton *edit_save_button;

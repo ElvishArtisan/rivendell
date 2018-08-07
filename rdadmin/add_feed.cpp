@@ -68,7 +68,7 @@ AddFeed::AddFeed(unsigned *id,QString *keyname,QWidget *parent)
   QLabel *label=new QLabel(feed_users_box,tr("Enable Feed for All Users"),this);
   label->setGeometry(60,38,sizeHint().width()-60,19);
   label->setFont(user_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Text Validator
@@ -85,7 +85,7 @@ AddFeed::AddFeed(unsigned *id,QString *keyname,QWidget *parent)
   label=new QLabel(feed_keyname_edit,tr("&New Feed Name:"),this);
   label->setGeometry(10,11,130,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   //  Ok Button

@@ -263,7 +263,7 @@ bool RDRenderer::renderToFile(const QString &outfile,RDLogEvent *log,
   // Verify Destination
   //
   if((f=fopen(outfile,"w"))==NULL) {
-    *err_msg=tr("unable to open output file")+" ["+strerror(errno)+"]";
+    *err_msg=tr("unable to open output file")+" ["+QString(strerror(errno))+"]";
     return false;
   }
   fclose(f);

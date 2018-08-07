@@ -21,14 +21,14 @@
 #include <qdialog.h>
 #include <qstring.h>
 #include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
+#include <q3listbox.h>
+#include <q3textedit.h>
 #include <qlabel.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -69,19 +69,19 @@ AutofillCarts::AutofillCarts(RDSvc *svc,QWidget *parent)
   //
   // Cart List
   //
-  svc_cart_list=new QListView(this);
+  svc_cart_list=new Q3ListView(this);
   svc_cart_list->
     setGeometry(10,10,sizeHint().width()-20,sizeHint().height()-110);
   svc_cart_list->setAllColumnsShowFocus(true);
   svc_cart_list->setItemMargin(5);
   svc_cart_list->addColumn(tr("Cart"));
-  svc_cart_list->setColumnAlignment(0,AlignCenter);
+  svc_cart_list->setColumnAlignment(0,Qt::AlignCenter);
   svc_cart_list->addColumn(tr("Length"));
-  svc_cart_list->setColumnAlignment(1,AlignRight);
+  svc_cart_list->setColumnAlignment(1,Qt::AlignRight);
   svc_cart_list->addColumn(tr("Title"));
-  svc_cart_list->setColumnAlignment(2,AlignLeft);
+  svc_cart_list->setColumnAlignment(2,Qt::AlignLeft);
   svc_cart_list->addColumn(tr("Artist"));
-  svc_cart_list->setColumnAlignment(3,AlignLeft);
+  svc_cart_list->setColumnAlignment(3,Qt::AlignLeft);
   svc_cart_list->setSortColumn(1);
 
   //
@@ -151,7 +151,7 @@ void AutofillCarts::addData()
     return;
   }
   RDCart *rdcart=new RDCart(cart);
-  QListViewItem *item=new QListViewItem(svc_cart_list);
+  Q3ListViewItem *item=new Q3ListViewItem(svc_cart_list);
   item->setText(0,QString().sprintf("%06d",cart));
   item->setText(1,RDGetTimeLength(rdcart->forcedLength(),false,true));
   item->setText(2,rdcart->title());
@@ -164,7 +164,7 @@ void AutofillCarts::addData()
 
 void AutofillCarts::deleteData()
 {
-  QListViewItem *item=svc_cart_list->selectedItem();
+  Q3ListViewItem *item=svc_cart_list->selectedItem();
   if(item==NULL) {
     return;
   }
@@ -178,7 +178,7 @@ void AutofillCarts::okData()
     "SERVICE=\""+RDEscapeString(svc_svc->name())+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
-  QListViewItem *item=svc_cart_list->firstChild();
+  Q3ListViewItem *item=svc_cart_list->firstChild();
   while(item!=NULL) {
     sql=QString("insert into AUTOFILLS set ")+
       "SERVICE=\""+RDEscapeString(svc_svc->name())+"\","+
@@ -199,7 +199,7 @@ void AutofillCarts::cancelData()
 
 void AutofillCarts::RefreshList()
 {
-  QListViewItem *item;
+  Q3ListViewItem *item;
 
   svc_cart_list->clear();
   QString sql=QString("select ")+
@@ -211,7 +211,7 @@ void AutofillCarts::RefreshList()
     "SERVICE=\""+RDEscapeString(svc_svc->name())+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
-    item=new QListViewItem(svc_cart_list);
+    item=new Q3ListViewItem(svc_cart_list);
     item->setText(0,QString().sprintf("%06u",q->value(0).toUInt()));
     item->setText(1,RDGetTimeLength(q->value(1).toInt(),false,true));
     item->setText(2,q->value(2).toString());

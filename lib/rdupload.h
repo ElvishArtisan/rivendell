@@ -22,7 +22,7 @@
 #define RDUPLOAD_H
 
 #include <qobject.h>
-#include <qurl.h>
+#include <q3url.h>
 
 class RDUpload : public QObject
 {
@@ -55,7 +55,7 @@ class RDUpload : public QObject
   friend int UploadProgressCallback(void *clientp,double dltotal,double dlnow,
 				    double ultotal,double ulnow);
   QString conv_src_filename;
-  QUrl conv_dst_url;
+  Q3Url conv_dst_url;
   bool conv_aborting;
   uint conv_src_size;
 };

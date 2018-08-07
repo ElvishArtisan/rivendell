@@ -21,13 +21,13 @@
 #include <qdialog.h>
 #include <qstring.h>
 #include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
+#include <q3listbox.h>
+#include <q3textedit.h>
 #include <qlabel.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 
 #include <rdapplication.h>
 #include <rddb.h>
@@ -99,13 +99,13 @@ ListSvcs::ListSvcs(QWidget *parent)
   //
   // Services List Box
   //
-  list_box=new QListBox(this);
+  list_box=new Q3ListBox(this);
   list_box->setGeometry(10,30,80,260);
   QLabel *list_box_label=new QLabel(list_box,tr("&Services:"),this);
   list_box_label->setFont(font);
   list_box_label->setGeometry(14,11,85,19);
-  connect(list_box,SIGNAL(doubleClicked(QListBoxItem *)),
-	  this,SLOT(doubleClickedData(QListBoxItem *)));
+  connect(list_box,SIGNAL(doubleClicked(Q3ListBoxItem *)),
+	  this,SLOT(doubleClickedData(Q3ListBoxItem *)));
 
   RefreshList();
 }
@@ -195,7 +195,7 @@ void ListSvcs::closeData()
 }
 
 
-void ListSvcs::doubleClickedData(QListBoxItem *item)
+void ListSvcs::doubleClickedData(Q3ListBoxItem *item)
 {
   editData();
 }

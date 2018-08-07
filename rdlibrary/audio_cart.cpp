@@ -23,14 +23,14 @@
 #include <qdialog.h>
 #include <qstring.h>
 #include <qpushbutton.h>
-#include <qlistview.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
+#include <q3listview.h>
+#include <q3listbox.h>
+#include <q3textedit.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 #include <qapplication.h>
 
 #include <rdapplication.h>
@@ -82,7 +82,7 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   //
   // Progress Dialog
   //
-  rdcart_progress_dialog=new QProgressDialog(this);
+  rdcart_progress_dialog=new Q3ProgressDialog(this);
   rdcart_progress_dialog->setLabelText(tr("Copying audio..."));
   rdcart_progress_dialog->setCancelButton(NULL);
   rdcart_progress_dialog->setTotalSteps(10);
@@ -130,13 +130,13 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   rdcart_cut_list=new RDListView(this);
   rdcart_cut_list->setGeometry(100,0,430,sizeHint().height());
   rdcart_cut_list->setAllColumnsShowFocus(true);
-  rdcart_cut_list->setSelectionMode(QListView::Extended);
+  rdcart_cut_list->setSelectionMode(Q3ListView::Extended);
   rdcart_cut_list->setItemMargin(5);
   rdcart_cut_list->setSorting(11);
   connect(rdcart_cut_list,
-	  SIGNAL(doubleClicked(QListViewItem *,const QPoint &,int)),
+	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,
-	  SLOT(doubleClickedData(QListViewItem *,const QPoint &,int)));
+	  SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
 
   rdcart_cut_list->addColumn(tr("WT"));
   rdcart_cut_list->setColumnAlignment(0,Qt::AlignHCenter);
@@ -195,8 +195,7 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   p->setPen(QColor(system_button_text_color));
   p->setFont(button_font);
   p->drawText((80-m->width(tr("Cut Info")))/2,20,tr("Cut Info"));
-  p->moveTo(10,24);
-  p->lineTo(70,24);
+  p->drawLine(10,24,70,24);
   p->drawText((80-m->width(tr("Record")))/2,38,tr("Record"));
   p->end();
   QPushButton *record_cut_button=new QPushButton(this);
@@ -238,8 +237,7 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   p->setPen(QColor(system_button_text_color));
   p->setFont(button_font);
   p->drawText((80-m->width(tr("Import")))/2,20,tr("Import"));
-  p->moveTo(10,24);
-  p->lineTo(70,24);
+  p->drawLine(10,24,70,24);
   p->drawText((80-m->width(tr("Export")))/2,38,tr("Export"));
   p->end();
   QPushButton *import_cut_button=new QPushButton(this);
@@ -351,7 +349,7 @@ void AudioCart::deleteCutData()
 				 QMessageBox::Yes,QMessageBox::No)) {
 
     case QMessageBox::No:
-    case QMessageBox::NoButton:
+    case Qt::NoButton:
       return;
       
     default:
@@ -687,7 +685,7 @@ void AudioCart::importCutData()
 }
 
 
-void AudioCart::doubleClickedData(QListViewItem *,const QPoint &,int)
+void AudioCart::doubleClickedData(Q3ListViewItem *,const QPoint &,int)
 {
   recordCutData();
 }

@@ -37,7 +37,6 @@ MainObject::MainObject(QObject *parent)
   username="";
   password="";
   RDUpload::ErrorCode conv_err;
-  unsigned schema=0;
 
   //
   // Open the Database

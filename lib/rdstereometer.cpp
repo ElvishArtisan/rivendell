@@ -27,9 +27,12 @@
 #include <qpainter.h>
 #include <qpushbutton.h>
 #include <qsize.h>
+//Added by qt3to4:
+#include <QPixmap>
+#include <QPaintEvent>
 #include <stdio.h>
 #include <qslider.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 #include <qsizepolicy.h>
 #include <qmessagebox.h>
 
@@ -44,7 +47,7 @@ RDStereoMeter::RDStereoMeter(QWidget *parent)
   clip_light_on=false;
   label_x=0;
   meter_label=QString("");
-  setBackgroundColor(black);
+  setBackgroundColor(Qt::black);
   left_meter=new RDSegMeter(RDSegMeter::Right,this);
   left_meter->setGeometry(25,10,300,10);
   left_meter->setRange(-4600,-800);
@@ -284,8 +287,8 @@ void RDStereoMeter::paintEvent(QPaintEvent *paintEvent)
   QPixmap pix(this->size());
   pix.fill(this,0,0);
   QPainter *p=new QPainter(&pix);
-  p->setBrush(QColor(white));
-  p->setPen(QColor(white));
+  p->setBrush(QColor(Qt::white));
+  p->setPen(QColor(Qt::white));
   p->setFont(meter_scale_font);
   p->drawText(10,20,tr("L"));
   p->drawText(10,50,tr("R"));

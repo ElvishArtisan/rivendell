@@ -852,7 +852,7 @@ QString RDReport::leftJustify(const QString &str,int width)
 {
   QString ret=str.left(width);
 
-  while(ret.length()<(unsigned)width) {
+  while(ret.length()<width) {
     ret+=" ";
   }
 
@@ -864,7 +864,7 @@ QString RDReport::rightJustify(const QString &str,int width)
 {
   QString ret=str.left(width);
 
-  while(ret.length()<(unsigned)width) {
+  while(ret.length()<width) {
     ret=" "+ret;
   }
 

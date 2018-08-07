@@ -29,7 +29,7 @@
 MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
-  unsigned schema=0;
+  int schema=0;
 
   destination_settings=new RDSettings();
   start_point=-1;
@@ -179,8 +179,7 @@ MainObject::MainObject(QObject *parent)
   // Open Database
   //
   QString err (tr("rdconvert: "));
-  QSqlDatabase *db=RDInitDb(&schema,&err);
-  if(!db) {
+  if(!RDOpenDb(&schema,&err,rdconfig)) {
     fprintf(stderr,err.ascii());
     delete cmd;
     exit(256);

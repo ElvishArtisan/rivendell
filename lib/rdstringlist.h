@@ -29,7 +29,7 @@ class RDStringList : public QStringList
   RDStringList();
   RDStringList(const RDStringList &lhs);
   RDStringList(const QStringList &lhs);  
-  RDStringList split(const QString &sep,const QString &str,
+  RDStringList split(const QChar &sep,const QString &str,
 		     const QString &esc="");
 };
 

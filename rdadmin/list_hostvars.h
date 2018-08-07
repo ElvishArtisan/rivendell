@@ -22,8 +22,8 @@
 #define LIST_HOSTVARS_H
 
 #include <qdialog.h>
-#include <qlistview.h>
-#include <qtextedit.h>
+#include <q3listview.h>
+#include <q3textedit.h>
 #include <qpixmap.h>
 #include <qradiobutton.h>
 #include <qsqldatabase.h>
@@ -44,13 +44,13 @@ class ListHostvars : public QDialog
    void addData();
    void editData();
    void deleteData();
-   void doubleClickedData(QListViewItem *,const QPoint &,int);
+   void doubleClickedData(Q3ListViewItem *,const QPoint &,int);
    void okData();
    void cancelData();
 
   private:
    void RefreshList();
-   QListView *list_view;
+   Q3ListView *list_view;
    QString list_station;
 };
 

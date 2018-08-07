@@ -35,7 +35,7 @@
 
 
 RDRLMHost::RDRLMHost(const QString &path,const QString &arg,
-		 QSocketDevice *udp_socket,QObject *parent)
+		 Q3SocketDevice *udp_socket,QObject *parent)
   : QObject(parent)
 {
   plugin_path=RDDateDecode(path,QDate::currentDate(),rda->station(),rda->config());
@@ -341,7 +341,7 @@ void RDRLMHost::ttyReceiveReadyData(int fd)
   int n;
 
   for(unsigned i=0;i<plugin_tty_devices.size();i++) {
-    if(plugin_tty_devices[i]->socket()==fd) {
+    if(plugin_tty_devices[i]->fileDescriptor()==fd) {
       while((n=plugin_tty_devices[i]->readBlock(data,1024))>0) {
 	if(plugin_serial_data_received_sym!=NULL) {
 	  plugin_serial_data_received_sym(this,i,data,n);
@@ -373,15 +373,15 @@ int RLMOpenSerial(void *ptr,const char *port,int speed,int parity,
 		  int word_length)
 {
   RDRLMHost *host=(RDRLMHost *)ptr;
-  host->plugin_tty_devices.push_back(new RDTTYDevice);
+  host->plugin_tty_devices.push_back(new RDTTYDevice());
   host->plugin_tty_devices.back()->setName(port);
   host->plugin_tty_devices.back()->setSpeed(speed);
   host->plugin_tty_devices.back()->setParity((RDTTYDevice::Parity)parity);
   host->plugin_tty_devices.back()->setWordLength(word_length);
-  if(host->plugin_tty_devices.back()->open(IO_ReadWrite)) {
+  if(host->plugin_tty_devices.back()->open(QIODevice::ReadWrite)) {
 
     host->plugin_tty_notifiers.
-      push_back(new QSocketNotifier(host->plugin_tty_devices.back()->socket(),
+      push_back(new QSocketNotifier(host->plugin_tty_devices.back()->fileDescriptor(),
 				    QSocketNotifier::Read));
     host->connect(host->plugin_tty_notifiers.back(),SIGNAL(activated(int)),
 		  host,SLOT(ttyReceiveReadyData(int)));

@@ -48,8 +48,8 @@ MainObject::MainObject(QObject *parent)
     fprintf(stderr,"rddelete: %s\n",(const char *)err_msg);
     exit(1);
   }
-  connect(RDDbStatus(),SIGNAL(logText(RDConfig::LogPriority,const QString &)),
-	  this,SLOT(log(RDConfig::LogPriority,const QString &)));
+  //  connect(RDDbStatus(),SIGNAL(logText(RDConfig::LogPriority,const QString &)),
+  //	  this,SLOT(log(RDConfig::LogPriority,const QString &)));
 
   //
   // Read Command Options

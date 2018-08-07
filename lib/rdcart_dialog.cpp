@@ -27,8 +27,12 @@
 #include <qdatetime.h>
 #include <qapplication.h>
 #include <qeventloop.h>
-#include <qfiledialog.h>
+#include <q3filedialog.h>
 #include <qmessagebox.h>
+//Added by qt3to4:
+#include <QPixmap>
+#include <QResizeEvent>
+#include <QCloseEvent>
 
 #include <rdapplication.h>
 #ifndef WIN32
@@ -111,12 +115,12 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   // Progress Dialog
   //
   cart_progress_dialog=
-    new QProgressDialog(tr("Please Wait..."),"Cancel",10,this,
+    new Q3ProgressDialog(tr("Please Wait..."),"Cancel",10,this,
 			"cart_progress_dialog",false,
 			Qt::WStyle_Customize|Qt::WStyle_NormalBorder);
   cart_progress_dialog->setCaption(" ");
   QLabel *label=new QLabel(tr("Please Wait..."),cart_progress_dialog);
-  label->setAlignment(AlignCenter);
+  label->setAlignment(Qt::AlignCenter);
   label->setFont(progress_font);
   cart_progress_dialog->setLabel(label);
   cart_progress_dialog->setCancelButton(NULL);
@@ -130,7 +134,7 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   cart_filter_edit=new QLineEdit(this);
   cart_filter_edit->setValidator(validator);
   cart_filter_label=new QLabel(cart_filter_edit,tr("Cart Filter:"),this);
-  cart_filter_label->setAlignment(AlignRight|AlignVCenter);
+  cart_filter_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   cart_filter_label->setFont(button_font);
   connect(cart_filter_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(filterChangedData(const QString &)));
@@ -156,7 +160,7 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   //
   cart_group_box=new RDComboBox(this);
   cart_group_label=new QLabel(cart_group_box,tr("Group:"),this);
-  cart_group_label->setAlignment(AlignRight|AlignVCenter);
+  cart_group_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   cart_group_label->setFont(button_font);
   connect(cart_group_box,SIGNAL(activated(const QString &)),
 	  this,SLOT(groupActivatedData(const QString &)));
@@ -167,7 +171,7 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   cart_schedcode_box=new RDComboBox(this);
   cart_schedcode_label=
     new QLabel(cart_schedcode_box,tr("Scheduler Code:"),this);
-  cart_schedcode_label->setAlignment(AlignRight|AlignVCenter);
+  cart_schedcode_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   cart_schedcode_label->setFont(button_font);
   connect(cart_schedcode_box,SIGNAL(activated(const QString &)),
 	  this,SLOT(schedcodeActivatedData(const QString &)));
@@ -181,7 +185,7 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
     new QLabel(cart_limit_box,tr("Show Only First")+
 	       QString().sprintf(" %d ",
 		      RD_LIMITED_CART_SEARCH_QUANTITY)+tr("Matches"),this);
-  cart_limit_label->setAlignment(AlignLeft|AlignVCenter);
+  cart_limit_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   cart_limit_label->setFont(button_font);
   connect(cart_limit_box,SIGNAL(stateChanged(int)),
 	  this,SLOT(limitChangedData(int)));
@@ -190,15 +194,15 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   // Cart List
   //
   cart_cart_list=new RDListView(this);
-  cart_cart_list->setSelectionMode(QListView::Single);
+  cart_cart_list->setSelectionMode(Q3ListView::Single);
   cart_cart_list->setAllColumnsShowFocus(true);
   cart_cart_list->setItemMargin(5);
-  connect(cart_cart_list,SIGNAL(clicked(QListViewItem *)),
-	  this,SLOT(clickedData(QListViewItem *)));
+  connect(cart_cart_list,SIGNAL(clicked(Q3ListViewItem *)),
+	  this,SLOT(clickedData(Q3ListViewItem *)));
   connect(cart_cart_list,
-	  SIGNAL(doubleClicked(QListViewItem *,const QPoint &,int)),
+	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,
-	  SLOT(doubleClickedData(QListViewItem *,const QPoint &,int)));
+	  SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
   cart_cart_label=new QLabel(cart_cart_list,"Carts",this);
   cart_cart_label->setFont(button_font);
   cart_cart_list->addColumn("");
@@ -213,7 +217,7 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
 
   cart_cart_list->addColumn(tr("TITLE"),200);
   cart_cart_list->setColumnAlignment(3,Qt::AlignLeft);
-  cart_cart_list->setColumnWidthMode(3,QListView::Manual);
+  cart_cart_list->setColumnWidthMode(3,Q3ListView::Manual);
 
   cart_cart_list->addColumn(tr("ARTIST"));
   cart_cart_list->setColumnAlignment(4,Qt::AlignLeft);
@@ -255,7 +259,7 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
 			 rda->station()->cueStartCart(),rda->station()->cueStopCart(),this);
     cart_player->playButton()->setDisabled(true);
     cart_player->stopButton()->setDisabled(true);
-    cart_player->stopButton()->setOnColor(red);
+    cart_player->stopButton()->setOnColor(Qt::red);
   }
 #endif  // WIN32
 
@@ -461,7 +465,7 @@ void RDCartDialog::limitChangedData(int state)
 }
 
 
-void RDCartDialog::clickedData(QListViewItem *item)
+void RDCartDialog::clickedData(Q3ListViewItem *item)
 {
   RDListViewItem *i=(RDListViewItem *)item;
   if (i==NULL) {
@@ -480,7 +484,7 @@ void RDCartDialog::clickedData(QListViewItem *item)
 }
 
 
-void RDCartDialog::doubleClickedData(QListViewItem *,const QPoint &,int)
+void RDCartDialog::doubleClickedData(Q3ListViewItem *,const QPoint &,int)
 {
   okData();
 }
@@ -551,7 +555,7 @@ void RDCartDialog::loadFileData()
   RDWaveData wavedata;
   QString err_msg;
 
-  filename=QFileDialog::getOpenFileName(cart_import_path,
+  filename=Q3FileDialog::getOpenFileName(cart_import_path,
 					cart_import_file_filter,this);
   if(!filename.isEmpty()) {
     cart_import_path=RDGetPathPart(filename);
@@ -804,7 +808,7 @@ void RDCartDialog::RefreshCarts()
     if(count++>RDCART_DIALOG_STEP_SIZE) {
       cart_progress_dialog->setProgress(++step);
       count=0;
-      qApp->eventLoop()->processEvents(QEventLoop::ExcludeUserInput);
+      QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
     }
   }
   cart_progress_dialog->reset();

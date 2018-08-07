@@ -119,7 +119,7 @@ MainObject::MainObject(QObject *parent)
   //
   // UDP Transmission Socket
   //
-  air_nownext_socket=new QSocketDevice(QSocketDevice::Datagram);
+  air_nownext_socket=new Q3SocketDevice(Q3SocketDevice::Datagram);
 
   //
   // Log Machines

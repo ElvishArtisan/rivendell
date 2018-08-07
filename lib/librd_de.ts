@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name></name>
     <message>
@@ -17,11 +19,11 @@
     <name>QObject</name>
     <message>
         <source>Couldn&apos;t initialize QSql driver!</source>
-        <translation>Qsql-Treiber konnte nicht initialisiert werden!</translation>
+        <translation type="obsolete">Qsql-Treiber konnte nicht initialisiert werden!</translation>
     </message>
     <message>
         <source>Couldn&apos;t open mySQL connection!</source>
-        <translation>Konnte keine Verbindung zum mySQL-Server herstellen!</translation>
+        <translation type="obsolete">Konnte keine Verbindung zum mySQL-Server herstellen!</translation>
     </message>
     <message>
         <source>Sequentially</source>
@@ -589,6 +591,14 @@
     </message>
     <message>
         <source>is not playable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t initialize MySql driver!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t open MySQL connection on</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2463,11 +2473,11 @@ bitte erneut versuchen!</translation>
     <name>RDSqlDatabaseStatus</name>
     <message>
         <source>Database connection restored.</source>
-        <translation>Datenbankverbindung wiederhergestellt.</translation>
+        <translation type="obsolete">Datenbankverbindung wiederhergestellt.</translation>
     </message>
     <message>
         <source>Database connection failed : </source>
-        <translation>Datenbankverbindung fehlgeschlagen:</translation>
+        <translation type="obsolete">Datenbankverbindung fehlgeschlagen:</translation>
     </message>
 </context>
 <context>

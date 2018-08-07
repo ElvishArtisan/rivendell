@@ -21,14 +21,14 @@
 #include <qdialog.h>
 #include <qstring.h>
 #include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
+#include <q3listbox.h>
+#include <q3textedit.h>
 #include <qlabel.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 #include <qsqldatabase.h>
 
 #include <rd.h>
@@ -75,7 +75,7 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   QLabel *label=new QLabel(lib_input_card,tr("INPUT"),this);
   label->setGeometry(10,10,110,19);
   label->setFont(big_font);
-  label->setAlignment(AlignCenter);
+  label->setAlignment(Qt::AlignCenter);
 
   //
   // Output Configuration
@@ -85,7 +85,7 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   label=new QLabel(lib_output_card,tr("OUTPUT"),this);
   label->setGeometry(170,10,110,19);
   label->setFont(big_font);
-  label->setAlignment(AlignCenter);
+  label->setAlignment(Qt::AlignCenter);
 
   //
   // Settings
@@ -93,17 +93,17 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   QLabel *setting_label=new QLabel(tr("Voice Tracker Settings"),this);
   setting_label->setGeometry(70,79,sizeHint().width()-80,19);
   setting_label->setFont(big_font);
-  setting_label->setAlignment(AlignLeft|ShowPrefix);
+  setting_label->setAlignment(Qt::AlignLeft);
 
   //
   // Maximum Record Length
   //
-  lib_maxlength_time=new QTimeEdit(this);
+  lib_maxlength_time=new Q3TimeEdit(this);
   lib_maxlength_time->setGeometry(160,100,85,19);
   QLabel *lib_maxlength_label=
     new QLabel(lib_maxlength_time,tr("&Max Record Time:"),this);
   lib_maxlength_label->setGeometry(25,101,130,19);
-  lib_maxlength_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  lib_maxlength_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Autotrim Level
@@ -114,10 +114,10 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   lib_threshold_spin->setMaxValue(0);
   label=new QLabel(lib_threshold_spin,tr("&AutoTrim Threshold:"),this);
   label->setGeometry(25,124,130,19);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   label=new QLabel(tr("dbFS"),this);
   label->setGeometry(215,124,120,19);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Normalization Level
@@ -128,10 +128,10 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   lib_normalization_spin->setMaxValue(0);
   label=new QLabel(lib_normalization_spin,tr("&Normalization Level:"),this);
   label->setGeometry(25,148,130,19);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   label=new QLabel(tr("dbFS"),this);
   label->setGeometry(215,148,120,19);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Audio Margin
@@ -144,10 +144,10 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   QLabel *lib_preroll_spin_label=
     new QLabel(lib_preroll_spin,tr("&Audio Margin:"),this);
   lib_preroll_spin_label->setGeometry(25,172,130,19);
-  lib_preroll_spin_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  lib_preroll_spin_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   QLabel *lib_preroll_spin_unit=new QLabel(tr("milliseconds"),this);
   lib_preroll_spin_unit->setGeometry(225,172,120,19);
-  lib_preroll_spin_unit->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  lib_preroll_spin_unit->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Format
@@ -157,7 +157,7 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   connect(lib_format_box,SIGNAL(activated(int)),this,SLOT(formatData(int)));
   QLabel *lib_format_label=new QLabel(lib_format_box,tr("&Format:"),this);
   lib_format_label->setGeometry(25,196,130,19);
-  lib_format_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  lib_format_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Bitrate
@@ -166,7 +166,7 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   lib_bitrate_box->setGeometry(160,220,130,19);
   QLabel *lib_bitrate_label=new QLabel(lib_bitrate_box,tr("&Bitrate:"),this);
   lib_bitrate_label->setGeometry(25,220,130,19);
-  lib_bitrate_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  lib_bitrate_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Enable Second Start Button
@@ -179,7 +179,7 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
    new QLabel(lib_enable_second_start_box,tr("Enable &2nd Start Button:"),this);
   lib_enable_second_start_label->setGeometry(10,244,145,19);
   lib_enable_second_start_label->
-    setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Validator
@@ -196,7 +196,7 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   QLabel *lib_startcart_label=
     new QLabel(lib_startcart_edit,tr("Play &Start Cart:"),this);
   lib_startcart_label->setGeometry(25,268,130,19);
-  lib_startcart_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  lib_startcart_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   QPushButton *button=new QPushButton(this);
   button->setGeometry(240,266,55,23);
   button->setText(tr("Select"));
@@ -211,7 +211,7 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   QLabel *lib_endcart_label=
     new QLabel(lib_endcart_edit,tr("Play &End Cart:"),this);
   lib_endcart_label->setGeometry(25,292,130,19);
-  lib_endcart_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  lib_endcart_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   button=new QPushButton(this);
   button->setGeometry(240,290,55,23);
   button->setText(tr("Select"));
@@ -226,7 +226,7 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   QLabel *lib_recstartcart_label=
     new QLabel(lib_recstartcart_edit,tr("&Record Start Cart:"),this);
   lib_recstartcart_label->setGeometry(25,316,130,19);
-  lib_recstartcart_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  lib_recstartcart_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   button=new QPushButton(this);
   button->setGeometry(240,314,55,23);
   button->setText(tr("Select"));
@@ -241,7 +241,7 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   QLabel *lib_recendcart_label=
     new QLabel(lib_recendcart_edit,tr("Re&cord End Cart:"),this);
   lib_recendcart_label->setGeometry(25,340,130,19);
-  lib_recendcart_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  lib_recendcart_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   button=new QPushButton(this);
   button->setGeometry(240,338,55,23);
   button->setText(tr("Select"));
@@ -254,7 +254,7 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   lib_channels_box->setGeometry(160,364,60,19);
   QLabel *lib_channels_label=new QLabel(lib_channels_box,tr("&Channels:"),this);
   lib_channels_label->setGeometry(25,364,130,19);
-  lib_channels_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  lib_channels_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Default Transition Type
@@ -265,7 +265,7 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
     new QLabel(lib_default_transtype_box,tr("Default Transition:"),this);
   lib_default_transtype_label->setGeometry(20,388,130,19);
   lib_default_transtype_label->
-    setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   lib_default_transtype_box->insertItem(tr("Play"));
   lib_default_transtype_box->insertItem(tr("Segue"));
   lib_default_transtype_box->insertItem(tr("Stop"));

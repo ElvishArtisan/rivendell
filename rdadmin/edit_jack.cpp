@@ -22,16 +22,19 @@
 
 #include <qdialog.h>
 #include <qstring.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
+#include <q3listbox.h>
+#include <q3textedit.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 #include <qcolordialog.h>
 #include <qvalidator.h>
-#include <qfiledialog.h>
+#include <q3filedialog.h>
+//Added by qt3to4:
+#include <QResizeEvent>
+#include <QLabel>
 
 #include <rdescape_string.h>
 
@@ -71,7 +74,7 @@ EditJack::EditJack(RDStation *station,QWidget *parent)
   edit_start_jack_label=
     new QLabel(edit_start_jack_box,tr("Start JACK Server"),this);
   edit_start_jack_label->setFont(font);
-  edit_start_jack_label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  edit_start_jack_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // JACK Server Name
@@ -81,7 +84,7 @@ EditJack::EditJack(RDStation *station,QWidget *parent)
     new QLabel(edit_jack_server_name_edit,tr("JACK Server Name:"),this);
   edit_jack_server_name_label->setFont(font);
   edit_jack_server_name_label->
-    setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // JACK Command Line
@@ -93,7 +96,7 @@ EditJack::EditJack(RDStation *station,QWidget *parent)
     new QLabel(edit_jack_command_line_edit,tr("JACK Command Line:"),this);
   edit_jack_command_line_label->setFont(font);
   edit_jack_command_line_label->
-    setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Active Audio Ports
@@ -103,7 +106,7 @@ EditJack::EditJack(RDStation *station,QWidget *parent)
   edit_jack_audio_ports_label=
     new QLabel(edit_jack_audio_ports_spin,tr("Active Audio Ports")+":",this);
   edit_jack_audio_ports_label->setFont(font);
-  edit_jack_audio_ports_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  edit_jack_audio_ports_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // JACK Client List
@@ -118,9 +121,9 @@ EditJack::EditJack(RDStation *station,QWidget *parent)
   edit_jack_client_view->setColumnAlignment(0,Qt::AlignLeft);
   edit_jack_client_view->addColumn(tr("Command Line"));
   edit_jack_client_view->setColumnAlignment(1,Qt::AlignLeft);
-  connect(edit_jack_client_view,SIGNAL(doubleClicked(QListViewItem *,
+  connect(edit_jack_client_view,SIGNAL(doubleClicked(Q3ListViewItem *,
 						     const QPoint &,int)),
-	  this,SLOT(doubleClickedData(QListViewItem *,const QPoint &,int)));
+	  this,SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
 
   //
   //  Add Button
@@ -270,7 +273,7 @@ void EditJack::deleteData()
 }
 
 
-void EditJack::doubleClickedData(QListViewItem *item,const QPoint &pt,int col)
+void EditJack::doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col)
 {
   editData();
 }

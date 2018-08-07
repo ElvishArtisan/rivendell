@@ -30,7 +30,7 @@ class RDGroup
 {
  public:
   enum ExportType {None=0,Traffic=1,Music=2};
-  RDGroup(QString name,bool create=false,QSqlDatabase *db=0);
+  RDGroup(QString name,bool create=false);
   QString name() const;
   bool exists() const;
   QString description() const;
@@ -78,7 +78,6 @@ class RDGroup
   void SetRow(const QString &param,unsigned value) const;
   void SetRow(const QString &param,const QString &value) const;
   QString ReportField(ExportType type) const;
-  QSqlDatabase *group_db;
   QString group_name;
 };
 

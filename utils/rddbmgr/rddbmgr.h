@@ -22,6 +22,8 @@
 #define RDDBMGR_H
 
 #include <qobject.h>
+//Added by qt3to4:
+#include <QSqlQuery>
 
 #include <rdconfig.h>
 #include <rdstation.h>

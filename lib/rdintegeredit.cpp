@@ -20,6 +20,8 @@
 
 #include <rdintegerdialog.h>
 #include <rdintegeredit.h>
+//Added by qt3to4:
+#include <QLabel>
 
 RDIntegerEdit::RDIntegerEdit(const QString &lbl,int low,int high,
 			     QWidget *parent)
@@ -41,13 +43,13 @@ RDIntegerEdit::RDIntegerEdit(const QString &lbl,int low,int high,
   //
   // Values List
   //
-  edit_values_box=new QListBox(this);
+  edit_values_box=new Q3ListBox(this);
 
   //
   // Title Label
   //
   edit_label=new QLabel(edit_values_box,lbl,this);
-  edit_label->setAlignment(AlignCenter);
+  edit_label->setAlignment(Qt::AlignCenter);
   edit_label->setFont(label_font);
 
   //
@@ -131,7 +133,7 @@ void RDIntegerEdit::addData()
 
 void RDIntegerEdit::deleteData()
 {
-  QListBoxItem *item=edit_values_box->selectedItem();
+  Q3ListBoxItem *item=edit_values_box->selectedItem();
   if(item==NULL) {
     return;
   }
@@ -139,7 +141,7 @@ void RDIntegerEdit::deleteData()
 }
 
 
-QListBoxItem *RDIntegerEdit::GetItem(int value)
+Q3ListBoxItem *RDIntegerEdit::GetItem(int value)
 {
   for(unsigned i=0;i<edit_values_box->count();i++) {
     if(edit_values_box->item(i)->text().toInt()==value) {

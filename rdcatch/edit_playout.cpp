@@ -21,12 +21,17 @@
 #include <qdialog.h>
 #include <qstring.h>
 #include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
+#include <q3listbox.h>
+#include <q3textedit.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
+//Added by qt3to4:
+#include <QCloseEvent>
+#include <QPaintEvent>
+#include <QLabel>
+#include <QKeyEvent>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -87,7 +92,7 @@ EditPlayout::EditPlayout(int id,std::vector<int> *adds,QString *filter,
   QLabel *label=new QLabel(edit_active_button,tr("Event Active"),this);
   label->setGeometry(30,11,125,20);
   label->setFont(label_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Station
@@ -97,19 +102,19 @@ EditPlayout::EditPlayout(int id,std::vector<int> *adds,QString *filter,
   label=new QLabel(edit_station_box,tr("Location:"),this);
   label->setGeometry(125,10,70,23);
   label->setFont(label_font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   connect(edit_station_box,SIGNAL(activated(int)),
 	  this,SLOT(activateStationData(int)));
 
   //
   // Start Time
   //
-  edit_starttime_edit=new QTimeEdit(this);
+  edit_starttime_edit=new Q3TimeEdit(this);
   edit_starttime_edit->setGeometry(sizeHint().width()-90,12,80,20);
   label=new QLabel(edit_starttime_edit,tr("Start Time:"),this);
   label->setGeometry(sizeHint().width()-175,12,80,20);
   label->setFont(label_font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Description
@@ -120,7 +125,7 @@ EditPlayout::EditPlayout(int id,std::vector<int> *adds,QString *filter,
   label=new QLabel(edit_description_edit,tr("Description:"),this);
   label->setGeometry(10,43,90,20);
   label->setFont(label_font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Destination
@@ -131,7 +136,7 @@ EditPlayout::EditPlayout(int id,std::vector<int> *adds,QString *filter,
   label=new QLabel(edit_destination_edit,tr("Destination:"),this);
   label->setGeometry(10,70,90,20);
   label->setFont(label_font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   QPushButton *button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-70,65,60,30);
   button->setFont(day_font);
@@ -144,7 +149,7 @@ EditPlayout::EditPlayout(int id,std::vector<int> *adds,QString *filter,
   label=new QLabel(tr("Active Days"),this);
   label->setGeometry(47,101,90,19);
   label->setFont(label_font);
-  label->setAlignment(AlignHCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignHCenter|Qt::TextShowMnemonic);
 
   //
   // Monday Button
@@ -154,7 +159,7 @@ EditPlayout::EditPlayout(int id,std::vector<int> *adds,QString *filter,
   label=new QLabel(edit_mon_button,tr("Monday"),this);
   label->setGeometry(40,120,115,20);
   label->setFont(day_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Tuesday Button
@@ -164,7 +169,7 @@ EditPlayout::EditPlayout(int id,std::vector<int> *adds,QString *filter,
   label=new QLabel(edit_tue_button,tr("Tuesday"),this);
   label->setGeometry(135,120,115,20);
   label->setFont(day_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Wednesday Button
@@ -174,7 +179,7 @@ EditPlayout::EditPlayout(int id,std::vector<int> *adds,QString *filter,
   label=new QLabel(edit_wed_button,tr("Wednesday"),this);
   label->setGeometry(235,120,115,20);
   label->setFont(day_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Thursday Button
@@ -184,7 +189,7 @@ EditPlayout::EditPlayout(int id,std::vector<int> *adds,QString *filter,
   label=new QLabel(edit_thu_button,tr("Thursday"),this);
   label->setGeometry(355,120,115,20);
   label->setFont(day_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Friday Button
@@ -194,7 +199,7 @@ EditPlayout::EditPlayout(int id,std::vector<int> *adds,QString *filter,
   label=new QLabel(edit_fri_button,tr("Friday"),this);
   label->setGeometry(460,120,40,20);
   label->setFont(day_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Saturday Button
@@ -204,7 +209,7 @@ EditPlayout::EditPlayout(int id,std::vector<int> *adds,QString *filter,
   label=new QLabel(edit_sat_button,tr("Saturday"),this);
   label->setGeometry(150,145,60,20);
   label->setFont(day_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Sunday Button
@@ -214,7 +219,7 @@ EditPlayout::EditPlayout(int id,std::vector<int> *adds,QString *filter,
   label=new QLabel(edit_sun_button,tr("Sunday"),this);
   label->setGeometry(320,145,60,20);
   label->setFont(day_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // OneShot Button
@@ -224,7 +229,7 @@ EditPlayout::EditPlayout(int id,std::vector<int> *adds,QString *filter,
   label=new QLabel(edit_oneshot_box,tr("Make OneShot"),this);
   label->setGeometry(40,178,115,20);
   label->setFont(label_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   //  Save As Button
@@ -351,7 +356,7 @@ void EditPlayout::cancelData()
 void EditPlayout::paintEvent(QPaintEvent *e)
 {
   QPainter *p=new QPainter(this);
-  p->setPen(QColor(black));
+  p->setPen(QColor(Qt::black));
   p->drawRect(10,109,sizeHint().width()-20,62);
   p->end();
 }

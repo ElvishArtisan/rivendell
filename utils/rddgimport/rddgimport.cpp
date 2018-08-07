@@ -25,10 +25,14 @@
 #include <qapplication.h>
 #include <qwindowsstyle.h>
 #include <qtextcodec.h>
-#include <qfiledialog.h>
+#include <q3filedialog.h>
 #include <qmessagebox.h>
 #include <qstringlist.h>
 #include <qfile.h>
+//Added by qt3to4:
+#include <QTranslator>
+#include <QLabel>
+#include <QResizeEvent>
 
 #include <rdapplication.h>
 #include <rdaudioimport.h>
@@ -123,7 +127,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Date Selector
   //
-  dg_date_edit=new QDateEdit(this);
+  dg_date_edit=new Q3DateEdit(this);
   dg_date_edit->setDate(QDate::currentDate());
   dg_date_label=new QLabel(dg_date_edit,tr("Date:"),this);
   dg_date_label->setFont(label_font);
@@ -142,7 +146,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Messages Area
   //
-  dg_messages_text=new QTextEdit(this);
+  dg_messages_text=new Q3TextEdit(this);
   dg_messages_text->setReadOnly(true);
   dg_messages_label=new QLabel(dg_service_box,tr("Messages"),this);
   dg_messages_label->setFont(label_font);
@@ -215,7 +219,7 @@ void MainWidget::filenameSelectedData()
     filename=RDGetHomeDir();
   }
   filename=
-    QFileDialog::getOpenFileName(filename,tr("Text Files")+" (*.txt *.TXT);;"+
+    Q3FileDialog::getOpenFileName(filename,tr("Text Files")+" (*.txt *.TXT);;"+
 				 tr("All Files")+" (*.*)",this);
   if(!filename.isEmpty()) {
     dg_filename_edit->setText(filename);
@@ -303,7 +307,7 @@ bool MainWidget::LoadEvents()
   if((f=fopen(dg_filename_edit->text(),"r"))==NULL) {
     QMessageBox::warning(this,tr("RDDgImport"),
 			 tr("Unable to open source file")+"["+
-			 strerror(errno)+"].");
+			 QString(strerror(errno))+"].");
     return false;
   }
   while(fgets(data,1024,f)!=NULL) {
@@ -374,7 +378,7 @@ bool MainWidget::WriteTrafficFile()
 		       rda->config(),dg_svc->name());
   if((f=fopen(outname,"w"))==NULL) {
     LogMessage(tr("WARNING: Unable to open traffic output file")+" \""+
-	       outname+"\" ["+strerror(errno)+"].");
+	       outname+"\" ["+QString(strerror(errno))+"].");
     return false;
   }
 
@@ -630,7 +634,7 @@ int main(int argc,char *argv[])
   // Load Translations
   //
   QTranslator qt(0);
-  qt.load(QString(QTDIR)+QString("/translations/qt_")+QTextCodec::locale(),
+  qt.load(QString("/usr/share/qt4/translations/qt_")+QTextCodec::locale(),
 	  ".");
   a.installTranslator(&qt);
 

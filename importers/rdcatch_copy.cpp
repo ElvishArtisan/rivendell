@@ -41,8 +41,8 @@ MainObject::MainObject(QObject *parent)
   QString src_station;
   QString dest_station;
   QString sql;
-  RDSqlQuery *q;
-  RDSqlQuery *q1;
+  QSqlQuery *q;
+  QSqlQuery *q1;
 
   //
   // Read Command Options
@@ -120,17 +120,13 @@ MainObject::MainObject(QObject *parent)
   // Open Databases
   //
   src_db=QSqlDatabase::addDatabase("QMYSQL3");
-  if(!src_db) {
-    fprintf(stderr,"rdcatch_copy: can't open source mySQL database\n");
-    exit(1);
-  }
-  src_db->setDatabaseName(rd_config->mysqlDbname());
-  src_db->setUserName(rd_config->mysqlUsername());
-  src_db->setPassword(rd_config->mysqlPassword());
-  src_db->setHostName(src_hostname);
-  if(!src_db->open()) {
+  src_db.setDatabaseName(rd_config->mysqlDbname());
+  src_db.setUserName(rd_config->mysqlUsername());
+  src_db.setPassword(rd_config->mysqlPassword());
+  src_db.setHostName(src_hostname);
+  if(!src_db.open()) {
     fprintf(stderr,"rdcatch_copy: unable to connect to source mySQL server\n");
-    src_db->removeDatabase(rd_config->mysqlDbname());
+    src_db.removeDatabase(rd_config->mysqlDbname());
     exit(256);
   }
 
@@ -145,18 +141,13 @@ MainObject::MainObject(QObject *parent)
   }
   else {
     dest_db=QSqlDatabase::addDatabase("QMYSQL3");
-    if(!dest_db) {
-      fprintf(stderr,"rdcatch_copy: can't open destination mySQL database\n");
-      exit(1);
-    }
-    dest_db->setDatabaseName(rd_config->mysqlDbname());
-    dest_db->setUserName(rd_config->mysqlUsername());
-    dest_db->setPassword(rd_config->mysqlPassword());
-    dest_db->setHostName(dest_hostname);
-    if(!dest_db->open()) {
+    dest_db.setDatabaseName(rd_config->mysqlDbname());
+    dest_db.setUserName(rd_config->mysqlUsername());
+    dest_db.setPassword(rd_config->mysqlPassword());
+    dest_db.setHostName(dest_hostname);
+    if(!dest_db.open()) {
       fprintf(stderr,
 	      "rdcatch_copy: unable to connect to destination mySQL server\n");
-      dest_db->removeDatabase(rd_config->mysqlDbname());
       exit(256);
     }
   }
@@ -165,7 +156,7 @@ MainObject::MainObject(QObject *parent)
   // Check Database Versions
   //
   sql=QString("select DB from VERSION");
-  q=new RDSqlQuery(sql,src_db);
+  q=new QSqlQuery(sql,src_db);
   if(!q->first()) {
     fprintf(stderr,
 	    "rdcatch_copy: unable to read source database version\n");
@@ -177,7 +168,7 @@ MainObject::MainObject(QObject *parent)
   }
   delete q;
 
-  q=new RDSqlQuery(sql,dest_db);
+  q=new QSqlQuery(sql,dest_db);
   if(!q->first()) {
     fprintf(stderr,
 	    "rdcatch_copy: unable to read destination database version\n");
@@ -194,7 +185,7 @@ MainObject::MainObject(QObject *parent)
   //
   sql=QString("select NAME from STATIONS where ")+
     "NAME=\""+RDEscapeString(src_station)+"\"";
-  q=new RDSqlQuery(sql,src_db);
+  q=new QSqlQuery(sql,src_db);
   if(!q->first()) {
     fprintf(stderr,
 	    "rdcatch_copy: source Rivendell host doesn't exist\n");
@@ -204,7 +195,7 @@ MainObject::MainObject(QObject *parent)
 
   sql=QString("select NAME from STATIONS where ")+
     "NAME=\""+RDEscapeString(dest_station)+"\"";
-  q=new RDSqlQuery(sql,dest_db);
+  q=new QSqlQuery(sql,dest_db);
   if(!q->first()) {
     fprintf(stderr,
 	    "rdcatch_copy: destination Rivendell host doesn't exist\n");
@@ -229,7 +220,7 @@ MainObject::MainObject(QObject *parent)
   //
   sql=QString("delete from RECORDINGS where ")+
     "STATION_NAME\""+RDEscapeString(dest_station)+"\"";
-  q=new RDSqlQuery(sql,dest_db);
+  q=new QSqlQuery(sql,dest_db);
   delete q;
 
   //
@@ -279,7 +270,7 @@ MainObject::MainObject(QObject *parent)
     "URL_PASSWORD "+      // 40
     "from RECORDINGS where "+
     "STATION_NAME=\""+RDEscapeString(src_station)+"\"";
-  q=new RDSqlQuery(sql,src_db);
+  q=new QSqlQuery(sql,src_db);
   while(q->next()) {
     sql=QString("insert into RECORDINGS set ")+
       ":IS_ACTIVE=\""+RDEscapeString(q->value(0).toString())+"\","+
@@ -324,7 +315,7 @@ MainObject::MainObject(QObject *parent)
       "URL_USERNAME=\""+RDEscapeString(q->value(39).toString())+"\","+
       "URL_PASSWORD=\""+RDEscapeString(q->value(40).toString())+"\","+
       "STATION_NAME=\""+RDEscapeString(dest_station)+"\"";
-    q1=new RDSqlQuery(sql,dest_db);
+    q1=new QSqlQuery(sql,dest_db);
     delete q1;
   }
   delete q;

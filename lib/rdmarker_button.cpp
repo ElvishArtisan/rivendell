@@ -19,6 +19,8 @@
 //
 
 #include <rdmarker_button.h>
+//Added by qt3to4:
+#include <QKeyEvent>
 
 RDMarkerButton::RDMarkerButton(QWidget *parent)
   : RDPushButton(parent)
@@ -32,7 +34,7 @@ RDMarkerButton::RDMarkerButton(const QString &text,QWidget *parent)
 }
 
 
-RDMarkerButton::RDMarkerButton(const QIconSet &icon,const QString &text,
+RDMarkerButton::RDMarkerButton(const QIcon &icon,const QString &text,
 			       QWidget *parent)
   : RDPushButton(icon,text,parent)
 {

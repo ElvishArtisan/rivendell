@@ -23,6 +23,8 @@
 #include <qpushbutton.h>
 #include <qpainter.h>
 #include <qmessagebox.h>
+//Added by qt3to4:
+#include <QPaintEvent>
 
 #include <rddb.h>
 #include <edit_schedulercodes.h>
@@ -113,11 +115,11 @@ EditSchedulerCodes::EditSchedulerCodes(QString *sched_codes,
   connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
 
-  for(unsigned i=0;i<edit_sched_codes->length()/11;i++) {
+  for(int i=0;i<edit_sched_codes->length()/11;i++) {
     codes_sel->destInsertItem(edit_sched_codes->mid(i*11,11).stripWhiteSpace());
     } 
   if(edit_remove_codes!=NULL) {
-    for(unsigned i=0;i<edit_remove_codes->length()/11;i++) {
+    for(int i=0;i<edit_remove_codes->length()/11;i++) {
       remove_codes_sel->destInsertItem(remove_codes->mid(i*11,11).stripWhiteSpace());
       } 
     }
@@ -158,9 +160,8 @@ QSizePolicy EditSchedulerCodes::sizePolicy() const
 void EditSchedulerCodes::paintEvent(QPaintEvent *e)
 {
   QPainter *p=new QPainter(this);
-  p->setPen(QColor(black));
-  p->moveTo(sizeHint().width(),10);
-  p->lineTo(sizeHint().width(),210);
+  p->setPen(QColor(Qt::black));
+  p->drawLine(sizeHint().width(),10,sizeHint().width(),210);
   p->end();
 }
 

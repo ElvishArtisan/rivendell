@@ -18,6 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <stdio.h>
 #ifndef WIN32
 #include <syslog.h>
 #endif  // WIN32
@@ -49,7 +50,7 @@ RDCmdSwitch::RDCmdSwitch(int argc,char *argv[],const char *modname,
     QStringList f0=f0.split("=",value,true);
     if(f0.size()>=2) {
       switch_keys.push_back(f0[0]);
-      for(unsigned i=2;i<f0.size();i++) {
+      for(int i=2;i<f0.size();i++) {
 	f0[1]+="="+f0[i];
       }
       switch_values.push_back(f0[1]);

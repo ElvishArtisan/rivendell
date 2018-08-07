@@ -83,6 +83,8 @@ extern QString RDXmlField(const QString &tag,const bool value,
 			  const QString &attrs="");
 extern QString RDXmlField(const QString &tag,const QDateTime &value,
 			  const QString &attrs="");
+extern QString RDXmlField(const QString &tag,const QDate &value,
+			  const QString &attrs="");
 extern QString RDXmlField(const QString &tag,const QTime &value,
 			  const QString &attrs="");
 extern QString RDXmlField(const QString &tag);

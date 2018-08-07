@@ -26,11 +26,13 @@
 #include <qwidget.h>
 #include <qsize.h>
 #include <qsizepolicy.h>
-#include <qlistbox.h>
+#include <q3listbox.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
 #include <qstringlist.h>
 #include <qpixmap.h>
+//Added by qt3to4:
+#include <QResizeEvent>
 
 #include <rdconfig.h>
 #include <rdmonitor_config.h>
@@ -44,7 +46,7 @@ class MainWidget : public QWidget
   QSizePolicy sizePolicy() const;
 
  private slots:
-  void doubleClickedData(QListBoxItem *item);
+  void doubleClickedData(Q3ListBoxItem *item);
   void okData();
   void cancelData();
   
@@ -62,7 +64,7 @@ class MainWidget : public QWidget
   int select_current_id;
   QLabel *select_current_label;
   QLabel *select_label;
-  QListBox *select_box;
+  Q3ListBox *select_box;
   QPixmap *login_rivendell_map;
   QPushButton *ok_button;
   QPushButton *cancel_button;

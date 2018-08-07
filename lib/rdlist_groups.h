@@ -22,8 +22,10 @@
 #define RDLIST_GROUPS_H
 
 #include <qdialog.h>
-#include <qlistview.h>
+#include <q3listview.h>
 #include <qpushbutton.h>
+//Added by qt3to4:
+#include <QCloseEvent>
 
 class RDListGroups : public QDialog
 {
@@ -35,7 +37,7 @@ class RDListGroups : public QDialog
  QSizePolicy sizePolicy() const;
 
  private slots:
-  void doubleClickedData(QListViewItem *item,const QPoint &pt,int col);
+  void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
   void okData();
   void cancelData();
 
@@ -45,7 +47,7 @@ class RDListGroups : public QDialog
  private:
   void BuildGroupList(const QString &username);
   QString *group_name;
-  QListView *group_group_list;
+  Q3ListView *group_group_list;
 };
 
 

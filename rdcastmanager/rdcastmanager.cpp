@@ -34,6 +34,9 @@
 #include <qsettings.h>
 #include <qpainter.h>
 #include <qmessagebox.h>
+//Added by qt3to4:
+#include <QResizeEvent>
+#include <QPixmap>
 
 #include <dbversion.h>
 #include <rd.h>
@@ -62,7 +65,7 @@ QString cast_group;
 QString cast_schedcode;
 
 MainWidget::MainWidget(QWidget *parent)
-  :QMainWindow(parent)
+  :Q3MainWindow(parent)
 {
   QString str1;
   QString str2;
@@ -142,9 +145,9 @@ MainWidget::MainWidget(QWidget *parent)
   cast_feed_list->setAllColumnsShowFocus(true);
   cast_feed_list->setItemMargin(5);
   connect(cast_feed_list,
-	  SIGNAL(doubleClicked(QListViewItem *,const QPoint &,int)),
+	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,
-	  SLOT(feedDoubleclickedData(QListViewItem *,const QPoint &,int)));
+	  SLOT(feedDoubleclickedData(Q3ListViewItem *,const QPoint &,int)));
   cast_feed_list->addColumn("");
   cast_feed_list->setColumnAlignment(0,Qt::AlignCenter);
   cast_feed_list->addColumn(tr("Key Name"));
@@ -213,7 +216,7 @@ void MainWidget::openData()
 }
 
 
-void MainWidget::feedDoubleclickedData(QListViewItem *,const QPoint &,int)
+void MainWidget::feedDoubleclickedData(Q3ListViewItem *,const QPoint &,int)
 {
   openData();
 }
@@ -339,7 +342,7 @@ int main(int argc,char *argv[])
   qt_path=tr_path;
 #else
   tr_path=QString(PREFIX)+QString("/share/rivendell/");
-  qt_path=QString(QTDIR)+QString("/translation/");
+  qt_path=QString("/usr/share/qt4/translation/");
 #endif  // WIN32
   QTranslator qt(0);
   qt.load(qt_path+QString("qt_")+QTextCodec::locale(),".");

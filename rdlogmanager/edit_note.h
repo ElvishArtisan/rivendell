@@ -23,7 +23,9 @@
 
 #include <qdialog.h>
 #include <qpushbutton.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
+//Added by qt3to4:
+#include <QCloseEvent>
 
 
 class EditNote : public QDialog
@@ -43,7 +45,7 @@ class EditNote : public QDialog
 
  private:
   QString *edit_text;
-  QTextEdit *edit_text_edit;
+  Q3TextEdit *edit_text_edit;
 };
 
 

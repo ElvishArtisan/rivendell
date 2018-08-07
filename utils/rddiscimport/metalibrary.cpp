@@ -122,7 +122,7 @@ void MetaLibrary::LoadLine(const QStringList fields)
 {
   MetaRecord *m=new MetaRecord();
   meta_tracks.push_back(m);
-  for(unsigned i=0;i<fields.size();i++) {
+  for(int i=0;i<fields.size();i++) {
     if(meta_headers[i]=="disc") {
       m->setDiscId(fields[i]);
     }
@@ -193,8 +193,8 @@ QStringList MetaLibrary::Split(const QString &sep,const QString &str)
   QStringList ret;
   bool quoted=false;
 
-  for(unsigned i=0;i<str.length();i++) {
-    switch(str[i]) {
+  for(int i=0;i<str.length();i++) {
+    switch(str.at(i).toAscii()) {
     case ',':
       if(quoted) {
 	buf+=str[i];
@@ -214,7 +214,7 @@ QStringList MetaLibrary::Split(const QString &sep,const QString &str)
       break;
 
     default:
-      buf+=str[i];
+      buf+=str.at(i);
       break;
     }
   }

@@ -29,7 +29,7 @@
 #include <qstring.h>
 #include <qdatetime.h>
 #include <qtimer.h>
-#include <qlistbox.h>
+#include <q3listbox.h>
 
 #include <rdhpisoundcard.h>
 
@@ -41,7 +41,7 @@
 #include <jack/jack.h>
 #endif  // JACK
 
-class RDHPISoundSelector : public QListBox
+class RDHPISoundSelector : public Q3ListBox
 {
   Q_OBJECT
 

@@ -23,13 +23,15 @@
 
 #include <rdpushbutton.h>
 #include <qevent.h>
+//Added by qt3to4:
+#include <QKeyEvent>
 
 class RDMarkerButton : public RDPushButton
 {
   public:
   RDMarkerButton(QWidget *parent);
   RDMarkerButton(const QString &text,QWidget *parent);
-  RDMarkerButton(const QIconSet &icon,const QString &text,QWidget *parent);
+  RDMarkerButton(const QIcon &icon,const QString &text,QWidget *parent);
 
   protected:
    void keyPressEvent(QKeyEvent *e);

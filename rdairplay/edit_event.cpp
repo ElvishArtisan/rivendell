@@ -22,6 +22,10 @@
 #include <qlabel.h>
 #include <qpainter.h>
 #include <qmessagebox.h>
+//Added by qt3to4:
+#include <QCloseEvent>
+#include <QResizeEvent>
+#include <QPixmap>
 
 #include <rdapplication.h>
 #include <rdconf.h>
@@ -56,7 +60,7 @@ EditEvent::EditEvent(RDLogPlay *log,RDCae *cae,QWidget *parent)
   //
   edit_timetype_box=new QCheckBox(this);
   edit_timetype_label=new QLabel(edit_timetype_box,tr("Start at:"),this);
-  edit_timetype_label->setAlignment(AlignLeft|AlignVCenter);
+  edit_timetype_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Start Time
@@ -71,7 +75,7 @@ EditEvent::EditEvent(RDLogPlay *log,RDCae *cae,QWidget *parent)
   // Grace Time
   //
   edit_grace_group
-    =new QButtonGroup(1,Qt::Vertical,
+    =new Q3ButtonGroup(1,Qt::Vertical,
 		      tr("Action If Previous Event Still Playing"),this);
   edit_grace_group->setFont(label_font);
   edit_grace_group->setRadioButtonExclusive(true);
@@ -104,14 +108,14 @@ EditEvent::EditEvent(RDLogPlay *log,RDCae *cae,QWidget *parent)
   edit_time_label=
     new QLabel(edit_transtype_box,tr("Start Transition Type:"),this);
   edit_time_label->setFont(label_font);
-  edit_time_label->setAlignment(AlignRight|AlignVCenter);
+  edit_time_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   // Overlap Box
   edit_overlap_box=new QCheckBox(this);
   edit_overlap_label=
     new QLabel(edit_overlap_box,tr("No Fade at Segue Out"),this);
   edit_overlap_label->setFont(button_font);
-  edit_overlap_label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  edit_overlap_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   
 
   //
@@ -120,11 +124,10 @@ EditEvent::EditEvent(RDLogPlay *log,RDCae *cae,QWidget *parent)
   edit_horizrule_label=new QLabel(this);
   QPixmap *pix=new QPixmap(sizeHint().width(),3);
   QPainter *p=new QPainter(pix);
-  p->setPen(QColor(black));
-  p->setBrush(QColor(black));
+  p->setPen(Qt::black);
+  p->setBrush(Qt::black);
   p->fillRect(0,0,sizeHint().width(),3,backgroundColor());
-  p->moveTo(10,1);
-  p->lineTo(sizeHint().width()-10,1);
+  p->drawLine(10,1,sizeHint().width()-10,1);
   p->end();
   edit_horizrule_label->setPixmap(*pix);
   delete p;
@@ -141,7 +144,7 @@ EditEvent::EditEvent(RDLogPlay *log,RDCae *cae,QWidget *parent)
   //
   edit_cart_notes_label=new QLabel(tr("Cart Notes"),this);
   edit_cart_notes_label->setFont(label_font);
-  edit_cart_notes_text=new QTextEdit(this);
+  edit_cart_notes_text=new Q3TextEdit(this);
   edit_cart_notes_text->setFont(notes_font);
   edit_cart_notes_text->setReadOnly(true);
 

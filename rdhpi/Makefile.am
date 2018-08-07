@@ -6,7 +6,7 @@
 ##
 ## Use automake to process this into a Makefile.in
 ##
-##   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
+##   (C) Copyright 2002-2007,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -22,8 +22,8 @@
 ##   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -DQTDIR=\"@QT_DIR@\" @QT_CXXFLAGS@ -I$(top_srcdir)/lib
-LIBS = @QT_LIBS@ -L$(top_srcdir)/lib
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -I$(top_srcdir)/lib @QT4_CFLAGS@ -DQT3_SUPPORT -I/usr/include/Qt3Support
+LIBS = -L$(top_srcdir)/lib
 MOC = @QT_MOC@
 CWRAP = ../helpers/cwrap
 
@@ -46,8 +46,8 @@ uninstall-local:
 	rm -f $(DESTDIR)$(prefix)/share/rivendell/rdhpi_*.qm
 
 all:	
-	@QT_BIN@/lupdate rdhpi.pro
-	@QT_BIN@/lrelease rdhpi.pro
+	lupdate-qt4 rdhpi.pro
+	lrelease-qt4 rdhpi.pro
 
 lib_LTLIBRARIES = librdhpi.la
 dist_librdhpi_la_SOURCES = rdhpicardselector.cpp rdhpicardselector.h\

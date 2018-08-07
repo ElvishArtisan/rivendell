@@ -22,12 +22,14 @@
 #define GENERATE_LOG_H
 
 #include <qcombobox.h>
-#include <qdatetimeedit.h>
+#include <q3datetimeedit.h>
 #include <qdialog.h>
 #include <qlabel.h>
 #include <qpixmap.h>
-#include <qprogressdialog.h>
+#include <q3progressdialog.h>
 #include <qpushbutton.h>
+//Added by qt3to4:
+#include <QResizeEvent>
 
 #include <rdnotification.h>
 
@@ -60,12 +62,12 @@ class GenerateLog : public QDialog
   QLabel *gen_service_label;
   QComboBox *gen_service_box;
   QLabel *gen_date_label;
-  QDateEdit *gen_date_edit;
+  Q3DateEdit *gen_date_edit;
   QPushButton *gen_select_button;
   QLabel *gen_import_label;
   QLabel *gen_available_label;
   QLabel *gen_merged_label;
-  QProgressDialog *gen_progress_dialog;
+  Q3ProgressDialog *gen_progress_dialog;
   QPushButton *gen_create_button;
   QPushButton *gen_music_button;
   QPushButton *gen_traffic_button;

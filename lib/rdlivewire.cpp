@@ -55,7 +55,7 @@ QStringList AString::split(const QString &sep,const QString &esc) const
   bool escape=false;
   QChar e=esc.at(0);
   list.push_back(QString());
-  for(unsigned i=0;i<length();i++) {
+  for(int i=0;i<length();i++) {
     if(at(i)==e) {
       escape=!escape;
     }
@@ -92,7 +92,7 @@ RDLiveWire::RDLiveWire(unsigned id,QObject *parent)
   //
   // Connection Socket
   //
-  live_socket=new QSocket(this,"live_socket");
+  live_socket=new Q3Socket(this,"live_socket");
   connect(live_socket,SIGNAL(connected()),this,SLOT(connectedData()));
   connect(live_socket,SIGNAL(connectionClosed()),
 	  this,SLOT(connectionClosedData()));
@@ -410,8 +410,8 @@ void RDLiveWire::errorData(int err)
 {
   int interval=RDLIVEWIRE_RECONNECT_MIN_INTERVAL;
 
-  switch((QSocket::Error)err) {
-      case QSocket::ErrConnectionRefused:
+  switch((Q3Socket::Error)err) {
+      case Q3Socket::ErrConnectionRefused:
 	live_watchdog_state=true;
 	interval=GetHoldoff();
 	emit watchdogStateChanged(live_id,QString().sprintf(
@@ -421,14 +421,14 @@ void RDLiveWire::errorData(int err)
 	live_holdoff_timer->start(interval,true);
 	break;
 
-      case QSocket::ErrHostNotFound:
+      case Q3Socket::ErrHostNotFound:
 	emit watchdogStateChanged(live_id,QString().sprintf(
 	  "Error on connection to LiveWire node at %s:%d: Host Not Found",
 				  (const char *)live_hostname,
 				  live_tcp_port));
 	break;
 
-      case QSocket::ErrSocketRead:
+      case Q3Socket::ErrSocketRead:
 	emit watchdogStateChanged(live_id,QString().sprintf(
 	  "Error on connection to LiveWire node at %s:%d: Socket Read Error",
 				  (const char *)live_hostname,
@@ -583,7 +583,7 @@ void RDLiveWire::ReadVersion(const QString &cmd)
 
   if(!live_connected) {
     f0=AString(cmd).split(" ","\"");
-    for(unsigned i=0;i<f0.size();i++) {
+    for(int i=0;i<f0.size();i++) {
       f1=f1.split(":",f0[i]);
       if(f1.size()==2) {
 	if(f1[0]=="LWRP") {
@@ -697,7 +697,7 @@ void RDLiveWire::ReadSources(const QString &cmd)
   RDLiveWireSource *src=new RDLiveWireSource();
   QStringList f0=AString(cmd).split(" ","\"");
   src->setSlotNumber(f0[0].toInt());
-  for(unsigned i=1;i<f0.size();i++) {
+  for(int i=1;i<f0.size();i++) {
     f1=f1.split(":",f0[i]);
     if(f1.size()==2) {
       if(f1[0]=="PSNM") {
@@ -742,7 +742,7 @@ void RDLiveWire::ReadDestinations(const QString &cmd)
   RDLiveWireDestination *dst=new RDLiveWireDestination();
   QStringList f0=AString(cmd).split(" ","\"");
   dst->setSlotNumber(f0[0].toInt());
-  for(unsigned i=1;i<f0.size();i++) {
+  for(int i=1;i<f0.size();i++) {
     f1=f1.split(":",f0[i]);
     if(f1.size()==2) {
       if(f1[0]=="NAME") {
@@ -825,7 +825,7 @@ void RDLiveWire::ReadGpioConfig(const QString &cmd)
 
   f0=AString(cmd).split(" ","\"");
   int slot=f0[0].toInt()-1;
-  for(unsigned i=1;i<f0.size();i++) {
+  for(int i=1;i<f0.size();i++) {
     f1=f1.split(":",f0[i]);
     if(f1.size()==2) {
       if(f1[0]=="SRCA") {

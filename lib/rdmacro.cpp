@@ -161,7 +161,7 @@ QString RDMacro::rollupArgs(int n)
 QString RDMacro::toString() const
 {
   QString ret=QChar(((uint16_t)rml_cmd)>>8);
-  ret+=+QChar(0xFF&((uint16_t)rml_cmd));
+  ret+=QChar(0xFF&((uint16_t)rml_cmd));
   ret+=" ";
   ret+=rml_args.join(" ");
   ret+="!";
@@ -294,7 +294,7 @@ RDMacro RDMacro::fromString(const QString &str,RDMacro::Role role)
   //
   // Get Arguments
   //
-  for(unsigned i=1;i<f0.size();i++) {
+  for(int i=1;i<f0.size();i++) {
     ret.addArg(f0[i]);
   }
 

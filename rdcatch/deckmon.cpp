@@ -27,9 +27,13 @@
 #include "colors.h"
 #include "deckmon.h"
 #include "globals.h"
+//Added by qt3to4:
+#include <QResizeEvent>
+#include <Q3Frame>
+#include <QLabel>
 
 DeckMon::DeckMon(QString station,unsigned channel,QWidget *parent)
-  : QFrame(parent)
+  : Q3Frame(parent)
 {
   mon_station=station;
   mon_channel=channel;
@@ -108,7 +112,7 @@ DeckMon::DeckMon(QString station,unsigned channel,QWidget *parent)
   mon_event_label=new QLabel(this);
   mon_event_label->setFont(event_font);
   mon_event_label->setAlignment(Qt::AlignCenter);
-  mon_event_label->setFrameStyle(QFrame::Panel|QFrame::Sunken);
+  mon_event_label->setFrameStyle(Q3Frame::Panel|Q3Frame::Sunken);
   mon_event_label->setPalette(mon_dark_palette);
   mon_event_label->setText("--");
   mon_event_timer=new QTimer(this);
@@ -163,7 +167,7 @@ void DeckMon::enableMonitorButton(bool state)
 
 void DeckMon::setGeometry(int x,int y,int w,int h)
 {
-  QFrame::setGeometry(x,y,w,h);
+  Q3Frame::setGeometry(x,y,w,h);
 }
 
 
@@ -290,7 +294,7 @@ void DeckMon::resizeEvent(QResizeEvent *e)
   mon_status_label->setGeometry(e->size().width()-320,6,80,18);
   mon_left_meter->setGeometry(e->size().width()-235,6,225,10);
   mon_right_meter->setGeometry(e->size().width()-235,16,225,10);
-  QFrame::resizeEvent(e);
+  Q3Frame::resizeEvent(e);
 }
 
 

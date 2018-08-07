@@ -21,6 +21,10 @@
 #include <qpushbutton.h>
 #include <qpainter.h>
 #include <qmessagebox.h>
+//Added by qt3to4:
+#include <QPaintEvent>
+#include <QResizeEvent>
+#include <QLabel>
 
 #include <rdapplication.h>
 #include <rdconf.h>
@@ -71,10 +75,10 @@ TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent)
   //
   // Date Selector
   //
-  test_date_edit=new QDateEdit(this);
+  test_date_edit=new Q3DateEdit(this);
   test_date_label=new QLabel(test_date_edit,tr("Test Date:"),this);
   test_date_label->setFont(font);
-  test_date_label->setAlignment(AlignVCenter|AlignRight);
+  test_date_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   test_date_edit->setDate(current_date);
   connect(test_date_edit,SIGNAL(valueChanged(const QDate &)),
 	  this,SLOT(dateChangedData(const QDate &)));
@@ -112,19 +116,19 @@ TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent)
   test_events_list=new RDListView(this);
   test_events_list->setItemMargin(2);
   test_events_list->addColumn(tr("Start Time"));
-  test_events_list->setColumnAlignment(0,AlignCenter);
+  test_events_list->setColumnAlignment(0,Qt::AlignCenter);
   test_events_list->addColumn(tr("Cart"));
-  test_events_list->setColumnAlignment(1,AlignCenter);
+  test_events_list->setColumnAlignment(1,Qt::AlignCenter);
   test_events_list->addColumn(tr("Len"));
-  test_events_list->setColumnAlignment(2,AlignRight);
+  test_events_list->setColumnAlignment(2,Qt::AlignRight);
   test_events_list->addColumn(tr("Title"));
-  test_events_list->setColumnAlignment(3,AlignLeft);
+  test_events_list->setColumnAlignment(3,Qt::AlignLeft);
   test_events_list->addColumn(tr("GUID"));
-  test_events_list->setColumnAlignment(4,AlignCenter);
+  test_events_list->setColumnAlignment(4,Qt::AlignCenter);
   test_events_list->addColumn(tr("Event ID"));
-  test_events_list->setColumnAlignment(5,AlignCenter);
+  test_events_list->setColumnAlignment(5,Qt::AlignCenter);
   test_events_list->addColumn(tr("Announcement Type"));
-  test_events_list->setColumnAlignment(6,AlignCenter);
+  test_events_list->setColumnAlignment(6,Qt::AlignCenter);
   test_events_list->setColumnSortType(0,RDListView::LineSort);
   test_events_label=new QLabel(test_events_list,tr("Imported Events"),this);
   test_events_label->setGeometry(15,160,sizeHint().width()-30,18);
@@ -278,9 +282,8 @@ void TestImport::closeData()
 void TestImport::paintEvent(QPaintEvent *e)
 {
   QPainter *p=new QPainter(this);
-  p->setPen(QColor(black));
-  p->moveTo(10,105);
-  p->lineTo(size().width()-20,105);
+  p->setPen(Qt::black);
+  p->drawLine(10,105,size().width()-20,105);
   p->end();
   delete p;
 }

@@ -25,16 +25,16 @@
 
 #include <qwidget.h>
 #include <qlabel.h>
-#include <qlistbox.h>
+#include <q3listbox.h>
 #include <qcombobox.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qpixmap.h>
 #include <qcheckbox.h>
 #include <qsqldatabase.h>
 #include <qlineedit.h>
 #include <qcheckbox.h>
 #include <qpushbutton.h>
-#include <qprogressdialog.h>
+#include <q3progressdialog.h>
 
 #include <rdcart.h>
 #include <rdlibrary_conf.h>
@@ -73,7 +73,7 @@ class AudioCart : public QWidget
    * cut of audio.
    **/
   void extEditorCutData();
-  void doubleClickedData(QListViewItem *,const QPoint &,int);
+  void doubleClickedData(Q3ListViewItem *,const QPoint &,int);
   void copyProgressData(const QVariant &step);
   
  signals:
@@ -92,7 +92,7 @@ class AudioCart : public QWidget
   bool rdcart_select_cut;
   AudioControls *rdcart_controls;
   QPushButton *paste_cut_button;
-  QProgressDialog *rdcart_progress_dialog;
+  Q3ProgressDialog *rdcart_progress_dialog;
   bool rdcart_modification_allowed;
   bool rdcart_import_metadata;
   bool rdcart_profile_rip;

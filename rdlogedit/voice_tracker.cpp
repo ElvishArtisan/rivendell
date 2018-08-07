@@ -27,6 +27,15 @@
 #include <qmessagebox.h>
 #include <qdatetime.h>
 #include <qapplication.h>
+//Added by qt3to4:
+#include <QLabel>
+#include <QWheelEvent>
+#include <QPixmap>
+#include <QMouseEvent>
+#include <QKeyEvent>
+#include <Q3PointArray>
+#include <QPaintEvent>
+#include <Q3PopupMenu>
 
 #include <rdapplication.h>
 #include <rdconf.h>
@@ -261,7 +270,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   //
   // Right-Click Menu
   //
-  track_menu=new QPopupMenu(this,"track_menu");
+  track_menu=new Q3PopupMenu(this,"track_menu");
   connect(track_menu,SIGNAL(aboutToShow()),this,SLOT(updateMenuData()));
   connect(track_menu,SIGNAL(aboutToHide()),this,SLOT(hideMenuData()));
   track_menu->
@@ -358,7 +367,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   track_stop_button=new RDTransportButton(RDTransportButton::Stop,this);
   track_stop_button->setGeometry(110,265,80,50);
   track_stop_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
-  track_stop_button->setOnColor(red);
+  track_stop_button->setOnColor(Qt::red);
   track_stop_button->on();
   connect(track_stop_button,SIGNAL(clicked()),this,SLOT(stopData()));
 
@@ -378,7 +387,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   edit_length_label=new QLabel(this);
   edit_length_label->setText("-:--:--.-");
   edit_length_label->setGeometry(565,255,110,25);
-  edit_length_label->setAlignment(AlignCenter);
+  edit_length_label->setAlignment(Qt::AlignCenter);
   edit_length_label->setFont(timer_font);
 
   //
@@ -392,7 +401,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   edit_tracks_remaining_label=new QLabel(this);
   edit_tracks_remaining_label->setText("0");
   edit_tracks_remaining_label->setGeometry(565,313,40,18);
-  edit_tracks_remaining_label->setAlignment(AlignCenter);
+  edit_tracks_remaining_label->setAlignment(Qt::AlignCenter);
   edit_tracks_remaining_label->setFont(label_font);
   label=new QLabel(tr("Tracks"),this);
   label->setGeometry(565,300,40,14);
@@ -403,14 +412,14 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   edit_time_remaining_label=new QLabel(this);
   edit_time_remaining_label->setText("0:00:00.0");
   edit_time_remaining_label->setGeometry(615,313,60,18);
-  edit_time_remaining_label->setAlignment(AlignCenter);
+  edit_time_remaining_label->setAlignment(Qt::AlignCenter);
   edit_time_remaining_label->setFont(label_font);
   edit_time_remaining_palette[0]=edit_time_remaining_label->palette();
   edit_time_remaining_palette[1]=edit_time_remaining_label->palette();
   edit_time_remaining_palette[1].
-    setColor(QPalette::Active,QColorGroup::Foreground,red);
+    setColor(QPalette::Active,QColorGroup::Foreground,Qt::red);
   edit_time_remaining_palette[1].
-    setColor(QPalette::Inactive,QColorGroup::Foreground,red);
+    setColor(QPalette::Inactive,QColorGroup::Foreground,Qt::red);
   label=new QLabel(tr("Time"),this);
   label->setGeometry(615,300,60,14);
   label->setFont(small_font);
@@ -425,30 +434,30 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
     setGeometry(10,335,sizeHint().width()-120,sizeHint().height()-405);
   track_log_list->setAllColumnsShowFocus(true);
   track_log_list->setItemMargin(5);
-  connect(track_log_list,SIGNAL(clicked(QListViewItem *,const QPoint &,int)),
-	  this,SLOT(logClickedData(QListViewItem *,const QPoint &,int)));
+  connect(track_log_list,SIGNAL(clicked(Q3ListViewItem *,const QPoint &,int)),
+	  this,SLOT(logClickedData(Q3ListViewItem *,const QPoint &,int)));
   connect(track_log_list,SIGNAL(transitionChanged(int,RDLogLine::TransType)),
 	  this,SLOT(transitionChangedData(int,RDLogLine::TransType)));
   track_log_list->addColumn(tr(" "));
-  track_log_list->setColumnAlignment(0,AlignCenter);
-  track_log_list->addColumn(tr("TIME"));
-  track_log_list->setColumnAlignment(1,AlignCenter);
-  track_log_list->addColumn(tr("TRANS"));
-  track_log_list->setColumnAlignment(2,AlignCenter);
-  track_log_list->addColumn(tr("CART"));
-  track_log_list->setColumnAlignment(3,AlignCenter);
-  track_log_list->addColumn(tr("GROUP"));
-  track_log_list->setColumnAlignment(4,AlignCenter);
-  track_log_list->addColumn(tr("LENGTH"));
-  track_log_list->setColumnAlignment(5,AlignRight);
-  track_log_list->addColumn(tr("TITLE"));
-  track_log_list->setColumnAlignment(6,AlignLeft);
-  track_log_list->addColumn(tr("ARTIST"));
-  track_log_list->setColumnAlignment(7,AlignLeft);
-  track_log_list->addColumn(tr("ALBUM"));
-  track_log_list->setColumnAlignment(8,AlignLeft);
-  track_log_list->addColumn(tr("LABEL"));
-  track_log_list->setColumnAlignment(9,AlignLeft);
+  track_log_list->setColumnAlignment(0,Qt::AlignCenter);
+  track_log_list->addColumn(tr("Time"));
+  track_log_list->setColumnAlignment(1,Qt::AlignCenter);
+  track_log_list->addColumn(tr("Trans"));
+  track_log_list->setColumnAlignment(2,Qt::AlignCenter);
+  track_log_list->addColumn(tr("Cart"));
+  track_log_list->setColumnAlignment(3,Qt::AlignCenter);
+  track_log_list->addColumn(tr("Group"));
+  track_log_list->setColumnAlignment(4,Qt::AlignCenter);
+  track_log_list->addColumn(tr("Length"));
+  track_log_list->setColumnAlignment(5,Qt::AlignRight);
+  track_log_list->addColumn(tr("Title"));
+  track_log_list->setColumnAlignment(6,Qt::AlignLeft);
+  track_log_list->addColumn(tr("Artist"));
+  track_log_list->setColumnAlignment(7,Qt::AlignLeft);
+  track_log_list->addColumn(tr("Album"));
+  track_log_list->setColumnAlignment(8,Qt::AlignLeft);
+  track_log_list->addColumn(tr("Label"));
+  track_log_list->setColumnAlignment(9,Qt::AlignLeft);
   for(int i=0;i<track_log_list->columns();i++) {
     track_log_list->setColumnSortType(i,RDListView::LineSort);
   }
@@ -1726,8 +1735,8 @@ void VoiceTracker::positionData(int id,int msecs)
     track_redraw_count=0;
   }
   QPainter *p=new QPainter(this);
-  p->setPen(black);
-  p->setBrush(black);
+  p->setPen(Qt::black);
+  p->setBrush(Qt::black);
   ClearCursor(p);
   int x=-1;
   if(msecs>=0) {
@@ -1736,8 +1745,7 @@ void VoiceTracker::positionData(int id,int msecs)
       x=(int)(((double)(msecs-edit_wave_origin[id]))*
 	      ((double)(edit_wave_map[id]->size().width()))/
 	      ((double)TRACKER_START_WIDTH))+10;
-      p->moveTo(x,10);
-      p->lineTo(x,248);
+      p->drawLine(x,10,x,248);
       if(x>edit_scroll_threshold) {
 	edit_scrolling=true;
       }
@@ -1785,7 +1793,7 @@ void VoiceTracker::segueStartData(int id)
 }
 
 
-void VoiceTracker::logClickedData(QListViewItem *item,const QPoint &pt,
+void VoiceTracker::logClickedData(Q3ListViewItem *item,const QPoint &pt,
 					int col)
 {
   CheckChanges();
@@ -2013,9 +2021,9 @@ void VoiceTracker::paintEvent(QPaintEvent *e)
   if(track_line<0) {
     p=new QPainter();
     for(int i=0;i<3;i++) {
-      p->begin(edit_wave_map[i],"");
+      p->begin(edit_wave_map[i]);
       p->setPen(TRACKER_TEXT_COLOR);
-      p->setBackgroundColor(gray);
+      p->setBackgroundColor(Qt::gray);
       p->eraseRect(0,0,edit_wave_map[i]->size().width(),
 		   edit_wave_map[i]->size().height());
       p->end();
@@ -2024,59 +2032,64 @@ void VoiceTracker::paintEvent(QPaintEvent *e)
   }
   p=new QPainter(this);
 
-  p->setPen(black);
+  p->setPen(Qt::black);
 
   p->fillRect(TRACKER_X_ORIGIN,TRACKER_Y_ORIGIN,TRACKER_X_WIDTH-1-2,238,
-	      white);
+	      Qt::white);
   p->fillRect(TRACKER_X_ORIGIN-2,TRACKER_Y_HEIGHT*3+TRACKER_Y_ORIGIN-1,
 	      TRACKER_X_WIDTH+2,TRACKER_Y_HEIGHT+6,colorGroup().mid());
 
-  p->moveTo(TRACKER_X_ORIGIN-2,TRACKER_Y_ORIGIN-2);
-  p->lineTo(TRACKER_X_WIDTH+TRACKER_X_ORIGIN-1,TRACKER_Y_ORIGIN-2);
-  p->moveTo(TRACKER_X_ORIGIN-1,TRACKER_Y_ORIGIN-1);
-  p->lineTo(TRACKER_X_WIDTH+TRACKER_X_ORIGIN,TRACKER_Y_ORIGIN-1);
+  p->drawLine(TRACKER_X_ORIGIN-2,TRACKER_Y_ORIGIN-2,
+	      TRACKER_X_WIDTH+TRACKER_X_ORIGIN-1,TRACKER_Y_ORIGIN-2);
+  p->drawLine(TRACKER_X_ORIGIN-1,TRACKER_Y_ORIGIN-1,
+	      TRACKER_X_WIDTH+TRACKER_X_ORIGIN,TRACKER_Y_ORIGIN-1);
 
-  p->moveTo(TRACKER_X_ORIGIN-2,TRACKER_Y_ORIGIN-2);
-  p->lineTo(TRACKER_X_ORIGIN-2,TRACKER_Y_HEIGHT*3+TRACKER_Y_ORIGIN-1);
-  p->moveTo(TRACKER_X_ORIGIN-1,TRACKER_Y_ORIGIN-1);
-  p->lineTo(TRACKER_X_ORIGIN-1,TRACKER_Y_HEIGHT*3+TRACKER_Y_ORIGIN-2);
+  p->drawLine(TRACKER_X_ORIGIN-2,TRACKER_Y_ORIGIN-2,
+	      TRACKER_X_ORIGIN-2,TRACKER_Y_HEIGHT*3+TRACKER_Y_ORIGIN-1);
+  p->drawLine(TRACKER_X_ORIGIN-1,TRACKER_Y_ORIGIN-1,
+	      TRACKER_X_ORIGIN-1,TRACKER_Y_HEIGHT*3+TRACKER_Y_ORIGIN-2);
 
-  p->moveTo(TRACKER_X_ORIGIN-2,TRACKER_Y_HEIGHT*3+TRACKER_Y_ORIGIN-2);
-  p->lineTo(TRACKER_X_WIDTH+TRACKER_X_ORIGIN-1,
-	    TRACKER_Y_HEIGHT*3+TRACKER_Y_ORIGIN-2);
-  p->moveTo(TRACKER_X_ORIGIN+TRACKER_X_ORIGIN-1,
-	    TRACKER_Y_HEIGHT*3+TRACKER_Y_ORIGIN-1);
-  p->lineTo(TRACKER_X_WIDTH+TRACKER_X_ORIGIN,
-	    TRACKER_Y_HEIGHT*3+TRACKER_Y_ORIGIN-1);
+  p->drawLine(TRACKER_X_ORIGIN-2,TRACKER_Y_HEIGHT*3+TRACKER_Y_ORIGIN-2,
+	      TRACKER_X_WIDTH+TRACKER_X_ORIGIN-1,
+	      TRACKER_Y_HEIGHT*3+TRACKER_Y_ORIGIN-2);
+  p->drawLine(TRACKER_X_ORIGIN+TRACKER_X_ORIGIN-1,
+	      TRACKER_Y_HEIGHT*3+TRACKER_Y_ORIGIN-1,
+	      TRACKER_X_WIDTH+TRACKER_X_ORIGIN,
+	      TRACKER_Y_HEIGHT*3+TRACKER_Y_ORIGIN-1);
 
-  p->moveTo(TRACKER_X_WIDTH+TRACKER_X_ORIGIN,TRACKER_Y_ORIGIN-2);
-  p->lineTo(TRACKER_X_WIDTH+TRACKER_X_ORIGIN,
-	    TRACKER_Y_HEIGHT*3+TRACKER_Y_ORIGIN-1);
-  p->moveTo(TRACKER_X_WIDTH+TRACKER_X_ORIGIN-1,TRACKER_Y_ORIGIN-1);
-  p->lineTo(TRACKER_X_WIDTH+TRACKER_X_ORIGIN-1,
-	    TRACKER_Y_HEIGHT*3+TRACKER_Y_ORIGIN-2);
+  p->drawLine(TRACKER_X_WIDTH+TRACKER_X_ORIGIN,TRACKER_Y_ORIGIN-2,
+	      TRACKER_X_WIDTH+TRACKER_X_ORIGIN,
+	      TRACKER_Y_HEIGHT*3+TRACKER_Y_ORIGIN-1);
+  p->drawLine(TRACKER_X_WIDTH+TRACKER_X_ORIGIN-1,TRACKER_Y_ORIGIN-1,
+	      TRACKER_X_WIDTH+TRACKER_X_ORIGIN-1,
+	      TRACKER_Y_HEIGHT*3+TRACKER_Y_ORIGIN-2);
 
-  p->moveTo(TRACKER_X_ORIGIN-2,TRACKER_Y_HEIGHT+TRACKER_Y_ORIGIN-2);
-  p->lineTo(TRACKER_X_WIDTH+TRACKER_X_ORIGIN-1,
-	    TRACKER_Y_HEIGHT+TRACKER_Y_ORIGIN-2);
-  p->moveTo(TRACKER_X_ORIGIN-1,TRACKER_Y_HEIGHT+TRACKER_Y_ORIGIN-1);
-  p->lineTo(TRACKER_X_WIDTH+TRACKER_X_ORIGIN-1,
-	    TRACKER_Y_HEIGHT+TRACKER_Y_ORIGIN-1);
+  p->drawLine(TRACKER_X_ORIGIN-2,TRACKER_Y_HEIGHT+TRACKER_Y_ORIGIN-2,
+	      TRACKER_X_WIDTH+TRACKER_X_ORIGIN-1,
+	      TRACKER_Y_HEIGHT+TRACKER_Y_ORIGIN-2);
+  p->drawLine(TRACKER_X_ORIGIN-1,TRACKER_Y_HEIGHT+TRACKER_Y_ORIGIN-1,
+	      TRACKER_X_WIDTH+TRACKER_X_ORIGIN-1,
+	      TRACKER_Y_HEIGHT+TRACKER_Y_ORIGIN-1);
 
-  p->moveTo(TRACKER_X_ORIGIN-2,TRACKER_Y_HEIGHT*2+TRACKER_Y_ORIGIN-2);
-  p->lineTo(TRACKER_X_WIDTH+TRACKER_X_ORIGIN,
-	    TRACKER_Y_HEIGHT*2+TRACKER_Y_ORIGIN-2);
-  p->moveTo(TRACKER_X_ORIGIN-1,TRACKER_Y_HEIGHT*2+TRACKER_Y_ORIGIN-1);
-  p->lineTo(TRACKER_X_WIDTH+TRACKER_X_ORIGIN-1,
-	    TRACKER_Y_HEIGHT*2+TRACKER_Y_ORIGIN-1);
+  p->drawLine(TRACKER_X_ORIGIN-2,TRACKER_Y_HEIGHT*2+TRACKER_Y_ORIGIN-2,
+	      TRACKER_X_WIDTH+TRACKER_X_ORIGIN,
+	      TRACKER_Y_HEIGHT*2+TRACKER_Y_ORIGIN-2);
+  p->drawLine(TRACKER_X_ORIGIN-1,TRACKER_Y_HEIGHT*2+TRACKER_Y_ORIGIN-1,
+	      TRACKER_X_WIDTH+TRACKER_X_ORIGIN-1,
+	      TRACKER_Y_HEIGHT*2+TRACKER_Y_ORIGIN-1);
 
-  p->moveTo(TRACKER_X_ORIGIN-2,TRACKER_Y_HEIGHT*3+TRACKER_Y_ORIGIN-1);
-  p->lineTo(TRACKER_X_WIDTH-1+TRACKER_X_ORIGIN+1,
-	    TRACKER_Y_HEIGHT*3+TRACKER_Y_ORIGIN-1);
-  p->lineTo(TRACKER_X_WIDTH-1+TRACKER_X_ORIGIN+1,
-	    TRACKER_Y_HEIGHT*4+TRACKER_Y_ORIGIN-5+10);
-  p->lineTo(TRACKER_X_ORIGIN-2,TRACKER_Y_HEIGHT*4+TRACKER_Y_ORIGIN-5+10);
-  p->lineTo(TRACKER_X_ORIGIN-2,TRACKER_Y_HEIGHT*3+TRACKER_Y_ORIGIN-1);
+  p->drawLine(TRACKER_X_ORIGIN-2,TRACKER_Y_HEIGHT*3+TRACKER_Y_ORIGIN-1,
+	      TRACKER_X_WIDTH-1+TRACKER_X_ORIGIN+1,
+	      TRACKER_Y_HEIGHT*3+TRACKER_Y_ORIGIN-1);
+  p->drawLine(TRACKER_X_WIDTH-1+TRACKER_X_ORIGIN+1,
+	      TRACKER_Y_HEIGHT*3+TRACKER_Y_ORIGIN-1,
+	      TRACKER_X_WIDTH-1+TRACKER_X_ORIGIN+1,
+	      TRACKER_Y_HEIGHT*4+TRACKER_Y_ORIGIN-5+10);
+  p->drawLine(TRACKER_X_WIDTH-1+TRACKER_X_ORIGIN+1,
+	      TRACKER_Y_HEIGHT*4+TRACKER_Y_ORIGIN-5+10,TRACKER_X_ORIGIN-2,
+	      TRACKER_Y_HEIGHT*4+TRACKER_Y_ORIGIN-5+10);
+  p->drawLine(TRACKER_X_ORIGIN-2,TRACKER_Y_HEIGHT*4+TRACKER_Y_ORIGIN-5+10,
+	      TRACKER_X_ORIGIN-2,TRACKER_Y_HEIGHT*3+TRACKER_Y_ORIGIN-1);
 
   WriteTrackMap(0);
   WriteTrackMap(1);
@@ -2092,11 +2105,11 @@ void VoiceTracker::mousePressEvent(QMouseEvent *e)
     return;
   }
   switch(e->button()) {
-  case QMouseEvent::LeftButton:
+  case Qt::LeftButton:
     edit_current_track=GetClick(e,edit_previous_point);
     break;
 
-  case QMouseEvent::RightButton:
+  case Qt::RightButton:
     edit_rightclick_track=GetClick(e,edit_previous_point);
     edit_rightclick_pos=edit_previous_point->x();
     if(edit_rightclick_track>=0) {
@@ -2116,7 +2129,7 @@ void VoiceTracker::mousePressEvent(QMouseEvent *e)
 void VoiceTracker::mouseReleaseEvent(QMouseEvent *e)
 {
   switch(e->button()) {
-  case QMouseEvent::LeftButton:
+  case Qt::LeftButton:
     if(edit_current_track>=0) {
       track_meter->setLeftPeakBar(-10000);
       track_meter->setRightPeakBar(-10000);
@@ -2124,11 +2137,11 @@ void VoiceTracker::mouseReleaseEvent(QMouseEvent *e)
     edit_current_track=-1;
     break;
 
-  case QMouseEvent::RightButton:
+  case Qt::RightButton:
     edit_rightclick_track=-1;
     break;
 
-  case QMouseEvent::MidButton:
+  case Qt::MidButton:
     if(e->y()<TRACKER_Y_ORIGIN+TRACKER_Y_HEIGHT) {
       DragTrack(0,((edit_wave_origin[0]-edit_logline[0]->startPoint())/TRACKER_MSECS_PER_PIXEL)+250);
     }
@@ -3062,7 +3075,7 @@ void VoiceTracker::DrawTrackMap(int trackno)
   case 0:
     if(edit_wave_name[0].isEmpty()) {
       p=new QPainter(edit_wave_map[0]);
-      p->setBackgroundColor(gray);
+      p->setBackgroundColor(Qt::gray);
       p->eraseRect(0,0,edit_wave_map[0]->size().width(),
 		   edit_wave_map[0]->size().height());
       p->end();
@@ -3079,7 +3092,7 @@ void VoiceTracker::DrawTrackMap(int trackno)
 	wpg[0]->drawWaveByMsecs(0,edit_wave_map[0]->width(),
 				edit_wave_origin[0],
 				edit_wave_origin[0]+edit_wave_width,800,
-				RDWavePainter::Mono,black,
+				RDWavePainter::Mono,Qt::black,
 				edit_logline[0]->
 				startPoint(RDLogLine::CartPointer),
 				edit_logline[0]->
@@ -3159,7 +3172,7 @@ void VoiceTracker::DrawTrackMap(int trackno)
 	p->drawText(5,14,edit_logline[1]->markerComment());
       }
       else {
-	p->setBackgroundColor(gray);
+	p->setBackgroundColor(Qt::gray);
 	p->eraseRect(0,0,edit_wave_map[1]->size().width(),
 		     edit_wave_map[1]->size().height());
       }
@@ -3177,7 +3190,7 @@ void VoiceTracker::DrawTrackMap(int trackno)
 	back_color=backgroundColor();
       }
       else {
-	back_color=lightGray;
+	back_color=Qt::lightGray;
       }
       switch(edit_deck_state) {
       case VoiceTracker::DeckTrack2:
@@ -3216,7 +3229,7 @@ void VoiceTracker::DrawTrackMap(int trackno)
 	  wpg[1]->drawWaveByMsecs(0,edit_wave_map[1]->width(),
 				  edit_wave_origin[1],
 				  edit_wave_origin[1]+edit_wave_width,800,
-				  RDWavePainter::Mono,black,
+				  RDWavePainter::Mono,Qt::black,
 				  edit_logline[1]->
 				  startPoint(RDLogLine::CartPointer),
 				  edit_logline[1]->
@@ -3304,7 +3317,7 @@ void VoiceTracker::DrawTrackMap(int trackno)
   case 2:
     if(edit_wave_name[2].isEmpty()) {
       p=new QPainter(edit_wave_map[2]);
-      p->setBackgroundColor(gray);
+      p->setBackgroundColor(Qt::gray);
       p->eraseRect(0,0,edit_wave_map[2]->size().width(),
 		   edit_wave_map[2]->size().height());
       p->end();
@@ -3315,7 +3328,7 @@ void VoiceTracker::DrawTrackMap(int trackno)
 	back_color=backgroundColor();
       }
       else {
-	back_color=lightGray;
+	back_color=Qt::lightGray;
       }
       wpg[2]->begin(edit_wave_map[2]);
       wpg[2]->setFont(QFont("Helvetica",12,QFont::Bold));
@@ -3326,7 +3339,7 @@ void VoiceTracker::DrawTrackMap(int trackno)
 	wpg[2]->drawWaveByMsecs(0,edit_wave_map[2]->width(),
 				edit_wave_origin[2],
 				edit_wave_origin[2]+edit_wave_width,800,
-				RDWavePainter::Mono,black,
+				RDWavePainter::Mono,Qt::black,
 				edit_logline[2]->startPoint(RDLogLine::CartPointer),
                                 edit_logline[2]->endPoint(RDLogLine::CartPointer));
 
@@ -3440,13 +3453,12 @@ void VoiceTracker::DrawCursor(RDWavePainter *wp,int height,int xpos,
 {
   wp->setPen(color);
   wp->setBrush(color);
-  wp->moveTo(xpos,0);
-  wp->lineTo(xpos,height);
+  wp->drawLine(xpos,0,xpos,height);
   int arrow_x=8;
   if(left_arrow) {
     arrow_x=-8;
   }
-  QPointArray *pa=new QPointArray(3);
+  Q3PointArray *pa=new Q3PointArray(3);
   pa->setPoint(0,xpos,arrow_offset);
   pa->setPoint(1,xpos+arrow_x,arrow_offset-5);
   pa->setPoint(2,xpos+arrow_x,arrow_offset+5);
@@ -3462,7 +3474,9 @@ void VoiceTracker::DrawCursor(RDWavePainter *wp,int height,int xpos,
 void VoiceTracker::DrawRubberBand(RDWavePainter *wp,int trackno)
 {
   int xpos=0;
+  int xstart=0;
   int ypos=0;
+  int ystart=0;
 
   wp->setPen(TRACKER_RUBBERBAND_COLOR);
   wp->setBrush(TRACKER_RUBBERBAND_COLOR);
@@ -3535,9 +3549,9 @@ void VoiceTracker::DrawRubberBand(RDWavePainter *wp,int trackno)
         (int)((double)draw_fadeup_gain*
         (1-(double)draw_duckup_gain/TRACKER_MIN_GAIN))
          /TRACKER_MB_PER_PIXEL;
-
   }
-  wp->moveTo(xpos,ypos);
+  xstart=xpos;
+  ystart=ypos;
   switch(trackno) {
   case 1:
     DrawTarget(wp,VoiceTracker::TrackFadeupGain,trackno,xpos,ypos);
@@ -3564,7 +3578,7 @@ void VoiceTracker::DrawRubberBand(RDWavePainter *wp,int trackno)
       draw_duckup_gain/TRACKER_MB_PER_PIXEL;
     break;
   }
-  wp->lineTo(xpos,ypos);
+  wp->drawLine(xstart,ystart,xpos,ypos);
   switch(trackno) {
   case 1:
     DrawTarget(wp,VoiceTracker::TrackFadeupPoint,trackno,xpos,ypos);
@@ -3580,16 +3594,18 @@ void VoiceTracker::DrawRubberBand(RDWavePainter *wp,int trackno)
   //
   xpos=(edit_logline[trackno]->fadeupPoint()-
 	edit_wave_origin[trackno])/TRACKER_MSECS_PER_PIXEL;
-  wp->moveTo(xpos,ypos);
-  if(draw_fadedown_point>=
-      edit_logline[trackno]->fadeupPoint())
+  xstart=xpos;
+  ystart=ypos;
+  if(draw_fadedown_point>=edit_logline[trackno]->fadeupPoint())
   xpos=(draw_fadedown_point-
 	edit_wave_origin[trackno])/TRACKER_MSECS_PER_PIXEL;
   else
     xpos=(draw_end_point-
 	 edit_wave_origin[trackno])/TRACKER_MSECS_PER_PIXEL;
 
-  wp->lineTo(xpos,ypos);
+  wp->drawLine(xstart,ystart,xpos,ypos);
+  xstart=xpos;
+  ystart=ypos;
 
   //
   // Fade Down
@@ -3618,7 +3634,7 @@ void VoiceTracker::DrawRubberBand(RDWavePainter *wp,int trackno)
         (1-(double)draw_duckdown_gain/TRACKER_MIN_GAIN))
          /TRACKER_MB_PER_PIXEL;
   }
-  wp->lineTo(xpos,ypos);
+  wp->drawLine(xstart,ystart,xpos,ypos);
   switch(trackno) {
   case 0:
     DrawTarget(wp,VoiceTracker::FadedownGain,trackno,xpos,ypos);

@@ -20,11 +20,13 @@
 
 #include <math.h>
 
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 #include <qcheckbox.h>
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qpushbutton.h>
+//Added by qt3to4:
+#include <QLabel>
 
 #include "rdapplication.h"
 #include "rdexport_settings_dialog.h"
@@ -55,7 +57,7 @@ RDExportSettingsDialog::RDExportSettingsDialog(RDSettings *settings,
 	  this,SLOT(formatData(const QString &)));
   QLabel *lib_format_label=new QLabel(lib_format_box,"Format:",this);
   lib_format_label->setGeometry(25,10,70,19);
-  lib_format_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  lib_format_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Default Channels
@@ -65,7 +67,7 @@ RDExportSettingsDialog::RDExportSettingsDialog(RDSettings *settings,
   QLabel *lib_channels_label=
     new QLabel(lib_channels_box,tr("&Channels:"),this);
   lib_channels_label->setGeometry(25,32,70,19);
-  lib_channels_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  lib_channels_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Default Sample Rate
@@ -77,7 +79,7 @@ RDExportSettingsDialog::RDExportSettingsDialog(RDSettings *settings,
   QLabel *lib_samprate_label=
     new QLabel(lib_samprate_box,tr("&Sample Rate:"),this);
   lib_samprate_label->setGeometry(25,54,75,19);
-  lib_samprate_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  lib_samprate_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Default Bitrate
@@ -88,7 +90,7 @@ RDExportSettingsDialog::RDExportSettingsDialog(RDSettings *settings,
 	  this,SLOT(bitrateData(const QString &)));
   lib_bitrate_label=new QLabel(lib_bitrate_box,tr("&Bitrate:"),this);
   lib_bitrate_label->setGeometry(25,76,70,19);
-  lib_bitrate_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  lib_bitrate_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Quality
@@ -98,7 +100,7 @@ RDExportSettingsDialog::RDExportSettingsDialog(RDSettings *settings,
   lib_quality_spin->setRange(0,10);
   lib_quality_label=new QLabel(lib_quality_spin,tr("&Quality:"),this);
   lib_quality_label->setGeometry(25,98,70,19);
-  lib_quality_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  lib_quality_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   //  Ok Button
@@ -239,7 +241,7 @@ void RDExportSettingsDialog::okData()
   case RDSettings::MpegL2:
   case RDSettings::MpegL2Wav:
   case RDSettings::MpegL3:
-    if (lib_bitrate_box && lib_bitrate_box->currentText()){
+    if(!lib_bitrate_box->currentText().isEmpty()){
       sscanf(lib_bitrate_box->currentText(),"%d",&rate);
     }
     if(rate!=0) {

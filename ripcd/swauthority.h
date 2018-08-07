@@ -24,7 +24,7 @@
 #include <map>
 #include <vector>
 
-#include <qsocket.h>
+#include <q3socket.h>
 #include <qhostaddress.h>
 #include <qtimer.h>
 
@@ -62,7 +62,7 @@ class SoftwareAuthority : public Switcher
   void ExecuteMacroCart(unsigned cartnum);
   QString PrettifyCommand(const char *cmd) const;
   QString BundleString(int offset,bool state);
-  QSocket *swa_socket;
+  Q3Socket *swa_socket;
   char swa_buffer[SWAUTHORITY_MAX_LENGTH];
   unsigned swa_ptr;
   QHostAddress swa_ipaddress;

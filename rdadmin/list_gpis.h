@@ -25,7 +25,9 @@
 #include <qsqldatabase.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
-#include <qlistview.h>
+#include <q3listview.h>
+//Added by qt3to4:
+#include <QResizeEvent>
 
 #include <rduser.h>
 #include <rdmatrix.h>
@@ -40,7 +42,7 @@ class ListGpis : public QDialog
 
  private slots:
   void editData();
-  void doubleClickedData(QListViewItem *,const QPoint &,int);
+  void doubleClickedData(Q3ListViewItem *,const QPoint &,int);
   void okData();
   void cancelData();
 
@@ -51,7 +53,7 @@ class ListGpis : public QDialog
   RDMatrix *list_matrix;
   RDMatrix::GpioType list_type;
   QString list_tablename;
-  QListView *list_list_view;
+  Q3ListView *list_list_view;
   QLabel *list_list_label;
   int list_size;
   QPushButton *list_edit_button;

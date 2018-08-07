@@ -25,12 +25,12 @@
 #include <qpushbutton.h>
 #include <qradiobutton.h>
 #include <qlineedit.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qlabel.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 
 
 #include <rdcardselector.h>
@@ -58,7 +58,7 @@ RDCardSelector::RDCardSelector(QWidget *parent)
   card_title=new QLabel(this,"card_title");
   card_title->setGeometry(0,0,geometry().width(),19);
   card_title->setFont(QFont("Helvetica",12,QFont::Bold));
-  card_title->setAlignment(AlignHCenter);
+  card_title->setAlignment(Qt::AlignHCenter);
   card_title->hide();
 
   //
@@ -74,7 +74,7 @@ RDCardSelector::RDCardSelector(QWidget *parent)
   card_card_label=new QLabel(card_card_box,tr("Card:"),this,
 				       "card_card_label");
   card_card_label->setGeometry(0,yoffset+2,55,19);
-  card_card_label->setAlignment(AlignRight|ShowPrefix);
+  card_card_label->setAlignment(Qt::AlignRight|Qt::TextShowMnemonic);
 
   //
   // Port
@@ -89,7 +89,7 @@ RDCardSelector::RDCardSelector(QWidget *parent)
   card_port_label=new QLabel(card_port_box,tr("Port:"),this,
 				       "card_port_label");
   card_port_label->setGeometry(0,yoffset+24,55,19);
-  card_port_label->setAlignment(AlignRight|ShowPrefix);
+  card_port_label->setAlignment(Qt::AlignRight|Qt::TextShowMnemonic);
   for(int i=0;i<RD_MAX_CARDS;i++) {
     card_max_ports[i] = 0;
     cardData(i);

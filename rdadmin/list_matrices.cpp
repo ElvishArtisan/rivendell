@@ -21,13 +21,13 @@
 #include <qdialog.h>
 #include <qstring.h>
 #include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
+#include <q3listbox.h>
+#include <q3textedit.h>
 #include <qlabel.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 
 #include <rdapplication.h>
 #include <rddb.h>
@@ -70,7 +70,7 @@ ListMatrices::ListMatrices(QString station,QWidget *parent)
   //
   // Matrix List Box
   //
-  list_view=new QListView(this,"list_box");
+  list_view=new Q3ListView(this,"list_box");
   list_view->setGeometry(10,24,sizeHint().width()-20,sizeHint().height()-94);
   QLabel *label=new QLabel(list_view,tr("Switchers:"),this);
   label->setFont(font);
@@ -83,8 +83,8 @@ ListMatrices::ListMatrices(QString station,QWidget *parent)
   list_view->setColumnAlignment(1,Qt::AlignLeft);
   list_view->addColumn(tr("TYPE"));
   list_view->setColumnAlignment(2,Qt::AlignLeft);
-  connect(list_view,SIGNAL(doubleClicked(QListViewItem *,const QPoint &,int)),
-	  this,SLOT(doubleClickedData(QListViewItem *,const QPoint &,int)));
+  connect(list_view,SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
+	  this,SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
 
   RefreshList();
 
@@ -177,7 +177,7 @@ void ListMatrices::editData()
   }
   int matrix_num=list_view->currentItem()->text(0).toInt();
   RDMatrix *matrix=new RDMatrix(list_station,matrix_num);
-  QListViewItem *item=list_view->selectedItem();
+  Q3ListViewItem *item=list_view->selectedItem();
   EditMatrix *edit=new EditMatrix(matrix,this);
   if(edit->exec()==0) {
     RefreshRecord(item);
@@ -210,7 +210,7 @@ void ListMatrices::deleteData()
 }
 
 
-void ListMatrices::doubleClickedData(QListViewItem *item,const QPoint &pt,
+void ListMatrices::doubleClickedData(Q3ListViewItem *item,const QPoint &pt,
 				     int col)
 {
   editData();
@@ -280,7 +280,7 @@ sql=QString("delete from VGUEST_RESOURCES where ")+
 
 void ListMatrices::RefreshList()
 {
-  QListViewItem *l;
+  Q3ListViewItem *l;
 
   list_view->clear();
   QString sql=QString("select ")+
@@ -292,7 +292,7 @@ void ListMatrices::RefreshList()
     "order by MATRIX";
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
-    l=new QListViewItem(list_view);
+    l=new Q3ListViewItem(list_view);
     l->setText(0,q->value(0).toString());
     l->setText(1,q->value(1).toString());
     l->setText(2,RDMatrix::typeString((RDMatrix::Type)q->value(2).toInt()));
@@ -304,7 +304,7 @@ void ListMatrices::RefreshList()
 void ListMatrices::AddList(int matrix_num)
 {
   RDMatrix *matrix=new RDMatrix(list_station,matrix_num);
-  QListViewItem *item=new QListViewItem(list_view);
+  Q3ListViewItem *item=new Q3ListViewItem(list_view);
   item->setText(0,QString().sprintf("%d",matrix_num));
   item->setText(1,matrix->name());
   item->setText(2,RDMatrix::typeString(matrix->type()));
@@ -314,7 +314,7 @@ void ListMatrices::AddList(int matrix_num)
 }
 
 
-void ListMatrices::RefreshRecord(QListViewItem *item)
+void ListMatrices::RefreshRecord(Q3ListViewItem *item)
 {
   RDMatrix *matrix=new RDMatrix(list_station,item->text(0).toInt());
   item->setText(1,matrix->name());

@@ -21,7 +21,7 @@
 #include <qdialog.h>
 #include <qpushbutton.h>
 #include <qlabel.h>
-#include <qfiledialog.h>
+#include <q3filedialog.h>
 
 #include <rd.h>
 #include <rdpaths.h>
@@ -63,7 +63,7 @@ EditNowNextPlugin::EditNowNextPlugin(QString *path,QString *arg,
   QLabel *label=new QLabel(plugin_path_edit,tr("Plugin Path:"),this);
   label->setGeometry(10,11,95,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   QPushButton *button=new QPushButton(tr("Select"),this);
   button->setGeometry(sizeHint().width()-60,10,50,22);
   button->setFont(user_font);
@@ -78,7 +78,7 @@ EditNowNextPlugin::EditNowNextPlugin(QString *path,QString *arg,
   label=new QLabel(plugin_arg_edit,tr("Argument:"),this);
   label->setGeometry(10,38,95,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   //  Ok Button
@@ -130,7 +130,7 @@ void EditNowNextPlugin::selectData()
   if(!plugin_path_edit->text().isEmpty()) {
     filename=plugin_path_edit->text();
   }
-  filename=QFileDialog::getOpenFileName(filename,RD_MODULE_FILE_FILTER,
+  filename=Q3FileDialog::getOpenFileName(filename,RD_MODULE_FILE_FILTER,
 					this,"",tr("Select plugin"));
   if(!filename.isNull()) {
     plugin_path_edit->setText(filename);

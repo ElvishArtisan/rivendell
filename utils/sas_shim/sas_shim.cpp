@@ -83,7 +83,7 @@ MainObject::MainObject(QObject *parent)
   //
   shim_tty=new RDTTYDevice();
   shim_tty->setName(rda->config()->sasTtyDevice());
-  if(!shim_tty->open(IO_ReadOnly)) {
+  if(!shim_tty->open(QIODevice::ReadOnly)) {
     fprintf(stderr,"sas_shim: unabled to open tty device\n");
     exit(1);
   }

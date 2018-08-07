@@ -19,6 +19,8 @@
 //
 
 #include <qmessagebox.h>
+//Added by qt3to4:
+#include <QLabel>
 
 #include <rdconf.h>
 #include <rddatedialog.h>
@@ -71,17 +73,17 @@ ListReports::ListReports(const QString &logname,const QString &description,
     new QLabel(list_reports_box,tr("Type:"),this);
   list_reports_label->setGeometry(10,10,35,19);
   list_reports_label->setFont(font);
-  list_reports_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  list_reports_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Effective Date
   //
-  list_date_edit=new QDateEdit(this);
+  list_date_edit=new Q3DateEdit(this);
   list_date_edit->setGeometry(110,34,100,19);
   QLabel *list_date_label=new QLabel(list_date_edit,tr("Effective Date:"),this);
   list_date_label->setGeometry(10,34,95,19);
   list_date_label->setFont(font);
-  list_date_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  list_date_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   QPushButton *button=new QPushButton(this);
   button->setGeometry(215,32,60,24);
   button->setFont(select_font);

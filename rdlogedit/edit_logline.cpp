@@ -21,6 +21,9 @@
 #include <qpushbutton.h>
 #include <qmessagebox.h>
 #include <qradiobutton.h>
+//Added by qt3to4:
+#include <QCloseEvent>
+#include <QLabel>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -80,7 +83,7 @@ EditLogLine::EditLogLine(RDLogLine *line,QString *filter,QString *group,
   edit_timetype_label=new QLabel(edit_timetype_box,tr("Start at:"),this);
   edit_timetype_label->setGeometry(30,21,80,17);
   edit_timetype_label->setFont(label_font);
-  edit_timetype_label->setAlignment(AlignLeft|AlignVCenter);
+  edit_timetype_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Start Time
@@ -96,7 +99,7 @@ EditLogLine::EditLogLine(RDLogLine *line,QString *filter,QString *group,
   // Grace Time
   //
   edit_grace_group
-    =new QButtonGroup(1,Qt::Vertical,
+    =new Q3ButtonGroup(1,Qt::Vertical,
 		      tr("Action If Previous Event Still Playing"),this);
   edit_grace_group->setGeometry(175,11,435,50);
   edit_grace_group->setFont(label_font);
@@ -132,7 +135,7 @@ EditLogLine::EditLogLine(RDLogLine *line,QString *filter,QString *group,
   edit_time_label=new QLabel(edit_transtype_box,tr("Transition Type:"),this);
   edit_time_label->setGeometry(190,68,290,26);
   edit_time_label->setFont(label_font);
-  edit_time_label->setAlignment(AlignRight|AlignVCenter);
+  edit_time_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   // Overlap Box
   edit_overlap_box=new QCheckBox(this);
@@ -141,7 +144,7 @@ EditLogLine::EditLogLine(RDLogLine *line,QString *filter,QString *group,
     new QLabel(edit_overlap_box,tr("No Fade on Segue Out"),this);
   edit_overlap_label->setGeometry(50,68,130,26);
   edit_overlap_label->setFont(button_font);
-  edit_overlap_label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  edit_overlap_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
   
   //
   // Cart Number

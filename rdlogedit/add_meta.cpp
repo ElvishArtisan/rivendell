@@ -21,13 +21,16 @@
 #include <qdialog.h>
 #include <qstring.h>
 #include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
+#include <q3listbox.h>
+#include <q3textedit.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
 #include <qsqldatabase.h>
+//Added by qt3to4:
+#include <QCloseEvent>
+#include <QLabel>
 
 #include <rd.h>
 #include <rdlog_line.h>
@@ -63,7 +66,7 @@ AddMeta::AddMeta(QWidget *parent)
   QLabel *label=new QLabel(tr("Insert a:"),this);
   label->setGeometry(0,0,sizeHint().width(),30);
   label->setFont(label_font);
-  label->setAlignment(AlignCenter);
+  label->setAlignment(Qt::AlignCenter);
 
   //
   // Marker Button

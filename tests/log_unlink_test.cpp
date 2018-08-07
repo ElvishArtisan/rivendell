@@ -38,7 +38,7 @@ MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
   test_import_source=RDSvc::Traffic;
-  unsigned schema=0;
+  int schema=0;
 
   //
   // Read Command Options
@@ -89,8 +89,7 @@ MainObject::MainObject(QObject *parent)
   // Open Database
   //
   QString err (tr("upload_test: "));
-  QSqlDatabase *db=RDInitDb(&schema,&err);
-  if(!db) {
+  if(!RDOpenDb(&schema,&err,test_config)) {
     fprintf(stderr,err.ascii());
     delete cmd;
     exit(256);

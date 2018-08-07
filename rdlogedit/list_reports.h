@@ -22,7 +22,7 @@
 #define LIST_REPORTS_H
 
 #include <qdialog.h>
-#include <qdatetimeedit.h>
+#include <q3datetimeedit.h>
 #include <qcombobox.h>
 #include <qsqldatabase.h>
 
@@ -57,7 +57,7 @@ class ListReports : public QDialog
   QDate list_end_date;
   bool list_auto_refresh;
   RDLogEvent *list_events;
-  QDateEdit *list_date_edit;
+  Q3DateEdit *list_date_edit;
 };
 
 

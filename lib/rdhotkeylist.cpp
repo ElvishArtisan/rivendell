@@ -107,7 +107,7 @@ void RDHotKeyList::BuildKeyList( )
 QString RDHotKeyList::cleanStrings( const QString sent)
 {
   QString cleanstring;
-  for (unsigned i=0 ; i<sent.length(); i++) {
+  for (int i=0 ; i<sent.length(); i++) {
     switch(((const char *)sent)[i]) {
     case '\n':
       break;

@@ -51,7 +51,7 @@ RDGetPasswd::RDGetPasswd(QString *passwd,QWidget *parent)
   //
   QLabel *label=new QLabel(tr("Enter password"),this);
   label->setGeometry(0,5,sizeHint().width(),20);
-  label->setAlignment(AlignCenter);
+  label->setAlignment(Qt::AlignCenter);
 
   //
   // Password

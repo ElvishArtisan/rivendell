@@ -21,7 +21,7 @@
 #ifndef QUARTZ1_H
 #define QUARTZ1_H
 
-#include <qsocket.h>
+#include <q3socket.h>
 #include <qhostaddress.h>
 #include <qtimer.h>
 
@@ -58,7 +58,7 @@ class Quartz1 : public Switcher
  private:
   void SendCommand(const char *str);
   RDTTYDevice *sas_device[2];
-  QSocket *sas_socket[2];
+  Q3Socket *sas_socket[2];
   char sas_buffer[2][QUARTZ1_MAX_LENGTH];
   unsigned sas_ptr[2];
   QHostAddress sas_ipaddress[2];

@@ -32,6 +32,9 @@
 #include <qlineedit.h>
 #include <qtextcodec.h>
 #include <qtranslator.h>
+//Added by qt3to4:
+#include <QLabel>
+#include <QPixmap>
 
 #include <rdapplication.h>
 #include <rddb.h>
@@ -136,7 +139,7 @@ MainWidget::MainWidget(QWidget *parent)
   QLabel *label=new QLabel(gpi_type_box,tr("Show:"),this);
   label->setGeometry(20,10,55,21);
   label->setFont(main_font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   connect(gpi_type_box,SIGNAL(activated(int)),
 	  this,SLOT(matrixActivatedData(int)));
 
@@ -151,7 +154,7 @@ MainWidget::MainWidget(QWidget *parent)
   label=new QLabel(gpi_matrix_box,tr("Matrix:"),this);
   label->setGeometry(220,10,55,21);
   label->setFont(main_font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   connect(gpi_matrix_box,SIGNAL(activated(int)),
 	  this,SLOT(matrixActivatedData(int)));
 
@@ -191,20 +194,20 @@ MainWidget::MainWidget(QWidget *parent)
   label=new QLabel(tr("Green = ON Cart"),this);
   label->setGeometry(200,370,300,12);
   label->setFont(main_font);
-  label->setAlignment(AlignLeft|AlignVCenter);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   QPalette p=palette();
-  p.setColor(QPalette::Active,QColorGroup::Foreground,darkGreen);
-  p.setColor(QPalette::Inactive,QColorGroup::Foreground,darkGreen);
-  p.setColor(QPalette::Disabled,QColorGroup::Foreground,darkGreen);
+  p.setColor(QPalette::Active,QColorGroup::Foreground,Qt::darkGreen);
+  p.setColor(QPalette::Inactive,QColorGroup::Foreground,Qt::darkGreen);
+  p.setColor(QPalette::Disabled,QColorGroup::Foreground,Qt::darkGreen);
   label->setPalette(p);
 
   label=new QLabel(tr("Red = OFF Cart"),this);
   label->setGeometry(200,392,300,12);
   label->setFont(main_font);
-  label->setAlignment(AlignLeft|AlignVCenter);
-  p.setColor(QPalette::Active,QColorGroup::Foreground,darkRed);
-  p.setColor(QPalette::Inactive,QColorGroup::Foreground,darkRed);
-  p.setColor(QPalette::Disabled,QColorGroup::Foreground,darkRed);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
+  p.setColor(QPalette::Active,QColorGroup::Foreground,Qt::darkRed);
+  p.setColor(QPalette::Inactive,QColorGroup::Foreground,Qt::darkRed);
+  p.setColor(QPalette::Disabled,QColorGroup::Foreground,Qt::darkRed);
   label->setPalette(p);
 
   //
@@ -215,7 +218,7 @@ MainWidget::MainWidget(QWidget *parent)
   label->setAlignment(Qt::AlignCenter);
   label->setGeometry(110,423,sizeHint().width()-220,30);
 
-  gpi_events_date_edit=new QDateEdit(this);
+  gpi_events_date_edit=new Q3DateEdit(this);
   gpi_events_date_edit->setGeometry(155,453,90,20);
   gpi_events_date_edit->setDate(QDate::currentDate());
   connect(gpi_events_date_edit,SIGNAL(valueChanged(const QDate &)),
@@ -241,7 +244,7 @@ MainWidget::MainWidget(QWidget *parent)
   gpi_events_list->setFont(main_font);
   gpi_events_list->setGeometry(110,480,sizeHint().width()-220,230);
   gpi_events_list->setItemMargin(5);
-  gpi_events_list->setSelectionMode(QListView::NoSelection);
+  gpi_events_list->setSelectionMode(Q3ListView::NoSelection);
 
   gpi_events_list->addColumn("Time");
   gpi_events_list->setColumnAlignment(0,Qt::AlignHCenter);
@@ -265,13 +268,13 @@ MainWidget::MainWidget(QWidget *parent)
   gpi_scroll_color.setColor(QPalette::Active,QColorGroup::Button,
 			    Qt::blue);
   gpi_scroll_color.setColor(QPalette::Active,QColorGroup::Background,
-			    lightGray);
+			    Qt::lightGray);
   gpi_scroll_color.setColor(QPalette::Inactive,QColorGroup::ButtonText,
 			    Qt::white);
   gpi_scroll_color.setColor(QPalette::Inactive,QColorGroup::Button,
 			    Qt::blue);
   gpi_scroll_color.setColor(QPalette::Inactive,QColorGroup::Background,
-			    lightGray);
+			    Qt::lightGray);
 
   gpi_events_report_button=new QPushButton(tr("Report"),this);
   gpi_events_report_button->setGeometry(sizeHint().width()-100,570,80,50);
@@ -754,8 +757,7 @@ int main(int argc,char *argv[])
   // Load Translations
   //
   QTranslator qt(0);
-  qt.load(QString(QTDIR)+QString("/translations/qt_")+QTextCodec::locale(),
-	  ".");
+  qt.load(QString("/usr/share/qt4/translations/qt_")+QTextCodec::locale(),".");
   a.installTranslator(&qt);
 
   QTranslator rd(0);

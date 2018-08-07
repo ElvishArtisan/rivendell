@@ -72,7 +72,7 @@ Unity4000::Unity4000(RDMatrix *matrix,QObject *parent)
     unity_device->setSpeed(tty->baudRate());
     unity_device->setWordLength(tty->dataBits());
     unity_device->setParity(tty->parity());
-    unity_device->open(IO_Raw|IO_ReadWrite);
+    unity_device->open(QIODevice::Unbuffered|QIODevice::ReadWrite);
   }
   delete tty;
 }

@@ -21,15 +21,15 @@
 #ifndef LIST_LISTVIEWITEM_H
 #define LIST_LISTVIEWITEM_H
 
-#include <qlistview.h>
+#include <q3listview.h>
 #include <qpixmap.h>
 
-#include <qlistview.h>
+#include <q3listview.h>
 
-class ListListViewItem : public QListViewItem
+class ListListViewItem : public Q3ListViewItem
 {
  public:
-  ListListViewItem(QListView *parent);
+  ListListViewItem(Q3ListView *parent);
   int trackColumn() const;
   void setTrackColumn(int col);
   int tracks() const;
@@ -46,7 +46,7 @@ class ListListViewItem : public QListViewItem
   QPixmap *list_whiteball_map;
   QPixmap *list_redball_map;
   QPixmap *list_greenball_map;
-  QListView *list_parent;
+  Q3ListView *list_parent;
 };
 
 

@@ -29,7 +29,7 @@
 
 #include <qobject.h>
 #include <qstring.h>
-#include <qserversocket.h>
+#include <q3serversocket.h>
 #include <qsqldatabase.h>
 #include <qtimer.h>
 #include <qhostaddress.h>
@@ -183,7 +183,7 @@ class MainObject : public QObject
   bool debug;
   RDTimeEngine *catch_engine;
   Q_INT16 tcp_port;
-  QServerSocket *server;
+  Q3ServerSocket *server;
   RDCatchConnect *catch_connect;
   RDSocket *socket[RDCATCHD_MAX_CONNECTIONS];
   char args[RDCATCHD_MAX_CONNECTIONS][RDCATCHD_MAX_ARGS][RDCATCHD_MAX_LENGTH];

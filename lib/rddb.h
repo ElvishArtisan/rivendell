@@ -1,9 +1,9 @@
 // rddb.h
 //
-// Database driver with automatic reconnect
+// Database driver with automatic error reporting and recovery
 //
 //   (C) Copyright 2007 Dan Mills <dmills@exponent.myzen.co.uk>
-//   (C) Copyright 2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,47 +19,29 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef RDDB_INC
-#define RDDB_INC
+#ifndef RDDB_H
+#define RDDB_H
 
-#include <qobject.h>
-#include <qsqldatabase.h>
-#include <qstring.h>
+#include <QString>
+#include <QSqlQuery>
+#include <QVariant>
 
 #include <rdconfig.h>
-
-class RDSqlDatabaseStatus : public QObject
-{
-  Q_OBJECT
- signals:
-  void logText(RDConfig::LogPriority prio,const QString &msg);
-  void reconnected();
-  void connectionFailed ();
- private:
-  RDSqlDatabaseStatus ();
-  bool discon;
-  friend RDSqlDatabaseStatus * RDDbStatus();
- public:
-  void sendRecon();
-  void sendDiscon(QString query);
-};
-
 
 class RDSqlQuery : public QSqlQuery
 {
  public:
-  RDSqlQuery(const QString &query=QString::null,bool reconnect=true);
+  RDSqlQuery(const QString &query = QString::null,bool reconnect=true);
+  int columns() const;
   static QVariant run(const QString &sql,bool *ok=NULL);
   static bool apply(const QString &sql,QString *err_msg=NULL);
   static int rows(const QString &sql);
+
+ private:
+  int sql_columns;
 };
 
-// Setup the default database, returns true on success.
-// if error is non NULL, an error string will be appended to it
-// if there is a problem.
-QSqlDatabase * RDInitDb(unsigned *schema,QString *error=NULL);
+bool RDOpenDb(int *schema,QString *err_str,RDConfig *config);
 
-// Return a handle to the database status object.
-RDSqlDatabaseStatus * RDDbStatus();
 
-#endif
+#endif  // RDDB_H

@@ -20,12 +20,14 @@
 
 #include <qstring.h>
 #include <qpushbutton.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
+//Added by qt3to4:
+#include <QLabel>
 
 #include <rdapplication.h>
 #include <rddb.h>
@@ -74,7 +76,7 @@ EditTtys::EditTtys(QString station,QWidget *parent)
   QLabel *label=new QLabel(edit_port_box,tr("Port ID:"),this);
   label->setGeometry(10,14,60,22);
   label->setFont(font);
-  label->setAlignment(AlignRight);
+  label->setAlignment(Qt::AlignRight);
 
   //
   // Enable Button
@@ -86,7 +88,7 @@ EditTtys::EditTtys(QString station,QWidget *parent)
   label=new QLabel(edit_enable_button,tr("Enabled"),this);
   label->setGeometry(200,14,60,22);
   label->setFont(font);
-  label->setAlignment(AlignRight);
+  label->setAlignment(Qt::AlignRight);
 
   //
   // The TTY Port
@@ -97,7 +99,7 @@ EditTtys::EditTtys(QString station,QWidget *parent)
   edit_port_label=new QLabel(edit_port_edit,tr("TTY Device:"),this);
   edit_port_label->setGeometry(20,56,120,22);
   edit_port_label->setFont(font);
-  edit_port_label->setAlignment(AlignRight);
+  edit_port_label->setAlignment(Qt::AlignRight);
   
   //
   // Baudrate Selector
@@ -108,7 +110,7 @@ EditTtys::EditTtys(QString station,QWidget *parent)
   edit_baudrate_label=new QLabel(edit_baudrate_box,tr("Baud Rate:"),this);
   edit_baudrate_label->setGeometry(20,84,120,22);
   edit_baudrate_label->setFont(font);
-  edit_baudrate_label->setAlignment(AlignRight);
+  edit_baudrate_label->setAlignment(Qt::AlignRight);
 
   //
   // Parity Selector
@@ -119,7 +121,7 @@ EditTtys::EditTtys(QString station,QWidget *parent)
   edit_parity_label=new QLabel(edit_parity_box,tr("Parity:"),this);
   edit_parity_label->setGeometry(20,110,120,22);
   edit_parity_label->setFont(font);
-  edit_parity_label->setAlignment(AlignRight);
+  edit_parity_label->setAlignment(Qt::AlignRight);
 
   //
   // Data Bits Selector
@@ -130,7 +132,7 @@ EditTtys::EditTtys(QString station,QWidget *parent)
   edit_databits_label=new QLabel(edit_databits_box,tr("Data Bits:"),this);
   edit_databits_label->setGeometry(20,138,120,22);
   edit_databits_label->setFont(font);
-  edit_databits_label->setAlignment(AlignRight);
+  edit_databits_label->setAlignment(Qt::AlignRight);
 
   //
   // Stop Bits Selector
@@ -141,7 +143,7 @@ EditTtys::EditTtys(QString station,QWidget *parent)
   edit_stopbits_label=new QLabel(edit_stopbits_box,tr("Stop Bits:"),this);
   edit_stopbits_label->setGeometry(20,166,120,22);
   edit_stopbits_label->setFont(font);
-  edit_stopbits_label->setAlignment(AlignRight);
+  edit_stopbits_label->setAlignment(Qt::AlignRight);
 
   //
   // Termination Character Selector
@@ -153,7 +155,7 @@ EditTtys::EditTtys(QString station,QWidget *parent)
     new QLabel(edit_termination_box,tr("Terminator:"),this);
   edit_termination_label->setGeometry(20,194,120,22);
   edit_termination_label->setFont(font);
-  edit_termination_label->setAlignment(AlignRight);
+  edit_termination_label->setAlignment(Qt::AlignRight);
 
   //
   //  Close Button

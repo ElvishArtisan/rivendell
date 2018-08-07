@@ -1,8 +1,6 @@
-## automake.am
+## Makefile.am
 ##
-## Automake.am for rivendell/utils/rdcollect
-##
-##   (C) Copyright 2002-2010,2016 Fred Gleason <fredg@paravelsystems.com>
+##   (C) Copyright 2002-2010,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -19,8 +17,8 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -DQTDIR=\"@QT_DIR@\" @QT_CXXFLAGS@ -I$(top_srcdir)/lib
-LIBS = @QT_LIBS@ -L$(top_srcdir)/lib
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -I$(top_srcdir)/lib @QT4_CFLAGS@ -DQT3_SUPPORT -I/usr/include/Qt3Support
+LIBS = -L$(top_srcdir)/lib
 MOC = @QT_MOC@
 
 # The dependency for qt's Meta Object Compiler (moc)
@@ -31,7 +29,7 @@ bin_PROGRAMS = rdcollect
 
 dist_rdcollect_SOURCES = rdcollect.cpp rdcollect.h
 
-rdcollect_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
+rdcollect_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
 
 EXTRA_DIST = rdcollect.pro
 

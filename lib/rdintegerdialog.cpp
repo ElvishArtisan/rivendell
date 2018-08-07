@@ -20,6 +20,8 @@
 
 #include <qpushbutton.h>
 #include <qlabel.h>
+//Added by qt3to4:
+#include <QCloseEvent>
 
 #include <rdintegerdialog.h>
 
@@ -54,7 +56,7 @@ RDIntegerDialog::RDIntegerDialog(int *value,const QString &lbl,int low,int high,
   QLabel *label=new QLabel(int_value_box,lbl,this);
   label->setGeometry(10,10,110,20);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // OK Button

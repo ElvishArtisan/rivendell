@@ -22,9 +22,9 @@
 #ifndef RDURL_H
 #define RDURL_H
 
-#include <qurl.h>
+#include <q3url.h>
 
-class RDUrl : public QUrl
+class RDUrl : public Q3Url
 {
  public:
   RDUrl();

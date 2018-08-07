@@ -22,15 +22,17 @@
 #include <qstring.h>
 #include <qpushbutton.h>
 #include <qradiobutton.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
+#include <q3listbox.h>
+#include <q3textedit.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 #include <qpainter.h>
-#include <qfiledialog.h>
+#include <q3filedialog.h>
+//Added by qt3to4:
+#include <QLabel>
 
 #include <rd.h>
 #include <rddb.h>
@@ -99,13 +101,13 @@ EditRDPanel::EditRDPanel(RDStation *station,RDStation *cae_station,
   air_start_rml_edit[0]->setValidator(validator);
   label=new QLabel(air_start_rml_edit[0],tr("Start RML:"),this);
   label->setGeometry(135,50,65,19);
-  label->setAlignment(AlignVCenter|AlignRight);
+  label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   air_stop_rml_edit[0]=new QLineEdit(this);
   air_stop_rml_edit[0]->setGeometry(205,71,160,19);
   air_stop_rml_edit[0]->setValidator(validator);
   label=new QLabel(air_start_rml_edit[0],tr("Stop RML:"),this);
   label->setGeometry(135,71,65,19);
-  label->setAlignment(AlignVCenter|AlignRight);
+  label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
 
   //
   // Sound Panel Second Play Output
@@ -120,13 +122,13 @@ EditRDPanel::EditRDPanel(RDStation *station,RDStation *cae_station,
   air_start_rml_edit[1]->setValidator(validator);
   label=new QLabel(air_start_rml_edit[1],tr("Start RML:"),this);
   label->setGeometry(135,118,65,19);
-  label->setAlignment(AlignVCenter|AlignRight);
+  label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   air_stop_rml_edit[1]=new QLineEdit(this);
   air_stop_rml_edit[1]->setGeometry(205,139,160,19);
   air_stop_rml_edit[1]->setValidator(validator);
   label=new QLabel(air_start_rml_edit[1],tr("Stop RML:"),this);
   label->setGeometry(135,139,65,19);
-  label->setAlignment(AlignVCenter|AlignRight);
+  label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
 
   //
   // Sound Panel Third Play Output
@@ -141,13 +143,13 @@ EditRDPanel::EditRDPanel(RDStation *station,RDStation *cae_station,
   air_start_rml_edit[2]->setValidator(validator);
   label=new QLabel(air_start_rml_edit[2],tr("Start RML:"),this);
   label->setGeometry(135,186,65,19);
-  label->setAlignment(AlignVCenter|AlignRight);
+  label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   air_stop_rml_edit[2]=new QLineEdit(this);
   air_stop_rml_edit[2]->setGeometry(205,207,160,19);
   air_stop_rml_edit[2]->setValidator(validator);
   label=new QLabel(air_start_rml_edit[2],tr("Stop RML:"),this);
   label->setGeometry(135,207,65,19);
-  label->setAlignment(AlignVCenter|AlignRight);
+  label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
 
   //
   // Sound Panel Fourth Play Output
@@ -162,13 +164,13 @@ EditRDPanel::EditRDPanel(RDStation *station,RDStation *cae_station,
   air_start_rml_edit[3]->setValidator(validator);
   label=new QLabel(air_start_rml_edit[3],tr("Start RML:"),this);
   label->setGeometry(135,254,65,19);
-  label->setAlignment(AlignVCenter|AlignRight);
+  label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   air_stop_rml_edit[3]=new QLineEdit(this);
   air_stop_rml_edit[3]->setGeometry(205,275,160,19);
   air_stop_rml_edit[3]->setValidator(validator);
   label=new QLabel(air_start_rml_edit[3],tr("Stop RML:"),this);
   label->setGeometry(135,275,65,19);
-  label->setAlignment(AlignVCenter|AlignRight);
+  label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
 
   //
   // Sound Panel Fifth Play Output
@@ -183,13 +185,13 @@ EditRDPanel::EditRDPanel(RDStation *station,RDStation *cae_station,
   air_start_rml_edit[4]->setValidator(validator);
   label=new QLabel(air_start_rml_edit[4],tr("Start RML:"),this);
   label->setGeometry(135,322,65,19);
-  label->setAlignment(AlignVCenter|AlignRight);
+  label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   air_stop_rml_edit[4]=new QLineEdit(this);
   air_stop_rml_edit[4]->setGeometry(205,343,160,19);
   air_stop_rml_edit[4]->setValidator(validator);
   label=new QLabel(air_start_rml_edit[4],tr("Stop RML:"),this);
   label->setGeometry(135,343,65,19);
-  label->setAlignment(AlignVCenter|AlignRight);
+  label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
 
   //
   // Sound Panel Cue Play Output
@@ -204,13 +206,13 @@ EditRDPanel::EditRDPanel(RDStation *station,RDStation *cae_station,
   air_start_rml_edit[5]->setValidator(validator);
   label=new QLabel(air_start_rml_edit[5],tr("Start RML:"),this);
   label->setGeometry(135,390,65,19);
-  label->setAlignment(AlignVCenter|AlignRight);
+  label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   air_stop_rml_edit[5]=new QLineEdit(this);
   air_stop_rml_edit[5]->setGeometry(205,411,160,19);
   air_stop_rml_edit[5]->setValidator(validator);
   label=new QLabel(air_start_rml_edit[5],tr("Stop RML:"),this);
   label->setGeometry(135,411,65,19);
-  label->setAlignment(AlignVCenter|AlignRight);
+  label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
 
   //
   // Display Settings Section
@@ -226,7 +228,7 @@ EditRDPanel::EditRDPanel(RDStation *station,RDStation *cae_station,
   air_skin_edit->setGeometry(135,460,180,20);
   label=new QLabel(air_skin_edit,tr("Background Image:"),this);
   label->setGeometry(10,460,115,20);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   QPushButton *button=new QPushButton(tr("Select"),this);
   button->setGeometry(320,458,50,25);
   connect(button,SIGNAL(clicked()),this,SLOT(selectSkinData()));
@@ -248,7 +250,7 @@ EditRDPanel::EditRDPanel(RDStation *station,RDStation *cae_station,
   air_station_box->setSpecialValueText(tr("None"));
   air_station_label=new QLabel(air_station_box,tr("Host Panels:"),this);
   air_station_label->setGeometry(405,35,100,20);
-  air_station_label->setAlignment(AlignRight|AlignVCenter);
+  air_station_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // # of User Panels
@@ -259,7 +261,7 @@ EditRDPanel::EditRDPanel(RDStation *station,RDStation *cae_station,
   air_user_box->setSpecialValueText(tr("None"));
   air_user_label=new QLabel(air_user_box,tr("User Panels:"),this);
   air_user_label->setGeometry(405,57,100,20);
-  air_user_label->setAlignment(AlignRight|AlignVCenter);
+  air_user_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Flash Active Button
@@ -268,7 +270,7 @@ EditRDPanel::EditRDPanel(RDStation *station,RDStation *cae_station,
   air_flash_box->setGeometry(435,85,15,15);
   label=new QLabel(air_flash_box,tr("Flash Active Buttons"),this);
   label->setGeometry(455,85,150,15);
-  label->setAlignment(AlignLeft|AlignVCenter);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Pause Panel Button
@@ -277,7 +279,7 @@ EditRDPanel::EditRDPanel(RDStation *station,RDStation *cae_station,
   air_panel_pause_box->setGeometry(435,107,15,15);
   label=new QLabel(air_panel_pause_box,tr("Enable Button Pausing"),this);
   label->setGeometry(455,107,150,15);
-  label->setAlignment(AlignLeft|AlignVCenter);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Clear Cart Filter
@@ -286,7 +288,7 @@ EditRDPanel::EditRDPanel(RDStation *station,RDStation *cae_station,
   air_clearfilter_box->setGeometry(435,129,15,15);
   label=new QLabel(air_clearfilter_box,tr("Clear Cart Search Filter"),this);
   label->setGeometry(455,129,150,15);
-  label->setAlignment(AlignLeft|AlignVCenter);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Default Service
@@ -295,7 +297,7 @@ EditRDPanel::EditRDPanel(RDStation *station,RDStation *cae_station,
   air_defaultsvc_box->setGeometry(520,151,100,20);
   label=new QLabel(air_defaultsvc_box,tr("Default Service:"),this);
   label->setGeometry(385,151,130,20);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Label Template
@@ -304,7 +306,7 @@ EditRDPanel::EditRDPanel(RDStation *station,RDStation *cae_station,
   air_label_template_edit->setGeometry(520,173,sizeHint().width()-530,20);
   label=new QLabel(air_label_template_edit,tr("Label Template:"),this);
   label->setGeometry(415,173,100,20);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   //  Ok Button
@@ -430,7 +432,7 @@ QSizePolicy EditRDPanel::sizePolicy() const
 void EditRDPanel::selectSkinData()
 {
  QString filename=air_skin_edit->text();
-  filename=QFileDialog::getOpenFileName(filename,RD_IMAGE_FILE_FILTER,this,"",
+  filename=Q3FileDialog::getOpenFileName(filename,RD_IMAGE_FILE_FILTER,this,"",
 					tr("Select Image File"));
   if(!filename.isNull()) {
     air_skin_edit->setText(filename);

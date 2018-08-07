@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>AudioCart</name>
     <message>
@@ -1260,9 +1262,9 @@ Přesto smazat?</translation>
     </message>
     <message>
         <source>Deleting cart %06u will also empty the clipboard.
-      <byte value="x9"/>Do you still want to proceed?</source>
+      	Do you still want to proceed?</source>
         <translation>Smazání vozíku %06u vyprázdní také schránku
-      <byte value="x9"/>Přesto pokračovat?</translation>
+      	Přesto pokračovat?</translation>
     </message>
     <message>
         <source>Empty Clipboard</source>

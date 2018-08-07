@@ -30,7 +30,7 @@
 RDMulticaster::RDMulticaster(QObject *parent)
   : QObject(parent)
 {
-  multi_socket=new QSocketDevice(QSocketDevice::Datagram);
+  multi_socket=new Q3SocketDevice(Q3SocketDevice::Datagram);
   multi_notifier=new QSocketNotifier(multi_socket->socket(),
 				     QSocketNotifier::Read,this);
   connect(multi_notifier,SIGNAL(activated(int)),this,SLOT(activatedData(int)));
@@ -66,7 +66,7 @@ void RDMulticaster::subscribe(const QHostAddress &addr)
     if(setsockopt(multi_socket->socket(),IPPROTO_IP,IP_ADD_MEMBERSHIP,
 		  &mreq,sizeof(mreq))<0) {
       fprintf(stderr,tr("Unable to subscribe to multicast address")+" \""+
-	      addr.toString()+"\" ["+strerror(errno)+"]");
+	      addr.toString()+"\" ["+QString(strerror(errno))+"]");
     }
   }
 }
@@ -84,7 +84,7 @@ void RDMulticaster::unsubscribe(const QHostAddress &addr)
     if(setsockopt(multi_socket->socket(),IPPROTO_IP,IP_DROP_MEMBERSHIP,
 		  &mreq,sizeof(mreq))<0) {
       fprintf(stderr,tr("Unable to subscribe to multicast address")+" \""+
-	      addr.toString()+"\" ["+strerror(errno)+"]");
+	      addr.toString()+"\" ["+QString(strerror(errno))+"]");
     }
   }
 }

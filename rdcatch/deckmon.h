@@ -21,16 +21,18 @@
 #ifndef DECKMON_H
 #define DECKMON_H
 
-#include <qframe.h>
+#include <q3frame.h>
 #include <qlabel.h>
 #include <qpalette.h>
 #include <qpushbutton.h>
+//Added by qt3to4:
+#include <QResizeEvent>
 
 #include <rdplaymeter.h>
 #include <rdrecording.h>
 #include <rddeck.h>
 
-class DeckMon : public QFrame
+class DeckMon : public Q3Frame
 {
   Q_OBJECT
  public:

@@ -31,9 +31,11 @@
 #include <qmessagebox.h>
 #include <qpushbutton.h>
 #include <qlabel.h>
-#include <qfiledialog.h>
+#include <q3filedialog.h>
 #include <qtextcodec.h>
 #include <qtranslator.h>
+//Added by qt3to4:
+#include <QPixmap>
 
 #include <dbversion.h>
 #include <rd.h>
@@ -406,7 +408,7 @@ int main(int argc,char *argv[])
   // Load Translations
   //
   QTranslator qt(0);
-  qt.load(QString(QTDIR)+QString("/translations/qt_")+QTextCodec::locale(),".");
+  qt.load(QString("/usr/share/qt4/translations/qt_")+QTextCodec::locale(),".");
   a.installTranslator(&qt);
   QTranslator rd(0);
   rd.load(QString(PREFIX)+QString("/share/rivendell/librd_")+

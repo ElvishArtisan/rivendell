@@ -26,16 +26,19 @@
 #include <unistd.h>
 #include <qdialog.h>
 #include <qdir.h>
-#include <qlistview.h>
+#include <q3listview.h>
 #include <qlabel.h>
 #include <qlineedit.h>
-#include <qprogressbar.h>
+#include <q3progressbar.h>
 #include <qtimer.h>
 #include <qfile.h>
 #include <qspinbox.h>
 #include <qcombobox.h>
 #include <qcheckbox.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
+//Added by qt3to4:
+#include <QCloseEvent>
+#include <QResizeEvent>
 
 #include <rdcdplayer.h>
 #include <rdcddbrecord.h>
@@ -76,7 +79,7 @@ class DiskRipper : public QDialog
   void normalizeCheckData(bool);
   void autotrimCheckData(bool);
   void selectionChangedData();
-  void doubleClickedData(QListViewItem *item,const QPoint &pt,int col);
+  void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
   void closeData();
   
  protected:
@@ -93,13 +96,13 @@ class DiskRipper : public QDialog
   RDCddbRecord rip_cddb_record;
   RDCddbLookup *rip_cddb_lookup;
   QLabel *rip_track_label;
-  QListView *rip_track_list;
+  Q3ListView *rip_track_list;
   QPushButton *rip_rip_button;
   bool rip_rip_aborted;
   QPushButton *rip_close_button;
   QLineEdit *rip_album_edit;
   QLineEdit *rip_artist_edit;
-  QTextEdit *rip_other_edit;
+  Q3TextEdit *rip_other_edit;
   QCheckBox *rip_apply_box;
   QLabel *rip_apply_label;
   RDTransportButton *rip_eject_button;
@@ -114,9 +117,9 @@ class DiskRipper : public QDialog
   QString rip_track;
   QString rip_title;
   QLabel *rip_diskbar_label;
-  QProgressBar *rip_disk_bar;
+  Q3ProgressBar *rip_disk_bar;
   QLabel *rip_trackbar_label;
-  QProgressBar *rip_track_bar;
+  Q3ProgressBar *rip_track_bar;
   QCheckBox *rip_normalize_box;
   QSpinBox *rip_normalize_spin;
   QLabel *rip_normalize_label;

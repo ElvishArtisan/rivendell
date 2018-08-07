@@ -22,9 +22,11 @@
 #ifndef CLOCK_LISTVIEW_H
 #define CLOCK_LISTVIEW_H
 
-#include <qlistview.h>
+#include <q3listview.h>
 #include <qpixmap.h>
-#include <qpopupmenu.h>
+#include <q3popupmenu.h>
+//Added by qt3to4:
+#include <QMouseEvent>
 
 #include <rdlistview.h>
 #include <rdlog_event.h>
@@ -47,7 +49,7 @@ class ClockListView : public RDListView
   void contentsMousePressEvent(QMouseEvent *e);
 
  private:
-  QPopupMenu *clock_menu;
+  Q3PopupMenu *clock_menu;
   RDListViewItem *clock_menu_item;
   QWidget *clock_parent;
 };

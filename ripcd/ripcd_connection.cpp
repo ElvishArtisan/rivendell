@@ -25,7 +25,7 @@ RipcdConnection::RipcdConnection(int id,int fd)
   ripcd_id=id;
   ripcd_authenticated=false;
   accum="";
-  ripcd_socket=new QSocket();
+  ripcd_socket=new Q3Socket();
   ripcd_socket->setSocket(fd);
 }
 
@@ -42,7 +42,7 @@ int RipcdConnection::id() const
 }
 
 
-QSocket *RipcdConnection::socket() const
+Q3Socket *RipcdConnection::socket() const
 {
   return ripcd_socket;
 }

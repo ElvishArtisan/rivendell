@@ -2,7 +2,7 @@
 //
 // A utility for displaying messages on the desktop
 //
-//   (C) Copyright 2009,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2009,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,6 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <stdio.h>
 #include <stdlib.h>
 #include <syslog.h>
 

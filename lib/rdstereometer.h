@@ -27,9 +27,11 @@
 #include <qsize.h>
 #include <qsizepolicy.h>
 #include <qstring.h>
+//Added by qt3to4:
+#include <QPaintEvent>
 #include <rdsegmeter.h>
 
-#define CLIP_LIGHT_COLOR red
+#define CLIP_LIGHT_COLOR Qt::red
 
 class RDStereoMeter : public QWidget
 {

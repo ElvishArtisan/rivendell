@@ -111,8 +111,6 @@ make install DESTDIR=$RPM_BUILD_ROOT
 rm -f $RPM_BUILD_ROOT/@LOCAL_PREFIX@/@RD_LIB_PATH@/libqmysqlutf*
 mkdir $RPM_BUILD_ROOT/.qt
 touch $RPM_BUILD_ROOT/.qt/qt
-rm -f $RPM_BUILD_ROOT/lib/security/pam_rd.la
-rm -f $RPM_BUILD_ROOT/lib64/security/pam_rd.la
 rm -rf $RPM_BUILD_ROOT/@libexecdir@/logos
 if test "@WIN32_SOURCE@" ; then
   mkdir -p $RPM_BUILD_ROOT/var/win32
@@ -136,7 +134,6 @@ cp conf/asound.conf-sample $RPM_BUILD_ROOT/@DOC_PATH@/
 cp utils/sas_shim/rc.sas_shim $RPM_BUILD_ROOT/@DOC_PATH@/
 mkdir -p $RPM_BUILD_ROOT/@DOC_PATH@/misc
 cp docs/misc/colors $RPM_BUILD_ROOT/@DOC_PATH@/misc/
-cp docs/misc/pam_rd.txt $RPM_BUILD_ROOT/@DOC_PATH@/misc/
 cp docs/misc/reports.txt $RPM_BUILD_ROOT/@DOC_PATH@/misc/
 cp docs/misc/ALSA.txt $RPM_BUILD_ROOT/@DOC_PATH@/misc/
 cp docs/misc/RDMONITOR.txt $RPM_BUILD_ROOT/@DOC_PATH@/misc/
@@ -291,7 +288,6 @@ rm -rf $RPM_BUILD_ROOT
 @LOCAL_PREFIX@/bin/rd_config
 @LOCAL_PREFIX@/bin/sage_endec_rwt.sh
 @LOCAL_PREFIX@/bin/rd_backup
-@LOCAL_PREFIX@/bin/rdchunk
 @LOCAL_PREFIX@/bin/rdmemcheck.sh
 @LOCAL_PREFIX@/bin/rdrender
 %attr(4755,root,root)@LOCAL_PREFIX@/bin/ripcd
@@ -394,15 +390,12 @@ rm -rf $RPM_BUILD_ROOT
 @LOCAL_PREFIX@/share/desktop-directories/rivendell-rivendell.directory
 @LOCAL_PREFIX@/share/desktop-directories/rivendell-utilities.directory
 /etc/xdg/menus/applications-merged/rivendell-rivendell.menu
-/@RD_LIB_PATH@/security/pam_rd.so
 /.qt/qt
 @libexecdir@/*
 %attr(6755,root,root) @libexecdir@/rdxport.cgi
 %attr(6755,root,root) @libexecdir@/webget.cgi
 @sysconfdir@/rd-bin.conf
 @WIN32_PATH@
-/etc/pam.d/rivendell
-/etc/pam.d/rdalsaconfig-root
 /etc/security/console.apps/rdalsaconfig-root
 %{_mandir}/man1/rdclilogedit.1.gz
 %{_mandir}/man1/rdconvert.1.gz

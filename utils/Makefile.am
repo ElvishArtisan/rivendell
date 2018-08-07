@@ -26,7 +26,6 @@ endif
 SUBDIRS = $(ALSACONFIG_RD_OPT)\
           rddgimport\
           rdcheckcuts\
-          rdchunk\
           rdcleandirs\
           rdclilogedit\
           rdcollect\

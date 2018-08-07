@@ -41,8 +41,8 @@ MainObject::MainObject(QObject *parent)
   QString src_station;
   QString dest_station;
   QString sql;
-  RDSqlQuery *q;
-  RDSqlQuery *q1;
+  QSqlQuery *q;
+  QSqlQuery *q1;
 
   //
   // Read Command Options
@@ -100,41 +100,31 @@ MainObject::MainObject(QObject *parent)
   // Open Databases
   //
   src_db=QSqlDatabase::addDatabase("QMYSQL3","SRCDB");
-  if(!src_db) {
-    fprintf(stderr,"panel_copy: can't open source mySQL database\n");
-    exit(1);
-  }
-  src_db->setDatabaseName(rd_config->mysqlDbname());
-  src_db->setUserName(rd_config->mysqlUsername());
-  src_db->setPassword(rd_config->mysqlPassword());
-  src_db->setHostName(src_hostname);
-  if(!src_db->open()) {
+  src_db.setDatabaseName(rd_config->mysqlDbname());
+  src_db.setUserName(rd_config->mysqlUsername());
+  src_db.setPassword(rd_config->mysqlPassword());
+  src_db.setHostName(src_hostname);
+  if(!src_db.open()) {
     fprintf(stderr,"panel_copy: unable to connect to source mySQL server\n");
-    src_db->removeDatabase(rd_config->mysqlDbname());
-    exit(256);
+    exit(1);
   }
 
   dest_db=QSqlDatabase::addDatabase("QMYSQL3","DESTDB");
-  if(!dest_db) {
-    fprintf(stderr,"panel_copy: can't open destination mySQL database\n");
-    exit(1);
-  }
-  dest_db->setDatabaseName(rd_config->mysqlDbname());
-  dest_db->setUserName(rd_config->mysqlUsername());
-  dest_db->setPassword(rd_config->mysqlPassword());
-  dest_db->setHostName(dest_hostname);
-  if(!dest_db->open()) {
+  dest_db.setDatabaseName(rd_config->mysqlDbname());
+  dest_db.setUserName(rd_config->mysqlUsername());
+  dest_db.setPassword(rd_config->mysqlPassword());
+  dest_db.setHostName(dest_hostname);
+  if(!dest_db.open()) {
     fprintf(stderr,
 	    "panel_copy: unable to connect to destination mySQL server\n");
-    dest_db->removeDatabase(rd_config->mysqlDbname());
-    exit(256);
+    exit(1);
   }
 
   //
   // Check Database Versions
   //
   sql=QString("select DB from VERSION");
-  q=new RDSqlQuery(sql,src_db);
+  q=new QSqlQuery(sql,src_db);
   if(!q->first()) {
     fprintf(stderr,"panel_copy: unable to read source database version\n");
     exit(256);
@@ -145,7 +135,7 @@ MainObject::MainObject(QObject *parent)
   }
   delete q;
 
-  q=new RDSqlQuery(sql,dest_db);
+  q=new QSqlQuery(sql,dest_db);
   if(!q->first()) {
     fprintf(stderr,
 	    "panel_copy: unable to read destination database version\n");
@@ -173,7 +163,7 @@ MainObject::MainObject(QObject *parent)
   // Delete current destination entries
   //
   sql="delete from PANELS";
-  q=new RDSqlQuery(sql,dest_db);
+  q=new QSqlQuery(sql,dest_db);
   delete q;
 
   //
@@ -189,7 +179,7 @@ MainObject::MainObject(QObject *parent)
     "CART,"+           // 06
     "DEFAULT_COLOR "+  // 07
     "from PANELS";
-  q=new RDSqlQuery(sql,src_db);
+  q=new QSqlQuery(sql,src_db);
   while(q->next()) {
     sql=QString("insert into PANELS set ")+
       QString().sprintf("TYPE=%d,",q->value(0).toInt())+
@@ -200,7 +190,7 @@ MainObject::MainObject(QObject *parent)
       "LABEL=\""+RDEscapeString(q->value(5).toString())+"\","+
       QString().sprintf("CART=%d,",q->value(6).toInt())+
       "DEFAULT_COLOR=\""+RDEscapeString(q->value(7).toString())+"\"";
-    q1=new RDSqlQuery(sql,dest_db);
+    q1=new QSqlQuery(sql,dest_db);
     delete q1;
   }
   delete q;

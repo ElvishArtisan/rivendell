@@ -21,18 +21,22 @@
 #ifndef RDSLIDER_H
 #define RDSLIDER_H
 
-#include <qwidget.h>
-#include <qslider.h>
-#include <qrangecontrol.h>
-#include <qcolor.h>
-#include <qpalette.h>
-#include <qsize.h>
-#include <qpixmap.h>
+#include <Q3RangeControl>
+#include <QWidget>
+#include <QSlider>
+#include <QColor>
+#include <QPalette>
+#include <QSize>
+#include <QPixmap>
+#include <QMouseEvent>
+#include <QPaintEvent>
 
-class RDSlider : public QWidget,public QRangeControl
+class RDSlider : public QWidget,public Q3RangeControl
 {
   Q_OBJECT
  public:
+  enum TickSetting {NoTicks=0,TicksLeft=1,TicksRight=2,TicksAbove=3,
+		    TicksBelow=4,TicksBothSides=5};
   enum Orientation {Left=0,Right=1,Up=2,Down=3};
   RDSlider(QWidget *parent);
   RDSlider(RDSlider::Orientation orient,QWidget *parent);
@@ -43,7 +47,7 @@ class RDSlider : public QWidget,public QRangeControl
   void setTracking(bool enable);
   bool tracking() const;
   void setTickInterval(int i);
-  void setTickmarks(QSlider::TickSetting s);
+  void setTickmarks(TickSetting s);
   void setMinValue(int min_value);
   void setMaxValue(int max_value);
   void setRange(int min_value,int max_value);
@@ -91,7 +95,7 @@ class RDSlider : public QWidget,public QRangeControl
   bool tracking_enabled;
   bool deferred_change;
   int tick_interval;
-  QSlider::TickSetting tick_setting;
+  TickSetting tick_setting;
 };
 
 

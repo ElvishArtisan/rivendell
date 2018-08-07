@@ -22,9 +22,9 @@
 #define RDSOCKET_H
 
 #include <qobject.h>
-#include <qsocket.h>
+#include <q3socket.h>
 
-class RDSocket : public QSocket
+class RDSocket : public Q3Socket
 {
   Q_OBJECT
  public:

@@ -32,7 +32,11 @@
 #include <qcheckbox.h>
 #include <qcombobox.h>
 #include <qpixmap.h>
-#include <qscrollview.h>
+#include <q3scrollview.h>
+//Added by qt3to4:
+#include <QCloseEvent>
+#include <QResizeEvent>
+#include <QLabel>
 
 #include <rd.h>
 #include <rdcatch_connect.h>
@@ -103,8 +107,8 @@ class MainWidget : public QWidget
   void meterLevelData(int,int,int,int);
   void abortData(int);
   void monitorData(int);
-  void selectionChangedData(QListViewItem *item);
-  void doubleClickedData(QListViewItem *,const QPoint &,int);
+  void selectionChangedData(Q3ListViewItem *item);
+  void doubleClickedData(Q3ListViewItem *,const QPoint &,int);
   void filterChangedData(bool state);
   void filterActivatedData(int id);
   void clockData();
@@ -141,7 +145,7 @@ class MainWidget : public QWidget
   void LoadGeometry();
   void SaveGeometry();
   std::vector<CatchMonitor *> catch_monitor;
-  QScrollView *catch_monitor_view;
+  Q3ScrollView *catch_monitor_view;
   VBox *catch_monitor_vbox;
   std::vector<CatchConnector *> catch_connect;
   QSqlDatabase *catch_db;

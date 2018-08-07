@@ -30,11 +30,11 @@
 #include <qpushbutton.h>
 #include <qlineedit.h>
 #include <qfont.h>
-#include <qsocketdevice.h>
+#include <q3socketdevice.h>
 #include <qhostaddress.h>
 #include <qmessagebox.h>
 #include <qtimer.h>
-#include <qtextstream.h>
+#include <q3textstream.h>
 #include <qrect.h>
 #include <qpoint.h>
 #include <qpainter.h>
@@ -43,6 +43,8 @@
 #include <qtextcodec.h>
 #include <qtranslator.h>
 #include <qsettings.h>
+//Added by qt3to4:
+#include <QPixmap>
 
 #include <rdcmd_switch.h>
 
@@ -71,7 +73,7 @@
 RDCmdSwitch *rdcmdswitch=NULL;
 
 MainWidget::MainWidget(QWidget *parent)
-  :QMainWindow(parent)
+  :Q3MainWindow(parent)
 {
   //
   // Set Window Size
@@ -106,7 +108,7 @@ MainWidget::MainWidget(QWidget *parent)
   QLabel *label=new QLabel(host,"Sent To:",this);
   label->setGeometry(10,16,65,14);
   label->setFont(label_font);
-  label->setAlignment(AlignRight);
+  label->setAlignment(Qt::AlignRight);
   for(unsigned i=0;i<rdcmdswitch->keys();i++) {
     if(rdcmdswitch->key(i)=="--to-host") {
       rdcmdswitch->setProcessed(i,true);
@@ -120,7 +122,7 @@ MainWidget::MainWidget(QWidget *parent)
   label=new QLabel(port_box,"Dest:",this);
   label->setGeometry(270,16,30,14);
   label->setFont(label_font);
-  label->setAlignment(AlignRight);
+  label->setAlignment(Qt::AlignRight);
   port_box->insertItem(tr("RML"));
   port_box->insertItem(tr("RML (no echo)"));
   port_box->insertItem(tr("Set Port"));
@@ -134,7 +136,7 @@ MainWidget::MainWidget(QWidget *parent)
   port_edit_label=new QLabel(port_edit,tr("UDP Port:"),this);
   port_edit_label->setGeometry(sizeHint().width()-130,16,65,14);
   port_edit_label->setFont(label_font);
-  port_edit_label->setAlignment(AlignRight);
+  port_edit_label->setAlignment(Qt::AlignRight);
   port_edit_label->setDisabled(true);
 
   command=new QLineEdit(this);
@@ -143,7 +145,7 @@ MainWidget::MainWidget(QWidget *parent)
   label=new QLabel(command,tr("Command:"),this);
   label->setGeometry(10,46,65,14);
   label->setFont(label_font);
-  label->setAlignment(AlignRight);
+  label->setAlignment(Qt::AlignRight);
 
   response=new QLineEdit(this);
   response->setGeometry(80,70,sizeHint().width()-90,25);
@@ -151,7 +153,7 @@ MainWidget::MainWidget(QWidget *parent)
   response_label=new QLabel(response,tr("Response:"),this);
   response_label->setGeometry(10,76,65,14);
   response_label->setFont(label_font);
-  response_label->setAlignment(AlignRight);
+  response_label->setAlignment(Qt::AlignRight);
 
   send=new QPushButton(tr("&Send Command"),this);
   send->setGeometry(10,sizeHint().height()-50,120,40);
@@ -164,9 +166,9 @@ MainWidget::MainWidget(QWidget *parent)
   quit->setDefault(true);
   connect(quit,SIGNAL(clicked()),qApp,SLOT(quit()));
 
-  udp_command=new QSocketDevice(QSocketDevice::Datagram);
+  udp_command=new Q3SocketDevice(Q3SocketDevice::Datagram);
 
-  udp_response=new QSocketDevice(QSocketDevice::Datagram);
+  udp_response=new Q3SocketDevice(Q3SocketDevice::Datagram);
   udp_response->bind(QHostAddress(),RD_RML_REPLY_PORT);
   udp_response->setBlocking(false);
 
@@ -418,8 +420,8 @@ void MainObject::InitStream()
       exit(1);
     }
   }
-  input_stream=new QTextStream(f,IO_ReadOnly);
-  input_stream->setEncoding(QTextStream::UnicodeUTF8);
+  input_stream=new Q3TextStream(f,QIODevice::ReadOnly);
+  input_stream->setEncoding(Q3TextStream::UnicodeUTF8);
 }
 
 
@@ -440,15 +442,6 @@ bool MainObject::GetNextChar(QChar *c)
     *input_stream >> *c; 
    return false;
   }
-
-  /*
-  if(rml_cmd.isNull()) {
-    if(read(input_fd,c,1)<=0) {
-      return true;
-    }
-    return false;
-  }
-  */
   if(rml_ptr>=rml_cmd.length()) {
     return true;
   }
@@ -460,7 +453,7 @@ bool MainObject::GetNextChar(QChar *c)
 void MainObject::ProcessCommands()
 {
   QChar c;
-  QSocketDevice *udp_command=new QSocketDevice(QSocketDevice::Datagram);
+  Q3SocketDevice *udp_command=new Q3SocketDevice(Q3SocketDevice::Datagram);
   QString rml="";
   bool active=false;
 
@@ -530,7 +523,7 @@ int main(int argc,char *argv[])
     qt_path=tr_path;
 #else
     tr_path=QString(PREFIX)+QString("/share/rivendell/");
-    qt_path=QString(QTDIR)+QString("/translation/");
+    qt_path=QString("/usr/share/qt4/translation/");
 #endif  // WIN32
     QTranslator qt(0);
     qt.load(qt_path+QString("qt_")+QTextCodec::locale(),".");

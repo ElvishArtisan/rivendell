@@ -20,6 +20,9 @@
 
 #include <qmessagebox.h>
 #include <qpushbutton.h>
+//Added by qt3to4:
+#include <QCloseEvent>
+#include <QResizeEvent>
 
 #include <rdadd_log.h>
 #include <rdapplication.h>
@@ -57,13 +60,13 @@ ListLogs::ListLogs(RDLogPlay *log,QWidget *parent)
   //
   // Log List
   //
-  list_log_list=new QListView(this);
+  list_log_list=new Q3ListView(this);
   list_log_list->setAllColumnsShowFocus(true);
   list_log_list->setItemMargin(5);
   connect(list_log_list,
-          SIGNAL(doubleClicked(QListViewItem *,const QPoint &,int)),
+          SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
           this,
-          SLOT(doubleClickedData(QListViewItem *,const QPoint &,int)));
+          SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
   list_log_list->addColumn(tr("NAME"));
   list_log_list->setColumnAlignment(0,Qt::AlignLeft);
   list_log_list->addColumn(tr("DESCRIPTION"));
@@ -156,7 +159,7 @@ void ListLogs::closeEvent(QCloseEvent *e)
 }
 
 
-void ListLogs::doubleClickedData(QListViewItem *,const QPoint &,int)
+void ListLogs::doubleClickedData(Q3ListViewItem *,const QPoint &,int)
 {
   loadButtonData();
 }
@@ -164,7 +167,7 @@ void ListLogs::doubleClickedData(QListViewItem *,const QPoint &,int)
 
 void ListLogs::loadButtonData()
 {
-  QListViewItem *item=list_log_list->selectedItem();
+  Q3ListViewItem *item=list_log_list->selectedItem();
   if(item==NULL) {
     return;
   }
@@ -247,7 +250,7 @@ void ListLogs::RefreshList()
 {
   RDSqlQuery *q;
   QString sql;
-  QListViewItem *l;
+  Q3ListViewItem *l;
   QDate current_date=QDate::currentDate();
   QStringList services_list;
 
@@ -263,7 +266,7 @@ void ListLogs::RefreshList()
     list_filter_widget->whereSql();
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    l=new QListViewItem(list_log_list);
+    l=new Q3ListViewItem(list_log_list);
     l->setText(0,q->value(0).toString());
     l->setText(1,q->value(1).toString());
     l->setText(2,q->value(2).toString());

@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name></name>
     <message>
@@ -17,11 +19,11 @@
     <name>QObject</name>
     <message>
         <source>Couldn&apos;t initialize QSql driver!</source>
-        <translation>Não foi possível inicializar driver QSql !</translation>
+        <translation type="obsolete">Não foi possível inicializar driver QSql !</translation>
     </message>
     <message>
         <source>Couldn&apos;t open mySQL connection!</source>
-        <translation>Não foi possível conetar ao mySQL !</translation>
+        <translation type="obsolete">Não foi possível conetar ao mySQL !</translation>
     </message>
     <message>
         <source>Sequentially</source>
@@ -89,7 +91,7 @@
     </message>
     <message>
         <source>PLAY</source>
-        <translation type="unfinished">SIMPLES<byte value="x9"/></translation>
+        <translation type="unfinished">SIMPLES	</translation>
     </message>
     <message>
         <source>SEGUE</source>
@@ -589,6 +591,14 @@
     </message>
     <message>
         <source>is not playable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t initialize MySql driver!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t open MySQL connection on</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2066,7 +2076,7 @@ Por Favor, cheque suas configurações e tenbte outra vez.</translation>
     </message>
     <message>
         <source>PLAY</source>
-        <translation type="obsolete">SIMPLES<byte value="x9"/></translation>
+        <translation type="obsolete">SIMPLES	</translation>
     </message>
     <message>
         <source>SEGUE</source>
@@ -2412,11 +2422,11 @@ por favor, tente novamente!</translation>
     <name>RDSqlDatabaseStatus</name>
     <message>
         <source>Database connection restored.</source>
-        <translation>Conexão à Base de Daods reestabelecido.</translation>
+        <translation type="obsolete">Conexão à Base de Daods reestabelecido.</translation>
     </message>
     <message>
         <source>Database connection failed : </source>
-        <translation>Conexão à Base de Daods falhou: </translation>
+        <translation type="obsolete">Conexão à Base de Daods falhou: </translation>
     </message>
 </context>
 <context>

@@ -18,7 +18,10 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qheader.h>
+#include <q3header.h>
+//Added by qt3to4:
+#include <Q3PopupMenu>
+#include <QMouseEvent>
 
 #include <rdapplication.h>
 #include <rdcart.h>
@@ -36,7 +39,7 @@ CatchListView::CatchListView(QWidget *parent)
   //
   // Right-Click Menu
   //
-  catch_menu=new QPopupMenu(NULL);
+  catch_menu=new Q3PopupMenu(NULL);
   connect(catch_menu,SIGNAL(aboutToShow()),this,SLOT(aboutToShowData()));
   catch_menu->
     insertItem(tr("Edit Cue Markers"),this,SLOT(editAudioMenuData()),0,0);
@@ -65,43 +68,43 @@ void CatchListView::editAudioMenuData()
 
 void CatchListView::contentsMousePressEvent(QMouseEvent *e)
 {
-  QListView::contentsMousePressEvent(e);
-  QListView::contentsMousePressEvent(e);
+  Q3ListView::contentsMousePressEvent(e);
+  Q3ListView::contentsMousePressEvent(e);
   catch_menu_item=selectedItem();
   if(catch_menu_item==NULL) {
     catch_cutname="";
   }
   else {
     switch(catch_menu_item->text(28).toUInt()) {
-	case RDRecording::Recording:
-	case RDRecording::Playout:
-	case RDRecording::Upload:
-	case RDRecording::Download:
-	  catch_cutname=catch_menu_item->text(25);
-	  break;
+    case RDRecording::Recording:
+    case RDRecording::Playout:
+    case RDRecording::Upload:
+    case RDRecording::Download:
+      catch_cutname=catch_menu_item->text(25);
+      break;
 
-	case RDRecording::MacroEvent:
-	case RDRecording::SwitchEvent:
-	  catch_cutname="";
-	  break;
+    case RDRecording::MacroEvent:
+    case RDRecording::SwitchEvent:
+      catch_cutname="";
+      break;
     }
   }
   switch(e->button()) {
-      case QMouseEvent::RightButton:
-	catch_menu->setGeometry(e->globalX(),e->globalY(),
-				catch_menu->sizeHint().width(),
-				catch_menu->sizeHint().height());
-	catch_menu->exec();
-	break;
+  case Qt::RightButton:
+    catch_menu->setGeometry(e->globalX(),e->globalY(),
+			    catch_menu->sizeHint().width(),
+			    catch_menu->sizeHint().height());
+    catch_menu->exec();
+    break;
 
-      default:
-	e->ignore();
-	break;
+  default:
+    e->ignore();
+    break;
   }
 }
 
 
 void CatchListView::contentsMouseDoubleClickEvent(QMouseEvent *e)
 {
-  QListView::contentsMouseDoubleClickEvent(e);
+  Q3ListView::contentsMouseDoubleClickEvent(e);
 }

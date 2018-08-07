@@ -21,7 +21,7 @@
 #include <math.h>
 
 #include <qfile.h>
-#include <qurl.h>
+#include <q3url.h>
 #include <qapplication.h>
 
 #include <rddb.h>
@@ -500,7 +500,7 @@ void RDFeed::setMediaLinkMode(RDFeed::MediaLinkMode mode) const
 QString RDFeed::audioUrl(RDFeed::MediaLinkMode mode,
 			 const QString &cgi_hostname,unsigned cast_id)
 {
-  QUrl url(baseUrl());
+  Q3Url url(baseUrl());
   QString ret;
   RDPodcast *cast;
 

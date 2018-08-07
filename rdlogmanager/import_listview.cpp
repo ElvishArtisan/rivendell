@@ -18,8 +18,15 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdragobject.h>
-#include <qheader.h>
+#include <q3dragobject.h>
+#include <q3header.h>
+//Added by qt3to4:
+#include <QDropEvent>
+#include <QFocusEvent>
+#include <QPixmap>
+#include <QMouseEvent>
+#include <Q3PopupMenu>
+#include <QDragEnterEvent>
 
 #include <rdcart.h>
 #include <rdconf.h>
@@ -39,7 +46,7 @@
 #include "../icons/notemarker.xpm"
 
 ImportListView::ImportListView(QWidget *parent)
-  : QListView(parent)
+  : Q3ListView(parent)
 {
   import_parent=parent;
 
@@ -59,7 +66,7 @@ ImportListView::ImportListView(QWidget *parent)
   //
   // Right Button Menu
   //
-  import_menu=new QPopupMenu(this);
+  import_menu=new Q3PopupMenu(this);
   connect(import_menu,SIGNAL(aboutToShow()),this,SLOT(aboutToShowData()));
   import_menu->
     insertItem(tr("Insert Log Note"),this,SLOT(insertNoteMenuData()),0,0);
@@ -138,8 +145,8 @@ void ImportListView::save()
 
 void ImportListView::refreshList(int line)
 {
-  QListViewItem *item;
-  QListViewItem *select_item=NULL;
+  Q3ListViewItem *item;
+  Q3ListViewItem *select_item=NULL;
   QString sql;
   RDEventImportItem *i_item;
   int total_len=0;
@@ -147,7 +154,7 @@ void ImportListView::refreshList(int line)
 
   clear();
   for(int i=import_list->size()-1;i>=0;i--) {
-    item=new QListViewItem(this);
+    item=new Q3ListViewItem(this);
     if((i_item=import_list->item(i))!=NULL) {
       if((i_item->eventType()==RDLogLine::Cart)||
 	 (i_item->eventType()==RDLogLine::Macro)) {
@@ -427,7 +434,7 @@ void ImportListView::deleteMenuData()
 
 void ImportListView::contentsMousePressEvent(QMouseEvent *e)
 {
-  QListView::contentsMousePressEvent(e);
+  Q3ListView::contentsMousePressEvent(e);
   import_menu_item=selectedItem();
   if(import_menu_item==NULL) {
     import_menu_i_item=NULL;
@@ -439,7 +446,7 @@ void ImportListView::contentsMousePressEvent(QMouseEvent *e)
     }
   }
   switch(e->button()) {
-      case QMouseEvent::RightButton:
+      case Qt::RightButton:
 	import_menu->setGeometry(import_parent->geometry().x()+
 				 geometry().x()+e->pos().x()+2,
 				 import_parent->geometry().y()+
@@ -459,7 +466,7 @@ void ImportListView::contentsMousePressEvent(QMouseEvent *e)
 
 void ImportListView::contentsMouseDoubleClickEvent(QMouseEvent *e)
 {
-  QListView::contentsMouseDoubleClickEvent(e);
+  Q3ListView::contentsMouseDoubleClickEvent(e);
   import_menu_item=selectedItem();
   if(import_menu_item==NULL) {
     return;
@@ -473,7 +480,7 @@ void ImportListView::contentsMouseDoubleClickEvent(QMouseEvent *e)
 
 void ImportListView::focusOutEvent(QFocusEvent *e)
 {
-  QListViewItem *item=selectedItem();
+  Q3ListViewItem *item=selectedItem();
   if(item==NULL) {
     return;
   }
@@ -489,7 +496,7 @@ void ImportListView::dragEnterEvent(QDragEnterEvent *e)
 
 void ImportListView::dropEvent(QDropEvent *e)
 {
-  QListViewItem *item;
+  Q3ListViewItem *item;
   unsigned cartnum;
   int line=0;
   QPoint pos(e->pos().x(),e->pos().y()-header()->sectionRect(0).height());

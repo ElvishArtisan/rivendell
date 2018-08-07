@@ -25,7 +25,7 @@
 #include <qsqldatabase.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
-#include <qlistview.h>
+#include <q3listview.h>
 
 #include <rduser.h>
 #include <rdmatrix.h>
@@ -41,7 +41,7 @@ class ListVguestResources : public QDialog
 
  private slots:
   void editData();
-  void doubleClickedData(QListViewItem *item,const QPoint &pt,int col);
+  void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
   void okData();
   void cancelData();
 
@@ -49,7 +49,7 @@ class ListVguestResources : public QDialog
   void RefreshList();
   RDMatrix *list_matrix;
   RDMatrix::VguestType list_type;
-  QListView *list_list_view;
+  Q3ListView *list_list_view;
   int list_size;
   QString list_table;
 };

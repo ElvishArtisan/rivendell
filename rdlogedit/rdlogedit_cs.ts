@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>AddMeta</name>
     <message>
@@ -149,55 +151,55 @@
     </message>
     <message>
         <source>TIME</source>
-        <translation>ČAS</translation>
+        <translation type="obsolete">ČAS</translation>
     </message>
     <message>
         <source>TRANS</source>
-        <translation>PŘECHOD</translation>
+        <translation type="obsolete">PŘECHOD</translation>
     </message>
     <message>
         <source>CART</source>
-        <translation>VOZÍK</translation>
+        <translation type="obsolete">VOZÍK</translation>
     </message>
     <message>
         <source>GROUP</source>
-        <translation>SKUPINA</translation>
+        <translation type="obsolete">SKUPINA</translation>
     </message>
     <message>
         <source>LENGTH</source>
-        <translation>DÉLKA</translation>
+        <translation type="obsolete">DÉLKA</translation>
     </message>
     <message>
         <source>TITLE</source>
-        <translation>NÁZEV</translation>
+        <translation type="obsolete">NÁZEV</translation>
     </message>
     <message>
         <source>ARTIST</source>
-        <translation>UMĚLEC</translation>
+        <translation type="obsolete">UMĚLEC</translation>
     </message>
     <message>
         <source>CLIENT</source>
-        <translation>ZÁKAZNÍK</translation>
+        <translation type="obsolete">ZÁKAZNÍK</translation>
     </message>
     <message>
         <source>AGENCY</source>
-        <translation>AGENTURA</translation>
+        <translation type="obsolete">AGENTURA</translation>
     </message>
     <message>
         <source>LABEL</source>
-        <translation>ŠTÍTEK</translation>
+        <translation type="obsolete">ŠTÍTEK</translation>
     </message>
     <message>
         <source>SOURCE</source>
-        <translation>ZDROJ</translation>
+        <translation type="obsolete">ZDROJ</translation>
     </message>
     <message>
         <source>LINE ID</source>
-        <translation>ID ŘÁDKU</translation>
+        <translation type="obsolete">ID ŘÁDKU</translation>
     </message>
     <message>
         <source>COUNT</source>
-        <translation>POČÍTADLO</translation>
+        <translation type="obsolete">POČÍTADLO</translation>
     </message>
     <message>
         <source>Insert
@@ -402,10 +404,6 @@ jež jsou pro vybranou službu zakázány!</translation>
         <translation>Soubor se zápisem nelze uložit, chyba při mazání zvuku!</translation>
     </message>
     <message>
-        <source>EXT DATA</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Link Start</source>
         <translation type="unfinished"></translation>
     </message>
@@ -439,6 +437,62 @@ jež jsou pro vybranou službu zakázány!</translation>
     </message>
     <message>
         <source>Log already being edited by</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trans</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cart</source>
+        <translation type="unfinished">Vozík</translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished">Název</translation>
+    </message>
+    <message>
+        <source>Artist</source>
+        <translation type="unfinished">Umělec</translation>
+    </message>
+    <message>
+        <source>Client</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Agency</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation type="unfinished">Štítek</translation>
+    </message>
+    <message>
+        <source>Source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ext Data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Line ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Count</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -769,51 +823,51 @@ vybrané služby!</translation>
     </message>
     <message>
         <source>LOG NAME</source>
-        <translation>NÁZEV ZÁPISU</translation>
+        <translation type="obsolete">NÁZEV ZÁPISU</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation>POPIS</translation>
+        <translation type="obsolete">POPIS</translation>
     </message>
     <message>
         <source>SERVICE</source>
-        <translation>SLUŽBA</translation>
+        <translation type="obsolete">SLUŽBA</translation>
     </message>
     <message>
         <source>MUSIC</source>
-        <translation>HUDBA</translation>
+        <translation type="obsolete">HUDBA</translation>
     </message>
     <message>
         <source>TRAFFIC</source>
-        <translation>PŘENOS</translation>
+        <translation type="obsolete">PŘENOS</translation>
     </message>
     <message>
         <source>TRACKS</source>
-        <translation>STOPY</translation>
+        <translation type="obsolete">STOPY</translation>
     </message>
     <message>
         <source>VALID FROM</source>
-        <translation>PLATNÉ OD</translation>
+        <translation type="obsolete">PLATNÉ OD</translation>
     </message>
     <message>
         <source>VALID TO</source>
-        <translation>PLATNÉ DO</translation>
+        <translation type="obsolete">PLATNÉ DO</translation>
     </message>
     <message>
         <source>AUTO REFRESH</source>
-        <translation>AUTOOBNOVA</translation>
+        <translation type="obsolete">AUTOOBNOVA</translation>
     </message>
     <message>
         <source>ORIGIN</source>
-        <translation>PŮVOD</translation>
+        <translation type="obsolete">PŮVOD</translation>
     </message>
     <message>
         <source>LAST LINKED</source>
-        <translation>NAPOSLEDY SPOJENO</translation>
+        <translation type="obsolete">NAPOSLEDY SPOJENO</translation>
     </message>
     <message>
         <source>LAST MODIFIED</source>
-        <translation>NAPOSLEDY ZMĚNĚNO</translation>
+        <translation type="obsolete">NAPOSLEDY ZMĚNĚNO</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -961,6 +1015,54 @@ Vyhledejte svého správce systému kvůli aktualizaci!</translation>
     </message>
     <message>
         <source>Unknown command option</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Log Name</source>
+        <translation type="unfinished">Název zápisu</translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Music</source>
+        <translation type="unfinished">Hudba</translation>
+    </message>
+    <message>
+        <source>Traffic</source>
+        <translation type="unfinished">Přenos</translation>
+    </message>
+    <message>
+        <source>Tracks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Valid From</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Valid To</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Auto Refresh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Origin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last Linked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last Modified</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1125,31 +1227,31 @@ Track</source>
     </message>
     <message>
         <source>TIME</source>
-        <translation type="unfinished">ČAS</translation>
+        <translation type="obsolete">ČAS</translation>
     </message>
     <message>
         <source>TRANS</source>
-        <translation type="unfinished">PŘECHOD</translation>
+        <translation type="obsolete">PŘECHOD</translation>
     </message>
     <message>
         <source>CART</source>
-        <translation type="unfinished">VOZÍK</translation>
+        <translation type="obsolete">VOZÍK</translation>
     </message>
     <message>
         <source>GROUP</source>
-        <translation type="unfinished">SKUPINA</translation>
+        <translation type="obsolete">SKUPINA</translation>
     </message>
     <message>
         <source>LENGTH</source>
-        <translation type="unfinished">DÉLKA</translation>
+        <translation type="obsolete">DÉLKA</translation>
     </message>
     <message>
         <source>TITLE</source>
-        <translation type="unfinished">NÁZEV</translation>
+        <translation type="obsolete">NÁZEV</translation>
     </message>
     <message>
         <source>ARTIST</source>
-        <translation type="unfinished">UMĚLEC</translation>
+        <translation type="obsolete">UMĚLEC</translation>
     </message>
     <message>
         <source>Do Over</source>
@@ -1279,12 +1381,8 @@ therefore only existing transitions will be editable.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>ALBUM</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>LABEL</source>
-        <translation type="unfinished">ŠTÍTEK</translation>
+        <translation type="obsolete">ŠTÍTEK</translation>
     </message>
     <message>
         <source>Log Locked</source>
@@ -1297,6 +1395,38 @@ therefore only existing transitions will be editable.</source>
     <message>
         <source>Talk</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trans</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cart</source>
+        <translation type="unfinished">Vozík</translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished">Název</translation>
+    </message>
+    <message>
+        <source>Artist</source>
+        <translation type="unfinished">Umělec</translation>
+    </message>
+    <message>
+        <source>Album</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation type="unfinished">Štítek</translation>
     </message>
 </context>
 </TS>

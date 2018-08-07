@@ -27,8 +27,11 @@
 #define RDLIST_LOGS_H
 
 #include <qdialog.h>
-#include <qlistview.h>
+#include <q3listview.h>
 #include <qpushbutton.h>
+//Added by qt3to4:
+#include <QResizeEvent>
+#include <QCloseEvent>
 
 #include <rdlogfilter.h>
 
@@ -43,7 +46,7 @@ class RDListLogs : public QDialog
 
  private slots:
   void filterChangedData(const QString &where_sql);
-  void doubleClickedData(QListViewItem *,const QPoint &,int);
+  void doubleClickedData(Q3ListViewItem *,const QPoint &,int);
   void closeEvent(QCloseEvent *);
   void okButtonData();
   void cancelButtonData();
@@ -53,7 +56,7 @@ class RDListLogs : public QDialog
 
  private:
   void RefreshList();
-  QListView *list_log_list;
+  Q3ListView *list_log_list;
   QString *list_logname;
   QPushButton *list_ok_button;
   QPushButton *list_cancel_button;

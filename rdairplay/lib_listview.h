@@ -23,6 +23,9 @@
 
 #include <rdlistview.h>
 #include <rdlog_line.h>
+//Added by qt3to4:
+#include <QDropEvent>
+#include <QDragEnterEvent>
 
 class LibListView : public RDListView
 {

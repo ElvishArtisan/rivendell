@@ -22,8 +22,11 @@
 #define RDALSACONFIG_H
 
 #include <qwidget.h>
-#include <qlistbox.h>
+#include <q3listbox.h>
 #include <qlabel.h>
+//Added by qt3to4:
+#include <QResizeEvent>
+#include <QCloseEvent>
 
 #include <rdtransportbutton.h>
 
@@ -55,13 +58,13 @@ class MainWidget : public QWidget
   void closeEvent(QCloseEvent *e);
 
  private:
-  void LoadList(QListBox *system,QListBox *config);
+  void LoadList(Q3ListBox *system,Q3ListBox *config);
   bool PcmUnused(int card,int device);
-  void MoveItem(QListBox *src,QListBox *dest);
+  void MoveItem(Q3ListBox *src,Q3ListBox *dest);
   QLabel *alsa_system_label;
-  QListBox *alsa_system_list;
+  Q3ListBox *alsa_system_list;
   QLabel *alsa_config_label;
-  QListBox *alsa_config_list;
+  Q3ListBox *alsa_config_list;
   RDTransportButton *alsa_up_button;
   RDTransportButton *alsa_down_button;
   QPushButton *alsa_save_button;

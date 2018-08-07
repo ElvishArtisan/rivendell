@@ -20,8 +20,8 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -DQTDIR=\"@QT_DIR@\" @QT_CXXFLAGS@ -I$(top_srcdir)/lib
-LIBS = @QT_LIBS@ -L$(top_srcdir)/lib
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -I$(top_srcdir)/lib @QT4_CFLAGS@ -DQT3_SUPPORT -I/usr/include/Qt3Support
+LIBS = -L$(top_srcdir)/lib
 MOC = @QT_MOC@
 
 # The dependency for qt's Meta Object Compiler (moc)
@@ -37,8 +37,8 @@ uninstall-local:
 	rm -f $(DESTDIR)$(prefix)/share/rivendell/rdcastmanager_*.qm
 
 all:	
-	@QT_BIN@/lupdate rdcastmanager.pro
-	@QT_BIN@/lrelease rdcastmanager.pro
+	lupdate-qt4 rdcastmanager.pro
+	lrelease-qt4 rdcastmanager.pro
 
 bin_PROGRAMS = rdcastmanager
 
@@ -53,7 +53,7 @@ nodist_rdcastmanager_SOURCES = moc_edit_cast.cpp\
                                moc_pick_report_dates.cpp\
                                moc_rdcastmanager.cpp
 
-rdcastmanager_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
+rdcastmanager_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
 
 EXTRA_DIST = rdcastmanager.pro\
              rdcastmanager_cs.ts\

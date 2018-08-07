@@ -18,7 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qtextstream.h>
+#include <q3textstream.h>
 
 #include "rdconf.h"
 #include "rdcart.h"

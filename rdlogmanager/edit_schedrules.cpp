@@ -20,12 +20,15 @@
 
 #include <qdialog.h>
 #include <qstring.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qpainter.h>
 #include <qmessagebox.h>
 
 #include <qspinbox.h>
 #include <qcombobox.h>
+//Added by qt3to4:
+#include <QCloseEvent>
+#include <QLabel>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -129,9 +132,9 @@ EditSchedRules::EditSchedRules(QString clock,unsigned *artistsep,SchedRulesList 
   list_box_label->setFont(font);
   list_box_label->setGeometry(10,40,200,20);
   connect(list_schedCodes_view,
-	  SIGNAL(doubleClicked(QListViewItem *,const QPoint &,int)),
+	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,
-	  SLOT(doubleClickedData(QListViewItem *,const QPoint &,int)));
+	  SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
 
  edit_modified=false;
  Load();
@@ -255,7 +258,7 @@ void EditSchedRules::importData()
 }
 
 
-void EditSchedRules::doubleClickedData(QListViewItem *item,const QPoint &pt,int col)
+void EditSchedRules::doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col)
 {
   editData();
 }

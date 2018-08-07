@@ -38,7 +38,7 @@ RDStringList::RDStringList(const QStringList &lhs)
 }
 
 
-RDStringList RDStringList::split(const QString &sep,const QString &str,
+RDStringList RDStringList::split(const QChar &sep,const QString &str,
 				 const QString &esc)
 {
   if(esc.isEmpty()) {
@@ -48,7 +48,7 @@ RDStringList RDStringList::split(const QString &sep,const QString &str,
   bool escape=false;
   QChar e=esc.at(0);
   list.push_back(QString());
-  for(unsigned i=0;i<str.length();i++) {
+  for(int i=0;i<str.length();i++) {
     if(str.at(i)==e) {
       escape=!escape;
     }

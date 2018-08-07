@@ -1,10 +1,8 @@
-## automake.am
-##
-## Automake.am for rivendell/rdlogedit
+## Makefile.am
 ##
 ## Use automake to process this into a Makefile.in
 ##
-##   (C) Copyright 2002-2005,2016 Fred Gleason <fredg@paravelsystems.com>
+##   (C) Copyright 2002-2005,2016-2018 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -20,8 +18,8 @@
 ##   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -DQTDIR=\"@QT_DIR@\" @QT_CXXFLAGS@ -I$(top_srcdir)/lib
-LIBS = @QT_LIBS@ -L$(top_srcdir)/lib
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -I$(top_srcdir)/lib @QT4_CFLAGS@ -DQT3_SUPPORT -I/usr/include/Qt3Support
+LIBS = -L$(top_srcdir)/lib
 MOC = @QT_MOC@
 
 # The dependency for qt's Meta Object Compiler (moc)
@@ -37,8 +35,8 @@ uninstall-local:
 	rm -f $(DESTDIR)$(prefix)/share/rivendell/rdlogedit_*.qm
 
 all:	
-	@QT_BIN@/lupdate rdlogedit.pro
-	@QT_BIN@/lrelease rdlogedit.pro
+	lupdate-qt4 rdlogedit.pro
+	lrelease-qt4 rdlogedit.pro
 
 bin_PROGRAMS = rdlogedit
 
@@ -71,7 +69,7 @@ nodist_rdlogedit_SOURCES = moc_add_meta.cpp\
                            moc_render_dialog.cpp\
                            moc_voice_tracker.cpp
 
-rdlogedit_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
+rdlogedit_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
 
 EXTRA_DIST = rdlogedit.pro\
              rdlogedit_cs.ts\

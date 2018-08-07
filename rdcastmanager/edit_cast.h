@@ -24,15 +24,15 @@
 #include <vector>
 
 #include <qdialog.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qspinbox.h>
 #include <qlineedit.h>
 #include <qsqldatabase.h>
 #include <qcombobox.h>
-#include <qdatetimeedit.h>
+#include <q3datetimeedit.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 
 #include <rdfeed.h>
 #include <rdpodcast.h>
@@ -61,7 +61,7 @@ class EditCast : public QDialog
   QLineEdit *cast_item_title_edit;
   QLineEdit *cast_item_author_edit;
   QLineEdit *cast_item_origin_edit;
-  QTextEdit *cast_item_description_edit;
+  Q3TextEdit *cast_item_description_edit;
   QLineEdit *cast_item_category_edit;
   QLineEdit *cast_item_comments_edit;
   QLineEdit *cast_item_sourcetext_edit;
@@ -70,9 +70,9 @@ class EditCast : public QDialog
   QComboBox *cast_item_expiration_box;
   QLabel *cast_item_expiration_label;
   QPushButton *cast_item_expiration_button;
-  QDateEdit *cast_item_expiration_edit;
-  QDateTimeEdit *cast_item_effective_edit;
-  QButtonGroup *cast_item_status_group;
+  Q3DateEdit *cast_item_expiration_edit;
+  Q3DateTimeEdit *cast_item_effective_edit;
+  Q3ButtonGroup *cast_item_status_group;
   int cast_ypos;
   RDPodcast::Status cast_status;
 };

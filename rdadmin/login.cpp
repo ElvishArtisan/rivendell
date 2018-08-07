@@ -25,12 +25,14 @@
 #include <qpushbutton.h>
 #include <qradiobutton.h>
 #include <qlineedit.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qlabel.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
+//Added by qt3to4:
+#include <QPaintEvent>
 
 #include <rdtextvalidator.h>
 
@@ -92,7 +94,7 @@ Login::Login(QString *username,QString *password,QWidget *parent)
   QLabel *login_name_label=new QLabel(login_name_edit,tr("User &Name:"),this);
   login_name_label->setGeometry(10,10,85,19);
   login_name_label->setFont(font);
-  login_name_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  login_name_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Login Password
@@ -106,7 +108,7 @@ Login::Login(QString *username,QString *password,QWidget *parent)
     new QLabel(login_password_edit,tr("&Password:"),this);
   login_password_label->setGeometry(10,31,85,19);
   login_password_label->setFont(font);
-  login_password_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  login_password_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
 }
 

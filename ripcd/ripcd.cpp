@@ -156,17 +156,17 @@ MainObject::MainObject(QObject *parent)
   //
   // The RML Sockets
   //
-  ripcd_rml_send=new QSocketDevice(QSocketDevice::Datagram);
+  ripcd_rml_send=new Q3SocketDevice(Q3SocketDevice::Datagram);
 
-  ripcd_rml_echo=new QSocketDevice(QSocketDevice::Datagram);
+  ripcd_rml_echo=new Q3SocketDevice(Q3SocketDevice::Datagram);
   ripcd_rml_echo->bind(QHostAddress(),RD_RML_ECHO_PORT);
   ripcd_rml_echo->setBlocking(false);
 
-  ripcd_rml_noecho=new QSocketDevice(QSocketDevice::Datagram);
+  ripcd_rml_noecho=new Q3SocketDevice(Q3SocketDevice::Datagram);
   ripcd_rml_noecho->bind(QHostAddress(),RD_RML_NOECHO_PORT);
   ripcd_rml_noecho->setBlocking(false);
 
-  ripcd_rml_reply=new QSocketDevice(QSocketDevice::Datagram);
+  ripcd_rml_reply=new Q3SocketDevice(Q3SocketDevice::Datagram);
   ripcd_rml_reply->bind(QHostAddress(),RD_RML_REPLY_PORT);
   ripcd_rml_reply->setBlocking(false);
 
@@ -357,16 +357,16 @@ void MainObject::readyReadData(int conn_id)
   while((n=conn->socket()->readBlock(data,1500))>0) {
     data[n]=0;
     QString line=QString::fromUtf8(data);
-    for(unsigned i=0;i<line.length();i++) {
+    for(int i=0;i<line.length();i++) {
       QChar c=line.ref(i);
-      if(c=="!") {
+      if(c.toAscii()=='!') {
 	if(!DispatchCommand(conn)) {
 	  return;
 	}
 	conn->accum="";
       }
       else {
-	if((c!="\r")&&(c!="\n")) {
+	if((c.toAscii()!='\r')&&(c.toAscii()!='\n')) {
 	  conn->accum+=c;
 	}
       }
@@ -451,7 +451,7 @@ void MainObject::garbageData()
 {
   for(unsigned i=0;i<ripcd_conns.size();i++) {
     if(ripcd_conns[i]!=NULL) {
-      if(ripcd_conns[i]->socket()->state()==QSocket::Idle) {
+      if(ripcd_conns[i]->socket()->state()==Q3Socket::Idle) {
 	delete ripcd_conns[i];
 	ripcd_conns[i]=NULL;
       }
@@ -521,7 +521,7 @@ bool MainObject::DispatchCommand(RipcdConnection *conn)
       return true;
     }
     str=cmds[3];
-    for(unsigned i=4;i<cmds.size();i++) {
+    for(int i=4;i<cmds.size();i++) {
       str+=" "+cmds[i];
     }
     str+="!";
@@ -555,7 +555,7 @@ bool MainObject::DispatchCommand(RipcdConnection *conn)
       return true;
     }
     str=cmds[3];
-    for(unsigned i=4;i<cmds.size();i++) {
+    for(int i=4;i<cmds.size();i++) {
       str+=" "+cmds[i];
     }
     str+="!";
@@ -604,7 +604,7 @@ bool MainObject::DispatchCommand(RipcdConnection *conn)
 
   if(cmds[0]=="ON") {  // Send Notification
     QString msg;
-    for(unsigned i=1;i<cmds.size();i++) {
+    for(int i=1;i<cmds.size();i++) {
       msg+=QString(cmds[i])+" ";
     }
     msg=msg.left(msg.length()-1);
@@ -631,7 +631,7 @@ bool MainObject::DispatchCommand(RipcdConnection *conn)
 void MainObject::EchoCommand(int ch,const QString &cmd)
 {
   //  printf("EchoCommand(%d,%s)\n",ch,(const char *)cmd.utf8());
-  if(ripcd_conns[ch]->socket()->state()==QSocket::Connected) {
+  if(ripcd_conns[ch]->socket()->state()==Q3Socket::Connected) {
     ripcd_conns[ch]->socket()->writeBlock(cmd.utf8(),cmd.utf8().length());
   }
 }
@@ -649,7 +649,7 @@ void MainObject::BroadcastCommand(const QString &cmd,int except_ch)
 }
 
 
-void MainObject::ReadRmlSocket(QSocketDevice *dev,RDMacro::Role role,
+void MainObject::ReadRmlSocket(Q3SocketDevice *dev,RDMacro::Role role,
 			       bool echo)
 {
   char buffer[1501];
@@ -674,7 +674,7 @@ void MainObject::ReadRmlSocket(QSocketDevice *dev,RDMacro::Role role,
 	}
 	else {
 	  LogLine(RDConfig::LogDebug,
-		  QString("rejected rml: \"")+buffer+
+		  QString("rejected rml: \"")+QString(buffer)+
 		  "\": on-air flag not active");
 	  break;
 	}

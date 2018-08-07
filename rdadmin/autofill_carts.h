@@ -23,7 +23,7 @@
 
 #include <qdialog.h>
 #include <qsqldatabase.h>
-#include <qlistview.h>
+#include <q3listview.h>
 
 #include <rdsvc.h>
 
@@ -45,7 +45,7 @@ class AutofillCarts : public QDialog
  private:
   void RefreshList();
   RDSvc *svc_svc;
-  QListView *svc_cart_list;
+  Q3ListView *svc_cart_list;
   QString svc_cart_filter;
   QString svc_cart_group;
 };

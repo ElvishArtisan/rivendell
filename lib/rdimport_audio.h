@@ -24,18 +24,21 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <qdialog.h>
-#include <qlistview.h>
+#include <q3listview.h>
 #include <qlabel.h>
 #include <qlineedit.h>
-#include <qprogressbar.h>
+#include <q3progressbar.h>
 #include <qtimer.h>
 #include <qfile.h>
 #include <qspinbox.h>
 #include <qcombobox.h>
 #include <qcheckbox.h>
-#include <qtextedit.h>
-#include <qbuttongroup.h>
+#include <q3textedit.h>
+#include <q3buttongroup.h>
 #include <qradiobutton.h>
+//Added by qt3to4:
+#include <QCloseEvent>
+#include <QPaintEvent>
 
 #include <rdaudioexport.h>
 #include <rdaudioimport.h>
@@ -93,7 +96,7 @@ class RDImportAudio : public QDialog
   RDSettings *import_default_settings;
   RDCut *import_clipboard;
   bool *import_running;
-  QButtonGroup *import_mode_group;
+  Q3ButtonGroup *import_mode_group;
   QRadioButton *import_importmode_button;
   QRadioButton *import_exportmode_button;
   QLabel *import_in_filename_label;

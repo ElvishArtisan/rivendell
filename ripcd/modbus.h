@@ -25,7 +25,7 @@
 #include <vector>
 
 #include <qsignalmapper.h>
-#include <qsocket.h>
+#include <q3socket.h>
 #include <qtimer.h>
 
 #include <rd.h>
@@ -65,7 +65,7 @@ class Modbus : public Switcher
   int modbus_istate;
   int modbus_input_bytes;
   std::vector<char> modbus_input_states;
-  QSocket *modbus_socket;
+  Q3Socket *modbus_socket;
   QTimer *modbus_poll_timer;
   QTimer *modbus_watchdog_timer;
   bool modbus_watchdog_active;

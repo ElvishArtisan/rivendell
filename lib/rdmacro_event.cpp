@@ -113,7 +113,7 @@ bool RDMacroEvent::load(const QString &str)
   RDMacro cmd;
   QString rmlstr="";
 
-  for(unsigned i=0;i<str.length();i++) {
+  for(int i=0;i<str.length();i++) {
     QChar c=str.at(i);
     rmlstr+=c;
     if(c=='!') {

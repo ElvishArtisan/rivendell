@@ -24,11 +24,16 @@
 
 #include <qdialog.h>
 #include <qstring.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qpainter.h>
 #include <qmessagebox.h>
 #include <qcolordialog.h>
 #include <qsignalmapper.h>
+//Added by qt3to4:
+#include <QCloseEvent>
+#include <QPaintEvent>
+#include <QLabel>
+#include <Q3PopupMenu>
 
 #include <rd.h>
 #include <rddb.h>
@@ -75,7 +80,7 @@ EditGrid::EditGrid(QString servicename,QWidget *parent)
     label=new QLabel(QDate::longDayName(i+1),this);
     label->setGeometry(20,14+75*i,90,16);
     label->setFont(bold_font);
-    label->setAlignment(AlignCenter);
+    label->setAlignment(Qt::AlignCenter);
     for(int j=0;j<24;j++) {
       edit_hour_button[i][j]=new RDPushButton(this);
       edit_hour_button[i][j]->setGeometry(10+42*j,30+75*i,42,40);
@@ -92,7 +97,7 @@ EditGrid::EditGrid(QString servicename,QWidget *parent)
     label=new QLabel(QDate::longDayName(i+1),this);
     label->setGeometry(20,44+75*i,90,16);
     label->setFont(bold_font);
-    label->setAlignment(AlignCenter);
+    label->setAlignment(Qt::AlignCenter);
     for(int j=0;j<24;j++) {
       edit_hour_button[i][j]=new RDPushButton(this);
       edit_hour_button[i][j]->setGeometry(10+42*j,60+75*i,42,40);
@@ -109,7 +114,7 @@ EditGrid::EditGrid(QString servicename,QWidget *parent)
   //
   // Right Button Menu
   //
-  edit_right_menu=new QPopupMenu(this);
+  edit_right_menu=new Q3PopupMenu(this);
   connect(edit_right_menu,SIGNAL(aboutToShow()),this,SLOT(aboutToShowData()));
   edit_right_menu->
     insertItem(tr("Edit Clock"),this,SLOT(editClockData()),0,0);
@@ -279,7 +284,7 @@ void EditGrid::closeData()
 void EditGrid::paintEvent(QPaintEvent *e)
 {
   QPainter *p=new QPainter(this);
-  p->setPen(QColor(black));
+  p->setPen(Qt::black);
   for(int i=0;i<5;i++) {
     p->drawRect(5,21+75*i,sizeHint().width()-10,55);
   }

@@ -436,7 +436,7 @@ void MainObject::ExportCut(RDCart *cart,RDCut *cut)
       FILE *f=NULL;
       f0=f0.split(".",conv->destinationFile(),true);
       QString filename;
-      for(unsigned i=0;i<f0.size()-1;i++) {
+      for(int i=0;i<f0.size()-1;i++) {
 	filename+=f0[i]+".";
       }
       filename+="xml";

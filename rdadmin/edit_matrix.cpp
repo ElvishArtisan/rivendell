@@ -20,9 +20,12 @@
 
 #include <qdialog.h>
 #include <qstring.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qpainter.h>
 #include <qmessagebox.h>
+//Added by qt3to4:
+#include <QLabel>
+#include <QPaintEvent>
 //#include <qsqldatabase.h>
 
 #include <rd.h>

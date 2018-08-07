@@ -24,10 +24,14 @@
 #include <signal.h>
 #include <fcntl.h>
 #include <unistd.h>
-#include <qfiledialog.h>
+#include <q3filedialog.h>
 #include <qlineedit.h>
 #include <qmessagebox.h>
 #include <qpushbutton.h>
+//Added by qt3to4:
+#include <QCloseEvent>
+#include <QResizeEvent>
+#include <QLabel>
 
 #include <rd.h>
 #include <rdconf.h>
@@ -65,7 +69,7 @@ RenderDialog::RenderDialog(RDStation *station,RDSystem *system,RDConfig *config,
   // Dialogs
   //
   render_progress_dialog=
-    new QProgressDialog(tr("Rendering Log..."),tr("Cancel"),0,this,"",true);
+    new Q3ProgressDialog(tr("Rendering Log..."),tr("Cancel"),0,this,"",true);
   render_progress_dialog->setCaption("RDLogEdit - "+tr("Render Progress"));
 
   //
@@ -128,7 +132,7 @@ RenderDialog::RenderDialog(RDStation *station,RDSystem *system,RDConfig *config,
   render_starttime_label=new QLabel(tr("Virtual Start Time")+":",this);
   render_starttime_label->setFont(button_font);
   render_starttime_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-  render_starttime_edit=new QTimeEdit(this);
+  render_starttime_edit=new Q3TimeEdit(this);
   render_starttime_edit->setDisabled(true);
 
   //
@@ -225,7 +229,7 @@ void RenderDialog::selectData()
 {
   if(render_to_box->currentItem()) {
     QString filename=
-      QFileDialog::getSaveFileName(render_save_path,RD_AUDIO_FILE_FILTER,
+      Q3FileDialog::getSaveFileName(render_save_path,RD_AUDIO_FILE_FILTER,
 				   this,"","RDLogEdit - "+tr("Render Log"));
     if(!filename.isEmpty()) {
       render_filename_edit->setText(filename);

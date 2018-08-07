@@ -44,7 +44,7 @@ Sas32000::Sas32000(RDMatrix *matrix,QObject *parent)
     sas_device->setSpeed(tty->baudRate());
     sas_device->setWordLength(tty->dataBits());
     sas_device->setParity(tty->parity());
-    sas_device->open(IO_Raw|IO_ReadWrite);
+    sas_device->open(QIODevice::Unbuffered|QIODevice::ReadWrite);
   }
   delete tty;
 

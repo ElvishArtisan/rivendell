@@ -21,14 +21,14 @@
 #include <qdialog.h>
 #include <qstring.h>
 #include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
+#include <q3listbox.h>
+#include <q3textedit.h>
 #include <qlabel.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -85,7 +85,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
     new QLabel(edit_description_edit,tr("&Report Description:"),this);
   label->setGeometry(10,10,155,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Export Filter Type
@@ -99,7 +99,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   label=new QLabel(edit_description_edit,tr("Export &Filter:"),this);
   label->setGeometry(10,31,155,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Station ID
@@ -111,7 +111,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   label=new QLabel(edit_stationid_edit,tr("Station ID:"),this);
   label->setGeometry(10,52,155,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Cart Number Parameters
@@ -119,7 +119,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   label=new QLabel(tr("Cart Number Parameters:"),this);
   label->setGeometry(10,73,155,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   
   edit_cartzeros_box=new QCheckBox(this);
   edit_cartzeros_box->setGeometry(170,75,15,15);
@@ -128,7 +128,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   label=new QLabel(edit_cartzeros_box,tr("Use Leading Zeros"),this);
   label->setGeometry(187,73,120,19);
   label->setFont(check_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   edit_cartdigits_spin=new QSpinBox(this);
   edit_cartdigits_spin->setGeometry(350,73,40,19);
@@ -136,7 +136,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   edit_cartdigits_label=new QLabel(edit_cartdigits_spin,tr("Digits:"),this);
   edit_cartdigits_label->setGeometry(300,73,45,19);
   edit_cartdigits_label->setFont(check_font);
-  edit_cartdigits_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  edit_cartdigits_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Station Type
@@ -150,7 +150,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   label=new QLabel(edit_stationtype_box,tr("Station Type:"),this);
   label->setGeometry(10,94,155,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Lines Per Page
@@ -161,7 +161,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   label=new QLabel(edit_linesperpage_spin,tr("Lines per Page:"),this);
   label->setGeometry(255,94,100,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   edit_linesperpage_spin->hide();
   label->hide();
 
@@ -174,7 +174,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   label=new QLabel(edit_servicename_edit,tr("Ser&vice Name:"),this);
   label->setGeometry(10,115,155,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Station Format
@@ -185,7 +185,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   label=new QLabel(edit_stationformat_edit,tr("Station &Format:"),this);
   label->setGeometry(10,136,155,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Linux Export Path
@@ -197,7 +197,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   label=new QLabel(edit_path_edit,tr("Linux Export Path:"),this);
   label->setGeometry(10,157,155,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Linux Post Export Command
@@ -208,7 +208,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   label=new QLabel(edit_path_edit,tr("Linux Post Export Cmd:"),this);
   label->setGeometry(10,178,155,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Windows Export Path
@@ -219,7 +219,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   label=new QLabel(edit_winpath_edit,tr("Windows Export Path:"),this);
   label->setGeometry(10,199,155,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Windows Post Export Command
@@ -230,7 +230,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   label=new QLabel(edit_path_edit,tr("Windows Post Export Cmd:"),this);
   label->setGeometry(10,219,155,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Type Selectors
@@ -238,28 +238,28 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   label=new QLabel(tr("Export Event Types:"),this);
   label->setGeometry(10,240,155,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   edit_traffic_box=new QCheckBox(this);
   edit_traffic_box->setGeometry(170,242,15,15);
   edit_traffic_label=new QLabel(tr("Traffic"),this);
   edit_traffic_label->setGeometry(187,241,80,19);
   edit_traffic_label->setFont(check_font);
-  edit_traffic_label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  edit_traffic_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   
   edit_music_box=new QCheckBox(this);
   edit_music_box->setGeometry(270,243,15,15);
   edit_music_label=new QLabel(tr("Music"),this);
   edit_music_label->setGeometry(287,241,80,19);
   edit_music_label->setFont(check_font);
-  edit_music_label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  edit_music_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   edit_generic_box=new QCheckBox(this);
   edit_generic_box->setGeometry(370,243,15,15);
   label=new QLabel(tr("All"),this);
   label->setGeometry(387,241,80,19);
   label->setFont(check_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   connect(edit_generic_box,SIGNAL(toggled(bool)),
 	  this,SLOT(genericEventsToggledData(bool)));
 
@@ -269,21 +269,21 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   label=new QLabel(tr("Export Events From:"),this);
   label->setGeometry(10,262,155,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   edit_forcetraffic_box=new QCheckBox(this);
   edit_forcetraffic_box->setGeometry(170,264,15,15);
   label=new QLabel(tr("Traffic Log"),this);
   label->setGeometry(187,262,80,19);
   label->setFont(check_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   
   edit_forcemusic_box=new QCheckBox(this);
   edit_forcemusic_box->setGeometry(270,264,15,15);
   label=new QLabel(tr("Music Log"),this);
   label->setGeometry(287,262,80,19);
   label->setFont(check_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Include Only On Air Events
@@ -295,7 +295,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   label=new QLabel(edit_onairflag_box,tr("Include Only OnAir Events:"),this);
   label->setGeometry(10,283,155,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Daypart Filter
@@ -306,21 +306,21 @@ EditReport::EditReport(QString rptname,QWidget *parent)
     new QLabel(edit_daypart_check,tr("Filter by Daypart"),this);
   edit_daypart_label->setGeometry(edit_daypart_check->geometry().x()+20,313,155,19);
   edit_daypart_label->setFont(font);
-  edit_daypart_label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  edit_daypart_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
-  edit_starttime_edit=new QTimeEdit(this);
+  edit_starttime_edit=new Q3TimeEdit(this);
   edit_starttime_edit->setGeometry(150,334,80,20);
   edit_starttime_label=new QLabel(edit_starttime_edit,tr("Start Time:"),this);
   edit_starttime_label->setGeometry(65,334,80,20);
   edit_starttime_label->setFont(font);
-  edit_starttime_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  edit_starttime_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
-  edit_endtime_edit=new QTimeEdit(this);
+  edit_endtime_edit=new Q3TimeEdit(this);
   edit_endtime_edit->setGeometry(335,334,80,20);
   edit_endtime_label=new QLabel(edit_endtime_edit,tr("End Time:"),this);
   edit_endtime_label->setGeometry(250,334,80,20);
   edit_endtime_label->setFont(font);
-  edit_endtime_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  edit_endtime_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   connect(edit_daypart_check,SIGNAL(toggled(bool)),
   	  edit_starttime_label,SLOT(setEnabled(bool)));
@@ -369,7 +369,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   label=new QLabel(edit_group_box,tr("Filter by Groups"),this);
   label->setGeometry(edit_group_box->geometry().x()+20,573,155,19);
   label->setFont(font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   connect(edit_group_box,SIGNAL(toggled(bool)),
 	  edit_group_sel,SLOT(setEnabled(bool)));
 

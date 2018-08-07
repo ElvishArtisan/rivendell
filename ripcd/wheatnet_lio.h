@@ -24,7 +24,7 @@
 #include <vector>
 
 #include <qsignalmapper.h>
-#include <qsocket.h>
+#include <q3socket.h>
 #include <qtimer.h>
 
 #include <rd.h>
@@ -63,7 +63,7 @@ class WheatnetLio : public Switcher
   void ProcessLioevent(int chan,QString &cmd);
   void ProcessCommand(const QString &cmd);
   void SendCommand(const QString &cmd);
-  QSocket *lio_socket;
+  Q3Socket *lio_socket;
   QTimer *lio_watchdog_timer;
   bool lio_watchdog_active;
   QHostAddress lio_ip_address;

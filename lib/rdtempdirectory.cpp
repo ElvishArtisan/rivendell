@@ -41,7 +41,7 @@ RDTempDirectory::~RDTempDirectory()
 {
   if(temp_dir!=NULL) {
     QStringList files=temp_dir->entryList(QDir::Files);
-    for(unsigned i=0;i<files.size();i++) {
+    for(int i=0;i<files.size();i++) {
       temp_dir->remove(files[i]);
     }
     temp_dir->rmdir(temp_dir->path());

@@ -234,7 +234,7 @@ VGuest::VGuest(RDMatrix *matrix,QObject *parent)
 	vguest_device[i]->setSpeed(tty->baudRate());
 	vguest_device[i]->setWordLength(tty->dataBits());
 	vguest_device[i]->setParity(tty->parity());
-	vguest_device[i]->open(IO_Raw|IO_ReadWrite);
+	vguest_device[i]->open(QIODevice::Unbuffered|QIODevice::ReadWrite);
       }
       delete tty;
     }
@@ -536,8 +536,8 @@ void VGuest::errorData(int err,int id)
 {
   int interval=VGUEST_RECONNECT_MIN_INTERVAL;
 
-  switch((QSocket::Error)err) {
-      case QSocket::ErrConnectionRefused:
+  switch((Q3Socket::Error)err) {
+      case Q3Socket::ErrConnectionRefused:
 	interval=GetHoldoff();
 	if(!vguest_error_notified[id]) {
 	  LogLine(RDConfig::LogNotice,QString().sprintf(
@@ -549,7 +549,7 @@ void VGuest::errorData(int err,int id)
 	vguest_reconnect_timer[id]->start(interval,true);
 	break;
 
-      case QSocket::ErrHostNotFound:
+      case Q3Socket::ErrHostNotFound:
 	if(!vguest_error_notified[id]) {
 	  LogLine(RDConfig::LogWarning,QString().sprintf(
 	    "Error on connection to vGuest device at %s:%d: Host Not Found",
@@ -559,7 +559,7 @@ void VGuest::errorData(int err,int id)
 	}
 	break;
 
-      case QSocket::ErrSocketRead:
+      case Q3Socket::ErrSocketRead:
 	if(!vguest_error_notified[id]) {
 	  LogLine(RDConfig::LogWarning,QString().sprintf(
 	    "Error on connection to vGuest device at %s:%d: Socket Read Error",
@@ -769,7 +769,7 @@ void VGuest::MetadataCommand(char *cmd,int len,int id)
 }
 
 
-QString VGuest::PadString(QString str,unsigned len)
+QString VGuest::PadString(QString str,int len)
 {
   QString out;
   out=str.left(len);

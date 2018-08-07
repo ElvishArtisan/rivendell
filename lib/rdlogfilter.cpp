@@ -23,6 +23,9 @@
 #include "rd.h"
 #include "rdescape_string.h"
 #include "rdlogfilter.h"
+//Added by qt3to4:
+#include <QResizeEvent>
+#include <QLabel>
 
 RDLogFilter::RDLogFilter(RDLogFilter::FilterMode mode,QWidget *parent)
    : QWidget(parent)

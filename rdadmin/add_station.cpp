@@ -21,14 +21,14 @@
 #include <qdialog.h>
 #include <qstring.h>
 #include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
+#include <q3listbox.h>
+#include <q3textedit.h>
 #include <qlabel.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 
 #include <rddb.h>
 #include <rdairplay_conf.h>
@@ -75,7 +75,7 @@ AddStation::AddStation(QString *stationname,QWidget *parent)
   QLabel *label=new QLabel(add_name_edit,tr("New &Host Name:"),this);
   label->setGeometry(10,10,115,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Exemplar
@@ -85,7 +85,7 @@ AddStation::AddStation(QString *stationname,QWidget *parent)
   label=new QLabel(add_exemplar_box,tr("Base Host On:"),this);
   label->setGeometry(10,35,115,19);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   //  Ok Button

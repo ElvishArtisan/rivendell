@@ -36,7 +36,7 @@ MainObject::MainObject(QObject *parent)
   QString date="";
   QString datetime="";
   QString service="";
-  unsigned schema=0;
+  int schema=0;
 
   //
   // Read Command Options
@@ -84,8 +84,7 @@ MainObject::MainObject(QObject *parent)
   // Open Database
   //
   QString err (tr("datedecode_test: "));
-  QSqlDatabase *db=RDInitDb(&schema,&err);
-  if(!db) {
+  if(!RDOpenDb(&schema,&err,config)) {
     fprintf(stderr,err.ascii());
     delete cmd;
     exit(256);

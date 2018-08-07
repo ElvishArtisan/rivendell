@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>AddClock</name>
     <message>
@@ -233,35 +235,35 @@ Você quer salvar?</translation>
     </message>
     <message>
         <source>CART</source>
-        <translation>CARTÃO</translation>
+        <translation type="obsolete">CARTÃO</translation>
     </message>
     <message>
         <source>GROUP</source>
-        <translation>GRUPO</translation>
+        <translation type="obsolete">GRUPO</translation>
     </message>
     <message>
         <source>LENGTH</source>
-        <translation>DURAÇÃO</translation>
+        <translation type="obsolete">DURAÇÃO</translation>
     </message>
     <message>
         <source>TITLE</source>
-        <translation>TÍTULO</translation>
+        <translation type="obsolete">TÍTULO</translation>
     </message>
     <message>
         <source>ARTIST</source>
-        <translation>ARTISTA</translation>
+        <translation type="obsolete">ARTISTA</translation>
     </message>
     <message>
         <source>START</source>
-        <translation>INÍCIO</translation>
+        <translation type="obsolete">INÍCIO</translation>
     </message>
     <message>
         <source>END</source>
-        <translation>TÉRMINO</translation>
+        <translation type="obsolete">TÉRMINO</translation>
     </message>
     <message>
         <source>TYPE</source>
-        <translation>TIPO</translation>
+        <translation type="obsolete">TIPO</translation>
     </message>
     <message>
         <source>REMARKS</source>
@@ -353,11 +355,11 @@ Você quer salvar?</translation>
     </message>
     <message>
         <source>TRANSITION</source>
-        <translation>TRANSIÇÃO</translation>
+        <translation type="obsolete">TRANSIÇÃO</translation>
     </message>
     <message>
         <source>COUNT</source>
-        <translation>CONTADOR</translation>
+        <translation type="obsolete">CONTADOR</translation>
     </message>
     <message>
         <source>None</source>
@@ -542,6 +544,46 @@ Você quer sobreescrêve-lo?</translation>
     <message>
         <source>Timed(Wait)</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="unfinished">Duração</translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Artist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start</source>
+        <translation type="unfinished">Início</translation>
+    </message>
+    <message>
+        <source>End</source>
+        <translation type="unfinished">Fim</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Count</source>
+        <translation type="unfinished">Contador</translation>
     </message>
 </context>
 <context>

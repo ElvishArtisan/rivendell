@@ -74,7 +74,7 @@ class VGuest : public Switcher
   int GetRelay(int enginenum,int devicenum,int surfacenum,int relaynum);
   int GetHoldoff();
   QString RenderCommand(char *cmd,int len);
-  QString PadString(QString str,unsigned len);
+  QString PadString(QString str,int len);
   void ExecuteMacroCart(unsigned cartnum);
   RDTTYDevice *vguest_device[2];
   RDSocket *vguest_socket[2];

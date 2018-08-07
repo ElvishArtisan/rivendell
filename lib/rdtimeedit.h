@@ -21,13 +21,18 @@
 #ifndef RDTIMEEDIT_H
 #define RDTIMEEDIT_H
 
-#include <qframe.h>
+#include <q3frame.h>
 #include <qdatetime.h>
 #include <qlabel.h>
+//Added by qt3to4:
+#include <QWheelEvent>
+#include <QMouseEvent>
+#include <QKeyEvent>
+#include <QFocusEvent>
 
 #include <rdtransportbutton.h>
 
-class RDTimeEdit : public QFrame
+class RDTimeEdit : public Q3Frame
 {
   Q_OBJECT
  public:

@@ -21,12 +21,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <qwidget.h>
-#include <qsocket.h>
+#include <q3socket.h>
 
 #include <rdsocket.h>
 
 RDSocket::RDSocket(int id,QObject *parent)
-  : QSocket(parent)
+  : Q3Socket(parent)
 {
   id_num=id;
   connect(this,SIGNAL(hostFound()),this,SLOT(hostFoundData()));

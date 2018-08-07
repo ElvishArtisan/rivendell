@@ -26,6 +26,8 @@
 #include <qlabel.h>
 #include <qpixmap.h>
 #include <qpushbutton.h>
+//Added by qt3to4:
+#include <QPaintEvent>
 
 #include <rdairplay_conf.h>
 #include <rdlistview.h>
@@ -71,7 +73,7 @@ class ListLog : public QWidget
   void takeButtonData();
   void playButtonData();
   void modifyButtonData();
-  void doubleclickedData(QListViewItem *,const QPoint &,int);
+  void doubleclickedData(Q3ListViewItem *,const QPoint &,int);
   void scrollButtonData();
   void refreshButtonData();
   void nextButtonData();

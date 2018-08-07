@@ -40,7 +40,7 @@
 //#define SHOW_SLOTS
 //#define SHOW_METER_SLOTS
 
-RDLogPlay::RDLogPlay(int id,RDEventPlayer *player,QSocketDevice *nn_sock,
+RDLogPlay::RDLogPlay(int id,RDEventPlayer *player,Q3SocketDevice *nn_sock,
 		     QString logname,std::vector<RDRLMHost *> *rlm_hosts,
 		     QObject *parent)
   : QObject(parent),RDLogEvent(logname)

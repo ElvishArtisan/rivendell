@@ -58,7 +58,7 @@ BtAdms4422::BtAdms4422(RDMatrix *matrix,QObject *parent)
     bt_device->setSpeed(tty->baudRate());
     bt_device->setWordLength(tty->dataBits());
     bt_device->setParity(tty->parity());
-    if(bt_device->open(IO_Raw|IO_ReadWrite)) {
+    if(bt_device->open(QIODevice::Unbuffered|QIODevice::ReadWrite)) {
       // Set Mix Mode
       bt_device->
 	writeBlock(QString().sprintf("*%uUM0\r\n",BTADMS4422_UNIT_ID),7);

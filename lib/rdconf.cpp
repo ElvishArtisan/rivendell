@@ -500,7 +500,7 @@ QString RDGetDisplay(bool strip_point)
   int l;
 
   if(getenv("DISPLAY")[0]==':') {
-    display=RDGetHostAddr().toString()+getenv("DISPLAY");
+    display=RDGetHostAddr().toString()+QString(getenv("DISPLAY"));
   }
   else {
     display=QString(getenv("DISPLAY"));
@@ -526,7 +526,7 @@ bool RDDoesRowExist(const QString &table,const QString &name,
 
   sql="select `"+name+"` from `"+table+"` where `"+name+"`="+
     "\""+RDEscapeString(test)+"\"";
-  q=new RDSqlQuery(sql,db);
+  q=new RDSqlQuery(sql);
   if(q->first()) {
     delete q;
     return true;
@@ -544,7 +544,7 @@ bool RDDoesRowExist(const QString &table,const QString &name,unsigned test,
 
   sql="select `"+name+"` from `"+table+"` where `"+name+"`="+
     QString().sprintf("%d",test);
-  q=new RDSqlQuery(sql,db);
+  q=new RDSqlQuery(sql);
   if(q->size()>0) {
     delete q;
     return true;
@@ -556,7 +556,7 @@ bool RDDoesRowExist(const QString &table,const QString &name,unsigned test,
 
 QVariant RDGetSqlValue(const QString &table,const QString &name,
 		       const QString &test,const QString &param,
-		       QSqlDatabase *db,bool *valid)
+		       bool *valid)
 {
   RDSqlQuery *q;
   QString sql;
@@ -564,7 +564,7 @@ QVariant RDGetSqlValue(const QString &table,const QString &name,
 
   sql="select `"+param+"` from `"+table+"` where `"+name+"`="+
     "\""+RDEscapeString(test)+"\"";
-  q=new RDSqlQuery(sql,db);
+  q=new RDSqlQuery(sql);
   if(q->isActive()) {
     q->first();
     v=q->value(0);
@@ -583,7 +583,7 @@ QVariant RDGetSqlValue(const QString &table,
 		       const QString &name1,const QString &test1,
 		       const QString &name2,const QString &test2,
                        const QString &name3,const QString &test3,
-		       const QString &param,QSqlDatabase *db,bool *valid)
+		       const QString &param,bool *valid)
 {
   RDSqlQuery *q;
   QString sql;
@@ -593,7 +593,7 @@ QVariant RDGetSqlValue(const QString &table,
     "(`"+name1+"`=\""+RDEscapeString(test1)+"\")&&"+
     "(`"+name2+"`=\""+RDEscapeString(test1)+"\")&&"+
     "(`"+name3+"`=\""+RDEscapeString(test1)+"\")";
-  q=new RDSqlQuery(sql,db);
+  q=new RDSqlQuery(sql);
   if(q->isActive()) {
     q->first();
     v=q->value(0);
@@ -616,7 +616,7 @@ bool RDIsSqlNull(const QString &table,const QString &name,const QString &test,
 
   sql="select `"+param+"` from `"+table+"` where `"+name+"`="+
     "\""+RDEscapeString(test)+"\"";
-  q=new RDSqlQuery(sql,db);
+  q=new RDSqlQuery(sql);
   if(q->isActive()) {
     q->first();
     if(q->isNull(0)) {
@@ -641,7 +641,7 @@ bool RDIsSqlNull(const QString &table,const QString &name,unsigned test,
 
   sql="select `"+param+"` from `"+table+"` where `"+name+"`="+
     QString().sprintf("%d",test);
-  q=new RDSqlQuery(sql,db);
+  q=new RDSqlQuery(sql);
   if(q->isActive()) {
     q->first();
     if(q->isNull(0)) {
@@ -659,7 +659,7 @@ bool RDIsSqlNull(const QString &table,const QString &name,unsigned test,
 
 
 QVariant RDGetSqlValue(const QString &table,const QString &name,unsigned test,
-		       const QString &param,QSqlDatabase *db,bool *valid)
+		       const QString &param,bool *valid)
 {
   RDSqlQuery *q;
   QString sql;
@@ -667,7 +667,7 @@ QVariant RDGetSqlValue(const QString &table,const QString &name,unsigned test,
 
   sql="select `"+param+"` from `"+table+"` where `"+name+"`="+
     QString().sprintf("%u",test);
-  q=new RDSqlQuery(sql,db);
+  q=new RDSqlQuery(sql);
   if(q->first()) {
     v=q->value(0);
     if(valid!=NULL) {
@@ -737,7 +737,7 @@ int RDSetTimeLength(const QString &str)
   if(str.isEmpty()) {
     return -1;
   }
-  for(unsigned i=0;i<str.length();i++) {
+  for(int i=0;i<str.length();i++) {
     if(str.at(i)==':') {
       istate--;
     }
@@ -745,7 +745,7 @@ int RDSetTimeLength(const QString &str)
   if(istate<0) {
     return -1;
   }
-  for(unsigned i=0;i<str.length();i++) {
+  for(int i=0;i<str.length();i++) {
     if(str.at(i).isNumber()) {
       field+=str.at(i);
     }
@@ -932,7 +932,7 @@ QString RDTruncateAfterWord(QString str,int word,bool add_dots)
   int quan=0;
   int point;
 
-  for(unsigned i=0;i<simple.length();i++) {
+  for(int i=0;i<simple.length();i++) {
     if(simple.at(i).isSpace()) {
       quan++;
       point=i;
@@ -1098,7 +1098,7 @@ bool RDProcessActive(const QStringList &cmds)
 
   proc_dir->setFilter(QDir::Dirs);
   dirs=proc_dir->entryList();
-  for(unsigned i=0;i<dirs.size();i++) {
+  for(int i=0;i<dirs.size();i++) {
     dirs[i].toInt(&ok);
     if(ok) {
       if((f=fopen(QString("/proc/")+dirs[i]+"/cmdline","r"))!=NULL) {
@@ -1106,7 +1106,7 @@ bool RDProcessActive(const QStringList &cmds)
 	  QStringList f1=f1.split(" ",QString(line));
 	  QStringList f2=f2.split("/",f1[0]);
 	  cmdline=f2[f2.size()-1];
-	  for(unsigned j=0;j<cmds.size();j++) {
+	  for(int j=0;j<cmds.size();j++) {
 	    if(cmdline==cmds[j]) {
 	      fclose(f);
 	      return true;
@@ -1142,7 +1142,7 @@ bool RDModulesActive()
   return RDProcessActive(cmds);
 }
 
-
+/*
 QByteArray RDStringToData(const QString &str)
 {
   QByteArray ret;
@@ -1183,3 +1183,4 @@ QByteArray RDStringToData(const QString &str)
 #endif  // WIN32
   return ret;
 }
+*/

@@ -24,6 +24,8 @@
 #include <globals.h>
 #include <rdlistviewitem.h>
 #include <lib_listview.h>
+//Added by qt3to4:
+#include <QMouseEvent>
 
 LibListView::LibListView(QWidget *parent)
   : RDListView(parent)
@@ -35,13 +37,13 @@ LibListView::LibListView(QWidget *parent)
 void LibListView::contentsMousePressEvent(QMouseEvent *e)
 {
   list_move_count=3;
-  QListView::contentsMousePressEvent(e);
+  Q3ListView::contentsMousePressEvent(e);
 }
 
 
 void LibListView::contentsMouseMoveEvent(QMouseEvent *e)
 {
-  QListView::contentsMouseMoveEvent(e);
+  Q3ListView::contentsMouseMoveEvent(e);
   list_move_count--;
   if(list_move_count==0) {
     RDListViewItem *item=(RDListViewItem *)selectedItem();
@@ -63,5 +65,5 @@ void LibListView::contentsMouseMoveEvent(QMouseEvent *e)
 void LibListView::contentsMouseReleaseEvent(QMouseEvent *e)
 {
   list_move_count=-1;
-  QListView::contentsMouseReleaseEvent(e);
+  Q3ListView::contentsMouseReleaseEvent(e);
 }

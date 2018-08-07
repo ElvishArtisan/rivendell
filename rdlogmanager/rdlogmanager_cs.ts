@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>AddClock</name>
     <message>
@@ -231,35 +233,35 @@ Chcete je uložit?</translation>
     </message>
     <message>
         <source>CART</source>
-        <translation>VOZÍK</translation>
+        <translation type="obsolete">VOZÍK</translation>
     </message>
     <message>
         <source>GROUP</source>
-        <translation>SKUPINA</translation>
+        <translation type="obsolete">SKUPINA</translation>
     </message>
     <message>
         <source>LENGTH</source>
-        <translation>DÉLKA</translation>
+        <translation type="obsolete">DÉLKA</translation>
     </message>
     <message>
         <source>TITLE</source>
-        <translation>NÁZEV</translation>
+        <translation type="obsolete">NÁZEV</translation>
     </message>
     <message>
         <source>ARTIST</source>
-        <translation>UMĚLEC</translation>
+        <translation type="obsolete">UMĚLEC</translation>
     </message>
     <message>
         <source>START</source>
-        <translation>ZAČÁTEK</translation>
+        <translation type="obsolete">ZAČÁTEK</translation>
     </message>
     <message>
         <source>END</source>
-        <translation>KONEC</translation>
+        <translation type="obsolete">KONEC</translation>
     </message>
     <message>
         <source>TYPE</source>
-        <translation>TYP</translation>
+        <translation type="obsolete">TYP</translation>
     </message>
     <message>
         <source>ALL</source>
@@ -343,11 +345,11 @@ Chcete je uložit?</translation>
     </message>
     <message>
         <source>TRANSITION</source>
-        <translation>PŘECHOD</translation>
+        <translation type="obsolete">PŘECHOD</translation>
     </message>
     <message>
         <source>COUNT</source>
-        <translation>POČÍTADLO</translation>
+        <translation type="obsolete">POČÍTADLO</translation>
     </message>
     <message>
         <source>None</source>
@@ -540,6 +542,46 @@ Chcete ji přepsat?</translation>
     <message>
         <source>Timed(Wait)</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="unfinished">Délka</translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Artist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start</source>
+        <translation type="unfinished">Začátek</translation>
+    </message>
+    <message>
+        <source>End</source>
+        <translation type="unfinished">Konec</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Count</source>
+        <translation type="unfinished">Počet</translation>
     </message>
 </context>
 <context>

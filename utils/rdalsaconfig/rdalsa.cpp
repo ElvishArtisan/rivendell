@@ -271,7 +271,7 @@ bool RDAlsa::SaveAsoundConfig(const QString &filename)
   if((f=fopen(filename,"w"))==NULL) {
     return false;
   }
-  for(unsigned i=0;i<card_other_lines.size();i++) {
+  for(int i=0;i<card_other_lines.size();i++) {
     fprintf(f,card_other_lines[i]);
   }
 

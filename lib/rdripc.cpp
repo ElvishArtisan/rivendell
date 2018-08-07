@@ -47,7 +47,7 @@ RDRipc::RDRipc(RDStation *station,RDConfig *config,QObject *parent)
   //
   // TCP Connection
   //
-  ripc_socket=new QSocket(this);
+  ripc_socket=new Q3Socket(this);
   connect(ripc_socket,SIGNAL(connected()),this,SLOT(connectedData()));
   connect(ripc_socket,SIGNAL(error(int)),this,SLOT(errorData(int)));
   connect(ripc_socket,SIGNAL(readyRead()),this,SLOT(readyData()));
@@ -210,62 +210,19 @@ void RDRipc::readyData()
   while((n=ripc_socket->readBlock(data,1500))>0) {
     data[n]=0;
     QString line=QString::fromUtf8(data);
-    for(unsigned i=0;i<line.length();i++) {
+    for(int i=0;i<line.length();i++) {
       QChar c=line.ref(i);
-      if(c=="!") {
+      if(c.ascii()=='!') {
 	DispatchCommand();
 	ripc_accum="";
       }
       else {
-	if((c!="\r")&&(c!="\n")) {
+	if((c.ascii()!='\r')&&(c.ascii()!='\n')) {
 	  ripc_accum+=c;
 	}
       }
     }
   }
-
-  /*
-  char buf[255];
-  int c;
-
-  while((c=ripc_socket->readBlock(buf,256))>0) {
-    buf[c]=0;
-    for(int i=0;i<c;i++) {
-      if(buf[i]==' ') {
-	if(argnum<RIPC_MAX_ARGS) {
-	  args[argnum][argptr]=0;
-	  argptr=0;
-	  argnum++;
-	}
-	else {
-	  if(debug) {
-	    printf("Argument list truncated!\n");
-	  }
-	}
-      }
-      if(buf[i]=='!') {
-	args[argnum++][argptr]=0;
-	DispatchCommand();
-	argnum=0;
-	argptr=0;
-	if(ripc_socket==NULL) {
-	  return;
-	}
-      }
-      if((isgraph(buf[i]))&&(buf[i]!='!')) {
-	if(argptr<RIPC_MAX_LENGTH) {
-	  args[argnum][argptr]=buf[i];
-	  argptr++;
-	}
-	else {
-	  if(debug) {
-	    printf("WARNING: argument truncated!\n");
-	  }
-	}
-      }
-    }
-  }
-  */
 }
 
 
@@ -304,7 +261,7 @@ void RDRipc::DispatchCommand()
       return;
     }
     str=cmds[3];
-    for(unsigned i=4;i<cmds.size();i++) {
+    for(int i=4;i<cmds.size();i++) {
       str+=" "+cmds[i];
     }
     str+="!";
@@ -326,13 +283,13 @@ void RDRipc::DispatchCommand()
       return;
     }
     str=cmds[3];
-    for(unsigned i=4;i<cmds.size();i++) {
+    for(int i=4;i<cmds.size();i++) {
       str+=" "+cmds[i];
     }
     str+="!";
     macro=RDMacro::fromString(str,RDMacro::Reply);
     if(!macro.isNull()) {
-      macro.setAddress(QHostAddress().setAddress(cmds[1]));
+      macro.setAddress(QHostAddress(cmds[1]));
       macro.setRole(RDMacro::Reply);
       emit rmlReceived(&macro);
     }
@@ -436,7 +393,7 @@ void RDRipc::DispatchCommand()
       return;
     }
     QString msg;
-    for(unsigned i=1;i<cmds.size();i++) {
+    for(int i=1;i<cmds.size();i++) {
       msg+=QString(cmds[i])+" ";
     }
     msg=msg.left(msg.length()-1);

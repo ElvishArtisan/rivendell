@@ -149,7 +149,7 @@ RDSoundPanel::RDSoundPanel(int cols,int rows,int station_panels,
   panel_reset_button->setFont(button_font);
   panel_reset_button->setText(tr("Reset"));
   panel_reset_button->setFlashColor(QColor(RDPANEL_RESET_FLASH_COLOR));
-  panel_reset_button->setFocusPolicy(QWidget::NoFocus);
+  panel_reset_button->setFocusPolicy(Qt::NoFocus);
   connect(panel_reset_button,SIGNAL(clicked()),this,SLOT(resetClickedData()));
 
   //
@@ -163,7 +163,7 @@ RDSoundPanel::RDSoundPanel(int cols,int rows,int station_panels,
   panel_all_button->setFont(button_font);
   panel_all_button->setText(tr("All"));
   panel_all_button->setFlashColor(QColor(RDPANEL_RESET_FLASH_COLOR));
-  panel_all_button->setFocusPolicy(QWidget::NoFocus);
+  panel_all_button->setFocusPolicy(Qt::NoFocus);
   panel_all_button->hide();
   connect(panel_all_button,SIGNAL(clicked()),this,SLOT(allClickedData()));
 
@@ -178,7 +178,7 @@ RDSoundPanel::RDSoundPanel(int cols,int rows,int station_panels,
   panel_setup_button->setFont(button_font);
   panel_setup_button->setText(tr("Setup"));
   panel_setup_button->setFlashColor(QColor(RDPANEL_SETUP_FLASH_COLOR));
-  panel_setup_button->setFocusPolicy(QWidget::NoFocus);
+  panel_setup_button->setFocusPolicy(Qt::NoFocus);
   connect(panel_setup_button,SIGNAL(clicked()),this,SLOT(setupClickedData()));
 
   //

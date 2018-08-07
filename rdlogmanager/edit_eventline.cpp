@@ -20,10 +20,13 @@
 
 #include <qdialog.h>
 #include <qstring.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qpainter.h>
 #include <qmessagebox.h>
 #include <qpushbutton.h>
+//Added by qt3to4:
+#include <QLabel>
+#include <QCloseEvent>
 
 #include <rd.h>
 #include <rddb.h>
@@ -100,7 +103,7 @@ EditEventLine::EditEventLine(RDEventLine *eventline,RDClock *clock,int line,
   QLabel *label=new QLabel(edit_eventname_edit,tr("Event:"),this);
   label->setGeometry(10,12,50,18);
   label->setFont(bold_font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Event Select Button
@@ -122,7 +125,7 @@ EditEventLine::EditEventLine(RDEventLine *eventline,RDClock *clock,int line,
   label=new QLabel(edit_starttime_edit,tr("Start Time:"),this);
   label->setGeometry(65,42,80,20);
   label->setFont(bold_font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // End Time
@@ -134,7 +137,7 @@ EditEventLine::EditEventLine(RDEventLine *eventline,RDClock *clock,int line,
   label=new QLabel(edit_endtime_edit,tr("End Time:"),this);
   label->setGeometry(250,42,70,20);
   label->setFont(bold_font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   //  OK Button

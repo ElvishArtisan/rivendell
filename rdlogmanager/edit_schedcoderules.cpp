@@ -22,19 +22,22 @@
 
 #include <qdialog.h>
 #include <qstring.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qpainter.h>
 #include <qmessagebox.h>
 #include <qsqldatabase.h>
 #include <qspinbox.h>
 #include <qcombobox.h>
+//Added by qt3to4:
+#include <QLabel>
+#include <QCloseEvent>
 
 #include <rd.h>
 
 #include <edit_schedcoderules.h>
 #include <schedruleslist.h>
 
-editSchedCodeRules::editSchedCodeRules(QListViewItem *item,
+editSchedCodeRules::editSchedCodeRules(Q3ListViewItem *item,
 				       SchedRulesList *sched_rules_list,
 				       QWidget* parent)
     : QDialog(parent,"",true)
@@ -73,37 +76,37 @@ editSchedCodeRules::editSchedCodeRules(QListViewItem *item,
   label_code_name->setGeometry( QRect( 40, 10, 150, 20 ) );
   label_code_name->setText( tr( "Code:" ) );
   label_code_name->setFont( font ); 
-  label_code_name->setAlignment( int( QLabel::AlignVCenter | QLabel::AlignRight ) );
+  label_code_name->setAlignment( int( Qt::AlignVCenter | Qt::AlignRight ) );
 
   label_max_row = new QLabel(this);
   label_max_row->setGeometry( QRect( 30, 80, 160, 20 ) );
   label_max_row->setText( tr( "Max. in a row:" ) );
   label_max_row->setFont( font ); 
-  label_max_row->setAlignment( int( QLabel::AlignVCenter | QLabel::AlignRight ) );
+  label_max_row->setAlignment( int( Qt::AlignVCenter | Qt::AlignRight ) );
 
   label_min_wait = new QLabel(this);
   label_min_wait->setGeometry( QRect( 30, 110, 160, 20 ) );
   label_min_wait->setText( tr( "Min. wait:" ) );
   label_min_wait->setFont( font ); 
-  label_min_wait->setAlignment( int( QLabel::AlignVCenter | QLabel::AlignRight ) );
+  label_min_wait->setAlignment( int( Qt::AlignVCenter | Qt::AlignRight ) );
 
   label_not_after = new QLabel(this);
   label_not_after->setGeometry( QRect( 30, 140, 160, 20 ) );
   label_not_after->setText( tr( "Do not schedule after:" ) );
   label_not_after->setFont( font ); 
-  label_not_after->setAlignment( int( QLabel::AlignVCenter | QLabel::AlignRight ) );
+  label_not_after->setAlignment( int( Qt::AlignVCenter | Qt::AlignRight ) );
 
   label_or_after = new QLabel(this);
   label_or_after->setGeometry( QRect( 30, 180, 160, 20 ) );
   label_or_after->setText( tr( "Or after:" ) );
   label_or_after->setFont( font ); 
-  label_or_after->setAlignment( int( QLabel::AlignVCenter | QLabel::AlignRight ) );
+  label_or_after->setAlignment( int( Qt::AlignVCenter | Qt::AlignRight ) );
 
   label_or_after_II = new QLabel(this);
   label_or_after_II->setGeometry( QRect( 30, 220, 160, 20 ) );
   label_or_after_II->setText( tr( "Or after:" ) );
   label_or_after_II->setFont( font ); 
-  label_or_after_II->setAlignment( int( QLabel::AlignVCenter | QLabel::AlignRight ) );
+  label_or_after_II->setAlignment( int( Qt::AlignVCenter | Qt::AlignRight ) );
   
   spinBox_max_row = new QSpinBox(this);
   spinBox_max_row->setGeometry( QRect( 200, 80, 70, 20 ) );
@@ -119,7 +122,7 @@ editSchedCodeRules::editSchedCodeRules(QListViewItem *item,
   
   label_code = new QLabel(this);
   label_code->setGeometry( QRect( 200, 10, 90, 20 ) );
-  label_code->setAlignment( int( QLabel::AlignVCenter | QLabel::AlignLeft ) );
+  label_code->setAlignment( int( Qt::AlignVCenter | Qt::AlignLeft ) );
   label_code->setText( item->text(0) );
     
   comboBox_not_after = new QComboBox( FALSE, this);
@@ -149,7 +152,7 @@ editSchedCodeRules::editSchedCodeRules(QListViewItem *item,
 
   label_description = new QLabel(this);
   label_description->setGeometry( QRect( 200, 40, 300, 40 ) );
-  label_description->setAlignment( int( QLabel::AlignTop | QLabel::AlignLeft ) );
+  label_description->setAlignment( int( Qt::AlignTop | Qt::AlignLeft ) );
   label_description->setText( item->text(6) );
 }
 

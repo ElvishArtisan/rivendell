@@ -45,7 +45,7 @@ class EditNowNext : public QDialog
    void addPluginData();
    void editPluginData();
    void deletePluginData();
-   void pluginDoubleClickedData(QListViewItem *item,const QPoint &pt,int col);
+   void pluginDoubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
    void editNowcartData(int lognum);
    void editNextcartData(int lognum);
    void okData();

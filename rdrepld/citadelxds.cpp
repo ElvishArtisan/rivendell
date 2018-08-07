@@ -146,9 +146,9 @@ bool CitadelXds::LoadIsciXreference(const QString &filename)
   // Load Records
   //
   while(fgets(line,1024,f)!=NULL) {
-    fields=fields.split(",",line,"\"");
+    fields=fields.split(',',line,"\"");
     if(fields.size()==9) {
-      for(unsigned i=0;i<fields.size();i++) {
+      for(int i=0;i<fields.size();i++) {
 	fields[i]=fields[i].replace("\"","").stripWhiteSpace();
       }
       cartnum=fields[3].right(fields[3].length()-1).toUInt(&ok);
@@ -420,7 +420,7 @@ void CitadelXds::PurgeCuts()
       if(path.right(1)!="/") {
 	path+="/";
       }
-      QUrl url(path+q->value(1).toString());
+      Q3Url url(path+q->value(1).toString());
       conv=new RDDelete(rda->config());
       conv->setTargetUrl(url);
       if((conv_err=conv->runDelete(config()->urlUsername(),

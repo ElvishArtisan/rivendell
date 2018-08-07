@@ -19,8 +19,11 @@
 //
 //
 
-#include <qdragobject.h>
-#include <qheader.h>
+#include <q3dragobject.h>
+#include <q3header.h>
+//Added by qt3to4:
+#include <Q3PopupMenu>
+#include <QMouseEvent>
 
 #include <rdcart.h>
 
@@ -35,7 +38,7 @@ ClockListView::ClockListView(QWidget *parent)
   //
   // Right Button Menu
   //
-  clock_menu=new QPopupMenu(this);
+  clock_menu=new Q3PopupMenu(this);
   connect(clock_menu,SIGNAL(aboutToShow()),this,SLOT(aboutToShowData()));
   clock_menu->
     insertItem(tr("Edit Event"),this,SLOT(editEventData()),0,0);
@@ -57,10 +60,10 @@ void ClockListView::editEventData()
 
 void ClockListView::contentsMousePressEvent(QMouseEvent *e)
 {
-  QListView::contentsMousePressEvent(e);
+  Q3ListView::contentsMousePressEvent(e);
   clock_menu_item=(RDListViewItem *)selectedItem();
   switch(e->button()) {
-      case QMouseEvent::RightButton:
+      case Qt::RightButton:
 	clock_menu->setGeometry(clock_parent->geometry().x()+
 				geometry().x()+e->pos().x()+2,
 				clock_parent->geometry().y()+

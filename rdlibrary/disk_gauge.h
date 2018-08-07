@@ -26,7 +26,9 @@
 #include <qwidget.h>
 #include <qlabel.h>
 #include <qtimer.h>
-#include <qprogressbar.h>
+#include <q3progressbar.h>
+//Added by qt3to4:
+#include <QResizeEvent>
 
 #define DISK_GAUGE_UPDATE_INTERVAL 60000
 
@@ -47,7 +49,7 @@ class DiskGauge : public QWidget
  private:
   unsigned GetMinutes(uint64_t bytes);
   QLabel *disk_label;
-  QProgressBar *disk_bar;
+  Q3ProgressBar *disk_bar;
   QLabel *disk_space_label;
   double disk_sample_rate;
   double disk_channels;

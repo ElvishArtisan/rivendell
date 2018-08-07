@@ -23,8 +23,12 @@
 
 #include <qwidget.h>
 #include <qlabel.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 #include <qtimer.h>
+//Added by qt3to4:
+#include <QWheelEvent>
+#include <QMouseEvent>
+#include <QKeyEvent>
 
 #include <rdtransportbutton.h>
 #include <rdslider.h>

@@ -23,7 +23,7 @@
 #define HELP_AUDIOS_H
 
 #include <qdialog.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 
 
 class HelpAudioPorts : public QDialog
@@ -38,7 +38,7 @@ class HelpAudioPorts : public QDialog
   void closeData();
 
  private:
-  QTextEdit *help_edit;
+  Q3TextEdit *help_edit;
 };
 
 

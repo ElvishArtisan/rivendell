@@ -22,7 +22,6 @@
 EXTRA_DIST = ALSA.txt\
              ando_interface.odt\
              colors\
-             pam_rd.txt\
              PODCASTING.txt\
              RDMONITOR.txt\
              reports.txt\

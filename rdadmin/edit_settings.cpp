@@ -22,12 +22,14 @@
 #include <qstring.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
-#include <qfiledialog.h>
+#include <q3filedialog.h>
 #include <qfile.h>
 #include <qdatetime.h>
-#include <qprogressdialog.h>
+#include <q3progressdialog.h>
 #include <qapplication.h>
-#include <qfiledialog.h>
+#include <q3filedialog.h>
+//Added by qt3to4:
+#include <QLabel>
 
 #include <rdescape_string.h>
 #include <rddb.h>
@@ -79,11 +81,11 @@ EditSettings::EditSettings(QWidget *parent)
   QLabel *label=new QLabel(edit_sample_rate_box,tr("System Sample Rate:"),this);
   label->setGeometry(10,10,185,20);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   label=new QLabel(tr("samples/second"),this);
   label->setGeometry(275,10,sizeHint().width()-285,20);
   label->setFont(font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Allow Duplicate Cart Titles Box
@@ -96,7 +98,7 @@ EditSettings::EditSettings(QWidget *parent)
     new QLabel(edit_duplicate_carts_box,tr("Allow Duplicate Cart Titles"),this);
   label->setGeometry(40,30,sizeHint().width()-50,20);
   label->setFont(font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   edit_fix_duplicate_carts_box=new QCheckBox(this);
   edit_fix_duplicate_carts_box->setGeometry(30,52,15,15);
@@ -105,7 +107,7 @@ EditSettings::EditSettings(QWidget *parent)
   edit_fix_duplicate_carts_label->setGeometry(50,50,sizeHint().width()-60,20);
   edit_fix_duplicate_carts_label->setFont(font);
   edit_fix_duplicate_carts_label->
-    setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+    setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // ISCI Cross Reference Path
@@ -115,7 +117,7 @@ EditSettings::EditSettings(QWidget *parent)
   label=new QLabel(edit_isci_path_edit,tr("ISCI Cross Reference Path:"),this);
   label->setGeometry(10,76,185,20);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Notification Address
@@ -125,7 +127,7 @@ EditSettings::EditSettings(QWidget *parent)
   label=new QLabel(edit_notification_address_edit,tr("Mcast Address for Notifications"),this);
   label->setGeometry(10,98,185,20);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Maximum POST Size
@@ -136,11 +138,11 @@ EditSettings::EditSettings(QWidget *parent)
   label=new QLabel(edit_maxpost_spin,tr("Maximum Remote Post Length:"),this);
   label->setGeometry(10,120,185,20);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   label=new QLabel(tr("Mbytes"),this);
   label->setGeometry(265,120,60,20);
   label->setFont(font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Temporary Cart Group
@@ -156,7 +158,7 @@ EditSettings::EditSettings(QWidget *parent)
   label=new QLabel(edit_temp_cart_group_box,tr("Temporary Cart Group:"),this);
   label->setGeometry(10,141,185,20);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Show User List
@@ -169,7 +171,7 @@ EditSettings::EditSettings(QWidget *parent)
     new QLabel(edit_show_user_list_box,tr("Show User List in RDLogin"),this);
   label->setGeometry(40,163,sizeHint().width()-50,20);
   label->setFont(font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Duplicate List (initially hidden)
@@ -180,14 +182,14 @@ EditSettings::EditSettings(QWidget *parent)
   edit_duplicate_label->setGeometry(15,186,sizeHint().width()-30,50);
   edit_duplicate_label->setFont(normal_font);
   edit_duplicate_label->hide();
-  edit_duplicate_list=new QListView(this);
+  edit_duplicate_list=new Q3ListView(this);
   edit_duplicate_list->setGeometry(10,209,sizeHint().width()-20,200);
   edit_duplicate_list->setItemMargin(5);
   edit_duplicate_list->setAllColumnsShowFocus(true);
   edit_duplicate_list->addColumn(tr("CART"));
-  edit_duplicate_list->setColumnAlignment(0,AlignCenter);
+  edit_duplicate_list->setColumnAlignment(0,Qt::AlignCenter);
   edit_duplicate_list->addColumn(tr("TITLE"));
-  edit_duplicate_list->setColumnAlignment(1,AlignLeft);
+  edit_duplicate_list->setColumnAlignment(1,Qt::AlignLeft);
   edit_duplicate_list->hide();
   edit_save_button=new QPushButton(this);
   edit_save_button->
@@ -271,7 +273,7 @@ void EditSettings::duplicatesCheckedData(bool state)
 void EditSettings::saveData()
 {
   QString filename=RDGetHomeDir();
-  filename=QFileDialog::getSaveFileName(filename,"Text Files *.txt",this);
+  filename=Q3FileDialog::getSaveFileName(filename,"Text Files *.txt",this);
   if(filename.isNull()) {
     return;
   }
@@ -300,7 +302,7 @@ void EditSettings::saveData()
   fprintf(f,"\n");
   fprintf(f,"Cart    Title\n");
   fprintf(f,"----    -----\n");
-  QListViewItem *item=edit_duplicate_list->firstChild();
+  Q3ListViewItem *item=edit_duplicate_list->firstChild();
   while(item!=NULL) {
     fprintf(f,"%s  %s\n",(const char *)item->text(0),
 	    (const char *)item->text(1));
@@ -320,7 +322,7 @@ void EditSettings::okData()
   if(edit_duplicate_carts_box->isChecked()!=
      edit_system->allowDuplicateCartTitles()) {
     QLabel *msg=new QLabel(this);
-    QProgressDialog *pd=new QProgressDialog(this);
+    Q3ProgressDialog *pd=new Q3ProgressDialog(this);
     pd->setLabel(msg);
     pd->setCancelButton(NULL);
     pd->setMinimumDuration(2);
@@ -354,7 +356,7 @@ void EditSettings::okData()
       delete q;
       pd->reset();
       if(dups.size()>0) {
-	QListViewItem *item;
+	Q3ListViewItem *item;
 	y_pos=305;
 	setMinimumWidth(sizeHint().width());
 	setMaximumWidth(sizeHint().width());
@@ -372,7 +374,7 @@ void EditSettings::okData()
 	  setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
 	for(std::map<unsigned,QString>::const_iterator ci=dups.begin();
 	    ci!=dups.end();ci++) {
-	  item=new QListViewItem(edit_duplicate_list);
+	  item=new Q3ListViewItem(edit_duplicate_list);
 	  item->setText(0,QString().sprintf("%06u",ci->first));
 	  item->setText(1,ci->second);
 	}

@@ -19,6 +19,9 @@
 //
 
 #include <qmessagebox.h>
+//Added by qt3to4:
+#include <QCloseEvent>
+#include <QLabel>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -66,7 +69,7 @@ EditCartSlots::EditCartSlots(RDStation *station,RDStation *cae_station,
   QLabel *label=new QLabel(tr("Global Settings"),this);
   label->setGeometry(10,10,sizeHint().width()-20,20);
   label->setFont(title_font);
-  label->setAlignment(AlignCenter);  
+  label->setAlignment(Qt::AlignCenter);  
 
   //
   // Slot Columns
@@ -79,7 +82,7 @@ EditCartSlots::EditCartSlots(RDStation *station,RDStation *cae_station,
   label=new QLabel(edit_slot_columns_spin,tr("Slot Columns:"),this);
   label->setGeometry(10,32,112,20);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Slot Rows
@@ -92,7 +95,7 @@ EditCartSlots::EditCartSlots(RDStation *station,RDStation *cae_station,
   label=new QLabel(edit_slot_rows_spin,tr("Slot Rows:"),this);
   label->setGeometry(10,54,112,20);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Slot Selector
@@ -116,7 +119,7 @@ EditCartSlots::EditCartSlots(RDStation *station,RDStation *cae_station,
   label=new QLabel(tr("Channel Assignments"),this);
   label->setGeometry(10,123,sizeHint().width()-20,20);
   label->setFont(label_font);
-  label->setAlignment(AlignCenter);  
+  label->setAlignment(Qt::AlignCenter);  
 
   //
   // Card Selector
@@ -130,7 +133,7 @@ EditCartSlots::EditCartSlots(RDStation *station,RDStation *cae_station,
   label=new QLabel(edit_card_spin,tr("Card:"),this);
   label->setGeometry(10,145,112,20);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Input Port Selector
@@ -142,7 +145,7 @@ EditCartSlots::EditCartSlots(RDStation *station,RDStation *cae_station,
   label=new QLabel(edit_input_spin,tr("Input Port:"),this);
   label->setGeometry(10,167,112,20);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Output Port Selector
@@ -154,7 +157,7 @@ EditCartSlots::EditCartSlots(RDStation *station,RDStation *cae_station,
   label=new QLabel(edit_output_spin,tr("Output Port:"),this);
   label->setGeometry(10,189,112,20);
   label->setFont(font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Default Settings
@@ -162,7 +165,7 @@ EditCartSlots::EditCartSlots(RDStation *station,RDStation *cae_station,
   label=new QLabel(tr("Default Settings"),this);
   label->setGeometry(10,218,sizeHint().width()-20,20);
   label->setFont(label_font);
-  label->setAlignment(AlignCenter);
+  label->setAlignment(Qt::AlignCenter);
 
   //
   // Service

@@ -24,12 +24,17 @@
 
 #include <qdialog.h>
 #include <qstring.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qpainter.h>
 #include <qmessagebox.h>
 #include <qcolordialog.h>
 #include <qspinbox.h>
 #include <qcombobox.h>
+//Added by qt3to4:
+#include <QCloseEvent>
+#include <QPaintEvent>
+#include <QPixmap>
+#include <QLabel>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -89,7 +94,7 @@ EditClock::EditClock(QString clockname,bool new_clock,
   QLabel *label=new QLabel(edit_shortname_edit,tr("Code:"),this);
   label->setGeometry(295,10,50,20);
   label->setFont(bold_font);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Clock List
@@ -102,14 +107,14 @@ EditClock::EditClock(QString clockname,bool new_clock,
   edit_clocks_list->addColumn(tr("End"));
   edit_clocks_list->addColumn(tr("Event"));
   edit_clocks_list->addColumn(tr("Length"));
-  edit_clocks_list->setColumnAlignment(3,AlignRight);
+  edit_clocks_list->setColumnAlignment(3,Qt::AlignRight);
   edit_clocks_list->addColumn(tr("Count"));
-  edit_clocks_list->setColumnAlignment(4,AlignCenter);
+  edit_clocks_list->setColumnAlignment(4,Qt::AlignCenter);
   connect(edit_clocks_list,
-	  SIGNAL(doubleClicked(QListViewItem *,const QPoint &,int)),
-	  this,SLOT(doubleClickedData(QListViewItem *,const QPoint &,int)));
-  connect(edit_clocks_list,SIGNAL(selectionChanged(QListViewItem *)),
-	  this,SLOT(selectionChangedData(QListViewItem *)));
+	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
+	  this,SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
+  connect(edit_clocks_list,SIGNAL(selectionChanged(Q3ListViewItem *)),
+	  this,SLOT(selectionChangedData(Q3ListViewItem *)));
   connect(edit_clocks_list,SIGNAL(editLine(int)),
 	  this,SLOT(editEventData(int)));
 
@@ -152,13 +157,13 @@ EditClock::EditClock(QString clockname,bool new_clock,
   //
   // Remarks
   //
-  edit_remarks_edit=new QTextEdit(this);
+  edit_remarks_edit=new Q3TextEdit(this);
   edit_remarks_edit->setGeometry(10,sizeHint().height()-140,CENTER_LINE-20,130);
-  edit_remarks_edit->setTextFormat(QTextEdit::PlainText);
+  edit_remarks_edit->setTextFormat(Qt::PlainText);
   label=new QLabel(edit_remarks_edit,tr("Remarks"),this);
   label->setGeometry(15,sizeHint().height()-155,CENTER_LINE-20,15);
   label->setFont(bold_font);
-  label->setAlignment(AlignLeft|AlignVCenter);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   //  Scheduler-Rules button
@@ -265,7 +270,7 @@ QSizePolicy EditClock::sizePolicy() const
 }
 
 
-void EditClock::selectionChangedData(QListViewItem *l)
+void EditClock::selectionChangedData(Q3ListViewItem *l)
 {
   if(l==NULL) {
     UpdateClock();
@@ -506,7 +511,7 @@ void EditClock::saveAsData()
 }
 
 
-void EditClock::doubleClickedData(QListViewItem *item,const QPoint &,int)
+void EditClock::doubleClickedData(Q3ListViewItem *item,const QPoint &,int)
 {
   editData();
 }
@@ -555,17 +560,17 @@ void EditClock::cancelData()
   if(edit_modified) {
     switch(QMessageBox::question(this,tr("Clock Modified"),
 				 tr("The clock has been modified.\nDo you want to save?"),QMessageBox::Yes,QMessageBox::No,QMessageBox::Cancel)) {
-	case QMessageBox::Yes:
-	  Save();
-	  done(0);
-	  break;
+    case QMessageBox::Yes:
+      Save();
+      done(0);
+      break;
 
-	case QMessageBox::No:
-	  done(-1);
-	  break;
+    case QMessageBox::No:
+      done(-1);
+      break;
 
-	case QMessageBox::NoButton:
-	  return;
+    case QMessageBox::NoButton:
+      return;
     }
   }
   else {
@@ -577,9 +582,8 @@ void EditClock::cancelData()
 void EditClock::paintEvent(QPaintEvent *e)
 {
   QPainter *p=new QPainter(this);
-  p->setPen(QColor(black));
-  p->moveTo(CENTER_LINE,10);
-  p->lineTo(CENTER_LINE,sizeHint().height()-10);
+  p->setPen(QColor(Qt::black));
+  p->drawLine(CENTER_LINE,10,CENTER_LINE,sizeHint().height()-10);
 
   p->end();
 }
@@ -670,8 +674,8 @@ void EditClock::UpdateClock(int line)
   map->fill();
   QPainter *p=new QPainter();
   p->begin(map);
-  p->setPen(QColor(black));
-  p->setBrush(QColor(black));
+  p->setPen(Qt::black);
+  p->setBrush(Qt::black);
   p->setFont(*edit_title_font);
 
   //

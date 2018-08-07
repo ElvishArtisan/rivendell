@@ -20,7 +20,7 @@
 
 #include <qfile.h>
 #include <qmessagebox.h>
-#include <qtextstream.h>
+#include <q3textstream.h>
 
 #include "rddb.h"
 #include "rdconf.h"
@@ -37,13 +37,13 @@ bool RDReport::ExportRadioTraffic(const QString &filename,
   QString air_fmt;
 
   QFile *file=new QFile(filename);
-  if(!file->open(IO_WriteOnly|IO_Truncate)) {
+  if(!file->open(QIODevice::WriteOnly|QIODevice::Truncate)) {
     report_error_code=RDReport::ErrorCantOpen;
     delete file;
     return false;
   }
-  QTextStream *strm=new QTextStream(file);
-  strm->setEncoding(QTextStream::UnicodeUTF8);
+  Q3TextStream *strm=new Q3TextStream(file);
+  strm->setEncoding(Q3TextStream::UnicodeUTF8);
   if(useLeadingZeros()) {
     air_fmt=QString().sprintf("%%0%uu ",cartDigits());
   }

@@ -50,14 +50,14 @@ bool RDTTYDevice::open(int mode)
   COMMTIMEOUTS timeouts;
 
   tty_mode=mode;
-  if((mode&IO_ReadWrite)==IO_ReadWrite) {
+  if((mode&QIODevice::ReadWrite)==QIODevice::ReadWrite) {
     flags|=GENERIC_WRITE|GENERIC_READ;
   }
   else {
-    if(((mode&IO_WriteOnly)!=0)) {
+    if(((mode&QIODevice::WriteOnly)!=0)) {
       flags|=GENERIC_WRITE;
     }
-    if(((mode&IO_ReadOnly)!=0)) {
+    if(((mode&QIODevice::ReadOnly)!=0)) {
       flags|=GENERIC_READ;
     }
   }
@@ -182,7 +182,7 @@ int RDTTYDevice::ungetch(int ch)
 }
 
 
-QIODevice::Offset RDTTYDevice::size() const
+qlonglong RDTTYDevice::size() const
 {
   return 0;
 }
@@ -259,7 +259,7 @@ bool RDTTYDevice::isTranslated() const
 
 bool RDTTYDevice::isReadable() const
 {
-  if(((tty_mode&IO_ReadOnly)!=0)||((tty_mode&IO_ReadWrite)!=0)) {
+  if(((tty_mode&QIODevice::ReadOnly)!=0)||((tty_mode&QIODevice::ReadWrite)!=0)) {
     return true;
   }
   return false;
@@ -268,7 +268,7 @@ bool RDTTYDevice::isReadable() const
 
 bool RDTTYDevice::isWritable() const
 {
-  if(((tty_mode&IO_WriteOnly)!=0)||((tty_mode&IO_ReadWrite)!=0)) {
+  if(((tty_mode&QIODevice::WriteOnly)!=0)||((tty_mode&QIODevice::ReadWrite)!=0)) {
     return true;
   }
   return false;
@@ -277,7 +277,7 @@ bool RDTTYDevice::isWritable() const
 
 bool RDTTYDevice::isReadWrite() const
 {
-  if((tty_mode&IO_ReadWrite)!=0) {
+  if((tty_mode&QIODevice::ReadWrite)!=0) {
     return true;
   }
   return false;

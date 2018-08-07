@@ -23,14 +23,14 @@
 #include <qdialog.h>
 #include <qstring.h>
 #include <qpushbutton.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
+#include <q3listbox.h>
+#include <q3textedit.h>
 #include <qlabel.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 #include <rddb.h>
 
 #include <edit_user.h>
@@ -68,7 +68,7 @@ AddUser::AddUser(QString *username,QWidget *parent)
   QLabel *user_name_label=new QLabel(user_name_edit,tr("&New User Name:"),this);
   user_name_label->setGeometry(10,13,110,19);
   user_name_label->setFont(font);
-  user_name_label->setAlignment(AlignRight|ShowPrefix);
+  user_name_label->setAlignment(Qt::AlignRight|Qt::TextShowMnemonic);
 
   //
   //  Ok Button

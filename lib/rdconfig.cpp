@@ -29,6 +29,7 @@
 #include <sys/ioctl.h>
 #endif  // WIN32
 
+#include <qdatetime.h>
 #include <qmessagebox.h>
 #include <qregexp.h>
 #include <qsettings.h>
@@ -302,7 +303,7 @@ QString RDConfig::provisioningHostShortName(const QString &hostname) const
 
   exp.search(hostname);
   QStringList texts=exp.capturedTexts();
-  if(texts.size()<conf_provisioning_host_short_name_group) {
+  if((unsigned)texts.size()<conf_provisioning_host_short_name_group) {
     return QString();
   }
   return texts[conf_provisioning_host_short_name_group];
@@ -327,7 +328,7 @@ QString RDConfig::provisioningServiceName(const QString &hostname) const
 
   exp.search(hostname);
   QStringList texts=exp.capturedTexts();
-  if(texts.size()<conf_provisioning_service_name_group) {
+  if((unsigned)texts.size()<conf_provisioning_service_name_group) {
     return QString();
   }
   return texts[conf_provisioning_service_name_group];

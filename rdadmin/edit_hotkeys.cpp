@@ -24,7 +24,10 @@
 #include <qpushbutton.h>
 #include <qsqldatabase.h>
 #include <qmessagebox.h>
-#include <qlistbox.h>
+#include <q3listbox.h>
+//Added by qt3to4:
+#include <QLabel>
+#include <QKeyEvent>
 
 #include <rdescape_string.h>
 #include <rdhotkeylist.h>
@@ -69,7 +72,7 @@ EditHotkeys::EditHotkeys(const QString &station,const QString &module,
   setCaption(hotkey_module.upper()+" "+tr("Hot Key Configuration for")+" "+
 	     hotkey_conf);
 
-  list_view=new QListView(this);
+  list_view=new Q3ListView(this);
   list_view->setGeometry(10,24,320,220);
   QLabel *label=new QLabel(list_view,tr("Host Hot Key Configurations"),this);
   label->setFont(font);
@@ -77,19 +80,19 @@ EditHotkeys::EditHotkeys(const QString &station,const QString &module,
   //list_view->setItemMargin(5);
   list_view->setSorting(-1);
   list_view->addColumn(tr("Button / Function "));
-  list_view->setColumnAlignment(0,AlignLeft|AlignVCenter);
+  list_view->setColumnAlignment(0,Qt::AlignLeft|Qt::AlignVCenter);
   list_view->addColumn(tr("KeyStroke"));
-  list_view->setColumnAlignment(1,AlignLeft|AlignVCenter);
+  list_view->setColumnAlignment(1,Qt::AlignLeft|Qt::AlignVCenter);
   list_view->setAllColumnsShowFocus(true);
  
-  connect(list_view,SIGNAL(clicked(QListViewItem *,const QPoint &,int)),
+  connect(list_view,SIGNAL(clicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,SLOT(showCurrentKey()));
-  connect(list_view,SIGNAL(doubleClicked(QListViewItem *,const QPoint &,int)),
+  connect(list_view,SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,SLOT(showCurrentKey()));
 
   //  Keystroke Value field
   keystroke = new QLineEdit(this);
-  keystroke->setFocusPolicy(QWidget::StrongFocus);
+  keystroke->setFocusPolicy(Qt::StrongFocus);
   keystroke->setGeometry(sizeHint().width()-270,sizeHint().height()-210,200,35);
   
   
@@ -128,7 +131,7 @@ EditHotkeys::EditHotkeys(const QString &station,const QString &module,
     new QLabel(clone_from_host_box,tr("Set From Host:"),this);
   clone_from_host_label->setFont(font);
   clone_from_host_label->setGeometry(sizeHint().width()-420,sizeHint().height()-110,120,30);
-  clone_from_host_label->setAlignment(AlignRight|AlignVCenter);
+  clone_from_host_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   sql=QString().sprintf("select NAME from STATIONS");
   q=new RDSqlQuery(sql);
   while(q->next()) {
@@ -193,9 +196,9 @@ void EditHotkeys::save()
   QString sql;
   RDSqlQuery *q;
 
-  QListViewItemIterator  *start;
+  Q3ListViewItemIterator  *start;
 
-  start = new QListViewItemIterator(list_view);
+  start = new Q3ListViewItemIterator(list_view);
 
   QString stringlist [40][45];   //  assumes no more than 40 entries...
   int cur, top, i = 0;
@@ -222,7 +225,7 @@ void EditHotkeys::save()
     }
   }
 
-  start = new QListViewItemIterator(list_view);
+  start = new Q3ListViewItemIterator(list_view);
     
   while(start->current()) {
     sql=QString("update RDHOTKEYS set ")+
@@ -242,7 +245,7 @@ void EditHotkeys::save()
 
 void EditHotkeys::SetHotKey()
 {
-  QListViewItem *item=list_view->selectedItem();
+  Q3ListViewItem *item=list_view->selectedItem();
   if (item==NULL) return;
 
   item->setText(1,hotkeystrokes);
@@ -261,7 +264,7 @@ void EditHotkeys::clearAll_Hotkeys()
     break;
   }
     
-  QListViewItem *l = list_view->firstChild();
+  Q3ListViewItem *l = list_view->firstChild();
   while (l)  {
     l->setText(1,"");
     l = l->nextSibling();
@@ -411,7 +414,7 @@ void EditHotkeys::RefreshList()
 
   QString sql;
   RDSqlQuery *q;
-  QListViewItem *l;
+  Q3ListViewItem *l;
   list_view->clear();
   
   keyupdated = false;
@@ -427,7 +430,7 @@ void EditHotkeys::RefreshList()
     "order by KEY_ID DESC";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    l=new QListViewItem(list_view);
+    l=new Q3ListViewItem(list_view);
     l->setText(0,q->value(0).toString());
     l->setText(1,q->value(1).toString());
   }
@@ -442,7 +445,7 @@ void EditHotkeys::Clone_RefreshList(const QString& clone_station)
   QString tmp_hotkey_conf=clone_station;
   RDHotkeys *tmp_station_hotkeys= new RDHotkeys(tmp_hotkey_conf,hotkey_module);
   keyupdated = true;
-  QListViewItem *l;
+  Q3ListViewItem *l;
   list_view->clear();
 
   sql=QString("select ")+
@@ -455,7 +458,7 @@ void EditHotkeys::Clone_RefreshList(const QString& clone_station)
 
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    l=new QListViewItem(list_view);
+    l=new Q3ListViewItem(list_view);
     l->setText(0,q->value(0).toString());
     l->setText(1,q->value(1).toString());
   }
@@ -467,7 +470,7 @@ void EditHotkeys::Clone_RefreshList(const QString& clone_station)
 
 void EditHotkeys::showCurrentKey()
 {
-  QListViewItem *item=list_view->selectedItem();
+  Q3ListViewItem *item=list_view->selectedItem();
   if (item==NULL) return;
   keystroke->setText((const char *)item->text(1));
   keystroke->displayText();
@@ -487,7 +490,7 @@ void EditHotkeys::clearCurrentItem()
 
 void EditHotkeys::SetButtonClicked()
 {
-  QListViewItem *item=list_view->selectedItem();
+  Q3ListViewItem *item=list_view->selectedItem();
   if (item==NULL) {
     QMessageBox::warning(this,tr("No Items Selected"),
                          tr("Please Select an Item From the List"));

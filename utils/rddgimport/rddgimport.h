@@ -32,8 +32,10 @@
 #include <qlineedit.h>
 #include <qpushbutton.h>
 #include <qdatetime.h>
-#include <qdatetimeedit.h>
-#include <qtextedit.h>
+#include <q3datetimeedit.h>
+#include <q3textedit.h>
+//Added by qt3to4:
+#include <QResizeEvent>
 
 #include <rdbusybar.h>
 #include <rddb.h>
@@ -84,10 +86,10 @@ class MainWidget : public QWidget
   QLineEdit *dg_filename_edit;
   QPushButton *dg_filename_button;
   QLabel *dg_date_label;
-  QDateEdit *dg_date_edit;
+  Q3DateEdit *dg_date_edit;
   QPushButton *dg_date_button;
   QLabel *dg_messages_label;
-  QTextEdit *dg_messages_text;
+  Q3TextEdit *dg_messages_text;
   RDBusyBar *dg_bar;
   QPushButton *dg_process_button;
   QPushButton *dg_close_button;

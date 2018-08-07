@@ -22,13 +22,15 @@
 
 #include <qdialog.h>
 #include <qstring.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
+#include <q3listbox.h>
+#include <q3textedit.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
+//Added by qt3to4:
+#include <QLabel>
 //#include <qsqldatabase.h>
 
 #include <rdapplication.h>
@@ -79,7 +81,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   QLabel *user_name_label=new QLabel(user_name_edit,tr("&User Name:"),this);
   user_name_label->setGeometry(5,11,110,19);
   user_name_label->setFont(font);
-  user_name_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  user_name_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Full Name
@@ -92,7 +94,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
     new QLabel(user_full_name_edit,tr("&Full Name:"),this);
   user_full_name_label->setGeometry(10,32,105,19);
   user_full_name_label->setFont(font);
-  user_full_name_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  user_full_name_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // User Description
@@ -105,7 +107,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
     new QLabel(user_description_edit,tr("&Description:"),this);
   user_description_label->setGeometry(5,53,110,19);
   user_description_label->setFont(font);
-  user_description_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  user_description_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // User Phone
@@ -117,7 +119,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   QLabel *user_phone_label=new QLabel(user_phone_edit,tr("&Phone:"),this);
   user_phone_label->setGeometry(10,75,105,19);
   user_phone_label->setFont(font);
-  user_phone_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  user_phone_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Local Authentication
@@ -130,7 +132,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
 				  tr("Authenticate This User Locally"),this);
   user_localauth_label->setGeometry(40,97,180,19);
   user_localauth_label->setFont(font);
-  user_localauth_label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  user_localauth_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // PAM Service
@@ -142,7 +144,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
     new QLabel(user_pamservice_edit,tr("PAM Service")+":",this);
   user_pamservice_label->setGeometry(10,119,105,19);
   user_pamservice_label->setFont(font);
-  user_pamservice_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  user_pamservice_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Change Password Button
@@ -164,7 +166,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
     new QLabel(user_webapi_auth_spin,tr("WebAPI Timeout:"),this);
   user_webapi_auth_label->setGeometry(10,141,105,19);
   user_webapi_auth_label->setFont(font);
-  user_webapi_auth_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  user_webapi_auth_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   /*
   //
@@ -175,12 +177,12 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   user_web_label=new QLabel(user_web_box,tr("Allow RDCastManager Web Logins"),this);
   user_web_label->setGeometry(40,162,sizeHint().width()-50,19);
   user_web_label->setFont(font);
-  user_web_label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  user_web_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   */
   //
   // Administrative Group Priviledges
   //
-  user_admin_group=new QButtonGroup(tr("Administrative Rights"),this);
+  user_admin_group=new Q3ButtonGroup(tr("Administrative Rights"),this);
   user_admin_group->setGeometry(10,170,355,45);
   user_admin_group->setFont(font);
 
@@ -194,12 +196,12 @@ EditUser::EditUser(const QString &user,QWidget *parent)
   user_admin_config_label->setGeometry(192,21,150,19);
   user_admin_config_label->setGeometry(30,21,150,19);
   user_admin_config_label->setFont(small_font);
-  user_admin_config_label->setAlignment(AlignLeft|ShowPrefix);
+  user_admin_config_label->setAlignment(Qt::AlignLeft);
 
   //
   // Production Group Priviledges
   //
-  user_prod_group=new QButtonGroup(tr("Production Rights"),this);
+  user_prod_group=new Q3ButtonGroup(tr("Production Rights"),this);
   user_prod_group->setGeometry(10,225,355,106);
   user_prod_group->setFont(font);
 
@@ -209,7 +211,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
     new QLabel(user_create_carts_button,tr("&Create Carts"),user_prod_group);
   user_create_carts_label->setGeometry(30,21,150,19);
   user_create_carts_label->setFont(small_font);
-  user_create_carts_label->setAlignment(AlignLeft|ShowPrefix);
+  user_create_carts_label->setAlignment(Qt::AlignLeft);
 
   user_delete_carts_button=new QCheckBox(user_prod_group);
   user_delete_carts_button->setGeometry(172,21,15,15);
@@ -217,7 +219,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
     new QLabel(user_delete_carts_button,tr("&Delete Carts"),user_prod_group);
   user_delete_carts_label->setGeometry(192,21,150,19);
   user_delete_carts_label->setFont(small_font);
-  user_delete_carts_label->setAlignment(AlignLeft|ShowPrefix);
+  user_delete_carts_label->setAlignment(Qt::AlignLeft);
 
   user_modify_carts_button=new QCheckBox(user_prod_group);
   user_modify_carts_button->setGeometry(10,42,15,15);
@@ -225,7 +227,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
     new QLabel(user_modify_carts_button,tr("&Modify Carts"),user_prod_group);
   user_modify_carts_label->setGeometry(30,41,150,19);
   user_modify_carts_label->setFont(small_font);
-  user_modify_carts_label->setAlignment(AlignLeft|ShowPrefix);
+  user_modify_carts_label->setAlignment(Qt::AlignLeft);
 
   user_edit_audio_button=new QCheckBox(user_prod_group);
   user_edit_audio_button->setGeometry(10,63,15,15);
@@ -233,7 +235,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
     new QLabel(user_edit_audio_button,tr("&Edit Audio"),user_prod_group);
   user_edit_audio_label->setGeometry(30,62,150,19);
   user_edit_audio_label->setFont(small_font);
-  user_edit_audio_label->setAlignment(AlignLeft|ShowPrefix);
+  user_edit_audio_label->setAlignment(Qt::AlignLeft);
 
   user_webget_login_button=new QCheckBox(user_prod_group);
   user_webget_login_button->setGeometry(10,84,15,15);
@@ -242,7 +244,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
 	       user_prod_group);
   user_webget_login_label->setGeometry(30,83,150,19);
   user_webget_login_label->setFont(small_font);
-  user_webget_login_label->setAlignment(AlignLeft|ShowPrefix);
+  user_webget_login_label->setAlignment(Qt::AlignLeft);
 
   user_edit_catches_button=new QCheckBox(user_prod_group);
   user_edit_catches_button->setGeometry(172,42,15,15);
@@ -251,7 +253,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
 	       user_prod_group);
   user_edit_catches_label->setGeometry(192,41,150,19);
   user_edit_catches_label->setFont(small_font);
-  user_edit_catches_label->setAlignment(AlignLeft|ShowPrefix);
+  user_edit_catches_label->setAlignment(Qt::AlignLeft);
 
   user_voicetrack_log_button=new QCheckBox(user_prod_group);
   user_voicetrack_log_button->setGeometry(172,63,15,15);
@@ -260,12 +262,12 @@ EditUser::EditUser(const QString &user,QWidget *parent)
 	       user_prod_group);
   user_voicetrack_log_label->setGeometry(192,62,150,19);
   user_voicetrack_log_label->setFont(small_font);
-  user_voicetrack_log_label->setAlignment(AlignLeft|ShowPrefix);
+  user_voicetrack_log_label->setAlignment(Qt::AlignLeft);
 
   //
   // Traffic Group Priviledges
   //
-  user_traffic_group=new QButtonGroup(tr("Traffic Rights"),this);
+  user_traffic_group=new Q3ButtonGroup(tr("Traffic Rights"),this);
   user_traffic_group->setGeometry(10,341,355,66);
   user_traffic_group->setFont(font);
 
@@ -275,7 +277,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
     new QLabel(user_create_log_button,tr("Create &Log"),user_traffic_group);
   user_create_log_label->setGeometry(30,21,150,19);
   user_create_log_label->setFont(small_font);
-  user_create_log_label->setAlignment(AlignLeft|ShowPrefix);
+  user_create_log_label->setAlignment(Qt::AlignLeft);
 
   user_delete_log_button=new QCheckBox(user_traffic_group);
   user_delete_log_button->setGeometry(172,21,15,15);
@@ -283,7 +285,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
     new QLabel(user_delete_log_button,tr("De&lete Log"),user_traffic_group);
   user_delete_log_label->setGeometry(192,21,150,19);
   user_delete_log_label->setFont(small_font);
-  user_delete_log_label->setAlignment(AlignLeft|ShowPrefix);
+  user_delete_log_label->setAlignment(Qt::AlignLeft);
 
   user_delete_rec_button=new QCheckBox(user_traffic_group);
   user_delete_rec_button->setGeometry(172,42,15,15);
@@ -292,7 +294,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
 	       user_traffic_group);
   user_delete_rec_label->setGeometry(192,42,150,19);
   user_delete_rec_label->setFont(small_font);
-  user_delete_rec_label->setAlignment(AlignLeft|ShowPrefix);
+  user_delete_rec_label->setAlignment(Qt::AlignLeft);
 
   user_modify_template_button=new QCheckBox(user_traffic_group);
   user_modify_template_button->setGeometry(10,42,15,15);
@@ -301,12 +303,12 @@ EditUser::EditUser(const QString &user,QWidget *parent)
 	       user_traffic_group);
   user_modify_template_label->setGeometry(30,42,100,19);
   user_modify_template_label->setFont(small_font);
-  user_modify_template_label->setAlignment(AlignLeft|ShowPrefix);
+  user_modify_template_label->setAlignment(Qt::AlignLeft);
 
   //
   // OnAir Group Priviledges
   //
-  user_onair_group=new QButtonGroup(tr("OnAir Rights"),this);
+  user_onair_group=new Q3ButtonGroup(tr("OnAir Rights"),this);
   user_onair_group->setGeometry(10,417,355,85);
   user_onair_group->setFont(font);
 
@@ -316,7 +318,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
     new QLabel(user_playout_log_button,tr("&Playout Logs"),user_onair_group);
   user_playout_log_label->setGeometry(30,21,150,19);
   user_playout_log_label->setFont(small_font);
-  user_playout_log_label->setAlignment(AlignLeft|ShowPrefix);
+  user_playout_log_label->setAlignment(Qt::AlignLeft);
 
   user_arrange_log_button=new QCheckBox(user_onair_group);
   user_arrange_log_button->setGeometry(172,21,15,15);
@@ -325,7 +327,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
 	       user_onair_group);
   user_arrange_log_label->setGeometry(192,21,150,19);
   user_arrange_log_label->setFont(small_font);
-  user_arrange_log_label->setAlignment(AlignLeft|ShowPrefix);
+  user_arrange_log_label->setAlignment(Qt::AlignLeft);
 
   user_addto_log_button=new QCheckBox(user_onair_group);
   user_addto_log_button->setGeometry(10,42,15,15);
@@ -333,7 +335,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
     new QLabel(user_addto_log_button,tr("Add Log &Items"),user_onair_group);
   user_addto_log_label->setGeometry(30,42,150,19);
   user_addto_log_label->setFont(small_font);
-  user_addto_log_label->setAlignment(AlignLeft|ShowPrefix);
+  user_addto_log_label->setAlignment(Qt::AlignLeft);
 
   user_removefrom_log_button=new QCheckBox(user_onair_group);
   user_removefrom_log_button->setGeometry(172,42,15,15);
@@ -342,7 +344,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
 	       user_onair_group);
   user_removefrom_log_label->setGeometry(192,42,150,19);
   user_removefrom_log_label->setFont(small_font);
-  user_removefrom_log_label->setAlignment(AlignLeft|ShowPrefix);
+  user_removefrom_log_label->setAlignment(Qt::AlignLeft);
 
   user_config_panels_button=new QCheckBox(user_onair_group);
   user_config_panels_button->setGeometry(10,63,15,15);
@@ -351,12 +353,12 @@ EditUser::EditUser(const QString &user,QWidget *parent)
 	       user_onair_group);
   user_config_panels_label->setGeometry(30,63,150,19);
   user_config_panels_label->setFont(small_font);
-  user_config_panels_label->setAlignment(AlignLeft|ShowPrefix);
+  user_config_panels_label->setAlignment(Qt::AlignLeft);
 
   //
   // Podcast Group Priviledges
   //
-  user_podcast_group=new QButtonGroup(tr("Podcasting Rights"),this);
+  user_podcast_group=new Q3ButtonGroup(tr("Podcasting Rights"),this);
   user_podcast_group->setGeometry(10,512,355,66);
   user_podcast_group->setFont(font);
 
@@ -367,7 +369,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
 	       user_podcast_group);
   user_add_podcast_label->setGeometry(30,21,150,19);
   user_add_podcast_label->setFont(small_font);
-  user_add_podcast_label->setAlignment(AlignLeft|ShowPrefix);
+  user_add_podcast_label->setAlignment(Qt::AlignLeft);
 
   user_edit_podcast_button=new QCheckBox(user_podcast_group);
   user_edit_podcast_button->setGeometry(172,21,15,15);
@@ -375,7 +377,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
     new QLabel(user_edit_podcast_button,tr("E&dit Podcast"),user_podcast_group);
   user_edit_podcast_label->setGeometry(192,21,150,19);
   user_edit_podcast_label->setFont(small_font);
-  user_edit_podcast_label->setAlignment(AlignLeft|ShowPrefix);
+  user_edit_podcast_label->setAlignment(Qt::AlignLeft);
 
   user_delete_podcast_button=new QCheckBox(user_podcast_group);
   user_delete_podcast_button->setGeometry(10,42,15,15);
@@ -384,7 +386,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
 	       user_podcast_group);
   user_delete_podcast_label->setGeometry(30,42,150,19);
   user_delete_podcast_label->setFont(small_font);
-  user_delete_podcast_label->setAlignment(AlignLeft|ShowPrefix);
+  user_delete_podcast_label->setAlignment(Qt::AlignLeft);
 
   user_web_box=new QCheckBox(user_podcast_group);
   user_web_box->setGeometry(172,42,15,15);
@@ -392,7 +394,7 @@ EditUser::EditUser(const QString &user,QWidget *parent)
 			    user_podcast_group);
   user_web_label->setGeometry(192,42,150,19);
   user_web_label->setFont(small_font);
-  user_web_label->setAlignment(AlignLeft|ShowPrefix);
+  user_web_label->setAlignment(Qt::AlignLeft);
 
   //
   //  Group Permissions Button

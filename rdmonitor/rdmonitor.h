@@ -31,12 +31,16 @@
 #include <qtimer.h>
 #include <qdesktopwidget.h>
 #include <qfontmetrics.h>
+//Added by qt3to4:
+#include <QPaintEvent>
+#include <QResizeEvent>
+#include <QMouseEvent>
 
 #include <rdconfig.h>
 #include <rdmonitor_config.h>
 
 #include "positiondialog.h"
-#include "status_tip.h"
+//#include "status_tip.h"
 
 #define RDSELECT_WIDTH 400
 #define RDSELECT_HEIGHT 300
@@ -71,7 +75,7 @@ class MainWidget : public QWidget
   int mon_dialog_y;
   int mon_rdselect_x;
   int mon_rdselect_y;
-  StatusTip *mon_tooltip;
+  //  StatusTip *mon_tooltip;
   QDesktopWidget *mon_desktop_widget;
   RDMonitorConfig *mon_config;
   RDConfig *mon_rdconfig;

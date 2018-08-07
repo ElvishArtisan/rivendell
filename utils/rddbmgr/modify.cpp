@@ -24,6 +24,8 @@
 #include <rddb.h>
 
 #include "rddbmgr.h"
+//Added by qt3to4:
+#include <QSqlQuery>
 
 bool MainObject::Modify(QString *err_msg,int set_schema) const
 {

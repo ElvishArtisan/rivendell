@@ -26,10 +26,10 @@
 #include <qlineedit.h>
 #include <qcombobox.h>
 #include <qspinbox.h>
-#include <qdatetimeedit.h>
+#include <q3datetimeedit.h>
 #include <qlabel.h>
 #include <qcheckbox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 
 #include <rd.h>
 #include <rdairplay_conf.h>

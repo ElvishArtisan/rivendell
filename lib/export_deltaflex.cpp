@@ -27,7 +27,7 @@
 
 #include <qfile.h>
 #include <qmessagebox.h>
-#include <qtextstream.h>
+#include <q3textstream.h>
 
 #include "rddatedecode.h"
 #include "rddb.h"
@@ -42,13 +42,13 @@ bool RDReport::ExportDeltaflex(const QString &filename,const QDate &startdate,
   QString air_fmt;
 
   QFile *file=new QFile(filename);
-  if(!file->open(IO_WriteOnly|IO_Truncate)) {
+  if(!file->open(QIODevice::WriteOnly|QIODevice::Truncate)) {
     report_error_code=RDReport::ErrorCantOpen;
     delete file;
     return false;
   }
-  QTextStream *strm=new QTextStream(file);
-  strm->setEncoding(QTextStream::UnicodeUTF8);
+  Q3TextStream *strm=new Q3TextStream(file);
+  strm->setEncoding(Q3TextStream::UnicodeUTF8);
   if(useLeadingZeros()) {
     air_fmt=QString().sprintf("%%0%uu",cartDigits());
   }
@@ -115,7 +115,7 @@ bool RDReport::ExportDeltaflex(const QString &filename,const QDate &startdate,
     ext_data="";
     if(q->value(6).toString().length()>0) {
       if(q->value(6).toString().length()<=8) {
-	for(unsigned i=0;i<(8-q->value(6).toString().stripWhiteSpace().length());
+	for(int i=0;i<(8-q->value(6).toString().stripWhiteSpace().length());
 	    i++) {
 	  ext_data+="0";
 	}

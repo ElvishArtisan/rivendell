@@ -214,8 +214,8 @@ MainObject::MainObject(QObject *parent)
   }
   connect(server,SIGNAL(connection(int)),this,SLOT(newConnection(int)));
 
-  connect (RDDbStatus(),SIGNAL(logText(RDConfig::LogPriority,const QString &)),
-	   this,SLOT(log(RDConfig::LogPriority,const QString &)));
+  //  connect (RDDbStatus(),SIGNAL(logText(RDConfig::LogPriority,const QString &)),
+  //	   this,SLOT(log(RDConfig::LogPriority,const QString &)));
 
   //
   // Create RDCatchConf
@@ -316,7 +316,7 @@ MainObject::MainObject(QObject *parent)
   if(fork()==0) {
     execl(QString(RD_PREFIX)+"/sbin/rdvairplayd","rdvairplayd",(char *)NULL);
     rda->log(RDConfig::LogWarning,QString("failed to start rdvairplayd(1) [")+
-	     strerror(errno)+"]");
+	     QString(strerror(errno))+"]");
     exit(1);
   }
   StartDropboxes();
@@ -1853,7 +1853,7 @@ void MainObject::KillSocket(int ch)
 void MainObject::EchoCommand(int ch,const char *command)
 {
 //  LogLine(RDConfig::LogDebug,QString().sprintf("rdcatchd: EchoCommand(%d,%s)",ch,command));
-  if(socket[ch]->state()==QSocket::Connection) {
+  if(socket[ch]->state()==Q3Socket::Connection) {
     socket[ch]->writeBlock(command,strlen(command));
   }
 }

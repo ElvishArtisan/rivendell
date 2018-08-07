@@ -22,7 +22,7 @@
 #define RDVAIRPLAYD_H
 
 #include <qobject.h>
-#include <qsocketdevice.h>
+#include <q3socketdevice.h>
 
 #include <rdevent_player.h>
 #include <rd.h>
@@ -56,7 +56,7 @@ class MainObject : public QObject
   bool air_start_starts[RD_RDVAIRPLAY_LOG_QUAN];
   std::vector<RDRLMHost *> air_plugin_hosts;
   RDEventPlayer *air_event_player;
-  QSocketDevice *air_nownext_socket;
+  Q3SocketDevice *air_nownext_socket;
   QDateTime air_startup_datetime;
   RDAirPlayConf::ExitCode air_previous_exit_code;
   QTimer *air_exit_timer;

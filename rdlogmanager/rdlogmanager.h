@@ -25,7 +25,7 @@
 #include <qsize.h>
 #include <qsizepolicy.h>
 #include <qlabel.h>
-#include <qlistview.h>
+#include <q3listview.h>
 #include <qpushbutton.h>
 #include <qpixmap.h>
 

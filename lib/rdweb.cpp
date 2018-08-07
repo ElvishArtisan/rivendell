@@ -830,7 +830,7 @@ bool RDParsePost(std::map<QString,QString> *vars)
 	  fields=fields.split(";",headers["content-disposition"]);
 	  if(fields.size()>0) {
 	    if(fields[0].lower().stripWhiteSpace()=="form-data") {
-	      for(unsigned i=1;i<fields.size();i++) {
+	      for(int i=1;i<fields.size();i++) {
 		QStringList pairs;
 		pairs=pairs.split("=",fields[i]);
 		if(pairs[0].lower().stripWhiteSpace()=="name") {
@@ -942,6 +942,20 @@ QString RDXmlField(const QString &tag,const QDateTime &value,
   }
   if(value.isValid()) {
     return QString("<")+tag+str+">"+RDXmlDateTime(value)+"</"+tag+">\n";
+  }
+  return RDXmlField(tag);
+}
+
+
+QString RDXmlField(const QString &tag,const QDate &value,const QString &attrs)
+{
+  QString str="";
+
+  if(!attrs.isEmpty()) {
+    str=" "+attrs;
+  }
+  if(value.isValid()&&(!value.isNull())) {
+    return QString("<")+tag+str+">"+RDXmlDate(value)+"</"+tag+">\n";
   }
   return RDXmlField(tag);
 }
@@ -1071,8 +1085,8 @@ QString RDUrlUnescape(const QString &str)
    */
   QString ret="";
 
-  for(unsigned i=0;i<str.length();i++) {
-    if((str.at(i)=="%")&&(i<str.length()-2)) {
+  for(int i=0;i<str.length();i++) {
+    if((str.at(i).ascii()=='%')&&(i<str.length()-2)) {
       ret+=QString().sprintf("%c",str.mid(i+1,2).toInt(NULL,16));
       i+=2;
     }

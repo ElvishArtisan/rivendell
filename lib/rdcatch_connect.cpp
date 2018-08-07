@@ -40,7 +40,7 @@ RDCatchConnect::RDCatchConnect(int serial,QObject *parent)
   //
   // TCP Connection
   //
-  cc_socket=new QSocket(this,"cc_socket");
+  cc_socket=new Q3Socket(this,"cc_socket");
   connect(cc_socket,SIGNAL(connected()),this,SLOT(connectedData()));
   connect(cc_socket,SIGNAL(readyRead()),this,SLOT(readyData()));
 

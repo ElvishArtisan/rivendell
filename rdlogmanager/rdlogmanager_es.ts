@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>AddClock</name>
     <message>
@@ -233,35 +235,35 @@ horario</translation>
     </message>
     <message>
         <source>CART</source>
-        <translation>CARTUCHO</translation>
+        <translation type="obsolete">CARTUCHO</translation>
     </message>
     <message>
         <source>GROUP</source>
-        <translation>GRUPO</translation>
+        <translation type="obsolete">GRUPO</translation>
     </message>
     <message>
         <source>LENGTH</source>
-        <translation>DURACIÓN</translation>
+        <translation type="obsolete">DURACIÓN</translation>
     </message>
     <message>
         <source>TITLE</source>
-        <translation>TÍTULO</translation>
+        <translation type="obsolete">TÍTULO</translation>
     </message>
     <message>
         <source>ARTIST</source>
-        <translation>ARTISTA</translation>
+        <translation type="obsolete">ARTISTA</translation>
     </message>
     <message>
         <source>START</source>
-        <translation>INICIO</translation>
+        <translation type="obsolete">INICIO</translation>
     </message>
     <message>
         <source>END</source>
-        <translation>FIN</translation>
+        <translation type="obsolete">FIN</translation>
     </message>
     <message>
         <source>TYPE</source>
-        <translation>TIPO</translation>
+        <translation type="obsolete">TIPO</translation>
     </message>
     <message>
         <source>ALL</source>
@@ -337,11 +339,11 @@ horario</translation>
     </message>
     <message>
         <source>TRANSITION</source>
-        <translation>TRANSICIÓN</translation>
+        <translation type="obsolete">TRANSICIÓN</translation>
     </message>
     <message>
         <source>COUNT</source>
-        <translation>CUENTA</translation>
+        <translation type="obsolete">CUENTA</translation>
     </message>
     <message>
         <source>None</source>
@@ -542,6 +544,46 @@ Do you want to overwrite it?</source>
     <message>
         <source>Timed(Wait)</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="unfinished">Duración</translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Artist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start</source>
+        <translation type="unfinished">Inicio</translation>
+    </message>
+    <message>
+        <source>End</source>
+        <translation type="unfinished">Fin</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Count</source>
+        <translation type="unfinished">Cuenta</translation>
     </message>
 </context>
 <context>

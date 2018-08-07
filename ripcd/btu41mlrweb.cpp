@@ -34,7 +34,7 @@ BtU41MlrWeb::BtU41MlrWeb(RDMatrix *matrix,QObject *parent)
     bt_gpi_states[i]=false;
   }
 
-  bt_socket=new QSocket(this);
+  bt_socket=new Q3Socket(this);
   connect(bt_socket,SIGNAL(connected()),this,SLOT(connectedData()));
   connect(bt_socket,SIGNAL(readyRead()),this,SLOT(readyReadData()));
   connect(bt_socket,SIGNAL(error(int)),this,SLOT(errorData(int)));

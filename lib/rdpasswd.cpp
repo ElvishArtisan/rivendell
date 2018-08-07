@@ -23,12 +23,12 @@
 #include <qpushbutton.h>
 #include <qradiobutton.h>
 #include <qlineedit.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qlabel.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 #include <math.h>
 
 #include <rdpasswd.h>
@@ -94,7 +94,7 @@ RDPasswd::RDPasswd(QString *password,QWidget *parent)
 					     "passwd_password_1_label");
   passwd_password_1_label->setFont(label_font);
   passwd_password_1_label->setGeometry(10,13,75,19);
-  passwd_password_1_label->setAlignment(AlignRight|ShowPrefix);
+  passwd_password_1_label->setAlignment(Qt::AlignRight|Qt::TextShowMnemonic);
 
   //
   // Confirm Password
@@ -109,7 +109,7 @@ RDPasswd::RDPasswd(QString *password,QWidget *parent)
 	       "passwd_password_2_label");
   passwd_password_2_label->setFont(label_font);
   passwd_password_2_label->setGeometry(10,34,75,19);
-  passwd_password_2_label->setAlignment(AlignRight|ShowPrefix);
+  passwd_password_2_label->setAlignment(Qt::AlignRight|Qt::TextShowMnemonic);
 
 }
 
@@ -142,7 +142,7 @@ void RDPasswd::okData()
   else {
     QMessageBox::warning(this,tr("Password Mismatch"),
 			 tr("The passwords don't match,\nplease try again!"),
-			 tr("OK"),0);
+			 tr("OK"));
   }
 }
 

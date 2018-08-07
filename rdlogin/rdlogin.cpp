@@ -29,6 +29,9 @@
 #include <qlabel.h>
 #include <qtextcodec.h>
 #include <qtranslator.h>
+//Added by qt3to4:
+#include <QResizeEvent>
+#include <QPixmap>
 
 #include <dbversion.h>
 #include <rd.h>
@@ -123,7 +126,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   login_label=new QLabel(this);
   login_label->setFont(label_font);
-  login_label->setAlignment(AlignCenter);
+  login_label->setAlignment(Qt::AlignCenter);
   login_label->setText(tr("Current User: unknown"));
 
   //
@@ -149,7 +152,7 @@ MainWidget::MainWidget(QWidget *parent)
   }
   login_username_label=new QLabel(login_username_box,tr("&Username:"),this);
   login_username_label->setFont(small_label_font);
-  login_username_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  login_username_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   if(rda->system()->showUserList()) {
     login_username_edit->hide();
   }
@@ -165,7 +168,7 @@ MainWidget::MainWidget(QWidget *parent)
   login_password_edit->setEchoMode(QLineEdit::Password);
   login_password_label=new QLabel(login_password_edit,tr("&Password:"),this);
   login_password_label->setFont(small_label_font);
-  login_password_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  login_password_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   connect(login_password_edit,SIGNAL(returnPressed()),this,SLOT(loginData()));
 
   //
@@ -311,7 +314,7 @@ int main(int argc,char *argv[])
   // Load Translations
   //
   QTranslator qt(0);
-  qt.load(QString(QTDIR)+QString("/translations/qt_")+QTextCodec::locale(),
+  qt.load(QString("/usr/share/qt4/translations/qt_")+QTextCodec::locale(),
 	  ".");
   a.installTranslator(&qt);
 

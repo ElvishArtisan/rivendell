@@ -32,7 +32,7 @@ void RDResolveNowNextDateTime(QString *str,const QString &code,
   std::vector<QString> dts;
 
   while((ptr=str->find(code,ptr))>=0) {
-    for(unsigned i=ptr+3;i<str->length();i++) {
+    for(int i=ptr+3;i<str->length();i++) {
       if(str->at(i)==')') {
 	dts.push_back(str->mid(ptr+3,i-ptr-3));
 	ptr+=(i-ptr-3);

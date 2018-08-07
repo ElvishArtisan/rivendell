@@ -19,6 +19,8 @@
 //
 
 #include <qcolordialog.h>
+//Added by qt3to4:
+#include <QResizeEvent>
 
 #include <rddb.h>
 #include <rdcart.h>
@@ -50,9 +52,9 @@ RDListSvcs::RDListSvcs(const QString &caption,QWidget *parent)
   //
   // Services
   //
-  edit_svc_list=new QListBox(this);
-  connect(edit_svc_list,SIGNAL(doubleClicked(QListBoxItem *)),
-	  this,SLOT(doubleClickedData(QListBoxItem *)));
+  edit_svc_list=new Q3ListBox(this);
+  connect(edit_svc_list,SIGNAL(doubleClicked(Q3ListBoxItem *)),
+	  this,SLOT(doubleClickedData(Q3ListBoxItem *)));
 
   //
   //  Ok Button
@@ -111,7 +113,7 @@ int RDListSvcs::exec(QString *svcname)
 }
 
 
-void RDListSvcs::doubleClickedData(QListBoxItem *item)
+void RDListSvcs::doubleClickedData(Q3ListBoxItem *item)
 {
   okData();
 }

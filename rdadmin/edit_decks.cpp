@@ -20,15 +20,18 @@
 
 #include <qstring.h>
 #include <qpushbutton.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qvalidator.h>
 #include <qmessagebox.h>
 #include <qsignalmapper.h>
 #include <qcheckbox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 #include <qstringlist.h>
+//Added by qt3to4:
+#include <QLabel>
+#include <QPaintEvent>
 
 #include <rd.h>
 #include <rddb.h>
@@ -72,13 +75,13 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   //
   edit_record_deck_box=new QComboBox(this);
   edit_record_deck_box->setGeometry(140,10,60,24);
-  edit_record_deck_box->setInsertionPolicy(QComboBox::NoInsertion);
+  edit_record_deck_box->setInsertionPolicy(QComboBox::NoInsert);
   connect(edit_record_deck_box,SIGNAL(activated(int)),
 	  this,SLOT(recordDeckActivatedData(int)));
   QLabel *label=new QLabel(edit_record_deck_box,tr("Record Deck"),this);
   label->setFont(small_font);
   label->setGeometry(35,14,100,22);
-  label->setAlignment(AlignRight);
+  label->setAlignment(Qt::AlignRight);
 
   //
   // Settings Label
@@ -106,7 +109,7 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
 	  this,SLOT(monitorPortChangedData(int)));
   edit_monitor_label=new QLabel(edit_monitor_box,tr("Monitor Port:"),this);
   edit_monitor_label->setGeometry(10,112,112,19);
-  edit_monitor_label->setAlignment(AlignRight|AlignVCenter);
+  edit_monitor_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   edit_default_on_box=new QComboBox(this);
   edit_default_on_box->setGeometry(305,112,60,19);
@@ -115,39 +118,39 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   edit_default_on_label=
     new QLabel(edit_default_on_box,tr("Monitor defaults to"),this);
   edit_default_on_label->setGeometry(195,112,105,19);
-  edit_default_on_label->setAlignment(AlignRight|AlignVCenter);
+  edit_default_on_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Format
   //
   edit_format_box=new QComboBox(this);
   edit_format_box->setGeometry(125,136,150,24);
-  edit_format_box->setInsertionPolicy(QComboBox::NoInsertion);
+  edit_format_box->setInsertionPolicy(QComboBox::NoInsert);
   connect(edit_format_box,SIGNAL(activated(int)),
 	  this,SLOT(formatActivatedData(int)));
   label=new QLabel(edit_format_box,tr("Format:"),this);
   label->setGeometry(10,136,110,24);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Bit Rate
   //
   edit_bitrate_box=new QComboBox(this,"edit_bitrate_box");
   edit_bitrate_box->setGeometry(125,160,140,24);
-  edit_bitrate_box->setInsertionPolicy(QComboBox::NoInsertion);
+  edit_bitrate_box->setInsertionPolicy(QComboBox::NoInsert);
   edit_bitrate_label=new QLabel(edit_bitrate_box,tr("Bit Rate:"),this);
   edit_bitrate_label->setGeometry(10,160,110,24);
-  edit_bitrate_label->setAlignment(AlignRight|AlignVCenter);
+  edit_bitrate_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Switcher Station
   //
   edit_swstation_box=new QComboBox(this);
   edit_swstation_box->setGeometry(125,190,250,24);
-  edit_swstation_box->setInsertionPolicy(QComboBox::NoInsertion);
+  edit_swstation_box->setInsertionPolicy(QComboBox::NoInsert);
   edit_swstation_label=new QLabel(edit_swstation_box,tr("Switcher Host:"),this);
   edit_swstation_label->setGeometry(10,190,110,24);
-  edit_swstation_label->setAlignment(AlignRight|AlignVCenter);
+  edit_swstation_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   connect(edit_swstation_box,SIGNAL(activated(const QString &)),
 	  this,SLOT(stationActivatedData(const QString &)));
 
@@ -156,11 +159,11 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   //
   edit_swmatrix_box=new QComboBox(this);
   edit_swmatrix_box->setGeometry(125,214,250,24);
-  edit_swmatrix_box->setInsertionPolicy(QComboBox::NoInsertion);
+  edit_swmatrix_box->setInsertionPolicy(QComboBox::NoInsert);
   edit_swmatrix_box->setDisabled(true);
   edit_swmatrix_label=new QLabel(edit_swmatrix_box,tr("Switcher Matrix:"),this);
   edit_swmatrix_label->setGeometry(10,214,110,24);
-  edit_swmatrix_label->setAlignment(AlignRight|AlignVCenter);
+  edit_swmatrix_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   edit_swmatrix_label->setDisabled(true);
   connect(edit_swmatrix_box,SIGNAL(activated(const QString &)),
 	  this,SLOT(matrixActivatedData(const QString &)));
@@ -170,11 +173,11 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   //
   edit_swoutput_box=new QComboBox(this);
   edit_swoutput_box->setGeometry(125,238,250,24);
-  edit_swoutput_box->setInsertionPolicy(QComboBox::NoInsertion);
+  edit_swoutput_box->setInsertionPolicy(QComboBox::NoInsert);
   edit_swoutput_box->setDisabled(true);
   edit_swoutput_label=new QLabel(edit_swoutput_box,tr("Switcher Output:"),this);
   edit_swoutput_label->setGeometry(10,238,110,24);
-  edit_swoutput_label->setAlignment(AlignRight|AlignVCenter);
+  edit_swoutput_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   edit_swoutput_label->setDisabled(true);
 
   //
@@ -186,11 +189,11 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   edit_swdelay_box->setDisabled(true);
   edit_swdelay_label=new QLabel(edit_swdelay_box,tr("Switcher Delay:"),this);
   edit_swdelay_label->setGeometry(10,262,110,24);
-  edit_swdelay_label->setAlignment(AlignRight|AlignVCenter);
+  edit_swdelay_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   edit_swdelay_label->setDisabled(true);
   edit_swdelay_unit=new QLabel(edit_swdelay_box,tr("1/10 sec"),this);
   edit_swdelay_unit->setGeometry(170,262,60,24);
-  edit_swdelay_unit->setAlignment(AlignLeft|AlignVCenter);
+  edit_swdelay_unit->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   edit_swdelay_unit->setDisabled(true);
   edit_swdelay_box->hide();
   edit_swdelay_label->hide();
@@ -208,10 +211,10 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   //
   edit_channels_box=new QComboBox(this);
   edit_channels_box->setGeometry(125,300,60,24);
-  edit_channels_box->setInsertionPolicy(QComboBox::NoInsertion);
+  edit_channels_box->setInsertionPolicy(QComboBox::NoInsert);
   label=new QLabel(edit_channels_box,tr("Channels:"),this);
   label->setGeometry(10,300,110,24);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Default Autotrim Threshold
@@ -222,7 +225,7 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   edit_threshold_box->setRange(-100,0);
   label=new QLabel(edit_threshold_box,tr("Trim Threshold:"),this);
   label->setGeometry(10,324,110,24);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Host-Wide Settings Label
@@ -235,20 +238,20 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   edit_errorrml_edit->setGeometry(125,393,248,24);
   label=new QLabel(edit_errorrml_edit,tr("Error RML:"),this);
   label->setGeometry(10,393,110,24);
-  label->setAlignment(AlignRight|AlignVCenter);
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Play Deck Selector
   //
   edit_play_deck_box=new QComboBox(this);
   edit_play_deck_box->setGeometry(475,10,60,24);
-  edit_play_deck_box->setInsertionPolicy(QComboBox::NoInsertion);
+  edit_play_deck_box->setInsertionPolicy(QComboBox::NoInsert);
   connect(edit_play_deck_box,SIGNAL(activated(int)),
 	  this,SLOT(playDeckActivatedData(int)));
   label=new QLabel(edit_play_deck_box,tr("Play Deck"),this);
   label->setFont(small_font);
   label->setGeometry(390,14,80,22);
-  label->setAlignment(AlignRight);
+  label->setAlignment(Qt::AlignRight);
 
   //
   // Play Deck Card Selector
@@ -545,9 +548,8 @@ void EditDecks::closeData()
 void EditDecks::paintEvent(QPaintEvent *e)
 {
   QPainter *p=new QPainter(this);
-  p->setPen(QColor(black));
-  p->moveTo(385,10);
-  p->lineTo(385,sizeHint().height()-10);
+  p->setPen(QColor(Qt::black));
+  p->drawLine(385,10,385,sizeHint().height()-10);
   p->end();
 }
 

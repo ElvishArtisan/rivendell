@@ -23,6 +23,8 @@
 
 #include <qdialog.h>
 #include <qspinbox.h>
+//Added by qt3to4:
+#include <QCloseEvent>
 
 class RDIntegerDialog : public QDialog
 {

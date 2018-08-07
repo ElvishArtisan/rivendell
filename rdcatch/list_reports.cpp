@@ -69,7 +69,7 @@ ListReports::ListReports(bool today_only,bool active_only,int dow,
     new QLabel(list_reports_box,tr("Type:"),this);
   list_reports_label->setGeometry(10,10,35,19);
   list_reports_label->setFont(font);
-  list_reports_label->setAlignment(AlignRight|AlignVCenter|ShowPrefix);
+  list_reports_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   //  Generate Button

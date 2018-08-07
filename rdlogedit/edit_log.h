@@ -24,11 +24,16 @@
 #include <vector>
 
 #include <qdialog.h>
+//Added by qt3to4:
+#include <QCloseEvent>
+#include <QPaintEvent>
+#include <QResizeEvent>
+#include <QPixmap>
 #include <rdlistview.h>
 #include <qsqldatabase.h>
 #include <qlineedit.h>
 #include <qcombobox.h>
-#include <qdatetimeedit.h>
+#include <q3datetimeedit.h>
 #include <qcheckbox.h>
 #include <qlabel.h>
 
@@ -79,9 +84,9 @@ class EditLog : public QDialog
   void endDateEnabledData(bool);
   void insertCartButtonData();
   void insertMarkerButtonData();
-  void clickedData(QListViewItem *item);
+  void clickedData(Q3ListViewItem *item);
   void selectionChangedData();
-  void doubleClickData(QListViewItem *item);
+  void doubleClickData(Q3ListViewItem *item);
   void editButtonData();
   void deleteButtonData();
   void upButtonData();
@@ -136,8 +141,8 @@ class EditLog : public QDialog
   QLabel *edit_autorefresh_label;
   QComboBox *edit_autorefresh_box;
   QLineEdit *edit_autorefresh_edit;
-  QDateEdit *edit_startdate_edit;
-  QDateEdit *edit_enddate_edit;
+  Q3DateEdit *edit_startdate_edit;
+  Q3DateEdit *edit_enddate_edit;
   QLabel *edit_startdate_label;
   QLabel *edit_startdate_box_label;
   QLabel *edit_enddate_box_label;
@@ -192,7 +197,7 @@ class EditLog : public QDialog
   QLineEdit *edit_endtime_edit;
   QCheckBox *edit_purgedate_box;
   QLabel *edit_purgedate_label;
-  QDateEdit *edit_purgedate_edit;
+  Q3DateEdit *edit_purgedate_edit;
   QPushButton *edit_purgedate_button;
   RDLogLock *edit_log_lock;
 #ifndef WIN32

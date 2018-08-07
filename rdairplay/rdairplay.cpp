@@ -32,15 +32,21 @@
 #include <qwindowsstyle.h>
 #include <qwidget.h>
 #include <qpainter.h>
-#include <qsqlpropertymap.h>
+#include <q3sqlpropertymap.h>
 #include <qmessagebox.h>
 #include <qpushbutton.h>
-#include <qlistview.h>
+#include <q3listview.h>
 #include <qsignalmapper.h>
 #include <qtimer.h>
 #include <qtextcodec.h>
 #include <qtranslator.h>
 #include <qpainter.h>
+//Added by qt3to4:
+#include <QPixmap>
+#include <QCloseEvent>
+#include <QKeyEvent>
+#include <Q3Frame>
+#include <QPaintEvent>
 
 #include <dbversion.h>
 #include <rd.h>
@@ -144,8 +150,8 @@ MainWidget::MainWidget(QWidget *parent)
     QMessageBox::critical(this,"RDAirPlay - "+tr("Error"),err_msg);
     exit(1);
   }
-  connect(RDDbStatus(),SIGNAL(logText(RDConfig::LogPriority,const QString &)),
-	  this,SLOT(logLine(RDConfig::LogPriority,const QString &))); 
+  //  connect(RDDbStatus(),SIGNAL(logText(RDConfig::LogPriority,const QString &)),
+  //	  this,SLOT(logLine(RDConfig::LogPriority,const QString &))); 
 
 
   //
@@ -158,7 +164,7 @@ MainWidget::MainWidget(QWidget *parent)
     for(unsigned j=0;j<rda->cmdSwitch()->keys();j++) {
       if(rda->cmdSwitch()->key(j)==QString().sprintf("--log%u",i+1)) {
 	air_start_logname[i]=rda->cmdSwitch()->value(j);
-	for(unsigned k=0;k<rda->cmdSwitch()->value(j).length();k++) {
+	for(int k=0;k<rda->cmdSwitch()->value(j).length();k++) {
 	  if(rda->cmdSwitch()->value(j).at(k)==QChar(':')) {
 	    air_start_logname[i]=
 	      RDDateTimeDecode(rda->cmdSwitch()->value(j).left(k),
@@ -336,7 +342,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // UDP Transmission Socket
   //
-  air_nownext_socket=new QSocketDevice(QSocketDevice::Datagram);
+  air_nownext_socket=new Q3SocketDevice(Q3SocketDevice::Datagram);
 
   //
   // Log Machines
@@ -417,7 +423,7 @@ MainWidget::MainWidget(QWidget *parent)
     setGeometry(10,5,clock->sizeHint().width(),clock->sizeHint().height());
   clock->setCheckSyncEnabled(rda->airplayConf()->checkTimesync());
   connect(air_master_timer,SIGNAL(timeout()),clock,SLOT(tickClock()));
- clock->setFocusPolicy(QWidget::NoFocus);
+ clock->setFocusPolicy(Qt::NoFocus);
   connect(clock,SIGNAL(timeModeChanged(RDAirPlayConf::TimeMode)),
 	  this,SLOT(timeModeData(RDAirPlayConf::TimeMode)));
 
@@ -428,7 +434,7 @@ MainWidget::MainWidget(QWidget *parent)
   air_post_counter->setGeometry(220,5,air_post_counter->sizeHint().width(),
 				air_post_counter->sizeHint().height());
   air_post_counter->setPostPoint(QTime(),0,false,false);
-  air_post_counter->setFocusPolicy(QWidget::NoFocus);
+  air_post_counter->setFocusPolicy(Qt::NoFocus);
   connect(air_master_timer,SIGNAL(timeout()),
 	  air_post_counter,SLOT(tickCounter()));
   connect(air_log[0],SIGNAL(postPointChanged(QTime,int,bool,bool)),
@@ -443,7 +449,7 @@ MainWidget::MainWidget(QWidget *parent)
   air_pie_counter->setCountLength(rda->airplayConf()->pieCountLength());
   air_pie_end=rda->airplayConf()->pieEndPoint();
   air_pie_counter->setOpMode(air_op_mode[0]);
-  air_pie_counter->setFocusPolicy(QWidget::NoFocus);
+  air_pie_counter->setFocusPolicy(Qt::NoFocus);
   if(mainmap!=NULL) {
     pm=new QPixmap(1024,738);
     pd=new QPainter(pm);
@@ -465,7 +471,7 @@ MainWidget::MainWidget(QWidget *parent)
   air_stereo_meter->setGeometry(50,70,air_stereo_meter->sizeHint().width(),
 				air_stereo_meter->sizeHint().height());
   air_stereo_meter->setMode(RDSegMeter::Peak);
- air_stereo_meter->setFocusPolicy(QWidget::NoFocus);
+ air_stereo_meter->setFocusPolicy(Qt::NoFocus);
   if(rda->config()->useStreamMeters()) {
     air_stereo_meter->hide();
   }
@@ -479,9 +485,9 @@ MainWidget::MainWidget(QWidget *parent)
   air_message_label->setWordWrapEnabled(true);
   air_message_label->setLineWidth(1);
   air_message_label->setMidLineWidth(1);
-  air_message_label->setFrameStyle(QFrame::Box|QFrame::Raised);
-  air_message_label->setAlignment(AlignCenter);
- air_message_label->setFocusPolicy(QWidget::NoFocus);
+  air_message_label->setFrameStyle(Q3Frame::Box|Q3Frame::Raised);
+  air_message_label->setAlignment(Qt::AlignCenter);
+ air_message_label->setFocusPolicy(Qt::NoFocus);
 
   //
   // Stop Counter
@@ -490,7 +496,7 @@ MainWidget::MainWidget(QWidget *parent)
   air_stop_counter->setGeometry(600,5,air_stop_counter->sizeHint().width(),
 				air_stop_counter->sizeHint().height());
   air_stop_counter->setTime(QTime(0,0,0));
- air_stop_counter->setFocusPolicy(QWidget::NoFocus);
+ air_stop_counter->setFocusPolicy(Qt::NoFocus);
   connect(air_master_timer,SIGNAL(timeout()),
 	  air_stop_counter,SLOT(tickCounter()));
   connect(air_log[0],SIGNAL(nextStopChanged(QTime)),
@@ -504,7 +510,7 @@ MainWidget::MainWidget(QWidget *parent)
     setGeometry(sizeHint().width()-air_mode_display->sizeHint().width()-10,
 		5,air_mode_display->sizeHint().width(),
 		air_mode_display->sizeHint().height());
-  air_mode_display->setFocusPolicy(QWidget::NoFocus);
+  air_mode_display->setFocusPolicy(Qt::NoFocus);
   air_mode_display->setOpModeStyle(air_op_mode_style);
   connect(air_mode_display,SIGNAL(clicked()),this,SLOT(modeButtonData()));
 
@@ -536,7 +542,7 @@ MainWidget::MainWidget(QWidget *parent)
   air_add_button->setGeometry(10,sizeHint().height()-65,80,60);
   air_add_button->setFont(button_font);
   air_add_button->setText(tr("ADD"));
- air_add_button->setFocusPolicy(QWidget::NoFocus);
+ air_add_button->setFocusPolicy(Qt::NoFocus);
   connect(air_add_button,SIGNAL(clicked()),this,SLOT(addButtonData()));
 
   //
@@ -547,7 +553,7 @@ MainWidget::MainWidget(QWidget *parent)
   air_delete_button->setFont(button_font);
   air_delete_button->setText(tr("DEL"));
   air_delete_button->setFlashColor(AIR_FLASH_COLOR);
- air_delete_button->setFocusPolicy(QWidget::NoFocus);
+ air_delete_button->setFocusPolicy(Qt::NoFocus);
   connect(air_delete_button,SIGNAL(clicked()),this,SLOT(deleteButtonData()));
 
   //
@@ -558,7 +564,7 @@ MainWidget::MainWidget(QWidget *parent)
   air_move_button->setFont(button_font);
   air_move_button->setText(tr("MOVE"));
   air_move_button->setFlashColor(AIR_FLASH_COLOR);
- air_move_button->setFocusPolicy(QWidget::NoFocus);
+ air_move_button->setFocusPolicy(Qt::NoFocus);
   connect(air_move_button,SIGNAL(clicked()),this,SLOT(moveButtonData()));
 
   //
@@ -569,7 +575,7 @@ MainWidget::MainWidget(QWidget *parent)
   air_copy_button->setFont(button_font);
   air_copy_button->setText(tr("COPY"));
   air_copy_button->setFlashColor(AIR_FLASH_COLOR);
-  air_copy_button->setFocusPolicy(QWidget::NoFocus);
+  air_copy_button->setFocusPolicy(Qt::NoFocus);
   connect(air_copy_button,SIGNAL(clicked()),this,SLOT(copyButtonData()));
 
   //
@@ -579,9 +585,9 @@ MainWidget::MainWidget(QWidget *parent)
   air_refresh_label->setGeometry(390,sizeHint().height()-65,120,60);
   air_refresh_label->setFont(button_font);
   QPalette p=palette();
-  p.setColor(QColorGroup::Foreground,red);
+  p.setColor(QColorGroup::Foreground,Qt::red);
   air_refresh_label->setPalette(p);
-  air_refresh_label->setAlignment(AlignCenter);
+  air_refresh_label->setAlignment(Qt::AlignCenter);
   if(mainmap!=NULL) {
     air_refresh_pixmap=new QPixmap(1024,738);
     pd=new QPainter(air_refresh_pixmap);
@@ -626,7 +632,7 @@ MainWidget::MainWidget(QWidget *parent)
     air_panel->setPauseEnabled(rda->airplayConf()->panelPauseEnabled());
     air_panel->setCard(0,rda->airplayConf()->card(RDAirPlayConf::SoundPanel1Channel));
     air_panel->setPort(0,rda->airplayConf()->port(RDAirPlayConf::SoundPanel1Channel));
-    air_panel->setFocusPolicy(QWidget::NoFocus);
+    air_panel->setFocusPolicy(Qt::NoFocus);
     if((card=rda->airplayConf()->card(RDAirPlayConf::SoundPanel2Channel))<0) {
       air_panel->setCard(1,air_panel->card(RDAirPlayConf::MainLog1Channel));
       air_panel->setPort(1,air_panel->port(RDAirPlayConf::MainLog1Channel));
@@ -748,7 +754,7 @@ MainWidget::MainWidget(QWidget *parent)
     air_log_button[i]=new QPushButton(this);
     air_log_button[i]->setGeometry(647+i*123,sizeHint().height()-65,118,60);
     air_log_button[i]->setFont(button_font);
-    air_log_button[i]->setFocusPolicy(QWidget::NoFocus);
+    air_log_button[i]->setFocusPolicy(Qt::NoFocus);
     mapper->setMapping(air_log_button[i],i);
     connect(air_log_button[i],SIGNAL(clicked()),mapper,SLOT(map()));
   }
@@ -781,7 +787,7 @@ MainWidget::MainWidget(QWidget *parent)
   air_panel_button->setFont(button_font);
   air_panel_button->setText(tr("Sound\nPanel"));
   air_panel_button->setPalette(active_color);
-  air_panel_button->setFocusPolicy(QWidget::NoFocus);
+  air_panel_button->setFocusPolicy(Qt::NoFocus);
   connect(air_panel_button,SIGNAL(clicked()),this,SLOT(panelButtonData()));
   if (rda->airplayConf()->panels(RDAirPlayConf::StationPanel) || 
       rda->airplayConf()->panels(RDAirPlayConf::UserPanel)){
@@ -893,7 +899,7 @@ MainWidget::MainWidget(QWidget *parent)
     if(mlockall(MCL_CURRENT|MCL_FUTURE)<0) {
       QMessageBox::warning(this,"RDAirPlay - "+tr("Memory Warning"),
 			   tr("Unable to lock all memory")+
-			   " ["+strerror(errno)+"].");
+			   " ["+QString(strerror(errno))+"].");
     }
   }
 
@@ -1954,8 +1960,8 @@ void MainWidget::keyPressEvent(QKeyEvent *e)
 	break;
 
       case Qt::Key_X:
-	if(((e->state()&AltButton)!=0)&&
-	   ((e->state()&ShiftButton)==0)&&((e->state()&ControlButton)==0)) {
+	if(((e->state()&Qt::AltModifier)!=0)&&
+	   ((e->state()&Qt::ShiftModifier)==0)&&((e->state()&Qt::ControlModifier)==0)) {
 	  QCloseEvent *ce=new QCloseEvent();
 	  closeEvent(ce);
 	  delete ce;
@@ -2164,8 +2170,8 @@ void MainWidget::closeEvent(QCloseEvent *e)
 void MainWidget::paintEvent(QPaintEvent *e)
 {
   QPainter *p=new QPainter(this);
-  p->setPen(black);
-  p->fillRect(10,70,410,air_stereo_meter->sizeHint().height(),black);
+  p->setPen(Qt::black);
+  p->fillRect(10,70,410,air_stereo_meter->sizeHint().height(),Qt::black);
   p->end();
   delete p;
 }
@@ -2485,7 +2491,7 @@ int main(int argc,char *argv[])
   // Load Translations
   //
   QTranslator qt(0);
-  qt.load(QString(QTDIR)+QString("/translations/qt_")+QTextCodec::locale(),
+  qt.load(QString("/usr/share/qt4/translations/qt_")+QTextCodec::locale(),
 	  ".");
   a.installTranslator(&qt);
 

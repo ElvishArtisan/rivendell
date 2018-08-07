@@ -23,6 +23,8 @@
 
 #include <qdialog.h>
 #include <qsqldatabase.h>
+//Added by qt3to4:
+#include <QCloseEvent>
 
 #include <rdlistselector.h>
 

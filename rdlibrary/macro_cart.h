@@ -23,10 +23,10 @@
 
 #include <qwidget.h>
 #include <qlabel.h>
-#include <qlistview.h>
-#include <qlistbox.h>
+#include <q3listview.h>
+#include <q3listbox.h>
 #include <qcombobox.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qpixmap.h>
 #include <qcheckbox.h>
 #include <qsqldatabase.h>
@@ -61,16 +61,16 @@ class MacroCart : public QWidget
   void editMacroData();
   void runLineMacroData();
   void runCartMacroData();
-  void doubleClickedData(QListViewItem *,const QPoint &,int);  
+  void doubleClickedData(Q3ListViewItem *,const QPoint &,int);  
 
  private:
   void RefreshList();
-  void RefreshLine(QListViewItem *item);
+  void RefreshLine(Q3ListViewItem *item);
   void AddLine(unsigned line,RDMacro *cmd);
-  void DeleteLine(QListViewItem *item);
+  void DeleteLine(Q3ListViewItem *item);
   void UpdateLength();
   RDCart *rdcart_cart;
-  QListView *rdcart_macro_list;
+  Q3ListView *rdcart_macro_list;
   QLabel *rdcart_macro_list_label;
   RDMacroEvent *rdcart_events;
   RDMacro rdcart_clipboard;

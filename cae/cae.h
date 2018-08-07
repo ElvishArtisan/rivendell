@@ -30,11 +30,11 @@
 
 #include <qobject.h>
 #include <qstring.h>
-#include <qsocketdevice.h>
-#include <qserversocket.h>
+#include <q3socketdevice.h>
+#include <q3serversocket.h>
 #include <qsignalmapper.h>
 #include <qtimer.h>
-#include <qprocess.h>
+#include <q3process.h>
 
 #include <rdwavefile.h>
 #include <rdsocket.h>
@@ -145,8 +145,8 @@ class MainObject : public QObject
   bool debug;
   unsigned system_sample_rate;
   Q_INT16 tcp_port;
-  QServerSocket *server;
-  QSocketDevice *meter_socket;
+  Q3ServerSocket *server;
+  Q3SocketDevice *meter_socket;
   RDSocket *socket[CAE_MAX_CONNECTIONS];
   Q_UINT16 meter_port[CAE_MAX_CONNECTIONS];
   char args[CAE_MAX_CONNECTIONS][CAE_MAX_ARGS][CAE_MAX_LENGTH];
@@ -269,7 +269,7 @@ class MainObject : public QObject
   bool jack_activated;
 #ifdef JACK
   int jack_card;
-  std::vector<QProcess *> jack_clients;
+  std::vector<Q3Process *> jack_clients;
   RDWaveFile *jack_record_wave[RD_MAX_STREAMS];
   RDWaveFile *jack_play_wave[RD_MAX_STREAMS];
   short *jack_wave_buffer;

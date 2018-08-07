@@ -25,6 +25,8 @@
 #include <qdatetime.h>
 #include <qlabel.h>
 #include <qpixmap.h>
+//Added by qt3to4:
+#include <QPaintEvent>
 
 #include <rdlog_line.h>
 #include <rdairplay_conf.h>

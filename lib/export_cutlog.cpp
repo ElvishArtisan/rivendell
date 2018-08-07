@@ -22,6 +22,8 @@
 
 #include <qfile.h>
 #include <qmessagebox.h>
+//Added by qt3to4:
+#include <Q3TextStream>
 
 #include <rdairplay_conf.h>
 #include <rdconf.h>
@@ -42,13 +44,13 @@ bool RDReport::ExportCutLog(const QString &filename,const QDate &startdate,
   QString cart_num;
 
   QFile *file=new QFile(filename);
-  if(!file->open(IO_WriteOnly|IO_Truncate)) {
+  if(!file->open(QIODevice::WriteOnly|QIODevice::Truncate)) {
     report_error_code=RDReport::ErrorCantOpen;
     delete file;
     return false;
   }
-  QTextStream *strm=new QTextStream(file);
-  strm->setEncoding(QTextStream::UnicodeUTF8);
+  Q3TextStream *strm=new Q3TextStream(file);
+  strm->setEncoding(Q3TextStream::UnicodeUTF8);
   if(useLeadingZeros()) {
     cart_fmt=QString().sprintf("%%0%uu",cartDigits());
   }

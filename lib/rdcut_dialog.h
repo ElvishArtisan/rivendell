@@ -22,12 +22,16 @@
 #define RDCUT_DIALOG_H
 
 #include <qdialog.h>
-#include <qlistview.h>
+#include <q3listview.h>
 #include <qlineedit.h>
 #include <qpushbutton.h>
 #include <qcombobox.h>
-#include <qprogressdialog.h>
+#include <q3progressdialog.h>
 #include <qcheckbox.h>
+//Added by qt3to4:
+#include <QPixmap>
+#include <QLabel>
+#include <QCloseEvent>
 
 #include <rdlistviewitem.h>
 
@@ -52,7 +56,7 @@ class RDCutDialog : public QDialog
   void clearData();
   void groupActivatedData(const QString &);
   void limitChangedData(int state);
-  void cartClickedData(QListViewItem *);
+  void cartClickedData(Q3ListViewItem *);
   void selectionChangedData();
   void searchButtonData();
   void clearButtonData();
@@ -72,7 +76,7 @@ class RDCutDialog : public QDialog
   void LoadState();
   void SaveState();
   RDListView *cut_cart_list;
-  QListView *cut_cut_list;
+  Q3ListView *cut_cut_list;
   QLineEdit *cut_filter_edit;
   QCheckBox *cart_limit_box;
   QPushButton *cut_search_button;
@@ -91,7 +95,7 @@ class RDCutDialog : public QDialog
   QPixmap *cut_macro_map;
   bool cut_allow_clear;
   bool cut_exclude_tracks;
-  QProgressDialog *cut_progress_dialog;
+  Q3ProgressDialog *cut_progress_dialog;
 };
 
 

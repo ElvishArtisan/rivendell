@@ -1,7 +1,5 @@
 ## Makefile.am
 ##
-## MAkefile.am for rivendell/utils/rddbmgr
-##
 ##   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
@@ -19,8 +17,8 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -DQTDIR=\"@QT_DIR@\" @QT_CXXFLAGS@ -I$(top_srcdir)/lib
-LIBS = @QT_LIBS@ -L$(top_srcdir)/lib
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -I$(top_srcdir)/lib @QT4_CFLAGS@ -DQT3_SUPPORT -I/usr/include/Qt3Support
+LIBS = -L$(top_srcdir)/lib
 MOC = @QT_MOC@
 
 # The dependency for qt's Meta Object Compiler (moc)
@@ -38,7 +36,7 @@ dist_rddbmgr_SOURCES = check.cpp\
                        schemamap.cpp\
                        updateschema.cpp
 
-rddbmgr_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
+rddbmgr_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
 
 CLEANFILES = *~\
              *.exe\

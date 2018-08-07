@@ -28,17 +28,19 @@
 #include <qwindowsstyle.h>
 #include <qwidget.h>
 #include <qpainter.h>
-#include <qsqlpropertymap.h>
+#include <q3sqlpropertymap.h>
 #include <qmessagebox.h>
 #include <qpushbutton.h>
 #include <qlabel.h>
 #include <qlabel.h>
-#include <qlistview.h>
+#include <q3listview.h>
 #include <qtextcodec.h>
 #include <qtranslator.h>
 #include <qsettings.h>
 #include <qpixmap.h>
 #include <qpainter.h>
+//Added by qt3to4:
+#include <QResizeEvent>
 
 #include <dbversion.h>
 #include <rd.h>
@@ -98,7 +100,7 @@ void SigHandler(int signo)
 
 
 MainWidget::MainWidget(QWidget *parent)
-  :QMainWindow(parent)
+  :Q3MainWindow(parent)
 {
   QString err_msg;
 
@@ -204,42 +206,42 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Log List
   //
-  log_log_list=new QListView(this);
+  log_log_list=new Q3ListView(this);
   log_log_list->setFont(default_font);
   log_log_list->setAllColumnsShowFocus(true);
-  log_log_list->setSelectionMode(QListView::Extended);
+  log_log_list->setSelectionMode(Q3ListView::Extended);
   log_log_list->setItemMargin(5);
   connect(log_log_list,SIGNAL(selectionChanged()),
 	  this,SLOT(logSelectionChangedData()));
   connect(log_log_list,
-	  SIGNAL(doubleClicked(QListViewItem *,const QPoint &,int)),
+	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,
-	  SLOT(logDoubleclickedData(QListViewItem *,const QPoint &,int)));
+	  SLOT(logDoubleclickedData(Q3ListViewItem *,const QPoint &,int)));
   log_log_list->addColumn("");
   log_log_list->setColumnAlignment(0,Qt::AlignCenter);
-  log_log_list->addColumn(tr("LOG NAME"));
+  log_log_list->addColumn(tr("Log Name"));
   log_log_list->setColumnAlignment(1,Qt::AlignHCenter);
-  log_log_list->addColumn(tr("DESCRIPTION"));
+  log_log_list->addColumn(tr("Description"));
   log_log_list->setColumnAlignment(2,Qt::AlignLeft);
-  log_log_list->addColumn(tr("SERVICE"));
+  log_log_list->addColumn(tr("Service"));
   log_log_list->setColumnAlignment(3,Qt::AlignLeft);
-  log_log_list->addColumn(tr("MUSIC"));
+  log_log_list->addColumn(tr("Music"));
   log_log_list->setColumnAlignment(4,Qt::AlignCenter);
-  log_log_list->addColumn(tr("TRAFFIC"));
+  log_log_list->addColumn(tr("Traffic"));
   log_log_list->setColumnAlignment(5,Qt::AlignCenter);
-  log_log_list->addColumn(tr("TRACKS"));
+  log_log_list->addColumn(tr("Tracks"));
   log_log_list->setColumnAlignment(6,Qt::AlignHCenter);
-  log_log_list->addColumn(tr("VALID FROM"));
+  log_log_list->addColumn(tr("Valid From"));
   log_log_list->setColumnAlignment(7,Qt::AlignHCenter);
-  log_log_list->addColumn(tr("VALID TO"));
+  log_log_list->addColumn(tr("Valid To"));
   log_log_list->setColumnAlignment(8,Qt::AlignHCenter);
-  log_log_list->addColumn(tr("AUTO REFRESH"));
+  log_log_list->addColumn(tr("Auto Refresh"));
   log_log_list->setColumnAlignment(9,Qt::AlignHCenter);
-  log_log_list->addColumn(tr("ORIGIN"));
+  log_log_list->addColumn(tr("Origin"));
   log_log_list->setColumnAlignment(10,Qt::AlignLeft);
-  log_log_list->addColumn(tr("LAST LINKED"));
+  log_log_list->addColumn(tr("Last Linked"));
   log_log_list->setColumnAlignment(11,Qt::AlignLeft);
-  log_log_list->addColumn(tr("LAST MODIFIED"));
+  log_log_list->addColumn(tr("Last Modified"));
   log_log_list->setColumnAlignment(12,Qt::AlignLeft);
 
   //
@@ -390,7 +392,7 @@ void MainWidget::addData()
     item->setText(1,logname);
     RefreshItem(item);
     log_log_list->setSelected(item,true);
-    log_log_list->ensureItemVisible((QListViewItem *)item);
+    log_log_list->ensureItemVisible((Q3ListViewItem *)item);
     for(unsigned i=0;i<newlogs.size();i++) {
       item=new ListListViewItem(log_log_list);
       item->setText(1,newlogs[i]);
@@ -685,7 +687,7 @@ void MainWidget::logSelectionChangedData()
 }
 
 
-void MainWidget::logDoubleclickedData(QListViewItem *,const QPoint &,int)
+void MainWidget::logDoubleclickedData(Q3ListViewItem *,const QPoint &,int)
 {
   editData();
 }
@@ -912,7 +914,7 @@ void MainWidget::UnlockList()
 {
   ListListViewItem *item=NULL;
 
-  for(unsigned i=0;i<log_deleted_logs.size();i++) {
+  for(int i=0;i<log_deleted_logs.size();i++) {
     if((item=(ListListViewItem *)log_log_list->
 	findItem(log_deleted_logs[i],1))!=NULL) {
       delete item;
@@ -941,7 +943,7 @@ int main(int argc,char *argv[])
   qt_path=tr_path;
 #else
   tr_path=QString(PREFIX)+QString("/share/rivendell/");
-  qt_path=QString(QTDIR)+QString("/translation/");
+  qt_path=QString("/usr/share/qt4/translation/");
 #endif  // WIN32
   QTranslator qt(0);
   qt.load(qt_path+QString("qt_")+QTextCodec::locale(),".");

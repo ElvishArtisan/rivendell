@@ -20,6 +20,8 @@
 
 
 #include <gpi_label.h>
+//Added by qt3to4:
+#include <QLabel>
 
 
 GpiLabel::GpiLabel(QWidget *parent)
@@ -41,32 +43,32 @@ GpiLabel::GpiLabel(QWidget *parent)
   gpi_line_label=new QLabel(this);
   gpi_line_label->setGeometry(0,0,59,33);
   gpi_line_label->setFont(line_font);
-  gpi_line_label->setAlignment(AlignHCenter|AlignVCenter);
-  gpi_line_label->setPalette(gray);
+  gpi_line_label->setAlignment(Qt::AlignHCenter|Qt::AlignVCenter);
+  gpi_line_label->setPalette(Qt::gray);
 
   //
   // On Cart Label
   //
   QPalette p=palette();
-  p.setColor(QPalette::Active,QColorGroup::Foreground,darkGreen);
-  p.setColor(QPalette::Inactive,QColorGroup::Foreground,darkGreen);
-  p.setColor(QPalette::Disabled,QColorGroup::Foreground,darkGreen);
+  p.setColor(QPalette::Active,QColorGroup::Foreground,Qt::darkGreen);
+  p.setColor(QPalette::Inactive,QColorGroup::Foreground,Qt::darkGreen);
+  p.setColor(QPalette::Disabled,QColorGroup::Foreground,Qt::darkGreen);
   gpi_oncart_label=new QLabel(this);
   gpi_oncart_label->setGeometry(0,33,59,16);
   gpi_oncart_label->setFont(cart_font);
-  gpi_oncart_label->setAlignment(AlignHCenter|AlignTop);
+  gpi_oncart_label->setAlignment(Qt::AlignHCenter|Qt::AlignTop);
   gpi_oncart_label->setPalette(p);
 
   //
   // Off Cart Label
   //
-  p.setColor(QPalette::Active,QColorGroup::Foreground,darkRed);
-  p.setColor(QPalette::Inactive,QColorGroup::Foreground,darkRed);
-  p.setColor(QPalette::Disabled,QColorGroup::Foreground,darkRed);
+  p.setColor(QPalette::Active,QColorGroup::Foreground,Qt::darkRed);
+  p.setColor(QPalette::Inactive,QColorGroup::Foreground,Qt::darkRed);
+  p.setColor(QPalette::Disabled,QColorGroup::Foreground,Qt::darkRed);
   gpi_offcart_label=new QLabel(this);
   gpi_offcart_label->setGeometry(0,49,59,16);
   gpi_offcart_label->setFont(cart_font);
-  gpi_offcart_label->setAlignment(AlignHCenter|AlignTop);
+  gpi_offcart_label->setAlignment(Qt::AlignHCenter|Qt::AlignTop);
   gpi_offcart_label->setPalette(p);
 }
 
@@ -99,10 +101,10 @@ void GpiLabel::setLine(int line)
 void GpiLabel::setState(bool state)
 {
   if(state) {
-    gpi_line_label->setPalette(green);
+    gpi_line_label->setPalette(Qt::green);
   }
   else {
-    gpi_line_label->setPalette(gray);
+    gpi_line_label->setPalette(Qt::gray);
   }
 }
 

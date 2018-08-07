@@ -37,7 +37,7 @@ MainObject::MainObject(QObject *parent)
 {
   QString filename="";
   QFile *file=NULL;
-  QString line;
+  char line[1025];
   QString xml="";
 
   //
@@ -66,7 +66,7 @@ MainObject::MainObject(QObject *parent)
   // Read File
   //
   file=new QFile(filename);
-  if(!file->open(IO_ReadOnly)) {
+  if(!file->open(QIODevice::ReadOnly)) {
     fprintf(stderr,"rdxml_parse_test: unable to open \"%s\"\n",
 	    (const char *)filename);
     exit(256);

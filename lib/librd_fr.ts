@@ -1,14 +1,8 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>QObject</name>
-    <message>
-        <source>Couldn&apos;t initialize QSql driver!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Couldn&apos;t open mySQL connection!</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>Sequentially</source>
         <translation type="unfinished"></translation>
@@ -567,6 +561,14 @@
     </message>
     <message>
         <source>is not playable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t initialize MySql driver!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Couldn&apos;t open MySQL connection on</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2043,17 +2045,6 @@ please try again!</source>
     <message>
         <source>Panel</source>
         <translation>Panneau</translation>
-    </message>
-</context>
-<context>
-    <name>RDSqlDatabaseStatus</name>
-    <message>
-        <source>Database connection restored.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Database connection failed : </source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

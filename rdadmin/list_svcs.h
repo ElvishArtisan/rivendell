@@ -22,8 +22,8 @@
 #define LIST_SVCS_H
 
 #include <qdialog.h>
-#include <qlistbox.h>
-#include <qtextedit.h>
+#include <q3listbox.h>
+#include <q3textedit.h>
 #include <qpixmap.h>
 #include <qradiobutton.h>
 #include <qsqldatabase.h>
@@ -41,12 +41,12 @@ class ListSvcs : public QDialog
   void addData();
   void editData();
   void deleteData();
-  void doubleClickedData(QListBoxItem *);
+  void doubleClickedData(Q3ListBoxItem *);
   void closeData();
   
  private:
   void RefreshList(QString svcname="");
-  QListBox *list_box;
+  Q3ListBox *list_box;
 };
 
 

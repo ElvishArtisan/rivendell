@@ -24,7 +24,7 @@
 #include <vector>
 
 #include <qsignalmapper.h>
-#include <qsocket.h>
+#include <q3socket.h>
 #include <qtimer.h>
 
 #include <rd.h>
@@ -63,7 +63,7 @@ class WheatnetSlio : public Switcher
   void ProcessSlioevent(int chan,QString &cmd);
   void ProcessCommand(const QString &cmd);
   void SendCommand(const QString &cmd);
-  QSocket *slio_socket;
+  Q3Socket *slio_socket;
   QTimer *slio_watchdog_timer;
   bool slio_watchdog_active;
   QHostAddress slio_ip_address;

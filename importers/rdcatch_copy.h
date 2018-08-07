@@ -40,8 +40,8 @@ class MainObject : public QObject
   MainObject(QObject *parent=0);
 
  private:
-  QSqlDatabase *src_db;
-  QSqlDatabase *dest_db;
+  QSqlDatabase src_db;
+  QSqlDatabase dest_db;
   RDConfig *rd_config;
 };
 

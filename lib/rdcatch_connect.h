@@ -21,7 +21,7 @@
 #include <qsqldatabase.h>
 #include <qstring.h>
 #include <qobject.h>
-#include <qsocket.h>
+#include <q3socket.h>
 #include <qlabel.h>
 
 #include <rd.h>
@@ -80,7 +80,7 @@ class RDCatchConnect : public QObject
  private:
   void SendCommand(QString cmd);
   void DispatchCommand();
-  QSocket *cc_socket;
+  Q3Socket *cc_socket;
   QString cc_password;
   bool debug;
   char args[CC_MAX_ARGS][CC_MAX_LENGTH];

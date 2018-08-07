@@ -19,6 +19,9 @@
 //
 
 #include <edit_channelgpios.h>
+//Added by qt3to4:
+#include <QResizeEvent>
+#include <QLabel>
 
 EditChannelGpios::EditChannelGpios(RDAirPlayConf *conf,
 				   RDAirPlayConf::Channel chan,QWidget *parent)

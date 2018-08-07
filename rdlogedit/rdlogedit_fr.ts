@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>AddMeta</name>
     <message>
@@ -145,58 +147,6 @@
     </message>
     <message>
         <source>End Date Enabled</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>TIME</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>TRANS</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>CART</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>GROUP</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>LENGTH</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>TITLE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>ARTIST</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>CLIENT</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>AGENCY</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>LABEL</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>SOURCE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>LINE ID</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>COUNT</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -380,10 +330,6 @@ for the selected service!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>EXT DATA</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Link Start</source>
         <translation type="unfinished"></translation>
     </message>
@@ -413,6 +359,62 @@ for the selected service!</source>
     </message>
     <message>
         <source>Log already being edited by</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trans</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Artist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Client</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Agency</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ext Data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Line ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Count</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -693,54 +695,6 @@ group for the specified service!</source>
 <context>
     <name>MainWidget</name>
     <message>
-        <source>LOG NAME</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>DESCRIPTION</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>SERVICE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>MUSIC</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>TRAFFIC</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>TRACKS</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>VALID FROM</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>VALID TO</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>AUTO REFRESH</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>ORIGIN</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>LAST LINKED</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>LAST MODIFIED</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Add</source>
         <translation type="unfinished"></translation>
     </message>
@@ -852,6 +806,54 @@ Report</source>
     </message>
     <message>
         <source>Unknown command option</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Log Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Music</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Traffic</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Tracks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Valid From</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Valid To</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Auto Refresh</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Origin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last Linked</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last Modified</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1015,34 +1017,6 @@ Track</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>TIME</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>TRANS</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>CART</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>GROUP</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>LENGTH</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>TITLE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>ARTIST</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Do Over</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1170,14 +1144,6 @@ therefore only existing transitions will be editable.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>ALBUM</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>LABEL</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Log Locked</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1187,6 +1153,38 @@ therefore only existing transitions will be editable.</source>
     </message>
     <message>
         <source>Talk</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trans</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Artist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Album</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Label</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

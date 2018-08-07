@@ -1,4 +1,4 @@
-## automake.am
+## Makefile.am
 ##
 ## Automake.am for rivendell/lib
 ##
@@ -20,7 +20,7 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" @QT_CXXFLAGS@ -Wno-strict-aliasing
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" @QT4_CFLAGS@ -Wno-strict-aliasing -DQT3_SUPPORT -I/usr/include/Qt3Support
 MOC = @QT_MOC@
 CWRAP = ../helpers/cwrap
 
@@ -43,8 +43,8 @@ uninstall-local:
 	rm -f $(DESTDIR)$(prefix)/share/rivendell/librd_*.qm
 
 all:	
-	@QT_BIN@/lupdate lib.pro
-	@QT_BIN@/lrelease lib.pro
+	lupdate-qt4 lib.pro
+	lrelease-qt4 lib.pro
 
 lib_LTLIBRARIES = librd.la
 dist_librd_la_SOURCES = dbversion.h\
@@ -275,7 +275,6 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdcut_dialog.cpp\
                           moc_rddatedialog.cpp\
                           moc_rddatepicker.cpp\
-                          moc_rddb.cpp\
                           moc_rddbheartbeat.cpp\
                           moc_rddelete.cpp\
                           moc_rddownload.cpp\
@@ -318,13 +317,13 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdplay_deck.cpp\
                           moc_rdplaymeter.cpp\
                           moc_rdpushbutton.cpp\
-                          moc_rdripc.cpp\
-                          moc_rdrlmhost.cpp\
-                         moc_rdschedcodes_dialog.cpp\
-                          moc_rdsegmeter.cpp\
-                          moc_rdsimpleplayer.cpp\
                           moc_rdrehash.cpp\
                           moc_rdrenderer.cpp\
+                          moc_rdripc.cpp\
+                          moc_rdrlmhost.cpp\
+                          moc_rdschedcodes_dialog.cpp\
+                          moc_rdsegmeter.cpp\
+                          moc_rdsimpleplayer.cpp\
                           moc_rdslider.cpp\
                           moc_rdsocket.cpp\
                           moc_rdsound_panel.cpp\
@@ -336,6 +335,7 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdtimeengine.cpp\
                           moc_rdtransportbutton.cpp\
                           moc_rdtrimaudio.cpp\
+                          moc_rdttydevice.cpp\
                           moc_rdupload.cpp\
                           moc_rdwavedata_dialog.cpp\
                           moc_schedcartlist.cpp

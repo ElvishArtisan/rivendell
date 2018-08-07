@@ -22,6 +22,9 @@
 #include <qpixmap.h>
 #include <qpainter.h>
 #include <qmessagebox.h>
+//Added by qt3to4:
+#include <QLabel>
+#include <QPaintEvent>
 
 #include <rdapplication.h>
 #include <rdconf.h>
@@ -173,7 +176,7 @@ ListLog::ListLog(RDLogPlay *log,RDCae *cae,int id,bool allow_pause,
   }
   list_log_list->setGeometry(0,y,sizeHint().width(),h);
   list_log_list->setAllColumnsShowFocus(true);
-  list_log_list->setSelectionMode(QListView::Extended);
+  list_log_list->setSelectionMode(Q3ListView::Extended);
   list_log_list->setItemMargin(5);
   list_log_list->addColumn("");
   list_log_list->setColumnAlignment(0,Qt::AlignHCenter);
@@ -210,13 +213,13 @@ ListLog::ListLog(RDLogPlay *log,RDCae *cae,int id,bool allow_pause,
   list_log_list->addColumn(tr("STATUS"));
   list_log_list->setColumnAlignment(16,Qt::AlignHCenter);
   list_log_list->setHardSortColumn(15);
-  list_log_list->setFocusPolicy(QWidget::NoFocus);
+  list_log_list->setFocusPolicy(Qt::NoFocus);
   connect(list_log_list,SIGNAL(selectionChanged()),
 	  this,SLOT(selectionChangedData()));
   connect(list_log_list,
-	  SIGNAL(doubleClicked(QListViewItem *,const QPoint &,int)),
+	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,
-	  SLOT(doubleclickedData(QListViewItem *,const QPoint &,int)));
+	  SLOT(doubleclickedData(Q3ListViewItem *,const QPoint &,int)));
   connect(list_log_list,SIGNAL(cartDropped(int,RDLogLine *)),
 	  this,SLOT(cartDroppedData(int,RDLogLine *)));
 
@@ -231,7 +234,7 @@ ListLog::ListLog(RDLogPlay *log,RDCae *cae,int id,bool allow_pause,
   QLabel *label=new QLabel(tr("Run Length"),this);
   label->setGeometry(372,sizeHint().height()-120,75,20);
   label->setFont(label_font);
-  label->setAlignment(AlignCenter);  
+  label->setAlignment(Qt::AlignCenter);  
   label->setBackgroundColor(QColor(system_mid_color));
   if(!rda->airplayConf()->showCounters()) {
     label->hide();
@@ -245,7 +248,7 @@ ListLog::ListLog(RDLogPlay *log,RDCae *cae,int id,bool allow_pause,
   list_stoptime_label=new QLabel(list_stoptime_edit,tr("Next Stop:"),this);
   list_stoptime_label->setGeometry(337,sizeHint().height()-100,65,18);
   list_stoptime_label->setFont(label_font);
-  list_stoptime_label->setAlignment(AlignRight|AlignVCenter);  
+  list_stoptime_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);  
   list_stoptime_label->setBackgroundColor(QColor(system_mid_color));
   if(!rda->airplayConf()->showCounters()) {
     list_stoptime_edit->hide();
@@ -260,7 +263,7 @@ ListLog::ListLog(RDLogPlay *log,RDCae *cae,int id,bool allow_pause,
   list_endtime_label=new QLabel(list_endtime_edit,tr("Log End:"),this);
   list_endtime_label->setGeometry(337,sizeHint().height()-80,65,18);
   list_endtime_label->setFont(label_font);
-  list_endtime_label->setAlignment(AlignRight|AlignVCenter);  
+  list_endtime_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);  
   list_endtime_label->setBackgroundColor(QColor(system_mid_color));
   if(!rda->airplayConf()->showCounters()) {
     list_endtime_edit->hide();
@@ -275,7 +278,7 @@ ListLog::ListLog(RDLogPlay *log,RDCae *cae,int id,bool allow_pause,
   list_take_button->setFont(font);
   list_take_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
   list_take_button->setText(tr("Select"));
-  list_take_button->setFocusPolicy(QWidget::NoFocus);
+  list_take_button->setFocusPolicy(Qt::NoFocus);
   connect(list_take_button,SIGNAL(clicked()),this,SLOT(takeButtonData()));
   list_take_button->hide();
 
@@ -287,7 +290,7 @@ ListLog::ListLog(RDLogPlay *log,RDCae *cae,int id,bool allow_pause,
   list_head_button->setFont(font);
   list_head_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
   list_head_button->setText(tr("Audition\nHead"));
-  list_head_button->setFocusPolicy(QWidget::NoFocus);
+  list_head_button->setFocusPolicy(Qt::NoFocus);
   connect(list_head_button,SIGNAL(clicked()),this,SLOT(headButtonData()));
   if(!rda->airplayConf()->showCounters()) {
     list_head_button->hide();
@@ -301,7 +304,7 @@ ListLog::ListLog(RDLogPlay *log,RDCae *cae,int id,bool allow_pause,
   list_tail_button->setFont(font);
   list_tail_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
   list_tail_button->setText(tr("Audition\nTail"));
-  list_tail_button->setFocusPolicy(QWidget::NoFocus);
+  list_tail_button->setFocusPolicy(Qt::NoFocus);
   connect(list_tail_button,SIGNAL(clicked()),this,SLOT(tailButtonData()));
   if(!rda->airplayConf()->showCounters()) {
     list_tail_button->hide();
@@ -316,7 +319,7 @@ ListLog::ListLog(RDLogPlay *log,RDCae *cae,int id,bool allow_pause,
   list_play_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
   list_play_button->setText(tr("Start"));
   list_play_button->setDisabled(true);
-  list_play_button->setFocusPolicy(QWidget::NoFocus);
+  list_play_button->setFocusPolicy(Qt::NoFocus);
   connect(list_play_button,SIGNAL(clicked()),this,SLOT(playButtonData()));
 
   //
@@ -328,7 +331,7 @@ ListLog::ListLog(RDLogPlay *log,RDCae *cae,int id,bool allow_pause,
   list_next_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
   list_next_button->setText(tr("Make\nNext"));
   list_next_button->setDisabled(true);
-  list_next_button->setFocusPolicy(QWidget::NoFocus);
+  list_next_button->setFocusPolicy(Qt::NoFocus);
   connect(list_next_button,SIGNAL(clicked()),this,SLOT(nextButtonData()));
 
   //
@@ -340,7 +343,7 @@ ListLog::ListLog(RDLogPlay *log,RDCae *cae,int id,bool allow_pause,
   list_modify_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
   list_modify_button->setText(tr("Modify"));
   list_modify_button->setDisabled(true);
-  list_modify_button->setFocusPolicy(QWidget::NoFocus);
+  list_modify_button->setFocusPolicy(Qt::NoFocus);
   connect(list_modify_button,SIGNAL(clicked()),this,SLOT(modifyButtonData()));
 
   //
@@ -351,7 +354,7 @@ ListLog::ListLog(RDLogPlay *log,RDCae *cae,int id,bool allow_pause,
   list_scroll_button->setFont(font);
   list_scroll_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
   list_scroll_button->setText(tr("Scroll"));
-  list_scroll_button->setFocusPolicy(QWidget::NoFocus);
+  list_scroll_button->setFocusPolicy(Qt::NoFocus);
   connect(list_scroll_button,SIGNAL(clicked()),this,SLOT(scrollButtonData()));
   list_scroll_button->setPalette(list_scroll_color[0]);
 
@@ -364,7 +367,7 @@ ListLog::ListLog(RDLogPlay *log,RDCae *cae,int id,bool allow_pause,
   list_refresh_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
   list_refresh_button->setText(tr("Refresh\nLog"));
   list_refresh_button->setDisabled(true);
-  list_refresh_button->setFocusPolicy(QWidget::NoFocus);
+  list_refresh_button->setFocusPolicy(Qt::NoFocus);
   connect(list_refresh_button,SIGNAL(clicked()),
 	  this,SLOT(refreshButtonData()));
 
@@ -377,7 +380,7 @@ ListLog::ListLog(RDLogPlay *log,RDCae *cae,int id,bool allow_pause,
   list_load_button->setFont(font);
   list_load_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
   list_load_button->setText(tr("Select\nLog"));
-  list_load_button->setFocusPolicy(QWidget::NoFocus);
+  list_load_button->setFocusPolicy(Qt::NoFocus);
   connect(list_load_button,SIGNAL(clicked()),this,SLOT(loadButtonData()));
 
   //
@@ -475,7 +478,7 @@ void ListLog::setActionMode(RDAirPlayConf::ActionMode mode,int *cartnum)
   }
   switch(mode) {
       case RDAirPlayConf::Normal:
-	list_log_list->setSelectionMode(QListView::Extended);
+	list_log_list->setSelectionMode(Q3ListView::Extended);
 	list_log_list->setPalette(palette());
 	list_take_button->hide();
 	list_play_button->show();
@@ -487,7 +490,7 @@ void ListLog::setActionMode(RDAirPlayConf::ActionMode mode,int *cartnum)
 	break;
 
       case RDAirPlayConf::AddTo:
-	list_log_list->setSelectionMode(QListView::Single);
+	list_log_list->setSelectionMode(Q3ListView::Single);
 	list_log_list->setPalette(list_list_to_color);
 	list_take_button->setText(ADD_TO_MODE_TITLE);
 	list_take_button->setPalette(list_to_color);
@@ -501,7 +504,7 @@ void ListLog::setActionMode(RDAirPlayConf::ActionMode mode,int *cartnum)
 	break;
 
       case RDAirPlayConf::DeleteFrom:
-	list_log_list->setSelectionMode(QListView::Single);
+	list_log_list->setSelectionMode(Q3ListView::Single);
 	list_log_list->setPalette(list_list_from_color);
 	list_take_button->setText(DELETE_FROM_MODE_TITLE);
 	list_take_button->setPalette(list_from_color);
@@ -515,7 +518,7 @@ void ListLog::setActionMode(RDAirPlayConf::ActionMode mode,int *cartnum)
 	break;
 
       case RDAirPlayConf::MoveFrom:
-	list_log_list->setSelectionMode(QListView::Single);
+	list_log_list->setSelectionMode(Q3ListView::Single);
 	list_log_list->setPalette(list_list_from_color);
 	list_take_button->setText(MOVE_FROM_MODE_TITLE);
 	list_take_button->setPalette(list_from_color);
@@ -529,7 +532,7 @@ void ListLog::setActionMode(RDAirPlayConf::ActionMode mode,int *cartnum)
 	break;
 
       case RDAirPlayConf::MoveTo:
-	list_log_list->setSelectionMode(QListView::Single);
+	list_log_list->setSelectionMode(Q3ListView::Single);
 	list_log_list->setPalette(list_list_to_color);
 	list_take_button->setText(MOVE_TO_MODE_TITLE);
 	list_take_button->setPalette(list_to_color);
@@ -543,7 +546,7 @@ void ListLog::setActionMode(RDAirPlayConf::ActionMode mode,int *cartnum)
 	break;
 
       case RDAirPlayConf::CopyFrom:
-	list_log_list->setSelectionMode(QListView::Single);
+	list_log_list->setSelectionMode(Q3ListView::Single);
 	list_log_list->setPalette(list_list_from_color);
 	list_take_button->setText(COPY_FROM_MODE_TITLE);
 	list_take_button->setPalette(list_from_color);
@@ -557,7 +560,7 @@ void ListLog::setActionMode(RDAirPlayConf::ActionMode mode,int *cartnum)
 	break;
 
       case RDAirPlayConf::CopyTo:
-	list_log_list->setSelectionMode(QListView::Single);
+	list_log_list->setSelectionMode(Q3ListView::Single);
 	list_log_list->setPalette(list_list_to_color);
 	list_take_button->setText(COPY_TO_MODE_TITLE);
 	list_take_button->setPalette(list_to_color);
@@ -811,7 +814,7 @@ void ListLog::modifyButtonData()
 }
 
 
-void ListLog::doubleclickedData(QListViewItem *,const QPoint &,int)
+void ListLog::doubleclickedData(Q3ListViewItem *,const QPoint &,int)
 {
   modifyButtonData();
 }
@@ -1093,13 +1096,12 @@ void ListLog::paintEvent(QPaintEvent *e)
   int y=sizeHint().height()-111;
 
   QPainter *p=new QPainter(this);
-  p->setPen(black);
-  p->setBrush(black);
-  p->moveTo(x,y);
-  p->lineTo(x+146,y);
-  p->lineTo(x+146,y+53);
-  p->lineTo(x,y+53);
-  p->lineTo(x,y);
+  p->setPen(Qt::black);
+  p->setBrush(Qt::black);
+  p->drawLine(x,y,x+146,y);
+  p->drawLine(x+146,y,x+146,y+53);
+  p->drawLine(x+146,y+53,x,y+53);
+  p->drawLine(x,y+53,x,y);
 
   p->end();
   delete p;

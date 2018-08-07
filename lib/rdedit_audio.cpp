@@ -23,6 +23,15 @@
 #include <qpainter.h>
 #include <qsignalmapper.h>
 #include <qmessagebox.h>
+//Added by qt3to4:
+#include <QLabel>
+#include <QPixmap>
+#include <QMouseEvent>
+#include <QCloseEvent>
+#include <QKeyEvent>
+#include <Q3PointArray>
+#include <QPaintEvent>
+#include <Q3PopupMenu>
 
 #include "rd.h"
 #include "rdapplication.h"
@@ -175,14 +184,14 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,int card,
 
   edit_pause_button=new RDTransportButton(RDTransportButton::Pause,this);
   edit_pause_button->setGeometry(160,425,65,45);
-  edit_pause_button->setOnColor(QColor(red));
+  edit_pause_button->setOnColor(QColor(Qt::red));
   edit_pause_button->setEnabled((edit_card>=0)&&(edit_port>=0));
   connect(edit_pause_button,SIGNAL(clicked()),this,SLOT(pauseData()));
 
   edit_stop_button=new RDTransportButton(RDTransportButton::Stop,this);
   edit_stop_button->setGeometry(230,425,65,45);
   edit_stop_button->on();
-  edit_stop_button->setOnColor(QColor(red));
+  edit_stop_button->setOnColor(QColor(Qt::red));
   edit_stop_button->setEnabled((edit_card>=0)&&(edit_port>=0));
   connect(edit_stop_button,SIGNAL(clicked()),this,SLOT(stopData()));
 
@@ -206,7 +215,7 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,int card,
   //
   QLabel *amp_label=new QLabel(this,"amp_label");
   amp_label->setGeometry(742,5,80,16);
-  amp_label->setAlignment(AlignHCenter|AlignVCenter);
+  amp_label->setAlignment(Qt::AlignHCenter|Qt::AlignVCenter);
   amp_label->setFont(button_font);
   amp_label->setText(tr("Amplitude"));
 
@@ -229,7 +238,7 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,int card,
   //
   QLabel *time_label=new QLabel(this);
   time_label->setGeometry(760,143,40,16);
-  time_label->setAlignment(AlignHCenter|AlignVCenter);
+  time_label->setAlignment(Qt::AlignHCenter|Qt::AlignVCenter);
   time_label->setFont(button_font);
   time_label->setText(tr("Time"));
 
@@ -264,7 +273,7 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,int card,
   //
   QLabel *goto_label=new QLabel(this);
   goto_label->setGeometry(760,378,40,16);
-  goto_label->setAlignment(AlignHCenter|AlignVCenter);
+  goto_label->setAlignment(Qt::AlignHCenter|Qt::AlignVCenter);
   goto_label->setFont(button_font);
   goto_label->setText(tr("Goto"));
 
@@ -616,14 +625,13 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,int card,
   edit_trim_box=new QSpinBox(this);
   edit_trim_box->setGeometry(243,529,70,21);
   edit_trim_box->setAcceptDrops(false);
-  edit_trim_box->setValidator(0);
   edit_trim_box->setSuffix(tr(" dB"));
   edit_trim_box->setRange(-99,0);
   edit_trim_box->
     setValue((trim_level+REFERENCE_LEVEL)/100);
   QLabel *label=new QLabel(tr("Threshold"),this);
   label->setGeometry(238,513,70,15);
-  label->setAlignment(AlignHCenter);
+  label->setAlignment(Qt::AlignHCenter);
   label->setFont(QFont(small_font));
   QPushButton *trim_start_button=new QPushButton(this);
   trim_start_button->setGeometry(175,485,66,45);
@@ -644,7 +652,7 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,int card,
   //
   // Cut Gain Control
   //
-  edit_gain_control=new QRangeControl();
+  edit_gain_control=new Q3RangeControl();
   edit_gain_control->setRange(-1000,1000);
   edit_gain_control->setSteps(10,10);
   edit_gain_edit=new RDMarkerEdit(this);
@@ -653,7 +661,7 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,int card,
   connect(edit_gain_edit,SIGNAL(returnPressed()),this,SLOT(gainChangedData()));
   label=new QLabel(tr("Cut Gain"),this);
   label->setGeometry(388,513,70,15);
-  label->setAlignment(AlignHCenter);
+  label->setAlignment(Qt::AlignHCenter);
   label->setFont(QFont(small_font));
   RDTransportButton *gain_up_button=new 
     RDTransportButton(RDTransportButton::Up,this);
@@ -691,7 +699,7 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,int card,
   label=new QLabel(edit_overlap_box,tr("No Fade on Segue Out"),this);
   label->setGeometry(590,513,130,20);
   label->setFont(small_font);
-  label->setAlignment(AlignLeft|AlignVCenter|ShowPrefix);
+  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   
   //
   // Time Counters
@@ -756,13 +764,13 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,int card,
 			 tr("Unable to download peak data, error was:\n\"")+
 			 RDPeaksExport::errorText(conv_err)+"\".");
   }
-  edit_wave_array=new QPointArray(EDITAUDIO_WAVEFORM_WIDTH-2);
+  edit_wave_array=new Q3PointArray(EDITAUDIO_WAVEFORM_WIDTH-2);
   DrawMaps();
 
   //
   // The Edit Menu
   //
-  edit_menu=new QPopupMenu(this);
+  edit_menu=new Q3PopupMenu(this);
   connect(edit_menu,SIGNAL(aboutToShow()),this,SLOT(updateMenuData()));
   edit_menu->insertItem(tr("Delete Talk Markers"),this,
 			SLOT(deleteTalkData()),0,RDEditAudio::TalkStart);
@@ -878,7 +886,7 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,int card,
   DrawPointers();
   setCursor(*edit_arrow_cursor);
   setMouseTracking(true);
-  setFocusPolicy(StrongFocus);
+  setFocusPolicy(Qt::StrongFocus);
 
   UpdateCursors();
   UpdateCounters();
@@ -1660,7 +1668,7 @@ void RDEditAudio::paintEvent(QPaintEvent *e)
   //
   // Waveforms
   //
-  p->setPen(QColor(black));
+  p->setPen(QColor(Qt::black));
   if(edit_channels==1) {
     p->drawImage(11,11,edit_left_image);
   }
@@ -1738,36 +1746,36 @@ void RDEditAudio::mousePressEvent(QMouseEvent *e)
     cursor=(int)((((double)e->x()-10.0)*edit_factor_x+
 		  (double)edit_hscroll->value())*1152.0);
     switch(e->button()) {
-	case QMouseEvent::LeftButton:
-	  left_button_pressed=true;
-	  if(edit_cue_point!=RDEditAudio::Play) {
-	    ignore_pause=true;
-	    PositionCursor(cursor);
-	    ignore_pause=false;
-	  }
-	  else {
-	    ignore_pause=true;
-	    rda->cae()->positionPlay(edit_handle,GetTime(cursor));
-	    ignore_pause=false;
-	  }
-	  break;
+    case Qt::LeftButton:
+      left_button_pressed=true;
+      if(edit_cue_point!=RDEditAudio::Play) {
+	ignore_pause=true;
+	PositionCursor(cursor);
+	ignore_pause=false;
+      }
+      else {
+	ignore_pause=true;
+	rda->cae()->positionPlay(edit_handle,GetTime(cursor));
+	ignore_pause=false;
+      }
+      break;
 
-	case QMouseEvent::MidButton:
-	  center_button_pressed=true;
-	  ignore_pause=true;
-	  rda->cae()->positionPlay(edit_handle,GetTime(cursor));
-	  ignore_pause=false;
-	  break;
+    case Qt::MidButton:
+      center_button_pressed=true;
+      ignore_pause=true;
+      rda->cae()->positionPlay(edit_handle,GetTime(cursor));
+      ignore_pause=false;
+      break;
 
-	case QMouseEvent::RightButton:
-	  edit_menu->setGeometry(e->x(),e->y()+53,
-				 edit_menu->sizeHint().width(),
-				 edit_menu->sizeHint().height());
-	  edit_menu->exec();
-	  break;
+    case Qt::RightButton:
+      edit_menu->setGeometry(e->x(),e->y()+53,
+			     edit_menu->sizeHint().width(),
+			     edit_menu->sizeHint().height());
+      edit_menu->exec();
+      break;
 
-	default:
-	  break;
+    default:
+      break;
     }
   }
 }
@@ -1776,11 +1784,11 @@ void RDEditAudio::mousePressEvent(QMouseEvent *e)
 void RDEditAudio::mouseReleaseEvent(QMouseEvent *e)
 {
   switch(e->button()) {
-      case QMouseEvent::LeftButton:
+      case Qt::LeftButton:
 	left_button_pressed=false;
 	break;
 
-      case QMouseEvent::MidButton:
+      case Qt::MidButton:
 	center_button_pressed=false;
 	break;
 
@@ -1793,54 +1801,54 @@ void RDEditAudio::mouseReleaseEvent(QMouseEvent *e)
 void RDEditAudio::keyPressEvent(QKeyEvent *e)
 {
   switch(e->key()) {
-      case Key_Space:
-	if(is_playing) {
-	  stopData();
-	}
-	else {
-	  if(e->state()==0) {
-	    playCursorData();
-	  }
-	  if((e->state()&ControlButton)!=0) {
-	    playStartData();
-	  }
-	}
-	e->accept();
-	break;
+  case Qt::Key_Space:
+    if(is_playing) {
+      stopData();
+    }
+    else {
+      if(e->state()==0) {
+	playCursorData();
+      }
+      if((e->state()&Qt::ControlButton)!=0) {
+	playStartData();
+      }
+    }
+    e->accept();
+    break;
 
-      case Key_Left:
-	PositionCursor(-(edit_sample_rate/10),true);
-	e->accept();
-	break;
+  case Qt::Key_Left:
+    PositionCursor(-(edit_sample_rate/10),true);
+    e->accept();
+    break;
 
-      case Key_Right:
-	PositionCursor(edit_sample_rate/10,true);
-	e->accept();
-	break;
+  case Qt::Key_Right:
+    PositionCursor(edit_sample_rate/10,true);
+    e->accept();
+    break;
 
-      case Key_Plus:
-	xUp();
-	break;
+  case Qt::Key_Plus:
+    xUp();
+    break;
 	
-      case Key_Minus:
-	xDown();
-	break;
+  case Qt::Key_Minus:
+    xDown();
+    break;
 	
-      case Key_Home:
-	gotoHomeData();
-	break;
+  case Qt::Key_Home:
+    gotoHomeData();
+    break;
 
-      case Key_End:
-	gotoEndData();
-	break;
+  case Qt::Key_End:
+    gotoEndData();
+    break;
 
-      case Key_Delete:
-	DeleteMarkerData(edit_cue_point);
-	break;
+  case Qt::Key_Delete:
+    DeleteMarkerData(edit_cue_point);
+    break;
 
-      default:
-	e->ignore();
-	break;
+  default:
+    e->ignore();
+    break;
   }
 }
 
@@ -1857,31 +1865,31 @@ void RDEditAudio::DeleteMarkerData(int id)
     return;
   }
   switch(id) {
-      case RDEditAudio::Start:
-      case RDEditAudio::TalkStart:
-      case RDEditAudio::SegueStart:
-      case RDEditAudio::HookStart:
-	edit_cursors[id]=-1;
-	edit_cursors[id+1]=-1;
-	edit_cursor_edit[id]->clear();
-	edit_cursor_edit[id+1]->clear();
-	break;
+  case RDEditAudio::Start:
+  case RDEditAudio::TalkStart:
+  case RDEditAudio::SegueStart:
+  case RDEditAudio::HookStart:
+    edit_cursors[id]=-1;
+    edit_cursors[id+1]=-1;
+    edit_cursor_edit[id]->clear();
+    edit_cursor_edit[id+1]->clear();
+    break;
 
-      case RDEditAudio::End:
-      case RDEditAudio::TalkEnd:
-      case RDEditAudio::SegueEnd:
-      case RDEditAudio::HookEnd:
-	edit_cursors[id]=-1;
-	edit_cursors[id-1]=-1;
-	edit_cursor_edit[id]->clear();
-	edit_cursor_edit[id-1]->clear();
-	break;
+  case RDEditAudio::End:
+  case RDEditAudio::TalkEnd:
+  case RDEditAudio::SegueEnd:
+  case RDEditAudio::HookEnd:
+    edit_cursors[id]=-1;
+    edit_cursors[id-1]=-1;
+    edit_cursor_edit[id]->clear();
+    edit_cursor_edit[id-1]->clear();
+    break;
 
-      case RDEditAudio::FadeUp:
-      case RDEditAudio::FadeDown:
-	edit_cursors[id]=-1;
-	edit_cursor_edit[id]->clear();
-	break;
+  case RDEditAudio::FadeUp:
+  case RDEditAudio::FadeDown:
+    edit_cursors[id]=-1;
+    edit_cursor_edit[id]->clear();
+    break;
   }
   UpdateCursors();
   UpdateCounters();
@@ -1892,45 +1900,48 @@ void RDEditAudio::PreRoll(int cursor,RDEditAudio::CuePoints point)
 {
   int prepoint=cursor-edit_preroll;
   switch(point) {
-      case RDEditAudio::SegueEnd:
-	if(prepoint>1152*edit_cursors[RDEditAudio::SegueStart]) {
-	  rda->cae()->positionPlay(edit_handle,GetTime(prepoint));
-	}
-	else {
-	  rda->cae()->positionPlay(edit_handle,
-			   GetTime(1152*edit_cursors[RDEditAudio::SegueStart]));
-	}
-	break;
-      case RDEditAudio::End:
-	if(prepoint>1152*edit_cursors[RDEditAudio::Start]) {
-	  rda->cae()->positionPlay(edit_handle,GetTime(prepoint));
-	}
-	else {
-	  rda->cae()->positionPlay(edit_handle,
-			      GetTime(1152*edit_cursors[RDEditAudio::Start]));
-	}
-	break;
-      case RDEditAudio::TalkEnd:
-	if(prepoint>1152*edit_cursors[RDEditAudio::TalkStart]) {
-	  rda->cae()->positionPlay(edit_handle,GetTime(prepoint));
-	}
-	else {
-	  rda->cae()->positionPlay(edit_handle,
-			     GetTime(1152*edit_cursors[RDEditAudio::TalkStart]));
-	}
-	break;
-      case RDEditAudio::HookEnd:
-	if(prepoint>1152*edit_cursors[RDEditAudio::HookStart]) {
-	  rda->cae()->positionPlay(edit_handle,GetTime(prepoint));
-	}
-	else {
-	  rda->cae()->positionPlay(edit_handle,
-			     GetTime(1152*edit_cursors[RDEditAudio::HookStart]));
-	}
-	break;
+  case RDEditAudio::SegueEnd:
+    if(prepoint>1152*edit_cursors[RDEditAudio::SegueStart]) {
+      rda->cae()->positionPlay(edit_handle,GetTime(prepoint));
+    }
+    else {
+      rda->cae()->positionPlay(edit_handle,
+			       GetTime(1152*edit_cursors[RDEditAudio::SegueStart]));
+    }
+    break;
 
-      default:
-	break;
+  case RDEditAudio::End:
+    if(prepoint>1152*edit_cursors[RDEditAudio::Start]) {
+      rda->cae()->positionPlay(edit_handle,GetTime(prepoint));
+    }
+    else {
+      rda->cae()->positionPlay(edit_handle,
+			       GetTime(1152*edit_cursors[RDEditAudio::Start]));
+    }
+    break;
+
+  case RDEditAudio::TalkEnd:
+    if(prepoint>1152*edit_cursors[RDEditAudio::TalkStart]) {
+      rda->cae()->positionPlay(edit_handle,GetTime(prepoint));
+    }
+    else {
+      rda->cae()->positionPlay(edit_handle,
+			       GetTime(1152*edit_cursors[RDEditAudio::TalkStart]));
+    }
+    break;
+
+  case RDEditAudio::HookEnd:
+    if(prepoint>1152*edit_cursors[RDEditAudio::HookStart]) {
+      rda->cae()->positionPlay(edit_handle,GetTime(prepoint));
+    }
+    else {
+      rda->cae()->positionPlay(edit_handle,
+			       GetTime(1152*edit_cursors[RDEditAudio::HookStart]));
+    }
+    break;
+
+  default:
+    break;
   }
 }
 
@@ -1938,168 +1949,168 @@ void RDEditAudio::PreRoll(int cursor,RDEditAudio::CuePoints point)
 bool RDEditAudio::PositionCursor(int cursor,bool relative)
 {
   switch(edit_cue_point) {
-      case RDEditAudio::Start:
-      case RDEditAudio::TalkStart:
-      case RDEditAudio::HookStart:
-      case RDEditAudio::SegueStart:
-	if((edit_cursors[edit_cue_point+1]==-1)&&(cursor!=-1)) {
-	  edit_cursors[edit_cue_point+1]=edit_cursors[RDEditAudio::End];
-	  edit_cursor_edit[edit_cue_point+1]->
-	    setText(RDGetTimeLength(
-		     (int)(1152000.0*(double)edit_cursors[edit_cue_point+1]/
-		 (double)edit_sample_rate),true));
-	}
-	if(relative) {
-	  if((edit_cursors[edit_cue_point]+cursor/1152)>
-	     edit_cursors[edit_cue_point+1]) {
-	    return false;
-	  }
-	  if(((edit_cursors[edit_cue_point]+cursor/1152)<
-	      edit_cursors[RDEditAudio::Start])&&
-	     (edit_cue_point!=RDEditAudio::Start)) {
-	    return false;
-	  }
-	  edit_cursors[edit_cue_point]+=cursor/1152;
-	  cursor=edit_cursors[edit_cue_point]*1152;
-	}
-	else {
-	  if((cursor/1152)>edit_cursors[edit_cue_point+1]) {
-	    return false;
-	  }
-	  if(((cursor/1152)<edit_cursors[RDEditAudio::Start])&&
-	    (edit_cue_point!=RDEditAudio::Start)) {
-	    return false;
-	  }
-	  edit_cursors[edit_cue_point]=cursor/1152;
-	}
-	edit_cursor_edit[edit_cue_point]->
-	  setText(RDGetTimeLength((int)(1000.0*(double)cursor/
-			       (double)edit_sample_rate),true));
-	rda->cae()->positionPlay(edit_handle,GetTime(cursor));
-	break;
+  case RDEditAudio::Start:
+  case RDEditAudio::TalkStart:
+  case RDEditAudio::HookStart:
+  case RDEditAudio::SegueStart:
+    if((edit_cursors[edit_cue_point+1]==-1)&&(cursor!=-1)) {
+      edit_cursors[edit_cue_point+1]=edit_cursors[RDEditAudio::End];
+      edit_cursor_edit[edit_cue_point+1]->
+	setText(RDGetTimeLength(
+				(int)(1152000.0*(double)edit_cursors[edit_cue_point+1]/
+				      (double)edit_sample_rate),true));
+    }
+    if(relative) {
+      if((edit_cursors[edit_cue_point]+cursor/1152)>
+	 edit_cursors[edit_cue_point+1]) {
+	return false;
+      }
+      if(((edit_cursors[edit_cue_point]+cursor/1152)<
+	  edit_cursors[RDEditAudio::Start])&&
+	 (edit_cue_point!=RDEditAudio::Start)) {
+	return false;
+      }
+      edit_cursors[edit_cue_point]+=cursor/1152;
+      cursor=edit_cursors[edit_cue_point]*1152;
+    }
+    else {
+      if((cursor/1152)>edit_cursors[edit_cue_point+1]) {
+	return false;
+      }
+      if(((cursor/1152)<edit_cursors[RDEditAudio::Start])&&
+	 (edit_cue_point!=RDEditAudio::Start)) {
+	return false;
+      }
+      edit_cursors[edit_cue_point]=cursor/1152;
+    }
+    edit_cursor_edit[edit_cue_point]->
+      setText(RDGetTimeLength((int)(1000.0*(double)cursor/
+				    (double)edit_sample_rate),true));
+    rda->cae()->positionPlay(edit_handle,GetTime(cursor));
+    break;
 	
-      case RDEditAudio::End:
-      case RDEditAudio::TalkEnd:
-      case RDEditAudio::HookEnd:
-      case RDEditAudio::SegueEnd:
-	if((edit_cursors[edit_cue_point-1]==-1)&&(cursor!=-1)) {
-	  edit_cursors[edit_cue_point-1]=edit_cursors[RDEditAudio::Start];
-	  edit_cursor_edit[edit_cue_point-1]->
-	    setText(RDGetTimeLength(
-		  (int)(1152000.0*(double)edit_cursors[edit_cue_point-1]/
-		 (double)edit_sample_rate),true));
-	}
-	if(relative) {
-	  if((edit_cursors[edit_cue_point]+cursor/1152)<
-	     edit_cursors[edit_cue_point-1]) {
-	    return false;
-	  }
-	  if(((edit_cursors[edit_cue_point]+cursor/1152)>
-	      edit_cursors[RDEditAudio::End])&&
-	     (edit_cue_point!=RDEditAudio::End)) {
-	    return false;
-	  }
-	  if((edit_cue_point==RDEditAudio::End)&&
-	     ((1152*edit_cursors[edit_cue_point]+cursor)
-	      >(int)edit_sample_length)) {
-	    cursor=edit_sample_length-
-	      1152*edit_cursors[edit_cue_point];;
-	  }
-	  edit_cursors[edit_cue_point]+=cursor/1152;
-	  cursor=edit_cursors[edit_cue_point]*1152;
-	}
-	else {
-	  if((cursor/1152)<edit_cursors[edit_cue_point-1]) {
-	    return false;
-	  }
-	  if(((cursor/1152)>edit_cursors[RDEditAudio::End])&&
-	    (edit_cue_point!=RDEditAudio::End)) {
-	    return false;
-	  }
-	  if((edit_cue_point==RDEditAudio::End)&&
-	     (cursor>(int)edit_sample_length)) {
-	    cursor=edit_sample_length;
-	  }
-	  edit_cursors[edit_cue_point]=cursor/1152;
-	}
-	if(((edit_play_mode==RDEditAudio::Region)&&
-	    ((edit_cue_point==edit_cue_point-1)||
-	     (edit_cue_point==edit_cue_point)))) {
-	}
-	edit_cursor_edit[edit_cue_point]->
-	  setText(RDGetTimeLength((int)(1000.0*(double)cursor/
-			       (double)edit_sample_rate),true));
-	PreRoll(cursor,edit_cue_point);
-	break;
-	
-      case RDEditAudio::FadeUp:
-	if(relative) {
-	  if(((edit_cursors[RDEditAudio::FadeUp]+cursor/1152)>
-	      edit_cursors[RDEditAudio::FadeDown])&&
-	     edit_cursors[RDEditAudio::FadeDown]==-1) {
-	    return false;
-	  }
-	  if((edit_cursors[edit_cue_point]+cursor/1152)<
-	     edit_cursors[RDEditAudio::Start]) {
-	    return false;
-	  }
-	  edit_cursors[RDEditAudio::FadeUp]+=cursor/1152;
-	  cursor=edit_cursors[RDEditAudio::FadeUp]*1152;
-	}
-	else {
-	  if(((cursor/1152)>edit_cursors[RDEditAudio::FadeDown])&&
-	     (edit_cursors[RDEditAudio::FadeDown]!=-1)) {
-	    return false;
-	  }
-	  if(((cursor/1152)<edit_cursors[RDEditAudio::Start])||
-	    ((cursor/1152)>edit_cursors[RDEditAudio::End])) {
-	    return false;
-	  }
-	  edit_cursors[RDEditAudio::FadeUp]=cursor/1152;
-	}
-	if(((edit_play_mode==RDEditAudio::Region)&&
-	    ((edit_cue_point==RDEditAudio::FadeUp)))) {
-	}
-	edit_cursor_edit[RDEditAudio::FadeUp]->
-	  setText(RDGetTimeLength((int)(1000.0*(double)cursor/
-			       (double)edit_sample_rate),true));
-	rda->cae()->positionPlay(edit_handle,
-			    GetTime(edit_cursors[RDEditAudio::Start]*1152));
-	break;
-	
-      case RDEditAudio::FadeDown:
-	if(relative) {
-	  if((edit_cursors[RDEditAudio::FadeDown]+cursor/1152)<
-	     edit_cursors[RDEditAudio::FadeUp]) {
-	    return false;
-	  }
-	  if(((edit_cursors[RDEditAudio::FadeDown]+cursor/1152)<
-	      edit_cursors[RDEditAudio::Start])||
-	    ((edit_cursors[RDEditAudio::FadeDown]+cursor/1152)>
-	     edit_cursors[RDEditAudio::End])) {
-	    return false;
-	  }
-	  edit_cursors[RDEditAudio::FadeDown]+=cursor/1152;
-	  cursor=edit_cursors[RDEditAudio::FadeDown]*1152;
-	}
-	else {
-	  if(((cursor/1152)<edit_cursors[RDEditAudio::FadeUp])) {
-	    return false;
-	  }
-	  if(((cursor/1152)<edit_cursors[RDEditAudio::Start])||
-	    ((cursor/1152)>edit_cursors[RDEditAudio::End])) {
-	    return false;
-	  }
-	  edit_cursors[RDEditAudio::FadeDown]=cursor/1152;
-	}
-	edit_cursor_edit[RDEditAudio::FadeDown]->
-	  setText(RDGetTimeLength((int)(1000.0*(double)cursor/
-			       (double)edit_sample_rate),true));
-	rda->cae()->positionPlay(edit_handle,GetTime(cursor));
-	break;	
+  case RDEditAudio::End:
+  case RDEditAudio::TalkEnd:
+  case RDEditAudio::HookEnd:
+  case RDEditAudio::SegueEnd:
+    if((edit_cursors[edit_cue_point-1]==-1)&&(cursor!=-1)) {
+      edit_cursors[edit_cue_point-1]=edit_cursors[RDEditAudio::Start];
+      edit_cursor_edit[edit_cue_point-1]->
+	setText(RDGetTimeLength(
+				(int)(1152000.0*(double)edit_cursors[edit_cue_point-1]/
+				      (double)edit_sample_rate),true));
+    }
+    if(relative) {
+      if((edit_cursors[edit_cue_point]+cursor/1152)<
+	 edit_cursors[edit_cue_point-1]) {
+	return false;
+      }
+      if(((edit_cursors[edit_cue_point]+cursor/1152)>
+	  edit_cursors[RDEditAudio::End])&&
+	 (edit_cue_point!=RDEditAudio::End)) {
+	return false;
+      }
+      if((edit_cue_point==RDEditAudio::End)&&
+	 ((1152*edit_cursors[edit_cue_point]+cursor)
+	  >(int)edit_sample_length)) {
+	cursor=edit_sample_length-
+	  1152*edit_cursors[edit_cue_point];;
+      }
+      edit_cursors[edit_cue_point]+=cursor/1152;
+      cursor=edit_cursors[edit_cue_point]*1152;
+    }
+    else {
+      if((cursor/1152)<edit_cursors[edit_cue_point-1]) {
+	return false;
+      }
+      if(((cursor/1152)>edit_cursors[RDEditAudio::End])&&
+	 (edit_cue_point!=RDEditAudio::End)) {
+	return false;
+      }
+      if((edit_cue_point==RDEditAudio::End)&&
+	 (cursor>(int)edit_sample_length)) {
+	cursor=edit_sample_length;
+      }
+      edit_cursors[edit_cue_point]=cursor/1152;
+    }
+    if(((edit_play_mode==RDEditAudio::Region)&&
+	((edit_cue_point==edit_cue_point-1)||
+	 (edit_cue_point==edit_cue_point)))) {
+    }
+    edit_cursor_edit[edit_cue_point]->
+      setText(RDGetTimeLength((int)(1000.0*(double)cursor/
+				    (double)edit_sample_rate),true));
+    PreRoll(cursor,edit_cue_point);
+    break;
 
-      default:
-	break;
+  case RDEditAudio::FadeUp:
+    if(relative) {
+      if(((edit_cursors[RDEditAudio::FadeUp]+cursor/1152)>
+	  edit_cursors[RDEditAudio::FadeDown])&&
+	 edit_cursors[RDEditAudio::FadeDown]==-1) {
+	return false;
+      }
+      if((edit_cursors[edit_cue_point]+cursor/1152)<
+	 edit_cursors[RDEditAudio::Start]) {
+	return false;
+      }
+      edit_cursors[RDEditAudio::FadeUp]+=cursor/1152;
+      cursor=edit_cursors[RDEditAudio::FadeUp]*1152;
+    }
+    else {
+      if(((cursor/1152)>edit_cursors[RDEditAudio::FadeDown])&&
+	 (edit_cursors[RDEditAudio::FadeDown]!=-1)) {
+	return false;
+      }
+      if(((cursor/1152)<edit_cursors[RDEditAudio::Start])||
+	 ((cursor/1152)>edit_cursors[RDEditAudio::End])) {
+	return false;
+      }
+      edit_cursors[RDEditAudio::FadeUp]=cursor/1152;
+    }
+    if(((edit_play_mode==RDEditAudio::Region)&&
+	((edit_cue_point==RDEditAudio::FadeUp)))) {
+    }
+    edit_cursor_edit[RDEditAudio::FadeUp]->
+      setText(RDGetTimeLength((int)(1000.0*(double)cursor/
+				    (double)edit_sample_rate),true));
+    rda->cae()->positionPlay(edit_handle,
+			     GetTime(edit_cursors[RDEditAudio::Start]*1152));
+    break;
+	
+  case RDEditAudio::FadeDown:
+    if(relative) {
+      if((edit_cursors[RDEditAudio::FadeDown]+cursor/1152)<
+	 edit_cursors[RDEditAudio::FadeUp]) {
+	return false;
+      }
+      if(((edit_cursors[RDEditAudio::FadeDown]+cursor/1152)<
+	  edit_cursors[RDEditAudio::Start])||
+	 ((edit_cursors[RDEditAudio::FadeDown]+cursor/1152)>
+	  edit_cursors[RDEditAudio::End])) {
+	return false;
+      }
+      edit_cursors[RDEditAudio::FadeDown]+=cursor/1152;
+      cursor=edit_cursors[RDEditAudio::FadeDown]*1152;
+    }
+    else {
+      if(((cursor/1152)<edit_cursors[RDEditAudio::FadeUp])) {
+	return false;
+      }
+      if(((cursor/1152)<edit_cursors[RDEditAudio::Start])||
+	 ((cursor/1152)>edit_cursors[RDEditAudio::End])) {
+	return false;
+      }
+      edit_cursors[RDEditAudio::FadeDown]=cursor/1152;
+    }
+    edit_cursor_edit[RDEditAudio::FadeDown]->
+      setText(RDGetTimeLength((int)(1000.0*(double)cursor/
+				    (double)edit_sample_rate),true));
+    rda->cae()->positionPlay(edit_handle,GetTime(cursor));
+    break;	
+    
+  default:
+    break;
   }
   ValidateMarkers();
   UpdateCursors();
@@ -2567,8 +2578,8 @@ void RDEditAudio::DrawCursors(int xpos,int ypos,int xsize,int ysize,int chan)
 					   edit_cursors[RDEditAudio::Play],
 					   prev_x[chan][RDEditAudio::Play],
 					   QColor(EDITAUDIO_PLAY_COLOR),
-					   RDEditAudio::None,20,RDEditAudio::Play,
-					   Qt::XorROP);
+					     RDEditAudio::None,20,RDEditAudio::Play);
+					     //					   Qt::XorROP);
   
   prev_x[chan][RDEditAudio::SegueStart]=DrawCursor(xpos,ypos,xsize,ysize,chan,
 					   edit_cursors[RDEditAudio::SegueStart],
@@ -2642,12 +2653,15 @@ void RDEditAudio::DrawCursors(int xpos,int ypos,int xsize,int ysize,int chan)
 }
 
 
+//int RDEditAudio::DrawCursor(int xpos,int ypos,int xsize,int ysize,int chan,
+//			  int samp,int prev,QColor color,Arrow arrow,int apos,
+//			  RDEditAudio::CuePoints pt,Qt::RasterOp op)
 int RDEditAudio::DrawCursor(int xpos,int ypos,int xsize,int ysize,int chan,
 			  int samp,int prev,QColor color,Arrow arrow,int apos,
-			  RDEditAudio::CuePoints pt,Qt::RasterOp op)
+			  RDEditAudio::CuePoints pt)
 {
   int x;
-  QPointArray *point;
+  Q3PointArray *point;
 
   if(samp<0) {
     return 0;
@@ -2656,16 +2670,15 @@ int RDEditAudio::DrawCursor(int xpos,int ypos,int xsize,int ysize,int chan,
   if((x!=prev)||(pt!=RDEditAudio::Play)) {
     QPainter *p=new QPainter(this);
     p->setClipRect(xpos,ypos,xsize,ysize);
-    p->setRasterOp(op);
+    //    p->setRasterOp(op);
     p->translate(xpos,ypos);
     if((x>=0)&(x<EDITAUDIO_WAVEFORM_WIDTH)) {
       p->setPen(color);
-      p->moveTo(x,0);
-      p->lineTo(x,ysize);
+      p->drawLine(x,0,x,ysize);
       if(arrow==RDEditAudio::Left) {
 	p->setClipRect(0,0,xsize+xpos+10,ysize+ypos);
 	p->setBrush(color);
-	point=new QPointArray(3);
+	point=new Q3PointArray(3);
 	point->setPoint(0,x,apos);
 	point->setPoint(1,x+10,apos-5);
 	point->setPoint(2,x+10,apos+5);
@@ -2679,7 +2692,7 @@ int RDEditAudio::DrawCursor(int xpos,int ypos,int xsize,int ysize,int chan,
       if(arrow==RDEditAudio::Right) {
 	p->setClipRect(-10,0,xsize+10,ysize+ypos);
 	p->setBrush(color);
-	point=new QPointArray(3);
+	point=new Q3PointArray(3);
 	point->setPoint(0,x,apos);
 	point->setPoint(1,x-10,apos-5);
 	point->setPoint(2,x-10,apos+5);
@@ -2768,8 +2781,8 @@ void RDEditAudio::DrawWave(int xsize,int ysize,int chan,QString label,
 
   int vert=ysize/2;
   double size_y=pow(10,(-((double)edit_gain)/20.0));
-  ref_line=int(size_y*ysize*pow(10.0,-(double)REFERENCE_LEVEL/2000.0-
-			      (double)edit_gain_control->value()/2000.0)/2.0);
+  ref_line=(int)(size_y*ysize*pow(10.0,-(double)REFERENCE_LEVEL/2000.0-
+			       (double)edit_gain_control->value()/2000.0)/2.0);
 
   //
   // Grayed-Out Area
@@ -2790,11 +2803,9 @@ void RDEditAudio::DrawWave(int xsize,int ysize,int chan,QString label,
   //
   // Reference Level Lines
   //
-  p->setPen(QColor(red));
-  p->moveTo(0,vert+ref_line);
-  p->lineTo(xsize,vert+ref_line);
-  p->moveTo(0,vert-ref_line);
-  p->lineTo(xsize,vert-ref_line);
+  p->setPen(QColor(Qt::red));
+  p->drawLine(0,vert+ref_line,xsize,vert+ref_line);
+  p->drawLine(0,vert-ref_line,xsize,vert-ref_line);
 
   p->translate(1,ysize/2);
   if(edit_peaks->energySize()>0) {
@@ -2808,10 +2819,9 @@ void RDEditAudio::DrawWave(int xsize,int ysize,int chan,QString label,
 	i+=(int)(edit_factor_x*(double)edit_sample_rate/576.0)) {
       offset=(int)((double)(i-origin_x)/edit_factor_x);
       if((offset>0)&&(offset<(EDITAUDIO_WAVEFORM_WIDTH-2))) {
-	p->setPen(QColor(green));
-	p->moveTo(offset,-ysize/2);
-	p->lineTo(offset,ysize/2);
-	p->setPen(QColor(red));
+	p->setPen(QColor(Qt::green));
+	p->drawLine(offset,-ysize/2,offset,ysize/2);
+	p->setPen(QColor(Qt::red));
 	p->drawText(offset+3,ysize/2-4,
 		    RDGetTimeLength((int)((1152000.0*(double)i)/
 	       		  (double)edit_sample_rate+1000.0),
@@ -2862,14 +2872,13 @@ void RDEditAudio::DrawWave(int xsize,int ysize,int chan,QString label,
     edit_wave_array->setPoint(xsize-3,xsize-3,0);
     p->drawPolygon(*edit_wave_array);
 
-    p->setPen(QColor(red));
+    p->setPen(QColor(Qt::red));
     if(!label.isEmpty()) {
       p->setFont(QFont("Helvetica",24,QFont::Normal));
       p->drawText(10,28-ysize/2,label);
     }
-    p->setPen(QColor(black));
-    p->moveTo(0,0);
-    p->lineTo(xsize-3,0);
+    p->setPen(QColor(Qt::black));
+    p->drawLine(0,0,xsize-3,0);
   }
   else {
     p->setFont(QFont("Helvetica",24,QFont::Bold));

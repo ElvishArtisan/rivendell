@@ -23,12 +23,12 @@
 #include <qpushbutton.h>
 #include <qradiobutton.h>
 #include <qlineedit.h>
-#include <qtextedit.h>
+#include <q3textedit.h>
 #include <qlabel.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
 
 #include <filter.h>
 
@@ -94,7 +94,7 @@ Filter::Filter(QString *filter,QWidget *parent)
   QLabel *filter_text_label=new QLabel(filter_text_edit,tr("&Filter:"),this);
   filter_text_label->setGeometry(10,12,50,19);
   filter_text_label->setFont(label_font);
-  filter_text_label->setAlignment(AlignRight|ShowPrefix);
+  filter_text_label->setAlignment(Qt::AlignRight|Qt::TextShowMnemonic);
 }
 
 

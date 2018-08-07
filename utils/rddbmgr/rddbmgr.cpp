@@ -26,6 +26,7 @@
 #include <qapplication.h>
 #include <qfileinfo.h>
 #include <qsqldatabase.h>
+#include <qsqlerror.h>
 #include <qstringlist.h>
 
 #include <dbversion.h>
@@ -282,19 +283,14 @@ MainObject::MainObject(QObject *parent)
   //
   // Open Database
   //
-  QSqlDatabase *db=QSqlDatabase::addDatabase(db_mysql_driver);
-  if(!db) {
-    fprintf(stderr,"rddbmgr: unable to connect to database server\n");
-    exit(1);
-  }
-  db->setDatabaseName(db_mysql_database);
-  db->setUserName(db_mysql_loginname);
-  db->setPassword(db_mysql_password);
-  db->setHostName(db_mysql_hostname);
-  if(!db->open()) {
+  QSqlDatabase db=QSqlDatabase::addDatabase(db_mysql_driver);
+  db.setDatabaseName(db_mysql_database);
+  db.setUserName(db_mysql_loginname);
+  db.setPassword(db_mysql_password);
+  db.setHostName(db_mysql_hostname);
+  if(!db.open()) {
     fprintf(stderr,"rddbmgr: unable to open database [%s]\n",
-	    (const char *)db->lastError().text());
-    db->removeDatabase(db_mysql_database);
+	    (const char *)db.lastError().text());
     exit(1);
   }
   db_table_create_postfix=

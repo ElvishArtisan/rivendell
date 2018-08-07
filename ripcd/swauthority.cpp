@@ -60,7 +60,7 @@ SoftwareAuthority::SoftwareAuthority(RDMatrix *matrix,QObject *parent)
   //
   // Initialize the connection
   //
-  swa_socket=new QSocket(this);
+  swa_socket=new Q3Socket(this);
   connect(swa_socket,SIGNAL(connected()),this,SLOT(connectedData()));
   connect(swa_socket,SIGNAL(connectionClosed()),
 	  this,SLOT(connectionClosedData()));
@@ -204,8 +204,8 @@ void SoftwareAuthority::readyReadData()
 
 void SoftwareAuthority::errorData(int err)
 {
-  switch((QSocket::Error)err) {
-      case QSocket::ErrConnectionRefused:
+  switch((Q3Socket::Error)err) {
+      case Q3Socket::ErrConnectionRefused:
 	LogLine(RDConfig::LogNotice,QString().sprintf(
 	  "Connection to SoftwareAuthority device at %s:%d refused, attempting reconnect",
 		  (const char *)swa_ipaddress.toString(),
@@ -213,14 +213,14 @@ void SoftwareAuthority::errorData(int err)
 	swa_reconnect_timer->start(SWAUTHORITY_RECONNECT_INTERVAL,true);
 	break;
 
-      case QSocket::ErrHostNotFound:
+      case Q3Socket::ErrHostNotFound:
 	LogLine(RDConfig::LogWarning,QString().sprintf(
 	  "Error on connection to SoftwareAuthority device at %s:%d: Host Not Found",
 		  (const char *)swa_ipaddress.toString(),
 		  swa_ipport));
 	break;
 
-      case QSocket::ErrSocketRead:
+      case Q3Socket::ErrSocketRead:
 	LogLine(RDConfig::LogWarning,QString().sprintf(
 	  "Error on connection to SoftwareAuthority device at %s:%d: Socket Read Error",
 				  (const char *)swa_ipaddress.toString(),

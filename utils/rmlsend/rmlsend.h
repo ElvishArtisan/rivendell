@@ -24,13 +24,15 @@
 #include <qcombobox.h>
 #include <qlabel.h>
 #include <qlineedit.h>
-#include <qmainwindow.h>
+#include <q3mainwindow.h>
 #include <qpushbutton.h>
 #include <qsize.h>
 #include <qsizepolicy.h>
-#include <qsocketdevice.h>
-#include <qtextstream.h>
+#include <q3socketdevice.h>
+#include <q3textstream.h>
 #include <qtimer.h>
+//Added by qt3to4:
+#include <QPixmap>
 
 #include <rd.h>
 
@@ -41,7 +43,7 @@
 #define RMLSEND_DEFAULT_ADDR "localhost"
 #define RMLSEND_DEFAULT_PORT 5859
 
-class MainWidget : public QMainWindow
+class MainWidget : public Q3MainWindow
 {
   Q_OBJECT
  public:
@@ -62,7 +64,7 @@ class MainWidget : public QMainWindow
   QLabel *port_edit_label;
   QComboBox *port_box;
   QLineEdit *port_edit;
-  QSocketDevice *udp_command,*udp_response;
+  Q3SocketDevice *udp_command,*udp_response;
   QHostAddress host_addr;
   QTimer *timer;
   int countdown;
@@ -87,12 +89,12 @@ class MainObject : public QObject
   void ProcessCommands();
   int input_fd;
   QString input_file;
-  QTextStream *input_stream;
+  Q3TextStream *input_stream;
   QString dest_hostname;
   QHostAddress *dest_addr;
   unsigned dest_port;
   QString rml_cmd;
-  unsigned rml_ptr;
+  int rml_ptr;
 };
 
 #endif  // RMLSEND_H

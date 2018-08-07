@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>AddClock</name>
     <message>
@@ -218,38 +220,6 @@ Do you want to save?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>CART</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>GROUP</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>LENGTH</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>TITLE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>ARTIST</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>START</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>END</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>TYPE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>ALL</source>
         <translation type="unfinished"></translation>
     </message>
@@ -327,14 +297,6 @@ Do you want to save?</source>
     </message>
     <message>
         <source>Use Timescaling</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>TRANSITION</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>COUNT</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -521,6 +483,46 @@ Do you want to overwrite it?</source>
     </message>
     <message>
         <source>Timed(Wait)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Artist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>End</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Count</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

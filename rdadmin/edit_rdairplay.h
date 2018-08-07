@@ -26,10 +26,12 @@
 #include <qlineedit.h>
 #include <qcombobox.h>
 #include <qspinbox.h>
-#include <qdatetimeedit.h>
+#include <q3datetimeedit.h>
 #include <qlabel.h>
 #include <qcheckbox.h>
-#include <qbuttongroup.h>
+#include <q3buttongroup.h>
+//Added by qt3to4:
+#include <QPaintEvent>
 
 #include <rd.h>
 #include <rdairplay_conf.h>
@@ -112,7 +114,7 @@ class EditRDAirPlay : public QDialog
   QSpinBox *air_aux2_box;
   QCheckBox *air_auxlog_box[2];
   QCheckBox *air_clearfilter_box;
-  QButtonGroup *air_bar_group;
+  Q3ButtonGroup *air_bar_group;
   QCheckBox *air_flash_box;
   QCheckBox *air_panel_pause_box;
   QCheckBox *air_show_counters_box;

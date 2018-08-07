@@ -30,6 +30,8 @@
 #include <rdweb.h>
 
 #include <rdformpost.h>
+//Added by qt3to4:
+#include <Q3TextStream>
 
 RDFormPost::RDFormPost(RDFormPost::Encoding encoding,unsigned maxsize,
 		       bool auto_delete)
@@ -401,7 +403,7 @@ QString RDFormPost::urlEncode(const QString &str)
 {
   QString ret;
 
-  for(unsigned i=0;i<str.length();i++) {
+  for(int i=0;i<str.length();i++) {
     if(str.at(i).isLetterOrNumber()) {
       ret+=str.mid(i,1);
     }
@@ -422,7 +424,7 @@ QString RDFormPost::urlDecode(const QString &str)
   QString ret;
   bool ok=false;
 
-  for(unsigned i=0;i<str.length();i++) {
+  for(int i=0;i<str.length();i++) {
     switch(istate) {
     case 0:
       if(str.at(i)==QChar('+')) {
@@ -482,7 +484,7 @@ void RDFormPost::LoadUrlEncoding(char first)
 
   post_data[post_content_length]=0;
   lines=lines.split("&",post_data);
-  for(unsigned i=0;i<lines.size();i++) {
+  for(int i=0;i<lines.size();i++) {
     line=line.split("=",lines[i]);
     switch(line.size()) {
     case 1:
@@ -511,13 +513,13 @@ void RDFormPost::LoadMultipartEncoding(char first)
     return;
   }
   QFile *file=new QFile();
-  if(!file->open(IO_ReadOnly,post_stream)) {
+  if(!file->open(QIODevice::ReadOnly,post_stream)) {
     delete file;
     post_error=RDFormPost::ErrorInternal;
     return;
   }
-  post_text_reader=new QTextStream(file);
-  post_text_reader->setEncoding(QTextStream::UnicodeUTF8);
+  post_text_reader=new Q3TextStream(file);
+  post_text_reader->setEncoding(Q3TextStream::UnicodeUTF8);
 
   //
   // Get Separator Line
@@ -563,7 +565,7 @@ bool RDFormPost::GetMimePart(QString *name,QString *value,bool *is_file)
     if(f0.size()==2) {
       if(f0[0].lower()=="content-disposition") {
 	QStringList f1=f1.split(";",f0[1]);
-	for(unsigned i=0;i<f1.size();i++) {
+	for(int i=0;i<f1.size();i++) {
 	  QStringList f2=f2.split("=",f1[i].stripWhiteSpace());
 	  if(f2.size()==2) {
 	    if(f2[0]=="name") {

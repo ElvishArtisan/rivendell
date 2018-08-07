@@ -23,6 +23,8 @@
 
 #include <qdialog.h>
 #include <qlabel.h>
+//Added by qt3to4:
+#include <QResizeEvent>
 
 #include <rdbusybar.h>
 
@@ -30,7 +32,7 @@ class RDBusyDialog : public QDialog
 {
   Q_OBJECT;
  public:
-  RDBusyDialog(QWidget *parent=0,WFlags f=0);
+  RDBusyDialog(QWidget *parent=0,Qt::WFlags f=0);
   ~RDBusyDialog();
   QSize sizeHint() const;
   void show(const QString &caption,const QString &label);

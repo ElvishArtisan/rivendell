@@ -26,7 +26,7 @@
 #include <qlineedit.h>
 #include <qcombobox.h>
 #include <qspinbox.h>
-#include <qdatetimeedit.h>
+#include <q3datetimeedit.h>
 
 #include <rdstation.h>
 #include <rdlogedit_conf.h>
@@ -63,7 +63,7 @@ class EditRDLogedit : public QDialog
   QSpinBox *lib_preroll_spin;
   QSpinBox *lib_threshold_spin;
   QSpinBox *lib_normalization_spin;
-  QTimeEdit *lib_maxlength_time;
+  Q3TimeEdit *lib_maxlength_time;
   QLineEdit *lib_startcart_edit;
   QLineEdit *lib_endcart_edit;
   QLineEdit *lib_recstartcart_edit;

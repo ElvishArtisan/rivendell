@@ -302,7 +302,7 @@ void RDCart::setSchedCodesList(const QStringList &codes) const
 {
   QString sched_codes="";
 
-  for(unsigned i=0;i<codes.size();i++) {
+  for(int i=0;i<codes.size();i++) {
     sched_codes+=QString().sprintf("%-11s",(const char *)codes[i].left(11));
   }
   sched_codes+=".";
@@ -323,7 +323,7 @@ void RDCart::removeSchedCode(const QString &code) const
   QStringList codes=schedCodesList();
   QStringList new_codes;
 
-  for(unsigned i=0;i<codes.size();i++) {
+  for(int i=0;i<codes.size();i++) {
     if(codes[i].lower()!=code.lower()) {
       new_codes.push_back(codes[i]);
     }
@@ -1497,7 +1497,7 @@ QString RDCart::xml(RDSqlQuery *q,bool include_cuts,
       }
       else {
 	xml+="  <macroList>\n";
-	for(unsigned i=0;i<mlist.size();i++) {
+	for(int i=0;i<mlist.size();i++) {
 	  xml+="    "+RDXmlField(QString().sprintf("macro%d",i),mlist[i]+"!");
 	}
 	xml+="  </macroList>\n";
@@ -1742,11 +1742,11 @@ unsigned RDCart::readXml(std::vector<RDWaveData> *data,const QString &xml)
   RDSettings *settings=NULL;
   QStringList f0=f0.split("\n",xml);
 
-  for(unsigned i=0;i<f0.size();i++) {
+  for(int i=0;i<f0.size();i++) {
     f0[i]=f0[i].stripWhiteSpace();
   }
 
-  for(unsigned i=0;i<f0.size();i++) {
+  for(int i=0;i<f0.size();i++) {
     switch(istate) {
     case 0:
       if(f0[i]=="<cart>") {

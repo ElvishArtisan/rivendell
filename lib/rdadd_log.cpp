@@ -21,6 +21,9 @@
 #include <math.h>
 
 #include <qmessagebox.h>
+//Added by qt3to4:
+#include <QLabel>
+#include <QCloseEvent>
 
 #include "rdapplication.h"
 #include "rddb.h"
@@ -71,7 +74,7 @@ RDAddLog::RDAddLog(QString *logname,QString *svcname,
   QLabel *label=new QLabel(add_name_edit,tr("&New Log Name:"),this);
   label->setGeometry(10,13,100,19);
   label->setFont(button_font);
-  label->setAlignment(AlignRight|ShowPrefix);
+  label->setAlignment(Qt::AlignRight);
   connect(add_name_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(nameChangedData(const QString &)));
 
@@ -83,7 +86,7 @@ RDAddLog::RDAddLog(QString *logname,QString *svcname,
   label=new QLabel(add_name_edit,tr("&Service:"),this);
   label->setGeometry(10,33,100,19);
   label->setFont(button_font);
-  label->setAlignment(AlignRight|ShowPrefix);
+  label->setAlignment(Qt::AlignRight);
 
   //
   //  Ok Button
