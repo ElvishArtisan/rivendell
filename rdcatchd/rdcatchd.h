@@ -2,7 +2,7 @@
 //
 // The Rivendell Netcatcher.
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,10 +27,11 @@
 #include <vector>
 #include <list>
 
+#include <qlist.h>
 #include <qobject.h>
 #include <qstring.h>
-#include <q3serversocket.h>
-#include <qsqldatabase.h>
+#include <qtcpserver.h>
+#include <qsignalmapper.h>
 #include <qtimer.h>
 #include <qhostaddress.h>
 #include <qsignalmapper.h>
@@ -53,9 +54,6 @@
 //
 // Global RDCATCHD Definitions
 //
-#define RDCATCHD_MAX_CONNECTIONS 32
-#define RDCATCHD_MAX_ARGS 10
-#define RDCATCHD_MAX_LENGTH 256
 #define RDCATCHD_GPO_INTERVAL 333
 #define RDCATCHD_MAX_MACROS 64
 #define RDCATCHD_FREE_EVENTS_INTERVAL 1000
@@ -67,26 +65,51 @@
 //
 void LogLine(RDConfig::LogPriority prio,const QString &line);
 
+class ServerConnection
+{
+ public:
+  ServerConnection(int id,QTcpSocket *sock);
+  ~ServerConnection();
+  int id() const;
+  bool isAuthenticated() const;
+  void setAuthenticated(bool state);
+  bool meterEnabled() const;
+  void setMeterEnabled(bool state);
+  QTcpSocket *socket();
+  bool isClosing() const;
+  void close();
+  QString accum;
+
+ private:
+  int conn_id;
+  bool conn_authenticated;
+  bool conn_meter_enabled;
+  QTcpSocket *conn_socket;
+  bool conn_is_closing;
+};
+
+
+
+
 class MainObject : public QObject
 {
   Q_OBJECT
  public:
   MainObject(QObject *parent=0);
 
- public slots:
-  void newConnection(int fd);
-
  private slots:
   //
   // rdcatchd.cpp
   //
+  void newConnectionData();
   void rmlReceivedData(RDMacro *rml);
   void gpiStateChangedData(int matrix,int line,bool state);
   void startTimerData(int id);
   void offsetTimerData(int id);
   void engineData(int);
-  void socketData(int);
-  void socketKill(int);
+  void socketReadyReadData(int conn_id);
+  void socketKillData(int conn_id);
+  void garbageData();
   void isConnectedData(bool state);
   void recordLoadedData(int card,int stream);
   void recordingData(int card,int stream);
@@ -139,8 +162,7 @@ class MainObject : public QObject
   void SendMeterLevel(int deck,short levels[2]);
   void SendDeckEvent(int deck,int number);
   void ParseCommand(int);
-  void DispatchCommand(int);
-  void KillSocket(int);
+  void DispatchCommand(ServerConnection *conn);
   void EchoCommand(int,const char *);
   void BroadcastCommand(const char *,int except_ch=-1);
   void EchoArgs(int,const char);
@@ -183,16 +205,13 @@ class MainObject : public QObject
   bool debug;
   RDTimeEngine *catch_engine;
   Q_INT16 tcp_port;
-  Q3ServerSocket *server;
+  QTcpServer *server;
   RDCatchConnect *catch_connect;
-  RDSocket *socket[RDCATCHD_MAX_CONNECTIONS];
-  char args[RDCATCHD_MAX_CONNECTIONS][RDCATCHD_MAX_ARGS][RDCATCHD_MAX_LENGTH];
-  int istate[RDCATCHD_MAX_CONNECTIONS];
-  int argnum[RDCATCHD_MAX_CONNECTIONS];
-  int argptr[RDCATCHD_MAX_CONNECTIONS];
-  bool auth[RDCATCHD_MAX_CONNECTIONS];
-  bool catch_meter_enabled[RDCATCHD_MAX_CONNECTIONS];
-  
+
+  QList<ServerConnection *> catch_connections;
+  QSignalMapper *catch_ready_mapper;
+  QSignalMapper *catch_kill_mapper;
+  QTimer *catch_garbage_timer;
   bool catch_record_status[MAX_DECKS];
   int catch_record_card[MAX_DECKS];
   int catch_record_stream[MAX_DECKS];

@@ -38,13 +38,11 @@
 #include <qtimer.h>
 #include <qsignalmapper.h>
 #include <qsessionmanager.h>
+#include <qurl.h>
 
 #include <rdapplication.h>
 #include <rdaudioconvert.h>
-#include <rdcatchd_socket.h>
-#include <rdcatchd.h>
 #include <rdcheck_daemons.h>
-#include <rdcmd_switch.h>
 #include <rdconf.h>
 #include <rdcut.h>
 #include <rddb.h>
@@ -52,17 +50,14 @@
 #include <rddebug.h>
 #include <rddownload.h>
 #include <rdescape_string.h>
-#include <rdlibrary_conf.h>
-#include <rdmixer.h>
-#include <rdpodcast.h>
-#include <rdrecording.h>
 #include <rdsettings.h>
 #include <rdtempdirectory.h>
-#include <rdttyout.h>
 #include <rdupload.h>
 #include <rdurl.h>
 #include <rdwavefile.h>
 #include <rdweb.h>
+
+#include "rdcatchd.h"
 
 void MainObject::catchConnectedData(int serial,bool state)
 {
@@ -195,7 +190,7 @@ void MainObject::RunDownload(CatchEvent *evt)
   QString url_username=evt->urlUsername();
   QString url_password=evt->urlPassword();
   if(url_username.isEmpty()&&
-     (Q3Url(evt->resolvedUrl()).protocol().lower()=="ftp")) {
+     (QUrl(evt->resolvedUrl()).scheme().lower()=="ftp")) {
     url_username=RD_ANON_FTP_USERNAME;
     url_password=QString(RD_ANON_FTP_PASSWORD)+"-"+VERSION;
   }
@@ -316,7 +311,7 @@ void MainObject::RunUpload(CatchEvent *evt)
   QString url_username=evt->urlUsername();
   QString url_password=evt->urlPassword();
   if(url_username.isEmpty()&&
-     (Q3Url(evt->resolvedUrl()).protocol().lower()=="ftp")) {
+     (QUrl(evt->resolvedUrl()).scheme().lower()=="ftp")) {
     url_username=RD_ANON_FTP_USERNAME;
     url_password=QString(RD_ANON_FTP_PASSWORD)+"-"+VERSION;
   }

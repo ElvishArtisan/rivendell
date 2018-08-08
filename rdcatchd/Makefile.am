@@ -20,7 +20,7 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -I$(top_srcdir)/lib @QT4_CFLAGS@ -DQT3_SUPPORT -I/usr/include/Qt3Support
+AM_CPPFLAGS = -Wall -I$(top_srcdir)/lib @QT4_CFLAGS@ -I/usr/include/Qt3Support
 LIBS = -L$(top_srcdir)/lib
 MOC = @QT_MOC@
 
@@ -35,12 +35,10 @@ dist_rdcatchd_SOURCES = batch.cpp\
                         event_player.cpp event_player.h\
                         local_macros.cpp\
                         rdcatchd.cpp rdcatchd.h\
-                        rdcatchd_socket.cpp rdcatchd_socket.h\
                         startdropboxes.cpp
 
 nodist_rdcatchd_SOURCES = moc_event_player.cpp\
-                          moc_rdcatchd.cpp\
-                          moc_rdcatchd_socket.cpp
+                          moc_rdcatchd.cpp
 
 rdcatchd_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
 

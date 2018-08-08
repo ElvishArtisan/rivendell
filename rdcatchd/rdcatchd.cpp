@@ -41,15 +41,12 @@
 #include <qsignalmapper.h>
 #include <qsessionmanager.h>
 
-#include <dbversion.h>
 #include <rdapplication.h>
-#include <rdcatchd_socket.h>
 #include <rdcheck_daemons.h>
 #include <rdconf.h>
 #include <rdcut.h>
 #include <rddatedecode.h>
 #include <rddb.h>
-#include <rddebug.h>
 #include <rdescape_string.h>
 #include <rdhash.h>
 #include <rdlibrary_conf.h>
@@ -59,7 +56,6 @@
 #include <rdrecording.h>
 #include <rdsettings.h>
 #include <rdtempdirectory.h>
-#include <rdttyout.h>
 #include <rdurl.h>
 #include <rdwavefile.h>
 
@@ -119,12 +115,80 @@ void SigHandler(int signum)
 }
 
 
+ServerConnection::ServerConnection(int id,QTcpSocket *sock)
+{
+  conn_id=id;
+  conn_socket=sock;
+  conn_authenticated=false;
+  conn_meter_enabled=false;
+  conn_is_closing=false;
+  accum="";
+}
+
+
+ServerConnection::~ServerConnection()
+{
+  delete conn_socket;
+}
+
+
+int ServerConnection::id() const
+{
+  return conn_id;
+}
+
+
+bool ServerConnection::isAuthenticated() const
+{
+  return conn_authenticated;
+}
+
+
+void ServerConnection::setAuthenticated(bool state)
+{
+  conn_authenticated=state;
+}
+
+
+bool ServerConnection::meterEnabled() const
+{
+  return conn_meter_enabled;
+}
+
+
+void ServerConnection::setMeterEnabled(bool state)
+{
+  conn_meter_enabled=state;
+}
+
+
+QTcpSocket *ServerConnection::socket()
+{
+  return conn_socket;
+}
+
+
+bool ServerConnection::isClosing() const
+{
+  return conn_is_closing;
+}
+
+
+void ServerConnection::close()
+{
+  conn_is_closing=true;
+}
+
+
+
+
 MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
   QString sql;
   RDSqlQuery *q;
   QString err_msg;
+  debug=false;
 
   //
   // Open the Database
@@ -142,6 +206,10 @@ MainObject::MainObject(QObject *parent)
     if(rda->cmdSwitch()->key(i)=="--event-id") {
       RunBatch(rda->cmdSwitch());
       return;
+    }
+    if(rda->cmdSwitch()->key(i)=="-d") {
+      debug=true;
+      rda->cmdSwitch()->setProcessed(i,true);
     }
     if(!rda->cmdSwitch()->processed(i)) {
       fprintf(stderr,"rdcatchdd: unknown command option \"%s\"\n",
@@ -161,15 +229,6 @@ MainObject::MainObject(QObject *parent)
   //
   // Initialize Data Structures
   //
-  debug=false;
-  for(unsigned i=0;i<RDCATCHD_MAX_CONNECTIONS;i++) {
-    socket[i]=NULL;
-    istate[i]=0;
-    argnum[i]=0;
-    argptr[i]=0;
-    auth[i]=false;
-    catch_meter_enabled[i]=false;
-  }
   for(int i=0;i<MAX_DECKS;i++) {
     catch_record_deck_status[i]=RDDeck::Offline;
     catch_playout_deck_status[i]=RDDeck::Offline;
@@ -207,12 +266,22 @@ MainObject::MainObject(QObject *parent)
   connect(timer,SIGNAL(timeout()),this,SLOT(freeEventsData()));
   timer->start(RDCATCHD_FREE_EVENTS_INTERVAL);
 
-  server=new RDCatchdSocket(RDCATCHD_TCP_PORT,0,this);
-  if(!server->ok()) {
-    printf("rdcatchd: aborting - couldn't bind socket");
+  //
+  // Command Server
+  //
+  server=new QTcpServer(this);
+  if(!server->listen(QHostAddress::Any,RDCATCHD_TCP_PORT)) {
+    fprintf(stderr,"rdcatchd: aborting - couldn't bind socket");
     exit(1);
   }
-  connect(server,SIGNAL(connection(int)),this,SLOT(newConnection(int)));
+  connect(server,SIGNAL(newConnection()),this,SLOT(newConnectionData()));
+  catch_ready_mapper=new QSignalMapper(this);
+  connect(catch_ready_mapper,SIGNAL(mapped(int)),this,SLOT(socketReadyReadData(int)));
+  catch_kill_mapper=new QSignalMapper(this);
+  connect(catch_kill_mapper,SIGNAL(mapped(int)),this,SLOT(socketKillData(int)));
+  catch_garbage_timer=new QTimer(this);
+  catch_garbage_timer->setSingleShot(true);
+  connect(catch_garbage_timer,SIGNAL(timeout()),this,SLOT(garbageData()));
 
   //  connect (RDDbStatus(),SIGNAL(logText(RDConfig::LogPriority,const QString &)),
   //	   this,SLOT(log(RDConfig::LogPriority,const QString &)));
@@ -427,26 +496,24 @@ void MainObject::log(RDConfig::LogPriority prio,const QString &msg)
 }
 
 
-void MainObject::newConnection(int fd)
+void MainObject::newConnectionData()
 {
-  unsigned i=0;
-
-  while((i<RDCATCHD_MAX_CONNECTIONS)&&(socket[i]!=NULL)) {
+  int i=0;
+  QTcpSocket *sock=server->nextPendingConnection();
+  while((i<catch_connections.size())&&(catch_connections[i]!=NULL)) {
     i++;
   }
-  if(i==RDCATCHD_MAX_CONNECTIONS) {      // Table full, drop it on the floor
-    LogLine(RDConfig::LogWarning,QString().sprintf(
-                "rdcatchd connection table full, dropping connection (%d/%d)", 
-                i, RDCATCHD_MAX_CONNECTIONS));
-    close(fd);
-    return;
+  if(i==catch_connections.size()) {      // Table full, create a new slot
+    catch_connections.push_back(new ServerConnection(i,sock));
   }
-  socket[i]=new RDSocket(i,this);
-  socket[i]->setSocket(fd);
-  connect(socket[i],SIGNAL(readyReadID(int)),this,SLOT(socketData(int)));
-  connect(socket[i],SIGNAL(connectionClosedID(int)),
-	  this,SLOT(socketKill(int)));
-  LogLine(RDConfig::LogDebug,"rdcatchd new connection open");
+  else {
+    catch_connections[i]=new ServerConnection(i,sock);
+  }
+  connect(sock,SIGNAL(readyRead()),catch_ready_mapper,SLOT(map()));
+  catch_ready_mapper->setMapping(sock,i);
+  connect(sock,SIGNAL(connectionClosed()),catch_kill_mapper,SLOT(map()));
+  catch_kill_mapper->setMapping(sock,i);
+  rda->log(RDConfig::LogDebug,QString().sprintf("created connection %d",i));
 }
 
 
@@ -528,7 +595,6 @@ void MainObject::startTimerData(int id)
 {
   int event=GetEvent(id);
   unsigned deck=catch_events[event].channel()-1;
-  //  bool waiting=false;
 
   catch_events[event].setStatus(RDDeck::Idle);
   for(unsigned i=0;i<catch_events.size();i++) {
@@ -836,15 +902,33 @@ void MainObject::engineData(int id)
 }
 
 
-void MainObject::socketData(int ch)
+void MainObject::socketReadyReadData(int ch)
 {
   ParseCommand(ch);
 }
 
 
-void MainObject::socketKill(int ch)
+void MainObject::socketKillData(int conn_id)
 {
-  KillSocket(ch);
+  if(catch_connections[conn_id]!=NULL) {
+    catch_connections[conn_id]->close();
+    catch_garbage_timer->start(1);
+  }
+}
+
+
+void MainObject::garbageData()
+{
+  for(int i=0;i<catch_connections.size();i++) {
+    if(catch_connections.at(i)!=NULL) {
+      if(catch_connections.at(i)->isClosing()) {
+	delete catch_connections.at(i);
+	catch_connections[i]=NULL;
+	rda->log(RDConfig::LogDebug,
+		 QString().sprintf("closed connection %d",i));
+      }
+    }
+  }
 }
 
 
@@ -1551,10 +1635,12 @@ void MainObject::SendFullStatus(int ch)
 
 void MainObject::SendMeterLevel(int deck,short levels[2])
 {
-  for(unsigned i=0;i<RDCATCHD_MAX_CONNECTIONS;i++) {
-    if(catch_meter_enabled[i]) {
-      EchoCommand(i,QString().sprintf("RM %d 0 %d!",deck,(int)levels[0]));
-      EchoCommand(i,QString().sprintf("RM %d 1 %d!",deck,(int)levels[1]));
+  for(int i=0;i<catch_connections.size();i++) {
+    if(catch_connections.at(i)!=NULL) {
+      if(catch_connections.at(i)->meterEnabled()) {
+	EchoCommand(i,QString().sprintf("RM %d 0 %d!",deck,(int)levels[0]));
+	EchoCommand(i,QString().sprintf("RM %d 1 %d!",deck,(int)levels[1]));
+      }
     }
   }
 }
@@ -1568,42 +1654,29 @@ void MainObject::SendDeckEvent(int deck,int number)
 
 void MainObject::ParseCommand(int ch)
 {
-  char buf[256];
-  static int c;
+  char data[1501];
+  int n;
 
-  while((c=socket[ch]->readBlock(buf,256))>0) {
-    buf[c]=0;
-    for(int i=0;i<c;i++) {
-      if(buf[i]==' ') {
-	if(argnum[ch]<RDCATCHD_MAX_ARGS) {
-	  args[ch][argnum[ch]][argptr[ch]]=0;
-	  argnum[ch]++;
-	  argptr[ch]=0;
-	}
-	else {
-	  if(debug) {
-	    printf("Argument list truncated!\n");
-	  }
-	}
-      }
-      if(buf[i]=='!') {
-	args[ch][argnum[ch]++][argptr[ch]]=0;
-	DispatchCommand(ch);
-	argnum[ch]=0;
-	argptr[ch]=0;
-	if(socket[ch]==NULL) {
-	  return;
-	}
-      }
-      if((isgraph(buf[i]))&&(buf[i]!='!')) {
-	if(argptr[ch]<RDCATCHD_MAX_LENGTH) {
-	  args[ch][argnum[ch]][argptr[ch]]=buf[i];
-	  argptr[ch]++;
-	}
-	else {
-	  if(debug) {
-	    LogLine(RDConfig::LogWarning,"parser arguments truncated");
-	  }
+  ServerConnection *conn=catch_connections.at(ch);
+  if(conn!=NULL) {
+    while((n=conn->socket()->read(data,1500))>0) {
+      data[n]=0;
+      QString line=QString::fromUtf8(data);
+      for(int i=0;i<line.length();i++) {
+	QChar c=line.at(i);
+	switch(c.toAscii()) {
+	case '!':
+	  DispatchCommand(conn);
+	  conn->accum="";
+	  break;
+
+	case '\r':
+	case '\n':
+	  break;
+
+	default:
+	  conn->accum+=c;
+	  break;
 	}
       }
     }
@@ -1611,40 +1684,35 @@ void MainObject::ParseCommand(int ch)
 }
 
 
-void MainObject::DispatchCommand(int ch)
+void MainObject::DispatchCommand(ServerConnection *conn)
 {
   int chan;
   int id;
   int event;
   int code;
   QString str;
+  bool ok=false;
 
-  /*
-  printf("RDCATCHD Received:");
-  for(int i=0;i<argnum[ch];i++) {
-    printf(" %s",args[ch][i]);
-  }
-  printf("\n");
-  */
+  QStringList cmds=conn->accum.split(" ");
 
   //
   // Common Commands
   // Authentication not required to execute these!
   //
-  if(!strcmp(args[ch][0],"DC")) {  // Drop Connection
-    socket[ch]->close();
-    KillSocket(ch);
+  if(cmds.at(0)=="DC") {  // Drop Connection
+    socketKillData(conn->id());
     return;
   }
-  if(!strcmp(args[ch][0],"PW")) {  // Password Authenticate
-    if(!strcmp(args[ch][1],rda->config()->password())) {
-      auth[ch]=true;
-      EchoCommand(ch,"PW +!");
+
+  if((cmds.at(0)=="PW")&&(cmds.size()==2)) {  // Password Authenticate
+    if(cmds.at(1)==rda->config()->password()) {
+      conn->setAuthenticated(true);
+      EchoCommand(conn->id(),"PW +!");
       return;
     }
     else {
-      auth[ch]=false;
-      EchoCommand(ch,"PW -!");
+      conn->setAuthenticated(false);
+      EchoCommand(conn->id(),"PW -!");
       return;
     }
   }
@@ -1653,144 +1721,143 @@ void MainObject::DispatchCommand(int ch)
   // Priviledged Commands
   // Authentication required to execute these!
   //
-  if(!auth[ch]) {
-    EchoArgs(ch,'-');
+  if(!conn->isAuthenticated()) {
+    EchoArgs(conn->id(),'-');
     return;
   }
 
-  if(!strcmp(args[ch][0],"RS")) {  // Reset
-    EchoArgs(ch,'+');
+  if(cmds.at(0)=="RS") {  // Reset
+    EchoArgs(conn->id(),'+');
     LoadEngine();
   }
 
-  if(!strcmp(args[ch][0],"RA")) {  // Add Event
-    if(AddEvent(QString(args[ch][1]).toInt())) {
-      EchoArgs(ch,'+');
-      BroadcastCommand(QString().sprintf("RU %s!",args[ch][1]),ch);
+  if((cmds.at(0)=="RA")&&(cmds.size()==2)) {  // Add Event
+    if(AddEvent(cmds.at(1).toInt())) {
+      EchoArgs(conn->id(),'+');
+      BroadcastCommand("RU "+cmds.at(1)+"!",conn->id());
     }
     else {
-      EchoArgs(ch,'-');
+      EchoArgs(conn->id(),'-');
     }
   }
 
-  if(!strcmp(args[ch][0],"RR")) {  // Remove Event
-    RemoveEvent(QString(args[ch][1]).toInt());
-    EchoArgs(ch,'+');
-    BroadcastCommand(QString().sprintf("RU %s!",args[ch][1]),ch);
+  if((cmds.at(0)=="RR")&&(cmds.size()==2)) {  // Remove Event
+    RemoveEvent(cmds.at(1).toInt());
+    EchoArgs(conn->id(),'+');
+    BroadcastCommand("RU "+cmds.at(1)+"!",conn->id());
   }
 
-  if(!strcmp(args[ch][0],"RU")) {  // Update Event
-    if(UpdateEvent(QString(args[ch][1]).toInt())) {
-      EchoArgs(ch,'+');
+  if((cmds.at(0)=="RU")&&(cmds.size()==2)) {  // Update Event
+    if(UpdateEvent(cmds.at(1).toInt())) {
+      EchoArgs(conn->id(),'+');
     }
     else {
-      EchoArgs(ch,'-');
+      EchoArgs(conn->id(),'-');
     }
   }
 
-  if(!strcmp(args[ch][0],"RD")) {  // Load Deck List
-    EchoArgs(ch,'+');
+  if(cmds.at(0)=="RD") {  // Load Deck List
+    EchoArgs(conn->id(),'+');
     LoadDeckList();
   }
 
-  if(!strcmp(args[ch][0],"RO")) {  // Reload Time Offset
-    EchoArgs(ch,'+');
+  if(cmds.at(0)=="RO") {  // Reload Time Offset
+    EchoArgs(conn->id(),'+');
     catch_engine->setTimeOffset(rda->station()->timeOffset());
   }
 
-  if(!strcmp(args[ch][0],"RE")) {  // Request Status
-    if(sscanf(args[ch][1],"%u",&chan)!=1) {
-      EchoArgs(ch,'-');
+  if((cmds.at(0)=="RE")&&(cmds.size()==2)) {  // Request Status
+    chan=cmds.at(1).toInt(&ok);
+    if(!ok) {
+      EchoArgs(conn->id(),'-');
       return;
     }
     if(chan==0) {
-      SendFullStatus(ch);
+      SendFullStatus(conn->id());
       return;
     }
     chan--;
     if(chan<MAX_DECKS) {
       if(catch_record_deck_status[chan]==RDDeck::Offline) {
-	EchoArgs(ch,'-');
+	EchoArgs(conn->id(),'-');
 	return;
       }
-      EchoCommand(ch,QString().sprintf("RE %u %d %d!",
-				       chan+1,catch_record_deck_status[chan],
-				       catch_record_id[chan]));
-      EchoCommand(ch,QString().sprintf("MN %u %d!",chan+1,
-				       catch_monitor_state[chan]));
+      EchoCommand(conn->id(),QString().sprintf("RE %u %d %d!",
+					       chan+1,
+					       catch_record_deck_status[chan],
+					       catch_record_id[chan]));
+      EchoCommand(conn->id(),QString().sprintf("MN %u %d!",chan+1,
+					       catch_monitor_state[chan]));
       return;
     }
     if((chan>=128)&&(chan<(MAX_DECKS+128))) {
       if(catch_playout_deck_status[chan-128]==RDDeck::Offline) {
-	EchoArgs(ch,'-');
+	EchoArgs(conn->id(),'-');
 	return;
       }
-      EchoCommand(ch,
+      EchoCommand(conn->id(),
 		  QString().sprintf("RE %u %d %d!",
 				    chan+1,catch_playout_deck_status[chan-128],
 				    catch_playout_id[chan-128]));
       return;
     }
-    EchoArgs(ch,'-');
+    EchoArgs(conn->id(),'-');
     return;
   }
 
-  if(!strcmp(args[ch][0],"RM")) {  // Enable/Disable Metering
-    if(!strcmp(args[ch][1],"0")) {  // Disable Metering
-      catch_meter_enabled[ch]=false;
-    }
-    if(!strcmp(args[ch][1],"1")) {  // Enable Metering
-      catch_meter_enabled[ch]=true;
-    }
+  if((cmds.at(0)=="RM")&&(cmds.size()==2)) {  // Enable/Disable Metering
+    conn->setMeterEnabled(cmds.at(1).trimmed()!="0");
   }
 
-  if(!strcmp(args[ch][0],"SR")) {  // Stop Recording
-    if(sscanf(args[ch][1],"%d",&chan)!=1) {
+  if((cmds.at(0)=="SR")&&(cmds.size()==2)) {  // Stop Recording
+    chan=cmds.at(1).toInt(&ok);
+    if(!ok) {
       return;
     }
     if((chan>0)&&(chan<(MAX_DECKS+1))) {
       switch(catch_record_deck_status[chan-1]) {
-	  case RDDeck::Recording:
-	    catch_record_aborting[chan-1]=true;
-	    rda->cae()->stopRecord(catch_record_card[chan-1],
-				  catch_record_stream[chan-1]);
-	    break;
+      case RDDeck::Recording:
+	catch_record_aborting[chan-1]=true;
+	rda->cae()->stopRecord(catch_record_card[chan-1],
+			       catch_record_stream[chan-1]);
+	break;
 
-	  case RDDeck::Waiting:
-	    startTimerData(catch_record_id[chan-1]);
-	    break;
+      case RDDeck::Waiting:
+	startTimerData(catch_record_id[chan-1]);
+	break;
 
-	  default:
-	    break;
+      default:
+	break;
       }
     }
     if((chan>128)&&(chan<(MAX_DECKS+129))) {
       switch(catch_playout_deck_status[chan-129]) {
-	  case RDDeck::Recording:
-	    rda->cae()->stopPlay(catch_playout_handle[chan-129]);
-	    break;
+      case RDDeck::Recording:
+	rda->cae()->stopPlay(catch_playout_handle[chan-129]);
+	break;
 
-	  default:
-	    break;
+      default:
+	break;
       }
     }
   }
 
-  if(!strcmp(args[ch][0],"RH")) {  // Reload Heartbeat Configuration
+  if(cmds.at(0)=="RH") {  // Reload Heartbeat Configuration
     LoadHeartbeat();
   }
 
-  if(!strcmp(args[ch][0],"RX")) {  // Restart Dropbox Instances
+  if(cmds.at(0)=="RX") {  // Restart Dropbox Instances
     StartDropboxes();
   }
 
-  if(!strcmp(args[ch][0],"MN")) {  // Monitor State
-    if(sscanf(args[ch][1],"%d",&chan)!=1) {
+  if((cmds.at(0)=="MN")&&(cmds.size()==3)) {  // Monitor State
+    chan=cmds.at(1).toInt(&ok);
+    if(!ok) {
       return;
     }
     if((chan>0)&&(chan<(MAX_DECKS+1))) {
       if(catch_monitor_port[chan-1]>=0) {
-	if(args[ch][2][0]=='1') {
+	if(cmds.at(2).toInt()!=0) {
 	  rda->cae()->setPassthroughVolume(catch_record_card[chan-1],
 					  catch_record_stream[chan-1],
 					  catch_monitor_port[chan-1],0);
@@ -1809,17 +1876,19 @@ void MainObject::DispatchCommand(int ch)
     }
   }
 
-  if(!strcmp(args[ch][0],"SC")) {  // Set Exit Code
-    if(sscanf(args[ch][1],"%d",&id)!=1) {
+  if((cmds.at(0)=="SC")&&(cmds.size()>=4)) {  // Set Exit Code
+    id=cmds.at(1).toInt(&ok);
+    if(!ok) {
       return;
     }
-    if(sscanf(args[ch][2],"%d",&code)!=1) {
+    code=cmds.at(2).toInt(&ok);
+    if(!ok) {
       return;
     }
     str="";
-    for(int i=3;i<argnum[ch];i++) {
-      str+=QString(args[ch][i])+" ";
-      str.stripWhiteSpace();
+    for(int i=3;i<cmds.size();i++) {
+      str+=cmds.at(i)+" ";
+      str=str.left(str.length()-1);
     }
     if((event=GetEvent(id))<0) {
       return;
@@ -1836,25 +1905,12 @@ void MainObject::DispatchCommand(int ch)
 }
 
 
-void MainObject::KillSocket(int ch)
-{
-  istate[ch]=0;
-  argnum[ch]=0;
-  argptr[ch]=0;
-  auth[ch]=false;
-  catch_meter_enabled[ch]=false;
-
-  delete socket[ch];
-  socket[ch]=NULL;
-  LogLine(RDConfig::LogDebug,"rdcatchd dropped connection");
-}
-
-
 void MainObject::EchoCommand(int ch,const char *command)
 {
 //  LogLine(RDConfig::LogDebug,QString().sprintf("rdcatchd: EchoCommand(%d,%s)",ch,command));
-  if(socket[ch]->state()==Q3Socket::Connection) {
-    socket[ch]->writeBlock(command,strlen(command));
+  ServerConnection *conn=catch_connections.at(ch);
+  if(conn->socket()->state()==QAbstractSocket::ConnectedState) {
+    conn->socket()->write(command,strlen(command));
   }
 }
 
@@ -1862,9 +1918,9 @@ void MainObject::EchoCommand(int ch,const char *command)
 void MainObject::BroadcastCommand(const char *command,int except_ch)
 {
 //  LogLine(RDConfig::LogDebug,QString().sprintf("rdcatchd: BroadcastCommand(%s)",command));
-  for(unsigned i=0;i<RDCATCHD_MAX_CONNECTIONS;i++) {
-    if(socket[i]!=NULL) {
-      if((int)i!=except_ch) {
+  for(int i=0;i<catch_connections.size();i++) {
+    if(catch_connections.at(i)!=NULL) {
+      if(i!=except_ch) {
 	EchoCommand(i,command);
       }
     }
@@ -1874,19 +1930,11 @@ void MainObject::BroadcastCommand(const char *command,int except_ch)
 
 void MainObject::EchoArgs(int ch,const char append)
 {
-  char command[RDCATCHD_MAX_LENGTH+2];
-  int l;
-
-  command[0]=0;
-  for(int i=0;i<argnum[ch];i++) {
-    strcat(command,args[ch][i]);
-    strcat(command," ");
+  ServerConnection *conn=catch_connections.at(ch);
+  if(conn!=NULL) {
+    QString cmd=conn->accum+append+"!";
+    EchoCommand(ch,cmd);
   }
-  l=strlen(command);
-  command[l]=append;
-  command[l+1]='!';
-  command[l+2]=0;
-  EchoCommand(ch,command);
 }
 
 
@@ -1935,7 +1983,6 @@ QString MainObject::LoadEventSql()
     "FORMAT,"                 // 19
     "CHANNELS,"+              // 20
     "SAMPRATE,"+              // 21
-
     "BITRATE,"+               // 22
     "MACRO_CART,"+            // 23
     "SWITCH_INPUT,"+          // 24

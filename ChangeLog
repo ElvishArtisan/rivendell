@@ -17327,3 +17327,7 @@
 	* Upgraded Qt3 to Qt4.
 2018-08-07 Fred Gleason <fredg@paravelsystems.com>
 	* Removed Qt3 support classes from ripcd(8).
+2018-08-08 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored rdcatchd(8) to remove arbitrary limits on number of
+	control connections.
+	* Removed Qt3 support classes from rdcatchd(8).
