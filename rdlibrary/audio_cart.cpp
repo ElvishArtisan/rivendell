@@ -36,7 +36,6 @@
 #include <rdapplication.h>
 #include <rdcut.h>
 #include <rdcddbrecord.h>
-//#include <rddb.h>
 #include <rdwavedata.h>
 #include <rd.h>
 #include <rdconf.h>
@@ -188,15 +187,15 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   //
   // Record Cut Button
   //
-  QPixmap *pix=new QPixmap(QSize(80,50));
+  QPixmap *pix=new QPixmap(QSize(70,40));
   QPainter *p=new QPainter(pix);
   QFontMetrics *m=new QFontMetrics(button_font);
-  p->fillRect(0,0,80,50,palette().color(QPalette::Active,QColorGroup::Button));
+  p->fillRect(0,0,70,40,palette().color(QPalette::Active,QColorGroup::Button));
   p->setPen(QColor(system_button_text_color));
   p->setFont(button_font);
-  p->drawText((80-m->width(tr("Cut Info")))/2,20,tr("Cut Info"));
-  p->drawLine(10,24,70,24);
-  p->drawText((80-m->width(tr("Record")))/2,38,tr("Record"));
+  p->drawText((70-m->width(tr("Cut Info")))/2,15,tr("Cut Info"));
+  p->drawLine(10,19,60,19);
+  p->drawText((70-m->width(tr("Record")))/2,33,tr("Record"));
   p->end();
   QPushButton *record_cut_button=new QPushButton(this);
   record_cut_button->setGeometry(550,0,80,50);
@@ -233,12 +232,12 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   //
   p=new QPainter(pix);
   m=new QFontMetrics(button_font);
-  p->fillRect(0,0,80,50,palette().color(QPalette::Active,QColorGroup::Button));
+  p->fillRect(0,0,70,40,palette().color(QPalette::Active,QColorGroup::Button));
   p->setPen(QColor(system_button_text_color));
   p->setFont(button_font);
-  p->drawText((80-m->width(tr("Import")))/2,20,tr("Import"));
-  p->drawLine(10,24,70,24);
-  p->drawText((80-m->width(tr("Export")))/2,38,tr("Export"));
+  p->drawText((70-m->width(tr("Import")))/2,15,tr("Import"));
+  p->drawLine(10,19,60,19);
+  p->drawText((70-m->width(tr("Export")))/2,33,tr("Export"));
   p->end();
   QPushButton *import_cut_button=new QPushButton(this);
   import_cut_button->setPixmap(*pix);

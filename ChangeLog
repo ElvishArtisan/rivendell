@@ -17336,3 +17336,6 @@
 	'QString::split()'.
 2018-08-08 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed up column alignment in the cart list in rdlibrary(1).
+2018-08-08 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in the 'Edit Cart' dialog in rdlibrary(1)
+	that caused button legends to be misaligned.
