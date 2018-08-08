@@ -17339,3 +17339,5 @@
 2018-08-08 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in the 'Edit Cart' dialog in rdlibrary(1)
 	that caused button legends to be misaligned.
+2018-08-08 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'RDAudioInfo' that caused segfaults.

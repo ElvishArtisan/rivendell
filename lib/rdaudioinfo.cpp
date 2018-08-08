@@ -255,7 +255,7 @@ int RDAudioInfo::ParseInt(const QString &tag,const QString &xml)
     if(list[i].contains(tag)) {
       QStringList list2=list[i].split("<");
       if(list2.size()>=2) {
-	list2=list2[i].split(">");
+	list2=list2[1].split(">");
 	if(list2.size()>=2) {
 	  return list2[1].toInt();
 	}
