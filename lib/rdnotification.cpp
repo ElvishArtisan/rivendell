@@ -85,7 +85,7 @@ bool RDNotification::read(const QString &str)
   notify_action=RDNotification::NoAction;
   notify_id=QVariant();
 
-  QStringList args=args.split(" ",str);
+  QStringList args=str.split(" ");
   if(args.size()==4) {
     if(args[0]!="NOTIFY") {
       return false;

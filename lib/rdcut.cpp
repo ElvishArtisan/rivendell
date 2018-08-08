@@ -1201,7 +1201,7 @@ bool RDCut::checkInRecording(const QString &station_name,
   //
   if(addr.setAddress(src_hostname)) {
     if(addr.isIPv4Address()) {
-      QStringList f0=f0.split(".",addr.toString());
+      QStringList f0=addr.toString().split(".");
       if(f0[0]=="127") {
 	src_hostname=station_name;
       }
@@ -1215,7 +1215,7 @@ bool RDCut::checkInRecording(const QString &station_name,
       }
     }
     if(addr.isIPv6Address()) {
-      QStringList f0=f0.split(":",addr.toString());
+      QStringList f0=addr.toString().split(":");
       if(f0.back()=="1") {
 	src_hostname=station_name;
       }

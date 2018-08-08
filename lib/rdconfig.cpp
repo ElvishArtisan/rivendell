@@ -524,7 +524,7 @@ void RDConfig::load()
   strcpy(sname,"windows");
 #else
   gethostname(sname,255);
-  QStringList list=list.split(".",sname);  // Strip domain name parts
+  QStringList list=QString(sname).split(".");  // Strip domain name parts
   strncpy(sname,list[0],256);
 #endif
   conf_station_name=

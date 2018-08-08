@@ -217,7 +217,7 @@ bool __RDRenderLogLine::GetCutFile(const QString &cutname,int start_pt,
 void __RDRenderLogLine::DeleteCutFile(const QString &dest_filename) const
 {
   unlink(dest_filename);
-  QStringList f0=f0.split("/",dest_filename);
+  QStringList f0=dest_filename.split("/");
   f0.erase(f0.fromLast());
   rmdir("/"+f0.join("/"));
 }
@@ -234,10 +234,6 @@ uint64_t __RDRenderLogLine::FramesFromMsec(uint64_t msec)
 RDRenderer::RDRenderer(QObject *parent)
   : QObject(parent)
 {
-  //  render_user=user;
-  //  render_station=station;
-  //  render_system=system;
-  //  render_config=config;
   render_total_passes=0;
 }
 
@@ -619,7 +615,7 @@ bool RDRenderer::ImportCart(const QString &srcfile,unsigned cartnum,int cutnum,
 void RDRenderer::DeleteTempFile(const QString &filename) const
 {
   unlink(filename);
-  QStringList f0=f0.split("/",filename);
+  QStringList f0=filename.split("/");
   f0.erase(f0.fromLast());
   rmdir("/"+f0.join("/"));
 }

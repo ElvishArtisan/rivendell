@@ -47,7 +47,7 @@ RDCmdSwitch::RDCmdSwitch(int argc,char *argv[],const char *modname,
     if(value=="-d") {
       debug=true;
     }
-    QStringList f0=f0.split("=",value,true);
+    QStringList f0=value.split("=");
     if(f0.size()>=2) {
       switch_keys.push_back(f0[0]);
       for(int i=2;i<f0.size();i++) {

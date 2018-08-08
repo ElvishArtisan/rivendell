@@ -85,7 +85,7 @@ MainObject::MainObject(QObject *parent)
     if(rda->cmdSwitch()->key(i)=="--carts") {
       bool ok=false;
       bool valid=false;
-      QStringList f0=f0.split(":",rda->cmdSwitch()->value(i));
+      QStringList f0=rda->cmdSwitch()->value(i).split(":");
       if(f0.size()==2) {
 	int start=f0[0].toUInt(&valid);
 	if(valid&&(start>0)&&(valid<=RD_MAX_CART_NUMBER)) {
@@ -430,11 +430,11 @@ void MainObject::ExportCut(RDCart *cart,RDCut *cut)
 
   if((export_err=conv->runExport(rda->user()->name(),rda->user()->password(),
 				 &conv_err))==RDAudioExport::ErrorOk) {
-    QStringList f0=f0.split("/",conv->destinationFile());
+    QStringList f0=conv->destinationFile().split("/");
     printf("%s\n",(const char *)f0[f0.size()-1]);
     if(export_xml) {
       FILE *f=NULL;
-      f0=f0.split(".",conv->destinationFile(),true);
+      f0=conv->destinationFile().split(".",QString::KeepEmptyParts);
       QString filename;
       for(int i=0;i<f0.size()-1;i++) {
 	filename+=f0[i]+".";

@@ -336,7 +336,7 @@ QString MainObject::ResolveItemWildcards(const QString &keyname,
 bool MainObject::ShouldCount(const QString &hdr)
 {
   bool ret=false;
-  QStringList lines=QStringList::split("\n",hdr);
+  QStringList lines=hdr.split("\n");
   int n;
   QString str;
 

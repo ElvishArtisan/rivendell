@@ -483,7 +483,7 @@ bool MainObject::DispatchCommand(RipcdConnection *conn)
   QHostAddress addr;
 
   //printf("DispatchCommand(%s)\n",(const char *)conn->accum.toUtf8());
-  QStringList cmds=cmds.split(" ",conn->accum);
+  QStringList cmds=conn->accum.split(" ",QString::SkipEmptyParts);
 
   //
   // Common Commands
@@ -672,7 +672,8 @@ void MainObject::ReadRmlSocket(QUdpSocket *sock,RDMacro::Role role,
     if(!macro.isNull()) {
       if(macro.command()==RDMacro::AG) {
 	if(ripc_onair_flag) {
-	  QStringList f0=f0.split(" ",QString::fromUtf8(buffer));
+	  QStringList f0=
+	    QString::fromUtf8(buffer).split(" ",QString::SkipEmptyParts);
 	  f0.pop_front();
 	  QString rmlstr=f0.join(" ");
 	  macro=RDMacro::fromString(rmlstr);

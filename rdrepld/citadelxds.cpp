@@ -153,7 +153,7 @@ bool CitadelXds::LoadIsciXreference(const QString &filename)
       }
       cartnum=fields[3].right(fields[3].length()-1).toUInt(&ok);
       if(ok&&(cartnum<=RD_MAX_CART_NUMBER)) {
-	datelist=datelist.split("/",fields[6]);
+	datelist=fields[6].split("/");
 	if(datelist.size()==3) {
 	  date.setYMD(datelist[2].toInt()+2000,datelist[0].toInt(),
 		      datelist[1].toInt());

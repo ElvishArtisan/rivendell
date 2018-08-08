@@ -82,7 +82,7 @@ void RDProfile::setSourceString(const QString &str)
   profile_section.resize(0);
   profile_section.push_back(RDProfileSection());
   profile_section.back().setName("");
-  lines=lines.split("\n",str);
+  lines=str.split("\n");
   for(int i=0;i<lines.size();i++) {
     QString line=lines[i];
     if((line.left(1)!=";")&&(line.left(1)!="#")) {

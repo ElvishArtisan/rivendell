@@ -1103,8 +1103,8 @@ bool RDProcessActive(const QStringList &cmds)
     if(ok) {
       if((f=fopen(QString("/proc/")+dirs[i]+"/cmdline","r"))!=NULL) {
 	if(fgets(line,1024,f)!=NULL) {
-	  QStringList f1=f1.split(" ",QString(line));
-	  QStringList f2=f2.split("/",f1[0]);
+	  QStringList f1=QString(line).split(" ",QString::SkipEmptyParts);
+	  QStringList f2=f1[0].split("/",QString::SkipEmptyParts);
 	  cmdline=f2[f2.size()-1];
 	  for(int j=0;j<cmds.size();j++) {
 	    if(cmdline==cmds[j]) {

@@ -208,7 +208,7 @@ MainObject::MainObject(QObject *parent)
       rda->cmdSwitch()->setProcessed(i,true);
     }
     if(rda->cmdSwitch()->key(i)=="--to-cart") {
-      QStringList f0=f0.split(":",rda->cmdSwitch()->value(i));
+      QStringList f0=rda->cmdSwitch()->value(i).split(":");
       if(f0.size()!=2) {
 	fprintf(stderr,"rdrender: invalid --to-cart argument\n");
 	exit(1);

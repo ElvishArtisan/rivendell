@@ -43,7 +43,7 @@ bool RDAudioStoreValid(RDConfig *config)
   if(config->audioStoreMountSource().isEmpty()) {  // Audio store is local
     ret=true;
     while(fgets(line,1024,f)!=NULL) {
-      QStringList fields=fields.split(" ",QString(line));
+      QStringList fields=QString(line).split(" ");
       if(fields.size()>=2) {
 	ret=ret&&(fields[1]!=RD_AUDIO_ROOT);
       }
@@ -52,7 +52,7 @@ bool RDAudioStoreValid(RDConfig *config)
   else {    // Audio store is remote
     ret=false;
     while(fgets(line,1024,f)!=NULL) {
-      QStringList fields=fields.split(" ",QString(line));
+      QStringList fields=QString(line).split(" ");
       if(fields.size()>=2) {
 	ret=ret||fields[0]==config->audioStoreMountSource();
       }

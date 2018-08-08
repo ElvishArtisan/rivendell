@@ -41,7 +41,7 @@ MainObject::MainObject(QObject *parent)
 		    MCAST_RECV_TEST_USAGE);
   for(unsigned i=0;i<cmd->keys();i++) {
     if(cmd->key(i)=="--from") {
-      QStringList f0=f0.split(":",cmd->value(i));
+      QStringList f0=cmd->value(i).split(":");
       if(f0.size()!=2) {
 	fprintf(stderr,"mcast_recv_test: invalid argument to \"--from\"\n");
 	exit(1);

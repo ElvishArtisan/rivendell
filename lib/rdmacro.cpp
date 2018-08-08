@@ -215,7 +215,7 @@ RDMacro RDMacro::fromString(const QString &str,RDMacro::Role role)
   //
   // Get Command
   //
-  QStringList f0=f0.split(" ",str2.left(str2.length()-1).stripWhiteSpace());  
+  QStringList f0=str2.left(str2.length()-1).trimmed().split(" ");
   if(f0[0].length()!=2) {
     ret.setCommand(RDMacro::NN);
     return ret;

@@ -7974,7 +7974,7 @@ void MainObject::TotalMacros89(unsigned cartnum) const
     QString().sprintf("NUMBER=%d",cartnum);
   RDSqlQuery *q=new RDSqlQuery(sql,false);
   if(q->first()) {
-    QStringList f0=f0.split("!",q->value(0).toString());
+    QStringList f0=q->value(0).toString().split("!");
     if(f0.size()==2) {
       if(f0[0]=="SP") {
 	len+=f0[1].toInt();

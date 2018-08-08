@@ -177,7 +177,7 @@ void BtU41MlrWeb::ProcessCommand(const QString &cmd)
 {
   //  syslog(LOG_NOTICE,"ProcessCommand(%s)\n",(const char *)cmd);
 
-  QStringList cmds=cmds.split(",",cmd);
+  QStringList cmds=cmd.split(",");
 
   if((cmds.size()==7)&&(cmds[0]=="S0P")) {
     for(int i=0;i<BTU41MLRWEB_GPI_QUAN;i++) {

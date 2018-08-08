@@ -1,8 +1,8 @@
 // wheatnet_slio.cpp
 //
-// A Rivendell switcher driver for Modbus TCP
+// A Rivendell switcher driver for WheatNet SLIO
 //
-//   (C) Copyright 2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -279,7 +279,7 @@ void WheatnetSlio::ProcessSys(const QString &cmd)
   RDSqlQuery *q;
   bool ok=false;
 
-  QStringList f0=f0.split(":",cmd);
+  QStringList f0=cmd.split(":");
   if((f0[0]=="SLIO")&&(f0.size()==2)) {
     int slio=f0[1].toUInt(&ok);
     if(ok) {
@@ -321,7 +321,7 @@ void WheatnetSlio::ProcessSys(const QString &cmd)
 void WheatnetSlio::ProcessSlioevent(int chan,QString &cmd)
 {
   //  printf("ProcessSlip(%d,%s)\n",chan,(const char *)cmd);
-  QStringList f0=f0.split(":",cmd);
+  QStringList f0=cmd.split(":");
   if((f0[0]=="LVL")&&(f0.size()==2)) {
     if(chan<=(int)slio_gpi_states.size()) {
       bool state=f0[1]=="1";
@@ -351,9 +351,9 @@ void WheatnetSlio::ProcessCommand(const QString &cmd)
   bool ok=false;
 
   if((cmd.left(1)=="<")&&(cmd.right(1)==">")) {
-    QStringList f0=f0.split("|",cmd.mid(1,cmd.length()-2));
+    QStringList f0=cmd.mid(1,cmd.length()-2).split("|");
     if(f0.size()==2) {
-      QStringList f1=f1.split(":",f0[0]);
+      QStringList f1=f0[0].split(":");
       if(f1[0]=="SYS") {
 	ProcessSys(f0[1]);
       }

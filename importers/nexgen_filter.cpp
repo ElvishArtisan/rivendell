@@ -622,11 +622,11 @@ QDateTime MainObject::GetDateTime(const QString &str) const
   QStringList times;
   QDateTime ret;
 
-  fields=fields.split(" ",str);
+  fields=str.split(" ");
   if(fields.size()==2) {
-    dates=dates.split("/",fields[0]);
+    dates=fields[0].split("/");
     if(dates.size()==3) {
-      times=times.split(":",fields[1]);
+      times=fields[1].split(":");
       if(times.size()==3) {
 	ret=
 	  QDateTime(QDate(dates[2].toInt(),dates[0].toInt(),dates[1].toInt()),
@@ -640,7 +640,7 @@ QDateTime MainObject::GetDateTime(const QString &str) const
 
 QString MainObject::SwapCase(const QString &str) const
 {
-  QStringList parts=parts.split(".",str);
+  QStringList parts=str.split(".");
   if(parts[parts.size()-1].contains(QRegExp("*[a-z]*",true,true))>0) {
     parts[parts.size()-1]=parts[parts.size()-1].upper();
   }

@@ -611,7 +611,7 @@ void EditRecording::activateStationData(int id,bool use_temp)
     return;
   }
   QString temp=edit_source_box->currentText();
-  QStringList f0=f0.split(":",edit_station_box->currentText());
+  QStringList f0=edit_station_box->currentText().split(":");
   if(edit_deck!=NULL) {
     delete edit_deck;
   }
@@ -1050,7 +1050,7 @@ bool EditRecording::CheckEvent(bool include_myself)
   //
   //  sscanf((const char *)edit_station_box->currentText(),"%s%s%d",
   //	 station,gunk,&chan);
-  QStringList f0=f0.split(":",edit_station_box->currentText());
+  QStringList f0=edit_station_box->currentText().split(":");
   switch((RDRecording::StartType)edit_starttype_group->selectedId()) {
       case RDRecording::GpiStart:
 	matrix=new RDMatrix(f0[0],edit_startmatrix_spin->value());
@@ -1184,8 +1184,8 @@ int EditRecording::GetSource()
 
 QString EditRecording::GetLocation(int *chan) const
 {
-  QStringList f0=f0.split(":",edit_station_box->currentText());
+  QStringList f0=edit_station_box->currentText().split(":");
   *chan=
-    f0[1].stripWhiteSpace().left(f0[1].stripWhiteSpace().length()-1).toInt();
-  return f0[0].stripWhiteSpace();
+    f0[1].trimmed().left(f0[1].trimmed().length()-1).toInt();
+  return f0[0].trimmed();
 }

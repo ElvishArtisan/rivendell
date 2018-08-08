@@ -229,7 +229,7 @@ bool RDAlsa::LoadAsoundConfig(const QString &filename)
 	  break;
 
 	case 1:
-	  list=list.split(" ",str);
+	  list=str.split(" ");
 	  if(list[0]=="}") {
 	    if((port>=0)&&(port<RD_MAX_CARDS)) {
 	      card_rivendell_cards[port]=card;

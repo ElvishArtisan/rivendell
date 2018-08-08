@@ -163,39 +163,39 @@ int RDListViewItem::compare(Q3ListViewItem *i,int col,bool ascending) const
 
   if((hard_column=list_parent->hardSortColumn())<0) {
     switch(list_parent->columnSortType(col)) {
-	case RDListView::TimeSort:
-	  prev_length=RDSetTimeLength(i->text(col));
-	  length=RDSetTimeLength(text(col));
-	  if(length<prev_length) {
-	    return -1;
-	  }
-	  if(length>prev_length) {
-	    return 1;
-	  }
-	  return 0;
+    case RDListView::TimeSort:
+      prev_length=RDSetTimeLength(i->text(col));
+      length=RDSetTimeLength(text(col));
+      if(length<prev_length) {
+	return -1;
+      }
+      if(length>prev_length) {
+	return 1;
+      }
+      return 0;
 
-	case RDListView::LineSort:
-	  if(line()<((RDListViewItem *)i)->line()) {
-	    return -1;
-	  }
-	  if(line()>((RDListViewItem *)i)->line()) {
-	    return 1;
-	  }
-	  return 0;
+    case RDListView::LineSort:
+      if(line()<((RDListViewItem *)i)->line()) {
+	return -1;
+      }
+      if(line()>((RDListViewItem *)i)->line()) {
+	return 1;
+      }
+      return 0;
 
-	case RDListView::GpioSort:
-	  fields=fields.split("-",text(col));
-	  prev_fields=fields.split("-",i->text(col));
-	  if(fields[0].toInt()>prev_fields[0].toInt()) {
-	    return 1;
-	  }
-	  if(fields[0].toInt()<prev_fields[0].toInt()) {
-	    return -1;
-	  }
-	  return 0;
-
-	case RDListView::NormalSort:
-	  return Q3ListViewItem::compare(i,col,ascending);
+    case RDListView::GpioSort:
+      fields=text(col).split("-");
+      prev_fields=i->text(col).split("-");
+      if(fields[0].toInt()>prev_fields[0].toInt()) {
+	return 1;
+      }
+      if(fields[0].toInt()<prev_fields[0].toInt()) {
+	return -1;
+      }
+      return 0;
+      
+    case RDListView::NormalSort:
+      return Q3ListViewItem::compare(i,col,ascending);
     }
   }
   if(ascending) {

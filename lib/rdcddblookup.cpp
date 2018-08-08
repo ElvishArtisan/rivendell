@@ -173,7 +173,7 @@ void RDCddbLookup::readyReadData()
     case 2:    // Query Response
       switch(code) {
       case 200:   // Exact Match
-	f0=f0.split(" ",line,true);
+	f0=line.split(" ");
 	if(f0.size()>=4) {
 	  lookup_record->setDiscId(f0[2].toInt(&ok,16));
 	  if(!ok) {

@@ -440,7 +440,7 @@ void MainObject::jackClientStartData()
     QString cmd=RDDateDecode(q->value(1).toString(),QDate::currentDate(),
 			     cae_station,rd_config,
 			     rd_config->provisioningServiceName(rd_config->stationName()));
-    QStringList fields=QStringList().split(" ",cmd);
+    QStringList fields=cmd.split(" ");
     jack_clients.push_back(new Q3Process(fields,this));
     if(jack_clients.back()->start()) {
       rd_config->log("caed",RDConfig::LogDebug,"started JACK Client \""+
@@ -486,7 +486,7 @@ void MainObject::jackInit(RDStation *station)
   // Start Jack Server
   //
   if(station->startJack()) {
-    QStringList fields=QStringList().split(" ",station->jackCommandLine());
+    QStringList fields=station->jackCommandLine().split(" ");
     Q3Process *proc=new Q3Process(fields,this);
     if(proc->start()) {
       rd_config->log("caed",RDConfig::LogDebug,"JACK server started");

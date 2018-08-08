@@ -255,9 +255,8 @@ void RDCart::setAlbum(const QString &album)
 
 int RDCart::year() const
 {
-  QString value;
-  value=RDGetSqlValue("CART","NUMBER",cart_number,"YEAR").toString();
-  QStringList f0=f0.split("-",value);
+  QStringList f0=
+    RDGetSqlValue("CART","NUMBER",cart_number,"YEAR").toString().split("-");
   return f0[0].toInt();
 }
 
@@ -1491,7 +1490,7 @@ QString RDCart::xml(RDSqlQuery *q,bool include_cuts,
       break;
 
     case RDCart::Macro:
-      mlist=mlist.split("!",q->value(27).toString());
+      mlist=q->value(27).toString().split("!");
       if(mlist.size()==0) {
 	xml+="  <macroList/>\n";
       }
@@ -1740,10 +1739,10 @@ unsigned RDCart::readXml(std::vector<RDWaveData> *data,const QString &xml)
   int istate=0;
   RDWaveData cartdata;
   RDSettings *settings=NULL;
-  QStringList f0=f0.split("\n",xml);
+  QStringList f0=xml.split("\n");
 
   for(int i=0;i<f0.size();i++) {
-    f0[i]=f0[i].stripWhiteSpace();
+    f0[i]=f0[i].trimmed();
   }
 
   for(int i=0;i<f0.size();i++) {

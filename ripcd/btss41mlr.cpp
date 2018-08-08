@@ -191,7 +191,7 @@ void BtSs41Mlr::gpoOneshotData(int value)
 
 void BtSs41Mlr::ProcessStatus(const QString &msg)
 {
-  QStringList f0=f0.split(",",msg);
+  QStringList f0=msg.split(",");
 
   if(f0.size()==10) {
     if((f0[0]==QString().sprintf("S%dP",BTSS41MLR_UNIT_ID))&&(f0[1]=="A")) {

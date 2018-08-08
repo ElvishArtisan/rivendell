@@ -309,7 +309,7 @@ void EditPlayout::activateStationData(int id,bool use_temp)
   if(edit_station_box->currentText().isEmpty()) {
     return;
   }
-  QStringList f0=f0.split(":",edit_station_box->currentText());
+  QStringList f0=edit_station_box->currentText().split(":");
   if(edit_deck!=NULL) {
     delete edit_deck;
   }
@@ -445,7 +445,7 @@ void EditPlayout::Save()
 
 QString EditPlayout::GetLocation(int *chan) const
 {
-  QStringList f0=f0.split(":",edit_station_box->currentText());
+  QStringList f0=edit_station_box->currentText().split(":");
   *chan=
     f0[1].stripWhiteSpace().left(f0[1].stripWhiteSpace().length()-1).toInt();
   return f0[0].stripWhiteSpace();

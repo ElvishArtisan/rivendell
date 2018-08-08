@@ -1,8 +1,8 @@
 // wheatnet_lio.cpp
 //
-// A Rivendell switcher driver for Modbus TCP
+// A Rivendell switcher driver for WheatNet LIO
 //
-//   (C) Copyright 2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -282,7 +282,7 @@ void WheatnetLio::ProcessSys(const QString &cmd)
   RDSqlQuery *q;
   bool ok=false;
 
-  QStringList f0=f0.split(":",cmd);
+  QStringList f0=cmd.split(":");
   if((f0[0]=="LIO")&&(f0.size()==2)) {
     int lio=f0[1].toUInt(&ok);
     if(ok) {
@@ -324,7 +324,7 @@ void WheatnetLio::ProcessSys(const QString &cmd)
 void WheatnetLio::ProcessLioevent(int chan,QString &cmd)
 {
   //  printf("ProcessLioevent(%d,%s)\n",chan,(const char *)cmd);
-  QStringList f0=f0.split(":",cmd);
+  QStringList f0=cmd.split(":");
   if((f0[0]=="LVL")&&(f0.size()==2)) {
     if(chan<(int)lio_gpi_states.size()) {
       bool state=f0[1]=="1";
@@ -353,14 +353,14 @@ void WheatnetLio::ProcessCommand(const QString &cmd)
   bool ok=false;
 
   if((cmd.left(1)=="<")&&(cmd.right(1)==">")) {
-    QStringList f0=f0.split("|",cmd.mid(1,cmd.length()-2));
+    QStringList f0=cmd.mid(1,cmd.length()-2).split("|");
     if(f0.size()==2) {
-      QStringList f1=f1.split(":",f0[0]);
+      QStringList f1=f0[0].split(":");
       if(f1[0]=="SYS") {
 	ProcessSys(f0[1]);
       }
       if((f1[0]=="LIOEVENT")&&(f1.size()==2)) {
-	QStringList f2=f2.split(".",f1[1]);
+	QStringList f2=f1[1].split(".");
 	if((f2[0]=="0")&&(f2.size()==2)) {
 	  int chan=f2[1].toUInt(&ok);
 	  if(ok) {

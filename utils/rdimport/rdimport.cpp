@@ -183,7 +183,7 @@ MainObject::MainObject(QObject *parent)
       rda->cmdSwitch()->setProcessed(i,true);
     }
     if(rda->cmdSwitch()->key(i)=="--set-datetimes") {
-      QStringList f0=QStringList().split(",",rda->cmdSwitch()->value(i));
+      QStringList f0=rda->cmdSwitch()->value(i).split(",");
       if(f0.size()!=2) {
 	fprintf(stderr,"rdimport: invalid argument to --set-datetimes\n");
 	exit(2);
@@ -236,7 +236,7 @@ MainObject::MainObject(QObject *parent)
       rda->cmdSwitch()->setProcessed(i,true);
     }
     if(rda->cmdSwitch()->key(i)=="--set-daypart-times") {
-      QStringList f0=QStringList().split(",",rda->cmdSwitch()->value(i));
+      QStringList f0=rda->cmdSwitch()->value(i).split(",");
       if(f0.size()!=2) {
 	fprintf(stderr,"rdimport: invalid argument to --set-daypart-times\n");
 	exit(2);
@@ -1985,7 +1985,7 @@ void MainObject::ReadXmlFile(const QString &basename,RDWaveData *wavedata) const
   //
   // Get XML Filename
   //
-  QStringList f0=f0.split(".",basename);
+  QStringList f0=basename.split(".");
   for(int i=0;i<f0.size()-1;i++) {
     xmlname+=f0[i]+".";
   }
