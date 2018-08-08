@@ -17334,3 +17334,5 @@
 2018-08-08 Fred Gleason <fredg@paravelsystems.com>
 	* Modified all instances of 'QStringList::split()' calls to use
 	'QString::split()'.
+2018-08-08 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed up column alignment in the cart list in rdlibrary(1).
