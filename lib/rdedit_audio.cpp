@@ -46,6 +46,7 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,int card,
 			 int port,int preroll,int trim_level,QWidget *parent)
   : QDialog(parent,"",true)
 {
+  setAttribute(Qt::WA_PaintOutsidePaintEvent);
   edit_card=card;
   edit_port=port;
   edit_stream=-1;
@@ -2575,12 +2576,13 @@ void RDEditAudio::DrawCursors(int xpos,int ypos,int xsize,int ysize,int chan)
 
 
   prev_x[chan][RDEditAudio::Play]=DrawCursor(xpos,ypos,xsize,ysize,chan,
-					   edit_cursors[RDEditAudio::Play],
-					   prev_x[chan][RDEditAudio::Play],
-					   QColor(EDITAUDIO_PLAY_COLOR),
-					     RDEditAudio::None,20,RDEditAudio::Play);
-					     //					   Qt::XorROP);
-  
+					     edit_cursors[RDEditAudio::Play],
+					     prev_x[chan][RDEditAudio::Play],
+					     QColor(EDITAUDIO_PLAY_COLOR),
+					     RDEditAudio::None,20,
+					     RDEditAudio::Play,
+  					     QPainter::RasterOp_SourceXorDestination);
+
   prev_x[chan][RDEditAudio::SegueStart]=DrawCursor(xpos,ypos,xsize,ysize,chan,
 					   edit_cursors[RDEditAudio::SegueStart],
 					   prev_x[chan][RDEditAudio::SegueStart],
@@ -2658,7 +2660,8 @@ void RDEditAudio::DrawCursors(int xpos,int ypos,int xsize,int ysize,int chan)
 //			  RDEditAudio::CuePoints pt,Qt::RasterOp op)
 int RDEditAudio::DrawCursor(int xpos,int ypos,int xsize,int ysize,int chan,
 			  int samp,int prev,QColor color,Arrow arrow,int apos,
-			  RDEditAudio::CuePoints pt)
+			    RDEditAudio::CuePoints pt,
+			    QPainter::CompositionMode op)
 {
   int x;
   Q3PointArray *point;
@@ -2670,7 +2673,7 @@ int RDEditAudio::DrawCursor(int xpos,int ypos,int xsize,int ysize,int chan,
   if((x!=prev)||(pt!=RDEditAudio::Play)) {
     QPainter *p=new QPainter(this);
     p->setClipRect(xpos,ypos,xsize,ysize);
-    //    p->setRasterOp(op);
+    p->setCompositionMode(op);
     p->translate(xpos,ypos);
     if((x>=0)&(x<EDITAUDIO_WAVEFORM_WIDTH)) {
       p->setPen(color);

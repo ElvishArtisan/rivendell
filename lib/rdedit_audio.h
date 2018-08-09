@@ -152,7 +152,8 @@ class RDEditAudio : public QDialog
   //		 RDEditAudio::CuePoints pt,Qt::RasterOp op=Qt::CopyROP);
   int DrawCursor(int xpos,int ypos,int xsize,int ysize,int chan,
 		 int samp,int prev,QColor color,Arrow arrow,int apos,
-		 RDEditAudio::CuePoints pt);
+		 RDEditAudio::CuePoints pt,
+		 QPainter::CompositionMode op=QPainter::CompositionMode_SourceOver);
   void EraseCursor(int xpos,int ypos,int xsize,int ysize,int chan,
 		   int samp,int prev,QColor color,Arrow arrow,int apos);
   void DrawWave(int xsize,int ysize,int chan,QString label,QPixmap *pix);

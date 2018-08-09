@@ -71,6 +71,8 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
 			   QWidget *parent)
   : QDialog(parent,"",true)
 {
+  setAttribute(Qt::WA_PaintOutsidePaintEvent);
+
   edit_log_name=logname;
   edit_import_path=import_path;
   edit_coding=RDCae::Pcm16;
@@ -1738,6 +1740,7 @@ void VoiceTracker::positionData(int id,int msecs)
   p->setPen(Qt::black);
   p->setBrush(Qt::black);
   ClearCursor(p);
+  //  p->setCompositionMode(QPainter::RasterOp_SourceXorDestination);
   int x=-1;
   if(msecs>=0) {
     if((msecs>edit_wave_origin[id])&&

@@ -109,16 +109,16 @@ void RDWavePainter::drawWaveBySamples(int x,int w,int startsamp,int endsamp,
   int center=pix->height()/2;
   RDWavePainter::Channel effective_channel=channel;
   switch(channel) {
-      case RDWavePainter::Left:
-      case RDWavePainter::Right:
-	if(wave_channels==1) {
-	  effective_channel=RDWavePainter::Mono;
-	}
-	break;
+  case RDWavePainter::Left:
+  case RDWavePainter::Right:
+    if(wave_channels==1) {
+      effective_channel=RDWavePainter::Mono;
+    }
+    break;
 
-      default:
-	effective_channel=channel;
-	break;
+  default:
+    effective_channel=channel;
+    break;
   }
   save();
   resetXForm();
@@ -128,83 +128,83 @@ void RDWavePainter::drawWaveBySamples(int x,int w,int startsamp,int endsamp,
   array.setPoint(0,0,center);
   array.setPoint(w+1,w+1,center);
   switch(effective_channel) {
-      case RDWavePainter::Left:
-	time_scale=(double)(endblock-startblock)/(double)w;
-	gain_scale=(double)(pix->height()/65536.0)*
-	  pow(10.0,(double)gain/2000.0);
-	for(int i=0;i<w;i++) {
-	  if(((dx=(2*((int)(time_scale*(double)i)+startblock)))<
-	     (int)wave_peaks->energySize())&&
-	     ((startclipblock<0)||(dx>(startclipblock*2)))&&
-	     ((endclipblock<0)||(dx<(endclipblock*2)))) {
-	    array.setPoint(i+1,i+1,
-			   center+(int)(gain_scale*(double)wave_peaks->energy(dx)));
-	  }
-	  else {
-	    array.setPoint(i+1,i+1,center);
-	  }
-	}
-	break;
+  case RDWavePainter::Left:
+    time_scale=(double)(endblock-startblock)/(double)w;
+    gain_scale=(double)(pix->height()/65536.0)*
+      pow(10.0,(double)gain/2000.0);
+    for(int i=0;i<w;i++) {
+      if(((dx=(2*((int)(time_scale*(double)i)+startblock)))<
+	  (int)wave_peaks->energySize())&&
+	 ((startclipblock<0)||(dx>(startclipblock*2)))&&
+	 ((endclipblock<0)||(dx<(endclipblock*2)))) {
+	array.setPoint(i+1,i+1,
+		       center+(int)(gain_scale*(double)wave_peaks->energy(dx)));
+      }
+      else {
+	array.setPoint(i+1,i+1,center);
+      }
+    }
+    break;
 
-      case RDWavePainter::Right:
-	time_scale=(double)(endblock-startblock)/(double)w;
-	gain_scale=(double)(pix->height()/65536.0)*
-	  pow(10.0,(double)gain/2000.0);
-	for(int i=0;i<w;i++) {
-	  if(((dx=(1+2*((int)(time_scale*(double)i)+startblock)))<
-	     (int)wave_peaks->energySize())&&
-	     ((startclipblock<0)||(dx>(startclipblock*2)))&&
-	     ((endclipblock<0)||(dx<(endclipblock*2)))) {
-	    array.setPoint(i+1,i+1,
-			   center+(int)(gain_scale*(double)wave_peaks->energy(dx)));
-	  }
-	  else {
-	    array.setPoint(i+1,i+1,center);
-	  }
-	}
-	break;
+  case RDWavePainter::Right:
+    time_scale=(double)(endblock-startblock)/(double)w;
+    gain_scale=(double)(pix->height()/65536.0)*
+      pow(10.0,(double)gain/2000.0);
+    for(int i=0;i<w;i++) {
+      if(((dx=(1+2*((int)(time_scale*(double)i)+startblock)))<
+	  (int)wave_peaks->energySize())&&
+	 ((startclipblock<0)||(dx>(startclipblock*2)))&&
+	 ((endclipblock<0)||(dx<(endclipblock*2)))) {
+	array.setPoint(i+1,i+1,
+		       center+(int)(gain_scale*(double)wave_peaks->energy(dx)));
+      }
+      else {
+	array.setPoint(i+1,i+1,center);
+      }
+    }
+    break;
 
-      case RDWavePainter::Mono:
-	switch(wave_channels) {
-	    case 1:
-	      time_scale=(double)(endblock-startblock)/(double)w;
-	      gain_scale=(double)(pix->height()/65536.0)*
-		pow(10.0,(double)gain/2000.0);
-	      for(int i=0;i<w;i++) {
-		if(((dx=((int)(time_scale*(double)i)+startblock))<
-		   (int)wave_peaks->energySize())&&
-		   ((startclipblock<0)||(dx>startclipblock))&&
-		   ((endclipblock<0)||(dx<endclipblock))) {
-		  array.setPoint(i+1,i+1,
-				 center+(int)(gain_scale*(double)wave_peaks->energy(dx)));
-		}
-		else {
-		  array.setPoint(i+1,i+1,center);
-		}
-	      }
-	      break;
-
-	    case 2:
-	      time_scale=(double)(endblock-startblock)/(double)w;
-	      gain_scale=(double)(pix->height()/65536.0)*
-		pow(10.0,(double)gain/2000.0);
-	      for(int i=0;i<w;i++) {
-		if(((dx=(2*((int)(time_scale*(double)i)+startblock)))<
-		   (int)wave_peaks->energySize())&&
-		   ((startclipblock<0)||(dx>(startclipblock*2)))&&
-		   ((endclipblock<0)||(dx<(endclipblock*2)))) {
-		  array.setPoint(i+1,i+1,
-				 center+(int)(gain_scale*
-					      ((double)wave_peaks->energy(dx)+
-					       (double)wave_peaks->energy(dx+1))/2.0));
-		}
-		else {
-		  array.setPoint(i+1,i+1,center);
-		}
-	      }
-	      break;
+  case RDWavePainter::Mono:
+    switch(wave_channels) {
+    case 1:
+      time_scale=(double)(endblock-startblock)/(double)w;
+      gain_scale=(double)(pix->height()/65536.0)*
+	pow(10.0,(double)gain/2000.0);
+      for(int i=0;i<w;i++) {
+	if(((dx=((int)(time_scale*(double)i)+startblock))<
+	    (int)wave_peaks->energySize())&&
+	   ((startclipblock<0)||(dx>startclipblock))&&
+	   ((endclipblock<0)||(dx<endclipblock))) {
+	  array.setPoint(i+1,i+1,
+			 center+(int)(gain_scale*(double)wave_peaks->energy(dx)));
 	}
-	break;
+	else {
+	  array.setPoint(i+1,i+1,center);
+	}
+      }
+      break;
+
+    case 2:
+      time_scale=(double)(endblock-startblock)/(double)w;
+      gain_scale=(double)(pix->height()/65536.0)*
+	pow(10.0,(double)gain/2000.0);
+      for(int i=0;i<w;i++) {
+	if(((dx=(2*((int)(time_scale*(double)i)+startblock)))<
+	    (int)wave_peaks->energySize())&&
+	   ((startclipblock<0)||(dx>(startclipblock*2)))&&
+	   ((endclipblock<0)||(dx<(endclipblock*2)))) {
+	  array.setPoint(i+1,i+1,
+			 center+(int)(gain_scale*
+				      ((double)wave_peaks->energy(dx)+
+				       (double)wave_peaks->energy(dx+1))/2.0));
+	}
+	else {
+	  array.setPoint(i+1,i+1,center);
+	}
+      }
+      break;
+    }
+    break;
   }
   drawPolygon(array);
   for(int i=0;i<(w+2);i++) {

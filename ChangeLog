@@ -17341,3 +17341,6 @@
 	that caused button legends to be misaligned.
 2018-08-08 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in 'RDAudioInfo' that caused segfaults.
+2018-08-08 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed regressions in rdlibrary(1) and rdlogedit(1) that broke
+	display of the audio playhead cursor.
