@@ -41,7 +41,6 @@
 
 #include <rdsocket.h>
 #include <rdconf.h>
-#include <rdcheck_daemons.h>
 #include <rddb.h>
 #include <rdescape_string.h>
 #include <rddebug.h>
@@ -108,15 +107,6 @@ MainObject::MainObject(QObject *parent,const char *name)
   rd_config->setModuleName("caed");
 
   //
-  // Make sure we're the only instance running
-  //
-  if(CheckDaemon(RD_CAED_PID)) {
-    rd_config->log("caed",RDConfig::LogErr,
-		   "ERROR caed aborting - multiple instances not allowed");
-    exit(1);
-  }
-
-  //
   // Initialize Data Structures
   //
   debug=false;
@@ -179,19 +169,9 @@ MainObject::MainObject(QObject *parent,const char *name)
   }
   connect(server,SIGNAL(connection(int)),this,SLOT(newConnection(int)));
 
-  if(!debug) {
-    RDDetach(rd_config->logCoreDumpDirectory());
-  }
-
   signal(SIGHUP,SigHandler);
   signal(SIGINT,SigHandler);
   signal(SIGTERM,SigHandler);
-
-  if(!RDWritePid(RD_PID_DIR,"caed.pid",rd_config->uid())) {
-    rd_config->log("caed",RDConfig::LogErr,"can't write pid file");
-    fprintf(stderr,"caed: can't write pid file\n");
-    exit(1);
-  }
 
   //
   // Allowcate Meter Socket
@@ -238,11 +218,7 @@ MainObject::MainObject(QObject *parent,const char *name)
   // Close Database Connection
   //
   cae_station->setScanned(true);
-  /*
-  delete cae_station;
-  cae_station=NULL;
-  db->removeDatabase(rd_config->mysqlDbname());
-  */
+
   //
   // Initialize Mixers
   //
@@ -455,7 +431,6 @@ void MainObject::updateMeters()
     jackFree();
     alsaFree();
     hpiFree();
-    RDDeletePid(RD_PID_DIR,"caed.pid");
     rd_config->log("caed",RDConfig::LogInfo,"cae exiting");
     exit(0);
   }

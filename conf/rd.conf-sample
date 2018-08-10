@@ -24,14 +24,16 @@ Hostname=localhost
 Loginname=rduser
 Password=letmein
 Database=Rivendell
-Driver=QMYSQL3      ; Stock Latin1-capable driver supplied by TrollTech
-;Driver=QNYSQLUTF8  ; UTF-8-capable driver packaged within Rivendell
+Driver=QMYSQL3
+
+; The interval between 'keep-alive' queries to the MySQL server (seconds)
+HeartbeatInterval=360
 
 ; The following three settings control the attributes of new DB tables
 ; created by Rivendell.
 Engine=MyISAM
-Charset=latin1
-Collation=latin1_swedish_ci
+Charset=utf8
+Collation=utf8_general_ci
 
 [AudioStore]
 MountSource=

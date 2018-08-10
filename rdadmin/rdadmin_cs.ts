@@ -5474,11 +5474,11 @@ Stále ještě chcete pokračovat?</translation>
     </message>
     <message>
         <source>Daemons Failed</source>
-        <translation>Chyba démona</translation>
+        <translation type="obsolete">Chyba démona</translation>
     </message>
     <message>
         <source>Unable to start Rivendell System Daemons!</source>
-        <translation>Nelze spustit démony systému Rivendell!</translation>
+        <translation type="obsolete">Nelze spustit démony systému Rivendell!</translation>
     </message>
     <message>
         <source>Insufficient Priviledges</source>

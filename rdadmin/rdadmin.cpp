@@ -40,7 +40,6 @@
 #include <dbversion.h>
 #include <rd.h>
 #include <rdapplication.h>
-#include <rdcheck_daemons.h>
 #include <rdconf.h>
 #include <rddb.h>
 #include <rddbheartbeat.h>
@@ -137,15 +136,6 @@ MainWidget::MainWidget(QWidget *parent)
     exit(1);
   }
   setCaption(QString("RDAdmin v")+VERSION+" - "+tr("Host")+": "+rda->config()->stationName());
-
-  //
-  // Check (and possibly start) daemons
-  //
-  if(!RDStartDaemons()) {
-    QMessageBox::warning(this,tr("Daemons Failed"),
-			 tr("Unable to start Rivendell System Daemons!"));
-    exit(1);
-  }
 
   rda->ripc()->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 

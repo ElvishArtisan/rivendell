@@ -36,7 +36,6 @@
 #include <dbversion.h>
 #include <rd.h>
 #include <rdapplication.h>
-#include <rdcheck_daemons.h>
 #include <rdcmd_switch.h>
 #include <rddb.h>
 #include <rddbheartbeat.h>
@@ -86,11 +85,6 @@ MainWidget::MainWidget(QWidget *parent)
   //
   login_rivendell_map=new QPixmap(rivendell_22x22_xpm);
   setIcon(*login_rivendell_map);
-
-  //
-  // Ensure that the system daemons are running
-  //
-  RDInitializeDaemons();
 
   rda=new RDApplication("RDLogin","rdlogin",RDLOGIN_USAGE,this);
   if(!rda->open(&err_msg)) {

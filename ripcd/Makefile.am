@@ -2,7 +2,7 @@
 ##
 ## Rivendell Interprocess Communication Daemon Makefile.am
 ##
-## (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -29,7 +29,7 @@ moc_%.cpp:	%.h
 	$(MOC) $< -o $@
 
 
-bin_PROGRAMS = ripcd
+sbin_PROGRAMS = ripcd
 
 dist_ripcd_SOURCES = acu1p.cpp acu1p.h\
                      am16.cpp am16.h\

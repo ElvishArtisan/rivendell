@@ -55,7 +55,6 @@
 #include <rdaudio_port.h>
 #include <rdcart_search_text.h>
 #include <rdmixer.h>
-#include <rdcheck_daemons.h>
 #include <rdcart_dialog.h>
 #include <rdmacro.h>
 #include <rdcmd_switch.h>
@@ -136,11 +135,6 @@ MainWidget::MainWidget(QWidget *parent)
   // Get the Startup Date/Time
   //
   air_startup_datetime=QDateTime(QDate::currentDate(),QTime::currentTime());
-
-  //
-  // Ensure that system daemons are running
-  //
-  RDInitializeDaemons();
 
   //
   // Open the Database

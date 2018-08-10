@@ -25,7 +25,9 @@
 #include <fcntl.h>
 #include <string.h>
 
+#include <qdir.h>
 #include <qhostaddress.h>
+#include <qtextstream.h>
 #include <qvariant.h>
 #include <qmessagebox.h>
 #include <qdir.h>
@@ -1184,3 +1186,32 @@ QByteArray RDStringToData(const QString &str)
   return ret;
 }
 */
+
+
+QList<pid_t> RDGetPids(const QString &program)
+{
+  QList<pid_t> pids;
+  bool ok=false;
+
+  QDir procdir("/proc");
+  QStringList files=
+    procdir.entryList(QDir::Dirs|QDir::NoDotAndDotDot,QDir::Name);
+
+  for(int i=0;i<files.size();i++) {
+    pid_t pid=files.at(i).toInt(&ok);
+    if(ok) {
+      QFile file(QString("/proc/")+files.at(i)+"/cmdline");
+      if(file.open(QIODevice::ReadOnly)) {
+	QTextStream strm(&file);
+	strm.setCodec("UTF-8");
+	QStringList f0=strm.readLine().split(" ");
+	QStringList f1=f0.at(0).split("/");
+	if(f1.back().left(f1.back().length()-1)==program.trimmed()) {
+	  pids.push_back(pid);
+	}
+      }
+    }
+  }
+
+  return pids;
+}

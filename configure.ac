@@ -536,30 +536,31 @@ AC_CONFIG_FILES([rivendell.spec \
     xdg/rivendell-opsguide-pdf.desktop \
     debian/Makefile \
     debian/patches/Makefile \
-    xdg/Makefile \
-    rdadmin/Makefile \
-    scripts/Makefile \
-    ripcd/Makefile \
-    rdlogin/Makefile \
-    rdlibrary/Makefile \
-    rdcatch/Makefile \
-    rdcatchd/Makefile \
-    rdlogedit/Makefile \
-    rdlogmanager/Makefile \
-    rdairplay/Makefile \
-    rdpanel/Makefile \
-    rdcartslots/Makefile \
-    rdcastmanager/Makefile \
-    rdselect/Makefile \
-    rdmonitor/Makefile \
-    rdrepld/Makefile \
-    rdvairplayd/Makefile \
-    tests/Makefile \
     importers/Makefile \
     ios/Makefile \
     ios/rmlsend/Makefile \
     ios/rmlsend/Classes/Makefile \
     ios/rmlsend/RMLSend.xcodeproj/Makefile \
+    rdadmin/Makefile \
+    ripcd/Makefile \
+    rdairplay/Makefile \
+    rdcartslots/Makefile \
+    rdcastmanager/Makefile \
+    rdcatch/Makefile \
+    rdcatchd/Makefile \
+    rdlibrary/Makefile \
+    rdlogin/Makefile \
+    rdlogedit/Makefile \
+    rdlogmanager/Makefile \
+    rdmonitor/Makefile \
+    rdpanel/Makefile \
+    rdrepld/Makefile \
+    rdselect/Makefile \
+    rdservice/Makefile \
+    rdvairplayd/Makefile \
+    scripts/Makefile \
+    tests/Makefile \
+    xdg/Makefile \
     ])
 AC_OUTPUT()
 chmod 755 make_slack

@@ -17344,3 +17344,13 @@
 2018-08-08 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed regressions in rdlibrary(1) and rdlogedit(1) that broke
 	display of the audio playhead cursor.
+2018-08-10 Fred Gleason <fredg@paravelsystems.com>
+	* Changed installation location of caed(8), ripcd(8), rdcatchd(8)
+	and rdrepld(8) from '@prefix@/bin' to '@prefix@/sbin'.
+	* Removed code to detach from controlling terminal after startup
+	from caed(8), ripcd(8), rdcatchd(8)
+	and rdrepld(8).
+	* Removed code to manage dropbox instances from rdcatchd(8).
+	* Removed code to start service daemons automatically from
+	user modules.
+	* Added rdservice(8).

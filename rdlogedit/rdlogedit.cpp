@@ -46,7 +46,6 @@
 #include <rd.h>
 #include <rdadd_log.h>
 #include <rdapplication.h>
-#include <rdcheck_daemons.h>
 #include <rdcmd_switch.h>
 #include <rdconf.h>
 #include <rddb.h>
@@ -113,13 +112,6 @@ MainWidget::MainWidget(QWidget *parent)
   //
   setMinimumWidth(sizeHint().width());
   setMinimumHeight(sizeHint().height());
-
-  //
-  // Ensure that the system daemons are running
-  //
-#ifndef WIN32
-  RDInitializeDaemons();
-#endif  // WIN32
 
   //
   // Open the Database

@@ -43,7 +43,6 @@
 
 #include <dbversion.h>
 #include <rd.h>
-#include <rdcheck_daemons.h>
 #include <rdcmd_switch.h>
 #include <rdaudioinfo.h>
 #include <rdstation.h>

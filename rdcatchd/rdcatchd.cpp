@@ -42,7 +42,6 @@
 #include <qsessionmanager.h>
 
 #include <rdapplication.h>
-#include <rdcheck_daemons.h>
 #include <rdconf.h>
 #include <rdcut.h>
 #include <rddatedecode.h>
@@ -99,7 +98,6 @@ void SigHandler(int signum)
   switch(signum) {
       case SIGINT:
       case SIGTERM:
-	RDDeletePid(RD_PID_DIR,"rdcatchd.pid");
 	LogLine(RDConfig::LogNotice,"rdcatchd exiting");
 	exit(0);
 	break;
@@ -216,14 +214,6 @@ MainObject::MainObject(QObject *parent)
 	      (const char *)rda->cmdSwitch()->key(i));
       exit(2);
     }
-  }
-
-  //
-  // Make sure we're the only instance running
-  //
-  if(RDCheckDaemon(RD_RDCATCHD_PID)) {
-    printf("rdcatchd: aborting - multiple instances not allowed");
-    exit(1);
   }
 
   //
@@ -380,17 +370,6 @@ MainObject::MainObject(QObject *parent)
   delete q;
 
   //
-  // Start Subprocesses
-  //
-  if(fork()==0) {
-    execl(QString(RD_PREFIX)+"/sbin/rdvairplayd","rdvairplayd",(char *)NULL);
-    rda->log(RDConfig::LogWarning,QString("failed to start rdvairplayd(1) [")+
-	     QString(strerror(errno))+"]");
-    exit(1);
-  }
-  StartDropboxes();
-
-  //
   // Playout Event Players
   //
   for(unsigned i=0;i<MAX_DECKS;i++) {
@@ -407,20 +386,13 @@ MainObject::MainObject(QObject *parent)
   connect(catch_engine,SIGNAL(timeout(int)),this,SLOT(engineData(int)));
   LoadEngine();
 
-  if(qApp->argc()==1) {
-    RDDetach(rda->config()->logCoreDumpDirectory());
-  }
-  else {
+  if(qApp->argc()!=1) {
     debug=true;
   }
 
   ::signal(SIGINT,SigHandler);
   ::signal(SIGTERM,SigHandler);
   ::signal(SIGCHLD,SigHandler);
-  if(!RDWritePid(RD_PID_DIR,"rdcatchd.pid")) {
-    printf("rdcatchd: aborting - can't write pid file\n");
-    exit(1);
-  }
 
   //
   // Start Heartbeat Timer
@@ -1846,8 +1818,11 @@ void MainObject::DispatchCommand(ServerConnection *conn)
     LoadHeartbeat();
   }
 
-  if(cmds.at(0)=="RX") {  // Restart Dropbox Instances
-    StartDropboxes();
+  if(cmds.at(0)=="RX") {  // Signal rdservice(8) to Restart Dropbox Instances
+    pid_t pid=RDGetPid(QString(RD_PID_DIR)+"/rdservice.pid");
+    if(pid>0) {
+      kill(pid,SIGUSR1);
+    }
   }
 
   if((cmds.at(0)=="MN")&&(cmds.size()==3)) {  // Monitor State

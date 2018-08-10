@@ -1,8 +1,8 @@
-## automake.am
+## Makefile.am
 ##
-## rdcatchd/ Makefile.am for Rivendell
+## Rivendell Services Manager
 ##
-## (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -20,35 +20,29 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -I$(top_srcdir)/lib @QT4_CFLAGS@ -I/usr/include/Qt3Support
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -I$(top_srcdir)/lib @QT4_CFLAGS@ -I/usr/include/Qt3Support
 LIBS = -L$(top_srcdir)/lib
 MOC = @QT_MOC@
 
-# QT's Meta Object Compiler (moc)
+# The dependency for qt's Meta Object Compiler (moc)
 moc_%.cpp:	%.h
 	$(MOC) $< -o $@
 
-sbin_PROGRAMS = rdcatchd
 
-dist_rdcatchd_SOURCES = batch.cpp\
-                        catch_event.cpp catch_event.h\
-                        event_player.cpp event_player.h\
-                        local_macros.cpp\
-                        rdcatchd.cpp rdcatchd.h
+sbin_PROGRAMS = rdservice
 
-nodist_rdcatchd_SOURCES = moc_event_player.cpp\
-                          moc_rdcatchd.cpp
+dist_rdservice_SOURCES = process.cpp process.h\
+                         rdservice.cpp rdservice.h\
+                         shutdown.cpp\
+                         startup.cpp
 
-rdcatchd_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
+nodist_rdservice_SOURCES = moc_process.cpp\
+                           moc_rdservice.cpp
+
+rdservice_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
 
 CLEANFILES = *~\
              moc_*
 
-DISTCLEANFILES = moc_*
-
 MAINTAINERCLEANFILES = *~\
-                       *.tar.gz\
-                       aclocal.m4\
-                       configure\
-                       Makefile.in\
-                       moc_*
+                       Makefile.in

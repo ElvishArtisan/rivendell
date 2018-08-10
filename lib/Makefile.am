@@ -93,7 +93,6 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdcddbrecord.cpp rdcddbrecord.h\
                         rdcdplayer.cpp rdcdplayer.h\
                         rdcdripper.cpp rdcdripper.h\
-                        rdcheck_daemons.cpp rdcheck_daemons.h\
                         rdcheck_version.cpp rdcheck_version.h\
                         rdclock.cpp rdclock.h\
                         rdcmd_cache.cpp rdcmd_cache.h\

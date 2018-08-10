@@ -32,6 +32,7 @@ noinst_PROGRAMS = audio_convert_test\
                   audio_peaks_test\
                   datedecode_test\
                   db_charset_test\
+                  getpids_test\
                   log_unlink_test\
                   mcast_recv_test\
                   rdxml_parse_test\
@@ -60,6 +61,9 @@ datedecode_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
 
 dist_db_charset_test_SOURCES = db_charset_test.cpp db_charset_test.h
 db_charset_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
+
+dist_getpids_test_SOURCES = getpids_test.cpp getpids_test.h
+getpids_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
 
 dist_log_unlink_test_SOURCES = log_unlink_test.cpp log_unlink_test.h
 nodist_log_unlink_test_SOURCES = moc_log_unlink_test.cpp

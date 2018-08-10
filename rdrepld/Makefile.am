@@ -26,7 +26,7 @@ MOC = @QT_MOC@
 moc_%.cpp:	%.h
 	$(MOC) $< -o $@
 
-bin_PROGRAMS = rdrepld
+sbin_PROGRAMS = rdrepld
 dist_rdrepld_SOURCES = rdrepld.cpp rdrepld.h \
                        replconfig.cpp replconfig.h\
                        replfactory.cpp replfactory.h\

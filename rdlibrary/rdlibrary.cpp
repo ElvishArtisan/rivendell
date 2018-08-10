@@ -49,7 +49,6 @@
 #include <rdapplication.h>
 #include <rdaudio_port.h>
 #include <rdcart_search_text.h>
-#include <rdcheck_daemons.h>
 #include <rdconf.h>
 #include <rdescape_string.h>
 #include <rdmixer.h>
@@ -141,11 +140,6 @@ MainWidget::MainWidget(QWidget *parent)
   lib_progress_dialog->setLabel(label);
   lib_progress_dialog->setCancelButton(NULL);
   lib_progress_dialog->setMinimumDuration(2000);
-
-  //
-  // Ensure that the system daemons are running
-  //
-  RDInitializeDaemons();
 
   //
   // Open the Database

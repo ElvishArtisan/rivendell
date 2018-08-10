@@ -1,8 +1,8 @@
-// rdrepld.h
+// rdservice.h
 //
-// The Rivendell Replicator Daemon
+// Rivendell Services Manager
 //
-//   (C) Copyright 2010,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,41 +18,43 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef RDREPLD_H
-#define RDREPLD_H
+#ifndef RDSERVICE_H
+#define RDSERVICE_H
 
-#include <vector>
-
+#include <qmap.h>
 #include <qobject.h>
+#include <qprocess.h>
 #include <qtimer.h>
 
-#include <rdconfig.h>
+#include "process.h"
 
-#include "replfactory.h"
-
-#define RDREPLD_USAGE "[-d]\n\nOptions:\n\n-d\n     Set 'debug' mode, causing rdrepld(8) to stay in the foreground\n     and print debugging info on standard output.\n\n" 
-#define RD_RDREPLD_PID "rdrepl.pid"
-#define RD_RDREPL_SCAN_INTERVAL 10000
+#define RDSERVICE_CAED_ID 0
+#define RDSERVICE_RIPCD_ID 1
+#define RDSERVICE_RDCATCHD_ID 2
+#define RDSERVICE_RDVAIRPLAYD_ID 3
+#define RDSERVICE_RDREPLD_ID 4
+#define RDSERVICE_LAST_ID 5
+#define RDSERVICE_FIRST_DROPBOX_ID 100
 
 class MainObject : public QObject
 {
-  Q_OBJECT
+  Q_OBJECT;
  public:
   MainObject(QObject *parent=0);
 
  private slots:
-  void mainLoop();
-  void log(RDConfig::LogPriority prio,const QString &line);
+  void processFinishedData(int id);
+  void exitData();
 
  private:
-  void ProcessCarts();
-  void LoadReplicators();
-  void FreeReplicators();
-  QTimer *repl_loop_timer;
-  QString repl_temp_dir;
-  std::vector<ReplFactory *> repl_replicators;
-  bool debug;
+  bool Startup(QString *err_msg);
+  bool StartDropboxes(QString *err_msg);
+  void KillProgram(const QString &program);
+  void Shutdown();
+  void ShutdownDropboxes();
+  QMap<int,Process *> svc_processes;
+  QTimer *svc_exit_timer;
 };
 
 
-#endif  // RDREPLD_H
+#endif  // RDSERVICE_H

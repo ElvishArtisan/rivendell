@@ -42,7 +42,6 @@
 
 #include <rdapplication.h>
 #include <rdaudioconvert.h>
-#include <rdcheck_daemons.h>
 #include <rdconf.h>
 #include <rdcut.h>
 #include <rddb.h>

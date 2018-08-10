@@ -4633,14 +4633,6 @@ Carts</source>
 <context>
     <name>MainWidget</name>
     <message>
-        <source>Daemons Failed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to start Rivendell System Daemons!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Insufficient Priviledges</source>
         <translation type="unfinished"></translation>
     </message>

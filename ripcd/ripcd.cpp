@@ -40,7 +40,6 @@
 
 #include <rdapplication.h>
 #include <rdconf.h>
-#include <rdcheck_daemons.h>
 #include <rdescape_string.h>
 #include <rdnotification.h>
 
@@ -80,15 +79,6 @@ MainObject::MainObject(QObject *parent)
   rda=new RDApplication("ripcd","ripcd",RIPCD_USAGE,this);
   if(!rda->open(&err_msg)) {
     fprintf(stderr,"ripcd: %s\n",(const char *)err_msg.utf8());
-    exit(1);
-  }
-
-  //
-  // Make sure we're the only instance running
-  //
-  if(RDCheckDaemon(RD_RIPCD_PID)) {
-    LogLine(RDConfig::LogErr,
-	    "ERROR ripcd aborting - multiple instances not allowed");
     exit(1);
   }
 
@@ -139,19 +129,12 @@ MainObject::MainObject(QObject *parent)
   //
   rda->cae()->connectHost();
 
-  if(qApp->argc()==1) {
-    RDDetach(rda->config()->logCoreDumpDirectory());
-  }
-  else {
+  if(qApp->argc()!=1) {
     debug=true;
   }
   ::signal(SIGCHLD,SigHandler);
   ::signal(SIGTERM,SigHandler);
   ::signal(SIGINT,SigHandler);
-  if(!RDWritePid(RD_PID_DIR,"ripcd.pid",rda->config()->uid())) {
-    fprintf(stderr,"ripcd: can't write pid file\n");
-    exit(1);
-  }
 
   //
   // The RML Sockets
@@ -447,7 +430,6 @@ void MainObject::exitTimerData()
       }
     }
     LogLine(RDConfig::LogInfo,"ripcd exiting normally");
-    RDDeletePid(RD_PID_DIR,"ripcd.pid");
     exit(0);
   }
 }

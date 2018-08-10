@@ -66,14 +66,6 @@ MainObject::MainObject(QObject *parent)
   debug=false;
 
   //
-  // Make sure we're the only instance running
-  //
-  if(RDCheckDaemon(RD_RDREPLD_PID)) {
-    printf("rdrepld: aborting - multiple instances not allowed");
-    exit(1);
-  }
-
-  //
   // Open the Database
   //
   rda=new RDApplication("rdrepld","rdrepld",RDREPLD_USAGE,this);
@@ -106,13 +98,7 @@ MainObject::MainObject(QObject *parent)
   //	  SIGNAL(logText(RDConfig::LogPriority,const QString &)),
   //	  this,SLOT(log(RDConfig::LogPriority,const QString &)));
 
-  //
-  // Detach
-  //
-  if(qApp->argc()==1) {
-    RDDetach(rda->config()->logCoreDumpDirectory());
-  }
-  else {
+  if(qApp->argc()!=1) {
     debug=true;
   }
 

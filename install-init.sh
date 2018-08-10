@@ -33,10 +33,4 @@ if test ! -f ./building-debian ; then
   fi
 fi
 
-if test -z $2 ; then
-  chmod 4755 $1/bin/caed
-  chmod 4755 $1/bin/ripcd
-  chmod 4755 $1/bin/rdcatchd
-fi
-
 # End of install-init.sh

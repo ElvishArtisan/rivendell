@@ -5341,11 +5341,11 @@ Wollen Sie immernoch fortfahren?</translation>
     </message>
     <message>
         <source>Daemons Failed</source>
-        <translation>Daemonfehler</translation>
+        <translation type="obsolete">Daemonfehler</translation>
     </message>
     <message>
         <source>Unable to start Rivendell System Daemons!</source>
-        <translation>Kann Rivendell-System-Daemons nicht starten!</translation>
+        <translation type="obsolete">Kann Rivendell-System-Daemons nicht starten!</translation>
     </message>
     <message>
         <source>Insufficient Priviledges</source>

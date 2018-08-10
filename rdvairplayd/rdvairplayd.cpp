@@ -27,7 +27,6 @@
 #include <qapplication.h>
 
 #include <rdapplication.h>
-#include <rdcheck_daemons.h>
 #include <rdconf.h>
 #include <rddatedecode.h>
 #include <rddbheartbeat.h>
@@ -54,11 +53,6 @@ MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
   QString err_msg;
-
-  //
-  // Ensure that system daemons are running
-  //
-  RDInitializeDaemons();
 
   //
   // Startup DateTime

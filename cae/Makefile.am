@@ -27,7 +27,7 @@ MOC = @QT_MOC@
 moc_%.cpp:	%.h
 	$(MOC) $< -o $@
 
-bin_PROGRAMS = caed
+sbin_PROGRAMS = caed
 
 dist_caed_SOURCES = cae.cpp cae.h\
                     cae_alsa.cpp\

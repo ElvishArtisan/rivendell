@@ -24,16 +24,18 @@
 #define MAX_RETRIES 10
 #include <stdlib.h>
 #include <stdio.h>
+#include <sys/types.h>
 
-#include <qstring.h>
+#include <qcolor.h>
 #include <qdatetime.h>
 #include <qfont.h>
 #include <qhostaddress.h>
+#include <qlist.h>
+#include <qstring.h>
+#include <qstringlist.h>
 #include <qsqldatabase.h>
 #include <qvariant.h>
-#include <qdatetime.h>
-#include <qcolor.h>
-#include <qstringlist.h>
+
 #include <q3cstring.h>
 
 /* Function Prototypes */
@@ -111,5 +113,6 @@ bool RDProcessActive(const QString &cmd);
 bool RDProcessActive(const QStringList &cmds);
 bool RDModulesActive();
 //QByteArray RDStringToData(const QString &str);
+QList<pid_t> RDGetPids(const QString &program);
 
 #endif   // RDCONF_H

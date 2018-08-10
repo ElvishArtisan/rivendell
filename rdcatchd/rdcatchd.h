@@ -193,7 +193,6 @@ class MainObject : public QObject
   bool SendErrorMessage(CatchEvent *event,const QString &err_desc,QString rml);
   void ResolveErrorWildcards(CatchEvent *event,const QString &err_desc,
 			     QString *rml);
-  void StartDropboxes();
   void RunLocalMacros(RDMacro *rml);
   unsigned GetNextDynamicId();
   void RunRmlRecordingCache(int chan);

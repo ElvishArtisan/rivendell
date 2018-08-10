@@ -45,7 +45,6 @@
 #include <rdapplication.h>
 #include <rdaudio_port.h>
 #include <rdcatch.h>
-#include <rdcheck_daemons.h>
 #include <rdconf.h>
 #include <rdcut.h>
 #include <rdcut_path.h>
@@ -122,11 +121,6 @@ MainWidget::MainWidget(QWidget *parent)
   catch_audition_stream=-1;
 
   catch_scroll=false;
-
-  //
-  // Ensure the system daemons are running
-  //
-  RDInitializeDaemons();
 
   //
   // Open the Database

@@ -37,7 +37,6 @@
 #include <dbversion.h>
 #include <rd.h>
 #include <rdapplication.h>
-#include <rdcheck_daemons.h>
 #include <rdcmd_switch.h>
 #include <rddbheartbeat.h>
 
@@ -98,11 +97,6 @@ MainWidget::MainWidget(QWidget *parent)
   //
   lib_rivendell_map=new QPixmap(rdpanel_22x22_xpm);
   setIcon(*lib_rivendell_map);
-
-  //
-  // Ensure that system daemons are running
-  //
-  RDInitializeDaemons();
 
   //
   // Open the Database

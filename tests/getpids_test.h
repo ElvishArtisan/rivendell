@@ -1,8 +1,8 @@
-// rdcheck_daemons.h
+// getpids_test.h
 //
-// Get the status of the Rivendell system daemons.
+// Test the Rivendell RDGetPids() function.
 //
-//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,17 +18,18 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef RDCHECK_DAEMONS_H
-#define RDCHECK_DAEMONS_H
+#ifndef GETPIDS_TEST_H
+#define GETPIDS_TEST_H
 
-#include <qstring.h>
+#include <qobject.h>
 
-void RDInitializeDaemons();
-bool RDCheckDaemon(QString name);
-bool RDCheckDaemons();
-bool RDStartDaemons();
-bool RDKillDaemons();
+#define GETPIDS_TEST_USAGE "[options]\n\nTest the Rivendell RDGetPids() function\n\nOptions are:\n--program=<pathname>\n     Full path to the program to look for\n\n"
+
+class MainObject : public QObject
+{
+ public:
+  MainObject(QObject *parent=0);
+};
 
 
-#endif  // RDCHECK_DAEMONS_H
-
+#endif  // GETPIDS_TEST_H
