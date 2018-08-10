@@ -17356,3 +17356,6 @@
 	* Added rdservice(8).
 2018-08-10 Fred Gleason <fredg@paravelsystems.com>
 	* Modified the boot system to use SystemD.
+2018-08-10 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'audio_convert_test' that caused a segfault
+	on startup.
