@@ -56,6 +56,7 @@ SUBDIRS = icons\
           rdservice\
           rdvairplayd\
           ripcd\
+          systemd\
           tests\
           utils\
           web
@@ -125,7 +126,6 @@ EXTRA_DIST = autogen.sh\
              rivendell.ism\
              rivendell.pro\
              rivendell.spec.in\
-             rivendell-suse.in\
              rivendell.sys\
              slack-desc.in\
              slack_doinst.sh\
@@ -161,5 +161,4 @@ MAINTAINERCLEANFILES = *~\
                        ltmain.sh\
                        missing\
                        mkinstalldirs\
-                       rivendell.spec\
-                       rivendell-suse
+                       rivendell.spec

@@ -17354,3 +17354,5 @@
 	* Removed code to start service daemons automatically from
 	user modules.
 	* Added rdservice(8).
+2018-08-10 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the boot system to use SystemD.

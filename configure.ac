@@ -409,19 +409,6 @@ else
 fi
 
 #
-# Distro-Specific Stuff
-#
-if test -f /etc/gentoo-release ; then
-  rm -f rivendell
-  ln -s rivendell-gentoo rivendell
-  AC_MSG_NOTICE([Configured to install Gentoo-specific init script])
-else
-  rm -f rivendell
-  ln -s rivendell-suse rivendell
-  AC_MSG_NOTICE([Configured to install generic init script])
-fi
-
-#
 # Configure RPM Build
 #
 AC_MSG_CHECKING([for $WIN32_SETUPS/rivendell-$VERSION-$RPM_RELEASE.exe])
@@ -483,7 +470,6 @@ AC_CONFIG_FILES([rivendell.spec \
     Makefile \
     make_slack \
     slack-desc \
-    rivendell-suse \
     rdrepld-suse \
     conf/rd-bin.conf \
     icons/Makefile \
@@ -559,12 +545,13 @@ AC_CONFIG_FILES([rivendell.spec \
     rdservice/Makefile \
     rdvairplayd/Makefile \
     scripts/Makefile \
+    systemd/Makefile \
+    systemd/rivendell.service \
     tests/Makefile \
     xdg/Makefile \
     ])
 AC_OUTPUT()
 chmod 755 make_slack
-chmod 755 rivendell-suse
 chmod 755 rdrepld-suse
 
 #

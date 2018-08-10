@@ -85,6 +85,7 @@ rivendell
 rivendell-suse
 rivendell.spec
 slack-desc
+systemd/rivendell.service
 tests/audio_convert_test
 tests/audio_export_test
 tests/audio_import_test
