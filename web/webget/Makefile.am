@@ -48,6 +48,7 @@ webget_cgi_LDADD = @LIB_RDLIBS@ -lsndfile @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
 EXTRA_DIST = webget.html\
              webget.js
 
-CLEANFILES = *~
+CLEANFILES = *~\
+             moc_*
 MAINTAINERCLEANFILES = *~\
                        Makefile.in

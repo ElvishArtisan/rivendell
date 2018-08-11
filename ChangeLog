@@ -17359,3 +17359,6 @@
 2018-08-10 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in 'audio_convert_test' that caused a segfault
 	on startup.
+2018-08-11 Fred Gleason <fredg@paravelsystems.com>
+	* Added a rule to remove stale moc(1) files in
+	'web/webget/Makefile.am'.
