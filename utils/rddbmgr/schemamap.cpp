@@ -54,8 +54,12 @@ VersionString::VersionString(const char *str)
 {
   QStringList f0=f0.split(".",str);
   ver_major=f0[0].toInt();
-  ver_minor=f0[1].toInt();
-  ver_point=f0[2].toInt();
+  if(f0.size()>=2) {
+    ver_minor=f0[1].toInt();
+    if(f0.size()>=3) {
+      ver_point=f0[2].toInt();
+    }
+  }
 }
 
 

@@ -17362,3 +17362,6 @@
 2018-08-11 Fred Gleason <fredg@paravelsystems.com>
 	* Added a rule to remove stale moc(1) files in
 	'web/webget/Makefile.am'.
+2018-08-11 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rddbmgr(8) that could cause segfaults when
+	determining the current schema verion.
