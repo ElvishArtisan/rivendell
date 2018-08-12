@@ -66,18 +66,10 @@ ACLOCAL_AMFLAGS = -I m4
 maintainer-clean-local:	
 	rm -rf m4
 
-install-exec-local:	
-	./install-init.sh $(DESTDIR)$(prefix) $(DESTDIR)
-
 install-debian:	
 	touch ./building-debian
 	make install
 	rm -f ./building-debian
-
-uninstall-exec:
-	rm -f $(DESTDIR)/etc/init.d/rdrepld
-	rm -f $(DESTDIR)/etc/init.d/rivendell
-	rm -f $(DESTDIR)/etc/sysconfig/rivendell
 
 rpm:	dist
 	mkdir -p $(HOME)/rpmbuild/SOURCES
@@ -118,7 +110,6 @@ EXTRA_DIST = autogen.sh\
              CODINGSTYLE\
              get_distro.pl\
              get_target.sh\
-             install-init.sh\
              make_slack.in\
              PACKAGE_VERSION\
              rdrepld-suse.in\
@@ -126,7 +117,6 @@ EXTRA_DIST = autogen.sh\
              rivendell.ism\
              rivendell.pro\
              rivendell.spec.in\
-             rivendell.sys\
              slack-desc.in\
              slack_doinst.sh\
              UPGRADING

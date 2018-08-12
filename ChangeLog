@@ -17367,3 +17367,6 @@
 	determining the current schema verion.
 2018-08-11 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed regressions in 'RDFormPost' that broke audio importation.
+2018-08-11 Fred Gleason <fredg@paravelsystems.com>
+	* Removed SysV-style init scripts.
+	* Removed sysconfig support.
