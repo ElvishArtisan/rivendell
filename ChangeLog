@@ -17370,3 +17370,5 @@
 2018-08-11 Fred Gleason <fredg@paravelsystems.com>
 	* Removed SysV-style init scripts.
 	* Removed sysconfig support.
+2018-08-11 Fred Gleason <fredg@paravelsystems.com>
+	* Added a debug block for saving raw post data to 'RDFormPost'.

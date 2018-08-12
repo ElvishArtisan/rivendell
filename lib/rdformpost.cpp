@@ -510,6 +510,24 @@ void RDFormPost::LoadMultipartEncoding(char first)
     return;
   }
 
+  /*
+   * Uncomment to save raw post to disc
+   *
+  FILE *f;
+  if((f=fopen("/var/snd/post.dat","w"))!=NULL) {
+    char data[1025];
+    int n;
+
+    while((n=fread(data,1,1024,post_stream))>0) {
+      fwrite(data,1,n,f);
+    }
+    fclose(f);
+    printf("Content-type: text/html\n\n");
+    printf("Raw post written to \"/var/snd/post.dat\"\n");
+    exit(0);
+  }
+  */
+
   //
   // Get Separator Line
   //
