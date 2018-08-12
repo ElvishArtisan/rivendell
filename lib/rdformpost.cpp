@@ -24,14 +24,11 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
-#include <syslog.h>
 
 #include <rdconf.h>
 #include <rdweb.h>
 
 #include <rdformpost.h>
-//Added by qt3to4:
-#include <Q3TextStream>
 
 RDFormPost::RDFormPost(RDFormPost::Encoding encoding,unsigned maxsize,
 		       bool auto_delete)
@@ -506,25 +503,17 @@ void RDFormPost::LoadUrlEncoding(char first)
 void RDFormPost::LoadMultipartEncoding(char first)
 {
   //
-  // Create Stream Readers
+  // Create Stream Reader
   //
   if((post_stream=fdopen(0,"r"))==NULL) {
     post_error=RDFormPost::ErrorInternal;
     return;
   }
-  QFile *file=new QFile();
-  if(!file->open(QIODevice::ReadOnly,post_stream)) {
-    delete file;
-    post_error=RDFormPost::ErrorInternal;
-    return;
-  }
-  post_text_reader=new Q3TextStream(file);
-  post_text_reader->setEncoding(Q3TextStream::UnicodeUTF8);
 
   //
   // Get Separator Line
   //
-  post_separator=first+post_text_reader->readLine();
+  post_separator=first+QString::fromUtf8(GetLine()).trimmed();
 
   //
   // Read Mime Parts
@@ -539,10 +528,6 @@ void RDFormPost::LoadMultipartEncoding(char first)
     post_values[name]=value;
     post_filenames[name]=is_file;
   } while(again);
-
-  delete post_text_reader;
-  delete file;
-
   post_error=RDFormPost::ErrorOk;
 }
 
@@ -560,7 +545,8 @@ bool RDFormPost::GetMimePart(QString *name,QString *value,bool *is_file)
   // Headers
   //
   do {
-    line=post_text_reader->readLine();
+    //    line=post_text_reader->readLine();
+    line=QString::fromUtf8(GetLine());
     QStringList f0=line.split(":");
     if(f0.size()==2) {
       if(f0[0].lower()=="content-disposition") {
@@ -580,30 +566,28 @@ bool RDFormPost::GetMimePart(QString *name,QString *value,bool *is_file)
 	}
       }
     }
-  } while(!line.stripWhiteSpace().isEmpty());
+  } while(!line.trimmed().isEmpty());
 
   //
   // Value
   //
   if(*is_file) {
-    char *data=NULL;
-    size_t n=0;
-
-    n=getline(&data,&n,post_stream);
-    line=QString(data).stripWhiteSpace();
+    QByteArray data;
+    data=GetLine();
+    line=QString::fromUtf8(data).trimmed();
     while(!line.contains(post_separator)) {
-      write(fd,data,n);
-      n=getline(&data,&n,post_stream);
-      line=QString(data).stripWhiteSpace();
+      write(fd,data,data.length());
+      data=GetLine();
+      line=QString::fromUtf8(data).trimmed();
     }
-    free(data);
   }
   else {
-    line=post_text_reader->readLine();
-    while(!line.contains(post_separator)) {
+    line=QString::fromUtf8(GetLine());
+    while((!line.isEmpty())&&(!line.contains(post_separator))) {
       *value+=line;
-      line=post_text_reader->readLine();
+      line=QString::fromUtf8(GetLine());
     }
+    *value=value->trimmed();
   }
 
   if(fd>=0) {
@@ -611,5 +595,17 @@ bool RDFormPost::GetMimePart(QString *name,QString *value,bool *is_file)
     close(fd);
   }
 
-  return line.right(2)!="--";
+  return line.trimmed().right(2)!="--";
+}
+
+
+QByteArray RDFormPost::GetLine() const
+{
+  char *data=NULL;
+  size_t n=0;
+
+  n=getline(&data,&n,post_stream);
+  QByteArray ret(data,n);
+  free(data);
+  return ret;
 }

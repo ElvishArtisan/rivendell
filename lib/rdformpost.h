@@ -2,7 +2,7 @@
 //
 // Handle POST data from an HTML form.
 //
-//   (C) Copyright 2009,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2009-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,7 +26,6 @@
 #include <qdatastream.h>
 #include <qstring.h>
 #include <qstringlist.h>
-#include <q3textstream.h>
 #include <qvariant.h>
 #include <qhostaddress.h>
 
@@ -67,6 +66,7 @@ class RDFormPost
   void LoadUrlEncoding(char first);
   void LoadMultipartEncoding(char first);
   bool GetMimePart(QString *name,QString *value,bool *is_file);
+  QByteArray GetLine() const;
   QHostAddress post_client_address;
   RDFormPost::Encoding post_encoding;
   RDFormPost::Error post_error;
@@ -77,10 +77,8 @@ class RDFormPost
   unsigned post_content_length;
   QString post_content_type;
   char *post_data;
-
   QString post_separator;
   FILE *post_stream;
-  Q3TextStream *post_text_reader;
 };
 
 

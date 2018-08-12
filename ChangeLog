@@ -17365,3 +17365,5 @@
 2018-08-11 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rddbmgr(8) that could cause segfaults when
 	determining the current schema verion.
+2018-08-11 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed regressions in 'RDFormPost' that broke audio importation.
