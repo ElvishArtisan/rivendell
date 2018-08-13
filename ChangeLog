@@ -17384,3 +17384,5 @@
 2018-08-13 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression that caused 'stop' transport buttons to have
 	the incorrect shadow color.
+2018-08-13 Fred Gleason <fredg@paravelsystems.com>
+	* Updated table documentation.

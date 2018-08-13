@@ -14,8 +14,6 @@ IPV4_ADDRESS	     char(15)
 HTTP_STATION	     char(64)           From STATIONS.NAME
 CAE_STATION          char(64)           From STATIONS.NAME
 TIME_OFFSET          int(11)
-BACKUP_DIR           char(255)
-BACKUP_LIFE          int(11)
 BROADCAST_SECURITY   int(10) unsigned   0=HostSec, 1=UserSec
 HEARTBEAT_CART       int(10) unsigned
 HEARTBEAT_INTERVAL   int(10) unsigned
