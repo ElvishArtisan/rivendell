@@ -74,7 +74,6 @@ class MainObject : public QObject
   void gpoStateData(int matrix,unsigned line,bool state);
   void ttyTrapData(int cartnum);
   void ttyScanData();
-  void databaseBackup();
   void macroTimerData(int num);
   void readyReadData(int conn_id);
   void killData(int conn_id);
@@ -125,7 +124,6 @@ class MainObject : public QObject
   RDTTYDevice *ripcd_tty_dev[MAX_TTYS];
   RDTty::Termination ripcd_tty_term[MAX_TTYS];
   RDCodeTrap *ripcd_tty_trap[MAX_TTYS];
-  QTimer *ripcd_backup_timer;
   bool ripc_onair_flag;
   QTimer *ripc_macro_timer[RD_MAX_MACRO_TIMERS];
   unsigned ripc_macro_cart[RD_MAX_MACRO_TIMERS];

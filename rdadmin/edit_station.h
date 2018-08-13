@@ -69,7 +69,6 @@ class EditStation : public QDialog
    void editTtyData();
    void editSwitcherData();
    void editHostvarsData();
-   void editBackupsData();
    void editDropboxesData();
    void jackSettingsData();
    void startCartClickedData();
@@ -147,11 +146,9 @@ class EditStation : public QDialog
    QPushButton *station_ttys_button;
    QPushButton *station_adapters_button;
    QPushButton *station_jack_button;
-   QPushButton *station_backups_button;
    QPushButton *station_ok_button;
    QPushButton *station_cancel_button;
 };
 
 
-#endif
-
+#endif  // EDIT_STATION_H

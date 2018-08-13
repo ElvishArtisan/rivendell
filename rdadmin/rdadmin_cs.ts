@@ -782,35 +782,35 @@ a záloha původní databáze uložena v </translation>
     <name>EditBackup</name>
     <message>
         <source>Backup config for </source>
-        <translation>Záloha nastavení pro</translation>
+        <translation type="obsolete">Záloha nastavení pro</translation>
     </message>
     <message>
         <source>Keep Backups For:</source>
-        <translation>Uchovat zálohy po:</translation>
+        <translation type="obsolete">Uchovat zálohy po:</translation>
     </message>
     <message>
         <source>days</source>
-        <translation>dnů</translation>
+        <translation type="obsolete">dnů</translation>
     </message>
     <message>
         <source>Backup Directory:</source>
-        <translation>Adresář pro zálohy:</translation>
+        <translation type="obsolete">Adresář pro zálohy:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>Path Missing</source>
-        <translation>Cesta chybí</translation>
+        <translation type="obsolete">Cesta chybí</translation>
     </message>
     <message>
         <source>You must supply a backup path!</source>
-        <translation>Musíte zadat cestu pro zálohu!</translation>
+        <translation type="obsolete">Musíte zadat cestu pro zálohu!</translation>
     </message>
 </context>
 <context>
@@ -3679,7 +3679,7 @@ serveru</translation>
     </message>
     <message>
         <source>Backups</source>
-        <translation>Zálohy</translation>
+        <translation type="obsolete">Zálohy</translation>
     </message>
     <message>
         <source>&amp;OK</source>

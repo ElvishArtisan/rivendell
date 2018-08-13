@@ -39,6 +39,25 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
 
 
   //
+  // Revert 296
+  //
+  if((cur_schema==296)&&(set_schema<cur_schema)) {
+    sql=QString("alter table STATIONS add column ")+
+      "BACKUP_DIR char(255) after TIME_OFFSET";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table STATIONS add column ")+
+      "BACKUP_LIFE int default 0 after BACKUP_DIR";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 295
   //
   if((cur_schema==295)&&(set_schema<cur_schema)) {

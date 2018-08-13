@@ -205,30 +205,6 @@ void RDStation::setTimeOffset(int msecs)
 }
 
 
-QString RDStation::backupPath() const
-{
-  return RDGetSqlValue("STATIONS","NAME",station_name,"BACKUP_DIR").toString();
-}
-
-
-void RDStation::setBackupPath(QString path) const
-{
-  SetRow("BACKUP_DIR",path);
-}
-
-
-int RDStation::backupLife() const
-{
-  return RDGetSqlValue("STATIONS","NAME",station_name,"BACKUP_LIFE").toInt();
-}
-
-
-void RDStation::setBackupLife(int days) const
-{
-  SetRow("BACKUP_LIFE",days);
-}
-
-
 unsigned RDStation::heartbeatCart() const
 {
   return RDGetSqlValue("STATIONS","NAME",station_name,"HEARTBEAT_CART").

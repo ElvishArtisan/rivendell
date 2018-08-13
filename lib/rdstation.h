@@ -56,10 +56,6 @@ class RDStation
   QString webServiceUrl(RDConfig *config) const;
   int timeOffset();
   void setTimeOffset(int msecs);
-  QString backupPath() const;
-  void setBackupPath(QString path) const;
-  int backupLife() const;
-  void setBackupLife(int days) const;
   unsigned heartbeatCart() const;
   void setHeartbeatCart(unsigned cartnum) const;
   unsigned heartbeatInterval() const;

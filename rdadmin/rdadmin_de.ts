@@ -708,35 +708,35 @@ worden. Aktuelle Version</translation>
     <name>EditBackup</name>
     <message>
         <source>Backup config for </source>
-        <translation>Konfigurationsbackup für</translation>
+        <translation type="obsolete">Konfigurationsbackup für</translation>
     </message>
     <message>
         <source>Keep Backups For:</source>
-        <translation>Backups behalten für:</translation>
+        <translation type="obsolete">Backups behalten für:</translation>
     </message>
     <message>
         <source>days</source>
-        <translation>Tage</translation>
+        <translation type="obsolete">Tage</translation>
     </message>
     <message>
         <source>Backup Directory:</source>
-        <translation>Backup-Verzeichnis:</translation>
+        <translation type="obsolete">Backup-Verzeichnis:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Abbre&amp;chen</translation>
+        <translation type="obsolete">Abbre&amp;chen</translation>
     </message>
     <message>
         <source>Path Missing</source>
-        <translation>Pfad fehlt</translation>
+        <translation type="obsolete">Pfad fehlt</translation>
     </message>
     <message>
         <source>You must supply a backup path!</source>
-        <translation>Sie müssen einen Backup-Pfad angeben!</translation>
+        <translation type="obsolete">Sie müssen einen Backup-Pfad angeben!</translation>
     </message>
 </context>
 <context>
@@ -3578,7 +3578,7 @@ Variablen</translation>
     </message>
     <message>
         <source>Backups</source>
-        <translation>Backups</translation>
+        <translation type="obsolete">Backups</translation>
     </message>
     <message>
         <source>&amp;OK</source>

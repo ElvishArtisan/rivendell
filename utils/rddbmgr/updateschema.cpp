@@ -7875,6 +7875,19 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<296)&&(set_schema>cur_schema)) {
+    sql=QString("alter table STATIONS drop column BACKUP_DIR");
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table STATIONS drop column BACKUP_LIFE");
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
 
 
   //

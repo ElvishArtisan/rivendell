@@ -679,35 +679,35 @@ atualizada para a Versão</translation>
     <name>EditBackup</name>
     <message>
         <source>Backup config for </source>
-        <translation>Configuração de cópia de Segurança para</translation>
+        <translation type="obsolete">Configuração de cópia de Segurança para</translation>
     </message>
     <message>
         <source>Keep Backups For:</source>
-        <translation>Guardar Backups por:</translation>
+        <translation type="obsolete">Guardar Backups por:</translation>
     </message>
     <message>
         <source>days</source>
-        <translation>dias</translation>
+        <translation type="obsolete">dias</translation>
     </message>
     <message>
         <source>Backup Directory:</source>
-        <translation>Diretório do Backup:</translation>
+        <translation type="obsolete">Diretório do Backup:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>Path Missing</source>
-        <translation>Está faltando o caminho</translation>
+        <translation type="obsolete">Está faltando o caminho</translation>
     </message>
     <message>
         <source>You must supply a backup path!</source>
-        <translation>Você deve inserir um caminho para a cópia de segurança!</translation>
+        <translation type="obsolete">Você deve inserir um caminho para a cópia de segurança!</translation>
     </message>
 </context>
 <context>
@@ -3580,7 +3580,7 @@ Encoders</source>
     </message>
     <message>
         <source>Backups</source>
-        <translation>Cópias de
+        <translation type="obsolete">Cópias de
 Segurança</translation>
     </message>
     <message>

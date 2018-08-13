@@ -229,7 +229,6 @@ RDMacro RDMacro::fromString(const QString &str,RDMacro::Role role)
   case RDMacro::CE:
   case RDMacro::CL:
   case RDMacro::CP:
-  case RDMacro::DB:
   case RDMacro::DL:
   case RDMacro::DP:
   case RDMacro::DS:

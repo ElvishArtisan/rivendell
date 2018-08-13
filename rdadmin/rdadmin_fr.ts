@@ -465,41 +465,6 @@
     </message>
 </context>
 <context>
-    <name>EditBackup</name>
-    <message>
-        <source>Backup config for </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Keep Backups For:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>days</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Backup Directory:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Path Missing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>You must supply a backup path!</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>EditCartSlots</name>
     <message>
         <source>RDAdmin - Edit CartSlots</source>
@@ -3156,10 +3121,6 @@ GPIO</source>
     <message>
         <source>Host
 Variables</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Backups</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

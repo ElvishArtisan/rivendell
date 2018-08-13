@@ -690,35 +690,35 @@ oppdatert til versjon </translation>
     <name>EditBackup</name>
     <message>
         <source>Backup config for </source>
-        <translation>Sikringskopi-oppsett for</translation>
+        <translation type="obsolete">Sikringskopi-oppsett for</translation>
     </message>
     <message>
         <source>Keep Backups For:</source>
-        <translation>Lagra sikringskopiar i:</translation>
+        <translation type="obsolete">Lagra sikringskopiar i:</translation>
     </message>
     <message>
         <source>days</source>
-        <translation>dagar</translation>
+        <translation type="obsolete">dagar</translation>
     </message>
     <message>
         <source>Backup Directory:</source>
-        <translation>Mappe for sikringskopiar:</translation>
+        <translation type="obsolete">Mappe for sikringskopiar:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Avbryt</translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
     </message>
     <message>
         <source>Path Missing</source>
-        <translation>Manglar stig</translation>
+        <translation type="obsolete">Manglar stig</translation>
     </message>
     <message>
         <source>You must supply a backup path!</source>
-        <translation>Du må velja ein stig til sikringskopi-mappa!</translation>
+        <translation type="obsolete">Du må velja ein stig til sikringskopi-mappa!</translation>
     </message>
 </context>
 <context>
@@ -3554,7 +3554,7 @@ Variables</source>
     </message>
     <message>
         <source>Backups</source>
-        <translation>Sikringskopiar</translation>
+        <translation type="obsolete">Sikringskopiar</translation>
     </message>
     <message>
         <source>&amp;OK</source>

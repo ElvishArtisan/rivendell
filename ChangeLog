@@ -17375,3 +17375,9 @@
 2018-08-13 Fred Gleason <fredg@paravelsystems.com>
 	* Moved execution of maintenance routines from ripcd(8) to
 	rdservice(8).
+2018-08-13 Fred Gleason <fredg@paravelsystems.com>
+	* Removed support for the 'Backup Database' ['DB'] RML.
+	* Removed support for automatic DB backup.
+	* Dropped the 'STATIONS.BACKUP_DIR' and 'STATIONS.BACKUP_LIFE'
+	fields drom the database.
+	* Incremented the database version to 296.

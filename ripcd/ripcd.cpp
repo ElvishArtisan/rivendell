@@ -173,14 +173,6 @@ MainObject::MainObject(QObject *parent)
   ripcd_notification_mcaster->subscribe(rda->system()->notificationAddress());
 
   //
-  // Database Backup Timer
-  //
-  databaseBackup();
-  ripcd_backup_timer=new QTimer(this);
-  connect(ripcd_backup_timer,SIGNAL(timeout()),this,SLOT(databaseBackup()));
-  ripcd_backup_timer->start(86400000);
-
-  //
   // Exit Timer
   //
   QTimer *timer=new QTimer(this);
@@ -290,33 +282,6 @@ void MainObject::rmlNoechoData()
 void MainObject::rmlReplyData()
 {
   ReadRmlSocket(ripcd_rml_reply,RDMacro::Reply,false);
-}
-
-
-void MainObject::databaseBackup()
-{
-  QString cmd;
-  QDateTime datetime=QDateTime::currentDateTime();
-  int life;
-
-  if((life=rda->station()->backupLife())<=0) {
-    return;
-  }
-  if(fork()==0) {
-    cmd=QString().sprintf("find %s -name *.sql -ctime +%d -exec rm \\{\\} \\;",
-			  (const char *)rda->station()->backupPath(),
-			  rda->station()->backupLife());
-    system((const char *)cmd);
-    cmd=QString().
-	sprintf("mysqldump -c Rivendell -h %s -u %s -p%s > %s/%s.sql",
-		(const char *)rda->config()->mysqlHostname(),
-		(const char *)rda->config()->mysqlUsername(),
-		(const char *)rda->config()->mysqlPassword(),
-		(const char *)rda->station()->backupPath(),
-		(const char *)datetime.date().toString("yyyyMMdd"));
-    system((const char *)cmd);
-    exit(0);
-  }
 }
 
 

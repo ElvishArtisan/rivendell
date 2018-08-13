@@ -1,8 +1,8 @@
-## automake.am
+## Makefile.am
 ##
 ## Automake.am for rivendell/rdadmin
 ##
-## (C) Copyright 2002-2006,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -55,7 +55,6 @@ dist_rdadmin_SOURCES = add_feed.cpp add_feed.h\
                        add_user.cpp add_user.h\
                        autofill_carts.cpp autofill_carts.h\
                        edit_audios.cpp edit_audios.h\
-                       edit_backup.cpp edit_backup.h\
                        edit_cartslots.cpp edit_cartslots.h\
                        edit_channelgpios.cpp edit_channelgpios.h\
                        edit_decks.cpp edit_decks.h\
@@ -132,7 +131,6 @@ nodist_rdadmin_SOURCES = moc_add_feed.cpp\
                          moc_add_user.cpp\
                          moc_autofill_carts.cpp\
                          moc_edit_audios.cpp\
-                         moc_edit_backup.cpp\
                          moc_edit_cartslots.cpp\
                          moc_edit_channelgpios.cpp\
                          moc_edit_decks.cpp\

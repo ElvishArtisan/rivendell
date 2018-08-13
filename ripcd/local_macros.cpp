@@ -271,29 +271,6 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
     return;
     break;
       
-  case RDMacro::DB:
-    if(rml->argQuantity()!=1) {
-      if(rml->echoRequested()) {
-	rml->acknowledge(false);
-	sendRml(rml);
-      }
-      return;
-    }
-    if(fork()==0) {
-      cmd=QString().sprintf("mysqldump -c Rivendell -h %s -u %s -p%s > %s",
-			    (const char *)rda->config()->mysqlHostname(),
-			    (const char *)rda->config()->mysqlUsername(),
-			    (const char *)rda->config()->mysqlPassword(),
-			    (const char *)rml->arg(0));
-      system((const char *)cmd);
-      exit(0);
-    }
-    if(rml->echoRequested()) {
-      rml->acknowledge(true);
-      sendRml(rml);
-    }
-    break;
-      
   case RDMacro::GI:
     if(rml->argQuantity()!=5) {
       if(rml->echoRequested()) {

@@ -790,35 +790,35 @@ y un respaldo de la base de datos se guardó en </translation>
     <name>EditBackup</name>
     <message>
         <source>Backup config for </source>
-        <translation>Configuración de respaldo para </translation>
+        <translation type="obsolete">Configuración de respaldo para </translation>
     </message>
     <message>
         <source>Keep Backups For:</source>
-        <translation>Mantener respald. por:</translation>
+        <translation type="obsolete">Mantener respald. por:</translation>
     </message>
     <message>
         <source>days</source>
-        <translation>días</translation>
+        <translation type="obsolete">días</translation>
     </message>
     <message>
         <source>Backup Directory:</source>
-        <translation>Carpeta de Respaldos:</translation>
+        <translation type="obsolete">Carpeta de Respaldos:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;Aceptar</translation>
+        <translation type="obsolete">&amp;Aceptar</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>Path Missing</source>
-        <translation>Directorio no encontrado</translation>
+        <translation type="obsolete">Directorio no encontrado</translation>
     </message>
     <message>
         <source>You must supply a backup path!</source>
-        <translation>¡Debe indicar un directorio para el respaldo!</translation>
+        <translation type="obsolete">¡Debe indicar un directorio para el respaldo!</translation>
     </message>
 </context>
 <context>
@@ -3678,7 +3678,7 @@ del Equipo</translation>
     </message>
     <message>
         <source>Backups</source>
-        <translation>Respaldos</translation>
+        <translation type="obsolete">Respaldos</translation>
     </message>
     <message>
         <source>&amp;OK</source>

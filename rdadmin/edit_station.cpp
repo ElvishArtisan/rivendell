@@ -43,7 +43,6 @@
 
 #include "view_adapters.h"
 #include "edit_audios.h"
-#include "edit_backup.h"
 #include "edit_cartslots.h"
 #include "edit_decks.h"
 #include "list_dropboxes.h"
@@ -433,15 +432,6 @@ EditStation::EditStation(QString sname,QWidget *parent)
   station_jack_button->setFont(font);
   station_jack_button->setText(tr("JACK\nSettings"));
   connect(station_jack_button,SIGNAL(clicked()),this,SLOT(jackSettingsData()));
-
-  //
-  // Backups Configuration Button
-  //
-  station_backups_button=new QPushButton(this);
-  station_backups_button->setFont(font);
-  station_backups_button->setText(tr("Backups"));
-  connect(station_backups_button,SIGNAL(clicked()),
-	  this,SLOT(editBackupsData()));
 
   //
   // Ok Button
@@ -840,13 +830,6 @@ void EditStation::editHostvarsData()
   delete list_conf;
 }
 
-void EditStation::editBackupsData()
-{
-  EditBackup *edit_backup=new EditBackup(station_station,this);
-  edit_backup->exec();
-  delete edit_backup;
-}
-
 
 void EditStation::editDropboxesData()
 {
@@ -998,9 +981,7 @@ void EditStation::resizeEvent(QResizeEvent *e)
 
   station_adapters_button->setGeometry(290,533,80,50);
 
-  station_jack_button->setGeometry(110,593,80,50);
-
-  station_backups_button->setGeometry(200,593,80,50);
+  station_jack_button->setGeometry(155,593,80,50);
 
   station_ok_button->setGeometry(size().width()-180,size().height()-60,80,50);
   station_cancel_button->

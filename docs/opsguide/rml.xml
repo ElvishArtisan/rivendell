@@ -454,33 +454,6 @@
     </para>
   </sect2>
 
-  <sect2 xml:id="sect.rml.database_backup__db_">
-    <title>Database Backup [DB]</title>
-    <para>
-      <variablelist>
-	<varlistentry>
-	  <term>Module</term>
-	  <listitem><command>ripcd</command><manvolnum>8</manvolnum></listitem>
-	</varlistentry>
-	<varlistentry>
-	  <term>Mnemonic</term>
-	  <listitem><userinput>DB</userinput></listitem>
-	</varlistentry>
-      </variablelist>
-    </para>
-    <para>
-      Backup the Rivendell database.
-    </para>
-    <para>
-      <userinput>DB
-      <replaceable>filename</replaceable>!</userinput>
-    </para>
-    <para>
-      Create a backup copy of the active Rivendell database in
-      <replaceable>filename</replaceable>. 
-    </para>
-  </sect2>
-
   <sect2 xml:id="sect.rml.disconnect_jack_ports__jd_">
     <title>Disconnect Jack Ports [JD]</title>
     <para>
