@@ -17372,3 +17372,6 @@
 	* Removed sysconfig support.
 2018-08-11 Fred Gleason <fredg@paravelsystems.com>
 	* Added a debug block for saving raw post data to 'RDFormPost'.
+2018-08-13 Fred Gleason <fredg@paravelsystems.com>
+	* Moved execution of maintenance routines from ripcd(8) to
+	rdservice(8).

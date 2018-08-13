@@ -57,7 +57,7 @@ dist_ripcd_SOURCES = acu1p.cpp acu1p.h\
                      livewire_mcastgpio.cpp livewire_mcastgpio.h\
                      local_audio.cpp local_audio.h\
                      local_gpio.cpp local_gpio.h\
-                     local_macros.cpp maint_routines.cpp\
+                     local_macros.cpp\
                      loaddrivers.cpp\
                      modbus.cpp modbus.h\
                      modemlines.cpp modemlines.h\

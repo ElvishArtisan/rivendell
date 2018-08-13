@@ -181,20 +181,6 @@ MainObject::MainObject(QObject *parent)
   ripcd_backup_timer->start(86400000);
 
   //
-  // Maintenance Routine Timer
-  //
-  srandom(QTime::currentTime().msec());
-  ripcd_maint_timer=new QTimer(this);
-  connect(ripcd_maint_timer,SIGNAL(timeout()),this,SLOT(checkMaintData()));
-  int interval=GetMaintInterval();
-  if(!rda->config()->disableMaintChecks()) {
-    ripcd_maint_timer->start(interval);
-  }
-  else {
-    log(RDConfig::LogInfo,"maintenance checks disabled on this host!");
-  }
-
-  //
   // Exit Timer
   //
   QTimer *timer=new QTimer(this);
@@ -368,49 +354,6 @@ void MainObject::killData(int conn_id)
   ripcd_garbage_timer->start(1,true);
   rda->log(RDConfig::LogDebug,QString().sprintf("closed connection %d",
 						conn_id));
-}
-
-
-void MainObject::checkMaintData()
-{
-  QString sql;
-  RDSqlQuery *q;
-  QDateTime current_datetime=
-    QDateTime(QDate::currentDate(),QTime::currentTime());
-  bool run=false;
-
-  RunLocalMaintRoutine();
-
-  //
-  // Should we try to run system maintenance?
-  //
-  if(!rda->station()->systemMaint()) {
-    return;
-  }
-
-  //
-  // Get the system-wide maintenance timestamp
-  //
-  sql="lock tables VERSION write";
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql="select LAST_MAINT_DATETIME from VERSION";
-  q=new RDSqlQuery(sql);
-  if(q->first()) {
-    run=1000*q->value(0).toDateTime().secsTo(current_datetime)>
-      RD_MAINT_MAX_INTERVAL;
-  }
-  delete q;
-  sql="unlock tables";
-  q=new RDSqlQuery(sql);
-  delete q;
-
-  //
-  // Run the routines
-  //
-  if(run) {
-    RunSystemMaintRoutine();
-  }
 }
 
 

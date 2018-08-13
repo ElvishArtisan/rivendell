@@ -31,7 +31,8 @@ moc_%.cpp:	%.h
 
 sbin_PROGRAMS = rdservice
 
-dist_rdservice_SOURCES = process.cpp process.h\
+dist_rdservice_SOURCES = maint_routines.cpp\
+                         process.cpp process.h\
                          rdservice.cpp rdservice.h\
                          shutdown.cpp\
                          startup.cpp

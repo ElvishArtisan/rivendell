@@ -78,7 +78,6 @@ class MainObject : public QObject
   void macroTimerData(int num);
   void readyReadData(int conn_id);
   void killData(int conn_id);
-  void checkMaintData();
   void exitTimerData();
   void garbageData();
   
@@ -100,9 +99,6 @@ class MainObject : public QObject
   void SendGpoMask(int ch,int matrix);
   void SendGpiCart(int ch,int matrix);
   void SendGpoCart(int ch,int matrix);
-  void RunSystemMaintRoutine();
-  void RunLocalMaintRoutine();
-  int GetMaintInterval() const;
   RDMacro ForwardConvert(const RDMacro &rml) const;
   bool LoadSwitchDriver(int matrix_num);
   QSqlDatabase *ripcd_db;
@@ -133,7 +129,6 @@ class MainObject : public QObject
   bool ripc_onair_flag;
   QTimer *ripc_macro_timer[RD_MAX_MACRO_TIMERS];
   unsigned ripc_macro_cart[RD_MAX_MACRO_TIMERS];
-  QTimer *ripcd_maint_timer;
   RDMulticaster *ripcd_notification_mcaster;
   QTimer *ripcd_garbage_timer;
 };

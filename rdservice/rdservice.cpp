@@ -89,6 +89,21 @@ MainObject::MainObject(QObject *parent)
     exit(1);
   }
 
+  //
+  // Maintenance Routine Timer
+  //
+  srandom(QTime::currentTime().msec());
+  svc_maint_timer=new QTimer(this);
+  svc_maint_timer->setSingleShot(true);
+  connect(svc_maint_timer,SIGNAL(timeout()),this,SLOT(checkMaintData()));
+  int interval=GetMaintInterval();
+  if(!rda->config()->disableMaintChecks()) {
+    svc_maint_timer->start(interval);
+  }
+  else {
+    rda->log(RDConfig::LogInfo,"maintenance checks disabled on this host!");
+  }
+
   if(!RDWritePid(RD_PID_DIR,"rdservice.pid",getuid())) {
     fprintf(stderr,"rdservice: can't write pid file\n");
   }
@@ -97,6 +112,8 @@ MainObject::MainObject(QObject *parent)
 
 void MainObject::processFinishedData(int id)
 {
+  svc_processes[id]->deleteLater();
+  svc_processes.remove(id);
 }
 
 
