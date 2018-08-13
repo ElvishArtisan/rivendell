@@ -17388,3 +17388,5 @@
 	* Updated table documentation.
 2018-08-13 Fred Gleason <fredg@paravelsystems.com>
 	* Added code to force the 'Plastique' GUI style.
+2018-08-13 Fred Gleason <fredg@paravelsystems.com>
+	* Removed debugging code from rdlibrary(1).

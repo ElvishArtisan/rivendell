@@ -90,10 +90,6 @@ void SigHandler(int signo);
 MainWidget::MainWidget(QWidget *parent)
   :QWidget(parent)
 {
-  QStringList styles=QStyleFactory::keys();
-  for(int i=0;i<styles.size();i++) {
-    printf("style: %s\n",(const char *)styles.at(i).toUtf8());
-  }
   QString err_msg;
 
   lib_resize=false;
