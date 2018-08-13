@@ -17381,3 +17381,6 @@
 	* Dropped the 'STATIONS.BACKUP_DIR' and 'STATIONS.BACKUP_LIFE'
 	fields drom the database.
 	* Incremented the database version to 296.
+2018-08-13 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression that caused 'stop' transport buttons to have
+	the incorrect shadow color.

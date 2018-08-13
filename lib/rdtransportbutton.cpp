@@ -387,7 +387,7 @@ void RDTransportButton::drawOnCap()
 
   case RDTransportButton::Stop:
     p.fillRect(width()/2-edge*3/10,height()/2-edge*3/10,
-	       edge*3/5,edge*3/5,QColor(on_color));
+    	       edge*3/5,edge*3/5,QColor(on_color));
     p.setPen(QColor(colorGroup().shadow()));
     p.drawLine(width()/2-edge*3/10,height()/2+edge*3/10,
 	       width()/2-edge*3/10,height()/2-edge*3/10);
@@ -667,7 +667,7 @@ void RDTransportButton::drawOffCap()
 
   case RDTransportButton::Stop:
     p.fillRect(width()/2-edge*3/10,height()/2-edge*3/10,
-	       edge*3/5,edge*3/5,QColor(colorGroup().shadow()));
+	       edge*3/5,edge*3/5,QColor(Qt::black));
     p.setPen(QColor(colorGroup().shadow()));
     p.drawLine(width()/2-edge*3/10,height()/2+edge*3/10,
 	       width()/2-edge*3/10,height()/2-edge*3/10);
