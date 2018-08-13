@@ -751,6 +751,7 @@ void MainWidget::AddEventsItem(int line,bool state)
 
 int main(int argc,char *argv[])
 {
+  QApplication::setStyle(RD_GUI_STYLE);
   QApplication a(argc,argv);
   
   //

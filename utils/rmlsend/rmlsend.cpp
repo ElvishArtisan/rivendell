@@ -507,7 +507,8 @@ int main(int argc,char *argv[])
 #endif  // WIN32
   }
   else {
-    QApplication a(argc,argv,true);
+    QApplication::setStyle(new QWindowsStyle);
+    QApplication a(argc,argv);
     
     //
     // Load Translations

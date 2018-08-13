@@ -380,6 +380,7 @@ int main(int argc,char *argv[])
   //
   // Start GUI
   //
+  QApplication::setStyle(RD_GUI_STYLE);
   QApplication a(argc,argv);
   MainWidget *w=new MainWidget();
   a.setMainWidget(w);

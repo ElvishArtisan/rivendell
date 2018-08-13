@@ -125,20 +125,20 @@ void RDPushButton::setPalette(const QPalette &pal)
 void RDPushButton::mousePressEvent(QMouseEvent *e)
 {
   switch(e->button()) {
-      case Qt::LeftButton:
-	QPushButton::mousePressEvent(e);
-	break;
+  case Qt::LeftButton:
+    QPushButton::mousePressEvent(e);
+    break;
 	
-      case Qt::MidButton:
-	emit centerPressed();
-	break;
+  case Qt::MidButton:
+    emit centerPressed();
+    break;
 	
-      case Qt::RightButton:
-	emit rightPressed();
-	break;
+  case Qt::RightButton:
+    emit rightPressed();
+    break;
 
-      default:
-	break;
+  default:
+    break;
   }
 }
 
@@ -146,32 +146,32 @@ void RDPushButton::mousePressEvent(QMouseEvent *e)
 void RDPushButton::mouseReleaseEvent(QMouseEvent *e)
 {
   switch(e->button()) {
-      case Qt::LeftButton:
-	QPushButton::mouseReleaseEvent(e);
-	break;
+  case Qt::LeftButton:
+    QPushButton::mouseReleaseEvent(e);
+    break;
 	
-      case Qt::MidButton:
-	e->accept();
-	emit centerReleased();
-	if((e->x()>=0)&&(e->x()<geometry().width())&&
-	   (e->y()>=0)&&(e->y()<geometry().height())) {
-	  emit centerClicked();
-	  emit centerClicked(button_id,QPoint(e->x(),e->y()));
-	}
-	break;
+  case Qt::MidButton:
+    e->accept();
+    emit centerReleased();
+    if((e->x()>=0)&&(e->x()<geometry().width())&&
+       (e->y()>=0)&&(e->y()<geometry().height())) {
+      emit centerClicked();
+      emit centerClicked(button_id,QPoint(e->x(),e->y()));
+    }
+    break;
 	
-      case Qt::RightButton:
-	e->accept();
-	emit rightReleased();
-	if((e->x()>=0)&&(e->x()<geometry().width())&&
-	   (e->y()>=0)&&(e->y()<geometry().height())) {
-	  emit rightClicked();
-	  emit rightClicked(button_id,QPoint(e->x(),e->y()));
-	}
-	break;
+  case Qt::RightButton:
+    e->accept();
+    emit rightReleased();
+    if((e->x()>=0)&&(e->x()<geometry().width())&&
+       (e->y()>=0)&&(e->y()<geometry().height())) {
+      emit rightClicked();
+      emit rightClicked(button_id,QPoint(e->x(),e->y()));
+    }
+    break;
 
-      default:
-	break;
+  default:
+    break;
   }
 }
 

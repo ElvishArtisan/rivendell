@@ -2,7 +2,7 @@
 //
 // Edit Rivendell Audio
 //
-//   (C) Copyright 2002-2003,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -214,7 +214,7 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,int card,
   //
   // Amplitude Buttons
   //
-  QLabel *amp_label=new QLabel(this,"amp_label");
+  QLabel *amp_label=new QLabel(this);
   amp_label->setGeometry(742,5,80,16);
   amp_label->setAlignment(Qt::AlignHCenter|Qt::AlignVCenter);
   amp_label->setFont(button_font);

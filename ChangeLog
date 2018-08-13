@@ -17386,3 +17386,5 @@
 	the incorrect shadow color.
 2018-08-13 Fred Gleason <fredg@paravelsystems.com>
 	* Updated table documentation.
+2018-08-13 Fred Gleason <fredg@paravelsystems.com>
+	* Added code to force the 'Plastique' GUI style.

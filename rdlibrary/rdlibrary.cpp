@@ -41,6 +41,8 @@
 #include <QPixmap>
 #include <QResizeEvent>
 #include <QCloseEvent>
+#include <qstylefactory.h>
+
 #include <curl/curl.h>
 
 #include <dbversion.h>
@@ -88,6 +90,10 @@ void SigHandler(int signo);
 MainWidget::MainWidget(QWidget *parent)
   :QWidget(parent)
 {
+  QStringList styles=QStyleFactory::keys();
+  for(int i=0;i<styles.size();i++) {
+    printf("style: %s\n",(const char *)styles.at(i).toUtf8());
+  }
   QString err_msg;
 
   lib_resize=false;
@@ -1529,8 +1535,9 @@ void MainWidget::SendNotification(RDNotification::Action action,
 
 int main(int argc,char *argv[])
 {
+  QApplication::setStyle(RD_GUI_STYLE);
   QApplication a(argc,argv);
-  
+
   //
   // Load Translations
   //

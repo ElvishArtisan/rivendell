@@ -585,5 +585,11 @@
 #define RD_RDVAIRPLAY_LOG_BASE 100
 #define RD_RDVAIRPLAY_LOG_QUAN 20
 
+/*
+ * GUI Style
+ * (must be one of the values returned by QStyleFactory::keys())
+ */
+#define RD_GUI_STYLE "Plastique"
+
 
 #endif  // RD_H

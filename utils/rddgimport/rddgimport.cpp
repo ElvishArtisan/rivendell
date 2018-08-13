@@ -628,6 +628,7 @@ void MainWidget::LogMessage(const QString &str)
 
 int main(int argc,char *argv[])
 {
+  QApplication::setStyle(RD_GUI_STYLE);
   QApplication a(argc,argv);
   
   //
