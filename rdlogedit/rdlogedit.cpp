@@ -77,7 +77,7 @@ RDCartDialog *log_cart_dialog;
 bool import_running=false;
 
 MainWidget::MainWidget(QWidget *parent)
-  :Q3MainWindow(parent)
+  :QWidget(parent)
 {
   QString err_msg;
 

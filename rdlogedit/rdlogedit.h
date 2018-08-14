@@ -23,16 +23,17 @@
 
 #include <vector>
 
-#include <q3mainwindow.h>
-#include <qsize.h>
-#include <qsizepolicy.h>
 #include <qcheckbox.h>
-#include <qlineedit.h>
-#include <q3listview.h>
-#include <qpushbutton.h>
-#include <qpixmap.h>
 #include <qcombobox.h>
 #include <qlabel.h>
+#include <qlineedit.h>
+#include <qpixmap.h>
+#include <qpushbutton.h>
+#include <qsize.h>
+#include <qsizepolicy.h>
+#include <qwidget.h>
+
+#include <q3listview.h>
 
 #include <rdlog_line.h>
 #include <rdlogfilter.h>
@@ -42,7 +43,7 @@
 
 #define RDLOGEDIT_USAGE "\n"
 
-class MainWidget : public Q3MainWindow
+class MainWidget : public QWidget
 {
  Q_OBJECT
  public:
