@@ -17392,3 +17392,5 @@
 	* Removed debugging code from rdlibrary(1).
 2018-08-14 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed cosmedic layout errors in the 'Edit Audio' dialog.
+2018-08-14 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed rendering errors in the 'Edit Audio' dialog.
