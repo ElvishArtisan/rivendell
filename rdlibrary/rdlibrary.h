@@ -1,8 +1,8 @@
 // rdlibrary.h
 //
-// The Production Utility for Rivendell.
+// Library Utility for Rivendell.
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,9 +25,6 @@
 #include <qsize.h>
 #include <qsizepolicy.h>
 #include <qsqldatabase.h>
-//Added by qt3to4:
-#include <QResizeEvent>
-#include <QCloseEvent>
 #include <rdlistview.h>
 #include <qpushbutton.h>
 #include <qcombobox.h>
@@ -46,9 +43,9 @@
 
 #include <rdconfig.h>
 
-#include <lib_listview.h>
-#include <disk_gauge.h>
-//#include <cart_tip.h>
+//#include "cart_tip.h"
+#include "disk_gauge.h"
+#include "lib_listview.h"
 
 #define RDLIBRARY_GEOMETRY_FILE ".rdlibrary"
 #define RDLIBRARY_STEP_SIZE 5000

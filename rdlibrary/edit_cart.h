@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Cart
 //
-//   (C) Copyright 2002,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,20 +29,17 @@
 #include <q3textedit.h>
 #include <qpixmap.h>
 #include <qcheckbox.h>
-#include <qsqldatabase.h>
 #include <qlineedit.h>
 #include <qcheckbox.h>
-//Added by qt3to4:
-#include <QCloseEvent>
-#include <globals.h>
 #include <q3datetimeedit.h>
 
 #include <rdcart.h>
 #include <rdlibrary_conf.h>
 
-#include <audio_cart.h>
-#include <audio_controls.h>
-#include <macro_cart.h>
+#include "audio_cart.h"
+#include "audio_controls.h"
+#include "globals.h"
+#include "macro_cart.h"
 
 
 class EditCart : public QDialog

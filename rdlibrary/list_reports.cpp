@@ -2,7 +2,7 @@
 //
 // List RDLibrary Reports
 //
-//   (C) Copyright 2002-2006,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,8 +21,6 @@
 #include <qdialog.h>
 #include <qpushbutton.h>
 #include <qstringlist.h>
-//Added by qt3to4:
-#include <QLabel>
 
 #include <rdapplication.h>
 #include <rdcart.h>
@@ -38,8 +36,10 @@
 ListReports::ListReports(const QString &filter,const QString &type_filter,
 			 const QString &group,const QString &schedcode,
 			 QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   list_filter=filter;
   list_type_filter=type_filter;
   list_group=group;
@@ -53,7 +53,7 @@ ListReports::ListReports(const QString &filter,const QString &type_filter,
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  setCaption(tr("RDLibrary Reports"));
+  setWindowTitle("RDLibrary - "+tr("Select Report"));
 
   //
   // Create Fonts

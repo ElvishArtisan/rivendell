@@ -2,7 +2,7 @@
 //
 // The Library Utility for Rivendell.
 //
-//   (C) Copyright 2002-2010,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -37,10 +37,6 @@
 #include <q3listview.h>
 #include <q3progressdialog.h>
 #include <qtooltip.h>
-//Added by qt3to4:
-#include <QPixmap>
-#include <QResizeEvent>
-#include <QCloseEvent>
 #include <qstylefactory.h>
 
 #include <curl/curl.h>
@@ -126,7 +122,7 @@ MainWidget::MainWidget(QWidget *parent)
   lib_macro_map=new QPixmap(rml5_xpm);
   lib_track_cart_map=new QPixmap(track_cart_xpm);
   lib_rivendell_map=new QPixmap(rdlibrary_22x22_xpm);
-  setIcon(*lib_rivendell_map);
+  setWindowIcon(*lib_rivendell_map);
 
   //
   // Progress Dialog
@@ -1400,7 +1396,7 @@ void MainWidget::SetCaption(QString user)
 
   str1=QString("RDLibrary")+" v"+VERSION+" - "+tr("Host")+":";
   str2=tr("User")+":";
-  setCaption(str1+" "+rda->config()->stationName()+", "+str2+" "+user);
+  setWindowTitle(str1+" "+rda->config()->stationName()+", "+str2+" "+user);
 }
 
 
@@ -1436,8 +1432,8 @@ QString MainWidget::GeometryFile() {
 
 void MainWidget::LoadGeometry()
 {
-  QString geometry_file = GeometryFile();
-  if(geometry_file==NULL) {
+  QString geometry_file=GeometryFile();
+  if(geometry_file.isEmpty()) {
     return;
   }
   RDProfile *profile=new RDProfile();
@@ -1455,8 +1451,8 @@ void MainWidget::LoadGeometry()
 
 void MainWidget::SaveGeometry()
 {
-  QString geometry_file = GeometryFile();
-  if(geometry_file==NULL) {
+  QString geometry_file=GeometryFile();
+  if(geometry_file.isEmpty()) {
     return;
   }
   FILE *file=fopen(geometry_file,"w");

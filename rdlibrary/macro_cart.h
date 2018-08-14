@@ -2,7 +2,7 @@
 //
 // The macro cart editor for RDLibrary.
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,7 +29,6 @@
 #include <q3textedit.h>
 #include <qpixmap.h>
 #include <qcheckbox.h>
-#include <qsqldatabase.h>
 #include <qlineedit.h>
 #include <qcheckbox.h>
 #include <qpushbutton.h>

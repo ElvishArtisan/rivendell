@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Macro
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,17 +22,16 @@
 #include <qpushbutton.h>
 #include <qlabel.h>
 #include <qsqldatabase.h>
-//Added by qt3to4:
-#include <QResizeEvent>
-#include <QCloseEvent>
 
 #include <rdtextvalidator.h>
 
-#include <edit_macro.h>
+#include "edit_macro.h"
 
 EditMacro::EditMacro(RDMacro *cmd,bool highlight,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   //
   // Fix the Window Size
   //
@@ -46,8 +45,6 @@ EditMacro::EditMacro(RDMacro *cmd,bool highlight,QWidget *parent)
   //
   QFont button_font("Helvetica",12,QFont::Bold);
   button_font.setPixelSize(12);
-
-  setCaption(tr("Edit Macro"));
 
   //
   // Text Validator

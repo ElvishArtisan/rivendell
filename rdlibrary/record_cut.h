@@ -2,7 +2,7 @@
 //
 // Record a Rivendell cut.
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,19 +23,17 @@
 
 #define RECORD_CUT_TIMER_INTERVAL 100
 
+#include <qbuttongroup.h>
+#include <qcheckbox.h>
+#include <qcombobox.h>
+#include <qdatetimeedit.h>
 #include <qdialog.h>
+#include <qgroupbox.h>
+#include <qlabel.h>
 #include <qlineedit.h>
 #include <qtimer.h>
-#include <qlabel.h>
-#include <qcombobox.h>
-#include <q3datetimeedit.h>
 #include <qradiobutton.h>
 #include <qspinbox.h>
-#include <qcheckbox.h>
-//Added by qt3to4:
-#include <QCloseEvent>
-#include <QPaintEvent>
-#include <QResizeEvent>
 
 #include <rdtransportbutton.h>
 #include <rdstereometer.h>
@@ -45,7 +43,7 @@
 #include <rdcut.h>
 #include <rdtimeedit.h>
 
-#include <globals.h>
+#include "globals.h"
 
 class RecordCut : public QDialog
 {
@@ -80,7 +78,6 @@ class RecordCut : public QDialog
 
   protected:
    void resizeEvent(QResizeEvent *e);
-   void paintEvent(QPaintEvent *e);
    void closeEvent(QCloseEvent *e);
 
   private:
@@ -107,19 +104,22 @@ class RecordCut : public QDialog
    QLineEdit *cut_playdate_edit;
    QLabel *cut_playcounter_label;
    QLineEdit *cut_playcounter_edit;
-   QLabel *cut_killdatetime_label;
+   QGroupBox *cut_killdatetime_groupbox;
+   QButtonGroup *cut_killdatetime_group;
    QRadioButton *cut_startdatetime_enable_button;
    QRadioButton *cut_startdatetime_disable_button;
    QLabel *cut_startdatetime_label;
-   Q3DateTimeEdit *cut_startdatetime_edit;
+   QGroupBox *cut_startdatetime_groupbox;
+   QDateTimeEdit *cut_startdatetime_edit;
    QLabel *cut_enddatetime_label;
-   Q3DateTimeEdit *cut_enddatetime_edit;
-   QLabel *cut_daypart_label;
+   QDateTimeEdit *cut_enddatetime_edit;
+   QGroupBox *cut_daypart_groupbox;
+   QButtonGroup *cut_daypart_group;
    QRadioButton *cut_starttime_enable_button;
    QRadioButton *cut_starttime_disable_button;
-   RDTimeEdit *cut_starttime_edit;
+   QTimeEdit *cut_starttime_edit;
    QLabel *cut_starttime_label;
-   RDTimeEdit *cut_endtime_edit;
+   QTimeEdit *cut_endtime_edit;
    QLabel *cut_endtime_label;
    QTimer *rec_timer;
    QLabel *rec_timer_label;
@@ -137,7 +137,7 @@ class RecordCut : public QDialog
    QComboBox *rec_mode_box;
    QLabel *rec_trim_box_label;
    QComboBox *rec_trim_box;
-   QLabel *rec_dayofweek_label;
+   QGroupBox *rec_dayofweek_groupbox;
    QPushButton *rec_set_button;
    QPushButton *rec_clear_button;
    QCheckBox *rec_weekpart_button[7];

@@ -2,7 +2,7 @@
 //
 // Set Filter widget for RDLibrary.
 //
-//   (C) Copyright 2002,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -33,8 +33,10 @@
 #include <filter.h>
 
 Filter::Filter(QString *filter,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   //
   // Fix the Window Size
   //
@@ -52,7 +54,7 @@ Filter::Filter(QString *filter,QWidget *parent)
   button_font.setPixelSize(14);
 
   filter_text=filter;
-  setCaption(tr("Library Filter"));
+  setWindowTitle("RDLibrary - "+tr("Library Filter"));
 
   //
   // OK Button

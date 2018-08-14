@@ -355,6 +355,10 @@ Rip</source>
         <source>Unable to create temporary directory!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Rip CD</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>DiskRipper</name>
@@ -766,13 +770,17 @@ Notes</source>
         <source>Duplicate Cut Order</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Edit Carts [multiple]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditMacro</name>
-    <message>
-        <source>Edit Macro</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>&amp;OK</source>
         <translation type="unfinished"></translation>
@@ -854,10 +862,6 @@ Notes</source>
 <context>
     <name>ListReports</name>
     <message>
-        <source>RDLibrary Reports</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Cart Report</source>
         <translation type="unfinished"></translation>
     </message>
@@ -891,6 +895,10 @@ Notes</source>
     </message>
     <message>
         <source>Prepend Field Names</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select Report</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1168,10 +1176,6 @@ Do you still want to delete it?</source>
 <context>
     <name>RecordCut</name>
     <message>
-        <source>RDLibrary - Record</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Description</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1404,6 +1408,10 @@ Do you still want to save?</source>
     </message>
     <message>
         <source>Source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cut Info / Record</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

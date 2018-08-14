@@ -415,6 +415,10 @@ Lectura</translation>
         <source>Unable to create temporary directory!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Rip CD</source>
+        <translation type="unfinished">Leer CD</translation>
+    </message>
 </context>
 <context>
     <name>DiskRipper</name>
@@ -897,12 +901,20 @@ Notas</translation>
         <source>Duplicate Cut Order</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Edit Carts [multiple]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditMacro</name>
     <message>
         <source>Edit Macro</source>
-        <translation>Editar macro</translation>
+        <translation type="obsolete">Editar macro</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -986,7 +998,7 @@ Notas</translation>
     <name>ListReports</name>
     <message>
         <source>RDLibrary Reports</source>
-        <translation>Reportes de RDLibrary</translation>
+        <translation type="obsolete">Reportes de RDLibrary</translation>
     </message>
     <message>
         <source>Cart Report</source>
@@ -1026,6 +1038,10 @@ Notas</translation>
     </message>
     <message>
         <source>Prepend Field Names</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select Report</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1337,7 +1353,7 @@ Do you still want to delete it?</source>
     <name>RecordCut</name>
     <message>
         <source>RDLibrary - Record</source>
-        <translation>RDLibrary - Grabar</translation>
+        <translation type="obsolete">RDLibrary - Grabar</translation>
     </message>
     <message>
         <source>&amp;Description</source>
@@ -1583,6 +1599,10 @@ Do you still want to save?</source>
     </message>
     <message>
         <source>Source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cut Info / Record</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

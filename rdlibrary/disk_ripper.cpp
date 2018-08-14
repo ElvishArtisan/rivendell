@@ -2,7 +2,7 @@
 //
 // CD Ripper Dialog for Rivendell.
 //
-//   (C) Copyright 2002-2003,2010,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -32,10 +32,6 @@
 #include <q3filedialog.h>
 #include <qmessagebox.h>
 #include <qpushbutton.h>
-//Added by qt3to4:
-#include <QLabel>
-#include <QResizeEvent>
-#include <QCloseEvent>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -55,11 +51,12 @@
 #include "disk_ripper.h"
 #include "globals.h"
 
-
 DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
 		       bool profile_rip,QWidget *parent) 
   : QDialog(parent)
 {
+  setModal(true);
+
   rip_isrc_read=false;
   rip_filter_text=filter;
   rip_group_text=group;
@@ -81,7 +78,7 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   QFont label_font=QFont("Helvetica",12,QFont::Bold);
   label_font.setPixelSize(12);
 
-  setCaption(tr("Rip Disk"));
+  setWindowTitle("RDLibrary - "+tr("Rip Disk"));
 
   //
   // Create Dialogs

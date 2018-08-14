@@ -415,6 +415,10 @@ abbrechen</translation>
         <source>Unable to create temporary directory!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Rip CD</source>
+        <translation type="unfinished">CD rippen</translation>
+    </message>
 </context>
 <context>
     <name>DiskRipper</name>
@@ -896,12 +900,20 @@ Notes</source>
         <source>Duplicate Cut Order</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Edit Carts [multiple]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditMacro</name>
     <message>
         <source>Edit Macro</source>
-        <translation>Makro editieren</translation>
+        <translation type="obsolete">Makro editieren</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -984,10 +996,6 @@ Notes</source>
 <context>
     <name>ListReports</name>
     <message>
-        <source>RDLibrary Reports</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Cart Report</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1021,6 +1029,10 @@ Notes</source>
     </message>
     <message>
         <source>Prepend Field Names</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select Report</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1332,7 +1344,7 @@ verwendet. Trotzdem löschen?</translation>
     <name>RecordCut</name>
     <message>
         <source>RDLibrary - Record</source>
-        <translation>RDLibrary - Aufnahme</translation>
+        <translation type="obsolete">RDLibrary - Aufnahme</translation>
     </message>
     <message>
         <source>&amp;Description</source>
@@ -1578,6 +1590,10 @@ Trotzdem speichern?</translation>
     </message>
     <message>
         <source>Source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cut Info / Record</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

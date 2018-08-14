@@ -2,7 +2,7 @@
 //
 // The audio cart editor for RDLibrary.
 //
-//   (C) Copyright 2002-2004,2016-2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -44,15 +44,13 @@
 #include <rdedit_audio.h>
 #include <rdescape_string.h>
 
-#include <cdripper.h>
-#include <audio_cart.h>
-#include <record_cut.h>
-#include <globals.h>
-
-#include <validate_cut.h>
+#include "audio_cart.h"
+#include "cdripper.h"
+#include "globals.h"
+#include "record_cut.h"
+#include "validate_cut.h"
 
 bool import_active=false;
-
 
 AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
 		     bool select_cut,bool profile_rip,QWidget *parent)
@@ -66,8 +64,8 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   rdcart_profile_rip=profile_rip;
   rdcart_modification_allowed=rda->user()->editAudio()&&cart->owner().isEmpty();
 
-  setCaption(QString().sprintf("%u",rdcart_cart->number())+" - "+
-    rdcart_cart->title());
+//setWindowTitle("RDLibrary - "+tr("Edit Cart")+QString().sprintf(" %u",rdcart_cart->number())+" ["+
+//   rdcart_cart->title()+"]");
 
   //
   // Generate Fonts

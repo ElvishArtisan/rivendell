@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Cart
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,10 +21,8 @@
 #include <vector>
 
 #include <qbitmap.h>
-//Added by qt3to4:
-#include <QLabel>
-#include <QCloseEvent>
 #include <unistd.h>
+
 #include <qdialog.h>
 #include <qstring.h>
 #include <qpushbutton.h>
@@ -57,8 +55,10 @@
 
 EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
 		   QWidget *parent,const char *name,Q3ListView *lib_cart_list)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   bool modification_allowed;
   rdcart_cart=NULL;
   rdcart_profile_rip=profile_rip;
@@ -86,13 +86,14 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   if(lib_cart_list_edit==NULL) {
     rdcart_cart=new RDCart(number);
     rdcart_import_path=path;
-    setCaption(QString().sprintf("%06u",rdcart_cart->number())+" - "+
-	       rdcart_cart->title());
+    setWindowTitle("RDLibrary - "+tr("Edit Cart")+
+		   QString().sprintf(" %06u",rdcart_cart->number())+" ["+
+		   rdcart_cart->title()+"]");
     modification_allowed=
       rda->user()->modifyCarts()&&rdcart_cart->owner().isEmpty();
   }
   else {
-    setCaption("Edit Carts");
+    setWindowTitle("RDLibrary - "+tr("Edit Carts [multiple]"));
     modification_allowed=true;
   }
 

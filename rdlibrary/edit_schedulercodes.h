@@ -2,7 +2,8 @@
 //
 // Edit the scheduler codes of a cart
 //
-//   Stefan Gabriel <stg@st-gabriel.de>
+//   (C) Copyright Stefan Gabriel <stg@st-gabriel.de>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,8 +25,6 @@
 #include <qdialog.h>
 #include <qlabel.h>
 #include <qsqldatabase.h>
-//Added by qt3to4:
-#include <QPaintEvent>
 
 #include <rdlistselector.h>
 

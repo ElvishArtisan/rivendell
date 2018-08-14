@@ -2,7 +2,7 @@
 //
 // Record a Rivendell Cut
 //
-//   (C) Copyright 2002-2004,2014-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,12 +25,6 @@
 #include <qtimer.h>
 #include <qmessagebox.h>
 #include <qfile.h>
-#include <q3buttongroup.h>
-//Added by qt3to4:
-#include <QLabel>
-#include <QResizeEvent>
-#include <QPaintEvent>
-#include <QCloseEvent>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -42,8 +36,10 @@
 #include "record_cut.h"
 
 RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   bool valid;
   bool is_track=cart->owner().isEmpty();
   bool allow_modification=rda->user()->modifyCarts()&&is_track;
@@ -72,7 +68,7 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent)
   QFont day_font=QFont("helvetica",10,QFont::Normal);
   day_font.setPixelSize(10);
 
-  setCaption(tr("RDLibrary - Record"));
+  setWindowTitle("RDLibrary - "+tr("Cut Info / Record"));
   rec_cut=new RDCut(cut);
   is_playing=false;
   is_ready=false;
@@ -112,17 +108,17 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent)
   rec_card_no[1]=rda->libraryConf()->outputCard();
   rec_name=rec_cut->cutName();
   switch(rec_cut->codingFormat()) {
-      case 0:
-	rec_format=RDCae::Pcm16;
-	break;
+  case 0:
+    rec_format=RDCae::Pcm16;
+    break;
 	
-      case 1:
-	rec_format=RDCae::MpegL2;
-	break;
+  case 1:
+    rec_format=RDCae::MpegL2;
+    break;
 
-      default:
-	rec_format=RDCae::Pcm16;
-	break;
+  default:
+    rec_format=RDCae::Pcm16;
+    break;
   }	
   rec_channels=rec_cut->channels();
   rec_samprate=rec_cut->sampleRate();
@@ -229,24 +225,23 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent)
   //
   // Cut Air Date Times
   //
-  cut_killdatetime_label=new QLabel(tr("Air Date/Time"),this);
-  cut_killdatetime_label->setAlignment(Qt::AlignHCenter);
-  cut_killdatetime_label->setFont(font);
-  Q3ButtonGroup *button_group=new Q3ButtonGroup(this);
-  button_group->hide();
-  connect(button_group,SIGNAL(clicked(int)),this,SLOT(airDateButtonData(int)));
-  cut_startdatetime_enable_button=new QRadioButton(tr("Enabled"),this,
-					       "air_date_enabled_button");
-  button_group->insert(cut_startdatetime_enable_button,true);
+  cut_killdatetime_groupbox=new QGroupBox(tr("Air Date/Time"),this);
+  cut_killdatetime_groupbox->setFont(font);
+  cut_killdatetime_group=new QButtonGroup(this);
+  connect(cut_killdatetime_group,SIGNAL(buttonClicked(int)),
+	  this,SLOT(airDateButtonData(int)));
+  cut_startdatetime_enable_button=new QRadioButton(tr("Enabled"),this);
+  cut_killdatetime_group->addButton(cut_startdatetime_enable_button,true);
   cut_startdatetime_disable_button=new QRadioButton(tr("Disabled"),this);
-  button_group->insert(cut_startdatetime_disable_button,false);
+  cut_killdatetime_group->addButton(cut_startdatetime_disable_button,false);
 
-  cut_startdatetime_edit=new Q3DateTimeEdit(this);
+  cut_startdatetime_edit=new QDateTimeEdit(this);
+  cut_startdatetime_edit->setDisplayFormat("MM/dd/yyyy - hh:mm:ss");
   cut_startdatetime_label=new QLabel(cut_startdatetime_edit,tr("&Start"),this);
   cut_startdatetime_label->setFont(small_font);
   cut_startdatetime_label->setAlignment(Qt::AlignRight);
-
-  cut_enddatetime_edit=new Q3DateTimeEdit(this);
+  cut_enddatetime_edit=new QDateTimeEdit(this);
+  cut_enddatetime_edit->setDisplayFormat("MM/dd/yyyy - hh:mm:ss");
   cut_enddatetime_label=new QLabel(cut_enddatetime_edit,tr("End"),this);
   cut_enddatetime_label->setFont(small_font);
   cut_enddatetime_label->setAlignment(Qt::AlignRight);
@@ -254,23 +249,24 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent)
   //
   // Cut Daypart
   //
-  cut_daypart_label=new QLabel(tr("Daypart"),this);
-  cut_daypart_label->setAlignment(Qt::AlignHCenter);
-  cut_daypart_label->setFont(font);
-  button_group=new Q3ButtonGroup(this);
-  button_group->hide();
-  connect(button_group,SIGNAL(clicked(int)),this,SLOT(daypartButtonData(int)));
+  cut_daypart_groupbox=new QGroupBox(tr("Daypart"),this);
+  cut_daypart_groupbox->setFont(font);
+  cut_daypart_group=new QButtonGroup(this);
+  connect(cut_daypart_group,SIGNAL(buttonClicked(int)),
+	  this,SLOT(daypartButtonData(int)));
   cut_starttime_enable_button=new QRadioButton(tr("Enabled"),this);
-  button_group->insert(cut_starttime_enable_button,true);
+  cut_daypart_group->addButton(cut_starttime_enable_button,true);
   cut_starttime_disable_button=new QRadioButton(tr("Disabled"),this);
-  button_group->insert(cut_starttime_disable_button,false);
+  cut_daypart_group->addButton(cut_starttime_disable_button,false);
 
-  cut_starttime_edit=new RDTimeEdit(this);
+  cut_starttime_edit=new QTimeEdit(this);
+  cut_starttime_edit->setDisplayFormat("hh:mm:ss");
   cut_starttime_label=new QLabel(cut_starttime_edit,tr("&Start Time"),this);
   cut_starttime_label->setFont(small_font);
   cut_starttime_label->setAlignment(Qt::AlignRight);
 
-  cut_endtime_edit=new RDTimeEdit(this);
+  cut_endtime_edit=new QTimeEdit(this);
+  cut_endtime_edit->setDisplayFormat("hh:mm:ss");
   cut_endtime_label=new QLabel(cut_endtime_edit,tr("End Time"),this);
   cut_endtime_label->setFont(small_font);
   cut_endtime_label->setAlignment(Qt::AlignRight);
@@ -278,9 +274,8 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent)
   //
   // Days of the Week
   //
-  rec_dayofweek_label=new QLabel(tr("Day of the Week"),this);
-  rec_dayofweek_label->setAlignment(Qt::AlignHCenter);
-  rec_dayofweek_label->setFont(font);
+  rec_dayofweek_groupbox=new QGroupBox(tr("Day of the Week"),this);
+  rec_dayofweek_groupbox->setFont(font);
   rec_weekpart_button[0]=new QCheckBox(this);
   rec_weekpart_label[0]=new QLabel(rec_weekpart_button[0],tr("Monday"),this);
   rec_weekpart_label[0]->setFont(day_font);
@@ -461,9 +456,9 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent)
   cut_startdatetime_disable_button->setChecked(!valid);
   airDateButtonData(valid);
   cut_starttime_edit->setTime(rec_cut->startDaypart(&valid));
-  cut_endtime_edit->setTime(rec_cut->endDaypart(&valid));
   cut_starttime_enable_button->setChecked(valid);
   cut_starttime_disable_button->setChecked(!valid);
+  cut_endtime_edit->setTime(rec_cut->endDaypart(&valid));
   daypartButtonData(valid);
   for(int i=0;i<7;i++) {
     if(rec_cut->weekPart(i+1)) {
@@ -507,20 +502,20 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent)
   if(!allow_modification) {
     cut_weight_box->setRange(cut_weight_box->value(),cut_weight_box->value());
     if(cut_startdatetime_enable_button->isChecked()) {
-      cut_startdatetime_edit->dateEdit()->
-	setRange(cut_startdatetime_edit->dateEdit()->date(),
-		 cut_startdatetime_edit->dateEdit()->date());
-      cut_startdatetime_edit->timeEdit()->
-	setRange(cut_startdatetime_edit->timeEdit()->time(),
-		 cut_startdatetime_edit->timeEdit()->time());
-      cut_enddatetime_edit->dateEdit()->
-	setRange(cut_enddatetime_edit->dateEdit()->date(),
-		 cut_enddatetime_edit->dateEdit()->date());
+      cut_startdatetime_edit->
+	setDateRange(cut_startdatetime_edit->date(),
+		     cut_startdatetime_edit->date());
+      cut_startdatetime_edit->
+	setTimeRange(cut_startdatetime_edit->time(),
+		     cut_startdatetime_edit->time());
+      cut_enddatetime_edit->
+	setDateRange(cut_enddatetime_edit->date(),
+		     cut_enddatetime_edit->date());
     }
     if(cut_starttime_enable_button->isChecked()) {
-      cut_enddatetime_edit->timeEdit()->
-	setRange(cut_enddatetime_edit->timeEdit()->time(),
-		 cut_enddatetime_edit->timeEdit()->time());
+      cut_enddatetime_edit->
+	setTimeRange(cut_enddatetime_edit->time(),
+		     cut_enddatetime_edit->time());
     }
   }
   rec_evergreen_box->setEnabled(allow_modification);
@@ -656,25 +651,25 @@ void RecordCut::recordData()
     cart->removeCutAudio(rda->station(),rda->user(),rec_cut->cutName(),rda->config());
     delete cart;
     switch(rda->libraryConf()->defaultFormat()) {
-	case 0:
-	  rec_cut->setCodingFormat(0);
-	  rec_format=RDCae::Pcm16;
-	  break;
+    case 0:
+      rec_cut->setCodingFormat(0);
+      rec_format=RDCae::Pcm16;
+      break;
 
-	case 1:
-	  rec_cut->setCodingFormat(1);
-	  rec_format=RDCae::MpegL2;
-	  break;
+    case 1:
+      rec_cut->setCodingFormat(1);
+      rec_format=RDCae::MpegL2;
+      break;
 
-	case 2:
-	  rec_cut->setCodingFormat(2);
-	  rec_format=RDCae::Pcm24;
-	  break;
+    case 2:
+      rec_cut->setCodingFormat(2);
+      rec_format=RDCae::Pcm24;
+      break;
 
-	default:
-	  rec_cut->setCodingFormat(0);
-	  rec_format=RDCae::Pcm16;
-	  break;
+    default:
+      rec_cut->setCodingFormat(0);
+      rec_format=RDCae::Pcm16;
+      break;
     }
     rec_samprate=rda->system()->sampleRate();
     rec_cut->setSampleRate(rec_samprate);
@@ -876,12 +871,12 @@ void RecordCut::closeData()
       switch(QMessageBox::warning(this,tr("Invalid Date"),
 				  tr("The End Date has already passed!\nDo you still want to save?"),
 				  QMessageBox::Yes,QMessageBox::No)) {
-	  case QMessageBox::No:
-	  case QMessageBox::NoButton:
-	    return;
+      case QMessageBox::No:
+      case QMessageBox::NoButton:
+	return;
 
-	  default:
-	    break;
+      default:
+	break;
       }
     }
   }
@@ -1009,21 +1004,21 @@ void RecordCut::evergreenToggledData(bool state)
 {
   cut_weight_label->setDisabled(state);
   cut_weight_box->setDisabled(state);
-  cut_killdatetime_label->setDisabled(state);
+  cut_killdatetime_groupbox->setDisabled(state);
   cut_startdatetime_enable_button->setDisabled(state);
   cut_startdatetime_disable_button->setDisabled(state);
   cut_startdatetime_label->setDisabled(state);
   cut_startdatetime_edit->setDisabled(state);
   cut_enddatetime_edit->setDisabled(state);
   cut_enddatetime_label->setDisabled(state);
-  cut_daypart_label->setDisabled(state);
+  cut_daypart_groupbox->setDisabled(state);
   cut_starttime_enable_button->setDisabled(state);
   cut_starttime_disable_button->setDisabled(state);
   cut_starttime_edit->setDisabled(state);
   cut_starttime_label->setDisabled(state);
   cut_endtime_edit->setDisabled(state);
   cut_endtime_label->setDisabled(state);
-  rec_dayofweek_label->setDisabled(state);
+  rec_dayofweek_groupbox->setDisabled(state);
   for(int i=0;i<7;i++) {
     rec_weekpart_button[i]->setDisabled(state);
     rec_weekpart_label[i]->setDisabled(state);
@@ -1075,7 +1070,8 @@ void RecordCut::resizeEvent(QResizeEvent *e)
 
   cut_startdatetime_enable_button->setGeometry(40,223,100,20);
   cut_startdatetime_disable_button->setGeometry(40,243,100,20);
-  cut_killdatetime_label->setGeometry(50,201,100,19);
+  cut_killdatetime_groupbox->setGeometry(30,203,size().width()-60,65);
+
   cut_startdatetime_label->setGeometry(120,226,40,12);
   cut_startdatetime_edit->setGeometry(165,222,170,19);
   cut_enddatetime_label->setGeometry(120,245,40,12);
@@ -1083,13 +1079,13 @@ void RecordCut::resizeEvent(QResizeEvent *e)
 
   cut_starttime_enable_button->setGeometry(57,303,100,20);
   cut_starttime_disable_button->setGeometry(57,323,100,20);
-  cut_daypart_label->setGeometry(50,281,65,19);
+  cut_daypart_groupbox->setGeometry(37,283,size().width()-64,62);
   cut_starttime_label->setGeometry(137,306,80,12);
   cut_starttime_edit->setGeometry(222,302,90,19);
   cut_endtime_label->setGeometry(137,326,80,12);
   cut_endtime_edit->setGeometry(222,322,90,19);
 
-  rec_dayofweek_label->setGeometry(50,361,125,19);
+  rec_dayofweek_groupbox->setGeometry(20,359,size().width()-35,85);
   rec_weekpart_label[0]->setGeometry(62,378,80,20);
   rec_weekpart_button[0]->setGeometry(40,380,15,15);
   rec_weekpart_label[1]->setGeometry(142,378,80,20);
@@ -1104,8 +1100,8 @@ void RecordCut::resizeEvent(QResizeEvent *e)
   rec_weekpart_button[5]->setGeometry(80,420,15,15);
   rec_weekpart_label[6]->setGeometry(202,418,80,20);
   rec_weekpart_button[6]->setGeometry(180,420,15,15);
-  rec_set_button->setGeometry(sizeHint().width()-80,371,55,30);
-  rec_clear_button->setGeometry(sizeHint().width()-80,409,55,30);
+  rec_set_button->setGeometry(size().width()-80,372,55,30);
+  rec_clear_button->setGeometry(size().width()-80,410,55,30);
 
   rec_meter->setGeometry(20,453,rec_meter->geometry().width(),
 			 rec_meter->geometry().height());
@@ -1128,28 +1124,6 @@ void RecordCut::resizeEvent(QResizeEvent *e)
   rec_trim_box->setGeometry(145,628,70,35);
 
   close_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
-}
-
-
-void RecordCut::paintEvent(QPaintEvent *e)
-{
-  QPainter *p=new QPainter(this);
-  if(rec_evergreen_box->isChecked()) {
-    p->setPen(palette().color(QPalette::Disabled,QColorGroup::Foreground));
-  }
-  else {
-    p->setPen(palette().color(QPalette::Active,QColorGroup::Foreground));
-  }
-  p->drawRect(30,208,sizeHint().width()-60,60);
-  p->drawRect(37,288,sizeHint().width()-74,60);
-  p->drawRect(20,369,sizeHint().width()-40,75);
-
-  /*
-  p->drawRect(30,275,sizeHint().width()-60,60);
-  p->drawRect(37,355,sizeHint().width()-74,60);
-  p->drawRect(20,436,sizeHint().width()-40,75);
-  */
-  p->end();
 }
 
 

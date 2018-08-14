@@ -415,6 +415,10 @@ vytahování</translation>
         <source>Unable to create temporary directory!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Rip CD</source>
+        <translation type="unfinished">Vytáhnout z CD</translation>
+    </message>
 </context>
 <context>
     <name>DiskRipper</name>
@@ -908,12 +912,20 @@ poznámky</translation>
         <source>Duplicate Cut Order</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Edit Carts [multiple]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditMacro</name>
     <message>
         <source>Edit Macro</source>
-        <translation>Upravit makro</translation>
+        <translation type="obsolete">Upravit makro</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -996,10 +1008,6 @@ poznámky</translation>
 <context>
     <name>ListReports</name>
     <message>
-        <source>RDLibrary Reports</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Cart Report</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1033,6 +1041,10 @@ poznámky</translation>
     </message>
     <message>
         <source>Prepend Field Names</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select Report</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1355,7 +1367,7 @@ Přesto smazat?</translation>
     <name>RecordCut</name>
     <message>
         <source>RDLibrary - Record</source>
-        <translation>RDLibrary - Nahrávání</translation>
+        <translation type="obsolete">RDLibrary - Nahrávání</translation>
     </message>
     <message>
         <source>&amp;Description</source>
@@ -1601,6 +1613,10 @@ Přesto uložit?</translation>
     </message>
     <message>
         <source>Source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cut Info / Record</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

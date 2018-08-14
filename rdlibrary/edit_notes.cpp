@@ -2,7 +2,7 @@
 //
 // Edit Cart Notes.
 //
-//   (C) Copyright 2009,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2009-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,16 +21,16 @@
 #include <rddb.h>
 #include <rdescape_string.h>
 
-#include <edit_notes.h>
-//Added by qt3to4:
-#include <QResizeEvent>
+#include "edit_notes.h"
 
 EditNotes::EditNotes(RDCart *cart,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   notes_cart=cart;
-  setCaption("RDLibrary - "+tr("Notes for cart")+
-	     QString().sprintf(" %06u - ",cart->number())+cart->title());
+  setWindowTitle("RDLibrary - "+tr("Notes for cart")+
+	     QString().sprintf(" %06u [",cart->number())+cart->title()+"]");
 
   //
   // Create Fonts

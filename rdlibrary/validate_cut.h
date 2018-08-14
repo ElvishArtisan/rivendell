@@ -2,7 +2,7 @@
 //
 // Validate a Rivendell Audio Cut
 //
-//   (C) Copyright 2006,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2006-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,7 +21,6 @@
 #ifndef VALIDATE_CUT_H
 #define VALIDATE_CUT_H
 
-#include <qsqldatabase.h>
 #include <qdatetime.h>
 
 #include <rdcart.h>

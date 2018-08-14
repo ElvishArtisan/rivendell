@@ -2,7 +2,7 @@
 //
 // CD Ripper Dialog for Rivendell.
 //
-//   (C) Copyright 2002-2003,2009,2016-2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -45,9 +45,9 @@
 #include <rdtempdirectory.h>
 #include <rdwavefile.h>
 
-#include <cdripper.h>
-#include <globals.h>
-#include <rdconfig.h>
+#include "cdripper.h"
+#include "globals.h"
+#include "rdconfig.h"
 
 //
 // Global Variables
@@ -58,6 +58,8 @@ CdRipper::CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
 		   bool profile_rip,QWidget *parent) 
   : QDialog(parent)
 {
+  setModal(true);
+
   rip_profile_rip=profile_rip;
   rip_isrc_read=false;
 
@@ -81,7 +83,7 @@ CdRipper::CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
   rip_track[1]=-1;
   rip_title=NULL;
 
-  setCaption("Rip CD");
+  setWindowTitle("RDLibrary - "+tr("Rip CD"));
 
   //
   // Create Temporary Directory
