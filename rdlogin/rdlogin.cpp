@@ -2,7 +2,7 @@
 //
 // The User Login/Logout Utility for Rivendell.
 //
-//   (C) Copyright 2002-2008,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,24 +21,11 @@
 #include <stdlib.h>
 
 #include <qapplication.h>
-#include <qwindowsstyle.h>
-#include <qpainter.h>
-#include <qsqldatabase.h>
 #include <qmessagebox.h>
-#include <qpushbutton.h>
-#include <qlabel.h>
-#include <qtextcodec.h>
 #include <qtranslator.h>
-//Added by qt3to4:
-#include <QResizeEvent>
-#include <QPixmap>
 
-#include <dbversion.h>
-#include <rd.h>
 #include <rdapplication.h>
-#include <rdcmd_switch.h>
 #include <rddb.h>
-#include <rddbheartbeat.h>
 
 #include "rdlogin.h"
 
@@ -84,7 +71,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Create And Set Icon
   //
   login_rivendell_map=new QPixmap(rivendell_22x22_xpm);
-  setIcon(*login_rivendell_map);
+  setWindowIcon(*login_rivendell_map);
 
   rda=new RDApplication("RDLogin","rdlogin",RDLOGIN_USAGE,this);
   if(!rda->open(&err_msg)) {
@@ -104,8 +91,7 @@ MainWidget::MainWidget(QWidget *parent)
     }
   }
 
-  str=QString(tr("RDLogin - Station:"));
-  setCaption(str+" "+rda->config()->stationName());
+  setWindowTitle("RDLogin");
 
   //
   // RIPC Connection

@@ -5,7 +5,7 @@
     <name>MainWidget</name>
     <message>
         <source>RDLogin - Station:</source>
-        <translation>RDLogin - Station:</translation>
+        <translation type="obsolete">RDLogin - Station:</translation>
     </message>
     <message>
         <source>rdlogin : </source>

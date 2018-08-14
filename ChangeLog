@@ -17400,3 +17400,5 @@
 	* Rebased rdlogedit(1)'s main window to QWidget.
 2018-08-14 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed style inconsistencies in dialogs within rdlibrary(1).
+2018-08-14 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed style inconsistencies in dialogs within rdlogin(1).
