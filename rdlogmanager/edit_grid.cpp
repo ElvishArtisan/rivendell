@@ -29,11 +29,6 @@
 #include <qmessagebox.h>
 #include <qcolordialog.h>
 #include <qsignalmapper.h>
-//Added by qt3to4:
-#include <QCloseEvent>
-#include <QPaintEvent>
-#include <QLabel>
-#include <Q3PopupMenu>
 
 #include <rd.h>
 #include <rddb.h>
@@ -45,11 +40,13 @@
 #include "edit_clock.h"
 
 EditGrid::EditGrid(QString servicename,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   QString sql;
 
-  setCaption("RDLogManager - "+tr("Edit Grid")+": "+servicename);
+  setWindowTitle("RDLogManager - "+tr("Edit Grid")+": "+servicename);
   edit_servicename=servicename;
 
   //

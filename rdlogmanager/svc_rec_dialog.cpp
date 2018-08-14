@@ -2,7 +2,7 @@
 //
 // A Services/Reports Management Dialog.
 //
-//   (C) Copyright 2002-2005,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -42,15 +42,16 @@
 // Global Classes
 //
 SvcRecDialog::SvcRecDialog(const QString &svcname,QWidget *parent)
-  :QDialog(parent,"",true)
+  :QDialog(parent)
 {
+  setModal(true);
+
   QFont font;
 
   font=QFont("Helvetica",12,QFont::Bold);
   font.setPixelSize(12);
 
-  setCaption(QString().sprintf("%s %s",(const char *)svcname,
-			       (const char *)tr("Report Data")));
+  setWindowTitle("RDLogManager - "+svcname+" "+tr("Report Data"));
 
   //
   // Datepicker

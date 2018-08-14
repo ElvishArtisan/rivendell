@@ -2,7 +2,7 @@
 //
 // List a Rivendell Log Event
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,11 +25,6 @@
 #include <q3textedit.h>
 #include <qpainter.h>
 #include <qmessagebox.h>
-//Added by qt3to4:
-#include <QCloseEvent>
-#include <QResizeEvent>
-#include <QPixmap>
-#include <QLabel>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -44,10 +39,12 @@
 #include "rename_item.h"
 
 ListEvents::ListEvents(QString *eventname,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   QStringList services_list;
-  setCaption("RDLogManager - "+tr("Log Events"));
+  setWindowTitle("RDLogManager - "+tr("Log Events"));
   edit_eventname=eventname;
 
   //

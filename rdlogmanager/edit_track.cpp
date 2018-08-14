@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell LogManager Track
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,9 +23,6 @@
 #include <q3textedit.h>
 #include <qpainter.h>
 #include <qmessagebox.h>
-#include <qsqldatabase.h>
-//Added by qt3to4:
-#include <QCloseEvent>
 
 #include <rd.h>
 #include <rdevent.h>
@@ -33,9 +30,9 @@
 #include "edit_track.h"
 
 EditTrack::EditTrack(QString *text,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
-  setCaption(tr("Edit Voice Track Marker"));
+  setWindowTitle("RDLogManager - "+tr("Edit Voice Track Marker"));
   edit_text=text;
 
   //

@@ -30,11 +30,6 @@
 #include <qcolordialog.h>
 #include <qspinbox.h>
 #include <qcombobox.h>
-//Added by qt3to4:
-#include <QCloseEvent>
-#include <QPaintEvent>
-#include <QPixmap>
-#include <QLabel>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -54,11 +49,13 @@
 
 EditClock::EditClock(QString clockname,bool new_clock,
 		     std::vector<QString> *new_clocks,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   QString str;
 
-  setCaption("RDLogManager - "+tr("Edit Clock")+": "+clockname);
+  setWindowTitle("RDLogManager - "+tr("Edit Clock")+": "+clockname);
   edit_name=clockname;
   edit_new_clock=new_clock;
   edit_new_clocks=new_clocks;

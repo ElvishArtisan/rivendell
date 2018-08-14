@@ -2,7 +2,7 @@
 //
 // Edit RDLogManager Service Associations
 //
-//   (C) Copyright 2002-2005,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,8 +29,6 @@
 #include <qmessagebox.h>
 #include <qcheckbox.h>
 #include <q3buttongroup.h>
-//Added by qt3to4:
-#include <QCloseEvent>
 
 #include <rddb.h>
 #include <rdescape_string.h>
@@ -40,11 +38,12 @@
 #include "edit_perms.h"
 
 EditPerms::EditPerms(QString object_name,ObjectType type,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   QString sql;
   RDSqlQuery *q;
-  QString str;
 
   sel_type=type;
   sel_name=object_name;
@@ -57,8 +56,7 @@ EditPerms::EditPerms(QString object_name,ObjectType type,QWidget *parent)
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  str=QString(tr("Service Associations"));
-  setCaption("RDLogManager - "+sel_name+" - "+tr("Service Associations"));
+  setWindowTitle("RDLogManager - "+sel_name+" - "+tr("Service Associations"));
 
   //
   // Create Fonts

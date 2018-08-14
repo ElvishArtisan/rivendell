@@ -25,10 +25,6 @@
 #include <qmessagebox.h>
 #include <qpixmap.h>
 #include <qpainter.h>
-//Added by qt3to4:
-#include <QCloseEvent>
-#include <QResizeEvent>
-#include <QLabel>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -43,10 +39,12 @@
 #include "rename_item.h"
 
 ListClocks::ListClocks(QString *clockname,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   QStringList services_list;
-  setCaption("RDLogManager - "+tr("Log Clocks"));
+  setWindowTitle("RDLogManager - "+tr("Log Clocks"));
   edit_clockname=clockname;
 
   //

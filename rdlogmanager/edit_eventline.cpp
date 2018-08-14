@@ -2,7 +2,7 @@
 //
 // Edit Rivendell Log Eventline
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,9 +24,6 @@
 #include <qpainter.h>
 #include <qmessagebox.h>
 #include <qpushbutton.h>
-//Added by qt3to4:
-#include <QLabel>
-#include <QCloseEvent>
 
 #include <rd.h>
 #include <rddb.h>
@@ -38,9 +35,11 @@
 
 EditEventLine::EditEventLine(RDEventLine *eventline,RDClock *clock,int line,
 			     QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
-  setCaption(tr("Edit Event Assignment"));
+  setModal(true);
+
+  setWindowTitle("RDLogManager - "+tr("Edit Event Assignment"));
   edit_eventline=eventline;
   edit_clock=clock;
   edit_line=line;

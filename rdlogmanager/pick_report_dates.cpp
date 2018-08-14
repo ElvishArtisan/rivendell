@@ -2,7 +2,7 @@
 //
 // Select a Set of Dates for a Rivendell Report
 //
-//   (C) Copyright 2002-2006,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -34,14 +34,16 @@
 #include "pick_report_dates.h"
 
 PickReportDates::PickReportDates(const QString &svcname,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   QString sql;
   RDSqlQuery *q;
   QDate yesterday_date=QDate::currentDate().addDays(-1);
 
   edit_svcname=svcname;
-  setCaption(tr("Select Report Dates"));
+  setWindowTitle("RDLogManager - "+tr("Select Report Dates"));
 	     
   //
   // Fix the Window Size

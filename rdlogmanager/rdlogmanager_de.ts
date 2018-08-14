@@ -5,7 +5,7 @@
     <name>AddClock</name>
     <message>
         <source>Add Log Clock</source>
-        <translation>Neue Loguhr hinzufügen</translation>
+        <translation type="obsolete">Neue Loguhr hinzufügen</translation>
     </message>
     <message>
         <source>&amp;New Clock Name:</source>
@@ -18,6 +18,10 @@
     <message>
         <source>&amp;Cancel</source>
         <translation>Abbre&amp;chen</translation>
+    </message>
+    <message>
+        <source>Add Clock</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

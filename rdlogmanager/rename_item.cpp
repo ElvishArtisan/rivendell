@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell LogManager Note
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -32,12 +32,14 @@
 #include "rename_item.h"
 
 RenameItem::RenameItem(QString *text,QString table,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   edit_text=text;
   edit_tablename=table;
 
-  setCaption(tr("Rename"));
+  setWindowTitle("RDLogManager - "+tr("Rename"));
 
   //
   // Fix the Window Size

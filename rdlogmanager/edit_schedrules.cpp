@@ -2,7 +2,8 @@
 //
 // Edit scheduler rules of a clock
 //
-//   Stefan Gabriel <stg@st-gabriel.de>
+//   (C) Copyright Stefan Gabriel <stg@st-gabriel.de>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,12 +24,8 @@
 #include <q3textedit.h>
 #include <qpainter.h>
 #include <qmessagebox.h>
-
 #include <qspinbox.h>
 #include <qcombobox.h>
-//Added by qt3to4:
-#include <QCloseEvent>
-#include <QLabel>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -43,8 +40,10 @@
 #include "schedruleslist.h"
 
 EditSchedRules::EditSchedRules(QString clock,unsigned *artistsep,SchedRulesList *schedruleslist,bool *rules_modified,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   edit_artistsep=artistsep;
   edit_rules_modified=rules_modified;
   sched_rules_list = schedruleslist;
@@ -58,7 +57,7 @@ EditSchedRules::EditSchedRules(QString clock,unsigned *artistsep,SchedRulesList 
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  setCaption(tr("Scheduler Rules"));
+  setWindowTitle("RDLogManager - "+tr("Scheduler Rules"));
 
   //
   // Create Fonts

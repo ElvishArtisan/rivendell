@@ -2,7 +2,8 @@
 //
 // Change rules for scheduler codes dialog
 //
-//   Stefan Gabriel <stg@st-gabriel.de>
+//   (C) Stefan Gabriel <stg@st-gabriel.de>
+//   (C) 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,20 +29,19 @@
 #include <qsqldatabase.h>
 #include <qspinbox.h>
 #include <qcombobox.h>
-//Added by qt3to4:
-#include <QLabel>
-#include <QCloseEvent>
 
 #include <rd.h>
-
-#include <edit_schedcoderules.h>
 #include <schedruleslist.h>
+
+#include "edit_schedcoderules.h"
 
 editSchedCodeRules::editSchedCodeRules(Q3ListViewItem *item,
 				       SchedRulesList *sched_rules_list,
 				       QWidget* parent)
-    : QDialog(parent,"",true)
+    : QDialog(parent)
 {
+  setModal(true);
+
   item_edit = item;
 
   //
@@ -52,8 +52,7 @@ editSchedCodeRules::editSchedCodeRules(Q3ListViewItem *item,
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
     
-  setCaption(tr("Edit Rules for Code"));
-
+  setWindowTitle("RDLogManager - "+tr("Edit Rules for Code"));
 
   // Create Font
   QFont font=QFont("Helvetica",12,QFont::Bold);

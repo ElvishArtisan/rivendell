@@ -2,7 +2,8 @@
 //
 // Change rules for scheduler codes dialog
 //
-//   Stefan Gabriel <stg@st-gabriel.de>
+//   (C) Copyright Stefan Gabriel <stg@st-gabriel.de>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,16 +23,14 @@
 #define EDIT_SCHEDCODERULES_H
 
 #include <qdialog.h>
-#include <qsqldatabase.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
 #include <qcombobox.h>
 #include <qvariant.h>
-//Added by qt3to4:
-#include <QCloseEvent>
 
 #include <schedruleslist.h>
-#include <clock_listview.h>
+
+#include "clock_listview.h"
 
 class QSpinBox;
 

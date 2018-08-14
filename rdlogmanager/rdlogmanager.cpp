@@ -1,8 +1,8 @@
 // rdlogmanager.cpp
 //
-// The Log Editor Utility for Rivendell.
+// The Log Generator Utility for Rivendell.
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -38,10 +38,7 @@
 #include <q3listview.h>
 #include <qtextcodec.h>
 #include <qtranslator.h>
-//Added by qt3to4:
-#include <QPixmap>
 
-#include <dbversion.h>
 #include <rd.h>
 #include <rdapplication.h>
 #include <rdcmd_switch.h>
@@ -72,24 +69,6 @@ QString *event_filter;
 QString *clock_filter;
 bool skip_db_check=false;
 
-#ifndef WIN32
-void SigHandler(int signo)
-{
-  pid_t pLocalPid;
-
-  switch(signo) {
-      case SIGCHLD:
-	pLocalPid=waitpid(-1,NULL,WNOHANG);
-	while(pLocalPid>0) {
-	  pLocalPid=waitpid(-1,NULL,WNOHANG);
-	}
-	signal(SIGCHLD,SigHandler);
-	break;
-  }
-}
-#endif  // WIN32
-
-
 MainWidget::MainWidget(QWidget *parent)
   :QWidget(parent)
 {
@@ -112,7 +91,7 @@ MainWidget::MainWidget(QWidget *parent)
     exit(1);
   }
 
-  setCaption(tr("RDLogManager"));
+  setWindowTitle(tr("RDLogManager"));
 
   //
   // CAE Connection
@@ -219,10 +198,6 @@ MainWidget::MainWidget(QWidget *parent)
   log_close_button->setText(tr("&Close"));
   log_close_button->setDefault(true);
   connect(log_close_button,SIGNAL(clicked()),this,SLOT(quitMainWidget()));
-
-#ifndef WIN32
-  signal(SIGCHLD,SigHandler);
-#endif  // WIN32
 }
 
 
@@ -240,8 +215,6 @@ QSizePolicy MainWidget::sizePolicy() const
 
 void MainWidget::userData()
 {
-  setCaption("RDLogManager");
-
   //
   // Set Control Perms
   //

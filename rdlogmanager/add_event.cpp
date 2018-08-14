@@ -1,8 +1,8 @@
 // add_event.cpp
 //
-// Add a Rivendell Service
+// Add a Rivendell LogManager Event
 //
-//   (C) Copyright 2002,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,29 +19,24 @@
 //
 
 #include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
-#include <qcheckbox.h>
+#include <qpainter.h>
+#include <qpushbutton.h>
+
 #include <q3buttongroup.h>
-#include <qsqldatabase.h>
-//Added by qt3to4:
-#include <QCloseEvent>
 
-#include <rdtextvalidator.h>
 #include <rdpasswd.h>
+#include <rdtextvalidator.h>
 
-#include <edit_event.h>
-#include <add_event.h>
+#include "add_event.h"
+#include "edit_event.h"
 
 AddEvent::AddEvent(QString *logname,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   event_name=logname;
 
   //
@@ -52,7 +47,7 @@ AddEvent::AddEvent(QString *logname,QWidget *parent)
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  setCaption(tr("Add Log Event"));
+  setWindowTitle("RDLogManager - "+tr("Add Log Event"));
 
   //
   // Create Fonts

@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Log Event
 //
-//   (C) Copyright 2002-2004,2008,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,11 +24,6 @@
 #include <qpainter.h>
 #include <qmessagebox.h>
 #include <qcolordialog.h>
-//Added by qt3to4:
-#include <QLabel>
-#include <QPixmap>
-#include <QPaintEvent>
-#include <QCloseEvent>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -52,14 +47,16 @@
 
 EditEvent::EditEvent(QString eventname,bool new_event,
 		     std::vector<QString> *new_events,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   event_saved=false;
   event_name=eventname;
   event_new_event=new_event;
   event_new_events=new_events;
   event_event=new RDEvent(eventname);
-  setCaption("RDLogManager - "+tr("Editing Event")+" - "+event_event->name());
+  setWindowTitle("RDLogManager - "+tr("Editing Event")+" - "+event_event->name());
 
   //
   // Fix the Window Size

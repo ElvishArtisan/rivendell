@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell LogManager Note
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,8 +24,6 @@
 #include <qpainter.h>
 #include <qmessagebox.h>
 #include <qsqldatabase.h>
-//Added by qt3to4:
-#include <QCloseEvent>
 
 #include <rd.h>
 #include <rdevent.h>
@@ -33,9 +31,11 @@
 #include "edit_note.h"
 
 EditNote::EditNote(QString *text,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
-  setCaption(tr("Edit Log Note"));
+  setModal(true);
+
+  setWindowTitle("RDLogManager - "+tr("Edit Log Note"));
   edit_text=text;
 
   //

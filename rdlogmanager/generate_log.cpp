@@ -2,7 +2,7 @@
 //
 // Generate a Rivendell Log
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,10 +26,6 @@
 #include <qmessagebox.h>
 #include <qfile.h>
 #include <qtimer.h>
-//Added by qt3to4:
-#include <QResizeEvent>
-#include <QPixmap>
-#include <QLabel>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -54,15 +50,17 @@
 
 GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
 			 QDate *cmd_date)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   QStringList services_list;
   bool  cmdservicefit=false;
   cmdswitch=cmd_switch;
   cmdservice = cmd_service;
   cmddate = cmd_date;
 
-  setCaption("RDLogManager - "+tr("Generate Log"));
+  setWindowTitle("RDLogManager - "+tr("Generate Log"));
 
   gen_music_enabled=false;
   gen_traffic_enabled=false;

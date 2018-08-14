@@ -2,7 +2,7 @@
 //
 // Generate a Rivendell Log
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,8 +28,6 @@
 #include <qpixmap.h>
 #include <q3progressdialog.h>
 #include <qpushbutton.h>
-//Added by qt3to4:
-#include <QResizeEvent>
 
 #include <rdnotification.h>
 

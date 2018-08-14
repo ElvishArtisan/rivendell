@@ -2,7 +2,7 @@
 //
 // List Rivendell Services and Report Ages
 //
-//   (C) Copyright 2002-2005,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,8 +20,6 @@
 
 #include <qmessagebox.h>
 #include <qdatetime.h>
-//Added by qt3to4:
-#include <QResizeEvent>
 
 #include <rddb.h>
 #include <rdescape_string.h>
@@ -33,9 +31,11 @@
 #include "pick_report_dates.h"
 
 ListSvcs::ListSvcs(QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
-  setCaption(tr("Rivendell Services"));
+  setModal(true);
+
+  setWindowTitle("RDLogManager - "+tr("Rivendell Services"));
 
   //
   // Fix the Window Size

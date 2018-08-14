@@ -2,7 +2,7 @@
 //
 // Edit A Rivendell Log Clock
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,20 +24,16 @@
 #include <vector>
 
 #include <qdialog.h>
-#include <qsqldatabase.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
 #include <qcombobox.h>
 #include <qvariant.h>
 #include <q3textedit.h>
-//Added by qt3to4:
-#include <QCloseEvent>
-#include <QPaintEvent>
 
 #include <rdclock.h>
-
-#include <clock_listview.h>
 #include <schedruleslist.h>
+
+#include "clock_listview.h"
 
 //
 // Layout
