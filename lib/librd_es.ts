@@ -1184,13 +1184,13 @@ Cartucho</translation>
     <message>
         <source>Zoom
 In</source>
-        <translation>Acercar
+        <translation type="unfinished">Acercar
 Zoom</translation>
     </message>
     <message>
         <source>Zoom
 Out</source>
-        <translation>Alejar
+        <translation type="unfinished">Alejar
 Zoom</translation>
     </message>
     <message>

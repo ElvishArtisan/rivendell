@@ -1183,12 +1183,12 @@ Cart</source>
     <message>
         <source>Zoom
 In</source>
-        <translation>hineinzoomen</translation>
+        <translation type="unfinished">hineinzoomen</translation>
     </message>
     <message>
         <source>Zoom
 Out</source>
-        <translation>herauszoomen</translation>
+        <translation type="unfinished">herauszoomen</translation>
     </message>
     <message>
         <source>Time</source>

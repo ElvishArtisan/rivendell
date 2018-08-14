@@ -34,12 +34,8 @@
 #include <qtimer.h>
 #include <qnamespace.h>
 #include <qcheckbox.h>
-//Added by qt3to4:
-#include <Q3RangeControl>
-#include <QCloseEvent>
-#include <QPaintEvent>
-#include <QMouseEvent>
-#include <QKeyEvent>
+
+#include <q3rangecontrol.h>
 
 #include <rdmarker_edit.h>
 #include <rdtransportbutton.h>

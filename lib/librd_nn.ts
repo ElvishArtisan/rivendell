@@ -1182,13 +1182,13 @@ Cart</source>
     <message>
         <source>Zoom
 In</source>
-        <translation>Zoom
+        <translation type="unfinished">Zoom
 inn</translation>
     </message>
     <message>
         <source>Zoom
 Out</source>
-        <translation>Zoom
+        <translation type="unfinished">Zoom
 ut</translation>
     </message>
     <message>

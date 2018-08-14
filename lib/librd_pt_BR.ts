@@ -1184,13 +1184,13 @@ Cartão</translation>
     <message>
         <source>Zoom
 In</source>
-        <translation>Zoom
+        <translation type="unfinished">Zoom
 In</translation>
     </message>
     <message>
         <source>Zoom
 Out</source>
-        <translation>Zoom
+        <translation type="unfinished">Zoom
 Out</translation>
     </message>
     <message>

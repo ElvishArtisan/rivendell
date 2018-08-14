@@ -20,18 +20,11 @@
 
 #include <stdlib.h>
 #include <math.h>
+
+#include <qgroupbox.h>
 #include <qpainter.h>
 #include <qsignalmapper.h>
 #include <qmessagebox.h>
-//Added by qt3to4:
-#include <QLabel>
-#include <QPixmap>
-#include <QMouseEvent>
-#include <QCloseEvent>
-#include <QKeyEvent>
-#include <Q3PointArray>
-#include <QPaintEvent>
-#include <Q3PopupMenu>
 
 #include "rd.h"
 #include "rdapplication.h"
@@ -214,55 +207,37 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,int card,
   //
   // Amplitude Buttons
   //
-  QLabel *amp_label=new QLabel(this);
-  amp_label->setGeometry(742,5,80,16);
-  amp_label->setAlignment(Qt::AlignHCenter|Qt::AlignVCenter);
-  amp_label->setFont(button_font);
-  amp_label->setText(tr("Amplitude"));
-
-  RDTransportButton *y_up_button=
-    new RDTransportButton(RDTransportButton::Up,this);
+  QGroupBox *group_box=new QGroupBox(tr("Amplitude"),this);
+  group_box->setGeometry(739,2,85,130);
+  group_box->setFont(label_font);
+  QPushButton *y_up_button=new QPushButton(tr("Zoom\nIn"),this);
   y_up_button->setGeometry(747,22,70,50);
-  y_up_button->setFont(QFont("Helvetica",12,QFont::Bold));
-  y_up_button->setText(tr("Zoom\nIn"));
+  y_up_button->setFont(button_font);
   connect(y_up_button,SIGNAL(clicked()),this,SLOT(yUp()));
-
-  RDTransportButton *y_down_button=
-    new RDTransportButton(RDTransportButton::Down,this);
+  QPushButton *y_down_button=new QPushButton(tr("Zoom\nOut"),this);
   y_down_button->setGeometry(747,72,70,50);
-  y_down_button->setFont(QFont("Helvetica",12,QFont::Bold));
-  y_down_button->setText(tr("Zoom\nOut"));
+  y_down_button->setFont(button_font);
   connect(y_down_button,SIGNAL(clicked()),this,SLOT(yDown()));
 
   //
   // Time Buttons
   //
-  QLabel *time_label=new QLabel(this);
-  time_label->setGeometry(760,143,40,16);
-  time_label->setAlignment(Qt::AlignHCenter|Qt::AlignVCenter);
-  time_label->setFont(button_font);
-  time_label->setText(tr("Time"));
-
+  group_box=new QGroupBox(tr("Time"),this);
+  group_box->setGeometry(739,140,85,230);
+  group_box->setFont(label_font);
   QPushButton *x_full_in_button=new QPushButton(this);
   x_full_in_button->setGeometry(747,160,70,50);
   x_full_in_button->setFont(button_font);
   x_full_in_button->setText(tr("Full\nIn"));
   connect(x_full_in_button,SIGNAL(clicked()),this,SLOT(xFullIn()));
-
-  RDTransportButton *x_up_button=
-    new RDTransportButton(RDTransportButton::Up,this);
+  QPushButton *x_up_button=new QPushButton(tr("Zoom\nIn"),this);
   x_up_button->setGeometry(747,212,70,50);
   x_up_button->setFont(button_font);
-  x_up_button->setText(tr("Zoom\nIn"));
   connect(x_up_button,SIGNAL(clicked()),this,SLOT(xUp()));
-
-  RDTransportButton *x_down_button=
-    new RDTransportButton(RDTransportButton::Down,this);
+  QPushButton *x_down_button=new QPushButton(tr("Zoom\nOut"),this);
   x_down_button->setGeometry(747,262,70,50);
   x_down_button->setFont(button_font);
-  x_down_button->setText(tr("Zoom\nOut"));
   connect(x_down_button,SIGNAL(clicked()),this,SLOT(xDown()));
-
   QPushButton *x_full_button=new QPushButton(this);
   x_full_button->setGeometry(747,312,70,50);
   x_full_button->setFont(button_font);
@@ -272,24 +247,19 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,int card,
   //
   // GoTo Buttons
   //
-  QLabel *goto_label=new QLabel(this);
-  goto_label->setGeometry(760,378,40,16);
-  goto_label->setAlignment(Qt::AlignHCenter|Qt::AlignVCenter);
-  goto_label->setFont(button_font);
-  goto_label->setText(tr("Goto"));
-
+  group_box=new QGroupBox(tr("Goto"),this);
+  group_box->setGeometry(739,375,85,175);
+  group_box->setFont(label_font);
   QPushButton *goto_cursor_button=new QPushButton(this);
   goto_cursor_button->setGeometry(747,393,70,50);
   goto_cursor_button->setFont(button_font);
   goto_cursor_button->setText(tr("Cursor"));
   connect(goto_cursor_button,SIGNAL(clicked()),this,SLOT(gotoCursorData()));
-
   QPushButton *goto_home_button=new QPushButton(this);
   goto_home_button->setGeometry(747,443,70,50);
   goto_home_button->setFont(button_font);
   goto_home_button->setText(tr("Home"));
   connect(goto_home_button,SIGNAL(clicked()),this,SLOT(gotoHomeData()));
-
   QPushButton *goto_end_button=new QPushButton(this);
   goto_end_button->setGeometry(747,493,70,50);
   goto_end_button->setFont(button_font);
@@ -1677,13 +1647,6 @@ void RDEditAudio::paintEvent(QPaintEvent *e)
     p->drawImage(11,11,edit_left_image);
     p->drawImage(11,11+EDITAUDIO_WAVEFORM_HEIGHT/2,edit_right_image);
   }
-
-  //
-  // Highlights
-  //
-  p->drawRect(739,12,85,120);    // Amplitude Buttons
-  p->drawRect(739,150,85,220);   // Time Buttons
-  p->drawRect(739,385,85,165);   // Goto Buttons
 
   //
   // Transport Control Area

@@ -66,6 +66,7 @@ class RDTransportButton : public QPushButton
  void drawOffCap();
  void flashOn();
  void flashOff();
+ QSize capSize() const;
  bool flash_state;
  RDTransportButton::TransType button_type;
  RDTransportButton::TransState button_state;
