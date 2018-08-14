@@ -310,10 +310,6 @@ for the selected service!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Run Length</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Selected:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -415,6 +411,10 @@ for the selected service!</source>
     </message>
     <message>
         <source>Count</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Run Length</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

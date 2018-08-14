@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Log Entry
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,9 +21,6 @@
 #include <qpushbutton.h>
 #include <qmessagebox.h>
 #include <qradiobutton.h>
-//Added by qt3to4:
-#include <QCloseEvent>
-#include <QLabel>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -37,8 +34,9 @@ EditLogLine::EditLogLine(RDLogLine *line,QString *filter,QString *group,
 			 QString *schedcode,QString svcname,
 			 RDGroupList *grplist,RDLogEvent *log,int lineno,
 			 QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
   //
   // Fix the Window Size
   //
@@ -47,7 +45,7 @@ EditLogLine::EditLogLine(RDLogLine *line,QString *filter,QString *group,
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  setCaption(tr("Edit Log Entry"));
+  setWindowTitle("RDLogEdit - "+tr("Edit Log Entry"));
 
   edit_logline=line;
   edit_filter=filter;

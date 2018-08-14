@@ -21,19 +21,12 @@
 #include <math.h>
 
 #include <qdialog.h>
-#include <qstring.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
 #include <qevent.h>
+#include <qgroupbox.h>
+#include <qlabel.h>
 #include <qmessagebox.h>
-#include <q3buttongroup.h>
-//Added by qt3to4:
-#include <QResizeEvent>
-#include <QPixmap>
-#include <QCloseEvent>
-#include <QPaintEvent>
+#include <qpainter.h>
+#include <qstring.h>
 
 #include <rd.h>
 #include <rdadd_log.h>
@@ -70,8 +63,10 @@
 EditLog::EditLog(QString logname,QString *filter,QString *group,
 		 QString *schedcode,vector<RDLogLine> *clipboard,
 		 vector<QString> *new_logs,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   QString sql;
   RDSqlQuery *q;
   QStringList services_list;
@@ -90,7 +85,8 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   bool editing_allowed=rda->user()->arrangeLog();
   bool saveas_allowed=rda->user()->createLog();
 
-  setCaption(tr("Edit Log"));
+  setModal(true);
+  setWindowTitle("RDLogEdit - "+tr("Edit Log"));
 
   //
   // Config Data
@@ -313,9 +309,8 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   //
   // Time Counter Section
   //
-  edit_time_label=new QLabel(tr("Run Length"),this);
-  edit_time_label->setFont(label_font);
-  edit_time_label->setAlignment(Qt::AlignCenter);  
+  edit_time_groupbox=new QGroupBox(tr("Run Length"),this);
+  edit_time_groupbox->setFont(label_font);
 
   //
   // Stop Time Counter
@@ -1320,7 +1315,7 @@ void EditLog::resizeEvent(QResizeEvent *e)
   edit_startdate_box_label->setGeometry(270,96,175,20);
   edit_enddate_box_label->setGeometry(450,96,140,20);
 
-  edit_time_label->setGeometry(655,62,75,20);
+  edit_time_groupbox->setGeometry(624,65,136,59);
   edit_stoptime_label->setGeometry(625,82,65,18);
   edit_stoptime_edit->setGeometry(695,82,60,18);
   edit_endtime_label->setGeometry(625,102,65,18);
@@ -1361,14 +1356,14 @@ void EditLog::paintEvent(QPaintEvent *e)
   p->fillRect(60,8,size().width()-120,24,QColor(system_mid_color));
   p->fillRect(9,size().height()-130,size().width()-20,60,
 	      QColor(system_mid_color));
-
+  /*
   p->setPen(Qt::black);
   p->setBrush(Qt::black);
   p->drawLine(624,70,760,70);
   p->drawLine(760,70,760,124);
   p->drawLine(760,124,624,124);
   p->drawLine(624,124,624,70);
-
+  */
   p->end();
   delete p;
 }

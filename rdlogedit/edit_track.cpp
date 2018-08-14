@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Voice Track Log Entry
 //
-//   (C) Copyright 2002-2005,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,15 +20,14 @@
 
 #include <qpushbutton.h>
 #include <qmessagebox.h>
-//Added by qt3to4:
-#include <QLabel>
-#include <QCloseEvent>
 
 #include <edit_track.h>
 
 EditTrack::EditTrack(RDLogLine *line,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   //
   // Fix the Window Size
   //
@@ -37,7 +36,7 @@ EditTrack::EditTrack(RDLogLine *line,QWidget *parent)
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  setCaption(tr("Edit Voice Track Marker"));
+  setWindowTitle("RDLogEdit - "+tr("Edit Voice Track Marker"));
 
   edit_logline=line;
 

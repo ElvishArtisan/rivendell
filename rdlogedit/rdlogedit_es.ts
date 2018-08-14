@@ -385,7 +385,7 @@ desactivados para el servicio actual!
     </message>
     <message>
         <source>Run Length</source>
-        <translation>Durac. total</translation>
+        <translation type="unfinished">Durac. total</translation>
     </message>
     <message>
         <source>Selected:</source>

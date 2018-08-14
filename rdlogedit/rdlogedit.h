@@ -33,8 +33,6 @@
 #include <qpixmap.h>
 #include <qcombobox.h>
 #include <qlabel.h>
-//Added by qt3to4:
-#include <QResizeEvent>
 
 #include <rdlog_line.h>
 #include <rdlogfilter.h>

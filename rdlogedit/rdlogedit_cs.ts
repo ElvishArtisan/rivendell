@@ -385,7 +385,7 @@ jež jsou pro vybranou službu zakázány!</translation>
     </message>
     <message>
         <source>Run Length</source>
-        <translation>Délka běhu</translation>
+        <translation type="unfinished">Délka běhu</translation>
     </message>
     <message>
         <source>Selected:</source>

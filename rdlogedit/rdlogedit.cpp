@@ -39,10 +39,7 @@
 #include <qsettings.h>
 #include <qpixmap.h>
 #include <qpainter.h>
-//Added by qt3to4:
-#include <QResizeEvent>
 
-#include <dbversion.h>
 #include <rd.h>
 #include <rdadd_log.h>
 #include <rdapplication.h>
@@ -78,25 +75,6 @@
 //
 RDCartDialog *log_cart_dialog;
 bool import_running=false;
-#ifndef WIN32
-
-void SigHandler(int signo)
-{
-  pid_t pLocalPid;
-
-  switch(signo) {
-  case SIGCHLD:
-    pLocalPid=waitpid(-1,NULL,WNOHANG);
-    while(pLocalPid>0) {
-      pLocalPid=waitpid(-1,NULL,WNOHANG);
-    }
-    import_running=false;
-    signal(SIGCHLD,SigHandler);
-    return;
-  }
-}
-#endif  // WIN32
-
 
 MainWidget::MainWidget(QWidget *parent)
   :Q3MainWindow(parent)
@@ -168,7 +146,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Create Icons
   //
   log_rivendell_map=new QPixmap(rdlogedit_22x22_xpm);
-  setIcon(*log_rivendell_map);
+  setWindowIcon(*log_rivendell_map);
   log_greencheckmark_map=new QPixmap(greencheckmark_xpm);
   log_redx_map=new QPixmap(redx_xpm);
   log_whiteball_map=new QPixmap(whiteball_xpm);
@@ -289,13 +267,8 @@ MainWidget::MainWidget(QWidget *parent)
 
 #ifdef WIN32
   RefreshList();
-#else
-  // 
-  // Setup Signal Handling 
-  //
-  ::signal(SIGCHLD,SigHandler);
 #endif  // WIN32
-  setCaption(QString("RDLogEdit")+"v"+VERSION+" - "+tr("Host")+": "+
+  setWindowTitle(QString("RDLogEdit")+"v"+VERSION+" - "+tr("Host")+": "+
 	     rda->config()->stationName()+", "+
 	     tr("User")+": ["+tr("Unknown")+"]");
 

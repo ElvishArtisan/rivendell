@@ -160,7 +160,7 @@ Ação se Evento anterior estiver sendo executado</translation>
     </message>
     <message>
         <source>Run Length</source>
-        <translation>Duração </translation>
+        <translation type="unfinished">Duração </translation>
     </message>
     <message>
         <source>Next Stop:</source>

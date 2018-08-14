@@ -2,7 +2,7 @@
 //
 // List and Generate Log Reports
 //
-//   (C) Copyright 2002-2006,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,8 +19,6 @@
 //
 
 #include <qmessagebox.h>
-//Added by qt3to4:
-#include <QLabel>
 
 #include <rdconf.h>
 #include <rddatedialog.h>
@@ -34,8 +32,10 @@ ListReports::ListReports(const QString &logname,const QString &description,
 			 const QString service_name,const QDate &start_date,
 			 const QDate &end_date,bool auto_refresh,
 			 RDLogEvent *events,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   list_log_name=logname;
   list_description=description;
   list_service_name=service_name;

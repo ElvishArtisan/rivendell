@@ -385,7 +385,7 @@ die für den gewählten Service ungültig sind!</translation>
     </message>
     <message>
         <source>Run Length</source>
-        <translation>Laufzeit</translation>
+        <translation type="unfinished">Laufzeit</translation>
     </message>
     <message>
         <source>Selected:</source>

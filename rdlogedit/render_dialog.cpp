@@ -28,10 +28,6 @@
 #include <qlineedit.h>
 #include <qmessagebox.h>
 #include <qpushbutton.h>
-//Added by qt3to4:
-#include <QCloseEvent>
-#include <QResizeEvent>
-#include <QLabel>
 
 #include <rd.h>
 #include <rdconf.h>
@@ -45,6 +41,8 @@ RenderDialog::RenderDialog(RDStation *station,RDSystem *system,RDConfig *config,
 
   : QDialog(parent)
 {
+  setModal(true);
+
   render_station=station;
   render_system=system;
   render_config=config;
@@ -52,7 +50,7 @@ RenderDialog::RenderDialog(RDStation *station,RDSystem *system,RDConfig *config,
   render_first_line=0;
   render_last_line=0;
 
-  setCaption("RDLogEdit - "+tr("Render Log"));
+  setWindowTitle("RDLogEdit - "+tr("Render Log"));
 
   QFont button_font("helvetica",12,QFont::Bold);
   button_font.setPixelSize(12);

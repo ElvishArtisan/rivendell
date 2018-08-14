@@ -2,7 +2,7 @@
 //
 // Add a Rivendell RDCatch Event
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,16 +21,11 @@
 #include <qdialog.h>
 #include <qstring.h>
 #include <qpushbutton.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
 #include <qpainter.h>
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
 #include <qsqldatabase.h>
-//Added by qt3to4:
-#include <QCloseEvent>
-#include <QLabel>
 
 #include <rd.h>
 #include <rdlog_line.h>
@@ -38,9 +33,10 @@
 #include <add_meta.h>
 
 AddMeta::AddMeta(QWidget *parent)
-  : QDialog(parent,"",true,Qt::WStyle_Customize|Qt::WStyle_DialogBorder)
+  : QDialog(parent,Qt::WStyle_Customize|Qt::WStyle_DialogBorder)
 {
-  setCaption("");
+  setModal(true);
+  setWindowTitle("");
 
   //
   // Fix the Window Size

@@ -23,22 +23,18 @@
 
 #include <vector>
 
-#include <qdialog.h>
-//Added by qt3to4:
-#include <QCloseEvent>
-#include <QPaintEvent>
-#include <QResizeEvent>
-#include <QPixmap>
-#include <rdlistview.h>
-#include <qsqldatabase.h>
-#include <qlineedit.h>
-#include <qcombobox.h>
-#include <q3datetimeedit.h>
 #include <qcheckbox.h>
+#include <qcombobox.h>
+#include <qdialog.h>
+#include <qgroupbox.h>
 #include <qlabel.h>
+#include <qlineedit.h>
+
+#include <q3datetimeedit.h>
 
 #include <rdcart_dialog.h>
 #include <rdgroup_list.h>
+#include <rdlistview.h>
 #include <rdlog.h>
 #include <rdlog_event.h>
 #include <rdloglock.h>
@@ -190,7 +186,8 @@ class EditLog : public QDialog
   unsigned edit_start_macro;
   unsigned edit_end_macro;
   RDSimplePlayer *edit_player;
-  QLabel *edit_time_label;
+  //  QLabel *edit_time_label;
+  QGroupBox *edit_time_groupbox;
   QLabel *edit_stoptime_label;
   QLineEdit *edit_stoptime_edit;
   QLabel *edit_endtime_label;

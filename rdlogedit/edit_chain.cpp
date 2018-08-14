@@ -20,9 +20,6 @@
 
 #include <qpushbutton.h>
 #include <qmessagebox.h>
-//Added by qt3to4:
-#include <QCloseEvent>
-#include <QLabel>
 
 #include <rdapplication.h>
 #include <rddb.h>
@@ -34,8 +31,10 @@
 #include "globals.h"
 
 EditChain::EditChain(RDLogLine *line,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   //
   // Fix the Window Size
   //
@@ -44,7 +43,7 @@ EditChain::EditChain(RDLogLine *line,QWidget *parent)
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  setCaption(tr("Edit Log Chain"));
+  setWindowTitle("RDLogEdit - "+tr("Edit Log Chain"));
 
   edit_logline=line;
 

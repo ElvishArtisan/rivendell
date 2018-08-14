@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Voice Track Log Entry
 //
-//   (C) Copyright 2002-2005,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,8 +30,6 @@
 #include <q3buttongroup.h>
 #include <qradiobutton.h>
 #include <qspinbox.h>
-//Added by qt3to4:
-#include <QCloseEvent>
 
 #include <rdlog_line.h>
 #include <rdtimeedit.h>

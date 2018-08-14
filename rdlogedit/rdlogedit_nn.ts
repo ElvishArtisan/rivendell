@@ -391,10 +391,6 @@ skrudd av for denne tenesta!</translation>
         <translation type="unfinished">Vel</translation>
     </message>
     <message>
-        <source>Run Length</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Next Stop:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -500,6 +496,10 @@ skrudd av for denne tenesta!</translation>
     </message>
     <message>
         <source>Count</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Run Length</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

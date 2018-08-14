@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Log Marker Entry
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,15 +20,14 @@
 
 #include <qpushbutton.h>
 #include <qmessagebox.h>
-//Added by qt3to4:
-#include <QLabel>
-#include <QCloseEvent>
 
 #include "edit_marker.h"
 
 EditMarker::EditMarker(RDLogLine *line,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   //
   // Fix the Window Size
   //
@@ -37,7 +36,7 @@ EditMarker::EditMarker(RDLogLine *line,QWidget *parent)
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  setCaption(tr("Edit Log Marker"));
+  setWindowTitle("RDLogEdit - "+tr("Edit Log Marker"));
 
   edit_logline=line;
 

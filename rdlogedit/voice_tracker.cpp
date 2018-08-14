@@ -27,15 +27,6 @@
 #include <qmessagebox.h>
 #include <qdatetime.h>
 #include <qapplication.h>
-//Added by qt3to4:
-#include <QLabel>
-#include <QWheelEvent>
-#include <QPixmap>
-#include <QMouseEvent>
-#include <QKeyEvent>
-#include <Q3PointArray>
-#include <QPaintEvent>
-#include <Q3PopupMenu>
 
 #include <rdapplication.h>
 #include <rdconf.h>
@@ -66,12 +57,12 @@
 #include "../icons/traffic.xpm"
 #include "../icons/mic16.xpm"
 
-
 VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
 			   QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   setAttribute(Qt::WA_PaintOutsidePaintEvent);
+  setModal(true);
 
   edit_log_name=logname;
   edit_import_path=import_path;
@@ -111,7 +102,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   setMaximumWidth(sizeHint().width());
   setMaximumHeight(sizeHint().height());
 
-  setCaption(tr("Voice Tracker"));
+  setWindowTitle("RDLogEdit - "+tr("Voice Tracker"));
 
   //
   // Create Fonts
