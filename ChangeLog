@@ -17408,3 +17408,6 @@
 	* Fixed style inconsistencies in dialogs within rdmonitor(1).
 2018-08-15 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed style inconsistencies in dialogs within rdpanel(1).
+2018-08-15 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression that caused Sound Panel buttons to lose their
+	border.

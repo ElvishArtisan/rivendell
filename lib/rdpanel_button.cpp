@@ -407,26 +407,26 @@ void RDPanelButton::dropEvent(QDropEvent *e)
 void RDPanelButton::WriteKeycap(int secs)
 {
   QString text=button_text;
-  QPixmap *pix=new QPixmap(size().width(),size().height());
+  QPixmap *pix=new QPixmap(size().width()-2,size().height()-2);
   QPainter *p=new QPainter(pix);
   if(button_state) {
     if(button_flash) {
       if(button_flash_state) {
-	p->fillRect(0,0,size().width(),size().height(),button_color);
+	p->fillRect(0,0,size().width()-2,size().height()-2,button_color);
 	p->setPen(RDGetTextColor(button_color));
       }
       else {
-	p->fillRect(0,0,size().width(),size().height(),button_default_color);
+	p->fillRect(0,0,size().width()-2,size().height()-2,button_default_color);
 	p->setPen(RDGetTextColor(button_default_color));
       }
     }
     else {
-      p->fillRect(0,0,size().width(),size().height(),button_color);
+      p->fillRect(0,0,size().width()-2,size().height()-2,button_color);
       p->setPen(RDGetTextColor(button_color));
     }
   }
   else {
-    p->fillRect(0,0,size().width(),size().height(),button_color);
+    p->fillRect(0,0,size().width()-2,size().height()-2,button_color);
     p->setPen(RDGetTextColor(button_color));
   }
 
@@ -438,11 +438,11 @@ void RDPanelButton::WriteKeycap(int secs)
   QFontMetrics m(font);
   p->setFont(font);
   p->drawText(RDPANEL_BUTTON_MARGIN,m.lineSpacing(),
-	      GetNextLine(&text,m,size().width()-3*RDPANEL_BUTTON_MARGIN));
+	      GetNextLine(&text,m,size().width()-2-3*RDPANEL_BUTTON_MARGIN));
   p->drawText(RDPANEL_BUTTON_MARGIN,2*m.lineSpacing(),
-	      GetNextLine(&text,m,size().width()-3*RDPANEL_BUTTON_MARGIN));
+	      GetNextLine(&text,m,size().width()-2-3*RDPANEL_BUTTON_MARGIN));
   p->drawText(RDPANEL_BUTTON_MARGIN,3*m.lineSpacing(),
-	      GetNextLine(&text,m,size().width()-3*RDPANEL_BUTTON_MARGIN));
+	      GetNextLine(&text,m,size().width()-2-3*RDPANEL_BUTTON_MARGIN));
 
   //
   // Time Field & Output Text
@@ -453,23 +453,23 @@ void RDPanelButton::WriteKeycap(int secs)
       out_font.setPixelSize(13);
       p->setFont(out_font);
       if(button_pause_when_finished) {
-        p->drawText(RDPANEL_BUTTON_MARGIN,size().height()-RDPANEL_BUTTON_MARGIN,"Finished");
+        p->drawText(RDPANEL_BUTTON_MARGIN,size().height()-2-RDPANEL_BUTTON_MARGIN,"Finished");
         }
       else {
 	if(button_active_length>=0) {
-	  p->drawText(RDPANEL_BUTTON_MARGIN,size().height()-
+	  p->drawText(RDPANEL_BUTTON_MARGIN,size().height()-2-
 		      RDPANEL_BUTTON_MARGIN,
 		      RDGetTimeLength(button_active_length+1000,true,false));
 	}
 	else {
-	  p->drawText(RDPANEL_BUTTON_MARGIN,size().height()-
+	  p->drawText(RDPANEL_BUTTON_MARGIN,size().height()-2-
 		      RDPANEL_BUTTON_MARGIN,tr("No Audio"));
 	}
       }
     }
     else {
       if(secs>8) {
-        p->drawText(RDPANEL_BUTTON_MARGIN,size().height()-RDPANEL_BUTTON_MARGIN,
+        p->drawText(RDPANEL_BUTTON_MARGIN,size().height()-2-RDPANEL_BUTTON_MARGIN,
 		  RDGetTimeLength(1000*(secs+1),true,false));
         }
       else {
@@ -477,15 +477,15 @@ void RDPanelButton::WriteKeycap(int secs)
         out_font.setPixelSize(18);
         p->setFont(out_font);
         QString secstr=QString().sprintf(":%d",secs+1);
-        p->drawText(RDPANEL_BUTTON_MARGIN,size().height()-RDPANEL_BUTTON_MARGIN,secstr);
+        p->drawText(RDPANEL_BUTTON_MARGIN,size().height()-2-RDPANEL_BUTTON_MARGIN,secstr);
         }
       QFont out_font("helvetica",18,QFont::Bold);
       out_font.setPixelSize(18);
       p->setFont(out_font);
       QFontMetrics om(out_font);
-      p->drawText(size().width()-om.width(button_output_text)-
+      p->drawText(size().width()-2-om.width(button_output_text)-
 		  RDPANEL_BUTTON_MARGIN,
-		  size().height()-RDPANEL_BUTTON_MARGIN,button_output_text);
+		  size().height()-2-RDPANEL_BUTTON_MARGIN,button_output_text);
     }
   }
   p->end();
