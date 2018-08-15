@@ -2,7 +2,7 @@
 //
 // A Dedicated Cart Wall Utility for Rivendell.
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,7 +22,6 @@
 #include <math.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include <signal.h>
 
 #include <qmessagebox.h>
 #include <qapplication.h>
@@ -30,9 +29,6 @@
 #include <qtranslator.h>
 #include <qtextcodec.h>
 #include <qpainter.h>
-//Added by qt3to4:
-#include <QCloseEvent>
-#include <QPixmap>
 
 #include <dbversion.h>
 #include <rd.h>
@@ -54,23 +50,8 @@ RDCartDialog *panel_cart_dialog;
 //
 #include "../icons/rdpanel-22x22.xpm"
 
-void SigHandler(int signo)
-{
-  pid_t pLocalPid;
-
-  switch(signo) {
-  case SIGCHLD:
-    pLocalPid=waitpid(-1,NULL,WNOHANG);
-    while(pLocalPid>0) {
-      pLocalPid=waitpid(-1,NULL,WNOHANG);
-    }
-    signal(SIGCHLD,SigHandler);
-    return;
-  }
-}
-
 MainWidget::MainWidget(QWidget *parent)
-  :QWidget(parent)
+  : QWidget(parent)
 {
   QPixmap *pm;
   QPainter *pd;
@@ -96,7 +77,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Create Icons
   //
   lib_rivendell_map=new QPixmap(rdpanel_22x22_xpm);
-  setIcon(*lib_rivendell_map);
+  setWindowIcon(*lib_rivendell_map);
 
   //
   // Open the Database
@@ -315,11 +296,6 @@ MainWidget::MainWidget(QWidget *parent)
   }
 
   rda->ripc()->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
-
-  //
-  // Signal Handlers
-  //
-  signal(SIGCHLD,SigHandler);
 }
 
 
@@ -402,9 +378,9 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
 
 void MainWidget::SetCaption()
 {
-  setCaption(QString("RDPanel")+" v"+VERSION+" - "+tr("Station")+": "+
-	     rda->config()->stationName()+", "+tr("User")+": "+
-	     rda->ripc()->user());
+  setWindowTitle(QString("RDPanel")+" v"+VERSION+" - "+tr("Station")+": "+
+		 rda->config()->stationName()+", "+tr("User")+": "+
+		 rda->ripc()->user());
 }
 
 

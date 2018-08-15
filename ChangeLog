@@ -17406,3 +17406,5 @@
 	* Fixed style inconsistencies in dialogs within rdlogmanager(1).
 2018-08-15 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed style inconsistencies in dialogs within rdmonitor(1).
+2018-08-15 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed style inconsistencies in dialogs within rdpanel(1).

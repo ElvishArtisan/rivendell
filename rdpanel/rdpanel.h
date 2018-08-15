@@ -2,7 +2,7 @@
 //
 // A Dedicated Cart Wall Utility for Rivendell.
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,8 +24,6 @@
 #include <qwidget.h>
 #include <qtimer.h>
 #include <qpixmap.h>
-//Added by qt3to4:
-#include <QCloseEvent>
 
 #include <rdemptycart.h>
 #include <rdevent_player.h>
