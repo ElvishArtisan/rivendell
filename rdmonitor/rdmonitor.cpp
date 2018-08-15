@@ -2,7 +2,7 @@
 //
 // System Monitor for Rivendell
 //
-//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -35,11 +35,6 @@
 #include <qdir.h>
 #include <qsignalmapper.h>
 #include <qsqldatabase.h>
-//Added by qt3to4:
-#include <QPaintEvent>
-#include <QResizeEvent>
-#include <QPixmap>
-#include <QMouseEvent>
 
 #include <dbversion.h>
 #include <rd.h>

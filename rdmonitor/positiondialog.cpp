@@ -2,7 +2,7 @@
 //
 // Dialog to set RDMonitor screen position.
 //
-//   (C) Copyright 2013,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2013-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,19 +19,16 @@
 //
 
 #include "positiondialog.h"
-//Added by qt3to4:
-#include <QResizeEvent>
-#include <QLabel>
-#include <QCloseEvent>
 
 PositionDialog::PositionDialog(QDesktopWidget *dw,RDMonitorConfig *config,
 			       QWidget *parent)
   : QDialog(parent)
 {
+  setModal(true);
   pos_desktop_widget=dw;
   pos_config=config;
 
-  setCaption("RDMonitor");
+  setWindowTitle("RDMonitor");
 
   //
   // Fonts
