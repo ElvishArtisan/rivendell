@@ -2,7 +2,7 @@
 //
 // A Dedicated Cart Slot Utility for Rivendell.
 //
-//   (C) Copyright 2012,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -49,7 +49,7 @@
 #include "../icons/rdcartslots-22x22.xpm"
 
 MainWidget::MainWidget(QWidget *parent)
-  :QWidget(parent)
+  : QWidget(parent)
 {
   QString err_msg;
 
@@ -85,7 +85,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Create Icons
   //
   lib_rivendell_map=new QPixmap(rdcartslots_22x22_xpm);
-  setIcon(*lib_rivendell_map);
+  setWindowIcon(*lib_rivendell_map);
 
   //
   // CAE Connection
@@ -229,9 +229,9 @@ void MainWidget::closeEvent(QCloseEvent *e)
 void MainWidget::SetCaption()
 {
   QString service=tr("[None]");
-  setCaption(tr("RDCartSlots")+" v"+VERSION+" - "+tr("Station")+": "+
-	     rda->config()->stationName()+"  "+tr("User")+": "+
-	     rda->ripc()->user());
+  setWindowTitle(tr("RDCartSlots")+" v"+VERSION+" - "+tr("Station")+": "+
+		 rda->config()->stationName()+"  "+tr("User")+": "+
+		 rda->ripc()->user());
 }
 
 
