@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell RDCatch Playout
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,6 +19,7 @@
 //
 
 #include <qdialog.h>
+#include <qgroupbox.h>
 #include <qstring.h>
 #include <qpushbutton.h>
 #include <q3listbox.h>
@@ -27,11 +28,6 @@
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
-//Added by qt3to4:
-#include <QCloseEvent>
-#include <QPaintEvent>
-#include <QLabel>
-#include <QKeyEvent>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -46,8 +42,10 @@
 
 EditPlayout::EditPlayout(int id,std::vector<int> *adds,QString *filter,
 			 QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   QString temp;
 
   //
@@ -72,7 +70,7 @@ EditPlayout::EditPlayout(int id,std::vector<int> *adds,QString *filter,
   edit_added_events=adds;
   edit_filter=filter;
 
-  setCaption(tr("Edit Playout"));
+  setWindowTitle("RDCatch - "+tr("Edit Playout"));
 
   //
   // Text Validator
@@ -146,10 +144,9 @@ EditPlayout::EditPlayout(int id,std::vector<int> *adds,QString *filter,
   //
   // Button Label
   //
-  label=new QLabel(tr("Active Days"),this);
-  label->setGeometry(47,101,90,19);
-  label->setFont(label_font);
-  label->setAlignment(Qt::AlignHCenter|Qt::TextShowMnemonic);
+  QGroupBox *groupbox=new QGroupBox(tr("Active Days"),this);
+  groupbox->setFont(label_font);
+  groupbox->setGeometry(10,104,sizeHint().width()-20,62);
 
   //
   // Monday Button
@@ -313,7 +310,7 @@ void EditPlayout::activateStationData(int id,bool use_temp)
   if(edit_deck!=NULL) {
     delete edit_deck;
   }
-  edit_deck=new RDDeck(f0[0],f0[2].toInt());
+  edit_deck=new RDDeck(f0[0].trimmed(),f0[1].toInt());
 }
 
 
@@ -353,26 +350,17 @@ void EditPlayout::cancelData()
 }
 
 
-void EditPlayout::paintEvent(QPaintEvent *e)
-{
-  QPainter *p=new QPainter(this);
-  p->setPen(QColor(Qt::black));
-  p->drawRect(10,109,sizeHint().width()-20,62);
-  p->end();
-}
-
-
 void EditPlayout::keyPressEvent(QKeyEvent *e)
 {
   switch(e->key()) {
-      case Qt::Key_Escape:
-	e->accept();
-	cancelData();
-	break;
+  case Qt::Key_Escape:
+    e->accept();
+    cancelData();
+    break;
 
-      default:
-	QDialog::keyPressEvent(e);
-	break;
+  default:
+    QDialog::keyPressEvent(e);
+    break;
   }
 }
 
@@ -447,6 +435,6 @@ QString EditPlayout::GetLocation(int *chan) const
 {
   QStringList f0=edit_station_box->currentText().split(":");
   *chan=
-    f0[1].stripWhiteSpace().left(f0[1].stripWhiteSpace().length()-1).toInt();
-  return f0[0].stripWhiteSpace();
+    f0[1].trimmed().left(f0[1].trimmed().length()-1).toInt();
+  return f0[0].trimmed();
 }

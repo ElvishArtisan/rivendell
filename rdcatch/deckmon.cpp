@@ -27,10 +27,6 @@
 #include "colors.h"
 #include "deckmon.h"
 #include "globals.h"
-//Added by qt3to4:
-#include <QResizeEvent>
-#include <Q3Frame>
-#include <QLabel>
 
 DeckMon::DeckMon(QString station,unsigned channel,QWidget *parent)
   : Q3Frame(parent)

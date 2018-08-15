@@ -2,7 +2,7 @@
 //
 //   Events List Widget for RDCatch
 //
-//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,8 +22,6 @@
 #define CATCH_LISTVIEW_H
 
 #include <q3popupmenu.h>
-//Added by qt3to4:
-#include <QMouseEvent>
 
 #include <rdlistview.h>
 

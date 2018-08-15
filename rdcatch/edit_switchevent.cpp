@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Netcatch Cart Event
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,6 +19,7 @@
 //
 
 #include <qdialog.h>
+#include <qgroupbox.h>
 #include <qstring.h>
 #include <qpushbutton.h>
 #include <q3listbox.h>
@@ -27,11 +28,6 @@
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
-//Added by qt3to4:
-#include <QCloseEvent>
-#include <QPaintEvent>
-#include <QLabel>
-#include <QKeyEvent>
 
 #include <rddb.h>
 #include <rd.h>
@@ -44,8 +40,10 @@
 
 
 EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   QString sql;
   RDSqlQuery *q;
   QString temp;
@@ -72,7 +70,7 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,QWidget *parent)
 
   edit_deck=NULL;
 
-  setCaption(tr("Edit Switcher Event"));
+  setWindowTitle("RDCatch - "+tr("Edit Switcher Event"));
 
   //
   // Text Validator
@@ -170,10 +168,9 @@ EditSwitchEvent::EditSwitchEvent(int id,std::vector<int> *adds,QWidget *parent)
   //
   // Button Label
   //
-  label=new QLabel(tr("Active Days"),this);
-  label->setGeometry(47,210,80,19);
-  label->setFont(label_font);
-  label->setAlignment(Qt::AlignHCenter|Qt::TextShowMnemonic);
+  QGroupBox *groupbox=new QGroupBox(tr("Active Days"),this);
+  groupbox->setFont(label_font);
+  groupbox->setGeometry(10,213,sizeHint().width()-20,62);
 
   //
   // Monday Button
@@ -492,15 +489,6 @@ void EditSwitchEvent::okData()
 void EditSwitchEvent::cancelData()
 {
   done(-1);
-}
-
-
-void EditSwitchEvent::paintEvent(QPaintEvent *e)
-{
-  QPainter *p=new QPainter(this);
-  p->setPen(QColor(Qt::black));
-  p->drawRect(10,218,sizeHint().width()-20,62);
-  p->end();
 }
 
 

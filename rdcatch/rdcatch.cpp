@@ -35,10 +35,6 @@
 #include <qtextcodec.h>
 #include <qtranslator.h>
 #include <qlayout.h>
-//Added by qt3to4:
-#include <QResizeEvent>
-#include <QPixmap>
-#include <QCloseEvent>
 
 #include <rdprofile.h>
 #include <rd.h>
@@ -111,7 +107,7 @@ QString CatchConnector::stationName()
 
 
 MainWidget::MainWidget(QWidget *parent)
-  :QWidget(parent)
+  : QWidget(parent)
 {
   QString str;
   QString err_msg;
@@ -178,7 +174,7 @@ MainWidget::MainWidget(QWidget *parent)
   catch_type_maps[RDRecording::Download]=new QPixmap(download_xpm);
   catch_type_maps[RDRecording::Upload]=new QPixmap(upload_xpm);
   catch_rivendell_map=new QPixmap(rdcatch_22x22_xpm);
-  setIcon(*catch_rivendell_map);
+  setWindowIcon(*catch_rivendell_map);
 
   //
   // Generate Palettes
@@ -199,7 +195,7 @@ MainWidget::MainWidget(QWidget *parent)
   catch_scroll_color[1]=QPalette(backgroundColor(),backgroundColor());
 
   str=QString("RDCatch")+" v"+VERSION+" - "+tr("Host")+":";
-  setCaption(str+" "+rda->config()->stationName());
+  setWindowTitle(str+" "+rda->config()->stationName());
 
   //  connect(RDDbStatus(),SIGNAL(logText(RDConfig::LogPriority,const QString &)),
   //	  this,SLOT(log(RDConfig::LogPriority,const QString &)));
@@ -2161,8 +2157,8 @@ QString MainWidget::GeometryFile() {
 
 void MainWidget::LoadGeometry()
 {
-  QString geometry_file = GeometryFile();
-  if(geometry_file==NULL) {
+  QString geometry_file=GeometryFile();
+  if(geometry_file.isEmpty()) {
     return;
   }
   RDProfile *profile=new RDProfile();
@@ -2176,8 +2172,8 @@ void MainWidget::LoadGeometry()
 
 void MainWidget::SaveGeometry()
 {
-  QString geometry_file = GeometryFile();
-  if(geometry_file==NULL) {
+  QString geometry_file=GeometryFile();
+  if(geometry_file.isEmpty()) {
     return;
   }
   FILE *file=fopen(geometry_file,"w");

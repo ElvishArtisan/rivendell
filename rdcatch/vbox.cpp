@@ -2,7 +2,7 @@
 //
 // A QVBox widget with dynamic horizontal resizing.
 //
-//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,8 +22,8 @@
 
 #include <vbox.h>
 
-VBox::VBox(QWidget *parent,const char *name,Qt::WFlags f)
-  : QWidget(parent,name,f)
+VBox::VBox(QWidget *parent,Qt::WFlags f)
+  : QWidget(parent,f)
 {
   box_spacing=0;
   setGeometry(QWidget::geometry());

@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell RDCatch Recording
 //
-//   (C) Copyright 2002-2005,2014-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,20 +19,15 @@
 //
 
 #include <qdialog.h>
+#include <qgroupbox.h>
 #include <qstring.h>
 #include <qpushbutton.h>
 #include <qradiobutton.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
 #include <qpainter.h>
 #include <qevent.h>
+#include <qgroupbox.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
-//Added by qt3to4:
-#include <QKeyEvent>
-#include <QLabel>
-#include <QPaintEvent>
-#include <QCloseEvent>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -48,8 +43,10 @@
 
 EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
 			     QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   QString temp;
 
   //
@@ -74,7 +71,7 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   edit_added_events=adds;
   edit_filter=filter;
 
-  setCaption(tr("Edit Recording"));
+  setWindowTitle("RDCatch - "+tr("Edit Recording"));
 
   //
   // Text Validator
@@ -108,19 +105,17 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   //
   // Start Parameters
   //
-  edit_starttype_group=new Q3ButtonGroup(this);
-  edit_starttype_group->setGeometry(10,47,sizeHint().width()-20,104);
-  connect(edit_starttype_group,SIGNAL(clicked(int)),
+  edit_starttype_group=new QButtonGroup(this);
+  connect(edit_starttype_group,SIGNAL(buttonClicked(int)),
 	  this,SLOT(startTypeClickedData(int)));
 
-  label=new QLabel(tr("Start Parameters"),this);
-  label->setGeometry(47,38,120,19);
-  label->setFont(label_font);
-  label->setAlignment(Qt::AlignHCenter);
+  QGroupBox *groupbox=new QGroupBox(tr("Start Parameters"),this);
+  groupbox->setFont(label_font);
+  groupbox->setGeometry(10,37,sizeHint().width()-20,105);
 
   QRadioButton *rbutton=new QRadioButton(tr("Use Hard Time"),this);
   rbutton->setGeometry(20,57,100,15);
-  edit_starttype_group->insert(rbutton,RDRecording::HardStart);  
+  edit_starttype_group->addButton(rbutton,RDRecording::HardStart);  
   rbutton->setFont(day_font);
   
   edit_starttime_edit=new Q3TimeEdit(this);
@@ -184,24 +179,21 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   edit_multirec_box->setGeometry(140,124,sizeHint().width()-170,15);
   edit_multirec_box->setFont(day_font);
 
-  edit_starttype_group->insert(rbutton,RDRecording::GpiStart);
+  edit_starttype_group->addButton(rbutton,RDRecording::GpiStart);
 
   //
   // End Parameters
   //
-  edit_endtype_group=new Q3ButtonGroup(this);
-  edit_endtype_group->setGeometry(10,171,sizeHint().width()-20,104);
-  connect(edit_endtype_group,SIGNAL(clicked(int)),
+  edit_endtype_group=new QButtonGroup(this);
+  connect(edit_endtype_group,SIGNAL(buttonClicked(int)),
 	  this,SLOT(endTypeClickedData(int)));
 
-  label=new QLabel(tr("End Parameters"),this);
-  label->setGeometry(47,162,120,19);
-  label->setFont(label_font);
-  label->setAlignment(Qt::AlignHCenter);
-
+  groupbox=new QGroupBox(tr("End Parameters"),this);
+  groupbox->setFont(label_font);
+  groupbox->setGeometry(10,160,sizeHint().width()-20,112);
   rbutton=new QRadioButton(tr("Use Length"),this);
   rbutton->setGeometry(20,205,100,15);
-  edit_endtype_group->insert(rbutton,RDRecording::LengthEnd);  
+  edit_endtype_group->addButton(rbutton,RDRecording::LengthEnd);  
   rbutton->setFont(day_font);
   edit_endlength_edit=new Q3TimeEdit(this);
   edit_endlength_edit->setGeometry(235,201,80,20);
@@ -212,7 +204,7 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
 
   rbutton=new QRadioButton(tr("Use Hard Time"),this);
   rbutton->setGeometry(20,181,1100,15);
-  edit_endtype_group->insert(rbutton,RDRecording::HardEnd);  
+  edit_endtype_group->addButton(rbutton,RDRecording::HardEnd);  
   rbutton->setFont(day_font);
   edit_endtime_edit=new Q3TimeEdit(this);
   edit_endtime_edit->setGeometry(235,177,80,20);
@@ -267,7 +259,7 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   edit_maxlength_label->
     setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
-  edit_endtype_group->insert(rbutton,RDRecording::GpiEnd);
+  edit_endtype_group->addButton(rbutton,RDRecording::GpiEnd);
 
   //
   // Description
@@ -365,10 +357,9 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   //
   // Button Label
   //
-  label=new QLabel(tr("Active Days"),this);
-  label->setGeometry(47,440,90,19);
-  label->setFont(label_font);
-  label->setAlignment(Qt::AlignHCenter);
+  groupbox=new QGroupBox(tr("Active Days"),this);
+  groupbox->setFont(label_font);
+  groupbox->setGeometry(10,442,sizeHint().width()-20,62);
 
   //
   // Monday Button
@@ -488,8 +479,9 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   edit_active_button->setChecked(edit_recording->isActive());
   edit_starttime_edit->setTime(edit_recording->startTime());
   edit_description_edit->setText(edit_recording->description());
-  edit_starttype_group->setButton((int)edit_recording->startType());
-  switch((RDRecording::StartType)edit_starttype_group->selectedId()) {
+  edit_starttype_group->button((int)edit_recording->startType())->
+    setChecked(true);
+  switch((RDRecording::StartType)edit_starttype_group->checkedId()) {
   case RDRecording::HardStart:
     edit_starttime_edit->setTime(edit_recording->startTime());
     break;
@@ -507,9 +499,9 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
       setChecked(edit_recording->allowMultipleRecordings());
     break;
   }
-  startTypeClickedData(edit_starttype_group->selectedId());
-  edit_endtype_group->setButton((int)edit_recording->endType());
-  switch((RDRecording::EndType)edit_endtype_group->selectedId()) {
+  startTypeClickedData(edit_starttype_group->checkedId());
+  edit_endtype_group->button((int)edit_recording->endType())->setChecked(true);
+  switch((RDRecording::EndType)edit_endtype_group->checkedId()) {
   case RDRecording::LengthEnd:
     edit_endlength_edit->
       setTime(QTime().addMSecs(edit_recording->length()));
@@ -530,7 +522,7 @@ EditRecording::EditRecording(int id,std::vector<int> *adds,QString *filter,
   }
   edit_maxlength_edit->
     setTime(QTime().addMSecs(edit_recording->maxGpiRecordingLength()));
-  endTypeClickedData(edit_endtype_group->selectedId());
+  endTypeClickedData(edit_endtype_group->checkedId());
 
   edit_cutname=edit_recording->cutName();
   edit_destination_edit->setText(RDCutPath(edit_cutname));
@@ -615,7 +607,7 @@ void EditRecording::activateStationData(int id,bool use_temp)
   if(edit_deck!=NULL) {
     delete edit_deck;
   }
-  edit_deck=new RDDeck(f0[0],f0[2].toInt());
+  edit_deck=new RDDeck(f0[0],f0[1].toInt());
   if(edit_channels_box->count()>0) {
     edit_channels_box->setCurrentItem(edit_deck->defaultChannels()-1);
   }
@@ -641,15 +633,15 @@ void EditRecording::startTypeClickedData(int id)
     edit_multirec_box->setDisabled(true);
   }
   else {
-    switch((RDRecording::EndType)edit_endtype_group->selectedId()) {
-	case RDRecording::HardEnd:
-	  edit_multirec_box->setDisabled(true);
-	  break;
+    switch((RDRecording::EndType)edit_endtype_group->checkedId()) {
+    case RDRecording::HardEnd:
+      edit_multirec_box->setDisabled(true);
+      break;
 
-	case RDRecording::GpiEnd:
-	case RDRecording::LengthEnd:
-	  edit_multirec_box->setEnabled(true);
-	  break;
+    case RDRecording::GpiEnd:
+    case RDRecording::LengthEnd:
+      edit_multirec_box->setEnabled(true);
+      break;
     }
   }
   edit_starttime_edit->setEnabled(state);
@@ -680,12 +672,12 @@ void EditRecording::endTypeClickedData(int id)
   if(((RDRecording::EndType)id)==RDRecording::GpiEnd) {
     gpi_state=true;
     edit_multirec_box->
-      setEnabled(edit_starttype_group->selectedId()==RDRecording::GpiStart);
+      setEnabled(edit_starttype_group->checkedId()==RDRecording::GpiStart);
   }
   if(((RDRecording::EndType)id)==RDRecording::LengthEnd) {
     length_state=true;
     edit_multirec_box->
-      setEnabled(edit_starttype_group->selectedId()==RDRecording::GpiStart);
+      setEnabled(edit_starttype_group->checkedId()==RDRecording::GpiStart);
   }
   edit_endtime_edit->setEnabled(hard_state);
   edit_endtime_label->setEnabled(hard_state);
@@ -765,26 +757,17 @@ void EditRecording::cancelData()
 }
 
 
-void EditRecording::paintEvent(QPaintEvent *e)
-{
-  QPainter *p=new QPainter(this);
-  p->setPen(Qt::black);
-  p->drawRect(10,447,sizeHint().width()-20,62);
-  p->end();
-}
-
-
 void EditRecording::keyPressEvent(QKeyEvent *e)
 {
   switch(e->key()) {
-      case Qt::Key_Escape:
-	e->accept();
-	cancelData();
-	break;
+  case Qt::Key_Escape:
+    e->accept();
+    cancelData();
+    break;
 
-      default:
-	QDialog::keyPressEvent(e);
-	break;
+  default:
+    QDialog::keyPressEvent(e);
+    break;
   }
 }
 
@@ -880,82 +863,77 @@ void EditRecording::Save()
   }
   edit_recording->setOneShot(edit_oneshot_box->isChecked());
   edit_recording->
-    setStartType((RDRecording::StartType)edit_starttype_group->selectedId());
-  switch((RDRecording::StartType)edit_starttype_group->selectedId()) {
-      case RDRecording::HardStart:
-	if(edit_starttime_edit->time().isNull()) {
-	  edit_recording->
-	    setStartTime(edit_starttime_edit->time().addMSecs(1));
-	}
-	else {
-	  edit_recording->setStartTime(edit_starttime_edit->time());
-	}
-	edit_recording->setAllowMultipleRecordings(false);
-	break;
+    setStartType((RDRecording::StartType)edit_starttype_group->checkedId());
+  switch((RDRecording::StartType)edit_starttype_group->checkedId()) {
+  case RDRecording::HardStart:
+    if(edit_starttime_edit->time().isNull()) {
+      edit_recording->
+	setStartTime(edit_starttime_edit->time().addMSecs(1));
+    }
+    else {
+      edit_recording->setStartTime(edit_starttime_edit->time());
+    }
+    edit_recording->setAllowMultipleRecordings(false);
+    break;
 
-      case RDRecording::GpiStart:
-	if(edit_start_startwindow_edit->time().isNull()) {
-	  edit_recording->
-	    setStartTime(edit_start_startwindow_edit->time().addMSecs(1));
-	}
-	else {
-	  edit_recording->setStartTime(edit_start_startwindow_edit->time());
-	}
-	edit_recording->
-	  setStartLength(edit_start_startwindow_edit->time().
-			 msecsTo(edit_start_endwindow_edit->time()));
-	edit_recording->setStartMatrix(edit_startmatrix_spin->value());
-	edit_recording->setStartLine(edit_startline_spin->value());
-	edit_recording->
-	  setStartOffset(QTime().msecsTo(edit_startoffset_edit->time()));
-	edit_recording->
-	  setAllowMultipleRecordings(edit_multirec_box->isChecked());
-	break;
+  case RDRecording::GpiStart:
+    if(edit_start_startwindow_edit->time().isNull()) {
+      edit_recording->
+	setStartTime(edit_start_startwindow_edit->time().addMSecs(1));
+    }
+    else {
+      edit_recording->setStartTime(edit_start_startwindow_edit->time());
+    }
+    edit_recording->
+      setStartLength(edit_start_startwindow_edit->time().
+		     msecsTo(edit_start_endwindow_edit->time()));
+    edit_recording->setStartMatrix(edit_startmatrix_spin->value());
+    edit_recording->setStartLine(edit_startline_spin->value());
+    edit_recording->
+      setStartOffset(QTime().msecsTo(edit_startoffset_edit->time()));
+    edit_recording->
+      setAllowMultipleRecordings(edit_multirec_box->isChecked());
+    break;
   }
   edit_recording->
-    setEndType((RDRecording::EndType)edit_endtype_group->selectedId());
+    setEndType((RDRecording::EndType)edit_endtype_group->checkedId());
   edit_recording->
     setMaxGpiRecordingLength(QTime().msecsTo(edit_maxlength_edit->time()));
-  switch((RDRecording::EndType)edit_endtype_group->selectedId()) {
-      case RDRecording::LengthEnd:
-	edit_recording->
-	  setLength(QTime().msecsTo(edit_endlength_edit->time()));
-	break;
+  switch((RDRecording::EndType)edit_endtype_group->checkedId()) {
+  case RDRecording::LengthEnd:
+    edit_recording->
+      setLength(QTime().msecsTo(edit_endlength_edit->time()));
+    break;
 
-      case RDRecording::HardEnd:
-	if(edit_endtime_edit->time().isNull()) {
-	  edit_recording->setEndTime(edit_endtime_edit->time().addMSecs(1));
-	}
-	else {
-	  edit_recording->setEndTime(edit_endtime_edit->time());
-	}
-	break;
+  case RDRecording::HardEnd:
+    if(edit_endtime_edit->time().isNull()) {
+      edit_recording->setEndTime(edit_endtime_edit->time().addMSecs(1));
+    }
+    else {
+      edit_recording->setEndTime(edit_endtime_edit->time());
+    }
+    break;
 
-      case RDRecording::GpiEnd:
-	if(edit_end_startwindow_edit->time().isNull()) {
-	  edit_recording->
-	    setEndTime(edit_end_startwindow_edit->time().addMSecs(1));
-	}
-	else {
-	  edit_recording->setEndTime(edit_end_startwindow_edit->time());
-	}
-	edit_recording->
-	  setEndLength(edit_end_startwindow_edit->time().
-		       msecsTo(edit_end_endwindow_edit->time()));
-	edit_recording->setEndMatrix(edit_endmatrix_spin->value());
-	edit_recording->setEndLine(edit_endline_spin->value());
-	break;
+  case RDRecording::GpiEnd:
+    if(edit_end_startwindow_edit->time().isNull()) {
+      edit_recording->
+	setEndTime(edit_end_startwindow_edit->time().addMSecs(1));
+    }
+    else {
+      edit_recording->setEndTime(edit_end_startwindow_edit->time());
+    }
+    edit_recording->
+      setEndLength(edit_end_startwindow_edit->time().
+		   msecsTo(edit_end_endwindow_edit->time()));
+    edit_recording->setEndMatrix(edit_endmatrix_spin->value());
+    edit_recording->setEndLine(edit_endline_spin->value());
+    break;
   }
 }
 
 
 bool EditRecording::CheckEvent(bool include_myself)
 {
-  /*
-  char station[65];
-  char gunk[3];
-  int chan;
-  */
   QTime start;
   QTime finish;
   QTime begin;
@@ -974,141 +952,139 @@ bool EditRecording::CheckEvent(bool include_myself)
   //
   // Ensure that the time values are sane
   //
-  switch((RDRecording::StartType)edit_starttype_group->selectedId()) {
-      case RDRecording::GpiStart:
-	if(edit_start_startwindow_edit->time()>=
-	   edit_start_endwindow_edit->time()) {
-	  QMessageBox::warning(this,tr("Record Parameter Error"),
-	            tr("The start GPI window cannot end before it begins!"));
-	  return false;
-	}
-	switch((RDRecording::EndType)edit_endtype_group->selectedId()) {
-	    case RDRecording::HardEnd:
-	      if(edit_start_startwindow_edit->time()>=
-		 edit_endtime_edit->time()) {
-		QMessageBox::warning(this,tr("Record Parameter Error"),
-			tr("The recording cannot end before it begins!"));
-		return false;
-	      }
-	      break;
+  switch((RDRecording::StartType)edit_starttype_group->checkedId()) {
+  case RDRecording::GpiStart:
+    if(edit_start_startwindow_edit->time()>=
+       edit_start_endwindow_edit->time()) {
+      QMessageBox::warning(this,tr("Record Parameter Error"),
+			   tr("The start GPI window cannot end before it begins!"));
+      return false;
+    }
+    switch((RDRecording::EndType)edit_endtype_group->checkedId()) {
+    case RDRecording::HardEnd:
+      if(edit_start_startwindow_edit->time()>=
+	 edit_endtime_edit->time()) {
+	QMessageBox::warning(this,tr("Record Parameter Error"),
+			     tr("The recording cannot end before it begins!"));
+	return false;
+      }
+      break;
 
-	    case RDRecording::GpiEnd:
-	      if(edit_start_startwindow_edit->time()>
-		 edit_end_startwindow_edit->time()) {
-		QMessageBox::warning(this,tr("Record Parameter Error"),
-			tr("The end GPI window cannot end before it begins!"));
-		return false;
-	      }
-	      break;
+    case RDRecording::GpiEnd:
+      if(edit_start_startwindow_edit->time()>
+	 edit_end_startwindow_edit->time()) {
+	QMessageBox::warning(this,tr("Record Parameter Error"),
+			     tr("The end GPI window cannot end before it begins!"));
+	return false;
+      }
+      break;
 
-	    case RDRecording::LengthEnd:
-	      break;
-	}
-	break;
+    case RDRecording::LengthEnd:
+      break;
+    }
+    break;
 
-      case RDRecording::HardStart:
-	switch((RDRecording::EndType)edit_endtype_group->selectedId()) {
-	    case RDRecording::HardEnd:
-	      if(edit_starttime_edit->time()>=
-		 edit_endtime_edit->time()) {
-		QMessageBox::warning(this,tr("Record Parameter Error"),
-			  tr("The recording cannot end before it begins!"));
-		return false;
-	      }
-	      break;
+  case RDRecording::HardStart:
+    switch((RDRecording::EndType)edit_endtype_group->checkedId()) {
+    case RDRecording::HardEnd:
+      if(edit_starttime_edit->time()>=
+	 edit_endtime_edit->time()) {
+	QMessageBox::warning(this,tr("Record Parameter Error"),
+			     tr("The recording cannot end before it begins!"));
+	return false;
+      }
+      break;
 
-	    case RDRecording::GpiEnd:
-	      if(edit_starttime_edit->time()>=
-		 edit_end_startwindow_edit->time()) {
-		QMessageBox::warning(this,tr("Record Parameter Error"),
-			tr("The end GPI window cannot end before it begins!"));
-		return false;
-	      }
-	      break;
+    case RDRecording::GpiEnd:
+      if(edit_starttime_edit->time()>=
+	 edit_end_startwindow_edit->time()) {
+	QMessageBox::warning(this,tr("Record Parameter Error"),
+			     tr("The end GPI window cannot end before it begins!"));
+	return false;
+      }
+      break;
 
-	    case RDRecording::LengthEnd:
-	      break;
-	}
-	break;
+    case RDRecording::LengthEnd:
+      break;
+    }
+    break;
   }
-  switch((RDRecording::EndType)edit_endtype_group->selectedId()) {
-      case RDRecording::GpiEnd:
-	if(edit_end_startwindow_edit->time()>=
-	   edit_end_endwindow_edit->time()) {
-	  QMessageBox::warning(this,tr("Record Parameter Error"),
-		     tr("The end GPI window cannot end before it begins!"));
-	  return false;
-	}
-	break;
+  switch((RDRecording::EndType)edit_endtype_group->checkedId()) {
+  case RDRecording::GpiEnd:
+    if(edit_end_startwindow_edit->time()>=
+       edit_end_endwindow_edit->time()) {
+      QMessageBox::warning(this,tr("Record Parameter Error"),
+			   tr("The end GPI window cannot end before it begins!"));
+      return false;
+    }
+    break;
 
-      default:
-	break;
+  default:
+    break;
   }
 
   //
   // Verify that the GPI values are valid
   //
-  //  sscanf((const char *)edit_station_box->currentText(),"%s%s%d",
-  //	 station,gunk,&chan);
   QStringList f0=edit_station_box->currentText().split(":");
-  switch((RDRecording::StartType)edit_starttype_group->selectedId()) {
-      case RDRecording::GpiStart:
-	matrix=new RDMatrix(f0[0],edit_startmatrix_spin->value());
-	if(!matrix->exists()) {
-	  QMessageBox::warning(this,tr("Record Parameter Error"),
-		     tr("The start GPI matrix doesn't exist!"));
-	  delete matrix;
-	  return false;
-	}
-	if(matrix->gpis()<edit_startline_spin->value()) {
-	  QMessageBox::warning(this,tr("Record Parameter Error"),
-		     tr("The start GPI line doesn't exist!"));
-	  delete matrix;
-	  return false;
-	}
-	delete matrix;
-	edit_starttime_edit->setTime(edit_start_startwindow_edit->time());
-	break;
+  switch((RDRecording::StartType)edit_starttype_group->checkedId()) {
+  case RDRecording::GpiStart:
+    matrix=new RDMatrix(f0[0],edit_startmatrix_spin->value());
+    if(!matrix->exists()) {
+      QMessageBox::warning(this,tr("Record Parameter Error"),
+			   tr("The start GPI matrix doesn't exist!"));
+      delete matrix;
+      return false;
+    }
+    if(matrix->gpis()<edit_startline_spin->value()) {
+      QMessageBox::warning(this,tr("Record Parameter Error"),
+			   tr("The start GPI line doesn't exist!"));
+      delete matrix;
+      return false;
+    }
+    delete matrix;
+    edit_starttime_edit->setTime(edit_start_startwindow_edit->time());
+    break;
 
-      default:
-	break;
+  default:
+    break;
   }
-  switch((RDRecording::EndType)edit_endtype_group->selectedId()) {
-      case RDRecording::GpiEnd:
-	matrix=new RDMatrix(f0[0],edit_endmatrix_spin->value());
-	if(!matrix->exists()) {
-	  QMessageBox::warning(this,tr("Record Parameter Error"),
-		     tr("The end GPI matrix doesn't exist!"));
-	  delete matrix;
-	  return false;
-	}
-	if(matrix->gpis()<edit_endline_spin->value()) {
-	  QMessageBox::warning(this,tr("Record Parameter Error"),
-		     tr("The end GPI line doesn't exist!"));
-	  delete matrix;
-	  return false;
-	}
-	delete matrix;
-	break;
+  switch((RDRecording::EndType)edit_endtype_group->checkedId()) {
+  case RDRecording::GpiEnd:
+    matrix=new RDMatrix(f0[0],edit_endmatrix_spin->value());
+    if(!matrix->exists()) {
+      QMessageBox::warning(this,tr("Record Parameter Error"),
+			   tr("The end GPI matrix doesn't exist!"));
+      delete matrix;
+      return false;
+    }
+    if(matrix->gpis()<edit_endline_spin->value()) {
+      QMessageBox::warning(this,tr("Record Parameter Error"),
+			   tr("The end GPI line doesn't exist!"));
+      delete matrix;
+      return false;
+    }
+    delete matrix;
+    break;
 
-      default:
-	break;
+  default:
+    break;
   }
 
   QString sql=QString("select ID from RECORDINGS where ")+
     "(STATION_NAME=\""+RDEscapeString(f0[0])+"\")&&"+
     QString().sprintf("(TYPE=%d)&&",RDRecording::Recording)+
     "(START_TIME=\""+RDEscapeString(edit_starttime_edit->time().toString("hh:mm:ss"))+"\")&&"+
-    QString().sprintf("(CHANNEL=%d)",f0[2].toInt());
-  switch((RDRecording::StartType)edit_starttype_group->selectedId()) {
-      case RDRecording::HardStart:
-	break;
+    QString().sprintf("(CHANNEL=%d)",f0[1].toInt());
+  switch((RDRecording::StartType)edit_starttype_group->checkedId()) {
+  case RDRecording::HardStart:
+    break;
 
-      case RDRecording::GpiStart:
-	sql+=QString().sprintf("&&(START_MATRIX=%d)&&(START_LINE=%d)",
-			       edit_startmatrix_spin->value(),
-			       edit_startline_spin->value());
-	break;
+  case RDRecording::GpiStart:
+    sql+=QString().sprintf("&&(START_MATRIX=%d)&&(START_LINE=%d)",
+			   edit_startmatrix_spin->value(),
+			   edit_startline_spin->value());
+    break;
   }
   if(edit_sun_button->isChecked()) {
     sql+="&&(SUN=\"Y\")";

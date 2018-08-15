@@ -2,7 +2,7 @@
 //
 // Add a Rivendell RDCatch Event
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,10 +29,6 @@
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
-//Added by qt3to4:
-#include <QLabel>
-#include <QKeyEvent>
-#include <QCloseEvent>
 
 #include <rddb.h>
 #include <rd.h>
@@ -40,20 +36,22 @@
 #include <rdcut_dialog.h>
 #include <rdcut_path.h>
 
-#include <add_recording.h>
-#include <edit_recording.h>
-#include <edit_playout.h>
-#include <edit_cartevent.h>
-#include <edit_switchevent.h>
-#include <edit_download.h>
-#include <edit_upload.h>
+#include "add_recording.h"
+#include "edit_recording.h"
+#include "edit_playout.h"
+#include "edit_cartevent.h"
+#include "edit_switchevent.h"
+#include "edit_download.h"
+#include "edit_upload.h"
 
 extern RDStation *rdstation_conf;
 
 AddRecording::AddRecording(int id,QString *filter,QWidget *parent)
-  : QDialog(parent,"",true,Qt::WStyle_Customize|Qt::WStyle_DialogBorder)
+  : QDialog(parent,Qt::WStyle_Customize|Qt::WStyle_DialogBorder)
 {
-  setCaption("");
+  setModal(true);
+
+  setWindowTitle("RDCatch");
 
   //
   // Fix the Window Size

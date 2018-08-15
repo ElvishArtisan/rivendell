@@ -19,6 +19,7 @@
 //
 
 #include <qdialog.h>
+#include <qgroupbox.h>
 #include <qstring.h>
 #include <qpushbutton.h>
 #include <q3listbox.h>
@@ -27,11 +28,6 @@
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
-//Added by qt3to4:
-#include <QKeyEvent>
-#include <QLabel>
-#include <QPaintEvent>
-#include <QCloseEvent>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -48,8 +44,10 @@
 
 EditUpload::EditUpload(int id,std::vector<int> *adds,QString *filter,
 		       QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   QString sql;
   RDSqlQuery *q;
   QString temp;
@@ -76,7 +74,7 @@ EditUpload::EditUpload(int id,std::vector<int> *adds,QString *filter,
   edit_added_events=adds;
   edit_filter=filter;
 
-  setCaption(tr("Edit Upload"));
+  setWindowTitle("RDCatch - "+tr("Edit Upload"));
 
   //
   // Text Validator
@@ -254,10 +252,9 @@ EditUpload::EditUpload(int id,std::vector<int> *adds,QString *filter,
   //
   // Button Label
   //
-  label=new QLabel(tr("Active Days"),this);
-  label->setGeometry(47,263,90,19);
-  label->setFont(label_font);
-  label->setAlignment(Qt::AlignHCenter|Qt::TextShowMnemonic);
+  QGroupBox *groupbox=new QGroupBox(tr("Active Days"),this);
+  groupbox->setFont(label_font);
+  groupbox->setGeometry(10,266,sizeHint().width()-20,62);
 
   //
   // Monday Button
@@ -581,26 +578,17 @@ void EditUpload::cancelData()
 }
 
 
-void EditUpload::paintEvent(QPaintEvent *e)
-{
-  QPainter *p=new QPainter(this);
-  p->setPen(QColor(Qt::black));
-  p->drawRect(10,271,sizeHint().width()-20,62);
-  p->end();
-}
-
-
 void EditUpload::keyPressEvent(QKeyEvent *e)
 {
   switch(e->key()) {
-      case Qt::Key_Escape:
-	e->accept();
-	cancelData();
-	break;
+  case Qt::Key_Escape:
+    e->accept();
+    cancelData();
+    break;
 
-      default:
-	QDialog::keyPressEvent(e);
-	break;
+  default:
+    QDialog::keyPressEvent(e);
+    break;
   }
 }
 

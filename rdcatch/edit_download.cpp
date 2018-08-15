@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Download Event
 //
-//   (C) Copyright 2002-2005,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,6 +19,7 @@
 //
 
 #include <qdialog.h>
+#include <qgroupbox.h>
 #include <qstring.h>
 #include <qpushbutton.h>
 #include <q3listbox.h>
@@ -28,11 +29,6 @@
 #include <qmessagebox.h>
 #include <qcheckbox.h>
 #include <q3url.h>
-//Added by qt3to4:
-#include <QCloseEvent>
-#include <QPaintEvent>
-#include <QLabel>
-#include <QKeyEvent>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -49,8 +45,10 @@
 
 EditDownload::EditDownload(int id,std::vector<int> *adds,QString *filter,
 			   QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   QString sql;
   RDSqlQuery *q;
   QString temp;
@@ -77,7 +75,7 @@ EditDownload::EditDownload(int id,std::vector<int> *adds,QString *filter,
   edit_added_events=adds;
   edit_filter=filter;
 
-  setCaption(tr("Edit Download"));
+  setWindowTitle("RDCatch - "+tr("Edit Download"));
 
   //
   // Text Validator
@@ -256,10 +254,9 @@ EditDownload::EditDownload(int id,std::vector<int> *adds,QString *filter,
   //
   // Button Label
   //
-  label=new QLabel(tr("Active Days"),this);
-  label->setGeometry(47,254,90,19);
-  label->setFont(label_font);
-  label->setAlignment(Qt::AlignHCenter);
+  QGroupBox *groupbox=new QGroupBox(tr("Active Days"),this);
+  groupbox->setFont(label_font);
+  groupbox->setGeometry(10,257,sizeHint().width()-20,62);
 
   //
   // Monday Button
@@ -483,10 +480,10 @@ void EditDownload::selectCartData()
   RDCutDialog *cut=
     new RDCutDialog(&edit_cutname,edit_filter,NULL,NULL,false,true);
   switch(cut->exec()) {
-      case 0:
-	edit_description_edit->setText(RDCutPath(edit_cutname));
-	edit_destination_edit->setText(tr("Cut")+" "+edit_cutname);
-	break;
+  case 0:
+    edit_description_edit->setText(RDCutPath(edit_cutname));
+    edit_destination_edit->setText(tr("Cut")+" "+edit_cutname);
+    break;
   }
   delete cut;
 }
@@ -558,26 +555,17 @@ void EditDownload::cancelData()
 }
 
 
-void EditDownload::paintEvent(QPaintEvent *e)
-{
-  QPainter *p=new QPainter(this);
-  p->setPen(Qt::black);
-  p->drawRect(10,262,sizeHint().width()-20,62);
-  p->end();
-}
-
-
 void EditDownload::keyPressEvent(QKeyEvent *e)
 {
   switch(e->key()) {
-      case Qt::Key_Escape:
-	e->accept();
-	cancelData();
-	break;
+  case Qt::Key_Escape:
+    e->accept();
+    cancelData();
+    break;
 
-      default:
-	QDialog::keyPressEvent(e);
-	break;
+  default:
+    QDialog::keyPressEvent(e);
+    break;
   }
 }
 

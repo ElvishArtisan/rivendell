@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Netcatch Cart Event
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,10 +30,6 @@
 #include <qcombobox.h>
 #include <qcheckbox.h>
 #include <qlabel.h>
-//Added by qt3to4:
-#include <QKeyEvent>
-#include <QCloseEvent>
-#include <QPaintEvent>
 
 #include <rdrecording.h>
 #include <rddeck.h>
@@ -61,7 +57,6 @@ class EditSwitchEvent : public QDialog
   void cancelData();
   
  protected:
-  void paintEvent(QPaintEvent *e);
   void keyPressEvent(QKeyEvent *);
   void closeEvent(QCloseEvent *e);
   

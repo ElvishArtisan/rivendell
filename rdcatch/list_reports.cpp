@@ -2,7 +2,7 @@
 //
 // List and Generate RDCatch Reports
 //
-//   (C) Copyright 2002-2006,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -36,8 +36,10 @@
 
 ListReports::ListReports(bool today_only,bool active_only,int dow,
 			 QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   list_today_only=today_only;
   list_active_only=active_only;
   list_dow=dow;
@@ -50,7 +52,7 @@ ListReports::ListReports(bool today_only,bool active_only,int dow,
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  setCaption(tr("RDLibrary Reports"));
+  setWindowTitle("RDCatch - "+tr("RDLibrary Reports"));
 
   //
   // Create Fonts
