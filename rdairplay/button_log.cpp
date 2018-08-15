@@ -2,7 +2,7 @@
 //
 // The button log widget for RDAirPlay
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -163,120 +163,120 @@ void ButtonLog::setActionMode(RDAirPlayConf::ActionMode mode,int *cartnum)
   for(int i=0;i<TRANSPORT_QUANTITY;i++) {
     if((lines[i]!=-1)&&((logline=log_log->logLine(lines[i]))!=NULL)) {
       switch(logline->status()) {
-	  case RDLogLine::Playing:
-	  case RDLogLine::Finishing:
-            if(mode==RDAirPlayConf::CopyFrom) {
-  	       log_start_button[i]->
-		  setMode(StartButton::CopyFrom,logline->cartType());
-              }
-            else {
-	      log_start_button[i]->
-	        setMode(StartButton::Play,logline->cartType());
-              }
+      case RDLogLine::Playing:
+      case RDLogLine::Finishing:
+	if(mode==RDAirPlayConf::CopyFrom) {
+	  log_start_button[i]->
+	    setMode(StartButton::CopyFrom,logline->cartType());
+	}
+	else {
+	  log_start_button[i]->
+	    setMode(StartButton::Play,logline->cartType());
+	}
+	break;
+
+      case RDLogLine::Paused:
+	switch(mode) {
+	case RDAirPlayConf::DeleteFrom:
+	  log_start_button[i]->
+	    setMode(StartButton::DeleteFrom,logline->cartType());
+	  break;
+
+	case RDAirPlayConf::CopyFrom:
+	  log_start_button[i]->
+	    setMode(StartButton::CopyFrom,logline->cartType());
+	  break;
+
+	default:
+	  log_start_button[i]->
+	    setMode(StartButton::Pause,logline->cartType());
+	}
+	break;
+
+      default:
+	switch(mode) {
+	case RDAirPlayConf::Normal:
+	  log_start_button[i]->
+	    setMode(StartButton::Stop,logline->cartType());
+	  break;
+		  
+	case RDAirPlayConf::AddTo:
+	  log_start_button[i]->
+	    setMode(StartButton::AddTo,logline->cartType());
+	  break;
+		  
+	case RDAirPlayConf::DeleteFrom:
+	  log_start_button[i]->
+	    setMode(StartButton::DeleteFrom,logline->cartType());
+	  break;
+		  
+	case RDAirPlayConf::MoveFrom:
+	  log_start_button[i]->
+	    setMode(StartButton::MoveFrom,logline->cartType());
+	  break;
+		  
+	case RDAirPlayConf::MoveTo:
+	  log_start_button[i]->
+	    setMode(StartButton::MoveTo,logline->cartType());
+	  break;
+		  
+	case RDAirPlayConf::CopyFrom:
+	  switch(logline->type()) {
+	  case RDLogLine::Marker:
+	  case RDLogLine::OpenBracket:
+	  case RDLogLine::CloseBracket:
+	  case RDLogLine::Chain:
+	  case RDLogLine::Track:
+	  case RDLogLine::MusicLink:
+	  case RDLogLine::TrafficLink:
+	  case RDLogLine::UnknownType:
+	    log_start_button[i]->
+	      setMode(StartButton::Stop,logline->cartType());
 	    break;
 
-	  case RDLogLine::Paused:
-	    switch(mode) {
-		case RDAirPlayConf::DeleteFrom:
-		  log_start_button[i]->
-		    setMode(StartButton::DeleteFrom,logline->cartType());
-		  break;
-
-		case RDAirPlayConf::CopyFrom:
-  		  log_start_button[i]->
-		     setMode(StartButton::CopyFrom,logline->cartType());
-		  break;
-
-		default:
-		  log_start_button[i]->
-		    setMode(StartButton::Pause,logline->cartType());
-	    }
+	  case RDLogLine::Cart:
+	  case RDLogLine::Macro:
+	    log_start_button[i]->
+	      setMode(StartButton::CopyFrom,logline->cartType());
 	    break;
+	  }
+	  break;
+		  
+	case RDAirPlayConf::CopyTo:
+	  log_start_button[i]->
+	    setMode(StartButton::CopyTo,logline->cartType());
+	  break;
 
-	  default:
-	    switch(mode) {
-		case RDAirPlayConf::Normal:
-		  log_start_button[i]->
-		    setMode(StartButton::Stop,logline->cartType());
-		  break;
-		  
-		case RDAirPlayConf::AddTo:
-		  log_start_button[i]->
-		    setMode(StartButton::AddTo,logline->cartType());
-		  break;
-		  
-		case RDAirPlayConf::DeleteFrom:
-		  log_start_button[i]->
-		    setMode(StartButton::DeleteFrom,logline->cartType());
-		  break;
-		  
-		case RDAirPlayConf::MoveFrom:
-		  log_start_button[i]->
-		    setMode(StartButton::MoveFrom,logline->cartType());
-		  break;
-		  
-		case RDAirPlayConf::MoveTo:
-		  log_start_button[i]->
-		    setMode(StartButton::MoveTo,logline->cartType());
-		  break;
-		  
-		case RDAirPlayConf::CopyFrom:
-		  switch(logline->type()) {
-		    case RDLogLine::Marker:
-		    case RDLogLine::OpenBracket:
-		    case RDLogLine::CloseBracket:
-		    case RDLogLine::Chain:
-		    case RDLogLine::Track:
-		    case RDLogLine::MusicLink:
-		    case RDLogLine::TrafficLink:
-		    case RDLogLine::UnknownType:
-		      log_start_button[i]->
-			setMode(StartButton::Stop,logline->cartType());
-		      break;
-
-		      case RDLogLine::Cart:
-		      case RDLogLine::Macro:
-			log_start_button[i]->
-			  setMode(StartButton::CopyFrom,logline->cartType());
-			break;
-		  }
-		  break;
-		  
-		case RDAirPlayConf::CopyTo:
-		  log_start_button[i]->
-		    setMode(StartButton::CopyTo,logline->cartType());
-		  break;
-
-		default:
-		  break;
-	    }
+	default:
+	  break;
+	}
       }	    
     }
     else {
       if(!end_button) {
 	switch(mode) {
-	    case RDAirPlayConf::AddTo:
-	      log_start_button[i]->
-		setMode(StartButton::AddTo,RDCart::All);
-	      end_button=true;
-	      break;
-	      
-	    case RDAirPlayConf::MoveTo:
-	      log_start_button[i]->
-		setMode(StartButton::MoveTo,RDCart::All);
-	      end_button=true;
-	      break;
-	      
-	    case RDAirPlayConf::CopyTo:
-	      log_start_button[i]->
-		setMode(StartButton::CopyTo,RDCart::All);
-	      end_button=true;
-	      break;
-	      
-	    default:
-	      log_start_button[i]->
-		setMode(StartButton::Disabled,RDCart::All);
-	      break;
+	case RDAirPlayConf::AddTo:
+	  log_start_button[i]->
+	    setMode(StartButton::AddTo,RDCart::All);
+	  end_button=true;
+	  break;
+
+	case RDAirPlayConf::MoveTo:
+	  log_start_button[i]->
+	    setMode(StartButton::MoveTo,RDCart::All);
+	  end_button=true;
+	  break;
+
+	case RDAirPlayConf::CopyTo:
+	  log_start_button[i]->
+	    setMode(StartButton::CopyTo,RDCart::All);
+	  end_button=true;
+	  break;
+
+	default:
+	  log_start_button[i]->
+	    setMode(StartButton::Disabled,RDCart::All);
+	  break;
 	}
 	end_button=true;
       }
@@ -315,42 +315,42 @@ void ButtonLog::startButton(int id)
     line=log_log->size();
   }
   switch(log_start_button[id]->mode()) {
-      case StartButton::Stop:
-	log_log->makeNext(line,false);
-	log_log->play(line,RDLogLine::StartManual);
-	break;
+  case StartButton::Stop:
+    log_log->makeNext(line,false);
+    log_log->play(line,RDLogLine::StartManual);
+    break;
 
-      case StartButton::Pause:
-	log_log->play(line,RDLogLine::StartManual);
-	break;
+  case StartButton::Pause:
+    log_log->play(line,RDLogLine::StartManual);
+    break;
 
-      case StartButton::Play:
-	if(log_pause_enabled&&(logline!=NULL)&&
-	   (logline->cartType()==RDCart::Audio)) {
-	    log_log->pause(line);
-	}
-	else {
-	  log_log->stop(line);
-	}
-	break;
+  case StartButton::Play:
+    if(log_pause_enabled&&(logline!=NULL)&&
+       (logline->cartType()==RDCart::Audio)) {
+      log_log->pause(line);
+    }
+    else {
+      log_log->stop(line);
+    }
+    break;
 
-      case StartButton::AddTo:
-      case StartButton::DeleteFrom:
-      case StartButton::MoveFrom:
-      case StartButton::MoveTo:
-      case StartButton::CopyFrom:
-      case StartButton::CopyTo:
-	if((logline=log_log->logLine(line))==NULL) {
-	  status=RDLogLine::Scheduled;
-	}
-	else {
-	  status=logline->status();
-	}
-	emit selectClicked(log_id,line,status);
-	break;
+  case StartButton::AddTo:
+  case StartButton::DeleteFrom:
+  case StartButton::MoveFrom:
+  case StartButton::MoveTo:
+  case StartButton::CopyFrom:
+  case StartButton::CopyTo:
+    if((logline=log_log->logLine(line))==NULL) {
+      status=RDLogLine::Scheduled;
+    }
+    else {
+      status=logline->status();
+    }
+    emit selectClicked(log_id,line,status);
+    break;
 
-      default:
-	break;
+  default:
+    break;
   }
 }
 
@@ -489,26 +489,26 @@ void ButtonLog::UpdateEvents()
 	log_start_button[i]->setPort(logline->portName());
 	log_line_box[i]->setStatus(log_log->logLine(lines[i])->status());
 	switch(log_log->logLine(lines[i])->status()) {
-	    case RDLogLine::Playing:
-	    case RDLogLine::Finishing:
-	      log_start_button[i]->
-		setMode(StartButton::Play,logline->cartType());
-	      break;
-	      
-	    case RDLogLine::Paused:
-	      log_start_button[i]->
-		setMode(StartButton::Pause,logline->cartType());
-	      break;
-	      
-	    case RDLogLine::Scheduled:
-	      log_start_button[i]->
-		setMode(StartButton::Stop,logline->cartType());
-	      break;
-	      
-	    default:
-	      log_start_button[i]->
-		setMode(StartButton::Disabled,logline->cartType());
-	      break;
+	case RDLogLine::Playing:
+	case RDLogLine::Finishing:
+	  log_start_button[i]->
+	    setMode(StartButton::Play,logline->cartType());
+	  break;
+
+	case RDLogLine::Paused:
+	  log_start_button[i]->
+	    setMode(StartButton::Pause,logline->cartType());
+	  break;
+
+	case RDLogLine::Scheduled:
+	  log_start_button[i]->
+	    setMode(StartButton::Stop,logline->cartType());
+	  break;
+
+	default:
+	  log_start_button[i]->
+	    setMode(StartButton::Disabled,logline->cartType());
+	  break;
 	}
       }
       if((next_line=log_log->nextLine(lines[i]))>=0) {
@@ -561,32 +561,32 @@ void ButtonLog::UpdateButtons()
 	// Set Buttons
 	//
 	switch(logline->status()) {
-	    case RDLogLine::Playing:
-	    case RDLogLine::Finishing:
-	      log_start_button[i]->
-		setMode(StartButton::Play,logline->cartType());
-	      log_start_button[i]->
-		setTime(logline->startTime(RDLogLine::Actual));
-	      break;
+	case RDLogLine::Playing:
+	case RDLogLine::Finishing:
+	  log_start_button[i]->
+	    setMode(StartButton::Play,logline->cartType());
+	  log_start_button[i]->
+	    setTime(logline->startTime(RDLogLine::Actual));
+	  break;
 
-	    case RDLogLine::Paused:
-	      log_start_button[i]->
-		setMode(StartButton::Pause,logline->cartType());
-	      log_start_button[i]->
-		setTime(logline->startTime(RDLogLine::Predicted));
-	      break;
+	case RDLogLine::Paused:
+	  log_start_button[i]->
+	    setMode(StartButton::Pause,logline->cartType());
+	  log_start_button[i]->
+	    setTime(logline->startTime(RDLogLine::Predicted));
+	  break;
 
-	    case RDLogLine::Scheduled:
-	      log_start_button[i]->
-		setMode(StartButton::Stop,logline->cartType());
-	      log_start_button[i]->
-		setTime(logline->startTime(RDLogLine::Predicted));
-	      break;
+	case RDLogLine::Scheduled:
+	  log_start_button[i]->
+	    setMode(StartButton::Stop,logline->cartType());
+	  log_start_button[i]->
+	    setTime(logline->startTime(RDLogLine::Predicted));
+	  break;
 
-	    default:
-	      log_start_button[i]->
-		setMode(StartButton::Disabled,logline->cartType());
-	      break;
+	default:
+	  log_start_button[i]->
+	    setMode(StartButton::Disabled,logline->cartType());
+	  break;
 	}
 
 	//
@@ -595,48 +595,48 @@ void ButtonLog::UpdateButtons()
 	if((next_logline=log_log->logLine(log_log->nextLine(lines[i])))!=
 	   NULL) {
 	  switch(log_log->mode()) {
-	      case RDAirPlayConf::Auto:
-		switch(next_logline->transType()) {
-		    case RDLogLine::Play:
-		    case RDLogLine::Segue:
-		      log_line_box[i]->setBarMode(LogLineBox::Transitioning);
-		      break;
+	  case RDAirPlayConf::Auto:
+	    switch(next_logline->transType()) {
+	    case RDLogLine::Play:
+	    case RDLogLine::Segue:
+	      log_line_box[i]->setBarMode(LogLineBox::Transitioning);
+	      break;
 
-		    case RDLogLine::Stop:
-		      if(lines[i]==longest_line) {
-			log_line_box[i]->setBarMode(LogLineBox::Stopping);
-		      }
-		      else {
-			log_line_box[i]->setBarMode(LogLineBox::Transitioning);
-		      }
-		      break;
+	    case RDLogLine::Stop:
+	      if(lines[i]==longest_line) {
+		log_line_box[i]->setBarMode(LogLineBox::Stopping);
+	      }
+	      else {
+		log_line_box[i]->setBarMode(LogLineBox::Transitioning);
+	      }
+	      break;
 
-		    default:
-		      break;
-		}
-		break;
+	    default:
+	      break;
+	    }
+	    break;
 
-	      case RDAirPlayConf::LiveAssist:
-	      case RDAirPlayConf::Manual:
-		switch(next_logline->status()) {
-		    case RDLogLine::Playing:
-		    case RDLogLine::Finishing:
-		      log_line_box[i]->setBarMode(LogLineBox::Transitioning);
-		      break;
+	  case RDAirPlayConf::LiveAssist:
+	  case RDAirPlayConf::Manual:
+	    switch(next_logline->status()) {
+	    case RDLogLine::Playing:
+	    case RDLogLine::Finishing:
+	      log_line_box[i]->setBarMode(LogLineBox::Transitioning);
+	      break;
 
-		    default:
-		      if(lines[i]==longest_line) {
-			log_line_box[i]->setBarMode(LogLineBox::Stopping);
-		      }
-		      else {
-			log_line_box[i]->setBarMode(LogLineBox::Transitioning);
-		      }
-		      break;
-		}
-		break;
+	    default:
+	      if(lines[i]==longest_line) {
+		log_line_box[i]->setBarMode(LogLineBox::Stopping);
+	      }
+	      else {
+		log_line_box[i]->setBarMode(LogLineBox::Transitioning);
+	      }
+	      break;
+	    }
+	    break;
 
-	      default:
-		break;
+	  default:
+	    break;
 	  }
 	}
 	else {

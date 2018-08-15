@@ -207,47 +207,47 @@
     <name>ListLog</name>
     <message>
         <source>TIME</source>
-        <translation>HORA</translation>
+        <translation type="obsolete">HORA</translation>
     </message>
     <message>
         <source>TRANS</source>
-        <translation>TRANS</translation>
+        <translation type="obsolete">TRANS</translation>
     </message>
     <message>
         <source>CART</source>
-        <translation>CARTUCHO</translation>
+        <translation type="obsolete">CARTUCHO</translation>
     </message>
     <message>
         <source>TITLE</source>
-        <translation>TÍTULO</translation>
+        <translation type="obsolete">TÍTULO</translation>
     </message>
     <message>
         <source>ARTIST</source>
-        <translation>ARTISTA</translation>
+        <translation type="obsolete">ARTISTA</translation>
     </message>
     <message>
         <source>CLIENT</source>
-        <translation>CLIENTE</translation>
+        <translation type="obsolete">CLIENTE</translation>
     </message>
     <message>
         <source>AGENCY</source>
-        <translation>AGENCIA</translation>
+        <translation type="obsolete">AGENCIA</translation>
     </message>
     <message>
         <source>LABEL</source>
-        <translation>ETIQUETA</translation>
+        <translation type="obsolete">ETIQUETA</translation>
     </message>
     <message>
         <source>LINE ID</source>
-        <translation>ID DE LÍNEA</translation>
+        <translation type="obsolete">ID DE LÍNEA</translation>
     </message>
     <message>
         <source>COUNT</source>
-        <translation>CUENTA</translation>
+        <translation type="obsolete">CUENTA</translation>
     </message>
     <message>
         <source>STATUS</source>
-        <translation>ESTADO</translation>
+        <translation type="obsolete">ESTADO</translation>
     </message>
     <message>
         <source>Select</source>
@@ -335,7 +335,7 @@ Lista</translation>
     </message>
     <message>
         <source>LEN</source>
-        <translation>LONG</translation>
+        <translation type="obsolete">LONG</translation>
     </message>
     <message>
         <source>LINK</source>
@@ -351,11 +351,11 @@ Lista</translation>
     </message>
     <message>
         <source>EST TIME</source>
-        <translation>TIEMPO EST</translation>
+        <translation type="obsolete">TIEMPO EST</translation>
     </message>
     <message>
         <source>GROUP</source>
-        <translation>GRUPO</translation>
+        <translation type="obsolete">GRUPO</translation>
     </message>
     <message>
         <source>Refresh
@@ -396,11 +396,71 @@ Tail</source>
 Final</translation>
     </message>
     <message>
-        <source>ALBUM</source>
+        <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Error</source>
+        <source>Est Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Len</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trans</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Artist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Album</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Client</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Agency</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Marker</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Line ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Count</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Status</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

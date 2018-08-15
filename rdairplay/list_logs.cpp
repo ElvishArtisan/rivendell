@@ -2,7 +2,7 @@
 //
 // Select a Rivendell Log
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,9 +20,6 @@
 
 #include <qmessagebox.h>
 #include <qpushbutton.h>
-//Added by qt3to4:
-#include <QCloseEvent>
-#include <QResizeEvent>
 
 #include <rdadd_log.h>
 #include <rdapplication.h>
@@ -33,8 +30,10 @@
 #include "list_logs.h"
 
 ListLogs::ListLogs(RDLogPlay *log,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   //
   // Fix the Window Size
   //
@@ -47,7 +46,7 @@ ListLogs::ListLogs(RDLogPlay *log,QWidget *parent)
   button_font.setPixelSize(12);
 
   list_log=log;
-  setCaption(tr("Select Log"));
+  setWindowTitle("RDAirPlay - "+tr("Select Log"));
 
   //
   // Filter Widget

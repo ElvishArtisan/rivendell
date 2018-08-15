@@ -2,7 +2,7 @@
 //
 // The On Air Playout Utility for Rivendell.
 //
-//   (C) Copyright 2002-2010,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,26 +29,10 @@
 #include <syslog.h>
 
 #include <qapplication.h>
-#include <qwindowsstyle.h>
-#include <qwidget.h>
-#include <qpainter.h>
-#include <q3sqlpropertymap.h>
 #include <qmessagebox.h>
-#include <qpushbutton.h>
-#include <q3listview.h>
 #include <qsignalmapper.h>
-#include <qtimer.h>
-#include <qtextcodec.h>
 #include <qtranslator.h>
-#include <qpainter.h>
-//Added by qt3to4:
-#include <QPixmap>
-#include <QCloseEvent>
-#include <QKeyEvent>
-#include <Q3Frame>
-#include <QPaintEvent>
 
-#include <dbversion.h>
 #include <rd.h>
 #include <rdapplication.h>
 #include <rdconf.h>
@@ -228,7 +212,7 @@ MainWidget::MainWidget(QWidget *parent)
   logfile=rda->config()->airplayLogname();
 
   str=QString("RDAirPlay")+" v"+VERSION+" - "+tr("Host:");
-  setCaption(str+" "+rda->config()->stationName());
+  setWindowTitle(str+" "+rda->config()->stationName());
 
   //
   // Master Clock Timer
@@ -819,26 +803,26 @@ MainWidget::MainWidget(QWidget *parent)
   //
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
     switch(rda->airplayConf()->logStartMode(i)) {
-      case RDAirPlayConf::Manual:
-	SetManualMode(i);
-	break;
+    case RDAirPlayConf::Manual:
+      SetManualMode(i);
+      break;
 	
-      case RDAirPlayConf::LiveAssist:
-	SetLiveAssistMode(i);
-	break;
+    case RDAirPlayConf::LiveAssist:
+      SetLiveAssistMode(i);
+      break;
 	
-      case RDAirPlayConf::Auto:
-	SetAutoMode(i);
-	break;
+    case RDAirPlayConf::Auto:
+      SetAutoMode(i);
+      break;
 	
-      case RDAirPlayConf::Previous:
-	if(air_op_mode_style==RDAirPlayConf::Unified) {
-	  SetMode(i,rda->airplayConf()->opMode(0));
-	}
-	else {
-	  SetMode(i,rda->airplayConf()->opMode(i));
-	}
-	break;
+    case RDAirPlayConf::Previous:
+      if(air_op_mode_style==RDAirPlayConf::Unified) {
+	SetMode(i,rda->airplayConf()->opMode(0));
+      }
+      else {
+	SetMode(i,rda->airplayConf()->opMode(i));
+      }
+      break;
     }
   }
 
@@ -961,47 +945,47 @@ void MainWidget::ripcConnectedData(bool state)
   for(unsigned i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
     if(air_start_logname[i].isNull()) {
       switch(rda->airplayConf()->startMode(i)) {
-	  case RDAirPlayConf::StartEmpty:
-	    break;
+      case RDAirPlayConf::StartEmpty:
+	break;
 	    
-	  case RDAirPlayConf::StartPrevious:
-	    air_start_logname[i]=
-	      RDDateTimeDecode(rda->airplayConf()->currentLog(i),
-			       air_startup_datetime,rda->station(),rda->config());
-	    if(!air_start_logname[i].isEmpty()) {
-	      if(rdairplay_previous_exit_code==RDAirPlayConf::ExitDirty) {
-		if((air_start_line[i]=rda->airplayConf()->logCurrentLine(i))>=0) {
-		  air_start_start[i]=rda->airplayConf()->autoRestart(i)&&
-		    rda->airplayConf()->logRunning(i);
-		}
+      case RDAirPlayConf::StartPrevious:
+	air_start_logname[i]=
+	  RDDateTimeDecode(rda->airplayConf()->currentLog(i),
+			   air_startup_datetime,rda->station(),rda->config());
+	if(!air_start_logname[i].isEmpty()) {
+	  if(rdairplay_previous_exit_code==RDAirPlayConf::ExitDirty) {
+	    if((air_start_line[i]=rda->airplayConf()->logCurrentLine(i))>=0) {
+	      air_start_start[i]=rda->airplayConf()->autoRestart(i)&&
+		rda->airplayConf()->logRunning(i);
+	    }
+	  }
+	  else {
+	    air_start_line[i]=0;
+	    air_start_start[i]=false;
+	  }
+	}
+	break;
+
+      case RDAirPlayConf::StartSpecified:
+	air_start_logname[i]=
+	  RDDateTimeDecode(rda->airplayConf()->logName(i),
+			   air_startup_datetime,rda->station(),rda->config());
+	if(!air_start_logname[i].isEmpty()) {
+	  if(rdairplay_previous_exit_code==RDAirPlayConf::ExitDirty) {
+	    if(air_start_logname[i]==rda->airplayConf()->currentLog(i)) {
+	      if((air_start_line[i]=rda->airplayConf()->logCurrentLine(i))>=
+		 0) {
+		air_start_start[i]=rda->airplayConf()->autoRestart(i)&&
+		  rda->airplayConf()->logRunning(i);
 	      }
 	      else {
 		air_start_line[i]=0;
 		air_start_start[i]=false;
 	      }
 	    }
-	    break;
-
-	  case RDAirPlayConf::StartSpecified:
-	    air_start_logname[i]=
-	      RDDateTimeDecode(rda->airplayConf()->logName(i),
-			       air_startup_datetime,rda->station(),rda->config());
-	    if(!air_start_logname[i].isEmpty()) {
-	      if(rdairplay_previous_exit_code==RDAirPlayConf::ExitDirty) {
-		if(air_start_logname[i]==rda->airplayConf()->currentLog(i)) {
-		  if((air_start_line[i]=rda->airplayConf()->logCurrentLine(i))>=
-		     0) {
-		    air_start_start[i]=rda->airplayConf()->autoRestart(i)&&
-		      rda->airplayConf()->logRunning(i);
-		  }
-		  else {
-		    air_start_line[i]=0;
-		    air_start_start[i]=false;
-		  }
-		}
-	      }
-	    }
-	    break;
+	  }
+	}
+	break;
       }
     }
     if(!air_start_logname[i].isEmpty()) {
@@ -1511,6 +1495,7 @@ void MainWidget::fullLogButtonData(int id)
     return;
   }
   else {
+    air_panel->hide();
     for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
       if(air_log_list[i]->isVisible()) {
 	air_log_list[i]->hide();
@@ -1519,7 +1504,9 @@ void MainWidget::fullLogButtonData(int id)
     }
     air_log_list[id]->show();
     air_log_button[id]->setPalette(active_color);
-    if (air_panel_button) air_panel_button->setPalette(palette());
+    if(air_panel_button) {
+      air_panel_button->setPalette(palette());
+    }
   }
 }
 
@@ -1532,6 +1519,7 @@ void MainWidget::panelButtonData()
       air_log_button[i]->setPalette(palette());
     }
   }
+  air_panel->show();
   air_panel_button->setPalette(active_color);
 }
 
@@ -1549,20 +1537,20 @@ void MainWidget::modeButtonData()
     break;
   }
   switch(air_op_mode[0]) {
-      case RDAirPlayConf::Manual:
-	SetMode(mach,RDAirPlayConf::LiveAssist);
-	break;
+  case RDAirPlayConf::Manual:
+    SetMode(mach,RDAirPlayConf::LiveAssist);
+    break;
 
-      case RDAirPlayConf::LiveAssist:
-	SetMode(mach,RDAirPlayConf::Auto);
-	break;
+  case RDAirPlayConf::LiveAssist:
+    SetMode(mach,RDAirPlayConf::Auto);
+    break;
 
-      case RDAirPlayConf::Auto:
-	SetMode(mach,RDAirPlayConf::Manual);
-	break;
+  case RDAirPlayConf::Auto:
+    SetMode(mach,RDAirPlayConf::Manual);
+    break;
 
-      default:
-	break;
+  default:
+    break;
   }
 }
 
@@ -1572,119 +1560,118 @@ void MainWidget::selectClickedData(int id,int line,RDLogLine::Status status)
   RDLogLine *logline;
 
   switch(air_action_mode) {
-      case StartButton::AddTo:
-	if(line<0) {
-	  air_log[id]->
-	    insert(air_log[id]->size(),air_add_cart,RDLogLine::Play);
-	  air_log[id]->logLine(air_log[id]->size()-1)->
-	    setTransType(rda->airplayConf()->defaultTransType());
-	  air_log_list[id]->refresh(air_log[id]->size()-1);
-	}
-	else {
-	  air_log[id]->
-	    insert(line,air_add_cart,air_log[id]->nextTransType(line));
-	  air_log[id]->logLine(line)->
-	    setTransType(rda->airplayConf()->defaultTransType());
-	  air_log_list[id]->refresh(line);
-	}
-	SetActionMode(StartButton::Stop);
-	break;
+  case StartButton::AddTo:
+    if(line<0) {
+      air_log[id]->
+	insert(air_log[id]->size(),air_add_cart,RDLogLine::Play);
+      air_log[id]->logLine(air_log[id]->size()-1)->
+	setTransType(rda->airplayConf()->defaultTransType());
+      air_log_list[id]->refresh(air_log[id]->size()-1);
+    }
+    else {
+      air_log[id]->
+	insert(line,air_add_cart,air_log[id]->nextTransType(line));
+      air_log[id]->logLine(line)->
+	setTransType(rda->airplayConf()->defaultTransType());
+      air_log_list[id]->refresh(line);
+    }
+    SetActionMode(StartButton::Stop);
+    break;
 
-      case StartButton::DeleteFrom:
-	if(status==RDLogLine::Finished) {
-	  return;
-	}
-	air_log[id]->remove(line,1);
-	SetActionMode(StartButton::Stop);
-	break;
+  case StartButton::DeleteFrom:
+    if(status==RDLogLine::Finished) {
+      return;
+    }
+    air_log[id]->remove(line,1);
+    SetActionMode(StartButton::Stop);
+    break;
 
-      case StartButton::MoveFrom:
-	if((logline=air_log[id]->logLine(line))!=NULL) {
-	  air_copy_line=line;
-	  air_add_cart=logline->cartNumber();
-	  air_source_id=id;
-	  SetActionMode(StartButton::MoveTo);
-	}
-	else {
-	  SetActionMode(StartButton::Stop);
-	}
-	break;
+  case StartButton::MoveFrom:
+    if((logline=air_log[id]->logLine(line))!=NULL) {
+      air_copy_line=line;
+      air_add_cart=logline->cartNumber();
+      air_source_id=id;
+      SetActionMode(StartButton::MoveTo);
+    }
+    else {
+      SetActionMode(StartButton::Stop);
+    }
+    break;
 
-      case StartButton::MoveTo:
-	if(air_source_id==id) {
-	  if(line<0) {
-	    air_log[id]->move(air_copy_line,air_log[id]->size());
-	    air_log_list[id]->refresh(air_log[id]->size()-1);
-	  }
-	  else {
-	    if(line>air_copy_line) {
-	      line--;
-	    }
-	    air_log[id]->move(air_copy_line,line);
-	    air_log_list[id]->refresh(line);
-	  }
+  case StartButton::MoveTo:
+    if(air_source_id==id) {
+      if(line<0) {
+	air_log[id]->move(air_copy_line,air_log[id]->size());
+	air_log_list[id]->refresh(air_log[id]->size()-1);
+      }
+      else {
+	if(line>air_copy_line) {
+	  line--;
 	}
-	else {
-	  air_log[air_source_id]->remove(air_copy_line,1);
-	  if(line<0) {
-	    air_log[id]->
-	      insert(air_log[id]->size(),air_add_cart,RDLogLine::Play);
-	    air_log_list[id]->refresh(air_log[id]->size()-1);
-	    
-	  }
-	  else {
-	    air_log[id]->
-	      insert(line,air_add_cart,air_log[id]->nextTransType(line));
-	    air_log_list[id]->refresh(line);
-	  }
-	}
-	SetActionMode(StartButton::Stop);
-	break;
+	air_log[id]->move(air_copy_line,line);
+	air_log_list[id]->refresh(line);
+      }
+    }
+    else {
+      air_log[air_source_id]->remove(air_copy_line,1);
+      if(line<0) {
+	air_log[id]->
+	  insert(air_log[id]->size(),air_add_cart,RDLogLine::Play);
+	air_log_list[id]->refresh(air_log[id]->size()-1);
+      }
+      else {
+	air_log[id]->
+	  insert(line,air_add_cart,air_log[id]->nextTransType(line));
+	air_log_list[id]->refresh(line);
+      }
+    }
+    SetActionMode(StartButton::Stop);
+    break;
 
-      case StartButton::CopyFrom:
-	if((logline=air_log[id]->logLine(line))!=NULL) {
-	  air_copy_line=line;
-	  air_add_cart=logline->cartNumber();
-	  air_source_id=id;
-	  SetActionMode(StartButton::CopyTo);
-	}
-	else {
-	  SetActionMode(StartButton::Stop);
-	}
-	break;
+  case StartButton::CopyFrom:
+    if((logline=air_log[id]->logLine(line))!=NULL) {
+      air_copy_line=line;
+      air_add_cart=logline->cartNumber();
+      air_source_id=id;
+      SetActionMode(StartButton::CopyTo);
+    }
+    else {
+      SetActionMode(StartButton::Stop);
+    }
+    break;
 
-      case StartButton::CopyTo:
-	if(air_source_id==id) {
-	  if(line<0) {
-	    air_log[id]->copy(air_copy_line,air_log[id]->size());
-	  }
-	  else {
-	    air_log[id]->copy(air_copy_line,line);
-	  }
-	}
-	else {
-	  if(line<0) {
-	    air_log[id]->insert(air_log[id]->size(),air_add_cart,
-				rda->airplayConf()->defaultTransType(),
-				rda->airplayConf()->defaultTransType());
-	    air_log[id]->logLine(air_log[id]->size()-1)->
-	      setTransType(rda->airplayConf()->defaultTransType());
-	    air_log_list[id]->refresh(air_log[id]->size()-1);
-	  }
-	  else {
-	    air_log[id]->
-	      insert(line,air_add_cart,air_log[id]->nextTransType(line),
-		     rda->airplayConf()->defaultTransType());
-	    air_log[id]->logLine(line)->
-	      setTransType(rda->airplayConf()->defaultTransType());
-	    air_log_list[id]->refresh(line);
-	  }
-	}
-	SetActionMode(StartButton::Stop);
-	break;
+  case StartButton::CopyTo:
+    if(air_source_id==id) {
+      if(line<0) {
+	air_log[id]->copy(air_copy_line,air_log[id]->size());
+      }
+      else {
+	air_log[id]->copy(air_copy_line,line);
+      }
+    }
+    else {
+      if(line<0) {
+	air_log[id]->insert(air_log[id]->size(),air_add_cart,
+			    rda->airplayConf()->defaultTransType(),
+			    rda->airplayConf()->defaultTransType());
+	air_log[id]->logLine(air_log[id]->size()-1)->
+	  setTransType(rda->airplayConf()->defaultTransType());
+	air_log_list[id]->refresh(air_log[id]->size()-1);
+      }
+      else {
+	air_log[id]->
+	  insert(line,air_add_cart,air_log[id]->nextTransType(line),
+		 rda->airplayConf()->defaultTransType());
+	air_log[id]->logLine(line)->
+	  setTransType(rda->airplayConf()->defaultTransType());
+	air_log_list[id]->refresh(line);
+      }
+    }
+    SetActionMode(StartButton::Stop);
+    break;
 
-      default:
-	break;
+  default:
+    break;
   }
 }
 
@@ -1692,39 +1679,39 @@ void MainWidget::selectClickedData(int id,int line,RDLogLine::Status status)
 void MainWidget::selectClickedData(unsigned cartnum,int row,int col)
 {
   switch(air_action_mode) {
-      case StartButton::CopyFrom:
-	air_copy_line=-1;
-	air_add_cart=cartnum;
-	air_source_id=-1;
-	SetActionMode(StartButton::CopyTo);
-	break;
+  case StartButton::CopyFrom:
+    air_copy_line=-1;
+    air_add_cart=cartnum;
+    air_source_id=-1;
+    SetActionMode(StartButton::CopyTo);
+    break;
 
-      case StartButton::CopyTo:
-	if(air_panel!=NULL) {
-	  air_panel->setButton(air_panel->currentType(),
-			       air_panel->currentNumber(),row,col,air_add_cart);
-	}
-	SetActionMode(StartButton::Stop);
-	break;
+  case StartButton::CopyTo:
+    if(air_panel!=NULL) {
+      air_panel->setButton(air_panel->currentType(),
+			   air_panel->currentNumber(),row,col,air_add_cart);
+    }
+    SetActionMode(StartButton::Stop);
+    break;
 
-      case StartButton::AddTo:
-	if(air_panel!=NULL) {
-	  air_panel->setButton(air_panel->currentType(),
-			       air_panel->currentNumber(),row,col,air_add_cart);
-	}
-	SetActionMode(StartButton::Stop);
-	break;
+  case StartButton::AddTo:
+    if(air_panel!=NULL) {
+      air_panel->setButton(air_panel->currentType(),
+			   air_panel->currentNumber(),row,col,air_add_cart);
+    }
+    SetActionMode(StartButton::Stop);
+    break;
 
-      case StartButton::DeleteFrom:
-	if(air_panel!=NULL) {
-	  air_panel->setButton(air_panel->currentType(),
-			       air_panel->currentNumber(),row,col,0);
-	}
-	SetActionMode(StartButton::Stop);
-	break;
+  case StartButton::DeleteFrom:
+    if(air_panel!=NULL) {
+      air_panel->setButton(air_panel->currentType(),
+			   air_panel->currentNumber(),row,col,0);
+    }
+    SetActionMode(StartButton::Stop);
+    break;
 
-      default:
-	break;
+  default:
+    break;
   }
 }
 
@@ -1806,68 +1793,68 @@ void MainWidget::transportChangedData()
     for(int i=0;i<count;i++) {
       if((logline=air_log[0]->logLine(lines[i]))!=NULL) {
 	switch(logline->type()) {
-	    case RDLogLine::Cart:
-	      if(logline->startTime(RDLogLine::Actual).
-		 addMSecs(logline->effectiveLength()-
-			  ((RDPlayDeck *)logline->playDeck())->
-			  lastStartPosition())>end_time) {
-		end_time=logline->startTime(RDLogLine::Actual).
-		  addMSecs(logline->effectiveLength()-
-			   ((RDPlayDeck *)logline->playDeck())->
-			   lastStartPosition());
-		line=lines[i];
-	      }
-	      break;
+	case RDLogLine::Cart:
+	  if(logline->startTime(RDLogLine::Actual).
+	     addMSecs(logline->effectiveLength()-
+		      ((RDPlayDeck *)logline->playDeck())->
+		      lastStartPosition())>end_time) {
+	    end_time=logline->startTime(RDLogLine::Actual).
+	      addMSecs(logline->effectiveLength()-
+		       ((RDPlayDeck *)logline->playDeck())->
+		       lastStartPosition());
+	    line=lines[i];
+	  }
+	  break;
 
-	    case RDLogLine::Macro:
-	      line=lines[i];
-	      break;
+	case RDLogLine::Macro:
+	  line=lines[i];
+	  break;
 
-	    default:
-	      break;
+	default:
+	  break;
 	}
       }
     }
 
     logline=air_log[0]->logLine(line);
     switch(air_op_mode[0]) {
-	case RDAirPlayConf::Manual:
-	case RDAirPlayConf::LiveAssist:
-	  pie_end=RDAirPlayConf::CartEnd;
-	  break;
+    case RDAirPlayConf::Manual:
+    case RDAirPlayConf::LiveAssist:
+      pie_end=RDAirPlayConf::CartEnd;
+      break;
 
-	case RDAirPlayConf::Auto:
-	  pie_end=air_pie_end;
-	  break;
+    case RDAirPlayConf::Auto:
+      pie_end=air_pie_end;
+      break;
 
-	default:
-	  break;
+    default:
+      break;
     }
     if(logline->effectiveLength()>0) {
       if((air_pie_counter->line()!=logline->id())) {
 	switch(pie_end) {
-	    case RDAirPlayConf::CartEnd:
-	      air_pie_counter->setTime(logline->effectiveLength());
-	      break;
+	case RDAirPlayConf::CartEnd:
+	  air_pie_counter->setTime(logline->effectiveLength());
+	  break;
 	      
-	    case RDAirPlayConf::CartTransition:
-	      if((next_logline=air_log[0]->
-		  logLine(air_log[0]->nextLine(line)))!=NULL) {
-		if((unsigned)logline->startTime(RDLogLine::Actual).
-		   msecsTo(QTime::currentTime())<
-		   logline->segueLength(next_logline->transType())-
-		   logline->playPosition()) {
-		  air_pie_counter->
-		    setTime(logline->segueLength(next_logline->transType()));
-		}
-		else {
-		  air_pie_counter->setTime(logline->effectiveLength());
-		}
-	      }
-	      else {
-		air_pie_counter->setTime(logline->effectiveLength());
-	      }
-	      break;
+	case RDAirPlayConf::CartTransition:
+	  if((next_logline=air_log[0]->
+	      logLine(air_log[0]->nextLine(line)))!=NULL) {
+	    if((unsigned)logline->startTime(RDLogLine::Actual).
+	       msecsTo(QTime::currentTime())<
+	       logline->segueLength(next_logline->transType())-
+	       logline->playPosition()) {
+	      air_pie_counter->
+		setTime(logline->segueLength(next_logline->transType()));
+	    }
+	    else {
+	      air_pie_counter->setTime(logline->effectiveLength());
+	    }
+	  }
+	  else {
+	    air_pie_counter->setTime(logline->effectiveLength());
+	  }
+	  break;
 	}
 	if(logline->talkStartPoint()==0) {
           air_pie_counter->setTalkStart(0);
@@ -1950,31 +1937,31 @@ void MainWidget::clearSplashData()
 void MainWidget::keyPressEvent(QKeyEvent *e)
 {
  switch(e->key()) {
-      case Qt::Key_Space:
-	break;
+ case Qt::Key_Space:
+   break;
 
-      case Qt::Key_X:
-	if(((e->state()&Qt::AltModifier)!=0)&&
-	   ((e->state()&Qt::ShiftModifier)==0)&&((e->state()&Qt::ControlModifier)==0)) {
-	  QCloseEvent *ce=new QCloseEvent();
-	  closeEvent(ce);
-	  delete ce;
-	}
-	break;
+ case Qt::Key_X:
+   if(((e->state()&Qt::AltModifier)!=0)&&
+      ((e->state()&Qt::ShiftModifier)==0)&&((e->state()&Qt::ControlModifier)==0)) {
+     QCloseEvent *ce=new QCloseEvent();
+     closeEvent(ce);
+     delete ce;
+   }
+   break;
 
-      case Qt::Key_Alt:
-        keystrokecount++;
-        AltKeyHit = true;
-        break;
+ case Qt::Key_Alt:
+   keystrokecount++;
+   AltKeyHit = true;
+   break;
 
-      case Qt::Key_Control:
-        keystrokecount++;
-        CtrlKeyHit = true;
-        break;
+ case Qt::Key_Control:
+   keystrokecount++;
+   CtrlKeyHit = true;
+   break;
 
-      default:
-        QWidget::keyPressEvent(e);
-	break;
+ default:
+   QWidget::keyPressEvent(e);
+   break;
   }
 }
 
@@ -1987,19 +1974,19 @@ void MainWidget::keyReleaseEvent(QKeyEvent *e)
   QString temp_string;
 
   switch(e->key()) {
-      case Qt::Key_Space:
-	switch(air_bar_action) {
-	    case RDAirPlayConf::StartNext:
-	      if(!e->isAutoRepeat()){
-		air_log[0]->
-		  play(air_log[0]->nextLine(),RDLogLine::StartManual);
-	      }
-	      break;
+  case Qt::Key_Space:
+    switch(air_bar_action) {
+    case RDAirPlayConf::StartNext:
+      if(!e->isAutoRepeat()){
+	air_log[0]->
+	  play(air_log[0]->nextLine(),RDLogLine::StartManual);
+      }
+      break;
 
-	    default:
-	      break;
-	}
-	break;
+    default:
+      break;
+    }
+    break;
   }
 //  Try to figure out if this is a hot key combination
   if ( (e->key() == Qt::Key_Shift) || 
@@ -2143,7 +2130,7 @@ void MainWidget::closeEvent(QCloseEvent *e)
     air_lock->unlock();
     exit(0);
   }
-  if(QMessageBox::question(this,"",tr("Exit RDAirPlay?"),
+  if(QMessageBox::question(this,"RDAirPlay",tr("Exit RDAirPlay?"),
 			   QMessageBox::Yes,QMessageBox::No)!=
      QMessageBox::Yes) {
     return;
@@ -2193,11 +2180,11 @@ void MainWidget::SetCaption()
   if(log.isEmpty()) {
     log="--    ";
   }
-  setCaption(QString("RDAirPlay")+" v"+VERSION+" - "+tr("Host")+": "+
-	     rda->config()->stationName()+" "+
-	     tr("User:")+" "+rda->ripc()->user()+" "+
-	     tr("Log:")+" "+log.left(log.length()-4)+" "+
-	     tr("Service:")+" "+air_log[0]->serviceName());
+  setWindowTitle(QString("RDAirPlay")+" v"+VERSION+" - "+tr("Host")+": "+
+		 rda->config()->stationName()+" "+
+		 tr("User:")+" "+rda->ripc()->user()+" "+
+		 tr("Log:")+" "+log.left(log.length()-4)+" "+
+		 tr("Service:")+" "+air_log[0]->serviceName());
 }
 
 
@@ -2213,20 +2200,20 @@ void MainWidget::SetMode(int mach,RDAirPlayConf::OpMode mode)
     return;
   }
   switch(mode) {
-      case RDAirPlayConf::Manual:
-	SetManualMode(mach);
-	break;
+  case RDAirPlayConf::Manual:
+    SetManualMode(mach);
+    break;
 
-      case RDAirPlayConf::LiveAssist:
-	SetLiveAssistMode(mach);
-	break;
+  case RDAirPlayConf::LiveAssist:
+    SetLiveAssistMode(mach);
+    break;
 
-      case RDAirPlayConf::Auto:
-	SetAutoMode(mach);
-	break;
+  case RDAirPlayConf::Auto:
+    SetAutoMode(mach);
+    break;
 
-      default:
-	break;
+  default:
+    break;
   }
 }
 
@@ -2319,160 +2306,158 @@ void MainWidget::SetActionMode(StartButton::Mode mode)
   }
   air_action_mode=mode;
   switch(mode) {
-      case StartButton::Stop:
-	air_add_button->setFlashingEnabled(false);
-	air_delete_button->setFlashingEnabled(false);
-	air_move_button->setFlashingEnabled(false);
-	air_copy_button->setFlashingEnabled(false);
-	for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
-	  air_log_list[i]->setActionMode(RDAirPlayConf::Normal);
-	}
-	air_button_list->setActionMode(RDAirPlayConf::Normal);
-	if(air_panel!=NULL) {
-	  air_panel->setActionMode(RDAirPlayConf::Normal);
-	}
+  case StartButton::Stop:
+    air_add_button->setFlashingEnabled(false);
+    air_delete_button->setFlashingEnabled(false);
+    air_move_button->setFlashingEnabled(false);
+    air_copy_button->setFlashingEnabled(false);
+    for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
+      air_log_list[i]->setActionMode(RDAirPlayConf::Normal);
+    }
+    air_button_list->setActionMode(RDAirPlayConf::Normal);
+    if(air_panel!=NULL) {
+      air_panel->setActionMode(RDAirPlayConf::Normal);
+    }
+    break;
 
-	break;
-
-      case StartButton::AddFrom:
-	if(air_clear_filter) {
-	  air_add_filter="";
-	}
-	air_add_cart=0;
-	for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
-	  svc_name[i]=air_log[i]->serviceName();
-	  if(!svc_name[i].isEmpty()) {
-	    svc_quan=RDAIRPLAY_LOG_QUANTITY;
-	  }
-	}
-	if(svc_quan==0) {
-	  sql=QString("select SERVICE_NAME from SERVICE_PERMS where ")+
-	    "STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\"";
-	  q=new RDSqlQuery(sql);
-	  while(q->next()) {
-	    services_list.append( q->value(0).toString() );
-	  }
-	  delete q;
-          for ( QStringList::Iterator it = services_list.begin(); 
-                it != services_list.end()&&svc_quan<(RD_MAX_DEFAULT_SERVICES-1);
-                ++it ) {
-            svc_name[svc_quan++]=*it;
-          }
-
-	}
-	air_add_button->setFlashColor(BUTTON_FROM_BACKGROUND_COLOR);
-	air_add_button->setFlashingEnabled(true);
-	air_delete_button->setFlashingEnabled(false);
-	air_move_button->setFlashingEnabled(false);
-	air_copy_button->setFlashingEnabled(false);
-	for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
-	  air_log_list[i]->setActionMode(RDAirPlayConf::Normal);
-	}
-	air_button_list->setActionMode(RDAirPlayConf::Normal);
-	if(air_panel!=NULL) {
-	  air_panel->setActionMode(RDAirPlayConf::Normal);
-	}
-	if(rdcart_dialog->exec(&air_add_cart,RDCart::All,0,0,
-			       rda->user()->name(),rda->user()->password())==0) {
-	  SetActionMode(StartButton::AddTo);
-	}
-	else {
-	  SetActionMode(StartButton::Stop);
-	}
-	break;
+  case StartButton::AddFrom:
+    if(air_clear_filter) {
+      air_add_filter="";
+    }
+    air_add_cart=0;
+    for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
+      svc_name[i]=air_log[i]->serviceName();
+      if(!svc_name[i].isEmpty()) {
+	svc_quan=RDAIRPLAY_LOG_QUANTITY;
+      }
+    }
+    if(svc_quan==0) {
+      sql=QString("select SERVICE_NAME from SERVICE_PERMS where ")+
+	"STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\"";
+      q=new RDSqlQuery(sql);
+      while(q->next()) {
+	services_list.append( q->value(0).toString() );
+      }
+      delete q;
+      for ( QStringList::Iterator it = services_list.begin(); 
+	    it != services_list.end()&&svc_quan<(RD_MAX_DEFAULT_SERVICES-1);
+	    ++it ) {
+	svc_name[svc_quan++]=*it;
+      }
+    }
+    air_add_button->setFlashColor(BUTTON_FROM_BACKGROUND_COLOR);
+    air_add_button->setFlashingEnabled(true);
+    air_delete_button->setFlashingEnabled(false);
+    air_move_button->setFlashingEnabled(false);
+    air_copy_button->setFlashingEnabled(false);
+    for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
+      air_log_list[i]->setActionMode(RDAirPlayConf::Normal);
+    }
+    air_button_list->setActionMode(RDAirPlayConf::Normal);
+    if(air_panel!=NULL) {
+      air_panel->setActionMode(RDAirPlayConf::Normal);
+    }
+    if(rdcart_dialog->exec(&air_add_cart,RDCart::All,0,0,
+			   rda->user()->name(),rda->user()->password())==0) {
+      SetActionMode(StartButton::AddTo);
+    }
+    else {
+      SetActionMode(StartButton::Stop);
+    }
+    break;
 	
-      case StartButton::AddTo:
-	air_add_button->setFlashColor(BUTTON_TO_BACKGROUND_COLOR);
-	air_add_button->setFlashingEnabled(true);
-	air_delete_button->setFlashingEnabled(false);
-	air_move_button->setFlashingEnabled(false);
-	air_copy_button->setFlashingEnabled(false);
-	for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
-	  air_log_list[i]->setActionMode(RDAirPlayConf::AddTo,&air_add_cart);
-	}
-	air_button_list->setActionMode(RDAirPlayConf::AddTo);
-	if(air_panel!=NULL) {
-	  air_panel->setActionMode(RDAirPlayConf::AddTo);
-	}
-	break;
+  case StartButton::AddTo:
+    air_add_button->setFlashColor(BUTTON_TO_BACKGROUND_COLOR);
+    air_add_button->setFlashingEnabled(true);
+    air_delete_button->setFlashingEnabled(false);
+    air_move_button->setFlashingEnabled(false);
+    air_copy_button->setFlashingEnabled(false);
+    for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
+      air_log_list[i]->setActionMode(RDAirPlayConf::AddTo,&air_add_cart);
+    }
+    air_button_list->setActionMode(RDAirPlayConf::AddTo);
+    if(air_panel!=NULL) {
+      air_panel->setActionMode(RDAirPlayConf::AddTo);
+    }
+    break;
 
-      case StartButton::DeleteFrom:
-	air_delete_button->setFlashColor(BUTTON_FROM_BACKGROUND_COLOR);
-	air_add_button->setFlashingEnabled(false);
-	air_delete_button->setFlashingEnabled(true);
-	air_move_button->setFlashingEnabled(false);
-	air_copy_button->setFlashingEnabled(false);
-	for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
-	  air_log_list[i]->setActionMode(RDAirPlayConf::DeleteFrom);
-	}
-	air_button_list->setActionMode(RDAirPlayConf::DeleteFrom);
-	if(air_panel!=NULL) {
-	  air_panel->setActionMode(RDAirPlayConf::DeleteFrom);
-	}
-	break;
+  case StartButton::DeleteFrom:
+    air_delete_button->setFlashColor(BUTTON_FROM_BACKGROUND_COLOR);
+    air_add_button->setFlashingEnabled(false);
+    air_delete_button->setFlashingEnabled(true);
+    air_move_button->setFlashingEnabled(false);
+    air_copy_button->setFlashingEnabled(false);
+    for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
+      air_log_list[i]->setActionMode(RDAirPlayConf::DeleteFrom);
+    }
+    air_button_list->setActionMode(RDAirPlayConf::DeleteFrom);
+    if(air_panel!=NULL) {
+      air_panel->setActionMode(RDAirPlayConf::DeleteFrom);
+    }
+    break;
 
-      case StartButton::MoveFrom:
-	air_move_button->setFlashColor(BUTTON_FROM_BACKGROUND_COLOR);
-	air_add_button->setFlashingEnabled(false);
-	air_delete_button->setFlashingEnabled(false);
-	air_move_button->setFlashingEnabled(true);
-	air_copy_button->setFlashingEnabled(false);
-	for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
-	  air_log_list[i]->setActionMode(RDAirPlayConf::MoveFrom);
-	}
-	air_button_list->setActionMode(RDAirPlayConf::MoveFrom);
-	if(air_panel!=NULL) {
-	  air_panel->setActionMode(RDAirPlayConf::MoveFrom);
-	}
-	break;
+  case StartButton::MoveFrom:
+    air_move_button->setFlashColor(BUTTON_FROM_BACKGROUND_COLOR);
+    air_add_button->setFlashingEnabled(false);
+    air_delete_button->setFlashingEnabled(false);
+    air_move_button->setFlashingEnabled(true);
+    air_copy_button->setFlashingEnabled(false);
+    for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
+      air_log_list[i]->setActionMode(RDAirPlayConf::MoveFrom);
+    }
+    air_button_list->setActionMode(RDAirPlayConf::MoveFrom);
+    if(air_panel!=NULL) {
+      air_panel->setActionMode(RDAirPlayConf::MoveFrom);
+    }
+    break;
 
-      case StartButton::MoveTo:
-	air_move_button->setFlashColor(BUTTON_TO_BACKGROUND_COLOR);
-	air_add_button->setFlashingEnabled(false);
-	air_delete_button->setFlashingEnabled(false);
-	air_move_button->setFlashingEnabled(true);
-	air_copy_button->setFlashingEnabled(false);
-	for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
-	  air_log_list[i]->setActionMode(RDAirPlayConf::MoveTo);
-	}
-	air_button_list->setActionMode(RDAirPlayConf::MoveTo);
-	if(air_panel!=NULL) {
-	  air_panel->setActionMode(RDAirPlayConf::MoveTo);
-	}
-	break;
+  case StartButton::MoveTo:
+    air_move_button->setFlashColor(BUTTON_TO_BACKGROUND_COLOR);
+    air_add_button->setFlashingEnabled(false);
+    air_delete_button->setFlashingEnabled(false);
+    air_move_button->setFlashingEnabled(true);
+    air_copy_button->setFlashingEnabled(false);
+    for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
+      air_log_list[i]->setActionMode(RDAirPlayConf::MoveTo);
+    }
+    air_button_list->setActionMode(RDAirPlayConf::MoveTo);
+    if(air_panel!=NULL) {
+      air_panel->setActionMode(RDAirPlayConf::MoveTo);
+    }
+    break;
 
-      case StartButton::CopyFrom:
-	air_copy_button->setFlashColor(BUTTON_FROM_BACKGROUND_COLOR);
-	air_add_button->setFlashingEnabled(false);
-	air_delete_button->setFlashingEnabled(false);
-	air_move_button->setFlashingEnabled(false);
-	air_copy_button->setFlashingEnabled(true);
-	for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
-	  air_log_list[i]->setActionMode(RDAirPlayConf::CopyFrom);
-	}
-	air_button_list->setActionMode(RDAirPlayConf::CopyFrom);
-	if(air_panel!=NULL) {
-	  air_panel->setActionMode(RDAirPlayConf::CopyFrom);
-	}
-	break;
+  case StartButton::CopyFrom:
+    air_copy_button->setFlashColor(BUTTON_FROM_BACKGROUND_COLOR);
+    air_add_button->setFlashingEnabled(false);
+    air_delete_button->setFlashingEnabled(false);
+    air_move_button->setFlashingEnabled(false);
+    air_copy_button->setFlashingEnabled(true);
+    for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
+      air_log_list[i]->setActionMode(RDAirPlayConf::CopyFrom);
+    }
+    air_button_list->setActionMode(RDAirPlayConf::CopyFrom);
+    if(air_panel!=NULL) {
+      air_panel->setActionMode(RDAirPlayConf::CopyFrom);
+    }
+    break;
 
-      case StartButton::CopyTo:
-	air_move_button->setFlashColor(BUTTON_TO_BACKGROUND_COLOR);
-	air_add_button->setFlashingEnabled(false);
-	air_delete_button->setFlashingEnabled(false);
-	air_move_button->setFlashingEnabled(false);
-	air_copy_button->setFlashingEnabled(true);
-	for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
-	  air_log_list[i]->setActionMode(RDAirPlayConf::CopyTo);
-	}
-	air_button_list->setActionMode(RDAirPlayConf::CopyTo);
-	if(air_panel!=NULL) {
-	  air_panel->setActionMode(RDAirPlayConf::CopyTo);
-	}
-	break;
+  case StartButton::CopyTo:
+    air_move_button->setFlashColor(BUTTON_TO_BACKGROUND_COLOR);
+    air_add_button->setFlashingEnabled(false);
+    air_delete_button->setFlashingEnabled(false);
+    air_move_button->setFlashingEnabled(false);
+    air_copy_button->setFlashingEnabled(true);
+    for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
+      air_log_list[i]->setActionMode(RDAirPlayConf::CopyTo);
+    }
+    air_button_list->setActionMode(RDAirPlayConf::CopyTo);
+    if(air_panel!=NULL) {
+      air_panel->setActionMode(RDAirPlayConf::CopyTo);
+    }
+    break;
 
-      default:
-	break;
+  default:
+    break;
   }
 }
 

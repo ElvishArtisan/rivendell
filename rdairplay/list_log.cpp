@@ -2,7 +2,7 @@
 //
 // The full log list for RDAirPlay
 //
-//   (C) Copyright 2002-2006,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,9 +22,6 @@
 #include <qpixmap.h>
 #include <qpainter.h>
 #include <qmessagebox.h>
-//Added by qt3to4:
-#include <QLabel>
-#include <QPaintEvent>
 
 #include <rdapplication.h>
 #include <rdconf.h>
@@ -180,37 +177,37 @@ ListLog::ListLog(RDLogPlay *log,RDCae *cae,int id,bool allow_pause,
   list_log_list->setItemMargin(5);
   list_log_list->addColumn("");
   list_log_list->setColumnAlignment(0,Qt::AlignHCenter);
-  list_log_list->addColumn(tr("EST TIME"));
+  list_log_list->addColumn(tr("Est Time"));
   list_log_list->setColumnAlignment(1,Qt::AlignRight);
-  list_log_list->addColumn(tr("LEN"));
+  list_log_list->addColumn(tr("Len"));
   list_log_list->setColumnAlignment(2,Qt::AlignRight);
-  list_log_list->addColumn(tr("TRANS"));
+  list_log_list->addColumn(tr("Trans"));
   list_log_list->setColumnAlignment(3,Qt::AlignHCenter);
-  list_log_list->addColumn(tr("CART"));
+  list_log_list->addColumn(tr("Cart"));
   list_log_list->setColumnAlignment(4,Qt::AlignHCenter);
-  list_log_list->addColumn(tr("TITLE"));
+  list_log_list->addColumn(tr("Title"));
   list_log_list->setColumnAlignment(5,Qt::AlignLeft);
-  list_log_list->addColumn(tr("ARTIST"));
+  list_log_list->addColumn(tr("Artist"));
   list_log_list->setColumnAlignment(6,Qt::AlignLeft);
-  list_log_list->addColumn(tr("GROUP"));
+  list_log_list->addColumn(tr("Group"));
   list_log_list->setColumnAlignment(7,Qt::AlignHCenter);
-  list_log_list->addColumn(tr("TIME"));
+  list_log_list->addColumn(tr("Time"));
   list_log_list->setColumnAlignment(8,Qt::AlignHCenter);
-  list_log_list->addColumn(tr("ALBUM"));
+  list_log_list->addColumn(tr("Album"));
   list_log_list->setColumnAlignment(9,Qt::AlignLeft);
-  list_log_list->addColumn(tr("LABEL"));
+  list_log_list->addColumn(tr("Label"));
   list_log_list->setColumnAlignment(10,Qt::AlignLeft);
-  list_log_list->addColumn(tr("CLIENT"));
+  list_log_list->addColumn(tr("Client"));
   list_log_list->setColumnAlignment(11,Qt::AlignLeft);
-  list_log_list->addColumn(tr("AGENCY"));
+  list_log_list->addColumn(tr("Agency"));
   list_log_list->setColumnAlignment(12,Qt::AlignLeft);
-  list_log_list->addColumn(tr("MARKER"));
+  list_log_list->addColumn(tr("Marker"));
   list_log_list->setColumnAlignment(13,Qt::AlignHCenter);
-  list_log_list->addColumn(tr("LINE ID"));
+  list_log_list->addColumn(tr("Line ID"));
   list_log_list->setColumnAlignment(14,Qt::AlignHCenter);
-  list_log_list->addColumn(tr("COUNT"));
+  list_log_list->addColumn(tr("Count"));
   list_log_list->setColumnAlignment(15,Qt::AlignHCenter);
-  list_log_list->addColumn(tr("STATUS"));
+  list_log_list->addColumn(tr("Status"));
   list_log_list->setColumnAlignment(16,Qt::AlignHCenter);
   list_log_list->setHardSortColumn(15);
   list_log_list->setFocusPolicy(Qt::NoFocus);
@@ -231,13 +228,11 @@ ListLog::ListLog(RDLogPlay *log,RDCae *cae,int id,bool allow_pause,
   //
   // Time Counter Section
   //
-  QLabel *label=new QLabel(tr("Run Length"),this);
-  label->setGeometry(372,sizeHint().height()-120,75,20);
-  label->setFont(label_font);
-  label->setAlignment(Qt::AlignCenter);  
-  label->setBackgroundColor(QColor(system_mid_color));
+  QGroupBox *groupbox=new QGroupBox(tr("Run Length"),this);
+  groupbox->setFont(label_font);
+  groupbox->setGeometry(336,sizeHint().height()-116,146,58);
   if(!rda->airplayConf()->showCounters()) {
-    label->hide();
+    groupbox->hide();
   }
 
   //
@@ -1084,28 +1079,6 @@ void ListLog::refreshabilityChangedData(bool state)
 void ListLog::cartDroppedData(int line,RDLogLine *ll)
 {
   emit cartDropped(list_id,line,ll);
-}
-
-
-void ListLog::paintEvent(QPaintEvent *e)
-{
-  if(!rda->airplayConf()->showCounters()) {
-    return;
-  }
-  int x=336;
-  int y=sizeHint().height()-111;
-
-  QPainter *p=new QPainter(this);
-  p->setPen(Qt::black);
-  p->setBrush(Qt::black);
-  p->drawLine(x,y,x+146,y);
-  p->drawLine(x+146,y,x+146,y+53);
-  p->drawLine(x+146,y+53,x,y+53);
-  p->drawLine(x,y+53,x,y);
-
-  p->end();
-  delete p;
-  
 }
 
 

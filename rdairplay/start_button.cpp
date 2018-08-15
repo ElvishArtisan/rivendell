@@ -2,7 +2,7 @@
 //
 // The Start Button for RDAirPlay Rivendell
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -116,68 +116,68 @@ void StartButton::setMode(Mode mode,RDCart::Type cart_type)
   }
   start_mode=mode;
   switch(mode) {
-      case StartButton::Stop:
-	setPalette(start_stop_color);
-	start_title=STOP_MODE_TITLE;
-	break;
+  case StartButton::Stop:
+    setPalette(start_stop_color);
+    start_title=STOP_MODE_TITLE;
+    break;
 
-      case StartButton::Play:
-	setPalette(start_play_color);
-	if(start_allow_pause&&(cart_type!=RDCart::Macro)) {
-	  start_title=PLAY1_MODE_TITLE;
-	}
-	else {
-	  start_title=PLAY0_MODE_TITLE;
-	}
-	break;
+  case StartButton::Play:
+    setPalette(start_play_color);
+    if(start_allow_pause&&(cart_type!=RDCart::Macro)) {
+      start_title=PLAY1_MODE_TITLE;
+    }
+    else {
+      start_title=PLAY0_MODE_TITLE;
+    }
+    break;
 
-      case StartButton::Pause:
-	setPalette(start_pause_color);
-	start_title=PAUSE_MODE_TITLE;
-	break;
+  case StartButton::Pause:
+    setPalette(start_pause_color);
+    start_title=PAUSE_MODE_TITLE;
+    break;
 
-      case StartButton::MoveFrom:
-	setPalette(start_from_color);
-	start_title=MOVE_FROM_MODE_TITLE;
-	break;
+  case StartButton::MoveFrom:
+    setPalette(start_from_color);
+    start_title=MOVE_FROM_MODE_TITLE;
+    break;
 
-      case StartButton::DeleteFrom:
-	setPalette(start_from_color);
-	start_title=DELETE_FROM_MODE_TITLE;
-	break;
+  case StartButton::DeleteFrom:
+    setPalette(start_from_color);
+    start_title=DELETE_FROM_MODE_TITLE;
+    break;
 
-      case StartButton::AddFrom:
-	break;
+  case StartButton::AddFrom:
+    break;
 
-      case StartButton::AddTo:
-	setPalette(start_to_color);
-	start_title=ADD_TO_MODE_TITLE;
-	break;
+  case StartButton::AddTo:
+    setPalette(start_to_color);
+    start_title=ADD_TO_MODE_TITLE;
+    break;
 
-      case StartButton::MoveTo:
-	setPalette(start_to_color);
-	start_title=MOVE_TO_MODE_TITLE;
-	break;
+  case StartButton::MoveTo:
+    setPalette(start_to_color);
+    start_title=MOVE_TO_MODE_TITLE;
+    break;
 
-      case StartButton::CopyTo:
-	setPalette(start_to_color);
-	start_title=COPY_TO_MODE_TITLE;
-	break;
+  case StartButton::CopyTo:
+    setPalette(start_to_color);
+    start_title=COPY_TO_MODE_TITLE;
+    break;
 
-      case StartButton::CopyFrom:
-	setPalette(start_from_color);
-	start_title=COPY_FROM_MODE_TITLE;
-	break;
+  case StartButton::CopyFrom:
+    setPalette(start_from_color);
+    start_title=COPY_FROM_MODE_TITLE;
+    break;
 
-      case StartButton::Disabled:
-	setPalette(start_disabled_color);
-	start_title=DISABLED_MODE_TITLE;
-	break;
+  case StartButton::Disabled:
+    setPalette(start_disabled_color);
+    start_title=DISABLED_MODE_TITLE;
+    break;
 
-      case StartButton::Error:
-	setPalette(start_error_color);
-	start_title=ERROR_MODE_TITLE;
-	break;
+  case StartButton::Error:
+    setPalette(start_error_color);
+    start_title=ERROR_MODE_TITLE;
+    break;
   }
   Resize(geometry().x(),geometry().y(),geometry().width(),geometry().height());
 }
@@ -208,11 +208,12 @@ void StartButton::setGeometry(QRect rect)
 
 void StartButton::Resize(int x,int y,int w,int h)
 {
+  w-=2;
+  h-=2;
   QPixmap *pix=new QPixmap(w,h);
   QPainter *p=new QPainter();
   p->begin(pix);
   p->fillRect(0,0,w,h,palette().color(QPalette::Active,QColorGroup::Button));
-  //p->eraseRect(0,0,w,h);
   if(start_mode!=StartButton::Disabled) {
     p->setPen(QColor(Qt::color1));
     p->setFont(start_label_font);

@@ -2,7 +2,7 @@
 //
 // The stop counter widget for Rivendell
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -50,13 +50,13 @@ StopCounter::StopCounter(QWidget *parent)
 void StopCounter::setTimeMode(RDAirPlayConf::TimeMode mode)
 {
   switch(mode) {
-      case RDAirPlayConf::TwentyFourHour:
-	time_format="hh:mm:ss";
-	break;
+  case RDAirPlayConf::TwentyFourHour:
+    time_format="hh:mm:ss";
+    break;
 
-      case RDAirPlayConf::TwelveHour:
-	time_format="h:mm:ss ap";
-	break;
+  case RDAirPlayConf::TwelveHour:
+    time_format="h:mm:ss ap";
+    break;
   }
   old_msecs = 0;
   if (stop_running) {
@@ -132,38 +132,38 @@ void StopCounter::UpdateTime()
   int msecs=QTime::currentTime().
     addMSecs(rda->station()->timeOffset()).msecsTo(stop_time);
 
-  if ((old_stop_running != stop_running) || (msecs/1000 != old_msecs/1000)){
-	  QPixmap pix(sizeHint().width(),sizeHint().height());
-	  QPainter *p=new QPainter(&pix);
-	  old_stop_running = stop_running;
-	  old_msecs = msecs;
+  if((old_stop_running != stop_running) || (msecs/1000 != old_msecs/1000)){
+    QPixmap pix(sizeHint().width()-2,sizeHint().height()-2);
+    QPainter *p=new QPainter(&pix);
+    old_stop_running = stop_running;
+    old_msecs = msecs;
 	  
-	  p->fillRect(0,0,sizeHint().width(),sizeHint().height(),
-		      backgroundColor());
-          p->setPen(QColor(system_button_text_color));
-	  p->setFont(stop_text_font);
-	  p->drawText((sizeHint().width()-p->fontMetrics().width(stop_text))/2,22,
-		      stop_text);
-	  p->setFont(stop_time_font);
-	  if (msecs < 0){
-		  /* HACK HACK HACK TODO */
-		  /* msecs is **PROBABLY** in the next day 
-		     (we have a log crossing midnight - logs 
-		     longer then 24 hours are NOT supported by this, 
-		     please fix).... */
-		  msecs += 86400000; /* 1 day */
-	  }
-	  if(stop_running) {
-		  text=QTime(0,0,1).addMSecs(msecs).toString("hh:mm:ss");
-		  p->drawText((sizeHint().width()-p->fontMetrics().width(text))/2,49,text);
-	  }
-	  else {
-		  p->drawText((sizeHint().width()-p->
-			       fontMetrics().width(tr("Stopped")))/2,49,
-			      tr("Stopped"));
-	  }
-	  p->end();
-	  delete p;
-	  setPixmap(pix);
+    p->fillRect(0,0,sizeHint().width()-2,sizeHint().height()-2,
+		backgroundColor());
+    p->setPen(QColor(system_button_text_color));
+    p->setFont(stop_text_font);
+    p->drawText((sizeHint().width()-2-p->fontMetrics().width(stop_text))/2,22,
+		stop_text);
+    p->setFont(stop_time_font);
+    if (msecs < 0){
+      /* HACK HACK HACK TODO */
+      /* msecs is **PROBABLY** in the next day 
+	 (we have a log crossing midnight - logs 
+	 longer then 24 hours are NOT supported by this, 
+	 please fix).... */
+      msecs += 86400000; /* 1 day */
+    }
+    if(stop_running) {
+      text=QTime(0,0,1).addMSecs(msecs).toString("hh:mm:ss");
+      p->drawText((sizeHint().width()-2-p->fontMetrics().width(text))/2,49,text);
+    }
+    else {
+      p->drawText((sizeHint().width()-2-p->
+		   fontMetrics().width(tr("Stopped")))/2,49,
+		  tr("Stopped"));
+    }
+    p->end();
+    delete p;
+    setPixmap(pix);
   }
 }

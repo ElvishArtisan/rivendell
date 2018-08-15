@@ -2,7 +2,7 @@
 //
 // The full log list widget for RDAirPlay.
 //
-//   (C) Copyright 2002-2003,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,8 +26,6 @@
 #include <qlabel.h>
 #include <qpixmap.h>
 #include <qpushbutton.h>
-//Added by qt3to4:
-#include <QPaintEvent>
 
 #include <rdairplay_conf.h>
 #include <rdlistview.h>
@@ -89,9 +87,6 @@ class ListLog : public QWidget
   void modifiedData(int line);
   void refreshabilityChangedData(bool state);
   void cartDroppedData(int line,RDLogLine *ll);
-
- protected:
-  void paintEvent(QPaintEvent *e);
 
  private:
   enum PlayButtonMode {ButtonDisabled=0,ButtonPlay=1,ButtonStop=2};

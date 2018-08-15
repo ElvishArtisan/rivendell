@@ -211,59 +211,59 @@
     <name>ListLog</name>
     <message>
         <source>EST TIME</source>
-        <translation>HORA EST</translation>
+        <translation type="obsolete">HORA EST</translation>
     </message>
     <message>
         <source>LEN</source>
-        <translation>DURAÇÃO</translation>
+        <translation type="obsolete">DURAÇÃO</translation>
     </message>
     <message>
         <source>TRANS</source>
-        <translation>TRANSIÇÃO</translation>
+        <translation type="obsolete">TRANSIÇÃO</translation>
     </message>
     <message>
         <source>CART</source>
-        <translation>CART</translation>
+        <translation type="obsolete">CART</translation>
     </message>
     <message>
         <source>TITLE</source>
-        <translation>TÍTULO</translation>
+        <translation type="obsolete">TÍTULO</translation>
     </message>
     <message>
         <source>ARTIST</source>
-        <translation>ARTISTA</translation>
+        <translation type="obsolete">ARTISTA</translation>
     </message>
     <message>
         <source>GROUP</source>
-        <translation>GRUPO</translation>
+        <translation type="obsolete">GRUPO</translation>
     </message>
     <message>
         <source>TIME</source>
-        <translation>HORA PROGRAMDA</translation>
+        <translation type="obsolete">HORA PROGRAMDA</translation>
     </message>
     <message>
         <source>CLIENT</source>
-        <translation>CLIENTE</translation>
+        <translation type="obsolete">CLIENTE</translation>
     </message>
     <message>
         <source>AGENCY</source>
-        <translation>AGÊNCIA</translation>
+        <translation type="obsolete">AGÊNCIA</translation>
     </message>
     <message>
         <source>LABEL</source>
-        <translation>SELO</translation>
+        <translation type="obsolete">SELO</translation>
     </message>
     <message>
         <source>LINE ID</source>
-        <translation>ID de LINHA</translation>
+        <translation type="obsolete">ID de LINHA</translation>
     </message>
     <message>
         <source>COUNT</source>
-        <translation>CONTADOR</translation>
+        <translation type="obsolete">CONTADOR</translation>
     </message>
     <message>
         <source>STATUS</source>
-        <translation>STATUS</translation>
+        <translation type="obsolete">STATUS</translation>
     </message>
     <message>
         <source>Run Length</source>
@@ -397,11 +397,71 @@ Log</source>
         <translation>Parar</translation>
     </message>
     <message>
-        <source>ALBUM</source>
+        <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Error</source>
+        <source>Est Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Len</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trans</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Artist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Album</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Client</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Agency</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Marker</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Line ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Count</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Status</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -2,7 +2,7 @@
 //
 // The mode display widget for RDAirPlay in Rivendell
 //
-//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,11 +19,9 @@
 //
 
 #include <qpainter.h>
-//Added by qt3to4:
-#include <QPixmap>
 
-#include <mode_display.h>
-#include <colors.h>
+#include "colors.h"
+#include "mode_display.h"
 
 ModeDisplay::ModeDisplay(QWidget *parent)
   : QPushButton(parent)
@@ -94,48 +92,48 @@ void ModeDisplay::setOpModeStyle(RDAirPlayConf::OpModeStyle style)
 void ModeDisplay::WriteMap()
 {
   QString str;
-  QPixmap *pix=new QPixmap(sizeHint().width(),sizeHint().height());
+  QPixmap *pix=new QPixmap(sizeHint().width()-2,sizeHint().height()-2);
   QPainter *p=new QPainter(pix);
   if(mode_style==RDAirPlayConf::Unified) {
     switch(mode_mode[0]) {
     case RDAirPlayConf::LiveAssist:
-      p->fillRect(0,0,sizeHint().width(),sizeHint().height(),
+      p->fillRect(0,0,sizeHint().width()-2,sizeHint().height()-2,
 		  BUTTON_MODE_LIVE_ASSIST_COLOR);
       p->setPen(QColor(Qt::color1));
       p->setFont(mode_small_font);
-      p->drawText((sizeHint().width()-p->fontMetrics().
+      p->drawText((sizeHint().width()-2-p->fontMetrics().
 		   width(tr("Operating Mode")))/2,
 		  22,tr("Operating Mode"));
       p->setFont(mode_large_font);
-      p->drawText((sizeHint().width()-p->fontMetrics().width(tr("LiveAssist")))/2,
+      p->drawText((sizeHint().width()-2-p->fontMetrics().width(tr("LiveAssist")))/2,
 		  48,tr("LiveAssist"));
       setPalette(live_assist_color);
       break;
 
     case RDAirPlayConf::Auto:
-      p->fillRect(0,0,sizeHint().width(),sizeHint().height(),
+      p->fillRect(0,0,sizeHint().width()-2,sizeHint().height()-2,
 		  BUTTON_MODE_AUTO_COLOR);
       p->setPen(QColor(Qt::color1));
       p->setFont(mode_small_font);
-      p->drawText((sizeHint().width()-p->fontMetrics().
+      p->drawText((sizeHint().width()-2-p->fontMetrics().
 		   width(tr("Operating Mode")))/2,
 		  22,tr("Operating Mode"));
       p->setFont(mode_large_font);
-      p->drawText((sizeHint().width()-p->fontMetrics().width(tr("Automatic")))/2,
+      p->drawText((sizeHint().width()-2-p->fontMetrics().width(tr("Automatic")))/2,
 		  48,tr("Automatic"));
       setPalette(auto_color);
       break;
 
     case RDAirPlayConf::Manual:
-      p->fillRect(0,0,sizeHint().width(),sizeHint().height(),
+      p->fillRect(0,0,sizeHint().width()-2,sizeHint().height()-2,
 		  BUTTON_MODE_MANUAL_COLOR);
       p->setPen(QColor(Qt::color1));
       p->setFont(mode_small_font);
-      p->drawText((sizeHint().width()-p->fontMetrics().
+      p->drawText((sizeHint().width()-2-p->fontMetrics().
 		   width(tr("Operating Mode")))/2,
 		  22,tr("Operating Mode"));
       p->setFont(mode_large_font);
-      p->drawText((sizeHint().width()-p->fontMetrics().width(tr("Manual")))/2,
+      p->drawText((sizeHint().width()-2-p->fontMetrics().width(tr("Manual")))/2,
 		  48,tr("Manual"));
       setPalette(manual_color);
       break;
@@ -147,43 +145,43 @@ void ModeDisplay::WriteMap()
   else {
     switch(mode_mode[0]) {
     case RDAirPlayConf::LiveAssist:
-      p->fillRect(0,0,sizeHint().width(),sizeHint().height(),
+      p->fillRect(0,0,sizeHint().width()-2,sizeHint().height()-2,
 		  BUTTON_MODE_LIVE_ASSIST_COLOR);
       p->setPen(QColor(Qt::color1));
       p->setFont(mode_small_font);
-      p->drawText((sizeHint().width()-p->fontMetrics().
+      p->drawText((sizeHint().width()-2-p->fontMetrics().
 		   width(tr("Operating Mode")))/2,
 		  12,tr("Operating Mode"));
       p->setFont(mode_large_font);
-      p->drawText((sizeHint().width()-p->fontMetrics().width(tr("LiveAssist")))/2,
+      p->drawText((sizeHint().width()-2-p->fontMetrics().width(tr("LiveAssist")))/2,
 		  38,tr("LiveAssist"));
       setPalette(live_assist_color);
       break;
 
     case RDAirPlayConf::Auto:
-      p->fillRect(0,0,sizeHint().width(),sizeHint().height(),
+      p->fillRect(0,0,sizeHint().width()-2,sizeHint().height()-2,
 		  BUTTON_MODE_AUTO_COLOR);
       p->setPen(QColor(Qt::color1));
       p->setFont(mode_small_font);
-      p->drawText((sizeHint().width()-p->fontMetrics().
+      p->drawText((sizeHint().width()-2-p->fontMetrics().
 		   width(tr("Operating Mode")))/2,
 		  12,tr("Operating Mode"));
       p->setFont(mode_large_font);
-      p->drawText((sizeHint().width()-p->fontMetrics().width(tr("Automatic")))/2,
+      p->drawText((sizeHint().width()-2-p->fontMetrics().width(tr("Automatic")))/2,
 		  39,tr("Automatic"));
       setPalette(auto_color);
       break;
 
     case RDAirPlayConf::Manual:
-      p->fillRect(0,0,sizeHint().width(),sizeHint().height(),
+      p->fillRect(0,0,sizeHint().width()-2,sizeHint().height()-2,
 		  BUTTON_MODE_MANUAL_COLOR);
       p->setPen(QColor(Qt::color1));
       p->setFont(mode_small_font);
-      p->drawText((sizeHint().width()-p->fontMetrics().
+      p->drawText((sizeHint().width()-2-p->fontMetrics().
 		   width(tr("Operating Mode")))/2,
 		  12,tr("Operating Mode"));
       p->setFont(mode_large_font);
-      p->drawText((sizeHint().width()-p->fontMetrics().width(tr("Manual")))/2,
+      p->drawText((sizeHint().width()-2-p->fontMetrics().width(tr("Manual")))/2,
 		  38,tr("Manual"));
       setPalette(manual_color);
       break;
@@ -193,9 +191,9 @@ void ModeDisplay::WriteMap()
     }
     p->setFont(mode_tiny_font);
     str=tr("Aux1")+": "+RDAirPlayConf::logModeText(mode_mode[1]);
-    p->drawText((sizeHint().width()/2-p->fontMetrics().width(str))/2,sizeHint().height()-5,str);
+    p->drawText((sizeHint().width()-2/2-p->fontMetrics().width(str))/2,sizeHint().height()-2-5,str);
     str=tr("Aux2")+": "+RDAirPlayConf::logModeText(mode_mode[2]);
-    p->drawText(sizeHint().width()/2+(sizeHint().width()/2-p->fontMetrics().width(str))/2,sizeHint().height()-5,str);
+    p->drawText(sizeHint().width()-2/2+(sizeHint().width()-2/2-p->fontMetrics().width(str))/2,sizeHint().height()-2-5,str);
   }
   p->end();
   delete p;

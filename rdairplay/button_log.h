@@ -3,7 +3,7 @@
 //
 // The button play widget for RDAirPlay.
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -44,7 +44,6 @@
 //
 #define BUTTON_PLAY_BUTTONS 3
 #define BUTTON_TOTAL_BUTTONS 7
-
 
 class ButtonLog : public QWidget
 {

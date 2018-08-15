@@ -2,7 +2,7 @@
 //
 // On Air Playout Utility for Rivendell.
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,13 +19,6 @@
 //
 
 #include <qpainter.h>
-//Added by qt3to4:
-#include <QLabel>
-#include <QPixmap>
-#include <QDragEnterEvent>
-#include <QDropEvent>
-#include <QMouseEvent>
-#include <QPaintEvent>
 
 #include <rdapplication.h>
 #include <rdconf.h>
@@ -827,7 +820,7 @@ void LogLineBox::mouseDoubleClickEvent(QMouseEvent *e)
 void LogLineBox::paintEvent(QPaintEvent *e)
 {
   QPainter *p=new QPainter(this);
-  p->drawRect(0,0,sizeHint().width(),sizeHint().height());
+  p->drawRect(0,0,sizeHint().width()-2,sizeHint().height()-2);
   p->end();
   delete p;
 }

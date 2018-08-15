@@ -17413,3 +17413,5 @@
 	border.
 2018-08-15 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed style inconsistencies in dialogs within rdselect(8).
+2018-08-15 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed style inconsistencies in dialogs within rdairplay(1).

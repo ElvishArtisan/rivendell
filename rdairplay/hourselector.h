@@ -2,7 +2,7 @@
 //
 // Hour Selector widget for RDAirPlay
 //
-//   (C) Copyright 2012,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,8 +24,6 @@
 #include <qwidget.h>
 #include <qpushbutton.h>
 #include <qtimer.h>
-//Added by qt3to4:
-#include <QResizeEvent>
 
 #include <rdairplay_conf.h>
 #include <rdlistview.h>

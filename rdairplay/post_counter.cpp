@@ -2,7 +2,7 @@
 //
 // The post counter widget for Rivendell
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,8 +20,6 @@
 
 #include <qpixmap.h>
 #include <qpainter.h>
-//Added by qt3to4:
-#include <QKeyEvent>
 
 #include <rdapplication.h>
 
@@ -64,13 +62,13 @@ PostCounter::PostCounter(QWidget *parent)
 void PostCounter::setTimeMode(RDAirPlayConf::TimeMode mode)
 {
   switch(mode) {
-      case RDAirPlayConf::TwentyFourHour:
-	post_time_format="hh:mm:ss";
-	break;
+  case RDAirPlayConf::TwentyFourHour:
+    post_time_format="hh:mm:ss";
+    break;
 
-      case RDAirPlayConf::TwelveHour:
-	post_time_format="h:mm:ss ap";
-	break;
+  case RDAirPlayConf::TwelveHour:
+    post_time_format="h:mm:ss ap";
+    break;
   }
   UpdateDisplay();
 }
@@ -173,15 +171,15 @@ void PostCounter::UpdateDisplay()
     state="--------";
     setPalette(post_idle_palette);
   }
-  QPixmap pix(sizeHint().width(),sizeHint().height());
+  QPixmap pix(size().width()-2,size().height()-2);
   QPainter *p=new QPainter(&pix);
-  p->fillRect(0,0,sizeHint().width(),sizeHint().height(),color);
+  p->fillRect(0,0,size().width()-2,size().height()-2,color);
   p->setPen(QColor(system_button_text_color));
   p->setFont(post_small_font);
-  p->drawText((sizeHint().width()-p->
+  p->drawText((size().width()-2-p->
 	       fontMetrics().width(point))/2,22,point);
   p->setFont(post_large_font);
-  p->drawText((sizeHint().width()-p->
+  p->drawText((size().width()-2-p->
 	       fontMetrics().width(state))/2,48,state);
   p->end();
   delete p;

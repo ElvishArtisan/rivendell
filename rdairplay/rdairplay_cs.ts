@@ -207,59 +207,59 @@
     <name>ListLog</name>
     <message>
         <source>EST TIME</source>
-        <translation>ODH. ČAS</translation>
+        <translation type="obsolete">ODH. ČAS</translation>
     </message>
     <message>
         <source>LEN</source>
-        <translation>DÉLKA</translation>
+        <translation type="obsolete">DÉLKA</translation>
     </message>
     <message>
         <source>TRANS</source>
-        <translation>PŘECHOD</translation>
+        <translation type="obsolete">PŘECHOD</translation>
     </message>
     <message>
         <source>CART</source>
-        <translation>VOZÍK</translation>
+        <translation type="obsolete">VOZÍK</translation>
     </message>
     <message>
         <source>TITLE</source>
-        <translation>NÁZEV</translation>
+        <translation type="obsolete">NÁZEV</translation>
     </message>
     <message>
         <source>ARTIST</source>
-        <translation>UMĚLEC</translation>
+        <translation type="obsolete">UMĚLEC</translation>
     </message>
     <message>
         <source>GROUP</source>
-        <translation>SKUPINA</translation>
+        <translation type="obsolete">SKUPINA</translation>
     </message>
     <message>
         <source>TIME</source>
-        <translation>ČAS</translation>
+        <translation type="obsolete">ČAS</translation>
     </message>
     <message>
         <source>CLIENT</source>
-        <translation>ZÁKAZNÍK</translation>
+        <translation type="obsolete">ZÁKAZNÍK</translation>
     </message>
     <message>
         <source>AGENCY</source>
-        <translation>AGENTURA</translation>
+        <translation type="obsolete">AGENTURA</translation>
     </message>
     <message>
         <source>LABEL</source>
-        <translation>ŠTÍTEK</translation>
+        <translation type="obsolete">ŠTÍTEK</translation>
     </message>
     <message>
         <source>LINE ID</source>
-        <translation>ID ŘÁDKU</translation>
+        <translation type="obsolete">ID ŘÁDKU</translation>
     </message>
     <message>
         <source>COUNT</source>
-        <translation>POČÍTADLO</translation>
+        <translation type="obsolete">POČÍTADLO</translation>
     </message>
     <message>
         <source>STATUS</source>
-        <translation>STAV</translation>
+        <translation type="obsolete">STAV</translation>
     </message>
     <message>
         <source>Select</source>
@@ -396,11 +396,71 @@ Tail</source>
 poslechu</translation>
     </message>
     <message>
-        <source>ALBUM</source>
+        <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Error</source>
+        <source>Est Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Len</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trans</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Artist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Album</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Client</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Agency</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Marker</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Line ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Count</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Status</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -2,7 +2,7 @@
 //
 //   The Log ListView widget for RDAirPlay's Full Log widget.
 //
-//   (C) Copyright 2002-2013,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,10 +18,9 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <q3header.h>
-//Added by qt3to4:
-#include <QDropEvent>
 #include <QDragEnterEvent>
+
+#include <q3header.h>
 
 #include <rdcartdrag.h>
 
