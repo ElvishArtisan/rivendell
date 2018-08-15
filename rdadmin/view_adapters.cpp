@@ -2,7 +2,7 @@
 //
 // Display Audio Adapter Information
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,8 +27,10 @@
 #include "view_adapters.h"
 
 ViewAdapters::ViewAdapters(RDStation *rdstation,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   //
   // Fix the Window Size
   //
@@ -37,7 +39,7 @@ ViewAdapters::ViewAdapters(RDStation *rdstation,QWidget *parent)
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  setCaption("RDADmin - "+tr("Audio Resource Information"));
+  setWindowTitle("RDADmin - "+tr("Audio Resource Information"));
 
   //
   // Create Fonts

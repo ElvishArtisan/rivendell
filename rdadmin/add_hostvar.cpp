@@ -2,7 +2,7 @@
 //
 // Add a Rivendell Host Variable
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,23 +29,15 @@
 #include <qmessagebox.h>
 #include <qcheckbox.h>
 #include <q3buttongroup.h>
-#include <qsqldatabase.h>
-
-#include <rdcatch_connect.h>
 
 #include <add_hostvar.h>
-#include <edit_rdlibrary.h>
-#include <edit_rdairplay.h>
-#include <edit_decks.h>
-#include <edit_audios.h>
-#include <edit_ttys.h>
-#include <list_matrices.h>
-#include <list_hostvars.h>
 
 AddHostvar::AddHostvar(QString station,QString *var,QString *varvalue,
 		       QString *remark,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   add_name=var;
   add_varvalue=varvalue;
   add_remark=remark;
@@ -56,7 +48,7 @@ AddHostvar::AddHostvar(QString station,QString *var,QString *varvalue,
   QFont font=QFont("Helvetica",12,QFont::Bold);
   font.setPixelSize(12);
 
-  setCaption(tr("Add Host Variable"));
+  setWindowTitle("RDAdmin - "+tr("Add Host Variable"));
 
   //
   // Fix the Window Size

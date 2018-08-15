@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell TTY Configuration
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,8 +26,6 @@
 #include <qmessagebox.h>
 #include <qcheckbox.h>
 #include <q3buttongroup.h>
-//Added by qt3to4:
-#include <QLabel>
 
 #include <rdapplication.h>
 #include <rddb.h>
@@ -39,8 +37,10 @@
 #include "globals.h"
 
 EditTtys::EditTtys(QString station,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   //
   // Fix the Window Size
   //
@@ -53,7 +53,7 @@ EditTtys::EditTtys(QString station,QWidget *parent)
   for(int i=0;i<MAX_TTYS;i++) {
     edit_port_modified[i]=false;
   }
-  setCaption(tr("Edit Serial Ports"));
+  setWindowTitle("RDAdmin- "+tr("Edit Serial Ports"));
 
   //
   // Create Fonts

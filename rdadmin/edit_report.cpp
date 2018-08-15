@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Report
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -43,8 +43,10 @@
 #include "test_import.h"
 
 EditReport::EditReport(QString rptname,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   QString sql;
   RDSqlQuery *q;
   bool ok=false;
@@ -58,7 +60,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   setMaximumHeight(sizeHint().height());
 
   edit_report=new RDReport(rptname,rda->station(),rda->config());
-  setCaption(tr("Edit Report")+" "+rptname);
+  setWindowTitle("RDAdmin - "+tr("Edit Report")+" "+rptname);
 
   //
   // Create Fonts

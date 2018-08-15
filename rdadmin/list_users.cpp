@@ -2,7 +2,7 @@
 //
 // List Rivendell Users
 //
-//   (C) Copyright 2002-2008,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,18 +30,15 @@
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <q3buttongroup.h>
-//Added by qt3to4:
-#include <QPixmap>
-#include <QResizeEvent>
-#include <rddb.h>
 
 #include <rdcart.h>
+#include <rddb.h>
 #include <rdtextfile.h>
 #include <rdescape_string.h>
 
-#include <list_users.h>
-#include <edit_user.h>
-#include <add_user.h>
+#include "add_user.h"
+#include "edit_user.h"
+#include "list_users.h"
 
 //
 // Icons
@@ -50,8 +47,9 @@
 #include "../icons/user.xpm"
 
 ListUsers::ListUsers(const QString &admin_name,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
   list_admin_name=admin_name;
 
   //
@@ -60,7 +58,7 @@ ListUsers::ListUsers(const QString &admin_name,QWidget *parent)
   setMinimumWidth(sizeHint().width());
   setMinimumHeight(sizeHint().height());
 
-  setCaption(tr("Rivendell User List"));
+  setWindowTitle("RDAdmin - "+tr("Rivendell User List"));
 
   //
   // Create Fonts

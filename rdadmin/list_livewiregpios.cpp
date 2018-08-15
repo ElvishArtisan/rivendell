@@ -2,7 +2,7 @@
 //
 // List Rivendell Livewire GPIO Slot Associations
 //
-//   (C) Copyright 2013,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2013-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -38,8 +38,10 @@
 
 ListLiveWireGpios::ListLiveWireGpios(RDMatrix *matrix,int slot_quan,
 				     QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   //
   // Fix the Window Size
   //
@@ -50,7 +52,7 @@ ListLiveWireGpios::ListLiveWireGpios(RDMatrix *matrix,int slot_quan,
 
   list_matrix=matrix;
   list_slot_quan=slot_quan;
-  setCaption(tr("LiveWire GPIO Source Assignments"));
+  setWindowTitle("RDAdmin - "+tr("Livewire GPIO Source Assignments"));
 
   //
   // Create Fonts

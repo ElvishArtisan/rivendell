@@ -3,6 +3,7 @@
 // The scheduler codes dialog for rdadmin
 //
 //   Stefan Gabriel <stg@st-gabriel.de>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsyustems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,8 +28,6 @@
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <q3buttongroup.h>
-//Added by qt3to4:
-#include <QResizeEvent>
 
 #include <rddb.h>
 #include <rdcart.h>
@@ -40,15 +39,17 @@
 #include <list_schedcodes.h>
 
 ListSchedCodes::ListSchedCodes(QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   //
   // Fix the Window Size
   //
   setMinimumWidth(sizeHint().width());
   setMinimumHeight(sizeHint().height());
 
-  setCaption(tr("Rivendell Scheduler Codes List"));
+  setWindowTitle("RDAdmin  - "+tr("Rivendell Scheduler Codes List"));
 
   //
   // Create Fonts

@@ -214,7 +214,7 @@ a záloha původní databáze uložena v </translation>
     <name>AddFeed</name>
     <message>
         <source>Add Feed</source>
-        <translation>Přidat přívod</translation>
+        <translation type="obsolete">Přidat přívod</translation>
     </message>
     <message>
         <source>Enable Feed for All Users</source>
@@ -239,6 +239,10 @@ a záloha původní databáze uložena v </translation>
     <message>
         <source>A feed with that key name already exists!</source>
         <translation>Přívod s tímto názvem klíče již existuje!</translation>
+    </message>
+    <message>
+        <source>Add RSS Feed</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -323,7 +327,7 @@ a záloha původní databáze uložena v </translation>
     <name>AddMatrix</name>
     <message>
         <source>Add Switcher</source>
-        <translation type="obsolete">Přidat přepínač</translation>
+        <translation type="unfinished">Přidat přepínač</translation>
     </message>
     <message>
         <source>&amp;New Matrix Number:</source>
@@ -404,10 +408,6 @@ a záloha původní databáze uložena v </translation>
     <message>
         <source>New Switcher</source>
         <translation>Nový přepínač</translation>
-    </message>
-    <message>
-        <source>RDAdmin - Add Switcher</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -816,10 +816,6 @@ a záloha původní databáze uložena v </translation>
 <context>
     <name>EditCartSlots</name>
     <message>
-        <source>RDAdmin - Edit CartSlots</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Global Settings</source>
         <translation type="unfinished"></translation>
     </message>
@@ -929,6 +925,10 @@ a záloha původní databáze uložena v </translation>
     </message>
     <message>
         <source>Slot selected has changed!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit CartSlots</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1985,7 +1985,7 @@ Stále ještě chcete uložit?</translation>
     <name>EditMatrix</name>
     <message>
         <source>Edit Switcher</source>
-        <translation type="obsolete">Upravit přepínač</translation>
+        <translation type="unfinished">Upravit přepínač</translation>
     </message>
     <message>
         <source>Matrix Number:</source>
@@ -2166,10 +2166,6 @@ G&amp;POs</translation>
 Switches</source>
         <translation>Přepínače
 SAS</translation>
-    </message>
-    <message>
-        <source>RDAdmin - Edit Switcher</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>LiveWire
@@ -5000,10 +4996,6 @@ Stále ještě jej chcete smazat?</translation>
 <context>
     <name>ListLiveWireGpios</name>
     <message>
-        <source>LiveWire GPIO Source Assignments</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Switchers:</source>
         <translation type="unfinished">Přepínače:</translation>
     </message>
@@ -5037,6 +5029,10 @@ Stále ještě jej chcete smazat?</translation>
     </message>
     <message>
         <source>Source #</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Livewire GPIO Source Assignments</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5447,7 +5443,7 @@ Stále ještě chcete pokračovat?</translation>
     <name>Login</name>
     <message>
         <source>Login</source>
-        <translation>Přihlášení</translation>
+        <translation type="obsolete">Přihlášení</translation>
     </message>
     <message>
         <source>&amp;OK</source>

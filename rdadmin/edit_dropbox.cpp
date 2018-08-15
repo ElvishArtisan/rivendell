@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Dropbox Configuration
 //
-//   (C) Copyright 2002-2007,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -33,8 +33,6 @@
 #include <qcolordialog.h>
 #include <qvalidator.h>
 #include <q3filedialog.h>
-//Added by qt3to4:
-#include <QLabel>
 
 #include <rdapplication.h>
 #include <rdcart_dialog.h>
@@ -45,8 +43,10 @@
 #include "edit_dropbox.h"
 
 EditDropbox::EditDropbox(int id,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   QString sql;
   RDSqlQuery *q;
 
@@ -60,8 +60,8 @@ EditDropbox::EditDropbox(int id,QWidget *parent)
 
   box_dropbox=new RDDropbox(id);
 
-  setCaption(tr("Dropbox Configuration")+" ["+
-	     tr("ID")+QString().sprintf(": %d]",id));
+  setWindowTitle("RDAdmin - "+tr("Dropbox Configuration")+" ["+
+		 tr("ID")+QString().sprintf(": %d]",id));
 
   //
   // Create Fonts

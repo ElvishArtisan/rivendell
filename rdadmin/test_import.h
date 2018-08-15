@@ -2,7 +2,7 @@
 //
 // Test a Rivendell Log Import
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,14 +22,10 @@
 #define TEST_IMPORT_H
 
 #include <qdialog.h>
-#include <qsqldatabase.h>
 #include <qpushbutton.h>
 #include <q3datetimeedit.h>
 #include <qlabel.h>
 #include <qlineedit.h>
-//Added by qt3to4:
-#include <QPaintEvent>
-#include <QResizeEvent>
 
 #include <rdsvc.h>
 #include <rdlistview.h>

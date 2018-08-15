@@ -134,10 +134,6 @@ atualizada para a Versão</translation>
 <context>
     <name>AddFeed</name>
     <message>
-        <source>Add Feed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Enable Feed for All Users</source>
         <translation type="unfinished"></translation>
     </message>
@@ -159,6 +155,10 @@ atualizada para a Versão</translation>
     </message>
     <message>
         <source>A feed with that key name already exists!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add RSS Feed</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -244,7 +244,7 @@ atualizada para a Versão</translation>
     <name>AddMatrix</name>
     <message>
         <source>Add Switcher</source>
-        <translation type="obsolete">Adicionar Switcher</translation>
+        <translation type="unfinished">Adicionar Switcher</translation>
     </message>
     <message>
         <source>&amp;New Matrix Number:</source>
@@ -316,10 +316,6 @@ atualizada para a Versão</translation>
     </message>
     <message>
         <source>New Switcher</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>RDAdmin - Add Switcher</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -713,10 +709,6 @@ atualizada para a Versão</translation>
 <context>
     <name>EditCartSlots</name>
     <message>
-        <source>RDAdmin - Edit CartSlots</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
@@ -834,6 +826,10 @@ atualizada para a Versão</translation>
     </message>
     <message>
         <source>Slot selected has changed!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit CartSlots</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1880,7 +1876,7 @@ Você ainda quer salvar?</translation>
     <name>EditMatrix</name>
     <message>
         <source>Edit Switcher</source>
-        <translation type="obsolete">Editar Switcher</translation>
+        <translation type="unfinished">Editar Switcher</translation>
     </message>
     <message>
         <source>Matrix Number:</source>
@@ -2062,10 +2058,6 @@ Displays</translation>
     <message>
         <source>SAS
 Switches</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>RDAdmin - Edit Switcher</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4850,10 +4842,6 @@ Você ainda quer Deletar?</translation>
 <context>
     <name>ListLiveWireGpios</name>
     <message>
-        <source>LiveWire GPIO Source Assignments</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Switchers:</source>
         <translation type="unfinished">Switchers:</translation>
     </message>
@@ -4887,6 +4875,10 @@ Você ainda quer Deletar?</translation>
     </message>
     <message>
         <source>Source #</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Livewire GPIO Source Assignments</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5287,7 +5279,7 @@ Você quer proceder?</translation>
     <name>Login</name>
     <message>
         <source>Login</source>
-        <translation>Administrar</translation>
+        <translation type="obsolete">Administrar</translation>
     </message>
     <message>
         <source>&amp;OK</source>

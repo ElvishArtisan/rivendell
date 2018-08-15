@@ -2,7 +2,7 @@
 //
 // Edit a List of Autofill Carts
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -42,8 +42,10 @@
 #include "globals.h"
 
 AutofillCarts::AutofillCarts(RDSvc *svc,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   QString str;
 
   //
@@ -56,7 +58,7 @@ AutofillCarts::AutofillCarts(RDSvc *svc,QWidget *parent)
 
   svc_svc=svc;
 
-  setCaption(tr("Autofill Carts - Service:")+" "+svc_svc->name());
+  setWindowTitle("RDAdmin - "+tr("Autofill Carts - Service:")+" "+svc_svc->name());
 
   //
   // Create Fonts

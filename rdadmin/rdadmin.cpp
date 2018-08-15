@@ -2,7 +2,7 @@
 //
 // The Administrator Utility for Rivendell.
 //
-//   (C) Copyright 2002-2006,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,7 +22,6 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include <signal.h>
 
 #include <qapplication.h>
 #include <qwindowsstyle.h>
@@ -34,10 +33,7 @@
 #include <q3filedialog.h>
 #include <qtextcodec.h>
 #include <qtranslator.h>
-//Added by qt3to4:
-#include <QPixmap>
 
-#include <dbversion.h>
 #include <rd.h>
 #include <rdapplication.h>
 #include <rdconf.h>
@@ -70,22 +66,6 @@
 RDCartDialog *admin_cart_dialog;
 bool exiting=false;
 
-void SigHandler(int signo)
-{
-  pid_t pLocalPid;
-
-  switch(signo) {
-      case SIGCHLD:
-	pLocalPid=waitpid(-1,NULL,WNOHANG);
-	while(pLocalPid>0) {
-	  pLocalPid=waitpid(-1,NULL,WNOHANG);
-	}
-	signal(SIGCHLD,SigHandler);
-	break;
-  }
-}
-
-
 void PrintError(const QString &str,bool interactive)
 {
   if(interactive) {
@@ -98,11 +78,10 @@ void PrintError(const QString &str,bool interactive)
 
 
 MainWidget::MainWidget(QWidget *parent)
-  :QWidget(parent)
+  : QWidget(parent)
 {
   QString str;
   QString err_msg;
-
 
   //
   // Fix the Window Size
@@ -125,7 +104,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Create And Set Icon
   //
   admin_rivendell_map=new QPixmap(rdadmin_22x22_xpm);
-  setIcon(*admin_rivendell_map);
+  setWindowIcon(*admin_rivendell_map);
 
   //
   // Open the Database
@@ -135,7 +114,8 @@ MainWidget::MainWidget(QWidget *parent)
     QMessageBox::critical(this,"RDAdmin - "+tr("Error"),err_msg);
     exit(1);
   }
-  setCaption(QString("RDAdmin v")+VERSION+" - "+tr("Host")+": "+rda->config()->stationName());
+  setWindowTitle(QString("RDAdmin v")+VERSION+" - "+
+		 tr("Host")+": "+rda->config()->stationName());
 
   rda->ripc()->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 
@@ -278,8 +258,6 @@ MainWidget::MainWidget(QWidget *parent)
   quit_button->setFont(font);
   quit_button->setText(tr("&Quit"));
   connect(quit_button,SIGNAL(clicked()),this,SLOT(quitMainWidget()));
-
-  signal(SIGCHLD,SigHandler);
 }
 
 

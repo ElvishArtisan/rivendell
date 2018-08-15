@@ -2,7 +2,7 @@
 //
 // Add a Rivendell Service
 //
-//   (C) Copyright 2002,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -40,8 +40,10 @@
 #include "globals.h"
 
 AddSvc::AddSvc(QString *svcname,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   svc_name=svcname;
 
   //
@@ -52,7 +54,7 @@ AddSvc::AddSvc(QString *svcname,QWidget *parent)
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  setCaption(tr("Add Service"));
+  setWindowTitle("RDAdmin - "+tr("Add Service"));
 
   //
   // Create Fonts

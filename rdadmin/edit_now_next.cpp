@@ -2,7 +2,7 @@
 //
 // Edit the Now & Next Configuration for a Rivendell Workstation.
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,8 +20,6 @@
 
 #include <qmessagebox.h>
 #include <qsignalmapper.h>
-//Added by qt3to4:
-#include <QLabel>
 
 #include <rdapplication.h>
 #include <rdescape_string.h>
@@ -34,8 +32,10 @@
 #include "globals.h"
 
 EditNowNext::EditNowNext(RDAirPlayConf *conf,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   QString sql;
   RDSqlQuery *q;
   RDListViewItem *item;
@@ -60,7 +60,7 @@ EditNowNext::EditNowNext(RDAirPlayConf *conf,QWidget *parent)
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  setCaption(tr("Edit Now & Next Data"));
+  setWindowTitle("RDAdmin - "+tr("Edit Now & Next Data"));
 
   //
   // Text Validator

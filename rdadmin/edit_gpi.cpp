@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Gpi
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,9 +20,6 @@
 
 #include <qmessagebox.h>
 #include <qpainter.h>
-//Added by qt3to4:
-#include <QLabel>
-#include <QPaintEvent>
 
 #include <rdapplication.h>
 #include <rdcart_dialog.h>
@@ -33,14 +30,16 @@
 
 EditGpi::EditGpi(int gpi,int *oncart,QString *ondesc,
 		 int *offcart,QString *offdesc,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   edit_gpi=gpi;
   edit_oncart=oncart;
   edit_offcart=offcart;
   edit_ondescription=ondesc;
   edit_offdescription=offdesc;
-  setCaption(tr("Edit GPI")+QString().sprintf(" %d",gpi));
+  setWindowTitle("RDAdmin - "+tr("Edit GPI")+QString().sprintf(" %d",gpi));
 
   //
   // Fix the Window Size

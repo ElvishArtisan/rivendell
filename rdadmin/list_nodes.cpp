@@ -1,8 +1,8 @@
 // list_nodes.cpp
 //
-// List Rivendell LiveWire Nodes
+// List Rivendell Livewire Nodes
 //
-//   (C) Copyright 2002-2003,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -34,10 +34,12 @@
 #include "edit_endpoint.h"
 
 ListNodes::ListNodes(RDMatrix *matrix,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   list_matrix=matrix;
-  setCaption(tr("LiveWire Node List"));
+  setWindowTitle("RDAdmin - "+tr("Livewire Node List"));
 
   //
   // Fix the Window Size

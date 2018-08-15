@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Jack Configuration
 //
-//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -32,9 +32,6 @@
 #include <qcolordialog.h>
 #include <qvalidator.h>
 #include <q3filedialog.h>
-//Added by qt3to4:
-#include <QResizeEvent>
-#include <QLabel>
 
 #include <rdescape_string.h>
 
@@ -45,8 +42,10 @@
 #include <edit_jack_client.h>
 
 EditJack::EditJack(RDStation *station,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   QString sql;
 
   edit_station=station;
@@ -57,7 +56,8 @@ EditJack::EditJack(RDStation *station,QWidget *parent)
   setMinimumWidth(sizeHint().width());
   setMinimumHeight(sizeHint().height());
 
-  setCaption(tr("JACK Configuration for ")+edit_station->name());
+  setWindowTitle("RDAdmin - "+tr("JACK Configuration for ")+
+		 edit_station->name());
 
   //
   // Create Fonts

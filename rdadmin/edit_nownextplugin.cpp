@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Now & Next Plugin Configuration
 //
-//   (C) Copyright 2008,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2008-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,13 +26,14 @@
 #include <rd.h>
 #include <rdpaths.h>
 
-#include <edit_nownextplugin.h>
-
+#include "edit_nownextplugin.h"
 
 EditNowNextPlugin::EditNowNextPlugin(QString *path,QString *arg,
 				     QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   plugin_path=path;
   plugin_arg=arg;
 
@@ -44,7 +45,7 @@ EditNowNextPlugin::EditNowNextPlugin(QString *path,QString *arg,
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  setCaption(tr("Edit Plugin"));
+  setWindowTitle("RDAdmin - "+tr("Edit Plugin"));
 
   //
   // Create Fonts

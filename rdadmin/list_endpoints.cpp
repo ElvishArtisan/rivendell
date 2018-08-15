@@ -2,7 +2,7 @@
 //
 // List a Rivendell Endpoints
 //
-//   (C) Copyright 2002-2003,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,8 +23,6 @@
 #include <q3textedit.h>
 #include <qpainter.h>
 #include <qmessagebox.h>
-//Added by qt3to4:
-#include <QLabel>
 
 #include <rd.h>
 #include <rddb.h>
@@ -37,8 +35,10 @@
 
 ListEndpoints::ListEndpoints(RDMatrix *matrix,RDMatrix::Endpoint endpoint,
 			     QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   QString sql;
   RDSqlQuery *q;
   Q3ListViewItem *l;
@@ -47,17 +47,17 @@ ListEndpoints::ListEndpoints(RDMatrix *matrix,RDMatrix::Endpoint endpoint,
   list_matrix=matrix;
   list_endpoint=endpoint;
   switch(list_endpoint) {
-      case RDMatrix::Input:
-	list_size=list_matrix->inputs();
-	list_table="INPUTS";
-	setCaption(tr("List Inputs"));
-	break;
+  case RDMatrix::Input:
+    list_size=list_matrix->inputs();
+    list_table="INPUTS";
+    setWindowTitle("RDAdmin - "+tr("List Inputs"));
+    break;
 
-      case RDMatrix::Output:
-	list_size=list_matrix->outputs();
-	list_table="OUTPUTS";
-	setCaption(tr("List Outputs"));
-	break;
+  case RDMatrix::Output:
+    list_size=list_matrix->outputs();
+    list_table="OUTPUTS";
+    setWindowTitle("RDAdmin - "+tr("List Outputs"));
+    break;
   }
 
   //

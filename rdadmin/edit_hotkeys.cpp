@@ -2,7 +2,7 @@
 //
 // Edit the Hot Key Configuration for a Rivendell Workstation.
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,12 +22,8 @@
 #include <qdialog.h>
 #include <qstring.h>
 #include <qpushbutton.h>
-#include <qsqldatabase.h>
 #include <qmessagebox.h>
 #include <q3listbox.h>
-//Added by qt3to4:
-#include <QLabel>
-#include <QKeyEvent>
 
 #include <rdescape_string.h>
 #include <rdhotkeylist.h>
@@ -38,8 +34,10 @@
 
 EditHotkeys::EditHotkeys(const QString &station,const QString &module,
 			 QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   QString sql;
   RDSqlQuery *q;
 
@@ -69,8 +67,8 @@ EditHotkeys::EditHotkeys(const QString &station,const QString &module,
   //
   // Hot Key Configuration Label
   //
-  setCaption(hotkey_module.upper()+" "+tr("Hot Key Configuration for")+" "+
-	     hotkey_conf);
+  setWindowTitle("RDAdmin - "+hotkey_module.upper()+" "+
+		 tr("Hot Key Configuration for")+" "+hotkey_conf);
 
   list_view=new Q3ListView(this);
   list_view->setGeometry(10,24,320,220);

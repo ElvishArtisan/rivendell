@@ -38,8 +38,10 @@
 #include "list_stations.h"
 
 ListStations::ListStations(QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   //
   // Fix the Window Size
   //
@@ -48,7 +50,7 @@ ListStations::ListStations(QWidget *parent)
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  setCaption(tr("Rivendell Host List"));
+  setWindowTitle("RDAdmin - "+tr("Rivendell Host List"));
 
   //
   // Create Fonts

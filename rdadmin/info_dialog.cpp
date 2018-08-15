@@ -2,7 +2,7 @@
 //
 // Display System Information for Rivendell
 //
-//   (C) Copyright 2002-2014,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -49,8 +49,10 @@
 #include <xpm_info_banner2.cpp>
 
 InfoDialog::InfoDialog(QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   //
   // Fix the Window Size
   //
@@ -59,7 +61,7 @@ InfoDialog::InfoDialog(QWidget *parent)
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  setCaption(tr("System Information"));
+  setWindowTitle("RDAdmin - "+tr("System Information"));
 
   //
   // Create Fonts

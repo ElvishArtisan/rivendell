@@ -2,7 +2,7 @@
 //
 // List Rivendell GPIOs
 //
-//   (C) Copyright 2002-2008,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,9 +23,6 @@
 #include <q3textedit.h>
 #include <qpainter.h>
 #include <qmessagebox.h>
-//Added by qt3to4:
-#include <QResizeEvent>
-#include <QLabel>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -40,8 +37,10 @@
 #include "list_gpis.h"
 
 ListGpis::ListGpis(RDMatrix *matrix,RDMatrix::GpioType type,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   QString sql;
   RDSqlQuery *q;
   Q3ListViewItem *l;
@@ -50,19 +49,19 @@ ListGpis::ListGpis(RDMatrix *matrix,RDMatrix::GpioType type,QWidget *parent)
   list_matrix=matrix;
   list_type=type;
   switch(type) {
-    case RDMatrix::GpioInput:
-      list_tablename="GPIS";
-      list_size=list_matrix->gpis();
-      list_label=tr("GPI Lines");
-      setCaption(tr("List GPIs"));
-      break;
+  case RDMatrix::GpioInput:
+    list_tablename="GPIS";
+    list_size=list_matrix->gpis();
+    list_label=tr("GPI Lines");
+    setWindowTitle("RDAdmin - "+tr("List GPIs"));
+    break;
 
-    case RDMatrix::GpioOutput:
-      list_tablename="GPOS";
-      list_size=list_matrix->gpos();
-      list_label=tr("GPO Lines");
-      setCaption(tr("List GPOs"));
-      break;
+  case RDMatrix::GpioOutput:
+    list_tablename="GPOS";
+    list_size=list_matrix->gpos();
+    list_label=tr("GPO Lines");
+    setWindowTitle("RDAdmin - "+tr("List GPOs"));
+    break;
   }
 
   //

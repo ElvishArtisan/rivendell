@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Audio Port Configuration
 //
-//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,15 +28,14 @@
 #include <q3buttongroup.h>
 #include <qsqldatabase.h>
 #include <qsignalmapper.h>
-//Added by qt3to4:
-#include <QResizeEvent>
-#include <QLabel>
 
-#include <edit_audios.h>
+#include "edit_audios.h"
 
 EditAudioPorts::EditAudioPorts(QString station,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   QString str;
 
   //
@@ -51,7 +50,7 @@ EditAudioPorts::EditAudioPorts(QString station,QWidget *parent)
   edit_card=NULL;
   rdstation=NULL;
 
-  setCaption(tr("Edit AudioScience Audio Ports"));
+  setWindowTitle("RDAdmin - "+tr("Edit AudioScience Audio Ports"));
 
   //
   // Create Fonts

@@ -27,9 +27,6 @@
 #include <qpainter.h>
 #include <qdatetime.h>
 #include <q3url.h>
-//Added by qt3to4:
-#include <QPaintEvent>
-#include <QLabel>
 
 #include <rdapplication.h>
 #include <rdexport_settings_dialog.h>
@@ -38,8 +35,10 @@
 #include "globals.h"
 
 EditFeed::EditFeed(const QString &feed,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   //
   // Fix the Window Size
   //
@@ -50,7 +49,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
 
   feed_feed=new RDFeed(feed,rda->config(),this);
 
-  setCaption(tr("Feed: ")+feed);
+  setWindowTitle("RDAdmin - "+tr("Feed: ")+feed);
 
   //
   // Create Fonts

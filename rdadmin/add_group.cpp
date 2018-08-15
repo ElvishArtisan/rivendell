@@ -2,7 +2,7 @@
 //
 // Add a Rivendell Group
 //
-//   (C) Copyright 2002,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,17 +29,20 @@
 #include <qmessagebox.h>
 #include <qcheckbox.h>
 #include <q3buttongroup.h>
+
 #include <rddb.h>
+#include <rdescape_string.h>
 
 #include <edit_group.h>
 #include <add_group.h>
 #include <rdpasswd.h>
 #include <rdtextvalidator.h>
-#include <rdescape_string.h>
 
 AddGroup::AddGroup(QString *group,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   group_group=group;
 
   //
@@ -50,7 +53,7 @@ AddGroup::AddGroup(QString *group,QWidget *parent)
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  setCaption(tr("Add Group"));
+  setCaption("RDAdmin - "+tr("Add Group"));
 
   //
   // Create Fonts

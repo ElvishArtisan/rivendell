@@ -2,7 +2,7 @@
 //
 // List Rivendell Services
 //
-//   (C) Copyright 2002-2003,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -39,8 +39,10 @@
 #include "list_svcs.h"
 
 ListSvcs::ListSvcs(QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   //
   // Fix the Window Size
   //
@@ -49,7 +51,7 @@ ListSvcs::ListSvcs(QWidget *parent)
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  setCaption(tr("Services"));
+  setWindowTitle("RDAdmin - "+tr("Services"));
 
   //
   // Create Fonts

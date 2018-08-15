@@ -2,10 +2,6 @@
 <context>
     <name>AddFeed</name>
     <message>
-        <source>Add Feed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Enable Feed for All Users</source>
         <translation type="unfinished"></translation>
     </message>
@@ -27,6 +23,10 @@
     </message>
     <message>
         <source>A feed with that key name already exists!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add RSS Feed</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -139,7 +139,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>RDAdmin - Add Switcher</source>
+        <source>Add Switcher</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -467,10 +467,6 @@
 <context>
     <name>EditCartSlots</name>
     <message>
-        <source>RDAdmin - Edit CartSlots</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
@@ -580,6 +576,10 @@
     </message>
     <message>
         <source>Slot selected has changed!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit CartSlots</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1723,10 +1723,6 @@ Switches</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>RDAdmin - Edit Switcher</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Configure
 &amp;Outputs</source>
         <translation type="unfinished"></translation>
@@ -1734,6 +1730,10 @@ Switches</source>
     <message>
         <source>LiveWire
 GPIOs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit Switcher</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4195,10 +4195,6 @@ PARTICULAR PURPOSE.  Touch the &quot;View License&quot; button for details.</sou
 <context>
     <name>ListLiveWireGpios</name>
     <message>
-        <source>LiveWire GPIO Source Assignments</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Switchers:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4232,6 +4228,10 @@ PARTICULAR PURPOSE.  Touch the &quot;View License&quot; button for details.</sou
     </message>
     <message>
         <source>Source #</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Livewire GPIO Source Assignments</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4570,10 +4570,6 @@ Carts</source>
 </context>
 <context>
     <name>Login</name>
-    <message>
-        <source>Login</source>
-        <translation type="unfinished"></translation>
-    </message>
     <message>
         <source>&amp;OK</source>
         <translation type="unfinished"></translation>

@@ -2,7 +2,7 @@
 //
 // Edit an RDPanel Configuration
 //
-//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -31,8 +31,6 @@
 #include <q3buttongroup.h>
 #include <qpainter.h>
 #include <q3filedialog.h>
-//Added by qt3to4:
-#include <QLabel>
 
 #include <rd.h>
 #include <rddb.h>
@@ -45,8 +43,10 @@
 
 EditRDPanel::EditRDPanel(RDStation *station,RDStation *cae_station,
 			 QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   QString sql;
   RDSqlQuery *q;
 
@@ -78,7 +78,7 @@ EditRDPanel::EditRDPanel(RDStation *station,RDStation *cae_station,
   //
   // Dialog Name
   //
-  setCaption(tr("Configure RDPanel"));
+  setWindowTitle("RDAdmin - "+tr("Configure RDPanel"));
 
   //
   // Channel Assignments Section

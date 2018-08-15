@@ -2,7 +2,7 @@
 //
 // Edit a vGuest Resource Record.
 //
-//   (C) Copyright 2002-2005,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,20 +19,19 @@
 //
 
 #include <qmessagebox.h>
-//Added by qt3to4:
-#include <QLabel>
 
 #include <rdtextvalidator.h>
 
 #include <edit_vguest_resource.h>
 
-
 EditVguestResource::EditVguestResource(RDMatrix::VguestType type,
 				       int *enginenum,int *devicenum,
 				       int *surfacenum,int *relaynum,
 				       QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   edit_type=type;
   edit_enginenum=enginenum;
   edit_devicenum=devicenum;
@@ -129,17 +128,17 @@ EditVguestResource::EditVguestResource(RDMatrix::VguestType type,
     edit_surfacenum_edit->setText(QString().sprintf("%04X",*surfacenum));
   }
   switch(edit_type) {
-      case RDMatrix::VguestTypeRelay:
-	setCaption(tr("Edit vGuest Switch"));
-	if(*relaynum>=0) {
-	  edit_relaynum_edit->setText(QString().sprintf("%04X",*relaynum));
-	}
-	break;
+  case RDMatrix::VguestTypeRelay:
+    setWindowTitle("RDAdmin - "+tr("Edit vGuest Switch"));
+    if(*relaynum>=0) {
+      edit_relaynum_edit->setText(QString().sprintf("%04X",*relaynum));
+    }
+    break;
 
-      case RDMatrix::VguestTypeDisplay:
-	setCaption(tr("Edit vGuest Display"));
-	edit_relaynum_edit->setDisabled(true);
-	break;
+  case RDMatrix::VguestTypeDisplay:
+    setWindowTitle("RDADmin - "+tr("Edit vGuest Display"));
+    edit_relaynum_edit->setDisabled(true);
+    break;
   }
 }
 

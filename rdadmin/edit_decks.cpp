@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell RDCatch Deck Configuration
 //
-//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,9 +29,6 @@
 #include <qcheckbox.h>
 #include <q3buttongroup.h>
 #include <qstringlist.h>
-//Added by qt3to4:
-#include <QLabel>
-#include <QPaintEvent>
 
 #include <rd.h>
 #include <rddb.h>
@@ -43,19 +40,20 @@
 #include "globals.h"
 
 EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   //
   // Fix the Window Size
   //
   setMinimumWidth(sizeHint().width());
-  //  setMaximumWidth(sizeHint().width());
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
   edit_station=station;
 
-  setCaption(tr("Configure RDCatch"));
+  setWindowTitle("RDAdmin - "+tr("Configure RDCatch"));
 
   //
   // Create Fonts

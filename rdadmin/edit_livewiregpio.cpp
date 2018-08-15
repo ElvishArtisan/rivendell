@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Livewire GPIO Slot Association
 //
-//   (C) Copyright 2013,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2013-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,8 +28,10 @@
 
 EditLiveWireGpio::EditLiveWireGpio(int slot,int *source,QHostAddress *addr,
 				   QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   edit_slot=slot;
   edit_source=source;
   edit_address=addr;
@@ -41,7 +43,7 @@ EditLiveWireGpio::EditLiveWireGpio(int slot,int *source,QHostAddress *addr,
   setMaximumWidth(sizeHint().width());
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
-  setCaption(tr("Edit GPIO Source"));
+  setWindowTitle("RDAdmin - "+tr("Edit GPIO Source"));
 
   //
   // Create Fonts

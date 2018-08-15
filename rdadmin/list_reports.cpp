@@ -2,7 +2,7 @@
 //
 // List Rivendell Reports
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -37,8 +37,10 @@
 #include "list_reports.h"
 
 ListReports::ListReports(QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   //
   // Fix the Window Size
   //
@@ -47,7 +49,7 @@ ListReports::ListReports(QWidget *parent)
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  setCaption(tr("Rivendell Report List"));
+  setWindowTitle("RDAdmin - "+tr("Rivendell Report List"));
 
   //
   // Create Fonts

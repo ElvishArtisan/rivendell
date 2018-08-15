@@ -37,11 +37,12 @@
 #include <edit_rdlibrary.h>
 #include <rdtextvalidator.h>
 
-
 EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
 			     QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   //
   // Fix the Window Size
   //
@@ -68,7 +69,7 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   //
   // Dialog Name
   //
-  setCaption(tr("Configure RDLibrary"));
+  setWindowTitle("RDAdmin - "+tr("Configure RDLibrary"));
 
   //
   // Input Configuration

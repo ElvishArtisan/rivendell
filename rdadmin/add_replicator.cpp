@@ -2,7 +2,7 @@
 //
 // Add a Rivendell Replicator Configuration
 //
-//   (C) Copyright 2010,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -39,8 +39,10 @@
 #include "add_replicator.h"
 
 AddReplicator::AddReplicator(QString *rname,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   repl_name=rname;
 
   //
@@ -51,7 +53,7 @@ AddReplicator::AddReplicator(QString *rname,QWidget *parent)
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  setCaption(tr("Add Replicator"));
+  setWindowTitle("RDAdmin - "+tr("Add Replicator"));
 
   //
   // Create Fonts

@@ -2,7 +2,7 @@
 //
 // Add a Rivendell Report
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -41,8 +41,10 @@
 #include "edit_svc_perms.h"
 
 AddReport::AddReport(QString *rptname,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   //
   // Fix the Window Size
   //
@@ -51,7 +53,7 @@ AddReport::AddReport(QString *rptname,QWidget *parent)
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  setCaption(tr("Add Report"));
+  setWindowTitle("RDAdmin - "+tr("Add Report"));
   add_name=rptname;
 
   //

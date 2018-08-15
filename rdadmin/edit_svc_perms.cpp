@@ -2,7 +2,7 @@
 //
 // Edit Rivendell Service Permissions
 //
-//   (C) Copyright 2002-2004,2016-2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,8 +24,10 @@
 #include "edit_svc_perms.h"
 
 EditSvcPerms::EditSvcPerms(RDSvc *svc,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   QString sql;
   RDSqlQuery *q;
 
@@ -39,7 +41,7 @@ EditSvcPerms::EditSvcPerms(RDSvc *svc,QWidget *parent)
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  setCaption(tr("Service: ")+svc_svc->name());
+  setWindowTitle("RDAdmin - "+tr("Service: ")+svc_svc->name());
 
   //
   // Create Fonts

@@ -1,8 +1,8 @@
 // add_feed.cpp
 //
-// Add a Rivendell Service
+// Add a Rivendell RSS Feed
 //
-//   (C) Copyright 2002,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -36,8 +36,10 @@
 #include "globals.h"
 
 AddFeed::AddFeed(unsigned *id,QString *keyname,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   feed_keyname=keyname;
   feed_id=id;
 
@@ -49,7 +51,7 @@ AddFeed::AddFeed(unsigned *id,QString *keyname,QWidget *parent)
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  setCaption(tr("Add Feed"));
+  setWindowTitle("RDADmin - "+tr("Add RSS Feed"));
 
   //
   // Create Fonts

@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Endpoint
 //
-//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,8 +19,6 @@
 //
 
 #include <qmessagebox.h>
-//Added by qt3to4:
-#include <QLabel>
 
 #include <rdtextvalidator.h>
 
@@ -30,8 +28,10 @@ EditEndpoint::EditEndpoint(RDMatrix::Type type,RDMatrix::Endpoint endpoint,
 			   int pointnum,QString *pointname,QString *feedname,
 			   RDMatrix::Mode *mode,int *enginenum,int *devicenum,
 			   QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   edit_type=type;
   edit_endpoint=endpoint;
   edit_pointnum=pointnum;
@@ -42,15 +42,15 @@ EditEndpoint::EditEndpoint(RDMatrix::Type type,RDMatrix::Endpoint endpoint,
   edit_devicenum=devicenum;
 
   switch(edit_endpoint) {
-      case RDMatrix::Input:
-	edit_table="INPUTS";
-	setCaption(tr("Edit Input"));
-	break;
+  case RDMatrix::Input:
+    edit_table="INPUTS";
+    setWindowTitle("RDAdmin - "+tr("Edit Input"));
+    break;
 
-      case RDMatrix::Output:
-	edit_table="OUTPUTS";
-	setCaption(tr("Edit Output"));
-	break;
+  case RDMatrix::Output:
+    edit_table="OUTPUTS";
+    setWindowTitle("RDAdmin - "+tr("Edit Output"));
+    break;
   }
 
   //

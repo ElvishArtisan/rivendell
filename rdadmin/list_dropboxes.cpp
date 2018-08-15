@@ -2,7 +2,7 @@
 //
 // List Rivendell Dropboxes
 //
-//   (C) Copyright 2002,2016-2018 Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,8 +28,6 @@
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <q3buttongroup.h>
-//Added by qt3to4:
-#include <QResizeEvent>
 
 #include <rddb.h>
 #include <rdescape_string.h>
@@ -38,8 +36,10 @@
 #include "list_dropboxes.h"
 
 ListDropboxes::ListDropboxes(const QString &stationname,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   list_stationname=stationname;
 
   //
@@ -48,7 +48,8 @@ ListDropboxes::ListDropboxes(const QString &stationname,QWidget *parent)
   setMinimumWidth(sizeHint().width());
   setMinimumHeight(sizeHint().height());
 
-  setCaption(tr("Rivendell Dropbox Configurations on")+" "+stationname);
+  setWindowTitle("RDAdmin - "+tr("Rivendell Dropbox Configurations on")+" "+
+		 stationname);
 
   //
   // Create Fonts

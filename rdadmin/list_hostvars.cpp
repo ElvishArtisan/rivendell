@@ -2,7 +2,7 @@
 //
 // List Rivendell Host Variables
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -39,8 +39,10 @@
 #include "list_hostvars.h"
 
 ListHostvars::ListHostvars(QString station,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   QString str;
 
   //
@@ -53,7 +55,7 @@ ListHostvars::ListHostvars(QString station,QWidget *parent)
 
   list_station=station;
   str=QString(tr("Host Variables for"));
-  setCaption(tr("Host Variables for")+" "+station);
+  setWindowTitle("RDAdmin - "+tr("Host Variables for")+" "+station);
 
   //
   // Create Fonts

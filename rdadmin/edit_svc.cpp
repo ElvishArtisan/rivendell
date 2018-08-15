@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Service
 //
-//   (C) Copyright 2002-2004,2008,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -33,7 +33,6 @@
 #include <rd.h>
 #include <rdapplication.h>
 #include <rddb.h>
-//#include <rduser.h>
 #include <rdidvalidator.h>
 #include <rdpasswd.h>
 #include <rdtextvalidator.h>
@@ -45,8 +44,10 @@
 #include "test_import.h"
 
 EditSvc::EditSvc(QString svc,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   QString sql;
   RDSqlQuery *q;
   QString group;
@@ -62,7 +63,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
 
   svc_svc=new RDSvc(svc,rda->station(),rda->config());
 
-  setCaption(tr("Edit Service"));
+  setWindowTitle("RDAdmin - "+tr("Edit Service"));
 
   //
   // Create Fonts

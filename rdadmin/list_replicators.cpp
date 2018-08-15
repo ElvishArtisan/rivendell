@@ -1,8 +1,8 @@
 // list_replicators.cpp
 //
-// List Rivendell Replication Configuratins
+// List Rivendell Replication Configurations
 //
-//   (C) Copyright 2002-2008,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,30 +30,30 @@
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <q3buttongroup.h>
-//Added by qt3to4:
-#include <QResizeEvent>
-#include <rddb.h>
 
 #include <rdcart.h>
+#include <rddb.h>
 #include <rdtextfile.h>
 #include <rdescape_string.h>
 #include <rdreplicator.h>
 
-#include <list_replicators.h>
-#include <list_replicator_carts.h>
-#include <edit_replicator.h>
-#include <add_replicator.h>
+#include "add_replicator.h"
+#include "edit_replicator.h"
+#include "list_replicators.h"
+#include "list_replicator_carts.h"
 
 ListReplicators::ListReplicators(QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   //
   // Fix the Window Size
   //
   setMinimumWidth(sizeHint().width());
   setMinimumHeight(sizeHint().height());
 
-  setCaption(tr("Rivendell Replicators"));
+  setWindowTitle("RDAdmin - "+tr("Rivendell Replicators"));
 
   //
   // Create Fonts

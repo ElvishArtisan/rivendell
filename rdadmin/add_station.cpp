@@ -40,8 +40,10 @@
 #include "edit_station.h"
 
 AddStation::AddStation(QString *stationname,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   add_name=stationname;
 
   //
@@ -52,7 +54,7 @@ AddStation::AddStation(QString *stationname,QWidget *parent)
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  setCaption(tr("Add Host"));
+  setWindowTitle("RDAdmin - "+tr("Add Host"));
 
   //
   // Create Fonts

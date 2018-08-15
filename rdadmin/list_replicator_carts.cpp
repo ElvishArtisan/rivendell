@@ -2,7 +2,7 @@
 //
 // List Rivendell Replicator Carts
 //
-//   (C) Copyright 2002-2008,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,26 +30,25 @@
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <q3buttongroup.h>
-//Added by qt3to4:
-#include <QPixmap>
-#include <QResizeEvent>
-#include <rddb.h>
 
 #include <rdcart.h>
+#include <rddb.h>
 #include <rdtextfile.h>
 #include <rdescape_string.h>
 #include <rdreplicator.h>
 
-#include <list_replicator_carts.h>
-#include <edit_replicator.h>
-#include <add_replicator.h>
+#include "add_replicator.h"
+#include "edit_replicator.h"
+#include "list_replicator_carts.h"
 
 #include "../icons/play.xpm"
 #include "../icons/rml5.xpm"
 
 ListReplicatorCarts::ListReplicatorCarts(QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   //
   // Fix the Window Size
   //
@@ -141,7 +140,7 @@ QSizePolicy ListReplicatorCarts::sizePolicy() const
 int ListReplicatorCarts::exec(const QString &replname)
 {
   list_replicator_name=replname;
-  setCaption(replname+tr(" Replicator Carts"));
+  setWindowTitle("RDAdmin - "+replname+tr(" Replicator Carts"));
   RefreshList();
   list_refresh_timer->start(5000,true);
   return QDialog::exec();

@@ -141,10 +141,6 @@ oppdatert til versjon </translation>
 <context>
     <name>AddFeed</name>
     <message>
-        <source>Add Feed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Enable Feed for All Users</source>
         <translation type="unfinished"></translation>
     </message>
@@ -166,6 +162,10 @@ oppdatert til versjon </translation>
     </message>
     <message>
         <source>A feed with that key name already exists!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Add RSS Feed</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -251,7 +251,7 @@ oppdatert til versjon </translation>
     <name>AddMatrix</name>
     <message>
         <source>Add Switcher</source>
-        <translation type="obsolete">Legg til bytar</translation>
+        <translation type="unfinished">Legg til bytar</translation>
     </message>
     <message>
         <source>&amp;New Matrix Number:</source>
@@ -323,10 +323,6 @@ oppdatert til versjon </translation>
     </message>
     <message>
         <source>New Switcher</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>RDAdmin - Add Switcher</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -724,10 +720,6 @@ oppdatert til versjon </translation>
 <context>
     <name>EditCartSlots</name>
     <message>
-        <source>RDAdmin - Edit CartSlots</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
@@ -845,6 +837,10 @@ oppdatert til versjon </translation>
     </message>
     <message>
         <source>Slot selected has changed!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit CartSlots</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1874,7 +1870,7 @@ Vil du framleis lagra?</translation>
     <name>EditMatrix</name>
     <message>
         <source>Edit Switcher</source>
-        <translation type="obsolete">Rediger svitsjar</translation>
+        <translation type="unfinished">Rediger svitsjar</translation>
     </message>
     <message>
         <source>Matrix Number:</source>
@@ -2059,10 +2055,6 @@ G&amp;POs</source>
     <message>
         <source>SAS
 Switches</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>RDAdmin - Edit Switcher</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4783,10 +4775,6 @@ Klikk på &quot;Lisens&quot;-knappen for fleire opplysningar.</translation>
 <context>
     <name>ListLiveWireGpios</name>
     <message>
-        <source>LiveWire GPIO Source Assignments</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Switchers:</source>
         <translation type="unfinished">Svitsjarar:</translation>
     </message>
@@ -4820,6 +4808,10 @@ Klikk på &quot;Lisens&quot;-knappen for fleire opplysningar.</translation>
     </message>
     <message>
         <source>Source #</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Livewire GPIO Source Assignments</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5222,7 +5214,7 @@ Er du sikker på at du vil halda fram?</translation>
     <name>Login</name>
     <message>
         <source>Login</source>
-        <translation>Logg inn</translation>
+        <translation type="obsolete">Logg inn</translation>
     </message>
     <message>
         <source>&amp;OK</source>

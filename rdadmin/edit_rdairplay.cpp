@@ -2,7 +2,7 @@
 //
 // Edit an RDAirPlay Configuration
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -31,9 +31,6 @@
 #include <q3buttongroup.h>
 #include <qpainter.h>
 #include <q3filedialog.h>
-//Added by qt3to4:
-#include <QLabel>
-#include <QPaintEvent>
 
 #include <rd.h>
 #include <rddb.h>
@@ -49,8 +46,10 @@
 
 EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
 			     QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   QString sql;
   RDSqlQuery *q;
 
@@ -87,7 +86,7 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   //
   // Dialog Name
   //
-  setCaption(tr("Configure RDAirPlay"));
+  setWindowTitle("RDAdmin - "+tr("Configure RDAirPlay"));
 
   //
   // Channel Assignments Section

@@ -38,8 +38,10 @@
 #include "globals.h"
 
 EditReplicator::EditReplicator(const QString &repl_name,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   QString sql;
   RDSqlQuery *q;
 
@@ -54,7 +56,7 @@ EditReplicator::EditReplicator(const QString &repl_name,QWidget *parent)
   repl_replicator=new RDReplicator(repl_name);
   repl_settings=new RDSettings();
 
-  setCaption(tr("Replicator: ")+repl_name);
+  setWindowTitle("RDAdmin - "+tr("Replicator: ")+repl_name);
 
   //
   // Create Fonts

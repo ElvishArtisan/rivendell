@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Group
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -31,9 +31,6 @@
 #include <qcheckbox.h>
 #include <q3buttongroup.h>
 #include <qcolordialog.h>
-//Added by qt3to4:
-#include <QResizeEvent>
-#include <QLabel>
 
 #include <rddb.h>
 #include <rdescape_string.h>
@@ -44,8 +41,10 @@
 #include "edit_group.h"
 
 EditGroup::EditGroup(QString group,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   QString sql;
   RDSqlQuery *q;
 
@@ -59,7 +58,7 @@ EditGroup::EditGroup(QString group,QWidget *parent)
 
   group_group=new RDGroup(group);
 
-  setCaption(tr("Group: ")+group);
+  setWindowTitle("RDAdmin - "+tr("Group: ")+group);
 
   //
   // Create Fonts

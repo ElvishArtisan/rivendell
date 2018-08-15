@@ -2,7 +2,7 @@
 //
 // Display help for audio ports (edit_audios.*)
 //
-// (C) Copyright 2006,2016 Fred Gleason <fredg@paravelsystems.com>
+// (C) Copyright 2006-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,8 +23,10 @@
 #include <help_audios.h>
 
 HelpAudioPorts::HelpAudioPorts(QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   //
   // Fix the Window Size
   //
@@ -33,7 +35,7 @@ HelpAudioPorts::HelpAudioPorts(QWidget *parent)
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  setCaption(tr("Audio Ports Help"));
+  setWindowTitle("RDAdmin - "+tr("Audio Ports Help"));
 
   //
   // Create Fonts

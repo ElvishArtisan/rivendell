@@ -2,7 +2,7 @@
 //
 // List vGuest Resources.
 //
-//   (C) Copyright 2002-2005,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,8 +23,6 @@
 #include <q3textedit.h>
 #include <qpainter.h>
 #include <qmessagebox.h>
-//Added by qt3to4:
-#include <QLabel>
 
 #include <rd.h>
 #include <rddb.h>
@@ -37,8 +35,10 @@
 ListVguestResources::ListVguestResources(RDMatrix *matrix,
 					 RDMatrix::VguestType type,int size,
 					 QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   QString sql;
   QString str;
 
@@ -74,16 +74,15 @@ ListVguestResources::ListVguestResources(RDMatrix *matrix,
   list_list_view->setAllColumnsShowFocus(true);
   list_list_view->setItemMargin(5);
   switch(list_type) {
-      case RDMatrix::VguestTypeRelay:
+  case RDMatrix::VguestTypeRelay:
+    setWindowTitle("RDAdmin - "+tr("vGuest Switches"));
+    list_list_view->addColumn(tr("GPIO LINE"));
+    break;
 
-	setCaption(tr("vGuest Switches"));
-	list_list_view->addColumn(tr("GPIO LINE"));
-	break;
-
-      case RDMatrix::VguestTypeDisplay:
-	setCaption(tr("vGuest Displays"));
-	list_list_view->addColumn(tr("DISPLAY"));
-	break;
+  case RDMatrix::VguestTypeDisplay:
+    setWindowTitle("RDAdmin - "+tr("vGuest Displays"));
+    list_list_view->addColumn(tr("DISPLAY"));
+    break;
   }
   list_list_view->setColumnAlignment(0,Qt::AlignHCenter);
   list_list_view->addColumn(tr("ENGINE (Hex)"));
@@ -91,17 +90,17 @@ ListVguestResources::ListVguestResources(RDMatrix *matrix,
   list_list_view->addColumn(tr("DEVICE (Hex)"));
   list_list_view->setColumnAlignment(2,Qt::AlignHCenter);
   switch(list_type) {
-      case RDMatrix::VguestTypeRelay:
-	list_list_view->addColumn(tr("SURFACE (Hex)"));
-	list_list_view->setColumnAlignment(3,Qt::AlignHCenter);
-	list_list_view->addColumn(tr("BUS/RELAY (Hex)"));
-	list_list_view->setColumnAlignment(4,Qt::AlignHCenter);
-	break;
+  case RDMatrix::VguestTypeRelay:
+    list_list_view->addColumn(tr("SURFACE (Hex)"));
+    list_list_view->setColumnAlignment(3,Qt::AlignHCenter);
+    list_list_view->addColumn(tr("BUS/RELAY (Hex)"));
+    list_list_view->setColumnAlignment(4,Qt::AlignHCenter);
+    break;
 
-      case RDMatrix::VguestTypeDisplay:
-	list_list_view->addColumn(tr("SURFACE (Hex)"));
-	list_list_view->setColumnAlignment(3,Qt::AlignHCenter);
-	break;
+  case RDMatrix::VguestTypeDisplay:
+    list_list_view->addColumn(tr("SURFACE (Hex)"));
+    list_list_view->setColumnAlignment(3,Qt::AlignHCenter);
+    break;
   }
   connect(list_list_view,
 	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),

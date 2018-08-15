@@ -39,11 +39,12 @@
 #include "edit_rdlogedit.h"
 #include "globals.h"
 
-
 EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
 			     QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   //
   // Fix the Window Size
   //
@@ -65,7 +66,7 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   //
   // Dialog Name
   //
-  setCaption(tr("Configure RDLogedit"));
+  setWindowTitle("RDAdmin - "+tr("Configure RDLogedit"));
 
   //
   // Input Configuration

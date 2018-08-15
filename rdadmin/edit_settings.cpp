@@ -1,8 +1,8 @@
 // edit_station.cpp
 //
-// Edit Rivendell Systemwide Configuration
+// Edit Rivendell System-Wide Configuration
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,8 +28,6 @@
 #include <q3progressdialog.h>
 #include <qapplication.h>
 #include <q3filedialog.h>
-//Added by qt3to4:
-#include <QLabel>
 
 #include <rdescape_string.h>
 #include <rddb.h>
@@ -40,8 +38,10 @@
 #include <globals.h>
 
 EditSettings::EditSettings(QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   QString sql;
   RDSqlQuery *q;
 
@@ -66,7 +66,7 @@ EditSettings::EditSettings(QWidget *parent)
 
   edit_system=new RDSystem();
 
-  setCaption(tr("System-Wide Settings"));
+  setWindowTitle("RDAdmin - "+tr("System-Wide Settings"));
 
   edit_system=new RDSystem();
 

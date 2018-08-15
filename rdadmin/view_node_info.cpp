@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell LiveWire Node
 //
-//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,7 +19,6 @@
 //
 
 #include <qmessagebox.h>
-#include <qsqldatabase.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
 
@@ -30,9 +29,11 @@
 #include <view_node_info.h>
 
 ViewNodeInfo::ViewNodeInfo(QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
-  setCaption(tr("Viewing LiveWire Node"));
+  setModal(true);
+
+  setWindowTitle("RDAdmin - "+tr("Viewing Livewire Node"));
 
   //
   // Fix the Window Size

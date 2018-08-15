@@ -2,7 +2,7 @@
 //
 // Login widget for RDAdmin.
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -31,16 +31,16 @@
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <q3buttongroup.h>
-//Added by qt3to4:
-#include <QPaintEvent>
 
 #include <rdtextvalidator.h>
 
 #include <login.h>
 
 Login::Login(QString *username,QString *password,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   //
   // Fix the Window Size
   //
@@ -49,7 +49,7 @@ Login::Login(QString *username,QString *password,QWidget *parent)
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  setCaption(tr("Login"));
+  setWindowTitle("RDAdmin");
   login_name=username;
   login_password=password;
 

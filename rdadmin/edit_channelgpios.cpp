@@ -2,7 +2,7 @@
 //
 // Edit Rivendell Channel GPIO Settings
 //
-//   (C) Copyright 2013,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2013-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,18 +19,17 @@
 //
 
 #include <edit_channelgpios.h>
-//Added by qt3to4:
-#include <QResizeEvent>
-#include <QLabel>
 
 EditChannelGpios::EditChannelGpios(RDAirPlayConf *conf,
 				   RDAirPlayConf::Channel chan,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   edit_airplay_conf=conf;
   edit_channel=chan;
 
-  setCaption(QString("RDAdmin - ")+tr("Edit Channel GPIOs"));
+  setWindowTitle("RDAdmin - "+tr("Edit Channel GPIOs"));
 
   //
   // Fonts

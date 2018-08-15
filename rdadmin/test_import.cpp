@@ -2,7 +2,7 @@
 //
 // Test a Rivendell Log Import
 //
-//   (C) Copyright 2002-2004,2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,10 +21,6 @@
 #include <qpushbutton.h>
 #include <qpainter.h>
 #include <qmessagebox.h>
-//Added by qt3to4:
-#include <QPaintEvent>
-#include <QResizeEvent>
-#include <QLabel>
 
 #include <rdapplication.h>
 #include <rdconf.h>
@@ -40,8 +36,10 @@
 #include "test_import.h"
 
 TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   QString sql;
   QDate current_date=QDate::currentDate();
 
@@ -55,13 +53,13 @@ TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent)
   setMinimumHeight(sizeHint().height());
 
   switch(test_src) {
-      case RDSvc::Traffic:
-	setCaption(tr("Test Traffic Import"));
-	break;
+  case RDSvc::Traffic:
+    setWindowTitle("RDAdmin - "+tr("Test Traffic Import"));
+    break;
 
-      case RDSvc::Music:
-	setCaption(tr("Test Music Import"));
-	break;
+  case RDSvc::Music:
+    setWindowTitle("RDAdmin - "+tr("Test Music Import"));
+    break;
   }
 
   //

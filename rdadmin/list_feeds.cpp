@@ -2,7 +2,7 @@
 //
 // List Rivendell Feeds
 //
-//   (C) Copyright 2002-2007,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -34,8 +34,6 @@
 #include <q3buttongroup.h>
 #include <q3progressdialog.h>
 #include <qapplication.h>
-//Added by qt3to4:
-#include <QResizeEvent>
 
 #include <rdapplication.h>
 #include <rdcart.h>
@@ -51,15 +49,17 @@
 #include "list_feeds.h"
 
 ListFeeds::ListFeeds(QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   //
   // Fix the Window Size
   //
   setMinimumWidth(sizeHint().width());
   setMinimumHeight(sizeHint().height());
 
-  setCaption(tr("Rivendell Feed List"));
+  setWindowTitle("RDAdmin - "+tr("Rivendell Feed List"));
 
   //
   // Create Fonts

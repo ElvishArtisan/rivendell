@@ -31,7 +31,6 @@ x11 {
   SOURCES += add_user.cpp
   SOURCES += autofill_carts.cpp
   SOURCES += edit_audios.cpp
-  SOURCES += edit_backup.cpp
   SOURCES += edit_cartslots.cpp
   SOURCES += edit_decks.cpp
   SOURCES += edit_dropbox.cpp
@@ -98,7 +97,6 @@ x11 {
   HEADERS += add_user.h
   HEADERS += autofill_carts.h
   HEADERS += edit_audios.h
-  HEADERS += edit_backup.h
   HEADERS += edit_cartslots.h
   HEADERS += edit_decks.h
   HEADERS += edit_dropbox.h

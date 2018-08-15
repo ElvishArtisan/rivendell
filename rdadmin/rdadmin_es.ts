@@ -223,7 +223,7 @@ y un respaldo de la base de datos se guardó en </translation>
     <name>AddFeed</name>
     <message>
         <source>Add Feed</source>
-        <translation>Añadir Feed</translation>
+        <translation type="obsolete">Añadir Feed</translation>
     </message>
     <message>
         <source>Enable Feed for All Users</source>
@@ -248,6 +248,10 @@ y un respaldo de la base de datos se guardó en </translation>
     <message>
         <source>A feed with that key name already exists!</source>
         <translation>¡Un feed con ese nombre ya existe!</translation>
+    </message>
+    <message>
+        <source>Add RSS Feed</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -332,7 +336,7 @@ y un respaldo de la base de datos se guardó en </translation>
     <name>AddMatrix</name>
     <message>
         <source>Add Switcher</source>
-        <translation type="obsolete">Agregar Suichera</translation>
+        <translation type="unfinished">Agregar Suichera</translation>
     </message>
     <message>
         <source>&amp;New Matrix Number:</source>
@@ -377,10 +381,6 @@ y un respaldo de la base de datos se guardó en </translation>
     <message>
         <source>New Switcher</source>
         <translation>Nueva Suichera</translation>
-    </message>
-    <message>
-        <source>RDAdmin - Add Switcher</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -824,10 +824,6 @@ y un respaldo de la base de datos se guardó en </translation>
 <context>
     <name>EditCartSlots</name>
     <message>
-        <source>RDAdmin - Edit CartSlots</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
@@ -945,6 +941,10 @@ y un respaldo de la base de datos se guardó en </translation>
     </message>
     <message>
         <source>Slot selected has changed!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Edit CartSlots</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1999,7 +1999,7 @@ Do you still want to save?</source>
     <name>EditMatrix</name>
     <message>
         <source>Edit Switcher</source>
-        <translation type="obsolete">Editar Suichera</translation>
+        <translation type="unfinished">Editar Suichera</translation>
     </message>
     <message>
         <source>Matrix Number:</source>
@@ -2179,10 +2179,6 @@ G&amp;POs</translation>
 Switches</source>
         <translation>Switches
 SAS</translation>
-    </message>
-    <message>
-        <source>RDAdmin - Edit Switcher</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>LiveWire
@@ -4963,10 +4959,6 @@ Do you still want to delete it?</source>
 <context>
     <name>ListLiveWireGpios</name>
     <message>
-        <source>LiveWire GPIO Source Assignments</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Switchers:</source>
         <translation type="unfinished">Suicheras:</translation>
     </message>
@@ -5000,6 +4992,10 @@ Do you still want to delete it?</source>
     </message>
     <message>
         <source>Source #</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Livewire GPIO Source Assignments</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5413,7 +5409,7 @@ Do you still want to proceed?</source>
     <name>Login</name>
     <message>
         <source>Login</source>
-        <translation>Ingreso</translation>
+        <translation type="obsolete">Ingreso</translation>
     </message>
     <message>
         <source>&amp;OK</source>

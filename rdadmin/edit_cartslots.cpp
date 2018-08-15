@@ -2,7 +2,7 @@
 //
 // Edit Rivendell CartSlot Configuration
 //
-//   (C) Copyright 2012,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -36,6 +36,8 @@ EditCartSlots::EditCartSlots(RDStation *station,RDStation *cae_station,
 			     QWidget *parent)
   : QDialog(parent)
 {
+  setModal(true);
+
   QString sql;
   RDSqlQuery *q;
 
@@ -51,7 +53,7 @@ EditCartSlots::EditCartSlots(RDStation *station,RDStation *cae_station,
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  setCaption(tr("RDAdmin - Edit CartSlots"));
+  setWindowTitle("RDAdmin - "+tr("Edit CartSlots"));
 
   //
   // Fonts

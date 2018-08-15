@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell LiveWire Node
 //
-//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,7 +19,6 @@
 //
 
 #include <qmessagebox.h>
-#include <qsqldatabase.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
 
@@ -27,16 +26,18 @@
 #include <rddb.h>
 #include <rdescape_string.h>
 
-#include <edit_node.h>
-#include <view_node_info.h>
+#include "edit_node.h"
+#include "view_node_info.h"
 
 EditNode::EditNode(int *id,RDMatrix *matrix,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   edit_id=id;
   edit_matrix=matrix;
   edit_password_changed=false;
-  setCaption(tr("Edit LiveWire Node"));
+  setWindowTitle("RDAdmin - "+tr("Edit LiveWire Node"));
 
   //
   // Fix the Window Size

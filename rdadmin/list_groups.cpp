@@ -2,7 +2,7 @@
 //
 // List Rivendell Groups
 //
-//   (C) Copyright 2002,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,8 +30,6 @@
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <q3buttongroup.h>
-//Added by qt3to4:
-#include <QResizeEvent>
 
 #include <rdapplication.h>
 #include <rdcart.h>
@@ -47,15 +45,17 @@
 #include "rename_group.h"
 
 ListGroups::ListGroups(QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   //
   // Fix the Window Size
   //
   setMinimumWidth(sizeHint().width());
   setMinimumHeight(sizeHint().height());
 
-  setCaption(tr("Rivendell Group List"));
+  setWindowTitle("RDAdmin - "+tr("Rivendell Group List"));
 
   //
   // Create Fonts
