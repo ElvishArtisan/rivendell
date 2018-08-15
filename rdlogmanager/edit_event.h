@@ -24,7 +24,7 @@
 #include <vector>
 
 #include <qdialog.h>
-#include <qsqldatabase.h>
+#include <qgroupbox.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
 #include <qradiobutton.h>
@@ -33,7 +33,7 @@
 #include <q3datetimeedit.h>
 #include <qspinbox.h>
 #include <qcombobox.h>
-#include <q3buttongroup.h>
+#include <qbuttongroup.h>
 #include <q3textedit.h>
 
 #include <rdemptycart.h>
@@ -100,7 +100,7 @@ class EditEvent : public QDialog
   QString event_name;
   RDEvent *event_event;
   QLineEdit *event_lib_filter_edit;
-  Q3ButtonGroup *event_lib_type_group;
+  QButtonGroup *event_lib_type_group;
   QComboBox *event_group_box;
   QComboBox *event_sched_group_box;
   QSpinBox* event_title_sep_spinbox;
@@ -123,8 +123,8 @@ class EditEvent : public QDialog
   QCheckBox *event_post_box;
   QLabel *event_post_label;
   QLabel *event_time_label;
-  QLabel *event_grace_label;
-  Q3ButtonGroup *event_grace_group;
+  QButtonGroup *event_grace_group;
+  QGroupBox *event_grace_groupbox;
   QRadioButton *event_immediate_button;
   QRadioButton *event_next_button;
   QRadioButton *event_wait_button;
@@ -140,7 +140,7 @@ class EditEvent : public QDialog
   QLineEdit *event_preimport_length_edit;
   RDTransportButton *event_preimport_up_button;
   RDTransportButton *event_preimport_down_button;
-  Q3ButtonGroup *event_source_group;
+  QButtonGroup *event_source_group;
   Q3TimeEdit *event_startslop_edit;
   QLabel *event_startslop_label;
   QLabel *event_startslop_unit;

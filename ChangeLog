@@ -17423,3 +17423,6 @@
 	* Fixed style inconsistencies in dialogs within rdcastmanager(1).
 2018-08-15 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed style inconsistencies in dialogs within rdcatch(1).
+2018-08-15 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed text rendering errors in the 'Edit Event' dialog in
+	rdlogmanager(1).

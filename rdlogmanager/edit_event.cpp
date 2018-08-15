@@ -109,14 +109,13 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   //
   // Type Filter
   //
-  event_lib_type_group=new Q3ButtonGroup(this);
-  event_lib_type_group->setExclusive(true);
-  event_lib_type_group->hide();
-  connect(event_lib_type_group,SIGNAL(clicked(int)),this,SLOT(filterClickedData(int)));
+  event_lib_type_group=new QButtonGroup(this);
+  connect(event_lib_type_group,SIGNAL(buttonClicked(int)),
+	  this,SLOT(filterClickedData(int)));
 
   QRadioButton *rbutton=new QRadioButton(this);
   rbutton->setGeometry(55,55,15,15);
-  event_lib_type_group->insert(rbutton);
+  event_lib_type_group->addButton(rbutton,0);
   label=new QLabel(rbutton,tr("All"),this);
   label->setFont(bold_font);
   label->setGeometry(75,55,30,15);
@@ -125,7 +124,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
 
   rbutton=new QRadioButton(this);
   rbutton->setGeometry(125,55,15,15);
-  event_lib_type_group->insert(rbutton);
+  event_lib_type_group->addButton(rbutton,1);
   label=new QLabel(rbutton,tr("Audio Only"),this);
   label->setFont(bold_font);
   label->setGeometry(145,55,80,15);
@@ -133,7 +132,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
 
   rbutton=new QRadioButton(this);
   rbutton->setGeometry(235,55,15,15);
-  event_lib_type_group->insert(rbutton);
+  event_lib_type_group->addButton(rbutton,2);
   label=new QLabel(rbutton,tr("Macros Only"),this);
   label->setFont(bold_font);
   label->setGeometry(255,55,80,15);
@@ -275,37 +274,31 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   //
   // Grace Time
   //
-  event_grace_group=
-    new Q3ButtonGroup(1,Qt::Vertical,
-		     tr("Action If Previous Event Still Playing"),this);
-  event_grace_group->hide();
-
-  event_grace_group->setFont(bold_font);
-  event_grace_group->setRadioButtonExclusive(true);
-  event_grace_label=
-    new QLabel(tr("Action If Previous Event Still Playing"),this);
-  event_grace_label->setGeometry(CENTER_LINE+180,75,225,16);
-  event_grace_label->setFont(bold_font);
-  event_grace_label->setAlignment(Qt::AlignCenter);
+  event_grace_groupbox=
+    new QGroupBox(tr("Action If Previous Event Still Playing"),this);
+  event_grace_groupbox->setFont(bold_font);
+  event_grace_groupbox->
+    setGeometry(CENTER_LINE+160,77,sizeHint().width()-CENTER_LINE-200,45);
+  event_grace_group=new QButtonGroup(this);
   event_immediate_button=new QRadioButton(tr("Start immediately"),this);
   event_immediate_button->setGeometry(CENTER_LINE+170,100,160,15);
   event_immediate_button->setFont(font);
-  event_grace_group->insert(event_immediate_button);
+  event_grace_group->addButton(event_immediate_button,0);
   event_next_button=new QRadioButton(tr("Make next"),this);
   event_next_button->setGeometry(CENTER_LINE+310,100,160,15);
   event_next_button->setFont(font);
-  event_grace_group->insert(event_next_button);
+  event_grace_group->addButton(event_next_button,1);
   event_wait_button=new QRadioButton(tr("Wait up to"),this);
   event_wait_button->setGeometry(CENTER_LINE+420,100,160,15);
   event_wait_button->setFont(font);
-  event_grace_group->insert(event_wait_button);
+  event_grace_group->addButton(event_wait_button,2);
 
   event_grace_edit=new Q3TimeEdit(this);
   event_grace_edit->setGeometry(CENTER_LINE+500,95,60,20);
   event_grace_edit->setDisplay(Q3TimeEdit::Minutes|Q3TimeEdit::Seconds);
   connect(event_timetype_box,SIGNAL(toggled(bool)),
 	  this,SLOT(timeToggledData(bool)));
-  connect(event_grace_group,SIGNAL(clicked(int)),
+  connect(event_grace_group,SIGNAL(buttonClicked(int)),
 	  this,SLOT(graceClickedData(int)));
 
   //
@@ -316,7 +309,6 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   event_transtype_box->insertItem(tr("Play"));
   event_transtype_box->insertItem(tr("Segue"));
   event_transtype_box->insertItem(tr("Stop"));
-//  event_transtype_box->setCurrentItem(2);
   connect(event_transtype_box,SIGNAL(activated(int)),
 	  this,SLOT(timeTransitionData(int)));
   event_time_label=
@@ -426,12 +418,12 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   label->setFont(bold_font);
   label->setGeometry(CENTER_LINE+15,362,200,16);
   
-  event_source_group=new Q3ButtonGroup(this);
-  event_source_group->hide();
-  connect(event_source_group,SIGNAL(clicked(int)),
+  event_source_group=new QButtonGroup(this);
+  //  event_source_group->hide();
+  connect(event_source_group,SIGNAL(buttonClicked(int)),
 	  this,SLOT(importClickedData(int)));
   rbutton=new QRadioButton(this);
-  event_source_group->insert(rbutton);
+  event_source_group->addButton(rbutton,0);
   rbutton->setGeometry(CENTER_LINE+100,362,15,15);
   label=new QLabel(rbutton,tr("None"),this);
   label->setFont(bold_font);
@@ -439,7 +431,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   
   rbutton=new QRadioButton(this);
-  event_source_group->insert(rbutton);
+  event_source_group->addButton(rbutton,1);
   rbutton->setGeometry(CENTER_LINE+200,362,15,15);
   label=new QLabel(rbutton,tr("From Traffic"),this);
   label->setFont(bold_font);
@@ -448,7 +440,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   
   rbutton=new QRadioButton(this);
   rbutton->setGeometry(CENTER_LINE+300,362,15,15);
-  event_source_group->insert(rbutton);
+  event_source_group->addButton(rbutton,2);
   label=new QLabel(rbutton,tr("From Music"),this);
   label->setFont(bold_font);
   label->setGeometry(CENTER_LINE+320,362,150,15);
@@ -456,7 +448,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   
   rbutton=new QRadioButton(this);
   rbutton->setGeometry(CENTER_LINE+400,362,15,15);
-  event_source_group->insert(rbutton);
+  event_source_group->addButton(rbutton,3);
   label=new QLabel(rbutton,tr("Select from:"),this);
   label->setFont(bold_font);
   label->setGeometry(CENTER_LINE+420,362,150,15);
@@ -729,7 +721,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   switch(event_event->timeType()) {
   case RDLogLine::Relative:
     event_timetype_box->setChecked(false);
-    event_grace_group->setButton(0);
+    event_grace_group->button(0)->setChecked(true);
     timeToggledData(false);
     break;
 	
@@ -739,17 +731,17 @@ EditEvent::EditEvent(QString eventname,bool new_event,
     event_transtype_box->setCurrentItem(event_event->firstTransType());
     switch((grace=event_event->graceTime())) {
     case 0:
-      event_grace_group->setButton(0);
+      event_grace_group->button(0)->setChecked(true);
       event_grace_edit->setTime(QTime());
       break;
 	      
     case -1:
-      event_grace_group->setButton(1);
+      event_grace_group->button(1)->setChecked(true);
       event_grace_edit->setTime(QTime());
       break;
 	      
     default:
-      event_grace_group->setButton(2);
+      event_grace_group->button(2)->setChecked(true);
       event_grace_edit->setTime(QTime().addMSecs(grace));
       break;
     }
@@ -766,8 +758,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   }
   autofillWarnToggledData(event_autofill_slop_box->isChecked());
   event_timescale_box->setChecked(event_event->useTimescale());
-
-  event_source_group->setButton(event_event->importSource());
+  event_source_group->button(event_event->importSource())->setChecked(true);
   event_startslop_edit->setTime(QTime().addMSecs(event_event->startSlop()));
   event_endslop_edit->setTime(QTime().addMSecs(event_event->endSlop()));
   event_firsttrans_box->setCurrentItem(event_event->firstTransType());
@@ -804,7 +795,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
 
   prepositionToggledData(event_position_box->isChecked());
   timeToggledData(event_timetype_box->isChecked());
-  importClickedData(event_source_group->selectedId());
+  importClickedData(event_source_group->checkedId());
   preimportChangedData(event_preimport_list->childCount());
   SetPostTransition();
 }
@@ -869,12 +860,12 @@ void EditEvent::prepositionToggledData(bool state)
   event_timetype_label->setDisabled(state);
   event_preimport_list->setAllowFirstTrans(!state);
   if(event_timetype_box->isChecked()) {
-    event_grace_label->setDisabled(state);
+    event_grace_groupbox->setDisabled(state);
     event_immediate_button->setDisabled(state);
     event_next_button->setDisabled(state);
     event_wait_button->setDisabled(state);
   }
-  if((RDEventLine::ImportSource)event_source_group->selectedId()!=
+  if((RDEventLine::ImportSource)event_source_group->checkedId()!=
      RDEventLine::None) {
     if(event_preimport_list->childCount()==0) {
       event_firsttrans_box->setDisabled(state);
@@ -902,14 +893,13 @@ void EditEvent::prepositionToggledData(bool state)
 
 void EditEvent::timeToggledData(bool state)
 {
-  event_grace_group->setEnabled(state);
-  event_grace_label->setEnabled(state);
+  event_grace_groupbox->setEnabled(state);
   event_immediate_button->setEnabled(state);
   event_next_button->setEnabled(state);
   event_wait_button->setEnabled(state);
   event_grace_edit->setEnabled(state);
-  event_post_label->setEnabled(state&&(event_grace_group->selectedId()==0));
-  event_post_box->setEnabled(state&&(event_grace_group->selectedId()==0));
+  event_post_label->setEnabled(state&&(event_grace_group->checkedId()==0));
+  event_post_box->setEnabled(state&&(event_grace_group->checkedId()==0));
   event_preimport_list->setAllowFirstTrans(!state);
   if(state) {
     event_preimport_list->
@@ -925,7 +915,7 @@ void EditEvent::timeToggledData(bool state)
   }
   event_preimport_list->refreshList();
   if(state) {
-    graceClickedData(event_grace_group->selectedId());
+    graceClickedData(event_grace_group->checkedId());
     event_time_label->setEnabled(true);
     event_transtype_box->setEnabled(true);
     timeTransitionData(2);
@@ -950,7 +940,7 @@ void EditEvent::timeToggledData(bool state)
     event_position_header->setEnabled(true);
     event_position_label->setEnabled(true);
     event_position_unit->setEnabled(true);
-    if(((RDEventLine::ImportSource)event_source_group->selectedId()!=
+    if(((RDEventLine::ImportSource)event_source_group->checkedId()!=
        RDEventLine::None)&&(!event_position_box->isChecked())&&
        (event_preimport_list->childCount()==0)) {
       event_firsttrans_box->setEnabled(true);
@@ -965,26 +955,26 @@ void EditEvent::timeToggledData(bool state)
 void EditEvent::graceClickedData(int id)
 {
   switch(id) {
-      case 0:
-	event_post_label->setEnabled(event_timetype_box->isChecked());
-	event_post_box->setEnabled(event_timetype_box->isChecked());
-	timeTransitionData(RDLogLine::Stop);
-	event_grace_edit->setDisabled(true);
-	break;
+  case 0:
+    event_post_label->setEnabled(event_timetype_box->isChecked());
+    event_post_box->setEnabled(event_timetype_box->isChecked());
+    timeTransitionData(RDLogLine::Stop);
+    event_grace_edit->setDisabled(true);
+    break;
 
-      case 1:
-	event_post_label->setDisabled(true);
-	event_post_box->setDisabled(true);
-	timeTransitionData(RDLogLine::Segue);
-	event_grace_edit->setDisabled(true);
-	break;
+  case 1:
+    event_post_label->setDisabled(true);
+    event_post_box->setDisabled(true);
+    timeTransitionData(RDLogLine::Segue);
+    event_grace_edit->setDisabled(true);
+    break;
 
-      case 2:
-	event_post_label->setDisabled(true);
-	event_post_box->setDisabled(true);
-	timeTransitionData(RDLogLine::Segue);
-	event_grace_edit->setEnabled(true);
-	break;
+  case 2:
+    event_post_label->setDisabled(true);
+    event_post_box->setDisabled(true);
+    timeTransitionData(RDLogLine::Segue);
+    event_grace_edit->setEnabled(true);
+    break;
   }
   SetPostTransition();
 }
@@ -1057,7 +1047,7 @@ void EditEvent::importClickedData(int id)
 
 void EditEvent::preimportChangedData(int size)
 {
-  if((size==0)&&(event_source_group->selectedId()!=0)&&
+  if((size==0)&&(event_source_group->checkedId()!=0)&&
      (!event_position_box->isChecked())&&(!event_timetype_box->isChecked())) {
     event_firsttrans_box->setEnabled(true);
     event_firsttrans_label->setEnabled(true);
@@ -1270,7 +1260,6 @@ void EditEvent::paintEvent(QPaintEvent *e)
   QPainter *p=new QPainter(this);
   p->setPen(Qt::black);
   p->drawLine(CENTER_LINE,10,CENTER_LINE,sizeHint().height()-10);
-  p->drawRect(CENTER_LINE+160,82,sizeHint().width()-CENTER_LINE-200,45);
   p->drawLine(CENTER_LINE+408,383,CENTER_LINE+408,450);
   p->end();
 }
@@ -1280,18 +1269,18 @@ void EditEvent::RefreshLibrary()
 {
   QString type_filter;
 
-  switch(event_lib_type_group->selectedId()) {
-      case 0:
-	type_filter="((TYPE=1)||(TYPE=2)||(TYPE=3))";
-	break;
+  switch(event_lib_type_group->checkedId()) {
+  case 0:
+    type_filter="((TYPE=1)||(TYPE=2)||(TYPE=3))";
+    break;
 
-      case 1:
-	type_filter="((TYPE=1)||(TYPE=3))";
-	break;
+  case 1:
+    type_filter="((TYPE=1)||(TYPE=3))";
+    break;
 
-      case 2:
-	type_filter="(TYPE=2)";
-	break;
+  case 2:
+    type_filter="(TYPE=2)";
+    break;
   }
   QString sql=QString("select ")+
     "TYPE,"+            // 00
@@ -1353,7 +1342,7 @@ void EditEvent::SetPostTransition()
   if((event_position_box->isChecked())||
      (event_timetype_box->isChecked())||
      (event_preimport_list->childCount()!=0)||
-     (event_source_group->selectedId()!=0)) {
+     (event_source_group->checkedId()!=0)) {
     event_postimport_list->setAllowStop(false);
   }
   else {
@@ -1401,7 +1390,7 @@ void EditEvent::Save()
     event_event->setPostPoint(event_post_box->isChecked());
     event_event->setFirstTransType((RDLogLine::TransType)
 				   event_transtype_box->currentItem());
-    switch(event_grace_group->selectedId()) {
+    switch(event_grace_group->checkedId()) {
     case 0:
       event_event->setGraceTime(0);
       break;
@@ -1432,7 +1421,7 @@ void EditEvent::Save()
   }
   event_event->setUseTimescale(event_timescale_box->isChecked());
   event_event->
-    setImportSource((RDEventLine::ImportSource)event_source_group->selectedId());
+    setImportSource((RDEventLine::ImportSource)event_source_group->checkedId());
   event_event->setStartSlop(QTime().msecsTo(event_startslop_edit->time()));
   event_event->setEndSlop(QTime().msecsTo(event_endslop_edit->time()));
   if(!event_timetype_box->isChecked()) {
@@ -1522,7 +1511,7 @@ QString EditEvent::GetProperties()
   }
 
   if(event_timetype_box->isChecked()) {
-    switch(event_grace_group->selectedId()) {
+    switch(event_grace_group->checkedId()) {
     case 0:
       properties+=tr(", Timed(Start)");
       break;
@@ -1546,7 +1535,7 @@ QString EditEvent::GetProperties()
   if(event_timescale_box->isChecked()) {
     properties+=tr(", Scale");
   }
-  switch((RDEventLine::ImportSource)event_source_group->selectedId()) {
+  switch((RDEventLine::ImportSource)event_source_group->checkedId()) {
   case RDEventLine::Traffic:
     properties+=tr(", Traffic");
     break;
