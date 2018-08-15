@@ -2,7 +2,7 @@
 //
 // A Qt-based application to display info about ALSA cards.
 //
-//   (C) Copyright 2009,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2009-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,17 +23,17 @@
 #include <sys/types.h>
 
 #include <qapplication.h>
-#include <qwindowsstyle.h>
 #include <qmessagebox.h>
-//Added by qt3to4:
-#include <QCloseEvent>
-#include <QResizeEvent>
-#include <QLabel>
 
 #include <rdcmd_switch.h>
 
 #include <alsaitem.h>
 #include <rdalsaconfig.h>
+
+//
+// Icons
+//
+#include "../../icons/rivendell-22x22.xpm"
 
 //
 // Globals
@@ -63,9 +63,14 @@ void StartDaemons()
 
 
 MainWidget::MainWidget(QWidget *parent)
-  :QWidget(parent)
+  : QWidget(parent)
 {
-  setCaption(tr("RDAlsaConfig")+" v"+VERSION);
+  setWindowTitle(tr("RDAlsaConfig")+" v"+VERSION);
+
+  //
+  // Create And Set Icon
+  //
+  setWindowIcon(QPixmap(rivendell_22x22_xpm));
 
   //
   // Fix the Window Size
