@@ -2,7 +2,7 @@
 //
 // System Selector for Rivendell
 //
-//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -34,9 +34,6 @@
 #include <qtranslator.h>
 #include <qdir.h>
 #include <qdesktopwidget.h>
-//Added by qt3to4:
-#include <QResizeEvent>
-#include <QPixmap>
 
 #include <rd.h>
 #include <rdconf.h>
@@ -122,8 +119,8 @@ MainWidget::MainWidget(QWidget *parent)
   // Create And Set Icons
   //
   login_rivendell_map=new QPixmap(rivendell_22x22_xpm);
-  setIcon(*login_rivendell_map);
-  setCaption(tr("RDSelect")+" v"+VERSION);
+  setWindowIcon(*login_rivendell_map);
+  setWindowTitle(QString("RDSelect - v")+VERSION);
   greencheckmark_map=new QPixmap(greencheckmark_xpm);
   redx_map=new QPixmap(redx_xpm);
 

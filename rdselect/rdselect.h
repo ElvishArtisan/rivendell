@@ -2,7 +2,7 @@
 //
 // System Selector for Rivendell
 //
-//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -31,8 +31,6 @@
 #include <qpushbutton.h>
 #include <qstringlist.h>
 #include <qpixmap.h>
-//Added by qt3to4:
-#include <QResizeEvent>
 
 #include <rdconfig.h>
 #include <rdmonitor_config.h>
@@ -74,4 +72,4 @@ class MainWidget : public QWidget
 };
 
 
-#endif  // RDLOGIN_H
+#endif  // RDSELECT_H
