@@ -320,7 +320,8 @@ MainObject::MainObject(QObject *parent)
       }
     }
     else {
-      if((set_schema=GetVersionSchema(set_version))==0) {
+      set_schema=GetVersionSchema(set_version);
+      if(set_schema==0) {
 	fprintf(stderr,"invalid/unsupported Rivendell version\n");
 	exit(1);
       }

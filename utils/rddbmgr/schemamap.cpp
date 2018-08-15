@@ -32,6 +32,7 @@ class VersionString : public QString
   int minor() const;
   int point() const;
   bool operator<(const VersionString &rhs) const;
+  bool operator==(const VersionString &rhs) const;
 
 private:
   int ver_major;
@@ -95,10 +96,13 @@ bool VersionString::operator<(const VersionString &rhs) const
   if(minor()>rhs.minor()) {
     return false;
   }
-  if(point()<rhs.point()) {
-    return true;
-  }
   return false;
+}
+
+
+bool VersionString::operator==(const VersionString &rhs) const
+{
+  return (major()==rhs.major())&&(minor()==rhs.minor());
 }
 
 
@@ -169,7 +173,7 @@ int MainObject::GetVersionSchema(const QString &ver) const
     return 0;
   }
 
-  return global_version_map[VersionString(f0[0]+"."+f0[1])];
+  return global_version_map.value(VersionString(f0[0]+"."+f0[1]));
 }
 
 

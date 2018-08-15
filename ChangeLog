@@ -17432,3 +17432,6 @@
 	* Remved 'rdcheckcuts.pro'.
 2018-08-15 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed style inconsistencies in dialogs within rddgimport(1).
+2018-08-15 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rddbmgr(8) that caused unreliable calculation of
+	the correct schema version from a package version string.
