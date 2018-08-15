@@ -2,7 +2,7 @@
 //
 // A Qt-based application for importing Dial Global CDN downloads
 //
-//   (C) Copyright 2012,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -34,8 +34,6 @@
 #include <qdatetime.h>
 #include <q3datetimeedit.h>
 #include <q3textedit.h>
-//Added by qt3to4:
-#include <QResizeEvent>
 
 #include <rdbusybar.h>
 #include <rddb.h>

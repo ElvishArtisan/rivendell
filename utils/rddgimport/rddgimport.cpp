@@ -2,7 +2,7 @@
 //
 // A Qt-based application for importing Dial Global CDN downloads
 //
-//   (C) Copyright 2012,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,12 +27,9 @@
 #include <qtextcodec.h>
 #include <q3filedialog.h>
 #include <qmessagebox.h>
+#include <qtranslator.h>
 #include <qstringlist.h>
 #include <qfile.h>
-//Added by qt3to4:
-#include <QTranslator>
-#include <QLabel>
-#include <QResizeEvent>
 
 #include <rdapplication.h>
 #include <rdaudioimport.h>
@@ -46,6 +43,11 @@
 
 #include "rddgimport.h"
 
+//
+// Icons
+//
+#include "../../icons/rivendell-22x22.xpm"
+
 MainWidget::MainWidget(QWidget *parent)
   : QWidget(parent)
 {
@@ -55,6 +57,11 @@ MainWidget::MainWidget(QWidget *parent)
 
   dg_group=NULL;
   dg_svc=NULL;
+
+  //
+  // Create And Set Icon
+  //
+  setWindowIcon(QPixmap(rivendell_22x22_xpm));
 
   //
   // Open the Database
@@ -290,7 +297,7 @@ void MainWidget::SetCaption()
 {
   QString username=tr("[unknown]");
   username=rda->user()->name();
-  setCaption(tr("RDDgImport")+" v"+VERSION+" "+tr("User")+": "+username);
+  setWindowTitle(tr("RDDgImport")+" v"+VERSION+" "+tr("User")+": "+username);
 }
 
 
