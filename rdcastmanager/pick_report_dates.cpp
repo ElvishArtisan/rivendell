@@ -2,7 +2,7 @@
 //
 // Select a Set of Dates for a Rivendell Report
 //
-//   (C) Copyright 2002-2006,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -38,15 +38,17 @@
 
 PickReportDates::PickReportDates(unsigned feed_id,unsigned cast_id,
 				 QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   QString sql;
   RDSqlQuery *q;
   QDate yesterday_date=QDate::currentDate().addDays(-1);
 
   edit_cast_id=feed_id;
   edit_cast_id=cast_id;
-  setCaption(tr("Select Report Dates"));
+  setWindowTitle("RDCastManager - "+tr("Select Report Dates"));
 	     
   sql=QString().sprintf("select KEY_NAME from FEEDS where ID=%d",feed_id);
   q=new RDSqlQuery(sql);

@@ -2,7 +2,7 @@
 //
 // List Rivendell Casts
 //
-//   (C) Copyright 2002-2007,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -36,9 +36,6 @@
 #include <qfile.h>
 #include <qapplication.h>
 #include <q3filedialog.h>
-//Added by qt3to4:
-#include <QResizeEvent>
-#include <QPixmap>
 
 #include <rdapplication.h>
 #include <rdcastsearch.h>
@@ -67,8 +64,10 @@
 #include "../icons/whiteball.xpm"
 
 ListCasts::ListCasts(unsigned feed_id,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   list_feed_id=feed_id;
 
   //
@@ -77,7 +76,7 @@ ListCasts::ListCasts(unsigned feed_id,QWidget *parent)
   setMinimumWidth(sizeHint().width());
   setMinimumHeight(sizeHint().height());
 
-  setCaption(tr("Podcast List"));
+  setWindowTitle("RDCastManager - "+tr("Podcast List"));
 
   //
   // Create Fonts

@@ -2,7 +2,7 @@
 //
 // A PodCast Management Utility for Rivendell.
 //
-//   (C) Copyright 2002-2005,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -34,9 +34,6 @@
 #include <qsettings.h>
 #include <qpainter.h>
 #include <qmessagebox.h>
-//Added by qt3to4:
-#include <QResizeEvent>
-#include <QPixmap>
 
 #include <dbversion.h>
 #include <rd.h>
@@ -65,7 +62,7 @@ QString cast_group;
 QString cast_schedcode;
 
 MainWidget::MainWidget(QWidget *parent)
-  :Q3MainWindow(parent)
+  : QWidget(parent)
 {
   QString str1;
   QString str2;
@@ -103,7 +100,7 @@ MainWidget::MainWidget(QWidget *parent)
 
   str1=QString("RDCastManager")+" v"+VERSION+" - "+tr("Host");
   str2=QString(tr("User: [Unknown]"));
-  setCaption(str1+": "+rda->config()->stationName()+" "+str2);
+  setWindowTitle(str1+": "+rda->config()->stationName()+" "+str2);
 
   //
   // RIPC Connection
@@ -133,7 +130,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Create Icons
   //
   cast_rivendell_map=new QPixmap(rdcastmanager_22x22_xpm);
-  setIcon(*cast_rivendell_map);
+  setWindowIcon(*cast_rivendell_map);
   cast_greencheckmark_map=new QPixmap(greencheckmark_xpm);
   cast_redx_map=new QPixmap(redx_xpm);
 

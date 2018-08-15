@@ -2,7 +2,7 @@
 //
 // A RSS Feed Management Utility for Rivendell.
 //
-//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,14 +23,12 @@
 
 #include <vector>
 
-#include <q3mainwindow.h>
 #include <qsize.h>
 #include <qsizepolicy.h>
 #include <qsqldatabase.h>
 #include <qpushbutton.h>
 #include <qpixmap.h>
-//Added by qt3to4:
-#include <QResizeEvent>
+#include <qwidget.h>
 
 #include <rdlistview.h>
 #include <rduser.h>
@@ -41,7 +39,7 @@
 
 #define RDCASTMANAGER_USAGE "\n"
 
-class MainWidget : public Q3MainWindow
+class MainWidget : public QWidget
 {
  Q_OBJECT
  public:

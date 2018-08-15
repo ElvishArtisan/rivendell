@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Cast
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -41,14 +41,16 @@
 #include "pick_report_dates.h"
 
 EditCast::EditCast(unsigned cast_id,QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
+  setModal(true);
+
   int ypos=0;
 
   cast_cast=new RDPodcast(rda->config(),cast_id);
   cast_feed=new RDFeed(cast_cast->feedId(),rda->config());
   cast_status=cast_cast->status();
-  setCaption(tr("Editing PodCast"));
+  setWindowTitle("RDCastManager - "+tr("Editing PodCast"));
 
   //
   // Create Fonts

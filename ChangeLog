@@ -17419,3 +17419,5 @@
 	* Fixed style inconsistencies in dialogs within rdadmin(1).
 2018-08-15 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed style inconsistencies in dialogs within rdcartslots(1).
+2018-08-15 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed style inconsistencies in dialogs within rdcastmanager(1).
