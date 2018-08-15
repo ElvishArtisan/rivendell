@@ -31,8 +31,6 @@ dist_rdcheckcuts_SOURCES = rdcheckcuts.cpp rdcheckcuts.h
 
 rdcheckcuts_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
 
-EXTRA_DIST = rdcheckcuts.pro
-
 CLEANFILES = *~\
              *.idb\
              *ilk\

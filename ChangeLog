@@ -17428,3 +17428,5 @@
 	rdlogmanager(1).
 2018-08-15 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed style inconsistencies in dialogs within rdalsaconfig(8).
+2018-08-15 Fred Gleason <fredg@paravelsystems.com>
+	* Remved 'rdcheckcuts.pro'.
