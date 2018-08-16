@@ -2,7 +2,7 @@
 //
 // A utility for sending RML Commands
 //
-//   (C) Copyright 2002-2006,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -51,7 +51,7 @@
 #include "../icons/rivendell-22x22.xpm"
 
 MainWidget::MainWidget(QWidget *parent)
-  : Q3MainWindow(parent)
+  : QWidget(parent)
 {
   key_ysize=70;
 
@@ -78,7 +78,7 @@ MainWidget::MainWidget(QWidget *parent)
   QFont label_font("Helvetica",18,QFont::Bold);
   label_font.setPixelSize(18);
 
-  setCaption(QString("RDSoftKeys")+" v"+VERSION);
+  setWindowTitle(QString("RDSoftKeys")+" v"+VERSION);
 
   //
   // Create And Set Icon

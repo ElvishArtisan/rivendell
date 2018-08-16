@@ -2,7 +2,7 @@
 //
 // A utility for sending RML Commands
 //
-//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,13 +23,11 @@
 
 #include <vector>
 
-#include <q3mainwindow.h>
 #include <qsize.h>
 #include <qsizepolicy.h>
 #include <qpixmap.h>
 #include <q3socketdevice.h>
-//Added by qt3to4:
-#include <QCloseEvent>
+#include <qwidget.h>
 
 #include <rdmacro.h>
 
@@ -39,7 +37,7 @@
 #define RDSOFTKEYS_USAGE "[--map-file=<filename>]\n\nWhere <filename> is the name of the file load soft key definitions from.\nThe default value is master Rivendell configuration file.\n"
 #define RDSOFTKEYS_DEFAULT_COLUMNS 1
 
-class MainWidget : public Q3MainWindow
+class MainWidget : public QWidget
 {
   Q_OBJECT
  public:
