@@ -1286,7 +1286,11 @@ void EditRDAirPlay::paintEvent(QPaintEvent *e)
 {
   QPainter *p=new QPainter(this);
   p->setPen(Qt::black);
-  p->drawRect(25,485,395,95);
+  p->drawLine(210,485,420,485);   // Top
+  p->drawLine(25,495,25,580);     // Left
+  p->drawLine(420,485,420,580);   // Right
+  p->drawLine(25,580,65,580);     // Left Bottom
+  p->drawLine(405,580,420,580);   // Right Bottom
   p->end();
   delete p;
 }

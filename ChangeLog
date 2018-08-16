@@ -17449,3 +17449,6 @@
 	recognized.
 2018-08-16 Fred Gleason <fredg@paravelsystems.com>
 	* Added a database attributes check to rddbmgr(8).
+2018-08-16 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a rendering error in the 'Edit RDAirPlay dialog in
+	rdadmin(1).
