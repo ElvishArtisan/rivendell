@@ -2,7 +2,7 @@
 //
 // A Qt-based application for testing General Purpose Input (GPI) devices.
 //
-//   (C) Copyright 2002-2014,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -32,9 +32,6 @@
 #include <qlineedit.h>
 #include <qtextcodec.h>
 #include <qtranslator.h>
-//Added by qt3to4:
-#include <QLabel>
-#include <QPixmap>
 
 #include <rdapplication.h>
 #include <rddb.h>
@@ -103,7 +100,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Create And Set Icon
   //
   gpi_rivendell_map=new QPixmap(rivendell_22x22_xpm);
-  setIcon(*gpi_rivendell_map);
+  setWindowIcon(*gpi_rivendell_map);
 
   //
   // RIPC Connection
@@ -313,7 +310,7 @@ void MainWidget::userData()
   QString str;
 
   str=QString("RDGpiMon")+" v"+VERSION+" - "+tr("User")+":";
-  setCaption(str+" "+rda->ripc()->user());
+  setWindowTitle(str+" "+rda->ripc()->user());
 }
 
 
