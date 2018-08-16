@@ -40,8 +40,11 @@ class MainObject : public QObject
   //
   // check.cpp
   //
-  bool Check(QString *err_msg) const;
-  void CheckTableAttributes() const;
+  bool Check(QString *err_msg);
+  void CheckTableAttributes();
+  void RewriteTable(const QString &tblname,const QString &old_charset,
+		    const QString &new_charset,
+		    const QString &new_collation);
   void RelinkAudio(const QString &srcdir) const;
   void CheckOrphanedTracks() const;
   void CheckCutCounts() const;

@@ -961,6 +961,14 @@ QString RDHomeDir()
 }
 
 
+QString RDTempDir()
+{
+  char path[PATH_MAX]="/tmp/rddbmgrXXXXXX";
+
+  return QString(mkdtemp(path));
+}
+
+
 QString RDTempFile()
 {
 #ifndef WIN32

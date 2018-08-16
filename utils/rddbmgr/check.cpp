@@ -26,10 +26,12 @@
 #include <sys/types.h>
 
 #include <qdir.h>
+#include <qprocess.h>
 
 #include <dbversion.h>
 #include <rdcart.h>
 #include <rdclock.h>
+#include <rdconf.h>
 #include <rdcut.h>
 #include <rddb.h>
 #include <rdescape_string.h>
@@ -39,7 +41,7 @@
 
 #include "rddbmgr.h"
 
-bool MainObject::Check(QString *err_msg) const
+bool MainObject::Check(QString *err_msg)
 {
   if(GetCurrentSchema()!=RD_VERSION_DATABASE) {
     *err_msg="unsupported schema for checking";
@@ -124,7 +126,7 @@ bool MainObject::Check(QString *err_msg) const
 }
 
 
-void MainObject::CheckTableAttributes() const
+void MainObject::CheckTableAttributes()
 {
   QString sql;
   RDSqlQuery *q;
@@ -163,10 +165,8 @@ void MainObject::CheckTableAttributes() const
 	     (const char *)db_mysql_collation.toUtf8());
       fflush(NULL);
       if(UserResponse()) {
-	sql=QString("alter table `")+q->value(0).toString()+"` "+
-	  "character set "+db_mysql_charset+" "+
-	  "collate "+db_mysql_collation;
-	RDSqlQuery::apply(sql);
+	RewriteTable(q->value(0).toString(),charset,db_mysql_charset,
+		     db_mysql_collation);
       }
     }
   }
@@ -201,6 +201,75 @@ void MainObject::CheckTableAttributes() const
     }
   }
   delete q;
+}
+
+
+void MainObject::RewriteTable(const QString &tblname,const QString &old_charset,
+			      const QString &new_charset,
+			      const QString &new_collation)
+{
+  QProcess *proc=NULL;
+  QStringList args;
+  QString tempdir=RDTempDir();
+  if(tempdir.isEmpty()) {
+    return;
+  }
+  QString filename=tempdir+"/table.sql";
+  QString out_filename=tempdir+"/table-out.sql";
+  printf("using: %s\n",(const char *)tempdir.toUtf8());
+
+  //
+  // Dump Table
+  //
+  args.clear();
+  args.push_back("--opt");
+  args.push_back("-h");
+  args.push_back(db_mysql_hostname);
+  args.push_back("-u");
+  args.push_back(db_mysql_loginname);
+  args.push_back("-p"+db_mysql_password);
+  args.push_back(db_mysql_database);
+  args.push_back(tblname);
+  proc=new QProcess(this);
+  proc->setStandardOutputFile(filename);
+  proc->start("mysqldump",args);
+  proc->waitForFinished(-1);
+  delete proc;
+
+  //
+  // Modify Dump
+  //
+  args.clear();
+  args.push_back("s/"+old_charset+"/"+new_charset+"/g");
+  args.push_back(filename);
+  proc=new QProcess(this);
+  proc->setStandardOutputFile(out_filename);
+  proc->start("sed",args);
+  proc->waitForFinished(-1);
+  delete proc;
+
+  //
+  // Push Back Modified Table
+  //
+  args.clear();
+  args.push_back("-h");
+  args.push_back(db_mysql_hostname);
+  args.push_back("-u");
+  args.push_back(db_mysql_loginname);
+  args.push_back("-p"+db_mysql_password);
+  args.push_back(db_mysql_database);
+  proc=new QProcess(this);
+  proc->setStandardInputFile(out_filename);
+  proc->start("mysql",args);
+  proc->waitForFinished(-1);
+  delete proc;
+
+  //
+  // Clean Up
+  //
+  unlink(filename.toUtf8());
+  unlink(out_filename.toUtf8());
+  rmdir(tempdir);
 }
 
 

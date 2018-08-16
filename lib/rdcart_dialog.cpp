@@ -926,8 +926,8 @@ QString RDCartDialog::StateFile() {
 
 void RDCartDialog::LoadState()
 {
-  QString state_file = StateFile();
-  if (state_file == NULL) {
+  QString state_file=StateFile();
+  if (state_file.isEmpty()) {
     return;
   }
 
@@ -945,8 +945,8 @@ void RDCartDialog::SaveState()
 {
   FILE *f=NULL;
 
-  QString state_file = StateFile();
-  if (state_file == NULL) {
+  QString state_file=StateFile();
+  if (state_file.isEmpty()) {
     return;
   }
 

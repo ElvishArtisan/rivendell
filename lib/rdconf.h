@@ -100,6 +100,7 @@ QString RDGetHomeDir(bool *found=0);
 bool RDTimeSynced();
 QString RDTruncateAfterWord(QString str,int word,bool add_dots=false);
 QString RDHomeDir();
+QString RDTempDir();
 QString RDTempFile();
 QString RDTimeZoneName(const QDateTime &datetime);
 QString RDDowCode(int dow);

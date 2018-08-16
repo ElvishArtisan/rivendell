@@ -17452,3 +17452,6 @@
 2018-08-16 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a rendering error in the 'Edit RDAirPlay dialog in
 	rdadmin(1).
+2018-08-16 Fred Gleason <fredg@paravelsystems.com>
+	* Added table rewriting when converting tables to a different
+	character set in rddbmgr(8).
