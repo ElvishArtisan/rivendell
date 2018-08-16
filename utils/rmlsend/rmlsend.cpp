@@ -2,7 +2,7 @@
 //
 // A utility for sending RML Commands
 //
-//   (C) Copyright 2002-2005,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -73,7 +73,7 @@
 RDCmdSwitch *rdcmdswitch=NULL;
 
 MainWidget::MainWidget(QWidget *parent)
-  :Q3MainWindow(parent)
+  :QWidget(parent)
 {
   //
   // Set Window Size
@@ -98,9 +98,10 @@ MainWidget::MainWidget(QWidget *parent)
   // Create And Set Icon
   //
   rivendell_map=new QPixmap(rivendell_22x22_xpm);
-  setIcon(*rivendell_map);
+  setWindowIcon(*rivendell_map);
 
-  setCaption(QString("RMLSend")+" v"+VERSION+" - "+tr("Macro Command Utility"));
+  setWindowTitle(QString("RMLSend")+" v"+VERSION+" - "+
+		 tr("Macro Command Utility"));
 
   host=new QLineEdit(this);
   host->setGeometry(80,10,180,25);

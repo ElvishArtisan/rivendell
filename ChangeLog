@@ -17440,3 +17440,5 @@
 	* Fixed style inconsistencies in dialogs within rdpopup(1).
 2018-08-16 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed style inconsistencies in dialogs within rdsoftkeys(1).
+2018-08-16 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed style inconsistencies in dialogs within rmlsend(1).
