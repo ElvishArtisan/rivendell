@@ -189,24 +189,31 @@ MainObject::MainObject(QObject *parent)
     //
     if(cmd->key(i)=="--yes") {
       db_yes=true;
+      cmd->setProcessed(i,true);
     }
     if(cmd->key(i)=="--no") {
       db_no=true;
+      cmd->setProcessed(i,true);
     }
     if(cmd->key(i)=="--orphan-group") {
       db_orphan_group_name=cmd->value(i);
+      cmd->setProcessed(i,true);
     }
     if(cmd->key(i)=="--dump-cuts-dir") {
       db_dump_cuts_dir=cmd->value(i);
+      cmd->setProcessed(i,true);
     }
     if(cmd->key(i)=="--relink-audio") {
       db_relink_audio=cmd->value(i);
+      cmd->setProcessed(i,true);
     }
     if(cmd->key(i)=="--relink-audio-move") {
       db_relink_audio_move=true;
+      cmd->setProcessed(i,true);
     }
     if(cmd->key(i)=="--rehash") {
       db_rehash=cmd->value(i);
+      cmd->setProcessed(i,true);
     }
 
     if(!cmd->processed(i)) {
