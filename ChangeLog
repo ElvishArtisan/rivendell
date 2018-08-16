@@ -17455,3 +17455,5 @@
 2018-08-16 Fred Gleason <fredg@paravelsystems.com>
 	* Added table rewriting when converting tables to a different
 	character set in rddbmgr(8).
+2018-08-16 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up warning in 'RDTempFile()'.

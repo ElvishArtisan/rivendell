@@ -972,7 +972,13 @@ QString RDTempDir()
 QString RDTempFile()
 {
 #ifndef WIN32
-  return QString(tmpnam(NULL));
+  int fd=-1;
+  char dirname[PATH_MAX];
+  strncpy(dirname,"/tmp/rivendellXXXXXX",PATH_MAX);
+  if((fd=mkstemp(dirname))>0) {
+    close(fd);
+    return QString(dirname);
+  }
 #endif  // WIN32
   return QString();
 }
