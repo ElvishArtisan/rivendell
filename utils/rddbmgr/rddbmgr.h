@@ -43,9 +43,6 @@ class MainObject : public QObject
   bool Check(QString *err_msg) const;
   void RelinkAudio(const QString &srcdir) const;
   void CheckOrphanedTracks() const;
-  void CheckClocks() const;
-  void CheckEvents() const;
-  void CheckOrphanedTables() const;
   void CheckCutCounts() const;
   void CheckPendingCarts() const;
   void CheckOrphanedCarts() const;
@@ -56,11 +53,6 @@ class MainObject : public QObject
   void RehashCart(unsigned cartnum) const;
   void RehashCut(const QString &cutnum) const;
   void SetCutLength(const QString &cutname,int len) const;
-  void CleanTables(const QString &ext,QSqlQuery *table_q,
-		   QSqlQuery *name_q) const;
-  void CleanTables(const QString &ext,QSqlQuery *table_q) const;
-  bool IsTableLinked(QSqlQuery *name_q,const QString &ext,
-		     const QString &table) const;
   void RemoveCart(unsigned cartnum);
   bool CopyFile(const QString &destfile,const QString &srcfile) const;
   bool UserResponse() const;
