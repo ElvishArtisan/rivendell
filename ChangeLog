@@ -17447,3 +17447,5 @@
 2018-08-16 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rddbmgr(8) that caused --check options not to be
 	recognized.
+2018-08-16 Fred Gleason <fredg@paravelsystems.com>
+	* Added a database attributes check to rddbmgr(8).

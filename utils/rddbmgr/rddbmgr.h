@@ -41,6 +41,7 @@ class MainObject : public QObject
   // check.cpp
   //
   bool Check(QString *err_msg) const;
+  void CheckTableAttributes() const;
   void RelinkAudio(const QString &srcdir) const;
   void CheckOrphanedTracks() const;
   void CheckCutCounts() const;

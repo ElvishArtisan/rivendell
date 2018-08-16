@@ -55,6 +55,13 @@ bool MainObject::Check(QString *err_msg) const
   }
 
   //
+  // Check Table Attributes
+  //
+  printf("Checking DB/table attributes...\n");
+  CheckTableAttributes();
+  printf("done.\n\n");
+
+  //
   // Check for Orphaned Voice Tracks
   //
   printf("Checking voice tracks...\n");
@@ -114,6 +121,86 @@ bool MainObject::Check(QString *err_msg) const
 
   *err_msg="ok";
   return true;
+}
+
+
+void MainObject::CheckTableAttributes() const
+{
+  QString sql;
+  RDSqlQuery *q;
+
+  //
+  // Per-table Attributes
+  //
+  sql=QString("select ")+
+    "TABLE_NAME,"+       // 00
+    "ENGINE,"+           // 01
+    "TABLE_COLLATION "+  // 02
+    "from information_schema.TABLES where "+
+    "TABLE_SCHEMA='"+RDEscapeString(db_mysql_database)+"'";
+  q=new RDSqlQuery(sql,false);
+  while(q->next()) {
+    QStringList f0=q->value(2).toString().split("_");
+    QString charset=f0.at(0);
+    if(q->value(1).toString().toLower()!=db_mysql_engine.toLower()) {
+      printf("  Table \"%s\" uses engine type %s, should be %s. Fix? (y/N) ",
+	     (const char *)q->value(0).toString().toUtf8(),
+	     (const char *)q->value(1).toString().toUtf8(),
+	     (const char *)db_mysql_engine.toUtf8());
+      fflush(NULL);
+      if(UserResponse()) {
+	sql=QString("alter table `")+q->value(0).toString()+"` "+
+	  "ENGINE="+db_mysql_engine;
+	RDSqlQuery::apply(sql);
+      }
+    }
+    if(q->value(2).toString().toLower()!=db_mysql_collation.toLower()) {
+      printf("  Table \"%s\" uses charset/collation %s/%s, should be %s/%s. Fix? (y/N) ",
+	     (const char *)q->value(0).toString().toUtf8(),
+	     (const char *)charset.toUtf8(),
+	     (const char *)q->value(2).toString().toUtf8(),
+	     (const char *)db_mysql_charset.toUtf8(),
+	     (const char *)db_mysql_collation.toUtf8());
+      fflush(NULL);
+      if(UserResponse()) {
+	sql=QString("alter table `")+q->value(0).toString()+"` "+
+	  "character set "+db_mysql_charset+" "+
+	  "collate "+db_mysql_collation;
+	RDSqlQuery::apply(sql);
+      }
+    }
+  }
+  delete q;
+
+  //
+  // Database Attributes
+  //
+  sql=QString("select ")+
+    "SCHEMA_NAME,"+                 // 00
+    "DEFAULT_CHARACTER_SET_NAME,"+  // 01
+    "DEFAULT_COLLATION_NAME "+      // 02
+    "from information_schema.SCHEMATA";
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    if(q->value(0).toString()==db_mysql_database) {
+      if((q->value(1).toString().toLower()!=db_mysql_charset.toLower())||
+	 (q->value(2).toString().toLower()!=db_mysql_collation.toLower())) {
+	printf("  Database uses default charset/collation %s/%s, should be %s/%s. Fix? (y/N) ",
+	       (const char *)q->value(1).toString().toUtf8(),
+	       (const char *)q->value(2).toString().toUtf8(),
+	       (const char *)db_mysql_charset.toUtf8(),
+	       (const char *)db_mysql_collation.toUtf8());
+	fflush(NULL);
+	if(UserResponse()) {
+	  sql=QString("alter database `")+db_mysql_database+"` "+
+	    "character set "+db_mysql_charset+" "+
+	    "collate "+db_mysql_collation;
+	  RDSqlQuery::apply(sql);	
+	}
+      }
+    }
+  }
+  delete q;
 }
 
 
