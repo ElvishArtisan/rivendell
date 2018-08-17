@@ -26,13 +26,9 @@ License: GPL
 Packager: Fred Gleason <fredg@paravelsystems.com>
 Group: Productivity/Multimedia/Other
 Source: rivendell-@VERSION@.tar.gz
-Requires: @MYSQL_PKG@, @QT3_MYSQL_PKG@, @APACHE_PKG@, @QT3_DEVEL_PKG@, curl, @USERMODE_PKG@, rivendell-base = @VERSION@, @CDDA2WAV_PKG@,
+Requires: @MYSQL_PKG@, @QT4_MYSQL_PKG@, @APACHE_PKG@, @QT4_DEVEL_PKG@, curl, @USERMODE_PKG@, @CDDA2WAV_PKG@,
 BuildRoot: /var/tmp/rivendell-@VERSION@
-
-%package base
-Summary: The base components for the Rivendell Radio Automation System
-Group: Productivity/Multimedia/Other
-Requires: @QT3_MYSQL_PKG@
+Obsoletes: rivendell-base
 
 %package importers
 Summary: Library importers for the Rivendell Broadcast Automation System
@@ -59,12 +55,6 @@ Rivendell is a complete radio broadcast automation solution, with
 facilities for the acquisition, management, scheduling and playout of
 audio content.  Modules for the production and management of podcast
 audio are also included.
-
-
-%description base
-This package contains the common base components for the Rivendell
-Radio Broadcast Automation system, including the applications libraries
-and Core Audio Engine (CAE) daemon.
 
 
 %description importers
@@ -102,7 +92,7 @@ associated with.
 
 %build
 %configure --libexecdir=@libexecdir@ --sysconfdir=@sysconfdir@ @RDXPORTDEBUG@
-make
+make -j
 
 
 %install
@@ -260,8 +250,6 @@ rm -rf $RPM_BUILD_ROOT
 @LOCAL_PREFIX@/bin/rdpanel
 @LOCAL_PREFIX@/bin/rdcartslots
 @LOCAL_PREFIX@/bin/rdcatch
-@LOCAL_PREFIX@/sbin/rdcatchd
-@LOCAL_PREFIX@/bin/rdrepld
 @LOCAL_PREFIX@/bin/rdgen
 @LOCAL_PREFIX@/bin/rdlibrary
 @LOCAL_PREFIX@/bin/rdlogedit
@@ -289,13 +277,7 @@ rm -rf $RPM_BUILD_ROOT
 @LOCAL_PREFIX@/bin/rd_backup
 @LOCAL_PREFIX@/bin/rdmemcheck.sh
 @LOCAL_PREFIX@/bin/rdrender
-@LOCAL_PREFIX@/sbin/ripcd
-@LOCAL_PREFIX@/sbin/sas_shim
-@LOCAL_PREFIX@/sbin/rdmarkerset
-@LOCAL_PREFIX@/sbin/rdcleandirs
-@LOCAL_PREFIX@/sbin/rddbmgr
 @LOCAL_PREFIX@/share/rivendell/*
-/etc/init.d/rdrepld
 @LOCAL_PREFIX@/share/icons/hicolor/16x16/apps/rivendell.png
 @LOCAL_PREFIX@/share/icons/hicolor/16x16/apps/rdadmin.png
 @LOCAL_PREFIX@/share/icons/hicolor/16x16/apps/rdairplay.png
@@ -390,12 +372,21 @@ rm -rf $RPM_BUILD_ROOT
 @LOCAL_PREFIX@/share/desktop-directories/rivendell-utilities.directory
 /etc/xdg/menus/applications-merged/rivendell-rivendell.menu
 /.qt/qt
-@libexecdir@/*
+@libexecdir@/*.gif
+@libexecdir@/*.html
+@libexecdir@/*.js
+@libexecdir@/*.mp3
+@libexecdir@/*.png
+@libexecdir@/*.xml
+@libexecdir@/rdcastmanager.cgi
 %attr(6755,root,root) @libexecdir@/rdxport.cgi
 %attr(6755,root,root) @libexecdir@/webget.cgi
 @sysconfdir@/rd-bin.conf
 @WIN32_PATH@
 /etc/security/console.apps/rdalsaconfig-root
+/etc/pam.d/rdalsaconfig-root
+/etc/pam.d/rivendell
+/lib/systemd/system/rivendell.service
 %{_mandir}/man1/rdclilogedit.1.gz
 %{_mandir}/man1/rdconvert.1.gz
 %{_mandir}/man1/rdexport.1.gz
@@ -405,33 +396,24 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man8/rddbmgr.8.gz
 %{_mandir}/man8/rdmarkerset.8.gz
 @DOC_PATH@/*
-
-
-%files base
-%defattr(-,root,root)
 @LOCAL_PREFIX@/@RD_LIB_PATH@/librd-@VERSION@.so
 @LOCAL_PREFIX@/@RD_LIB_PATH@/librd.a
 @LOCAL_PREFIX@/@RD_LIB_PATH@/librd.la
 @LOCAL_PREFIX@/@RD_LIB_PATH@/librd.so
+@LOCAL_PREFIX@/sbin/rdservice
 @LOCAL_PREFIX@/sbin/caed
+@LOCAL_PREFIX@/sbin/ripcd
+@LOCAL_PREFIX@/sbin/rdcatchd
 @LOCAL_PREFIX@/sbin/rdvairplayd
-/etc/init.d/rivendell
-%config /etc/sysconfig/rivendell
+@LOCAL_PREFIX@/sbin/rdrepld
+@LOCAL_PREFIX@/sbin/sas_shim
+@LOCAL_PREFIX@/sbin/rdmarkerset
+@LOCAL_PREFIX@/sbin/rdcleandirs
+@LOCAL_PREFIX@/sbin/rddbmgr
 @HPI_FILE1@
 @HPI_FILE2@
 @HPI_FILE3@
 @HPI_FILE4@
-@HPI_FILE5@
-@HPI_FILE6@
-@HPI_FILE7@
-@HPI_FILE8@
-@HPI_FILE9@
-@HPI_FILE10@
-@HPI_FILE11@
-@HPI_FILE12@
-@HPI_FILE13@
-@HPI_FILE14@
-@HPI_FILE15@
 
 
 %files importers

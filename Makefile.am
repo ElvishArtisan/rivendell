@@ -113,7 +113,6 @@ EXTRA_DIST = autogen.sh\
              make_slack.in\
              PACKAGE_VERSION\
              rdrepld-suse.in\
-             rivendell-gentoo\
              rivendell.ism\
              rivendell.pro\
              rivendell.spec.in\
