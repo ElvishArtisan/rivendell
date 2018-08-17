@@ -17480,3 +17480,5 @@
 2018-08-17 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed problems with dragged carts setting the correct color
 	when dropped on a sound panel button.
+2018-08-17 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed the incorrect background color in the meters in rdcatch(1).

@@ -3,7 +3,7 @@
 // This implements a widget that represents a stereo audio level meter,
 // complete with labels and scale.
 //
-//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -19,29 +19,21 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qwidget.h>
-#include <qstring.h>
+#include <stdio.h>
+
+#include <qcolor.h>
 #include <qfont.h>
 #include <qfontmetrics.h>
-#include <qcolor.h>
 #include <qpainter.h>
-#include <qpushbutton.h>
-#include <qsize.h>
-//Added by qt3to4:
-#include <QPaintEvent>
-#include <stdio.h>
-#include <qslider.h>
-#include <q3buttongroup.h>
-#include <qsizepolicy.h>
-#include <qmessagebox.h>
+#include <qstring.h>
+#include <qwidget.h>
 
-#include <rdplaymeter.h>
+#include "rdplaymeter.h"
 
 RDPlayMeter::RDPlayMeter(RDSegMeter::Orientation orient,QWidget *parent)
   : QWidget(parent)
 {
   meter_label=QString("");
-  setBackgroundColor(Qt::black);
   orientation=orient;
   makeFont();
   meter=new RDSegMeter(orientation,this);
@@ -218,22 +210,26 @@ void RDPlayMeter::paintEvent(QPaintEvent *paintEvent)
   // Setup
   //
   QPainter *p=new QPainter(this);
+  p->fillRect(0,0,width(),height(),Qt::black);
   p->setFont(label_font);
   p->setPen(Qt::white);
   if(!meter_label.isEmpty()) {
     switch(orientation) {
-	case RDSegMeter::Left:
-	  p->drawText(width()-height()+meter_label_x,height()-2,meter_label);
-	  break;
-	case RDSegMeter::Right:
-	  p->drawText(meter_label_x,height()-2,meter_label);
-	  break;
-	case RDSegMeter::Up:
-	  p->drawText(meter_label_x,height()-3,meter_label);
-	  break;
-	case RDSegMeter::Down:
-	  p->drawText(meter_label_x,width()-1,meter_label);
-	  break;
+    case RDSegMeter::Left:
+      p->drawText(width()-height()+meter_label_x,height()-2,meter_label);
+      break;
+
+    case RDSegMeter::Right:
+      p->drawText(meter_label_x,height()-2,meter_label);
+      break;
+
+    case RDSegMeter::Up:
+      p->drawText(meter_label_x,height()-3,meter_label);
+      break;
+
+    case RDSegMeter::Down:
+      p->drawText(meter_label_x,width()-1,meter_label);
+      break;
     }
   }
   p->end();
@@ -244,29 +240,28 @@ void RDPlayMeter::paintEvent(QPaintEvent *paintEvent)
 void RDPlayMeter::makeFont()
 {
   switch(orientation) {
-      case RDSegMeter::Left:
-	label_font=QFont("helvetica",height()-2,QFont::Bold);
-	label_font.setPixelSize(height()-2);
-	meter_label_x=(height()-QFontMetrics(label_font).
-		       width(meter_label))/2;
-	break;
-      case RDSegMeter::Right:
-	label_font=QFont("helvetica",height()-2,QFont::Bold);
-	label_font.setPixelSize(height()-2);
-	meter_label_x=(height()-QFontMetrics(label_font).
-		       width(meter_label))/2;
-	break;
-      case RDSegMeter::Up:
-	label_font=QFont("helvetica",width()-2,QFont::Bold);
-	label_font.setPixelSize(width()-2);
-	meter_label_x=(width()-QFontMetrics(label_font).
-		       width(meter_label))/2;
-	break;
-      case RDSegMeter::Down:
-	label_font=QFont("helvetica",width()-2,QFont::Bold);
-	label_font.setPixelSize(width()-2);
-	meter_label_x=(width()-QFontMetrics(label_font).
-		       width(meter_label))/2;
-	break;
+  case RDSegMeter::Left:
+    label_font=QFont("helvetica",height()-2,QFont::Bold);
+    label_font.setPixelSize(height()-2);
+    meter_label_x=(height()-QFontMetrics(label_font).width(meter_label))/2;
+    break;
+
+  case RDSegMeter::Right:
+    label_font=QFont("helvetica",height()-2,QFont::Bold);
+    label_font.setPixelSize(height()-2);
+    meter_label_x=(height()-QFontMetrics(label_font).width(meter_label))/2;
+    break;
+
+  case RDSegMeter::Up:
+    label_font=QFont("helvetica",width()-2,QFont::Bold);
+    label_font.setPixelSize(width()-2);
+    meter_label_x=(width()-QFontMetrics(label_font).width(meter_label))/2;
+    break;
+
+  case RDSegMeter::Down:
+    label_font=QFont("helvetica",width()-2,QFont::Bold);
+    label_font.setPixelSize(width()-2);
+    meter_label_x=(width()-QFontMetrics(label_font).width(meter_label))/2;
+    break;
   }
 }
