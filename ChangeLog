@@ -17457,3 +17457,6 @@
 	character set in rddbmgr(8).
 2018-08-16 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up warning in 'RDTempFile()'.
+2018-08-17 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdadmin(1) that caused creation of a new host
+	entry to fail.

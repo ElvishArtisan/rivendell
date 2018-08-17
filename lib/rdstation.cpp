@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Workstation.
 //
-//   (C) Copyright 2002-2010,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -847,20 +847,18 @@ bool RDStation::create(const QString &name,QString *err_msg,
       "SYSTEM_MAINT,"+        // 08
       "HTTP_STATION,"+        // 09
       "CAE_STATION,"+         // 10
-      "BACKUP_DIR,"+          // 11
-      "BACKUP_LIFE,"+         // 12
-      "START_JACK,"+          // 13
-      "JACK_SERVER_NAME,"+    // 14
-      "JACK_COMMAND_LINE,"+   // 15
-      "JACK_PORTS,"+          // 16
-      "CUE_CARD,"+            // 17
-      "CUE_PORT,"+            // 18
-      "CUE_START_CART,"+      // 19
-      "CUE_STOP_CART,"+       // 20
-      "CARTSLOT_COLUMNS,"+    // 21
-      "CARTSLOT_ROWS,"+       // 22
-      "ENABLE_DRAGDROP,"+     // 23
-      "ENFORCE_PANEL_SETUP "+ // 24
+      "START_JACK,"+          // 11
+      "JACK_SERVER_NAME,"+    // 12
+      "JACK_COMMAND_LINE,"+   // 13
+      "JACK_PORTS,"+          // 14
+      "CUE_CARD,"+            // 15
+      "CUE_PORT,"+            // 16
+      "CUE_START_CART,"+      // 17
+      "CUE_STOP_CART,"+       // 18
+      "CARTSLOT_COLUMNS,"+    // 19
+      "CARTSLOT_ROWS,"+       // 20
+      "ENABLE_DRAGDROP,"+     // 21
+      "ENFORCE_PANEL_SETUP "+ // 22
       "from STATIONS where "+
       "NAME=\""+RDEscapeString(exemplar)+"\"";
     q=new RDSqlQuery(sql);
@@ -882,20 +880,18 @@ bool RDStation::create(const QString &name,QString *err_msg,
 	"SYSTEM_MAINT=\""+RDEscapeString(q->value(8).toString())+"\","+
 	"HTTP_STATION=\""+RDEscapeString(q->value(9).toString())+"\","+
 	"CAE_STATION=\""+RDEscapeString(q->value(10).toString())+"\","+
-	"BACKUP_DIR=\""+RDEscapeString(q->value(11).toString())+"\","+
-	QString().sprintf("BACKUP_LIFE=%d,",q->value(12).toInt())+
-	"START_JACK=\""+RDEscapeString(q->value(13).toString())+"\","+
-	"JACK_SERVER_NAME=\""+RDEscapeString(q->value(14).toString())+"\","+
-	"JACK_COMMAND_LINE=\""+RDEscapeString(q->value(15).toString())+"\","+
-	QString().sprintf("JACK_PORTS=%d,",q->value(16).toInt())+
-	QString().sprintf("CUE_CARD=%d,",q->value(17).toInt())+
-	QString().sprintf("CUE_PORT=%d,",q->value(18).toInt())+
-	QString().sprintf("CUE_START_CART=%u,",q->value(19).toInt())+
-	QString().sprintf("CUE_STOP_CART=%u,",q->value(20).toInt())+
-	QString().sprintf("CARTSLOT_COLUMNS=%d,",q->value(21).toInt())+
-	QString().sprintf("CARTSLOT_ROWS=%d,",q->value(22).toInt())+
-	"ENABLE_DRAGDROP=\""+RDEscapeString(q->value(23).toString())+"\","+
-	"ENFORCE_PANEL_SETUP=\""+RDEscapeString(q->value(24).toString())+"\"";
+	"START_JACK=\""+RDEscapeString(q->value(11).toString())+"\","+
+	"JACK_SERVER_NAME=\""+RDEscapeString(q->value(12).toString())+"\","+
+	"JACK_COMMAND_LINE=\""+RDEscapeString(q->value(13).toString())+"\","+
+	QString().sprintf("JACK_PORTS=%d,",q->value(14).toInt())+
+	QString().sprintf("CUE_CARD=%d,",q->value(15).toInt())+
+	QString().sprintf("CUE_PORT=%d,",q->value(16).toInt())+
+	QString().sprintf("CUE_START_CART=%u,",q->value(17).toInt())+
+	QString().sprintf("CUE_STOP_CART=%u,",q->value(18).toInt())+
+	QString().sprintf("CARTSLOT_COLUMNS=%d,",q->value(19).toInt())+
+	QString().sprintf("CARTSLOT_ROWS=%d,",q->value(20).toInt())+
+	"ENABLE_DRAGDROP=\""+RDEscapeString(q->value(21).toString())+"\","+
+	"ENFORCE_PANEL_SETUP=\""+RDEscapeString(q->value(22).toString())+"\"";
       q1=new RDSqlQuery(sql);
       if(!q1->isActive()) {
 	*err_msg=QObject::tr("host already exists");
