@@ -888,43 +888,43 @@ Cor</translation>
     </message>
     <message>
         <source>NUMBER</source>
-        <translation>NÚMERO</translation>
+        <translation type="obsolete">NÚMERO</translation>
     </message>
     <message>
         <source>LENGTH</source>
-        <translation>DURAÇÃO</translation>
+        <translation type="obsolete">DURAÇÃO</translation>
     </message>
     <message>
         <source>TITLE</source>
-        <translation>TÍTULO</translation>
+        <translation type="obsolete">TÍTULO</translation>
     </message>
     <message>
         <source>ARTIST</source>
-        <translation>ARTISTA</translation>
+        <translation type="obsolete">ARTISTA</translation>
     </message>
     <message>
         <source>GROUP</source>
-        <translation>GRUPO</translation>
+        <translation type="obsolete">GRUPO</translation>
     </message>
     <message>
         <source>CLIENT</source>
-        <translation>CLIENTE</translation>
+        <translation type="obsolete">CLIENTE</translation>
     </message>
     <message>
         <source>AGENCY</source>
-        <translation>AGÊNCIA</translation>
+        <translation type="obsolete">AGÊNCIA</translation>
     </message>
     <message>
         <source>USER DEF</source>
-        <translation>USO GENERICO</translation>
+        <translation type="obsolete">USO GENERICO</translation>
     </message>
     <message>
         <source>START</source>
-        <translation>INÍCIO</translation>
+        <translation type="obsolete">INÍCIO</translation>
     </message>
     <message>
         <source>END</source>
-        <translation>FINAL</translation>
+        <translation type="obsolete">FINAL</translation>
     </message>
     <message>
         <source>Send to
@@ -986,12 +986,52 @@ Cor</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>COMPOSER</source>
+        <source>Number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>CONDUCTOR</source>
+        <source>Length</source>
+        <translation type="unfinished">Duração</translation>
+    </message>
+    <message>
+        <source>Title</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Artist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Composer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Conductor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Client</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Agency</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User Def</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>End</source>
+        <translation type="unfinished">Fim</translation>
     </message>
 </context>
 <context>

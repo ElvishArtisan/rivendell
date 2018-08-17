@@ -214,12 +214,12 @@ MainWidget::MainWidget(QWidget *parent)
   lib_search_button->setFont(button_font);
   connect(lib_search_button,SIGNAL(clicked()),this,SLOT(searchClickedData()));
   switch(lib_filter_mode) {
-    case RDStation::FilterSynchronous:
-      lib_search_button->hide();
-      break;
+  case RDStation::FilterSynchronous:
+    lib_search_button->hide();
+    break;
 
-    case RDStation::FilterAsynchronous:
-      break;
+  case RDStation::FilterAsynchronous:
+    break;
   }
 
   //
@@ -758,12 +758,12 @@ Do you still want to delete it?"),item->text(1).toUInt());
         switch(QMessageBox::question(this,tr("Empty Clipboard"),str,
 				  QMessageBox::Yes,
 				  QMessageBox::No)) {
-	  case QMessageBox::No:
-	  case QMessageBox::NoButton:
-                del_flag=false;
+	case QMessageBox::No:
+	case QMessageBox::NoButton:
+	  del_flag=false;
 
-	  default:
-	    break;
+	default:
+	  break;
       }
       delete cut_clipboard;
       cut_clipboard=NULL;
@@ -1225,15 +1225,15 @@ void SigHandler(int signo)
   pid_t pLocalPid;
 
   switch(signo) {
-      case SIGCHLD:
-	pLocalPid=waitpid(-1,NULL,WNOHANG);
-	while(pLocalPid>0) {
-	  pLocalPid=waitpid(-1,NULL,WNOHANG);
-	}
-	ripper_running=false;
-	import_active=false;
-	signal(SIGCHLD,SigHandler);
-	break;
+  case SIGCHLD:
+    pLocalPid=waitpid(-1,NULL,WNOHANG);
+    while(pLocalPid>0) {
+      pLocalPid=waitpid(-1,NULL,WNOHANG);
+    }
+    ripper_running=false;
+    import_active=false;
+    signal(SIGCHLD,SigHandler);
+    break;
   }
 }
 
@@ -1242,28 +1242,47 @@ void MainWidget::RefreshLine(RDListViewItem *item)
 {
   RDCart::Validity validity=RDCart::NeverValid;
   QDateTime current_datetime(QDate::currentDate(),QTime::currentTime());
-  QString sql=QString().sprintf("select CART.FORCED_LENGTH,CART.TITLE,\
-                                 CART.ARTIST,\
-                                 CART.ALBUM,CART.LABEL,\
-                                 CART.CLIENT,\
-                                 CART.AGENCY,CART.USER_DEFINED,\
-                                 CART.COMPOSER,CART.CONDUCTOR,CART.PUBLISHER,\
-                                 CART.GROUP_NAME,CART.START_DATETIME,\
-                                 CART.END_DATETIME,CART.TYPE,\
-                                 CART.CUT_QUANTITY,CART.LAST_CUT_PLAYED,\
-                                 CART.ENFORCE_LENGTH,\
-                                 CART.PRESERVE_PITCH,\
-                                 CART.LENGTH_DEVIATION,CART.OWNER,\
-                                 CART.VALIDITY,GROUPS.COLOR,CUTS.LENGTH,\
-                                 CUTS.EVERGREEN,CUTS.START_DATETIME,\
-                                 CUTS.END_DATETIME,CUTS.START_DAYPART,\
-                                 CUTS.END_DAYPART,CUTS.MON,CUTS.TUE,\
-                                 CUTS.WED,CUTS.THU,CUTS.FRI,CUTS.SAT,CUTS.SUN \
-                                 from CART left join GROUPS on \
-                                 CART.GROUP_NAME=GROUPS.NAME left join \
-                                 CUTS on CART.NUMBER=CUTS.CART_NUMBER \
-                                 where CART.NUMBER=%u",
-				item->text(1).toUInt());
+  QString sql=QString("select ")+
+    "CART.FORCED_LENGTH,"+     // 00
+    "CART.TITLE,"+             // 01
+    "CART.ARTIST,"+            // 02
+    "CART.ALBUM,"+             // 03
+    "CART.LABEL,"+             // 04
+    "CART.CLIENT,"+            // 05
+    "CART.AGENCY,"+            // 06
+    "CART.USER_DEFINED,"+      // 07
+    "CART.COMPOSER,"+          // 08
+    "CART.CONDUCTOR,"+         // 09
+    "CART.PUBLISHER,"+         // 10
+    "CART.GROUP_NAME,"+        // 11
+    "CART.START_DATETIME,"+    // 12
+    "CART.END_DATETIME,"+      // 13
+    "CART.TYPE,"+              // 14
+    "CART.CUT_QUANTITY,"+      // 15
+    "CART.LAST_CUT_PLAYED,"+   // 16
+    "CART.ENFORCE_LENGTH,"+    // 17
+    "CART.PRESERVE_PITCH,"+    // 18
+    "CART.LENGTH_DEVIATION,"+  // 19
+    "CART.OWNER,"+             // 20
+    "CART.VALIDITY,"+          // 21
+    "GROUPS.COLOR,"+           // 22
+    "CUTS.LENGTH,"+            // 23
+    "CUTS.EVERGREEN,"+         // 24
+    "CUTS.START_DATETIME,"+    // 25
+    "CUTS.END_DATETIME,"+      // 26
+    "CUTS.START_DAYPART,"+     // 27
+    "CUTS.END_DAYPART,"+       // 28
+    "CUTS.MON,"+               // 29
+    "CUTS.TUE,"+               // 30
+    "CUTS.WED,"+               // 31
+    "CUTS.THU,"+               // 32
+    "CUTS.FRI,"+               // 33
+    "CUTS.SAT,"+               // 34
+    "CUTS.SUN "+               // 35
+    "from CART left join GROUPS "+
+    "on CART.GROUP_NAME=GROUPS.NAME left join CUTS on "+
+    "CART.NUMBER=CUTS.CART_NUMBER where "+
+    QString().sprintf("CART.NUMBER=%u",item->text(1).toUInt());
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
     if((RDCart::Type)q->value(14).toUInt()==RDCart::Macro) {
@@ -1273,28 +1292,28 @@ void MainWidget::RefreshLine(RDListViewItem *item)
       validity=ValidateCut(q,23,validity,current_datetime);
     }
     switch((RDCart::Type)q->value(14).toUInt()) {
-	case RDCart::Audio:
-	  if(q->value(20).isNull()) {
-	    item->setPixmap(0,*lib_playout_map);
-	  }
-	  else {
-	    item->setPixmap(0,*lib_track_cart_map);
-	  }
-	  if(q->value(0).toUInt()==0) {
-	    item->setBackgroundColor(RD_CART_ERROR_COLOR);
-	  }
-	  else {
-	    UpdateItemColor(item,validity,
-			    q->value(13).toDateTime(),current_datetime);
-	  }
-	  break;
+    case RDCart::Audio:
+      if(q->value(20).isNull()) {
+	item->setPixmap(0,*lib_playout_map);
+      }
+      else {
+	item->setPixmap(0,*lib_track_cart_map);
+      }
+      if(q->value(0).toUInt()==0) {
+	item->setBackgroundColor(RD_CART_ERROR_COLOR);
+      }
+      else {
+	UpdateItemColor(item,validity,
+			q->value(13).toDateTime(),current_datetime);
+      }
+      break;
 
-	case RDCart::Macro:
-	  item->setPixmap(0,*lib_macro_map);
-	  break;
+    case RDCart::Macro:
+      item->setPixmap(0,*lib_macro_map);
+      break;
 
     case RDCart::All:
-	  break;
+      break;
     }
     item->setText(2,q->value(11).toString());
     item->setTextColor(2,q->value(22).toString(),QFont::Bold);
@@ -1358,32 +1377,32 @@ void MainWidget::UpdateItemColor(RDListViewItem *item,
 {
   if(item!=NULL) {
     switch(validity) {
-      case RDCart::NeverValid:
+    case RDCart::NeverValid:
+      item->setBackgroundColor(RD_CART_ERROR_COLOR);
+      break;
+	
+    case RDCart::ConditionallyValid:
+      if(end_datetime.isValid()&&
+	 (end_datetime<current_datetime)) {
 	item->setBackgroundColor(RD_CART_ERROR_COLOR);
-	break;
+      }
+      else {
+	item->setBackgroundColor(RD_CART_CONDITIONAL_COLOR);
+      }
+      break;
 	
-      case RDCart::ConditionallyValid:
-	if(end_datetime.isValid()&&
-	   (end_datetime<current_datetime)) {
-	  item->setBackgroundColor(RD_CART_ERROR_COLOR);
-	}
-	else {
-	  item->setBackgroundColor(RD_CART_CONDITIONAL_COLOR);
-	}
-	break;
+    case RDCart::FutureValid:
+      item->setBackgroundColor(RD_CART_FUTURE_COLOR);
+      break;
 	
-      case RDCart::FutureValid:
-	item->setBackgroundColor(RD_CART_FUTURE_COLOR);
-	break;
-	
-      case RDCart::AlwaysValid:
-	item->setBackgroundColor(palette().color(QPalette::Active,
-					      QColorGroup::Base));
-	break;
-	
-      case RDCart::EvergreenValid:
-	item->setBackgroundColor(RD_CART_EVERGREEN_COLOR);
-	break;
+    case RDCart::AlwaysValid:
+      item->setBackgroundColor(palette().color(QPalette::Active,
+					       QColorGroup::Base));
+      break;
+
+    case RDCart::EvergreenValid:
+      item->setBackgroundColor(RD_CART_EVERGREEN_COLOR);
+      break;
     }
   }
 }

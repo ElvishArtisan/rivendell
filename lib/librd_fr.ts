@@ -814,46 +814,6 @@ La Couleur</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>NUMBER</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>LENGTH</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>TITLE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>ARTIST</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>GROUP</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>CLIENT</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>AGENCY</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>USER DEF</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>START</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>END</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Send to
 &amp;Editor</source>
         <translation type="unfinished"></translation>
@@ -880,14 +840,6 @@ La Couleur</translation>
     </message>
     <message>
         <source>Matches</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>COMPOSER</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>CONDUCTOR</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -918,6 +870,54 @@ La Couleur</translation>
     <message>
         <source>Imported from</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Artist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Composer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Conductor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Client</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Agency</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User Def</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start</source>
+        <translation type="unfinished">Début</translation>
+    </message>
+    <message>
+        <source>End</source>
+        <translation type="unfinished">Fin</translation>
     </message>
 </context>
 <context>

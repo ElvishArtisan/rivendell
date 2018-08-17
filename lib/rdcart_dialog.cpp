@@ -2,7 +2,7 @@
 //
 // A widget to select a Rivendell Cart.
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,10 +29,6 @@
 #include <qeventloop.h>
 #include <q3filedialog.h>
 #include <qmessagebox.h>
-//Added by qt3to4:
-#include <QPixmap>
-#include <QResizeEvent>
-#include <QCloseEvent>
 
 #include <rdapplication.h>
 #ifndef WIN32
@@ -208,42 +204,42 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   cart_cart_list->addColumn("");
   cart_cart_list->setColumnAlignment(0,Qt::AlignHCenter);
 
-  cart_cart_list->addColumn(tr("NUMBER"));
+  cart_cart_list->addColumn(tr("Number"));
   cart_cart_list->setColumnAlignment(1,Qt::AlignHCenter);
 
-  cart_cart_list->addColumn(tr("LENGTH"));
+  cart_cart_list->addColumn(tr("Length"));
   cart_cart_list->setColumnAlignment(2,Qt::AlignRight);
   cart_cart_list->setColumnSortType(2,RDListView::TimeSort);
 
-  cart_cart_list->addColumn(tr("TITLE"),200);
+  cart_cart_list->addColumn(tr("Title"),200);
   cart_cart_list->setColumnAlignment(3,Qt::AlignLeft);
   cart_cart_list->setColumnWidthMode(3,Q3ListView::Manual);
 
-  cart_cart_list->addColumn(tr("ARTIST"));
+  cart_cart_list->addColumn(tr("Artist"));
   cart_cart_list->setColumnAlignment(4,Qt::AlignLeft);
 
-  cart_cart_list->addColumn(tr("GROUP"));
+  cart_cart_list->addColumn(tr("Group"));
   cart_cart_list->setColumnAlignment(5,Qt::AlignLeft);
 
-  cart_cart_list->addColumn(tr("COMPOSER"));
+  cart_cart_list->addColumn(tr("Composer"));
   cart_cart_list->setColumnAlignment(6,Qt::AlignLeft);
 
-  cart_cart_list->addColumn(tr("CONDUCTOR"));
+  cart_cart_list->addColumn(tr("Conductor"));
   cart_cart_list->setColumnAlignment(7,Qt::AlignLeft);
 
-  cart_cart_list->addColumn(tr("CLIENT"));
+  cart_cart_list->addColumn(tr("Client"));
   cart_cart_list->setColumnAlignment(8,Qt::AlignLeft);
 
-  cart_cart_list->addColumn(tr("AGENCY"));
+  cart_cart_list->addColumn(tr("Agency"));
   cart_cart_list->setColumnAlignment(9,Qt::AlignLeft);
 
-  cart_cart_list->addColumn(tr("USER DEF"));
+  cart_cart_list->addColumn(tr("User Def"));
   cart_cart_list->setColumnAlignment(10,Qt::AlignLeft);
 
-  cart_cart_list->addColumn(tr("START"));
+  cart_cart_list->addColumn(tr("Start"));
   cart_cart_list->setColumnAlignment(11,Qt::AlignLeft);
 
-  cart_cart_list->addColumn(tr("END"));
+  cart_cart_list->addColumn(tr("End"));
   cart_cart_list->setColumnAlignment(12,Qt::AlignLeft);
 
   //
@@ -894,7 +890,7 @@ QString RDCartDialog::GetSearchFilter(const QString &filter,
   if(schedcode!=tr("ALL")) {
     sched=schedcode;
   }
-  QString search=RDCartSearchText(filter,group,sched,false).utf8();
+  QString search=RDCartSearchText(filter,group,sched,false);
 
   //
   // Excluded Groups

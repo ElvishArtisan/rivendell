@@ -892,43 +892,43 @@ barvu</translation>
     </message>
     <message>
         <source>NUMBER</source>
-        <translation>ČÍSLO</translation>
+        <translation type="obsolete">ČÍSLO</translation>
     </message>
     <message>
         <source>LENGTH</source>
-        <translation>DÉLKA</translation>
+        <translation type="obsolete">DÉLKA</translation>
     </message>
     <message>
         <source>TITLE</source>
-        <translation>NÁZEV</translation>
+        <translation type="obsolete">NÁZEV</translation>
     </message>
     <message>
         <source>ARTIST</source>
-        <translation>UMĚLEC</translation>
+        <translation type="obsolete">UMĚLEC</translation>
     </message>
     <message>
         <source>GROUP</source>
-        <translation>SKUPINA</translation>
+        <translation type="obsolete">SKUPINA</translation>
     </message>
     <message>
         <source>CLIENT</source>
-        <translation>ZÁKAZNÍK</translation>
+        <translation type="obsolete">ZÁKAZNÍK</translation>
     </message>
     <message>
         <source>AGENCY</source>
-        <translation>AGENTURA</translation>
+        <translation type="obsolete">AGENTURA</translation>
     </message>
     <message>
         <source>USER DEF</source>
-        <translation>DEF UŽIVATELE</translation>
+        <translation type="obsolete">DEF UŽIVATELE</translation>
     </message>
     <message>
         <source>START</source>
-        <translation>ZAČÁTEK</translation>
+        <translation type="obsolete">ZAČÁTEK</translation>
     </message>
     <message>
         <source>END</source>
-        <translation>KONEC</translation>
+        <translation type="obsolete">KONEC</translation>
     </message>
     <message>
         <source>Send to
@@ -995,12 +995,52 @@ ze &amp;souboru</translation>
         <translation>Zavádí se</translation>
     </message>
     <message>
-        <source>COMPOSER</source>
+        <source>Number</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>CONDUCTOR</source>
+        <source>Length</source>
+        <translation type="unfinished">Délka</translation>
+    </message>
+    <message>
+        <source>Title</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Artist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Composer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Conductor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Client</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Agency</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User Def</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>End</source>
+        <translation type="unfinished">Konec</translation>
     </message>
 </context>
 <context>
