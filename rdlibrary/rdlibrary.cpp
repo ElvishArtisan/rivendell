@@ -331,70 +331,70 @@ MainWidget::MainWidget(QWidget *parent)
   connect(lib_cart_list,SIGNAL(onItem(Q3ListViewItem *)),
 	  this,SLOT(cartOnItemData(Q3ListViewItem *)));
   lib_cart_list->addColumn("");
-  lib_cart_list->setColumnAlignment(0,Qt::AlignHCenter|Qt::AlignVCenter);
+  lib_cart_list->setColumnAlignment(0,Qt::AlignHCenter);
   lib_cart_list->addColumn(tr("CART"));
-  lib_cart_list->setColumnAlignment(1,Qt::AlignHCenter|Qt::AlignVCenter);
+  lib_cart_list->setColumnAlignment(1,Qt::AlignHCenter);
 
   lib_cart_list->addColumn(tr("GROUP"));
-  lib_cart_list->setColumnAlignment(2,Qt::AlignHCenter|Qt::AlignVCenter);
+  lib_cart_list->setColumnAlignment(2,Qt::AlignHCenter);
 
   lib_cart_list->addColumn(tr("LENGTH"));
-  lib_cart_list->setColumnAlignment(3,Qt::AlignRight|Qt::AlignVCenter);
+  lib_cart_list->setColumnAlignment(3,Qt::AlignRight);
   lib_cart_list->setColumnSortType(3,RDListView::TimeSort);
 
   lib_cart_list->addColumn(tr("TITLE"));
-  lib_cart_list->setColumnAlignment(4,Qt::AlignLeft|Qt::AlignVCenter);
+  lib_cart_list->setColumnAlignment(4,Qt::AlignLeft);
 
   lib_cart_list->addColumn(tr("ARTIST"));
-  lib_cart_list->setColumnAlignment(5,Qt::AlignLeft|Qt::AlignVCenter);
+  lib_cart_list->setColumnAlignment(5,Qt::AlignLeft);
 
   lib_cart_list->addColumn(tr("START"));
-  lib_cart_list->setColumnAlignment(6,Qt::AlignHCenter|Qt::AlignVCenter);
+  lib_cart_list->setColumnAlignment(6,Qt::AlignHCenter);
 
   lib_cart_list->addColumn(tr("END"));
-  lib_cart_list->setColumnAlignment(7,Qt::AlignHCenter|Qt::AlignVCenter);
+  lib_cart_list->setColumnAlignment(7,Qt::AlignHCenter);
 
   lib_cart_list->addColumn(tr("ALBUM"));
-  lib_cart_list->setColumnAlignment(8,Qt::AlignLeft|Qt::AlignVCenter);
+  lib_cart_list->setColumnAlignment(8,Qt::AlignLeft);
 
   lib_cart_list->addColumn(tr("LABEL"));
-  lib_cart_list->setColumnAlignment(9,Qt::AlignLeft|Qt::AlignVCenter);
+  lib_cart_list->setColumnAlignment(9,Qt::AlignLeft);
 
   lib_cart_list->addColumn(tr("COMPOSER"));
-  lib_cart_list->setColumnAlignment(10,Qt::AlignLeft|Qt::AlignVCenter);
+  lib_cart_list->setColumnAlignment(10,Qt::AlignLeft);
 
   lib_cart_list->addColumn(tr("CONDUCTOR"));
-  lib_cart_list->setColumnAlignment(11,Qt::AlignLeft|Qt::AlignVCenter);
+  lib_cart_list->setColumnAlignment(11,Qt::AlignLeft);
 
   lib_cart_list->addColumn(tr("PUBLISHER"));
-  lib_cart_list->setColumnAlignment(12,Qt::AlignLeft|Qt::AlignVCenter);
+  lib_cart_list->setColumnAlignment(12,Qt::AlignLeft);
 
   lib_cart_list->addColumn(tr("CLIENT"));
-  lib_cart_list->setColumnAlignment(13,Qt::AlignLeft|Qt::AlignVCenter);
+  lib_cart_list->setColumnAlignment(13,Qt::AlignLeft);
 
   lib_cart_list->addColumn(tr("AGENCY"));
-  lib_cart_list->setColumnAlignment(14,Qt::AlignLeft|Qt::AlignVCenter);
+  lib_cart_list->setColumnAlignment(14,Qt::AlignLeft);
 
   lib_cart_list->addColumn(tr("USER DEFINED"));
-  lib_cart_list->setColumnAlignment(15,Qt::AlignLeft|Qt::AlignVCenter);
+  lib_cart_list->setColumnAlignment(15,Qt::AlignLeft);
 
   lib_cart_list->addColumn(tr("CUTS"));
-  lib_cart_list->setColumnAlignment(16,Qt::AlignRight|Qt::AlignVCenter);
+  lib_cart_list->setColumnAlignment(16,Qt::AlignRight);
 
   lib_cart_list->addColumn(tr("LAST CUT PLAYED"));
-  lib_cart_list->setColumnAlignment(17,Qt::AlignHCenter|Qt::AlignVCenter);
+  lib_cart_list->setColumnAlignment(17,Qt::AlignHCenter);
 
   lib_cart_list->addColumn(tr("ENFORCE LENGTH"));
-  lib_cart_list->setColumnAlignment(18,Qt::AlignHCenter|Qt::AlignVCenter);
+  lib_cart_list->setColumnAlignment(18,Qt::AlignHCenter);
 
   lib_cart_list->addColumn(tr("PRESERVE PITCH"));
-  lib_cart_list->setColumnAlignment(19,Qt::AlignHCenter|Qt::AlignVCenter);
+  lib_cart_list->setColumnAlignment(19,Qt::AlignHCenter);
 
   lib_cart_list->addColumn(tr("LENGTH DEVIATION"));
-  lib_cart_list->setColumnAlignment(20,Qt::AlignHCenter|Qt::AlignVCenter);
+  lib_cart_list->setColumnAlignment(20,Qt::AlignHCenter);
 
   lib_cart_list->addColumn(tr("OWNED BY"));
-  lib_cart_list->setColumnAlignment(21,Qt::AlignHCenter|Qt::AlignVCenter);
+  lib_cart_list->setColumnAlignment(21,Qt::AlignHCenter);
 
   //
   // Add Button
