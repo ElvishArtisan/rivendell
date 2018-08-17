@@ -460,12 +460,14 @@ MainWidget::MainWidget(QWidget *parent)
   air_message_label=new RDLabel(this);
   air_message_label->setGeometry(sizeHint().width()-425,70,
 		MESSAGE_WIDGET_WIDTH,air_stereo_meter->sizeHint().height());
+  air_message_label->setStyleSheet("background-color: "+
+				   QColor(LOGLINEBOX_BACKGROUND_COLOR).name());
   air_message_label->setWordWrapEnabled(true);
   air_message_label->setLineWidth(1);
   air_message_label->setMidLineWidth(1);
   air_message_label->setFrameStyle(Q3Frame::Box|Q3Frame::Raised);
   air_message_label->setAlignment(Qt::AlignCenter);
- air_message_label->setFocusPolicy(Qt::NoFocus);
+  air_message_label->setFocusPolicy(Qt::NoFocus);
 
   //
   // Stop Counter

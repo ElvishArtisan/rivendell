@@ -92,7 +92,6 @@ class LogLineBox : public QWidget
   void dropEvent(QDropEvent *e);
 
  private:
-  void SetColor(QColor);
   void UpdateCountdown();
   void PrintTime();
   QString TimeString(const QTime &time);

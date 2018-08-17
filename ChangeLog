@@ -17468,3 +17468,6 @@
 2018-08-17 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed incorrect column alignment in the library list in
 	rdlibrary(1).
+2018-08-17 Fred Gleason <fredg@paravelsystems.com>
+	* Corrected background colors of the Button Log and Message widgets
+	in rdairplay(1).
