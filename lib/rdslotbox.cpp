@@ -522,7 +522,9 @@ void RDSlotBox::mousePressEvent(QMouseEvent *e)
   if((line_logline!=NULL)&&(line_mode==RDSlotOptions::CartDeckMode)&&
      line_allow_drags) {
     RDCartDrag *d=new RDCartDrag(line_logline->cartNumber(),
-				 line_icon_label->pixmap(),this);
+				 line_icon_label->pixmap(),
+				 line_group_label->palette().
+				 color(QColorGroup::Foreground),this);
     d->dragCopy();
   }
 }

@@ -34,10 +34,11 @@
 #include "../icons/rml5.xpm"
 #include "../icons/trashcan-16x16.xpm"
 
-RDCartDrag::RDCartDrag(unsigned cartnum,const QPixmap *icon,QWidget *src)
+RDCartDrag::RDCartDrag(unsigned cartnum,const QPixmap *icon,const QColor &color,
+		       QWidget *src)
   : Q3StoredDrag(RDMIMETYPE_CART,src)
 {
-  SetData(cartnum,QColor(),QString());
+  SetData(cartnum,color,QString());
   if(icon==NULL) {
     RDCart *cart=new RDCart(cartnum);
     switch(cart->type()) {

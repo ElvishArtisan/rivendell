@@ -46,7 +46,8 @@ void LibListView::contentsMousePressEvent(QMouseEvent *e)
   if(item==NULL) {
     return;
   }
-  RDCartDrag *d=new RDCartDrag(item->text(1).toUInt(),item->pixmap(0),this);
+  RDCartDrag *d=new RDCartDrag(item->text(1).toUInt(),item->pixmap(0),
+			       Qt::lightGray,this);
   d->dragCopy();
 
   emit clicked(item);

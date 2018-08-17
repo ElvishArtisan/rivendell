@@ -794,7 +794,8 @@ void LogLineBox::mouseMoveEvent(QMouseEvent *e)
     if(line_allow_drags&&(line_logline!=NULL)) {
       RDCartDrag *d=
 	new RDCartDrag(line_logline->cartNumber(),line_icon_label->pixmap(),
-		       this);
+		       line_group_label->palette().
+		       color(QColorGroup::Foreground),this);
       d->dragCopy();
     }
   }

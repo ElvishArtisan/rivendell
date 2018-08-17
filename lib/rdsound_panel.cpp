@@ -2,7 +2,7 @@
 //
 // The sound panel widget for RDAirPlay
 //
-//   (C) Copyright 2002-2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -426,25 +426,25 @@ void RDSoundPanel::setActionMode(RDAirPlayConf::ActionMode mode)
     return;
   }
   switch(mode) {
-      case RDAirPlayConf::CopyFrom:
-	mode=RDAirPlayConf::CopyFrom;
-	break;
+  case RDAirPlayConf::CopyFrom:
+    mode=RDAirPlayConf::CopyFrom;
+    break;
 
-      case RDAirPlayConf::CopyTo:
-	mode=RDAirPlayConf::CopyTo;
-	break;
+  case RDAirPlayConf::CopyTo:
+    mode=RDAirPlayConf::CopyTo;
+    break;
 
-      case RDAirPlayConf::AddTo:
-	mode=RDAirPlayConf::AddTo;
-	break;
+  case RDAirPlayConf::AddTo:
+    mode=RDAirPlayConf::AddTo;
+    break;
 
-      case RDAirPlayConf::DeleteFrom:
-	mode=RDAirPlayConf::DeleteFrom;
-	break;
+  case RDAirPlayConf::DeleteFrom:
+    mode=RDAirPlayConf::DeleteFrom;
+    break;
 
-      default:
-	mode=RDAirPlayConf::Normal;
-	break;
+  default:
+    mode=RDAirPlayConf::Normal;
+    break;
   }
   if(mode!=panel_action_mode) {
     panel_action_mode=mode;
@@ -702,85 +702,85 @@ void RDSoundPanel::buttonMapperData(int id)
   unsigned cartnum;
 
   switch(panel_action_mode) {
-      case RDAirPlayConf::CopyFrom:
-	if((cartnum=panel_buttons[PanelOffset(panel_type,panel_number)]->
-	    panelButton(row,col)->cart())>0) {
-	  emit selectClicked(cartnum,0,0);
-	}
-	break;
+  case RDAirPlayConf::CopyFrom:
+    if((cartnum=panel_buttons[PanelOffset(panel_type,panel_number)]->
+	panelButton(row,col)->cart())>0) {
+      emit selectClicked(cartnum,0,0);
+    }
+    break;
 	
-      case RDAirPlayConf::CopyTo:
-         if(panel_buttons[PanelOffset(panel_type,panel_number)]->
-	    panelButton(row,col)->playDeck()==NULL
-             && ((panel_type==RDAirPlayConf::UserPanel) || 
-		 panel_config_panels)) { 
-	   emit selectClicked(0,row,col);
-           }
-	break;
+  case RDAirPlayConf::CopyTo:
+    if(panel_buttons[PanelOffset(panel_type,panel_number)]->
+       panelButton(row,col)->playDeck()==NULL
+       && ((panel_type==RDAirPlayConf::UserPanel) || 
+	   panel_config_panels)) { 
+      emit selectClicked(0,row,col);
+    }
+    break;
 	
-      case RDAirPlayConf::AddTo:
-         if(panel_buttons[PanelOffset(panel_type,panel_number)]->
-	    panelButton(row,col)->playDeck()==NULL
-             && ((panel_type==RDAirPlayConf::UserPanel) || 
-		 panel_config_panels)) { 
-	   emit selectClicked(0,row,col);
-           }
-	break;
+  case RDAirPlayConf::AddTo:
+    if(panel_buttons[PanelOffset(panel_type,panel_number)]->
+       panelButton(row,col)->playDeck()==NULL
+       && ((panel_type==RDAirPlayConf::UserPanel) || 
+	   panel_config_panels)) { 
+      emit selectClicked(0,row,col);
+    }
+    break;
 	
-      case RDAirPlayConf::DeleteFrom:
-         if(panel_buttons[PanelOffset(panel_type,panel_number)]->
-	    panelButton(row,col)->playDeck()==NULL
-             && ((panel_type==RDAirPlayConf::UserPanel) || 
-		 panel_config_panels)) { 
-	   emit selectClicked(0,row,col);
-           }
-	break;
+  case RDAirPlayConf::DeleteFrom:
+    if(panel_buttons[PanelOffset(panel_type,panel_number)]->
+       panelButton(row,col)->playDeck()==NULL
+       && ((panel_type==RDAirPlayConf::UserPanel) || 
+	   panel_config_panels)) { 
+      emit selectClicked(0,row,col);
+    }
+    break;
 	
-      default:
-	if(panel_setup_mode) {
-	  if((panel_type==RDAirPlayConf::StationPanel)&&
-	     (!panel_config_panels)) {
-	    ClearReset();
-	    return;
-	  }
-	  if(panel_button_dialog->
-	     exec(panel_buttons[PanelOffset(panel_type,panel_number)]->
-		  panelButton(row,col),panel_playmode_box->currentItem()==1,
-		  rda->user()->name(),rda->user()->password())
-	     ==0) {
-	    SaveButton(panel_type,panel_number,row,col);
-	  }
+  default:
+    if(panel_setup_mode) {
+      if((panel_type==RDAirPlayConf::StationPanel)&&
+	 (!panel_config_panels)) {
+	ClearReset();
+	return;
+      }
+      if(panel_button_dialog->
+	 exec(panel_buttons[PanelOffset(panel_type,panel_number)]->
+	      panelButton(row,col),panel_playmode_box->currentItem()==1,
+	      rda->user()->name(),rda->user()->password())
+	 ==0) {
+	SaveButton(panel_type,panel_number,row,col);
+      }
+    }
+    else {
+      RDPanelButton *button=
+	panel_buttons[PanelOffset(panel_type,panel_number)]->
+	panelButton(row,col);
+      RDPlayDeck *deck=button->playDeck();
+      if(panel_reset_mode) {
+	StopButton(panel_type,panel_number,row,col);
+      }
+      else {
+	if(deck==NULL) {
+	  PlayButton(panel_type,panel_number,row,col,
+		     RDLogLine::StartManual,
+		     panel_playmode_box->currentItem()==1);
 	}
 	else {
-	  RDPanelButton *button=
-	    panel_buttons[PanelOffset(panel_type,panel_number)]->
-	    panelButton(row,col);
-	  RDPlayDeck *deck=button->playDeck();
-	  if(panel_reset_mode) {
-	    StopButton(panel_type,panel_number,row,col);
-	  }
-	  else {
-	    if(deck==NULL) {
-	      PlayButton(panel_type,panel_number,row,col,
-			 RDLogLine::StartManual,
-			 panel_playmode_box->currentItem()==1);
+	  if(panel_pause_enabled) {
+	    if(deck->state()!=RDPlayDeck::Paused) {
+	      PauseButton(panel_type,panel_number,row,col);
 	    }
 	    else {
-	      if(panel_pause_enabled) {
-		if(deck->state()!=RDPlayDeck::Paused) {
-		  PauseButton(panel_type,panel_number,row,col);
-		}
-		else {
-		  PlayButton(panel_type,panel_number,row,col,
-			     RDLogLine::StartManual,button->hookMode());
-		}
-	      }
-	      else {
-		StopButton(panel_type,panel_number,row,col);
-	      }
+	      PlayButton(panel_type,panel_number,row,col,
+			 RDLogLine::StartManual,button->hookMode());
 	    }
 	  }
+	  else {
+	    StopButton(panel_type,panel_number,row,col);
+	  }
 	}
+      }
+    }
   }
   ClearReset();
 }
@@ -789,21 +789,21 @@ void RDSoundPanel::buttonMapperData(int id)
 void RDSoundPanel::stateChangedData(int id,RDPlayDeck::State state)
 {
   switch(state) {
-      case RDPlayDeck::Playing:
-	Playing(id);
-	break;
+  case RDPlayDeck::Playing:
+    Playing(id);
+    break;
 
-      case RDPlayDeck::Stopped:
-      case RDPlayDeck::Finished:
-        Stopped(id);
-	break;
+  case RDPlayDeck::Stopped:
+  case RDPlayDeck::Finished:
+    Stopped(id);
+    break;
 
-      case RDPlayDeck::Paused:
-	Paused(id);
-	break;
+  case RDPlayDeck::Paused:
+    Paused(id);
+    break;
 
-      default:
-	break;
+  default:
+    break;
   }
 }
 
@@ -817,13 +817,13 @@ void RDSoundPanel::hookEndData(int id)
   RDPlayDeck *deck=button->playDeck();
   if(deck!=NULL) {
     switch(deck->state()) {
-	case RDPlayDeck::Playing:
-	case RDPlayDeck::Paused:
-	  StopButton(id);
-	  break;
+    case RDPlayDeck::Playing:
+    case RDPlayDeck::Paused:
+      StopButton(id);
+      break;
 	  
-	default:
-	  break;
+    default:
+      break;
     }
   }
 }
@@ -954,16 +954,16 @@ void RDSoundPanel::PlayButton(RDAirPlayConf::PanelType type,int panel,
     button->setPauseWhenFinished(false);
     }
   switch(cart->type()) {
-      case RDCart::Audio:
-	PlayAudio(button,cart,hookmode,mport);
-	break;
+  case RDCart::Audio:
+    PlayAudio(button,cart,hookmode,mport);
+    break;
 
-      case RDCart::Macro:
-	PlayMacro(button,cart);
-	break;
+  case RDCart::Macro:
+    PlayMacro(button,cart);
+    break;
 
-      default:
-	break;
+  default:
+    break;
   }
   delete cart;
 }
@@ -1124,17 +1124,17 @@ void RDSoundPanel::StopButton(RDAirPlayConf::PanelType type,int panel,
                     setPauseWhenFinished(false);
               }
             switch(deck->state()) {
-	        case RDPlayDeck::Playing:
-	          deck->stop(fade_out,RD_FADE_DEPTH);
-	          break;
+	    case RDPlayDeck::Playing:
+	      deck->stop(fade_out,RD_FADE_DEPTH);
+	      break;
 
-  	        case RDPlayDeck::Paused:
-	          deck->clear();
-	          break;
+	    case RDPlayDeck::Paused:
+	      deck->clear();
+	      break;
 
-	        default:
-	          deck->clear();
-	          break;
+	    default:
+	      deck->clear();
+	      break;
             }
           }
         }
@@ -1167,16 +1167,16 @@ void RDSoundPanel::StopButton(RDPlayDeck *deck)
 {
   if(deck!=NULL) {
     switch(deck->state()) {
-	case RDPlayDeck::Playing:
-	  deck->stop();
-	  break;
+    case RDPlayDeck::Playing:
+      deck->stop();
+      break;
 
-	case RDPlayDeck::Paused:
-	  deck->clear();
-	  break;
+    case RDPlayDeck::Paused:
+      deck->clear();
+      break;
 
-	default:
-	  break;
+    default:
+      break;
     }
   }    
 }
@@ -1231,15 +1231,15 @@ void RDSoundPanel::LoadPanel(RDAirPlayConf::PanelType type,int panel)
   int offset=0;
 
   switch(type) {
-      case RDAirPlayConf::UserPanel:
-	owner=rda->user()->name();
-	offset=panel_station_panels+panel;
-	break;
+  case RDAirPlayConf::UserPanel:
+    owner=rda->user()->name();
+    offset=panel_station_panels+panel;
+    break;
 
-      case RDAirPlayConf::StationPanel:
-	owner=rda->station()->name();
-	offset=panel;
-	break;
+  case RDAirPlayConf::StationPanel:
+    owner=rda->station()->name();
+    offset=panel;
+    break;
   }
 
   QString sql=QString("select ")+panel_tablename+".ROW_NO,"+
@@ -1326,15 +1326,15 @@ void RDSoundPanel::SaveButton(RDAirPlayConf::PanelType type,
   int offset=0;
 
   switch(type) {
-      case RDAirPlayConf::UserPanel:
-	owner=rda->user()->name();
-	offset=panel_station_panels+panel;
-	break;
+  case RDAirPlayConf::UserPanel:
+    owner=rda->user()->name();
+    offset=panel_station_panels+panel;
+    break;
 
-      case RDAirPlayConf::StationPanel:
-	owner=rda->station()->name();
-	offset=panel;
-	break;
+  case RDAirPlayConf::StationPanel:
+    owner=rda->station()->name();
+    offset=panel;
+    break;
   }
 
   //
@@ -1399,13 +1399,13 @@ void RDSoundPanel::SaveButton(RDAirPlayConf::PanelType type,
 int RDSoundPanel::PanelOffset(RDAirPlayConf::PanelType type,int panel)
 {
   switch(type) {
-      case RDAirPlayConf::StationPanel:
-	return panel;
-	break;
+  case RDAirPlayConf::StationPanel:
+    return panel;
+    break;
 
-      case RDAirPlayConf::UserPanel:
-	return panel_station_panels+panel;
-	break;
+  case RDAirPlayConf::UserPanel:
+    return panel_station_panels+panel;
+    break;
   }
   return 0;
 }
@@ -1680,11 +1680,11 @@ QString RDSoundPanel::PanelTag(int index)
 QString RDSoundPanel::PanelOwner(RDAirPlayConf::PanelType type)
 {
   switch(type) {
-      case RDAirPlayConf::StationPanel:
-	return rda->station()->name();
+  case RDAirPlayConf::StationPanel:
+    return rda->station()->name();
 
-      case RDAirPlayConf::UserPanel:
-	return rda->user()->name();
+  case RDAirPlayConf::UserPanel:
+    return rda->user()->name();
   }
   return QString();
 }

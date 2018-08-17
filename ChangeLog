@@ -17477,3 +17477,6 @@
 2018-08-17 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the Cart Picker dialog that caused corruption
 	with UTF-8 strings.
+2018-08-17 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed problems with dragged carts setting the correct color
+	when dropped on a sound panel button.

@@ -32,7 +32,8 @@
 class RDCartDrag : public Q3StoredDrag
 {
  public:
-  RDCartDrag(unsigned cartnum,const QPixmap *icon,QWidget *src=0);
+  RDCartDrag(unsigned cartnum,const QPixmap *icon,const QColor &color,
+	     QWidget *src=0);
   RDCartDrag(unsigned cartnum,const QString &title,const QColor &color,
 	     QWidget *src=0);
   static bool canDecode(QMimeSource *e);
