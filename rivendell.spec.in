@@ -145,7 +145,8 @@ cp scripts/init_template_host.py $RPM_BUILD_ROOT/@DOC_PATH@
 
 
 %post
-ldconfig
+/sbin/ldconfig
+/bin/systemctl daemon-reload
 /usr/sbin/groupadd -r -g 150 %{name} &>/dev/null || :
 /usr/sbin/useradd -o -u 150 -g %{name} -s /bin/false -r -c "Rivendell radio automation system" -d /var/snd %{name} &>/dev/null || :
 if test ! -e /var/snd ; then
@@ -153,7 +154,6 @@ if test ! -e /var/snd ; then
   chown rivendell:rivendell /var/snd
   chmod 775 /var/snd
 fi
-mkdir -p -m 777 /var/run/rivendell
 if test ! -d /etc/rivendell.d ; then
   mkdir -p /etc/rivendell.d
   chmod 775 /etc/rivendell.d
@@ -169,43 +169,15 @@ fi
 if test ! -e /etc/asound.conf ; then
   cp @DOC_PATH@/asound.conf-sample /etc/asound.conf
 fi
-if test -f /etc/init.d/mysql ; then
-  /etc/init.d/mysql start
-  MYSQL_INIT="/etc/init.d/mysql"
-fi
-if test -f /etc/init.d/mysqld ; then
-  /etc/init.d/mysqld start
-  MYSQL_INIT="/etc/init.d/mysqld"
-fi
-if test -f /usr/lib/systemd/system/mariadb.service ; then
-  systemctl start mariadb.service
-  MYSQL_INIT="systemctl start mariadb.service"
-fi
 @LOCAL_PREFIX@/sbin/rddbmgr --modify
-/etc/init.d/rivendell restart
+/bin/systemctl restart rivendell
 if test "@DISTRO@" = "suse" ; then
   /etc/init.d/apache2 restart
   insserv -d -f /etc/init.d/apache2 /etc/init.d/rivendell $MYSQL_INIT
 fi
 if test "@DISTRO@" = "redhat" ; then
-  if test -f /etc/init.d/httpd ; then
-    service httpd restart
-    chkconfig httpd on
-  fi
-  if test -f /usr/lib/systemd/system/httpd.service ; then
-    systemctl restart httpd.service
-    systemctl enable httpd.service
-  fi
-  chkconfig --add rivendell
-  chkconfig --levels 35 rivendell on
-  if test -n "$MYSQL_INIT" ; then
-    if test -f /etc/init.d/mysqld ; then
-      chkconfig mysqld on
-    fi
-    if test -f /usr/lib/systemd/system/mariadb.service ; then
-      systemctl enable mariadb.service
-    fi
-  fi
+  /bin/systemctl restart httpd
+  /bin/systemctl enable httpd
 fi
 if [ -x %{_bindir}/gtk-update-icon-cache ] ; then
   %{_bindir}/gtk-update-icon-cache -f --quiet %{_datadir}/icons/hicolor || :
@@ -221,13 +193,12 @@ exit 0
 
 %preun
 if test "$1" = "0" ; then
-  /etc/init.d/rivendell stop
+  /bin/systemctl stop rivendell
   if test "@DISTRO@" = "suse" ; then
     insserv -r -d -f /etc/init.d/rivendell
   fi
   if test "@DISTRO@" = "redhat" ; then
-    chkconfig --levels 35 rivendell off
-    chkconfig --del rivendell
+    /bin/systemctl disable rivendell
   fi
 fi
 exit 0
@@ -237,6 +208,7 @@ exit 0
 if [ -x %{_bindir}/gtk-update-icon-cache ] ; then
   %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
 fi
+/bin/systemctl daemon-reload
 
 
 %clean

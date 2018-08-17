@@ -17485,3 +17485,6 @@
 2018-08-17 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored the RPM spec file to combine the 'rivendell' and
 	'rivendell-base' packages.
+2018-08-17 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the pre- and post-installation scripts in the RPM spec
+	file.
