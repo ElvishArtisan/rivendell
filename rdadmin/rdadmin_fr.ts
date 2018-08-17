@@ -1006,10 +1006,6 @@ files, causing any whose files remain to be imported again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>CHANNEL VALUES</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Title:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1163,6 +1159,10 @@ this feed to be PERMANENTLY redirected to the
 specified URL.
 
 Do you still want to enable redireciton?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Channel Values</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -23,15 +23,16 @@
 
 #include <map>
 
-#include <qdialog.h>
 #include <qcheckbox.h>
-#include <q3listview.h>
+#include <qcombobox.h>
+#include <qdialog.h>
 #include <qspinbox.h>
 #include <qpushbutton.h>
+#include <qlabel.h>
 #include <qlineedit.h>
-#include <qcombobox.h>
 
-#include <rdlabel.h>
+#include <q3listview.h>
+
 #include <rdsystem.h>
 #include <rdaudiosettings.h>
 
@@ -54,7 +55,7 @@ class EditSettings : public QDialog
  private:
    QComboBox *edit_sample_rate_box;
    QCheckBox *edit_duplicate_carts_box;
-   RDLabel *edit_duplicate_label;
+   QLabel *edit_duplicate_label;
    QCheckBox *edit_fix_duplicate_carts_box;
    QLabel *edit_fix_duplicate_carts_label;
    QSpinBox *edit_maxpost_spin;

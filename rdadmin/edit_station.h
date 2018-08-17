@@ -26,7 +26,7 @@
 #include <q3textedit.h>
 #include <qpixmap.h>
 #include <qcheckbox.h>
-#include <qsqldatabase.h>
+#include <qgroupbox.h>
 #include <qlineedit.h>
 #include <qcombobox.h>
 #include <qspinbox.h>
@@ -72,7 +72,6 @@ class EditStation : public QDialog
    void stopCartClickedData();
 
  protected:
-  void paintEvent(QPaintEvent *e);
   void resizeEvent(QResizeEvent *e);
 
   private:
@@ -89,7 +88,6 @@ class EditStation : public QDialog
    QLineEdit *station_description_edit;
    QLabel *station_default_name_label;
    QComboBox *station_default_name_edit;
-   //   QComboBox *station_broadcast_sec_edit;
    QLabel *station_address_label;
    QLineEdit *station_address_edit;
    QLabel *station_editor_cmd_label;
@@ -125,7 +123,7 @@ class EditStation : public QDialog
    QLabel *station_dragdrop_label;
    QLabel *station_panel_enforce_label;
    QCheckBox *station_panel_enforce_box;
-   QLabel *station_systemservices_label;
+   QGroupBox *station_systemservices_groupbox;
    QLabel *station_http_station_label;
    QComboBox *station_http_station_box;
    QLabel *station_cae_station_label;

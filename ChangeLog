@@ -17460,3 +17460,8 @@
 2018-08-17 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdadmin(1) that caused creation of a new host
 	entry to fail.
+2018-08-17 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a rendering error in the 'Edit Host' dialog in rdadmin(1).
+	* Fixed a bug in the 'Edit System Settings' dialog in rdadmin(1)
+	that caused a segfault.
+	* Fixed a rendering error in the 'Edit RSS Feed' dialog in rdadmin(1).

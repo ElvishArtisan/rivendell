@@ -176,14 +176,14 @@ EditSettings::EditSettings(QWidget *parent)
   //
   // Duplicate List (initially hidden)
   //
-  edit_duplicate_label=new RDLabel(this);
+  edit_duplicate_label=new QLabel(this);
   edit_duplicate_label->setText(tr("The following duplicate titles must be corrected before \"Allow Duplicate Values\" can be turned off."));
-  edit_duplicate_label->setWordWrapEnabled(true);
+  edit_duplicate_label->setWordWrap(true);
   edit_duplicate_label->setGeometry(15,186,sizeHint().width()-30,50);
   edit_duplicate_label->setFont(normal_font);
   edit_duplicate_label->hide();
   edit_duplicate_list=new Q3ListView(this);
-  edit_duplicate_list->setGeometry(10,209,sizeHint().width()-20,200);
+  edit_duplicate_list->setGeometry(10,234,sizeHint().width()-20,215);
   edit_duplicate_list->setItemMargin(5);
   edit_duplicate_list->setAllColumnsShowFocus(true);
   edit_duplicate_list->addColumn(tr("CART"));
@@ -193,7 +193,7 @@ EditSettings::EditSettings(QWidget *parent)
   edit_duplicate_list->hide();
   edit_save_button=new QPushButton(this);
   edit_save_button->
-    setGeometry(sizeHint().width()-85,414,70,25);
+    setGeometry(sizeHint().width()-85,454,70,25);
   edit_save_button->setFont(normal_font);
   edit_save_button->setText(tr("&Save List"));
   connect(edit_save_button,SIGNAL(clicked()),this,SLOT(saveData()));

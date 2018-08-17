@@ -1587,7 +1587,11 @@ al URL especificado.
     </message>
     <message>
         <source>CHANNEL VALUES</source>
-        <translation>VALORES DEL CANAL</translation>
+        <translation type="obsolete">VALORES DEL CANAL</translation>
+    </message>
+    <message>
+        <source>Channel Values</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

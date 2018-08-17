@@ -293,9 +293,8 @@ EditStation::EditStation(QString sname,QWidget *parent)
   //
   // System Services Section
   //
-  station_systemservices_label=new QLabel(tr("System Services"),this);
-  station_systemservices_label->setFont(font);
-  station_systemservices_label->setAlignment(Qt::AlignCenter);
+  station_systemservices_groupbox=new QGroupBox(tr("System Services"),this);
+  station_systemservices_groupbox->setFont(font);
 
   //
   // HTTP Service Host
@@ -868,24 +867,6 @@ void EditStation::stopCartClickedData()
 }
 
 
-void EditStation::paintEvent(QPaintEvent *e)
-{
-  QPainter *p=new QPainter(this);
-  p->setPen(Qt::black);
-  p->setBrush(Qt::black);
-
-  //
-  // System Services
-  //
-  p->drawLine(10,343,size().width()-10,343);
-  p->drawLine(size().width()-10,343,size().width()-10,401);
-  p->drawLine(size().width()-10,401,10,401);
-  p->drawLine(10,401,10,343);
-
-  delete p;
-}
-
-
 void EditStation::resizeEvent(QResizeEvent *e)
 {
   station_name_edit->setGeometry(115,11,size().width()-125,19);
@@ -947,7 +928,7 @@ void EditStation::resizeEvent(QResizeEvent *e)
   station_panel_enforce_box->setGeometry(25,314,15,15);
   station_panel_enforce_label->setGeometry(45,312,size().width()-55,20);
 
-  station_systemservices_label->setGeometry(30,333,110,20);
+  station_systemservices_groupbox->setGeometry(10,339,size().width()-20,60);
 
   station_http_station_box->setGeometry(145,354,size().width()-165,19);
   station_http_station_label->setGeometry(11,354,130,19);

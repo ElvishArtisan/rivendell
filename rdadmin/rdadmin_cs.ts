@@ -1419,7 +1419,7 @@ files, causing any whose files remain to be imported again.</source>
     </message>
     <message>
         <source>CHANNEL VALUES</source>
-        <translation>HODNOTY KANÁLŮ</translation>
+        <translation type="obsolete">HODNOTY KANÁLŮ</translation>
     </message>
     <message>
         <source>Title:</source>
@@ -1585,6 +1585,10 @@ Do you still want to enable redireciton?</source>
 přívodu budou TRVALE přesměrováni na zadanou adresu.
 
 Pořád ještě chcete povolit přesměrování?</translation>
+    </message>
+    <message>
+        <source>Channel Values</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

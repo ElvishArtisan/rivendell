@@ -21,15 +21,16 @@
 #ifndef EDIT_FEED_H
 #define EDIT_FEED_H
 
-#include <qdialog.h>
-#include <q3textedit.h>
-#include <qspinbox.h>
-#include <qlineedit.h>
-#include <qsqldatabase.h>
 #include <qcheckbox.h>
-#include <qlabel.h>
 #include <qcombobox.h>
+#include <qdialog.h>
+#include <qgroupbox.h>
+#include <qlabel.h>
+#include <qlineedit.h>
 #include <qpushbutton.h>
+#include <qspinbox.h>
+
+#include <q3textedit.h>
 
 #include <rdfeed.h>
 #include <rdsettings.h>
@@ -52,9 +53,6 @@ class EditFeed : public QDialog
   void okData();
   void cancelData();
   
- protected:
-  void paintEvent(QPaintEvent *e);
-
  private:
   void RedirectChanged(bool state);
   RDFeed *feed_feed;
@@ -91,6 +89,7 @@ class EditFeed : public QDialog
   QLabel *feed_redirect_label;
   QLineEdit *feed_redirect_edit;
   QPushButton *feed_format_button;
+  QGroupBox *feed_channel_section_groupbox;
   QLabel *feed_channel_title_label;
   QLabel *feed_channel_category_label;
   QLabel *feed_channel_link_label;
@@ -114,7 +113,6 @@ class EditFeed : public QDialog
   QLabel *feed_header_xml_label;
   QLabel *feed_channel_xml_label;
   QLabel *feed_item_xml_label;
-  QLabel *feed_channel_section_label;
 };
 
 

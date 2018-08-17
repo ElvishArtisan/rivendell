@@ -74,10 +74,9 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   //
   // Channel Section
   //
-  feed_channel_section_label=new QLabel(tr("CHANNEL VALUES"),this);
-  feed_channel_section_label->setGeometry(30,41,130,20);
-  feed_channel_section_label->setAlignment(Qt::AlignCenter);
-  feed_channel_section_label->setFont(font);
+  feed_channel_section_groupbox=new QGroupBox(tr("Channel Values"),this);
+  feed_channel_section_groupbox->setFont(font);
+  feed_channel_section_groupbox->setGeometry(10,45,sizeHint().width()/2-10,227);
 
   //
   // Channel Title
@@ -610,17 +609,6 @@ void EditFeed::cancelData()
 }
 
 
-void EditFeed::paintEvent(QPaintEvent *e)
-{
-  QPainter *p=new QPainter(this);
-  p->drawLine(10,50,sizeHint().width()/2,50);
-  p->drawLine(sizeHint().width()/2,50,sizeHint().width()/2,272);
-  p->drawLine(sizeHint().width()/2,272,10,272);
-  p->drawLine(10,272,10,50);
-  delete p;
-}
-
-
 void EditFeed::RedirectChanged(bool state)
 {
   feed_redirect_label->setEnabled(state);
@@ -668,7 +656,7 @@ void EditFeed::RedirectChanged(bool state)
   feed_normalize_unit_label->setDisabled(state);
   feed_castorder_label->setDisabled(state);
   feed_extension_label->setDisabled(state);
-  feed_channel_section_label->setDisabled(state);
+  feed_channel_section_groupbox->setDisabled(state);
   feed_header_xml_label->setDisabled(state);
   feed_channel_xml_label->setDisabled(state);
   feed_item_xml_label->setDisabled(state);
