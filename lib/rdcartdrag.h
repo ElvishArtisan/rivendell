@@ -2,7 +2,7 @@
 //
 // Stored value drag object for Rivendell carts.
 //
-//   (C) Copyright 2013,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2013-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,8 +22,9 @@
 #define RDCARTDRAG_H
 
 #include <qcolor.h>
-#include <q3dragobject.h>
 #include <qpixmap.h>
+
+#include <q3dragobject.h>
 
 #include <rdcart.h>
 #include <rdlog_line.h>

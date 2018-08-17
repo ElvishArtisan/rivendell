@@ -2,7 +2,7 @@
 //
 // Stored value drag object for Rivendell carts.
 //
-//   (C) Copyright 2013,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2013-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,8 +21,6 @@
 #include <string.h>
 
 #include <qstringlist.h>
-//Added by qt3to4:
-#include <QPixmap>
 
 #include <rd.h>
 #include <rdcart.h>
@@ -99,7 +97,7 @@ bool RDCartDrag::decode(QMimeSource *e,unsigned *cartnum,QColor *color,
 			QString *title)
 {
   RDProfile *p=new RDProfile();
-  p->setSourceString(e->encodedData(RDMIMETYPE_CART));
+  p->setSourceString(QString::fromUtf8(e->encodedData(RDMIMETYPE_CART)));
   *cartnum=p->intValue("Rivendell-Cart","Number");
   if(color!=NULL) {
     color->setNamedColor(p->stringValue("Rivendell-Cart","Color"));
@@ -135,7 +133,5 @@ void RDCartDrag::SetData(unsigned cartnum,const QColor &color,const QString &tit
   if(!title.isEmpty()) {
     str+="ButtonText="+title+"\n";
   }
-  QByteArray data(str.length());
-  data.duplicate(str,str.length());
-  setEncodedData(data);
+  setEncodedData(str.toUtf8());
 }
