@@ -2,7 +2,7 @@
 //
 // Functions for getting system status.
 //
-//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2016-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -23,10 +23,9 @@
 #include <syslog.h>
 #include <errno.h>
 
+#include <qsqlquery.h>
 #include <qstringlist.h>
-#include <qsqldatabase.h>
-//Added by qt3to4:
-#include <QSqlQuery>
+#include <qvariant.h>
 
 #include "rdstatus.h"
 

@@ -17488,3 +17488,5 @@
 2018-08-17 Fred Gleason <fredg@paravelsystems.com>
 	* Updated the pre- and post-installation scripts in the RPM spec
 	file.
+2018-08-19 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression that caused the build to break under RHEL 6.
