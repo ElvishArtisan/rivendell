@@ -39,7 +39,7 @@ OggVorbis - Open Source Audio Coding Library.  Needed for OggVorbis
 importing and exporting.  Included with most distros, or available at: 
 http://www.xiph.org/.
 
-Qt Toolkit, v3.3 or better
+Qt Toolkit, v4.6 or better
 Most modern Linux distros include this.  It's typically installed as part
 of the KDE Desktop Environment, although KDE is by no means required.
 It can also be downloaded directly from TrollTech (http://www.trolltech.com/).

@@ -17500,3 +17500,5 @@
 2018-08-20 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdadmin(1) that failed to close the program after
 	a failed login.
+2018-08-20 Fred Gleason <fredg@paravelsystems.com>
+	* Updated dependency list in 'INSTALL'.
