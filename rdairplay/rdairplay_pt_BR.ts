@@ -473,15 +473,15 @@ Log</source>
     </message>
     <message>
         <source>NAME</source>
-        <translation>NOME</translation>
+        <translation type="obsolete">NOME</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation>Descrição</translation>
+        <translation type="obsolete">Descrição</translation>
     </message>
     <message>
         <source>SERVICE</source>
-        <translation>SERVIÇO</translation>
+        <translation type="obsolete">SERVIÇO</translation>
     </message>
     <message>
         <source>Load</source>
@@ -533,6 +533,18 @@ Log</source>
     </message>
     <message>
         <source>You must refresh the log before it can be saved.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

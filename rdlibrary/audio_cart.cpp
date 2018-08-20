@@ -135,46 +135,46 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
 	  this,
 	  SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
 
-  rdcart_cut_list->addColumn(tr("WT"));
+  rdcart_cut_list->addColumn(tr("Wt"));
   rdcart_cut_list->setColumnAlignment(0,Qt::AlignHCenter);
 
-  rdcart_cut_list->addColumn(tr("DESCRIPTION"));
+  rdcart_cut_list->addColumn(tr("Description"));
   rdcart_cut_list->setColumnAlignment(1,Qt::AlignLeft);
 
-  rdcart_cut_list->addColumn(tr("LENGTH"));
+  rdcart_cut_list->addColumn(tr("Length"));
   rdcart_cut_list->setColumnAlignment(2,Qt::AlignRight);
   rdcart_cut_list->setColumnSortType(2,RDListView::TimeSort);
 
-  rdcart_cut_list->addColumn(tr("LAST PLAYED"));
+  rdcart_cut_list->addColumn(tr("Last Played"));
   rdcart_cut_list->setColumnAlignment(3,Qt::AlignHCenter);
 
-  rdcart_cut_list->addColumn(tr("# OF PLAYS"));
+  rdcart_cut_list->addColumn(tr("# of Plays"));
   rdcart_cut_list->setColumnAlignment(4,Qt::AlignHCenter);
 
 
-  rdcart_cut_list->addColumn(tr("SOURCE"));
+  rdcart_cut_list->addColumn(tr("Source"));
   rdcart_cut_list->setColumnAlignment(5,Qt::AlignHCenter);
 
 
-  rdcart_cut_list->addColumn(tr("INGEST"));
+  rdcart_cut_list->addColumn(tr("Ingest"));
   rdcart_cut_list->setColumnAlignment(6,Qt::AlignHCenter);
 
-  rdcart_cut_list->addColumn(tr("OUTCUE"));
+  rdcart_cut_list->addColumn(tr("Outcue"));
   rdcart_cut_list->setColumnAlignment(7,Qt::AlignLeft);
 
-  rdcart_cut_list->addColumn(tr("START DATE"));
+  rdcart_cut_list->addColumn(tr("Start Date"));
   rdcart_cut_list->setColumnAlignment(8,Qt::AlignLeft);
 
-  rdcart_cut_list->addColumn(tr("END DATE"));
+  rdcart_cut_list->addColumn(tr("End Date"));
   rdcart_cut_list->setColumnAlignment(9,Qt::AlignLeft);
 
-  rdcart_cut_list->addColumn(tr("DAYPART START"));
+  rdcart_cut_list->addColumn(tr("Daypart Start"));
   rdcart_cut_list->setColumnAlignment(10,Qt::AlignLeft);
 
-  rdcart_cut_list->addColumn(tr("DAYPART END"));
+  rdcart_cut_list->addColumn(tr("Daypart End"));
   rdcart_cut_list->setColumnAlignment(11,Qt::AlignLeft);
 
-  rdcart_cut_list->addColumn(tr("NAME"));
+  rdcart_cut_list->addColumn(tr("Name"));
   rdcart_cut_list->setColumnAlignment(12,Qt::AlignLeft);
 
   rdcart_cut_list->addColumn(tr("SHA1"));
@@ -293,10 +293,10 @@ void AudioCart::changeCutScheduling(int sched)
     item=(RDListViewItem *)item->nextSibling();
   }
   if(sched) {
-    rdcart_cut_list->setColumnText(0,tr("WT"));
+    rdcart_cut_list->setColumnText(0,tr("Wt"));
   }
   else {
-    rdcart_cut_list->setColumnText(0,tr("ORD"));
+    rdcart_cut_list->setColumnText(0,tr("Ord"));
   }
   rdcart_use_weighting=sched!=0;
 }

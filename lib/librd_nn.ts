@@ -1107,15 +1107,15 @@ farge</translation>
     </message>
     <message>
         <source>NUMBER</source>
-        <translation>NUMMER</translation>
+        <translation type="obsolete">NUMMER</translation>
     </message>
     <message>
         <source>TITLE</source>
-        <translation>TITTEL</translation>
+        <translation type="obsolete">TITTEL</translation>
     </message>
     <message>
         <source>GROUP</source>
-        <translation>GRUPPE</translation>
+        <translation type="obsolete">GRUPPE</translation>
     </message>
     <message>
         <source>Cuts</source>
@@ -1123,7 +1123,7 @@ farge</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation>SKILDRING</translation>
+        <translation type="obsolete">SKILDRING</translation>
     </message>
     <message>
         <source>&amp;Add New
@@ -1156,6 +1156,22 @@ Cart</source>
     </message>
     <message>
         <source>Scheduler Code:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

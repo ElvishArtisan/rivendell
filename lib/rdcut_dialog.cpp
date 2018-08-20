@@ -190,13 +190,13 @@ RDCutDialog::RDCutDialog(QString *cutname,QString *filter,QString *group,
   label->setFont(label_font);
   cut_cart_list->addColumn("");
   cut_cart_list->setColumnAlignment(0,Qt::AlignHCenter);
-  cut_cart_list->addColumn(tr("NUMBER"));
+  cut_cart_list->addColumn(tr("Number"));
 
   cut_cart_list->setColumnAlignment(1,Qt::AlignHCenter);
-  cut_cart_list->addColumn(tr("TITLE"));
+  cut_cart_list->addColumn(tr("Title"));
   cut_cart_list->setColumnAlignment(2,Qt::AlignLeft);
 
-  cut_cart_list->addColumn(tr("GROUP"));
+  cut_cart_list->addColumn(tr("Group"));
   cut_cart_list->setColumnAlignment(3,Qt::AlignCenter);
 
   //
@@ -209,10 +209,10 @@ RDCutDialog::RDCutDialog(QString *cutname,QString *filter,QString *group,
   label=new QLabel(cut_cut_list,tr("Cuts"),this);
   label->setGeometry(325,100,100,20);
   label->setFont(label_font);
-  cut_cut_list->addColumn(tr("DESCRIPTION"));
+  cut_cut_list->addColumn(tr("Description"));
   cut_cut_list->setColumnAlignment(0,Qt::AlignLeft);
 
-  cut_cut_list->addColumn(tr("NUMBER"));
+  cut_cut_list->addColumn(tr("Number"));
   cut_cut_list->setColumnAlignment(1,Qt::AlignLeft);
 
 

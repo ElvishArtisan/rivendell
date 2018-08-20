@@ -993,23 +993,7 @@ La Couleur</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>NUMBER</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>TITLE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>GROUP</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Cuts</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>DESCRIPTION</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1043,6 +1027,22 @@ Cart</source>
     </message>
     <message>
         <source>Matches</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

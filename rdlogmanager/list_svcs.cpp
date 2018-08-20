@@ -57,9 +57,9 @@ ListSvcs::ListSvcs(QWidget *parent)
   list_log_list=new Q3ListView(this);
   list_log_list->setAllColumnsShowFocus(true);
   list_log_list->setItemMargin(5);
-  list_log_list->addColumn(tr("SERVICE"));
+  list_log_list->addColumn(tr("Service"));
   list_log_list->setColumnAlignment(0,Qt::AlignLeft);
-  list_log_list->addColumn(tr("OLDEST REPORT"));
+  list_log_list->addColumn(tr("Oldest Report"));
   list_log_list->setColumnAlignment(1,Qt::AlignCenter);
   connect(list_log_list,
 	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),

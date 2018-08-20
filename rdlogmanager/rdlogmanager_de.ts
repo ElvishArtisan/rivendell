@@ -1276,11 +1276,11 @@ delete</source>
     </message>
     <message>
         <source>SERVICE</source>
-        <translation>SERVICE</translation>
+        <translation type="obsolete">SERVICE</translation>
     </message>
     <message>
         <source>OLDEST REPORT</source>
-        <translation>ÄLTESTER REPORT</translation>
+        <translation type="obsolete">ÄLTESTER REPORT</translation>
     </message>
     <message>
         <source>&amp;Generate
@@ -1301,6 +1301,14 @@ Data</source>
     <message>
         <source>[none]</source>
         <translation>[keine]</translation>
+    </message>
+    <message>
+        <source>Service</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Oldest Report</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

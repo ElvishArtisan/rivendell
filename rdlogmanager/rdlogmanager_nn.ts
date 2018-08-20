@@ -1283,11 +1283,11 @@ sletta</translation>
     </message>
     <message>
         <source>SERVICE</source>
-        <translation>TENEST</translation>
+        <translation type="obsolete">TENEST</translation>
     </message>
     <message>
         <source>OLDEST REPORT</source>
-        <translation>ELDSTE RAPPORT</translation>
+        <translation type="obsolete">ELDSTE RAPPORT</translation>
     </message>
     <message>
         <source>&amp;Generate
@@ -1308,6 +1308,14 @@ data</translation>
     <message>
         <source>[none]</source>
         <translation>[ingen]</translation>
+    </message>
+    <message>
+        <source>Service</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Oldest Report</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

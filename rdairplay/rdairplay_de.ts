@@ -472,15 +472,15 @@ vorhören</translation>
     </message>
     <message>
         <source>NAME</source>
-        <translation>NAME</translation>
+        <translation type="obsolete">NAME</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation>BESCHREIBUNG</translation>
+        <translation type="obsolete">BESCHREIBUNG</translation>
     </message>
     <message>
         <source>SERVICE</source>
-        <translation>SERVICE</translation>
+        <translation type="obsolete">SERVICE</translation>
     </message>
     <message>
         <source>Load</source>
@@ -532,6 +532,18 @@ vorhören</translation>
     </message>
     <message>
         <source>You must refresh the log before it can be saved.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

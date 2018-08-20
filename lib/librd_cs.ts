@@ -1117,15 +1117,15 @@ ze &amp;souboru</translation>
     </message>
     <message>
         <source>NUMBER</source>
-        <translation>ČÍSLO</translation>
+        <translation type="obsolete">ČÍSLO</translation>
     </message>
     <message>
         <source>TITLE</source>
-        <translation>NÁZEV</translation>
+        <translation type="obsolete">NÁZEV</translation>
     </message>
     <message>
         <source>GROUP</source>
-        <translation>SKUPINA</translation>
+        <translation type="obsolete">SKUPINA</translation>
     </message>
     <message>
         <source>Cuts</source>
@@ -1133,7 +1133,7 @@ ze &amp;souboru</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation>POPIS</translation>
+        <translation type="obsolete">POPIS</translation>
     </message>
     <message>
         <source>&amp;Add New
@@ -1168,6 +1168,22 @@ vozík</translation>
     <message>
         <source>Scheduler Code:</source>
         <translation>Kódy rozvrhovače:</translation>
+    </message>
+    <message>
+        <source>Number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

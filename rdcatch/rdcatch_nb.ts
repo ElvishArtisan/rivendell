@@ -1024,79 +1024,79 @@ ny</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation>SKILDRING</translation>
+        <translation type="obsolete">SKILDRING</translation>
     </message>
     <message>
         <source>LOCATION</source>
-        <translation>PLASS</translation>
+        <translation type="obsolete">PLASS</translation>
     </message>
     <message>
         <source>START</source>
-        <translation>START</translation>
+        <translation type="obsolete">START</translation>
     </message>
     <message>
         <source>END</source>
-        <translation>SLUTT</translation>
+        <translation type="obsolete">SLUTT</translation>
     </message>
     <message>
         <source>SOURCE</source>
-        <translation>KJELDE</translation>
+        <translation type="obsolete">KJELDE</translation>
     </message>
     <message>
         <source>DESTINATION</source>
-        <translation>MÅL</translation>
+        <translation type="obsolete">MÅL</translation>
     </message>
     <message>
         <source>ORIGIN</source>
-        <translation>OPPHAV</translation>
+        <translation type="obsolete">OPPHAV</translation>
     </message>
     <message>
         <source>ONE SHOT</source>
-        <translation>ENKELTSKOT</translation>
+        <translation type="obsolete">ENKELTSKOT</translation>
     </message>
     <message>
         <source>TRIM THRESHOLD</source>
-        <translation>TRIMMETERSKEL</translation>
+        <translation type="obsolete">TRIMMETERSKEL</translation>
     </message>
     <message>
         <source>STARTDATE OFFSET</source>
-        <translation>AVVIK STARTDATO</translation>
+        <translation type="obsolete">AVVIK STARTDATO</translation>
     </message>
     <message>
         <source>ENDDATE OFFSET</source>
-        <translation>AVVIK SLUTTDATO</translation>
+        <translation type="obsolete">AVVIK SLUTTDATO</translation>
     </message>
     <message>
         <source>FORMAT</source>
-        <translation>FORMAT</translation>
+        <translation type="obsolete">FORMAT</translation>
     </message>
     <message>
         <source>CHANNELS</source>
-        <translation>KANALAR</translation>
+        <translation type="obsolete">KANALAR</translation>
     </message>
     <message>
         <source>SAMPLE RATE</source>
-        <translation>PUNKTPRØVERATE</translation>
+        <translation type="obsolete">PUNKTPRØVERATE</translation>
     </message>
     <message>
         <source>BIT RATE</source>
-        <translation>BITRATE</translation>
+        <translation type="obsolete">BITRATE</translation>
     </message>
     <message>
         <source>STATION</source>
-        <translation>STASJON</translation>
+        <translation type="obsolete">STASJON</translation>
     </message>
     <message>
         <source>DECK</source>
-        <translation>SPELAR</translation>
+        <translation type="obsolete">SPELAR</translation>
     </message>
     <message>
         <source>CUT</source>
-        <translation>KLIPP</translation>
+        <translation type="obsolete">KLIPP</translation>
     </message>
     <message>
         <source>CART</source>
-        <translation>KORG</translation>
+        <translation type="obsolete">KORG</translation>
     </message>
     <message>
         <source>ID</source>
@@ -1104,19 +1104,19 @@ ny</translation>
     </message>
     <message>
         <source>TYPE</source>
-        <translation>TYPE</translation>
+        <translation type="obsolete">TYPE</translation>
     </message>
     <message>
         <source>STATUS</source>
-        <translation>STATUS</translation>
+        <translation type="obsolete">STATUS</translation>
     </message>
     <message>
         <source>EXIT CODE</source>
-        <translation>AVSLUTT-KODE</translation>
+        <translation type="obsolete">AVSLUTT-KODE</translation>
     </message>
     <message>
         <source>STATE</source>
-        <translation>TILSTAND</translation>
+        <translation type="obsolete">TILSTAND</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -1344,6 +1344,86 @@ ny</translation>
     </message>
     <message>
         <source>Connection Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Location</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>End</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Destination</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Origin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>One Shot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trim Threshold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>StartDate Offset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>EndDate Offset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Channels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sample Rate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bit Rate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Deck</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Exit Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>State</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

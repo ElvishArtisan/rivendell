@@ -478,15 +478,15 @@ Tail</source>
     </message>
     <message>
         <source>NAME</source>
-        <translation>NAMN</translation>
+        <translation type="obsolete">NAMN</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation>SKILDRING</translation>
+        <translation type="obsolete">SKILDRING</translation>
     </message>
     <message>
         <source>SERVICE</source>
-        <translation>TENEST</translation>
+        <translation type="obsolete">TENEST</translation>
     </message>
     <message>
         <source>Load</source>
@@ -538,6 +538,18 @@ Tail</source>
     </message>
     <message>
         <source>You must refresh the log before it can be saved.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

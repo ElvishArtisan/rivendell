@@ -66,11 +66,11 @@ ListLogs::ListLogs(RDLogPlay *log,QWidget *parent)
           SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
           this,
           SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
-  list_log_list->addColumn(tr("NAME"));
+  list_log_list->addColumn(tr("Name"));
   list_log_list->setColumnAlignment(0,Qt::AlignLeft);
-  list_log_list->addColumn(tr("DESCRIPTION"));
+  list_log_list->addColumn(tr("Description"));
   list_log_list->setColumnAlignment(1,Qt::AlignLeft);
-  list_log_list->addColumn(tr("SERVICE"));
+  list_log_list->addColumn(tr("Service"));
   list_log_list->setColumnAlignment(2,Qt::AlignLeft);
 
   //

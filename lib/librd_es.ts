@@ -1100,11 +1100,11 @@ Color</translation>
     </message>
     <message>
         <source>NUMBER</source>
-        <translation>NÚMERO</translation>
+        <translation type="obsolete">NÚMERO</translation>
     </message>
     <message>
         <source>TITLE</source>
-        <translation>TÍTULO</translation>
+        <translation type="obsolete">TÍTULO</translation>
     </message>
     <message>
         <source>Cuts</source>
@@ -1112,7 +1112,7 @@ Color</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation>DESCRIPCIÓN</translation>
+        <translation type="obsolete">DESCRIPCIÓN</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -1138,7 +1138,7 @@ Cartucho</translation>
     </message>
     <message>
         <source>GROUP</source>
-        <translation>GRUPO</translation>
+        <translation type="obsolete">GRUPO</translation>
     </message>
     <message>
         <source>Please Wait...</source>
@@ -1159,6 +1159,22 @@ Cartucho</translation>
     <message>
         <source>Scheduler Code:</source>
         <translation>Cód. Programac.:</translation>
+    </message>
+    <message>
+        <source>Number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -25,23 +25,23 @@
     </message>
     <message>
         <source>WT</source>
-        <translation>WT</translation>
+        <translation type="obsolete">WT</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation>DESCRIPCIÓN</translation>
+        <translation type="obsolete">DESCRIPCIÓN</translation>
     </message>
     <message>
         <source>LENGTH</source>
-        <translation>DURACIÓN</translation>
+        <translation type="obsolete">DURACIÓN</translation>
     </message>
     <message>
         <source>LAST PLAYED</source>
-        <translation>ÚLTIMA REPROD</translation>
+        <translation type="obsolete">ÚLTIMA REPROD</translation>
     </message>
     <message>
         <source># OF PLAYS</source>
-        <translation># DE REPROD</translation>
+        <translation type="obsolete"># DE REPROD</translation>
     </message>
     <message>
         <source>ORIGIN</source>
@@ -49,27 +49,27 @@
     </message>
     <message>
         <source>OUTCUE</source>
-        <translation>OUTCUE</translation>
+        <translation type="obsolete">OUTCUE</translation>
     </message>
     <message>
         <source>START DATE</source>
-        <translation>FECHA INICIO</translation>
+        <translation type="obsolete">FECHA INICIO</translation>
     </message>
     <message>
         <source>END DATE</source>
-        <translation>FECHA FIN</translation>
+        <translation type="obsolete">FECHA FIN</translation>
     </message>
     <message>
         <source>DAYPART START</source>
-        <translation>INICIO DE DAYPART</translation>
+        <translation type="obsolete">INICIO DE DAYPART</translation>
     </message>
     <message>
         <source>DAYPART END</source>
-        <translation>FIN DE DAYPART</translation>
+        <translation type="obsolete">FIN DE DAYPART</translation>
     </message>
     <message>
         <source>NAME</source>
-        <translation>NOMBRE</translation>
+        <translation type="obsolete">NOMBRE</translation>
     </message>
     <message>
         <source>Cuts</source>
@@ -223,10 +223,6 @@ Do you still want to delete?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>ORD</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>SHA1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -235,15 +231,63 @@ Do you still want to delete?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>INGEST</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>SOURCE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>unknown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wt</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last Played</source>
+        <translation type="unfinished">Últ. Reprod</translation>
+    </message>
+    <message>
+        <source># of Plays</source>
+        <translation type="unfinished"># de reprod</translation>
+    </message>
+    <message>
+        <source>Source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ingest</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Outcue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start Date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>End Date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Daypart Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Daypart End</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ord</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1065,11 +1109,11 @@ Notas</translation>
     </message>
     <message>
         <source>LINE</source>
-        <translation>LÍNEA</translation>
+        <translation type="obsolete">LÍNEA</translation>
     </message>
     <message>
         <source>COMMAND</source>
-        <translation>COMANDO</translation>
+        <translation type="obsolete">COMANDO</translation>
     </message>
     <message>
         <source>Macros</source>
@@ -1094,6 +1138,14 @@ Cartucho</translation>
     <message>
         <source>--- End of cart ---</source>
         <translation>--- Fin del cartucho ---</translation>
+    </message>
+    <message>
+        <source>Line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Command</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1124,51 +1176,51 @@ Cartucho</translation>
     </message>
     <message>
         <source>CART</source>
-        <translation>CARTUCHO</translation>
+        <translation type="obsolete">CARTUCHO</translation>
     </message>
     <message>
         <source>GROUP</source>
-        <translation>GRUPO</translation>
+        <translation type="obsolete">GRUPO</translation>
     </message>
     <message>
         <source>LENGTH</source>
-        <translation>DURACIÓN</translation>
+        <translation type="obsolete">DURACIÓN</translation>
     </message>
     <message>
         <source>TITLE</source>
-        <translation>TÍTULO</translation>
+        <translation type="obsolete">TÍTULO</translation>
     </message>
     <message>
         <source>ARTIST</source>
-        <translation>ARTISTA</translation>
+        <translation type="obsolete">ARTISTA</translation>
     </message>
     <message>
         <source>START</source>
-        <translation>INICIO</translation>
+        <translation type="obsolete">INICIO</translation>
     </message>
     <message>
         <source>END</source>
-        <translation>FIN</translation>
+        <translation type="obsolete">FIN</translation>
     </message>
     <message>
         <source>CLIENT</source>
-        <translation>CLIENTE</translation>
+        <translation type="obsolete">CLIENTE</translation>
     </message>
     <message>
         <source>AGENCY</source>
-        <translation>AGENCIA</translation>
+        <translation type="obsolete">AGENCIA</translation>
     </message>
     <message>
         <source>USER DEFINED</source>
-        <translation>RESERVADO</translation>
+        <translation type="obsolete">RESERVADO</translation>
     </message>
     <message>
         <source>CUTS</source>
-        <translation>AUDIOS</translation>
+        <translation type="obsolete">AUDIOS</translation>
     </message>
     <message>
         <source>LAST CUT PLAYED</source>
-        <translation>ÚLT. AUDIO REPR.</translation>
+        <translation type="obsolete">ÚLT. AUDIO REPR.</translation>
     </message>
     <message>
         <source>PLAY ORDER</source>
@@ -1176,15 +1228,15 @@ Cartucho</translation>
     </message>
     <message>
         <source>ENFORCE LENGTH</source>
-        <translation>OBLIGAR DURACIÓN</translation>
+        <translation type="obsolete">OBLIGAR DURACIÓN</translation>
     </message>
     <message>
         <source>PRESERVE PITCH</source>
-        <translation>PRESERVAR PITCH</translation>
+        <translation type="obsolete">PRESERVAR PITCH</translation>
     </message>
     <message>
         <source>LENGTH DEVIATION</source>
-        <translation>DESVIACIÓN DE LA DURACIÓN</translation>
+        <translation type="obsolete">DESVIACIÓN DE LA DURACIÓN</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -1238,7 +1290,7 @@ CD</translation>
     </message>
     <message>
         <source>OWNED BY</source>
-        <translation>PROPIEDAD DE</translation>
+        <translation type="obsolete">PROPIEDAD DE</translation>
     </message>
     <message>
         <source>RDCatch Event Exists</source>
@@ -1317,18 +1369,6 @@ Do you still want to delete it?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>COMPOSER</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>CONDUCTOR</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>PUBLISHER</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Allow Cart Dragging</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1337,15 +1377,91 @@ Do you still want to delete it?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>ALBUM</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>LABEL</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Unknown command option</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Artist</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>End</source>
+        <translation type="unfinished">Fin</translation>
+    </message>
+    <message>
+        <source>Album</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Label</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Composer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Conductor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Publisher</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Client</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Agency</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>User Defined</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cuts</source>
+        <translation type="unfinished">Audios</translation>
+    </message>
+    <message>
+        <source>Last Cut Played</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Enforce Length</source>
+        <translation type="unfinished">Forzar duración</translation>
+    </message>
+    <message>
+        <source>Preserve Pitch</source>
+        <translation type="unfinished">Preservar pitch</translation>
+    </message>
+    <message>
+        <source>Length Deviation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Owned By</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

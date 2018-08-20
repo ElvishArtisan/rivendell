@@ -1280,11 +1280,11 @@ deletar</translation>
     </message>
     <message>
         <source>SERVICE</source>
-        <translation>SERVIÇO</translation>
+        <translation type="obsolete">SERVIÇO</translation>
     </message>
     <message>
         <source>OLDEST REPORT</source>
-        <translation>RELATÓRIO MAIS VELHO</translation>
+        <translation type="obsolete">RELATÓRIO MAIS VELHO</translation>
     </message>
     <message>
         <source>&amp;Generate
@@ -1305,6 +1305,14 @@ Dados</translation>
     <message>
         <source>[none]</source>
         <translation>[nenhum]</translation>
+    </message>
+    <message>
+        <source>Service</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Oldest Report</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

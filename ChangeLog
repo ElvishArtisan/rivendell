@@ -17490,3 +17490,8 @@
 	file.
 2018-08-19 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression that caused the build to break under RHEL 6.
+2018-08-20 Fred Gleason <fredg@paravelsystems.com>
+	* Changed column headings to lower-case in rdairplay(1).
+	* Changed column headings to lower-case in rdlibrary(1).
+	* Changed column headings to lower-case in rdcatch(1).
+	* Changed column headings to lower-case in rdlogmanager(1).

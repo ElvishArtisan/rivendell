@@ -113,10 +113,10 @@ MacroCart::MacroCart(RDCart *cart,QWidget *parent)
 	  this,
 	  SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
 
-  rdcart_macro_list->addColumn(tr("LINE"));
+  rdcart_macro_list->addColumn(tr("Line"));
   rdcart_macro_list->setColumnAlignment(0,Qt::AlignHCenter);
 
-  rdcart_macro_list->addColumn(tr("COMMAND"));
+  rdcart_macro_list->addColumn(tr("Command"));
   rdcart_macro_list->setColumnAlignment(1,Qt::AlignLeft);
 
   rdcart_macro_list_label=new QLabel(rdcart_macro_list,tr("Macros"),this);

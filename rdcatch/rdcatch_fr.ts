@@ -1004,99 +1004,7 @@ New</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>DESCRIPTION</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>LOCATION</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>START</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>END</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>SOURCE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>DESTINATION</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>ORIGIN</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>ONE SHOT</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>TRIM THRESHOLD</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>STARTDATE OFFSET</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>ENDDATE OFFSET</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>FORMAT</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>CHANNELS</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>SAMPLE RATE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>BIT RATE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>STATION</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>DECK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>CUT</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>CART</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>ID</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>TYPE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>STATUS</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>EXIT CODE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>STATE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1269,6 +1177,86 @@ New</source>
     </message>
     <message>
         <source>Connection Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Location</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>End</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Destination</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Origin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>One Shot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trim Threshold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>StartDate Offset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>EndDate Offset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Channels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sample Rate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bit Rate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Deck</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Exit Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>State</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

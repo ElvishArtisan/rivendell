@@ -1027,79 +1027,79 @@ nové</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation>POPIS</translation>
+        <translation type="obsolete">POPIS</translation>
     </message>
     <message>
         <source>LOCATION</source>
-        <translation>UMÍSTĚNÍ</translation>
+        <translation type="obsolete">UMÍSTĚNÍ</translation>
     </message>
     <message>
         <source>START</source>
-        <translation>ZAČÁTEK</translation>
+        <translation type="obsolete">ZAČÁTEK</translation>
     </message>
     <message>
         <source>END</source>
-        <translation>KONEC</translation>
+        <translation type="obsolete">KONEC</translation>
     </message>
     <message>
         <source>SOURCE</source>
-        <translation>ZDROJ</translation>
+        <translation type="obsolete">ZDROJ</translation>
     </message>
     <message>
         <source>DESTINATION</source>
-        <translation>CÍL</translation>
+        <translation type="obsolete">CÍL</translation>
     </message>
     <message>
         <source>ORIGIN</source>
-        <translation>PŮVOD</translation>
+        <translation type="obsolete">PŮVOD</translation>
     </message>
     <message>
         <source>ONE SHOT</source>
-        <translation>JEDNOU</translation>
+        <translation type="obsolete">JEDNOU</translation>
     </message>
     <message>
         <source>TRIM THRESHOLD</source>
-        <translation>PRÁH ZASTŘIŽENÍ</translation>
+        <translation type="obsolete">PRÁH ZASTŘIŽENÍ</translation>
     </message>
     <message>
         <source>STARTDATE OFFSET</source>
-        <translation>POSUN POČÁTEČNÍHO DATA</translation>
+        <translation type="obsolete">POSUN POČÁTEČNÍHO DATA</translation>
     </message>
     <message>
         <source>ENDDATE OFFSET</source>
-        <translation>POSUN KONCOVÉHO DATA</translation>
+        <translation type="obsolete">POSUN KONCOVÉHO DATA</translation>
     </message>
     <message>
         <source>FORMAT</source>
-        <translation>FORMÁT</translation>
+        <translation type="obsolete">FORMÁT</translation>
     </message>
     <message>
         <source>CHANNELS</source>
-        <translation>KANÁLY</translation>
+        <translation type="obsolete">KANÁLY</translation>
     </message>
     <message>
         <source>SAMPLE RATE</source>
-        <translation>VZORKOVACÍ KMITOČET</translation>
+        <translation type="obsolete">VZORKOVACÍ KMITOČET</translation>
     </message>
     <message>
         <source>BIT RATE</source>
-        <translation>DATOVÝ TOK</translation>
+        <translation type="obsolete">DATOVÝ TOK</translation>
     </message>
     <message>
         <source>STATION</source>
-        <translation>STANICE</translation>
+        <translation type="obsolete">STANICE</translation>
     </message>
     <message>
         <source>DECK</source>
-        <translation>PATRO</translation>
+        <translation type="obsolete">PATRO</translation>
     </message>
     <message>
         <source>CUT</source>
-        <translation>ZÁBĚR</translation>
+        <translation type="obsolete">ZÁBĚR</translation>
     </message>
     <message>
         <source>CART</source>
-        <translation>VOZÍK</translation>
+        <translation type="obsolete">VOZÍK</translation>
     </message>
     <message>
         <source>ID</source>
@@ -1107,19 +1107,19 @@ nové</translation>
     </message>
     <message>
         <source>TYPE</source>
-        <translation>TYP</translation>
+        <translation type="obsolete">TYP</translation>
     </message>
     <message>
         <source>STATUS</source>
-        <translation>STAV</translation>
+        <translation type="obsolete">STAV</translation>
     </message>
     <message>
         <source>EXIT CODE</source>
-        <translation>UKONČOVACÍ KÓD</translation>
+        <translation type="obsolete">UKONČOVACÍ KÓD</translation>
     </message>
     <message>
         <source>STATE</source>
-        <translation>STAV</translation>
+        <translation type="obsolete">STAV</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -1347,6 +1347,86 @@ nové</translation>
     </message>
     <message>
         <source>Connection Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Location</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>End</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Source</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Destination</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Origin</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>One Shot</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trim Threshold</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>StartDate Offset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>EndDate Offset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Format</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Channels</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sample Rate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bit Rate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Deck</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Exit Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>State</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

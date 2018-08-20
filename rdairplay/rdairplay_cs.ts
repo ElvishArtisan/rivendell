@@ -472,15 +472,15 @@ poslechu</translation>
     </message>
     <message>
         <source>NAME</source>
-        <translation>NÁZEV</translation>
+        <translation type="obsolete">NÁZEV</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation>POPIS</translation>
+        <translation type="obsolete">POPIS</translation>
     </message>
     <message>
         <source>SERVICE</source>
-        <translation>SLUŽBA</translation>
+        <translation type="obsolete">SLUŽBA</translation>
     </message>
     <message>
         <source>Load</source>
@@ -532,6 +532,18 @@ poslechu</translation>
     </message>
     <message>
         <source>You must refresh the log before it can be saved.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

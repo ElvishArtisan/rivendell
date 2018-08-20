@@ -1280,11 +1280,11 @@ eliminar</translation>
     </message>
     <message>
         <source>SERVICE</source>
-        <translation>SERVICIO</translation>
+        <translation type="obsolete">SERVICIO</translation>
     </message>
     <message>
         <source>OLDEST REPORT</source>
-        <translation>REPORTE MAS ANTIGUO</translation>
+        <translation type="obsolete">REPORTE MAS ANTIGUO</translation>
     </message>
     <message>
         <source>C&amp;lose</source>
@@ -1304,6 +1304,14 @@ Data</source>
 Reports</source>
         <translation>&amp;Generar 
 Reportes</translation>
+    </message>
+    <message>
+        <source>Service</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Oldest Report</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

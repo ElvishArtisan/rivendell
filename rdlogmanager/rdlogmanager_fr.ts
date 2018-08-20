@@ -1149,14 +1149,6 @@ Do you want to save?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>SERVICE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>OLDEST REPORT</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Generate
 Reports</source>
         <translation type="unfinished"></translation>
@@ -1172,6 +1164,14 @@ Data</source>
     </message>
     <message>
         <source>[none]</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Oldest Report</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

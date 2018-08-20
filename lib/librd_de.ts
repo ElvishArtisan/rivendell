@@ -1108,15 +1108,15 @@ senden</translation>
     </message>
     <message>
         <source>NUMBER</source>
-        <translation>NUMMER</translation>
+        <translation type="obsolete">NUMMER</translation>
     </message>
     <message>
         <source>TITLE</source>
-        <translation>TITEL</translation>
+        <translation type="obsolete">TITEL</translation>
     </message>
     <message>
         <source>GROUP</source>
-        <translation>GRUPPE</translation>
+        <translation type="obsolete">GRUPPE</translation>
     </message>
     <message>
         <source>Cuts</source>
@@ -1124,7 +1124,7 @@ senden</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation>BESCHREIBUNG</translation>
+        <translation type="obsolete">BESCHREIBUNG</translation>
     </message>
     <message>
         <source>&amp;Add New
@@ -1157,6 +1157,22 @@ Cart</source>
     </message>
     <message>
         <source>Scheduler Code:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Number</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
