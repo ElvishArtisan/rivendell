@@ -387,8 +387,9 @@ MainObject::MainObject(QObject *parent)
 					(const char *)RDCheckDateTime(q1->value(17).
 					toTime(),"hh:mm:ss"));//Invalid possible?
       }
-      RDCut::create(q1->value(0).toString());
-      sql=QString("update CUTS set ")+
+      sql=QString("insert into CUTS set ")+
+	"CUT_NAME=\""+RDEscapeString(q1->value(0).toString())+"\","+
+	QString().sprintf("CART_NUMBER=%u,",q->value(0).toUInt())+
 	"EVERGREEN=\""+RDEscapeString(q1->value(1).toString())+"\","+
 	"DESCRIPTION=\""+RDEscapeString(q1->value(2).toString())+"\","+
 	"OUTCUE=\""+RDEscapeString(q1->value(3).toString())+"\","+
@@ -410,21 +411,21 @@ MainObject::MainObject(QObject *parent)
 	QString().sprintf("WEIGHT=%u,",q1->value(19).toUInt())+
 	QString().sprintf("VALIDITY=%u,",q1->value(20).toUInt())+
 	QString().sprintf("CODING_FORMAT=%u,",q1->value(21).toUInt())+
-	QString().sprintf("BIT_RATE=%u,",q1->value(22).toUInt())+
-	QString().sprintf("CHANNELS=%u,",q1->value(23).toUInt())+
-	QString().sprintf("PLAY_GAIN=%d,",q1->value(24).toInt())+
-	QString().sprintf("START_POINT=%d,",q1->value(25).toInt())+
-	QString().sprintf("END_POINT=%d,",q1->value(26).toInt())+
-	QString().sprintf("FADEUP_POINT=%d,",q1->value(27).toInt())+
-	QString().sprintf("FADEDOWN_POINT=%d,",q1->value(28).toInt())+
-	QString().sprintf("SEGUE_START_POINT=%d,",q1->value(29).toInt())+
-	QString().sprintf("SEGUE_END_POINT=%d,",q1->value(30).toInt())+
-	QString().sprintf("SEGUE_GAIN=%d,",q1->value(31).toInt())+
-	QString().sprintf("HOOK_START_POINT=%d,",q1->value(32).toInt())+
-	QString().sprintf("HOOK_END_POINT=%d,",q1->value(33).toInt())+
-	QString().sprintf("TALK_START_POINT=%d,",q1->value(34).toInt())+
-	QString().sprintf("TALK_END_POINT=%d where ",q1->value(35).toInt())+
-	"CUT_NAME=\""+RDEscapeString(q1->value(0).toString())+"\"";
+	QString().sprintf("SAMPLE_RATE=%u,",q1->value(22).toUInt())+
+	QString().sprintf("BIT_RATE=%u,",q1->value(23).toUInt())+
+	QString().sprintf("CHANNELS=%u,",q1->value(24).toUInt())+
+	QString().sprintf("PLAY_GAIN=%d,",q1->value(25).toInt())+
+	QString().sprintf("START_POINT=%d,",q1->value(26).toInt())+
+	QString().sprintf("END_POINT=%d,",q1->value(27).toInt())+
+	QString().sprintf("FADEUP_POINT=%d,",q1->value(28).toInt())+
+	QString().sprintf("FADEDOWN_POINT=%d,",q1->value(29).toInt())+
+	QString().sprintf("SEGUE_START_POINT=%d,",q1->value(30).toInt())+
+	QString().sprintf("SEGUE_END_POINT=%d,",q1->value(31).toInt())+
+	QString().sprintf("SEGUE_GAIN=%d,",q1->value(32).toInt())+
+	QString().sprintf("HOOK_START_POINT=%d,",q1->value(33).toInt())+
+	QString().sprintf("HOOK_END_POINT=%d,",q1->value(34).toInt())+
+	QString().sprintf("TALK_START_POINT=%d,",q1->value(35).toInt())+
+	QString().sprintf("TALK_END_POINT=%d",q1->value(36).toInt());
       q2=new QSqlQuery(sql,filter_db);
       delete q2;
       ok=RDCopy(ext_audiodir+q1->value(0).toString()+"."+RD_AUDIO_EXTENSION,
