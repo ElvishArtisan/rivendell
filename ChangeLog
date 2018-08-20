@@ -17495,5 +17495,5 @@
 	* Changed column headings to lower-case in rdlibrary(1).
 	* Changed column headings to lower-case in rdcatch(1).
 	* Changed column headings to lower-case in rdlogmanager(1).
-2018-08-15 Fred Gleason <fredg@paravelsystems.com>
+2018-08-20 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rivendell_filter(1) that caused a segfault.
