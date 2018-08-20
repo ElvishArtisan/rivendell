@@ -347,7 +347,7 @@ bool CitadelXds::PostCut(const QString &cutname,const QString &filename)
   }
   RDSettings *settings=new RDSettings();
   QString tempfile=RDTempDirectory::basePath()+"/"+filename;
-  RDAudioConvert *conv=new RDAudioConvert(rdconfig->stationName());
+  RDAudioConvert *conv=new RDAudioConvert(rdconfig);
   conv->setSourceFile(RDCut::pathName(cutname));
   conv->setDestinationFile(tempfile);
   conv->setRange(cut->startPoint(),cut->endPoint());

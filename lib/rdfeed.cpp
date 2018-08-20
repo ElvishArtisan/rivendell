@@ -660,7 +660,7 @@ unsigned RDFeed::postFile(RDStation *station,const QString &srcfile,Error *err,
   // Convert Cut
   //
   tmpfile=GetTempFilename();
-  RDAudioConvert *conv=new RDAudioConvert(station->name(),this);
+  RDAudioConvert *conv=new RDAudioConvert(feed_config,this);
   conv->setSourceFile(srcfile);
   conv->setDestinationFile(tmpfile);
   RDSettings *settings=new RDSettings();

@@ -36,6 +36,7 @@
 
 #include <qobject.h>
 
+#include "rdconfig.h"
 #include "rdsettings.h"
 #include "rdwavedata.h"
 #include "rdwavefile.h"
@@ -48,7 +49,7 @@ class RDAudioConvert : public QObject
 		  ErrorNoDestination=3,ErrorInvalidSource=4,ErrorInternal=5,
 		  ErrorFormatNotSupported=6,ErrorNoDisc=7,ErrorNoTrack=8,
 		  ErrorInvalidSpeed=9,ErrorFormatError=10,ErrorNoSpace=11};
-  RDAudioConvert(const QString &station_name,QObject *parent=0);
+  RDAudioConvert(RDConfig *config,QObject *parent=0);
   ~RDAudioConvert();
   void setSourceFile(const QString &filename);
   void setDestinationFile(const QString &filename);
@@ -117,6 +118,7 @@ class RDAudioConvert : public QObject
   void *conv_mad_handle;
   void *conv_lame_handle;
   void *conv_twolame_handle;
+  RDConfig *conv_config;
 #ifdef HAVE_MAD
   void (*mad_stream_init)(struct mad_stream *);
   void (*mad_frame_init)(struct mad_frame *);

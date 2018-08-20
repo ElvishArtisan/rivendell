@@ -400,7 +400,7 @@ bool MainObject::Export(CatchEvent *evt)
     return false;
   }
   RDCart *cart=new RDCart(cut->cartNumber());
-  RDAudioConvert *conv=new RDAudioConvert(catch_config->stationName(),this);
+  RDAudioConvert *conv=new RDAudioConvert(catch_config,this);
   conv->setSourceFile(RDCut::pathName(evt->cutName()));
   conv->setRange(cut->startPoint(),cut->endPoint());
   conv->setDestinationFile(RDEscapeString(evt->tempName()));
@@ -472,7 +472,7 @@ bool MainObject::Import(CatchEvent *evt)
   unsigned msecs=wave->getExtTimeLength();
   delete wave;
   RDCart *cart=new RDCart(cut->cartNumber());
-  RDAudioConvert *conv=new RDAudioConvert(catch_config->stationName(),this);
+  RDAudioConvert *conv=new RDAudioConvert(catch_config,this);
   conv->setSourceFile(RDEscapeString(evt->tempName()));
   conv->setDestinationFile(RDCut::pathName(evt->cutName()));
   RDSettings *settings=new RDSettings();
