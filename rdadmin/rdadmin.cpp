@@ -123,19 +123,19 @@ MainWidget::MainWidget(QWidget *parent)
   // Log In
   //
   Login *login=new Login(&admin_username,&admin_password,this);
-  if(login->exec()!=0) {
+  if(!login->exec()) {
     exit(0);
   }
   rda->user()->setName(admin_username);
   if(!rda->user()->checkPassword(admin_password,false)) {
     QMessageBox::warning(this,"Login Failed","Login Failed!.\n");
-    exiting=true;
+    exit(1);
   }
   else {
     if(!rda->user()->adminConfig()) {
       QMessageBox::warning(this,tr("Insufficient Priviledges"),
          tr("This account has insufficient priviledges for this operation."));
-      exiting=true;
+      exit(1);
     }
   }
 

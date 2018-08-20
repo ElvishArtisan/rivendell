@@ -136,13 +136,13 @@ void Login::okData()
 {
   *login_name=login_name_edit->text();
   *login_password=login_password_edit->text();
-  done(0);
+  done(true);
 }
 
 
 void Login::cancelData()
 {
-  done(1);
+  done(false);
 }
 
 
