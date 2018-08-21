@@ -467,6 +467,40 @@
     </para>
   </sect1>
 
+  <sect1 xml:id="sect.gpio_switcher_devices.btss21">
+    <title>BroadcastTools SS 2.1</title>
+    <variablelist>
+      <varlistentry>
+	<term>Driver Name:</term>
+	<listitem>
+	  <para>
+	    BroadcastTools SS 2.1
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>Supported RML Commands:</term>
+	<listitem>
+	  <para>
+	    <simplelist>
+	      <member>Switch Take ['<command>ST</command>']</member>
+	    </simplelist>
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <para>
+      Control is done by means of an RS-232C connection to a four pin RJ11
+      modular jack on the back of the unit (an adapter to a standard DB9
+      connector is supplied by Broadcast Tools with the unit).  Serial port
+      parameters should be set to 9600 baud rate, no parity, 8 data bits, 1
+      stop bit, CR/LF termination.
+    </para>
+    <para>
+      Operation in 'multidrop' mode is not supported.
+    </para>
+  </sect1>
+
   <sect1 xml:id="sect.gpio_switcher_devices.btss164">
     <title>BroadcastTools SS 16.4</title>
     <variablelist>
