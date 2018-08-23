@@ -908,6 +908,31 @@ void MainObject::RunLocalMacros(RDMacro *rml)
 }
 
 
+bool MainObject::CheckAirGate(RDMacro *rml)
+{
+  char buffer[RD_RML_MAX_LENGTH];
+
+  if(rml->command()==RDMacro::AG) {
+    if(ripc_onair_flag) {
+      rml->generateString(buffer,RD_RML_MAX_LENGTH-1);
+      QStringList f0=f0.split(" ",buffer);
+      f0.pop_front();
+      QString rmlstr=f0.join(" ");
+      if(!rml->parseString(rmlstr,rmlstr.length())) {
+	return false;
+      }
+    }
+    else {
+      LogLine(RDConfig::LogDebug,
+	      QString("rejected rml: \"")+buffer+
+	      "\": on-air flag not active");
+      return false;
+    }
+  }
+  return true;
+}
+
+
 void MainObject::ForwardConvert(RDMacro *rml) const
 {
   //

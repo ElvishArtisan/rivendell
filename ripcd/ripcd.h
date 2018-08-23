@@ -93,6 +93,7 @@ class MainObject : public QObject
   QString StripPoint(QString);
   void LoadLocalMacros();
   void RunLocalMacros(RDMacro *rml);
+  bool CheckAirGate(RDMacro *rml);
   void LoadGpiTable();
   void SendGpi(int ch,int matrix);
   void SendGpo(int ch,int matrix);

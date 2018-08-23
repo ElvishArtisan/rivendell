@@ -565,7 +565,9 @@ void MainObject::DispatchCommand(int ch)
 	}
 	sprintf(cmd,"MS %s %d %s",(const char *)macro.address().toString(),
 		echo,buffer);
-	RunLocalMacros(&macro);
+	if(CheckAirGate(&macro)) {
+	  RunLocalMacros(&macro);
+	}
 	BroadcastCommand(cmd);
       }
       else {
@@ -703,21 +705,8 @@ void MainObject::ReadRmlSocket(QSocketDevice *dev,RDMacro::Role role,
   while((n=dev->readBlock(buffer,RD_RML_MAX_LENGTH))>0) {
     buffer[n]=0;
     if(macro.parseString(buffer,n)) {
-      if(macro.command()==RDMacro::AG) {
-	if(ripc_onair_flag) {
-	  QStringList f0=f0.split(" ",buffer);
-	  f0.pop_front();
-	  QString rmlstr=f0.join(" ");
-	  if(!macro.parseString(rmlstr,rmlstr.length())) {
-	    break;
-	  }
-	}
-	else {
-	  LogLine(RDConfig::LogDebug,
-		  QString("rejected rml: \"")+buffer+
-		  "\": on-air flag not active");
-	  break;
-	}
+      if(!CheckAirGate(&macro)) {
+	break;
       }
       macro.setRole(role);
       macro.setAddress(dev->peerAddress());
