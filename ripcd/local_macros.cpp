@@ -671,7 +671,7 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
       break;
     }
     break;
-    /*      
+
   case RDMacro::SO:
     tty_port=rml->arg(0).toInt();
     if((tty_port<0)||(tty_port>MAX_TTYS)) {
@@ -707,12 +707,12 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
       break;
     }
     data=RDStringToData(str);
-    ripcd_tty_dev[tty_port]->writeBlock((const char *)data,data.size());
+    ripcd_tty_dev[tty_port]->write(data);
     rml->acknowledge(true);
     sendRml(rml);
     return;
     break;
-    */      
+
   case RDMacro::CL:
   case RDMacro::FS:
   case RDMacro::GO:
@@ -855,7 +855,7 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
       sendRml(rml);
     }
     break;
-    /*
+
   case RDMacro::UO:
     if(rml->argQuantity()<3) {
       if(rml->echoRequested()) {
@@ -886,17 +886,14 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
 	    sprintf("Sending \"%s\" to %s:%d",(const char *)str,
 		    (const char *)addr.toString(),rml->arg(1).toInt()));
     data=RDStringToData(str);
-    ripcd_rml_send->writeBlock((const char *)data,data.size(),addr,
-			       (Q_UINT16)(rml->arg(1).toInt()));
+    ripcd_rml_send->writeDatagram(data,addr,(Q_UINT16)(rml->arg(1).toInt()));
     if(rml->echoRequested()) {
       rml->acknowledge(true);
       sendRml(rml);
     }
     break;
-    */ 
+
   default:
-//	LogLine(RDConfig::LogDebug,QString().sprintf("unhandled rml: \'%s\' from %s",
-//	       (const char *)logstr,(const char *)rml->address()));
     break;
   }
 }

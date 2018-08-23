@@ -17512,3 +17512,6 @@
 	switcher/gpio driver.
 2018-06-23 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in ripcd(8) that broke local RML processing.
+2018-06-23 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression that broke processing of the 'Serial Out' ['SO']
+	and 'UDP Out' ['UO'] RMLs.

@@ -1158,48 +1158,49 @@ bool RDModulesActive()
   return RDProcessActive(cmds);
 }
 
-/*
+
 QByteArray RDStringToData(const QString &str)
 {
-  QByteArray ret;
-#ifndef WIN32
   int istate=0;
-  QString hexcode="";
+  unsigned n;
+  QString code;
+  QByteArray ret;
+  bool ok=false;
 
-  for(unsigned i=0;i<str.length();i++) {
+  for(int i=0;i<str.length();i++) {
     switch(istate) {
     case 0:
-      if((str.at(i)=='%')&&(i<(str.length()-2))) {
-	hexcode="";
+      if(str.at(i)==QChar('%')) {
 	istate=1;
       }
       else {
-	ret.resize(ret.size()+1);
-	ret[ret.size()-1]=str.at(i);
+	ret+=str.at(i);
       }
       break;
 
     case 1:
-      hexcode=str.at(i);
+      n=str.mid(i,1).toUInt(&ok);
+      if((!ok)||(n>9)) {
+	istate=0;
+      }
+      code=str.mid(i,1);
       istate=2;
       break;
 
     case 2:
-      hexcode+=str.at(i);
-      ret.resize(ret.size()+1);
-      ret[ret.size()-1]=0xFF&hexcode.toUInt(NULL,16);
-      istate=0;
-      break;
-
-    default:
+      n=str.mid(i,1).toUInt(&ok);
+      if((!ok)||(n>9)) {
+	istate=0;
+      }
+      code+=str.mid(i,1);
+      ret+=code.toUInt(NULL,16);
       istate=0;
       break;
     }
   }
-#endif  // WIN32
+
   return ret;
 }
-*/
 
 
 QList<pid_t> RDGetPids(const QString &program)
