@@ -2,7 +2,7 @@
 //
 // Local RML Macros for the Rivendell Interprocess Communication Daemon
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -244,7 +244,6 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
 
   RDMacro *rml=new RDMacro();
   *rml=ForwardConvert(*rml_in);
-  //  ForwardConvert(rml);
 
   switch(rml->command()) {
   case RDMacro::BO:
@@ -964,56 +963,9 @@ RDMacro MainObject::ForwardConvert(const RDMacro &rml) const
     break;
 
   default:
+    ret=rml;
     break;
   }
 
   return ret;
 }
-
-
-/*
-void MainObject::ForwardConvert(RDMacro *rml) const
-{
-  //
-  // Convert old RML syntax to current forms
-  //
-  switch(rml->command()) {
-    case RDMacro::GE:
-      if(rml->argQuantity()==3) {
-	rml->setArgQuantity(4);
-	for(int i=2;i>=1;i--) {
-	  rml->setArg(i+1,rml->arg(i));
-	}
-	rml->setArg(1,"I");
-      }
-      break;
-
-    case RDMacro::GI:
-      if(rml->argQuantity()==3) {
-	rml->setArgQuantity(4);
-	rml->setArg(3,0);
-      }
-      if(rml->argQuantity()==4) {
-	rml->setArgQuantity(5);
-	for(int i=3;i>=1;i--) {
-	  rml->setArg(i+1,rml->arg(i));
-	}
-	rml->setArg(1,"I");
-      }
-      break;
-
-    case RDMacro::GO:
-      if(rml->argQuantity()==4) {
-	rml->setArgQuantity(5);
-	for(int i=3;i>=1;i--) {
-	  rml->setArg(i+1,rml->arg(i));
-	}
-	rml->setArg(1,"O");
-      }
-      break;
-
-    default:
-      break;
-  }
-}
-*/
