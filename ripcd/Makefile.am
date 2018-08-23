@@ -21,7 +21,7 @@
 ## Use automake to process this into a Makefile.in
 
 AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -I$(top_srcdir)/lib @QT4_CFLAGS@ -I/usr/include/Qt3Support
-LIBS = -L$(top_srcdir)/lib
+LIBS = -L$(top_srcdir)/lib -L$(top_srcdir)/rdhpi
 MOC = @QT_MOC@
 
 # The dependency for qt's Meta Object Compiler (moc)
@@ -42,6 +42,7 @@ dist_ripcd_SOURCES = acu1p.cpp acu1p.h\
                      btgpi16.cpp btgpi16.h\
                      btsentinel4web.cpp btsentinel4web.h\
                      btss124.cpp btss124.h\
+                     btss21.cpp btss21.h\
                      btss164.cpp btss164.h\
                      btss41mlr.cpp btss41mlr.h\
                      btss42.cpp btss42.h\
@@ -94,6 +95,7 @@ nodist_ripcd_SOURCES = moc_am16.cpp\
                        moc_btsrc8iii.cpp\
                        moc_btss124.cpp\
                        moc_btss164.cpp\
+                       moc_btss21.cpp\
                        moc_btss41mlr.cpp\
                        moc_btss42.cpp\
                        moc_btss44.cpp\
@@ -124,7 +126,7 @@ nodist_ripcd_SOURCES = moc_am16.cpp\
                        moc_wheatnet_lio.cpp\
                        moc_wheatnet_slio.cpp
 
-ripcd_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
+ripcd_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @LIBHPI@ -lQt3Support
 
 EXTRA_DIST = ripcd.pro
 

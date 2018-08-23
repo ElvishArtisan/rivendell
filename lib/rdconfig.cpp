@@ -468,6 +468,12 @@ int RDConfig::realtimePriority()
   return conf_realtime_priority;
 }
 
+
+int RDConfig::transcodingDelay() const
+{
+  return conf_transcoding_delay;
+}
+
 // Don't use this method in application code, use RDTempDirectory()
 QString RDConfig::tempDirectory()
 {
@@ -639,6 +645,7 @@ void RDConfig::load()
   conf_enable_mixer_logging=profile->boolValue("Caed","EnableMixerLogging");
   conf_use_realtime=profile->boolValue("Tuning","UseRealtime",false);
   conf_realtime_priority=profile->intValue("Tuning","RealtimePriority",9);
+  conf_transcoding_delay=profile->intValue("Tuning","TranscodingDelay");
   conf_temp_directory=profile->stringValue("Tuning","TempDirectory","");
   conf_sas_station=profile->stringValue("SASFilter","Station","");
   conf_sas_matrix=profile->intValue("SASFilter","Matrix",0);
@@ -749,6 +756,7 @@ void RDConfig::clear()
   conf_enable_mixer_logging=false;
   conf_use_realtime=false;
   conf_realtime_priority=9;
+  conf_transcoding_delay=0;
   conf_temp_directory="";
   conf_sas_station="";
   conf_sas_matrix=-1;

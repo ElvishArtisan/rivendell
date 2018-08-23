@@ -36,6 +36,7 @@
 
 #include <qobject.h>
 
+#include "rdconfig.h"
 #include "rdsettings.h"
 #include "rdwavedata.h"
 #include "rdwavefile.h"
@@ -117,6 +118,7 @@ class RDAudioConvert : public QObject
   void *conv_mad_handle;
   void *conv_lame_handle;
   void *conv_twolame_handle;
+  RDConfig *conv_config;
 #ifdef HAVE_MAD
   void (*mad_stream_init)(struct mad_stream *);
   void (*mad_frame_init)(struct mad_frame *);

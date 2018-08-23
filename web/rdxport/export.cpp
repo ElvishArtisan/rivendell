@@ -146,7 +146,7 @@ void Xport::Export()
     XmlExit("unable to create temporary directory ["+err_msg+"]",500);
   }
   QString tmpfile=tempdir->path()+"/exported_audio";
-  RDAudioConvert *conv=new RDAudioConvert(this);
+  RDAudioConvert *conv=new RDAudioConvert();
   conv->setSourceFile(RDCut::pathName(cartnum,cutnum));
   conv->setDestinationFile(tmpfile);
   conv->setDestinationSettings(settings);

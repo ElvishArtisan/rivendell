@@ -39,6 +39,7 @@
 #include "btsrc8iii.h"
 #include "btss124.h"
 #include "btss164.h"
+#include "btss21.h"
 #include "btss41mlr.h"
 #include "btss42.h"
 #include "btss44.h"
@@ -126,6 +127,10 @@ bool MainObject::LoadSwitchDriver(int matrix_num)
 
   case RDMatrix::BtSs164:
     ripcd_switcher[matrix_num]=new BtSs164(matrix,this);
+    break;
+
+  case RDMatrix::BtSs21:
+    ripcd_switcher[matrix_num]=new BtSs21(matrix,this);
     break;
 
   case RDMatrix::BtSs41Mlr:

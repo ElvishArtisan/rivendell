@@ -110,6 +110,7 @@ class RDConfig
 #endif
   bool useRealtime();
   int realtimePriority();
+  int transcodingDelay() const;
   QString tempDirectory();
   QString sasStation() const;
   int sasMatrix() const;
@@ -180,6 +181,7 @@ class RDConfig
   QString conf_cae_logfile;
   bool conf_enable_mixer_logging;
   bool conf_use_realtime;
+  int conf_transcoding_delay;
   int conf_realtime_priority;
   QString conf_temp_directory;
   QString conf_sas_station;

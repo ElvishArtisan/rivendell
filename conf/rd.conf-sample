@@ -133,6 +133,10 @@ ChannelsPerPcm=-1
 UseRealtime=Yes
 RealtimePriority=9
 
+; Introduce a delay of this many microseconds in each loop iteration
+; when transcoding files.
+TranscodingDelay=0
+
 [Format]
 ; This value is used when testing and developing new features in the
 ; audio drivers.  It should never be altered on a production system.

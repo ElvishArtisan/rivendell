@@ -1,6 +1,6 @@
-// local_audio.h
+// hpigpio.h
 //
-// A Rivendell switcher driver for local audio cards.
+// A Rivendell switcher driver for AudioScience HPI GPIO devices
 //
 //   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
@@ -18,18 +18,14 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef LOCAL_AUDIO_H
-#define LOCAL_AUDIO_H
-
-#include <vector>
-
-#include <qtimer.h>
+#ifndef HPIGPIO_H
+#define HPIGPIO_H
 
 #include <rd.h>
 #include <rdmatrix.h>
 #include <rdmacro.h>
-#include <rdoneshot.h>
 #include <rdtty.h>
+#include <rdoneshot.h>
 
 #ifdef HPI
 #include <asihpi/hpi.h>
@@ -37,14 +33,15 @@
 
 #include "switcher.h"
 
-#define LOCALAUDIO_POLL_INTERVAL 100
+#define HPIGPIO_POLL_INTERVAL 100
+#define HPIGPIO_GPIO_PINS 16
 
-class LocalAudio : public Switcher
+class HpiGpio : public Switcher
 {
  Q_OBJECT
  public:
-  LocalAudio(RDMatrix *matrix,QObject *parent=0);
-  ~LocalAudio();
+  HpiGpio(RDMatrix *matrix,QObject *parent=0);
+  ~HpiGpio();
   RDMatrix::Type type();
   unsigned gpiQuantity();
   unsigned gpoQuantity();
@@ -53,30 +50,28 @@ class LocalAudio : public Switcher
   void processCommand(RDMacro *cmd);
 
  private slots:
-  void pollData();
+  void processStatus();
+  void gpiOneshotData(int value);
   void gpoOneshotData(int value);
 
  private:
-  void InitializeHpi(RDMatrix *matrix);
-  void SetGpo(int line,bool state);
-  void UpdateDb(RDMatrix *matrix) const;
 #ifdef HPI
+  void UpdateDb(RDMatrix *matrix) const;
   hpi_err_t LogHpi(hpi_err_t err,int lineno);
-  hpi_handle_t bt_mixer;
-  hpi_handle_t bt_gpis_param;
-  hpi_handle_t bt_gpos_param;
-  std::vector<uint8_t> bt_gpi_states;
+  hpi_handle_t hpi_mixer;
+  hpi_handle_t hpi_gpis_param;
+  hpi_handle_t hpi_gpos_param;
 #endif  // HPI
-  RDOneShot *bt_gpo_oneshot;
-  uint8_t *bt_gpi_values;
-  uint8_t *bt_gpo_values;
-  QTimer *bt_poll_timer;
-  int bt_inputs;
-  int bt_outputs;
-  int bt_gpis;
-  int bt_gpos;
-  int bt_card;
+  RDOneShot *hpi_gpi_oneshot;
+  RDOneShot *hpi_gpo_oneshot;
+  int hpi_matrix;
+  int hpi_card;
+  int hpi_gpis;
+  int hpi_gpos;
+  int hpi_istate;
+  bool hpi_gpi_state[HPIGPIO_GPIO_PINS];
+  bool hpi_gpi_mask[HPIGPIO_GPIO_PINS];
 };
 
 
-#endif  // LOCAL_AUDIO_H
+#endif  // HPIGPIO_H

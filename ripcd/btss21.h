@@ -1,6 +1,6 @@
-// local_audio.h
+// btss21.h
 //
-// A Rivendell switcher driver for local audio cards.
+// A Rivendell switcher driver for the BroadcastTools SS 2.1
 //
 //   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
@@ -18,33 +18,25 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef LOCAL_AUDIO_H
-#define LOCAL_AUDIO_H
-
-#include <vector>
-
-#include <qtimer.h>
+#ifndef BTSS21_H
+#define BTSS21_H
 
 #include <rd.h>
 #include <rdmatrix.h>
 #include <rdmacro.h>
-#include <rdoneshot.h>
 #include <rdtty.h>
+#include <rdoneshot.h>
 
-#ifdef HPI
-#include <asihpi/hpi.h>
-#endif  // HPI
+#include <switcher.h>
 
-#include "switcher.h"
+#define BTSS21_UNIT_ID 0
 
-#define LOCALAUDIO_POLL_INTERVAL 100
-
-class LocalAudio : public Switcher
+class BtSs21 : public Switcher
 {
  Q_OBJECT
  public:
-  LocalAudio(RDMatrix *matrix,QObject *parent=0);
-  ~LocalAudio();
+  BtSs21(RDMatrix *matrix,QObject *parent=0);
+  ~BtSs21();
   RDMatrix::Type type();
   unsigned gpiQuantity();
   unsigned gpoQuantity();
@@ -52,31 +44,12 @@ class LocalAudio : public Switcher
   bool secondaryTtyActive();
   void processCommand(RDMacro *cmd);
 
- private slots:
-  void pollData();
-  void gpoOneshotData(int value);
-
  private:
-  void InitializeHpi(RDMatrix *matrix);
-  void SetGpo(int line,bool state);
-  void UpdateDb(RDMatrix *matrix) const;
-#ifdef HPI
-  hpi_err_t LogHpi(hpi_err_t err,int lineno);
-  hpi_handle_t bt_mixer;
-  hpi_handle_t bt_gpis_param;
-  hpi_handle_t bt_gpos_param;
-  std::vector<uint8_t> bt_gpi_states;
-#endif  // HPI
-  RDOneShot *bt_gpo_oneshot;
-  uint8_t *bt_gpi_values;
-  uint8_t *bt_gpo_values;
-  QTimer *bt_poll_timer;
+  RDTTYDevice *bt_device;
+  int bt_matrix;
   int bt_inputs;
   int bt_outputs;
-  int bt_gpis;
-  int bt_gpos;
-  int bt_card;
 };
 
 
-#endif  // LOCAL_AUDIO_H
+#endif  // BTSS21_H

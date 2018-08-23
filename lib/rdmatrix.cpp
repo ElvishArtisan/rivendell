@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Switcher Matrix
 //
-//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -71,7 +71,8 @@ bool __mx_primary_controls[RDMatrix::LastType][RDMatrix::LastControl]=
     {0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,1,1,0,0,0,0,0,0,0,0,0},  // Kernel GPIO
     {0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0},  // WheatNet SLIO
     {0,0,1,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0},  // WheatNet LIO
-    {0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0}   // BT Universale 4.1 MLR>>Web
+    {0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0},  // BT Universale 4.1 MLR>>Web
+    {0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0}   // BT SS 2.1
   };
 bool __mx_backup_controls[RDMatrix::LastType][RDMatrix::LastControl]=
   {
@@ -119,7 +120,8 @@ bool __mx_backup_controls[RDMatrix::LastType][RDMatrix::LastControl]=
     {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},  // Kernel GPIO
     {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},  // WheatNet SLIO
     {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},  // WheatNet LIO
-    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}   // BT Universal 4.1 MLR>>Web
+    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},  // BT Universal 4.1 MLR>>Web
+    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}   // BT SS 2.1
   };
 
 int __mx_default_values[RDMatrix::LastType][RDMatrix::LastControl]=
@@ -168,7 +170,8 @@ int __mx_default_values[RDMatrix::LastType][RDMatrix::LastControl]=
     {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0},  // Kernel GPIO
     {1,0,0,55776,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0},  // WheatNet SLIO
     {1,0,0,55776,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0},  // WheatNet LIO
-    {1,0,0,56,0,0,0,0,0,0,0,4,1,5,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0}   // BT Universal 4.1 MLR>>Web
+    {1,0,0,56,0,0,0,0,0,0,0,4,1,5,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0},  // BT Universal 4.1 MLR>>Web
+    {0,0,0,0,0,0,0,0,0,0,0,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0}   // BT SS 2.1
   };
 
 RDMatrix::RDMatrix(const QString &station,int matrix)
@@ -648,6 +651,10 @@ QString RDMatrix::typeString(RDMatrix::Type type)
 
       case RDMatrix::LogitekVguest:
 	return QString("Logitek vGuest");
+	break;
+
+      case RDMatrix::BtSs21:
+	return QString("BroadcastTools SS2.1");
 	break;
 
       case RDMatrix::BtSs164:
