@@ -1016,6 +1016,9 @@
 	<listitem>
 	  <para>
 	    <simplelist>
+	      <member>GPI Enable ['<command>GE</command>']</member>
+	      <member>GPI Set ['<command>GI</command>']</member>
+	      <member>GPO Set ['<command>GO</command>']</member>
 	      <member>Switch Add ['<command>SA</command>']</member>
 	      <member>Switch Add With Gain ['<command>SX</command>']</member>
 	      <member>Switch Remove ['<command>SR</command>']</member>

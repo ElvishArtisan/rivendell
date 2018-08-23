@@ -16663,3 +16663,6 @@
 	of rd.conf(5).
 2018-06-21 Fred Gleason <fredg@paravelsystems.com>
 	* Added support for the Broadcast Tools SS 2.1 switcher.
+2018-06-22 Fred Gleason <fredg@paravelsystems.com>
+	* Added GPIO support for HPI devices to the 'Local Audio Adapter'
+	switcher/gpio driver.

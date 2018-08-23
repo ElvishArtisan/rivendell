@@ -2,7 +2,7 @@
 ##
 ## Rivendell Interprocess Communication Daemon Makefile.am
 ##
-## (C) Copyright 2002-2006 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -21,7 +21,7 @@
 ## Use automake to process this into a Makefile.in
 
 AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -DQTDIR=\"@QT_DIR@\" @QT_CXXFLAGS@ -I$(top_srcdir)/lib
-LIBS = @QT_LIBS@ -L$(top_srcdir)/lib
+LIBS =  @QT_LIBS@ -L$(top_srcdir)/lib -L$(top_srcdir)/rdhpi
 MOC = @QT_MOC@
 
 # The dependency for qt's Meta Object Compiler (moc)
@@ -128,7 +128,7 @@ nodist_ripcd_SOURCES = moc_am16.cpp\
                        moc_wheatnet_lio.cpp\
                        moc_wheatnet_slio.cpp
 
-ripcd_LDADD = @LIB_RDLIBS@ @LIBVORBIS@
+ripcd_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @LIBHPI@
 
 EXTRA_DIST = ripcd.pro
 
