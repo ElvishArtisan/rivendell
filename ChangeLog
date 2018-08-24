@@ -17521,3 +17521,6 @@
 	* Changed the default value of the 'Collation=' parameter in the
 	[mySQL] section of rd.conf(5) from 'latin1_swedish_ci' to
 	'utf8_general_ci'.
+2018-06-24 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdlogmanager(1) that caused a segfault
+	when generating a log.

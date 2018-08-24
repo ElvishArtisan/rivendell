@@ -522,13 +522,13 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
       QString().sprintf("EVENT_LENGTH=%d",event_length);
     RDSqlQuery::apply(sql);
     count++;
-    time=time.addMSecs(GetLength(q->value(2).toUInt()));
+    time=time.addMSecs(i_item->cartNumber());
     trans_type=event_default_transtype;
     time_type=RDLogLine::Relative;
     post_point=false;
     grace_time=-1;
 
-    postimport_length+=GetLength(q->value(2).toUInt());
+    postimport_length+=GetLength(i_item->cartNumber());
   }
 
   //
@@ -895,7 +895,7 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
       QString().sprintf("EVENT_LENGTH=%d",event_length);
     RDSqlQuery::apply(sql);
     count++;
-    time=time.addMSecs(GetLength(q->value(2).toUInt()));
+    time=time.addMSecs(GetLength(i_item->cartNumber()));
     time_type=RDLogLine::Relative;
     trans_type=event_default_transtype;
     post_point=false;
