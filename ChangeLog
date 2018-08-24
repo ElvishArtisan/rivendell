@@ -16661,11 +16661,11 @@
 2018-06-20 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'TranscodingDelay=' parameter to the '[Tuning]' section
 	of rd.conf(5).
-2018-06-21 Fred Gleason <fredg@paravelsystems.com>
+2018-08-21 Fred Gleason <fredg@paravelsystems.com>
 	* Added support for the Broadcast Tools SS 2.1 switcher.
-2018-06-22 Fred Gleason <fredg@paravelsystems.com>
+2018-08-22 Fred Gleason <fredg@paravelsystems.com>
 	* Added GPIO support for HPI devices to the 'Local Audio Adapter'
 	switcher/gpio driver.
-2018-06-23 Fred Gleason <fredg@paravelsystems.com>
+2018-08-23 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in ripcd(8) that caused process of the 'Air Gate' ['AG']
 	RML to fail.
