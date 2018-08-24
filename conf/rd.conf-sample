@@ -31,9 +31,11 @@ HeartbeatInterval=360
 
 ; The following three settings control the attributes of new DB tables
 ; created by Rivendell.
-Engine=MyISAM
-Charset=utf8
-Collation=utf8_general_ci
+;Engine=MyISAM
+; 'Charset' and 'Collation' should *not* changed except for development
+; purposes.
+;Charset=utf8
+;Collation=utf8_general_ci
 
 [AudioStore]
 MountSource=

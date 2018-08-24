@@ -17515,3 +17515,9 @@
 2018-06-23 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression that broke processing of the 'Serial Out' ['SO']
 	and 'UDP Out' ['UO'] RMLs.
+2018-06-24 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the default value of the 'Charset=' parameter in the
+	[mySQL] section of rd.conf(5) from 'latin1' to 'utf8'.
+	* Changed the default value of the 'Collation=' parameter in the
+	[mySQL] section of rd.conf(5) from 'latin1_swedish_ci' to
+	'utf8_general_ci'.
