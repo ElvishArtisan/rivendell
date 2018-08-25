@@ -598,33 +598,34 @@ void rlm_spinitron_plus_RLMPadDataSent(void *ptr,const struct rlm_svc *svc,
       }
 
       if(strlen(now->rlm_title)!=0) {
-	/* if the Username config is empty then use this v2 API URL
-	snprintf(msg,8192,
-		 "https://spinitron.com/api/spin/create-v1?access-token=%s&sn=%s&aw=%s&dn=%s&ln=%s&sc=%s&se=%s&sd=%d",
-		 rlm_spinitron_plus_passwords+256*i,
-		 title,
-		 artist,
-		 album,
-		 label,
-		 composer,
-		 notes,
-		 now->rlm_len/1000);
-	else use the old v1 URL */
-	snprintf(msg,8192,
-		 "https://spinitron.com/member/logthis.php?un=%s&pw=%s&sn=%s&aw=%s&dn=%s&ln=%s&sc=%s&se=%s&df=%s&st=%s&sd=%d&pm=%d",
-		 rlm_spinitron_plus_usernames+256*i,
-		 rlm_spinitron_plus_passwords+256*i,
-		 title,
-		 artist,
-		 album,
-		 label,
-		 composer,
-		 notes,
-		 RLM_SPINITRON_PLUS_LOGGER_NAME,
-		 rlm_spinitron_plus_stations+256*i,
-		 now->rlm_len/1000,
-		 pm);
-	/* end Spinitron v1/v2 branches */
+	/* if the Username config is empty then use Spinitron v2 API, or else use v1 */
+	if ((rlm_spinitron_plus_usernames+256*i)==0) {
+	  snprintf(msg,8192,
+		   "https://spinitron.com/api/spin/create-v1?access-token=%s&sn=%s&aw=%s&dn=%s&ln=%s&sc=%s&se=%s&sd=%d",
+		   rlm_spinitron_plus_passwords+256*i,
+		   title,
+		   artist,
+		   album,
+		   label,
+		   composer,
+		   notes,
+		   now->rlm_len/1000);
+	} else {
+	  snprintf(msg,8192,
+		   "https://spinitron.com/member/logthis.php?un=%s&pw=%s&sn=%s&aw=%s&dn=%s&ln=%s&sc=%s&se=%s&df=%s&st=%s&sd=%d&pm=%d",
+		   rlm_spinitron_plus_usernames+256*i,
+		   rlm_spinitron_plus_passwords+256*i,
+		   title,
+		   artist,
+		   album,
+		   label,
+		   composer,
+		   notes,
+		   RLM_SPINITRON_PLUS_LOGGER_NAME,
+		   rlm_spinitron_plus_stations+256*i,
+		   now->rlm_len/1000,
+		   pm);
+	}
 	if(fork()==0) {
 	  execlp("curl","curl",msg,(char *)NULL);
 	  RLMLog(ptr,LOG_WARNING,"rlm_spinitron_plus: unable to execute curl(1)");
