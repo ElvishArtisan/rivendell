@@ -17524,3 +17524,6 @@
 2018-06-24 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdlogmanager(1) that caused a segfault
 	when generating a log.
+2018-08-25 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed a regression in rdcatchd(1) to change location
+	of rdcatchd(1) from 'bin/rdcatchd' to 'sbin/rdcatchd'.

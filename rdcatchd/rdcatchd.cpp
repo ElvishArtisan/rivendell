@@ -2733,7 +2733,7 @@ void MainObject::StartRmlRecording(int chan,int cartnum,int cutnum,int maxlen)
 void MainObject::StartBatch(int id)
 {
   if((fork())==0) {
-    QString bin=QString(RD_PREFIX)+"/"+"bin/rdcatchd";
+    QString bin=QString(RD_PREFIX)+"/"+"sbin/rdcatchd";
     execl(bin,(const char *)bin,
 	  (const char *)QString().sprintf("--event-id=%d",id),
 	  (char *)NULL);
