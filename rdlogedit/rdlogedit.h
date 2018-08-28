@@ -53,6 +53,7 @@ class MainWidget : public QWidget
   
  private slots:
   void connectedData(bool state);
+  void caeConnectedData(bool state);
   void userData();
   void recentData(bool state);
   void addData();
