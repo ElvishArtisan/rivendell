@@ -117,6 +117,8 @@ MainWidget::MainWidget(QWidget *parent)
   // CAE Connection
   //
 #ifndef WIN32
+  connect(rda->cae(),SIGNAL(isConnected(bool)),
+          this,SLOT(caeConnectedData(bool)));
   rda->cae()->connectHost();
 #endif  // WIN32
 
@@ -292,6 +294,15 @@ void MainWidget::connectedData(bool state)
 {
 }
 
+void MainWidget::caeConnectedData(bool state)
+{
+  std::vector<int> cards;
+  RDLogeditConf *conf=new RDLogeditConf(rda->config()->stationName());
+
+  cards.push_back(conf->inputCard());
+  cards.push_back(conf->outputCard());
+  rda->cae()->enableMetering(&cards);
+}
 
 void MainWidget::userData()
 {
