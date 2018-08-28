@@ -218,11 +218,13 @@
     <para>
       <userinput>PX
       <replaceable>mach</replaceable>
-      <replaceable>cart</replaceable>!</userinput>
+      <replaceable>cart</replaceable>
+      [PLAY|SEGUE|STOP]!</userinput>
     </para>
     <para>
-      Insert cart <replaceable>cart</replaceable>> in the next to play
-      position on log machine <replaceable>mach</replaceable>.
+      Insert cart <replaceable>cart</replaceable> in the next to play
+      position on log machine <replaceable>mach</replaceable>. The
+      transition may also be optionally specified.
     </para>
   </sect2>
 

@@ -16669,3 +16669,6 @@
 2018-08-23 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in ripcd(8) that caused process of the 'Air Gate' ['AG']
 	RML to fail.
+2018-08-28 Fred Gleason <fredg@paravelsystems.com>
+	* Added an optional third argument to the 'Add Next' ['PX'] RML
+	to allow specication of the transition type.
