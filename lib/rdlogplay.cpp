@@ -850,8 +850,7 @@ void RDLogPlay::insert(int line,int cartnum,RDLogLine::TransType next_type,
   if(nextLine()<0) {
     play_next_line=line;
   }
-  logline->loadCart(cartnum,next_type,play_id,play_timescaling_available,
-		    rda->airplayConf()->defaultTransType());
+  logline->loadCart(cartnum,next_type,play_id,play_timescaling_available,type);
   logline->
     setTimescalingActive(play_timescaling_available&&logline->enforceLength());
   UpdateStartTimes(line);

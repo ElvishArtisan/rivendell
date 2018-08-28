@@ -42,6 +42,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
   RDLogLine *logline=NULL;
   QString label;
   int mach=0;
+  RDLogLine::TransType trans=RDLogLine::Play;
 
   if(rml->role()!=RDMacro::Cmd) {
     return;
@@ -783,7 +784,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     break;
 
   case RDMacro::PX:    // Add Next
-    if(rml->argQuantity()!=2) {
+    if((rml->argQuantity()<2)||(rml->argQuantity()>3)) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
 	rda->ripc()->sendRml(rml);
@@ -798,15 +799,24 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
       }
       return;
     }
+    trans=RDLogLine::Play;
+    if(rml->argQuantity()==3) {
+      if(rml->arg(2).toLower()=="segue") {
+	trans=RDLogLine::Segue;
+      }
+      if(rml->arg(2).toLower()=="stop") {
+	trans=RDLogLine::Stop;
+      }
+    }
     if(air_log[rml->arg(0).toInt()-1]->nextLine()>=0) {
       air_log[rml->arg(0).toInt()-1]->
 	insert(air_log[rml->arg(0).toInt()-1]->nextLine(),
-	       rml->arg(1).toUInt(),RDLogLine::Play);
+	       rml->arg(1).toUInt(),RDLogLine::NoTrans,trans);
     }
     else {
       air_log[rml->arg(0).toInt()-1]->
 	insert(air_log[rml->arg(0).toInt()-1]->size(),
-	       rml->arg(1).toUInt(),RDLogLine::Play);
+	       rml->arg(1).toUInt(),RDLogLine::NoTrans,trans);
       air_log[rml->arg(0).toInt()-1]->
 	makeNext(air_log[rml->arg(0).toInt()-1]->size()-1);
     }
