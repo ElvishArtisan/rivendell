@@ -1090,8 +1090,6 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   }
   if(*cartnum==0) {
     *cartnum=effective_group->nextFreeCart();
-  }
-  if(*cartnum==0) {
     PrintLogDateTime(stderr);
     fprintf(stderr,"rdimport: no free carts available in specified group\n");
     fflush(stderr);
@@ -1114,8 +1112,13 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   if(import_delete_cuts) {
     DeleteCuts(import_cart_number);
   }
-  cart_created=
-    RDCart::create(effective_group->name(),RDCart::Audio,&err_msg,*cartnum)!=0;
+  if(RDCart::exists(*cartnum)) {
+    cart_created=false;
+  }
+  else {
+    cart_created=
+      RDCart::create(effective_group->name(),RDCart::Audio,&err_msg,*cartnum)!=0;
+  }
   RDCart *cart=new RDCart(*cartnum);
   int cutnum=
     cart->addCut(import_format,import_bitrate,import_channels);
