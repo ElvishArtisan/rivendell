@@ -170,8 +170,8 @@ bool MainObject::StartDropboxes(QString *err_msg)
       QString().sprintf("DROPBOX_ID=%d",q->value(0).toInt());
     q1=new RDSqlQuery(sql);
     while(q1->next()) {
-      args.push_back(QString().sprintf("--add-scheduler-code=\"")+
-		     q1->value(0).toString()+"\"");
+      args.push_back(QString().sprintf("--add-scheduler-code=")+
+		     q1->value(0).toString()+"");
     }
     delete q1;
     args.push_back(QString().sprintf("--normalization-level=%d",
