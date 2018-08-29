@@ -17538,3 +17538,5 @@
 	a segfault when importing audio.
 2018-08-28 Patrick Linstruth <patrick@deltecent.com>
 	* Fixed a regression in rdlogedit(1) that broke audio level meters.
+2018-08-29 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for the Spinitron v2 API in the 'spinitron_plus' RLM.

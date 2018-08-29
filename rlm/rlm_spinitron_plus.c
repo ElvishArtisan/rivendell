@@ -43,9 +43,11 @@
 #define RLM_SPINITRON_PLUS_LOGGER_NAME "Rivendell"
 
 int rlm_spinitron_plus_devs;
+int *rlm_spinitron_plus_major_versions;
 char *rlm_spinitron_plus_stations;
 char *rlm_spinitron_plus_usernames;
 char *rlm_spinitron_plus_passwords;
+char *rlm_spinitron_plus_api_keys;
 int *rlm_spinitron_plus_playlist_modes;
 char *rlm_spinitron_plus_titles;
 char *rlm_spinitron_plus_artists;
@@ -190,9 +192,11 @@ void rlm_spinitron_plus_RLMStart(void *ptr,const char *arg)
   int i=1;
 
   rlm_spinitron_plus_devs=0;
+  rlm_spinitron_plus_major_versions=NULL;
   rlm_spinitron_plus_stations=NULL;
   rlm_spinitron_plus_usernames=NULL;
   rlm_spinitron_plus_passwords=NULL;
+  rlm_spinitron_plus_api_keys=NULL;
   rlm_spinitron_plus_playlist_modes=NULL;
   rlm_spinitron_plus_titles=NULL;
   rlm_spinitron_plus_artists=NULL;
@@ -232,6 +236,11 @@ void rlm_spinitron_plus_RLMStart(void *ptr,const char *arg)
     return;
   }
   while(strlen(station)>0) {
+    rlm_spinitron_plus_major_versions=realloc(rlm_spinitron_plus_major_versions,
+					      (rlm_spinitron_plus_devs+1)*(rlm_spinitron_plus_devs+1)*sizeof(int));
+    rlm_spinitron_plus_major_versions[rlm_spinitron_plus_devs]=
+      RLMGetIntegerValue(ptr,arg,section,"MajorVersion",1);
+
     rlm_spinitron_plus_stations=realloc(rlm_spinitron_plus_stations,
 			   (rlm_spinitron_plus_devs+1)*(rlm_spinitron_plus_devs+1)*256);
     strcpy(rlm_spinitron_plus_stations+256*rlm_spinitron_plus_devs,station);
@@ -248,6 +257,12 @@ void rlm_spinitron_plus_RLMStart(void *ptr,const char *arg)
     strcpy(rlm_spinitron_plus_passwords+256*rlm_spinitron_plus_devs,
 	   RLMGetStringValue(ptr,arg,section,"Password",""));
     rlm_spinitron_plus_EncodeString(rlm_spinitron_plus_passwords+256*rlm_spinitron_plus_devs,255);
+
+    rlm_spinitron_plus_api_keys=realloc(rlm_spinitron_plus_api_keys,
+			   (rlm_spinitron_plus_devs+1)*(rlm_spinitron_plus_devs+1)*256);
+    strcpy(rlm_spinitron_plus_api_keys+256*rlm_spinitron_plus_devs,
+	   RLMGetStringValue(ptr,arg,section,"APIKey",""));
+    rlm_spinitron_plus_EncodeString(rlm_spinitron_plus_api_keys+256*rlm_spinitron_plus_devs,255);
 
     pmode=3;
     strcpy(mode,RLMGetStringValue(ptr,arg,section,"PlaylistMode",""));
@@ -415,8 +430,10 @@ void rlm_spinitron_plus_RLMStart(void *ptr,const char *arg)
 void rlm_spinitron_plus_RLMFree(void *ptr)
 {
   free(rlm_spinitron_plus_stations);
+  free(rlm_spinitron_plus_major_versions);
   free(rlm_spinitron_plus_usernames);
   free(rlm_spinitron_plus_passwords);
+  free(rlm_spinitron_plus_api_keys);
   free(rlm_spinitron_plus_playlist_modes);
   free(rlm_spinitron_plus_titles);
   free(rlm_spinitron_plus_artists);
@@ -598,20 +615,34 @@ void rlm_spinitron_plus_RLMPadDataSent(void *ptr,const struct rlm_svc *svc,
       }
 
       if(strlen(now->rlm_title)!=0) {
-	snprintf(msg,8192,
-		 "https://spinitron.com/member/logthis.php?un=%s&pw=%s&sn=%s&aw=%s&dn=%s&ln=%s&sc=%s&se=%s&df=%s&st=%s&sd=%d&pm=%d",
-		 rlm_spinitron_plus_usernames+256*i,
-		 rlm_spinitron_plus_passwords+256*i,
-		 title,
-		 artist,
-		 album,
-		 label,
-		 composer,
-		 notes,
-		 RLM_SPINITRON_PLUS_LOGGER_NAME,
-		 rlm_spinitron_plus_stations+256*i,
-		 now->rlm_len/1000,
-		 pm);
+	if(rlm_spinitron_plus_major_versions[i]==2) {  /* Use v2 API */
+	  snprintf(msg,8192,
+		   "https://spinitron.com/api/spin/create-v1?access-token=%s&sn=%s&aw=%s&dn=%s&ln=%s&sc=%s&se=%s&sd=%d",
+		   rlm_spinitron_plus_api_keys+256*i,
+		   title,
+		   artist,
+		   album,
+		   label,
+		   composer,
+		   notes,
+		   now->rlm_len/1000);
+	}
+	else {                                         /* Default to v1 API */
+	  snprintf(msg,8192,
+		   "https://spinitron.com/member/logthis.php?un=%s&pw=%s&sn=%s&aw=%s&dn=%s&ln=%s&sc=%s&se=%s&df=%s&st=%s&sd=%d&pm=%d",
+		   rlm_spinitron_plus_usernames+256*i,
+		   rlm_spinitron_plus_passwords+256*i,
+		   title,
+		   artist,
+		   album,
+		   label,
+		   composer,
+		   notes,
+		   RLM_SPINITRON_PLUS_LOGGER_NAME,
+		   rlm_spinitron_plus_stations+256*i,
+		   now->rlm_len/1000,
+		   pm);
+	}
 	if(fork()==0) {
 	  execlp("curl","curl",msg,(char *)NULL);
 	  RLMLog(ptr,LOG_WARNING,"rlm_spinitron_plus: unable to execute curl(1)");
