@@ -17536,3 +17536,5 @@
 2018-08-28 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression that caused the RDXport service to throw
 	a segfault when importing audio.
+2018-08-28 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed a regression in rdlogedit(1) that broke audio level meters.
