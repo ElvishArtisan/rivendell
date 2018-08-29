@@ -17540,3 +17540,5 @@
 	* Fixed a regression in rdlogedit(1) that broke audio level meters.
 2018-08-29 Fred Gleason <fredg@paravelsystems.com>
 	* Added support for the Spinitron v2 API in the 'spinitron_plus' RLM.
+2018-08-29 Fred Gleason <fredg@paravelsystems.com>
+	* Removed spurious syslog warnings when initializing HPI devices.

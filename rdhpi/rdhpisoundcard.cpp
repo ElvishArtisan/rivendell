@@ -266,9 +266,15 @@ unsigned short RDHPISoundCard::getInputPortError(int card,int port)
   uint16_t error_word=0;
 
   if(input_port_aesebu[card][port]) {
-    LogHpi(HPI_AESEBU_Receiver_GetErrorStatus(NULL,
-					input_port_aesebu_control[card][port],
-					      &error_word),__LINE__);
+    if(HPI_AESEBU_Receiver_GetErrorStatus(NULL,
+					  input_port_aesebu_control[card][port],
+					  &error_word)==0) {
+      //
+      // Do nothing
+      //
+      // Needed to suppress the goofy 'result unused' compiler warnings.
+      //
+    }
   }
   return error_word;
 }
@@ -855,12 +861,11 @@ void RDHPISoundCard::HPIProbe()
 	  output_stream_volume[i][j][k]=false;
 	}
       }
-      if(LogHpi(HPI_MixerGetControl(NULL,hpi_mixer[i],
-				    0,0,
-				    HPI_DESTNODE_ISTREAM,j,
-				    HPI_CONTROL_METER,
-				    &input_stream_meter_control[i][j]),
-		__LINE__)==0) {
+      if(HPI_MixerGetControl(NULL,hpi_mixer[i],
+			     0,0,
+			     HPI_DESTNODE_ISTREAM,j,
+			     HPI_CONTROL_METER,
+			     &input_stream_meter_control[i][j])==0) {
 	input_stream_meter[i][j]=true;
       }
       else {
@@ -949,19 +954,18 @@ void RDHPISoundCard::HPIProbe()
 	  l=0;
 	  input_port_mux_type[i][j][0]=false;
 	  input_port_mux_type[i][j][1]=false;
-	  while(LogHpi(HPI_Multiplexer_QuerySource(NULL,
-						   input_mux_control[i][j],
-						   l++,&type,&index),
-		       __LINE__)==0) {
+	  while(HPI_Multiplexer_QuerySource(NULL,input_mux_control[i][j],
+					    l++,&type,&index)==0) {
 	    switch(type) {
-		case HPI_SOURCENODE_LINEIN:
-		  input_port_mux_type[i][j][0]=true;
-		  input_mux_index[i][j][0]=index;
-		  break;
-		case HPI_SOURCENODE_AESEBU_IN:
-		  input_port_mux_type[i][j][1]=true;
-		  input_mux_index[i][j][1]=index;
-		  break;
+	    case HPI_SOURCENODE_LINEIN:
+	      input_port_mux_type[i][j][0]=true;
+	      input_mux_index[i][j][0]=index;
+	      break;
+
+	    case HPI_SOURCENODE_AESEBU_IN:
+	      input_port_mux_type[i][j][1]=true;
+	      input_mux_index[i][j][1]=index;
+	      break;
 	    }
 	  }
 	}
