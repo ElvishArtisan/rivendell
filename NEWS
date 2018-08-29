@@ -1,19 +1,23 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v2.19.2int01 -- 5/8/2018
+v2.19.2int02 -- 8/29/2018
 
 Changes:
-   Fixed a bug that caused the 'Switcher Matrix' and
-   'Switcher Output' dropdowns to populate incorrect values when
-   selecting a non-local 'Switcher Host' in the 'Configure RDCatch'
-   dialog in rdadmin(1).
+   BroadcastTools Support. Added a Switcher/GPIO driver for the
+   BroadcastTools SS 2.1 switcher.
 
-   Fixed a bug in rdlogmanager(1) that caused the initial transition
-   type specified in the 'IMPORT' section of the 'Editing Event' dialog
-   to be applied to both the parent log link and the first imported
-   event when the 'PRE-IMPORT CARTS' list was empty and no Timed Start
-   was enabled.
+   AudioScience GPIO. Added support for GPIO on AudioScience adapters
+   to the 'Local Audio Adapter' Switcher/GPIO driver.
+
+   Add Next RML. Added an optional third argument to the
+   'Add Next' ['PX'] RML to permit the transition type of the added
+   event to be specified.
+
+   Spinitron RLM. Added support for Spinitron v2 to the 'spinitron_plus'
+   RLM. 
+
+   Various bug fixes. See the 'ChangeLog' for details.
 
 Database Update:
    This version of Rivendell uses database schema version 275, and will

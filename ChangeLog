@@ -16682,3 +16682,5 @@
 2018-08-29 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in the 'spinitron_plus' RLM that caused
 	a segfault.
+2018-08-29 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.19.2int02.
