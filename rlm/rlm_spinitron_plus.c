@@ -199,7 +199,6 @@ void rlm_spinitron_plus_RLMStart(void *ptr,const char *arg)
   while(strlen(station)>0) {
     rlm_spinitron_plus_major_versions=realloc(rlm_spinitron_plus_major_versions,
 					      (rlm_spinitron_plus_devs+1)*(rlm_spinitron_plus_devs+1)*sizeof(int));
-    strcpy(rlm_spinitron_plus_stations+256*rlm_spinitron_plus_devs,station);
     rlm_spinitron_plus_major_versions[rlm_spinitron_plus_devs]=
       RLMGetIntegerValue(ptr,arg,section,"MajorVersion",1);
 

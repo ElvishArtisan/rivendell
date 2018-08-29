@@ -16679,3 +16679,6 @@
 	* Fixed a bug in rdimport(1) that would throw a spurious SQL error
 	when using the '--to-cart=' switch with an already existing cart
 	[Issue #000217].
+2018-08-29 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in the 'spinitron_plus' RLM that caused
+	a segfault.
