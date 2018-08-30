@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry id="stdin" xmlns="http://docbook.org/ns/docbook" version="5.0">
+  <!--
+                    Header
+  -->
+  <refmeta>
+    <refentrytitle>RD_SaveLog</refentrytitle>
+    <manvolnum>7</manvolnum>
+    <refmiscinfo class='source'>February 2017</refmiscinfo>
+    <refmiscinfo class='manual'>Rivendell C Library Manual</refmiscinfo>
+  </refmeta>
+  <refnamediv>
+    <refname>rd_savelog</refname>
+    <refpurpose>Rivendell Save Log C Library Function</refpurpose>
+  </refnamediv>
+  <info>
+    <author>
+      <personname>
+        <firstname>Todd</firstname>
+        <surname>Baker</surname>
+        <email>bakert@rfa.org</email>
+      </personname>
+      <contrib>Rivendell C Library Author</contrib>
+    </author>
+  </info>
+
+  <!--
+                    Body
+  -->
+  <refsynopsisdiv id='synopsis'>
+    <funcsynopsis>
+    <funcsynopsisinfo>#include &lt;rivendell/rd_savelog.h&gt;</funcsynopsisinfo>
+    <funcprototype>
+    <funcdef>int <function>RD_SaveLog</function></funcdef>
+      <paramdef>struct save_loghdr_values <parameter>*hdrvals</parameter></paramdef>
+      <paramdef>struct save_logline_values <parameter>*linevals</parameter></paramdef>
+      <paramdef>unsigned <parameter>linevals_quan</parameter></paramdef>
+      <paramdef>const char <parameter>hostname[]</parameter></paramdef>
+      <paramdef>const char <parameter>username[]</parameter></paramdef>
+      <paramdef>const char <parameter>passwd[]</parameter></paramdef>
+      <paramdef>const char <parameter>ticket[]</parameter></paramdef>
+      <paramdef>const char <parameter>log_name[]</parameter></paramdef>
+      <paramdef>const char <parameter>user_agent[]</parameter></paramdef>
+    </funcprototype> 
+    </funcsynopsis>
+
+  </refsynopsisdiv>
+
+  <refsect1 id='description'><title>Description</title>
+  <para>
+    <command>RD_SaveLog</command> is  the function to use
+    to save log information (both headers and lines) to an existing Rivendell
+    Database.
+  </para>
+  <para>
+    This function saves the specified log to the Rivendell database on
+    hostname.
+  </para>
+  <table xml:id="ex.savelog" frame="all">
+    <title>RD_SaveLog function call fields</title>
+    <tgroup cols="4" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="FIELD TYPE" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+        <row>
+          <entry>
+            FIELD NAME
+          </entry>
+          <entry>
+            FIELD TYPE
+          </entry>
+          <entry>
+            MEANING
+          </entry>
+          <entry>
+            REMARKS
+          </entry>
+        </row>
+      </thead>
+      <tbody>
+        <row>
+          <entry>
+            hdrvals
+          </entry>
+          <entry>
+            Pointer to save_loghdr_values structure
+          </entry>
+          <entry>
+            Log header data
+          </entry>
+          <entry>
+            Mandatory
+          </entry>
+        </row>
+        <row>
+          <entry>
+            linevals
+          </entry>
+          <entry>
+            Pointer to save_logline_values structure
+          </entry>
+          <entry>
+            Log lines data
+          </entry>
+          <entry>
+            Mandatory
+          </entry>
+        </row>
+        <row>
+          <entry>
+            linevals_quan
+          </entry>
+          <entry>
+            Unsigned Integer
+          </entry>
+          <entry>
+            Number of lines in the linevals argument 
+          </entry>
+          <entry>
+            Mandatory
+          </entry>
+        </row>
+        <row>
+          <entry>
+            hostname
+          </entry>
+          <entry>
+          Character Array
+          </entry>
+          <entry>
+            Name Of Rivendell DB Host
+          </entry>
+          <entry>
+            Mandatory
+          </entry>
+        </row>
+        <row>
+          <entry>
+            username
+          </entry>
+          <entry>
+          Character Array
+          </entry>
+          <entry>
+            Rivendell User Name
+          </entry>
+          <entry>
+            Mandatory When NO Ticket Provided
+          </entry>
+        </row>
+        <row>
+          <entry>
+            passwd
+          </entry>
+          <entry>
+          Character Array
+          </entry>
+          <entry>
+            Rivendell User Password
+          </entry>
+          <entry>
+            Mandatory When NO Ticket Provided
+          </entry>
+        </row>
+        <row>
+          <entry>
+            ticket
+          </entry>
+          <entry>
+          Character Array
+          </entry>
+          <entry>
+            Rivendell Authentification Ticket
+          </entry>
+          <entry>
+            Mandatory When NO User/Password Pair Provided.
+          </entry>
+        </row>
+        <row>
+          <entry>
+            log_name
+          </entry>
+          <entry>
+          Character Array
+          </entry>
+          <entry>
+            Name to assign to new log
+          </entry>
+          <entry>
+            Mandatory
+          </entry>
+        </row>
+        <row>
+          <entry>
+            user_agent
+          </entry>
+          <entry>
+          Character Array
+          </entry>
+          <entry>
+            User Agent Value put into HTTP request
+          </entry>
+          <entry>
+            Optional (default is Rivendell-C-API/x.x.x)
+          </entry>
+        </row>
+      </tbody>
+    </tgroup>
+  </table>
+  <para>
+    Header data for the log is sent in a 'save_loghdr_values' struct, as
+    follows:
+  </para>
+  <programlisting>
+    struct save_loghdr_values {
+      char loghdr_service[11];
+      char loghdr_description[65];
+      int loghdr_autorefresh;
+      struct tm loghdr_purge_date;
+      struct tm loghdr_start_date;
+      struct tm loghdr_end_date;
+    };
+  </programlisting>
+  <para>
+    Each line in the log is sent in a 'save_logline_values' struct, as
+    follows:
+  </para>
+  <programlisting>
+    struct save_logline_values {
+      int  logline_id;
+      int  logline_type;
+      int  logline_source;
+      unsigned logline_cart_number;
+      int  logline_starttime;
+      int  logline_gracetime;
+      int  logline_time_type;
+      int  logline_transition_type;
+      int  logline_start_point_log;
+      int  logline_end_point_log;
+      int  logline_segue_start_point_log;
+      int  logline_segue_end_point_log;
+      int  logline_fadeup_point_log;
+      int  logline_fadedown_point_log;
+      int  logline_duckup_gain;
+      int  logline_duckdown_gain;
+      char logline_marker_comment[256];
+      char logline_marker_label[65];
+      char logline_origin_user[256];
+      struct tm logline_origin_datetime;
+      int  logline_event_length;
+      char logline_link_event_name[65];
+      struct tm logline_link_starttime;
+      int  logline_link_length;
+      int  logline_link_start_slop;
+      int  logline_link_end_slop;
+      int  logline_link_id;
+      int  logline_link_embedded;
+      struct tm logline_ext_starttime;
+      int  logline_ext_length;
+      char logline_ext_cart_name[33];
+      char logline_ext_data[33];
+      char logline_ext_event_id[33];
+      char logline_ext_annc_type[9];
+      };
+  </programlisting>
+  </refsect1>
+  <refsect2 id='returns'><title>RETURN VALUE</title>
+    <para>
+      On success, zero is returned.
+    </para>
+    <para>
+      If a server error occurs a -1 is returned.
+      If a client error occurs a specific error number is returned.
+    </para>
+  </refsect2>
+  <refsect3 id='errors'><title>ERRORS</title>
+    <para>
+      400          Invalid/Missing Parameter.
+    </para>
+    <para>
+      403          User Authentification Error.
+    </para>
+    <para>
+      404          User Permission Error.
+    </para>
+    <para>
+      404          Service or Log Does Not Exist.
+    </para>
+    <para>
+      500          Server error.
+    </para>
+    <para>
+      nnn  Unknown Error Occurred.
+    </para>
+  </refsect3>
+     
+</refentry>

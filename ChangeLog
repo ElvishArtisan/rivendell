@@ -17544,3 +17544,8 @@
 	* Removed spurious syslog warnings when initializing HPI devices.
 2018-08-30 Fred Gleason <fredg@paravelsystems.com>
 	* Moved RLM subsystem to 'apis/rlm/'.
+2018-08-30 Fred Gleason <fredg@paravelsystems.com>
+	* Integrated the 'Rivendell-C-API'
+	[from https://github.com/RadioFreeAsia/rivendell-c-api] in
+	'apis/rivwebcapi/'.
+	* Added a 'rivendell-webapi' RPM subpackage.

@@ -20,7 +20,8 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-SUBDIRS = rlm
+SUBDIRS = rivwebcapi\
+          rlm
 
 CLEANFILES = *~\
              *.idb\

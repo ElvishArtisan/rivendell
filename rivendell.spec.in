@@ -24,7 +24,6 @@ Version: @VERSION@
 Release: @RPM_RELEASE@
 License: GPL
 Packager: Fred Gleason <fredg@paravelsystems.com>
-Group: Productivity/Multimedia/Other
 Source: rivendell-@VERSION@.tar.gz
 Requires: @MYSQL_PKG@, @QT4_MYSQL_PKG@, @APACHE_PKG@, @QT4_DEVEL_PKG@, curl, @USERMODE_PKG@, @CDDA2WAV_PKG@,
 BuildRoot: /var/tmp/rivendell-@VERSION@
@@ -32,21 +31,21 @@ Obsoletes: rivendell-base
 
 %package importers
 Summary: Library importers for the Rivendell Broadcast Automation System
-Group: Productivity/Multimedia/Other
 Requires: rivendell = @VERSION@, madplay
 
 %package opsguide
 Summary: The Rivendell Operations and Administration Guide
-Group: Productivity/Multimedia/Other
 Requires: evince, firefox, rivendell = @VERSION@
 
+%package webapi
+Summary: Client libraries for interfacing with Rivendell's Web API.
+
 %package devel
-Summary: Header files and example code for developing Rivendell Loadable Modules
-Group: Productivity/Multimedia/Other
+Summary: Header files and example code for development with Rivendell APIs
+Requires: rivendell = @VERSION@, rivendell-webapi = @VERSION@
 
 %package select
 Summary: The RDSelect system selector tool for Rivendell.
-Group: Productivity/Multimedia/Other
 Requires: rivendell = @VERSION@
 
 
@@ -73,10 +72,17 @@ This package contains the Rivendell Operations and Administration Guide,
 in both HTML and PDF formats.
 
 
+%description webapi
+This package contains client libraries for interfacing with Rivendell's
+Web API subsystem.
+
+
 %description devel
-This package contains header files and example code for developing Rivendell 
-Loadable Modules (RLMs), which can be used to generate custom Now & Next data
-outputs for a wide variety of external devices.
+This package contains header files and example code for development using
+Rivendell's various APIs, including Rivendell Loadable Modules (RLMs),
+which can be used to generate custom Now & Next data outputs for a wide
+variety of external devices and the Rivendell Web C API, which can be
+used to integrate with Rivendell Web API Interface.
 
 
 %description select
@@ -388,6 +394,11 @@ rm -rf $RPM_BUILD_ROOT
 @HPI_FILE4@
 
 
+%files webapi
+@LOCAL_PREFIX@/@RD_LIB_PATH@/librivwebcapi.so.@INTERFACE_RIVWEBCAPI_MAJOR@
+@LOCAL_PREFIX@/@RD_LIB_PATH@/librivwebcapi.so.@INTERFACE_RIVWEBCAPI_MAJOR@.@INTERFACE_RIVWEBCAPI_MINOR@.@INTERFACE_RIVWEBCAPI_POINT@
+
+
 %files importers
 @LOCAL_PREFIX@/bin/wings_filter
 @LOCAL_PREFIX@/bin/rivendell_filter
@@ -410,8 +421,47 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %files devel
+@LOCAL_PREFIX@/@RD_LIB_PATH@/librivwebcapi.so
+@LOCAL_PREFIX@/@RD_LIB_PATH@/librivwebcapi.a
+@LOCAL_PREFIX@/@RD_LIB_PATH@/librivwebcapi.la
+@LOCAL_PREFIX@/@RD_LIB_PATH@/pkgconfig/rivwebcapi.pc
+@LOCAL_PREFIX@/include/rivwebcapi/*
 @LOCAL_PREFIX@/include/rlm/*
 @LOCAL_PREFIX@/src/rlm/*
+@LOCAL_PREFIX@/share/man/man7/rd_addcart.7.gz
+@LOCAL_PREFIX@/share/man/man7/rd_addcut.7.gz
+@LOCAL_PREFIX@/share/man/man7/rd_addlog.7.gz
+@LOCAL_PREFIX@/share/man/man7/rd_assignschedcode.7.gz
+@LOCAL_PREFIX@/share/man/man7/rd_audioinfo.7.gz
+@LOCAL_PREFIX@/share/man/man7/rd_audiostore.7.gz
+@LOCAL_PREFIX@/share/man/man7/rd_copyaudio.7.gz
+@LOCAL_PREFIX@/share/man/man7/rd_createticket.7.gz
+@LOCAL_PREFIX@/share/man/man7/rd_deleteaudio.7.gz
+@LOCAL_PREFIX@/share/man/man7/rd_deletelog.7.gz
+@LOCAL_PREFIX@/share/man/man7/rd_editcart.7.gz
+@LOCAL_PREFIX@/share/man/man7/rd_editcut.7.gz
+@LOCAL_PREFIX@/share/man/man7/rd_export.7.gz
+@LOCAL_PREFIX@/share/man/man7/rd_exportpeaks.7.gz
+@LOCAL_PREFIX@/share/man/man7/rd_getuseragent.7.gz
+@LOCAL_PREFIX@/share/man/man7/rd_getversion.7.gz
+@LOCAL_PREFIX@/share/man/man7/rd_import.7.gz
+@LOCAL_PREFIX@/share/man/man7/rd_listcart.7.gz
+@LOCAL_PREFIX@/share/man/man7/rd_listcarts.7.gz
+@LOCAL_PREFIX@/share/man/man7/rd_listcartschedcodes.7.gz
+@LOCAL_PREFIX@/share/man/man7/rd_listcut.7.gz
+@LOCAL_PREFIX@/share/man/man7/rd_listcuts.7.gz
+@LOCAL_PREFIX@/share/man/man7/rd_listgroup.7.gz
+@LOCAL_PREFIX@/share/man/man7/rd_listgroups.7.gz
+@LOCAL_PREFIX@/share/man/man7/rd_listlog.7.gz
+@LOCAL_PREFIX@/share/man/man7/rd_listlogs.7.gz
+@LOCAL_PREFIX@/share/man/man7/rd_listschedcodes.7.gz
+@LOCAL_PREFIX@/share/man/man7/rd_listservices.7.gz
+@LOCAL_PREFIX@/share/man/man7/rd_listsystemsettings.7.gz
+@LOCAL_PREFIX@/share/man/man7/rd_removecart.7.gz
+@LOCAL_PREFIX@/share/man/man7/rd_removecut.7.gz
+@LOCAL_PREFIX@/share/man/man7/rd_savelog.7.gz
+@LOCAL_PREFIX@/share/man/man7/rd_trimaudio.7.gz
+@LOCAL_PREFIX@/share/man/man7/rd_unassignschedcode.7.gz
 
 
 %files select

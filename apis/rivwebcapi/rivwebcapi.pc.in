@@ -1,0 +1,10 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=${prefix}/include/rivwebcapi
+
+Name: rivwebcapi
+Description: C API for the Rivendell Radio Automation System Web Service
+Version: @VERSION@
+Libs: -L${libdir} -lrivwebcapi -lcurl -lm
+Cflags: -I${includedir} -I/usr/include

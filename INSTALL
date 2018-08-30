@@ -11,6 +11,9 @@ Cdda2Wav
 A CD ripper engine.  Included in most distributions, but also available from 
 http://www.cdda2wav.de/.
 
+Expat
+A stream-oriented XML parser library. Available at https://libexpat.github.io/.
+
 ID3Lib
 An audio metadata tag library.  Included in most distros, or available at 
 http://id3lib.sourceforge.net/.

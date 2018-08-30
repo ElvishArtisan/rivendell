@@ -1,15 +1,13 @@
 The following folks have contributed to Rivendell:
 
 Todd Baker <bakert@rfa.org>
+   C client binding for the Rivendell Web API [rivwebcapi].
    --create-startdate-offset and --create-enddate-offset options for
    RDImport(1).
    Hotkey system.
 
 Luigino Bracci <lbracci@gmail.com>
    Spanish translation.
-
-Michael Cheng <mikecheng@planckenergy.com>
-   The tooLame MPEG Layer 2 encoder.
 
 Josh Edelstein <edelsteinj@rfa.org>
    Icon Set
@@ -50,8 +48,8 @@ Daniel Roviriego <danifernando@gmail.com>
    Portuguese Translation (pt_BR).
 
 Chris Smowton
-   MP4 imporatation support.
+   MP4 importation support.
 
 Scott Spillers <scotts@paravelsystems.com>
-   The Icon set
+   The original Icon set
 
