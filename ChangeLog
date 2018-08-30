@@ -17542,3 +17542,5 @@
 	* Added support for the Spinitron v2 API in the 'spinitron_plus' RLM.
 2018-08-29 Fred Gleason <fredg@paravelsystems.com>
 	* Removed spurious syslog warnings when initializing HPI devices.
+2018-08-30 Fred Gleason <fredg@paravelsystems.com>
+	* Moved RLM subsystem to 'apis/rlm/'.

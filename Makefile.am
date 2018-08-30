@@ -30,7 +30,7 @@ endif
 SUBDIRS = icons\
           helpers\
           lib\
-          $(HPI_RD_OPT) rlm\
+          $(HPI_RD_OPT) apis\
           scripts\
           conf\
           debian\

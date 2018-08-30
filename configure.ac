@@ -441,10 +441,11 @@ AC_CONFIG_FILES([rivendell.spec \
     conf/rd-bin.conf \
     icons/Makefile \
     helpers/Makefile \
+    apis/Makefile \
+    apis/rlm/Makefile \
     lib/rdpaths.h \
     lib/Makefile \
     rdhpi/Makefile \
-    rlm/Makefile \
     cae/Makefile \
     utils/Makefile \
     utils/rdalsaconfig/Makefile \
