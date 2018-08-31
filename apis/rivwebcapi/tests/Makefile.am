@@ -18,8 +18,8 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CFLAGS = -Wall -I$(top_srcdir)/apis/rivwebcapi
-LIBS = -L$(top_srcdir)/apis/rivwebcapi/rivwebcapi
+AM_CFLAGS = -Wall -I$ ..
+LIBS = -L$ ../rivwebcapi
 noinst_PROGRAMS = listgroups_test \
 		listgroup_test \
 		listcarts_test \

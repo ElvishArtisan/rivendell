@@ -39,6 +39,12 @@ DISTCLEANFILES = rivwebcapi.pc
 MAINTAINERCLEANFILES = *~\
                        *.tar.gz\
                        aclocal.m4\
+                       config.guess\
+                       config.sub\
                        configure\
+                       depcomp\
+                       install-sh\
+                       ltmain.sh\
                        Makefile.in\
+                       missing\
                        moc_*

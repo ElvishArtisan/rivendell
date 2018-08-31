@@ -17549,3 +17549,6 @@
 	[from https://github.com/RadioFreeAsia/rivendell-c-api] in
 	'apis/rivwebcapi/'.
 	* Added a 'rivendell-webapi' RPM subpackage.
+2018-08-31 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for cross-compiling 'rivwebcapi' for Windows with
+	the MingW64 environment.

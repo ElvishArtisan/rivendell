@@ -18,7 +18,7 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CFLAGS = -I$(top_srcdir)/apis/rivwebcapi
+AM_CFLAGS = -I ..
 lib_LTLIBRARIES = librivwebcapi.la 
 dist_librivwebcapi_la_SOURCES = rd_addcart.c rd_addcart.h \
 				rd_addcut.c rd_addcut.h \

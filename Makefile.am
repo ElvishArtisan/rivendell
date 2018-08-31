@@ -110,6 +110,7 @@ EXTRA_DIST = autogen.sh\
              CODINGSTYLE\
              get_distro.pl\
              get_target.sh\
+             INSTALL-WINDOWS\
              make_slack.in\
              PACKAGE_VERSION\
              rdrepld-suse.in\
