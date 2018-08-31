@@ -17552,3 +17552,5 @@
 2018-08-31 Fred Gleason <fredg@paravelsystems.com>
 	* Added support for cross-compiling 'rivwebcapi' for Windows with
 	the MingW64 environment.
+2018-08-31 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug that broke the build under MingW32.

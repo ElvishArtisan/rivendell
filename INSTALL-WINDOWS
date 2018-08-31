@@ -25,6 +25,6 @@ export RANLIB=i686-w64-mingw32-gcc-ranlib
 3) cd to 'apis/rivwebcapi/' in the Rivendell sources and do:
 
    ./autogen.sh
-   ./configure --prefix=$MINGW32_SYS_ROOT --i686-w64-mingw32
+   ./configure --prefix=$MINGW32_SYS_ROOT --host=i686-w64-mingw32
    make
    make install (as root)

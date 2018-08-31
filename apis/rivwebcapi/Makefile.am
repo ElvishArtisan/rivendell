@@ -26,6 +26,12 @@ SUBDIRS = rivwebcapi \
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = rivwebcapi.pc
 
+EXTRA_DIST = acinclude.m4\
+             autogen.sh\
+             configure.ac\
+             get_distro.pl\
+             get_target.sh
+
 CLEANFILES = *~\
              *.idb\
              *ilk\
