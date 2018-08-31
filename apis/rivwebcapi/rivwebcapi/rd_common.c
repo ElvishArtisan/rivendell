@@ -143,7 +143,6 @@ size_t strlcpy(char * dest, const char* src, size_t bufsize)
  *   RD_Cnv_tm_to_DTString
  *     Copies tm struct values into a date string. Returns 
  *     size_t length copied. Returns 0 if invalid tm struct.
- *     Automatically URL Encodes colon and the plus sign.
 *****************************************************************/
 size_t RD_Cnv_tm_to_DTString(struct tm *tmptr,char * dest)
 {
@@ -155,7 +154,7 @@ size_t RD_Cnv_tm_to_DTString(struct tm *tmptr,char * dest)
     char thesec[3];
     char plusminus[3];
     char minus[2] = "-";
-    char colon_sep[4] = "%3a";
+    char colon_sep[4] = ":";
     char T_sep[2] = "T";
     char offsethr[3];
     char offsetmin[3];

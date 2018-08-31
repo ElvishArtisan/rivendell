@@ -3,6 +3,7 @@
  * Implementation of the AddLog Rivendell Access Library
  *
  * (C) Copyright 2017 Todd Baker  <bakert@rfa.org>
+ * (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License version 2 as
@@ -31,13 +32,14 @@ int RD_AddLog(const char hostname[],
 	      const char servicename[],
               const char user_agent[])
 {
-  char post[1500];
   char url[1500];
   CURL *curl=NULL;
   long response_code;
   char errbuf[CURL_ERROR_SIZE];
   CURLcode res;
   char user_agent_string[255];
+  struct curl_httppost *first=NULL;
+  struct curl_httppost *last=NULL;
 
   if((curl=curl_easy_init())==NULL) {
     curl_easy_cleanup(curl);
@@ -48,13 +50,54 @@ int RD_AddLog(const char hostname[],
    * Setup the CURL call
    */
   snprintf(url,1500,"http://%s/rd-bin/rdxport.cgi",hostname);
-  snprintf(post,1500,"COMMAND=29&LOGIN_NAME=%s&PASSWORD=%s&TICKET=%s&LOG_NAME=%s&SERVICE_NAME=%s",
-	   curl_easy_escape(curl,username,0),
-	   curl_easy_escape(curl,passwd,0),
-	   curl_easy_escape(curl,ticket,0),
-	   curl_easy_escape(curl,logname,0),
-	   curl_easy_escape(curl,servicename,0));
 
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"COMMAND",
+        CURLFORM_COPYCONTENTS,
+        "29",
+        CURLFORM_END);
+
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"LOGIN_NAME",
+	CURLFORM_COPYCONTENTS,
+	username,
+	CURLFORM_END); 
+
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"PASSWORD",
+        CURLFORM_COPYCONTENTS,
+	passwd,
+	CURLFORM_END);
+
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"TICKET",
+        CURLFORM_COPYCONTENTS,
+        ticket,
+	CURLFORM_END);
+
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"LOG_NAME",
+        CURLFORM_COPYCONTENTS,
+        logname,
+	CURLFORM_END);
+
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"SERVICE_NAME",
+        CURLFORM_COPYCONTENTS,
+        servicename,
+	CURLFORM_END);
   if (strlen(user_agent)> 0)
   {
     curl_easy_setopt(curl, CURLOPT_USERAGENT,user_agent);
@@ -67,7 +110,7 @@ int RD_AddLog(const char hostname[],
   }
   curl_easy_setopt(curl,CURLOPT_URL,url);
   curl_easy_setopt(curl,CURLOPT_POST,1);
-  curl_easy_setopt(curl,CURLOPT_POSTFIELDS,post);
+  curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
   curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
   curl_easy_setopt(curl,CURLOPT_ERRORBUFFER,errbuf);
   //  curl_easy_setopt(curl,CURLOPT_VERBOSE,1);
@@ -88,6 +131,7 @@ int RD_AddLog(const char hostname[],
 /* The response OK - so figure out if we got what we wanted.. */
 
   curl_easy_getinfo(curl,CURLINFO_RESPONSE_CODE,&response_code);
+  curl_formfree(first);
   curl_easy_cleanup(curl);
   
   if (response_code > 199 && response_code < 300) {  //Success

@@ -3,6 +3,7 @@
  * Implementation of the Export Cart Rivendell Access Library
  *
  * (C) Copyright 2015 Todd Baker  <bakert@rfa.org>             
+ * (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License version 2 as
@@ -54,7 +55,6 @@ int RD_ExportCart( const char hostname[],
                         const char user_agent[])
 
 {
-  char post[1500];
   char url[1500];
   CURL *curl=NULL;
   FILE *fp;
@@ -65,6 +65,9 @@ int RD_ExportCart( const char hostname[],
   char errbuf[CURL_ERROR_SIZE];
   CURLcode res;
   char user_agent_string[255];
+  char cart_buffer[7];
+  struct curl_httppost *first=NULL;
+  struct curl_httppost *last=NULL;
 
   /*   Check File name */
   memset(checked_fname,'\0',sizeof(checked_fname));
@@ -80,33 +83,147 @@ int RD_ExportCart( const char hostname[],
 //
 // Generate POST Data
 //
-
   if((curl=curl_easy_init())==NULL) {
     curl_easy_cleanup(curl);
     return -1;
   }
 
   snprintf(url,1500,"http://%s/rd-bin/rdxport.cgi",hostname);
-  snprintf(post,1500,"COMMAND=1&LOGIN_NAME=%s&PASSWORD=%s&TICKET=%s&CART_NUMBER=%u&CUT_NUMBER=%u&FORMAT=%d&CHANNELS=%d&SAMPLE_RATE=%d&BIT_RATE=%d&QUALITY=%d&START_POINT=%d&END_POINT=%d&NORMALIZATION_LEVEL=%d&ENABLE_METADATA=%d",
-        curl_easy_escape(curl,username,0),
-	curl_easy_escape(curl,passwd,0),
-	curl_easy_escape(curl,ticket,0),
-	cartnum, 
-	cutnum,
-	format,
-	channels, 
-	sample_rate, 
-	bit_rate,
-	quality, 
-	start_point, 
-	end_point,
-	normalization_level,
-	enable_metadata);
+
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"COMMAND",
+        CURLFORM_COPYCONTENTS,
+        "1",
+        CURLFORM_END);
+
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"LOGIN_NAME",
+	CURLFORM_COPYCONTENTS,
+	username,
+	CURLFORM_END); 
+
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"PASSWORD",
+        CURLFORM_COPYCONTENTS,
+	passwd,
+	CURLFORM_END);
+
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"TICKET",
+        CURLFORM_COPYCONTENTS,
+        ticket,
+	CURLFORM_END);
+
+  snprintf(cart_buffer,7,"%u",cartnum);
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"CART_NUMBER",
+        CURLFORM_COPYCONTENTS, 
+	cart_buffer,
+	CURLFORM_END);
+
+  snprintf(cart_buffer,7,"%u",cutnum);
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"CUT_NUMBER",
+        CURLFORM_COPYCONTENTS, 
+	cart_buffer,
+	CURLFORM_END);
+
+  snprintf(cart_buffer,7,"%u",format);
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"FORMAT",
+        CURLFORM_COPYCONTENTS, 
+	cart_buffer,
+	CURLFORM_END);
+
+  snprintf(cart_buffer,7,"%u",channels);
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"CHANNELS",
+        CURLFORM_COPYCONTENTS, 
+	cart_buffer,
+	CURLFORM_END);
+
+  snprintf(cart_buffer,7,"%u",sample_rate);
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"SAMPLE_RATE",
+        CURLFORM_COPYCONTENTS, 
+	cart_buffer,
+	CURLFORM_END);
+
+  snprintf(cart_buffer,7,"%u",bit_rate);
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"BIT_RATE",
+        CURLFORM_COPYCONTENTS, 
+	cart_buffer,
+	CURLFORM_END);
+
+  snprintf(cart_buffer,7,"%u",quality);
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"QUALITY",
+        CURLFORM_COPYCONTENTS, 
+	cart_buffer,
+	CURLFORM_END);
+
+  snprintf(cart_buffer,7,"%u",start_point);
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"START_POINT",
+        CURLFORM_COPYCONTENTS, 
+	cart_buffer,
+	CURLFORM_END);
+
+  snprintf(cart_buffer,7,"%u",end_point);
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"END_POINT",
+        CURLFORM_COPYCONTENTS, 
+	cart_buffer,
+	CURLFORM_END);
+
+  snprintf(cart_buffer,7,"%u",normalization_level);
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"NORMALIZATION_LEVEL",
+        CURLFORM_COPYCONTENTS, 
+	cart_buffer,
+	CURLFORM_END);
+
+  snprintf(cart_buffer,7,"%u",enable_metadata);
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"ENABLE_METADATA",
+        CURLFORM_COPYCONTENTS, 
+	cart_buffer,
+	CURLFORM_END);
 
   /*
    * Setup the CURL call
    */
-
   fp = fopen(checked_fname,"wb");
   if (!fp)
   {
@@ -132,7 +249,7 @@ int RD_ExportCart( const char hostname[],
   curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,write_data);
   curl_easy_setopt(curl,CURLOPT_WRITEDATA,fp);
   curl_easy_setopt(curl,CURLOPT_POST,1);
-  curl_easy_setopt(curl,CURLOPT_POSTFIELDS,post);
+  curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
   curl_easy_setopt(curl,CURLOPT_VERBOSE,0);
   curl_easy_setopt(curl,CURLOPT_ERRORBUFFER,errbuf);
 
@@ -154,6 +271,7 @@ int RD_ExportCart( const char hostname[],
 /* The response OK - so figure out if we got what we wanted.. */
 
   curl_easy_getinfo(curl,CURLINFO_RESPONSE_CODE,&response_code);
+  curl_formfree(first);
   curl_easy_cleanup(curl);
   
   if (response_code > 199 && response_code < 300) {  //Success

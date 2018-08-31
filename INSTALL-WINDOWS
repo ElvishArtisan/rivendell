@@ -2,9 +2,9 @@ BUILDING RIVWEBCAPI FOR WINDOWS USING MINGW64
 ---------------------------------------------
 
 To build the Rivendell Web C API client library for Windows using
-the MingW64 cross-compiler environment, proceed as follows:
+the MingW32 cross-compiler environment, proceed as follows:
 
-1) Ensure that the necessary MingW64 packages are installed. On RHEL-7,
+1) Ensure that the necessary MingW32 packages are installed. On RHEL-7,
 this can be accomplished with the following command (as 'root'):
 
 *** snip snip ***

@@ -36,7 +36,7 @@ int main(int argc,char *argv[])
   char *user;
   char *passwd;
   char ticket[41]="";
-  char user_agent[255];
+  char user_agent[255]={0};
   struct save_loghdr_values hdr_values;
 
   /*      Get the Rivendell Host, User and Password if set in env */

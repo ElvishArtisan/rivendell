@@ -45,7 +45,7 @@ int main(int argc,char *argv[])
   char title[BUFSIZ]="";
   struct rd_cartimport *cartimport=0;
   unsigned numrecs;
-  char user_agent[255];
+  char user_agent[255]={0};
 
   /*      Get the Rivendell Host, User and Password if set in env */
   if (getenv("RIVHOST")!=NULL) {

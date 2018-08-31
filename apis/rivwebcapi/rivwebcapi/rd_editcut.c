@@ -188,7 +188,6 @@ int RD_EditCut(struct rd_cut *cut[],
                         const char      user_agent[],
 			unsigned 	*numrecs)
 {
-  char post[3500];
   char url[1500];
   CURL *curl=NULL;
   XML_Parser parser;
@@ -197,6 +196,9 @@ int RD_EditCut(struct rd_cut *cut[],
   char errbuf[CURL_ERROR_SIZE];
   CURLcode res;
   char user_agent_string[255];
+  char cart_buffer[7];
+  struct curl_httppost *first=NULL;
+  struct curl_httppost *last=NULL;
 
   if((curl=curl_easy_init())==NULL) {
     curl_easy_cleanup(curl);
@@ -215,13 +217,57 @@ int RD_EditCut(struct rd_cut *cut[],
 			__EditCutElementEnd);
   XML_SetCharacterDataHandler(parser,__EditCutElementData);
   snprintf(url,1500,"http://%s/rd-bin/rdxport.cgi",hostname);
-  snprintf(post,1500,"COMMAND=15&LOGIN_NAME=%s&PASSWORD=%s&TICKET=%s&CART_NUMBER=%u&CUT_NUMBER=%u",
-	curl_easy_escape(curl,username,0),
-	curl_easy_escape(curl,passwd,0),
-	curl_easy_escape(curl,ticket,0),
-	cartnum, 
-	cutnum);
-  Build_Post_Cut_Fields(post, curl, edit_cut_values);
+
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"COMMAND",
+        CURLFORM_COPYCONTENTS,
+        "15",
+        CURLFORM_END);
+
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"LOGIN_NAME",
+	CURLFORM_COPYCONTENTS,
+	username,
+	CURLFORM_END); 
+
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"PASSWORD",
+        CURLFORM_COPYCONTENTS,
+	passwd,
+	CURLFORM_END);
+
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"TICKET",
+        CURLFORM_COPYCONTENTS,
+        ticket,
+	CURLFORM_END);
+
+  snprintf(cart_buffer,7,"%u",cartnum);
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"CART_NUMBER",
+        CURLFORM_COPYCONTENTS, 
+	cart_buffer,
+	CURLFORM_END);
+
+  snprintf(cart_buffer,7,"%u",cutnum);
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"CUT_NUMBER",
+        CURLFORM_COPYCONTENTS, 
+	cart_buffer,
+	CURLFORM_END);
+  Build_Post_Cut_Fields(&first,&last,edit_cut_values);
 
   // Check if User Agent Present otherwise set to default
   if (strlen(user_agent)> 0){
@@ -237,7 +283,7 @@ int RD_EditCut(struct rd_cut *cut[],
   curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,__EditCutCallback);
   curl_easy_setopt(curl,CURLOPT_URL,url);
   curl_easy_setopt(curl,CURLOPT_POST,1);
-  curl_easy_setopt(curl,CURLOPT_POSTFIELDS,post);
+  curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
   curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
   curl_easy_setopt(curl,CURLOPT_ERRORBUFFER,errbuf);
   //  curl_easy_setopt(curl,CURLOPT_VERBOSE,1);
@@ -259,6 +305,7 @@ int RD_EditCut(struct rd_cut *cut[],
 /* The response OK - so figure out if we got what we wanted.. */
 
   curl_easy_getinfo(curl,CURLINFO_RESPONSE_CODE,&response_code);
+  curl_formfree(first);
   curl_easy_cleanup(curl);
   
   if (response_code > 199 && response_code < 300) {  //Success
@@ -274,43 +321,68 @@ int RD_EditCut(struct rd_cut *cut[],
   }
 }
 
-void Build_Post_Cut_Fields(char *post, CURL *curl, struct edit_cut_values edit_values)
-{ 
 
-  char buffer[1024];
+void Build_Post_Cut_Fields(struct curl_httppost **first,
+			   struct curl_httppost **last,
+			   struct edit_cut_values edit_values)
+{
+  char buffer[255]={0};
   char hold_datetime[34];  // take URL Encoding into account
   int  retlen=0;
 
-  /*  Copy all of the applicable values into the post string */
-
-  if (edit_values.use_cut_evergreen)
-  {
-    snprintf(buffer,1024,"&EVERGREEN=%d",edit_values.cut_evergreen);
-    strcat(post,buffer);
+  if (edit_values.use_cut_evergreen) {
+    snprintf(buffer,255,"%d",edit_values.cut_evergreen);
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "EVERGREEN",
+		 CURLFORM_COPYCONTENTS,
+		 buffer,
+		 CURLFORM_END); 
   }
 
   if (edit_values.use_cut_description)
   {
-    snprintf(buffer,1024,"&DESCRIPTION=%s",curl_easy_escape(curl,edit_values.cut_description,0));
-    strcat(post,buffer);
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "DESCRIPTION",
+		 CURLFORM_COPYCONTENTS,
+		 edit_values.cut_description,
+		 CURLFORM_END); 
   }
 
   if (edit_values.use_cut_outcue)
   {
-    snprintf(buffer,1024,"&OUTCUE=%s",curl_easy_escape(curl,edit_values.cut_outcue,0));
-    strcat(post,buffer);
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "OUTCUE",
+		 CURLFORM_COPYCONTENTS,
+		 edit_values.cut_outcue,
+		 CURLFORM_END); 
   }
 
   if (edit_values.use_cut_isrc)
   {
-    snprintf(buffer,1024,"&ISRC=%s",curl_easy_escape(curl,edit_values.cut_isrc,0));
-    strcat(post,buffer);
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "ISRC",
+		 CURLFORM_COPYCONTENTS,
+		 edit_values.cut_isrc,
+		 CURLFORM_END); 
   }
 
   if (edit_values.use_cut_isci)
   {
-    snprintf(buffer,1024,"&ISCI=%s",curl_easy_escape(curl,edit_values.cut_isci,0));
-    strcat(post,buffer);
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "ISCI",
+		 CURLFORM_COPYCONTENTS,
+		 edit_values.cut_isci,
+		 CURLFORM_END); 
   }
 
   if (edit_values.use_cut_start_datetime)
@@ -318,8 +390,13 @@ void Build_Post_Cut_Fields(char *post, CURL *curl, struct edit_cut_values edit_v
     retlen = RD_Cnv_tm_to_DTString( &edit_values.cut_start_datetime,hold_datetime);
     if (retlen > 0) 
     {
-        snprintf(buffer,1024,"&START_DATETIME=%s",hold_datetime);
-        strcat(post,buffer);
+      curl_formadd(first,
+		   last,
+		   CURLFORM_PTRNAME,
+		   "START_DATETIME",
+		   CURLFORM_COPYCONTENTS,
+		   hold_datetime,
+		   CURLFORM_END); 
     }
   }
 
@@ -328,172 +405,324 @@ void Build_Post_Cut_Fields(char *post, CURL *curl, struct edit_cut_values edit_v
     retlen = RD_Cnv_tm_to_DTString( &edit_values.cut_end_datetime,hold_datetime);
     if (retlen > 0) 
     {
-        snprintf(buffer,1024,"&END_DATETIME=%s",hold_datetime);
-        strcat(post,buffer);
+      curl_formadd(first,
+		   last,
+		   CURLFORM_PTRNAME,
+		   "END_DATETIME",
+		   CURLFORM_COPYCONTENTS,
+		   hold_datetime,
+		   CURLFORM_END); 
     }
   }
 
   if (edit_values.use_cut_sun)
   {
-    snprintf(buffer,1024,"&SUN=%d",edit_values.cut_sun);
-    strcat(post,buffer);
+    snprintf(buffer,255,"%d",edit_values.cut_sun);
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "SUN",
+		 CURLFORM_COPYCONTENTS,
+		 hold_datetime,
+		 CURLFORM_END); 
   }
 
   if (edit_values.use_cut_mon)
   {
-    snprintf(buffer,1024,"&MON=%d",edit_values.cut_mon);
-    strcat(post,buffer);
+    snprintf(buffer,255,"%d",edit_values.cut_mon);
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "MON",
+		 CURLFORM_COPYCONTENTS,
+		 hold_datetime,
+		 CURLFORM_END); 
   }
 
   if (edit_values.use_cut_tue)
   {
-    snprintf(buffer,1024,"&TUE=%d",edit_values.cut_tue);
-    strcat(post,buffer);
+    snprintf(buffer,255,"%d",edit_values.cut_tue);
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "TUE",
+		 CURLFORM_COPYCONTENTS,
+		 hold_datetime,
+		 CURLFORM_END); 
   }
 
   if (edit_values.use_cut_wed)
   {
-    snprintf(buffer,1024,"&WED=%d",edit_values.cut_wed);
-    strcat(post,buffer);
+    snprintf(buffer,255,"%d",edit_values.cut_wed);
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "WED",
+		 CURLFORM_COPYCONTENTS,
+		 hold_datetime,
+		 CURLFORM_END); 
   }
 
   if (edit_values.use_cut_thu)
   {
-    snprintf(buffer,1024,"&THU=%d",edit_values.cut_thu);
-    strcat(post,buffer);
+    snprintf(buffer,255,"%d",edit_values.cut_thu);
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "THU",
+		 CURLFORM_COPYCONTENTS,
+		 hold_datetime,
+		 CURLFORM_END); 
   }
 
   if (edit_values.use_cut_fri)
   {
-    snprintf(buffer,1024,"&FRI=%d",edit_values.cut_fri);
-    strcat(post,buffer);
+    snprintf(buffer,255,"%d",edit_values.cut_fri);
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "FRI",
+		 CURLFORM_COPYCONTENTS,
+		 hold_datetime,
+		 CURLFORM_END); 
   }
 
   if (edit_values.use_cut_sat)
   {
-    snprintf(buffer,1024,"&SAT=%d",edit_values.cut_sat);
-    strcat(post,buffer);
+    snprintf(buffer,255,"%d",edit_values.cut_sat);
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "SAT",
+		 CURLFORM_COPYCONTENTS,
+		 hold_datetime,
+		 CURLFORM_END); 
   }
 
   if (edit_values.use_cut_start_daypart)
   {
-    snprintf(buffer,1024,"&START_DAYPART=%s",curl_easy_escape(curl,edit_values.cut_start_daypart,0));
-    strcat(post,buffer);
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "START_DAYPART",
+		 CURLFORM_COPYCONTENTS,
+		 edit_values.cut_start_daypart,
+		 CURLFORM_END); 
   }
 
   if (edit_values.use_cut_end_daypart)
   {
-    snprintf(buffer,1024,"&END_DAYPART=%s",curl_easy_escape(curl,edit_values.cut_end_daypart,0));
-    strcat(post,buffer);
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "END_DAYPART",
+		 CURLFORM_COPYCONTENTS,
+		 edit_values.cut_end_daypart,
+		 CURLFORM_END); 
   }
 
   if (edit_values.use_cut_weight)
   {
-    snprintf(buffer,1024,"&WEIGHT=%u",edit_values.cut_weight);
-    strcat(post,buffer);
+    snprintf(buffer,255,"%d",edit_values.cut_weight);
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "WEIGHT",
+		 CURLFORM_COPYCONTENTS,
+		 buffer,
+		 CURLFORM_END); 
   }
 
   if (edit_values.use_cut_validity)
   {
-    snprintf(buffer,1024,"&VALIDITY=%u",edit_values.cut_validity);
-    strcat(post,buffer);
+    snprintf(buffer,255,"%u",edit_values.cut_validity);
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "VALIDITY",
+		 CURLFORM_COPYCONTENTS,
+		 buffer,
+		 CURLFORM_END); 
   }
 
   if (edit_values.use_cut_coding_format)
   {
-    snprintf(buffer,1024,"&CODING_FORMAT=%u",edit_values.cut_coding_format);
-    strcat(post,buffer);
-  }
-
-  if (edit_values.use_cut_sample_rate)
-  {
-    snprintf(buffer,1024,"&SAMPLE_RATE=%u",edit_values.cut_sample_rate);
-    strcat(post,buffer);
+    snprintf(buffer,255,"%u",edit_values.cut_coding_format);
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "CODING_FORMAT",
+		 CURLFORM_COPYCONTENTS,
+		 buffer,
+		 CURLFORM_END); 
   }
 
   if (edit_values.use_cut_bit_rate)
   {
-    snprintf(buffer,1024,"&BIT_RATE=%u",edit_values.cut_bit_rate);
-    strcat(post,buffer);
+    snprintf(buffer,255,"%u",edit_values.cut_bit_rate);
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "BIT_RATE",
+		 CURLFORM_COPYCONTENTS,
+		 buffer,
+		 CURLFORM_END); 
   }
 
   if (edit_values.use_cut_channels)
   {
-    snprintf(buffer,1024,"&CHANNELS=%u",edit_values.cut_channels);
-    strcat(post,buffer);
+    snprintf(buffer,255,"%u",edit_values.cut_channels);
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "CHANNELS",
+		 CURLFORM_COPYCONTENTS,
+		 buffer,
+		 CURLFORM_END); 
   }
 
   if (edit_values.use_cut_play_gain)
   {
-    snprintf(buffer,1024,"&PLAY_GAIN=%d",edit_values.cut_play_gain);
-    strcat(post,buffer);
+    snprintf(buffer,255,"%d",edit_values.cut_play_gain);
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "PLAY_GAIN",
+		 CURLFORM_COPYCONTENTS,
+		 buffer,
+		 CURLFORM_END); 
   }
 
   if (edit_values.use_cut_start_point)
   {
-    snprintf(buffer,1024,"&START_POINT=%d",edit_values.cut_start_point);
-    strcat(post,buffer);
+    snprintf(buffer,255,"%d",edit_values.cut_start_point);
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "START_POINT",
+		 CURLFORM_COPYCONTENTS,
+		 buffer,
+		 CURLFORM_END); 
   }
 
   if (edit_values.use_cut_end_point)
   {
-    snprintf(buffer,1024,"&END_POINT=%d",edit_values.cut_end_point);
-    strcat(post,buffer);
+    snprintf(buffer,255,"%d",edit_values.cut_end_point);
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "END_POINT",
+		 CURLFORM_COPYCONTENTS,
+		 buffer,
+		 CURLFORM_END); 
   }
 
   if (edit_values.use_cut_fadeup_point)
   {
-    snprintf(buffer,1024,"&FADEUP_POINT=%d",edit_values.cut_fadeup_point);
-    strcat(post,buffer);
+    snprintf(buffer,255,"%d",edit_values.cut_fadeup_point);
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "FADEUP_POINT",
+		 CURLFORM_COPYCONTENTS,
+		 buffer,
+		 CURLFORM_END); 
   }
 
   if (edit_values.use_cut_fadedown_point)
   {
-    snprintf(buffer,1024,"&FADEDOWN_POINT=%d",edit_values.cut_fadedown_point);
-    strcat(post,buffer);
+    snprintf(buffer,255,"%d",edit_values.cut_fadedown_point);
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "FADEDOWN_POINT",
+		 CURLFORM_COPYCONTENTS,
+		 buffer,
+		 CURLFORM_END); 
   }
 
   if (edit_values.use_cut_segue_start_point)
   {
-    snprintf(buffer,1024,"&SEGUE_START_POINT=%d",edit_values.cut_segue_start_point);
-    strcat(post,buffer);
+    snprintf(buffer,255,"%d",edit_values.cut_segue_start_point);
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "SEGUE_START_POINT",
+		 CURLFORM_COPYCONTENTS,
+		 buffer,
+		 CURLFORM_END); 
   }
 
   if (edit_values.use_cut_segue_end_point)
   {
-    snprintf(buffer,1024,"&SEGUE_END_POINT=%d",edit_values.cut_segue_end_point);
-    strcat(post,buffer);
+    snprintf(buffer,255,"%d",edit_values.cut_segue_end_point);
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "SEGUE_END_POINT",
+		 CURLFORM_COPYCONTENTS,
+		 buffer,
+		 CURLFORM_END);
   }
 
   if (edit_values.use_cut_segue_gain)
   {
-    snprintf(buffer,1024,"&SEGUE_GAIN=%d",edit_values.cut_segue_gain);
-    strcat(post,buffer);
+    snprintf(buffer,255,"%d",edit_values.cut_segue_gain);
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "SEGUE_GAIN",
+		 CURLFORM_COPYCONTENTS,
+		 buffer,
+		 CURLFORM_END); 
   }
 
   if (edit_values.use_cut_hook_start_point)
   {
-    snprintf(buffer,1024,"&HOOK_START_POINT=%d",edit_values.cut_hook_start_point);
-    strcat(post,buffer);
+    snprintf(buffer,255,"%d",edit_values.cut_hook_start_point);
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "HOOK_START_POINT",
+		 CURLFORM_COPYCONTENTS,
+		 buffer,
+		 CURLFORM_END); 
   }
 
   if (edit_values.use_cut_hook_end_point)
   {
-    snprintf(buffer,1024,"&HOOK_END_POINT=%d",edit_values.cut_hook_end_point);
-    strcat(post,buffer);
+    snprintf(buffer,255,"%d",edit_values.cut_hook_end_point);
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "HOOK_END_POINT",
+		 CURLFORM_COPYCONTENTS,
+		 buffer,
+		 CURLFORM_END); 
   }
 
 
   if (edit_values.use_cut_talk_start_point)
   {
-    snprintf(buffer,1024,"&TALK_START_POINT=%d",edit_values.cut_talk_start_point);
-    strcat(post,buffer);
+    snprintf(buffer,255,"%d",edit_values.cut_talk_start_point);
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "TALK_START_POINT",
+		 CURLFORM_COPYCONTENTS,
+		 buffer,
+		 CURLFORM_END);
   }
 
   if (edit_values.use_cut_talk_end_point)
   {
-    snprintf(buffer,1024,"&TALK_END_POINT=%d",edit_values.cut_talk_end_point);
-    strcat(post,buffer);
+    snprintf(buffer,255,"%d",edit_values.cut_talk_end_point);
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "FALK_END_POINT",
+		 CURLFORM_COPYCONTENTS,
+		 buffer,
+		 CURLFORM_END); 
   }
-
 }

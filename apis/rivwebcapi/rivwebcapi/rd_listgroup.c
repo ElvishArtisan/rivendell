@@ -3,6 +3,7 @@
  * Implementation of the ListGroup Rivendell Access Library
  *
  * (C) Copyright 2015 Todd Baker  <bakert@rfa.org>             
+ * (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License version 2 as
@@ -122,7 +123,6 @@ int RD_ListGroup(struct rd_group *grp[],
                         const char user_agent[],
                   	unsigned *numrecs)
 {
-  char post[1500];
   char url[1500];
   CURL *curl=NULL;
   XML_Parser parser;
@@ -131,6 +131,8 @@ int RD_ListGroup(struct rd_group *grp[],
   char errbuf[CURL_ERROR_SIZE];
   CURLcode res;
   char user_agent_string[255];
+  struct curl_httppost *first=NULL;
+  struct curl_httppost *last=NULL;
 
    /* set number of recs so if fail already set */
   *numrecs = 0;
@@ -150,11 +152,47 @@ int RD_ListGroup(struct rd_group *grp[],
 			__ListGroupElementEnd);
   XML_SetCharacterDataHandler(parser,__ListGroupElementData);
   snprintf(url,1500,"http://%s/rd-bin/rdxport.cgi",hostname);
-  snprintf(post,1500,"COMMAND=5&LOGIN_NAME=%s&PASSWORD=%s&TICKET=%s&GROUP_NAME=%s",
-	curl_easy_escape(curl,username,0),
-	curl_easy_escape(curl,passwd,0),
-	curl_easy_escape(curl,ticket,0),
-	curl_easy_escape(curl,groupname,0));
+
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"COMMAND",
+        CURLFORM_COPYCONTENTS,
+        "5",
+        CURLFORM_END);
+
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"LOGIN_NAME",
+	CURLFORM_COPYCONTENTS,
+	username,
+	CURLFORM_END); 
+
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"PASSWORD",
+        CURLFORM_COPYCONTENTS,
+	passwd,
+	CURLFORM_END);
+
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"TICKET",
+        CURLFORM_COPYCONTENTS,
+        ticket,
+	CURLFORM_END);
+
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"GROUP_NAME",
+        CURLFORM_COPYCONTENTS,
+        groupname,
+	CURLFORM_END);
+
   //
   // Check if User Agent Present otherwise set to default
   if (strlen(user_agent)> 0){
@@ -170,7 +208,7 @@ int RD_ListGroup(struct rd_group *grp[],
   curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,__ListGroupCallback);
   curl_easy_setopt(curl,CURLOPT_URL,url);
   curl_easy_setopt(curl,CURLOPT_POST,1);
-  curl_easy_setopt(curl,CURLOPT_POSTFIELDS,post);
+  curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
   curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
   curl_easy_setopt(curl,CURLOPT_ERRORBUFFER,errbuf);
   //  curl_easy_setopt(curl,CURLOPT_VERBOSE,1);
@@ -192,6 +230,7 @@ int RD_ListGroup(struct rd_group *grp[],
 /* The response OK - so figure out if we got what we wanted.. */
 
   curl_easy_getinfo(curl,CURLINFO_RESPONSE_CODE,&response_code);
+  curl_formfree(first);
   curl_easy_cleanup(curl);
   
   if (response_code > 199 && response_code < 300) {

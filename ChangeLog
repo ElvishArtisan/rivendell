@@ -17554,3 +17554,46 @@
 	the MingW64 environment.
 2018-08-31 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug that broke the build under MingW32.
+2018-08-31 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed buffer overflow vulnerabilities in the rivwebcapi test
+	harnesses.
+	* Modified rd_createticket(7) in the rivwebcapi to process UTF-8
+	strings correctly.
+	* Modified rd_addcart(7) in the rivwebcapi to process UTF-8
+	strings correctly.
+	* Modified rd_addcut(7) in the rivwebcapi to process UTF-8
+	strings correctly.
+	* Modified rd_addlog(7) in the rivwebcapi to process UTF-8
+	strings correctly.
+	* Modified rd_assignschedcode(7) in the rivwebcapi to process UTF-8
+	strings correctly.
+	* Modified rd_audioinfo(7) in the rivwebcapi to process UTF-8
+	strings correctly.
+	* Modified rd_audiostore(7) in the rivwebcapi to process UTF-8
+	strings correctly.
+	* Modified rd_copyaudio(7) in the rivwebcapi to process UTF-8
+	strings correctly.
+	* Modified rd_deletelog(7) in the rivwebcapi to process UTF-8
+	strings correctly.
+	* Modified rd_editcart(7) in the rivwebcapi to process UTF-8
+	strings correctly.
+	* Modified rd_editcut(7) in the rivwebcapi to process UTF-8
+	strings correctly.
+	* Modified rd_export(7) in the rivwebcapi to process UTF-8
+	strings correctly.
+	* Modified rd_exportpeaks(7) in the rivwebcapi to process UTF-8
+	strings correctly.
+	* Modified rd_listcart(7) in the rivwebcapi to process UTF-8
+	strings correctly.
+	* Modified rd_listcarts(7) in the rivwebcapi to process UTF-8
+	strings correctly.
+	* Modified rd_listcartschedcodes(7) in the rivwebcapi to process UTF-8
+	strings correctly.
+	* Modified rd_listcut(7) in the rivwebcapi to process UTF-8
+	strings correctly.
+	* Modified rd_listcuts(7) in the rivwebcapi to process UTF-8
+	strings correctly.
+	* Modified rd_listgroup(7) in the rivwebcapi to process UTF-8
+	strings correctly.
+	* Modified rd_listgroups(7) in the rivwebcapi to process UTF-8
+	strings correctly.

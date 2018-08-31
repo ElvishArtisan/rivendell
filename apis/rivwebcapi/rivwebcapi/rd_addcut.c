@@ -3,6 +3,7 @@
  * Implementation of the Add Cut Rivendell Access Library
  *
  * (C) Copyright 2015 Todd Baker  <bakert@rfa.org>             
+ * (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License version 2 as
@@ -218,7 +219,6 @@ int RD_AddCut(struct rd_cut *cut[],
                         const char user_agent[],
 			unsigned *numrecs)
 {
-  char post[1500];
   char url[1500];
   CURL *curl=NULL;
   XML_Parser parser;
@@ -227,6 +227,9 @@ int RD_AddCut(struct rd_cut *cut[],
   char errbuf[CURL_ERROR_SIZE];
   CURLcode res;
   char user_agent_string[255];
+  char cart_buffer[7];
+  struct curl_httppost *first=NULL;
+  struct curl_httppost *last=NULL;
 
   if((curl=curl_easy_init())==NULL) {
     curl_easy_cleanup(curl);
@@ -246,11 +249,47 @@ int RD_AddCut(struct rd_cut *cut[],
 			__AddCutElementEnd);
   XML_SetCharacterDataHandler(parser,__AddCutElementData);
   snprintf(url,1500,"http://%s/rd-bin/rdxport.cgi",hostname);
-  snprintf(post,1500,"COMMAND=10&LOGIN_NAME=%s&PASSWORD=%s&TICKET=%s&CART_NUMBER=%u",
-	curl_easy_escape(curl,username,0),
-	curl_easy_escape(curl,passwd,0),
-	curl_easy_escape(curl,ticket,0),
-	cartnumber);
+
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"COMMAND",
+        CURLFORM_COPYCONTENTS,
+        "10",
+        CURLFORM_END);
+
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"LOGIN_NAME",
+	CURLFORM_COPYCONTENTS,
+	username,
+	CURLFORM_END); 
+
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"PASSWORD",
+        CURLFORM_COPYCONTENTS,
+	passwd,
+	CURLFORM_END);
+
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"TICKET",
+        CURLFORM_COPYCONTENTS,
+        ticket,
+	CURLFORM_END);
+
+  snprintf(cart_buffer,7,"%u",cartnumber);
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"CART_NUMBER",
+        CURLFORM_COPYCONTENTS, 
+	cart_buffer,
+	CURLFORM_END);
   // Check if User Agent Present otherwise set to default
   if (strlen(user_agent)> 0){
     curl_easy_setopt(curl, CURLOPT_USERAGENT,user_agent);
@@ -265,7 +304,7 @@ int RD_AddCut(struct rd_cut *cut[],
   curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,__AddCutCallback);
   curl_easy_setopt(curl,CURLOPT_URL,url);
   curl_easy_setopt(curl,CURLOPT_POST,1);
-  curl_easy_setopt(curl,CURLOPT_POSTFIELDS,post);
+  curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
   curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
   curl_easy_setopt(curl,CURLOPT_ERRORBUFFER,errbuf);
   //  curl_easy_setopt(curl,CURLOPT_VERBOSE,1);
@@ -286,6 +325,7 @@ int RD_AddCut(struct rd_cut *cut[],
 /* The response OK - so figure out if we got what we wanted.. */
 
   curl_easy_getinfo(curl,CURLINFO_RESPONSE_CODE,&response_code);
+  curl_formfree(first);
   curl_easy_cleanup(curl);
   
   if (response_code > 199 && response_code < 300) {

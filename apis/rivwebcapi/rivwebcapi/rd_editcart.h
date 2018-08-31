@@ -78,7 +78,9 @@ int RD_EditCart(struct rd_cart *cart[],
 			unsigned *numrecs);
 
 
-void Build_Post_Cart_Fields(char *post, CURL * curl, struct edit_cart_values edit_values);
+void Build_Post_Cart_Fields(struct curl_httppost **first,
+			    struct curl_httppost **last,
+			    struct edit_cart_values edit_values);
 
 _MYRIVLIB_FINI_DECL
 

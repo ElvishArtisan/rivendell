@@ -112,7 +112,10 @@ int RD_EditCut(struct rd_cut *cut[],
                         const char    user_agent[],
                         unsigned        *numrecs);
 
-void Build_Post_Cut_Fields(char *post, CURL * curl, struct edit_cut_values edit_values);
+void Build_Post_Cut_Fields(struct curl_httppost **first,
+			   struct curl_httppost **last,
+			   struct edit_cut_values edit_values);
+//void Build_Post_Cut_Fields(char *post, CURL * curl, struct edit_cut_values edit_values);
 
 _MYRIVLIB_FINI_DECL
 

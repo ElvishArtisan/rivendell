@@ -3,6 +3,7 @@
  * Implementation of the Edit Cart Rivendell Access Library
  *
  * (C) Copyright 2015 Todd Baker  <bakert@rfa.org>             
+ * (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License version 2 as
@@ -181,7 +182,6 @@ int RD_EditCart(struct rd_cart *cart[],
                         const char user_agent[],
 			unsigned *numrecs)
 {
-  char post[3350];
   char url[1500];
   CURL *curl=NULL;
   XML_Parser parser;
@@ -190,6 +190,9 @@ int RD_EditCart(struct rd_cart *cart[],
   char errbuf[CURL_ERROR_SIZE];
   CURLcode res;
   char user_agent_string[255];
+  char cart_buffer[7];
+  struct curl_httppost *first=NULL;
+  struct curl_httppost *last=NULL;
 
   if((curl=curl_easy_init())==NULL) {
     curl_easy_cleanup(curl);
@@ -208,12 +211,49 @@ int RD_EditCart(struct rd_cart *cart[],
 			__EditCartElementEnd);
   XML_SetCharacterDataHandler(parser,__EditCartElementData);
   snprintf(url,1500,"http://%s/rd-bin/rdxport.cgi",hostname);
-  snprintf(post,3350,"COMMAND=14&LOGIN_NAME=%s&PASSWORD=%s&TICKET=%s&CART_NUMBER=%u",
-	   	curl_easy_escape(curl,username,0),
-		curl_easy_escape(curl,passwd,0),
-	        curl_easy_escape(curl,ticket,0),
-		cartnum);
-  Build_Post_Cart_Fields(post,curl,edit_c_values);
+
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"COMMAND",
+        CURLFORM_COPYCONTENTS,
+        "14",
+        CURLFORM_END);
+
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"LOGIN_NAME",
+	CURLFORM_COPYCONTENTS,
+	username,
+	CURLFORM_END); 
+
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"PASSWORD",
+        CURLFORM_COPYCONTENTS,
+	passwd,
+	CURLFORM_END);
+
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"TICKET",
+        CURLFORM_COPYCONTENTS,
+        ticket,
+	CURLFORM_END);
+
+  snprintf(cart_buffer,7,"%u",cartnum);
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"CART_NUMBER",
+        CURLFORM_COPYCONTENTS, 
+	cart_buffer,
+	CURLFORM_END);
+
+  Build_Post_Cart_Fields(&first,&last,edit_c_values);
   
   // Check if User Agent Present otherwise set to default
   if (strlen(user_agent)> 0){
@@ -230,7 +270,7 @@ int RD_EditCart(struct rd_cart *cart[],
   curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,__EditCartCallback);
   curl_easy_setopt(curl,CURLOPT_URL,url);
   curl_easy_setopt(curl,CURLOPT_POST,1);
-  curl_easy_setopt(curl,CURLOPT_POSTFIELDS,post);
+  curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
   curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
   curl_easy_setopt(curl,CURLOPT_ERRORBUFFER,errbuf);
  
@@ -251,6 +291,7 @@ int RD_EditCart(struct rd_cart *cart[],
 /* The response OK - so figure out if we got what we wanted.. */
 
   curl_easy_getinfo(curl,CURLINFO_RESPONSE_CODE,&response_code);
+  curl_formfree(first);
   curl_easy_cleanup(curl);
   
   if (response_code > 199 && response_code < 300) {  //Success
@@ -266,101 +307,211 @@ int RD_EditCart(struct rd_cart *cart[],
   }
 }
 
-void Build_Post_Cart_Fields(char *post, CURL *curl, struct edit_cart_values edit_values)
-{ 
-  char buffer[1024];
-  /*  Copy all of the applicable values into the post string */
+
+void Build_Post_Cart_Fields(struct curl_httppost **first,
+			    struct curl_httppost **last,
+			    struct edit_cart_values edit_values)
+{
+  char buffer[255]={0};
 
   if (edit_values.use_cart_grp_name)
   {
-    snprintf(buffer,1024,"&GROUP_NAME=%s",curl_easy_escape(curl,edit_values.cart_grp_name,0));
-    strcat(post,buffer);
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "GROUP_NAME",
+		 CURLFORM_COPYCONTENTS,
+		 edit_values.cart_grp_name,
+		 CURLFORM_END); 
   }
+
   if (edit_values.use_cart_title)
   {
-    snprintf(buffer,1024,"&TITLE=%s",curl_easy_escape(curl,edit_values.cart_title,0));
-    strcat(post,buffer);
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "TITLE",
+		 CURLFORM_COPYCONTENTS,
+		 edit_values.cart_title,
+		 CURLFORM_END); 
   }
   if (edit_values.use_cart_artist)
   {
-    snprintf(buffer,1024,"&ARTIST=%s",curl_easy_escape(curl,edit_values.cart_artist,0));
-    strcat(post,buffer);
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "ARTIST",
+		 CURLFORM_COPYCONTENTS,
+		 edit_values.cart_artist,
+		 CURLFORM_END); 
   }
+
   if (edit_values.use_cart_album)
   {
-    snprintf(buffer,1024,"&ALBUM=%s",curl_easy_escape(curl,edit_values.cart_album,0));
-    strcat(post,buffer);
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "ALBUM",
+		 CURLFORM_COPYCONTENTS,
+		 edit_values.cart_album,
+		 CURLFORM_END); 
   }
   if (edit_values.use_cart_year)
   {
-    snprintf(buffer,1024,"&YEAR=%d",edit_values.cart_year);
-    strcat(post,buffer);
-  }
-  if (edit_values.use_cart_label)
-  {
-    snprintf(buffer,1024,"&LABEL=%s",curl_easy_escape(curl,edit_values.cart_label,0));
-    strcat(post,buffer);
-  }
-  if (edit_values.use_cart_client)
-  {
-    snprintf(buffer,1024,"&CLIENT=%s",curl_easy_escape(curl,edit_values.cart_client,0));
-    strcat(post,buffer);
-  }
-  if (edit_values.use_cart_agency)
-  {
-    snprintf(buffer,1024,"&AGENCY=%s",curl_easy_escape(curl,edit_values.cart_agency,0));
-    strcat(post,buffer);
-  }
-  if (edit_values.use_cart_publisher)
-  {
-    snprintf(buffer,1024,"&PUBLISHER=%s",curl_easy_escape(curl,edit_values.cart_publisher,0));
-    strcat(post,buffer);
-  }
-  if (edit_values.use_cart_composer)
-  {
-    snprintf(buffer,1024,"&COMPOSER=%s",curl_easy_escape(curl,edit_values.cart_composer,0));
-    strcat(post,buffer);
-  }
-  if (edit_values.use_cart_conductor)
-  {
-    snprintf(buffer,1024,"&CONDUCTOR=%s",curl_easy_escape(curl,edit_values.cart_conductor,0));
-    strcat(post,buffer);
-  }
-  if (edit_values.use_cart_user_defined)
-  {
-    snprintf(buffer,1024,"&USER_DEFINED=%s",curl_easy_escape(curl,edit_values.cart_user_defined,0));
-    strcat(post,buffer);
-  }
-  if (edit_values.use_cart_usage_code)
-  {
-    snprintf(buffer,1024,"&USAGE_CODE=%d",edit_values.cart_usage_code);
-    strcat(post,buffer);
-  }
-  if (edit_values.use_cart_forced_length)
-  {
-    snprintf(buffer,1024,"&FORCED_LENGTH=%d",edit_values.cart_forced_length);
-    strcat(post,buffer);
-  }
-  if (edit_values.use_cart_enforce_length)
-  {
-    snprintf(buffer,1024,"&ENFORCE_LENGTH=%d",edit_values.cart_enforce_length);
-    strcat(post,buffer);
-  }
-  if (edit_values.use_cart_asyncronous)
-  {
-    snprintf(buffer,1024,"&ASYNCRONOUS=%d",edit_values.cart_asyncronous);
-    strcat(post,buffer);
-  }
-  if (edit_values.use_cart_owner)
-  {
-    snprintf(buffer,1024,"&OWNER=%s",curl_easy_escape(curl,edit_values.cart_owner,0));
-    strcat(post,buffer);
-  }
-  if (edit_values.use_cart_notes)
-  {
-    snprintf(buffer,1024,"&NOTES=%s",curl_easy_escape(curl,edit_values.cart_notes,0));
-    strcat(post,buffer);
+    snprintf(buffer,255,"%d",edit_values.cart_year);
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "YEAR",
+		 CURLFORM_COPYCONTENTS,
+		 buffer,
+		 CURLFORM_END);
   }
 
-  return;
+  if (edit_values.use_cart_label)
+  {
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "LABEL",
+		 CURLFORM_COPYCONTENTS,
+		 edit_values.cart_label,
+		 CURLFORM_END); 
+  }
+
+  if (edit_values.use_cart_client)
+  {
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "CLIENT",
+		 CURLFORM_COPYCONTENTS,
+		 edit_values.cart_client,
+		 CURLFORM_END); 
+  }
+
+  if (edit_values.use_cart_agency)
+  {
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "AGENCY",
+		 CURLFORM_COPYCONTENTS,
+		 edit_values.cart_agency,
+		 CURLFORM_END); 
+  }
+
+  if (edit_values.use_cart_publisher)
+  {
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "PUBLISHER",
+		 CURLFORM_COPYCONTENTS,
+		 edit_values.cart_publisher,
+		 CURLFORM_END); 
+  }
+
+  if (edit_values.use_cart_composer)
+  {
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "COMPOSER",
+		 CURLFORM_COPYCONTENTS,
+		 edit_values.cart_composer,
+		 CURLFORM_END); 
+  }
+
+  if (edit_values.use_cart_conductor)
+  {
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "CONDUCTOR",
+		 CURLFORM_COPYCONTENTS,
+		 edit_values.cart_conductor,
+		 CURLFORM_END); 
+  }
+
+  if (edit_values.use_cart_user_defined)
+  {
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "USER_DEFINED",
+		 CURLFORM_COPYCONTENTS,
+		 edit_values.cart_user_defined,
+		 CURLFORM_END); 
+  }
+
+  if (edit_values.use_cart_usage_code)
+  {
+    snprintf(buffer,255,"%d",edit_values.cart_usage_code);
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "USAGE_CODE",
+		 CURLFORM_COPYCONTENTS,
+		 buffer,
+		 CURLFORM_END); 
+  }
+
+  if (edit_values.use_cart_forced_length)
+  {
+    snprintf(buffer,255,"%d",edit_values.cart_forced_length);
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "FORCED_LENGTH",
+		 CURLFORM_COPYCONTENTS,
+		 buffer,
+		 CURLFORM_END); 
+  }
+
+  if (edit_values.use_cart_enforce_length)
+  {
+    snprintf(buffer,255,"%d",edit_values.cart_enforce_length);
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "ENFORCE_LENGTH",
+		 CURLFORM_COPYCONTENTS,
+		 buffer,
+		 CURLFORM_END); 
+  }
+
+  if (edit_values.use_cart_asyncronous)
+  {
+    snprintf(buffer,255,"%d",edit_values.cart_asyncronous);
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "ASYNCRONOUS",
+		 CURLFORM_COPYCONTENTS,
+		 buffer,
+		 CURLFORM_END); 
+  }
+
+  if (edit_values.use_cart_owner)
+  {
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "OWNER",
+		 CURLFORM_COPYCONTENTS,
+		 edit_values.cart_owner,
+		 CURLFORM_END); 
+  }
+
+  if (edit_values.use_cart_notes)
+  {
+    curl_formadd(first,
+		 last,
+		 CURLFORM_PTRNAME,
+		 "NOTES",
+		 CURLFORM_COPYCONTENTS,
+		 edit_values.cart_notes,
+		 CURLFORM_END); 
+  }
 }

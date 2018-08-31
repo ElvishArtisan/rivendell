@@ -90,7 +90,7 @@ int RD_CreateTicket(struct rd_ticketinfo *ticketinfo[],
                         const char user_agent[],
                   	unsigned *numrecs)
 {
-  char post[1500];
+  //  char post[1500];
   char url[1500];
   CURL *curl=NULL;
   XML_Parser parser;
@@ -99,6 +99,8 @@ int RD_CreateTicket(struct rd_ticketinfo *ticketinfo[],
   char errbuf[CURL_ERROR_SIZE];
   CURLcode res;
   char user_agent_string[255];
+  struct curl_httppost *first=NULL;
+  struct curl_httppost *last=NULL;
 
    /* Set number of recs so if fail already set */
   *numrecs = 0;
@@ -118,10 +120,36 @@ int RD_CreateTicket(struct rd_ticketinfo *ticketinfo[],
 			__CreateTicketElementEnd);
   XML_SetCharacterDataHandler(parser,__CreateTicketElementData);
   snprintf(url,1500,"http://%s/rd-bin/rdxport.cgi",hostname);
+
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"COMMAND",
+        CURLFORM_COPYCONTENTS,
+        "31",
+        CURLFORM_END);
+
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"LOGIN_NAME",
+	CURLFORM_COPYCONTENTS,
+	username,
+	CURLFORM_END); 
+
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"PASSWORD",
+        CURLFORM_COPYCONTENTS,
+	passwd,
+	CURLFORM_END);
+
+  /*
   snprintf(post,1500,"COMMAND=31&LOGIN_NAME=%s&PASSWORD=%s",
 	curl_easy_escape(curl,username,0),
 	curl_easy_escape(curl,passwd,0));
-
+  */
   // Check if User Agent Present otherwise set to default
   if (strlen(user_agent)> 0){
     curl_easy_setopt(curl, CURLOPT_USERAGENT,user_agent);
@@ -137,7 +165,8 @@ int RD_CreateTicket(struct rd_ticketinfo *ticketinfo[],
   curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,__CreateTicketCallback);
   curl_easy_setopt(curl,CURLOPT_URL,url);
   curl_easy_setopt(curl,CURLOPT_POST,1);
-  curl_easy_setopt(curl,CURLOPT_POSTFIELDS,post);
+  //  curl_easy_setopt(curl,CURLOPT_POSTFIELDS,post);
+  curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
   curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
   curl_easy_setopt(curl,CURLOPT_ERRORBUFFER,errbuf);
   //  curl_easy_setopt(curl,CURLOPT_VERBOSE,1);
@@ -159,6 +188,7 @@ int RD_CreateTicket(struct rd_ticketinfo *ticketinfo[],
 /* The response OK - so figure out if we got what we wanted.. */
 
   curl_easy_getinfo(curl,CURLINFO_RESPONSE_CODE,&response_code);
+  curl_formfree(first);
   curl_easy_cleanup(curl);
   
   if (response_code > 199 && response_code < 300) { 

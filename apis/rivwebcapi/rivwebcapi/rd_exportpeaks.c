@@ -3,6 +3,7 @@
  * Implementation of the Export Peaks Rivendell Access Library
  *
  * (C) Copyright 2015 Todd Baker  <bakert@rfa.org>             
+ * (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License version 2 as
@@ -45,7 +46,6 @@ int RD_ExportPeaks( const char hostname[],
                         const char         filename[],
                         const char 	  user_agent[])
 {
-  char post[1500];
   char url[1500];
   CURL *curl=NULL;
   FILE *fp;
@@ -56,6 +56,9 @@ int RD_ExportPeaks( const char hostname[],
   char errbuf[CURL_ERROR_SIZE];
   CURLcode res;
   char user_agent_string[255];
+  char cart_buffer[7];
+  struct curl_httppost *first=NULL;
+  struct curl_httppost *last=NULL;
 
   /*   Check File name */
   memset(checked_fname,'\0',sizeof(checked_fname));
@@ -79,17 +82,60 @@ int RD_ExportPeaks( const char hostname[],
 //
 
   snprintf(url,1500,"http://%s/rd-bin/rdxport.cgi",hostname);
-  snprintf(post,1500,"COMMAND=16&LOGIN_NAME=%s&PASSWORD=%s&TICKET=%s&CART_NUMBER=%u&CUT_NUMBER=%u",
-        curl_easy_escape(curl,username,0),
-	curl_easy_escape(curl,passwd,0),
-	curl_easy_escape(curl,ticket,0),
-	cartnum, 
-	cutnum);
+
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"COMMAND",
+        CURLFORM_COPYCONTENTS,
+        "16",
+        CURLFORM_END);
+
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"LOGIN_NAME",
+	CURLFORM_COPYCONTENTS,
+	username,
+	CURLFORM_END); 
+
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"PASSWORD",
+        CURLFORM_COPYCONTENTS,
+	passwd,
+	CURLFORM_END);
+
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"TICKET",
+        CURLFORM_COPYCONTENTS,
+        ticket,
+	CURLFORM_END);
+
+  snprintf(cart_buffer,7,"%u",cartnum);
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"CART_NUMBER",
+        CURLFORM_COPYCONTENTS, 
+	cart_buffer,
+	CURLFORM_END);
+
+  snprintf(cart_buffer,7,"%u",cutnum);
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"CUT_NUMBER",
+        CURLFORM_COPYCONTENTS, 
+	cart_buffer,
+	CURLFORM_END);
 
   /*
    * Setup the CURL call
    */
-
   fp = fopen(checked_fname,"wb");
   if (!fp)
   {
@@ -115,7 +161,7 @@ int RD_ExportPeaks( const char hostname[],
   curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,__ExportPeaks_write_peaks_data);
   curl_easy_setopt(curl,CURLOPT_WRITEDATA,fp);
   curl_easy_setopt(curl,CURLOPT_POST,1);
-  curl_easy_setopt(curl,CURLOPT_POSTFIELDS,post);
+  curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
   curl_easy_setopt(curl,CURLOPT_VERBOSE,0);
   curl_easy_setopt(curl,CURLOPT_ERRORBUFFER,errbuf);
 
@@ -137,6 +183,7 @@ int RD_ExportPeaks( const char hostname[],
 /* The response OK - so figure out if we got what we wanted.. */
 
   curl_easy_getinfo(curl,CURLINFO_RESPONSE_CODE,&response_code);
+  curl_formfree(first);
   curl_easy_cleanup(curl);
   
   if (response_code > 199 && response_code < 300) {  //Success

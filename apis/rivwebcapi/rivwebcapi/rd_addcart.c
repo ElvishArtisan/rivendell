@@ -3,6 +3,7 @@
  * Implementation of the Add Cart Rivendell Access Library
  *
  * (C) Copyright 2015 Todd Baker  <bakert@rfa.org>             
+ * (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License version 2 as
@@ -177,7 +178,6 @@ int RD_AddCart(struct rd_cart *cart[],
                         const char user_agent[],
 			unsigned *numrecs)
 {
-  char post[1500];
   char url[1500];
   CURL *curl=NULL;
   XML_Parser parser;
@@ -186,6 +186,10 @@ int RD_AddCart(struct rd_cart *cart[],
   char errbuf[CURL_ERROR_SIZE];
   CURLcode res;
   char user_agent_string[255];
+  char cart_buffer[50];
+  char cut_buffer[50];
+  struct curl_httppost *first=NULL;
+  struct curl_httppost *last=NULL;
 
   if((curl=curl_easy_init())==NULL) {
     curl_easy_cleanup(curl);
@@ -204,13 +208,63 @@ int RD_AddCart(struct rd_cart *cart[],
 			__AddCartElementEnd);
   XML_SetCharacterDataHandler(parser,__AddCartElementData);
   snprintf(url,1500,"http://%s/rd-bin/rdxport.cgi",hostname);
-  snprintf(post,1500,"COMMAND=12&LOGIN_NAME=%s&PASSWORD=%s&TICKET=%s&GROUP_NAME=%s&TYPE=%s&CART_NUMBER=%u",
-	curl_easy_escape(curl,username,0),
-	curl_easy_escape(curl,passwd,0),
-	curl_easy_escape(curl,ticket,0), 
-	curl_easy_escape(curl,group,0),
+
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"COMMAND",
+        CURLFORM_COPYCONTENTS,
+        "12",
+        CURLFORM_END);
+
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"LOGIN_NAME",
+	CURLFORM_COPYCONTENTS,
+	username,
+	CURLFORM_END); 
+
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"PASSWORD",
+        CURLFORM_COPYCONTENTS,
+	passwd,
+	CURLFORM_END);
+
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"TICKET",
+        CURLFORM_COPYCONTENTS,
+        ticket,
+	CURLFORM_END);
+
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"GROUP_NAME",
+        CURLFORM_COPYCONTENTS,
+        group,
+        CURLFORM_END);
+
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"TYPE",
+        CURLFORM_COPYCONTENTS,
 	type,
-	cartnumber);
+	CURLFORM_END);
+
+  sprintf(cart_buffer,"%u",cartnumber);
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"CART_NUMBER",
+        CURLFORM_COPYCONTENTS, 
+	cart_buffer,
+	CURLFORM_END);
 
   // Check if User Agent Present otherwise set to default
   if (strlen(user_agent)> 0){
@@ -227,7 +281,7 @@ int RD_AddCart(struct rd_cart *cart[],
   curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,__AddCartCallback);
   curl_easy_setopt(curl,CURLOPT_URL,url);
   curl_easy_setopt(curl,CURLOPT_POST,1);
-  curl_easy_setopt(curl,CURLOPT_POSTFIELDS,post);
+  curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
   curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
   curl_easy_setopt(curl,CURLOPT_ERRORBUFFER,errbuf);
   //  curl_easy_setopt(curl,CURLOPT_VERBOSE,1);
@@ -248,6 +302,7 @@ int RD_AddCart(struct rd_cart *cart[],
 /* The response OK - so figure out if we got what we wanted.. */
 
   curl_easy_getinfo(curl,CURLINFO_RESPONSE_CODE,&response_code);
+  curl_formfree(first);
   curl_easy_cleanup(curl);
   
   if (response_code > 199 && response_code < 300) {  //Success
