@@ -20,7 +20,7 @@
 ## Use automake to process this into a Makefile.in
 
 if DOCBOOK_AM
-  DOCBOOK_AM_OPT = stylesheets apis manpages opsguide
+  DOCBOOK_AM_OPT = stylesheets apis manpages opsguide rivwebcapi
 endif
 
 SUBDIRS = $(DOCBOOK_AM_OPT) examples\

@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry id="stdin" xmlns="http://docbook.org/ns/docbook" version="5.0">
+  <!--
+                    Header
+  -->
+  <refmeta>
+    <refentrytitle>RD_ListLog</refentrytitle>
+    <manvolnum>7</manvolnum>
+    <refmiscinfo class='source'>October 2015</refmiscinfo>
+    <refmiscinfo class='manual'>Rivendell C Library Manual</refmiscinfo>
+  </refmeta>
+  <refnamediv>
+    <refname>rd_listlog</refname>
+    <refpurpose>Rivendell List Log C Library Function</refpurpose>
+  </refnamediv>
+  <info>
+    <author>
+      <personname>
+        <firstname>Todd</firstname>
+        <surname>Baker</surname>
+        <email>bakert@rfa.org</email>
+      </personname>
+      <contrib>Rivendell C Library Author</contrib>
+    </author>
+  </info>
+
+  <!--
+                    Body
+  -->
+  <refsynopsisdiv id='synopsis'>
+    <funcsynopsis>
+    <funcsynopsisinfo>#include &lt;rivendell/rd_listlog.h&gt;</funcsynopsisinfo>
+    <funcprototype>
+    <funcdef>int <function>RD_ListLog</function></funcdef>
+      <paramdef> struct rd_logline * <parameter>logline[]</parameter></paramdef>
+      <paramdef>const char <parameter>hostname[]</parameter></paramdef>
+      <paramdef>const char <parameter>username[]</parameter></paramdef>
+      <paramdef>const char <parameter>passwd[]</parameter></paramdef>
+      <paramdef>const char <parameter>ticket[]</parameter></paramdef>
+      <paramdef>const char <parameter>logname[]</parameter></paramdef>
+      <paramdef>const char <parameter>user_agent[]</parameter></paramdef>
+      <paramdef>unsigned * <parameter>numrecs</parameter></paramdef>
+    </funcprototype> 
+    </funcsynopsis>
+
+  </refsynopsisdiv>
+
+  <refsect1 id='description'><title>Description</title>
+  <para>
+    <command>RD_ListLog</command> is  the function to use
+    to list the log lines that are stored for a particular log file within the Rivendell Database.
+  </para>
+  <para>
+    This function lists the lines in a pre-existing Log File.  
+  </para>
+  <table xml:id="ex.listlog" frame="all">
+    <title>RD_ListLog function call fields</title>
+    <tgroup cols="4" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="FIELD TYPE" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+        <row>
+          <entry>
+            FIELD NAME
+          </entry>
+          <entry>
+            FIELD TYPE
+          </entry>
+          <entry>
+            MEANING
+          </entry>
+          <entry>
+            REMARKS
+          </entry>
+        </row>
+      </thead>
+      <tbody>
+        <row>
+          <entry>
+            *logline[]
+          </entry>
+          <entry>
+          Pointer to rd_logline structure
+          </entry>
+          <entry>
+            Memory location to store logline information
+          </entry>
+          <entry>
+            Mandatory
+          </entry>
+        </row>
+        <row>
+          <entry>
+            hostname
+          </entry>
+          <entry>
+          Character Array
+          </entry>
+          <entry>
+            Name Of Rivendell DB Host
+          </entry>
+          <entry>
+            Mandatory
+          </entry>
+        </row>
+        <row>
+          <entry>
+            username
+          </entry>
+          <entry>
+          Character Array
+          </entry>
+          <entry>
+            Rivendell User Name
+          </entry>
+          <entry>
+            Mandatory When NO Ticket Provided
+          </entry>
+        </row>
+        <row>
+          <entry>
+            passwd
+          </entry>
+          <entry>
+          Character Array
+          </entry>
+          <entry>
+            Rivendell User Password
+          </entry>
+          <entry>
+            Mandatory When NO Ticket Provided
+          </entry>
+        </row>
+        <row>
+          <entry>
+            ticket
+          </entry>
+          <entry>
+          Character Array
+          </entry>
+          <entry>
+            Rivendell Authentification Ticket
+          </entry>
+          <entry>
+            Mandatory When NO User/Password Pair Provided.
+          </entry>
+        </row>
+        <row>
+          <entry>
+            logname
+          </entry>
+          <entry>
+          character array
+          </entry>
+          <entry>
+            LogFile Name
+          </entry>
+          <entry>
+            Mandatory
+          </entry>
+        </row>
+        <row>
+          <entry>
+            user_agent
+          </entry>
+          <entry>
+          Character Array
+          </entry>
+          <entry>
+            User Agent Value put into HTTP request
+          </entry>
+          <entry>
+            Optional (default is Rivendell-C-API/x.x.x)
+          </entry>
+        </row>
+        <row>
+          <entry>
+            *numrecs
+          </entry>
+          <entry>
+          pointer to integer
+          </entry>
+          <entry>
+            memory location for number of records returned
+          </entry>
+          <entry>
+            Mandatory
+          </entry>
+        </row>
+      </tbody>
+    </tgroup>
+  </table>
+
+  <para>
+    When successful function will return the number of records sent (numrecs) and rd_logline structure which 
+    is stored in the provided memory locations. The rd_logline structure has the following fields:
+  </para>
+  <programlisting>
+struct rd_logline {
+  int  logline_line;
+  int  logline_id;
+  int  logline_type;
+  int  logline_cart_type;
+  unsigned logline_cart_number;
+  unsigned logline_cut_number;
+  char logline_group_name[11];
+  char logline_group_color[10];
+  char logline_title[256];
+  char logline_artist[256];
+  char logline_album[256];
+  int  logline_year;
+  char logline_label[65];
+  char logline_client[65];
+  char logline_agency[65];
+  char logline_publisher[65];
+  char logline_composer[65];
+  char logline_conductor[65];
+  char logline_user_defined[256];
+  int  logline_usage_code;
+  int  logline_enforce_length;
+  char logline_forced_length[10];
+  int  logline_evergreen;
+  int  logline_source;
+  int  logline_time_type;
+  char logline_starttime[13];
+  int  logline_transition_type;
+  int  logline_cut_quantity;
+  int  logline_last_cut_played;
+  char logline_marker_comment[256];
+  char logline_marker_label[65];
+  char logline_origin_user[256];
+  struct tm logline_origin_datetime;
+  int  logline_start_point_cart;
+  int  logline_start_point_log;
+  int  logline_end_point_cart;
+  int  logline_end_point_log;
+  int  logline_segue_start_point_cart;
+  int  logline_segue_start_point_log;
+  int  logline_segue_end_point_cart;
+  int  logline_segue_end_point_log;
+  int  logline_segue_gain;
+  int  logline_fadeup_point_cart;
+  int  logline_fadeup_point_log;
+  int  logline_fadeup_gain;
+  int  logline_fadedown_point_cart;
+  int  logline_fadedown_point_log;
+  int  logline_duckup_gain;
+  int  logline_duckdown_gain;
+  int  logline_talk_start_point;
+  int  logline_talk_end_point;
+  int  logline_hook_mode;
+  int  logline_hook_start_point;
+  int  logline_hook_end_point;
+};
+
+All character arrays above are the sizes listed and must be null-terminated.
+
+logline_line			is a integer which represents the line number in the log.
+
+logline_id			is an integer which represents the line id (generated by rdlogedit).
+
+logline_type			is an integer 0=Cart, 1=Marker, 2=Macro, 3=OpenBracket,
+					4=CloseBracket, 5=Chain, 6=Track, 7=MusicLink, 8=TrafficLink,
+					9=UnknownType.
+
+logline_cart_type		is an integer 1=Audio, 2=Macro. 
+
+logline_cart_number		is an unsigned integer.
+
+logline_cut_number		is an unsigned integer.
+
+logline_group_name		is a character arrray.
+
+logline_group_color		is a character arrray. No value set is #000000.
+
+logline_title			is a character arrray.
+
+logline_artist			is a character arrray.
+
+logline_album			is a character arrray.
+
+logline_year			is the 4 digit year.
+
+logline_label			is a character arrray.
+
+logline_client			is a character arrray.
+
+logline_agency			is a character arrray.
+
+logline_publisher		is a character arrray.
+
+logline_composer		is a character arrray.
+
+logline_conductor		is a character arrray.
+
+logline_user_defined	is a character arrray.
+
+logline_usage_code		is an integer  0=UsageFeature, 1=UsageOpen, 2=UsageClose,
+					3=UsageTheme, 4=UsageBackground, 5=UsagePromo, 6=UsageLast. 
+
+logline_enforce_length	is a Boolean 0 = False, 1 = True.
+
+logline_forced_length	is the Length (Format HH:MM:SS.milliseconds).
+
+logline_evergreen		is a Boolean 0 = False, 1 = True.
+
+logline_source			is an integer  0=Manual, 1=Traffic, 2=Music, 
+					3=Template, 4=Tracker
+
+logline_time_type		is an integer  0 = Relative, 1=Hard, 255 = NoTime.
+
+logline_starttime		is start Time (Format HH:MM:SS.milliseconds).
+
+logline_transition_type	is an integer  0=Play, 1=Segue, 2=Stop, 255=NoTrans.
+
+logline_cut_quantity	is an integer.
+
+logline_last_cut_played	is an integer.
+
+logline_marker_comment	is a character array.
+
+logline_marker_label		is a character array.
+
+logline_origin_user		is a character array.
+
+logline_origin_datetime	is a struct tm.
+
+logline_start_point_cart is a integer. No Value = -1.
+
+logline_start_point_log	is a integer. No Value = -1.
+
+logline_end_point_cart	is a integer. No Value = -1.
+
+logline_end_point_log	is a integer. No Value = -1.
+
+logline_segue_start_point_cart is a integer. No Value = -1.
+
+logline_segue_start_point_log is a integer. No Value = -1.
+
+logline_segue_end_point_cart is a integer. No Value = -1.
+
+logline_segue_end_point_log is a integer. No Value = -1.
+
+logline_segue_gain		is an integer. No Value = -3000.
+
+logline_fadeup_point_cart	is a integer. No Value = -1.
+
+logline_fadeup_point_log	is a integer. No Value = -1.
+
+logline_fadeup_gain		is an integer.
+
+logline_fadedown_point_cart	is a integer. No Value = -1.
+
+logline_fadedown_point_log	is a integer. No Value = -1.
+
+logline_duckup_gain		is a integer.
+
+logline_duckdown_gain	is a integer. 
+
+logline_talk_start_point	is a integer. No Value = -1.
+
+logline_talk_end_point	is a integer. No Value = -1.
+
+logline_hook_mode		is a integer. No Value = -1.
+
+logline_hook_start_point	is a integer. No Value = -1.
+
+logline_hook_end_point	is a integer. No Value = -1.
+
+  </programlisting>
+
+  </refsect1>
+  <refsect2 id='returns'><title>RETURN VALUE</title>
+    <para>
+      On success, zero is returned. Using the provided parameters an rd_logline
+structure is returned and the number of records is returned.
+    </para>
+    <para>
+      If a server error occurs a -1 is returned.
+      If a client error occurs a specific error number is returned.
+    </para>
+  </refsect2>
+  <refsect3 id='errors'><title>ERRORS</title>
+    <para>
+      403          User Authentification Error.
+    </para>
+    <para>
+      404          No Such Log File Exists.
+    </para>
+    <para>
+      nnn  Unknown Error Occurred.
+    </para>
+  </refsect3>
+     
+</refentry>

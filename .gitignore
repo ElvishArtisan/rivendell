@@ -20,6 +20,8 @@ rivendell-*.zip
 .deps
 .libs
 aclocal.m4
+apis/rivwebcapi/rivwebcapi.pc
+apis/rivwebcapi/tests/*_test
 autom4te.cache
 cae/caed
 compile
@@ -44,6 +46,9 @@ docs/opsguide/rml5.png
 docs/opsguide/track_cart.png
 docs/opsguide/traffic.png
 docs/opsguide/trashcan-32x32.png
+docs/rivwebcapi/*.7
+docs/rivwebcapi/*.html
+docs/rivwebcapi/*.pdf
 helpers/cwrap
 helpers/docbook
 helpers/jsmin

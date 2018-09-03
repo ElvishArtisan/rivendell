@@ -26,6 +26,36 @@ m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
 AC_CONFIG_MACRO_DIR([m4])
 
 #
+# API Library Versioning
+#
+# From http://www.gnu.org/software/libtool/manual.html#Updating-version-info
+#
+#   1. Start with version information of 0:0:0 for each libtool library.
+#   2. Update the version information only immediately before a public
+#      release of your software. More frequent updates are unnecessary,
+#      and only guarantee that the current interface number gets larger
+#      faster.
+#   3. If the library source code has changed at all since the last update,
+#      then increment 'REVISION' (c:r:a becomes c:r+1:a).
+#   4. If any interfaces have been added, removed, or changed since the last
+#      update, increment 'CURRENT', and set 'REVISION' to 0.
+#   5. If any interfaces have been added since the last public release, then
+#      increment 'AGE'.
+#   6. If any interfaces have been removed since the last public release,
+#      then set 'AGE' to 0.
+RIVWEBCAPI_CURRENT=1
+RIVWEBCAPI_REVISION=0
+RIVWEBCAPI_AGE=1
+RIVWEBCAPI_POINT=$(($RIVWEBCAPI_CURRENT - $RIVWEBCAPI_AGE))
+
+AC_SUBST(INTERFACE_RIVWEBCAPI_CURRENT,$RIVWEBCAPI_CURRENT)
+AC_SUBST(INTERFACE_RIVWEBCAPI_REVISION,$RIVWEBCAPI_REVISION)
+AC_SUBST(INTERFACE_RIVWEBCAPI_AGE,$RIVWEBCAPI_AGE)
+AC_SUBST(INTERFACE_RIVWEBCAPI_MAJOR,$RIVWEBCAPI_POINT)
+AC_SUBST(INTERFACE_RIVWEBCAPI_MINOR,$RIVWEBCAPI_AGE)
+AC_SUBST(INTERFACE_RIVWEBCAPI_POINT,$RIVWEBCAPI_REVISION)
+
+#
 # Some Fully Resolved Install Paths
 # (for the packaging system and friends)
 #
@@ -40,6 +70,7 @@ fi
 #
 # Basic Compiler Checks
 #
+AC_PROG_CC
 AC_PROG_CXX
 AC_PROG_LIBTOOL
 AC_LANG(C++)
@@ -146,6 +177,11 @@ else
     fi
   fi
 fi
+
+#
+# Check for Expat
+#
+AC_CHECK_HEADER(expat.h,[],[AC_MSG_ERROR([*** Expat not found ***])])
 
 #
 # Check for OpenSSL
@@ -441,10 +477,15 @@ AC_CONFIG_FILES([rivendell.spec \
     conf/rd-bin.conf \
     icons/Makefile \
     helpers/Makefile \
+    apis/Makefile \
+    apis/rivwebcapi/Makefile \
+    apis/rivwebcapi/rivwebcapi.pc \
+    apis/rivwebcapi/rivwebcapi/Makefile \
+    apis/rivwebcapi/tests/Makefile \
+    apis/rlm/Makefile \
     lib/rdpaths.h \
     lib/Makefile \
     rdhpi/Makefile \
-    rlm/Makefile \
     cae/Makefile \
     utils/Makefile \
     utils/rdalsaconfig/Makefile \
@@ -483,6 +524,7 @@ AC_CONFIG_FILES([rivendell.spec \
     docs/misc/Makefile \
     docs/opsguide/frontspiece.xml \
     docs/opsguide/Makefile \
+    docs/rivwebcapi/Makefile \
     docs/stylesheets/Makefile \
     docs/tables/Makefile \
     xdg/rivendell-opsguide-html.desktop \

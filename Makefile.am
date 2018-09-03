@@ -30,7 +30,7 @@ endif
 SUBDIRS = icons\
           helpers\
           lib\
-          $(HPI_RD_OPT) rlm\
+          $(HPI_RD_OPT) apis\
           scripts\
           conf\
           debian\
@@ -110,6 +110,7 @@ EXTRA_DIST = autogen.sh\
              CODINGSTYLE\
              get_distro.pl\
              get_target.sh\
+             INSTALL-WINDOWS\
              make_slack.in\
              PACKAGE_VERSION\
              rdrepld-suse.in\

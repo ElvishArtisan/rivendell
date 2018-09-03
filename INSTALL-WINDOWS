@@ -1,0 +1,30 @@
+BUILDING RIVWEBCAPI FOR WINDOWS USING MINGW64
+---------------------------------------------
+
+To build the Rivendell Web C API client library for Windows using
+the MingW32 cross-compiler environment, proceed as follows:
+
+1) Ensure that the necessary MingW32 packages are installed. On RHEL-7,
+this can be accomplished with the following command (as 'root'):
+
+*** snip snip ***
+yum install mingw32-pkg-config mingw32-headers mingw-binutils-generic mingw32-libtiff mingw32-qt mingw32-sqlite-static mingw32-qt-static mingw32-pixman mingw32-gettext mingw32-libogg mingw32-openssl mingw32-libmad mingw-filesystem-base mingw32-crt mingw32-zlib mingw32-libjpeg-turbo mingw32-expat mingw32-qt-qmake mingw32-binutils mingw32-gcc-c++ mingw32-dbus mingw32-sqlite mingw32-zlib-static mingw32-libtiff-static mingw32-libpng-static mingw32-libjpeg-turbo-static mingw32-bzip2 mingw32-fontconfig mingw32-win-iconv mingw32-termcap mingw32-glib2 mingw32-cairo-static mingw32-libsamplerate mingw32-libvorbis mingw32-libltdl mingw32-libssh2 mingw32-curl mingw32-filesystem mingw32-winpthreads mingw32-cpp mingw32-gcc mingw32-libpng mingw32-dbus-static mingw32-winpthreads-static mingw32-freetype mingw32-libffi mingw32-cairo mingw32-libsndfile mingw32-opus mingw32-libidn mingw32-nsis
+*** snip snip ***
+
+
+2) Define the following variables in your build environment:
+
+export MINGW32_SYS_ROOT=/usr/i686-w64-mingw32/sys-root/mingw
+export PKG_CONFIG_PATH=$MINGW32_SYS_ROOT/lib/pkgconfig
+export CC=i686-w64-mingw32-gcc
+export CXX=i686-w64-mingw32-g++
+export WINDRES=i686-w64-mingw32-windres
+export RANLIB=i686-w64-mingw32-gcc-ranlib
+
+
+3) cd to 'apis/rivwebcapi/' in the Rivendell sources and do:
+
+   ./autogen.sh
+   ./configure --prefix=$MINGW32_SYS_ROOT --host=i686-w64-mingw32
+   make
+   make install (as root)

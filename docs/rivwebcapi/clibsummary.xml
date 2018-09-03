@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<article xmlns="http://docbook.org/ns/docbook" version="5.0">
+<info>
+  <title>Rivendell C Library API</title>
+  <author>
+    <personname>
+      <firstname>Todd</firstname>
+      <surname>Baker</surname>
+      <email>bakert@rfa.org</email>
+    </personname>
+  </author>
+</info>
+
+<section>
+  <title>Overview</title>
+  <para>
+    This is a C Library that can be used to access and query the Rivendell database.  These functions
+    allow the programmer to access the Rivendell Web API components directly, and provides 
+    almost complete 
+    functionality in relation to content in an existing Rivendell system.  See function 
+    descriptions for further information on using these functions below.
+  </para>
+</section>
+
+<section>
+  <title>Function Descriptions</title>
+  <para>
+  <command>RD_AudioInfo</command> This function returns
+information about an entry in the audio store.
+  </para>
+  <para><command>RD_AddCart</command> This function 
+    adds a cart to a Rivendell Database.
+  </para>
+  <para><command>RD_AddCut</command> This function 
+    adds a cut to a Rivendell Database.
+  </para>
+  <para><command>RD_AssignSchedCode</command> This function
+    assigns a Scheduler Code to carts in a Rivendell database.
+  </para>
+  <para><command>RD_AudioStore</command> This function 
+    returns information about the audio store.
+  </para>
+  <para><command>RD_CopyAudio</command> This function 
+    copys PCM/MPEG data from one Cart/Cut to another Cart/Cut.
+  </para>
+  <para><command>RD_CreateTicket</command> This function 
+    will create an Authentification ticket in the Rivendell database
+    that can be used in leu of username/password pair.
+  </para>
+  <para><command>RD_DeleteAudio</command> This function 
+    deletes PCM/MPEG data from the audio store.
+  </para>
+  <para><command>RD_EditCart</command> This function 
+    edits the fields within a cart in the Rivendell Database.
+  </para>
+  <para><command>RD_EditCut</command> This function 
+    edit the fields within a cut in the Rivendell Database.
+  </para>
+  <para><command>RD_Export</command> This function 
+    exports PCM/MPEG data from the audio store.
+  </para>
+  <para><command>RD_ExportPeaks</command> This function 
+    exports Peak Data from the audio store.
+  </para>
+  <para><command>RD_Import</command> This function 
+    imports PCM/MPEG data into the audio store.
+  </para>
+  <para><command>RD_ListCart</command> This function 
+    lists the fields within a cart in the Rivendell Database.
+  </para>
+  <para><command>RD_ListCarts</command> This function 
+    lists the carts in the Rivendell Database.
+  </para>
+  <para><command>RD_ListCartSchedCodes</command> This function 
+    lists the Scheduler Codes assigned to a cart in the Rivendell Database.
+  </para>
+  <para><command>RD_ListCut</command> This function 
+    lists the fields within a cut in the Rivendell Database.
+  </para>
+  <para><command>RD_ListCuts</command> This function 
+    lists the cuts that exist in a Cart entry.
+  </para>
+  <para><command>RD_ListGroup</command> This function 
+    lists the group field entries for a specific group in the Rivendell database.
+  </para>
+  <para><command>RD_ListGroups</command> This function 
+    lists the groups within the Rivendell Database.
+  </para>
+  <para><command>RD_ListLog</command> This function 
+    lists the log lines for a particular log file within the Rivendell Database.
+  </para>
+  <para><command>RD_ListLogs</command> This function 
+    lists the Log Files within the Rivendell Database.
+  </para>
+  <para><command>RD_ListSchedCodes</command> This function 
+    lists the Scheduler Codes that currently exist in the Rivendell Database.
+  </para>
+  <para><command>RD_ListServices</command> This function 
+    lists the Servicess that are stored within the Rivendell Database.
+  </para>
+  <para><command>RD_ListSystemSettings</command> This function 
+    lists the System Settings that are stored within the Rivendell Database.
+  </para>
+  <para><command>RD_RemoveCart</command> This function 
+    removes a cart from the Rivendell database.
+  </para>
+  <para><command>RD_RemoveCut</command> This function 
+    removes a cut from the Rivendell database.
+  </para>
+  <para><command>RD_TrimAudio</command> This function 
+    returns a time pointer to the first and last instance of a particular dB level in a cut.
+  </para>
+  <para><command>RD_UnassignSchedCode</command> This function 
+    unassigns a Scheduler Code from a cart in the Rivendell database.
+  </para>
+</section>
+</article>

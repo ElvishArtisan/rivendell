@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry id="stdin" xmlns="http://docbook.org/ns/docbook" version="5.0">
+  <!--
+                    Header
+  -->
+  <refmeta>
+    <refentrytitle>RD_Import</refentrytitle>
+    <manvolnum>7</manvolnum>
+    <refmiscinfo class='source'>October 2015</refmiscinfo>
+    <refmiscinfo class='manual'>Rivendell C Library Manual</refmiscinfo>
+  </refmeta>
+  <refnamediv>
+    <refname>rd_import</refname>
+    <refpurpose>Rivendell Import Audio C Library Function</refpurpose>
+  </refnamediv>
+  <info>
+    <author>
+      <personname>
+        <firstname>Todd</firstname>
+        <surname>Baker</surname>
+        <email>bakert@rfa.org</email>
+      </personname>
+      <contrib>Rivendell C Library Author</contrib>
+    </author>
+  </info>
+
+  <!--
+                    Body
+  -->
+  <refsynopsisdiv id='synopsis'>
+    <funcsynopsis>
+    <funcsynopsisinfo>#include &lt;rivendell/rd_import.h&gt;</funcsynopsisinfo>
+    <funcprototype>
+    <funcdef>int <function>RD_Import</function></funcdef>
+      <paramdef>struct rd_cartimport *<parameter>import[]</parameter></paramdef>
+      <paramdef>const char <parameter>hostname[]</parameter></paramdef>
+      <paramdef>const char <parameter>username[]</parameter></paramdef>
+      <paramdef>const char <parameter>passwd[]</parameter></paramdef>
+      <paramdef>const char <parameter>ticket[]</parameter></paramdef>
+      <paramdef>const unsigned <parameter>cartnumber</parameter></paramdef>
+      <paramdef>const unsigned <parameter>cutnumber</parameter></paramdef>
+      <paramdef>const unsigned <parameter>channels</parameter></paramdef>
+      <paramdef>const int <parameter>normalization_level</parameter></paramdef>
+      <paramdef>const int <parameter>autotrim_level</parameter></paramdef>
+      <paramdef>const int <parameter>use_metadata</parameter></paramdef>
+      <paramdef>const int <parameter>create</parameter></paramdef>
+      <paramdef>const char <parameter>group[]</parameter></paramdef>
+      <paramdef>const char <parameter>title[]</parameter></paramdef>
+      <paramdef>const char <parameter>filename[]</parameter></paramdef>
+      <paramdef>const char <parameter>user_agent[]</parameter></paramdef>
+      <paramdef>unsigned *<parameter>numrecs</parameter></paramdef>
+    </funcprototype> 
+    </funcsynopsis>
+
+  </refsynopsisdiv>
+
+  <refsect1 id='description'><title>Description</title>
+  <para>
+    <command>RD_Import</command> is  the function to use
+    to import PCM/MPEG data into the audio store.
+  </para>
+  <table xml:id="ex.import" frame="all">
+    <title>RD_Import function call fields</title>
+    <tgroup cols="4" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="FIELD TYPE" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+        <row>
+          <entry>
+            FIELD NAME
+          </entry>
+          <entry>
+            FIELD TYPE
+          </entry>
+          <entry>
+            MEANING
+          </entry>
+          <entry>
+            REMARKS
+          </entry>
+        </row>
+      </thead>
+      <tbody>
+        <row>
+          <entry>
+            *import
+          </entry>
+          <entry>
+	    Pointer to rd_cartimport structure
+          </entry>
+          <entry>
+            Memory location to store import information
+          </entry>
+          <entry>
+            Mandatory
+          </entry>
+        </row>
+        <row>
+          <entry>
+            hostname
+          </entry>
+          <entry>
+          Character Array
+          </entry>
+          <entry>
+            Name Of Rivendell DB Host
+          </entry>
+          <entry>
+            Mandatory When NO Ticket Provided
+          </entry>
+        </row>
+        <row>
+          <entry>
+            username
+          </entry>
+          <entry>
+          Character Array
+          </entry>
+          <entry>
+            Rivendell User Name
+          </entry>
+          <entry>
+            Mandatory
+          </entry>
+        </row>
+        <row>
+          <entry>
+            passwd
+          </entry>
+          <entry>
+          Character Array
+          </entry>
+          <entry>
+            Rivendell User Password
+          </entry>
+          <entry>
+            Mandatory When NO Ticket Provided
+          </entry>
+        </row>
+        <row>
+          <entry>
+            ticket
+          </entry>
+          <entry>
+          Character Array
+          </entry>
+          <entry>
+            Rivendell Authentification Ticket
+          </entry>
+          <entry>
+            Mandatory When NO User/Password Pair Provided.
+          </entry>
+        </row>
+        <row>
+          <entry>
+            cartnumber
+          </entry>
+          <entry>
+          unsigned integer
+          </entry>
+          <entry>
+            Cart Number
+          </entry>
+          <entry>
+            Mandatory
+          </entry>
+        </row>
+        <row>
+          <entry>
+            cutnumber
+          </entry>
+          <entry>
+          unsigned integer
+          </entry>
+          <entry>
+            Cut Number
+          </entry>
+          <entry>
+            Mandatory
+          </entry>
+        </row>
+        <row>
+          <entry>
+            channels
+          </entry>
+          <entry>
+          unsigned integer
+          </entry>
+          <entry>
+            Number of Channels
+          </entry>
+          <entry>
+            Mandatory
+          </entry>
+        </row>
+        <row>
+          <entry>
+            normalization_level
+          </entry>
+          <entry>
+          integer
+          </entry>
+          <entry>
+            Normalization Level
+          </entry>
+          <entry>
+            Mandatory
+          </entry>
+        </row>
+        <row>
+          <entry>
+            autotrim_level
+          </entry>
+          <entry>
+          integer
+          </entry>
+          <entry>
+            AutoTrim Level
+          </entry>
+          <entry>
+            Mandatory
+          </entry>
+        </row>
+        <row>
+          <entry>
+            use_metadata
+          </entry>
+          <entry>
+          integer
+          </entry>
+          <entry>
+            Flag for whether to use Meta Data 
+          </entry>
+          <entry>
+            Mandatory
+          </entry>
+        </row>
+        <row>
+          <entry>
+            create
+          </entry>
+          <entry>
+          integer
+          </entry>
+          <entry>
+            Create Cart Flag
+          </entry>
+          <entry>
+            Optional
+          </entry>
+        </row>
+        <row>
+          <entry>
+            group 
+          </entry>
+          <entry>
+          Character Array
+          </entry>
+          <entry>
+            Rivendell Group Name
+          </entry>
+          <entry>
+            Mandatory IF Creating Cart
+          </entry>
+        </row>
+	<row>
+          <entry>
+            title
+          </entry>
+          <entry>
+          Character Array
+          </entry>
+          <entry>
+            Cart Title
+          </entry>
+          <entry>
+            Optional - If present used for Duplicate Cart Check
+          </entry>
+        </row>
+        <row>
+          <entry>
+            filename
+          </entry>
+          <entry>
+          character array
+          </entry>
+          <entry>
+            File Name For Source Audio
+          </entry>
+          <entry>
+            Mandatory
+          </entry>
+        </row>
+        <row>
+          <entry>
+            user_agent
+          </entry>
+          <entry>
+          Character Array
+          </entry>
+          <entry>
+            User Agent Value put into HTTP request
+          </entry>
+          <entry>
+            Optional (default is Rivendell-C-API/x.x.x)
+          </entry>
+        </row>
+        <row>
+          <entry>
+            *numrecs
+          </entry>
+          <entry>
+          pointer to integer
+          </entry>
+          <entry>
+            memory location for number of records returned
+          </entry>
+          <entry>
+            Mandatory
+          </entry>
+        </row>
+      </tbody>
+    </tgroup>
+  </table>
+
+  <para>
+    When successful function will return the number of records sent (numrecs)
+    and a rd_cartimport structure which 
+    is stored in the provided memory locations. The rd_cartimport structure
+    has the following fields:
+  </para>
+  <programlisting>
+    struct rd_cartimport{
+          int response_code;                  /* HTTP Response Code */
+          char error_string[256];             /* Error Explanation */
+          unsigned cart_number;               /* Destination Cart Number */
+          unsigned cut_number;                /* Destination Cut Number */
+    };
+  </programlisting>
+
+  </refsect1>
+  <refsect2 id='returns'><title>RETURN VALUE</title>
+    <para>
+      On success, zero is returned. 
+    </para>
+    <para>
+      If a server error occurs a -1 is returned.
+      If a client error occurs a specific error number is returned.
+    </para>
+  </refsect2>
+  <refsect3 id='errors'><title>ERRORS</title>
+    <para>
+      400          Missing Cart Number / Cut Number Error.
+    </para>
+    <para>
+      400          Missing Input Parameter(s).
+    </para>
+    <para>
+      403          User Authentification Error.
+    </para>
+    <para>
+      404          Unauthorized, or No Such Cart/Cut/Group,
+                   or Duplicate Cart Titles Not Allowed.
+    </para>
+    <para>
+      415          Format Not Supported.
+    </para>
+    <para>
+      415          Conversion Settings/Format Error.
+    </para>
+    <para>
+      500          Conversion Error.
+    </para>
+    <para>
+      509          Format Error On Convert.
+    </para>
+    <para>
+      nnn          Unknown Error Occurred.
+    </para>
+  </refsect3>
+     
+</refentry>

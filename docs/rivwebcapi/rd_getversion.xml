@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry id="stdin" xmlns="http://docbook.org/ns/docbook" version="5.0">
+  <!--
+                    Header
+  -->
+  <refmeta>
+    <refentrytitle>RD_GetVersion</refentrytitle>
+    <manvolnum>7</manvolnum>
+    <refmiscinfo class='source'>September 2017</refmiscinfo>
+    <refmiscinfo class='manual'>Rivendell C Library Manual</refmiscinfo>
+  </refmeta>
+  <refnamediv>
+    <refname>rd_getversion</refname>
+    <refpurpose>Get Version Function</refpurpose>
+  </refnamediv>
+  <info>
+    <author>
+      <personname>
+        <firstname>Todd</firstname>
+        <surname>Baker</surname>
+        <email>bakert@rfa.org</email>
+      </personname>
+      <contrib>Rivendell C Library Author</contrib>
+    </author>
+  </info>
+
+  <!--
+                    Body
+  -->
+  <refsynopsisdiv id='synopsis'>
+    <funcsynopsis>
+    <funcprototype>
+    <funcdef>char * <function>RD_GetVersion</function></funcdef><void/>
+    </funcprototype> 
+    </funcsynopsis>
+
+  </refsynopsisdiv>
+
+  <refsect1 id='description'><title>Description</title>
+  <para>
+    <command>RD_GetVersion</command> Returns the Rivendell C API
+    Version number as a string.
+  </para>
+  <para>
+    When successful function will return a character string of the Version number
+  </para>
+  </refsect1>
+  <refsect2 id='returns'><title>RETURN VALUE</title>
+    <para>
+      Returns the Rivendell-C-API version number as a character string.
+    </para>
+  </refsect2>     
+</refentry>

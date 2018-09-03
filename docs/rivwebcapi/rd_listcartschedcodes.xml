@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry id="stdin" xmlns="http://docbook.org/ns/docbook" version="5.0">
+  <!--
+                    Header
+  -->
+  <refmeta>
+    <refentrytitle>RD_ListCartSchedCodes</refentrytitle>
+    <manvolnum>7</manvolnum>
+    <refmiscinfo class='source'>October 2015</refmiscinfo>
+    <refmiscinfo class='manual'>Rivendell C Library Manual</refmiscinfo>
+  </refmeta>
+  <refnamediv>
+    <refname>rd_listcartschedcodes</refname>
+    <refpurpose>Rivendell List Cart Scheduler Codes C Library Function</refpurpose>
+  </refnamediv>
+  <info>
+    <author>
+      <personname>
+        <firstname>Todd</firstname>
+        <surname>Baker</surname>
+        <email>bakert@rfa.org</email>
+      </personname>
+      <contrib>Rivendell C Library Author</contrib>
+    </author>
+  </info>
+
+  <!--
+                    Body
+  -->
+  <refsynopsisdiv id='synopsis'>
+    <funcsynopsis>
+    <funcsynopsisinfo>#include &lt;rivendell/rd_listcartschedcodes.h&gt;</funcsynopsisinfo>
+    <funcprototype>
+    <funcdef>int <function>RD_ListCartSchedCodes</function></funcdef>
+      <paramdef> struct rd_schedcodes * <parameter>cart[]</parameter></paramdef>
+      <paramdef>const char <parameter>hostname[]</parameter></paramdef>
+      <paramdef>const char <parameter>username[]</parameter></paramdef>
+      <paramdef>const char <parameter>passwd[]</parameter></paramdef>
+      <paramdef>const char <parameter>ticket[]</parameter></paramdef>
+      <paramdef>const unsigned <parameter>cartnumber</parameter></paramdef>
+      <paramdef>const char <parameter>user_agent[]</parameter></paramdef>
+      <paramdef>unsigned * <parameter>numrecs</parameter></paramdef>
+    </funcprototype> 
+    </funcsynopsis>
+
+  </refsynopsisdiv>
+
+  <refsect1 id='description'><title>Description</title>
+  <para>
+    <command>RD_ListCartSchedCodes</command> is  the function to use
+    to list the Scheduler Codes that are currently assigned to a cart in the Rivendell Database.
+  </para>
+  <para>
+    This function lists the scheduler codes in a pre-existing cart.  
+  </para>
+  <table xml:id="ex.listcartschedcodes" frame="all">
+    <title>RD_ListCartSchedCodes function call fields</title>
+    <tgroup cols="4" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="FIELD TYPE" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+        <row>
+          <entry>
+            FIELD NAME
+          </entry>
+          <entry>
+            FIELD TYPE
+          </entry>
+          <entry>
+            MEANING
+          </entry>
+          <entry>
+            REMARKS
+          </entry>
+        </row>
+      </thead>
+      <tbody>
+        <row>
+          <entry>
+            *schedcodes
+          </entry>
+          <entry>
+          Pointer to rd_schedcodes structure
+          </entry>
+          <entry>
+            Memory location to store scheduler code information
+          </entry>
+          <entry>
+            Mandatory
+          </entry>
+        </row>
+        <row>
+          <entry>
+            hostname
+          </entry>
+          <entry>
+          Character Array
+          </entry>
+          <entry>
+            Name Of Rivendell DB Host
+          </entry>
+          <entry>
+            Mandatory
+          </entry>
+        </row>
+        <row>
+          <entry>
+            username
+          </entry>
+          <entry>
+          Character Array
+          </entry>
+          <entry>
+            Rivendell User Name
+          </entry>
+          <entry>
+            Mandatory When NO Ticket Provided
+          </entry>
+        </row>
+        <row>
+          <entry>
+            passwd
+          </entry>
+          <entry>
+          Character Array
+          </entry>
+          <entry>
+            Rivendell User Password
+          </entry>
+          <entry>
+            Mandatory When NO Ticket Provided
+          </entry>
+        </row>
+        <row>
+          <entry>
+            ticket
+          </entry>
+          <entry>
+          Character Array
+          </entry>
+          <entry>
+            Rivendell Authentification Ticket
+          </entry>
+          <entry>
+            Mandatory When NO User/Password Pair Provided.
+          </entry>
+        </row>
+        <row>
+          <entry>
+            cartnumber
+          </entry>
+          <entry>
+          unsigned integer
+          </entry>
+          <entry>
+            Cart Number
+          </entry>
+          <entry>
+            Mandatory
+          </entry>
+        </row>
+        <row>
+          <entry>
+            user_agent
+          </entry>
+          <entry>
+          Character Array
+          </entry>
+          <entry>
+            User Agent Value put into HTTP request
+          </entry>
+          <entry>
+            Optional (default is Rivendell-C-API/x.x.x)
+          </entry>
+        </row>
+        <row>
+          <entry>
+            *numrecs
+          </entry>
+          <entry>
+          pointer to integer
+          </entry>
+          <entry>
+            memory location for number of records returned
+          </entry>
+          <entry>
+            Mandatory
+          </entry>
+        </row>
+      </tbody>
+    </tgroup>
+  </table>
+
+  <para>
+    When successful function will return the number of records sent (numrecs) and a rd_schedcodes structure which 
+    is stored in the provided memory locations. The rd_schedcodes structure has the following fields:
+  </para>
+  <programlisting>
+    struct rd_schedcodes {
+      char code[11];
+      char description[255];
+    };
+
+      All character arrays above are the sizes listed and must be null-terminated.
+
+  </programlisting>
+  </refsect1>
+  <refsect2 id='returns'><title>RETURN VALUE</title>
+    <para>
+      On success, zero is returned. Using the provided parameters an rd_schedcodes
+structure is returned and the number of records is returned.
+    </para>
+    <para>
+      If a server error occurs a -1 is returned.
+      If a client error occurs a specific error number is returned.
+    </para>
+  </refsect2>
+  <refsect3 id='errors'><title>ERRORS</title>
+    <para>
+      400          Missing Cart Number.
+    </para>
+    <para>
+      403          User Authentification Error.
+    </para>
+    <para>
+      404          No Such Cart Exists or Unauthorized.
+    </para>
+    <para>
+      nnn  Unknown Error Occurred.
+    </para>
+  </refsect3>
+     
+</refentry>

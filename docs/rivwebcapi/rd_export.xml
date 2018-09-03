@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry id="stdin" xmlns="http://docbook.org/ns/docbook" version="5.0">
+  <!--
+                    Header
+  -->
+  <refmeta>
+    <refentrytitle>RD_Export</refentrytitle>
+    <manvolnum>7</manvolnum>
+    <refmiscinfo class='source'>October 2015</refmiscinfo>
+    <refmiscinfo class='manual'>Rivendell C Library Manual</refmiscinfo>
+  </refmeta>
+  <refnamediv>
+    <refname>rd_export</refname>
+    <refpurpose>Rivendell Export Audio C Library Function</refpurpose>
+  </refnamediv>
+  <info>
+    <author>
+      <personname>
+        <firstname>Todd</firstname>
+        <surname>Baker</surname>
+        <email>bakert@rfa.org</email>
+      </personname>
+      <contrib>Rivendell C Library Author</contrib>
+    </author>
+  </info>
+
+  <!--
+                    Body
+  -->
+  <refsynopsisdiv id='synopsis'>
+    <funcsynopsis>
+    <funcsynopsisinfo>#include &lt;rivendell/rd_export.h&gt;</funcsynopsisinfo>
+    <funcprototype>
+    <funcdef>int <function>RD_Export</function></funcdef>
+      <paramdef>const char <parameter>hostname[]</parameter></paramdef>
+      <paramdef>const char <parameter>username[]</parameter></paramdef>
+      <paramdef>const char <parameter>passwd[]</parameter></paramdef>
+      <paramdef>const char <parameter>ticket[]</parameter></paramdef>
+      <paramdef>const unsigned <parameter>cartnumber</parameter></paramdef>
+      <paramdef>const unsigned <parameter>cutnumber</parameter></paramdef>
+      <paramdef>const int <parameter>format</parameter></paramdef>
+      <paramdef>const int <parameter>channels</parameter></paramdef>
+      <paramdef>const int <parameter>sample_rate</parameter></paramdef>
+      <paramdef>const int <parameter>bit_rate</parameter></paramdef>
+      <paramdef>const int <parameter>quality</parameter></paramdef>
+      <paramdef>const int <parameter>start_point</parameter></paramdef>
+      <paramdef>const int <parameter>end_point</parameter></paramdef>
+      <paramdef>const int <parameter>normalization_level</parameter></paramdef>
+      <paramdef>const int <parameter>enable_metadata</parameter></paramdef>
+      <paramdef>const char <parameter>filename[]</parameter></paramdef>
+      <paramdef>const char <parameter>user_agent[]</parameter></paramdef>
+    </funcprototype> 
+    </funcsynopsis>
+
+  </refsynopsisdiv>
+
+  <refsect1 id='description'><title>Description</title>
+  <para>
+    <command>RD_Export</command> is  the function to use
+    to export PCM/MPEG data from the audio store.
+  </para>
+  <table xml:id="ex.export" frame="all">
+    <title>RD_Export function call fields</title>
+    <tgroup cols="4" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="FIELD TYPE" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+        <row>
+          <entry>
+            FIELD NAME
+          </entry>
+          <entry>
+            FIELD TYPE
+          </entry>
+          <entry>
+            MEANING
+          </entry>
+          <entry>
+            REMARKS
+          </entry>
+        </row>
+      </thead>
+      <tbody>
+        <row>
+          <entry>
+            hostname
+          </entry>
+          <entry>
+          Character Array
+          </entry>
+          <entry>
+            Name Of Rivendell DB Host
+          </entry>
+          <entry>
+            Mandatory
+          </entry>
+        </row>
+        <row>
+          <entry>
+            username
+          </entry>
+          <entry>
+          Character Array
+          </entry>
+          <entry>
+            Rivendell User Name
+          </entry>
+          <entry>
+            Mandatory When NO Ticket Provided
+          </entry>
+        </row>
+        <row>
+          <entry>
+            passwd
+          </entry>
+          <entry>
+          Character Array
+          </entry>
+          <entry>
+            Rivendell User Password
+          </entry>
+          <entry>
+            Mandatory When NO Ticket Provided
+          </entry>
+        </row>
+        <row>
+          <entry>
+            ticket
+          </entry>
+          <entry>
+          Character Array
+          </entry>
+          <entry>
+            Rivendell Authentification Ticket
+          </entry>
+          <entry>
+            Mandatory When NO User/Password Pair Provided.
+          </entry>
+        </row>
+        <row>
+          <entry>
+            cartnumber
+          </entry>
+          <entry>
+          unsigned integer
+          </entry>
+          <entry>
+            Cart Number
+          </entry>
+          <entry>
+            Mandatory
+          </entry>
+        </row>
+        <row>
+          <entry>
+            cutnumber
+          </entry>
+          <entry>
+          unsigned integer
+          </entry>
+          <entry>
+            Cut Number
+          </entry>
+          <entry>
+            Mandatory
+          </entry>
+        </row>
+        <row>
+          <entry>
+            format
+          </entry>
+          <entry>
+          integer
+          </entry>
+          <entry>
+            Format
+          </entry>
+          <entry>
+            Mandatory
+          </entry>
+        </row>
+        <row>
+          <entry>
+            channels
+          </entry>
+          <entry>
+          integer
+          </entry>
+          <entry>
+            Number of Channels
+          </entry>
+          <entry>
+            Mandatory
+          </entry>
+        </row>
+        <row>
+          <entry>
+            sample_rate
+          </entry>
+          <entry>
+          integer
+          </entry>
+          <entry>
+            Sample Rate
+          </entry>
+          <entry>
+            Mandatory
+          </entry>
+        </row>
+        <row>
+          <entry>
+            bit_rate
+          </entry>
+          <entry>
+          integer
+          </entry>
+          <entry>
+            Bit Rate
+          </entry>
+          <entry>
+            Mandatory
+          </entry>
+        </row>
+        <row>
+          <entry>
+            quality
+          </entry>
+          <entry>
+          integer
+          </entry>
+          <entry>
+            Quality
+          </entry>
+          <entry>
+            Mandatory
+          </entry>
+        </row>
+        <row>
+          <entry>
+            start_point
+          </entry>
+          <entry>
+          integer
+          </entry>
+          <entry>
+            Start Point
+          </entry>
+          <entry>
+            Mandatory
+          </entry>
+        </row>
+        <row>
+          <entry>
+            end_point
+          </entry>
+          <entry>
+          integer
+          </entry>
+          <entry>
+            End Point
+          </entry>
+          <entry>
+            Mandatory
+          </entry>
+        </row>
+        <row>
+          <entry>
+            normalization_level
+          </entry>
+          <entry>
+          integer
+          </entry>
+          <entry>
+            Normalization Level
+          </entry>
+          <entry>
+            Mandatory
+          </entry>
+        </row>
+        <row>
+          <entry>
+            enable_metadata
+          </entry>
+          <entry>
+          integer
+          </entry>
+          <entry>
+            Flag for whether to enable Meta Data 
+          </entry>
+          <entry>
+            Mandatory
+          </entry>
+        </row>
+        <row>
+          <entry>
+            filename
+          </entry>
+          <entry>
+          character array
+          </entry>
+          <entry>
+            File Name For Audio
+          </entry>
+          <entry>
+            Mandatory
+          </entry>
+        </row>
+        <row>
+          <entry>
+            user_agent
+          </entry>
+          <entry>
+          Character Array
+          </entry>
+          <entry>
+            User Agent Value put into HTTP request
+          </entry>
+          <entry>
+            Optional (default is Rivendell-C-API/x.x.x)
+          </entry>
+        </row>
+      </tbody>
+    </tgroup>
+  </table>
+
+  </refsect1>
+  <refsect2 id='returns'><title>RETURN VALUE</title>
+    <para>
+      On success, zero is returned. 
+    </para>
+    <para>
+      If a server error occurs a -1 is returned.
+      If a client error occurs a specific error number is returned.
+    </para>
+  </refsect2>
+  <refsect3 id='errors'><title>ERRORS</title>
+    <para>
+      400          Invalid Input Parameter(s).
+    </para>
+    <para>
+      403          User Authentification Error.
+    </para>
+    <para>
+      404          No Source Audio Present.
+    </para>
+    <para>
+      404          Unauthorized or No Such Cart / Cut.
+    </para>
+    <para>
+      415          Invalid Settings.
+    </para>
+    <para>
+      500          Conversion Error.
+    </para>
+    <para>
+      nnn          Unknown Error Occurred.
+    </para>
+  </refsect3>
+     
+</refentry>

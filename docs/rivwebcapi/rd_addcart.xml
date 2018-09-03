@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry id="stdin" xmlns="http://docbook.org/ns/docbook" version="5.0">
+  <!--
+                    Header
+  -->
+  <refmeta>
+    <refentrytitle>RD_AddCart</refentrytitle>
+    <manvolnum>7</manvolnum>
+    <refmiscinfo class='source'>October 2015</refmiscinfo>
+    <refmiscinfo class='manual'>Rivendell C Library Manual</refmiscinfo>
+  </refmeta>
+  <refnamediv>
+    <refname>rd_addcart</refname>
+    <refpurpose>Rivendell Add Cart C Library Function</refpurpose>
+  </refnamediv>
+  <info>
+    <author>
+      <personname>
+        <firstname>Todd</firstname>
+        <surname>Baker</surname>
+        <email>bakert@rfa.org</email>
+      </personname>
+      <contrib>Rivendell C Library Author</contrib>
+    </author>
+  </info>
+
+  <!--
+                    Body
+  -->
+  <refsynopsisdiv id='synopsis'>
+    <funcsynopsis>
+    <funcsynopsisinfo>#include &lt;rivendell/rd_addcart.h&gt;</funcsynopsisinfo>
+    <funcprototype>
+    <funcdef>int <function>RD_AddCart</function></funcdef>
+      <paramdef> struct rd_cart * <parameter>cart[]</parameter></paramdef>
+      <paramdef>const char <parameter>hostname[]</parameter></paramdef>
+      <paramdef>const char <parameter>username[]</parameter></paramdef>
+      <paramdef>const char <parameter>passwd[]</parameter></paramdef>
+      <paramdef>const char <parameter>ticket[]</parameter></paramdef>
+      <paramdef>const char <parameter>group[]</parameter></paramdef>
+      <paramdef>const char <parameter>type[]</parameter></paramdef>
+      <paramdef>const unsigned <parameter>cartnumber</parameter></paramdef>
+      <paramdef>const char <parameter>user_agent[]</parameter></paramdef>
+      <paramdef>unsigned * <parameter>numrecs</parameter></paramdef>
+    </funcprototype> 
+    </funcsynopsis>
+
+  </refsynopsisdiv>
+
+  <refsect1 id='description'><title>Description</title>
+  <para>
+    <command>RD_AddCart</command> is  the function to use
+    to add a cart to an existing Rivendell Database.
+  </para>
+  <para>
+    This function adds the cart number to the Rivendell database on hostname. Default values are used when the cart is created.
+  </para>
+  <table xml:id="ex.addcart" frame="all">
+    <title>RD_AddCart function call fields</title>
+    <tgroup cols="4" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="FIELD TYPE" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+        <row>
+          <entry>
+            FIELD NAME
+          </entry>
+          <entry>
+            FIELD TYPE
+          </entry>
+          <entry>
+            MEANING
+          </entry>
+          <entry>
+            REMARKS
+          </entry>
+        </row>
+      </thead>
+      <tbody>
+        <row>
+          <entry>
+            *rd_cart
+          </entry>
+          <entry>
+          Pointer to rd_cart structure
+          </entry>
+          <entry>
+            Memory location to store cart information
+          </entry>
+          <entry>
+            Mandatory
+          </entry>
+        </row>
+        <row>
+          <entry>
+            hostname
+          </entry>
+          <entry>
+          Character Array
+          </entry>
+          <entry>
+            Name Of Rivendell DB Host
+          </entry>
+          <entry>
+            Mandatory
+          </entry>
+        </row>
+        <row>
+          <entry>
+            username
+          </entry>
+          <entry>
+          Character Array
+          </entry>
+          <entry>
+            Rivendell User Name
+          </entry>
+          <entry>
+            Mandatory When NO Ticket Provided.
+          </entry>
+        </row>
+        <row>
+          <entry>
+            passwd
+          </entry>
+          <entry>
+          Character Array
+          </entry>
+          <entry>
+            Rivendell User Password
+          </entry>
+          <entry>
+            Mandatory When NO Ticket Provided.
+          </entry>
+        </row>
+        <row>
+          <entry>
+            ticket
+          </entry>
+          <entry>
+          Character Array
+          </entry>
+          <entry>
+            Rivendell Authentification Ticket
+          </entry>
+          <entry>
+            Mandatory When NO User/Password Pair Provided.
+          </entry>
+        </row>
+        <row>
+          <entry>
+            group
+          </entry>
+          <entry>
+          Character Array
+          </entry>
+          <entry>
+            Rivendell Group Name
+          </entry>
+          <entry>
+            Mandatory
+          </entry>
+        </row>
+        <row>
+          <entry>
+            type
+          </entry>
+          <entry>
+          Character Array
+          </entry>
+          <entry>
+            Cart Type
+          </entry>
+          <entry>
+            Mandatory
+          </entry>
+        </row>
+        <row>
+          <entry>
+            cartnumber
+          </entry>
+          <entry>
+          unsigned integer
+          </entry>
+          <entry>
+            Cart Number
+          </entry>
+          <entry>
+            Mandatory
+          </entry>
+        </row>
+        <row>
+          <entry>
+            user_agent
+          </entry>
+          <entry>
+          Character Array
+          </entry>
+          <entry>
+            User Agent Value put into HTTP request
+          </entry>
+          <entry>
+            Optional (default is Rivendell-C-API/x.x.x)
+          </entry>
+        </row>
+        <row>
+          <entry>
+            *numrecs
+          </entry>
+          <entry>
+          pointer to integer
+          </entry>
+          <entry>
+            memory location for number of records returned
+          </entry>
+          <entry>
+            Mandatory
+          </entry>
+        </row>
+      </tbody>
+    </tgroup>
+  </table>
+
+  <para>
+    When successful function will return the number of records sent (numrecs) and a rd_cart structure which 
+    is stored in the provided memory locations. The rd_cart structure has the following fields:
+  </para>
+  <programlisting>
+    struct rd_cart {
+  	  unsigned cart_number;                /* Cart Number */
+  	  unsigned cart_type;                  /* Cart Type */
+  	  char cart_grp_name[11];              /* Group Name */
+  	  char cart_title[256];                /* Cart Title */
+  	  char cart_artist[256];               /* Artist */
+  	  char cart_album[256];                /* Album */
+  	  int cart_year;                       /* Year */
+  	  char cart_label[65];                 /* Label */
+  	  char cart_client[65];                /* Client */
+  	  char cart_agency[65];                /* Agency */
+  	  char cart_publisher[65];             /* Publisher */
+  	  char cart_composer[65];              /* Composer */
+  	  char cart_user_defined[256];         /* User Defined */
+  	  int  cart_usage_code;                /* Usage Code */
+  	  int cart_forced_length;              /* Forced Length */
+  	  int cart_average_length;             /* AverageLength */
+  	  int cart_length_deviation;           /* Length Deviation */
+  	  int cart_average_segue_length;       /* Average Segue Length */
+  	  int cart_average_hook_length;        /* Average Hook Length */
+  	  unsigned  cart_cut_quantity;         /* Cut Quantity */
+  	  unsigned  cart_last_cut_played;      /* Last Cut Played */
+  	  unsigned  cart_validity;             /* Validity */
+  	  int cart_enforce_length;             /* Enforce Length Flag */
+  	  int cart_asyncronous;                /* Asyncronous Flag */
+  	  char cart_owner[65];                 /* Owner */
+  	  struct tm cart_metadata_datetime;    /* Metadata Datetime */
+  	  char cart_notes[1024];               /* Notes */
+    };
+
+      All character arrays above are the sizes listed and are null-terminated.
+
+      The cart number is a unsigned integer.
+
+      The cart_type is 1=Audio,2=Macro. The default is Audio(1).
+      
+      The cart_grp_name must be a valid Rivendell DB Group.
+
+      The cart_title is 255 characters Default is [new cart].
+
+      The cart_artist is 255 characters. Default is NULL.
+
+      The cart_album is 255 characters. Default is NULL.
+
+      The cart_year is a date (YYYY). Default is NULL.
+
+      The cart_label is 64 characters. Default is NULL.
+
+      The cart_client is 64 characters. Default is NULL.
+
+      The cart_agency is 64 characters. Default is NULL.
+
+      The cart_publisher is 64 characters. Default is NULL.
+
+      The cart_composer is 64 characters. Default is NULL.
+
+      The cart_user_defined is 255 characters. Default is NULL.
+      
+      The cart_usage_code is  0=Feature (Default), 1=Theme Open,
+                              2=Theme Close, 3=Theme Open/Close,
+                              4=Background, 5=Comm/Promo
+      
+      The cart_forced_length is in milliseconds. Default is 0.
+      
+      The cart_average_length is in milliseconds. Default is 0.
+      
+      The cart_length_deviation is in milliseconds. Default is 0.
+      
+      The cart_average_segue_length is in milliseconds. Default is 0.
+
+      The cart_average_hook_length is in milliseconds. Default is 0.
+      
+      The cart_cut_quantity is number of cuts. Default is 0.
+
+      The cart_last_cut_played is self explanatory. Default is 0.
+
+      The cart_validity is 0=NeverValid, 1=Conditional, 2=AlwaysValid (Default)
+                           3=EvergreenValid, 4=FutureValid
+
+      The cart_enforce_length is True(1) or False(0). Default is False(0).
+      
+      The cart_asyncronous is True(1) or False(0). Default is False(0).
+      
+      The cart_owner is 64 characters. Default is NULL.
+      
+      The cart_metadata_datetime is in tm struct format. Default is NULL.
+      
+      The cart_user_notes is a character array up to 1024 characters. Default is NULL
+      
+  </programlisting>
+
+  </refsect1>
+  <refsect2 id='returns'><title>RETURN VALUE</title>
+    <para>
+      On success, zero is returned. Using the provided parameters an rd_cart
+structure is returned and the number of records is returned.
+    </para>
+    <para>
+      If a server error occurs a -1 is returned.
+      If a client error occurs a specific error number is returned.
+    </para>
+  </refsect2>
+  <refsect3 id='errors'><title>ERRORS</title>
+    <para>
+      400          Invalid Parameter for GROUP or TYPE.
+    </para>
+    <para>
+      400          Cart Already Exists.
+    </para>
+    <para>
+      403          User Authentification Error.
+    </para>
+    <para>
+      404          No Such Group Exists or Cart Out Of Range.
+    </para>
+    <para>
+      500          Unable to Create Cart.
+    </para>
+    <para>
+      nnn  Unknown Error Occurred.
+    </para>
+  </refsect3>
+     
+</refentry>
