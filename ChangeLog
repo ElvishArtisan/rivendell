@@ -16671,7 +16671,7 @@
 	RML to fail.
 2018-08-28 Fred Gleason <fredg@paravelsystems.com>
 	* Added an optional third argument to the 'Add Next' ['PX'] RML
-	to allow specication of the transition type.
+	to allow specification of the transition type.
 2018-08-28 Fred Gleason <fredg@paravelsystems.com>
 	* Added support for the Spinitron v2 API in the 'spinitron_plus'
 	RLM [Pull Request #000211].
