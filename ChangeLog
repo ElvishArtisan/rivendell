@@ -17542,3 +17542,6 @@
 	* Added support for the Spinitron v2 API in the 'spinitron_plus' RLM.
 2018-08-29 Fred Gleason <fredg@paravelsystems.com>
 	* Removed spurious syslog warnings when initializing HPI devices.
+2018-09-03 Fred Gleason <fredg@paravelsystems.com>
+	* Renamed the 'Add Next' ['PX'] RML to 'Insert Cart' ['PX'].
+	* Added an 'offset' parameter to the 'Insert Cart' ['PX'] RML.

@@ -198,36 +198,6 @@
     </para>
   </sect2>
 
-  <sect2 xml:id="sect.rml.add_next__px_">
-    <title>Add Next [PX]</title>
-    <para>
-      <variablelist>
-	<varlistentry>
-	  <term>Module</term>
-	  <listitem><command>rdairplay</command><manvolnum>1</manvolnum></listitem>
-	</varlistentry>
-	<varlistentry>
-	  <term>Mnemonic</term>
-	  <listitem><userinput>PX</userinput></listitem>
-	</varlistentry>
-      </variablelist>
-    </para>
-    <para>
-      Insert a cart in a log in the next to play position.
-    </para>
-    <para>
-      <userinput>PX
-      <replaceable>mach</replaceable>
-      <replaceable>cart</replaceable>
-      [PLAY|SEGUE|STOP]!</userinput>
-    </para>
-    <para>
-      Insert cart <replaceable>cart</replaceable> in the next to play
-      position on log machine <replaceable>mach</replaceable>. The
-      transition may also be optionally specified.
-    </para>
-  </sect2>
-
   <sect2 xml:id="sect.rml.binary_serial_out__bo_">
     <title>Binary Serial Out [BO]</title>
     <para>
@@ -860,6 +830,38 @@
       <replaceable>matrix</replaceable>> to <replaceable>state</replaceable>
       for <replaceable>length</replaceable>> mS.  A length of
       <userinput>0</userinput> indicates to hold the state indefinitely.
+    </para>
+  </sect2>
+
+  <sect2 xml:id="sect.rml.insert_cart__px_">
+    <title>Insert Cart [PX]</title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>rdairplay</command><manvolnum>1</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>PX</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Insert a cart in a log.
+    </para>
+    <para>
+      <userinput>PX
+      <replaceable>mach</replaceable>
+      <replaceable>cart</replaceable>
+      [<replaceable>offset</replaceable>]
+      [PLAY|SEGUE|STOP]!</userinput>
+    </para>
+    <para>
+      Insert cart <replaceable>cart</replaceable> after the currently playing
+      or next event plus <replaceable>offset</replaceable> (default '0')
+      lines on log machine <replaceable>mach</replaceable>. The
+      transition may also be optionally specified.
     </para>
   </sect2>
 
