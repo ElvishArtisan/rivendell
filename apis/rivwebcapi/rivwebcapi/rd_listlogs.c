@@ -3,6 +3,7 @@
  * Implementation of the ListLogs Rivendell Access Library
  *
  * (C) Copyright 2015 Todd Baker  <bakert@rfa.org>             
+ * (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License version 2 as
@@ -164,6 +165,9 @@ int RD_ListLogs(struct rd_log *logs[],
   char errbuf[CURL_ERROR_SIZE];
   CURLcode res;
   char user_agent_string[255];
+  char cart_buffer[7];
+  struct curl_httppost *first=NULL;
+  struct curl_httppost *last=NULL;
 
   /*  Set number of recs so if fail already set */
   *numrecs = 0;
@@ -209,20 +213,85 @@ int RD_ListLogs(struct rd_log *logs[],
 			__ListLogsElementEnd);
   XML_SetCharacterDataHandler(parser,__ListLogsElementData);
   snprintf(url,1500,"http://%s/rd-bin/rdxport.cgi",hostname);
-  snprintf(post,1500,"COMMAND=20&LOGIN_NAME=%s&PASSWORD=%s&TICKET=%s&SERVICE_NAME=%s&LOG_NAME=%s&TRACKABLE=%d&FILTER=%s&RECENT=%d",
-	   curl_easy_escape(curl,username,0),
-	   curl_easy_escape(curl,passwd,0),
-	   curl_easy_escape(curl,ticket,0),
-	   curl_easy_escape(curl,checked_service,0),
-	   curl_easy_escape(curl,checked_logname,0),
-	   checked_trackable,
-	   curl_easy_escape(curl,filter,0),
-	   checked_recent);
+
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"COMMAND",
+        CURLFORM_COPYCONTENTS,
+        "20",
+        CURLFORM_END);
+
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"LOGIN_NAME",
+	CURLFORM_COPYCONTENTS,
+	username,
+	CURLFORM_END); 
+
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"PASSWORD",
+        CURLFORM_COPYCONTENTS,
+	passwd,
+	CURLFORM_END);
+
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"TICKET",
+        CURLFORM_COPYCONTENTS,
+        ticket,
+	CURLFORM_END);
+
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"SERVICE_NAME",
+        CURLFORM_COPYCONTENTS,
+        checked_service,
+	CURLFORM_END);
+
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"LOG_NAME",
+        CURLFORM_COPYCONTENTS,
+        checked_logname,
+	CURLFORM_END);
+
+  snprintf(cart_buffer,7,"%d",checked_trackable);
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"TRACKABLE",
+        CURLFORM_COPYCONTENTS,
+        cart_buffer,
+	CURLFORM_END);
+
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"FILTER",
+        CURLFORM_COPYCONTENTS,
+        filter,
+	CURLFORM_END);
+
+  snprintf(cart_buffer,7,"%d",checked_recent);
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"RECENT",
+        CURLFORM_COPYCONTENTS,
+        cart_buffer,
+	CURLFORM_END);
   curl_easy_setopt(curl,CURLOPT_WRITEDATA,parser);
   curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,__ListLogsCallback);
   curl_easy_setopt(curl,CURLOPT_URL,url);
   curl_easy_setopt(curl,CURLOPT_POST,1);
-  curl_easy_setopt(curl,CURLOPT_POSTFIELDS,post);
+  curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
   curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
   curl_easy_setopt(curl,CURLOPT_ERRORBUFFER,errbuf);
   //  curl_easy_setopt(curl,CURLOPT_VERBOSE,1);
@@ -256,6 +325,7 @@ int RD_ListLogs(struct rd_log *logs[],
 /* The response OK - so figure out if we got what we wanted.. */
 
   curl_easy_getinfo(curl,CURLINFO_RESPONSE_CODE,&response_code);
+  curl_formfree(first);
   curl_easy_cleanup(curl);
   
   if (response_code > 199 && response_code < 300) {

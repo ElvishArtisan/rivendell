@@ -17597,3 +17597,22 @@
 	strings correctly.
 	* Modified rd_listgroups(7) in the rivwebcapi to process UTF-8
 	strings correctly.
+2018-09-04 Fred Gleason <fredg@paravelsystems.com>
+	* Modified rd_listlog(7) in the rivwebcapi to process UTF-8
+	strings correctly.
+	* Modified rd_listschedcodes(7) in the rivwebcapi to process UTF-8
+	strings correctly.
+	* Modified rd_listservices(7) in the rivwebcapi to process UTF-8
+	strings correctly.
+	* Modified rd_listsystemsettings(7) in the rivwebcapi to process UTF-8
+	strings correctly.
+	* Modified rd_removecart(7) in the rivwebcapi to process UTF-8
+	strings correctly.
+	* Modified rd_removecut(7) in the rivwebcapi to process UTF-8
+	strings correctly.
+	* Modified rd_savelog(7) in the rivwebcapi to process UTF-8
+	strings correctly.
+	* Modified rd_trimaudio(7) in the rivwebcapi to process UTF-8
+	strings correctly.
+	* Modified rd_unassignschedcode(7) in the rivwebcapi to process UTF-8
+	strings correctly.

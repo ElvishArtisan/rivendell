@@ -3,6 +3,7 @@
  * Header for the Save Log Rivendell Access Library
  *
  * (C) Copyright 2017 Todd Baker  <bakert@rfa.org>
+ * (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
  *
  *   This program is free software; you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License version 2 as
@@ -44,14 +45,15 @@ int RD_SaveLog(struct save_loghdr_values *hdrvals,
   char url[1500];
   char str[1024];
   char dtstr[256];
-  char *post=malloc(1);
   CURL *curl=NULL;
   CURLcode res;
   char errbuf[CURL_ERROR_SIZE];
   long response_code;
   unsigned i=0;
-  post[0]=0;
   char user_agent_string[255];
+  char buffer[1024];
+  struct curl_httppost *first=NULL;
+  struct curl_httppost *last=NULL;
 
   if((curl=curl_easy_init())==NULL) {
     curl_easy_cleanup(curl);
@@ -61,203 +63,461 @@ int RD_SaveLog(struct save_loghdr_values *hdrvals,
   //
   // Log Header
   //
-  post=AppendString(post,"COMMAND=28&");
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"COMMAND",
+        CURLFORM_COPYCONTENTS,
+        "28",
+        CURLFORM_END);
 
-  snprintf(str,1024,"LOGIN_NAME=%s&",curl_easy_escape(curl,username,0));
-  post=AppendString(post,str);
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"LOGIN_NAME",
+	CURLFORM_COPYCONTENTS,
+	username,
+	CURLFORM_END); 
 
-  snprintf(str,1024,"PASSWORD=%s&",curl_easy_escape(curl,passwd,0));
-  post=AppendString(post,str);
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"PASSWORD",
+        CURLFORM_COPYCONTENTS,
+	passwd,
+	CURLFORM_END);
 
-  snprintf(str,1024,"TICKET=%s&",curl_easy_escape(curl,ticket,0));
-  post=AppendString(post,str);
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"TICKET",
+        CURLFORM_COPYCONTENTS,
+        ticket,
+	CURLFORM_END);
 
-  snprintf(str,1024,"LOG_NAME=%s&",curl_easy_escape(curl,logname,0));
-  post=AppendString(post,str);
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"SERVICE_NAME",
+        CURLFORM_COPYCONTENTS,
+	hdrvals->loghdr_service,
+	CURLFORM_END);
 
-  snprintf(str,1024,"SERVICE_NAME=%s&",curl_easy_escape(curl,hdrvals->loghdr_service,0));
-  post=AppendString(post,str);
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"DESCRIPTION",
+        CURLFORM_COPYCONTENTS,
+        hdrvals->loghdr_description,
+	CURLFORM_END);
 
-  snprintf(str,1024,"DESCRIPTION=%s&",curl_easy_escape(curl,hdrvals->loghdr_description,0));
-  post=AppendString(post,str);
-
-  snprintf(str,1024,"AUTO_REFRESH=%d&",hdrvals->loghdr_autorefresh);
-  post=AppendString(post,str);
+  snprintf(buffer,1024,"%d",hdrvals->loghdr_autorefresh);
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"AUTO_REFRESH",
+        CURLFORM_COPYCONTENTS,
+        buffer,
+	CURLFORM_END);
 
   RD_Cnv_tm_to_DTString(&hdrvals->loghdr_purge_date,dtstr);
-  snprintf(str,1024,"PURGE_DATE=%s&",dtstr);
-  post=AppendString(post,str);
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"PURGE_DATE",
+        CURLFORM_COPYCONTENTS,
+        dtstr,
+	CURLFORM_END);
 
   RD_Cnv_tm_to_DTString(&hdrvals->loghdr_start_date,dtstr);
-  snprintf(str,1024,"START_DATE=%s&",dtstr);
-  post=AppendString(post,str);
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"START_DATE",
+        CURLFORM_COPYCONTENTS,
+        dtstr,
+	CURLFORM_END);
 
   RD_Cnv_tm_to_DTString(&hdrvals->loghdr_end_date,dtstr);
-  snprintf(str,1024,"END_DATE=%s&",dtstr);
-  post=AppendString(post,str);
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"END_DATE",
+        CURLFORM_COPYCONTENTS,
+        dtstr,
+	CURLFORM_END);
 
-  snprintf(str,1024,"LINE_QUANTITY=%d",linevals_quan);
-  post=AppendString(post,str);
+  snprintf(buffer,1024,"%d",linevals_quan);
+  curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	"LINE_QUANTITY",
+        CURLFORM_COPYCONTENTS,
+        buffer,
+	CURLFORM_END);
 
   //
   // Log Lines
   //
   for(i=0;i<linevals_quan;i++) {
-    snprintf(str,1024,"&LINE%u_ID=%u",i,linevals[i].logline_id);
-    post=AppendString(post,str);
+    snprintf(str,1024,"LINE%u_ID",i);
+    snprintf(buffer,1024,"%d",linevals[i].logline_id);
+    curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	str,
+        CURLFORM_COPYCONTENTS,
+        buffer,
+	CURLFORM_END);
 
-    snprintf(str,1024,"&LINE%u_TYPE=%u",i,linevals[i].logline_type);
-    post=AppendString(post,str);
+    snprintf(str,1024,"LINE%u_TYPE",i);
+    snprintf(buffer,1024,"%d",linevals[i].logline_type);
+    curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	str,
+        CURLFORM_COPYCONTENTS,
+        buffer,
+	CURLFORM_END);
 
-    snprintf(str,1024,"&LINE%u_CART_NUMBER=%u",i,
-	     linevals[i].logline_cart_number);
-    post=AppendString(post,str);
+    snprintf(str,1024,"LINE%u_CART_NUMBER",i);
+    snprintf(buffer,1024,"%d",linevals[i].logline_cart_number);
+    curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	str,
+        CURLFORM_COPYCONTENTS,
+        buffer,
+	CURLFORM_END);
 
-    snprintf(str,1024,"&LINE%u_START_TIME=%u",i,linevals[i].logline_starttime);
-    post=AppendString(post,str);
+    snprintf(str,1024,"LINE%u_START_TIME",i);
+    snprintf(buffer,1024,"%d",linevals[i].logline_starttime);
+    curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	str,
+        CURLFORM_COPYCONTENTS,
+        buffer,
+	CURLFORM_END);
 
-    snprintf(str,1024,"&LINE%u_GRACE_TIME=%u",i,linevals[i].logline_gracetime);
-    post=AppendString(post,str);
+    snprintf(str,1024,"LINE%u_GRACE_TIME",i);
+    snprintf(buffer,1024,"%d",linevals[i].logline_gracetime);
+    curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	str,
+        CURLFORM_COPYCONTENTS,
+        buffer,
+	CURLFORM_END);
 
-    snprintf(str,1024,"&LINE%u_TIME_TYPE=%u",i,linevals[i].logline_time_type);
-    post=AppendString(post,str);
+    snprintf(str,1024,"LINE%u_TIME_TYPE",i);
+    snprintf(buffer,1024,"%d",linevals[i].logline_time_type);
+    curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	str,
+        CURLFORM_COPYCONTENTS,
+        buffer,
+	CURLFORM_END);
 
+    snprintf(str,1024,"LINE%u_TRANS_TYPE",i);
     switch(linevals[i].logline_transition_type) {
     case 0:
-      snprintf(str,1024,"&LINE%u_TRANS_TYPE=PLAY",i);
+      snprintf(buffer,1024,"PLAY");
       break;
 
     case 1:
-      snprintf(str,1024,"&LINE%u_TRANS_TYPE=SEGUE",i);
+      snprintf(buffer,1024,"SEGUE");
       break;
 
     case 2:
-      snprintf(str,1024,"&LINE%u_TRANS_TYPE=STOP",i);
+      snprintf(buffer,1024,"STOP");
       break;
     }
-    post=AppendString(post,str);
+    curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	str,
+        CURLFORM_COPYCONTENTS,
+        buffer,
+	CURLFORM_END);
 
-    snprintf(str,1024,"&LINE%u_START_POINT=%d",i,
-	     linevals[i].logline_start_point_log);
-    post=AppendString(post,str);
+    snprintf(str,1024,"LINE%u_START_POINT",i);
+    snprintf(buffer,1024,"%d",linevals[i].logline_start_point_log);
+    curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	str,
+        CURLFORM_COPYCONTENTS,
+        buffer,
+	CURLFORM_END);
 
-    snprintf(str,1024,"&LINE%u_END_POINT=%d",i,
-	     linevals[i].logline_end_point_log);
-    post=AppendString(post,str);
+    snprintf(str,1024,"LINE%u_END_POINT",i);
+    snprintf(buffer,1024,"%d",linevals[i].logline_end_point_log);
+    curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	str,
+        CURLFORM_COPYCONTENTS,
+        buffer,
+	CURLFORM_END);
 
-    snprintf(str,1024,"&LINE%u_SEGUE_START_POINT=%d",i,
-	     linevals[i].logline_segue_start_point_log);
-    post=AppendString(post,str);
+    snprintf(str,1024,"LINE%u_SEGUE_START_POINT",i);
+    snprintf(buffer,1024,"%d",linevals[i].logline_segue_start_point_log);
+    curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	str,
+        CURLFORM_COPYCONTENTS,
+        buffer,
+	CURLFORM_END);
 
-    snprintf(str,1024,"&LINE%u_SEGUE_END_POINT=%d",i,
-	     linevals[i].logline_segue_end_point_log);
-    post=AppendString(post,str);
+    snprintf(str,1024,"LINE%u_SEGUE_END_POINT",i);
+    snprintf(buffer,1024,"%d",linevals[i].logline_segue_end_point_log);
+    curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	str,
+        CURLFORM_COPYCONTENTS,
+        buffer,
+	CURLFORM_END);
 
-    snprintf(str,1024,"&LINE%u_FADEUP_POINT=%d",i,
-	     linevals[i].logline_fadeup_point_log);
-    post=AppendString(post,str);
+    snprintf(str,1024,"LINE%u_FADEUP_POINT",i);
+    snprintf(buffer,1024,"%d",linevals[i].logline_fadeup_point_log);
+    curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	str,
+        CURLFORM_COPYCONTENTS,
+        buffer,
+	CURLFORM_END);
 
-    snprintf(str,1024,"&LINE%u_FADEUP_GAIN=%d",i,
-	     linevals[i].logline_fadeup_gain);
-    post=AppendString(post,str);
+    snprintf(str,1024,"LINE%u_FADEUP_GAIN",i);
+    snprintf(buffer,1024,"%d",linevals[i].logline_fadeup_gain);
+    curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	str,
+        CURLFORM_COPYCONTENTS,
+        buffer,
+	CURLFORM_END);
 
-    snprintf(str,1024,"&LINE%u_FADEDOWN_POINT=%d",i,
-	     linevals[i].logline_fadedown_point_log);
-    post=AppendString(post,str);
+    snprintf(str,1024,"LINE%u_FADEDOWN_POINT",i);
+    snprintf(buffer,1024,"%d",linevals[i].logline_fadedown_point_log);
+    curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	str,
+        CURLFORM_COPYCONTENTS,
+        buffer,
+	CURLFORM_END);
 
-    snprintf(str,1024,"&LINE%u_FADEDOWN_GAIN=%d",i,
-	     linevals[i].logline_fadedown_gain);
-    post=AppendString(post,str);
+    snprintf(str,1024,"LINE%u_FADEDOWN_GAIN",i);
+    snprintf(buffer,1024,"%d",linevals[i].logline_fadedown_gain);
+    curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	str,
+        CURLFORM_COPYCONTENTS,
+        buffer,
+	CURLFORM_END);
 
-    snprintf(str,1024,"&LINE%u_DUCK_UP_GAIN=%d",i,
-	     linevals[i].logline_duckup_gain);
-    post=AppendString(post,str);
+    snprintf(str,1024,"LINE%u_DUCK_UP_GAIN",i);
+    snprintf(buffer,1024,"%d",linevals[i].logline_duckup_gain);
+    curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	str,
+        CURLFORM_COPYCONTENTS,
+        buffer,
+	CURLFORM_END);
 
-    snprintf(str,1024,"&LINE%u_DUCK_DOWN_GAIN=%d",i,
-	     linevals[i].logline_duckdown_gain);
-    post=AppendString(post,str);
+    snprintf(str,1024,"LINE%u_DUCK_DOWN_GAIN",i);
+    snprintf(buffer,1024,"%d",linevals[i].logline_duckdown_gain);
+    curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	str,
+        CURLFORM_COPYCONTENTS,
+        buffer,
+	CURLFORM_END);
 
-    snprintf(str,1024,"&LINE%u_COMMENT=%s",i,
-	     curl_easy_escape(curl,linevals[i].logline_marker_comment,0));
-    post=AppendString(post,str);
+    snprintf(str,1024,"LINE%u_COMMENT",i);
+    curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	str,
+        CURLFORM_COPYCONTENTS,
+        linevals[i].logline_marker_comment,
+	CURLFORM_END);
 
-    snprintf(str,1024,"&LINE%u_LABEL=%s",i,
-	     curl_easy_escape(curl,linevals[i].logline_marker_label,0));
-    post=AppendString(post,str);
+    snprintf(str,1024,"LINE%u_LABEL",i);
+    curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	str,
+        CURLFORM_COPYCONTENTS,
+        linevals[i].logline_marker_label,
+	CURLFORM_END);
 
-    snprintf(str,1024,"&LINE%u_ORIGIN_USER=%s",i,
-	     curl_easy_escape(curl,linevals[i].logline_origin_user,0));
-    post=AppendString(post,str);
+    snprintf(str,1024,"LINE%u_ORIGIN_USER",i);
+    curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	str,
+        CURLFORM_COPYCONTENTS,
+        linevals[i].logline_origin_user,
+	CURLFORM_END);
 
+    snprintf(str,1024,"LINE%u_ORIGIN_DATETIME",i);
     RD_Cnv_tm_to_DTString(&linevals[i].logline_origin_datetime,dtstr);
-    snprintf(str,1024,"&LINE%u_ORIGIN_DATETIME=%s",i,dtstr);
-    post=AppendString(post,str);
+    curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	str,
+        CURLFORM_COPYCONTENTS,
+	dtstr,
+	CURLFORM_END);
 
-    snprintf(str,1024,"&LINE%u_ORIGIN_USER=%s",i,
-	     curl_easy_escape(curl,linevals[i].logline_origin_user,0));
-    post=AppendString(post,str);
+    snprintf(str,1024,"LINE%u_EVENT_LENGTH",i);
+    snprintf(buffer,1024,"%u",linevals[i].logline_event_length);
+    curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	str,
+        CURLFORM_COPYCONTENTS,
+        buffer,
+	CURLFORM_END);
 
-    snprintf(str,1024,"&LINE%u_EVENT_LENGTH=%u",i,
-	     linevals[i].logline_event_length);
-    post=AppendString(post,str);
+    snprintf(str,1024,"LINE%u_LINK_EVENT_NAME",i);
+    curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	str,
+        CURLFORM_COPYCONTENTS,
+        linevals[i].logline_link_event_name,
+	CURLFORM_END);
 
-    snprintf(str,1024,"&LINE%u_LINK_EVENT_NAME=%s",i,
-	     curl_easy_escape(curl,linevals[i].logline_link_event_name,0));
-    post=AppendString(post,str);
+    snprintf(str,1024,"LINE%u_LINK_LENGTH",i);
+    snprintf(buffer,1024,"%u",linevals[i].logline_link_length);
+    curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	str,
+        CURLFORM_COPYCONTENTS,
+        buffer,
+	CURLFORM_END);
 
-    snprintf(str,1024,"&LINE%u_LINK_LENGTH=%u",i,
-	     linevals[i].logline_link_length);
-    post=AppendString(post,str);
-
+    snprintf(str,1024,"LINE%u_LINK_START_TIME",i);
     RD_Cnv_tm_to_DTString(&linevals[i].logline_link_starttime,dtstr);
-    snprintf(str,1024,"&LINE%u_LINK_START_TIME=%s",i,dtstr);
-    post=AppendString(post,str);
+    curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	str,
+        CURLFORM_COPYCONTENTS,
+	dtstr,
+	CURLFORM_END);
 
-    snprintf(str,1024,"&LINE%u_LINK_START_SLOP=%u",i,
-	     linevals[i].logline_link_start_slop);
-    post=AppendString(post,str);
+    snprintf(str,1024,"LINE%u_LINK_START_SLOP",i);
+    snprintf(buffer,1024,"%u",linevals[i].logline_link_start_slop);
+    curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	str,
+        CURLFORM_COPYCONTENTS,
+        buffer,
+	CURLFORM_END);
 
-    snprintf(str,1024,"&LINE%u_LINK_END_SLOP=%u",i,
-	     linevals[i].logline_link_end_slop);
-    post=AppendString(post,str);
+    snprintf(str,1024,"LINE%u_LINK_END_SLOP",i);
+    snprintf(buffer,1024,"%u",linevals[i].logline_link_end_slop);
+    curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	str,
+        CURLFORM_COPYCONTENTS,
+        buffer,
+	CURLFORM_END);
 
-    snprintf(str,1024,"&LINE%u_LINK_ID=%u",i,
-	     linevals[i].logline_link_id);
-    post=AppendString(post,str);
+    snprintf(str,1024,"LINE%u_LINK_ID",i);
+    snprintf(buffer,1024,"%u",linevals[i].logline_link_id);
+    curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	str,
+        CURLFORM_COPYCONTENTS,
+        buffer,
+	CURLFORM_END);
 
-    snprintf(str,1024,"&LINE%u_LINK_EMBEDDED=%u",i,
-	     linevals[i].logline_link_embedded);
-    post=AppendString(post,str);
+    snprintf(str,1024,"LINE%u_LINK_EMBEDDED",i);
+    snprintf(buffer,1024,"%u",linevals[i].logline_link_embedded);
+    curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	str,
+        CURLFORM_COPYCONTENTS,
+        buffer,
+	CURLFORM_END);
 
+    snprintf(str,1024,"LINE%u_EXT_START_TIME",i);
     RD_Cnv_tm_to_DTString(&linevals[i].logline_ext_starttime,dtstr);
-    snprintf(str,1024,"&LINE%u_EXT_START_TIME=%s",i,dtstr);
-    post=AppendString(post,str);
+    curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	str,
+        CURLFORM_COPYCONTENTS,
+	dtstr,
+	CURLFORM_END);
 
-    snprintf(str,1024,"&LINE%u_EXT_LENGTH=%u",i,
-	     linevals[i].logline_ext_length);
-    post=AppendString(post,str);
+    snprintf(str,1024,"LINE%u_EXT_LENGTH",i);
+    snprintf(buffer,1024,"%u",linevals[i].logline_ext_length);
+    curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	str,
+        CURLFORM_COPYCONTENTS,
+        buffer,
+	CURLFORM_END);
 
-    snprintf(str,1024,"&LINE%u_EXT_CART_NAME=%s",i,
-	     curl_easy_escape(curl,linevals[i].logline_ext_cart_name,0));
-    post=AppendString(post,str);
+    snprintf(str,1024,"LINE%u_EXT_CART_NAME",i);
+    curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	str,
+        CURLFORM_COPYCONTENTS,
+        linevals[i].logline_ext_cart_name,
+	CURLFORM_END);
 
-    snprintf(str,1024,"&LINE%u_EXT_DATA=%s",i,
-	     curl_easy_escape(curl,linevals[i].logline_ext_data,0));
-    post=AppendString(post,str);
+    snprintf(str,1024,"LINE%u_EXT_DATA",i);
+    curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	str,
+        CURLFORM_COPYCONTENTS,
+        linevals[i].logline_ext_data,
+	CURLFORM_END);
 
-    snprintf(str,1024,"&LINE%u_EXT_EVENT_ID=%s",i,
-	     curl_easy_escape(curl,linevals[i].logline_ext_event_id,0));
-    post=AppendString(post,str);
+    snprintf(str,1024,"LINE%u_EXT_EVENT_ID",i);
+    curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	str,
+        CURLFORM_COPYCONTENTS,
+        linevals[i].logline_ext_event_id,
+	CURLFORM_END);
 
-    snprintf(str,1024,"&LINE%u_EXT_ANNC_TYPE=%s",i,
-	     curl_easy_escape(curl,linevals[i].logline_ext_annc_type,0));
-    post=AppendString(post,str);
+    snprintf(str,1024,"LINE%u_EXT_ANNC_TYPE",i);
+    curl_formadd(&first,
+	&last,
+	CURLFORM_PTRNAME,
+	str,
+        CURLFORM_COPYCONTENTS,
+        linevals[i].logline_ext_annc_type,
+	CURLFORM_END);
   }
-
   snprintf(url,1500,"http://%s/rd-bin/rdxport.cgi",hostname);
   curl_easy_setopt(curl,CURLOPT_URL,url);
   curl_easy_setopt(curl,CURLOPT_POST,1);
-  curl_easy_setopt(curl,CURLOPT_POSTFIELDS,post);
+  curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
   curl_easy_setopt(curl,CURLOPT_NOPROGRESS,1);
   curl_easy_setopt(curl,CURLOPT_ERRORBUFFER,errbuf);
   //  curl_easy_setopt(curl,CURLOPT_VERBOSE,1);
@@ -284,12 +544,14 @@ int RD_SaveLog(struct save_loghdr_values *hdrvals,
         else
             fprintf(stderr, "%s\n", curl_easy_strerror(res));
     #endif
+    curl_formfree(first);
     curl_easy_cleanup(curl);
     return -1;
   }
 /* The response OK - so figure out if we got what we wanted.. */
 
   curl_easy_getinfo(curl,CURLINFO_RESPONSE_CODE,&response_code);
+  curl_formfree(first);
   curl_easy_cleanup(curl);
   
   if (response_code > 199 && response_code < 300) {  //Success
