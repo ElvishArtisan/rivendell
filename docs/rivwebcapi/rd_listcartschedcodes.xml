@@ -29,7 +29,7 @@
   -->
   <refsynopsisdiv id='synopsis'>
     <funcsynopsis>
-    <funcsynopsisinfo>#include &lt;rivendell/rd_listcartschedcodes.h&gt;</funcsynopsisinfo>
+    <funcsynopsisinfo>#include &lt;rivwebcapi/rd_listcartschedcodes.h&gt;</funcsynopsisinfo>
     <funcprototype>
     <funcdef>int <function>RD_ListCartSchedCodes</function></funcdef>
       <paramdef> struct rd_schedcodes * <parameter>cart[]</parameter></paramdef>

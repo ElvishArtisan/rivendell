@@ -29,7 +29,7 @@
   -->
   <refsynopsisdiv id='synopsis'>
     <funcsynopsis>
-    <funcsynopsisinfo>#include &lt;rivendell/rd_listcut.h&gt;</funcsynopsisinfo>
+    <funcsynopsisinfo>#include &lt;rivwebcapi/rd_listcut.h&gt;</funcsynopsisinfo>
     <funcprototype>
     <funcdef>int <function>RD_ListCut</function></funcdef>
       <paramdef> struct rd_cut * <parameter>cut[]</parameter></paramdef>

@@ -17619,3 +17619,6 @@
 	strings correctly.
 	* Modified rd_unassignschedcode(7) in the rivwebcapi to process UTF-8
 	strings correctly.
+2018-09-04 Fred Gleason <fredg@paravelsystems.com>
+	* Corrected the include path shown in the man pages for the
+	'rivwebcapi' library.

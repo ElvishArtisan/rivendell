@@ -29,7 +29,7 @@
   -->
   <refsynopsisdiv id='synopsis'>
     <funcsynopsis>
-    <funcsynopsisinfo>#include &lt;rivendell/rd_listsystemsettings.h&gt;</funcsynopsisinfo>
+    <funcsynopsisinfo>#include &lt;rivwebcapi/rd_listsystemsettings.h&gt;</funcsynopsisinfo>
     <funcprototype>
     <funcdef>int <function>RD_ListSystemSettings</function></funcdef>
       <paramdef> struct rd_system_settings * <parameter>system_settings[]</parameter></paramdef>

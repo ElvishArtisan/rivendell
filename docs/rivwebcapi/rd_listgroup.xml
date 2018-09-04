@@ -29,7 +29,7 @@
   -->
   <refsynopsisdiv id='synopsis'>
     <funcsynopsis>
-    <funcsynopsisinfo>#include &lt;rivendell/rd_listgroup.h&gt;</funcsynopsisinfo>
+    <funcsynopsisinfo>#include &lt;rivwebcapi/rd_listgroup.h&gt;</funcsynopsisinfo>
     <funcprototype>
     <funcdef>int <function>RD_ListGroup</function></funcdef>
       <paramdef> struct rd_group * <parameter>group[]</parameter></paramdef>

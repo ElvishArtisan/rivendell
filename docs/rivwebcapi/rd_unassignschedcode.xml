@@ -29,7 +29,7 @@
   -->
   <refsynopsisdiv id='synopsis'>
     <funcsynopsis>
-    <funcsynopsisinfo>#include &lt;rivendell/rd_unassignschedcode.h&gt;</funcsynopsisinfo>
+    <funcsynopsisinfo>#include &lt;rivwebcapi/rd_unassignschedcode.h&gt;</funcsynopsisinfo>
     <funcprototype>
     <funcdef>int <function>RD_UnassignSchedCode</function></funcdef>
       <paramdef>const char <parameter>hostname[]</parameter></paramdef>

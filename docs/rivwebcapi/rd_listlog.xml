@@ -29,7 +29,7 @@
   -->
   <refsynopsisdiv id='synopsis'>
     <funcsynopsis>
-    <funcsynopsisinfo>#include &lt;rivendell/rd_listlog.h&gt;</funcsynopsisinfo>
+    <funcsynopsisinfo>#include &lt;rivwebcapi/rd_listlog.h&gt;</funcsynopsisinfo>
     <funcprototype>
     <funcdef>int <function>RD_ListLog</function></funcdef>
       <paramdef> struct rd_logline * <parameter>logline[]</parameter></paramdef>
