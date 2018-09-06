@@ -17622,3 +17622,6 @@
 2018-09-04 Fred Gleason <fredg@paravelsystems.com>
 	* Corrected the include path shown in the man pages for the
 	'rivwebcapi' library.
+2018-09-06 Fred Gleason <fredg@paravelsystems.com>
+	* Added instructions for building 'rivwebcapi' under Visual Studio
+	2013 to 'INSTALL-WINDOWS'.

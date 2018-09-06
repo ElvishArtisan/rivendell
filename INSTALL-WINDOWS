@@ -28,3 +28,63 @@ export RANLIB=i686-w64-mingw32-gcc-ranlib
    ./configure --prefix=$MINGW32_SYS_ROOT --host=i686-w64-mingw32
    make
    make install (as root)
+
+
+BUILDING RIVWEBCAPI FOR WINDOWS USING MICROSOFT VISUAL STUDIO 2013
+[Courtesy of Todd Baker <bakert@rfa.org>]
+------------------------------------------------------------------
+  -  Prequesites Required -  You must have the compiled library for libCurl
+and ExPat. You need to point at these when building rivwebcapi. My libraries
+were at c:\Project\
+
+Follow these steps for building:
+
+1) Create a Directory  (I used c:\Project\rivwebcapi).
+
+2) Copy the rivwebcapi directory (found in rivendell/apis) to that directory.
+This means that the autogen.sh,Makefile.in,etc. and other files will be at
+the top folowed by the other directories (test, rivwebcapi).
+
+3) Start Visual Studio
+
+4) Click 'File->New Project' and create a project with the name 'rivwebcapi'.
+Its location should be where you copied everything (my example
+'c:\Project\rivwebcapi'). This should create a 'rivwebcapi.sln' file.
+
+5) In the Solution Explorer - click 'source files'. Right click and click
+'Add->Existing Item'.  Then highlight all of the source files that you are
+there (*.c,*.h only). Click 'OK'.
+
+6) Highlight 'rivwebcapi' - and right click - choose the bottom choice
+'Properties->Configuration Properties->General->Configuration Type'.
+The type should be 'Static library (.lib)'
+
+      -   C/C++ General
+
+              Additional Include Directories:
+
+                      Add  C:\Project\curl-7.46.0\include.
+
+			   C:\Project\expat\lib
+
+                           C:\Project\rivwebcapi
+
+      -   C/C++ - General
+
+              Warning Level:     Warning Level3
+
+              Treat Warning as Errors:    No (/WX-)
+
+              SDL Checks:  blank (I actually removed what was there)
+
+7) Click 'OK' to close Properties
+
+8) Build Solution
+      Ensure that you are building Under 'Release - Win32' (Top drop downs)
+      You will see a bunch of warnings - but it "should" build anyway. 
+      Last line of output is where the library was built. for me it was:
+
+      'C:\Project\rinwebcapi\Release\rivwebcapi.lib'
+
+Use the directory where the static library was built in your application which
+needs to use rivwebcapi. For me that was 'c:\Project\rivwebcapi\'
