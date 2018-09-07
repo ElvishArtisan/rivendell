@@ -16687,3 +16687,5 @@
 2018-09-03 Fred Gleason <fredg@paravelsystems.com>
 	* Renamed the 'Add Next' ['PX'] RML to 'Insert Cart' ['PX'].
 	* Added an 'offset' parameter to the 'Insert Cart' ['PX'] RML.
+2018-09-07 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.19.2int03.

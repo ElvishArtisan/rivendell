@@ -1,7 +1,7 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v2.19.2int02 -- 8/29/2018
+v2.19.2int03 -- 9/7/2018
 
 Changes:
    BroadcastTools Support. Added a Switcher/GPIO driver for the
@@ -10,9 +10,9 @@ Changes:
    AudioScience GPIO. Added support for GPIO on AudioScience adapters
    to the 'Local Audio Adapter' Switcher/GPIO driver.
 
-   Add Next RML. Added an optional third argument to the
-   'Add Next' ['PX'] RML to permit the transition type of the added
-   event to be specified.
+   Add Next/Insert Cart RML. Renamed the 'Add Next' ['PX'] RML to
+   'Insert Cart' ['PX'] and added two optional arguments to allow
+   specification of the insertion position and transition type.
 
    Spinitron RLM. Added support for Spinitron v2 to the 'spinitron_plus'
    RLM. 
