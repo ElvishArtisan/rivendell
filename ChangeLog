@@ -16689,3 +16689,7 @@
 	* Added an 'offset' parameter to the 'Insert Cart' ['PX'] RML.
 2018-09-07 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.19.2int03.
+2018-09-08 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression that caused rdimport(1) to return a
+	'no free carts available in specified group' when invoked without
+	the '--to-cart=' option.

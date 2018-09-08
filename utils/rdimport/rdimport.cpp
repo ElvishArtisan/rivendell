@@ -1090,6 +1090,8 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   }
   if(*cartnum==0) {
     *cartnum=effective_group->nextFreeCart();
+  }
+  if(*cartnum==0) {
     PrintLogDateTime(stderr);
     fprintf(stderr,"rdimport: no free carts available in specified group\n");
     fflush(stderr);
