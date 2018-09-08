@@ -65,6 +65,11 @@ class MainWidget : public QWidget
 {
  Q_OBJECT
  public:
+  enum Column {Icon=0,Cart=1,Group=2,Length=3,Title=4,Artist=5,
+		Start=6,End=7,Album=8,Label=9,Composer=10,Conductor=11,
+		Publisher=12,Client=13,Agency=14,UserDefined=15,
+		Cuts=16,LastCutPlayed=17,EnforceLength=18,PreservePitch=19,
+		LengthDeviation=20,OwnedBy=21};
   MainWidget(QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
