@@ -39,7 +39,28 @@
 RDSqlQuery::RDSqlQuery (const QString &query,bool reconnect):
   QSqlQuery(query)
 {
+  QSqlDatabase db;
+  QString err;
   sql_columns=0;
+
+  if (!isActive() && reconnect) {
+    db = QSqlDatabase::database();
+
+    if (db.open()) {
+      clear();
+      exec(query);
+      err=QObject::tr("DB connection re-established");
+    }
+    else {
+      err=QObject::tr("Could not re-establish DB connection")+
+      +"["+db.lastError().text()+"]";
+    }
+
+    fprintf(stderr,"%s\n",(const char *)err);
+#ifndef WIN32
+    syslog(LOG_ERR,(const char *)err);
+#endif
+  }
 
   if(isActive()) {
     QStringList f0=query.split(" ");
@@ -58,7 +79,7 @@ RDSqlQuery::RDSqlQuery (const QString &query,bool reconnect):
     }
   }
   else {
-    QString err=QObject::tr("invalid SQL or failed DB connection")+
+    err=QObject::tr("invalid SQL or failed DB connection")+
       +"["+lastError().text()+"]: "+query;
 
     fprintf(stderr,"%s\n",(const char *)err);
