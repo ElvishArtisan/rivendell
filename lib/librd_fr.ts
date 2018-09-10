@@ -571,6 +571,14 @@
         <source>Couldn&apos;t open MySQL connection on</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>DB connection re-established</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Could not re-establish DB connection</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddCart</name>

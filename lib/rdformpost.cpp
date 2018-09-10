@@ -514,7 +514,9 @@ void RDFormPost::LoadMultipartEncoding(char first)
    * Uncomment to save raw post to disc
    *
   FILE *f;
-  if((f=fopen("/var/snd/post.dat","w"))!=NULL) {
+  QString dumpfile=QString("/var/snd/post-")+
+    QTime::currentTime().toString("hhmmsszzz")+".dat";
+  if((f=fopen(dumpfile.toUtf8(),"w"))!=NULL) {
     char data[1025];
     int n;
 
@@ -523,7 +525,7 @@ void RDFormPost::LoadMultipartEncoding(char first)
     }
     fclose(f);
     printf("Content-type: text/html\n\n");
-    printf("Raw post written to \"/var/snd/post.dat\"\n");
+    printf("Raw post written to \"%s\"\n",(const char *)dumpfile.toUtf8());
     exit(0);
   }
   */
