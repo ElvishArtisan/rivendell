@@ -321,19 +321,20 @@ MainWidget::MainWidget(QWidget *parent)
   lib_cart_list->setAllColumnsShowFocus(true);
   lib_cart_list->setItemMargin(5);
   lib_cart_list->setSelectionMode(Q3ListView::Extended);
+  lib_cart_list->setRootIsDecorated(true);
   //  lib_cart_tip=new CartTip(lib_cart_list->viewport());
   connect(lib_cart_list,
 	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,
 	  SLOT(cartDoubleclickedData(Q3ListViewItem *,const QPoint &,int)));
-  connect(lib_cart_list,SIGNAL(pressed(Q3ListViewItem *)),
-	  this,SLOT(cartClickedData(Q3ListViewItem *)));
+  connect(lib_cart_list,SIGNAL(selectionChanged()),
+	  this,SLOT(cartClickedData()));
   connect(lib_cart_list,SIGNAL(onItem(Q3ListViewItem *)),
 	  this,SLOT(cartOnItemData(Q3ListViewItem *)));
   lib_cart_list->addColumn("");
   lib_cart_list->setColumnAlignment(Icon,Qt::AlignHCenter);
   lib_cart_list->addColumn(tr("Cart"));
-  lib_cart_list->setColumnAlignment(Cart,Qt::AlignHCenter);
+  lib_cart_list->setColumnAlignment(Cart,Qt::AlignLeft);
 
   lib_cart_list->addColumn(tr("Group"));
   lib_cart_list->setColumnAlignment(Group,Qt::AlignHCenter);
@@ -410,6 +411,7 @@ MainWidget::MainWidget(QWidget *parent)
   lib_edit_button=new QPushButton(this);
   lib_edit_button->setFont(button_font);
   lib_edit_button->setText(tr("&Edit"));
+  lib_edit_button->setEnabled(false);
   connect(lib_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
 
   //
@@ -418,6 +420,7 @@ MainWidget::MainWidget(QWidget *parent)
   lib_delete_button=new QPushButton(this);
   lib_delete_button->setFont(button_font);
   lib_delete_button->setText(tr("&Delete"));
+  lib_delete_button->setEnabled(false);
   connect(lib_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
 
   //
@@ -531,8 +534,6 @@ void MainWidget::userData()
   }
   else {
     lib_add_button->setEnabled(rda->user()->createCarts());
-    lib_edit_button->setEnabled(true);
-    lib_delete_button->setEnabled(rda->user()->deleteCarts());
     lib_rip_button->setEnabled(rda->user()->editAudio());
   }
 
@@ -649,7 +650,7 @@ void MainWidget::editData()
 
   it=new Q3ListViewItemIterator(lib_cart_list);
   while(it->current()) {
-    if (it->current()->isSelected()) {
+    if (it->current()->isSelected() && !it->current()->parent()) {
       sel_count++;
     }
     ++(*it);
@@ -662,7 +663,7 @@ void MainWidget::editData()
   }
   if(sel_count==1) { //single edit
     it=new Q3ListViewItemIterator(lib_cart_list);
-    while(!it->current()->isSelected()) {
+    while(!it->current()->isSelected() || it->current()->parent()) {
       ++(*it);
     }
     RDListViewItem *item=(RDListViewItem *)it->current();
@@ -687,7 +688,7 @@ void MainWidget::editData()
     
       it=new Q3ListViewItemIterator(lib_cart_list);
       while(it->current()) {
-        if (it->current()->isSelected()) {
+        if (it->current()->isSelected() && !it->current()->parent()) {
           RefreshLine((RDListViewItem *)it->current());
 	  SendNotification(RDNotification::ModifyAction,
 			   it->current()->text(1).toUInt());
@@ -715,7 +716,7 @@ void MainWidget::deleteData()
 
   it=new Q3ListViewItemIterator(lib_cart_list);
   while(it->current()) {
-    if (it->current()->isSelected()) {
+    if (it->current()->isSelected() && !it->current()->parent()) {
       sel_count++;
     }
     ++(*it);
@@ -735,7 +736,7 @@ void MainWidget::deleteData()
   }
   it=new Q3ListViewItemIterator(lib_cart_list);
   while(it->current()) {
-    if (it->current()->isSelected()) {
+    if (it->current()->isSelected() && !it->current()->parent()) {
     del_flag=true;
     RDListViewItem *item=(RDListViewItem *)it->current();
   sql=QString().sprintf("select CUT_NAME from RECORDINGS where \
@@ -839,7 +840,7 @@ void MainWidget::cartOnItemData(Q3ListViewItem *item)
 }
 
 
-void MainWidget::cartClickedData(Q3ListViewItem *item)
+void MainWidget::cartClickedData()
 {
   int del_count=0;
   int sel_count=0;
@@ -847,9 +848,9 @@ void MainWidget::cartClickedData(Q3ListViewItem *item)
 
   it=new Q3ListViewItemIterator(lib_cart_list);
   while(it->current()) {
-    if (it->current()->isSelected()) {
+    if (it->current()->isSelected() && !it->current()->parent()) {
       sel_count++;
-      if(it->current()->text(21).isEmpty()) {
+      if(it->current()->text(21).isEmpty() && !it->current()->parent()) {
         del_count++;
       }
     }
@@ -863,7 +864,8 @@ void MainWidget::cartClickedData(Q3ListViewItem *item)
   else {
     lib_delete_button->setEnabled(false);
   }
-  if(sel_count>1) {
+
+  if(sel_count) {
     if(del_count==0) {
       lib_edit_button->setEnabled(false);
     }
@@ -872,7 +874,7 @@ void MainWidget::cartClickedData(Q3ListViewItem *item)
     }
   } 
   else {
-    lib_edit_button->setEnabled(true);
+    lib_edit_button->setEnabled(false);
   }
 }
 
@@ -938,7 +940,7 @@ void MainWidget::notificationReceivedData(RDNotification *notify)
 
     case RDNotification::ModifyAction:
       if((item=(RDListViewItem *)lib_cart_list->
-	  findItem(QString().sprintf("%06u",cartnum),1))!=NULL) {
+	  findItem(QString().sprintf("%06u",cartnum),Cart))!=NULL) {
 	RefreshLine(item);
       }
       break;
@@ -1021,6 +1023,65 @@ void MainWidget::resizeEvent(QResizeEvent *e)
   }
 }
 
+void MainWidget::RefreshCuts(RDListViewItem *p,unsigned cartnum)
+{
+  RDListViewItem *l=NULL;
+  Q3ListViewItem *i=NULL;
+  RDSqlQuery *q;
+  QString sql;
+  QDateTime current_datetime(QDate::currentDate(),QTime::currentTime());
+  QDateTime end_datetime;
+  RDCart::Validity validity=RDCart::NeverValid;
+
+  while ((i=p->firstChild())) {
+    delete i;
+  }
+
+  sql=QString("select ")+
+    "CUTS.CART_NUMBER,"+        // 00
+    "CUTS.CUT_NAME,"+           // 01
+    "CUTS.DESCRIPTION,"+        // 02
+    "CUTS.LENGTH,"+             // 03  offsets begin here
+    "CUTS.EVERGREEN,"+          // 04
+    "CUTS.START_DATETIME,"+     // 05
+    "CUTS.END_DATETIME,"+       // 06
+    "CUTS.START_DAYPART,"+      // 07
+    "CUTS.END_DAYPART,"+        // 08
+    "CUTS.MON,"+                // 09
+    "CUTS.TUE,"+                // 10
+    "CUTS.WED,"+                // 11
+    "CUTS.THU,"+                // 12
+    "CUTS.FRI,"+                // 13
+    "CUTS.SAT,"+                // 14
+    "CUTS.SUN "+                // 15
+    "from CUTS ";
+  sql+=QString().sprintf("where CUTS.CART_NUMBER=%u ",cartnum);
+  sql+="order by CUTS.CUT_NAME";
+  q=new RDSqlQuery(sql);
+  if (q->size()>1) {
+    while(q->next()) {
+      l=new RDListViewItem(p);
+      l->setText(Cart,q->value(1).toString());
+      l->setText(Length,RDGetTimeLength(q->value(3).toUInt()));
+      l->setText(Title,q->value(2).toString());
+      if(!q->value(5).toDateTime().isNull()) {
+        l->setText(Start,q->value(5).toDateTime().
+		   toString("MM/dd/yyyy hh:mm:ss"));
+      }
+      if(!q->value(6).toDateTime().isNull()) {
+        l->setText(End,q->value(6).toDateTime().
+		   toString("MM/dd/yyyy - hh:mm:ss"));
+      }
+      else {
+        l->setText(End,"TFN");
+      }
+      validity=ValidateCut(q,3,validity,current_datetime);
+      end_datetime=q->value(6).toDateTime();
+      UpdateItemColor(l,validity,end_datetime,current_datetime);
+    }
+  }
+  delete q;
+}
 
 void MainWidget::RefreshList()
 {
@@ -1034,6 +1095,9 @@ void MainWidget::RefreshList()
   QDateTime end_datetime;
 
   lib_cart_list->clear();
+
+  lib_edit_button->setEnabled(false);
+  lib_delete_button->setEnabled(false);
 
   type_filter=GetTypeFilter();
   if(type_filter.isEmpty()) {
@@ -1115,71 +1179,75 @@ void MainWidget::RefreshList()
 	validity=ValidateCut(q,24,RDCart::NeverValid,current_datetime);
       }
       l=new RDListViewItem(lib_cart_list);
+      l->setExpandable(false);
       switch((RDCart::Type)q->value(15).toUInt()) {
       case RDCart::Audio:
 	if(q->value(21).isNull()) {
-	  l->setPixmap(0,*lib_playout_map);
+	  l->setPixmap(Icon,*lib_playout_map);
 	}
 	else {
-	  l->setPixmap(0,*lib_track_cart_map);
+	  l->setPixmap(Icon,*lib_track_cart_map);
 	}
 	break;
 	
       case RDCart::Macro:
-	l->setPixmap(0,*lib_macro_map);
+	l->setPixmap(Icon,*lib_macro_map);
 	l->setBackgroundColor(backgroundColor());
 	break;
 	
       case RDCart::All:
 	break;
       }
-      l->setText(1,QString().sprintf("%06d",q->value(0).toUInt()));
-      l->setText(2,q->value(12).toString());
-      l->setTextColor(2,q->value(23).toString(),QFont::Bold);
-      l->setText(3,RDGetTimeLength(q->value(1).toUInt()));
-      l->setText(4,q->value(2).toString());
-      l->setText(5,q->value(3).toString());
+      l->setText(Cart,QString().sprintf("%06d",q->value(0).toUInt()));
+      l->setText(Group,q->value(12).toString());
+      l->setTextColor(Group,q->value(23).toString(),QFont::Bold);
+      l->setText(Length,RDGetTimeLength(q->value(1).toUInt()));
+      l->setText(Title,q->value(2).toString());
+      l->setText(Artist,q->value(3).toString());
       if(!q->value(13).toDateTime().isNull()) {
-	l->setText(6,q->value(13).toDateTime().
+	l->setText(Start,q->value(13).toDateTime().
 		   toString("MM/dd/yyyy - hh:mm:ss"));
       }
       if(!q->value(14).toDateTime().isNull()) {
-	l->setText(7,q->value(14).toDateTime().
+	l->setText(End,q->value(14).toDateTime().
 		   toString("MM/dd/yyyy - hh:mm:ss"));
       }
       else {
-	l->setText(7,"TFN");
+	l->setText(End,"TFN");
       }
-      l->setText(8,q->value(4).toString());
-      l->setText(9,q->value(5).toString());
-      l->setText(10,q->value(9).toString());
-      l->setText(11,q->value(11).toString());
-      l->setText(12,q->value(10).toString());
-      l->setText(13,q->value(6).toString());
-      l->setText(14,q->value(7).toString());
-      l->setText(15,q->value(8).toString());
-      l->setText(16,q->value(16).toString());
-      l->setText(17,q->value(17).toString());
-      l->setText(18,q->value(18).toString());
-      l->setText(19,q->value(19).toString());
-      l->setText(20,q->value(20).toString());
-      l->setText(21,q->value(21).toString());
+      l->setText(Album,q->value(4).toString());
+      l->setText(Label,q->value(5).toString());
+      l->setText(Composer,q->value(9).toString());
+      l->setText(Conductor,q->value(11).toString());
+      l->setText(Publisher,q->value(10).toString());
+      l->setText(Client,q->value(6).toString());
+      l->setText(Agency,q->value(7).toString());
+      l->setText(UserDefined,q->value(8).toString());
+      l->setText(Cuts,q->value(16).toString());
+      l->setText(LastCutPlayed,q->value(17).toString());
+      l->setText(EnforceLength,q->value(18).toString());
+      l->setText(PreservePitch,q->value(19).toString());
+      l->setText(LengthDeviation,q->value(20).toString());
+      l->setText(OwnedBy,q->value(21).toString());
       if(q->value(18).toString()=="Y") {
-	l->setTextColor(3,QColor(RDLIBRARY_ENFORCE_LENGTH_COLOR),QFont::Bold);
+	l->setTextColor(Length,QColor(RDLIBRARY_ENFORCE_LENGTH_COLOR),QFont::Bold);
       }
       else {
 	if((q->value(20).toUInt()>RDLIBRARY_MID_LENGTH_LIMIT)&&
 	   (q->value(18).toString()=="N")) {
 	  if(q->value(20).toUInt()>RDLIBRARY_MAX_LENGTH_LIMIT) {
-	    l->setTextColor(3,QColor(RDLIBRARY_MAX_LENGTH_COLOR),QFont::Bold);
+	    l->setTextColor(Length,QColor(RDLIBRARY_MAX_LENGTH_COLOR),QFont::Bold);
 	  }
 	  else {
-	    l->setTextColor(3,QColor(RDLIBRARY_MID_LENGTH_COLOR),QFont::Bold);
+	    l->setTextColor(Length,QColor(RDLIBRARY_MID_LENGTH_COLOR),QFont::Bold);
 	  }
 	}
 	else {
-	  l->setTextColor(3,QColor(Qt::black),QFont::Normal);
+	  l->setTextColor(Length,QColor(Qt::black),QFont::Normal);
 	}
+      }
+      if(q->value(16).toUInt() > 1) {
+        RefreshCuts(l,q->value(0).toUInt());
       }
     }
     cartnum=q->value(0).toUInt();
@@ -1365,6 +1433,8 @@ void MainWidget::RefreshLine(RDListViewItem *item)
 	item->setTextColor(Length,QColor(Qt::black),QFont::Normal);
       }
     }
+
+    RefreshCuts(item,item->text(Cart).toUInt());
   }
   delete q;
 }
@@ -1471,9 +1541,6 @@ void MainWidget::LoadGeometry()
 void MainWidget::SaveGeometry()
 {
   QString geometry_file=GeometryFile();
-  if(geometry_file.isEmpty()) {
-    return;
-  }
   FILE *file=fopen(geometry_file,"w");
   if(file==NULL) {
     return;

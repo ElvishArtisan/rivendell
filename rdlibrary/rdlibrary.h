@@ -87,7 +87,7 @@ class MainWidget : public QWidget
   void ripData();
   void reportsData();
   void cartOnItemData(Q3ListViewItem *item);
-  void cartClickedData(Q3ListViewItem *item);
+  void cartClickedData();
   void cartDoubleclickedData(Q3ListViewItem *,const QPoint &,int);
   void audioChangedData(int state);
   void macroChangedData(int state);
@@ -102,6 +102,7 @@ class MainWidget : public QWidget
   
  private:
   void RefreshList();
+  void RefreshCuts(RDListViewItem *p,unsigned cartnum);
   QString WhereClause() const;
   void RefreshLine(RDListViewItem *item);
   void UpdateItemColor(RDListViewItem *item,RDCart::Validity validity,
