@@ -17626,5 +17626,5 @@
 	* Added instructions for building 'rivwebcapi' under Visual Studio
 	2013 to 'INSTALL-WINDOWS'.
 2018-09-07 Patrick Linstruth <patrick@deltecent.com>
-	Implemented database reconnect in RDSqlQuery::RDSqlQuery in
+	* Implemented database reconnect in RDSqlQuery::RDSqlQuery in
 	'lib/rddb.cpp'.
