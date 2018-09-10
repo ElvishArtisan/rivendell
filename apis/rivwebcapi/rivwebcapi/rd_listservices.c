@@ -66,10 +66,10 @@ static void XMLCALL __ListServicesElementEnd(void *data, const char *el)
   struct rd_service *services=xml_data->services+(xml_data->services_quan-1);
 
   if(strcasecmp(el,"name")==0) {
-    strlcpy(services->service_name,xml_data->strbuf,11);
+    strlcpy(services->service_name,xml_data->strbuf,41);
   }
   if(strcasecmp(el,"description")==0) {
-    strlcpy(services->service_description,xml_data->strbuf,256);
+    strlcpy(services->service_description,xml_data->strbuf,1021);
   }
 }
 

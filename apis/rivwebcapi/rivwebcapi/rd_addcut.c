@@ -80,13 +80,13 @@ static void XMLCALL __AddCutElementEnd(void *data, const char *el)
     strlcpy(cut->cut_description,xml_data->strbuf,65);
   }
   if(strcasecmp(el,"outcue")==0) {
-    strlcpy(cut->cut_outcue,xml_data->strbuf,65);
+    strlcpy(cut->cut_outcue,xml_data->strbuf,257);
   }
   if(strcasecmp(el,"isrc")==0) {
-    strlcpy(cut->cut_isrc,xml_data->strbuf,13);
+    strlcpy(cut->cut_isrc,xml_data->strbuf,49);
   }
   if(strcasecmp(el,"isci")==0) {
-    strlcpy(cut->cut_isci,xml_data->strbuf,33);
+    strlcpy(cut->cut_isci,xml_data->strbuf,129);
   }
   if(strcasecmp(el,"length")==0){
     sscanf(xml_data->strbuf,"%u",&cut->cut_length);
@@ -131,7 +131,7 @@ if(strcasecmp(el,"tue")==0) {
     strlcpy(cut->cut_end_daypart,xml_data->strbuf,15);
   }
   if(strcasecmp(el,"originName")==0) {
-    strlcpy(cut->cut_origin_name,xml_data->strbuf,65);
+    strlcpy(cut->cut_origin_name,xml_data->strbuf,257);
   }
   if(strcasecmp(el,"weight")==0) {
     sscanf(xml_data->strbuf,"%u",&cut->cut_weight);

@@ -83,13 +83,13 @@ static void XMLCALL __ListCutsElementEnd(void *data, const char *el)
     strlcpy(cuts->cut_description,xml_data->strbuf,65);
   }
   if(strcasecmp(el,"outcue")==0) {
-    strlcpy(cuts->cut_outcue,xml_data->strbuf,65);
+    strlcpy(cuts->cut_outcue,xml_data->strbuf,257);
   }
   if(strcasecmp(el,"isrc")==0) {
-    strlcpy(cuts->cut_isrc,xml_data->strbuf,13);
+    strlcpy(cuts->cut_isrc,xml_data->strbuf,49);
   }
   if(strcasecmp(el,"isci")==0) {
-    strlcpy(cuts->cut_isci,xml_data->strbuf,33);
+    strlcpy(cuts->cut_isci,xml_data->strbuf,129);
   }
   if(strcasecmp(el,"length")==0){
     sscanf(xml_data->strbuf,"%u",&cuts->cut_length);
@@ -134,13 +134,13 @@ static void XMLCALL __ListCutsElementEnd(void *data, const char *el)
     strlcpy(cuts->cut_end_daypart,xml_data->strbuf,10);
   }
   if(strcasecmp(el,"originName")==0) {
-    strlcpy(cuts->cut_origin_name,xml_data->strbuf,65);
+    strlcpy(cuts->cut_origin_name,xml_data->strbuf,257);
   }
   if(strcasecmp(el,"originLoginName")==0) {
-    strlcpy(cuts->cut_origin_login_name,xml_data->strbuf,256);
+    strlcpy(cuts->cut_origin_login_name,xml_data->strbuf,1021);
   }
   if(strcasecmp(el,"sourceHostname")==0) {
-    strlcpy(cuts->cut_source_hostname,xml_data->strbuf,256);
+    strlcpy(cuts->cut_source_hostname,xml_data->strbuf,1021);
   }
   if(strcasecmp(el,"weight")==0) {
     sscanf(xml_data->strbuf,"%u",&cuts->cut_weight);

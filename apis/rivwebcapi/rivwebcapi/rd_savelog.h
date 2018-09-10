@@ -26,8 +26,8 @@
 _MYRIVLIB_INIT_DECL
 
 struct save_loghdr_values {
-  char loghdr_service[11];
-  char loghdr_description[65];
+  char loghdr_service[41];
+  char loghdr_description[257];
   int loghdr_autorefresh;
   struct tm loghdr_purge_date;
   struct tm loghdr_start_date;
@@ -53,12 +53,12 @@ struct save_logline_values {
   int  logline_fadedown_gain;
   int  logline_duckup_gain;
   int  logline_duckdown_gain;
-  char logline_marker_comment[256];
-  char logline_marker_label[65];
-  char logline_origin_user[256];
+  char logline_marker_comment[1021];
+  char logline_marker_label[257];
+  char logline_origin_user[1021];
   struct tm logline_origin_datetime;
   int  logline_event_length;
-  char logline_link_event_name[65];
+  char logline_link_event_name[257];
   struct tm logline_link_starttime;
   int  logline_link_length;
   int  logline_link_start_slop;
@@ -67,10 +67,10 @@ struct save_logline_values {
   int  logline_link_embedded;
   struct tm logline_ext_starttime;
   int  logline_ext_length;
-  char logline_ext_cart_name[33];
-  char logline_ext_data[33];
-  char logline_ext_event_id[33];
-  char logline_ext_annc_type[9];
+  char logline_ext_cart_name[129];
+  char logline_ext_data[129];
+  char logline_ext_event_id[129];
+  char logline_ext_annc_type[33];
 };
 
 int RD_SaveLog(struct save_loghdr_values *hdrvals,

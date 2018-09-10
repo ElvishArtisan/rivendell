@@ -26,10 +26,10 @@
 _MYRIVLIB_INIT_DECL
 
 struct rd_log {
-  char  log_name[65];
-  char  log_service[11];
-  char  log_description[65];
-  char  log_origin_username[256];
+  char  log_name[257];
+  char  log_service[41];
+  char  log_description[257];
+  char  log_origin_username[1021];
   struct tm log_origin_datetime;
   struct tm  log_purge_date;
   struct tm  log_link_datetime;

@@ -203,10 +203,10 @@
           unsigned cut_cart_number;		/* Cart Number */
           unsigned cut_cut_number;		/* Next available Cut Number */
           int cut_evergreen;                    /* Default is: False */
-          char cut_description[65];		/* Defualt is: Cut ### */
-          char cut_outcue[65];			/* Default is: NULL */
-          char cut_isrc[13];			/* Default is: NULL */
-          char cut_isci[33];			/* Default is: NULL */
+          char cut_description[257];		/* Default is: Cut ### */
+          char cut_outcue[257];			/* Default is: NULL */
+          char cut_isrc[49];			/* Default is: NULL */
+          char cut_isci[129];			/* Default is: NULL */
           unsigned  cut_length;			/* Default is: 0 */
           struct tm cut_origin_datetime;	/* Default is: NULL */
           struct tm cut_start_datetime;		/* Default is: NULL */
@@ -220,7 +220,7 @@
           int cut_sat;				/* Default is: true */
           char cut_start_daypart[14];		/* Default is: NULL */
           char cut_end_daypart[14];		/* Default is: NULL */
-          char cut_origin_name[65];		/* Default is: NULL */
+          char cut_origin_name[257];		/* Default is: NULL */
           unsigned cut_weight;			/* Default is: 1 */
           struct tm cut_last_play_datetime; 	/* Default is: NULL */
           unsigned cut_play_counter;		/* Default is: 0 */

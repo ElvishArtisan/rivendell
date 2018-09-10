@@ -199,8 +199,8 @@
   </para>
   <programlisting>
     struct rd_service {
-      char service_name [11];
-      char service_description[256];
+      char service_name [41];
+      char service_description[1021];
     };
 
   </programlisting>

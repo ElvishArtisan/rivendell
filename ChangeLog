@@ -17631,3 +17631,6 @@
 2018-09-10 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed bugs in the 'rivwebcapi' rd_savelog(7) call that caused
 	log saves to fail.
+2018-09-10 Fred Gleason <fredg@paravelsystems.com>
+	* Quadrupled the length of strings in 'struct rd_cart' in the
+	'rivwebcapi' to accomodate UTF-8 characters.

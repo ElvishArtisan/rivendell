@@ -28,10 +28,10 @@ struct rd_cut {
   unsigned cut_cart_number;
   unsigned cut_cut_number;
   int cut_evergreen;
-  char cut_description[65];
-  char cut_outcue[65];
-  char cut_isrc[13];
-  char cut_isci[33];
+  char cut_description[257];
+  char cut_outcue[257];
+  char cut_isrc[49];
+  char cut_isci[129];
   unsigned  cut_length;
   struct tm cut_origin_datetime;
   struct tm cut_start_datetime;
@@ -45,9 +45,9 @@ struct rd_cut {
   int cut_sat;
   char cut_start_daypart[15];
   char cut_end_daypart[15];
-  char cut_origin_name[65];
-  char cut_origin_login_name[256];
-  char cut_source_hostname[256];
+  char cut_origin_name[257];
+  char cut_origin_login_name[1021];
+  char cut_source_hostname[1021];
   unsigned cut_weight;
   struct tm cut_last_play_datetime;
   unsigned cut_play_counter;

@@ -204,6 +204,7 @@
     };
 
       All character arrays above are the sizes listed and must be null-terminated.
+      Character encoding is UTF-8.
 
   </programlisting>
   </refsect1>

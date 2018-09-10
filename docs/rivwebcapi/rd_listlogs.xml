@@ -260,10 +260,10 @@
   </para>
   <programlisting>
 	struct rd_log {
-  		char  log_name[11];
-  		char  log_service[11];
-  		char  log_description[65];
-  		char  log_origin_username[256];
+  		char  log_name[41];
+  		char  log_service[41];
+  		char  log_description[257];
+  		char  log_origin_username[1021];
   		struct tm  log_origin_datetime;
 		struct tm  log_purge_date;
   		struct tm  log_link_datetime;
@@ -280,6 +280,7 @@
 	};
 
       All character arrays above are the sizes listed and must be null-terminated.
+      Character encoding is UTF-8.
 
   </programlisting>
 

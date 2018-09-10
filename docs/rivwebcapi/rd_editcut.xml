@@ -237,13 +237,13 @@
 	struct edit_cut_values {
   		int cut_evergreen;
   		int use_cut_evergreen;
-  		char cut_description[65];
+  		char cut_description[257];
   		int use_cut_description;
-  		char cut_outcue[65];
+  		char cut_outcue[257];
   		int use_cut_outcue;
-  		char cut_isrc[13];
+  		char cut_isrc[49];
   		int use_cut_isrc;
-  		char cut_isci[33];
+  		char cut_isci[129];
   		int use_cut_isci;
   		struct tm cut_start_datetime;
   		int use_cut_start_datetime;
@@ -316,10 +316,10 @@
           unsigned cut_cart_number;		
           unsigned cut_cut_number;		
           int cut_evergreen;                    
-          char cut_description[65];		
-          char cut_outcue[65];			
-          char cut_isrc[13];			
-          char cut_isci[33];			
+          char cut_description[257];		
+          char cut_outcue[257];			
+          char cut_isrc[49];			
+          char cut_isci[129];			
           unsigned  cut_length;			
           struct tm cut_origin_datetime;		
           struct tm cut_start_datetime;		
@@ -333,7 +333,7 @@
           int cut_sat;				
           char cut_start_daypart[9];		
           char cut_end_daypart[9];		
-          char cut_origin_name[65];		
+          char cut_origin_name[257];		
           unsigned cut_weight;			
           struct tm cut_last_play_datetime; 	
           unsigned cut_play_counter;		
@@ -358,7 +358,8 @@
     };
 
       All character arrays above are the sizes listed and are null-terminated.
-      
+      Character encoding is UTF-8.
+
   </programlisting>
 
   </refsect1>

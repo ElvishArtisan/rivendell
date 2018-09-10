@@ -73,10 +73,10 @@ static void XMLCALL __ListSystemSettingsElementEnd(void *data, const char *el)
     sscanf(xml_data->strbuf,"%u",&system_settings->max_post_length);
   }
   if(strcasecmp(el,"isciXreferencePath")==0){
-    strlcpy(system_settings->isci_xreference_path,xml_data->strbuf,256);
+    strlcpy(system_settings->isci_xreference_path,xml_data->strbuf,1021);
   }
   if(strcasecmp(el,"tempCartGroup")==0){
-    strlcpy(system_settings->temp_cart_group,xml_data->strbuf,11);
+    strlcpy(system_settings->temp_cart_group,xml_data->strbuf,41);
   }
 }
 

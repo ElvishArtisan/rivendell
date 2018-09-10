@@ -133,40 +133,40 @@ static void XMLCALL __ListLogElementEnd(void *data, const char *el)
     sscanf(xml_data->strbuf,"%d",&logline->logline_cut_number);
   }
   if(strcasecmp(el,"groupName")==0) {
-    strlcpy(logline->logline_group_name,xml_data->strbuf,10);
+    strlcpy(logline->logline_group_name,xml_data->strbuf,41);
   }
   if(strcasecmp(el,"groupColor")==0) {
     sscanf(xml_data->strbuf,"%s",(char *)&logline->logline_group_color);
   }
   if(strcasecmp(el,"title")==0) {
-    strlcpy(logline->logline_title,xml_data->strbuf,256);
+    strlcpy(logline->logline_title,xml_data->strbuf,1021);
   }
   if(strcasecmp(el,"artist")==0) {
-    strlcpy(logline->logline_artist,xml_data->strbuf,256);
+    strlcpy(logline->logline_artist,xml_data->strbuf,1021);
   }
   if(strcasecmp(el,"publisher")==0) {
-    strlcpy(logline->logline_publisher,xml_data->strbuf,65);
+    strlcpy(logline->logline_publisher,xml_data->strbuf,257);
   }
   if(strcasecmp(el,"composer")==0) {
-    strlcpy(logline->logline_composer,xml_data->strbuf,65);
+    strlcpy(logline->logline_composer,xml_data->strbuf,257);
   }
   if(strcasecmp(el,"album")==0) {
-    strlcpy(logline->logline_album,xml_data->strbuf,256);
+    strlcpy(logline->logline_album,xml_data->strbuf,1021);
   }
   if(strcasecmp(el,"label")==0) {
-    strlcpy(logline->logline_label,xml_data->strbuf,65);
+    strlcpy(logline->logline_label,xml_data->strbuf,257);
   }
   if(strcasecmp(el,"year")==0) {
     sscanf(xml_data->strbuf,"%d",&logline->logline_year);
   }
   if(strcasecmp(el,"client")==0) {
-    strlcpy(logline->logline_client,xml_data->strbuf,65);
+    strlcpy(logline->logline_client,xml_data->strbuf,257);
   }
   if(strcasecmp(el,"agency")==0) {
-    strlcpy(logline->logline_agency,xml_data->strbuf,65);
+    strlcpy(logline->logline_agency,xml_data->strbuf,257);
   }
   if(strcasecmp(el,"conductor")==0) {
-    strlcpy(logline->logline_conductor,xml_data->strbuf,65);
+    strlcpy(logline->logline_conductor,xml_data->strbuf,257);
   }
   if(strcasecmp(el,"userDefined")==0) {
     strlcpy(logline->logline_user_defined,xml_data->strbuf,256);
@@ -239,10 +239,10 @@ static void XMLCALL __ListLogElementEnd(void *data, const char *el)
     sscanf(xml_data->strbuf,"%d",&logline->logline_last_cut_played);
   }
   if(strcasecmp(el,"markerComment")==0) {
-    strlcpy(logline->logline_marker_comment,xml_data->strbuf,256);
+    strlcpy(logline->logline_marker_comment,xml_data->strbuf,1021);
   }
   if(strcasecmp(el,"markerLabel")==0) {
-    strlcpy(logline->logline_marker_label,xml_data->strbuf,65);
+    strlcpy(logline->logline_marker_label,xml_data->strbuf,257);
   }
   if(strcasecmp(el,"originUser")==0) {
     sscanf(xml_data->strbuf,"%s",(char *)&logline->logline_origin_user);
@@ -359,7 +359,7 @@ static void XMLCALL __ListLogElementEnd(void *data, const char *el)
       sscanf(xml_data->strbuf,"%d",&logline->logline_event_length);
   }
   if(strcasecmp(el,"linkEventName")==0) {
-    strlcpy(logline->logline_link_event_name,xml_data->strbuf,64);
+    strlcpy(logline->logline_link_event_name,xml_data->strbuf,257);
   }
   if(strcasecmp(el,"linkStartTime")==0) {
     logline->logline_link_starttime=RD_Cnv_TString_to_msec(xml_data->strbuf);
@@ -388,16 +388,16 @@ static void XMLCALL __ListLogElementEnd(void *data, const char *el)
       sscanf(xml_data->strbuf,"%d",&logline->logline_ext_length);
   }
   if(strcasecmp(el,"extCartName")==0) {
-    strlcpy(logline->logline_ext_cart_name,xml_data->strbuf,32);
+    strlcpy(logline->logline_ext_cart_name,xml_data->strbuf,129);
   }
   if(strcasecmp(el,"extData")==0) {
-    strlcpy(logline->logline_ext_data,xml_data->strbuf,32);
+    strlcpy(logline->logline_ext_data,xml_data->strbuf,129);
   }
   if(strcasecmp(el,"extEventId")==0) {
-    strlcpy(logline->logline_ext_event_id,xml_data->strbuf,32);
+    strlcpy(logline->logline_ext_event_id,xml_data->strbuf,129);
   }
   if(strcasecmp(el,"extAnncType")==0) {
-    strlcpy(logline->logline_ext_annc_type,xml_data->strbuf,8);
+    strlcpy(logline->logline_ext_annc_type,xml_data->strbuf,33);
   }
 }
 

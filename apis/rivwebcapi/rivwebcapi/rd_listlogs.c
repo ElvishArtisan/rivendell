@@ -67,16 +67,16 @@ static void XMLCALL __ListLogsElementEnd(void *data, const char *el)
   char hold_datetime[25];
 
   if(strcasecmp(el,"name")==0) {
-    strlcpy(logs->log_name,xml_data->strbuf,64);
+    strlcpy(logs->log_name,xml_data->strbuf,257);
   }
   if(strcasecmp(el,"serviceName")==0) {
-    strlcpy(logs->log_service,xml_data->strbuf,10);
+    strlcpy(logs->log_service,xml_data->strbuf,41);
   }
   if(strcasecmp(el,"description")==0) {
-    strlcpy(logs->log_description,xml_data->strbuf,64);
+    strlcpy(logs->log_description,xml_data->strbuf,257);
   }
   if(strcasecmp(el,"originUserName")==0) {
-    strlcpy(logs->log_origin_username,xml_data->strbuf,255);
+    strlcpy(logs->log_origin_username,xml_data->strbuf,1021);
   }
   if(strcasecmp(el,"originDatetime")==0) {
     strlcpy(hold_datetime,xml_data->strbuf,26);

@@ -25,8 +25,8 @@ struct rd_system_settings {
   unsigned sample_rate;
   int dup_cart_titles;
   unsigned max_post_length;
-  char isci_xreference_path[256];
-  char temp_cart_group[11];
+  char isci_xreference_path[1021];
+  char temp_cart_group[41];
 };
 
 #include <rivwebcapi/rd_common.h>

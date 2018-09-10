@@ -207,17 +207,17 @@ struct rd_logline {
   unsigned logline_cut_number;
   char logline_group_name[11];
   char logline_group_color[10];
-  char logline_title[256];
-  char logline_artist[256];
-  char logline_album[256];
+  char logline_title[1021];
+  char logline_artist[1021];
+  char logline_album[1021];
   int  logline_year;
-  char logline_label[65];
-  char logline_client[65];
-  char logline_agency[65];
-  char logline_publisher[65];
-  char logline_composer[65];
-  char logline_conductor[65];
-  char logline_user_defined[256];
+  char logline_label[257];
+  char logline_client[257];
+  char logline_agency[257];
+  char logline_publisher[257];
+  char logline_composer[257];
+  char logline_conductor[257];
+  char logline_user_defined[1021];
   int  logline_usage_code;
   int  logline_enforce_length;
   char logline_forced_length[10];
@@ -228,9 +228,9 @@ struct rd_logline {
   int  logline_transition_type;
   int  logline_cut_quantity;
   int  logline_last_cut_played;
-  char logline_marker_comment[256];
-  char logline_marker_label[65];
-  char logline_origin_user[256];
+  char logline_marker_comment[1021];
+  char logline_marker_label[257];
+  char logline_origin_user[1021];
   struct tm logline_origin_datetime;
   int  logline_start_point_cart;
   int  logline_start_point_log;
@@ -256,6 +256,7 @@ struct rd_logline {
 };
 
 All character arrays above are the sizes listed and must be null-terminated.
+Charater encoding is UTF-8.
 
 logline_line			is a integer which represents the line number in the log.
 

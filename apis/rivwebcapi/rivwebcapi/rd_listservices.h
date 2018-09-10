@@ -26,8 +26,8 @@
 _MYRIVLIB_INIT_DECL
 
 struct rd_service {
-  char service_name [11];
-  char service_description[256];
+  char service_name [41];
+  char service_description[1021];
 };
 
 int RD_ListServices(struct rd_service *services[],

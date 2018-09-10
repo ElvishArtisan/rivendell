@@ -65,10 +65,10 @@ static void XMLCALL __ListGroupsElementEnd(void *data, const char *el)
   struct rd_group *grp=xml_data->grps+(xml_data->grps_quan-1);
 
   if(strcasecmp(el,"name")==0) {
-    strlcpy(grp->grp_name,xml_data->strbuf,10);
+    strlcpy(grp->grp_name,xml_data->strbuf,41);
   }
   if(strcasecmp(el,"description")==0) {
-    strlcpy(grp->grp_desc,xml_data->strbuf,256);
+    strlcpy(grp->grp_desc,xml_data->strbuf,1021);
   }
   if(strcasecmp(el,"defaultcarttype")==0) {
     if(strcasecmp(xml_data->strbuf,"audio")==0) {
@@ -88,7 +88,7 @@ static void XMLCALL __ListGroupsElementEnd(void *data, const char *el)
     sscanf(xml_data->strbuf,"%d",&grp->grp_shelf_life);
   }
   if(strcasecmp(el,"defaulttitle")==0) {
-    strlcpy(grp->grp_default_title,xml_data->strbuf,256);
+    strlcpy(grp->grp_default_title,xml_data->strbuf,1021);
   }
   if(strcasecmp(el,"enforcecartrange")==0) {
     grp->grp_enforce_range=RD_ReadBool(xml_data->strbuf);

@@ -184,8 +184,8 @@
   </para>
   <programlisting>
     struct rd_schedcodes {
-      char code[11];
-      char description[255];
+      char code[41];
+      char description[1021];
     };
 
       All character arrays above are the sizes listed and must be null-terminated.

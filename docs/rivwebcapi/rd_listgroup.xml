@@ -199,13 +199,13 @@
   </para>
   <programlisting>
 struct rd_group {
-  char grp_name[11];			/* Group Name */
-  char grp_desc[255];			/* Description */
+  char grp_name[41];			/* Group Name */
+  char grp_desc[1021];			/* Description */
   unsigned grp_default_cart_type;	/* Default cart type */
   unsigned grp_lo_limit;		/* Group starting Cart Number */
   unsigned grp_hi_limit;		/* Group Ending Cart Number */
   int grp_shelf_life;
-  char grp_default_title[255];
+  char grp_default_title[1021];
   int grp_enforce_range;
   int grp_report_tfc;
   int grp_report_mus;

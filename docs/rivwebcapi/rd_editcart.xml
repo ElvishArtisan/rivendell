@@ -220,29 +220,29 @@
   </para>
   <programlisting>
     struct edit_cart_values {
-      char cart_grp_name[11];
+      char cart_grp_name[41];
       int use_cart_grp_name;
-      char cart_title[256];
+      char cart_title[1021];
       int use_cart_title;
-      char cart_artist[256];
+      char cart_artist[1021];
       int use_cart_artist;
-      char cart_album[256];
+      char cart_album[1021];
       int use_cart_album;
       int cart_year;
       int use_cart_year;
-      char cart_label[65];
+      char cart_label[257];
       int use_cart_label;
-      char cart_client[65];
+      char cart_client[257];
       int use_cart_client;
-      char cart_agency[65];
+      char cart_agency[257];
       int use_cart_agency;
-      char cart_publisher[65];
+      char cart_publisher[257];
       int use_cart_publisher;
-      char cart_composer[65];
+      char cart_composer[257];
       int use_cart_composer;
-      char cart_conductor[65];
+      char cart_conductor[257];
       int use_cart_conductor;
-      char cart_user_defined[256];
+      char cart_user_defined[1021];
       int use_cart_user_defined;
       int  cart_usage_code;
       int use_cart_usage_code;
@@ -252,9 +252,9 @@
       int use_cart_enforce_length;
       int cart_asyncronous;
       int use_cart_asyncronous;
-      char cart_owner[65];
+      char cart_owner[257];
       int use_cart_owner;
-      char cart_notes[1024];
+      char cart_notes[4096];
       int use_cart_notes;
     };
   </programlisting> 
@@ -266,18 +266,18 @@
     struct rd_cart {
   	  unsigned cart_number;                /* Cart Number */
   	  unsigned cart_type;                  /* Cart Type */
-  	  char cart_grp_name[11];              /* Group Name */
-  	  char cart_title[256];                /* Cart Title */
-  	  char cart_artist[256];               /* Artist */
-  	  char cart_album[256];                /* Album */
+  	  char cart_grp_name[41];              /* Group Name */
+  	  char cart_title[1021];               /* Cart Title */
+  	  char cart_artist[1021];              /* Artist */
+  	  char cart_album[1021];               /* Album */
   	  int cart_year;                       /* Year */
-  	  char cart_label[65];                 /* Label */
-  	  char cart_client[65];                /* Client */
-  	  char cart_agency[65];                /* Agency */
-  	  char cart_publisher[65];             /* Publisher */
-  	  char cart_composer[65];              /* Composer */
-  	  char cart_conductor[65];              /* Conductor */
-  	  char cart_user_defined[256];         /* User Defined */
+  	  char cart_label[257];                /* Label */
+  	  char cart_client[257];               /* Client */
+  	  char cart_agency[257];               /* Agency */
+  	  char cart_publisher[257];            /* Publisher */
+  	  char cart_composer[257];             /* Composer */
+  	  char cart_conductor[257];            /* Conductor */
+  	  char cart_user_defined[1021];        /* User Defined */
   	  int  cart_usage_code;                /* Usage Code */
   	  int cart_forced_length;              /* Forced Length */
   	  int cart_average_length;             /* AverageLength */
@@ -289,11 +289,12 @@
   	  unsigned  cart_validity;             /* Validity */
   	  int cart_enforce_length;             /* Enforce Length Flag */
   	  int cart_asyncronous;                /* Asyncronous Flag */
-  	  char cart_owner[65];                 /* Owner */
-  	  char cart_notes[1024];               /* Notes */
+  	  char cart_owner[257];                 /* Owner */
+  	  char cart_notes[4096];               /* Notes */
     };
 
       All character arrays above are the sizes listed and are null-terminated.
+      Character encoding is UTF-8.
 
       The cart number is a unsigned integer.
 

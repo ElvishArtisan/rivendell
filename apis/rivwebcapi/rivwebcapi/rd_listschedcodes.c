@@ -64,10 +64,10 @@ static void XMLCALL __ListSchedCodesElementEnd(void *data, const char *el)
   struct rd_schedcodes *schedcodes=xml_data->schedcodes+(xml_data->schedcodes_quan-1);
 
   if(strcasecmp(el,"code")==0) {
-    strlcpy(schedcodes->code,xml_data->strbuf,10);
+    strlcpy(schedcodes->code,xml_data->strbuf,41);
   }
   if(strcasecmp(el,"description")==0){
-    strlcpy(schedcodes->description,xml_data->strbuf,256);
+    strlcpy(schedcodes->description,xml_data->strbuf,1021);
   }
 }
 

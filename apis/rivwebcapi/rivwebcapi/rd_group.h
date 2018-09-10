@@ -15,13 +15,13 @@
 #define RD_GROUP_H
 
 struct rd_group {
-  char grp_name[11];
-  char grp_desc[255];
+  char grp_name[41];
+  char grp_desc[1021];
   unsigned grp_default_cart_type;
   unsigned grp_lo_limit;
   unsigned grp_hi_limit;
   int grp_shelf_life;
-  char grp_default_title[255];
+  char grp_default_title[1021];
   int grp_enforce_range;
   int grp_report_tfc;
   int grp_report_mus;

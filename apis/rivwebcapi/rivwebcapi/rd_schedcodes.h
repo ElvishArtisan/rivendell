@@ -17,8 +17,8 @@
 #define RD_SCHEDCODES_H
 
 struct rd_schedcodes {
-  char code[11];
-  char description[255];
+  char code[41];
+  char description[1021];
 };
 
 

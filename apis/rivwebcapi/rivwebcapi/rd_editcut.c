@@ -75,16 +75,16 @@ static void XMLCALL __EditCutElementEnd(void *data, const char *el)
     cut->cut_evergreen=RD_ReadBool(xml_data->strbuf);
   }
   if(strcasecmp(el,"description")==0) {
-    strncpy(cut->cut_description,xml_data->strbuf,65);
+    strncpy(cut->cut_description,xml_data->strbuf,257);
   }
   if(strcasecmp(el,"outcue")==0) {
-    strncpy(cut->cut_outcue,xml_data->strbuf,65);
+    strncpy(cut->cut_outcue,xml_data->strbuf,257);
   }
   if(strcasecmp(el,"isrc")==0) {
-    strncpy(cut->cut_isrc,xml_data->strbuf,13);
+    strncpy(cut->cut_isrc,xml_data->strbuf,49);
   }
   if(strcasecmp(el,"isci")==0) {
-    strncpy(cut->cut_isci,xml_data->strbuf,33);
+    strncpy(cut->cut_isci,xml_data->strbuf,129);
   }
   if(strcasecmp(el,"originDatetime")==0) {
     strlcpy(hold_datetime,xml_data->strbuf,26);
@@ -126,7 +126,7 @@ static void XMLCALL __EditCutElementEnd(void *data, const char *el)
     strncpy(cut->cut_end_daypart,xml_data->strbuf,15);
   }
   if(strcasecmp(el,"originName")==0) {
-    strncpy(cut->cut_origin_name,xml_data->strbuf,65);
+    strncpy(cut->cut_origin_name,xml_data->strbuf,257);
   }
   if(strcasecmp(el,"weight")==0) {
     sscanf(xml_data->strbuf,"%u",&cut->cut_weight);

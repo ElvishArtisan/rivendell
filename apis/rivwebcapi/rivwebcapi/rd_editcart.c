@@ -84,40 +84,40 @@ static void XMLCALL __EditCartElementEnd(void *data, const char *el)
   }
 
   if(strcasecmp(el,"groupName")==0) {
-    strlcpy(cart->cart_grp_name,xml_data->strbuf,10);
+    strlcpy(cart->cart_grp_name,xml_data->strbuf,41);
   }
   if(strcasecmp(el,"title")==0) {
-    strlcpy(cart->cart_title,xml_data->strbuf,255);
+    strlcpy(cart->cart_title,xml_data->strbuf,1021);
   }
   if(strcasecmp(el,"artist")==0) {
-    strlcpy(cart->cart_artist,xml_data->strbuf,255);
+    strlcpy(cart->cart_artist,xml_data->strbuf,1021);
   }
   if(strcasecmp(el,"album")==0) {
-    strlcpy(cart->cart_album,xml_data->strbuf,255);
+    strlcpy(cart->cart_album,xml_data->strbuf,1021);
   }
   if(strcasecmp(el,"year")==0) {
     sscanf(xml_data->strbuf,"%d",&cart->cart_year);
   }
   if(strcasecmp(el,"label")==0) {
-    strlcpy(cart->cart_label,xml_data->strbuf,64);
+    strlcpy(cart->cart_label,xml_data->strbuf,257);
   }
   if(strcasecmp(el,"client")==0) {
-    strlcpy(cart->cart_client,xml_data->strbuf,64);
+    strlcpy(cart->cart_client,xml_data->strbuf,257);
   }
   if(strcasecmp(el,"agency")==0) {
-    strlcpy(cart->cart_agency,xml_data->strbuf,64);
+    strlcpy(cart->cart_agency,xml_data->strbuf,257);
   }
   if(strcasecmp(el,"publisher")==0) {
-    strlcpy(cart->cart_publisher,xml_data->strbuf,64);
+    strlcpy(cart->cart_publisher,xml_data->strbuf,257);
   }
   if(strcasecmp(el,"composer")==0) {
-    strlcpy(cart->cart_composer,xml_data->strbuf,64);
+    strlcpy(cart->cart_composer,xml_data->strbuf,257);
   }
   if(strcasecmp(el,"conductor")==0) {
-    strlcpy(cart->cart_conductor,xml_data->strbuf,64);
+    strlcpy(cart->cart_conductor,xml_data->strbuf,257);
   }
   if(strcasecmp(el,"userDefined")==0) {
-    strlcpy(cart->cart_user_defined,xml_data->strbuf,255);
+    strlcpy(cart->cart_user_defined,xml_data->strbuf,1021);
   }
   if(strcasecmp(el,"usageCode")==0) {
     sscanf(xml_data->strbuf,"%d",&cart->cart_usage_code);
@@ -153,11 +153,11 @@ static void XMLCALL __EditCartElementEnd(void *data, const char *el)
     cart->cart_asyncronous=RD_ReadBool(xml_data->strbuf);
   }
   if(strcasecmp(el,"owner")==0) {
-    strlcpy(cart->cart_owner,xml_data->strbuf,64);
+    strlcpy(cart->cart_owner,xml_data->strbuf,257);
   }
   if(strcasecmp(el,"notes")==0 ){
     /* handle multiple NOTE Lines */
-    strlcpy(cart->cart_notes,xml_data->strbuf,1024);
+    strlcpy(cart->cart_notes,xml_data->strbuf,4096);
   }
 }
 
