@@ -17634,3 +17634,7 @@
 2018-09-10 Fred Gleason <fredg@paravelsystems.com>
 	* Quadrupled the length of strings in 'struct rd_cart' in the
 	'rivwebcapi' to accomodate UTF-8 characters.
+2018-09-11 Todd Baker <bakert@rfa.org>
+	* Updated docs/rivwebcapi/rd_listgroups.xml to explicitly explain
+	that rd_listgroups shows all groups that the requesting user belongs to.
+

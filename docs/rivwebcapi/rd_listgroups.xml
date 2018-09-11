@@ -47,11 +47,12 @@
 
   <refsect1 id='description'><title>Description</title>
   <para>
-    <command>RD_ListGroups</command> is  the function to use
-    to list the fields that are stored for a particular group within the Rivendell Database.
+    <command>RD_ListGroups</command> is the function to use
+    to list the fields that are stored for a user's groups within the Rivendell Database.
   </para>
   <para>
-    This function lists the fields in all pre-existing Groups.  
+    This function lists the fields in all pre-existing Groups for the Requesting User.  Lists
+    the group fields for each group that the User has permission to see.
   </para>
   <table xml:id="ex.listgroup" frame="all">
     <title>RD_ListGroups function call fields</title>
