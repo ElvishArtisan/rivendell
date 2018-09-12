@@ -26,6 +26,7 @@
 #include <qsizepolicy.h>
 #include <qsqldatabase.h>
 #include <rdlistview.h>
+#include <rdsimpleplayer.h>
 #include <qpushbutton.h>
 #include <qcombobox.h>
 #include <qlabel.h>
@@ -65,6 +66,11 @@ class MainWidget : public QWidget
 {
  Q_OBJECT
  public:
+  enum Column {Icon=0,Cart=1,Group=2,Length=3,Title=4,Artist=5,
+		Start=6,End=7,Album=8,Label=9,Composer=10,Conductor=11,
+		Publisher=12,Client=13,Agency=14,UserDefined=15,
+		Cuts=16,LastCutPlayed=17,EnforceLength=18,PreservePitch=19,
+		LengthDeviation=20,OwnedBy=21};
   MainWidget(QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -82,7 +88,7 @@ class MainWidget : public QWidget
   void ripData();
   void reportsData();
   void cartOnItemData(Q3ListViewItem *item);
-  void cartClickedData(Q3ListViewItem *item);
+  void cartClickedData();
   void cartDoubleclickedData(Q3ListViewItem *,const QPoint &,int);
   void audioChangedData(int state);
   void macroChangedData(int state);
@@ -97,6 +103,7 @@ class MainWidget : public QWidget
   
  private:
   void RefreshList();
+  void RefreshCuts(RDListViewItem *p,unsigned cartnum);
   QString WhereClause() const;
   void RefreshLine(RDListViewItem *item);
   void UpdateItemColor(RDListViewItem *item,RDCart::Validity validity,
@@ -131,6 +138,9 @@ class MainWidget : public QWidget
   QPushButton *lib_rip_button;
   QPushButton *lib_reports_button;
   QPushButton *lib_close_button;
+  RDSimplePlayer *lib_player;
+  int lib_output_card;
+  int lib_output_port;
   QCheckBox *lib_allowdrag_box;
   QLabel *lib_allowdrag_label;
   QCheckBox *lib_showaudio_box;
