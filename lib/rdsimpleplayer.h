@@ -38,6 +38,7 @@ class RDSimplePlayer : public QWidget
 		 unsigned start_cart,unsigned end_cart,QWidget *parent=0);
   ~RDSimplePlayer();
   void setCart(unsigned cart);
+  bool isPlaying();
   RDTransportButton *playButton() const;
   RDTransportButton *stopButton() const;
 

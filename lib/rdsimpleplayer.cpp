@@ -74,6 +74,12 @@ RDSimplePlayer::~RDSimplePlayer()
 }
 
 
+bool RDSimplePlayer::isPlaying()
+{
+  return play_is_playing;
+}
+
+
 void RDSimplePlayer::setCart(unsigned cart)
 {
   play_cart=cart;
