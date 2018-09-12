@@ -38,6 +38,8 @@ class RDSimplePlayer : public QWidget
 		 unsigned start_cart,unsigned end_cart,QWidget *parent=0);
   ~RDSimplePlayer();
   void setCart(unsigned cart);
+  void setCart(QString cart);
+  void setCut(QString cart);
   bool isPlaying();
   RDTransportButton *playButton() const;
   RDTransportButton *stopButton() const;
@@ -63,6 +65,7 @@ class RDSimplePlayer : public QWidget
   int play_port;
   std::queue<int> play_handles;
   unsigned play_cart;
+  QString play_cut;
   unsigned play_start_cart;
   unsigned play_end_cart;
   bool play_is_playing;
