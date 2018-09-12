@@ -17530,3 +17530,7 @@
 2018-08-25 Patrick Linstruth <patrick@deltecent.com>
 	* Fixed a regression in rdservice(8) by removing quotation marks
 	from rdimport(1) '--add-scheduler-code' argument that broke dropboxes.
+2018-09-11 Patrick Linstruth <patrick@deltecent.com>
+        * Added ability expand carts and view cuts in rdlibrary(1) list view.
+        * Added ability to play carts/cuts directly from rdlibrary(1)
+          list view.
