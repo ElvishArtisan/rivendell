@@ -453,6 +453,25 @@ MainWidget::MainWidget(QWidget *parent)
   lib_close_button->setText(tr("&Close"));
   connect(lib_close_button,SIGNAL(clicked()),this,SLOT(quitMainWidget()));
 
+
+  //
+  // Load Output Assignment
+  //
+  lib_output_card=rda->libraryConf()->outputCard();
+  lib_output_port=rda->libraryConf()->outputPort();
+
+
+  //
+  // Cart Player
+  //
+  lib_player=
+    new RDSimplePlayer(rda->cae(),rda->ripc(),lib_output_card,lib_output_port,
+                       0,0,this);
+  lib_player->playButton()->setEnabled(false);
+  lib_player->stopButton()->setEnabled(false);
+  lib_player->stopButton()->setOnColor(Qt::red);
+
+
   // 
   // Setup Signal Handling 
   //
@@ -597,6 +616,7 @@ void MainWidget::addData()
   RDCart::Type cart_type=RDCart::All;
   QString cart_title;
 
+  lib_player->stop();
   LockUser();
 
   RDAddCart *add_cart=new RDAddCart(&lib_default_group,&cart_type,&cart_title,
@@ -646,6 +666,7 @@ void MainWidget::editData()
   int sel_count=0;
   Q3ListViewItemIterator *it;
 
+  lib_player->stop();
   LockUser();
 
   it=new Q3ListViewItemIterator(lib_cart_list);
@@ -712,6 +733,7 @@ void MainWidget::deleteData()
   Q3ListViewItemIterator *it;
   bool del_flag;
 
+  lib_player->stop();
   LockUser();
 
   it=new Q3ListViewItemIterator(lib_cart_list);
@@ -796,6 +818,7 @@ Do you still want to delete it?"),item->text(Cart).toUInt());
 
 void MainWidget::ripData()
 {
+  lib_player->stop();
   LockUser();
   QString group=lib_group_box->currentText();
   QString schedcode=lib_codes_box->currentText();
@@ -819,6 +842,7 @@ void MainWidget::ripData()
 
 void MainWidget::reportsData()
 {
+  lib_player->stop();
   LockUser();
   ListReports *lr=
     new ListReports(lib_filter_edit->text(),GetTypeFilter(),
@@ -844,12 +868,18 @@ void MainWidget::cartClickedData()
 {
   int del_count=0;
   int sel_count=0;
+  int play_count=0;
   Q3ListViewItemIterator *it;
+  Q3ListViewItem *item;
 
   it=new Q3ListViewItemIterator(lib_cart_list);
   while(it->current()) {
-    if (it->current()->isSelected() && !it->current()->parent()) {
-      sel_count++;
+    if (it->current()->isSelected()) {
+      play_count++;
+      item=it->current();
+      if(!it->current()->parent()) {
+        sel_count++;
+      }
       if(it->current()->text(21).isEmpty() && !it->current()->parent()) {
         del_count++;
       }
@@ -863,6 +893,20 @@ void MainWidget::cartClickedData()
   } 
   else {
     lib_delete_button->setEnabled(false);
+  }
+
+  if(play_count==1) {
+    lib_player->setCart(item->text(Cart));
+    lib_player->playButton()->setEnabled(true);
+    lib_player->stopButton()->setEnabled(true);
+    if(lib_player->isPlaying()) {
+      lib_player->play();
+    }
+  }
+  else {
+    lib_player->stop();
+    lib_player->playButton()->setEnabled(false);
+    lib_player->stopButton()->setEnabled(false);
   }
 
   if(sel_count) {
@@ -1011,8 +1055,8 @@ void MainWidget::resizeEvent(QResizeEvent *e)
     lib_add_button->setGeometry(10,e->size().height()-60,80,50);
     lib_edit_button->setGeometry(100,e->size().height()-60,80,50);
     lib_delete_button->setGeometry(190,e->size().height()-60,80,50);
-    disk_gauge->setGeometry(285,e->size().height()-55,
-			    e->size().width()-585,
+    disk_gauge->setGeometry(475,e->size().height()-55,
+			    e->size().width()-775,
 			    disk_gauge->sizeHint().height());
     lib_rip_button->
       setGeometry(e->size().width()-290,e->size().height()-60,80,50);
@@ -1020,6 +1064,8 @@ void MainWidget::resizeEvent(QResizeEvent *e)
       setGeometry(e->size().width()-200,e->size().height()-60,80,50);
     lib_close_button->setGeometry(e->size().width()-90,e->size().height()-60,
 				  80,50);
+    lib_player->playButton()->setGeometry(290,e->size().height()-60,80,50);
+    lib_player->stopButton()->setGeometry(380,e->size().height()-60,80,50);
   }
 }
 

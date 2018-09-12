@@ -26,6 +26,7 @@
 #include <qsizepolicy.h>
 #include <qsqldatabase.h>
 #include <rdlistview.h>
+#include <rdsimpleplayer.h>
 #include <qpushbutton.h>
 #include <qcombobox.h>
 #include <qlabel.h>
@@ -137,6 +138,9 @@ class MainWidget : public QWidget
   QPushButton *lib_rip_button;
   QPushButton *lib_reports_button;
   QPushButton *lib_close_button;
+  RDSimplePlayer *lib_player;
+  int lib_output_card;
+  int lib_output_port;
   QCheckBox *lib_allowdrag_box;
   QLabel *lib_allowdrag_label;
   QCheckBox *lib_showaudio_box;
