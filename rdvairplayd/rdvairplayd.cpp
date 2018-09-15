@@ -23,6 +23,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 
 #include <qapplication.h>
 
@@ -41,11 +43,21 @@ bool global_exiting=false;
 
 void SigHandler(int signo)
 {
+  pid_t pid;
+
   switch(signo) {
   case SIGINT:
   case SIGTERM:
     global_exiting=true;
     break;
+
+  case SIGCHLD:
+    pid=waitpid(-1,NULL,WNOHANG);
+    while(pid>0) {
+      pid=waitpid(-1,NULL,WNOHANG);
+    }
+    signal(SIGCHLD,SigHandler);
+    return;
   }
 }
 
@@ -210,6 +222,7 @@ MainObject::MainObject(QObject *parent)
   air_exit_timer->start(1000);
   ::signal(SIGINT,SigHandler);
   ::signal(SIGTERM,SigHandler);
+  ::signal(SIGCHLD,SigHandler);
 }
 
 
