@@ -17102,3 +17102,5 @@
 2018-09-15 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdvairplayd(8) that caused child processes
 	created by RLMs to become zombies after execution.
+2018-09-15 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to '2.19.2vlog07.
