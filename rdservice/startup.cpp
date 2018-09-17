@@ -205,6 +205,9 @@ bool MainObject::StartDropboxes(QString *err_msg)
     if(q->value(10).toString()=="Y") {
       args.push_back("--fix-broken-formats");
     }
+    if(!q->value(11).toString().isEmpty()) {
+      args.push_back(QString("--log-path=")+q->value(11).toString());
+    }
     if(q->value(12).toString()=="Y") {
       args.push_back("--delete-source");
     }

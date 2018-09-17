@@ -79,6 +79,8 @@ class MainObject : public QObject
   RDGroup *import_group;
   bool import_verbose;
   bool import_log_mode;
+  QString import_log_path;
+  FILE *import_log_file=stdout;
   bool import_to_mono;
   bool import_use_cartchunk_cutid;
   int import_cart_number_offset;

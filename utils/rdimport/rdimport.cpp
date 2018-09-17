@@ -121,6 +121,10 @@ MainObject::MainObject(QObject *parent)
       import_log_mode=true;
       rda->cmdSwitch()->setProcessed(i,true);
     }
+    if(rda->cmdSwitch()->key(i)=="--log-path") {
+      import_log_path=rda->cmdSwitch()->value(i);
+      rda->cmdSwitch()->setProcessed(i,true);
+    }
     if(rda->cmdSwitch()->key(i)=="--to-cart") {
       import_cart_number=rda->cmdSwitch()->value(i).toUInt(&ok);
       if((!ok)||(import_cart_number<1)||(import_cart_number>999999)) {
@@ -557,181 +561,193 @@ MainObject::MainObject(QObject *parent)
   }
 
   //
+  // Open Log File
+  //
+  if((!import_log_path.isEmpty())&&import_log_mode) {
+    import_log_file=fopen(import_log_path,"a");
+    if(import_log_file==NULL) {
+      import_log_file=stdout;
+      fprintf(stderr,"rdimport: could not open log file \"%s\"\n",
+             (const char *)import_log_path);
+    }
+  }
+
+  //
   // Print Status Messages
   //
   if(import_verbose) {
-    printf("\n");
+    fprintf(import_log_file,"\n");
     if(import_log_mode) {
-      PrintLogDateTime(stdout);
-      printf("rdimport started\n");
+      PrintLogDateTime(import_log_file);
+      fprintf(import_log_file,"rdimport started\n");
     }
-    printf("RDImport v%s\n",VERSION);
+    fprintf(import_log_file,"RDImport v%s\n",VERSION);
     if(import_log_mode) {
-      printf(" Log mode is ON\n");
+      fprintf(import_log_file," Log mode is ON\n");
     }
     else {
-      printf(" Log mode is OFF\n");
+      fprintf(import_log_file," Log mode is OFF\n");
     }
     if(import_to_mono) {
-      printf(" Force to Mono is ON\n");
+      fprintf(import_log_file," Force to Mono is ON\n");
     }
     else {
-      printf(" Force to Mono is OFF\n");
+      fprintf(import_log_file," Force to Mono is OFF\n");
     }
     if(import_normalization_level==0) {
-      printf(" Normalization is OFF\n");
+      fprintf(import_log_file," Normalization is OFF\n");
     }
     else {
-      printf(" Normalization level = %d dB\n",import_normalization_level/100);
+      fprintf(import_log_file," Normalization level = %d dB\n",import_normalization_level/100);
     }
     if(import_autotrim_level==0) {
-      printf(" AutoTrim is OFF\n");
+      fprintf(import_log_file," AutoTrim is OFF\n");
     }
     else {
-      printf(" AutoTrim level = %d dB\n",import_autotrim_level/100);
+      fprintf(import_log_file," AutoTrim level = %d dB\n",import_autotrim_level/100);
     }
     if(import_cart_number==0) {
       if(import_use_cartchunk_cutid) {
-	printf(" Destination cart is taken from CartChunk CutID\n");
+	fprintf(import_log_file," Destination cart is taken from CartChunk CutID\n");
       }
       else {
-	printf(" Destination cart is AUTO\n");
+	fprintf(import_log_file," Destination cart is AUTO\n");
       }
     }
     else {
-      printf(" Destination cart is %06u\n",import_cart_number);
+      fprintf(import_log_file," Destination cart is %06u\n",import_cart_number);
     }
     if(import_single_cart) {
-      printf(" Single cart mode is ON\n");
+      fprintf(import_log_file," Single cart mode is ON\n");
     }
     else {
-      printf(" Single cart mode is OFF\n");
+      fprintf(import_log_file," Single cart mode is OFF\n");
     }
     if(import_title_from_cartchunk_cutid) {
-      printf(" Destination cart title is taken from CartChunk CutID\n");
+      fprintf(import_log_file," Destination cart title is taken from CartChunk CutID\n");
     }
     if(import_cart_number_offset!=0) {
-      printf(" Cart number offset is %d\n",import_cart_number_offset);
+      fprintf(import_log_file," Cart number offset is %d\n",import_cart_number_offset);
     }
     if(import_delete_source) {
-      printf(" Delete source mode is ON\n");
+      fprintf(import_log_file," Delete source mode is ON\n");
     }
     else {
-      printf(" Delete source mode is OFF\n");
+      fprintf(import_log_file," Delete source mode is OFF\n");
     }
     if(import_delete_cuts) {
-      printf(" Delete cuts mode is ON\n");
+      fprintf(import_log_file," Delete cuts mode is ON\n");
     }
     else {
-      printf(" Delete cuts mode is OFF\n");
+      fprintf(import_log_file," Delete cuts mode is OFF\n");
     }
     if(import_drop_box) {
-      printf(" DropBox mode is ON\n");
+      fprintf(import_log_file," DropBox mode is ON\n");
     }
     else {
-      printf(" DropBox mode is OFF\n");
+      fprintf(import_log_file," DropBox mode is OFF\n");
     }
     if(import_add_scheduler_codes.size()>0) {
-      printf(" Adding Scheduler Code(s):");
+      fprintf(import_log_file," Adding Scheduler Code(s):");
       for(unsigned i=0;i<import_add_scheduler_codes.size();i++) {
-	printf(" %s",(const char *)import_add_scheduler_codes[i].utf8());
+	fprintf(import_log_file," %s",(const char *)import_add_scheduler_codes[i].utf8());
       }
-      printf("\n");
+      fprintf(import_log_file,"\n");
     }
     if(!import_set_user_defined.isEmpty()) {
-      printf(" Setting the User Defined field to \"%s\"\n",
+      fprintf(import_log_file," Setting the User Defined field to \"%s\"\n",
 	     (const char *)import_set_user_defined);
     }
     if(!import_metadata_pattern.isEmpty()) {
-      printf(" Using metadata pattern: %s\n",
+      fprintf(import_log_file," Using metadata pattern: %s\n",
 	     (const char *)import_metadata_pattern);
     }
-    printf(" Start Date Offset = %d days\n",import_startdate_offset);
-    printf(" End Date Offset = %d days\n",import_enddate_offset);
+    fprintf(import_log_file," Start Date Offset = %d days\n",import_startdate_offset);
+    fprintf(import_log_file," End Date Offset = %d days\n",import_enddate_offset);
     if((!import_dayparts[0].isNull())||(!import_dayparts[1].isNull())) {
-      printf(" Start Daypart = %s\n",
+      fprintf(import_log_file," Start Daypart = %s\n",
 	     (const char *)import_dayparts[0].toString("hh:mm:ss"));
-      printf(" End Daypart = %s\n",
+      fprintf(import_log_file," End Daypart = %s\n",
 	     (const char *)import_dayparts[1].toString("hh:mm:ss"));
     }
     if(import_clear_dayparts) {
-      printf(" Clearing daypart times\n");
+      fprintf(import_log_file," Clearing daypart times\n");
     }
     if((!import_datetimes[0].isNull())||(!import_datetimes[1].isNull())) {
-      printf(" Start DateTime = %s\n",
+      fprintf(import_log_file," Start DateTime = %s\n",
 	     (const char *)import_datetimes[0].toString("MM/dd/yyyy hh:mm:ss"));
-      printf(" End DateTime = %s\n",
+      fprintf(import_log_file," End DateTime = %s\n",
 	     (const char *)import_datetimes[1].toString("MM/dd/yyyy hh:mm:ss"));
     }
     if(import_clear_datetimes) {
-      printf(" Clearing datetimes\n");
+      fprintf(import_log_file," Clearing datetimes\n");
     }
     if(import_fix_broken_formats) {
-      printf(" Broken format workarounds are ENABLED\n");
+      fprintf(import_log_file," Broken format workarounds are ENABLED\n");
     }
     else {
-      printf(" Broken format workarounds are DISABLED\n");
+      fprintf(import_log_file," Broken format workarounds are DISABLED\n");
     }
     if(import_create_dates) {
-      printf(" Import Create Dates mode is ON\n");
-      printf(" Import Create Start Date Offset = %d days\n",import_create_startdate_offset);
-      printf(" Import Create End Date Offset = %d days\n",import_create_enddate_offset);
+      fprintf(import_log_file," Import Create Dates mode is ON\n");
+      fprintf(import_log_file," Import Create Start Date Offset = %d days\n",import_create_startdate_offset);
+      fprintf(import_log_file," Import Create End Date Offset = %d days\n",import_create_enddate_offset);
     }
     else {
-      printf(" Import Create Dates mode is OFF\n");
+      fprintf(import_log_file," Import Create Dates mode is OFF\n");
     }
     if(import_persistent_dropbox_id>=0) {
-      printf(" Persistent DropBox ID = %d\n",import_persistent_dropbox_id);
+      fprintf(import_log_file," Persistent DropBox ID = %d\n",import_persistent_dropbox_id);
     }
     if(!import_string_agency.isNull()) {
-      printf(" Agency set to: %s\n",(const char *)import_string_agency);
+      fprintf(import_log_file," Agency set to: %s\n",(const char *)import_string_agency);
     }
     if(!import_string_album.isNull()) {
-      printf(" Album set to: %s\n",(const char *)import_string_album);
+      fprintf(import_log_file," Album set to: %s\n",(const char *)import_string_album);
     }
     if(!import_string_artist.isNull()) {
-      printf(" Artist set to: %s\n",(const char *)import_string_artist);
+      fprintf(import_log_file," Artist set to: %s\n",(const char *)import_string_artist);
     }
     if(import_string_bpm!=0) {
-      printf(" BPM set to: %d\n",import_string_bpm);
+      fprintf(import_log_file," BPM set to: %d\n",import_string_bpm);
     }
     if(!import_string_client.isNull()) {
-      printf(" Client set to: %s\n",(const char *)import_string_client);
+      fprintf(import_log_file," Client set to: %s\n",(const char *)import_string_client);
     }
     if(!import_string_composer.isNull()) {
-      printf(" Composer set to: %s\n",(const char *)import_string_composer);
+      fprintf(import_log_file," Composer set to: %s\n",(const char *)import_string_composer);
     }
     if(!import_string_conductor.isNull()) {
-      printf(" Conductor set to: %s\n",(const char *)import_string_conductor);
+      fprintf(import_log_file," Conductor set to: %s\n",(const char *)import_string_conductor);
     }
     if(!import_string_description.isNull()) {
-      printf(" Description set to: %s\n",
+      fprintf(import_log_file," Description set to: %s\n",
 	     (const char *)import_string_description);
     }
     if(!import_string_label.isNull()) {
-      printf(" Label set to: %s\n",(const char *)import_string_label);
+      fprintf(import_log_file," Label set to: %s\n",(const char *)import_string_label);
     }
     if(!import_string_outcue.isNull()) {
-      printf(" Outcue set to: %s\n",(const char *)import_string_outcue);
+      fprintf(import_log_file," Outcue set to: %s\n",(const char *)import_string_outcue);
     }
     if(!import_string_publisher.isNull()) {
-      printf(" Publisher set to: %s\n",(const char *)import_string_publisher);
+      fprintf(import_log_file," Publisher set to: %s\n",(const char *)import_string_publisher);
     }
     if(!import_string_song_id.isNull()) {
-      printf(" Song ID set to: %s\n",(const char *)import_string_song_id);
+      fprintf(import_log_file," Song ID set to: %s\n",(const char *)import_string_song_id);
     }
     if(!import_string_title.isNull()) {
-      printf(" Title set to: %s\n",(const char *)import_string_title);
+      fprintf(import_log_file," Title set to: %s\n",(const char *)import_string_title);
     }
     if(!import_string_user_defined.isNull()) {
-      printf(" User Defined set to: %s\n",
+      fprintf(import_log_file," User Defined set to: %s\n",
 	     (const char *)import_string_user_defined);
     }
     if(import_string_year!=0) {
-      printf(" Year set to: %d\n",import_string_year);
+      fprintf(import_log_file," Year set to: %d\n",import_string_year);
     }
     if(import_xml) {
-      printf(" Importing RDXML metadata from external file\n");
+      fprintf(import_log_file," Importing RDXML metadata from external file\n");
     }
     import_cut_markers->dump();
     import_talk_markers->dump();
@@ -739,12 +755,12 @@ MainObject::MainObject(QObject *parent)
     import_segue_markers->dump();
     import_fadedown_marker->dump();
     import_fadeup_marker->dump();
-    printf(" Files to process:\n");
+    fprintf(import_log_file," Files to process:\n");
     for(unsigned i=import_file_key;i<rda->cmdSwitch()->keys();i++) {
-      printf("   \"%s\"\n",(const char *)rda->cmdSwitch()->key(i));
+      fprintf(import_log_file,"   \"%s\"\n",(const char *)rda->cmdSwitch()->key(i));
     }
-    printf("\n");
-    fflush(stdout);
+    fprintf(import_log_file,"\n");
+    fflush(import_log_file);
   }
 
   // 
@@ -848,7 +864,7 @@ void MainObject::RunDropBox()
   struct sched_param sp;
   memset(&sp,0,sizeof(sp));
   if(sched_setscheduler(getpid(),SCHED_BATCH,&sp)!=0) {
-    printf(" Unable to set batch permissions, %s",strerror(errno));
+    fprintf(import_log_file," Unable to set batch permissions, %s",strerror(errno));
   }
 
   do {
@@ -884,9 +900,9 @@ void MainObject::RunDropBox()
     sleep(RDIMPORT_DROPBOX_SCAN_INTERVAL);
   } while(import_run);
   if(import_log_mode) {
-    PrintLogDateTime();
-    printf("rdimport stopped\n");
-    fflush(stdout);
+    PrintLogDateTime(import_log_file);
+    fprintf(import_log_file,"rdimport stopped\n");
+    fflush(import_log_file);
   }
 }
 
@@ -961,15 +977,15 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   else {
     if(import_fix_broken_formats) {
       if(import_verbose) {
-	PrintLogDateTime();
-	printf(" File \"%s\" appears to be malformed, trying workaround ... ",
+	PrintLogDateTime(import_log_file);
+	fprintf(import_log_file," File \"%s\" appears to be malformed, trying workaround ... ",
 	       (const char *)RDGetBasePart(filename).utf8());
-	fflush(stdout);
+	fflush(import_log_file);
       }
       delete wavefile;
       if((wavefile=FixFile(filename,wavedata))==NULL) {
 	if(import_verbose) {
-	  printf("failed.\n");
+	  fprintf(import_log_file,"failed.\n");
 	}
 	PrintLogDateTime(stderr);
 	fprintf(stderr,
@@ -983,15 +999,15 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
 	  exit(0);
 	}
 	if(!import_temp_fix_filename.isEmpty()) {
-//	  printf("Fixed Name: %s\n",(const char *)import_temp_fix_filename);
+//	  fprintf(import_log_file,"Fixed Name: %s\n",(const char *)import_temp_fix_filename);
 	  QFile::remove(import_temp_fix_filename);
 	  import_temp_fix_filename="";
 	}
 	return MainObject::FileBad;
       }
       if(import_verbose) {
-	printf("success.\n");
-	fflush(stdout);
+	fprintf(import_log_file,"success.\n");
+	fflush(import_log_file);
       }
       effective_filename=import_temp_fix_filename;
     }
@@ -1121,33 +1137,33 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   conv->setDestinationSettings(settings);
   conv->setUseMetadata(cart_created);
   if(import_verbose) {
-    PrintLogDateTime();
+    PrintLogDateTime(import_log_file);
     if(wavedata->title().length()==0 || ( (wavedata->title().length()>0) && (wavedata->title()[0] == '\0')) ) {
-      printf(" Importing file \"%s\" to cart %06u ... ",
+      fprintf(import_log_file," Importing file \"%s\" to cart %06u ... ",
 	     (const char *)RDGetBasePart(filename).utf8(),*cartnum);
     }
     else {
       if(import_string_title.isNull()) {
-	printf(" Importing file \"%s\" [%s] to cart %06u ... ",
+	fprintf(import_log_file," Importing file \"%s\" [%s] to cart %06u ... ",
 	       (const char *)RDGetBasePart(filename).utf8(),
 	       (const char *)wavedata->title().stripWhiteSpace().utf8(),
 	       *cartnum);
       }
       else {
-	printf(" Importing file \"%s\" [%s] to cart %06u ... ",
+	fprintf(import_log_file," Importing file \"%s\" [%s] to cart %06u ... ",
 	       (const char *)RDGetBasePart(filename).utf8(),
 	       (const char *)import_string_title.stripWhiteSpace().utf8(),
 	       *cartnum);
       }
     }
-    fflush(stdout);
+    fflush(import_log_file);
   }
 
   switch(conv_err=conv->runImport(rda->user()->name(),rda->user()->password(),
 				  &audio_conv_err)) {
   case RDAudioImport::ErrorOk:
     if(import_verbose) {
-      printf("done.\n");
+      fprintf(import_log_file,"done.\n");
     }
     break;
 
@@ -1359,9 +1375,9 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   if(import_delete_source) {
     unlink(filename.utf8());
     if(import_verbose) {
-      PrintLogDateTime();
-      printf(" Deleted file \"%s\"\n",(const char *)RDGetBasePart(filename).utf8());
-      fflush(stdout);
+      PrintLogDateTime(import_log_file);
+      fprintf(import_log_file," Deleted file \"%s\"\n",(const char *)RDGetBasePart(filename).utf8());
+      fflush(import_log_file);
     }
   }
   if(!import_run) {
@@ -1898,9 +1914,9 @@ void MainObject::PrintLogDateTime(FILE *f)
 void MainObject::DeleteCuts(unsigned cartnum)
 {
   if(import_verbose) {
-    PrintLogDateTime();
-    printf(" Deleting cuts from cart %06u\n",cartnum);
-    fflush(stdout);
+    PrintLogDateTime(import_log_file);
+    fprintf(import_log_file," Deleting cuts from cart %06u\n",cartnum);
+    fflush(import_log_file);
   }
   unsigned dev;
   RDCart *cart=new RDCart(cartnum);
@@ -1991,7 +2007,7 @@ void MainObject::ReadXmlFile(const QString &basename,RDWaveData *wavedata) const
   }
   xmlname+="xml";
   if(import_verbose) {
-    printf(" Reading xml metadata from \"%s\": ",(const char *)xmlname);
+    fprintf(import_log_file," Reading xml metadata from \"%s\": ",(const char *)xmlname);
   }
 
   //
@@ -2000,12 +2016,12 @@ void MainObject::ReadXmlFile(const QString &basename,RDWaveData *wavedata) const
   wavedata->clear();
   if((f=fopen(xmlname,"r"))==NULL) {
     if(import_verbose) {
-      printf("failed [%s]\n",strerror(errno));
+      fprintf(import_log_file,"failed [%s]\n",strerror(errno));
       return;
     }
   }
   if(import_verbose) {
-    printf("success\n");
+    fprintf(import_log_file,"success\n");
   }
   while(fgets(line,1024,f)!=NULL) {
     xml+=line;
