@@ -17639,3 +17639,8 @@
 	that rd_listgroups shows all groups that the requesting user belongs to.
 2018-09-17 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug that broke the build.
+2018-09-17 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed a regression that broke dropbox logging in rdimport(1)
+	by adding '--log-path' argument.
+	* Added '--log-path' argument to invocation of rdimport(1) from
+	rdservice(8).
