@@ -19,7 +19,7 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CFLAGS = -fPIC -Wall
+AM_CFLAGS = -fPIC -Wall -I../
 
 RLM_MODULES=rlm_ando.rlm\
             rlm_facebook.rlm\

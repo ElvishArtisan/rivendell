@@ -33,7 +33,7 @@
 #include <rdlog_line.h>
 #include <rdttydevice.h>
 
-#include "../rlm/rlm.h"
+#include "../apis/rlm/rlm.h"
 
 class RDRLMHost : public QObject
 {

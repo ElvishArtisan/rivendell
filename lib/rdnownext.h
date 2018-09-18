@@ -22,7 +22,7 @@
 #define RDNOWNEXT_H
 
 #include <rdlog_line.h>
-#include "../rlm/rlm.h"
+#include "../apis/rlm/rlm.h"
 
 void RDResolveNowNext(QString *str,RDLogLine **loglines,int encoding);
 QString RDResolveNowNext(const QString &pattern,RDLogLine *ll);
