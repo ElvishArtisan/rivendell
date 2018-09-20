@@ -17639,3 +17639,6 @@
 	that rd_listgroups shows all groups that the requesting user belongs to.
 2018-09-17 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug that broke the build.
+2018-09-07 Patrick Linstruth <patrick@deltecent.com>
+	*  Fixed a regression in RDTimeEdit where highlighted background was not
+	displaying properly.
