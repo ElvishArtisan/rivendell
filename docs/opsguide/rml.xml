@@ -1784,8 +1784,7 @@
 	</varlistentry>
 	<varlistentry>
 	  <term>Mnemonic</term>
-	  <listitem><userinput>PB
-	  <replaceable>button</replaceable> </userinput></listitem>
+	  <listitem><userinput>PB</userinput></listitem>
 	</varlistentry>
       </variablelist>
     </para>
