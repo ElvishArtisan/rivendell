@@ -1784,12 +1784,13 @@
 	</varlistentry>
 	<varlistentry>
 	  <term>Mnemonic</term>
-	  <listitem><userinput>PB</userinput></listitem>
+	  <listitem><userinput>PB
+	  <replaceable>button</replaceable> </userinput></listitem>
 	</varlistentry>
       </variablelist>
     </para>
     <para>
-      Push an RDAirPlay Start button.
+      Push an RDAirPlay Start button (1-7, numbered from the top).
     </para>
     <para>
       <userinput>PB
