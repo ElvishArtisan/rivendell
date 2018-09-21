@@ -52,7 +52,7 @@ void LibListView::contentsMouseMoveEvent(QMouseEvent *e)
     }
     if(item->text(MainWidget::OwnedBy).isEmpty()) {  // Voice tracks cannot be dragged
       RDCartDrag *d=
-        new RDCartDrag(item->text(MainWidget::Cart).toUInt(),item->text(MainWidget::Title),
+        new RDCartDrag(item->text(MainWidget::Cart).left(6).toUInt(),item->text(MainWidget::Title),
                        item->textColor(MainWidget::Group), this);
       d->dragCopy();
       emit clicked(item);
