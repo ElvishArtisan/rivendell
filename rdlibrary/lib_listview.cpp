@@ -23,6 +23,7 @@
 
 #include <rdlistviewitem.h>
 
+#include "rdlibrary.h"
 #include "globals.h"
 #include "lib_listview.h"
 
@@ -39,7 +40,6 @@ void LibListView::contentsMousePressEvent(QMouseEvent *e)
   Q3ListView::contentsMousePressEvent(e);
 }
 
-
 void LibListView::contentsMouseMoveEvent(QMouseEvent *e)
 {
   Q3ListView::contentsMouseMoveEvent(e);
@@ -50,10 +50,10 @@ void LibListView::contentsMouseMoveEvent(QMouseEvent *e)
     if(item==NULL) {
       return;
     }
-    if(item->text(21).isEmpty()) {  // Voice tracks cannot be dragged
+    if(item->text(MainWidget::OwnedBy).isEmpty()) {  // Voice tracks cannot be dragged
       RDCartDrag *d=
-	new RDCartDrag(item->text(1).toUInt(),item->text(4),item->textColor(2),
-		       this);
+        new RDCartDrag(item->text(MainWidget::Cart).toUInt(),item->text(MainWidget::Title),
+                       item->textColor(MainWidget::Group), this);
       d->dragCopy();
       emit clicked(item);
     }

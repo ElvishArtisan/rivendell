@@ -880,7 +880,7 @@ void MainWidget::cartClickedData()
       if(!it->current()->parent()) {
         sel_count++;
       }
-      if(it->current()->text(21).isEmpty() && !it->current()->parent()) {
+      if(it->current()->text(OwnedBy).isEmpty() && !it->current()->parent()) {
         del_count++;
       }
     }
