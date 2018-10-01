@@ -17647,3 +17647,6 @@
 	fixed a regression where the 'Stop' button would fail to function
 	after enabling a pointer counter in rdlibrary(1)'s Edit Audio
 	dialog [GibHub PR #000239].
+2018-10-01 Patrick Linstruth <patrick@deltecent.com>
+	*  Fixed a regression in RDTimeEdit where highlighted background was not
+	displaying properly.
