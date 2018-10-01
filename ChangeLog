@@ -17642,3 +17642,8 @@
 2018-09-20 Fred Gleason <fredg@paravelsystems.com>
 	* Corrected an omission in the documentation of the
 	'Start Button' ['PB'] RML.
+2018-10-01 Fred Gleason <fredg@paravelsystems.com>
+	* Applied a PR from Patrick Linstruth <patrick@deltecent.com> that
+	fixed a regression where the 'Stop' button would fail to function
+	after enabling a pointer counter in rdlibrary(1)'s Edit Audio
+	dialog [GibHub PR #000239].
