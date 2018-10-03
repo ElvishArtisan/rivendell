@@ -39,6 +39,1773 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg) co
 
 
   //
+  // Revert 297
+  //
+  if((cur_schema==297)&&(set_schema<cur_schema)) {
+    sql=QString("alter table AUDIO_CARDS ")+
+      "modify column STATION_NAME char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table AUDIO_CARDS ")+
+      "modify column NAME char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table AUDIO_INPUTS ")+
+      "modify column STATION_NAME char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table AUDIO_OUTPUTS ")+
+      "modify column STATION_NAME char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table AUDIO_PERMS ")+
+      "modify column GROUP_NAME char(10)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table AUDIO_PERMS ")+
+      "modify column SERVICE_NAME char(10)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table AUTOFILLS ")+
+      "modify column SERVICE char(10)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table AUX_METADATA ")+
+      "modify column VAR_NAME char(16)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table AUX_METADATA ")+
+      "modify column CAPTION char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table CART ")+
+      "modify column GROUP_NAME char(10) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table CART ")+
+      "modify column TITLE char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table CART ")+
+      "modify column ARTIST char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table CART ")+
+      "modify column ALBUM char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table CART ")+
+      "modify column CONDUCTOR char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table CART ")+
+      "modify column LABEL char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table CART ")+
+      "modify column CLIENT char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table CART ")+
+      "modify column AGENCY char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table CART ")+
+      "modify column PUBLISHER char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table CART ")+
+      "modify column COMPOSER char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table CART ")+
+      "modify column USER_DEFINED char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table CART ")+
+      "modify column SONG_ID char(32)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table CART ")+
+      "modify column OWNER char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table CART ")+
+      "modify column PENDING_STATION char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table CARTSLOTS ")+
+      "modify column STATION_NAME char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table CARTSLOTS ")+
+      "modify column SERVICE_NAME char(10)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table CAST_DOWNLOADS ")+
+      "modify column FEED_KEY_NAME char(8) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table CLIPBOARD ")+
+      "modify column CUT_NAME char(12) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table CLIPBOARD ")+
+      "modify column DESCRIPTION char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table CLIPBOARD ")+
+      "modify column OUTCUE char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table CLIPBOARD ")+
+      "modify column ORIGIN_NAME char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table CLOCKS ")+
+      "modify column NAME char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table CLOCKS ")+
+      "modify column SHORT_NAME char(8)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table CLOCKS ")+
+      "modify column COLOR char(7)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table CLOCKS ")+
+      "modify column REMARKS text";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table CLOCK_LINES ")+
+      "modify column CLOCK_NAME char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table CLOCK_LINES ")+
+      "modify column EVENT_NAME char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table CLOCK_PERMS ")+
+      "modify column CLOCK_NAME char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table CLOCK_PERMS ")+
+      "modify column SERVICE_NAME char(10) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table CUTS ")+
+      "modify column CUT_NAME char(12) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table CUTS ")+
+      "modify column DESCRIPTION char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table CUTS ")+
+      "modify column OUTCUE char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table CUTS ")+
+      "modify column ISRC char(12)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table CUTS ")+
+      "modify column ISCI char(32)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table CUTS ")+
+      "modify column SHA1_HASH char(40)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table CUTS ")+
+      "modify column ORIGIN_NAME char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table CUTS ")+
+      "modify column ORIGIN_LOGIN_NAME char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table CUTS ")+
+      "modify column SOURCE_HOSTNAME char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table CUT_EVENTS ")+
+      "modify column CUT_NAME char(12) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table DECKS ")+
+      "modify column STATION_NAME char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table DECKS ")+
+      "modify column SWITCH_STATION char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table DECK_EVENTS ")+
+      "modify column STATION_NAME char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table DROPBOXES ")+
+      "modify column STATION_NAME char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table DROPBOXES ")+
+      "modify column GROUP_NAME char(10)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table DROPBOXES ")+
+      "modify column PATH char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table DROPBOXES ")+
+      "modify column METADATA_PATTERN char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table DROPBOXES ")+
+      "modify column LOG_PATH char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table DROPBOXES ")+
+      "modify column SET_USER_DEFINED char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table DROPBOX_PATHS ")+
+      "modify column FILE_PATH char(255) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table DROPBOX_SCHED_CODES ")+
+      "modify column SCHED_CODE char(11) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table ELR_LINES ")+
+      "modify column SERVICE_NAME char(10) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table ELR_LINES ")+
+      "modify column LOG_NAME char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table ELR_LINES ")+
+      "modify column TITLE char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table ELR_LINES ")+
+      "modify column ARTIST char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table ELR_LINES ")+
+      "modify column PUBLISHER char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table ELR_LINES ")+
+      "modify column COMPOSER char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table ELR_LINES ")+
+      "modify column USER_DEFINED char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table ELR_LINES ")+
+      "modify column SONG_ID char(32)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table ELR_LINES ")+
+      "modify column ALBUM char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table ELR_LINES ")+
+      "modify column LABEL char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table ELR_LINES ")+
+      "modify column CONDUCTOR char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table ELR_LINES ")+
+      "modify column DESCRIPTION char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table ELR_LINES ")+
+      "modify column OUTCUE char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table ELR_LINES ")+
+      "modify column ISRC char(12)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table ELR_LINES ")+
+      "modify column ISCI char(32)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table ELR_LINES ")+
+      "modify column STATION_NAME char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table ELR_LINES ")+
+      "modify column EXT_CART_NAME char(32)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table ELR_LINES ")+
+      "modify column EXT_DATA char(32)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table ELR_LINES ")+
+      "modify column EXT_EVENT_ID char(8)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table ELR_LINES ")+
+      "modify column EXT_ANNC_TYPE char(8)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table ENCODERS ")+
+      "modify column NAME char(32) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table ENCODERS ")+
+      "modify column STATION_NAME char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table ENCODERS ")+
+      "modify column COMMAND_LINE char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table ENCODERS ")+
+      "modify column DEFAULT_EXTENSION char(16)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table EVENTS ")+
+      "modify column NAME char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table EVENTS ")+
+      "modify column PROPERTIES char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table EVENTS ")+
+      "modify column DISPLAY_TEXT char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table EVENTS ")+
+      "modify column NOTE_TEXT char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table EVENTS ")+
+      "modify column COLOR char(7)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table EVENTS ")+
+      "modify column SCHED_GROUP char(10)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table EVENTS ")+
+      "modify column HAVE_CODE char(10)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table EVENTS ")+
+      "modify column HAVE_CODE2 char(10)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table EVENTS ")+
+      "modify column NESTED_EVENT char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table EVENTS ")+
+      "modify column REMARKS text";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table EVENT_LINES ")+
+      "modify column EVENT_NAME char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table EVENT_LINES ")+
+      "modify column MARKER_COMMENT char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table EVENT_PERMS ")+
+      "modify column EVENT_NAME char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table EVENT_PERMS ")+
+      "modify column SERVICE_NAME char(10)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table EXTENDED_PANELS ")+
+      "modify column OWNER char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table EXTENDED_PANELS ")+
+      "modify column LABEL char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table EXTENDED_PANELS ")+
+      "modify column DEFAULT_COLOR char(7)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table EXTENDED_PANEL_NAMES ")+
+      "modify column OWNER char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table EXTENDED_PANEL_NAMES ")+
+      "modify column NAME char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table FEEDS ")+
+      "modify column KEY_NAME char(8) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table FEEDS ")+
+      "modify column CHANNEL_TITLE char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table FEEDS ")+
+      "modify column CHANNEL_DESCRIPTION text";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table FEEDS ")+
+      "modify column CHANNEL_CATEGORY char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table FEEDS ")+
+      "modify column CHANNEL_LINK char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table FEEDS ")+
+      "modify column CHANNEL_COPYRIGHT char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table FEEDS ")+
+      "modify column CHANNEL_WEBMASTER char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table FEEDS ")+
+      "modify column CHANNEL_LANGUAGE char(5) default \"en-us\"";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table FEEDS ")+
+      "modify column BASE_URL char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table FEEDS ")+
+      "modify column BASE_PREAMBLE char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table FEEDS ")+
+      "modify column PURGE_URL char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table FEEDS ")+
+      "modify column PURGE_USERNAME char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table FEEDS ")+
+      "modify column PURGE_PASSWORD char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table FEEDS ")+
+      "modify column UPLOAD_EXTENSION char(16) default \"mp3\"";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table FEEDS ")+
+      "modify column REDIRECT_PATH char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table FEED_PERMS ")+
+      "modify column USER_NAME char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table FEED_PERMS ")+
+      "modify column KEY_NAME char(8)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table GPIO_EVENTS ")+
+      "modify column STATION_NAME char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table GPIS ")+
+      "modify column STATION_NAME char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table GPOS ")+
+      "modify column STATION_NAME char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table GROUPS ")+
+      "modify column NAME char(10) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table GROUPS ")+
+      "modify column DESCRIPTION char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table GROUPS ")+
+      "modify column DEFAULT_TITLE char(255) default 'Imported from %f.%e'";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table GROUPS ")+
+      "modify column COLOR char(7)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table HOSTVARS ")+
+      "modify column STATION_NAME char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table HOSTVARS ")+
+      "modify column NAME char(32) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table HOSTVARS ")+
+      "modify column VARVALUE char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table HOSTVARS ")+
+      "modify column REMARK char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table IMPORTER_LINES ")+
+      "modify column STATION_NAME char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table IMPORTER_LINES ")+
+      "modify column TITLE char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table IMPORTER_LINES ")+
+      "modify column TRACK_STRING char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table IMPORTER_LINES ")+
+      "modify column EXT_DATA char(32)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table IMPORTER_LINES ")+
+      "modify column EXT_EVENT_ID char(32)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table IMPORTER_LINES ")+
+      "modify column EXT_ANNC_TYPE char(8)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table IMPORTER_LINES ")+
+      "modify column EXT_CART_NAME char(32)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table IMPORT_TEMPLATES ")+
+      "modify column NAME char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table INPUTS ")+
+      "modify column STATION_NAME char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table INPUTS ")+
+      "modify column NAME char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table INPUTS ")+
+      "modify column FEED_NAME char(8)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table INPUTS ")+
+      "modify column NODE_HOSTNAME char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table ISCI_XREFERENCE ")+
+      "modify column ISCI char(32) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table ISCI_XREFERENCE ")+
+      "modify column FILENAME char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table ISCI_XREFERENCE ")+
+      "modify column TYPE char(1) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table ISCI_XREFERENCE ")+
+      "modify column ADVERTISER_NAME char(30)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table ISCI_XREFERENCE ")+
+      "modify column PRODUCT_NAME char(35)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table ISCI_XREFERENCE ")+
+      "modify column CREATIVE_TITLE char(30)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table ISCI_XREFERENCE ")+
+      "modify column REGION_NAME char(80)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table JACK_CLIENTS ")+
+      "modify column STATION_NAME char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table JACK_CLIENTS ")+
+      "modify column DESCRIPTION char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table JACK_CLIENTS ")+
+      "modify column COMMAND_LINE text";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table LIVEWIRE_GPIO_SLOTS ")+
+      "modify column STATION_NAME char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table LIVEWIRE_GPIO_SLOTS ")+
+      "modify column IP_ADDRESS char(15)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table LOGS ")+
+      "modify column NAME char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table LOGS ")+
+      "modify column SERVICE char(10) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table LOGS ")+
+      "modify column DESCRIPTION char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table LOGS ")+
+      "modify column ORIGIN_USER char(255) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table LOGS ")+
+      "modify column LOCK_USER_NAME char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table LOGS ")+
+      "modify column LOCK_STATION_NAME char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table LOGS ")+
+      "modify column LOCK_IPV4_ADDRESS char(16)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table LOGS ")+
+      "modify column LOCK_GUID char(82)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table LOG_LINES ")+
+      "modify column LOG_NAME char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table LOG_LINES ")+
+      "modify column COMMENT char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table LOG_LINES ")+
+      "modify column LABEL char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table LOG_LINES ")+
+      "modify column ORIGIN_USER char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table LOG_LINES ")+
+      "modify column LINK_EVENT_NAME char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table LOG_LINES ")+
+      "modify column EXT_CART_NAME char(32)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table LOG_LINES ")+
+      "modify column EXT_DATA char(32)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table LOG_LINES ")+
+      "modify column EXT_EVENT_ID char(32)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table LOG_LINES ")+
+      "modify column EXT_ANNC_TYPE char(8)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table LOG_MACHINES ")+
+      "modify column STATION_NAME char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table LOG_MACHINES ")+
+      "modify column LOG_NAME char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table LOG_MACHINES ")+
+      "modify column CURRENT_LOG char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table LOG_MACHINES ")+
+      "modify column UDP_ADDR char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table LOG_MACHINES ")+
+      "modify column UDP_STRING char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table LOG_MACHINES ")+
+      "modify column LOG_RML char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table LOG_MODES ")+
+      "modify column STATION_NAME char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table MATRICES ")+
+      "modify column STATION_NAME char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table MATRICES ")+
+      "modify column NAME char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table MATRICES ")+
+      "modify column IP_ADDRESS char(16)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table MATRICES ")+
+      "modify column IP_ADDRESS_2 char(16)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table MATRICES ")+
+      "modify column USERNAME char(32)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table MATRICES ")+
+      "modify column USERNAME_2 char(32)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table MATRICES ")+
+      "modify column PASSWORD char(32)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table MATRICES ")+
+      "modify column PASSWORD_2 char(32)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table MATRICES ")+
+      "modify column GPIO_DEVICE char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table NOWNEXT_PLUGINS ")+
+      "modify column STATION_NAME char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table NOWNEXT_PLUGINS ")+
+      "modify column PLUGIN_PATH char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table NOWNEXT_PLUGINS ")+
+      "modify column PLUGIN_ARG char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table OUTPUTS ")+
+      "modify column STATION_NAME char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table OUTPUTS ")+
+      "modify column NAME char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table OUTPUTS ")+
+      "modify column NODE_HOSTNAME char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table PANELS ")+
+      "modify column OWNER char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table PANELS ")+
+      "modify column LABEL char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table PANELS ")+
+      "modify column DEFAULT_COLOR char(7)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table PANEL_NAMES ")+
+      "modify column OWNER char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table PANEL_NAMES ")+
+      "modify column NAME char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table PODCASTS ")+
+      "modify column ITEM_TITLE char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table PODCASTS ")+
+      "modify column ITEM_DESCRIPTION text";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table PODCASTS ")+
+      "modify column ITEM_CATEGORY char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table PODCASTS ")+
+      "modify column ITEM_LINK char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table PODCASTS ")+
+      "modify column ITEM_COMMENTS char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table PODCASTS ")+
+      "modify column ITEM_AUTHOR char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table PODCASTS ")+
+      "modify column ITEM_SOURCE_TEXT char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table PODCASTS ")+
+      "modify column ITEM_SOURCE_URL char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table PODCASTS ")+
+      "modify column AUDIO_FILENAME char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table RDAIRPLAY ")+
+      "modify column STATION char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table RDAIRPLAY ")+
+      "modify column BUTTON_LABEL_TEMPLATE char(32) default '%t'";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table RDAIRPLAY ")+
+      "modify column DEFAULT_SERVICE char(10)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table RDAIRPLAY ")+
+      "modify column TITLE_TEMPLATE char(64) default '%t'";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table RDAIRPLAY ")+
+      "modify column ARTIST_TEMPLATE char(64) default '%a'";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table RDAIRPLAY ")+
+      "modify column OUTCUE_TEMPLATE char(64) default '%o'";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table RDAIRPLAY ")+
+      "modify column DESCRIPTION_TEMPLATE char(64) default '%i'";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table RDAIRPLAY ")+
+      "modify column EXIT_PASSWORD char(41)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table RDAIRPLAY ")+
+      "modify column SKIN_PATH char(255) default '/usr/share/pixmaps/rivendell/rdairplay_skin.png'";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table RDAIRPLAY_CHANNELS ")+
+      "modify column STATION_NAME char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table RDAIRPLAY_CHANNELS ")+
+      "modify column START_RML char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table RDAIRPLAY_CHANNELS ")+
+      "modify column STOP_RML char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table RDCATCH ")+
+      "modify column STATION char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table RDCATCH ")+
+      "modify column ERROR_RML char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table RDHOTKEYS ")+
+      "modify column STATION_NAME char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table RDHOTKEYS ")+
+      "modify column MODULE_NAME char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table RDHOTKEYS ")+
+      "modify column KEY_VALUE char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table RDHOTKEYS ")+
+      "modify column KEY_LABEL char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table RDLIBRARY ")+
+      "modify column STATION char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table RDLIBRARY ")+
+      "modify column RIPPER_DEVICE char(64) default '/dev/cdrom'";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table RDLIBRARY ")+
+      "modify column CDDB_SERVER char(64) default 'freedb.freedb.org'";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table RDLOGEDIT ")+
+      "modify column STATION char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table RDPANEL ")+
+      "modify column STATION char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table RDPANEL ")+
+      "modify column BUTTON_LABEL_TEMPLATE char(32) default '%t'";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table RDPANEL ")+
+      "modify column DEFAULT_SERVICE char(10)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table RDPANEL ")+
+      "modify column SKIN_PATH char(255) default '/usr/share/pixmaps/rivendell/rdpanel_skin.png'";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table RDPANEL_CHANNELS ")+
+      "modify column STATION_NAME char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table RDPANEL_CHANNELS ")+
+      "modify column START_RML char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table RDPANEL_CHANNELS ")+
+      "modify column STOP_RML char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table RECORDINGS ")+
+      "modify column STATION_NAME char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table RECORDINGS ")+
+      "modify column CUT_NAME char(12) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table RECORDINGS ")+
+      "modify column DESCRIPTION char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table RECORDINGS ")+
+      "modify column URL char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table RECORDINGS ")+
+      "modify column URL_USERNAME char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table RECORDINGS ")+
+      "modify column URL_PASSWORD char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table REPLICATORS ")+
+      "modify column NAME char(32) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table REPLICATORS ")+
+      "modify column DESCRIPTION char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table REPLICATORS ")+
+      "modify column STATION_NAME char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table REPLICATORS ")+
+      "modify column URL char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table REPLICATORS ")+
+      "modify column URL_USERNAME char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table REPLICATORS ")+
+      "modify column URL_PASSWORD char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table REPLICATOR_MAP ")+
+      "modify column REPLICATOR_NAME char(32) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table REPLICATOR_MAP ")+
+      "modify column GROUP_NAME char(10) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table REPL_CART_STATE ")+
+      "modify column REPLICATOR_NAME char(32) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table REPL_CART_STATE ")+
+      "modify column POSTED_FILENAME char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table REPL_CUT_STATE ")+
+      "modify column REPLICATOR_NAME char(32) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table REPL_CUT_STATE ")+
+      "modify column CUT_NAME char(12) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table REPORTS ")+
+      "modify column NAME char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table REPORTS ")+
+      "modify column DESCRIPTION char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table REPORTS ")+
+      "modify column EXPORT_PATH char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table REPORTS ")+
+      "modify column WIN_EXPORT_PATH char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table REPORTS ")+
+      "modify column STATION_ID char(16)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table REPORTS ")+
+      "modify column SERVICE_NAME char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table REPORTS ")+
+      "modify column STATION_FORMAT char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table REPORT_GROUPS ")+
+      "modify column REPORT_NAME char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table REPORT_GROUPS ")+
+      "modify column GROUP_NAME char(10)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table REPORT_SERVICES ")+
+      "modify column REPORT_NAME char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table REPORT_SERVICES ")+
+      "modify column SERVICE_NAME char(10)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table REPORT_SERVICES ")+
+      "modify column REPORT_NAME char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table REPORT_SERVICES ")+
+      "modify column SERVICE_NAME char(10)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table REPORT_STATIONS ")+
+      "modify column REPORT_NAME char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table REPORT_STATIONS ")+
+      "modify column STATION_NAME char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table SERVICES ")+
+      "modify column NAME char(10) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table SERVICES ")+
+      "modify column DESCRIPTION char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table SERVICES ")+
+      "modify column NAME_TEMPLATE char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table SERVICES ")+
+      "modify column DESCRIPTION_TEMPLATE char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table SERVICES ")+
+      "modify column PROGRAM_CODE char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table SERVICES ")+
+      "modify column TRACK_GROUP char(10)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table SERVICES ")+
+      "modify column AUTOSPOT_GROUP char(10)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table SERVICES ")+
+      "modify column TFC_PATH char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table SERVICES ")+
+      "modify column TFC_WIN_PATH char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table SERVICES ")+
+      "modify column TFC_IMPORT_TEMPLATE char(64) default 'Rivendell Standard Import'";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table SERVICES ")+
+      "modify column TFC_LABEL_CART char(32)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table SERVICES ")+
+      "modify column TFC_TRACK_CART char(32)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table SERVICES ")+
+      "modify column TFC_BREAK_STRING char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table SERVICES ")+
+      "modify column TFC_TRACK_STRING char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table SERVICES ")+
+      "modify column MUS_PATH char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table SERVICES ")+
+      "modify column MUS_WIN_PATH char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table SERVICES ")+
+      "modify column MUS_IMPORT_TEMPLATE char(64) default 'Rivendell Standard Import'";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table SERVICES ")+
+      "modify column MUS_LABEL_CART char(32)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table SERVICES ")+
+      "modify column MUS_TRACK_CART char(32)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table SERVICES ")+
+      "modify column MUS_BREAK_STRING char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table SERVICES ")+
+      "modify column MUS_TRACK_STRING char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table SERVICE_CLOCKS ")+
+      "modify column SERVICE_NAME char(10) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table SERVICE_CLOCKS ")+
+      "modify column CLOCK_NAME char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table SERVICE_PERMS ")+
+      "modify column STATION_NAME char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table SERVICE_PERMS ")+
+      "modify column SERVICE_NAME char(10)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table STACK_LINES ")+
+      "modify column SERVICE_NAME char(10) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table STATIONS ")+
+      "modify column NAME char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table STATIONS ")+
+      "modify column SHORT_NAME char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table STATIONS ")+
+      "modify column DESCRIPTION char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table STATIONS ")+
+      "modify column USER_NAME char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table STATIONS ")+
+      "modify column DEFAULT_NAME char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table STATIONS ")+
+      "modify column IPV4_ADDRESS char(15) default '127.0.0.2'";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table STATIONS ")+
+      "modify column HTTP_STATION char(64) default 'localhost'";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table STATIONS ")+
+      "modify column CAE_STATION char(64) default 'localhost'";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table STATIONS ")+
+      "modify column EDITOR_PATH char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table STATIONS ")+
+      "modify column JACK_SERVER_NAME char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table STATIONS ")+
+      "modify column JACK_COMMAND_LINE char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table STATIONS ")+
+      "modify column HPI_VERSION char(16)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table STATIONS ")+
+      "modify column JACK_VERSION char(16)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table STATIONS ")+
+      "modify column ALSA_VERSION char(16)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table SWITCHER_NODES ")+
+      "modify column STATION_NAME char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table SWITCHER_NODES ")+
+      "modify column HOSTNAME char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table SWITCHER_NODES ")+
+      "modify column PASSWORD char(64)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table SWITCHER_NODES ")+
+      "modify column DESCRIPTION char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table SYSTEM ")+
+      "modify column ISCI_XREFERENCE_PATH char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table SYSTEM ")+
+      "modify column TEMP_CART_GROUP char(10)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table SYSTEM ")+
+      "modify column NOTIFICATION_ADDRESS char(15) default '"+
+      RD_NOTIFICATION_ADDRESS+"'";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table TRIGGERS ")+
+      "modify column CUT_NAME char(12)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table TTYS ")+
+      "modify column STATION_NAME char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table TTYS ")+
+      "modify column PORT char(20)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table USERS ")+
+      "modify column LOGIN_NAME char(255) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table USERS ")+
+      "modify column FULL_NAME char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table USERS ")+
+      "modify column PHONE_NUMBER char(20)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table USERS ")+
+      "modify column DESCRIPTION char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table USERS ")+
+      "modify column PASSWORD char(32)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table USERS ")+
+      "modify column PAM_SERVICE char(32) default 'rivendell'";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table USER_PERMS ")+
+      "modify column USER_NAME char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table USER_PERMS ")+
+      "modify column GROUP_NAME char(10)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table USER_SERVICE_PERMS ")+
+      "modify column USER_NAME char(255) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table USER_SERVICE_PERMS ")+
+      "modify column SERVICE_NAME char(10) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table VGUEST_RESOURCES ")+
+      "modify column STATION_NAME char(64) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table WEBAPI_AUTHS ")+
+      "modify column TICKET char(41) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table WEBAPI_AUTHS ")+
+      "modify column LOGIN_NAME char(255) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table WEBAPI_AUTHS ")+
+      "modify column IPV4_ADDRESS char(16) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table WEB_CONNECTIONS ")+
+      "modify column LOGIN_NAME char(255)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table WEB_CONNECTIONS ")+
+      "modify column IP_ADDRESS char(16)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 296
   //
   if((cur_schema==296)&&(set_schema<cur_schema)) {

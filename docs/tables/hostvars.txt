@@ -1,0 +1,12 @@
+                HOSTVARS Table Layout for Rivendell
+
+The HOSTVARS table holds host variable definitions.
+
+
+FIELD NAME           TYPE              REMARKS
+---------------------------------------------------------------
+ID                   int(11)           Primary key, auto increment
+STATION_NAME         varchar(64)       From STATIONS.NAME
+NAME                 varchar(32)
+VARVALUE             varchar(191)
+REMARK               varchar(191)

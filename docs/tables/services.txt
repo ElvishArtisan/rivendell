@@ -6,25 +6,25 @@ table:
 
 FIELD NAME              TYPE               REMARKS
 ---------------------------------------------------------------
-NAME                    char(10) unsigned  Primary Key
-DESCRIPTION             char(255)
-NAME_TEMPLATE           char(255)
-DESCRIPTION_TEMPLATE    char(255)
-PROGRAM_CODE            char(255)
+NAME                    varchar(10) unsigned  Primary Key
+DESCRIPTION             varchar(191)
+NAME_TEMPLATE           varchar(191)
+DESCRIPTION_TEMPLATE    varchar(191)
+PROGRAM_CODE            varchar(191)
 CHAIN_LOG               enum('N','Y')
-TRACK_GROUP             char(10)           From GROUPS.NAME
-AUTOSPOT_GROUP          char(10)           From GROUPS.NAME
+TRACK_GROUP             varchar(10)           From GROUPS.NAME
+AUTOSPOT_GROUP          varchar(10)           From GROUPS.NAME
 AUTO_REFRESH            enum('N','Y')
 DEFAULT_LOG_SHELFLIFE   int(11)
-LOG_SHELFLIFE_ORIGIN    int(11)            0=Air Date, 1=Log Creation
+LOG_SHELFLIFE_ORIGIN    int(11)               0=Air Date, 1=Log Creation
 ELR_SHELFLIFE           int(11)
-TFC_PATH                char(255)
+TFC_PATH                varchar(191)
 TFC_PREIMPORT_CMD       text
-TFC_WIN_PATH            char(255)
+TFC_WIN_PATH            varchar(191)
 TFC_WIN_PREIMPORT_CMD   text
-TFC_IMPORT_TEMPLATE     char(64)           From IMPORT_TEMPLATES.NAME
-TFC_LABEL_CART          char(32)
-TFC_TRACK_CART          char(32)
+TFC_IMPORT_TEMPLATE     varchar(64)           From IMPORT_TEMPLATES.NAME
+TFC_LABEL_CART          varchar(32)
+TFC_TRACK_CART          varchar(32)
 TFC_CART_OFFSET         int(11)
 TFC_CART_LENGTH         int(11)
 TFC_TITLE_OFFSET        int(11)
@@ -35,8 +35,6 @@ TFC_MINUTES_OFFSET      int(11)
 TFC_MINUTES_LENGTH      int(11)
 TFC_SECONDS_OFFSET      int(11)
 TFC_SECONDS_LENGTH      int(11)
-TFC_LENGTH_OFFSET       int(11)            RETIRED
-TFC_LENGTH_LENGTH       int(11)            RETIRED
 TFC_LEN_HOURS_OFFSET    int(11)
 TFC_LEN_HOURS_LENGTH    int(11)
 TFC_LEN_MINUTES_OFFSET  int(11)
@@ -49,15 +47,15 @@ TFC_EVENT_ID_OFFSET     int(11)
 TFC_EVENT_ID_LENGTH     int(11)
 TFC_ANNC_TYPE_OFFSET    int(11)
 TFC_ANNC_TYPE_LENGTH    int(11)
-MUS_PATH                char(255)
+MUS_PATH                varchar(191)
 MUS_PREIMPORT_CMD       text
-MUS_WIN_PATH            char(255)
+MUS_WIN_PATH            varchar(191)
 MUS_WIN_PREIMPORT_CMD   text
-MUS_IMPORT_TEMPLATE     char(64)           From IMPORT_TEMPLATES.NAME
-MUS_LABEL_CART          char(32)
-MUS_TRACK_CART          char(32)
-MUS_BREAK_STRING        char(64)
-MUS_TRACK_STRING        char(64)
+MUS_IMPORT_TEMPLATE     varchar(64)           From IMPORT_TEMPLATES.NAME
+MUS_LABEL_CART          varchar(32)
+MUS_TRACK_CART          varchar(32)
+MUS_BREAK_STRING        varchar(64)
+MUS_TRACK_STRING        varchar(64)
 MUS_CART_OFFSET         int(11)
 MUS_CART_LENGTH         int(11)
 MUS_TITLE_OFFSET        int(11)
@@ -74,8 +72,6 @@ MUS_LEN_MINUTES_OFFSET  int(11)
 MUS_LEN_MINUTES_LENGTH  int(11)
 MUS_LEN_SECONDS_OFFSET  int(11)
 MUS_LEN_SECONDS_LENGTH  int(11)
-MUS_LENGTH_OFFSET       int(11)             RETIRED
-MUS_LENGTH_LENGTH       int(11)             RETIRED
 MUS_DATA_OFFSET         int(11)
 MUS_DATA_LENGTH         int(11)
 MUS_EVENT_ID_OFFSET     int(11)

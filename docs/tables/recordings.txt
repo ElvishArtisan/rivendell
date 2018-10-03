@@ -11,9 +11,9 @@ IS_ACTIVE            enum('N','Y')
 TYPE                 int(11)           0=Recording,1=Macro Event,
                                        2=Switch Event,3=Playout,
                                        4=Download,5=Upload
-STATION_NAME         char(64)          From STATIONS.NAME
+STATION_NAME         varchar(64)       From STATIONS.NAME
 CHANNEL              int(10) unsigned
-CUT_NAME             char(12)          From CUTS.CUT_NAME
+CUT_NAME             varchar(12)       From CUTS.CUT_NAME
 SUN                  enum('N','Y')
 MON                  enum('N','Y')
 TUE                  enum('N','Y')
@@ -21,7 +21,7 @@ WED                  enum('N','Y')
 THU                  enum('N','Y')
 FRI                  enum('N','Y')
 SAT                  enum('N','Y')
-DESCRIPTION          char(64)          Remarks
+DESCRIPTION          varchar(64)       Remarks
 
 START_TYPE           int(10)           0=Hard Timed,1=GPI
 START_TIME           time
@@ -57,8 +57,8 @@ EXIT_CODE            int(11)           0 = Ok, 1 = Short Length,
                                        2 = Low Level, 3 = High Level
 EXIT_TEXT            text
 ONE_SHOT             enum ('N','Y')
-URL                  char(255)
-URL_USERNAME         char(64)
-URL_PASSWORD         char(64)
+URL                  varchar(255)
+URL_USERNAME         varchar(64)
+URL_PASSWORD         varchar(64)
 ENABLE_METADATA      enum('N','Y')
 FEED_ID              int               From FEEDS.ID

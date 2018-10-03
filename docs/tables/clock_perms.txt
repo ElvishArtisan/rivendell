@@ -8,5 +8,5 @@ in the CLOCK_PERMS table:
 FIELD NAME           TYPE              REMARKS
 ---------------------------------------------------------------
 ID                   int(10) unsigned  Primary key, auto increment
-CLOCK_NAME           char(64)          Index
-SERVICE_NAME         char(10)          Index
+CLOCK_NAME           varchar(64)       Index
+SERVICE_NAME         varchar(10)       Index

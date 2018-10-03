@@ -6,7 +6,7 @@ events.
 FIELD NAME           TYPE              REMARKS
 ------------------------------------------------------------------------------
 ID                   int(11)           Primary key, auto increment
-STATION_NAME         char(64)          From STATIONS.NAME
+STATION_NAME         varchar(64)       From STATIONS.NAME
 CHANNEL              int(10) unsigned  From DECKS.CHANNEL
 NUMBER               int(11) signed
 CART_NUMBER          int(10) unsigned

@@ -2,19 +2,18 @@
 
 The CUTS table holds data concerning each individual audio cut on the
 system, as opposed to CART (where individual entries may reference
-more than one cut, as in the case of rotators).  Following is the
-layout of a record in the CUTS table:
+more than one cut, as in the case of rotators).
 
 FIELD NAME           TYPE              REMARKS
 ---------------------------------------------------------------
-CUT_NAME             char(12)          * Primary key, Base name of WAV file
+CUT_NAME             varchar(12)       * Primary key, Base name of WAV file
 CART_NUMBER          int(10) unsigned  Parent Cart Entry, Indexed
 EVERGREEN            enum('N','Y')
-DESCRIPTION          char(64)          Indexed
-OUTCUE               char(64)          Indexed
-ISRC                 char(12)          International Standard Recording Code
-ISCI                 char(32)          ISCI Code
-SHA1_HASH            char(40)
+DESCRIPTION          varchar(64)       Indexed
+OUTCUE               varchar(64)       Indexed
+ISRC                 varchar(12)       International Standard Recording Code
+ISCI                 varchar(32)       ISCI Code
+SHA1_HASH            varchar(40)
 LENGTH               int(10) unsigned  Overall length in ms.
 ORIGIN_DATETIME      datetime          Date/Time when recorded
 START_DATETIME       datetime
@@ -28,9 +27,9 @@ WED                  enum('N','Y')
 THU                  enum('N','Y')
 FRI                  enum('N','Y')
 SAT                  enum('N','Y')
-ORIGIN_NAME          char(64)          Workstation ID where recorded
-ORIGIN_LOGIN_NAME    char(255)         From USERS.LOGIN_NAME
-SOURCE_HOSTNAME      char(255)         Hostname of remote originator of audio
+ORIGIN_NAME          varchar(64)       Workstation ID where recorded
+ORIGIN_LOGIN_NAME    varchar(191)      From USERS.LOGIN_NAME
+SOURCE_HOSTNAME      varchar(191)      Hostname of remote originator of audio
 WEIGHT               int(10) unsigned  Relative airplay frequency, 1 = normal
 PLAY_ORDER           int(11)           Play order when weighting disabled
 LAST_PLAY_DATETIME   datetime

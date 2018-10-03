@@ -1,0 +1,23 @@
+                  PODCASTS Table Layout for Rivendell
+
+The PODCASTS table holds information about individual RSS posts.
+
+FIELD NAME           TYPE              REMARKS
+------------------------------------------------------------------------------
+ID                   int(10) unsigned  * Primary key, Auto Increment
+FEED_ID              int(10) unsigned  From FEEDS.ID
+STATUS               int(10) unsigned
+ITEM_TITLE           varchar(191)
+ITEM_DESCRIPTION     text
+ITEM_CATEGORY        varchar(64)
+ITEM_LINK            varchar(191)
+ITEM_COMMENTS        varchar(191)
+ITEM_AUTHOR          varchar(191)
+ITEM_SOURCE_TEXT     varchar(64)
+ITEM_SOURCE_URL      varchar(191)
+AUDIO_FILENAME       varchar(191)
+AUDIO_LENGTH         int(10) unsigned
+AUDIO_TIME           int(10) unsigned
+SHELF_LIFE           int(11)
+ORIGIN_DATETIME      datetime
+EFFECTIVE_DATETIME   datetime

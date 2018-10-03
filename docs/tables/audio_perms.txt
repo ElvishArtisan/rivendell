@@ -8,5 +8,5 @@ in the AUDIO_PERMS table:
 FIELD NAME           TYPE              REMARKS
 ---------------------------------------------------------------
 ID                   int(10) unsigned  Primary key, auto increment
-GROUP_NAME           char(10)          Index
-SERVICE_NAME         char(10)          Index
+GROUP_NAME           varchar(10)       Index
+SERVICE_NAME         varchar(10)       Index

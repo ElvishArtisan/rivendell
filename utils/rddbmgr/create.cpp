@@ -63,6 +63,13 @@ bool MainObject::CreateNewDb(QString *err_msg) const
   //
   // Create a Rivendell DB of schema number 286
   //
+  // Maintainer's Note:
+  //
+  // DO NOT alter the schema in this method! Rather, when adding schema
+  // changes, add the update to the 'UpdateSchema()' [updateschema.cpp]
+  // and the reversion to the 'RevertSchema()' [revertschema.cpp] methods.
+  //
+
   QString sql;
   bool ok=false;
 

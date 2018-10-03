@@ -8,4 +8,4 @@ FIELD NAME                   TYPE          REMARKS
 ID                           int(11)       Primary Key, Not Null, Unique
                                            Auto-Increment
 DROPBOX_ID                   int(11)       From DROPBOXES.ID
-SCHED_CODE                   char(11)
+SCHED_CODE                   varchar(11)
