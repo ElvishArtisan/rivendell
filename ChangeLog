@@ -17740,3 +17740,6 @@
 	* Removed the POSTGRESQL_BUILTIN_DATABASE define from 'lib/rd.h'.
 2018-10-03 Fred Gleason <fredg@paravelsystems.com>
 	* Added a beta test warning to 'README'.
+2018-10-03 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'UPGRADING' to include information for v3.x.
+	* Updated 'INSTALL'.
