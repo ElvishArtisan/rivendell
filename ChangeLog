@@ -17642,3 +17642,11 @@
 2018-09-20 Fred Gleason <fredg@paravelsystems.com>
 	* Corrected an omission in the documentation of the
 	'Start Button' ['PB'] RML.
+2018-10-03 Patrick Linstruth <patrick@deltecent.com>
+	* Added --log-syslog, --log-directory, and --log-filename options
+	to rdimport(1) and logging to RDConfig::log().
+	* Modified rdservice(8) to launch rdimport(1) dropboxes with
+	--log-directory and --log-file if a dropbox Log File is specified
+	in rdadmin(1).
+	* Updated rdadmin(1) and rdimport(1) man pages.
+	* Updated Dropboxes section in Operations Guide.
