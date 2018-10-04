@@ -47,12 +47,16 @@ RDTimeEdit::RDTimeEdit(QWidget *parent)
   setPalette(p);
   edit_labels[0]=new QLabel("00",this);
   edit_labels[0]->setAlignment(Qt::AlignCenter);
+  edit_labels[0]->setAutoFillBackground(true);
   edit_labels[1]=new QLabel("00",this);
   edit_labels[1]->setAlignment(Qt::AlignCenter);
+  edit_labels[1]->setAutoFillBackground(true);
   edit_labels[2]=new QLabel("00",this);
   edit_labels[2]->setAlignment(Qt::AlignCenter);
+  edit_labels[2]->setAutoFillBackground(true);
   edit_labels[3]=new QLabel("0",this);
   edit_labels[3]->setAlignment(Qt::AlignCenter);
+  edit_labels[3]->setAutoFillBackground(true);
   edit_sep_labels[0]=new QLabel(":",this);
   edit_sep_labels[0]->setAlignment(Qt::AlignCenter);
   edit_sep_labels[1]=new QLabel(":",this);

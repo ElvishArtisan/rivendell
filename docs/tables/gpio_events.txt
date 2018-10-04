@@ -6,7 +6,7 @@ by the system.
 FIELD NAME           TYPE              REMARKS
 ------------------------------------------------------------------
 ID                   int(10) unsigned  Primary key, auto increment
-STATION_NAME         char(64)          From STATIONS.NAME
+STATION_NAME         varchar(64)       From STATIONS.NAME
 MATRIX               int(10) unsigned  From MATRICES.MATRIX
 NUMBER               int(11)
 TYPE                 int(11)           0 = GPI, 1 = GPO

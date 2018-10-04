@@ -6,7 +6,7 @@ The CAST_DOWNLOADS table holds data concerning downloads of podcast episodes.
 FIELD NAME           TYPE              REMARKS
 ------------------------------------------------------------------------------
 ID                   int(10) unsigned  Primary key, Auto Increment
-FEED_KEY_NAME        char(8)           From FEEDS.KEY_NAME
+FEED_KEY_NAME        varchar(8)        From FEEDS.KEY_NAME
 CAST_ID              int(10) unsigned  From PODCASTS.ID
 ACCESS_DATE          date
 ACCESS_COUNT         int(10) unsigned

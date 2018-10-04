@@ -34,8 +34,8 @@ HeartbeatInterval=360
 ;Engine=MyISAM
 ; 'Charset' and 'Collation' should *not* changed except for development
 ; purposes.
-;Charset=utf8
-;Collation=utf8_general_ci
+;Charset=utf8mb4
+;Collation=utf8mb4_general_ci
 
 [AudioStore]
 MountSource=

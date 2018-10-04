@@ -1,0 +1,19 @@
+                   INPUTS Table Layout for Rivendell
+
+The INPUTS table holds information regarding switcher inputs.
+
+
+FIELD NAME           TYPE              REMARKS
+---------------------------------------------------------------
+ID                   int(11)           Primary key, auto increment
+STATION_NAME         varchar(64)       From STATIONS.NAME
+MATRIX               int(11)
+NUMBER               int(11)
+NAME                 varchar(64)
+FEED_NAME            varchar(8)
+CHANNEL_MODE         int(11)
+ENGINE_NUM           int(11)
+DEVICE_NUM           int(11)
+NODE_HOSTNAME        varchar(191)
+NODE_TCP_PORT        int(11)
+NODE_SLOT            int(11)

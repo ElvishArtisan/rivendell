@@ -6,7 +6,7 @@ physical audio inputs.
 FIELD NAME           TYPE              REMARKS
 ---------------------------------------------------------------
 ID                   int(10) unsigned  Primary key, auto increment
-STATION_NAME	     char(64)
+STATION_NAME	     varchar(64)
 CARD_NUMBER	     int(11) signed
 PORT_NUMBER          int(11) signed
 TYPE                 int(11) signed    0 = Analog, 1 = AES/EBU,

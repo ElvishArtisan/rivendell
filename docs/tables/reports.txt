@@ -5,24 +5,24 @@ The REPORTS table holds data concerning each report configured on the system.
 FIELD NAME              TYPE               REMARKS
 ---------------------------------------------------------------
 ID                      int(10) unsigned   Primary Key
-NAME                    char(64)
-DESCRIPTION             char(64)
+NAME                    varchar(64)
+DESCRIPTION             varchar(64)
 EXPORT_FILTER           int(11)
-EXPORT_PATH             char(255)
+EXPORT_PATH             varchar(191)
 POST_EXPORT_CMD         text
-WIN_EXPORT_PATH         char(255)
+WIN_EXPORT_PATH         varchar(191)
 WIN_POST_EXPORT_CMD     text
 EXPORT_TFC              enum('N','Y')
 EXPORT_MUS              enum('N','Y')
 FORCE_MUS               enum('N','Y')
 EXPORT_GEN              enum('N','Y')
-STATION_ID              char(16)
+STATION_ID              varchar(16)
 CART_DIGITS             int(10) unsigned
 USE_LEADING_ZEROS       enum('N','Y')
 LINES_PER_PAGE          int(11)
-SERVICE_NAME            char(64)
+SERVICE_NAME            varchar(64)
 STATION_TYPE            int(11)
-STATION_FORMAT          char(64)
+STATION_FORMAT          varchar(64)
 FILTER_ONAIR_FLAG       enum('N','Y')
 FILTER_GROUPS           enum('N','Y')
 START_TIME              time

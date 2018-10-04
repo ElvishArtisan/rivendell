@@ -6,5 +6,5 @@ RDCatch module.  Following is the layout of a record in the RDAIRPLAY table:
 FIELD NAME           TYPE              REMARKS
 ------------------------------------------------------------------------------
 ID                   int(10) unsigned  * Primary key, Auto Increment
-STATION              char(64)          Workstation, Indexed
-ERROR_RML            char(255)
+STATION              varchar(64)       Workstation, Indexed
+ERROR_RML            varchar(191)

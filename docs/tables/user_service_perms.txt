@@ -7,5 +7,5 @@ are allowed to be accessed by which users.
 FIELD NAME           TYPE              REMARKS
 ---------------------------------------------------------------
 ID                   int(11) signed    Primary key, auto increment
-USER_NAME            char(255)         From USERS.LOGIN_NAME
-SERVICE_NAME         char(10)          From SERVICES.NAME
+USER_NAME            varchar(191)      From USERS.LOGIN_NAME
+SERVICE_NAME         varchar(10)       From SERVICES.NAME

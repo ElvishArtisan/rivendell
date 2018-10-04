@@ -1,7 +1,6 @@
                   RDAIRPLAY Table Layout for Rivendell
 
 The RDAIRPLAY table holds configuration data for the RDAirPlay widget.
-Following is the layout of a record in the RDAIRPLAY table:
 
 FIELD NAME           TYPE              REMARKS
 ------------------------------------------------------------------------------
@@ -21,17 +20,17 @@ DEFAULT_TRANS_TYPE     int(11)
 BAR_ACTION             int(10) unsigned  0=None, 1=Start Next
 FLASH_PANEL            enum('N','Y')
 PANEL_PAUSE_ENABLED    enum('N','Y')
-BUTTON_LABEL_TEMPLATE  char(32)
+BUTTON_LABEL_TEMPLATE  varchar(32)
 PAUSE_ENABLED          enum('N','Y')
-DEFAULT_SERVICE        char(10)          From SERVICES.NAME
+DEFAULT_SERVICE        varchar(10)       From SERVICES.NAME
 HOUR_SELECTOR_ENABLED  enum('N','Y')
 EXIT_CODE              int(11)           0=clean, 1=dirty
 VIRTUAL_EXIT_CODE      int(11)           0=clean, 1=dirty
-EXIT_PASSWORD          char(41)
-SKIN_PATH              char(255)
+EXIT_PASSWORD          varchar(41)
+SKIN_PATH              varchar(191)
 SHOW_COUNTERS          enum('N','Y')
 AUDITION_PREROLL       int(11)
-TITLE_TEMPLATE         char(64)
-ARTIST_TEMPLATE        char(64)
-OUTCUE_TEMPLATE        char(64)
-DESCRIPTION_TEMPLATE   char(64)
+TITLE_TEMPLATE         varchar(64)
+ARTIST_TEMPLATE        varchar(64)
+OUTCUE_TEMPLATE        varchar(64)
+DESCRIPTION_TEMPLATE   varchar(64)

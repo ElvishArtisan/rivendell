@@ -310,7 +310,7 @@ void RDEventLine::clear()
    event_color=QColor();
    event_preimport_list->clear();
    event_postimport_list->clear();
-   event_start_time=QTime();
+   event_start_time=QTime(0,0,0,0);
    event_length=0;
    event_autofill_slop=-1;
    event_sched_group="";

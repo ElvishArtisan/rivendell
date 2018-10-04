@@ -1,0 +1,10 @@
+                 REPORT_GROUPS Table Layout for Rivendell
+
+The REPORT_GROUPS table holds data which groups are referenced by
+a given report configuration.
+
+FIELD NAME              TYPE               REMARKS
+---------------------------------------------------------------
+ID                      int(10) unsigned   Primary Key
+REPORT_NAME             varchar(64)
+GROUP_NAME              varchar(10)
