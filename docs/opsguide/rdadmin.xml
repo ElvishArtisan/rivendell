@@ -1725,7 +1725,10 @@
 	    <listitem>
 	      <para>
 		The full path to a file to which to write a log of dropbox
-		operations. Useful for troubleshooting problems.
+		operations. Useful for troubleshooting problems. If a log file
+		is not specified, the log will be written to the log specified
+		in the <userinput>[Logs]</userinput> section of
+		<command>rd.conf</command><manvolnum>5</manvolnum>.
 	      </para>
 	    </listitem>
 	  </varlistentry>
