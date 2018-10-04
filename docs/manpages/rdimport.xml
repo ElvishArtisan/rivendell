@@ -224,12 +224,86 @@
 
     <varlistentry>
       <term>
-	<option>--log-mode</option>
+	<option>--log-directory=</option><replaceable>directory</replaceable>
       </term>
       <listitem>
 	<para>
-	  Prepend date/time information to each line of printed status
-	  (implies the <option>--verbose</option> option).
+	  The <replaceable>directory</replaceable> to write logs to.
+	  Overrides the <userinput>[Logs]</userinput> section of
+	  <command>rd.conf</command><manvolnum>5</manvolnum>.
+	  The <option>--log-filename</option> option must also be specified.
+	  This option is mutually exclusive with the <option>--log-syslog</option> option.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--log-filename=</option><replaceable>filename</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  The <replaceable>filename</replaceable> to write logs to.
+	  Overrides the <userinput>[Logs]</userinput> section of
+	  <command>rd.conf</command><manvolnum>5</manvolnum>.
+	  The <option>--log-directory</option> option must also be specified.
+	  This option is mutually exclusive with the <option>--log-syslog</option> option.
+	</para>
+	<para>
+	  The following wildcards can be used can be used in <replaceable>filename</replaceable>:
+	</para>
+	<variablelist>
+	  <varlistentry>
+	    <term><userinput>%d</userinput></term>
+	    <listitem>
+	      <para>The day of the month (01 - 31)</para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term><userinput>%h</userinput></term>
+	    <listitem>
+	      <para>The hour (00 - 23)</para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term><userinput>%M</userinput></term>
+	    <listitem>
+	      <para>The month (01 - 12)</para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term><userinput>%n</userinput></term>
+	    <listitem>
+	      <para>The name of the originating module --e.g. 'rdairplay', 'caed'.</para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term><userinput>%s</userinput></term>
+	    <listitem>
+	      <para>The second (00 - 60)</para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term><userinput>%Y</userinput></term>
+	    <listitem>
+	      <para>The four digit year</para>
+	    </listitem>
+	  </varlistentry>
+	</variablelist>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--log-syslog</option>
+      </term>
+      <listitem>
+	<para>
+	  Writes the logs to <command>syslog</command><manvolnum>3</manvolnum>.
+	  Overrides the <userinput>[Logs]</userinput> section of
+	  <command>rd.conf</command><manvolnum>5</manvolnum>.
+	  This option is mutually exclusive with the <option>--log-directory</option>
+	  and <option>--log-filename</option> options.
 	</para>
       </listitem>
     </varlistentry>
