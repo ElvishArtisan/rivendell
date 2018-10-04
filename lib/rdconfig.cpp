@@ -212,9 +212,21 @@ RDConfig::LogFacility RDConfig::logFacility() const
 }
 
 
+void RDConfig::setLogFacility(RDConfig::LogFacility log_facility)
+{
+  conf_log_facility=log_facility;
+}
+
+
 QString RDConfig::logDirectory() const
 {
   return conf_log_directory;
+}
+
+
+void RDConfig::setLogDirectory(QString log_directory)
+{
+  conf_log_directory=log_directory;
 }
 
 
@@ -227,6 +239,12 @@ QString RDConfig::logCoreDumpDirectory() const
 QString RDConfig::logPattern() const
 {
   return conf_log_pattern;
+}
+
+
+void RDConfig::setLogPattern(QString log_pattern)
+{
+  conf_log_pattern=log_pattern;
 }
 
 
