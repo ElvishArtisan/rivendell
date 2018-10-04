@@ -447,6 +447,8 @@ void Xport::XmlExit(const QString &str,int code,const QString &srcfile,
   if(xport_post!=NULL) {
     delete xport_post;
   }
+  rda->log(RDConfig::LogErr,QString().sprintf("%s '%s' %s",(const char *)str,(const char *)srcfile,
+    (srcline>0)?(const char *)QString().sprintf("line %d",srcline):""));
 #ifdef RDXPORT_DEBUG
   if(srcline>0) {
     RDXMLResult(str+" \""+srcfile+"\" "+QString().sprintf("line %d",srcline),
