@@ -68,7 +68,6 @@ class MainObject : public QObject
   bool RunPattern(const QString &pattern,const QString &filename,
 		  RDWaveData *wavedata,QString *groupname);
   bool VerifyPattern(const QString &pattern);
-  void PrintLogDateTime(FILE *f=stdout);
   void DeleteCuts(unsigned cartnum);
   QDateTime GetCachedTimestamp(const QString &filename);
   void WriteTimestampCache(const QString &filename,const QDateTime &dt);
@@ -78,7 +77,9 @@ class MainObject : public QObject
   unsigned import_file_key;
   RDGroup *import_group;
   bool import_verbose;
-  bool import_log_mode;
+  bool import_log_syslog;
+  QString import_log_directory;
+  QString import_log_filename;
   bool import_to_mono;
   bool import_use_cartchunk_cutid;
   int import_cart_number_offset;
