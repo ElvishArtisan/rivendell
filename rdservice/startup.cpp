@@ -21,6 +21,7 @@
 #include <stdio.h>
 
 #include <qstringlist.h>
+#include <qfileinfo.h>
 
 #include <rdapplication.h>
 #include <rdconf.h>
@@ -165,7 +166,6 @@ bool MainObject::StartDropboxes(QString *err_msg)
     args.push_back(QString().sprintf("--persistent-dropbox-id=%d",
 				     q->value(15).toInt()));
     args.push_back("--drop-box");
-    args.push_back("--log-mode");
     sql=QString("select SCHED_CODE from DROPBOX_SCHED_CODES where ")+
       QString().sprintf("DROPBOX_ID=%d",q->value(0).toInt());
     q1=new RDSqlQuery(sql);
@@ -221,6 +221,14 @@ bool MainObject::StartDropboxes(QString *err_msg)
 				     q->value(13).toInt()));
     args.push_back(QString().sprintf("--enddate-offset=%d",
 				     q->value(14).toInt()));
+    if(!q->value(11).toString().isEmpty()) {
+      QFileInfo *fileinfo=new QFileInfo(q->value(11).toString());
+      args.push_back(QString().sprintf("--log-filename=%s",
+				     (const char *)fileinfo->fileName()));
+      args.push_back(QString().sprintf("--log-directory=%s",
+				     (const char *)fileinfo->absolutePath()));
+      args.push_back("--verbose");
+    }
     args.push_back(q->value(1).toString());
     args.push_back(q->value(2).toString());
 
@@ -232,85 +240,6 @@ bool MainObject::StartDropboxes(QString *err_msg)
       return false;
     }
     id++;
-
-
-
-    /*
-    QString cmd=QString().
-      sprintf("nice rdimport --persistent-dropbox-id=%d --drop-box --log-mode",
-	      q->value(15).toInt());
-    sql=QString("select SCHED_CODE from DROPBOX_SCHED_CODES where ")+
-      QString().sprintf("DROPBOX_ID=%d",q->value(0).toInt());
-    q1=new RDSqlQuery(sql);
-    while(q1->next()) {
-      cmd+=QString(" --add-scheduler-code=\"")+q1->value(0).toString()+"\"";
-    }
-    delete q1;
-    cmd+=
-      QString().sprintf(" --normalization-level=%d",q->value(3).toInt()/100);
-    cmd+=
-      QString().sprintf(" --autotrim-level=%d",q->value(4).toInt()/100);
-    if(q->value(5).toUInt()>0) {
-      cmd+=QString().sprintf(" --to-cart=%u",q->value(5).toUInt());
-    }
-    if(q->value(6).toString()=="Y") {
-      cmd+=" --use-cartchunk-cutid";
-    }
-    if(q->value(21).toInt()<1) {
-        cmd+=
-          QString().sprintf(" --segue-level=%d",q->value(21).toInt());
-        cmd+=
-          QString().sprintf(" --segue-length=%u",q->value(22).toUInt());
-    }
-    if(q->value(7).toString()=="Y") {
-      cmd+=" --title-from-cartchunk-cutid";
-    }
-    if(q->value(8).toString()=="Y") {
-      cmd+=" --delete-cuts";
-    }
-    if(q->value(20).toString()=="Y") {
-      cmd+=" --to-mono";
-    }
-    if(!q->value(9).toString().isEmpty()) {
-      cmd+=QString().sprintf(" \"--metadata-pattern=%s\"",
-			     (const char *)q->value(9).toString());
-    }
-    if(q->value(10).toString()=="Y") {
-      cmd+=" --fix-broken-formats";
-    }
-    if(q->value(12).toString()=="Y") {
-      cmd+=" --delete-source";
-    }
-    if(q->value(16).toString()=="Y") {
-      cmd+=QString().sprintf(" --create-startdate-offset=%d",
-			     q->value(17).toInt());
-      cmd+=QString().sprintf(" --create-enddate-offset=%d",
-			     q->value(18).toInt());
-    }
-    if(!q->value(19).toString().isEmpty()) {
-      cmd+=" --set-user-defined="+RDEscapeString(q->value(19).toString());
-    }
-    cmd+=QString().sprintf(" --startdate-offset=%d",q->value(13).toInt());
-    cmd+=QString().sprintf(" --enddate-offset=%d",q->value(14).toInt());
-    cmd+=QString().sprintf(" %s \"%s\"",(const char *)q->value(1).toString(),
-			   (const char *)q->value(2).toString());
-    if(!q->value(11).toString().isEmpty()) {
-      cmd+=QString().sprintf(" >> %s 2>> %s",
-			     (const char *)q->value(11).toString(),
-			     (const char *)q->value(11).toString());
-    }
-    else {
-      cmd+=" > /dev/null 2> /dev/null";
-    }
-    cmd+=" &";
-    LogLine(RDConfig::LogInfo,QString().
-	    sprintf("launching dropbox configuration: \"%s\"",
-		    (const char *)cmd));
-    if(fork()==0) {
-      system(cmd);
-      exit(0);
-    }
-    */
   }
   delete q;
   return true;
