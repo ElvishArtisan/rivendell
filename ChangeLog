@@ -16700,3 +16700,5 @@
 	* Fixed a regression in rdairplay(1) that caused carts Added or Copied
 	to a log to have a PLAY transition regardless of the default
 	transition type set in rdadmin(1).
+2018-10-05 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.19.2int04.
