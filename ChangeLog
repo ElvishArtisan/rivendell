@@ -16696,3 +16696,7 @@
 2018-09-20 Fred Gleason <fredg@paravelsystems.com>
 	* Corrected an omission in the documentation of the
 	'Start Button' ['PB'] RML.
+2018-10-05 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdairplay(1) that caused carts Added or Copied
+	to a log to have a PLAY transition regardless of the default
+	transition type set in rdadmin(1).
