@@ -1,7 +1,7 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v2.19.2int04 -- 10/5/2018
+v2.19.2int05 -- 10/6/2018
 
 Changes:
    BroadcastTools Support. Added a Switcher/GPIO driver for the
