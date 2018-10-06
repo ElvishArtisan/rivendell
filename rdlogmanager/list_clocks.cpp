@@ -388,12 +388,12 @@ void ListClocks::renameData()
   old_name_esc.replace(" ","_");
   QString new_name_esc=new_name;
   new_name_esc.replace(" ","_");
-  sql=QString().sprintf("alter table %s_CLK rename to %s_CLK",
+  sql=QString().sprintf("alter table `%s_CLK` rename to `%s_CLK`",
 			(const char *)old_name_esc,
 			(const char *)new_name_esc);
   q=new RDSqlQuery(sql);
   delete q;
-  sql=QString().sprintf("alter table %s_RULES rename to %s_RULES",
+  sql=QString().sprintf("alter table `%s_RULES` rename to `%s_RULES`",
 			(const char *)old_name_esc,
 			(const char *)new_name_esc);
   q=new RDSqlQuery(sql);
@@ -404,8 +404,8 @@ void ListClocks::renameData()
   //
   sql=QString().sprintf("update CLOCK_PERMS set CLOCK_NAME=\"%s\"\
                          where CLOCK_NAME=\"%s\"",
-			(const char *)new_name,
-			(const char *)item->text(0));
+			(const char *)RDEscapeString(new_name),
+			(const char *)RDEscapeString(item->text(0)));
   q=new RDSqlQuery(sql);
   delete q;
 
@@ -413,8 +413,8 @@ void ListClocks::renameData()
   // Rename Primary Key
   //
   sql=QString().sprintf("update CLOCKS set NAME=\"%s\" where NAME=\"%s\"",
-			(const char *)new_name,
-			(const char *)item->text(0));
+			(const char *)RDEscapeString(new_name),
+			(const char *)RDEscapeString(item->text(0)));
   q=new RDSqlQuery(sql);
   delete q;
 
