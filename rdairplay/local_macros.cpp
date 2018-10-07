@@ -44,6 +44,8 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
   int mach=0;
   RDLogLine::TransType trans=RDLogLine::Play;
   int offset=0;
+  int running;
+  int lines[TRANSPORT_QUANTITY];
 
   if(rml->role()!=RDMacro::Cmd) {
     return;
@@ -137,7 +139,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
 	}
 	if(rml->arg(2).toInt()==-2) {  // Start if trans type allows
 	  // Find first non-running event
-	  bool found=false;
+	  int found=false;
 	  for(int i=0;i<air_log[rml->arg(0).toInt()-1]->size();i++) {
 	    if((logline=air_log[rml->arg(0).toInt()-1]->logLine(i))!=NULL) {
 	      if(logline->status()==RDLogLine::Scheduled) {
@@ -899,6 +901,40 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
       rml->acknowledge(true);
       rda->ripc()->sendRml(rml);
     }   
+    break;
+
+  case RDMacro::FG:
+    if((rml->argQuantity()<1)||(rml->argQuantity()>2)) {
+      if(rml->echoRequested()) {
+	rml->acknowledge(false);
+	rda->ripc()->sendRml(rml);
+      }
+      return;
+    }
+ 
+    mach=rml->arg(0).toInt()-1;
+    if((mach<0)||(mach>RDAIRPLAY_LOG_QUANTITY)) {
+      if(rml->echoRequested()) {
+        rml->acknowledge(false);
+        rda->ripc()->sendRml(rml);
+      }
+      return;
+    }
+
+    fade=1000;
+    if(rml->argQuantity()>1) {
+      fade=rml->arg(1).toInt();
+    }
+
+    if((running=air_log[mach]->runningEvents(lines,false))>0) {
+      for (int i=0;i<running;i++) {
+        logline=air_log[mach]->logLine(lines[i]);
+        if(logline->status()==RDLogLine::Playing||logline->status()==RDLogLine::Finishing) {
+          air_log[mach]->stop(lines[i],fade);
+          break;
+        }
+      }
+    }
     break;
 
   default:
