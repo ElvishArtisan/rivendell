@@ -557,6 +557,35 @@
     </para>
   </sect2>
 
+  <sect2 xml:id="sect.rml.fage_and_go__fg_">
+    <title>Fade and Go [FG]</title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>rdairplay</command><manvolnum>1</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>FG</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Fade currently playing events and start next event.
+    </para>
+    <para>
+      <userinput>FG
+      <replaceable>mach</replaceable>
+      [<replaceable>fade</replaceable>]!</userinput>
+    </para>
+    <para>
+      Fade currently playing events in <replaceable>fade</replaceable> msecs
+      (default '1000') and start the next event for log machine
+      <replaceable>mach</replaceable>.
+    </para>
+  </sect2>
+
   <sect2 xml:id="sect.rml.fire_salvo__fs_">
     <title>Fire Salvo [FS]</title>
     <para>
