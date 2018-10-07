@@ -234,6 +234,7 @@ RDMacro RDMacro::fromString(const QString &str,RDMacro::Role role)
   case RDMacro::DS:
   case RDMacro::DX:
   case RDMacro::EX:
+  case RDMacro::FG:
   case RDMacro::FS:
   case RDMacro::GE:
   case RDMacro::GI:
