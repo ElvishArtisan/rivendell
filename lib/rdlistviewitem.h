@@ -32,6 +32,7 @@ class RDListViewItem : public Q3ListViewItem
 {
  public:
   RDListViewItem(Q3ListView *parent);
+  RDListViewItem(RDListViewItem *parent);
   int line() const;
   void setLine(int line);
   int id() const;
