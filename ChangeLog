@@ -17642,3 +17642,7 @@
 2018-09-20 Fred Gleason <fredg@paravelsystems.com>
 	* Corrected an omission in the documentation of the
 	'Start Button' ['PB'] RML.
+2018-10-07 Patrick Linstruth <patrick@deltecent.com>
+	* Added talk (intro) column to cart list view in rdlibrary(1)
+	* Added ability to expand cart to view individual cuts in rdlibrary(1)
+	* Added play/stop buttons to cart list in rdlibrary(1)
