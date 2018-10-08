@@ -51,6 +51,12 @@ MainWidget::MainWidget(QWidget *parent)
   db_daemon_start_needed=false;
   db=NULL;
 
+  if(geteuid()!=0) {
+    QMessageBox::critical(this,tr("RDDbConfig Error"),
+      tr("This application requires root permissions."));
+      exit(256);
+  }
+
   //
   // Open rd.conf(5)
   //
@@ -170,7 +176,7 @@ void MainWidget::updateLabels()
   db = new Db(&err_msg,rd_config);
 
   if (!db->isOpen()) {
-    QMessageBox::critical(this,tr("Cannot Open Database"),tr("Unable to open database. The connection parameters of the [Mysql] section of rd.conf may be incorrect or you may need to create a new database."));
+    QMessageBox::information(this,tr("Cannot Open Database"),tr("Unable to open database. The connection parameters of the [Mysql] section of rd.conf may be incorrect or you may need to create a new database."));
     label_schema->setVisible(false);
     db_backup_button->setEnabled(false);
     db_restore_button->setEnabled(false);
@@ -198,12 +204,6 @@ void MainWidget::createData()
   QString msg="Message";
   QString err_str;
 
-  if(geteuid()!=0) {
-    QMessageBox::warning(this,tr("RDDbConfig error"),
-      tr("Create requires root permissions."));
-      return;
-  }
-
   if (db->isOpen()) {
     if (QMessageBox::question(this,tr("Create Database"),tr("Creating a new database will erase all of your data. Are you sure you want to create a new database?"),(QMessageBox::No|QMessageBox::Yes)) != QMessageBox::Yes) {
       return;
@@ -217,6 +217,7 @@ void MainWidget::createData()
   delete mysql_login;
 
   if(admin_name.isEmpty()||admin_pwd.isEmpty()||hostname.isEmpty()||dbname.isEmpty()) {
+    QMessageBox::critical(this,tr("RDDbConfig Error"),tr("Did not specify username and/or password."));
     return;
   }
 
@@ -225,7 +226,10 @@ void MainWidget::createData()
   CreateDb *db_create=new CreateDb(hostname,dbname,admin_name,admin_pwd);
 
   if(db_create->create(this,&err_str,rd_config)) {
-    fprintf(stderr,"err_str: %s\n",(const char *)err_str);
+    QMessageBox::critical(this,tr("RDDbConfig Error"),err_str);
+  }
+  else {
+    QMessageBox::information(this,tr("Success"),tr("A new database has been successfully created."));
   }
 
   delete db_create;
@@ -262,7 +266,7 @@ void MainWidget::backupData()
     QApplication::restoreOverrideCursor();
     if (backupProcess.exitCode()) {
       fprintf(stderr,"Exit Code=%d\n",backupProcess.exitCode());
-      QMessageBox::critical(this,tr("RDDbConfig error"),
+      QMessageBox::critical(this,tr("RDDbConfig Error"),
         QString(backupProcess.readAllStandardError()));
     }
     else {
@@ -283,14 +287,8 @@ void MainWidget::restoreData()
 {
   QString filename;
 
-  if(geteuid()!=0) {
-    QMessageBox::warning(this,tr("RDDbConfig error"),
-      tr("Restore requires root permissions."));
-    return;
-  }
-
   if (!db->isOpen()) {
-    QMessageBox::critical(this,tr("RDDbConfig error"),
+    QMessageBox::critical(this,tr("RDDbConfig Error"),
       tr("Could not open Rivendell database."));
     return;
   }
@@ -316,7 +314,7 @@ void MainWidget::restoreData()
     restoreProcess.waitForFinished();
     QApplication::restoreOverrideCursor();
     if (restoreProcess.exitCode()) {
-      QMessageBox::critical(this,tr("RDDbConfig error"),
+      QMessageBox::critical(this,tr("RDDbConfig Error"),
       QString(restoreProcess.readAllStandardError()));
     }
     else {

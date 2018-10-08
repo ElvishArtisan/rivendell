@@ -65,11 +65,11 @@ MySqlLogin::MySqlLogin(QString msg,QString *hostname,QString *dbname,QString *us
   // MySql Host Name
   //
   login_host_edit=new QLineEdit(this);
+  login_host_edit->setReadOnly(true);
   login_host_edit->setFont(font);
   login_host_edit->setGeometry(100,sizeHint().height()-150,200,19);
   login_host_edit->setMaxLength(64);
   login_host_edit->setText(*login_host);
-  login_host_edit->setFocus();
   QLabel *login_host_label=new QLabel(login_host_edit,tr("&Hostname:"),this);
   login_host_label->setFont(font);
   login_host_label->setGeometry(10,sizeHint().height()-150,85,19);
@@ -79,11 +79,11 @@ MySqlLogin::MySqlLogin(QString msg,QString *hostname,QString *dbname,QString *us
   // MySql Database Name
   //
   login_dbname_edit=new QLineEdit(this);
+  login_dbname_edit->setReadOnly(true);
   login_dbname_edit->setFont(font);
   login_dbname_edit->setGeometry(100,sizeHint().height()-130,200,19);
   login_dbname_edit->setMaxLength(64);
   login_dbname_edit->setText(*login_dbname);
-  login_dbname_edit->setFocus();
   QLabel *login_dbname_label=new QLabel(login_dbname_edit,tr("&Database:"),this);
   login_dbname_label->setFont(font);
   login_dbname_label->setGeometry(10,sizeHint().height()-130,85,19);

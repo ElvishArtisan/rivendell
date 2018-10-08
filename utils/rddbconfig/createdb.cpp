@@ -20,6 +20,7 @@
 
 #include <qapplication.h>
 #include <qprocess.h>
+#include <qmessagebox.h>
 
 #include <rdconfig.h>
 #include <rdpaths.h>
@@ -34,7 +35,7 @@ CreateDb::CreateDb(QString host,QString database,QString username,QString passwo
   db_pass=password;
 }
 
-bool CreateDb::create(QObject *parent,QString *err_str,RDConfig *config)
+bool CreateDb::create(QWidget *parent,QString *err_str,RDConfig *config)
 {
   QString sql;
 
@@ -64,7 +65,7 @@ bool CreateDb::create(QObject *parent,QString *err_str,RDConfig *config)
     sql=QString().sprintf("drop database if exists `%s`",(const char *)db_name);
     q=new QSqlQuery(sql,db);
     if (!q->isActive()) {
-      *err_str+=QString(QObject::tr("Could not remove database"));
+      *err_str+=QString(QObject::tr("Could not remove old database"));
       return true;
     }
     delete q;
@@ -72,12 +73,13 @@ bool CreateDb::create(QObject *parent,QString *err_str,RDConfig *config)
     sql=QString().sprintf("create database if not exists `%s`",(const char *)db_name);
     q=new QSqlQuery(sql,db);
     if (!q->isActive()) {
-      *err_str+=QString(QObject::tr("Could not create database"));
+      *err_str+=QString(QObject::tr("Could not create new database"));
       return true;
     }
     delete q;
 
-    sql=QString().sprintf("grant all on * to %s identified by \"%s\"",(const char *)db_user,(const char *)db_pass);
+    sql=QString().sprintf("grant all on * to %s identified by \"%s\"",
+      (const char *)db_user,(const char *)db_pass);
     q=new QSqlQuery(sql,db);
     if (!q->isActive()) {
       *err_str+=QString().sprintf("Could not set permissions: %s",(const char *)sql);
@@ -93,7 +95,8 @@ bool CreateDb::create(QObject *parent,QString *err_str,RDConfig *config)
     rddbmgrProcess.waitForFinished();
     QApplication::restoreOverrideCursor();
     if (rddbmgrProcess.exitCode()) {
-      fprintf(stderr,"Exit Code=%d\n",rddbmgrProcess.exitCode());
+        *err_str+=QString().sprintf("Failed to create %s database. Rddbmgr exit code=%d", 
+        (const char *)db_name,rddbmgrProcess.exitCode());
       return true;
     }
   }
