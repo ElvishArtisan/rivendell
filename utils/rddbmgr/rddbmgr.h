@@ -78,13 +78,14 @@ class MainObject : public QObject
   //
   // modify.cpp
   //
-  bool Modify(QString *err_msg,int set_schema) const;
+  bool Modify(QString *err_msg,int set_schema);
   int GetCurrentSchema() const;
+  bool ModifyCharset(const QString &charset,const QString &collation);
 
   //
   // updateschema.cpp
   //
-  bool UpdateSchema(int cur_schema,int set_schema,QString *err_msg) const;
+  bool UpdateSchema(int cur_schema,int set_schema,QString *err_msg);
   void AverageCuts89(unsigned cartnum) const;
   void TotalMacros89(unsigned cartnum) const;
   void CreateAuxFieldsTable143(const QString &key_name) const;
@@ -96,7 +97,7 @@ class MainObject : public QObject
   //
   // revertschema.cpp
   //
-  bool RevertSchema(int cur_schema,int set_schema,QString *err_msg) const;
+  bool RevertSchema(int cur_schema,int set_schema,QString *err_msg);
 
   //
   // schemamap.cpp
@@ -120,8 +121,6 @@ class MainObject : public QObject
   QString db_mysql_database;
   QString db_mysql_driver;
   QString db_mysql_engine;
-  QString db_mysql_charset;
-  QString db_mysql_collation;
   bool db_verbose;
   bool db_yes;
   bool db_no;

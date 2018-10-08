@@ -156,17 +156,15 @@ void MainObject::CheckTableAttributes()
 	RDSqlQuery::apply(sql);
       }
     }
-    if(q->value(2).toString().toLower()!=db_mysql_collation.toLower()) {
-      printf("  Table \"%s\" uses charset/collation %s/%s, should be %s/%s. Fix? (y/N) ",
+    if(q->value(2).toString().toLower()!="utf8mb4_general_ci") {
+      printf("  Table \"%s\" uses charset/collation %s/%s, should be utf8mb4/utf8mb4_general_ci. Fix? (y/N) ",
 	     (const char *)q->value(0).toString().toUtf8(),
 	     (const char *)charset.toUtf8(),
-	     (const char *)q->value(2).toString().toUtf8(),
-	     (const char *)db_mysql_charset.toUtf8(),
-	     (const char *)db_mysql_collation.toUtf8());
+	     (const char *)q->value(2).toString().toUtf8());
       fflush(NULL);
       if(UserResponse()) {
-	RewriteTable(q->value(0).toString(),charset,db_mysql_charset,
-		     db_mysql_collation);
+	RewriteTable(q->value(0).toString(),charset,"utf8mb4",
+		     "utf8mb4_general_ci");
       }
     }
   }
@@ -183,18 +181,15 @@ void MainObject::CheckTableAttributes()
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(q->value(0).toString()==db_mysql_database) {
-      if((q->value(1).toString().toLower()!=db_mysql_charset.toLower())||
-	 (q->value(2).toString().toLower()!=db_mysql_collation.toLower())) {
-	printf("  Database uses default charset/collation %s/%s, should be %s/%s. Fix? (y/N) ",
+      if((q->value(1).toString().toLower()!="utf8mb4")||
+	 (q->value(2).toString().toLower()!="utf8mb4_general_ci")) {
+	printf("  Database uses default charset/collation %s/%s, should be utf8mb4/utf8mb4_general_ci. Fix? (y/N) ",
 	       (const char *)q->value(1).toString().toUtf8(),
-	       (const char *)q->value(2).toString().toUtf8(),
-	       (const char *)db_mysql_charset.toUtf8(),
-	       (const char *)db_mysql_collation.toUtf8());
+	       (const char *)q->value(2).toString().toUtf8());
 	fflush(NULL);
 	if(UserResponse()) {
 	  sql=QString("alter database `")+db_mysql_database+"` "+
-	    "character set "+db_mysql_charset+" "+
-	    "collate "+db_mysql_collation;
+	    "character set utf8mb4 collate utf8mb4_general_ci";
 	  RDSqlQuery::apply(sql);	
 	}
       }
@@ -216,7 +211,11 @@ void MainObject::RewriteTable(const QString &tblname,const QString &old_charset,
   }
   QString filename=tempdir+"/table.sql";
   QString out_filename=tempdir+"/table-out.sql";
-  printf("using: %s\n",(const char *)tempdir.toUtf8());
+  /*
+  printf("table \"%s\" using: %s\n",
+	 (const char *)tblname.toUtf8(),
+	 (const char *)tempdir.toUtf8());
+  */
 
   //
   // Dump Table

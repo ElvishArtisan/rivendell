@@ -17681,7 +17681,7 @@
 	* Changed the width of the 'HOSTVARS.REMARK' field to 191.
 	* Changed the width of the 'IMPORTER_LINES.TITLE' field to 191.
 	* Changed the width of the 'IMPORTER_LINES.TRACK_STRING' field to 191.
-	* Changed the width of the 'INPUTS.NODE_HOSTNAME' field to 191.
+	* Changed the width of the 'INPUTS.NODE_HOSTNAME' field to 176.
 	* Changed the width of the 'LOGS.ORIGIN_USER' field to 191.
 	* Changed the width of the 'LOGS.LOCK_USER_NAME' field to 191.
 	* Changed the width of the 'LOG_LINES.COMMENT' field to 191.
@@ -17692,7 +17692,7 @@
 	* Changed the width of the 'MATRICES.GPIO_DEVICE' field to 191.
 	* Changed the width of the 'NOWNEXT_PLUGINS.PLUGIN_PATH' field to 191.
 	* Changed the width of the 'NOWNEXT_PLUGINS.PLUGIN_ARG' field to 191.
-	* Changed the width of the 'OUTPUTS.NODE_HOSTNAME' field to 191.
+	* Changed the width of the 'OUTPUTS.NODE_HOSTNAME' field to 176.
 	* Changed the width of the 'PODCASTS.ITEM_TITLE' field to 191.
 	* Changed the width of the 'PODCASTS.ITEM_LINK' field to 191.
 	* Changed the width of the 'PODCASTS.ITEM_COMMENTS' field to 191.
@@ -17720,6 +17720,8 @@
 	* Changed the width of the 'SERVICES.TFC_WIN_PATH' field to 191.
 	* Changed the width of the 'SERVICES.MUS_PATH' field to 191.
 	* Changed the width of the 'SERVICES_MUS_WIN_PATH' field to 191.
+	* Changed the width of the 'STACK_LINES.ARTIST' field to 191.
+	* Changed the width of the 'STACK_LINES.SCHED_CODES' field to 191.
 	* Changed the width of the 'STATIONS.USER_NAME' field to 191.
 	* Changed the width of the 'STATIONS.DEFAULT_NAME' field to 191.
 	* Changed the width of the 'STATIONS.EDITOR_PATH' field to 191.
@@ -17733,6 +17735,8 @@
 	* Changed the width of the 'USER_SERVICE_PERMS.USER_NAME' field to 191.
 	* Changed the width of the 'WEBAPI_AUTHS.LOGIN_NAME' field to 191.
 	* Changed the width of the 'WEB_CONNECTIONS.LOGIN_NAME' field to 191.
+	* Changed the charset/collation of the DB to
+	'utf8mb4'/'utf8mb4_general_ci'.
 	* Incremented the database version to 297.
 	* Changed the default DB charset to 'utf8mb4'.
 	* Changed the default DB collation to 'utf8mb4_general_ci'.
@@ -17743,3 +17747,10 @@
 2018-10-03 Fred Gleason <fredg@paravelsystems.com>
 	* Updated 'UPGRADING' to include information for v3.x.
 	* Updated 'INSTALL'.
+2018-10-08 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'Charset=' and 'Collation=' parameters from the
+	'[mySQL]' section of rd.conf(5).
+	* Removed support for the --mysql-charset=' and '--mysql-collation='
+	switches in rddbmgr(8).
+	* Refactored handling of character set and collation attributes
+	in rddbmgr(8) to treat them as immutable parts of the DB schema.

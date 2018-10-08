@@ -27,7 +27,7 @@
 
 #include "rddbmgr.h"
 
-bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) const
+bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
 {
   QString sql;
   RDSqlQuery *q;
@@ -58,6 +58,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "PANEL_STREAM1 int default -1,"+
       "PANEL_PORT1 int default -1,"+
       "index STATION_IDX (STATION,INSTANCE))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -307,6 +308,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "CART int,"+
       "DEFAULT_COLOR char(6),"+
       "index OWNER_IDX (OWNER))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -341,6 +343,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "CART int,"+
       "DEFAULT_COLOR char(6),"+
       "index OWNER_IDX (OWNER))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -366,6 +369,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "DEFAULT_COLOR char(6),"+
       "index LOAD_IDX (TYPE,OWNER,PANEL_NO),"+
       "index SAVE_IDX (TYPE,OWNER,PANEL_NO,ROW_NO,COLUMN_NO))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -402,6 +406,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "GPIS int not null,"+
       "GPOS int not null,"+
       "index MATRIX_IDX (STATION_NAME,MATRIX))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -418,6 +423,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "NAME char(64),"+
       "FEED_NAME char(8),"+
       "index MATRIX_IDX (STATION_NAME,MATRIX,NUMBER))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -433,6 +439,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "NUMBER int not null,"+
       "NAME char(64),"+
       "index MATRIX_IDX (STATION_NAME,MATRIX,NUMBER))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -478,6 +485,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "index THU_IDX (STATION_NAME,THU),"+
       "index FRI_IDX (STATION_NAME,FRI),"+
       "index SAT_IDX (STATION_NAME,SAT))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -609,6 +617,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "NUMBER int not null,"+
       "MACRO_CART int default -1,"+
       "index MATRIX_IDX (STATION_NAME,MATRIX,NUMBER))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -791,6 +800,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "FIRST_TRANS_TYPE int default 0,"+
       "DEFAULT_TRANS_TYPE int default 0,"+
       "COLOR char(7))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -830,6 +840,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "NAME char(64) not null primary key,"+
       "SHORT_NAME char(8),"+
       "COLOR char(7))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -967,6 +978,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "SERVICE char(10),"+
       "CART_NUMBER int unsigned,"+
       "index SERVICE_IDX (SERVICE))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -1005,6 +1017,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "VARVALUE char(255),"+
       "REMARK char(255),"+
       "index NAME_IDX (STATION_NAME))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -1054,6 +1067,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "SERVICE_NAME char(10),"+
       "index STATION_IDX (STATION_NAME),"+
       "index SERVICE_IDX (SERVICE_NAME))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -1156,6 +1170,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "EXPORT_PATH char(255),"+
       "WIN_EXPORT_PATH char(255),"+
       "index IDX_NAME (NAME))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -1165,6 +1180,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "REPORT_NAME char(64) not null,"+
       "SERVICE_NAME char(10),"+
       "index IDX_REPORT_NAME (REPORT_NAME))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -1174,6 +1190,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "REPORT_NAME char(64) not null,"+
       "STATION_NAME char(64),"+
       "index IDX_REPORT_NAME (REPORT_NAME))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -1344,6 +1361,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "SERVICE_NAME char(10),"+
       "index CLOCK_IDX (CLOCK_NAME),"+
       "index SERVICE_IDX (SERVICE_NAME))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -1374,6 +1392,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "SERVICE_NAME char(10),"+
       "index EVENT_IDX (EVENT_NAME),"+
       "index SERVICE_IDX (SERVICE_NAME))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -1422,6 +1441,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "GROUP_NAME char(10),"+
       "index USER_IDX (USER_NAME),"+
       "index GROUP_IDX (GROUP_NAME))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -1613,6 +1633,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "RELAY_NUM int default -1,"+
       "BUSS_NUM int default -1,"+
       "index STATION_MATRIX_IDX (STATION_NAME,MATRIX_NUM,VGUEST_TYPE))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -2175,6 +2196,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "START_CART int unsigned default 0,"+
       "END_CART int unsigned default 0,"+
       "index STATION_IDX (STATION))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -2244,6 +2266,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
 	"EXT_EVENT_ID char(8),"+
 	"EXT_ANNC_TYPE char(8),"+
 	"index EVENT_DATETIME_IDX(EVENT_DATETIME))"+
+	" charset latin1 collate latin1_swedish_ci"+
 	db_table_create_postfix;
       if(!RDSqlQuery::apply(sql,err_msg)) {
         return false;
@@ -3447,6 +3470,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "STATION char(64) not null,"+
       "ERROR_RML char(255),"+
       "index STATION_IDX (STATION))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -3487,6 +3511,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
     sql=QString("create table if not exists SCHED_CODES (")+
       "CODE varchar(10) not null primary key,"+
       "DESCRIPTION varchar(255))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -3563,6 +3588,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "FIX_BROKEN_FORMATS enum('N','Y') default 'N',"+
       "LOG_PATH char(255),"+
       "index STATION_NAME_IDX (STATION_NAME))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -3651,6 +3677,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "PANEL_PAUSE_ENABLED enum('N','Y') default 'N',"+
       "DEFAULT_SERVICE char(10),"+
       "index STATION_IDX (STATION))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -3671,6 +3698,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "DEFAULT_COLOR char(7),"+
       "index LOAD_IDX (TYPE,OWNER,PANEL_NO),"+
       "index SAVE_IDX (TYPE,OWNER,PANEL_NO,ROW_NO,COLUMN_NO))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -3699,6 +3727,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "PANEL_NO int not null,"+
       "NAME char(64),"+
       "index LOAD_IDX (TYPE,OWNER,PANEL_NO))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -3714,6 +3743,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "PANEL_NO int not null,"+
       "NAME char(64),"+
       "index LOAD_IDX (TYPE,OWNER,PANEL_NO))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -3811,6 +3841,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "ORIGIN_DATETIME datetime,"+
       "ENABLE_AUTOPOST enum('N','Y') default 'N',"+
       "index KEY_NAME_IDX(KEY_NAME))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -3829,6 +3860,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "SHELF_LIFE int,"+
       "ORIGIN_DATETIME datetime,"+
       "index FEED_ID_IDX(FEED_ID,ORIGIN_DATETIME))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -3854,6 +3886,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "VAR_NAME char(16),"+
       "CAPTION char(64),"+
       "index FEED_ID_IDX(FEED_ID))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -3927,6 +3960,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "KEY_NAME char(8),"+
       "index USER_IDX (USER_NAME),"+
       "index KEYNAME_IDX (KEY_NAME))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -4017,6 +4051,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "LOGIN_NAME char(8),"+
       "IP_ADDRESS char(16),"+
       "TIME_STAMP datetime)"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -4053,6 +4088,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "TCP_PORT int,"+
       "DESCRIPTION char(255),"+
       "index STATION_IDX (STATION_NAME,MATRIX))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -4271,6 +4307,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "COMMAND_LINE char(255),"+
       "DEFAULT_EXTENSION char(16),"+
       "index NAME_IDX(NAME,STATION_NAME))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -4294,6 +4331,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "ENCODER_ID int not null,"+
       "BITRATES int not null,"+
       "index ENCODER_ID_IDX(ENCODER_ID))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -4307,6 +4345,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "ENCODER_ID int not null,"+
       "CHANNELS int not null,"+
       "index ENCODER_ID_IDX(ENCODER_ID))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -4320,6 +4359,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "ENCODER_ID int not null,"+
       "SAMPLERATES int not null,"+
       "index ENCODER_ID_IDX(ENCODER_ID))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -4350,6 +4390,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "NUMBER int not null,"+
       "MACRO_CART int default 0,"+
       "index MATRIX_IDX (STATION_NAME,MATRIX,NUMBER))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -4391,6 +4432,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "PLUGIN_PATH char(255),"+
       "PLUGIN_ARG char(255),"+
       "index STATION_IDX (STATION_NAME,LOG_MACHINE))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -4406,6 +4448,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "FILE_PATH char(255) not null,"+
       "FILE_DATETIME datetime,"+
       "index FILE_PATH_IDX (DROPBOX_ID,FILE_PATH))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -4676,6 +4719,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
     sql=QString("create table if not exists SYSTEM (")+
       "ID int auto_increment not null primary key,"+
       "DUP_CART_TITLES enum('N','Y') not null default 'Y')"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -4795,6 +4839,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "EVENT_ID_LENGTH int,"+
       "ANNC_TYPE_OFFSET int,"+
       "ANNC_TYPE_LENGTH int)"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -5036,6 +5081,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "ENABLE_METADATA enum('N','Y') default 'N',"+
       "NORMALIZATION_LEVEL int unsigned default 0,"+
       "index TYPE_ID_IDX (TYPE_ID))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -5047,6 +5093,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "GROUP_NAME char(10) not null,"+
       "index REPLICATOR_NAME_IDX(REPLICATOR_NAME),"+
       "index GROUP_NAME_IDX(GROUP_NAME))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -5070,6 +5117,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "CART_NUMBER int unsigned not null,"+
       "ITEM_DATETIME datetime not null,"+
       "unique REPLICATOR_NAME_IDX(REPLICATOR_NAME,CART_NUMBER))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -5085,6 +5133,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "ITEM_DATETIME datetime not null,"+
       "index REPLICATOR_NAME_IDX(REPLICATOR_NAME),"+
       "index CUT_NAME_IDX(CUT_NAME))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -5106,6 +5155,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "CREATIVE_TITLE char(30),"+
       "REGION_NAME char(80),"+
       "index CART_NUMBER_IDX(CART_NUMBER))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -5165,6 +5215,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "KEY_ID int,"+
       "KEY_VALUE char(64),"+
       "KEY_LABEL char(64))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -5270,6 +5321,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "REPORT_NAME char(64) not null,"+
       "GROUP_NAME char(10),"+
       "index IDX_REPORT_NAME (REPORT_NAME))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -5312,6 +5364,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "DESCRIPTION char(64),"+
       "COMMAND_LINE char(255) not null,"+
       "index IDX_STATION_NAME (STATION_NAME))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -5336,6 +5389,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "INPUT_PORT int not null default 0,"+
       "OUTPUT_PORT int not null default 0,"+
       "index STATION_NAME_IDX(STATION_NAME,SLOT_NUMBER))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -5454,6 +5508,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "SLOT int not null,"+
       "SOURCE_NUMBER int,"+
       "index STATION_NAME_IDX(STATION_NAME,MATRIX))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -5493,6 +5548,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "STOP_GPO_MATRIX int not null default -1,"+
       "STOP_GPO_LINE int not null default -1,"+
       "index STATION_NAME_IDX(STATION_NAME,INSTANCE))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -5539,6 +5595,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "STOP_GPO_MATRIX int not null default -1,"+
       "STOP_GPO_LINE int not null default -1,"+
       "index STATION_NAME_IDX(STATION_NAME,INSTANCE))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -5855,6 +5912,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "START_MODE int not null default 0,"+
       "OP_MODE int not null default 2,"+
       "index STATION_NAME_IDX(STATION_NAME,MACHINE))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -5993,6 +6051,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "SCHED_CODE char(11) not null,"
       "index DROPBOX_ID_IDX(DROPBOX_ID),"+
       "index SCHED_CODE_IDX(SCHED_CODE))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -6011,6 +6070,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "EDGE int not null,"+
       "EVENT_DATETIME datetime not null,"+
       "index STATION_NAME_IDX(STATION_NAME,MATRIX,TYPE,EVENT_DATETIME,EDGE))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -6138,6 +6198,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "NUMBER int not null,"+
       "POINT int not null,"+
       "index CUT_NAME_IDX(CUT_NAME))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -6150,6 +6211,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "NUMBER int not null,"+
       "CART_NUMBER int unsigned not null default 0,"+
       "index STATION_NAME_IDX(STATION_NAME,CHANNEL))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -6220,6 +6282,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "CLOCK_NAME char(64) default null,"+
       "index SERVICE_NAME_IDX(SERVICE_NAME,HOUR),"+
       "index CLOCK_NAME_IDX(CLOCK_NAME))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -6266,6 +6329,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "IPV4_ADDRESS char(16) not null,"+
       "EXPIRATION_DATETIME datetime not null,"+
       "index TICKET_IDX(TICKET,IPV4_ADDRESS,EXPIRATION_DATETIME))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -6472,6 +6536,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "USER_NAME char(255) not null,"+
       "SERVICE_NAME char(10) not null,"+
       "index USER_NAME_IDX(USER_NAME))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -6592,6 +6657,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "UDP_STRING char(255),"+
       "LOG_RML char(255),"+
       "index STATION_NAME_IDX(STATION_NAME,MACHINE))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -6765,6 +6831,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "INPUTS int not null default -1,"+
       "OUTPUTS int not null default -1,"+
       "unique index STATION_NAME_IDX(STATION_NAME,CARD_NUMBER))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -6841,6 +6908,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "TYPE int not null default 0,"
       "MODE int not null default 0,"+
       "unique index STATION_NAME_IDX(STATION_NAME,CARD_NUMBER,PORT_NUMBER))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -6892,6 +6960,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "PORT_NUMBER int not null,"+
       "LEVEL int not null default 0,"+
       "unique index STATION_NAME_IDX(STATION_NAME,CARD_NUMBER,PORT_NUMBER))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -7214,6 +7283,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "unique index LOG_NAME_IDX (LOG_NAME,COUNT),"+
       "index CART_NUMBER_IDX (CART_NUMBER),"+
       "index LABEL_IDX (LABEL))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -7375,6 +7445,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "EXT_EVENT_ID char(8),"+
       "EXT_ANNC_TYPE char(8),"+
       "index SERVICE_NAME_EVENT_DATETIME_IDX(SERVICE_NAME,EVENT_DATETIME))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -7499,6 +7570,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "TRANS_TYPE int not null,"+
       "MARKER_COMMENT char(255),"+
       "unique index EVENT_NAME_TYPE_COUNT_IDX (EVENT_NAME,TYPE,COUNT))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -7609,6 +7681,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "START_TIME int not null,"+
       "LENGTH int not null,"+
       "unique index CLOCK_NAME_START_TIME_IDX (CLOCK_NAME,START_TIME))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -7668,6 +7741,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "OR_AFTER varchar(10),"+
       "OR_AFTER_II varchar(10),"+
       "unique index CLOCK_NAME_CODE_IDX(CLOCK_NAME,CODE))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -7733,6 +7807,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "SCHEDULED_AT datetime default '1752-09-14 00:00:00',"+
       "index SERVICE_NAME_IDX(SERVICE_NAME),"+
       "index SCHED_STACK_ID_IDX(SERVICE_NAME,SCHED_STACK_ID,SCHED_CODES))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -7805,6 +7880,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "ACCESS_DATE date not null,"+
       "ACCESS_COUNT int unsigned not null default 0,"+
       "unique index KEY_NAME_CAST_ID_DATE_IDX(FEED_KEY_NAME,CAST_ID,ACCESS_DATE))"+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -7867,6 +7943,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       "EVENT_USED enum('N','Y') default 'N',"+
       "index STATION_NAME_PROCESS_ID_IDX (STATION_NAME,PROCESS_ID),"+
       "unique index START_TIME_IDX (STATION_NAME,PROCESS_ID,START_HOUR,START_SECS,LINE_ID)) "+
+      " charset latin1 collate latin1_swedish_ci"+
       db_table_create_postfix;
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -8631,7 +8708,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       return false;
     }
     sql=QString("alter table INPUTS ")+
-      "modify column NODE_HOSTNAME varchar(191)";
+      "modify column NODE_HOSTNAME varchar(176)";
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }
@@ -8896,7 +8973,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       return false;
     }
     sql=QString("alter table OUTPUTS ")+
-      "modify column NODE_HOSTNAME varchar(191)";
+      "modify column NODE_HOSTNAME varchar(176)";
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }
@@ -9436,6 +9513,16 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }
+    sql=QString("alter table STACK_LINES ")+
+      "modify column ARTIST varchar(191) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table STACK_LINES ")+
+      "modify column SCHED_CODES varchar(191) not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
 
     sql=QString("alter table STATIONS ")+
       "modify column NAME varchar(64) not null";
@@ -9649,9 +9736,19 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg) co
       return false;
     }
 
+    ModifyCharset("utf8mb4","utf8mb4_general_ci");
+
     WriteSchemaVersion(++cur_schema);
   }
 
+  //
+  // Maintainer's Note:
+  //
+  // All tables created below this point should use a character set
+  // of 'utf8mb4' and a collation of 'utf8mb4_general_ci'.
+  //
+
+  // NEW SCHEMA UPDATES GO HERE...
 
 
   //
@@ -9774,6 +9871,7 @@ void MainObject::CreateAuxFieldsTable143(const QString &key_name) const
   keyname.replace(" ","_");
   QString sql=QString("create table if not exists `")+
     keyname+"_FIELDS` (CAST_ID int unsigned not null primary key) "+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   RDSqlQuery *q=new RDSqlQuery(sql);
   delete q;
@@ -9793,7 +9891,9 @@ void MainObject::CreateFeedLog151(const QString &key_name) const
     "CAST_ID int unsigned,"+
     "ACCESS_DATE date,"+
     "ACCESS_COUNT int unsigned default 0,"+
-    "index CAST_ID_IDX(CAST_ID,ACCESS_DATE))";
+    "index CAST_ID_IDX(CAST_ID,ACCESS_DATE))"+
+    " charset latin1 collate latin1_swedish_ci"+
+    db_table_create_postfix;
   q=new RDSqlQuery(sql);
   delete q;
 }

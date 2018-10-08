@@ -29,13 +29,9 @@ Driver=QMYSQL3
 ; The interval between 'keep-alive' queries to the MySQL server (seconds)
 HeartbeatInterval=360
 
-; The following three settings control the attributes of new DB tables
+; The following setting controls the attributes of new DB tables
 ; created by Rivendell.
 ;Engine=MyISAM
-; 'Charset' and 'Collation' should *not* changed except for development
-; purposes.
-;Charset=utf8mb4
-;Collation=utf8mb4_general_ci
 
 [AudioStore]
 MountSource=
