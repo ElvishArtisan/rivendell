@@ -72,7 +72,7 @@ class RDPlayDeck : public QObject
   void pause();
   void stop();
  // void stop(int interval);
-  void stop(int interval,int gain=-10000);
+  void stop(int interval,int gain=-10000,bool force=false);
   void duckDown(int interval);
   void duckVolume(int level,int fade);
 

@@ -403,7 +403,7 @@ bool RDLogPlay::stop(bool all,int port,int fade)
 }
 
 
-bool RDLogPlay::stop(int line,int fade)
+bool RDLogPlay::stop(int line,int fade,bool force)
 {
   RDLogLine *logline;
 
@@ -415,7 +415,7 @@ bool RDLogPlay::stop(int line,int fade)
     if(((RDPlayDeck *)logline->playDeck())==NULL) {
       return false;
     }
-    ((RDPlayDeck *)logline->playDeck())->stop(fade,RD_FADE_DEPTH);
+    ((RDPlayDeck *)logline->playDeck())->stop(fade,RD_FADE_DEPTH,force);
     return true;
     break;
     

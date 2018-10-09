@@ -77,7 +77,7 @@ class RDLogPlay : public QObject,public RDLogEvent
 	    int mport=-1,bool skip_meta=false);
   bool channelPlay(int mport);
   bool stop(bool all=true,int port=0,int fade=0);
-  bool stop(int line,int fade=0);
+  bool stop(int line,int fade=0,bool force=false);
   bool channelStop(int mport);
   bool pause(int line);
   void duckVolume(int level,int fade,int mport=-1);

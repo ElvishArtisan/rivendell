@@ -512,14 +512,13 @@ void RDPlayDeck::stop()
 }
 
 
-void RDPlayDeck::stop(int interval,int gain)
+void RDPlayDeck::stop(int interval,int gain,bool force)
 {
   int level;
   
-  if(gain>play_point_gain) {
+  if(gain>play_point_gain||force) {
     play_point_gain=gain;
   }
-  
 
   if((play_state!=RDPlayDeck::Playing)&&(play_state!=RDPlayDeck::Stopping)) {
     return;
