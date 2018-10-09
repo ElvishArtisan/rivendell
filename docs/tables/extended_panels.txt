@@ -1,0 +1,16 @@
+             EXTENDED_PANELS Table Layout for Rivendell
+
+The EXTENDED_PANELS table holds configuration data for the
+extended SoundPanels in Rivendell.
+
+FIELD NAME           TYPE              REMARKS
+------------------------------------------------------------------------------
+ID                   int(10) unsigned  * Primary key, Auto Increment
+TYPE                 int(11)           0=Station Panel, 1=User Panel
+OWNER                varchar(64)
+PANEL_NO             int(11)
+ROW_NO               int(11)
+COLUMN_NO            int(11)
+LABEL                varchar(64)
+CART                 int(11)
+DEFAULT_COLOR        varchar(7)

@@ -6,21 +6,21 @@ channels assignments and related information.
 FIELD NAME           TYPE              REMARKS
 ------------------------------------------------------------------------------
 ID                     int(10) unsigned  * Primary key, Auto Increment
-STATION_NAME           char(64)          From STATIONS.NAME
+STATION_NAME           varchar(64)       From STATIONS.NAME
 MACHINE                int(11)           1 = RDAirPlay Main Log
                                          2 = RDAirPlay Aux Log 1
                                          3 = RDAirPlay Aux Log 2
                                          101..124 = RDVAirPlay Log Machines
 START_MODE             int(11)
 AUTO_RESTART           enum('N','Y')
-LOG_NAME               char(64)
-CURRENT_LOG            char(64)
+LOG_NAME               varchar(64)
+CURRENT_LOG            varchar(64)
 RUNNING                enum('N','Y')
 LOG_ID                 int(11)
 LOG_LINE               int(11)
 NOW_CART               int(10) unsigned
 NEXT_CART              int(10) unsigned
-UDP_ADDR               char(255)
+UDP_ADDR               varchar(255)
 UDP_PORT               int(10) unsigned
-UDP_STRING             char(255)
-LOG_RML                char(255)
+UDP_STRING             varchar(255)
+LOG_RML                varchar(255)

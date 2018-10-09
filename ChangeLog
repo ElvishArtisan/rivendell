@@ -17642,3 +17642,115 @@
 2018-09-20 Fred Gleason <fredg@paravelsystems.com>
 	* Corrected an omission in the documentation of the
 	'Start Button' ['PB'] RML.
+2018-10-01 Fred Gleason <fredg@paravelsystems.com>
+	* Applied a PR from Patrick Linstruth <patrick@deltecent.com> that
+	fixed a regression where the 'Stop' button would fail to function
+	after enabling a pointer counter in rdlibrary(1)'s Edit Audio
+	dialog [GibHub PR #000239].
+2018-10-01 Patrick Linstruth <patrick@deltecent.com>
+	*  Fixed a regression in RDTimeEdit where highlighted background was not
+	displaying properly.
+2018-10-03 Fred Gleason <fredg@paravelsystems.com>
+	* Changed all instances of 'char' to 'varchar' in the database.
+	* Changed the width of the 'CART.TITLE' field to 191.
+	* Changed the width of the 'CART.ARTIST' field to 191.
+	* Changed the width of the 'CART.ALBUM' field to 191.
+	* Changed the width of the 'CART.USER_DEFINED' field to 191.
+	* Changed the width of the 'CUTS.ORIGIN_LOGIN_NAME' field to 191.
+	* Changed the width of the 'DROPBOXES.PATH' field to 191.
+	* Changed the width of the 'DROPBOXES.LOG_PATH' field to 191.
+	* Changed the width of the 'DROPBOXES.SET_USER_DEFINED' field to 191.
+	* Changed the width of the 'DROPBOX_PATHS.FILE_PATH' field to 191.
+	* Changed the width of the 'ELR_LINES.TITLE' field to 191.
+	* Changed the width of the 'ELR_LINES.ARTIST' field to 191.
+	* Changed the width of the 'ELR_LINES.USER_DEFINED' field to 191.
+	* Changed the width of the 'ELR_LINES.ALBUM' field to 191.
+	* Changed the width of the 'ENCODERS.COMMAND_LINE' field to 191.
+	* Changed the width of the 'EVENTS.NOTE_TEXT' field to 191.
+	* Changed the width of the 'EVENT_LINES.MARKER_COMMENT' field to 191.
+	* Changed the width of the 'FEEDS.CHANNEL_TITLE' field to 191.
+	* Changed the width of the 'FEEDS.CHANNEL_LINK' field to 191.
+	* Changed the width of the 'FEEDS.BASE_URL' field to 191.
+	* Changed the width of the 'FEEDS.BASE_PREAMBLE' field to 191.
+	* Changed the width of the 'FEEDS.PURGE_URL' field to 191.
+	* Changed the width of the 'FEEDS.REDIRECT_PATH' field to 191.
+	* Changed the width of the 'FEED_PERMS.USER_NAME' field to 191.
+	* Changed the width of the 'GROUPS.DESCRIPTION' field to 191.
+	* Changed the width of the 'GROUPS.DEFAULT_TITLE' field to 191.
+	* Changed the width of the 'HOSTVARS.VARVALUE' field to 191.
+	* Changed the width of the 'HOSTVARS.REMARK' field to 191.
+	* Changed the width of the 'IMPORTER_LINES.TITLE' field to 191.
+	* Changed the width of the 'IMPORTER_LINES.TRACK_STRING' field to 191.
+	* Changed the width of the 'INPUTS.NODE_HOSTNAME' field to 176.
+	* Changed the width of the 'LOGS.ORIGIN_USER' field to 191.
+	* Changed the width of the 'LOGS.LOCK_USER_NAME' field to 191.
+	* Changed the width of the 'LOG_LINES.COMMENT' field to 191.
+	* Changed the width of the 'LOG_LINES.ORIGIN_USER' field to 191.
+	* Changed the width of the 'LOG_MACHINES.UDP_ADDR' field to 191.
+	* Changed the width of the 'LOG_MACHINES.UDP_STRING' field to 191.
+	* Changed the width of the 'LOG_MACHINES.LOG_RML' field to 191.
+	* Changed the width of the 'MATRICES.GPIO_DEVICE' field to 191.
+	* Changed the width of the 'NOWNEXT_PLUGINS.PLUGIN_PATH' field to 191.
+	* Changed the width of the 'NOWNEXT_PLUGINS.PLUGIN_ARG' field to 191.
+	* Changed the width of the 'OUTPUTS.NODE_HOSTNAME' field to 176.
+	* Changed the width of the 'PODCASTS.ITEM_TITLE' field to 191.
+	* Changed the width of the 'PODCASTS.ITEM_LINK' field to 191.
+	* Changed the width of the 'PODCASTS.ITEM_COMMENTS' field to 191.
+	* Changed the width of the 'PODCASTS.ITEM_AUTHOR' field to 191.
+	* Changed the width of the 'PODCASTS.ITEM_SOURCE_URL' field to 191.
+	* Changed the width of the 'PODCASTS.AUDIO_FILENAME' field to 191.
+	* Changed the width of the 'RDAIRPLAY.SKIN_PATH' field to 191.
+	* Changed the width of the 'RDAIRPLAY_CHANNELS.START_RML' field to 191.
+	* Changed the width of the 'RDAIRPLAY_CHANNELS.STOP_RML' field to 191.
+	* Changed the width of the 'RDCATCH.ERROR_RML' field to 191.
+	* Changed the width of the 'RDPANEL.SKIN_PATH' field to 191.
+	* Changed the width of the 'RDPANEL_CHANNELS.START_RML' field to 191.
+	* Changed the width of the 'RDPANEL_CHANNELS.STOP_RML' field to 191.
+	* Changed the width of the 'RECORDINGS.URL' field to 191.
+	* Changed the width of the 'REPLICATORS.URL' field to 191.
+	* Changed the width of the 'REPL_CART_STATE.POSTED_FILENAME' field
+	to 191.
+	* Changed the width of the 'REPORTS.EXPORT_PATH' field to 191.
+	* Changed the width of the 'REPORTS.WIN_EXPORT_PATH' field to 191.
+	* Changed the width of the 'SERVICES.DESCRIPTION' field to 191.
+	* Changed the width of the 'SERVICES.NAME_TEMPLATE' field to 191.
+	* Changed the width of the 'SERVICES.DESCRIPTION_TEMPLATE' field to 191.
+	* Changed the width of the 'SERVICES.PROGRAM_CODE' field to 191.
+	* Changed the width of the 'SERVICES.TFC_PATH' field to 191.
+	* Changed the width of the 'SERVICES.TFC_WIN_PATH' field to 191.
+	* Changed the width of the 'SERVICES.MUS_PATH' field to 191.
+	* Changed the width of the 'SERVICES_MUS_WIN_PATH' field to 191.
+	* Changed the width of the 'STACK_LINES.ARTIST' field to 191.
+	* Changed the width of the 'STACK_LINES.SCHED_CODES' field to 191.
+	* Changed the width of the 'STATIONS.USER_NAME' field to 191.
+	* Changed the width of the 'STATIONS.DEFAULT_NAME' field to 191.
+	* Changed the width of the 'STATIONS.EDITOR_PATH' field to 191.
+	* Changed the width of the 'STATIONS.JACK_COMMAND_LINE' field to 191.
+	* Changed the width of the 'SWITCHER_NODES.DESCRIPTION' field to 191.
+	* Changed the width of the 'SYSTEM.ISCI_XREFERENCE_PATH' field to 191.
+	* Changed the width of the 'USERS.LOGIN_NAME' field to 191.
+	* Changed the width of the 'USERS.FULL_NAME' field to 191.
+	* Changed the width of the 'USERS.DESCRIPTION' field to 191.
+	* Changed the width of the 'USER_PERMS.USER_NAME' field to 191.
+	* Changed the width of the 'USER_SERVICE_PERMS.USER_NAME' field to 191.
+	* Changed the width of the 'WEBAPI_AUTHS.LOGIN_NAME' field to 191.
+	* Changed the width of the 'WEB_CONNECTIONS.LOGIN_NAME' field to 191.
+	* Changed the charset/collation of the DB to
+	'utf8mb4'/'utf8mb4_general_ci'.
+	* Incremented the database version to 297.
+	* Changed the default DB charset to 'utf8mb4'.
+	* Changed the default DB collation to 'utf8mb4_general_ci'.
+	* Removed the MYSQL_BUILTIN_DATABASE define from 'lib/rd.h'.
+	* Removed the POSTGRESQL_BUILTIN_DATABASE define from 'lib/rd.h'.
+2018-10-03 Fred Gleason <fredg@paravelsystems.com>
+	* Added a beta test warning to 'README'.
+2018-10-03 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'UPGRADING' to include information for v3.x.
+	* Updated 'INSTALL'.
+2018-10-08 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'Charset=' and 'Collation=' parameters from the
+	'[mySQL]' section of rd.conf(5).
+	* Removed support for the --mysql-charset=' and '--mysql-collation='
+	switches in rddbmgr(8).
+	* Refactored handling of character set and collation attributes
+	in rddbmgr(8) to treat them as immutable parts of the DB schema.

@@ -6,13 +6,13 @@ layout of a record in the CLIPBOARD table:
 
 FIELD NAME           TYPE              REMARKS
 ---------------------------------------------------------------
-CUT_NAME             char(12)          * Primary key, Base name of WAV file
+CUT_NAME             varchar(12)       * Primary key, Base name of WAV file
 CART_NUMBER          int(10) unsigned  Parent Cart Entry, Indexed
-DESCRIPTION          char(64)          Indexed
-OUTCUE               char(64)          Indexed
+DESCRIPTION          varchar(64)       Indexed
+OUTCUE               varchar(64)       Indexed
 LENGTH               int(10) unsigned  Overall length in ms.
 ORIGIN_DATETIME      datetime          Date/Time when recorded
-ORIGIN_NAME          char(64)          Workstation ID where recorded
+ORIGIN_NAME          varchar(64)       Workstation ID where recorded
 WEIGHT               int(10) unsigned  Relative airplay frequency, 1 = normal
 LAST_PLAY_DATETIME   datetime
 PLAY_COUNTER         int(10) unsigned

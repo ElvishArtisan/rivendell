@@ -24,13 +24,15 @@ EXTRA_DIST = audio_cards.txt\
              audio_inputs.txt\
              audio_outputs.txt\
              audio_perms.txt\
+             autofills.txt\
+             aux_metadata.txt\
              cart.txt\
              cartslots.txt\
              cast_downloads.txt\
              clipboard.txt\
              clock_lines.txt\
              clock_perms.txt\
-             copy_splits.txt\
+             clocks.txt\
              cut_events.txt\
              cuts.txt\
              deck_events.txt\
@@ -44,13 +46,20 @@ EXTRA_DIST = audio_cards.txt\
              encoder_samplerates.txt\
              encoders.txt\
              event_lines.txt\
+             event_perms.txt\
+             events.txt\
              extended_panel_names.txt\
+             extended_panels.txt\
              feed_perms.txt\
+             feeds.txt\
              gpio_events.txt\
              gpis.txt\
              gpos.txt\
              groups.txt\
+             hostvars.txt\
              importer_lines.txt\
+             import_templates.txt\
+             inputs.txt\
              isci_xreference.txt\
              jack_clients.txt\
              livewire_gpio_slots.txt\
@@ -58,27 +67,37 @@ EXTRA_DIST = audio_cards.txt\
              log_modes.txt\
              log_lines.txt\
              logs.txt\
+             matrices.txt\
              nownext_plugins.txt\
+             outputs.txt\
              panels.txt\
              panel_names.txt\
+             podcasts.txt\
              rdairplay_channels.txt\
              rd_airplay.txt\
              rd_catch.txt\
+             rdhotkeys.txt\
              rd_library.txt\
              rd_logedit.txt\
              rdpanel_channels.txt\
+             rdpanel.txt\
              recordings.txt\
              repl_cart_state.txt\
              repl_cut_state.txt\
              replicator_map.txt\
              replicators.txt\
+             report_groups.txt\
+             report_services.txt\
+             report_stations.txt\
              reports.txt\
              rule_lines.txt\
              service_clocks.txt\
+             service_perms.txt\
              services.txt\
              sources.txt\
              stack_lines.txt\
              stations.txt\
+             switcher_nodes.txt\
              system.txt\
              triggers.txt\
              ttys.txt\

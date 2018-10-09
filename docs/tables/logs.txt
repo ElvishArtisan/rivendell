@@ -6,12 +6,12 @@ table:
 
 FIELD NAME           TYPE             REMARKS
 -------------------------------------------------------------------
-NAME                 char(64)
+NAME                 varchar(64)
 LOG_EXISTS           enum('N','Y')
 TYPE                 int(11)          0=Log, 1=Event, 2=Clock, 3=Grid
-SERVICE              char(10)         From SERVICES.NAME
-DESCRIPTION          char(64)
-ORIGIN_USER          char(255)        From USERS.LOGIN_NAME
+SERVICE              varchar(10)      From SERVICES.NAME
+DESCRIPTION          varchar(64)
+ORIGIN_USER          varchar(191)     From USERS.LOGIN_NAME
 ORIGIN_DATETIME      datetime    
 LINK_DATETIME        datetime
 MODIFIED_DATETIME    datetime
@@ -27,8 +27,8 @@ MUSIC_LINKED         enum('N','Y')
 TRAFFIC_LINKS        int
 TRAFFIC_LINKED       enum('N','Y')
 NEXT_ID              int(11)
-LOCK_USER_NAME       char(255)        From USER.LOGIN_NAME
-LOCK_STATION_NAME    char(64)         From STATIONS.NAME
-LOCK_IPV4_ADDRESS    char(16)
+LOCK_USER_NAME       varchar(191)     From USER.LOGIN_NAME
+LOCK_STATION_NAME    varchar(64)      From STATIONS.NAME
+LOCK_IPV4_ADDRESS    varchar(16)
 LOCK_DATETIME        datetime
-LOCK_GUID            char(82)
+LOCK_GUID            varchar(82)

@@ -61,8 +61,6 @@ class RDConfig
   QString mysqlDriver() const;
   int mysqlHeartbeatInterval() const;
   QString mysqlEngine() const;
-  QString mysqlCharset() const;
-  QString mysqlCollation() const;
   QString createTablePostfix() const;
   RDConfig::LogFacility logFacility() const;
   QString logDirectory() const;
@@ -120,9 +118,7 @@ class RDConfig
   void load();
   void clear();
   static QString userAgent(const QString &modname);
-  static QString createTablePostfix(const QString &engine,
-				    const QString &charset,
-				    const QString &collation);
+  static QString createTablePostfix(const QString &engine);
 
  private:
   QString conf_filename;
@@ -133,8 +129,6 @@ class RDConfig
   QString conf_mysql_password;
   QString conf_mysql_driver;
   QString conf_mysql_engine;
-  QString conf_mysql_charset;
-  QString conf_mysql_collation;
   QString conf_create_table_postfix;
   int conf_mysql_heartbeat_interval;
   RDConfig::LogFacility conf_log_facility;

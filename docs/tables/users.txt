@@ -1,28 +1,25 @@
                    USERS Table Layout for Rivendell
 
 The USERS table holds data concerning each individual user configured
-on the system.  Following is the layout of a record in the USERS
-table:
+on the system.
 
 FIELD NAME           TYPE             REMARKS
 --------------------------------------------------------------------------
-LOGIN_NAME           char(255)        Primary key
-FULL_NAME            char(255)        Indexed
-PHONE_NUMBER         char(20)
-DESCRIPTION          char(255)
-PASSWORD             char(32)         Not-NULL, Hashed
+LOGIN_NAME           varchar(255)     Primary key
+FULL_NAME            varchar(255)     Indexed
+PHONE_NUMBER         varchar(20)
+DESCRIPTION          varchar(255)
+PASSWORD             varchar(32)      Not-NULL, Hashed
 WEBAPI_AUTH_TIMEOUT  int(11) signed   Seconds
 ENABLE_WEB           enum('N','Y')
 LOCAL_AUTH           enum('N','Y')
-PAM_SERVICE          char(32)
-ADMIN_USERS_PRIV     enum('N','Y')    Retired
+PAM_SERVICE          varchar(32)
 ADMIN_CONFIG_PRIV    enum('N','Y')
 CREATE_CARTS_PRIV    enum('N','Y')
 DELETE_CARTS_PRIV    enum('N','Y')
 MODIFY_CARTS_PRIV    enum('N','Y')
 EDIT_AUDIO_PRIV      enum('N','Y')
 WEBGET_LOGIN_PRIV    enum('N','Y')
-ASSIGN_CART_PRIV     enum('N','Y')    Retired
 CREATE_LOG_PRIV      enum('N','Y')
 DELETE_LOG_PRIV      enum('N','Y')
 DELETE_REC_PRIV      enum('N','Y')

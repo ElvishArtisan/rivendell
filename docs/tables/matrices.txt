@@ -1,0 +1,36 @@
+               MATRICES Table Layout for Rivendell
+
+The MATRICES table holds data that defines a switcher device.
+
+FIELD NAME           TYPE             REMARKS
+-------------------------------------------------------------------
+ID                   int(11)          Primary key, auto_increment
+STATION_NAME         varchar(64)      From STATIONS.NAME
+NAME                 varchar(64)
+MATRIX               int(11)
+TYPE                 int(11)
+LAYER                int(11)
+PORT_TYPE            int(11)
+PORT_TYPE_2          int(11)
+CARD                 int(11)
+PORT                 int(11)
+PORT_2               int(11)
+IP_ADDRESS           varchar(16) 
+IP_ADDRESS_2         varchar(16)
+IP_PORT              int(11)
+IP_PORT_2            int(11)
+USERNAME             varchar(32)
+USERNAME_2           varchar(32)
+PASSWORD             varchar(32)
+PASSWORD_2           varchar(32)
+START_CART           int(10) unsigned
+STOP_CART            int(10) unsigned
+START_CART_2         int(10) unsigned
+STOP_CART_2          int(10) unsigned
+GPIO_DEVICE          varchar(191)
+INPUTS               int(11)
+OUTPUTS              int(11)
+GPIS                 int(11)
+GPOS                 int(11)
+FADERS               int(11)
+DISPLAYS             int(11)

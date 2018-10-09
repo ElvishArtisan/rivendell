@@ -1,0 +1,12 @@
+                  AUTOFILLS Table Layout for Rivendell
+
+The AUTOFILLS table holds data concerning which carts should be used
+to fill available time when 'Autofill' is enabled in an rdlogmanager(1)
+event.
+
+
+FIELD NAME           TYPE              REMARKS
+---------------------------------------------------------------
+ID                   int(11)           Primary key, auto increment
+SERVICE              varchar(10)       Index
+CART_NUMBER          int(10) unsigned  Index
