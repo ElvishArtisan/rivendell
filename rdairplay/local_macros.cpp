@@ -930,7 +930,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
       for (int i=0;i<running;i++) {
         logline=air_log[mach]->logLine(lines[i]);
         if(logline->status()==RDLogLine::Playing||logline->status()==RDLogLine::Finishing) {
-          air_log[mach]->stop(lines[i],fade);
+          air_log[mach]->stop(lines[i],fade,true);
           break;
         }
       }
