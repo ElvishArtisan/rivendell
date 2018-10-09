@@ -593,8 +593,8 @@ QVariant RDGetSqlValue(const QString &table,
 
   sql="select `"+param+"` from `"+table+"` where "+
     "(`"+name1+"`=\""+RDEscapeString(test1)+"\")&&"+
-    "(`"+name2+"`=\""+RDEscapeString(test1)+"\")&&"+
-    "(`"+name3+"`=\""+RDEscapeString(test1)+"\")";
+    "(`"+name2+"`=\""+RDEscapeString(test2)+"\")&&"+
+    "(`"+name3+"`=\""+RDEscapeString(test3)+"\")";
   q=new RDSqlQuery(sql);
   if(q->isActive()) {
     q->first();
