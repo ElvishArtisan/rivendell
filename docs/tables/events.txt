@@ -1,0 +1,31 @@
+                  EVENTS Table Layout for Rivendell
+
+The EVENTS table holds data defining each event in rdlogmanager(1).
+
+FIELD NAME           TYPE               REMARKS
+------------------------------------------------------------------------
+NAME                 varchar(64)        Primary key
+PROPERTIES           varchar(64)
+DISPLAY_TEXT         varchar(64)
+NOTE_TEXT            varchar(191)
+PREPOSITION          int(11)
+TIME_TYPE            int(11)
+GRACE_TIME           int(11)
+POST_POINT           enum('N','Y')
+USE_AUTOFILL         enum('N','Y')
+AUTOFILL_SLOP        int(11)
+USE_TIMESCALE        enum('N','Y')
+IMPORT_SOURCE        int(11)
+START_SLOP           int(11)
+END_SLOP             int(11)
+FIRST_TRANS_TYPE     int(11)
+DEFAULT_TRANS_TYPE   int(11)
+COLOR                varchar(7)
+SCHED_GROUP          varchar(10)
+TITLE_SEP            int(10) unsigned
+HAVE_CODE            varchar(10)
+HAVE_CODE2           varchar(10)
+HOR_SEP              int(10) unsigned
+HOR_DIST             int(10) unsigned
+NESTED_EVENT         varchar(64)
+REMARKS              text

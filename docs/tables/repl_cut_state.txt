@@ -7,6 +7,6 @@ FIELD NAME           TYPE              REMARKS
 ------------------------------------------------------------------
 ID                   int(10) unsigned  auto_increment, not null
                                        primary key
-REPLICATOR_NAME      char(32)          from REPLICATORS.NAME
-CUT_NAME             char(12)          from CUTS.CUT_NAME
+REPLICATOR_NAME      varchar(32)       from REPLICATORS.NAME
+CUT_NAME             varchar(12)       from CUTS.CUT_NAME
 ITEM_DATETIME        datetime

@@ -1,6 +1,6 @@
                     SYSTEM Table Layout for Rivendell
 
-The STATIONS table contains system-wide settings.
+The SYSTEM table contains system-wide settings.
 
 FIELD NAME           TYPE               REMARKS
 ---------------------------------------------------------------
@@ -9,7 +9,7 @@ SAMPLE_RATE          int(10) unsigned
 DUP_CART_TITLE       enum('N','Y')
 FIX_DUP_CART_TITLES  enum('N','Y')
 MAX_POST_LENGTH      int(10) unsigned
-ISCI_XREFERENCE_PATH char(255)
-TEMP_CART_GROUP      char(10)            From 'GROUPS.NAME'
+ISCI_XREFERENCE_PATH varchar(191)
+TEMP_CART_GROUP      varchar(10)         From 'GROUPS.NAME'
 SHOW_USER_LIST       enum('N','Y')
-NOTIFICATION_ADDRESS char(15)
+NOTIFICATION_ADDRESS varchar(15)

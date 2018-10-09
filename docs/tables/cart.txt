@@ -2,25 +2,25 @@
 
 The CARTS table holds data concerning all of the available events
 in a Rivendell system that are capable of being individually
-scheduled.  Following is the layout of a record in the CARTS table:
+scheduled.
 
 FIELD NAME           TYPE              REMARKS
 --------------------------------------------------------------------------
 NUMBER               int(10) unsigned  Primary key
 TYPE                 int(10) unsigned  1 = Audio, 2 = Command, 3 = Split
-GROUP_NAME           char(10)          Index
-TITLE                char(255)         Index
-ARTIST               char(255)         Index
-ALBUM                char(255)         Name of release album
+GROUP_NAME           varchar(10)       Index
+TITLE                varchar(191)      Index
+ARTIST               varchar(191)      Index
+ALBUM                varchar(191)      Name of release album
 YEAR                 date              Year of release
-CONDUCTOR            char(64)
-LABEL                char(64)          Release Record Label 
-CLIENT               char(64)          Index
-AGENCY               char(64)          Index
-PUBLISHER            char(64)          Index
-COMPOSER             char(64)          Index
-USER_DEFINED         char(255)         For use by local user
-SONG_ID              char(32)
+CONDUCTOR            varchar(64)
+LABEL                varchar(64)       Release Record Label 
+CLIENT               varchar(64)       Index
+AGENCY               varchar(64)       Index
+PUBLISHER            varchar(64)       Index
+COMPOSER             varchar(64)       Index
+USER_DEFINED         varchar(191)      For use by local user
+SONG_ID              varchar(32)
 BPM                  int(10) unsigned  Beats per minute
 USAGE_CODE           int(11)           0=Feature, 1=Theme Open,
                                        2=Theme Close, 3=Theme Open/Close,
@@ -41,12 +41,13 @@ ENFORCE_LENGTH       enum('N','Y')     Timeshift?
 PRESERVE_PITCH       enum('N','Y')     Preserve Pitch?
 USE_WEIGHTING        enum('N','Y')
 ASYNCRONOUS          enum('N','Y')
-OWNER                char(64)          From LOGS.NAME or STATIONS.NAME
+OWNER                varchar(64)       From LOGS.NAME or STATIONS.NAME
 MACROS               text              RML Macros
+SCHED_CODES          varchar(255)
 NOTES                text              User notes (freeform)
 METADATA_DATETIME    datetime          Metadata last modified
 USE_EVENT_LENGTH     enum('N','Y')     Use RDLogManager event lengths for
                                        macro cart PAD updates.
-PENDING_STATION      char(64)
+PENDING_STATION      varchar(64)
 PENDING_DATETIME     datetime
 PENDING_PID          int(11)

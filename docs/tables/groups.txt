@@ -1,22 +1,21 @@
                    GROUPS Layout for Rivendell
 
 The GROUPS table holds data concerning each Cart Group configured
-on the system.  Following is the layout of a record in the GROUPS
-table:
+on the system.
 
 FIELD NAME           TYPE             REMARKS
 ---------------------------------------------------------------
-NAME                 char(10)         Primary Key
-DESCRIPTION          char(255)
+NAME                 varchar(10)      Primary Key
+DESCRIPTION          varchar(255)
 DEFAULT_CART_TYPE    unsigned int(10) 1=Audio, 2=Macro
 DEFAULT_LOW_CART     unsigned int(10)
 DEFAULT_HIGH_CART    unsigned int(10)
 DEFAULT_CUT_LIFE     int(11)          Default END_DATETIME interval (days)
 CUT_SHELFLIFE        int(11)          -1=no autopurge
 DELETE_EMPTY_CARTS   enum('N','Y')    After purging cuts
-DEFAULT_TITLE        char(255)
+DEFAULT_TITLE        varchar(255)
 ENFORCE_CART_RANGE   enum('N','Y')
 REPORT_TFC           enum('N','Y')
 REPORT_MUS           enum('N','Y')
 ENABLE_NOW_NEXT      enum('N','Y')
-COLOR                char(7)
+COLOR                varchar(7)

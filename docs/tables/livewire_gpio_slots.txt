@@ -7,8 +7,8 @@ Each slot consist of five Rivendell GPIO lines.
 FIELD NAME           TYPE               REMARKS
 ------------------------------------------------------------------------
 ID                   int(11) signed     Primary key, auto-increment
-STATION_NAME         char(64)           From STATIONS.NAME
+STATION_NAME         varchar(64)        From STATIONS.NAME
 MATRIX               int(11)            From MATRICES.MATRIX
 SLOT                 int(11)
-IP_ADDRESS           char(15)
+IP_ADDRESS           varchar(15)
 SOURCE_NUMBER        int(11)

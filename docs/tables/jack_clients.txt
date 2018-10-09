@@ -6,6 +6,6 @@ when starting the rivendell daemons.
 FIELD NAME           TYPE               REMARKS
 -------------------------------------------------------------------------
 ID                   int unsigned(10)   Primary Key
-STATION_NAME         char(64)           From STATIONS.NAME
-DESCRIPTION          char(64)
-COMMAND_LINE         char(255)
+STATION_NAME         varchar(64)        From STATIONS.NAME
+DESCRIPTION          varchar(64)
+COMMAND_LINE         varchar(255)

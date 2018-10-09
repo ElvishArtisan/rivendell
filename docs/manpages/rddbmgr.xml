@@ -6,7 +6,7 @@
   <refmeta>
     <refentrytitle>rddbmgr</refentrytitle>
     <manvolnum>8</manvolnum>
-    <refmiscinfo class='source'>June 2018</refmiscinfo>
+    <refmiscinfo class='source'>October 2018</refmiscinfo>
     <refmiscinfo class='manual'>Linux Audio Manual</refmiscinfo>
   </refmeta>
   <refnamediv>
@@ -145,30 +145,6 @@
 	<para>
 	  Use table engine <replaceable>engine</replaceable> when
 	  creating new DB tables.
-	  Default is to use the corresponding value found in the 
-	  <userinput>[mySQL]</userinput> section of
-	  <command>rd.conf</command><manvolnum>5</manvolnum>.
-	</para>
-      </listitem>
-    </varlistentry>
-    <varlistentry>
-      <term><option>--mysql-charset=</option><replaceable>charset</replaceable></term>
-      <listitem>
-	<para>
-	  Configure new tables to use character set
-	  <replaceable>charset</replaceable>.
-	  Default is to use the corresponding value found in the 
-	  <userinput>[mySQL]</userinput> section of
-	  <command>rd.conf</command><manvolnum>5</manvolnum>.
-	</para>
-      </listitem>
-    </varlistentry>
-    <varlistentry>
-      <term><option>--mysql-collation=</option><replaceable>collation</replaceable></term>
-      <listitem>
-	<para>
-	  Configure new tables to use collation
-	  <replaceable>collation</replaceable>.
 	  Default is to use the corresponding value found in the 
 	  <userinput>[mySQL]</userinput> section of
 	  <command>rd.conf</command><manvolnum>5</manvolnum>.
@@ -482,6 +458,15 @@
     <para>
       When reverting the schema of a database, the contents of fields that
       do not exist in the reverted schema will be irrecoverably lost!
+    </para>
+  </warning>
+  <warning>
+    <para>
+      Schema versions earlier than <computeroutput>297</computeroutput>
+      (Rivendell version <computeroutput>3.0.0</computeroutput>) utilize
+      the <computeroutput>Latin1</computeroutput> character set; reverting
+      a database containing non-Latin1 characters to these schema versions
+      will cause irreversible corruption of those characters!
     </para>
   </warning>
   </refsect1>

@@ -63,6 +63,13 @@ bool MainObject::CreateNewDb(QString *err_msg) const
   //
   // Create a Rivendell DB of schema number 286
   //
+  // Maintainer's Note:
+  //
+  // DO NOT alter the schema in this method! Rather, when adding schema
+  // changes, add the update to the 'UpdateSchema()' [updateschema.cpp]
+  // and the reversion to the 'RevertSchema()' [revertschema.cpp] methods.
+  //
+
   QString sql;
   bool ok=false;
 
@@ -102,6 +109,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "EDIT_PODCAST_PRIV enum('N','Y') not null default 'N',"+
     "DELETE_PODCAST_PRIV enum('N','Y') not null default 'N',"+
     "INDEX FULL_NAME_IDX (FULL_NAME))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -153,6 +161,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "ALSA_VERSION char(16),"+
     "INDEX DESCRIPTION_IDX (DESCRIPTION),"+
     "index IPV4_ADDRESS_IDX (IPV4_ADDRESS))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -220,6 +229,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "index PENDING_STATION_IDX(PENDING_STATION),"+
     "index PENDING_PID_IDX(PENDING_STATION,PENDING_PID),"+
     "index PENDING_DATETIME_IDX(PENDING_DATETIME))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -284,6 +294,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "index END_DATETIME_IDX (END_DATETIME),"+
     "index ISCI_IDX (ISCI),"+
     "index ISRC_IDX (ISRC))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -321,6 +332,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "index CART_NUMBER_IDX (CART_NUMBER),"+
     "index DESCRIPTION_IDX (DESCRIPTION),"+
     "index OUTCUE_IDX (OUTCUE))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -367,8 +379,6 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "TFC_LEN_MINUTES_LENGTH int,"+
     "TFC_LEN_SECONDS_OFFSET int,"+
     "TFC_LEN_SECONDS_LENGTH int,"+
-    //    "TFC_LENGTH_OFFSET int,"+
-    //    "TFC_LENGTH_LENGTH int,"+
     "TFC_DATA_OFFSET int,"+
     "TFC_DATA_LENGTH int,"+
     "TFC_EVENT_ID_OFFSET int,"+
@@ -400,14 +410,13 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "MUS_LEN_MINUTES_LENGTH int,"+
     "MUS_LEN_SECONDS_OFFSET int,"+
     "MUS_LEN_SECONDS_LENGTH int,"+
-    //    "MUS_LENGTH_OFFSET int,"+
-    //    "MUS_LENGTH_LENGTH int,"+
     "MUS_DATA_OFFSET int,"+
     "MUS_DATA_LENGTH int,"+
     "MUS_EVENT_ID_OFFSET int,"+
     "MUS_EVENT_ID_LENGTH int,"+
     "MUS_ANNC_TYPE_OFFSET int,"+
     "MUS_ANNC_TYPE_LENGTH int)"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -433,6 +442,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "COLOR char(7),"+
     "index IDX_REPORT_TFC (REPORT_TFC),"+
     "index IDX_REPORT_MUS (REPORT_MUS))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -447,6 +457,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "SERVICE_NAME char(10),"+
     "index GROUP_IDX (GROUP_NAME),"+
     "index SERVICE_IDX (SERVICE_NAME))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -484,6 +495,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "LIMIT_SEARCH int default 1,"+
     "SEARCH_LIMITED enum('N','Y') default 'Y',"+
     "index STATION_IDX (STATION,INSTANCE))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -498,6 +510,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "TRIGGER_CODE int unsigned,"+
     "OFFSET int unsigned,"+
     "index CUT_NAME_IDX (CUT_NAME))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -520,6 +533,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "index STATION_NAME_IDX (STATION_NAME),"+
     "index ACTIVE_IDX (ACTIVE),"+
     "index PORT_ID_IDX (PORT_ID))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -548,6 +562,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "SWITCH_DELAY int default 0,"+
     "index STATION_NAME_IDX (STATION_NAME),"+
     "index CHANNEL_IDX (CHANNEL))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -609,6 +624,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "ENABLE_METADATA enum('N','Y') default 'N',"+
     "FEED_ID int default -1,"+
     "index STATION_NAME_IDX (STATION_NAME))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -652,6 +668,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "index END_DATE_IDX (END_DATE),"+
     "index TYPE_IDX(TYPE,LOG_EXISTS),"+
     "index LOCK_GUID_IDX(LOCK_GUID))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -664,6 +681,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "DB int not null primary key,"+
     "LAST_MAINT_DATETIME datetime default \"1970-01-01 00:00:00\","+
     "LAST_ISCI_XREFERENCE datetime default \"1970-01-01 00:00:00\")"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -706,6 +724,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "SHOW_COUNTERS enum('N','Y') default 'N',"+
     "AUDITION_PREROLL int default 10000,"+
     "index STATION_IDX (STATION))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -726,6 +745,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "DEFAULT_COLOR char(7),"+
     "index LOAD_IDX (TYPE,OWNER,PANEL_NO),"+
     "index SAVE_IDX (TYPE,OWNER,PANEL_NO,ROW_NO,COLUMN_NO))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -766,6 +786,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "FADERS int default 0,"+
     "DISPLAYS int default 0,"+
     "index MATRIX_IDX (STATION_NAME,MATRIX))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -789,6 +810,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "NODE_SLOT int,"+
     "index MATRIX_IDX (STATION_NAME,MATRIX,NUMBER),"+
     "index NODE_IDX (STATION_NAME,MATRIX,NUMBER,NODE_HOSTNAME,NODE_TCP_PORT))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -810,6 +832,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "NODE_SLOT int,"+
     "index MATRIX_IDX (STATION_NAME,MATRIX,NUMBER),"+
     "index NODE_IDX (STATION_NAME,MATRIX,NUMBER,NODE_HOSTNAME,NODE_TCP_PORT))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -826,6 +849,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "MACRO_CART int default 0,"+
     "OFF_MACRO_CART int default 0,"+
     "index MATRIX_IDX (STATION_NAME,MATRIX,NUMBER))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -860,6 +884,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "HOR_DIST INT(10) unsigned,"+
     "NESTED_EVENT char(64),"+
     "REMARKS char(255))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -874,6 +899,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "ARTISTSEP int(10) unsigned,"+
     "COLOR char(7),"+
     "REMARKS char(255))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -887,6 +913,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "SERVICE char(10),"+
     "CART_NUMBER int unsigned,"+
     "index SERVICE_IDX (SERVICE))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -902,6 +929,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "VARVALUE char(255),"+
     "REMARK char(255),"+
     "index NAME_IDX (STATION_NAME))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -916,6 +944,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "SERVICE_NAME char(10),"+
     "index STATION_IDX (STATION_NAME),"+
     "index SERVICE_IDX (SERVICE_NAME))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -950,6 +979,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "START_TIME time,"+
     "END_TIME time,"+
     "index IDX_NAME (NAME))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -963,6 +993,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "REPORT_NAME char(64) not null,"+
     "SERVICE_NAME char(10),"+
     "index IDX_REPORT_NAME (REPORT_NAME))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -976,6 +1007,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "REPORT_NAME char(64) not null,"+
     "STATION_NAME char(64),"+
     "index IDX_REPORT_NAME (REPORT_NAME))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -989,6 +1021,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "REPORT_NAME char(64) not null,"+
     "GROUP_NAME char(10),"+
     "index IDX_REPORT_NAME (REPORT_NAME))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1003,6 +1036,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "SERVICE_NAME char(10),"+
     "index STATION_IDX (CLOCK_NAME),"+
     "index SERVICE_IDX (SERVICE_NAME))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1017,6 +1051,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "SERVICE_NAME char(10),"+
     "index STATION_IDX (EVENT_NAME),"+
     "index SERVICE_IDX (SERVICE_NAME))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1031,6 +1066,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "GROUP_NAME char(10),"+
     "index USER_IDX (USER_NAME),"+
     "index GROUP_IDX (GROUP_NAME))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1051,6 +1087,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "RELAY_NUM int default -1,"+
     "BUSS_NUM int default -1,"+
     "index STATION_MATRIX_IDX (STATION_NAME,MATRIX_NUM,VGUEST_TYPE))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1081,6 +1118,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "RIPPER_LEVEL int default -1300,"+
     "DEFAULT_TRANS_TYPE int default 0,"+
     "index STATION_IDX (STATION))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1094,6 +1132,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "STATION char(64) not null,"+
     "ERROR_RML char(255),"+
     "index STATION_IDX (STATION))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1105,6 +1144,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
   sql=QString("create table if not exists SCHED_CODES")+
     "(CODE varchar(10) not null primary key,"+
     "DESCRIPTION varchar(255))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1139,6 +1179,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "CREATE_ENDDATE_OFFSET int default 0,"+
     "SET_USER_DEFINED char(255),"+
     "index STATION_NAME_IDX (STATION_NAME))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1160,6 +1201,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "SKIN_PATH char(255) default \""+
     RDEscapeString(RD_DEFAULT_RDPANEL_SKIN)+"\","+
     "index STATION_IDX (STATION))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1180,6 +1222,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "DEFAULT_COLOR char(7),"+
     "index LOAD_IDX (TYPE,OWNER,PANEL_NO),"+
     "index SAVE_IDX (TYPE,OWNER,PANEL_NO,ROW_NO,COLUMN_NO))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1195,6 +1238,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "PANEL_NO int not null,"+
     "NAME char(64),"+
     "index LOAD_IDX (TYPE,OWNER,PANEL_NO))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1210,6 +1254,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "PANEL_NO int not null,"+
     "NAME char(64),"+
     "index LOAD_IDX (TYPE,OWNER,PANEL_NO))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1252,6 +1297,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "REDIRECT_PATH char(255),"+
     "MEDIA_LINK_MODE int default 0,"+
     "index KEY_NAME_IDX(KEY_NAME))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1279,6 +1325,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "ORIGIN_DATETIME datetime,"+
     "EFFECTIVE_DATETIME datetime,"+
     "index FEED_ID_IDX(FEED_ID,ORIGIN_DATETIME))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1293,6 +1340,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "VAR_NAME char(16),"+
     "CAPTION char(64),"+
     "index FEED_ID_IDX(FEED_ID))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1307,6 +1355,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "KEY_NAME char(8),"+
     "index USER_IDX (USER_NAME),"+
     "index KEYNAME_IDX (KEY_NAME))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1320,6 +1369,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "LOGIN_NAME char(255),"+
     "IP_ADDRESS char(16),"+
     "TIME_STAMP datetime)"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1338,6 +1388,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "TCP_PORT int,"+
     "DESCRIPTION char(255),"+
     "index STATION_IDX (STATION_NAME,MATRIX))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1353,6 +1404,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "COMMAND_LINE char(255),"+
     "DEFAULT_EXTENSION char(16),"+
     "index NAME_IDX(NAME,STATION_NAME))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1381,6 +1433,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "ENCODER_ID int not null,"+
     "BITRATES int not null,"+
     "index ENCODER_ID_IDX(ENCODER_ID))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1394,6 +1447,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "ENCODER_ID int not null,"+
     "CHANNELS int not null,"+
     "index ENCODER_ID_IDX(ENCODER_ID))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1407,6 +1461,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "ENCODER_ID int not null,"+
     "SAMPLERATES int not null,"+
     "index ENCODER_ID_IDX(ENCODER_ID))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1423,6 +1478,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "MACRO_CART int default 0,"+
     "OFF_MACRO_CART int default 0,"+
     "index MATRIX_IDX (STATION_NAME,MATRIX,NUMBER))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1437,6 +1493,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "FILE_PATH char(255) not null,"+
     "FILE_DATETIME datetime,"+
     "index FILE_PATH_IDX (DROPBOX_ID,FILE_PATH))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1452,6 +1509,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "PLUGIN_PATH char(255),"+
     "PLUGIN_ARG char(255),"+
     "index STATION_IDX (STATION_NAME,LOG_MACHINE))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1472,6 +1530,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "TEMP_CART_GROUP char(10),"+
     "SHOW_USER_LIST enum('N','Y') not null default 'Y',"+
     "NOTIFICATION_ADDRESS char(15) default \""+RD_NOTIFICATION_ADDRESS+"\")"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1506,6 +1565,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "EVENT_ID_LENGTH int,"+
     "ANNC_TYPE_OFFSET int,"+
     "ANNC_TYPE_LENGTH int)"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1534,6 +1594,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "ENABLE_METADATA enum('N','Y') default 'N',"+
     "NORMALIZATION_LEVEL int default 0,"+
     "index TYPE_ID_IDX (TYPE_ID))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1548,6 +1609,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "GROUP_NAME char(10) not null,"+
     "index REPLICATOR_NAME_IDX(REPLICATOR_NAME),"+
     "index GROUP_NAME_IDX(GROUP_NAME))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1564,6 +1626,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "ITEM_DATETIME datetime not null,"+
     "REPOST enum('N','Y') default 'N',"+
     "unique REPLICATOR_NAME_IDX(REPLICATOR_NAME,CART_NUMBER,POSTED_FILENAME))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1578,6 +1641,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "CUT_NAME char(12) not null,"+
     "ITEM_DATETIME datetime not null,"+
     "unique REPLICATOR_NAME_IDX(REPLICATOR_NAME,CUT_NAME))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1600,6 +1664,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "index CART_NUMBER_IDX(CART_NUMBER),"+
     "index TYPE_IDX(TYPE,LATEST_DATE),"+
     "index LATEST_DATE_IDX(LATEST_DATE))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1615,6 +1680,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "KEY_ID               int,"+
     "KEY_VALUE            char(64),"+
     "KEY_LABEL            char(64))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1629,6 +1695,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "DESCRIPTION char(64),"+
     "COMMAND_LINE text not null,"+
     "index IDX_STATION_NAME (STATION_NAME))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1654,6 +1721,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "INPUT_PORT int not null default 0,"+
     "OUTPUT_PORT int not null default 0,"+
     "index STATION_NAME_IDX(STATION_NAME,SLOT_NUMBER))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1670,6 +1738,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "IP_ADDRESS char(15),"+
     "SOURCE_NUMBER int,"+
     "index STATION_NAME_IDX(STATION_NAME,MATRIX))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1696,6 +1765,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "STOP_GPO_MATRIX int not null default -1,"+
     "STOP_GPO_LINE int not null default -1,"+
     "index STATION_NAME_IDX(STATION_NAME,INSTANCE))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1722,6 +1792,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "STOP_GPO_MATRIX int not null default -1,"+
     "STOP_GPO_LINE int not null default -1,"+
     "index STATION_NAME_IDX(STATION_NAME,INSTANCE))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1737,6 +1808,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "START_MODE int not null default 0,"+
     "OP_MODE int not null default 2,"+
     "index STATION_NAME_IDX(STATION_NAME,MACHINE))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1751,6 +1823,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "SCHED_CODE char(11) not null,"
     "index DROPBOX_ID_IDX(DROPBOX_ID),"+
     "index SCHED_CODE_IDX(SCHED_CODE))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1768,6 +1841,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "EDGE int not null,"+
     "EVENT_DATETIME datetime not null,"+
     "index STATION_NAME_IDX(STATION_NAME,MATRIX,TYPE,EVENT_DATETIME,EDGE))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1782,6 +1856,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "NUMBER int not null,"+
     "POINT int not null,"+
     "index CUT_NAME_IDX(CUT_NAME))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1797,6 +1872,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "NUMBER int not null,"+
     "CART_NUMBER int unsigned not null default 0,"+
     "index STATION_NAME_IDX(STATION_NAME,CHANNEL))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1812,6 +1888,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "CLOCK_NAME char(64) default null,"+
     "index SERVICE_NAME_IDX(SERVICE_NAME,HOUR),"+
     "index CLOCK_NAME_IDX(CLOCK_NAME))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1826,6 +1903,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "IPV4_ADDRESS char(16) not null,"+
     "EXPIRATION_DATETIME datetime not null,"+
     "index TICKET_IDX(TICKET,IPV4_ADDRESS,EXPIRATION_DATETIME))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1839,6 +1917,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "USER_NAME char(255) not null,"+
     "SERVICE_NAME char(10) not null,"+
     "index USER_NAME_IDX(USER_NAME))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1865,6 +1944,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "UDP_STRING char(255),"+
     "LOG_RML char(255),"+
     "index STATION_NAME_IDX(STATION_NAME,MACHINE))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1883,6 +1963,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "OUTPUTS int not null default -1,"+
     "CLOCK_SOURCE int not null default 0,"+
     "unique index STATION_NAME_IDX(STATION_NAME,CARD_NUMBER))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1900,6 +1981,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "TYPE int not null default 0,"
     "MODE int not null default 0,"+
     "unique index STATION_NAME_IDX(STATION_NAME,CARD_NUMBER,PORT_NUMBER))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -1915,6 +1997,7 @@ bool MainObject::CreateNewDb(QString *err_msg) const
     "PORT_NUMBER int not null,"+
     "LEVEL int not null default 0,"+
     "unique index STATION_NAME_IDX(STATION_NAME,CARD_NUMBER,PORT_NUMBER))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -2395,6 +2478,7 @@ bool MainObject::InititalizeNewDb(const QString &station_name,bool gen_audio,
     "index COUNT_IDX (COUNT),"+
     "index CART_NUMBER_IDX (CART_NUMBER),"+
     "index LABEL_IDX (LABEL))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
@@ -2744,6 +2828,7 @@ bool MainObject::CreateReconciliationTable(const QString &svc_name,
     "EXT_EVENT_ID char(8),"+
     "EXT_ANNC_TYPE char(8),"+
     "index EVENT_DATETIME_IDX(EVENT_DATETIME))"+
+    " charset latin1 collate latin1_swedish_ci"+
     db_table_create_postfix;
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;

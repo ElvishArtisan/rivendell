@@ -1,0 +1,12 @@
+                  CLOCKS Table Layout for Rivendell
+
+The CLOCKS table holds data defining each clock in RDLogManager.
+
+
+FIELD NAME           TYPE              REMARKS
+---------------------------------------------------------------
+NAME                 varchar(64)       Primary key
+SHORT_NAME           varchar(8)
+ARTISTSEP            int(10) unsigned
+COLOR                varchar(7)
+REMARKS              text

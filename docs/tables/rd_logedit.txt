@@ -1,12 +1,11 @@
                   RDLOGEDIT Table Layout for Rivendell
 
 The RDLOGEDIT table holds configuration data for the RDLogEdit widget.
-Following is the layout of a record in the RDLOGEDIT table:
 
 FIELD NAME           TYPE              REMARKS
 ------------------------------------------------------------------------------
 ID                   int(10) unsigned  * Primary key, Auto Increment
-STATION              char(64)          Workstation, Indexed
+STATION              varchar(64)       From STATIONS.NAME
 INPUT_CARD           int(11)           None=-1
 OUTPUT_CARD          int(11)           None=-1
 OUTPUT_PORT          int(11)

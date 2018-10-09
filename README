@@ -1,5 +1,10 @@
 This is the README file for the Rivendell package.
 
+WARNING: This is a BETA TEST version of Rivendell. As such, it is virtually
+         guaranteed to contain bugs, possibly severe ones that could
+         cause LOSS OF DATA. It is intended for testing purposes, and
+         should not be used in 'production' siuations.
+
 This software comes with ABSOLUTELY NO WARRANTY.  See the file COPYING for
 details.
 
@@ -8,8 +13,8 @@ to be a robust, functionally complete digital audio system for use in
 professional radio broadcast environments.
 
 See the file INSTALL for installation instructions.  If you are upgrading from
-a 1.x version of Rivendell, also see the file 'UPGRADING' for important notes
-and pointers.
+a 1.x or 2.x version of Rivendell, also see the file 'UPGRADING'
+for important notes and pointers.
 
 
 OVERVIEW

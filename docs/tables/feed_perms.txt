@@ -1,12 +1,11 @@
                 FEED_PERMS Table Layout for Rivendell
 
 The FEED_PERMS table holds data concerning which RSS feeds are 
-are allowed to be accessed by which users.  Following is the layout 
-of a record in the FEED_PERMS table:
+are allowed to be accessed by which users.
 
 
 FIELD NAME           TYPE              REMARKS
 ---------------------------------------------------------------
 ID                   int(10) unsigned  Primary key, auto increment
-USER_NAME            char(255)         From USERS.LOGIN_NAME
-KEY_NAME             char(8)           From FEEDS.KEYNAME
+USER_NAME            varchar(191)      From USERS.LOGIN_NAME
+KEY_NAME             varchar(8)        From FEEDS.KEYNAME

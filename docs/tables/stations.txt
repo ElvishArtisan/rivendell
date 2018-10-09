@@ -1,28 +1,27 @@
                   STATIONS Table Layout for Rivendell
 
 The STATIONS table contains data about each workstation in the system.
-Following is the layout of a record in the SERVICES table:
 
 FIELD NAME           TYPE               REMARKS
 ---------------------------------------------------------------
-NAME                 char(64)           Primary Key
-SHORT_NAME           char(64)
-DESCRIPTION          char(64)           Indexed
-USER_NAME            char(255)          Current User
-DEFAULT_NAME         char(255)          Default User
-IPV4_ADDRESS	     char(15)
-HTTP_STATION	     char(64)           From STATIONS.NAME
-CAE_STATION          char(64)           From STATIONS.NAME
+NAME                 varchar(64)        Primary Key
+SHORT_NAME           varchar(64)
+DESCRIPTION          varchar(64)        Indexed
+USER_NAME            varchar(255)       Current User
+DEFAULT_NAME         varchar(255)       Default User
+IPV4_ADDRESS	     varchar(15)
+HTTP_STATION	     varchar(64)        From STATIONS.NAME
+CAE_STATION          varchar(64)        From STATIONS.NAME
 TIME_OFFSET          int(11)
 BROADCAST_SECURITY   int(10) unsigned   0=HostSec, 1=UserSec
 HEARTBEAT_CART       int(10) unsigned
 HEARTBEAT_INTERVAL   int(10) unsigned
 STARTUP_CART         int(10) unsigned
-EDITOR_PATH          char(255)
+EDITOR_PATH          varchar(255)
 FILTER_MODE          int(11)            0=Synchronous, 1=Asynchronous
 START_JACK           enum('Y','N')
-JACK_SERVER_NAME     char(64)
-JACK_COMMAND_LINE    char(255)
+JACK_SERVER_NAME     varchar(64)
+JACK_COMMAND_LINE    varchar(255)
 JACK_PORTS           int(11) signed
 CUE_CARD             int(11) signed
 CUE_PORT             int(11) signed
@@ -41,6 +40,6 @@ HAVE_TWOLAME         enum('N','Y')
 HAVE_LAME            enum('N','Y')
 HAVE_MPG321          enum('N','Y')
 HAVE_MP4_DECODE      enum('N','Y')
-HPI_VERSION          char(16)
-JACK_VERSION         char(16)
-ALSA_VERSION         char(16)
+HPI_VERSION          varchar(16)
+JACK_VERSION         varchar(16)
+ALSA_VERSION         varchar(16)

@@ -1,0 +1,12 @@
+                  AUX_METADATA Table Layout for Rivendell
+
+The AUX_METADATA table holds data concerning auxiliary data fields
+associated with podcast feeds.
+
+
+FIELD NAME           TYPE              REMARKS
+---------------------------------------------------------------
+ID                   int(10) unsigned  Primary key, auto increment
+FEED_ID              int(10) unsigned  From FEEDS.ID
+VAR_NAME             varchar(16)
+CAPTION              varchar(64)

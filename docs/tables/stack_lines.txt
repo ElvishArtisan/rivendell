@@ -6,8 +6,8 @@ FIELD NAME           TYPE               REMARKS
 ------------------------------------------------------------------------
 ID                   int(10) unsigned   Primary key, auto_increment
 SCHED_STACK_ID       int(10) unsigned
-SERVICE_NAME         char(10)           From SERVICES.NAME
+SERVICE_NAME         varchar(10)        From SERVICES.NAME
 CART                 int(10) unsigned   From CART.NUMBER
-ARTIST               varchar(255)       From CART.ARTIST
-SCHED_CODES          varchar(255)
+ARTIST               varchar(191)       From CART.ARTIST
+SCHED_CODES          varchar(191)
 SCHEDULED_AT         datetime

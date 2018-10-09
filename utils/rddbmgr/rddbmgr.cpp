@@ -72,8 +72,6 @@ MainObject::MainObject(QObject *parent)
   db_mysql_database=db_config->mysqlDbname();
   db_mysql_driver=db_config->mysqlDriver();
   db_mysql_engine=db_config->mysqlEngine();
-  db_mysql_charset=db_config->mysqlCharset();
-  db_mysql_collation=db_config->mysqlCollation();
   station_name=db_config->stationName();
 
   InitializeSchemaMap();
@@ -140,14 +138,6 @@ MainObject::MainObject(QObject *parent)
     }
     if(cmd->key(i)=="--mysql-engine") {
       db_mysql_engine=cmd->value(i);
-      cmd->setProcessed(i,true);
-    }
-    if(cmd->key(i)=="--mysql-charset") {
-      db_mysql_charset=cmd->value(i);
-      cmd->setProcessed(i,true);
-    }
-    if(cmd->key(i)=="--mysql-collation") {
-      db_mysql_collation=cmd->value(i);
       cmd->setProcessed(i,true);
     }
     if(cmd->key(i)=="--set-schema") {
@@ -283,8 +273,6 @@ MainObject::MainObject(QObject *parent)
     fprintf(stderr,"  Database: %s\n",(const char *)db_mysql_database);
     fprintf(stderr,"  Driver: %s\n",(const char *)db_mysql_driver);
     fprintf(stderr,"  Engine: %s\n",(const char *)db_mysql_engine);
-    fprintf(stderr,"  Charset: %s\n",(const char *)db_mysql_charset);
-    fprintf(stderr,"  Collation: %s\n",(const char *)db_mysql_collation);
   }
 
   //
@@ -300,9 +288,7 @@ MainObject::MainObject(QObject *parent)
 	    (const char *)db.lastError().text());
     exit(1);
   }
-  db_table_create_postfix=
-    RDConfig::createTablePostfix(db_mysql_engine,db_mysql_charset,
-				 db_mysql_collation);  
+  db_table_create_postfix=RDConfig::createTablePostfix(db_mysql_engine);
 
   //
   // Resolve Target Schema
