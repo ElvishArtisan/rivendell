@@ -31,43 +31,41 @@ Db::Db(QString *err_str,RDConfig *config)
   //
   // Open Database
   //
-  if (!db.isOpen()){
-    db=QSqlDatabase::addDatabase(config->mysqlDriver());
-    if(!db.isValid()) {
-      *err_str+= QString(QObject::tr("Couldn't initialize MySql driver!"));
-      return;
-    }
-    db.setHostName(config->mysqlHostname());
-    db.setDatabaseName(config->mysqlDbname());
-    db.setUserName(config->mysqlUsername());
-    db.setPassword(config->mysqlPassword());
-    if(!db.open()) {
-      *err_str+=QString(QObject::tr("Couldn't open MySQL connection on"))+
-	" \""+config->mysqlHostname()+"\".";
-      db.removeDatabase(config->mysqlDbname());
-      db.close();
-      return;
-    }
-
-    q=new QSqlQuery("select DB from VERSION");
-    if(q->first()) {
-      db_schema=q->value(0).toUInt();
-    }
-    delete q;
+  QSqlDatabase db=QSqlDatabase::addDatabase(config->mysqlDriver(),"Rivendell");
+  if(!db.isValid()) {
+    *err_str+= QString(QObject::tr("Couldn't initialize MySql driver!"));
+    return;
   }
+  db.setHostName(config->mysqlHostname());
+  db.setDatabaseName(config->mysqlDbname());
+  db.setUserName(config->mysqlUsername());
+  db.setPassword(config->mysqlPassword());
+  if(!db.open()) {
+    *err_str+=QString().sprintf("Couldn't open MySQL connection on %s",
+      (const char *)config->mysqlHostname());
+    return;
+  }
+
+  q=new QSqlQuery("select DB from VERSION",db);
+  if(q->first()) {
+    db_schema=q->value(0).toUInt();
+  }
+  delete q;
 }
 
 
 Db::~Db()
 {
-  if(db.isOpen()) {
-//    db.removeDatabase(config->mysqlDbname());
+  {
+    QSqlDatabase db=QSqlDatabase::database("Rivendell");
     db.close();
   }
+  QSqlDatabase::removeDatabase("Rivendell");
 }
 
 bool Db::isOpen()
 {
+  QSqlDatabase db=QSqlDatabase::database("Rivendell");
   return db.isOpen();
 }
 

@@ -34,7 +34,6 @@ class Db
    unsigned schema();
 
   private:
-   QSqlDatabase db;
    unsigned db_schema;
 };
 

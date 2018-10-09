@@ -176,13 +176,12 @@ void MainWidget::updateLabels()
   db = new Db(&err_msg,rd_config);
 
   if (!db->isOpen()) {
-    label_schema->setVisible(false);
+    label_schema->setText("DB Version: unknown");
     db_backup_button->setEnabled(false);
     db_restore_button->setEnabled(false);
   }
   else {
     label_schema->setText(QString().sprintf("DB Version: %d",db->schema()));
-    label_schema->setVisible(true);
     db_backup_button->setEnabled(true);
     db_restore_button->setEnabled(true);
   }
@@ -211,7 +210,10 @@ void MainWidget::createData()
 
   mysql_login=new MySqlLogin(msg,&hostname,&dbname,&admin_name,&admin_pwd);
 
-  mysql_login->exec();
+  if(mysql_login->exec()) {
+    delete mysql_login;
+    return;
+  }
 
   delete mysql_login;
 
@@ -231,11 +233,11 @@ void MainWidget::createData()
     QMessageBox::information(this,tr("Success"),tr("A new database has been successfully created."));
   }
 
-  delete db_create;
+  startDaemons();
 
   updateLabels();
 
-  startDaemons();
+  delete db_create;
 }
 
 
@@ -346,24 +348,52 @@ void MainWidget::resizeEvent(QResizeEvent *e)
 }
 
 
+int MainWidget::statusDaemons(QString service)
+{
+  QProcess statusProcess(this);
+  QStringList args;
+  args << "status" << service;
+  statusProcess.start("systemctl", args);
+  statusProcess.waitForFinished();
+  return statusProcess.exitCode();
+}
+
 void MainWidget::stopDaemons()
 {
+  QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+  if(!statusDaemons("rivendell")) {
+    QProcess stopProcess(this);
+    QStringList args;
+    args << "stop" << "rivendell";
+    stopProcess.start("systemctl", args);
+    stopProcess.waitForFinished();
+    if (!stopProcess.exitCode()) {
+      db_daemon_start_needed=true;
+    }
+  }
+  QApplication::restoreOverrideCursor();
+#if 0
   if(system("/usr/bin/systemctl status rivendell")==0) {
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
     system("/usr/bin/systemctl stop rivendell");
     QApplication::restoreOverrideCursor();
     db_daemon_start_needed=true;
   }
+#endif
 }
 
 
 void MainWidget::startDaemons()
 {
-  if(db_daemon_start_needed) {
-    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-    system("/usr/bin/systemctl start rivendell");
-    QApplication::restoreOverrideCursor();
+  QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+  if(statusDaemons("rivendell")) {
+    QProcess startProcess(this);
+    QStringList args;
+    args << "start" << "rivendell";
+    startProcess.start("systemctl", args);
+    startProcess.waitForFinished();
   }
+  QApplication::restoreOverrideCursor();
 }
 
 

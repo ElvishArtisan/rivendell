@@ -42,100 +42,96 @@ bool CreateDb::create(QWidget *parent,QString *err_str,RDConfig *rd_config)
   //
   // Open Database
   //
-  if (!db.isOpen()){
-    db=QSqlDatabase::addDatabase(rd_config->mysqlDriver(),"createDb");
-    if(!db.isValid()) {
-      *err_str+= QString(QObject::tr("Couldn't initialize MySql driver!"));
-      return true;
-    }
-    db.setHostName(db_host);
-    db.setDatabaseName("mysql");
-    db.setUserName(db_user);
-    db.setPassword(db_pass);
-    if(!db.open()) {
-      *err_str+=QString(QObject::tr("Couldn't open MySQL connection on"))+
-	" \""+db_host+"\".";
-      db.removeDatabase(db.connectionName());
-      db.close();
-      return true;
-    }
+  QSqlDatabase db=QSqlDatabase::addDatabase(rd_config->mysqlDriver(),"createDb");
+  if(!db.isValid()) {
+    *err_str+= QString(QObject::tr("Couldn't initialize MySql driver!"));
+    return true;
+  }
 
-    QSqlQuery *q;
+  db.setHostName(db_host);
+  db.setDatabaseName("mysql");
+  db.setUserName(db_user);
+  db.setPassword(db_pass);
+  if(!db.open()) {
+    *err_str+=QString().sprintf("Couldn't open MySQL connection on %s",(const char *)db_host);
+    return true;
+  }
 
-    sql=QString().sprintf("drop database if exists `%s`",(const char *)db_name);
-    q=new QSqlQuery(sql,db);
-    if (!q->isActive()) {
-      *err_str+=QString(QObject::tr("Could not remove old database"));
-      return true;
-    }
-    delete q;
+  QSqlQuery *q;
 
-    sql=QString().sprintf("create database if not exists `%s`",(const char *)db_name);
-    q=new QSqlQuery(sql,db);
-    if (!q->isActive()) {
-      *err_str+=QString(QObject::tr("Could not create new database"));
-      return true;
-    }
-    delete q;
+  sql=QString().sprintf("drop database if exists `%s`",(const char *)db_name);
+  q=new QSqlQuery(sql,db);
+  if (!q->isActive()) {
+    *err_str+=QString(QObject::tr("Could not remove old database"));
+    return true;
+  }
+  delete q;
 
-    //
-    // Drop any existing 'rduser'@'%' and 'rduser'@'localhost' users
-    //
-    sql=QString().sprintf("drop user '%s'@'%%'",(const char *)rd_config->mysqlUsername());
-    q=new QSqlQuery(sql,db);
-    delete q;
-    sql=QString().sprintf("drop user '%s'@'localhost'",(const char *)rd_config->mysqlUsername());
-    q=new QSqlQuery(sql,db);
-    delete q;
+  sql=QString().sprintf("create database if not exists `%s`",(const char *)db_name);
+  q=new QSqlQuery(sql,db);
+  if (!q->isActive()) {
+    *err_str+=QString(QObject::tr("Could not create new database"));
+    return true;
+  }
+  delete q;
 
-    sql=QString("flush privileges");
-    q=new QSqlQuery(sql,db);
-    delete q;
+  //
+  // Drop any existing 'rduser'@'%' and 'rduser'@'localhost' users
+  //
+  sql=QString().sprintf("drop user '%s'@'%%'",(const char *)rd_config->mysqlUsername());
+  q=new QSqlQuery(sql,db);
+  delete q;
+  sql=QString().sprintf("drop user '%s'@'localhost'",(const char *)rd_config->mysqlUsername());
+  q=new QSqlQuery(sql,db);
+  delete q;
 
-    sql=QString().sprintf("create user '%s'@'%%' identified by \"%s\"",
-      (const char *)rd_config->mysqlUsername(),(const char *)rd_config->mysqlPassword());
-    q=new QSqlQuery(sql,db);
-    if (!q->isActive()) {
-      *err_str+=QString().sprintf("Could not create user: '%s'@'%%'",(const char *)sql);
-      return true;
-    }
-    delete q;
+  sql=QString("flush privileges");
+  q=new QSqlQuery(sql,db);
+  delete q;
 
-    sql=QString().sprintf("create user '%s'@'localhost' identified by \"%s\"",
-      (const char *)rd_config->mysqlUsername(),(const char *)rd_config->mysqlPassword());
-    q=new QSqlQuery(sql,db);
-    if (!q->isActive()) {
-      *err_str+=QString().sprintf("Could not create user: '%s'@'localhost'",(const char *)sql);
-      return true;
-    }
-    delete q;
+  sql=QString().sprintf("create user '%s'@'%%' identified by \"%s\"",
+    (const char *)rd_config->mysqlUsername(),(const char *)rd_config->mysqlPassword());
+  q=new QSqlQuery(sql,db);
+  if (!q->isActive()) {
+    *err_str+=QString().sprintf("Could not create user: '%s'@'%%'",(const char *)sql);
+    return true;
+  }
+  delete q;
 
-    sql=QString().sprintf("grant SELECT, INSERT, UPDATE, DELETE, CREATE, DROP,\
-	          INDEX, ALTER, LOCK TABLES on %s.* to %s", 
-	          (const char *)db_name, (const char *)rd_config->mysqlUsername());
-    q=new QSqlQuery(sql,db);
-    if (!q->isActive()) {
-      *err_str+=QString().sprintf("Could not set permissions: %s",(const char *)sql);
-      return true;
-    }
-    delete q;
+  sql=QString().sprintf("create user '%s'@'localhost' identified by \"%s\"",
+    (const char *)rd_config->mysqlUsername(),(const char *)rd_config->mysqlPassword());
+  q=new QSqlQuery(sql,db);
+  if (!q->isActive()) {
+    *err_str+=QString().sprintf("Could not create user: '%s'@'localhost'",(const char *)sql);
+    return true;
+  }
+  delete q;
 
-    sql=QString("flush privileges");
-    q=new QSqlQuery(sql,db);
-    delete q;
+  sql=QString().sprintf("grant SELECT, INSERT, UPDATE, DELETE, CREATE, DROP,\
+    INDEX, ALTER, LOCK TABLES on %s.* to %s", 
+    (const char *)db_name, (const char *)rd_config->mysqlUsername());
+  q=new QSqlQuery(sql,db);
+  if (!q->isActive()) {
+    *err_str+=QString().sprintf("Could not set permissions: %s",(const char *)sql);
+    return true;
+  }
+  delete q;
 
-    QProcess rddbmgrProcess(parent);
-    QStringList args;
-    args << QString("--create");
-    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-    rddbmgrProcess.start(QString(RD_PREFIX)+"/sbin/rddbmgr",args);
-    rddbmgrProcess.waitForFinished();
-    QApplication::restoreOverrideCursor();
-    if (rddbmgrProcess.exitCode()) {
-        *err_str+=QString().sprintf("Failed to create %s database. Rddbmgr exit code=%d", 
-        (const char *)db_name,rddbmgrProcess.exitCode());
-      return true;
-    }
+  sql=QString("flush privileges");
+  q=new QSqlQuery(sql,db);
+  delete q;
+
+  QProcess rddbmgrProcess(parent);
+  QStringList args;
+  args << QString("--create");
+  QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+  rddbmgrProcess.start(QString(RD_PREFIX)+"/sbin/rddbmgr",args);
+  rddbmgrProcess.waitForFinished();
+  QApplication::restoreOverrideCursor();
+  if (rddbmgrProcess.exitCode()) {
+    *err_str+=QString().sprintf("Failed to create %s database. Rddbmgr exit code=%d", 
+      (const char *)db_name,rddbmgrProcess.exitCode());
+    return true;
   }
 
   return false;
@@ -143,14 +139,16 @@ bool CreateDb::create(QWidget *parent,QString *err_str,RDConfig *rd_config)
 
 CreateDb::~CreateDb()
 {
-  if(db.isOpen()) {
-    db.removeDatabase(db_name);
+  {
+    QSqlDatabase db=QSqlDatabase::database("createDb");
     db.close();
   }
+  QSqlDatabase::removeDatabase("createDb");
 }
 
 bool CreateDb::isOpen()
 {
+  QSqlDatabase db=QSqlDatabase::database("createDb");
   return db.isOpen();
 }
 

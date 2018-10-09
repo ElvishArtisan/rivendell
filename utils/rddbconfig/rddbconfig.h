@@ -46,6 +46,7 @@ class MainWidget : public QWidget
   QSizePolicy sizePolicy() const;
 
  private slots:
+  int statusDaemons(QString service);
   void stopDaemons();
   void startDaemons();
   void createData();

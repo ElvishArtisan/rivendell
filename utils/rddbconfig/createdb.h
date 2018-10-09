@@ -39,7 +39,6 @@ class CreateDb
    QString db_name;
    QString db_user;
    QString db_pass;
-   QSqlDatabase db;
 };
 
 #endif  // CREATEDB_H
