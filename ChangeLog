@@ -16707,3 +16707,7 @@
 	characters added to the interior of existing strings.
 2018-10-06 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.19.2int05.
+2018-10-08 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the copyright of the Operations Guide.
+	* Documented GPIO support for AudioScience cards in the
+	'Local Audio Adapter' section of the Operations Guide.

@@ -1040,7 +1040,12 @@
       <computeroutput>Inputs:</computeroutput> and
       <computeroutput>Outputs:</computeroutput> fields to the
       number of inputs and outputs on the card (as found in
-      <code>RDADmin->ManageHosts->AudioResources</code>.
+      <code>RDADmin->ManageHosts->AudioResources</code>).
+    </para>
+    <para>
+      For AudioScience cards that include onboard GPIO (such as the
+      ASI67xx series), the GPIO resources on the card will also be
+      available via the this driver.
     </para>
   </sect1>
 

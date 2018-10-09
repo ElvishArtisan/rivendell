@@ -9,7 +9,7 @@
   <edition>
     @VERSION@
   </edition>
-  <copyright><year>-2003-2017</year><holder>Fred Gleason</holder></copyright>
+  <copyright><year>2003-2018</year><holder>Fred Gleason</holder></copyright>
   <mediaobject>
     <imageobject>
       <imagedata fileref="../../icons/rivendell-512x512.png" scale="80"/>

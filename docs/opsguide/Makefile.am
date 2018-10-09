@@ -56,6 +56,7 @@ OPSGUIDE_HTML = appendix.filepath_wildcards.html\
                 sect.gpio_switcher_devices.btsrc16.html\
                 sect.gpio_switcher_devices.btss124.html\
                 sect.gpio_switcher_devices.btss164.html\
+                sect.gpio_switcher_devices.btss21.html\
                 sect.gpio_switcher_devices.btss41mlr.html\
                 sect.gpio_switcher_devices.btss42.html\
                 sect.gpio_switcher_devices.btss44.html\
@@ -274,6 +275,7 @@ OPSGUIDE_ICONS = chain.png\
 OPSGUIDE_DEPS = $(OPSGUIDE_IMAGES) \
                 $(OPSGUIDE_ICONS) \
                 filepath_wildcards.xml\
+                frontspiece.xml\
                 gpio_switcher_devices.xml\
                 gplv2.xml\
                 opsguide.xml\
