@@ -17756,3 +17756,5 @@
 	in rddbmgr(8) to treat them as immutable parts of the DB schema.
 2018-10-09 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'UPDATING CHARACTER SET' section from 'UPGRADING'.
+2018-10-09 Fred Gleason <fredg@paravelsystems.com>
+	* Alphabetized the Makefile component lists in 'rivwebcapi'.
