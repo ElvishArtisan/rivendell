@@ -176,7 +176,6 @@ void MainWidget::updateLabels()
   db = new Db(&err_msg,rd_config);
 
   if (!db->isOpen()) {
-    QMessageBox::information(this,tr("Cannot Open Database"),tr("Unable to open database. The connection parameters of the [Mysql] section of rd.conf may be incorrect or you may need to create a new database."));
     label_schema->setVisible(false);
     db_backup_button->setEnabled(false);
     db_restore_button->setEnabled(false);
@@ -233,6 +232,8 @@ void MainWidget::createData()
   }
 
   delete db_create;
+
+  updateLabels();
 
   startDaemons();
 }
@@ -348,7 +349,9 @@ void MainWidget::resizeEvent(QResizeEvent *e)
 void MainWidget::stopDaemons()
 {
   if(system("/usr/bin/systemctl status rivendell")==0) {
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
     system("/usr/bin/systemctl stop rivendell");
+    QApplication::restoreOverrideCursor();
     db_daemon_start_needed=true;
   }
 }
@@ -357,7 +360,9 @@ void MainWidget::stopDaemons()
 void MainWidget::startDaemons()
 {
   if(db_daemon_start_needed) {
+    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
     system("/usr/bin/systemctl start rivendell");
+    QApplication::restoreOverrideCursor();
   }
 }
 

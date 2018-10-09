@@ -35,7 +35,7 @@ CreateDb::CreateDb(QString host,QString database,QString username,QString passwo
   db_pass=password;
 }
 
-bool CreateDb::create(QWidget *parent,QString *err_str,RDConfig *config)
+bool CreateDb::create(QWidget *parent,QString *err_str,RDConfig *rd_config)
 {
   QString sql;
 
@@ -43,7 +43,7 @@ bool CreateDb::create(QWidget *parent,QString *err_str,RDConfig *config)
   // Open Database
   //
   if (!db.isOpen()){
-    db=QSqlDatabase::addDatabase(config->mysqlDriver(),"createDb");
+    db=QSqlDatabase::addDatabase(rd_config->mysqlDriver(),"createDb");
     if(!db.isValid()) {
       *err_str+= QString(QObject::tr("Couldn't initialize MySql driver!"));
       return true;
@@ -78,13 +78,50 @@ bool CreateDb::create(QWidget *parent,QString *err_str,RDConfig *config)
     }
     delete q;
 
-    sql=QString().sprintf("grant all on * to %s identified by \"%s\"",
-      (const char *)db_user,(const char *)db_pass);
+    //
+    // Drop any existing 'rduser'@'%' and 'rduser'@'localhost' users
+    //
+    sql=QString().sprintf("drop user '%s'@'%%'",(const char *)rd_config->mysqlUsername());
+    q=new QSqlQuery(sql,db);
+    delete q;
+    sql=QString().sprintf("drop user '%s'@'localhost'",(const char *)rd_config->mysqlUsername());
+    q=new QSqlQuery(sql,db);
+    delete q;
+
+    sql=QString("flush privileges");
+    q=new QSqlQuery(sql,db);
+    delete q;
+
+    sql=QString().sprintf("create user '%s'@'%%' identified by \"%s\"",
+      (const char *)rd_config->mysqlUsername(),(const char *)rd_config->mysqlPassword());
+    q=new QSqlQuery(sql,db);
+    if (!q->isActive()) {
+      *err_str+=QString().sprintf("Could not create user: '%s'@'%%'",(const char *)sql);
+      return true;
+    }
+    delete q;
+
+    sql=QString().sprintf("create user '%s'@'localhost' identified by \"%s\"",
+      (const char *)rd_config->mysqlUsername(),(const char *)rd_config->mysqlPassword());
+    q=new QSqlQuery(sql,db);
+    if (!q->isActive()) {
+      *err_str+=QString().sprintf("Could not create user: '%s'@'localhost'",(const char *)sql);
+      return true;
+    }
+    delete q;
+
+    sql=QString().sprintf("grant SELECT, INSERT, UPDATE, DELETE, CREATE, DROP,\
+	          INDEX, ALTER, LOCK TABLES on %s.* to %s", 
+	          (const char *)db_name, (const char *)rd_config->mysqlUsername());
     q=new QSqlQuery(sql,db);
     if (!q->isActive()) {
       *err_str+=QString().sprintf("Could not set permissions: %s",(const char *)sql);
       return true;
     }
+    delete q;
+
+    sql=QString("flush privileges");
+    q=new QSqlQuery(sql,db);
     delete q;
 
     QProcess rddbmgrProcess(parent);
