@@ -31,7 +31,7 @@ class CreateDb
   public:
    CreateDb(QString host,QString database,QString username,QString password);
    ~CreateDb();
-   bool create(QObject *parent,QString *err_str, RDConfig *config);
+   bool create(QWidget *parent,QString *err_str, RDConfig *config);
    bool isOpen();
 
   private:
