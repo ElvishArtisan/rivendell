@@ -36,13 +36,10 @@
 
 #include "mysql_login.h"
 
-MySqlLogin::MySqlLogin(QString msg,QString *hostname,QString *dbname,QString *username,QString *password,
-		       QWidget *parent)
+MySqlLogin::MySqlLogin(QString *username,QString *password, QWidget *parent)
   : QDialog(parent,"",true)
 {
   setCaption(tr("mySQL Admin"));
-  login_host=hostname;
-  login_dbname=dbname;
   login_name=username;
   login_password=password;
 
@@ -55,51 +52,22 @@ MySqlLogin::MySqlLogin(QString msg,QString *hostname,QString *dbname,QString *us
   //
   // Message Label
   //
-  RDLabel *label=new RDLabel(msg,this);
+  RDLabel *label=new RDLabel(tr("Enter your MySQL administrator username and password\nThe Hostname and Database are found in /etc/rd.conf"),this);
   label->setFont(font);
-  label->setGeometry(10,10,sizeHint().width()-20,sizeHint().height()-130);
+  label->setGeometry(10,10,sizeHint().width()-20,30);
   label->setAlignment(Qt::AlignCenter);
   
-
-  //
-  // MySql Host Name
-  //
-  login_host_edit=new QLineEdit(this);
-  login_host_edit->setReadOnly(true);
-  login_host_edit->setFont(font);
-  login_host_edit->setGeometry(100,sizeHint().height()-150,200,19);
-  login_host_edit->setMaxLength(64);
-  login_host_edit->setText(*login_host);
-  QLabel *login_host_label=new QLabel(login_host_edit,tr("&Hostname:"),this);
-  login_host_label->setFont(font);
-  login_host_label->setGeometry(10,sizeHint().height()-150,85,19);
-  login_host_label->setAlignment(Qt::AlignRight|Qt::ShowPrefix);
-
-  //
-  // MySql Database Name
-  //
-  login_dbname_edit=new QLineEdit(this);
-  login_dbname_edit->setReadOnly(true);
-  login_dbname_edit->setFont(font);
-  login_dbname_edit->setGeometry(100,sizeHint().height()-130,200,19);
-  login_dbname_edit->setMaxLength(64);
-  login_dbname_edit->setText(*login_dbname);
-  QLabel *login_dbname_label=new QLabel(login_dbname_edit,tr("&Database:"),this);
-  login_dbname_label->setFont(font);
-  login_dbname_label->setGeometry(10,sizeHint().height()-130,85,19);
-  login_dbname_label->setAlignment(Qt::AlignRight|Qt::ShowPrefix);
-
   //
   // MySql Login Name
   //
   login_name_edit=new QLineEdit(this);
   login_name_edit->setFont(font);
-  login_name_edit->setGeometry(100,sizeHint().height()-110,100,19);
+  login_name_edit->setGeometry(sizeHint().width()/2-125+90,50,140,19);
   login_name_edit->setMaxLength(16);
   login_name_edit->setFocus();
-  QLabel *login_name_label=new QLabel(login_name_edit,tr("User&name:"),this);
+  QLabel *login_name_label=new QLabel(login_name_edit,tr("&Username:"),this);
   login_name_label->setFont(font);
-  login_name_label->setGeometry(10,sizeHint().height()-109,85,19);
+  login_name_label->setGeometry(sizeHint().width()/2-125,50,85,19);
   login_name_label->setAlignment(Qt::AlignRight|Qt::ShowPrefix);
 
   //
@@ -107,19 +75,19 @@ MySqlLogin::MySqlLogin(QString msg,QString *hostname,QString *dbname,QString *us
   //
   login_password_edit=new QLineEdit(this);
   login_password_edit->setFont(font);
-  login_password_edit->setGeometry(100,sizeHint().height()-90,100,19);
+  login_password_edit->setGeometry(sizeHint().width()/2-125+90,70,140,19);
   login_password_edit->setMaxLength(16);
   login_password_edit->setEchoMode(QLineEdit::Password);
   QLabel *login_password_label=new QLabel(login_password_edit,tr("&Password:"),this);
   login_password_label->setFont(font);
-  login_password_label->setGeometry(10,sizeHint().height()-88,85,19);
+  login_password_label->setGeometry(sizeHint().width()/2-125,70,85,19);
   login_password_label->setAlignment(Qt::AlignRight|Qt::ShowPrefix);
 
   //
   // OK Button
   //
   QPushButton *ok_button=new QPushButton(this);
-  ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
+  ok_button->setGeometry(sizeHint().width()/2-90,sizeHint().height()-60,80,50);
   ok_button->setFont(font);
   ok_button->setText(tr("&OK"));
   ok_button->setDefault(true);
@@ -129,7 +97,7 @@ MySqlLogin::MySqlLogin(QString msg,QString *hostname,QString *dbname,QString *us
   // Cancel Button
   //
   QPushButton *cancel_button=new QPushButton(this);
-  cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
+  cancel_button->setGeometry(sizeHint().width()/2+10,sizeHint().height()-60,
 			     80,50);
   cancel_button->setFont(font);
   cancel_button->setText(tr("&Cancel"));
@@ -146,7 +114,7 @@ MySqlLogin::~MySqlLogin()
 
 QSize MySqlLogin::sizeHint() const
 {
-  return QSize(360,210);
+  return QSize(340,160);
 } 
 
 
@@ -158,8 +126,6 @@ QSizePolicy MySqlLogin::sizePolicy() const
 
 void MySqlLogin::okData()
 {
-  *login_host=login_host_edit->text();
-  *login_dbname=login_dbname_edit->text();
   *login_name=login_name_edit->text();
   *login_password=login_password_edit->text();
 

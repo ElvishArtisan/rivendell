@@ -199,7 +199,6 @@ void MainWidget::createData()
   QString dbname=rd_config->mysqlDbname();
   QString admin_name;
   QString admin_pwd;
-  QString msg="Message";
   QString err_str;
 
   if (db->isOpen()) {
@@ -208,7 +207,7 @@ void MainWidget::createData()
     }
   }
 
-  mysql_login=new MySqlLogin(msg,&hostname,&dbname,&admin_name,&admin_pwd);
+  mysql_login=new MySqlLogin(&admin_name,&admin_pwd);
 
   if(mysql_login->exec()) {
     delete mysql_login;
@@ -217,7 +216,7 @@ void MainWidget::createData()
 
   delete mysql_login;
 
-  if(admin_name.isEmpty()||admin_pwd.isEmpty()||hostname.isEmpty()||dbname.isEmpty()) {
+  if(admin_name.isEmpty()||admin_pwd.isEmpty()) {
     QMessageBox::critical(this,tr("RDDbConfig Error"),tr("Did not specify username and/or password."));
     return;
   }

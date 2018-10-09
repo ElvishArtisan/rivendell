@@ -31,8 +31,7 @@ class MySqlLogin : public QDialog
 {
   Q_OBJECT
   public:
-   MySqlLogin(QString msg,QString *hostname,QString *dbname,QString *username,QString *password,
-	      QWidget *parent=0);
+   MySqlLogin(QString *username,QString *password, QWidget *parent=0);
    ~MySqlLogin();
    QSize sizeHint() const;
    QSizePolicy sizePolicy() const;
@@ -42,10 +41,6 @@ class MySqlLogin : public QDialog
    void cancelData();
 
   private:
-   QString *login_host;
-   QLineEdit *login_host_edit;
-   QString *login_dbname;
-   QLineEdit *login_dbname_edit;
    QString *login_name;
    QLineEdit *login_name_edit;
    QString *login_password;
