@@ -41,6 +41,7 @@ noinst_PROGRAMS = addcart_test \
 		  listcut_test \
 		  listcuts_test \
 		  listcart_test \
+		  listcartcuts_test \
 		  listcarts_test \
 		  listcartschedcodes_test \
 		  listgroup_test \
@@ -109,6 +110,9 @@ importcart_test_LDADD  =  -lrivwebcapi -lexpat -lcurl -lm
 
 dist_listcart_test_SOURCES = listcart_test.c 
 listcart_test_LDADD =  -lrivwebcapi -lexpat -lcurl -lm
+
+dist_listcartcuts_test_SOURCES = listcartcuts_test.c 
+listcartcuts_test_LDADD =  -lrivwebcapi -lexpat -lcurl -lm
 
 dist_listcarts_test_SOURCES = listcarts_test.c 
 listcarts_test_LDADD =  -lrivwebcapi -lexpat -lcurl -lm

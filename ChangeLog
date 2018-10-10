@@ -17758,3 +17758,9 @@
 	* Removed the 'UPDATING CHARACTER SET' section from 'UPGRADING'.
 2018-10-09 Fred Gleason <fredg@paravelsystems.com>
 	* Alphabetized the Makefile component lists in 'rivwebcapi'.
+2018-10-10 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RD_ListCartCuts()' function to 'rivwebcapi'.
+	* Changed the length of the 'cut_name' member of the 'rd_cut' struct
+	from 11 to 41 in 'rivwebcapi'.
+	* Added a 'struct rd_cut *cart_cuts' member to the 'rd_cart' struct
+	in 'rivwebcapi'.

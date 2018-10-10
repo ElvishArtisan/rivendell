@@ -446,6 +446,7 @@ rm -rf $RPM_BUILD_ROOT
 @LOCAL_PREFIX@/share/man/man7/rd_getversion.7.gz
 @LOCAL_PREFIX@/share/man/man7/rd_import.7.gz
 @LOCAL_PREFIX@/share/man/man7/rd_listcart.7.gz
+@LOCAL_PREFIX@/share/man/man7/rd_listcartcuts.7.gz
 @LOCAL_PREFIX@/share/man/man7/rd_listcarts.7.gz
 @LOCAL_PREFIX@/share/man/man7/rd_listcartschedcodes.7.gz
 @LOCAL_PREFIX@/share/man/man7/rd_listcut.7.gz

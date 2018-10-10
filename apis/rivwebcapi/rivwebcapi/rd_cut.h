@@ -24,7 +24,7 @@
 #include <time.h>
 
 struct rd_cut {
-  char cut_name[11];
+  char cut_name[41];
   unsigned cut_cart_number;
   unsigned cut_cut_number;
   int cut_evergreen;

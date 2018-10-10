@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry id="stdin" xmlns="http://docbook.org/ns/docbook" version="5.0">
+  <!--
+                    Header
+  -->
+  <refmeta>
+    <refentrytitle>RD_ListCartCuts</refentrytitle>
+    <manvolnum>7</manvolnum>
+    <refmiscinfo class='source'>October 2015</refmiscinfo>
+    <refmiscinfo class='manual'>Rivendell C Library Manual</refmiscinfo>
+  </refmeta>
+  <refnamediv>
+    <refname>rd_listcartcuts</refname>
+    <refpurpose>Rivendell List Cart/Cuts C Library Function</refpurpose>
+  </refnamediv>
+  <info>
+    <author>
+      <personname>
+        <firstname>Todd</firstname>
+        <surname>Baker</surname>
+        <email>bakert@rfa.org</email>
+      </personname>
+      <contrib>Rivendell C Library Author</contrib>
+    </author>
+  </info>
+
+  <!--
+                    Body
+  -->
+  <refsynopsisdiv id='synopsis'>
+    <funcsynopsis>
+    <funcsynopsisinfo>#include &lt;rivwebcapi/rd_listcartcuts.h&gt;</funcsynopsisinfo>
+    <funcprototype>
+    <funcdef>int <function>RD_ListCartCuts</function></funcdef>
+      <paramdef> struct rd_cart * <parameter>cart[]</parameter></paramdef>
+      <paramdef>const char <parameter>hostname[]</parameter></paramdef>
+      <paramdef>const char <parameter>username[]</parameter></paramdef>
+      <paramdef>const char <parameter>passwd[]</parameter></paramdef>
+      <paramdef>const char <parameter>ticket[]</parameter></paramdef>
+      <paramdef>const unsigned <parameter>cartnumber</parameter></paramdef>
+      <paramdef>const char <parameter>user_agent[]</parameter></paramdef>
+      <paramdef>unsigned * <parameter>numrecs</parameter></paramdef>
+    </funcprototype> 
+
+    <funcprototype>
+    <funcdef>struct rd_cut *<function>RD_ListCartCuts_GetCut</function></funcdef>
+      <paramdef> struct rd_cart * <parameter>cart</parameter></paramdef>
+      <paramdef>int <parameter>pos</parameter></paramdef>
+    </funcprototype> 
+
+    <funcprototype>
+    <funcdef>void <function>RD_ListCartCuts_Free</function></funcdef>
+      <paramdef> struct rd_cart * <parameter>cart</parameter></paramdef>
+    </funcprototype> 
+    </funcsynopsis>
+
+  </refsynopsisdiv>
+
+  <refsect1 id='description'><title>Description</title>
+  <para>
+    <command>RD_ListCartCuts</command> is  the function to use to list the
+    fields within a single cart that already exists in the Rivendell Database.
+    Unlike <command>RD_ListCart</command><manvolnum>7</manvolnum>,
+    <command>RD_ListCartCuts</command><manvolnum>7</manvolnum> will
+    also fetch the full list of cuts associated with the requested cart.
+  </para>
+  <table xml:id="ex.listcart" frame="all">
+    <title>RD_ListCartCuts function call fields</title>
+    <tgroup cols="4" align="left" colsep="1" rowsep="1">
+      <colspec colname="FIELD NAME" />
+      <colspec colname="FIELD TYPE" />
+      <colspec colname="MEANING" />
+      <colspec colname="REMARKS" />
+      <thead>
+        <row>
+          <entry>
+            FIELD NAME
+          </entry>
+          <entry>
+            FIELD TYPE
+          </entry>
+          <entry>
+            MEANING
+          </entry>
+          <entry>
+            REMARKS
+          </entry>
+        </row>
+      </thead>
+      <tbody>
+        <row>
+          <entry>
+            *cart
+          </entry>
+          <entry>
+          Pointer to rd_cart structure
+          </entry>
+          <entry>
+            Memory location to store cart information
+          </entry>
+          <entry>
+            Mandatory
+          </entry>
+        </row>
+        <row>
+          <entry>
+            hostname
+          </entry>
+          <entry>
+          Character Array
+          </entry>
+          <entry>
+            Name Of Rivendell DB Host
+          </entry>
+          <entry>
+            Mandatory
+          </entry>
+        </row>
+        <row>
+          <entry>
+            username
+          </entry>
+          <entry>
+          Character Array
+          </entry>
+          <entry>
+            Rivendell User Name
+          </entry>
+          <entry>
+            Mandatory When NO Ticket Provided
+          </entry>
+        </row>
+        <row>
+          <entry>
+            passwd
+          </entry>
+          <entry>
+          Character Array
+          </entry>
+          <entry>
+            Rivendell User Password
+          </entry>
+          <entry>
+            Mandatory When NO Ticket Provided
+          </entry>
+        </row>
+        <row>
+          <entry>
+            ticket
+          </entry>
+          <entry>
+          Character Array
+          </entry>
+          <entry>
+            Rivendell Authentification Ticket
+          </entry>
+          <entry>
+            Mandatory When NO User/Password Pair Provided.
+          </entry>
+        </row>
+        <row>
+          <entry>
+            cartnumber
+          </entry>
+          <entry>
+          unsigned integer
+          </entry>
+          <entry>
+            Cart Number
+          </entry>
+          <entry>
+            Mandatory
+          </entry>
+        </row>
+        <row>
+          <entry>
+            user_agent
+          </entry>
+          <entry>
+          Character Array
+          </entry>
+          <entry>
+            User Agent Value put into HTTP request
+          </entry>
+          <entry>
+            Optional (default is Rivendell-C-API/x.x.x)
+          </entry>
+        </row>
+        <row>
+          <entry>
+            *numrecs
+          </entry>
+          <entry>
+          pointer to integer
+          </entry>
+          <entry>
+            memory location for number of records returned
+          </entry>
+          <entry>
+            Mandatory
+          </entry>
+        </row>
+      </tbody>
+    </tgroup>
+  </table>
+
+  <para>
+    When successful the function will return the number of records sent
+    (numrecs) and a rd_cart structure which 
+    is stored in the provided memory locations. The rd_cart structure has
+    the following fields:
+  </para>
+  <programlisting>
+    struct rd_cart {
+  	  unsigned cart_number;                /* Cart Number */
+  	  unsigned cart_type;                  /* Cart Type */
+  	  char cart_grp_name[41];              /* Group Name */
+  	  char cart_title[1021];               /* Cart Title */
+  	  char cart_artist[1021];              /* Artist */
+  	  char cart_album[1021];               /* Album */
+  	  int cart_year;                       /* Year */
+  	  char cart_label[257];                /* Label */
+  	  char cart_client[257];               /* Client */
+  	  char cart_agency[257];               /* Agency */
+  	  char cart_publisher[257];            /* Publisher */
+  	  char cart_composer[257];             /* Composer */
+  	  char cart_conductor[257];            /* Conductor */
+  	  char cart_user_defined[1021];        /* User Defined */
+  	  int  cart_usage_code;                /* Usage Code */
+  	  int cart_forced_length;              /* Forced Length */
+  	  int cart_average_length;             /* AverageLength */
+  	  int cart_length_deviation;           /* Length Deviation */
+  	  int cart_average_segue_length;       /* Average Segue Length */
+  	  int cart_average_hook_length;        /* Average Hook Length */
+  	  unsigned  cart_cut_quantity;         /* Cut Quantity */
+  	  unsigned  cart_last_cut_played;      /* Last Cut Played */
+  	  unsigned  cart_validity;             /* Validity */
+  	  int cart_enforce_length;             /* Enforce Length Flag */
+  	  int cart_asyncronous;                /* Asyncronous Flag */
+  	  char cart_owner[257];                /* Owner */
+  	  struct tm cart_metadata_datetime;    /* Metatdata Datetime */
+  	  char cart_notes[4096];               /* Notes */
+	  struct rd_cut **cart_cuts;           /* Cut list */
+    };
+  </programlisting>
+  <para>
+    All character arrays use UTF-8 encoding and are null-terminated.
+  </para>
+
+  <refsect2 id='access_cut_information'><title>Accessing Cut Information</title>
+  <para>
+    Information about the cuts associated with the cart can be accessed
+    from the returned rd_cart structure through use of the
+    <command>RD_ListCartCuts_GetCut()</command> function.
+    The <parameter>pos</parameter> parameter should range between
+    <userinput>0</userinput> and one less than the
+    value of the <parameter>cart_cut_quantity</parameter> member of the
+    cart's rd_cart structure.
+  </para>
+  <para>
+    Cut information is returned in the form of a rd_cut structure, which
+    has the following fields:
+  </para>
+  <programlisting>
+    struct rd_cut {
+          char cut_name[41];                 /* Cut Name */
+          unsigned cut_cart_number;          /* Parent Cart Number */
+          unsigned cut_cut_number;           /* Cut Number */
+          int cut_evergreen;                 /* Boolean */
+          char cut_description[257];         /* Description */
+          char cut_outcue[257];              /* Outcue */
+          char cut_isrc[49];                 /* International Standard Recording Code */
+          char cut_isci[129];                /* Industry Standard Commercial Identifier */
+          unsigned  cut_length;              /* Milliseconds */
+          struct tm cut_origin_datetime;     /* Origin Datetime */
+          struct tm cut_start_datetime;      /* Start Datetime */
+          struct tm cut_end_datetime;        /* End Datetime */
+          int cut_sun;                       /* Playable on Sunday */
+          int cut_mon;                       /* Playable on Monday */
+          int cut_tue;                       /* Playable on Tuesday */
+          int cut_wed;                       /* Playable on Wednesday */
+          int cut_thu;                       /* Playable on Thursday */
+          int cut_fri;                       /* Playable on Friday */
+          int cut_sat;                       /* Playable on Saturday */
+          char cut_start_daypart[15];        /* Start Daypart */
+          char cut_end_daypart[15];          /* End Daypart */
+          char cut_origin_name[257];         /* Hostname of Ingestion System */
+          char cut_origin_login_name[1021];  /* RD Username on Ingestion System */
+          char cut_source_hostname[1021];    /* Hostname of Originating System */
+          unsigned cut_weight;               /* Cut Weighting */
+          struct tm cut_last_play_datetime;  /* Datetime of Last OnAir Play-out */
+          unsigned cut_play_counter;         /* Number of Times Played */
+          unsigned cut_local_counter;        /* Plays Since Rotation Changed */
+          unsigned cut_validity;             /* Cut Validity */
+          unsigned cut_coding_format;        /* 0 = PCM, 1 = MPEG */
+          unsigned cut_sample_rate;          /* Samples per Second */
+          unsigned cut_bit_rate;             /* Bits per Second */
+          unsigned cut_channels;             /* Audio Channels */
+          int cut_play_gain;                 /* dBFS */
+          int cut_start_point;               /* Milliseconds from Start */
+          int cut_end_point;                 /* Milliseconds from Start */
+          int cut_fadeup_point;              /* Milliseconds from Start */
+          int cut_fadedown_point;            /* Milliseconds from Start */
+          int cut_segue_start_point;         /* Milliseconds from Start */
+          int cut_segue_end_point;           /* Milliseconds from Start */
+          int cut_segue_gain;                /* dBFS */
+          int cut_hook_start_point;          /* Milliseconds from Start */
+          int cut_hook_end_point;            /* Milliseconds from Start */
+          int cut_talk_start_point;          /* Milliseconds from Start */
+          int cut_talk_end_point;            /* Milliseconds from Start */
+};
+  </programlisting>
+  <para>
+    All character arrays use UTF-8 encoding and are null-terminated.
+  </para>
+  </refsect2>
+
+  <refsect2 id='freeing_memory'><title>Freeing Memory</title>
+  <para>
+    When the returned rd_cart structure is no longer required, it should
+    freed by passing it to the <command>RD_ListCartCuts_Free()</command>
+    function.
+  </para>
+  </refsect2>
+</refsect1>
+
+<refsect1 id='returns'><title>RETURN VALUE</title>
+  <para>
+    On success, zero is returned. Using the provided parameters an rd_cart
+    structure is returned and the number of records is returned.
+  </para>
+  <para>
+    If a server error occurs a -1 is returned.
+    If a client error occurs a specific error number is returned.
+  </para>
+  <refsect2 id='errors'><title>Errors</title>
+  <para>
+    400          Missing Cart.
+  </para>
+  <para>
+    403          User Authentification Error.
+  </para>
+  <para>
+    404          No Such Cart Exists.
+  </para>
+  <para>
+    nnn  Unknown Error Occurred.
+  </para>
+  </refsect2>
+</refsect1>
+     
+</refentry>
