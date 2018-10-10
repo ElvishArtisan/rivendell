@@ -94,7 +94,6 @@ MainObject::MainObject(QObject *parent)
   //
   srandom(QTime::currentTime().msec());
   svc_maint_timer=new QTimer(this);
-  svc_maint_timer->setSingleShot(true);
   connect(svc_maint_timer,SIGNAL(timeout()),this,SLOT(checkMaintData()));
   int interval=GetMaintInterval();
   if(!rda->config()->disableMaintChecks()) {
