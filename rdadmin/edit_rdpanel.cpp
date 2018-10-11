@@ -340,7 +340,7 @@ EditRDPanel::EditRDPanel(RDStation *station,RDStation *cae_station,
   }
   else {
     QMessageBox::information(this,tr("No Audio Configuration Data"),
-			    tr("Channel assignments will not be available for this host, as audio resource data\nhas not yet been generated.  Please start the Rivendell daemons on this host\n(by executing, as user 'root',  the command \"/etc/init.d/rivendell start\")\nin order to populate the audio resources database."));
+			    tr("Channel assignments will not be available for this host, as audio resource data\nhas not yet been generated.  Please start the Rivendell daemons on this host\n(by executing, as user 'root',  the command \"systemctl start rivendell\")\nin order to populate the audio resources database."));
     for(int i=0;i<6;i++) {
       air_card_sel[i]->setDisabled(true);
     }
