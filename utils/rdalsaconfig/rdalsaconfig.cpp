@@ -46,8 +46,8 @@ bool alsa_daemon_start_needed=false;
 void StopDaemons()
 {
   if(alsa_manage_daemons) {
-    if(system("/etc/init.d/rivendell status")==0) {
-      system("/etc/init.d/rivendell stop");
+    if(system("systemctl --quiet is-active rivendell")==0) {
+      system("systemctl --quiet stop rivendell");
       alsa_daemon_start_needed=true;
     }
   }
@@ -57,7 +57,7 @@ void StopDaemons()
 void StartDaemons()
 {
   if(alsa_daemon_start_needed) {
-    system("/etc/init.d/rivendell start");
+    system("systemctl --quiet start rivendell");
   }
 }
 
@@ -148,7 +148,7 @@ MainWidget::MainWidget(QWidget *parent)
 	     tr("The \"--manage-daemons\" switch requires root permissions."));
       exit(256);
     }
-    if(system("/etc/init.d/rivendell status")==0) {
+    if(system("systemctl --quiet is-active rivendell")==0) {
       int r=QMessageBox::warning(this,tr("RDAlsaConfig warning"),
 	    tr("Rivendell audio will be interrupted while running this program.\nContinue?"),
 				     QMessageBox::Yes,QMessageBox::No);
