@@ -17764,3 +17764,5 @@
 	from 11 to 41 in 'rivwebcapi'.
 	* Added a 'struct rd_cut *cart_cuts' member to the 'rd_cart' struct
 	in 'rivwebcapi'.
+2018-10-11 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RD_ListCartsCuts()' function to 'rivwebcapi'.

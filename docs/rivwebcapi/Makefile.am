@@ -97,6 +97,9 @@ all-local:	rd_addcart.html\
                 rd_listcarts.html\
                 rd_listcarts.pdf\
                 rd_listcarts.xml\
+                rd_listcartscuts.html\
+                rd_listcartscuts.pdf\
+                rd_listcartscuts.xml\
                 rd_listcuts.html\
                 rd_listcuts.pdf\
                 rd_listcuts.xml\
@@ -161,6 +164,7 @@ man_MANS = rd_addcart.7\
            rd_listcart.7\
            rd_listcartcuts.7\
            rd_listcarts.7\
+           rd_listcartscuts.7\
            rd_listcuts.7\
            rd_listcut.7\
            rd_listgroups.7\
@@ -253,13 +257,19 @@ EXTRA_DIST = rd_addcart.7\
              rd_listcart.7\
              rd_listcart.html\
              rd_listcart.pdf\
+             rd_listcart.xml\
              rd_listcartcuts.7\
              rd_listcartcuts.html\
              rd_listcartcuts.pdf\
+             rd_listcartcuts.xml\
              rd_listcarts.7\
              rd_listcarts.html\
              rd_listcarts.pdf\
              rd_listcarts.xml\
+             rd_listcartscuts.7\
+             rd_listcartscuts.html\
+             rd_listcartscuts.pdf\
+             rd_listcartscuts.xml\
              rd_listcart.xml\
              rd_listcuts.7\
              rd_listcuts.html\

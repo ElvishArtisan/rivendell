@@ -42,6 +42,7 @@ dist_librivwebcapi_la_SOURCES = rd_addcart.c rd_addcart.h \
 				rd_listcart.c rd_listcart.h \
 				rd_listcartcuts.c rd_listcartcuts.h \
 				rd_listcarts.c rd_listcarts.h \
+				rd_listcartscuts.c rd_listcartscuts.h \
 				rd_listcut.c rd_listcut.h \
 				rd_listcuts.c rd_listcuts.h \
 				rd_listgroups.c rd_listgroups.h \
@@ -85,6 +86,7 @@ include_HEADERS = rd_addcart.h\
                   rd_listcartcuts.h\
                   rd_listcartschedcodes.h\
                   rd_listcarts.h\
+                  rd_listcartscuts.h\
                   rd_listcut.h\
                   rd_listcuts.h\
                   rd_listgroup.h\
