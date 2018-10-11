@@ -45,7 +45,7 @@
     <funcprototype>
     <funcdef>struct rd_cut *<function>RD_ListCartCuts_GetCut</function></funcdef>
       <paramdef> struct rd_cart * <parameter>cart</parameter></paramdef>
-      <paramdef>int <parameter>pos</parameter></paramdef>
+      <paramdef>int <parameter>cut_rec</parameter></paramdef>
     </funcprototype> 
 
     <funcprototype>
@@ -252,7 +252,7 @@
     Information about the cuts associated with the cart can be accessed
     from the returned rd_cart structure through use of the
     <command>RD_ListCartCuts_GetCut()</command> function.
-    The <parameter>pos</parameter> parameter should range between
+    The <parameter>cut_rec</parameter> parameter should range between
     <userinput>0</userinput> and one less than the
     value of the <parameter>cart_cut_quantity</parameter> member of the
     cart's rd_cart structure.

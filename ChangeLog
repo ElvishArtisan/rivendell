@@ -17766,3 +17766,10 @@
 	in 'rivwebcapi'.
 2018-10-11 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'RD_ListCartsCuts()' function to 'rivwebcapi'.
+2018-10-11 Fred Gleason <fredg@paravelsystems.com>
+	* Replaced listings of the 'rd_cart' structure with a reference
+	to the rd_listcartcuts(7) man page in the rd_listcart(7),
+	rd_listcarts(7) and rd_listcartscuts(7) man pages.
+	* Replaced listings of the 'rd_cut' structure with a reference
+	to the rd_listcartcuts(7) man page in the rd_listcut(7) and
+	rd_listcuts(7) man pages.
