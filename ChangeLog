@@ -17792,3 +17792,6 @@
 2018-10-16 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdservice(8) that caused maintenance routines
 	to be attempted only once per invocation.
+2018-10-16 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed a bug that caused the build to break when M4A decoding
+	support was enabled.
