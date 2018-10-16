@@ -17784,3 +17784,8 @@
 	* Fixed a bug that caused a gratuitious 'INALID_FUNC' error to
 	be sent to syslog when used with an ASI card without timescaling
 	support.
+2018-10-16 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'RDGetSqlValue(const QString &table,const QString &name1,
+	const QString &test1,const QString &name2,const QString &test2,
+	const QString &name3,const QString &test3,const QString &param,
+	bool *valid=0)' function.
