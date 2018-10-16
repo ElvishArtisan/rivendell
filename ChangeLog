@@ -17774,7 +17774,7 @@
 	* Replaced listings of the 'rd_cut' structure with a reference
 	to the rd_listcartcuts(7) man page in the rd_listcut(7) and
 	rd_listcuts(7) man pages.
-2018-10-04 Patrick Linstruth <patrick@deltecent.com>
+2018-10-16 Patrick Linstruth <patrick@deltecent.com>
 	* Added exit logging to rdxport.cgi.
 2018-10-16 Patrick Linstruth <patrick@deltecent.com>
 	* Added rddbconfig(8).
