@@ -17642,6 +17642,7 @@
 2018-09-20 Fred Gleason <fredg@paravelsystems.com>
 	* Corrected an omission in the documentation of the
 	'Start Button' ['PB'] RML.
+<<<<<<< HEAD
 2018-10-01 Fred Gleason <fredg@paravelsystems.com>
 	* Applied a PR from Patrick Linstruth <patrick@deltecent.com> that
 	fixed a regression where the 'Stop' button would fail to function
@@ -17773,3 +17774,5 @@
 	* Replaced listings of the 'rd_cut' structure with a reference
 	to the rd_listcartcuts(7) man page in the rd_listcut(7) and
 	rd_listcuts(7) man pages.
+2018-10-04 Patrick Linstruth <patrick@deltecent.com>
+	* Added exit logging to rdxport.cgi.
