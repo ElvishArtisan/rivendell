@@ -17780,3 +17780,7 @@
 	* Added rddbconfig(8).
 2018-10-16 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'Rivendell->Configuration' menu entry for rddbconfig(8).
+2018-10-16 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed a bug that caused a gratuitious 'INALID_FUNC' error to
+	be sent to syslog when used with an ASI card without timescaling
+	support.
