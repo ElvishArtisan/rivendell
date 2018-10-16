@@ -482,7 +482,7 @@
     </para>
     <para>
       Set the duck level of button at <replaceable>column</replaceable>,
-      <replaceable>row</replaceable>> of panel
+      <replaceable>row</replaceable> of panel
       <replaceable>panel</replaceable>.
       Panel: <userinput>S1</userinput>...<userinput>S50</userinput> or
       <userinput>U1</userinput>...<userinput>U50</userinput>;
@@ -763,8 +763,8 @@
     <para>
       Command GPIO line <replaceable>gponum</replaceable> of type 
       <replaceable>type</replaceable> on matrix
-      <replaceable>matrix</replaceable>> to <replaceable>state</replaceable>
-      for <replaceable>length</replaceable>> mS.  A length of
+      <replaceable>matrix</replaceable> to <replaceable>state</replaceable>
+      for <replaceable>length</replaceable> mS.  A length of
       <userinput>0</userinput> indicates to hold the state indefinitely.
       Possible types are: 
     </para>
@@ -827,8 +827,8 @@
     </para>
     <para>
       Command GPIO line <replaceable>gponum</replaceable> on matrix
-      <replaceable>matrix</replaceable>> to <replaceable>state</replaceable>
-      for <replaceable>length</replaceable>> mS.  A length of
+      <replaceable>matrix</replaceable> to <replaceable>state</replaceable>
+      for <replaceable>length</replaceable> mS.  A length of
       <userinput>0</userinput> indicates to hold the state indefinitely.
     </para>
   </sect2>
@@ -963,7 +963,7 @@
       <replaceable>startline</replaceable> is -2, the log will be started at
       the first event if that event does not have a 'stop' transition. 
       Default <replaceable>startline</replaceable>=-1. If no 
-      <replaceable>log</replaceable>> is specified, the machine's current log
+      <replaceable>log</replaceable> is specified, the machine's current log
       is unloaded.
     </para>
   </sect2>
@@ -1140,7 +1140,7 @@
     </para>
     <para>
       Set the next event for log machine <replaceable>mach</replaceable> to
-      line <replaceable>line</replaceable>>.
+      line <replaceable>line</replaceable>.
     </para>
   </sect2>
 
@@ -1470,7 +1470,7 @@
       <replaceable>string</replaceable>!</userinput>
     </para>
     <para>
-      Display <replaceable>string</replaceable>> in color 
+      Display <replaceable>string</replaceable> in color 
       <replaceable>color</replaceable> in the message widget. 
     </para>
   </sect2>
@@ -1671,7 +1671,7 @@
       <replaceable>string</replaceable>!</userinput>
     </para>
     <para>
-      Display <replaceable>string</replaceable>> in the message widget. 
+      Display <replaceable>string</replaceable> in the message widget. 
     </para>
   </sect2>
 
@@ -1824,9 +1824,9 @@
       [<replaceable>skip</replaceable>]!</userinput>
     </para>
     <para>
-      Start log machine <replaceable>mach</replaceable>> if stopped, or start
+      Start log machine <replaceable>mach</replaceable> if stopped, or start
       next event if already running.  If specified, start the playout on
-      machine port <replaceable>mport</replaceable>>.  If
+      machine port <replaceable>mport</replaceable>.  If
       <replaceable>skip</replaceable> is supplied, equal to '1' and the log
       machine is in Manual or Live Assist mode, then any intervening
       meta-events in log between the current 'next' event and the next cart
