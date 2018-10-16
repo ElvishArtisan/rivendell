@@ -17789,3 +17789,6 @@
 	const QString &test1,const QString &name2,const QString &test2,
 	const QString &name3,const QString &test3,const QString &param,
 	bool *valid=0)' function.
+2018-10-16 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdservice(8) that caused maintenance routines
+	to be attempted only once per invocation.
