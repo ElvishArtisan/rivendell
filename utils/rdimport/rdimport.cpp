@@ -135,7 +135,6 @@ MainObject::MainObject(QObject *parent)
     if(rda->cmdSwitch()->key(i)=="--to-cart") {
       import_cart_number=rda->cmdSwitch()->value(i).toUInt(&ok);
       if((!ok)||(import_cart_number<1)||(import_cart_number>999999)) {
-	fprintf(stderr,(const char *)QString("rdimport: invalid cart number"));
 	LogError(RDConfig::LogErr,QString("rdimport: invalid cart number"));
 	exit(2);
       }
