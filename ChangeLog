@@ -17776,3 +17776,5 @@
 	rd_listcuts(7) man pages.
 2018-10-04 Patrick Linstruth <patrick@deltecent.com>
 	* Added exit logging to rdxport.cgi.
+2018-10-16 Patrick Linstruth <patrick@deltecent.com>
+	* Added rddbconfig(8).
