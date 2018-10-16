@@ -22,8 +22,8 @@
       <Filename>rivendell-rdadmin.desktop</Filename>
       <Filename>rivendell-rdalsaconfig.desktop</Filename>
       <Filename>rivendell-rdalsaconfig-root.desktop</Filename>
-      <Filename>rivendell-rdhpiinfo.desktop</Filename>
-      <Filename>rivendell-rdhpiinfo-root.desktop</Filename>
+      <Filename>rivendell-rddbconfig.desktop</Filename>
+      <Filename>rivendell-rddbconfig-root.desktop</Filename>
     </Include>
   </Menu>
   <Menu>

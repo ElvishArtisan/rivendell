@@ -17778,3 +17778,5 @@
 	* Added exit logging to rdxport.cgi.
 2018-10-16 Patrick Linstruth <patrick@deltecent.com>
 	* Added rddbconfig(8).
+2018-10-16 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Rivendell->Configuration' menu entry for rddbconfig(8).

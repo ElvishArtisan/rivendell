@@ -35,8 +35,6 @@ nodist_rddbconfig_SOURCES = moc_rddbconfig.cpp moc_mysql_login.cpp
 
 rddbconfig_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @LIBALSA@ @QT4_LIBS@ -lQt3Support
 
-EXTRA_DIST = rddbconfig.pro
-
 CLEANFILES = *~\
              *.qm\
              moc_*
