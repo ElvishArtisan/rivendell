@@ -19,8 +19,6 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#define LINE fprintf(stderr,"%s:%d\n",__FILE__,__LINE__);
-
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/types.h>
@@ -31,11 +29,11 @@
 #include <q3filedialog.h>
 
 #include <rdconfig.h>
+#include <dbversion.h>
 
 #include "../../icons/rivendell-22x22.xpm"
 
-#include <rddbconfig.h>
-
+#include "rddbconfig.h"
 #include "db.h"
 #include "createdb.h"
 #include "mysql_login.h"
@@ -146,7 +144,15 @@ MainWidget::MainWidget(QWidget *parent)
   db_close_button->setFont(label_font);
   connect(db_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 
-  updateLabels();
+  //
+  // Signals
+  //
+  connect(this,SIGNAL(dbChanged()),this,SLOT(updateLabels()));
+  connect(this,SIGNAL(dbMismatch()),this,SLOT(mismatchData()));
+
+  this->show();
+
+  emit dbChanged();
 }
 
 
@@ -164,6 +170,36 @@ QSize MainWidget::sizeHint() const
 QSizePolicy MainWidget::sizePolicy() const
 {
   return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
+}
+
+void MainWidget::mismatchData()
+{
+  if (!db->schema()) {
+    return;
+  }
+
+  if (QMessageBox::question(this,tr("Database Mismatch"),QString().sprintf("Your database is version %d. Your Rivendell %s installation requires version %d. Would you like to modify your database to the current version?",db->schema(),VERSION,RD_VERSION_DATABASE),(QMessageBox::No|QMessageBox::Yes)) != QMessageBox::Yes) {
+    return;
+  }
+
+  QProcess modifyProcess(this);
+  QStringList args;
+  args << QString("--modify");
+  QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+  modifyProcess.start("rddbmgr", args);
+  modifyProcess.waitForFinished(-1);
+  QApplication::restoreOverrideCursor();
+  if (modifyProcess.exitCode()) {
+    QMessageBox::critical(this,tr("RDDbConfig Error"),
+      QString(modifyProcess.readAllStandardError()));
+  }
+  else {
+    QMessageBox::information(this,"Database Modified Successfully",
+      QString().sprintf("Modified database to version %d", RD_VERSION_DATABASE));
+    rd_config->log("rddbconfig",RDConfig::LogInfo,QString().sprintf("Modified database to version %d", RD_VERSION_DATABASE));
+
+    emit dbChanged();
+  }
 }
 
 void MainWidget::updateLabels()
@@ -184,6 +220,10 @@ void MainWidget::updateLabels()
     label_schema->setText(QString().sprintf("DB Version: %d",db->schema()));
     db_backup_button->setEnabled(true);
     db_restore_button->setEnabled(true);
+
+    if(db->schema()!=RD_VERSION_DATABASE) {
+      emit dbMismatch();
+    }
   }
 }
 
@@ -234,7 +274,7 @@ void MainWidget::createData()
 
   startDaemons();
 
-  updateLabels();
+  emit updateLabels();
 
   delete db_create;
 }
@@ -264,10 +304,9 @@ void MainWidget::backupData()
     backupProcess.setStandardOutputFile(filename);
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
     backupProcess.start("mysqldump", args);
-    backupProcess.waitForFinished();
+    backupProcess.waitForFinished(-1);
     QApplication::restoreOverrideCursor();
     if (backupProcess.exitCode()) {
-      fprintf(stderr,"Exit Code=%d\n",backupProcess.exitCode());
       QMessageBox::critical(this,tr("RDDbConfig Error"),
         QString(backupProcess.readAllStandardError()));
     }
@@ -303,6 +342,9 @@ void MainWidget::restoreData()
     if (QMessageBox::question(this,tr("Restore Entire Database"),tr("Are you sure you want to restore your entire Rivendell database?"),(QMessageBox::No|QMessageBox::Yes)) != QMessageBox::Yes) {
       return;
     }
+
+    db->clearDatabase(rd_config->mysqlDbname());
+
     QProcess restoreProcess(this);
     QStringList args;
     args << QString().sprintf("--user=%s",(const char *)rd_config->mysqlUsername())
@@ -313,7 +355,7 @@ void MainWidget::restoreData()
     QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
     stopDaemons();
     restoreProcess.start("mysql", args);
-    restoreProcess.waitForFinished();
+    restoreProcess.waitForFinished(-1);
     QApplication::restoreOverrideCursor();
     if (restoreProcess.exitCode()) {
       QMessageBox::critical(this,tr("RDDbConfig Error"),
@@ -329,6 +371,7 @@ void MainWidget::restoreData()
           (const char *)rd_config->mysqlDbname(),
           (const char *)filename));
     }
+    emit updateLabels();
     startDaemons();
   }
 }
@@ -371,14 +414,6 @@ void MainWidget::stopDaemons()
     }
   }
   QApplication::restoreOverrideCursor();
-#if 0
-  if(system("/usr/bin/systemctl status rivendell")==0) {
-    QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-    system("/usr/bin/systemctl stop rivendell");
-    QApplication::restoreOverrideCursor();
-    db_daemon_start_needed=true;
-  }
-#endif
 }
 
 
@@ -405,8 +440,5 @@ int main(int argc,char *argv[])
   QApplication a(argc,argv);
   MainWidget *w=new MainWidget();
   a.setMainWidget(w);
-  w->setGeometry(QRect(QPoint(0,0),w->sizeHint()));
-  w->move(250,250);
-  w->show();
   return a.exec();
 }
