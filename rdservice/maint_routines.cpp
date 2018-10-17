@@ -34,6 +34,11 @@ void MainObject::checkMaintData()
     QDateTime(QDate::currentDate(),QTime::currentTime());
   bool run=false;
 
+  //
+  // Schedule Next Maintenance Run
+  //
+  svc_maint_timer->start(GetMaintInterval());
+
   RunLocalMaintRoutine();
 
   //

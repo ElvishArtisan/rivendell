@@ -413,9 +413,11 @@ bool RDHPIPlayStream::play()
     return false;
   }
   if((!playing)&&(!is_paused)) {
-    LogHpi(HPI_OutStreamSetTimeScale(NULL,hpi_stream,
+    if(sound_card->haveTimescaling(card_number)) {
+      LogHpi(HPI_OutStreamSetTimeScale(NULL,hpi_stream,
 			(uint16_t)((RD_TIMESCALE_DIVISOR/(double)play_speed)*
 				   HPI_OSTREAM_TIMESCALE_UNITS)),__LINE__);
+    }
     if(LogHpi(HPI_OutStreamGetInfoEx(NULL,hpi_stream,
 				     &state,&buffer_size,&data_to_play,
 				     &samples_played,&reserved),__LINE__)!=0) {

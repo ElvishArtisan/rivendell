@@ -3222,7 +3222,7 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
 has not yet been generated.  Please start the Rivendell daemons on this host
 (by executing, as user &apos;root&apos;,  the command &quot;/etc/init.d/rivendell start&quot;)
 in order to populate the audio resources database.</source>
-        <translation>Přiřazení kanálů nebudou dostupná pro tento server jako zdroj zvuku, data
+        <translation type="obsolete">Přiřazení kanálů nebudou dostupná pro tento server jako zdroj zvuku, data
 ještě nebyla vytvořena. Spusťte, prosím, démony Rivendell na tomto serveru.
 Zadejte jako superuživatel &apos;root&apos; příkaz &quot;/etc/init.d/rivendell start&quot;
 pro naplnění databáze zdroji zvuku.</translation>
@@ -3237,6 +3237,13 @@ pro naplnění databáze zdroji zvuku.</translation>
     </message>
     <message>
         <source>Configure RDPanel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Channel assignments will not be available for this host, as audio resource data
+has not yet been generated.  Please start the Rivendell daemons on this host
+(by executing, as user &apos;root&apos;,  the command &quot;systemctl start rivendell&quot;)
+in order to populate the audio resources database.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -6152,7 +6159,7 @@ Prověřte, prosím, svá nastavení a zkuste to znovu.</translation>
     </message>
     <message>
         <source>Please start the Rivendell daemons on this host (by executing, as user &apos;root&apos;, the command &quot;/etc/init.d/rivendell start&quot;) in order to populate the audio resources database.</source>
-        <translation>Spusťte, prosím, démony Rivendell na tomto serveru. Zadejte jako superuživatel &apos;root&apos; příkaz &quot;/etc/init.d/rivendell start&quot;
+        <translation type="obsolete">Spusťte, prosím, démony Rivendell na tomto serveru. Zadejte jako superuživatel &apos;root&apos; příkaz &quot;/etc/init.d/rivendell start&quot;
 pro naplnění databáze zdroji zvuku.</translation>
     </message>
     <message>
@@ -6176,6 +6183,10 @@ pro naplnění databáze zdroji zvuku.</translation>
     </message>
     <message>
         <source>Outputs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please start the Rivendell daemons on this host (by executing, as user &apos;root&apos;, the command &quot;systemctl start rivendell&quot;) in order to populate the audio resources database.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

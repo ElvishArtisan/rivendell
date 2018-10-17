@@ -3098,7 +3098,7 @@ configured to run the CAE service in order to populate the audio resources datab
 has not yet been generated.  Please start the Rivendell daemons on this host
 (by executing, as user &apos;root&apos;,  the command &quot;/etc/init.d/rivendell start&quot;)
 in order to populate the audio resources database.</source>
-        <translation type="unfinished">Det vil ikkje vera tilgjengelege kanalar for denne verten, fordi det ikkje har vorte laga
+        <translation type="obsolete">Det vil ikkje vera tilgjengelege kanalar for denne verten, fordi det ikkje har vorte laga
 data for lydressursar enno. Start Rivendell-programma på denne verten ved å køyra
 kommandoen &quot;/etc/init.d/rivendell-start&quot; som root-brukaren for å fylla ut databasen
 for lydressursar.</translation>
@@ -3113,6 +3113,13 @@ for lydressursar.</translation>
     </message>
     <message>
         <source>Configure RDPanel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Channel assignments will not be available for this host, as audio resource data
+has not yet been generated.  Please start the Rivendell daemons on this host
+(by executing, as user &apos;root&apos;,  the command &quot;systemctl start rivendell&quot;)
+in order to populate the audio resources database.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5768,7 +5775,7 @@ Sjekk oppsettet ditt og prøv att.</translation>
     </message>
     <message>
         <source>Please start the Rivendell daemons on this host (by executing, as user &apos;root&apos;, the command &quot;/etc/init.d/rivendell start&quot;) in order to populate the audio resources database.</source>
-        <translation>Start Rivendell-nisseprogramma på denne verten ved å køyra kommandoen &quot;/etc/init.d/rivendell-start&quot; som root-brukaren for å fylla ut lydressursdatabasen.</translation>
+        <translation type="obsolete">Start Rivendell-nisseprogramma på denne verten ved å køyra kommandoen &quot;/etc/init.d/rivendell-start&quot; som root-brukaren for å fylla ut lydressursdatabasen.</translation>
     </message>
     <message>
         <source>&amp;Close</source>
@@ -5790,6 +5797,10 @@ Sjekk oppsettet ditt og prøv att.</translation>
     </message>
     <message>
         <source>Outputs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please start the Rivendell daemons on this host (by executing, as user &apos;root&apos;, the command &quot;systemctl start rivendell&quot;) in order to populate the audio resources database.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

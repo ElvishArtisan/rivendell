@@ -581,35 +581,6 @@ QVariant RDGetSqlValue(const QString &table,const QString &name,
 }
 
 
-QVariant RDGetSqlValue(const QString &table,
-		       const QString &name1,const QString &test1,
-		       const QString &name2,const QString &test2,
-                       const QString &name3,const QString &test3,
-		       const QString &param,bool *valid)
-{
-  RDSqlQuery *q;
-  QString sql;
-  QVariant v;
-
-  sql="select `"+param+"` from `"+table+"` where "+
-    "(`"+name1+"`=\""+RDEscapeString(test1)+"\")&&"+
-    "(`"+name2+"`=\""+RDEscapeString(test1)+"\")&&"+
-    "(`"+name3+"`=\""+RDEscapeString(test1)+"\")";
-  q=new RDSqlQuery(sql);
-  if(q->isActive()) {
-    q->first();
-    v=q->value(0);
-    if(valid!=NULL) {
-      *valid=!q->isNull(0);
-    }
-    delete q;
-    return v;
-  }
-  delete q;
-  return QVariant();
-}
-
-
 bool RDIsSqlNull(const QString &table,const QString &name,const QString &test,
 		 const QString &param,QSqlDatabase *db)
 {

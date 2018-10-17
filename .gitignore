@@ -124,6 +124,7 @@ utils/rdclilogedit/rdclilogedit
 utils/rdcleandirs/rdcleandirs
 utils/rdsoftkeys/rdsoftkeys
 utils/rddbcheck/rddbcheck
+utils/rddbconfig/rddbconfig
 utils/rdalsaconfig/rdalsaconfig
 utils/rdpopup/rdpopup
 utils/rddbmgr/rddbmgr

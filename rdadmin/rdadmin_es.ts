@@ -3210,7 +3210,7 @@ computador para obtener los recursos de audio de dicho equipo.</translation>
 has not yet been generated.  Please start the Rivendell daemons on this host
 (by executing, as user &apos;root&apos;,  the command &quot;/etc/init.d/rivendell start&quot;)
 in order to populate the audio resources database.</source>
-        <translation>La asignación de canales no estará disponible para este equipo, debido a que la
+        <translation type="obsolete">La asignación de canales no estará disponible para este equipo, debido a que la
 configuración de audio aún no ha sido generada.  Inicie los servicios de Rivendell 
 en el equipo (ejecutando, como &apos;root&apos;, el comando &quot;/etc/init.d/rivendell start&quot;)
 para generar la base de datos con los recursos de audio disponibles.</translation>
@@ -3225,6 +3225,13 @@ para generar la base de datos con los recursos de audio disponibles.</translatio
     </message>
     <message>
         <source>Configure RDPanel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Channel assignments will not be available for this host, as audio resource data
+has not yet been generated.  Please start the Rivendell daemons on this host
+(by executing, as user &apos;root&apos;,  the command &quot;systemctl start rivendell&quot;)
+in order to populate the audio resources database.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -6113,7 +6120,7 @@ Revise los parámetros e intente de nuevo.</translation>
     </message>
     <message>
         <source>Please start the Rivendell daemons on this host (by executing, as user &apos;root&apos;, the command &quot;/etc/init.d/rivendell start&quot;) in order to populate the audio resources database.</source>
-        <translation>Inicie los servicios Rivendell en este equipo (ejecutando, como &apos;root&apos;, el comando &quot;/etc/init.d/rivendell start&quot;) para iniciar la base de datos de recursos de audio.</translation>
+        <translation type="obsolete">Inicie los servicios Rivendell en este equipo (ejecutando, como &apos;root&apos;, el comando &quot;/etc/init.d/rivendell start&quot;) para iniciar la base de datos de recursos de audio.</translation>
     </message>
     <message>
         <source>&amp;Close</source>
@@ -6135,6 +6142,10 @@ Revise los parámetros e intente de nuevo.</translation>
     </message>
     <message>
         <source>Outputs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please start the Rivendell daemons on this host (by executing, as user &apos;root&apos;, the command &quot;systemctl start rivendell&quot;) in order to populate the audio resources database.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

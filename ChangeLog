@@ -17642,6 +17642,7 @@
 2018-09-20 Fred Gleason <fredg@paravelsystems.com>
 	* Corrected an omission in the documentation of the
 	'Start Button' ['PB'] RML.
+<<<<<<< HEAD
 2018-10-01 Fred Gleason <fredg@paravelsystems.com>
 	* Applied a PR from Patrick Linstruth <patrick@deltecent.com> that
 	fixed a regression where the 'Stop' button would fail to function
@@ -17754,3 +17755,59 @@
 	switches in rddbmgr(8).
 	* Refactored handling of character set and collation attributes
 	in rddbmgr(8) to treat them as immutable parts of the DB schema.
+2018-10-09 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'UPDATING CHARACTER SET' section from 'UPGRADING'.
+2018-10-09 Fred Gleason <fredg@paravelsystems.com>
+	* Alphabetized the Makefile component lists in 'rivwebcapi'.
+2018-10-10 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RD_ListCartCuts()' function to 'rivwebcapi'.
+	* Changed the length of the 'cut_name' member of the 'rd_cut' struct
+	from 11 to 41 in 'rivwebcapi'.
+	* Added a 'struct rd_cut *cart_cuts' member to the 'rd_cart' struct
+	in 'rivwebcapi'.
+2018-10-11 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RD_ListCartsCuts()' function to 'rivwebcapi'.
+2018-10-11 Fred Gleason <fredg@paravelsystems.com>
+	* Replaced listings of the 'rd_cart' structure with a reference
+	to the rd_listcartcuts(7) man page in the rd_listcart(7),
+	rd_listcarts(7) and rd_listcartscuts(7) man pages.
+	* Replaced listings of the 'rd_cut' structure with a reference
+	to the rd_listcartcuts(7) man page in the rd_listcut(7) and
+	rd_listcuts(7) man pages.
+2018-10-16 Patrick Linstruth <patrick@deltecent.com>
+	* Added exit logging to rdxport.cgi.
+2018-10-16 Patrick Linstruth <patrick@deltecent.com>
+	* Added rddbconfig(8).
+2018-10-16 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Rivendell->Configuration' menu entry for rddbconfig(8).
+2018-10-16 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed a bug that caused a gratuitious 'INALID_FUNC' error to
+	be sent to syslog when used with an ASI card without timescaling
+	support.
+2018-10-16 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'RDGetSqlValue(const QString &table,const QString &name1,
+	const QString &test1,const QString &name2,const QString &test2,
+	const QString &name3,const QString &test3,const QString &param,
+	bool *valid=0)' function.
+2018-10-16 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdservice(8) that caused maintenance routines
+	to be attempted only once per invocation.
+2018-10-16 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed a bug that caused the build to break when M4A decoding
+	support was enabled.
+2018-10-16 Patrick Linstruth <patrick@deltecent.com>
+	* Updated instructions in the 'Audio Resources' dialog in rdadmin(1)
+	to reflect the transition to Systemd.
+2018-10-16 Patrick Linstruth <patrick@deltecent.com>
+	* Updated rdalsaconfig(8) to use the proper Systemd idiom for
+	restarting the 'rivendell' service.
+	* Updated rdselect(8) to use the proper Systemd idiom for
+	restarting the 'rivendell' service.
+2018-10-16 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'RDIdValidator' and 'RDTextValidator' classes
+	that caused them to throw exceptions when processing certain
+	multi-byte UTF-8 characters.
+2018-10-16 Patrick Linstruth <patrick@deltecent.com>
+	* Disabled the 'More than half the audio will be faded...' warning
+	in the 'Edit Audio' dialog in rdlibrary(1) if the 'No Fade on
+	Segue Out' checkbox is ticked.

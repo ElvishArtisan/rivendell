@@ -16,6 +16,8 @@
 
 #include <time.h>
 
+#include <rivwebcapi/rd_cut.h>
+
 enum CART_TYPE {TYPE_ALL,TYPE_AUDIO,TYPE_MACRO};
 
 struct rd_cart {
@@ -39,7 +41,6 @@ struct rd_cart {
   int  cart_length_deviation;
   int  cart_average_segue_length;
   int  cart_average_hook_length;
-  unsigned  cart_cut_quantity;
   unsigned  cart_last_cut_played;
   unsigned  cart_validity;
   int cart_enforce_length;
@@ -47,6 +48,8 @@ struct rd_cart {
   char cart_owner[257];  
   char cart_notes[4096];
   struct tm cart_metadata_datetime;
+  unsigned  cart_cut_quantity;
+  struct rd_cut **cart_cuts;
 };                      
 
 

@@ -25,9 +25,11 @@ install-exec-am:
 	cp rivendell-opsguide-pdf.desktop $(DESTDIR)@prefix@/share/applications/
 	cp rivendell-rdadmin.desktop $(DESTDIR)@prefix@/share/applications/
 	cp rivendell-rdairplay.desktop $(DESTDIR)@prefix@/share/applications/
+##	cp rivendell-rdalsaconfig.desktop $(DESTDIR)@prefix@/share/applications/
 	cp rivendell-rdcartslots.desktop $(DESTDIR)@prefix@/share/applications/
 	cp rivendell-rdcastmanager.desktop $(DESTDIR)@prefix@/share/applications/
 	cp rivendell-rdcatch.desktop $(DESTDIR)@prefix@/share/applications/
+##	cp rivendell-rddbconfig.desktop $(DESTDIR)@prefix@/share/applications/
 	cp rivendell-rddgimport.desktop $(DESTDIR)@prefix@/share/applications/
 	cp rivendell-rddiscimport.desktop $(DESTDIR)@prefix@/share/applications/
 	cp rivendell-rdgpimon.desktop $(DESTDIR)@prefix@/share/applications/
@@ -39,7 +41,6 @@ install-exec-am:
 	cp rivendell-rdpanel.desktop $(DESTDIR)@prefix@/share/applications/
 	cp rivendell-rdsoftkeys.desktop $(DESTDIR)@prefix@/share/applications/
 	cp rivendell-rmlsend.desktop $(DESTDIR)@prefix@/share/applications/
-	cp rivendell-rdalsaconfig-root.desktop $(DESTDIR)@prefix@/share/applications/
 
 	mkdir -p $(DESTDIR)@prefix@/share/desktop-directories
 	cp *.directory $(DESTDIR)@prefix@/share/desktop-directories/
@@ -47,10 +48,17 @@ install-exec-am:
 	cp *.menu $(DESTDIR)/etc/xdg/menus/applications-merged/
 	mkdir -p $(DESTDIR)/etc/pam.d
 	cp rdalsaconfig-root-pam $(DESTDIR)/etc/pam.d/rdalsaconfig-root
+	cp rddbconfig-root-pam $(DESTDIR)/etc/pam.d/rddbconfig-root
 	mkdir -p $(DESTDIR)/etc/security/console.apps
 	cp rdalsaconfig-root-consolehelper $(DESTDIR)/etc/security/console.apps/rdalsaconfig-root
+	cp rddbconfig-root-consolehelper $(DESTDIR)/etc/security/console.apps/rddbconfig-root
+	cp rivendell-rdalsaconfig-root.desktop $(DESTDIR)@prefix@/share/applications/
+	cp rivendell-rddbconfig-root.desktop $(DESTDIR)@prefix@/share/applications/
 	rm -f $(DESTDIR)$(prefix)/bin/rdalsaconfig-root
 	ln -s /usr/bin/consolehelper $(DESTDIR)$(prefix)/bin/rdalsaconfig-root
+	cp rivendell-rddbconfig-root.desktop $(DESTDIR)@prefix@/share/applications/
+	rm -f $(DESTDIR)$(prefix)/bin/rddbconfig-root
+	ln -s /usr/bin/consolehelper $(DESTDIR)$(prefix)/bin/rddbconfig-root
 
 uninstall-local:	
 	rm -f $(DESTDIR)@prefix@/share/applications/rivendell-*.desktop
@@ -59,9 +67,14 @@ uninstall-local:
 	rm -f $(DESTDIR)/etc/pam.d/rdalsaconfig-root
 	rm -f $(DESTDIR)/etc/security/console.apps/rdalsaconfig-root
 	rm -f $(DESTDIR)$(prefix)/bin/rdalsaconfig-root
+	rm -f $(DESTDIR)/etc/pam.d/rddbconfig-root
+	rm -f $(DESTDIR)/etc/security/console.apps/rddbconfig-root
+	rm -f $(DESTDIR)$(prefix)/bin/rddbconfig-root
 
 EXTRA_DIST = rdalsaconfig-root-consolehelper\
              rdalsaconfig-root-pam\
+             rddbconfig-root-consolehelper\
+             rddbconfig-root-pam\
              rivendell-configuration.directory\
              rivendell-documentation.directory\
              rivendell-logtools.directory\
@@ -74,6 +87,8 @@ EXTRA_DIST = rdalsaconfig-root-consolehelper\
              rivendell-rdcartslots.desktop\
              rivendell-rdcastmanager.desktop\
              rivendell-rdcatch.desktop\
+             rivendell-rddbconfig.desktop\
+             rivendell-rddbconfig-root.desktop\
              rivendell-rddgimport.desktop\
              rivendell-rddiscimport.desktop\
              rivendell-rdgpimon.desktop\
