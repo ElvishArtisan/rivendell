@@ -1,7 +1,7 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v2.19.2int05 -- 10/6/2018
+v2.19.2int06 -- 10/17/2018
 
 Changes:
    BroadcastTools Support. Added a Switcher/GPIO driver for the
@@ -16,6 +16,10 @@ Changes:
 
    Spinitron RLM. Added support for Spinitron v2 to the 'spinitron_plus'
    RLM. 
+
+   Exported File Mode. Added an 'ExportedFileMode=' parameter to the
+   '[Tuning]' section of rd.conf(5) to permit permission mode of exported
+   audio files to be specified.
 
    Various bug fixes. See the 'ChangeLog' for details.
 

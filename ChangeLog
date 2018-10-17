@@ -16714,3 +16714,5 @@
 2018-10-17 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'ExportedFileMode=' parameter to the '[Tuning]' section
 	of rd.conf(5).
+2018-10-17 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.19.2int06.
