@@ -16722,3 +16722,5 @@
 	* Incremented the package version to 2.19.2int07.
 2018-10-17 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression that broke the build on CentOS 6.
+2018-10-17 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.19.2int08.
