@@ -194,104 +194,12 @@
   </table>
 
   <para>
-    When successful function will return the number of records sent (numrecs) and a rd_cart structure which 
-    is stored in the provided memory locations. The rd_cart structure has the following fields:
+    When successful function will return the number of records sent
+    (numrecs) and a rd_cart structure which 
+    is stored in the provided memory locations. (See the
+    <command>rd_listcartcuts</command><manvolnum>7</manvolnum> man page
+    for a listing of the rd_cart structure).
   </para>
-  <programlisting>
-    struct rd_cart {
-  	  unsigned cart_number;                /* Cart Number */
-  	  unsigned cart_type;                  /* Cart Type */
-  	  char cart_grp_name[11];              /* Group Name */
-  	  char cart_title[256];                /* Cart Title */
-  	  char cart_artist[256];               /* Artist */
-  	  char cart_album[256];                /* Album */
-  	  int cart_year;                       /* Year */
-  	  char cart_label[65];                 /* Label */
-  	  char cart_client[65];                /* Client */
-  	  char cart_agency[65];                /* Agency */
-  	  char cart_publisher[65];             /* Publisher */
-  	  char cart_composer[65];              /* Composer */
-  	  char cart_conductor[65];             /* Conductor */
-  	  char cart_user_defined[256];         /* User Defined */
-  	  int  cart_usage_code;                /* Usage Code */
-  	  int cart_forced_length;              /* Forced Length */
-  	  int cart_average_length;             /* AverageLength */
-  	  int cart_length_deviation;           /* Length Deviation */
-  	  int cart_average_segue_length;       /* Average Segue Length */
-  	  int cart_average_hook_length;        /* Average Hook Length */
-  	  unsigned  cart_cut_quantity;         /* Cut Quantity */
-  	  unsigned  cart_last_cut_played;      /* Last Cut Played */
-  	  unsigned  cart_validity;             /* Validity */
-  	  int cart_enforce_length;             /* Enforce Length Flag */
-  	  int cart_asyncronous;                /* Asyncronous Flag */
-  	  char cart_owner[65];                 /* Owner */
-  	  struct tm cart_metadata_datetime;    /* Metatdata Datetime */
-  	  char cart_notes[1024];               /* Notes */
-    };
-
-      All character arrays above are the sizes listed and must be null-terminated.
-
-      The cart number is a unsigned integer.
-
-      The cart_type is 1=Audio,2=Macro. 
-      
-      The cart_grp_name must be a valid Rivendell DB Group.
-
-      The cart_title is 255 characters.
-
-      The cart_artist is 255 characters.
-
-      The cart_album is 255 characters.
-
-      The cart_year is a date (YYYY). 
-
-      The cart_label is 64 characters.
-
-      The cart_client is 64 characters.
-
-      The cart_agency is 64 characters.
-
-      The cart_publisher is 64 characters.
-
-      The cart_composer is 64 characters.
-
-      The cart_conductor is 64 characters.
-
-      The cart_user_defined is 255 characters.
-      
-      The cart_usage_code is  0=Feature, 1=Theme Open,
-                              2=Theme Close, 3=Theme Open/Close,
-                              4=Background, 5=Comm/Promo
-      
-      The cart_forced_length is in milliseconds. 
-      
-      The cart_average_length is in milliseconds.
-      
-      The cart_length_deviation is in milliseconds.
-      
-      The cart_average_segue_length is in milliseconds.
-
-      The cart_average_hook_length is in milliseconds. 
-      
-      The cart_cut_quantity is number of cuts. 
-
-      The cart_last_cut_played is self explanatory.
-
-      The cart_validity is 0=NeverValid, 1=Conditional, 2=AlwaysValid 
-                           3=EvergreenValid, 4=FutureValid
-
-      The cart_enforce_length is True(1) or False(0).
-      
-      The cart_asyncronous is True(1) or False(0).
-      
-      The cart_owner is 64 characters.
-      
-      The cart_metadata_datetime is a struct tm.
-      
-      The cart_user_notes is a character array up to 1024 characters.
-      
-  </programlisting>
-
   </refsect1>
   <refsect2 id='returns'><title>RETURN VALUE</title>
     <para>

@@ -9,11 +9,11 @@ FIELD NAME           TYPE              REMARKS
 ------------------------------------------------------------------
 ID                   int(10) unsigned  Primary key, auto increment
 CART_NUMBER          int(10) unsigned
-ISCI                 char(32)
-FILENAME             char(64)
+ISCI                 varchar(32)
+FILENAME             varchar(64)
 LATEST_DATE          date
-TYPE                 char(1)
-ADVERTISER_NAME      char(30)
-PRODUCT_NAME         char(35)
-CREATIVE_TITLE       char(30)
-REGION_NAME          char(80)
+TYPE                 varchar(1)
+ADVERTISER_NAME      varchar(30)
+PRODUCT_NAME         varchar(35)
+CREATIVE_TITLE       varchar(30)
+REGION_NAME          varchar(80)

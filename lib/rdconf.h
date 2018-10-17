@@ -77,11 +77,6 @@ QVariant RDGetSqlValue(const QString &table,const QString &name,
 		       bool *valid=0);
 QVariant RDGetSqlValue(const QString &table,const QString &name,unsigned test,
 		       const QString &param,bool *valid=0);
-QVariant RDGetSqlValue(const QString &table,
-		       const QString &name1,const QString &test1,
-		       const QString &name2,const QString &test2,
-		       const QString &name3,const QString &test3,
-		       const QString &param,bool *valid=0);
 bool RDIsSqlNull(const QString &table,const QString &name,
 		 const QString &test,const QString &param,QSqlDatabase *db=0);
 bool RDIsSqlNull(const QString &table,const QString &name,unsigned test,

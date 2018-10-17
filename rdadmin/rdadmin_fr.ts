@@ -2683,13 +2683,6 @@ configured to run the CAE service in order to populate the audio resources datab
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Channel assignments will not be available for this host, as audio resource data
-has not yet been generated.  Please start the Rivendell daemons on this host
-(by executing, as user &apos;root&apos;,  the command &quot;/etc/init.d/rivendell start&quot;)
-in order to populate the audio resources database.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>[none]</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2699,6 +2692,13 @@ in order to populate the audio resources database.</source>
     </message>
     <message>
         <source>Configure RDPanel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Channel assignments will not be available for this host, as audio resource data
+has not yet been generated.  Please start the Rivendell daemons on this host
+(by executing, as user &apos;root&apos;,  the command &quot;systemctl start rivendell&quot;)
+in order to populate the audio resources database.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4893,10 +4893,6 @@ please check your settings and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Please start the Rivendell daemons on this host (by executing, as user &apos;root&apos;, the command &quot;/etc/init.d/rivendell start&quot;) in order to populate the audio resources database.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Close</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4916,6 +4912,10 @@ please check your settings and try again.</source>
     </message>
     <message>
         <source>Outputs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Please start the Rivendell daemons on this host (by executing, as user &apos;root&apos;, the command &quot;systemctl start rivendell&quot;) in order to populate the audio resources database.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

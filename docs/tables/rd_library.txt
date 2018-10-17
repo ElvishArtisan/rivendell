@@ -5,7 +5,7 @@ The RDLIBRARY table holds configuration data for the RDLibrary widget.
 FIELD NAME           TYPE              REMARKS
 ------------------------------------------------------------------------------
 ID                   int(10) unsigned  * Primary key, Auto Increment
-STATION              char(40)          Workstation, Indexed
+STATION              varchar(64)       From STATIONS.NAME
 INSTANCE             int(10) unsigned
 INPUT_CARD           int(11)           None=-1
 INPUT_TYPE           enum('A','D')
@@ -21,10 +21,10 @@ DEFAULT_RECORD_MODE  int(10) unsigned  0 = Manual, 1 = VOX
 DEFAULT_TRIM_STATE   enum('Y','N')
 MAXLENGTH            int(11)           Max record length, in sec
 TAIL_PREROLL	     int(10) unsigned
-RIPPER_DEVICE        char(64)
+RIPPER_DEVICE        varchar(64)
 PARANOIA_LEVEL       int(11)
 RIPPER_LEVEL         int(11)
-CDDB_SERVER          char(64)
+CDDB_SERVER          varchar(64)
 READ_ISRC            enum('N','Y')
 ENABLE_EDITOR        enum('N','Y')
 SRC_CONVERTER        int(11)

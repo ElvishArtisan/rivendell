@@ -5,7 +5,7 @@ The LOG_LINES table holds the per-line data for all Rivendell logs.
 FIELD NAME           TYPE               REMARKS
 ------------------------------------------------------------------------
 ID                   int(11) signed     Primary key, auto-increment
-LOG_NAME             char(64)           From LOGS.NAME
+LOG_NAME             varchar(64)        From LOGS.NAME
 COUNT                int(11) signed     Order of records
 TYPE                 int(11) signed     0=Cart, 1=Marker, 2=OpenBracket,
                                         3=CloseBracket, 4=Link
@@ -26,12 +26,12 @@ FADEDOWN_GAIN        int(11) signed
 SEGUE_START_POINT    int(11) signed     Overloads CUTS.SEGUE_START_POINT
 SEGUE_END_POINT      int(11) signed     Overloads CUTS.SEGUE_END_POINT
 SEGUE_GAIN           int(11) signed
-COMMENT              char(255)
-LABEL                char(64)
-ORIGIN_USER          char(255)          From USERS.LOGIN_NAME
+COMMENT              varchar(255)
+LABEL                varchar(64)
+ORIGIN_USER          varchar(255)       From USERS.LOGIN_NAME
 ORIGIN_DATETIME      datetime
 EVENT_LENGTH         int(11)            Length of parent RDLogManager event
-LINK_EVENT_NAME      char(64)
+LINK_EVENT_NAME      varchar(64)
 LINK_START_TIME      int(11)            Milliseconds after 00:00:00
 LINK_LENGTH          int(11)
 LINK_START_SLOP      int(11)
@@ -40,7 +40,7 @@ LINK_ID              int(11)
 LINK_EMBEDDED        enum('N','Y')
 EXT_START_TIME       time               External Scheduler Start Time
 EXT_LENGTH           int(11)            External Scheduler Event Length
-EXT_CART_NAME        char(32)           External Scheduler Cart Name
-EXT_DATA             char(32)           External Scheduler Data
-EXT_EVENT_ID         char(8)            External Scheduler Event ID
-EXT_ANNC_TYPE        char(8)            External Scheduler Announcement Type
+EXT_CART_NAME        varchar(32)        External Scheduler Cart Name
+EXT_DATA             varchar(32)        External Scheduler Data
+EXT_EVENT_ID         varchar(8)         External Scheduler Event ID
+EXT_ANNC_TYPE        varchar(8)         External Scheduler Announcement Type

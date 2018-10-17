@@ -62,10 +62,8 @@
 #define DEFAULT_MYSQL_DRIVER "QMYSQL3"
 #define DEFAULT_MYSQL_HEARTBEAT_INTERVAL 360
 #define DEFAULT_MYSQL_ENGINE "MyISAM"
-#define DEFAULT_MYSQL_CHARSET "utf8"
-#define DEFAULT_MYSQL_COLLATION "utf8_general_ci"
-#define MYSQL_BUILTIN_DATABASE "mysql"
-#define POSTGRESQL_BUILTIN_DATABASE "template1"
+#define DEFAULT_MYSQL_CHARSET "utf8mb4"
+#define DEFAULT_MYSQL_COLLATION "utf8mb4_general_ci"
 
 /*
  * Default Logging Settings

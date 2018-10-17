@@ -70,6 +70,7 @@ MainObject::MainObject(QObject *parent)
   import_group=NULL;
   import_verbose=false;
   import_log_syslog=false;
+  import_log_file=false;
   import_log_directory="";
   import_log_filename="";
   import_single_cart=false;
@@ -455,6 +456,7 @@ MainObject::MainObject(QObject *parent)
     rda->config()->setLogDirectory(import_log_directory);
     rda->config()->setLogPattern(import_log_filename);
     rda->config()->setLogFacility(RDConfig::LogFile);
+    import_log_file=true;
   }
 
   import_cut_markers=new MarkerSet();
@@ -2025,7 +2027,10 @@ void MainObject::Log(RDConfig::LogPriority prio,const QString &msg) const
 {
   QString m=msg;
 
-  if(!import_drop_box) {
+  if (import_drop_box||import_log_syslog||import_log_file) {
+    rda->log(prio,m.replace(QRegExp("^rdimport: "),"").simplified());
+  }
+  else {
     if(prio==RDConfig::LogErr) {
       fprintf(stderr,"%s",(const char *)msg);
       fflush(stderr);
@@ -2034,9 +2039,6 @@ void MainObject::Log(RDConfig::LogPriority prio,const QString &msg) const
       fprintf(stdout,"%s",(const char *)msg);
       fflush(stdout);
     }
-  }
-  if(prio==RDConfig::LogErr||import_verbose) {
-    rda->log(prio,m.replace(QRegExp("^rdimport: "),"").simplified());
   }
 }
 

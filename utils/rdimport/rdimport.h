@@ -79,6 +79,7 @@ class MainObject : public QObject
   RDGroup *import_group;
   bool import_verbose;
   bool import_log_syslog;
+  bool import_log_file;
   QString import_log_directory;
   QString import_log_filename;
   bool import_to_mono;

@@ -163,8 +163,7 @@ bool RDOpenDb (int *schema,QString *err_str,RDConfig *config)
     }
   }
   new RDDbHeartbeat(config->mysqlHeartbeatInterval());
-  sql=QString("set NAMES '")+config->mysqlCharset()+"'"+
-    "COLLATE '"+config->mysqlCollation()+"'";
+  sql=QString("set NAMES utf8mb4 collate utf8mb4_general_ci");
   q=new QSqlQuery(sql);
   delete q;
 

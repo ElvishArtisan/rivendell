@@ -241,6 +241,8 @@ rm -rf $RPM_BUILD_ROOT
 @LOCAL_PREFIX@/bin/rdalsaconfig-root
 @LOCAL_PREFIX@/bin/rdgpimon
 @LOCAL_PREFIX@/bin/rdclilogedit
+@LOCAL_PREFIX@/bin/rddbconfig
+@LOCAL_PREFIX@/bin/rddbconfig-root
 @LOCAL_PREFIX@/bin/rddelete
 @LOCAL_PREFIX@/bin/rdexport
 @LOCAL_PREFIX@/bin/rdimport
@@ -337,6 +339,7 @@ rm -rf $RPM_BUILD_ROOT
 @LOCAL_PREFIX@/share/applications/rivendell-rdcatch.desktop
 @LOCAL_PREFIX@/share/applications/rivendell-rdgpimon.desktop
 @LOCAL_PREFIX@/share/applications/rivendell-rdalsaconfig-root.desktop
+@LOCAL_PREFIX@/share/applications/rivendell-rddbconfig-root.desktop
 @LOCAL_PREFIX@/share/applications/rivendell-rdlibrary.desktop
 @LOCAL_PREFIX@/share/applications/rivendell-rdlogedit.desktop
 @LOCAL_PREFIX@/share/applications/rivendell-rdlogmanager.desktop
@@ -363,6 +366,8 @@ rm -rf $RPM_BUILD_ROOT
 @WIN32_PATH@
 /etc/security/console.apps/rdalsaconfig-root
 /etc/pam.d/rdalsaconfig-root
+/etc/security/console.apps/rddbconfig-root
+/etc/pam.d/rddbconfig-root
 /etc/pam.d/rivendell
 /lib/systemd/system/rivendell.service
 %{_mandir}/man1/rdclilogedit.1.gz
@@ -446,7 +451,9 @@ rm -rf $RPM_BUILD_ROOT
 @LOCAL_PREFIX@/share/man/man7/rd_getversion.7.gz
 @LOCAL_PREFIX@/share/man/man7/rd_import.7.gz
 @LOCAL_PREFIX@/share/man/man7/rd_listcart.7.gz
+@LOCAL_PREFIX@/share/man/man7/rd_listcartcuts.7.gz
 @LOCAL_PREFIX@/share/man/man7/rd_listcarts.7.gz
+@LOCAL_PREFIX@/share/man/man7/rd_listcartscuts.7.gz
 @LOCAL_PREFIX@/share/man/man7/rd_listcartschedcodes.7.gz
 @LOCAL_PREFIX@/share/man/man7/rd_listcut.7.gz
 @LOCAL_PREFIX@/share/man/man7/rd_listcuts.7.gz

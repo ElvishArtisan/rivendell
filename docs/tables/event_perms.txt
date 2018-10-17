@@ -1,0 +1,11 @@
+                EVENT_PERMS Table Layout for Rivendell
+
+The EVENT_PERMS table holds data concerning which rdlogmanager(1)
+events are associated with which services.
+
+
+FIELD NAME           TYPE              REMARKS
+---------------------------------------------------------------
+ID                   int(10) unsigned  Primary key, auto increment
+EVENT_NAME           varchar(64)      From EVENTS.NAME
+SERIVCE_NAME         varchar(10)       From SERVICES.NAME

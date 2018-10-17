@@ -7,8 +7,8 @@ FIELD NAME           TYPE              REMARKS
 ------------------------------------------------------------------
 ID                   int(10) unsigned  auto_increment, not null
                                        primary key
-REPLICATOR_NAME      char(32)          from REPLICATORS.NAME
+REPLICATOR_NAME      varchar(32)       from REPLICATORS.NAME
 CART_NUMBER          int(10) unsigned  from CART.NUMBER
-POSTED_FILENAME      char(255)
+POSTED_FILENAME      varchar(191)
 ITEM_DATETIME        datetime
 REPOST               enum('N','Y')

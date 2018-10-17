@@ -151,7 +151,7 @@ ViewAdapters::ViewAdapters(RDStation *rdstation,QWidget *parent)
   }
   else {
     text=tr("NO DATA AVAILABLE\n\n");
-    text+=tr("Please start the Rivendell daemons on this host (by executing, as user 'root', the command \"/etc/init.d/rivendell start\") in order to populate the audio resources database.");
+    text+=tr("Please start the Rivendell daemons on this host (by executing, as user 'root', the command \"systemctl start rivendell\") in order to populate the audio resources database.");
   }
   text_edit->setText(text);
 

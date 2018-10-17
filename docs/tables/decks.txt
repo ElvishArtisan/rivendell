@@ -6,7 +6,7 @@ recording interface on the system.
 FIELD NAME           TYPE              REMARKS
 ------------------------------------------------------------------
 ID                   int(10) unsigned  Primary key, auto increment
-STATION_NAME         char(64)          From STATIONS.NAME
+STATION_NAME         varchar(64)       From STATIONS.NAME
 CHANNEL              int(10) unsigned  0 = Audition Channel
 CARD_NUMBER          int(11) signed    -1 = None Assigned
 STREAM_NUMBER        int(11) signed    -1 = None Assigned
@@ -18,7 +18,7 @@ DEFAULT_FORMAT       int(10) signed
 DEFAULT_CHANNELS     int(10) signed
 DEFAULT_BITRATE      int(10) signed
 DEFAULT_THRESHOLD    int(10) signed
-SWITCH_STATION       char(64)          From OUTPUTS.STATION_NAME
+SWITCH_STATION       varchar(64)       From OUTPUTS.STATION_NAME
 SWITCH_MATRIX        int(11)           From OUTPUTS.MATRIX
 SWITCH_OUTPUT        int(11)           From OUTPUTS.NUMBER
 SWITCH_DELAY         int(10) unsigned

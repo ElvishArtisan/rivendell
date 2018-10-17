@@ -6,6 +6,6 @@ browser connection.
 FIELD NAME           TYPE             REMARKS
 --------------------------------------------------------------------------
 SESSION_ID           unsigned int(10) Primary key
-LOGIN_NAME           char(255)        From USERS.LOGIN_NAME
-IP_ADDRESS           char(16)
+LOGIN_NAME           varchar(191)     From USERS.LOGIN_NAME
+IP_ADDRESS           varchar(16)
 TIMESTAMP            datetime

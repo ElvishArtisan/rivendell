@@ -30,6 +30,7 @@ SUBDIRS = $(ALSACONFIG_RD_OPT)\
           rdclilogedit\
           rdcollect\
           rdconvert\
+          rddbconfig\
           rddbmgr\
           rddelete\
           rddiscimport\

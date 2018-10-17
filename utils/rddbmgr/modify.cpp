@@ -20,14 +20,15 @@
 
 #include <stdlib.h>
 
+#include <qstringlist.h>
+
 #include <dbversion.h>
 #include <rddb.h>
+#include <rdescape_string.h>
 
 #include "rddbmgr.h"
-//Added by qt3to4:
-#include <QSqlQuery>
 
-bool MainObject::Modify(QString *err_msg,int set_schema) const
+bool MainObject::Modify(QString *err_msg,int set_schema)
 {
   *err_msg="ok";
 
@@ -67,4 +68,51 @@ int MainObject::GetCurrentSchema() const
   return ret;
 }
 
+
+bool MainObject::ModifyCharset(const QString &charset,
+			       const QString &collation)
+{
+  QString sql;
+  RDSqlQuery *q;
+
+  //
+  // Per-table Attributes
+  //
+  sql=QString("select ")+
+    "TABLE_NAME,"+       // 00
+    "TABLE_COLLATION "+  // 01
+    "from information_schema.TABLES where "+
+    "TABLE_SCHEMA='"+RDEscapeString(db_mysql_database)+"'";
+  q=new RDSqlQuery(sql,false);
+  while(q->next()) {
+    QStringList f0=q->value(1).toString().split("_");
+    QString prev_charset=f0.at(0);
+    if(q->value(1).toString().toLower()!=collation) {
+      RewriteTable(q->value(0).toString(),prev_charset,charset,collation);
+    }
+  }
+  delete q;
+
+  //
+  // Database Attributes
+  //
+  sql=QString("select ")+
+    "SCHEMA_NAME,"+                 // 00
+    "DEFAULT_CHARACTER_SET_NAME,"+  // 01
+    "DEFAULT_COLLATION_NAME "+      // 02
+    "from information_schema.SCHEMATA";
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    if(q->value(0).toString()==db_mysql_database) {
+      if((q->value(1).toString().toLower()!=charset)||
+	 (q->value(2).toString().toLower()!=collation)) {
+	sql=QString("alter database `")+db_mysql_database+"` "+
+	  "character set "+charset+" collate "+collation;
+	RDSqlQuery::apply(sql);	
+      }
+    }
+  }
+  delete q;
+  return true;
+}
 

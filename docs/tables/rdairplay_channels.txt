@@ -6,7 +6,7 @@ channels assignments and related information.
 FIELD NAME           TYPE              REMARKS
 ------------------------------------------------------------------------------
 ID                     int(10) unsigned  * Primary key, Auto Increment
-STATION_NAME           char(64)          From STATIONS.NAME
+STATION_NAME           varchar(64)       From STATIONS.NAME
 INSTANCE               int(10) unsigned  0 = Main Log Output 1
                                          1 = Main Log Output 2
                                          2 = Sound Panel Output 1
@@ -19,8 +19,8 @@ INSTANCE               int(10) unsigned  0 = Main Log Output 1
                                          9 = Sound Panel Output 5
 CARD                   int(11)
 PORT                   int(11)
-START_RML              char(255)
-STOP_RML               char(255)
+START_RML              varchar(191)
+STOP_RML               varchar(191)
 GPIO_TYPE              int unsigned      0 = Edge, 1 = Level
 START_GPI_MATRIX       int(11)
 START_GPI_LINE         int(11)

@@ -1,0 +1,10 @@
+                 REPORT_STATIONS Table Layout for Rivendell
+
+The REPORT_STATIONS table holds data which hosts are referenced by
+a given report configuration.
+
+FIELD NAME              TYPE               REMARKS
+---------------------------------------------------------------
+ID                      int(10) unsigned   Primary Key
+REPORT_NAME             varchar(64)
+STATION_NAME            varchar(64)

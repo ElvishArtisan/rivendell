@@ -141,6 +141,7 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,int card,
   //  Save Button
   //
   QPushButton *button=new QPushButton(this,"save_button");
+  button->setFocusPolicy(Qt::NoFocus);
   button->setGeometry(EDITAUDIO_WIDGET_WIDTH-90,EDITAUDIO_WIDGET_HEIGHT-120,
 		      80,50);
   button->setDefault(true);
@@ -152,6 +153,7 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,int card,
   //  Cancel Button
   //
   QPushButton *cancel_button=new QPushButton(this,"cancel_button");
+  cancel_button->setFocusPolicy(Qt::NoFocus);
   cancel_button->setGeometry(EDITAUDIO_WIDGET_WIDTH-90,
 			     EDITAUDIO_WIDGET_HEIGHT-60,80,50);
   cancel_button->setDefault(true);
@@ -164,6 +166,7 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,int card,
   //
   edit_play_cursor_button=
     new RDTransportButton(RDTransportButton::PlayBetween,this);
+  edit_play_cursor_button->setFocusPolicy(Qt::NoFocus);
   edit_play_cursor_button->setGeometry(20,425,65,45);
   edit_play_cursor_button->setEnabled((edit_card>=0)&&(edit_port>=0));
   connect(edit_play_cursor_button,SIGNAL(clicked()),
@@ -171,18 +174,21 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,int card,
 
   edit_play_start_button=
     new RDTransportButton(RDTransportButton::Play,this);
+  edit_play_start_button->setFocusPolicy(Qt::NoFocus);
   edit_play_start_button->setGeometry(90,425,65,45);
   edit_play_start_button->setEnabled((edit_card>=0)&&(edit_port>=0));
   connect(edit_play_start_button,SIGNAL(clicked()),
 	  this,SLOT(playStartData()));
 
   edit_pause_button=new RDTransportButton(RDTransportButton::Pause,this);
+  edit_pause_button->setFocusPolicy(Qt::NoFocus);
   edit_pause_button->setGeometry(160,425,65,45);
   edit_pause_button->setOnColor(QColor(Qt::red));
   edit_pause_button->setEnabled((edit_card>=0)&&(edit_port>=0));
   connect(edit_pause_button,SIGNAL(clicked()),this,SLOT(pauseData()));
 
   edit_stop_button=new RDTransportButton(RDTransportButton::Stop,this);
+  edit_stop_button->setFocusPolicy(Qt::NoFocus);
   edit_stop_button->setGeometry(230,425,65,45);
   edit_stop_button->on();
   edit_stop_button->setOnColor(QColor(Qt::red));
@@ -2155,7 +2161,7 @@ bool RDEditAudio::SaveMarkers()
     }
   }
 
-  if(edit_cursors[RDEditAudio::SegueStart]!=-1) {
+  if(edit_cursors[RDEditAudio::SegueStart]!=-1&&!edit_overlap_box->isChecked()) {
     len=end_point-start_point;
     start_point=(int)((double)(edit_cursors[RDEditAudio::SegueStart])*
 		      1152000.0/(double)edit_sample_rate);
@@ -2286,8 +2292,10 @@ void RDEditAudio::UpdateCounters()
 	  (int)(1000.0*(double)((edit_cursors[RDEditAudio::Play]-baseline)*1152)/
 	  (double)edit_sample_rate),true,true));
   if(prev_cue_point!=RDEditAudio::Play) {
-    edit_cursor_edit[prev_cue_point]->clearFocus();
-    edit_cursor_edit[prev_cue_point]->deselect();
+    if(prev_cue_point!=edit_cue_point) {
+      edit_cursor_edit[prev_cue_point]->clearFocus();
+      edit_cursor_edit[prev_cue_point]->deselect();
+    }
   }
 
   switch(edit_cue_point) {

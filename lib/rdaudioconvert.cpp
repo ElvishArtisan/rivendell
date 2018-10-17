@@ -30,6 +30,13 @@
 #include <errno.h>
 #include <unistd.h>
 
+#include <rdapplication.h>
+#include <rdaudioconvert.h>
+#include <rdcart.h>
+#include <rdconf.h>
+#include <rd.h>
+#include <rdtempdirectory.h>
+
 #include <sndfile.h>
 #include <samplerate.h>
 #include <soundtouch/SoundTouch.h>
@@ -47,13 +54,6 @@
 #endif // HAVE_MP4_LIBS
 #include <id3/tag.h>
 #include <qfile.h>
-
-#include <rdapplication.h>
-#include <rdaudioconvert.h>
-#include <rdcart.h>
-#include <rdconf.h>
-#include <rd.h>
-#include <rdtempdirectory.h>
 
 #define STAGE2_XFER_SIZE 2048
 #define STAGE2_BUFFER_SIZE 49152
