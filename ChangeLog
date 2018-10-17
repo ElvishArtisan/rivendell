@@ -17815,3 +17815,6 @@
 	* Fixed a bug in rivwebcapi's 'RD_ListCartCuts()' and
 	'RD_ListCartsCuts()' functions that threw a segfault if the WebAPI
 	returned an error response.
+2018-10-17 Patrick Linstruth <patrick@deltecent.com>
+	* Modified rddbconfig(8) to query the user before modifying the
+	DB to the current schema after a DB restore.
