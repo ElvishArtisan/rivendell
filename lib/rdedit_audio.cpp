@@ -2161,7 +2161,7 @@ bool RDEditAudio::SaveMarkers()
     }
   }
 
-  if(edit_cursors[RDEditAudio::SegueStart]!=-1) {
+  if(edit_cursors[RDEditAudio::SegueStart]!=-1&&!edit_overlap_box->isChecked()) {
     len=end_point-start_point;
     start_point=(int)((double)(edit_cursors[RDEditAudio::SegueStart])*
 		      1152000.0/(double)edit_sample_rate);
