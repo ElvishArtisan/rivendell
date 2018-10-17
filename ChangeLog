@@ -17807,3 +17807,7 @@
 	* Fixed a bug in the 'RDIdValidator' and 'RDTextValidator' classes
 	that caused them to throw exceptions when processing certain
 	multi-byte UTF-8 characters.
+2018-10-16 Patrick Linstruth <patrick@deltecent.com>
+	* Disabled the 'More than half the audio will be faded...' warning
+	in the 'Edit Audio' dialog in rdlibrary(1) if the 'No Fade on
+	Segue Out' checkbox is ticked.
