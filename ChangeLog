@@ -17795,3 +17795,6 @@
 2018-10-16 Patrick Linstruth <patrick@deltecent.com>
 	* Fixed a bug that caused the build to break when M4A decoding
 	support was enabled.
+2018-10-16 Patrick Linstruth <patrick@deltecent.com>
+	* Updated instructions in the 'Audio Resources' dialog in rdadmin(1)
+	to reflect the transition to Systemd.
