@@ -362,6 +362,7 @@ int RD_ListCartsCuts(struct rd_cart *carts[],
    */
   memset(&xml_data,0,sizeof(xml_data));
   xml_data.cart_ptr=-1;
+  xml_data.cut_ptr=-1;
   parser=XML_ParserCreate(NULL);
   XML_SetUserData(parser,&xml_data);
   XML_SetElementHandler(parser,__ListCartsCutsElementStart,

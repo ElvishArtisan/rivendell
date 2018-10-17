@@ -17811,3 +17811,7 @@
 	* Disabled the 'More than half the audio will be faded...' warning
 	in the 'Edit Audio' dialog in rdlibrary(1) if the 'No Fade on
 	Segue Out' checkbox is ticked.
+2018-10-17 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rivwebcapi's 'RD_ListCartCuts()' and
+	'RD_ListCartsCuts()' functions that threw a segfault if the WebAPI
+	returned an error response.
