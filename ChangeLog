@@ -17803,3 +17803,7 @@
 	restarting the 'rivendell' service.
 	* Updated rdselect(8) to use the proper Systemd idiom for
 	restarting the 'rivendell' service.
+2018-10-16 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'RDIdValidator' and 'RDTextValidator' classes
+	that caused them to throw exceptions when processing certain
+	multi-byte UTF-8 characters.
