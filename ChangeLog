@@ -16718,3 +16718,5 @@
 	* Incremented the package version to 2.19.2int06.
 2018-10-17 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug that broke the build under Windows.
+2018-10-17 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.19.2int07.
