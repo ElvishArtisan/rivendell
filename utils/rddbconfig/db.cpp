@@ -63,6 +63,20 @@ Db::~Db()
   QSqlDatabase::removeDatabase("Rivendell");
 }
 
+void Db::clearDatabase(QString name)
+{
+  QSqlQuery *q;
+  QSqlDatabase db=QSqlDatabase::database("Rivendell");
+
+  if(db.isOpen()){
+    q=new QSqlQuery(QString().sprintf("drop database if exists `%s`",(const char *)name),db);
+    delete q;
+
+    q=new QSqlQuery(QString().sprintf("create database `%s`",(const char *)name),db);
+    delete q;
+  }
+}
+
 bool Db::isOpen()
 {
   QSqlDatabase db=QSqlDatabase::database("Rivendell");
