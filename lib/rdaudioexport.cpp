@@ -2,7 +2,7 @@
 //
 // Export an Audio File using the RdXport Web Service
 //
-//   (C) Copyright 2010,2016-2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -217,6 +217,7 @@ RDAudioExport::ErrorCode RDAudioExport::runExport(const QString &username,
 
   if(response_code==200) {
     *conv_err=RDAudioConvert::ErrorOk;
+    chmod(conv_dst_filename,conv_config->tuningExportedFileMode());
     return RDAudioExport::ErrorOk;
   }
 

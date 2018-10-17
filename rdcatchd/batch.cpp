@@ -336,6 +336,10 @@ void MainObject::RunUpload(CatchEvent *evt)
 				   catch_config->logXloadDebugData()))) {
   case RDUpload::ErrorOk:
     catch_connect->setExitCode(evt->id(),RDRecording::Ok,tr("Ok"));
+    if(QUrl(evt->resolvedUrl()).protocol().lower()=="file") {
+      chmod(QUrl(evt->resolvedUrl()).path(),
+	    catch_config->tuningExportedFileMode());
+    }
     qApp->processEvents();
     LogLine(RDConfig::LogInfo,QString().
 	    sprintf("finished upload of %s to %s, id=%d",

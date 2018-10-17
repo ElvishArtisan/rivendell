@@ -2,7 +2,7 @@
 //
 // A container class for a Rivendell Base Configuration
 //
-//   (C) Copyright 2002-2004,2016-2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,6 +25,8 @@
 #include <syslog.h>
 #include <unistd.h>
 #endif  // WIN32
+
+#include <sys/stat.h>
 
 #include <vector>
 
@@ -111,6 +113,7 @@ class RDConfig
   bool useRealtime();
   int realtimePriority();
   int transcodingDelay() const;
+  mode_t tuningExportedFileMode() const;
   QString tempDirectory();
   QString sasStation() const;
   int sasMatrix() const;
@@ -178,6 +181,7 @@ class RDConfig
   QString conf_cae_logfile;
   bool conf_enable_mixer_logging;
   bool conf_use_realtime;
+  mode_t conf_tuning_exported_file_mode;
   int conf_transcoding_delay;
   int conf_realtime_priority;
   QString conf_temp_directory;

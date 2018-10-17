@@ -20,7 +20,6 @@
 
 #ifndef WIN32
 #include <sys/types.h>
-#include <sys/stat.h>
 #include <pwd.h>
 #include <grp.h>
 #include <unistd.h>
@@ -473,6 +472,12 @@ int RDConfig::transcodingDelay() const
   return conf_transcoding_delay;
 }
 
+
+mode_t RDConfig::tuningExportedFileMode() const
+{
+  return conf_tuning_exported_file_mode;
+}
+
 // Don't use this method in application code, use RDTempDirectory()
 QString RDConfig::tempDirectory()
 {
@@ -640,6 +645,10 @@ void RDConfig::load()
   conf_use_realtime=profile->boolValue("Tuning","UseRealtime",false);
   conf_realtime_priority=profile->intValue("Tuning","RealtimePriority",9);
   conf_transcoding_delay=profile->intValue("Tuning","TranscodingDelay");
+  conf_tuning_exported_file_mode=profile->
+    stringValue("Tuning","ExportedFileMode",
+		QString().sprintf("%o",RD_TUNING_DEFAULT_EXPORTED_FILE_MODE)).
+    toInt(NULL,8);
   conf_temp_directory=profile->stringValue("Tuning","TempDirectory","");
   conf_sas_station=profile->stringValue("SASFilter","Station","");
   conf_sas_matrix=profile->intValue("SASFilter","Matrix",0);
@@ -750,6 +759,7 @@ void RDConfig::clear()
   conf_enable_mixer_logging=false;
   conf_use_realtime=false;
   conf_realtime_priority=9;
+  conf_tuning_exported_file_mode=RD_TUNING_DEFAULT_EXPORTED_FILE_MODE;
   conf_transcoding_delay=0;
   conf_temp_directory="";
   conf_sas_station="";

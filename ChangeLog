@@ -16711,3 +16711,6 @@
 	* Updated the copyright of the Operations Guide.
 	* Documented GPIO support for AudioScience cards in the
 	'Local Audio Adapter' section of the Operations Guide.
+2018-10-17 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'ExportedFileMode=' parameter to the '[Tuning]' section
+	of rd.conf(5).

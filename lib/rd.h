@@ -86,6 +86,11 @@
 #define RD_ALSA_SAMPLE_RATE_TOLERANCE 100
 
 /*
+ * Tuning Settings
+ */
+#define RD_TUNING_DEFAULT_EXPORTED_FILE_MODE 0664
+
+/*
  * Date Limits
  */
 #define RD_MAX_YEAR 8000
