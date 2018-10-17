@@ -329,6 +329,7 @@ void MainWidget::restoreData()
           (const char *)rd_config->mysqlDbname(),
           (const char *)filename));
     }
+    updateLabels();
     startDaemons();
   }
 }
