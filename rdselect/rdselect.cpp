@@ -271,7 +271,7 @@ bool MainWidget::Shutdown(int id)
 {
   RDConfig *conf=select_configs[id];
 
-  if(system("/etc/init.d/rivendell stop")!=0) {
+  if(system("systemctl stop rivendell")!=0) {
     return false;
   }
   system(QString("umount ")+conf->audioRoot());
@@ -300,7 +300,7 @@ bool MainWidget::Startup(int id)
   }
   unlink(RD_CONF_FILE);
   symlink(select_filenames[id],RD_CONF_FILE);
-  if(system("/etc/init.d/rivendell start")!=0) {
+  if(system("systemctl start rivendell")!=0) {
     return false;
   }
 
