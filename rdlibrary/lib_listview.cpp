@@ -20,7 +20,7 @@
 //
 
 #include <rdcartdrag.h>
-
+#include <rdlibrary.h>
 #include <rdlistviewitem.h>
 
 #include "globals.h"
@@ -50,10 +50,10 @@ void LibListView::contentsMouseMoveEvent(QMouseEvent *e)
     if(item==NULL) {
       return;
     }
-    if(item->text(21).isEmpty()) {  // Voice tracks cannot be dragged
+    if(item->text(MainWidget::OwnedBy).isEmpty()&&!item->parent()) {  // Voice tracks and cuts cannot be dragged
       RDCartDrag *d=
-	new RDCartDrag(item->text(1).toUInt(),item->text(4),item->textColor(2),
-		       this);
+        new RDCartDrag(item->text(MainWidget::Cart).left(6).toUInt(),item->text(MainWidget::Title),
+                       item->textColor(MainWidget::Group), this);
       d->dragCopy();
       emit clicked(item);
     }
