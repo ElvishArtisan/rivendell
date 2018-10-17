@@ -17643,6 +17643,7 @@
 	* Corrected an omission in the documentation of the
 	'Start Button' ['PB'] RML.
 <<<<<<< HEAD
+<<<<<<< HEAD
 2018-10-01 Fred Gleason <fredg@paravelsystems.com>
 	* Applied a PR from Patrick Linstruth <patrick@deltecent.com> that
 	fixed a regression where the 'Stop' button would fail to function
@@ -17818,3 +17819,7 @@
 2018-10-17 Patrick Linstruth <patrick@deltecent.com>
 	* Modified rddbconfig(8) to query the user before modifying the
 	DB to the current schema after a DB restore.
+2018-10-17 Patrick Linstruth <patrick@deltecent.com>
+	* Added talk (intro) column to cart list view in rdlibrary(1)
+	* Added ability to expand cart to view individual cuts in rdlibrary(1)
+	* Added play/stop buttons to cart list in rdlibrary(1)
