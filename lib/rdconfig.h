@@ -113,7 +113,9 @@ class RDConfig
   bool useRealtime();
   int realtimePriority();
   int transcodingDelay() const;
+#ifndef WIN32
   mode_t tuningExportedFileMode() const;
+#endif  // WIN32
   QString tempDirectory();
   QString sasStation() const;
   int sasMatrix() const;
@@ -177,11 +179,11 @@ class RDConfig
 #ifndef WIN32
   uid_t conf_uid;
   gid_t conf_gid;
+  mode_t conf_tuning_exported_file_mode;
 #endif
   QString conf_cae_logfile;
   bool conf_enable_mixer_logging;
   bool conf_use_realtime;
-  mode_t conf_tuning_exported_file_mode;
   int conf_transcoding_delay;
   int conf_realtime_priority;
   QString conf_temp_directory;

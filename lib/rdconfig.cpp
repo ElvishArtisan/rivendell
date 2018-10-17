@@ -2,7 +2,7 @@
 //
 // A container class for a Rivendell Base Configuration
 //
-//   (C) Copyright 2002-2004,2016-2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -473,10 +473,13 @@ int RDConfig::transcodingDelay() const
 }
 
 
+#ifndef WIN32
 mode_t RDConfig::tuningExportedFileMode() const
 {
   return conf_tuning_exported_file_mode;
 }
+#endif  // WIN32
+
 
 // Don't use this method in application code, use RDTempDirectory()
 QString RDConfig::tempDirectory()
@@ -645,10 +648,12 @@ void RDConfig::load()
   conf_use_realtime=profile->boolValue("Tuning","UseRealtime",false);
   conf_realtime_priority=profile->intValue("Tuning","RealtimePriority",9);
   conf_transcoding_delay=profile->intValue("Tuning","TranscodingDelay");
+#ifndef WIN32
   conf_tuning_exported_file_mode=profile->
     stringValue("Tuning","ExportedFileMode",
 		QString().sprintf("%o",RD_TUNING_DEFAULT_EXPORTED_FILE_MODE)).
     toInt(NULL,8);
+#endif  // WIN32
   conf_temp_directory=profile->stringValue("Tuning","TempDirectory","");
   conf_sas_station=profile->stringValue("SASFilter","Station","");
   conf_sas_matrix=profile->intValue("SASFilter","Matrix",0);
@@ -759,7 +764,9 @@ void RDConfig::clear()
   conf_enable_mixer_logging=false;
   conf_use_realtime=false;
   conf_realtime_priority=9;
+#ifndef WIN32
   conf_tuning_exported_file_mode=RD_TUNING_DEFAULT_EXPORTED_FILE_MODE;
+#endif  // WIN32
   conf_transcoding_delay=0;
   conf_temp_directory="";
   conf_sas_station="";
