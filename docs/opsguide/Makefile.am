@@ -275,7 +275,6 @@ OPSGUIDE_ICONS = chain.png\
 OPSGUIDE_DEPS = $(OPSGUIDE_IMAGES) \
                 $(OPSGUIDE_ICONS) \
                 filepath_wildcards.xml\
-                frontspiece.xml\
                 gpio_switcher_devices.xml\
                 gplv2.xml\
                 opsguide.xml\
