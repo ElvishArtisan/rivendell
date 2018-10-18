@@ -39,6 +39,20 @@ RDListViewItem::RDListViewItem(Q3ListView *parent)
   }
 }
 
+RDListViewItem::RDListViewItem(RDListViewItem *parent)
+  : Q3ListViewItem((Q3ListViewItem *)parent)
+{
+  item_line=-1;
+  item_id=-1;
+  list_parent=(RDListView *)listView();
+  item_background_color=
+    list_parent->palette().color(QPalette::Active,QColorGroup::Base);
+  for(int i=0;i<list_parent->columns();i++) {
+    item_text_color.
+      push_back(list_parent->palette().color(QPalette::Active,QColorGroup::Text));
+    item_text_weight.push_back(list_parent->font().weight());
+  }
+}
 
 int RDListViewItem::line() const
 {

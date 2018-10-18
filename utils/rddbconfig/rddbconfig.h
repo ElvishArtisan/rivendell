@@ -39,6 +39,7 @@
 class MainWidget : public QWidget
 {
   Q_OBJECT
+
  public:
   MainWidget(QWidget *parent=0);
   ~MainWidget();
@@ -53,12 +54,17 @@ class MainWidget : public QWidget
   void backupData();
   void restoreData();
   void closeData();
+  void mismatchData();
+  void updateLabels();
+
+ signals:
+  void dbMismatch();
+  void dbChanged();
 
  protected:
   void resizeEvent(QResizeEvent *e);
 
  private:
-  void updateLabels();
   RDConfig *rd_config;
   bool db_manage_daemons;
   bool db_daemon_start_needed;

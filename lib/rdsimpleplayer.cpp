@@ -36,6 +36,7 @@ RDSimplePlayer::RDSimplePlayer(RDCae *cae,RDRipc *ripc,int card,int port,
   play_end_cart=end_cart;
   play_stream=-1;
   play_cart=0;
+  play_cut="";
   play_is_playing=false;
 
   //
@@ -74,9 +75,34 @@ RDSimplePlayer::~RDSimplePlayer()
 }
 
 
+bool RDSimplePlayer::isPlaying()
+{
+  return play_is_playing;
+}
+
+
 void RDSimplePlayer::setCart(unsigned cart)
 {
   play_cart=cart;
+}
+
+
+void RDSimplePlayer::setCart(QString cart)
+{
+  QStringList cartcut=cart.split("_");
+  play_cart=cartcut[0].toUInt();
+  if(cartcut.size()>1) {
+    setCut(cart);
+  }
+  else {
+    play_cut="";
+  }
+}
+
+
+void RDSimplePlayer::setCut(QString cut)
+{
+  play_cut=cut;
 }
 
 
@@ -112,14 +138,14 @@ void RDSimplePlayer::play(int start_pos)
     stop();
   }
 
-  QString cut = "";
-  RDCart *cart=new RDCart(play_cart);
-  if(cart->selectCut(&cut)) {
-    if(cut.isEmpty()) {
-      return;
-    }
+  if(play_cut.isEmpty()) {
+    RDCart *cart=new RDCart(play_cart);
+    cart->selectCut(&play_cut);
+    delete cart;
+  }
+  if(!play_cut.isEmpty()) {
     play_cae->
-      loadPlay(play_card,cut,&play_stream,&handle);
+      loadPlay(play_card,play_cut,&play_stream,&handle);
 
     if(play_stream<0) {
       return;
@@ -130,7 +156,7 @@ void RDSimplePlayer::play(int start_pos)
       "END_POINT,"+    // 01
       "PLAY_GAIN "+    // 02
       "from CUTS where "+
-      "CUT_NAME=\""+RDEscapeString(cut)+"\"";
+      "CUT_NAME=\""+RDEscapeString(play_cut)+"\"";
     q=new RDSqlQuery(sql);
     if(q->first()) {
       play_cut_gain=q->value(2).toInt(); 
@@ -147,7 +173,6 @@ void RDSimplePlayer::play(int start_pos)
     }
     delete q;
   }
-  delete cart;
 }
 
 

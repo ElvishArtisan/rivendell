@@ -357,6 +357,7 @@ int RD_ListCartCuts(struct rd_cart *carts[],
    * Setup the CURL call
    */
   memset(&xml_data,0,sizeof(xml_data));
+  xml_data.cut_ptr=-1;
   parser=XML_ParserCreate(NULL);
   XML_SetUserData(parser,&xml_data);
   XML_SetElementHandler(parser,__ListCartCutsElementStart,

@@ -47,6 +47,7 @@
 #include <rdaudioexport.h>
 #include <rdupload.h>
 
+#include "rdlibrary.h"
 #include "cdripper.h"
 #include "edit_cart.h"
 #include "edit_notes.h"
@@ -937,9 +938,9 @@ void EditCart::okData()
     while(it->current()) {
       if(it->current()->isSelected()) {  
         RDListViewItem *item=(RDListViewItem *)it->current();
-        if(item->text(21).isEmpty()) {
+        if(item->text(MainWidget::OwnedBy).isEmpty()) {
  
-          rdcart_cart_medit=new RDCart(item->text(1).toUInt());
+          rdcart_cart_medit=new RDCart(item->text(MainWidget::Cart).toUInt());
 	  
           if(!rdcart_group_box->currentText().stripWhiteSpace().isEmpty()) {
 	    rdcart_cart_medit->setGroupName(rdcart_group_box->currentText());

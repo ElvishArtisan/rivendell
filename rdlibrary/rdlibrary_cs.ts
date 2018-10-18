@@ -1478,6 +1478,10 @@ Přesto smazat?</translation>
         <source>Owned By</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Talk</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RecordCut</name>

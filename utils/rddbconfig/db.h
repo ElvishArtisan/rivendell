@@ -31,6 +31,7 @@ class Db
    Db(QString *err_str,RDConfig *config);
    ~Db();
    bool isOpen();
+   void clearDatabase(QString name);
    unsigned schema();
 
   private:
