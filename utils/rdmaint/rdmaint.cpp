@@ -47,8 +47,6 @@
 MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
-  QString sql;
-  RDSqlQuery *q;
   QString err_msg;
 
   //
@@ -92,23 +90,22 @@ MainObject::MainObject(QObject *parent)
   }
 
   //
-  // Get User
+  // RIPC Connection
   //
-  sql="select LOGIN_NAME from USERS where ADMIN_CONFIG_PRIV=\"Y\"";
-  q=new RDSqlQuery(sql);
-  if(!q->first()) {
-    fprintf(stderr,"unable to find valid user\n");
-    exit(256);
-  }
-  delete q;
+  connect(rda,SIGNAL(userChanged()),this,SLOT(userData()));
+  rda->ripc()->
+    connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
+}
 
+
+void MainObject::userData()
+{
   if(maint_system) {
     RunSystemMaintenance();
   }
   else {
     RunLocalMaintenance();
   }
-
   exit(0);
 }
 
@@ -358,7 +355,6 @@ void MainObject::RehashCuts()
   sql="select CUT_NAME from CUTS where SHA1_HASH is null limit 100";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    printf("CUT: %s\n",(const char *)q->value(0).toString());
     if((err=RDRehash::rehash(rda->station(),rda->user(),rda->config(),
 			     RDCut::cartNumber(q->value(0).toString()),
 			     RDCut::cutNumber(q->value(0).toString())))!=RDRehash::ErrorOk) {
@@ -369,9 +365,11 @@ void MainObject::RehashCuts()
 					       (const char *)RDRehash::errorText(err)));
       
     }
-    if(maint_verbose) {
-      fprintf(stderr,"rehashed cut \"%s\"\n",
-	      (const char *)q->value(0).toString());
+    else {
+      if(maint_verbose) {
+	fprintf(stderr,"rehashed cut \"%s\"\n",
+		(const char *)q->value(0).toString());
+      }
     }
     sleep(1);
   }

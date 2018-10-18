@@ -27,8 +27,12 @@
 
 class MainObject : public QObject
 {
+  Q_OBJECT;
  public:
   MainObject(QObject *parent=0);
+
+ private slots:
+  void userData();
 
  private:
   void RunSystemMaintenance();

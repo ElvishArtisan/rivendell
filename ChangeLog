@@ -17833,3 +17833,5 @@
 	screen of rdlibrary(1).
 	* Changed the minimum size of the main screen of rdlibrary to
 	850x600.
+2018-10-18 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdmaint(8) that broke cut rehashing.
