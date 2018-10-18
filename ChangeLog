@@ -17828,3 +17828,8 @@
 2018-10-17 Patrick Linstruth <patrick@deltecent.com>
 	* Fixed bug in rdservice(8) where local maintence process was started
 	with RDSERVICE_SYSTEMMAINT_ID instead of RDSERVICE_LOCALMAINT_ID.
+2018-10-18 Fred Gleason <fredg@paravelsystems.com>
+	* Tweaked the position of buttons on the bottom row of the main
+	screen of rdlibrary(1).
+	* Changed the minimum size of the main screen of rdlibrary to
+	850x600.

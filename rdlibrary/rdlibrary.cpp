@@ -521,7 +521,7 @@ MainWidget::MainWidget(QWidget *parent)
 
 QSize MainWidget::sizeHint() const
 {
-  return QSize(800,600);
+  return QSize(850,600);
 }
 
 
@@ -1115,18 +1115,18 @@ void MainWidget::resizeEvent(QResizeEvent *e)
     lib_add_button->setGeometry(10,e->size().height()-60,80,50);
     lib_edit_button->setGeometry(100,e->size().height()-60,80,50);
     lib_delete_button->setGeometry(190,e->size().height()-60,80,50);
-    disk_gauge->setGeometry(475,e->size().height()-55,
-			    e->size().width()-775,
-			    disk_gauge->sizeHint().height());
-    lib_rip_button->
-      setGeometry(e->size().width()-290,e->size().height()-60,80,50);
-    lib_reports_button->
-      setGeometry(e->size().width()-200,e->size().height()-60,80,50);
-    lib_close_button->setGeometry(e->size().width()-90,e->size().height()-60,
-				  80,50);
     lib_macro_button->setGeometry(290,e->size().height()-60,80,50);
     lib_player->playButton()->setGeometry(290,e->size().height()-60,80,50);
     lib_player->stopButton()->setGeometry(380,e->size().height()-60,80,50);
+    disk_gauge->setGeometry(475,e->size().height()-55,
+			    e->size().width()-765,
+			    disk_gauge->sizeHint().height());
+    lib_rip_button->
+      setGeometry(e->size().width()-280,e->size().height()-60,80,50);
+    lib_reports_button->
+      setGeometry(e->size().width()-190,e->size().height()-60,80,50);
+    lib_close_button->setGeometry(e->size().width()-90,e->size().height()-60,
+				  80,50);
   }
 }
 
