@@ -85,6 +85,7 @@ class MainWidget : public QWidget
   void addData();
   void editData();
   void deleteData();
+  void macroData();
   void ripData();
   void reportsData();
   void cartOnItemData(Q3ListViewItem *item);
@@ -138,6 +139,8 @@ class MainWidget : public QWidget
   QPushButton *lib_rip_button;
   QPushButton *lib_reports_button;
   QPushButton *lib_close_button;
+  QPushButton *lib_macro_button;
+  RDMacroEvent *lib_macro_events;
   RDSimplePlayer *lib_player;
   int lib_output_card;
   int lib_output_port;
