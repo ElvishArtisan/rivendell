@@ -1459,6 +1459,11 @@ verwendet. Trotzdem löschen?</translation>
         <source>Talk</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Run
+&amp;Macro</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RecordCut</name>
