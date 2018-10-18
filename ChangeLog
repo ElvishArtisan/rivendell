@@ -17823,3 +17823,5 @@
 	* Added talk (intro) column to cart list view in rdlibrary(1)
 	* Added ability to expand cart to view individual cuts in rdlibrary(1)
 	* Added play/stop buttons to cart list in rdlibrary(1)
+2018-10-17 Patrick Linstruth <patrick@deltecent.com>
+	* Added ability to run macros from cart list view in rdlibrary(1)
