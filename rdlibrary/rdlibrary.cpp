@@ -428,6 +428,16 @@ MainWidget::MainWidget(QWidget *parent)
   connect(lib_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
 
   //
+  // Run Macro Button
+  //
+  lib_macro_button=new QPushButton(this);
+  lib_macro_button->setFont(button_font);
+  lib_macro_button->setText(tr("Run\n&Macro"));
+  lib_macro_button->setEnabled(false);
+  lib_macro_button->setVisible(false);
+  connect(lib_macro_button,SIGNAL(clicked()),this,SLOT(macroData()));
+
+  //
   // Disk Gauge
   //
   disk_gauge=new DiskGauge(rda->system()->sampleRate(),
@@ -499,6 +509,11 @@ MainWidget::MainWidget(QWidget *parent)
   }
 
   lib_resize=true;
+
+  //
+  // Create RDMacroEvent for running macros
+  //
+  lib_macro_events=new RDMacroEvent(rda->station()->address(),rda->ripc(),this);
 
   LoadGeometry();
 }
@@ -727,6 +742,27 @@ void MainWidget::editData()
 }
 
 
+void MainWidget::macroData()
+{
+  Q3ListViewItemIterator *it;
+  Q3ListViewItem *item;
+
+  it=new Q3ListViewItemIterator(lib_cart_list);
+  while(it->current()) {
+    if (it->current()->isSelected()) {
+      item=it->current();
+      RDCart *rdcart=new RDCart(item->text(Cart).toUInt());
+      lib_macro_events->clear();
+      lib_macro_events->load(rdcart->macros());
+      lib_macro_events->exec();
+      delete rdcart;
+      break;
+    }
+    ++(*it);
+  }
+  delete it;
+}
+
 void MainWidget::deleteData()
 {
   QString filename;
@@ -900,17 +936,37 @@ void MainWidget::cartClickedData()
   }
 
   if(play_count==1) {
-    lib_player->setCart(item->text(Cart));
-    lib_player->playButton()->setEnabled(true);
-    lib_player->stopButton()->setEnabled(true);
-    if(lib_player->isPlaying()) {
-      lib_player->play();
+    RDCart *rdcart=new RDCart(item->text(Cart).toUInt());
+    if(rdcart->type()==RDCart::Macro) {
+      lib_macro_button->setEnabled(true);
+      lib_macro_button->setVisible(true);
+      lib_player->playButton()->setEnabled(false);
+      lib_player->stopButton()->setEnabled(false);
+      lib_player->playButton()->setVisible(false);
+      lib_player->stopButton()->setVisible(false);
     }
+    else {
+      lib_player->setCart(item->text(Cart));
+      lib_player->playButton()->setEnabled(true);
+      lib_player->stopButton()->setEnabled(true);
+      lib_player->playButton()->setVisible(true);
+      lib_player->stopButton()->setVisible(true);
+      lib_macro_button->setEnabled(false);
+      lib_macro_button->setVisible(false);
+      if(lib_player->isPlaying()) {
+        lib_player->play();
+      }
+    }
+    delete rdcart;
   }
   else {
     lib_player->stop();
     lib_player->playButton()->setEnabled(false);
     lib_player->stopButton()->setEnabled(false);
+    lib_player->playButton()->setVisible(true);
+    lib_player->stopButton()->setVisible(true);
+    lib_macro_button->setEnabled(false);
+    lib_macro_button->setVisible(false);
   }
 
   if(sel_count) {
@@ -1068,6 +1124,7 @@ void MainWidget::resizeEvent(QResizeEvent *e)
       setGeometry(e->size().width()-200,e->size().height()-60,80,50);
     lib_close_button->setGeometry(e->size().width()-90,e->size().height()-60,
 				  80,50);
+    lib_macro_button->setGeometry(290,e->size().height()-60,80,50);
     lib_player->playButton()->setGeometry(290,e->size().height()-60,80,50);
     lib_player->stopButton()->setGeometry(380,e->size().height()-60,80,50);
   }
