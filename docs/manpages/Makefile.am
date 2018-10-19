@@ -66,7 +66,7 @@ EXTRA_DIST = rdclilogedit.1\
              rdrender.1\
              rdrender.xml\
              rmlsend.1\
-             rmlsend.xm\
+             rmlsend.xml\
              rdservice.8\
              rdservice.xml
 
