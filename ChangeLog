@@ -17835,3 +17835,6 @@
 	850x600.
 2018-10-18 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdmaint(8) that broke cut rehashing.
+2018-10-19 Fred Gleason <fredg@paravelsystems.com>
+	* Added code in the %post and %preun rules in 'rivendell.spec.in'
+	to enable and disable the 'rivendell' service.

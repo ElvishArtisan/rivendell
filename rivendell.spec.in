@@ -177,6 +177,7 @@ if test ! -e /etc/asound.conf ; then
 fi
 @LOCAL_PREFIX@/sbin/rddbmgr --modify
 /bin/systemctl restart rivendell
+/bin/systemctl enable rivendell
 if test "@DISTRO@" = "suse" ; then
   /etc/init.d/apache2 restart
   insserv -d -f /etc/init.d/apache2 /etc/init.d/rivendell $MYSQL_INIT
@@ -205,6 +206,7 @@ if test "$1" = "0" ; then
   fi
   if test "@DISTRO@" = "redhat" ; then
     /bin/systemctl disable rivendell
+    /bin/systemctl stop rivendell
   fi
 fi
 exit 0
