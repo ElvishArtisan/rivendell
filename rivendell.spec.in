@@ -108,10 +108,6 @@ rm -f $RPM_BUILD_ROOT/@LOCAL_PREFIX@/@RD_LIB_PATH@/libqmysqlutf*
 mkdir $RPM_BUILD_ROOT/.qt
 touch $RPM_BUILD_ROOT/.qt/qt
 rm -rf $RPM_BUILD_ROOT/@libexecdir@/logos
-if test "@WIN32_SOURCE@" ; then
-  mkdir -p $RPM_BUILD_ROOT/var/win32
-  cp @WIN32_SOURCE@ $RPM_BUILD_ROOT/var/win32/
-fi
 mkdir -p $RPM_BUILD_ROOT/@DOC_PATH@/logos
 cp icons/webget_logo.png $RPM_BUILD_ROOT/@DOC_PATH@/logos/
 cp AUTHORS $RPM_BUILD_ROOT/@DOC_PATH@/
@@ -365,7 +361,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(6755,root,root) @libexecdir@/rdxport.cgi
 %attr(6755,root,root) @libexecdir@/webget.cgi
 @sysconfdir@/rd-bin.conf
-@WIN32_PATH@
 /etc/security/console.apps/rdalsaconfig-root
 /etc/pam.d/rdalsaconfig-root
 /etc/security/console.apps/rddbconfig-root

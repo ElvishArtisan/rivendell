@@ -2,7 +2,7 @@
 #
 # The lib/ QMake project file for Rivendell.
 #
-# (C) Copyright 2003-2016 Fred Gleason <fredg@paravelsystems.com>
+# (C) Copyright 2003-2018 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as
@@ -17,16 +17,12 @@
 #   License along with this program; if not, write to the Free Software
 #   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-TEMPLATE = lib
-
-win32 {
-  DEFINES += WIN32
-  DEFINES += VERSION=\"$$[VERSION]\"
-  DEFINES += PACKAGE=\"rivendell\" 
-  DEFINES += PACKAGE_VERSION=\"$$[VERSION]\" 
-  DEFINES += PACKAGE_NAME=\"rivendell\"
-  DEFINES += PACKAGE_BUGREPORT=\"fredg@paravelsystems.com\"
-}
+#
+# Maintainer's Note
+#
+# We don't use Qt's 'Qmake' build system, so the entries in here are
+# purely for the sake of i18n support.
+#
 
 SOURCES += export_bmiemr.cpp
 SOURCES += export_cutlog.cpp
@@ -40,47 +36,76 @@ SOURCES += export_spincount.cpp
 SOURCES += export_soundex.cpp
 SOURCES += export_technical.cpp
 SOURCES += export_textlog.cpp
+SOURCES += html_gpl2.cpp
 SOURCES += rdadd_log.cpp
+SOURCES += rdadd_cart.cpp
+SOURCES += rdairplay_conf.cpp
 SOURCES += rdapplication.cpp
+SOURCES += rdaudio_exists.cpp
+SOURCES += rdaudio_port.cpp
 SOURCES += rdaudiosettings.cpp
 SOURCES += rdaudiosettings_dialog.cpp
 SOURCES += rdbusybar.cpp
 SOURCES += rdbusydialog.cpp
+SOURCES += rdbutton_dialog.cpp
+SOURCES += rdbutton_panel.cpp
+SOURCES += rdcae.cpp
+SOURCES += rdcardselector.cpp
 SOURCES += rdcart.cpp
 SOURCES += rdcart_dialog.cpp
 SOURCES += rdcart_search_text.cpp
 SOURCES += rdcartdrag.cpp
+SOURCES += rdcatch_connect.cpp
+SOURCES += rdcddblookup.cpp
+SOURCES += rdcdplayer.cpp
+SOURCES += rdcddbrecord.cpp
+SOURCES += rdcheck_version.cpp
 SOURCES += rdclock.cpp
+SOURCES += rdcmd_cache.cpp
 SOURCES += rdcmd_switch.cpp
 SOURCES += rdcombobox.cpp
 SOURCES += rdconf.cpp
 SOURCES += rdconfig.cpp
+SOURCES += rdcueedit.cpp
+SOURCES += rdcueeditdialog.cpp
 SOURCES += rdcut.cpp
+SOURCES += rdcut_path.cpp
+SOURCES += rdcut_dialog.cpp
 SOURCES += rddatedialog.cpp
 SOURCES += rddatedecode.cpp
 SOURCES += rddatepicker.cpp
 SOURCES += rddb.cpp
 SOURCES += rddbheartbeat.cpp
 SOURCES += rddebug.cpp
+SOURCES += rddeck.cpp
 SOURCES += rddropbox.cpp
+SOURCES += rdedit_audio.cpp
+SOURCES += rdedit_panel_name.cpp
 SOURCES += rdemptycart.cpp
 SOURCES += rdescape_string.cpp
 SOURCES += rdevent.cpp
 SOURCES += rdevent_line.cpp
 SOURCES += rdeventimportlist.cpp
 SOURCES += rdexception_dialog.cpp
+SOURCES += rdexport_settings_dialog.cpp
 SOURCES += rdget_ath.cpp
 SOURCES += rdgetpasswd.cpp
+SOURCES += rdgpioselector.cpp
+SOURCES += rdgrid.cpp
 SOURCES += rdgroup.cpp
 SOURCES += rdgroup_list.cpp
+SOURCES += rdhash.cpp
 SOURCES += rdidvalidator.cpp
+SOURCES += rdimport_audio.cpp
 SOURCES += rdintegeredit.cpp
 SOURCES += rdintegerdialog.cpp
+SOURCES += rdkernelgpio.cpp
 SOURCES += rdlabel.cpp
 SOURCES += rdlibrary_conf.cpp
 SOURCES += rdlicense.cpp
 SOURCES += rdlineedit.cpp
 SOURCES += rdlist_logs.cpp
+SOURCES += rdlist_groups.cpp
 SOURCES += rdlistselector.cpp
 SOURCES += rdlistview.cpp
 SOURCES += rdlistviewitem.cpp
@@ -90,23 +115,38 @@ SOURCES += rdlog_line.cpp
 SOURCES += rdlogedit_conf.cpp
 SOURCES += rdlogfilter.cpp
 SOURCES += rdloglock.cpp
+SOURCES += rdlogplay.cpp
 SOURCES += rdmacro.cpp
 SOURCES += rdmacro_event.cpp
+SOURCES += rdmarker_button.cpp
+SOURCES += rdmarker_edit.cpp
+SOURCES += rdmatrix.cpp
+SOURCES += rdmonitor_config.cpp
 SOURCES += rdnotification.cpp
 SOURCES += rdoneshot.cpp
+SOURCES += rdpanel_button.cpp
+SOURCES += rdpasswd.cpp
+SOURCES += rdplay_deck.cpp
 SOURCES += rdplaymeter.cpp
 SOURCES += rdprofile.cpp
 SOURCES += rdprofileline.cpp
 SOURCES += rdprofilesection.cpp
 SOURCES += rdpushbutton.cpp
+SOURCES += rdrecording.cpp
+SOURCES += rdrehash.cpp
+SOURCES += rdrenderer.cpp
 SOURCES += rdreport.cpp
 SOURCES += rdripc.cpp
+SOURCES += rdrlmhost.cpp
 SOURCES += rdschedcode.cpp
 SOURCES += rdsegmeter.cpp
 SOURCES += rdsettings.cpp
+SOURCES += rdsimpleplayer.cpp
 SOURCES += rdslider.cpp
 SOURCES += rdsocket.cpp
+SOURCES += rdsound_panel.cpp
 SOURCES += rdstation.cpp
+SOURCES += rdstatus.cpp
 SOURCES += rdstereometer.cpp
 SOURCES += rdsvc.cpp
 SOURCES += rdsystem.cpp
@@ -116,87 +156,53 @@ SOURCES += rdtextvalidator.cpp
 SOURCES += rdtimeedit.cpp
 SOURCES += rdtimeengine.cpp
 SOURCES += rdtransportbutton.cpp
+SOURCES += rdtty.cpp
+SOURCES += rdttydevice.cpp
+SOURCES += rdttyout.cpp
 SOURCES += rduser.cpp
+SOURCES += rdversion.cpp
 SOURCES += rdwavedata.cpp
+SOURCES += rdwavefile.cpp
 SOURCES += rdweb.cpp
 SOURCES += schedcartlist.cpp
 SOURCES += schedruleslist.cpp
-win32 {
-  SOURCES += html_gpl2_win32.cpp
-  SOURCES += rdttydevice_win32.cpp
-  SOURCES += rdwin32.cpp
-}
-x11 {
-  SOURCES += html_gpl2.cpp
-  SOURCES += rdadd_cart.cpp
-  SOURCES += rdairplay_conf.cpp
-  SOURCES += rdaudio_exists.cpp
-  SOURCES += rdaudio_port.cpp
-  SOURCES += rdbutton_dialog.cpp
-  SOURCES += rdbutton_panel.cpp
-  SOURCES += rdcae.cpp
-  SOURCES += rdcardselector.cpp
-  SOURCES += rdcatch_connect.cpp
-  SOURCES += rdcddblookup.cpp
-  SOURCES += rdcdplayer.cpp
-  SOURCES += rdcddbrecord.cpp
-  SOURCES += rdcheck_version.cpp
-  SOURCES += rdcmd_cache.cpp
-  SOURCES += rdcueedit.cpp
-  SOURCES += rdcueeditdialog.cpp
-  SOURCES += rdcut_dialog.cpp
-  SOURCES += rdcut_path.cpp
-  SOURCES += rddeck.cpp
-  SOURCES += rdedit_audio.cpp
-  SOURCES += rdedit_panel_name.cpp
-  SOURCES += rdexport_settings_dialog.cpp
-  SOURCES += rdgpioselector.cpp
-  SOURCES += rdgrid.cpp
-  SOURCES += rdhash.cpp
-  SOURCES += rdimport_audio.cpp
-  SOURCES += rdkernelgpio.cpp
-  SOURCES += rdlist_groups.cpp
-  SOURCES += rdlogplay.cpp
-  SOURCES += rdmarker_button.cpp
-  SOURCES += rdmarker_edit.cpp
-  SOURCES += rdmatrix.cpp
-  SOURCES += rdmonitor_config.cpp
-  SOURCES += rdpanel_button.cpp
-  SOURCES += rdpasswd.cpp
-  SOURCES += rdplay_deck.cpp
-  SOURCES += rdrecording.cpp
-  SOURCES += rdrehash.cpp
-  SOURCES += rdrenderer.cpp
-  SOURCES += rdrlmhost.cpp
-  SOURCES += rdsimpleplayer.cpp
-  SOURCES += rdsound_panel.cpp
-  SOURCES += rdstatus.cpp
-  SOURCES += rdtimeedit.cpp
-  SOURCES += rdtty.cpp
-  SOURCES += rdttydevice.cpp
-  SOURCES += rdttyout.cpp
-  SOURCES += rdversion.cpp
-  SOURCES += rdwavefile.cpp
-}
 
 HEADERS += schedcartlist.h
 HEADERS += schedruleslist.h
+HEADERS += rd.h
+HEADERS += rdadd_cart.h
 HEADERS += rdadd_log.h
+HEADERS += rdairplay_conf.h
 HEADERS += rdapplication.h
+HEADERS += rdaudio_exists.h
+HEADERS += rdaudio_port.h
 HEADERS += rdaudiosettings.h
 HEADERS += rdaudiosettings_dialog.h
 HEADERS += rdbusybar.h
 HEADERS += rdbusydialog.h
+HEADERS += rdbutton_dialog.h
+HEADERS += rdbutton_panel.h
 HEADERS += rdcae.h
+HEADERS += rdcardselector.h
 HEADERS += rdcart.h
 HEADERS += rdcart_dialog.h
 HEADERS += rdcart_search_text.h
 HEADERS += rdcartdrag.h
+HEADERS += rdcatch_connect.h
+HEADERS += rdcddblookup.h
+HEADERS += rdcdplayer.h
+HEADERS += rdcddbrecord.h
+HEADERS += rdcheck_version.h
 HEADERS += rdclock.h
+HEADERS += rdcmd_cache.h
 HEADERS += rdcmd_switch.h
 HEADERS += rdcombobox.h
 HEADERS += rdconf.h
 HEADERS += rdconfig.h
+HEADERS += rdcueedit.h
+HEADERS += rdcueeditdialog.h
+HEADERS += rdcut_dialog.h
+HEADERS += rdcut_path.h
 HEADERS += rdcut.h
 HEADERS += rddatedecode.h
 HEADERS += rddatedialog.h
@@ -204,25 +210,35 @@ HEADERS += rddatepicker.h
 HEADERS += rddb.h
 HEADERS += rddbheartbeat.h
 HEADERS += rddebug.h
+HEADERS += rddeck.h
 HEADERS += rddropbox.h
+HEADERS += rdedit_audio.h
+HEADERS += rdedit_panel_name.h
 HEADERS += rdemptycart.h
 HEADERS += rdescape_string.h
 HEADERS += rdevent.h
 HEADERS += rdevent_line.h
 HEADERS += rdeventimportlist.h
 HEADERS += rdexception_dialog.h
+HEADERS += rdexport_settings_dialog.h
 HEADERS += rdget_ath.h
 HEADERS += rdgetpasswd.h
+HEADERS += rdgpioselector.h
+HEADERS += rdgrid.h
+HEADERS += rdgpio.h
 HEADERS += rdgroup_list.h
 HEADERS += rdgroup.h
-HEADERS += rd.h
+HEADERS += rdhash.h
 HEADERS += rdidvalidator.h
+HEADERS += rdimport_audio.h
 HEADERS += rdintegeredit.h
 HEADERS += rdintegerdialog.h
+HEADERS += rdkernelgpio.h
 HEADERS += rdlabel.h
 HEADERS += rdlibrary_conf.h
 HEADERS += rdlicense.h
 HEADERS += rdlineedit.h
+HEADERS += rdlist_groups.h
 HEADERS += rdlist_logs.h
 HEADERS += rdlistselector.h
 HEADERS += rdlistview.h
@@ -233,23 +249,39 @@ HEADERS += rdlog_line.h
 HEADERS += rdlogedit_conf.h
 HEADERS += rdlogfilter.h
 HEADERS += rdloglock.h
+HEADERS += rdlogplay.h
 HEADERS += rdmacro.h
 HEADERS += rdmacro_event.h
+HEADERS += rdmarker_button.h
+HEADERS += rdmarker_edit.h
+HEADERS += rdmatrix.h
+HEADERS += rdmonitor_config.h
 HEADERS += rdnotification.h
 HEADERS += rdoneshot.h
+HEADERS += rdpanel_button.h
+HEADERS += rdpaths.h
+HEADERS += rdpasswd.h
+HEADERS += rdplay_deck.h
 HEADERS += rdplaymeter.h
 HEADERS += rdprofile.h
 HEADERS += rdprofileline.h
 HEADERS += rdprofilesection.h
 HEADERS += rdpushbutton.h
+HEADERS += rdrecording.h
+HEADERS += rdrehash.h
+HEADERS += rdrenderer.h
 HEADERS += rdreport.h
 HEADERS += rdripc.h
+HEADERS += rdrlmhost.h
 HEADERS += rdschedcode.h
 HEADERS += rdsegmeter.h
 HEADERS += rdsettings.h
+HEADERS += rdsimpleplayer.h
 HEADERS += rdslider.h
 HEADERS += rdsocket.h
+HEADERS += rdsound_panel.h
 HEADERS += rdstation.h
+HEADERS += rdstatus.h
 HEADERS += rdstereometer.h
 HEADERS += rdsvc.h
 HEADERS += rdsystem.h
@@ -257,71 +289,16 @@ HEADERS += rdtempdirectory.h
 HEADERS += rdtextfile.h
 HEADERS += rdtextvalidator.h
 HEADERS += rdtimeedit.h
+HEADERS += rdtimeedit.h
 HEADERS += rdtimeengine.h
 HEADERS += rdtransportbutton.h
+HEADERS += rdtty.h
 HEADERS += rdttydevice.h
+HEADERS += rdttyout.h
 HEADERS += rduser.h
+HEADERS += rdversion.h
 HEADERS += rdwavedata.h
 HEADERS += rdweb.h
-
-win32 {
-  HEADERS += rdwin32.h
-}
-x11 {
-  HEADERS += rdadd_cart.h
-  HEADERS += rdairplay_conf.h
-  HEADERS += rdaudio_exists.h
-  HEADERS += rdaudio_port.h
-  HEADERS += rdbutton_dialog.h
-  HEADERS += rdbutton_panel.h
-  HEADERS += rdcae.h
-  HEADERS += rdcardselector.h
-  HEADERS += rdcatch_connect.h
-  HEADERS += rdcddblookup.h
-  HEADERS += rdcdplayer.h
-  HEADERS += rdcddbrecord.h
-  HEADERS += rdcheck_version.h
-  HEADERS += rdcmd_cache.h
-  HEADERS += rdcueedit.h
-  HEADERS += rdcueeditdialog.h
-  HEADERS += rdcut_dialog.h
-  HEADERS += rdcut_path.h
-  HEADERS += rddeck.h
-  HEADERS += rdedit_audio.h
-  HEADERS += rdedit_panel_name.h
-  HEADERS += rdexport_settings_dialog.h
-  HEADERS += rdgpioselector.h
-  HEADERS += rdgrid.h
-  HEADERS += rdgpio.h
-  HEADERS += rdhash.h
-  HEADERS += rdimport_audio.h
-  HEADERS += rdkernelgpio.h
-  HEADERS += rdlist_groups.h
-  HEADERS += rdlogplay.h
-  HEADERS += rdmarker_button.h
-  HEADERS += rdmarker_edit.h
-  HEADERS += rdmatrix.h
-  HEADERS += rdmonitor_config.h
-  HEADERS += rdpanel_button.h
-  HEADERS += rdpaths.h
-  HEADERS += rdpasswd.h
-  HEADERS += rdplay_deck.h
-  HEADERS += rdrecording.h
-  HEADERS += rdrehash.h
-  HEADERS += rdrenderer.h
-  HEADERS += rdrlmhost.h
-  HEADERS += rdsimpleplayer.h
-  HEADERS += rdsound_panel.h
-  HEADERS += rdstatus.h
-  HEADERS += rdtimeedit.h
-  HEADERS += rdtty.h
-  HEADERS += rdttyout.h
-  HEADERS += rdversion.h
-}
-
-INCLUDEPATH += ..\..\libradio\radio
-
-CONFIG += qt staticlib
 
 TRANSLATIONS += librd_cs.ts
 TRANSLATIONS += librd_de.ts

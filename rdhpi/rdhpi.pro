@@ -17,36 +17,26 @@
 #   License along with this program; if not, write to the Free Software
 #   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-TEMPLATE = lib
+#
+# Maintainer's Note
+#
+# We don't use Qt's 'Qmake' build system, so the entries in here are
+# purely for the sake of i18n support.
+#
 
-win32 {
-  DEFINES += WIN32
-  DEFINES += VERSION=\"$$[VERSION]\"
-  DEFINES += PACKAGE=\"rivendell\" 
-  DEFINES += PACKAGE_VERSION=\"$$[VERSION]\" 
-  DEFINES += PACKAGE_NAME=\"rivendell\"
-  DEFINES += PACKAGE_BUGREPORT=\"fredg@paravelsystems.com\"
-}
+SOURCES += rdhpicardselector.cpp
+SOURCES += rdhpiinformation.cpp
+SOURCES += rdhpiplaystream.cpp
+SOURCES += rdhpirecordstream.cpp
+SOURCES += rdhpisoundcard.cpp
+SOURCES += rdhpisoundselector.cpp
 
-x11 {
-  SOURCES += rdhpicardselector.cpp
-  SOURCES += rdhpiinformation.cpp
-  SOURCES += rdhpiplaystream.cpp
-  SOURCES += rdhpirecordstream.cpp
-  SOURCES += rdhpisoundcard.cpp
-  SOURCES += rdhpisoundselector.cpp
-}
-
-x11 {
-  HEADERS += rdhpicardselector.h
-  HEADERS += rdhpiinformation.h
-  HEADERS += rdhpiplaystream.h
-  HEADERS += rdhpirecordstream.h
-  HEADERS += rdhpisoundcard.h
-  HEADERS += rdhpisoundselector.h
-}
-
-CONFIG += qt staticlib
+HEADERS += rdhpicardselector.h
+HEADERS += rdhpiinformation.h
+HEADERS += rdhpiplaystream.h
+HEADERS += rdhpirecordstream.h
+HEADERS += rdhpisoundcard.h
+HEADERS += rdhpisoundselector.h
 
 TRANSLATIONS += rdhpi_cs.ts
 TRANSLATIONS += rdhpi_de.ts
