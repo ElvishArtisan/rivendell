@@ -17838,3 +17838,8 @@
 2018-10-19 Fred Gleason <fredg@paravelsystems.com>
 	* Added code in the %post and %preun rules in 'rivendell.spec.in'
 	to enable and disable the 'rivendell' service.
+2018-10-19 Fred Gleason <fredg@paravelsystems.com>
+	* Modified rdservice(8) to log errors to syslog.
+	* Added an rdservice(8) man page.
+	* Modified 'systemd/rivendell.service.in' to enable automatic
+	start retries.

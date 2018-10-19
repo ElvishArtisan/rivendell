@@ -232,85 +232,6 @@ bool MainObject::StartDropboxes(QString *err_msg)
       return false;
     }
     id++;
-
-
-
-    /*
-    QString cmd=QString().
-      sprintf("nice rdimport --persistent-dropbox-id=%d --drop-box --log-mode",
-	      q->value(15).toInt());
-    sql=QString("select SCHED_CODE from DROPBOX_SCHED_CODES where ")+
-      QString().sprintf("DROPBOX_ID=%d",q->value(0).toInt());
-    q1=new RDSqlQuery(sql);
-    while(q1->next()) {
-      cmd+=QString(" --add-scheduler-code=\"")+q1->value(0).toString()+"\"";
-    }
-    delete q1;
-    cmd+=
-      QString().sprintf(" --normalization-level=%d",q->value(3).toInt()/100);
-    cmd+=
-      QString().sprintf(" --autotrim-level=%d",q->value(4).toInt()/100);
-    if(q->value(5).toUInt()>0) {
-      cmd+=QString().sprintf(" --to-cart=%u",q->value(5).toUInt());
-    }
-    if(q->value(6).toString()=="Y") {
-      cmd+=" --use-cartchunk-cutid";
-    }
-    if(q->value(21).toInt()<1) {
-        cmd+=
-          QString().sprintf(" --segue-level=%d",q->value(21).toInt());
-        cmd+=
-          QString().sprintf(" --segue-length=%u",q->value(22).toUInt());
-    }
-    if(q->value(7).toString()=="Y") {
-      cmd+=" --title-from-cartchunk-cutid";
-    }
-    if(q->value(8).toString()=="Y") {
-      cmd+=" --delete-cuts";
-    }
-    if(q->value(20).toString()=="Y") {
-      cmd+=" --to-mono";
-    }
-    if(!q->value(9).toString().isEmpty()) {
-      cmd+=QString().sprintf(" \"--metadata-pattern=%s\"",
-			     (const char *)q->value(9).toString());
-    }
-    if(q->value(10).toString()=="Y") {
-      cmd+=" --fix-broken-formats";
-    }
-    if(q->value(12).toString()=="Y") {
-      cmd+=" --delete-source";
-    }
-    if(q->value(16).toString()=="Y") {
-      cmd+=QString().sprintf(" --create-startdate-offset=%d",
-			     q->value(17).toInt());
-      cmd+=QString().sprintf(" --create-enddate-offset=%d",
-			     q->value(18).toInt());
-    }
-    if(!q->value(19).toString().isEmpty()) {
-      cmd+=" --set-user-defined="+RDEscapeString(q->value(19).toString());
-    }
-    cmd+=QString().sprintf(" --startdate-offset=%d",q->value(13).toInt());
-    cmd+=QString().sprintf(" --enddate-offset=%d",q->value(14).toInt());
-    cmd+=QString().sprintf(" %s \"%s\"",(const char *)q->value(1).toString(),
-			   (const char *)q->value(2).toString());
-    if(!q->value(11).toString().isEmpty()) {
-      cmd+=QString().sprintf(" >> %s 2>> %s",
-			     (const char *)q->value(11).toString(),
-			     (const char *)q->value(11).toString());
-    }
-    else {
-      cmd+=" > /dev/null 2> /dev/null";
-    }
-    cmd+=" &";
-    LogLine(RDConfig::LogInfo,QString().
-	    sprintf("launching dropbox configuration: \"%s\"",
-		    (const char *)cmd));
-    if(fork()==0) {
-      system(cmd);
-      exit(0);
-    }
-    */
   }
   delete q;
   return true;
@@ -324,8 +245,8 @@ void MainObject::KillProgram(const QString &program)
   while(pids.size()>0) {
     for(int i=0;i<pids.size();i++) {
       kill(pids.at(i),SIGKILL);
-      fprintf(stderr,"rdservice: killing stale program \"%s\" [%d]\n",
-	      (const char *)program.toUtf8(),pids.at(i));
+      syslog(LOG_WARNING,"killing unresponsive program \"%s\" [PID: %d]",
+	     (const char *)program.toUtf8(),pids.at(i));
     }
     sleep(1);
     pids=RDGetPids(program);

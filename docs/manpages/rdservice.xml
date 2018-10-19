@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry id="stdin" xmlns="http://docbook.org/ns/docbook" version="5.0">
+  <!--
+      Header
+  -->
+  <refmeta>
+    <refentrytitle>rdservice</refentrytitle>
+    <manvolnum>8</manvolnum>
+    <refmiscinfo class='source'>October 2018</refmiscinfo>
+    <refmiscinfo class='manual'>Linux Audio Manual</refmiscinfo>
+  </refmeta>
+  <refnamediv>
+    <refname>rdservice</refname>
+    <refpurpose>Rivendell service manager</refpurpose>
+  </refnamediv>
+  <info>
+    <author>
+      <personname>
+	<firstname>Fred</firstname>
+	<surname>Gleason</surname>
+	<email>fredg@paravelsystems.com</email>
+      </personname>
+      <contrib>Application Author</contrib>
+    </author>
+  </info>
+
+  <!--
+      Body
+  -->
+  <refsynopsisdiv id='synopsis'>
+    <cmdsynopsis>
+      <command>rdservice</command>
+      <sbr/>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+
+  <refsect1 id='description'><title>Description</title>
+  <para>
+    <command>rdservice</command><manvolnum>8</manvolnum> manages the various
+    background service components of the Rivendell Radio Automation
+    System, including <command>caed</command><manvolnum>8</manvolnum>,
+    <command>rdcatchd</command><manvolnum>8</manvolnum>,
+    <command>ripcd</command><manvolnum>8</manvolnum>,
+    <command>rdvairplayd</command><manvolnum>8</manvolnum>,
+    <command>rdimport</command><manvolnum>1</manvolnum> (in dropbox mode)
+    as well as periodic system maintenance tasks using
+    <command>rdmaint</command><manvolnum>8</manvolnum>.
+    It is normally invoked by the host's boot system
+    (such as Systemd) at system boot-time and runs continuously thereafter.
+    There should only be one instance of
+    <command>rdservice</command><manvolnum>8</manvolnum> running at any
+    given time; attempts to start an additional instance will terminate
+    with exit code <computeroutput>1</computeroutput>.
+  </para>
+  </refsect1>
+  
+  <refsect1 id='exit_values'><title>Exit Values</title>
+<para>
+  <segmentedlist>
+    <?dbhtml list-presentation="tabular"?>
+    <?dbfo   list-presentation="tabular"?>
+    <!-- Is there a way to suppress the title line entirely? -->
+    <segtitle></segtitle>
+    <segtitle></segtitle>
+    <seglistitem><seg>0</seg><seg>Normal shutdown</seg></seglistitem>
+    <seglistitem><seg>1</seg><seg>Prior instance found</seg></seglistitem>
+    <seglistitem><seg>2</seg><seg>Unable to open database</seg></seglistitem>
+    <seglistitem><seg>3</seg><seg>Unable to start a service component</seg></seglistitem>
+  </segmentedlist>
+</para>
+  </refsect1>
+
+  <refsect1 id='see_also'><title>See Also</title>
+  <para>
+  <citerefentry>
+    <refentrytitle>rddbmgr</refentrytitle><manvolnum>8</manvolnum>
+  </citerefentry>
+  <literal>, </literal>
+  <citerefentry>
+    <refentrytitle>rdimport</refentrytitle><manvolnum>1</manvolnum>
+  </citerefentry>
+  </para>
+  </refsect1>
+
+
+</refentry>
+

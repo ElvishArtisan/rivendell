@@ -380,6 +380,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/rmlsend.1.gz
 %{_mandir}/man8/rddbmgr.8.gz
 %{_mandir}/man8/rdmarkerset.8.gz
+%{_mandir}/man8/rdservice.8.gz
 @DOC_PATH@/*
 @LOCAL_PREFIX@/@RD_LIB_PATH@/librd-@VERSION@.so
 @LOCAL_PREFIX@/@RD_LIB_PATH@/librd.a
