@@ -128,8 +128,6 @@ nodist_ripcd_SOURCES = moc_am16.cpp\
 
 ripcd_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @LIBHPI@ -lQt3Support
 
-EXTRA_DIST = ripcd.pro
-
 CLEANFILES = *~\
              *.idb\
              *ilk\

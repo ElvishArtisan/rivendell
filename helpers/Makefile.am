@@ -36,9 +36,7 @@ dist_jsmin_SOURCES = jsmin.c
 EXTRA_DIST = rdpack.sh\
              rdtrans.sh\
              rdtransgui.sh\
-             setenvvar.sh\
-             win32_frag1.txt\
-             win32_frag2.txt
+             setenvvar.sh
 
 CLEANFILES = *~\
              *.tar.gz\

@@ -18,9 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef WIN32
 #include <syslog.h>
-#endif  // WIN32
 
 #include <qobject.h>
 
@@ -1592,18 +1590,13 @@ RDLogLine::State RDLogLine::setEvent(int mach,RDLogLine::TransType next_type,
     cart=new RDCart(log_cart_number);
     if(!cart->exists()) {
       delete cart;
-#ifndef WIN32
       syslog(LOG_USER|LOG_WARNING,"RDLogLine::setEvent(): no such cart, CART=%06u",log_cart_number);
-#endif  // WIN32
       log_state=RDLogLine::NoCart;
       return RDLogLine::NoCart;
     }
     cart->selectCut(&log_cut_name);
     if(log_cut_name.isEmpty()) {
       delete cart;
-#ifndef WIN32
-	  // syslog(LOG_USER|LOG_WARNING,"RDLogLine::setEvent(): RDCut::selectCut() failed, CART=%06u",log_cart_number);
-#endif  // WIN32
       log_state=RDLogLine::NoCut;
       return RDLogLine::NoCut;
     }
@@ -1628,18 +1621,14 @@ RDLogLine::State RDLogLine::setEvent(int mach,RDLogLine::TransType next_type,
     if(!q->first()) {
       delete q;
       delete cart;
-#ifndef WIN32
       syslog(LOG_USER|LOG_WARNING,"RDLogLine::setEvent(): no cut record found, SQL=%s",(const char *)sql);
-#endif  // WIN32
       log_state=RDLogLine::NoCut;
       return RDLogLine::NoCut;
     }
     if(q->value(0).toInt()==0) {
       delete q;
       delete cart;
-#ifndef WIN32
       syslog(LOG_USER|LOG_WARNING,"RDLogLine::setEvent(): zero length cut audio, SQL=%s",(const char *)sql);
-#endif  // WIN32
       log_state=RDLogLine::NoCut;
       return RDLogLine::NoCut;
     }
@@ -1953,7 +1942,6 @@ void RDLogLine::refreshPointers()
 QString RDLogLine::xml(int line) const
 {
   QString ret;
-#ifndef WIN32
   ret+="  <logLine>\n";
   ret+="    "+RDXmlField("line",line);
   ret+="    "+RDXmlField("id",id());
@@ -2059,7 +2047,7 @@ QString RDLogLine::xml(int line) const
   ret+="    "+RDXmlField("extAnncType",extAnncType());
 
   ret+="  </logLine>\n";
-#endif  // WIN32
+
   return ret;
 }
 

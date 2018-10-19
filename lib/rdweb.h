@@ -29,9 +29,7 @@
 #include <qhostaddress.h>
 #include <qstringlist.h>
 
-#ifndef WIN32
 #include <rdaudioconvert.h>
-#endif  // WIN32
 
 //
 // Data Structure Sizes
@@ -42,7 +40,6 @@
 //
 // Function Prototypes
 //
-#ifndef WIN32
 extern int RDReadPost(char *,int);
 extern int RDPutPostString(char *,char *,char *,int);
 extern int RDFindPostString(const char *,const char *,char *,int);
@@ -56,10 +53,8 @@ extern int RDDecodeString(char *);
 extern int RDPutPlaintext(char *,int);
 extern int RDPurgePlaintext(char *,int);
 extern void RDCgiError(const char *str,int resp_code=200);
-#ifndef WIN32
 extern void RDXMLResult(const char *str,int resp_code,
 			RDAudioConvert::ErrorCode err=RDAudioConvert::ErrorOk);
-#endif  // WIN32
 extern int RDBufferDiff(char *,int,int,int);
 extern void RDPruneAmp(char *);
 extern int RDEscapeQuotes(const char *src,char *dest,int maxlen);
@@ -70,7 +65,6 @@ extern QString RDAuthenticateSession(long int session_id,
 				     const QHostAddress &addr);
 extern void RDLogoutSession(long int session_id,const QHostAddress &addr);
 extern bool RDParsePost(std::map<QString,QString> *vars);
-#endif  // WIN32
 extern QString RDXmlField(const QString &tag,const QString &value,
 			  const QString &attrs="");
 extern QString RDXmlField(const QString &tag,const char *value,

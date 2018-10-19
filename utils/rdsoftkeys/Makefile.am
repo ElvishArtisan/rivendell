@@ -33,8 +33,6 @@ nodist_rdsoftkeys_SOURCES = moc_rdsoftkeys.cpp
 
 rdsoftkeys_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
 
-EXTRA_DIST = rdsoftkeys.pro
-
 CLEANFILES = *~\
              *.exe\
              *.idb\

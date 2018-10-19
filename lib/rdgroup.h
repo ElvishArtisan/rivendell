@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Service
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -60,20 +60,16 @@ class RDGroup
   void setColor(const QColor &color);
   unsigned nextFreeCart(unsigned startcart=0) const;
   int freeCartQuantity() const;
-#ifndef WIN32
   bool reserveCarts(std::vector<unsigned> *cart_nums,
 		    const QString &station_name,RDCart::Type type,
 		    unsigned quan) const;
-#endif  // WIN32
   bool cartNumberValid(unsigned cartnum) const;
   QString xml() const;
   
  private:
   unsigned GetNextFreeCart(unsigned startcart) const;
-#ifndef WIN32
   bool ReserveCart(const QString &station_name,RDCart::Type type,
 		   unsigned cart_num) const;
-#endif  // WIN32
   void SetRow(const QString &param,int value) const;
   void SetRow(const QString &param,unsigned value) const;
   void SetRow(const QString &param,const QString &value) const;
@@ -82,4 +78,4 @@ class RDGroup
 };
 
 
-#endif 
+#endif  // RDGROUP_H

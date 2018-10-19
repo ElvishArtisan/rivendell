@@ -351,10 +351,7 @@ EXTRA_DIST = gpl2.html\
              librd_nb.ts\
              librd_nn.ts\
              librd_pt_BR.ts\
-             rdpaths.h.in\
-             rdttydevice_win32.cpp\
-             rdwin32.cpp\
-             rdwin32.h
+             rdpaths.h.in
 
 CLEANFILES = *~\
              moc_*\

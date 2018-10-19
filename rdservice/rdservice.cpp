@@ -57,10 +57,15 @@ MainObject::MainObject(QObject *parent)
   QString err_msg;
 
   //
+  // Open the syslog
+  //
+  openlog("rdservice",LOG_PERROR,LOG_DAEMON);
+
+  //
   // Check for prior instance
   //
   if(RDGetPids("rdservice").size()>1) {
-    fprintf(stderr,"rdservice: prior instance found\n");
+    syslog(LOG_ERR,"prior instance found");
     exit(1);
   }
 
@@ -69,8 +74,9 @@ MainObject::MainObject(QObject *parent)
   //
   rda=new RDApplication("rdservice","rdservice","\n\n",this);
   if(!rda->open(&err_msg)) {
-    fprintf(stderr,"rdservice: %s\n",(const char *)err_msg.utf8());
-    exit(1);
+    syslog(LOG_ERR,"unable to open database [%s]",
+	   (const char *)err_msg.utf8());
+    exit(2);
   }
 
   //
@@ -85,8 +91,9 @@ MainObject::MainObject(QObject *parent)
 
   if(!Startup(&err_msg)) {
     Shutdown();
-    fprintf(stderr,"rdservice: %s\n",(const char *)err_msg.toUtf8());
-    exit(1);
+    syslog(LOG_ERR,"unable to start service component [%s]",
+	   (const char *)err_msg.toUtf8());
+    exit(3);
   }
 
   //
@@ -105,7 +112,8 @@ MainObject::MainObject(QObject *parent)
   }
 
   if(!RDWritePid(RD_PID_DIR,"rdservice.pid",getuid())) {
-    fprintf(stderr,"rdservice: can't write pid file\n");
+    syslog(LOG_WARNING,"unable to write pid file to \"%s/rdservice.pid\"",
+	   RD_PID_DIR);
   }
 }
 
@@ -124,6 +132,7 @@ void MainObject::exitData()
   if(global_exiting) {
     Shutdown();
     RDDeletePid(RD_PID_DIR,"rdservice.pid");
+    syslog(LOG_DEBUG,"shutting down normally");
     exit(0);
   }
 

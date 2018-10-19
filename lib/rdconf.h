@@ -84,13 +84,11 @@ bool RDIsSqlNull(const QString &table,const QString &name,unsigned test,
 QString RDGetTimeLength(int mseconds,bool leadzero=false,bool tenths=true);
 int RDSetTimeLength(const QString &string);
 bool RDCopy(const QString &srcfile,const QString &destfile);
-#ifndef WIN32
 bool RDWritePid(const QString &dirname,const QString &filename,int owner=-1,
 		int group=-1);
 void RDDeletePid(const QString &dirname,const QString &filename);
 bool RDCheckPid(const QString &dirname,const QString &filename);
 pid_t RDGetPid(const QString &pidfile);
-#endif  // WIN32
 QString RDGetHomeDir(bool *found=0);
 bool RDTimeSynced();
 QString RDTruncateAfterWord(QString str,int word,bool add_dots=false);

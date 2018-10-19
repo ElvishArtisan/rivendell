@@ -18,9 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef WIN32
 #include <syslog.h>
-#endif  // WIN32
 
 #include <qdatetime.h>
 
@@ -61,21 +59,11 @@ bool RDLogLock::tryLock(QString *username,QString *stationname,
 			QHostAddress *addr)
 {
   bool ret=false;
-#ifdef WIN32
-  QString guid=RDLogLock::makeGuid("windows");
-#else
   QString guid=RDLogLock::makeGuid(lock_station->name());
-#endif  // WIN32
 
-#ifdef WIN32
-  *username="windows";
-  *stationname="windows";
-#else
   *username=lock_user->name();
   *stationname=lock_station->name();
   addr->setAddress(lock_station->address().toString());
-#endif  // WIN32
-
   if(RDLogLock::tryLock(username,stationname,addr,lock_log_name,guid)) {
     lock_timer->start(RD_LOG_LOCK_TIMEOUT/2);
     lock_guid=guid;
@@ -156,12 +144,10 @@ void RDLogLock::updateLock(const QString &log_name,const QString &guid)
     "LOCK_DATETIME=now() where "+
     "LOCK_GUID=\""+RDEscapeString(guid)+"\"";
   q=new RDSqlQuery(sql);
-#ifndef WIN32
   if(q->numRowsAffected()==0) {
     syslog(LOG_WARNING,"lock on log \"%s\" has evaporated!",
 	   (const char *)log_name);
   }
-#endif  // WIN32
   delete q;
 }
 

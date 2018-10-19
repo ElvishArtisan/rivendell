@@ -17823,3 +17823,31 @@
 	* Added talk (intro) column to cart list view in rdlibrary(1)
 	* Added ability to expand cart to view individual cuts in rdlibrary(1)
 	* Added play/stop buttons to cart list in rdlibrary(1)
+2018-10-17 Patrick Linstruth <patrick@deltecent.com>
+	* Added ability to run macros from cart list view in rdlibrary(1)
+2018-10-17 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed bug in rdservice(8) where local maintence process was started
+	with RDSERVICE_SYSTEMMAINT_ID instead of RDSERVICE_LOCALMAINT_ID.
+2018-10-18 Fred Gleason <fredg@paravelsystems.com>
+	* Tweaked the position of buttons on the bottom row of the main
+	screen of rdlibrary(1).
+	* Changed the minimum size of the main screen of rdlibrary to
+	850x600.
+2018-10-18 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdmaint(8) that broke cut rehashing.
+2018-10-19 Fred Gleason <fredg@paravelsystems.com>
+	* Added code in the %post and %preun rules in 'rivendell.spec.in'
+	to enable and disable the 'rivendell' service.
+2018-10-19 Fred Gleason <fredg@paravelsystems.com>
+	* Modified rdservice(8) to log errors to syslog.
+	* Added an rdservice(8) man page.
+	* Modified 'systemd/rivendell.service.in' to enable automatic
+	start retries.
+2018-10-19 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a typo that broke generation of the rmlsend(1) man page.
+2018-10-19 Fred Gleason <fredg@paravelsystems.com>
+	* Removed 'build_win32.bat'.
+	* Removed all conditional compilation based on 'WIN32'.
+2018-10-19 Fred Gleason <fredg@paravelsystems.com>
+	* Removed check for Win32 installer from 'configure.ac'.
+	* Removed win32 clauses from '.pro' files.

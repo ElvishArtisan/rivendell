@@ -108,10 +108,6 @@ rm -f $RPM_BUILD_ROOT/@LOCAL_PREFIX@/@RD_LIB_PATH@/libqmysqlutf*
 mkdir $RPM_BUILD_ROOT/.qt
 touch $RPM_BUILD_ROOT/.qt/qt
 rm -rf $RPM_BUILD_ROOT/@libexecdir@/logos
-if test "@WIN32_SOURCE@" ; then
-  mkdir -p $RPM_BUILD_ROOT/var/win32
-  cp @WIN32_SOURCE@ $RPM_BUILD_ROOT/var/win32/
-fi
 mkdir -p $RPM_BUILD_ROOT/@DOC_PATH@/logos
 cp icons/webget_logo.png $RPM_BUILD_ROOT/@DOC_PATH@/logos/
 cp AUTHORS $RPM_BUILD_ROOT/@DOC_PATH@/
@@ -177,6 +173,7 @@ if test ! -e /etc/asound.conf ; then
 fi
 @LOCAL_PREFIX@/sbin/rddbmgr --modify
 /bin/systemctl restart rivendell
+/bin/systemctl enable rivendell
 if test "@DISTRO@" = "suse" ; then
   /etc/init.d/apache2 restart
   insserv -d -f /etc/init.d/apache2 /etc/init.d/rivendell $MYSQL_INIT
@@ -205,6 +202,7 @@ if test "$1" = "0" ; then
   fi
   if test "@DISTRO@" = "redhat" ; then
     /bin/systemctl disable rivendell
+    /bin/systemctl stop rivendell
   fi
 fi
 exit 0
@@ -363,7 +361,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(6755,root,root) @libexecdir@/rdxport.cgi
 %attr(6755,root,root) @libexecdir@/webget.cgi
 @sysconfdir@/rd-bin.conf
-@WIN32_PATH@
 /etc/security/console.apps/rdalsaconfig-root
 /etc/pam.d/rdalsaconfig-root
 /etc/security/console.apps/rddbconfig-root
@@ -378,6 +375,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/rmlsend.1.gz
 %{_mandir}/man8/rddbmgr.8.gz
 %{_mandir}/man8/rdmarkerset.8.gz
+%{_mandir}/man8/rdservice.8.gz
 @DOC_PATH@/*
 @LOCAL_PREFIX@/@RD_LIB_PATH@/librd-@VERSION@.so
 @LOCAL_PREFIX@/@RD_LIB_PATH@/librd.a

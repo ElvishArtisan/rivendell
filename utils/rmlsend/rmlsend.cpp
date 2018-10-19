@@ -18,11 +18,18 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef WIN32
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
-#endif
+#include <unistd.h>
+#include <stdlib.h>
+#include <netdb.h>
+#include <stdio.h>
+#include <signal.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <ctype.h>
 
 #include <qapplication.h>
 #include <qwindowsstyle.h>
@@ -43,24 +50,11 @@
 #include <qtextcodec.h>
 #include <qtranslator.h>
 #include <qsettings.h>
-//Added by qt3to4:
 #include <QPixmap>
 
 #include <rdcmd_switch.h>
 
-#ifndef WIN32
-#include <unistd.h>
-#include <stdlib.h>
-#include <netdb.h>
-#endif  // WIN32
-#include <stdio.h>
-#include <signal.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <ctype.h>
-
-#include <rmlsend.h>
+#include "rmlsend.h"
 
 //
 // Icons
@@ -245,7 +239,6 @@ void MainWidget::sendCommand()
     break;
   }
   response->setText("");
-#ifndef WIN32 
   struct hostent *hostent=gethostbyname(host->text());
   if(hostent==NULL) {
     QMessageBox::warning(this,tr("RMLSend"),hstrerror(h_errno));
@@ -259,9 +252,6 @@ void MainWidget::sendCommand()
   else {
     host_addr.setAddress(host->text());
   }
-#else 
-  host_addr.setAddress(host->text());
-#endif  // WIN32
   dcl_command=command->text();
   if(!udp_command->writeBlock(dcl_command.utf8(),dcl_command.utf8().length(),
 			      host_addr,(Q_UINT16)port)) {
@@ -329,7 +319,6 @@ void MainWidget::destChangedData(int id)
   }
 }
 
-#ifndef WIN32
 MainObject::MainObject(QObject *parent,const char *name)
 {
   input_fd=-1;
@@ -479,7 +468,7 @@ void MainObject::ProcessCommands()
     }
   }
 }
-#endif  // WIN32
+
 
 int main(int argc,char *argv[])
 {
@@ -496,16 +485,10 @@ int main(int argc,char *argv[])
       cli_mode=true;
     }
   }
-#ifdef WIN32
-  cli_mode=false;
-#endif  // WIN32
-
   if(cli_mode) {
-#ifndef WIN32
     QApplication a(argc,argv,false);
     new MainObject();
     return a.exec();
-#endif  // WIN32
   }
   else {
     QApplication::setStyle(new QWindowsStyle);
@@ -516,17 +499,10 @@ int main(int argc,char *argv[])
     //
     QString tr_path;
     QString qt_path;
-#ifdef WIN32
-    QSettings settings;
-    settings.insertSearchPath(QSettings::Windows,"/SalemRadioLabs");
-    tr_path=QString().sprintf("%s\\",
-			      (const char *)settings.
-			      readEntry("/Rivendell/InstallDir"));
-    qt_path=tr_path;
-#else
+
     tr_path=QString(PREFIX)+QString("/share/rivendell/");
     qt_path=QString("/usr/share/qt4/translation/");
-#endif  // WIN32
+
     QTranslator qt(0);
     qt.load(qt_path+QString("qt_")+QTextCodec::locale(),".");
     a.installTranslator(&qt);

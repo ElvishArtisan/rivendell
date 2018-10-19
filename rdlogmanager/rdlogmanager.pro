@@ -2,7 +2,7 @@
 #
 # The rdlogmanager/ QMake project file for Rivendell
 #
-# (C) Copyright 2003-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+# (C) Copyright 2003-2018 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as
@@ -17,18 +17,12 @@
 #   License along with this program; if not, write to the Free Software
 #   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-TEMPLATE = app
-
-TARGET = rdlogmanager
-
-win32 {
-  DEFINES += WIN32
-  DEFINES += VERSION=\"$$[VERSION]\"
-  DEFINES += PACKAGE=\"rivendell\" 
-  DEFINES += PACKAGE_VERSION=\"$$[VERSION]\" 
-  DEFINES += PACKAGE_NAME=\"rivendell\"
-  DEFINES += PACKAGE_BUGREPORT=\"fredg@paravelsystems.com\"
-}
+#
+# Maintainer's Note
+#
+# We don't use Qt's 'Qmake' build system, so the entries in here are
+# purely for the sake of i18n support.
+#
 
 SOURCES += add_clock.cpp
 SOURCES += add_event.cpp
@@ -81,14 +75,6 @@ HEADERS += rdlogmanager.h
 HEADERS += rename_item.h
 HEADERS += svc_rec.h
 HEADERS += svc_rec_dialog.h
-
-RES_FILE += ..\icons\rivendell.res
-
-INCLUDEPATH += ..\lib
-
-LIBS = -lqui -L..\lib -llib
-
-CONFIG += qt
 
 TRANSLATIONS += rdlogmanager_cs.ts
 TRANSLATIONS += rdlogmanager_de.ts

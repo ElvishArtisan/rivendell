@@ -274,7 +274,6 @@ void RDLogeditConf::setDefaultTransType(RDLogLine::TransType type)
 }
 
 
-#ifndef WIN32
 void RDLogeditConf::getSettings(RDSettings *s) const
 {
   QString sql;
@@ -313,7 +312,6 @@ void RDLogeditConf::getSettings(RDSettings *s) const
   }
   delete q;
 }
-#endif  // WIN32
 
 
 void RDLogeditConf::SetRow(const QString &param,int value) const

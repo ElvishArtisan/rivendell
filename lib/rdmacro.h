@@ -30,11 +30,6 @@
 
 #include <rd.h>
 
-#ifdef WIN32
-#include <rdwin32.h>
-#endif  // WIN32
-
-
 class RDMacro
 {
  public:

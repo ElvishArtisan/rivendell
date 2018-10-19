@@ -2,7 +2,7 @@
 //
 // Securely create and then remove a temporary directory
 //
-//   (C) Copyright 2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,9 +20,7 @@
 
 #include <errno.h>
 #include <stdlib.h>
-#ifndef WIN32
 #include <unistd.h>
-#endif  // WIN32
 
 #include <qdatetime.h>
 #include <qstringlist.h>
@@ -61,17 +59,6 @@ QString RDTempDirectory::path() const
 
 bool RDTempDirectory::create(QString *err_msg)
 {
-#ifdef WIN32
-  QDateTime now=QDateTime::currentDateTime();
-  QString tempdir=RDTempDirectory::basePath()+"/"+temp_base_name+
-    QString().sprintf("%u",now.toTime_t());
-  temp_dir=new QDir(tempdir);
-  if(!temp_dir->mkdir(tempdir)) {
-    *err_msg="unable to create temp directory";
-    delete temp_dir;
-    return false;
-  }
-#else
   char tempdir[PATH_MAX];
 
   strncpy(tempdir,RDTempDirectory::basePath(),PATH_MAX);
@@ -83,7 +70,6 @@ bool RDTempDirectory::create(QString *err_msg)
     return false;
   }
   temp_dir=new QDir(tempdir);
-#endif  // WIN32
 
   return true;
 }
@@ -95,18 +81,8 @@ QString RDTempDirectory::basePath()
   if (!conf_temp_directory.isEmpty()) {
     return conf_temp_directory;
   }
-#ifdef WIN32
-  if(getenv("TEMP")!=NULL) {
-    return QString(getenv("TEMP"));
-  }
-  if(getenv("TMP")!=NULL) {
-    return QString(getenv("TMP"));
-  }
-  return QString("C:\\");
-#else
   if(getenv("TMPDIR")!=NULL) {
     return QString(getenv("TMPDIR"));
   }
   return QString("/tmp");
-#endif  // WIN32
 }

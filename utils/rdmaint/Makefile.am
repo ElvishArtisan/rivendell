@@ -29,6 +29,8 @@ bin_PROGRAMS = rdmaint
 
 dist_rdmaint_SOURCES = rdmaint.cpp rdmaint.h
 
+nodist_rdmaint_SOURCES = moc_rdmaint.cpp
+
 rdmaint_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
 
 CLEANFILES = *~\

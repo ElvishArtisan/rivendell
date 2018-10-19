@@ -31,8 +31,6 @@ dist_rdcollect_SOURCES = rdcollect.cpp rdcollect.h
 
 rdcollect_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
 
-EXTRA_DIST = rdcollect.pro
-
 CLEANFILES = *~\
              *.exe\
              *.idb\

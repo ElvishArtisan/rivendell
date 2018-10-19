@@ -2,7 +2,7 @@
 #
 # The utils/ QMake project file for Rivendell
 #
-# (C) Copyright 2003-2007,2016 Fred Gleason <fredg@paravelsystems.com>
+# (C) Copyright 2003-2018 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as
@@ -17,29 +17,16 @@
 #   License along with this program; if not, write to the Free Software
 #   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-TEMPLATE = app
-
-TARGET = rmlsend
-
-win32 {
-  DEFINES += WIN32
-  DEFINES += VERSION=\"$$[VERSION]\"
-  DEFINES += PACKAGE=\"rivendell\" 
-  DEFINES += PACKAGE_VERSION=\"$$[VERSION]\" 
-  DEFINES += PACKAGE_NAME=\"rivendell\"
-  DEFINES += PACKAGE_BUGREPORT=\"fredg@paravelsystems.com\"
-}
+#
+# Maintainer's Note
+#
+# We don't use Qt's 'Qmake' build system, so the entries in here are
+# purely for the sake of i18n support.
+#
 
 SOURCES += rmlsend.cpp
+
 HEADERS += rmlsend.h
-
-RES_FILE += ..\..\icons\rivendell.res
-
-INCLUDEPATH += ..\..\..\libradio\radio ..\..\lib
-
-LIBS = -lqui -L..\..\..\libradio\radio -lradio -L..\..\lib -llib
-
-CONFIG += qt
 
 TRANSLATIONS += rmlsend_cs.ts
 TRANSLATIONS += rmlsend_de.ts

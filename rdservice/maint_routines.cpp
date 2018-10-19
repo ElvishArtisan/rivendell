@@ -93,7 +93,7 @@ void MainObject::RunSystemMaintRoutine()
 
 void MainObject::RunLocalMaintRoutine()
 {
-  RunEphemeralProcess(RDSERVICE_SYSTEMMAINT_ID,
+  RunEphemeralProcess(RDSERVICE_LOCALMAINT_ID,
 		      QString(RD_PREFIX)+"/bin/rdmaint",QStringList());
 
   rda->log(RDConfig::LogInfo,"ran local maintenance routines");

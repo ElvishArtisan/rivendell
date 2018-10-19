@@ -72,10 +72,8 @@ SvcRecDialog::SvcRecDialog(const QString &svcname,QWidget *parent)
   date_delete_button->setFont(font);
   date_delete_button->setText(tr("&Purge\nData"));
   connect(date_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
-#ifndef WIN32
   date_delete_button->setEnabled(rda->user()->deleteRec()&&
     date_picker->dayActive(date_picker->date().day()));
-#endif  // WIN32
 
   //
   // Close Button
@@ -109,13 +107,8 @@ QSizePolicy SvcRecDialog::sizePolicy() const
 
 void SvcRecDialog::dateSelectedData(const QDate &,bool active)
 {
-#ifdef WIN32
-  date_delete_button->
-    setEnabled(date_picker->dayActive(date_picker->date().day()));
-#else
   date_delete_button->setEnabled(rda->user()->deleteRec()&&
     date_picker->dayActive(date_picker->date().day()));
-#endif  // WIN32
 }
 
 

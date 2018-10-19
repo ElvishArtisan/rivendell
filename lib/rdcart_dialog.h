@@ -115,9 +115,7 @@ class RDCartDialog : public QDialog
   QString cart_user_name;
   QString cart_user_password;
   RDBusyDialog *cart_busy_dialog;
-#ifndef WIN32
   RDSimplePlayer *cart_player;
-#endif  // WIN32
 };
 
 

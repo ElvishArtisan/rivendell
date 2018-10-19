@@ -338,9 +338,6 @@ QString RDSvc::importFilename(ImportSource src,const QDate &date) const
 	break;
   }
   QString os_flag;
-#ifdef WIN32
-  os_flag="_WIN";
-#endif
   QString sql=QString("select ")+
     src_str+os_flag+"_PATH from SERVICES where "+
     "NAME=\""+RDEscapeString(svc_name)+"\"";
@@ -391,13 +388,6 @@ bool RDSvc::import(ImportSource src,const QDate &date,const QString &break_str,
     src_str="MUS";
     break;
   }
-
-  //
-  // Set OS Type
-  //
-#ifdef WIN32
-  os_flag="_WIN";
-#endif
 
   //
   // Load Parser Parameters
@@ -1035,7 +1025,6 @@ QString RDSvc::xml() const
   QString sql;
   RDSqlQuery *q;
   QString ret;
-#ifndef WIN32
   sql="select DESCRIPTION from SERVICES where NAME=\""+
     RDEscapeString(svc_name)+"\"";
 
@@ -1047,7 +1036,6 @@ QString RDSvc::xml() const
     ret+="  </service>\n";
   }
   delete q;
-#endif  // WIN32
   return ret;
 }
 

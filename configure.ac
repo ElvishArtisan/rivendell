@@ -414,16 +414,6 @@ fi
 #
 # Configure RPM Build
 #
-AC_MSG_CHECKING([for $WIN32_SETUPS/rivendell-$VERSION-$RPM_RELEASE.exe])
-if test -f $WIN32_SETUPS/rivendell-$VERSION-$RPM_RELEASE.exe ; then
-  AC_MSG_RESULT([yes])
-  AC_SUBST(WIN32_SOURCE,"$WIN32_SETUPS/rivendell-$VERSION-$RPM_RELEASE.exe")
-  AC_SUBST(WIN32_PATH,"/var/win32/rivendell-$VERSION-$RPM_RELEASE.exe")
-else
-  AC_MSG_RESULT([no])
-  AC_SUBST(WIN32_SOURCE,"")
-  AC_SUBST(WIN32_PATH,"")
-fi
 AC_CHECK_PROG(RPMBUILD_FOUND,rpmbuild,[yes],[])
 if test -z $RPMBUILD_FOUND ; then
   AC_SUBST(RPMBUILD,rpm)
@@ -621,11 +611,6 @@ AC_MSG_NOTICE("|                      M4A Decoding Support ... Yes   |")
 fi
 AC_MSG_NOTICE("|-----------------------------------------------------|")
 AC_MSG_NOTICE()
-if test $WIN32_SOURCE ; then
-AC_MSG_NOTICE([Including RPM win32 setup from:])
-AC_MSG_NOTICE([  $WIN32_SOURCE])
-AC_MSG_NOTICE()
-fi
 AC_MSG_NOTICE()
 AC_MSG_NOTICE(Now enter 'make' to build the software.)
 AC_MSG_NOTICE()

@@ -3,7 +3,7 @@
 // Functions for interfacing with web components using the
 // Common Gateway Interface (CGI) Standard 
 //
-//   (C) Copyright 1996-2007,2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 1996-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,9 +22,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#ifndef WIN32
 #include <sys/time.h>
-#endif  //WIN32
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -37,13 +35,10 @@
 #include "rdescape_string.h"
 #include "rdtempdirectory.h"
 #include "rduser.h"
-#ifndef WIN32
 #include "rdwebresult.h"
-#endif  // WIN32
 
 #include "rdweb.h"
 
-#ifndef WIN32
 /* RDReadPost(char *cBuffer,int dSize) */
 
 /* This function reads POST data (such as that submitted by an HTML form) into
@@ -559,7 +554,6 @@ void RDCgiError(const char *str,int resp_code)
 }
 
 
-#ifndef WIN32
 extern void RDXMLResult(const char *str,int resp_code,
 			RDAudioConvert::ErrorCode err)
 {
@@ -573,7 +567,6 @@ extern void RDXMLResult(const char *str,int resp_code,
 
   exit(0);
 }
-#endif  // WIN32
 
 
 /*
@@ -875,8 +868,6 @@ bool RDParsePost(std::map<QString,QString> *vars)
 
   return true;
 }
-
-#endif  // WIN32
 
 
 QString RDXmlField(const QString &tag,const QString &value,const QString &attrs)

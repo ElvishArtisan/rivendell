@@ -31,7 +31,6 @@
 #include <qmessagebox.h>
 
 #include <rdapplication.h>
-#ifndef WIN32
 #include <rdaudioimport.h>
 #include <rdcart_dialog.h>
 #include <rdcart_search_text.h>
@@ -42,7 +41,6 @@
 #include <rdprofile.h>
 #include <rdsettings.h>
 #include <rdtextvalidator.h>
-#endif  // WIN32
 #include <rdwavefile.h>
 
 //
@@ -69,11 +67,7 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
     *cart_schedcode=tr("ALL");
   }
   cart_temp_allowed=NULL;
-#ifdef WIN32
-  cart_filter_mode=RDStation::FilterSynchronous;
-#else
   cart_filter_mode=rda->station()->filterMode();
-#endif  // WIN32
 
   if(filter==NULL) {
     cart_filter=new QString();
@@ -245,7 +239,6 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   //
   // Audition Player
   //
-#ifndef WIN32
   if((rda->station()->cueCard()<0)||(rda->station()->cuePort()<0)) {
     cart_player=NULL;
   }
@@ -257,7 +250,6 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
     cart_player->stopButton()->setDisabled(true);
     cart_player->stopButton()->setOnColor(Qt::red);
   }
-#endif  // WIN32
 
   //
   // Send to Editor Button
@@ -278,9 +270,6 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   if(rda->station()->editorPath().isEmpty()) {
     cart_file_button->hide();
   }
-#ifdef WIN32
-  cart_file_button->hide();
-#endif  // WIN32
 
   //
   // OK Button
@@ -303,11 +292,9 @@ RDCartDialog::~RDCartDialog()
   if(local_filter) {
     delete cart_filter;
   }
-#ifndef WIN32
   if(cart_player!=NULL) {
     delete cart_player;
   }
-#endif  // WIN32
   delete cart_playout_map;
   delete cart_macro_map;
 }
@@ -345,22 +332,18 @@ int RDCartDialog::exec(int *cartnum,RDCart::Type type,QString *svcname,
       else {
 	cart_file_button->show();
       }
-#ifndef WIN32
       if(cart_player!=NULL) {
 	cart_player->playButton()->show();
 	cart_player->stopButton()->show();
       }
-#endif  // WIN32
       break;
 
     case RDCart::Macro:
       cart_editor_button->hide();
-#ifndef WIN32
       if(cart_player!=NULL) {
 	cart_player->playButton()->hide();
 	cart_player->stopButton()->hide();
       }
-#endif  // WIN32
       break;
   }
   if(*cart_cartnum==0) {
@@ -469,13 +452,11 @@ void RDCartDialog::clickedData(Q3ListViewItem *item)
   }
   cart_ok_button->setEnabled(true);
   bool audio=((RDCart::Type)i->id())==RDCart::Audio;
-#ifndef WIN32
   if(cart_player!=NULL) {
     cart_player->playButton()->setEnabled(audio);
     cart_player->stopButton()->setEnabled(audio);
     cart_player->setCart(i->text(1).toUInt());
   }
-#endif  // WIN32
   cart_editor_button->setEnabled(audio);
 }
 
@@ -488,7 +469,6 @@ void RDCartDialog::doubleClickedData(Q3ListViewItem *,const QPoint &,int)
 
 void RDCartDialog::editorData()
 {
-#ifndef WIN32
   RDListViewItem *item=(RDListViewItem *)cart_cart_list->currentItem();
   if(item==NULL) {
     return;
@@ -531,13 +511,11 @@ void RDCartDialog::editorData()
     system(cmd+" &");
     exit(0);
   }
-#endif
 }
 
 
 void RDCartDialog::loadFileData()
 {
-#ifndef WIN32
   QString filename;
   RDCart *cart=NULL;
   RDCut *cut=NULL;
@@ -615,7 +593,6 @@ void RDCartDialog::loadFileData()
     delete cut;
     done(0);
   }
-#endif  // WIN32
 }
 
 
@@ -626,12 +603,10 @@ void RDCartDialog::okData()
     return;
   }
 
-#ifndef WIN32
   SaveState();
   if(cart_player!=NULL) {
     cart_player->stop();
   }
-#endif  // WIN32
   if(!local_filter) {
     *cart_filter=cart_filter_edit->text();
   }
@@ -645,12 +620,10 @@ void RDCartDialog::okData()
 
 void RDCartDialog::cancelData()
 {
-#ifndef WIN32
   SaveState();
   if(cart_player!=NULL) {
     cart_player->stop();
   }
-#endif  // WIN32
   done(-1);
 }
 
@@ -682,22 +655,18 @@ void RDCartDialog::resizeEvent(QResizeEvent *e)
       cart_filter_edit->setGeometry(100,10,size().width()-200,20);
       break;
   }
-#ifndef WIN32
   if(cart_player!=NULL) {
     cart_player->playButton()->setGeometry(10,size().height()-60,80,50);
     cart_player->stopButton()->setGeometry(100,size().height()-60,80,50);
   }
-#endif  // WIN32
 }
 
 
 void RDCartDialog::closeEvent(QCloseEvent *e)
 {
-#ifndef WIN32
   if(cart_player!=NULL) {
     cart_player->stop();
   }
-#endif  // WIN32
   cancelData();
 }
 

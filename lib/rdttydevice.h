@@ -22,20 +22,14 @@
 #ifndef RDTTYDEVICE_H
 #define RDTTYDEVICE_H
 
-#ifdef WIN32
-#include <windows.h>
-#else
 #include <termios.h>
 #include <unistd.h>
-#endif  // WIN32
 
 #include <queue>
 
 #include <qiodevice.h>
 #include <qsocketnotifier.h>
 #include <qtimer.h>
-
-#define WIN32_BUFFER_SIZE 130
 
 class RDTTYDevice : public QIODevice
 {
@@ -94,15 +88,9 @@ class RDTTYDevice : public QIODevice
   bool tty_open;
   int tty_flags;
   QIODevice::OpenMode tty_mode;
-#ifdef WIN32
-  HANDLE tty_fd;
-  int tty_speed;
-  int tty_length;
-#else
   int tty_fd;
   speed_t tty_speed;
   tcflag_t tty_length;
-#endif  // WIN32
   QSocketNotifier *tty_notifier;
   std::queue<char> tty_write_queue;
   QTimer *tty_write_timer;

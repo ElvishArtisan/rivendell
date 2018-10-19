@@ -310,13 +310,8 @@ RDReport::ErrorCode RDReport::errorCode() const
 bool RDReport::outputExists(const QDate &startdate)
 {
   QString out_path;
-#ifdef WIN32
-  out_path=RDDateDecode(exportPath(RDReport::Windows),startdate,report_station,
-			report_config,serviceName());
-#else
   out_path=RDDateDecode(exportPath(RDReport::Linux),startdate,report_station,
 			report_config,serviceName());
-#endif
   return QFile::exists(out_path);
 }
 
@@ -586,14 +581,8 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
   delete q;
 
   bool ret=false;
-#ifdef WIN32
-  QString filename=RDDateDecode(exportPath(RDReport::Windows),startdate,
-				report_station,report_config,serviceName());
-#else
   QString filename=RDDateDecode(exportPath(RDReport::Linux),startdate,
 				report_station,report_config,serviceName());
-#endif
-
   switch(filter()) {
   case RDReport::CbsiDeltaFlex:
     ret=ExportDeltaflex(filename,startdate,enddate,mixname);
@@ -665,17 +654,10 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
     return false;
     break;
   }
-#ifdef WIN32
-  *out_path=RDDateDecode(exportPath(RDReport::Windows),startdate,report_station,
-			 report_config,serviceName());
-  QString post_cmd=RDDateDecode(postExportCommand(RDReport::Windows),startdate,
-				report_station,report_config,serviceName());
-#else
   *out_path=RDDateDecode(exportPath(RDReport::Linux),startdate,report_station,
 			 report_config,serviceName());
   QString post_cmd=RDDateDecode(postExportCommand(RDReport::Linux),startdate,
 				report_station,report_config,serviceName());
-#endif
   system(post_cmd);
   sql=QString("delete from ELR_LINES where ")+
     "SERVICE_NAME=\""+RDEscapeString(mixname)+"\"";
