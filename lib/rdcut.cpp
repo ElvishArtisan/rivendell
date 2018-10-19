@@ -18,9 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef WIN32
 #include <unistd.h>
-#endif  // WIN32
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <fcntl.h>
@@ -31,9 +29,7 @@
 
 #include <rd.h>
 #include <rdconf.h>
-#ifndef WIN32
 #include <rdwavefile.h>
-#endif
 
 #include <rdcut.h>
 #include <rdtextvalidator.h>
@@ -863,9 +859,6 @@ void RDCut::logPlayout() const
 bool RDCut::copyTo(RDStation *station,RDUser *user,
 		   const QString &cutname,RDConfig *config) const
 {
-#ifdef WIN32
-  return false;
-#else
   QString sql;
   RDSqlQuery *q;
   RDSqlQuery *q1;
@@ -953,7 +946,6 @@ bool RDCut::copyTo(RDStation *station,RDUser *user,
   delete conv;
 
   return ret;
-#endif
 }
 
 
@@ -1182,9 +1174,6 @@ bool RDCut::checkInRecording(const QString &station_name,
 			     RDSettings *settings,
 			     unsigned msecs) const
 {
-#ifdef WIN32
-  return false;
-#else
   QString sql;
   RDSqlQuery *q;
   int format;
@@ -1260,13 +1249,11 @@ bool RDCut::checkInRecording(const QString &station_name,
   q=new RDSqlQuery(sql);
   delete q;
   return true;
-#endif  // WIN32
 }
 
 
 void RDCut::autoTrim(RDCut::AudioEnd end,int level)
 {
-#ifndef WIN32
   int point;
   int start_point=0;
   int end_point=-1;
@@ -1318,14 +1305,12 @@ void RDCut::autoTrim(RDCut::AudioEnd end,int level)
   }
   setLength(end_point-start_point);
   delete wave;
-#endif  // WIN32
 }
 
 
 void RDCut::autoSegue(int level,int length,RDStation *station,RDUser *user,
 		      RDConfig *config)
 {
-#ifndef WIN32
   int point;
   //  int start_point;
 
@@ -1369,13 +1354,11 @@ void RDCut::autoSegue(int level,int length,RDStation *station,RDUser *user,
        }
     }
   delete wave;
-#endif  // WIN32
 }
 
 
 void RDCut::reset() const
 {
-#ifndef WIN32
   QString sql;
   RDSqlQuery *q;
   int format;
@@ -1446,7 +1429,6 @@ void RDCut::reset() const
   delete q;
   wave->closeWave();
   delete wave;
-#endif  // WIN32
 }
 
 
@@ -1719,7 +1701,6 @@ void RDCut::GetDefaultDateTimes(QString *start_dt,QString *end_dt,
 
 bool RDCut::FileCopy(const QString &srcfile,const QString &destfile) const
 {
-#ifndef WIN32
   int src_fd;
   int dest_fd;
   struct stat src_stat;
@@ -1763,7 +1744,7 @@ bool RDCut::FileCopy(const QString &srcfile,const QString &destfile) const
   free(buf);
   close(src_fd);
   close(dest_fd);
-#endif
+
   return true;
 }
 

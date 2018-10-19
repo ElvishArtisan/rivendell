@@ -19,12 +19,10 @@
 //
 
 #include <stdlib.h>
-#ifndef WIN32
 #include <netdb.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
-#endif
 
 #include <qtranslator.h>
 #include <qapplication.h>
@@ -34,7 +32,6 @@
 #include <qpushbutton.h>
 #include <qmessagebox.h>
 #include <qsettings.h>
-//Added by qt3to4:
 #include <QCloseEvent>
 #include <QPixmap>
 
@@ -197,7 +194,6 @@ QSizePolicy MainWidget::sizePolicy() const
 void MainWidget::buttonData(int id)
 {
   QHostAddress addr;
-#ifndef WIN32 
   struct hostent *hostent=gethostbyname(key_addrs[id]);
   if(hostent==NULL) {
     QMessageBox::warning(this,tr("RDSoftKeys"),hstrerror(h_errno));
@@ -211,9 +207,6 @@ void MainWidget::buttonData(int id)
   else {
     addr.setAddress(key_addrs[id]);
   }
-#else 
-  addr.setAddress(key_addrs[id]);
-#endif  // WIN32
   key_socket->writeBlock(key_macros[id],key_macros[id].length(),
 			 addr,(Q_UINT16)RD_RML_NOECHO_PORT);
 }
@@ -289,17 +282,10 @@ int main(int argc,char *argv[])
   //
   QString tr_path;
   QString qt_path;
-#ifdef WIN32
-  QSettings settings;
-  settings.insertSearchPath(QSettings::Windows,"/SalemRadioLabs");
-  tr_path=QString().sprintf("%s\\",
-			    (const char *)settings.
-			    readEntry("/Rivendell/InstallDir"));
-  qt_path=tr_path;
-#else
+
   tr_path=QString(PREFIX)+QString("/share/srlabs/");
   qt_path=QString("/usr/share/qt4/translation/");
-#endif  // WIN32
+
   QTranslator qt(0);
   qt.load(qt_path+QString("qt_")+QTextCodec::locale(),".");
   a.installTranslator(&qt);

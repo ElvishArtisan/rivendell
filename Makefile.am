@@ -106,7 +106,6 @@ doxygen:
 	cd ripcd && doxygen doxygen.conf &
 
 EXTRA_DIST = autogen.sh\
-             build_win32.bat\
              CODINGSTYLE\
              get_distro.pl\
              get_target.sh\

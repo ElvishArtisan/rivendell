@@ -446,7 +446,7 @@ QString RDLog::xml() const
   QString sql;
   RDSqlQuery *q;
   QString ret;
-#ifndef WIN32
+
   sql=QString("select ")+
     "NAME,"+                // 00
     "SERVICE,"+             // 01
@@ -491,7 +491,6 @@ QString RDLog::xml() const
     ret+="  </log>\n";
   }
   delete q;
-#endif  // WIN32
   return ret;
 }
 

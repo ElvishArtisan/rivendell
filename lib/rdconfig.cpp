@@ -18,7 +18,6 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef WIN32
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <pwd.h>
@@ -27,7 +26,6 @@
 #include <arpa/inet.h>
 #include <net/if.h>
 #include <sys/ioctl.h>
-#endif  // WIN32
 
 #include <qdatetime.h>
 #include <qmessagebox.h>
@@ -226,7 +224,6 @@ bool RDConfig::logXloadDebugData() const
 
 void RDConfig::log(const QString &module,LogPriority prio,const QString &msg)
 {
-#ifndef WIN32
   QDateTime dt;
   QString filename;
   FILE *f=NULL;
@@ -263,7 +260,6 @@ void RDConfig::log(const QString &module,LogPriority prio,const QString &msg)
   case RDConfig::LogNone:
     break;
   }
-#endif  // WIN32
 }
 
 
@@ -419,7 +415,6 @@ unsigned RDConfig::channels() const
 }
 
 
-#ifndef WIN32
 uid_t RDConfig::uid() const
 {
   return conf_uid;
@@ -430,7 +425,6 @@ gid_t RDConfig::gid() const
 {
   return conf_gid;
 }
-#endif
 
 
 QString RDConfig::caeLogfile() const
@@ -507,20 +501,14 @@ void RDConfig::load()
   QString client;
   QString facility;
   QString iface;
-#ifndef WIN32
   struct passwd *user;
   struct group *groups;
-#endif 
 
   RDProfile *profile=new RDProfile();
   profile->setSource(conf_filename);
-#ifdef WIN32
-  strcpy(sname,"windows");
-#else
   gethostname(sname,255);
   QStringList list=QString(sname).split(".");  // Strip domain name parts
   strncpy(sname,list[0],256);
-#endif
   conf_station_name=
     profile->stringValue("Identity","StationName",sname);
   conf_password=profile->stringValue("Identity","Password","");
@@ -611,14 +599,12 @@ void RDConfig::load()
   conf_lock_rdairplay_memory=
     profile->boolValue("Hacks","LockRdairplayMemory",false);
   conf_channels=profile->intValue("Format","Channels",RD_DEFAULT_CHANNELS);
-#ifndef WIN32
   if((user=getpwnam(profile->stringValue("Identity","AudioOwner")))!=NULL) {
     conf_uid=user->pw_uid;
   }
   if((groups=getgrnam(profile->stringValue("Identity","AudioGroup")))!=NULL) {
     conf_gid=groups->gr_gid;
   }
-#endif
   conf_cae_logfile=profile->stringValue("Caed","Logfile","");
   conf_enable_mixer_logging=profile->boolValue("Caed","EnableMixerLogging");
   conf_use_realtime=profile->boolValue("Tuning","UseRealtime",false);
@@ -643,7 +629,6 @@ void RDConfig::load()
   //
   int sock=-1;
 
-#ifndef WIN32
   if((sock=socket(PF_INET,SOCK_DGRAM,IPPROTO_IP))<0) {
     return;
   }
@@ -663,22 +648,12 @@ void RDConfig::load()
     ifr.ifr_ifindex=++index;
   }
   close(sock);
-#endif  // WIN32
 }
 
 
 void RDConfig::clear()
 {
-#ifdef WIN32
-  QSettings settings;
-  settings.insertSearchPath(QSettings::Windows,"/SalemRadioLabs");
-  conf_filename=QString().sprintf("%s\\%s",
-				  (const char *)settings.
-				  readEntry("/Rivendell/InstallDir"),
-				  (const char *)RD_WIN_CONF_FILE);  
-#else
   conf_filename=RD_CONF_FILE;
-#endif
   conf_module_name="";
   conf_mysql_hostname="";
   conf_mysql_username="";
@@ -724,10 +699,8 @@ void RDConfig::clear()
   conf_disable_maint_checks=false;
   conf_lock_rdairplay_memory=false;
   conf_channels=RD_DEFAULT_CHANNELS;
-#ifndef WIN32
   conf_uid=65535;
   conf_gid=65535;
-#endif
   conf_cae_logfile="";
   conf_enable_mixer_logging=false;
   conf_use_realtime=false;

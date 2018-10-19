@@ -45,9 +45,7 @@
 
 #include "drop_listview.h"
 #include "list_reports.h"
-#ifndef WIN32
 #include "render_dialog.h"
-#endif  // WIN32
 
 //
 // Widget Settings
@@ -197,10 +195,8 @@ class EditLog : public QDialog
   Q3DateEdit *edit_purgedate_edit;
   QPushButton *edit_purgedate_button;
   RDLogLock *edit_log_lock;
-#ifndef WIN32
   QPushButton *edit_renderas_button;
   RenderDialog *edit_render_dialog;
-#endif  // WIN32
 };
 
 

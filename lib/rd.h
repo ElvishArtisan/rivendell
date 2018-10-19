@@ -430,7 +430,6 @@
  * Default Text Editors
  */
 #define RD_LINUX_EDITOR "xterm -e vi"
-#define RD_WIN32_EDITOR "notepad"
 
 /*
  * System-wide Maintenance Interval (mS)

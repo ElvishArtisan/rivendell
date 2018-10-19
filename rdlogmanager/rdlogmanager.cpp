@@ -18,13 +18,12 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef WIN32
 #include <stdlib.h>
 #include <unistd.h>
 #include <signal.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#endif  // WIN32
+
 #include <qapplication.h>
 #include <qwindowsstyle.h>
 #include <qwidget.h>
@@ -96,9 +95,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // CAE Connection
   //
-#ifndef WIN32
   rda->cae()->connectHost();
-#endif  // WIN32
 
   //
   // RIPC Connection
@@ -285,17 +282,9 @@ int gui_main(int argc,char *argv[])
   //
   QString tr_path;
   QString qt_path;
-#ifdef WIN32
-  QSettings settings;
-  settings.insertSearchPath(QSettings::Windows,"/SalemRadioLabs");
-  tr_path=QString().sprintf("%s\\",
-			    (const char *)settings.
-			    readEntry("/Rivendell/InstallDir"));
-  qt_path=tr_path;
-#else
   tr_path=QString(PREFIX)+QString("/share/rivendell/");
   qt_path=QString("/usr/share/qt4/translation/");
-#endif  // WIN32
+
   QTranslator qt(0);
   qt.load(qt_path+QString("qt_")+QTextCodec::locale(),".");
   a.installTranslator(&qt);

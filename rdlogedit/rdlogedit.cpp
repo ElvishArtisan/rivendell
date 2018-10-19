@@ -18,12 +18,11 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef WIN32
 #include <signal.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
-#endif  // WIN32
+
 #include <qapplication.h>
 #include <qwindowsstyle.h>
 #include <qwidget.h>
@@ -56,9 +55,7 @@
 #include "edit_log.h"
 #include "globals.h"
 #include "rdlogedit.h"
-#ifndef WIN32
 #include "voice_tracker.h"
-#endif  // WIN32
 
 //
 // Icons
@@ -116,24 +113,19 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // CAE Connection
   //
-#ifndef WIN32
   connect(rda->cae(),SIGNAL(isConnected(bool)),
           this,SLOT(caeConnectedData(bool)));
   rda->cae()->connectHost();
-#endif  // WIN32
 
   //
   // RIPC Connection
   //
-#ifndef WIN32
   connect(rda->ripc(),SIGNAL(connected(bool)),this,SLOT(connectedData(bool)));
   connect(rda->ripc(),SIGNAL(notificationReceived(RDNotification *)),
 	  this,SLOT(notificationReceivedData(RDNotification *)));
   connect(rda,SIGNAL(userChanged()),this,SLOT(userData()));
-  rda->ripc()->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
-#else
-  rdripc=NULL;
-#endif  // WIN32
+  rda->ripc()
+    ->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 
   // 
   // Create Fonts
@@ -156,16 +148,9 @@ MainWidget::MainWidget(QWidget *parent)
   log_redball_map=new QPixmap(redball_xpm);
 
   //
-  // User
-  //
-#ifndef WIN32
-  //
   // Load Audio Assignments
   //
   RDSetMixerPorts(rda->config()->stationName(),rda->cae());
-#else 
-  rda->user()->setName(RD_USER_LOGIN_NAME);
-#endif  // WIN32
 
   //
   // Log Filter
@@ -247,9 +232,6 @@ MainWidget::MainWidget(QWidget *parent)
   log_track_button->setFont(button_font);
   log_track_button->setText(tr("Voice\n&Tracker"));
   connect(log_track_button,SIGNAL(clicked()),this,SLOT(trackData()));
-#ifdef WIN32
-  log_track_button->hide();
-#endif
 
   //
   // Log Report Button
@@ -267,9 +249,6 @@ MainWidget::MainWidget(QWidget *parent)
   log_close_button->setText(tr("&Close"));
   connect(log_close_button,SIGNAL(clicked()),this,SLOT(quitMainWidget()));
 
-#ifdef WIN32
-  RefreshList();
-#endif  // WIN32
   setWindowTitle(QString("RDLogEdit")+"v"+VERSION+" - "+tr("Host")+": "+
 	     rda->config()->stationName()+", "+
 	     tr("User")+": ["+tr("Unknown")+"]");
@@ -347,11 +326,7 @@ void MainWidget::addData()
       return;
     }
     delete log;
-#ifdef WIN32
-    QString username(RD_USER_LOGIN_NAME);
-#else
     QString username(rda->ripc()->user());
-#endif  // WIN32
     QString err_msg;
     if(!RDLog::create(logname,svcname,QDate(),username,&err_msg,
 		      rda->config())) {
@@ -503,7 +478,6 @@ void MainWidget::deleteData()
 
 void MainWidget::trackData()
 {
-#ifndef WIN32
   std::vector<ListListViewItem *> items;
   if(SelectedLogs(&items)!=1) {
     return;
@@ -514,7 +488,6 @@ void MainWidget::trackData()
   delete dialog;
   RefreshItem(items.at(0));
   UnlockList();
-#endif  // WIN32
 }
 
 
@@ -911,17 +884,10 @@ int main(int argc,char *argv[])
   //
   QString tr_path;
   QString qt_path;
-#ifdef WIN32
-  QSettings settings;
-  settings.insertSearchPath(QSettings::Windows,"/SalemRadioLabs");
-  tr_path=QString().sprintf("%s\\",
-			    (const char *)settings.
-			    readEntry("/Rivendell/InstallDir"));
-  qt_path=tr_path;
-#else
+
   tr_path=QString(PREFIX)+QString("/share/rivendell/");
   qt_path=QString("/usr/share/qt4/translation/");
-#endif  // WIN32
+
   QTranslator qt(0);
   qt.load(qt_path+QString("qt_")+QTextCodec::locale(),".");
   a.installTranslator(&qt);

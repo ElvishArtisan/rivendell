@@ -18,12 +18,10 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef WIN32
 #include <sys/types.h>
 #include <unistd.h>
 #include <syslog.h>
 #include <curl/curl.h>
-#endif  // WIN32
 
 #include <vector>
 
@@ -91,11 +89,9 @@ bool RDCart::selectCut(QString *cut,const QTime &time) const
   if(!exists()) {
     ret=(*cut=="");
     *cut="";
-#ifndef WIN32
     syslog(LOG_USER|LOG_WARNING,
 	   "RDCart::selectCut(): cart doesn't exist, CUT=%s",
 	   (const char *)cut);
-#endif  // WIN32
     return ret;
   }
 
@@ -147,9 +143,6 @@ bool RDCart::selectCut(QString *cut,const QTime &time) const
     break;
   }
   if(cutname.isEmpty()) {   // No valid cuts, try the evergreen
-#ifndef WIN32
-    // syslog(LOG_USER|LOG_WARNING,"RDCart::selectCut(): no valid cuts, trying evergreen, SQL=%s",(const char *)sql);
-#endif  // WIN32
     sql=QString("select ")+
       "CUT_NAME,"+
       "PLAY_ORDER,"+
@@ -171,9 +164,6 @@ bool RDCart::selectCut(QString *cut,const QTime &time) const
     delete q;
   }
   if(cutname.isEmpty()) {
-#ifndef WIN32
-    // syslog(LOG_USER|LOG_WARNING,"RDCart::selectCut(): no valid evergreen cuts, SQL=%s",(const char *)sql);
-#endif  // WIN32
   }
   *cut=cutname;
   return true;
@@ -817,7 +807,6 @@ void RDCart::setUseEventLength(bool state) const
 
 void RDCart::setPending(const QString &station_name)
 {
-#ifndef WIN32
   QString sql;
   RDSqlQuery *q;
 
@@ -828,7 +817,6 @@ void RDCart::setPending(const QString &station_name)
     QString().sprintf("where NUMBER=%u",cart_number);
   q=new RDSqlQuery(sql);
   delete q;
-#endif  // WIN32
 }
 
 
@@ -978,9 +966,6 @@ bool RDCart::validateLengths(int len) const
 QString RDCart::xml(bool include_cuts,bool absolute,
 		    RDSettings *settings,int cutnum) const
 {
-#ifdef WIN32
-  return QString();
-#else
   QString sql=RDCart::xmlSql(include_cuts)+
     QString().sprintf(" where (CART.NUMBER=%u)",cart_number);
   if(cutnum>=0) {
@@ -991,7 +976,6 @@ QString RDCart::xml(bool include_cuts,bool absolute,
   delete q;
 
   return xml;
-#endif  // WIN32
 }
 
 
@@ -1640,7 +1624,6 @@ bool RDCart::removeCutAudio(RDStation *station,RDUser *user,unsigned cart_num,
 			    const QString &cutname,RDConfig *config)
 {
   bool ret=true;
-#ifndef WIN32
   CURL *curl=NULL;
   long response_code=0;
   struct curl_httppost *first=NULL;
@@ -1702,14 +1685,12 @@ bool RDCart::removeCutAudio(RDStation *station,RDUser *user,unsigned cart_num,
     curl_easy_cleanup(curl);
     curl_formfree(first);
   }
-#endif  // WIN32
   return ret;
 }
 
 
 void RDCart::removePending(RDStation *station,RDUser *user,RDConfig *config)
 {
-#ifndef WIN32
   QString sql;
   RDSqlQuery *q;
 
@@ -1721,7 +1702,6 @@ void RDCart::removePending(RDStation *station,RDUser *user,RDConfig *config)
     
   }
   delete q;
-#endif  // WIN32
 }
 
 

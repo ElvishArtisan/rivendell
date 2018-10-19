@@ -19,13 +19,12 @@
 //
 
 #include <stdio.h>
-#ifndef WIN32
 #include <syslog.h>
-#endif  // WIN32
-
 #include <stdlib.h>
-#include <rdcmd_switch.h>
+
 #include <qmessagebox.h>
+
+#include <rdcmd_switch.h>
 
 RDCmdSwitch::RDCmdSwitch(int argc,char *argv[],const char *modname,
 			 const char *usage)
@@ -34,12 +33,10 @@ RDCmdSwitch::RDCmdSwitch(int argc,char *argv[],const char *modname,
 
   for(int i=1;i<argc;i++) {
     QString value=QString::fromUtf8(argv[i]);
-#ifndef WIN32
     if(value=="--version") {
       printf("Rivendell v%s [%s]\n",VERSION,modname);
       exit(0);
     }
-#endif  // WIN32
     if(value=="--help") {
       printf("\n%s %s\n",modname,usage);
       exit(0);
@@ -66,14 +63,12 @@ RDCmdSwitch::RDCmdSwitch(int argc,char *argv[],const char *modname,
   //
   // Initialize Logging
   //
-#ifndef WIN32
   if(debug) {
     openlog(modname,LOG_PERROR,LOG_USER);
   }
   else {
     openlog(modname,0,LOG_USER);
   }
-#endif  // WIN32
 }
 
 

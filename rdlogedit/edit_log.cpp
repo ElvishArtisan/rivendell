@@ -133,9 +133,8 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   //
   // Dialogs
   //
-#ifndef WIN32
-  edit_render_dialog=new RenderDialog(rda->station(),rda->system(),rda->config(),this);
-#endif  // WIN32
+  edit_render_dialog=
+    new RenderDialog(rda->station(),rda->system(),rda->config(),this);
 
   //
   // Text Validator
@@ -477,12 +476,10 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   //
   //  Render Button
   //
-#ifndef WIN32
   edit_renderas_button=new QPushButton(this);
   edit_renderas_button->setFont(button_font);
   edit_renderas_button->setText(tr("Render"));
   connect(edit_renderas_button,SIGNAL(clicked()),this,SLOT(renderasData()));
-#endif  // WIN32
 
   //
   //  Reports Button
@@ -495,14 +492,10 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   //
   // Cart Player
   //
-#ifdef WIN32
-  edit_player=NULL;
-#else
   edit_player=
     new RDSimplePlayer(rda->cae(),rda->ripc(),edit_output_card,edit_output_port,
 		       edit_start_macro,edit_end_macro,this);
   edit_player->stopButton()->setOnColor(Qt::red);
-#endif  // WIN32
 
   //
   //  Ok Button
@@ -855,7 +848,6 @@ void EditLog::insertMarkerButtonData()
 
 void EditLog::clickedData(Q3ListViewItem *item)
 {
-#ifndef WIN32
   RDListViewItem *rditem=SingleSelection();
   if(rditem==NULL) {
     edit_player->setCart(0);
@@ -864,7 +856,6 @@ void EditLog::clickedData(Q3ListViewItem *item)
   else {
     edit_player->setCart(rditem->text(3).toUInt());
   }
-#endif  // WIN32
 }
 
 
@@ -1178,7 +1169,6 @@ void EditLog::saveasData()
 
 void EditLog::renderasData()
 {
-#ifndef WIN32
   int first_line=-1;
   int last_line=-1;
 
@@ -1200,7 +1190,6 @@ void EditLog::renderasData()
   else {
     edit_render_dialog->exec(rda->user(),edit_log_event,first_line,last_line+1);
   }
-#endif  // WIN32
 }
 
 
@@ -1236,9 +1225,7 @@ void EditLog::okData()
     SaveLog();
     DeleteTracks();
   }
-#ifndef WIN32
   edit_player->stop();
-#endif  // WIN32
   for(unsigned i=0;i<edit_clipboard->size();i++) {
     edit_clipboard->at(i).clearExternalData();
   }
@@ -1269,9 +1256,7 @@ void EditLog::cancelData()
       break;
     }
   }
-#ifndef WIN32
   edit_player->stop();
-#endif  // WIN32
   for(unsigned i=0;i<edit_clipboard->size();i++) {
     edit_clipboard->at(i).clearExternalData();
   }
@@ -1338,11 +1323,9 @@ void EditLog::resizeEvent(QResizeEvent *e)
   edit_save_button->setGeometry(10,size().height()-60,80,50);
   edit_saveas_button->setGeometry(100,size().height()-60,80,50);
   edit_reports_button->setGeometry(300,size().height()-60,80,50);
-#ifndef WIN32
   edit_renderas_button->setGeometry(190,size().height()-60,80,50);
   edit_player->playButton()->setGeometry(410,size().height()-60,80,50);
   edit_player->stopButton()->setGeometry(500,size().height()-60,80,50);
-#endif  // WIN32
   edit_ok_button->
     setGeometry(size().width()-180,size().height()-60,80,50);
   edit_cancel_button->setGeometry(size().width()-90,size().height()-60,80,50);

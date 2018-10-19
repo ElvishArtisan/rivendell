@@ -17845,3 +17845,6 @@
 	start retries.
 2018-10-19 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a typo that broke generation of the rmlsend(1) man page.
+2018-10-19 Fred Gleason <fredg@paravelsystems.com>
+	* Removed 'build_win32.bat'.
+	* Removed all conditional compilation based on 'WIN32'.

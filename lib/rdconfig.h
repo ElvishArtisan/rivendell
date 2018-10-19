@@ -21,10 +21,8 @@
 #ifndef RDCONFIG_H
 #define RDCONFIG_H
 
-#ifndef WIN32
 #include <syslog.h>
 #include <unistd.h>
-#endif  // WIN32
 
 #include <vector>
 
@@ -37,16 +35,10 @@ class RDConfig
 {
  public:
   enum LogFacility {LogNone=0,LogSyslog=1,LogFile=2};
-#ifdef WIN32
-  enum LogPriority {LogEmerg=0,LogAlert=1,LogCrit=2,
-		    LogErr=3,LogWarning=4,LogNotice=5,
-		    LogInfo=6,LogDebug=7};
-#else
   enum LogPriority {LogEmerg=LOG_EMERG,LogAlert=LOG_ALERT,LogCrit=LOG_CRIT,
 		    LogErr=LOG_ERR,LogWarning=LOG_WARNING,LogNotice=LOG_NOTICE,
 		    LogInfo=LOG_INFO,LogDebug=LOG_DEBUG};
 
-#endif  // WIN32
   RDConfig();
   RDConfig(const QString &filename);
   QString filename() const;
@@ -102,10 +94,8 @@ class RDConfig
   QString caeLogfile() const;
   bool enableMixerLogging() const;
   unsigned channels() const;
-#ifndef WIN32
   uid_t uid() const;
   gid_t gid() const;
-#endif
   bool useRealtime();
   int realtimePriority();
   int transcodingDelay() const;
@@ -168,10 +158,8 @@ class RDConfig
   bool conf_lock_rdairplay_memory;
   std::vector<QString> conf_jack_ports[2];
   unsigned conf_channels;
-#ifndef WIN32
   uid_t conf_uid;
   gid_t conf_gid;
-#endif
   QString conf_cae_logfile;
   bool conf_enable_mixer_logging;
   bool conf_use_realtime;

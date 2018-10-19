@@ -18,12 +18,11 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef WIN32
 #include <signal.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
-#endif
+
 #include <qapplication.h>
 #include <qwindowsstyle.h>
 #include <qwidget.h>
@@ -105,17 +104,8 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // RIPC Connection
   //
-#ifndef WIN32
   connect(rda,SIGNAL(userChanged()),this,SLOT(userChangedData()));
   rda->ripc()->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
-#endif  // WIN32
-
-  //
-  // User
-  //
-#ifdef WIN32
-  rda->user()->setName(RD_USER_LOGIN_NAME);
-#endif  // WIN32
 
   // 
   // Create Fonts
@@ -333,15 +323,9 @@ int main(int argc,char *argv[])
   //
   QString tr_path;
   QString qt_path;
-#ifdef WIN32
-  QSettings settings;
-  settings.insertSearchPath(QSettings::Windows,"/SalemRadioLabs");
-  tr_path=settings.readEntry("/Rivendell/InstallDir")+"\"";
-  qt_path=tr_path;
-#else
   tr_path=QString(PREFIX)+QString("/share/rivendell/");
   qt_path=QString("/usr/share/qt4/translation/");
-#endif  // WIN32
+
   QTranslator qt(0);
   qt.load(qt_path+QString("qt_")+QTextCodec::locale(),".");
   a.installTranslator(&qt);

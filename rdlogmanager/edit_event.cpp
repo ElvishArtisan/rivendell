@@ -170,7 +170,6 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   QString sql;
   RDSqlQuery *q;
   event_player = NULL;
-#ifndef WIN32
   sql=QString("select ")+
     "OUTPUT_CARD,"+  // 00
     "OUTPUT_PORT,"+  // 01
@@ -189,7 +188,6 @@ EditEvent::EditEvent(QString eventname,bool new_event,
     event_player->stopButton()->setOnColor(Qt::red);
   }
   delete q;
-#endif  // WIN32  
 
   //
   // Remarks
@@ -841,14 +839,12 @@ void EditEvent::filterClickedData(int id)
 
 void EditEvent::cartClickedData(Q3ListViewItem *item)
 {
-#ifndef WIN32
   if (!event_player) return;
   if(item==NULL) {
     event_player->setCart(0);
     return;
   }
   event_player->setCart(item->text(1).toUInt());
-#endif  // WIN32
 }
 
 
@@ -1224,22 +1220,19 @@ void EditEvent::colorData()
 void EditEvent::okData()
 {
   Save();
-#ifndef WIN32
   if (event_player){
     event_player->stop();
   }
-#endif  // WIN32
+
   done(0);
 }
 
 
 void EditEvent::cancelData()
 {
-#ifndef WIN32
   if (event_player){
     event_player->stop();
   }
-#endif  // WIN32
   if(event_saved) {
     done(-1);
   }

@@ -2,7 +2,7 @@
 //
 //   A class for handling Microsoft WAV files.
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -25,9 +25,7 @@
 #include <vector>
 #include <sys/types.h>
 #include <sys/stat.h>
-#ifndef WIN32
 #include <unistd.h>
-#endif  // WIN32
 #include <qobject.h>
 #include <qstring.h>
 #include <qdatetime.h>

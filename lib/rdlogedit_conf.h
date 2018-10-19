@@ -23,9 +23,7 @@
 
 #include <qsqldatabase.h>
 
-#ifndef WIN32
 #include <rdsettings.h>
-#endif  // WIN32
 #include <rdlog_line.h>
 
 class RDLogeditConf
@@ -69,9 +67,7 @@ class RDLogeditConf
   void setRipperLevel(int level);
   RDLogLine::TransType defaultTransType() const;
   void setDefaultTransType(RDLogLine::TransType type);
-#ifndef WIN32
   void getSettings(RDSettings *s) const;
-#endif  // WIN32
   
  private:
   void SetRow(const QString &param,int value) const;
@@ -81,4 +77,4 @@ class RDLogeditConf
 };
 
 
-#endif 
+#endif  // RDLOGEDIT_CONF_H

@@ -57,9 +57,7 @@ RDSqlQuery::RDSqlQuery (const QString &query,bool reconnect):
     }
 
     fprintf(stderr,"%s\n",(const char *)err);
-#ifndef WIN32
     syslog(LOG_ERR,(const char *)err);
-#endif
   }
 
   if(isActive()) {
@@ -83,9 +81,7 @@ RDSqlQuery::RDSqlQuery (const QString &query,bool reconnect):
       +"["+lastError().text()+"]: "+query;
 
     fprintf(stderr,"%s\n",(const char *)err);
-#ifndef WIN32
     syslog(LOG_ERR,(const char *)err);
-#endif  // WIN32
   }
 }
 

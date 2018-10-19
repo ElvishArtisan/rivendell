@@ -80,7 +80,6 @@ bool RDUser::authenticated(bool webuser) const
     }
     delete q;
   }
-#ifndef WIN32
   else {
     bool ret=false;
     RDPam *pam=new RDPam(pamService());
@@ -88,7 +87,7 @@ bool RDUser::authenticated(bool webuser) const
     delete pam;
     return ret;
   }
-#endif  // WIN32
+
   return false;
 }
 

@@ -31,15 +31,12 @@
 #include <qvariant.h>
 #include <qmessagebox.h>
 #include <qdir.h>
-#ifdef WIN32
-#define RDCONF_FILE_SEPARATOR '\\'
-#else
 #define RDCONF_FILE_SEPARATOR '/'
 #include <unistd.h>
 #include <netdb.h>
 #include <sys/timex.h>
 #include <time.h>
-#endif
+
 #include <rddb.h>
 #include <rdconf.h>
 #include <rdescape_string.h>
@@ -57,21 +54,12 @@ int GetPrivateProfileBool(const char *sFilename,const char *cHeader,
   if(temp[0]==0) {
     return bDefault;
   }
-#ifdef WIN32
-  if((!stricmp(temp,"yes"))||(!stricmp(temp,"on"))) {
-    return true;
-  }
-  if((!stricmp(temp,"no"))||(!stricmp(temp,"off"))) {
-    return false;
-  }
-#else
   if((!strcasecmp(temp,"yes"))||(!strcasecmp(temp,"on"))) {
     return true;
   }
   if((!strcasecmp(temp,"no"))||(!strcasecmp(temp,"off"))) {
     return false;
   }
-#endif
   return bDefault;
 }
 
@@ -150,13 +138,6 @@ int GetIni(const char *sFileName,const char *cHeader,const char *cLabel,
   int iFileStat;
 
   strcpy(sName,sFileName);
-#ifdef WIN32
-  for(int i=0;i<strlen(sName);i++) {
-    if(sName[i]=='/') {
-      sName[i]='\\';
-    }
-  }
-#endif  // WIN32
   cIniName=fopen(sName,"r");
   if(cIniName==NULL) {
     return 2;	/* ini file doesn't exist! */
@@ -231,7 +212,6 @@ void Prepend(char *sPathname,char *sFilename)
 }
 
   
-#ifndef WIN32
 int IncrementIndex(char *sPathname,int dMaxIndex)
 {
   int dLockname=-1;
@@ -296,7 +276,6 @@ int IncrementIndex(char *sPathname,int dMaxIndex)
 
   return dIndex;
 }
-#endif
 
 
 /*
@@ -323,7 +302,6 @@ void StripLevel(char *sString)
 
 
 
-#ifndef WIN32
 bool GetLock(const char *sLockname)
 {
   int fd;
@@ -344,17 +322,12 @@ bool GetLock(const char *sLockname)
   close(fd);
   return true;
 }
-#endif
 
 
-
-
-#ifndef WIN32
 void ClearLock(const char *sLockname)
 {
   unlink(sLockname);
 }
-#endif  // WIN32
 
 
 QString RDGetPathPart(QString path)
@@ -435,7 +408,6 @@ QFont::Weight RDGetFontWeight(QString string)
 }
 
 
-#ifndef WIN32
 bool RDDetach(const QString &coredir)
 {
   if(!coredir.isEmpty()) {
@@ -446,7 +418,6 @@ bool RDDetach(const QString &coredir)
   }
   return true;
 }
-#endif
 
 
 bool RDBool(QString string)
@@ -467,7 +438,6 @@ QString RDYesNo(bool state)
 }
 
 
-#ifndef WIN32
 QHostAddress RDGetHostAddr()
 {
   FILE *file;
@@ -490,14 +460,10 @@ QHostAddress RDGetHostAddr()
     (host_ent->h_addr_list[0][3]&0xff);
   return QHostAddress((Q_UINT32)host_address);
 }
-#endif  // WIN32
 
 
 QString RDGetDisplay(bool strip_point)
 {
-#ifdef WIN32
-  return QString("win32");
-#else
   QString display;
   int l;
 
@@ -516,7 +482,6 @@ QString RDGetDisplay(bool strip_point)
     }
   }
   return display;
-#endif  // WIN32
 }
 
 
@@ -775,7 +740,6 @@ int RDSetTimeLength(const QString &str)
 }
 
 
-#ifndef WIN32
 bool RDCopy(const QString &srcfile,const QString &destfile)
 {
   int src_fd;
@@ -812,10 +776,8 @@ bool RDCopy(const QString &srcfile,const QString &destfile)
   close(dest_fd);
   return true;
 }
-#endif  // WIN32
 
 
-#ifndef WIN32
 bool RDWritePid(const QString &dirname,const QString &filename,int owner,
 		int group)
 {
@@ -881,7 +843,6 @@ bool RDTimeSynced()
   }
   return false;
 }
-#endif  // WIN32
 
 
 QString RDGetHomeDir(bool *found)
@@ -942,7 +903,6 @@ QString RDTempDir()
 
 QString RDTempFile()
 {
-#ifndef WIN32
   int fd=-1;
   char dirname[PATH_MAX];
   strncpy(dirname,"/tmp/rivendellXXXXXX",PATH_MAX);
@@ -950,12 +910,10 @@ QString RDTempFile()
     close(fd);
     return QString(dirname);
   }
-#endif  // WIN32
   return QString();
 }
 
 
-#ifndef WIN32
 QString RDTimeZoneName(const QDateTime &datetime)
 {
   char name[20];
@@ -963,7 +921,6 @@ QString RDTimeZoneName(const QDateTime &datetime)
   strftime(name,20,"%Z",localtime(&time));
   return QString(name);
 }
-#endif  // WIN32
 
 
 QString RDDowCode(int dow)
@@ -1028,9 +985,6 @@ QTime RDUtcToLocal(const QTime &gmttime)
 
 int RDTimeZoneOffset()
 {
-#ifdef WIN32
-  return 0;
-#else
   time_t t=time(&t);
   struct tm *tm=localtime(&t);
   time_t local_time=3600*tm->tm_hour+60*tm->tm_min+tm->tm_sec;
@@ -1038,7 +992,6 @@ int RDTimeZoneOffset()
   time_t gmt_time=3600*tm->tm_hour+60*tm->tm_min+tm->tm_sec;
 
   return gmt_time-local_time;
-#endif  // WIN32
 }
 
 
@@ -1075,7 +1028,6 @@ bool RDProcessActive(const QString &cmd)
 
 bool RDProcessActive(const QStringList &cmds)
 {
-#ifndef WIN32
   QStringList dirs;
   QDir *proc_dir=new QDir("/proc");
   bool ok=false;
@@ -1106,7 +1058,6 @@ bool RDProcessActive(const QStringList &cmds)
   }
 
   delete proc_dir;
-#endif  // WIN32
   return false;
 }
 
