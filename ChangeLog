@@ -17865,3 +17865,5 @@
 	* Removed 'conf/my.cnf-standby'.
 	* Removed 'conf/rd-sample.ini'.
 	* Removed 'conf/rd.conf-slax'.
+2018-10-19 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.0.0alpha00.
