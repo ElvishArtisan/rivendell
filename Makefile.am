@@ -33,7 +33,6 @@ SUBDIRS = icons\
           $(HPI_RD_OPT) apis\
           scripts\
           conf\
-          debian\
           docs\
           xdg\
           cae\
@@ -65,11 +64,6 @@ ACLOCAL_AMFLAGS = -I m4
 
 maintainer-clean-local:	
 	rm -rf m4
-
-install-debian:	
-	touch ./building-debian
-	make install
-	rm -f ./building-debian
 
 rpm:	dist
 	mkdir -p $(HOME)/rpmbuild/SOURCES

@@ -518,8 +518,6 @@ AC_CONFIG_FILES([rivendell.spec \
     docs/tables/Makefile \
     xdg/rivendell-opsguide-html.desktop \
     xdg/rivendell-opsguide-pdf.desktop \
-    debian/Makefile \
-    debian/patches/Makefile \
     importers/Makefile \
     ios/Makefile \
     ios/rmlsend/Makefile \
