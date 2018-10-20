@@ -78,19 +78,6 @@ zip:	dist
 	zip -r rivendell-@VERSION@.zip rivendell-@VERSION@
 	rm -rf rivendell-@VERSION@
 
-doxygen: 
-	cd lib && doxygen doxygen.conf 
-	cd cae && doxygen doxygen.conf &
-	cd rdairplay && doxygen doxygen.conf &
-	cd rdadmin && doxygen doxygen.conf &
-	cd rdcatch && doxygen doxygen.conf &
-	cd rdcatchd && doxygen doxygen.conf &
-	cd rdlibrary && doxygen doxygen.conf &
-	cd rdlogedit && doxygen doxygen.conf &
-	cd rdlogin && doxygen doxygen.conf &
-	cd rdlogmanager && doxygen doxygen.conf &
-	cd ripcd && doxygen doxygen.conf &
-
 EXTRA_DIST = autogen.sh\
              CODINGSTYLE\
              get_distro.pl\

@@ -17856,3 +17856,5 @@
 	* Removed the 'make slax' target.
 2018-10-19 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'debian/' directory.
+2018-10-19 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'make doxygen' target.
