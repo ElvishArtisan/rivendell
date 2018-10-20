@@ -461,7 +461,6 @@ ln -s ../../icons/trashcan-32x32.png docs/opsguide/trashcan-32x32.png
 
 AC_CONFIG_FILES([rivendell.spec \
     Makefile \
-    rdrepld-suse \
     conf/rd-bin.conf \
     icons/Makefile \
     helpers/Makefile \
@@ -547,7 +546,6 @@ AC_CONFIG_FILES([rivendell.spec \
     xdg/Makefile \
     ])
 AC_OUTPUT()
-chmod 755 rdrepld-suse
 
 #
 # Configuration Results

@@ -1,8 +1,6 @@
-## automake.am
+## Makefile.am
 ##
 ## Top level automake.am for Rivendell
-##
-## Use automake to process this into a Makefile.in
 ##
 ##   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 ##
@@ -19,6 +17,7 @@
 ##   License along with this program; if not, write to the Free Software
 ##   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
+## Use automake to process this into a Makefile.in
 
 if HPI_RD_AM
   HPI_RD_OPT = rdhpi
@@ -84,7 +83,6 @@ EXTRA_DIST = autogen.sh\
              get_target.sh\
              INSTALL-WINDOWS\
              PACKAGE_VERSION\
-             rdrepld-suse.in\
              rivendell.ism\
              rivendell.pro\
              rivendell.spec.in\
@@ -100,7 +98,6 @@ CLEANFILES = *~\
 DISTCLEANFILES = config.guess\
                  config.sub\
                  ltmain.sh\
-                 rdrepld-suse\
                  rivendell\
                  rivendell.spec
 

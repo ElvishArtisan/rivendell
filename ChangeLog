@@ -17858,3 +17858,5 @@
 	* Removed the 'debian/' directory.
 2018-10-19 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'make doxygen' target.
+2018-10-19 Fred Gleason <fredg@paravelsystems.com>
+	* Removed 'rdrepld-suse.in'.
