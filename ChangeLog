@@ -17860,3 +17860,8 @@
 	* Removed the 'make doxygen' target.
 2018-10-19 Fred Gleason <fredg@paravelsystems.com>
 	* Removed 'rdrepld-suse.in'.
+2018-10-19 Fred Gleason <fredg@paravelsystems.com>
+	* Removed 'conf/my.cnf-master'.
+	* Removed 'conf/my.cnf-standby'.
+	* Removed 'conf/rd-sample.ini'.
+	* Removed 'conf/rd.conf-slax'.
