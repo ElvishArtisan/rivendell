@@ -31,12 +31,8 @@ uninstall:
 	rm -f $(DESTDIR)/etc/pam.d/rivendell
 
 EXTRA_DIST = asound.conf-sample\
-             my.cnf-master\
-             my.cnf-standby\
              rd-bin.conf.in\
              rd.conf-sample\
-             rd.conf-slax\
-             rd-sample.ini\
              rivendell.pam\
              rlm_ando.conf\
              rlm_facebook.conf\
