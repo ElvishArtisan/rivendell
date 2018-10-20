@@ -79,14 +79,6 @@ rpm:	dist
 	mv $(HOME)/rpmbuild/SRPMS/rivendell-*.src.rpm $(top_srcdir)/
 	rm $(HOME)/rpmbuild/SOURCES/rivendell-$(VERSION).tar.gz
 
-slack:	all
-	./make_slack
-
-slax:	all
-	rm -f rivendell-$(VERSION)-$(ARCH)-$(RPM_RELEASE).mo
-	./make_slack
-	tgz2mo rivendell-$(VERSION)-$(ARCH)-$(RPM_RELEASE).tgz rivendell-$(VERSION)-$(ARCH)-$(RPM_RELEASE).mo
-
 zip:	dist
 	tar -zxf rivendell-@VERSION@.tar.gz
 	zip -r rivendell-@VERSION@.zip rivendell-@VERSION@
@@ -110,14 +102,11 @@ EXTRA_DIST = autogen.sh\
              get_distro.pl\
              get_target.sh\
              INSTALL-WINDOWS\
-             make_slack.in\
              PACKAGE_VERSION\
              rdrepld-suse.in\
              rivendell.ism\
              rivendell.pro\
              rivendell.spec.in\
-             slack-desc.in\
-             slack_doinst.sh\
              UPGRADING
 
 CLEANFILES = *~\
@@ -130,11 +119,9 @@ CLEANFILES = *~\
 DISTCLEANFILES = config.guess\
                  config.sub\
                  ltmain.sh\
-                 make_slack\
                  rdrepld-suse\
                  rivendell\
-                 rivendell.spec\
-                 slack-desc
+                 rivendell.spec
 
 MAINTAINERCLEANFILES = *~\
                        *.tar.gz\
