@@ -1,18 +1,18 @@
 This is the README file for the Rivendell package.
 
-WARNING: This is a BETA TEST version of Rivendell. As such, it is virtually
+WARNING: This is an ALPHA TEST version of Rivendell. As such, it is virtually
          guaranteed to contain bugs, possibly severe ones that could
          cause LOSS OF DATA. It is intended for testing purposes, and
-         should not be used in 'production' siuations.
+         should not be used in 'production' situations.
 
-This software comes with ABSOLUTELY NO WARRANTY.  See the file COPYING for
+This software comes with ABSOLUTELY NO WARRANTY. See the file COPYING for
 details.
 
-Welcome to this release of the Rivendell Project.  Rivendell aims
+Welcome to this release of the Rivendell Project. Rivendell aims
 to be a robust, functionally complete digital audio system for use in 
 professional radio broadcast environments.
 
-See the file INSTALL for installation instructions.  If you are upgrading from
+See the file INSTALL for installation instructions. If you are upgrading from
 a 1.x or 2.x version of Rivendell, also see the file 'UPGRADING'
 for important notes and pointers.
 
@@ -48,6 +48,9 @@ The on-air playout application.
 RDPanel
 A 'fullscreen' SoundPanel cartwall application.
 
+RDCartSlots
+An application that emulates a multi-slot cart decks.
+
 RDCastManager
 A utility for posting and managing podcast episodes.
 
@@ -62,11 +65,11 @@ A utility for configuring ALSA audio adapters.
 
 RDImport
 A command-line utility for batch importing audio along with
-accompanying metadata.  Do:
+accompanying metadata. Do:
 
-	rdimport --help
+	man 1 rdimport
 
-from a command prompt for a list of options.
+for usage help.
 
 RMLSend
 A GUI and command-line utility for sending Rivendell Macro Language

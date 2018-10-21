@@ -17851,3 +17851,19 @@
 2018-10-19 Fred Gleason <fredg@paravelsystems.com>
 	* Removed check for Win32 installer from 'configure.ac'.
 	* Removed win32 clauses from '.pro' files.
+2018-10-19 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'make slack' target.
+	* Removed the 'make slax' target.
+2018-10-19 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'debian/' directory.
+2018-10-19 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'make doxygen' target.
+2018-10-19 Fred Gleason <fredg@paravelsystems.com>
+	* Removed 'rdrepld-suse.in'.
+2018-10-19 Fred Gleason <fredg@paravelsystems.com>
+	* Removed 'conf/my.cnf-master'.
+	* Removed 'conf/my.cnf-standby'.
+	* Removed 'conf/rd-sample.ini'.
+	* Removed 'conf/rd.conf-slax'.
+2018-10-19 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.0.0alpha00.

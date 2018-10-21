@@ -1,9 +1,0 @@
-[Desktop Entry]
-Encoding=UTF-8
-Name=rdlibrary
-Comment=Rivendell Library
-Exec=rdlibrary
-Terminal=false
-Type=Application
-Icon=/usr/share/srlabs/rdlibrary.xpm
-Categories=Application;AudioVideo;

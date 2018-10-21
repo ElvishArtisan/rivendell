@@ -1,8 +1,6 @@
-## automake.am
+## Makefile.am
 ##
 ## Top level automake.am for Rivendell
-##
-## Use automake to process this into a Makefile.in
 ##
 ##   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 ##
@@ -19,6 +17,7 @@
 ##   License along with this program; if not, write to the Free Software
 ##   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
+## Use automake to process this into a Makefile.in
 
 if HPI_RD_AM
   HPI_RD_OPT = rdhpi
@@ -33,7 +32,6 @@ SUBDIRS = icons\
           $(HPI_RD_OPT) apis\
           scripts\
           conf\
-          debian\
           docs\
           xdg\
           cae\
@@ -66,11 +64,6 @@ ACLOCAL_AMFLAGS = -I m4
 maintainer-clean-local:	
 	rm -rf m4
 
-install-debian:	
-	touch ./building-debian
-	make install
-	rm -f ./building-debian
-
 rpm:	dist
 	mkdir -p $(HOME)/rpmbuild/SOURCES
 	cp rivendell-$(VERSION).tar.gz $(HOME)/rpmbuild/SOURCES/
@@ -79,45 +72,20 @@ rpm:	dist
 	mv $(HOME)/rpmbuild/SRPMS/rivendell-*.src.rpm $(top_srcdir)/
 	rm $(HOME)/rpmbuild/SOURCES/rivendell-$(VERSION).tar.gz
 
-slack:	all
-	./make_slack
-
-slax:	all
-	rm -f rivendell-$(VERSION)-$(ARCH)-$(RPM_RELEASE).mo
-	./make_slack
-	tgz2mo rivendell-$(VERSION)-$(ARCH)-$(RPM_RELEASE).tgz rivendell-$(VERSION)-$(ARCH)-$(RPM_RELEASE).mo
-
 zip:	dist
 	tar -zxf rivendell-@VERSION@.tar.gz
 	zip -r rivendell-@VERSION@.zip rivendell-@VERSION@
 	rm -rf rivendell-@VERSION@
-
-doxygen: 
-	cd lib && doxygen doxygen.conf 
-	cd cae && doxygen doxygen.conf &
-	cd rdairplay && doxygen doxygen.conf &
-	cd rdadmin && doxygen doxygen.conf &
-	cd rdcatch && doxygen doxygen.conf &
-	cd rdcatchd && doxygen doxygen.conf &
-	cd rdlibrary && doxygen doxygen.conf &
-	cd rdlogedit && doxygen doxygen.conf &
-	cd rdlogin && doxygen doxygen.conf &
-	cd rdlogmanager && doxygen doxygen.conf &
-	cd ripcd && doxygen doxygen.conf &
 
 EXTRA_DIST = autogen.sh\
              CODINGSTYLE\
              get_distro.pl\
              get_target.sh\
              INSTALL-WINDOWS\
-             make_slack.in\
              PACKAGE_VERSION\
-             rdrepld-suse.in\
              rivendell.ism\
              rivendell.pro\
              rivendell.spec.in\
-             slack-desc.in\
-             slack_doinst.sh\
              UPGRADING
 
 CLEANFILES = *~\
@@ -130,11 +98,8 @@ CLEANFILES = *~\
 DISTCLEANFILES = config.guess\
                  config.sub\
                  ltmain.sh\
-                 make_slack\
-                 rdrepld-suse\
                  rivendell\
-                 rivendell.spec\
-                 slack-desc
+                 rivendell.spec
 
 MAINTAINERCLEANFILES = *~\
                        *.tar.gz\

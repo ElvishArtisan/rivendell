@@ -461,9 +461,6 @@ ln -s ../../icons/trashcan-32x32.png docs/opsguide/trashcan-32x32.png
 
 AC_CONFIG_FILES([rivendell.spec \
     Makefile \
-    make_slack \
-    slack-desc \
-    rdrepld-suse \
     conf/rd-bin.conf \
     icons/Makefile \
     helpers/Makefile \
@@ -520,8 +517,6 @@ AC_CONFIG_FILES([rivendell.spec \
     docs/tables/Makefile \
     xdg/rivendell-opsguide-html.desktop \
     xdg/rivendell-opsguide-pdf.desktop \
-    debian/Makefile \
-    debian/patches/Makefile \
     importers/Makefile \
     ios/Makefile \
     ios/rmlsend/Makefile \
@@ -551,8 +546,6 @@ AC_CONFIG_FILES([rivendell.spec \
     xdg/Makefile \
     ])
 AC_OUTPUT()
-chmod 755 make_slack
-chmod 755 rdrepld-suse
 
 #
 # Configuration Results

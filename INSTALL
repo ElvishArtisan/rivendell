@@ -74,9 +74,7 @@ One or more audio driver libraries. Choices are:
 
   The JACK Audio Connection Kit
   A low latency audio server, designed from the ground up for
-  professional audio work. See http://jackit.sourceforge.net/.
-  Further information on running Rivendell with the JACK driver can be
-  found in 'docs/JACK.txt'.
+  professional audio work. See http://jackaudio.org/.
 
   The Advanced Linux Sound Architecture (ALSA) v1.0 or greater.
   The standard soundcard driver for Linux for kernels 2.6.x or later.
