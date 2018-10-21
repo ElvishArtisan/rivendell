@@ -20,7 +20,7 @@ dnl   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 dnl
 
 AC_INIT([rivendell],m4_esyscmd(cat PACKAGE_VERSION))
-AM_INIT_AUTOMAKE
+AM_INIT_AUTOMAKE([1.9 tar-pax])
 AC_SUBST(RPM_RELEASE,1)
 m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
 AC_CONFIG_MACRO_DIR([m4])
