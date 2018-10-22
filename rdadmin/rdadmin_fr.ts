@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>AddFeed</name>
     <message>
@@ -757,6 +759,10 @@ configured to run the CAE service in order to populate the audio resources datab
     </message>
     <message>
         <source>Event Carts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>RDAdmin - </source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3014,6 +3020,10 @@ Overwrite?</source>
     </message>
     <message>
         <source>Mcast Address for Notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to write file &quot;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
