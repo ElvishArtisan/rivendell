@@ -98,7 +98,7 @@ associated with.
 
 %build
 %configure --libexecdir=@libexecdir@ --sysconfdir=@sysconfdir@ @RDXPORTDEBUG@
-make -j
+make -j 10
 
 
 %install
