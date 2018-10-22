@@ -17874,3 +17874,6 @@
 	package.
 2018-10-22 Patrick Linstruth <patrick@deltecent.com>
 	* Fixed regression with Qt4 build of rdadmin(1)
+2018-10-22 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed a bug in 'configure.ac' that broke the 'make rpm' target
+	when used with long version strings.
