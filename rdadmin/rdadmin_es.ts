@@ -1,4 +1,6 @@
-<!DOCTYPE TS><TS>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.0">
 <context>
     <name>@default</name>
     <message>
@@ -1128,6 +1130,10 @@ computador para obtener los recursos de audio de dicho equipo.</translation>
     </message>
     <message>
         <source>Event Carts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>RDAdmin - </source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3084,7 +3090,7 @@ computador para obtener los recursos de audio de dicho equipo.</translation>
     </message>
     <message>
         <source>No</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">No</translation>
     </message>
     <message>
         <source>Yes</source>
@@ -3572,6 +3578,10 @@ Overwrite?</source>
     </message>
     <message>
         <source>Mcast Address for Notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to write file &quot;</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -17872,3 +17872,5 @@
 	from the RPM 'opsguide' sub-package.
 	* Removed the 'qt-devel' dependency from the RPM 'rivendell'
 	package.
+2018-10-22 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed regression with Qt4 build of rdadmin(1)
