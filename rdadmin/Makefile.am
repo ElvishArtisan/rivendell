@@ -38,8 +38,8 @@ uninstall-local:
 	rm -f $(DESTDIR)$(prefix)/share/rivendell/rdadmin_*.qm
 
 all:	
-	lupdate rdadmin.pro
-	lrelease rdadmin.pro
+	lupdate-qt4 rdadmin.pro
+	lrelease-qt4 rdadmin.pro
 
 bin_PROGRAMS = rdadmin
 
