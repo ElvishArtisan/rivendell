@@ -25,7 +25,7 @@ Release: @RPM_RELEASE@
 License: GPL
 Packager: Fred Gleason <fredg@paravelsystems.com>
 Source: rivendell-@VERSION@.tar.gz
-Requires: @MYSQL_PKG@, @QT4_MYSQL_PKG@, @APACHE_PKG@, @QT4_DEVEL_PKG@, curl, @USERMODE_PKG@, @CDDA2WAV_PKG@,
+Requires: @MYSQL_PKG@, @QT4_MYSQL_PKG@, @APACHE_PKG@, curl, @USERMODE_PKG@, @CDDA2WAV_PKG@,
 BuildRoot: /var/tmp/rivendell-@VERSION@
 Obsoletes: rivendell-base
 

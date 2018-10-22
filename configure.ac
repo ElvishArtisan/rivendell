@@ -149,7 +149,6 @@ if test $ar_gcc_distro = suse ; then
   AC_SUBST(USERMODE_PKG,"")
   AC_SUBST(MYSQL_PKG,"mysql")
   AC_SUBST(QT4_MYSQL_PKG,"qt-mysql")
-  AC_SUBST(QT4_DEVEL_PKG,"qt-devel")
   AC_SUBST(DOC_PATH,"/usr/share/doc/rivendell")
 else
   AC_SUBST(APACHE_PKG,"httpd")
@@ -159,20 +158,17 @@ else
     AC_SUBST(USERMODE_PKG,"usermode usermode-gtk")
     AC_SUBST(MYSQL_PKG,"mariadb")
     AC_SUBST(QT4_MYSQL_PKG,"qt-mysql")
-    AC_SUBST(QT4_DEVEL_PKG,"qt-devel")
     AC_SUBST(CDDA2WAV_PKG,"icedax")
   else
     if test $ar_distro_major -ge 6 ; then
     AC_SUBST(USERMODE_PKG,"usermode")
       AC_SUBST(MYSQL_PKG,"mysql")
       AC_SUBST(QT4_MYSQL_PKG,"qt4-mysql")
-      AC_SUBST(QT4_DEVEL_PKG,"qt4-devel")
       AC_SUBST(CDDA2WAV_PKG,"icedax")
     else
       AC_SUBST(USERMODE_PKG,"usermode")
       AC_SUBST(MYSQL_PKG,"mysql")
       AC_SUBST(QT4_MYSQL_PKG,"qt-MySQL")
-      AC_SUBST(QT4_DEVEL_PKG,"qt-devel")
       AC_SUBST(CDDA2WAV_PKG,"")
     fi
   fi
@@ -515,8 +511,6 @@ AC_CONFIG_FILES([rivendell.spec \
     docs/rivwebcapi/Makefile \
     docs/stylesheets/Makefile \
     docs/tables/Makefile \
-    xdg/rivendell-opsguide-html.desktop \
-    xdg/rivendell-opsguide-pdf.desktop \
     importers/Makefile \
     ios/Makefile \
     ios/rmlsend/Makefile \

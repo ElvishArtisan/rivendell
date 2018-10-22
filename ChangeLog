@@ -17870,3 +17870,5 @@
 2018-10-22 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'evince', 'firefox' and 'rivendell' dependencies
 	from the RPM 'opsguide' sub-package.
+	* Removed the 'qt-devel' dependency from the RPM 'rivendell'
+	package.
