@@ -34,8 +34,7 @@ Summary: Library importers for the Rivendell Broadcast Automation System
 Requires: rivendell = @VERSION@, madplay
 
 %package opsguide
-Summary: The Rivendell Operations and Administration Guide
-Requires: evince, firefox, rivendell = @VERSION@
+Summary: Rivendell Operations and Administration Guide
 
 %package webapi
 Summary: Client libraries for interfacing with Rivendell's Web API.
@@ -415,8 +414,6 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %files opsguide
-@LOCAL_PREFIX@/share/applications/rivendell-opsguide-html.desktop
-@LOCAL_PREFIX@/share/applications/rivendell-opsguide-pdf.desktop
 @LOCAL_PREFIX@/share/rivendell/opsguide.pdf
 @LOCAL_PREFIX@/share/rivendell/html/*
 
