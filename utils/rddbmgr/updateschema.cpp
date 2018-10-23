@@ -9162,6 +9162,18 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     }
 
     sql=QString("alter table RDLOGEDIT ")+
+      "modify column INPUT_CARD int(11) default 0";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table RDLOGEDIT ")+
+      "modify column OUTPUT_CARD int(11) default 0";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table RDLOGEDIT ")+
       "modify column STATION varchar(64) not null";
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
