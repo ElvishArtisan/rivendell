@@ -17851,3 +17851,6 @@
 2018-10-19 Fred Gleason <fredg@paravelsystems.com>
 	* Removed check for Win32 installer from 'configure.ac'.
 	* Removed win32 clauses from '.pro' files.
+2018-10-22 Patrick Linstruth <patrick@deltecent.com>
+	* Changed `RDLOGEDIT.INPUT_CARD` and `RDLOGEDIT.OUTPUT_CARD`
+	defaults to 0 to match RDLIBRARY defaults
