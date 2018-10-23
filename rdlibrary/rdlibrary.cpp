@@ -484,6 +484,8 @@ MainWidget::MainWidget(QWidget *parent)
   lib_player->playButton()->setEnabled(false);
   lib_player->stopButton()->setEnabled(false);
   lib_player->stopButton()->setOnColor(Qt::red);
+  lib_player->playButton()->setFocusPolicy(Qt::NoFocus);
+  lib_player->stopButton()->setFocusPolicy(Qt::NoFocus);
 
 
   // 
