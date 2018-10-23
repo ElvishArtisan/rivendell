@@ -17891,3 +17891,6 @@
 	* Changed 'RDLOGEDIT.INPUT_CARD' and 'RDLOGEDIT.OUTPUT_CARD'
 	defaults to 0 to match RDLIBRARY defaults
 	* Incremented the database version to 298.
+2018-10-23 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'configure.ac' that caused detection of FLAC
+	support to always fail.

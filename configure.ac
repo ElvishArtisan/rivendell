@@ -243,11 +243,6 @@ AC_CHECK_HEADER(security/pam_appl.h,[],[AC_MSG_ERROR([*** PAM not found ***])])
 AC_CHECK_HEADER(soundtouch/SoundTouch.h,[],[AC_MSG_ERROR([*** SoundTouch not found ***])])
 
 #
-# Check for MySQL client libraries
-#
-MYSQL_CLIENT()
-
-#
 # Check for FLAC
 #
 if test -z $FLAC_DISABLED ; then
