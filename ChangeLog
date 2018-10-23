@@ -17884,3 +17884,4 @@
 	* Modified rdmonitor(1) to use QProcess to spawn rdselect(1).
 2018-10-22 Patrick Linstruth <patrick@deltecent.com>
 	* Disable play/stop button focus in rdlibrary(1)
+	* Fixed bug in cart validation after edit in rdlibrary(1)
