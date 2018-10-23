@@ -88,6 +88,7 @@ class MainWidget : public QWidget
   void macroData();
   void ripData();
   void reportsData();
+  void playerShortcutData();
   void cartOnItemData(Q3ListViewItem *item);
   void cartClickedData();
   void cartDoubleclickedData(Q3ListViewItem *,const QPoint &,int);

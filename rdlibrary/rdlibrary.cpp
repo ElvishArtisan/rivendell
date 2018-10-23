@@ -38,6 +38,8 @@
 #include <q3progressdialog.h>
 #include <qtooltip.h>
 #include <qstylefactory.h>
+#include <qkeysequence.h>
+#include <qshortcut.h>
 
 #include <curl/curl.h>
 
@@ -484,7 +486,11 @@ MainWidget::MainWidget(QWidget *parent)
   lib_player->playButton()->setEnabled(false);
   lib_player->stopButton()->setEnabled(false);
   lib_player->stopButton()->setOnColor(Qt::red);
+  lib_player->playButton()->setFocusPolicy(Qt::NoFocus);
+  lib_player->stopButton()->setFocusPolicy(Qt::NoFocus);
 
+  QShortcut *lib_player_shortcut=new QShortcut(Qt::Key_Space,this);
+  connect(lib_player_shortcut,SIGNAL(activated()),this,SLOT(playerShortcutData()));
 
   // 
   // Setup Signal Handling 
@@ -626,6 +632,19 @@ void MainWidget::groupActivatedData(const QString &str)
   filterChangedData("");
 }
 
+
+void MainWidget::playerShortcutData()
+{
+  if(lib_player->isPlaying()) {
+    lib_player->stop();
+  }
+  else if(lib_player->playButton()->isEnabled()) {
+    lib_player->play();
+  }
+  else if(lib_macro_button->isEnabled()) {
+    macroData();
+  }
+}
 
 void MainWidget::addData()
 {
@@ -944,6 +963,7 @@ void MainWidget::cartClickedData()
       lib_player->stopButton()->setEnabled(false);
       lib_player->playButton()->setVisible(false);
       lib_player->stopButton()->setVisible(false);
+      lib_player->stop();
     }
     else {
       lib_player->setCart(item->text(Cart));
@@ -1452,19 +1472,19 @@ void MainWidget::RefreshLine(RDListViewItem *item)
     "GROUPS.COLOR,"+           // 22
     "CUTS.TALK_START_POINT,"+  // 23
     "CUTS.TALK_END_POINT,"+    // 24
-    "CUTS.LENGTH,"+            // 23
-    "CUTS.EVERGREEN,"+         // 24
-    "CUTS.START_DATETIME,"+    // 25
-    "CUTS.END_DATETIME,"+      // 26
-    "CUTS.START_DAYPART,"+     // 27
-    "CUTS.END_DAYPART,"+       // 28
-    "CUTS.MON,"+               // 29
-    "CUTS.TUE,"+               // 30
-    "CUTS.WED,"+               // 31
-    "CUTS.THU,"+               // 32
-    "CUTS.FRI,"+               // 33
-    "CUTS.SAT,"+               // 34
-    "CUTS.SUN "+               // 35
+    "CUTS.LENGTH,"+            // 25  offsets begin here
+    "CUTS.EVERGREEN,"+         // 26
+    "CUTS.START_DATETIME,"+    // 27
+    "CUTS.END_DATETIME,"+      // 28
+    "CUTS.START_DAYPART,"+     // 29
+    "CUTS.END_DAYPART,"+       // 30
+    "CUTS.MON,"+               // 31
+    "CUTS.TUE,"+               // 32
+    "CUTS.WED,"+               // 33
+    "CUTS.THU,"+               // 34
+    "CUTS.FRI,"+               // 35
+    "CUTS.SAT,"+               // 35
+    "CUTS.SUN "+               // 37
     "from CART left join GROUPS "+
     "on CART.GROUP_NAME=GROUPS.NAME left join CUTS on "+
     "CART.NUMBER=CUTS.CART_NUMBER where "+
@@ -1475,7 +1495,7 @@ void MainWidget::RefreshLine(RDListViewItem *item)
       validity=RDCart::AlwaysValid;
     }
     else {
-      validity=ValidateCut(q,24,validity,current_datetime);
+      validity=ValidateCut(q,25,validity,current_datetime);
     }
     switch((RDCart::Type)q->value(14).toUInt()) {
     case RDCart::Audio:
