@@ -17851,6 +17851,7 @@
 2018-10-19 Fred Gleason <fredg@paravelsystems.com>
 	* Removed check for Win32 installer from 'configure.ac'.
 	* Removed win32 clauses from '.pro' files.
+<<<<<<< HEAD
 2018-10-19 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'make slack' target.
 	* Removed the 'make slax' target.
@@ -17886,3 +17887,7 @@
 	* Disable play/stop button focus in rdlibrary(1)
 	* Added space bar shortcut to play/stop buttons in rdlibrary(1)
 	* Fixed bug in cart validation after edit in rdlibrary(1)
+2018-10-23 Patrick Linstruth <patrick@deltecent.com>
+	* Changed 'RDLOGEDIT.INPUT_CARD' and 'RDLOGEDIT.OUTPUT_CARD'
+	defaults to 0 to match RDLIBRARY defaults
+	* Incremented the database version to 298.

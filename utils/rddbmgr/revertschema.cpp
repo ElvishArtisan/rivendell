@@ -40,6 +40,24 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
   // NEW SCHEMA REVERSIONS GO HERE...
 
+  //
+  // Revert 298
+  //
+  if((cur_schema==298)&&(set_schema<cur_schema)) {
+    sql=QString("alter table RDLOGEDIT ")+
+      "modify column INPUT_CARD int(11) default -1";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table RDLOGEDIT ")+
+      "modify column OUTPUT_CARD int(11) default -1";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(--cur_schema);
+  }
 
   //
   // Maintainer's Note:
