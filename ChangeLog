@@ -17854,3 +17854,4 @@
 2018-10-22 Patrick Linstruth <patrick@deltecent.com>
 	* Changed `RDLOGEDIT.INPUT_CARD` and `RDLOGEDIT.OUTPUT_CARD`
 	defaults to 0 to match RDLIBRARY defaults
+	* Incremented the database version to 298.
