@@ -38,6 +38,8 @@
 #include <q3progressdialog.h>
 #include <qtooltip.h>
 #include <qstylefactory.h>
+#include <qkeysequence.h>
+#include <qshortcut.h>
 
 #include <curl/curl.h>
 
@@ -487,6 +489,8 @@ MainWidget::MainWidget(QWidget *parent)
   lib_player->playButton()->setFocusPolicy(Qt::NoFocus);
   lib_player->stopButton()->setFocusPolicy(Qt::NoFocus);
 
+  QShortcut *lib_player_shortcut=new QShortcut(Qt::Key_Space,this);
+  connect(lib_player_shortcut,SIGNAL(activated()),this,SLOT(playerShortcutData()));
 
   // 
   // Setup Signal Handling 
@@ -628,6 +632,19 @@ void MainWidget::groupActivatedData(const QString &str)
   filterChangedData("");
 }
 
+
+void MainWidget::playerShortcutData()
+{
+  if(lib_player->isPlaying()) {
+    lib_player->stop();
+  }
+  else if(lib_player->playButton()->isEnabled()) {
+    lib_player->play();
+  }
+  else if(lib_macro_button->isEnabled()) {
+    macroData();
+  }
+}
 
 void MainWidget::addData()
 {
@@ -946,6 +963,7 @@ void MainWidget::cartClickedData()
       lib_player->stopButton()->setEnabled(false);
       lib_player->playButton()->setVisible(false);
       lib_player->stopButton()->setVisible(false);
+      lib_player->stop();
     }
     else {
       lib_player->setCart(item->text(Cart));
