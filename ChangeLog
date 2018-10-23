@@ -17880,3 +17880,5 @@
 2018-10-22 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a ''qt_sql_default_connection' is still in use' runtime
 	warning emitted by the 'RDDbValid()' function.
+2018-10-22 Fred Gleason <fredg@paravelsystems.com>
+	* Modified rdmonitor(1) to use QProcess to spawn rdselect(1).

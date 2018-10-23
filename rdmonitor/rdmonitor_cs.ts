@@ -2,6 +2,21 @@
 <!DOCTYPE TS>
 <TS version="2.0">
 <context>
+    <name>MainWidget</name>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>RDSelect crashed!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>RDSelect returned non-zero exit code</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>QObject</name>
     <message>
         <source>Status: OK</source>

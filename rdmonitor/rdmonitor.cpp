@@ -23,29 +23,24 @@
 #include <unistd.h>
 
 #include <qapplication.h>
-#include <qpainter.h>
-#include <qsqldatabase.h>
-#include <qmessagebox.h>
-#include <qpushbutton.h>
-#include <qlabel.h>
-#include <qtextcodec.h>
-#include <qtranslator.h>
-#include <qpainter.h>
-#include <q3process.h>
 #include <qdir.h>
-#include <qsignalmapper.h>
+#include <qlabel.h>
+#include <qmessagebox.h>
+#include <qpainter.h>
+#include <qprocess.h>
 #include <qsqldatabase.h>
+#include <qstringlist.h>
+#include <qtranslator.h>
 
 #include <dbversion.h>
 #include <rd.h>
-#include <rdcmd_switch.h>
 #include <rdaudioinfo.h>
-#include <rdstation.h>
-#include <rdcut.h>
-#include <rdstatus.h>
+#include <rdcmd_switch.h>
 #include <rdmonitor_config.h>
+#include <rdstation.h>
+#include <rdstatus.h>
 
-#include <rdmonitor.h>
+#include "rdmonitor.h"
 
 //
 // Icons
@@ -217,8 +212,28 @@ void MainWidget::mouseDoubleClickEvent(QMouseEvent *e)
   dir.setFilter(QDir::Files|QDir::Readable);
   dir.setNameFilter("*.conf");
   if(dir.entryList().size()>1) {
-    system(QString().sprintf("rdselect -geometry +%d+%d",
-			     mon_rdselect_x,mon_rdselect_y));
+    QProcess *proc=new QProcess(this);
+    QStringList args;
+    args.push_back("-geometry");
+    args.push_back(QString().sprintf("+%d+%d",mon_rdselect_x,mon_rdselect_y));
+    proc->start("rdselect",args);
+    proc->waitForFinished(-1);
+    if(proc->exitStatus()!=QProcess::NormalExit) {
+      QMessageBox::critical(this,"RDMonitor - "+tr("Error"),
+			    tr("RDSelect crashed!"));
+      delete proc;
+      return;
+    }
+    if(proc->exitCode()!=0) {
+      QMessageBox::critical(this,"RDMonitor - "+tr("Error"),
+			    tr("RDSelect returned non-zero exit code")+
+			    QString().sprintf(" %d.",proc->exitCode())+
+			    "\n\nERROR MESSAGE:\n"+
+			    proc->readAllStandardError());
+      delete proc;
+      return;
+    }
+    delete proc;
     validate();
   }
 }
