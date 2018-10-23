@@ -17882,3 +17882,5 @@
 	warning emitted by the 'RDDbValid()' function.
 2018-10-22 Fred Gleason <fredg@paravelsystems.com>
 	* Modified rdmonitor(1) to use QProcess to spawn rdselect(1).
+2018-10-22 Patrick Linstruth <patrick@deltecent.com>
+	* Disable play/stop button focus in rdlibrary(1)
