@@ -68,12 +68,14 @@ bool RDDbValid(RDConfig *config,int *schema)
   QSqlQuery *q;
   bool ret=false;
 
-  QSqlDatabase db=QSqlDatabase::addDatabase(config->mysqlDriver());
-  db.setDatabaseName(config->mysqlDbname());
-  db.setUserName(config->mysqlUsername());
-  db.setPassword(config->mysqlPassword());
-  db.setHostName(config->mysqlHostname());
-  if(db.open()) {
+  QSqlDatabase *db=
+    new QSqlDatabase(QSqlDatabase::addDatabase(config->mysqlDriver()));
+  QString conn_name=db->connectionName();
+  db->setDatabaseName(config->mysqlDbname());
+  db->setUserName(config->mysqlUsername());
+  db->setPassword(config->mysqlPassword());
+  db->setHostName(config->mysqlHostname());
+  if(db->open()) {
     ret=true;
     sql="select DB from VERSION";
     q=new QSqlQuery(sql);
@@ -81,8 +83,10 @@ bool RDDbValid(RDConfig *config,int *schema)
       *schema=q->value(0).toInt();
     }
     delete q;
-    db.close();
+    db->close();
   }
+  delete db;
+  QSqlDatabase::removeDatabase(conn_name);
 
   return ret;
 }

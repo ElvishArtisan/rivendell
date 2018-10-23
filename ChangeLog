@@ -17877,3 +17877,6 @@
 2018-10-22 Patrick Linstruth <patrick@deltecent.com>
 	* Fixed a bug in 'configure.ac' that broke the 'make rpm' target
 	when used with long version strings.
+2018-10-22 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a ''qt_sql_default_connection' is still in use' runtime
+	warning emitted by the 'RDDbValid()' function.
