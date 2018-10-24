@@ -579,6 +579,62 @@
         <source>Could not re-establish DB connection</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Unknown error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invalid arguments specified</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Specified configuration was not found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>One or more Rivendell modules are active</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No running as root</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>systemctl(8) crashed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rivendell service shutdown failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Audio store unmount failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Audio store mount failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rivendell service startup failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Current configuration was not found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Synlink creation failed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Invalid configuration name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>mount(8) crashed</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddCart</name>

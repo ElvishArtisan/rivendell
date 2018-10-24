@@ -9,7 +9,7 @@
     </message>
     <message>
         <source>RDSelect</source>
-        <translation>RDSelect</translation>
+        <translation type="obsolete">RDSelect</translation>
     </message>
     <message>
         <source>None</source>
@@ -29,19 +29,31 @@
     </message>
     <message>
         <source>Only root can run this utility!</source>
-        <translation>Pouze superuživatel (root) může spouštět tento program!</translation>
+        <translation type="obsolete">Pouze superuživatel (root) může spouštět tento program!</translation>
     </message>
     <message>
         <source>Unable to shutdown current configuration</source>
-        <translation>Nelze vypnout nynější nastavení</translation>
+        <translation type="obsolete">Nelze vypnout nynější nastavení</translation>
     </message>
     <message>
         <source>Unable to start up new configuration</source>
-        <translation>Nelze spustit nové nastavení</translation>
+        <translation type="obsolete">Nelze spustit nové nastavení</translation>
     </message>
     <message>
         <source>One or more Rivendell modules are still open.</source>
-        <translation>Jeden nebo více modulů Rivendell je stále ještě otevřeno.</translation>
+        <translation type="obsolete">Jeden nebo více modulů Rivendell je stále ještě otevřeno.</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>RDSelect helper process crashed!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to select configuration:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

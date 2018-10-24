@@ -2,7 +2,7 @@
 //
 // A container class for a Rivendell Base Configuration
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,12 +29,13 @@
 
 #include <qdatetime.h>
 #include <qmessagebox.h>
+#include <qobject.h>
 #include <qregexp.h>
 #include <qsettings.h>
 #include <qstringlist.h>
 
-#include <rdprofile.h>
-#include <rdconfig.h>
+#include "rdconfig.h"
+#include "rdprofile.h"
 
 RDConfig *RDConfiguration(void) 
 {
@@ -495,7 +496,7 @@ QString RDConfig::destination(unsigned n)
 }
 
 
-void RDConfig::load()
+bool RDConfig::load()
 {
   char sname[256];
   QString client;
@@ -505,7 +506,9 @@ void RDConfig::load()
   struct group *groups;
 
   RDProfile *profile=new RDProfile();
-  profile->setSource(conf_filename);
+  if(!profile->setSource(conf_filename)) {
+    return false;
+  }
   gethostname(sname,255);
   QStringList list=QString(sname).split(".");  // Strip domain name parts
   strncpy(sname,list[0],256);
@@ -630,7 +633,7 @@ void RDConfig::load()
   int sock=-1;
 
   if((sock=socket(PF_INET,SOCK_DGRAM,IPPROTO_IP))<0) {
-    return;
+    return true;
   }
   struct ifreq ifr;
   int index=0;
@@ -648,6 +651,8 @@ void RDConfig::load()
     ifr.ifr_ifindex=++index;
   }
   close(sock);
+
+  return true;
 }
 
 
@@ -727,4 +732,73 @@ QString RDConfig::userAgent(const QString &modname)
 QString RDConfig::createTablePostfix(const QString &engine)
 {
   return QString(" engine ")+engine+" ";
+}
+
+
+QString RDConfig::rdselectExitCodeText(RDSelectExitCode code)
+{
+  QString ret=QObject::tr("Unknown error")+QString().sprintf(" [%d]",code);
+
+  switch(code) {
+  case RDConfig::RDSelectOk:
+    ret=QObject::tr("OK");
+    break;
+
+  case RDConfig::RDSelectInvalidArguments:
+    ret=QObject::tr("Invalid arguments specified");
+    break;
+
+  case RDConfig::RDSelectNoSuchConfiguration:
+    ret=QObject::tr("Specified configuration was not found");
+    break;
+
+  case RDConfig::RDSelectModulesActive:
+    ret=QObject::tr("One or more Rivendell modules are active");
+    break;
+
+  case RDConfig::RDSelectNotRoot:
+    ret=QObject::tr("No running as root");
+    break;
+
+  case RDConfig::RDSelectSystemctlCrashed:
+    ret=QObject::tr("systemctl(8) crashed");
+    break;
+
+  case RDConfig::RDSelectRivendellShutdownFailed:
+    ret=QObject::tr("Rivendell service shutdown failed");
+    break;
+
+  case RDConfig::RDSelectAudioUnmountFailed:
+    ret=QObject::tr("Audio store unmount failed");
+    break;
+
+  case RDConfig::RDSelectAudioMountFailed:
+    ret=QObject::tr("Audio store mount failed");
+    break;
+
+  case RDConfig::RDSelectRivendellStartupFailed:
+    ret=QObject::tr("Rivendell service startup failed");
+    break;
+
+  case RDConfig::RDSelectNoCurrentConfig:
+    ret=QObject::tr("Current configuration was not found");
+    break;
+
+  case RDConfig::RDSelectSymlinkFailed:
+    ret=QObject::tr("Synlink creation failed");
+    break;
+
+  case RDConfig::RDSelectInvalidName:
+    ret=QObject::tr("Invalid configuration name");
+    break;
+
+  case RDConfig::RDSelectMountCrashed:
+    ret=QObject::tr("mount(8) crashed");
+    break;
+
+  case RDConfig::RDSelectLast:
+    break;
+  }
+
+  return ret;
 }

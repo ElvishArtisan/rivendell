@@ -2,7 +2,7 @@
 //
 // A class to read an ini formatted configuration file.
 //
-// (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
+// (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -22,7 +22,95 @@
 #include <qstringlist.h>
 #include <q3textstream.h>
 
-#include <rdprofile.h>
+#include "rdprofile.h"
+
+RDProfileLine::RDProfileLine()
+{
+  clear();
+}
+
+
+QString RDProfileLine::tag() const
+{
+  return line_tag;
+}
+
+
+void RDProfileLine::setTag(QString tag)
+{
+  line_tag=tag;
+}
+
+
+QString RDProfileLine::value() const
+{
+  return line_value;
+}
+
+
+void RDProfileLine::setValue(QString value)
+{
+  line_value=value;
+}
+
+
+void RDProfileLine::clear()
+{
+  line_tag="";
+  line_value="";
+}
+
+
+
+
+
+RDProfileSection::RDProfileSection()
+{
+  clear();
+}
+
+
+QString RDProfileSection::name() const
+{
+  return section_name;
+}
+
+
+void RDProfileSection::setName(QString name)
+{
+  section_name=name;
+}
+
+
+bool RDProfileSection::getValue(QString tag,QString *value) const
+{
+  for(unsigned i=0;i<section_line.size();i++) {
+    if(section_line[i].tag()==tag) {
+      *value=section_line[i].value();
+      return true;
+    }
+  }
+  return false;
+}
+
+
+void RDProfileSection::addValue(QString tag,QString value)
+{
+  section_line.push_back(RDProfileLine());
+  section_line.back().setTag(tag);
+  section_line.back().setValue(value);
+}
+
+
+void RDProfileSection::clear()
+{
+  section_name="";
+  section_line.resize(0);
+}
+
+
+
+
 
 RDProfile::RDProfile()
 {

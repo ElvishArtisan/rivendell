@@ -26,22 +26,24 @@
 #include <errno.h>
 
 #include <qapplication.h>
-#include <qwindowsstyle.h>
-#include <qpainter.h>
-#include <qmessagebox.h>
+#include <qdesktopwidget.h>
+#include <qdir.h>
 #include <qlabel.h>
+#include <qmessagebox.h>
+#include <qpainter.h>
+#include <qprocess.h>
 #include <qtextcodec.h>
 #include <qtranslator.h>
-#include <qdir.h>
-#include <qdesktopwidget.h>
+#include <qwindowsstyle.h>
 
 #include <rd.h>
 #include <rdconf.h>
 #include <rdcmd_switch.h>
+#include <rdpaths.h>
 #include <rdstatus.h>
 #include <dbversion.h>
 
-#include <rdselect.h>
+#include "rdselect.h"
 
 //
 // Icons
@@ -195,13 +197,14 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Check for Root User 
   //
-
+  /*
   setuid(geteuid());  // So the SETUID bit works as expected
   if(getuid()!=0) {
     QMessageBox::information(this,tr("RDSelect"),
 			     tr("Only root can run this utility!"));
     exit(256);
   }
+  */
 }
 
 
@@ -225,28 +228,30 @@ void MainWidget::doubleClickedData(Q3ListBoxItem *item)
 
 void MainWidget::okData()
 {
-  if(RDModulesActive()) {
-    QMessageBox::information(this,tr("RDSelect"),
-			tr("One or more Rivendell modules are still open."));
-    return;
-  }
+  QStringList args;
+  QProcess *proc=NULL;
 
-  if(!VerifyShutdown()) {
+  QStringList f0=select_configs[select_box->currentItem()]->filename().
+    split("/",QString::SkipEmptyParts);
+  args.push_back(f0.last());
+  proc=new QProcess(this);
+  proc->start(QString(RD_PREFIX)+"/bin/rdselect_helper",args);
+  proc->waitForFinished();
+  if(proc->exitStatus()!=QProcess::NormalExit) {
+    QMessageBox::critical(this,"RDSelect - "+tr("Error"),
+			  tr("RDSelect helper process crashed!"));
+    delete proc;
     return;
   }
-  if(!Shutdown(select_current_id)) {
-    SetSystem(-1);
-    QMessageBox::warning(this,tr("RDSelect"),
-			 tr("Unable to shutdown current configuration")+
-			 "\n["+QString(strerror(errno))+"].");
+  if(proc->exitCode()!=0) {
+    QMessageBox::critical(this,"RDSelect - "+tr("Error"),
+			  tr("Unable to select configuration:")+"\n"+
+			  RDConfig::rdselectExitCodeText((RDConfig::RDSelectExitCode)proc->exitCode()));
+    delete proc;
     return;
   }
-  if(!Startup(select_box->currentItem())) {
-    SetSystem(-1);
-    QMessageBox::warning(this,tr("RDSelect"),
-			 tr("Unable to start up new configuration"));
-  }
-  SetSystem(select_box->currentItem());
+  delete proc;
+
   exit(0);
 }
 
@@ -267,47 +272,6 @@ void MainWidget::resizeEvent(QResizeEvent *e)
 }
 
 
-bool MainWidget::Shutdown(int id)
-{
-  RDConfig *conf=select_configs[id];
-
-  if(system("systemctl stop rivendell")!=0) {
-    return false;
-  }
-  system(QString("umount ")+conf->audioRoot());
-
-  return true;
-}
-
-
-bool MainWidget::Startup(int id)
-{
-  RDConfig *conf=select_configs[id];
-
-  if(!conf->audioStoreMountSource().isEmpty()) {
-    QString cmd=QString("mount");
-    if(!conf->audioStoreMountType().isEmpty()) {
-      cmd+=" -t "+conf->audioStoreMountType();
-    }
-    if(!conf->audioStoreMountOptions().isEmpty()) {
-      cmd+=" -o "+conf->audioStoreMountOptions();
-    }
-    cmd+=" "+conf->audioStoreMountSource()+" "+
-      conf->audioRoot();
-    if(system(cmd)!=0) {
-      return false;
-    }
-  }
-  unlink(RD_CONF_FILE);
-  symlink(select_filenames[id],RD_CONF_FILE);
-  if(system("systemctl start rivendell")!=0) {
-    return false;
-  }
-
-  return true;
-}
-
-
 void MainWidget::SetSystem(int id)
 {
   QString text=tr("None");
@@ -316,12 +280,6 @@ void MainWidget::SetSystem(int id)
   }
   select_current_label->setText(tr("Current System:")+" "+text);
   select_current_id=id;
-}
-
-
-bool MainWidget::VerifyShutdown() const
-{
-  return true;
 }
 
 

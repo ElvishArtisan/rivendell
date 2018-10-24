@@ -192,8 +192,6 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdpeaksexport.cpp rdpeaksexport.h\
                         rdpodcast.cpp rdpodcast.h\
                         rdprofile.cpp rdprofile.h\
-                        rdprofileline.cpp rdprofileline.h\
-                        rdprofilesection.cpp rdprofilesection.h\
                         rdpushbutton.cpp rdpushbutton.h\
                         rdrecording.cpp rdrecording.h\
                         rdrehash.cpp rdrehash.h\

@@ -43,6 +43,7 @@ SUBDIRS = $(ALSACONFIG_RD_OPT)\
           rdpopup\
           rdpurgecasts\
           rdrender\
+          rdselect_helper\
           rdsoftkeys\
           rmlsend\
           sas_shim

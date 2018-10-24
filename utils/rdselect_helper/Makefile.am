@@ -1,6 +1,6 @@
 ## Makefile.am
 ##
-## (C) Copyright 2012,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+##   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -15,53 +15,41 @@
 ##   License along with this program; if not, write to the Free Software
 ##   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
-##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -I$(top_srcdir)/lib @QT4_CFLAGS@ -DQT3_SUPPORT -I/usr/include/Qt3Support
-LIBS = -L$(top_srcdir)/lib
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" @QT4_CFLAGS@
 MOC = @QT_MOC@
 
 # The dependency for qt's Meta Object Compiler (moc)
 moc_%.cpp:	%.h
 	$(MOC) $< -o $@
 
-# I18N Stuff
 install-exec-hook:
-	mkdir -p $(DESTDIR)$(prefix)/share/rivendell
-	cp rdselect_*.qm $(DESTDIR)$(prefix)/share/rivendell
+	chmod 4755 $(DESTDIR)$(prefix)/bin/rdselect_helper
 
-uninstall-local:	
-	rm -f $(DESTDIR)$(prefix)/share/rivendell/rdselect_*.qm
+bin_PROGRAMS = rdselect_helper
 
-all:	
-	lupdate-qt4 rdselect.pro
-	lrelease-qt4 rdselect.pro
+dist_rdselect_helper_SOURCES = rdselect_helper.cpp rdselect_helper.h
 
-bin_PROGRAMS = rdselect
+nodist_rdselect_helper_SOURCES = moc_rdselect_helper.cpp\
+                                 rd.h\
+                                 rdconfig.cpp rdconfig.h\
+                                 rdprofile.cpp rdprofile.h
 
-dist_rdselect_SOURCES = rdselect.cpp rdselect.h
-
-nodist_rdselect_SOURCES = moc_rdselect.cpp
-
-rdselect_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
-
-EXTRA_DIST = rdselect.pro\
-             rdselect_cs.ts\
-             rdselect_de.ts\
-             rdselect_es.ts\
-             rdselect_fr.ts\
-             rdselect_nb.ts\
-             rdselect_nn.ts\
-             rdselect_pt_BR.ts
+rdselect_helper_LDADD = -lQtCore -lQtNetwork -lQt3Support
 
 CLEANFILES = *~\
+             *.idb\
+             *ilk\
+             *.obj\
+             *.pdb\
              *.qm\
              moc_*
 
+DISTCLEANFILES = rd.h\
+                 rdconfig.cpp rdconfig.h\
+                 rdprofile.cpp rdprofile.h
+
 MAINTAINERCLEANFILES = *~\
-                       *.tar.gz\
-                       aclocal.m4\
-                       configure\
                        Makefile.in\
                        moc_*

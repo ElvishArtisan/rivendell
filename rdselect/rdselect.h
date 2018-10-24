@@ -52,10 +52,7 @@ class MainWidget : public QWidget
   void resizeEvent(QResizeEvent *e);
 
  private:
-  bool Shutdown(int id);
-  bool Startup(int id);
   void SetSystem(int id);
-  bool VerifyShutdown() const;
   void SetCurrentItem(int id);
   std::vector<RDConfig *> select_configs;
   QStringList select_filenames;

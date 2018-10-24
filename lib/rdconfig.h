@@ -2,7 +2,7 @@
 //
 // A container class for a Rivendell Base Configuration
 //
-//   (C) Copyright 2002-2004,2016-2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -38,7 +38,20 @@ class RDConfig
   enum LogPriority {LogEmerg=LOG_EMERG,LogAlert=LOG_ALERT,LogCrit=LOG_CRIT,
 		    LogErr=LOG_ERR,LogWarning=LOG_WARNING,LogNotice=LOG_NOTICE,
 		    LogInfo=LOG_INFO,LogDebug=LOG_DEBUG};
-
+  enum RDSelectExitCode {RDSelectOk=0,RDSelectInvalidArguments=1,
+			 RDSelectNoSuchConfiguration=2,
+			 RDSelectModulesActive=3,
+			 RDSelectNotRoot=4,
+			 RDSelectSystemctlCrashed=5,
+			 RDSelectRivendellShutdownFailed=6,
+			 RDSelectAudioUnmountFailed=7,
+			 RDSelectAudioMountFailed=8,
+			 RDSelectRivendellStartupFailed=9,
+			 RDSelectNoCurrentConfig=10,
+			 RDSelectSymlinkFailed=11,
+			 RDSelectInvalidName=12,
+			 RDSelectMountCrashed=13,
+			 RDSelectLast=14};
   RDConfig();
   RDConfig(const QString &filename);
   QString filename() const;
@@ -105,10 +118,11 @@ class RDConfig
   unsigned sasBaseCart() const;
   QString sasTtyDevice() const;
   QString destination(unsigned n);
-  void load();
+  bool load();
   void clear();
   static QString userAgent(const QString &modname);
   static QString createTablePostfix(const QString &engine);
+  static QString rdselectExitCodeText(RDSelectExitCode code);
 
  private:
   QString conf_filename;

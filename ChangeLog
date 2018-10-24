@@ -17894,3 +17894,8 @@
 2018-10-23 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'configure.ac' that caused detection of FLAC
 	support to always fail.
+2018-10-24 Fred Gleason <fredg@paravelsystems.com>
+	* Consolidated the implementation of the 'RDProfile' class into
+	two files.
+	* Added an rdselect_helper(1) SETUID helper program.
+	* Removed the SETUID bit from rdselect(1).

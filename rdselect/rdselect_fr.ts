@@ -8,10 +8,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>RDSelect</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>None</source>
         <translation type="unfinished"></translation>
     </message>
@@ -28,19 +24,15 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Only root can run this utility!</source>
+        <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Unable to shutdown current configuration</source>
+        <source>RDSelect helper process crashed!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Unable to start up new configuration</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>One or more Rivendell modules are still open.</source>
+        <source>Unable to select configuration:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

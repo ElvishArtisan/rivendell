@@ -465,7 +465,8 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %files select
-%attr(4755,root,root) @LOCAL_PREFIX@/bin/rdselect
+@LOCAL_PREFIX@/bin/rdselect
+%attr(4755,root,root) @LOCAL_PREFIX@/bin/rdselect_helper
 @LOCAL_PREFIX@/bin/rdmonitor
 /etc/X11/xinit/xinitrc.d/start-rdmonitor.sh
 

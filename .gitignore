@@ -137,6 +137,12 @@ utils/rdmaint/rdmaint
 utils/rdgen/rdgen
 utils/rdrender/rdrender
 utils/rdrevert/rdrevert
+utils/rdselect_helper/rd.h
+utils/rdselect_helper/rdconfig.cpp
+utils/rdselect_helper/rdconfig.h
+utils/rdselect_helper/rdprofile.cpp
+utils/rdselect_helper/rdprofile.h
+utils/rdselect_helper/rdselect_helper
 utils/sas_shim/sas_shim
 web/rdfeed/rdfeed.xml
 xdg/rivendell-opsguide-html.desktop

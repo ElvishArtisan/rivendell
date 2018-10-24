@@ -465,30 +465,6 @@ AC_CONFIG_FILES([rivendell.spec \
     lib/Makefile \
     rdhpi/Makefile \
     cae/Makefile \
-    utils/Makefile \
-    utils/rdalsaconfig/Makefile \
-    utils/rdcheckcuts/Makefile \
-    utils/rdcleandirs/Makefile \
-    utils/rdclilogedit/Makefile \
-    utils/rdcollect/Makefile \
-    utils/rdconvert/Makefile \
-    utils/rddbconfig/Makefile \
-    utils/rddbmgr/Makefile \
-    utils/rddelete/Makefile \
-    utils/rddgimport/Makefile \
-    utils/rddiscimport/Makefile \
-    utils/rdexport/Makefile \
-    utils/rdgen/Makefile \
-    utils/rdgpimon/Makefile \
-    utils/rdimport/Makefile \
-    utils/rdmaint/Makefile \
-    utils/rdmarkerset/Makefile \
-    utils/rdpopup/Makefile \
-    utils/rdpurgecasts/Makefile \
-    utils/rdrender/Makefile \
-    utils/rdsoftkeys/Makefile \
-    utils/rmlsend/Makefile \
-    utils/sas_shim/Makefile \
     web/Makefile \
     web/rdfeed/Makefile \
     web/rdcastmanager/Makefile \
@@ -532,9 +508,50 @@ AC_CONFIG_FILES([rivendell.spec \
     systemd/Makefile \
     systemd/rivendell.service \
     tests/Makefile \
+    utils/Makefile \
+    utils/rdalsaconfig/Makefile \
+    utils/rdcheckcuts/Makefile \
+    utils/rdcleandirs/Makefile \
+    utils/rdclilogedit/Makefile \
+    utils/rdcollect/Makefile \
+    utils/rdconvert/Makefile \
+    utils/rddbconfig/Makefile \
+    utils/rddbmgr/Makefile \
+    utils/rddelete/Makefile \
+    utils/rddgimport/Makefile \
+    utils/rddiscimport/Makefile \
+    utils/rdexport/Makefile \
+    utils/rdgen/Makefile \
+    utils/rdgpimon/Makefile \
+    utils/rdimport/Makefile \
+    utils/rdmaint/Makefile \
+    utils/rdmarkerset/Makefile \
+    utils/rdpopup/Makefile \
+    utils/rdpurgecasts/Makefile \
+    utils/rdrender/Makefile \
+    utils/rdselect_helper/Makefile \
+    utils/rdsoftkeys/Makefile \
+    utils/rmlsend/Makefile \
+    utils/sas_shim/Makefile \
     xdg/Makefile \
     ])
 AC_OUTPUT()
+
+#
+# Create symlinks in 'utils/rdselect_helper/'
+#
+rm -f utils/rdselect_helper/rd.h
+ln -s ../../lib/rd.h utils/rdselect_helper/rd.h
+
+rm -f utils/rdselect_helper/rdconfig.cpp
+ln -s ../../lib/rdconfig.cpp utils/rdselect_helper/rdconfig.cpp
+rm -f utils/rdselect_helper/rdconfig.h
+ln -s ../../lib/rdconfig.h utils/rdselect_helper/rdconfig.h
+
+rm -f utils/rdselect_helper/rdprofile.cpp
+ln -s ../../lib/rdprofile.cpp utils/rdselect_helper/rdprofile.cpp
+rm -f utils/rdselect_helper/rdprofile.h
+ln -s ../../lib/rdprofile.h utils/rdselect_helper/rdprofile.h
 
 #
 # Configuration Results
