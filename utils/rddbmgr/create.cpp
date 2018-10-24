@@ -2185,21 +2185,6 @@ bool MainObject::InititalizeNewDb(const QString &station_name,bool gen_audio,
   }
 
   //
-  // Create Service Perms
-  //
-  sql=QString("select NAME from SERVICES");
-  q=new RDSqlQuery(sql);
-  while(q->next()) {
-    sql=QString("insert into SERVICE_PERMS set ")+
-      "SERVICE_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
-      "STATION_NAME=\""+RDEscapeString(station_name)+"\"";
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
-  }
-  delete q;
-
-  //
   // RDAirPlay/RDPanel Channel Data
   //
   for(unsigned i=0;i<10;i++) {
@@ -2332,23 +2317,6 @@ bool MainObject::InititalizeNewDb(const QString &station_name,bool gen_audio,
   while(q->next()) {
     sql=QString().sprintf("insert into AUDIO_PERMS set\
                            GROUP_NAME=\"%s\",SERVICE_NAME=\"%s\"",
-			  (const char *)
-			  RDEscapeString(q->value(0).toString()),
-			  (const char *)RDEscapeString(RD_SERVICE_NAME));
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
-  }
-  delete q;
-  
-  //
-  // Create Station Perms
-  //
-  sql="select NAME from STATIONS";
-  q=new RDSqlQuery(sql);
-  while(q->next()) {
-    sql=QString().sprintf("insert into SERVICE_PERMS set\
-                           STATION_NAME=\"%s\",SERVICE_NAME=\"%s\"",
 			  (const char *)
 			  RDEscapeString(q->value(0).toString()),
 			  (const char *)RDEscapeString(RD_SERVICE_NAME));

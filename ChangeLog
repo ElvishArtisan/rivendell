@@ -17899,3 +17899,6 @@
 	two files.
 	* Added an rdselect_helper(1) SETUID helper program.
 	* Removed the SETUID bit from rdselect(1).
+2018-10-24 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rddbmgr(8) that caused multiple default records
+	to be created in 'SERVICE_PERMS' when creating a new database.
