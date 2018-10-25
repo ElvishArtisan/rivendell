@@ -1565,14 +1565,16 @@ void MainWidget::selectClickedData(int id,int line,RDLogLine::Status status)
   case StartButton::AddTo:
     if(line<0) {
       air_log[id]->
-	insert(air_log[id]->size(),air_add_cart,RDLogLine::Play);
+	insert(air_log[id]->size(),air_add_cart,RDLogLine::Play,
+	       rda->airplayConf()->defaultTransType());
       air_log[id]->logLine(air_log[id]->size()-1)->
 	setTransType(rda->airplayConf()->defaultTransType());
       air_log_list[id]->refresh(air_log[id]->size()-1);
     }
     else {
       air_log[id]->
-	insert(line,air_add_cart,air_log[id]->nextTransType(line));
+	insert(line,air_add_cart,air_log[id]->nextTransType(line),
+	       rda->airplayConf()->defaultTransType());
       air_log[id]->logLine(line)->
 	setTransType(rda->airplayConf()->defaultTransType());
       air_log_list[id]->refresh(line);
@@ -1645,7 +1647,8 @@ void MainWidget::selectClickedData(int id,int line,RDLogLine::Status status)
   case StartButton::CopyTo:
     if(air_source_id==id) {
       if(line<0) {
-	air_log[id]->copy(air_copy_line,air_log[id]->size());
+	air_log[id]->copy(air_copy_line,air_log[id]->size(),
+			  rda->airplayConf()->defaultTransType());
       }
       else {
 	air_log[id]->copy(air_copy_line,line);
@@ -1726,14 +1729,16 @@ void MainWidget::cartDroppedData(int id,int line,RDLogLine *ll)
   else {
     if(line<0) {
       air_log[id]->
-	insert(air_log[id]->size(),ll->cartNumber(),RDLogLine::Play);
+	insert(air_log[id]->size(),ll->cartNumber(),RDLogLine::Play,
+	       rda->airplayConf()->defaultTransType());
       air_log[id]->logLine(air_log[id]->size()-1)->
 	setTransType(rda->airplayConf()->defaultTransType());
       air_log_list[id]->refresh(air_log[id]->size()-1);
     }
     else {
       air_log[id]->
-	insert(line,ll->cartNumber(),air_log[id]->nextTransType(line));
+       insert(line,ll->cartNumber(),air_log[id]->nextTransType(line),
+	       rda->airplayConf()->defaultTransType());
       air_log[id]->logLine(line)->
 	setTransType(rda->airplayConf()->defaultTransType());
       air_log_list[id]->refresh(line);

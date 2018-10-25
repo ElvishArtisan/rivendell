@@ -17905,3 +17905,7 @@
 2018-10-24 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdadmin(1) that threw a segfault when the
 	'OK' button wash pushed in the 'Configure RDCatch' dialog.
+2018-10-24 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdairplay(1) that caused carts Added or Copied
+	to a log to have a PLAY transition regardless of the default
+	transition type set in rdadmin(1).
