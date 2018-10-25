@@ -771,8 +771,10 @@ void EditDecks::WriteRecord(int chan)
 
 int EditDecks::GetMatrix()
 {
-  if(edit_swmatrix_box->currentItem()<(int)edit_matrix_ids.size()) {
-    return edit_matrix_ids[edit_swmatrix_box->currentItem()];
+  if(edit_swmatrix_box->currentItem()>=0) {
+    if(edit_swmatrix_box->currentItem()<(int)edit_matrix_ids.size()) {
+      return edit_matrix_ids[edit_swmatrix_box->currentItem()];
+    }
   }
   return -1;
 }
