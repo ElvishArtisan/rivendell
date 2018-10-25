@@ -21,6 +21,7 @@
 #include <stdio.h>
 
 #include <qstringlist.h>
+#include <qfileinfo.h>
 
 #include <rdapplication.h>
 #include <rdconf.h>
@@ -165,7 +166,6 @@ bool MainObject::StartDropboxes(QString *err_msg)
     args.push_back(QString().sprintf("--persistent-dropbox-id=%d",
 				     q->value(15).toInt()));
     args.push_back("--drop-box");
-    args.push_back("--log-mode");
     sql=QString("select SCHED_CODE from DROPBOX_SCHED_CODES where ")+
       QString().sprintf("DROPBOX_ID=%d",q->value(0).toInt());
     q1=new RDSqlQuery(sql);
@@ -221,6 +221,14 @@ bool MainObject::StartDropboxes(QString *err_msg)
 				     q->value(13).toInt()));
     args.push_back(QString().sprintf("--enddate-offset=%d",
 				     q->value(14).toInt()));
+    if(!q->value(11).toString().isEmpty()) {
+      QFileInfo *fileinfo=new QFileInfo(q->value(11).toString());
+      args.push_back(QString().sprintf("--log-filename=%s",
+				     (const char *)fileinfo->fileName()));
+      args.push_back(QString().sprintf("--log-directory=%s",
+				     (const char *)fileinfo->absolutePath()));
+      args.push_back("--verbose");
+    }
     args.push_back(q->value(1).toString());
     args.push_back(q->value(2).toString());
 

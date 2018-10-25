@@ -68,9 +68,12 @@ class RDConfig
   QString mysqlEngine() const;
   QString createTablePostfix() const;
   RDConfig::LogFacility logFacility() const;
+  void setLogFacility(RDConfig::LogFacility log_facility);
   QString logDirectory() const;
+  void setLogDirectory(QString log_directory);
   QString logCoreDumpDirectory() const;
   QString logPattern() const;
+  void setLogPattern(QString log_pattern);
   bool logXloadDebugData() const;
   void log(const QString &module,LogPriority prio,const QString &msg);
   bool provisioningCreateHost() const;
