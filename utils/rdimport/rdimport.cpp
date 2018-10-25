@@ -35,6 +35,7 @@
 
 #include <rd.h>
 #include <rdapplication.h>
+#include <rdconfig.h>
 #include <rdaudioimport.h>
 #include <rdconf.h>
 #include <rdcut.h>
@@ -68,7 +69,10 @@ MainObject::MainObject(QObject *parent)
   import_file_key=0;
   import_group=NULL;
   import_verbose=false;
-  import_log_mode=false;
+  import_log_syslog=false;
+  import_log_file=false;
+  import_log_directory="";
+  import_log_filename="";
   import_single_cart=false;
   import_use_cartchunk_cutid=false;
   import_cart_number_offset=0;
@@ -106,9 +110,7 @@ MainObject::MainObject(QObject *parent)
   // Read Command Options
   //
   if(rda->cmdSwitch()->keys()<2) {
-    fprintf(stderr,"\n");
-    fprintf(stderr,"%s",RDIMPORT_USAGE);
-    fprintf(stderr,"\n");
+    Log(RDConfig::LogErr,QString().sprintf("\n%s\n",RDIMPORT_USAGE));
     exit(2);
   }
   for(unsigned i=0;i<rda->cmdSwitch()->keys()-2;i++) {
@@ -116,19 +118,26 @@ MainObject::MainObject(QObject *parent)
       import_verbose=true;
       rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(rda->cmdSwitch()->key(i)=="--log-mode") {
-      import_verbose=true;
-      import_log_mode=true;
+    if(rda->cmdSwitch()->key(i)=="--log-syslog") {
+      import_log_syslog=true;
+      rda->cmdSwitch()->setProcessed(i,true);
+    }
+    if(rda->cmdSwitch()->key(i)=="--log-directory") {
+      import_log_directory=rda->cmdSwitch()->value(i);
+      rda->cmdSwitch()->setProcessed(i,true);
+    }
+    if(rda->cmdSwitch()->key(i)=="--log-filename") {
+      import_log_filename=rda->cmdSwitch()->value(i);
       rda->cmdSwitch()->setProcessed(i,true);
     }
     if(rda->cmdSwitch()->key(i)=="--to-cart") {
       import_cart_number=rda->cmdSwitch()->value(i).toUInt(&ok);
       if((!ok)||(import_cart_number<1)||(import_cart_number>999999)) {
-	fprintf(stderr,"rdimport: invalid cart number\n");
+	Log(RDConfig::LogErr,QString("rdimport: invalid cart number\n"));
 	exit(2);
       }
       if(import_use_cartchunk_cutid) {
-	fprintf(stderr,"rdimport: '--to-cart' and '--use-cartchunk-cutid' are mutually exclusive\n");
+	Log(RDConfig::LogErr,QString("rdimport: '--to-cart' and '--use-cartchunk-cutid' are mutually exclusive\n"));
 	exit(2);
       }
       import_single_cart=true;
@@ -136,7 +145,7 @@ MainObject::MainObject(QObject *parent)
     }
     if(rda->cmdSwitch()->key(i)=="--use-cartchunk-cutid") {
       if(import_cart_number!=0) {
-	fprintf(stderr,"rdimport: '--to-cart' and '--use-cartchunk-cutid' are mutually exclusive\n");
+	Log(RDConfig::LogErr,QString("rdimport: '--to-cart' and '--use-cartchunk-cutid' are mutually exclusive\n"));
 	exit(2);
       }
       import_use_cartchunk_cutid=true;
@@ -145,7 +154,7 @@ MainObject::MainObject(QObject *parent)
     if(rda->cmdSwitch()->key(i)=="--cart-number-offset") {
       import_cart_number_offset=rda->cmdSwitch()->value(i).toInt(&ok);
       if(!ok) {
-	fprintf(stderr,"rdimport: invalid --cart-number-offset\n");
+	Log(RDConfig::LogErr,QString("rdimport: invalid --cart-number-offset\n"));
 	exit(2);
       }
       rda->cmdSwitch()->setProcessed(i,true);
@@ -165,7 +174,7 @@ MainObject::MainObject(QObject *parent)
     if(rda->cmdSwitch()->key(i)=="--startdate-offset") {
       import_startdate_offset=rda->cmdSwitch()->value(i).toInt(&ok);
       if(!ok) {
-	fprintf(stderr,"rdimport: invalid startdate-offset\n");
+	Log(RDConfig::LogErr,QString("rdimport: invalid startdate-offset\n"));
 	exit(2);
       }
       rda->cmdSwitch()->setProcessed(i,true);
@@ -173,7 +182,7 @@ MainObject::MainObject(QObject *parent)
     if(rda->cmdSwitch()->key(i)=="--enddate-offset") {
       import_enddate_offset=rda->cmdSwitch()->value(i).toInt(&ok);
       if(!ok) {
-	fprintf(stderr,"rdimport: invalid enddate-offset\n");
+	Log(RDConfig::LogErr,QString("rdimport: invalid enddate-offset\n"));
 	exit(2);
       }
       rda->cmdSwitch()->setProcessed(i,true);
@@ -185,86 +194,86 @@ MainObject::MainObject(QObject *parent)
     if(rda->cmdSwitch()->key(i)=="--set-datetimes") {
       QStringList f0=rda->cmdSwitch()->value(i).split(",");
       if(f0.size()!=2) {
-	fprintf(stderr,"rdimport: invalid argument to --set-datetimes\n");
+	Log(RDConfig::LogErr,QString("rdimport: invalid argument to --set-datetimes\n"));
 	exit(2);
       }
       for(unsigned j=0;j<2;j++) {
 	if((f0[j].length()!=15)||(f0[j].mid(8,1)!="-")) {
-	  fprintf(stderr,"rdimport: invalid argument to --set-datetimes\n");
+	  Log(RDConfig::LogErr,QString("rdimport: invalid argument to --set-datetimes\n"));
 	  exit(2);
 	}
 	unsigned year=f0[j].left(4).toUInt(&ok);
 	if(!ok) {
-	  fprintf(stderr,"rdimport: invalid year argument to --set-datetimes\n");
+	  Log(RDConfig::LogErr,QString("rdimport: invalid year argument to --set-datetimes\n"));
 	  exit(2);
 	}
 	unsigned month=f0[j].mid(4,2).toUInt(&ok);
 	if((!ok)||(month>12)) {
-	  fprintf(stderr,"rdimport: invalid month argument to --set-datetimes\n");
+	  Log(RDConfig::LogErr,QString("rdimport: invalid month argument to --set-datetimes\n"));
 	  exit(2);
 	}
 	unsigned day=f0[j].mid(6,2).toUInt(&ok);
 	if((!ok)||(day>31)) {
-	  fprintf(stderr,"rdimport: invalid day argument to --set-datetimes\n");
+	  Log(RDConfig::LogErr,QString("rdimport: invalid day argument to --set-datetimes\n"));
 	  exit(2);
 	}
 	unsigned hour=f0[j].mid(9,2).toUInt(&ok);
 	if((!ok)||(hour>23)) {
-	  fprintf(stderr,"rdimport: invalid hour argument to --set-datetimes\n");
+	  Log(RDConfig::LogErr,QString("rdimport: invalid hour argument to --set-datetimes\n"));
 	  exit(2);
 	}
 	unsigned min=f0[j].mid(11,2).toUInt(&ok);
 	if((!ok)||(min>59)) {
-	  fprintf(stderr,"rdimport: invalid minute argument to --set-datetimes\n");
+	  Log(RDConfig::LogErr,QString("rdimport: invalid minute argument to --set-datetimes\n"));
 	  exit(2);
 	}
 	unsigned sec=f0[j].right(2).toUInt(&ok);
 	if((!ok)||(sec>59)) {
-	  fprintf(stderr,"rdimport: invalid seconds argument to --set-datetimes\n");
+	  Log(RDConfig::LogErr,QString("rdimport: invalid seconds argument to --set-datetimes\n"));
 	  exit(2);
 	}
 	import_datetimes[j]=QDateTime(QDate(year,month,day),
 				      QTime(hour,min,sec));
 	if(!import_datetimes[j].isValid()) {
-	  fprintf(stderr,"rdimport: invalid argument to --set-datetimes\n");
+	  Log(RDConfig::LogErr,QString("rdimport: invalid argument to --set-datetimes\n"));
 	}
       }
       if(import_datetimes[0]>=import_datetimes[1]) {
-	fprintf(stderr,"rdimport: datetime cannot end before it begins\n");
+	Log(RDConfig::LogErr,QString("rdimport: datetime cannot end before it begins\n"));
 	exit(2);
       }
       rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(rda->cmdSwitch()->key(i)=="--set-daypart-times") {
+    if(rda->cmdSwitch()->key(i)=="--set-daypart-times\n") {
       QStringList f0=rda->cmdSwitch()->value(i).split(",");
       if(f0.size()!=2) {
-	fprintf(stderr,"rdimport: invalid argument to --set-daypart-times\n");
+	Log(RDConfig::LogErr,QString("rdimport: invalid argument to --set-daypart-times\n"));
 	exit(2);
       }
       for(unsigned j=0;j<2;j++) {
 	if(f0[j].length()!=6) {
-	  fprintf(stderr,"rdimport: invalid argument to --set-daypart-times\n");
+	  Log(RDConfig::LogErr,QString("rdimport: invalid argument to --set-daypart-times\n"));
 	  exit(2);
 	}
 	unsigned hour=f0[j].left(2).toUInt(&ok);
 	if((!ok)||(hour>23)) {
-	  fprintf(stderr,"rdimport: invalid hour argument to --set-daypart-times\n");
+	  Log(RDConfig::LogErr,QString("rdimport: invalid hour argument to --set-daypart-times\n"));
 	  exit(2);
 	}
 	unsigned min=f0[j].mid(2,2).toUInt(&ok);
 	if((!ok)||(min>59)) {
-	  fprintf(stderr,"rdimport: invalid minute argument to --set-daypart-times\n");
+	  Log(RDConfig::LogErr,QString("rdimport: invalid minute argument to --set-daypart-times\n"));
 	  exit(2);
 	}
 	unsigned sec=f0[j].right(2).toUInt(&ok);
 	if((!ok)||(sec>59)) {
-	  fprintf(stderr,"rdimport: invalid seconds argument to --set-daypart-times\n");
+	  Log(RDConfig::LogErr,QString("rdimport: invalid seconds argument to --set-daypart-times\n"));
 	  exit(2);
 	}
 	import_dayparts[j].setHMS(hour,min,sec);
       }
       if(import_dayparts[0]>=import_dayparts[1]) {
-	fprintf(stderr,"rdimport: daypart cannot end before it begins\n");
+	Log(RDConfig::LogErr,QString("rdimport: daypart cannot end before it begins\n"));
 	exit(2);
       }
       rda->cmdSwitch()->setProcessed(i,true);
@@ -295,7 +304,7 @@ MainObject::MainObject(QObject *parent)
     if(rda->cmdSwitch()->key(i)=="--metadata-pattern") {
       import_metadata_pattern=rda->cmdSwitch()->value(i);
       if(!VerifyPattern(import_metadata_pattern)) {
-	fprintf(stderr,"rdimport: invalid metadata pattern\n");
+	Log(RDConfig::LogErr,QString("rdimport: invalid metadata pattern\n"));
 	exit(2);
       }
       rda->cmdSwitch()->setProcessed(i,true);
@@ -307,7 +316,7 @@ MainObject::MainObject(QObject *parent)
     if(rda->cmdSwitch()->key(i)=="--persistent-dropbox-id") {
       import_persistent_dropbox_id=rda->cmdSwitch()->value(i).toInt(&ok);
       if(!ok) {
-	fprintf(stderr,"rdimport: invalid persistent dropbox id\n");
+	Log(RDConfig::LogErr,QString("rdimport: invalid persistent dropbox id\n"));
 	exit(2);
       }
       rda->cmdSwitch()->setProcessed(i,true);
@@ -315,7 +324,7 @@ MainObject::MainObject(QObject *parent)
     if(rda->cmdSwitch()->key(i)=="--create-startdate-offset") {
       import_create_startdate_offset=rda->cmdSwitch()->value(i).toInt(&ok);
       if(!ok) {
-	fprintf(stderr,"rdimport: invalid create-startddate-offset\n");
+	Log(RDConfig::LogErr,QString("rdimport: invalid create-startddate-offset\n"));
 	exit(2);
       }
       import_create_dates=true;
@@ -325,7 +334,7 @@ MainObject::MainObject(QObject *parent)
       import_create_enddate_offset=rda->cmdSwitch()->value(i).toInt(&ok);
       if((!ok) || 
          (import_create_startdate_offset > import_create_enddate_offset )) {
-	fprintf(stderr,"rdimport: invalid create-enddate-offset\n");
+	Log(RDConfig::LogErr,QString("rdimport: invalid create-enddate-offset\n"));
 	exit(2);
       }
       import_create_dates=true;
@@ -346,7 +355,7 @@ MainObject::MainObject(QObject *parent)
     if(rda->cmdSwitch()->key(i)=="--set-string-bpm") {
       import_string_bpm=rda->cmdSwitch()->value(i).toInt(&ok);
       if(!ok) {
-	fprintf(stderr,"rdimport: invalid value for --set-string-bpm\n");
+	Log(RDConfig::LogErr,QString("rdimport: invalid value for --set-string-bpm\n"));
 	exit(255);
       }
       rda->cmdSwitch()->setProcessed(i,true);
@@ -385,7 +394,7 @@ MainObject::MainObject(QObject *parent)
     }
     if(rda->cmdSwitch()->key(i)=="--set-string-title") {
       if(rda->cmdSwitch()->value(i).isEmpty()) {
-	fprintf(stderr,"title field cannot be empty\n");
+	Log(RDConfig::LogErr,QString("rdimport: title field cannot be empty\n"));
 	exit(255);
       }
       import_string_title=rda->cmdSwitch()->value(i);
@@ -398,7 +407,7 @@ MainObject::MainObject(QObject *parent)
     if(rda->cmdSwitch()->key(i)=="--set-string-year") {
       import_string_year=rda->cmdSwitch()->value(i).toInt(&ok);
       if(!ok) {
-	fprintf(stderr,"rdimport: invalid value for --set-string-year\n");
+	Log(RDConfig::LogErr,QString("rdimport: invalid value for --set-string-year\n"));
 	exit(255);
       }
       rda->cmdSwitch()->setProcessed(i,true);
@@ -413,16 +422,41 @@ MainObject::MainObject(QObject *parent)
   // Sanity Checks
   //
   if(import_datetimes[0].isValid()&&import_clear_datetimes) {
-    fprintf(stderr,"rdimport: --set-datetimes and --clear-datetimes are mutually exclusive\n");
+    Log(RDConfig::LogErr,QString("rdimport: --set-datetimes and --clear-datetimes are mutually exclusive\n"));
     exit(255);
   }
   if((!import_dayparts[1].isNull())&&import_clear_dayparts) {
-    fprintf(stderr,"rdimport: --set-daypart-times and --clear-daypart-times are mutually exclusive\n");
+    Log(RDConfig::LogErr,QString("rdimport: --set-daypart-times and --clear-daypart-times are mutually exclusive\n"));
     exit(255);
   }
   if((!import_metadata_pattern.isEmpty())&&import_xml) {
-    fprintf(stderr,"rdimport: --metadata-pattern and --xml are mutually exclusive\n");
+    Log(RDConfig::LogErr,QString().sprintf("rdimport: --metadata-pattern and --xml are mutually exclusive\n"));
     exit(255);
+  }
+  if((!import_log_directory.isEmpty())&&import_log_filename.isEmpty()) {
+    Log(RDConfig::LogErr,QString().sprintf("rdimport: --log-directory requires --log-filename\n"));
+    exit(255);
+  }
+  if((!import_log_filename.isEmpty())&&import_log_directory.isEmpty()) {
+    Log(RDConfig::LogErr,QString().sprintf("rdimport: --log-filename requires --log-directory\n"));
+    exit(255);
+  }
+  if((!import_log_filename.isEmpty())&&import_log_syslog) {
+    Log(RDConfig::LogErr,QString().sprintf("rdimport: --log-filename and --log-syslog are mutually exclusive\n"));
+    exit(255);
+  }
+
+  //
+  // Set Logging
+  //
+  if(import_log_syslog) {
+    rda->config()->setLogFacility(RDConfig::LogSyslog);
+  }
+  else if((!import_log_filename.isEmpty())&&!import_log_directory.isEmpty()) {
+    rda->config()->setLogDirectory(import_log_directory);
+    rda->config()->setLogPattern(import_log_filename);
+    rda->config()->setLogFacility(RDConfig::LogFile);
+    import_log_file=true;
   }
 
   import_cut_markers=new MarkerSet();
@@ -452,7 +486,7 @@ MainObject::MainObject(QObject *parent)
     if(rda->cmdSwitch()->key(i).left(2)!="--") {
       import_group=new RDGroup(rda->cmdSwitch()->key(i));
       if(!import_group->exists()) {
-	fprintf(stderr,"rdimport: invalid group specified\n");
+	Log(RDConfig::LogErr,QString().sprintf("rdimport: invalid group specified\n"));
 	delete import_group;
 	exit(2);
       }
@@ -461,12 +495,12 @@ MainObject::MainObject(QObject *parent)
     }
   }
   if(import_group==NULL) {
-    fprintf(stderr,"rdimport: invalid group specified\n");
+    Log(RDConfig::LogErr,QString().sprintf("rdimport: invalid group specified\n"));
     exit(2);
   }
   if(import_cart_number>0) {
     if(!import_group->cartNumberValid(import_cart_number)) {
-      fprintf(stderr,"rdimport: invalid cart number for group\n");
+      Log(RDConfig::LogErr,QString().sprintf("rdimport: invalid cart number for group\n"));
       delete import_group;
       exit(2);
     }
@@ -477,8 +511,8 @@ MainObject::MainObject(QObject *parent)
   //
   for(unsigned i=0;i<import_add_scheduler_codes.size();i++) {
     if(!SchedulerCodeExists(import_add_scheduler_codes[i])) {
-      fprintf(stderr,"scheduler code \"%s\" does not exist\n",
-	      (const char *)import_add_scheduler_codes[i].utf8());
+      Log(RDConfig::LogErr,QString().sprintf("rdimport: scheduler code \"%s\" does not exist\n",
+	      (const char *)import_add_scheduler_codes[i].utf8()));
       exit(2);
     }
   }
@@ -503,7 +537,7 @@ MainObject::MainObject(QObject *parent)
 	import_normalization_level=100*n;
       }
       else {
-	fprintf(stderr,"rdimport: invalid normalization level\n");
+	Log(RDConfig::LogErr,QString("rdimport: invalid normalization level\n"));
 	exit(2);
       }
       rda->cmdSwitch()->setProcessed(i,true);
@@ -514,7 +548,7 @@ MainObject::MainObject(QObject *parent)
 	import_autotrim_level=100*n;
       }
       else {
-	fprintf(stderr,"rdimport: invalid autotrim level\n");
+	Log(RDConfig::LogErr,QString("rdimport: invalid autotrim level\n"));
 	exit(2);
       }
       rda->cmdSwitch()->setProcessed(i,true);
@@ -525,7 +559,7 @@ MainObject::MainObject(QObject *parent)
 	import_segue_level=n;
       }
       else {
-	fprintf(stderr,"rdimport: invalid segue level\n");
+	Log(RDConfig::LogErr,QString("rdimport: invalid segue level\n"));
 	exit(2);
       }
       rda->cmdSwitch()->setProcessed(i,true);
@@ -536,7 +570,7 @@ MainObject::MainObject(QObject *parent)
 	import_segue_length=n;
       }
       else {
-	fprintf(stderr,"rdimport: invalid segue length\n");
+	Log(RDConfig::LogErr,QString("rdimport: invalid segue length\n"));
 	exit(2);
       }
       rda->cmdSwitch()->setProcessed(i,true);
@@ -547,8 +581,8 @@ MainObject::MainObject(QObject *parent)
     }
     if((!rda->cmdSwitch()->processed(i))&&
        (rda->cmdSwitch()->key(i).left(2)=="--")) {
-      fprintf(stderr,"rdimport: unknown command option \"%s\"\n",
-	      (const char *)rda->cmdSwitch()->key(i));
+      Log(RDConfig::LogErr,QString().sprintf("rdimport: unknown command option \"%s\"\n",
+	      (const char *)rda->cmdSwitch()->key(i)));
       exit(2);
     }
   }
@@ -560,178 +594,168 @@ MainObject::MainObject(QObject *parent)
   // Print Status Messages
   //
   if(import_verbose) {
-    printf("\n");
-    if(import_log_mode) {
-      PrintLogDateTime(stdout);
-      printf("rdimport started\n");
-    }
-    printf("RDImport v%s\n",VERSION);
-    if(import_log_mode) {
-      printf(" Log mode is ON\n");
-    }
-    else {
-      printf(" Log mode is OFF\n");
-    }
+    Log(RDConfig::LogInfo,QString("rdimport started\n"));
+
+    Log(RDConfig::LogInfo,QString().sprintf("RDImport v%s\n",VERSION));
     if(import_to_mono) {
-      printf(" Force to Mono is ON\n");
+      Log(RDConfig::LogInfo,QString(" Force to Mono is ON\n"));
     }
     else {
-      printf(" Force to Mono is OFF\n");
+      Log(RDConfig::LogInfo,QString(" Force to Mono is OFF\n"));
     }
     if(import_normalization_level==0) {
-      printf(" Normalization is OFF\n");
+      Log(RDConfig::LogInfo,QString(" Normalization is OFF\n"));
     }
     else {
-      printf(" Normalization level = %d dB\n",import_normalization_level/100);
+      Log(RDConfig::LogInfo,QString().sprintf(" Normalization level = %d dB\n",import_normalization_level/100));
     }
     if(import_autotrim_level==0) {
-      printf(" AutoTrim is OFF\n");
+      Log(RDConfig::LogInfo,QString(" AutoTrim is OFF\n"));
     }
     else {
-      printf(" AutoTrim level = %d dB\n",import_autotrim_level/100);
+      Log(RDConfig::LogInfo,QString().sprintf(" AutoTrim level = %d dB\n",import_autotrim_level/100));
     }
     if(import_cart_number==0) {
       if(import_use_cartchunk_cutid) {
-	printf(" Destination cart is taken from CartChunk CutID\n");
+	Log(RDConfig::LogInfo,QString(" Destination cart is taken from CartChunk CutID\n"));
       }
       else {
-	printf(" Destination cart is AUTO\n");
+	Log(RDConfig::LogInfo,QString(" Destination cart is AUTO\n"));
       }
     }
     else {
-      printf(" Destination cart is %06u\n",import_cart_number);
+      Log(RDConfig::LogInfo,QString().sprintf(" Destination cart is %06u\n",import_cart_number));
     }
     if(import_single_cart) {
-      printf(" Single cart mode is ON\n");
+      Log(RDConfig::LogInfo,QString(" Single cart mode is ON\n"));
     }
     else {
-      printf(" Single cart mode is OFF\n");
+      Log(RDConfig::LogInfo,QString(" Single cart mode is OFF\n"));
     }
     if(import_title_from_cartchunk_cutid) {
-      printf(" Destination cart title is taken from CartChunk CutID\n");
+      Log(RDConfig::LogInfo,QString(" Destination cart title is taken from CartChunk CutID\n"));
     }
     if(import_cart_number_offset!=0) {
-      printf(" Cart number offset is %d\n",import_cart_number_offset);
+      Log(RDConfig::LogInfo,QString().sprintf(" Cart number offset is %d\n",import_cart_number_offset));
     }
     if(import_delete_source) {
-      printf(" Delete source mode is ON\n");
+      Log(RDConfig::LogInfo,QString(" Delete source mode is ON\n"));
     }
     else {
-      printf(" Delete source mode is OFF\n");
+      Log(RDConfig::LogInfo,QString(" Delete source mode is OFF\n"));
     }
     if(import_delete_cuts) {
-      printf(" Delete cuts mode is ON\n");
+      Log(RDConfig::LogInfo,QString(" Delete cuts mode is ON\n"));
     }
     else {
-      printf(" Delete cuts mode is OFF\n");
+      Log(RDConfig::LogInfo,QString(" Delete cuts mode is OFF\n"));
     }
     if(import_drop_box) {
-      printf(" DropBox mode is ON\n");
+      Log(RDConfig::LogInfo,QString(" DropBox mode is ON\n"));
     }
     else {
-      printf(" DropBox mode is OFF\n");
+      Log(RDConfig::LogInfo,QString(" DropBox mode is OFF\n"));
     }
     if(import_add_scheduler_codes.size()>0) {
-      printf(" Adding Scheduler Code(s):");
+      Log(RDConfig::LogInfo,QString(" Adding Scheduler Code(s):\n"));
       for(unsigned i=0;i<import_add_scheduler_codes.size();i++) {
-	printf(" %s",(const char *)import_add_scheduler_codes[i].utf8());
+	Log(RDConfig::LogInfo,QString().sprintf(" %s\n",(const char *)import_add_scheduler_codes[i].utf8()));
       }
-      printf("\n");
     }
     if(!import_set_user_defined.isEmpty()) {
-      printf(" Setting the User Defined field to \"%s\"\n",
-	     (const char *)import_set_user_defined);
+      Log(RDConfig::LogInfo,QString().sprintf(" Setting the User Defined field to \"%s\"\n",
+	     (const char *)import_set_user_defined));
     }
     if(!import_metadata_pattern.isEmpty()) {
-      printf(" Using metadata pattern: %s\n",
-	     (const char *)import_metadata_pattern);
+      Log(RDConfig::LogInfo,QString().sprintf(" Using metadata pattern: %s\n",
+	     (const char *)import_metadata_pattern));
     }
-    printf(" Start Date Offset = %d days\n",import_startdate_offset);
-    printf(" End Date Offset = %d days\n",import_enddate_offset);
+    Log(RDConfig::LogInfo,QString().sprintf(" Start Date Offset = %d days\n",import_startdate_offset));
+    Log(RDConfig::LogInfo,QString().sprintf(" End Date Offset = %d days\n",import_enddate_offset));
     if((!import_dayparts[0].isNull())||(!import_dayparts[1].isNull())) {
-      printf(" Start Daypart = %s\n",
-	     (const char *)import_dayparts[0].toString("hh:mm:ss"));
-      printf(" End Daypart = %s\n",
-	     (const char *)import_dayparts[1].toString("hh:mm:ss"));
+      Log(RDConfig::LogInfo,QString().sprintf(" Start Daypart = %s\n",
+	     (const char *)import_dayparts[0].toString("hh:mm:ss")));
+      Log(RDConfig::LogInfo,QString().sprintf(" End Daypart = %s\n",
+	     (const char *)import_dayparts[1].toString("hh:mm:ss")));
     }
     if(import_clear_dayparts) {
-      printf(" Clearing daypart times\n");
+      Log(RDConfig::LogInfo,QString(" Clearing daypart times\n"));
     }
     if((!import_datetimes[0].isNull())||(!import_datetimes[1].isNull())) {
-      printf(" Start DateTime = %s\n",
-	     (const char *)import_datetimes[0].toString("MM/dd/yyyy hh:mm:ss"));
-      printf(" End DateTime = %s\n",
-	     (const char *)import_datetimes[1].toString("MM/dd/yyyy hh:mm:ss"));
+      Log(RDConfig::LogInfo,QString().sprintf(" Start DateTime = %s\n",
+	     (const char *)import_datetimes[0].toString("MM/dd/yyyy hh:mm:ss")));
+      Log(RDConfig::LogInfo,QString().sprintf(" End DateTime = %s\n",
+	     (const char *)import_datetimes[1].toString("MM/dd/yyyy hh:mm:ss")));
     }
     if(import_clear_datetimes) {
-      printf(" Clearing datetimes\n");
+      Log(RDConfig::LogInfo,QString(" Clearing datetimes\n"));
     }
     if(import_fix_broken_formats) {
-      printf(" Broken format workarounds are ENABLED\n");
+      Log(RDConfig::LogInfo,QString(" Broken format workarounds are ENABLED\n"));
     }
     else {
-      printf(" Broken format workarounds are DISABLED\n");
+      Log(RDConfig::LogInfo,QString(" Broken format workarounds are DISABLED\n"));
     }
     if(import_create_dates) {
-      printf(" Import Create Dates mode is ON\n");
-      printf(" Import Create Start Date Offset = %d days\n",import_create_startdate_offset);
-      printf(" Import Create End Date Offset = %d days\n",import_create_enddate_offset);
+      Log(RDConfig::LogInfo,QString(" Import Create Dates mode is ON\n"));
+      Log(RDConfig::LogInfo,QString().sprintf(" Import Create Start Date Offset = %d days\n",import_create_startdate_offset));
+      Log(RDConfig::LogInfo,QString().sprintf(" Import Create End Date Offset = %d days\n",import_create_enddate_offset));
     }
     else {
-      printf(" Import Create Dates mode is OFF\n");
+      Log(RDConfig::LogInfo,QString(" Import Create Dates mode is OFF\n"));
     }
     if(import_persistent_dropbox_id>=0) {
-      printf(" Persistent DropBox ID = %d\n",import_persistent_dropbox_id);
+      Log(RDConfig::LogInfo,QString().sprintf(" Persistent DropBox ID = %d\n",import_persistent_dropbox_id));
     }
     if(!import_string_agency.isNull()) {
-      printf(" Agency set to: %s\n",(const char *)import_string_agency);
+      Log(RDConfig::LogInfo,QString().sprintf(" Agency set to: %s\n",(const char *)import_string_agency));
     }
     if(!import_string_album.isNull()) {
-      printf(" Album set to: %s\n",(const char *)import_string_album);
+      Log(RDConfig::LogInfo,QString().sprintf(" Album set to: %s\n",(const char *)import_string_album));
     }
     if(!import_string_artist.isNull()) {
-      printf(" Artist set to: %s\n",(const char *)import_string_artist);
+      Log(RDConfig::LogInfo,QString().sprintf(" Artist set to: %s\n",(const char *)import_string_artist));
     }
     if(import_string_bpm!=0) {
-      printf(" BPM set to: %d\n",import_string_bpm);
+      Log(RDConfig::LogInfo,QString().sprintf(" BPM set to: %d\n",import_string_bpm));
     }
     if(!import_string_client.isNull()) {
-      printf(" Client set to: %s\n",(const char *)import_string_client);
+      Log(RDConfig::LogInfo,QString().sprintf(" Client set to: %s\n",(const char *)import_string_client));
     }
     if(!import_string_composer.isNull()) {
-      printf(" Composer set to: %s\n",(const char *)import_string_composer);
+      Log(RDConfig::LogInfo,QString().sprintf(" Composer set to: %s\n",(const char *)import_string_composer));
     }
     if(!import_string_conductor.isNull()) {
-      printf(" Conductor set to: %s\n",(const char *)import_string_conductor);
+      Log(RDConfig::LogInfo,QString().sprintf(" Conductor set to: %s\n",(const char *)import_string_conductor));
     }
     if(!import_string_description.isNull()) {
-      printf(" Description set to: %s\n",
-	     (const char *)import_string_description);
+      Log(RDConfig::LogInfo,QString().sprintf(" Description set to: %s\n",
+	     (const char *)import_string_description));
     }
     if(!import_string_label.isNull()) {
-      printf(" Label set to: %s\n",(const char *)import_string_label);
+      Log(RDConfig::LogInfo,QString().sprintf(" Label set to: %s\n",(const char *)import_string_label));
     }
     if(!import_string_outcue.isNull()) {
-      printf(" Outcue set to: %s\n",(const char *)import_string_outcue);
+      Log(RDConfig::LogInfo,QString().sprintf(" Outcue set to: %s\n",(const char *)import_string_outcue));
     }
     if(!import_string_publisher.isNull()) {
-      printf(" Publisher set to: %s\n",(const char *)import_string_publisher);
+      Log(RDConfig::LogInfo,QString().sprintf(" Publisher set to: %s\n",(const char *)import_string_publisher));
     }
     if(!import_string_song_id.isNull()) {
-      printf(" Song ID set to: %s\n",(const char *)import_string_song_id);
+      Log(RDConfig::LogInfo,QString().sprintf(" Song ID set to: %s\n",(const char *)import_string_song_id));
     }
     if(!import_string_title.isNull()) {
-      printf(" Title set to: %s\n",(const char *)import_string_title);
+      Log(RDConfig::LogInfo,QString().sprintf(" Title set to: %s\n",(const char *)import_string_title));
     }
     if(!import_string_user_defined.isNull()) {
-      printf(" User Defined set to: %s\n",
-	     (const char *)import_string_user_defined);
+      Log(RDConfig::LogInfo,QString().sprintf(" User Defined set to: %s\n",
+	     (const char *)import_string_user_defined));
     }
     if(import_string_year!=0) {
-      printf(" Year set to: %d\n",import_string_year);
+      Log(RDConfig::LogInfo,QString().sprintf(" Year set to: %d\n",import_string_year));
     }
     if(import_xml) {
-      printf(" Importing RDXML metadata from external file\n");
+      Log(RDConfig::LogInfo,QString().sprintf(" Importing RDXML metadata from external file\n"));
     }
     import_cut_markers->dump();
     import_talk_markers->dump();
@@ -739,12 +763,10 @@ MainObject::MainObject(QObject *parent)
     import_segue_markers->dump();
     import_fadedown_marker->dump();
     import_fadeup_marker->dump();
-    printf(" Files to process:\n");
+    Log(RDConfig::LogInfo,QString(" Files to process:\n"));
     for(unsigned i=import_file_key;i<rda->cmdSwitch()->keys();i++) {
-      printf("   \"%s\"\n",(const char *)rda->cmdSwitch()->key(i));
+      Log(RDConfig::LogInfo,QString().sprintf("   \"%s\"\n",(const char *)rda->cmdSwitch()->key(i)));
     }
-    printf("\n");
-    fflush(stdout);
   }
 
   // 
@@ -767,8 +789,9 @@ void MainObject::userData()
   // Verify Permissions
   //
   if(!rda->user()->editAudio()) {
-    fprintf(stderr,"rdimport: user \"%s\" has no edit audio permission\n",
-	    (const char *)rda->user()->name());
+    Log(RDConfig::LogErr,
+            QString().sprintf("rdimport: user \"%s\" has no edit audio permission\n",
+	    (const char *)rda->user()->name()));
     exit(256);
   }
 
@@ -836,6 +859,10 @@ void MainObject::userData()
   delete import_group;
   //  delete import_cmd;
 
+  if(import_verbose) {
+    Log(RDConfig::LogInfo,QString("rdimport finished\n"));
+  }
+
   exit(0);
 }
 
@@ -883,10 +910,8 @@ void MainObject::RunDropBox()
 
     sleep(RDIMPORT_DROPBOX_SCAN_INTERVAL);
   } while(import_run);
-  if(import_log_mode) {
-    PrintLogDateTime();
-    printf("rdimport stopped\n");
-    fflush(stdout);
+  if(import_verbose) {
+    Log(RDConfig::LogInfo,QString("rdimport stopped\n"));
   }
 }
 
@@ -915,10 +940,8 @@ void MainObject::ProcessFileEntry(const QString &entry)
   while((globbuf.gl_pathc==RDIMPORT_GLOB_SIZE)||(gflags==GLOB_MARK)) {
     glob(RDEscapeString(entry),gflags,NULL,&globbuf);
     if((globbuf.gl_pathc==0)&&(gflags==GLOB_MARK)&&(!import_drop_box)) {
-      PrintLogDateTime(stderr);
-      fprintf(stderr," Unable to open \"%s\", skipping...\n",
-	      (const char *)entry);
-      fflush(stderr);
+      Log(RDConfig::LogErr,QString().sprintf(" Unable to open \"%s\", skipping...\n",
+	      (const char *)entry));
       globfree(&globbuf);
     }
     for(size_t i=0;i<globbuf.gl_pathc;i++) {
@@ -961,21 +984,17 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   else {
     if(import_fix_broken_formats) {
       if(import_verbose) {
-	PrintLogDateTime();
-	printf(" File \"%s\" appears to be malformed, trying workaround ... ",
-	       (const char *)RDGetBasePart(filename).utf8());
-	fflush(stdout);
+	Log(RDConfig::LogWarning,QString().sprintf(" File \"%s\" appears to be malformed, trying workaround ... ",
+	       (const char *)RDGetBasePart(filename).utf8()));
       }
       delete wavefile;
       if((wavefile=FixFile(filename,wavedata))==NULL) {
 	if(import_verbose) {
-	  printf("failed.\n");
+	  Log(RDConfig::LogWarning,QString().sprintf("failed.\n"));
 	}
-	PrintLogDateTime(stderr);
-	fprintf(stderr,
+	Log(RDConfig::LogWarning,QString().sprintf(
 		" File \"%s\" is not readable or not a recognized format, skipping...\n",
-		(const char *)RDGetBasePart(filename).utf8());
-	fflush(stderr);
+		(const char *)RDGetBasePart(filename).utf8()));
 	delete wavefile;
 	delete wavedata;
 	delete effective_group;
@@ -990,17 +1009,14 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
 	return MainObject::FileBad;
       }
       if(import_verbose) {
-	printf("success.\n");
-	fflush(stdout);
+	Log(RDConfig::LogWarning,QString().sprintf("success.\n"));
       }
       effective_filename=import_temp_fix_filename;
     }
     else {
-      PrintLogDateTime(stderr);
-      fprintf(stderr,
-      " File \"%s\" is not readable or not a recognized format, skipping...\n",
-      (const char *)RDGetBasePart(filename).utf8());
-      fflush(stderr);
+      Log(RDConfig::LogWarning,QString().sprintf(
+        " File \"%s\" is not readable or not a recognized format, skipping...\n",
+        (const char *)RDGetBasePart(filename).utf8()));
       delete wavefile;
       delete wavedata;
       delete effective_group;
@@ -1019,19 +1035,16 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
     found_cart=RunPattern(import_metadata_pattern,RDGetBasePart(filename),
 			  wavedata,&groupname);
     if(!wavedata->checkDateTimes()) {
-      PrintLogDateTime(stderr);
-      fprintf(stderr,
+      Log(RDConfig::LogErr,QString().sprintf(
 	      " File \"%s\": End date/time cannot be prior to start date/time, ignoring...\n",
-	      (const char *)filename.utf8());
+	      (const char *)filename.utf8()));
     }
     if(groupname!=effective_group->name()) {
       delete effective_group;
       effective_group=new RDGroup(groupname);
       if(!effective_group->exists()) {
-	PrintLogDateTime(stderr);
-	fprintf(stderr," Specified group \"%s\" from file \"%s\" does not exist, using default group...\n",
-		(const char *)groupname,(const char *)filename.utf8());
-	fflush(stderr);
+	Log(RDConfig::LogErr,QString().sprintf(" Specified group \"%s\" from file \"%s\" does not exist, using default group...\n",
+		(const char *)groupname,(const char *)filename.utf8()));
 	delete effective_group;
 	effective_group=new RDGroup(import_group->name());
       }
@@ -1052,11 +1065,9 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
     if((*cartnum==0)||(*cartnum>999999)||
        (effective_group->enforceCartRange()&&
 	(!effective_group->cartNumberValid(*cartnum)))) {
-      PrintLogDateTime(stderr);
-      fprintf(stderr,
+      Log(RDConfig::LogErr,QString().sprintf(
 	      " File \"%s\" has an invalid or out of range Cart Number, skipping...\n",
-	      (const char *)RDGetBasePart(filename).utf8());
-      fflush(stderr);
+	      (const char *)RDGetBasePart(filename).utf8()));
       wavefile->closeWave();
       delete wavefile;
       delete wavedata;
@@ -1068,9 +1079,7 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
     *cartnum=effective_group->nextFreeCart();
   }
   if(*cartnum==0) {
-    PrintLogDateTime(stderr);
-    fprintf(stderr,"rdimport: no free carts available in specified group\n");
-    fflush(stderr);
+    Log(RDConfig::LogErr,QString().sprintf("rdimport: no free carts available in specified group\n"));
     wavefile->closeWave();
     delete wavefile;
     delete wavedata;
@@ -1096,7 +1105,7 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   int cutnum=
     cart->addCut(import_format,import_bitrate,import_channels);
   if(cutnum<0) {
-    fprintf(stderr,"rdimport: no free cuts available in cart %06u\n",*cartnum);
+    Log(RDConfig::LogErr,QString().sprintf("rdimport: no free cuts available in cart %06u\n",*cartnum));
     delete cart;
     return MainObject::NoCut;
   }
@@ -1121,42 +1130,38 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   conv->setDestinationSettings(settings);
   conv->setUseMetadata(cart_created);
   if(import_verbose) {
-    PrintLogDateTime();
     if(wavedata->title().length()==0 || ( (wavedata->title().length()>0) && (wavedata->title()[0] == '\0')) ) {
-      printf(" Importing file \"%s\" to cart %06u ... ",
-	     (const char *)RDGetBasePart(filename).utf8(),*cartnum);
+      Log(RDConfig::LogInfo,QString().sprintf(" Importing file \"%s\" to cart %06u ... ",
+	     (const char *)RDGetBasePart(filename).utf8(),*cartnum));
     }
     else {
       if(import_string_title.isNull()) {
-	printf(" Importing file \"%s\" [%s] to cart %06u ... ",
+	Log(RDConfig::LogInfo,QString().sprintf(" Importing file \"%s\" [%s] to cart %06u ... ",
 	       (const char *)RDGetBasePart(filename).utf8(),
 	       (const char *)wavedata->title().stripWhiteSpace().utf8(),
-	       *cartnum);
+	       *cartnum));
       }
       else {
-	printf(" Importing file \"%s\" [%s] to cart %06u ... ",
+	Log(RDConfig::LogInfo,QString().sprintf(" Importing file \"%s\" [%s] to cart %06u ... ",
 	       (const char *)RDGetBasePart(filename).utf8(),
 	       (const char *)import_string_title.stripWhiteSpace().utf8(),
-	       *cartnum);
+	       *cartnum));
       }
     }
-    fflush(stdout);
   }
 
   switch(conv_err=conv->runImport(rda->user()->name(),rda->user()->password(),
 				  &audio_conv_err)) {
   case RDAudioImport::ErrorOk:
     if(import_verbose) {
-      printf("done.\n");
+      Log(RDConfig::LogInfo,QString().sprintf("done.\n"));
     }
     break;
 
   default:
-    PrintLogDateTime(stderr);
-    fprintf(stderr," %s, skipping %s...\n",
+    Log(RDConfig::LogNotice,QString().sprintf(" %s, skipping %s...\n",
 	    (const char *)RDAudioImport::errorText(conv_err,audio_conv_err),
-	    (const char *)filename.utf8());
-    fflush(stderr);
+	    (const char *)filename.utf8()));
     if(cart_created) {
       cart->remove(rda->station(),rda->user(),rda->config());
     }
@@ -1359,9 +1364,7 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   if(import_delete_source) {
     unlink(filename.utf8());
     if(import_verbose) {
-      PrintLogDateTime();
-      printf(" Deleted file \"%s\"\n",(const char *)RDGetBasePart(filename).utf8());
-      fflush(stdout);
+      Log(RDConfig::LogInfo,QString().sprintf(" Deleted file \"%s\"\n",(const char *)RDGetBasePart(filename).utf8()));
     }
   }
   if(!import_run) {
@@ -1885,22 +1888,10 @@ bool MainObject::VerifyPattern(const QString &pattern)
 }
 
 
-void MainObject::PrintLogDateTime(FILE *f)
-{
-  if(import_log_mode) {
-    fprintf(f,"%s - %s : ",
-	   (const char *)QDate::currentDate().toString("MM-dd-yyyy"),
-	   (const char *)QTime::currentTime().toString("hh:mm:ss"));
-  }
-}
-
-
 void MainObject::DeleteCuts(unsigned cartnum)
 {
   if(import_verbose) {
-    PrintLogDateTime();
-    printf(" Deleting cuts from cart %06u\n",cartnum);
-    fflush(stdout);
+    Log(RDConfig::LogInfo,QString().sprintf(" Deleting cuts from cart %06u\n",cartnum));
   }
   unsigned dev;
   RDCart *cart=new RDCart(cartnum);
@@ -1991,7 +1982,7 @@ void MainObject::ReadXmlFile(const QString &basename,RDWaveData *wavedata) const
   }
   xmlname+="xml";
   if(import_verbose) {
-    printf(" Reading xml metadata from \"%s\": ",(const char *)xmlname);
+    Log(RDConfig::LogInfo,QString().sprintf(" Reading xml metadata from \"%s\": ",(const char *)xmlname));
   }
 
   //
@@ -2000,12 +1991,12 @@ void MainObject::ReadXmlFile(const QString &basename,RDWaveData *wavedata) const
   wavedata->clear();
   if((f=fopen(xmlname,"r"))==NULL) {
     if(import_verbose) {
-      printf("failed [%s]\n",strerror(errno));
+      Log(RDConfig::LogErr,QString().sprintf("failed [%s]\n",strerror(errno)));
       return;
     }
   }
   if(import_verbose) {
-    printf("success\n");
+    Log(RDConfig::LogInfo,QString("success\n"));
   }
   while(fgets(line,1024,f)!=NULL) {
     xml+=line;
@@ -2029,6 +2020,26 @@ void MainObject::SendNotification(RDNotification::Action action,
   rda->ripc()->sendNotification(*notify);
   qApp->processEvents();
   delete notify;
+}
+
+
+void MainObject::Log(RDConfig::LogPriority prio,const QString &msg) const
+{
+  QString m=msg;
+
+  if (import_drop_box||import_log_syslog||import_log_file) {
+    rda->log(prio,m.replace(QRegExp("^rdimport: "),"").simplified());
+  }
+  else {
+    if(prio==RDConfig::LogErr) {
+      fprintf(stderr,"%s",(const char *)msg);
+      fflush(stderr);
+    }
+    else {
+      fprintf(stdout,"%s",(const char *)msg);
+      fflush(stdout);
+    }
+  }
 }
 
 

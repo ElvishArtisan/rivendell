@@ -17812,6 +17812,7 @@
 	* Disabled the 'More than half the audio will be faded...' warning
 	in the 'Edit Audio' dialog in rdlibrary(1) if the 'No Fade on
 	Segue Out' checkbox is ticked.
+<<<<<<< HEAD
 2018-10-17 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rivwebcapi's 'RD_ListCartCuts()' and
 	'RD_ListCartsCuts()' functions that threw a segfault if the WebAPI
@@ -17909,3 +17910,7 @@
 	* Fixed a regression in rdairplay(1) that caused carts Added or Copied
 	to a log to have a PLAY transition regardless of the default
 	transition type set in rdadmin(1).
+2018-10-24 Patrick Linstruth <patrick@deltecent.com>
+	* Update rdimport(1) logging to support both console, syslog, and
+	file output.
+	* Update rdservice(8) to use new rdimport(1) logging options.
