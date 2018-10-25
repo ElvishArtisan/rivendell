@@ -788,6 +788,35 @@
 	touching the <computeroutput>Edit</computeroutput> button.
       </para>
     </sect2>
+    <sect2 xml:id="sect.rdlibrary.viewing_and_selecting_cuts">
+      <title>Viewing and Selecting Cuts</title>
+      <para>
+	If a cart contains more than one cut, you can view all the cuts
+	contained by the cart by clicking the
+	<computeroutput>+</computeroutput> icon. The cuts can be
+	hidden by clicking the <computeroutput>-</computeroutput>
+	icon.
+      </para>
+    </sect2>
+    <sect2 xml:id="sect.rdlibrary.playing_carts_and_cuts">
+      <title>Playing Carts and Cuts</title>
+      <para>
+	A selected cart or cut can be played by either pressing the
+	play button (the one with the triangular symbol) or by
+	pressing the space bar. If a cart or cut is currently
+	playing, selecting another cart or cut with the mouse
+	or arrow keys will automatically play the newly selected
+	item. To stop a playing cart or cut, press the stop button
+	(square symbol) or press the space bar again.
+      </para>
+    </sect2>
+    <sect2 xml:id="sect.rdlibrary.runnings_macros">
+      <title>Running Macros</title>
+      <para>
+	A selected macro can be run by pressing the
+	<computeroutput>Run Macro</computeroutput> button.
+      </para>
+    </sect2>
   </sect1>
   <sect1 xml:id="sect.rdlibrary.library_maintenance">
     <title>Library Maintenance</title>
