@@ -17917,3 +17917,10 @@
 2018-10-26 Fred Gleason <fredg@paravelsystems.com>
 	* Added a warning when starting a module if the host does not
 	have a corresponding entry in the database.
+2018-10-26 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdairplay(1) that caused to the
+	'Enter Password' dialog to be dispplayed when exiting even if
+	no exit password had been set.
+	* Fixed a regression in rdairplay(1) that caused the application
+	to be closed even if an incorrect response was entered in the
+	'Enter Password' dialog.

@@ -2130,6 +2130,7 @@ void MainWidget::closeEvent(QCloseEvent *e)
     RDGetPasswd *gw=new RDGetPasswd(&passwd,this);
     gw->exec();
     if(!rda->airplayConf()->exitPasswordValid(passwd)) {
+      e->ignore();
       return;
     }
     rda->airplayConf()->setExitCode(RDAirPlayConf::ExitClean);

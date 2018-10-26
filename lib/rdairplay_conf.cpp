@@ -773,7 +773,11 @@ bool RDAirPlayConf::exitPasswordValid(const QString &passwd) const
 
   sql=QString("select EXIT_PASSWORD from `")+air_tablename+"` where "+
     "STATION=\""+RDEscapeString(air_station)+"\" && "+
-    "EXIT_PASSWORD=PASSWORD(\""+RDEscapeString(passwd)+"\")";
+    "((EXIT_PASSWORD=PASSWORD(\""+RDEscapeString(passwd)+"\"))";
+  if(passwd.isEmpty()) {
+    sql+="||(EXIT_PASSWORD is null)";
+  }
+  sql+=")";
   q=new RDSqlQuery(sql);
   if(q->size()>0) {
     delete q;
