@@ -40,10 +40,11 @@ class RDApplication : public QObject
 {
   Q_OBJECT;
  public:
+  enum ErrorType {ErrorOk=0,ErrorDbVersionSkew=1,ErrorNoHostEntry=2};
   RDApplication(const QString &module_name,const QString &cmdname,
 		const QString &usage,QObject *parent=0);
   ~RDApplication();
-  bool open(QString *err_msg);
+  bool open(QString *err_msg,ErrorType *err_type=NULL);
   RDAirPlayConf *airplayConf();
   RDCae *cae();
   RDCmdSwitch *cmdSwitch();

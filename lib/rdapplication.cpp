@@ -93,11 +93,15 @@ RDApplication::~RDApplication()
 }
 
 
-bool RDApplication::open(QString *err_msg)
+bool RDApplication::open(QString *err_msg,RDApplication::ErrorType *err_type)
 {
   int schema=0;
   QString db_err;
   bool skip_db_check=false;
+
+  if(err_type!=NULL) {
+    *err_type=RDApplication::ErrorOk;
+  }
 
   //
   // Read command switches
@@ -126,6 +130,9 @@ bool RDApplication::open(QString *err_msg)
     return false;
   }
   if((RD_VERSION_DATABASE!=schema)&&(!skip_db_check)) {
+    if(err_type!=NULL) {
+      *err_type=RDApplication::ErrorDbVersionSkew;
+    }
     *err_msg=QObject::tr("Database version mismatch, should be")+
       QString().sprintf(" %u, ",RD_VERSION_DATABASE)+
       QObject::tr("is")+
@@ -137,8 +144,17 @@ bool RDApplication::open(QString *err_msg)
   //
   // Open Accessors
   //
-  app_system=new RDSystem();
   app_station=new RDStation(app_config->stationName());
+  if(!app_station->exists()) {
+    if(err_type!=NULL) {
+      *err_type=RDApplication::ErrorNoHostEntry;
+    }
+    *err_msg=QObject::tr("This host")+" (\""+app_config->stationName()+"\") "+
+      QObject::tr("does not have a Hosts entry in the database.")+"\n"+
+      QObject::tr("Open RDAdmin->ManageHosts->Add to create one.");
+    return false;
+  }
+  app_system=new RDSystem();
   app_library_conf=new RDLibraryConf(app_config->stationName());
   app_logedit_conf=new RDLogeditConf(app_config->stationName());
   app_airplay_conf=new RDAirPlayConf(app_config->stationName(),"RDAIRPLAY");

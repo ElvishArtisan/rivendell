@@ -635,6 +635,18 @@
         <source>mount(8) crashed</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>This host</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>does not have a Hosts entry in the database.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open RDAdmin-&gt;ManageHosts-&gt;Add to create one.</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddCart</name>

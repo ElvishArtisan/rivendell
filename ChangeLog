@@ -17914,3 +17914,6 @@
 	* Update rdimport(1) logging to support both console, syslog, and
 	file output.
 	* Update rdservice(8) to use new rdimport(1) logging options.
+2018-10-26 Fred Gleason <fredg@paravelsystems.com>
+	* Added a warning when starting a module if the host does not
+	have a corresponding entry in the database.
