@@ -17895,4 +17895,5 @@
 	* Fixed a bug in 'configure.ac' that caused detection of FLAC
 	support to always fail.
 2018-10-27 Patrick Linstruth <patrick@deltecent.com>
-	* Fix delete and voice track buttons in rdlogedit(1)
+	* Fix delete and voice track buttons in rdlogedit(1).
+	* Fix bug in RDSimplePlayer setCart() method.
