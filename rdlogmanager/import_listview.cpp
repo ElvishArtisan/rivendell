@@ -342,7 +342,7 @@ void ImportListView::insertNoteMenuData()
   i_item->setEventType(RDLogLine::Marker);
   i_item->setMarkerComment(note);
   i_item->setTransType(RDLogLine::Segue);
-  import_list->takeItem(1,i_item);
+  import_list->takeItem(import_menu_line,i_item);
   validateTransitions();
   refreshList(import_menu_line);
   emit sizeChanged(childCount());
