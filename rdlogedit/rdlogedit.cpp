@@ -300,8 +300,8 @@ void MainWidget::userData()
   // Set Control Perms
   //
   log_add_button->setEnabled(rda->user()->createLog());
-  log_delete_button->setEnabled(rda->user()->deleteLog());
-  log_track_button->setEnabled(rda->user()->voicetrackLog());
+  log_delete_button->setEnabled(false);
+  log_track_button->setEnabled(false);
 }
 
 
