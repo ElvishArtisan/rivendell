@@ -23,7 +23,6 @@
 
 #include <qpixmap.h>
 #include <qpainter.h>
-//Added by qt3to4:
 #include <QDropEvent>
 #include <QMouseEvent>
 #include <QKeyEvent>
@@ -52,8 +51,8 @@ void RDPanelButton::clear()
 {
   setText("");
   setOutputText("");
-  setDefaultColor(button_parent->backgroundColor());
-  setColor(button_parent->backgroundColor());
+  button_color=Qt::lightGray;
+  button_default_color=Qt::lightGray;
   setCart(0);
   button_deck=-1;
   button_output=-1;
@@ -492,6 +491,7 @@ void RDPanelButton::WriteKeycap(int secs)
   setPixmap(*pix);
   delete p;
   delete pix;
+  update();
 }
 
 

@@ -17924,3 +17924,6 @@
 	* Fixed a regression in rdairplay(1) that caused the application
 	to be closed even if an incorrect response was entered in the
 	'Enter Password' dialog.
+2018-10-28 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression that caused the bankground of blank Sound Panel
+	buttons to be black.
