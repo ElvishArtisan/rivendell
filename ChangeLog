@@ -17934,3 +17934,6 @@
 2018-10-28 Patrick Linstruth <patrick@deltecent.com>
 	* Updated the Operations Guide to include illustration of the
 	'Play' and 'Stop' buttons on the main window of rdlibrary(1).
+2018-10-28 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed a regression in rdlogmanaer(1) that threw a segfault when
+	adding a Log Note to an Event.
