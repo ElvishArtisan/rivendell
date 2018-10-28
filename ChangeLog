@@ -17927,3 +17927,7 @@
 2018-10-28 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression that caused the bankground of blank Sound Panel
 	buttons to be black.
+2018-10-28 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed a regression in rdairplay(1) that caused the application
+	to be closed even if "No" was pressed in the 'Exit RDAirPlay?'
+	dialog.
