@@ -17931,3 +17931,6 @@
 	* Fixed a regression in rdairplay(1) that caused the application
 	to be closed even if "No" was pressed in the 'Exit RDAirPlay?'
 	dialog.
+2018-10-28 Patrick Linstruth <patrick@deltecent.com>
+	* Updated the Operations Guide to include illustration of the
+	'Play' and 'Stop' buttons on the main window of rdlibrary(1).
