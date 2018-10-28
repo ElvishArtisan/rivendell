@@ -17937,3 +17937,6 @@
 2018-10-28 Patrick Linstruth <patrick@deltecent.com>
 	* Fixed a regression in rdlogmanaer(1) that threw a segfault when
 	adding a Log Note to an Event.
+2018-10-28 Patrick Linstruth <patrick@deltecent.com>
+	* Fix delete and voice track buttons in rdlogedit(1).
+	* Fix bug in RDSimplePlayer setCart() method.

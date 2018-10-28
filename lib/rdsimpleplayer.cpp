@@ -84,6 +84,7 @@ bool RDSimplePlayer::isPlaying()
 void RDSimplePlayer::setCart(unsigned cart)
 {
   play_cart=cart;
+  play_cut="";
 }
 
 
