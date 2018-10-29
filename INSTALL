@@ -224,13 +224,13 @@ In the '[mySQL]' section of the '/etc/rd.conf' file, set the 'Database=',
 'Loginname=' and 'Password=' parameters to the DB name, user and password
 that you created. Then, create an initial Rivendell database by doing:
 
-     rddbmgr --create
+       rddbmgr --create
 
 If all goes well, this command should return with no output.
 
 Finally, start up the Rivendell service by doing (as root):
 
-      systemctl start rivendell
+       systemctl start rivendell
 
 You should now be able to run the various Rivendell components from the
 Applications menu.
