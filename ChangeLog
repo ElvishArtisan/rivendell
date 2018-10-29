@@ -17950,3 +17950,7 @@
 2018-10-29 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the code to implement schema update/reversion 284
 	that did not properly add/drop the 'RDAIRPLAY.INSTANCE' field.
+2018-10-29 Fred Gleason <fredg@paravelsystems.com>
+	* Backported a consistency check into schema update 291 in
+	rddbmgr(8) to remove rdlogmanager(1) events with duplicate start
+	times.
