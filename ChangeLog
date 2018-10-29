@@ -17895,6 +17895,7 @@
 2018-10-23 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'configure.ac' that caused detection of FLAC
 	support to always fail.
+<<<<<<< HEAD
 2018-10-24 Fred Gleason <fredg@paravelsystems.com>
 	* Consolidated the implementation of the 'RDProfile' class into
 	two files.
@@ -17940,3 +17941,6 @@
 2018-10-28 Patrick Linstruth <patrick@deltecent.com>
 	* Fix delete and voice track buttons in rdlogedit(1).
 	* Fix bug in RDSimplePlayer setCart() method.
+2018-10-29 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed regression where background colors are were not displayed
+	in the RDDatePicker calendar.
