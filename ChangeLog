@@ -17954,3 +17954,5 @@
 	* Backported a consistency check into schema update 291 in
 	rddbmgr(8) to remove rdlogmanager(1) events with duplicate start
 	times.
+2018-10-29 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.0.0alpha01.
