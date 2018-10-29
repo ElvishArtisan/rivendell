@@ -17894,3 +17894,5 @@
 2018-10-23 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'configure.ac' that caused detection of FLAC
 	support to always fail.
+2018-10-29 Patrick Linstruth <patrick@deltecent.com>
+	* Updated the 'README' file with RDDbConfig utility.
