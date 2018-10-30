@@ -17642,8 +17642,6 @@
 2018-09-20 Fred Gleason <fredg@paravelsystems.com>
 	* Corrected an omission in the documentation of the
 	'Start Button' ['PB'] RML.
-<<<<<<< HEAD
-<<<<<<< HEAD
 2018-10-01 Fred Gleason <fredg@paravelsystems.com>
 	* Applied a PR from Patrick Linstruth <patrick@deltecent.com> that
 	fixed a regression where the 'Stop' button would fail to function
@@ -17812,7 +17810,6 @@
 	* Disabled the 'More than half the audio will be faded...' warning
 	in the 'Edit Audio' dialog in rdlibrary(1) if the 'No Fade on
 	Segue Out' checkbox is ticked.
-<<<<<<< HEAD
 2018-10-17 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rivwebcapi's 'RD_ListCartCuts()' and
 	'RD_ListCartsCuts()' functions that threw a segfault if the WebAPI
@@ -17852,7 +17849,6 @@
 2018-10-19 Fred Gleason <fredg@paravelsystems.com>
 	* Removed check for Win32 installer from 'configure.ac'.
 	* Removed win32 clauses from '.pro' files.
-<<<<<<< HEAD
 2018-10-19 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'make slack' target.
 	* Removed the 'make slax' target.
@@ -17895,8 +17891,6 @@
 2018-10-23 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'configure.ac' that caused detection of FLAC
 	support to always fail.
-<<<<<<< HEAD
-<<<<<<< HEAD
 2018-10-24 Fred Gleason <fredg@paravelsystems.com>
 	* Consolidated the implementation of the 'RDProfile' class into
 	two files.
@@ -17956,3 +17950,5 @@
 	times.
 2018-10-29 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.0.0alpha01.
+2018-10-30 Patrick Linstruth <patrick@deltecent.com>
+	* Added display of warnings from rddbmgr(8) to rddbconfig(8).
