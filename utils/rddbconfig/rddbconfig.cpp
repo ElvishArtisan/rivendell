@@ -189,14 +189,22 @@ void MainWidget::mismatchData()
   modifyProcess.start("rddbmgr", args);
   modifyProcess.waitForFinished(-1);
   QApplication::restoreOverrideCursor();
+  QString stderr=modifyProcess.readAllStandardError();
   if (modifyProcess.exitCode()) {
-    QMessageBox::critical(this,tr("RDDbConfig Error"),
-      QString(modifyProcess.readAllStandardError()));
+    QMessageBox::critical(this,tr("RDDbConfig Error"),stderr);
   }
   else {
-    QMessageBox::information(this,"Database Modified Successfully",
+    if(!stderr.isEmpty()) {
+      QMessageBox::information(this,"Database Modified with Warnings",
+        QString().sprintf("Modified database to version %d with warnings:\n\n%s",
+          RD_VERSION_DATABASE,(const char *)stderr));
+    }
+    else {
+      QMessageBox::information(this,"Database Modified Successfully",
+        QString().sprintf("Modified database to version %d", RD_VERSION_DATABASE));
+    }
+    rd_config->log("rddbconfig",RDConfig::LogInfo,
       QString().sprintf("Modified database to version %d", RD_VERSION_DATABASE));
-    rd_config->log("rddbconfig",RDConfig::LogInfo,QString().sprintf("Modified database to version %d", RD_VERSION_DATABASE));
 
     emit dbChanged();
   }
