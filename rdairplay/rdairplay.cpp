@@ -2141,6 +2141,7 @@ void MainWidget::closeEvent(QCloseEvent *e)
   if(QMessageBox::question(this,"RDAirPlay",tr("Exit RDAirPlay?"),
 			   QMessageBox::Yes,QMessageBox::No)!=
      QMessageBox::Yes) {
+    e->setAccepted(false);
     return;
   }
   for(unsigned i=0;i<air_plugin_hosts.size();i++) {

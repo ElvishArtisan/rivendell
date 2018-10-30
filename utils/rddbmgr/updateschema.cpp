@@ -7008,12 +7008,10 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
   }
 
   if((cur_schema<284)&&(set_schema>cur_schema)) { 
-    /*
     sql=QString("alter table RDAIRPLAY drop column INSTANCE");
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }
-    */
     for(int i=0;i<10;i++) {
       sql=QString("alter table RDAIRPLAY ")+
 	QString().sprintf("drop column CARD%d",i);
@@ -7692,6 +7690,49 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     while(q->next()) {
       QString tablename=q->value(0).toString()+"_CLK";
       tablename.replace(" ","_");
+
+      /* *** HACK WARNING *** HACK WARNING ***
+       *
+       * This check works around a bug in Rivendell v2.x that permitted
+       * clocks to have events with the same start time. It deletes all
+       * such 'conflicting' events except the one with the lowest ID number.
+       */
+      QList<unsigned> deleted_ids;
+      sql=QString("select ")+
+	"ID,"+          // 00
+	"EVENT_NAME,"+  // 01
+	"START_TIME,"+  // 02
+	"LENGTH "+      // 03
+	"from `"+tablename+"` "+
+	"order by ID";
+      q1=new RDSqlQuery(sql);
+      while(q1->next()) {
+	sql=QString("select ")+
+	  "ID,"+          // 00
+	  "EVENT_NAME "+  // 01
+	  "from `"+tablename+"` where "+
+	  QString().sprintf("START_TIME=%d && ",q1->value(2).toInt())+
+	  QString().sprintf("ID!=%u ",q1->value(0).toUInt())+
+	  "order by ID";
+	q2=new RDSqlQuery(sql);
+	while(q2->next()) {
+	  if(!deleted_ids.contains(q1->value(0).toUInt())) {
+	    fprintf(stderr,
+	       "WARNING: deleted conflicting event \"%s\" from clock \"%s\"\n",
+		    (const char *)q2->value(1).toString().toUtf8(),
+		    (const char *)q->value(0).toString().toUtf8());
+	    sql=QString("delete ")+
+	      "from `"+tablename+"` where "+
+	      QString().sprintf("ID=%u",q2->value(0).toUInt());
+	    RDSqlQuery::apply(sql);
+	    deleted_ids.push_back(q2->value(0).toUInt());
+	  }
+	}
+	delete q2;
+      }
+      delete q1;
+      /* *** END OF HACK WARNING *** END OF HACK WARNING ***/
+
       sql=QString("select ")+
 	"EVENT_NAME,"+  // 00
 	"START_TIME,"+  // 01

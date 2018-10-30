@@ -17895,6 +17895,8 @@
 2018-10-23 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'configure.ac' that caused detection of FLAC
 	support to always fail.
+<<<<<<< HEAD
+<<<<<<< HEAD
 2018-10-24 Fred Gleason <fredg@paravelsystems.com>
 	* Consolidated the implementation of the 'RDProfile' class into
 	two files.
@@ -17924,3 +17926,33 @@
 	* Fixed a regression in rdairplay(1) that caused the application
 	to be closed even if an incorrect response was entered in the
 	'Enter Password' dialog.
+2018-10-28 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression that caused the bankground of blank Sound Panel
+	buttons to be black.
+2018-10-28 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed a regression in rdairplay(1) that caused the application
+	to be closed even if "No" was pressed in the 'Exit RDAirPlay?'
+	dialog.
+2018-10-28 Patrick Linstruth <patrick@deltecent.com>
+	* Updated the Operations Guide to include illustration of the
+	'Play' and 'Stop' buttons on the main window of rdlibrary(1).
+2018-10-28 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed a regression in rdlogmanaer(1) that threw a segfault when
+	adding a Log Note to an Event.
+2018-10-28 Patrick Linstruth <patrick@deltecent.com>
+	* Fix delete and voice track buttons in rdlogedit(1).
+	* Fix bug in RDSimplePlayer setCart() method.
+2018-10-29 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed regression where background colors are were not displayed
+	in the RDDatePicker calendar.
+2018-10-29 Patrick Linstruth <patrick@deltecent.com>
+	* Updated the 'README' file with RDDbConfig utility.
+2018-10-29 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the code to implement schema update/reversion 284
+	that did not properly add/drop the 'RDAIRPLAY.INSTANCE' field.
+2018-10-29 Fred Gleason <fredg@paravelsystems.com>
+	* Backported a consistency check into schema update 291 in
+	rddbmgr(8) to remove rdlogmanager(1) events with duplicate start
+	times.
+2018-10-29 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.0.0alpha01.

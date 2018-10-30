@@ -57,11 +57,12 @@ A utility for posting and managing podcast episodes.
 RDGpiMon
 A utility for monitoring GPI line status.
 
-RDHPIInfo
-A utility for configuring AudioScience audio adapters.
-
 RDAlsaConfig
 A utility for configuring ALSA audio adapters.
+
+RDDbConfig
+A utility for creating, backing up and restoring the Rivendell
+database.
 
 RDImport
 A command-line utility for batch importing audio along with
