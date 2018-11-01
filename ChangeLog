@@ -17956,6 +17956,6 @@
 	* Modified rdselect_helper(8) to use the automounter for managing
 	audio store mounts.
 2018-11-01 Fred Gleason <fredg@paravelsystems.com>
-	* Modified rdselect_helper(8) to include the value of the value of
+	* Modified rdselect_helper(8) to include the value of
 	the 'MountOptions=' parameter in rd.conf(5) when configuring
 	audio store mounts.
