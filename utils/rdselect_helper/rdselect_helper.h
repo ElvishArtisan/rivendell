@@ -29,6 +29,9 @@
 
 #include "rdconfig.h"
 
+#define RDSELECT_AUTOMOUNT_CONFIG "/etc/auto.rd.audiostore"
+#define RDSELECT_AUTOMOUNT_WARNING "# THE CONTENTS OF THIS FILE ARE MANAGED BY RIVENDELL'S RDSELECT SYSTEM!\n# DO NOT HAND EDIT!\n\n"
+
 class MainObject : public QObject
 {
   Q_OBJECT;
@@ -38,6 +41,7 @@ class MainObject : public QObject
  private:
   void Startup();
   void Shutdown();
+  void ControlAutomounter(const QString &cmd);
   bool ProcessActive(const QStringList &cmds) const;
   bool ModulesActive() const;
   QString helper_config_filename;

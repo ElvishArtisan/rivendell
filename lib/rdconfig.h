@@ -51,7 +51,8 @@ class RDConfig
 			 RDSelectSymlinkFailed=11,
 			 RDSelectInvalidName=12,
 			 RDSelectMountCrashed=13,
-			 RDSelectLast=14};
+			 RDSelectCantAccessAutomount=14,
+			 RDSelectLast=15};
   RDConfig();
   RDConfig(const QString &filename);
   QString filename() const;

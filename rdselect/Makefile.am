@@ -1,6 +1,6 @@
 ## Makefile.am
 ##
-## (C) Copyright 2012,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2012-2018 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -30,9 +30,13 @@ moc_%.cpp:	%.h
 install-exec-hook:
 	mkdir -p $(DESTDIR)$(prefix)/share/rivendell
 	cp rdselect_*.qm $(DESTDIR)$(prefix)/share/rivendell
+	mkdir -p $(DESTDIR)/etc/auto.master.d
+	cp rd.audiostore.autofs $(DESTDIR)/etc/auto.master.d/
+	touch $(DESTDIR)/etc/auto.rd.audiostore
 
 uninstall-local:	
 	rm -f $(DESTDIR)$(prefix)/share/rivendell/rdselect_*.qm
+	rm -f $(DESTDIR)/etc/auto.master.d/rd.audiostore.autofs
 
 all:	
 	lupdate-qt4 rdselect.pro
@@ -46,7 +50,8 @@ nodist_rdselect_SOURCES = moc_rdselect.cpp
 
 rdselect_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
 
-EXTRA_DIST = rdselect.pro\
+EXTRA_DIST = rd.audiostore.autofs\
+             rdselect.pro\
              rdselect_cs.ts\
              rdselect_de.ts\
              rdselect_es.ts\

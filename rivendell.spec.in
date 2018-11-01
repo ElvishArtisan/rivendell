@@ -45,7 +45,7 @@ Requires: rivendell = @VERSION@, rivendell-webapi = @VERSION@
 
 %package select
 Summary: The RDSelect system selector tool for Rivendell.
-Requires: rivendell = @VERSION@
+Requires: rivendell = @VERSION@, autofs
 
 
 %description
@@ -141,6 +141,7 @@ cp scripts/rd_backup_system.sh $RPM_BUILD_ROOT/@DOC_PATH@/scripts/
 cp scripts/rd_restore_system.sh $RPM_BUILD_ROOT/@DOC_PATH@/scripts/
 cp scripts/engine_conv.py $RPM_BUILD_ROOT/@DOC_PATH@
 cp scripts/init_template_host.py $RPM_BUILD_ROOT/@DOC_PATH@
+rm -f $RPM_BUILD_ROOT/etc/auto.rd.audiostore
 
 
 %post
@@ -467,8 +468,18 @@ rm -rf $RPM_BUILD_ROOT
 %files select
 @LOCAL_PREFIX@/bin/rdselect
 %attr(4755,root,root) @LOCAL_PREFIX@/bin/rdselect_helper
+/etc/auto.master.d/rd.audiostore.autofs
 @LOCAL_PREFIX@/bin/rdmonitor
 /etc/X11/xinit/xinitrc.d/start-rdmonitor.sh
+
+
+%post select
+touch /etc/auto.rd.audiostore
+systemctl restart autofs
+
+
+%postun select
+systemctl restart autofs
 
 
 %changelog

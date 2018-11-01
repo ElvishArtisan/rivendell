@@ -96,38 +96,35 @@ void MainObject::Startup()
 {
   QStringList args;
   QProcess *proc=NULL;
+  FILE *f=NULL;
 
-  //
-  // Mount the audio store
-  //
   if(!helper_config->audioStoreMountSource().isEmpty()) {
-    args.clear();
-    if(!helper_config->audioStoreMountType().isEmpty()) { 
-      args.push_back("-t");
-      args.push_back(helper_config->audioStoreMountType());
+    //
+    // Stop the Automounter
+    //
+    ControlAutomounter("stop");
+
+    //
+    // Update the Automounter
+    //
+    if((f=fopen(RDSELECT_AUTOMOUNT_CONFIG,"w"))==NULL) {
+      fprintf(stderr,
+       "rdselect_helper: unable to open automount configuration \"%s\" [%s]\n",
+	      RDSELECT_AUTOMOUNT_CONFIG,
+	      strerror(errno));
+      exit(RDConfig::RDSelectCantAccessAutomount);
     }
-    args.push_back("-o");
-    if(helper_config->audioStoreMountOptions().isEmpty()) {
-      args.push_back("defaults");
-    }
-    else {
-      args.push_back(helper_config->audioStoreMountOptions());
-    }
-    args.push_back(helper_config->audioStoreMountSource());
-    args.push_back(helper_config->audioRoot());
-    proc=new QProcess(this);
-    proc->start("/bin/mount",args);
-    proc->waitForFinished();
-    if(proc->exitStatus()!=QProcess::NormalExit) {
-      fprintf(stderr,"rdselect_helper: mount(8) command crashed\n");
-      exit(RDConfig::RDSelectMountCrashed);
-    }
-    if(proc->exitCode()!=0) {
-      fprintf(stderr,"rdselect_helper: mount exited with error code %d\n",
-	      proc->exitCode());
-      exit(RDConfig::RDSelectAudioMountFailed);
-    }
-    delete proc;
+    fprintf(f,"%s",RDSELECT_AUTOMOUNT_WARNING);
+    fprintf(f,"%s\t-fstype=%s\t%s\n",
+	    (const char *)helper_config->audioRoot().toUtf8(),
+	    (const char *)helper_config->audioStoreMountType().toUtf8(),
+	    (const char *)helper_config->audioStoreMountSource().toUtf8());
+    fclose(f);
+
+    //
+    // Restart the Automounter
+    //
+    ControlAutomounter("start");
   }
 
   //
@@ -160,6 +157,7 @@ void MainObject::Startup()
 void MainObject::Shutdown()
 {
   QStringList args;
+  FILE *f=NULL;
 
   //
   // Stop Rivendell Service
@@ -180,6 +178,11 @@ void MainObject::Shutdown()
   delete proc;
 
   //
+  // Stop the Automounter
+  //
+  ControlAutomounter("stop");
+
+  //
   // Unmount the audio store
   //
   if(umount(helper_prev_config->audioRoot())!=0) {
@@ -190,6 +193,46 @@ void MainObject::Shutdown()
       exit(RDConfig::RDSelectAudioUnmountFailed);
     }
   }
+
+  //
+  // Update the Automounter
+  //
+  if((f=fopen(RDSELECT_AUTOMOUNT_CONFIG,"w"))==NULL) {
+    fprintf(stderr,
+      "rdselect_helper: unable to open automount configuration \"%s\" [%s]\n",
+	    RDSELECT_AUTOMOUNT_CONFIG,
+	    strerror(errno));
+    exit(RDConfig::RDSelectCantAccessAutomount);
+  }
+  fprintf(f,"%s",RDSELECT_AUTOMOUNT_WARNING);
+  fclose(f);
+
+  //
+  // Restart the Automounter
+  //
+  ControlAutomounter("start");
+}
+
+
+void MainObject::ControlAutomounter(const QString &cmd)
+{
+  QStringList args;
+
+  args.push_back(cmd);
+  args.push_back("autofs");
+  QProcess *proc=new QProcess(this);
+  proc->start("/bin/systemctl",args);
+  proc->waitForFinished();
+  if(proc->exitStatus()!=QProcess::NormalExit) {
+    fprintf(stderr,"rdselect_helper: systemctl(8) crashed\n");
+    exit(RDConfig::RDSelectSystemctlCrashed);
+  }
+  if(proc->exitCode()!=0) {
+    fprintf(stderr,
+     "rdselect_helper: automounter control failed [systemctl exit code: %d]\n",
+	    proc->exitCode());
+  }
+  delete proc;
 }
 
 

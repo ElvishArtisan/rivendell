@@ -681,6 +681,10 @@
         <source>Open RDAdmin-&gt;ManageHosts-&gt;Add to create one.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Unable to update automounter configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddCart</name>

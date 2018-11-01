@@ -814,6 +814,10 @@ QString RDConfig::rdselectExitCodeText(RDSelectExitCode code)
     ret=QObject::tr("mount(8) crashed");
     break;
 
+  case RDConfig::RDSelectCantAccessAutomount:
+    ret=QObject::tr("Unable to update automounter configuration");
+    break;
+
   case RDConfig::RDSelectLast:
     break;
   }
