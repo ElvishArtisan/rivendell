@@ -254,7 +254,7 @@ void PieCounter::paintEvent(QPaintEvent *e)
 	  ring_angle = 0;
 
   if(pie_onair||pie_pixmap.isNull()) {
-    p->fillRect(0,0,PIE_COUNTER_BBOX,PIE_COUNTER_BBOX,PIE_ONAIR_OFF_COLOR);
+    p->fillRect(0,0,PIE_COUNTER_BBOX,PIE_COUNTER_BBOX,PIE_ONAIR_COLOR);
   }
   else {
     p->drawPixmap(-PIE_X_PADDING,-PIE_Y_PADDING,pie_pixmap);
