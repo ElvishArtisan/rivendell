@@ -90,7 +90,6 @@ class PieCounter : public QWidget
   RDAirPlayConf::OpMode pie_op_mode;
   RDLogLine::TransType pie_trans_type;
   int air_line;
-  QColor onair_off_color;
   RDLogLine *pie_logline;
   QPixmap pie_pixmap;
   bool pie_onair;
