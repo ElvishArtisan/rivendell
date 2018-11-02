@@ -17959,3 +17959,5 @@
 	* Modified rdselect_helper(8) to include the value of
 	the 'MountOptions=' parameter in rd.conf(5) when configuring
 	audio store mounts.
+2018-11-02 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed regression with pie widget in rdairplay(1).
