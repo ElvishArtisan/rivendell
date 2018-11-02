@@ -1137,7 +1137,7 @@ Cartucho</translation>
     </message>
     <message>
         <source>--- End of cart ---</source>
-        <translation>--- Fin del cartucho ---</translation>
+        <translation type="obsolete">--- Fin del cartucho ---</translation>
     </message>
     <message>
         <source>Line</source>

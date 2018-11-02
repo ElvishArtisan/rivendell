@@ -1126,7 +1126,7 @@ Cartão</translation>
     </message>
     <message>
         <source>--- End of cart ---</source>
-        <translation>-- Fim do Cartão --</translation>
+        <translation type="obsolete">-- Fim do Cartão --</translation>
     </message>
     <message>
         <source>Line</source>

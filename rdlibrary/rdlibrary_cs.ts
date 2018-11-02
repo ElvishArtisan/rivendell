@@ -1140,7 +1140,7 @@ vozík</translation>
     </message>
     <message>
         <source>--- End of cart ---</source>
-        <translation>--- Konec vozíku ---</translation>
+        <translation type="obsolete">--- Konec vozíku ---</translation>
     </message>
     <message>
         <source>Line</source>

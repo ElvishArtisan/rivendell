@@ -107,7 +107,7 @@ MacroCart::MacroCart(RDCart *cart,QWidget *parent)
   rdcart_macro_list->setGeometry(100,0,430,sizeHint().height());
   rdcart_macro_list->setAllColumnsShowFocus(true);
   rdcart_macro_list->setItemMargin(5);
-  rdcart_macro_list->setSorting(0);
+  rdcart_macro_list->setSorting(-1);
   connect(rdcart_macro_list,
 	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,
@@ -195,9 +195,6 @@ void MacroCart::addMacroData()
   unsigned line;
 
   if(item==NULL) {
-    return;
-  }
-  if(item->text(0).isEmpty()) {
     line=rdcart_events->size();
   }
   else {
@@ -309,13 +306,12 @@ void MacroCart::RefreshList()
 {
   Q3ListViewItem *item;
 
-  item=new Q3ListViewItem(rdcart_macro_list);
-  item->setText(1,tr("--- End of cart ---"));
   for(int i=0;i<rdcart_events->size();i++) {
     item=new Q3ListViewItem(rdcart_macro_list);
     item->setText(0,QString().sprintf("%03d",i+1));
     item->setText(1,rdcart_events->command(i)->toString());
   }
+  SortLines();
 }
 
 
@@ -323,8 +319,16 @@ void MacroCart::RefreshLine(Q3ListViewItem *item)
 {
   int line=item->text(0).toInt()-1;
   item->setText(1,rdcart_events->command(line)->toString());
+  SortLines();
 }
 
+
+void MacroCart::SortLines()
+{
+  rdcart_macro_list->setSorting(0);
+  rdcart_macro_list->sort();
+  rdcart_macro_list->setSorting(-1);
+}
 
 void MacroCart::AddLine(unsigned line,RDMacro *cmd)
 {

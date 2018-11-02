@@ -68,6 +68,7 @@ class MacroCart : public QWidget
   void AddLine(unsigned line,RDMacro *cmd);
   void DeleteLine(Q3ListViewItem *item);
   void UpdateLength();
+  void SortLines();
   RDCart *rdcart_cart;
   Q3ListView *rdcart_macro_list;
   QLabel *rdcart_macro_list_label;

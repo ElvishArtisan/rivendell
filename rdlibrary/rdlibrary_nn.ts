@@ -1124,7 +1124,7 @@ korg</translation>
     </message>
     <message>
         <source>--- End of cart ---</source>
-        <translation>--- Slutten på korga ---</translation>
+        <translation type="obsolete">--- Slutten på korga ---</translation>
     </message>
     <message>
         <source>Line</source>
