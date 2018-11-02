@@ -161,13 +161,15 @@
        widget counts down the final few seconds of each event. The length
        of time it counts down, along with whether it counts to the start
        of the next transition or the absolute end of the event are both
-       configurable in RDADmin. The color of the band that grows as the
+       configurable in RDAdmin. The color of the band that grows as the
        countdown progresses (shown in GREEN in the illustration) will
        change color
        to indicate if the currently playing event is the last event before
        a log stopdown. If it is the last, it will be RED, if not, GREEN.
        A BLUE band and countdown will also appear to indicate the event's
        talk time (if talk time markers have been set in the underlying cart).
+       If the On-Air flag has been set to ON, the area around the
+       pie widget will be RED.
      </para>
    </sect2>
    <sect2 xml:id="sect.rdairplay.the_next_stop_counter">
