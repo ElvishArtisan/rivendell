@@ -17961,3 +17961,6 @@
 	audio store mounts.
 2018-11-02 Patrick Linstruth <patrick@deltecent.com>
 	* Fixed regression with pie widget in rdairplay(1).
+2018-11-02 David Klann <dklann@linux.com>
+	* Added a 'Log Machines' section to the 'Rivendell Macro Language'
+	chapter of the Operations Guide.
