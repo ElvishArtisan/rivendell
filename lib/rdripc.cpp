@@ -146,7 +146,7 @@ void RDRipc::sendNotification(const RDNotification &notify)
 
 void RDRipc::sendOnairFlag()
 {
-  SendCommand("TA!");
+  SendCommand(QString().sprintf("TA %d!",ripc_onair_flag));
 }
 
 
@@ -269,7 +269,7 @@ void RDRipc::DispatchCommand()
     if(!macro.isNull()) {
       QHostAddress addr;
       addr.setAddress(cmds[1]);
-      if(cmds[2].left(0)=="1") {
+      if(cmds[2].left(1)=="1") {
 	macro.setEchoRequested(true);
       }
       macro.setAddress(addr);
@@ -304,7 +304,7 @@ void RDRipc::DispatchCommand()
     int line=cmds[2].toInt();
     int mask=cmds[4].toInt();
     if((mask>0)||ripc_ignore_mask) {
-      if(cmds[3].left(0)=="0") {
+      if(cmds[3].left(1)=="0") {
 	emit gpiStateChanged(matrix,line,false);
       }
       else {
@@ -321,7 +321,7 @@ void RDRipc::DispatchCommand()
     int line=cmds[2].toInt();
     int mask=cmds[4].toInt();
     if((mask>0)||ripc_ignore_mask) {
-      if(cmds[3].left(0)=="0") {
+      if(cmds[3].left(1)=="0") {
 	emit gpoStateChanged(matrix,line,false);
       }
       else {
@@ -336,7 +336,7 @@ void RDRipc::DispatchCommand()
     }
     int matrix=cmds[1].toInt();
     int line=cmds[2].toInt();
-    if(cmds[3].left(0)=="0") {
+    if(cmds[3].left(1)=="0") {
       emit gpiMaskChanged(matrix,line,false);
     }
     else {
@@ -350,7 +350,7 @@ void RDRipc::DispatchCommand()
     }
     int matrix=cmds[1].toInt();
     int line=cmds[2].toInt();
-    if(cmds[3].left(0)=="0") {
+    if(cmds[3].left(1)=="0") {
       emit gpoMaskChanged(matrix,line,false);
     }
     else {
@@ -384,7 +384,7 @@ void RDRipc::DispatchCommand()
     if(cmds.size()!=2) {
       return;
     }
-    ripc_onair_flag=cmds[1].left(0)=="1";
+    ripc_onair_flag=cmds[1].left(1)=="1";
     emit onairFlagChanged(ripc_onair_flag);
   }
 
