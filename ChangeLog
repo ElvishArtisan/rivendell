@@ -17970,3 +17970,6 @@
 	Guide.
 2018-11-02 Patrick Linstruth <patrick@deltecent.com>
 	* Fixed bug in in some RML commands with boolean paramters.
+2018-11-02 Patrick Linstruth <patrick@deltecent.com>
+	* Fix macro editor in rdlibrary(1) to no longer display
+	"--- End of cart ---" and disable sorting of columns.
