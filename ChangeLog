@@ -17968,3 +17968,5 @@
 	* Fixed the 'off air' color in the Pie Widget in rdairplay(1).
 	* Added information regarding the OnAir Flag to the Operations
 	Guide.
+2018-11-02 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed bug in in some RML commands with boolean paramters.
