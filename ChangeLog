@@ -17970,3 +17970,5 @@
 	Guide.
 2018-11-02 Patrick Linstruth <patrick@deltecent.com>
 	* Fixed bug in in some RML commands with boolean paramters.
+2018-11-02 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.0.0alpha02.
