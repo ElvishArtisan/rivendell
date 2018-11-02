@@ -17955,3 +17955,5 @@
 2018-11-01 Fred Gleason <fredg@paravelsystems.com>
 	* Modified rdselect_helper(8) to use the automounter for managing
 	audio store mounts.
+2018-11-02 Patrick Linstruth <patrick@deltecent.com>
+	* Fix bugs in processing of some RML with boolean parameters.
