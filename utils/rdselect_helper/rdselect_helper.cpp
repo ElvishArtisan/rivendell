@@ -115,9 +115,13 @@ void MainObject::Startup()
       exit(RDConfig::RDSelectCantAccessAutomount);
     }
     fprintf(f,"%s",RDSELECT_AUTOMOUNT_WARNING);
-    fprintf(f,"%s\t-fstype=%s\t%s\n",
+    QString options="-fstype="+helper_config->audioStoreMountType();
+    if(!helper_config->audioStoreMountOptions().isEmpty()) {
+      options+=","+helper_config->audioStoreMountOptions();
+    }
+    fprintf(f,"%s\t%s\t%s\n",
 	    (const char *)helper_config->audioRoot().toUtf8(),
-	    (const char *)helper_config->audioStoreMountType().toUtf8(),
+	    (const char *)options.toUtf8(),
 	    (const char *)helper_config->audioStoreMountSource().toUtf8());
     fclose(f);
 

@@ -17955,5 +17955,18 @@
 2018-11-01 Fred Gleason <fredg@paravelsystems.com>
 	* Modified rdselect_helper(8) to use the automounter for managing
 	audio store mounts.
+2018-11-01 Fred Gleason <fredg@paravelsystems.com>
+	* Modified rdselect_helper(8) to include the value of
+	the 'MountOptions=' parameter in rd.conf(5) when configuring
+	audio store mounts.
 2018-11-02 Patrick Linstruth <patrick@deltecent.com>
-	* Fix bugs in processing of some RML with boolean parameters.
+	* Fixed regression with pie widget in rdairplay(1).
+2018-11-02 David Klann <dklann@linux.com>
+	* Added a 'Log Machines' section to the 'Rivendell Macro Language'
+	chapter of the Operations Guide.
+2018-11-02 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed the 'off air' color in the Pie Widget in rdairplay(1).
+	* Added information regarding the OnAir Flag to the Operations
+	Guide.
+2018-11-02 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed bug in in some RML commands with boolean paramters.

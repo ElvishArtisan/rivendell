@@ -61,7 +61,6 @@ PieCounter::PieCounter(int count_length,QWidget *parent)
   pie_talk_label->setFont(font);
   pie_talk_label->setAlignment(Qt::AlignCenter);
   pie_talk_label->hide();
-  onair_off_color=backgroundColor();
   pie_logline=NULL;
 
   resetTime();
@@ -188,12 +187,12 @@ void PieCounter::setOnairFlag(bool state)
     pie_talk_label->setBackgroundColor(PIE_ONAIR_COLOR);
   }
   else {
-    setBackgroundColor(onair_off_color);
+    setBackgroundColor(PIE_ONAIR_OFF_COLOR);
     if(!pie_pixmap.isNull()) {
       QWidget::setErasePixmap(pie_pixmap);
     }
-    pie_time_label->setBackgroundColor(onair_off_color);
-    pie_talk_label->setBackgroundColor(onair_off_color);
+    pie_time_label->setBackgroundColor(PIE_ONAIR_OFF_COLOR);
+    pie_talk_label->setBackgroundColor(PIE_ONAIR_OFF_COLOR);
   }
   pie_onair=state;
 }
@@ -255,7 +254,7 @@ void PieCounter::paintEvent(QPaintEvent *e)
 	  ring_angle = 0;
 
   if(pie_onair||pie_pixmap.isNull()) {
-    p->fillRect(0,0,PIE_COUNTER_BBOX,PIE_COUNTER_BBOX,backgroundColor());
+    p->fillRect(0,0,PIE_COUNTER_BBOX,PIE_COUNTER_BBOX,PIE_ONAIR_COLOR);
   }
   else {
     p->drawPixmap(-PIE_X_PADDING,-PIE_Y_PADDING,pie_pixmap);
@@ -299,8 +298,8 @@ void PieCounter::paintEvent(QPaintEvent *e)
     if(((pie_time<pie_count_length)&&(pie_time>0))||
        ((((750+pie_talk_end-pie_pos)/1000)<100)&&
 	((pie_pos>=pie_talk_start)&&(pie_pos<=pie_talk_end)))) {
-      p->setBrush(backgroundColor());
-      p->setPen(backgroundColor());
+      p->setBrush(PIE_ONAIR_OFF_COLOR);
+      p->setPen(PIE_ONAIR_OFF_COLOR);
       p->drawPie(ring+20,ring+20,PIE_COUNTER_SIZE-40,PIE_COUNTER_SIZE-40,0,5760);
     }
   }
