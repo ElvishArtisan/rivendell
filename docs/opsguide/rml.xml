@@ -169,6 +169,35 @@
   </para>
 </sect1>
 
+<sect1 xml:id="sect.rml.log_machines">
+  <title>Log Machines</title>
+  <para>
+    Some commands (e.g., <command>MD</command>, <command>PL</command>,
+    and <command>PS</command>) require a <replaceable>log
+    machine</replaceable> argument. See
+    <xref linkend="sect.rdairplay.log_machines">Log Machines</xref> in
+    <xref linkend="chapter.rdairplay">RDAirPlay</xref> for a detailed
+    description of Log Machines.
+  </para>
+  <para>
+    The <replaceable>log machine</replaceable> argument in the context
+    of Rivendell macros must be an integer ranging from Zero (0) to
+    Three (3). <replaceable>0</replaceable> represents
+    <emphasis>all</emphasis> log machines,
+    <replaceable>1</replaceable> represents the <computeroutput>Main
+    Log</computeroutput>, <replaceable>2</replaceable> represents
+    <computeroutput>Aux Log 1</computeroutput>, and
+    <replaceable>3</replaceable> represents <computeroutput>Aux Log
+    2</computeroutput>.
+  </para>
+  <para>
+    For example, the macro <userinput>PL 1 0!</userinput> starts
+    playing at the first line (<replaceable>0</replaceable>) of the
+    <replaceable>Main Log</replaceable> (log machine
+    <replaceable>1</replaceable>).
+  </para>
+</sect1>
+
 <sect1 xml:id="sect.rml.commands">
   <title>Commands</title>
   <sect2 xml:id="sect.rml.air_gate__ag_">
