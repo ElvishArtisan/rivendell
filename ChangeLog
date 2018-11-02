@@ -17964,3 +17964,7 @@
 2018-11-02 David Klann <dklann@linux.com>
 	* Added a 'Log Machines' section to the 'Rivendell Macro Language'
 	chapter of the Operations Guide.
+2018-11-02 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed the 'off air' color in the Pie Widget in rdairplay(1).
+	* Added information regarding the OnAir Flag to the Operations
+	Guide.
