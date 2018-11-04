@@ -1147,6 +1147,10 @@ Cartucho</translation>
         <source>Command</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>--- End of Cart ---</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MainWidget</name>

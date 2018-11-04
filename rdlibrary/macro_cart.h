@@ -60,7 +60,8 @@ class MacroCart : public QWidget
   void editMacroData();
   void runLineMacroData();
   void runCartMacroData();
-  void doubleClickedData(Q3ListViewItem *,const QPoint &,int);  
+  void selectionChangedData(Q3ListViewItem *);
+  void doubleClickedData(Q3ListViewItem *);  
 
  private:
   void RefreshList();

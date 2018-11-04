@@ -67,6 +67,7 @@ MacroCart::MacroCart(RDCart *cart,QWidget *parent)
   rdcart_add_button->setGeometry(10,0,80,50);
   rdcart_add_button->setFont(button_font);
   rdcart_add_button->setText(tr("Add"));
+  rdcart_add_button->setEnabled(false);
   connect(rdcart_add_button,SIGNAL(clicked()),this,SLOT(addMacroData()));
 
   //
@@ -76,6 +77,7 @@ MacroCart::MacroCart(RDCart *cart,QWidget *parent)
   rdcart_delete_button->setGeometry(10,60,80,50);
   rdcart_delete_button->setFont(button_font);
   rdcart_delete_button->setText(tr("Delete"));
+  rdcart_delete_button->setEnabled(false);
   connect(rdcart_delete_button,SIGNAL(clicked()),this,SLOT(deleteMacroData()));
 
   //
@@ -85,6 +87,7 @@ MacroCart::MacroCart(RDCart *cart,QWidget *parent)
   rdcart_copy_button->setGeometry(10,120,80,50);
   rdcart_copy_button->setFont(button_font);
   rdcart_copy_button->setText(tr("Copy"));
+  rdcart_copy_button->setEnabled(false);
   connect(rdcart_copy_button,SIGNAL(clicked()),this,SLOT(copyMacroData()));
 
   //
@@ -95,6 +98,7 @@ MacroCart::MacroCart(RDCart *cart,QWidget *parent)
   paste_macro_button->setFont(button_font);
   paste_macro_button->setText(tr("Paste"));
   paste_macro_button->setDisabled(true);
+  paste_macro_button->setEnabled(false);
   connect(paste_macro_button,SIGNAL(clicked()),this,SLOT(pasteMacroData()));
 
   //
@@ -109,9 +113,13 @@ MacroCart::MacroCart(RDCart *cart,QWidget *parent)
   rdcart_macro_list->setItemMargin(5);
   rdcart_macro_list->setSorting(-1);
   connect(rdcart_macro_list,
-	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
+	  SIGNAL(selectionChanged(Q3ListViewItem *)),
 	  this,
-	  SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
+	  SLOT(selectionChangedData(Q3ListViewItem *)));
+  connect(rdcart_macro_list,
+	  SIGNAL(doubleClicked(Q3ListViewItem *)),
+	  this,
+	  SLOT(doubleClickedData(Q3ListViewItem *)));
 
   rdcart_macro_list->addColumn(tr("Line"));
   rdcart_macro_list->setColumnAlignment(0,Qt::AlignHCenter);
@@ -132,6 +140,7 @@ MacroCart::MacroCart(RDCart *cart,QWidget *parent)
   rdcart_edit_button->setGeometry(550,0,80,50);
   rdcart_edit_button->setFont(button_font);
   rdcart_edit_button->setText(tr("Edit"));
+  rdcart_edit_button->setEnabled(false);
   connect(rdcart_edit_button,SIGNAL(clicked()),this,SLOT(editMacroData()));
 
   //
@@ -141,6 +150,7 @@ MacroCart::MacroCart(RDCart *cart,QWidget *parent)
   rdcart_runline_button->setGeometry(550,120,80,50);
   rdcart_runline_button->setFont(button_font);
   rdcart_runline_button->setText(tr("Run\nLine"));
+  rdcart_runline_button->setEnabled(false);
   connect(rdcart_runline_button,SIGNAL(clicked()),
 	  this,SLOT(runLineMacroData()));
 
@@ -153,14 +163,6 @@ MacroCart::MacroCart(RDCart *cart,QWidget *parent)
   rdcart_runcart_button->setText(tr("Run\nCart"));
   connect(rdcart_runcart_button,SIGNAL(clicked()),
 	  this,SLOT(runCartMacroData()));
-
-  //
-  // Set Control Permissions
-  //
-  rdcart_add_button->setEnabled(rdcart_allow_modification);
-  rdcart_delete_button->setEnabled(rdcart_allow_modification);
-  rdcart_copy_button->setEnabled(rdcart_allow_modification);
-  rdcart_edit_button->setEnabled(rdcart_allow_modification);
 }
 
 
@@ -194,7 +196,7 @@ void MacroCart::addMacroData()
   RDMacro cmd;
   unsigned line;
 
-  if(item==NULL) {
+  if(item==NULL||item->text(0).isEmpty()) {
     line=rdcart_events->size();
   }
   else {
@@ -229,7 +231,7 @@ void MacroCart::copyMacroData()
     return;
   }
   rdcart_clipboard=*rdcart_events->command(item->text(0).toUInt()-1);
-  paste_macro_button->setEnabled(true);
+  paste_macro_button->setEnabled(rdcart_allow_modification);
 }
 
 
@@ -287,11 +289,30 @@ void MacroCart::runCartMacroData()
 }
 
 
-void MacroCart::doubleClickedData(Q3ListViewItem *,const QPoint &,int)
+void MacroCart::selectionChangedData(Q3ListViewItem *item)
+{
+  rdcart_add_button->setEnabled(rdcart_allow_modification);
+  if(!rdcart_clipboard.isNull()) {
+    paste_macro_button->setEnabled(rdcart_allow_modification);
+  }
+  if(!item->text(0).isEmpty()) {
+    rdcart_runline_button->setEnabled(rdcart_allow_modification);
+    rdcart_delete_button->setEnabled(rdcart_allow_modification);
+    rdcart_copy_button->setEnabled(rdcart_allow_modification);
+    rdcart_edit_button->setEnabled(rdcart_allow_modification);
+  }
+  else {
+    rdcart_runline_button->setEnabled(false);
+    rdcart_delete_button->setEnabled(false);
+    rdcart_copy_button->setEnabled(false);
+    rdcart_edit_button->setEnabled(false);
+  }
+}
+
+
+void MacroCart::doubleClickedData(Q3ListViewItem *item)
 {
   if(rdcart_allow_modification) {
-    Q3ListViewItem *item=rdcart_macro_list->selectedItem();
-
     if((item==NULL)||(item->text(0).isEmpty())) {
       addMacroData();
     }
@@ -304,14 +325,36 @@ void MacroCart::doubleClickedData(Q3ListViewItem *,const QPoint &,int)
 
 void MacroCart::RefreshList()
 {
-  Q3ListViewItem *item;
+  Q3ListViewItem *item=NULL;
+  Q3ListViewItem *selected;
+  QString line;
 
+  selected=rdcart_macro_list->selectedItem();
+  if(selected!=NULL) {
+    line=selected->text(0);
+  }
+
+  rdcart_macro_list->clear();
   for(int i=0;i<rdcart_events->size();i++) {
     item=new Q3ListViewItem(rdcart_macro_list);
     item->setText(0,QString().sprintf("%03d",i+1));
     item->setText(1,rdcart_events->command(i)->toString());
   }
   SortLines();
+  if(item!=NULL) {
+    item=new Q3ListViewItem(rdcart_macro_list,item);
+  }
+  else {
+    item=new Q3ListViewItem(rdcart_macro_list);
+  }
+  item->setText(1,tr("--- End of Cart ---"));
+
+  if (!line.isEmpty()) {
+    selected=rdcart_macro_list->findItem(line,0);
+    if(selected!=NULL) {
+      rdcart_macro_list->setSelected(selected,true);
+    }
+  }
 }
 
 
@@ -319,7 +362,6 @@ void MacroCart::RefreshLine(Q3ListViewItem *item)
 {
   int line=item->text(0).toInt()-1;
   item->setText(1,rdcart_events->command(line)->toString());
-  SortLines();
 }
 
 
@@ -345,8 +387,9 @@ void MacroCart::AddLine(unsigned line,RDMacro *cmd)
   rdcart_events->insert(line,cmd);
   item=new Q3ListViewItem(rdcart_macro_list);
   item->setText(0,QString().sprintf("%03u",line+1));
-  RefreshLine(item);
+  item->setText(1,rdcart_events->command(line)->toString());
   rdcart_macro_list->setSelected(item,true);
+  RefreshList();
 }
 
 
