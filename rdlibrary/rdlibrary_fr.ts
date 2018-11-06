@@ -939,15 +939,15 @@ Cart</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>--- End of cart ---</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Line</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Command</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>--- End of Cart ---</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

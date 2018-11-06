@@ -1128,7 +1128,7 @@ starten</translation>
     </message>
     <message>
         <source>--- End of cart ---</source>
-        <translation>--- Ende des Carts ---</translation>
+        <translation type="obsolete">--- Ende des Carts ---</translation>
     </message>
     <message>
         <source>Line</source>
@@ -1136,6 +1136,10 @@ starten</translation>
     </message>
     <message>
         <source>Command</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>--- End of Cart ---</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

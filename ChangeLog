@@ -17981,3 +17981,6 @@
 	* Tweaked parameters of the Systemd service file to provide for
 	more response startup of the 'rivendell' service after a system
 	restart.
+2018-11-05 Patrick Linstruth <patrick@deltecent.com>
+	* Update macro editor in rdlibrary(1) to fix display of
+	"--- End of cart ---" item and improve buttons and permissions.
