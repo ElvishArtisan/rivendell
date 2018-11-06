@@ -17975,3 +17975,5 @@
 2018-11-02 Fred Gleason <fredg@paravelsystems.com>
 	* Moved the automounter definition for the audio store from the
 	'select' to the base RPM package.
+2018-11-02 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.0.0alpha03.
