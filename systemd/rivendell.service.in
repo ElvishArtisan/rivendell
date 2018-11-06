@@ -1,16 +1,15 @@
 [Unit]
 Description=Rivendell Radio Automation System
 After=network.target remote-fs.target nss-lookup.target
-#Documentation=man:drouterd(8) man:dmap(1) man:dlist(1)
 
 [Service]
 Type=simple
 ExecStart=@prefix@/sbin/rdservice
 PrivateTmp=true
 Restart=always
-RestartSec=10
+RestartSec=2
 RestartLimitInterval=120
-StartLimitBurst=10
+StartLimitBurst=50
 
 [Install]
 WantedBy=multi-user.target
