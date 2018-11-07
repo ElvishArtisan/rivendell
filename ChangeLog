@@ -17988,3 +17988,5 @@
 	* Fixed buffer overflow bugs in the rd_export(7) rivcwebapi call.
 	* Fixed buffer overflow bugs in the rd_listservices(7) rivcwebapi call.
 	* Fixed buffer overflow bugs in the rd_trimaudio(7) rivcwebapi call.
+2018-11-07 Fred Gleason <fredg@paravelsystems.com>
+	* Modified rd_deleteaudio(7) in the rivwebcapi to process UTF-8.
