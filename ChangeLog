@@ -17984,3 +17984,7 @@
 2018-11-05 Patrick Linstruth <patrick@deltecent.com>
 	* Update macro editor in rdlibrary(1) to fix display of
 	"--- End of cart ---" item and improve buttons and permissions.
+2018-11-07 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed buffer overflow bugs in the rd_export(7) rivcwebapi call.
+	* Fixed buffer overflow bugs in the rd_listservices(7) rivcwebapi call.
+	* Fixed buffer overflow bugs in the rd_trimaudio(7) rivcwebapi call.

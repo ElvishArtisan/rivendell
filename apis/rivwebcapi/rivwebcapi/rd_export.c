@@ -27,10 +27,11 @@
 #include "rd_getuseragent.h"
 #include "rd_export.h"
 
-size_t write_data( void *ptr, size_t size, size_t nmemb, FILE *stream)
+size_t write_data( void *ptr, size_t size, size_t nmemb, void *userdata)
 {
   size_t written;
-  written = fwrite(ptr,size,nmemb,stream);
+
+  written = fwrite(ptr,size,nmemb,(FILE *)userdata);
   return written;
 }
 
@@ -66,6 +67,7 @@ int RD_ExportCart( const char hostname[],
   CURLcode res;
   char user_agent_string[255];
   char cart_buffer[7];
+  char point[14];
   struct curl_httppost *first=NULL;
   struct curl_httppost *last=NULL;
 
@@ -140,7 +142,7 @@ int RD_ExportCart( const char hostname[],
 	cart_buffer,
 	CURLFORM_END);
 
-  snprintf(cart_buffer,7,"%u",format);
+  snprintf(cart_buffer,7,"%d",format);
   curl_formadd(&first,
 	&last,
 	CURLFORM_PTRNAME,
@@ -149,7 +151,7 @@ int RD_ExportCart( const char hostname[],
 	cart_buffer,
 	CURLFORM_END);
 
-  snprintf(cart_buffer,7,"%u",channels);
+  snprintf(cart_buffer,7,"%d",channels);
   curl_formadd(&first,
 	&last,
 	CURLFORM_PTRNAME,
@@ -158,7 +160,7 @@ int RD_ExportCart( const char hostname[],
 	cart_buffer,
 	CURLFORM_END);
 
-  snprintf(cart_buffer,7,"%u",sample_rate);
+  snprintf(cart_buffer,7,"%d",sample_rate);
   curl_formadd(&first,
 	&last,
 	CURLFORM_PTRNAME,
@@ -167,7 +169,7 @@ int RD_ExportCart( const char hostname[],
 	cart_buffer,
 	CURLFORM_END);
 
-  snprintf(cart_buffer,7,"%u",bit_rate);
+  snprintf(cart_buffer,7,"%d",bit_rate);
   curl_formadd(&first,
 	&last,
 	CURLFORM_PTRNAME,
@@ -176,7 +178,7 @@ int RD_ExportCart( const char hostname[],
 	cart_buffer,
 	CURLFORM_END);
 
-  snprintf(cart_buffer,7,"%u",quality);
+  snprintf(cart_buffer,7,"%d",quality);
   curl_formadd(&first,
 	&last,
 	CURLFORM_PTRNAME,
@@ -185,25 +187,25 @@ int RD_ExportCart( const char hostname[],
 	cart_buffer,
 	CURLFORM_END);
 
-  snprintf(cart_buffer,7,"%u",start_point);
+  snprintf(point,13,"%d",start_point);
   curl_formadd(&first,
 	&last,
 	CURLFORM_PTRNAME,
 	"START_POINT",
         CURLFORM_COPYCONTENTS, 
-	cart_buffer,
+	point,
 	CURLFORM_END);
 
-  snprintf(cart_buffer,7,"%u",end_point);
+  snprintf(point,13,"%d",end_point);
   curl_formadd(&first,
 	&last,
 	CURLFORM_PTRNAME,
 	"END_POINT",
         CURLFORM_COPYCONTENTS, 
-	cart_buffer,
+	point,
 	CURLFORM_END);
 
-  snprintf(cart_buffer,7,"%u",normalization_level);
+  snprintf(cart_buffer,7,"%d",normalization_level);
   curl_formadd(&first,
 	&last,
 	CURLFORM_PTRNAME,
@@ -212,7 +214,7 @@ int RD_ExportCart( const char hostname[],
 	cart_buffer,
 	CURLFORM_END);
 
-  snprintf(cart_buffer,7,"%u",enable_metadata);
+  snprintf(cart_buffer,7,"%d",enable_metadata);
   curl_formadd(&first,
 	&last,
 	CURLFORM_PTRNAME,

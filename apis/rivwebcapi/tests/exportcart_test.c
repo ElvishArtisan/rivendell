@@ -101,7 +101,6 @@ int main(int argc,char *argv[])
   //
   // Call the function
   //
-  
   int result=RD_ExportCart( host,
 		user,
 		passwd,
@@ -119,7 +118,6 @@ int main(int argc,char *argv[])
 		0,
                 filename,
                 user_agent);
-
   if(result<0) {
     fprintf(stderr,"Something went wrong! Result Code = %d\n",result);
     exit(256);

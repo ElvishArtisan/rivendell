@@ -183,7 +183,7 @@ int RD_TrimAudio(struct rd_trimaudio *trimaudio[],
 	buffer,
 	CURLFORM_END);
 
-  snprintf(buffer,1024,"%u",trimlevel);
+  snprintf(buffer,1024,"%d",trimlevel);
   curl_formadd(&first,
 	&last,
 	CURLFORM_PTRNAME,

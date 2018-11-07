@@ -157,7 +157,7 @@ int RD_ListServices(struct rd_service *services[],
         ticket,
 	CURLFORM_END);
 
-  snprintf(cart_buffer,7,"%u",trackable);
+  snprintf(cart_buffer,7,"%d",trackable);
   curl_formadd(&first,
 	&last,
 	CURLFORM_PTRNAME,
