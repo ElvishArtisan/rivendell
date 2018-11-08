@@ -17990,3 +17990,6 @@
 	* Fixed buffer overflow bugs in the rd_trimaudio(7) rivcwebapi call.
 2018-11-07 Fred Gleason <fredg@paravelsystems.com>
 	* Modified rd_deleteaudio(7) in the rivwebcapi to process UTF-8.
+2018-11-08 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rddbmgr(8) that attempted to drop the
+	'RDAIRPLAY.INSTANCE' field when processing schema update 284.
