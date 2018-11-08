@@ -24,6 +24,7 @@
 
 #include <qapplication.h>
 #include <qdir.h>
+#include <qfontmetrics.h>
 #include <qlabel.h>
 #include <qmessagebox.h>
 #include <qpainter.h>
@@ -60,7 +61,8 @@ void SigHandler(int signo)
 }
 
 MainWidget::MainWidget(QWidget *parent)
-  :QWidget(parent,"",Qt::WStyle_Customize|Qt::WStyle_NoBorder|Qt::WStyle_StaysOnTop|Qt::WX11BypassWM)
+  : QWidget(parent,(Qt::WindowFlags)(Qt::WStyle_Customize|Qt::WStyle_NoBorder|Qt::WStyle_StaysOnTop))
+    //  : QWidget(parent,"",(Qt::WindowFlags)(Qt::WStyle_Customize|Qt::WStyle_NoBorder|Qt::WStyle_StaysOnTop|Qt::WX11BypassWM|Qt::WA_AlwaysShowToolTips))
 {
   QString str;
   mon_dialog_x=0;
@@ -123,6 +125,13 @@ MainWidget::MainWidget(QWidget *parent)
   mon_red_label->hide();
 
   //
+  // Status Label
+  //
+  mon_status_label=new QLabel(NULL,(Qt::WindowFlags)(Qt::WStyle_Customize|Qt::WStyle_NoBorder|Qt::WStyle_StaysOnTop));
+  mon_status_label->setAlignment(Qt::AlignCenter|Qt::AlignVCenter);
+  mon_status_label->hide();
+
+  //
   // Validation Timer
   //
   mon_validate_timer=new QTimer(this);
@@ -171,6 +180,7 @@ void MainWidget::validate()
   //
   // Record Results
   //
+  SetToolTip(db_ok,schema,snd_ok);
   //  mon_tooltip->
   //    setStatus(QRect(0,0,size().width(),size().height()),db_ok,schema,snd_ok);
   SetSummaryState(db_ok&&(schema==RD_VERSION_DATABASE)&&snd_ok);
@@ -181,6 +191,20 @@ void MainWidget::validate()
 void MainWidget::quitMainWidget()
 {
   exit(0);
+}
+
+
+void MainWidget::enterEvent(QEvent *e)
+{
+  mon_status_label->show();
+  QWidget::enterEvent(e);
+}
+
+
+void MainWidget::leaveEvent(QEvent *e)
+{
+  mon_status_label->hide();
+  QWidget::leaveEvent(e);
 }
 
 
@@ -383,6 +407,69 @@ void MainWidget::SetPosition()
     break;
   }
   setGeometry(x,y,width,RDMONITOR_HEIGHT);
+  SetStatusPosition();
+}
+
+
+void MainWidget::SetToolTip(bool db_status,int schema,bool snd_status)
+{
+  mon_status_label->clear();
+  if(db_status&&(schema==RD_VERSION_DATABASE)&&snd_status) {
+    mon_status_label->setText(tr("Status: OK"));
+  }
+  else {
+    if(!db_status) {
+      mon_status_label->setText(tr("Database: CONNECTION FAILED"));
+    }
+    else {
+      if(schema!=RD_VERSION_DATABASE) {
+	mon_status_label->setText(tr("Database: SCHEMA SKEWED"));
+      }
+    }
+    if(!snd_status) {
+      if(!mon_status_label->text().isEmpty()) {
+	mon_status_label->setText(mon_status_label->text()+"\n");
+      }
+      mon_status_label->
+	setText(mon_status_label->text()+tr("Audio Store: FAILED"));
+    }
+  }
+  SetStatusPosition();
+}
+
+
+void MainWidget::SetStatusPosition()
+{
+  QFontMetrics *fm=new QFontMetrics(mon_status_label->font());
+  int h=10+fm->height();
+  int w=10+fm->width(mon_status_label->text());
+
+  switch(mon_config->position()) {
+  case RDMonitorConfig::UpperLeft:
+  case RDMonitorConfig::UpperCenter:
+    mon_status_label->setGeometry(geometry().x(),geometry().y()+(2+geometry().height()),w,h);
+    break;
+
+  case RDMonitorConfig::UpperRight:
+    mon_status_label->setGeometry(geometry().x()-h,geometry().y()+(2+geometry().height()),w,h);
+    break;
+
+  case RDMonitorConfig::LowerLeft:
+  case RDMonitorConfig::LowerCenter:
+    mon_status_label->setGeometry(geometry().x(),geometry().y()-(2+h),w,h);
+    break;
+
+    break;
+
+  case RDMonitorConfig::LowerRight:
+    mon_status_label->setGeometry(geometry().x()-h,geometry().y()-(2+h),w,h);
+    break;
+
+  case RDMonitorConfig::LastPosition:
+    break;
+  }
+
+  delete fm;
 }
 
 

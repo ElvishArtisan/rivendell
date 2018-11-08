@@ -17993,3 +17993,5 @@
 2018-11-08 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rddbmgr(8) that attempted to drop the
 	'RDAIRPLAY.INSTANCE' field when processing schema update 284.
+2018-11-08 Fred Gleason <fredg@paravelsystems.com>
+	* Restored the status display bubble on rdmonitor(1).

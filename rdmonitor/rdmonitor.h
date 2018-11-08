@@ -31,9 +31,6 @@
 #include <qtimer.h>
 #include <qdesktopwidget.h>
 #include <qfontmetrics.h>
-//Added by qt3to4:
-#include <QPaintEvent>
-#include <QResizeEvent>
 #include <QMouseEvent>
 
 #include <rdconfig.h>
@@ -57,6 +54,8 @@ class MainWidget : public QWidget
   void quitMainWidget();
 
  protected:
+  void enterEvent(QEvent *e);
+  void leaveEvent(QEvent *e);
   void mousePressEvent(QMouseEvent *e);
   void mouseDoubleClickEvent(QMouseEvent *e);
   void paintEvent(QPaintEvent *e);
@@ -65,6 +64,8 @@ class MainWidget : public QWidget
  private:
   void SetSummaryState(bool state);
   void SetPosition();
+  void SetToolTip(bool db_status,int schema,bool snd_status);
+  void SetStatusPosition();
   QLabel *mon_name_label;
   QLabel *mon_green_label;
   QLabel *mon_red_label;
@@ -75,6 +76,7 @@ class MainWidget : public QWidget
   int mon_dialog_y;
   int mon_rdselect_x;
   int mon_rdselect_y;
+  QLabel *mon_status_label;
   //  StatusTip *mon_tooltip;
   QDesktopWidget *mon_desktop_widget;
   RDMonitorConfig *mon_config;
