@@ -231,7 +231,7 @@ MainWidget::MainWidget(QWidget *parent)
   }
   air_editor_cmd=rda->station()->editorPath();
   bgmap=QPixmap(rda->airplayConf()->skinPath());
-  if(!bgmap.isNull()||(bgmap.width()>=1024)||(bgmap.height()>=738)) {
+  if(!bgmap.isNull()&&(bgmap.width()>=1024)&&(bgmap.height()>=738)) {
     QPalette palette;
     palette.setBrush(backgroundRole(),bgmap);
     setPalette(palette);
