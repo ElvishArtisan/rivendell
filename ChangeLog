@@ -17999,3 +17999,5 @@
 	* Tweaked layout and appearance of the status bubble in rdmonitor(1).
 2018-11-09 Fred Gleason <fredg@paravelsystems.com>
 	* Removed superceded 'StatusTip' class from rdmonitor(1).
+2018-11-09 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed a regression in rdpanel(1) background image.
