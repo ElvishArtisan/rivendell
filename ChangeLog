@@ -18001,3 +18001,5 @@
 	* Removed superceded 'StatusTip' class from rdmonitor(1).
 2018-11-09 Fred Gleason <fredg@paravelsystems.com>
 	* Restored cart note bubbles in rdlibrary(1).
+2018-11-09 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed a regression in rdairplay(1) pie widget.

@@ -88,12 +88,9 @@ MainWidget::MainWidget(QWidget *parent)
   int ports[3];
   QString start_rmls[3];
   QString stop_rmls[3];
-  QPixmap *mainmap=NULL;
-  QPixmap *pm=NULL;
-  QPainter *pd=NULL;
+  QPixmap bgmap;
   QString err_msg;
 
-  air_refresh_pixmap=NULL;
   air_panel=NULL;
 
   //
@@ -233,15 +230,12 @@ MainWidget::MainWidget(QWidget *parent)
     air_op_mode[i]=RDAirPlayConf::Previous;
   }
   air_editor_cmd=rda->station()->editorPath();
-  mainmap=new QPixmap(rda->airplayConf()->skinPath());
-  if(mainmap->isNull()||(mainmap->width()<1024)||(mainmap->height()<738)) {
-    delete mainmap;
-    mainmap=NULL;
+  bgmap=QPixmap(rda->airplayConf()->skinPath());
+  if(!bgmap.isNull()&&(bgmap.width()>=1024)&&(bgmap.height()>=738)) {
+    QPalette palette;
+    palette.setBrush(backgroundRole(),bgmap);
+    setPalette(palette);
   }
-  else {
-    setErasePixmap(*mainmap);
-  }
-
   //
   // Load GPIO Channel Configuration
   //
@@ -428,15 +422,6 @@ MainWidget::MainWidget(QWidget *parent)
   air_pie_end=rda->airplayConf()->pieEndPoint();
   air_pie_counter->setOpMode(air_op_mode[0]);
   air_pie_counter->setFocusPolicy(Qt::NoFocus);
-  if(mainmap!=NULL) {
-    pm=new QPixmap(1024,738);
-    pd=new QPainter(pm);
-    pd->drawPixmap(-426,-5,*mainmap);
-    pd->end();
-    air_pie_counter->setErasePixmap(*pm);
-    delete pd;
-    delete pm;
-  }
   connect(air_master_timer,SIGNAL(timeout()),
 	  air_pie_counter,SLOT(tickCounter()));
   connect(rda->ripc(),SIGNAL(onairFlagChanged(bool)),
@@ -568,14 +553,6 @@ MainWidget::MainWidget(QWidget *parent)
   p.setColor(QColorGroup::Foreground,Qt::red);
   air_refresh_label->setPalette(p);
   air_refresh_label->setAlignment(Qt::AlignCenter);
-  if(mainmap!=NULL) {
-    air_refresh_pixmap=new QPixmap(1024,738);
-    pd=new QPainter(air_refresh_pixmap);
-    pd->drawPixmap(-390,-sizeHint().height()+65,*mainmap);
-    pd->end();
-    air_refresh_label->setErasePixmap(*air_refresh_pixmap);
-    delete pd;
-  }
 
   //
   // Meter Timer
@@ -600,15 +577,6 @@ MainWidget::MainWidget(QWidget *parent)
     air_panel->setLogfile(rda->config()->airplayLogname());
     air_panel->setGeometry(510,140,air_panel->sizeHint().width(),
 			 air_panel->sizeHint().height());
-    if(mainmap!=NULL) {
-      pm=new QPixmap(1024,738);
-      pd=new QPainter(pm);
-      pd->drawPixmap(-510,-140,*mainmap);
-      pd->end();
-      air_panel->setErasePixmap(*pm);
-      delete pd;
-      delete pm;
-    }
     air_panel->setPauseEnabled(rda->airplayConf()->panelPauseEnabled());
     air_panel->setCard(0,rda->airplayConf()->card(RDAirPlayConf::SoundPanel1Channel));
     air_panel->setPort(0,rda->airplayConf()->port(RDAirPlayConf::SoundPanel1Channel));
@@ -786,15 +754,6 @@ MainWidget::MainWidget(QWidget *parent)
 				air_pause_enabled,this);
   air_button_list->setGeometry(10,140,air_button_list->sizeHint().width(),
 			       air_button_list->sizeHint().height());
-  if(mainmap!=NULL) {
-    pm=new QPixmap(1024,738);
-    pd=new QPainter(pm);
-    pd->drawPixmap(-10,-140,*mainmap);
-    pd->end();
-    air_button_list->setErasePixmap(*pm);
-    delete pd;
-    delete pm;
-  }
   connect(air_button_list,SIGNAL(selectClicked(int,int,RDLogLine::Status)),
 	  this,SLOT(selectClickedData(int,int,RDLogLine::Status)));
   connect(air_button_list,SIGNAL(cartDropped(int,int,RDLogLine *)),
@@ -1916,13 +1875,9 @@ void MainWidget::timeModeData(RDAirPlayConf::TimeMode mode)
 void MainWidget::refreshStatusChangedData(bool active)
 {
   if(active) {
-    air_refresh_label->setErasePixmap(QPixmap());
     air_refresh_label->setText(tr("LOG\nREFRESHING"));
   }
   else {
-    if(air_refresh_pixmap!=NULL) {
-      air_refresh_label->setErasePixmap(*air_refresh_pixmap);
-    }
     air_refresh_label->setText("");
   }
   //
