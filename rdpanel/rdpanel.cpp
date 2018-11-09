@@ -53,8 +53,7 @@ RDCartDialog *panel_cart_dialog;
 MainWidget::MainWidget(QWidget *parent)
   : QWidget(parent)
 {
-  QPixmap *pm;
-  QPainter *pd;
+  QPixmap panel_skin_pixmap;
   QString err_msg;
 
   //
@@ -110,14 +109,12 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Allocate Global Resources
   //
-  panel_skin_pixmap=new QPixmap(rda->panelConf()->skinPath());
-  if(panel_skin_pixmap->isNull()||(panel_skin_pixmap->width()<1024)||
-     (panel_skin_pixmap->height()<738)) {
-    delete panel_skin_pixmap;
-    panel_skin_pixmap=NULL;
-  }
-  else {
-    setErasePixmap(*panel_skin_pixmap);
+  panel_skin_pixmap=QPixmap(rda->panelConf()->skinPath());
+  if(!panel_skin_pixmap.isNull()&&(panel_skin_pixmap.width()>=1024)&&
+     (panel_skin_pixmap.height()>=738)) {
+    QPalette p=palette();
+    p.setBrush(backgroundRole(),panel_skin_pixmap);
+    setPalette(p);
   }
 
   //
@@ -168,15 +165,6 @@ MainWidget::MainWidget(QWidget *parent)
     panel_panel->setLogfile(rda->config()->airplayLogname());
     panel_panel->setGeometry(10,10,panel_panel->sizeHint().width(),
 			 panel_panel->sizeHint().height());
-    if(panel_skin_pixmap!=NULL) {
-      pm=new QPixmap(1024,738);
-      pd=new QPainter(pm);
-      pd->drawPixmap(-10,-10,*panel_skin_pixmap);
-      pd->end();
-      panel_panel->setErasePixmap(*pm);
-      delete pd;
-      delete pm;
-    }
     panel_panel->setPauseEnabled(rda->panelConf()->panelPauseEnabled());
     panel_panel->setCard(0,rda->panelConf()->card(RDAirPlayConf::SoundPanel1Channel));
     panel_panel->setPort(0,rda->panelConf()->port(RDAirPlayConf::SoundPanel1Channel));
