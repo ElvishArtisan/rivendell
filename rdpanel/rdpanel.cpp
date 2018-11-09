@@ -166,17 +166,6 @@ MainWidget::MainWidget(QWidget *parent)
     panel_panel->setLogfile(rda->config()->airplayLogname());
     panel_panel->setGeometry(10,10,panel_panel->sizeHint().width(),
 			 panel_panel->sizeHint().height());
-#if 0
-    if(panel_skin_pixmap!=NULL) {
-      pm=new QPixmap(1024,738);
-      pd=new QPainter(pm);
-      pd->drawPixmap(-10,-10,*panel_skin_pixmap);
-      pd->end();
-      panel_panel->setErasePixmap(*pm);
-      delete pd;
-      delete pm;
-    }
-#endif
     panel_panel->setPauseEnabled(rda->panelConf()->panelPauseEnabled());
     panel_panel->setCard(0,rda->panelConf()->card(RDAirPlayConf::SoundPanel1Channel));
     panel_panel->setPort(0,rda->panelConf()->port(RDAirPlayConf::SoundPanel1Channel));
