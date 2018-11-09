@@ -18003,3 +18003,5 @@
 	* Restored cart note bubbles in rdlibrary(1).
 2018-11-09 Patrick Linstruth <patrick@deltecent.com>
 	* Fixed a regression in rdairplay(1) pie widget.
+2018-11-09 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed a regression in rdpanel(1) background image.

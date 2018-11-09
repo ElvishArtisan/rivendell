@@ -71,7 +71,6 @@ class MainWidget : public QWidget
   QString panel_filter;
   QString panel_group;
   QString panel_schedcode;
-  QPixmap *panel_skin_pixmap;
   RDEmptyCart *panel_empty_cart;
 };
 
