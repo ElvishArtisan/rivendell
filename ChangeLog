@@ -17995,3 +17995,5 @@
 	'RDAIRPLAY.INSTANCE' field when processing schema update 284.
 2018-11-08 Fred Gleason <fredg@paravelsystems.com>
 	* Restored the status display bubble on rdmonitor(1).
+2018-11-09 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed a regression in rdairplay(1) pie widget.

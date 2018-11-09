@@ -69,7 +69,6 @@
 #define PIE_FINAL_COLOR Qt::black
 #define PIE_FINAL_BG_COLOR Qt::white
 #define PIE_ONAIR_COLOR Qt::red
-#define PIE_ONAIR_OFF_COLOR Qt::gray
 
 //
 // Widget Colors
