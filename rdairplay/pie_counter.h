@@ -67,7 +67,6 @@ class PieCounter : public QWidget
   void start(int offset=0);
   void stop();
   void setLogline(RDLogLine *logline);
-  void setErasePixmap(const QPixmap &pix);
 
  public slots:
   void setOnairFlag(bool state);
@@ -90,9 +89,12 @@ class PieCounter : public QWidget
   RDAirPlayConf::OpMode pie_op_mode;
   RDLogLine::TransType pie_trans_type;
   int air_line;
+  QPalette time_label_palette;
+  QPalette talk_label_palette;
+  QPalette onair_on_palette;
+  QPalette onair_off_palette;
   RDLogLine *pie_logline;
   QPixmap pie_pixmap;
-  bool pie_onair;
 };
 
 #endif
