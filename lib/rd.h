@@ -588,5 +588,10 @@
  */
 #define RD_GUI_STYLE "Plastique"
 
+/*
+ * Status / Note Bubble Background Color
+ */
+#define RD_STATUS_BACKGROUND_COLOR "#AAFFFF"
+
 
 #endif  // RD_H

@@ -127,8 +127,13 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Status Label
   //
-  mon_status_label=new QLabel(NULL,(Qt::WindowFlags)(Qt::WStyle_Customize|Qt::WStyle_NoBorder|Qt::WStyle_StaysOnTop));
+  mon_status_label=new QLabel(tr("Status: unknown"),NULL,
+			      (Qt::WindowFlags)(Qt::WStyle_Customize|
+						Qt::WStyle_NoBorder|
+						Qt::WStyle_StaysOnTop));
   mon_status_label->setAlignment(Qt::AlignCenter|Qt::AlignVCenter);
+  mon_status_label->
+    setStyleSheet(QString("background-color:")+RD_STATUS_BACKGROUND_COLOR);
   mon_status_label->hide();
 
   //
@@ -443,26 +448,33 @@ void MainWidget::SetStatusPosition()
   QFontMetrics *fm=new QFontMetrics(mon_status_label->font());
   int h=10+fm->height();
   int w=10+fm->width(mon_status_label->text());
+  QRect g=geometry();
 
   switch(mon_config->position()) {
   case RDMonitorConfig::UpperLeft:
+    mon_status_label->setGeometry(20+g.x(),g.y()+(2+g.height()),w,h);
+    break;
+
   case RDMonitorConfig::UpperCenter:
-    mon_status_label->setGeometry(geometry().x(),geometry().y()+(2+geometry().height()),w,h);
+    mon_status_label->
+      setGeometry(g.x()+(g.width()-w)/2,g.y()+(2+g.height()),w,h);
     break;
 
   case RDMonitorConfig::UpperRight:
-    mon_status_label->setGeometry(geometry().x()-h,geometry().y()+(2+geometry().height()),w,h);
+    mon_status_label->
+      setGeometry(g.x()+g.width()-w-20,g.y()+(2+g.height()),w,h);
     break;
 
   case RDMonitorConfig::LowerLeft:
-  case RDMonitorConfig::LowerCenter:
-    mon_status_label->setGeometry(geometry().x(),geometry().y()-(2+h),w,h);
+    mon_status_label->setGeometry(20+g.x(),g.y()-(2+h),w,h);
     break;
 
+  case RDMonitorConfig::LowerCenter:
+    mon_status_label->setGeometry(g.x()+(g.width()-w)/2,g.y()-(2+h),w,h);
     break;
 
   case RDMonitorConfig::LowerRight:
-    mon_status_label->setGeometry(geometry().x()-h,geometry().y()-(2+h),w,h);
+    mon_status_label->setGeometry(g.x()+g.width()-w-20,g.y()-(2+h),w,h);
     break;
 
   case RDMonitorConfig::LastPosition:

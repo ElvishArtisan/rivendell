@@ -31,6 +31,10 @@
         <source>Audio Store: FAILED</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Status: unknown</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QObject</name>
