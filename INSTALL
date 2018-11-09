@@ -171,9 +171,9 @@ plan on using those sound driver architectures.
 The installation of Rivendell's web services components are controlled
 by two parameters passed to 'configure', as follows:
 
---libexecdir	 Location to install web scripts and static content
+--libexecdir     Location to install web scripts and static content
 
---sysconfdir	 Location to install Apache configuration
+--sysconfdir     Location to install Apache configuration
 
 The specific values to pass will vary widely depending upon the specific
 distro in question. Some known good values (assuming a default Apache
@@ -183,7 +183,7 @@ RHEL 5:	  --libexecdir=/var/httpd/rd-bin --sysconfdir=/etc/httpd/conf.d
 
 RHEL 6/7: --libexecdir=/var/www/rd-bin --sysconfdir=/etc/httpd/conf.d
 
-SuSE:	  --libexecdir=/srv/www/rd-bin --sysconfdir=/etc/apache2/conf.d
+SuSE:     --libexecdir=/srv/www/rd-bin --sysconfdir=/etc/apache2/conf.d
 
 After doing 'make install', be sure to restart the Apache web service.
 
@@ -222,9 +222,10 @@ DB user to access it. This user should have the following privileges:
 
 In the '[mySQL]' section of the '/etc/rd.conf' file, set the 'Database=',
 'Loginname=' and 'Password=' parameters to the DB name, user and password
-that you created. Then, create an initial Rivendell database by doing:
+that you created. Then, create an initial Rivendell database and generate
+the audio for the test-tone cart in the audio store audio cart by doing:
 
-       rddbmgr --create
+       rddbmgr --create --generate-audio
 
 If all goes well, this command should return with no output.
 
