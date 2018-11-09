@@ -115,7 +115,6 @@ MainWidget::MainWidget(QWidget *parent)
     QPalette p=palette();
     p.setBrush(backgroundRole(),panel_skin_pixmap);
     setPalette(p);
-    fprintf(stderr,"setPalette\n");
   }
 
   //
