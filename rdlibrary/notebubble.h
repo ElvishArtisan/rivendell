@@ -1,8 +1,8 @@
-// cart_tip.cpp
+// notebubble.h
 //
-// Custom ToolTip for RDLibrary's Cart List
+// Bubble for displaying a cart note
 //
-//   (C) Copyright 2009,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,27 +18,24 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <rdcart.h>
+#ifndef NOTEBUBBLE_H
+#define NOTEBUBBLE_H
 
-#include <cart_tip.h>
+#include <qlabel.h>
+#include <qtimer.h>
 
-CartTip::CartTip(QWidget *widget,QToolTipGroup *group)
-  : QToolTip(widget,group)
+class NoteBubble : public QLabel
 {
-}
+  Q_OBJECT
+ public:
+  NoteBubble(QWidget *parent=0);
+  unsigned cartNumber() const;
+  bool setCartNumber(unsigned cartnum);
+
+ private:
+  unsigned note_cart_number;
+  QTimer *note_show_timer;
+};
 
 
-void CartTip::setCartNumber(const QRect &item_rect,unsigned cartnum)
-{
-  RDCart *cart=new RDCart(cartnum);
-  tip_notes=cart->notes();
-  delete cart;
-  tip_item_rect=item_rect;
-  tip_cart_number=cartnum;
-}
-
-
-void CartTip::maybeTip(const QPoint &pt)
-{
-  tip(tip_item_rect,tip_notes);
-}
+#endif  // NOTEBUBBLE_H

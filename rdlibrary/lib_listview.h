@@ -23,18 +23,27 @@
 
 #include <rdlistview.h>
 
+#include "notebubble.h"
+
 class LibListView : public RDListView
 {
   Q_OBJECT
  public:
   LibListView(QWidget *parent);
+  bool noteBubblesEnabled() const;
+
+ public slots:
+  void enableNoteBubbles(bool state);
 
  protected:
+  void leaveEvent(QEvent *e);
   void contentsMousePressEvent(QMouseEvent *e);
   void contentsMouseMoveEvent(QMouseEvent *e);
   void contentsMouseReleaseEvent(QMouseEvent *e);
 
  private:
+  NoteBubble *list_note_bubble;
+  bool list_note_bubbles_enabled;
   int list_move_count;
 };
 

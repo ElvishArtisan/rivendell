@@ -30,6 +30,28 @@ LibListView::LibListView(QWidget *parent)
   : RDListView(parent)
 {
   list_move_count=-1;
+  list_note_bubbles_enabled=false;
+
+  list_note_bubble=new NoteBubble(this);
+  list_note_bubble->hide();
+}
+
+
+bool LibListView::noteBubblesEnabled() const
+{
+  return list_note_bubbles_enabled;
+}
+
+
+void LibListView::enableNoteBubbles(bool state)
+{
+  list_note_bubbles_enabled=state;
+}
+
+
+void LibListView::leaveEvent(QEvent *e)
+{
+  list_note_bubble->hide();
 }
 
 
@@ -42,10 +64,39 @@ void LibListView::contentsMousePressEvent(QMouseEvent *e)
 
 void LibListView::contentsMouseMoveEvent(QMouseEvent *e)
 {
+  RDListViewItem *item=NULL;
+
   Q3ListView::contentsMouseMoveEvent(e);
+
+  //
+  // Note Bubbles
+  //
+  if(list_note_bubbles_enabled) {
+    if((item=(RDListViewItem *)itemAt(contentsToViewport(e->pos())))!=NULL) {
+      unsigned cartnum=item->text(1).left(6).toUInt();
+      if(cartnum!=list_note_bubble->cartNumber()) {
+	list_note_bubble->setCartNumber(cartnum);
+	QRect box(contentsToViewport(e->pos()).x(),
+		  itemRect(item).y()+itemRect(item).height(),
+		  list_note_bubble->sizeHint().width(),
+		  list_note_bubble->sizeHint().height());
+	if((box.x()+box.width())>width()) {
+	  box.moveLeft(width()-box.width()-20);
+	}
+	if((box.y()+box.height())>height()) {
+	  box.moveTop(height()-box.height()-20);
+	}
+	list_note_bubble->setGeometry(box);
+      }
+    }
+  }
+
+  //
+  // Drag-n-Drop
+  //
   list_move_count--;
   if(list_move_count==0) {
-    RDListViewItem *item=(RDListViewItem *)selectedItem();
+    item=(RDListViewItem *)selectedItem();
 
     if(item==NULL) {
       return;

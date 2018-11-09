@@ -324,7 +324,7 @@ MainWidget::MainWidget(QWidget *parent)
   lib_cart_list->setItemMargin(5);
   lib_cart_list->setSelectionMode(Q3ListView::Extended);
   lib_cart_list->setRootIsDecorated(true);
-  //  lib_cart_tip=new CartTip(lib_cart_list->viewport());
+  lib_cart_list->enableNoteBubbles(true);
   connect(lib_cart_list,
 	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,
@@ -333,6 +333,8 @@ MainWidget::MainWidget(QWidget *parent)
 	  this,SLOT(cartClickedData()));
   connect(lib_cart_list,SIGNAL(onItem(Q3ListViewItem *)),
 	  this,SLOT(cartOnItemData(Q3ListViewItem *)));
+  connect(lib_shownotes_box,SIGNAL(toggled(bool)),
+  	  lib_cart_list,SLOT(enableNoteBubbles(bool)));
   lib_cart_list->addColumn("");
   lib_cart_list->setColumnAlignment(Icon,Qt::AlignHCenter);
   lib_cart_list->addColumn(tr("Cart"));

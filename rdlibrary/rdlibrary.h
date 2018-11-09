@@ -44,7 +44,6 @@
 
 #include <rdconfig.h>
 
-//#include "cart_tip.h"
 #include "disk_gauge.h"
 #include "lib_listview.h"
 
@@ -120,7 +119,6 @@ class MainWidget : public QWidget
   bool UnlockUser();
   void SendNotification(RDNotification::Action action,unsigned cartnum);
   LibListView *lib_cart_list;
-  //  CartTip *lib_cart_tip;
   QString lib_filter_text;
   QString lib_search_text;
   QPixmap *lib_playout_map;
