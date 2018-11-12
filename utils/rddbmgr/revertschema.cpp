@@ -41,6 +41,18 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // NEW SCHEMA REVERSIONS GO HERE...
 
   //
+  // Revert 299
+  //
+  if((cur_schema==299)&&(set_schema<cur_schema)) {
+    sql=QString("alter table CART alter column SCHED_CODES set default NULL");
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 298
   //
   if((cur_schema==298)&&(set_schema<cur_schema)) {

@@ -9803,6 +9803,14 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
 
   // NEW SCHEMA UPDATES GO HERE...
 
+  if((cur_schema<299)&&(set_schema>cur_schema)) {
+    sql=QString("alter table CART alter column SCHED_CODES set default '.'");
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(++cur_schema);
+  }
 
   //
   // Maintainer's Note:
