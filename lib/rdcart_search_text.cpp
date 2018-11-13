@@ -103,20 +103,29 @@ QString RDBaseSearchText(QString filter,bool incl_cuts)
   return ret;
 }
 
+QString RDSchedSearchText(const QString &schedcode)
+{
+  QString ret="";
+
+  if(!schedcode.isEmpty()) {
+    ret+=QString(" inner join CART_SCHED_CODES on CART.NUMBER=CART_SCHED_CODES.CART_NUMBER and CART_SCHED_CODES.SCHED_CODE=\"")+RDEscapeString(schedcode)+"\" ";
+  }
+
+  return ret;
+}
+
 
 QString RDCartSearchText(QString filter,const QString &group,
 			 const QString &schedcode,bool incl_cuts)
 {
-  QString ret=QString(" ")+RDBaseSearchText(filter,incl_cuts);
+  QString ret="";
+
+  ret+=RDSchedSearchText(schedcode);
+  ret+=QString(" where ")+RDBaseSearchText(filter,incl_cuts);
   if(!group.isEmpty()) {
     ret+=QString("&&(CART.GROUP_NAME=\"")+RDEscapeString(group)+"\")";
   }
 
-  if(!schedcode.isEmpty()) {
-    QString code=schedcode+"          ";
-    code=code.left(11);
-    ret+=QString("&&(SCHED_CODES like \"%")+RDEscapeString(code)+"%\")";
-  }
   return ret;
 }
 
@@ -126,8 +135,10 @@ QString RDAllCartSearchText(const QString &filter,const QString &schedcode,
 {
   QString sql;
   RDSqlQuery *q;
-  QString search="(";
+  QString search="";
 
+  search+=RDSchedSearchText(schedcode);
+  search+=" where (";
   sql=QString("select GROUP_NAME from USER_PERMS where ")+
     "USER_NAME=\""+RDEscapeString(user)+"\"";
   q=new RDSqlQuery(sql);
@@ -138,12 +149,6 @@ QString RDAllCartSearchText(const QString &filter,const QString &schedcode,
   delete q;
   search=search.left(search.length()-2)+QString(")");
   search+=QString("&&")+RDBaseSearchText(filter,incl_cuts);
-
-  if(!schedcode.isEmpty()) {
-    QString code=schedcode+"          ";
-    code=code.left(11);
-    search+=QString("&&(SCHED_CODES like \"%%")+RDEscapeString(code)+"%%\")";
-  }
 
   return search;
 }

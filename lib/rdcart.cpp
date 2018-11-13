@@ -260,27 +260,41 @@ void RDCart::setYear(int year)
 
 QString RDCart::schedCodes() const
 {
-  return RDGetSqlValue("CART","NUMBER",cart_number,"SCHED_CODES").toString();
+  QString sched_codes="";
+
+  QStringList list = schedCodesList();
+
+  for(int i=0;i<list.size();i++) {
+    sched_codes+=QString().sprintf("%-11s",(const char *)list.at(i));
+  }
+  sched_codes+=".";
+  return sched_codes;
 }
 
 
 void RDCart::setSchedCodes(const QString &sched_codes) const
 {
-  SetRow("SCHED_CODES",sched_codes);
-}
-
-
-QStringList RDCart::schedCodesList() const
-{
   QStringList list;
-  QString sched_codes=
-    RDGetSqlValue("CART","NUMBER",cart_number,"SCHED_CODES").toString();
 
   for(int i=0;i<255;i+=11) {
     QString code=sched_codes.mid(i,11);
     if((!code.isEmpty())&&(code.stripWhiteSpace()!=".")) {
       list.push_back(code.stripWhiteSpace());
     }
+  }
+  setSchedCodesList(list);
+}
+
+
+QStringList RDCart::schedCodesList() const
+{
+  QStringList list;
+  RDSqlQuery *q;
+
+  QString sql=QString().sprintf("select SCHED_CODE from CART_SCHED_CODES where CART_NUMBER=%u", cart_number);
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    list.push_back(q->value(0).toString());
   }
 
   return list;
@@ -289,13 +303,19 @@ QStringList RDCart::schedCodesList() const
 
 void RDCart::setSchedCodesList(const QStringList &codes) const
 {
+  RDSqlQuery *q;
+  QString sql;
   QString sched_codes="";
+  
+  sql=QString().sprintf("delete from CART_SCHED_CODES where CART_NUMBER=%u",cart_number);
+  q=new RDSqlQuery(sql);
+  delete q;
 
   for(int i=0;i<codes.size();i++) {
-    sched_codes+=QString().sprintf("%-11s",(const char *)codes[i].left(11));
+    sql=QString().sprintf("insert into CART_SCHED_CODES set CART_NUMBER=%u,SCHED_CODE='%s'",cart_number,(const char *)codes.at(i));
+    q=new RDSqlQuery(sql);
+    delete q;
   }
-  sched_codes+=".";
-  SetRow("SCHED_CODES",sched_codes);  
 }
 
 
@@ -324,7 +344,7 @@ void RDCart::removeSchedCode(const QString &code) const
 void RDCart::updateSchedCodes(const QString &add_codes,const QString &remove_codes) const
 {
   QString sched_codes;
-  QString save_codes="";
+  QStringList save_codes;
   QString sql;
   RDSqlQuery *q;
   QString str;
@@ -336,15 +356,13 @@ void RDCart::updateSchedCodes(const QString &add_codes,const QString &remove_cod
   while(q->next()) {
   	QString wstr=q->value(0).toString();
   	wstr+="          ";
-    wstr=wstr.left(11);
+        wstr=wstr.left(11);
   	if((sched_codes.contains(wstr)>0||add_codes.contains(wstr)>0)&&remove_codes.contains(wstr)==0) {
-  	  save_codes+=wstr;
+          save_codes.push_back(wstr.stripWhiteSpace());
   	}
   }
   delete q;
-
-  save_codes+=".";
-  SetRow("SCHED_CODES",save_codes);
+  setSchedCodesList(save_codes);
 }	
 
 
@@ -1606,6 +1624,9 @@ bool RDCart::removeCart(unsigned cart_num,RDStation *station,RDUser *user,
   }
   delete q;
   sql=QString().sprintf("delete from CUTS where CART_NUMBER=%u",cart_num);
+  q=new RDSqlQuery(sql);
+  delete q;
+  sql=QString().sprintf("delete from CART_SCHED_CODES where CART_NUMBER=%u",cart_num);
   q=new RDSqlQuery(sql);
   delete q;
   sql=QString().sprintf("delete from REPL_CART_STATE where CART_NUMBER=%u",

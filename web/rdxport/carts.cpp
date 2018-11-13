@@ -164,7 +164,7 @@ void Xport::ListCarts()
   if(cart_type!=RDCart::All) {
     where+=QString().sprintf("&&(TYPE=%u)",cart_type);
   }
-  sql=RDCart::xmlSql(include_cuts)+"where "+where+" order by CART.NUMBER";
+  sql=RDCart::xmlSql(include_cuts)+where+" order by CART.NUMBER";
   q=new RDSqlQuery(sql);
 
   //

@@ -594,8 +594,7 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
     
     sql=QString("select ")+
       "NUMBER,"+
-      "ARTIST,"+
-      "SCHED_CODES "+
+      "ARTIST "+
       "from CART where "+
       "GROUP_NAME=\""+RDEscapeString(SchedGroup())+"\"";
     q=new RDSqlQuery(sql);
@@ -617,7 +616,9 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
       for(counter=0;counter<querysize;counter++)
       {
 	q->seek(counter);
-	schedCL->insertItem(q->value(0).toUInt(),0,0,q->value(1).toString(),q->value(2).toString());
+        RDCart *cart=new RDCart(q->value(0).toUInt());
+	schedCL->insertItem(q->value(0).toUInt(),0,0,q->value(1).toString(),cart->schedCodes());
+        delete cart;
       }
       delete q;
       
