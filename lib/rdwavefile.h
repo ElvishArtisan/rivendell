@@ -1014,6 +1014,10 @@ class RDWaveFile
    double getNormalizeLevel() const;
    void setNormalizeLevel(double level);
 
+   static QString formatText(Format fmt);
+   static QString typeText(Type type);
+
+
   private:
    RDWaveFile::Type GetType(int fd);
    bool IsWav(int fd);

@@ -52,7 +52,10 @@
 #include <mp4v2/mp4v2.h>
 #include <neaacdec.h>
 #endif // HAVE_MP4_LIBS
-#include <id3/tag.h>
+//#include <id3/tag.h>
+#include <id3v2tag.h>
+#include <textidentificationframe.h>
+#include <mpegfile.h>
 #include <qfile.h>
 
 #define STAGE2_XFER_SIZE 2048
@@ -1886,71 +1889,71 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage3Pcm24(SNDFILE *src_sf,
 
 void RDAudioConvert::ApplyId3Tag(const QString &filename,RDWaveData *wavedata)
 {
-  ID3_Tag *tag=new ID3_Tag(filename);
-  ID3_Frame *frame=new ID3_Frame(ID3FID_TITLE);
-  frame->GetField(ID3FN_TEXT)->Set((const char *)wavedata->title().toUtf8());
-  tag->AddNewFrame(frame);
+  TagLib::MPEG::File *file=new TagLib::MPEG::File(filename.toUtf8(),false);
+  TagLib::PropertyMap *map=new TagLib::PropertyMap();
+  TagLib::ID3v2::Tag *tag=file->ID3v2Tag();
 
-  if(wavedata->beatsPerMinute()>0) {
-    frame=new ID3_Frame(ID3FID_BPM);
-    frame->GetField(ID3FN_TEXT)->
-      Set((const char *)QString().sprintf("%d",wavedata->beatsPerMinute()).toUtf8());
-    tag->AddNewFrame(frame);
+  AddId3Property(map,"TITLE",wavedata->title());
+  if(!wavedata->artist().isEmpty()) {
+    AddId3Property(map,"ARTIST",wavedata->artist());
   }
   if(!wavedata->album().isEmpty()) {
-    frame=new ID3_Frame(ID3FID_ALBUM);
-    frame->GetField(ID3FN_TEXT)->Set((const char *)wavedata->album().toUtf8());
-    tag->AddNewFrame(frame);
+    AddId3Property(map,"ALBUM",wavedata->album());
   }
-  if(!wavedata->composer().isEmpty()) {
-    frame=new ID3_Frame(ID3FID_COMPOSER);
-    frame->GetField(ID3FN_TEXT)->Set((const char *)wavedata->composer().toUtf8());
-    tag->AddNewFrame(frame);
-  }
-  if(!wavedata->copyrightNotice().isEmpty()) {
-    frame=new ID3_Frame(ID3FID_COPYRIGHT);
-    frame->GetField(ID3FN_TEXT)->Set((const char *)wavedata->copyrightNotice().toUtf8());
-    tag->AddNewFrame(frame);
-  }
-  if(!wavedata->artist().isEmpty()) {
-    frame=new ID3_Frame(ID3FID_LEADARTIST);
-    frame->GetField(ID3FN_TEXT)->Set((const char *)wavedata->artist().toUtf8());
-    tag->AddNewFrame(frame);
-  }
-  if(!wavedata->publisher().isEmpty()) {
-    frame=new ID3_Frame(ID3FID_PUBLISHER);
-    frame->GetField(ID3FN_TEXT)->Set((const char *)wavedata->publisher().toUtf8());
-    tag->AddNewFrame(frame);
+  if(!wavedata->label().isEmpty()) {
+    AddId3Property(map,"LABEL",wavedata->label());
   }
   if(!wavedata->conductor().isEmpty()) {
-    frame=new ID3_Frame(ID3FID_CONDUCTOR);
-    frame->GetField(ID3FN_TEXT)->Set((const char *)wavedata->conductor().toUtf8());
-    tag->AddNewFrame(frame);
+    AddId3Property(map,"CONDUCTOR",wavedata->conductor());
+  }
+  if(!wavedata->composer().isEmpty()) {
+    AddId3Property(map,"COMPOSER",wavedata->composer());
+  }
+  if(!wavedata->publisher().isEmpty()) {
+    AddId3Property(map,"PUBLISHER",wavedata->publisher());
+  }
+  if(!wavedata->copyrightNotice().isEmpty()) {
+    AddId3Property(map,"COPYRIGHT",wavedata->copyrightNotice());
   }
   if(!wavedata->isrc().isEmpty()) {
-    frame=new ID3_Frame(ID3FID_ISRC);
-    frame->GetField(ID3FN_TEXT)->Set((const char *)wavedata->isrc().toUtf8());
-    tag->AddNewFrame(frame);
+    AddId3Property(map,"ISRC",wavedata->isrc());
   }
   if(wavedata->releaseYear()>0) {
-    frame=new ID3_Frame(ID3FID_YEAR);
-    frame->GetField(ID3FN_TEXT)->
-      Set((const char *)QString().sprintf("%d",wavedata->releaseYear()).toUtf8());
-    tag->AddNewFrame(frame);
+    AddId3Property(map,"YEAR",QString().sprintf("%d",wavedata->releaseYear()));
   }
+  if(wavedata->beatsPerMinute()>0) {
+    AddId3Property(map,"BPM",
+		   QString().sprintf("%d",wavedata->beatsPerMinute()));
+  }
+  tag->setProperties(*map);
+
   RDCart *cart=new RDCart(wavedata->cartNumber());
   if(cart->exists()) {
     QString xml=
       cart->xml(true,conv_start_point<0,conv_settings,wavedata->cutNumber());
-    frame=new ID3_Frame(ID3FID_USERTEXT);
-    frame->GetField(ID3FN_DESCRIPTION)->Set("rdxl");
-    frame->GetField(ID3FN_TEXTENC)->Set(ID3TE_NONE);
-    frame->GetField(ID3FN_TEXT)->Set((const char *)xml.toUtf8());
-    tag->AddNewFrame(frame);
-    delete cart;
+    TagLib::ID3v2::UserTextIdentificationFrame *frame=
+      new TagLib::ID3v2::UserTextIdentificationFrame(TagLib::String::UTF8);
+    frame->setDescription("rdxl");
+    frame->setText(TagLib::String((const char *)xml.toUtf8(),
+    				  TagLib::String::UTF8));
+    tag->addFrame(frame);
   }
-  tag->Update();
-  delete tag;
+  delete cart;
+
+  file->save();
+  delete map;
+  delete file;
+}
+
+
+void RDAudioConvert::AddId3Property(TagLib::PropertyMap *map,const QString &key,
+				    const QString &value) const
+{
+  TagLib::StringList args;
+
+  args.
+    append(TagLib::String((const char *)value.toUtf8(),TagLib::String::UTF8));
+  map->insert((const char *)key.toUtf8(),args);
 }
 
 

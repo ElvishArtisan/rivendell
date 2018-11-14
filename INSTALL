@@ -58,6 +58,10 @@ Available at http://www.surina.net/soundtouch/.
 Systemd System and Service Manager
 Most modern Linux distros include this.
 
+TagLib Audio Meta-Data Library, v1.8 or better
+A high-quality C++ library for reading and writing a variety of audio metadata
+formats. Available at https://taglib.org/.
+
 X11 Window System
 Virtually all Linux distros should include this.
 

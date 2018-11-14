@@ -95,6 +95,7 @@ systemd/rivendell.service
 tests/audio_convert_test
 tests/audio_export_test
 tests/audio_import_test
+tests/audio_metadata_test
 tests/audio_peaks_test
 tests/datedecode_test
 tests/db_charset_test

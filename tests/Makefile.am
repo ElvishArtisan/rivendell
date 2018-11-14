@@ -29,6 +29,7 @@ moc_%.cpp:	%.h
 noinst_PROGRAMS = audio_convert_test\
                   audio_export_test\
                   audio_import_test\
+                  audio_metadata_test\
                   audio_peaks_test\
                   datedecode_test\
                   db_charset_test\
@@ -52,6 +53,9 @@ audio_export_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
 
 dist_audio_import_test_SOURCES = audio_import_test.cpp audio_import_test.h
 audio_import_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
+
+dist_audio_metadata_test_SOURCES = audio_metadata_test.cpp audio_metadata_test.h
+audio_metadata_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
 
 dist_audio_peaks_test_SOURCES = audio_peaks_test.cpp audio_peaks_test.h
 audio_peaks_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support

@@ -2,7 +2,7 @@
 //
 // Test the Rivendell file format converter.
 //
-//   (C) Copyright 2010-2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,11 +29,13 @@ MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
   QString err_msg;
+  RDWaveData *wavedata=NULL;
 
   destination_settings=new RDSettings();
   start_point=-1;
   end_point=-1;
   speed_ratio=1.0;
+  metadata_cart=0;
   bool ok=false;
   RDAudioConvert::ErrorCode conv_err;
 
@@ -131,6 +133,14 @@ MainObject::MainObject(QObject *parent)
       destination_settings->setQuality(quality);
       rda->cmdSwitch()->setProcessed(i,true);
     }
+    if(rda->cmdSwitch()->key(i)=="--metadata-cart") {
+      metadata_cart=rda->cmdSwitch()->value(i).toUInt(&ok);
+      if((!ok)||(metadata_cart==0)||(metadata_cart>RD_MAX_CART_NUMBER)) {
+	fprintf(stderr,"audio_convert_test: invalid --metadata-cart\n");
+	exit(256);
+      }
+      rda->cmdSwitch()->setProcessed(i,true);
+    }
     if(rda->cmdSwitch()->key(i)=="--normalization-level") {
       int normalization_level=rda->cmdSwitch()->value(i).toInt(&ok);
       if((!ok)||(normalization_level>0)) {
@@ -162,11 +172,23 @@ MainObject::MainObject(QObject *parent)
     fprintf(stderr,"audio_convert_test: --destination-bit-rate and --destination-quality are mutually exclusive\n");
     exit(256);
   }
+  if(metadata_cart>0) {
+    RDCart *cart=new RDCart(metadata_cart);
+    if(!cart->exists()) {
+      fprintf(stderr,"audio_convert_test: --metadata-cart does not exist\n");
+      exit(256);
+    }
+    wavedata=new RDWaveData();
+    cart->getMetadata(wavedata);
+    wavedata->setCutNumber(1);
+    delete cart;
+  }
 
   RDAudioConvert *conv=new RDAudioConvert(this);
   conv->setSourceFile(source_filename);
   conv->setDestinationFile(destination_filename);
   conv->setDestinationSettings(destination_settings);
+  conv->setDestinationWaveData(wavedata);
   conv->setRange(start_point,end_point);
   conv->setSpeedRatio(speed_ratio);
   printf("Converting...\n");

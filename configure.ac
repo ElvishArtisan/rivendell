@@ -228,6 +228,11 @@ fi
 AC_CHECK_HEADER(id3/tag.h,[],[AC_MSG_ERROR([*** Id3Lib not found ***])])
 
 #
+# Check for TagLib
+#
+AC_CHECK_HEADER(taglib/taglib.h,[],[AC_MSG_ERROR([*** TagLib not found ***])])
+
+#
 # Check for LibCurl
 #
 AC_CHECK_HEADER(curl/curl.h,[],[AC_MSG_ERROR([*** LibCurl not found ***])])
@@ -293,7 +298,8 @@ fi
 #
 # Set Hard Library Dependencies
 #
-AC_SUBST(LIB_RDLIBS,"-lm -lpthread -lrd -lcurl -lid3 $FLAC_LIBS -lsndfile -lsamplerate -lcdda_interface -lcdda_paranoia -lcrypt -ldl -lpam -lSoundTouch -lcrypto")
+#AC_SUBST(LIB_RDLIBS,"-lm -lpthread -lrd -lcurl -lid3 $FLAC_LIBS -lsndfile -lsamplerate -lcdda_interface -lcdda_paranoia -lcrypt -ldl -lpam -lSoundTouch -lcrypto")
+AC_SUBST(LIB_RDLIBS,"-lm -lpthread -lrd -lcurl -lid3 -ltag $FLAC_LIBS -lsndfile -lsamplerate -lcdda_interface -lcdda_paranoia -lcrypt -ldl -lpam -lSoundTouch -lcrypto")
 
 #
 # Setup MPEG Dependencies

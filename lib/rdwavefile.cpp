@@ -34,14 +34,23 @@
 #include <assert.h>
 #include <arpa/inet.h>
 
+#include <typeinfo>
+
 #include <id3/tag.h>
 #include <id3/misc_support.h>
+#include <fileref.h>
+#include <apetag.h>
+#include <id3v1tag.h>
+#include <id3v2tag.h>
+#include <tag.h>
+#include <tpropertymap.h>
 #ifdef HAVE_FLAC
 #include <FLAC/metadata.h>
 #endif  // HAVE_FLAC
 
 #include <qobject.h>
 #include <qstring.h>
+#include <qtextcodec.h>
 #include <qdatetime.h>
 //Added by qt3to4:
 #include <Q3CString>
@@ -2164,6 +2173,111 @@ void RDWaveFile::setRdxlContents(const QString &xml)
 }
 
 
+QString RDWaveFile::formatText(RDWaveFile::Format fmt)
+{
+  QString ret=QObject::tr("unknown");
+
+  switch(fmt) {
+  case RDWaveFile::Pcm8:
+    ret=QObject::tr("PCM8");
+    break;
+
+  case RDWaveFile::Pcm16:
+    ret=QObject::tr("PCM16");
+    break;
+
+  case RDWaveFile::Float32:
+    ret=QObject::tr("Float32");
+    break;
+
+  case RDWaveFile::MpegL1:
+    ret=QObject::tr("MPEG Layer I");
+    break;
+
+  case RDWaveFile::MpegL2:
+    ret=QObject::tr("MPEG Layer II (MP2)");
+    break;
+
+  case RDWaveFile::MpegL3:
+    ret=QObject::tr("MPEG Layer III (MP3)");
+    break;
+
+  case RDWaveFile::DolbyAc2:
+    ret=QObject::tr("Dolby AC2");
+    break;
+
+  case RDWaveFile::DolbyAc3:
+    ret=QObject::tr("Dolby AC3");
+    break;
+
+  case RDWaveFile::Vorbis:
+    ret=QObject::tr("OggVorbis");
+    break;
+
+  case RDWaveFile::Pcm24:
+    ret=QObject::tr("PCM24");
+    break;
+
+  }
+
+  return ret;
+}
+
+  enum Format {Pcm8=0,Pcm16=1,Float32=2,MpegL1=3,MpegL2=4,MpegL3=5,
+  	       DolbyAc2=6,DolbyAc3=7,Vorbis=8,Pcm24=9};
+  enum Type {Unknown=0,Wave=1,Mpeg=2,Ogg=3,Atx=4,Tmc=5,Flac=6,Ambos=7,
+	     Aiff=8,M4A=9};
+
+
+QString RDWaveFile::typeText(RDWaveFile::Type type)
+{
+  QString ret=QObject::tr("unknown");
+
+  switch(type) {
+  case RDWaveFile::Unknown:
+    break;
+
+  case RDWaveFile::Wave:
+    ret=QObject::tr("RIFF/WAVE");
+    break;
+
+  case RDWaveFile::Mpeg:
+    ret=QObject::tr("Raw MPEG Bitstream");
+    break;
+
+  case RDWaveFile::Ogg:
+    ret=QObject::tr("Ogg Bitstream");
+    break;
+
+  case RDWaveFile::Atx:
+    ret=QObject::tr("ATX");
+    break;
+
+  case RDWaveFile::Tmc:
+    ret=QObject::tr("TMC");
+    break;
+
+  case RDWaveFile::Flac:
+    ret=QObject::tr("Raw FLAC Bitstream");
+    break;
+
+  case RDWaveFile::Ambos:
+    ret=QObject::tr("AM-BOS Hybrid");
+    break;
+
+  case RDWaveFile::Aiff:
+    ret=QObject::tr("AIFF");
+    break;
+
+  case RDWaveFile::M4A:
+    ret=QObject::tr("MP4");
+    break;
+  }
+
+  return ret;
+}
+
+
 RDWaveFile::Type RDWaveFile::GetType(int fd)
 {
   if(IsWav(fd)) {
@@ -3357,63 +3471,105 @@ void RDWaveFile::ReadId3Metadata()
   if(wave_data==NULL) {
     return;
   }
-  ID3_Frame *frame=NULL;
-  ID3_Tag id3_tag(Q3CString().sprintf("%s",(const char *)wave_file.name().utf8()));
-  if((frame=id3_tag.Find(ID3FID_USERTEXT,ID3FN_DESCRIPTION,"rdxl"))!=NULL) {
-    rdxl_contents=ID3_GetString(frame,ID3FN_TEXT);
-    if(wave_data!=NULL) {
-      std::vector<RDWaveData> wavedatas;
-      if(RDCart::readXml(&wavedatas,rdxl_contents)>1) {
-	*wave_data=wavedatas[1];
+  bool using_rdxl=false;
+  TagLib::FileRef tagref(wave_file.name().toUtf8());
+  TagLib::PropertyMap tags=tagref.file()->properties();
+
+  //
+  // Check for an RDXL frame
+  // If we find one, use id3lib to process it, otherwise continue with TagLib
+  //
+  for(TagLib::PropertyMap::ConstIterator it=tags.begin();it!=tags.end();++it) {
+    QString name=QString::fromUtf8(it->first.toCString(true));
+    if(name==QString::fromUtf8("牤硬")) {  // Mangled RD v2.x RDXL Frame
+      using_rdxl=true;
+      ID3_Frame *frame=NULL;
+      ID3_Tag id3_tag(wave_file.name().toUtf8());
+      if((frame=id3_tag.Find(ID3FID_USERTEXT,ID3FN_DESCRIPTION,"rdxl"))!=NULL) {
+	rdxl_contents=ID3_GetString(frame,ID3FN_TEXT);
+	if(wave_data!=NULL) {
+	  std::vector<RDWaveData> wavedatas;
+	  if(RDCart::readXml(&wavedatas,rdxl_contents)>1) {
+	    *wave_data=wavedatas[1];
+	  }
+	}
+      }
+    }
+    if(name=="RDXL") {
+      using_rdxl=true;
+      rdxl_contents=QString::fromUtf8(it->second.begin()->toCString(true));
+      if(wave_data!=NULL) {
+	std::vector<RDWaveData> wavedatas;
+	if(RDCart::readXml(&wavedatas,rdxl_contents)>1) {
+	  *wave_data=wavedatas[1];
+	}
       }
     }
   }
-  else {
-    if((frame=id3_tag.Find(ID3FID_TITLE))!=NULL) {
-      wave_data->setTitle(ID3_GetString(frame,ID3FN_TEXT));
-      wave_data->setMetadataFound(true);
-    }
-    if((frame=id3_tag.Find(ID3FID_BPM))!=NULL) {
-      wave_data->
-	setBeatsPerMinute(QString(ID3_GetString(frame,ID3FN_TEXT)).toInt());
-      wave_data->setMetadataFound(true);
-    }
-    if((frame=id3_tag.Find(ID3FID_ALBUM))!=NULL) {
-      wave_data->setAlbum(ID3_GetString(frame,ID3FN_TEXT));
-      wave_data->setMetadataFound(true);
-    }
-    if((frame=id3_tag.Find(ID3FID_COMPOSER))!=NULL) {
-      wave_data->setComposer(ID3_GetString(frame,ID3FN_TEXT));
-      wave_data->setMetadataFound(true);
-    }
-    if((frame=id3_tag.Find(ID3FID_COPYRIGHT))!=NULL) {
-      wave_data->setCopyrightNotice(ID3_GetString(frame,ID3FN_TEXT));
-      wave_data->setMetadataFound(true);
-    }
-    if((frame=id3_tag.Find(ID3FID_ORIGARTIST))!=NULL) {
-      wave_data->setArtist(ID3_GetString(frame,ID3FN_TEXT));
-      wave_data->setMetadataFound(true);
-    }
-    if((frame=id3_tag.Find(ID3FID_LEADARTIST))!=NULL) {
-      wave_data->setArtist(ID3_GetString(frame,ID3FN_TEXT));
-      wave_data->setMetadataFound(true);
-    }
-    if((frame=id3_tag.Find(ID3FID_CONDUCTOR))!=NULL) {
-      wave_data->setConductor(ID3_GetString(frame,ID3FN_TEXT));
-      wave_data->setMetadataFound(true);
-    }
-    if((frame=id3_tag.Find(ID3FID_PUBLISHER))!=NULL) {
-      wave_data->setPublisher(ID3_GetString(frame,ID3FN_TEXT));
-      wave_data->setMetadataFound(true);
-    }
-    if((frame=id3_tag.Find(ID3FID_ISRC))!=NULL) {
-      wave_data->setIsrc(ID3_GetString(frame,ID3FN_TEXT));
-      wave_data->setMetadataFound(true);
-    }
-    if((frame=id3_tag.Find(ID3FID_YEAR))!=NULL) {
-      wave_data->
-	setReleaseYear(QString(ID3_GetString(frame,ID3FN_TEXT)).toInt());
-      wave_data->setMetadataFound(true);
+
+  if(!using_rdxl) {
+    for(TagLib::PropertyMap::ConstIterator it=tags.begin();it!=tags.end();++it) {
+      QString name=QString::fromUtf8(it->first.toCString(true));
+      if(name=="TITLE") {
+	wave_data->
+	  setTitle(QString::fromUtf8(it->second.begin()->toCString(true)));
+	wave_data->setMetadataFound(true);
+      }
+      if(name=="ARTIST") {
+	wave_data->
+	  setArtist(QString::fromUtf8(it->second.begin()->toCString(true)));
+	wave_data->setMetadataFound(true);
+      }
+      if(name=="ALBUM") {
+	wave_data->
+	  setAlbum(QString::fromUtf8(it->second.begin()->toCString(true)));
+	wave_data->setMetadataFound(true);
+      }
+      if(name=="COMPOSER") {
+	wave_data->
+	  setComposer(QString::fromUtf8(it->second.begin()->toCString(true)));
+	wave_data->setMetadataFound(true);
+      }
+      if(name=="CONDUCTOR") {
+	wave_data->
+	  setConductor(QString::fromUtf8(it->second.begin()->toCString(true)));
+	wave_data->setMetadataFound(true);
+      }
+      if(name=="PUBLISHER") {
+	wave_data->
+	  setPublisher(QString::fromUtf8(it->second.begin()->toCString(true)));
+	wave_data->setMetadataFound(true);
+      }
+      if(name=="ISRC") {
+	wave_data->
+	  setIsrc(QString::fromUtf8(it->second.begin()->toCString(true)));
+	wave_data->setMetadataFound(true);
+      }
+      if(name=="COPYRIGHT") {
+	wave_data->
+	  setCopyrightNotice(QString::fromUtf8(it->second.begin()->
+					       toCString(true)));
+	wave_data->setMetadataFound(true);
+      }
+      if(name=="YEAR") {
+	wave_data->
+	  setReleaseYear(QString(it->second.begin()->toCString(true)).toInt());
+	wave_data->setMetadataFound(true);
+      }
+      if(name=="BPM") {
+	wave_data->
+	  setBeatsPerMinute(QString(it->second.begin()->toCString(true)).toInt());
+	wave_data->setMetadataFound(true);
+      }
+      /*
+      printf("TAG: %s = ",it->first.toCString(true));
+      for(TagLib::StringList::ConstIterator it2=it->second.begin();it2!=
+	    it->second.end();
+	  ++it2) {
+	printf("%s ",it2->toCString(true));
+      }
+      printf("\n");
+      */
     }
   }
 }

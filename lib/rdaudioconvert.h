@@ -22,6 +22,8 @@
 #define RDAUDIOCONVERT_H
 
 #include <sndfile.h>
+#include <taglib/taglib.h>
+#include <taglib/tpropertymap.h>
 #ifdef HAVE_TWOLAME
 #include <twolame.h>
 #endif  // HAVE_TWOLAME
@@ -98,6 +100,8 @@ class RDAudioConvert : public QObject
   RDAudioConvert::ErrorCode Stage3Pcm24(SNDFILE *src_sf,SF_INFO *src_sf_info,
 					const QString &dstfile);
   void ApplyId3Tag(const QString &filename,RDWaveData *wavedata);
+  void AddId3Property(TagLib::PropertyMap *map,
+		      const QString &key,const QString &value) const;
   void UpdatePeak(const float data[],ssize_t len);
   void UpdatePeak(const double data[],ssize_t len);
   bool LoadMad();

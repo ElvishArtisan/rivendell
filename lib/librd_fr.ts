@@ -651,6 +651,82 @@
         <source>Unable to update automounter configuration</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>PCM8</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PCM16</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Float32</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MPEG Layer I</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MPEG Layer II (MP2)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MPEG Layer III (MP3)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dolby AC2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Dolby AC3</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OggVorbis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PCM24</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>RIFF/WAVE</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Raw MPEG Bitstream</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Ogg Bitstream</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ATX</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TMC</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Raw FLAC Bitstream</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>AM-BOS Hybrid</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>AIFF</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MP4</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddCart</name>

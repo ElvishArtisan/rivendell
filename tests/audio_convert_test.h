@@ -27,7 +27,7 @@
 
 #include <rdsettings.h>
 
-#define AUDIO_CONVERT_TEST_USAGE "[options]\n\nTest the Rivendell audio converter routines\n\nOptions are:\n--source-file=<filename>\n\n--destination-file=<filename>\n\n--start-point=<msecs>\n\n--end-point=<msecs>\n\n--destination-format=<fmt>\n     Supported formats are:\n        0 - PCM16 WAV\n        2 - MPEG Layer 2\n        3 - MPEG Layer 3\n        4 - FLAC\n        5 - OggVorbis\n        6 - MPEG Layer 2 WAV\n        7 - PCM24 WAV\n\n--destination-channels=<chans>\n\n--destination-sample-rate=<rate>\n\n--destination-bit-rate=<rate>\n\n--destination-quality=<qual>\n\n--normalization-level=<dbfs>\n\n--speed-ratio=<ratio>\n\n"
+#define AUDIO_CONVERT_TEST_USAGE "[options]\n\nTest the Rivendell audio converter routines\n\nOptions are:\n--source-file=<filename>\n\n--destination-file=<filename>\n\n--start-point=<msecs>\n\n--end-point=<msecs>\n\n--destination-format=<fmt>\n     Supported formats are:\n        0 - PCM16 WAV\n        2 - MPEG Layer 2\n        3 - MPEG Layer 3\n        4 - FLAC\n        5 - OggVorbis\n        6 - MPEG Layer 2 WAV\n        7 - PCM24 WAV\n\n--destination-channels=<chans>\n\n--destination-sample-rate=<rate>\n\n--destination-bit-rate=<rate>\n\n--destination-quality=<qual>\n\n--normalization-level=<dbfs>\n\n--speed-ratio=<ratio>\n\n--metadata-cart=<cartnum>\n\n"
 
 
 class MainObject : public QObject
@@ -41,6 +41,7 @@ class MainObject : public QObject
   int start_point;
   int end_point;
   float speed_ratio;
+  unsigned metadata_cart;
   RDSettings *destination_settings;
 };
 

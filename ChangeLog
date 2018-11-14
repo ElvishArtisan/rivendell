@@ -18007,3 +18007,8 @@
 	* Fixed a regression in rdpanel(1) background image.
 2018-11-09 Fred Gleason <fredg@paravelsystems.com>
 	* Removed a debugging printf in rdpanel(1).
+2018-11-14 Fred Gleason <fredg@paravelsystems.com>
+	* Added a '--metadata-cart=' switch to the 'audio_convert_test'
+	test harness.
+	* Added an 'audio_metadata_test' test harness.
+	* Modified ID3 tag reading/writing to use TagLib.
