@@ -594,8 +594,11 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
     
     sql=QString("select ")+
       "NUMBER,"+
-      "ARTIST "+
-      "from CART where "+
+      "ARTIST, "+
+      "SCHED_CODE "+
+      "from CART "+
+      "left join CART_SCHED_CODES on CART.NUMBER=CART_SCHED_CODES.CART_NUMBER "+
+      "where "+
       "GROUP_NAME=\""+RDEscapeString(SchedGroup())+"\"";
     q=new RDSqlQuery(sql);
     if(q->size()>0)
@@ -612,13 +615,14 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
       int querysize=(int)q->size();
       SchedCartList *schedCL;
       schedCL=new SchedCartList(querysize);
-      
+
+      QString schedcode; 
       for(counter=0;counter<querysize;counter++)
       {
 	q->seek(counter);
-        RDCart *cart=new RDCart(q->value(0).toUInt());
-	schedCL->insertItem(q->value(0).toUInt(),0,0,q->value(1).toString(),cart->schedCodes());
-        delete cart;
+	schedcode=q->value(2).toString()+"          ";
+	schedcode=schedcode.left(11);
+	schedCL->insertItem(q->value(0).toUInt(),0,0,q->value(1).toString(),schedcode);
       }
       delete q;
       

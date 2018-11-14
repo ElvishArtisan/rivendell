@@ -1,6 +1,7 @@
 // rdcart_search_text.cpp
 //
-// Generates a standardized SQL 'WHERE' clause for filtering Rivendell carts.
+// Generates a standardized SQL 'INNER JOIN' and 'WHERE' clause for
+// filtering Rivendell carts.
 //
 //   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
 //
