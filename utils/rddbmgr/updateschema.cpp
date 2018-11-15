@@ -9820,12 +9820,12 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       for(int i=0;i<255;i+=11) {
         QString code=q->value(1).toString().mid(i,11).stripWhiteSpace();
         if((!code.isEmpty())&&(code!=".")) {
-	  sql=QString("insert into CART_SCHED_CODES set ")+
-	    "CART_NUMBER="+q->value(0).toString()+","+
+          sql=QString("insert into CART_SCHED_CODES set ")+
+            "CART_NUMBER="+q->value(0).toString()+","+
             "SCHED_CODE=\""+code+"\"";
-	  if(!RDSqlQuery::apply(sql,err_msg)) {
-	    return false;
-	  }
+          if(!RDSqlQuery::apply(sql,err_msg)) {
+            return false;
+          }
         }
       }
     }
