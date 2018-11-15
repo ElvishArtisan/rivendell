@@ -18007,9 +18007,7 @@
 	* Fixed a regression in rdpanel(1) background image.
 2018-11-09 Fred Gleason <fredg@paravelsystems.com>
 	* Removed a debugging printf in rdpanel(1).
-2018-11-13 Patrick Linstruth <patrick@deltecent.com>
+2018-11-15 Patrick Linstruth <patrick@deltecent.com>
 	* Added a 'CART_SCHED_CODES' table to the database.
 	* Removed 'SCHED_CODES' field from 'CART'
 	* Incremented the database version to 299.
-2018-11-13 Patrick Linstruth <patrick@deltecent.com>
-	* Scheduler optimization
