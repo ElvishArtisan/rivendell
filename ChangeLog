@@ -18012,3 +18012,6 @@
 	test harness.
 	* Added an 'audio_metadata_test' test harness.
 	* Modified ID3 tag reading/writing to use TagLib.
+2018-11-15 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdadmin(1) that prevented login from a system with
+	no host record in the database.

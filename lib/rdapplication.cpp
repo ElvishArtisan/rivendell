@@ -145,15 +145,6 @@ bool RDApplication::open(QString *err_msg,RDApplication::ErrorType *err_type)
   // Open Accessors
   //
   app_station=new RDStation(app_config->stationName());
-  if(!app_station->exists()) {
-    if(err_type!=NULL) {
-      *err_type=RDApplication::ErrorNoHostEntry;
-    }
-    *err_msg=QObject::tr("This host")+" (\""+app_config->stationName()+"\") "+
-      QObject::tr("does not have a Hosts entry in the database.")+"\n"+
-      QObject::tr("Open RDAdmin->ManageHosts->Add to create one.");
-    return false;
-  }
   app_system=new RDSystem();
   app_library_conf=new RDLibraryConf(app_config->stationName());
   app_logedit_conf=new RDLogeditConf(app_config->stationName());
@@ -163,6 +154,16 @@ bool RDApplication::open(QString *err_msg,RDApplication::ErrorType *err_type)
   app_cae=new RDCae(app_station,app_config,this);
   app_ripc=new RDRipc(app_station,app_config,this);
   connect(app_ripc,SIGNAL(userChanged()),this,SLOT(userChangedData()));
+
+  if(!app_station->exists()) {
+    if(err_type!=NULL) {
+      *err_type=RDApplication::ErrorNoHostEntry;
+    }
+    *err_msg=QObject::tr("This host")+" (\""+app_config->stationName()+"\") "+
+      QObject::tr("does not have a Hosts entry in the database.")+"\n"+
+      QObject::tr("Open RDAdmin->ManageHosts->Add to create one.");
+    return false;
+  }
 
   return true; 
 }

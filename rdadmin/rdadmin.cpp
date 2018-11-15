@@ -82,6 +82,7 @@ MainWidget::MainWidget(QWidget *parent)
 {
   QString str;
   QString err_msg;
+  RDApplication::ErrorType err_type=RDApplication::ErrorOk;
 
   //
   // Fix the Window Size
@@ -110,9 +111,11 @@ MainWidget::MainWidget(QWidget *parent)
   // Open the Database
   //
   rda=new RDApplication("RDAdmin","rdadmin",RDADMIN_USAGE,this);
-  if(!rda->open(&err_msg)) {
-    QMessageBox::critical(this,"RDAdmin - "+tr("Error"),err_msg);
-    exit(1);
+  if(!rda->open(&err_msg,&err_type)) {
+    if(err_type!=RDApplication::ErrorNoHostEntry) {
+      QMessageBox::critical(this,"RDAdmin - "+tr("Error"),err_msg);
+      exit(1);
+    }
   }
   setWindowTitle(QString("RDAdmin v")+VERSION+" - "+
 		 tr("Host")+": "+rda->config()->stationName());
