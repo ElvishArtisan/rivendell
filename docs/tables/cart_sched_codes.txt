@@ -1,0 +1,10 @@
+               CART_SCHED_CODES Table Layout for Rivendell
+
+The CART_SCHED_CODES table holds the scheduler codes for carts.
+
+FIELD NAME                   TYPE          REMARKS
+-------------------------------------------------------------------------
+ID                           int(11)       Primary Key, Not Null, Unique
+                                           Auto-Increment
+CART_NUMBER                  int(11)       From CART.NUMBER
+SCHED_CODE                   varchar(11)

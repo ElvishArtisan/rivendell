@@ -9557,8 +9557,41 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
-  // NEW SCHEMA UPDATES GO HERE...
+  if((cur_schema<299)&&(set_schema>cur_schema)) {
+    sql=QString("create table if not exists CART_SCHED_CODES (")+
+      "ID int auto_increment not null primary key,"+
+      "CART_NUMBER int unsigned not null default 0,"+
+      "SCHED_CODE varchar(11) not null,"+
+      "index SCHED_CODE_IDX (CART_NUMBER,SCHED_CODE))"+
+      " charset utf8mb4 collate utf8mb4_general_ci"+
+      db_table_create_postfix;
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
 
+    q=new RDSqlQuery("select NUMBER,SCHED_CODES from CART where TYPE=1",false);
+    while(q->next()) {
+      for(int i=0;i<255;i+=11) {
+        QString code=q->value(1).toString().mid(i,11).stripWhiteSpace();
+        if((!code.isEmpty())&&(code!=".")) {
+          sql=QString("insert into CART_SCHED_CODES set ")+
+            "CART_NUMBER="+q->value(0).toString()+","+
+            "SCHED_CODE=\""+code+"\"";
+          if(!RDSqlQuery::apply(sql,err_msg)) {
+            return false;
+          }
+        }
+      }
+    }
+    delete q;
+
+    q=new RDSqlQuery("alter table CART drop column SCHED_CODES",false);
+    delete q;
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
+  // NEW SCHEMA UPDATES GO HERE...
 
   //
   // Maintainer's Note:

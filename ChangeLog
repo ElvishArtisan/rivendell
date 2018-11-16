@@ -18021,3 +18021,7 @@
 2018-11-16 Fred Gleason <fredg@paravelsystems.com>
 	* Added '-fno-var-tracking-assignments' to the 'AM_CPPFLAGS' rule
 	for rddbmgr(8).
+2018-11-16 Patrick Linstruth <patrick@deltecent.com>
+	* Added a 'CART_SCHED_CODES' table to the database.
+	* Removed 'SCHED_CODES' field from 'CART'
+	* Incremented the database version to 299.

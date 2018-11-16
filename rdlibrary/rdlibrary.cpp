@@ -1411,14 +1411,12 @@ QString MainWidget::WhereClause() const
     schedcode=lib_codes_box->currentText();
   }
   if(lib_group_box->currentText()==QString(tr("ALL"))) {
-    sql+=QString(" where ")+
-      RDAllCartSearchText(lib_filter_edit->text(),schedcode,
+    sql+=RDAllCartSearchText(lib_filter_edit->text(),schedcode,
 			  rda->user()->name(),true)+" && "+type_filter;
 
   }
   else {
-    sql+=QString(" where ")+
-      RDCartSearchText(lib_filter_edit->text(),lib_group_box->currentText(),
+    sql+=RDCartSearchText(lib_filter_edit->text(),lib_group_box->currentText(),
 		       schedcode,true)+" && "+type_filter;      
   }
 

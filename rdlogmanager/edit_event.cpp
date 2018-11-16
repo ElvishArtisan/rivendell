@@ -1289,8 +1289,7 @@ void EditEvent::RefreshLibrary()
   if(group==QString(tr("ALL"))) {
     group="";
   }
-  sql+=QString(" where ")+
-    RDCartSearchText(event_lib_filter_edit->text(),group,"",false)+" && "+
+  sql+=RDCartSearchText(event_lib_filter_edit->text(),group,"",false)+" && "+
     type_filter;
   RDSqlQuery *q=new RDSqlQuery(sql);
   Q3ListViewItem *item;
