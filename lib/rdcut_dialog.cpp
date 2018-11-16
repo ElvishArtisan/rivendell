@@ -489,7 +489,7 @@ void RDCutDialog::RefreshCarts()
   sql=QString().sprintf("select CART.NUMBER,CART.TITLE,CART.GROUP_NAME,\
                          GROUPS.COLOR,CART.TYPE from CART left join GROUPS \
                          on CART.GROUP_NAME=GROUPS.NAME \
-                         where (%s)&&((CART.TYPE=%u))",
+                         %s&&(CART.TYPE=%u)",
 			(const char *)RDCartSearchText(cut_filter_edit->text(),
 						       group,schedcode.utf8(),
 						       false),

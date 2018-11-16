@@ -41,6 +41,29 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // NEW SCHEMA REVERSIONS GO HERE...
 
   //
+  // Revert 299
+  //
+  if((cur_schema==299)&&(set_schema<cur_schema)) {
+    QString schedcode;
+
+    q=new RDSqlQuery("alter table CART add column SCHED_CODES VARCHAR( 255 ) NULL default '.' after MACROS",false);
+    delete q;
+
+    q=new RDSqlQuery("select CART_NUMBER,SCHED_CODE from CART_SCHED_CODES order by CART_NUMBER",false);
+    while(q->next()) {
+      schedcode=QString().sprintf("%-11s",(const char *)q->value(1).toString());
+      q1=new RDSqlQuery(QString().sprintf("update CART set SCHED_CODES=CONCAT(\"%s\",SCHED_CODES) where NUMBER=%d",(const char *)schedcode,q->value(0).toUInt()),false);
+      delete q1;
+    }
+    delete q;
+
+    q=new RDSqlQuery("drop table CART_SCHED_CODES",false);
+    delete q;
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 298
   //
   if((cur_schema==298)&&(set_schema<cur_schema)) {

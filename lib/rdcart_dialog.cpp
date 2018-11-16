@@ -703,7 +703,7 @@ void RDCartDialog::RefreshCarts()
       "CART.GROUP_NAME,"+      // 12
       "GROUPS.COLOR "+         // 13
       "from CART left join GROUPS "+
-      "on CART.GROUP_NAME=GROUPS.NAME where "+
+      "on CART.GROUP_NAME=GROUPS.NAME "+
       GetSearchFilter(cart_filter_edit->text(),group,schedcode);
   }
   else {
@@ -723,8 +723,8 @@ void RDCartDialog::RefreshCarts()
       "CART.GROUP_NAME,"+      // 12
       "GROUPS.COLOR "+         // 13
       "from CART left join GROUPS "+
-      "on CART.GROUP_NAME=GROUPS.NAME where "+
-      "("+GetSearchFilter(cart_filter_edit->text(),group,schedcode)+")&&"+
+      "on CART.GROUP_NAME=GROUPS.NAME "+
+      GetSearchFilter(cart_filter_edit->text(),group,schedcode)+"&&"+
       QString().sprintf("(TYPE=%d)",cart_type);
   }
   if(cart_limit_box->isChecked()) {
