@@ -18012,3 +18012,5 @@
 	test harness.
 	* Added an 'audio_metadata_test' test harness.
 	* Modified ID3 tag reading/writing to use TagLib.
+2018-11-15 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed marker bugs in rdlibrary(1) audio editor widget.
