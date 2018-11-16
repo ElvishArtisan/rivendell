@@ -2560,10 +2560,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // Revert 287
   //
   if((cur_schema==287)&&(set_schema<cur_schema)) {
-    sql=QString("alter table STATIONS drop column JACK_PORTS");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
+    DropColumn("STATIONS","JACK_PORTS");
 
     WriteSchemaVersion(--cur_schema);
   }
@@ -2945,10 +2942,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
       }
     }
     delete q;
-    sql=QString("alter table AUDIO_CARDS drop column CLOCK_SOURCE");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
+    DropColumn("AUDIO_CARDS","CLOCK_SOURCE");
 
     WriteSchemaVersion(--cur_schema);
   }
@@ -2994,10 +2988,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // Revert 281
   //
   if((cur_schema==281)&&(set_schema<cur_schema)) {
-    sql=QString("alter table RDAIRPLAY drop column VIRTUAL_EXIT_CODE");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
+    DropColumn("RDAIRPLAY","VIRTUAL_EXIT_CODE");
 
     WriteSchemaVersion(--cur_schema);
   }
@@ -3184,10 +3175,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // Revert 277
   //
   if((cur_schema==277)&&(set_schema<cur_schema)) {
-    sql=QString("alter table USERS drop column WEBGET_LOGIN_PRIV");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
+    DropColumn("USERS","WEBGET_LOGIN_PRIV");
 
     WriteSchemaVersion(--cur_schema);
   }
@@ -3196,10 +3184,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // Revert 276
   //
   if((cur_schema==276)&&(set_schema<cur_schema)) {
-    sql=QString("alter table SYSTEM drop column NOTIFICATION_ADDRESS");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
+    DropColumn("SYSTEM","NOTIFICATION_ADDRESS");
 
     WriteSchemaVersion(--cur_schema);
   }
@@ -3208,10 +3193,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // Revert 275
   //
   if((cur_schema==275)&&(set_schema<cur_schema)) {
-    sql=QString("alter table SERVICES drop column LOG_SHELFLIFE_ORIGIN");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
+    DropColumn("SERVICES","LOG_SHELFLIFE_ORIGIN");
 
     WriteSchemaVersion(--cur_schema);
   }
@@ -3224,11 +3206,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }
-
-    sql=QString("alter table LOGS drop column LOCK_GUID");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
+    DropColumn("LOGS","LOCK_GUID");
 
     WriteSchemaVersion(--cur_schema);
   }
@@ -3237,25 +3215,10 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // Revert 273
   //
   if((cur_schema==273)&&(set_schema<cur_schema)) {
-    sql=QString("alter table LOGS drop column LOCK_DATETIME");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
-
-    sql=QString("alter table LOGS drop column LOCK_IPV4_ADDRESS");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
-
-    sql=QString("alter table LOGS drop column LOCK_STATION_NAME");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
-
-    sql=QString("alter table LOGS drop column LOCK_USER_NAME");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
+    DropColumn("LOGS","LOCK_DATETIME");
+    DropColumn("LOGS","LOCK_IPV4_ADDRESS");
+    DropColumn("LOGS","LOCK_STATION_NAME");
+    DropColumn("LOGS","LOCK_USER_NAME");
 
     WriteSchemaVersion(--cur_schema);
   }
@@ -3275,11 +3238,8 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // Revert 271
   //
   if((cur_schema==271)&&(set_schema<cur_schema)) {
-    sql=QString("alter table DROPBOXES drop column SEGUE_LEVEL, ")+
-      "drop column SEGUE_LENGTH";
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
+    DropColumn("DROPBOXES","SEGUE_LEVEL");
+    DropColumn("DROPBOXES","SEGUE_LENGTH");
 
     WriteSchemaVersion(--cur_schema);
   }
@@ -3288,10 +3248,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // Revert 270
   //
   if((cur_schema==270)&&(set_schema<cur_schema)) {
-    sql="alter table STATIONS drop column SHORT_NAME";
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }  
+    DropColumn("STATIONS","SHORT_NAME");
 
     WriteSchemaVersion(--cur_schema);
   }
@@ -3300,10 +3257,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // Revert 269
   //
   if((cur_schema==269)&&(set_schema<cur_schema)) {
-    sql="alter table GROUPS drop column DEFAULT_CUT_LIFE";
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }  
+    DropColumn("GROUPS","DEFAULT_CUT_LIFE");
 
     WriteSchemaVersion(--cur_schema);
   }
@@ -3312,10 +3266,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // Revert 268
   //
   if((cur_schema==268)&&(set_schema<cur_schema)) {
-    sql="alter table DROPBOXES drop column FORCE_TO_MONO";
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }  
+    DropColumn("DROPBOXES","FORCE_TO_MONO");
 
     WriteSchemaVersion(--cur_schema);
   }
@@ -3324,15 +3275,8 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // Revert 267
   //
   if((cur_schema==267)&&(set_schema<cur_schema)) {
-    sql="alter table CUTS drop column ORIGIN_LOGIN_NAME";
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }  
-
-    sql="alter table CUTS drop column SOURCE_HOSTNAME";
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }  
+    DropColumn("CUTS","ORIGIN_LOGIN_NAME");
+    DropColumn("CUTS","SOURCE_HOSTNAME");
 
     WriteSchemaVersion(--cur_schema);
   }
@@ -3350,10 +3294,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // Revert 265
   //
   if((cur_schema==265)&&(set_schema<cur_schema)) {
-    sql="alter table SYSTEM drop column SHOW_USER_LIST";
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }  
+    DropColumn("SYSTEM","SHOW_USER_LIST");
 
     WriteSchemaVersion(--cur_schema);
   }
@@ -3362,10 +3303,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // Revert 264
   //
   if((cur_schema==264)&&(set_schema<cur_schema)) {
-    sql="alter table SYSTEM drop column FIX_DUP_CART_TITLES";
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }  
+    DropColumn("SYSTEM","FIX_DUP_CART_TITLES");
 
     WriteSchemaVersion(--cur_schema);
   }
@@ -3383,15 +3321,8 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // Revert 262
   //
   if((cur_schema==262)&&(set_schema<cur_schema)) {
-    sql=QString("alter table USERS drop column LOCAL_AUTH");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
-
-    sql=QString("alter table USERS drop column PAM_SERVICE");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
+    DropColumn("USERS","LOCAL_AUTH");
+    DropColumn("USERS","PAM_SERVICE");
 
     sql=QString("drop index IPV4_ADDRESS_IDX on STATIONS");
     if(!RDSqlQuery::apply(sql,err_msg)) {
@@ -3405,10 +3336,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // Revert 261
   //
   if((cur_schema==261)&&(set_schema<cur_schema)) {
-    sql=QString("alter table CUTS drop column SHA1_HASH");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
+    DropColumn("CUTS","SHA1_HASH");
 
     WriteSchemaVersion(--cur_schema);
   }
@@ -3417,11 +3345,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // Revert 260
   //
   if((cur_schema==260)&&(set_schema<cur_schema)) {
-    sql=QString("alter table USERS drop column WEBAPI_AUTH_TIMEOUT");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
-
+    DropColumn("USERS","WEBAPI_AUTH_TIMEOUT");
     if(!DropTable("WEBAPI_AUTHS",err_msg)) {
       return false;
     }
@@ -3532,15 +3456,8 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
     while(q->next()) {
       tablename=q->value(0).toString();
       tablename.replace(" ","_");
-      sql=QString("alter table `")+tablename+"_SRT` drop column DESCRIPTION";
-      if(!RDSqlQuery::apply(sql,err_msg)) {
-	return false;
-      }
-
-      sql=QString("alter table `")+tablename+"_SRT` drop column OUTCUE";
-      if(!RDSqlQuery::apply(sql,err_msg)) {
-	return false;
-      }
+      DropColumn(tablename+"_SRT","DESCRIPTION");
+      DropColumn(tablename+"_SRT","OUTCUE");
     }
     delete q;
 
@@ -3551,15 +3468,8 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // Revert 254
   //
   if((cur_schema==254)&&(set_schema<cur_schema)) {
-    sql=QString("alter table CUTS drop column PLAY_ORDER");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
-
-    sql=QString("alter table CART drop column USE_WEIGHTING");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
+    DropColumn("CUTS","PLAY_ORDER");
+    DropColumn("CART","USE_WEIGHTING");
 
     WriteSchemaVersion(--cur_schema);
   }
@@ -3640,10 +3550,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // Revert 245
   //
   if((cur_schema==245)&&(set_schema<cur_schema)) {
-    sql=QString("alter table RDLIBRARY drop column READ_ISRC");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
+    DropColumn("RDLIBRARY","READ_ISRC");
 
     WriteSchemaVersion(--cur_schema);
   }
@@ -3665,10 +3572,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // Revert 243
   //
   if((cur_schema==243)&&(set_schema<cur_schema)) {
-    sql=QString("alter table STATIONS drop column HAVE_MP4_DECODE");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
+    DropColumn("STATIONS","HAVE_MP4_DECODE");
 
     WriteSchemaVersion(--cur_schema);
   }

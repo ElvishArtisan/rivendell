@@ -18015,3 +18015,6 @@
 2018-11-15 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdadmin(1) that prevented login from a system with
 	no host record in the database.
+2018-11-16 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored schema modification routines in rddbmgr(8) to check
+	for existence of a field before dropping it.

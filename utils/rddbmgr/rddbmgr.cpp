@@ -400,6 +400,40 @@ bool MainObject::DropTable(const QString &tbl_name,QString *err_msg) const
 }
 
 
+bool MainObject::ColumnExists(const QString &tbl_name,
+			      const QString &col_name) const
+{
+  QString sql;
+  RDSqlQuery *q;
+  bool ret=false;
+
+  sql=QString("select * from INFORMATION_SCHEMA.COLUMNS where ")+
+    "TABLE_SCHEMA=\""+db_config->mysqlDbname()+"\" && "+
+    "TABLE_NAME=\""+tbl_name+"\" && "+
+    "COLUMN_NAME=\""+col_name+"\"";
+  q=new RDSqlQuery(sql,false);
+  ret=q->first();
+  delete q;
+
+  return ret;
+}
+
+
+bool MainObject::DropColumn(const QString &tbl_name,const QString &col_name,
+			    QString *err_msg) const
+{
+  QString sql;
+  bool ret=false;
+
+  if(ColumnExists(tbl_name,col_name)) {
+    sql=QString("alter table `")+tbl_name+"` drop column "+col_name;
+    ret=RDSqlQuery::apply(sql,err_msg);
+  }
+
+  return ret;
+}
+
+
 int main(int argc,char *argv[])
 {
   QApplication a(argc,argv,false);

@@ -152,55 +152,14 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }
-    sql=QString("alter table RDAIRPLAY drop column AUTO_CARD0");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
+    for(int i=0;i<2;i++) {
+      DropColumn("RDAIRPLAY",QString().sprintf("AUTO_CARD%d",i));
+      DropColumn("RDAIRPLAY",QString().sprintf("AUTO_STREAM%d",i));
+      DropColumn("RDAIRPLAY",QString().sprintf("AUTO_PORT%d",i)); 
+      DropColumn("RDAIRPLAY",QString().sprintf("PANEL_CARD%d",i));
+      DropColumn("RDAIRPLAY",QString().sprintf("PANEL_STREAM%d",i));
+      DropColumn("RDAIRPLAY",QString().sprintf("PANEL_PORT%d",i));
     }
-    sql=QString("alter table RDAIRPLAY drop column AUTO_CARD1");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
-    sql=QString("alter table RDAIRPLAY drop column AUTO_STREAM0");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
-    sql=QString("alter table RDAIRPLAY drop column AUTO_STREAM1");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
-    sql=QString("alter table RDAIRPLAY drop column AUTO_PORT0");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
-    sql=QString("alter table RDAIRPLAY drop column AUTO_PORT1");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
-    sql=QString("alter table RDAIRPLAY drop column PANEL_CARD0");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
-    sql=QString("alter table RDAIRPLAY drop column PANEL_CARD1");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
-    sql=QString("alter table RDAIRPLAY drop column PANEL_STREAM0");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
-    sql=QString("alter table RDAIRPLAY drop column PANEL_STREAM1");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
-    sql=QString("alter table RDAIRPLAY drop column PANEL_PORT0");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
-    sql=QString("alter table RDAIRPLAY drop column PANEL_PORT1");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
-
     WriteSchemaVersion(++cur_schema);
   }
 
@@ -379,9 +338,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
   }
 
   if((cur_schema<15)&&(set_schema>cur_schema)) {
-    q=new RDSqlQuery("alter table PANELS drop column DEFAULT_COLOR",false);
-    delete q;
-
+    DropColumn("PANELS","DEFAULT_COLOR");
     q=new RDSqlQuery("alter table PANELS add column DEFAULT_COLOR char(7)",
 		     false);
     delete q;
@@ -514,10 +471,8 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
   }
 
   if((cur_schema<22)&&(set_schema>cur_schema)) {
-    q=new RDSqlQuery("alter table DECKS drop column SWITCH_TYPE",false);
-    delete q;
-    q=new RDSqlQuery("alter table DECKS drop column TTY_ID",false);
-    delete q;
+    DropColumn("DECKS","SWITCH_TYPE");
+    DropColumn("DECKS","TTY_ID");
     q=new RDSqlQuery("alter table DECKS add column SWITCH_STATION char(64)",
 		     false);
     delete q;
@@ -538,8 +493,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
   }
 
   if((cur_schema<23)&&(set_schema>cur_schema)) {
-    q=new RDSqlQuery("alter table RECORDINGS drop column SOURCE_NAME",false);
-    delete q;
+    DropColumn("RECORDINGS","SOURCE_NAME");
     q=new 
       RDSqlQuery("alter table RECORDINGS add column SWITCH_INPUT int default -1",false);
     delete q;
@@ -2862,11 +2816,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       if(!RDSqlQuery::apply(sql,err_msg)) {
         return false;
       }
-
-      sql=QString("alter table `")+tablename+"_LOG` drop column ORIGIN_NAME";
-      if(!RDSqlQuery::apply(sql,err_msg)) {
-        return false;
-      }
+      DropColumn(tablename+"_LOG","ORIGIN_NAME");
     }
     delete q;
 
@@ -2897,16 +2847,8 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
         return false;
       }
 
-      sql=QString("alter table `")+tablename+"_PRE` "+
-	"drop column ORIGIN_NAME";
-      if(!RDSqlQuery::apply(sql,err_msg)) {
-        return false;
-      }
-      sql=QString("alter table `")+tablename+"_POST` "+
-	"drop column ORIGIN_NAME";
-      if(!RDSqlQuery::apply(sql,err_msg)) {
-        return false;
-      }
+      DropColumn(tablename+"_PRE","ORIGIN_NAME");
+      DropColumn(tablename+"_POST","ORIGIN_NAME");
     }
     delete q;
 
@@ -4754,10 +4696,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       return false;
     }
 
-    sql="alter table PANELS drop column SKIN_PATH";
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
+    DropColumn("PANELS","SKIN_PATH");
 
     WriteSchemaVersion(++cur_schema);
   }
@@ -5234,11 +5173,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
   }
 
   if((cur_schema<203)&&(set_schema>cur_schema)) {
-    sql=
-      "alter table REPLICATORS drop column NORMALIZATION_LEVEL";
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
+    DropColumn("REPLICATORS","NORMALIZATION_LEVEL");
     sql=
       "alter table REPLICATORS add column NORMALIZATION_LEVEL int default 0 after ENABLE_METADATA";
     if(!RDSqlQuery::apply(sql,err_msg)) {
@@ -5627,52 +5562,24 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     //
     // Clean Up RDAirPlay
     //
-    sql="alter table RDAIRPLAY drop column INSTANCE";
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
+    DropColumn("RDAIRPLAY","INSTANCE");
     for(unsigned i=0;i<10;i++) {
-      sql=QString().sprintf("alter table RDAIRPLAY drop column CARD%u",i);
-      q=new RDSqlQuery(sql,false);
-      delete q;
-
-      sql=QString().sprintf("alter table RDAIRPLAY drop column PORT%u",i);
-      q=new RDSqlQuery(sql,false);
-      delete q;
-
-      sql=QString().sprintf("alter table RDAIRPLAY drop column START_RML%u",i);
-      q=new RDSqlQuery(sql,false);
-      delete q;
-
-      sql=QString().sprintf("alter table RDAIRPLAY drop column STOP_RML%u",i);
-      q=new RDSqlQuery(sql,false);
-      delete q;
+      DropColumn("RDAIRPLAY",QString().sprintf("CARD%u",i));
+      DropColumn("RDAIRPLAY",QString().sprintf("PORT%u",i));
+      DropColumn("RDAIRPLAY",QString().sprintf("START_RML%u",i));
+      DropColumn("RDAIRPLAY",QString().sprintf("STOP%u",i));
     }
     
     //
     // Clean Up RDPanel
     //
-    sql="alter table RDPANEL drop column INSTANCE";
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
+    DropColumn("RDPANEL","INSTANCE");
     for(unsigned i=0;i<10;i++) {
       if((i==2)||(i==3)||(i==6)||(i==7)||(i==8)||(i==9)) {
-	sql=QString().sprintf("alter table RDPANEL drop column CARD%u",i);
-	q=new RDSqlQuery(sql,false);
-	delete q;
-
-	sql=QString().sprintf("alter table RDPANEL drop column PORT%u",i);
-	q=new RDSqlQuery(sql,false);
-	delete q;
-
-	sql=QString().sprintf("alter table RDPANEL drop column START_RML%u",i);
-	q=new RDSqlQuery(sql,false);
-	delete q;
-
-	sql=QString().sprintf("alter table RDPANEL drop column STOP_RML%u",i);
-	q=new RDSqlQuery(sql,false);
-	delete q;
+	DropColumn("RDPANEL",QString().sprintf("CARD%u",i));
+	DropColumn("RDPANEL",QString().sprintf("PORT%u",i));
+	DropColumn("RDPANEL",QString().sprintf("START_RML%u",i));
+	DropColumn("RDPANEL",QString().sprintf("STOP_RML%u",i));
       }
     }
 
@@ -6314,9 +6221,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     delete q;
 
     for(int i=0;i<168;i++) {
-      sql=QString().sprintf("alter table SERVICES drop column CLOCK%d",i);
-      q=new RDSqlQuery(sql,false);
-      delete q;
+      DropColumn("SERVICES",QString().sprintf("CLOCK%d",i));
     }
 
     WriteSchemaVersion(++cur_schema);
@@ -6720,57 +6625,19 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     delete q;
 
     for(int i=0;i<3;i++) {
-      sql=QString().sprintf("alter table RDAIRPLAY drop column UDP_ADDR%d",i);
-      q=new RDSqlQuery(sql,false);
-      delete q;
-
-      sql=QString().sprintf("alter table RDAIRPLAY drop column UDP_PORT%d",i);
-      q=new RDSqlQuery(sql,false);
-      delete q;
-
-      sql=QString().sprintf("alter table RDAIRPLAY drop column UDP_STRING%d",i);
-      q=new RDSqlQuery(sql,false);
-      delete q;
-
-      sql=QString().sprintf("alter table RDAIRPLAY drop column LOG_RML%d",i);
-      q=new RDSqlQuery(sql,false);
-      delete q;
-
-      sql=QString().sprintf("alter table RDAIRPLAY drop column LOG%d_START_MODE",i);
-      q=new RDSqlQuery(sql,false);
-      delete q;
-
-      sql=QString().sprintf("alter table RDAIRPLAY drop column LOG%d_AUTO_RESTART",i);
-      q=new RDSqlQuery(sql,false);
-      delete q;
-
-      sql=QString().sprintf("alter table RDAIRPLAY drop column LOG%d_LOG_NAME",i);
-      q=new RDSqlQuery(sql,false);
-      delete q;
-
-      sql=QString().sprintf("alter table RDAIRPLAY drop column LOG%d_CURRENT_LOG",i);
-      q=new RDSqlQuery(sql,false);
-      delete q;
-
-      sql=QString().sprintf("alter table RDAIRPLAY drop column LOG%d_RUNNING",i);
-      q=new RDSqlQuery(sql,false);
-      delete q;
-
-      sql=QString().sprintf("alter table RDAIRPLAY drop column LOG%d_LOG_ID",i);
-      q=new RDSqlQuery(sql,false);
-      delete q;
-
-      sql=QString().sprintf("alter table RDAIRPLAY drop column LOG%d_LOG_LINE",i);
-      q=new RDSqlQuery(sql,false);
-      delete q;
-
-      sql=QString().sprintf("alter table RDAIRPLAY drop column LOG%d_NOW_CART",i);
-      q=new RDSqlQuery(sql,false);
-      delete q;
-
-      sql=QString().sprintf("alter table RDAIRPLAY drop column LOG%d_NEXT_CART",i);
-      q=new RDSqlQuery(sql,false);
-      delete q;
+      DropColumn("RDAIRPLAY",QString().sprintf("UDP_ADDR%d",i));
+      DropColumn("RDAIRPLAY",QString().sprintf("UDP_PORT%d",i));
+      DropColumn("RDAIRPLAY",QString().sprintf("UDP_STRING%d",i));
+      DropColumn("RDAIRPLAY",QString().sprintf("LOG_RML%d",i));
+      DropColumn("RDAIRPLAY",QString().sprintf("LOG%d_START_MODE",i));
+      DropColumn("RDAIRPLAY",QString().sprintf("LOG%d_AUTO_RESTART",i));
+      DropColumn("RDAIRPLAY",QString().sprintf("LOG%d_LOG_NAME",i));
+      DropColumn("RDAIRPLAY",QString().sprintf("LOG%d_CURRENT_LOG",i));
+      DropColumn("RDAIRPLAY",QString().sprintf("LOG%d_RUNNING",i));
+      DropColumn("RDAIRPLAY",QString().sprintf("LOG%d_LOG_ID",i));
+      DropColumn("RDAIRPLAY",QString().sprintf("LOG%d_LOG_LINE",i));
+      DropColumn("RDAIRPLAY",QString().sprintf("LOG%d_NOW_CART",i));
+      DropColumn("RDAIRPLAY",QString().sprintf("LOG%d_NEXT_CART",i));
     }
 
     WriteSchemaVersion(++cur_schema);
@@ -6852,25 +6719,10 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     delete q;
 
     for(int i=0;i<8;i++) {
-      sql=QString("alter table STATIONS drop column ")+
-	QString().sprintf("CARD%d_DRIVER",i);
-      q=new RDSqlQuery(sql,false);
-      delete q;
-
-      sql=QString("alter table STATIONS drop column ")+
-	QString().sprintf("CARD%d_NAME",i);
-      q=new RDSqlQuery(sql,false);
-      delete q;
-
-      sql=QString("alter table STATIONS drop column ")+
-	QString().sprintf("CARD%d_INPUTS",i);
-      q=new RDSqlQuery(sql,false);
-      delete q;
-
-      sql=QString("alter table STATIONS drop column ")+
-	QString().sprintf("CARD%d_OUTPUTS",i);
-      q=new RDSqlQuery(sql,false);
-      delete q;
+      DropColumn("STATIONS",QString().sprintf("CARD%d_DRIVER",i));
+      DropColumn("STATIONS",QString().sprintf("CARD%d_NAME",i));
+      DropColumn("STATIONS",QString().sprintf("CARD%d_INPUTS",i));
+      DropColumn("STATIONS",QString().sprintf("CARD%d_OUTPUTS",i));
     }
 
     WriteSchemaVersion(++cur_schema);
@@ -7009,85 +6861,26 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
 
   if((cur_schema<284)&&(set_schema>cur_schema)) { 
     for(int i=0;i<10;i++) {
-      sql=QString("alter table RDAIRPLAY ")+
-	QString().sprintf("drop column CARD%d",i);
-      q=new RDSqlQuery(sql,false);
-      delete q;
-
-      sql=QString("alter table RDAIRPLAY ")+
-	QString().sprintf("drop column PORT%d",i);
-      q=new RDSqlQuery(sql,false);
-      delete q;
-
-      sql=QString("alter table RDAIRPLAY ")+
-	QString().sprintf("drop column START_RML%d",i);
-      q=new RDSqlQuery(sql,false);
-      delete q;
-
-      sql=QString("alter table RDAIRPLAY ")+
-	QString().sprintf("drop column STOP_RML%d",i);
-      q=new RDSqlQuery(sql,false);
-      delete q;
+      DropColumn("RDAIRPLAY",QString().sprintf("CARD%d",i));
+      DropColumn("RDAIRPLAY",QString().sprintf("PORT%d",i));
+      DropColumn("RDAIRPLAY",QString().sprintf("START_RML%d",i));
+      DropColumn("RDAIRPLAY",QString().sprintf("STOP_RML%d",i));
     }
-
-    sql=QString("alter table RDAIRPLAY drop column OP_MODE");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
-
-    sql=QString("alter table RDAIRPLAY drop column START_MODE");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
-
-
-    sql=QString("alter table RDPANEL drop column INSTANCE");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
-
+    DropColumn("RDAIRPLAY","OP_MODE");
+    DropColumn("RDAIRPLAY","START_MODE");
+    DropColumn("RDPANEL","INSTANCE");
     for(int i=2;i<4;i++) {
-      sql=QString("alter table RDPANEL ")+
-	QString().sprintf("drop column CARD%d",i);
-      q=new RDSqlQuery(sql,false);
-      delete q;
-
-      sql=QString("alter table RDPANEL ")+
-	QString().sprintf("drop column PORT%d",i);
-      q=new RDSqlQuery(sql,false);
-      delete q;
-
-      sql=QString("alter table RDPANEL ")+
-	QString().sprintf("drop column START_RML%d",i);
-      q=new RDSqlQuery(sql,false);
-      delete q;
-
-      sql=QString("alter table RDPANEL ")+
-	QString().sprintf("drop column STOP_RML%d",i);
-      q=new RDSqlQuery(sql,false);
-      delete q;
+      DropColumn("RDPANEL",QString().sprintf("CARD%d",i));
+      DropColumn("RDPANEL",QString().sprintf("PORT%d",i));
+      DropColumn("RDPANEL",QString().sprintf("START_RML%d",i));
+      DropColumn("RDPANEL",QString().sprintf("STOP_RML%d",i));
     }
 
     for(int i=6;i<10;i++) {
-      sql=QString("alter table RDPANEL ")+
-	QString().sprintf("drop column CARD%d",i);
-      q=new RDSqlQuery(sql,false);
-      delete q;
-
-      sql=QString("alter table RDPANEL ")+
-	QString().sprintf("drop column PORT%d",i);
-      q=new RDSqlQuery(sql,false);
-      delete q;
-
-      sql=QString("alter table RDPANEL ")+
-	QString().sprintf("drop column START_RML%d",i);
-      q=new RDSqlQuery(sql,false);
-      delete q;
-
-      sql=QString("alter table RDPANEL ")+
-	QString().sprintf("drop column STOP_RML%d",i);
-      q=new RDSqlQuery(sql,false);
-      delete q;
+      DropColumn("RDPANEL",QString().sprintf("CARD%d",i));
+      DropColumn("RDPANEL",QString().sprintf("PORT%d",i));
+      DropColumn("RDPANEL",QString().sprintf("START_RML%d",i));
+      DropColumn("RDPANEL",QString().sprintf("STOP_RML%d",i));
     }
 
     sql=QString("alter table MATRICES alter column PORT set default 0");
@@ -7128,95 +6921,29 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
-  if((cur_schema<285)&&(set_schema>cur_schema)) { 
-    sql=QString("alter table CART drop column ISRC");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
-
-    sql=QString("alter table DECKS drop column DEFAULT_SAMPRATE");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
-
-    sql=QString("alter table RDLIBRARY drop column INPUT_STREAM");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
-
-    sql=QString("alter table RDLIBRARY drop column OUTPUT_STREAM");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
-
-    sql=QString("alter table RDLIBRARY drop column RECORD_GPI");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
-
-    sql=QString("alter table RDLIBRARY drop column PLAY_GPI");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
-
-    sql=QString("alter table RDLIBRARY drop column STOP_GPI");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
-
-    sql=QString("alter table RDLIBRARY drop column DEFAULT_SAMPRATE");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
-
-    sql=QString("alter table RDLOGEDIT drop column SAMPRATE");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
-
-    sql=QString("alter table SERVICES drop column TFC_START_OFFSET");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
-
-    sql=QString("alter table SERVICES drop column TFC_START_LENGTH");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
-
-    sql=QString("alter table SERVICES drop column MUS_START_OFFSET");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
-
-    sql=QString("alter table SERVICES drop column MUS_START_LENGTH");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
+  if((cur_schema<285)&&(set_schema>cur_schema)) {
+    DropColumn("CART","ISRC");
+    DropColumn("DECKS","DEFAULT_SAMPRATE");
+    DropColumn("RDLIBRARY","INPUT_STREAM");
+    DropColumn("RDLIBRARY","OUTPUT_STREAM");
+    DropColumn("RDLIBRARY","RECORD_GPI");
+    DropColumn("RDLIBRARY","PLAY_GPI");
+    DropColumn("RDLIBRARY","STOP_GPI");
+    DropColumn("RDLIBRARY","DEFAULT_SAMPRATE");
+    DropColumn("RDLOGEDIT","SAMPRATE");
+    DropColumn("SERVICES","TFC_START_OFFSET");
+    DropColumn("SERVICES","TFC_START_LENGTH");
+    DropColumn("SERVICES","MUS_START_OFFSET");
+    DropColumn("SERVICES","MUS_START_LENGTH");
 
     WriteSchemaVersion(++cur_schema);
   }
 
   if((cur_schema<286)&&(set_schema>cur_schema)) { 
-    sql=QString("alter table SERVICES drop column TFC_LENGTH_OFFSET");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
-
-    sql=QString("alter table SERVICES drop column TFC_LENGTH_LENGTH");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
-
-    sql=QString("alter table SERVICES drop column MUS_LENGTH_OFFSET");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
-
-    sql=QString("alter table SERVICES drop column MUS_LENGTH_LENGTH");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
+    DropColumn("SERVICES","TFC_LENGTH_OFFSET");
+    DropColumn("SERVICES","TFC_LENGTH_LENGTH");
+    DropColumn("SERVICES","MUS_LENGTH_OFFSET");
+    DropColumn("SERVICES","MUS_LENGTH_LENGTH");
 
     WriteSchemaVersion(++cur_schema);
   }
@@ -7288,98 +7015,104 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     while(q->next()) {
       QString tablename=q->value(0).toString()+"_LOG";
       tablename.replace(" ","_");
-      sql=QString("select ")+
-	"ID,"+                 // 00
-	"COUNT,"+              // 01
-	"TYPE,"+               // 02
-	"SOURCE,"+             // 03
-	"START_TIME,"+         // 04
-	"GRACE_TIME,"+         // 05
-	"CART_NUMBER,"+        // 06
-	"TIME_TYPE,"+          // 07
-	"POST_POINT,"+         // 08
-	"TRANS_TYPE,"+         // 09
-	"START_POINT,"+        // 10
-	"END_POINT,"+          // 11
-	"FADEUP_POINT,"+       // 12
-	"FADEUP_GAIN,"+        // 13
-	"FADEDOWN_POINT,"+     // 14
-	"FADEDOWN_GAIN,"+      // 15
-	"SEGUE_START_POINT,"+  // 16
-	"SEGUE_END_POINT,"+    // 17
-	"SEGUE_GAIN,"+         // 18
-	"DUCK_UP_GAIN,"+       // 19
-	"DUCK_DOWN_GAIN,"+     // 20
-	"COMMENT,"+            // 21
-	"LABEL,"+              // 22
-	"ORIGIN_USER,"+        // 23
-	"ORIGIN_DATETIME,"+    // 24
-	"EVENT_LENGTH,"+       // 25
-	"LINK_EVENT_NAME,"+    // 26
-	"LINK_START_TIME,"+    // 27
-	"LINK_LENGTH,"+        // 28
-	"LINK_START_SLOP,"+    // 29
-	"LINK_END_SLOP,"+      // 30
-	"LINK_ID,"+            // 31
-	"LINK_EMBEDDED,"+      // 32
-	"EXT_START_TIME,"+     // 33
-	"EXT_LENGTH,"+         // 34
-	"EXT_CART_NAME,"+      // 35
-	"EXT_DATA,"+           // 36
-	"EXT_EVENT_ID,"+       // 37
-	"EXT_ANNC_TYPE "+      // 38
-	"from `"+tablename+"` order by COUNT";
-      q1=new RDSqlQuery(sql);
-      while(q1->next()) {
-	sql=QString("insert into LOG_LINES set ")+
-	  "LOG_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
-	  QString().sprintf("LINE_ID=%d,",q1->value(0).toInt())+
-	  QString().sprintf("COUNT=%d,",q1->value(1).toInt())+
-	  QString().sprintf("TYPE=%d,",q1->value(2).toInt())+
-	  QString().sprintf("SOURCE=%d,",q1->value(3).toInt())+
-	  QString().sprintf("START_TIME=%d,",q1->value(4).toInt())+
-	  QString().sprintf("GRACE_TIME=%d,",q1->value(5).toInt())+
-	  QString().sprintf("CART_NUMBER=%u,",q1->value(6).toUInt())+
-	  QString().sprintf("TIME_TYPE=%d,",q1->value(7).toInt())+
-	  "POST_POINT=\""+RDEscapeString(q1->value(8).toString())+"\","+
-	  QString().sprintf("TRANS_TYPE=%d,",q1->value(9).toInt())+
-	  QString().sprintf("START_POINT=%d,",q1->value(10).toInt())+
-	  QString().sprintf("END_POINT=%d,",q1->value(11).toInt())+
-	  QString().sprintf("FADEUP_POINT=%d,",q1->value(12).toInt())+
-	  QString().sprintf("FADEUP_GAIN=%d,",q1->value(13).toInt())+
-	  QString().sprintf("FADEDOWN_POINT=%d,",q1->value(14).toInt())+
-	  QString().sprintf("FADEDOWN_GAIN=%d,",q1->value(15).toInt())+
-	  QString().sprintf("SEGUE_START_POINT=%d,",q1->value(16).toInt())+
-	  QString().sprintf("SEGUE_END_POINT=%d,",q1->value(17).toInt())+
-	  QString().sprintf("SEGUE_GAIN=%d,",q1->value(18).toInt())+
-	  QString().sprintf("DUCK_UP_GAIN=%d,",q1->value(19).toInt())+
-	  QString().sprintf("DUCK_DOWN_GAIN=%d,",q1->value(20).toInt())+
-	  "COMMENT=\""+RDEscapeString(q1->value(21).toString())+"\","+
-	  "LABEL=\""+RDEscapeString(q1->value(22).toString())+"\","+
-	  "ORIGIN_USER=\""+RDEscapeString(q1->value(23).toString())+"\","+
-	  "ORIGIN_DATETIME=\""+q1->value(24).toDateTime().
-	  toString("yyyy-MM-dd hh:mm:ss")+"\","+
-	  QString().sprintf("EVENT_LENGTH=%d,",q1->value(25).toInt())+
-	  "LINK_EVENT_NAME=\""+RDEscapeString(q1->value(26).toString())+"\","+
-	  QString().sprintf("LINK_START_TIME=%d,",q1->value(27).toInt())+
-	  QString().sprintf("LINK_LENGTH=%d,",q1->value(28).toInt())+
-	  QString().sprintf("LINK_START_SLOP=%d,",q1->value(29).toInt())+
-	  QString().sprintf("LINK_END_SLOP=%d,",q1->value(30).toInt())+
-	  QString().sprintf("LINK_ID=%d,",q1->value(31).toInt())+
-	  "LINK_EMBEDDED=\""+RDEscapeString(q1->value(32).toString())+"\","+
-	  "EXT_START_TIME=\""+q1->value(33).toTime().toString("hh:mm:ss")+"\","+
-	  QString().sprintf("EXT_LENGTH=%d,",q1->value(34).toInt())+
-	  "EXT_CART_NAME=\""+RDEscapeString(q1->value(35).toString())+"\","+
-	  "EXT_DATA=\""+RDEscapeString(q1->value(36).toString())+"\","+
-	  "EXT_EVENT_ID=\""+RDEscapeString(q1->value(37).toString())+"\","+
-	  "EXT_ANNC_TYPE=\""+RDEscapeString(q1->value(38).toString())+"\"";
-	if(!RDSqlQuery::apply(sql,err_msg)) {
+      if(!TableExists(tablename)) {
+	fprintf(stderr,"rddbmgr: missing LOG table for log \"%s\"\n",
+		(const char *)q->value(0).toString().toUtf8());
+      }
+      else {
+	sql=QString("select ")+
+	  "ID,"+                 // 00
+	  "COUNT,"+              // 01
+	  "TYPE,"+               // 02
+	  "SOURCE,"+             // 03
+	  "START_TIME,"+         // 04
+	  "GRACE_TIME,"+         // 05
+	  "CART_NUMBER,"+        // 06
+	  "TIME_TYPE,"+          // 07
+	  "POST_POINT,"+         // 08
+	  "TRANS_TYPE,"+         // 09
+	  "START_POINT,"+        // 10
+	  "END_POINT,"+          // 11
+	  "FADEUP_POINT,"+       // 12
+	  "FADEUP_GAIN,"+        // 13
+	  "FADEDOWN_POINT,"+     // 14
+	  "FADEDOWN_GAIN,"+      // 15
+	  "SEGUE_START_POINT,"+  // 16
+	  "SEGUE_END_POINT,"+    // 17
+	  "SEGUE_GAIN,"+         // 18
+	  "DUCK_UP_GAIN,"+       // 19
+	  "DUCK_DOWN_GAIN,"+     // 20
+	  "COMMENT,"+            // 21
+	  "LABEL,"+              // 22
+	  "ORIGIN_USER,"+        // 23
+	  "ORIGIN_DATETIME,"+    // 24
+	  "EVENT_LENGTH,"+       // 25
+	  "LINK_EVENT_NAME,"+    // 26
+	  "LINK_START_TIME,"+    // 27
+	  "LINK_LENGTH,"+        // 28
+	  "LINK_START_SLOP,"+    // 29
+	  "LINK_END_SLOP,"+      // 30
+	  "LINK_ID,"+            // 31
+	  "LINK_EMBEDDED,"+      // 32
+	  "EXT_START_TIME,"+     // 33
+	  "EXT_LENGTH,"+         // 34
+	  "EXT_CART_NAME,"+      // 35
+	  "EXT_DATA,"+           // 36
+	  "EXT_EVENT_ID,"+       // 37
+	  "EXT_ANNC_TYPE "+      // 38
+	  "from `"+tablename+"` order by COUNT";
+	q1=new RDSqlQuery(sql);
+	while(q1->next()) {
+	  sql=QString("insert into LOG_LINES set ")+
+	    "LOG_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	    QString().sprintf("LINE_ID=%d,",q1->value(0).toInt())+
+	    QString().sprintf("COUNT=%d,",q1->value(1).toInt())+
+	    QString().sprintf("TYPE=%d,",q1->value(2).toInt())+
+	    QString().sprintf("SOURCE=%d,",q1->value(3).toInt())+
+	    QString().sprintf("START_TIME=%d,",q1->value(4).toInt())+
+	    QString().sprintf("GRACE_TIME=%d,",q1->value(5).toInt())+
+	    QString().sprintf("CART_NUMBER=%u,",q1->value(6).toUInt())+
+	    QString().sprintf("TIME_TYPE=%d,",q1->value(7).toInt())+
+	    "POST_POINT=\""+RDEscapeString(q1->value(8).toString())+"\","+
+	    QString().sprintf("TRANS_TYPE=%d,",q1->value(9).toInt())+
+	    QString().sprintf("START_POINT=%d,",q1->value(10).toInt())+
+	    QString().sprintf("END_POINT=%d,",q1->value(11).toInt())+
+	    QString().sprintf("FADEUP_POINT=%d,",q1->value(12).toInt())+
+	    QString().sprintf("FADEUP_GAIN=%d,",q1->value(13).toInt())+
+	    QString().sprintf("FADEDOWN_POINT=%d,",q1->value(14).toInt())+
+	    QString().sprintf("FADEDOWN_GAIN=%d,",q1->value(15).toInt())+
+	    QString().sprintf("SEGUE_START_POINT=%d,",q1->value(16).toInt())+
+	    QString().sprintf("SEGUE_END_POINT=%d,",q1->value(17).toInt())+
+	    QString().sprintf("SEGUE_GAIN=%d,",q1->value(18).toInt())+
+	    QString().sprintf("DUCK_UP_GAIN=%d,",q1->value(19).toInt())+
+	    QString().sprintf("DUCK_DOWN_GAIN=%d,",q1->value(20).toInt())+
+	    "COMMENT=\""+RDEscapeString(q1->value(21).toString())+"\","+
+	    "LABEL=\""+RDEscapeString(q1->value(22).toString())+"\","+
+	    "ORIGIN_USER=\""+RDEscapeString(q1->value(23).toString())+"\","+
+	    "ORIGIN_DATETIME=\""+q1->value(24).toDateTime().
+	    toString("yyyy-MM-dd hh:mm:ss")+"\","+
+	    QString().sprintf("EVENT_LENGTH=%d,",q1->value(25).toInt())+
+	    "LINK_EVENT_NAME=\""+RDEscapeString(q1->value(26).toString())+"\","+
+	    QString().sprintf("LINK_START_TIME=%d,",q1->value(27).toInt())+
+	    QString().sprintf("LINK_LENGTH=%d,",q1->value(28).toInt())+
+	    QString().sprintf("LINK_START_SLOP=%d,",q1->value(29).toInt())+
+	    QString().sprintf("LINK_END_SLOP=%d,",q1->value(30).toInt())+
+	    QString().sprintf("LINK_ID=%d,",q1->value(31).toInt())+
+	    "LINK_EMBEDDED=\""+RDEscapeString(q1->value(32).toString())+"\","+
+	    "EXT_START_TIME=\""+q1->value(33).toTime().toString("hh:mm:ss")+"\","+
+	    QString().sprintf("EXT_LENGTH=%d,",q1->value(34).toInt())+
+	    "EXT_CART_NAME=\""+RDEscapeString(q1->value(35).toString())+"\","+
+	    "EXT_DATA=\""+RDEscapeString(q1->value(36).toString())+"\","+
+	    "EXT_EVENT_ID=\""+RDEscapeString(q1->value(37).toString())+"\","+
+	    "EXT_ANNC_TYPE=\""+RDEscapeString(q1->value(38).toString())+"\"";
+	  if(!RDSqlQuery::apply(sql,err_msg)) {
+	    return false;
+	  }
+	}
+	delete q1;
+	if(!DropTable(tablename,err_msg)) {
 	  return false;
 	}
-      }
-      delete q1;
-      if(!DropTable(tablename,err_msg)) {
-	return false;
       }
     }
     delete q;
@@ -7578,31 +7311,37 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       //
       QString tablename=q->value(0).toString()+"_PRE";
       tablename.replace(" ","_");
-      sql=QString("select ")+
-	"COUNT,"+        // 00
-	"TYPE,"+         // 01
-	"CART_NUMBER,"+  // 02
-	"TRANS_TYPE,"+   // 03
-	"COMMENT "+      // 05
-	"from `"+tablename+"`"+
-	"order by COUNT";
-      q1=new RDSqlQuery(sql,false);
-      while(q1->next()) {
-	sql=QString("insert into EVENT_LINES set ")+
-	  "EVENT_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
-	  "TYPE=0,"+
-	  QString().sprintf("COUNT=%d,",q1->value(0).toInt())+
-	  QString().sprintf("EVENT_TYPE=%d,",q1->value(1).toInt())+
-	  QString().sprintf("CART_NUMBER=%u,",q1->value(2).toUInt())+
-	  QString().sprintf("TRANS_TYPE=%d,",q1->value(3).toInt())+
-	  "MARKER_COMMENT=\""+RDEscapeString(q1->value(4).toString())+"\"";
-	if(!RDSqlQuery::apply(sql,err_msg)) {
+      if(!TableExists(tablename)) {
+	fprintf(stderr,"rddbmgr: missing PRE table for event \"%s\"\n",
+		(const char *)q->value(0).toString().toUtf8());
+      }
+      else {
+	sql=QString("select ")+
+	  "COUNT,"+        // 00
+	  "TYPE,"+         // 01
+	  "CART_NUMBER,"+  // 02
+	  "TRANS_TYPE,"+   // 03
+	  "COMMENT "+      // 05
+	  "from `"+tablename+"`"+
+	  "order by COUNT";
+	q1=new RDSqlQuery(sql,false);
+	while(q1->next()) {
+	  sql=QString("insert into EVENT_LINES set ")+
+	    "EVENT_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	    "TYPE=0,"+
+	    QString().sprintf("COUNT=%d,",q1->value(0).toInt())+
+	    QString().sprintf("EVENT_TYPE=%d,",q1->value(1).toInt())+
+	    QString().sprintf("CART_NUMBER=%u,",q1->value(2).toUInt())+
+	    QString().sprintf("TRANS_TYPE=%d,",q1->value(3).toInt())+
+	    "MARKER_COMMENT=\""+RDEscapeString(q1->value(4).toString())+"\"";
+	  if(!RDSqlQuery::apply(sql,err_msg)) {
+	    return false;
+	  }
+	}
+	delete q1;
+	if(!DropTable(tablename)) {
 	  return false;
 	}
-      }
-      delete q1;
-      if(!DropTable(tablename)) {
-	return false;
       }
 
       //
@@ -7610,31 +7349,37 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       //
       tablename=q->value(0).toString()+"_POST";
       tablename.replace(" ","_");
-      sql=QString("select ")+
-	"COUNT,"+        // 00
-	"TYPE,"+         // 01
-	"CART_NUMBER,"+  // 02
-	"TRANS_TYPE,"+   // 03
-	"COMMENT "+      // 05
-	"from `"+tablename+"`"+
-	"order by COUNT";
-      q1=new RDSqlQuery(sql,false);
-      while(q1->next()) {
-	sql=QString("insert into EVENT_LINES set ")+
-	  "EVENT_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
-	  "TYPE=1,"+
-	  QString().sprintf("COUNT=%d,",q1->value(0).toInt())+
-	  QString().sprintf("EVENT_TYPE=%d,",q1->value(1).toInt())+
-	  QString().sprintf("CART_NUMBER=%u,",q1->value(2).toUInt())+
-	  QString().sprintf("TRANS_TYPE=%d,",q1->value(3).toInt())+
-	  "MARKER_COMMENT=\""+RDEscapeString(q1->value(4).toString())+"\"";
-	if(!RDSqlQuery::apply(sql,err_msg)) {
+      if(!TableExists(tablename)) {
+	fprintf(stderr,"rddbmgr: missing POST table for event \"%s\"\n",
+		(const char *)q->value(0).toString().toUtf8());
+      }
+      else {
+	sql=QString("select ")+
+	  "COUNT,"+        // 00
+	  "TYPE,"+         // 01
+	  "CART_NUMBER,"+  // 02
+	  "TRANS_TYPE,"+   // 03
+	  "COMMENT "+      // 05
+	  "from `"+tablename+"`"+
+	  "order by COUNT";
+	q1=new RDSqlQuery(sql,false);
+	while(q1->next()) {
+	  sql=QString("insert into EVENT_LINES set ")+
+	    "EVENT_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	    "TYPE=1,"+
+	    QString().sprintf("COUNT=%d,",q1->value(0).toInt())+
+	    QString().sprintf("EVENT_TYPE=%d,",q1->value(1).toInt())+
+	    QString().sprintf("CART_NUMBER=%u,",q1->value(2).toUInt())+
+	    QString().sprintf("TRANS_TYPE=%d,",q1->value(3).toInt())+
+	    "MARKER_COMMENT=\""+RDEscapeString(q1->value(4).toString())+"\"";
+	  if(!RDSqlQuery::apply(sql,err_msg)) {
+	    return false;
+	  }
+	}
+	delete q1;
+	if(!DropTable(tablename,err_msg)) {
 	  return false;
 	}
-      }
-      delete q1;
-      if(!DropTable(tablename,err_msg)) {
-	return false;
       }
     }
     delete q;
@@ -7686,69 +7431,74 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     while(q->next()) {
       QString tablename=q->value(0).toString()+"_CLK";
       tablename.replace(" ","_");
-
-      /* *** HACK WARNING *** HACK WARNING ***
-       *
-       * This check works around a bug in Rivendell v2.x that permitted
-       * clocks to have events with the same start time. It deletes all
-       * such 'conflicting' events except the one with the lowest ID number.
-       */
-      QList<unsigned> deleted_ids;
-      sql=QString("select ")+
-	"ID,"+          // 00
-	"EVENT_NAME,"+  // 01
-	"START_TIME,"+  // 02
-	"LENGTH "+      // 03
-	"from `"+tablename+"` "+
-	"order by ID";
-      q1=new RDSqlQuery(sql);
-      while(q1->next()) {
+      if(!TableExists(tablename)) {
+	fprintf(stderr,"rddbmgr: missing CLK table for clock \"%s\"\n",
+		(const char *)q->value(0).toString().toUtf8());
+      }
+      else {
+	/* *** HACK WARNING *** HACK WARNING ***
+	 *
+	 * This check works around a bug in Rivendell v2.x that permitted
+	 * clocks to have events with the same start time. It deletes all
+	 * such 'conflicting' events except the one with the lowest ID number.
+	 */
+	QList<unsigned> deleted_ids;
 	sql=QString("select ")+
 	  "ID,"+          // 00
-	  "EVENT_NAME "+  // 01
-	  "from `"+tablename+"` where "+
-	  QString().sprintf("START_TIME=%d && ",q1->value(2).toInt())+
-	  QString().sprintf("ID!=%u ",q1->value(0).toUInt())+
+	  "EVENT_NAME,"+  // 01
+	  "START_TIME,"+  // 02
+	  "LENGTH "+      // 03
+	  "from `"+tablename+"` "+
 	  "order by ID";
-	q2=new RDSqlQuery(sql);
-	while(q2->next()) {
-	  if(!deleted_ids.contains(q1->value(0).toUInt())) {
-	    fprintf(stderr,
-	       "WARNING: deleted conflicting event \"%s\" from clock \"%s\"\n",
-		    (const char *)q2->value(1).toString().toUtf8(),
-		    (const char *)q->value(0).toString().toUtf8());
-	    sql=QString("delete ")+
-	      "from `"+tablename+"` where "+
-	      QString().sprintf("ID=%u",q2->value(0).toUInt());
-	    RDSqlQuery::apply(sql);
-	    deleted_ids.push_back(q2->value(0).toUInt());
+	q1=new RDSqlQuery(sql);
+	while(q1->next()) {
+	  sql=QString("select ")+
+	    "ID,"+          // 00
+	    "EVENT_NAME "+  // 01
+	    "from `"+tablename+"` where "+
+	    QString().sprintf("START_TIME=%d && ",q1->value(2).toInt())+
+	    QString().sprintf("ID!=%u ",q1->value(0).toUInt())+
+	    "order by ID";
+	  q2=new RDSqlQuery(sql);
+	  while(q2->next()) {
+	    if(!deleted_ids.contains(q1->value(0).toUInt())) {
+	      fprintf(stderr,
+		      "WARNING: deleted conflicting event \"%s\" from clock \"%s\"\n",
+		      (const char *)q2->value(1).toString().toUtf8(),
+		      (const char *)q->value(0).toString().toUtf8());
+	      sql=QString("delete ")+
+		"from `"+tablename+"` where "+
+		QString().sprintf("ID=%u",q2->value(0).toUInt());
+	      RDSqlQuery::apply(sql);
+	      deleted_ids.push_back(q2->value(0).toUInt());
+	    }
+	  }
+	  delete q2;
+	}
+	delete q1;
+	/* *** END OF HACK WARNING *** END OF HACK WARNING ***/
+
+	sql=QString("select ")+
+	  "EVENT_NAME,"+  // 00
+	  "START_TIME,"+  // 01
+	  "LENGTH "+      // 02
+	  "from `"+tablename+"` "+
+	  "order by START_TIME";
+	q1=new RDSqlQuery(sql);
+	while(q1->next()) {
+	  sql=QString("insert into CLOCK_LINES set ")+
+	    "CLOCK_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	    "EVENT_NAME=\""+RDEscapeString(q1->value(0).toString())+"\","+
+	    QString().sprintf("START_TIME=%d,",q1->value(1).toInt())+
+	    QString().sprintf("LENGTH=%d",q1->value(2).toInt());
+	  if(!RDSqlQuery::apply(sql,err_msg)) {
+	    return false;
 	  }
 	}
-	delete q2;
-      }
-      delete q1;
-      /* *** END OF HACK WARNING *** END OF HACK WARNING ***/
-
-      sql=QString("select ")+
-	"EVENT_NAME,"+  // 00
-	"START_TIME,"+  // 01
-	"LENGTH "+      // 02
-	"from `"+tablename+"` "+
-	"order by START_TIME";
-      q1=new RDSqlQuery(sql);
-      while(q1->next()) {
-	sql=QString("insert into CLOCK_LINES set ")+
-	  "CLOCK_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
-	  "EVENT_NAME=\""+RDEscapeString(q1->value(0).toString())+"\","+
-	  QString().sprintf("START_TIME=%d,",q1->value(1).toInt())+
-	  QString().sprintf("LENGTH=%d",q1->value(2).toInt());
-	if(!RDSqlQuery::apply(sql,err_msg)) {
+	delete q1;
+	if(!DropTable(tablename,err_msg)) {
 	  return false;
 	}
-      }
-      delete q1;
-      if(!DropTable(tablename,err_msg)) {
-	return false;
       }
     }
     delete q;
@@ -7789,32 +7539,38 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     while(q->next()) {
       QString tablename=q->value(0).toString()+"_RULES";
       tablename.replace(" ","_");
-      sql=QString("select ")+
-	"CODE,"+         // 00
-	"MAX_ROW,"+      // 01
-	"MIN_WAIT,"+     // 02
-	"NOT_AFTER,"+    // 03
-	"OR_AFTER,"+     // 04
-	"OR_AFTER_II "+  // 05
-	"from `"+tablename+"` "+
-	"order by CODE";
-      q1=new RDSqlQuery(sql);
-      while(q1->next()) {
-	sql=QString("insert into RULE_LINES set ")+
-	  "CLOCK_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
-	  "CODE=\""+RDEscapeString(q1->value(0).toString())+"\","+
-	  QString().sprintf("MAX_ROW=%u,",q1->value(1).toUInt())+
-	  QString().sprintf("MIN_WAIT=%u,",q1->value(2).toUInt())+
-	  "NOT_AFTER=\""+RDEscapeString(q1->value(3).toString())+"\","+
-	  "OR_AFTER=\""+RDEscapeString(q1->value(4).toString())+"\","+
-	  "OR_AFTER_II=\""+RDEscapeString(q1->value(5).toString())+"\"";
-	if(!RDSqlQuery::apply(sql,err_msg)) {
+      if(!TableExists(tablename)) {
+	fprintf(stderr,"rddbmgr: missing RULES table for clock \"%s\"\n",
+		(const char *)q->value(0).toString().toUtf8());
+      }
+      else {
+	sql=QString("select ")+
+	  "CODE,"+         // 00
+	  "MAX_ROW,"+      // 01
+	  "MIN_WAIT,"+     // 02
+	  "NOT_AFTER,"+    // 03
+	  "OR_AFTER,"+     // 04
+	  "OR_AFTER_II "+  // 05
+	  "from `"+tablename+"` "+
+	  "order by CODE";
+	q1=new RDSqlQuery(sql);
+	while(q1->next()) {
+	  sql=QString("insert into RULE_LINES set ")+
+	    "CLOCK_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	    "CODE=\""+RDEscapeString(q1->value(0).toString())+"\","+
+	    QString().sprintf("MAX_ROW=%u,",q1->value(1).toUInt())+
+	    QString().sprintf("MIN_WAIT=%u,",q1->value(2).toUInt())+
+	    "NOT_AFTER=\""+RDEscapeString(q1->value(3).toString())+"\","+
+	    "OR_AFTER=\""+RDEscapeString(q1->value(4).toString())+"\","+
+	    "OR_AFTER_II=\""+RDEscapeString(q1->value(5).toString())+"\"";
+	  if(!RDSqlQuery::apply(sql,err_msg)) {
+	    return false;
+	  }
+	}
+	delete q1;
+	if(!DropTable(tablename,err_msg)) {
 	  return false;
 	}
-      }
-      delete q1;
-      if(!DropTable(tablename,err_msg)) {
-	return false;
       }
     }
     delete q;
@@ -7928,27 +7684,33 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     while(q->next()) {
       QString tablename=q->value(0).toString()+"_FLG";
       tablename.replace(" ","_");
-      sql=QString("select ")+
-	"CAST_ID,"+       // 00
-	"ACCESS_DATE,"+   // 01
-	"ACCESS_COUNT "+  // 02
-	"from `"+tablename+"` "+
-	"order by ACCESS_DATE";
-      q1=new RDSqlQuery(sql,false);
-      while(q1->next()) {
-	sql=QString("insert into CAST_DOWNLOADS set ")+
-	  "FEED_KEY_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
-	  QString().sprintf("CAST_ID=%u,",q1->value(0).toUInt())+
-	  "ACCESS_DATE=\""+
-	  RDEscapeString(q1->value(1).toDate().toString("yyyy-MM-dd"))+"\","+
-	  QString().sprintf("ACCESS_COUNT=%u",q1->value(2).toUInt());
-	if(!RDSqlQuery::apply(sql,err_msg)) {
+      if(!TableExists(tablename)) {
+	fprintf(stderr,"rddbmgr: missing FLG table for feed \"%s\"\n",
+		(const char *)q->value(0).toString().toUtf8());
+      }
+      else {
+	sql=QString("select ")+
+	  "CAST_ID,"+       // 00
+	  "ACCESS_DATE,"+   // 01
+	  "ACCESS_COUNT "+  // 02
+	  "from `"+tablename+"` "+
+	  "order by ACCESS_DATE";
+	q1=new RDSqlQuery(sql,false);
+	while(q1->next()) {
+	  sql=QString("insert into CAST_DOWNLOADS set ")+
+	    "FEED_KEY_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	    QString().sprintf("CAST_ID=%u,",q1->value(0).toUInt())+
+	    "ACCESS_DATE=\""+
+	    RDEscapeString(q1->value(1).toDate().toString("yyyy-MM-dd"))+"\","+
+	    QString().sprintf("ACCESS_COUNT=%u",q1->value(2).toUInt());
+	  if(!RDSqlQuery::apply(sql,err_msg)) {
+	    return false;
+	  }
+	}
+	delete q1;
+	if(!DropTable(tablename,err_msg)) {
 	  return false;
 	}
-      }
-      delete q1;
-      if(!DropTable(tablename,err_msg)) {
-	return false;
       }
     }
     delete q;
@@ -7990,14 +7752,8 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
   }
 
   if((cur_schema<296)&&(set_schema>cur_schema)) {
-    sql=QString("alter table STATIONS drop column BACKUP_DIR");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
-    sql=QString("alter table STATIONS drop column BACKUP_LIFE");
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
+    DropColumn("STATIONS","BACKUP_DIR");
+    DropColumn("STATIONS","BACKUP_LIFE");
 
     WriteSchemaVersion(++cur_schema);
   }
@@ -9778,6 +9534,13 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
+  //
+  // Maintainer's Note:
+  //
+  // All tables created below this point should use a character set
+  // of 'utf8mb4' and a collation of 'utf8mb4_general_ci'.
+  //
+
   if((cur_schema<298)&&(set_schema>cur_schema)) {
     sql=QString("alter table RDLOGEDIT ")+
       "modify column INPUT_CARD int(11) default 0";
@@ -9793,13 +9556,6 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
 
     WriteSchemaVersion(++cur_schema);
   }
-
-  //
-  // Maintainer's Note:
-  //
-  // All tables created below this point should use a character set
-  // of 'utf8mb4' and a collation of 'utf8mb4_general_ci'.
-  //
 
   // NEW SCHEMA UPDATES GO HERE...
 
