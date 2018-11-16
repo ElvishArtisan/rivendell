@@ -18030,3 +18030,5 @@
 	new method for dropping a DB field.
 2018-11-16 Patrick Linstruth <patrick@deltecent.com>
 	* Fixed marker bugs in rdlibrary(1) audio editor widget.
+2018-11-16 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the package version to 3.0.0alpha04.

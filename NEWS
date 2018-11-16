@@ -1,6 +1,23 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
+v3.0.0alpha04 -- 11/16/2018
+
+Fourth alpha release for v3.x.
+
+Changes:
+   Added a TagLib dependency. See 'INSTALL' for details.
+
+   Cleaned up various regressions. See the ChangeLog for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 299, and will
+   automatically upgrade any earlier versions. To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
+   to allow any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
 v3.0.0alpha03 -- 11/2/2018
 
 Third alpha release for v3.x.
