@@ -18018,3 +18018,6 @@
 2018-11-16 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored schema modification routines in rddbmgr(8) to check
 	for existence of a field before dropping it.
+2018-11-16 Fred Gleason <fredg@paravelsystems.com>
+	* Added '-fno-var-tracking-assignments' to the 'AM_CPPFLAGS' rule
+	for rddbmgr(8).
