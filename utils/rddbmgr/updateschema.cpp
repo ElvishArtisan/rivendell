@@ -9584,9 +9584,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       }
     }
     delete q;
-
-    q=new RDSqlQuery("alter table CART drop column SCHED_CODES",false);
-    delete q;
+    DropColumn("CART","SCHED_CODES");
 
     WriteSchemaVersion(++cur_schema);
   }

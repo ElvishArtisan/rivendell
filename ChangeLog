@@ -18025,3 +18025,6 @@
 	* Added a 'CART_SCHED_CODES' table to the database.
 	* Removed 'SCHED_CODES' field from 'CART'
 	* Incremented the database version to 299.
+2018-11-16 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the 298 => 299 schema change in rddbmgr(8) to use the
+	new method for dropping a DB field.
