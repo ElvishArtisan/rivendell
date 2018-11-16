@@ -219,6 +219,7 @@ class RDEditAudio : public QDialog
   int edit_stream;
   int edit_port;
   int edit_preroll;
+  int edit_prev_x[2][LastMarker];
 };
 
 

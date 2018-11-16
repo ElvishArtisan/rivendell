@@ -43,7 +43,7 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,int card,
   edit_card=card;
   edit_port=port;
   edit_stream=-1;
-  
+
   bool editing_allowed=rda->user()->editAudio()&&cart->owner().isEmpty();
 
   //
@@ -64,17 +64,6 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,int card,
   QFont small_font("Helvetica",10,QFont::Bold);
   small_font.setPixelSize(10);
 
-  edit_cursors[RDEditAudio::Play]=-1;
-  edit_cursors[RDEditAudio::SegueStart]=-1;
-  edit_cursors[RDEditAudio::SegueEnd]=-1;
-  edit_cursors[RDEditAudio::TalkStart]=-1;
-  edit_cursors[RDEditAudio::TalkEnd]=-1;
-  edit_cursors[RDEditAudio::Start]=-1;
-  edit_cursors[RDEditAudio::End]=-1;
-  edit_cursors[RDEditAudio::FadeUp]=-1;
-  edit_cursors[RDEditAudio::FadeDown]=-1;
-  edit_cursors[RDEditAudio::HookStart]=-1;
-  edit_cursors[RDEditAudio::HookEnd]=-1;
   is_playing=false;
   is_paused=false;
   is_stopped=false;
@@ -92,6 +81,11 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,int card,
   delete_marker=false;
   pause_mode=false;
   played_cursor=0;
+  for(int i=0;i<RDEditAudio::LastMarker;i++) {
+    edit_cursors[i]=-1;
+    edit_prev_x[0][i]=-1;
+    edit_prev_x[1][i]=-1;
+  }
 
   //
   // The Cut
@@ -1667,7 +1661,6 @@ void RDEditAudio::paintEvent(QPaintEvent *e)
   //
   p->drawRect(11,130+EDITAUDIO_WAVEFORM_HEIGHT,717,197);
 
-  p->end();
   delete p;
   UpdateCursors();
 }
@@ -2465,12 +2458,12 @@ void RDEditAudio::DrawMaps()
 void RDEditAudio::UpdateCursors()
 {
   if(edit_channels==1) {
-    DrawCursors(11,11,EDITAUDIO_WAVEFORM_WIDTH,EDITAUDIO_WAVEFORM_HEIGHT,0);
+    DrawCursors(11,11,EDITAUDIO_WAVEFORM_WIDTH,EDITAUDIO_WAVEFORM_HEIGHT-1,0);
   }
   if(edit_channels==2) {
     DrawCursors(11,11,EDITAUDIO_WAVEFORM_WIDTH,EDITAUDIO_WAVEFORM_HEIGHT/2,0);
     DrawCursors(11,11+EDITAUDIO_WAVEFORM_HEIGHT/2,EDITAUDIO_WAVEFORM_WIDTH,
-		EDITAUDIO_WAVEFORM_HEIGHT/2,1);
+		(EDITAUDIO_WAVEFORM_HEIGHT/2)-1,1);
   }
 
 }
@@ -2478,158 +2471,155 @@ void RDEditAudio::UpdateCursors()
 
 void RDEditAudio::DrawCursors(int xpos,int ypos,int xsize,int ysize,int chan)
 {
-  static int prev_x[2][12]={{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1},
-			    {-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1}};
-
   EraseCursor(xpos,ypos,xsize,ysize,chan,
-	      edit_cursors[RDEditAudio::Play],prev_x[chan][RDEditAudio::Play],
+	      edit_cursors[RDEditAudio::Play],edit_prev_x[chan][RDEditAudio::Play],
 	      QColor(EDITAUDIO_PLAY_COLOR),RDEditAudio::None,20);
 
   EraseCursor(xpos,ypos,xsize,ysize,chan,
 	      edit_cursors[RDEditAudio::SegueStart],
-	      prev_x[chan][RDEditAudio::SegueStart],
+	      edit_prev_x[chan][RDEditAudio::SegueStart],
 	      QColor(RD_SEGUE_MARKER_COLOR),
 	      RDEditAudio::Right,30);
 
   EraseCursor(xpos,ypos,xsize,ysize,chan,
 	      edit_cursors[RDEditAudio::SegueEnd],
-	      prev_x[chan][RDEditAudio::SegueEnd],
+	      edit_prev_x[chan][RDEditAudio::SegueEnd],
 	      QColor(RD_SEGUE_MARKER_COLOR),
 	      RDEditAudio::Left,30);
 
   EraseCursor(xpos,ypos,xsize,ysize,chan,
 	      edit_cursors[RDEditAudio::Start],
-	      prev_x[chan][RDEditAudio::Start],
+	      edit_prev_x[chan][RDEditAudio::Start],
 	      QColor(RD_START_END_MARKER_COLOR),
 	      RDEditAudio::Right,10);
 
   EraseCursor(xpos,ypos,xsize,ysize,chan,
 	      edit_cursors[RDEditAudio::End],
-	      prev_x[chan][RDEditAudio::End],
+	      edit_prev_x[chan][RDEditAudio::End],
 	      QColor(RD_START_END_MARKER_COLOR),
 	      RDEditAudio::Left,10);
 
   EraseCursor(xpos,ypos,xsize,ysize,chan,
 	      edit_cursors[RDEditAudio::TalkStart],
-	      prev_x[chan][RDEditAudio::TalkStart],
+	      edit_prev_x[chan][RDEditAudio::TalkStart],
 	      QColor(RD_TALK_MARKER_COLOR),
 	      RDEditAudio::Right,20);
 
   EraseCursor(xpos,ypos,xsize,ysize,chan,
 	      edit_cursors[RDEditAudio::TalkEnd],
-	      prev_x[chan][RDEditAudio::TalkEnd],
+	      edit_prev_x[chan][RDEditAudio::TalkEnd],
 	      QColor(RD_TALK_MARKER_COLOR),
 	      RDEditAudio::Left,20);
 
   EraseCursor(xpos,ypos,xsize,ysize,chan,
 	      edit_cursors[RDEditAudio::FadeUp],
-	      prev_x[chan][RDEditAudio::FadeUp],
+	      edit_prev_x[chan][RDEditAudio::FadeUp],
 	      QColor(RD_FADE_MARKER_COLOR),
 	      RDEditAudio::Left,40);
 
   EraseCursor(xpos,ypos,xsize,ysize,chan,
 	      edit_cursors[RDEditAudio::FadeDown],
-	      prev_x[chan][RDEditAudio::FadeDown],
+	      edit_prev_x[chan][RDEditAudio::FadeDown],
 	      QColor(RD_FADE_MARKER_COLOR),
 	      RDEditAudio::Right,40);
 
   EraseCursor(xpos,ypos,xsize,ysize,chan,
 	      edit_cursors[RDEditAudio::HookStart],
-	      prev_x[chan][RDEditAudio::HookStart],
+	      edit_prev_x[chan][RDEditAudio::HookStart],
 	      QColor(RD_HOOK_MARKER_COLOR),
 	      RDEditAudio::Right,50);
 
   EraseCursor(xpos,ypos,xsize,ysize,chan,
 	      edit_cursors[RDEditAudio::HookEnd],
-	      prev_x[chan][RDEditAudio::HookEnd],
+	      edit_prev_x[chan][RDEditAudio::HookEnd],
 	      QColor(RD_HOOK_MARKER_COLOR),
 	      RDEditAudio::Left,50);
 
-  prev_x[chan][RDEditAudio::Play]=
+  edit_prev_x[chan][RDEditAudio::Play]=
     DrawCursor(xpos,ypos,xsize,ysize,chan,
 	       edit_cursors[RDEditAudio::Play],
-	       prev_x[chan][RDEditAudio::Play],
+	       edit_prev_x[chan][RDEditAudio::Play],
 	       QColor(EDITAUDIO_PLAY_COLOR),
 	       RDEditAudio::None,20,
 	       RDEditAudio::Play,
 	       QPainter::RasterOp_SourceXorDestination);
 
-  prev_x[chan][RDEditAudio::SegueStart]=
+  edit_prev_x[chan][RDEditAudio::SegueStart]=
     DrawCursor(xpos,ypos,xsize,ysize,chan,
 	       edit_cursors[RDEditAudio::SegueStart],
-	       prev_x[chan][RDEditAudio::SegueStart],
+	       edit_prev_x[chan][RDEditAudio::SegueStart],
 	       QColor(RD_SEGUE_MARKER_COLOR),
 	       RDEditAudio::Right,30,
 	       RDEditAudio::SegueStart);
 
-  prev_x[chan][RDEditAudio::SegueEnd]=
+  edit_prev_x[chan][RDEditAudio::SegueEnd]=
     DrawCursor(xpos,ypos,xsize,ysize,chan,
 	       edit_cursors[RDEditAudio::SegueEnd],
-	       prev_x[chan][RDEditAudio::SegueEnd],
+	       edit_prev_x[chan][RDEditAudio::SegueEnd],
 	       QColor(RD_SEGUE_MARKER_COLOR),
 	       RDEditAudio::Left,30,
 	       RDEditAudio::SegueEnd);
 
-  prev_x[chan][RDEditAudio::Start]=
+  edit_prev_x[chan][RDEditAudio::Start]=
     DrawCursor(xpos,ypos,xsize,ysize,chan,
 	       edit_cursors[RDEditAudio::Start],
-	       prev_x[chan][RDEditAudio::Start],
+	       edit_prev_x[chan][RDEditAudio::Start],
 	       QColor(RD_START_END_MARKER_COLOR),
 	       RDEditAudio::Right,10,
 	       RDEditAudio::Start);
 
-  prev_x[chan][RDEditAudio::End]=
+  edit_prev_x[chan][RDEditAudio::End]=
     DrawCursor(xpos,ypos,xsize,ysize,chan,
 	       edit_cursors[RDEditAudio::End],
-	       prev_x[chan][RDEditAudio::End],
+	       edit_prev_x[chan][RDEditAudio::End],
 	       QColor(RD_START_END_MARKER_COLOR),
 	       RDEditAudio::Left,10,
 	       RDEditAudio::End);
 
-  prev_x[chan][RDEditAudio::TalkStart]=
+  edit_prev_x[chan][RDEditAudio::TalkStart]=
     DrawCursor(xpos,ypos,xsize,ysize,chan,
 	       edit_cursors[RDEditAudio::TalkStart],
-	       prev_x[chan][RDEditAudio::TalkStart],
+	       edit_prev_x[chan][RDEditAudio::TalkStart],
 	       QColor(RD_TALK_MARKER_COLOR),
 	       RDEditAudio::Right,20,
 	       RDEditAudio::TalkStart);
 
-  prev_x[chan][RDEditAudio::TalkEnd]=
+  edit_prev_x[chan][RDEditAudio::TalkEnd]=
     DrawCursor(xpos,ypos,xsize,ysize,chan,
 	       edit_cursors[RDEditAudio::TalkEnd],
-	       prev_x[chan][RDEditAudio::TalkEnd],
+	       edit_prev_x[chan][RDEditAudio::TalkEnd],
 	       QColor(RD_TALK_MARKER_COLOR),
 	       RDEditAudio::Left,20,
 	       RDEditAudio::TalkEnd);
 
-  prev_x[chan][RDEditAudio::FadeUp]=
+  edit_prev_x[chan][RDEditAudio::FadeUp]=
     DrawCursor(xpos,ypos,xsize,ysize,chan,
 	       edit_cursors[RDEditAudio::FadeUp],
-	       prev_x[chan][RDEditAudio::FadeUp],
+	       edit_prev_x[chan][RDEditAudio::FadeUp],
 	       QColor(RD_FADE_MARKER_COLOR),
 	       RDEditAudio::Left,40,
 	       RDEditAudio::FadeUp);
 
-  prev_x[chan][RDEditAudio::FadeDown]=
+  edit_prev_x[chan][RDEditAudio::FadeDown]=
     DrawCursor(xpos,ypos,xsize,ysize,chan,
 	       edit_cursors[RDEditAudio::FadeDown],
-	       prev_x[chan][RDEditAudio::FadeDown],
+	       edit_prev_x[chan][RDEditAudio::FadeDown],
 	       QColor(RD_FADE_MARKER_COLOR),
 	       RDEditAudio::Right,40,
 	       RDEditAudio::FadeDown);
 
-  prev_x[chan][RDEditAudio::HookStart]=
+  edit_prev_x[chan][RDEditAudio::HookStart]=
     DrawCursor(xpos,ypos,xsize,ysize,chan,
 	       edit_cursors[RDEditAudio::HookStart],
-	       prev_x[chan][RDEditAudio::HookStart],
+	       edit_prev_x[chan][RDEditAudio::HookStart],
 	       QColor(RD_HOOK_MARKER_COLOR),
 	       RDEditAudio::Right,50,
 	       RDEditAudio::HookStart);
 
-  prev_x[chan][RDEditAudio::HookEnd]=
+  edit_prev_x[chan][RDEditAudio::HookEnd]=
     DrawCursor(xpos,ypos,xsize,ysize,chan,
 	       edit_cursors[RDEditAudio::HookEnd],
-	       prev_x[chan][RDEditAudio::HookEnd],
+	       edit_prev_x[chan][RDEditAudio::HookEnd],
 	       QColor(RD_HOOK_MARKER_COLOR),
 	       RDEditAudio::Left,50,
 	       RDEditAudio::HookEnd);
@@ -2653,7 +2643,7 @@ int RDEditAudio::DrawCursor(int xpos,int ypos,int xsize,int ysize,int chan,
     p->setClipRect(xpos,ypos,xsize,ysize);
     p->setCompositionMode(op);
     p->translate(xpos,ypos);
-    if((x>=0)&(x<EDITAUDIO_WAVEFORM_WIDTH)) {
+    if((x>=0)&&(x<EDITAUDIO_WAVEFORM_WIDTH)) {
       p->setPen(color);
       p->drawLine(x,0,x,ysize);
       if(arrow==RDEditAudio::Left) {
@@ -2685,7 +2675,6 @@ int RDEditAudio::DrawCursor(int xpos,int ypos,int xsize,int ysize,int chan,
 	delete point;
       }
     }
-    p->end();
     delete p;
   }
   return x;
@@ -2697,7 +2686,7 @@ void RDEditAudio::EraseCursor(int xpos,int ypos,int xsize,int ysize,int chan,
 {
   int x;
 
-  if((edit_hscroll==NULL)||(prev<0)||(samp<0)) {
+  if((edit_hscroll==NULL)||(prev<0)||((prev==0)&&(samp<0))) {
     return;
   }
   x=(int)((double)(samp-edit_hscroll->value())/edit_factor_x);
@@ -2736,7 +2725,6 @@ void RDEditAudio::EraseCursor(int xpos,int ypos,int xsize,int ysize,int chan,
 	}
       }
     }
-    p->end();
     delete p;
   }
 }
@@ -2865,7 +2853,6 @@ void RDEditAudio::DrawWave(int xsize,int ysize,int chan,QString label,
     p->setFont(QFont("Helvetica",24,QFont::Bold));
     p->drawText(270,0,"No Energy Data");
   }
-  p->end();
   delete p;
 }
 
