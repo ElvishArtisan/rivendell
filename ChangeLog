@@ -16726,3 +16726,7 @@
 	* Incremented the package version to 2.19.2int08.
 2018-10-31 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.19.3.
+2018-11-19 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdlogmanager(1) that caused embedded traffic
+	events to get a zero link length when the break duration was not
+	explicitly set in the music import data.
