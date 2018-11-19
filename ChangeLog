@@ -16730,3 +16730,5 @@
 	* Fixed a regression in rdlogmanager(1) that caused embedded traffic
 	events to get a zero link length when the break duration was not
 	explicitly set in the music import data.
+2018-11-19 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.19.3int00.

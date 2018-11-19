@@ -1,25 +1,12 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v2.19.3 -- 10/31/2018
+v2.19.3int00 -- 11/19/2018
 
 Changes:
-   BroadcastTools Support. Added a Switcher/GPIO driver for the
-   BroadcastTools SS 2.1 switcher.
-
-   AudioScience GPIO. Added support for GPIO on AudioScience adapters
-   to the 'Local Audio Adapter' Switcher/GPIO driver.
-
-   Add Next/Insert Cart RML. Renamed the 'Add Next' ['PX'] RML to
-   'Insert Cart' ['PX'] and added two optional arguments to allow
-   specification of the insertion position and transition type.
-
-   Spinitron RLM. Added support for Spinitron v2 to the 'spinitron_plus'
-   RLM. 
-
-   Exported File Mode. Added an 'ExportedFileMode=' parameter to the
-   '[Tuning]' section of rd.conf(5) to permit permission mode of exported
-   audio files to be specified.
+   Fixed a regression in rdlogmanager(1) that caused embedded traffic
+   events to get a zero link length when the break duration was not
+   explicitly set in the music import data.
 
    Various bug fixes. See the 'ChangeLog' for details.
 
