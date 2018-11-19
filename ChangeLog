@@ -16732,3 +16732,6 @@
 	explicitly set in the music import data.
 2018-11-19 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.19.3int00.
+2018-11-19 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdlogmanager(1) that caused embedded traffic
+	events always to be placed before any imported music events.

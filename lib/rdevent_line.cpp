@@ -995,11 +995,13 @@ bool RDEventLine::linkLog(RDLogEvent *e,const QString &svcname,
 	  logline->setEventLength(event_length);
 	  logline->setLinkEventName(event_nested_event);
 	  if(!q->value(13).isNull()) {
-	    logline->setLinkStartTime(q->value(12).toTime());
 	    if(q->value(13).toInt()>0) {
+	      logline->setLinkStartTime(q->value(12).toTime());
 	      logline->setLinkLength(q->value(13).toInt());
 	    }
 	    else {
+	      logline->setLinkStartTime(QTime().
+		       addSecs(start_start_hour*3600+start_start_secs/1000));
 	      logline->setLinkLength(end_start_secs-start_start_secs);
 	    }
 	  }
