@@ -1458,7 +1458,7 @@ void RDSoundPanel::LogTraffic(RDPanelButton *button)
 
   QString sql;
   RDSqlQuery *q;
-  QDateTime datetime(QDate::currentDate(),QTime::currentTime());
+  QDateTime now=QDateTime::currentDateTime();
 
   sql=QString("select ")+
     "CART.TITLE,"+         // 00
@@ -1480,20 +1480,14 @@ void RDSoundPanel::LogTraffic(RDPanelButton *button)
     "CUTS.CUT_NAME=\""+RDEscapeString(button->cutName())+"\"";
   q=new RDSqlQuery(sql);
   if(q->first()) {
-
-    QString eventDateTimeSQL = "NULL";
-
-    if(datetime.isValid() && button->startTime().isValid())
-      eventDateTimeSQL = RDCheckDateTime(QDateTime(datetime.date(),
-            button->startTime()), "yyyy-MM-dd hh:mm:ss");
-
     sql=QString("insert into ELR_LINES set ")+
       "SERVICE_NAME=\""+RDEscapeString(panel_svcname)+"\","+
-      QString().sprintf("LENGTH=%d,",button->startTime().
-			msecsTo(datetime.time()))+
+      QString().sprintf("LENGTH=%d,",button->startTime().msecsTo(now.time()))+
       QString().sprintf("CART_NUMBER=%u,",button->cart())+
       "STATION_NAME=\""+RDEscapeString(rda->station()->name().utf8())+"\","+
-      "EVENT_DATETIME="+eventDateTimeSQL+","+
+      "EVENT_DATETIME="+
+      RDCheckDateTime(QDateTime(now.date(),button->startTime()),
+		      "yyyy-MM-dd hh:mm:ss")+","+
       QString().sprintf("EVENT_TYPE=%d,",RDAirPlayConf::TrafficStop)+
       QString().sprintf("EVENT_SOURCE=%d,",RDLogLine::SoundPanel)+
       QString().sprintf("PLAY_SOURCE=%d,",RDLogLine::SoundPanel)+
