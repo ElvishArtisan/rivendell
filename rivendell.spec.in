@@ -253,7 +253,7 @@ rm -rf $RPM_BUILD_ROOT
 @LOCAL_PREFIX@/bin/rd_backup
 @LOCAL_PREFIX@/bin/rdmemcheck.sh
 @LOCAL_PREFIX@/bin/rdrender
-@LOCAL_PREFIX@/share/rivendell/*
+@LOCAL_PREFIX@/share/rivendell/*.qm
 @LOCAL_PREFIX@/share/icons/hicolor/16x16/apps/rivendell.png
 @LOCAL_PREFIX@/share/icons/hicolor/16x16/apps/rdadmin.png
 @LOCAL_PREFIX@/share/icons/hicolor/16x16/apps/rdairplay.png
