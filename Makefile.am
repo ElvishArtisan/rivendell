@@ -69,6 +69,7 @@ rpm:	dist
 	cp rivendell-$(VERSION).tar.gz $(HOME)/rpmbuild/SOURCES/
 	$(RPMBUILD) -ba --target $(ARCH)-$(VENDOR)-linux rivendell.spec
 	mv $(HOME)/rpmbuild/RPMS/$(ARCH)/rivendell-*.rpm $(top_srcdir)/
+	mv $(HOME)/rpmbuild/RPMS/noarch/rivendell-*.rpm $(top_srcdir)/
 	mv $(HOME)/rpmbuild/SRPMS/rivendell-*.src.rpm $(top_srcdir)/
 	rm $(HOME)/rpmbuild/SOURCES/rivendell-$(VERSION).tar.gz
 

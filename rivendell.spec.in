@@ -25,9 +25,10 @@ Release: @RPM_RELEASE@
 License: GPL
 Packager: Fred Gleason <fredg@paravelsystems.com>
 Source: rivendell-@VERSION@.tar.gz
-Requires: @MYSQL_PKG@, @QT4_MYSQL_PKG@, @APACHE_PKG@, curl, @USERMODE_PKG@, @CDDA2WAV_PKG@,
+Requires: @MYSQL_PKG@, @QT4_MYSQL_PKG@, @APACHE_PKG@, curl, @USERMODE_PKG@, @CDDA2WAV_PKG@
 BuildRoot: /var/tmp/rivendell-@VERSION@
-Obsoletes: rivendell-base
+Obsoletes: rivendell-base rivendell-opsguide
+Conflicts: rivendell-opsguide
 
 %package importers
 Summary: Library importers for the Rivendell Broadcast Automation System
@@ -35,6 +36,8 @@ Requires: rivendell = @VERSION@, madplay
 
 %package opsguide
 Summary: Rivendell Operations and Administration Guide
+BuildArch: noarch
+Conflicts: rivendell
 
 %package webapi
 Summary: Client libraries for interfacing with Rivendell's Web API.
@@ -394,6 +397,8 @@ rm -rf $RPM_BUILD_ROOT
 @HPI_FILE3@
 @HPI_FILE4@
 /etc/auto.master.d/rd.audiostore.autofs
+@LOCAL_PREFIX@/share/rivendell/opsguide.pdf
+@LOCAL_PREFIX@/share/rivendell/html/*
 
 
 %files webapi

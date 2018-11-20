@@ -18037,3 +18037,7 @@
 2018-11-20 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a packaging conflict between the 'rivendell' and
 	'rivendell-opsguide' RPM packages.
+2018-11-20 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the 'rivendell-opsguide' RPM package to be 'noarch'.
+	* Added the components of the 'rivendell-opsguide' subpackage to
+	the 'rivendell' RPM package.
