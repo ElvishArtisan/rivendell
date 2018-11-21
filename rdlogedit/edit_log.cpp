@@ -1417,6 +1417,9 @@ void EditLog::RefreshLine(RDListViewItem *item)
 	break;
 
       default:
+	/*
+	 * The 'new style' time rendering. Broken!
+	 *
 	if(logline->
 	   startTime(RDLogLine::Predicted).isNull()) {
 	  item->setText(1,edit_log_event->
@@ -1428,7 +1431,8 @@ void EditLog::RefreshLine(RDListViewItem *item)
 			logLine(line)->startTime(RDLogLine::Predicted).
 			toString("hh:mm:ss.zzz").left(10));
 	}
-	/*
+	*/
+
 	if(logline->
 	   startTime(RDLogLine::Logged).isNull()) {
 	  item->setText(1,edit_log_event->
@@ -1440,7 +1444,7 @@ void EditLog::RefreshLine(RDListViewItem *item)
 			logLine(line)->startTime(RDLogLine::Logged).
 			toString("hh:mm:ss.zzz").left(10));
 	}
-	*/
+
 	break;
   }
   switch(logline->transType()) {
