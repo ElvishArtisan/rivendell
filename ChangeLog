@@ -16740,3 +16740,5 @@
 2018-11-21 Fred Gleason <fredg@paravelsystems.com>
 	* Reverted commit 08d41d6fbefc3c4e306e453770013b2e9c4056dd that
 	broke time display in rdlogedit(1).
+2018-11-21 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 2.19.3int02.
