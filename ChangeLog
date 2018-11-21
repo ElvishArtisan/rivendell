@@ -18043,3 +18043,7 @@
 	the 'rivendell' RPM package.
 2018-11-21 Patrick Linstruth <patrick@deltecent.com>
 	* Add rddbmgr '--generate-audio' switch to INSTALL documentation.
+2018-11-21 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a typo in the systemd unit file that caused an
+	"Unknown lvalue 'RestartLimitInterval' in section 'Service'" warning
+	to be generated when installing the base RPM.

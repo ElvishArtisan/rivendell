@@ -8,7 +8,7 @@ ExecStart=@prefix@/sbin/rdservice
 PrivateTmp=true
 Restart=always
 RestartSec=2
-RestartLimitInterval=120
+StartLimitInterval=120
 StartLimitBurst=50
 
 [Install]
