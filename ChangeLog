@@ -18041,3 +18041,5 @@
 	* Modified the 'rivendell-opsguide' RPM package to be 'noarch'.
 	* Added the components of the 'rivendell-opsguide' subpackage to
 	the 'rivendell' RPM package.
+2018-11-21 Patrick Linstruth <patrick@deltecent.com>
+	* Add rddbmgr '--generate-audio' switch to INSTALL documentation.
