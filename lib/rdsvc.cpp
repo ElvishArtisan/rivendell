@@ -264,34 +264,33 @@ void RDSvc::setTrackCart(ImportSource src,const QString &str)
 }
 
 
-QString RDSvc::importPath(ImportSource src,ImportOs os) const
+QString RDSvc::importPath(ImportSource src) const
 {
-  QString fieldname=SourceString(src)+OsString(os)+"PATH";
+  QString fieldname=SourceString(src)+"PATH";
   return RDGetSqlValue("SERVICES","NAME",svc_name,fieldname).
     toString();
 }
 
 
-void RDSvc::setImportPath(ImportSource src,ImportOs os,const QString &path) 
+void RDSvc::setImportPath(ImportSource src,const QString &path) 
   const
 {
-  QString fieldname=SourceString(src)+OsString(os)+"PATH";
+  QString fieldname=SourceString(src)+"PATH";
   SetRow(fieldname,path);
 }
 
 
-QString RDSvc::preimportCommand(ImportSource src,ImportOs os) const
+QString RDSvc::preimportCommand(ImportSource src) const
 {
-  QString fieldname=SourceString(src)+OsString(os)+"PREIMPORT_CMD";
+  QString fieldname=SourceString(src)+"PREIMPORT_CMD";
   return RDGetSqlValue("SERVICES","NAME",svc_name,fieldname).
     toString();
 }
 
 
-void RDSvc::setPreimportCommand(ImportSource src,ImportOs os,
-				const QString &path) const
+void RDSvc::setPreimportCommand(ImportSource src,const QString &path) const
 {
-  QString fieldname=SourceString(src)+OsString(os)+"PREIMPORT_CMD";
+  QString fieldname=SourceString(src)+"PREIMPORT_CMD";
   SetRow(fieldname,path);
 }
 
@@ -1447,22 +1446,6 @@ QString RDSvc::SourceString(ImportSource src) const
 
       case RDSvc::Music:
 	fieldname="MUS_";
-	break;
-  }
-  return fieldname;
-}
-
-
-QString RDSvc::OsString(ImportOs os) const
-{
-  QString fieldname;
-  switch(os) {
-      case RDSvc::Linux:
-	fieldname="";
-	break;
-
-      case RDSvc::Windows:
-	fieldname="WIN_";
 	break;
   }
   return fieldname;

@@ -41,9 +41,39 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // NEW SCHEMA REVERSIONS GO HERE...
 
   //
+  // Revert 300
+  //
+  if((cur_schema==300)&&(set_schema<cur_schema)) {
+    sql=QString("alter table SERVICES add column TFC_WIN_PATH varchar(191) ")+
+      "after TFC_PREIMPORT_CMD";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table SERVICES add column TFC_WIN_PREIMPORT_CMD text ")+
+      "after TFC_WIN_PATH";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table SERVICES add column MUS_WIN_PATH varchar(191) ")+
+      "after MUS_PREIMPORT_CMD";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table SERVICES add column MUS_WIN_PREIMPORT_CMD text ")+
+      "after MUS_WIN_PATH";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 299
   //
   if((cur_schema==299)&&(set_schema<cur_schema)) {
+
     QString schedcode;
 
     q=new RDSqlQuery("alter table CART add column SCHED_CODES VARCHAR( 255 ) NULL default '.' after MACROS",false);

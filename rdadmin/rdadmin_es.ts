@@ -3872,11 +3872,11 @@ Ports</source>
     </message>
     <message>
         <source>Linux Import Path:</source>
-        <translation>Importar desde (Linux):</translation>
+        <translation type="obsolete">Importar desde (Linux):</translation>
     </message>
     <message>
         <source>Windows Import Path:</source>
-        <translation>Importar desde (Windows):</translation>
+        <translation type="obsolete">Importar desde (Windows):</translation>
     </message>
     <message>
         <source>Note Cart String:</source>
@@ -3946,11 +3946,11 @@ debe guardarse.  ¿Hacerlo ahora?</translation>
     </message>
     <message>
         <source>Linux Preimport Command:</source>
-        <translation>Cmd antes de importar (Linux):</translation>
+        <translation type="obsolete">Cmd antes de importar (Linux):</translation>
     </message>
     <message>
         <source>Windows Preimport Command:</source>
-        <translation>Cmd antes de importar (Win):</translation>
+        <translation type="obsolete">Cmd antes de importar (Win):</translation>
     </message>
     <message>
         <source>&amp;Program Code:</source>
@@ -3990,6 +3990,14 @@ debe guardarse.  ¿Hacerlo ahora?</translation>
     </message>
     <message>
         <source>creation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import Path:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Preimport Command:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

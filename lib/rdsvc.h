@@ -35,7 +35,6 @@ class RDSvc : public QObject
 {
   Q_OBJECT
  public:
-  enum ImportOs {Linux=0,Windows=1};
   enum ImportSource {Traffic=0,Music=1};
   enum ImportField {CartNumber=0,ExtData=3,ExtEventId=4,ExtAnncType=5,
 		    Title=6,StartHours=7,StartMinutes=8,StartSeconds=9,
@@ -76,11 +75,10 @@ class RDSvc : public QObject
   void setLabelCart(ImportSource src,const QString &str);
   QString trackCart(ImportSource src) const;
   void setTrackCart(ImportSource src,const QString &str);
-  QString importPath(ImportSource src,ImportOs os) const;
-  void setImportPath(ImportSource src,ImportOs os,const QString &path) const;
-  QString preimportCommand(ImportSource src,ImportOs os) const;
-  void setPreimportCommand(ImportSource src,ImportOs os,
-			   const QString &path) const;
+  QString importPath(ImportSource src) const;
+  void setImportPath(ImportSource src,const QString &path) const;
+  QString preimportCommand(ImportSource src) const;
+  void setPreimportCommand(ImportSource src,const QString &path) const;
   int importOffset(ImportSource src,ImportField field) const;
   void setImportOffset(ImportSource src,ImportField field,int offset) const;
   int importLength(ImportSource src,ImportField field) const;
@@ -111,7 +109,6 @@ class RDSvc : public QObject
  private:
   bool TryLock(RDLogLock *lock,QString *err_msg);
   QString SourceString(ImportSource src) const;
-  QString OsString(ImportOs os) const;
   QString FieldString(ImportField field) const;
   void SetRow(const QString &param,QString value) const;
   void SetRow(const QString &param,int value) const;

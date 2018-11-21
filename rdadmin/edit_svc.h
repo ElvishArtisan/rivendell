@@ -65,8 +65,6 @@ class EditSvc : public QDialog
   QComboBox *svc_autospot_group_box;
   QLineEdit *svc_tfc_path_edit;
   QLineEdit *svc_tfc_preimport_cmd_edit;
-  QLineEdit *svc_tfc_win_path_edit;
-  QLineEdit *svc_tfc_win_preimport_cmd_edit;
   QComboBox *svc_tfc_import_template_box;
   QLineEdit *svc_tfc_label_cart_edit;
   QLineEdit *svc_tfc_track_edit;
@@ -74,8 +72,6 @@ class EditSvc : public QDialog
   ImportFields *svc_mus_fields;
   QLineEdit *svc_mus_path_edit;
   QLineEdit *svc_mus_preimport_cmd_edit;
-  QLineEdit *svc_mus_win_path_edit;
-  QLineEdit *svc_mus_win_preimport_cmd_edit;
   QComboBox *svc_mus_import_template_box;
   QLineEdit *svc_mus_label_cart_edit;
   QLineEdit *svc_mus_break_edit;

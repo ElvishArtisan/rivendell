@@ -380,7 +380,7 @@ bool MainWidget::WriteTrafficFile()
   //
   // Open Output File
   //
-  outname=RDDateDecode(dg_svc->importPath(RDSvc::Traffic,RDSvc::Linux),
+  outname=RDDateDecode(dg_svc->importPath(RDSvc::Traffic),
 		       dg_date_edit->date(),rda->station(),
 		       rda->config(),dg_svc->name());
   if((f=fopen(outname,"w"))==NULL) {

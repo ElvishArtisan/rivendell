@@ -9589,6 +9589,15 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<300)&&(set_schema>cur_schema)) {
+    DropColumn("SERVICES","MUS_WIN_PATH");
+    DropColumn("SERVICES","MUS_WIN_PREIMPORT_CMD");
+    DropColumn("SERVICES","TFC_WIN_PATH");
+    DropColumn("SERVICES","TFC_WIN_PREIMPORT_CMD");
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
   // NEW SCHEMA UPDATES GO HERE...
 
   //

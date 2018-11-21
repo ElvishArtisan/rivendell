@@ -3713,11 +3713,11 @@ Ports</source>
     </message>
     <message>
         <source>Linux Import Path:</source>
-        <translation>Linux-importstig:</translation>
+        <translation type="obsolete">Linux-importstig:</translation>
     </message>
     <message>
         <source>Windows Import Path:</source>
-        <translation>Windows-importstig:</translation>
+        <translation type="obsolete">Windows-importstig:</translation>
     </message>
     <message>
         <source>Note Cart String:</source>
@@ -3830,14 +3830,6 @@ Lagre no?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Linux Preimport Command:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Windows Preimport Command:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Program Code:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3875,6 +3867,14 @@ Lagre no?</translation>
     </message>
     <message>
         <source>creation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import Path:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Preimport Command:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

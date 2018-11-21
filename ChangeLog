@@ -18047,3 +18047,11 @@
 	* Fixed a typo in the systemd unit file that caused an
 	"Unknown lvalue 'RestartLimitInterval' in section 'Service'" warning
 	to be generated when installing the base RPM.
+2018-11-21 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'SERVICES.MUS_WIN_PATH', 'SERVICES.MUS_WIN_PREIMPORT_CMD'
+	'SERVICES.TFC_WIN_PATH', and 'SERVICES.TFC_WIN_PREIMPORT_CMD' fields
+	from the database.
+	* Incremented the database version to 300.
+	* Removed the 'RDSvc::ImportOs' enumeration.
+	* Removed the 'Windows Import Path' and 'Windows Preimport Command'
+	fields from the 'Edit Service' dialog in rdadmin(1).

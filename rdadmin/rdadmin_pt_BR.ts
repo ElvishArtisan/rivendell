@@ -3748,11 +3748,11 @@ de Preenchimento</translation>
     </message>
     <message>
         <source>Linux Import Path:</source>
-        <translation>Pasta de importação - Linux:</translation>
+        <translation type="obsolete">Pasta de importação - Linux:</translation>
     </message>
     <message>
         <source>Windows Import Path:</source>
-        <translation>Pasta de imp. - Windows:</translation>
+        <translation type="obsolete">Pasta de imp. - Windows:</translation>
     </message>
     <message>
         <source>Note Cart String:</source>
@@ -3857,14 +3857,6 @@ deve ser salva.  Salvar Agora?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Linux Preimport Command:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Windows Preimport Command:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Import Template:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3906,6 +3898,14 @@ deve ser salva.  Salvar Agora?</translation>
     </message>
     <message>
         <source>creation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import Path:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Preimport Command:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

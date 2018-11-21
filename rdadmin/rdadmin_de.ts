@@ -3748,11 +3748,11 @@ konfigurieren</translation>
     </message>
     <message>
         <source>Linux Import Path:</source>
-        <translation>Linux Importpfad:</translation>
+        <translation type="obsolete">Linux Importpfad:</translation>
     </message>
     <message>
         <source>Windows Import Path:</source>
-        <translation>Windowsimportpfad:</translation>
+        <translation type="obsolete">Windowsimportpfad:</translation>
     </message>
     <message>
         <source>Note Cart String:</source>
@@ -3874,11 +3874,11 @@ gespeichert werden. Jetzt speichern?</translation>
     </message>
     <message>
         <source>Linux Preimport Command:</source>
-        <translation>Vor-Import-Befehl Linux:</translation>
+        <translation type="obsolete">Vor-Import-Befehl Linux:</translation>
     </message>
     <message>
         <source>Windows Preimport Command:</source>
-        <translation>Vor-Import-Befehl Windows:</translation>
+        <translation type="obsolete">Vor-Import-Befehl Windows:</translation>
     </message>
     <message>
         <source>&amp;Program Code:</source>
@@ -3918,6 +3918,14 @@ gespeichert werden. Jetzt speichern?</translation>
     </message>
     <message>
         <source>creation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import Path:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Preimport Command:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

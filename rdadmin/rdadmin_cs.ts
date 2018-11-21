@@ -3863,11 +3863,11 @@ Ports</source>
     </message>
     <message>
         <source>Linux Import Path:</source>
-        <translation>Cesta pro zavedení v Linuxu:</translation>
+        <translation type="obsolete">Cesta pro zavedení v Linuxu:</translation>
     </message>
     <message>
         <source>Windows Import Path:</source>
-        <translation>Cesta pro zavedení ve Windows:</translation>
+        <translation type="obsolete">Cesta pro zavedení ve Windows:</translation>
     </message>
     <message>
         <source>Note Cart String:</source>
@@ -3989,11 +3989,11 @@ uloženo. Uložit nyní?</translation>
     </message>
     <message>
         <source>Linux Preimport Command:</source>
-        <translation>Příkaz pro před-zavedení v Linuxu:</translation>
+        <translation type="obsolete">Příkaz pro před-zavedení v Linuxu:</translation>
     </message>
     <message>
         <source>Windows Preimport Command:</source>
-        <translation>Příkaz pro před-zavedení ve Windows:</translation>
+        <translation type="obsolete">Příkaz pro před-zavedení ve Windows:</translation>
     </message>
     <message>
         <source>&amp;Program Code:</source>
@@ -4033,6 +4033,14 @@ uloženo. Uložit nyní?</translation>
     </message>
     <message>
         <source>creation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import Path:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Preimport Command:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
