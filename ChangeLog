@@ -18055,3 +18055,5 @@
 	* Removed the 'RDSvc::ImportOs' enumeration.
 	* Removed the 'Windows Import Path' and 'Windows Preimport Command'
 	fields from the 'Edit Service' dialog in rdadmin(1).
+2018-11-23 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed bug where requested port could overrun HPI_MAX_NODES.

@@ -189,36 +189,48 @@ bool RDHPISoundCard::setClockSource(int card,RDHPISoundCard::ClockSource src)
 
 bool RDHPISoundCard::haveTimescaling(int card) const
 {
+  if(card>=HPI_MAX_ADAPTERS) return false;
+
   return timescale_support[card];
 }
 
 
 bool RDHPISoundCard::haveInputVolume(int card,int stream,int port) const
 {
+  if(card>=HPI_MAX_ADAPTERS||stream>=HPI_MAX_STREAMS||port>=HPI_MAX_NODES) return false;
+
   return input_stream_volume[card][stream][port];
 }
 
 
 bool RDHPISoundCard::haveOutputVolume(int card,int stream,int port) const
 {
+  if(card>=HPI_MAX_ADAPTERS||stream>=HPI_MAX_STREAMS||port>=HPI_MAX_NODES) return false;
+
   return output_stream_volume[card][stream][port];
 }
 
 
 bool RDHPISoundCard::haveInputLevel(int card,int port) const
 {
+  if(card>=HPI_MAX_ADAPTERS||port>=HPI_MAX_NODES) return false;
+
   return input_port_level[card][port];
 }
 
 
 bool RDHPISoundCard::haveOutputLevel(int card,int port) const
 {
+  if(card>=HPI_MAX_ADAPTERS||port>=HPI_MAX_NODES) return false;
+
   return output_port_level[card][port];
 }
 
 
 bool RDHPISoundCard::haveInputStreamVOX(int card,int stream) const
 {
+  if(card>=HPI_MAX_ADAPTERS||stream>=HPI_MAX_STREAMS) return false;
+
   return input_stream_vox[card][stream];
 }
 
