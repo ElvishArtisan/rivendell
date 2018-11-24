@@ -18057,3 +18057,6 @@
 	fields from the 'Edit Service' dialog in rdadmin(1).
 2018-11-22 Patrick Linstruth <patrick@deltecent.com>
 	* Fixed bug where requested port could overrun HPI_MAX_NODES.
+2018-11-23 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed regression where remote log changes did not auto refresh
+	in rdairplay(1).
