@@ -45,6 +45,10 @@ class RDAudioPort
   private:
    QString port_station;
    int port_card;
+   int audio_input_port_level[RD_MAX_PORTS];
+   int audio_output_port_level[RD_MAX_PORTS];
+   RDAudioPort::PortType audio_input_port_type[RD_MAX_PORTS];
+   RDCae::ChannelMode audio_input_port_mode[RD_MAX_PORTS];
 };
 
 
