@@ -222,16 +222,16 @@ void RDLogPlay::setOpMode(RDAirPlayConf::OpMode mode)
   UpdateStartTimes(play_line_counter);
 }
 
-/*
+
 void RDLogPlay::setLogName(QString name)
 {
   if(logName()!=name) {
     RDLogEvent::setLogName(name);
     emit renamed();
-    rda->airplayConf()->setCurrentLog(play_id,name.left(name.length()-4));
+    rda->airplayConf()->setCurrentLog(play_id,name);
   }
 }
-*/
+
 
 void RDLogPlay::setChannels(int cards[2],int ports[2],
 			  const QString start_rml[2],const QString stop_rml[2])
