@@ -332,7 +332,6 @@ MainObject::MainObject(QObject *parent)
   //
   // Sound Initialization
   //
-  RDSetMixerPorts(rda->config()->stationName(),rda->cae());
   sql=QString("select ")+
     "CHANNEL,"+      // 00
     "CARD_NUMBER,"+  // 01

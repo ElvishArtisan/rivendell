@@ -47,6 +47,7 @@
 #include <rdcmd_switch.h>
 #include <rdsvc.h>
 #include <rdsystem.h>
+#include <rdaudio_port.h>
 
 #include <cae_socket.h>
 #include <cae.h>
@@ -105,6 +106,8 @@ MainObject::MainObject(QObject *parent,const char *name)
   rd_config=new RDConfig(RD_CONF_FILE);
   rd_config->load();
   rd_config->setModuleName("caed");
+
+  rd_config->log("caed",RDConfig::LogInfo,"cae starting");
 
   //
   // Initialize Data Structures
@@ -589,12 +592,23 @@ void MainObject::InitProvisioning() const
 void MainObject::InitMixers()
 {
   for(int i=0;i<RD_MAX_CARDS;i++) {
+    RDAudioPort *port=new RDAudioPort(rd_config->stationName(),i);
     switch(cae_driver[i]) {
 	case RDStation::Hpi:
+          hpiSetClockSource(i,port->clockSource());
 	  for(int j=0;j<RD_MAX_PORTS;j++) {
 	    for(int k=0;k<RD_MAX_PORTS;k++) {
 	      hpiSetPassthroughLevel(i,j,k,RD_MUTE_DEPTH);
 	    }
+            if(port->inputPortType(j)==RDAudioPort::Analog) {
+              hpiSetInputType(i,j,RDCae::Analog);
+            }
+            else {
+              hpiSetInputType(i,j,RDCae::AesEbu);
+            }
+            hpiSetInputLevel(i,j,RD_BASE_ANALOG+port->inputPortLevel(j));
+            hpiSetOutputLevel(i,j,RD_BASE_ANALOG+port->outputPortLevel(j));
+            hpiSetInputMode(i,j,port->inputPortMode(j));
 	  }
 	  break;
 
@@ -603,6 +617,15 @@ void MainObject::InitMixers()
 	    for(int k=0;k<RD_MAX_PORTS;k++) {
 	      jackSetPassthroughLevel(i,j,k,RD_MUTE_DEPTH);
 	    }
+            if(port->inputPortType(j)==RDAudioPort::Analog) {
+              jackSetInputType(i,j,RDCae::Analog);
+            }
+            else {
+              jackSetInputType(i,j,RDCae::AesEbu);
+            }
+            jackSetInputLevel(i,j,RD_BASE_ANALOG+port->inputPortLevel(j));
+            jackSetOutputLevel(i,j,RD_BASE_ANALOG+port->outputPortLevel(j));
+            jackSetInputMode(i,j,port->inputPortMode(j));
 	  }
 	  break;
 
@@ -611,12 +634,22 @@ void MainObject::InitMixers()
 	    for(int k=0;k<RD_MAX_PORTS;k++) {
 	      alsaSetPassthroughLevel(i,j,k,RD_MUTE_DEPTH);
 	    }
+            if(port->inputPortType(j)==RDAudioPort::Analog) {
+              alsaSetInputType(i,j,RDCae::Analog);
+            }
+            else {
+              alsaSetInputType(i,j,RDCae::AesEbu);
+            }
+            alsaSetInputLevel(i,j,RD_BASE_ANALOG+port->inputPortLevel(j));
+            alsaSetOutputLevel(i,j,RD_BASE_ANALOG+port->outputPortLevel(j));
+            alsaSetInputMode(i,j,port->inputPortMode(j));
 	  }
 	  break;
 
 	case RDStation::None:
 	  break;
     }
+    delete port;
   }
 }
 

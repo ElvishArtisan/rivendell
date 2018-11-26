@@ -234,11 +234,6 @@ MainWidget::MainWidget(QWidget *parent)
   rda->cae()->connectHost();
 
   //
-  // Set Audio Assignments
-  //
-  RDSetMixerPorts(rda->station()->name(),rda->cae());
-
-  //
   // Deck Monitors
   //
   catch_monitor_view=new Q3ScrollView(this,"",Qt::WNoAutoErase);
