@@ -18060,3 +18060,5 @@
 	in rdairplay(1).
 2018-11-24 Patrick Linstruth <patrick@deltecent.com>
 	* Fixed regression with rdairplay(1) loading previous log.
+2018-11-25 Patrick Linstruth <patrick@deltecent.com>
+	* Optimized RDAudioPort SQL queries.

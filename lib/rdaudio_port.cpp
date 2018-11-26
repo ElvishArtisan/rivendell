@@ -26,8 +26,38 @@
 //
 RDAudioPort::RDAudioPort(QString station,int card)
 {
+  QString sql;
+  RDSqlQuery *q;
+
   port_station=station;
   port_card=card;
+
+  for(int port=0;port<RD_MAX_PORTS;port++) {
+    audio_input_port_level[port]=400;
+    audio_input_port_type[port]=RDAudioPort::Analog;
+    audio_input_port_mode[port]=RDCae::Normal;
+    audio_output_port_level[port]=400;
+  }
+
+  sql=QString("select PORT_NUMBER,LEVEL,TYPE,MODE from AUDIO_INPUTS where ")+
+    "STATION_NAME=\""+RDEscapeString(port_station)+"\" && "+
+    QString().sprintf("CARD_NUMBER=%d",port_card);
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    audio_input_port_level[q->value(0).toInt()]=q->value(1).toInt();
+    audio_input_port_type[q->value(0).toInt()]=(RDAudioPort::PortType)q->value(2).toInt();
+    audio_input_port_mode[q->value(0).toInt()]=(RDCae::ChannelMode)q->value(3).toInt();
+  }
+  delete q;
+
+  sql=QString("select PORT_NUMBER,LEVEL from AUDIO_OUTPUTS where ")+
+    "STATION_NAME=\""+RDEscapeString(port_station)+"\" && "+
+    QString().sprintf("CARD_NUMBER=%d",port_card);
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    audio_output_port_level[q->value(0).toInt()]=q->value(1).toInt();
+  }
+  delete q;
 }
 
 
@@ -71,25 +101,20 @@ void RDAudioPort::setClockSource(RDCae::ClockSource src)
 
 RDAudioPort::PortType RDAudioPort::inputPortType(int port)
 {
-  RDAudioPort::PortType ret=RDAudioPort::Analog;
-  QString sql=QString("select TYPE from AUDIO_INPUTS where ")+
-    "STATION_NAME=\""+RDEscapeString(port_station)+"\" && "+
-    QString().sprintf("CARD_NUMBER=%d && ",port_card)+
-    QString().sprintf("PORT_NUMBER=%d",port);
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  if(q->first()) {
-    ret=(RDAudioPort::PortType)q->value(0).toInt();
+  if(port<0||port>RD_MAX_PORTS) {
+    return RDAudioPort::Analog;
   }
 
-  return ret;
+  return audio_input_port_type[port];
 }
 
 
 void RDAudioPort::setInputPortType(int port,RDAudioPort::PortType type)
 {
-  if(port<0) {
+  if(port<0||port>RD_MAX_PORTS) {
     return;
   }
+  audio_input_port_type[port]=type;
   QString sql=QString("update AUDIO_INPUTS set ")+
     QString().sprintf("TYPE=%d where ",type)+
     "STATION_NAME=\""+RDEscapeString(port_station)+"\" && "+
@@ -102,25 +127,20 @@ void RDAudioPort::setInputPortType(int port,RDAudioPort::PortType type)
 
 RDCae::ChannelMode RDAudioPort::inputPortMode(int port)
 {
-  RDCae::ChannelMode ret=RDCae::Normal;
-  QString sql=QString("select MODE from AUDIO_INPUTS where ")+
-    "STATION_NAME=\""+RDEscapeString(port_station)+"\" && "+
-    QString().sprintf("CARD_NUMBER=%d && ",port_card)+
-    QString().sprintf("PORT_NUMBER=%d",port);
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  if(q->first()) {
-    ret=(RDCae::ChannelMode)q->value(0).toInt();
+  if(port<0||port>RD_MAX_PORTS) {
+    return RDCae::Normal;
   }
 
-  return ret;
+  return audio_input_port_mode[port];
 }
 
 
 void RDAudioPort::setInputPortMode(int port,RDCae::ChannelMode mode)
 {
-  if(port<0) {
+  if(port<0||port>RD_MAX_PORTS) {
     return;
   }
+  audio_input_port_mode[port]=mode;
   QString sql=QString("update AUDIO_INPUTS set ")+
     QString().sprintf("MODE=%d where ",mode)+
     "STATION_NAME=\""+RDEscapeString(port_station)+"\" && "+
@@ -133,28 +153,20 @@ void RDAudioPort::setInputPortMode(int port,RDCae::ChannelMode mode)
 
 int RDAudioPort::inputPortLevel(int port)
 {
-  if(port<0) {
+  if(port<0||port>RD_MAX_PORTS) {
     return 400;
   }
-  int ret=400;
-  QString sql=QString("select LEVEL from AUDIO_INPUTS where ")+
-    "STATION_NAME=\""+RDEscapeString(port_station)+"\" && "+
-    QString().sprintf("CARD_NUMBER=%d && ",port_card)+
-    QString().sprintf("PORT_NUMBER=%d",port);
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  if(q->first()) {
-    ret=q->value(0).toInt();
-  }
 
-  return ret;
+  return audio_input_port_level[port];
 }
 
 
 void RDAudioPort::setInputPortLevel(int port,int level)
 {
-  if(port<0) {
+  if(port<0||port>RD_MAX_PORTS) {
     return;
   }
+  audio_input_port_level[port]=level;
   QString sql=QString("update AUDIO_INPUTS set ")+
     QString().sprintf("LEVEL=%d where ",level)+
     "STATION_NAME=\""+RDEscapeString(port_station)+"\" && "+
@@ -167,28 +179,20 @@ void RDAudioPort::setInputPortLevel(int port,int level)
 
 int RDAudioPort::outputPortLevel(int port)
 {
-  if(port<0) {
+  if(port<0||port>RD_MAX_PORTS) {
     return 400;
   }
-  int ret=400;
-  QString sql=QString("select LEVEL from AUDIO_OUTPUTS where ")+
-    "STATION_NAME=\""+RDEscapeString(port_station)+"\" && "+
-    QString().sprintf("CARD_NUMBER=%d && ",port_card)+
-    QString().sprintf("PORT_NUMBER=%d",port);
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  if(q->first()) {
-    ret=q->value(0).toInt();
-  }
 
-  return ret;
+  return audio_output_port_level[port];
 }
 
 
 void RDAudioPort::setOutputPortLevel(int port,int level)
 {
-  if(port<0) {
+  if(port<0||port>RD_MAX_PORTS) {
     return;
   }
+  audio_output_port_level[port]=level;
   QString sql=QString("update AUDIO_OUTPUTS set ")+
     QString().sprintf("LEVEL=%d where ",level)+
     "STATION_NAME=\""+RDEscapeString(port_station)+"\" && "+
