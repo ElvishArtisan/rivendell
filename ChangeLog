@@ -18062,3 +18062,5 @@
 	* Fixed regression with rdairplay(1) loading previous log.
 2018-11-25 Patrick Linstruth <patrick@deltecent.com>
 	* Optimized RDAudioPort SQL queries.
+2018-11-26 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed bug where requested port could overrun HPI_MAX_NODES.
