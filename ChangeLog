@@ -18055,3 +18055,5 @@
 	* Removed the 'RDSvc::ImportOs' enumeration.
 	* Removed the 'Windows Import Path' and 'Windows Preimport Command'
 	fields from the 'Edit Service' dialog in rdadmin(1).
+2018-11-25 Patrick Linstruth <patrick@deltecent.com>
+	* Optimized RDAudioPort SQL queries.
