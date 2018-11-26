@@ -1396,13 +1396,13 @@ Cartão</translation>
     <message>
         <source>Zoom
 In</source>
-        <translation type="unfinished">Zoom
+        <translation type="obsolete">Zoom
 In</translation>
     </message>
     <message>
         <source>Zoom
 Out</source>
-        <translation type="unfinished">Zoom
+        <translation type="obsolete">Zoom
 Out</translation>
     </message>
     <message>

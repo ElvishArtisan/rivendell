@@ -1395,12 +1395,12 @@ Cart</source>
     <message>
         <source>Zoom
 In</source>
-        <translation type="unfinished">hineinzoomen</translation>
+        <translation type="obsolete">hineinzoomen</translation>
     </message>
     <message>
         <source>Zoom
 Out</source>
-        <translation type="unfinished">herauszoomen</translation>
+        <translation type="obsolete">herauszoomen</translation>
     </message>
     <message>
         <source>Time</source>

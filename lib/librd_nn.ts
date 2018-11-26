@@ -1394,13 +1394,13 @@ Cart</source>
     <message>
         <source>Zoom
 In</source>
-        <translation type="unfinished">Zoom
+        <translation type="obsolete">Zoom
 inn</translation>
     </message>
     <message>
         <source>Zoom
 Out</source>
-        <translation type="unfinished">Zoom
+        <translation type="obsolete">Zoom
 ut</translation>
     </message>
     <message>

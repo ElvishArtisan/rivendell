@@ -1396,13 +1396,13 @@ Cartucho</translation>
     <message>
         <source>Zoom
 In</source>
-        <translation type="unfinished">Acercar
+        <translation type="obsolete">Acercar
 Zoom</translation>
     </message>
     <message>
         <source>Zoom
 Out</source>
-        <translation type="unfinished">Alejar
+        <translation type="obsolete">Alejar
 Zoom</translation>
     </message>
     <message>
