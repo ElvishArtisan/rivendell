@@ -841,11 +841,11 @@ Do you want to save?</source>
     </message>
     <message>
         <source>No Errors</source>
-        <translation>No hubo errores</translation>
+        <translation type="unfinished">No hubo errores</translation>
     </message>
     <message>
         <source>No exceptions found.</source>
-        <translation>No se encontraron errores.</translation>
+        <translation type="unfinished">No se encontraron errores.</translation>
     </message>
     <message>
         <source>This will also delete the</source>
@@ -977,6 +977,10 @@ removerá estos datos.  ¿Remezclar?</translation>
     </message>
     <message>
         <source>already contains merged traffic data.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>cannot be relinked.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

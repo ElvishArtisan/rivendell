@@ -180,6 +180,20 @@ void RDSvc::setElrShelflife(int days) const
 }
 
 
+bool RDSvc::includeImportMarkers() const
+{
+  return 
+    RDBool(RDGetSqlValue("SERVICES","NAME",svc_name,"INCLUDE_IMPORT_MARKERS").
+	   toString());
+}
+
+
+void RDSvc::setIncludeImportMarkers(bool state)
+{
+  SetRow("INCLUDE_IMPORT_MARKERS",RDYesNo(state));
+}
+
+
 bool RDSvc::chainto() const
 {
   return 
@@ -722,6 +736,7 @@ bool RDSvc::generateLog(const QDate &date,const QString &logname,
   log=new RDLog(logname);
   log->setDescription(RDDateDecode(descriptionTemplate(),date,svc_station,
 				   svc_config,svc_name));
+  log->setIncludeImportMarkers(includeImportMarkers());
 
   emit generationProgress(1);
 
@@ -805,6 +820,26 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
     return false;
   }
 
+  //
+  // Calculate Source
+  //
+  RDLogLine::Type src_type=RDLogLine::UnknownType;
+  RDLog::Source link_src=RDLog::SourceMusic;
+  switch(src) {
+  case RDSvc::Music:
+    src_type=RDLogLine::MusicLink;
+    link_src=RDLog::SourceMusic;
+    break;
+
+  case RDSvc::Traffic:
+    src_type=RDLogLine::TrafficLink;
+    link_src=RDLog::SourceTraffic;
+    break;
+  }
+  RDLog *log=new RDLog(logname);
+  int current_link=0;
+  int total_links=log->linkQuantity(link_src);
+
   emit generationProgress(0);
 
   //
@@ -826,26 +861,6 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
   }
 
   //
-  // Calculate Source
-  //
-  RDLogLine::Type src_type=RDLogLine::UnknownType;
-  RDLog::Source link_src=RDLog::SourceMusic;
-  switch(src) {
-  case RDSvc::Music:
-    src_type=RDLogLine::MusicLink;
-    link_src=RDLog::SourceMusic;
-    break;
-
-  case RDSvc::Traffic:
-    src_type=RDLogLine::TrafficLink;
-    link_src=RDLog::SourceTraffic;
-    break;
-  }
-  RDLog *log=new RDLog(logname);
-  int current_link=0;
-  int total_links=log->linkQuantity(link_src);
-
-  //
   // Iterate Through the Log
   //
   RDLogEvent *src_event=new RDLogEvent(logname);
@@ -858,8 +873,8 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
       RDEventLine *e=new RDEventLine(svc_station);
       e->setName(logline->linkEventName());
       e->load();
-      e->linkLog(dest_event,svc_name,logline,track_str,label_cart,track_cart,
-		 &autofill_errors);
+      e->linkLog(dest_event,log,svc_name,logline,track_str,label_cart,
+		 track_cart,&autofill_errors);
       delete e;
       emit generationProgress(1+(24*current_link++)/total_links);
     }

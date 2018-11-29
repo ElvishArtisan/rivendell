@@ -893,11 +893,11 @@ Continue</translation>
     </message>
     <message>
         <source>No Errors</source>
-        <translation>Sem Erros</translation>
+        <translation type="unfinished">Sem Erros</translation>
     </message>
     <message>
         <source>No exceptions found.</source>
-        <translation>Exceções não encontradas. Parabéns. </translation>
+        <translation type="unfinished">Exceções não encontradas. Parabéns. </translation>
     </message>
     <message>
         <source>already contains merged music and/or traffic data.
@@ -977,6 +977,10 @@ Re-agregar removerá estes dados.  Re-agregar? </translation>
     </message>
     <message>
         <source>already contains merged traffic data.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>cannot be relinked.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -84,6 +84,7 @@ class EditSvc : public QDialog
   QComboBox *svc_loglifeorigin_box;
   QCheckBox *svc_shelflife_box;
   QSpinBox *svc_shelflife_spin;
+  QCheckBox *svc_import_markers_check;
   bool import_changed;
 };
 

@@ -1,34 +1,34 @@
                LOGS Table Layout for Rivendell
 
 The LOGS table holds data concerning each log object that exists
-on the system.  Following is the layout of a record in the LOGS
-table:
+on the system.
 
 FIELD NAME           TYPE             REMARKS
 -------------------------------------------------------------------
-NAME                 varchar(64)
-LOG_EXISTS           enum('N','Y')
-TYPE                 int(11)          0=Log, 1=Event, 2=Clock, 3=Grid
-SERVICE              varchar(10)      From SERVICES.NAME
-DESCRIPTION          varchar(64)
-ORIGIN_USER          varchar(191)     From USERS.LOGIN_NAME
-ORIGIN_DATETIME      datetime    
-LINK_DATETIME        datetime
-MODIFIED_DATETIME    datetime
-AUTO_REFRESH         enum('N','Y')
-START_DATE	     date
-END_DATE	     date
-PURGE_DATE           date
-IMPORT_DATE          date
-SCHEDULED_TRACKS     int unsigned(10)
-COMPLETED_TRACKS     int unsigned(10)
-MUSIC_LINKS          int
-MUSIC_LINKED         enum('N','Y')
-TRAFFIC_LINKS        int
-TRAFFIC_LINKED       enum('N','Y')
-NEXT_ID              int(11)
-LOCK_USER_NAME       varchar(191)     From USER.LOGIN_NAME
-LOCK_STATION_NAME    varchar(64)      From STATIONS.NAME
-LOCK_IPV4_ADDRESS    varchar(16)
-LOCK_DATETIME        datetime
-LOCK_GUID            varchar(82)
+NAME                    varchar(64)
+LOG_EXISTS              enum('N','Y')
+TYPE                    int(11)          0=Log, 1=Event, 2=Clock, 3=Grid
+SERVICE                 varchar(10)      From SERVICES.NAME
+DESCRIPTION             varchar(64)
+ORIGIN_USER             varchar(191)     From USERS.LOGIN_NAME
+ORIGIN_DATETIME         datetime    
+LINK_DATETIME           datetime
+MODIFIED_DATETIME       datetime
+AUTO_REFRESH            enum('N','Y')
+START_DATE              date
+END_DATE  	        date
+PURGE_DATE              date
+IMPORT_DATE             date
+SCHEDULED_TRACKS        int unsigned(10)
+COMPLETED_TRACKS        int unsigned(10)
+INCLUDE_IMPORT_MARKERS  enum('N','Y')
+MUSIC_LINKS             int
+MUSIC_LINKED            enum('N','Y')
+TRAFFIC_LINKS           int
+TRAFFIC_LINKED          enum('N','Y')
+NEXT_ID                 int(11)
+LOCK_USER_NAME          varchar(191)     From USER.LOGIN_NAME
+LOCK_STATION_NAME       varchar(64)      From STATIONS.NAME
+LOCK_IPV4_ADDRESS       varchar(16)
+LOCK_DATETIME           datetime
+LOCK_GUID               varchar(82)

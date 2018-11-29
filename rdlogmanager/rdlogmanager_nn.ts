@@ -900,11 +900,11 @@ Hald fram?</translation>
     </message>
     <message>
         <source>No Errors</source>
-        <translation>Ingen feil</translation>
+        <translation type="unfinished">Ingen feil</translation>
     </message>
     <message>
         <source>No exceptions found.</source>
-        <translation>Fann ingen unntak.</translation>
+        <translation type="unfinished">Fann ingen unntak.</translation>
     </message>
     <message>
         <source>already contains merged music and/or traffic data.
@@ -980,6 +980,10 @@ Flettar du på nytt, vil du fjerna desse dataa. Flett på nytt?</translation>
     </message>
     <message>
         <source>already contains merged traffic data.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>cannot be relinked.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

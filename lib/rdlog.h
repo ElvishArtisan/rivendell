@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Log
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,8 +20,6 @@
 
 #ifndef RDLOG_H
 #define RDLOG_H
-
-#include <qsqldatabase.h>
 
 #include <rdconfig.h>
 #include <rdlog_event.h>
@@ -65,6 +63,8 @@ class RDLog
    void setScheduledTracks(unsigned tracks) const;
    unsigned completedTracks() const;
    void setCompletedTracks(unsigned tracks) const;
+   bool includeImportMarkers() const;
+   void setIncludeImportMarkers(bool state);
    int linkQuantity(RDLog::Source src) const;
    void setLinkQuantity(RDLog::Source src,int quan) const;
    void updateLinkQuantity(RDLog::Source src) const;

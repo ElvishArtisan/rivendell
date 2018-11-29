@@ -18064,3 +18064,9 @@
 	* Optimized RDAudioPort SQL queries.
 2018-11-26 Patrick Linstruth <patrick@deltecent.com>
 	* Fixed bug where requested port could overrun HPI_MAX_NODES.
+2018-11-29 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'SERVICES.INCLUDE_IMPORT_MARKERS' field to the database.
+	* Added a 'LOGS.INCLUDE_IMPORT_MARKERS' field to the database.
+	* Incremented the database version to 301.
+	* Added an 'Inlcude Import Markers in Finished Logs' checkbox to
+	the 'Edit Service' dialog in rdadmin(1).

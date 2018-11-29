@@ -132,6 +132,13 @@ void LogObject::userData()
 		(const char *)log->name().utf8());
 	exit(256);
       }
+      if((!log->includeImportMarkers())&&
+	 (log->linkState(RDLog::SourceMusic)!=RDLog::LinkMissing)) {
+	fprintf(stderr,
+		"rdlogmanager: music for log \"%s\" cannot be reimported\n",
+		(const char *)log->name().utf8());
+	exit(256);
+      }
       report="";
       log->removeTracks(rda->station(),rda->user(),rda->config());
       if(!svc->clearLogLinks(RDSvc::Traffic,logname,rda->user(),&err_msg)) {
@@ -165,6 +172,13 @@ void LogObject::userData()
 	 (log->linkState(RDLog::SourceTraffic)==RDLog::LinkDone)) {
 	fprintf(stderr,
 		"rdlogmanager: traffic for log \"%s\" is already imported\n",
+		(const char *)log->name().utf8());
+	exit(256);
+      }
+      if((!log->includeImportMarkers())&&
+	 (log->linkState(RDLog::SourceTraffic)!=RDLog::LinkMissing)) {
+	fprintf(stderr,
+		"rdlogmanager: traffic for log \"%s\" cannot be reimported\n",
 		(const char *)log->name().utf8());
 	exit(256);
       }

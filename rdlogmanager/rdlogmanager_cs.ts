@@ -887,11 +887,11 @@ Pokračovat?</translation>
     </message>
     <message>
         <source>No Errors</source>
-        <translation>Žádné chyby</translation>
+        <translation type="unfinished">Žádné chyby</translation>
     </message>
     <message>
         <source>No exceptions found.</source>
-        <translation>Nenalezena žádná chyba.</translation>
+        <translation type="unfinished">Nenalezena žádná chyba.</translation>
     </message>
     <message>
         <source>already contains merged music and/or traffic data.
@@ -975,6 +975,10 @@ Opětovné sloučení tato data smaže. Sloučit znovu?</translation>
     </message>
     <message>
         <source>already contains merged traffic data.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>cannot be relinked.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

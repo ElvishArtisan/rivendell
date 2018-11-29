@@ -18,6 +18,7 @@ AUTO_REFRESH            enum('N','Y')
 DEFAULT_LOG_SHELFLIFE   int(11)
 LOG_SHELFLIFE_ORIGIN    int(11)               0=Air Date, 1=Log Creation
 ELR_SHELFLIFE           int(11)
+INCLUDE_IMPORT_MARKERS  enum('N','Y')
 TFC_PATH                varchar(191)
 TFC_PREIMPORT_CMD       text
 TFC_WIN_PATH            varchar(191)

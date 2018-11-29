@@ -223,6 +223,18 @@ void RDLog::setCompletedTracks(unsigned tracks) const
 }
 
 
+bool RDLog::includeImportMarkers() const
+{
+  return RDBool(GetStringValue("INCLUDE_IMPORT_MARKERS"));
+}
+
+
+void RDLog::setIncludeImportMarkers(bool state)
+{
+  SetRow("INCLUDE_IMPORT_MARKERS",RDYesNo(state));
+}
+
+
 int RDLog::linkQuantity(RDLog::Source src) const
 {
   switch(src) {
@@ -638,11 +650,9 @@ QString RDLog::GetStringValue(const QString &field) const
   q=new RDSqlQuery(sql);
   if(q->first()) {
     accum=q->value(0).toString();
-    delete q;
-    return accum;
   }
   delete q;
-  return 0;    
+  return accum;    
 }
 
 

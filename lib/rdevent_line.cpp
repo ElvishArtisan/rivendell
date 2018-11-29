@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Log Manager Event
 //
-//   (C) Copyright 2002-2006,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -911,7 +911,7 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 }
 
 
-bool RDEventLine::linkLog(RDLogEvent *e,const QString &svcname,
+bool RDEventLine::linkLog(RDLogEvent *e,RDLog *log,const QString &svcname,
 			  RDLogLine *link_logline,const QString &track_str,
 			  const QString &label_cart,const QString &track_cart,
 			  QString *errors)
@@ -945,13 +945,15 @@ bool RDEventLine::linkLog(RDLogEvent *e,const QString &svcname,
   //
   // Insert Parent Link
   //
-  e->insert(e->size(),1);
-  logline=new RDLogLine();
-  *logline=*link_logline;
-  logline->setId(e->nextId());
-  *(e->logLine(e->size()-1))=*logline;
-  delete logline;
-  logline=NULL;
+  if(log->includeImportMarkers()) {
+    e->insert(e->size(),1);
+    logline=new RDLogLine();
+    *logline=*link_logline;
+    logline->setId(e->nextId());
+    *(e->logLine(e->size()-1))=*logline;
+    delete logline;
+    logline=NULL;
+  }
 
   //
   // Clear Leading Event Values
@@ -1139,17 +1141,7 @@ bool RDEventLine::linkLog(RDLogEvent *e,const QString &svcname,
 	logline->setCartNumber(q->value(0).toUInt());
       }
     }
-    /*
-    //
-    // Clear Leading Event Values
-    //
-    time_type=RDLogLine::Relative;
-    trans_type=event_default_transtype;
-    */
     time=time.addMSecs(length);
-    /*
-    grace_time=-1;
-    */
   }
   delete q;
 

@@ -9598,6 +9598,23 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<301)&&(set_schema>cur_schema)) {
+    sql=QString("alter table SERVICES add column ")+
+      "INCLUDE_IMPORT_MARKERS enum('N','Y') default 'Y' after ELR_SHELFLIFE";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table LOGS add column ")+
+      "INCLUDE_IMPORT_MARKERS enum('N','Y') default 'Y' after COMPLETED_TRACKS";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
+
   // NEW SCHEMA UPDATES GO HERE...
 
   //

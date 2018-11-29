@@ -3373,6 +3373,10 @@ must be saved.  Save now?</source>
         <source>Preimport Command:</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Include Import Markers in Finished Logs</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditSvcPerms</name>

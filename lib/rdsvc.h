@@ -63,6 +63,8 @@ class RDSvc : public QObject
   void setLogShelflifeOrigin(ShelflifeOrigin orig);
   int elrShelflife() const;
   void setElrShelflife(int days) const;
+  bool includeImportMarkers() const;
+  void setIncludeImportMarkers(bool state);
   bool chainto() const;
   void setChainto(bool state) const;
   QString importTemplate(ImportSource src) const;

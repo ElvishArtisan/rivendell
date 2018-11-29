@@ -802,14 +802,6 @@ Do you want to save?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>No Errors</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>No exceptions found.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Music Exists</source>
         <translation type="unfinished"></translation>
     </message>
@@ -875,6 +867,18 @@ Do you want to save?</source>
     </message>
     <message>
         <source>already contains merged traffic data.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No Errors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No exceptions found.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>cannot be relinked.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -41,6 +41,16 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // NEW SCHEMA REVERSIONS GO HERE...
 
   //
+  // Revert 301
+  //
+  if((cur_schema==301)&&(set_schema<cur_schema)) {
+    DropColumn("LOGS","INCLUDE_IMPORT_MARKERS");
+    DropColumn("SERVICES","INCLUDE_IMPORT_MARKERS");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 300
   //
   if((cur_schema==300)&&(set_schema<cur_schema)) {

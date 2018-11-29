@@ -887,11 +887,11 @@ Fortfahren?</translation>
     </message>
     <message>
         <source>No Errors</source>
-        <translation>Keine Fehler</translation>
+        <translation type="unfinished">Keine Fehler</translation>
     </message>
     <message>
         <source>No exceptions found.</source>
-        <translation>Keine Fehler gefunden.</translation>
+        <translation type="unfinished">Keine Fehler gefunden.</translation>
     </message>
     <message>
         <source>already contains merged music and/or traffic data.
@@ -975,6 +975,10 @@ Einbinden wird diese entfernen. Fortfahren?</translation>
     </message>
     <message>
         <source>already contains merged traffic data.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>cannot be relinked.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

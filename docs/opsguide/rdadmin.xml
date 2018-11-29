@@ -361,6 +361,18 @@
 	as-played data to be purged from the database the specified number
 	of days after being generated.
       </para>
+      <para>
+	The <computeroutput>Include Import Markers in Finished Logs</computeroutput>
+	box, if ticked, will cause markers to indicate the base location
+	of imported Music and Traffic events to be retained even after
+	such events have been imported. Some users find these markers
+	distracting, so their retention can be disabled by clearing this
+	check box.
+      </para>
+      <warning>
+	If import markers are not included in finished logs, then it will
+	not be possible re-import music or traffic data into those logs.
+      </warning>
       <sect3 xml:id="sect.rdadmin.manage_services.general.configure_autofill_carts">
 	<title>Configuring Autofill Carts</title>
 	<para>

@@ -390,29 +390,38 @@ void GenerateLog::musicData()
   RDLog *log=new RDLog(logname);
   if(((log->linkState(RDLog::SourceMusic)==RDLog::LinkDone)||
       (log->linkState(RDLog::SourceTraffic)==RDLog::LinkDone))) {
-    if(QMessageBox::question(this,"RDLogManager - "+tr("Music Exists"),
-			     tr("The log for")+" "+
-			     gen_date_edit->date().toString("MM/dd/yyyy")+" "+
-			     tr("already contains merged music and/or traffic data.")+"\n"+
-			     tr("Remerging it will remove this data.  Remerge?"),
-			     QMessageBox::Yes,QMessageBox::No)!=
-       QMessageBox::Yes) {
-      delete log;
-      delete svc;
-      return;
-    }
-    if((tracks=log->completedTracks())>0) {
-      if(QMessageBox::warning(this,"RDLogManager - "+tr("Tracks Exist"),
-			      tr("This will also delete the")+
-			      QString().sprintf(" %u ",tracks)+
-			      tr("voice tracks associated with this log.")+
-			      "\n"+tr("Continue?"),
-			      QMessageBox::Yes,QMessageBox::No)!=
+    if(log->includeImportMarkers()) {
+      if(QMessageBox::question(this,"RDLogManager - "+tr("Music Exists"),
+			       tr("The log for")+" "+
+			       gen_date_edit->date().toString("MM/dd/yyyy")+" "+
+			       tr("already contains merged music and/or traffic data.")+"\n"+
+			       tr("Remerging it will remove this data.  Remerge?"),
+			       QMessageBox::Yes,QMessageBox::No)!=
 	 QMessageBox::Yes) {
 	delete log;
 	delete svc;
 	return;
       }
+      if((tracks=log->completedTracks())>0) {
+	if(QMessageBox::warning(this,"RDLogManager - "+tr("Tracks Exist"),
+				tr("This will also delete the")+
+				QString().sprintf(" %u ",tracks)+
+				tr("voice tracks associated with this log.")+
+				"\n"+tr("Continue?"),
+				QMessageBox::Yes,QMessageBox::No)!=
+	   QMessageBox::Yes) {
+	  delete log;
+	  delete svc;
+	  return;
+	}
+      }
+    }
+    else {
+      QMessageBox::warning(this,"RDLogManager - "+tr("Error"),
+			   tr("The log for")+" "+
+			   gen_date_edit->date().toString("MM/dd/yyyy")+" "+
+			   tr("cannot be relinked."));
+      return;
     }
     log->removeTracks(rda->station(),rda->user(),rda->config());
     if(!svc->clearLogLinks(RDSvc::Traffic,logname,rda->user(),&err_msg)) {
@@ -461,15 +470,24 @@ void GenerateLog::trafficData()
 			       rda->station(),rda->config(),svc->name());
   RDLog *log=new RDLog(logname);
   if((log->linkState(RDLog::SourceTraffic)==RDLog::LinkDone)) {
-    if(QMessageBox::question(this,"RDLogManager - "+tr("Traffic Exists"),
-			     tr("The log for")+" "+
-			     gen_date_edit->date().toString("MM/dd/yyyy")+" "+
-			     tr("already contains merged traffic data.")+"\n"+
-			     tr("Remerging it will remove this data.  Remerge?"),
-			     QMessageBox::Yes,QMessageBox::No)!=
-       QMessageBox::Yes) {
-      delete log;
-      delete svc;
+    if(log->includeImportMarkers()) {
+      if(QMessageBox::question(this,"RDLogManager - "+tr("Traffic Exists"),
+			       tr("The log for")+" "+
+			       gen_date_edit->date().toString("MM/dd/yyyy")+" "+
+			       tr("already contains merged traffic data.")+"\n"+
+			       tr("Remerging it will remove this data.  Remerge?"),
+			       QMessageBox::Yes,QMessageBox::No)!=
+	 QMessageBox::Yes) {
+	delete log;
+	delete svc;
+	return;
+      }
+    }
+    else {
+      QMessageBox::warning(this,"RDLogManager - "+tr("Error"),
+			   tr("The log for")+" "+
+			   gen_date_edit->date().toString("MM/dd/yyyy")+" "+
+			   tr("cannot be relinked."));
       return;
     }
     if(!svc->clearLogLinks(RDSvc::Traffic,logname,rda->user(),&err_msg)) {
@@ -512,7 +530,9 @@ void GenerateLog::fileScanData()
   if(gen_music_enabled) {
     if(QFile::exists(svc->
 		     importFilename(RDSvc::Music,gen_date_edit->date()))) {
-      gen_music_button->setEnabled(true);
+      gen_music_button->setEnabled(log->includeImportMarkers()||
+				   (log->linkState(RDLog::SourceMusic)==
+				    RDLog::LinkMissing));
       gen_mus_avail_label->setPixmap(*gen_greenball_map);
     }
     else {
@@ -527,8 +547,11 @@ void GenerateLog::fileScanData()
     if(QFile::exists(svc->
 		     importFilename(RDSvc::Traffic,gen_date_edit->date()))) {
       gen_traffic_button->
-	setEnabled((!gen_music_enabled)||
-		   (log->linkState(RDLog::SourceMusic)==RDLog::LinkDone));
+	setEnabled(((!gen_music_enabled)||
+		    (log->linkState(RDLog::SourceMusic)==RDLog::LinkDone))&&
+		   (log->includeImportMarkers()||
+		    (log->linkState(RDLog::SourceTraffic)==
+		     RDLog::LinkMissing)));
       gen_tfc_avail_label->setPixmap(*gen_greenball_map);
     }
     else {
