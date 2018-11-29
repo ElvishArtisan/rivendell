@@ -18,30 +18,30 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <unistd.h>
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 #include <qfile.h>
 #include <qmessagebox.h>
-#include <q3process.h>
 
+#include "rdapplication.h"
 #include "rdconf.h"
 #include "rd.h"
 #include "rdtempdirectory.h"
 
 #include <rdtextfile.h>
 
-bool RDTextFile(const QString &data)
+bool RDTextFile(const QString &data,bool delete_on_exit)
 {
   char tmpfile[256];
-  QString editor;
+  char editor[256];
 
   if(getenv("VISUAL")==NULL) {
-    editor=RD_LINUX_EDITOR;
+    strncpy(editor,RD_LINUX_EDITOR,256);
   }
   else {
-    editor=getenv("VISUAL");
+    strncpy(editor,getenv("VISUAL"),256);
   }
   strcpy(tmpfile,RDTempDirectory::basePath()+"/rdreportXXXXXX");
   int fd=mkstemp(tmpfile);
@@ -51,10 +51,14 @@ bool RDTextFile(const QString &data)
   }
   write(fd,data.utf8(),data.utf8().length());
   ::close(fd);
+  if(delete_on_exit) {
+    rda->addTempFile(tmpfile);
+  }
+
+  char *args[]={editor,tmpfile,(char *)NULL};
   if(fork()==0) {
-    system(editor+" "+QString(tmpfile));
-    unlink(tmpfile);
-    exit(0);
+    execvp(editor,args);
+    exit(1);
   }
   return true;
 }

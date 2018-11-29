@@ -22,6 +22,7 @@
 #define RDAPPLICATION_H
 
 #include <qobject.h>
+#include <qstringlist.h>
 
 #include <rdairplay_conf.h>
 #include <rdcae.h>
@@ -58,6 +59,7 @@ class RDApplication : public QObject
   RDUser *user();
   void log(RDConfig::LogPriority prio,const QString &msg);
   bool dropTable(const QString &tbl_name);
+  void addTempFile(const QString &pathname);
 
  private slots:
   void userChangedData();

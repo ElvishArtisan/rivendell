@@ -23,7 +23,7 @@
 
 #include <qstring.h>
 
-bool RDTextFile(const QString &data);
+bool RDTextFile(const QString &data,bool delete_on_exit=true);
 
 
 #endif  // RDTEXTFILE_H

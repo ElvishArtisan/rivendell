@@ -28,6 +28,15 @@
 #include "rdcmd_switch.h"
 
 RDApplication *rda=NULL;
+QStringList __rdapplication_temp_files;
+
+void __RDApplication_ExitCallback()
+{
+  for(int i=0;i<__rdapplication_temp_files.size();i++) {
+    unlink(__rdapplication_temp_files.at(i).toUtf8());
+  }
+}
+
 
 RDApplication::RDApplication(const QString &module_name,const QString &cmdname,
 			     const QString &usage,QObject *parent)
@@ -49,6 +58,8 @@ RDApplication::RDApplication(const QString &module_name,const QString &cmdname,
   app_station=NULL;
   app_system=NULL;
   app_user=NULL;
+
+  atexit(__RDApplication_ExitCallback);
 }
 
 
@@ -257,6 +268,12 @@ bool RDApplication::dropTable(const QString &tbl_name)
   delete q;
 
   return ret;
+}
+
+
+void RDApplication::addTempFile(const QString &pathname)
+{
+  __rdapplication_temp_files.push_back(pathname);
 }
 
 
