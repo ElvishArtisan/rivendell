@@ -81,7 +81,7 @@
       </mediaobject>
     </para>
     <para>
-      The upper third of the the dialog provides fields for basic information
+      The upper third of the dialog provides fields for basic information
       regarding the user as well as authentication settings. If the
       <computeroutput>Authenticate This User Locally</computeroutput> box
       is ticked, then the login password for this user can be set by touching
@@ -394,7 +394,7 @@
 	  in an event by RDLogManager when the event's
 	  <computeroutput>Use Autofill</computeroutput> box is ticked.
 	  When filling a gap, RDLogManager will recursively scan the list
-	  of available carts, working from the longest to to shortest, and
+	  of available carts, working from the longest to shortest, and
 	  insert the longest cart that will fit. The process will stop when
 	  either the available gap has been completely filled or no cart
 	  short enough to fit has been found.
@@ -1400,6 +1400,11 @@
 	closely mirrors that of the
 	<link linkend="sect.rdadmin.manage_hosts.configuring_rdairplay">
 	  RDAirPlay configuration</link>. Please see that section for details.
+      </para>
+      <para>
+	Although rdpanel(1)'s panels appear similar to rdairplay(1)'s panels,
+	rdpanel(1) has its own set of system and user panels that are independent
+	of rdairplay(1) and must be set up separately.
       </para>
     </sect2>
     <sect2 xml:id="sect.rdadmin.manage_hosts.configuring_rdlogedit">

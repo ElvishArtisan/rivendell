@@ -126,7 +126,7 @@
     <warning>
       <title>Duplicate Cart Numbers</title>
       <para>
-	If a cart from the source system has the same number as one one the
+	If a cart from the source system has the same number as the
 	destination, the destination cart (data and *all* audio) will be
 	overwritten!
       </para>

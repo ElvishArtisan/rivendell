@@ -309,7 +309,7 @@
 	<title>Cut Dayparting</title>
 	<para>
 	  For carts for which <computeroutput>Schedule Cuts</computeroutput>
-	  is set to <computeroutput>By Weight</computeroutput>,each cut in
+	  is set to <computeroutput>By Weight</computeroutput>, each cut in
 	  can be dayparted on the basis of these parameters:
 	</para>
 	<para>
