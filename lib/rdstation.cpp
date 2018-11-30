@@ -871,7 +871,8 @@ bool RDStation::create(const QString &name,QString *err_msg,
       "CARTSLOT_COLUMNS,"+    // 19
       "CARTSLOT_ROWS,"+       // 20
       "ENABLE_DRAGDROP,"+     // 21
-      "ENFORCE_PANEL_SETUP "+ // 22
+      "ENFORCE_PANEL_SETUP,"+ // 22
+      "REPORT_EDITOR_PATH "+  // 23
       "from STATIONS where "+
       "NAME=\""+RDEscapeString(exemplar)+"\"";
     q=new RDSqlQuery(sql);
@@ -904,7 +905,8 @@ bool RDStation::create(const QString &name,QString *err_msg,
 	QString().sprintf("CARTSLOT_COLUMNS=%d,",q->value(19).toInt())+
 	QString().sprintf("CARTSLOT_ROWS=%d,",q->value(20).toInt())+
 	"ENABLE_DRAGDROP=\""+RDEscapeString(q->value(21).toString())+"\","+
-	"ENFORCE_PANEL_SETUP=\""+RDEscapeString(q->value(22).toString())+"\"";
+	"ENFORCE_PANEL_SETUP=\""+RDEscapeString(q->value(22).toString())+"\","+
+	"REPORT_EDITOR_PATH=\""+RDEscapeString(q->value(23).toString())+"\"";
       q1=new RDSqlQuery(sql);
       if(!q1->isActive()) {
 	*err_msg=QObject::tr("host already exists");
