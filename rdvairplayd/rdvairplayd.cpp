@@ -90,7 +90,6 @@ MainObject::MainObject(QObject *parent)
   // Set Audio Assignments
   //
   //  air_segue_length=rda->airplayConf()->segueLength()+1;
-  RDSetMixerPorts(rda->config()->stationName(),rda->cae());
 
   //
   // RIPC Connection

@@ -192,11 +192,6 @@ MainWidget::MainWidget(QWidget *parent)
   rda->cae()->connectHost();
 
   //
-  // Load Audio Assignments
-  //
-  RDSetMixerPorts(rda->config()->stationName(),rda->cae());
-
-  //
   // Filter
   //
   lib_filter_edit=new QLineEdit(this);
