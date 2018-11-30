@@ -18068,7 +18068,7 @@
 	* Added a 'SERVICES.INCLUDE_IMPORT_MARKERS' field to the database.
 	* Added a 'LOGS.INCLUDE_IMPORT_MARKERS' field to the database.
 	* Incremented the database version to 301.
-	* Added an 'Inlcude Import Markers in Finished Logs' checkbox to
+	* Added an 'Include Import Markers in Finished Logs' checkbox to
 	the 'Edit Service' dialog in rdadmin(1).
 2018-11-29 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the 'RDTextFile()' function that caused zombification
