@@ -148,11 +148,6 @@ MainWidget::MainWidget(QWidget *parent)
   log_redball_map=new QPixmap(redball_xpm);
 
   //
-  // Load Audio Assignments
-  //
-  RDSetMixerPorts(rda->config()->stationName(),rda->cae());
-
-  //
   // Log Filter
   //
   log_filter_widget=
