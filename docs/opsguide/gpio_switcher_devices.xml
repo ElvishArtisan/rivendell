@@ -903,7 +903,7 @@
       resulting constellation of nodes can be controled with the
       'Switch Take' ['<command>ST</command>'] RML by specifying the
       Livewire source stream number as the <replaceable>input</replaceable>
-      parameter and the the base output number+the slot number-1 for the
+      parameter and the base output number+the slot number-1 for the
       <replaceable>output</replaceable> parameter.
     </para>
   </sect1>

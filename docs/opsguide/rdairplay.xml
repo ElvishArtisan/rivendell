@@ -519,7 +519,7 @@
        particular host system; while a <computeroutput>U</computeroutput>
        indicates a 'user' panel,
        one which is associated with a particular user and that will
-       &quot;follow around&quot; that user whereever he logs in in the
+       &quot;follow around&quot; that user whereever he logs in the
        site. (Depending upon how the system administrator has configured
        RDAirPlay, you may not have both of these panel types available to
        you).
