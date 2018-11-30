@@ -18083,7 +18083,7 @@
 	environmental variable.
 2018-11-30 Patrick Linstruth <patrick@deltecent.com>
 	* Put Amplitude and Time Up/Down arrows back in rdlibrary(1).
-2018-11-26 Patrick Linstruth <patrick@deltecent.com>
+2018-11-30 Patrick Linstruth <patrick@deltecent.com>
 	* Moved mixer initialization to caed(8).
 2018-11-30 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdadmin(1) that caused the exemplar value of
