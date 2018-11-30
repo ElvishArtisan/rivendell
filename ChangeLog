@@ -18081,3 +18081,5 @@
 	* Modified the report generator to use the editor specified in the
 	'Report Editor' control rather than than the value of the $VISUAL
 	environmental variable.
+2018-11-30 Patrick Linstruth <patrick@deltecent.com>
+	* Put Amplitude and Time Up/Down arrows back in rdlibrary(1).
