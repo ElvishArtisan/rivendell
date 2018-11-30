@@ -41,6 +41,15 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // NEW SCHEMA REVERSIONS GO HERE...
 
   //
+  // Revert 302
+  //
+  if((cur_schema==302)&&(set_schema<cur_schema)) {
+    DropColumn("STATIONS","REPORT_EDITOR_PATH");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 301
   //
   if((cur_schema==301)&&(set_schema<cur_schema)) {

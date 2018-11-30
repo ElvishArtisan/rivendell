@@ -18073,3 +18073,11 @@
 2018-11-29 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the 'RDTextFile()' function that caused zombification
 	of client programs.
+2018-11-30 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'STATIONS.REPORT_EDITOR_PATH' field to the database.
+	* Incremented the database version to 302.
+	* Added a 'Report Editor' control to the 'Edit Host' dialog in
+	rdadmin(1).
+	* Modified the report generator to use the editor specified in the
+	'Report Editor' control rather than than the value of the $VISUAL
+	environmental variable.

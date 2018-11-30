@@ -3598,7 +3598,7 @@ Přepsat?</translation>
     </message>
     <message>
         <source>Editor &amp;Command:</source>
-        <translation>&amp;Příkaz pro editor:</translation>
+        <translation type="obsolete">&amp;Příkaz pro editor:</translation>
     </message>
     <message>
         <source> mS</source>
@@ -3810,6 +3810,14 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
     <message>
         <source>ASI Audio
 Ports</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Audio Editor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Report Editor</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

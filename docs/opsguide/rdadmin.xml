@@ -669,12 +669,24 @@
       (<userinput>127.0.0.1</userinput>) here.
     </para>
     <para>
-      The <computeroutput>Editor Command:</computeroutput> can be used to
+      The <computeroutput>Audio Editor:</computeroutput> can be used to
       specify an external audio editor for use by rdlibrary(1). If desired,
       the value should consist of the command invocation needed to start
       the edit, with a <userinput>%f</userinput> wildcard to indicate the
       name of the file to open.
     </para>
+    <para>
+      The <computeroutput>Report Editor:</computeroutput> can be used to
+      specify an external text editor to be used to display reports.
+      If desired, the value should consist of the command invocation
+      needed to start the editor.
+    </para>
+    <note>
+      If left blank, the system will use the
+      <command>vi</command><manvolnum>1</manvolnum> editor running in an
+      <command>xterm</command><manvolnum>1</manvolnum> window
+      --i.e. <code>xterm -e vi</code>.
+    </note>
     <para>
       The <computeroutput>Time Offset:</computeroutput> field can be used
       to specify a static time offset in milliseconds to by applied to

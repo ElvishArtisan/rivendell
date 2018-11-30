@@ -3486,7 +3486,7 @@ Overwrite?</source>
     </message>
     <message>
         <source>Editor &amp;Command:</source>
-        <translation>Editor-&amp;Kommando:</translation>
+        <translation type="obsolete">Editor-&amp;Kommando:</translation>
     </message>
     <message>
         <source> mS</source>
@@ -3695,6 +3695,14 @@ configured to run the CAE service in order to populate the audio resources datab
     <message>
         <source>ASI Audio
 Ports</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Audio Editor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Report Editor</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -3723,7 +3723,7 @@ del Equipo</translation>
     </message>
     <message>
         <source>Editor &amp;Command:</source>
-        <translation>&amp;Comando editor:</translation>
+        <translation type="obsolete">&amp;Comando editor:</translation>
     </message>
     <message>
         <source>Use Realtime Filtering</source>
@@ -3819,6 +3819,14 @@ configured to run the CAE service in order to populate the audio resources datab
     <message>
         <source>ASI Audio
 Ports</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Audio Editor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Report Editor</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

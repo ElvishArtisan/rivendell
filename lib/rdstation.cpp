@@ -257,6 +257,19 @@ void RDStation::setEditorPath(const QString &cmd)
 }
 
 
+QString RDStation::reportEditorPath() const
+{
+  return RDGetSqlValue("STATIONS","NAME",station_name,"REPORT_EDITOR_PATH").
+    toString();
+}
+
+
+void RDStation::setReportEditorPath(const QString &cmd)
+{
+  SetRow("REPORT_EDITOR_PATH",cmd);
+}
+
+
 RDStation::FilterMode RDStation::filterMode() const
 {
   return (RDStation::FilterMode)RDGetSqlValue("STATIONS","NAME",station_name,

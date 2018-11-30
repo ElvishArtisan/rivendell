@@ -90,8 +90,10 @@ class EditStation : public QDialog
    QComboBox *station_default_name_edit;
    QLabel *station_address_label;
    QLineEdit *station_address_edit;
-   QLabel *station_editor_cmd_label;
-   QLineEdit *station_editor_cmd_edit;
+   QLabel *station_audio_editor_label;
+   QLineEdit *station_audio_editor_edit;
+   QLabel *station_report_editor_label;
+   QLineEdit *station_report_editor_edit;
    QLabel *station_timeoffset_label;
    QSpinBox *station_timeoffset_box;
    QLabel *station_startup_cart_label;

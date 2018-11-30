@@ -2,7 +2,7 @@
 //
 // Spawn an external text file viewer.
 //
-//   (C) Copyright 2002-2006,2016-2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -35,13 +35,27 @@
 bool RDTextFile(const QString &data,bool delete_on_exit)
 {
   char tmpfile[256];
-  char editor[256];
+  QString editor=RD_LINUX_EDITOR;
+  char cmd[PATH_MAX];
+  char *args[64];
 
-  if(getenv("VISUAL")==NULL) {
-    strncpy(editor,RD_LINUX_EDITOR,256);
+  if(!rda->station()->reportEditorPath().trimmed().isEmpty()) {
+    editor=rda->station()->reportEditorPath();
   }
-  else {
-    strncpy(editor,getenv("VISUAL"),256);
+  memset(args,0,sizeof(args));
+  QStringList f0=editor.split(" ",QString::SkipEmptyParts);
+  if(f0.size()>64) {
+    QMessageBox::warning(NULL,"File Error",
+			 "Too many arguments to report editor!");
+    return false;
+  }
+  strncpy(cmd,f0.at(0).toUtf8(),PATH_MAX);
+  QStringList f1=f0.at(0).split("/");
+  args[0]=(char *)malloc(f1.back().toUtf8().size()+1);
+  strcpy(args[0],f1.back().toUtf8());
+  for(int i=1;i<f0.size();i++) {
+    args[i]=(char *)malloc(f0.at(i).toUtf8().size()+1);
+    strcpy(args[i],f0.at(i).toUtf8());
   }
   strcpy(tmpfile,RDTempDirectory::basePath()+"/rdreportXXXXXX");
   int fd=mkstemp(tmpfile);
@@ -55,10 +69,15 @@ bool RDTextFile(const QString &data,bool delete_on_exit)
     rda->addTempFile(tmpfile);
   }
 
-  char *args[]={editor,tmpfile,(char *)NULL};
+  args[f0.size()]=(char *)malloc(strlen(tmpfile)+1);
+  strcpy(args[f0.size()],tmpfile);
+
+  args[f0.size()+1]=(char *)NULL;
+
   if(fork()==0) {
-    execvp(editor,args);
-    exit(1);
+    execvp(cmd,args);
+    _exit(1);
   }
+
   return true;
 }

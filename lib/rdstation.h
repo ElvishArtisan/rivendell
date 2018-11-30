@@ -64,6 +64,8 @@ class RDStation
   void setStartupCart(unsigned cartnum) const;
   QString editorPath() const;
   void setEditorPath(const QString &cmd);
+  QString reportEditorPath() const;
+  void setReportEditorPath(const QString &cmd);
   RDStation::FilterMode filterMode() const;
   void setFilterMode(RDStation::FilterMode mode) const;
   bool startJack() const;
