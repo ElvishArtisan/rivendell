@@ -210,11 +210,11 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,int card,
   QGroupBox *group_box=new QGroupBox(tr("Amplitude"),this);
   group_box->setGeometry(739,2,85,130);
   group_box->setFont(label_font);
-  QPushButton *y_up_button=new QPushButton(tr("Zoom\nIn"),this);
+  QPushButton *y_up_button=new RDTransportButton(RDTransportButton::Up,this);
   y_up_button->setGeometry(747,22,70,50);
   y_up_button->setFont(button_font);
   connect(y_up_button,SIGNAL(clicked()),this,SLOT(yUp()));
-  QPushButton *y_down_button=new QPushButton(tr("Zoom\nOut"),this);
+  QPushButton *y_down_button=new RDTransportButton(RDTransportButton::Down,this);
   y_down_button->setGeometry(747,72,70,50);
   y_down_button->setFont(button_font);
   connect(y_down_button,SIGNAL(clicked()),this,SLOT(yDown()));
@@ -230,11 +230,11 @@ RDEditAudio::RDEditAudio(RDCart *cart,QString cut_name,int card,
   x_full_in_button->setFont(button_font);
   x_full_in_button->setText(tr("Full\nIn"));
   connect(x_full_in_button,SIGNAL(clicked()),this,SLOT(xFullIn()));
-  QPushButton *x_up_button=new QPushButton(tr("Zoom\nIn"),this);
+  QPushButton *x_up_button=new RDTransportButton(RDTransportButton::Up,this);
   x_up_button->setGeometry(747,212,70,50);
   x_up_button->setFont(button_font);
   connect(x_up_button,SIGNAL(clicked()),this,SLOT(xUp()));
-  QPushButton *x_down_button=new QPushButton(tr("Zoom\nOut"),this);
+  QPushButton *x_down_button=new RDTransportButton(RDTransportButton::Down,this);
   x_down_button->setGeometry(747,262,70,50);
   x_down_button->setFont(button_font);
   connect(x_down_button,SIGNAL(clicked()),this,SLOT(xDown()));
