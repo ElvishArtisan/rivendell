@@ -18088,3 +18088,5 @@
 2018-11-30 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdadmin(1) that caused the exemplar value of
 	'Report Editor' to fail to propagate to new host configurations.
+2018-11-30 Patrick Linstruth <patrick@deltecent.com>
+	* Added text clarifying independent rdpanel(1) panels in Ops Guide.

@@ -1401,6 +1401,11 @@
 	<link linkend="sect.rdadmin.manage_hosts.configuring_rdairplay">
 	  RDAirPlay configuration</link>. Please see that section for details.
       </para>
+      <para>
+	Although rdpanel(1)'s panels appear similar to rdairplay(1)'s panels,
+	rdpanel(1) has its own set of system and user panels that are independent
+	of rdairplay(1) and must be set up separately.
+      </para>
     </sect2>
     <sect2 xml:id="sect.rdadmin.manage_hosts.configuring_rdlogedit">
       <title>Configuring RDLogEdit</title>
