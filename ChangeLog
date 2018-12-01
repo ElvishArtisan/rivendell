@@ -18091,3 +18091,6 @@
 2018-11-30 Patrick Linstruth <patrick@deltecent.com>
 	* Added text clarifying independent rdpanel(1) panels in Ops Guide
 	and other minor corrections.
+2018-11-30 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed regression with rdimport(1) that threw SQL errors when
+	importing into an existing cart.
