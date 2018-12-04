@@ -593,5 +593,11 @@
  */
 #define RD_STATUS_BACKGROUND_COLOR "#AAFFFF"
 
+/*
+ * RLM2 Connection Points
+ */
+#define RD_RLM2_CLIENT_TCP_PORT 34289
+#define RD_RLM2_SOURCE_UNIX_ADDRESS "m4w8n8fsfddf-473fdueusurt-8954"
+
 
 #endif  // RD_H

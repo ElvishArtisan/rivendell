@@ -18094,3 +18094,6 @@
 2018-11-30 Patrick Linstruth <patrick@deltecent.com>
 	* Fixed regression with rdimport(1) that threw SQL errors when
 	importing into an existing cart.
+2018-12-04 Fred Gleason <fredg@paravelsystems.com>
+	* Added an rdrlmd(8) service.
+	* Implemented JSON-formatted PAD output on TCP port 34289.

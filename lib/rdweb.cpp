@@ -1043,6 +1043,110 @@ QString RDXmlUnescape(const QString &str)
 }
 
 
+QString RDJsonPadding(int padding)
+{
+  QString ret="";
+
+  for(int i=0;i<padding;i++) {
+    ret+=" ";
+  }
+  return ret;
+}
+
+
+QString RDJsonNullField(const QString &name,int padding,bool final)
+{
+  QString comma=",";
+
+  if(final) {
+    comma="";
+  }
+
+  return RDJsonPadding(padding)+"\""+name+"\": null"+comma+"\r\n";
+}
+
+
+QString RDJsonField(const QString &name,bool value,int padding,bool final)
+{
+  QString comma=",";
+
+  if(final) {
+    comma="";
+  }
+
+  if(value) {
+    return RDJsonPadding(padding)+"\""+name+"\": true"+comma+"\r\n";
+  }
+  return RDJsonPadding(padding)+"\""+name+"\": false"+comma+"\r\n";
+}
+
+
+QString RDJsonField(const QString &name,int value,int padding,bool final)
+{
+  QString comma=",";
+
+  if(final) {
+    comma="";
+  }
+
+  return RDJsonPadding(padding)+"\""+name+"\": "+QString().sprintf("%d",value)+
+    comma+"\r\n";
+}
+
+
+QString RDJsonField(const QString &name,unsigned value,int padding,bool final)
+{
+  QString comma=",";
+
+  if(final) {
+    comma="";
+  }
+
+  return RDJsonPadding(padding)+"\""+name+"\": "+QString().sprintf("%u",value)+
+    comma+"\r\n";
+}
+
+
+QString RDJsonField(const QString &name,const QString &value,int padding,
+		    bool final)
+{
+  QString str=value;
+  QString comma=",";
+
+  if(final) {
+    comma="";
+  }
+
+  str.replace("\\","\\\\");
+  str.replace("\"","\\\"");
+  str.replace("/","\\/");
+  str.replace("\b","\\b");
+  str.replace("\f","\\f");
+  str.replace("\n","\\n");
+  str.replace("\r","\\r");
+  str.replace("\t","\\t");
+
+  return RDJsonPadding(padding)+"\""+name+"\": \""+str+"\""+comma+"\r\n";
+}
+
+
+QString RDJsonField(const QString &name,const QDateTime &value,int padding,
+		    bool final)
+{
+  QString comma=",";
+
+  if(final) {
+    comma="";
+  }
+
+  if(!value.isValid()) {
+    return RDJsonNullField(name,padding,final);
+  }
+  return RDJsonPadding(padding)+"\""+name+"\": \""+RDWebDateTime(value)+"\""+
+    comma+"\r\n";
+}
+
+
 QString RDUrlEscape(const QString &str)
 {
   /*
@@ -1098,7 +1202,18 @@ QString RDWebDateTime(const QDateTime &datetime)
   if(!datetime.isValid()) {
     return QString();
   }
-  return RDLocalToUtc(datetime).toString("ddd, dd MMM yyyy hh:mm:ss")+" GMT";
+  int offset=RDTimeZoneOffset();
+  QString tzstr="-";
+  if(offset<0) {
+    tzstr="+";
+  }
+  tzstr+=QString().sprintf("%02d%02d",
+			   offset/3600,(offset/60)-((offset/3600)*60));
+  if(offset==0) {
+    tzstr="GMT";
+  }
+
+  return RDLocalToUtc(datetime).toString("ddd, dd MMM yyyy hh:mm:ss")+" "+tzstr;
 }
 
 

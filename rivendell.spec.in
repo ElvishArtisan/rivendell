@@ -388,6 +388,7 @@ rm -rf $RPM_BUILD_ROOT
 @LOCAL_PREFIX@/sbin/rdcatchd
 @LOCAL_PREFIX@/sbin/rdvairplayd
 @LOCAL_PREFIX@/sbin/rdrepld
+@LOCAL_PREFIX@/sbin/rdrlmd
 @LOCAL_PREFIX@/sbin/sas_shim
 @LOCAL_PREFIX@/sbin/rdmarkerset
 @LOCAL_PREFIX@/sbin/rdcleandirs

@@ -52,6 +52,7 @@
 #include <rdsound_panel.h>
 #include <rdstereometer.h>
 #include <rdttydevice.h>
+#include <rdunixsocket.h>
 #include <rduser.h>
 
 #include "button_log.h"
