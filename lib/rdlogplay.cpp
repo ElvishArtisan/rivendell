@@ -2961,46 +2961,48 @@ void RDLogPlay::SendNowNext()
   //
   // RLM2
   //
-  play_pad_socket->write(QString("\"padUpdate\": {\r\n").toUtf8());
-  play_pad_socket->write(RDJsonField("dateTime",QDateTime::currentDateTime(),4).toUtf8());
-  play_pad_socket->write(RDJsonField("logMachine",play_id,4));
-  play_pad_socket->write(RDJsonField("onairFlag",play_onair_flag,4));
-  play_pad_socket->write(RDJsonField("logMode",RDAirPlayConf::logModeText(play_op_mode),4));
+  play_pad_socket->write(QString("{\r\n").toUtf8());
+  play_pad_socket->write(QString("    \"padUpdate\": {\r\n").toUtf8());
+  play_pad_socket->write(RDJsonField("dateTime",QDateTime::currentDateTime(),8).toUtf8());
+  play_pad_socket->write(RDJsonField("logMachine",play_id,8));
+  play_pad_socket->write(RDJsonField("onairFlag",play_onair_flag,8));
+  play_pad_socket->write(RDJsonField("logMode",RDAirPlayConf::logModeText(play_op_mode),8));
 
   //
   // Service
   //
   RDSvc *svc=new RDSvc(svcname,rda->station(),rda->config(),this);
-  play_pad_socket->write(QString("    \"service\": {\r\n").toUtf8());
-  play_pad_socket->write(RDJsonField("name",svcname,8).toUtf8());
+  play_pad_socket->write(QString("        \"service\": {\r\n").toUtf8());
+  play_pad_socket->write(RDJsonField("name",svcname,12).toUtf8());
   play_pad_socket->
-    write(RDJsonField("description",svc->description(),8).toUtf8());
+    write(RDJsonField("description",svc->description(),12).toUtf8());
   play_pad_socket->
-    write(RDJsonField("programCode",svc->programCode(),8,true).toUtf8());
-  play_pad_socket->write(QString("    },\r\n").toUtf8());
+    write(RDJsonField("programCode",svc->programCode(),12,true).toUtf8());
+  play_pad_socket->write(QString("        },\r\n").toUtf8());
   delete svc;
 
   //
   // Log
   //
-  play_pad_socket->write(QString("    \"log\": {\r\n").toUtf8());
-  play_pad_socket->write(RDJsonField("name",logName(),8,true).toUtf8());
-  play_pad_socket->write(QString("    },\r\n").toUtf8());
+  play_pad_socket->write(QString("        \"log\": {\r\n").toUtf8());
+  play_pad_socket->write(RDJsonField("name",logName(),12,true).toUtf8());
+  play_pad_socket->write(QString("        },\r\n").toUtf8());
 
   //
   // Now
   //
-  play_pad_socket->write(GetPadJson("now",logline[0],4,false).toUtf8());
+  play_pad_socket->write(GetPadJson("now",logline[0],8,false).toUtf8());
 
   //
   // Next
   //
-  play_pad_socket->write(GetPadJson("next",logline[1],4,true).toUtf8());
+  play_pad_socket->write(GetPadJson("next",logline[1],8,true).toUtf8());
 
   //
   // Commit the update
   //
-  play_pad_socket->write("}\r\n\r\n",5);
+  play_pad_socket->write(QString("    }\r\n").toUtf8());
+  play_pad_socket->write(QString("}\r\n\r\n").toUtf8());
 
   //
   // Old-style RLM Hosts
@@ -3039,7 +3041,7 @@ QString RDLogPlay::GetPadJson(const QString &name,RDLogLine *ll,
   QString ret;
 
   if(ll==NULL) {
-    ret=RDJsonNullField(name,4,final);
+    ret=RDJsonNullField(name,padding,final);
   }
   else {
     ret+=RDJsonPadding(padding)+"\""+name+"\": {\r\n";

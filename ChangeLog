@@ -18097,3 +18097,6 @@
 2018-12-04 Fred Gleason <fredg@paravelsystems.com>
 	* Added an rdrlmd(8) service.
 	* Implemented JSON-formatted PAD output on TCP port 34289.
+2018-12-05 Fred Gleason <fredg@paravelsystems.com>
+	* Added a set of enclosing '{}' braces around the JSON-formatted PAD
+	output to make it well-formed.
