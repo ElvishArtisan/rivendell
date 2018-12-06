@@ -18102,3 +18102,5 @@
 	output to make it well-formed.
 2018-12-05 Fred Gleason <fredg@paravelsystems.com>
 	* Added a set of Python classes for processing PAD updates.
+2018-12-06 Fred Gleason <fredg@paravelsystems.com>
+	* Added comments to the 'now_and_next.py' PyPAD script.
