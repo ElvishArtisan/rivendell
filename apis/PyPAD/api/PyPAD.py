@@ -128,6 +128,11 @@ class PyPADUpdate(object):
                string=self.__replace('%'+chr(i),string)
         for i in range(101,123):
                string=self.__replace('%'+chr(i),string)
+        string=string.replace('\\b','\b')
+        string=string.replace('\\f','\f')
+        string=string.replace('\\n','\n')
+        string=string.replace('\\r','\r')
+        string=string.replace('\\t','\t')
         return string
 
     def hasNowPad(self):
