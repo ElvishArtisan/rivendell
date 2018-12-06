@@ -31,16 +31,10 @@ import rivendell.PyPAD
 
 #
 # First, we create a callback method, that will be called every time a
-# log machine updates its PAD. Two arguments are supplied:
+# log machine updates its PAD. An instance of 'PyPADUpdate' that contains
+# the PAD information is supplied as the single argument.
 #
-#   update - An instance of 'PyPADUpdate' that contains the PAD information.
-#
-#   priv - An arbitrary object that was passed to 'PyPADReceiver' using
-#          its 'setPrivateObject()' method. This allows initialiation to
-#          be done (create sockets, file handles, etc) before starting the
-#          receiver and then passing those objects to the processing callback.
-#       
-def ProcessPad(update,priv):
+def ProcessPad(update):
     print
     if update.hasNowPad():
         print "Log %03d NOW: " % update.logMachine()+update.padFields("%a - %t")

@@ -152,23 +152,15 @@ class PyPADUpdate(object):
 class PyPADReceiver(object):
     def __init__(self):
         self.__callback=None
-        self.__priv=None
 
     def __PyPAD_Process(self,pad):
-        self.__callback(pad,self.__priv)
+        self.__callback(pad)
 
     def setCallback(self,cb):
         """
            Set the processing callback.
         """
         self.__callback=cb
-
-    def setPrivateObject(self,obj):
-        """
-           Set the 'private' object. This object will be passed to the
-           callback in its second argument.
-        """
-        self.priv=obj
 
     def start(self,hostname):
         """
