@@ -2964,7 +2964,7 @@ void RDLogPlay::SendNowNext()
   play_pad_socket->write(QString("{\r\n").toUtf8());
   play_pad_socket->write(QString("    \"padUpdate\": {\r\n").toUtf8());
   play_pad_socket->write(RDJsonField("dateTime",QDateTime::currentDateTime(),8).toUtf8());
-  play_pad_socket->write(RDJsonField("logMachine",play_id,8));
+  play_pad_socket->write(RDJsonField("logMachine",play_id+1,8));
   play_pad_socket->write(RDJsonField("onairFlag",play_onair_flag,8));
   play_pad_socket->write(RDJsonField("logMode",RDAirPlayConf::logModeText(play_op_mode),8));
 

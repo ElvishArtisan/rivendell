@@ -18100,3 +18100,5 @@
 2018-12-05 Fred Gleason <fredg@paravelsystems.com>
 	* Added a set of enclosing '{}' braces around the JSON-formatted PAD
 	output to make it well-formed.
+2018-12-05 Fred Gleason <fredg@paravelsystems.com>
+	* Added a set of Python classes for processing PAD updates.

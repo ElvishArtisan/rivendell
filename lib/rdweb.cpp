@@ -1213,7 +1213,7 @@ QString RDWebDateTime(const QDateTime &datetime)
     tzstr="GMT";
   }
 
-  return RDLocalToUtc(datetime).toString("ddd, dd MMM yyyy hh:mm:ss")+" "+tzstr;
+  return datetime.toString("ddd, dd MMM yyyy hh:mm:ss")+" "+tzstr;
 }
 
 

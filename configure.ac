@@ -248,6 +248,11 @@ AC_CHECK_HEADER(security/pam_appl.h,[],[AC_MSG_ERROR([*** PAM not found ***])])
 AC_CHECK_HEADER(soundtouch/SoundTouch.h,[],[AC_MSG_ERROR([*** SoundTouch not found ***])])
 
 #
+# Check for Python
+#
+AM_PATH_PYTHON([2.7])
+
+#
 # Check for FLAC
 #
 if test -z $FLAC_DISABLED ; then
@@ -462,6 +467,9 @@ AC_CONFIG_FILES([rivendell.spec \
     icons/Makefile \
     helpers/Makefile \
     apis/Makefile \
+    apis/PyPAD/Makefile \
+    apis/PyPAD/api/Makefile \
+    apis/PyPAD/examples/Makefile \
     apis/rivwebcapi/Makefile \
     apis/rivwebcapi/rivwebcapi.pc \
     apis/rivwebcapi/rivwebcapi/Makefile \

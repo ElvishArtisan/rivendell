@@ -1,6 +1,6 @@
-## Makefile.am
+## automake.am
 ##
-## Makefile.am for rivendell/apis
+## Automake.am for Rivendell PyPAD/examples
 ##
 ##   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
 ##
@@ -20,9 +20,7 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-SUBDIRS = PyPAD\
-          rivwebcapi\
-          rlm
+EXTRA_DIST = now_and_next.py
 
 CLEANFILES = *~\
              *.idb\
