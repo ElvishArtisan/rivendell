@@ -18110,3 +18110,5 @@
 2018-12-06 Fred Gleason <fredg@paravelsystems.com>
 	* Added support for '\b', '\f', '\n' '\r' and '\t' control escapes
 	in the 'PyPADUpdate::padFields()' method.
+2018-12-06 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'pypad_udp.py' PyPAD script.

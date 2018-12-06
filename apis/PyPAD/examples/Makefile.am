@@ -20,7 +20,8 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-EXTRA_DIST = now_and_next.py
+EXTRA_DIST = now_and_next.py\
+             pypad_udp.py
 
 CLEANFILES = *~\
              *.idb\
