@@ -24,31 +24,31 @@
 # To see the full documentation of these classes, enter the following at
 # a python interactive prompt:
 #
-#   import rivendell.PyPAD
-#   help(rivendell.PyPAD)
+#   import PyPAD
+#   help(PyPAD)
 #
-import rivendell.PyPAD
+import PyPAD
 
 #
 # First, we create a callback method, that will be called every time a
-# log machine updates its PAD. An instance of 'PyPADUpdate' that contains
+# log machine updates its PAD. An instance of 'PyPAD.Update' that contains
 # the PAD information is supplied as the single argument.
 #
 def ProcessPad(update):
     print
     if update.hasNowPad():
-        print "Log %03d NOW: " % update.logMachine()+update.padFields("%a - %t")
+        print "Log %03d NOW: " % update.logMachine()+update.padFields("%a - %t",PyPAD.ESCAPE_NONE)
     else:
         print "Log %03d NOW: [none]" % update.logMachine()
     if update.hasNextPad():
-        print "Log %03d NEXT: " % update.logMachine()+update.padFields("%A - %T")
+        print "Log %03d NEXT: " % update.logMachine()+update.padFields("%A - %T",PyPAD.ESCAPE_NONE)
     else:
         print "Log %03d NEXT: [none]" % update.logMachine()
 
 #
 # Create an instance of 'PyPADReceiver'
 #
-rcvr=rivendell.PyPAD.PyPADReceiver()
+rcvr=PyPAD.Receiver()
 
 #
 # Tell it to use the callback
@@ -56,8 +56,8 @@ rcvr=rivendell.PyPAD.PyPADReceiver()
 rcvr.setCallback(ProcessPad)
 
 #
-# Start the receiver, giving it the hostname or IP address of the target
-# Rivendell system. Once started, all further processing can only be done
-# in the callback method!
+# Start the receiver, giving it the hostname or IP address and TCP port of
+# the target Rivendell system. Once started, all further processing can only
+# be done in the callback method!
 #
-rcvr.start("localhost")
+rcvr.start("localhost",PyPAD.PAD_TCP_PORT)

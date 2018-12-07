@@ -18112,3 +18112,13 @@
 	in the 'PyPADUpdate::padFields()' method.
 2018-12-06 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'pypad_udp.py' PyPAD script.
+2018-12-07 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the Python namespace of the PyPAD classes from
+	'rivendell.PyPAD' to 'PyPAD'.
+	* Renamed the 'PyPAD.PyPADReceiver' class to 'PyPAD.Receiver'.
+	* Renamed the 'PyPAD.PyPADUpdate' class to 'PyPAD.Update'.
+	* Added a 'port' argument to the 'PyPAD.Receiver::start()' method.
+	* Added an 'escaping' argument to the 'PyPAD.Update::padFields()'
+	method.
+	* Added support for the 'Encoding=' directive to the 'pypad_udp.py'
+	script.

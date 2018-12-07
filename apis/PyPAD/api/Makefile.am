@@ -20,9 +20,8 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-rivendelldir = $(pkgpyexecdir)
-rivendell_PYTHON = __init__.py\
-                   PyPAD.py
+rivendelldir = $(pyexecdir)
+rivendell_PYTHON = PyPAD.py
 
 CLEANFILES = *~\
              *.idb\

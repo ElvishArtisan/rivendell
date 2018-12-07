@@ -25,7 +25,7 @@ from __future__ import print_function
 import sys
 import socket
 import ConfigParser
-import rivendell.PyPAD
+import PyPAD
 
 def eprint(*args,**kwargs):
     print(*args,file=sys.stderr,**kwargs)
@@ -36,7 +36,7 @@ def ProcessPad(update):
         section='Udp'+str(n)
         try:
             format=config.get(section,'FormatString')
-            send_sock.sendto(update.padFields(format),
+            send_sock.sendto(update.padFields(format,int(config.get(section,'Encoding'))),
                              (config.get(section,'IpAddress'),int(config.get(section,'UdpPort'))))
             n=n+1
         except ConfigParser.NoSectionError:
@@ -59,6 +59,6 @@ else:
 #
 send_sock=socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
 
-rcvr=rivendell.PyPAD.PyPADReceiver()
+rcvr=PyPAD.Receiver()
 rcvr.setCallback(ProcessPad)
-rcvr.start("localhost")
+rcvr.start("localhost",PyPAD.PAD_TCP_PORT)

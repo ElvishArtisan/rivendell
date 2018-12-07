@@ -23,30 +23,95 @@
 import socket
 import json
 
-class PyPADUpdate(object):
+#
+# Enumerated Constants (sort of)
+#
+# Escape types
+#
+ESCAPE_NONE=0
+ESCAPE_XML=1
+ESCAPE_URL=2
+ESCAPE_JSON=3
+
+#
+# Default TCP port for connecting to Rivendell's PAD service
+#
+PAD_TCP_PORT=34289
+
+class Update(object):
     def __init__(self,pad_data):
         self.__fields=pad_data;
 
-    def __replace(self,wildcard,string):
-        stype='now'
-        if wildcard[1].isupper():
-            stype='next'
-        sfields={'a':'artist','b':'label','c':'client','d':'','e':'agency',
-                 'f':'','g':'groupName','h':'length','i':'description',
-                 'j':'cutNumber','k':'','l':'album','m': 'composer',
-                 'n':'cartNumber','o':'outcue','p':'publisher','q': '',
-                 'r':'conductor','s':'songId','t':'title','u':'userDefined',
-                 'v':'','w':'','x':'','y':'year',
-                 'z':''}
-        sfield=sfields[wildcard[1].lower()]
-
-        try:
-            string=string.replace(wildcard,self.__fields['padUpdate'][stype][sfield])
-        except TypeError:
-            string=string.replace(wildcard,'')
-        except KeyError:
-            string=string.replace(wildcard,'')
+    def __escapeXml(self,string):
+        string=string.replace("&","&amp;")
+        string=string.replace("<","&lt;")
+        string=string.replace(">","&gt;")
+        string=string.replace("'","&apos;")
+        string=string.replace("\"","&quot;")
         return string
+
+    def __escapeWeb(self,string):
+        string=string.replace("%","%25")
+        string=string.replace(" ","%20")
+        string=string.replace("<","%3C")
+        string=string.replace(">","%3E")
+        string=string.replace("#","%23")
+        string=string.replace("\"","%22")
+        string=string.replace("{","%7B")
+        string=string.replace("}","%7D")
+        string=string.replace("|","%7C")
+        string=string.replace("\\","%5C")
+        string=string.replace("^","%5E")
+        string=string.replace("[","%5B")
+        string=string.replace("]","%5D")
+        string=string.replace("`","%60")
+        string=string.replace("\a","%07")
+        string=string.replace("\b","%08")
+        string=string.replace("\f","%0C")
+        string=string.replace("\n","%0A")
+        string=string.replace("\r","%0D")
+        string=string.replace("\t","%09")
+        string=string.replace("\v","%0B")
+        return string
+
+    def __escapeJson(self,string):
+        string=string.replace("\\","\\\\")
+        string=string.replace("\"","\\\"")
+        string=string.replace("/","\\/")
+        string=string.replace("\b","\\b")
+        string=string.replace("\f","\\f")
+        string=string.replace("\n","\\n")
+        string=string.replace("\r","\\r")
+        string=string.replace("\t","\\t")
+        return string
+
+    def __escape(self,string,escaping):
+        if(escaping==0):
+            return string
+        if(escaping==1):
+            return self.__escapeXml(string)
+        if(escaping==2):
+            return self.__escapeWeb(string)
+        if(escaping==3):
+            return self.__escapeJson(string)
+        raise ValueError('invalid escaping value')
+
+    def __replaceWildcard(self,wildcard,sfield,stype,string,escaping):
+        try:
+            if isinstance(self.__fields['padUpdate'][stype][sfield],unicode):
+                string=string.replace('%'+wildcard,self.__escape(self.__fields['padUpdate'][stype][sfield],escaping))
+            else:
+                string=string.replace('%'+wildcard,str(self.__fields['padUpdate'][stype][sfield]))
+        except TypeError:
+            string=string.replace('%'+wildcard,'')
+        except KeyError:
+            string=string.replace('%'+wildcard,'')
+        return string
+
+    def __replaceWildcardPair(self,wildcard,sfield,string,escaping):
+        string=self.__replaceWildcard(wildcard,sfield,'now',string,escaping);
+        string=self.__replaceWildcard(wildcard.upper(),sfield,'next',string,escaping);
+        return string;
 
     def dateTime(self):
         """
@@ -113,21 +178,55 @@ class PyPADUpdate(object):
         """
         return self.__fields['padUpdate']['log']['name']
 
-    def padFields(self,string):
+    def padFields(self,string,escaping):
         """
-           Takes an argument of a string containing one or more PAD wildcards,
-           which it will resolve into the appropriate values. See the
-           'Metadata Wildcards' section of the Rivendell Operations Guide
-           for a list of recognized wildcards.
+           Takes two arguments:
+
+           string - A string containing one or more PAD wildcards, which it
+                    will resolve into the appropriate values. See the
+                    'Metadata Wildcards' section of the Rivendell Operations
+                    Guide for a list of recognized wildcards.
+
+           escaping - Character escaping to be applied to the PAD fields.
+                      Must be one of the following:
+
+                      PyPAD.ESCAPE_NONE - No escaping
+                      PyPAD.ESCAPE_XML - "XML" escaping: Escape reserved
+                                          characters as per XML-v1.0
+                      PyPAD.ESCAPE_URL - "URL" escaping: Escape reserved
+                                          characters as per RFC 2396
+                                          Section 2.4
+                      PyPAD.ESCAPE_JSON - "JSON" escaping: Escape reserved
+                                          characters as per ECMA-404.
         """
-        for i in range(65,68):
-               string=self.__replace('%'+chr(i),string)
-        for i in range(69,91):
-               string=self.__replace('%'+chr(i),string)
-        for i in range(97,100):
-               string=self.__replace('%'+chr(i),string)
-        for i in range(101,123):
-               string=self.__replace('%'+chr(i),string)
+        string=self.__replaceWildcardPair('a','artist',string,escaping)
+        string=self.__replaceWildcardPair('b','label',string,escaping)
+        string=self.__replaceWildcardPair('c','client',string,escaping)
+        # DateTime
+        #string=self.__replaceWildcardPair('d',sfield,string,escaping)
+        string=self.__replaceWildcardPair('e','agency',string,escaping)
+        # Unassigned
+        #string=self.__replaceWildcardPair('f',sfield,string,escaping) # Unassigned
+        string=self.__replaceWildcardPair('g','groupName',string,escaping)
+        string=self.__replaceWildcardPair('h','length',string,escaping)
+        string=self.__replaceWildcardPair('i','description',string,escaping)
+        string=self.__replaceWildcardPair('j','cutNumber',string,escaping)
+        #string=self.__replaceWildcardPair('k',sfield,string,escaping) # Start time for rdimport
+        string=self.__replaceWildcardPair('l','album',string,escaping)
+        string=self.__replaceWildcardPair('m','composer',string,escaping)
+        string=self.__replaceWildcardPair('n','cartNumber',string,escaping)
+        string=self.__replaceWildcardPair('o','outcue',string,escaping)
+        string=self.__replaceWildcardPair('p','publisher',string,escaping)
+        #string=self.__replaceWildcardPair('q',sfield,string,escaping) # Start date for rdimport
+        string=self.__replaceWildcardPair('r','conductor',string,escaping)
+        string=self.__replaceWildcardPair('s','songId',string,escaping)
+        string=self.__replaceWildcardPair('t','title',string,escaping)
+        string=self.__replaceWildcardPair('u','userDefined',string,escaping)
+        #string=self.__replaceWildcardPair('v',sfield,string,escaping) # Length, rounded down
+        #string=self.__replaceWildcardPair('w',sfield,string,escaping) # Unassigned
+        #string=self.__replaceWildcardPair('x',sfield,string,escaping) # Unassigned
+        string=self.__replaceWildcardPair('y','year',string,escaping)
+        #string=self.__replaceWildcardPair('z',sfield,string,escaping) # Unassigned
         string=string.replace('\\b','\b')
         string=string.replace('\\f','\f')
         string=string.replace('\\n','\n')
@@ -154,7 +253,7 @@ class PyPADUpdate(object):
             return False;
                           
 
-class PyPADReceiver(object):
+class Receiver(object):
     def __init__(self):
         self.__callback=None
 
@@ -167,17 +266,20 @@ class PyPADReceiver(object):
         """
         self.__callback=cb
 
-    def start(self,hostname):
+    def start(self,hostname,port):
         """
            Connect to a Rivendell system and begin processing PAD events.
            Once started, a PyPAD object can be interacted with
            only within one of its callback methods.
-           Takes the following argument:
+           Takes the following arguments:
 
-           hostname: The hostname or IP address of the Rivendell system.
+           hostname - The hostname or IP address of the Rivendell system.
+
+           port - The TCP port to connect to. For most cases, just use
+                  'PyPAD.PAD_TCP_PORT'.
         """
         sock=socket.socket(socket.AF_INET)
-        conn=sock.connect((hostname,34289))
+        conn=sock.connect((hostname,port))
         c=""
         line=""
         msg=""
@@ -188,7 +290,7 @@ class PyPADReceiver(object):
             if c[0]=="\n":
                 msg+=line
                 if line=="\r\n":
-                    self.__PyPAD_Process(PyPADUpdate(json.loads(msg)))
+                    self.__PyPAD_Process(Update(json.loads(msg)))
                     msg=""
                 line=""
 
