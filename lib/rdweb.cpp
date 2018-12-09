@@ -1142,7 +1142,7 @@ QString RDJsonField(const QString &name,const QDateTime &value,int padding,
   if(!value.isValid()) {
     return RDJsonNullField(name,padding,final);
   }
-  return RDJsonPadding(padding)+"\""+name+"\": \""+RDWebDateTime(value)+"\""+
+  return RDJsonPadding(padding)+"\""+name+"\": \""+RDXmlDateTime(value)+"\""+
     comma+"\r\n";
 }
 

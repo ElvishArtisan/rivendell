@@ -2991,12 +2991,23 @@ void RDLogPlay::SendNowNext()
   //
   // Now
   //
-  play_pad_socket->write(GetPadJson("now",logline[0],8,false).toUtf8());
+  QDateTime start_datetime;
+  if(logline[0]!=NULL) {
+    start_datetime=
+      QDateTime(QDate::currentDate(),logline[0]->startTime(RDLogLine::Actual));
+  }
+  play_pad_socket->
+    write(GetPadJson("now",logline[0],start_datetime,8,false).toUtf8());
 
   //
   // Next
   //
-  play_pad_socket->write(GetPadJson("next",logline[1],8,true).toUtf8());
+  QDateTime next_datetime;
+  if((mode()==RDAirPlayConf::Auto)&&(logline[0]!=NULL)) {
+    next_datetime=start_datetime.addSecs(logline[0]->forcedLength()/1000);
+  }
+ play_pad_socket->write(GetPadJson("next",logline[1],
+				    next_datetime,8,true).toUtf8());
 
   //
   // Commit the update
@@ -3036,7 +3047,8 @@ void RDLogPlay::SendNowNext()
 
 
 QString RDLogPlay::GetPadJson(const QString &name,RDLogLine *ll,
-			      int padding,bool final) const
+			      const QDateTime &start_datetime,int padding,
+			      bool final) const
 {
   QString ret;
 
@@ -3045,6 +3057,12 @@ QString RDLogPlay::GetPadJson(const QString &name,RDLogLine *ll,
   }
   else {
     ret+=RDJsonPadding(padding)+"\""+name+"\": {\r\n";
+    if(start_datetime.isValid()) {
+      ret+=RDJsonField("startDateTime",start_datetime,4+padding);
+    }
+    else {
+      ret+=RDJsonNullField("startDateTime",4+padding);
+    }
     ret+=RDJsonField("cartNumber",ll->cartNumber(),4+padding);
     ret+=RDJsonField("cartType",RDCart::typeText(ll->cartType()),4+padding);
     ret+=RDJsonField("length",ll->forcedLength(),4+padding);

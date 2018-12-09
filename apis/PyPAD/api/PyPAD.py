@@ -20,6 +20,7 @@
 #   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #
 
+import datetime
 import socket
 import json
 
@@ -34,6 +35,12 @@ ESCAPE_URL=2
 ESCAPE_JSON=3
 
 #
+# PAD Types
+#
+TYPE_NOW='now'
+TYPE_NEXT='next'
+
+#
 # Default TCP port for connecting to Rivendell's PAD service
 #
 PAD_TCP_PORT=34289
@@ -41,6 +48,12 @@ PAD_TCP_PORT=34289
 class Update(object):
     def __init__(self,pad_data):
         self.__fields=pad_data;
+
+    def __fromIso8601(self,string):
+        try:
+            return datetime.datetime.strptime(string.strip()[:19],'%Y-%m-%dT%H:%M:%S')
+        except AttributeError:
+            return ''
 
     def __escapeXml(self,string):
         string=string.replace("&","&amp;")
@@ -85,21 +98,21 @@ class Update(object):
         string=string.replace("\t","\\t")
         return string
 
-    def __escape(self,string,escaping):
-        if(escaping==0):
+    def __escape(self,string,esc):
+        if(esc==0):
             return string
-        if(escaping==1):
+        if(esc==1):
             return self.__escapeXml(string)
-        if(escaping==2):
+        if(esc==2):
             return self.__escapeWeb(string)
-        if(escaping==3):
+        if(esc==3):
             return self.__escapeJson(string)
-        raise ValueError('invalid escaping value')
+        raise ValueError('invalid esc value')
 
-    def __replaceWildcard(self,wildcard,sfield,stype,string,escaping):
+    def __replaceWildcard(self,wildcard,sfield,stype,string,esc):
         try:
             if isinstance(self.__fields['padUpdate'][stype][sfield],unicode):
-                string=string.replace('%'+wildcard,self.__escape(self.__fields['padUpdate'][stype][sfield],escaping))
+                string=string.replace('%'+wildcard,self.__escape(self.__fields['padUpdate'][stype][sfield],esc))
             else:
                 string=string.replace('%'+wildcard,str(self.__fields['padUpdate'][stype][sfield]))
         except TypeError:
@@ -108,16 +121,96 @@ class Update(object):
             string=string.replace('%'+wildcard,'')
         return string
 
-    def __replaceWildcardPair(self,wildcard,sfield,string,escaping):
-        string=self.__replaceWildcard(wildcard,sfield,'now',string,escaping);
-        string=self.__replaceWildcard(wildcard.upper(),sfield,'next',string,escaping);
+    def __replaceWildcardPair(self,wildcard,sfield,string,esc):
+        string=self.__replaceWildcard(wildcard,sfield,'now',string,esc);
+        string=self.__replaceWildcard(wildcard.upper(),sfield,'next',string,esc);
         return string;
+
+    def __findDatetimePattern(self,pos,wildcard,string):
+        start=string.find('%'+wildcard+'(',pos)
+        if start>=0:
+            end=string.find(")",start+3)
+            if end>0:
+                return (end+2,string[start:end+1])
+        return None
+
+    def __replaceDatetimePattern(self,string,pattern):
+        stype='now'
+        if pattern[1]=='D':
+            stype='next'
+        try:
+            dt=self.__fromIso8601(self.__fields['padUpdate'][stype]['startDateTime'])
+        except TypeError:
+            string=string.replace(pattern,'')
+            return string
+
+        dt_pattern=pattern[3:-1]
+
+        try:
+            dt_pattern=dt_pattern.replace('dddd',dt.strftime('%A'))
+            dt_pattern=dt_pattern.replace('ddd',dt.strftime('%a'))
+            dt_pattern=dt_pattern.replace('dd',dt.strftime('%d'))
+            dt_pattern=dt_pattern.replace('d',str(dt.day))
+
+            dt_pattern=dt_pattern.replace('MMMM',dt.strftime('%B'))
+            dt_pattern=dt_pattern.replace('MMM',dt.strftime('%b'))
+            dt_pattern=dt_pattern.replace('MM',dt.strftime('%m'))
+            dt_pattern=dt_pattern.replace('M',str(dt.month))
+
+            dt_pattern=dt_pattern.replace('yyyy',dt.strftime('%Y'))
+            dt_pattern=dt_pattern.replace('yy',dt.strftime('%y'))
+
+            miltime=(dt_pattern.find('ap')<0)and(dt_pattern.find('AP')<0)
+            if not miltime:
+                if dt.hour<13:
+                    dt_pattern=dt_pattern.replace('ap','am')
+                    dt_pattern=dt_pattern.replace('AP','AM')
+                else:
+                    dt_pattern=dt_pattern.replace('ap','pm')
+                    dt_pattern=dt_pattern.replace('AP','PM')
+            if miltime:
+                dt_pattern=dt_pattern.replace('hh',dt.strftime('%H'))
+                dt_pattern=dt_pattern.replace('h',str(dt.hour))
+            else:
+                dt_pattern=dt_pattern.replace('hh',dt.strftime('%I'))
+                hour=dt.hour
+                if hour==0:
+                    hour=12
+                dt_pattern=dt_pattern.replace('h',str(hour))
+
+            dt_pattern=dt_pattern.replace('mm',dt.strftime('%M'))
+            dt_pattern=dt_pattern.replace('m',str(dt.minute))
+
+            dt_pattern=dt_pattern.replace('ss',dt.strftime('%S'))
+            dt_pattern=dt_pattern.replace('s',str(dt.second))
+        except AttributeError:
+            string=string.replace(pattern,'')
+            return string
+
+        string=string.replace(pattern,dt_pattern)
+        return string
+
+    def __replaceDatetimePair(self,string,wildcard):
+        pos=0
+        pattern=(0,'')
+        while(pattern!=None):
+            pattern=self.__findDatetimePattern(pattern[0],wildcard,string)
+            if pattern!=None:
+                string=self.__replaceDatetimePattern(string,pattern[1])
+                #print 'pos: '+str(pattern[0])+'  pattern: '+pattern[1]
+        return string
+
+    def dateTimeString(self):
+        """
+           Returns the date-time of the update in ISO 8601 format (string).
+        """
+        return self.__fields['padUpdate']['dateTime']
 
     def dateTime(self):
         """
-           Returns the date-time stamp of the update in RFC-822 format (string).
+           Returns the date-time of the PAD update (datetime)
         """
-        return self.__fields['padUpdate']['dateTime']
+        return self.__fromIso8601(pad_data['padUpdate']['dateTime'])
 
     def logMachine(self):
         """
@@ -178,7 +271,7 @@ class Update(object):
         """
         return self.__fields['padUpdate']['log']['name']
 
-    def padFields(self,string,escaping):
+    def padFields(self,string,esc):
         """
            Takes two arguments:
 
@@ -187,46 +280,45 @@ class Update(object):
                     'Metadata Wildcards' section of the Rivendell Operations
                     Guide for a list of recognized wildcards.
 
-           escaping - Character escaping to be applied to the PAD fields.
-                      Must be one of the following:
+           esc - Character escaping to be applied to the PAD fields.
+                 Must be one of the following:
 
-                      PyPAD.ESCAPE_NONE - No escaping
-                      PyPAD.ESCAPE_XML - "XML" escaping: Escape reserved
-                                          characters as per XML-v1.0
-                      PyPAD.ESCAPE_URL - "URL" escaping: Escape reserved
-                                          characters as per RFC 2396
-                                          Section 2.4
-                      PyPAD.ESCAPE_JSON - "JSON" escaping: Escape reserved
-                                          characters as per ECMA-404.
+                 PyPAD.ESCAPE_NONE - No escaping
+                  PyPAD.ESCAPE_XML - "XML" escaping: Escape reserved
+                                     characters as per XML-v1.0
+                  PyPAD.ESCAPE_URL - "URL" escaping: Escape reserved
+                                     characters as per RFC 2396
+                                     Section 2.4
+                 PyPAD.ESCAPE_JSON - "JSON" escaping: Escape reserved
+                                     characters as per ECMA-404.
         """
-        string=self.__replaceWildcardPair('a','artist',string,escaping)
-        string=self.__replaceWildcardPair('b','label',string,escaping)
-        string=self.__replaceWildcardPair('c','client',string,escaping)
-        # DateTime
-        #string=self.__replaceWildcardPair('d',sfield,string,escaping)
-        string=self.__replaceWildcardPair('e','agency',string,escaping)
-        # Unassigned
-        #string=self.__replaceWildcardPair('f',sfield,string,escaping) # Unassigned
-        string=self.__replaceWildcardPair('g','groupName',string,escaping)
-        string=self.__replaceWildcardPair('h','length',string,escaping)
-        string=self.__replaceWildcardPair('i','description',string,escaping)
-        string=self.__replaceWildcardPair('j','cutNumber',string,escaping)
-        #string=self.__replaceWildcardPair('k',sfield,string,escaping) # Start time for rdimport
-        string=self.__replaceWildcardPair('l','album',string,escaping)
-        string=self.__replaceWildcardPair('m','composer',string,escaping)
-        string=self.__replaceWildcardPair('n','cartNumber',string,escaping)
-        string=self.__replaceWildcardPair('o','outcue',string,escaping)
-        string=self.__replaceWildcardPair('p','publisher',string,escaping)
-        #string=self.__replaceWildcardPair('q',sfield,string,escaping) # Start date for rdimport
-        string=self.__replaceWildcardPair('r','conductor',string,escaping)
-        string=self.__replaceWildcardPair('s','songId',string,escaping)
-        string=self.__replaceWildcardPair('t','title',string,escaping)
-        string=self.__replaceWildcardPair('u','userDefined',string,escaping)
-        #string=self.__replaceWildcardPair('v',sfield,string,escaping) # Length, rounded down
-        #string=self.__replaceWildcardPair('w',sfield,string,escaping) # Unassigned
-        #string=self.__replaceWildcardPair('x',sfield,string,escaping) # Unassigned
-        string=self.__replaceWildcardPair('y','year',string,escaping)
-        #string=self.__replaceWildcardPair('z',sfield,string,escaping) # Unassigned
+        string=self.__replaceWildcardPair('a','artist',string,esc)
+        string=self.__replaceWildcardPair('b','label',string,esc)
+        string=self.__replaceWildcardPair('c','client',string,esc)
+        string=self.__replaceDatetimePair(string,'d') # %d(<dt>) Handler
+        string=self.__replaceDatetimePair(string,'D') # %D(<dt>) Handler
+        string=self.__replaceWildcardPair('e','agency',string,esc)
+        #string=self.__replaceWildcardPair('f',sfield,string,esc) # Unassigned
+        string=self.__replaceWildcardPair('g','groupName',string,esc)
+        string=self.__replaceWildcardPair('h','length',string,esc)
+        string=self.__replaceWildcardPair('i','description',string,esc)
+        string=self.__replaceWildcardPair('j','cutNumber',string,esc)
+        #string=self.__replaceWildcardPair('k',sfield,string,esc) # Start time for rdimport
+        string=self.__replaceWildcardPair('l','album',string,esc)
+        string=self.__replaceWildcardPair('m','composer',string,esc)
+        string=self.__replaceWildcardPair('n','cartNumber',string,esc)
+        string=self.__replaceWildcardPair('o','outcue',string,esc)
+        string=self.__replaceWildcardPair('p','publisher',string,esc)
+        #string=self.__replaceWildcardPair('q',sfield,string,esc) # Start date for rdimport
+        string=self.__replaceWildcardPair('r','conductor',string,esc)
+        string=self.__replaceWildcardPair('s','songId',string,esc)
+        string=self.__replaceWildcardPair('t','title',string,esc)
+        string=self.__replaceWildcardPair('u','userDefined',string,esc)
+        #string=self.__replaceWildcardPair('v',sfield,string,esc) # Length, rounded down
+        #string=self.__replaceWildcardPair('w',sfield,string,esc) # Unassigned
+        #string=self.__replaceWildcardPair('x',sfield,string,esc) # Unassigned
+        string=self.__replaceWildcardPair('y','year',string,esc)
+        #string=self.__replaceWildcardPair('z',sfield,string,esc) # Unassigned
         string=string.replace('\\b','\b')
         string=string.replace('\\f','\f')
         string=string.replace('\\n','\n')
@@ -234,24 +326,27 @@ class Update(object):
         string=string.replace('\\t','\t')
         return string
 
-    def hasNowPad(self):
+    def hasPadType(self,pad_type):
         """
-           Indicates if this update include 'Now' playing PAD.
-        """
-        try:
-            return self.__fields['padUpdate']['now']!=None
-        except TypeError:
-            return False;
-                          
-    def hasNextPad(self):
-        """
-           Indicates if this update include 'Next' playing PAD.
+           Indicates if this update includes the specified PAD type
+           ('PyPAD.PAD_NOW' or 'PyPAD.PAD_NEXT')
         """
         try:
-            return self.__fields['padUpdate']['next']!=None
+            return self.__fields['padUpdate'][pad_type]!=None
         except TypeError:
             return False;
-                          
+
+    def startDateTime(self,pad_type):
+        """
+           Returns the start datetime of the specified PAD type
+           ('PyPAD.PAD_NOW' or 'PyPAD.PAD_NEXT')
+        """
+        try:
+            return self.__fromIso8601(self.__fields['padUpdate'][pad_type]['startDateTime'])
+        except AttributeError:
+            return None
+
+
 
 class Receiver(object):
     def __init__(self):

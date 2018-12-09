@@ -36,11 +36,11 @@ import PyPAD
 #
 def ProcessPad(update):
     print
-    if update.hasNowPad():
+    if update.hasPadType(PyPAD.TYPE_NOW):
         print "Log %03d NOW: " % update.logMachine()+update.padFields("%a - %t",PyPAD.ESCAPE_NONE)
     else:
         print "Log %03d NOW: [none]" % update.logMachine()
-    if update.hasNextPad():
+    if update.hasPadType(PyPAD.TYPE_NEXT):
         print "Log %03d NEXT: " % update.logMachine()+update.padFields("%A - %T",PyPAD.ESCAPE_NONE)
     else:
         print "Log %03d NEXT: [none]" % update.logMachine()

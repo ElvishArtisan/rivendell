@@ -18122,3 +18122,17 @@
 	method.
 	* Added support for the 'Encoding=' directive to the 'pypad_udp.py'
 	script.
+2018-12-08 Fred Gleason <fredg@paravelsystems.com>
+	* Renamed the 'PyPAD.Update::dateTime()' method to
+	'PyPAD.Update::dateTimeString()'.
+	* Changed the format of the 'dateTime' field in the PAD JSON structure
+	from RFC822 to ISO 8601.
+	* Added a 'startDateTime' field to the 'now' and 'next' objects in
+	the PAD JSON structure.
+	* Added a PAD Type enumeration for use in 'PyPAD.Update'.
+	* Added 'PyPAD.Update::hasPadType()' and 'PyPAD.Update.startDateTime()'
+	methods.
+	* Removed 'PyPAD.Update::hasNowPad()' and 'PyPAD.Update:hasNextPad()'
+	methods.
+	* Added support for '%d(<dt>)' and '%D(<dt>)' wildcards in
+	'PyPAD.Update::padFields()'.

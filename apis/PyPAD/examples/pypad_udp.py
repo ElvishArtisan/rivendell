@@ -35,8 +35,8 @@ def ProcessPad(update):
     while(True):
         section='Udp'+str(n)
         try:
-            format=config.get(section,'FormatString')
-            send_sock.sendto(update.padFields(format,int(config.get(section,'Encoding'))),
+            fmtstr=config.get(section,'FormatString')
+            send_sock.sendto(update.padFields(fmtstr,int(config.get(section,'Encoding'))),
                              (config.get(section,'IpAddress'),int(config.get(section,'UdpPort'))))
             n=n+1
         except ConfigParser.NoSectionError:
