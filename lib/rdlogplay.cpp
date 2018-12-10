@@ -33,6 +33,7 @@
 #include "rdmixer.h"
 #include "rdnownext.h"
 #include "rdsvc.h"
+#include "rdweb.h"
 
 //
 // Debug Settings
@@ -41,9 +42,8 @@
 //#define SHOW_METER_SLOTS
 
 RDLogPlay::RDLogPlay(int id,RDEventPlayer *player,Q3SocketDevice *nn_sock,
-		     QString logname,std::vector<RDRLMHost *> *rlm_hosts,
-		     QObject *parent)
-  : QObject(parent),RDLogEvent(logname)
+		     std::vector<RDRLMHost *> *rlm_hosts,QObject *parent)
+  : QObject(parent),RDLogEvent("")
 {
   //
   // Initialize Data Structures
@@ -51,6 +51,7 @@ RDLogPlay::RDLogPlay(int id,RDEventPlayer *player,Q3SocketDevice *nn_sock,
   play_log=NULL;
   play_id=id;
   play_event_player=player;
+  //  play_pad_socket=pad_sock;
   play_rlm_hosts=rlm_hosts;
   play_onair_flag=false;
   play_segue_length=rda->airplayConf()->segueLength()+1;
@@ -74,6 +75,14 @@ RDLogPlay::RDLogPlay(int id,RDEventPlayer *player,Q3SocketDevice *nn_sock,
   play_audition_preroll=rda->airplayConf()->auditionPreroll();
   for(int i=0;i<LOGPLAY_MAX_PLAYS;i++) {
     play_slot_id[i]=i;
+  }
+
+  //
+  // RLM2 Connection
+  //
+  play_pad_socket=new RDUnixSocket(this);
+  if(!play_pad_socket->connectToAbstract(RD_RLM2_SOURCE_UNIX_ADDRESS)) {
+    fprintf(stderr,"RLMHost: unable to connect to rdrlmd\n");
   }
 
   //
@@ -2869,10 +2878,12 @@ void RDLogPlay::SendNowNext()
   //
   // Get NOW PLAYING Event
   //
+  /*
   if(play_nownext_address.isNull()&&play_nownext_rml.isEmpty()&&
      (play_rlm_hosts->size()==0)) {
     return;
   }
+  */
   QString cmd=play_nownext_string;
   int lines[TRANSPORT_QUANTITY];
   int running=runningEvents(lines,false);
@@ -2946,10 +2957,75 @@ void RDLogPlay::SendNowNext()
   if(svcname.isEmpty()) {
     svcname=play_defaultsvc_name;
   }
+
+  //
+  // RLM2
+  //
+  play_pad_socket->write(QString("{\r\n").toUtf8());
+  play_pad_socket->write(QString("    \"padUpdate\": {\r\n").toUtf8());
+  play_pad_socket->write(RDJsonField("dateTime",QDateTime::currentDateTime(),8).toUtf8());
+  play_pad_socket->write(RDJsonField("logMachine",play_id+1,8));
+  play_pad_socket->write(RDJsonField("onairFlag",play_onair_flag,8));
+  play_pad_socket->write(RDJsonField("logMode",RDAirPlayConf::logModeText(play_op_mode),8));
+
+  //
+  // Service
+  //
+  RDSvc *svc=new RDSvc(svcname,rda->station(),rda->config(),this);
+  play_pad_socket->write(QString("        \"service\": {\r\n").toUtf8());
+  play_pad_socket->write(RDJsonField("name",svcname,12).toUtf8());
+  play_pad_socket->
+    write(RDJsonField("description",svc->description(),12).toUtf8());
+  play_pad_socket->
+    write(RDJsonField("programCode",svc->programCode(),12,true).toUtf8());
+  play_pad_socket->write(QString("        },\r\n").toUtf8());
+  delete svc;
+
+  //
+  // Log
+  //
+  play_pad_socket->write(QString("        \"log\": {\r\n").toUtf8());
+  play_pad_socket->write(RDJsonField("name",logName(),12,true).toUtf8());
+  play_pad_socket->write(QString("        },\r\n").toUtf8());
+
+  //
+  // Now
+  //
+  QDateTime start_datetime;
+  if(logline[0]!=NULL) {
+    start_datetime=
+      QDateTime(QDate::currentDate(),logline[0]->startTime(RDLogLine::Actual));
+  }
+  play_pad_socket->
+    write(GetPadJson("now",logline[0],start_datetime,8,false).toUtf8());
+
+  //
+  // Next
+  //
+  QDateTime next_datetime;
+  if((mode()==RDAirPlayConf::Auto)&&(logline[0]!=NULL)) {
+    next_datetime=start_datetime.addSecs(logline[0]->forcedLength()/1000);
+  }
+ play_pad_socket->write(GetPadJson("next",logline[1],
+				    next_datetime,8,true).toUtf8());
+
+  //
+  // Commit the update
+  //
+  play_pad_socket->write(QString("    }\r\n").toUtf8());
+  play_pad_socket->write(QString("}\r\n\r\n").toUtf8());
+
+  //
+  // Old-style RLM Hosts
+  //
   for(unsigned i=0;i<play_rlm_hosts->size();i++) {
     play_rlm_hosts->at(i)->
       sendEvent(svcname,logName(),play_id,logline,play_onair_flag,play_op_mode);
   }
+
+  //
+  // Premordial integrated interface
+  //
   RDResolveNowNext(&cmd,logline,0);
   play_nownext_socket->
     writeBlock(cmd,cmd.length(),play_nownext_address,play_nownext_port);
@@ -2967,6 +3043,63 @@ void RDLogPlay::SendNowNext()
   if(default_next_logline!=NULL) {
     delete default_next_logline;
   }
+}
+
+
+QString RDLogPlay::GetPadJson(const QString &name,RDLogLine *ll,
+			      const QDateTime &start_datetime,int padding,
+			      bool final) const
+{
+  QString ret;
+
+  if(ll==NULL) {
+    ret=RDJsonNullField(name,padding,final);
+  }
+  else {
+    ret+=RDJsonPadding(padding)+"\""+name+"\": {\r\n";
+    if(start_datetime.isValid()) {
+      ret+=RDJsonField("startDateTime",start_datetime,4+padding);
+    }
+    else {
+      ret+=RDJsonNullField("startDateTime",4+padding);
+    }
+    ret+=RDJsonField("cartNumber",ll->cartNumber(),4+padding);
+    ret+=RDJsonField("cartType",RDCart::typeText(ll->cartType()),4+padding);
+    ret+=RDJsonField("length",ll->forcedLength(),4+padding);
+    if(ll->year().isValid()) {
+      ret+=RDJsonField("year",ll->year().year(),4+padding);
+    }
+    else {
+      ret+=RDJsonNullField("year",4+padding);
+    }
+    ret+=RDJsonField("groupName",ll->groupName(),4+padding);
+    ret+=RDJsonField("title",ll->title(),4+padding);
+    ret+=RDJsonField("artist",ll->artist(),4+padding);
+    ret+=RDJsonField("publisher",ll->publisher(),4+padding);
+    ret+=RDJsonField("composer",ll->composer(),4+padding);
+    ret+=RDJsonField("album",ll->album(),4+padding);
+    ret+=RDJsonField("label",ll->label(),4+padding);
+    ret+=RDJsonField("client",ll->client(),4+padding);
+    ret+=RDJsonField("agency",ll->agency(),4+padding);
+    ret+=RDJsonField("conductor",ll->conductor(),4+padding);
+    ret+=RDJsonField("userDefined",ll->userDefined(),4+padding);
+    ret+=RDJsonField("songId",ll->songId(),4+padding);
+    ret+=RDJsonField("outcue",ll->outcue(),4+padding);
+    ret+=RDJsonField("description",ll->description(),4+padding);
+    ret+=RDJsonField("isrc",ll->isrc(),4+padding);
+    ret+=RDJsonField("isci",ll->isci(),4+padding);
+    ret+=RDJsonField("externalEventId",ll->extEventId(),4+padding);
+    ret+=RDJsonField("externalData",ll->extData(),4+padding);
+    ret+=RDJsonField("externalAnncType",ll->extAnncType(),4+padding,true);
+    if(final) {
+      ret+=RDJsonPadding(padding)+"}\r\n";
+    }
+    else {
+      ret+=RDJsonPadding(padding)+"},\r\n";
+    }
+  }
+
+  return ret;
 }
 
 

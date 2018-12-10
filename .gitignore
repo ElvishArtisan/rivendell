@@ -69,6 +69,7 @@ missing
 Makefile.in
 Makefile
 moc_*
+py-compile
 rdadmin/rdadmin
 rdairplay/rdairplay
 rdcastmanager/rdcastmanager
@@ -83,6 +84,7 @@ rdmonitor/rdmonitor
 rdpanel/rdpanel
 rdrepld/rdrepld
 rdrepld-suse
+rdrlmd/rdrlmd
 rdselect/rdselect
 rdservice/rdservice
 rdvairplayd/rdvairplayd

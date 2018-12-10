@@ -39,6 +39,7 @@
 #include <rdplay_deck.h>
 #include <rdrlmhost.h>
 #include <rdsimpleplayer.h>
+#include <rdunixsocket.h>
 
 //
 // Widget Settings
@@ -53,8 +54,8 @@ class RDLogPlay : public QObject,public RDLogEvent
 {
  Q_OBJECT
  public:
-  RDLogPlay(int id,RDEventPlayer *player,Q3SocketDevice *nn_sock,QString logname,
-	  std::vector<RDRLMHost *> *rlm_hosts,QObject *parent=0);
+  RDLogPlay(int id,RDEventPlayer *player,Q3SocketDevice *nn_sock,
+	    std::vector<RDRLMHost *> *rlm_hosts,QObject *parent=0);
   QString serviceName() const;
   void setServiceName(const QString &svcname);
   QString defaultServiceName() const;
@@ -188,6 +189,9 @@ class RDLogPlay : public QObject,public RDLogEvent
   RDLogLine::TransType GetTransType(const QString &logname,int line);
   bool ClearBlock(int start_line);
   void SendNowNext();
+  QString GetPadJson(const QString &name,RDLogLine *ll,
+		     const QDateTime &start_datetime,int padding,
+		     bool final=false) const;
   void LogTraffic(RDLogLine *logline,RDLogLine::PlaySource src,
 		  RDAirPlayConf::TrafficAction action,bool onair_flag) const;
   RDCae *play_cae;
@@ -246,6 +250,7 @@ class RDLogPlay : public QObject,public RDLogEvent
   bool play_audition_head_played;
   int play_audition_preroll;
   RDEventPlayer *play_event_player;
+  RDUnixSocket *play_pad_socket;
 };
 
 

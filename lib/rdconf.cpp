@@ -991,7 +991,15 @@ int RDTimeZoneOffset()
   tm=gmtime(&t);
   time_t gmt_time=3600*tm->tm_hour+60*tm->tm_min+tm->tm_sec;
 
-  return gmt_time-local_time;
+  int offset=gmt_time-local_time;
+  if(offset>43200) {
+    offset=offset-86400;
+  }
+  if(offset<-43200) {
+    offset=offset+86400;
+  }
+
+  return offset;
 }
 
 

@@ -18094,6 +18094,50 @@
 2018-11-30 Patrick Linstruth <patrick@deltecent.com>
 	* Fixed regression with rdimport(1) that threw SQL errors when
 	importing into an existing cart.
-2018-12-10 Patrick Linstruth <patrick@deltecent.com>
-	* Fixed a bug that was causing rdairplay(1) to segfault when no
-	log was loaded.
+2018-12-04 Fred Gleason <fredg@paravelsystems.com>
+	* Added an rdrlmd(8) service.
+	* Implemented JSON-formatted PAD output on TCP port 34289.
+2018-12-05 Fred Gleason <fredg@paravelsystems.com>
+	* Added a set of enclosing '{}' braces around the JSON-formatted PAD
+	output to make it well-formed.
+2018-12-05 Fred Gleason <fredg@paravelsystems.com>
+	* Added a set of Python classes for processing PAD updates.
+2018-12-06 Fred Gleason <fredg@paravelsystems.com>
+	* Added comments to the 'now_and_next.py' PyPAD script.
+2018-12-06 Fred Gleason <fredg@paravelsystems.com>
+	* Removed support for the 'priv' argument in callbacks in PyPAD
+	scripts.
+2018-12-06 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for '\b', '\f', '\n' '\r' and '\t' control escapes
+	in the 'PyPADUpdate::padFields()' method.
+2018-12-06 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'pypad_udp.py' PyPAD script.
+2018-12-07 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the Python namespace of the PyPAD classes from
+	'rivendell.PyPAD' to 'PyPAD'.
+	* Renamed the 'PyPAD.PyPADReceiver' class to 'PyPAD.Receiver'.
+	* Renamed the 'PyPAD.PyPADUpdate' class to 'PyPAD.Update'.
+	* Added a 'port' argument to the 'PyPAD.Receiver::start()' method.
+	* Added an 'escaping' argument to the 'PyPAD.Update::padFields()'
+	method.
+	* Added support for the 'Encoding=' directive to the 'pypad_udp.py'
+	script.
+2018-12-08 Fred Gleason <fredg@paravelsystems.com>
+	* Renamed the 'PyPAD.Update::dateTime()' method to
+	'PyPAD.Update::dateTimeString()'.
+	* Changed the format of the 'dateTime' field in the PAD JSON structure
+	from RFC822 to ISO 8601.
+	* Added a 'startDateTime' field to the 'now' and 'next' objects in
+	the PAD JSON structure.
+	* Added a PAD Type enumeration for use in 'PyPAD.Update'.
+	* Added 'PyPAD.Update::hasPadType()' and 'PyPAD.Update.startDateTime()'
+	methods.
+	* Removed 'PyPAD.Update::hasNowPad()' and 'PyPAD.Update:hasNextPad()'
+	methods.
+	* Added support for '%d(<dt>)' and '%D(<dt>)' wildcards in
+	'PyPAD.Update::padFields()'.
+2018-12-09 Fred Gleason <fredg@paravelsystems.com>
+	* Renamed the 'PyPAD.Update::padFields()' method to
+	'PyPAD.Update::resolvePadFields()'.
+	* Added a 'PyPAD.Update::padField()' method.
+	* Added a 'PyPAD.Update::escape()' method.

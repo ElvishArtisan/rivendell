@@ -123,7 +123,7 @@ MainObject::MainObject(QObject *parent)
   QString default_svcname=rda->airplayConf()->defaultSvc();
   for(int i=0;i<RD_RDVAIRPLAY_LOG_QUAN;i++) {
     air_logs[i]=new RDLogPlay(i+RD_RDVAIRPLAY_LOG_BASE,air_event_player,
-			      air_nownext_socket,"",&air_plugin_hosts);
+			      air_nownext_socket,&air_plugin_hosts);
     air_logs[i]->setDefaultServiceName(default_svcname);
     //
     // FIXME: Add the ability to specify default carts for vLogs!
@@ -134,12 +134,6 @@ MainObject::MainObject(QObject *parent)
     connect(air_logs[i],SIGNAL(reloaded()),reload_mapper,SLOT(map()));
     rename_mapper->setMapping(air_logs[i],i);
     connect(air_logs[i],SIGNAL(renamed()),rename_mapper,SLOT(map()));
-    //    connect(air_logs[i],SIGNAL(refreshStatusChanged(bool)),
-    //	    this,SLOT(refreshStatusChangedData(bool)));
-    //    connect(air_logs[i],SIGNAL(channelStarted(int,int,int,int)),
-    //	    this,SLOT(logChannelStartedData(int,int,int,int)));
-    //    connect(air_logs[i],SIGNAL(channelStopped(int,int,int,int)),
-    //	    this,SLOT(logChannelStoppedData(int,int,int,int)));
     int cards[2]={0,0};
     cards[0]=rda->airplayConf()->virtualCard(i+RD_RDVAIRPLAY_LOG_BASE);
     cards[1]=rda->airplayConf()->virtualCard(i+RD_RDVAIRPLAY_LOG_BASE);
