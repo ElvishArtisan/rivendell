@@ -30,14 +30,38 @@ import PyPAD
 def eprint(*args,**kwargs):
     print(*args,file=sys.stderr,**kwargs)
 
+def processUpdate(update,section):
+    if config.get(section,'ProcessNullUpdates')=='0':
+        return True
+    if config.get(section,'ProcessNullUpdates')=='1':
+        return update.hasPadType(PyPAD.TYPE_NOW)
+    if config.get(section,'ProcessNullUpdates')=='2':
+        return update.hasPadType(PyPAD.TYPE_NEXT)
+    if config.get(section,'ProcessNullUpdates')=='3':
+        return update.hasPadType(PyPAD.TYPE_NOW) and update.hasPadType(PyPAD.TYPE_NEXT)
+
+    log_dict={1: 'MasterLog',2: 'Aux1Log',3: 'Aux2Log',
+              101: 'VLog101',102: 'VLog102',103: 'VLog103',104: 'VLog104',
+              105: 'VLog105',106: 'VLog106',107: 'VLog107',108: 'VLog108',
+              109: 'VLog109',110: 'VLog110',111: 'VLog111',112: 'VLog112',
+              113: 'VLog113',114: 'VLog114',115: 'VLog115',116: 'VLog116',
+              117: 'VLog117',118: 'VLog118',119: 'VLog119',120: 'VLog120'}
+    if config.get(section,log_dict[update.machine()]).lower()=='yes':
+        return True
+    if config.get(section,log_dict[update.machine()]).lower()=='no':
+        return False
+    if config.get(section,log_dict[update.machine()]).lower()=='onair':
+        return update.onairFlag()
+
 def ProcessPad(update):
     n=1
     while(True):
         section='Udp'+str(n)
         try:
-            fmtstr=config.get(section,'FormatString')
-            send_sock.sendto(update.resolvePadFields(fmtstr,int(config.get(section,'Encoding'))),
-                             (config.get(section,'IpAddress'),int(config.get(section,'UdpPort'))))
+            if processUpdate(update,section):
+                fmtstr=config.get(section,'FormatString')
+                send_sock.sendto(update.resolvePadFields(fmtstr,int(config.get(section,'Encoding'))),
+                                 (config.get(section,'IpAddress'),int(config.get(section,'UdpPort'))))
             n=n+1
         except ConfigParser.NoSectionError:
             return

@@ -18154,3 +18154,8 @@
 	* Fixed a bug in 'PyPAD.Update::resolvePadFields()' that caused
 	incorrect rendering of 'dddd' placeholders when processing '%d(<dt>)'
 	wildcards.
+2018-12-10 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for the 'ProcessNullUpdates=' directive in the
+	'pypad_udp.py' script.
+	* Added support for the log selection directives in the
+	'pypad_udp.py' script.
