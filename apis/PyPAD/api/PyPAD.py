@@ -41,6 +41,34 @@ TYPE_NOW='now'
 TYPE_NEXT='next'
 
 #
+# Field Names
+#
+FIELD_START_DATETIME='startDateTime'
+FIELD_CART_NUMBER='cartNumber'
+FIELD_CART_TYPE='cartType'
+FIELD_LENGTH='length'
+FIELD_YEAR='year'
+FIELD_GROUP_NAME='groupName'
+FIELD_TITLE='title'
+FIELD_ARTIST='artist'
+FIELD_PUBLISHER='publisher'
+FIELD_COMPOSER='composer'
+FIELD_ALBUM='album'
+FIELD_LABEL='label'
+FIELD_CLIENT='client'
+FIELD_AGENCY='agency'
+FIELD_CONDUCTOR='conductor'
+FIELD_USER_DEFINED='userDefined'
+FIELD_SONG_ID='songId'
+FIELD_OUTCUE='outcue'
+FIELD_DESCRIPTION='description'
+FIELD_ISRC='isrc'
+FIELD_ISCI='isci'
+FIELD_EXTERNAL_EVENT_ID='externalEventId'
+FIELD_EXTERNAL_DATA='externalData'
+FIELD_EXTERNAL_ANNC_TYPE='externalAnncType'
+
+#
 # Default TCP port for connecting to Rivendell's PAD service
 #
 PAD_TCP_PORT=34289
@@ -98,21 +126,10 @@ class Update(object):
         string=string.replace("\t","\\t")
         return string
 
-    def __escape(self,string,esc):
-        if(esc==0):
-            return string
-        if(esc==1):
-            return self.__escapeXml(string)
-        if(esc==2):
-            return self.__escapeWeb(string)
-        if(esc==3):
-            return self.__escapeJson(string)
-        raise ValueError('invalid esc value')
-
     def __replaceWildcard(self,wildcard,sfield,stype,string,esc):
         try:
             if isinstance(self.__fields['padUpdate'][stype][sfield],unicode):
-                string=string.replace('%'+wildcard,self.__escape(self.__fields['padUpdate'][stype][sfield],esc))
+                string=string.replace('%'+wildcard,self.escape(self.__fields['padUpdate'][stype][sfield],esc))
             else:
                 string=string.replace('%'+wildcard,str(self.__fields['padUpdate'][stype][sfield]))
         except TypeError:
@@ -197,7 +214,6 @@ class Update(object):
             pattern=self.__findDatetimePattern(pattern[0],wildcard,string)
             if pattern!=None:
                 string=self.__replaceDatetimePattern(string,pattern[1])
-                #print 'pos: '+str(pattern[0])+'  pattern: '+pattern[1]
         return string
 
     def dateTimeString(self):
@@ -211,6 +227,30 @@ class Update(object):
            Returns the date-time of the PAD update (datetime)
         """
         return self.__fromIso8601(pad_data['padUpdate']['dateTime'])
+
+    def escape(self,string,esc):
+        """
+           Returns an 'escaped' version of the specified string.
+           Take two arguments:
+
+           string - The string to be processed.
+
+           esc - The type of escaping to be applied. The following values
+                 are valid:
+                 PyPAD.ESCAPE_JSON - Escaping for JSON string values
+                 PyPAD.ESCAPE_NONE - No escaping applied
+                 PyPAD.ESCAPE_URL - Escaping for using in URLs
+                 PyPAD.ESCAPE_XML - Escaping for use in XML
+        """
+        if(esc==0):
+            return string
+        if(esc==1):
+            return self.__escapeXml(string)
+        if(esc==2):
+            return self.__escapeWeb(string)
+        if(esc==3):
+            return self.__escapeJson(string)
+        raise ValueError('invalid esc value')
 
     def logMachine(self):
         """
@@ -271,7 +311,7 @@ class Update(object):
         """
         return self.__fields['padUpdate']['log']['name']
 
-    def padFields(self,string,esc):
+    def resolvePadFields(self,string,esc):
         """
            Takes two arguments:
 
@@ -329,7 +369,10 @@ class Update(object):
     def hasPadType(self,pad_type):
         """
            Indicates if this update includes the specified PAD type
-           ('PyPAD.PAD_NOW' or 'PyPAD.PAD_NEXT')
+           Takes one argument:
+              pad_type - The type of PAD value. Valid values are:
+                         PyPAD.NOW - Now playing data
+                         PyPAD.NEXT - Next to play data
         """
         try:
             return self.__fields['padUpdate'][pad_type]!=None
@@ -339,12 +382,61 @@ class Update(object):
     def startDateTime(self,pad_type):
         """
            Returns the start datetime of the specified PAD type
-           ('PyPAD.PAD_NOW' or 'PyPAD.PAD_NEXT')
+           Takes one argument:
+              pad_type - The type of PAD value. Valid values are:
+                         PyPAD.NOW - Now playing data
+                         PyPAD.NEXT - Next to play data
         """
         try:
             return self.__fromIso8601(self.__fields['padUpdate'][pad_type]['startDateTime'])
         except AttributeError:
             return None
+
+    def padField(self,pad_type,pad_field):
+        """
+           Returns the raw value of the specified PAD field.
+           Takes two arguments:
+              pad_type - The type of PAD value. Valid values are:
+                         PyPAD.NOW - Now playing data
+                         PyPAD.NEXT - Next to play data
+
+              pad_field - The specific field. Valid values are:
+                          PyPAD.FIELD_AGENCY - The 'Agency' field (string)
+                          PyPAD.FIELD_ALBUM - The 'Album' field (string)
+                          PyPAD.FIELD_ARTIST - The 'Artist' field (string)
+                          PyPAD.FIELD_CART_NUMBER - The 'Cart Number' field
+                                                    (integer)
+                          PyPAD.FIELD_CART_TYPE - 'The 'Cart Type' field
+                                                  (string)
+                          PyPAD.FIELD_CLIENT - The 'Client' field (string)
+                          PyPAD.FIELD_COMPOSER - The 'Composer' field (string)
+                          PyPAD.FIELD_CONDUCTOR - The 'Conductor' field (string)
+                          PyPAD.FIELD_DESCRIPTION - The 'Description' field
+                                                    (string)
+                          PyPAD.FIELD_EXTERNAL_ANNC_TYPE - The 'EXT_ANNC_TYPE'
+                                                           field (string)
+                          PyPAD.FIELD_EXTERNAL_DATA - The 'EXT_DATA' field
+                                                      (string)
+                          PyPAD.FIELD_EXTERNAL_EVENT_ID - The 'EXT_EVENT_ID'
+                                                          field (string)
+                          PyPAD.FIELD_GROUP_NAME - The 'GROUP_NAME' field
+                                                   (string)
+                          PyPAD.FIELD_ISRC - The 'ISRC' field (string)
+                          PyPAD.FIELD_ISCI - The 'ISCI' field (string)
+                          PyPAD.FIELD_LABEL - The 'Label' field (string)
+                          PyPAD.FIELD_LENGTH - The 'Length' field (integer)
+                          PyPAD.FIELD_OUTCUE - The 'Outcue' field (string)
+                          PyPAD.FIELD_PUBLISHER - The 'Publisher' field (string)
+                          PyPAD.FIELD_SONG_ID - The 'Song ID' field (string)
+                          PyPAD.FIELD_START_DATETIME - The 'Start DateTime field
+                                                       (string)
+                          PyPAD.FIELD_TITLE - The 'Title' field (string)
+                          PyPAD.FIELD_USER_DEFINED - 'The 'User Defined' field
+                                                      (string)
+                          PyPAD.FIELD_YEAR - The 'Year' field (integer)
+        """
+        return self.__fields['padUpdate'][pad_type][pad_field]
+
 
 
 

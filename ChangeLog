@@ -18136,3 +18136,8 @@
 	methods.
 	* Added support for '%d(<dt>)' and '%D(<dt>)' wildcards in
 	'PyPAD.Update::padFields()'.
+2018-12-09 Fred Gleason <fredg@paravelsystems.com>
+	* Renamed the 'PyPAD.Update::padFields()' method to
+	'PyPAD.Update::resolvePadFields()'.
+	* Added a 'PyPAD.Update::padField()' method.
+	* Added a 'PyPAD.Update::escape()' method.
