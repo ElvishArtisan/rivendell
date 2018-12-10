@@ -46,6 +46,7 @@ TYPE_NEXT='next'
 FIELD_START_DATETIME='startDateTime'
 FIELD_CART_NUMBER='cartNumber'
 FIELD_CART_TYPE='cartType'
+FIELD_CUT_NUMBER='cutNumber'
 FIELD_LENGTH='length'
 FIELD_YEAR='year'
 FIELD_GROUP_NAME='groupName'
@@ -226,7 +227,7 @@ class Update(object):
         """
            Returns the date-time of the PAD update (datetime)
         """
-        return self.__fromIso8601(pad_data['padUpdate']['dateTime'])
+        return self.__fromIso8601(self.__fields['padUpdate']['dateTime'])
 
     def escape(self,string,esc):
         """
@@ -252,12 +253,19 @@ class Update(object):
             return self.__escapeJson(string)
         raise ValueError('invalid esc value')
 
-    def logMachine(self):
+    def machine(self):
         """
            Returns the log machine number to which this update pertains
            (integer).
         """
-        return self.__fields['padUpdate']['logMachine']
+        return self.__fields['padUpdate']['machine']
+
+    def mode(self):
+        """
+           Returns the operating mode of the host log machine to which
+           this update pertains (string).
+        """
+        return self.__fields['padUpdate']['mode']
 
     def onairFlag(self):
         """
@@ -411,6 +419,8 @@ class Update(object):
                           PyPAD.FIELD_CLIENT - The 'Client' field (string)
                           PyPAD.FIELD_COMPOSER - The 'Composer' field (string)
                           PyPAD.FIELD_CONDUCTOR - The 'Conductor' field (string)
+                          PyPAD.FIELD_CUT_NUMER - The 'Cut Number' field
+                                                  (integer)
                           PyPAD.FIELD_DESCRIPTION - The 'Description' field
                                                     (string)
                           PyPAD.FIELD_EXTERNAL_ANNC_TYPE - The 'EXT_ANNC_TYPE'

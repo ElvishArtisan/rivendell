@@ -37,13 +37,13 @@ import PyPAD
 def ProcessPad(update):
     print
     if update.hasPadType(PyPAD.TYPE_NOW):
-        print "Log %03d NOW: " % update.logMachine()+update.resolvePadFields("%a - %t",PyPAD.ESCAPE_NONE)
+        print "Log %03d NOW: " % update.machine()+update.resolvePadFields("%a - %t",PyPAD.ESCAPE_NONE)
     else:
-        print "Log %03d NOW: [none]" % update.logMachine()
+        print "Log %03d NOW: [none]" % update.machine()
     if update.hasPadType(PyPAD.TYPE_NEXT):
-        print "Log %03d NEXT: " % update.logMachine()+update.resolvePadFields("%A - %T",PyPAD.ESCAPE_NONE)
+        print "Log %03d NEXT: " % update.machine()+update.resolvePadFields("%A - %T",PyPAD.ESCAPE_NONE)
     else:
-        print "Log %03d NEXT: [none]" % update.logMachine()
+        print "Log %03d NEXT: [none]" % update.machine()
 
 #
 # Create an instance of 'PyPADReceiver'

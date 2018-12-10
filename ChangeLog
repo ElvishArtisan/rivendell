@@ -18141,3 +18141,12 @@
 	'PyPAD.Update::resolvePadFields()'.
 	* Added a 'PyPAD.Update::padField()' method.
 	* Added a 'PyPAD.Update::escape()' method.
+2018-12-10 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the name of the JSON PAD field 'logMachine' to 'machine'.
+	* Changed the name of the 'PyPAD.Update::logMachine()' method to
+	'PyPAD.Update::machine()'.
+	* Changed the name of the JSON PAD field 'logMode' to 'mode'.
+	* Added a 'PyPAD.Update::mode()' method.
+	* Added a 'cutNumber' field to the JSON PAD 'now' and 'next' objects.
+	* Added a 'PyPAD.FIELD_CUT_NUMBER' define.
+	* Added 'api/PyPAD/examples/pypad_test.py'.
