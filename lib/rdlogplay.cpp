@@ -2719,7 +2719,7 @@ void RDLogPlay::Playing(int id)
   emit played(line);
   AdvanceActiveEvent();
   UpdatePostPoint();
-  if (isRefreshable()&&play_log->autoRefresh()) {
+  if (play_log!=NULL&&isRefreshable()&&play_log->autoRefresh()) {
     refresh();
   }
   LogPlayEvent(logline);
