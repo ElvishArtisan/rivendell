@@ -18159,3 +18159,6 @@
 	'pypad_udp.py' script.
 	* Added support for the log selection directives in the
 	'pypad_udp.py' script.
+2018-12-10 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'pypad_udp.py' script that threw an exception
+	when processing multi-byte UTF-8 characters.

@@ -20,15 +20,15 @@
 #   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #
 
-from __future__ import print_function
+#from __future__ import print_function
 
 import sys
 import socket
 import ConfigParser
 import PyPAD
 
-def eprint(*args,**kwargs):
-    print(*args,file=sys.stderr,**kwargs)
+#def eprint(*args,**kwargs):
+#    print(*args,file=sys.stderr,**kwargs)
 
 def processUpdate(update,section):
     if config.get(section,'ProcessNullUpdates')=='0':
@@ -60,7 +60,7 @@ def ProcessPad(update):
         try:
             if processUpdate(update,section):
                 fmtstr=config.get(section,'FormatString')
-                send_sock.sendto(update.resolvePadFields(fmtstr,int(config.get(section,'Encoding'))),
+                send_sock.sendto(update.resolvePadFields(fmtstr,int(config.get(section,'Encoding'))).encode('utf-8'),
                                  (config.get(section,'IpAddress'),int(config.get(section,'UdpPort'))))
             n=n+1
         except ConfigParser.NoSectionError:
