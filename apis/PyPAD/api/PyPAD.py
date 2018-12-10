@@ -165,19 +165,9 @@ class Update(object):
         dt_pattern=pattern[3:-1]
 
         try:
-            dt_pattern=dt_pattern.replace('dddd',dt.strftime('%A'))
-            dt_pattern=dt_pattern.replace('ddd',dt.strftime('%a'))
-            dt_pattern=dt_pattern.replace('dd',dt.strftime('%d'))
-            dt_pattern=dt_pattern.replace('d',str(dt.day))
-
-            dt_pattern=dt_pattern.replace('MMMM',dt.strftime('%B'))
-            dt_pattern=dt_pattern.replace('MMM',dt.strftime('%b'))
-            dt_pattern=dt_pattern.replace('MM',dt.strftime('%m'))
-            dt_pattern=dt_pattern.replace('M',str(dt.month))
-
-            dt_pattern=dt_pattern.replace('yyyy',dt.strftime('%Y'))
-            dt_pattern=dt_pattern.replace('yy',dt.strftime('%y'))
-
+            #
+            # Process Times
+            #
             miltime=(dt_pattern.find('ap')<0)and(dt_pattern.find('AP')<0)
             if not miltime:
                 if dt.hour<13:
@@ -201,6 +191,23 @@ class Update(object):
 
             dt_pattern=dt_pattern.replace('ss',dt.strftime('%S'))
             dt_pattern=dt_pattern.replace('s',str(dt.second))
+
+            #
+            # Process Dates
+            #
+            dt_pattern=dt_pattern.replace('MMMM',dt.strftime('%B'))
+            dt_pattern=dt_pattern.replace('MMM',dt.strftime('%b'))
+            dt_pattern=dt_pattern.replace('MM',dt.strftime('%m'))
+            dt_pattern=dt_pattern.replace('M',str(dt.month))
+
+            dt_pattern=dt_pattern.replace('dddd',dt.strftime('%A'))
+            dt_pattern=dt_pattern.replace('ddd',dt.strftime('%a'))
+            dt_pattern=dt_pattern.replace('dd',dt.strftime('%d'))
+            dt_pattern=dt_pattern.replace('d',str(dt.day))
+
+            dt_pattern=dt_pattern.replace('yyyy',dt.strftime('%Y'))
+            dt_pattern=dt_pattern.replace('yy',dt.strftime('%y'))
+
         except AttributeError:
             string=string.replace(pattern,'')
             return string

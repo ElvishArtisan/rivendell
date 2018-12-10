@@ -18150,3 +18150,7 @@
 	* Added a 'cutNumber' field to the JSON PAD 'now' and 'next' objects.
 	* Added a 'PyPAD.FIELD_CUT_NUMBER' define.
 	* Added 'api/PyPAD/examples/pypad_test.py'.
+2018-12-10 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'PyPAD.Update::resolvePadFields()' that caused
+	incorrect rendering of 'dddd' placeholders when processing '%d(<dt>)'
+	wildcards.
