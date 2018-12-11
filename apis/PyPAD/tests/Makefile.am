@@ -1,6 +1,6 @@
 ## automake.am
 ##
-## Automake.am for Rivendell PyPAD
+## Automake.am for Rivendell PyPAD/tests
 ##
 ##   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
 ##
@@ -20,9 +20,8 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-SUBDIRS = api\
-          examples\
-          tests
+EXTRA_DIST = filepath_test.py
+	     pad_test.py
 
 CLEANFILES = *~\
              *.idb\

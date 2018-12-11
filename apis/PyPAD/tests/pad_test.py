@@ -1,10 +1,10 @@
 #!/usr/bin/python
 
-# pypad_test.py
+# pad_test.py
 #
 # PyPAD regression test script for Rivendell
 #
-#  Exercise every method of 'PyPAD.Update' for each update.
+#  Exercise every PAD accessor method of 'PyPAD.Update' for each update.
 #
 #   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
 #
@@ -29,6 +29,8 @@ def ProcessPad(update):
     print '*** Log %03d Update ***********************************************' % update.machine()
     print '** HEADER INFO **'
     print '          dateTime(): '+update.dateTime().isoformat(' ')
+    print '          hostName(): '+update.hostName()
+    print '     shortHostName(): '+update.shortHostName()
     print '           machine(): %d' % update.machine()
     print '              mode(): '+update.mode()
     print '         onairFlag(): '+str(update.onairFlag())

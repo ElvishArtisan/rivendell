@@ -470,6 +470,7 @@ AC_CONFIG_FILES([rivendell.spec \
     apis/PyPAD/Makefile \
     apis/PyPAD/api/Makefile \
     apis/PyPAD/examples/Makefile \
+    apis/PyPAD/tests/Makefile \
     apis/rivwebcapi/Makefile \
     apis/rivwebcapi/rivwebcapi.pc \
     apis/rivwebcapi/rivwebcapi/Makefile \

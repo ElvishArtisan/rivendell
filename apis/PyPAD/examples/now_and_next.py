@@ -36,6 +36,8 @@ import PyPAD
 #
 def ProcessPad(update):
     print
+    print 'Filepath: '+update.resolveFilepath('string %$a',update.dateTime())
+
     if update.hasPadType(PyPAD.TYPE_NOW):
         print "Log %03d NOW: " % update.machine()+update.resolvePadFields("%a - %t",PyPAD.ESCAPE_NONE)
     else:

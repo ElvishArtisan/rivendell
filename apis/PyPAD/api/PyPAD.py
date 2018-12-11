@@ -260,6 +260,20 @@ class Update(object):
             return self.__escapeJson(string)
         raise ValueError('invalid esc value')
 
+    def hostName(self):
+        """
+           Returns the host name of the machine whence this PAD update
+           originated (string).
+        """
+        return self.__fields['padUpdate']['hostName']
+
+    def shortHostName(self):
+        """
+           Returns the short host name of the machine whence this PAD update
+           originated (string).
+        """
+        return self.__fields['padUpdate']['shortHostName']
+
     def machine(self):
         """
            Returns the log machine number to which this update pertains
@@ -454,8 +468,197 @@ class Update(object):
         """
         return self.__fields['padUpdate'][pad_type][pad_field]
 
+    def resolveFilepath(self,string,dt):
+        """
+           Returns a string with any Rivendell Filepath wildcards resolved
+           (See Appdendix C of the Rivendell Operations Guide for a list).
+           Takes two arguments:
+ 
+           string - The string to resolve.
 
+           dt - A Python 'datetime' object to use for the resolution.
+        """
+        ret=''
+        upper_case=False
+        initial_case=False
+        offset=0
+        i=0
 
+        while i<len(string):
+            field=''
+            offset=0;
+            if string[i]!='%':
+                ret+=string[i]
+            else:
+                i=i+1
+                offset=offset+1
+                if string[i]=='^':
+                    upper_case=True
+                    i=i+1
+                    offset=offset+1
+                else:
+                    upper_case=False
+
+                if string[i]=='$':
+                    initial_case=True
+                    i=i+1
+                    offset=offset+1
+                else:
+                    initial_case=False
+
+                found=False
+                if string[i]=='a':   # Abbreviated weekday name
+                    field=dt.strftime('%a').lower()
+                    found=True
+
+                if string[i]=='A':   # Full weekday name
+                    field=dt.strftime('%A').lower()
+                    found=True
+
+                if (string[i]=='b') or (string[i]=='h'): # Abrev. month Name
+                    field=dt.strftime('%b').lower()
+                    found=True
+
+                if string[i]=='B':  # Full month name
+                    field=dt.strftime('%B').lower()
+                    found=True
+
+                if string[i]=='C':  # Century
+                    field=dt.strftime('%C').lower()
+                    found=True
+
+                if string[i]=='d':  # Day (01 - 31)
+                    field='%02d' % dt.day
+                    found=True
+
+                if string[i]=='D':  # Date (mm-dd-yy)
+                    field=dt.strftime('%m-%d-%y')
+                    found=True
+
+                if string[i]=='e':  # Day, padded ( 1 - 31)
+                    field='%2d' % dt.day
+                    found=True
+
+                if string[i]=='E':  # Day, unpadded (1 - 31)
+                    field='%d' % dt.day
+                    found=True
+
+                if string[i]=='F':  # Date (yyyy-mm-dd)
+                    field=dt.strftime('%F')
+                    found=True
+                    
+                if string[i]=='g':  # Two digit year number (as per ISO 8601)
+                    field=dt.strftime('%g').lower()
+                    found=True
+
+                if string[i]=='G':  # Four digit year number (as per ISO 8601)
+                    field=dt.strftime('%G').lower()
+                    found=True
+
+                if string[i]=='H':  # Hour, zero padded, 24 hour
+                    field=dt.strftime('%H').lower()
+                    found=True
+
+                if string[i]=='I':  # Hour, zero padded, 12 hour
+                    field=dt.strftime('%I').lower()
+                    found=True
+
+                if string[i]=='i':  # Hour, space padded, 12 hour
+                    hour=dt.hour
+                    if hour>12:
+                        hour=hour-12
+                    if hour==0:
+                        hour=12
+                    field='%2d' % hour
+                    found=True
+
+                if string[i]=='J':  # Hour, unpadded, 12 hour
+                    hour=dt.hour
+                    if hour>12:
+                        hour=hour-12
+                    if hour==0:
+                        hour=12
+                    field=str(hour)
+                    found=True
+
+                if string[i]=='j':  # Day of year
+                    field=dt.strftime('%j')
+                    found=True
+                
+                if string[i]=='k':  # Hour, space padded, 24 hour
+                    field=dt.strftime('%k')
+                    found=True
+
+                if string[i]=='M':  # Minute, zero padded
+                    field=dt.strftime('%M')
+                    found=True
+
+                if string[i]=='m':  # Month (01 - 12)
+                    field=dt.strftime('%m')
+                    found=True
+
+                if string[i]=='p':  # AM/PM string
+                    field=dt.strftime('%p')
+                    found=True
+
+                if string[i]=='r':  # Rivendell host name
+                    field=self.hostName()
+                    found=True
+
+                if string[i]=='R':  # Rivendell short host name
+                    field=self.shortHostName()
+                    found=True
+
+                if string[i]=='S':  # Second (SS)
+                    field=dt.strftime('%S')
+                    found=True
+
+                if string[i]=='s':  # Rivendell service name
+                    if self.hasService():
+                        field=self.serviceName()
+                    else:
+                        field=''
+                    found=True
+
+                if string[i]=='u':  # Day of week (numeric, 1..7, 1=Monday)
+                    field=dt.strftime('%u')
+                    found=True
+
+                if (string[i]=='V') or (string[i]=='W'): # Week # (as per ISO 8601)
+                    field=dt.strftime('%V')
+                    found=True
+    
+                if string[i]=='w':  # Day of week (numeric, 0..6, 0=Sunday)
+                    field=dt.strftime('%w')
+                    found=True
+
+                if string[i]=='y':  # Year (yy)
+                    field=dt.strftime('%y')
+                    found=True
+
+                if string[i]=='Y':  # Year (yyyy)
+                    field=dt.strftime('%Y')
+                    found=True
+
+                if string[i]=='%':
+                    field='%'
+                    found=True
+
+                if not found:  # No recognized wildcard, rollback!
+                    i=-offset
+                    field=string[i]
+
+            if upper_case:
+                field=field.upper();
+            if initial_case:
+                field=field[0].upper()+field[1::]
+            ret+=field
+            upper_case=False
+            initial_case=False
+            i=i+1
+
+        return ret
+        
 
 class Receiver(object):
     def __init__(self):

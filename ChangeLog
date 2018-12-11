@@ -18162,3 +18162,13 @@
 2018-12-10 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the 'pypad_udp.py' script that threw an exception
 	when processing multi-byte UTF-8 characters.
+2018-12-11 Fred Gleason <fredg@paravelsystems.com>
+	* Renamed 'apis/PyPAD/examples/pypad_test.py' to
+	'apisPyPAD/tests/pad_test.py'.
+	* Added a 'hostName' field to the JSON PAD 'padUpdate' object.
+	* Added a 'PyPAD.Update::hostName()' method.
+	* Added a 'shortHostName' field to the JSON PAD 'padUpdate' object.
+	* Added a 'PyPAD.Update::shortHostName()' method.
+	* Added a 'PyPAD.Update::resolveFilepath()' method.
+	* Added 'apis/PyPAD/tests/filepath_test.py.
+	* Added 'api/PyPAD/examples/pypad_filewrite.py'.
