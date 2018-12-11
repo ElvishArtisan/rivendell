@@ -18141,3 +18141,5 @@
 	'PyPAD.Update::resolvePadFields()'.
 	* Added a 'PyPAD.Update::padField()' method.
 	* Added a 'PyPAD.Update::escape()' method.
+2018-12-10 Patrick Linstruth <patrick@deltecent.com>
+	* Added a 'pypad_tunein.py' PyPAD script.
