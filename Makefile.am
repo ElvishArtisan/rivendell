@@ -50,7 +50,7 @@ SUBDIRS = icons\
           rdmonitor\
           rdpanel\
           rdrepld\
-          rdrlmd\
+          rdpadd\
           rdselect\
           rdservice\
           rdvairplayd\

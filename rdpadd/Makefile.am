@@ -1,6 +1,6 @@
 ## Makefile.am
 ##
-## Rivendell RLM Consolidation Server
+## Rivendell PAD Consolidation Server
 ##
 ## (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
 ##
@@ -29,13 +29,13 @@ moc_%.cpp:	%.h
 	$(MOC) $< -o $@
 
 
-sbin_PROGRAMS = rdrlmd
+sbin_PROGRAMS = rdpadd
 
-dist_rdrlmd_SOURCES = rdrlmd.cpp rdrlmd.h
+dist_rdpadd_SOURCES = rdpadd.cpp rdpadd.h
 
-nodist_rdrlmd_SOURCES = moc_rdrlmd.cpp
+nodist_rdpadd_SOURCES = moc_rdpadd.cpp
 
-rdrlmd_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
+rdpadd_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
 
 CLEANFILES = *~\
              *.idb\

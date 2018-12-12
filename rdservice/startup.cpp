@@ -41,7 +41,7 @@ bool MainObject::Startup(QString *err_msg)
   //
   KillProgram("rdrepld");
   KillProgram("rdvairplayd");
-  KillProgram("rdrlmd");
+  KillProgram("rdpadd");
   KillProgram("rdcatchd");
   KillProgram("ripcd");
   KillProgram("caed");
@@ -85,15 +85,15 @@ bool MainObject::Startup(QString *err_msg)
   }
 
   //
-  // rdrlmd(8)
+  // rdpadd(8)
   //
-  svc_processes[RDSERVICE_RDRLMD_ID]=new Process(RDSERVICE_RDRLMD_ID,this);
+  svc_processes[RDSERVICE_RDPADD_ID]=new Process(RDSERVICE_RDPADD_ID,this);
   args.clear();
-  svc_processes[RDSERVICE_RDRLMD_ID]->
-    start(QString(RD_PREFIX)+"/sbin/rdrlmd",args);
-  if(!svc_processes[RDSERVICE_RDRLMD_ID]->process()->waitForStarted(-1)) {
-    *err_msg=tr("unable to start rdrlmd(8)")+": "+
-      svc_processes[RDSERVICE_RDRLMD_ID]->errorText();
+  svc_processes[RDSERVICE_RDPADD_ID]->
+    start(QString(RD_PREFIX)+"/sbin/rdpadd",args);
+  if(!svc_processes[RDSERVICE_RDPADD_ID]->process()->waitForStarted(-1)) {
+    *err_msg=tr("unable to start rdpadd(8)")+": "+
+      svc_processes[RDSERVICE_RDPADD_ID]->errorText();
     return false;
   }
 
