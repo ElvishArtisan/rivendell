@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#%PYTHON_BANGPATH%
 
 # pypad_udp.py
 #
@@ -20,15 +20,13 @@
 #   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #
 
-#from __future__ import print_function
-
 import sys
 import socket
-import ConfigParser
+import configparser
 import PyPAD
 
-#def eprint(*args,**kwargs):
-#    print(*args,file=sys.stderr,**kwargs)
+def eprint(*args,**kwargs):
+    print(*args,file=sys.stderr,**kwargs)
 
 def processUpdate(update,section):
     if config.get(section,'ProcessNullUpdates')=='0':
@@ -63,7 +61,7 @@ def ProcessPad(update):
                 send_sock.sendto(update.resolvePadFields(fmtstr,int(config.get(section,'Encoding'))).encode('utf-8'),
                                  (config.get(section,'IpAddress'),int(config.get(section,'UdpPort'))))
             n=n+1
-        except ConfigParser.NoSectionError:
+        except configparser.NoSectionError:
             return
 
 #
@@ -71,7 +69,7 @@ def ProcessPad(update):
 #
 if len(sys.argv)>=2:
     fp=open(sys.argv[1])
-    config=ConfigParser.ConfigParser()
+    config=configparser.ConfigParser(interpolation=None)
     config.readfp(fp)
     fp.close()
 else:

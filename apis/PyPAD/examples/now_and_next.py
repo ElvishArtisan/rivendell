@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#%PYTHON_BANGPATH%
 
 # now_and_next.py
 #
@@ -36,16 +36,16 @@ import PyPAD
 #
 def ProcessPad(update):
     print
-    print 'Filepath: '+update.resolveFilepath('string %$a',update.dateTime())
+    print('Filepath: '+update.resolveFilepath('string %$a',update.dateTime()))
 
     if update.hasPadType(PyPAD.TYPE_NOW):
-        print "Log %03d NOW: " % update.machine()+update.resolvePadFields("%a - %t",PyPAD.ESCAPE_NONE)
+        print("Log %03d NOW: " % update.machine()+update.resolvePadFields("%a - %t",PyPAD.ESCAPE_NONE))
     else:
-        print "Log %03d NOW: [none]" % update.machine()
+        print("Log %03d NOW: [none]" % update.machine())
     if update.hasPadType(PyPAD.TYPE_NEXT):
-        print "Log %03d NEXT: " % update.machine()+update.resolvePadFields("%A - %T",PyPAD.ESCAPE_NONE)
+        print("Log %03d NEXT: " % update.machine()+update.resolvePadFields("%A - %T",PyPAD.ESCAPE_NONE))
     else:
-        print "Log %03d NEXT: [none]" % update.machine()
+        print("Log %03d NEXT: [none]" % update.machine())
 
 #
 # Create an instance of 'PyPADReceiver'

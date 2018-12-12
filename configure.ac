@@ -250,7 +250,7 @@ AC_CHECK_HEADER(soundtouch/SoundTouch.h,[],[AC_MSG_ERROR([*** SoundTouch not fou
 #
 # Check for Python
 #
-AM_PATH_PYTHON([2.7])
+AM_PATH_PYTHON([3])
 
 #
 # Check for FLAC
@@ -466,6 +466,7 @@ AC_CONFIG_FILES([rivendell.spec \
     conf/rd-bin.conf \
     icons/Makefile \
     helpers/Makefile \
+    helpers/install_python.sh \
     apis/Makefile \
     apis/PyPAD/Makefile \
     apis/PyPAD/api/Makefile \
@@ -552,6 +553,8 @@ AC_CONFIG_FILES([rivendell.spec \
     xdg/Makefile \
     ])
 AC_OUTPUT()
+
+chmod 755 helpers/install_python.sh
 
 #
 # Create symlinks in 'utils/rdselect_helper/'

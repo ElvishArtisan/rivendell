@@ -52,6 +52,7 @@ docs/rivwebcapi/*.html
 docs/rivwebcapi/*.pdf
 helpers/cwrap
 helpers/docbook
+helpers/install_python.sh
 helpers/jsmin
 importers/nexgen_filter
 importers/panel_copy

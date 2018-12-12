@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 # PyPAD.py
 #
 # PAD processor for Rivendell
@@ -129,7 +127,7 @@ class Update(object):
 
     def __replaceWildcard(self,wildcard,sfield,stype,string,esc):
         try:
-            if isinstance(self.__fields['padUpdate'][stype][sfield],unicode):
+            if isinstance(self.__fields['padUpdate'][stype][sfield],str):
                 string=string.replace('%'+wildcard,self.escape(self.__fields['padUpdate'][stype][sfield],esc))
             else:
                 string=string.replace('%'+wildcard,str(self.__fields['padUpdate'][stype][sfield]))
@@ -687,18 +685,18 @@ class Receiver(object):
         """
         sock=socket.socket(socket.AF_INET)
         conn=sock.connect((hostname,port))
-        c=""
-        line=""
+        c=bytes()
+        line=bytes()
         msg=""
 
         while 1<2:
             c=sock.recv(1)
             line+=c
-            if c[0]=="\n":
-                msg+=line
-                if line=="\r\n":
+            if c[0]==10:
+                msg+=line.decode('utf-8')
+                if line.decode('utf-8')=="\r\n":
                     self.__PyPAD_Process(Update(json.loads(msg)))
                     msg=""
-                line=""
+                line=bytes()
 
 

@@ -33,7 +33,8 @@ dist_cwrap_SOURCES = cwrap.cpp cwrap.h
 
 dist_jsmin_SOURCES = jsmin.c
 
-EXTRA_DIST = rdpack.sh\
+EXTRA_DIST = install_python.sh.in\
+             rdpack.sh\
              rdtrans.sh\
              rdtransgui.sh\
              setenvvar.sh
@@ -42,7 +43,8 @@ CLEANFILES = *~\
              *.tar.gz\
              moc_*
 
-DISTCLEANFILES = docbook
+DISTCLEANFILES = docbook\
+                 install_python.sh
 
 MAINTAINERCLEANFILES = *~\
                        *.tar.gz\

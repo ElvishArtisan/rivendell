@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#%PYTHON_BANGPATH%
 
 # pypad_filewrite.py
 #
@@ -20,14 +20,12 @@
 #   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #
 
-#from __future__ import print_function
-
 import sys
-import ConfigParser
+import configparser
 import PyPAD
 
-#def eprint(*args,**kwargs):
-#    print(*args,file=sys.stderr,**kwargs)
+def eprint(*args,**kwargs):
+    print(*args,file=sys.stderr,**kwargs)
 
 def processUpdate(update,section):
     try:
@@ -39,7 +37,7 @@ def processUpdate(update,section):
             return update.hasPadType(PyPAD.TYPE_NEXT)
         if config.get(section,'ProcessNullUpdates')=='3':
             return update.hasPadType(PyPAD.TYPE_NOW) and update.hasPadType(PyPAD.TYPE_NEXT)
-    except ConfigParser.NoOptionError:
+    except configparser.NoOptionError:
         return True
 
     log_dict={1: 'MasterLog',2: 'Aux1Log',3: 'Aux2Log',
@@ -66,11 +64,11 @@ def ProcessPad(update):
                 if config.get(section,'Append')=='1':
                     mode='a'
                 f=open(update.resolveFilepath(config.get(section,'Filename'),update.dateTime()),mode)
-                f.write(update.resolvePadFields(fmtstr,int(config.get(section,'Encoding'))).encode('utf-8'))
+                f.write(update.resolvePadFields(fmtstr,int(config.get(section,'Encoding'))))
                 f.close()
             n=n+1
 
-    except ConfigParser.NoSectionError:
+    except configparser.NoSectionError:
         return
 
 #
@@ -78,7 +76,7 @@ def ProcessPad(update):
 #
 if len(sys.argv)>=2:
     fp=open(sys.argv[1])
-    config=ConfigParser.ConfigParser()
+    config=configparser.ConfigParser(interpolation=None)
     config.readfp(fp)
     fp.close()
 else:
@@ -87,4 +85,4 @@ else:
 
 rcvr=PyPAD.Receiver()
 rcvr.setCallback(ProcessPad)
-rcvr.start("localhost",PyPAD.PAD_TCP_PORT)
+rcvr.start('localhost',PyPAD.PAD_TCP_PORT)

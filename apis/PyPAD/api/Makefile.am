@@ -23,6 +23,10 @@
 rivendelldir = $(pyexecdir)
 rivendell_PYTHON = PyPAD.py
 
+##install-exec-am:	
+##	../../../helpers/install_python.sh PyPAD.py $(pyexecdir)/PyPAD.py
+##EXTRA_DIST = PyPAD.py
+
 CLEANFILES = *~\
              *.idb\
              *ilk\
