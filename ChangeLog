@@ -18141,5 +18141,42 @@
 	'PyPAD.Update::resolvePadFields()'.
 	* Added a 'PyPAD.Update::padField()' method.
 	* Added a 'PyPAD.Update::escape()' method.
-2018-12-10 Patrick Linstruth <patrick@deltecent.com>
+2018-12-10 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the name of the JSON PAD field 'logMachine' to 'machine'.
+	* Changed the name of the 'PyPAD.Update::logMachine()' method to
+	'PyPAD.Update::machine()'.
+	* Changed the name of the JSON PAD field 'logMode' to 'mode'.
+	* Added a 'PyPAD.Update::mode()' method.
+	* Added a 'cutNumber' field to the JSON PAD 'now' and 'next' objects.
+	* Added a 'PyPAD.FIELD_CUT_NUMBER' define.
+	* Added 'api/PyPAD/examples/pypad_test.py'.
+2018-12-10 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'PyPAD.Update::resolvePadFields()' that caused
+	incorrect rendering of 'dddd' placeholders when processing '%d(<dt>)'
+	wildcards.
+2018-12-10 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for the 'ProcessNullUpdates=' directive in the
+	'pypad_udp.py' script.
+	* Added support for the log selection directives in the
+	'pypad_udp.py' script.
+2018-12-10 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'pypad_udp.py' script that threw an exception
+	when processing multi-byte UTF-8 characters.
+2018-12-11 Fred Gleason <fredg@paravelsystems.com>
+	* Renamed 'apis/PyPAD/examples/pypad_test.py' to
+	'apisPyPAD/tests/pad_test.py'.
+	* Added a 'hostName' field to the JSON PAD 'padUpdate' object.
+	* Added a 'PyPAD.Update::hostName()' method.
+	* Added a 'shortHostName' field to the JSON PAD 'padUpdate' object.
+	* Added a 'PyPAD.Update::shortHostName()' method.
+	* Added a 'PyPAD.Update::resolveFilepath()' method.
+	* Added 'apis/PyPAD/tests/filepath_test.py.
+	* Added 'api/PyPAD/examples/pypad_filewrite.py'.
+2018-12-12 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the PyPAD classes and scripts to use Python 3.
+2018-12-12 Fred Gleason <fredg@paravelsystems.com>
+	* Documented the Python 3.4 dependency in 'INSTALL'.
+2018-12-12 Fred Gleason <fredg@paravelsystems.com>
+	* Renamed rdrlmd(8) to rdpadd(8).
+2018-12-12 Patrick Linstruth <patrick@deltecent.com>
 	* Added a 'pypad_tunein.py' PyPAD script.

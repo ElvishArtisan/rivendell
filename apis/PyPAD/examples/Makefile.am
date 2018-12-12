@@ -21,6 +21,7 @@
 ## Use automake to process this into a Makefile.in
 
 EXTRA_DIST = now_and_next.py\
+             pypad_filewrite.py\
              pypad_udp.py
 
 CLEANFILES = *~\

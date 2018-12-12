@@ -2963,10 +2963,15 @@ void RDLogPlay::SendNowNext()
   //
   play_pad_socket->write(QString("{\r\n").toUtf8());
   play_pad_socket->write(QString("    \"padUpdate\": {\r\n").toUtf8());
-  play_pad_socket->write(RDJsonField("dateTime",QDateTime::currentDateTime(),8).toUtf8());
-  play_pad_socket->write(RDJsonField("logMachine",play_id+1,8));
+  play_pad_socket->write(RDJsonField("dateTime",QDateTime::currentDateTime(),8).
+			 toUtf8());
+  play_pad_socket->write(RDJsonField("hostName",
+				     rda->station()->name(),8).toUtf8());
+  play_pad_socket->write(RDJsonField("shortHostName",
+				     rda->station()->shortName(),8).toUtf8());
+  play_pad_socket->write(RDJsonField("machine",play_id+1,8));
   play_pad_socket->write(RDJsonField("onairFlag",play_onair_flag,8));
-  play_pad_socket->write(RDJsonField("logMode",RDAirPlayConf::logModeText(play_op_mode),8));
+  play_pad_socket->write(RDJsonField("mode",RDAirPlayConf::logModeText(play_op_mode),8));
 
   //
   // Service
@@ -3065,6 +3070,12 @@ QString RDLogPlay::GetPadJson(const QString &name,RDLogLine *ll,
     }
     ret+=RDJsonField("cartNumber",ll->cartNumber(),4+padding);
     ret+=RDJsonField("cartType",RDCart::typeText(ll->cartType()),4+padding);
+    if(ll->cartType()==RDCart::Audio) {
+      ret+=RDJsonField("cutNumber",ll->cutNumber(),4+padding);
+    }
+    else {
+      ret+=RDJsonNullField("cutNumber",4+padding);
+    }
     ret+=RDJsonField("length",ll->forcedLength(),4+padding);
     if(ll->year().isValid()) {
       ret+=RDJsonField("year",ll->year().year(),4+padding);

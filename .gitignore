@@ -52,6 +52,7 @@ docs/rivwebcapi/*.html
 docs/rivwebcapi/*.pdf
 helpers/cwrap
 helpers/docbook
+helpers/install_python.sh
 helpers/jsmin
 importers/nexgen_filter
 importers/panel_copy
@@ -81,10 +82,10 @@ rdlogedit/rdlogedit
 rdlogin/rdlogin
 rdlogmanager/rdlogmanager
 rdmonitor/rdmonitor
+rdpadd/rdpadd
 rdpanel/rdpanel
 rdrepld/rdrepld
 rdrepld-suse
-rdrlmd/rdrlmd
 rdselect/rdselect
 rdservice/rdservice
 rdvairplayd/rdvairplayd

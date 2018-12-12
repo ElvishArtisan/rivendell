@@ -1,6 +1,6 @@
-// rdrlmd.h
+// rdpadd.h
 //
-// Rivendell RLM Consolidation Server
+// Rivendell PAD Consolidation Server
 //
 //   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
 //
@@ -18,8 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef RDRLMD_H
-#define RDRLMD_H
+#ifndef RDPADD_H
+#define RDPADD_H
 
 #include <qmap.h>
 #include <qobject.h>
@@ -29,7 +29,7 @@
 
 #include <rdunixserver.h>
 
-#define RDRLMD_USAGE "\n\n"
+#define RDPADD_USAGE "\n\n"
 
 class MetadataSource
 {
@@ -64,15 +64,15 @@ class MainObject : public QObject
 
  private:
   void SendState(int id);
-  QSignalMapper *rlm_client_disconnect_mapper;
-  QTcpServer *rlm_client_server;
-  QMap<int,QTcpSocket *> rlm_client_sockets;
+  QSignalMapper *pad_client_disconnect_mapper;
+  QTcpServer *pad_client_server;
+  QMap<int,QTcpSocket *> pad_client_sockets;
 
-  QSignalMapper *rlm_source_ready_mapper;
-  QSignalMapper *rlm_source_disconnect_mapper;
-  RDUnixServer *rlm_source_server;
-  QMap<int,MetadataSource *> rlm_sources;
+  QSignalMapper *pad_source_ready_mapper;
+  QSignalMapper *pad_source_disconnect_mapper;
+  RDUnixServer *pad_source_server;
+  QMap<int,MetadataSource *> pad_sources;
 };
 
 
-#endif  // RDRLMD_H
+#endif  // RDPADD_H

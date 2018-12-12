@@ -1,8 +1,8 @@
 #%PYTHON_BANGPATH%
 
-# pypad_udp.py
+# pypad_filewrite.py
 #
-# Send PAD updates via UDP
+# Write PAD updates to files
 #
 #   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
 #
@@ -21,7 +21,6 @@
 #
 
 import sys
-import socket
 import configparser
 import PyPAD
 
@@ -29,14 +28,17 @@ def eprint(*args,**kwargs):
     print(*args,file=sys.stderr,**kwargs)
 
 def processUpdate(update,section):
-    if config.get(section,'ProcessNullUpdates')=='0':
+    try:
+        if config.get(section,'ProcessNullUpdates')=='0':
+            return True
+        if config.get(section,'ProcessNullUpdates')=='1':
+            return update.hasPadType(PyPAD.TYPE_NOW)
+        if config.get(section,'ProcessNullUpdates')=='2':
+            return update.hasPadType(PyPAD.TYPE_NEXT)
+        if config.get(section,'ProcessNullUpdates')=='3':
+            return update.hasPadType(PyPAD.TYPE_NOW) and update.hasPadType(PyPAD.TYPE_NEXT)
+    except configparser.NoOptionError:
         return True
-    if config.get(section,'ProcessNullUpdates')=='1':
-        return update.hasPadType(PyPAD.TYPE_NOW)
-    if config.get(section,'ProcessNullUpdates')=='2':
-        return update.hasPadType(PyPAD.TYPE_NEXT)
-    if config.get(section,'ProcessNullUpdates')=='3':
-        return update.hasPadType(PyPAD.TYPE_NOW) and update.hasPadType(PyPAD.TYPE_NEXT)
 
     log_dict={1: 'MasterLog',2: 'Aux1Log',3: 'Aux2Log',
               101: 'VLog101',102: 'VLog102',103: 'VLog103',104: 'VLog104',
@@ -53,16 +55,21 @@ def processUpdate(update,section):
 
 def ProcessPad(update):
     n=1
-    while(True):
-        section='Udp'+str(n)
-        try:
+    try:
+        while(True):
+            section='File'+str(n)
             if processUpdate(update,section):
                 fmtstr=config.get(section,'FormatString')
-                send_sock.sendto(update.resolvePadFields(fmtstr,int(config.get(section,'Encoding'))).encode('utf-8'),
-                                 (config.get(section,'IpAddress'),int(config.get(section,'UdpPort'))))
+                mode='w'
+                if config.get(section,'Append')=='1':
+                    mode='a'
+                f=open(update.resolveFilepath(config.get(section,'Filename'),update.dateTime()),mode)
+                f.write(update.resolvePadFields(fmtstr,int(config.get(section,'Encoding'))))
+                f.close()
             n=n+1
-        except configparser.NoSectionError:
-            return
+
+    except configparser.NoSectionError:
+        return
 
 #
 # Read Configuration
@@ -73,14 +80,9 @@ if len(sys.argv)>=2:
     config.readfp(fp)
     fp.close()
 else:
-    eprint('pypad_udp.py: you must specify a configuration file')
+    eprint('pypad_filewrite.py: you must specify a configuration file')
     sys.exit(1)
-
-#
-# Create Send Socket
-#
-send_sock=socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
 
 rcvr=PyPAD.Receiver()
 rcvr.setCallback(ProcessPad)
-rcvr.start("localhost",PyPAD.PAD_TCP_PORT)
+rcvr.start('localhost',PyPAD.PAD_TCP_PORT)
