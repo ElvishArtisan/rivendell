@@ -18174,3 +18174,5 @@
 	* Added 'api/PyPAD/examples/pypad_filewrite.py'.
 2018-12-12 Fred Gleason <fredg@paravelsystems.com>
 	* Updated the PyPAD classes and scripts to use Python 3.
+2018-12-12 Fred Gleason <fredg@paravelsystems.com>
+	* Documented the Python 3.4 dependency in 'INSTALL'.
