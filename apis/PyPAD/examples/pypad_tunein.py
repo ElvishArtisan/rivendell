@@ -1,4 +1,4 @@
-#%PYTHON_BANGPATH%
+#!/usr/bin/python3.6
 
 # pypad_tunein.py
 #
@@ -32,13 +32,13 @@ import PyPAD
 import configparser
 
 def eprint(*args,**kwargs):
-    print(pypad_name+': ',file=sys.stderr,end='',**kwargs)
-    print(*args,file=sys.stderr,**kwargs)
+    print(pypad_name+': ',file=sys.stderr,end='')
+    print(*args,file=sys.stderr)
     syslog.syslog(syslog.LOG_ERR,*args)
 
 def iprint(*args,**kwargs):
-    print(pypad_name+': ',file=sys.stdout,end='',**kwargs)
-    print(*args,sep=pypad_name+': ',file=sys.stdout,**kwargs)
+    print(pypad_name+': ',file=sys.stdout,end='')
+    print(*args,file=sys.stdout)
     syslog.syslog(syslog.LOG_INFO,*args)
 
 def isTrue(string):
