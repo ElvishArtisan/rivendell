@@ -25,7 +25,7 @@ from __future__ import print_function
 import os
 import sys
 import socket
-import urllib
+import requests
 import xml.etree.ElementTree as ET
 import syslog
 import PyPAD
