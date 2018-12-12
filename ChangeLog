@@ -18094,3 +18094,6 @@
 2018-11-30 Patrick Linstruth <patrick@deltecent.com>
 	* Fixed regression with rdimport(1) that threw SQL errors when
 	importing into an existing cart.
+2018-12-10 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed a bug that was causing rdairplay(1) to segfault when no
+	log was loaded.
