@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#%PYTHON_BANGPATH%
 
 # pypad_tunein.py
 #
@@ -29,10 +29,7 @@ import requests
 import xml.etree.ElementTree as ET
 import syslog
 import PyPAD
-try:
-    import configparser
-except ImportError:
-    import ConfigParser as configparser
+import configparser
 
 def eprint(*args,**kwargs):
     print(pypad_name+': ',file=sys.stderr,end='',**kwargs)
@@ -61,15 +58,14 @@ def ProcessPad(update):
                 values['title']=update.resolvePadFields(config.get(section,'TitleString'),PyPAD.ESCAPE_URL)
                 values['artist']=update.resolvePadFields(config.get(section,'ArtistString'),PyPAD.ESCAPE_URL)
                 values['album']=update.resolvePadFields(config.get(section,'AlbumString'),PyPAD.ESCAPE_URL)
-                url_values=urllib.urlencode(values)
-                url='http://air.radiotime.com/Playing.ashx?'+url_values
                 iprint('Updating TuneIn: artist='+values['artist']+' title='+values['title']+' album='+values['album'])
                 try:
-                    response=urllib.urlopen(url)
-                except:
-                    eprint(url+' code='+str(response.getcode()))
+                    response=requests.get('http://air.radiotime.com/Playing.ashx',params=values)
+                    response.raise_for_status()
+                except requests.exceptions.RequestException as e:
+                    eprint(str(e))
                 else:
-                    xml=ET.fromstring(response.read())
+                    xml=ET.fromstring(response.text)
                     status=xml.find('./head/status')
                     if(status.text!='200'):
                         eprint('Update Failed: '+xml.find('./head/fault').text)
@@ -94,7 +90,7 @@ syslog.openlog(logoption=syslog.LOG_PID, facility=syslog.LOG_DAEMON)
 #
 if len(sys.argv)>=2:
     fp=open(sys.argv[1])
-    config=configparser.ConfigParser()
+    config=configparser.ConfigParser(interpolation=None)
     config.readfp(fp)
     fp.close()
 else:
