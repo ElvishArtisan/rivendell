@@ -101,25 +101,6 @@ else:
     eprint('You must specify a configuration file')
     sys.exit(1)
 
-#
-# Daemonize
-#
-try:
-    daemon=config.get(section,'Daemonize')
-except:
-    daemon='0'
-
-if isTrue(daemon):
-    try:
-        pid=os.fork()
-    except:
-        eprint('Could not fork')
-        sys.exit(1)
-        
-    if (pid==0):
-        os.setsid()
-    else:
-        exit(0)
 
 #
 # Create Send Socket
