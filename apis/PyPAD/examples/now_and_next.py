@@ -1,4 +1,4 @@
-#%PYTHON_BANGPATH%
+#!%PYTHON_BANGPATH%
 
 # now_and_next.py
 #

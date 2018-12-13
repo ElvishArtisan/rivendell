@@ -18178,3 +18178,8 @@
 	* Documented the Python 3.4 dependency in 'INSTALL'.
 2018-12-12 Fred Gleason <fredg@paravelsystems.com>
 	* Renamed rdrlmd(8) to rdpadd(8).
+2018-12-13 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'make install' rule in 'apis/PyPAD/examples/' to install
+	PyPAD scripts in '${libdir}/rivendell/PyPAD/'.
+	* Fixed a typo in the pseudo-bangpath line in the example PyPAD
+	scripts.
