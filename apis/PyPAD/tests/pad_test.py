@@ -1,4 +1,4 @@
-#%PYTHON_BANGPATH%
+#!%PYTHON_BANGPATH%
 
 # pad_test.py
 #

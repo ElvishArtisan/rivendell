@@ -1,4 +1,4 @@
-#%PYTHON_BANGPATH%
+#!%PYTHON_BANGPATH%
 
 # filepath_test.py
 #
@@ -75,4 +75,4 @@ rcvr.setCallback(ProcessPad)
 # the target Rivendell system. Once started, all further processing can only
 # be done in the callback method!
 #
-rcvr.start(localhost',PyPAD.PAD_TCP_PORT)
+rcvr.start('localhost',PyPAD.PAD_TCP_PORT)
