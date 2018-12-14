@@ -3705,6 +3705,11 @@ Ports</source>
         <source>Report Editor</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>PyPAD
+Instances</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditSvc</name>

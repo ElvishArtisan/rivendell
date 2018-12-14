@@ -73,6 +73,7 @@ EXTRA_DIST = audio_cards.txt\
              panels.txt\
              panel_names.txt\
              podcasts.txt\
+             pypad_instances.txt\
              rdairplay_channels.txt\
              rd_airplay.txt\
              rd_catch.txt\

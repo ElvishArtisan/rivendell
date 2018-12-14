@@ -1,0 +1,278 @@
+// list_pypads.cpp
+//
+// List PyPAD Instances
+//
+//   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+//
+//   This program is free software; you can redistribute it and/or modify
+//   it under the terms of the GNU General Public License version 2 as
+//   published by the Free Software Foundation.
+//
+//   This program is distributed in the hope that it will be useful,
+//   but WITHOUT ANY WARRANTY; without even the implied warranty of
+//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//   GNU General Public License for more details.
+//
+//   You should have received a copy of the GNU General Public
+//   License along with this program; if not, write to the Free Software
+//   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+//
+
+#include <qfile.h>
+#include <qfiledialog.h>
+#include <qmessagebox.h>
+#include <qstringlist.h>
+
+#include <rd.h>
+#include <rdapplication.h>
+#include <rddb.h>
+#include <rdescape_string.h>
+#include <rdpasswd.h>
+
+#include "list_pypads.h"
+#include "edit_pypad.h"
+
+ListPypads::ListPypads(RDStation *station,QWidget *parent)
+  : QDialog(parent)
+{
+  list_station=station;
+
+  setModal(true);
+
+  setWindowTitle("RDAdmin - "+tr("PyPAD Instances on")+" "+
+		 rda->station()->name());
+
+  //
+  // Fix the Window Size
+  //
+  setMinimumWidth(sizeHint().width());
+  setMinimumHeight(sizeHint().height());
+
+  //
+  // Create Fonts
+  //
+  QFont bold_font=QFont("Helvetica",12,QFont::Bold);
+  bold_font.setPixelSize(12);
+  QFont font=QFont("Helvetica",12,QFont::Normal);
+  font.setPixelSize(12);
+
+  //
+  // Instances List Box
+  //
+  list_list_view=new RDListView(this);
+  list_list_view->setAllColumnsShowFocus(true);
+  list_list_view->setItemMargin(5);
+  list_list_view->addColumn(tr("Id"));
+  list_list_view->setColumnAlignment(0,Qt::AlignRight);
+  list_list_view->addColumn(tr("Description"));
+  list_list_view->setColumnAlignment(1,Qt::AlignLeft);
+  list_list_view->addColumn(tr("Script Path"));
+  list_list_view->setColumnAlignment(2,Qt::AlignLeft);
+  connect(list_list_view,
+	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
+	  this,
+	  SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
+
+  //
+  //  Add Button
+  //
+  list_add_button=new QPushButton(this);
+  list_add_button->setFont(bold_font);
+  list_add_button->setText(tr("&Add"));
+  connect(list_add_button,SIGNAL(clicked()),this,SLOT(addData()));
+
+  //
+  //  Edit Button
+  //
+  list_edit_button=new QPushButton(this);
+  list_edit_button->setFont(bold_font);
+  list_edit_button->setText(tr("&Edit"));
+  connect(list_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
+
+  //
+  //  Delete Button
+  //
+  list_delete_button=new QPushButton(this);
+  list_delete_button->setFont(bold_font);
+  list_delete_button->setText(tr("&Delete"));
+  connect(list_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
+
+  //
+  //  Close Button
+  //
+  list_close_button=new QPushButton(this);
+  list_close_button->setDefault(true);
+  list_close_button->setFont(bold_font);
+  list_close_button->setText(tr("&Close"));
+  connect(list_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
+
+  //
+  // Load Values
+  //
+  RefreshList();
+}
+
+
+QSize ListPypads::sizeHint() const
+{
+  return QSize(400,250);
+} 
+
+
+QSizePolicy ListPypads::sizePolicy() const
+{
+  return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
+}
+
+
+void ListPypads::addData()
+{
+  //
+  // Get Script Name
+  //
+  QString script=
+    QFileDialog::getOpenFileName(this,tr("Select PyPAD Script"),
+				 "/usr/lib64/rivendell/PyPAD",
+				 "Python Scripts (*.py)");
+  if(script.isNull()) {
+    return;
+  }
+
+  //
+  // Get Exemplar
+  //
+  QString exemplar="";
+  QStringList f0=script.split(".");
+  f0.last()="exemplar";
+  QFile *file=new QFile(f0.join("."));
+  if(file->open(QIODevice::ReadOnly)) {
+    exemplar=file->readAll();
+    file->close();
+  }
+  delete file;
+
+  QString sql=QString("insert into PYPAD_INSTANCES set ")+
+    "STATION_NAME=\""+RDEscapeString(list_station->name())+"\","+
+    "SCRIPT_PATH=\""+RDEscapeString(script)+"\","+
+    "DESCRIPTION=\""+
+    RDEscapeString("new "+script.split("/").last()+" instance")+"\","+
+    "CONFIG=\""+RDEscapeString(exemplar)+"\"";
+  int id=RDSqlQuery::run(sql).toInt();
+  EditPypad *d=new EditPypad(id,this);
+  if(d->exec()) {
+    RDListViewItem *item=new RDListViewItem(list_list_view);
+    item->setId(id);
+    RefreshItem(item);
+    list_list_view->ensureItemVisible(item);
+    item->setSelected(true);
+  }
+  else {
+    sql=QString("delete from PYPAD_INSTANCES where ")+
+      QString().sprintf("ID=%u",id);
+    RDSqlQuery::apply(sql);
+  }
+  delete d;
+}
+
+
+void ListPypads::editData()
+{
+  RDListViewItem *item;
+
+  if((item=(RDListViewItem *)list_list_view->selectedItem())==NULL) {
+    return;
+  }
+  EditPypad *d=new EditPypad(item->id(),this);
+  if(d->exec()) {
+    RefreshItem(item);
+  }
+  delete d;
+}
+
+
+void ListPypads::deleteData()
+{
+  QString sql;
+  RDListViewItem *item;
+
+  if((item=(RDListViewItem *)list_list_view->selectedItem())==NULL) {
+    return;
+  }
+  if(QMessageBox::question(this,tr("Delete Instance"),
+			   tr("Are your sure you want to delete this instance?"),
+			   QMessageBox::Yes,QMessageBox::No)==
+     QMessageBox::No) {
+    return;
+  }
+  sql=QString("delete from PYPAD_INSTANCES where ")+
+    QString().sprintf("ID=%d",item->id());
+  RDSqlQuery::apply(sql);
+  delete item;
+}
+
+
+void ListPypads::doubleClickedData(Q3ListViewItem *item,const QPoint &pt,
+				      int col)
+{
+  editData();
+}
+
+
+void ListPypads::closeData()
+{
+  done(0);
+}
+
+
+void ListPypads::resizeEvent(QResizeEvent *e)
+{
+  list_list_view->setGeometry(10,10,size().width()-20,size().height()-80);
+
+  list_add_button->setGeometry(10,size().height()-60,80,50);
+  list_edit_button->setGeometry(100,size().height()-60,80,50);
+  list_delete_button->setGeometry(190,size().height()-60,80,50);
+
+  list_close_button->setGeometry(size().width()-90,size().height()-60,80,50);
+}
+
+
+void ListPypads::RefreshList()
+{
+  QString sql;
+  RDSqlQuery *q;
+  RDListViewItem *item;
+
+  list_list_view->clear();
+  sql=QString("select ")+
+    "ID,"+           // 00
+    "DESCRIPTION,"+  // 01
+    "SCRIPT_PATH "+  // 02
+    "from PYPAD_INSTANCES where "+
+    "STATION_NAME=\""+RDEscapeString(list_station->name())+"\"";
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    item=new RDListViewItem(list_list_view);
+    item->setId(q->value(0).toInt());
+    item->setText(0,QString().sprintf("%u",q->value(0).toUInt()));
+    item->setText(1,q->value(1).toString());
+    item->setText(2,q->value(2).toString());
+  }
+  delete q;
+}
+
+
+void ListPypads::RefreshItem(RDListViewItem *item)
+{
+  QString sql;
+  RDSqlQuery *q;
+
+  sql=QString("select DESCRIPTION,SCRIPT_PATH from PYPAD_INSTANCES where ")+
+    QString().sprintf("ID=%u",item->id());
+  q=new RDSqlQuery(sql);
+  if(q->first()) {
+    item->setText(0,QString().sprintf("%u",item->id()));
+    item->setText(1,q->value(0).toString());
+    item->setText(2,q->value(1).toString());
+  }
+  delete q;
+}

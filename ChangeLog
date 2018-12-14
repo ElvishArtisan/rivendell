@@ -18190,3 +18190,10 @@
 	'PyPAD.Update::shouldBeProcessed()' method.
 	* Updated the 'pypad_udp.py' script to use the
 	'PyPAD.Update::shouldBeProcessed()' method.
+2018-12-13 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'PYPAD_INSTANCES' table to the database.
+	* Incremented the database version to 303.
+	* Added a 'PyPAD Instances' button to the 'Edit Station' dialog
+	in rdadmin(1).
+	* Added a 'ListPyPAD Instances' dialog in rdadmin(1).
+	* Added an 'Edit PyPAD' Instance' dialog in rdadmin(1).
