@@ -1,4 +1,4 @@
-#!/usr/bin/python3.6
+#!%PYTHON_BANGPATH%
 
 # pypad_tunein.py
 #
@@ -52,12 +52,12 @@ def ProcessPad(update):
             section='Station'+str(n)
             try:
                 values={}
-                values['id']=config.get(section,'StationID')
-                values['partnerId']=config.get(section,'PartnerID')
-                values['partnerKey']=config.get(section,'PartnerKey')
-                values['title']=update.resolvePadFields(config.get(section,'TitleString'),PyPAD.ESCAPE_URL)
-                values['artist']=update.resolvePadFields(config.get(section,'ArtistString'),PyPAD.ESCAPE_URL)
-                values['album']=update.resolvePadFields(config.get(section,'AlbumString'),PyPAD.ESCAPE_URL)
+                values['id']=update.config().get(section,'StationID')
+                values['partnerId']=update.config().get(section,'PartnerID')
+                values['partnerKey']=update.config().get(section,'PartnerKey')
+                values['title']=update.resolvePadFields(update.config().get(section,'TitleString'),PyPAD.ESCAPE_URL)
+                values['artist']=update.resolvePadFields(update.config().get(section,'ArtistString'),PyPAD.ESCAPE_URL)
+                values['album']=update.resolvePadFields(update.config().get(section,'AlbumString'),PyPAD.ESCAPE_URL)
                 iprint('Updating TuneIn: artist='+values['artist']+' title='+values['title']+' album='+values['album'])
                 try:
                     response=requests.get('http://air.radiotime.com/Playing.ashx',params=values)
@@ -85,18 +85,6 @@ pypad_name=os.path.basename(__file__)
 #
 syslog.openlog(logoption=syslog.LOG_PID, facility=syslog.LOG_DAEMON)
 
-#
-# Read Configuration
-#
-if len(sys.argv)>=2:
-    fp=open(sys.argv[1])
-    config=configparser.ConfigParser(interpolation=None)
-    config.readfp(fp)
-    fp.close()
-else:
-    eprint('You must specify a configuration file')
-    sys.exit(1)
-
 
 #
 # Create Send Socket
@@ -107,6 +95,11 @@ send_sock=socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
 # Start Receiver
 #
 rcvr=PyPAD.Receiver()
+try:
+    rcvr.setConfigFile(sys.argv[1])
+except IndexError:
+    eprint('You must specify a configuration file')
+    sys.exit(1)
 rcvr.setCallback(ProcessPad)
 iprint('Started')
 rcvr.start("localhost",PyPAD.PAD_TCP_PORT)
