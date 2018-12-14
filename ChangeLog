@@ -18197,3 +18197,6 @@
 	in rdadmin(1).
 	* Added a 'ListPyPAD Instances' dialog in rdadmin(1).
 	* Added an 'Edit PyPAD' Instance' dialog in rdadmin(1).
+2018-12-13 Fred Gleason <fredg@paravelsystems.com>
+	* Added support in 'PyPAD.Receiver::setConfigFile()' to load
+	configuration information from a Rivendell database.

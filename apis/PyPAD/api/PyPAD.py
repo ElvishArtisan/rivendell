@@ -20,6 +20,7 @@
 
 import configparser
 import datetime
+import MySQLdb
 import socket
 import json
 
@@ -715,6 +716,16 @@ class Receiver(object):
     def __PyPAD_Process(self,pad):
         self.__callback(pad)
 
+    def __getDbCredentials(self):
+        config=configparser.ConfigParser()
+        config.readfp(open('/etc/rd.conf'))
+        return (config.get('mySQL','Loginname'),config.get('mySQL','Password'),
+                config.get('mySQL','Hostname'),config.get('mySQL','Database'))
+
+    def __openDb(self):
+        creds=self.__getDbCredentials()
+        return MySQLdb.connect(creds[2],creds[0],creds[1],creds[3])
+
     def setCallback(self,cb):
         """
            Set the processing callback.
@@ -727,11 +738,28 @@ class Receiver(object):
            the 'PyPAD.Update::config()' method will return a parserconfig
            object created from the specified file. The file must be in INI
            format.
+
+           A special case is if the supplied filename string begins with
+           the '$' character. If so, the remainder of the string is assumed
+           to be an unsigned integer ID that is used to retrieve the
+           configuration from the 'PYPAD_INSTANCES' table in the database
+           pointed to by '/etc/rd.conf'.
         """
-        fp=open(filename)
-        self.__config_parser=configparser.ConfigParser(interpolation=None)
-        self.__config_parser.readfp(fp)
-        fp.close()
+        if filename[0]=='$':  # Get the config from the DB
+            db=self.__openDb()
+            cursor=db.cursor()
+            cursor.execute('select CONFIG from PYPAD_INSTANCES where ID='+
+                           filename[1::])
+            config=cursor.fetchone()
+            self.__config_parser=configparser.ConfigParser(interpolation=None)
+            self.__config_parser.read_string(config[0])
+            db.close()
+
+        else:   # Get the config from a file
+            fp=open(filename)
+            self.__config_parser=configparser.ConfigParser(interpolation=None)
+            self.__config_parser.readfp(fp)
+            fp.close()
 
     def start(self,hostname,port):
         """
