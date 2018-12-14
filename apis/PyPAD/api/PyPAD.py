@@ -18,6 +18,7 @@
 #   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #
 
+import configparser
 import datetime
 import socket
 import json
@@ -73,8 +74,9 @@ FIELD_EXTERNAL_ANNC_TYPE='externalAnncType'
 PAD_TCP_PORT=34289
 
 class Update(object):
-    def __init__(self,pad_data):
-        self.__fields=pad_data;
+    def __init__(self,pad_data,config):
+        self.__fields=pad_data
+        self.__config=config
 
     def __fromIso8601(self,string):
         try:
@@ -222,6 +224,15 @@ class Update(object):
                 string=self.__replaceDatetimePattern(string,pattern[1])
         return string
 
+    def config(self):
+        """
+           If a valid configuration file was set in
+           'PyPAD.Receiver::setConfigFile()', this will return a
+           parserconfig object created from it. If no configuration file
+           was specified, returns None.
+        """
+        return self.__config
+
     def dateTimeString(self):
         """
            Returns the date-time of the update in ISO 8601 format (string).
@@ -237,16 +248,20 @@ class Update(object):
     def escape(self,string,esc):
         """
            Returns an 'escaped' version of the specified string.
-           Take two arguments:
+
+           Takes two arguments:
 
            string - The string to be processed.
 
            esc - The type of escaping to be applied. The following values
                  are valid:
-                 PyPAD.ESCAPE_JSON - Escaping for JSON string values
-                 PyPAD.ESCAPE_NONE - No escaping applied
-                 PyPAD.ESCAPE_URL - Escaping for using in URLs
-                 PyPAD.ESCAPE_XML - Escaping for use in XML
+                 PyPAD.ESCAPE_JSON - Escape for use in JSON string values
+                                     (as per ECMA-404)
+                 PyPAD.ESCAPE_NONE - String is passed through unchanged
+                 PyPAD.ESCAPE_URL - Escape for use in URLs
+                                    (as per RFC 2396)
+                 PyPAD.ESCAPE_XML - Escape for use in XML
+                                    (as per XML-v1.0)
         """
         if(esc==0):
             return string
@@ -348,16 +363,8 @@ class Update(object):
                     Guide for a list of recognized wildcards.
 
            esc - Character escaping to be applied to the PAD fields.
-                 Must be one of the following:
-
-                 PyPAD.ESCAPE_NONE - No escaping
-                  PyPAD.ESCAPE_XML - "XML" escaping: Escape reserved
-                                     characters as per XML-v1.0
-                  PyPAD.ESCAPE_URL - "URL" escaping: Escape reserved
-                                     characters as per RFC 2396
-                                     Section 2.4
-                 PyPAD.ESCAPE_JSON - "JSON" escaping: Escape reserved
-                                     characters as per ECMA-404.
+                 See the documentation for the 'escape()' method for valid
+                 field values.
         """
         string=self.__replaceWildcardPair('a','artist',string,esc)
         string=self.__replaceWildcardPair('b','label',string,esc)
@@ -396,10 +403,12 @@ class Update(object):
     def hasPadType(self,pad_type):
         """
            Indicates if this update includes the specified PAD type
+
            Takes one argument:
-              pad_type - The type of PAD value. Valid values are:
-                         PyPAD.NOW - Now playing data
-                         PyPAD.NEXT - Next to play data
+
+           pad_type - The type of PAD value. Valid values are:
+                      PyPAD.NOW - Now playing data
+                      PyPAD.NEXT - Next to play data
         """
         try:
             return self.__fields['padUpdate'][pad_type]!=None
@@ -409,10 +418,12 @@ class Update(object):
     def startDateTime(self,pad_type):
         """
            Returns the start datetime of the specified PAD type
+
            Takes one argument:
-              pad_type - The type of PAD value. Valid values are:
-                         PyPAD.NOW - Now playing data
-                         PyPAD.NEXT - Next to play data
+
+           pad_type - The type of PAD value. Valid values are:
+                      PyPAD.NOW - Now playing data
+                      PyPAD.NEXT - Next to play data
         """
         try:
             return self.__fromIso8601(self.__fields['padUpdate'][pad_type]['startDateTime'])
@@ -422,47 +433,46 @@ class Update(object):
     def padField(self,pad_type,pad_field):
         """
            Returns the raw value of the specified PAD field.
-           Takes two arguments:
-              pad_type - The type of PAD value. Valid values are:
-                         PyPAD.NOW - Now playing data
-                         PyPAD.NEXT - Next to play data
 
-              pad_field - The specific field. Valid values are:
-                          PyPAD.FIELD_AGENCY - The 'Agency' field (string)
-                          PyPAD.FIELD_ALBUM - The 'Album' field (string)
-                          PyPAD.FIELD_ARTIST - The 'Artist' field (string)
-                          PyPAD.FIELD_CART_NUMBER - The 'Cart Number' field
-                                                    (integer)
-                          PyPAD.FIELD_CART_TYPE - 'The 'Cart Type' field
-                                                  (string)
-                          PyPAD.FIELD_CLIENT - The 'Client' field (string)
-                          PyPAD.FIELD_COMPOSER - The 'Composer' field (string)
-                          PyPAD.FIELD_CONDUCTOR - The 'Conductor' field (string)
-                          PyPAD.FIELD_CUT_NUMER - The 'Cut Number' field
-                                                  (integer)
-                          PyPAD.FIELD_DESCRIPTION - The 'Description' field
-                                                    (string)
-                          PyPAD.FIELD_EXTERNAL_ANNC_TYPE - The 'EXT_ANNC_TYPE'
-                                                           field (string)
-                          PyPAD.FIELD_EXTERNAL_DATA - The 'EXT_DATA' field
-                                                      (string)
-                          PyPAD.FIELD_EXTERNAL_EVENT_ID - The 'EXT_EVENT_ID'
-                                                          field (string)
-                          PyPAD.FIELD_GROUP_NAME - The 'GROUP_NAME' field
+           Takes two arguments:
+
+           pad_type - The type of PAD value. Valid values are:
+                      PyPAD.NOW - Now playing data
+                      PyPAD.NEXT - Next to play data
+
+           pad_field - The specific field. Valid values are:
+                       PyPAD.FIELD_AGENCY - The 'Agency' field (string)
+                       PyPAD.FIELD_ALBUM - The 'Album' field (string)
+                       PyPAD.FIELD_ARTIST - The 'Artist' field (string)
+                       PyPAD.FIELD_CART_NUMBER - The 'Cart Number' field
+                                                 (integer)
+                       PyPAD.FIELD_CART_TYPE - 'The 'Cart Type' field (string)
+                       PyPAD.FIELD_CLIENT - The 'Client' field (string)
+                       PyPAD.FIELD_COMPOSER - The 'Composer' field (string)
+                       PyPAD.FIELD_CONDUCTOR - The 'Conductor' field (string)
+                       PyPAD.FIELD_CUT_NUMER - The 'Cut Number' field (integer)
+                       PyPAD.FIELD_DESCRIPTION - The 'Description' field
+                                                 (string)
+                       PyPAD.FIELD_EXTERNAL_ANNC_TYPE - The 'EXT_ANNC_TYPE'
+                                                        field (string)
+                       PyPAD.FIELD_EXTERNAL_DATA - The 'EXT_DATA' field
                                                    (string)
-                          PyPAD.FIELD_ISRC - The 'ISRC' field (string)
-                          PyPAD.FIELD_ISCI - The 'ISCI' field (string)
-                          PyPAD.FIELD_LABEL - The 'Label' field (string)
-                          PyPAD.FIELD_LENGTH - The 'Length' field (integer)
-                          PyPAD.FIELD_OUTCUE - The 'Outcue' field (string)
-                          PyPAD.FIELD_PUBLISHER - The 'Publisher' field (string)
-                          PyPAD.FIELD_SONG_ID - The 'Song ID' field (string)
-                          PyPAD.FIELD_START_DATETIME - The 'Start DateTime field
-                                                       (string)
-                          PyPAD.FIELD_TITLE - The 'Title' field (string)
-                          PyPAD.FIELD_USER_DEFINED - 'The 'User Defined' field
-                                                      (string)
-                          PyPAD.FIELD_YEAR - The 'Year' field (integer)
+                       PyPAD.FIELD_EXTERNAL_EVENT_ID - The 'EXT_EVENT_ID'
+                                                       field (string)
+                       PyPAD.FIELD_GROUP_NAME - The 'GROUP_NAME' field (string)
+                       PyPAD.FIELD_ISRC - The 'ISRC' field (string)
+                       PyPAD.FIELD_ISCI - The 'ISCI' field (string)
+                       PyPAD.FIELD_LABEL - The 'Label' field (string)
+                       PyPAD.FIELD_LENGTH - The 'Length' field (integer)
+                       PyPAD.FIELD_OUTCUE - The 'Outcue' field (string)
+                       PyPAD.FIELD_PUBLISHER - The 'Publisher' field (string)
+                       PyPAD.FIELD_SONG_ID - The 'Song ID' field (string)
+                       PyPAD.FIELD_START_DATETIME - The 'Start DateTime field
+                                                    (string)
+                       PyPAD.FIELD_TITLE - The 'Title' field (string)
+                       PyPAD.FIELD_USER_DEFINED - 'The 'User Defined' field
+                                                   (string)
+                       PyPAD.FIELD_YEAR - The 'Year' field (integer)
         """
         return self.__fields['padUpdate'][pad_type][pad_field]
 
@@ -470,6 +480,7 @@ class Update(object):
         """
            Returns a string with any Rivendell Filepath wildcards resolved
            (See Appdendix C of the Rivendell Operations Guide for a list).
+
            Takes two arguments:
  
            string - The string to resolve.
@@ -656,11 +667,50 @@ class Update(object):
             i=i+1
 
         return ret
+
+    def shouldBeProcessed(self,section):
+        """
+           Reads the Log Selection and SendNullUpdate parameters of the
+           config and returns a boolean to indicate whether or not this
+           update should be processed (boolean).
+
+           Takes one argument:
+
+           section - The '[<section>]' of the INI configuration from which
+                     to take the parameters.
+        """
+        try:
+            if self.__config.get(section,'ProcessNullUpdates')=='0':
+                return True
+            if self.__config.get(section,'ProcessNullUpdates')=='1':
+                return self.hasPadType(PyPAD.TYPE_NOW)
+            if self.__config.get(section,'ProcessNullUpdates')=='2':
+                return self.hasPadType(PyPAD.TYPE_NEXT)
+            if self.__config.get(section,'ProcessNullUpdates')=='3':
+                return self.hasPadType(PyPAD.TYPE_NOW) and self.hasPadType(PyPAD.TYPE_NEXT)
+        except configparser.NoOptionError:
+            return True
+
+        log_dict={1: 'MasterLog',2: 'Aux1Log',3: 'Aux2Log',
+                  101: 'VLog101',102: 'VLog102',103: 'VLog103',104: 'VLog104',
+                  105: 'VLog105',106: 'VLog106',107: 'VLog107',108: 'VLog108',
+                  109: 'VLog109',110: 'VLog110',111: 'VLog111',112: 'VLog112',
+                  113: 'VLog113',114: 'VLog114',115: 'VLog115',116: 'VLog116',
+                  117: 'VLog117',118: 'VLog118',119: 'VLog119',120: 'VLog120'}
+        if self.__config.get(section,log_dict[self.machine()]).lower()=='yes':
+            return True
+        if self.__config.get(section,log_dict[self.machine()]).lower()=='no':
+            return False
+        if self.__config.get(section,log_dict[self.machine()]).lower()=='onair':
+            return self.onairFlag()
+
+
         
 
 class Receiver(object):
     def __init__(self):
         self.__callback=None
+        self.__config_parser=None
 
     def __PyPAD_Process(self,pad):
         self.__callback(pad)
@@ -671,11 +721,24 @@ class Receiver(object):
         """
         self.__callback=cb
 
+    def setConfigFile(self,filename):
+        """
+           Set a file whence to get configuration information. If set,
+           the 'PyPAD.Update::config()' method will return a parserconfig
+           object created from the specified file. The file must be in INI
+           format.
+        """
+        fp=open(filename)
+        self.__config_parser=configparser.ConfigParser(interpolation=None)
+        self.__config_parser.readfp(fp)
+        fp.close()
+
     def start(self,hostname,port):
         """
            Connect to a Rivendell system and begin processing PAD events.
            Once started, a PyPAD object can be interacted with
-           only within one of its callback methods.
+           only within its callback method.
+
            Takes the following arguments:
 
            hostname - The hostname or IP address of the Rivendell system.
@@ -695,7 +758,7 @@ class Receiver(object):
             if c[0]==10:
                 msg+=line.decode('utf-8')
                 if line.decode('utf-8')=="\r\n":
-                    self.__PyPAD_Process(Update(json.loads(msg)))
+                    self.__PyPAD_Process(Update(json.loads(msg),self.__config_parser))
                     msg=""
                 line=bytes()
 

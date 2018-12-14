@@ -18178,5 +18178,17 @@
 	* Documented the Python 3.4 dependency in 'INSTALL'.
 2018-12-12 Fred Gleason <fredg@paravelsystems.com>
 	* Renamed rdrlmd(8) to rdpadd(8).
-2018-12-12 Patrick Linstruth <patrick@deltecent.com>
+2018-12-13 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'make install' rule in 'apis/PyPAD/examples/' to install
+	PyPAD scripts in '${libdir}/rivendell/PyPAD/'.
+	* Fixed a typo in the pseudo-bangpath line in the example PyPAD
+	scripts.
+2018-12-13 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'PyPAD.Receiver::setConfigFile()' method.
+	* Added a 'PyPAD.Update::shouldBeProcessed()' method.
+	* Updated the 'pypad_filewrite.py' script to use the
+	'PyPAD.Update::shouldBeProcessed()' method.
+	* Updated the 'pypad_udp.py' script to use the
+	'PyPAD.Update::shouldBeProcessed()' method.
+2018-12-13 Patrick Linstruth <patrick@deltecent.com>
 	* Added a 'pypad_tunein.py' PyPAD script.

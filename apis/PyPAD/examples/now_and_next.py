@@ -1,4 +1,4 @@
-#%PYTHON_BANGPATH%
+#!%PYTHON_BANGPATH%
 
 # now_and_next.py
 #
@@ -36,8 +36,6 @@ import PyPAD
 #
 def ProcessPad(update):
     print
-    print('Filepath: '+update.resolveFilepath('string %$a',update.dateTime()))
-
     if update.hasPadType(PyPAD.TYPE_NOW):
         print("Log %03d NOW: " % update.machine()+update.resolvePadFields("%a - %t",PyPAD.ESCAPE_NONE))
     else:
@@ -62,4 +60,4 @@ rcvr.setCallback(ProcessPad)
 # the target Rivendell system. Once started, all further processing can only
 # be done in the callback method!
 #
-rcvr.start("localhost",PyPAD.PAD_TCP_PORT)
+rcvr.start('localhost',PyPAD.PAD_TCP_PORT)
