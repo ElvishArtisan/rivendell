@@ -18190,5 +18190,6 @@
 	'PyPAD.Update::shouldBeProcessed()' method.
 	* Updated the 'pypad_udp.py' script to use the
 	'PyPAD.Update::shouldBeProcessed()' method.
-2018-12-13 Patrick Linstruth <patrick@deltecent.com>
+2018-12-14 Patrick Linstruth <patrick@deltecent.com>
 	* Added a 'pypad_tunein.py' PyPAD script.
+	* Added a 'pypad_icecast2.py' PyPAD script.
