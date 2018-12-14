@@ -24,17 +24,20 @@ install-exec-am:
 	mkdir -p $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD
 	../../../helpers/install_python.sh now_and_next.py $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/now_and_next.py
 	../../../helpers/install_python.sh pypad_filewrite.py $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_filewrite.py
+	../../../helpers/install_python.sh pypad_icecast2.py $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_icecast2.py
 	../../../helpers/install_python.sh pypad_tunein.py $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_tunein.py
 	../../../helpers/install_python.sh pypad_udp.py $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_udp.py
 
 uninstall-local:	
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/now_and_next.py
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_filewrite.py
+	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_icecast2.py
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_tunein.py
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_udp.py
 
 EXTRA_DIST = now_and_next.py\
              pypad_filewrite.py\
+             pypad_icecast2.py\
              pypad_tunein.py\
              pypad_udp.py
 
