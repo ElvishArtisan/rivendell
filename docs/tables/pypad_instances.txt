@@ -10,3 +10,6 @@ STATION_NAME         varchar(64)       From STATIONS.NAME
 SCRIPT_PATH          varchar(191)
 DESCRIPTION          varchar(191)
 CONFIG               text
+IS_RUNNING           enum('N','Y')
+EXIT_CODE            int(11) signed
+ERROR_TEXT           text

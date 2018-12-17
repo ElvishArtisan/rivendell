@@ -42,7 +42,7 @@ void MainObject::Shutdown()
 
 void MainObject::ShutdownDropboxes()
 {
-  for(QMap<int,Process *>::iterator it=svc_processes.begin();
+  for(QMap<int,RDProcess *>::iterator it=svc_processes.begin();
       it!=svc_processes.end();it++) {
     if(it.key()>=RDSERVICE_FIRST_DROPBOX_ID) {
       it.value()->process()->kill();

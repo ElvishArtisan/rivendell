@@ -315,16 +315,6 @@ MainWidget::MainWidget(QWidget *parent)
   //
   air_nownext_socket=new Q3SocketDevice(Q3SocketDevice::Datagram);
 
-  /*
-  //
-  // RLM2 Connection
-  //
-  air_pad_socket=new RDUnixSocket(this);
-  if(!air_pad_socket->connectToAbstract(RD_RLM2_SOURCE_UNIX_ADDRESS)) {
-    fprintf(stderr,"RLMHost: unable to connect to rdrlmd\n");
-  }
-  */
-
   //
   // Log Machines
   //

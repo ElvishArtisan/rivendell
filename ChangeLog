@@ -18200,3 +18200,17 @@
 2018-12-13 Fred Gleason <fredg@paravelsystems.com>
 	* Added support in 'PyPAD.Receiver::setConfigFile()' to load
 	configuration information from a Rivendell database.
+2018-12-17 Fred Gleason <fredg@paravelsystems.com>
+	* Renamed the RD_RLM2_CLIENT_TCP_PORT define to RD_PAD_CLIENT_TCP_PORT.
+	* Renamed the  RD_RLM_SOURCE_UNIX_ADDRESS define to
+	 RD_PAD_SOURCE_UNIX_ADDRESS.
+	* Added a RD_PYPAD_SCRIPT_DIR define.
+	* Added an 'RDNotification::PypadType' value to the
+	'RDNotification::Type' enumeration.
+	* Added 'PypadOwner=' and 'PypadGroup=' directives to the
+	'[Identity]' section of rd.conf(5).
+	* Added an rdpadengined(8) service.
+	* Added a 'PYPAD_INSTANCES.IS_RUNNING' field to the database.
+	* Added a 'PYPAD_INSTANCES.EXIT_CODE' field to the database.
+	* Added a 'PYPAD_INSTANCES.ERROR_TEXT' field to the database.
+	* Incremented the database version to 304.

@@ -85,9 +85,9 @@ MainObject::MainObject(QObject *parent)
   pad_client_server=new QTcpServer(this);
   connect(pad_client_server,SIGNAL(newConnection()),
 	  this,SLOT(newClientConnectionData()));
-  if(!pad_client_server->listen(QHostAddress::Any,RD_RLM2_CLIENT_TCP_PORT)) {
+  if(!pad_client_server->listen(QHostAddress::Any,RD_PAD_CLIENT_TCP_PORT)) {
     fprintf(stderr,"rdpadd: unable to bind client port %d\n",
-	    RD_RLM2_CLIENT_TCP_PORT);
+	    RD_PAD_CLIENT_TCP_PORT);
     exit(1);
   }
 
@@ -105,7 +105,7 @@ MainObject::MainObject(QObject *parent)
   pad_source_server=new RDUnixServer(this);
   connect(pad_source_server,SIGNAL(newConnection()),
 	  this,SLOT(newSourceConnectionData()));
-  if(!pad_source_server->listenToAbstract(RD_RLM2_SOURCE_UNIX_ADDRESS)) {
+  if(!pad_source_server->listenToAbstract(RD_PAD_SOURCE_UNIX_ADDRESS)) {
     fprintf(stderr,"rdpadd: unable to bind source socket [%s]\n",
 	    (const char *)pad_source_server->errorString().toUtf8());
     exit(1);

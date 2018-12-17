@@ -119,7 +119,8 @@ dist_rdadmin_SOURCES = add_feed.cpp add_feed.h\
                        rename_group.cpp rename_group.h\
                        test_import.cpp test_import.h\
                        view_adapters.cpp view_adapters.h\
-                       view_node_info.cpp view_node_info.h
+                       view_node_info.cpp view_node_info.h\
+                       view_pypad_errors.cpp view_pypad_errors.h
 
 nodist_rdadmin_SOURCES = moc_add_feed.cpp\
                          moc_add_group.cpp\
@@ -196,7 +197,8 @@ nodist_rdadmin_SOURCES = moc_add_feed.cpp\
                          moc_rename_group.cpp\
                          moc_test_import.cpp\
                          moc_view_adapters.cpp\
-                         moc_view_node_info.cpp
+                         moc_view_node_info.cpp\
+                         moc_view_pypad_errors.cpp
 
 rdadmin_LDADD = @LIB_RDLIBS@ -lsamplerate @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
 

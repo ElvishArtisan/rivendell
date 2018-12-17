@@ -111,7 +111,7 @@ int MainObject::GetMaintInterval() const
 void MainObject::RunEphemeralProcess(int id,const QString &program,
 				     const QStringList &args)
 {
-  svc_processes[id]=new Process(id,this);
+  svc_processes[id]=new RDProcess(id,this);
   connect(svc_processes[id],SIGNAL(finished(int)),
 	  this,SLOT(processFinishedData(int)));
   svc_processes[id]->start(program,args);

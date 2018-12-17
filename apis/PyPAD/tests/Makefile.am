@@ -20,7 +20,8 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-EXTRA_DIST = filepath_test.py
+EXTRA_DIST = filepath_test.py\
+             now_and_next.py\
 	     pad_test.py
 
 CLEANFILES = *~\

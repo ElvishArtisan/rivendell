@@ -44,5 +44,11 @@ extern "C" {
  */
 #define RD_PREFIX "@prefix@"
 
+/*
+ * PyPAD
+ */
+#define RD_PYPAD_PYTHON_PATH "@PYTHON@"
+#define RD_PYPAD_SCRIPT_DIR "@libdir@/rivendell/PyPAD"
+
 
 #endif  // RDPATHS_H

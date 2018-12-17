@@ -2319,6 +2319,37 @@ GPIOs</source>
     </message>
 </context>
 <context>
+    <name>EditPypad</name>
+    <message>
+        <source>Edit PyPAD Instance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Script Path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancelar</translation>
+    </message>
+</context>
+<context>
     <name>EditRDAirPlay</name>
     <message>
         <source>RDAirPlay config for </source>
@@ -5117,6 +5148,62 @@ Do you still want to delete it?</source>
     </message>
 </context>
 <context>
+    <name>ListPypads</name>
+    <message>
+        <source>PyPAD Instances on</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Script Path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Exit Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Add</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Edit</source>
+        <translation type="unfinished">&amp;Editar</translation>
+    </message>
+    <message>
+        <source>&amp;Delete</source>
+        <translation type="unfinished">E&amp;liminar</translation>
+    </message>
+    <message>
+        <source>&amp;Error
+Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Cerrar</translation>
+    </message>
+    <message>
+        <source>Select PyPAD Script</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Instance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are your sure you want to delete this instance?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ListReplicatorCarts</name>
     <message>
         <source>&amp;Repost</source>
@@ -6181,6 +6268,21 @@ Revise los parámetros e intente de nuevo.</translation>
     </message>
     <message>
         <source>Please start the Rivendell daemons on this host (by executing, as user &apos;root&apos;, the command &quot;systemctl start rivendell&quot;) in order to populate the audio resources database.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ViewPypadErrors</name>
+    <message>
+        <source>Script Error Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

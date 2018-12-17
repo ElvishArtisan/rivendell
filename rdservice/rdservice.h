@@ -23,21 +23,21 @@
 
 #include <qmap.h>
 #include <qobject.h>
-#include <qprocess.h>
 #include <qtimer.h>
 
-#include "process.h"
+#include <rdprocess.h>
 
 #define RDSERVICE_CAED_ID 0
 #define RDSERVICE_RIPCD_ID 1
 #define RDSERVICE_RDCATCHD_ID 2
 #define RDSERVICE_RDPADD_ID 3
-#define RDSERVICE_RDVAIRPLAYD_ID 4
-#define RDSERVICE_RDREPLD_ID 5
-#define RDSERVICE_LOCALMAINT_ID 6
-#define RDSERVICE_SYSTEMMAINT_ID 7
-#define RDSERVICE_PURGECASTS_ID 8
-#define RDSERVICE_LAST_ID 9
+#define RDSERVICE_RDPADENGINED_ID 4
+#define RDSERVICE_RDVAIRPLAYD_ID 5
+#define RDSERVICE_RDREPLD_ID 6
+#define RDSERVICE_LOCALMAINT_ID 7
+#define RDSERVICE_SYSTEMMAINT_ID 8
+#define RDSERVICE_PURGECASTS_ID 9
+#define RDSERVICE_LAST_ID 10
 #define RDSERVICE_FIRST_DROPBOX_ID 100
 
 class MainObject : public QObject
@@ -62,7 +62,7 @@ class MainObject : public QObject
   int GetMaintInterval() const;
   void RunEphemeralProcess(int id,const QString &program,
 			   const QStringList &args);
-  QMap<int,Process *> svc_processes;
+  QMap<int,RDProcess *> svc_processes;
   QTimer *svc_maint_timer;
   QTimer *svc_exit_timer;
 };

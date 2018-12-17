@@ -51,6 +51,7 @@ SUBDIRS = icons\
           rdpanel\
           rdrepld\
           rdpadd\
+          rdpadengined\
           rdselect\
           rdservice\
           rdvairplayd\

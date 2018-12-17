@@ -28,7 +28,8 @@ EditPypad::EditPypad(int id,QWidget *parent)
 {
   edit_id=id;
 
-  setWindowTitle(tr("Edit ByPAD Instance")+
+  setMinimumSize(sizeHint());
+  setWindowTitle(tr("Edit PyPAD Instance")+
 		 " ["+tr("ID")+QString().sprintf(": %u]",id));
 
   //

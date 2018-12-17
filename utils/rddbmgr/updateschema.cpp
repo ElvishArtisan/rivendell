@@ -9634,7 +9634,26 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       "index STATION_NAME_IDX(STATION_NAME))"+
       " charset utf8mb4 collate utf8mb4_general_ci"+
       db_table_create_postfix;
-      
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
+  if((cur_schema<304)&&(set_schema>cur_schema)) {
+    sql=QString("alter table PYPAD_INSTANCES add column ")+
+      "IS_RUNNING enum('N','Y') not null default 'N' after CONFIG";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table PYPAD_INSTANCES add column ")+
+      "EXIT_CODE int not null default 0 after IS_RUNNING";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table PYPAD_INSTANCES add column ")+
+      "ERROR_TEXT text after EXIT_CODE";
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }

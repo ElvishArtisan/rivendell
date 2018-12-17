@@ -21,7 +21,9 @@
 import configparser
 import datetime
 import MySQLdb
+import signal
 import socket
+import sys
 import json
 
 #
@@ -774,6 +776,9 @@ class Receiver(object):
            port - The TCP port to connect to. For most cases, just use
                   'PyPAD.PAD_TCP_PORT'.
         """
+        # So we exit cleanly when shutdown by rdpadengined(8)
+        signal.signal(signal.SIGTERM,SigHandler)
+
         sock=socket.socket(socket.AF_INET)
         conn=sock.connect((hostname,port))
         c=bytes()
@@ -791,3 +796,5 @@ class Receiver(object):
                 line=bytes()
 
 
+def SigHandler(signo,stack):
+    sys.exit(0)

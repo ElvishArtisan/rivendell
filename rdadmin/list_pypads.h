@@ -22,7 +22,9 @@
 #define LIST_PYPADS_H
 
 #include <qdialog.h>
+#include <qpixmap.h>
 #include <qpushbutton.h>
+#include <qtimer.h>
 
 #include <rdlistview.h>
 #include <rdlistviewitem.h>
@@ -40,8 +42,10 @@ class ListPypads : public QDialog
   void addData();
   void editData();
   void deleteData();
+  void errorData();
   void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
   void closeData();
+  void updateData();
 
  protected:
   void resizeEvent(QResizeEvent *e);
@@ -53,8 +57,12 @@ class ListPypads : public QDialog
   QPushButton *list_add_button;
   QPushButton *list_edit_button;
   QPushButton *list_delete_button;
+  QPushButton *list_error_button;
   QPushButton *list_close_button;
+  QPixmap *list_greenball_pixmap;
+  QPixmap *list_redball_pixmap;
   RDStation *list_station;
+  QTimer *list_update_timer;
 };
 
 

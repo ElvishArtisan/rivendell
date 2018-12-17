@@ -28,9 +28,17 @@
 #include <rddb.h>
 #include <rdescape_string.h>
 #include <rdpasswd.h>
+#include <rdpaths.h>
 
-#include "list_pypads.h"
 #include "edit_pypad.h"
+#include "list_pypads.h"
+#include "view_pypad_errors.h"
+
+//
+// Icons
+//
+#include "../icons/greenball.xpm"
+#include "../icons/redball.xpm"
 
 ListPypads::ListPypads(RDStation *station,QWidget *parent)
   : QDialog(parent)
@@ -38,6 +46,7 @@ ListPypads::ListPypads(RDStation *station,QWidget *parent)
   list_station=station;
 
   setModal(true);
+  setMinimumSize(sizeHint());
 
   setWindowTitle("RDAdmin - "+tr("PyPAD Instances on")+" "+
 		 rda->station()->name());
@@ -57,17 +66,27 @@ ListPypads::ListPypads(RDStation *station,QWidget *parent)
   font.setPixelSize(12);
 
   //
+  // Icons
+  //
+  list_greenball_pixmap=new QPixmap(greenball_xpm);
+  list_redball_pixmap=new QPixmap(redball_xpm);
+
+  //
   // Instances List Box
   //
   list_list_view=new RDListView(this);
   list_list_view->setAllColumnsShowFocus(true);
   list_list_view->setItemMargin(5);
-  list_list_view->addColumn(tr("Id"));
-  list_list_view->setColumnAlignment(0,Qt::AlignRight);
+  list_list_view->addColumn(" ");
+  list_list_view->setColumnAlignment(0,Qt::AlignCenter);
+  list_list_view->addColumn(tr("ID"));
+  list_list_view->setColumnAlignment(1,Qt::AlignRight);
   list_list_view->addColumn(tr("Description"));
-  list_list_view->setColumnAlignment(1,Qt::AlignLeft);
-  list_list_view->addColumn(tr("Script Path"));
   list_list_view->setColumnAlignment(2,Qt::AlignLeft);
+  list_list_view->addColumn(tr("Script Path"));
+  list_list_view->setColumnAlignment(3,Qt::AlignLeft);
+  list_list_view->addColumn(tr("Exit Code"));
+  list_list_view->setColumnAlignment(4,Qt::AlignRight);
   connect(list_list_view,
 	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,
@@ -98,6 +117,14 @@ ListPypads::ListPypads(RDStation *station,QWidget *parent)
   connect(list_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
 
   //
+  //  Error Button
+  //
+  list_error_button=new QPushButton(this);
+  list_error_button->setFont(bold_font);
+  list_error_button->setText(tr("&Error\nLog"));
+  connect(list_error_button,SIGNAL(clicked()),this,SLOT(errorData()));
+
+  //
   //  Close Button
   //
   list_close_button=new QPushButton(this);
@@ -110,12 +137,20 @@ ListPypads::ListPypads(RDStation *station,QWidget *parent)
   // Load Values
   //
   RefreshList();
+
+  //
+  // Update Timer
+  //
+  list_update_timer=new QTimer(this);
+  list_update_timer->setSingleShot(true);
+  connect(list_update_timer,SIGNAL(timeout()),this,SLOT(updateData()));
+  list_update_timer->start(3000);
 }
 
 
 QSize ListPypads::sizeHint() const
 {
-  return QSize(400,250);
+  return QSize(600,400);
 } 
 
 
@@ -132,7 +167,7 @@ void ListPypads::addData()
   //
   QString script=
     QFileDialog::getOpenFileName(this,tr("Select PyPAD Script"),
-				 "/usr/lib64/rivendell/PyPAD",
+				 RD_PYPAD_SCRIPT_DIR,
 				 "Python Scripts (*.py)");
   if(script.isNull()) {
     return;
@@ -165,6 +200,9 @@ void ListPypads::addData()
     RefreshItem(item);
     list_list_view->ensureItemVisible(item);
     item->setSelected(true);
+    RDNotification notify=RDNotification(RDNotification::PypadType,
+					 RDNotification::AddAction,id);
+    rda->ripc()->sendNotification(notify);
   }
   else {
     sql=QString("delete from PYPAD_INSTANCES where ")+
@@ -185,6 +223,10 @@ void ListPypads::editData()
   EditPypad *d=new EditPypad(item->id(),this);
   if(d->exec()) {
     RefreshItem(item);
+    RDNotification notify=RDNotification(RDNotification::PypadType,
+					 RDNotification::ModifyAction,
+					 item->id());
+    rda->ripc()->sendNotification(notify);
   }
   delete d;
 }
@@ -207,7 +249,23 @@ void ListPypads::deleteData()
   sql=QString("delete from PYPAD_INSTANCES where ")+
     QString().sprintf("ID=%d",item->id());
   RDSqlQuery::apply(sql);
+  RDNotification notify=RDNotification(RDNotification::PypadType,
+				       RDNotification::DeleteAction,item->id());
+  rda->ripc()->sendNotification(notify);
   delete item;
+}
+
+
+void ListPypads::errorData()
+{
+  RDListViewItem *item;
+
+  if((item=(RDListViewItem *)list_list_view->selectedItem())==NULL) {
+    return;
+  }
+  ViewPypadErrors *d=new ViewPypadErrors(item->id(),this);
+  d->exec();
+  delete d;
 }
 
 
@@ -224,6 +282,35 @@ void ListPypads::closeData()
 }
 
 
+void ListPypads::updateData()
+{
+  QString sql;
+  RDSqlQuery *q;
+
+  RDListViewItem *item=(RDListViewItem *)list_list_view->firstChild();
+  while(item!=NULL) {
+    sql=QString("select ")+
+      "IS_RUNNING,"+  // 00
+      "EXIT_CODE "+   // 01
+      "from PYPAD_INSTANCES where "+
+      QString().sprintf("ID=%d",item->id());
+    q=new RDSqlQuery(sql);
+    if(q->first()) {
+      if(q->value(0).toString()=="Y") {
+	item->setPixmap(0,*list_greenball_pixmap);
+      }
+      else {
+	item->setPixmap(0,*list_redball_pixmap);
+      }
+      item->setText(4,QString().sprintf("%d",q->value(1).toInt()));
+    }
+    delete q;
+    item=(RDListViewItem *)item->nextSibling();
+  }
+  list_update_timer->start(3000);
+}
+
+
 void ListPypads::resizeEvent(QResizeEvent *e)
 {
   list_list_view->setGeometry(10,10,size().width()-20,size().height()-80);
@@ -231,6 +318,8 @@ void ListPypads::resizeEvent(QResizeEvent *e)
   list_add_button->setGeometry(10,size().height()-60,80,50);
   list_edit_button->setGeometry(100,size().height()-60,80,50);
   list_delete_button->setGeometry(190,size().height()-60,80,50);
+
+  list_error_button->setGeometry(300,size().height()-60,80,50);
 
   list_close_button->setGeometry(size().width()-90,size().height()-60,80,50);
 }
@@ -245,17 +334,26 @@ void ListPypads::RefreshList()
   list_list_view->clear();
   sql=QString("select ")+
     "ID,"+           // 00
-    "DESCRIPTION,"+  // 01
-    "SCRIPT_PATH "+  // 02
+    "IS_RUNNING,"+   // 01
+    "DESCRIPTION,"+  // 02
+    "SCRIPT_PATH,"+  // 03
+    "EXIT_CODE "+    // 04
     "from PYPAD_INSTANCES where "+
     "STATION_NAME=\""+RDEscapeString(list_station->name())+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     item=new RDListViewItem(list_list_view);
     item->setId(q->value(0).toInt());
-    item->setText(0,QString().sprintf("%u",q->value(0).toUInt()));
-    item->setText(1,q->value(1).toString());
+    if(q->value(1).toString()=="Y") {
+      item->setPixmap(0,*list_greenball_pixmap);
+    }
+    else {
+      item->setPixmap(0,*list_redball_pixmap);
+    }
+    item->setText(1,QString().sprintf("%u",q->value(0).toUInt()));
     item->setText(2,q->value(2).toString());
+    item->setText(3,q->value(3).toString());
+    item->setText(4,QString().sprintf("%d",q->value(4).toInt()));
   }
   delete q;
 }
@@ -266,13 +364,25 @@ void ListPypads::RefreshItem(RDListViewItem *item)
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString("select DESCRIPTION,SCRIPT_PATH from PYPAD_INSTANCES where ")+
+  sql=QString("select ")+
+    "IS_RUNNING,"+   // 00
+    "DESCRIPTION,"+  // 01
+    "SCRIPT_PATH,"+  // 02
+    "EXIT_CODE "+    //03
+    "from PYPAD_INSTANCES where "+
     QString().sprintf("ID=%u",item->id());
   q=new RDSqlQuery(sql);
   if(q->first()) {
-    item->setText(0,QString().sprintf("%u",item->id()));
-    item->setText(1,q->value(0).toString());
+    if(q->value(0).toString()=="Y") {
+      item->setPixmap(0,*list_greenball_pixmap);
+    }
+    else {
+      item->setPixmap(0,*list_redball_pixmap);
+    }
+    item->setText(1,QString().sprintf("%u",item->id()));
     item->setText(2,q->value(1).toString());
+    item->setText(3,q->value(2).toString());
+    item->setText(4,QString().sprintf("%d",q->value(3).toInt()));
   }
   delete q;
 }
