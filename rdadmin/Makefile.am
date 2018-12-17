@@ -73,6 +73,7 @@ dist_rdadmin_SOURCES = add_feed.cpp add_feed.h\
                        edit_node.cpp edit_node.h\
                        edit_now_next.cpp edit_now_next.h\
                        edit_nownextplugin.cpp edit_nownextplugin.h\
+                       edit_pypad.cpp edit_pypad.h\
                        edit_rdairplay.cpp edit_rdairplay.h\
                        edit_rdlibrary.cpp edit_rdlibrary.h\
                        edit_rdlogedit.cpp edit_rdlogedit.h\
@@ -103,6 +104,7 @@ dist_rdadmin_SOURCES = add_feed.cpp add_feed.h\
                        list_livewiregpios.cpp list_livewiregpios.h\
                        list_matrices.cpp list_matrices.h\
                        list_nodes.cpp list_nodes.h\
+                       list_pypads.cpp list_pypads.h\
                        list_replicator_carts.cpp list_replicator_carts.h\
                        list_replicators.cpp list_replicators.h\
                        list_reports.cpp list_reports.h\
@@ -117,7 +119,8 @@ dist_rdadmin_SOURCES = add_feed.cpp add_feed.h\
                        rename_group.cpp rename_group.h\
                        test_import.cpp test_import.h\
                        view_adapters.cpp view_adapters.h\
-                       view_node_info.cpp view_node_info.h
+                       view_node_info.cpp view_node_info.h\
+                       view_pypad_errors.cpp view_pypad_errors.h
 
 nodist_rdadmin_SOURCES = moc_add_feed.cpp\
                          moc_add_group.cpp\
@@ -149,6 +152,7 @@ nodist_rdadmin_SOURCES = moc_add_feed.cpp\
                          moc_edit_node.cpp\
                          moc_edit_now_next.cpp\
                          moc_edit_nownextplugin.cpp\
+                         moc_edit_pypad.cpp\
                          moc_edit_rdairplay.cpp\
                          moc_edit_rdlibrary.cpp\
                          moc_edit_rdlogedit.cpp\
@@ -178,6 +182,7 @@ nodist_rdadmin_SOURCES = moc_add_feed.cpp\
                          moc_list_livewiregpios.cpp\
                          moc_list_matrices.cpp\
                          moc_list_nodes.cpp\
+                         moc_list_pypads.cpp\
                          moc_list_replicator_carts.cpp\
                          moc_list_replicators.cpp\
                          moc_list_reports.cpp\
@@ -192,7 +197,8 @@ nodist_rdadmin_SOURCES = moc_add_feed.cpp\
                          moc_rename_group.cpp\
                          moc_test_import.cpp\
                          moc_view_adapters.cpp\
-                         moc_view_node_info.cpp
+                         moc_view_node_info.cpp\
+                         moc_view_pypad_errors.cpp
 
 rdadmin_LDADD = @LIB_RDLIBS@ -lsamplerate @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
 

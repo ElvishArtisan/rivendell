@@ -81,7 +81,7 @@ RDLogPlay::RDLogPlay(int id,RDEventPlayer *player,Q3SocketDevice *nn_sock,
   // RLM2 Connection
   //
   play_pad_socket=new RDUnixSocket(this);
-  if(!play_pad_socket->connectToAbstract(RD_RLM2_SOURCE_UNIX_ADDRESS)) {
+  if(!play_pad_socket->connectToAbstract(RD_PAD_SOURCE_UNIX_ADDRESS)) {
     fprintf(stderr,"RLMHost: unable to connect to rdrlmd\n");
   }
 

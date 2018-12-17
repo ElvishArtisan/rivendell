@@ -1,8 +1,8 @@
-// dbversion.h
+// view_pypad_errors.h
 //
-// The Current Database Schema Version for Rivendell
+// View the Edit Log for a PyPAD Instance
 //
-//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,13 +18,31 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef DBVERSION_H
-#define DBVERSION_H
+#ifndef VIEW_PYPAD_ERRORS_H
+#define VIEW_PYPAD_ERRORS_H
 
-/*
- * Current Database Version
- */
-#define RD_VERSION_DATABASE 304
+#include <qdialog.h>
+#include <qpushbutton.h>
+#include <qtextedit.h>
+
+class ViewPypadErrors : public QDialog
+{
+ Q_OBJECT
+ public:
+  ViewPypadErrors(int id,QWidget *parent=0);
+  QSize sizeHint() const;
+
+ private slots:
+   void closeData();
+
+ protected:
+  void resizeEvent(QResizeEvent *e);
+
+ private:
+  QTextEdit *view_text;
+  QPushButton *view_close_button;
+};
 
 
-#endif  // DBVERSION_H
+#endif  // VIEW_PYPAD_ERRORS_H
+

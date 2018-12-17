@@ -47,6 +47,7 @@ x11 {
   SOURCES += edit_matrix.cpp
   SOURCES += edit_nownextplugin.cpp
   SOURCES += edit_now_next.cpp
+  SOURCES += edit_pypad.cpp
   SOURCES += edit_rdairplay.cpp
   SOURCES += edit_rdlibrary.cpp
   SOURCES += edit_rdlogedit.cpp
@@ -70,6 +71,7 @@ x11 {
   SOURCES += list_hostvars.cpp
   SOURCES += list_livewiregpios.cpp
   SOURCES += list_matrices.cpp
+  SOURCES += list_pypads.cpp
   SOURCES += list_reports.cpp
   SOURCES += list_replicator_carts.cpp
   SOURCES += list_replicators.cpp
@@ -81,6 +83,7 @@ x11 {
   SOURCES += rename_group.cpp
   SOURCES += test_import.cpp
   SOURCES += view_adapters.cpp
+  SOURCES += view_pypad_errors.cpp
   SOURCES += xpm_info_banner1.cpp
   SOURCES += xpm_info_banner2.cpp
 }
@@ -113,6 +116,7 @@ x11 {
   HEADERS += edit_matrix.h
   HEADERS += edit_nownextplugin.h
   HEADERS += edit_now_next.h
+  HEADERS += edit_pypad.h
   HEADERS += edit_rdairplay.h
   HEADERS += edit_rdlibrary.h
   HEADERS += edit_rdlogedit.h
@@ -136,6 +140,7 @@ x11 {
   HEADERS += list_hostvars.h
   HEADERS += list_livewiregpios.h
   HEADERS += list_matrices.h
+  HEADERS += list_pypads.h
   HEADERS += list_reports.h
   HEADERS += list_replicator_carts.h
   HEADERS += list_replicators.h
@@ -147,6 +152,7 @@ x11 {
   HEADERS += rename_group.h
   HEADERS += test_import.h
   HEADERS += view_adapters.h
+  HEADERS += view_pypad_errors.h
 }
 
 TRANSLATIONS += rdadmin_cs.ts

@@ -50,9 +50,9 @@ send_sock=socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
 
 rcvr=PyPAD.Receiver()
 try:
-    rcvr.setConfigFile(sys.argv[1])
+    rcvr.setConfigFile(sys.argv[3])
 except IndexError:
     eprint('pypad_udp.py: you must specify a configuration file')
     sys.exit(1)
 rcvr.setCallback(ProcessPad)
-rcvr.start("localhost",PyPAD.PAD_TCP_PORT)
+rcvr.start(sys.argv[1],int(sys.argv[2]))

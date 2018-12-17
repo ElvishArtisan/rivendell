@@ -41,6 +41,26 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // NEW SCHEMA REVERSIONS GO HERE...
 
   //
+  // Revert 304
+  //
+  if((cur_schema==304)&&(set_schema<cur_schema)) {
+    DropColumn("PYPAD_INSTANCES","ERROR_TEXT");
+    DropColumn("PYPAD_INSTANCES","ERROR_CODE");
+    DropColumn("PYPAD_INSTANCES","IS_RUNNING");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
+  // Revert 303
+  //
+  if((cur_schema==303)&&(set_schema<cur_schema)) {
+    DropTable("PYPAD_INSTANCES",err_msg);
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 302
   //
   if((cur_schema==302)&&(set_schema<cur_schema)) {

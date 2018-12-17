@@ -68,6 +68,7 @@ class EditStation : public QDialog
    void editHostvarsData();
    void editDropboxesData();
    void jackSettingsData();
+   void pypadInstancesData();
    void startCartClickedData();
    void stopCartClickedData();
 
@@ -143,6 +144,7 @@ class EditStation : public QDialog
    QPushButton *station_ttys_button;
    QPushButton *station_adapters_button;
    QPushButton *station_jack_button;
+   QPushButton *station_pypad_button;
    QPushButton *station_ok_button;
    QPushButton *station_cancel_button;
 };

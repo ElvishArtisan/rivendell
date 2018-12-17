@@ -1,4 +1,4 @@
-// process.cpp
+// rdprocess.cpp
 //
 // Process container for the Rivendell Services Manager
 //
@@ -20,44 +20,45 @@
 
 #include <qfile.h>
 
-#include "process.h"
+#include "rdprocess.h"
 
-Process::Process(int id,QObject *parent)
+RDProcess::RDProcess(int id,QObject *parent)
   : QObject(parent)
 {
   p_id=id;
   p_process=new QProcess(this);
+  p_private_data=NULL;
   connect(p_process,SIGNAL(started()),this,SLOT(startedData()));
   connect(p_process,SIGNAL(finished(int,QProcess::ExitStatus)),
 	  this,SLOT(finishedData(int,QProcess::ExitStatus)));
 }
 
 
-Process::~Process()
+RDProcess::~RDProcess()
 {
   delete p_process;
 }
 
 
-QProcess *Process::process() const
+QProcess *RDProcess::process() const
 {
   return p_process;
 }
 
 
-QString Process::program() const
+QString RDProcess::program() const
 {
   return p_program;
 }
 
 
-QStringList Process::arguments() const
+QStringList RDProcess::arguments() const
 {
   return p_arguments;
 }
 
 
-void Process::start(const QString &program,const QStringList &args)
+void RDProcess::start(const QString &program,const QStringList &args)
 {
   p_program=program;
   p_arguments=args;
@@ -71,19 +72,19 @@ void Process::start(const QString &program,const QStringList &args)
 }
 
 
-QString Process::errorText() const
+QString RDProcess::errorText() const
 {
   return p_error_text;
 }
 
 
-void Process::startedData()
+void RDProcess::startedData()
 {
   emit started(p_id);
 }
 
 
-void Process::finishedData(int exit_code,QProcess::ExitStatus status)
+void RDProcess::finishedData(int exit_code,QProcess::ExitStatus status)
 {
   p_error_text=tr("ok");
 
@@ -99,4 +100,16 @@ void Process::finishedData(int exit_code,QProcess::ExitStatus status)
   }
 
   emit finished(p_id);
+}
+
+
+void *RDProcess::privateData() const
+{
+  return p_private_data;
+}
+
+
+void RDProcess::setPrivateData(void *priv)
+{
+  p_private_data=priv;
 }

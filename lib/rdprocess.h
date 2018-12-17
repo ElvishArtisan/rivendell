@@ -1,6 +1,6 @@
-// process.h
+// rdprocess.h
 //
-// Process container for the Rivendell Services Manager
+// Process container
 //
 //   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
 //
@@ -18,23 +18,25 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef PROCESS_H
-#define PROCESS_H
+#ifndef RDPROCESS_H
+#define RDPROCESS_H
 
 #include <qobject.h>
 #include <qprocess.h>
 
-class Process : public QObject
+class RDProcess : public QObject
 {
   Q_OBJECT;
  public:
-  Process(int id,QObject *parent=0);
-  ~Process();
+  RDProcess(int id,QObject *parent=0);
+  ~RDProcess();
   QProcess *process() const;
   QString program() const;
   QStringList arguments() const;
   void start(const QString &program,const QStringList &args);
   QString errorText() const;
+  void *privateData() const;
+  void setPrivateData(void *priv);
 
  signals:
   void started(int id);
@@ -50,7 +52,8 @@ class Process : public QObject
    QStringList p_arguments;
    QProcess *p_process;
    QString p_error_text;
+   void *p_private_data;
 };
 
 
-#endif  // PROCESS_H
+#endif  // RDPROCESS_H

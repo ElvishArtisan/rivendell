@@ -18190,6 +18190,30 @@
 	'PyPAD.Update::shouldBeProcessed()' method.
 	* Updated the 'pypad_udp.py' script to use the
 	'PyPAD.Update::shouldBeProcessed()' method.
-2018-12-14 Patrick Linstruth <patrick@deltecent.com>
+2018-12-13 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'PYPAD_INSTANCES' table to the database.
+	* Incremented the database version to 303.
+	* Added a 'PyPAD Instances' button to the 'Edit Station' dialog
+	in rdadmin(1).
+	* Added a 'ListPyPAD Instances' dialog in rdadmin(1).
+	* Added an 'Edit PyPAD' Instance' dialog in rdadmin(1).
+2018-12-13 Fred Gleason <fredg@paravelsystems.com>
+	* Added support in 'PyPAD.Receiver::setConfigFile()' to load
+	configuration information from a Rivendell database.
+2018-12-17 Fred Gleason <fredg@paravelsystems.com>
+	* Renamed the RD_RLM2_CLIENT_TCP_PORT define to RD_PAD_CLIENT_TCP_PORT.
+	* Renamed the  RD_RLM_SOURCE_UNIX_ADDRESS define to
+	 RD_PAD_SOURCE_UNIX_ADDRESS.
+	* Added a RD_PYPAD_SCRIPT_DIR define.
+	* Added an 'RDNotification::PypadType' value to the
+	'RDNotification::Type' enumeration.
+	* Added 'PypadOwner=' and 'PypadGroup=' directives to the
+	'[Identity]' section of rd.conf(5).
+	* Added an rdpadengined(8) service.
+	* Added a 'PYPAD_INSTANCES.IS_RUNNING' field to the database.
+	* Added a 'PYPAD_INSTANCES.EXIT_CODE' field to the database.
+	* Added a 'PYPAD_INSTANCES.ERROR_TEXT' field to the database.
+	* Incremented the database version to 304.
+2018-12-17 Patrick Linstruth <patrick@deltecent.com>
 	* Added a 'pypad_tunein.py' PyPAD script.
 	* Added a 'pypad_icecast2.py' PyPAD script.

@@ -32,13 +32,11 @@ moc_%.cpp:	%.h
 sbin_PROGRAMS = rdservice
 
 dist_rdservice_SOURCES = maint_routines.cpp\
-                         process.cpp process.h\
                          rdservice.cpp rdservice.h\
                          shutdown.cpp\
                          startup.cpp
 
-nodist_rdservice_SOURCES = moc_process.cpp\
-                           moc_rdservice.cpp
+nodist_rdservice_SOURCES = moc_rdservice.cpp
 
 rdservice_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
 

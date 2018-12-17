@@ -91,6 +91,8 @@ class RDConfig
   QString password() const;
   QString audioOwner() const;
   QString audioGroup() const;
+  QString pypadOwner() const;
+  QString pypadGroup() const;
   QString audioRoot() const;
   QString audioExtension() const;
   QString audioFileName (QString cutname);
@@ -113,6 +115,8 @@ class RDConfig
   unsigned channels() const;
   uid_t uid() const;
   gid_t gid() const;
+  uid_t pypadUid() const;
+  gid_t pypadGid() const;
   bool useRealtime();
   int realtimePriority();
   int transcodingDelay() const;
@@ -160,6 +164,8 @@ class RDConfig
   QString conf_password;
   QString conf_audio_owner;
   QString conf_audio_group;
+  QString conf_pypad_owner;
+  QString conf_pypad_group;
   QString conf_audio_root;
   QString conf_audio_extension;
   QString conf_label;
@@ -178,6 +184,8 @@ class RDConfig
   unsigned conf_channels;
   uid_t conf_uid;
   gid_t conf_gid;
+  uid_t conf_pypad_uid;
+  gid_t conf_pypad_gid;
   QString conf_cae_logfile;
   bool conf_enable_mixer_logging;
   bool conf_use_realtime;
