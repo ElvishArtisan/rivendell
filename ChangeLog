@@ -18228,3 +18228,6 @@
 2018-12-18 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'pypad_urlwrite.py' PyPAD script.
 	* Removed the 'rlm_urlwrite' RLM.
+2018-12-18 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'pypad_walltime.py' PyPAD script.
+	* Removed the 'rlm_walltime' RLM.
