@@ -22,8 +22,6 @@
 AM_CFLAGS = -fPIC -Wall -I../
 
 RLM_MODULES=rlm_ando.rlm\
-            rlm_facebook.rlm\
-            rlm_filewrite.rlm\
             rlm_icecast2.rlm\
             rlm_inno713.rlm\
             rlm_liqcomp.rlm\
@@ -33,11 +31,8 @@ RLM_MODULES=rlm_ando.rlm\
             rlm_shoutcast1.rlm\
             rlm_spinitron_plus.rlm\
             rlm_spottrap.rlm\
-            rlm_tagstation.rlm\
             rlm_test.rlm\
             rlm_tunein.rlm\
-            rlm_twitter.rlm\
-            rlm_udp.rlm\
             rlm_urlwrite.rlm\
             rlm_walltime.rlm\
             rlm_xds.rlm\
@@ -63,8 +58,6 @@ header_HEADERS = rlm.h
 EXTRA_DIST = Makefile-example\
              rlm.h\
              rlm_ando.c\
-             rlm_facebook.c\
-             rlm_filewrite.c\
              rlm_icecast2.c\
              rlm_inno713.c\
              rlm_liqcomp.c\
@@ -74,11 +67,8 @@ EXTRA_DIST = Makefile-example\
              rlm_shoutcast1.c\
              rlm_spinitron_plus.c\
              rlm_spottrap.c\
-             rlm_tagstation.c\
              rlm_test.c\
              rlm_tunein.c\
-             rlm_twitter.c\
-             rlm_udp.c\
              rlm_urlwrite.c\
              rlm_walltime.c\
              rlm_xds.c\

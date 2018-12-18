@@ -18219,3 +18219,9 @@
 	script after receiving a DELETE notification for it.
 2018-12-18 Fred Gleason <fredg@paravelsystems.com>
 	* Removed superflous syslog() call in rdpadengined(8).
+2018-12-18 Fred Gleason <fredg@paravelsystems.com>
+	* Deleted the 'rlm_facebook' RLM.
+	* Deleted the 'rlm_filewrite' RLM.
+	* Deleted the 'rlm_tagstation' RLM.
+	* Deleted the 'rlm_twitter' RLM.
+	* Deleted the 'rlm_udp' RLM.
