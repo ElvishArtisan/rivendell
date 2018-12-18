@@ -18225,3 +18225,6 @@
 	* Deleted the 'rlm_tagstation' RLM.
 	* Deleted the 'rlm_twitter' RLM.
 	* Deleted the 'rlm_udp' RLM.
+2018-12-18 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'pypad_urlwrite.py' PyPAD script.
+	* Removed the 'rlm_urlwrite' RLM.

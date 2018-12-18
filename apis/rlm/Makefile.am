@@ -33,7 +33,6 @@ RLM_MODULES=rlm_ando.rlm\
             rlm_spottrap.rlm\
             rlm_test.rlm\
             rlm_tunein.rlm\
-            rlm_urlwrite.rlm\
             rlm_walltime.rlm\
             rlm_xds.rlm\
             rlm_xmpad.rlm
@@ -69,7 +68,6 @@ EXTRA_DIST = Makefile-example\
              rlm_spottrap.c\
              rlm_test.c\
              rlm_tunein.c\
-             rlm_urlwrite.c\
              rlm_walltime.c\
              rlm_xds.c\
              rlm_xmpad.c
