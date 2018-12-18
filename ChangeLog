@@ -18214,3 +18214,6 @@
 	* Added a 'PYPAD_INSTANCES.EXIT_CODE' field to the database.
 	* Added a 'PYPAD_INSTANCES.ERROR_TEXT' field to the database.
 	* Incremented the database version to 304.
+2018-12-18 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdpadengined(8) that failed to kill a pypad
+	script after receiving a DELETE notification for it.

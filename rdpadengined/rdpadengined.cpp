@@ -145,33 +145,34 @@ void MainObject::notificationReceivedData(RDNotification *notify)
   QString sql;
   RDSqlQuery *q;
 
- if(notify->type()==RDNotification::PypadType) {
+  syslog(LOG_NOTICE,"NOTIFY: %s",(const char *)notify->write().toUtf8());
+  if(notify->type()==RDNotification::PypadType) {
     int id=notify->id().toUInt();
-    sql=QString("select SCRIPT_PATH from PYPAD_INSTANCES where ")+
-      QString().sprintf("ID=%u && ",id)+
-      "STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\"";
-    q=new RDSqlQuery(sql);
-    while(q->next()) {
-      switch(notify->action()) {
-      case RDNotification::AddAction:
+    switch(notify->action()) {
+    case RDNotification::AddAction:
+      sql=QString("select SCRIPT_PATH from PYPAD_INSTANCES where ")+
+	QString().sprintf("ID=%u && ",id)+
+	"STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\"";
+      q=new RDSqlQuery(sql);
+      if(q->first()) {
 	StartScript(id,q->value(0).toString());
-	break;
-
-      case RDNotification::DeleteAction:
-	pad_instances.value(id)->setPrivateData((void *)true);  // No Restart
-	KillScript(id);
-	break;
-
-      case RDNotification::ModifyAction:
-	KillScript(id);
-	break;
-
-      case RDNotification::NoAction:
-      case RDNotification::LastAction:
-	break;
       }
+      delete q;
+      break;
+
+    case RDNotification::DeleteAction:
+      pad_instances.value(id)->setPrivateData((void *)true);  // No Restart
+      KillScript(id);
+      break;
+
+    case RDNotification::ModifyAction:
+      KillScript(id);
+      break;
+
+    case RDNotification::NoAction:
+    case RDNotification::LastAction:
+      break;
     }
-    delete q;
   }
 }
 
