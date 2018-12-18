@@ -145,7 +145,6 @@ void MainObject::notificationReceivedData(RDNotification *notify)
   QString sql;
   RDSqlQuery *q;
 
-  syslog(LOG_NOTICE,"NOTIFY: %s",(const char *)notify->write().toUtf8());
   if(notify->type()==RDNotification::PypadType) {
     int id=notify->id().toUInt();
     switch(notify->action()) {

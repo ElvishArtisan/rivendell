@@ -18217,3 +18217,5 @@
 2018-12-18 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdpadengined(8) that failed to kill a pypad
 	script after receiving a DELETE notification for it.
+2018-12-18 Fred Gleason <fredg@paravelsystems.com>
+	* Removed superflous syslog() call in rdpadengined(8).
