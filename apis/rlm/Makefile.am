@@ -25,7 +25,6 @@ RLM_MODULES=rlm_ando.rlm\
             rlm_icecast2.rlm\
             rlm_inno713.rlm\
             rlm_liqcomp.rlm\
-            rlm_padpoint.rlm\
             rlm_serial.rlm\
             rlm_shoutcast1.rlm\
             rlm_spinitron_plus.rlm\
@@ -58,7 +57,6 @@ EXTRA_DIST = Makefile-example\
              rlm_icecast2.c\
              rlm_inno713.c\
              rlm_liqcomp.c\
-             rlm_padpoint.c\
              rlm_serial.c\
              rlm_shoutcast1.c\
              rlm_spinitron_plus.c\

@@ -18239,3 +18239,5 @@
 	* Removed the 'rlm_live365' RLM.
 	* Fixed typos in the docstrings for 'PyPAD.Update::startDateTime()'
 	and 'PyPAD.Update::padField()'.
+2018-12-18 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'rlm_padpoint' RLM.
