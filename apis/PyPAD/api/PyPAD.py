@@ -410,8 +410,8 @@ class Update(object):
            Takes one argument:
 
            pad_type - The type of PAD value. Valid values are:
-                      PyPAD.NOW - Now playing data
-                      PyPAD.NEXT - Next to play data
+                      PyPAD.TYPE_NOW - Now playing data
+                      PyPAD.TYPE_NEXT - Next to play data
         """
         try:
             return self.__fields['padUpdate'][pad_type]!=None
@@ -425,8 +425,8 @@ class Update(object):
            Takes one argument:
 
            pad_type - The type of PAD value. Valid values are:
-                      PyPAD.NOW - Now playing data
-                      PyPAD.NEXT - Next to play data
+                      PyPAD.TYPE_NOW - Now playing data
+                      PyPAD.TYPE_NEXT - Next to play data
         """
         try:
             return self.__fromIso8601(self.__fields['padUpdate'][pad_type]['startDateTime'])
@@ -440,8 +440,8 @@ class Update(object):
            Takes two arguments:
 
            pad_type - The type of PAD value. Valid values are:
-                      PyPAD.NOW - Now playing data
-                      PyPAD.NEXT - Next to play data
+                      PyPAD.TYPE_NOW - Now playing data
+                      PyPAD.TYPE_NEXT - Next to play data
 
            pad_field - The specific field. Valid values are:
                        PyPAD.FIELD_AGENCY - The 'Agency' field (string)
