@@ -1,9 +1,7 @@
-; pypad_icecast2.conf
-;
-; This is the sample configuration file for the 'pypad_icecast2.py' module for 
-; Rivendell, which can be used to update the metadata on an Icecast2 
+; This is the sample configuration file for the 'pypad_icecast2.py' PyPAD script
+; for Rivendell, which can be used to update the metadata on an Icecast2 
 ; mountpoint using Now & Next data.
-
+;
 
 ; Section Header
 ;

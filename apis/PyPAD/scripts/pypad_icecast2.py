@@ -20,8 +20,6 @@
 #   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #
 
-from __future__ import print_function
-
 import os
 import sys
 import socket

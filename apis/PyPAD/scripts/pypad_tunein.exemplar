@@ -1,10 +1,7 @@
-; pypad_tunein.conf
+; This is the sample configuration file for the 'pypad_tunein.py' PyPAD script for 
+; Rivendell, which can be used to update the metadata at TuneIn server
+; using Now & Next data.
 ;
-; This is the sample configuration file for the 'pypad_tunein' module for 
-; Rivendell, which can be used to update the metadata at TuneIn
-; server using Now & Next data.
-;
-
 
 ; Section Header
 ;
