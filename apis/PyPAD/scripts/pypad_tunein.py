@@ -81,7 +81,7 @@ pypad_name=os.path.basename(__file__)
 #
 # Open Syslog
 #
-syslog.openlog(logoption=syslog.LOG_PID, facility=syslog.LOG_DAEMON)
+syslog.openlog(pypad_name,logoption=syslog.LOG_PID,facility=syslog.LOG_DAEMON)
 
 
 #
