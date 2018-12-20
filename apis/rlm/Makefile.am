@@ -27,7 +27,6 @@ RLM_MODULES=rlm_ando.rlm\
             rlm_liqcomp.rlm\
             rlm_serial.rlm\
             rlm_shoutcast1.rlm\
-            rlm_spinitron_plus.rlm\
             rlm_spottrap.rlm\
             rlm_test.rlm\
             rlm_tunein.rlm\
@@ -59,7 +58,6 @@ EXTRA_DIST = Makefile-example\
              rlm_liqcomp.c\
              rlm_serial.c\
              rlm_shoutcast1.c\
-             rlm_spinitron_plus.c\
              rlm_spottrap.c\
              rlm_test.c\
              rlm_tunein.c\

@@ -418,6 +418,19 @@ class Update(object):
         except TypeError:
             return False;
 
+    def startDateTimeString(self,pad_type):
+        """
+           Returns the start date-time of the specified PAD type in ISO 8601
+           format (string).
+
+           Takes one argument:
+
+           pad_type - The type of PAD value. Valid values are:
+                      PyPAD.TYPE_NOW - Now playing data
+                      PyPAD.TYPE_NEXT - Next to play data
+        """
+        return self.__fields['padUpdate'][pad_type]['startDateTime']
+
     def startDateTime(self,pad_type):
         """
            Returns the start datetime of the specified PAD type

@@ -1,0 +1,132 @@
+; This is the configuration for the 'pypad_spinitron' script
+; for Rivendell, which can be used log Now & Next data to the Spinitron
+; online playlist service [http://www.spinitron.com].
+
+; Section Header
+;
+; One section per Spinitron account is configured, starting with 
+; 'Spinitron1' and working up consecutively
+[Spinitron1]
+
+; APIKey
+;
+; API key for the Spinitron v2 account to which to log the play-out.
+; (This setting is only needed for Spinitron major version 2).
+APIKey=change_me_please
+
+; PlaylistMode
+;
+; Set the Spinitron playlist mode to use when sending updates.
+;
+; (For a discussion of the implications of this setting on your
+; Spinitron playlists, see Section 3.2 of the 'Spinitron Automation
+; Integration' document, available from Spinitron).
+;
+; The following options are recognized:
+;
+;  Full - Always use the Spinitron 'Full Automation' mode.
+;  Assist - Always use the Spinitron 'Live Assist' mode.
+;  Follow - Use the Spinitron 'Full Automation' mode when RDAirPlay
+;           is in Automatic, otherwise use the Spinitron 'Live Assist' mode.
+PlaylistMode=Follow
+
+; Title.  The string to be sent as the 'Title' field for each update,
+; including any wildcards as placeholders for metadata values. For the
+; list of supported wildcards. see the 'Metadata Wildcards' section of the
+; Rivendell Operations Guide.
+Title=%t
+
+; Artist.  The string to be sent as the 'Artist' field for each update,
+; including any wildcards as placeholders for metadata values.
+Artist=%a
+
+; Album.  The string to be sent as the 'Album' field for each update,
+; including any wildcards as placeholders for metadata values.
+Album=%l
+
+; Label.  The string to be sent as the 'Label' field for each update,
+; including any wildcards as placeholders for metadata values.
+Label=%b
+
+; Composer.  The string to be sent as the 'Composer' field for each update,
+; including any wildcards as placeholders for metadata values.
+Composer=%m
+
+; Conductor.  The string to be sent as the 'Conductor' field for each update,
+; including any wildcards as placeholders for metadata values.
+Conductor=%r
+
+; Notes.  The string to be sent as the 'Notes' field for each update,
+; including any wildcards as placeholders for metadata values.
+Notes=%u
+
+; Log Selection
+;
+; Set the status for each log to 'Yes', 'No' or 'Onair' to indicate whether
+; state changes on that log should be output to this account.  If set
+; to 'Onair', then output will be generated only if RDAirPlays OnAir flag
+; is active.
+MasterLog=Yes
+Aux1Log=Yes
+Aux2Log=Yes
+VLog101=No
+VLog102=No
+VLog103=No
+VLog104=No
+VLog105=No
+VLog106=No
+VLog107=No
+VLog108=No
+VLog109=No
+VLog110=No
+VLog111=No
+VLog112=No
+VLog113=No
+VLog114=No
+VLog115=No
+VLog116=No
+VLog117=No
+VLog118=No
+VLog119=No
+VLog120=No
+
+
+; Additional Spinitron instances can be configured by adding new
+; sections...
+;
+;[Spinitron2]
+;MajorVersion=2
+;Station=abcd
+;Username=metoo
+;Password=letmein
+;APIKey=some_different_key
+;Title=%t
+;Artist=%a
+;Album=%l
+;Label=%b
+;Composer=%m
+;Conductor=%r
+;Notes=%u
+;MasterLog=Yes
+;Aux1Log=No
+;Aux2Log=Onair
+;VLog101=No
+;VLog102=No
+;VLog103=No
+;VLog104=No
+;VLog105=No
+;VLog106=No
+;VLog107=No
+;VLog108=No
+;VLog109=No
+;VLog110=No
+;VLog111=No
+;VLog112=No
+;VLog113=No
+;VLog114=No
+;VLog115=No
+;VLog116=No
+;VLog117=No
+;VLog118=No
+;VLog119=No
+;VLog120=No
