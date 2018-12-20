@@ -18245,3 +18245,6 @@
 	* Added a 'PyPAD.Update::startDateTimeString()' method.
 	* Added a 'pypad_spinitron.py' PyPAD script.
 	* Removed the 'rlm_spinitron_plus' RLM.
+2018-12-20 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'pypad_ando.py' PyPAD script.
+	* Removed the 'rlm_ando' RLM.
