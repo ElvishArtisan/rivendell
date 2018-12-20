@@ -13,8 +13,7 @@
 ; IP Address
 ;
 ; The IP address of the remote encoder, in dotted-quad notation.
-;IpAddress=192.168.10.22
-IpAddress=127.0.0.1
+IpAddress=192.168.10.22
 
 ; UDP Port
 ;
