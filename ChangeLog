@@ -18248,3 +18248,6 @@
 2018-12-20 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'pypad_ando.py' PyPAD script.
 	* Removed the 'rlm_ando' RLM.
+2018-12-20 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'pypad_liqcomp.py' PyPAD script.
+	* Removed the 'rlm_liqcomp' RLM.

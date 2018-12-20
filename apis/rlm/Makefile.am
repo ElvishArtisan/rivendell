@@ -23,7 +23,6 @@ AM_CFLAGS = -fPIC -Wall -I../
 
 RLM_MODULES = rlm_icecast2.rlm\
               rlm_inno713.rlm\
-              rlm_liqcomp.rlm\
               rlm_serial.rlm\
               rlm_shoutcast1.rlm\
               rlm_spottrap.rlm\
@@ -53,7 +52,6 @@ EXTRA_DIST = Makefile-example\
              rlm.h\
              rlm_icecast2.c\
              rlm_inno713.c\
-             rlm_liqcomp.c\
              rlm_serial.c\
              rlm_shoutcast1.c\
              rlm_spottrap.c\

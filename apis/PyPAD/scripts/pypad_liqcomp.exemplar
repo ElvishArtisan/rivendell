@@ -1,0 +1,94 @@
+; This is the configuration for the 'pypad_liqcomp.py' module for 
+; Rivendell, which can be used to output Now & Next data to one or more
+; Liquid Compass Internet streaming encoders, using the following format:
+;
+; |<title>|<artist>|<cart-num>|<length>|<group>|<album>|<label>|<lf>
+
+; Section Header
+;
+; One section per remote encoder is configured, starting with 'System1' and 
+; working up consecutively
+[System1]
+
+; IP Address
+;
+; The IP address of the remote encoder, in dotted-quad notation.
+;IpAddress=192.168.10.22
+IpAddress=127.0.0.1
+
+; UDP Port
+;
+; The UDP port number of the remote encoder, in the range 0 - 65,535.
+UdpPort=5273
+
+; Field Definitions.  The string to use to populate the <title>, <artist>,
+; <album> and <label> fields sent to ANDO each time RDAirPlay changes play
+; state.   These can include wildcards as placeholders for metadata values.
+; For the list of supported wildcards. see the 'Metadata Wildcards' section
+; of the Rivendell Operations Guide.
+Title=%t
+Artist=%a
+Album=%l
+Label=%b
+
+; Log Selection
+;
+; Set the status for each log to 'Yes', 'No' or 'Onair' to indicate whether
+; state changes on that log should be output on this udp port.  If set
+; to 'Onair', then output will be generated only if the RDAirPlay OnAir flag
+; is active.
+MasterLog=Yes
+Aux1Log=Yes
+Aux2Log=Yes
+VLog101=No
+VLog102=No
+VLog103=No
+VLog104=No
+VLog105=No
+VLog106=No
+VLog107=No
+VLog108=No
+VLog109=No
+VLog110=No
+VLog111=No
+VLog112=No
+VLog113=No
+VLog114=No
+VLog115=No
+VLog116=No
+VLog117=No
+VLog118=No
+VLog119=No
+VLog120=No
+
+
+; Additional encoders can be configured by adding new sections...
+;[System2]
+;IpAddress=192.168.10.22
+;UdpPort=6789
+;Title=%u
+;Artist=%a
+;Album=%p
+;MasterLog=Yes
+;Aux1Log=No
+;Aux2Log=Onair
+;VLog101=No
+;VLog102=No
+;VLog103=No
+;VLog104=No
+;VLog105=No
+;VLog106=No
+;VLog107=No
+;VLog108=No
+;VLog109=No
+;VLog110=No
+;VLog111=No
+;VLog112=No
+;VLog113=No
+;VLog114=No
+;VLog115=No
+;VLog116=No
+;VLog117=No
+;VLog118=No
+;VLog119=No
+;VLog120=No
