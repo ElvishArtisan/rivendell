@@ -25,15 +25,23 @@ import socket
 import configparser
 import PyPAD
 
+last_updates={}
+
 def eprint(*args,**kwargs):
     print(*args,file=sys.stderr,**kwargs)
 
 def ProcessPad(update):
+    try:
+        last_updates[update.machine()]
+    except KeyError:
+        last_updates[update.machine()]=None
+
     n=1
     while(True):
         section='System'+str(n)
         try:
-            if update.shouldBeProcessed(section) and update.hasPadType(PyPAD.TYPE_NOW):
+            if update.shouldBeProcessed(section) and update.hasPadType(PyPAD.TYPE_NOW) and (last_updates[update.machine()] != update.startDateTimeString(PyPAD.TYPE_NOW)):
+                last_updates[update.machine()]=update.startDateTimeString(PyPAD.TYPE_NOW)
                 title=update.resolvePadFields(update.config().get(section,'Title'),PyPAD.ESCAPE_NONE)
                 artist=update.resolvePadFields(update.config().get(section,'Artist'),PyPAD.ESCAPE_NONE)
                 album=update.resolvePadFields(update.config().get(section,'Album'),PyPAD.ESCAPE_NONE)

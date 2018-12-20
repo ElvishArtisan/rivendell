@@ -18253,3 +18253,6 @@
 	* Removed the 'rlm_liqcomp' RLM.
 2018-12-20 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a typo in 'pypad_liqcomp.exemplar'.
+2018-12-20 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'pypad_ando.py' script that caused duplicate
+	PAD updates to be generated.
