@@ -18256,3 +18256,6 @@
 2018-12-20 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the 'pypad_ando.py' script that caused duplicate
 	PAD updates to be generated.
+2018-12-20 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'pypad_serial.py' PyPAD script.
+	* Removed the 'rlm_serial' RLM.
