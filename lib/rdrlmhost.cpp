@@ -436,7 +436,7 @@ const char *RLMResolveNowNextEncoded(void *ptr,const struct rlm_pad *now,
   loglines[1]=new RDLogLine();
   RDRLMHost::saveMetadata(now,loglines[0]);
   RDRLMHost::saveMetadata(next,loglines[1]);
-  RDResolveNowNext(&str,loglines,encoding);
+  RDResolveNowNext(&str,loglines,0,encoding);
   strncpy(host->plugin_value_string,str,1024);
   delete loglines[1];
   delete loglines[0];

@@ -18259,3 +18259,10 @@
 2018-12-20 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'pypad_serial.py' PyPAD script.
 	* Removed the 'rlm_serial' RLM.
+2019-01-02 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'lineNumber' parameter to the 'padUpdate' structure.
+	* Added a 'FIELD_LINE_NUMBER' data value to PyPAD.
+	* Defined the '%z' metadata wildcard to refer to log line number.
+	* Added a 'lineId' parameter to the 'padUpdate' structure.
+	* Added 'FIELD_LINE_ID' data value to PyPAD.
+	* Defined the '%x' metadata wildcard to refer to log line ID.

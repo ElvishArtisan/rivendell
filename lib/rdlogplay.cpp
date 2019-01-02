@@ -3002,7 +3002,8 @@ void RDLogPlay::SendNowNext()
       QDateTime(QDate::currentDate(),logline[0]->startTime(RDLogLine::Actual));
   }
   play_pad_socket->
-    write(GetPadJson("now",logline[0],start_datetime,8,false).toUtf8());
+    write(GetPadJson("now",logline[0],start_datetime,now_line,8,false).
+	  toUtf8());
 
   //
   // Next
@@ -3012,7 +3013,7 @@ void RDLogPlay::SendNowNext()
     next_datetime=start_datetime.addSecs(logline[0]->forcedLength()/1000);
   }
  play_pad_socket->write(GetPadJson("next",logline[1],
-				    next_datetime,8,true).toUtf8());
+				   next_datetime,nextLine(),8,true).toUtf8());
 
   //
   // Commit the update
@@ -3031,12 +3032,12 @@ void RDLogPlay::SendNowNext()
   //
   // Premordial integrated interface
   //
-  RDResolveNowNext(&cmd,logline,0);
+  RDResolveNowNext(&cmd,logline,now_line,0);
   play_nownext_socket->
     writeBlock(cmd,cmd.length(),play_nownext_address,play_nownext_port);
 
   cmd=play_nownext_rml;
-  RDResolveNowNext(&cmd,logline,0);
+  RDResolveNowNext(&cmd,logline,now_line,0);
   play_event_player->exec(cmd);
 
   //
@@ -3052,8 +3053,8 @@ void RDLogPlay::SendNowNext()
 
 
 QString RDLogPlay::GetPadJson(const QString &name,RDLogLine *ll,
-			      const QDateTime &start_datetime,int padding,
-			      bool final) const
+			      const QDateTime &start_datetime,int line,
+			      int padding,bool final) const
 {
   QString ret;
 
@@ -3068,6 +3069,8 @@ QString RDLogPlay::GetPadJson(const QString &name,RDLogLine *ll,
     else {
       ret+=RDJsonNullField("startDateTime",4+padding);
     }
+    ret+=RDJsonField("lineNumber",line,4+padding);
+    ret+=RDJsonField("lineId",ll->id(),4+padding);
     ret+=RDJsonField("cartNumber",ll->cartNumber(),4+padding);
     ret+=RDJsonField("cartType",RDCart::typeText(ll->cartType()),4+padding);
     if(ll->cartType()==RDCart::Audio) {

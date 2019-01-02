@@ -190,7 +190,7 @@ class RDLogPlay : public QObject,public RDLogEvent
   bool ClearBlock(int start_line);
   void SendNowNext();
   QString GetPadJson(const QString &name,RDLogLine *ll,
-		     const QDateTime &start_datetime,int padding,
+		     const QDateTime &start_datetime,int line,int padding,
 		     bool final=false) const;
   void LogTraffic(RDLogLine *logline,RDLogLine::PlaySource src,
 		  RDAirPlayConf::TrafficAction action,bool onair_flag) const;

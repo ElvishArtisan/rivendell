@@ -46,6 +46,8 @@ TYPE_NEXT='next'
 # Field Names
 #
 FIELD_START_DATETIME='startDateTime'
+FIELD_LINE_NUMBER='lineNumber'
+FIELD_LINE_ID='lineId'
 FIELD_CART_NUMBER='cartNumber'
 FIELD_CART_TYPE='cartType'
 FIELD_CUT_NUMBER='cutNumber'
@@ -393,9 +395,9 @@ class Update(object):
         string=self.__replaceWildcardPair('u','userDefined',string,esc)
         #string=self.__replaceWildcardPair('v',sfield,string,esc) # Length, rounded down
         #string=self.__replaceWildcardPair('w',sfield,string,esc) # Unassigned
-        #string=self.__replaceWildcardPair('x',sfield,string,esc) # Unassigned
+        string=self.__replaceWildcardPair('x','lineId',string,esc) # Log Line ID
         string=self.__replaceWildcardPair('y','year',string,esc)
-        #string=self.__replaceWildcardPair('z',sfield,string,esc) # Unassigned
+        string=self.__replaceWildcardPair('z','lineNumber',string,esc) # Log Line #
         string=string.replace('\\b','\b')
         string=string.replace('\\f','\f')
         string=string.replace('\\n','\n')
@@ -480,6 +482,8 @@ class Update(object):
                        PyPAD.FIELD_ISCI - The 'ISCI' field (string)
                        PyPAD.FIELD_LABEL - The 'Label' field (string)
                        PyPAD.FIELD_LENGTH - The 'Length' field (integer)
+                       PyPAD.FIELD_LINE_ID - The log line ID (integer)
+                       PyPAD.FIELD_LINE_NUMBER - The log line number (integer)
                        PyPAD.FIELD_OUTCUE - The 'Outcue' field (string)
                        PyPAD.FIELD_PUBLISHER - The 'Publisher' field (string)
                        PyPAD.FIELD_SONG_ID - The 'Song ID' field (string)

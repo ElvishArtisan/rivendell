@@ -2,7 +2,7 @@
 
 # now_and_next.py
 #
-# Example PyPAD script for Rivendell
+# Barebones example PyPAD script for Rivendell
 #
 #   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
 #
@@ -35,15 +35,21 @@ import PyPAD
 # the PAD information is supplied as the single argument.
 #
 def ProcessPad(update):
-    print
+    print()
     if update.hasPadType(PyPAD.TYPE_NOW):
-        print("Log %03d NOW: " % update.machine()+update.resolvePadFields("%a - %t",PyPAD.ESCAPE_NONE))
+        msg='%03d:' % update.machine()
+        msg+='%04d ' % update.padField(PyPAD.TYPE_NOW,PyPAD.FIELD_LINE_NUMBER)
+        msg+='NOW: '+update.resolvePadFields('%a - %t',PyPAD.ESCAPE_NONE)
+        print(msg)
     else:
-        print("Log %03d NOW: [none]" % update.machine())
+        print("%03d:xxxx NOW: [none]" % update.machine())
     if update.hasPadType(PyPAD.TYPE_NEXT):
-        print("Log %03d NEXT: " % update.machine()+update.resolvePadFields("%A - %T",PyPAD.ESCAPE_NONE))
+        msg='%03d:' % update.machine()
+        msg+='%04d ' % update.padField(PyPAD.TYPE_NEXT,PyPAD.FIELD_LINE_NUMBER)
+        msg+='NEXT: '+update.resolvePadFields('%A - %T',PyPAD.ESCAPE_NONE)
+        print(msg)
     else:
-        print("Log %03d NEXT: [none]" % update.machine())
+        print("%03d:xxxx NEXT: [none]" % update.machine())
 
 #
 # Create an instance of 'PyPADReceiver'

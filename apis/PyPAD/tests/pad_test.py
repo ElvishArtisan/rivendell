@@ -59,6 +59,8 @@ def ProcessPad(update):
             print('     startDateTime(): '+update.startDateTime(PyPAD.TYPE_NOW).isoformat(' '))
         except AttributeError:
             print('     startDateTime(): None')
+        print('        lineNumber(): '+str(update.padField(PyPAD.TYPE_NOW,PyPAD.FIELD_LINE_NUMBER))+'/'+update.resolvePadFields('%z',PyPAD.ESCAPE_NONE))
+        print('            lineId(): '+str(update.padField(PyPAD.TYPE_NOW,PyPAD.FIELD_LINE_ID))+'/'+update.resolvePadFields('%x',PyPAD.ESCAPE_NONE))
         print('          cartType(): '+update.padField(PyPAD.TYPE_NOW,PyPAD.FIELD_CART_TYPE))
         print('        cartNumber(): %u / ' % update.padField(PyPAD.TYPE_NOW,PyPAD.FIELD_CART_NUMBER)+update.resolvePadFields("%n",PyPAD.ESCAPE_NONE))
         print('         cutNumber(): %u / ' % update.padField(PyPAD.TYPE_NOW,PyPAD.FIELD_CUT_NUMBER)+update.resolvePadFields("%j",PyPAD.ESCAPE_NONE))
@@ -96,6 +98,8 @@ def ProcessPad(update):
             print('     startDateTime(): '+update.startDateTime(PyPAD.TYPE_NEXT).isoformat(' '))
         except AttributeError:
             print('     startDateTime(): None')
+        print('        lineNumber(): '+str(update.padField(PyPAD.TYPE_NEXT,PyPAD.FIELD_LINE_NUMBER))+'/'+update.resolvePadFields('%Z',PyPAD.ESCAPE_NONE))
+        print('            lineId(): '+str(update.padField(PyPAD.TYPE_NEXT,PyPAD.FIELD_LINE_ID))+'/'+update.resolvePadFields('%X',PyPAD.ESCAPE_NONE))
         print('          cartType(): '+update.padField(PyPAD.TYPE_NEXT,PyPAD.FIELD_CART_TYPE))
         print('        cartNumber(): %u / ' % update.padField(PyPAD.TYPE_NEXT,PyPAD.FIELD_CART_NUMBER)+update.resolvePadFields("%N",PyPAD.ESCAPE_NONE))
         print('         cutNumber(): %u / ' % update.padField(PyPAD.TYPE_NEXT,PyPAD.FIELD_CUT_NUMBER)+update.resolvePadFields("%J",PyPAD.ESCAPE_NONE))

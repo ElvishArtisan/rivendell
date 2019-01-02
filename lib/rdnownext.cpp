@@ -73,7 +73,7 @@ QString RDResolveNowNextEncode(const QString &str,int encoding)
   return ret;
 }
 
-void RDResolveNowNext(QString *str,RDLogLine **loglines,int encoding)
+void RDResolveNowNext(QString *str,RDLogLine **loglines,int line,int encoding)
 {
   //
   // NOW PLAYING Event
@@ -104,6 +104,7 @@ void RDResolveNowNext(QString *str,RDLogLine **loglines,int encoding)
     str->replace("%o",RDResolveNowNextEncode(loglines[0]->outcue(),encoding));
     str->replace("%i",RDResolveNowNextEncode(loglines[0]->description(),
     					     encoding));
+    str->replace("%x",QString().sprintf("%d",loglines[0]->id()));
     RDResolveNowNextDateTime(str,"%d(",loglines[0]->startDatetime());
   }
   else {   // No NOW PLAYING Event
@@ -125,6 +126,7 @@ void RDResolveNowNext(QString *str,RDLogLine **loglines,int encoding)
     str->replace("%u","");
     str->replace("%o","");
     str->replace("%i","");
+    str->replace("%z","");
     RDResolveNowNextDateTime(str,"%d(",QDateTime());
   }
 
@@ -156,6 +158,7 @@ void RDResolveNowNext(QString *str,RDLogLine **loglines,int encoding)
     str->replace("%O",RDResolveNowNextEncode(loglines[1]->outcue(),encoding));
     str->replace("%I",RDResolveNowNextEncode(loglines[1]->description(),
 					     encoding));
+    str->replace("%X",QString().sprintf("%d",loglines[1]->id()));
     RDResolveNowNextDateTime(str,"%D(",loglines[1]->startDatetime());
   }
   else {   // No NEXT Event
@@ -177,6 +180,7 @@ void RDResolveNowNext(QString *str,RDLogLine **loglines,int encoding)
     str->replace("%U","");
     str->replace("%O","");
     str->replace("%I","");
+    str->replace("%X","");
     RDResolveNowNextDateTime(str,"%D(",QDateTime());
   }
   str->replace("%%","%");
@@ -185,7 +189,7 @@ void RDResolveNowNext(QString *str,RDLogLine **loglines,int encoding)
 }
 
 
-QString RDResolveNowNext(const QString &pattern,RDLogLine *ll)
+QString RDResolveNowNext(const QString &pattern,RDLogLine *ll,int line)
 {
   QString ret=pattern;
 

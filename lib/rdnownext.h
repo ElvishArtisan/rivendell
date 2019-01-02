@@ -24,8 +24,8 @@
 #include <rdlog_line.h>
 #include "../apis/rlm/rlm.h"
 
-void RDResolveNowNext(QString *str,RDLogLine **loglines,int encoding);
-QString RDResolveNowNext(const QString &pattern,RDLogLine *ll);
+void RDResolveNowNext(QString *str,RDLogLine **loglines,int line,int encoding);
+QString RDResolveNowNext(const QString &pattern,RDLogLine *ll,int line);
 
 
 #endif  // RDNOWNEXT_H
