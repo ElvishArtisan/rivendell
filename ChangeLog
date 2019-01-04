@@ -18266,3 +18266,6 @@
 	* Added a 'lineId' parameter to the 'padUpdate' structure.
 	* Added 'FIELD_LINE_ID' data value to PyPAD.
 	* Defined the '%x' metadata wildcard to refer to log line ID.
+2019-01-04 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'pypad_xds.py' PyPAD script.
+	* Removed the 'rlm_xds' RLM.

@@ -81,6 +81,7 @@ PAD_TCP_PORT=34289
 class Update(object):
     def __init__(self,pad_data,config):
         self.__fields=pad_data
+        #print('PAD: '+str(self.__fields))
         self.__config=config
 
     def __fromIso8601(self,string):

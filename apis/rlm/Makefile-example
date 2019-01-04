@@ -18,25 +18,13 @@
 ##   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 ##
 
-OBJS = rlm_ando.rlm\
-       rlm_facebook.rlm\
-       rlm_filewrite.rlm\
+OBJS = 
        rlm_icecast2.rlm\
        rlm_inno713.rlm\
-       rlm_liqcomp.rlm\
-       rlm_live365.rlm\
-       rlm_padpoint.rlm\
-       rlm_serial.rlm\
        rlm_shoutcast1.rlm\
-       rlm_spinitron_plus.rlm\
        rlm_spottrap.rlm\
-       rlm_tagstation.rlm\
        rlm_test.rlm\
        rlm_tunein.rlm\
-       rlm_twitter.rlm\
-       rlm_udp.rlm \
-       rlm_urlwrite.rlm\
-       rlm_walltime.rlm\
        rlm_xmpad.rlm
 
 %.rlm:	%.c

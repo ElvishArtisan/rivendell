@@ -40,6 +40,8 @@ install-exec-am:
 	cp pypad_urlwrite.exemplar $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_urlwrite.exemplar
 	../../../helpers/install_python.sh pypad_walltime.py $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_walltime.py
 	cp pypad_walltime.exemplar $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_walltime.exemplar
+	../../../helpers/install_python.sh pypad_xds.py $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_xds.py
+	cp pypad_xds.exemplar $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_xds.exemplar
 
 uninstall-local:	
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_ando.exemplar
@@ -60,6 +62,8 @@ uninstall-local:
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_urlwrite.py
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_walltime.exemplar
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_walltime.py
+	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_xds.exemplar
+	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_xds.py
 
 EXTRA_DIST = pypad_ando.exemplar\
              pypad_ando.py\
@@ -76,7 +80,9 @@ EXTRA_DIST = pypad_ando.exemplar\
              pypad_urlwrite.exemplar\
              pypad_urlwrite.py\
              pypad_walltime.exemplar\
-             pypad_walltime.py
+             pypad_walltime.py\
+             pypad_xds.exemplar\
+             pypad_xds.py
 
 CLEANFILES = *~\
              *.idb\

@@ -27,7 +27,6 @@ RLM_MODULES = rlm_icecast2.rlm\
               rlm_spottrap.rlm\
               rlm_test.rlm\
               rlm_tunein.rlm\
-              rlm_xds.rlm\
               rlm_xmpad.rlm
 
 all:	$(RLM_MODULES)
@@ -55,7 +54,6 @@ EXTRA_DIST = Makefile-example\
              rlm_spottrap.c\
              rlm_test.c\
              rlm_tunein.c\
-             rlm_xds.c\
              rlm_xmpad.c
 
 CLEANFILES = *~\
