@@ -22,7 +22,6 @@
 AM_CFLAGS = -fPIC -Wall -I../
 
 RLM_MODULES = rlm_icecast2.rlm\
-              rlm_inno713.rlm\
               rlm_shoutcast1.rlm\
               rlm_spottrap.rlm\
               rlm_test.rlm\
@@ -49,7 +48,6 @@ header_HEADERS = rlm.h
 EXTRA_DIST = Makefile-example\
              rlm.h\
              rlm_icecast2.c\
-             rlm_inno713.c\
              rlm_shoutcast1.c\
              rlm_spottrap.c\
              rlm_test.c\

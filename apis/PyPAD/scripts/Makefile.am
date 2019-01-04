@@ -26,6 +26,8 @@ install-exec-am:
 	cp pypad_ando.exemplar $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_ando.exemplar
 	../../../helpers/install_python.sh pypad_filewrite.py $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_filewrite.py
 	cp pypad_filewrite.exemplar $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_filewrite.exemplar
+	../../../helpers/install_python.sh pypad_inno713.py $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_inno713.py
+	cp pypad_inno713.exemplar $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_inno713.exemplar
 	../../../helpers/install_python.sh pypad_live365.py $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_live365.py
 	cp pypad_live365.exemplar $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_live365.exemplar
 	../../../helpers/install_python.sh pypad_liqcomp.py $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_liqcomp.py
@@ -48,6 +50,8 @@ uninstall-local:
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_ando.py
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_filewrite.exemplar
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_filewrite.py
+	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_inno713.exemplar
+	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_inno713.py
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_live365.exemplar
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_live365.py
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_liqcomp.exemplar
@@ -69,6 +73,8 @@ EXTRA_DIST = pypad_ando.exemplar\
              pypad_ando.py\
              pypad_filewrite.exemplar\
              pypad_filewrite.py\
+             pypad_inno713.exemplar\
+             pypad_inno713.py\
              pypad_liqcomp.exemplar\
              pypad_liqcomp.py\
              pypad_live365.exemplar\

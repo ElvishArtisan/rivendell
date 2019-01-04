@@ -1,12 +1,6 @@
-; rlm_inno713.conf
-;
-; This is the sample configuration file for the 'rlm_inno713' module for 
+; This is the configuration for the 'rlm_inno713.py' script for 
 ; Rivendell, which can be used to output Now & Next data to one or more
 ; Innovonics model 713 RDS encoders.
-;
-; To enable this module, add it to the 'Loadable Modules' list in 
-; RDAdmin->ManageHosts->RDAirPlay->ConfigureNow&Next.  The 'Argument'
-; field should point to the location of this file.
 
 ; Section Header
 ;
@@ -49,37 +43,10 @@ WordSize=8
 
 ; Output Strings.  The PAD data to output each time RDAirPlay changes
 ; play state, including any wildcards as placeholders for metadata values.
-; Three different RDS values can be set:
 ;
-;          PS -- the standard "static" RDS PS field.
-;  Dynamic PS -- a special scrolling PS mode that allows strings longer than
-;                eight characters to be displayed on RDS compliant radios.
-;                See the model 713 manual for a discussion of the tradeoffs
-;                between the two PS display modes.
-;   Radiotext -- Standard RDS radiotext. 
-;
-; The following wildcards are available:
-;
-;  Now  Next  Field
-;  ----------------------------------------------
-;   %n   %N   The Rivendell cart number
-;   %h   %H   Event length (in milliseconds)
-;   %g   %G   The Rivendell group name
-;   %t   %T   Title
-;   %a   %A   Artist
-;   %l   %L   Album
-;   %y   %Y   Year
-;   %b   %B   Record Label
-;   %c   %C   Client
-;   %e   %E   Agency
-;   %m   %M   Composer
-;   %p   %P   Publisher
-;   %r   %R   Conductor
-;   %s   %S   Song ID
-;   %u   %U   User Definied
-;   %o   %O   Outcue
-;   %i   %I   Description
-PsString=PSPS
+; For the list of supported wildcards. see the 'Metadata Wildcards' section
+; of the Rivendell Operations Guide.
+PsString=
 DynamicPsString=%t
 RadiotextString=%a
 
