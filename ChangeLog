@@ -18283,3 +18283,6 @@
 2019-01-05 Fred Gleason <fredg@paravelsystems.com>
 	* Added keep-alive packet support to the 'pypad_xmpad.py' PyPAD
 	script.
+2019-01-05 Fred Gleason <fredg@paravelsystems.com>
+	* Added keep-alive packet support to the 'pypad_ando.py' PyPAD
+	script.

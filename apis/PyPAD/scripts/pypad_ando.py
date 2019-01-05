@@ -30,6 +30,17 @@ last_updates={}
 def eprint(*args,**kwargs):
     print(*args,file=sys.stderr,**kwargs)
 
+def ProcessTimer(config):
+    n=1
+    while(True):
+        section='System'+str(n)
+        try:
+            send_sock.sendto('HB'.encode('utf-8'),
+                             (config.get(section,'IpAddress'),int(config.get(section,'UdpPort'))))
+            n=n+1
+        except configparser.NoSectionError:
+            return
+
 def ProcessPad(update):
     try:
         last_updates[update.machine()]
@@ -73,4 +84,5 @@ except IndexError:
     eprint('pypad_ando.py: you must specify a configuration file')
     sys.exit(1)
 rcvr.setCallback(ProcessPad)
+rcvr.setTimerCallback(30,ProcessTimer)
 rcvr.start(sys.argv[1],int(sys.argv[2]))
