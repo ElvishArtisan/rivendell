@@ -18275,3 +18275,5 @@
 2019-01-05 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'pypad_xmpad.py' PyPAD script.
 	* Removed the 'rlm_xmpad' RLM.
+2019-01-05 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'PyPAD.Receiver::setTimerCallback()' method.

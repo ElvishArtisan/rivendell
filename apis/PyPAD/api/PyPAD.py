@@ -22,6 +22,7 @@ import configparser
 import datetime
 import MySQLdb
 import signal
+import selectors
 import socket
 import sys
 import json
@@ -731,10 +732,15 @@ class Update(object):
 class Receiver(object):
     def __init__(self):
         self.__callback=None
+        self.__timer_callback=None
+        self.__timer_interval=None
         self.__config_parser=None
 
     def __PyPAD_Process(self,pad):
         self.__callback(pad)
+
+    def __PyPAD_TimerProcess(self,config):
+        self.__timer_callback(config)
 
     def __getDbCredentials(self):
         config=configparser.ConfigParser()
@@ -746,11 +752,27 @@ class Receiver(object):
         creds=self.__getDbCredentials()
         return MySQLdb.connect(creds[2],creds[0],creds[1],creds[3])
 
-    def setCallback(self,cb):
+    def setCallback(self,callback):
         """
            Set the processing callback.
         """
-        self.__callback=cb
+        self.__callback=callback
+
+    def setTimerCallback(self,interval,callback):
+        """
+           Set the timer callback.
+
+           Takes two arguments:
+
+           interval - The interval (in seconds) between callback invocations.
+
+           callback - The function to call when the timer interval expires. The
+                      function should take one argument, which will be a
+                      configparser object if setConfigFile() was called prior
+                      to start(), otherwise None.
+        """
+        self.__timer_interval=interval
+        self.__timer_callback=callback
 
     def setConfigFile(self,filename):
         """
@@ -799,19 +821,35 @@ class Receiver(object):
 
         sock=socket.socket(socket.AF_INET)
         conn=sock.connect((hostname,port))
+        timeout=None
+        if self.__timer_interval!=None:
+            timeout=self.__timer_interval
+            deadline=datetime.datetime.now()+datetime.timedelta(seconds=timeout)
+        sel=selectors.DefaultSelector()
+        sel.register(sock,selectors.EVENT_READ)
         c=bytes()
         line=bytes()
         msg=""
 
         while 1<2:
-            c=sock.recv(1)
-            line+=c
-            if c[0]==10:
-                msg+=line.decode('utf-8')
-                if line.decode('utf-8')=="\r\n":
-                    self.__PyPAD_Process(Update(json.loads(msg),self.__config_parser))
-                    msg=""
-                line=bytes()
+            if len(sel.select(timeout))==0:
+                now=datetime.datetime.now()
+                if now>=deadline:
+                    timeout=self.__timer_interval
+                    deadline=now+datetime.timedelta(seconds=timeout)
+                    self.__PyPAD_TimerProcess(self.__config_parser)
+                else:
+                    timeout=(deadline-now).total_seconds()
+            else:
+                c=sock.recv(1)
+                line+=c
+                if c[0]==10:
+                    msg+=line.decode('utf-8')
+                    if line.decode('utf-8')=="\r\n":
+                        self.__PyPAD_Process(Update(json.loads(msg),self.__config_parser))
+                        msg=""
+                    line=bytes()
+                timeout=(deadline-datetime.datetime.now()).total_seconds()
 
 
 def SigHandler(signo,stack):
