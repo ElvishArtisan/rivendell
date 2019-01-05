@@ -786,6 +786,9 @@ class Receiver(object):
            to be an unsigned integer ID that is used to retrieve the
            configuration from the 'PYPAD_INSTANCES' table in the database
            pointed to by '/etc/rd.conf'.
+
+           Returns a configparser object created from the specified
+           configuration.
         """
         if filename[0]=='$':  # Get the config from the DB
             db=self.__openDb()
@@ -802,6 +805,9 @@ class Receiver(object):
             self.__config_parser=configparser.ConfigParser(interpolation=None)
             self.__config_parser.readfp(fp)
             fp.close()
+
+        return self.__config_parser
+
 
     def start(self,hostname,port):
         """
