@@ -48,9 +48,6 @@ DisplaySize2=10
 ; Record Flag.  Set to 'Yes' to allow recording, or 'No' to disable.
 Recording=Yes
 
-; Heartbeat Interval.  Should normally be set to '30'.
-HeartbeatInterval=30
-
 ; Log Selection
 ;
 ; Set the status for each log to 'Yes', 'No' or 'Onair' to indicate whether

@@ -18280,3 +18280,6 @@
 2019-01-05 Fred Gleason <fredg@paravelsystems.com>
 	* Modified the 'PyPAD.setConfigFile()' method to return a
 	configparser object.
+2019-01-05 Fred Gleason <fredg@paravelsystems.com>
+	* Added keep-alive packet support to the 'pypad_xmpad.py' PyPAD
+	script.

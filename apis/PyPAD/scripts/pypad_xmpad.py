@@ -122,21 +122,38 @@ def MakeB4(update,section):
     return b4
 
 
+def OpenSerialDevice(config,section):
+    devname=config.get(section,'Device')
+    speed=int(config.get(section,'Speed'))
+    parity=serial.PARITY_NONE
+    if int(config.get(section,'Parity'))==1:
+        parity=serial.PARITY_EVEN
+    if int(config.get(section,'Parity'))==2:
+        parity=serial.PARITY_ODD
+    bytesize=int(config.get(section,'WordSize'))
+    return serial.Serial(devname,speed,parity=parity,bytesize=bytesize)
+
+
+def ProcessTimer(config):
+    n=1
+    try:
+        while(True):
+            section='Serial'+str(n)
+            dev=OpenSerialDevice(config,section)
+            dev.write('H0\n'.encode('utf-8'))
+            dev.close()
+            n=n+1
+
+    except configparser.NoSectionError:
+        return
+
 def ProcessPad(update):
     n=1
     try:
         while(True):
             section='Serial'+str(n)
             if update.shouldBeProcessed(section) and update.hasPadType(PyPAD.TYPE_NOW):
-                devname=update.config().get(section,'Device')
-                speed=int(update.config().get(section,'Speed'))
-                parity=serial.PARITY_NONE
-                if int(update.config().get(section,'Parity'))==1:
-                    parity=serial.PARITY_EVEN
-                if int(update.config().get(section,'Parity'))==2:
-                    parity=serial.PARITY_ODD
-                bytesize=int(update.config().get(section,'WordSize'))
-                dev=serial.Serial(devname,speed,parity=parity,bytesize=bytesize)
+                dev=OpenSerialDevice(update.config(),section)
                 b4=MakeB4(update,section)
                 a4=MakeA4(update,section)
                 a5=MakeA5(update,section)
@@ -163,4 +180,5 @@ except IndexError:
     eprint('pypad_xmpad.py: you must specify a configuration file')
     sys.exit(1)
 rcvr.setCallback(ProcessPad)
+rcvr.setTimerCallback(30,ProcessTimer)
 rcvr.start(sys.argv[1],int(sys.argv[2]))
