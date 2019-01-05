@@ -23,8 +23,7 @@ OBJS =
        rlm_shoutcast1.rlm\
        rlm_spottrap.rlm\
        rlm_test.rlm\
-       rlm_tunein.rlm\
-       rlm_xmpad.rlm
+       rlm_tunein.rlm
 
 %.rlm:	%.c
 	$(CC) $(CFLAGS) -fPIC -shared $< -o $@

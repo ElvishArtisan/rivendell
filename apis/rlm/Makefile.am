@@ -25,8 +25,7 @@ RLM_MODULES = rlm_icecast2.rlm\
               rlm_shoutcast1.rlm\
               rlm_spottrap.rlm\
               rlm_test.rlm\
-              rlm_tunein.rlm\
-              rlm_xmpad.rlm
+              rlm_tunein.rlm
 
 all:	$(RLM_MODULES)
 
@@ -51,8 +50,7 @@ EXTRA_DIST = Makefile-example\
              rlm_shoutcast1.c\
              rlm_spottrap.c\
              rlm_test.c\
-             rlm_tunein.c\
-             rlm_xmpad.c
+             rlm_tunein.c
 
 CLEANFILES = *~\
              *.idb\
