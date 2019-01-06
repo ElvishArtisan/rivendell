@@ -855,7 +855,8 @@ class Receiver(object):
                         self.__PyPAD_Process(Update(json.loads(msg),self.__config_parser))
                         msg=""
                     line=bytes()
-                timeout=(deadline-datetime.datetime.now()).total_seconds()
+                if self.__timer_interval!=None:
+                    timeout=(deadline-datetime.datetime.now()).total_seconds()
 
 
 def SigHandler(signo,stack):

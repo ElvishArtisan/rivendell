@@ -21,8 +21,6 @@
 OBJS = 
        rlm_icecast2.rlm\
        rlm_shoutcast1.rlm\
-       rlm_spottrap.rlm\
-       rlm_test.rlm\
        rlm_tunein.rlm
 
 %.rlm:	%.c

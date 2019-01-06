@@ -23,8 +23,6 @@ AM_CFLAGS = -fPIC -Wall -I../
 
 RLM_MODULES = rlm_icecast2.rlm\
               rlm_shoutcast1.rlm\
-              rlm_spottrap.rlm\
-              rlm_test.rlm\
               rlm_tunein.rlm
 
 all:	$(RLM_MODULES)
@@ -48,8 +46,6 @@ EXTRA_DIST = Makefile-example\
              rlm.h\
              rlm_icecast2.c\
              rlm_shoutcast1.c\
-             rlm_spottrap.c\
-             rlm_test.c\
              rlm_tunein.c
 
 CLEANFILES = *~\

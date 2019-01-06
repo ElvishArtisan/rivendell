@@ -18286,3 +18286,9 @@
 2019-01-05 Fred Gleason <fredg@paravelsystems.com>
 	* Added keep-alive packet support to the 'pypad_ando.py' PyPAD
 	script.
+2019-01-06 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'PyPAD.Receiver' that threw an exception when
+	processing a PAD update with no active timer.
+	* Added a 'pypad_spottrap.py' PyPAD script.
+	* Removed the 'rlm_spottrap' RLM.
+	* Removed the 'rlm_test' RLM.
