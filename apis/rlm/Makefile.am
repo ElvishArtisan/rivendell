@@ -21,9 +21,7 @@
 
 AM_CFLAGS = -fPIC -Wall -I../
 
-RLM_MODULES = rlm_icecast2.rlm\
-              rlm_shoutcast1.rlm\
-              rlm_tunein.rlm
+RLM_MODULES = rlm_shoutcast1.rlm
 
 all:	$(RLM_MODULES)
 
@@ -44,9 +42,7 @@ header_HEADERS = rlm.h
 
 EXTRA_DIST = Makefile-example\
              rlm.h\
-             rlm_icecast2.c\
-             rlm_shoutcast1.c\
-             rlm_tunein.c
+             rlm_shoutcast1.c
 
 CLEANFILES = *~\
              *.idb\

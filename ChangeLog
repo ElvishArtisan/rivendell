@@ -18300,3 +18300,6 @@
 	metadata fields.
 	* Fixed a bug in 'pypad_tunein.py' that caused double-escaping of
 	metadata fields.
+2019-01-07 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'rlm_icecast2' RLM.
+	* Removed the 'rlm_tunein' RLM.
