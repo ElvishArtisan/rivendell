@@ -18292,3 +18292,11 @@
 	* Added a 'pypad_spottrap.py' PyPAD script.
 	* Removed the 'rlm_spottrap' RLM.
 	* Removed the 'rlm_test' RLM.
+2019-01-07 Patrick Linstruth <patrick@deltecent.com>
+	* Added a 'pypad_tunein.py' PyPAD script.
+	* Added a 'pypad_icecast2.py' PyPAD script.
+2019-01-07 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'pypad_icecast2.py' that caused double-escaping of
+	metadata fields.
+	* Fixed a bug in 'pypad_tunein.py' that caused double-escaping of
+	metadata fields.
