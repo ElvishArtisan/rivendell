@@ -26,6 +26,8 @@ install-exec-am:
 	cp pypad_ando.exemplar $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_ando.exemplar
 	../../../helpers/install_python.sh pypad_filewrite.py $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_filewrite.py
 	cp pypad_filewrite.exemplar $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_filewrite.exemplar
+	../../../helpers/install_python.sh pypad_icecast2.py $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_icecast2.py
+	cp pypad_icecast2.exemplar $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_icecast2.exemplar
 	../../../helpers/install_python.sh pypad_inno713.py $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_inno713.py
 	cp pypad_inno713.exemplar $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_inno713.exemplar
 	../../../helpers/install_python.sh pypad_live365.py $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_live365.py
@@ -38,6 +40,8 @@ install-exec-am:
 	cp pypad_spinitron.exemplar $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_spinitron.exemplar
 	../../../helpers/install_python.sh pypad_spottrap.py $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_spottrap.py
 	cp pypad_spottrap.exemplar $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_spottrap.exemplar
+	../../../helpers/install_python.sh pypad_tunein.py $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_tunein.py
+	cp pypad_tunein.exemplar $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_tunein.exemplar
 	../../../helpers/install_python.sh pypad_udp.py $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_udp.py
 	cp pypad_udp.exemplar $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_udp.exemplar
 	../../../helpers/install_python.sh pypad_urlwrite.py $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_urlwrite.py
@@ -54,6 +58,8 @@ uninstall-local:
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_ando.py
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_filewrite.exemplar
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_filewrite.py
+	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_icecast2.exemplar
+	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_icecast2.py
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_inno713.exemplar
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_inno713.py
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_live365.exemplar
@@ -66,6 +72,8 @@ uninstall-local:
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_spinitron.py
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_spottrap.exemplar
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_spottrap.py
+	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_tunein.exemplar
+	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_tunein.py
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_udp.exemplar
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_udp.py
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_urlwrite.exemplar
@@ -81,6 +89,8 @@ EXTRA_DIST = pypad_ando.exemplar\
              pypad_ando.py\
              pypad_filewrite.exemplar\
              pypad_filewrite.py\
+             pypad_icecast2.exemplar\
+             pypad_icecast2.py\
              pypad_inno713.exemplar\
              pypad_inno713.py\
              pypad_liqcomp.exemplar\
@@ -91,6 +101,8 @@ EXTRA_DIST = pypad_ando.exemplar\
              pypad_spinitron.py\
              pypad_spottrap.exemplar\
              pypad_spottrap.py\
+             pypad_tunein.exemplar\
+             pypad_tunein.py\
              pypad_udp.exemplar\
              pypad_udp.py\
              pypad_urlwrite.exemplar\
