@@ -18303,3 +18303,6 @@
 2019-01-07 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'rlm_icecast2' RLM.
 	* Removed the 'rlm_tunein' RLM.
+2019-01-07 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'pypad_shoutcast1.py' PyPAD script.
+	* Removed the 'rlm_shoutcast1' RLM.

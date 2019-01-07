@@ -36,6 +36,8 @@ install-exec-am:
 	cp pypad_liqcomp.exemplar $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_liqcomp.exemplar
 	../../../helpers/install_python.sh pypad_serial.py $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_serial.py
 	cp pypad_serial.exemplar $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_serial.exemplar
+	../../../helpers/install_python.sh pypad_shoutcast1.py $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_shoutcast1.py
+	cp pypad_shoutcast1.exemplar $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_shoutcast1.exemplar
 	../../../helpers/install_python.sh pypad_spinitron.py $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_spinitron.py
 	cp pypad_spinitron.exemplar $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_spinitron.exemplar
 	../../../helpers/install_python.sh pypad_spottrap.py $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_spottrap.py
@@ -68,6 +70,8 @@ uninstall-local:
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_liqcomp.py
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_serial.exemplar
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_serial.py
+	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_shoutcast1.exemplar
+	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_shoutcast1.py
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_spinitron.exemplar
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_spinitron.py
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/PyPAD/pypad_spottrap.exemplar
@@ -97,6 +101,10 @@ EXTRA_DIST = pypad_ando.exemplar\
              pypad_liqcomp.py\
              pypad_live365.exemplar\
              pypad_live365.py\
+             pypad_serial.exemplar\
+             pypad_serial.py\
+             pypad_shoutcast1.exemplar\
+             pypad_shoutcast1.py\
              pypad_spinitron.exemplar\
              pypad_spinitron.py\
              pypad_spottrap.exemplar\
