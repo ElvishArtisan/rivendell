@@ -9661,6 +9661,16 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<305)&&(set_schema>cur_schema)) {
+    DropTable("NOWNEXT_PLUGINS");
+    DropColumn("LOG_MACHINES","UDP_ADDR");
+    DropColumn("LOG_MACHINES","UDP_PORT");
+    DropColumn("LOG_MACHINES","UDP_STRING");
+    DropColumn("LOG_MACHINES","LOG_RML");
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
 
   // NEW SCHEMA UPDATES GO HERE...
 

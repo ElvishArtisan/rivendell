@@ -18306,3 +18306,15 @@
 2019-01-07 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'pypad_shoutcast1.py' PyPAD script.
 	* Removed the 'rlm_shoutcast1' RLM.
+2019-01-07 Fred Gleason <fredg@paravelsystems.com>
+	* Removed 'apis/rlm/'.
+	* Removed the 'Edit Now & Next' button from the 'Configure RDAirPlay'
+	dialog in rdadmin(1).
+	* Removed RLM support from rdairplay(1) and rdvairplayd(8).
+	* Removed v1.x legacy PAD update support from rdairplay(1).
+	* Dropped the 'NOWNEXT_PLUGINS' table from the database.
+	* Dropped the 'LOG_MACHINES.UDP_ADDR' field from the database.
+	* Dropped the 'LOG_MACHINES.UDP_PORT' field from the database.
+	* Dropped the 'LOG_MACHINES.UDP_STRING' field from the database.
+	* Dropped the 'LOG_MACHINES.LOG_RML' field from the database.
+	* Incremented the database version to 305.

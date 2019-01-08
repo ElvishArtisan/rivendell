@@ -38,7 +38,6 @@
 #include <rdlist_logs.h>
 #include <rdtextvalidator.h>
 
-#include "edit_now_next.h"
 #include "edit_rdpanel.h"
 
 EditRDPanel::EditRDPanel(RDStation *station,RDStation *cae_station,

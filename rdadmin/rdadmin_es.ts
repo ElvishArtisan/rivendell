@@ -2200,122 +2200,122 @@ GPIOs</source>
     <name>EditNowNext</name>
     <message>
         <source>Edit Now &amp; Next Data</source>
-        <translation>Editar datos Now &amp; Next</translation>
+        <translation type="obsolete">Editar datos Now &amp; Next</translation>
     </message>
     <message>
         <source>Master Log</source>
-        <translation>Lista Maestra</translation>
+        <translation type="obsolete">Lista Maestra</translation>
     </message>
     <message>
         <source>IP Address:</source>
-        <translation>Dirección IP:</translation>
+        <translation type="obsolete">Dirección IP:</translation>
     </message>
     <message>
         <source>UDP Port:</source>
-        <translation>Puerto UDP:</translation>
+        <translation type="obsolete">Puerto UDP:</translation>
     </message>
     <message>
         <source>UDP String:</source>
-        <translation>Cadena UDP:</translation>
+        <translation type="obsolete">Cadena UDP:</translation>
     </message>
     <message>
         <source>RML:</source>
-        <translation>RML:</translation>
+        <translation type="obsolete">RML:</translation>
     </message>
     <message>
         <source>Aux Log 1</source>
-        <translation>Lista aux. 1</translation>
+        <translation type="obsolete">Lista aux. 1</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;Aceptar</translation>
+        <translation type="obsolete">&amp;Aceptar</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>The IP address</source>
-        <translation>¡La dirección IP </translation>
+        <translation type="obsolete">¡La dirección IP </translation>
     </message>
     <message>
         <source>is invalid!</source>
-        <translation>es inválida!</translation>
+        <translation type="obsolete">es inválida!</translation>
     </message>
     <message>
         <source>Invalid Address</source>
-        <translation>Dirección inválida</translation>
+        <translation type="obsolete">Dirección inválida</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation>Añadir</translation>
+        <translation type="obsolete">Añadir</translation>
     </message>
     <message>
         <source>Edit</source>
-        <translation>Editar</translation>
+        <translation type="obsolete">Editar</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Borrar</translation>
+        <translation type="obsolete">Borrar</translation>
     </message>
     <message>
         <source>Path</source>
-        <translation>Carpeta</translation>
+        <translation type="obsolete">Carpeta</translation>
     </message>
     <message>
         <source>Argument</source>
-        <translation>Argumento</translation>
+        <translation type="obsolete">Argumento</translation>
     </message>
     <message>
         <source>Loadable Modules:</source>
-        <translation>Módulos Cargables:</translation>
+        <translation type="obsolete">Módulos Cargables:</translation>
     </message>
     <message>
         <source>Default Now Cart:</source>
-        <translation>Cart.Now p/omis.:</translation>
+        <translation type="obsolete">Cart.Now p/omis.:</translation>
     </message>
     <message>
         <source>Default Next Cart:</source>
-        <translation>Cart.Next p/omis.:</translation>
+        <translation type="obsolete">Cart.Next p/omis.:</translation>
     </message>
     <message>
         <source>Select</source>
-        <translation>Elegir</translation>
+        <translation type="obsolete">Elegir</translation>
     </message>
     <message>
         <source>Aux Log 2</source>
-        <translation>Lista aux. 2</translation>
+        <translation type="obsolete">Lista aux. 2</translation>
     </message>
 </context>
 <context>
     <name>EditNowNextPlugin</name>
     <message>
         <source>Edit Plugin</source>
-        <translation>Editar Plugin</translation>
+        <translation type="obsolete">Editar Plugin</translation>
     </message>
     <message>
         <source>Plugin Path:</source>
-        <translation>Carpeta Plugins:</translation>
+        <translation type="obsolete">Carpeta Plugins:</translation>
     </message>
     <message>
         <source>Argument:</source>
-        <translation>Argumento:</translation>
+        <translation type="obsolete">Argumento:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;Aceptar</translation>
+        <translation type="obsolete">&amp;Aceptar</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>Select</source>
-        <translation>Elegir</translation>
+        <translation type="obsolete">Elegir</translation>
     </message>
     <message>
         <source>Select plugin</source>
-        <translation>Elegir plugin</translation>
+        <translation type="obsolete">Elegir plugin</translation>
     </message>
 </context>
 <context>
@@ -2410,7 +2410,7 @@ GPIOs</source>
     <message>
         <source>Configure Now &amp;&amp; Next
 Parameters</source>
-        <translation>Parámetros Now &amp;&amp; Next</translation>
+        <translation type="obsolete">Parámetros Now &amp;&amp; Next</translation>
     </message>
     <message>
         <source>Manual Segue:</source>

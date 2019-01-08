@@ -21,8 +21,7 @@
 ## Use automake to process this into a Makefile.in
 
 SUBDIRS = PyPAD\
-          rivwebcapi\
-          rlm
+          rivwebcapi
 
 CLEANFILES = *~\
              *.idb\

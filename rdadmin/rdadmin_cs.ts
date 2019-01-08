@@ -2187,122 +2187,122 @@ GPIOs</source>
     <name>EditNowNext</name>
     <message>
         <source>Edit Now &amp; Next Data</source>
-        <translation>Upravit data Nyní &amp; Další</translation>
+        <translation type="obsolete">Upravit data Nyní &amp; Další</translation>
     </message>
     <message>
         <source>Master Log</source>
-        <translation>Hlavní zápis</translation>
+        <translation type="obsolete">Hlavní zápis</translation>
     </message>
     <message>
         <source>IP Address:</source>
-        <translation>Adresa IP:</translation>
+        <translation type="obsolete">Adresa IP:</translation>
     </message>
     <message>
         <source>UDP Port:</source>
-        <translation>Přípojka UDP:</translation>
+        <translation type="obsolete">Přípojka UDP:</translation>
     </message>
     <message>
         <source>UDP String:</source>
-        <translation>Řetězec UDP:</translation>
+        <translation type="obsolete">Řetězec UDP:</translation>
     </message>
     <message>
         <source>RML:</source>
-        <translation>RML:</translation>
+        <translation type="obsolete">RML:</translation>
     </message>
     <message>
         <source>Aux Log 1</source>
-        <translation>Pomocný zápis 1</translation>
+        <translation type="obsolete">Pomocný zápis 1</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>The IP address</source>
-        <translation>Adresa IP</translation>
+        <translation type="obsolete">Adresa IP</translation>
     </message>
     <message>
         <source>is invalid!</source>
-        <translation>je neplatná!</translation>
+        <translation type="obsolete">je neplatná!</translation>
     </message>
     <message>
         <source>Invalid Address</source>
-        <translation>Neplatná adresa</translation>
+        <translation type="obsolete">Neplatná adresa</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation>Přidat</translation>
+        <translation type="obsolete">Přidat</translation>
     </message>
     <message>
         <source>Edit</source>
-        <translation>Upravit</translation>
+        <translation type="obsolete">Upravit</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Smazat</translation>
+        <translation type="obsolete">Smazat</translation>
     </message>
     <message>
         <source>Path</source>
-        <translation>Cesta</translation>
+        <translation type="obsolete">Cesta</translation>
     </message>
     <message>
         <source>Argument</source>
-        <translation>Argument</translation>
+        <translation type="obsolete">Argument</translation>
     </message>
     <message>
         <source>Loadable Modules:</source>
-        <translation>Nahratelné moduly:</translation>
+        <translation type="obsolete">Nahratelné moduly:</translation>
     </message>
     <message>
         <source>Default Now Cart:</source>
-        <translation>Výchozí vozík Nyní:</translation>
+        <translation type="obsolete">Výchozí vozík Nyní:</translation>
     </message>
     <message>
         <source>Default Next Cart:</source>
-        <translation>Výchozí vozík Další:</translation>
+        <translation type="obsolete">Výchozí vozík Další:</translation>
     </message>
     <message>
         <source>Select</source>
-        <translation>Vybrat</translation>
+        <translation type="obsolete">Vybrat</translation>
     </message>
     <message>
         <source>Aux Log 2</source>
-        <translation>Pomocný zápis 2</translation>
+        <translation type="obsolete">Pomocný zápis 2</translation>
     </message>
 </context>
 <context>
     <name>EditNowNextPlugin</name>
     <message>
         <source>Edit Plugin</source>
-        <translation>Upravit přídavný modul</translation>
+        <translation type="obsolete">Upravit přídavný modul</translation>
     </message>
     <message>
         <source>Plugin Path:</source>
-        <translation>Cesta k přídavnému modulu:</translation>
+        <translation type="obsolete">Cesta k přídavnému modulu:</translation>
     </message>
     <message>
         <source>Argument:</source>
-        <translation>Argument:</translation>
+        <translation type="obsolete">Argument:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>Select</source>
-        <translation>Vybrat</translation>
+        <translation type="obsolete">Vybrat</translation>
     </message>
     <message>
         <source>Select plugin</source>
-        <translation>Vybrat přídavný modul</translation>
+        <translation type="obsolete">Vybrat přídavný modul</translation>
     </message>
 </context>
 <context>
@@ -2529,7 +2529,7 @@ GPIOs</source>
     <message>
         <source>Configure Now &amp;&amp; Next
 Parameters</source>
-        <translation>Nastavit parametry
+        <translation type="obsolete">Nastavit parametry
 Nyní &amp;&amp; Další</translation>
     </message>
     <message>

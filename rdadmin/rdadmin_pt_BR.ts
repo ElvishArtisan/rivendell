@@ -2076,122 +2076,122 @@ GPIOs</source>
     <name>EditNowNext</name>
     <message>
         <source>Edit Now &amp; Next Data</source>
-        <translation>Editar Agora &amp; Próximo </translation>
+        <translation type="obsolete">Editar Agora &amp; Próximo </translation>
     </message>
     <message>
         <source>Master Log</source>
-        <translation>Lista Principal</translation>
+        <translation type="obsolete">Lista Principal</translation>
     </message>
     <message>
         <source>IP Address:</source>
-        <translation>Endereço de IP:</translation>
+        <translation type="obsolete">Endereço de IP:</translation>
     </message>
     <message>
         <source>UDP Port:</source>
-        <translation>Porta UDP:</translation>
+        <translation type="obsolete">Porta UDP:</translation>
     </message>
     <message>
         <source>UDP String:</source>
-        <translation>String UDP:</translation>
+        <translation type="obsolete">String UDP:</translation>
     </message>
     <message>
         <source>RML:</source>
-        <translation>RML:</translation>
+        <translation type="obsolete">RML:</translation>
     </message>
     <message>
         <source>Default Now Cart:</source>
-        <translation>Cartão &apos;Agora&apos;: </translation>
+        <translation type="obsolete">Cartão &apos;Agora&apos;: </translation>
     </message>
     <message>
         <source>Select</source>
-        <translation>Sel</translation>
+        <translation type="obsolete">Sel</translation>
     </message>
     <message>
         <source>Default Next Cart:</source>
-        <translation>Cartão &apos;Próximo&apos;: </translation>
+        <translation type="obsolete">Cartão &apos;Próximo&apos;: </translation>
     </message>
     <message>
         <source>Aux Log 1</source>
-        <translation>Lista Auxiliar 1</translation>
+        <translation type="obsolete">Lista Auxiliar 1</translation>
     </message>
     <message>
         <source>Path</source>
-        <translation>Caminho</translation>
+        <translation type="obsolete">Caminho</translation>
     </message>
     <message>
         <source>Argument</source>
-        <translation>Argumento</translation>
+        <translation type="obsolete">Argumento</translation>
     </message>
     <message>
         <source>Loadable Modules:</source>
-        <translation>Módulos Carregáveis:</translation>
+        <translation type="obsolete">Módulos Carregáveis:</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation>Adicionar</translation>
+        <translation type="obsolete">Adicionar</translation>
     </message>
     <message>
         <source>Edit</source>
-        <translation>Editar</translation>
+        <translation type="obsolete">Editar</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Deletar</translation>
+        <translation type="obsolete">Deletar</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>The IP address</source>
-        <translation>Endereço de IP</translation>
+        <translation type="obsolete">Endereço de IP</translation>
     </message>
     <message>
         <source>is invalid!</source>
-        <translation>é inválido!</translation>
+        <translation type="obsolete">é inválido!</translation>
     </message>
     <message>
         <source>Invalid Address</source>
-        <translation>Endereço Inválido</translation>
+        <translation type="obsolete">Endereço Inválido</translation>
     </message>
     <message>
         <source>Aux Log 2</source>
-        <translation type="unfinished">Lista Auxiliar 2</translation>
+        <translation type="obsolete">Lista Auxiliar 2</translation>
     </message>
 </context>
 <context>
     <name>EditNowNextPlugin</name>
     <message>
         <source>Edit Plugin</source>
-        <translation>Editar Plugin</translation>
+        <translation type="obsolete">Editar Plugin</translation>
     </message>
     <message>
         <source>Plugin Path:</source>
-        <translation>Pasta do Plugin:</translation>
+        <translation type="obsolete">Pasta do Plugin:</translation>
     </message>
     <message>
         <source>Select</source>
-        <translation>Sel</translation>
+        <translation type="obsolete">Sel</translation>
     </message>
     <message>
         <source>Argument:</source>
-        <translation>Argumento:</translation>
+        <translation type="obsolete">Argumento:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>Select plugin</source>
-        <translation>Selecionar Plugin</translation>
+        <translation type="obsolete">Selecionar Plugin</translation>
     </message>
 </context>
 <context>
@@ -2418,7 +2418,7 @@ GPIOs</source>
     <message>
         <source>Configure Now &amp;&amp; Next
 Parameters</source>
-        <translation>Configurar Parâmetros do
+        <translation type="obsolete">Configurar Parâmetros do
 Agora &amp;&amp; Próximo
 </translation>
     </message>

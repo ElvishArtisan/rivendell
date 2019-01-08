@@ -2,7 +2,7 @@
 //
 // Rivendell Log Playout Machine
 //
-//   (C) Copyright 2002-2009,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -41,8 +41,7 @@
 //#define SHOW_SLOTS
 //#define SHOW_METER_SLOTS
 
-RDLogPlay::RDLogPlay(int id,RDEventPlayer *player,Q3SocketDevice *nn_sock,
-		     std::vector<RDRLMHost *> *rlm_hosts,QObject *parent)
+RDLogPlay::RDLogPlay(int id,RDEventPlayer *player,QObject *parent)
   : QObject(parent),RDLogEvent("")
 {
   //
@@ -51,8 +50,6 @@ RDLogPlay::RDLogPlay(int id,RDEventPlayer *player,Q3SocketDevice *nn_sock,
   play_log=NULL;
   play_id=id;
   play_event_player=player;
-  //  play_pad_socket=pad_sock;
-  play_rlm_hosts=rlm_hosts;
   play_onair_flag=false;
   play_segue_length=rda->airplayConf()->segueLength()+1;
   play_trans_length=rda->airplayConf()->transLength()+1;
@@ -68,7 +65,6 @@ RDLogPlay::RDLogPlay(int id,RDEventPlayer *player,Q3SocketDevice *nn_sock,
   play_trans_line=-1;
   play_grace_line=-1;
   next_channel=0;
-  play_nownext_socket=nn_sock;
   play_timescaling_available=false;
   play_rescan_pos=0;
   play_refreshable=false;
@@ -78,11 +74,11 @@ RDLogPlay::RDLogPlay(int id,RDEventPlayer *player,Q3SocketDevice *nn_sock,
   }
 
   //
-  // RLM2 Connection
+  // PAD Server Connection
   //
   play_pad_socket=new RDUnixSocket(this);
   if(!play_pad_socket->connectToAbstract(RD_PAD_SOURCE_UNIX_ADDRESS)) {
-    fprintf(stderr,"RLMHost: unable to connect to rdrlmd\n");
+    fprintf(stderr,"RDLogPlat: unable to connect to rdpadd\n");
   }
 
   //
@@ -105,10 +101,6 @@ RDLogPlay::RDLogPlay(int id,RDEventPlayer *player,Q3SocketDevice *nn_sock,
   }
   play_macro_running=false;
   play_refresh_pending=false;
-  play_nownext_string=rda->airplayConf()->udpString(id);
-  play_nownext_address=rda->airplayConf()->udpAddress(id);
-  play_nownext_port=rda->airplayConf()->udpPort(id);
-  play_nownext_rml=rda->airplayConf()->logRml(id);
   play_now_cartnum=0;
   play_next_cartnum=0;
   play_prevnow_cartnum=0;
@@ -2878,13 +2870,6 @@ void RDLogPlay::SendNowNext()
   //
   // Get NOW PLAYING Event
   //
-  /*
-  if(play_nownext_address.isNull()&&play_nownext_rml.isEmpty()&&
-     (play_rlm_hosts->size()==0)) {
-    return;
-  }
-  */
-  QString cmd=play_nownext_string;
   int lines[TRANSPORT_QUANTITY];
   int running=runningEvents(lines,false);
   for(int i=0;i<running;i++) {
@@ -2959,7 +2944,7 @@ void RDLogPlay::SendNowNext()
   }
 
   //
-  // RLM2
+  // Send to PAD Server
   //
   play_pad_socket->write(QString("{\r\n").toUtf8());
   play_pad_socket->write(QString("    \"padUpdate\": {\r\n").toUtf8());
@@ -3020,25 +3005,6 @@ void RDLogPlay::SendNowNext()
   //
   play_pad_socket->write(QString("    }\r\n").toUtf8());
   play_pad_socket->write(QString("}\r\n\r\n").toUtf8());
-
-  //
-  // Old-style RLM Hosts
-  //
-  for(unsigned i=0;i<play_rlm_hosts->size();i++) {
-    play_rlm_hosts->at(i)->
-      sendEvent(svcname,logName(),play_id,logline,play_onair_flag,play_op_mode);
-  }
-
-  //
-  // Premordial integrated interface
-  //
-  RDResolveNowNext(&cmd,logline,now_line,0);
-  play_nownext_socket->
-    writeBlock(cmd,cmd.length(),play_nownext_address,play_nownext_port);
-
-  cmd=play_nownext_rml;
-  RDResolveNowNext(&cmd,logline,now_line,0);
-  play_event_player->exec(cmd);
 
   //
   // Clean up

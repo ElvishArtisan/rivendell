@@ -2,7 +2,7 @@
 #
 # PAD processor for Rivendell
 #
-#   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+#   (C) Copyright 2018-2019 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as
@@ -373,6 +373,10 @@ class Update(object):
                  See the documentation for the 'escape()' method for valid
                  field values.
         """
+        #
+        # MAINTAINER'S NOTE: These mappings must be kept in sync with
+        #                    those in 'lib/rdnownext.cpp'!
+        #
         string=self.__replaceWildcardPair('a','artist',string,esc)
         string=self.__replaceWildcardPair('b','label',string,esc)
         string=self.__replaceWildcardPair('c','client',string,esc)

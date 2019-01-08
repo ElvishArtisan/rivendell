@@ -41,6 +41,49 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // NEW SCHEMA REVERSIONS GO HERE...
 
   //
+  // Revert 305
+  //
+  if((cur_schema==305)&&(set_schema<cur_schema)) {
+    sql=QString("alter table LOG_MACHINES add column ")+
+      "UDP_ADDR varchar(191) after NEXT_CART";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table LOG_MACHINES add column ")+
+      "UDP_PORT int unsigned after UDP_ADDR";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table LOG_MACHINES add column ")+
+      "UDP_STRING varchar(191) after UDP_PORT";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table LOG_MACHINES add column ")+
+      "LOG_RML varchar(191) after UDP_STRING";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("create table if not exists NOWNEXT_PLUGINS (")+
+      "ID int auto_increment not null primary key,"+
+      "STATION_NAME varchar(64) not null,"+
+      "LOG_MACHINE int unsigned not null default 0,"+
+      "PLUGIN_PATH varchar(191),"+
+      "PLUGIN_ARG varchar(101),"+
+      "index STATION_NAME_IDX(STATION_NAME))"+
+      db_table_create_postfix;
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 304
   //
   if((cur_schema==304)&&(set_schema<cur_schema)) {

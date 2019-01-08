@@ -306,16 +306,6 @@ MainWidget::MainWidget(QWidget *parent)
   rdevent_player=new RDEventPlayer(rda->ripc(),this);
 
   //
-  // User
-  //
-  //  rduser=NULL;
-
-  //
-  // UDP Transmission Socket
-  //
-  air_nownext_socket=new Q3SocketDevice(Q3SocketDevice::Datagram);
-
-  //
   // Log Machines
   //
   QSignalMapper *reload_mapper=new QSignalMapper(this);
@@ -324,8 +314,7 @@ MainWidget::MainWidget(QWidget *parent)
   connect(rename_mapper,SIGNAL(mapped(int)),this,SLOT(logRenamedData(int)));
   QString default_svcname=rda->airplayConf()->defaultSvc();
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
-    air_log[i]=
-      new RDLogPlay(i,rdevent_player,air_nownext_socket,&air_plugin_hosts);
+    air_log[i]=new RDLogPlay(i,rdevent_player,this);
     air_log[i]->setDefaultServiceName(default_svcname);
     air_log[i]->setNowCart(rda->airplayConf()->logNowCart(i));
     air_log[i]->setNextCart(rda->airplayConf()->logNextCart(i));
@@ -785,33 +774,6 @@ MainWidget::MainWidget(QWidget *parent)
       break;
     }
   }
-
-  //
-  // Load Plugins
-  //
-  QString sql;
-  RDSqlQuery *q;
-
-  //
-  // Load Plugins
-  //
-  sql=QString("select ")+
-    "PLUGIN_PATH,"+  // 00
-    "PLUGIN_ARG "+   // 01
-    "from NOWNEXT_PLUGINS where "+
-    "(STATION_NAME=\""+RDEscapeString(rda->config()->stationName())+"\")&&"+
-     "(LOG_MACHINE=0)";
-  q=new RDSqlQuery(sql);
-  while(q->next()) {
-    air_plugin_hosts.
-      push_back(new RDRLMHost(q->value(0).toString(),q->value(1).toString(),
-			      air_nownext_socket,this));
-    LogLine(RDConfig::LogInfo,"Loading RLM \""+q->value(0).toString()+"\"");
-    if(!air_plugin_hosts.back()->load()) {
-      LogLine(RDConfig::LogWarning,"Failed to load RLM \""+q->value(0).toString()+"\"");
-    }
-  }
-  delete q;
 
   //
   // Create the HotKeyList object
@@ -2098,9 +2060,6 @@ void MainWidget::closeEvent(QCloseEvent *e)
      QMessageBox::Yes) {
     e->setAccepted(false);
     return;
-  }
-  for(unsigned i=0;i<air_plugin_hosts.size();i++) {
-    air_plugin_hosts[i]->unload();
   }
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
     delete air_log[i];

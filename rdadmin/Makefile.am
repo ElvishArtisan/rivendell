@@ -71,8 +71,6 @@ dist_rdadmin_SOURCES = add_feed.cpp add_feed.h\
                        edit_livewiregpio.cpp edit_livewiregpio.h\
                        edit_matrix.cpp edit_matrix.h\
                        edit_node.cpp edit_node.h\
-                       edit_now_next.cpp edit_now_next.h\
-                       edit_nownextplugin.cpp edit_nownextplugin.h\
                        edit_pypad.cpp edit_pypad.h\
                        edit_rdairplay.cpp edit_rdairplay.h\
                        edit_rdlibrary.cpp edit_rdlibrary.h\
@@ -150,8 +148,6 @@ nodist_rdadmin_SOURCES = moc_add_feed.cpp\
                          moc_edit_livewiregpio.cpp\
                          moc_edit_matrix.cpp\
                          moc_edit_node.cpp\
-                         moc_edit_now_next.cpp\
-                         moc_edit_nownextplugin.cpp\
                          moc_edit_pypad.cpp\
                          moc_edit_rdairplay.cpp\
                          moc_edit_rdlibrary.cpp\

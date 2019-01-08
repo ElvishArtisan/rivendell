@@ -45,8 +45,6 @@ x11 {
   SOURCES += edit_jack_client.cpp
   SOURCES += edit_livewiregpio.cpp
   SOURCES += edit_matrix.cpp
-  SOURCES += edit_nownextplugin.cpp
-  SOURCES += edit_now_next.cpp
   SOURCES += edit_pypad.cpp
   SOURCES += edit_rdairplay.cpp
   SOURCES += edit_rdlibrary.cpp
@@ -114,8 +112,6 @@ x11 {
   HEADERS += edit_jack_client.h
   HEADERS += edit_livewiregpio.h
   HEADERS += edit_matrix.h
-  HEADERS += edit_nownextplugin.h
-  HEADERS += edit_now_next.h
   HEADERS += edit_pypad.h
   HEADERS += edit_rdairplay.h
   HEADERS += edit_rdlibrary.h

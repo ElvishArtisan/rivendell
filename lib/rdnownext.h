@@ -1,8 +1,8 @@
 // rdnownext.h
 //
-// Rivendell Now & Next Implementation
+// Rivendell Metadata Wildcards Implementation
 //
-//   (C) Copyright 2008,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2008-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,9 +22,7 @@
 #define RDNOWNEXT_H
 
 #include <rdlog_line.h>
-#include "../apis/rlm/rlm.h"
 
-void RDResolveNowNext(QString *str,RDLogLine **loglines,int line,int encoding);
 QString RDResolveNowNext(const QString &pattern,RDLogLine *ll,int line);
 
 
