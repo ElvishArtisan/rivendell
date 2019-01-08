@@ -92,7 +92,7 @@ try:
 except IndexError:
     eprint('pypad_icecast2: USAGE: cmd <hostname> <port> <config>')
     sys.exit(1)
-rcvr.setCallback(ProcessPad)
+rcvr.setPadCallback(ProcessPad)
 iprint('Started')
 rcvr.start(sys.argv[1],int(sys.argv[2]))
 iprint('Stopped')

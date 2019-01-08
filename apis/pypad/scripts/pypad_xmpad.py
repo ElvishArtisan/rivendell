@@ -179,6 +179,6 @@ try:
 except IndexError:
     eprint('pypad_xmpad.py: USAGE: cmd <hostname> <port> <config>')
     sys.exit(1)
-rcvr.setCallback(ProcessPad)
+rcvr.setPadCallback(ProcessPad)
 rcvr.setTimerCallback(30,ProcessTimer)
 rcvr.start(sys.argv[1],int(sys.argv[2]))

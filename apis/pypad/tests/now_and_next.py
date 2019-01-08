@@ -52,14 +52,14 @@ def ProcessPad(update):
         print("%03d:xxxx NEXT: [none]" % update.machine())
 
 #
-# Create an instance of 'pypadReceiver'
+# Create an instance of 'pypad.Receiver'
 #
 rcvr=pypad.Receiver()
 
 #
 # Tell it to use the callback
 #
-rcvr.setCallback(ProcessPad)
+rcvr.setPadCallback(ProcessPad)
 
 #
 # Start the receiver, giving it the hostname or IP address and TCP port of

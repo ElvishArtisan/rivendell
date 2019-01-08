@@ -735,13 +735,13 @@ class Update(object):
 
 class Receiver(object):
     def __init__(self):
-        self.__callback=None
+        self.__pad_callback=None
         self.__timer_callback=None
         self.__timer_interval=None
         self.__config_parser=None
 
     def __pypad_Process(self,pad):
-        self.__callback(pad)
+        self.__pad_callback(pad)
 
     def __pypad_TimerProcess(self,config):
         self.__timer_callback(config)
@@ -756,11 +756,11 @@ class Receiver(object):
         creds=self.__getDbCredentials()
         return MySQLdb.connect(creds[2],creds[0],creds[1],creds[3])
 
-    def setCallback(self,callback):
+    def setPadCallback(self,callback):
         """
            Set the processing callback.
         """
-        self.__callback=callback
+        self.__pad_callback=callback
 
     def setTimerCallback(self,interval,callback):
         """

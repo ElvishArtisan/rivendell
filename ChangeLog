@@ -18324,3 +18324,6 @@
 	* Changed the PyPAD namespace from 'PyPAD' to 'pypad'.
 	* Changed the installation location of PyPAD scripts from
 	'@libdir@/rivendell/PyPAD/' to '@libdir@/rivendell/pypad/'.
+2019-01-08 Fred Gleason <fredg@paravelsystems.com>
+	* Renamed the 'pypad.Receiver::setCallback()' method to
+	'pypad.Receiver::setPadCallback()'.

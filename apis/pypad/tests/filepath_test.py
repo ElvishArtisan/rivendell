@@ -68,7 +68,7 @@ rcvr=pypad.Receiver()
 #
 # Tell it to use the callback
 #
-rcvr.setCallback(ProcessPad)
+rcvr.setPadCallback(ProcessPad)
 
 #
 # Start the receiver, giving it the hostname or IP address and TCP port of

@@ -95,5 +95,5 @@ try:
 except IndexError:
     eprint('pypad_inno713.py: USAGE: cmd <hostname> <port> <config>')
     sys.exit(1)
-rcvr.setCallback(ProcessPad)
+rcvr.setPadCallback(ProcessPad)
 rcvr.start(sys.argv[1],int(sys.argv[2]))
