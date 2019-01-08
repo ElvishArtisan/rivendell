@@ -1,8 +1,8 @@
-## automake.am
+## Makefile.am
 ##
-## Automake.am for Rivendell PyPAD/api
+## Makefile.am for Rivendell pypad/api
 ##
-##   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+##   (C) Copyright 2018-2019 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License as
@@ -21,11 +21,7 @@
 ## Use automake to process this into a Makefile.in
 
 rivendelldir = $(pyexecdir)
-rivendell_PYTHON = PyPAD.py
-
-##install-exec-am:	
-##	../../../helpers/install_python.sh PyPAD.py $(pyexecdir)/PyPAD.py
-##EXTRA_DIST = PyPAD.py
+rivendell_PYTHON = pypad.py
 
 CLEANFILES = *~\
              *.idb\

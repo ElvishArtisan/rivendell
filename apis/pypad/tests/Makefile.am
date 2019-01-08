@@ -1,6 +1,6 @@
 ## automake.am
 ##
-## Automake.am for Rivendell PyPAD/tests
+## Automake.am for Rivendell pypad/tests
 ##
 ##   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
 ##

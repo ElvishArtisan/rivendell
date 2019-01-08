@@ -1,8 +1,8 @@
 #!%PYTHON_BANGPATH%
 
-# pypad_walltime.py
+# pypad_serial.py
 #
-# Write PAD updates a WallTime text widget.
+# Write PAD updates to arbitrary URLs
 #
 #   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
 #
@@ -23,8 +23,8 @@
 import sys
 import syslog
 import configparser
-import pycurl
-import PyPAD
+import pypad
+import serial
 from io import BytesIO
 
 def eprint(*args,**kwargs):
@@ -34,21 +34,21 @@ def ProcessPad(update):
     n=1
     try:
         while(True):
-            section='Walltime'+str(n)
+            section='Serial'+str(n)
             if update.shouldBeProcessed(section):
+                devname=update.config().get(section,'Device')
+                speed=int(update.config().get(section,'Speed'))
+                parity=serial.PARITY_NONE
+                if int(update.config().get(section,'Parity'))==1:
+                    parity=serial.PARITY_EVEN
+                if int(update.config().get(section,'Parity'))==2:
+                    parity=serial.PARITY_ODD
+                bytesize=int(update.config().get(section,'WordSize'))
+                dev=serial.Serial(devname,speed,parity=parity,bytesize=bytesize)
                 fmtstr=update.config().get(section,'FormatString')
-                buf=BytesIO(update.resolvePadFields(fmtstr,PyPAD.ESCAPE_NONE).encode('utf-8'))
-                curl=pycurl.Curl()
-                curl.setopt(curl.URL,'http://'+update.config().get(section,'IpAddress')+'/webwidget');
-                curl.setopt(curl.USERNAME,'user')
-                curl.setopt(curl.PASSWORD,update.config().get(section,'Password'))
-                curl.setopt(curl.UPLOAD,True)
-                curl.setopt(curl.READDATA,buf)
-                try:
-                    curl.perform()
-                except pycurl.error:
-                    syslog.syslog(syslog.LOG_WARNING,'['+section+'] failed: '+curl.errstr())
-                curl.close()
+                esc=int(update.config().get(section,'Encoding'))
+                dev.write(update.resolvePadFields(fmtstr,esc).encode('utf-8'))
+                dev.close()
             n=n+1
 
     except configparser.NoSectionError:
@@ -59,11 +59,11 @@ def ProcessPad(update):
 #
 syslog.openlog(sys.argv[0].split('/')[-1])
 
-rcvr=PyPAD.Receiver()
+rcvr=pypad.Receiver()
 try:
     rcvr.setConfigFile(sys.argv[3])
 except IndexError:
-    eprint('pypad_walltime.py: you must specify a configuration file')
+    eprint('pypad_serial.py: USAGE: cmd <hostname> <port> <config>')
     sys.exit(1)
 rcvr.setCallback(ProcessPad)
 rcvr.start(sys.argv[1],int(sys.argv[2]))

@@ -1,8 +1,8 @@
 #!%PYTHON_BANGPATH%
 
-# pypad_tunein.py
+# pypad_icecast2.py
 #
-# Send PAD updates to TuneIn
+# Send PAD updates to Icecast2 mountpoint
 #
 #   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
 #
@@ -24,9 +24,10 @@ import os
 import sys
 import socket
 import requests
+from requests.auth import HTTPBasicAuth
 import xml.etree.ElementTree as ET
 import syslog
-import PyPAD
+import pypad
 import configparser
 
 def eprint(*args,**kwargs):
@@ -44,33 +45,26 @@ def isTrue(string):
     return string.lower() in map(str.lower,l)
 
 def ProcessPad(update):
-    if update.hasPadType(PyPAD.TYPE_NOW):
+    if update.hasPadType(pypad.TYPE_NOW):
         n=1
         while(True):
-            section='Station'+str(n)
+            section='Icecast'+str(n)
             try:
                 values={}
-                values['id']=update.config().get(section,'StationID')
-                values['partnerId']=update.config().get(section,'PartnerID')
-                values['partnerKey']=update.config().get(section,'PartnerKey')
-                values['title']=update.resolvePadFields(update.config().get(section,'TitleString'),PyPAD.ESCAPE_NONE)
-                values['artist']=update.resolvePadFields(update.config().get(section,'ArtistString'),PyPAD.ESCAPE_NONE)
-                values['album']=update.resolvePadFields(update.config().get(section,'AlbumString'),PyPAD.ESCAPE_NONE)
-                iprint('Updating TuneIn: artist='+values['artist']+' title='+values['title']+' album='+values['album'])
+                values['mount']=update.config().get(section,'Mountpoint')
+                values['song']=update.resolvePadFields(update.config().get(section,'FormatString'),pypad.ESCAPE_NONE)
+                values['mode']='updinfo'
+                iprint('Updating '+update.config().get(section,'Hostname')+': song='+values['song'])
+                url="http://%s:%s/admin/metadata" % (update.config().get(section,'Hostname'),update.config().get(section,'Tcpport'))
                 try:
-                    response=requests.get('http://air.radiotime.com/Playing.ashx',params=values)
+                    response=requests.get(url,auth=HTTPBasicAuth(update.config().get(section,'Username'),update.config().get(section,'Password')),params=values)
                     response.raise_for_status()
                 except requests.exceptions.RequestException as e:
                     eprint(str(e))
-                else:
-                    xml=ET.fromstring(response.text)
-                    status=xml.find('./head/status')
-                    if(status.text!='200'):
-                        eprint('Update Failed: '+xml.find('./head/fault').text)
                 n=n+1
             except configparser.NoSectionError:
                 if(n==1):
-                    eprint('No station config found')
+                    eprint('No icecast config found')
                 return
 
 #
@@ -92,11 +86,11 @@ send_sock=socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
 #
 # Start Receiver
 #
-rcvr=PyPAD.Receiver()
+rcvr=pypad.Receiver()
 try:
     rcvr.setConfigFile(sys.argv[3])
 except IndexError:
-    eprint('You must specify a configuration file')
+    eprint('pypad_icecast2: USAGE: cmd <hostname> <port> <config>')
     sys.exit(1)
 rcvr.setCallback(ProcessPad)
 iprint('Started')

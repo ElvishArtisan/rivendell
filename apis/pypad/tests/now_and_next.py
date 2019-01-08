@@ -2,7 +2,7 @@
 
 # now_and_next.py
 #
-# Barebones example PyPAD script for Rivendell
+# Barebones example pypad script for Rivendell
 #
 #   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
 #
@@ -24,37 +24,37 @@
 # To see the full documentation of these classes, enter the following at
 # a python interactive prompt:
 #
-#   import PyPAD
-#   help(PyPAD)
+#   import pypad
+#   help(pypad)
 #
-import PyPAD
+import pypad
 
 #
 # First, we create a callback method, that will be called every time a
-# log machine updates its PAD. An instance of 'PyPAD.Update' that contains
+# log machine updates its PAD. An instance of 'pypad.Update' that contains
 # the PAD information is supplied as the single argument.
 #
 def ProcessPad(update):
     print()
-    if update.hasPadType(PyPAD.TYPE_NOW):
+    if update.hasPadType(pypad.TYPE_NOW):
         msg='%03d:' % update.machine()
-        msg+='%04d ' % update.padField(PyPAD.TYPE_NOW,PyPAD.FIELD_LINE_NUMBER)
-        msg+='NOW: '+update.resolvePadFields('%a - %t',PyPAD.ESCAPE_NONE)
+        msg+='%04d ' % update.padField(pypad.TYPE_NOW,pypad.FIELD_LINE_NUMBER)
+        msg+='NOW: '+update.resolvePadFields('%a - %t',pypad.ESCAPE_NONE)
         print(msg)
     else:
         print("%03d:xxxx NOW: [none]" % update.machine())
-    if update.hasPadType(PyPAD.TYPE_NEXT):
+    if update.hasPadType(pypad.TYPE_NEXT):
         msg='%03d:' % update.machine()
-        msg+='%04d ' % update.padField(PyPAD.TYPE_NEXT,PyPAD.FIELD_LINE_NUMBER)
-        msg+='NEXT: '+update.resolvePadFields('%A - %T',PyPAD.ESCAPE_NONE)
+        msg+='%04d ' % update.padField(pypad.TYPE_NEXT,pypad.FIELD_LINE_NUMBER)
+        msg+='NEXT: '+update.resolvePadFields('%A - %T',pypad.ESCAPE_NONE)
         print(msg)
     else:
         print("%03d:xxxx NEXT: [none]" % update.machine())
 
 #
-# Create an instance of 'PyPADReceiver'
+# Create an instance of 'pypadReceiver'
 #
-rcvr=PyPAD.Receiver()
+rcvr=pypad.Receiver()
 
 #
 # Tell it to use the callback
@@ -66,4 +66,4 @@ rcvr.setCallback(ProcessPad)
 # the target Rivendell system. Once started, all further processing can only
 # be done in the callback method!
 #
-rcvr.start('localhost',PyPAD.PAD_TCP_PORT)
+rcvr.start('localhost',pypad.PAD_TCP_PORT)

@@ -24,7 +24,7 @@ import sys
 import socket
 import configparser
 import serial
-import PyPAD
+import pypad
 
 def eprint(*args,**kwargs):
     print(*args,file=sys.stderr,**kwargs)
@@ -35,16 +35,16 @@ def ProcessPad(update):
     while(True):
         section='Rds'+str(n)
         try:
-            if update.shouldBeProcessed(section) and update.hasPadType(PyPAD.TYPE_NOW):
+            if update.shouldBeProcessed(section) and update.hasPadType(pypad.TYPE_NOW):
                 dps=''
                 if(len(update.config().get(section,'DynamicPsString'))!=0):
-                    dps='DPS='+update.resolvePadFields(update.config().get(section,'DynamicPsString'),PyPAD.ESCAPE_NONE)+'\r\n'
+                    dps='DPS='+update.resolvePadFields(update.config().get(section,'DynamicPsString'),pypad.ESCAPE_NONE)+'\r\n'
                 ps=''
                 if(len(update.config().get(section,'PsString'))!=0):
-                    ps='PS='+update.resolvePadFields(update.config().get(section,'PsString'),PyPAD.ESCAPE_NONE)+'\r\n'
+                    ps='PS='+update.resolvePadFields(update.config().get(section,'PsString'),pypad.ESCAPE_NONE)+'\r\n'
                 text=''
                 if(len(update.config().get(section,'RadiotextString'))!=0):
-                    text='TEXT='+update.resolvePadFields(update.config().get(section,'RadiotextString'),PyPAD.ESCAPE_NONE)+'\r\n'
+                    text='TEXT='+update.resolvePadFields(update.config().get(section,'RadiotextString'),pypad.ESCAPE_NONE)+'\r\n'
                 try:
                     #
                     # Use serial output
@@ -89,11 +89,11 @@ def ProcessPad(update):
 #
 send_sock=socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
 
-rcvr=PyPAD.Receiver()
+rcvr=pypad.Receiver()
 try:
     rcvr.setConfigFile(sys.argv[3])
 except IndexError:
-    eprint('pypad_inno713.py: you must specify a configuration file')
+    eprint('pypad_inno713.py: USAGE: cmd <hostname> <port> <config>')
     sys.exit(1)
 rcvr.setCallback(ProcessPad)
 rcvr.start(sys.argv[1],int(sys.argv[2]))

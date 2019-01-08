@@ -20,7 +20,7 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-SUBDIRS = PyPAD\
+SUBDIRS = pypad\
           rivwebcapi
 
 CLEANFILES = *~\

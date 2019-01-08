@@ -1,8 +1,8 @@
 #!%PYTHON_BANGPATH%
 
-# pypad_filewrite.py
+# pypad_walltime.py
 #
-# Write PAD updates to files
+# Write PAD updates a WallTime text widget.
 #
 #   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
 #
@@ -21,8 +21,11 @@
 #
 
 import sys
+import syslog
 import configparser
-import PyPAD
+import pycurl
+import pypad
+from io import BytesIO
 
 def eprint(*args,**kwargs):
     print(*args,file=sys.stderr,**kwargs)
@@ -31,15 +34,21 @@ def ProcessPad(update):
     n=1
     try:
         while(True):
-            section='File'+str(n)
+            section='Walltime'+str(n)
             if update.shouldBeProcessed(section):
                 fmtstr=update.config().get(section,'FormatString')
-                mode='w'
-                if update.config().get(section,'Append')=='1':
-                    mode='a'
-                f=open(update.resolveFilepath(update.config().get(section,'Filename'),update.dateTime()),mode)
-                f.write(update.resolvePadFields(fmtstr,int(update.config().get(section,'Encoding'))))
-                f.close()
+                buf=BytesIO(update.resolvePadFields(fmtstr,pypad.ESCAPE_NONE).encode('utf-8'))
+                curl=pycurl.Curl()
+                curl.setopt(curl.URL,'http://'+update.config().get(section,'IpAddress')+'/webwidget');
+                curl.setopt(curl.USERNAME,'user')
+                curl.setopt(curl.PASSWORD,update.config().get(section,'Password'))
+                curl.setopt(curl.UPLOAD,True)
+                curl.setopt(curl.READDATA,buf)
+                try:
+                    curl.perform()
+                except pycurl.error:
+                    syslog.syslog(syslog.LOG_WARNING,'['+section+'] failed: '+curl.errstr())
+                curl.close()
             n=n+1
 
     except configparser.NoSectionError:
@@ -48,11 +57,13 @@ def ProcessPad(update):
 #
 # 'Main' function
 #
-rcvr=PyPAD.Receiver()
+syslog.openlog(sys.argv[0].split('/')[-1])
+
+rcvr=pypad.Receiver()
 try:
     rcvr.setConfigFile(sys.argv[3])
 except IndexError:
-    eprint('pypad_filewrite.py: you must specify a configuration file')
+    eprint('pypad_walltime.py: USAGE: cmd <hostname> <port> <config>')
     sys.exit(1)
 rcvr.setCallback(ProcessPad)
 rcvr.start(sys.argv[1],int(sys.argv[2]))

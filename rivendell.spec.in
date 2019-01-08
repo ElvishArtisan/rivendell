@@ -155,7 +155,7 @@ cp scripts/rd_restore_system.sh $RPM_BUILD_ROOT/@DOC_PATH@/scripts/
 cp scripts/engine_conv.py $RPM_BUILD_ROOT/@DOC_PATH@
 cp scripts/init_template_host.py $RPM_BUILD_ROOT/@DOC_PATH@
 rm -f $RPM_BUILD_ROOT/etc/auto.rd.audiostore
-rm -rf $RPM_BUILD_ROOT%{_libdir}/rivendell/PyPAD/__pycache__
+rm -rf $RPM_BUILD_ROOT%{_libdir}/rivendell/pypad/__pycache__
 rm -rf $RPM_BUILD_ROOT%{_libdir}/python3.4/site-packages/__pycache__
 
 %post
@@ -482,9 +482,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %files pypad
-%{_libdir}/rivendell/PyPAD/*
-%{_libdir}/python3.4/site-packages/PyPAD*
-%{_libdir}/python3.4/site-packages/__pycache__/PyPAD*
+%{_libdir}/rivendell/pypad/*
+%{_libdir}/python3.4/site-packages/pypad*
+%{_libdir}/python3.4/site-packages/__pycache__/pypad*
 
 
 %files select

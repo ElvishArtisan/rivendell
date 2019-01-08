@@ -24,7 +24,7 @@ import sys
 import syslog
 import configparser
 import pycurl
-import PyPAD
+import pypad
 from io import BytesIO
 
 last_updates={}
@@ -36,7 +36,7 @@ def JsonField(update,tag,value,is_last=False):
     if (value==None) or (value==''):
         ret='  "'+tag+'": null'
     else:
-        ret='  "'+tag+'": "'+update.escape(value,PyPAD.ESCAPE_JSON)+'"'
+        ret='  "'+tag+'": "'+update.escape(value,pypad.ESCAPE_JSON)+'"'
     if not is_last:
         ret+=','
     return ret+'\r\n'
@@ -51,15 +51,15 @@ def ProcessPad(update):
     try:
         while(True):
             section='Spinitron'+str(n)
-            if update.shouldBeProcessed(section) and update.hasPadType(PyPAD.TYPE_NOW) and (last_updates[update.machine()] != update.startDateTimeString(PyPAD.TYPE_NOW)):
-                last_updates[update.machine()]=update.startDateTimeString(PyPAD.TYPE_NOW)
-                title=update.resolvePadFields(update.config().get(section,'Title'),PyPAD.ESCAPE_JSON)
-                artist=update.resolvePadFields(update.config().get(section,'Artist'),PyPAD.ESCAPE_JSON)
-                album=update.resolvePadFields(update.config().get(section,'Album'),PyPAD.ESCAPE_JSON)
-                label=update.resolvePadFields(update.config().get(section,'Label'),PyPAD.ESCAPE_JSON)
-                composer=update.resolvePadFields(update.config().get(section,'Composer'),PyPAD.ESCAPE_JSON)
-                conductor=update.resolvePadFields(update.config().get(section,'Conductor'),PyPAD.ESCAPE_JSON)
-                notes=update.resolvePadFields(update.config().get(section,'Notes'),PyPAD.ESCAPE_JSON)
+            if update.shouldBeProcessed(section) and update.hasPadType(pypad.TYPE_NOW) and (last_updates[update.machine()] != update.startDateTimeString(pypad.TYPE_NOW)):
+                last_updates[update.machine()]=update.startDateTimeString(pypad.TYPE_NOW)
+                title=update.resolvePadFields(update.config().get(section,'Title'),pypad.ESCAPE_JSON)
+                artist=update.resolvePadFields(update.config().get(section,'Artist'),pypad.ESCAPE_JSON)
+                album=update.resolvePadFields(update.config().get(section,'Album'),pypad.ESCAPE_JSON)
+                label=update.resolvePadFields(update.config().get(section,'Label'),pypad.ESCAPE_JSON)
+                composer=update.resolvePadFields(update.config().get(section,'Composer'),pypad.ESCAPE_JSON)
+                conductor=update.resolvePadFields(update.config().get(section,'Conductor'),pypad.ESCAPE_JSON)
+                notes=update.resolvePadFields(update.config().get(section,'Notes'),pypad.ESCAPE_JSON)
 
                 json='{\r\n'
                 pmode=update.config().get(section,'PlaylistMode')
@@ -72,8 +72,8 @@ def ProcessPad(update):
                         json+='  "live": false,\r\n'
                     else:
                         json+='  "live": true,\r\n'
-                duration=str(update.padField(PyPAD.TYPE_NOW,PyPAD.FIELD_LENGTH)//1000)
-                year=update.padField(PyPAD.TYPE_NOW,PyPAD.FIELD_YEAR)
+                duration=str(update.padField(pypad.TYPE_NOW,pypad.FIELD_LENGTH)//1000)
+                year=update.padField(pypad.TYPE_NOW,pypad.FIELD_YEAR)
                 if year==None:
                     json+='  "released": null,\r\n'
                 else:
@@ -86,7 +86,7 @@ def ProcessPad(update):
                 json+=JsonField(update,'composer',composer)
                 json+=JsonField(update,'conductor',conductor)
                 json+=JsonField(update,'note',notes)
-                json+=JsonField(update,'isrc',update.padField(PyPAD.TYPE_NOW,PyPAD.FIELD_ISRC),True)
+                json+=JsonField(update,'isrc',update.padField(pypad.TYPE_NOW,pypad.FIELD_ISRC),True)
                 json+='}\r\n'
                 send_buf=BytesIO(json.encode('utf-8'))
                 recv_buf=BytesIO()
@@ -118,11 +118,11 @@ def ProcessPad(update):
 #
 syslog.openlog(sys.argv[0].split('/')[-1])
 
-rcvr=PyPAD.Receiver()
+rcvr=pypad.Receiver()
 try:
     rcvr.setConfigFile(sys.argv[3])
 except IndexError:
-    eprint('pypad_spinitron.py: you must specify a configuration file')
+    eprint('pypad_spinitron.py: USAGE: cmd <hostname> <port> <config>')
     sys.exit(1)
 rcvr.setCallback(ProcessPad)
 rcvr.start(sys.argv[1],int(sys.argv[2]))

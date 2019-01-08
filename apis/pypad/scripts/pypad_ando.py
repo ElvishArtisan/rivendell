@@ -23,7 +23,7 @@
 import sys
 import socket
 import configparser
-import PyPAD
+import pypad
 
 last_updates={}
 
@@ -51,19 +51,19 @@ def ProcessPad(update):
     while(True):
         section='System'+str(n)
         try:
-            if update.shouldBeProcessed(section) and update.hasPadType(PyPAD.TYPE_NOW) and (last_updates[update.machine()] != update.startDateTimeString(PyPAD.TYPE_NOW)):
-                last_updates[update.machine()]=update.startDateTimeString(PyPAD.TYPE_NOW)
-                title=update.resolvePadFields(update.config().get(section,'Title'),PyPAD.ESCAPE_NONE)
-                artist=update.resolvePadFields(update.config().get(section,'Artist'),PyPAD.ESCAPE_NONE)
-                album=update.resolvePadFields(update.config().get(section,'Album'),PyPAD.ESCAPE_NONE)
-                label=update.resolvePadFields(update.config().get(section,'Label'),PyPAD.ESCAPE_NONE)
-                secs=update.padField(PyPAD.TYPE_NOW,PyPAD.FIELD_LENGTH)
+            if update.shouldBeProcessed(section) and update.hasPadType(pypad.TYPE_NOW) and (last_updates[update.machine()] != update.startDateTimeString(pypad.TYPE_NOW)):
+                last_updates[update.machine()]=update.startDateTimeString(pypad.TYPE_NOW)
+                title=update.resolvePadFields(update.config().get(section,'Title'),pypad.ESCAPE_NONE)
+                artist=update.resolvePadFields(update.config().get(section,'Artist'),pypad.ESCAPE_NONE)
+                album=update.resolvePadFields(update.config().get(section,'Album'),pypad.ESCAPE_NONE)
+                label=update.resolvePadFields(update.config().get(section,'Label'),pypad.ESCAPE_NONE)
+                secs=update.padField(pypad.TYPE_NOW,pypad.FIELD_LENGTH)
                 duration=('%02d:' % (secs//60000))+('%02d' % ((secs%60000)//1000))
-                group=update.padField(PyPAD.TYPE_NOW,PyPAD.FIELD_GROUP_NAME)
+                group=update.padField(pypad.TYPE_NOW,pypad.FIELD_GROUP_NAME)
                 if update.config().get(section,'Label')=='':
-                    msg='^'+artist+'~'+title+'~'+duration+'~'+group+'~'+album+'~'+str(update.padField(PyPAD.TYPE_NOW,PyPAD.FIELD_CART_NUMBER))+'|'
+                    msg='^'+artist+'~'+title+'~'+duration+'~'+group+'~'+album+'~'+str(update.padField(pypad.TYPE_NOW,pypad.FIELD_CART_NUMBER))+'|'
                 else:
-                    msg='^'+artist+'~'+title+'~'+duration+'~'+group+'~'+str(update.padField(PyPAD.TYPE_NOW,PyPAD.FIELD_CART_NUMBER))+'~'+album+'~'+label+'|'
+                    msg='^'+artist+'~'+title+'~'+duration+'~'+group+'~'+str(update.padField(pypad.TYPE_NOW,pypad.FIELD_CART_NUMBER))+'~'+album+'~'+label+'|'
                 send_sock.sendto(msg.encode('utf-8'),
                                  (update.config().get(section,'IpAddress'),int(update.config().get(section,'UdpPort'))))
             n=n+1
@@ -77,11 +77,11 @@ def ProcessPad(update):
 #
 send_sock=socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
 
-rcvr=PyPAD.Receiver()
+rcvr=pypad.Receiver()
 try:
     rcvr.setConfigFile(sys.argv[3])
 except IndexError:
-    eprint('pypad_ando.py: you must specify a configuration file')
+    eprint('pypad_ando.py: USAGE: cmd <hostname> <port> <config>')
     sys.exit(1)
 rcvr.setCallback(ProcessPad)
 rcvr.setTimerCallback(30,ProcessTimer)

@@ -1,8 +1,8 @@
 #!%PYTHON_BANGPATH%
 
-# pypad_shoutcast1.py
+# pypad_live365.py
 #
-# Write PAD updates to a Shoutcast 1 instance
+# Write PAD updates to Live365 stations
 #
 #   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
 #
@@ -24,37 +24,30 @@ import sys
 import syslog
 import configparser
 import pycurl
-import PyPAD
+import pypad
 from io import BytesIO
-
-last_updates={}
 
 def eprint(*args,**kwargs):
     print(*args,file=sys.stderr,**kwargs)
 
 def ProcessPad(update):
-    try:
-        last_updates[update.machine()]
-    except KeyError:
-        last_updates[update.machine()]=None
-
     n=1
     try:
         while(True):
-            section='Shoutcast'+str(n)
-            if update.shouldBeProcessed(section) and update.hasPadType(PyPAD.TYPE_NOW) and (last_updates[update.machine()] != update.startDateTimeString(PyPAD.TYPE_NOW)):
-                last_updates[update.machine()]=update.startDateTimeString(PyPAD.TYPE_NOW)
-                song=update.resolvePadFields(update.config().get(section,'FormatString'),PyPAD.ESCAPE_URL)
-                url='http://'+update.config().get(section,'Hostname')+':'+str(update.config().get(section,'Tcpport'))+'/admin.cgi?pass='+update.escape(update.config().get(section,'Password'),PyPAD.ESCAPE_URL)+'&mode=updinfo&song='+song
+            section='Station'+str(n)
+            if update.shouldBeProcessed(section) and update.hasPadType(pypad.TYPE_NOW):
+                member=update.escape(update.config().get(section,'MemberName'),pypad.ESCAPE_URL)
+                password=update.escape(update.config().get(section,'Password'),pypad.ESCAPE_URL)
+                title=update.resolvePadFields(update.config().get(section,'TitleString'),pypad.ESCAPE_URL)
+                artist=update.resolvePadFields(update.config().get(section,'ArtistString'),pypad.ESCAPE_URL)
+                album=update.resolvePadFields(update.config().get(section,'AlbumString'),pypad.ESCAPE_URL)
+                seconds=str(update.padField(pypad.TYPE_NOW,pypad.FIELD_LENGTH)//1000)
+                buf=BytesIO()
                 curl=pycurl.Curl()
+                url='http://www.live365.com/cgi-bin/add_song.cgi?member_name='+member+'&password='+password+'&version=2&filename=Rivendell&seconds='+seconds+'&title='+title+'&artist='+artist+'&album='+album
                 curl.setopt(curl.URL,url)
-                headers=[]
-                #
-                # D.N.A.S v1.9.8 refuses to process updates with the default
-                # CURL user-agent value, hence we lie to it.
-                #
-                headers.append('User-Agent: '+'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.2) Gecko/20070219 Firefox/2.0.0.2')
-                curl.setopt(curl.HTTPHEADER,headers);
+                curl.setopt(curl.WRITEDATA,buf)
+                curl.setopt(curl.FOLLOWLOCATION,True)
                 try:
                     curl.perform()
                     code=curl.getinfo(pycurl.RESPONSE_CODE)
@@ -73,11 +66,11 @@ def ProcessPad(update):
 #
 syslog.openlog(sys.argv[0].split('/')[-1])
 
-rcvr=PyPAD.Receiver()
+rcvr=pypad.Receiver()
 try:
     rcvr.setConfigFile(sys.argv[3])
 except IndexError:
-    eprint('pypad_shoutcast1.py: you must specify a configuration file')
+    eprint('pypad_live365.py: USAGE: cmd <hostname> <port> <config>')
     sys.exit(1)
 rcvr.setCallback(ProcessPad)
 rcvr.start(sys.argv[1],int(sys.argv[2]))

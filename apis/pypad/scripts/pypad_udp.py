@@ -1,8 +1,8 @@
 #!%PYTHON_BANGPATH%
 
-# pypad_serial.py
+# pypad_udp.py
 #
-# Write PAD updates to arbitrary URLs
+# Send PAD updates via UDP
 #
 #   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
 #
@@ -21,49 +21,38 @@
 #
 
 import sys
-import syslog
+import socket
 import configparser
-import PyPAD
-import serial
-from io import BytesIO
+import pypad
 
 def eprint(*args,**kwargs):
     print(*args,file=sys.stderr,**kwargs)
 
 def ProcessPad(update):
     n=1
-    try:
-        while(True):
-            section='Serial'+str(n)
+    while(True):
+        section='Udp'+str(n)
+        try:
             if update.shouldBeProcessed(section):
-                devname=update.config().get(section,'Device')
-                speed=int(update.config().get(section,'Speed'))
-                parity=serial.PARITY_NONE
-                if int(update.config().get(section,'Parity'))==1:
-                    parity=serial.PARITY_EVEN
-                if int(update.config().get(section,'Parity'))==2:
-                    parity=serial.PARITY_ODD
-                bytesize=int(update.config().get(section,'WordSize'))
-                dev=serial.Serial(devname,speed,parity=parity,bytesize=bytesize)
                 fmtstr=update.config().get(section,'FormatString')
-                esc=int(update.config().get(section,'Encoding'))
-                dev.write(update.resolvePadFields(fmtstr,esc).encode('utf-8'))
-                dev.close()
+                send_sock.sendto(update.resolvePadFields(fmtstr,int(update.config().get(section,'Encoding'))).encode('utf-8'),
+                                 (update.config().get(section,'IpAddress'),int(update.config().get(section,'UdpPort'))))
             n=n+1
-
-    except configparser.NoSectionError:
-        return
+        except configparser.NoSectionError:
+            return
 
 #
 # 'Main' function
 #
-syslog.openlog(sys.argv[0].split('/')[-1])
+# Create Send Socket
+#
+send_sock=socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
 
-rcvr=PyPAD.Receiver()
+rcvr=pypad.Receiver()
 try:
     rcvr.setConfigFile(sys.argv[3])
 except IndexError:
-    eprint('pypad_serial.py: you must specify a configuration file')
+    eprint('pypad_udp.py: USAGE: cmd <hostname> <port> <config>')
     sys.exit(1)
 rcvr.setCallback(ProcessPad)
 rcvr.start(sys.argv[1],int(sys.argv[2]))

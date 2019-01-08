@@ -2,9 +2,9 @@
 
 # filepath_test.py
 #
-# PyPAD regression test script for Rivendell
+# pypad regression test script for Rivendell
 #
-#  Exercise every filepath wildcard in 'PyPAD.Update::resolveFilepath()'
+#  Exercise every filepath wildcard in 'pypad.Update::resolveFilepath()'
 #
 #   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
 #
@@ -22,7 +22,7 @@
 #   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #
 
-import PyPAD
+import pypad
 
 def ProcessPad(update):
     print()
@@ -61,9 +61,9 @@ def ProcessPad(update):
     print("Literal '%' [%%]: "+update.resolveFilepath('%%',update.dateTime()))
 
 #
-# Create an instance of 'PyPADReceiver'
+# Create an instance of 'pypad.Receiver'
 #
-rcvr=PyPAD.Receiver()
+rcvr=pypad.Receiver()
 
 #
 # Tell it to use the callback
@@ -75,4 +75,4 @@ rcvr.setCallback(ProcessPad)
 # the target Rivendell system. Once started, all further processing can only
 # be done in the callback method!
 #
-rcvr.start('localhost',PyPAD.PAD_TCP_PORT)
+rcvr.start('localhost',pypad.PAD_TCP_PORT)

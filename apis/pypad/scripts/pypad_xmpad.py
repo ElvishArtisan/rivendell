@@ -24,7 +24,7 @@ import sys
 import syslog
 import configparser
 import serial
-import PyPAD
+import pypad
 
 XMPAD_DELIMITER='\02'
 # XMPAD_DELIMITER='\x7c' #(|)
@@ -39,7 +39,7 @@ def MakeA4(update,section):
     a4+=XMPAD_DELIMITER+'1'
 
     field1=update.resolvePadFields(update.config().get(section,'FormatString1'),
-                                   PyPAD.ESCAPE_NONE)
+                                   pypad.ESCAPE_NONE)
     a4+=XMPAD_DELIMITER+field1[0:16]
 
     a4+='\n'
@@ -52,7 +52,7 @@ def MakeA5(update,section):
     a5+=XMPAD_DELIMITER+'1'
 
     field2=update.resolvePadFields(update.config().get(section,'FormatString2'),
-                                   PyPAD.ESCAPE_NONE)
+                                   pypad.ESCAPE_NONE)
     a5+=XMPAD_DELIMITER+field2[0:16]
 
     a5+='\n'
@@ -76,7 +76,7 @@ def MakeB4(update,section):
     #
     # Event duration
     #
-    b4+=XMPAD_DELIMITER+str(update.padField(PyPAD.TYPE_NOW,PyPAD.FIELD_LENGTH)//432)
+    b4+=XMPAD_DELIMITER+str(update.padField(pypad.TYPE_NOW,pypad.FIELD_LENGTH)//432)
 
     b4+=XMPAD_DELIMITER+'0'
 
@@ -101,9 +101,9 @@ def MakeB4(update,section):
     # Display field values
     #
     field1=update.resolvePadFields(update.config().get(section,'FormatString1'),
-                                   PyPAD.ESCAPE_NONE)
+                                   pypad.ESCAPE_NONE)
     field2=update.resolvePadFields(update.config().get(section,'FormatString2'),
-                                   PyPAD.ESCAPE_NONE)
+                                   pypad.ESCAPE_NONE)
     b4+=XMPAD_DELIMITER+field2[0:16]
     b4+=XMPAD_DELIMITER+mask1
     b4+=XMPAD_DELIMITER+mask2
@@ -152,7 +152,7 @@ def ProcessPad(update):
     try:
         while(True):
             section='Serial'+str(n)
-            if update.shouldBeProcessed(section) and update.hasPadType(PyPAD.TYPE_NOW):
+            if update.shouldBeProcessed(section) and update.hasPadType(pypad.TYPE_NOW):
                 dev=OpenSerialDevice(update.config(),section)
                 b4=MakeB4(update,section)
                 a4=MakeA4(update,section)
@@ -173,11 +173,11 @@ def ProcessPad(update):
 #
 syslog.openlog(sys.argv[0].split('/')[-1])
 
-rcvr=PyPAD.Receiver()
+rcvr=pypad.Receiver()
 try:
     rcvr.setConfigFile(sys.argv[3])
 except IndexError:
-    eprint('pypad_xmpad.py: you must specify a configuration file')
+    eprint('pypad_xmpad.py: USAGE: cmd <hostname> <port> <config>')
     sys.exit(1)
 rcvr.setCallback(ProcessPad)
 rcvr.setTimerCallback(30,ProcessTimer)

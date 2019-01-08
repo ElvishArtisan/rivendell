@@ -24,7 +24,7 @@ import sys
 import socket
 import configparser
 import serial
-import PyPAD
+import pypad
 
 def eprint(*args,**kwargs):
     print(*args,file=sys.stderr,**kwargs)
@@ -64,8 +64,8 @@ def ProcessPad(update):
     while(True):
         section='Udp'+str(n)
         try:
-            if update.shouldBeProcessed(section) and update.hasPadType(PyPAD.TYPE_NOW):
-                packet='0:'+update.serviceProgramCode()+':'+update.config().get(section,'IsciPrefix')+FilterField(update.padField(PyPAD.TYPE_NOW,PyPAD.FIELD_EXTERNAL_EVENT_ID))+':*'
+            if update.shouldBeProcessed(section) and update.hasPadType(pypad.TYPE_NOW):
+                packet='0:'+update.serviceProgramCode()+':'+update.config().get(section,'IsciPrefix')+FilterField(update.padField(pypad.TYPE_NOW,pypad.FIELD_EXTERNAL_EVENT_ID))+':*'
                 try:
                     #
                     # Use serial output
@@ -94,11 +94,11 @@ def ProcessPad(update):
 #
 send_sock=socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
 
-rcvr=PyPAD.Receiver()
+rcvr=pypad.Receiver()
 try:
     rcvr.setConfigFile(sys.argv[3])
 except IndexError:
-    eprint('pypad_udp.py: you must specify a configuration file')
+    eprint('pypad_xds.py: USAGE: cmd <hostname> <port> <config>')
     sys.exit(1)
 rcvr.setCallback(ProcessPad)
 rcvr.start(sys.argv[1],int(sys.argv[2]))

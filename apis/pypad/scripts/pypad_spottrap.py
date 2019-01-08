@@ -23,7 +23,7 @@
 import sys
 import socket
 import configparser
-import PyPAD
+import pypad
 
 last_updates={}
 
@@ -41,13 +41,13 @@ def ProcessPad(update):
     while(True):
         section='Rule'+str(n)
         try:
-            if update.shouldBeProcessed(section) and update.hasPadType(PyPAD.TYPE_NOW) and (last_updates[update.machine()] != update.startDateTimeString(PyPAD.TYPE_NOW)):
-                last_updates[update.machine()]=update.startDateTimeString(PyPAD.TYPE_NOW)
-                length=update.padField(PyPAD.TYPE_NOW,PyPAD.FIELD_LENGTH)
-                if update.padField(PyPAD.TYPE_NOW,PyPAD.FIELD_GROUP_NAME)==update.config().get(section,'GroupName') and length>=int(update.config().get(section,'MinimumLength')) and length<=int(update.config().get(section,'MaximumLength')):
-                    msg=update.resolvePadFields(update.config().get(section,'FormatString'),PyPAD.ESCAPE_NONE)
+            if update.shouldBeProcessed(section) and update.hasPadType(pypad.TYPE_NOW) and (last_updates[update.machine()] != update.startDateTimeString(pypad.TYPE_NOW)):
+                last_updates[update.machine()]=update.startDateTimeString(pypad.TYPE_NOW)
+                length=update.padField(pypad.TYPE_NOW,pypad.FIELD_LENGTH)
+                if update.padField(pypad.TYPE_NOW,pypad.FIELD_GROUP_NAME)==update.config().get(section,'GroupName') and length>=int(update.config().get(section,'MinimumLength')) and length<=int(update.config().get(section,'MaximumLength')):
+                    msg=update.resolvePadFields(update.config().get(section,'FormatString'),pypad.ESCAPE_NONE)
                 else:
-                    msg=update.resolvePadFields(update.config().get(section,'DefaultFormatString'),PyPAD.ESCAPE_NONE)
+                    msg=update.resolvePadFields(update.config().get(section,'DefaultFormatString'),pypad.ESCAPE_NONE)
                 send_sock.sendto(msg.encode('utf-8'),
                                  (update.config().get(section,'IpAddress'),int(update.config().get(section,'UdpPort'))))
             n=n+1
@@ -61,11 +61,11 @@ def ProcessPad(update):
 #
 send_sock=socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
 
-rcvr=PyPAD.Receiver()
+rcvr=pypad.Receiver()
 try:
     rcvr.setConfigFile(sys.argv[3])
 except IndexError:
-    eprint('pypad_spottrap.py: you must specify a configuration file')
+    eprint('pypad_spottrap.py: USAGE: cmd <hostname> <port> <config>')
     sys.exit(1)
 rcvr.setCallback(ProcessPad)
 rcvr.start(sys.argv[1],int(sys.argv[2]))

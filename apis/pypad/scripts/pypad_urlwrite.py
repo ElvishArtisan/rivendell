@@ -24,7 +24,7 @@ import sys
 import syslog
 import configparser
 import pycurl
-import PyPAD
+import pypad
 from io import BytesIO
 
 def eprint(*args,**kwargs):
@@ -59,11 +59,11 @@ def ProcessPad(update):
 #
 syslog.openlog(sys.argv[0].split('/')[-1])
 
-rcvr=PyPAD.Receiver()
+rcvr=pypad.Receiver()
 try:
     rcvr.setConfigFile(sys.argv[3])
 except IndexError:
-    eprint('pypad_urlwrite.py: you must specify a configuration file')
+    eprint('pypad_urlwrite.py: USAGE: cmd <hostname> <port> <config>')
     sys.exit(1)
 rcvr.setCallback(ProcessPad)
 rcvr.start(sys.argv[1],int(sys.argv[2]))

@@ -1,8 +1,8 @@
 #!%PYTHON_BANGPATH%
 
-# pypad_udp.py
+# pypad_filewrite.py
 #
-# Send PAD updates via UDP
+# Write PAD updates to files
 #
 #   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
 #
@@ -21,38 +21,38 @@
 #
 
 import sys
-import socket
 import configparser
-import PyPAD
+import pypad
 
 def eprint(*args,**kwargs):
     print(*args,file=sys.stderr,**kwargs)
 
 def ProcessPad(update):
     n=1
-    while(True):
-        section='Udp'+str(n)
-        try:
+    try:
+        while(True):
+            section='File'+str(n)
             if update.shouldBeProcessed(section):
                 fmtstr=update.config().get(section,'FormatString')
-                send_sock.sendto(update.resolvePadFields(fmtstr,int(update.config().get(section,'Encoding'))).encode('utf-8'),
-                                 (update.config().get(section,'IpAddress'),int(update.config().get(section,'UdpPort'))))
+                mode='w'
+                if update.config().get(section,'Append')=='1':
+                    mode='a'
+                f=open(update.resolveFilepath(update.config().get(section,'Filename'),update.dateTime()),mode)
+                f.write(update.resolvePadFields(fmtstr,int(update.config().get(section,'Encoding'))))
+                f.close()
             n=n+1
-        except configparser.NoSectionError:
-            return
+
+    except configparser.NoSectionError:
+        return
 
 #
 # 'Main' function
 #
-# Create Send Socket
-#
-send_sock=socket.socket(socket.AF_INET,socket.SOCK_DGRAM)
-
-rcvr=PyPAD.Receiver()
+rcvr=pypad.Receiver()
 try:
     rcvr.setConfigFile(sys.argv[3])
 except IndexError:
-    eprint('pypad_udp.py: you must specify a configuration file')
+    eprint('pypad_filewrite.py: USAGE: cmd <hostname> <port> <config>')
     sys.exit(1)
 rcvr.setCallback(ProcessPad)
 rcvr.start(sys.argv[1],int(sys.argv[2]))

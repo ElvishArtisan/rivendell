@@ -468,10 +468,10 @@ AC_CONFIG_FILES([rivendell.spec \
     helpers/Makefile \
     helpers/install_python.sh \
     apis/Makefile \
-    apis/PyPAD/Makefile \
-    apis/PyPAD/api/Makefile \
-    apis/PyPAD/scripts/Makefile \
-    apis/PyPAD/tests/Makefile \
+    apis/pypad/Makefile \
+    apis/pypad/api/Makefile \
+    apis/pypad/scripts/Makefile \
+    apis/pypad/tests/Makefile \
     apis/rivwebcapi/Makefile \
     apis/rivwebcapi/rivwebcapi.pc \
     apis/rivwebcapi/rivwebcapi/Makefile \
