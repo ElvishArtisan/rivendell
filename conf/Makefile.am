@@ -1,8 +1,6 @@
-## automake.am
+## Makefile.am
 ##
-## Top level automake.am for Rivendell
-##
-## (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -33,26 +31,7 @@ uninstall:
 EXTRA_DIST = asound.conf-sample\
              rd-bin.conf.in\
              rd.conf-sample\
-             rivendell.pam\
-             rlm_ando.conf\
-             rlm_facebook.conf\
-             rlm_filewrite.conf\
-             rlm_icecast2.conf\
-             rlm_inno713.conf\
-             rlm_liqcomp.conf\
-             rlm_padpoint.conf\
-             rlm_serial.conf\
-             rlm_shoutcast1.conf\
-             rlm_spinitron_plus.conf\
-             rlm_spottrap.conf\
-             rlm_tagstation.conf\
-             rlm_tunein.conf\
-             rlm_twitter.conf\
-             rlm_udp.conf\
-             rlm_urlwrite.conf\
-             rlm_walltime.conf\
-             rlm_xds.conf\
-             rlm_xmpad.conf
+             rivendell.pam
 
 CLEANFILES = *~
 DISTCLEANFILES = rdfeed.conf

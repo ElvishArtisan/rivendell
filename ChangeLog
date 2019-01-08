@@ -18327,3 +18327,5 @@
 2019-01-08 Fred Gleason <fredg@paravelsystems.com>
 	* Renamed the 'pypad.Receiver::setCallback()' method to
 	'pypad.Receiver::setPadCallback()'.
+2019-01-08 Fred Gleason <fredg@paravelsystems.com>
+	* Removed sample RLM configurations from 'conf/'.
