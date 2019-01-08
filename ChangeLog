@@ -18318,3 +18318,5 @@
 	* Dropped the 'LOG_MACHINES.UDP_STRING' field from the database.
 	* Dropped the 'LOG_MACHINES.LOG_RML' field from the database.
 	* Incremented the database version to 305.
+2019-01-08 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'rivendell-pypad' RPM subpackage.
