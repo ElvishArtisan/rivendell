@@ -1744,124 +1744,33 @@ GPIOs</source>
     </message>
 </context>
 <context>
-    <name>EditNowNext</name>
+    <name>EditPypad</name>
     <message>
-        <source>Edit Now &amp; Next Data</source>
+        <source>Edit PyPAD Instance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Master Log</source>
+        <source>ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>IP Address:</source>
+        <source>Script Path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>UDP Port:</source>
+        <source>Description</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>UDP String:</source>
+        <source>Configuration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>RML:</source>
+        <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Aux Log 1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The IP address</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>is invalid!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Invalid Address</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Edit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Path</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Argument</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Loadable Modules:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Default Now Cart:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Default Next Cart:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Select</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Aux Log 2</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>EditNowNextPlugin</name>
-    <message>
-        <source>Edit Plugin</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Plugin Path:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Argument:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Select</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Select plugin</source>
+        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2033,11 +1942,6 @@ GPIOs</source>
     </message>
     <message>
         <source>Start Next</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Configure Now &amp;&amp; Next
-Parameters</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3234,6 +3138,11 @@ Ports</source>
         <source>Report Editor</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>PyPAD
+Instances</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditSvc</name>
@@ -4301,6 +4210,62 @@ PARTICULAR PURPOSE.  Touch the &quot;View License&quot; button for details.</sou
     </message>
 </context>
 <context>
+    <name>ListPypads</name>
+    <message>
+        <source>PyPAD Instances on</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Script Path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Exit Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Add</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Error
+Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select PyPAD Script</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Instance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are your sure you want to delete this instance?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ListReplicatorCarts</name>
     <message>
         <source>&amp;Repost</source>
@@ -4926,6 +4891,21 @@ please check your settings and try again.</source>
     </message>
     <message>
         <source>Please start the Rivendell daemons on this host (by executing, as user &apos;root&apos;, the command &quot;systemctl start rivendell&quot;) in order to populate the audio resources database.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ViewPypadErrors</name>
+    <message>
+        <source>Script Error Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

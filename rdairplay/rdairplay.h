@@ -32,7 +32,6 @@
 #include <qtimer.h>
 #include <qsignalmapper.h>
 #include <qpalette.h>
-#include <q3socketdevice.h>
 #include <qpixmap.h>
 #include <qsplashscreen.h>
 #include <qfontmetrics.h>
@@ -48,10 +47,10 @@
 #include <rdplay_deck.h>
 #include <rdpushbutton.h>
 #include <rdripc.h>
-#include <rdrlmhost.h>
 #include <rdsound_panel.h>
 #include <rdstereometer.h>
 #include <rdttydevice.h>
+#include <rdunixsocket.h>
 #include <rduser.h>
 
 #include "button_log.h"
@@ -199,8 +198,6 @@ class MainWidget : public QWidget
   RDLabel *air_refresh_label;
   QPixmap *air_refresh_pixmap;
   QString air_editor_cmd;
-  Q3SocketDevice *air_nownext_socket;
-  std::vector<RDRLMHost *> air_plugin_hosts;
   QSplashScreen *air_splash_screen;
   int  keystrokecount;
   bool AltKeyHit ;
@@ -219,7 +216,6 @@ class MainWidget : public QWidget
   RDAirPlayConf::GpioType air_channel_gpio_types[RDAirPlayConf::LastChannel];
   std::map<unsigned,QTimer *> air_channel_timers[2];
   RDEmptyCart *air_empty_cart;
-  RDCae *air_cae;
 };
 
 

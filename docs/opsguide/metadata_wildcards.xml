@@ -38,9 +38,9 @@
 	  <row><entry><userinput>%u</userinput></entry><entry><userinput>%U</userinput></entry><entry>User Definied</entry></row>
 	  <row><entry><userinput>%v</userinput></entry><entry><userinput>%V</userinput></entry><entry>Event length (seconds, rounded down)</entry></row>
 	  <row><entry><userinput>%w</userinput></entry><entry><userinput>%W</userinput></entry><entry>[Unassigned]</entry></row>
-	  <row><entry><userinput>%x</userinput></entry><entry><userinput>%X</userinput></entry><entry>[Unassigned]</entry></row>
+	  <row><entry><userinput>%x</userinput></entry><entry><userinput>%X</userinput></entry><entry>Log line ID (numeric)</entry></row>
 	  <row><entry><userinput>%y</userinput></entry><entry><userinput>%Y</userinput></entry><entry>Release Year</entry></row>
-	  <row><entry><userinput>%z</userinput></entry><entry><userinput>%Z</userinput></entry><entry>[Unassigned]</entry></row>
+	  <row><entry><userinput>%z</userinput></entry><entry><userinput>%Z</userinput></entry><entry>Log line number (numeric)</entry></row>
 	  <row><entry><userinput>\r</userinput></entry><entry><userinput>\r</userinput></entry><entry>Literal Carriage Return (ASCII 13)</entry></row>
 	  <row><entry><userinput>\n</userinput></entry><entry><userinput>\n</userinput></entry><entry>Literal Linefeed (ASCII 10)</entry></row>
 	</tbody>

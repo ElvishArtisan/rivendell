@@ -191,6 +191,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdplaymeter.cpp rdplaymeter.h\
                         rdpeaksexport.cpp rdpeaksexport.h\
                         rdpodcast.cpp rdpodcast.h\
+                        rdprocess.cpp rdprocess.h\
                         rdprofile.cpp rdprofile.h\
                         rdpushbutton.cpp rdpushbutton.h\
                         rdrecording.cpp rdrecording.h\
@@ -200,7 +201,6 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdreport.cpp rdreport.h\
                         rdringbuffer.cpp rdringbuffer.h\
                         rdripc.cpp rdripc.h\
-                        rdrlmhost.cpp rdrlmhost.h\
                         rdschedcode.cpp rdschedcode.h\
                         rdschedcodes_dialog.cpp rdschedcodes_dialog.h\
                         rdsegmeter.cpp rdsegmeter.h\
@@ -233,6 +233,8 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdurl.cpp rdurl.h\
                         rduser.cpp rduser.h\
                         rdupload.cpp rdupload.h\
+                        rdunixserver.cpp rdunixserver.h\
+                        rdunixsocket.cpp rdunixsocket.h\
                         rdversion.cpp rdversion.h\
                         rdwavedata.cpp rdwavedata.h\
                         rdwavedata_dialog.cpp rdwavedata_dialog.h\
@@ -313,11 +315,11 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdpasswd.cpp\
                           moc_rdplay_deck.cpp\
                           moc_rdplaymeter.cpp\
+                          moc_rdprocess.cpp\
                           moc_rdpushbutton.cpp\
                           moc_rdrehash.cpp\
                           moc_rdrenderer.cpp\
                           moc_rdripc.cpp\
-                          moc_rdrlmhost.cpp\
                           moc_rdschedcodes_dialog.cpp\
                           moc_rdsegmeter.cpp\
                           moc_rdsimpleplayer.cpp\
@@ -333,6 +335,8 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdtransportbutton.cpp\
                           moc_rdtrimaudio.cpp\
                           moc_rdttydevice.cpp\
+                          moc_rdunixserver.cpp\
+                          moc_rdunixsocket.cpp\
                           moc_rdupload.cpp\
                           moc_rdwavedata_dialog.cpp\
                           moc_schedcartlist.cpp

@@ -248,6 +248,11 @@ AC_CHECK_HEADER(security/pam_appl.h,[],[AC_MSG_ERROR([*** PAM not found ***])])
 AC_CHECK_HEADER(soundtouch/SoundTouch.h,[],[AC_MSG_ERROR([*** SoundTouch not found ***])])
 
 #
+# Check for Python
+#
+AM_PATH_PYTHON([3])
+
+#
 # Check for FLAC
 #
 if test -z $FLAC_DISABLED ; then
@@ -461,12 +466,16 @@ AC_CONFIG_FILES([rivendell.spec \
     conf/rd-bin.conf \
     icons/Makefile \
     helpers/Makefile \
+    helpers/install_python.sh \
     apis/Makefile \
+    apis/pypad/Makefile \
+    apis/pypad/api/Makefile \
+    apis/pypad/scripts/Makefile \
+    apis/pypad/tests/Makefile \
     apis/rivwebcapi/Makefile \
     apis/rivwebcapi/rivwebcapi.pc \
     apis/rivwebcapi/rivwebcapi/Makefile \
     apis/rivwebcapi/tests/Makefile \
-    apis/rlm/Makefile \
     lib/rdpaths.h \
     lib/Makefile \
     rdhpi/Makefile \
@@ -507,6 +516,8 @@ AC_CONFIG_FILES([rivendell.spec \
     rdmonitor/Makefile \
     rdpanel/Makefile \
     rdrepld/Makefile \
+    rdpadd/Makefile \
+    rdpadengined/Makefile \
     rdselect/Makefile \
     rdservice/Makefile \
     rdvairplayd/Makefile \
@@ -542,6 +553,8 @@ AC_CONFIG_FILES([rivendell.spec \
     xdg/Makefile \
     ])
 AC_OUTPUT()
+
+chmod 755 helpers/install_python.sh
 
 #
 # Create symlinks in 'utils/rdselect_helper/'

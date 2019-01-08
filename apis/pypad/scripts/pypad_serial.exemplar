@@ -1,0 +1,116 @@
+; This is the configuration for the 'pypad_serial.py' script for
+; Rivendell, which can be used to output Now & Next data via one or more
+; serial ports.
+;
+; NOTE: The serial ports configured here have NOTHING TO DO with the
+;       ports configured in RDAdmin! These ports are used strictly by the
+;       'pypad_serial.py' plugin, and will not be usable by any other Rivendell
+;       component.
+
+; Section Header
+;
+; One per serial device to be configured, starting with 'Serial1' and
+; working up consecutively
+[Serial1]
+
+; Serial Device
+;
+; The device file that corresponds to the serial device.
+Device=/dev/ttyS0
+
+; Serial Baud Rate (in bps)
+Speed=9600
+
+; Parity (0=none, 1=even, 2=odd)
+Parity=0
+
+; Number of bits per data 'word'.
+WordSize=8
+
+; Format String.  The string to be output each time RDAirPlay changes
+; play state, including any wildcards as placeholders for metadata values.
+;
+; The list of available wildcards can be found in the 'metadata_wildcards.txt'
+; file in the Rivendell documentation directory.
+;
+FormatString=NOW: %d(ddd MMM d hh:mm:ss yyyy): %t - %a\r\nNEXT: %D(ddd MMM d hh:mm:ss yyyy): %T - %A\r\n
+
+; Encoding.  Defines the set of escapes to be applied to the PAD fields.
+; The following options are available:
+;
+;  0 - Perform no character escaping.
+;  1 - "XML" escaping: Escape reserved characters as per XML-v1.0
+;  2 - "Web" escaping: Escape reserved characters as per RFC 2396 Section 2.4
+Encoding=0
+
+; Null Update Handling.  Defines how 'null' updates --i.e. those with a cart
+; number of '0' -- should be handled.
+;
+;  0 - Process all updates regardless of cart values.
+;  1 - Process update only if the 'now' cart is not null.
+;  2 - Process update only if the 'next' cart is not null.
+;  3 - Process update only if both the 'now' and 'next' carts are not null.
+ProcessNullUpdates=0
+
+; Log Selection
+;
+; Set the status for each log to 'Yes', 'No' or 'Onair' to indicate whether
+; state changes on that log should be output on this serial port.  If set
+; to 'Onair', then output will be generated only if RDAirPlay's OnAir flag
+; is active.
+MasterLog=Yes
+Aux1Log=Yes
+Aux2Log=Yes
+VLog101=No
+VLog102=No
+VLog103=No
+VLog104=No
+VLog105=No
+VLog106=No
+VLog107=No
+VLog108=No
+VLog109=No
+VLog110=No
+VLog111=No
+VLog112=No
+VLog113=No
+VLog114=No
+VLog115=No
+VLog116=No
+VLog117=No
+VLog118=No
+VLog119=No
+VLog120=No
+
+
+; Additional serial ports can be configured by adding new sections...
+;[Serial2]
+;Device=/dev/ttyS1
+;Speed=9600
+;Parity=0
+;WordSize=8
+;FormatString=%t
+;ProcessNullUpdates=0
+;MasterLog=Yes
+;Aux1Log=No
+;Aux2Log=Onair
+;VLog101=No
+;VLog102=No
+;VLog103=No
+;VLog104=No
+;VLog105=No
+;VLog106=No
+;VLog107=No
+;VLog108=No
+;VLog109=No
+;VLog110=No
+;VLog111=No
+;VLog112=No
+;VLog113=No
+;VLog114=No
+;VLog115=No
+;VLog116=No
+;VLog117=No
+;VLog118=No
+;VLog119=No
+;VLog120=No

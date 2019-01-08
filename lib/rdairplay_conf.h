@@ -129,14 +129,6 @@ class RDAirPlayConf
   void setDescriptionTemplate(const QString &str);
   bool hourSelectorEnabled() const;
   void setHourSelectorEnabled(bool state) const;
-  QHostAddress udpAddress(int logno) const;
-  void setUdpAddress(int logno,QHostAddress addr) const;
-  Q_UINT16 udpPort(int logno) const;
-  void setUdpPort(int logno,Q_UINT16 port) const;
-  QString udpString(int logno) const;
-  void setUdpString(int logno,const QString &str) const;
-  QString logRml(int logno) const;
-  void setLogRml(int logno,const QString &str) const;
   RDAirPlayConf::ExitCode exitCode() const;
   void setExitCode(RDAirPlayConf::ExitCode code) const;
   RDAirPlayConf::ExitCode virtualExitCode() const;

@@ -2,7 +2,7 @@
 //
 // Rivendell Log Playout Machine
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,7 +26,6 @@
 #include <qobject.h>
 #include <qsignalmapper.h>
 #include <qtimer.h>
-#include <q3socketdevice.h>
 #include <qdatetime.h>
 
 #include <rd.h>
@@ -37,8 +36,8 @@
 #include <rdlog_event.h>
 #include <rdmacro_event.h>
 #include <rdplay_deck.h>
-#include <rdrlmhost.h>
 #include <rdsimpleplayer.h>
+#include <rdunixsocket.h>
 
 //
 // Widget Settings
@@ -53,8 +52,7 @@ class RDLogPlay : public QObject,public RDLogEvent
 {
  Q_OBJECT
  public:
-  RDLogPlay(int id,RDEventPlayer *player,Q3SocketDevice *nn_sock,QString logname,
-	  std::vector<RDRLMHost *> *rlm_hosts,QObject *parent=0);
+  RDLogPlay(int id,RDEventPlayer *player,QObject *parent=0);
   QString serviceName() const;
   void setServiceName(const QString &svcname);
   QString defaultServiceName() const;
@@ -188,6 +186,9 @@ class RDLogPlay : public QObject,public RDLogEvent
   RDLogLine::TransType GetTransType(const QString &logname,int line);
   bool ClearBlock(int start_line);
   void SendNowNext();
+  QString GetPadJson(const QString &name,RDLogLine *ll,
+		     const QDateTime &start_datetime,int line,int padding,
+		     bool final=false) const;
   void LogTraffic(RDLogLine *logline,RDLogLine::PlaySource src,
 		  RDAirPlayConf::TrafficAction action,bool onair_flag) const;
   RDCae *play_cae;
@@ -220,10 +221,6 @@ class RDLogPlay : public QObject,public RDLogEvent
   RDPlayDeck *play_deck[RD_MAX_STREAMS];
   bool play_deck_active[RD_MAX_STREAMS];
   int next_channel;
-  Q3SocketDevice *play_nownext_socket;
-  QString play_nownext_string;
-  QHostAddress play_nownext_address;
-  Q_UINT16 play_nownext_port;
   QString play_nownext_rml;
   bool play_timescaling_supported[RD_MAX_CARDS];
   QString play_svc_name;
@@ -236,7 +233,6 @@ class RDLogPlay : public QObject,public RDLogEvent
   bool play_onair_flag;
   int play_duck_volume_port1;
   int play_duck_volume_port2;
-  std::vector<RDRLMHost *> *play_rlm_hosts;
   unsigned play_now_cartnum;
   unsigned play_next_cartnum;
   unsigned play_prevnow_cartnum;
@@ -246,6 +242,7 @@ class RDLogPlay : public QObject,public RDLogEvent
   bool play_audition_head_played;
   int play_audition_preroll;
   RDEventPlayer *play_event_player;
+  RDUnixSocket *play_pad_socket;
 };
 
 

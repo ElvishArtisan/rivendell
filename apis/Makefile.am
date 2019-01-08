@@ -20,8 +20,8 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-SUBDIRS = rivwebcapi\
-          rlm
+SUBDIRS = pypad\
+          rivwebcapi
 
 CLEANFILES = *~\
              *.idb\

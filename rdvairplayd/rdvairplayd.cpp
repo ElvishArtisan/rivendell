@@ -110,11 +110,6 @@ MainObject::MainObject(QObject *parent)
   air_event_player=new RDEventPlayer(rda->ripc(),this);
 
   //
-  // UDP Transmission Socket
-  //
-  air_nownext_socket=new Q3SocketDevice(Q3SocketDevice::Datagram);
-
-  //
   // Log Machines
   //
   QSignalMapper *reload_mapper=new QSignalMapper(this);
@@ -122,24 +117,14 @@ MainObject::MainObject(QObject *parent)
   QSignalMapper *rename_mapper=new QSignalMapper(this);
   QString default_svcname=rda->airplayConf()->defaultSvc();
   for(int i=0;i<RD_RDVAIRPLAY_LOG_QUAN;i++) {
-    air_logs[i]=new RDLogPlay(i+RD_RDVAIRPLAY_LOG_BASE,air_event_player,
-			      air_nownext_socket,"",&air_plugin_hosts);
+    air_logs[i]=new RDLogPlay(i+RD_RDVAIRPLAY_LOG_BASE,air_event_player,this);
     air_logs[i]->setDefaultServiceName(default_svcname);
-    //
-    // FIXME: Add the ability to specify default carts for vLogs!
-    //
     air_logs[i]->setNowCart(rda->airplayConf()->logNowCart(i));
     air_logs[i]->setNextCart(rda->airplayConf()->logNextCart(i));
     reload_mapper->setMapping(air_logs[i],i);
     connect(air_logs[i],SIGNAL(reloaded()),reload_mapper,SLOT(map()));
     rename_mapper->setMapping(air_logs[i],i);
     connect(air_logs[i],SIGNAL(renamed()),rename_mapper,SLOT(map()));
-    //    connect(air_logs[i],SIGNAL(refreshStatusChanged(bool)),
-    //	    this,SLOT(refreshStatusChangedData(bool)));
-    //    connect(air_logs[i],SIGNAL(channelStarted(int,int,int,int)),
-    //	    this,SLOT(logChannelStartedData(int,int,int,int)));
-    //    connect(air_logs[i],SIGNAL(channelStopped(int,int,int,int)),
-    //	    this,SLOT(logChannelStoppedData(int,int,int,int)));
     int cards[2]={0,0};
     cards[0]=rda->airplayConf()->virtualCard(i+RD_RDVAIRPLAY_LOG_BASE);
     cards[1]=rda->airplayConf()->virtualCard(i+RD_RDVAIRPLAY_LOG_BASE);
@@ -167,34 +152,6 @@ MainObject::MainObject(QObject *parent)
   //  connect(air_logs[0],SIGNAL(transportChanged()),
   //	  this,SLOT(transportChangedData()));
   
-  //
-  // Load Plugins
-  //
-  QString sql;
-  RDSqlQuery *q;
-
-  sql=QString("select ")+
-    "PLUGIN_PATH,"+
-    "PLUGIN_ARG "+
-    "from NOWNEXT_PLUGINS where "+
-    "(STATION_NAME=\""+RDEscapeString(rda->config()->stationName())+"\")&&"+
-    "(LOG_MACHINE=0)";
-  q=new RDSqlQuery(sql);
-  while(q->next()) {
-    air_plugin_hosts.
-      push_back(new RDRLMHost(q->value(0).toString(),q->value(1).toString(),
-			      air_nownext_socket,this));
-    rda->log(RDConfig::LogInfo,QString().
-	     sprintf("Loading RLM \"%s\"",
-		     (const char *)q->value(0).toString()));
-    if(!air_plugin_hosts.back()->load()) {
-      rda->log(RDConfig::LogWarning,QString().
-	       sprintf("Failed to load RLM \"%s\"",
-		       (const char *)q->value(0).toString()));
-    }
-  }
-  delete q;
-
   //
   // Exit Timer
   //
@@ -339,9 +296,6 @@ void MainObject::logReloadedData(int log)
 void MainObject::exitData()
 {
   if(global_exiting) {
-    for(unsigned i=0;i<air_plugin_hosts.size();i++) {
-      air_plugin_hosts[i]->unload();
-    }
     for(int i=0;i<RD_RDVAIRPLAY_LOG_QUAN;i++) {
       delete air_logs[i];
     }

@@ -88,6 +88,21 @@ extern QString RDXmlDateTime(const QDateTime &datetime);
 extern QString RDXmlTimeZoneSuffix();
 extern QString RDXmlEscape(const QString &str);
 extern QString RDXmlUnescape(const QString &str);
+extern QString RDJsonPadding(int padding);
+extern QString RDJsonNullField(const QString &name,int padding=0,
+			       bool final=false);
+extern QString RDJsonField(const QString &name,bool value,int padding=0,
+			   bool final=false);
+extern QString RDJsonField(const QString &name,int value,int padding=0,
+			   bool final=false);
+extern QString RDJsonField(const QString &name,unsigned value,int padding=0,
+			   bool final=false);
+extern QString RDJsonField(const QString &name,const QString &value,
+			   int padding=0,bool final=false);
+extern QString RDJsonField(const QString &name,const QDateTime &value,
+			   int padding=0,bool final=false);
+
+
 extern QString RDUrlEscape(const QString &str);
 extern QString RDUrlUnescape(const QString &str);
 extern QString RDWebDateTime(const QDateTime &datetime);

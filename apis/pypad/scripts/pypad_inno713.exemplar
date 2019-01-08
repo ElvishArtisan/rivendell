@@ -1,0 +1,117 @@
+; This is the configuration for the 'rlm_inno713.py' script for 
+; Rivendell, which can be used to output Now & Next data to one or more
+; Innovonics model 713 RDS encoders.
+
+; Section Header
+;
+; One section per remote RDS unit is configured, starting with 'Rds1' and 
+; working up consecutively
+[Rds1]
+
+; Two methods of connecting to the unit are supported: TCP/IP or serial.
+;
+; *****************************************************************************
+; TCP/IP Connection Settings
+;  IP Address
+;
+; The IP address of the UDP port to send updates to, in dotted-quad notation.
+; If using a serial connection, leave this entry blank!
+IpAddress=127.0.0.1
+
+; UDP Port
+;
+; The UDP port number to send updates to, in the range 0 - 65,535.
+UdpPort=10001
+; *****************************************************************************
+
+; *****************************************************************************
+; Serial Connection Settings
+; 
+; The device file that corresponds to the serial device that is connected
+; to the unit.  If using a TCP/IP connection, leave this entry blank!
+;Device=/dev/ttyS0
+
+; Serial Baud Rate (in bps)
+Speed=9600
+
+; Parity (0=none, 1=even, 2=odd)
+Parity=0
+
+; Number of bits per data 'word'.
+WordSize=8
+; *****************************************************************************
+
+; Output Strings.  The PAD data to output each time RDAirPlay changes
+; play state, including any wildcards as placeholders for metadata values.
+;
+; For the list of supported wildcards. see the 'Metadata Wildcards' section
+; of the Rivendell Operations Guide.
+PsString=
+DynamicPsString=%t
+RadiotextString=%a
+
+; Log Selection
+;
+; Set the status for each log to 'Yes', 'No' or 'Onair' to indicate whether
+; state changes on that log should be output on this udp port.  If set
+; to 'Onair', then output will be generated only if RDAirPlays OnAir flag
+; is active.
+MasterLog=Yes
+Aux1Log=Yes
+Aux2Log=Yes
+VLog101=No
+VLog102=No
+VLog103=No
+VLog104=No
+VLog105=No
+VLog106=No
+VLog107=No
+VLog108=No
+VLog109=No
+VLog110=No
+VLog111=No
+VLog112=No
+VLog113=No
+VLog114=No
+VLog115=No
+VLog116=No
+VLog117=No
+VLog118=No
+VLog119=No
+VLog120=No
+
+
+; Additional RDS encoders can be configured by adding new sections...
+;[Rds2]
+;IpAddress=192.168.10.22
+;UdpPort=6789
+;Device=/dev/ttyS0
+;Speed=9600
+;Parity=0
+;WordSize=8
+;PsString=
+;DynamicPsString=%t
+;RadiotextString=%a
+;MasterLog=Yes
+;Aux1Log=No
+;Aux2Log=Onair
+;VLog101=No
+;VLog102=No
+;VLog103=No
+;VLog104=No
+;VLog105=No
+;VLog106=No
+;VLog107=No
+;VLog108=No
+;VLog109=No
+;VLog110=No
+;VLog111=No
+;VLog112=No
+;VLog113=No
+;VLog114=No
+;VLog115=No
+;VLog116=No
+;VLog117=No
+;VLog118=No
+;VLog119=No
+;VLog120=No

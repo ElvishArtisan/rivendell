@@ -2076,122 +2076,153 @@ GPIOs</source>
     <name>EditNowNext</name>
     <message>
         <source>Edit Now &amp; Next Data</source>
-        <translation>Editar Agora &amp; Próximo </translation>
+        <translation type="obsolete">Editar Agora &amp; Próximo </translation>
     </message>
     <message>
         <source>Master Log</source>
-        <translation>Lista Principal</translation>
+        <translation type="obsolete">Lista Principal</translation>
     </message>
     <message>
         <source>IP Address:</source>
-        <translation>Endereço de IP:</translation>
+        <translation type="obsolete">Endereço de IP:</translation>
     </message>
     <message>
         <source>UDP Port:</source>
-        <translation>Porta UDP:</translation>
+        <translation type="obsolete">Porta UDP:</translation>
     </message>
     <message>
         <source>UDP String:</source>
-        <translation>String UDP:</translation>
+        <translation type="obsolete">String UDP:</translation>
     </message>
     <message>
         <source>RML:</source>
-        <translation>RML:</translation>
+        <translation type="obsolete">RML:</translation>
     </message>
     <message>
         <source>Default Now Cart:</source>
-        <translation>Cartão &apos;Agora&apos;: </translation>
+        <translation type="obsolete">Cartão &apos;Agora&apos;: </translation>
     </message>
     <message>
         <source>Select</source>
-        <translation>Sel</translation>
+        <translation type="obsolete">Sel</translation>
     </message>
     <message>
         <source>Default Next Cart:</source>
-        <translation>Cartão &apos;Próximo&apos;: </translation>
+        <translation type="obsolete">Cartão &apos;Próximo&apos;: </translation>
     </message>
     <message>
         <source>Aux Log 1</source>
-        <translation>Lista Auxiliar 1</translation>
+        <translation type="obsolete">Lista Auxiliar 1</translation>
     </message>
     <message>
         <source>Path</source>
-        <translation>Caminho</translation>
+        <translation type="obsolete">Caminho</translation>
     </message>
     <message>
         <source>Argument</source>
-        <translation>Argumento</translation>
+        <translation type="obsolete">Argumento</translation>
     </message>
     <message>
         <source>Loadable Modules:</source>
-        <translation>Módulos Carregáveis:</translation>
+        <translation type="obsolete">Módulos Carregáveis:</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation>Adicionar</translation>
+        <translation type="obsolete">Adicionar</translation>
     </message>
     <message>
         <source>Edit</source>
-        <translation>Editar</translation>
+        <translation type="obsolete">Editar</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Deletar</translation>
+        <translation type="obsolete">Deletar</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>The IP address</source>
-        <translation>Endereço de IP</translation>
+        <translation type="obsolete">Endereço de IP</translation>
     </message>
     <message>
         <source>is invalid!</source>
-        <translation>é inválido!</translation>
+        <translation type="obsolete">é inválido!</translation>
     </message>
     <message>
         <source>Invalid Address</source>
-        <translation>Endereço Inválido</translation>
+        <translation type="obsolete">Endereço Inválido</translation>
     </message>
     <message>
         <source>Aux Log 2</source>
-        <translation type="unfinished">Lista Auxiliar 2</translation>
+        <translation type="obsolete">Lista Auxiliar 2</translation>
     </message>
 </context>
 <context>
     <name>EditNowNextPlugin</name>
     <message>
         <source>Edit Plugin</source>
-        <translation>Editar Plugin</translation>
+        <translation type="obsolete">Editar Plugin</translation>
     </message>
     <message>
         <source>Plugin Path:</source>
-        <translation>Pasta do Plugin:</translation>
+        <translation type="obsolete">Pasta do Plugin:</translation>
     </message>
     <message>
         <source>Select</source>
-        <translation>Sel</translation>
+        <translation type="obsolete">Sel</translation>
     </message>
     <message>
         <source>Argument:</source>
-        <translation>Argumento:</translation>
+        <translation type="obsolete">Argumento:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>Select plugin</source>
-        <translation>Selecionar Plugin</translation>
+        <translation type="obsolete">Selecionar Plugin</translation>
+    </message>
+</context>
+<context>
+    <name>EditPypad</name>
+    <message>
+        <source>Edit PyPAD Instance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Script Path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2387,7 +2418,7 @@ GPIOs</source>
     <message>
         <source>Configure Now &amp;&amp; Next
 Parameters</source>
-        <translation>Configurar Parâmetros do
+        <translation type="obsolete">Configurar Parâmetros do
 Agora &amp;&amp; Próximo
 </translation>
     </message>
@@ -3691,6 +3722,11 @@ Ports</source>
     </message>
     <message>
         <source>Report Editor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PyPAD
+Instances</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5015,6 +5051,62 @@ Você ainda quer Deletar?</translation>
     </message>
 </context>
 <context>
+    <name>ListPypads</name>
+    <message>
+        <source>PyPAD Instances on</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Script Path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Exit Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Add</source>
+        <translation type="unfinished">&amp;Adicionar</translation>
+    </message>
+    <message>
+        <source>&amp;Edit</source>
+        <translation type="unfinished">&amp;Editar</translation>
+    </message>
+    <message>
+        <source>&amp;Delete</source>
+        <translation type="unfinished">&amp;Deletar</translation>
+    </message>
+    <message>
+        <source>&amp;Error
+Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Fechar</translation>
+    </message>
+    <message>
+        <source>Select PyPAD Script</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Instance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are your sure you want to delete this instance?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ListReplicatorCarts</name>
     <message>
         <source>&amp;Repost</source>
@@ -5898,6 +5990,21 @@ por favor, cheque suas configurações e tente novamente</translation>
     </message>
     <message>
         <source>Please start the Rivendell daemons on this host (by executing, as user &apos;root&apos;, the command &quot;systemctl start rivendell&quot;) in order to populate the audio resources database.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ViewPypadErrors</name>
+    <message>
+        <source>Script Error Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

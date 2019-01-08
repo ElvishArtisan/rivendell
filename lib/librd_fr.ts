@@ -2049,6 +2049,25 @@ please try again!</source>
     </message>
 </context>
 <context>
+    <name>RDProcess</name>
+    <message>
+        <source>no such program</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ok</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>process crashed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>process returned exit code</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RDRehash</name>
     <message>
         <source>OK</source>

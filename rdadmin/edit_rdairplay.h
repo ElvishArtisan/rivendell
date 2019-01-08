@@ -59,7 +59,6 @@ class EditRDAirPlay : public QDialog
   void virtualModeActivatedData(int vlognum);
   void startModeChangedData(int mode);
   void selectData();
-  void nownextData();
   void editHotKeys();
   void selectSkinData();
   void modeControlActivatedData(int n);

@@ -40,7 +40,6 @@
 
 #include "edit_rdairplay.h"
 #include "edit_hotkeys.h"
-#include "edit_now_next.h"
 #include "edit_channelgpios.h"
 #include "globals.h"
 
@@ -291,15 +290,6 @@ EditRDAirPlay::EditRDAirPlay(RDStation *station,RDStation *cae_station,
   button->setFont(small_font);
   button->setText(tr("Configure Hot Keys"));
   connect(button,SIGNAL(clicked()),this,SLOT(editHotKeys()));
-
-  //
-  // Now & Next Button
-  //
-  button=new QPushButton(this);
-  button->setGeometry(200,385,180,50);
-  button->setFont(small_font);
-  button->setText(tr("Configure Now && Next\nParameters"));
-  connect(button,SIGNAL(clicked()),this,SLOT(nownextData()));
 
   //
   // Sound Panel First Play Output
@@ -1127,13 +1117,6 @@ void EditRDAirPlay::selectData()
   delete ll;
 }
 
-
-void EditRDAirPlay::nownextData()
-{
-  EditNowNext *edit=new EditNowNext(air_conf,this);
-  edit->exec();
-  delete edit;
-}
 
 void EditRDAirPlay::editHotKeys()
 {

@@ -219,6 +219,8 @@
  */
 #define RD_DEFAULT_AUDIO_OWNER "user"
 #define RD_DEFAULT_AUDIO_GROUP "users"
+#define RD_DEFAULT_PYPAD_OWNER "nobody"
+#define RD_DEFAULT_PYPAD_GROUP "nobody"
 #define RD_DEFAULT_LABEL "Default Configuration"
 
 /*
@@ -592,6 +594,12 @@
  * Status / Note Bubble Background Color
  */
 #define RD_STATUS_BACKGROUND_COLOR "#AAFFFF"
+
+/*
+ * PAD Update Connection Points
+ */
+#define RD_PAD_CLIENT_TCP_PORT 34289
+#define RD_PAD_SOURCE_UNIX_ADDRESS "m4w8n8fsfddf-473fdueusurt-8954"
 
 
 #endif  // RD_H

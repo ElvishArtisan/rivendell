@@ -9624,6 +9624,53 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<303)&&(set_schema>cur_schema)) {
+    sql=QString("create table if not exists PYPAD_INSTANCES (")+
+      "ID int auto_increment not null primary key,"+
+      "STATION_NAME varchar(64) not null,"+
+      "SCRIPT_PATH varchar(191) not null,"+
+      "DESCRIPTION varchar(191) default '[new]',"+
+      "CONFIG text not null,"+
+      "index STATION_NAME_IDX(STATION_NAME))"+
+      " charset utf8mb4 collate utf8mb4_general_ci"+
+      db_table_create_postfix;
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
+  if((cur_schema<304)&&(set_schema>cur_schema)) {
+    sql=QString("alter table PYPAD_INSTANCES add column ")+
+      "IS_RUNNING enum('N','Y') not null default 'N' after CONFIG";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table PYPAD_INSTANCES add column ")+
+      "EXIT_CODE int not null default 0 after IS_RUNNING";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table PYPAD_INSTANCES add column ")+
+      "ERROR_TEXT text after EXIT_CODE";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
+  if((cur_schema<305)&&(set_schema>cur_schema)) {
+    DropTable("NOWNEXT_PLUGINS");
+    DropColumn("LOG_MACHINES","UDP_ADDR");
+    DropColumn("LOG_MACHINES","UDP_PORT");
+    DropColumn("LOG_MACHINES","UDP_STRING");
+    DropColumn("LOG_MACHINES","LOG_RML");
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
 
   // NEW SCHEMA UPDATES GO HERE...
 

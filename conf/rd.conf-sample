@@ -11,6 +11,11 @@
 AudioOwner=rivendell
 AudioGroup=rivendell
 
+; These entries are used to define the system user and group that PyPAD
+; scripts will run under.
+PypadOwner=pypad
+PypadGroup=pypad
+
 ; This password is used by the various Rivendell modules to log into 
 ; Rivendell system services [caed(8), ripcd(8), rdcatchd(8)].
 Password=letmein

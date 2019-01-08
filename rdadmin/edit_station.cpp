@@ -45,6 +45,7 @@
 #include "list_hostvars.h"
 #include "edit_jack.h"
 #include "list_matrices.h"
+#include "list_pypads.h"
 #include "edit_rdairplay.h"
 
 #include "edit_rdlibrary.h"
@@ -440,6 +441,15 @@ EditStation::EditStation(QString sname,QWidget *parent)
   station_jack_button->setFont(font);
   station_jack_button->setText(tr("JACK\nSettings"));
   connect(station_jack_button,SIGNAL(clicked()),this,SLOT(jackSettingsData()));
+
+  //
+  // PyPAD Instances Button
+  //
+  station_pypad_button=new QPushButton(this);
+  station_pypad_button->setFont(font);
+  station_pypad_button->setText(tr("PyPAD\nInstances"));
+  connect(station_pypad_button,SIGNAL(clicked()),
+	  this,SLOT(pypadInstancesData()));
 
   //
   // Ok Button
@@ -858,6 +868,14 @@ void EditStation::jackSettingsData()
 }
 
 
+void EditStation::pypadInstancesData()
+{
+  ListPypads *d=new ListPypads(station_station,this);
+  d->exec();
+  delete d;
+}
+
+
 void EditStation::startCartClickedData()
 {
   int cartnum=station_start_cart_edit->text().toUInt();
@@ -976,7 +994,9 @@ void EditStation::resizeEvent(QResizeEvent *e)
 
   station_adapters_button->setGeometry(290,554,80,50);
 
-  station_jack_button->setGeometry(155,614,80,50);
+  station_jack_button->setGeometry(110,614,80,50);
+
+  station_pypad_button->setGeometry(200,614,80,50);
 
   station_ok_button->setGeometry(size().width()-180,size().height()-60,80,50);
   station_cancel_button->

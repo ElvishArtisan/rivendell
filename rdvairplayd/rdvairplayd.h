@@ -22,13 +22,11 @@
 #define RDVAIRPLAYD_H
 
 #include <qobject.h>
-#include <q3socketdevice.h>
 
 #include <rdevent_player.h>
 #include <rd.h>
 #include <rdlogplay.h>
 #include <rdmacro.h>
-#include <rdrlmhost.h>
 
 #define RDVAIRPLAYD_USAGE "[options]\n"
 
@@ -54,9 +52,7 @@ class MainObject : public QObject
   QString air_start_lognames[RD_RDVAIRPLAY_LOG_QUAN];
   int air_start_lines[RD_RDVAIRPLAY_LOG_QUAN];
   bool air_start_starts[RD_RDVAIRPLAY_LOG_QUAN];
-  std::vector<RDRLMHost *> air_plugin_hosts;
   RDEventPlayer *air_event_player;
-  Q3SocketDevice *air_nownext_socket;
   QDateTime air_startup_datetime;
   RDAirPlayConf::ExitCode air_previous_exit_code;
   QTimer *air_exit_timer;

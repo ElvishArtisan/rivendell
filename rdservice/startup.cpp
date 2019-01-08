@@ -41,6 +41,8 @@ bool MainObject::Startup(QString *err_msg)
   //
   KillProgram("rdrepld");
   KillProgram("rdvairplayd");
+  KillProgram("rdpadengined");
+  KillProgram("rdpadd");
   KillProgram("rdcatchd");
   KillProgram("ripcd");
   KillProgram("caed");
@@ -48,7 +50,7 @@ bool MainObject::Startup(QString *err_msg)
   //
   // caed(8)
   //
-  svc_processes[RDSERVICE_CAED_ID]=new Process(RDSERVICE_CAED_ID,this);
+  svc_processes[RDSERVICE_CAED_ID]=new RDProcess(RDSERVICE_CAED_ID,this);
   args.clear();
   svc_processes[RDSERVICE_CAED_ID]->start(QString(RD_PREFIX)+"/sbin/caed",args);
   if(!svc_processes[RDSERVICE_CAED_ID]->process()->waitForStarted(-1)) {
@@ -60,7 +62,7 @@ bool MainObject::Startup(QString *err_msg)
   //
   // ripcd(8)
   //
-  svc_processes[RDSERVICE_RIPCD_ID]=new Process(RDSERVICE_RIPCD_ID,this);
+  svc_processes[RDSERVICE_RIPCD_ID]=new RDProcess(RDSERVICE_RIPCD_ID,this);
   args.clear();
   svc_processes[RDSERVICE_RIPCD_ID]->
     start(QString(RD_PREFIX)+"/sbin/ripcd",args);
@@ -73,7 +75,7 @@ bool MainObject::Startup(QString *err_msg)
   //
   // rdcatchd(8)
   //
-  svc_processes[RDSERVICE_RDCATCHD_ID]=new Process(RDSERVICE_RDCATCHD_ID,this);
+  svc_processes[RDSERVICE_RDCATCHD_ID]=new RDProcess(RDSERVICE_RDCATCHD_ID,this);
   args.clear();
   svc_processes[RDSERVICE_RDCATCHD_ID]->
     start(QString(RD_PREFIX)+"/sbin/rdcatchd",args);
@@ -84,9 +86,43 @@ bool MainObject::Startup(QString *err_msg)
   }
 
   //
+  // rdpadd(8)
+  //
+  svc_processes[RDSERVICE_RDPADD_ID]=new RDProcess(RDSERVICE_RDPADD_ID,this);
+  args.clear();
+  svc_processes[RDSERVICE_RDPADD_ID]->
+    start(QString(RD_PREFIX)+"/sbin/rdpadd",args);
+  if(!svc_processes[RDSERVICE_RDPADD_ID]->process()->waitForStarted(-1)) {
+    *err_msg=tr("unable to start rdpadd(8)")+": "+
+      svc_processes[RDSERVICE_RDPADD_ID]->errorText();
+    return false;
+  }
+
+  //
+  // *** BAND-AID * BAND_AID * YEECH! ***
+  // This Makes It Work, but I think we're going to need to implement
+  // socket activation on all of these services.
+  //
+  sleep(1);
+
+  //
+  // rdpadengined(8)
+  //
+  svc_processes[RDSERVICE_RDPADENGINED_ID]=
+    new RDProcess(RDSERVICE_RDPADENGINED_ID,this);
+  args.clear();
+  svc_processes[RDSERVICE_RDPADENGINED_ID]->
+    start(QString(RD_PREFIX)+"/sbin/rdpadengined",args);
+  if(!svc_processes[RDSERVICE_RDPADENGINED_ID]->process()->waitForStarted(-1)) {
+    *err_msg=tr("unable to start rdpadengined(8)")+": "+
+      svc_processes[RDSERVICE_RDPADENGINED_ID]->errorText();
+    return false;
+  }
+
+  //
   // rdvairplayd(8)
   //
-  svc_processes[RDSERVICE_RDVAIRPLAYD_ID]=new Process(RDSERVICE_RDVAIRPLAYD_ID,this);
+  svc_processes[RDSERVICE_RDVAIRPLAYD_ID]=new RDProcess(RDSERVICE_RDVAIRPLAYD_ID,this);
   args.clear();
   svc_processes[RDSERVICE_RDVAIRPLAYD_ID]->
     start(QString(RD_PREFIX)+"/sbin/rdvairplayd",args);
@@ -103,7 +139,7 @@ bool MainObject::Startup(QString *err_msg)
     "STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\"";
   q=new RDSqlQuery(sql);
   if(q->first()) {
-    svc_processes[RDSERVICE_RDREPLD_ID]=new Process(RDSERVICE_RDREPLD_ID,this);
+    svc_processes[RDSERVICE_RDREPLD_ID]=new RDProcess(RDSERVICE_RDREPLD_ID,this);
     args.clear();
     svc_processes[RDSERVICE_RDREPLD_ID]->
       start(QString(RD_PREFIX)+"/sbin/rdrepld",args);
@@ -232,7 +268,7 @@ bool MainObject::StartDropboxes(QString *err_msg)
     args.push_back(q->value(1).toString());
     args.push_back(q->value(2).toString());
 
-    svc_processes[id]=new Process(id,this);
+    svc_processes[id]=new RDProcess(id,this);
     svc_processes[id]->start(QString(RD_PREFIX)+"/bin/rdimport",args);
     if(!svc_processes[id]->process()->waitForStarted(-1)) {
       *err_msg=tr("unable to start dropbox")+": "+

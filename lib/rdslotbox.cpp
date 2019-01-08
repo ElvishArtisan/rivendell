@@ -352,7 +352,7 @@ void RDSlotBox::setCart(RDLogLine *logline)
 	   (!line_logline->originDateTime().isValid())) {
 	  line_title_label->
 	    setText(RDResolveNowNext(line_airplay_conf->titleTemplate(),
-				     logline));
+				     logline,log_id+1));
 	}
 	else {
 	  line_title_label->setText(line_logline->title()+" -- "+
@@ -362,10 +362,10 @@ void RDSlotBox::setCart(RDLogLine *logline)
 	}
 	line_description_label->
 	  setText(RDResolveNowNext(line_airplay_conf->descriptionTemplate(),
-				   logline));
+				   logline,log_id+1));
 	line_artist_label->
 	  setText(RDResolveNowNext(line_airplay_conf->artistTemplate(),
-				   logline));
+				   logline,log_id+1));
 	line_up_label->
 	  setText(RDGetTimeLength(line_logline->playPosition(),true,true));
 	line_down_label->
@@ -378,7 +378,7 @@ void RDSlotBox::setCart(RDLogLine *logline)
 	    setText(QString().sprintf("%03u",logline->cutNumber()));
 	  line_outcue_label->
 	    setText(RDResolveNowNext(line_airplay_conf->outcueTemplate(),
-				     logline));
+				     logline,log_id+1));
 	  line_position_bar->show();
 	  line_up_label->show();
 	  line_down_label->show();

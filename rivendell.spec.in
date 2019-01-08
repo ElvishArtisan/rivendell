@@ -1,7 +1,7 @@
 ## rivendell.spec.in
 ##
 ##    The Rivendell Radio Automation System
-##    Copyright (C) 2002-2018  Fred Gleason <fredg@paravelsystems.com>
+##    Copyright (C) 2002-2019  Fred Gleason <fredg@paravelsystems.com>
 ##
 ##    This program is free software; you can redistribute it and/or modify
 ##    it under the terms of version 2 of the GNU General Public License as
@@ -18,6 +18,9 @@
 ##    Boston, MA  02111-1307  USA
 ##
 
+# So python bytecompilation works correctly
+%define __python @PYTHON@
+
 Summary: Radio Broadcast Automation System
 Name: rivendell
 Version: @VERSION@
@@ -25,7 +28,7 @@ Release: @RPM_RELEASE@
 License: GPL
 Packager: Fred Gleason <fredg@paravelsystems.com>
 Source: rivendell-@VERSION@.tar.gz
-Requires: @MYSQL_PKG@, @QT4_MYSQL_PKG@, @APACHE_PKG@, curl, @USERMODE_PKG@, @CDDA2WAV_PKG@
+Requires: @MYSQL_PKG@, @QT4_MYSQL_PKG@, @APACHE_PKG@, curl, @USERMODE_PKG@, @CDDA2WAV_PKG@, rivendell-pypad = @VERSION@
 BuildRoot: /var/tmp/rivendell-@VERSION@
 Obsoletes: rivendell-base rivendell-opsguide
 Conflicts: rivendell-opsguide
@@ -45,6 +48,10 @@ Summary: Client libraries for interfacing with Rivendell's Web API.
 %package devel
 Summary: Header files and example code for development with Rivendell APIs
 Requires: rivendell = @VERSION@, rivendell-webapi = @VERSION@
+
+%package pypad
+Summary: PyPAD Program Associated Data script system for Rivendell
+Requires: python34, python34-pycurl, python34-requests, python34-pyserial, python34-mysql
 
 %package select
 Summary: The RDSelect system selector tool for Rivendell.
@@ -81,10 +88,13 @@ Web API subsystem.
 
 %description devel
 This package contains header files and example code for development using
-Rivendell's various APIs, including Rivendell Loadable Modules (RLMs),
-which can be used to generate custom Now & Next data outputs for a wide
-variety of external devices and the Rivendell Web C API, which can be
-used to integrate with Rivendell Web API Interface.
+Rivendell's Web C API, which can be used to integrate with Rivendell Web
+API Interface.
+
+
+%description pypad
+This package contains Rivendell's PyPAD scripting system for transmitting
+Program Associated Data (PAD) using of Python scripts.
 
 
 %description select
@@ -145,7 +155,8 @@ cp scripts/rd_restore_system.sh $RPM_BUILD_ROOT/@DOC_PATH@/scripts/
 cp scripts/engine_conv.py $RPM_BUILD_ROOT/@DOC_PATH@
 cp scripts/init_template_host.py $RPM_BUILD_ROOT/@DOC_PATH@
 rm -f $RPM_BUILD_ROOT/etc/auto.rd.audiostore
-
+rm -rf $RPM_BUILD_ROOT%{_libdir}/rivendell/pypad/__pycache__
+rm -rf $RPM_BUILD_ROOT%{_libdir}/python3.4/site-packages/__pycache__
 
 %post
 /sbin/ldconfig
@@ -221,7 +232,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)
-@LOCAL_PREFIX@/@RD_LIB_PATH@/rivendell/*.rlm
 @LOCAL_PREFIX@/bin/rdadmin
 @LOCAL_PREFIX@/bin/rdairplay
 @LOCAL_PREFIX@/bin/rdpanel
@@ -388,6 +398,8 @@ rm -rf $RPM_BUILD_ROOT
 @LOCAL_PREFIX@/sbin/rdcatchd
 @LOCAL_PREFIX@/sbin/rdvairplayd
 @LOCAL_PREFIX@/sbin/rdrepld
+@LOCAL_PREFIX@/sbin/rdpadd
+@LOCAL_PREFIX@/sbin/rdpadengined
 @LOCAL_PREFIX@/sbin/sas_shim
 @LOCAL_PREFIX@/sbin/rdmarkerset
 @LOCAL_PREFIX@/sbin/rdcleandirs
@@ -431,8 +443,6 @@ rm -rf $RPM_BUILD_ROOT
 @LOCAL_PREFIX@/@RD_LIB_PATH@/librivwebcapi.la
 @LOCAL_PREFIX@/@RD_LIB_PATH@/pkgconfig/rivwebcapi.pc
 @LOCAL_PREFIX@/include/rivwebcapi/*
-@LOCAL_PREFIX@/include/rlm/*
-@LOCAL_PREFIX@/src/rlm/*
 @LOCAL_PREFIX@/share/man/man7/rd_addcart.7.gz
 @LOCAL_PREFIX@/share/man/man7/rd_addcut.7.gz
 @LOCAL_PREFIX@/share/man/man7/rd_addlog.7.gz
@@ -469,6 +479,12 @@ rm -rf $RPM_BUILD_ROOT
 @LOCAL_PREFIX@/share/man/man7/rd_savelog.7.gz
 @LOCAL_PREFIX@/share/man/man7/rd_trimaudio.7.gz
 @LOCAL_PREFIX@/share/man/man7/rd_unassignschedcode.7.gz
+
+
+%files pypad
+%{_libdir}/rivendell/pypad/*
+%{_libdir}/python3.4/site-packages/pypad*
+%{_libdir}/python3.4/site-packages/__pycache__/pypad*
 
 
 %files select

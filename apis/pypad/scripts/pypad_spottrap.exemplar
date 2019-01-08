@@ -1,0 +1,123 @@
+; This is the configuration for the 'pypad_spottrap.script' script for 
+; Rivendell, which can be used to output Now & Next data to one or more
+; remote UDP ports on the basis of Group and Length.
+;
+; Module configuration consists of a list of rules, each of which consists
+; in turn with a set of filter parameters and actions.  Each PAD update is
+; compared against the filter parameters of each rule.  If the filter matches,
+; then the rule actions are performed.
+;
+
+; Rule Header
+;
+; One section per rule is configured, starting with 'Rule1' and 
+; working up consecutively
+[Rule1]
+
+; FILTER PARAMETERS
+;
+; Group Name
+;
+; The name of the Rivendell group to match.
+GroupName=BEDS
+
+; Minimum Length
+;
+; The minimum length, in milliseconds.  A PAD update with a Length of less
+; than this value will not be matched.
+MinimumLength=0
+
+; Maximum Length
+; The maximum length, in milliseconds.  A PAD update with a Length of more
+; than this value will not be matched.  
+MaximumLength=10000000
+
+; ACTION PARAMETERS
+;
+; IP Address
+;
+; The IP address of the remote UDP port, in dotted-quad notation.
+IpAddress=192.168.10.30
+
+; UDP Port
+;
+; The UDP port number of the remote UDP port, in the range 0 - 65,535.
+UdpPort=5859
+
+; Format String.  The string to be output each time RDAirPlay changes
+; play state, including any wildcards as placeholders for metadata values.
+;
+; The list of available wildcards can be found in the 'metadata_wildcards.txt'
+; file in the Rivendell documentation directory.
+;
+FormatString=DX 1 %h!
+
+; Default Format String.  Similar to the 'FormatString=' parameter described
+; above, but this string is output when the rule *doesn't* match.  All of
+; the wildcards described in the 'FormatString=' section apply here as well.
+DefaultFormatString=DX 1 0!
+
+
+; Log Selection
+;
+; Set the status for each log to 'Yes', 'No' or 'Onair' to indicate whether
+; state changes on that log should be output on this udp port.  If set
+; to 'Onair', then output will be generated only if RDAirPlay's OnAir flag
+; is active.
+MasterLog=Yes
+Aux1Log=Yes
+Aux2Log=Yes
+VLog101=No
+VLog102=No
+VLog103=No
+VLog104=No
+VLog105=No
+VLog106=No
+VLog107=No
+VLog108=No
+VLog109=No
+VLog110=No
+VLog111=No
+VLog112=No
+VLog113=No
+VLog114=No
+VLog115=No
+VLog116=No
+VLog117=No
+VLog118=No
+VLog119=No
+VLog120=No
+
+
+; Additional Rules can be configured by adding new sections...
+;[Rule2]
+;GroupName=TEST
+;MinimumLength=0
+;MaximumLength=1000000
+;FormatString=Artist: %a%r
+;DefaultFormatString=Artist: %a%r
+;IpAddress=192.168.10.30
+;UdpPort=6789
+;MasterLog=Yes
+;Aux1Log=No
+;Aux2Log=Onair
+;VLog101=No
+;VLog102=No
+;VLog103=No
+;VLog104=No
+;VLog105=No
+;VLog106=No
+;VLog107=No
+;VLog108=No
+;VLog109=No
+;VLog110=No
+;VLog111=No
+;VLog112=No
+;VLog113=No
+;VLog114=No
+;VLog115=No
+;VLog116=No
+;VLog117=No
+;VLog118=No
+;VLog119=No
+;VLog120=No

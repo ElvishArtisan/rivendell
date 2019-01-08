@@ -2073,121 +2073,104 @@ GPIOs</source>
     <name>EditNowNext</name>
     <message>
         <source>Edit Now &amp; Next Data</source>
-        <translation>Rediger no &amp; neste data</translation>
+        <translation type="obsolete">Rediger no &amp; neste data</translation>
     </message>
     <message>
         <source>Master Log</source>
-        <translation>Hovudlogg</translation>
+        <translation type="obsolete">Hovudlogg</translation>
     </message>
     <message>
         <source>IP Address:</source>
-        <translation>IP-adresse:</translation>
+        <translation type="obsolete">IP-adresse:</translation>
     </message>
     <message>
         <source>UDP Port:</source>
-        <translation>UDP-port:</translation>
+        <translation type="obsolete">UDP-port:</translation>
     </message>
     <message>
         <source>UDP String:</source>
-        <translation>UDP-streng:</translation>
+        <translation type="obsolete">UDP-streng:</translation>
     </message>
     <message>
         <source>RML:</source>
-        <translation>RMS:</translation>
+        <translation type="obsolete">RMS:</translation>
     </message>
     <message>
         <source>Aux Log 1</source>
-        <translation>Hjelpelogg 1</translation>
+        <translation type="obsolete">Hjelpelogg 1</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Avbryt</translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
     </message>
     <message>
         <source>The IP address</source>
-        <translation>IP-adressa</translation>
+        <translation type="obsolete">IP-adressa</translation>
     </message>
     <message>
         <source>is invalid!</source>
-        <translation>er ugyldig!</translation>
+        <translation type="obsolete">er ugyldig!</translation>
     </message>
     <message>
         <source>Invalid Address</source>
-        <translation>Ugyldig adresse</translation>
-    </message>
-    <message>
-        <source>Default Now Cart:</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Ugyldig adresse</translation>
     </message>
     <message>
         <source>Select</source>
-        <translation type="unfinished">Vel</translation>
-    </message>
-    <message>
-        <source>Default Next Cart:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Path</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Argument</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Loadable Modules:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Edit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Vel</translation>
     </message>
     <message>
         <source>Aux Log 2</source>
-        <translation type="unfinished">Hjelpelogg 2</translation>
+        <translation type="obsolete">Hjelpelogg 2</translation>
     </message>
 </context>
 <context>
     <name>EditNowNextPlugin</name>
     <message>
-        <source>Edit Plugin</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Plugin Path:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Select</source>
-        <translation type="unfinished">Vel</translation>
-    </message>
-    <message>
-        <source>Argument:</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Vel</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Avbryt</translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
+    </message>
+</context>
+<context>
+    <name>EditPypad</name>
+    <message>
+        <source>Edit PyPAD Instance</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Select plugin</source>
+        <source>ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Script Path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2388,7 +2371,7 @@ GPIOs</source>
     <message>
         <source>Configure Now &amp;&amp; Next
 Parameters</source>
-        <translation>Set opp no &amp;&amp; Neste
+        <translation type="obsolete">Set opp no &amp;&amp; Neste
 parametrar</translation>
     </message>
     <message>
@@ -3670,6 +3653,11 @@ Ports</source>
         <source>Report Editor</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>PyPAD
+Instances</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditSvc</name>
@@ -4948,6 +4936,62 @@ Klikk på &quot;Lisens&quot;-knappen for fleire opplysningar.</translation>
     </message>
 </context>
 <context>
+    <name>ListPypads</name>
+    <message>
+        <source>PyPAD Instances on</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Script Path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Exit Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Add</source>
+        <translation type="unfinished">&amp;Legg til</translation>
+    </message>
+    <message>
+        <source>&amp;Edit</source>
+        <translation type="unfinished">R&amp;ediger</translation>
+    </message>
+    <message>
+        <source>&amp;Delete</source>
+        <translation type="unfinished">&amp;Slett</translation>
+    </message>
+    <message>
+        <source>&amp;Error
+Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Lukk</translation>
+    </message>
+    <message>
+        <source>Select PyPAD Script</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Instance</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are your sure you want to delete this instance?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ListReplicatorCarts</name>
     <message>
         <source>&amp;Repost</source>
@@ -5823,6 +5867,21 @@ Sjekk oppsettet ditt og prøv att.</translation>
     </message>
     <message>
         <source>Please start the Rivendell daemons on this host (by executing, as user &apos;root&apos;, the command &quot;systemctl start rivendell&quot;) in order to populate the audio resources database.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ViewPypadErrors</name>
+    <message>
+        <source>Script Error Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
