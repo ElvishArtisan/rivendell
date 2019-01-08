@@ -18329,3 +18329,8 @@
 	'pypad.Receiver::setPadCallback()'.
 2019-01-08 Fred Gleason <fredg@paravelsystems.com>
 	* Removed sample RLM configurations from 'conf/'.
+2019-01-08 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'Configuring Now & Next Parameters' subsection from
+	'Configuring RDAirPlay' in the Operations Guide.
+	* Added a 'Managing PyPAD Instances' subsection to the 'Configuring
+	RDAirPlay section in the Operations Guide.

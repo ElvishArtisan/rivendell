@@ -150,6 +150,7 @@ OPSGUIDE_IMAGES = rdadmin.audio_resource_information_dialog.png\
                   rdadmin.edit_channel_gpios_dialog.png\
                   rdadmin.edit_gpi_dialog.png\
                   rdadmin.edit_host_variable_dialog.png\
+                  rdadmin.edit_pypad_instance_dialog.png\
                   rdadmin.edit_serial_ports_dialog.png\
                   rdadmin.edit_service_dialog.png\
                   rdadmin.edit_switcher_dialog.png\
@@ -162,6 +163,7 @@ OPSGUIDE_IMAGES = rdadmin.audio_resource_information_dialog.png\
                   rdadmin.list_gpis_dialog.png\
                   rdadmin.log_importation_string_fields.png\
                   rdadmin.login_dialog.png\
+                  rdadmin.pypad_instances_dialog.png\
                   rdadmin.rdadmin_screenshot.png\
                   rdadmin.rdairplay_channel_assignments.png\
                   rdadmin.rdairplay_display_settings.png\
@@ -183,6 +185,7 @@ OPSGUIDE_IMAGES = rdadmin.audio_resource_information_dialog.png\
                   rdadmin.rivendell_switcher_list_dialog.png\
                   rdadmin.rivendell_user_list_dialog.png\
                   rdadmin.scheduler_code_dialog.png\
+                  rdadmin.select_pypad_script_dialog.png\
                   rdadmin.select_scheduler_codes_dialog.png\
                   rdadmin.services_dialog.png\
                   rdadmin.system_wide_settings_dialog.png\
