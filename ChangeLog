@@ -18340,3 +18340,5 @@
 2019-01-09 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdpadengined(8) that caused PyPAD script errors
 	to fail to be logged.
+2019-01-09 Fred Gleason <fredg@paravelsystems.com>
+	* Added a rule to the RPM package to create a PyPAD user and group.
