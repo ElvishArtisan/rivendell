@@ -31,6 +31,8 @@ RDProcess::RDProcess(int id,QObject *parent)
   connect(p_process,SIGNAL(started()),this,SLOT(startedData()));
   connect(p_process,SIGNAL(finished(int,QProcess::ExitStatus)),
 	  this,SLOT(finishedData(int,QProcess::ExitStatus)));
+  connect(p_process,SIGNAL(readyReadStandardError()),
+	  this,SLOT(readyReadStandardErrorData()));
 }
 
 
@@ -103,6 +105,12 @@ void RDProcess::finishedData(int exit_code,QProcess::ExitStatus status)
 }
 
 
+void RDProcess::readyReadStandardErrorData()
+{
+  p_standard_error_data+=process()->readAllStandardError();
+}
+
+
 void *RDProcess::privateData() const
 {
   return p_private_data;
@@ -112,4 +120,10 @@ void *RDProcess::privateData() const
 void RDProcess::setPrivateData(void *priv)
 {
   p_private_data=priv;
+}
+
+
+QByteArray RDProcess::standardErrorData() const
+{
+  return p_standard_error_data;
 }

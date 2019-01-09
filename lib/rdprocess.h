@@ -37,6 +37,7 @@ class RDProcess : public QObject
   QString errorText() const;
   void *privateData() const;
   void setPrivateData(void *priv);
+  QByteArray standardErrorData() const;
 
  signals:
   void started(int id);
@@ -45,6 +46,7 @@ class RDProcess : public QObject
   private slots:
    void startedData();
    void finishedData(int exit_code,QProcess::ExitStatus status);
+   void readyReadStandardErrorData();
 
  private:
    int p_id;
@@ -53,6 +55,7 @@ class RDProcess : public QObject
    QProcess *p_process;
    QString p_error_text;
    void *p_private_data;
+   QByteArray p_standard_error_data;
 };
 
 

@@ -64,13 +64,17 @@ MainObject::MainObject(QObject *parent)
   //
   if(getuid()==0) {
     if(setgid(rda->config()->pypadGid())!=0) {
-      fprintf(stderr,"rdpadengined: unable to set GID to %d [%s]\n",
-	      rda->config()->pypadGid(),strerror(errno));
+      rda->log(RDConfig::LogErr,
+	       QString().sprintf("unable to set GID to %d [",
+				 rda->config()->pypadGid())+
+	       QString(strerror(errno))+"], exiting");
       exit(1);
     }
     if(setuid(rda->config()->pypadUid())!=0) {
-      fprintf(stderr,"rdpadengined: unable to set UID to %d [%s]\n",
-	      rda->config()->pypadUid(),strerror(errno));
+      rda->log(RDConfig::LogErr,
+	       QString().sprintf("unable to set UID to %d [",
+				 rda->config()->pypadUid())+
+	       QString(strerror(errno))+"], exiting");
       exit(1);
     }
   }
@@ -80,8 +84,9 @@ MainObject::MainObject(QObject *parent)
   //
   for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
     if(!rda->cmdSwitch()->processed(i)) {
-      fprintf(stderr,"rdpadengined: unknown command option \"%s\"\n",
-	      (const char *)rda->cmdSwitch()->key(i));
+      rda->log(RDConfig::LogErr,
+	       QString("unknown command option \"")+rda->cmdSwitch()->key(i)+
+	       "\"");
       exit(2);
     }
   }
@@ -187,8 +192,9 @@ void MainObject::instanceFinishedData(int id)
   RDProcess *proc=pad_instances.value(id);
 
   if(proc->process()->exitStatus()!=QProcess::NormalExit) {
-    fprintf(stderr,"rdpadengined: process %d crashed\n",id);
-    SetRunStatus(id,false,-1,proc->process()->readAllStandardError());
+    rda->log(RDConfig::LogWarning,
+	     QString().sprintf("PyPAD script %d crashed\n",id));
+    SetRunStatus(id,false,-1,proc->standardErrorData());
     proc->deleteLater();
     pad_instances.remove(id);
     return;
@@ -205,8 +211,11 @@ void MainObject::instanceFinishedData(int id)
   }
   else {
     if(!global_pad_exiting) {
+      rda->log(RDConfig::LogWarning,
+	       QString().sprintf("PyPAD script ID %d exited with code %d",
+				 id,proc->process()->exitCode()));
       SetRunStatus(id,false,proc->process()->exitCode(),
-		   proc->process()->readAllStandardError());
+		   proc->standardErrorData());
     }
   }
 }
@@ -243,13 +252,14 @@ void MainObject::StartScript(unsigned id,const QString &script_path)
   connect(proc,SIGNAL(started(int)),this,SLOT(instanceStartedData(int)));
   connect(proc,SIGNAL(finished(int)),this,SLOT(instanceFinishedData(int)));
   QStringList args;
+  args.push_back("-u");
   args.push_back(script_path);
   args.push_back("localhost");
   args.push_back(QString().sprintf("%u",RD_PAD_CLIENT_TCP_PORT));
   args.push_back(QString().sprintf("$%u",id));
   pad_instances.value(id)->start(RD_PYPAD_PYTHON_PATH,args);
-  syslog(LOG_NOTICE,"starting: %s %s",(const char *)proc->program().toUtf8(),
-	 (const char *)proc->arguments().join(" ").toUtf8());
+  rda->log(RDConfig::LogInfo,"starting: "+proc->program()+" "+
+	   proc->arguments().join(" ").toUtf8());
 }
 
 
