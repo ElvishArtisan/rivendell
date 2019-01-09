@@ -18334,3 +18334,6 @@
 	'Configuring RDAirPlay' in the Operations Guide.
 	* Added a 'Managing PyPAD Instances' subsection to the 'Configuring
 	RDAirPlay section in the Operations Guide.
+2019-01-09 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rddbmgr(8) that caused DB corruption in multi-byte
+	UTF-8 strings when reverting the schema.

@@ -204,9 +204,9 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   //
   // Revert 297
   //
-  ModifyCharset("latin1","latin1_swedish_ci");
-
   if((cur_schema==297)&&(set_schema<cur_schema)) {
+    ModifyCharset("latin1","latin1_swedish_ci");
+
     sql=QString("alter table AUDIO_CARDS ")+
       "modify column STATION_NAME char(64) not null";
     if(!RDSqlQuery::apply(sql,err_msg)) {
