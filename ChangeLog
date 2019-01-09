@@ -18342,3 +18342,8 @@
 	to fail to be logged.
 2019-01-09 Fred Gleason <fredg@paravelsystems.com>
 	* Added a rule to the RPM package to create a PyPAD user and group.
+2019-01-09 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the value of RD_DEFAULT_PYPAD_OWNER to 'pypad'.
+	* Changed the value of RD_DEFAULT_PYPAD_GROUP to 'pypad'.
+	* Fixed a bug that caused creation of the 'pypad' system user
+	to fail.

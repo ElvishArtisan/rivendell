@@ -219,8 +219,8 @@
  */
 #define RD_DEFAULT_AUDIO_OWNER "user"
 #define RD_DEFAULT_AUDIO_GROUP "users"
-#define RD_DEFAULT_PYPAD_OWNER "nobody"
-#define RD_DEFAULT_PYPAD_GROUP "nobody"
+#define RD_DEFAULT_PYPAD_OWNER "pypad"
+#define RD_DEFAULT_PYPAD_GROUP "pypad"
 #define RD_DEFAULT_LABEL "Default Configuration"
 
 /*

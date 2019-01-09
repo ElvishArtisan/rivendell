@@ -489,7 +489,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %post pypad
 /usr/sbin/groupadd -r -g 151 pypad &>/dev/null || :
-/usr/sbin/useradd -o -u 151 -g pypad -s /bin/false -r -c "Rivendell PyPAD scripts" -d /var/snd %{name} &>/dev/null || :
+/usr/sbin/useradd -o -u 151 -g pypad -s /bin/false -r -c "Rivendell PyPAD scripts" -d /dev/null pypad &>/dev/null || :
 
 
 %files select
