@@ -252,7 +252,6 @@ void MainObject::StartScript(unsigned id,const QString &script_path)
   connect(proc,SIGNAL(started(int)),this,SLOT(instanceStartedData(int)));
   connect(proc,SIGNAL(finished(int)),this,SLOT(instanceFinishedData(int)));
   QStringList args;
-  args.push_back("-u");
   args.push_back(script_path);
   args.push_back("localhost");
   args.push_back(QString().sprintf("%u",RD_PAD_CLIENT_TCP_PORT));

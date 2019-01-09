@@ -18347,3 +18347,6 @@
 	* Changed the value of RD_DEFAULT_PYPAD_GROUP to 'pypad'.
 	* Fixed a bug that caused creation of the 'pypad' system user
 	to fail.
+2019-01-09 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdpadengined(8) that caused process
+	restarts to fail.
