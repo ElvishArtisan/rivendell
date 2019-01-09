@@ -18350,3 +18350,6 @@
 2019-01-09 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdpadengined(8) that caused process
 	restarts to fail.
+2019-01-09 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression that caused invalid values for PyPAD UID/GID
+	to be loaded.

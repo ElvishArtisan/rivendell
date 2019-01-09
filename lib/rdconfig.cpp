@@ -654,10 +654,12 @@ bool RDConfig::load()
   if((groups=getgrnam(profile->stringValue("Identity","AudioGroup")))!=NULL) {
     conf_gid=groups->gr_gid;
   }
-  if((user=getpwnam(profile->stringValue("Identity","PypadOwner")))!=NULL) {
+  if((user=getpwnam(profile->stringValue("Identity","PypadOwner",
+					 RD_DEFAULT_PYPAD_OWNER)))!=NULL) {
     conf_pypad_uid=user->pw_uid;
   }
-  if((groups=getgrnam(profile->stringValue("Identity","PypadGroup")))!=NULL) {
+  if((groups=getgrnam(profile->stringValue("Identity","PypadGroup",
+					   RD_DEFAULT_PYPAD_GROUP)))!=NULL) {
     conf_pypad_gid=groups->gr_gid;
   }
   conf_cae_logfile=profile->stringValue("Caed","Logfile","");
