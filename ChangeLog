@@ -18359,3 +18359,5 @@
 	when updating events in a null log.
 	* Fixed a bug in rdairplay(1) and rdvairplayd(1) that threw a
 	segfault when playing an event in a null log.
+2019-01-10 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a typo in 'apis/pypad/scripts/pypad_xmpad.exemplar'.

@@ -15,8 +15,7 @@
 ; Serial Device
 ; 
 ; The device file that corresponds to the serial device. 
-;Device=/dev/ttyS0
-Device=/dev/ttyUSB0
+Device=/dev/ttyS0
 
 ; Serial Baud Rate (in bps)
 Speed=4800
