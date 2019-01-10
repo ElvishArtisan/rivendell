@@ -64,7 +64,7 @@ def ProcessPad(update):
     while(True):
         section='Udp'+str(n)
         try:
-            if update.shouldBeProcessed(section) and update.hasPadType(pypad.TYPE_NOW):
+            if update.shouldBeProcessed(section) and update.hasPadType(pypad.TYPE_NOW) and update.hasService():
                 packet='0:'+update.serviceProgramCode()+':'+update.config().get(section,'IsciPrefix')+FilterField(update.padField(pypad.TYPE_NOW,pypad.FIELD_EXTERNAL_EVENT_ID))+':*'
                 try:
                     #

@@ -18361,3 +18361,6 @@
 	segfault when playing an event in a null log.
 2019-01-10 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a typo in 'apis/pypad/scripts/pypad_xmpad.exemplar'.
+2019-01-10 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'pypad_xds.py' that threw an exception when
+	processing a PAD update originated from a null log.
