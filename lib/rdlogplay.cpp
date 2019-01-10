@@ -1380,6 +1380,9 @@ void RDLogPlay::resync()
 
 bool RDLogPlay::isRefreshable() const
 {
+  if(play_log==NULL) {
+    return false;
+  }
   return (play_log->exists())&&
     (play_log->linkDatetime()==play_link_datetime)&&
     (play_log->modifiedDatetime()>play_modified_datetime);
@@ -2961,15 +2964,20 @@ void RDLogPlay::SendNowNext()
   //
   // Service
   //
-  RDSvc *svc=new RDSvc(svcname,rda->station(),rda->config(),this);
-  play_pad_socket->write(QString("        \"service\": {\r\n").toUtf8());
-  play_pad_socket->write(RDJsonField("name",svcname,12).toUtf8());
-  play_pad_socket->
-    write(RDJsonField("description",svc->description(),12).toUtf8());
-  play_pad_socket->
-    write(RDJsonField("programCode",svc->programCode(),12,true).toUtf8());
-  play_pad_socket->write(QString("        },\r\n").toUtf8());
-  delete svc;
+  if(svcname.isEmpty()) {
+    play_pad_socket->write(RDJsonNullField("service",8).toUtf8());
+  }
+  else {
+    RDSvc *svc=new RDSvc(svcname,rda->station(),rda->config(),this);
+    play_pad_socket->write(QString("        \"service\": {\r\n").toUtf8());
+    play_pad_socket->write(RDJsonField("name",svcname,12).toUtf8());
+    play_pad_socket->
+      write(RDJsonField("description",svc->description(),12).toUtf8());
+    play_pad_socket->
+      write(RDJsonField("programCode",svc->programCode(),12,true).toUtf8());
+    play_pad_socket->write(QString("        },\r\n").toUtf8());
+    delete svc;
+  }
 
   //
   // Log
