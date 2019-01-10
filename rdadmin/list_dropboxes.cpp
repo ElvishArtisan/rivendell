@@ -29,8 +29,10 @@
 #include <qmessagebox.h>
 #include <q3buttongroup.h>
 
+#include <rdapplication.h>
 #include <rddb.h>
 #include <rdescape_string.h>
+#include <rdnotification.h>
 
 #include "edit_dropbox.h"
 #include "list_dropboxes.h"
@@ -152,7 +154,14 @@ void ListDropboxes::addData()
   int id=box->id();
   delete box;
   EditDropbox *edit_dropbox=new EditDropbox(id,this);
-  if(edit_dropbox->exec()<0) {
+  if(edit_dropbox->exec()) {
+    RDNotification *notify=new RDNotification(RDNotification::DropboxType,
+					      RDNotification::AddAction,
+					      list_stationname);
+    rda->ripc()->sendNotification(*notify);
+    delete notify;
+  }
+  else {
     QString sql=QString().sprintf("delete from DROPBOXES where ID=%d",id);
     RDSqlQuery *q=new RDSqlQuery(sql);
     delete q;
@@ -175,7 +184,13 @@ void ListDropboxes::editData()
     return;
   }
   EditDropbox *edit_dropbox=new EditDropbox(item->id(),this);
-  edit_dropbox->exec();
+  if(edit_dropbox->exec()) {
+    RDNotification *notify=new RDNotification(RDNotification::DropboxType,
+					      RDNotification::ModifyAction,
+					      list_stationname);
+    rda->ripc()->sendNotification(*notify);
+    delete notify;
+  }
   delete edit_dropbox;
   RefreshItem(item);
 }
@@ -197,6 +212,13 @@ void ListDropboxes::deleteData()
   sql=QString().sprintf("delete from DROPBOXES where ID=%d",item->id());
   q=new RDSqlQuery(sql);
   delete q;
+
+  RDNotification *notify=new RDNotification(RDNotification::DropboxType,
+					    RDNotification::DeleteAction,
+					    list_stationname);
+  rda->ripc()->sendNotification(*notify);
+  delete notify;
+
   delete item;
 }
 

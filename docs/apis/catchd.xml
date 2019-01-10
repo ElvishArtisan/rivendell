@@ -464,17 +464,6 @@
     </para>
   </sect2>
 
-  <sect2 xml:id="sect.privileged_commands.restart_dropbox_instances">
-    <title>Restart Dropbox Instances</title>
-    <para>
-      Restart all <command>rdimport</command><manvolnum>1</manvolnum>
-      instances for running dropboxes.
-    </para>
-    <para>
-      <userinput>RX!</userinput>
-    </para>
-  </sect2>
-
   <sect2 xml:id="sect.privileged_commands.input_monitor_state">
     <title>Input Monitor State</title>
     <para>

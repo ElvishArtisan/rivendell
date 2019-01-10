@@ -32,6 +32,7 @@
 #include <qtimer.h>
 #include <qudpsocket.h>
 
+#include <rdnotification.h>
 #include <rdsocket.h>
 #include <rdttydevice.h>
 #include <rdcodetrap.h>
@@ -90,6 +91,7 @@ class MainObject : public QObject
   void ReadRmlSocket(QUdpSocket *sock,RDMacro::Role role,bool echo);
   QString StripPoint(QString);
   void LoadLocalMacros();
+  void RunLocalNotifications(RDNotification *notify);
   void RunLocalMacros(RDMacro *rml);
   void LoadGpiTable();
   void SendGpi(int ch,int matrix);

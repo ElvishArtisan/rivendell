@@ -1817,13 +1817,6 @@ void MainObject::DispatchCommand(ServerConnection *conn)
     LoadHeartbeat();
   }
 
-  if(cmds.at(0)=="RX") {  // Signal rdservice(8) to Restart Dropbox Instances
-    pid_t pid=RDGetPid(QString(RD_PID_DIR)+"/rdservice.pid");
-    if(pid>0) {
-      kill(pid,SIGUSR1);
-    }
-  }
-
   if((cmds.at(0)=="MN")&&(cmds.size()==3)) {  // Monitor State
     chan=cmds.at(1).toInt(&ok);
     if(!ok) {

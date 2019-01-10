@@ -229,13 +229,18 @@ void MainObject::notificationReceivedData(const QString &msg,
 					  const QHostAddress &addr)
 {
   RDNotification *notify=new RDNotification();
+
+  syslog(LOG_NOTICE,"recv: %s\n",(const char *)msg.toUtf8());
+
   if(!notify->read(msg)) {
     LogLine(RDConfig::LogWarning,
 	    "Invalid notification received from "+addr.toString());
     delete notify;
     return;
   }
+  RunLocalNotifications(notify);
   BroadcastCommand("ON "+msg+"!");
+
   delete notify;
 }
 
@@ -512,6 +517,7 @@ bool MainObject::DispatchCommand(RipcdConnection *conn)
       delete notify;
       return true;
     }
+    RunLocalNotifications(notify);
     BroadcastCommand("ON "+msg+"!",conn->id());
     ripcd_notification_mcaster->
       send(msg,rda->system()->notificationAddress(),RD_NOTIFICATION_PORT);

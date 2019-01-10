@@ -657,13 +657,13 @@ void EditDropbox::okData()
     q=new RDSqlQuery(sql);
     delete q;
   }
-  done(0);
+  done(true);
 }
 
 
 void EditDropbox::cancelData()
 {
-  done(-1);
+  done(false);
 }
 
 
