@@ -18367,3 +18367,5 @@
 2019-01-10 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored dropbox instance management to use multicast
 	notifications.
+2019-01-11 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.0.0alpha05.

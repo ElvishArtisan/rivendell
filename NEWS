@@ -1,6 +1,28 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
+v3.0.0alpha05 -- 1/11/2019
+
+Five alpha release for v3.x.
+
+Changes:
+   Added PAD updating system by means of JSON messages pushed via TCP
+   port 34289.
+
+   Added a Python scripting system for processing PAD updates (PyPAD).
+
+   Removed the Rivendell Loadable Module (RLM) subsystem.
+
+   Removed the legacy v1.x UDP PAD update system.
+
+Database Update:
+   This version of Rivendell uses database schema version 299, and will
+   automatically upgrade any earlier versions. To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
+   to allow any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
 v3.0.0alpha04 -- 11/16/2018
 
 Fourth alpha release for v3.x.
