@@ -615,12 +615,10 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
       SchedCartList *schedCL;
       schedCL=new SchedCartList(querysize);
 
-      QString schedcode; 
+      QString schedcode;	// No longer needed - possibly remove at a later date
       for(counter=0;counter<querysize;counter++)
       {
 	q->seek(counter);
-//	schedcode=q->value(2).toString()+"          ";
-//	schedcode=schedcode.left(11);
 	schedCL->insertItem(q->value(0).toUInt(),0,0,q->value(1).toString(),schedcode);
       }
       delete q;

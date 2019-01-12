@@ -39,6 +39,9 @@ SchedCartList::~SchedCartList()
 	delete []sched_codes;
 }
 
+//
+// stack_schedcodes should no longer be needed. Possibly remove at a later date. P. Linstruth 01/12/2019
+//
 void SchedCartList::insertItem(unsigned cartnumber,int cartlength,int stack_id,QString stack_artist,QString stack_schedcodes)
 {
 	cartnum[itemcounter]=cartnumber;
