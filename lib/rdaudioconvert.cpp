@@ -177,6 +177,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::convert()
   QString err_msg;
   if(!temp_dir->create(&err_msg)) {
     delete temp_dir;
+    rda->log(RDConfig::LogErr,QString("Could not create "+err_msg));
     return RDAudioConvert::ErrorInternal;
   }
   tmpfile1=QString(temp_dir->path())+"/signed32_1.wav";
@@ -824,6 +825,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage1M4A(const QString &dstfile,
     UpdatePeak((const float*)sample_buffer, frameInfo.samples);
     
     if(sf_write_float(sf_dst, (const float*)sample_buffer, frameInfo.samples) != (sf_count_t)frameInfo.samples) {
+      rda->log(RDConfig::LogErr,QString().sprintf("%s",sf_strerror(sf_dst)));
       ret = RDAudioConvert::ErrorInternal;
       break;
     }
@@ -920,6 +922,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage2Convert(const QString &srcfile,
   //
   memset(&src_info,0,sizeof(src_info));
   if((src_sf=sf_open(srcfile,SFM_READ,&src_info))==NULL) {
+    rda->log(RDConfig::LogErr,QString().sprintf("Could not open %s",(const char *)srcfile));
     return RDAudioConvert::ErrorInternal;
   }
   sf_command(src_sf,SFC_SET_NORM_FLOAT,NULL,SF_FALSE);
@@ -930,6 +933,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage2Convert(const QString &srcfile,
   dst_info.samplerate=conv_settings->sampleRate();
   if((dst_sf=sf_open(dstfile,SFM_WRITE,&dst_info))==NULL) {
     sf_close(src_sf);
+    rda->log(RDConfig::LogErr,QString().sprintf("Could not open %s",(const char *)dstfile));
     return RDAudioConvert::ErrorInternal;
   }
 
@@ -968,6 +972,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage2Convert(const QString &srcfile,
     if((src_state=src_new(conv_src_converter,src_info.channels,&err))==NULL) {
       sf_close(src_sf);
       sf_close(dst_sf);
+      rda->log(RDConfig::LogErr,QString().sprintf("%s",src_strerror(err)));
       return RDAudioConvert::ErrorInternal;
     }
     memset(&src_data,0,sizeof(src_data));
@@ -1017,8 +1022,9 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage2Convert(const QString &srcfile,
     if(src_state!=NULL) {
       src_data.input_frames=n;
       if((err=src_process(src_state,&src_data))!=0) {
-	fprintf(stderr,"SRC Error: %s\n",src_strerror(err));
-	return RDAudioConvert::ErrorInternal;
+        fprintf(stderr,"SRC Error: %s\n",src_strerror(err));
+        rda->log(RDConfig::LogErr,QString().sprintf("%s",src_strerror(err)));
+        return RDAudioConvert::ErrorInternal;
       }
       n=src_data.output_frames_gen;
     }
@@ -1137,6 +1143,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage3Convert(const QString &srcfile,
   // Open Source File
   //
   if((src_sf=sf_open(srcfile,SFM_READ,&src_sf_info))==NULL) {
+    rda->log(RDConfig::LogErr,QString().sprintf("%s",sf_strerror(NULL)));
     return RDAudioConvert::ErrorInternal;
   }
 
@@ -1202,12 +1209,13 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage3Flac(SNDFILE *src_sf,
    *
   flac->set_filename(dstfile.ascii());
   switch(flac->init()) {
-  case 0:
-  break;
+    case 0:
+      break;
 
-  default:
-  delete flac;
-  return RDAudioConvert::ErrorInternal;
+    default:
+      delete flac;
+      rda->log(RDConfig::LogErr,QString("flac->init() failure"));
+      return RDAudioConvert::ErrorInternal;
   }
   */
   /*
@@ -1232,6 +1240,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage3Flac(SNDFILE *src_sf,
   case FLAC__STREAM_ENCODER_INIT_STATUS_INVALID_METADATA:
   default:
     delete flac;
+    rda->log(RDConfig::LogErr,QString("flac->init() failure"));
     return RDAudioConvert::ErrorInternal;
   }
 
@@ -1299,6 +1308,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage3Vorbis(SNDFILE *src_sf,
 				conv_settings->quality())) {
   case OV_EFAULT:
   default:
+    rda->log(RDConfig::LogErr,QString("vorbis_encode_init_vbr() failure"));
     return RDAudioConvert::ErrorInternal;
 
   case OV_EINVAL:
@@ -1490,6 +1500,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage3Layer3(SNDFILE *src_sf,
   if((lameopts=lame_init())==NULL) {
     lame_close(lameopts);
     ::close(dst_fd);
+    rda->log(RDConfig::LogErr,QString("lame_init() failure"));
     return RDAudioConvert::ErrorInternal;
   }
   lame_set_mode(lameopts,mpeg_mode);
@@ -1628,6 +1639,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage3Layer2Wav(SNDFILE *src_sf,
   //
   if((lameopts=twolame_init())==NULL) {
     wave->closeWave();
+    rda->log(RDConfig::LogErr,QString("twolame_init() failure"));
     return RDAudioConvert::ErrorInternal;
   }
   twolame_set_mode(lameopts,mpeg_mode);
@@ -1732,6 +1744,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage3Layer2(SNDFILE *src_sf,
   //
   if((lameopts=twolame_init())==NULL) {
     ::close(dst_fd);
+    rda->log(RDConfig::LogErr,QString("twolame_init() failure"));
     return RDAudioConvert::ErrorInternal;
   }
   twolame_set_mode(lameopts,mpeg_mode);

@@ -18369,3 +18369,5 @@
 	notifications.
 2019-01-11 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.0.0alpha05.
+2019-01-12 Patrick Linstruth <patrick@deltecent.com>
+	* Add error logging to RDAudioConvert class.
