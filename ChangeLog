@@ -18367,3 +18367,7 @@
 2019-01-10 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored dropbox instance management to use multicast
 	notifications.
+2019-01-12 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed regression in scheduler that caused events with two
+	scheduler codes to fail.
+	* Updated scheduler reports to indicate scheduler codes.

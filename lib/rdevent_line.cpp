@@ -446,7 +446,7 @@ bool RDEventLine::save(RDConfig *config)
 
 
 bool RDEventLine::generateLog(QString logname,const QString &svcname,
-			      QString *errors, unsigned artistsep,
+			      QString *report, unsigned artistsep,
 			      QString clockname)
 {
   QString sql;
@@ -579,9 +579,9 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
     grace_time=-1;
   }
 
-// Scheduler 
+  // Scheduler 
 
-  if(event_import_source == RDEventLine::Scheduler ) {
+  if(event_import_source == RDEventLine::Scheduler) {
     int titlesep;
     int stackid;
     int counter;   		
@@ -591,18 +591,17 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
     svcname_rp.replace(" ","_");
     
     time.addMSecs(postimport_length);
-    
-    sql=QString("select ")+
-      "NUMBER,"+
-      "ARTIST, "+
-      "SCHED_CODE "+
-      "from CART "+
-      "left join CART_SCHED_CODES on CART.NUMBER=CART_SCHED_CODES.CART_NUMBER "+
-      "where "+
-      "GROUP_NAME=\""+RDEscapeString(SchedGroup())+"\"";
+   
+    sql=QString("select NUMBER,ARTIST from CART");
+    if(event_have_code!="") {
+      sql+=" INNER JOIN CART_SCHED_CODES AS S1 on (NUMBER=S1.CART_NUMBER AND S1.SCHED_CODE='"+RDEscapeString(event_have_code)+"')";
+    }
+    if(event_have_code2!="") {
+      sql+=" INNER JOIN CART_SCHED_CODES AS S2 on (NUMBER=S2.CART_NUMBER AND S2.SCHED_CODE='"+RDEscapeString(event_have_code2)+"')";
+    }
+    sql+=" where GROUP_NAME='"+RDEscapeString(SchedGroup())+"'";
     q=new RDSqlQuery(sql);
-    if(q->size()>0)
-    {
+    if(q->size()>0) {
       if(event_title_sep>=0 && event_title_sep<=50000)
       {
 	titlesep = (int)event_title_sep;
@@ -620,8 +619,8 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
       for(counter=0;counter<querysize;counter++)
       {
 	q->seek(counter);
-	schedcode=q->value(2).toString()+"          ";
-	schedcode=schedcode.left(11);
+//	schedcode=q->value(2).toString()+"          ";
+//	schedcode=schedcode.left(11);
 	schedCL->insertItem(q->value(0).toUInt(),0,0,q->value(1).toString(),schedcode);
       }
       delete q;
@@ -644,39 +643,6 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
       
       
       // Add deconflicting rules here		  
-      // Reduce schedCL to match requested scheduler code
-      if(event_have_code!="") {
-	schedCL->save();		  
-	for(counter=0;counter<schedCL->getNumberOfItems();counter++) { 
-	  if(!schedCL->itemHasCode(counter,event_have_code)) {
-	    schedCL->removeItem(counter);
-	    counter--;
-	  }
-	}
-	if(schedCL->getNumberOfItems()==0) {
-	  *errors+=time.toString("hh:mm:ss")+
-	    " "+QObject::tr("Rule broken: Must have code")+" "+event_have_code+"\n";
-	}
-	schedCL->restore();
-      }
-
-      // Reduce schedCL to match second requested scheduler code
-      if(event_have_code2!="") {
-	schedCL->save();
-	for(counter=0;counter<schedCL->getNumberOfItems();counter++) {
-	  if(!schedCL->itemHasCode(counter,event_have_code2)) {
-	    schedCL->removeItem(counter);
-	    counter--;
-	  }
-	}
-	if(schedCL->getNumberOfItems()==0) {
-	  *errors+=time.toString("hh:mm:ss")+" "+
-	    QObject::tr("Rule broken: Must have second code")+" "+
-	    event_have_code2+"\n";
-	}
-	schedCL->restore();
-      }
-
       // Title separation 
       schedCL->save();		  
       sql=QString("select CART from STACK_LINES where ")+
@@ -692,9 +658,14 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 	}
       }
       delete q;
-      if(schedCL->getNumberOfItems()==0)
-	*errors+=time.toString("hh:mm:ss")+" "+
-	  QObject::tr("Rule broken: Title Separation")+"\n";
+      if(schedCL->getNumberOfItems()==0) {
+	*report+=time.toString("hh:mm:ss")+" "+
+	  QObject::tr("Rule broken: Title separation");
+        if(!HaveCode().isEmpty()) {
+          *report+=QObject::tr(" with sched code(s): ")+HaveCode()+" "+HaveCode2();
+        }
+        *report+="\n";
+      }
       schedCL->restore();
       
       // Artist separation
@@ -713,8 +684,12 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
       }          
       delete q;
       if(schedCL->getNumberOfItems()==0) {
-	*errors+=time.toString("hh:mm:ss")+" "+
-	  QObject::tr("Rule broken: Artist Separation")+"\n";
+	*report+=time.toString("hh:mm:ss")+" "+
+	  QObject::tr("Rule broken: Artist separation");
+        if(!HaveCode().isEmpty()) {
+          *report+=QObject::tr(" with sched code(s): ")+HaveCode()+" "+HaveCode2();
+        }
+        *report+="\n";
       }
       schedCL->restore();
       
@@ -751,7 +726,7 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 	}
 	delete q1;
 	if(schedCL->getNumberOfItems()==0) {
-	  *errors+=time.toString("hh:mm:ss")+" "+
+	  *report+=time.toString("hh:mm:ss")+" "+
 	    QObject::tr("Rule broken: Max. in a Row/Min. Wait for ")+
 	    q->value(0).toString()+"\n";
 	}
@@ -776,7 +751,7 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 	  }
 	  delete q1;
 	  if(schedCL->getNumberOfItems()==0) {
-	    *errors+=time.toString("hh:mm:ss")+" "+
+	    *report+=time.toString("hh:mm:ss")+" "+
 	      QObject::tr("Rule broken: Do not schedule ")+
 	      q->value(0).toString()+" "+QObject::tr("after")+" "+
 	      q->value(3).toString()+"\n";
@@ -802,7 +777,7 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 	  }
 	  delete q1;
 	  if(schedCL->getNumberOfItems()==0) {
-	    *errors+=time.toString("hh:mm:ss")+" "+
+	    *report+=time.toString("hh:mm:ss")+" "+
 	      QObject::tr("Rule broken: Do not schedule")+" "+
 	      q->value(0).toString()+" "+QObject::tr("after")+" "+
 	      q->value(4).toString()+"\n";
@@ -828,7 +803,7 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 	  }
 	  delete q1;
 	  if(schedCL->getNumberOfItems()==0) {
-	    *errors+=time.toString("hh:mm:ss")+" "+
+	    *report+=time.toString("hh:mm:ss")+" "+
 	      QObject::tr("Rule broken: Do not schedule")+" "+
 	      q->value(0).toString()+" "+QObject::tr("after")+" "+
 	      q->value(5).toString()+"\n";
@@ -837,8 +812,7 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 	}
       }
       delete q;
-      
-      
+
 // end of deconflicting rules
       
       int schedpos=rand()%schedCL->getNumberOfItems();
@@ -875,6 +849,13 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
     }
     else
     {
+      // We don't have any carts to work with
+      *report+=time.toString("hh:mm:ss")+
+        " "+QObject::tr("No carts found in group")+" "+SchedGroup();
+      if(!HaveCode().isEmpty()) {
+        *report+=QObject::tr(" with sched code(s): ")+HaveCode()+" "+HaveCode2();
+      }
+      *report+="\n";
       delete q;
     }
   }

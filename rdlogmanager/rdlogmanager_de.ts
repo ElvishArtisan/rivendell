@@ -891,7 +891,7 @@ Fortfahren?</translation>
     </message>
     <message>
         <source>No exceptions found.</source>
-        <translation type="unfinished">Keine Fehler gefunden.</translation>
+        <translation type="obsolete">Keine Fehler gefunden.</translation>
     </message>
     <message>
         <source>already contains merged music and/or traffic data.
@@ -979,6 +979,10 @@ Einbinden wird diese entfernen. Fortfahren?</translation>
     </message>
     <message>
         <source>cannot be relinked.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No broken rules or validation exceptions found.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -891,7 +891,7 @@ Pokračovat?</translation>
     </message>
     <message>
         <source>No exceptions found.</source>
-        <translation type="unfinished">Nenalezena žádná chyba.</translation>
+        <translation type="obsolete">Nenalezena žádná chyba.</translation>
     </message>
     <message>
         <source>already contains merged music and/or traffic data.
@@ -979,6 +979,10 @@ Opětovné sloučení tato data smaže. Sloučit znovu?</translation>
     </message>
     <message>
         <source>cannot be relinked.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No broken rules or validation exceptions found.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
