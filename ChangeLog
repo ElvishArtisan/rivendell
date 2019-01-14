@@ -18373,3 +18373,6 @@
 	* Fixed regression in scheduler that caused events with two
 	scheduler codes to fail.
 	* Updated scheduler reports to indicate scheduler codes.
+2019-01-14 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed a bug in RDLogManager that allowed cloned clock lines to pass
+	hour mark.

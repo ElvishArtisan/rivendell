@@ -350,6 +350,9 @@ void EditClock::cloneData()
   eventline.setName(selectedEventLine->name());
   eventline.setStartTime(selectedEventLine->startTime().addMSecs(selectedEventLine->length()));
   eventline.setLength(selectedEventLine->length());
+  if(eventline.startTime().addMSecs(eventline.length()).hour()) {
+    eventline.setLength(0);
+  }
   
   EditEventLine *edit_eventline=
     new EditEventLine(&eventline,edit_clock,-1,this);
