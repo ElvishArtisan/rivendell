@@ -520,22 +520,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Rule broken: Must have code</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Rule broken: Must have second code</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Rule broken: Title Separation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Rule broken: Artist Separation</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Rule broken: Max. in a Row/Min. Wait for </source>
         <translation type="unfinished"></translation>
     </message>
@@ -725,6 +709,22 @@
     </message>
     <message>
         <source>MP4</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rule broken: Title separation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source> with sched code(s): </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rule broken: Artist separation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No carts found in group</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -200,7 +200,7 @@ int RDLogEvent::validate(QString *report,const QDate &date)
   // Report Header
   //
   *report="Rivendell Log Exception Report\n";
-  *report=QString("Generated at: ")+
+  *report+=QString("Generated at: ")+
     QDate::currentDate().toString("MM/dd/yyyy")+" - "+
     QTime::currentTime().toString("hh:mm:ss")+"\n";
   *report+=QString("Log: ")+log_name+"\n";
@@ -277,10 +277,10 @@ int RDLogEvent::validate(QString *report,const QDate &date)
   }
   *report+="\n";
   if(errs==1) {
-    *report+=QString().sprintf("%d exception found.\n\n",errs);
+    *report+=QString().sprintf("%d validation exception found.\n\n",errs);
   }
   else {
-    *report+=QString().sprintf("%d exceptions found.\n\n",errs);
+    *report+=QString().sprintf("%d validation exceptions found.\n\n",errs);
   }
   return errs;
 }
