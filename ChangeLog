@@ -18369,3 +18369,7 @@
 	notifications.
 2019-01-11 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.0.0alpha05.
+2019-01-14 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed regression in scheduler that caused events with two
+	scheduler codes to fail.
+	* Updated scheduler reports to indicate scheduler codes.

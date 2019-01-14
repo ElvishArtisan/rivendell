@@ -874,11 +874,11 @@ Do you want to save?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>No exceptions found.</source>
+        <source>cannot be relinked.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>cannot be relinked.</source>
+        <source>No broken rules or validation exceptions found.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

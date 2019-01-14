@@ -367,10 +367,19 @@ void GenerateLog::createData()
   event->load();
   if((event->validate(&report,gen_date_edit->date())==0)&&
      unused_report.isEmpty()) {
-    QMessageBox::information(this,tr("No Errors"),tr("No exceptions found."));
+    QMessageBox::information(this,tr("No Errors"),\
+      tr("No broken rules or validation exceptions found."));
   }
   else {
-    RDTextFile(report+"\n\n"+unused_report);
+    int errs=unused_report.count("\n"); 
+    if(errs==1) {
+      unused_report+=QString().sprintf("\n%d broken rule.\n",errs);
+    }
+    else {
+      unused_report+=QString().sprintf("\n%d broken rules.\n",errs);
+    }
+
+    RDTextFile(report+"\n"+unused_report);
   }
   delete event;
 

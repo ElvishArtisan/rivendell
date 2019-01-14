@@ -904,7 +904,7 @@ Hald fram?</translation>
     </message>
     <message>
         <source>No exceptions found.</source>
-        <translation type="unfinished">Fann ingen unntak.</translation>
+        <translation type="obsolete">Fann ingen unntak.</translation>
     </message>
     <message>
         <source>already contains merged music and/or traffic data.
@@ -984,6 +984,10 @@ Flettar du på nytt, vil du fjerna desse dataa. Flett på nytt?</translation>
     </message>
     <message>
         <source>cannot be relinked.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>No broken rules or validation exceptions found.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
