@@ -18381,3 +18381,6 @@
 2019-01-15 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdlogedit(1) that caused indicated meter levels
 	to be 5 dB too high for incoming signals in the voicetracker dialog.
+2019-01-15 Fred Gleason <fredg@paravelsystems.com>
+	* Replaced deprecated 'configparser' method call in the
+	'pypad.Receiver::setConfigFile()' method.

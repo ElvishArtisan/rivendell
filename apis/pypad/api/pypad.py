@@ -807,7 +807,7 @@ class Receiver(object):
         else:   # Get the config from a file
             fp=open(filename)
             self.__config_parser=configparser.ConfigParser(interpolation=None)
-            self.__config_parser.readfp(fp)
+            self.__config_parser.read_file(fp)
             fp.close()
 
         return self.__config_parser
