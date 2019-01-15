@@ -46,10 +46,25 @@ Python, v3.4 or later
 Open source scripting language. Included with most distros, or available at:
 https://www.python.org/.
 
+PycURL, v7.43.0 or later
+Python interface to libcurl. Available at http://pycurl.io/.
+
+PyMySQL, v1.3.12 or later
+Python library for accessing MySQL databases. Available at
+https://github.com/PyMySQL/mysqlclient-python.
+
+PySerial, v 3.2.1 or later
+Python library for accessing serial devices. Available at
+https://pythonhosted.org/pyserial/.
+
+Requests, v2.12.5 or later
+HTTP transfer library for Python. Available at 
+http://docs.python-requests.org/.
+
 Qt Toolkit, v4.6 or better
 Most modern Linux distros include this. It's typically installed as part
 of the KDE Desktop Environment, although KDE is by no means required.
-It can also be downloaded directly from TrollTech (http://www.trolltech.com/).
+It can also be downloaded directly at http://www.qt.io/.
 
 Secret Rabbit Code
 A sample-rate converter library, written by Erik de Castro Lopo. Included
@@ -143,7 +158,7 @@ running. They are:
 1)  Setting Up Prerequisites
 
 The major prerequisite piece of software needed for a functioning
-Rivendell system is the mySQL database engine. This needs to
+Rivendell system is the MySQL database engine. This needs to
 be accessible from the target system (either by running on the local
 host, or on a remote system) before Rivendell installation proper
 is commenced. In practice, this means that the 'mysqld' daemon is
@@ -155,10 +170,6 @@ The process of configuring mySQL on a given host can be intricate and
 is generally beyond the scope of this document. Details can be found
 in a number of books on the subject, as well as in the very extensive
 documentation that accompanies the server itself.
-
-If GPIO support is desired, this is also the time to install and test
-the kernel GPIO driver. Full installation instructions as well as the 
-list of currently supported GPIO boards are included in the package.
 
 
 2)  Installing the Rivendell Package
