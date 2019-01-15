@@ -22,6 +22,11 @@
 #define RD_H
 
 /*
+ * Copyright Notice
+ */
+#define RD_COPYRIGHT_NOTICE "© 2002-2019 Fred Gleason"
+
+/*
  * Default Configuration File
  */
 #define RD_CONF_FILE "/etc/rd.conf"

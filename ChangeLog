@@ -18386,3 +18386,5 @@
 	'pypad.Receiver::setConfigFile()' method.
 2019-01-15 Fred Gleason <fredg@paravelsystems.com>
 	* Updated 'INSTALL'.
+2019-01-15 Fred Gleason <fredg@paravelsystems.com>
+	* Updated copyright notices.

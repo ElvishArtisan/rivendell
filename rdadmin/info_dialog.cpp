@@ -2,7 +2,7 @@
 //
 // Display System Information for Rivendell
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -127,7 +127,7 @@ InfoDialog::InfoDialog(QWidget *parent)
   //
   // Signature
   //
-  label=new QLabel(tr("Copyright 2002-2018")+" "+PACKAGE_BUGREPORT,this);
+  label=new QLabel(QString::fromUtf8(RD_COPYRIGHT_NOTICE),this);
   label->setGeometry(10,87,sizeHint().width()-20,14);
   label->setFont(font);
 

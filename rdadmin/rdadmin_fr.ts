@@ -3671,10 +3671,6 @@ PARTICULAR PURPOSE.  Touch the &quot;View License&quot; button for details.</sou
         <source>&amp;Close</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Copyright 2002-2018</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>ListDropboxes</name>

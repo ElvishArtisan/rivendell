@@ -4395,7 +4395,11 @@ anzeigen</translation>
     </message>
     <message>
         <source>Copyright 2002-2018</source>
-        <translation type="unfinished">Copyright 2002-2018</translation>
+        <translation type="obsolete">Copyright 2002-2018</translation>
+    </message>
+    <message>
+        <source>Copyright 2002-2019</source>
+        <translation type="obsolete">Copyright 2002-2019</translation>
     </message>
 </context>
 <context>
