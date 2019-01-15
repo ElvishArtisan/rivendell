@@ -1838,14 +1838,14 @@ void VoiceTracker::meterData()
       rda->cae()->
 	outputMeterUpdate(edit_deck[i]->card(),edit_deck[i]->port(),level);
       for(int j=0;j<2;j++) {
-	ratio[j]+=pow(10.0,((double)level[j])/1000.0);
+	ratio[j]=pow(10.0,((double)level[j])/1000.0);
       }
     }
     if(track_recording) {
       rda->cae()->
 	inputMeterUpdate(edit_input_card,edit_input_port,level);
       for(int j=0;j<2;j++) {
-	ratio[j]+=pow(10.0,((double)level[j])/1000.0);
+	ratio[j]=pow(10.0,((double)level[j])/1000.0);
       }
     }
   }
@@ -2962,8 +2962,8 @@ void VoiceTracker::DragTarget(int trackno,const QPoint &pt)
     }  
     DrawTrackMap(trackno);
     WriteTrackMap(trackno);
-    track_meter->setLeftPeakBar(edit_logline[trackno]->fadedownGain()-1600);
-    track_meter->setRightPeakBar(edit_logline[trackno]->fadedownGain()-1600);
+       track_meter->setLeftPeakBar(edit_logline[trackno]->fadedownGain()-1600);
+       track_meter->setRightPeakBar(edit_logline[trackno]->fadedownGain()-1600);
     if(edit_logline[trackno+1]!=NULL) {
       edit_logline[trackno+1]->setHasCustomTransition(true);
     }  

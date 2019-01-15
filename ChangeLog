@@ -18378,3 +18378,6 @@
 	hour mark.
 2019-01-14 Patrick Linstruth <patrick@deltecent.com>
 	* Add error logging to RDAudioConvert class.
+2019-01-15 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdlogedit(1) that caused indicated meter levels
+	to be 5 dB too high for incoming signals in the voicetracker dialog.
