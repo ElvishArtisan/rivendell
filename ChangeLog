@@ -18376,3 +18376,5 @@
 2019-01-14 Patrick Linstruth <patrick@deltecent.com>
 	* Fixed a bug in RDLogManager that allowed cloned clock lines to pass
 	hour mark.
+2019-01-14 Patrick Linstruth <patrick@deltecent.com>
+	* Add error logging to RDAudioConvert class.
