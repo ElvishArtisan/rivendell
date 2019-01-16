@@ -18388,3 +18388,6 @@
 	* Updated 'INSTALL'.
 2019-01-15 Fred Gleason <fredg@paravelsystems.com>
 	* Updated copyright notices.
+2019-01-15 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'View Credits' button to the 'System Information' dialog
+	in rdadmin(1).

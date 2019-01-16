@@ -28,9 +28,11 @@ CWRAP = ../helpers/cwrap
 moc_%.cpp:	%.h
 	$(MOC) $< -o $@
 
-# The cwrap dependency
+# The cwrap dependencies
 html_%.cpp:	%.html
 	$(CWRAP) -o $@ $<
+credits.cpp:	
+	$(CWRAP) -o $@ ../AUTHORS
 
 instdir = @LOCAL_PREFIX@/lib
 
@@ -61,7 +63,6 @@ dist_librd_la_SOURCES = dbversion.h\
                         export_spincount.cpp\
                         export_technical.cpp\
                         export_textlog.cpp\
-                        html_gpl2.cpp\
                         rdadd_cart.cpp rdadd_cart.h\
                         rdadd_log.cpp rdadd_log.h\
                         rdairplay_conf.cpp rdairplay_conf.h\
@@ -247,7 +248,9 @@ dist_librd_la_SOURCES = dbversion.h\
                         schedcartlist.cpp schedcartlist.h
 
 
-nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
+nodist_librd_la_SOURCES = credits.cpp\
+                          html_gpl2.cpp\
+                          moc_rdadd_cart.cpp\
                           moc_rdadd_log.cpp\
                           moc_rdapplication.cpp\
                           moc_rdaudioconvert.cpp\
@@ -356,6 +359,8 @@ EXTRA_DIST = gpl2.html\
              rdpaths.h.in
 
 CLEANFILES = *~\
+             credits.cpp\
+             html_gpl2.cpp\
              moc_*\
              *.lib\
              *.obj\

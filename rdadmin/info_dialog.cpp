@@ -38,15 +38,15 @@
 #include <rd.h>
 #include <dbversion.h>
 
-#include <info_dialog.h>
+#include "info_dialog.h"
 
 //
 // This is a kludge, but apparently needed to get the bitmap data
 // for the info banners, as Automake refuses to process the cwrap
 // dependency correctly.
 //
-#include <xpm_info_banner1.cpp>
-#include <xpm_info_banner2.cpp>
+#include "xpm_info_banner1.cpp"
+#include "xpm_info_banner2.cpp"
 
 InfoDialog::InfoDialog(QWidget *parent)
   : QDialog(parent)
@@ -140,9 +140,18 @@ InfoDialog::InfoDialog(QWidget *parent)
   label->setText(tr("This program is free software, and comes with ABSOLUTELY NO WARRANTY,\nnot even the implied warranties of MERCHANTIBILITY or FITNESS FOR A\nPARTICULAR PURPOSE.  Touch the \"View License\" button for details."));
 
   //
-  // License Button
+  // Credits Button
   //
   QPushButton *button=new QPushButton(this);
+  button->setGeometry(sizeHint().width()/2-145,174,80,50);
+  button->setFont(button_font);
+  button->setText(tr("View\n&Credits"));
+  connect(button,SIGNAL(clicked()),this,SLOT(viewCreditsData()));
+
+  //
+  // License Button
+  //
+  button=new QPushButton(this);
   button->setGeometry(sizeHint().width()/2-45,174,80,50);
   button->setFont(button_font);
   button->setText(tr("View\n&License"));
@@ -170,6 +179,14 @@ QSize InfoDialog::sizeHint() const
 QSizePolicy InfoDialog::sizePolicy() const
 {
   return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
+}
+
+
+void InfoDialog::viewCreditsData()
+{
+  RDLicense *lic=new RDLicense(this);
+  lic->exec(RDLicense::Credits);
+  delete lic;
 }
 
 

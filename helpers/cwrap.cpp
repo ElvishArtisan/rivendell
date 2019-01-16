@@ -115,7 +115,7 @@ int main(int argc,char *argv[])
   for(int i=0;i<(stat.st_size/LINE_LENGTH+1);i++) {
     n=read(input_fd,line,LINE_LENGTH);
     for(int j=0;j<n;j++) {
-      fprintf(output_desc,"%d,",line[j]);
+      fprintf(output_desc,"%d,",0xFF&line[j]);
       count++;
     }
     if(n>0) {

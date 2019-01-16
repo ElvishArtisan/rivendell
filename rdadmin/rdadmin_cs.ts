@@ -4517,6 +4517,11 @@ GNU Library General Public License. Klepněte na tlačítko pro zobrazení povol
         <source>Copyright 2002-2019</source>
         <translation type="obsolete">Autorské právo 2002-2019</translation>
     </message>
+    <message>
+        <source>View
+&amp;Credits</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListAuxFields</name>

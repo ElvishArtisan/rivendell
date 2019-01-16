@@ -4401,6 +4401,11 @@ anzeigen</translation>
         <source>Copyright 2002-2019</source>
         <translation type="obsolete">Copyright 2002-2019</translation>
     </message>
+    <message>
+        <source>View
+&amp;Credits</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListAuxFields</name>

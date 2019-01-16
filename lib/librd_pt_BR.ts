@@ -2154,6 +2154,10 @@ Por Favor, cheque suas configurações e tenbte outra vez.</translation>
         <source>GNU Public License v2</source>
         <translation>GNU Public License v2</translation>
     </message>
+    <message>
+        <source>Rivendell Credits</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDListGroups</name>

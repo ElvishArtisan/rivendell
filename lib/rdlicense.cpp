@@ -2,7 +2,7 @@
 //
 // Display License Text.
 //
-// (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
+// (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -23,10 +23,11 @@
 
 #include <rdlicense.h>
 
-#include <html_gpl2.cpp>
+#include "credits.cpp"
+#include "html_gpl2.cpp"
 
 RDLicense::RDLicense(QWidget *parent)
-  : QDialog(parent,"",true)
+  : QDialog(parent)
 {
   //
   // Fix the Window Size
@@ -42,10 +43,9 @@ RDLicense::RDLicense(QWidget *parent)
   QFont button_font=QFont("Helvetica",14,QFont::Bold);
   button_font.setPixelSize(14);
 
-  license_edit=new Q3TextEdit(this,"license_edit");
+  license_edit=new QTextEdit(this);
   license_edit->
-    setGeometry(10,10,sizeHint().width()-20,sizeHint().height()-70);
-  license_edit->setTextFormat(Qt::RichText);
+    setGeometry(10,10,sizeHint().width()-20,sizeHint().height()-80);
   license_edit->setReadOnly(true);
 
   //
@@ -74,10 +74,17 @@ QSizePolicy RDLicense::sizePolicy() const
 void RDLicense::exec(RDLicense::License lic)
 {
   switch(lic) {
-      case RDLicense::GplV2:
-	license_edit->setText((const char *)html_gpl2);
-	setCaption(tr("GNU Public License v2"));
-	break;
+  case RDLicense::Credits:
+    license_edit->setTextFormat(Qt::PlainText);
+    license_edit->setText(QString::fromUtf8((const char *)credits));
+    setWindowTitle(tr("Rivendell Credits"));
+    break;
+
+  case RDLicense::GplV2:
+    license_edit->setTextFormat(Qt::RichText);
+    license_edit->setText((const char *)html_gpl2);
+    setWindowTitle(tr("GNU Public License v2"));
+    break;
   }
   QDialog::exec();
 }

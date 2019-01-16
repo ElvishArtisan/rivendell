@@ -4484,6 +4484,11 @@ PARA UN PROPÓSITO PARTICULAR.  Oprima el botón &quot;Ver licencia&quot; para d
         <source>Copyright 2002-2019</source>
         <translation type="obsolete">Copyright 2002-2019</translation>
     </message>
+    <message>
+        <source>View
+&amp;Credits</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListAuxFields</name>

@@ -2152,6 +2152,10 @@ Sjekk eksportoppsettet ditt og prøv att.</translation>
         <source>GNU Public License v2</source>
         <translation>GNU Public-lisensen, versjon 2</translation>
     </message>
+    <message>
+        <source>Rivendell Credits</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDListGroups</name>

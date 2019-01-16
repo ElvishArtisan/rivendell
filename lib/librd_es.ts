@@ -2156,6 +2156,10 @@ Do you still want to proceed?</source>
         <source>GNU Public License v2</source>
         <translation>Licencia Pública GNU v2</translation>
     </message>
+    <message>
+        <source>Rivendell Credits</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDListGroups</name>

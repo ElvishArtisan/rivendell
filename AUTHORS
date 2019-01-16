@@ -1,4 +1,4 @@
-The following folks have contributed to Rivendell:
+The following people have contributed to the Rivendell codebase:
 
 Todd Baker <bakert@rfa.org>
    C client binding for the Rivendell Web API [rivwebcapi].
@@ -29,7 +29,7 @@ Fred Gleason <fredg@paravelsystems.com>
 Patrick Linstruth <patrick@deltecent.com>
    General Bugfixes
    rddbconfig(8) Utility
-   TuneIn RLM
+   TuneIn and IceCast2 PyPAD scripts
 
 Dan Mills <dmills@spamblock.demon.co.uk>
    General Bughunter Extrordinaire

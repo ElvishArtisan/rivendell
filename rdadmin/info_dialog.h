@@ -45,6 +45,7 @@ class InfoDialog : public QDialog
   QSizePolicy sizePolicy() const;
 
  private slots:
+  void viewCreditsData();
   void viewLicenseData();
   void closeData();
 };

@@ -61,6 +61,7 @@ importers/rivendell_filter
 importers/sas_filter
 importers/wings_filter
 install-sh
+lib/credits.cpp
 lib/rdpaths.h
 libtool
 ltmain.sh
