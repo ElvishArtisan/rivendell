@@ -51,7 +51,7 @@ Requires: rivendell = @VERSION@, rivendell-webapi = @VERSION@
 
 %package pypad
 Summary: PyPAD Program Associated Data script system for Rivendell
-Requires: python34, python34-pycurl, python34-requests, python34-pyserial, python34-mysql
+Requires: python34, python34-pycurl, python34-requests, python34-mysql, pyserial
 
 %package select
 Summary: The RDSelect system selector tool for Rivendell.
