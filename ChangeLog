@@ -18391,3 +18391,6 @@
 2019-01-15 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'View Credits' button to the 'System Information' dialog
 	in rdadmin(1).
+2019-01-16 Fred Gleason <fredg@paravelsystems.com>
+	* Moved the 'RDLicense' class in the convienence library to
+	'License' in 'rdadmin(1).

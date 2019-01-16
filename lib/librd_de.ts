@@ -2144,15 +2144,11 @@ Bitte Kofiguration prüfen und erneut versuchen.</translation>
     <name>RDLicense</name>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Schliessen</translation>
+        <translation type="obsolete">&amp;Schliessen</translation>
     </message>
     <message>
         <source>GNU Public License v2</source>
-        <translation>GNU Public License v2</translation>
-    </message>
-    <message>
-        <source>Rivendell Credits</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">GNU Public License v2</translation>
     </message>
 </context>
 <context>

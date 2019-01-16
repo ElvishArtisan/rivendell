@@ -2150,15 +2150,11 @@ Do you still want to proceed?</source>
     <name>RDLicense</name>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Cerrar</translation>
+        <translation type="obsolete">&amp;Cerrar</translation>
     </message>
     <message>
         <source>GNU Public License v2</source>
-        <translation>Licencia Pública GNU v2</translation>
-    </message>
-    <message>
-        <source>Rivendell Credits</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Licencia Pública GNU v2</translation>
     </message>
 </context>
 <context>

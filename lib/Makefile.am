@@ -28,12 +28,6 @@ CWRAP = ../helpers/cwrap
 moc_%.cpp:	%.h
 	$(MOC) $< -o $@
 
-# The cwrap dependencies
-html_%.cpp:	%.html
-	$(CWRAP) -o $@ $<
-credits.cpp:	
-	$(CWRAP) -o $@ ../AUTHORS
-
 instdir = @LOCAL_PREFIX@/lib
 
 # I18N Stuff
@@ -152,7 +146,6 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdkernelgpio.cpp rdkernelgpio.h\
                         rdlabel.cpp rdlabel.h\
                         rdlibrary_conf.cpp rdlibrary_conf.h\
-                        rdlicense.cpp rdlicense.h\
                         rdlineedit.cpp rdlineedit.h\
                         rdlistselector.cpp rdlistselector.h\
                         rdlist_groups.cpp rdlist_groups.h\
@@ -248,9 +241,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         schedcartlist.cpp schedcartlist.h
 
 
-nodist_librd_la_SOURCES = credits.cpp\
-                          html_gpl2.cpp\
-                          moc_rdadd_cart.cpp\
+nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdadd_log.cpp\
                           moc_rdapplication.cpp\
                           moc_rdaudioconvert.cpp\
@@ -298,7 +289,6 @@ nodist_librd_la_SOURCES = credits.cpp\
                           moc_rdintegerdialog.cpp\
                           moc_rdkernelgpio.cpp\
                           moc_rdlabel.cpp\
-                          moc_rdlicense.cpp\
                           moc_rdlineedit.cpp\
                           moc_rdlist_groups.cpp\
                           moc_rdlist_logs.cpp\
@@ -346,9 +336,7 @@ nodist_librd_la_SOURCES = credits.cpp\
 
 librd_la_LDFLAGS = -release $(VERSION)
 
-EXTRA_DIST = gpl2.html\
-             html_gpl2_win32.cpp\
-             lib.pro\
+EXTRA_DIST = lib.pro\
              librd_cs.ts\
              librd_de.ts\
              librd_es.ts\
@@ -359,8 +347,6 @@ EXTRA_DIST = gpl2.html\
              rdpaths.h.in
 
 CLEANFILES = *~\
-             credits.cpp\
-             html_gpl2.cpp\
              moc_*\
              *.lib\
              *.obj\

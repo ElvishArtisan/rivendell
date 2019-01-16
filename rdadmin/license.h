@@ -1,4 +1,4 @@
-// rdlicense.h
+// license.h
 //
 // Display License Text.
 //
@@ -19,23 +19,23 @@
 //
 //
 
-#ifndef RDLICENSE_H
-#define RDLICENSE_H
+#ifndef LICENSE_H
+#define LICENSE_H
 
 #include <qdialog.h>
 #include <qtextedit.h>
 
-class RDLicense : public QDialog
+class License : public QDialog
 {
  Q_OBJECT
  public:
-  enum License {GplV2=0,Credits=1};
-  RDLicense(QWidget *parent=0);
+  enum Text {GplV2=0,Credits=1};
+  License(QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 
  public slots:
-  void exec(RDLicense::License lic);
+  void exec(License::Text lic);
 
  private slots:
   void closeData();
@@ -45,4 +45,4 @@ class RDLicense : public QDialog
 };
 
 
-#endif  // RDLICENSE_H
+#endif  // LICENSE_H

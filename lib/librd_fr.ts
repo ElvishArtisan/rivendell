@@ -1896,21 +1896,6 @@ Do you want to overwrite it?</source>
     </message>
 </context>
 <context>
-    <name>RDLicense</name>
-    <message>
-        <source>&amp;Close</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>GNU Public License v2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Rivendell Credits</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>RDListGroups</name>
     <message>
         <source>Select Group</source>

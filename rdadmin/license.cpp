@@ -1,4 +1,4 @@
-// rdlicense.cpp
+// license.cpp
 //
 // Display License Text.
 //
@@ -21,12 +21,15 @@
 
 #include <qpushbutton.h>
 
-#include <rdlicense.h>
+#include "license.h"
 
-#include "credits.cpp"
-#include "html_gpl2.cpp"
+//
+// Externally Generated Strings (via cwrap)
+//
+extern const unsigned char global_credits[];
+extern const unsigned char global_gpl2[];
 
-RDLicense::RDLicense(QWidget *parent)
+License::License(QWidget *parent)
   : QDialog(parent)
 {
   //
@@ -59,30 +62,30 @@ RDLicense::RDLicense(QWidget *parent)
 }
 
 
-QSize RDLicense::sizeHint() const
+QSize License::sizeHint() const
 {
   return QSize(600,400);
 } 
 
 
-QSizePolicy RDLicense::sizePolicy() const
+QSizePolicy License::sizePolicy() const
 {
   return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
 }
 
 
-void RDLicense::exec(RDLicense::License lic)
+void License::exec(License::Text lic)
 {
   switch(lic) {
-  case RDLicense::Credits:
+  case License::Credits:
     license_edit->setTextFormat(Qt::PlainText);
-    license_edit->setText(QString::fromUtf8((const char *)credits));
+    license_edit->setText(QString::fromUtf8((const char *)global_credits));
     setWindowTitle(tr("Rivendell Credits"));
     break;
 
-  case RDLicense::GplV2:
+  case License::GplV2:
     license_edit->setTextFormat(Qt::RichText);
-    license_edit->setText((const char *)html_gpl2);
+    license_edit->setText((const char *)global_gpl2);
     setWindowTitle(tr("GNU Public License v2"));
     break;
   }
@@ -90,7 +93,7 @@ void RDLicense::exec(RDLicense::License lic)
 }
 
 
-void RDLicense::closeData()
+void License::closeData()
 {
   done(0);
 }

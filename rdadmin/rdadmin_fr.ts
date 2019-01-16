@@ -3678,6 +3678,21 @@ PARTICULAR PURPOSE.  Touch the &quot;View License&quot; button for details.</sou
     </message>
 </context>
 <context>
+    <name>License</name>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rivendell Credits</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>GNU Public License v2</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ListDropboxes</name>
     <message>
         <source>&amp;Add</source>

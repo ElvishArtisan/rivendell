@@ -4524,6 +4524,21 @@ GNU Library General Public License. Klepněte na tlačítko pro zobrazení povol
     </message>
 </context>
 <context>
+    <name>License</name>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Zavřít</translation>
+    </message>
+    <message>
+        <source>Rivendell Credits</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>GNU Public License v2</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ListAuxFields</name>
     <message>
         <source>Auxiliary Metadata Fields</source>

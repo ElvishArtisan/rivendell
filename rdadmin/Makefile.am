@@ -29,6 +29,12 @@ CWRAP = ../helpers/cwrap
 moc_%.cpp:	%.h
 	$(MOC) $< -o $@
 
+# The cwrap dependencies
+global_gpl2.c:	
+	$(CWRAP) -o global_gpl2.c gpl2.html
+global_credits.c:	
+	$(CWRAP) -o global_credits.c ../AUTHORS
+
 # I18N Stuff
 install-exec-local:	
 	mkdir -p $(DESTDIR)$(prefix)/share/rivendell
@@ -93,6 +99,7 @@ dist_rdadmin_SOURCES = add_feed.cpp add_feed.h\
                        help_audios.cpp help_audios.h\
                        importfields.cpp importfields.h\
                        info_dialog.cpp info_dialog.h\
+                       license.cpp license.h\
                        list_dropboxes.cpp list_dropboxes.h\
                        list_endpoints.cpp list_endpoints.h\
                        list_feeds.cpp list_feeds.h\
@@ -120,7 +127,9 @@ dist_rdadmin_SOURCES = add_feed.cpp add_feed.h\
                        view_node_info.cpp view_node_info.h\
                        view_pypad_errors.cpp view_pypad_errors.h
 
-nodist_rdadmin_SOURCES = moc_add_feed.cpp\
+nodist_rdadmin_SOURCES = global_credits.c\
+                         global_gpl2.c\
+                         moc_add_feed.cpp\
                          moc_add_group.cpp\
                          moc_add_hostvar.cpp\
                          moc_add_matrix.cpp\
@@ -169,6 +178,7 @@ nodist_rdadmin_SOURCES = moc_add_feed.cpp\
                          moc_help_audios.cpp\
                          moc_importfields.cpp\
                          moc_info_dialog.cpp\
+                         moc_license.cpp\
                          moc_list_dropboxes.cpp\
                          moc_list_endpoints.cpp\
                          moc_list_feeds.cpp\
@@ -198,7 +208,8 @@ nodist_rdadmin_SOURCES = moc_add_feed.cpp\
 
 rdadmin_LDADD = @LIB_RDLIBS@ -lsamplerate @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
 
-EXTRA_DIST = info_banner1.xpm\
+EXTRA_DIST = gpl2.html\
+             info_banner1.xpm\
              info_banner2.xpm\
              rdadmin.pro\
              rdadmin_cs.ts\
@@ -212,6 +223,8 @@ EXTRA_DIST = info_banner1.xpm\
              xpm_info_banner2.cpp
 
 CLEANFILES = *~\
+             global_credits.c\
+             global_gpl2.c\
              *.qm\
              moc_*
 

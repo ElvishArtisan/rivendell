@@ -4491,6 +4491,21 @@ PARA UN PROPÓSITO PARTICULAR.  Oprima el botón &quot;Ver licencia&quot; para d
     </message>
 </context>
 <context>
+    <name>License</name>
+    <message>
+        <source>&amp;Close</source>
+        <translation type="unfinished">&amp;Cerrar</translation>
+    </message>
+    <message>
+        <source>Rivendell Credits</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>GNU Public License v2</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ListAuxFields</name>
     <message>
         <source>Auxiliary Metadata Fields</source>

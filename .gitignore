@@ -61,7 +61,6 @@ importers/rivendell_filter
 importers/sas_filter
 importers/wings_filter
 install-sh
-lib/credits.cpp
 lib/rdpaths.h
 libtool
 ltmain.sh
@@ -72,6 +71,10 @@ Makefile.in
 Makefile
 moc_*
 py-compile
+rdadmin/global_credits.c
+rdadmin/global_credits.cpp
+rdadmin/global_gpl2.c
+rdadmin/global_gpl2.cpp
 rdadmin/rdadmin
 rdairplay/rdairplay
 rdcastmanager/rdcastmanager

@@ -2146,15 +2146,11 @@ Sjekk eksportoppsettet ditt og prøv att.</translation>
     <name>RDLicense</name>
     <message>
         <source>&amp;Close</source>
-        <translation>Lu&amp;kk</translation>
+        <translation type="obsolete">Lu&amp;kk</translation>
     </message>
     <message>
         <source>GNU Public License v2</source>
-        <translation>GNU Public-lisensen, versjon 2</translation>
-    </message>
-    <message>
-        <source>Rivendell Credits</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">GNU Public-lisensen, versjon 2</translation>
     </message>
 </context>
 <context>

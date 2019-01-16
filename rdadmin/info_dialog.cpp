@@ -33,12 +33,12 @@
 #include <QLabel>
 
 #include <rdlabel.h>
-#include <rdlicense.h>
 #include <rdstation.h>
 #include <rd.h>
 #include <dbversion.h>
 
 #include "info_dialog.h"
+#include "license.h"
 
 //
 // This is a kludge, but apparently needed to get the bitmap data
@@ -184,16 +184,16 @@ QSizePolicy InfoDialog::sizePolicy() const
 
 void InfoDialog::viewCreditsData()
 {
-  RDLicense *lic=new RDLicense(this);
-  lic->exec(RDLicense::Credits);
+  License *lic=new License(this);
+  lic->exec(License::Credits);
   delete lic;
 }
 
 
 void InfoDialog::viewLicenseData()
 {
-  RDLicense *lic=new RDLicense(this);
-  lic->exec(RDLicense::GplV2);
+  License *lic=new License(this);
+  lic->exec(License::GplV2);
   delete lic;
 }
 

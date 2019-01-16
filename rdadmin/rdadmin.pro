@@ -61,6 +61,7 @@ x11 {
   SOURCES += edit_user_perms.cpp
   SOURCES += edit_vguest_resource.cpp
   SOURCES += info_dialog.cpp
+  SOURCES += license.cpp
   SOURCES += list_dropboxes.cpp
   SOURCES += list_endpoints.cpp
   SOURCES += list_feeds.cpp
@@ -128,6 +129,7 @@ x11 {
   HEADERS += edit_user_perms.h
   HEADERS += edit_vguest_resource.h
   HEADERS += info_dialog.h
+  HEADERS += license.h
   HEADERS += list_dropboxes.h
   HEADERS += list_endpoints.h
   HEADERS += list_feeds.h
