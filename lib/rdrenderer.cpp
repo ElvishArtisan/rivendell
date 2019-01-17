@@ -38,10 +38,6 @@ __RDRenderLogLine::__RDRenderLogLine(RDLogLine *ll,unsigned chans)
   ll_cart=NULL;
   ll_cut=NULL;
   ll_handle=NULL;
-  //  ll_user=user;
-  //  ll_station=station;
-  //  ll_system=sys;
-  //  ll_config=config;
   ll_channels=chans;
   ll_ramp_level=0.0;
   ll_ramp_rate=0.0;
@@ -92,10 +88,9 @@ void __RDRenderLogLine::setRampRate(double lvl)
 
 void __RDRenderLogLine::setRamp(RDLogLine::TransType next_trans)
 {
-  if((next_trans==RDLogLine::Segue)&&
-     (ll_cut->segueStartPoint()>=0)&&(ll_cut->segueEndPoint()>=0)) {
+  if((next_trans==RDLogLine::Segue)&&(segueStartPoint()>=0)) {
     ll_ramp_rate=((double)RD_FADE_DEPTH)/
-      ((double)FramesFromMsec(ll_cut->segueEndPoint()-ll_cut->segueStartPoint()));
+      ((double)FramesFromMsec(segueEndPoint()-segueStartPoint()));
   }
 }
 
@@ -110,6 +105,10 @@ bool __RDRenderLogLine::open(const QTime &time)
     if(ll_cart->exists()&&(ll_cart->type()==RDCart::Audio)) {
       if(ll_cart->selectCut(&cutname,time)) {
 	ll_cut=new RDCut(cutname);
+	setStartPoint(ll_cut->startPoint(),RDLogLine::CartPointer);
+	setEndPoint(ll_cut->endPoint(),RDLogLine::CartPointer);
+	setSegueStartPoint(ll_cut->segueStartPoint(),RDLogLine::CartPointer);
+	setSegueEndPoint(ll_cut->segueEndPoint(),RDLogLine::CartPointer);
 	QString filename;
 	if(GetCutFile(cutname,ll_cut->startPoint(),ll_cut->endPoint(),
 		      &filename)) {
@@ -496,18 +495,18 @@ bool RDRenderer::Render(const QString &outfile,RDLogEvent *log,RDSettings *s,
 			lls.at(i)->title()+"]");
 	sf_count_t frames=0;
 	if((lls.at(i+1)->transType()==RDLogLine::Segue)&&
-	   (lls.at(i)->cut()->segueStartPoint()>=0)) {
-	  frames=FramesFromMsec(lls.at(i)->cut()->segueStartPoint()-
-				lls.at(i)->cut()->startPoint());
+	   (lls.at(i)->segueStartPoint()>=0)) {
+	  frames=FramesFromMsec(lls.at(i)->segueStartPoint()-
+				lls.at(i)->startPoint());
 	  current_time=
-	    current_time.addMSecs(lls.at(i)->cut()->segueStartPoint()-
-				  lls.at(i)->cut()->startPoint());
+	    current_time.addMSecs(lls.at(i)->segueStartPoint()-
+				  lls.at(i)->startPoint());
 	}
 	else {
-	  frames=FramesFromMsec(lls.at(i)->cut()->endPoint()-
-				lls.at(i)->cut()->startPoint());
-	  current_time=current_time.addMSecs(lls.at(i)->cut()->endPoint()-
-					     lls.at(i)->cut()->startPoint());
+	  frames=FramesFromMsec(lls.at(i)->endPoint()-
+				lls.at(i)->startPoint());
+	  current_time=current_time.addMSecs(lls.at(i)->endPoint()-
+					     lls.at(i)->startPoint());
 	}
 	pcm=new float[frames*s->channels()];
 	memset(pcm,0,frames*s->channels()*sizeof(float));

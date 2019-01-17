@@ -18398,3 +18398,6 @@
 	* Changed the alpha warning in 'README' to a beta warning.
 	* Updated 'UPGRADING'.
 	* Incremented the package version to 3.0.0beta00.
+2019-01-17 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in log rendering that caused custom transitions
+	to be rendered as a PLAY transition.
