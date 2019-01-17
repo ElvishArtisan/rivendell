@@ -18394,3 +18394,7 @@
 2019-01-16 Fred Gleason <fredg@paravelsystems.com>
 	* Moved the 'RDLicense' class in the convienence library to
 	'License' in 'rdadmin(1).
+2019-01-17 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the alpha warning in 'README' to a beta warning.
+	* Updated 'UPGRADING'.
+	* Incremented the package version to 3.0.0beta00.

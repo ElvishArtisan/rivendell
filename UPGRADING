@@ -35,8 +35,8 @@ This version of Rivendell makes use of a web services protocol to accomplish
 many functions (audio import, export, ripping, etc). These services require
 that a CGI-compliant web server be installed and active on the system.  
 Any server that complies with CGI-1.1 should work, although as of this writing
-only Apache 2.2 has been well tested. A configuration file snippet for Apache
-that will configure the target web services directory (set by the
+only Apache 2.2/2.4 has been well tested. A configuration file snippet for
+Apache that will configure the target web services directory (set by the
 '--libexecdir=' switch passed to './configure') correctly is generated 
 automatically as part of the build process; it can be found in
 'conf/rd-bin.conf' after the build is complete.
@@ -67,8 +67,73 @@ the target file, respectively.
 
 The 'smb:' protocol is no longer supported.
 
-8) RLM API CHANGES (V1.x only)
-The parameters passed to the RLMPadDataSent() callback in RLMs have changed;
-private plug-ins written for RD 1.x will need to be modified to work with the
-new API.  (All plug-ins supplied with the Rivendell sources have already been
-modified appropriately.)
+8) Now & Next / PAD Updates
+The built-in UDP and RLM PAD transmission subsystems found in previous
+Rivendell versions have been replaced with a Python 3 based scripting
+system known as 'PyPAD'. Documentation for the full API can be found
+by entering the following at a Python 3 interactive prompt:
+
+   import pypad
+   help(pypad)
+
+A heavily commented sample script can also be found at
+'apis/pypad/tests/now_and_next.py' in the source tree.
+
+The following RLMs that were previously shipped with Rivendell 2.x have
+been ported to PyPAD:
+
+--------------------------------------------------------------------------
+|  RLM Plug-in        |  PyPAD Script       |  Remarks                   |
+--------------------------------------------------------------------------
+| rlm_ando            | pypad_ando.py       |                            |
+| rlm_filewrite       | pypad_filewrite.py  |                            |
+| rlm_icecast2        | pypad_icecast2.py   |                            |
+| rlm_inno713         | pypad_inno713.py    |                            |
+| rlm_liqcomp         | pypad_liqcomp.py    |                            |
+| rlm_live365         | pypad_live365.py    |                            |
+| rlm_serial          | pypad_serial.py     |                            |
+| rlm_shoutcast1      | pypad_shoutcast1.py |                            |
+| rlm_spinitroni_plus | pypad_spinitron.py  | Supports Spinitron v2 only |
+| rlm_spottrap        | pypad_spottrap.py   |                            |
+| rlm_tunein          | pypad_tunein.py     |                            |
+| rlm_udp             | pypad_udp.py        |                            |
+| rlm_urlwrite        | pypad_urlwrite.py   |                            |
+| rlm_walltime        | pypad_walltime.py   |                            |
+| rlm_xds             | pypad_xds.py        |                            |
+| rlm_xmpad           | pypad_xmpad.py      |                            |
+--------------------------------------------------------------------------
+
+With one exception, the configuration files for all of the above RLMs
+are forward compatibile with the successor PyPAD script. To apply the
+configuration, simply copy/paste the contents of the RLM configuration file
+into the Configuration box when creating the PyPAD instance in rdadmin(1).
+(See the Operations Guide for information on creating and modifying PyPAD
+instances).
+
+The single exception is the 'pypad_spinitron.py' script. Since this script
+supports only v2 of the Spinitron API, configuration parameters that apply
+only to the v1 API ('MajorVersion=', 'Station=' and 'Password=') are ignored.
+With these execptions, the RLM configuration is fully forward compatible.
+
+9) Multicast Data
+This version of Rivendell includes a new system for providing real-time
+status updates between Rivendell modules by means of multicast network
+packets. The default subscription address for these updates is
+239.192.255.72 (administratively scoped), but can be customized in
+RDAdmin->SystemsSettings if necessary.
+
+This means that all Rivendell hosts sharing a common database must
+be able to communicate via the specified multicast group. For typical
+installations (stand-alone, or networked with all hosts residing on a
+common TCP/IP subnet), this should 'just work', but those sites employing
+hosts on disparate TCP/IP networks (multiple subnets, WAN links, etc) may
+need to provision an appropriate multicast routing infrastructure.
+
+10) Database Management
+This version of Rivendell splits off database management tasks (creating,
+updating, backing up and restoration) from rdadmin(1). Simple management
+tasks can be done with the rddbconfig(8) GUI utility (available on the
+Rivendell->Configuration desktop menu), while advanced functionality is
+available in the rddbmgr(8) command-line utility (do 'man 8 rddbmgr' for
+full documentation). The functions of the rdrevert(8) and rddbcheck(8)
+utilites have also been subsumed into rddbmgr(8).
