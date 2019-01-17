@@ -204,7 +204,7 @@ bool __RDRenderLogLine::GetCutFile(const QString &cutname,int start_pt,
   default:
     ret=false;
     printf("export err %d [%s]\n",export_err,
-	   (const char *)RDAudioExport::errorText(export_err,conv_err));
+	  (const char *)RDAudioExport::errorText(export_err,conv_err).toUtf8());
     break;
   }
 

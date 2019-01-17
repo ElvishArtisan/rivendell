@@ -18403,3 +18403,6 @@
 	to be rendered as a PLAY transition.
 2019-01-17 Fred Gleason <fredg@paravelsystems.com>
 	* Removed dead debugging lines from the 'RDRenderer' class.
+2019-01-17 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdrender(1) that caused corruption when printing
+	UTF-8 characters.

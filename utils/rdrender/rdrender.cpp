@@ -71,7 +71,7 @@ MainObject::MainObject(QObject *parent)
   //
   rda=new RDApplication("rdrender","rdrender",RDRENDER_USAGE,this);
   if(!rda->open(&err_msg)) {
-    fprintf(stderr,"rdrender: %s\n",(const char *)err_msg);
+    fprintf(stderr,"rdrender: %s\n",(const char *)err_msg.toUtf8());
     exit(1);
   }
 
@@ -330,7 +330,7 @@ void MainObject::userData()
 void MainObject::printProgressMessage(const QString &msg)
 {
   if(render_verbose) {
-    fprintf(stderr,"%s\n",(const char *)msg);
+    fprintf(stderr,"%s\n",(const char *)msg.toUtf8());
   }
 }
 
