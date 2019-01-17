@@ -18401,3 +18401,5 @@
 2019-01-17 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in log rendering that caused custom transitions
 	to be rendered as a PLAY transition.
+2019-01-17 Fred Gleason <fredg@paravelsystems.com>
+	* Removed dead debugging lines from the 'RDRenderer' class.

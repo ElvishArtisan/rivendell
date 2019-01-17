@@ -2,7 +2,7 @@
 //
 // Render a Rivendell log to a single audio object.
 //
-//   (C) Copyright 2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,19 +28,13 @@
 #include <qobject.h>
 #include <qstringlist.h>
 
-//#include <rdconfig.h>
 #include <rdlog_event.h>
 #include <rdsettings.h>
-//#include <rdstation.h>
-//#include <rdsystem.h>
-//#include <rduser.h>
 
 class __RDRenderLogLine : public RDLogLine
 {
  public:
   __RDRenderLogLine(RDLogLine *ll,unsigned chans);
-  //  __RDRenderLogLine(RDLogLine *ll,RDUser *user,RDStation *station,RDSystem *sys,
-  //		    RDConfig *config,unsigned chans);
   RDCart *cart() const;
   RDCut *cut() const;
   SNDFILE *handle() const;
@@ -62,10 +56,6 @@ class __RDRenderLogLine : public RDLogLine
   RDCut *ll_cut;
   SNDFILE *ll_handle;
   RDLogLine *ll_logline;
-  //  RDUser *ll_user;
-  //  RDStation *ll_station;
-  //  RDSystem *ll_system;
-  //  RDConfig *ll_config;
   unsigned ll_channels;
   double ll_ramp_level;
   double ll_ramp_rate;
@@ -79,8 +69,6 @@ class RDRenderer : public QObject
   Q_OBJECT;
  public:
   RDRenderer(QObject *parent=0);
-  //  RDRenderer(RDUser *user,RDStation *station,RDSystem *system,RDConfig *config,
-  //	     QObject *parent=0);
   ~RDRenderer();
   bool renderToFile(const QString &outfile,RDLogEvent *log,RDSettings *s,
 		    const QTime &start_time,bool ignore_stops,
@@ -117,10 +105,6 @@ class RDRenderer : public QObject
   void ProgressMessage(const QString &msg);
   void ProgressMessage(const QTime &time,int line,const QString &trans,
 		       const QString &msg);
-  //  RDUser *render_user;
-  //  RDStation *render_station;
-  //  RDSystem *render_system;
-  //  RDConfig *render_config;
   QStringList render_warnings;
   bool render_abort;
   int render_total_passes;
