@@ -1,0 +1,3 @@
+USER=root
+PROGRAM=@prefix@/bin/rddbconfig
+SESSION=true

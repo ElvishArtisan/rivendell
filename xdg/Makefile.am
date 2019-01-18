@@ -67,9 +67,9 @@ uninstall-local:
 	rm -f $(DESTDIR)/etc/security/console.apps/rddbconfig-root
 	rm -f $(DESTDIR)$(prefix)/bin/rddbconfig-root
 
-EXTRA_DIST = rdalsaconfig-root-consolehelper\
+EXTRA_DIST = rdalsaconfig-root-consolehelper.in\
              rdalsaconfig-root-pam\
-             rddbconfig-root-consolehelper\
+             rddbconfig-root-consolehelper.in\
              rddbconfig-root-pam\
              rivendell-configuration.directory\
              rivendell-documentation.directory\
@@ -99,6 +99,7 @@ EXTRA_DIST = rdalsaconfig-root-consolehelper\
              rivendell-utilities.directory
 
 CLEANFILES = *~
-
+DISTCLEANFILES = rdalsaconfig-root-consolehelper\
+                 rddbconfig-root-consolehelper
 MAINTAINERCLEANFILES = *~\
                        Makefile.in

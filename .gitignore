@@ -155,5 +155,7 @@ utils/rdselect_helper/rdprofile.h
 utils/rdselect_helper/rdselect_helper
 utils/sas_shim/sas_shim
 web/rdfeed/rdfeed.xml
+xdg/rdalsaconfig-root-consolehelper
+xdg/rddbconfig-root-consolehelper
 xdg/rivendell-opsguide-html.desktop
 xdg/rivendell-opsguide-pdf.desktop

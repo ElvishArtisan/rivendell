@@ -18406,3 +18406,7 @@
 2019-01-17 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdrender(1) that caused corruption when printing
 	UTF-8 characters.
+2019-01-18 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a path bug in the Console Helper configuration that broke
+	startup of rdalsaconfig(8) and rddbconfig(8) from the desktop
+	menu when using default --prefix= value.
