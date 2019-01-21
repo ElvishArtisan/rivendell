@@ -18410,3 +18410,7 @@
 	* Fixed a path bug in the Console Helper configuration that broke
 	startup of rdalsaconfig(8) and rddbconfig(8) from the desktop
 	menu when using default --prefix= value.
+2019-01-21 Fred Gleason <fredg@paravelsystems.com>
+	* Updated comments in 'pypad.Receiver::serviceDescription()' and
+	'pypad.Receiver::padField()' methods to caution against confusing
+	the two.

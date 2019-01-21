@@ -333,7 +333,8 @@ class Update(object):
     def serviceDescription(self):
         """
            Returns the description of the service associated with this update
-           (string).
+           (string). Not to be confused with the 'description' field for a
+           cut!
         """
         return self.__fields['padUpdate']['service']['description']
 
@@ -475,8 +476,9 @@ class Update(object):
                        pypad.FIELD_COMPOSER - The 'Composer' field (string)
                        pypad.FIELD_CONDUCTOR - The 'Conductor' field (string)
                        pypad.FIELD_CUT_NUMER - The 'Cut Number' field (integer)
-                       pypad.FIELD_DESCRIPTION - The 'Description' field
-                                                 (string)
+                       pypad.FIELD_DESCRIPTION - The cut 'Description' field
+                                                 (string). Not to be confused
+                                                 with the service description!
                        pypad.FIELD_EXTERNAL_ANNC_TYPE - The 'EXT_ANNC_TYPE'
                                                         field (string)
                        pypad.FIELD_EXTERNAL_DATA - The 'EXT_DATA' field
