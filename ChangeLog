@@ -18415,5 +18415,4 @@
 	'pypad.Receiver::padField()' methods to caution against confusing
 	the two.
 2019-01-24 Patrick Linstruth <patrick@deltecent.com>
-	* Reduced size of PyPAD edit window in rdadmin(1) to match
-	rdairplay(1).
+	* Fixed regression with RDTransportButton taking focus from lists.
