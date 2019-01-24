@@ -18414,3 +18414,5 @@
 	* Updated comments in 'pypad.Receiver::serviceDescription()' and
 	'pypad.Receiver::padField()' methods to caution against confusing
 	the two.
+2019-01-24 Patrick Linstruth <patrick@deltecent.com>
+	* Added the ability to duplicate dropboxes in rdadmin(1).

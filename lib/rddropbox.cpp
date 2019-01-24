@@ -54,6 +54,43 @@ int RDDropbox::id() const
 }
 
 
+int RDDropbox::duplicate() const
+{
+  int new_box_id;
+
+  RDDropbox *new_box=new RDDropbox(-1,stationName());
+  new_box_id=new_box->id();
+
+  new_box->setStationName(stationName());
+  new_box->setGroupName(groupName());
+  new_box->setPath(path());
+  new_box->setNormalizationLevel(normalizationLevel());
+  new_box->setAutotrimLevel(autotrimLevel());
+  new_box->setSingleCart(singleCart());
+  new_box->setForceToMono(forceToMono());
+  new_box->setToCart(toCart());
+  new_box->setUseCartchunkId(useCartchunkId());
+  new_box->setTitleFromCartchunkId(titleFromCartchunkId());
+  new_box->setDeleteCuts(deleteCuts());
+  new_box->setDeleteSource(deleteSource());
+  new_box->setMetadataPattern(metadataPattern());
+  new_box->setUserDefined(userDefined());
+  new_box->setStartdateOffset(startdateOffset());
+  new_box->setEnddateOffset(enddateOffset());
+  new_box->setFixBrokenFormats(fixBrokenFormats());
+  new_box->setLogPath(logPath());
+  new_box->setCreateDates(createDates());
+  new_box->setCreateStartdateOffset(createStartdateOffset());
+  new_box->setCreateEnddateOffset(createEnddateOffset());
+  new_box->setSegueLevel(segueLevel());
+  new_box->setSegueLength(segueLength());
+
+  delete new_box;
+
+  return new_box_id;
+}
+
+
 QString RDDropbox::stationName() const
 {
   return RDGetSqlValue("DROPBOXES","ID",box_id,"STATION_NAME").toString();

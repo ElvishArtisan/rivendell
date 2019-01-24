@@ -29,6 +29,7 @@ class RDDropbox
  public:
   RDDropbox(int id,const QString &stationname="");
   int id() const;
+  int duplicate() const;
   QString stationName() const;
   void setStationName(const QString &name) const;
   QString groupName() const;
