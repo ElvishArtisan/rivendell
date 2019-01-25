@@ -18422,3 +18422,5 @@
 	rdairplay(1).
 2019-01-25 Patrick Linstruth <patrick@deltecent.com>
 	* Fixed regression with RDTransportButton taking focus from lists.
+2019-01-25 Patrick Linstruth <patrick@deltecent.com>
+	* Added the ability to duplicate dropboxes in rdadmin(1).

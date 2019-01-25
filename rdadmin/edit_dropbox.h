@@ -42,12 +42,13 @@ class EditDropbox : public QDialog
 {
  Q_OBJECT
  public:
-  EditDropbox(int id,QWidget *parent=0);
+  EditDropbox(int id,bool duplicate=false,QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 
  private slots:
   void selectPathData();
+  void pathChangedData(QString text);
   void selectCartData();
   void selectLogPathData();
   void schedcodesData();
@@ -63,6 +64,7 @@ class EditDropbox : public QDialog
   RDDropbox *box_dropbox;
   QComboBox *box_group_name_box;
   QLineEdit *box_path_edit;
+  QString box_path;
   QLineEdit *box_to_cart_edit;
   QPushButton *box_schedcodes_button;
   QCheckBox *box_delete_cuts_box;
@@ -85,6 +87,7 @@ class EditDropbox : public QDialog
   QCheckBox *box_title_from_cartchunk_id_box;
   QCheckBox *box_fix_broken_formats_box;
   QPushButton *box_select_cart_button;
+  QPushButton *ok_button;
   QSpinBox *box_startoffset_spin;
   QSpinBox *box_endoffset_spin;
   QCheckBox *box_create_dates_box;

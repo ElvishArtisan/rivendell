@@ -80,6 +80,14 @@ ListDropboxes::ListDropboxes(const QString &stationname,QWidget *parent)
   connect(list_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
 
   //
+  //  Duplicate Button
+  //
+  list_duplicate_button=new QPushButton(this);
+  list_duplicate_button->setFont(font);
+  list_duplicate_button->setText(tr("D&uplicate"));
+  connect(list_duplicate_button,SIGNAL(clicked()),this,SLOT(duplicateData()));
+
+  //
   //  Delete Button
   //
   list_delete_button=new QPushButton(this);
@@ -153,7 +161,7 @@ void ListDropboxes::addData()
   RDDropbox *box=new RDDropbox(-1,list_stationname);
   int id=box->id();
   delete box;
-  EditDropbox *edit_dropbox=new EditDropbox(id,this);
+  EditDropbox *edit_dropbox=new EditDropbox(id,false,this);
   if(edit_dropbox->exec()) {
     RDNotification *notify=new RDNotification(RDNotification::DropboxType,
 					      RDNotification::AddAction,
@@ -183,7 +191,7 @@ void ListDropboxes::editData()
   if(item==NULL) {
     return;
   }
-  EditDropbox *edit_dropbox=new EditDropbox(item->id(),this);
+  EditDropbox *edit_dropbox=new EditDropbox(item->id(),false,this);
   if(edit_dropbox->exec()) {
     RDNotification *notify=new RDNotification(RDNotification::DropboxType,
 					      RDNotification::ModifyAction,
@@ -193,6 +201,41 @@ void ListDropboxes::editData()
   }
   delete edit_dropbox;
   RefreshItem(item);
+}
+
+
+void ListDropboxes::duplicateData()
+{
+  RDListViewItem *item=(RDListViewItem *)list_dropboxes_view->selectedItem();
+  if(item==NULL) {
+    return;
+  }
+
+  RDDropbox *src_box=new RDDropbox(item->id(),list_stationname);
+  int new_box_id=src_box->duplicate();
+  delete src_box;
+
+  EditDropbox *edit_dropbox=new EditDropbox(new_box_id,true,this);
+  if(edit_dropbox->exec()) {
+    RDNotification *notify=new RDNotification(RDNotification::DropboxType,
+					      RDNotification::AddAction,
+					      list_stationname);
+    rda->ripc()->sendNotification(*notify);
+    delete notify;
+  }
+  else {
+    QString sql=QString().sprintf("delete from DROPBOXES where ID=%d",new_box_id);
+    RDSqlQuery *q=new RDSqlQuery(sql);
+    delete q;
+    delete edit_dropbox;
+    return;
+  }
+  item=new RDListViewItem(list_dropboxes_view);
+  item->setId(new_box_id);
+  RefreshItem(item);
+  item->setSelected(true);
+  list_dropboxes_view->setCurrentItem(item);
+  list_dropboxes_view->ensureItemVisible(item);
 }
 
 
@@ -240,7 +283,8 @@ void ListDropboxes::resizeEvent(QResizeEvent *e)
 {
   list_add_button->setGeometry(size().width()-90,10,80,50);
   list_edit_button->setGeometry(size().width()-90,70,80,50);
-  list_delete_button->setGeometry(size().width()-90,130,80,50);
+  list_duplicate_button->setGeometry(size().width()-90,130,80,50);
+  list_delete_button->setGeometry(size().width()-90,190,80,50);
   list_close_button->setGeometry(size().width()-90,size().height()-60,80,50);
   list_dropboxes_view->
     setGeometry(10,10,size().width()-120,size().height()-40);
