@@ -161,7 +161,7 @@ void ListDropboxes::addData()
   RDDropbox *box=new RDDropbox(-1,list_stationname);
   int id=box->id();
   delete box;
-  EditDropbox *edit_dropbox=new EditDropbox(id,this);
+  EditDropbox *edit_dropbox=new EditDropbox(id,false,this);
   if(edit_dropbox->exec()) {
     RDNotification *notify=new RDNotification(RDNotification::DropboxType,
 					      RDNotification::AddAction,
@@ -191,7 +191,7 @@ void ListDropboxes::editData()
   if(item==NULL) {
     return;
   }
-  EditDropbox *edit_dropbox=new EditDropbox(item->id(),this);
+  EditDropbox *edit_dropbox=new EditDropbox(item->id(),false,this);
   if(edit_dropbox->exec()) {
     RDNotification *notify=new RDNotification(RDNotification::DropboxType,
 					      RDNotification::ModifyAction,
@@ -215,7 +215,7 @@ void ListDropboxes::duplicateData()
   int new_box_id=src_box->duplicate();
   delete src_box;
 
-  EditDropbox *edit_dropbox=new EditDropbox(new_box_id,this);
+  EditDropbox *edit_dropbox=new EditDropbox(new_box_id,true,this);
   if(edit_dropbox->exec()) {
     RDNotification *notify=new RDNotification(RDNotification::DropboxType,
 					      RDNotification::AddAction,

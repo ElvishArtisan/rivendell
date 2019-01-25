@@ -42,7 +42,7 @@
 #include "globals.h"
 #include "edit_dropbox.h"
 
-EditDropbox::EditDropbox(int id,QWidget *parent)
+EditDropbox::EditDropbox(int id,bool duplicate,QWidget *parent)
   : QDialog(parent)
 {
   setModal(true);
@@ -403,7 +403,7 @@ EditDropbox::EditDropbox(int id,QWidget *parent)
   //
   //  Ok Button
   //
-  QPushButton *ok_button=new QPushButton(this);
+  ok_button=new QPushButton(this);
   ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   ok_button->setDefault(true);
   ok_button->setFont(font);
@@ -472,6 +472,13 @@ EditDropbox::EditDropbox(int id,QWidget *parent)
     box_schedcodes.push_back(q->value(0).toString());
   }
   delete q;
+
+  if(duplicate) {
+    box_path=box_dropbox->path();
+    connect(box_path_edit,SIGNAL(textChanged(QString)),this,SLOT(pathChangedData(QString)));
+    ok_button->setEnabled(false);
+    box_path_edit->setFocus();
+  }
 }
 
 
@@ -493,6 +500,17 @@ void EditDropbox::selectPathData()
   path=Q3FileDialog::getExistingDirectory(path,this);
   if(!path.isEmpty()) {
     box_path_edit->setText(path);
+  }
+}
+
+
+void EditDropbox::pathChangedData(QString text)
+{
+  if(box_path!=text) {
+    ok_button->setEnabled(true);
+  }
+  else {
+    ok_button->setEnabled(false);
   }
 }
 
