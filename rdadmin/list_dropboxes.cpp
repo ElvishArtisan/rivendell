@@ -80,7 +80,7 @@ ListDropboxes::ListDropboxes(const QString &stationname,QWidget *parent)
   connect(list_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
 
   //
-  //  Delete Button
+  //  Duplicate Button
   //
   list_duplicate_button=new QPushButton(this);
   list_duplicate_button->setFont(font);
