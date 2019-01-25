@@ -18417,3 +18417,6 @@
 2019-01-25 Patrick Linstruth <patrick@deltecent.com>
 	* Added a 'pypad_xcmd.py' PyPAD script for sending PAD data to
 	RDS encoders supporting the Pira.cz X-Command protocol.
+2019-01-25 Patrick Linstruth <patrick@deltecent.com>
+	* Reduced size of PyPAD edit window in rdadmin(1) to match
+	rdairplay(1).
