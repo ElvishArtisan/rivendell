@@ -3766,6 +3766,10 @@ PARTICULAR PURPOSE.  Touch the &quot;View License&quot; button for details.</sou
         <source>Rivendell Dropbox Configurations on</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>D&amp;uplicate</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListEndpoints</name>

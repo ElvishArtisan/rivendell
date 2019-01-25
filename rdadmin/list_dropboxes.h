@@ -41,6 +41,7 @@ class ListDropboxes : public QDialog
  private slots:
   void addData();
   void editData();
+  void duplicateData();
   void deleteData();
   void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
   void closeData();
@@ -55,6 +56,7 @@ class ListDropboxes : public QDialog
   RDListView *list_dropboxes_view;
   QPushButton *list_add_button;
   QPushButton *list_edit_button;
+  QPushButton *list_duplicate_button;
   QPushButton *list_delete_button;
   QPushButton *list_close_button;
   QString list_stationname;

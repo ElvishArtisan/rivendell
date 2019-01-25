@@ -4620,6 +4620,10 @@ Are you sure you want to continue?</source>
         <source>Rivendell Dropbox Configurations on</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>D&amp;uplicate</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListEncoders</name>
