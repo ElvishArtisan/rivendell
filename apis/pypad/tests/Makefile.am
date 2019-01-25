@@ -22,7 +22,8 @@
 
 EXTRA_DIST = filepath_test.py\
              now_and_next.py\
-	     pad_test.py
+	     pad_test.py\
+	     xcmd_server.py
 
 CLEANFILES = *~\
              *.idb\

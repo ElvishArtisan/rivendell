@@ -18414,3 +18414,6 @@
 	* Updated comments in 'pypad.Receiver::serviceDescription()' and
 	'pypad.Receiver::padField()' methods to caution against confusing
 	the two.
+2019-01-25 Patrick Linstruth <patrick@deltecent.com>
+	* Added a 'pypad_xcmd.py' PyPAD script for sending PAD data to
+	RDS encoders supporting the Pira.cz X-Command protocol.
