@@ -61,7 +61,6 @@ class ImportListView : public Q3ListView
  protected:
   void contentsMousePressEvent(QMouseEvent *e);
   void contentsMouseDoubleClickEvent(QMouseEvent *e);
-  void focusOutEvent(QFocusEvent *e);
   void dragEnterEvent(QDragEnterEvent *e);
   void dropEvent(QDropEvent *e);
 

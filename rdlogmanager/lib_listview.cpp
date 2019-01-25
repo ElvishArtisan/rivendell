@@ -29,16 +29,6 @@ LibListView::LibListView(QWidget *parent)
 }
 
 
-void LibListView::focusOutEvent(QFocusEvent *e)
-{
-  Q3ListViewItem *item=selectedItem();
-  if(item==NULL) {
-    return;
-  }
-  setSelected(item,false);
-}
-
-
 void LibListView::contentsMousePressEvent(QMouseEvent *e)
 {
   Q3ListView::contentsMousePressEvent(e);

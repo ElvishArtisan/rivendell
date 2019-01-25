@@ -41,6 +41,7 @@ RDTransportButton::RDTransportButton(RDTransportButton::TransType type,
   off_cap=new QPixmap();
   drawOffCap();
   setPixmap(*off_cap);
+  setFocusPolicy(Qt::NoFocus);
 
   flash_timer=new QTimer(this,"flash_timer");
   connect(flash_timer,SIGNAL(timeout()),this,SLOT(flashClock()));
