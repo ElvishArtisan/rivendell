@@ -37,7 +37,6 @@ class LibListView : public Q3ListView
   LibListView(QWidget *parent);
 
  protected:
-  void focusOutEvent(QFocusEvent *e);
   void contentsMousePressEvent(QMouseEvent *e);
 };
 

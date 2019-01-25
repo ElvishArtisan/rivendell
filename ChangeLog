@@ -18420,3 +18420,5 @@
 2019-01-25 Patrick Linstruth <patrick@deltecent.com>
 	* Reduced size of PyPAD edit window in rdadmin(1) to match
 	rdairplay(1).
+2019-01-25 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed regression with RDTransportButton taking focus from lists.

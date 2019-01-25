@@ -472,16 +472,6 @@ void ImportListView::contentsMouseDoubleClickEvent(QMouseEvent *e)
 }
 
 
-void ImportListView::focusOutEvent(QFocusEvent *e)
-{
-  Q3ListViewItem *item=selectedItem();
-  if(item==NULL) {
-    return;
-  }
-  setSelected(item,false);
-}
-
-
 void ImportListView::dragEnterEvent(QDragEnterEvent *e)
 {
   e->accept(RDCartDrag::canDecode(e));
