@@ -255,6 +255,9 @@ bool RDFormPost::getValue(const QString &name,QDate *date,bool *ok)
     return false;
   }
   if(str.length()==0) {
+    if(ok!=NULL) {
+      *ok=true;
+    }    
     *date=QDate();
   }
   else {
@@ -275,6 +278,9 @@ bool RDFormPost::getValue(const QString &name,QTime *time,bool *ok)
     return false;
   }
   if(str.length()==0) {
+    if(ok!=NULL) {
+      *ok=true;
+    }    
     *time=QTime();
   }
   else {

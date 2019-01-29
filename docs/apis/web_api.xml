@@ -1239,7 +1239,7 @@
 	    Set Start Date/Time
 	  </entry>
 	  <entry>
-	    Optional, RFC-822 format
+	    Optional, RFC-822 or XML xs:dateTime format
 	  </entry>
 	</row>
 	<row>
@@ -1250,7 +1250,7 @@
 	    Set End Date/Time
 	  </entry>
 	  <entry>
-	    Optional, RFC-822 format
+	    Optional, RFC-822 or XML xs:dateTime format
 	  </entry>
 	</row>
 	<row>
@@ -1338,7 +1338,7 @@
 	    Set Start daypart time
 	  </entry>
 	  <entry>
-	    Optional, RFC-822 format
+	    Optional, XML xs:time format
 	  </entry>
 	</row>
 	<row>
@@ -1349,7 +1349,7 @@
 	    Set End daypart time
 	  </entry>
 	  <entry>
-	    Optional, RFC-822 format
+	    Optional, XML xs:time format
 	  </entry>
 	</row>
 	<row>

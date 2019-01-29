@@ -461,17 +461,17 @@ void Xport::AddCut()
   // Verify Post
   //
   if(!xport_post->getValue("CART_NUMBER",&cart_number)) {
-    XmlExit("Missing CART_NUMBER",400);
+    XmlExit("Missing CART_NUMBER",400,"carts.cpp",LINE_NUMBER);
   }
 
   //
   // Verify User Perms
   //
   if(!rda->user()->cartAuthorized(cart_number)) {
-    XmlExit("No such cart",404);
+    XmlExit("No such cart",404,"carts.cpp",LINE_NUMBER);
   }
   if(!rda->user()->editAudio()) {
-    XmlExit("Forbidden",404);
+    XmlExit("Forbidden",404,"carts.cpp",LINE_NUMBER);
   }
 
   //
@@ -480,11 +480,11 @@ void Xport::AddCut()
   cart=new RDCart(cart_number);
   if(!cart->exists()) {
     delete cart;
-    XmlExit("No such cart",404);
+    XmlExit("No such cart",404,"carts.cpp",LINE_NUMBER);
   }
   if((cut_number=cart->addCut(0,0,2))<0) {
     delete cart;
-    XmlExit("No new cuts available",500);
+    XmlExit("No new cuts available",500,"carts.cpp",LINE_NUMBER);
   }
   printf("Content-type: application/xml\n");
   printf("Status: 200\n\n");
@@ -515,14 +515,14 @@ void Xport::ListCuts()
   // Verify Post
   //
   if(!xport_post->getValue("CART_NUMBER",&cart_number)) {
-    XmlExit("Missing CART_NUMBER",400);
+    XmlExit("Missing CART_NUMBER",400,"carts.cpp",LINE_NUMBER);
   }
 
   //
   // Verify User Perms
   //
   if(!rda->user()->cartAuthorized(cart_number)) {
-    XmlExit("No such cart",404);
+    XmlExit("No such cart",404,"carts.cpp",LINE_NUMBER);
   }
 
   //
@@ -555,17 +555,17 @@ void Xport::ListCut()
   // Verify Post
   //
   if(!xport_post->getValue("CART_NUMBER",&cart_number)) {
-    XmlExit("Missing CART_NUMBER",400);
+    XmlExit("Missing CART_NUMBER",400,"carts.cpp",LINE_NUMBER);
   }
   if(!xport_post->getValue("CUT_NUMBER",&cut_number)) {
-    XmlExit("Missing CUT_NUMBER",400);
+    XmlExit("Missing CUT_NUMBER",400,"carts.cpp",LINE_NUMBER);
   }
 
   //
   // Verify User Perms
   //
   if(!rda->user()->cartAuthorized(cart_number)) {
-    XmlExit("No such cart",404);
+    XmlExit("No such cart",404,"carts.cpp",LINE_NUMBER);
   }
 
   //
@@ -574,7 +574,7 @@ void Xport::ListCut()
   cut=new RDCut(cart_number,cut_number);
   if(!cut->exists()) {
     delete cut;
-    XmlExit("No such cut",404);
+    XmlExit("No such cut",404,"carts.cpp",LINE_NUMBER);
   }
   printf("Content-type: application/xml\n");
   printf("Status: 200\n\n");
@@ -627,20 +627,20 @@ void Xport::EditCut()
   // Verify Post
   //
   if(!xport_post->getValue("CART_NUMBER",&cart_number)) {
-    XmlExit("Missing CART_NUMBER",400);
+    XmlExit("Missing CART_NUMBER",400,"carts.cpp",LINE_NUMBER);
   }
   if(!xport_post->getValue("CUT_NUMBER",&cut_number)) {
-    XmlExit("Missing CUT_NUMBER",400);
+    XmlExit("Missing CUT_NUMBER",400,"carts.cpp",LINE_NUMBER);
   }
 
   //
   // Verify User Perms
   //
   if(!rda->user()->cartAuthorized(cart_number)) {
-    XmlExit("No such cart",404);
+    XmlExit("No such cart",404,"carts.cpp",LINE_NUMBER);
   }
   if(!rda->user()->editAudio()) {
-    XmlExit("Forbidden",404);
+    XmlExit("Forbidden",404,"carts.cpp",LINE_NUMBER);
   }
 
   //
@@ -649,42 +649,45 @@ void Xport::EditCut()
   if((use_start_datetime=xport_post->
       getValue("START_DATETIME",&start_datetime,&ok))) {
     if(!ok) {
-      XmlExit("invalid START_DATETIME",400);
+      XmlExit("invalid START_DATETIME",400,"carts.cpp",LINE_NUMBER);
     }
   }
   if((use_end_datetime=xport_post->
       getValue("END_DATETIME",&end_datetime,&ok))) {
     if(!ok) {
-      XmlExit("invalid END_DATETIME",400);
+      XmlExit("invalid END_DATETIME",400,"carts.cpp",LINE_NUMBER);
     }
   }
   if(use_start_datetime!=use_end_datetime) {
-    XmlExit("both DATETIME values must be set together",400);
+    XmlExit("both DATETIME values must be set together",400,"carts.cpp",
+	    LINE_NUMBER);
   }
   if(use_start_datetime&&(start_datetime>end_datetime)) {
-    XmlExit("START_DATETIME is later than END_DATETIME",400);
+    XmlExit("START_DATETIME is later than END_DATETIME",400,"carts.cpp",
+	    LINE_NUMBER);
   }
 
   if((use_start_daypart=xport_post->
       getValue("START_DAYPART",&start_daypart,&ok))) {
     if(!ok) {
-      XmlExit("invalid START_DAYPART",400);
+      XmlExit("invalid START_DAYPART",400,"carts.cpp",LINE_NUMBER);
     }
   }
   if((use_end_daypart=xport_post->
       getValue("END_DAYPART",&end_daypart,&ok))) {
     if(!ok) {
-      XmlExit("invalid END_DAYPART",400);
+      XmlExit("invalid END_DAYPART",400,"carts.cpp",LINE_NUMBER);
     }
   }
   if(use_start_daypart!=use_end_daypart) {
-    XmlExit("both DAYPART values must be set together",400);
+    XmlExit("both DAYPART values must be set together",400,"carts.cpp",
+	    LINE_NUMBER);
   }
 
   cut=new RDCut(cart_number,cut_number);
   if(!cut->exists()) {
     delete cut;
-    XmlExit("No such cut",404);
+    XmlExit("No such cut",404,"carts.cpp",LINE_NUMBER);
   }
 
   //
@@ -701,24 +704,27 @@ void Xport::EditCut()
   if((use_fadeup_point=xport_post->
       getValue("FADEUP_POINT",&fadeup_point,&ok))) {
     if(!ok) {
-      XmlExit("invalid FADEUP_POINT",400);
+      XmlExit("invalid FADEUP_POINT",400,"carts.cpp",LINE_NUMBER);
     }
     if(fadeup_point>end_points[1]) {
-      XmlExit("FADEUP_POINT exceeds length of cart",400);
+      XmlExit("FADEUP_POINT exceeds length of cart",400,"carts.cpp",
+	      LINE_NUMBER);
     }
   }
   if((use_fadedown_point=xport_post->
       getValue("FADEDOWN_POINT",&fadedown_point,&ok))) {
     if(!ok) {
-      XmlExit("invalid FADEDOWN_POINT",400);
+      XmlExit("invalid FADEDOWN_POINT",400,"carts.cpp",LINE_NUMBER);
     }
     if(fadeup_point>end_points[1]) {
-      XmlExit("FADEDOWN_POINT exceeds length of cart",400);
+      XmlExit("FADEDOWN_POINT exceeds length of cart",400,"carts.cpp",
+	      LINE_NUMBER);
     }
   }
   if(use_fadeup_point&&use_fadedown_point&&
      (fadeup_point>=0)&&(fadedown_point>=0)&&(fadeup_point>fadedown_point)) {
-    XmlExit("FADEUP_POINT is greater than FADEDOWN_POINT",400);
+    XmlExit("FADEUP_POINT is greater than FADEDOWN_POINT",400,"carts.cpp",
+	    LINE_NUMBER);
   }
 
   //
@@ -726,7 +732,7 @@ void Xport::EditCut()
   //
   if((use_weight=xport_post->getValue("WEIGHT",&weight,&ok))) {
     if((!ok)||(weight<0)) {
-      XmlExit("invalid WEIGHT",400);
+      XmlExit("invalid WEIGHT",400,"carts.cpp",LINE_NUMBER);
     }
   }
 
@@ -876,31 +882,35 @@ void Xport::CheckPointerValidity(int ptr_values[2],bool use_ptrs[2],
     return;
   }
   if(!start_ok) {
-    XmlExit("invalid "+type+"START_POINT",400);
+    XmlExit("invalid "+type+"START_POINT",400,"carts.cpp",LINE_NUMBER);
   }
   if(!end_ok) {
-    XmlExit("invalid "+type+"END_POINT",400);
+    XmlExit("invalid "+type+"END_POINT",400,"carts.cpp",LINE_NUMBER);
   }
   if(use_ptrs[0]!=use_ptrs[1]) {
-    XmlExit("both "+type+"*_POINT values must be set together",400);
+    XmlExit("both "+type+"*_POINT values must be set together",400,"carts.cpp",
+	    LINE_NUMBER);
   }
   if(use_ptrs[0]) {
     if(((ptr_values[0]<0)&&(ptr_values[1]>=0))||
        ((ptr_values[0]>=0)&&(ptr_values[1]<0))) {
-      XmlExit("inconsistent "+type+"*_POINT values",400);
+      XmlExit("inconsistent "+type+"*_POINT values",400,"carts.cpp",
+	      LINE_NUMBER);
     }
   }
   if(ptr_values[0]>=0) {
     if(ptr_values[0]>ptr_values[1]) {
-      XmlExit(type+"START_POINT greater than "+type+"END_POINT",400);
+      XmlExit(type+"START_POINT greater than "+type+"END_POINT",400,
+	      "carts.cpp",LINE_NUMBER);
     }
     if((max_value>0)&&((unsigned)ptr_values[1]>max_value)) {
-      XmlExit(type+"END_POINT exceeds length of cut",400);
+      XmlExit(type+"END_POINT exceeds length of cut",400,"carts.cpp",
+	      LINE_NUMBER);
     }
   }
   else {
     if(max_value==0) {
-      XmlExit("End markers cannot be removed",400);
+      XmlExit("End markers cannot be removed",400,"carts.cpp",LINE_NUMBER);
     }
     else {
       ptr_values[0]=-1;
@@ -920,20 +930,20 @@ void Xport::RemoveCut()
   // Verify Post
   //
   if(!xport_post->getValue("CART_NUMBER",&cart_number)) {
-    XmlExit("Missing CART_NUMBER",400);
+    XmlExit("Missing CART_NUMBER",400,"carts.cpp",LINE_NUMBER);
   }
   if(!xport_post->getValue("CUT_NUMBER",&cut_number)) {
-    XmlExit("Missing CUT_NUMBER",400);
+    XmlExit("Missing CUT_NUMBER",400,"carts.cpp",LINE_NUMBER);
   }
 
   //
   // Verify User Perms
   //
   if(!rda->user()->cartAuthorized(cart_number)) {
-    XmlExit("No such cart",404);
+    XmlExit("No such cart",404,"carts.cpp",LINE_NUMBER);
   }
   if(!rda->user()->editAudio()) {
-    XmlExit("Forbidden",404);
+    XmlExit("Forbidden",404,"carts.cpp",LINE_NUMBER);
   }
 
   //
@@ -942,12 +952,12 @@ void Xport::RemoveCut()
   cart=new RDCart(cart_number);
   if(!cart->exists()) {
     delete cart;
-    XmlExit("No such cart",404);
+    XmlExit("No such cart",404,"carts.cpp",LINE_NUMBER);
   }
   if(!cart->removeCut(NULL,NULL,RDCut::cutName(cart_number,cut_number),
 		      rda->config())) {
     delete cart;
-    XmlExit("No such cut",404);
+    XmlExit("No such cut",404,"carts.cpp",LINE_NUMBER);
   }
   SendNotification(RDNotification::CartType,RDNotification::ModifyAction,
 		   QVariant(cart->number()));
