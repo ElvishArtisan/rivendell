@@ -25,8 +25,9 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-#include <rdconf.h>
-#include <rdweb.h>
+#include "rdconf.h"
+#include "rddatetime.h"
+#include "rdweb.h"
 
 #include <rdformpost.h>
 
@@ -237,7 +238,7 @@ bool RDFormPost::getValue(const QString &name,QDateTime *datetime,bool *ok)
     }
   }
   else {
-    *datetime=RDGetWebDateTime(str,ok);
+    *datetime=RDParseDateTime(str,ok);
   }
   return true;
 }
@@ -257,7 +258,7 @@ bool RDFormPost::getValue(const QString &name,QDate *date,bool *ok)
     *date=QDate();
   }
   else {
-    *date=RDGetWebDate(str,ok);
+    *date=RDParseXmlDate(str,ok);
   }
   return true;
 }
@@ -277,7 +278,7 @@ bool RDFormPost::getValue(const QString &name,QTime *time,bool *ok)
     *time=QTime();
   }
   else {
-    *time=RDGetWebTime(str,ok);
+    *time=RDParseXmlTime(str,ok);
   }
   return true;
 }

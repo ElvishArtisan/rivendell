@@ -23,6 +23,8 @@
 #include <rdapplication.h>
 #include <rdweb.h>
 
+#include <rddatetime.h>
+
 #include "rdclilogedit.h"
 
 void MainObject::DispatchCommand(QString cmd)
@@ -503,7 +505,7 @@ void MainObject::DispatchCommand(QString cmd)
 	    switch(ttype) {
 	    case RDLogLine::Hard:
 	      if(cmds.size()>=4) {
-		time=RDGetWebTime(cmds[3],&ok);
+		time=RDParseXmlTime(cmds[3],&ok);
 		if(ok) {
 		  Settime(line,ttype,time);
 		}

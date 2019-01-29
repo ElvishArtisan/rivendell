@@ -37,9 +37,10 @@
 #include <sys/timex.h>
 #include <time.h>
 
-#include <rddb.h>
-#include <rdconf.h>
-#include <rdescape_string.h>
+#include "rddb.h"
+#include "rdconf.h"
+#include "rddatetime.h"
+#include "rdescape_string.h"
 
 #define BUFFER_SIZE 1024
 
@@ -982,7 +983,7 @@ QTime RDUtcToLocal(const QTime &gmttime)
   return gmttime.addSecs(-RDTimeZoneOffset());
 }
 
-
+/*
 int RDTimeZoneOffset()
 {
   time_t t=time(&t);
@@ -1001,7 +1002,7 @@ int RDTimeZoneOffset()
 
   return offset;
 }
-
+*/
 
 QColor RDGetTextColor(const QColor &background_color)
 {

@@ -101,7 +101,7 @@ QDateTime RDLocalToUtc(const QDateTime &localdatetime);
 QTime RDLocalToUtc(const QTime &localtime);
 QDateTime RDUtcToLocal(const QDateTime &gmtdatetime);
 QTime RDUtcToLocal(const QTime &gmttime);
-int RDTimeZoneOffset();
+//int RDTimeZoneOffset();
 QColor RDGetTextColor(const QColor &background_color);
 bool RDProcessActive(const QString &cmd);
 bool RDProcessActive(const QStringList &cmds);

@@ -18424,3 +18424,11 @@
 	* Fixed regression with RDTransportButton taking focus from lists.
 2019-01-25 Patrick Linstruth <patrick@deltecent.com>
 	* Added the ability to duplicate dropboxes in rdadmin(1).
+2019-01-29 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored routines for parsing/writing standard date/time strings
+	(RFC822 and XML xs:dateTime formats) into 'lib/rddatetime.[cpp|h].
+	* Removed the 'RDWebDateTime()', 'RDGetWebDateTime()',
+	'RDGetWebDate()', 'RDGetWebTime()', 'RDGetWebMonth()',
+	'RDXmlDate()', 'RDXmlTime()', 'RDXmlDateTime()' and
+	'RDXmlTimeZoneSuffix()' functions from 'lib/rdweb.[cpp|h].
+	* Added a 'dateparse_test' test harness.

@@ -107,6 +107,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rddatepicker.cpp rddatepicker.h\
 		        rddb.h rddb.cpp\
                         rddbheartbeat.cpp rddbheartbeat.h\
+                        rddatetime.cpp rddatetime.h\
                         rddebug.cpp rddebug.h\
                         rddeck.cpp rddeck.h\
                         rddelete.cpp rddelete.h\
