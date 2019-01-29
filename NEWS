@@ -1,7 +1,7 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v2.19.3int00 -- 11/19/2018
+v2.19.3int03 -- 1/29/2019
 
 Changes:
    Fixed a regression in rdlogmanager(1) that caused embedded traffic
