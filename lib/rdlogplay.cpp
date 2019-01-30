@@ -2876,8 +2876,10 @@ void RDLogPlay::SendNowNext()
   int lines[TRANSPORT_QUANTITY];
   int running=runningEvents(lines,false);
   for(int i=0;i<running;i++) {
-    if((time=logLine(lines[i])->startTime(RDLogLine::Actual).
-	addMSecs(logLine(lines[i])->effectiveLength()))>end_time) {
+    if(((time=logLine(lines[i])->startTime(RDLogLine::Actual).
+	addMSecs(logLine(lines[i])->effectiveLength()))>end_time)
+        ||(logLine(lines[i])->cartType()==RDCart::Macro&&
+          logLine(lines[i])->useEventLength()==false)) {
       end_time=time;
       now_line=lines[i];
     }
