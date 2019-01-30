@@ -704,6 +704,18 @@
       (see <xref linkend="appendix.filepath_wildcards" />).
     </para>
     <para>
+      A macro cart will execute synchronously in the event log, meaning the next
+      event in the log will not start until the macro cart has finished. Checking
+      the <computeroutput>Execute Asynchronously</computeroutput> box will cause
+      the macro cart to execute asynchrounsly in the background.
+    </para>
+    <para>
+      By default, the PAD data associated with the macro will be sent regardless of
+      the lengths of other running events. Checking the <computeroutput>Use Event
+      Length for PAD Updates</computeroutput> box will use the end time of all
+      running events to determine the PAD data to be sent.
+    </para>
+    <para>
       <mediaobject>
 	<imageobject>
 	  <imagedata align="center" fileref="rdlibrary.edit_macro_cart_dialog.png" scale="50"/>
