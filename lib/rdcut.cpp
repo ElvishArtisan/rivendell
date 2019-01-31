@@ -882,10 +882,11 @@ bool RDCut::copyTo(RDStation *station,RDUser *user,
     "FADEDOWN_POINT,"+     // 11
     "SEGUE_START_POINT,"+  // 12
     "SEGUE_END_POINT,"+    // 13
-    "HOOK_START_POINT,"+   // 14
-    "HOOK_END_POINT,"+     // 15
-    "TALK_START_POINT,"+   // 16
-    "TALK_END_POINT "+     // 17
+    "SEGUE_GAIN,"+         // 14
+    "HOOK_START_POINT,"+   // 15
+    "HOOK_END_POINT,"+     // 16
+    "TALK_START_POINT,"+   // 17
+    "TALK_END_POINT "+     // 18
     "from CUTS where "+
     "CUT_NAME=\""+RDEscapeString(cut_name)+"\"";
   q=new RDSqlQuery(sql);
@@ -908,10 +909,11 @@ bool RDCut::copyTo(RDStation *station,RDUser *user,
       QString().sprintf("FADEDOWN_POINT=%d,",q->value(11).toInt())+
       QString().sprintf("SEGUE_START_POINT=%d,",q->value(12).toInt())+
       QString().sprintf("SEGUE_END_POINT=%d,",q->value(13).toInt())+
-      QString().sprintf("HOOK_START_POINT=%d,",q->value(14).toInt())+
-      QString().sprintf("HOOK_END_POINT=%d,",q->value(15).toInt())+
-      QString().sprintf("TALK_START_POINT=%d,",q->value(16).toInt())+
-      QString().sprintf("TALK_END_POINT=%d ",q->value(17).toInt())+
+      QString().sprintf("SEGUE_GAIN=%d,",q->value(14).toInt())+
+      QString().sprintf("HOOK_START_POINT=%d,",q->value(15).toInt())+
+      QString().sprintf("HOOK_END_POINT=%d,",q->value(16).toInt())+
+      QString().sprintf("TALK_START_POINT=%d,",q->value(17).toInt())+
+      QString().sprintf("TALK_END_POINT=%d ",q->value(18).toInt())+
       "where CUT_NAME=\""+RDEscapeString(cutname)+"\"";
   }
   delete q;
