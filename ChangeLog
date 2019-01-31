@@ -18436,3 +18436,6 @@
 	* Fixed a bug in the 'EditCut' web API call that caused attempts
 	to clear the 'START_DAYPART' and 'END_DAYPART' fields to return
 	an error.
+2019-01-31 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed a bug in rdlibrary(1) where double-clicking a cart would
+	expand/collapse the item.

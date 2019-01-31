@@ -1000,9 +1000,18 @@ void MainWidget::cartClickedData()
 }
 
 
-void MainWidget::cartDoubleclickedData(Q3ListViewItem *,const QPoint &,int)
+void MainWidget::cartDoubleclickedData(Q3ListViewItem * item,const QPoint &,int)
 {
   editData();
+
+  //
+  // KLUDGE ALERT:
+  // The default double-click behavior of a Q3ListViewItem is to expand/collapse the item.
+  // We don't want it to do that, so if we set the open status to the opposite of what we
+  // want (the current status), it will put it back to what we do want. There is probably
+  // a Qt way of doing this which should probably be addressed at a later date.
+  //
+  item->setOpen(!item->isOpen());
 }
 
 
