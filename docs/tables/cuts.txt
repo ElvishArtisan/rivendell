@@ -46,6 +46,9 @@ PLAY_GAIN            int(11) signed    In 1/100 dB
 START_POINT          int(10) unsigned  Offset to Start point in ms
 FADEUP_POINT         int(10) unsigned  Offset to FadeUp point in ms
 FADEDOWN_POINT       int(10) unsigned  Offset to FadeDown point in ms
+SEGUE_START_POINT    int(11)
+SEGUE_END_POINT      int(11)
+SEGUE_GAIN           int(11)
 END_POINT            int(10) unsigned  Offset to End point in ms
 HOOK_START_POINT     int(10) unsigned  Offset to Hook Start point in ms
 HOOK_END_POINT       int(10) unsigned  Offset to Hook End point in ms
