@@ -2875,6 +2875,10 @@ void RDLogPlay::SendNowNext()
   //
   int lines[TRANSPORT_QUANTITY];
   int running=runningEvents(lines,false);
+  //
+  // "Longest running" algorithm
+  //
+  /*
   for(int i=0;i<running;i++) {
     if((time=logLine(lines[i])->startTime(RDLogLine::Actual).
 	addMSecs(logLine(lines[i])->effectiveLength()))>end_time) {
@@ -2882,6 +2886,15 @@ void RDLogPlay::SendNowNext()
       now_line=lines[i];
     }
   }
+  */
+
+  //
+  // "Most recently started" algorithm
+  //
+  if(running>0) {
+    now_line=lines[running-1];
+  }
+
   if((now_line>=0)&&(logLine(now_line)->nowNextEnabled())) {
     logline[0]=logLine(now_line);
   }

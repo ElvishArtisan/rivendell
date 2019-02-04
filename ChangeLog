@@ -18451,3 +18451,6 @@
 	Length for PAD Updates'.
 	* Updated the screenshot of the 'Edit Cart' dialog in the
 	Operations Guide.
+2019-02-04 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the PAD emission code to use the most recently
+	started event rather than the longest running.
