@@ -3053,7 +3053,12 @@ QString RDLogPlay::GetPadJson(const QString &name,RDLogLine *ll,
     else {
       ret+=RDJsonNullField("cutNumber",4+padding);
     }
-    ret+=RDJsonField("length",ll->forcedLength(),4+padding);
+    if(ll->useEventLength()) {
+      ret+=RDJsonField("length",ll->eventLength(),4+padding);
+    }
+    else {
+      ret+=RDJsonField("length",ll->forcedLength(),4+padding);
+    }
     if(ll->year().isValid()) {
       ret+=RDJsonField("year",ll->year().year(),4+padding);
     }

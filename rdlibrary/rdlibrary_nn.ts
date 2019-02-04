@@ -917,10 +917,6 @@ Notes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Use Event Length for Now &amp;&amp; Next Updates</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>By Specified Order</source>
         <translation type="unfinished"></translation>
     </message>
@@ -946,6 +942,10 @@ Notes</source>
     </message>
     <message>
         <source>Edit Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use RDLogManager Length for PAD Updates</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

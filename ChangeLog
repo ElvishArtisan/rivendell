@@ -18442,3 +18442,12 @@
 2019-02-04 Patrick Linstruth <patrick@deltecent.com>
 	* Fixed a bug in rdlibrary(1) where double-clicking a cart would
 	expand/collapse the item.
+2019-02-04 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdairplay(1) that caused macro carts with
+	the 'Use Event Length for Now & Next Updates' attribute set to
+	fail to use the parent rdlogmanager(1) event/clock duration.
+	* Renamed the 'Use Event Length for Now & Next Updates' checkbox
+	in the 'Edit Cart' dialog in rdlibrary(1) to 'Use RDLogManager
+	Length for PAD Updates'.
+	* Updated the screenshot of the 'Edit Cart' dialog in the
+	Operations Guide.

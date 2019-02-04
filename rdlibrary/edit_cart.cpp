@@ -506,7 +506,8 @@ EditCart::EditCart(unsigned number,QString *path,bool new_cart,bool profile_rip,
   rdcart_use_event_length_box->hide();
   QLabel *rdcart_use_event_length_label=
     new QLabel(rdcart_use_event_length_box,
-	       tr("Use Event Length for Now && Next Updates"),this);
+	       tr("Use RDLogManager Length for PAD Updates"),this);
+  //	       tr("Use Event Length for Now && Next Updates"),this);
   rdcart_use_event_length_label->setGeometry(350,351,sizeHint().width()-350,19);
   rdcart_use_event_length_label->setFont(button_font);
   rdcart_use_event_length_label->setAlignment(Qt::AlignLeft|Qt::TextShowMnemonic);
