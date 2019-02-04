@@ -18436,6 +18436,9 @@
 	* Fixed a bug in the 'EditCut' web API call that caused attempts
 	to clear the 'START_DAYPART' and 'END_DAYPART' fields to return
 	an error.
-2019-01-30 Patrick Linstruth <patrick@deltecent.com>
+2019-02-04 Patrick Linstruth <patrick@deltecent.com>
 	* Fixed a bug in RDCut::copyTo() where the segue gain was not
 	copied.
+2019-02-04 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed a bug in rdlibrary(1) where double-clicking a cart would
+	expand/collapse the item.
