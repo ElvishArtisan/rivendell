@@ -18457,3 +18457,6 @@
 2019-02-05 Fred Gleason <fredg@paravelsystems.com>
 	* Added a Maintainer's Note to the 'MainObject::SchemaMap()'
 	method in rddbmgr(8).
+2019-02-05 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdairplay(1) that threw a segfault when processing
+	a null RML.

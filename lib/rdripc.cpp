@@ -240,6 +240,10 @@ void RDRipc::DispatchCommand()
 
   //  printf("RDRipc::DispatchCommand: %s\n",(const char *)ripc_accum.toUtf8());
   QStringList cmds=ripc_accum.split(" ",QString::SkipEmptyParts);
+
+  if(cmds.size()==0) {
+    return;
+  }
   
   if(cmds[0]=="PW") {  // Password Response
     SendCommand("RU!");
