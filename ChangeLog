@@ -18454,3 +18454,6 @@
 2019-02-04 Fred Gleason <fredg@paravelsystems.com>
 	* Modified the PAD emission code to use the most recently
 	started event rather than the longest running.
+2019-02-05 Fred Gleason <fredg@paravelsystems.com>
+	* Added a Maintainer's Note to the 'MainObject::SchemaMap()'
+	method in rddbmgr(8).

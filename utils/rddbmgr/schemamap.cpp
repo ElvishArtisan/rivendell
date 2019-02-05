@@ -112,6 +112,22 @@ bool VersionString::operator==(const VersionString &rhs) const
 QMap<VersionString,int> global_version_map;
 
 void MainObject::InitializeSchemaMap() {
+  //
+  // Maintainer's Note
+  //
+  // With the (possible) exception of the very last entry, the items in
+  // this mapping should be considered immutable. The value of the last
+  // entry should be either that of the current production minor release
+  // (if no subsequent schema updates have been made), or that of the *next*
+  // (upcoming) release. If this is the first schema change made after a
+  // public release, a line referencing the next (upcoming) release should
+  // be added and its value set to that of the new schema version. Otherwise,
+  // it should be incremented every time a schmea update is committed.
+  //
+  // When the first production release in the minor version referenced
+  // on the last line occurs, that line too is declared immutable, and
+  // the cycle begins again.
+  //
   global_version_map["1.0"]=159;
   global_version_map["1.1"]=162;
   global_version_map["1.2"]=169;
