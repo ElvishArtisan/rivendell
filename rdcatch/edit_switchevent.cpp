@@ -482,13 +482,13 @@ void EditSwitchEvent::okData()
     return;
   }
   Save();
-  done(0);
+  done(true);
 }
 
 
 void EditSwitchEvent::cancelData()
 {
-  done(-1);
+  done(false);
 }
 
 

@@ -365,13 +365,13 @@ void EditCartEvent::okData()
     return;
   }
   Save();
-  done(0);
+  done(true);
 }
 
 
 void EditCartEvent::cancelData()
 {
-  done(-1);
+  done(false);
 }
 
 

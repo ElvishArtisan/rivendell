@@ -2,7 +2,7 @@
 //
 // A container class for a Rivendell Notification message.
 //
-//   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -111,6 +111,10 @@ bool RDNotification::read(const QString &str)
 	  notify_id=QVariant(args[3]);
 	  break;
 
+	case RDNotification::CatchEventType:
+	  notify_id=QVariant(args[3].toUInt());
+	  break;
+
 	case RDNotification::NullType:
 	case RDNotification::LastType:
 	  break;
@@ -158,6 +162,10 @@ QString RDNotification::write() const
     ret+=notify_id.toString();
     break;
 
+  case RDNotification::CatchEventType: 
+    ret+=QString().sprintf("%u",notify_id.toUInt());
+    break;
+
   case RDNotification::NullType:
   case RDNotification::LastType:
     break;
@@ -185,6 +193,10 @@ QString RDNotification::typeString(RDNotification::Type type)
 
   case RDNotification::DropboxType:
     ret="DROPBOX";
+    break;
+
+  case RDNotification::CatchEventType:
+    ret="CATCH_EVENT";
     break;
 
   case RDNotification::NullType:

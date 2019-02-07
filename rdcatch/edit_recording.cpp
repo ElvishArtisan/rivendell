@@ -747,13 +747,13 @@ void EditRecording::okData()
     return;
   }
   Save();
-  done(0);
+  done(true);
 }
 
 
 void EditRecording::cancelData()
 {
-  done(-1);
+  done(false);
 }
 
 

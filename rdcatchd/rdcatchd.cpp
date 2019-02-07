@@ -2,7 +2,7 @@
 //
 // The Rivendell Netcatcher Daemon
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -61,7 +61,6 @@
 #include "rdcatchd.h"
 
 // Logging function that works within and outside the MainObject. 
-//static RDConfig *rd_config = NULL;
 void LogLine(RDConfig::LogPriority prio,const QString &line)
 {
   FILE *logfile;
@@ -305,6 +304,8 @@ MainObject::MainObject(QObject *parent)
 	  this,SLOT(rmlReceivedData(RDMacro *)));
   connect(rda->ripc(),SIGNAL(gpiStateChanged(int,int,bool)),
 	  this,SLOT(gpiStateChangedData(int,int,bool)));
+  connect(rda->ripc(),SIGNAL(notificationReceived(RDNotification *)),
+	  this,SLOT(notificationReceivedData(RDNotification *)));
 
   //
   // CAE Connection
@@ -467,6 +468,24 @@ void MainObject::log(RDConfig::LogPriority prio,const QString &msg)
 }
 
 
+void MainObject::notificationReceivedData(RDNotification *notify)
+{
+  if(notify->type()==RDNotification::CatchEventType) {
+    switch(notify->action()) {
+    case RDNotification::AddAction:
+    case RDNotification::ModifyAction:
+    case RDNotification::DeleteAction:
+      UpdateEvent(notify->id().toUInt());
+      break;
+
+    case RDNotification::NoAction:
+    case RDNotification::LastAction:
+      break;
+    }
+  }
+}
+
+
 void MainObject::newConnectionData()
 {
   int i=0;
@@ -568,12 +587,6 @@ void MainObject::startTimerData(int id)
   unsigned deck=catch_events[event].channel()-1;
 
   catch_events[event].setStatus(RDDeck::Idle);
-  for(unsigned i=0;i<catch_events.size();i++) {
-    if((catch_events[i].status()==RDDeck::Waiting)&&
-       ((catch_events[i].channel()-1)==deck)) {
-      //      waiting=true;
-    }
-  }
   WriteExitCodeById(id,RDRecording::Ok);
   catch_record_deck_status[deck]=RDDeck::Idle;
   catch_record_id[deck]=0;
@@ -1702,31 +1715,6 @@ void MainObject::DispatchCommand(ServerConnection *conn)
     LoadEngine();
   }
 
-  if((cmds.at(0)=="RA")&&(cmds.size()==2)) {  // Add Event
-    if(AddEvent(cmds.at(1).toInt())) {
-      EchoArgs(conn->id(),'+');
-      BroadcastCommand("RU "+cmds.at(1)+"!",conn->id());
-    }
-    else {
-      EchoArgs(conn->id(),'-');
-    }
-  }
-
-  if((cmds.at(0)=="RR")&&(cmds.size()==2)) {  // Remove Event
-    RemoveEvent(cmds.at(1).toInt());
-    EchoArgs(conn->id(),'+');
-    BroadcastCommand("RU "+cmds.at(1)+"!",conn->id());
-  }
-
-  if((cmds.at(0)=="RU")&&(cmds.size()==2)) {  // Update Event
-    if(UpdateEvent(cmds.at(1).toInt())) {
-      EchoArgs(conn->id(),'+');
-    }
-    else {
-      EchoArgs(conn->id(),'-');
-    }
-  }
-
   if(cmds.at(0)=="RD") {  // Load Deck List
     EchoArgs(conn->id(),'+');
     LoadDeckList();
@@ -2238,7 +2226,8 @@ bool MainObject::AddEvent(int id)
     delete q;
     return true;
   }
-  LogLine(RDConfig::LogWarning,QString().sprintf("event %d not found, not loaded",id));
+  LogLine(RDConfig::LogDebug,QString().
+	  sprintf("event %d not found, not loaded",id));
   delete q;
   return false;
 }
@@ -2248,7 +2237,7 @@ void MainObject::RemoveEvent(int id)
 {
   int event=GetEvent(id);
   if(event<0) {
-    LogLine(RDConfig::LogNotice,QString().
+    LogLine(RDConfig::LogDebug,QString().
 	    sprintf("event %d not found, not removed",id));
     return;
   }

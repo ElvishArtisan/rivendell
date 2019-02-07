@@ -33,7 +33,6 @@
 #include <qcombobox.h>
 #include <qpixmap.h>
 #include <q3scrollview.h>
-//Added by qt3to4:
 #include <QCloseEvent>
 #include <QResizeEvent>
 #include <QLabel>

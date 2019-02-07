@@ -545,13 +545,13 @@ void EditDownload::okData()
     return;
   }
   Save();
-  done(0);
+  done(true);
 }
 
 
 void EditDownload::cancelData()
 {
-  done(-1);
+  done(false);
 }
 
 

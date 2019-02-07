@@ -340,13 +340,13 @@ void EditPlayout::saveasData()
 void EditPlayout::okData()
 {
   Save();
-  done(0);
+  done(true);
 }
 
 
 void EditPlayout::cancelData()
 {
-  done(-1);
+  done(false);
 }
 
 

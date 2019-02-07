@@ -2,7 +2,7 @@
 //
 // Connect to the Rivendell Netcatcher Daemon.
 //
-//   (C) Copyright 2002-2004,2016-2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -102,24 +102,6 @@ void RDCatchConnect::reloadHeartbeat()
 void RDCatchConnect::reloadDropboxes()
 {
   SendCommand("RX!");
-}
-
-
-void RDCatchConnect::addEvent(int id)
-{
-  SendCommand(QString().sprintf("RA %d!",id));
-}
-
-
-void RDCatchConnect::removeEvent(int id)
-{
-  SendCommand(QString().sprintf("RR %d!",id));
-}
-
-
-void RDCatchConnect::updateEvent(int id)
-{
-  SendCommand(QString().sprintf("RU %d!",id));
 }
 
 

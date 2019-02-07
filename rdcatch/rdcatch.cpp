@@ -2,7 +2,7 @@
 //
 // The Event Schedule Manager for Rivendell.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -196,9 +196,6 @@ MainWidget::MainWidget(QWidget *parent)
 
   str=QString("RDCatch")+" v"+VERSION+" - "+tr("Host")+":";
   setWindowTitle(str+" "+rda->config()->stationName());
-
-  //  connect(RDDbStatus(),SIGNAL(logText(RDConfig::LogPriority,const QString &)),
-  //	  this,SLOT(log(RDConfig::LogPriority,const QString &)));
 
   //
   // Allocate Global Resources
@@ -665,6 +662,7 @@ void MainWidget::addData()
   RDSqlQuery *q;
   RDListViewItem *item;
   int conn;
+  RDNotification *notify=NULL;
 
   if(!rda->user()->editCatches()) {
     return;
@@ -679,6 +677,10 @@ void MainWidget::addData()
       case RDRecording::SwitchEvent:
       case RDRecording::Download:
       case RDRecording::Upload:
+	notify=new RDNotification(RDNotification::CatchEventType,
+				  RDNotification::AddAction,n);
+	rda->ripc()->sendNotification(*notify);
+	delete notify;
 	item=new RDListViewItem(catch_recordings_list);
 	item->setBackgroundColor(catch_recordings_list->palette().color(QPalette::Active,QColorGroup::Base));
 	item->setText(28,QString().sprintf("%d",n));
@@ -690,7 +692,6 @@ void MainWidget::addData()
 	}
 	catch_recordings_list->setSelected(item,true);
 	catch_recordings_list->ensureItemVisible(item);
-	catch_connect[conn]->connector()->addEvent(n);
 	nextEventData();
 	break;
 
@@ -706,8 +707,6 @@ void MainWidget::addData()
 
 void MainWidget::editData()
 {
-  int old_conn;
-  int new_conn;
   std::vector<int> new_events;
 
   RDListViewItem *item=(RDListViewItem *)catch_recordings_list->selectedItem();
@@ -717,6 +716,7 @@ void MainWidget::editData()
   EditSwitchEvent *switch_event;
   EditDownload *download;
   EditUpload *upload;
+  bool updated=false;
 
   if(!rda->user()->editCatches()) {
     return;
@@ -739,110 +739,53 @@ void MainWidget::editData()
   }
   EnableScroll(false);
   int id=item->text(28).toInt();
-  old_conn=GetConnection(item->text(24));
-  if(old_conn<0) {
-    fprintf(stderr,"rdcatch: invalid connection index!\n");
-    return;
-  }
   switch((RDRecording::Type)item->text(29).toInt()) {
   case RDRecording::Recording:
     recording=new EditRecording(id,&new_events,&catch_filter,this);
-    if(recording->exec()>=0) {
-      RefreshLine(item);
-      new_conn=GetConnection(item->text(24));
-      if(new_conn<0) {
-	fprintf(stderr,"rdcatch: invalid connection index!\n");
-	return;
-      }
-      catch_connect[old_conn]->connector()->removeEvent(id);
-      catch_connect[new_conn]->connector()->addEvent(id);
-      nextEventData();
-    }
+    updated=recording->exec();
     delete recording;
     break;
 
   case RDRecording::Playout:
     playout=new EditPlayout(id,&new_events,&catch_filter,this);
-    if(playout->exec()>=0) {
-      RefreshLine(item);
-      new_conn=GetConnection(item->text(24));
-      if(new_conn<0) {
-	fprintf(stderr,"rdcatch: invalid connection index!\n");
-	return;
-      }
-      catch_connect[old_conn]->connector()->removeEvent(id);
-      catch_connect[new_conn]->connector()->addEvent(id);
-      nextEventData();
-    }
+    updated=playout->exec();
     delete playout;
     break;
 
   case RDRecording::MacroEvent:
     event=new EditCartEvent(id,&new_events,this);
-    if(event->exec()>=0) {
-      RefreshLine(item);
-      new_conn=GetConnection(item->text(24));
-      if(new_conn<0) {
-	fprintf(stderr,"rdcatch: invalid connection index!\n");
-	return;
-      }
-      catch_connect[old_conn]->connector()->removeEvent(id);
-      catch_connect[new_conn]->connector()->addEvent(id);
-      nextEventData();
-    }
+    updated=event->exec();
     delete event;
     break;
 
   case RDRecording::SwitchEvent:
     switch_event=new EditSwitchEvent(id,&new_events,this);
-    if(switch_event->exec()>=0) {
-      RefreshLine(item);
-      new_conn=GetConnection(item->text(24));
-      if(new_conn<0) {
-	fprintf(stderr,"rdcatch: invalid connection index!\n");
-	return;
-      }
-      catch_connect[old_conn]->connector()->removeEvent(id);
-      catch_connect[new_conn]->connector()->addEvent(id);
-      nextEventData();
-    }
+    updated=switch_event->exec();
     delete switch_event;
     break;
 
   case RDRecording::Download:
     download=new EditDownload(id,&new_events,&catch_filter,this);
-    if(download->exec()>=0) {
-      RefreshLine(item);
-      new_conn=GetConnection(item->text(24));
-      if(new_conn<0) {
-	fprintf(stderr,"rdcatch: invalid connection index!\n");
-	return;
-      }
-      catch_connect[old_conn]->connector()->removeEvent(id);
-      catch_connect[new_conn]->connector()->addEvent(id);
-      nextEventData();
-    }
+    updated=download->exec();
     delete download;
     break;
 
   case RDRecording::Upload:
     upload=new EditUpload(id,&new_events,&catch_filter,this);
-    if(upload->exec()>=0) {
-      RefreshLine(item);
-      new_conn=GetConnection(item->text(24));
-      if(new_conn<0) {
-	fprintf(stderr,"rdcatch: invalid connection index!\n");
-	return;
-      }
-      catch_connect[old_conn]->connector()->removeEvent(id);
-      catch_connect[new_conn]->connector()->addEvent(id);
-      nextEventData();
-    }
+    updated=upload->exec();
     delete upload;
     break;
 
   case RDRecording::LastType:
     break;
+  }
+  if(updated) {
+    RDNotification *notify=new RDNotification(RDNotification::CatchEventType,
+					      RDNotification::ModifyAction,id);
+    rda->ripc()->sendNotification(*notify);
+    delete notify;
+    RefreshLine(item);
+    nextEventData();
   }
   ProcessNewRecords(&new_events);
 }
@@ -879,11 +822,15 @@ void MainWidget::deleteData()
     fprintf(stderr,"rdcatch: invalid connection index!\n");
     return;
   }
-  catch_connect[conn]->connector()->removeEvent(item->text(28).toInt());
   sql=QString("delete from RECORDINGS where ")+
     "ID="+item->text(28);
   q=new RDSqlQuery(sql);
   delete q;
+  RDNotification *notify=new RDNotification(RDNotification::CatchEventType,
+					    RDNotification::DeleteAction,
+					    item->text(28).toInt());
+  rda->ripc()->sendNotification(*notify);
+  delete notify;
   RDListViewItem *next=(RDListViewItem *)item->nextSibling();
   catch_recordings_list->removeItem(item);
   if(next!=NULL) {
@@ -1238,9 +1185,6 @@ void MainWidget::heartbeatFailedData(int id)
   if(!catch_host_warnings) {
     return;
   }
-  QString str;
-
-  str=QString(tr("Control connection timed out to host"));
   QString msg=tr("Control connection timed out to host")+
     " `"+catch_connect[id]->stationName()+"'?";
   QMessageBox::warning(this,"RDCatch - "+tr("Connection Error"),msg);
@@ -1602,7 +1546,11 @@ void MainWidget::ProcessNewRecords(std::vector<int> *adds)
       fprintf(stderr,"rdcatch: invalid connection index!\n");
       return;
     }
-    catch_connect[conn]->connector()->addEvent(adds->at(i));
+    RDNotification *notify=new RDNotification(RDNotification::CatchEventType,
+					      RDNotification::AddAction,
+					      adds->at(i));
+    rda->ripc()->sendNotification(*notify);
+    delete notify;
   }
   nextEventData();
 }

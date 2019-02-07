@@ -190,7 +190,7 @@ void AddRecording::closeEvent(QCloseEvent *e)
 void AddRecording::recordingData()
 {
   EditRecording *recording=new EditRecording(add_id,NULL,add_filter,this);
-  if(recording->exec()<0) {
+  if(!recording->exec()) {
     delete recording;
     done(-1);
     return;
@@ -203,7 +203,7 @@ void AddRecording::recordingData()
 void AddRecording::playoutData()
 {
   EditPlayout *playout=new EditPlayout(add_id,NULL,add_filter,this);
-  if(playout->exec()<0) {
+  if(!playout->exec()) {
     delete playout;
     done(-1);
     return;
@@ -217,7 +217,7 @@ void AddRecording::downloadData()
 {
   EditDownload *recording=
     new EditDownload(add_id,NULL,add_filter,this);
-  if(recording->exec()<0) {
+  if(!recording->exec()) {
     delete recording;
     done(-1);
     return;
@@ -230,7 +230,7 @@ void AddRecording::downloadData()
 void AddRecording::uploadData()
 {
   EditUpload *recording=new EditUpload(add_id,NULL,add_filter,this);
-  if(recording->exec()<0) {
+  if(!recording->exec()) {
     delete recording;
     done(-1);
     return;
@@ -243,7 +243,7 @@ void AddRecording::uploadData()
 void AddRecording::macroData()
 {
   EditCartEvent *recording=new EditCartEvent(add_id,NULL,this);
-  if(recording->exec()<0) {
+  if(!recording->exec()) {
     delete recording;
     done(-1);
     return;
@@ -256,7 +256,7 @@ void AddRecording::macroData()
 void AddRecording::switchData()
 {
   EditSwitchEvent *recording=new EditSwitchEvent(add_id,NULL,this);
-  if(recording->exec()<0) {
+  if(!recording->exec()) {
     delete recording;
     done(-1);
     return;

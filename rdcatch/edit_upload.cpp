@@ -568,13 +568,13 @@ void EditUpload::okData()
     return;
   }
   Save();
-  done(0);
+  done(true);
 }
 
 
 void EditUpload::cancelData()
 {
-  done(-1);
+  done(false);
 }
 
 
