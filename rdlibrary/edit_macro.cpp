@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Macro
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,12 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
 #include <qpushbutton.h>
 #include <qlabel.h>
-#include <qsqldatabase.h>
-
-#include <rdtextvalidator.h>
 
 #include "edit_macro.h"
 
@@ -47,18 +43,12 @@ EditMacro::EditMacro(RDMacro *cmd,bool highlight,QWidget *parent)
   button_font.setPixelSize(12);
 
   //
-  // Text Validator
-  //
-  RDTextValidator *validator=new RDTextValidator(this);
-
-  //
   // Macro
   //
   edit_macro=cmd;
 
   edit_macro_edit=new QLineEdit(this);
   edit_macro_edit->setMaxLength(RD_RML_MAX_LENGTH-1);
-  edit_macro_edit->setValidator(validator);
 
   //
   //  Ok Button

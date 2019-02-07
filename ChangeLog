@@ -18464,3 +18464,6 @@
 	* Replaced the 'Add Event', 'Delete Event' and 'Modify Event'
 	commands in the RDCatch Monitor Protocol with multicast update
 	events.
+2019-02-07 Fred Gleason <fredg@paravelsystems.com>
+	Fixed a regression in rdlibrary(1) that made it impossible to
+	enter apostrophes or quotes in RMLs.
