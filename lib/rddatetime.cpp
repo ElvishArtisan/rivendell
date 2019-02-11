@@ -84,7 +84,7 @@ QTime RDParseXmlTime(const QString &str,bool *ok,int *day_offset)
   }
 
   if(f0[0].right(1).lower()=="z") {  // GMT
-    tz=RDTimeZoneOffset();
+    tz=-RDTimeZoneOffset();
     f0[0]=f0[0].left(f0[0].length()-1);
     f2=f0[0].split(":");
   }
@@ -95,7 +95,7 @@ QTime RDParseXmlTime(const QString &str,bool *ok,int *day_offset)
       if(f2.size()==2) {
 	tztime=QTime(f2[0].toInt(),f2[1].toInt(),0);
 	if(tztime.isValid()) {
-	  tz=RDTimeZoneOffset()+QTime(0,0,0).secsTo(tztime);
+	  tz=-RDTimeZoneOffset()-QTime(0,0,0).secsTo(tztime);
 	}
       }
       else {
@@ -112,7 +112,7 @@ QTime RDParseXmlTime(const QString &str,bool *ok,int *day_offset)
 	if(f2.size()==2) {
 	  tztime=QTime(f2[0].toInt(),f2[1].toInt(),0);
 	  if(tztime.isValid()) {
-	    tz=RDTimeZoneOffset()-QTime(0,0,0).secsTo(tztime);
+	    tz=-RDTimeZoneOffset()+QTime(0,0,0).secsTo(tztime);
 	  }
 	}
 	else {

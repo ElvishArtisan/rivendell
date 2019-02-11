@@ -18473,3 +18473,6 @@
 2019-02-11 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the 'RDWaveFile' class that could cause a segfault
 	when opening a file containing a null ID3 tag.
+2019-02-11 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the date/time parsing routines that caused a
+	transposed sign to be applied when processing time zone offsets.
