@@ -3468,18 +3468,46 @@ bool RDWaveFile::GetLine(int fd,char *buffer,int max_len)
 
 void RDWaveFile::ReadId3Metadata()
 {
+  //
+  // This whole method is a mess!
+  //
+  // The short story: Rivendell versions 1.x and 2.x (as well as a whole
+  // slew of other audio applications) used the ID3Lib library
+  // [http://id3lib.sourceforge.net/api/index.html] to read and
+  // write ID3 tags. As it turns out, that library does not properly
+  // implement the ID3v2 standard for using UTF-8 characters in tags,
+  // resulting in tags that the TagLib library (which does understand
+  // UTF-8 properly) may refuse to read. This method attempts to be decently
+  // reliable at detecting at least the 'RDXL' tag used by this and previous
+  // versions of Rivendell to provide a 'full-fidelity' transfer of metadata
+  // between Rivendell databases. The basic methodology is: use TagLib
+  // if possible, but if that fails, fall back to ID3Lib and try again.
+  //
+
   if(wave_data==NULL) {
     return;
   }
   bool using_rdxl=false;
   TagLib::FileRef tagref(wave_file.name().toUtf8());
-  if(tagref.file()==NULL) {
+  if(tagref.file()==NULL) {  // Take another look with ID3Lib
+    ID3_Frame *frame=NULL;
+    ID3_Tag id3_tag(wave_file.name().toUtf8());
+    if((frame=id3_tag.Find(ID3FID_USERTEXT,ID3FN_DESCRIPTION,"rdxl"))!=NULL) {
+      rdxl_contents=ID3_GetString(frame,ID3FN_TEXT);
+      if(wave_data!=NULL) {
+	std::vector<RDWaveData> wavedatas;
+	if(RDCart::readXml(&wavedatas,rdxl_contents)>1) {
+	  *wave_data=wavedatas[1];
+	  using_rdxl=true;
+	}
+      }
+    }
     return;
   }
   TagLib::PropertyMap tags=tagref.file()->properties();
 
   //
-  // Check for an RDXL frame
+  // Check for a mangled RDXL frame
   // If we find one, use id3lib to process it, otherwise continue with TagLib
   //
   for(TagLib::PropertyMap::ConstIterator it=tags.begin();it!=tags.end();++it) {
