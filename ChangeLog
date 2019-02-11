@@ -18467,3 +18467,6 @@
 2019-02-07 Fred Gleason <fredg@paravelsystems.com>
 	Fixed a regression in rdlibrary(1) that made it impossible to
 	enter apostrophes or quotes in RMLs.
+2019-02-11 Fred Gleason <fredg@paravelsystems.com>
+	Fixed a bug in rdcatchd(8) that could cause invalid filenames
+	to be generated for temporary files.

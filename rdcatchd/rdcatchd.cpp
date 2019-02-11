@@ -2550,9 +2550,8 @@ QString MainObject::BuildTempName(int event,QString str)
 
 QString MainObject::BuildTempName(CatchEvent *evt,QString str)
 {
-  return QString().sprintf("%s/rdcatchd-%s-%d.%s",(const char *)catch_temp_dir,
-	 (const char *)str,evt->id(),
-	 (const char *)GetFileExtension(evt->resolvedUrl()));
+  return catch_temp_dir+"/rdcatchd="+str+
+    QString().sprintf("%u-%u",evt->id(),getpid());
 }
 
 
