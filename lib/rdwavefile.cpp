@@ -3473,6 +3473,9 @@ void RDWaveFile::ReadId3Metadata()
   }
   bool using_rdxl=false;
   TagLib::FileRef tagref(wave_file.name().toUtf8());
+  if(tagref.file()==NULL) {
+    return;
+  }
   TagLib::PropertyMap tags=tagref.file()->properties();
 
   //
