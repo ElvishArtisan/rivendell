@@ -741,11 +741,11 @@ void EditLog::insertCartButtonData()
   int id;
 
   Q3ListViewItem *item=SingleSelection();
-  if(item==NULL || (line=item->text(14).toInt())<0) {
+  if(item==NULL || (line=item->text(Count).toInt())<0) {
     line=edit_log_event->size();
     id=END_MARKER_ID;
   } else {
-    id=item->text(13).toInt();
+    id=item->text(LineId).toInt();
   }
   edit_log_event->insert(line,1);
   edit_log_event->logLine(line)->setTransType(edit_default_trans);
@@ -785,8 +785,8 @@ void EditLog::insertMarkerButtonData()
   if(item==NULL) {
     return;
   }
-  line=item->text(14).toInt();
-  id=item->text(13).toInt();
+  line=item->text(Count).toInt();
+  id=item->text(LineId).toInt();
   AddMeta *meta=new AddMeta(this);
   switch((RDLogLine::Type)meta->exec()) {
   case RDLogLine::Marker:
@@ -854,7 +854,7 @@ void EditLog::clickedData(Q3ListViewItem *item)
     return;
   }
   else {
-    edit_player->setCart(rditem->text(3).toUInt());
+    edit_player->setCart(rditem->text(Cart).toUInt());
   }
 }
 
@@ -867,7 +867,7 @@ void EditLog::selectionChangedData()
 
 void EditLog::doubleClickData(Q3ListViewItem *item)
 {
-  if(item->text(13).toInt()==END_MARKER_ID) {
+  if(item->text(LineId).toInt()==END_MARKER_ID) {
     insertCartButtonData();
   }
   else {
@@ -887,8 +887,8 @@ void EditLog::editButtonData()
   if(item==NULL) {
     return;
   }
-  int id=item->text(13).toInt();
-  int line=item->text(14).toInt();
+  int id=item->text(LineId).toInt();
+  int line=item->text(Count).toInt();
   if(id==END_MARKER_ID) {
     return;
   }
@@ -900,7 +900,7 @@ void EditLog::editButtonData()
 		      edit_schedcode,edit_service_box->currentText(),
 		      &edit_group_list,edit_log_event,line,this);
     if(edit_cart->exec()>=0) {
-      edit_log_event->refresh(item->text(14).toInt());
+      edit_log_event->refresh(item->text(Count).toInt());
       SetLogModified(true);
     }
     delete edit_cart;
@@ -948,9 +948,9 @@ void EditLog::deleteButtonData()
 
   while(next!=NULL) {
     if(edit_log_list->isSelected(next)) {
-      if(next->text(13).toInt()!=END_MARKER_ID) {
+      if(next->text(LineId).toInt()!=END_MARKER_ID) {
 	if(count==0) {
-	  line=next->text(14).toInt();
+	  line=next->text(Count).toInt();
 	}
 	count++;
       }
@@ -964,14 +964,14 @@ void EditLog::deleteButtonData()
 void EditLog::upButtonData()
 {
   Q3ListViewItem *item=SingleSelection();
-  if((item==NULL)||(item->text(14).toInt()==0)||
-     (item->text(13).toInt()==END_MARKER_ID)) {
+  if((item==NULL)||(item->text(Count).toInt()==0)||
+     (item->text(LineId).toInt()==END_MARKER_ID)) {
     return;
   }
-  int id=item->text(13).toInt();
-  sscanf((const char *)item->text(13),"%u",&id);
-  edit_log_event->move(item->text(14).toInt(),
-		       item->text(14).toInt()-1);
+  int id=item->text(LineId).toInt();
+  sscanf((const char *)item->text(LineId),"%u",&id);
+  edit_log_event->move(item->text(Count).toInt(),
+		       item->text(Count).toInt()-1);
   SetLogModified(true);
   RefreshList();
   SelectRecord(id);
@@ -983,13 +983,13 @@ void EditLog::downButtonData()
 {
   Q3ListViewItem *item=SingleSelection();
 
-  if((item==NULL)||(item->text(14).toInt()==(edit_log_list->childCount()-2))||
-     (item->text(13).toInt()==END_MARKER_ID)) {
+  if((item==NULL)||(item->text(Count).toInt()==(edit_log_list->childCount()-2))||
+     (item->text(LineId).toInt()==END_MARKER_ID)) {
     return;
   }
-  int id=item->text(13).toInt();
-  edit_log_event->move(item->text(14).toInt(),
-		       item->text(14).toInt()+1);
+  int id=item->text(LineId).toInt();
+  edit_log_event->move(item->text(Count).toInt(),
+		       item->text(Count).toInt()+1);
   SetLogModified(true);
   RefreshList();
   SelectRecord(id);
@@ -1018,8 +1018,8 @@ void EditLog::pasteButtonData()
   if((item==NULL)||(edit_clipboard->size()==0)) {
     return;
   }
-  int line=item->text(14).toInt();
-  int id=item->text(13).toInt();
+  int line=item->text(Count).toInt();
+  int id=item->text(LineId).toInt();
   edit_log_event->insert(line,edit_clipboard->size());
   for(unsigned i=0;i<edit_clipboard->size();i++) {
     edit_clipboard->at(i).setId(edit_log_event->logLine(line+i)->id());
@@ -1059,14 +1059,14 @@ void EditLog::cartDroppedData(int line,RDLogLine *ll)
   SetLogModified(true);
   if(appended) {
     item=(RDListViewItem *)edit_log_list->lastItem();
-    item->setText(Count,QString().sprintf("%d",item->text(14).toInt()+1));
+    item->setText(Count,QString().sprintf("%d",item->text(Count).toInt()+1));
   }
   else {
     item=(RDListViewItem *)edit_log_list->
       findItem(QString().sprintf("%d",line),14);
-    item->setText(Count,QString().sprintf("%d",item->text(14).toInt()+1));
+    item->setText(Count,QString().sprintf("%d",item->text(Count).toInt()+1));
     while((item=(RDListViewItem *)item->nextSibling())!=NULL) {
-      item->setText(Count,QString().sprintf("%d",item->text(14).toInt()+1));
+      item->setText(Count,QString().sprintf("%d",item->text(Count).toInt()+1));
     }
   }
   item=new RDListViewItem(edit_log_list);
@@ -1086,8 +1086,8 @@ void EditLog::notificationReceivedData(RDNotification *notify)
     unsigned cartnum=notify->id().toUInt();
     item=(RDListViewItem *)edit_log_list->firstChild();
     while(item!=NULL) {
-      if(item->text(3).toUInt()==cartnum) {
-	int line=item->text(14).toInt();
+      if(item->text(Cart).toUInt()==cartnum) {
+	int line=item->text(Count).toInt();
 	if(line>=0) {
 	  edit_log_event->refresh(line);
 	  RefreshLine(item);
@@ -1175,11 +1175,11 @@ void EditLog::renderasData()
   Q3ListViewItem *next=edit_log_list->firstChild();
   while(next!=NULL) {
     if(edit_log_list->isSelected(next)) {
-      if(next->text(13).toInt()!=END_MARKER_ID) {
+      if(next->text(LineId).toInt()!=END_MARKER_ID) {
 	if(first_line<0) {
-	  first_line=next->text(14).toInt();
+	  first_line=next->text(Count).toInt();
 	}
-	last_line=next->text(14).toInt();
+	last_line=next->text(Count).toInt();
       }
     }
     next=next->nextSibling();
@@ -1414,7 +1414,7 @@ void EditLog::SaveLog()
 
 void EditLog::RefreshLine(RDListViewItem *item)
 {
-  int line=item->text(14).toInt();
+  int line=item->text(Count).toInt();
   if(line<0) {
     return;
   }
@@ -1444,12 +1444,12 @@ void EditLog::RefreshLine(RDListViewItem *item)
   switch(logline->transType()) {
   case RDLogLine::Play:
     item->setText(Trans,tr("PLAY"));
-    item->setTextColor(Trans,item->textColor(1),QFont::Normal);
+    item->setTextColor(Trans,item->textColor(Time),QFont::Normal);
     break;
 
   case RDLogLine::Stop:
     item->setText(Trans,tr("STOP"));
-    item->setTextColor(Trans,item->textColor(1),QFont::Normal);
+    item->setTextColor(Trans,item->textColor(Time),QFont::Normal);
     break;
 
   case RDLogLine::Segue:
@@ -1458,7 +1458,7 @@ void EditLog::RefreshLine(RDListViewItem *item)
       item->setTextColor(Trans,RD_CUSTOM_TRANSITION_COLOR,QFont::Bold);
     }
     else {
-      item->setTextColor(Trans,item->textColor(1),QFont::Normal);
+      item->setTextColor(Trans,item->textColor(Time),QFont::Normal);
     }
     break;
 
@@ -1631,11 +1631,11 @@ void EditLog::UpdateSelection()
     int end_line=-1;
     while(next!=NULL) {
       if(edit_log_list->isSelected(next)) {
-	if((start_line<0)&&(next->text(13).toInt()!=END_MARKER_ID)) {
-	  start_line=next->text(14).toInt();
+	if((start_line<0)&&(next->text(LineId).toInt()!=END_MARKER_ID)) {
+	  start_line=next->text(Count).toInt();
 	}
-	if(next->text(13).toInt()!=END_MARKER_ID) {
-	  end_line=next->text(14).toInt();
+	if(next->text(LineId).toInt()!=END_MARKER_ID) {
+	  end_line=next->text(Count).toInt();
 	}
       }
       next=next->nextSibling();
@@ -1646,11 +1646,11 @@ void EditLog::UpdateSelection()
     }
     return;
   }
-  if(rditem->text(13).toInt()>0) {
+  if(rditem->text(LineId).toInt()>0) {
     edit_endtime_edit->setText(RDGetTimeLength(edit_log_event->
-      length(rditem->text(14).toInt(),edit_log_event->size()),true,false));
+      length(rditem->text(Count).toInt(),edit_log_event->size()),true,false));
     edit_stoptime_label->setText(tr("Next Stop:"));
-    int stoplen=edit_log_event->lengthToStop(rditem->text(14).toInt());
+    int stoplen=edit_log_event->lengthToStop(rditem->text(Count).toInt());
     if(stoplen>=0) {
       edit_stoptime_edit->setText(RDGetTimeLength(stoplen,true,false));
     }
@@ -1674,8 +1674,8 @@ bool EditLog::UpdateColor(RDListViewItem *item,RDLogLine *logline)
   case RDLogLine::Cart:
     switch(logline->validity(now)) {
     case RDCart::AlwaysValid:
-      if(edit_group_list.isGroupValid(item->text(4))||
-	 item->text(4).isEmpty()) {
+      if(edit_group_list.isGroupValid(item->text(Group))||
+	 item->text(Group).isEmpty()) {
 	item->setBackgroundColor(palette().color(QPalette::Active,
 						 QColorGroup::Base));
       }
@@ -1705,8 +1705,8 @@ bool EditLog::UpdateColor(RDListViewItem *item,RDLogLine *logline)
     break;
 
   default:
-    if(edit_group_list.isGroupValid(item->text(4))||
-       item->text(4).isEmpty()) {
+    if(edit_group_list.isGroupValid(item->text(Group))||
+       item->text(Group).isEmpty()) {
       item->setBackgroundColor(palette().color(QPalette::Active,
 					       QColorGroup::Base));
     }
@@ -1744,7 +1744,7 @@ void EditLog::SelectRecord(int id)
   Q3ListViewItem *item=edit_log_list->firstChild();
 
   while(item!=NULL) {
-    if(item->text(13).toInt()==id) {
+    if(item->text(LineId).toInt()==id) {
       edit_log_list->setSelected(item,true);
       edit_log_list->ensureItemVisible(item);
       return;
@@ -1780,7 +1780,7 @@ bool EditLog::ValidateSvc()
   bool valid=true;
   RDListViewItem *item=(RDListViewItem *)edit_log_list->firstChild();
   while(item!=NULL) {
-    if((logline=edit_log_event->logLine(item->text(14).toInt()))!=NULL) {
+    if((logline=edit_log_event->logLine(item->text(Count).toInt()))!=NULL) {
       valid&=UpdateColor(item,logline);
     }
     item=(RDListViewItem *)item->nextSibling();
@@ -1831,9 +1831,9 @@ void EditLog::LoadClipboard(bool clear_ext)
   edit_clipboard->clear();
   while(next!=NULL) {
     if((edit_log_list->isSelected(next))&&
-       (next->text(13).toInt()!=END_MARKER_ID)) {
+       (next->text(LineId).toInt()!=END_MARKER_ID)) {
       edit_clipboard->
-	push_back(*edit_log_event->logLine(next->text(14).toInt()));
+	push_back(*edit_log_event->logLine(next->text(Count).toInt()));
       if(clear_ext) {
 	edit_clipboard->back().clearExternalData();
       }
