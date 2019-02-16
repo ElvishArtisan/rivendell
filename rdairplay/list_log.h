@@ -90,6 +90,9 @@ class ListLog : public QWidget
 
  private:
   enum PlayButtonMode {ButtonDisabled=0,ButtonPlay=1,ButtonStop=2};
+  enum Column {Icon=0,EstTime=1,Len=2,Trans=3,Cart=4,Title=5,Artist=6,
+		Group=7,Time=8,Album=9,Label=10,Client=11,Agency=12,
+		Marker=13,LineId=14,Count=15,Status=16};
   void RefreshList();
   void RefreshList(int line);
   void RefreshItem(RDListViewItem *l,int line);
