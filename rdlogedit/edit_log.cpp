@@ -335,37 +335,37 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   edit_log_list->setSelectionMode(Q3ListView::Extended);
   edit_log_list->setItemMargin(5);
   edit_log_list->addColumn("");
-  edit_log_list->setColumnAlignment(0,Qt::AlignHCenter);
+  edit_log_list->setColumnAlignment(Icon,Qt::AlignHCenter);
   edit_log_list->addColumn(tr("Time"));
-  edit_log_list->setColumnAlignment(1,Qt::AlignRight);
+  edit_log_list->setColumnAlignment(Time,Qt::AlignRight);
   edit_log_list->addColumn(tr("Trans"));
-  edit_log_list->setColumnAlignment(2,Qt::AlignHCenter);
+  edit_log_list->setColumnAlignment(Trans,Qt::AlignHCenter);
   edit_log_list->addColumn(tr("Cart"));
-  edit_log_list->setColumnAlignment(3,Qt::AlignHCenter);
+  edit_log_list->setColumnAlignment(Cart,Qt::AlignHCenter);
   edit_log_list->addColumn(tr("Group"));
-  edit_log_list->setColumnAlignment(4,Qt::AlignHCenter);
+  edit_log_list->setColumnAlignment(Group,Qt::AlignHCenter);
   edit_log_list->addColumn(tr("Length"));
-  edit_log_list->setColumnAlignment(5,Qt::AlignRight);
+  edit_log_list->setColumnAlignment(Length,Qt::AlignRight);
   edit_log_list->addColumn(tr("Title"));
-  edit_log_list->setColumnAlignment(6,Qt::AlignLeft);
+  edit_log_list->setColumnAlignment(Title,Qt::AlignLeft);
   edit_log_list->addColumn(tr("Artist"));
-  edit_log_list->setColumnAlignment(7,Qt::AlignLeft);
+  edit_log_list->setColumnAlignment(Artist,Qt::AlignLeft);
   edit_log_list->addColumn(tr("Client"));
-  edit_log_list->setColumnAlignment(8,Qt::AlignLeft);
+  edit_log_list->setColumnAlignment(Client,Qt::AlignLeft);
   edit_log_list->addColumn(tr("Agency"));
-  edit_log_list->setColumnAlignment(9,Qt::AlignLeft);
+  edit_log_list->setColumnAlignment(Agency,Qt::AlignLeft);
   edit_log_list->addColumn(tr("Label"));
-  edit_log_list->setColumnAlignment(10,Qt::AlignHCenter);
+  edit_log_list->setColumnAlignment(Label,Qt::AlignHCenter);
   edit_log_list->addColumn(tr("Source"));
-  edit_log_list->setColumnAlignment(11,Qt::AlignHCenter);
+  edit_log_list->setColumnAlignment(Source,Qt::AlignHCenter);
   edit_log_list->addColumn(tr("Ext Data"));
-  edit_log_list->setColumnAlignment(12,Qt::AlignHCenter);
+  edit_log_list->setColumnAlignment(ExtData,Qt::AlignHCenter);
   edit_log_list->addColumn(tr("Line ID"));
-  edit_log_list->setColumnAlignment(13,Qt::AlignHCenter);
+  edit_log_list->setColumnAlignment(LineId,Qt::AlignHCenter);
   edit_log_list->addColumn(tr("Count"));
-  edit_log_list->setColumnAlignment(14,Qt::AlignHCenter);
-  edit_log_list->setHardSortColumn(14);
-  edit_log_list->setColumnSortType(14,RDListView::LineSort);
+  edit_log_list->setColumnAlignment(Count,Qt::AlignHCenter);
+  edit_log_list->setHardSortColumn(Count);
+  edit_log_list->setColumnSortType(Count,RDListView::LineSort);
   if(editing_allowed) {
     connect(edit_log_list,SIGNAL(doubleClicked(Q3ListViewItem *)),
 	    this,SLOT(doubleClickData(Q3ListViewItem *)));
@@ -1059,18 +1059,18 @@ void EditLog::cartDroppedData(int line,RDLogLine *ll)
   SetLogModified(true);
   if(appended) {
     item=(RDListViewItem *)edit_log_list->lastItem();
-    item->setText(14,QString().sprintf("%d",item->text(14).toInt()+1));
+    item->setText(Count,QString().sprintf("%d",item->text(14).toInt()+1));
   }
   else {
     item=(RDListViewItem *)edit_log_list->
       findItem(QString().sprintf("%d",line),14);
-    item->setText(14,QString().sprintf("%d",item->text(14).toInt()+1));
+    item->setText(Count,QString().sprintf("%d",item->text(14).toInt()+1));
     while((item=(RDListViewItem *)item->nextSibling())!=NULL) {
-      item->setText(14,QString().sprintf("%d",item->text(14).toInt()+1));
+      item->setText(Count,QString().sprintf("%d",item->text(14).toInt()+1));
     }
   }
   item=new RDListViewItem(edit_log_list);
-  item->setText(14,QString().sprintf("%d",line));
+  item->setText(Count,QString().sprintf("%d",line));
   RefreshLine(item);
   edit_log_list->sort();
   edit_log_list->clearSelection();
@@ -1337,7 +1337,7 @@ void EditLog::paintEvent(QPaintEvent *e)
   QColor system_mid_color = colorGroup().mid();
   QPainter *p=new QPainter(this);
   p->fillRect(60,8,size().width()-120,24,QColor(system_mid_color));
-  p->fillRect(9,size().height()-130,size().width()-20,60,
+  p->fillRect(Agency,size().height()-130,size().width()-20,60,
 	      QColor(system_mid_color));
   /*
   p->setPen(Qt::black);
@@ -1422,7 +1422,7 @@ void EditLog::RefreshLine(RDListViewItem *item)
   RDLogLine *logline=edit_log_event->logLine(line);
   switch(logline->timeType()) {
   case RDLogLine::Hard:
-    item->setText(1,QString("T")+edit_log_event->
+    item->setText(Time,QString("T")+edit_log_event->
 		  logLine(line)->startTime(RDLogLine::Logged).
 		  toString("hh:mm:ss.zzz").left(10));
     break;
@@ -1430,12 +1430,12 @@ void EditLog::RefreshLine(RDListViewItem *item)
   default:
     if(logline->
        startTime(RDLogLine::Predicted).isNull()) {
-      item->setText(1,edit_log_event->
+      item->setText(Time,edit_log_event->
 		    blockStartTime(line).
 		    toString("hh:mm:ss.zzz").left(10));
     }
     else {
-      item->setText(1,edit_log_event->
+      item->setText(Time,edit_log_event->
 		    logLine(line)->startTime(RDLogLine::Predicted).
 		    toString("hh:mm:ss.zzz").left(10));
     }
@@ -1443,22 +1443,22 @@ void EditLog::RefreshLine(RDListViewItem *item)
   }
   switch(logline->transType()) {
   case RDLogLine::Play:
-    item->setText(2,tr("PLAY"));
-    item->setTextColor(2,item->textColor(1),QFont::Normal);
+    item->setText(Trans,tr("PLAY"));
+    item->setTextColor(Trans,item->textColor(1),QFont::Normal);
     break;
 
   case RDLogLine::Stop:
-    item->setText(2,tr("STOP"));
-    item->setTextColor(2,item->textColor(1),QFont::Normal);
+    item->setText(Trans,tr("STOP"));
+    item->setTextColor(Trans,item->textColor(1),QFont::Normal);
     break;
 
   case RDLogLine::Segue:
-    item->setText(2,tr("SEGUE"));
+    item->setText(Trans,tr("SEGUE"));
     if(logline->hasCustomTransition()) {
-      item->setTextColor(2,RD_CUSTOM_TRANSITION_COLOR,QFont::Bold);
+      item->setTextColor(Trans,RD_CUSTOM_TRANSITION_COLOR,QFont::Bold);
     }
     else {
-      item->setTextColor(2,item->textColor(1),QFont::Normal);
+      item->setTextColor(Trans,item->textColor(1),QFont::Normal);
     }
     break;
 
@@ -1469,106 +1469,106 @@ void EditLog::RefreshLine(RDListViewItem *item)
   case RDLogLine::Cart:
     switch(logline->source()) {
     case RDLogLine::Tracker:
-      item->setPixmap(0,*edit_track_cart_map);
+      item->setPixmap(Icon,*edit_track_cart_map);
       break;
 
     default:
-      item->setPixmap(0,*edit_playout_map);
+      item->setPixmap(Icon,*edit_playout_map);
       break;
     }
-    item->setText(3,QString().
+    item->setText(Cart,QString().
 		  sprintf("%06u",logline->cartNumber()));
     if(logline->title().isEmpty()) {
-      item->setText(4,"");
-      item->setText(5,tr("[cart not found]"));
+      item->setText(Group,"");
+      item->setText(Length,tr("[cart not found]"));
     }
     else {
-      item->setText(4,logline->groupName());
-      item->setTextColor(4,logline->groupColor(),QFont::Bold);
+      item->setText(Group,logline->groupName());
+      item->setTextColor(Group,logline->groupColor(),QFont::Bold);
       if((logline->source()!=RDLogLine::Tracker)||
 	 logline->originUser().isEmpty()||
 	 (!logline->originDateTime().isValid())) {
-	item->setText(6,logline->title());
+	item->setText(Title,logline->title());
       }
       else {
-	item->setText(6,logline->title()+" -- "+logline->originUser()+
+	item->setText(Title,logline->title()+" -- "+logline->originUser()+
 		      " "+logline->originDateTime().toString("M/d hh:mm"));
       }
     }
     item->
-      setText(5,RDGetTimeLength(logline->forcedLength(),false,false));
-    item->setText(7,logline->artist());
-    item->setText(8,logline->client());
-    item->setText(9,logline->agency());
-    item->setText(12,logline->extData());
+      setText(Length,RDGetTimeLength(logline->forcedLength(),false,false));
+    item->setText(Artist,logline->artist());
+    item->setText(Client,logline->client());
+    item->setText(Agency,logline->agency());
+    item->setText(ExtData,logline->extData());
     break;
 	
   case RDLogLine::Macro:
-    item->setPixmap(0,*edit_macro_map);
-    item->setText(3,QString().
+    item->setPixmap(Icon,*edit_macro_map);
+    item->setText(Cart,QString().
 		  sprintf("%06u",logline->cartNumber()));
     if(logline->title().isEmpty()) {
-      item->setText(4,"");
-      item->setText(6,tr("[cart not found]"));
+      item->setText(Group,"");
+      item->setText(Title,tr("[cart not found]"));
     }
     else {
-      item->setText(4,logline->groupName());
-      item->setTextColor(4,logline->groupColor(),QFont::Bold);
-      item->setText(6,logline->title());
+      item->setText(Group,logline->groupName());
+      item->setTextColor(Group,logline->groupColor(),QFont::Bold);
+      item->setText(Title,logline->title());
     }
-    item->setText(5,RDGetTimeLength(logline->forcedLength(),false,false));
-    item->setText(7,logline->artist());
-    item->setText(8,logline->client());
-    item->setText(9,logline->agency());
-    item->setText(12,logline->extData());
+    item->setText(Length,RDGetTimeLength(logline->forcedLength(),false,false));
+    item->setText(Artist,logline->artist());
+    item->setText(Client,logline->client());
+    item->setText(Agency,logline->agency());
+    item->setText(ExtData,logline->extData());
     break;
 	
   case RDLogLine::Marker:
-    item->setPixmap(0,*edit_notemarker_map);
-    item->setText(3,tr("MARKER"));
-    item->setText(4,"");
-    item->setText(6,RDTruncateAfterWord(edit_log_event->
+    item->setPixmap(Icon,*edit_notemarker_map);
+    item->setText(Cart,tr("MARKER"));
+    item->setText(Group,"");
+    item->setText(Title,RDTruncateAfterWord(edit_log_event->
 					logLine(line)->markerComment(),5,true));
-    item->setText(10,logline->markerLabel());
-    item->setText(12,logline->extData());
+    item->setText(Label,logline->markerLabel());
+    item->setText(ExtData,logline->extData());
     break;
 
   case RDLogLine::Track:
-    item->setPixmap(0,*edit_mic16_map);
-    item->setText(3,tr("TRACK"));
-    item->setText(4,"");
-    item->setText(6,RDTruncateAfterWord(edit_log_event->
+    item->setPixmap(Icon,*edit_mic16_map);
+    item->setText(Cart,tr("TRACK"));
+    item->setText(Group,"");
+    item->setText(Title,RDTruncateAfterWord(edit_log_event->
 					logLine(line)->markerComment(),5,true));
-    item->setText(12,logline->extData());
+    item->setText(ExtData,logline->extData());
     break;
 
   case RDLogLine::Chain:
-    item->setPixmap(0,*edit_chain_map);
-    item->setText(3,tr("LOG CHAIN"));
-    item->setText(4,"");
-    item->setText(6,logline->markerLabel());
-    item->setText(7,RDTruncateAfterWord(edit_log_event->
+    item->setPixmap(Icon,*edit_chain_map);
+    item->setText(Cart,tr("LOG CHAIN"));
+    item->setText(Group,"");
+    item->setText(Title,logline->markerLabel());
+    item->setText(Artist,RDTruncateAfterWord(edit_log_event->
 					logLine(line)->markerComment(),5,true));
-    item->setText(12,logline->extData());
+    item->setText(ExtData,logline->extData());
     break;
 
   case RDLogLine::MusicLink:
-    item->setPixmap(0,*edit_music_map);
-    item->setText(3,tr("LINK"));
-    item->setText(4,"");
-    item->setText(6,tr("[music import]"));
-    item->setText(12,tr("Link Start")+": "+
+    item->setPixmap(Icon,*edit_music_map);
+    item->setText(Cart,tr("LINK"));
+    item->setText(Group,"");
+    item->setText(Title,tr("[music import]"));
+    item->setText(ExtData,tr("Link Start")+": "+
 		  logline->linkStartTime().toString("hh:mm:ss")+", "+
 		  tr("Len")+": "+
 		  RDGetTimeLength(logline->linkLength(),false,false));
     break;
 
   case RDLogLine::TrafficLink:
-    item->setPixmap(0,*edit_traffic_map);
-    item->setText(3,tr("LINK"));
-    item->setText(4,"");
-    item->setText(6,tr("[traffic import]"));
-    item->setText(12,tr("Link Start")+": "+
+    item->setPixmap(Icon,*edit_traffic_map);
+    item->setText(Cart,tr("LINK"));
+    item->setText(Group,"");
+    item->setText(Title,tr("[traffic import]"));
+    item->setText(ExtData,tr("Link Start")+": "+
 		  logline->linkStartTime().toString("hh:mm:ss")+", "+
 		  tr("Len")+": "+
 		  RDGetTimeLength(logline->linkLength(),false,false));
@@ -1579,26 +1579,26 @@ void EditLog::RefreshLine(RDListViewItem *item)
   }
   switch(logline->source()) {
   case RDLogLine::Manual:
-    item->setText(11,tr("Manual"));
+    item->setText(Source,tr("Manual"));
     break;
 
   case RDLogLine::Traffic:
-    item->setText(11,tr("Traffic"));
+    item->setText(Source,tr("Traffic"));
     break;
 
   case RDLogLine::Music:
-    item->setText(11,tr("Music"));
+    item->setText(Source,tr("Music"));
     break;
 
   case RDLogLine::Template:
-    item->setText(11,tr("RDLogManager"));
+    item->setText(Source,tr("RDLogManager"));
     break;
 
   case RDLogLine::Tracker:
-    item->setText(11,tr("Voice Tracker"));
+    item->setText(Source,tr("Voice Tracker"));
     break;
   }
-  item->setText(13,QString().sprintf("%d",logline->id()));
+  item->setText(LineId,QString().sprintf("%d",logline->id()));
   UpdateColor(item,logline);
 }
 
@@ -1609,12 +1609,12 @@ void EditLog::RefreshList()
 
   edit_log_list->clear();
   l=new RDListViewItem(edit_log_list);
-  l->setText(6,tr("--- end of log ---"));
-  l->setText(13,QString().sprintf("%d",END_MARKER_ID));
-  l->setText(14,QString().sprintf("%d",edit_log_event->size()));
+  l->setText(Title,tr("--- end of log ---"));
+  l->setText(LineId,QString().sprintf("%d",END_MARKER_ID));
+  l->setText(Count,QString().sprintf("%d",edit_log_event->size()));
   for(int i=edit_log_event->size()-1;i>=0;i--) {
     l=new RDListViewItem(edit_log_list);
-    l->setText(14,QString().sprintf("%d",i));
+    l->setText(Count,QString().sprintf("%d",i));
     RefreshLine(l);
   }
 }
@@ -1699,7 +1699,7 @@ bool EditLog::UpdateColor(RDListViewItem *item,RDLogLine *logline)
 	      
     case RDCart::NeverValid:
       item->setBackgroundColor(RD_CART_ERROR_COLOR);
-      item->setText(6,tr("[INVALID CART]"));
+      item->setText(Title,tr("[INVALID CART]"));
       break;
     }
     break;
@@ -1731,11 +1731,11 @@ void EditLog::RenumberList(int line)
     item=item->nextSibling();
   }
   while(item!=NULL) {
-    item->setText(14,QString().sprintf("%d",line++));
+    item->setText(Count,QString().sprintf("%d",line++));
     prev=item;
     item=item->nextSibling();
   }
-  prev->setText(13,QString().sprintf("%d",END_MARKER_ID));
+  prev->setText(LineId,QString().sprintf("%d",END_MARKER_ID));
 }
 
 

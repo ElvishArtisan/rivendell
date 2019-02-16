@@ -103,6 +103,9 @@ class EditLog : public QDialog
   void paintEvent(QPaintEvent *);
   
  private:
+  enum Column {Icon=0,Time=1,Trans=2,Cart=3,Group=4,Length=5,
+		Title=6,Artist=7,Client=8,Agency=9,Label=10,
+                Source=11,ExtData=12,LineId=13,Count=14};
   void DeleteLines(int line,int count);
   void SaveLog();
   void RefreshLine(RDListViewItem *item);
