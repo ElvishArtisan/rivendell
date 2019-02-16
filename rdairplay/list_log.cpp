@@ -635,13 +635,13 @@ void ListLog::takeButtonData()
 	      return;
 	      
 	    default:
-	      line=list_log_list->currentItem()->text(15).toInt();
+	      line=list_log_list->currentItem()->text(Count).toInt();
 	      break;
 	}
 	break;
 	  
       case RDAirPlayConf::CopyFrom:
-	line=list_log_list->currentItem()->text(15).toInt();
+	line=list_log_list->currentItem()->text(Count).toInt();
 	if(list_log->logLine(line)!=NULL) {
 	  switch(list_log->logLine(line)->type()) {
 	      case RDLogLine::Marker:
@@ -669,7 +669,7 @@ void ListLog::takeButtonData()
 	      return;
 	      
 	    default:
-	      line=list_log_list->currentItem()->text(15).toInt();
+	      line=list_log_list->currentItem()->text(Count).toInt();
 	      break;
 	}
 	break;
@@ -682,7 +682,7 @@ void ListLog::takeButtonData()
 	      return;
 	      
 	    default:
-	      line=list_log_list->currentItem()->text(15).toInt();
+	      line=list_log_list->currentItem()->text(Count).toInt();
               // Don't try delete "end of log" or other invalid log entries.
               if (line<0) {
                 return;
@@ -797,7 +797,7 @@ void ListLog::modifyButtonData()
       (item->text(16).toInt()!=RDLogLine::NoCut))) {
     return;
   }
-  int line=item->text(15).toInt();
+  int line=item->text(Count).toInt();
   if(list_event_edit->exec(line)==0) {
     list_log->lineModified(line);
   }
@@ -842,7 +842,7 @@ void ListLog::nextButtonData()
      (list_log_list->currentItem()->text(16).toInt()!=RDLogLine::Scheduled)) {
     return;
   }
-  int line=list_log_list->currentItem()->text(15).toInt();
+  int line=list_log_list->currentItem()->text(Count).toInt();
   list_log->makeNext(line);
   ClearSelection();
 }
@@ -935,7 +935,7 @@ void ListLog::logInsertedData(int line)
   int count;
   RDListViewItem *item=GetItem(line+1);
   while(item!=NULL) {
-    if((count=item->text(15).toInt())>=0) {
+    if((count=item->text(Count).toInt())>=0) {
       item->setText(Count,QString().sprintf("%d",count+1));
     }
     item=(RDListViewItem *)item->nextSibling();
@@ -956,7 +956,7 @@ void ListLog::logRemovedData(int line,int num,bool moving)
   int count;
   RDListViewItem *item=GetItem(line+num);
   while(item!=NULL) {
-    if((count=item->text(15).toInt())>=0) {
+    if((count=item->text(Count).toInt())>=0) {
       item->setText(Count,QString().sprintf("%d",count-num));
     }
     item=(RDListViewItem *)item->nextSibling();
@@ -981,11 +981,11 @@ void ListLog::selectionChangedData()
   while(next!=NULL) {
     if(list_log_list->isSelected(next)) {
       item=next;
-      if((start_line<0)&&(next->text(14).toInt()!=END_MARKER_ID)) {
-	start_line=next->text(15).toInt();
+      if((start_line<0)&&(next->text(LineId).toInt()!=END_MARKER_ID)) {
+	start_line=next->text(Count).toInt();
       }
-      if(next->text(12).toInt()!=END_MARKER_ID) {
-	end_line=next->text(15).toInt();
+      if(next->text(LineId).toInt()!=END_MARKER_ID) {
+	end_line=next->text(Count).toInt();
       }
       count++;
     }
@@ -1026,11 +1026,11 @@ void ListLog::selectionChangedData()
       default:
 	break;
   }
-  if(item->text(15).toInt()>=0) {
+  if(item->text(Count).toInt()>=0) {
     list_endtime_edit->setText(RDGetTimeLength(list_log->
-      length(item->text(15).toInt(),list_log->size()),true,false));
+      length(item->text(Count).toInt(),list_log->size()),true,false));
     list_stoptime_label->setText(tr("Next Stop:"));
-    int stoplen=list_log->lengthToStop(item->text(15).toInt());
+    int stoplen=list_log->lengthToStop(item->text(Count).toInt());
     if(stoplen>=0) {
       list_stoptime_edit->setText(RDGetTimeLength(stoplen,true,false));
     }
@@ -1105,7 +1105,7 @@ void ListLog::RefreshList()
 void ListLog::RefreshList(int line)
 {
   RDListViewItem *next=(RDListViewItem *)list_log_list->firstChild();
-  while((next!=NULL)&&next->text(15).toInt()!=line) {
+  while((next!=NULL)&&next->text(Count).toInt()!=line) {
     next=(RDListViewItem *)next->nextSibling();
   }
   if(next!=NULL) {
@@ -1150,11 +1150,11 @@ void ListLog::RefreshItem(RDListViewItem *l,int line)
   switch(log_line->transType()) {
       case RDLogLine::Play:
 	l->setText(Trans,tr("PLAY"));
-	l->setTextColor(Trans,l->textColor(2),QFont::Normal);
+	l->setTextColor(Trans,l->textColor(Len),QFont::Normal);
 	break;
       case RDLogLine::Stop:
 	l->setText(Trans,tr("STOP"));
-	l->setTextColor(Trans,l->textColor(2),QFont::Normal);
+	l->setTextColor(Trans,l->textColor(Len),QFont::Normal);
 	break;
       case RDLogLine::Segue:
 	l->setText(Trans,tr("SEGUE"));
@@ -1163,10 +1163,10 @@ void ListLog::RefreshItem(RDListViewItem *l,int line)
 	}
 	else {
 	  if(log_line->timeType()==RDLogLine::Hard) {
-	    l->setTextColor(Trans,l->textColor(2),QFont::Bold);
+	    l->setTextColor(Trans,l->textColor(Len),QFont::Bold);
 	  }
 	  else {
-	    l->setTextColor(Trans,l->textColor(2),QFont::Normal);
+	    l->setTextColor(Trans,l->textColor(Len),QFont::Normal);
 	  }
 	}
 	break;
@@ -1318,7 +1318,7 @@ int ListLog::CurrentLine() {
   if(!list_log_list->isSelected(item)) {
     return -1;
   }
-  return list_log_list->currentItem()->text(15).toInt();
+  return list_log_list->currentItem()->text(Count).toInt();
 }
 
 
@@ -1335,7 +1335,7 @@ RDLogLine::State ListLog::CurrentState() {
     return RDLogLine::NoCart;
   }
   return list_log->
-    logLine(list_log_list->currentItem()->text(14).toInt())->state();
+    logLine(list_log_list->currentItem()->text(LineId).toInt())->state();
 }
 
 
@@ -1357,7 +1357,7 @@ void ListLog::UpdateTimes(int removed_line,int num_lines)
 
   RDListViewItem *next=(RDListViewItem *)list_log_list->firstChild();
   for(int i=0;i<(list_log_list->childCount()-1);i++) {
-    if((line=next->text(15).toInt())>=removed_line) {
+    if((line=next->text(Count).toInt())>=removed_line) {
       line+=num_lines;
     }
     if((logline=list_log->logLine(line))!=NULL) {
@@ -1548,7 +1548,7 @@ int ListLog::PredictedStartHour(RDListViewItem *item)
   if(item==NULL) {
     return -1;
   }
-  QStringList item_fields=item->text(1).split(":");
+  QStringList item_fields=item->text(EstTime).split(":");
   if(item_fields.size()==3) {
     int item_hour=item_fields[0].replace("T","").toInt(&ok);
     if(ok) {
