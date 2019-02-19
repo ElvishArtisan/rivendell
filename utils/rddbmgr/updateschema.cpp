@@ -9671,6 +9671,16 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<306)&&(set_schema>cur_schema)) {
+    sql=QString("alter table RDLIBRARY drop index STATION_IDX");
+    RDSqlQuery::apply(sql);
+    DropColumn("RDLIBRARY","INSTANCE");
+    sql=QString("create index STATION_IDX on RDLIBRARY (STATION)"); 
+    RDSqlQuery::apply(sql);
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
 
   // NEW SCHEMA UPDATES GO HERE...
 

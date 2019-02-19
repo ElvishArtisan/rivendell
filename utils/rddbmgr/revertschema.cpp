@@ -41,6 +41,23 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // NEW SCHEMA REVERSIONS GO HERE...
 
   //
+  // Revert 306
+  //
+  if((cur_schema==306)&&(set_schema<cur_schema)) {
+    sql=QString("alter table RDLIBRARY drop index STATION_IDX");
+    RDSqlQuery::apply(sql);
+
+    sql=QString("alter table RDLIBRARY add column ")+
+      "INSTANCE int unsigned not null after STATION";
+    RDSqlQuery::apply(sql);
+
+    sql=QString("create index STATION_IDX on RDLIBRARY (STATION,INSTANCE)"); 
+    RDSqlQuery::apply(sql);
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 305
   //
   if((cur_schema==305)&&(set_schema<cur_schema)) {

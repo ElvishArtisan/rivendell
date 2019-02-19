@@ -18487,3 +18487,6 @@
 2019-02-19 Fred Gleason <fredg@paravelsystems.com>
 	* Changed the minimum size of the 'Edit PyPAD Instance dialog in
 	rdadmin(1) to be 600x660.
+2019-02-19 Fred Gleason <fredg@paravelsystems.com>
+	* Dropped the 'RDLIBRARY.INSTANCE' field from the database.
+	* Incremented the database version to 306.
