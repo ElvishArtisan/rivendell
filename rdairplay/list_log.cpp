@@ -193,6 +193,10 @@ ListLog::ListLog(RDLogPlay *log,RDCae *cae,int id,bool allow_pause,
   list_log_list->setColumnAlignment(Group,Qt::AlignHCenter);
   list_log_list->addColumn(tr("Time"));
   list_log_list->setColumnAlignment(Time,Qt::AlignHCenter);
+  list_log_list->addColumn(tr("SchedCode"));
+  list_log_list->setColumnAlignment(SchedCode,Qt::AlignLeft);
+  list_log_list->addColumn(tr("SchedCode2"));
+  list_log_list->setColumnAlignment(SchedCode2,Qt::AlignLeft);
   list_log_list->addColumn(tr("Album"));
   list_log_list->setColumnAlignment(Album,Qt::AlignLeft);
   list_log_list->addColumn(tr("Label"));
@@ -1204,6 +1208,8 @@ void ListLog::RefreshItem(RDListViewItem *l,int line)
 	l->setText(Label,log_line->label());
 	l->setText(Client,log_line->client());
 	l->setText(Agency,log_line->agency());
+	l->setText(SchedCode,log_line->schedCode());
+	l->setText(SchedCode2,log_line->schedCode2());
 	break;
 
       case RDLogLine::Macro:

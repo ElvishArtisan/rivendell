@@ -467,6 +467,14 @@ la Fin</translation>
         <source>Status</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>SchedCode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SchedCode2</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListLogs</name>
