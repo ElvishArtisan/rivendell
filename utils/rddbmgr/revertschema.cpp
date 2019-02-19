@@ -41,6 +41,16 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // NEW SCHEMA REVERSIONS GO HERE...
 
   //
+  // Revert 307
+  //
+  if((cur_schema==307)&&(set_schema<cur_schema)) {
+    DropColumn("LOG_LINES","SCHED_CODE");
+    DropColumn("LOG_LINES","SCHED_CODE2");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 306
   //
   if((cur_schema==306)&&(set_schema<cur_schema)) {

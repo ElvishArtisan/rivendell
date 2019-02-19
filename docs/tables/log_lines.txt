@@ -11,6 +11,8 @@ TYPE                 int(11) signed     0=Cart, 1=Marker, 2=OpenBracket,
                                         3=CloseBracket, 4=Link
 SOURCE               int(11) signed     0=Manual, 1=Traffic, 2=Music,
                                         3=Template
+SCHED_CODE           varchar(10)
+SCHED_CODE2          varchar(10)
 START_TIME           int(11)            Milliseconds after 00:00:00
 GRACE_TIME           int(11) signed
 CART_NUMBER          int(10) unsigned   From CART.NUMBER
