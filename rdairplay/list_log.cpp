@@ -795,10 +795,10 @@ void ListLog::modifyButtonData()
 {
   RDListViewItem *item=(RDListViewItem *)list_log_list->currentItem();
   if((item==NULL)||
-     ((item->text(16).toInt()!=RDLogLine::Scheduled)&&
-      (item->text(16).toInt()!=RDLogLine::Paused)&&
-      (item->text(16).toInt()!=RDLogLine::NoCart)&&
-      (item->text(16).toInt()!=RDLogLine::NoCut))) {
+     ((item->text(Status).toInt()!=RDLogLine::Scheduled)&&
+      (item->text(Status).toInt()!=RDLogLine::Paused)&&
+      (item->text(Status).toInt()!=RDLogLine::NoCart)&&
+      (item->text(Status).toInt()!=RDLogLine::NoCut))) {
     return;
   }
   int line=item->text(Count).toInt();
@@ -843,7 +843,7 @@ void ListLog::refreshButtonData()
 void ListLog::nextButtonData()
 {
   if((list_log_list->currentItem()==NULL)||
-     (list_log_list->currentItem()->text(16).toInt()!=RDLogLine::Scheduled)) {
+     (list_log_list->currentItem()->text(Status).toInt()!=RDLogLine::Scheduled)) {
     return;
   }
   int line=list_log_list->currentItem()->text(Count).toInt();
@@ -1203,7 +1203,7 @@ void ListLog::RefreshItem(RDListViewItem *l,int line)
 	}
 	l->setText(Artist,log_line->artist());
 	l->setText(Group,log_line->groupName());
-	l->setTextColor(7,log_line->groupColor(),QFont::Bold);
+	l->setTextColor(Group,log_line->groupColor(),QFont::Bold);
 	l->setText(Album,log_line->album());
 	l->setText(Label,log_line->label());
 	l->setText(Client,log_line->client());
@@ -1332,7 +1332,7 @@ RDLogLine::Status ListLog::CurrentStatus() {
   if(list_log_list->currentItem()==NULL) {
     return RDLogLine::Finished;
   }
-  return (RDLogLine::Status)list_log_list->currentItem()->text(16).toInt();
+  return (RDLogLine::Status)list_log_list->currentItem()->text(Status).toInt();
 }
 
 
@@ -1367,7 +1367,7 @@ void ListLog::UpdateTimes(int removed_line,int num_lines)
       line+=num_lines;
     }
     if((logline=list_log->logLine(line))!=NULL) {
-      switch((RDLogLine::Status)next->text(16).toInt()) {
+      switch((RDLogLine::Status)next->text(Status).toInt()) {
 	  case RDLogLine::Scheduled:
 	  case RDLogLine::Paused:
 	    switch(logline->timeType()) {
@@ -1431,7 +1431,7 @@ void ListLog::UpdateColor(int line,bool next)
       if(((logline->cutNumber()<0)&&(logline->type()==RDLogLine::Cart))||
 	 (logline->state()==RDLogLine::NoCut)) {
 	item->setBackgroundColor(QColor(LOG_ERROR_COLOR));
-	item->setText(6,tr("[NO VALID CUT AVAILABLE]"));
+	item->setText(Artist,tr("[NO VALID CUT AVAILABLE]"));
       }
       else {
 	if(next) {
