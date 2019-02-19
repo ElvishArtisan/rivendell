@@ -112,6 +112,8 @@ void RDLogLine::clear()
   log_cart_type=RDCart::Audio;
   log_group_name="";
   log_group_color=QColor();
+  log_sched_code="";
+  log_sched_code2="";
   log_title="";
   log_artist="";
   log_publisher="";
@@ -737,6 +739,40 @@ QColor RDLogLine::groupColor() const
 void RDLogLine::setGroupColor(const QColor &color)
 {
   log_group_color=color;
+}
+
+
+QString RDLogLine::schedCode() const
+{
+  return log_sched_code;
+}
+
+
+void RDLogLine::setSchedCode(const QString &code)
+{
+  log_sched_code=code;
+}
+
+
+QString RDLogLine::schedCode2() const
+{
+  return log_sched_code2;
+}
+
+
+void RDLogLine::setSchedCode2(const QString &code)
+{
+  log_sched_code2=code;
+}
+
+
+QStringList RDLogLine::schedCodes() const
+{
+  QStringList codes;
+
+  codes << log_sched_code << log_sched_code2;
+
+  return codes;
 }
 
 

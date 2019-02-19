@@ -820,6 +820,8 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 	QString().sprintf("COUNT=%d,",count)+
 	QString().sprintf("TYPE=%d,",RDLogLine::Cart)+
 	QString().sprintf("SOURCE=%d,",source)+
+	QString().sprintf("SCHED_CODE='%s',",(const char *)event_have_code)+
+  	QString().sprintf("SCHED_CODE2='%s',",(const char *)event_have_code2)+
 	QString().sprintf("START_TIME=%d,",QTime().msecsTo(time))+
 	QString().sprintf("GRACE_TIME=%d,",grace_time)+
 	QString().sprintf("CART_NUMBER=%u,",schedCL->getItemCartnumber(schedpos))+

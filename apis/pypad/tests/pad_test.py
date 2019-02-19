@@ -70,6 +70,8 @@ def ProcessPad(update):
         except TypeError:
             print('              year(): None / '+update.resolvePadFields("%Y",pypad.ESCAPE_NONE))
         print('         groupName(): '+update.padField(pypad.TYPE_NOW,pypad.FIELD_GROUP_NAME)+' / '+update.resolvePadFields('%g',pypad.ESCAPE_NONE))
+        print('         schedCode(): '+update.padField(pypad.TYPE_NOW,pypad.FIELD_SCHED_CODE))
+        print('        schedCode2(): '+update.padField(pypad.TYPE_NOW,pypad.FIELD_SCHED_CODE2))
         print('             title(): '+update.padField(pypad.TYPE_NOW,pypad.FIELD_TITLE)+' / '+update.resolvePadFields('%t',pypad.ESCAPE_NONE))
         print('            artist(): '+update.padField(pypad.TYPE_NOW,pypad.FIELD_ARTIST)+' / '+update.resolvePadFields('%a',pypad.ESCAPE_NONE))
         print('         publisher(): '+update.padField(pypad.TYPE_NOW,pypad.FIELD_PUBLISHER)+' / '+update.resolvePadFields('%p',pypad.ESCAPE_NONE))
@@ -109,6 +111,8 @@ def ProcessPad(update):
         except TypeError:
             print('              year(): None / '+update.resolvePadFields("%Y",pypad.ESCAPE_NONE))
         print('         groupName(): '+update.padField(pypad.TYPE_NEXT,pypad.FIELD_GROUP_NAME)+' / '+update.resolvePadFields('%G',pypad.ESCAPE_NONE))
+        print('         schedCode(): '+update.padField(pypad.TYPE_NEXT,pypad.FIELD_SCHED_CODE))
+        print('        schedCode2(): '+update.padField(pypad.TYPE_NEXT,pypad.FIELD_SCHED_CODE2))
         print('             title(): '+update.padField(pypad.TYPE_NEXT,pypad.FIELD_TITLE)+' / '+update.resolvePadFields('%T',pypad.ESCAPE_NONE))
         print('            artist(): '+update.padField(pypad.TYPE_NEXT,pypad.FIELD_ARTIST)+' / '+update.resolvePadFields('%A',pypad.ESCAPE_NONE))
         print('         publisher(): '+update.padField(pypad.TYPE_NEXT,pypad.FIELD_PUBLISHER)+' / '+update.resolvePadFields('%P',pypad.ESCAPE_NONE))

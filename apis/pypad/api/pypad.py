@@ -64,6 +64,8 @@ FIELD_LABEL='label'
 FIELD_CLIENT='client'
 FIELD_AGENCY='agency'
 FIELD_CONDUCTOR='conductor'
+FIELD_SCHED_CODE='schedCode'
+FIELD_SCHED_CODE2='schedCode2'
 FIELD_USER_DEFINED='userDefined'
 FIELD_SONG_ID='songId'
 FIELD_OUTCUE='outcue'
@@ -475,6 +477,8 @@ class Update(object):
                        pypad.FIELD_CLIENT - The 'Client' field (string)
                        pypad.FIELD_COMPOSER - The 'Composer' field (string)
                        pypad.FIELD_CONDUCTOR - The 'Conductor' field (string)
+                       pypad.FIELD_SCHED_CODE - The 'Sched Code' field (string)
+                       pypad.FIELD_SCHED_CODE2 - The 'Sched Code 2' field (string)
                        pypad.FIELD_CUT_NUMER - The 'Cut Number' field (integer)
                        pypad.FIELD_DESCRIPTION - The cut 'Description' field
                                                  (string). Not to be confused

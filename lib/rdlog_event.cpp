@@ -882,7 +882,9 @@ int RDLogEvent::LoadLines(int id_offset,bool track_ptrs)
     "CART.END_DATETIME,"+            // 62
     "LOG_LINES.EVENT_LENGTH,"+       // 63
     "CART.USE_EVENT_LENGTH,"+        // 64
-    "CART.NOTES	"+                   // 65
+    "CART.NOTES,"+                   // 65
+    "LOG_LINES.SCHED_CODE,"+         // 66
+    "LOG_LINES.SCHED_CODE2 "+        // 67
     "from LOG_LINES left join CART "+
     "on LOG_LINES.CART_NUMBER=CART.NUMBER where "+
     "LOG_LINES.LOG_NAME=\""+RDEscapeString(log_name)+"\" "+
@@ -1011,6 +1013,12 @@ int RDLogEvent::LoadLines(int id_offset,bool track_ptrs)
       }
       if(!q->value(62).isNull()) {                      // End Datetime
 	line.setEndDatetime(q->value(62).toDateTime());
+      }
+      if(!q->value(66).isNull()) {                      // Sched Code
+	line.setSchedCode(q->value(66).toString());
+      }
+      if(!q->value(67).isNull()) {                      // Sched Code 2
+	line.setSchedCode2(q->value(67).toString());
       }
       line.setValidity((RDCart::Validity)q->value(56).toInt()); // Validity
       break;
