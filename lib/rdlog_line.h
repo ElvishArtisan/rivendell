@@ -126,6 +126,11 @@ class RDLogLine
   void setGroupName(const QString &name);
   QColor groupColor() const;
   void setGroupColor(const QColor &color);
+  QString schedCode() const;
+  void setSchedCode(const QString &code);
+  QString schedCode2() const;
+  void setSchedCode2(const QString &code);
+  QStringList schedCodes() const;
   QString title() const;
   void setTitle(const QString &title);
   QString artist() const;
@@ -300,6 +305,8 @@ class RDLogLine
   RDCart::Type log_cart_type;
   QString log_group_name;
   QColor log_group_color;
+  QString log_sched_code;
+  QString log_sched_code2;
   QString log_title;
   QString log_artist;
   QString log_album;
