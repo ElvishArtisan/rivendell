@@ -18493,3 +18493,6 @@
 2019-02-19 Patrick Linstruth <patrick@deltecent.com>
 	* Fixed a bug in rdlibrary(1) where double-clicking outside of
 	the list would cause a segfault.
+2019-02-19 Patrick Linstruth <patrick@deltecent.com>
+	* Add non-contiguous cart selections in RDListView class.
+	* Allow non-contiguous cart selections in rdlibrary(1).
