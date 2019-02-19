@@ -495,6 +495,14 @@ die für den gewählten Service ungültig sind!</translation>
         <source>Count</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Sched Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sched Code 2</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditLogLine</name>

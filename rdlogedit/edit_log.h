@@ -104,8 +104,9 @@ class EditLog : public QDialog
   
  private:
   enum Column {Icon=0,Time=1,Trans=2,Cart=3,Group=4,Length=5,
-		Title=6,Artist=7,Client=8,Agency=9,Label=10,
-                Source=11,ExtData=12,LineId=13,Count=14};
+		Title=6,Artist=7,SchedCode=8,SchedCode2=9,Client=10,
+                Agency=11,Label=12,Source=13,ExtData=14,LineId=15,
+                Count=16};
   void DeleteLines(int line,int count);
   void SaveLog();
   void RefreshLine(RDListViewItem *item);

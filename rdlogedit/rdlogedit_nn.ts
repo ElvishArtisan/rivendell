@@ -502,6 +502,14 @@ skrudd av for denne tenesta!</translation>
         <source>Run Length</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Sched Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sched Code 2</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditLogLine</name>

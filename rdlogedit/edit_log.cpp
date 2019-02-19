@@ -350,6 +350,10 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   edit_log_list->setColumnAlignment(Title,Qt::AlignLeft);
   edit_log_list->addColumn(tr("Artist"));
   edit_log_list->setColumnAlignment(Artist,Qt::AlignLeft);
+  edit_log_list->addColumn(tr("Sched Code"));
+  edit_log_list->setColumnAlignment(SchedCode,Qt::AlignLeft);
+  edit_log_list->addColumn(tr("Sched Code 2"));
+  edit_log_list->setColumnAlignment(SchedCode2,Qt::AlignLeft);
   edit_log_list->addColumn(tr("Client"));
   edit_log_list->setColumnAlignment(Client,Qt::AlignLeft);
   edit_log_list->addColumn(tr("Agency"));
@@ -1063,7 +1067,7 @@ void EditLog::cartDroppedData(int line,RDLogLine *ll)
   }
   else {
     item=(RDListViewItem *)edit_log_list->
-      findItem(QString().sprintf("%d",line),14);
+      findItem(QString().sprintf("%d",line),Count);
     item->setText(Count,QString().sprintf("%d",item->text(Count).toInt()+1));
     while((item=(RDListViewItem *)item->nextSibling())!=NULL) {
       item->setText(Count,QString().sprintf("%d",item->text(Count).toInt()+1));
@@ -1364,7 +1368,7 @@ void EditLog::DeleteLines(int line,int count)
       }
     }
     item=(RDListViewItem *)edit_log_list->
-      findItem(QString().sprintf("%d",line),14);
+      findItem(QString().sprintf("%d",line),Count);
     for(int i=0;i<count;i++) {
       next=(RDListViewItem *)item->nextSibling();
       delete item;
@@ -1498,6 +1502,8 @@ void EditLog::RefreshLine(RDListViewItem *item)
     item->
       setText(Length,RDGetTimeLength(logline->forcedLength(),false,false));
     item->setText(Artist,logline->artist());
+    item->setText(SchedCode,logline->schedCode());
+    item->setText(SchedCode2,logline->schedCode2());
     item->setText(Client,logline->client());
     item->setText(Agency,logline->agency());
     item->setText(ExtData,logline->extData());
