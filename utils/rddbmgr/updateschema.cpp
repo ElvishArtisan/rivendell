@@ -9671,6 +9671,20 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<306)&&(set_schema>cur_schema)) {
+    sql=QString("alter table LOG_LINES add column ")+
+      "SCHED_CODE varchar(10) after SOURCE";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table LOG_LINES add column ")+
+      "SCHED_CODE2 varchar(10) after SCHED_CODE";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(++cur_schema);
+  }
 
   // NEW SCHEMA UPDATES GO HERE...
 
