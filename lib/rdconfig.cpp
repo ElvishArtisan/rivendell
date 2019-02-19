@@ -392,6 +392,18 @@ QString RDConfig::pypadGroup() const
 }
 
 
+QString RDConfig::rnRmlOwner() const
+{
+  return conf_rn_rml_owner;
+}
+
+
+QString RDConfig::rnRmlGroup() const
+{
+  return conf_rn_rml_group;
+}
+
+
 QString RDConfig::ripcdLogname() const
 {
   return conf_ripcd_logname;
@@ -467,6 +479,18 @@ uid_t RDConfig::pypadUid() const
 gid_t RDConfig::pypadGid() const
 {
   return conf_pypad_gid;
+}
+
+
+uid_t RDConfig::rnRmlUid() const
+{
+  return conf_rn_rml_uid;
+}
+
+
+gid_t RDConfig::rnRmlGid() const
+{
+  return conf_rn_rml_gid;
 }
 
 
@@ -565,6 +589,10 @@ bool RDConfig::load()
     profile->stringValue("Identity","PypadOwner",RD_DEFAULT_PYPAD_OWNER);
   conf_pypad_group=
     profile->stringValue("Identity","PypadGroup",RD_DEFAULT_PYPAD_GROUP);
+  conf_rn_rml_owner=
+    profile->stringValue("Identity","RnRmlOwner",RD_DEFAULT_RN_RML_OWNER);
+  conf_rn_rml_group=
+    profile->stringValue("Identity","RnRmlGroup",RD_DEFAULT_RN_RML_GROUP);
   conf_label=profile->stringValue("Identity","Label",RD_DEFAULT_LABEL);
 
   conf_audio_store_mount_source=
@@ -662,6 +690,16 @@ bool RDConfig::load()
 					   RD_DEFAULT_PYPAD_GROUP)))!=NULL) {
     conf_pypad_gid=groups->gr_gid;
   }
+
+  if((user=getpwnam(profile->stringValue("Identity","RnRmlOwner",
+					 RD_DEFAULT_RN_RML_OWNER)))!=NULL) {
+    conf_rn_rml_uid=user->pw_uid;
+  }
+  if((groups=getgrnam(profile->stringValue("Identity","RnRmlGroup",
+					   RD_DEFAULT_RN_RML_GROUP)))!=NULL) {
+    conf_rn_rml_gid=groups->gr_gid;
+  }
+
   conf_cae_logfile=profile->stringValue("Caed","Logfile","");
   conf_enable_mixer_logging=profile->boolValue("Caed","EnableMixerLogging");
   conf_use_realtime=profile->boolValue("Tuning","UseRealtime",false);
@@ -743,6 +781,8 @@ void RDConfig::clear()
   conf_audio_group="";
   conf_pypad_owner="";
   conf_pypad_group="";
+  conf_rn_rml_owner="";
+  conf_rn_rml_group="";
   conf_audio_root=RD_AUDIO_ROOT;
   conf_audio_extension=RD_AUDIO_EXTENSION;
   conf_label=RD_DEFAULT_LABEL;
@@ -764,6 +804,8 @@ void RDConfig::clear()
   conf_gid=65535;
   conf_pypad_uid=65535;
   conf_pypad_gid=65535;
+  conf_rn_rml_uid=65535;
+  conf_rn_rml_gid=65535;
   conf_cae_logfile="";
   conf_enable_mixer_logging=false;
   conf_use_realtime=false;
