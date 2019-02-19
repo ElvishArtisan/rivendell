@@ -18502,3 +18502,6 @@
 2019-02-19 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdamin(1) that caused PyPAD instance data
 	to fail to be cloned properly when creating a new host entry.
+2019-02-19 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdadmin(1) that caused cloning of an
+	existing service to fail.
