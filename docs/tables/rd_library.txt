@@ -6,7 +6,6 @@ FIELD NAME           TYPE              REMARKS
 ------------------------------------------------------------------------------
 ID                   int(10) unsigned  * Primary key, Auto Increment
 STATION              varchar(64)       From STATIONS.NAME
-INSTANCE             int(10) unsigned
 INPUT_CARD           int(11)           None=-1
 INPUT_TYPE           enum('A','D')
 OUTPUT_CARD          int(11)           None=-1

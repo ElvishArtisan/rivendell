@@ -968,8 +968,7 @@ bool RDStation::create(const QString &name,QString *err_msg,
       "LIMIT_SEARCH,"+         // 22
       "SEARCH_LIMITED "+       // 23
       "from RDLIBRARY where "+
-      "(STATION=\""+RDEscapeString(exemplar)+"\")&&"+
-      "(INSTANCE=0)";
+      "STATION=\""+RDEscapeString(exemplar)+"\"";
     q=new RDSqlQuery(sql);
     if(q->first()) {
       sql=QString("insert into RDLIBRARY set ")+
@@ -1663,21 +1662,21 @@ bool RDStation::create(const QString &name,QString *err_msg,
     delete q;
 
     //
-    // Clone RLM Parameters
+    // Clone PyPAD Instances
     //
     sql=QString("select ")+
-      "LOG_MACHINE,"+  // 00
-      "PLUGIN_PATH,"+  // 01
-      "PLUGIN_ARG "+   // 02
-      "from NOWNEXT_PLUGINS where "+
+      "SCRIPT_PATH,"+  // 00
+      "DESCRIPTION,"+  // 01
+      "CONFIG "+       // 02
+      "from PYPAD_INSTANCES where "+
       "STATION_NAME=\""+RDEscapeString(exemplar)+"\"";
     q=new RDSqlQuery(sql);
     while(q->next()) {
-      sql=QString("insert into NOWNEXT_PLUGINS set ")+
+      sql=QString("insert into PYPAD_INSTANCES set ")+
 	"STATION_NAME=\""+RDEscapeString(name)+"\","+
-	QString().sprintf("LOG_MACHINE=%u,",q->value(0).toUInt())+
-	"PLUGIN_PATH=\""+RDEscapeString(q->value(1).toString())+"\","+
-	"PLUGIN_ARG=\""+RDEscapeString(q->value(2).toString())+"\"";
+	"SCRIPT_PATH=\""+RDEscapeString(q->value(0).toString())+"\","+
+	"DESCRIPTION=\""+RDEscapeString(q->value(1).toString())+"\","+
+	"CONFIG=\""+RDEscapeString(q->value(2).toString())+"\"";
       q1=new RDSqlQuery(sql);
       delete q1;
     }
@@ -1783,11 +1782,7 @@ bool RDStation::create(const QString &name,QString *err_msg,
       "LOG_ID,"+         // 06
       "LOG_LINE,"+       // 07
       "NOW_CART,"+       // 08
-      "NEXT_CART,"+      // 09
-      "UDP_ADDR,"+       // 10
-      "UDP_PORT,"+       // 11
-      "UDP_STRING,"+     // 12
-      "LOG_RML "+        // 13
+      "NEXT_CART "+      // 09
       "from LOG_MACHINES where "+
       "STATION_NAME=\""+RDEscapeString(exemplar)+"\"";
     q=new RDSqlQuery(sql);
@@ -1803,13 +1798,8 @@ bool RDStation::create(const QString &name,QString *err_msg,
 	QString().sprintf("LOG_ID=%d,",q->value(6).toInt())+
 	QString().sprintf("LOG_LINE=%d,",q->value(7).toInt())+
 	QString().sprintf("NOW_CART=%u,",q->value(8).toUInt())+
-	QString().sprintf("NEXT_CART=%u,",q->value(9).toUInt())+
-	"UDP_ADDR=\""+RDEscapeString(q->value(10).toString())+"\","+
-	QString().sprintf("UDP_PORT=%u,",q->value(11).toUInt())+
-	"UDP_STRING=\""+RDEscapeString(q->value(12).toString())+"\","+
-	"LOG_RML=\""+RDEscapeString(q->value(13).toString())+"\"";
-      q1=new RDSqlQuery(sql);
-      delete q1;
+	QString().sprintf("NEXT_CART=%u",q->value(9).toUInt());
+      RDSqlQuery::apply(sql);
     }
     delete q;
 

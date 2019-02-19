@@ -18499,3 +18499,6 @@
 2019-02-19 Fred Gleason <fredg@paravelsystems.com>
 	* Modified the PAD emission code to use a hybrid "most recently
 	started" / "longest running" strategy.
+2019-02-19 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdamin(1) that caused PyPAD instance data
+	to fail to be cloned properly when creating a new host entry.
