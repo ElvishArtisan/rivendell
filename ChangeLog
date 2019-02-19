@@ -18490,3 +18490,6 @@
 2019-02-19 Fred Gleason <fredg@paravelsystems.com>
 	* Dropped the 'RDLIBRARY.INSTANCE' field from the database.
 	* Incremented the database version to 306.
+2019-02-19 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed a bug in rdlibrary(1) where double-clicking outside of
+	the list would cause a segfault.
