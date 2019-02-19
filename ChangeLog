@@ -18505,3 +18505,6 @@
 2019-02-19 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdadmin(1) that caused cloning of an
 	existing service to fail.
+2019-02-19 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdadmin(1) that threw a SQL error when deleting
+	a host entry.

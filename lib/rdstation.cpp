@@ -1994,7 +1994,7 @@ void RDStation::remove(const QString &name)
   q=new RDSqlQuery(sql);
   delete q;
 
-  sql=QString("delete from NOWNEXT_PLUGINS where ")+
+  sql=QString("delete from PYPAD_INSTANCES where ")+
     "STATION_NAME=\""+RDEscapeString(name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
