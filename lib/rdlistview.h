@@ -35,6 +35,8 @@ class RDListView : public Q3ListView
   RDListView(QWidget *parent);
   int hardSortColumn() const;
   void setHardSortColumn(int col);
+  void setContiguous(bool state);
+  bool contiguous() const;
   RDListView::SortType columnSortType(int column) const;
   void setColumnSortType(int column,SortType type);
   int addColumn(const QString &label,int width=-1);
@@ -47,6 +49,7 @@ class RDListView : public Q3ListView
 
  private:
   int list_hard_sort_column;
+  bool list_contiguous;
   std::vector<RDListView::SortType> sort_type;
 };
 
