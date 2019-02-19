@@ -100,7 +100,7 @@ EditPypad::EditPypad(int id,QWidget *parent)
 
 QSize EditPypad::sizeHint() const
 {
-  return QSize(600,738);
+  return QSize(600,660);
 }
 
 

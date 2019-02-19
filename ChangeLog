@@ -18484,3 +18484,6 @@
 	* Added 'RnRmlOwner=' and 'RnRmlGroup=' directives to rd.conf(5).
 	* Refactored the implementation of the 'Run Shell Command' ['RN']
 	RML to use runuser(1).
+2019-02-19 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the minimum size of the 'Edit PyPAD Instance dialog in
+	rdadmin(1) to be 600x660.
