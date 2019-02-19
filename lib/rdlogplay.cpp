@@ -2887,12 +2887,32 @@ void RDLogPlay::SendNowNext()
     }
   }
   */
-
+  /*
   //
   // "Most recently started" algorithm
   //
   if(running>0) {
-    now_line=lines[running-1];
+    now_line=lines[running-1];  // Most recently started event
+  }
+  */
+  //
+  // "Hybrid" algorithm
+  //
+  if(running>0) {
+    now_line=lines[running-1];  // Most recently started event
+    if((!logLine(now_line)->nowNextEnabled())||(logLine(now_line)->cartType()!=RDCart::Macro)) {
+      //
+      // If the most recently started event is not a Now&Next-enabled macro
+      // cart, then use longest running event instead
+      //
+      for(int i=0;i<running;i++) {
+	if((time=logLine(lines[i])->startTime(RDLogLine::Actual).
+	    addMSecs(logLine(lines[i])->effectiveLength()))>end_time) {
+	  end_time=time;
+	  now_line=lines[i];
+	}
+      }
+    }
   }
 
   if((now_line>=0)&&(logLine(now_line)->nowNextEnabled())) {

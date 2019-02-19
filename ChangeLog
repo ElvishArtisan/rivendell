@@ -18496,3 +18496,6 @@
 2019-02-19 Patrick Linstruth <patrick@deltecent.com>
 	* Add non-contiguous cart selections in RDListView class.
 	* Allow non-contiguous cart selections in rdlibrary(1).
+2019-02-19 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the PAD emission code to use a hybrid "most recently
+	started" / "longest running" strategy.
