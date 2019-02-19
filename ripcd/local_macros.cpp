@@ -18,6 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <errno.h>
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/wait.h>
@@ -27,6 +28,7 @@
 #include <rdconf.h>
 #include <rdescape_string.h>
 #include <rdmatrix.h>
+#include <rdpaths.h>
 #include <rdtty.h>
 
 #include "ripcd.h"
@@ -147,6 +149,7 @@ void MainObject::LoadLocalMacros()
   QString sql;
   RDSqlQuery *q;
   unsigned tty_port;
+  QString cmd;
 
   for(int i=0;i<MAX_MATRICES;i++) {
     ripcd_switcher_tty[i][0]=-1;
@@ -560,34 +563,10 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
       }
       return;
     }
-    if(fork()==0) {
-      QString cmd=rml->arg(0);
-      for(int i=1;i<=rml->argQuantity();i++) {
-	cmd+=" "+rml->arg(i);
-      }
-      if(getuid()==0) {
-	if(setgid(rda->config()->gid())<0) {
-	  LogLine(RDConfig::LogWarning,QString().
-		  sprintf("unable to set group id %d for RN",
-			  rda->config()->gid()));
-	  if(rml->echoRequested()) {
-	    rml->acknowledge(false);
-	    sendRml(rml);
-	  }
-	}
-	if(setuid(rda->config()->uid())<0) {
-	  LogLine(RDConfig::LogWarning,QString().
-		  sprintf("unable to set user id %d for RN",
-			  rda->config()->uid()));
-	  if(rml->echoRequested()) {
-	    rml->acknowledge(false);
-	    sendRml(rml);
-	  }
-	}
-      }
-      system((const char *)cmd);
-      exit(0);
+    for(int i=0;i<rml->argQuantity();i++) {
+      cmd+=rml->arg(i)+" ";
     }
+    RunCommand(rda->config()->rnRmlOwner(),rda->config()->rnRmlGroup(),cmd.trimmed());
     if(rml->echoRequested()) {
       rml->acknowledge(true);
       sendRml(rml);
@@ -966,3 +945,25 @@ RDMacro MainObject::ForwardConvert(const RDMacro &rml) const
 
   return ret;
 }
+
+
+void MainObject::RunCommand(const QString &user,const QString &group,
+			    const QString &cmd) const
+{
+  QStringList f0=cmd.split(" ",QString::SkipEmptyParts);
+  const char *args[f0.size()+6];
+  args[0]=RD_RUNUSER;
+  args[1]="-u";
+  args[2]=user.toUtf8();
+  args[3]="-g";
+  args[4]=group.toUtf8();
+  for(int i=0;i<f0.size();i++) {
+    args[5+i]=f0.at(i).toUtf8();
+  }
+  args[5+f0.size()]=(char *)NULL;
+  if(vfork()==0) {
+    execv(RD_RUNUSER,(char * const *)args);
+    exit(0);
+  }
+}
+

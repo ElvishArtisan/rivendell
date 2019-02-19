@@ -320,6 +320,7 @@ MainWidget::MainWidget(QWidget *parent)
   lib_cart_list->setSelectionMode(Q3ListView::Extended);
   lib_cart_list->setRootIsDecorated(true);
   lib_cart_list->enableNoteBubbles(true);
+  lib_cart_list->setContiguous(false);
   connect(lib_cart_list,
 	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,
@@ -1011,7 +1012,9 @@ void MainWidget::cartDoubleclickedData(Q3ListViewItem * item,const QPoint &,int)
   // want (the current status), it will put it back to what we do want. There is probably
   // a Qt way of doing this which should probably be addressed at a later date.
   //
-  item->setOpen(!item->isOpen());
+  if(item!=NULL) {
+    item->setOpen(!item->isOpen());
+  }
 }
 
 

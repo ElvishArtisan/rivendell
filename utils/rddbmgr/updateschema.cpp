@@ -9672,16 +9672,11 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
   }
 
   if((cur_schema<306)&&(set_schema>cur_schema)) {
-    sql=QString("alter table LOG_LINES add column ")+
-      "SCHED_CODE varchar(10) after SOURCE";
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
-    sql=QString("alter table LOG_LINES add column ")+
-      "SCHED_CODE2 varchar(10) after SCHED_CODE";
-    if(!RDSqlQuery::apply(sql,err_msg)) {
-      return false;
-    }
+    sql=QString("alter table RDLIBRARY drop index STATION_IDX");
+    RDSqlQuery::apply(sql);
+    DropColumn("RDLIBRARY","INSTANCE");
+    sql=QString("create index STATION_IDX on RDLIBRARY (STATION)"); 
+    RDSqlQuery::apply(sql);
 
     WriteSchemaVersion(++cur_schema);
   }

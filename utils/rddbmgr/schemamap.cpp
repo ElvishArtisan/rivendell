@@ -122,7 +122,7 @@ void MainObject::InitializeSchemaMap() {
   // (upcoming) release. If this is the first schema change made after a
   // public release, a line referencing the next (upcoming) release should
   // be added and its value set to that of the new schema version. Otherwise,
-  // it should be incremented every time a schmea update is committed.
+  // it should be incremented every time a schema update is committed.
   //
   // When the first production release in the minor version referenced
   // on the last line occurs, that line too is declared immutable, and
@@ -156,7 +156,7 @@ void MainObject::InitializeSchemaMap() {
   global_version_map["2.17"]=268;
   global_version_map["2.18"]=272;
   global_version_map["2.19"]=275;
-  global_version_map["3.0"]=305;
+  global_version_map["3.0"]=306;
 }
 
 

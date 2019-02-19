@@ -19,6 +19,7 @@
 //
 //
 
+#include <stdio.h>
 #include <vector>
 
 #include <rdlistview.h>
@@ -27,11 +28,22 @@
 RDListView::RDListView(QWidget *parent)
   : Q3ListView(parent)
 {
+  list_contiguous=true;
   list_hard_sort_column=-1;
   connect(this,
 	  SIGNAL(mouseButtonClicked(int,Q3ListViewItem *,const QPoint &,int)),
 	  this,
 	 SLOT(mouseButtonClickedData(int,Q3ListViewItem *,const QPoint &,int)));
+}
+
+void RDListView::setContiguous(bool state) {
+  list_contiguous=state;
+}
+
+
+bool RDListView::contiguous() const
+{
+  return list_contiguous;
 }
 
 
@@ -93,7 +105,7 @@ void RDListView::mouseButtonClickedData(int button,Q3ListViewItem *item,
   Q3ListViewItem *l;
   bool contiguous;
 
-  if((selectionMode()!=Q3ListView::Extended)||(item==NULL)||(button!=1)) {
+  if((list_contiguous==false)||(selectionMode()!=Q3ListView::Extended)||(item==NULL)||(button!=1)) {
     return;
   }
 
