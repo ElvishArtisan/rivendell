@@ -16,6 +16,11 @@ AudioGroup=rivendell
 PypadOwner=pypad
 PypadGroup=pypad
 
+; These entries are used to define the system user and group that commands
+; executed by the 'Run Shell Command' ['RN'] RML will run under.
+RnRmlOwner=rivendell
+RnRmlGroup=rivendell
+
 ; This password is used by the various Rivendell modules to log into 
 ; Rivendell system services [caed(8), ripcd(8), rdcatchd(8)].
 Password=letmein

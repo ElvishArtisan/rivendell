@@ -1389,6 +1389,26 @@
     <para>
       Run the shell command <replaceable>cmd</replaceable>.
     </para>
+    <note>
+      <para>
+      The command is actually executed as:
+      </para>
+      <para>
+	<code>
+	  runuser -u <replaceable>user</replaceable>
+	  -g <replaceable>group</replaceable> <replaceable>cmd</replaceable>
+	  </code>
+      </para>
+      <para>
+	where <replaceable>user</replaceable> and
+	<replaceable>group</replaceable> are the values specified by the
+	&quot;RnRmlOwner=&quot; and &quot;RnRmlGroup=&quot; directives in
+	the &quot;[Identity]&quot; section of
+	<command>rd.conf</command><manvolnum>5</manvolnum>. See the
+	<command>runuser</command><manvolnum>1</manvolnum> man page for
+	details concerning handling of the process enironment.
+      </para>
+    </note>
   </sect2>
 
   <sect2 xml:id="sect.rml.select_widget__pw_">
