@@ -80,6 +80,7 @@ MainObject::MainObject(QObject *parent)
   import_title_from_cartchunk_cutid=false;
   import_delete_source=false;
   import_delete_cuts=false;
+  import_retain_markers=false;
   import_drop_box=false;
   import_set_user_defined="";
   import_stdin_specified=false;
@@ -169,6 +170,10 @@ MainObject::MainObject(QObject *parent)
     }
     if(rda->cmdSwitch()->key(i)=="--delete-cuts") {
       import_delete_cuts=true;
+      rda->cmdSwitch()->setProcessed(i,true);
+    }
+    if(rda->cmdSwitch()->key(i)=="--retain-markers") {
+      import_retain_markers=true;
       rda->cmdSwitch()->setProcessed(i,true);
     }
     if(rda->cmdSwitch()->key(i)=="--startdate-offset") {
@@ -590,6 +595,15 @@ MainObject::MainObject(QObject *parent)
     import_channels=1;
   }
 
+  if(import_retain_markers&&import_segue_level) {
+    Log(RDConfig::LogErr,QString().sprintf("rdimport: --delete-cuts and --segue-level are mutually exclusive\n"));
+    exit(255);
+  }
+  if(import_retain_markers&&import_segue_length) {
+    Log(RDConfig::LogErr,QString().sprintf("rdimport: --delete-cuts and --segue-length are mutually exclusive\n"));
+    exit(255);
+  }
+
   //
   // Print Status Messages
   //
@@ -649,6 +663,12 @@ MainObject::MainObject(QObject *parent)
     }
     else {
       Log(RDConfig::LogInfo,QString(" Delete cuts mode is OFF\n"));
+    }
+    if(import_retain_markers) {
+      Log(RDConfig::LogInfo,QString(" Retain markers mode is ON\n"));
+    }
+    else {
+      Log(RDConfig::LogInfo,QString(" Retain markers mode is OFF\n"));
     }
     if(import_drop_box) {
       Log(RDConfig::LogInfo,QString(" DropBox mode is ON\n"));
@@ -976,6 +996,8 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   RDGroup *effective_group=new RDGroup(import_group->name());
   RDWaveData *wavedata=new RDWaveData();
   RDWaveFile *wavefile=new RDWaveFile(filename);
+  RDCut *retain_cut;
+  int retain_marker[8]={-1,-1,-1,-1,-1,-1,-1,-1};
   QString err_msg;
 
   if(wavefile->openWave(wavedata)) {
@@ -1097,7 +1119,25 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
     exit(256);
   }
   if(import_delete_cuts) {
-    DeleteCuts(import_cart_number);
+    if(import_retain_markers) {
+      retain_cut=new RDCut(*cartnum,1);
+      if(retain_cut->exists()) {
+        retain_marker[0]=retain_cut->talkStartPoint();
+        retain_marker[1]=retain_cut->talkEndPoint();
+        retain_marker[2]=retain_cut->hookStartPoint();
+        retain_marker[3]=retain_cut->hookEndPoint();
+        retain_marker[4]=retain_cut->segueStartPoint();
+        retain_marker[5]=retain_cut->segueEndPoint();
+        retain_marker[6]=retain_cut->fadedownPoint();
+        retain_marker[7]=retain_cut->fadeupPoint();
+      }
+      else {
+        Log(RDConfig::LogWarning,QString().sprintf("rdimport: cannot retain markers because \
+		cut %s does not exist\n",(const char *)retain_cut->cutName()));
+      }
+      delete retain_cut;
+    }
+    DeleteCuts(*cartnum);
   }
   if (RDCart::exists(*cartnum)) {
     cart_created=false;
@@ -1325,30 +1365,42 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
     cut->setEndPoint(import_cut_markers->endValue());
     cut->setLength(cut->endPoint()-cut->startPoint());
   }
-  int lo=cut->startPoint();
-  int hi=cut->endPoint();
-  import_talk_markers->setAudioLength(wavefile->getExtTimeLength());
-  if(import_talk_markers->hasStartValue()) {
-    cut->setTalkStartPoint(import_talk_markers->startValue(lo,hi));
-    cut->setTalkEndPoint(import_talk_markers->endValue(lo,hi));
+  if(import_retain_markers) {
+    cut->setTalkStartPoint(retain_marker[0]);
+    cut->setTalkEndPoint(retain_marker[1]);
+    cut->setHookStartPoint(retain_marker[2]);
+    cut->setHookEndPoint(retain_marker[3]);
+    cut->setSegueStartPoint(retain_marker[4]);
+    cut->setSegueEndPoint(retain_marker[5]);
+    cut->setFadedownPoint(retain_marker[6]);
+    cut->setFadeupPoint(retain_marker[7]);
   }
-  import_hook_markers->setAudioLength(wavefile->getExtTimeLength());
-  if(import_hook_markers->hasStartValue()) {
-    cut->setHookStartPoint(import_hook_markers->startValue(lo,hi));
-    cut->setHookEndPoint(import_hook_markers->endValue(lo,hi));
-  }
-  import_segue_markers->setAudioLength(wavefile->getExtTimeLength());
-  if(import_segue_markers->hasStartValue()) {
-    cut->setSegueStartPoint(import_segue_markers->startValue(lo,hi));
-    cut->setSegueEndPoint(import_segue_markers->endValue(lo,hi));
-  }
-  import_fadedown_marker->setAudioLength(wavefile->getExtTimeLength());
-  if(import_fadedown_marker->hasFadeValue()) {
-    cut->setFadedownPoint(import_fadedown_marker->fadeValue(lo,hi));
-  }
-  import_fadeup_marker->setAudioLength(wavefile->getExtTimeLength());
-  if(import_fadeup_marker->hasFadeValue()) {
-    cut->setFadeupPoint(import_fadeup_marker->fadeValue(lo,hi));
+  else {
+    int lo=cut->startPoint();
+    int hi=cut->endPoint();
+    import_talk_markers->setAudioLength(wavefile->getExtTimeLength());
+    if(import_talk_markers->hasStartValue()) {
+      cut->setTalkStartPoint(import_talk_markers->startValue(lo,hi));
+      cut->setTalkEndPoint(import_talk_markers->endValue(lo,hi));
+    }
+    import_hook_markers->setAudioLength(wavefile->getExtTimeLength());
+    if(import_hook_markers->hasStartValue()) {
+      cut->setHookStartPoint(import_hook_markers->startValue(lo,hi));
+      cut->setHookEndPoint(import_hook_markers->endValue(lo,hi));
+    }
+    import_segue_markers->setAudioLength(wavefile->getExtTimeLength());
+    if(import_segue_markers->hasStartValue()) {
+      cut->setSegueStartPoint(import_segue_markers->startValue(lo,hi));
+      cut->setSegueEndPoint(import_segue_markers->endValue(lo,hi));
+    }
+    import_fadedown_marker->setAudioLength(wavefile->getExtTimeLength());
+    if(import_fadedown_marker->hasFadeValue()) {
+      cut->setFadedownPoint(import_fadedown_marker->fadeValue(lo,hi));
+    }
+    import_fadeup_marker->setAudioLength(wavefile->getExtTimeLength());
+    if(import_fadeup_marker->hasFadeValue()) {
+      cut->setFadeupPoint(import_fadeup_marker->fadeValue(lo,hi));
+    }
   }
   cart->updateLength();
   if(cart_created) {
