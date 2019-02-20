@@ -18499,3 +18499,4 @@
 2019-02-19 Patrick Linstruth <patrick@deltecent.com>
 	* Add scheduler codes to logs and PyPAD data.
 	* Add scheduler codes columns to rdlogedit(1) and rdairplay(1).
+	* Incremented the database version to 307.
