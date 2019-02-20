@@ -52,6 +52,8 @@ class RDDropbox
   void setTitleFromCartchunkId(bool state) const;
   bool deleteCuts() const;
   void setDeleteCuts(bool state) const;
+  bool retainMarkers() const;
+  void setRetainMarkers(bool state) const;
   bool deleteSource() const;
   void setDeleteSource(bool state) const;
   QString metadataPattern() const;

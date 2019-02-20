@@ -72,6 +72,7 @@ int RDDropbox::duplicate() const
   new_box->setUseCartchunkId(useCartchunkId());
   new_box->setTitleFromCartchunkId(titleFromCartchunkId());
   new_box->setDeleteCuts(deleteCuts());
+  new_box->setRetainMarkers(retainMarkers());
   new_box->setDeleteSource(deleteSource());
   new_box->setMetadataPattern(metadataPattern());
   new_box->setUserDefined(userDefined());
@@ -223,6 +224,18 @@ bool RDDropbox::deleteCuts() const
 void RDDropbox::setDeleteCuts(bool state) const
 {
   SetRow("DELETE_CUTS",state);
+}
+
+
+bool RDDropbox::retainMarkers() const
+{
+  return RDBool(RDGetSqlValue("DROPBOXES","ID",box_id,"RETAIN_MARKERS").toString());
+}
+
+
+void RDDropbox::setRetainMarkers(bool state) const
+{
+  SetRow("RETAIN_MARKERS",state);
 }
 
 

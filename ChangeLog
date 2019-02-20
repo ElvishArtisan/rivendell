@@ -18496,3 +18496,7 @@
 2019-02-19 Patrick Linstruth <patrick@deltecent.com>
 	* Add non-contiguous cart selections in RDListView class.
 	* Allow non-contiguous cart selections in rdlibrary(1).
+2019-02-20 Patrick Linstruth <patrick@deltecent.com>
+	* Added "--retain-markers" option to rdimport(1).
+	* Added "Retain markers" option to edit dropboxes in rdadmin(1).
+	* Incremented the database version to 308.
