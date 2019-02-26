@@ -18508,3 +18508,5 @@
 2019-02-19 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdadmin(1) that threw a SQL error when deleting
 	a host entry.
+2019-02-21 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed erase marker error in the 'Edit Audio' dialog.
