@@ -2686,7 +2686,7 @@ void RDEditAudio::EraseCursor(int xpos,int ypos,int xsize,int ysize,int chan,
 {
   int x;
 
-  if((edit_hscroll==NULL)||(prev<0)||((prev==0)&&(samp<0))) {
+  if((edit_hscroll==NULL)||(prev<0)) {
     return;
   }
   x=(int)((double)(samp-edit_hscroll->value())/edit_factor_x);
