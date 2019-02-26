@@ -76,33 +76,48 @@ bool RDCart::exists() const
 }
 
 
-bool RDCart::selectCut(QString *cut) const
+bool RDCart::selectCut(int *cutnum) const
 {
-  return selectCut(cut,QTime::currentTime());
+  QString cutname;
+  bool ret;
+
+  ret=selectCut(&cutname,QTime::currentTime());
+
+  *cutnum=cutname.right(3).toInt();
+
+  return ret;
 }
 
 
-bool RDCart::selectCut(QString *cut,const QTime &time) const
+bool RDCart::selectCut(QString *cutname) const
+{
+  return selectCut(cutname,QTime::currentTime());
+}
+
+
+bool RDCart::selectCut(QString *cutname,const QTime &time) const
 {
   bool ret;
 
+  // Check if cart exists
   if(!exists()) {
-    ret=(*cut=="");
-    *cut="";
+    ret=(*cutname=="");
+    *cutname="";
     syslog(LOG_USER|LOG_WARNING,
 	   "RDCart::selectCut(): cart doesn't exist, CUT=%s",
-	   (const char *)cut);
+	   (const char *)cutname);
     return ret;
   }
 
-  if(!cut->isEmpty()) {
-    RDCut *rdcut=new RDCut(*cut);
+  // What is the purpose?
+  if(!cutname->isEmpty()) {
+    RDCut *rdcut=new RDCut(*cutname);
     delete rdcut;
   }
 
   QString sql;
   RDSqlQuery *q;
-  QString cutname;
+  QString nextcut;
   QDate current_date=QDate::currentDate();
   QString datetime_str=QDateTime(current_date,time).
     toString("yyyy-MM-dd hh:mm:ss");
@@ -134,7 +149,7 @@ bool RDCart::selectCut(QString *cut,const QTime &time) const
       sql+=" order by LAST_PLAY_DATETIME desc, PLAY_ORDER desc";
     }
     q=new RDSqlQuery(sql);
-    cutname=GetNextCut(q);
+    nextcut=GetNextCut(q);
     delete q;
     break;
 
@@ -142,7 +157,7 @@ bool RDCart::selectCut(QString *cut,const QTime &time) const
   case RDCart::All:
     break;
   }
-  if(cutname.isEmpty()) {   // No valid cuts, try the evergreen
+  if(nextcut.isEmpty()) {   // No valid cuts, try the evergreen
     sql=QString("select ")+
       "CUT_NAME,"+
       "PLAY_ORDER,"+
@@ -160,12 +175,10 @@ bool RDCart::selectCut(QString *cut,const QTime &time) const
       sql+=" order by LAST_PLAY_DATETIME desc";
     }
     q=new RDSqlQuery(sql);
-    cutname=GetNextCut(q);
+    nextcut=GetNextCut(q);
     delete q;
   }
-  if(cutname.isEmpty()) {
-  }
-  *cut=cutname;
+  *cutname=nextcut;
   return true;
 }
 

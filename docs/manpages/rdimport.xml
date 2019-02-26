@@ -535,6 +535,20 @@
 
     <varlistentry>
       <term>
+	<option>--retain-markers</option>
+      </term>
+      <listitem>
+	<para>
+	  If <option>--delete-cuts</option> is also specified the segue markers from the
+	  deleted cut will be retained and used for the imported cut.
+          See <option>--delete-cuts</option>, above.
+	  This option is mutually exclusive with the <option>--segue-level</option> option.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
 	<option>--segue-length=</option><replaceable>length</replaceable>
       </term>
       <listitem>

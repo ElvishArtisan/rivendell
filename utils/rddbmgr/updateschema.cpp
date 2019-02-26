@@ -9681,6 +9681,16 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<307)&&(set_schema>cur_schema)) {
+    sql=QString("alter table DROPBOXES add column ")+
+      "RETAIN_MARKERS enum('N','Y') default 'N' after DELETE_CUTS";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
 
   // NEW SCHEMA UPDATES GO HERE...
 

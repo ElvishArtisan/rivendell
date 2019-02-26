@@ -192,7 +192,8 @@ bool MainObject::StartDropboxes(QString *err_msg)
     "SET_USER_DEFINED,"+         // 19
     "FORCE_TO_MONO,"+            // 20
     "SEGUE_LEVEL,"+              // 21
-    "SEGUE_LENGTH "+             // 22
+    "SEGUE_LENGTH,"+             // 22
+    "RETAIN_MARKERS "+           // 23
     "from DROPBOXES where "+
     "STATION_NAME=\""+RDEscapeString(rda->config()->stationName())+"\"";
   q=new RDSqlQuery(sql);
@@ -231,6 +232,9 @@ bool MainObject::StartDropboxes(QString *err_msg)
     }
     if(q->value(8).toString()=="Y") {
       args.push_back("--delete-cuts");
+    }
+    if(q->value(23).toString()=="Y") {
+      args.push_back("--retain-markers");
     }
     if(q->value(20).toString()=="Y") {
       args.push_back("--to-mono");
