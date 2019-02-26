@@ -596,6 +596,10 @@ Vil du byta henne ut?</translation>
         <source>Count</source>
         <translation type="unfinished">Tellign</translation>
     </message>
+    <message>
+        <source>Artist Separation</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditEventLine</name>
@@ -794,6 +798,14 @@ Vil du lagra?</translation>
     </message>
     <message>
         <source>Import Rules from Clock</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation type="obsolete">Ingen</translation>
+    </message>
+    <message>
+        <source>(This setting is deprecated and has been moved to events)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

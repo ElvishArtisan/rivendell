@@ -99,6 +99,7 @@ been ported to PyPAD:
 | rlm_udp             | pypad_udp.py        |                            |
 | rlm_urlwrite        | pypad_urlwrite.py   |                            |
 | rlm_walltime        | pypad_walltime.py   |                            |
+|                     | pypad_xcmd.py       | New in Rivendell 3.0       |
 | rlm_xds             | pypad_xds.py        |                            |
 | rlm_xmpad           | pypad_xmpad.py      |                            |
 --------------------------------------------------------------------------
@@ -115,7 +116,7 @@ supports only v2 of the Spinitron API, configuration parameters that apply
 only to the v1 API ('MajorVersion=', 'Station=' and 'Password=') are ignored.
 With these execptions, the RLM configuration is fully forward compatible.
 
-9) Multicast Data
+9) MULTICAST DATA
 This version of Rivendell includes a new system for providing real-time
 status updates between Rivendell modules by means of multicast network
 packets. The default subscription address for these updates is
@@ -129,7 +130,7 @@ common TCP/IP subnet), this should 'just work', but those sites employing
 hosts on disparate TCP/IP networks (multiple subnets, WAN links, etc) may
 need to provision an appropriate multicast routing infrastructure.
 
-10) Database Management
+10) DATABASE MANAGEMENT
 This version of Rivendell splits off database management tasks (creating,
 updating, backing up and restoration) from rdadmin(1). Simple management
 tasks can be done with the rddbconfig(8) GUI utility (available on the
@@ -137,3 +138,10 @@ Rivendell->Configuration desktop menu), while advanced functionality is
 available in the rddbmgr(8) command-line utility (do 'man 8 rddbmgr' for
 full documentation). The functions of the rdrevert(8) and rddbcheck(8)
 utilites have also been subsumed into rddbmgr(8).
+
+11) ARTIST SEPARATION
+This version of Rivendell moves artist separation in rdlogmanager(1) from
+clocks to events. The artist separation value from Rivendell 2.x is still
+visible in the EditClock->SchedulerRules dialog but will not be used
+by the "Generate Log" scheduler. New artist separation values will have
+to be entered into each event.
