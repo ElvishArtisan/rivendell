@@ -41,6 +41,7 @@
 #include <rdcut.h>
 #include <rdescape_string.h>
 #include <rdlibrary_conf.h>
+#include <rdedit_audio.h>
 #include <rdtempdirectory.h>
 
 #include "rdimport.h"
@@ -998,8 +999,12 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   RDWaveData *wavedata=new RDWaveData();
   RDWaveFile *wavefile=new RDWaveFile(filename);
   RDCut *retain_cut=NULL;
-  int retain_marker[8]={-1,-1,-1,-1,-1,-1,-1,-1};
+  int retain_marker[RDEditAudio::LastMarker];
   QString err_msg;
+
+  for(int i=0;i<RDEditAudio::LastMarker;i++) {
+    retain_marker[i]=-1;
+  }
 
   if(wavefile->openWave(wavedata)) {
     effective_filename=filename;
@@ -1136,18 +1141,20 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
       retain_cut=new RDCut(*cartnum,cutnum);
       if(retain_cut->exists()) {
         Log(RDConfig::LogInfo,QString().sprintf("Retaining markers for cart %06d cut %03d\n",*cartnum,cutnum));
-        retain_marker[0]=retain_cut->talkStartPoint();
-        retain_marker[1]=retain_cut->talkEndPoint();
-        retain_marker[2]=retain_cut->hookStartPoint();
-        retain_marker[3]=retain_cut->hookEndPoint();
-        retain_marker[4]=retain_cut->segueStartPoint();
-        retain_marker[5]=retain_cut->segueEndPoint();
-        retain_marker[6]=retain_cut->fadedownPoint();
-        retain_marker[7]=retain_cut->fadeupPoint();
+        retain_marker[RDEditAudio::Start]=retain_cut->startPoint();
+        retain_marker[RDEditAudio::End]=retain_cut->endPoint();
+        retain_marker[RDEditAudio::SegueStart]=retain_cut->segueStartPoint();
+        retain_marker[RDEditAudio::SegueEnd]=retain_cut->segueEndPoint();
+        retain_marker[RDEditAudio::TalkStart]=retain_cut->talkStartPoint();
+        retain_marker[RDEditAudio::TalkEnd]=retain_cut->talkEndPoint();
+        retain_marker[RDEditAudio::HookStart]=retain_cut->hookStartPoint();
+        retain_marker[RDEditAudio::HookEnd]=retain_cut->hookEndPoint();
+        retain_marker[RDEditAudio::FadeUp]=retain_cut->fadeupPoint();
+        retain_marker[RDEditAudio::FadeDown]=retain_cut->fadedownPoint();
         have_markers=true;
       }
       else {
-        Log(RDConfig::LogWarning,QString().sprintf("rdimport: cannot retain markers because \
+        Log(RDConfig::LogWarning,QString().sprintf("rdimport: Cannot retain markers because \
 		cut %s does not exist\n",(const char *)retain_cut->cutName()));
       }
       delete retain_cut;
@@ -1207,7 +1214,7 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
 				  &audio_conv_err)) {
   case RDAudioImport::ErrorOk:
     if(import_verbose) {
-      Log(RDConfig::LogInfo,QString().sprintf("done.\n"));
+      Log(RDConfig::LogInfo,QString().sprintf("Done.\n"));
     }
     break;
 
@@ -1375,14 +1382,18 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   }
   if(import_retain_markers&&have_markers) {
     Log(RDConfig::LogInfo,QString().sprintf("Restoring markers for cart %06d_%03d\n",*cartnum,cutnum));
-    cut->setTalkStartPoint(retain_marker[0]);
-    cut->setTalkEndPoint(retain_marker[1]);
-    cut->setHookStartPoint(retain_marker[2]);
-    cut->setHookEndPoint(retain_marker[3]);
-    cut->setSegueStartPoint(retain_marker[4]);
-    cut->setSegueEndPoint(retain_marker[5]);
-    cut->setFadedownPoint(retain_marker[6]);
-    cut->setFadeupPoint(retain_marker[7]);
+    if(import_autotrim_level==0) {
+      cut->setStartPoint(retain_marker[RDEditAudio::Start]);
+      cut->setEndPoint(retain_marker[RDEditAudio::End]);
+    }
+    cut->setSegueStartPoint(retain_marker[RDEditAudio::SegueStart]);
+    cut->setSegueEndPoint(retain_marker[RDEditAudio::SegueEnd]);
+    cut->setTalkStartPoint(retain_marker[RDEditAudio::TalkStart]);
+    cut->setTalkEndPoint(retain_marker[RDEditAudio::TalkEnd]);
+    cut->setHookStartPoint(retain_marker[RDEditAudio::HookStart]);
+    cut->setHookEndPoint(retain_marker[RDEditAudio::HookEnd]);
+    cut->setFadeupPoint(retain_marker[RDEditAudio::FadeUp]);
+    cut->setFadedownPoint(retain_marker[RDEditAudio::FadeDown]);
   }
   else {
     int lo=cut->startPoint();
