@@ -73,8 +73,10 @@ class RDEvent
   void setHaveCode(QString str);
   QString HaveCode2();
   void setHaveCode2(QString str);
-  unsigned titleSep();
-  void setTitleSep(unsigned titlesep);
+  int artistSep();
+  void setArtistSep(int artistsep);
+  int titleSep();
+  void setTitleSep(int titlesep);
   
  private:
   int GetIntValue(const QString &field) const;

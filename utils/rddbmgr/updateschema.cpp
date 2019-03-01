@@ -9682,6 +9682,24 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
   }
 
   if((cur_schema<307)&&(set_schema>cur_schema)) {
+    sql=QString("alter table EVENTS add column ")+
+      "ARTIST_SEP int(10) after SCHED_GROUP";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql="alter table EVENTS modify column TITLE_SEP int(10)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    if (!ConvertArtistSep307(err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
+  if((cur_schema<308)&&(set_schema>cur_schema)) {
     sql=QString("alter table DROPBOXES add column ")+
       "RETAIN_MARKERS enum('N','Y') default 'N' after DELETE_CUTS";
     if(!RDSqlQuery::apply(sql,err_msg)) {
@@ -9933,6 +9951,29 @@ bool MainObject::ConvertTimeField186(const QString &table,const QString &field,
   // Delete Temporary field
   //
   sql=QString("alter table `")+table+"` drop column "+field+"_TEMP";
+  if(!RDSqlQuery::apply(sql,err_msg)) {
+    return false;
+  }
+
+  return true;
+}
+
+bool MainObject::ConvertArtistSep307(QString *err_msg) const
+{
+  QString sql;
+  RDSqlQuery *q;
+  int max=-1;
+
+  sql=QString("select ARTISTSEP from CLOCKS");
+  q=new RDSqlQuery(sql,false);
+  while(q->next()) {
+    if(q->value(0).toInt()>max) {
+      max=q->value(0).toInt();
+    }
+  }
+  delete q;
+
+  sql=QString().sprintf("update EVENTS set ARTIST_SEP=%d",max);
   if(!RDSqlQuery::apply(sql,err_msg)) {
     return false;
   }

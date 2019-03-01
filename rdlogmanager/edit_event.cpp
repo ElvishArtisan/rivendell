@@ -464,26 +464,50 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   }
   delete q2;
  
+// Artist Separation SpinBox
+
+  event_artist_sep_label=new QLabel(tr("Artist Separation"),this);
+  event_artist_sep_label->setFont(bold_font);
+  event_artist_sep_label->setGeometry(CENTER_LINE+420,383,100,20);
+  
+  event_artist_sep_spinbox=new QSpinBox(this);
+  event_artist_sep_spinbox->setGeometry(CENTER_LINE+510,383,53,20);
+  event_artist_sep_spinbox->setMinValue( -1 );
+  event_artist_sep_spinbox->setMaxValue( 50000 );
+  event_artist_sep_spinbox->setSpecialValueText("None");
+
+  event_artist_none_button=new QPushButton(this);
+  event_artist_none_button->setGeometry(CENTER_LINE+570,383,40,20);
+  event_artist_none_button->setFont(font);
+  event_artist_none_button->setText(tr("None"));
+  connect(event_artist_none_button,SIGNAL(clicked()),this,SLOT(artistData()));
+
 // Title Separation SpinBox
 
   event_title_sep_label=new QLabel(tr("Title Separation"),this);
   event_title_sep_label->setFont(bold_font);
-  event_title_sep_label->setGeometry(CENTER_LINE+420,383,100,20);
+  event_title_sep_label->setGeometry(CENTER_LINE+420,404,100,20);
   
   event_title_sep_spinbox=new QSpinBox(this);
-  event_title_sep_spinbox->setGeometry(CENTER_LINE+510,383,50,20);
-  event_title_sep_spinbox->setMinValue( 0 );
+  event_title_sep_spinbox->setGeometry(CENTER_LINE+510,404,53,20);
+  event_title_sep_spinbox->setMinValue( -1 );
   event_title_sep_spinbox->setMaxValue( 50000 );
+  event_title_sep_spinbox->setSpecialValueText("None");
 
+  event_title_none_button=new QPushButton(this);
+  event_title_none_button->setGeometry(CENTER_LINE+570,404,40,20);
+  event_title_none_button->setFont(font);
+  event_title_none_button->setText(tr("None"));
+  connect(event_title_none_button,SIGNAL(clicked()),this,SLOT(titleData()));
 
 // Must have code..
 
   event_have_code_label=new QLabel(tr("Must have code"),this);
   event_have_code_label->setFont(bold_font);
-  event_have_code_label->setGeometry(CENTER_LINE+420,404,100,20);
+  event_have_code_label->setGeometry(CENTER_LINE+420,427,100,20);
   
   event_have_code_box=new QComboBox(this);
-  event_have_code_box->setGeometry(CENTER_LINE+510,404,100,20);
+  event_have_code_box->setGeometry(CENTER_LINE+510,427,100,20);
   event_have_code_box->insertItem("");
   sql2="select CODE from SCHED_CODES order by CODE";
   q2=new RDSqlQuery(sql2);
@@ -496,10 +520,10 @@ EditEvent::EditEvent(QString eventname,bool new_event,
 
   event_have_code2_label=new QLabel(tr("and code"),this);
   event_have_code2_label->setFont(bold_font);
-  event_have_code2_label->setGeometry(CENTER_LINE+420,425,100,20);
+  event_have_code2_label->setGeometry(CENTER_LINE+420,448,100,20);
 
   event_have_code2_box=new QComboBox(this);
-  event_have_code2_box->setGeometry(CENTER_LINE+510,425,100,20);
+  event_have_code2_box->setGeometry(CENTER_LINE+510,448,100,20);
   event_have_code2_box->insertItem("");
   sql2="select CODE from SCHED_CODES order by CODE";
   q2=new RDSqlQuery(sql2);
@@ -764,6 +788,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   if(!event_event->schedGroup().isEmpty()) {
     event_sched_group_box->setCurrentText(event_event->schedGroup());
   }
+  event_artist_sep_spinbox->setValue(event_event->artistSep());
   event_title_sep_spinbox->setValue(event_event->titleSep());
   event_have_code_box->setCurrentText(event_event->HaveCode());
   event_have_code2_box->setCurrentText(event_event->HaveCode2());
@@ -1032,8 +1057,12 @@ void EditEvent::importClickedData(int id)
   event_nestevent_unit->setEnabled(state);
   SetPostTransition();
   event_sched_group_box->setEnabled(stateschedinv);
+  event_artist_sep_label->setEnabled(stateschedinv);
+  event_artist_sep_spinbox->setEnabled(stateschedinv);
+  event_artist_none_button->setEnabled(stateschedinv);
   event_title_sep_label->setEnabled(stateschedinv);
   event_title_sep_spinbox->setEnabled(stateschedinv);
+  event_title_none_button->setEnabled(stateschedinv);
   event_have_code_box->setEnabled(stateschedinv);
   event_have_code_label->setEnabled(stateschedinv);
   event_have_code2_box->setEnabled(stateschedinv);
@@ -1140,6 +1169,18 @@ void EditEvent::postimportDownData()
 void EditEvent::postimportLengthChangedData(int msecs)
 {
   event_postimport_length_edit->setText(RDGetTimeLength(msecs,true,false));
+}
+
+
+void EditEvent::artistData()
+{
+  event_artist_sep_spinbox->setValue(-1);
+}
+
+
+void EditEvent::titleData()
+{
+  event_title_sep_spinbox->setValue(-1);
 }
 
 
@@ -1253,7 +1294,7 @@ void EditEvent::paintEvent(QPaintEvent *e)
   QPainter *p=new QPainter(this);
   p->setPen(Qt::black);
   p->drawLine(CENTER_LINE,10,CENTER_LINE,sizeHint().height()-10);
-  p->drawLine(CENTER_LINE+408,383,CENTER_LINE+408,450);
+  p->drawLine(CENTER_LINE+408,383,CENTER_LINE+408,465);
   p->end();
 }
 
@@ -1433,6 +1474,7 @@ void EditEvent::Save()
   }
   event_event->setProperties(GetProperties());
   event_event->setSchedGroup(event_sched_group_box->currentText());  
+  event_event->setArtistSep(event_artist_sep_spinbox->value());
   event_event->setTitleSep(event_title_sep_spinbox->value());
   event_event->setHaveCode(event_have_code_box->currentText());
   if (event_have_code_box->currentText() != QString("")) {

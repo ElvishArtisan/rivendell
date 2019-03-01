@@ -18508,12 +18508,16 @@
 2019-02-19 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdadmin(1) that threw a SQL error when deleting
 	a host entry.
-2019-02-25 Patrick Linstruth <patrick@deltecent.com>
+2019-02-21 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed erase marker error in the 'Edit Audio' dialog.
+2019-03-01 Patrick Linstruth <patrick@deltecent.com>
+	* Moved artist separation in rdlogmanager(1) from clocks to events.
+	* Added ability to disable artist and title separation for an event.
+	* Incremented the database version to 307.
+2019-03-01 Patrick Linstruth <patrick@deltecent.com>
+	* Updated schema map for version 3.0 to database version 307.
+2019-03-01 Patrick Linstruth <patrick@deltecent.com>
+	* Changed RDEditAudio::CuePoints enum from private to public.
 	* Added "--retain-markers" option to rdimport(1).
 	* Added "Retain markers" checkbox to edit dropboxes in rdadmin(1).
-	* Incremented the database version to 307.
-2019-02-27 Patrick Linstruth <patrick@deltecent.com>
-	* Changed RDEditAudio::CuePoints enum from private to public.
-	* Fixed bug where "--retain-markers" was not retaining start and end
-	points.
-	* Updated schema map for version 3.0 to database version 307. 
+	* Incremented the database version to 308.
