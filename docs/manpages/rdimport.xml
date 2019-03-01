@@ -539,9 +539,9 @@
       </term>
       <listitem>
 	<para>
-	  If <option>--delete-cuts</option> is also specified the segue markers from the
-	  deleted cut will be retained and used for the imported cut.
-          See <option>--delete-cuts</option>, above.
+	  Segue markers will be retained from the most recently added cut
+	  and applied to the newly imported cut.
+	  The <option>--to-cart</option> option must also be specified.
 	  This option is mutually exclusive with the <option>--segue-level</option> option.
 	</para>
       </listitem>
