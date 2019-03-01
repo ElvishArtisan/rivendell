@@ -18512,3 +18512,8 @@
 	* Added "--retain-markers" option to rdimport(1).
 	* Added "Retain markers" checkbox to edit dropboxes in rdadmin(1).
 	* Incremented the database version to 307.
+2019-02-27 Patrick Linstruth <patrick@deltecent.com>
+	* Changed RDEditAudio::CuePoints enum from private to public.
+	* Fixed bug where "--retain-markers" was not retaining start and end
+	points.
+	* Updated schema map for version 3.0 to database version 307. 
