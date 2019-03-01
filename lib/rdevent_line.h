@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Log Manager Event
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -81,7 +81,7 @@ class RDEventLine
   bool load();
   bool save(RDConfig *config);
   bool generateLog(QString logname,const QString &svcname,
-		   QString *errors, unsigned artistsep,QString clockname);
+		   QString *errors,QString clockname);
   bool linkLog(RDLogEvent *e,RDLog *log,const QString &svcname,
 	       RDLogLine *link_logline,const QString &track_str,
 	       const QString &label_cart,const QString &track_cart,
@@ -112,7 +112,8 @@ class RDEventLine
   QString event_sched_group;
   QString event_have_code;
   QString event_have_code2;
-  unsigned event_title_sep;
+  int event_artist_sep;
+  int event_title_sep;
   RDStation *event_station;
 };
 

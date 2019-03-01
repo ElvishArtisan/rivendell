@@ -40,6 +40,16 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
   // NEW SCHEMA REVERSIONS GO HERE...
 
+  if((cur_schema==307)&&(set_schema>cur_schema)) {
+    DropColumn("EVENTS","ARTIST_SEP");
+    sql="alter table `EVENTS` modify column `TITLE_SEP` int(10) unsigned";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
   //
   // Revert 306
   //
