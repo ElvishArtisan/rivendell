@@ -539,8 +539,8 @@
       </term>
       <listitem>
 	<para>
-	  Segue markers will be retained from the most recently added cut
-	  and applied to the newly imported cut.
+	  Markers will be retained from the most recently added cut and applied
+          to the newly imported cut.
 	  The <option>--to-cart</option> option must also be specified.
 	  This option is mutually exclusive with the <option>--segue-level</option> option.
 	</para>
