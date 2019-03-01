@@ -2,7 +2,7 @@
 //
 // A Batch Importer for Rivendell.
 //
-//   (C) Copyright 2002-2014,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2014,2016-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -451,6 +451,11 @@ MainObject::MainObject(QObject *parent)
     Log(RDConfig::LogErr,QString().sprintf("rdimport: --log-filename and --log-syslog are mutually exclusive\n"));
     exit(255);
   }
+  if(import_retain_markers&&!import_cart_number) {
+    Log(RDConfig::LogErr,QString().sprintf("rdimport: --retain-markers requires --to-cart\n"));
+    exit(255);
+  }
+
 
   //
   // Set Logging
@@ -604,7 +609,6 @@ MainObject::MainObject(QObject *parent)
     Log(RDConfig::LogErr,QString().sprintf("rdimport: --retain-markers and --segue-length are mutually exclusive\n"));
     exit(255);
   }
-
   //
   // Print Status Messages
   //
@@ -1134,13 +1138,16 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
 
   RDCart *cart=new RDCart(*cartnum);
 
-  if(import_delete_cuts&&!cart_created) {
-    if(import_retain_markers) {
+  if(import_retain_markers) {
+    if(import_delete_cuts&&cart->cutQuantity()<1) {
+      Log(RDConfig::LogInfo,QString().sprintf("Cart %06d does not contain any cuts. Cannot retain markers.\n",*cartnum));
+    }
+    else {
       int cutnum;
-      cart->selectCut(&cutnum);
+      cart->selectNewestCut(&cutnum);
       retain_cut=new RDCut(*cartnum,cutnum);
       if(retain_cut->exists()) {
-        Log(RDConfig::LogInfo,QString().sprintf("Retaining markers for cart %06d cut %03d\n",*cartnum,cutnum));
+        Log(RDConfig::LogInfo,QString().sprintf("Retaining markers from cart %06d cut %03d\n",*cartnum,cutnum));
         retain_marker[RDEditAudio::Start]=retain_cut->startPoint();
         retain_marker[RDEditAudio::End]=retain_cut->endPoint();
         retain_marker[RDEditAudio::SegueStart]=retain_cut->segueStartPoint();
@@ -1156,9 +1163,12 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
       else {
         Log(RDConfig::LogWarning,QString().sprintf("rdimport: Cannot retain markers because \
 		cut %s does not exist\n",(const char *)retain_cut->cutName()));
+       
+        delete retain_cut;
       }
-      delete retain_cut;
     }
+  }
+  if(import_delete_cuts&&!cart_created) {
     DeleteCuts(*cartnum);
   }
 
@@ -1214,7 +1224,7 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
 				  &audio_conv_err)) {
   case RDAudioImport::ErrorOk:
     if(import_verbose) {
-      Log(RDConfig::LogInfo,QString().sprintf("Done.\n"));
+      Log(RDConfig::LogInfo,QString().sprintf("Import Done.\n"));
     }
     break;
 
@@ -1441,7 +1451,7 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   if(import_delete_source) {
     unlink(filename.utf8());
     if(import_verbose) {
-      Log(RDConfig::LogInfo,QString().sprintf(" Deleted file \"%s\"\n",(const char *)RDGetBasePart(filename).utf8()));
+      Log(RDConfig::LogInfo,QString().sprintf(" Deleted source file \"%s\"\n",(const char *)RDGetBasePart(filename).utf8()));
     }
   }
   if(!import_run) {

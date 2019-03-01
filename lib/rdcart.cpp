@@ -76,19 +76,6 @@ bool RDCart::exists() const
 }
 
 
-bool RDCart::selectCut(int *cutnum) const
-{
-  QString cutname;
-  bool ret;
-
-  ret=selectCut(&cutname,QTime::currentTime());
-
-  *cutnum=cutname.right(3).toInt();
-
-  return ret;
-}
-
-
 bool RDCart::selectCut(QString *cutname) const
 {
   return selectCut(cutname,QTime::currentTime());
@@ -180,6 +167,25 @@ bool RDCart::selectCut(QString *cutname,const QTime &time) const
   }
   *cutname=nextcut;
   return true;
+}
+
+
+bool RDCart::selectNewestCut(int *cutnum) const
+{
+  QString cutname;
+  bool ret=false;
+
+  QString sql=QString().sprintf("select CUT_NAME from CUTS\
+                         where CART_NUMBER=%u\
+                         order by ORIGIN_DATETIME desc limit 1",
+                         cart_number);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(q->next()) {
+    *cutnum=q->value(0).toString().right(3).toInt();
+    ret=true;
+  }
+
+  return ret;
 }
 
 

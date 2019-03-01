@@ -48,8 +48,8 @@ class RDCart
   ~RDCart();
   bool exists() const;
   bool selectCut(QString *cut) const;
-  bool selectCut(int *cutnum) const;
   bool selectCut(QString *cut,const QTime &time) const;
+  bool selectNewestCut(int *cutnum) const;
   RDCart::Type type() const;
   void setType(RDCart::Type type);
   unsigned number() const;

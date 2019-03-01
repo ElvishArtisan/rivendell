@@ -135,8 +135,6 @@ EditDropbox::EditDropbox(int id,bool duplicate,QWidget *parent)
   box_delete_cuts_label->setGeometry(280,y-2,sizeHint().width()-150,20);
   box_delete_cuts_label->setFont(font);
   box_delete_cuts_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-  connect(box_delete_cuts_box,SIGNAL(toggled(bool)),
-          this,SLOT(deleteToggledData(bool)));
 
   //
   // Retain Markers
@@ -496,7 +494,6 @@ EditDropbox::EditDropbox(int id,bool duplicate,QWidget *parent)
   normalizationToggledData(box_normalization_box->isChecked());
   autotrimToggledData(box_autotrim_box->isChecked());
   segueToggledData(box_segue_box->isChecked());
-  deleteToggledData(box_retain_markers_box->isChecked());
   retainToggledData(box_retain_markers_box->isChecked());
   createDatesToggledData(box_create_dates_box->isChecked());
   segueToggledData(box_segue_box->isChecked());
@@ -607,24 +604,10 @@ void EditDropbox::segueToggledData(bool state)
   if (!state) {
     box_segue_level_spin->setValue(1);
     box_segue_length_spin->setValue(0);
-    box_retain_markers_box->setEnabled(box_delete_cuts_box->isChecked());
-    box_retain_markers_label->setEnabled(box_delete_cuts_box->isChecked());
+    box_retain_markers_box->setEnabled(true);
+    box_retain_markers_label->setEnabled(true);
   }
   else {
-    box_retain_markers_box->setEnabled(false);
-    box_retain_markers_label->setEnabled(false);
-  }
-}
-
-
-void EditDropbox::deleteToggledData(bool state)
-{
-  if (state) {
-    box_retain_markers_box->setEnabled(!box_segue_box->isChecked());
-    box_retain_markers_label->setEnabled(!box_segue_box->isChecked());
-  }
-  else {
-    box_retain_markers_box->setChecked(false);
     box_retain_markers_box->setEnabled(false);
     box_retain_markers_label->setEnabled(false);
   }
