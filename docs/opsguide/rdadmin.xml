@@ -1656,10 +1656,12 @@
 		rather than creating a new cart. If the
 		<computeroutput>Delete cuts before importing</computeroutput>
 		box is also ticked, then any existing cuts in the specified
-		cart will be deleted before adding the new cut. If the
-                <computeroutput>Retain cut markers</computeroutput> box is
-                also ticked, the marker data from the existing cut will be
-                retained before it is deleted and will applied to the new cut.
+		cart will be deleted before adding the new cut.
+	      </para>
+	      <para>
+                If the <computeroutput>Retain cut markers</computeroutput> box is
+                ticked, marker data from the most recently added cut will be
+                retained and applied to the newly created cut.
 	      </para>
 	    </listitem>
 	  </varlistentry>
