@@ -587,6 +587,10 @@ Wollen Sie es überschreiben?</translation>
         <source>Count</source>
         <translation type="unfinished">Zähler</translation>
     </message>
+    <message>
+        <source>Artist Separation</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditEventLine</name>
@@ -785,6 +789,14 @@ Wollen Sie sie speichern?</translation>
     </message>
     <message>
         <source>Import Rules from Clock</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation type="obsolete">Keine</translation>
+    </message>
+    <message>
+        <source>(This setting is deprecated and has been moved to events)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -40,6 +40,7 @@ RDEvent::RDEvent(const QString &name,bool create)
       delete q;
       sql=QString("insert into EVENTS set ")+
 	"NAME=\""+RDEscapeString(event_name)+"\","+
+	"ARTIST_SEP=15,"+
 	"TITLE_SEP=100";
       q=new RDSqlQuery(sql);
       delete q;
@@ -398,13 +399,26 @@ void RDEvent::setHaveCode2(QString str)
   SetRow("HAVE_CODE2",str,true);
 }
 
-unsigned RDEvent::titleSep()
+
+int RDEvent::artistSep()
+{
+  return GetIntValue("ARTIST_SEP");
+}
+
+
+void RDEvent::setArtistSep(int artistsep)
+{
+  SetRow("ARTIST_SEP",artistsep);
+}
+
+
+int RDEvent::titleSep()
 {
   return GetIntValue("TITLE_SEP");
 }
 
 
-void RDEvent::setTitleSep(unsigned titlesep)
+void RDEvent::setTitleSep(int titlesep)
 {
   SetRow("TITLE_SEP",titlesep);
 }

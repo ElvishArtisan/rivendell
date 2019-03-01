@@ -589,6 +589,10 @@ Você quer sobreescrêve-lo?</translation>
         <source>Count</source>
         <translation type="unfinished">Contador</translation>
     </message>
+    <message>
+        <source>Artist Separation</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditEventLine</name>
@@ -787,6 +791,14 @@ Você quer salvar?</translation>
     </message>
     <message>
         <source>Import Rules from Clock</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation type="obsolete">Nenhum</translation>
+    </message>
+    <message>
+        <source>(This setting is deprecated and has been moved to events)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

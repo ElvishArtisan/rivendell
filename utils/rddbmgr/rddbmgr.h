@@ -93,6 +93,7 @@ class MainObject : public QObject
   bool UpdateLogTable186(const QString &table,QString *err_msg) const;
   bool ConvertTimeField186(const QString &table,const QString &field,
 			   QString *err_msg) const;
+  bool ConvertArtistSep307(QString *err_msg) const;
 
   //
   // revertschema.cpp

@@ -69,12 +69,18 @@ EditSchedRules::EditSchedRules(QString clock,unsigned *artistsep,SchedRulesList 
   artistSepLabel->setGeometry( QRect( 10, 10, 130, 20 ) );
   artistSepLabel->setFont(font);
   artistSepLabel->setText(tr("Artist Separation:"));
+  artistSepLabel->setEnabled(false);
 
   artistSepSpinBox = new QSpinBox(this);
   artistSepSpinBox->setGeometry( QRect( 160, 10, 70, 20 ) );
   artistSepSpinBox->setMaxValue( 10000 );
   artistSepSpinBox->setValue( *edit_artistsep );
+  artistSepSpinBox->setEnabled(false);
 
+  QLabel *artistSepDep=
+    new QLabel(this,tr("(This setting is deprecated and has been moved to events)"),this);
+  artistSepDep->setFont(font);
+  artistSepDep->setGeometry(240,10,540,20);
 
   //
   //  Edit Button

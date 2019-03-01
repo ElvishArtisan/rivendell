@@ -589,6 +589,10 @@ Do you want to overwrite it?</source>
         <source>Count</source>
         <translation type="unfinished">Cuenta</translation>
     </message>
+    <message>
+        <source>Artist Separation</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditEventLine</name>
@@ -788,6 +792,14 @@ Do you want to save?</source>
     <message>
         <source>Import Rules from Clock</source>
         <translation>Importar reglas desde Torta</translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation type="obsolete">Ninguno</translation>
+    </message>
+    <message>
+        <source>(This setting is deprecated and has been moved to events)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
