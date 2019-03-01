@@ -18520,4 +18520,5 @@
 	* Changed RDEditAudio::CuePoints enum from private to public.
 	* Added "--retain-markers" option to rdimport(1).
 	* Added "Retain markers" checkbox to edit dropboxes in rdadmin(1).
+	* Fixed bug in database version 307 reversion.
 	* Incremented the database version to 308.
