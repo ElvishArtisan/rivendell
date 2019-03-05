@@ -18522,3 +18522,5 @@
 	* Added "Retain markers" checkbox to edit dropboxes in rdadmin(1).
 	* Fixed bug in database version 307 reversion.
 	* Incremented the database version to 308.
+2019-03-04 Patrick Linstruth <patrick@deltecent.com>
+	* Added out-of-bounds detection to rdimport(1) "--retain-markers".

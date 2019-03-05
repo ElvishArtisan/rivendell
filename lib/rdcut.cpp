@@ -1701,6 +1701,65 @@ void RDCut::GetDefaultDateTimes(QString *start_dt,QString *end_dt,
 }
 
 
+bool RDCut::validateMarkers() const
+{
+  bool ret=false;
+  int cut_length=length();
+
+  if(endPoint()>cut_length) {
+    setEndPoint(cut_length);
+    ret=true;
+  }
+
+  if(startPoint()>endPoint()) {
+    setStartPoint(0);
+    ret=true;
+  }
+
+  if(talkStartPoint()>cut_length) {
+    setTalkStartPoint(-1);
+    setTalkEndPoint(-1);
+    ret=true;
+  }
+  else if(talkEndPoint()>cut_length) {
+    setTalkEndPoint(cut_length);
+    ret=true;
+  }
+
+  if(segueStartPoint()>cut_length) {
+    setSegueStartPoint(-1);
+    setSegueEndPoint(-1);
+    ret=true;
+  }
+  else if(segueEndPoint()>cut_length) {
+    setSegueEndPoint(cut_length);
+    ret=true;
+  }
+
+  if(hookStartPoint()>cut_length) {
+    setHookStartPoint(-1);
+    setHookEndPoint(-1);
+    ret=true;
+  }
+  else if(hookEndPoint()>cut_length) {
+    setHookEndPoint(cut_length);
+    ret=true;
+  }
+
+  if(fadeupPoint()>cut_length) {
+    setFadeupPoint(-1);
+    ret=true;
+  }
+
+  if(fadedownPoint()>cut_length) {
+    setFadedownPoint(-1);
+    ret=true;
+  }
+
+  return ret;
+}
+
+
 bool RDCut::FileCopy(const QString &srcfile,const QString &destfile) const
 {
   int src_fd;

@@ -127,6 +127,7 @@ class RDCut
   void setTalkStartPoint(int point) const;
   int talkEndPoint(bool calc=false) const;
   void setTalkEndPoint(int point) const;
+  bool validateMarkers() const;
   int effectiveStart() const;
   int effectiveEnd() const;
   void logPlayout() const;
