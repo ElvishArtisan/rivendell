@@ -2,7 +2,7 @@
 //
 //   A Container Class for Audio Meta Data.
 //
-//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -137,10 +137,10 @@ class RDWaveData
   void setWeight(int weight);
   bool evergreen() const;
   void setEvergreen(bool state);
-  int introStartPos() const;
-  void setIntroStartPos(int msec);
-  int introEndPos() const;
-  void setIntroEndPos(int msec);
+  int talkStartPos() const;
+  void setTalkStartPos(int msec);
+  int talkEndPos() const;
+  void setTalkEndPos(int msec);
   int segueStartPos() const;
   void setSegueStartPos(int msec);
   int segueEndPos() const;
@@ -250,8 +250,8 @@ class RDWaveData
   bool data_evergreen;
   bool data_day_of_week[7];
   int data_weight;
-  int data_intro_start_pos;
-  int data_intro_end_pos;
+  int data_talk_start_pos;
+  int data_talk_end_pos;
   int data_segue_start_pos;
   int data_segue_end_pos;
   int data_segue_gain;
@@ -261,11 +261,6 @@ class RDWaveData
   int data_hook_end_pos;
   int data_fade_up_pos;
   int data_fade_down_pos;
-/*
-  int data_intro_length;
-  int data_segue_length;
-  int data_full_length;
-*/
   int data_beats_per_minute;
   QString data_tmci_song_id;
   QDate data_origination_date;

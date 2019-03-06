@@ -18520,3 +18520,12 @@
 	* Added an 'RDWaveData::validateMarkers()' method.
 	* Added an 'RDWaveData::validateDateTime()' method.
 	* Removed the 'RDWaveData::checkDateTimes()' method.
+2019-03-06 Fred Gleason <fredg@paravelsystems.com>
+	* Renamed the 'RDWaveData::introStartPos()' method to
+	'RDWaveData::talkStartPos()'.
+	* Renamed the 'RDWaveData::setIntroStartPos()' method to
+	'RDWaveData::setTalkStartPos()'.
+	* Renamed the 'RDWaveData::introEndPos()' method to
+	'RDWaveData::talkEndPos()'.
+	* Renamed the 'RDWaveData::setIntroEndPos()' method to
+	'RDWaveData::setTalkEndPos()'.

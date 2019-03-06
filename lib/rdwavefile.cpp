@@ -2777,16 +2777,16 @@ bool RDWaveFile::GetCart(int fd)
 					((double)getSamplesPerSec())));
       }
       if(cart_timer_label[i]=="INTs") {
-	wave_data->setIntroStartPos((int)(1000.0*((double)cart_timer_sample[i])/
+	wave_data->setTalkStartPos((int)(1000.0*((double)cart_timer_sample[i])/
 					  ((double)getSamplesPerSec())));
       }
       if(cart_timer_label[i]=="INTe") {
-	wave_data->setIntroEndPos((int)(1000.0*((double)cart_timer_sample[i])/
+	wave_data->setTalkEndPos((int)(1000.0*((double)cart_timer_sample[i])/
 					((double)getSamplesPerSec())));
       }
       if((cart_timer_label[i]=="INT ")||(cart_timer_label[i]=="INT1")) {
-	wave_data->setIntroStartPos(0);
-	wave_data->setIntroEndPos((int)(1000.0*((double)cart_timer_sample[i])/
+	wave_data->setTalkStartPos(0);
+	wave_data->setTalkEndPos((int)(1000.0*((double)cart_timer_sample[i])/
 					((double)getSamplesPerSec())));
       }
       if(cart_timer_label[i]=="AUDs") {
@@ -3002,8 +3002,8 @@ bool RDWaveFile::GetScot(int fd)
     wave_data->setUserDefined(scot_etc.stripWhiteSpace());
     wave_data->setReleaseYear(scot_year);
     wave_data->setCutId(QString().sprintf("%u",cartnum));
-    wave_data->setIntroStartPos(0);
-    wave_data->setIntroEndPos(scot_intro_length);
+    wave_data->setTalkStartPos(0);
+    wave_data->setTalkEndPos(scot_intro_length);
     if(segue_start>0) {
       wave_data->setSegueStartPos(getExtTimeLength()-10*segue_start);
       wave_data->setSegueEndPos(getExtTimeLength());
@@ -3122,8 +3122,8 @@ bool RDWaveFile::GetAv10(int fd)
 	  if(label=="IN") {  // AV Intro
 	    if(ok) {
 	      if(wave_data!=NULL) {
-		wave_data->setIntroStartPos(wave_data->startPos());
-		wave_data->setIntroEndPos(1000*arg.toInt());
+		wave_data->setTalkStartPos(wave_data->startPos());
+		wave_data->setTalkEndPos(1000*arg.toInt());
 		wave_data->setMetadataFound(true);
 	      }
 	    }
@@ -3312,8 +3312,8 @@ bool RDWaveFile::ReadListElement(unsigned char *buffer,unsigned *offset,
     wave_data->setMetadataFound(true);
   }
   if(!strcmp(tag,"tint")) {
-    wave_data->setIntroStartPos(0);
-    wave_data->setIntroEndPos(RDSetTimeLength(((char *)buffer)+(*offset)));
+    wave_data->setTalkStartPos(0);
+    wave_data->setTalkEndPos(RDSetTimeLength(((char *)buffer)+(*offset)));
     wave_data->setMetadataFound(true);
   }
   if(!strcmp(tag,"ttim")) {
@@ -3413,8 +3413,8 @@ void RDWaveFile::ReadTmcTag(const QString tag,const QString value)
     wave_data->setMetadataFound(true);
   }
   if(tag=="INTRO") {
-    wave_data->setIntroStartPos(0);
-    wave_data->setIntroEndPos(RDSetTimeLength(value.stripWhiteSpace()));
+    wave_data->setTalkStartPos(0);
+    wave_data->setTalkEndPos(RDSetTimeLength(value.stripWhiteSpace()));
     wave_data->setMetadataFound(true);
   }
   if(tag=="AUX") {
@@ -4428,15 +4428,15 @@ bool RDWaveFile::MakeCart(unsigned ptr_offset)
 		 FrameOffset(wave_data->segueEndPos()-ptr_offset_msecs));
       timer++;
     }
-    if((wave_data->introStartPos()>=0)&&
-       (wave_data->introEndPos()>wave_data->introStartPos())) {
+    if((wave_data->talkStartPos()>=0)&&
+       (wave_data->talkEndPos()>wave_data->talkStartPos())) {
       sprintf((char *)cart_chunk_data+684+timer*MAX_TIMERS,"INTs");
       WriteDword(cart_chunk_data,688+timer*MAX_TIMERS,
-		 FrameOffset(wave_data->introStartPos()-ptr_offset_msecs));
+		 FrameOffset(wave_data->talkStartPos()-ptr_offset_msecs));
       timer++;
       sprintf((char *)cart_chunk_data+684+timer*MAX_TIMERS,"INTe");
       WriteDword(cart_chunk_data,688+timer*MAX_TIMERS,
-		 FrameOffset(wave_data->introEndPos()-ptr_offset_msecs));
+		 FrameOffset(wave_data->talkEndPos()-ptr_offset_msecs));
       timer++;
     }
     if((wave_data->startPos()>=0)&&

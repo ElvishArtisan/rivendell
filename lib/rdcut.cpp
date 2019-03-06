@@ -996,8 +996,8 @@ void RDCut::getMetadata(RDWaveData *data) const
     data->setDaypartEndTime(q->value(9).toTime());
     data->setSegueStartPos(q->value(10).toInt());
     data->setSegueEndPos(q->value(11).toInt());
-    data->setIntroStartPos(q->value(12).toInt());
-    data->setIntroEndPos(q->value(13).toInt());
+    data->setTalkStartPos(q->value(12).toInt());
+    data->setTalkEndPos(q->value(13).toInt());
     data->setStartPos(q->value(14).toInt());
     data->setEndPos(q->value(15).toInt());
     data->setHookStartPos(q->value(16).toInt());
@@ -1045,25 +1045,25 @@ void RDCut::setMetadata(RDWaveData *data) const
   if(data->endPos()>=0) {
     sql+=QString().sprintf("END_POINT=%d,",data->endPos());
   }
-  if((data->introStartPos()==data->startPos())&&
-     (data->introEndPos()==data->endPos())) {
+  if((data->talkStartPos()==data->startPos())&&
+     (data->talkEndPos()==data->endPos())) {
     sql+="TALK_START_POINT=-1,TALK_END_POINT=-1,";
   }
   else {
-    if(data->introStartPos()>=0) {
-      if(data->introStartPos()<data->startPos()) {
+    if(data->talkStartPos()>=0) {
+      if(data->talkStartPos()<data->startPos()) {
 	sql+=QString().sprintf("TALK_START_POINT=%d,",data->startPos());
       }
       else {
-	sql+=QString().sprintf("TALK_START_POINT=%d,",data->introStartPos());
+	sql+=QString().sprintf("TALK_START_POINT=%d,",data->talkStartPos());
       }
     }
-    if(data->introEndPos()>=0) {
-      if((data->introEndPos()>data->endPos())&&(data->endPos()!=-1)) {
+    if(data->talkEndPos()>=0) {
+      if((data->talkEndPos()>data->endPos())&&(data->endPos()!=-1)) {
 	sql+=QString().sprintf("TALK_END_POINT=%d,",data->endPos());
       }
       else {
-	sql+=QString().sprintf("TALK_END_POINT=%d,",data->introEndPos());
+	sql+=QString().sprintf("TALK_END_POINT=%d,",data->talkEndPos());
       }
     }
   }
