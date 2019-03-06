@@ -297,8 +297,8 @@ void MetaRecord::getMetadata(RDWaveData *data,int track_len)
   data->setPublisher(meta_publisher);
   data->setIsrc(meta_isrc);
   data->setLicensingOrganization(meta_license);
-  data->setIntroStartPos(0);
-  data->setIntroEndPos(meta_intro_length);
+  data->setTalkStartPos(0);
+  data->setTalkEndPos(meta_intro_length);
   if(meta_segue_start>=0) {
     data->setSegueStartPos(meta_segue_start);
     data->setSegueEndPos(track_len);

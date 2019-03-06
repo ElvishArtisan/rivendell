@@ -2,7 +2,7 @@
 //
 //   A Container Class for Audio Meta Data.
 //
-//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -641,27 +641,27 @@ void RDWaveData::setEvergreen(bool state)
 }
 
 
-int RDWaveData::introStartPos() const
+int RDWaveData::talkStartPos() const
 {
-  return data_intro_start_pos;
+  return data_talk_start_pos;
 }
 
 
-void RDWaveData::setIntroStartPos(int msec)
+void RDWaveData::setTalkStartPos(int msec)
 {
-  data_intro_start_pos=msec;
+  data_talk_start_pos=msec;
 }
 
 
-int RDWaveData::introEndPos() const
+int RDWaveData::talkEndPos() const
 {
-  return data_intro_end_pos;
+  return data_talk_end_pos;
 }
 
 
-void RDWaveData::setIntroEndPos(int msec)
+void RDWaveData::setTalkEndPos(int msec)
 {
-  data_intro_end_pos=msec;
+  data_talk_end_pos=msec;
 }
 
 
@@ -945,21 +945,141 @@ void RDWaveData::setPlayGain(int lvl)
 }
 
 
-bool RDWaveData::checkDateTimes()
+bool RDWaveData::validateMarkers(int msec)
+{
+  int len=msec;
+  bool modified=false;
+
+  if(len<0) {
+    len=length();
+  }
+
+  //
+  // Start/End Markers
+  //
+  if(startPos()<0) {
+    setStartPos(0);
+    modified=true;
+  }
+  if((endPos()<0)||(endPos()>len)) {
+    setEndPos(len);
+    modified=true;
+  }
+  if(startPos()>endPos()) {
+    setStartPos(0);
+    setEndPos(len);
+    modified=true;
+  }
+
+  //
+  // Talk Markers
+  //
+  if((talkStartPos()==startPos())&&(talkEndPos()==endPos())) {
+    setTalkStartPos(-1);
+    setTalkEndPos(-1);
+    modified=true;
+  }
+  if((talkStartPos()<0)||(talkEndPos()<0)||(talkStartPos()>talkEndPos())) {
+    setTalkStartPos(-1);
+    setTalkEndPos(-1);
+    modified=true;
+  }
+  else {
+    if(talkEndPos()>endPos()) {
+      setTalkEndPos(endPos());
+      modified=true;
+    }
+    if(talkStartPos()>endPos()) {
+      setTalkStartPos(-1);
+      setTalkEndPos(-1);
+      modified=true;
+    }
+  }
+
+  //
+  // Segue Markers
+  //
+  if((segueStartPos()==startPos())&&(segueEndPos()==endPos())) {
+    setSegueStartPos(-1);
+    setSegueEndPos(-1);
+    modified=true;
+  }
+  if((segueStartPos()<0)||(segueEndPos()<0)||(segueStartPos()>segueEndPos())) {
+    setSegueStartPos(-1);
+    setSegueEndPos(-1);
+    modified=true;
+  }
+  else {
+    if(segueEndPos()>endPos()) {
+      setSegueEndPos(endPos());
+      modified=true;
+    }
+    if(segueStartPos()>endPos()) {
+      setSegueStartPos(-1);
+      setSegueEndPos(-1);
+      modified=true;
+    }
+  }
+
+  //
+  // Hook Markers
+  //
+  if((hookStartPos()<0)||(hookEndPos()<0)||(hookStartPos()>hookEndPos())) {
+    setHookStartPos(-1);
+    setHookEndPos(-1);
+    modified=true;
+  }
+  else {
+    if(hookEndPos()>endPos()) {
+      setHookEndPos(endPos());
+      modified=true;
+    }
+    if(hookStartPos()>endPos()) {
+      setHookStartPos(-1);
+      setHookEndPos(-1);
+      modified=true;
+    }
+  }
+
+  //
+  // FadeUp Marker
+  //
+  if(fadeUpPos()>=0) {
+    if(fadeUpPos()>endPos()) {
+      setFadeUpPos(endPos());
+      modified=true;
+    }
+  }
+
+  //
+  // FadeDown Marker
+  //
+  if(fadeDownPos()>=0) {
+    if(fadeDownPos()>endPos()) {
+      setFadeDownPos(endPos());
+      modified=true;
+    }
+  }
+
+  return modified;
+}
+
+
+bool RDWaveData::validateDateTimes()
 {
   if(data_datetime_set) {
     if(startDateTime()<endDateTime()) {
-      return true;
+      return false;
     }
     else {
       setStartDate(QDate());
       setEndDate(QDate());
       setStartTime(QTime());
       setEndTime(QTime());
-      return false;
+      return true;
     }
   }
-  return true;
+  return false;
 }
 
 
@@ -1092,8 +1212,8 @@ QString RDWaveData::dump() const
   ret+=QString().sprintf("segueStartPos: %d\n",segueStartPos());
   ret+=QString().sprintf("segueEndPos: %d\n",segueEndPos());
   ret+=QString().sprintf("segueGain: %d\n",segueGain());
-  ret+=QString().sprintf("introStartPos: %d\n",introStartPos());
-  ret+=QString().sprintf("introEndPos: %d\n",introEndPos());
+  ret+=QString().sprintf("talkStartPos: %d\n",talkStartPos());
+  ret+=QString().sprintf("talkEndPos: %d\n",talkEndPos());
   ret+=QString().sprintf("hookStartPos: %d\n",hookStartPos());
   ret+=QString().sprintf("hookEndPos: %d\n",hookEndPos());
   ret+=QString().sprintf("fadeUpPos: %d\n",fadeUpPos());
@@ -1160,8 +1280,8 @@ void RDWaveData::clear()
   }
   data_weight=1;
   data_evergreen=false;
-  data_intro_start_pos=-1;
-  data_intro_end_pos=-1;
+  data_talk_start_pos=-1;
+  data_talk_end_pos=-1;
   data_segue_start_pos=-1;
   data_segue_end_pos=-1;
   data_segue_gain=-3000;

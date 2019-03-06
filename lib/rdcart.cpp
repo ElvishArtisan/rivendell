@@ -2019,12 +2019,12 @@ unsigned RDCart::readXml(std::vector<RDWaveData> *data,const QString &xml)
 	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<talkStartPoint>")) {
-	data->back().setIntroStartPos(GetXmlValue("talkStartPoint",f0[i]).
+	data->back().setTalkStartPos(GetXmlValue("talkStartPoint",f0[i]).
 				      toInt());
 	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<talkEndPoint>")) {
-	data->back().setIntroEndPos(GetXmlValue("talkEndPoint",f0[i]).toInt());
+	data->back().setTalkEndPos(GetXmlValue("talkEndPoint",f0[i]).toInt());
 	cartdata.setMetadataFound(true);
       }
       if(f0[i].contains("<hookStartPoint>")) {

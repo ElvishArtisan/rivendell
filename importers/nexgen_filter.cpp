@@ -518,8 +518,8 @@ void MainObject::ProcessXmlLine(const QString &line,RDWaveData *data,
   }
   if(tag=="intro_3") {
     if(value.toInt()>0) {
-      data->setIntroStartPos(0);
-      data->setIntroEndPos(value.toInt());
+      data->setTalkStartPos(0);
+      data->setTalkEndPos(value.toInt());
     }
   }
   if(tag=="hookstart") {

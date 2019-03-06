@@ -18516,11 +18516,23 @@
 	* Incremented the database version to 307.
 2019-03-01 Patrick Linstruth <patrick@deltecent.com>
 	* Updated schema map for version 3.0 to database version 307.
-2019-03-01 Patrick Linstruth <patrick@deltecent.com>
+2019-03-06 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDWaveData::validateMarkers()' method.
+	* Added an 'RDWaveData::validateDateTime()' method.
+	* Removed the 'RDWaveData::checkDateTimes()' method.
+2019-03-06 Fred Gleason <fredg@paravelsystems.com>
+	* Renamed the 'RDWaveData::introStartPos()' method to
+	'RDWaveData::talkStartPos()'.
+	* Renamed the 'RDWaveData::setIntroStartPos()' method to
+	'RDWaveData::setTalkStartPos()'.
+	* Renamed the 'RDWaveData::introEndPos()' method to
+	'RDWaveData::talkEndPos()'.
+	* Renamed the 'RDWaveData::setIntroEndPos()' method to
+	'RDWaveData::setTalkEndPos()'.
+2019-03-06 Patrick Linstruth <patrick@deltecent.com>
 	* Changed RDEditAudio::CuePoints enum from private to public.
 	* Added "--retain-markers" option to rdimport(1).
 	* Added "Retain markers" checkbox to edit dropboxes in rdadmin(1).
 	* Fixed bug in database version 307 reversion.
 	* Incremented the database version to 308.
-2019-03-04 Patrick Linstruth <patrick@deltecent.com>
 	* Added out-of-bounds detection to rdimport(1) "--retain-markers".
