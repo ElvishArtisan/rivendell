@@ -1000,15 +1000,11 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   RDAudioImport::ErrorCode conv_err;
   RDAudioConvert::ErrorCode audio_conv_err;
   RDGroup *effective_group=new RDGroup(import_group->name());
+  RDCut *retain_cut=NULL;
+  RDWaveData *retaindata=new RDWaveData();
   RDWaveData *wavedata=new RDWaveData();
   RDWaveFile *wavefile=new RDWaveFile(filename);
-  RDCut *retain_cut=NULL;
-  int retain_marker[RDEditAudio::LastMarker];
   QString err_msg;
-
-  for(int i=0;i<RDEditAudio::LastMarker;i++) {
-    retain_marker[i]=-1;
-  }
 
   if(wavefile->openWave(wavedata)) {
     effective_filename=filename;
@@ -1148,16 +1144,16 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
       retain_cut=new RDCut(*cartnum,cutnum);
       if(retain_cut->exists()) {
         Log(RDConfig::LogInfo,QString().sprintf("Retaining markers from cart %06d cut %03d\n",*cartnum,cutnum));
-        retain_marker[RDEditAudio::Start]=retain_cut->startPoint();
-        retain_marker[RDEditAudio::End]=retain_cut->endPoint();
-        retain_marker[RDEditAudio::SegueStart]=retain_cut->segueStartPoint();
-        retain_marker[RDEditAudio::SegueEnd]=retain_cut->segueEndPoint();
-        retain_marker[RDEditAudio::TalkStart]=retain_cut->talkStartPoint();
-        retain_marker[RDEditAudio::TalkEnd]=retain_cut->talkEndPoint();
-        retain_marker[RDEditAudio::HookStart]=retain_cut->hookStartPoint();
-        retain_marker[RDEditAudio::HookEnd]=retain_cut->hookEndPoint();
-        retain_marker[RDEditAudio::FadeUp]=retain_cut->fadeupPoint();
-        retain_marker[RDEditAudio::FadeDown]=retain_cut->fadedownPoint();
+        retaindata->setStartPos(retain_cut->startPoint());
+        retaindata->setEndPos(retain_cut->endPoint());
+        retaindata->setSegueStartPos(retain_cut->segueStartPoint());
+        retaindata->setSegueEndPos(retain_cut->segueEndPoint());
+        retaindata->setTalkStartPos(retain_cut->talkStartPoint());
+        retaindata->setTalkEndPos(retain_cut->talkEndPoint());
+        retaindata->setHookStartPos(retain_cut->hookStartPoint());
+        retaindata->setHookEndPos(retain_cut->hookEndPoint());
+        retaindata->setFadeUpPos(retain_cut->fadeupPoint());
+        retaindata->setFadeDownPos(retain_cut->fadedownPoint());
         have_markers=true;
       }
       else {
@@ -1187,13 +1183,13 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   RDSettings *settings=new RDSettings();
   settings->setChannels(import_channels);
   switch(import_format) {
-  case 0:
-    settings->setFormat(RDSettings::Pcm16);
-    break;
+    case 0:
+      settings->setFormat(RDSettings::Pcm16);
+      break;
 
-  case 1:
-    settings->setFormat(RDSettings::MpegL2Wav);
-    break;
+    case 1:
+      settings->setFormat(RDSettings::MpegL2Wav);
+      break;
   }
   settings->setNormalizationLevel(import_normalization_level/100);
   settings->setAutotrimLevel(import_autotrim_level/100);
@@ -1222,37 +1218,37 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
 
   switch(conv_err=conv->runImport(rda->user()->name(),rda->user()->password(),
 				  &audio_conv_err)) {
-  case RDAudioImport::ErrorOk:
-    if(import_verbose) {
-      Log(RDConfig::LogInfo,QString().sprintf("Import Done.\n"));
-    }
-    break;
+    case RDAudioImport::ErrorOk:
+      if(import_verbose) {
+        Log(RDConfig::LogInfo,QString().sprintf("Import Done.\n"));
+      }
+      break;
 
-  default:
-    Log(RDConfig::LogNotice,QString().sprintf(" %s, skipping %s...\n",
+    default:
+      Log(RDConfig::LogNotice,QString().sprintf(" %s, skipping %s...\n",
 	    (const char *)RDAudioImport::errorText(conv_err,audio_conv_err),
 	    (const char *)filename.utf8()));
-    if(cart_created) {
-      cart->remove(rda->station(),rda->user(),rda->config());
-    }
-    else {
-      cart->removeCut(rda->station(),rda->user(),cut->cutName(),rda->config());
-    }
-    delete cut;
-    delete cart;
-    wavefile->closeWave();
-    delete wavefile;
-    delete wavedata;
-    delete effective_group;
-    if(!import_run) {
-      exit(0);
-    }
-    if(!import_temp_fix_filename.isEmpty()) {
-      QFile::remove(import_temp_fix_filename);
-      import_temp_fix_filename="";
-    }
-    return MainObject::FileBad;
-    break;
+      if(cart_created) {
+        cart->remove(rda->station(),rda->user(),rda->config());
+      }
+      else {
+        cart->removeCut(rda->station(),rda->user(),cut->cutName(),rda->config());
+      }
+      delete cut;
+      delete cart;
+      wavefile->closeWave();
+      delete wavefile;
+      delete wavedata;
+      delete effective_group;
+      if(!import_run) {
+        exit(0);
+      }
+      if(!import_temp_fix_filename.isEmpty()) {
+        QFile::remove(import_temp_fix_filename);
+        import_temp_fix_filename="";
+      }
+      return MainObject::FileBad;
+      break;
   }
   if(wavedata->metadataFound()) {
     if(import_autotrim_level!=0) {
@@ -1392,18 +1388,15 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   }
   if(import_retain_markers&&have_markers) {
     Log(RDConfig::LogInfo,QString().sprintf("Restoring markers for cart %06d_%03d\n",*cartnum,cutnum));
-    if(import_autotrim_level==0) {
-      cut->setStartPoint(retain_marker[RDEditAudio::Start]);
-      cut->setEndPoint(retain_marker[RDEditAudio::End]);
+    retaindata->setLength(wavedata->length());
+    if(import_autotrim_level!=0) {
+      retaindata->setStartPos(wavedata->startPos());
+      retaindata->setEndPos(wavedata->endPos());
     }
-    cut->setSegueStartPoint(retain_marker[RDEditAudio::SegueStart]);
-    cut->setSegueEndPoint(retain_marker[RDEditAudio::SegueEnd]);
-    cut->setTalkStartPoint(retain_marker[RDEditAudio::TalkStart]);
-    cut->setTalkEndPoint(retain_marker[RDEditAudio::TalkEnd]);
-    cut->setHookStartPoint(retain_marker[RDEditAudio::HookStart]);
-    cut->setHookEndPoint(retain_marker[RDEditAudio::HookEnd]);
-    cut->setFadeupPoint(retain_marker[RDEditAudio::FadeUp]);
-    cut->setFadedownPoint(retain_marker[RDEditAudio::FadeDown]);
+    if(retaindata->validateMarkers()) {
+      Log(RDConfig::LogWarning,QString().sprintf("Out-of-bounds detected. Markers changed for cart %06d_%03d\n",*cartnum,cutnum));
+    }
+    cut->setMetadata(retaindata);
   }
   else {
     int lo=cut->startPoint();
