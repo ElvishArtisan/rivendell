@@ -18516,3 +18516,7 @@
 	* Incremented the database version to 307.
 2019-03-01 Patrick Linstruth <patrick@deltecent.com>
 	* Updated schema map for version 3.0 to database version 307.
+2019-03-06 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDWaveData::validateMarkers()' method.
+	* Added an 'RDWaveData::validateDateTime()' method.
+	* Removed the 'RDWaveData::checkDateTimes()' method.

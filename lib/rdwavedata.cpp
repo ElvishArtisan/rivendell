@@ -945,21 +945,141 @@ void RDWaveData::setPlayGain(int lvl)
 }
 
 
-bool RDWaveData::checkDateTimes()
+bool RDWaveData::validateMarkers(int msec)
+{
+  int len=msec;
+  bool modified=false;
+
+  if(len<0) {
+    len=length();
+  }
+
+  //
+  // Start/End Markers
+  //
+  if(startPos()<0) {
+    setStartPos(0);
+    modified=true;
+  }
+  if((endPos()<0)||(endPos()>len)) {
+    setEndPos(len);
+    modified=true;
+  }
+  if(startPos()>endPos()) {
+    setStartPos(0);
+    setEndPos(len);
+    modified=true;
+  }
+
+  //
+  // Talk Markers
+  //
+  if((introStartPos()==startPos())&&(introEndPos()==endPos())) {
+    setIntroStartPos(-1);
+    setIntroEndPos(-1);
+    modified=true;
+  }
+  if((introStartPos()<0)||(introEndPos()<0)||(introStartPos()>introEndPos())) {
+    setIntroStartPos(-1);
+    setIntroEndPos(-1);
+    modified=true;
+  }
+  else {
+    if(introEndPos()>endPos()) {
+      setIntroEndPos(endPos());
+      modified=true;
+    }
+    if(introStartPos()>endPos()) {
+      setIntroStartPos(-1);
+      setIntroEndPos(-1);
+      modified=true;
+    }
+  }
+
+  //
+  // Segue Markers
+  //
+  if((segueStartPos()==startPos())&&(segueEndPos()==endPos())) {
+    setSegueStartPos(-1);
+    setSegueEndPos(-1);
+    modified=true;
+  }
+  if((segueStartPos()<0)||(segueEndPos()<0)||(segueStartPos()>segueEndPos())) {
+    setSegueStartPos(-1);
+    setSegueEndPos(-1);
+    modified=true;
+  }
+  else {
+    if(segueEndPos()>endPos()) {
+      setSegueEndPos(endPos());
+      modified=true;
+    }
+    if(segueStartPos()>endPos()) {
+      setSegueStartPos(-1);
+      setSegueEndPos(-1);
+      modified=true;
+    }
+  }
+
+  //
+  // Hook Markers
+  //
+  if((hookStartPos()<0)||(hookEndPos()<0)||(hookStartPos()>hookEndPos())) {
+    setHookStartPos(-1);
+    setHookEndPos(-1);
+    modified=true;
+  }
+  else {
+    if(hookEndPos()>endPos()) {
+      setHookEndPos(endPos());
+      modified=true;
+    }
+    if(hookStartPos()>endPos()) {
+      setHookStartPos(-1);
+      setHookEndPos(-1);
+      modified=true;
+    }
+  }
+
+  //
+  // FadeUp Marker
+  //
+  if(fadeUpPos()>=0) {
+    if(fadeUpPos()>endPos()) {
+      setFadeUpPos(endPos());
+      modified=true;
+    }
+  }
+
+  //
+  // FadeDown Marker
+  //
+  if(fadeDownPos()>=0) {
+    if(fadeDownPos()>endPos()) {
+      setFadeDownPos(endPos());
+      modified=true;
+    }
+  }
+
+  return modified;
+}
+
+
+bool RDWaveData::validateDateTimes()
 {
   if(data_datetime_set) {
     if(startDateTime()<endDateTime()) {
-      return true;
+      return false;
     }
     else {
       setStartDate(QDate());
       setEndDate(QDate());
       setStartTime(QTime());
       setEndTime(QTime());
-      return false;
+      return true;
     }
   }
-  return true;
+  return false;
 }
 
 

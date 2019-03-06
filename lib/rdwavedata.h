@@ -187,7 +187,8 @@ class RDWaveData
   void setAudioSettings(const RDSettings &settings);
   int playGain() const;
   void setPlayGain(int lvl);
-  bool checkDateTimes();
+  bool validateMarkers(int msec=-1);
+  bool validateDateTimes();
   QString dump() const;
   void clear();
   static QString endTypeText(EndType type);

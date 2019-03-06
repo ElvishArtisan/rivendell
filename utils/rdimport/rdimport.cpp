@@ -1034,7 +1034,7 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
     QString groupname=effective_group->name();
     found_cart=RunPattern(import_metadata_pattern,RDGetBasePart(filename),
 			  wavedata,&groupname);
-    if(!wavedata->checkDateTimes()) {
+    if(wavedata->validateDateTimes()) {
       Log(RDConfig::LogErr,QString().sprintf(
 	      " File \"%s\": End date/time cannot be prior to start date/time, ignoring...\n",
 	      (const char *)filename.utf8()));
