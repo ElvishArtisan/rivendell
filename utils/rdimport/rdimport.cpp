@@ -1388,11 +1388,12 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   }
   if(import_retain_markers&&have_markers) {
     Log(RDConfig::LogInfo,QString().sprintf("Restoring markers for cart %06d_%03d\n",*cartnum,cutnum));
-    retaindata->setLength(wavedata->length());
+    retaindata->setLength(cut->length());
     if(import_autotrim_level!=0) {
       retaindata->setStartPos(wavedata->startPos());
       retaindata->setEndPos(wavedata->endPos());
     }
+
     if(retaindata->validateMarkers()) {
       Log(RDConfig::LogWarning,QString().sprintf("Out-of-bounds detected. Markers changed for cart %06d_%03d\n",*cartnum,cutnum));
     }
