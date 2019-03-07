@@ -979,7 +979,7 @@ bool RDWaveData::validateMarkers(int msec)
     setTalkEndPos(-1);
     modified=true;
   }
-  if((talkStartPos()<0)||(talkEndPos()<0)||(talkStartPos()>talkEndPos())) {
+  if((talkStartPos()<-1)||(talkEndPos()<-1)||(talkStartPos()>talkEndPos())) {
     setTalkStartPos(-1);
     setTalkEndPos(-1);
     modified=true;
@@ -1004,7 +1004,7 @@ bool RDWaveData::validateMarkers(int msec)
     setSegueEndPos(-1);
     modified=true;
   }
-  if((segueStartPos()<0)||(segueEndPos()<0)||(segueStartPos()>segueEndPos())) {
+  if((segueStartPos()<-1)||(segueEndPos()<-1)||(segueStartPos()>segueEndPos())) {
     setSegueStartPos(-1);
     setSegueEndPos(-1);
     modified=true;
@@ -1024,7 +1024,7 @@ bool RDWaveData::validateMarkers(int msec)
   //
   // Hook Markers
   //
-  if((hookStartPos()<0)||(hookEndPos()<0)||(hookStartPos()>hookEndPos())) {
+  if((hookStartPos()<-1)||(hookEndPos()<-1)||(hookStartPos()>hookEndPos())) {
     setHookStartPos(-1);
     setHookEndPos(-1);
     modified=true;
