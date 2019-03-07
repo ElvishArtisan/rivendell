@@ -55,6 +55,7 @@ class EditDropbox : public QDialog
   void normalizationToggledData(bool state);
   void autotrimToggledData(bool state);
   void segueToggledData(bool state);
+  void retainToggledData(bool state);
   void createDatesToggledData(bool state);
   void resetData();
   void okData();
@@ -68,6 +69,8 @@ class EditDropbox : public QDialog
   QLineEdit *box_to_cart_edit;
   QPushButton *box_schedcodes_button;
   QCheckBox *box_delete_cuts_box;
+  QLabel *box_retain_markers_label;
+  QCheckBox *box_retain_markers_box;
   QLabel *box_delete_cuts_label;
   QCheckBox *box_force_to_mono_box;
   QLabel *box_force_to_mono_label;
@@ -98,6 +101,7 @@ class EditDropbox : public QDialog
   QLabel *box_create_enddate_label;
   QLabel *box_create_enddate_unit;
   QCheckBox *box_segue_box;
+  QLabel *box_segue_label;
   QSpinBox *box_segue_level_spin;
   QLabel *box_segue_level_label;
   QLabel *box_segue_level_unit;

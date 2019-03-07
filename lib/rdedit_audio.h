@@ -72,6 +72,9 @@ class RDEditAudio : public QDialog
 {
   Q_OBJECT
  public:
+  enum CuePoints {Play=0,Start=1,End=2,SegueStart=3,SegueEnd=4,
+		  TalkStart=5,TalkEnd=6,HookStart=7,HookEnd=8,
+		  FadeUp=9,FadeDown=10,LastMarker=11};
   RDEditAudio(RDCart *cart,QString cut_name,int card,int port,
 	      int preroll,int trim_level,QWidget *parent=0);
   ~RDEditAudio();
@@ -127,9 +130,6 @@ class RDEditAudio : public QDialog
   void closeEvent(QCloseEvent *e);
   
  private:
-  enum CuePoints {Play=0,Start=1,End=2,SegueStart=3,SegueEnd=4,
-		  TalkStart=5,TalkEnd=6,HookStart=7,HookEnd=8,
-		  FadeUp=9,FadeDown=10,LastMarker=11};
   enum Arrow {None=0,Left=1,Right=2};
   enum PlayMode {FromStart=1,FromCursor=2,Region=3};
   enum GainChange {GainNone=0,GainUp=1,GainDown=2};

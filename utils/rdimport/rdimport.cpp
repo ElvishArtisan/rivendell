@@ -2,7 +2,7 @@
 //
 // A Batch Importer for Rivendell.
 //
-//   (C) Copyright 2002-2014,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2014,2016-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -41,6 +41,7 @@
 #include <rdcut.h>
 #include <rdescape_string.h>
 #include <rdlibrary_conf.h>
+#include <rdedit_audio.h>
 #include <rdtempdirectory.h>
 
 #include "rdimport.h"
@@ -80,6 +81,7 @@ MainObject::MainObject(QObject *parent)
   import_title_from_cartchunk_cutid=false;
   import_delete_source=false;
   import_delete_cuts=false;
+  import_retain_markers=false;
   import_drop_box=false;
   import_set_user_defined="";
   import_stdin_specified=false;
@@ -169,6 +171,10 @@ MainObject::MainObject(QObject *parent)
     }
     if(rda->cmdSwitch()->key(i)=="--delete-cuts") {
       import_delete_cuts=true;
+      rda->cmdSwitch()->setProcessed(i,true);
+    }
+    if(rda->cmdSwitch()->key(i)=="--retain-markers") {
+      import_retain_markers=true;
       rda->cmdSwitch()->setProcessed(i,true);
     }
     if(rda->cmdSwitch()->key(i)=="--startdate-offset") {
@@ -445,6 +451,11 @@ MainObject::MainObject(QObject *parent)
     Log(RDConfig::LogErr,QString().sprintf("rdimport: --log-filename and --log-syslog are mutually exclusive\n"));
     exit(255);
   }
+  if(import_retain_markers&&!import_cart_number) {
+    Log(RDConfig::LogErr,QString().sprintf("rdimport: --retain-markers requires --to-cart\n"));
+    exit(255);
+  }
+
 
   //
   // Set Logging
@@ -590,6 +601,14 @@ MainObject::MainObject(QObject *parent)
     import_channels=1;
   }
 
+  if(import_retain_markers&&import_segue_level) {
+    Log(RDConfig::LogErr,QString().sprintf("rdimport: --retain-markers and --segue-level are mutually exclusive\n"));
+    exit(255);
+  }
+  if(import_retain_markers&&import_segue_length) {
+    Log(RDConfig::LogErr,QString().sprintf("rdimport: --retain-markers and --segue-length are mutually exclusive\n"));
+    exit(255);
+  }
   //
   // Print Status Messages
   //
@@ -649,6 +668,12 @@ MainObject::MainObject(QObject *parent)
     }
     else {
       Log(RDConfig::LogInfo,QString(" Delete cuts mode is OFF\n"));
+    }
+    if(import_retain_markers) {
+      Log(RDConfig::LogInfo,QString(" Retain markers mode is ON\n"));
+    }
+    else {
+      Log(RDConfig::LogInfo,QString(" Retain markers mode is OFF\n"));
     }
     if(import_drop_box) {
       Log(RDConfig::LogInfo,QString(" DropBox mode is ON\n"));
@@ -969,11 +994,14 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   bool cart_created=false;
   QString effective_filename;
   bool found_cart=false;
+  bool have_markers=false;
   QDateTime dt;
   bool ok=false;
   RDAudioImport::ErrorCode conv_err;
   RDAudioConvert::ErrorCode audio_conv_err;
   RDGroup *effective_group=new RDGroup(import_group->name());
+  RDCut *retain_cut=NULL;
+  RDWaveData *retaindata=new RDWaveData();
   RDWaveData *wavedata=new RDWaveData();
   RDWaveFile *wavefile=new RDWaveFile(filename);
   QString err_msg;
@@ -1096,9 +1124,6 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
     }
     exit(256);
   }
-  if(import_delete_cuts) {
-    DeleteCuts(import_cart_number);
-  }
   if (RDCart::exists(*cartnum)) {
     cart_created=false;
   }
@@ -1106,7 +1131,43 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
     cart_created=
       RDCart::create(effective_group->name(),RDCart::Audio,&err_msg,*cartnum)!=0;
   }
+
   RDCart *cart=new RDCart(*cartnum);
+
+  if(import_retain_markers) {
+    if(import_delete_cuts&&cart->cutQuantity()<1) {
+      Log(RDConfig::LogInfo,QString().sprintf("Cart %06d does not contain any cuts. Cannot retain markers.\n",*cartnum));
+    }
+    else {
+      int cutnum;
+      cart->selectNewestCut(&cutnum);
+      retain_cut=new RDCut(*cartnum,cutnum);
+      if(retain_cut->exists()) {
+        Log(RDConfig::LogInfo,QString().sprintf("Retaining markers from cart %06d cut %03d\n",*cartnum,cutnum));
+        retaindata->setStartPos(retain_cut->startPoint());
+        retaindata->setEndPos(retain_cut->endPoint());
+        retaindata->setSegueStartPos(retain_cut->segueStartPoint());
+        retaindata->setSegueEndPos(retain_cut->segueEndPoint());
+        retaindata->setTalkStartPos(retain_cut->talkStartPoint());
+        retaindata->setTalkEndPos(retain_cut->talkEndPoint());
+        retaindata->setHookStartPos(retain_cut->hookStartPoint());
+        retaindata->setHookEndPos(retain_cut->hookEndPoint());
+        retaindata->setFadeUpPos(retain_cut->fadeupPoint());
+        retaindata->setFadeDownPos(retain_cut->fadedownPoint());
+        have_markers=true;
+      }
+      else {
+        Log(RDConfig::LogWarning,QString().sprintf("rdimport: Cannot retain markers because \
+		cut %s does not exist\n",(const char *)retain_cut->cutName()));
+       
+        delete retain_cut;
+      }
+    }
+  }
+  if(import_delete_cuts&&!cart_created) {
+    DeleteCuts(*cartnum);
+  }
+
   int cutnum=
     cart->addCut(import_format,import_bitrate,import_channels);
   if(cutnum<0) {
@@ -1122,13 +1183,13 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   RDSettings *settings=new RDSettings();
   settings->setChannels(import_channels);
   switch(import_format) {
-  case 0:
-    settings->setFormat(RDSettings::Pcm16);
-    break;
+    case 0:
+      settings->setFormat(RDSettings::Pcm16);
+      break;
 
-  case 1:
-    settings->setFormat(RDSettings::MpegL2Wav);
-    break;
+    case 1:
+      settings->setFormat(RDSettings::MpegL2Wav);
+      break;
   }
   settings->setNormalizationLevel(import_normalization_level/100);
   settings->setAutotrimLevel(import_autotrim_level/100);
@@ -1157,37 +1218,37 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
 
   switch(conv_err=conv->runImport(rda->user()->name(),rda->user()->password(),
 				  &audio_conv_err)) {
-  case RDAudioImport::ErrorOk:
-    if(import_verbose) {
-      Log(RDConfig::LogInfo,QString().sprintf("done.\n"));
-    }
-    break;
+    case RDAudioImport::ErrorOk:
+      if(import_verbose) {
+        Log(RDConfig::LogInfo,QString().sprintf("Import Done.\n"));
+      }
+      break;
 
-  default:
-    Log(RDConfig::LogNotice,QString().sprintf(" %s, skipping %s...\n",
+    default:
+      Log(RDConfig::LogNotice,QString().sprintf(" %s, skipping %s...\n",
 	    (const char *)RDAudioImport::errorText(conv_err,audio_conv_err),
 	    (const char *)filename.utf8()));
-    if(cart_created) {
-      cart->remove(rda->station(),rda->user(),rda->config());
-    }
-    else {
-      cart->removeCut(rda->station(),rda->user(),cut->cutName(),rda->config());
-    }
-    delete cut;
-    delete cart;
-    wavefile->closeWave();
-    delete wavefile;
-    delete wavedata;
-    delete effective_group;
-    if(!import_run) {
-      exit(0);
-    }
-    if(!import_temp_fix_filename.isEmpty()) {
-      QFile::remove(import_temp_fix_filename);
-      import_temp_fix_filename="";
-    }
-    return MainObject::FileBad;
-    break;
+      if(cart_created) {
+        cart->remove(rda->station(),rda->user(),rda->config());
+      }
+      else {
+        cart->removeCut(rda->station(),rda->user(),cut->cutName(),rda->config());
+      }
+      delete cut;
+      delete cart;
+      wavefile->closeWave();
+      delete wavefile;
+      delete wavedata;
+      delete effective_group;
+      if(!import_run) {
+        exit(0);
+      }
+      if(!import_temp_fix_filename.isEmpty()) {
+        QFile::remove(import_temp_fix_filename);
+        import_temp_fix_filename="";
+      }
+      return MainObject::FileBad;
+      break;
   }
   if(wavedata->metadataFound()) {
     if(import_autotrim_level!=0) {
@@ -1325,30 +1386,45 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
     cut->setEndPoint(import_cut_markers->endValue());
     cut->setLength(cut->endPoint()-cut->startPoint());
   }
-  int lo=cut->startPoint();
-  int hi=cut->endPoint();
-  import_talk_markers->setAudioLength(wavefile->getExtTimeLength());
-  if(import_talk_markers->hasStartValue()) {
-    cut->setTalkStartPoint(import_talk_markers->startValue(lo,hi));
-    cut->setTalkEndPoint(import_talk_markers->endValue(lo,hi));
+  if(import_retain_markers&&have_markers) {
+    Log(RDConfig::LogInfo,QString().sprintf("Restoring markers for cart %06d_%03d\n",*cartnum,cutnum));
+    retaindata->setLength(cut->length());
+    if(import_autotrim_level!=0) {
+      retaindata->setStartPos(wavedata->startPos());
+      retaindata->setEndPos(wavedata->endPos());
+    }
+
+    if(retaindata->validateMarkers()) {
+      Log(RDConfig::LogWarning,QString().sprintf("Out-of-bounds detected. Markers changed for cart %06d_%03d\n",*cartnum,cutnum));
+    }
+    cut->setMetadata(retaindata);
   }
-  import_hook_markers->setAudioLength(wavefile->getExtTimeLength());
-  if(import_hook_markers->hasStartValue()) {
-    cut->setHookStartPoint(import_hook_markers->startValue(lo,hi));
-    cut->setHookEndPoint(import_hook_markers->endValue(lo,hi));
-  }
-  import_segue_markers->setAudioLength(wavefile->getExtTimeLength());
-  if(import_segue_markers->hasStartValue()) {
-    cut->setSegueStartPoint(import_segue_markers->startValue(lo,hi));
-    cut->setSegueEndPoint(import_segue_markers->endValue(lo,hi));
-  }
-  import_fadedown_marker->setAudioLength(wavefile->getExtTimeLength());
-  if(import_fadedown_marker->hasFadeValue()) {
-    cut->setFadedownPoint(import_fadedown_marker->fadeValue(lo,hi));
-  }
-  import_fadeup_marker->setAudioLength(wavefile->getExtTimeLength());
-  if(import_fadeup_marker->hasFadeValue()) {
-    cut->setFadeupPoint(import_fadeup_marker->fadeValue(lo,hi));
+  else {
+    int lo=cut->startPoint();
+    int hi=cut->endPoint();
+    import_talk_markers->setAudioLength(wavefile->getExtTimeLength());
+    if(import_talk_markers->hasStartValue()) {
+      cut->setTalkStartPoint(import_talk_markers->startValue(lo,hi));
+      cut->setTalkEndPoint(import_talk_markers->endValue(lo,hi));
+    }
+    import_hook_markers->setAudioLength(wavefile->getExtTimeLength());
+    if(import_hook_markers->hasStartValue()) {
+      cut->setHookStartPoint(import_hook_markers->startValue(lo,hi));
+      cut->setHookEndPoint(import_hook_markers->endValue(lo,hi));
+    }
+    import_segue_markers->setAudioLength(wavefile->getExtTimeLength());
+    if(import_segue_markers->hasStartValue()) {
+      cut->setSegueStartPoint(import_segue_markers->startValue(lo,hi));
+      cut->setSegueEndPoint(import_segue_markers->endValue(lo,hi));
+    }
+    import_fadedown_marker->setAudioLength(wavefile->getExtTimeLength());
+    if(import_fadedown_marker->hasFadeValue()) {
+      cut->setFadedownPoint(import_fadedown_marker->fadeValue(lo,hi));
+    }
+    import_fadeup_marker->setAudioLength(wavefile->getExtTimeLength());
+    if(import_fadeup_marker->hasFadeValue()) {
+      cut->setFadeupPoint(import_fadeup_marker->fadeValue(lo,hi));
+    }
   }
   cart->updateLength();
   if(cart_created) {
@@ -1369,7 +1445,7 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   if(import_delete_source) {
     unlink(filename.utf8());
     if(import_verbose) {
-      Log(RDConfig::LogInfo,QString().sprintf(" Deleted file \"%s\"\n",(const char *)RDGetBasePart(filename).utf8()));
+      Log(RDConfig::LogInfo,QString().sprintf(" Deleted source file \"%s\"\n",(const char *)RDGetBasePart(filename).utf8()));
     }
   }
   if(!import_run) {

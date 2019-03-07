@@ -1658,6 +1658,11 @@
 		box is also ticked, then any existing cuts in the specified
 		cart will be deleted before adding the new cut.
 	      </para>
+	      <para>
+                If the <computeroutput>Retain cut markers</computeroutput> box is
+                ticked, marker data from the most recently added cut will be
+                retained and applied to the newly created cut.
+	      </para>
 	    </listitem>
 	  </varlistentry>
 	  <varlistentry>

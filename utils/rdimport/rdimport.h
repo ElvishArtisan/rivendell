@@ -89,6 +89,7 @@ class MainObject : public QObject
   bool import_title_from_cartchunk_cutid;
   bool import_delete_source;
   bool import_delete_cuts;
+  bool import_retain_markers;
   bool import_drop_box;
   std::vector<QString> import_add_scheduler_codes;
   QString import_set_user_defined;
