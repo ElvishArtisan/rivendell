@@ -267,10 +267,9 @@ void RDMacroEvent::exec(int line)
       }
       delete station;
     }
-    cmd=event_cmds[line]->command();
-    rml.setCommand(cmd);
-    for(int i=0;i<rml.argQuantity();i++) {
-      rml.addArg(event_cmds[line]->arg(i+2));
+    rml.setCommand(event_cmds[line]->arg(1));
+    for(int i=2;i<event_cmds[line]->argQuantity();i++) {
+      rml.addArg(event_cmds[line]->arg(i));
     }
     rml.setRole(RDMacro::Cmd);
     rml.setPort(port);

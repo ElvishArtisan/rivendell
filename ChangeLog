@@ -18529,3 +18529,5 @@
 	'RDWaveData::talkEndPos()'.
 	* Renamed the 'RDWaveData::setIntroEndPos()' method to
 	'RDWaveData::setTalkEndPos()'.
+2019-03-14 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression that broke the 'Command Send' ['CC'] RML.

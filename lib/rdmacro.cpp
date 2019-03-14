@@ -53,6 +53,81 @@ void RDMacro::setCommand(RDMacro::Command cmd)
 }
 
 
+void RDMacro::setCommand(const QString &str)
+{
+  RDMacro::Command cmd=RDMacro::NN;
+  cmd=(RDMacro::Command)((str.at(0).latin1()<<8)+str.at(1).latin1());
+  switch(cmd) {
+  case RDMacro::AG:
+  case RDMacro::AL:
+  case RDMacro::BO:
+  case RDMacro::CC:
+  case RDMacro::CE:
+  case RDMacro::CL:
+  case RDMacro::CP:
+  case RDMacro::DL:
+  case RDMacro::DP:
+  case RDMacro::DS:
+  case RDMacro::DX:
+  case RDMacro::EX:
+  case RDMacro::FS:
+  case RDMacro::GE:
+  case RDMacro::GI:
+  case RDMacro::GO:
+  case RDMacro::JC:
+  case RDMacro::JD:
+  case RDMacro::LB:
+  case RDMacro::LC:
+  case RDMacro::LL:
+  case RDMacro::LO:
+  case RDMacro::MB:
+  case RDMacro::MD:
+  case RDMacro::MN:
+  case RDMacro::MT:
+  case RDMacro::NN:
+  case RDMacro::PB:
+  case RDMacro::PC:
+  case RDMacro::PE:
+  case RDMacro::PL:
+  case RDMacro::PM:
+  case RDMacro::PN:
+  case RDMacro::PP:
+  case RDMacro::PS:
+  case RDMacro::PT:
+  case RDMacro::PU:
+  case RDMacro::PW:
+  case RDMacro::PX:
+  case RDMacro::RL:
+  case RDMacro::RS:
+  case RDMacro::RR:
+  case RDMacro::RN:
+  case RDMacro::SN:
+  case RDMacro::ST:
+  case RDMacro::SA:
+  case RDMacro::SC:
+  case RDMacro::SD:
+  case RDMacro::SG:
+  case RDMacro::SI:
+  case RDMacro::SO:
+  case RDMacro::SP:
+  case RDMacro::SR:
+  case RDMacro::SL:
+  case RDMacro::SX:
+  case RDMacro::SY:
+  case RDMacro::SZ:
+  case RDMacro::TA:
+  case RDMacro::UO:
+  case RDMacro::PD:
+    setCommand(cmd);
+    break;
+
+  default:
+    setCommand(RDMacro::NN);
+    break;
+  }
+}
+
+
 QHostAddress RDMacro::address() const
 {
   return rml_addr;

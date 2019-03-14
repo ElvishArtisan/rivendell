@@ -49,6 +49,7 @@ class RDMacro
   void setRole(RDMacro::Role role);
   RDMacro::Command command() const;
   void setCommand(RDMacro::Command cmd);
+  void setCommand(const QString &str);
   QHostAddress address() const;
   void setAddress(QHostAddress addr);
   Q_UINT16 port() const;
