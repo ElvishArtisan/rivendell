@@ -376,7 +376,7 @@ int RDLogEvent::size() const
 void RDLogEvent::insert(int line,int num_lines,bool preserve_trans)
 {
   if(!preserve_trans) {
-    if(line>0) {
+    if(log_line[line-1]!=NULL) {
       log_line[line-1]->setEndPoint(-1,RDLogLine::LogPointer);
       log_line[line-1]->setSegueStartPoint(-1,RDLogLine::LogPointer);
       log_line[line-1]->setSegueEndPoint(-1,RDLogLine::LogPointer);

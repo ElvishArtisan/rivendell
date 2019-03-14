@@ -18531,3 +18531,6 @@
 	'RDWaveData::setTalkEndPos()'.
 2019-03-14 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression that broke the 'Command Send' ['CC'] RML.
+2019-03-14 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdairplay(1) that could throw a segfault when
+	moving a log event to the end of a log.
