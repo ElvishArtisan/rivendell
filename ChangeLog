@@ -18534,3 +18534,12 @@
 2019-03-14 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdairplay(1) that could throw a segfault when
 	moving a log event to the end of a log.
+2019-03-15 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the rivwebcapi 'RD_ListLogs()' that caused
+	corruption of log names containing multi-byte UTF-8 characters.
+	* Fixed a bug in the rivwebcapi 'RD_ListLog()' that caused
+	corruption of log names containing multi-byte UTF-8 characters.
+	* Fixed a regression in the 'RDLogEvent::insert()' method
+	that threw a segfault when applied on am empty log.
+	* Fixed a bug in date/time parsing methods that could cause
+	segfaults.

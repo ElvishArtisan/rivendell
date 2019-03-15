@@ -155,8 +155,6 @@ int RD_ListLogs(struct rd_log *logs[],
   XML_Parser parser;
   char checked_service[11]={0};
   char *check_svc = &checked_service[0];
-  char checked_logname[65]={0};
-  char *check_logname = &checked_logname[0];
   int checked_trackable = 0;
   int checked_recent = 0;
   struct xml_data xml_data;
@@ -188,16 +186,6 @@ int RD_ListLogs(struct rd_log *logs[],
       }
     }
   }
-  if ((strlen(logname) > 0) && 
-      (strlen(logname) < 65))  {
-    for (i = 0; i<strlen(logname);i++) {
-      if (logname[i]>32) {
-        strncpy(check_logname,&logname[i],1);
-        check_logname++;
-      }
-    }
-  }
-
   if((curl=curl_easy_init())==NULL) {
     curl_easy_cleanup(curl);
     return -1;
@@ -259,7 +247,7 @@ int RD_ListLogs(struct rd_log *logs[],
 	CURLFORM_PTRNAME,
 	"LOG_NAME",
         CURLFORM_COPYCONTENTS,
-        checked_logname,
+        logname,
 	CURLFORM_END);
 
   snprintf(cart_buffer,7,"%d",checked_trackable);

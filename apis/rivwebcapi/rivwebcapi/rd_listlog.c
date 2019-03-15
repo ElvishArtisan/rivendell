@@ -426,8 +426,6 @@ int RD_ListLog(struct rd_logline *logline[],
   CURL *curl=NULL;
   XML_Parser parser;
   struct xml_data xml_data;
-  char real_logname[64];
-  char *real_index = &real_logname[0];
   long response_code;
   int i;
   char errbuf[CURL_ERROR_SIZE];
@@ -443,18 +441,6 @@ int RD_ListLog(struct rd_logline *logline[],
   if (strlen(logname)==0)  {
     return 400;        /* Log Name Missing */
   }
-  /* make the actual log name */
-  if (strlen(logname)>60)  {
-    return 404;        /* Log Name Incorrect */
-  }
-  memset(real_logname,'\0',sizeof(real_logname));
-  for (i = 0; i<strlen(logname);i++)  {
-    if (logname[i]>32) {
-      strncpy(real_index,&logname[i],1);
-      real_index++;
-    }
-  }
-
   if((curl=curl_easy_init())==NULL) {
     curl_easy_cleanup(curl);
     return -1;
@@ -508,7 +494,7 @@ int RD_ListLog(struct rd_logline *logline[],
 	CURLFORM_PTRNAME,
 	"NAME",
         CURLFORM_COPYCONTENTS, 
-	real_logname,
+	logname,
 	CURLFORM_END);
   curl_easy_setopt(curl,CURLOPT_WRITEDATA,parser);
   curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,__ListLogCallback);

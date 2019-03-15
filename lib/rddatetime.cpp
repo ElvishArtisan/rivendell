@@ -49,7 +49,9 @@ QDateTime RDParseDateTime(const QString &str,bool *ok)
 QDate RDParseXmlDate(const QString &str,bool *ok)
 {
   QDate ret=QDate::fromString(str,"yyyy-MM-dd");
-  *ok=ret.isValid();
+  if(ok!=NULL) {
+    *ok=ret.isValid();
+  }
   return ret;
 }
 
@@ -73,13 +75,17 @@ QTime RDParseXmlTime(const QString &str,bool *ok,int *day_offset)
   QTime time;
   QTime tztime;
 
-  *ok=false;
+  if(ok!=NULL) {
+    *ok=false;
+  }
   if(day_offset!=NULL) {
     *day_offset=0;
   }
   f0=str.trimmed().split(" ");
   if(f0.size()!=1) {
-    *ok=false;
+    if(ok!=NULL) {
+      *ok=false;
+    }
     return ret;
   }
 
@@ -178,11 +184,15 @@ QDateTime RDParseXmlDateTime(const QString &str,bool *ok)
   bool lok=false;
   int day_offset=0;
 
-  *ok=false;
+  if(ok!=NULL) {
+    *ok=false;
+  }
 
   f0=str.trimmed().split(" ");
   if(f0.size()!=1) {
-    *ok=false;
+    if(ok!=NULL) {
+      *ok=false;
+    }
     return ret;
   }
   f1=f0[0].split("T");
@@ -233,7 +243,9 @@ QDateTime RDParseRfc822DateTime(const QString &str,bool *ok)
     f0.removeFirst();
   }
   if(f0.size()!=5) {
-    *ok=false;
+    if(ok!=NULL) {
+      *ok=false;
+    }
     return QDateTime();
   }
 
@@ -247,7 +259,9 @@ QDateTime RDParseRfc822DateTime(const QString &str,bool *ok)
     }
   }
   if(month<0) {
-    *ok=false;
+    if(ok!=NULL) {
+      *ok=false;
+    }
     return QDateTime();
   }
   if(f0.at(2).length()==2) {
@@ -255,7 +269,9 @@ QDateTime RDParseRfc822DateTime(const QString &str,bool *ok)
   }
   QDate date(f0.at(2).toInt(),month+1,f0.at(0).toInt());
   if(!date.isValid()) {
-    *ok=false;
+    if(ok!=NULL) {
+      *ok=false;
+    }
     return QDateTime();
   }
 
@@ -264,7 +280,9 @@ QDateTime RDParseRfc822DateTime(const QString &str,bool *ok)
   //
   QTime time=QTime::fromString(f0.at(3),"hh:mm:ss");
   if(!time.isValid()) {
-    *ok=false;
+    if(ok!=NULL) {
+      *ok=false;
+    }
     return QDateTime();
   }
   
@@ -281,7 +299,9 @@ QDateTime RDParseRfc822DateTime(const QString &str,bool *ok)
     }
     else {
       if(f0.at(4).left(1)!="-") {
-	*ok=false;
+	if(ok!=NULL) {
+	  *ok=false;
+	}
 	return QDateTime();
       }
     }
@@ -304,13 +324,17 @@ QDateTime RDParseRfc822DateTime(const QString &str,bool *ok)
     zones["pdt"]=-7;
     // "Military" zone IDs are not implemented (see RFC1123 section 5.2.14)
     if(zones.value(f0.at(4).toLower(),1)>0) {
-      *ok=false;
+      if(ok!=NULL) {
+	*ok=false;
+      }
       return QDateTime();
     }
     tz_offset=-3600*zones.value(f0.at(4).toLower());
   }
   
-  *ok=true;
+  if(ok!=NULL) {
+    *ok=true;
+  }
 
   return QDateTime(date,time).addSecs(tz_offset-RDTimeZoneOffset());
 }
