@@ -1262,6 +1262,52 @@
     </para>
   </sect2>
 
+
+
+
+
+
+
+
+  <sect2 xml:id="sect.rml.no_operation__nn_">
+    <title>No Operation [NN]</title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem>none</listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>NN</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Do nothing.
+    </para>
+    <para>
+      <userinput>NN!</userinput>
+    </para>
+    <para>
+      This RML does precisely nothing.
+    </para>
+  </sect2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   <sect2 xml:id="sect.rml.pause_panel__pu_">
     <title>Pause Panel [PU]</title>
     <para>
