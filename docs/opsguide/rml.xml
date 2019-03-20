@@ -227,6 +227,37 @@
     </para>
   </sect2>
 
+  <sect2 xml:id="sect.rml.append_log__al_">
+    <title>Append Log [AL]</title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem>
+	    <command>rdairplay</command><manvolnum>1</manvolnum>,
+	    <command>rdairplayd</command><manvolnum>8</manvolnum>
+	  </listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>AL</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Append a log to a cuurently loaded log.
+    </para>
+    <para>
+      <userinput>AL
+      <replaceable>mach</replaceable>
+      <replaceable>logname</replaceable>!</userinput>
+    </para>
+    <para>
+      Append the log named <replaceable>logname</replaceable> to the log
+      currently loaded in log machine <replaceable>mach</replaceable>.
+    </para>
+  </sect2>
+
   <sect2 xml:id="sect.rml.binary_serial_out__bo_">
     <title>Binary Serial Out [BO]</title>
     <para>
