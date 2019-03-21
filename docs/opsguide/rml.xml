@@ -1262,13 +1262,6 @@
     </para>
   </sect2>
 
-
-
-
-
-
-
-
   <sect2 xml:id="sect.rml.no_operation__nn_">
     <title>No Operation [NN]</title>
     <para>
@@ -1293,20 +1286,6 @@
       This RML does precisely nothing.
     </para>
   </sect2>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   <sect2 xml:id="sect.rml.pause_panel__pu_">
     <title>Pause Panel [PU]</title>

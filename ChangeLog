@@ -18549,3 +18549,6 @@
 2019-03-20 Fred Gleason <fredg@paravelsystems.com>
 	* Documented the 'No Operation' ['NN'] RML in the Operations
 	Guide.
+2019-03-21 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up formatting typos in 'docs/opsguide/rml.xml'.
+
