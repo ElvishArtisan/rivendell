@@ -18551,4 +18551,5 @@
 	Guide.
 2019-03-21 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up formatting typos in 'docs/opsguide/rml.xml'.
-
+2019-03-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added a startup check for the 'rivendell' service.

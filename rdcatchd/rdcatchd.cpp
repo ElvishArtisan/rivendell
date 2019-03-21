@@ -185,13 +185,14 @@ MainObject::MainObject(QObject *parent)
   QString sql;
   RDSqlQuery *q;
   QString err_msg;
+  RDApplication::ErrorType err_type=RDApplication::ErrorOk;
   debug=false;
 
   //
   // Open the Database
   //
   rda=new RDApplication("rdcatchd","rdcatchd",RDCATCHD_USAGE,this);
-  if(!rda->open(&err_msg)) {
+  if(!rda->open(&err_msg,&err_type,false)) {
     fprintf(stderr,"rdcatchd: %s\n",(const char *)err_msg);
     exit(1);
   }

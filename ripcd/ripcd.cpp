@@ -2,7 +2,7 @@
 //
 // Rivendell Interprocess Communication Daemon
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -75,9 +75,10 @@ MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
   QString err_msg;
+  RDApplication::ErrorType err_type=RDApplication::ErrorOk;
 
   rda=new RDApplication("ripcd","ripcd",RIPCD_USAGE,this);
-  if(!rda->open(&err_msg)) {
+  if(!rda->open(&err_msg,&err_type,false)) {
     fprintf(stderr,"ripcd: %s\n",(const char *)err_msg.utf8());
     exit(1);
   }

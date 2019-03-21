@@ -2,7 +2,7 @@
 //
 // Base Application Class
 //
-//   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,6 +22,7 @@
 
 #include <qapplication.h>
 #include <qobject.h>
+#include <qprocess.h>
 
 #include "dbversion.h"
 #include "rdapplication.h"
@@ -104,7 +105,8 @@ RDApplication::~RDApplication()
 }
 
 
-bool RDApplication::open(QString *err_msg,RDApplication::ErrorType *err_type)
+bool RDApplication::open(QString *err_msg,RDApplication::ErrorType *err_type,
+			 bool check_svc)
 {
   int schema=0;
   QString db_err;
@@ -132,6 +134,18 @@ bool RDApplication::open(QString *err_msg,RDApplication::ErrorType *err_type)
   app_config=new RDConfig();
   app_config->load();
   app_config->setModuleName(app_module_name);
+
+  //
+  // Check Rivendell Service Status
+  //
+  if(check_svc) {
+    if(!CheckService(err_msg)) {
+      if(err_type!=NULL) {
+	*err_type=RDApplication::ErrorNoService;
+      }
+      return false;
+    }
+  }
 
   //
   // Open Database
@@ -281,4 +295,46 @@ void RDApplication::userChangedData()
 {
   app_user->setName(app_ripc->user());
   emit userChanged();
+}
+
+
+ bool RDApplication::CheckService(QString *err_msg)
+{
+  bool ret=false;
+  QStringList args;
+  QProcess *proc=new QProcess(this);
+
+  args.push_back("--property");
+  args.push_back("ActiveState");
+  args.push_back("show");
+  args.push_back("rivendell");
+  proc->start("systemctl",args);
+  proc->waitForFinished();
+  if(proc->exitStatus()!=QProcess::NormalExit) {
+    *err_msg=tr("systemctl(1) crashed.");
+  }
+  else {
+    if(proc->exitCode()!=0) {
+      *err_msg=tr("systemctl(1) returned exit code")+
+	QString().sprintf(" %d:\n",proc->exitCode())+
+	proc->readAllStandardError();
+    }
+    else {
+      *err_msg=tr("Rivendell service is not active.");
+      QStringList f0=QString(proc->readAllStandardOutput()).
+	split("\n",QString::SkipEmptyParts);
+      for(int i=0;i<f0.size();i++) {
+	QStringList f1=f0.at(i).trimmed().split("=");
+	if((f1.size()==2)&&(f1.at(0)=="ActiveState")) {
+	  ret=f1.at(1).toLower()=="active";
+	  if(ret) {
+	    *err_msg=tr("OK");
+	  }
+	}
+      }
+    }
+  }
+  delete proc;
+
+  return ret;
 }

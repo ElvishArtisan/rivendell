@@ -2,7 +2,7 @@
 //
 // Base Application Class
 //
-//   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -41,11 +41,12 @@ class RDApplication : public QObject
 {
   Q_OBJECT;
  public:
-  enum ErrorType {ErrorOk=0,ErrorDbVersionSkew=1,ErrorNoHostEntry=2};
+  enum ErrorType {ErrorOk=0,ErrorDbVersionSkew=1,ErrorNoHostEntry=2,
+  ErrorNoService=3};
   RDApplication(const QString &module_name,const QString &cmdname,
 		const QString &usage,QObject *parent=0);
   ~RDApplication();
-  bool open(QString *err_msg,ErrorType *err_type=NULL);
+  bool open(QString *err_msg,ErrorType *err_type=NULL,bool check_svc=true);
   RDAirPlayConf *airplayConf();
   RDCae *cae();
   RDCmdSwitch *cmdSwitch();
@@ -68,6 +69,7 @@ class RDApplication : public QObject
   void userChanged();
 
  private:
+  bool CheckService(QString *err_msg);
   RDAirPlayConf *app_airplay_conf;
   RDAirPlayConf *app_panel_conf;
   RDCae *app_cae;

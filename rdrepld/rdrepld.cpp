@@ -62,6 +62,7 @@ MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
   QString err_msg;
+  RDApplication::ErrorType err_type=RDApplication::ErrorOk;
 
   debug=false;
 
@@ -69,7 +70,7 @@ MainObject::MainObject(QObject *parent)
   // Open the Database
   //
   rda=new RDApplication("rdrepld","rdrepld",RDREPLD_USAGE,this);
-  if(!rda->open(&err_msg)) {
+  if(!rda->open(&err_msg,&err_type,false)) {
     fprintf(stderr,"rdrepld: %s\n",(const char *)err_msg);
     exit(1);
   }

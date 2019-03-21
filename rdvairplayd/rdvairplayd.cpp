@@ -53,6 +53,7 @@ MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
   QString err_msg;
+  RDApplication::ErrorType err_type=RDApplication::ErrorOk;
 
   //
   // Startup DateTime
@@ -63,7 +64,7 @@ MainObject::MainObject(QObject *parent)
   // Open the Database
   //
   rda=new RDApplication("rdvairplayd","rdvairplayd",RDVAIRPLAYD_USAGE,this);
-  if(!rda->open(&err_msg)) {
+  if(!rda->open(&err_msg,&err_type,false)) {
     fprintf(stderr,"rdvairplayd: %s\n",(const char *)err_msg);
     exit(1);
   }
