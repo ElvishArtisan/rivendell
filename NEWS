@@ -1,6 +1,33 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
+v3.0.0rc00 -- 3/22/2019
+
+First release candidate for v3.x.
+
+Please see the file 'UPGRADING' for important information.
+
+Changes:
+   New PyPAD script. Added a 'pypad_xcmd.py' PyPAD script for sending PAD
+   data to RDS encoders supporting the Pira.cz X-Command protocol.
+
+   Run Shell Command [RN]. Added 'RnRmlOwner=' and 'RnRmlGroup='
+   directives in the '[Identity]' section of rd.conf(5) to allow
+   specification of the user/group under which to run commands.
+
+   Music Scheduler. Artist Separation is now specified on a per-event
+   basis (similar to Title separation) rather than per-clock.
+
+   Many fixes for bugs and regressions. See the 'ChangeLog' for details. 
+
+Database Update:
+   This version of Rivendell uses database schema version 307, and will
+   automatically upgrade any earlier versions. To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
+   to allow any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
 v3.0.0beta00 -- 1/17/2019
 
 First beta release for v3.x.

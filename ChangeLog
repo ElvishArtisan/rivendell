@@ -18553,3 +18553,5 @@
 	* Cleaned up formatting typos in 'docs/opsguide/rml.xml'.
 2019-03-21 Fred Gleason <fredg@paravelsystems.com>
 	* Added a startup check for the 'rivendell' service.
+2019-03-22 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.0.0rc00.
