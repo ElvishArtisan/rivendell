@@ -2,6 +2,7 @@
 
 <!DOCTYPE book [
   <!ENTITY frontspiece SYSTEM "frontspiece.xml">
+  <!ENTITY pad SYSTEM "pad.xml">
   <!ENTITY overview SYSTEM "overview.xml">
   <!ENTITY rdlogin SYSTEM "rdlogin.xml">
   <!ENTITY rdlibrary SYSTEM "rdlibrary.xml">
@@ -40,6 +41,7 @@
     <title>Rivendell Administration</title>
     &rdadmin;
     &rml;
+    &pad;
     &utilities;
   </part>
   <part xml:id="part.appendices" xmlns="http://docbook.org/ns/docbook" version="5.0">

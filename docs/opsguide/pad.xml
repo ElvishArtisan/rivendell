@@ -1,0 +1,194 @@
+<chapter xmlns="http://docbook.org/ns/docbook"  xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="chapter.pad">
+  <title>Program Associated Data</title>
+  <sect1 xml:id="sect.pad.overview">
+    <title>Overview</title>
+    <para>
+      Rivendell includes full support for the origination and transmission
+      of program associated data (PAD) in realtime, including a Python
+      module (PyPAD)
+      that can be used to create scripts for interfacing Rivendell's PAD
+      feed to most any arbitrary external system.
+    </para>
+    <sect2 xml:id="sect.pad.the_json_interface">
+      <title>The JSON Interface</title>
+      <para>
+	All Rivendell PAD updates are emitted as
+	<link xlink:href="https://www.json.org/">JSON documents</link> of
+	type <code>padUpdate</code> via TCP port 34289. A typical update
+	looks like:
+	<programlisting>
+	  <![CDATA[
+{
+    "padUpdate": {
+        "dateTime": "2019-03-28T15:09:01-04:00",
+        "hostName": "elastigirl",
+        "shortHostName": "elastigirl",
+        "machine": 1,
+        "onairFlag": false,
+        "mode": "Automatic",
+        "service": {
+            "name": "Production",
+            "description": "Production Log"
+            "programCode": ""
+        },
+        "log": {
+           "name": "Example"
+        },
+        "now": {
+            "startDateTime": "2019-03-28T15:09:01-04:00",
+            "lineNumber": 0,
+            "lineId": 0,
+            "cartNumber": 10477,
+            "cartType": "Audio",
+            "cutNumber": 1,
+            "length": 225500,
+            "year": null,
+            "groupName": "MUSIC",
+            "title": "Allentown",
+            "artist": "Billy Joel",
+            "publisher": "",
+            "composer": "",
+            "album": "The Complete Hits Collection 1973-1997",
+            "label": "",
+            "client": "",
+            "agency": "",
+            "conductor": "",
+            "userDefined": "",
+            "songId": "",
+            "outcue": "",
+            "description": "Cut 001",
+            "isrc": "",
+            "isci": "",
+            "externalEventId": "",
+            "externalData": "",
+            "externalAnncType": ""
+        },
+        "next": {
+            "startDateTime": "2019-03-28T15:12:46-04:00",
+            "lineNumber": 1,
+            "lineId": 1,
+            "cartNumber": 10153,
+            "cartType": "Audio",
+            "cutNumber": 1,
+            "length": 168700,
+            "year": null,
+            "groupName": "MUSIC",
+            "title": "Me & You & A Dog Named Boo",
+            "artist": "Lobo",
+            "publisher": "",
+            "composer": "",
+            "album": "'70s Radio Hits",
+            "label": "",
+            "client": "",
+            "agency": "",
+            "conductor": "",
+            "userDefined": "",
+            "songId": "",
+            "outcue": "",
+            "description": "Cut 001",
+            "isrc": "",
+            "isci": "",
+            "externalEventId": "",
+            "externalData": "",
+            "externalAnncType": ""
+        }
+    }
+}]]>
+	</programlisting>
+      </para>
+    </sect2>
+
+    <sect2 xml:id="sect.pad.pypad">
+      <title>PyPAD</title>
+      <para>
+	Rivendell ships with a Python 3 module called &quot;pypad&quot; that
+	automates away most of the work involved in reading, parsing and
+	processing the raw JSON data feed described above. A copiously
+	commented example script can be found in the Rivendell source
+	tree at <userinput>apis/pypad/tests/now_and_next.py</userinput>.
+      </para>
+      <sect3 xml:id="sect.pad.pypad.starting_scripts_sutomatically_with_the_rivendell_service">
+	<title>Starting Scripts Automatically with the &quot;rivendell&quot; Service</title>
+	<para>
+	  Rivendell can be configured to start one or more PyPAD scripts
+	  automatically whenever the &quot;rivendell&quot; systemd service
+	  is (re)started. In order to support this, a PyPAD script must
+	  meet the following requirements:
+	</para>
+	<itemizedlist>
+	  <listitem>
+	    <para>
+	      Accept exactly three command-line arguments as follows:
+	    </para>
+	    <para>
+	      <userinput>script <replaceable>host-name</replaceable>
+	      <replaceable>port-num</replaceable>
+	      <replaceable>config</replaceable></userinput>
+	    </para>
+	    <para>
+	      The <replaceable>config</replaceable> value should be
+	      passed to the <code>pypad.Receiver.setConfigFile()</code> method,
+	      and <replaceable>host-name</replaceable> and
+	      <replaceable>port-num</replaceable> values should be
+	      passed to the
+	      <code>pypad.Receiver().start()</code> method.	      
+	      See any of the production PyPAD scripts in the Rivendell
+	      sources in <userinput>apis/pypad/scripts/</userinput> for
+	      an example.
+	    </para>
+	  </listitem>
+	  <listitem>
+	    <para>
+	      If the script is configurable via a configuration file,
+	      provide a sample copy of the configuration file, using
+	      wherever possible sane
+	      default values along with comments documenting
+	      what the various parameters do. The file should have the
+	      the same base name as that of the script, but have an
+	      <userinput>.exemplar</userinput> extension.
+	    </para>
+	    <para>
+	      For example, if the script is called
+	      <userinput>myscript.py</userinput>,
+	      the sample configuration file would be called
+	      <userinput>myscript.exemplar</userinput>.
+	    </para>
+	  </listitem>
+	  <listitem>
+	    <para>
+	      Install a copy of the script, along with a copy of the
+	      sample configuration file (if needed) in the Rivendell
+	      PyPAD script directory
+	      <userinput><replaceable>$(libdir)</replaceable>/rivendell/pypad/</userinput>.
+	    </para>
+	    <note>
+	      In the RHEL/CentOS reference installation, this directory
+	      is <userinput>/usr/lib64/rivendell/pypad/</userinput>.
+	    </note>
+	    <note>
+	      The <userinput><replaceable>$(libdir)</replaceable></userinput>
+	      path component evaluates to
+	      the value used for the <userinput>--libdir</userinput>
+	      switch that was passed to the &quot;configure&quot; script
+	      when Rivendell was built [default value:
+	      <userinput>/usr/local/lib</userinput>].
+	    </note>
+	  </listitem>
+	</itemizedlist>
+	<para>
+	  All PyPAD scripts started in this manner will be run under the
+	  user/group specified by the <userinput>PypadOwner=</userinput>
+	  and <userinput>PypadGroup=</userinput> directives in the
+	<userinput>[Identity]</userinput> section of the
+	<command>rd.conf</command><manvolnum>5</manvolnum> configuration
+	file.
+	</para>
+	<para>
+	  See <xref linkend="sect.rdadmin.managing_pypad_instances" />
+	  for instructions on enabling a script that has been
+	  prepared in this manner.
+	</para>
+      </sect3>
+    </sect2>
+</sect1>
+</chapter>

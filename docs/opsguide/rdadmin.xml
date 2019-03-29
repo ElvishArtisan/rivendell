@@ -2206,7 +2206,14 @@
 	PyPAD is a system that is built into Rivendell that
 	allows processing and transmission of Program Associated Data [PAD]
 	by means of scripts written in the popular Python programming
-	language. To see the list of PyPAD scripts configured to run on
+	language.
+      </para>
+      <note>
+	See <xref linkend="sect.pad.pypad" /> for information
+	on creating your own customized PyPAD scripts.
+      </note>
+      <para>
+	To see the list of PyPAD scripts configured to run on
 	the selected host, touch the 
 	<computeroutput>PyPAD Instances</computeroutput> button to open
 	the PyPAD Instances dialog.
@@ -2260,8 +2267,69 @@
     <para>
       When finished editing the configuration, touch the
       <computeroutput>OK</computeroutput> button to save the configuration
-      and start the script running.
+      and start the script running. The green light adjacent to the entry
+      for the script instance just edited will turn red briefly before
+      turning back to green, indicating that the changes to the configuration
+      have been applied to the active instance.
     </para>
+    <note>
+      It is not necessary to restart rdairplay(1) for the configuration
+      changes to be made effective.
+    </note>
+    <sect3 xml:id="sect.rdadmin.moving_legacy_rlm_configurations_to_pypad">
+      <title>Moving Legacy RLM Configurations to PyPAD</title>
+      <para>
+	Rivendell v2.x included a feature called &quot;Rivendell Loadable
+	Modules&quot; (&quot;RLM&quot; for short) that included much of
+	the functionality now provided by PyPAD. The following RLMs that
+	shipped as part of Rivendell v2.x have been ported to PyPAD
+	and shipped as part of Rivendell 3.x:
+      </para>
+      <simplelist>
+	<member><computeroutput>rlm_ando</computeroutput></member>
+	<member><computeroutput>rlm_filewrite</computeroutput></member>
+	<member><computeroutput>rlm_icecast2</computeroutput></member>
+	<member><computeroutput>rlm_inno712</computeroutput></member>
+	<member><computeroutput>rlm_liqcomp</computeroutput></member>
+	<member><computeroutput>rlm_live365</computeroutput></member>
+	<member><computeroutput>rlm_serial</computeroutput></member>
+	<member><computeroutput>rlm_shoutcast1</computeroutput></member>
+	<member><computeroutput>rlm_spottrap</computeroutput></member>
+	<member><computeroutput>rlm_tunein</computeroutput></member>
+	<member><computeroutput>rlm_udp</computeroutput></member>
+	<member><computeroutput>rlm_urlwrite</computeroutput></member>
+	<member><computeroutput>rlm_walltime</computeroutput></member>
+	<member><computeroutput>rlm_xds</computeroutput></member>
+	<member><computeroutput>rlm_xmpad</computeroutput></member>
+      </simplelist>
+      <para>
+	The formats of the configuration files used for these plug-ins are
+	unchanged under PyPAD. Thus, a &quot;known good&quot; configuration
+	file for an RLM can simply be copy/pasted into the
+	<computeroutput>Configuration</computeroutput> box in the
+	<computeroutput>Edit PyPAD Instance</computeroutput> dialog
+	when setting up its replacement PyPAD script.
+      </para>
+      <caution>
+	Be sure to remove completely the default &quot;sample&quot;
+	configuration entries before copy/pasting in the
+	&quot;known good&quot; ones!
+      </caution>
+      <sect4 xml:id="sect.rdadmin.moving_a_spinitron_rlm_configuration_to_pypad">
+	<title>Moving a Spinitron RLM Configuration to PyPAD</title> 
+	<para>
+	  In addition to the above, some of the functionality of the
+	  <computeroutput>rlm_spinitron_plus</computeroutput> RLM has
+	  been ported into the
+	  <computeroutput>pypad_spinitron</computeroutput> script.
+	  Specifically, support for the deprecated Spinitron v1 interface
+	  has been removed. Sites which have not yet transitioned to
+	  Spinitron v2 will need to do so in order to use this script.
+	  Sites which are already using Spinitron v2 can use their existing
+	  RLM configuration unchanged.
+	</para>
+      </sect4>
+    </sect3>
     </sect2>
   </sect1>
   <sect1 xml:id="sect.rdadmin.manage_system_settings">

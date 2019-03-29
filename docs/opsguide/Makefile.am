@@ -2,7 +2,7 @@
 ##
 ## docs/opsguide/automake.am for Rivendell
 ##
-## (C) Copyright 2017 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2017-2019 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -26,6 +26,7 @@ OPSGUIDE_HTML = appendix.filepath_wildcards.html\
                 appendix.rivendell_filter.html\
                 appendix.wings_filter.html\
                 chapter.overview.html\
+                chapter.pad.html\
                 chapter.rdadmin.html\
                 chapter.rdairplay.html\
                 chapter.rdcartslots.html\
@@ -282,6 +283,7 @@ OPSGUIDE_DEPS = $(OPSGUIDE_IMAGES) \
                 opsguide.xml\
                 overview.xml\
                 metadata_wildcards.xml\
+                pad.xml\
                 rdadmin.xml\
                 rdairplay.xml\
                 rdcartslots.xml\

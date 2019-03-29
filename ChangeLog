@@ -18555,3 +18555,6 @@
 	* Added a startup check for the 'rivendell' service.
 2019-03-22 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.0.0rc00.
+2019-03-28 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Program Associated Data' chapter to the Operations
+	Guide.
