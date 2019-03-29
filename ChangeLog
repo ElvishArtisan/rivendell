@@ -18558,3 +18558,5 @@
 2019-03-28 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'Program Associated Data' chapter to the Operations
 	Guide.
+2019-03-28 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a typo in the remarks in 'apis/pypad/scripts/pypad_serial.py'.
