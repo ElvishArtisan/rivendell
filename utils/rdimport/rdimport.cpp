@@ -244,7 +244,7 @@ MainObject::MainObject(QObject *parent)
       }
       rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(rda->cmdSwitch()->key(i)=="--set-daypart-times\n") {
+    if(rda->cmdSwitch()->key(i)=="--set-daypart-times") {
       QStringList f0=rda->cmdSwitch()->value(i).split(",");
       if(f0.size()!=2) {
 	Log(RDConfig::LogErr,QString("rdimport: invalid argument to --set-daypart-times\n"));

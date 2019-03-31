@@ -18560,3 +18560,6 @@
 	Guide.
 2019-03-28 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a typo in the remarks in 'apis/pypad/scripts/pypad_serial.py'.
+2019-03-31 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed a regression in rdimport(1) that broke the
+	"--set-daypart-times" argument.
