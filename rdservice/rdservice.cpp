@@ -55,6 +55,7 @@ MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
   QString err_msg;
+  RDApplication::ErrorType err_type=RDApplication::ErrorOk;
 
   //
   // Open the syslog
@@ -73,7 +74,7 @@ MainObject::MainObject(QObject *parent)
   // Open the Database
   //
   rda=new RDApplication("rdservice","rdservice","\n\n",this);
-  if(!rda->open(&err_msg)) {
+  if(!rda->open(&err_msg,&err_type,false)) {
     syslog(LOG_ERR,"unable to open database [%s]",
 	   (const char *)err_msg.utf8());
     exit(2);

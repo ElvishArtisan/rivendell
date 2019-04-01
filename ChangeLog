@@ -18560,3 +18560,8 @@
 	Guide.
 2019-03-28 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a typo in the remarks in 'apis/pypad/scripts/pypad_serial.py'.
+2019-04-01 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a race in rdservice(8) that could cause a deadlock
+	when starting on a system with many dropboxes configured.
+	* Fixed a bug in rdadmin(1) that caused a spurious error message
+	when started on a system with the 'rivendell' service inactive.

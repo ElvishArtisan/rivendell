@@ -111,7 +111,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Open the Database
   //
   rda=new RDApplication("RDAdmin","rdadmin",RDADMIN_USAGE,this);
-  if(!rda->open(&err_msg,&err_type)) {
+  if(!rda->open(&err_msg,&err_type,false)) {
     if(err_type!=RDApplication::ErrorNoHostEntry) {
       QMessageBox::critical(this,"RDAdmin - "+tr("Error"),err_msg);
       exit(1);
