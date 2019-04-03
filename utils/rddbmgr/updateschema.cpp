@@ -7089,8 +7089,8 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
 	    "COMMENT=\""+RDEscapeString(q1->value(21).toString())+"\","+
 	    "LABEL=\""+RDEscapeString(q1->value(22).toString())+"\","+
 	    "ORIGIN_USER=\""+RDEscapeString(q1->value(23).toString())+"\","+
-	    "ORIGIN_DATETIME=\""+q1->value(24).toDateTime().
-	    toString("yyyy-MM-dd hh:mm:ss")+"\","+
+	    "ORIGIN_DATETIME="+RDCheckDateTime(q1->value(24).toDateTime(),
+	    "yyyy-MM-dd hh:mm:ss")+","+
 	    QString().sprintf("EVENT_LENGTH=%d,",q1->value(25).toInt())+
 	    "LINK_EVENT_NAME=\""+RDEscapeString(q1->value(26).toString())+"\","+
 	    QString().sprintf("LINK_START_TIME=%d,",q1->value(27).toInt())+
@@ -7099,7 +7099,8 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
 	    QString().sprintf("LINK_END_SLOP=%d,",q1->value(30).toInt())+
 	    QString().sprintf("LINK_ID=%d,",q1->value(31).toInt())+
 	    "LINK_EMBEDDED=\""+RDEscapeString(q1->value(32).toString())+"\","+
-	    "EXT_START_TIME=\""+q1->value(33).toTime().toString("hh:mm:ss")+"\","+
+	    "EXT_START_TIME="+
+	    RDCheckDateTime(q1->value(33).toTime(),"hh:mm:ss")+","+
 	    QString().sprintf("EXT_LENGTH=%d,",q1->value(34).toInt())+
 	    "EXT_CART_NAME=\""+RDEscapeString(q1->value(35).toString())+"\","+
 	    "EXT_DATA=\""+RDEscapeString(q1->value(36).toString())+"\","+
@@ -7244,15 +7245,15 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
 	  "STATION_NAME=\""+RDEscapeString(q1->value(19).toString())+"\","+
 	  "EVENT_DATETIME=\""+RDEscapeString(q1->value(20).toDateTime().
 				     toString("yyyy-MM-dd hh:mm:ss"))+"\","+
-	  "SCHEDULED_TIME=\""+RDEscapeString(q1->value(21).toTime().
-					     toString("hh:mm:ss"))+"\","+
+	  "SCHEDULED_TIME="+
+	  RDCheckDateTime(q1->value(21).toTime(),"hh:mm:ss")+","+
 	  QString().sprintf("EVENT_TYPE=%d,",q1->value(22).toInt())+
 	  QString().sprintf("EVENT_SOURCE=%d,",q1->value(23).toInt())+
 	  QString().sprintf("PLAY_SOURCE=%d,",q1->value(24).toInt())+
 	  QString().sprintf("START_SOURCE=%d,",q1->value(25).toInt())+
 	  "ONAIR_FLAG=\""+RDEscapeString(q1->value(26).toString())+"\","+
-	  "EXT_START_TIME=\""+RDEscapeString(q1->value(27).toTime().
-					     toString("hh:mm:ss"))+"\","+
+	  "EXT_START_TIME="+
+	  RDCheckDateTime(q1->value(27).toTime(),"hh:mm:ss")+","+
 	  QString().sprintf("EXT_LENGTH=%d,",q1->value(28).toInt())+
 	  "EXT_CART_NAME=\""+RDEscapeString(q1->value(29).toString())+"\","+
 	  "EXT_DATA=\""+RDEscapeString(q1->value(30).toString())+"\","+

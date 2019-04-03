@@ -18565,3 +18565,7 @@
 	when starting on a system with many dropboxes configured.
 	* Fixed a bug in rdadmin(1) that caused a spurious error message
 	when started on a system with the 'rivendell' service inactive.
+2019-04-03 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rddbmgr(8) that caused SQL errors when updating
+	the DB schema when used with the RDBMS system configured to
+	disallow invalid datetime values.
