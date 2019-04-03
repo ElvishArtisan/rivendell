@@ -2,7 +2,7 @@
 //
 // Revert Rivendell DB schema
 //
-//   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -40,7 +40,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
   // NEW SCHEMA REVERSIONS GO HERE...
 
-  if((cur_schema==307)&&(set_schema>cur_schema)) {
+  if((cur_schema==307)&&(set_schema<cur_schema)) {
     DropColumn("EVENTS","ARTIST_SEP");
     sql="alter table `EVENTS` modify column `TITLE_SEP` int(10) unsigned";
     if(!RDSqlQuery::apply(sql,err_msg)) {

@@ -18569,3 +18569,5 @@
 	* Fixed a bug in rddbmgr(8) that caused SQL errors when updating
 	the DB schema when used with the RDBMS system configured to
 	disallow invalid datetime values.
+2019-04-03 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rddbmgr(8) that broke schema reverting.
