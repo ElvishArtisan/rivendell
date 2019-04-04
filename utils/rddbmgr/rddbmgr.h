@@ -42,7 +42,9 @@ class MainObject : public QObject
   //
   bool Check(QString *err_msg);
   void CheckTableAttributes();
-  void RewriteTable(const QString &tblname,const QString &old_charset,
+  void RewriteTable(const QString &tblname,
+		    const QString &old_charset,
+		    const QString &old_collation,
 		    const QString &new_charset,
 		    const QString &new_collation);
   void RelinkAudio(const QString &srcdir) const;

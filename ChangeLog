@@ -18571,3 +18571,6 @@
 	disallow invalid datetime values.
 2019-04-03 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rddbmgr(8) that broke schema reverting.
+2019-04-04 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rddbmgr(8) that could cause database corruption
+	when altering a table's charset/collation.

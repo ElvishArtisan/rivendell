@@ -163,8 +163,9 @@ void MainObject::CheckTableAttributes()
 	     (const char *)q->value(2).toString().toUtf8());
       fflush(NULL);
       if(UserResponse()) {
-	RewriteTable(q->value(0).toString(),charset,"utf8mb4",
-		     "utf8mb4_general_ci");
+	RewriteTable(q->value(0).toString(),
+		     charset,q->value(2).toString(),
+		     "utf8mb4","utf8mb4_general_ci");
       }
     }
   }
@@ -199,7 +200,9 @@ void MainObject::CheckTableAttributes()
 }
 
 
-void MainObject::RewriteTable(const QString &tblname,const QString &old_charset,
+void MainObject::RewriteTable(const QString &tblname,
+			      const QString &old_charset,
+			      const QString &old_collation,
 			      const QString &new_charset,
 			      const QString &new_collation)
 {
@@ -210,6 +213,7 @@ void MainObject::RewriteTable(const QString &tblname,const QString &old_charset,
     return;
   }
   QString filename=tempdir+"/table.sql";
+  QString temp_filename=tempdir+"/table-temp.sql";
   QString out_filename=tempdir+"/table-out.sql";
   /*
   printf("table \"%s\" using: %s\n",
@@ -236,11 +240,23 @@ void MainObject::RewriteTable(const QString &tblname,const QString &old_charset,
   delete proc;
 
   //
-  // Modify Dump
+  // Modify COLLATION
+  //
+  args.clear();
+  args.push_back("s/"+old_collation+"/"+new_collation+"/g");
+  args.push_back(filename);
+  proc=new QProcess(this);
+  proc->setStandardOutputFile(temp_filename);
+  proc->start("sed",args);
+  proc->waitForFinished(-1);
+  delete proc;
+
+  //
+  // Modify CHARSET
   //
   args.clear();
   args.push_back("s/"+old_charset+"/"+new_charset+"/g");
-  args.push_back(filename);
+  args.push_back(temp_filename);
   proc=new QProcess(this);
   proc->setStandardOutputFile(out_filename);
   proc->start("sed",args);
@@ -267,6 +283,7 @@ void MainObject::RewriteTable(const QString &tblname,const QString &old_charset,
   // Clean Up
   //
   unlink(filename.toUtf8());
+  unlink(temp_filename.toUtf8());
   unlink(out_filename.toUtf8());
   rmdir(tempdir);
 }
