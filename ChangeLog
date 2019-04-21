@@ -18574,3 +18574,6 @@
 2019-04-04 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rddbmgr(8) that could cause database corruption
 	when altering a table's charset/collation.
+2019-04-21 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed a bug in rdlogmanager(1) that could corrupt the
+	'CLOCK_LINES' table when renaming an event.
