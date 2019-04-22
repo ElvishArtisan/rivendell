@@ -18574,3 +18574,5 @@
 2019-04-04 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rddbmgr(8) that could cause database corruption
 	when altering a table's charset/collation.
+2019-04-22 Fred Gleason <fredg@paravelsystems.com>
+	* Added a commented out debug printf the in 'RDSqlQuery' constructor.

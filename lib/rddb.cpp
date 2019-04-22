@@ -61,6 +61,7 @@ RDSqlQuery::RDSqlQuery (const QString &query,bool reconnect):
   }
 
   if(isActive()) {
+    //printf("QUERY: %s\n",(const char *)query.toUtf8());
     QStringList f0=query.split(" ");
     if(f0[0].toLower()=="select") {
       for(int i=1;i<f0.size();i++) {
