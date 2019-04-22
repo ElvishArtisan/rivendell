@@ -18582,3 +18582,6 @@
 2019-04-22 Patrick Linstruth <patrick@deltecent.com>
 	* Fixed a regression in rdimport(1) that broke the
 	"--set-daypart-times" argument.
+2019-04-22 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed a regression that broke clock scheduler rules
+	in rdlogmanager(1).
