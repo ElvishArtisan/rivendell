@@ -19,7 +19,7 @@
 ##
 
 # So python bytecompilation works correctly
-%define __python @PYTHON@
+%define __python /usr/bin/python3.4
 
 Summary: Radio Broadcast Automation System
 Name: rivendell
@@ -109,6 +109,7 @@ associated with.
 
 
 %build
+export PYTHON=/usr/bin/python3.4
 %configure --libexecdir=@libexecdir@ --sysconfdir=@sysconfdir@ @RDXPORTDEBUG@
 make -j 10
 

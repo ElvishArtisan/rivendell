@@ -18576,3 +18576,6 @@
 	when altering a table's charset/collation.
 2019-04-22 Fred Gleason <fredg@paravelsystems.com>
 	* Added a commented out debug printf the in 'RDSqlQuery' constructor.
+2019-04-22 Fred Gleason <fredg@paravelsystems.com>
+	* Modified 'rivendell.spec.in' to pin the Python version used on
+	RHEL 7 to 3.4.

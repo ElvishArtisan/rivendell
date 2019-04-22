@@ -3,7 +3,7 @@ dnl
 dnl Autoconf configuration for Rivendell.
 dnl Use autoconf to process this into a configure script
 dnl
-dnl   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+dnl   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 dnl
 dnl   This program is free software; you can redistribute it and/or modify
 dnl   it under the terms of the GNU General Public License version 2 as
@@ -251,6 +251,7 @@ AC_CHECK_HEADER(soundtouch/SoundTouch.h,[],[AC_MSG_ERROR([*** SoundTouch not fou
 # Check for Python
 #
 AM_PATH_PYTHON([3])
+AC_SUBST(PYTHON_BASE_DEP,"python"`echo $PYTHON_VERSION | sed -e s/3./3/`)
 
 #
 # Check for runuser(1)
