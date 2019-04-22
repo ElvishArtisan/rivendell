@@ -316,8 +316,6 @@ void ListEvents::renameData()
 {
   QString sql;
   RDSqlQuery *q;
-  RDSqlQuery *q1;
-  QString clock_name_esc;
   Q3ListViewItem *item=edit_events_list->selectedItem();
   if(item==NULL) {
     return;
@@ -333,27 +331,20 @@ void ListEvents::renameData()
   //
   // Rename Clock References
   //
-  sql="select NAME from CLOCKS";
+  sql=QString("update CLOCK_LINES set ")+
+    "EVENT_NAME=\""+RDEscapeString(new_name)+"\" where "+
+    "EVENT_NAME=\""+RDEscapeString(item->text(0))+"\"";
   q=new RDSqlQuery(sql);
-  while(q->next()) {
-    clock_name_esc=q->value(0).toString();
-    clock_name_esc.replace(" ","_");
-    sql=QString("update CLOCK_LINES set ")+
-      "CLOCK_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
-      "EVENT_NAME=\""+RDEscapeString(new_name)+"\" where "+
-      "EVENT_NAME=\""+RDEscapeString(item->text(0))+"\"";
-    q1=new RDSqlQuery(sql);
-    delete q1;
-  }
   delete q;
 
   //
-  // Rename Event Data
+  // Rename Event Line References
   //
   sql=QString("update EVENT_LINES set ")+
     "EVENT_NAME=\""+RDEscapeString(new_name)+"\" where "+
     "EVENT_NAME=\""+RDEscapeString(item->text(0))+"\"";
-  RDSqlQuery::apply(sql);
+  q=new RDSqlQuery(sql);
+  delete q;
 
   //
   // Rename Service Permissions

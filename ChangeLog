@@ -18585,3 +18585,6 @@
 2019-04-22 Patrick Linstruth <patrick@deltecent.com>
 	* Fixed a regression that broke clock scheduler rules
 	in rdlogmanager(1).
+2019-04-22 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed a bug in rdlogmanager(1) that could corrupt the
+	'CLOCK_LINES' table when renaming an event.
