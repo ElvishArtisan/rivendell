@@ -22,6 +22,7 @@
 #define SCHEDCARTLIST_H
 
 #include <qsqldatabase.h>
+#include <qstringlist.h>
 
 class SchedCartList
 {
@@ -32,8 +33,9 @@ class SchedCartList
    void removeItem(int itemnumber);
    bool removeIfCode(int itemnumber,QString test_code);
    bool itemHasCode(int itemnumber,QString test_code);
-   unsigned getItemCartnumber(int itemnumber);
-   int getItemCartlength(int itemnumber);
+   bool itemHasCodes(int itemnumber,QStringList test_codes);
+   unsigned getItemCartNumber(int itemnumber);
+   int getItemCartLength(int itemnumber);
    int getItemStackid(int itemnumber);
    QString getItemArtist(int itemnumber);
    QString getItemSchedCodes(int itemnumber);
