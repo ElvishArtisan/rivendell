@@ -1,8 +1,9 @@
-// schedcartlist.h
+// rdschedcartlist.h
 //
 // A class for handling carts to be used in scheduler
 //
-//   Stefan Gabriel <stg@st-gabriel.de>
+//   Copyright (C) 2005 Stefan Gabriel <stg@st-gabriel.de>
+//   Copyright (C) 2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,45 +19,44 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef SCHEDCARTLIST_H
-#define SCHEDCARTLIST_H
+#ifndef RDSCHEDCARTLIST_H
+#define RDSCHEDCARTLIST_H
 
-#include <qsqldatabase.h>
+#include <qlist.h>
 #include <qstringlist.h>
 
-class SchedCartList
+class RDSchedCartList
 {
   public:
-   SchedCartList(int listsize);
-   ~SchedCartList();
-   void insertItem(unsigned cartnumber,int cartlength,int stack_id,QString stack_artist,QString stack_schedcodes);
+   RDSchedCartList();
+   void insertItem(unsigned cartnumber,int cartlength,int stack_id,
+		   const QString &stack_artist,
+		   const QStringList &stack_schedcodes);
    void removeItem(int itemnumber);
-   bool removeIfCode(int itemnumber,QString test_code);
-   bool itemHasCode(int itemnumber,QString test_code);
-   bool itemHasCodes(int itemnumber,QStringList test_codes);
+   bool removeIfCode(int itemnumber,const QString &test_code);
+   bool itemHasCode(int itemnumber,const QString &test_code);
+   bool itemHasCodes(int itemnumber,const QStringList &test_codes);
    unsigned getItemCartNumber(int itemnumber);
    int getItemCartLength(int itemnumber);
    int getItemStackid(int itemnumber);
    QString getItemArtist(int itemnumber);
-   QString getItemSchedCodes(int itemnumber);
+   QStringList getItemSchedCodes(int itemnumber);
    int getNumberOfItems(void);
    void save(void);
    void restore(void);
    
   private:
-   int itemcounter;
-   int saveitemcounter;
-   unsigned* cartnum;
-   unsigned* savecartnum;
-   int* cartlen;
-   int* savecartlen;
-   int* stackid;
-   int* savestackid;
-   QString* saveartist;
-   QString* artist;
-   QString* sched_codes;
-   QString* save_sched_codes;
+   QList<unsigned> list_cartnum;
+   QList<unsigned> list_savecartnum;
+   QList<int> list_cartlen;
+   QList<int> list_savecartlen;
+   QList<int> list_stackid;
+   QList<int> list_savestackid;
+   QStringList list_artist;
+   QStringList list_saveartist;
+   QList<QStringList> list_schedcodes;
+   QList<QStringList> list_saveschedcodes;
 };
 
 
-#endif 
+#endif  // RDSCHEDCARTLIST_H

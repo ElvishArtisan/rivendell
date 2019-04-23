@@ -31,7 +31,7 @@
 #include <q3textedit.h>
 
 #include <rdclock.h>
-#include <schedruleslist.h>
+#include <rdschedruleslist.h>
 
 #include "clock_listview.h"
 
@@ -93,7 +93,7 @@ class EditClock : public QDialog
   QString edit_name;
   bool edit_new_clock;
   std::vector<QString> *edit_new_clocks;
-  SchedRulesList* sched_rules_list;
+  RDSchedRulesList* sched_rules_list;
   Q3TextEdit *edit_remarks_edit;
 };
 

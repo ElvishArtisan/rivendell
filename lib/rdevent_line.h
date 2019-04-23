@@ -65,7 +65,7 @@ class RDEventLine
   void setDefaultTransType(RDLogLine::TransType trans);
   QColor color() const;
   void setColor(const QColor &color);
-  QString SchedGroup() const;
+  QString schedGroup() const;
   void setSchedGroup(QString str);
   QString HaveCode() const;
   void setHaveCode(QString str);

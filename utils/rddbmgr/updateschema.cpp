@@ -2,7 +2,7 @@
 //
 // Update Rivendell DB schema.
 //
-//   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -9699,6 +9699,40 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
 
     WriteSchemaVersion(++cur_schema);
   }
+
+  if((cur_schema<308)&&(set_schema>cur_schema)) {
+    sql=QString("create table if not exists STACK_SCHED_CODES (")+
+      "ID int auto_increment not null primary key,"+
+      "STACK_LINES_ID int unsigned,"+
+      "SCHED_CODE varchar(10),"+
+      "index SCHED_CODE_IDX(SCHED_CODE))"+
+      " charset utf8mb4 collate utf8mb4_general_ci"+
+      db_table_create_postfix;
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("select ")+
+      "ID,"+          // 00
+      "SCHED_CODES "  // 01
+      "from STACK_LINES";
+    q=new RDSqlQuery(sql,false);
+    while(q->next()) {
+      QStringList f0=q->value(1).toString().split(" ",QString::SkipEmptyParts);
+      for(int i=0;i<f0.size();i++) {
+	if((!f0.at(i).trimmed().isEmpty())&&(f0.at(i).trimmed()!=".")) {
+	  sql=QString("insert into STACK_SCHED_CODES set ")+
+	    QString().sprintf("STACK_LINES_ID=%u,",q->value(0).toUInt())+
+	    "SCHED_CODE=\""+RDEscapeString(f0.at(i).trimmed())+"\"";
+	  RDSqlQuery::apply(sql,err_msg);
+	}
+      }
+    }
+    delete q;
+    DropColumn("STACK_LINES","SCHED_CODES",err_msg);
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
 
   // NEW SCHEMA UPDATES GO HERE...
 

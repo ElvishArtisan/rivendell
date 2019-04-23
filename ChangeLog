@@ -18588,3 +18588,10 @@
 2019-04-22 Patrick Linstruth <patrick@deltecent.com>
 	* Fixed a bug in rdlogmanager(1) that could corrupt the
 	'CLOCK_LINES' table when renaming an event.
+2019-04-23 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'STACK_SCHED_CODES' table to the database.
+	* Dropped the 'STACK_LINES.SCHED_CODES' field from the database.
+	* Incremented the database version to 308.
+	* Renamed the 'SchedCartList' class to 'RDSchedCartList' and
+	refactored it to be idiomatic Qt.
+	* Renamed the 'SchedRulesList' class to 'RDSchedRulesList'.

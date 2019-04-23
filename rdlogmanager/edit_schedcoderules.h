@@ -3,7 +3,7 @@
 // Change rules for scheduler codes dialog
 //
 //   (C) Copyright Stefan Gabriel <stg@st-gabriel.de>
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,7 +28,7 @@
 #include <qcombobox.h>
 #include <qvariant.h>
 
-#include <schedruleslist.h>
+#include <rdschedruleslist.h>
 
 #include "clock_listview.h"
 
@@ -38,7 +38,7 @@ class editSchedCodeRules : public QDialog
 {
   Q_OBJECT
  public:
-  editSchedCodeRules(Q3ListViewItem *item, SchedRulesList *sched_rules_list,
+  editSchedCodeRules(Q3ListViewItem *item, RDSchedRulesList *sched_rules_list,
 		     QWidget *parent=0);
   ~editSchedCodeRules();
   QSize sizeHint() const;

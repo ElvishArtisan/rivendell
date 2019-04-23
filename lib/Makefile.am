@@ -196,8 +196,10 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdreport.cpp rdreport.h\
                         rdringbuffer.cpp rdringbuffer.h\
                         rdripc.cpp rdripc.h\
+                        rdschedcartlist.cpp rdschedcartlist.h\
                         rdschedcode.cpp rdschedcode.h\
                         rdschedcodes_dialog.cpp rdschedcodes_dialog.h\
+                        rdschedruleslist.cpp rdschedruleslist.h\
                         rdsegmeter.cpp rdsegmeter.h\
                         rdsettings.cpp rdsettings.h\
                         rdsimpleplayer.cpp rdsimpleplayer.h\
@@ -237,9 +239,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdwavepainter.cpp rdwavepainter.h\
                         rdweb.cpp rdweb.h\
                         rdwebresult.cpp rdwebresult.h\
-                        rdxport_interface.h\
-                        schedruleslist.cpp schedruleslist.h\
-                        schedcartlist.cpp schedcartlist.h
+                        rdxport_interface.h
 
 
 nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
@@ -332,8 +332,7 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdunixserver.cpp\
                           moc_rdunixsocket.cpp\
                           moc_rdupload.cpp\
-                          moc_rdwavedata_dialog.cpp\
-                          moc_schedcartlist.cpp
+                          moc_rdwavedata_dialog.cpp
 
 librd_la_LDFLAGS = -release $(VERSION)
 

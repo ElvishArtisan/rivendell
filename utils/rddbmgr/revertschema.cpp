@@ -40,6 +40,58 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
   // NEW SCHEMA REVERSIONS GO HERE...
 
+  //
+  // Revert 308
+  //
+  if((cur_schema==308)&&(set_schema<cur_schema)) {
+    sql=QString("alter table STACK_LINES add column ")+
+      "SCHED_CODES varchar(191) not null after ARTIST";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    /*
+    sql=QString("create index SCHED_STACK_ID_IDX on STACK_LINES ")+
+      "(SERVICE_NAME,SCHED_STACK_ID,SCHED_CODES)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    */
+    QString codes="";
+    sql=QString("select ")+
+      "ID "  // 00
+      "from STACK_LINES";
+    q=new RDSqlQuery(sql,false);
+    while(q->next()) {
+      sql=QString("select ")+
+	"SCHED_CODE "      // 00
+	"from STACK_SCHED_CODES where "+
+	QString().sprintf("STACK_LINES_ID=%u",q->value(0).toUInt());
+      q1=new RDSqlQuery(sql,false);
+      while(q1->next()) {
+	codes+=q1->value(0).toString();
+	while((codes.length()%10)!=0) {
+	  codes+=" ";
+	}
+      }
+      delete q1;
+      codes+=".";
+      sql=QString("update STACK_LINES set ")+
+	"SCHED_CODES=\""+RDEscapeString(codes)+"\" where "+
+	QString().sprintf("ID=%u",q->value(0).toUInt());
+      if(!RDSqlQuery::apply(sql,err_msg)) {
+	return false;
+      }
+      codes="";
+    }
+    delete q;
+    DropTable("STACK_SCHED_CODES",err_msg);
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
+  // Revert 307
+  //
   if((cur_schema==307)&&(set_schema<cur_schema)) {
     DropColumn("EVENTS","ARTIST_SEP");
     sql="alter table `EVENTS` modify column `TITLE_SEP` int(10) unsigned";

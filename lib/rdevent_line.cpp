@@ -27,7 +27,7 @@
 #include "rdevent.h"
 #include "rdevent_line.h"
 #include "rdeventimportlist.h"
-#include "schedcartlist.h"
+#include "rdschedcartlist.h"
 
 RDEventLine::RDEventLine(RDStation *station)
 {
@@ -222,7 +222,7 @@ void RDEventLine::setColor(const QColor &color)
 }
 
 
-QString RDEventLine::SchedGroup() const
+QString RDEventLine::schedGroup() const
 {
   return event_sched_group;
 }
@@ -633,16 +633,17 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
     sql=QString("select NUMBER,ARTIST,")+
       "CONCAT(GROUP_CONCAT(RPAD(SC.SCHED_CODE,11,' ') separator ''),'.') as SCHED_CODES"+
       " from CART LEFT JOIN CART_SCHED_CODES AS SC on (NUMBER=SC.CART_NUMBER)"+
-      " where GROUP_NAME='"+RDEscapeString(SchedGroup())+"'"+
+      " where GROUP_NAME='"+RDEscapeString(schedGroup())+"'"+
       " group by NUMBER";
+    RDSchedCartList *schedCL=new RDSchedCartList();
     q=new RDSqlQuery(sql);
-    int querysize=(int)q->size();
-    SchedCartList *schedCL;
-    schedCL=new SchedCartList(querysize);
-
-    for(counter=0;counter<querysize;counter++) {
-      q->seek(counter);
-      schedCL->insertItem(q->value(0).toUInt(),0,0,q->value(1).toString(),q->value(2).toString());
+    while(q->next()) {
+      QStringList codes=q->value(2).toString().split(" ",QString::SkipEmptyParts);
+      if((codes.size()>0)&&(codes.last()==".")) {
+	codes.removeLast();
+      }
+      schedCL->
+	insertItem(q->value(0).toUInt(),0,0,q->value(1).toString(),codes);
     }
     delete q;
       
@@ -748,10 +749,18 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 	QString wstr=q->value(0).toString();
 	wstr+="          ";
 	wstr=wstr.left(11);
+	sql=QString("select STACK_LINES.CART ")+
+	  "from STACK_LINES left join STACK_SCHED_CODES "+
+	  "on STACK_LINES.ID=STACK_SCHED_CODES.STACK_LINES_ID where "+
+	  "STACK_LINES.SERVICE_NAME=\""+RDEscapeString(svcname)+"\" && "+
+	  QString().sprintf("STACK_LINES.SCHED_STACK_ID > %d && ",stackid-range)+
+	  "STACK_SCHED_CODES.SCHED_CODE=\""+RDEscapeString(wstr)+"\"";
+	/*
 	sql=QString("select CART from STACK_LINES where ")+
 	  "SERVICE_NAME=\""+RDEscapeString(svcname)+"\" && "+
 	  QString().sprintf("SCHED_STACK_ID > %d && ",stackid-range)+
 	  "SCHED_CODES like \"%%"+RDEscapeString(wstr)+"%%\"";
+	*/
 	q1=new RDSqlQuery(sql);
 	if(q1->size()>=allowed || allowed==0) {
 	  for(counter=0;counter<schedCL->getNumberOfItems();counter++) {
@@ -774,10 +783,18 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 	  QString wstr=q->value(3).toString();
 	  wstr+="          ";
 	  wstr=wstr.left(11);
+	  sql=QString("select STACK_LINES.CART ")+
+	    "from STACK_LINES left join STACK_SCHED_CODES "+
+	    "on STACK_LINES.ID=STACK_SCHED_CODES.STACK_LINES_ID where "+
+	    "STACK_LINES.SERVICE_NAME=\""+RDEscapeString(svcname)+"\" && "+
+	    QString().sprintf("STACK_LINES.SCHED_STACK_ID=%d && ",stackid-1)+
+	    "STACK_SCHED_CODES.SCHED_CODE=\""+RDEscapeString(wstr)+"\"";
+	  /*
 	  sql=QString("select CART from STACK_LINES where ")+
 	    "SERVICE_NAME=\""+RDEscapeString(svcname)+"\" && "+
 	    QString().sprintf("SCHED_STACK_ID=%d && ",stackid-1)+
 	    "SCHED_CODES like \"%"+RDEscapeString(wstr)+"%\"";
+	  */
 	  q1=new RDSqlQuery(sql);
 	  if(q1->size()>0) {
 	    for(counter=0;counter<schedCL->getNumberOfItems();counter++) {
@@ -801,9 +818,16 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 	  QString wstr=q->value(4).toString();
 	  wstr+="          ";
 	  wstr=wstr.left(11);
+	  sql=QString("select STACK_LINES.CART ")+
+	    "from STACK_LINES left join STACK_SCHED_CODES "+
+	    "on STACK_LINES.ID=STACK_SCHED_CODES.STACK_LINES_ID where "+
+	    QString().sprintf("STACK_LINES.SCHED_STACK_ID=%d && ",stackid-1)+
+	    "STACK_SCHED_CODES.SCHED_CODE=\""+RDEscapeString(wstr)+"\"";
+	  /*
 	  sql=QString("select CART from STACK_LINES where ")+
 	    QString().sprintf("SCHED_STACK_ID=%d && ",stackid-1)+
 	    "SCHED_CODES like \"%"+RDEscapeString(wstr)+"%\"";
+	  */
 	  q1=new RDSqlQuery(sql);
 	  if(q1->size()>0) {	
 	    for(counter=0;counter<schedCL->getNumberOfItems();counter++) {
@@ -827,9 +851,16 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 	  QString wstr=q->value(5).toString();
 	  wstr+="          ";
 	  wstr=wstr.left(11);
+	  sql=QString("select STACK_LINES.CART ")+
+	    "from STACK_LINES left join STACK_SCHED_CODES "+
+	    "on STACK_LINES.ID=STACK_SCHED_CODES.STACK_LINES_ID where "+
+	    QString().sprintf("STACK_LINES.SCHED_STACK_ID=%d && ",stackid-1)+
+	    "STACK_SCHED_CODES.SCHED_CODE=\""+RDEscapeString(wstr)+"\"";
+	  /*
 	  sql=QString("select CART from STACK_LINES where ")+
 	    QString().sprintf("SCHED_STACK_ID=%d && ",stackid-1)+
 	    "SCHED_CODES like \"%"+RDEscapeString(wstr)+"%\"";
+	  */
 	  q1=new RDSqlQuery(sql);
 	  if(q1->size()>0) {
 	    for(counter=0;counter<schedCL->getNumberOfItems();counter++) {
@@ -885,18 +916,34 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 	"SCHEDULED_AT=now(),"+
 	QString().sprintf("SCHED_STACK_ID=%u,",stackid)+
 	QString().sprintf("CART=%u,",schedCL->getItemCartNumber(schedpos))+
+	"ARTIST=\""+RDEscapeString(schedCL->getItemArtist(schedpos))+"\"";
+      unsigned line_id=RDSqlQuery::run(sql).toUInt();
+      QStringList codes=schedCL->getItemSchedCodes(schedpos);
+      for(int i=0;i<codes.size();i++) {
+	sql=QString("insert into STACK_SCHED_CODES set ")+
+	  QString().sprintf("STACK_LINES_ID=%u,",line_id)+
+	  "SCHED_CODE=\""+RDEscapeString(codes.at(i))+"\"";
+	RDSqlQuery::apply(sql);
+      }
+      /*
+      sql=QString("insert into STACK_LINES set ")+
+	"SERVICE_NAME=\""+RDEscapeString(svcname)+"\","+
+	"SCHEDULED_AT=now(),"+
+	QString().sprintf("SCHED_STACK_ID=%u,",stackid)+
+	QString().sprintf("CART=%u,",schedCL->getItemCartNumber(schedpos))+
 	"ARTIST=\""+RDEscapeString(schedCL->getItemArtist(schedpos))+"\","+
 	"SCHED_CODES=\""+RDEscapeString(schedCL->getItemSchedCodes(schedpos))+
 	"\"";
       q=new RDSqlQuery(sql);
       delete q;
+      */
 
       delete schedCL;
     }
     else {
       // We don't have any carts to work with
       *report+=time.toString("hh:mm:ss")+
-        " "+QObject::tr("No carts found in group")+" "+SchedGroup();
+        " "+QObject::tr("No carts found in group")+" "+schedGroup();
       if(!HaveCode().isEmpty()) {
         *report+=QObject::tr(" with sched code(s): ")+HaveCode()+" "+HaveCode2();
       }
