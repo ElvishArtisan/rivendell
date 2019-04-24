@@ -68,7 +68,6 @@ ListReports::ListReports(const QString &filter,const QString &type_filter,
   list_reports_box->setGeometry(50,10,sizeHint().width()-60,19);
   list_reports_box->insertItem(tr("Cart Report"));
   list_reports_box->insertItem(tr("Cut Report"));
-  list_reports_box->insertItem(tr("Cart Data Dump (fixed width)"));
   list_reports_box->insertItem(tr("Cart Data Dump (CSV)"));
   list_reports_label=new QLabel(list_reports_box,tr("Type:"),this);
   list_reports_label->setGeometry(10,10,35,19);
@@ -151,11 +150,7 @@ void ListReports::generateData()
     GenerateCutReport(&report);
     break;
 
-  case 2:  // Cart Data Dump (fixed)
-    GenerateCartDumpFixed(&report,list_fieldnames_check->isChecked());
-    break;
-
-  case 3:  // Cart Data Dump (CSV)
+  case 2:  // Cart Data Dump (CSV)
     GenerateCartDumpCsv(&report,list_fieldnames_check->isChecked());
     break;
 
@@ -529,174 +524,6 @@ void ListReports::GenerateCutReport(QString *report)
 
     current_cart=q->value(0).toUInt();
   }
-  delete q;
-}
-
-
-void ListReports::GenerateCartDumpFixed(QString *report,bool prepend_names)
-{
-  QString sql;
-  RDSqlQuery *q;
-  QString schedcode="";
-
-  if(list_schedcode!=tr("ALL")) {
-    schedcode=list_schedcode;
-  }
-
-  //
-  // Prepend Field Names
-  //
-  if(prepend_names) {
-    *report="CART  |";
-    *report+="CUT|";
-    *report+="GROUP_NAME|";
-    *report+="TITLE                                                                                                                                                                                                                                                          |";
-    *report+="ARTIST                                                                                                                                                                                                                                                         |";
-    *report+="ALBUM                                                                                                                                                                                                                                                          |";
-    *report+="YEAR|";
-    *report+="ISRC        |";
-    *report+="LABEL                                                           |";
-    *report+="CLIENT                                                          |";
-    *report+="AGENCY                                                          |";
-    *report+="PUBLISHER                                                       |";
-    *report+="COMPOSER                                                        |";
-    *report+="USER_DEFINED                                                                                                                                                                                                                                                   |";
-    *report+="LENGTH   |\n";
-  }
-
-  //
-  // Generate Rows
-  //
-  if(list_type_filter.isEmpty()) {
-    return;
-  }
-  sql=QString("select ")+
-    "CUTS.CUT_NAME,"+      // 00
-    "CART.GROUP_NAME,"+    // 01
-    "CART.TITLE,"+         // 02
-    "CART.ARTIST,"+        // 03
-    "CART.ALBUM,"+         // 04
-    "CART.YEAR,"+          // 05
-    "CUTS.ISRC,"+          // 06
-    "CART.LABEL,"+         // 07
-    "CART.CLIENT,"+        // 08
-    "CART.AGENCY,"+        // 09
-    "CART.PUBLISHER,"+     // 10
-    "CART.COMPOSER,"+      // 11
-    "CART.USER_DEFINED,"+  // 12
-    "CUTS.LENGTH "+        // 13
-    "from CART join CUTS "+
-    "on CART.NUMBER=CUTS.CART_NUMBER ";
-  if(list_group==QString("ALL")) {
-    sql+=RDAllCartSearchText(list_filter,schedcode,rda->user()->name(),true)+" && "+
-      list_type_filter+" order by CUTS.CUT_NAME";
-  }
-  else {
-    sql+=RDCartSearchText(list_filter,list_group,schedcode,true)+" && "+
-      list_type_filter+" order by CUTS.CUT_NAME";
-  }
-  q=new RDSqlQuery(sql);
-  while(q->next()) {
-    //
-    // Cart Number
-    //
-    *report+=QString().sprintf("%-6s|",(const char *)q->value(0).toString().
-			       utf8().left(6));
-
-    //
-    // Cut Number
-    //
-    *report+=
-      QString().sprintf("%-3s|",(const char *)q->value(0).toString().right(3));
-
-    //
-    // Group Name
-    //
-    *report+=QString().sprintf("%-10s|",(const char *)q->value(1).toString().
-			       utf8());
-
-    //
-    // Title
-    //
-    *report+=QString().sprintf("%-255s|",(const char *)q->value(2).toString().
-			       utf8());
-
-    //
-    // Artist
-    //
-    *report+=QString().sprintf("%-255s|",(const char *)q->value(3).toString().
-			       utf8());
-
-    //
-    // Album
-    //
-    *report+=QString().sprintf("%-255s|",(const char *)q->value(4).toString().
-			       utf8());
-
-    //
-    // Year
-    //
-    if(q->value(5).toDate().isNull()) {
-      *report+="    |";
-    }
-    else {
-      *report+=QString().sprintf("%4d|",q->value(5).toDate().year());
-    }
-
-    //
-    // ISRC
-    //
-    *report+=QString().sprintf("%-12s|",(const char *)q->value(6).toString().
-			       utf8());
-
-    //
-    // Label
-    //
-    *report+=QString().sprintf("%-64s|",(const char *)q->value(7).toString().
-			       utf8());
-
-    //
-    // Client
-    //
-    *report+=QString().sprintf("%-64s|",(const char *)q->value(8).toString().
-			       utf8());
-
-    //
-    // Agency
-    //
-    *report+=QString().sprintf("%-64s|",(const char *)q->value(9).toString().
-			       utf8());
-
-    //
-    // Publisher
-    //
-    *report+=QString().sprintf("%-64s|",(const char *)q->value(10).toString().
-			       utf8());
-
-    //
-    // Composer
-    //
-    *report+=QString().sprintf("%-64s|",(const char *)q->value(11).toString().
-			       utf8());
-
-    //
-    // User Defined
-    //
-    *report+=QString().sprintf("%-255s|",(const char *)q->value(12).toString().
-			       utf8());
-
-    //
-    // Length
-    //
-    *report+=QString().sprintf("%9s|",
-	     (const char *)RDGetTimeLength(q->value(13).toInt(),true,true));
-
-    //
-    // End of Line
-    //
-    *report+="\n";
-  }
-
   delete q;
 }
 

@@ -46,7 +46,6 @@ class ListReports : public QDialog
  private:
   void GenerateCartReport(QString *report);
   void GenerateCutReport(QString *report);
-  void GenerateCartDumpFixed(QString *report,bool prepend_names);
   void GenerateCartDumpCsv(QString *report,bool prepend_names);
   QString CsvField(QString str) const;
   QLabel *list_reports_label;

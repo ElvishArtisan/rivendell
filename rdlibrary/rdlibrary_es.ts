@@ -1073,10 +1073,6 @@ Notas</translation>
         <translation type="unfinished">TODAS</translation>
     </message>
     <message>
-        <source>Cart Data Dump (fixed width)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Cart Data Dump (CSV)</source>
         <translation type="unfinished"></translation>
     </message>

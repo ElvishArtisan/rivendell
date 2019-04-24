@@ -18602,3 +18602,6 @@
 2019-04-24 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdlibrary(1) that broke the 'Cart Data Dump (CSV)'
 	report.
+2019-04-24 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'Cart Data Dump (fixed width)' report from
+	rdlibrary(1).
