@@ -341,7 +341,7 @@ void ListReports::GenerateCutReport(QString *report)
   *report=RDReport::center("Rivendell Cut Report",132)+"\n";
   *report+=RDReport::center(QString("Generated: ")+
 			    QDateTime::currentDateTime().toString("MM/dd/yyyy - hh:mm:ss")+"     Group: "+list_group+"     Filter: "+filter,132)+"\n";
-  *report+="-Cart- Cut Wht -Cart Title-------------- -Description--- -Len- Last Play Plays Start Date End Date -Days of Week- -Daypart-----------\n";
+  *report+="-Cart- Cut W/O- -Cart Title-------------- -Description-- -Len- Last Play Plays Start Date End Date -Days of Week- -Daypart-----------\n";
 
   //
   // Generate Rows
@@ -352,32 +352,34 @@ void ListReports::GenerateCutReport(QString *report)
   sql=QString("select ")+
     "CART.NUMBER,"+              // 00
     "CUTS.CUT_NAME,"+            // 01
-    "CUTS.WEIGHT,"+              // 02
-    "CART.TITLE,"+               // 03
-    "CUTS.DESCRIPTION,"+         // 04
-    "CUTS.LENGTH,"+              // 05
-    "CUTS.LAST_PLAY_DATETIME,"+  // 06
-    "CUTS.PLAY_COUNTER,"+        // 07
-    "CUTS.START_DATETIME,"+      // 08
-    "CUTS.END_DATETIME,"+        // 09
-    "CUTS.SUN,"+                 // 10
-    "CUTS.MON,"+                 // 11
-    "CUTS.TUE,"+                 // 12
-    "CUTS.WED,"+                 // 13
-    "CUTS.THU,"+                 // 14
-    "CUTS.FRI,"+                 // 15
-    "CUTS.SAT,"+                 // 16
-    "CUTS.START_DAYPART,"+       // 17
-    "CUTS.END_DAYPART "+         // 18
+    "CART.USE_WEIGHTING,"+       // 02
+    "CUTS.PLAY_ORDER,"+          // 03
+    "CUTS.WEIGHT,"+              // 04
+    "CART.TITLE,"+               // 05
+    "CUTS.DESCRIPTION,"+         // 06
+    "CUTS.LENGTH,"+              // 07
+    "CUTS.LAST_PLAY_DATETIME,"+  // 08
+    "CUTS.PLAY_COUNTER,"+        // 09
+    "CUTS.START_DATETIME,"+      // 10
+    "CUTS.END_DATETIME,"+        // 11
+    "CUTS.SUN,"+                 // 12
+    "CUTS.MON,"+                 // 13
+    "CUTS.TUE,"+                 // 14
+    "CUTS.WED,"+                 // 15
+    "CUTS.THU,"+                 // 16
+    "CUTS.FRI,"+                 // 17
+    "CUTS.SAT,"+                 // 18
+    "CUTS.START_DAYPART,"+       // 19
+    "CUTS.END_DAYPART "+         // 20
     "from CART join CUTS "+
     "on CART.NUMBER=CUTS.CART_NUMBER ";
   if(list_group==QString("ALL")) {
     sql+=RDAllCartSearchText(list_filter,schedcode,rda->user()->name(),true)+" && "+
-      list_type_filter+" order by CART.NUMBER";
+      list_type_filter+" order by CART.NUMBER,CUTS.CUT_NAME";
   }
   else {
     sql+=RDCartSearchText(list_filter,list_group,schedcode,true)+" && "+
-      list_type_filter+" order by CART.NUMBER";
+      list_type_filter+" order by CART.NUMBER,CUTS.CUT_NAME";
   }
   q=new RDSqlQuery(sql);
   while(q->next()) {
@@ -398,15 +400,20 @@ void ListReports::GenerateCutReport(QString *report)
       QString().sprintf("%03d ",q->value(1).toString().right(3).toInt());
 
     //
-    // Weight
+    // Weight /  Play Order
     //
-    *report+=QString().sprintf("%3d ",q->value(2).toInt());
+    if(q->value(2).toString()=="Y") {
+      *report+=QString().sprintf("W%03d ",q->value(4).toInt());
+    }
+    else {
+      *report+=QString().sprintf("O%03d ",q->value(3).toInt());
+    }
 
     //
     // Title
     //
     if(q->value(0).toUInt()!=current_cart) {
-      *report+=RDReport::leftJustify(q->value(3).toString(),25)+" ";
+      *report+=RDReport::leftJustify(q->value(5).toString(),25)+" ";
     }
     else {
       *report+="                          ";
@@ -415,89 +422,89 @@ void ListReports::GenerateCutReport(QString *report)
     //
     // Description
     //
-    *report+=RDReport::leftJustify(q->value(4).toString(),15)+" ";
+    *report+=RDReport::leftJustify(q->value(6).toString(),14)+" ";
 
     //
     // Length
     //
-    *report+=RDReport::rightJustify(RDGetTimeLength(q->value(5).toInt(),
+    *report+=RDReport::rightJustify(RDGetTimeLength(q->value(7).toInt(),
 						    false,false),5)+" ";
 
     //
     // Last Play
     //
-    if(q->value(6).toDateTime().isNull()) {
+    if(q->value(8).toDateTime().isNull()) {
       *report+="  [none]   ";
     }
     else {
-      *report+=RDReport::center(q->value(6).toDate().toString("MM/dd/yy"),10)+"  ";
+      *report+=RDReport::center(q->value(8).toDate().toString("MM/dd/yy"),10)+"  ";
     }
 
     //
     // Plays
     //
-    *report+=QString().sprintf("%4d ",q->value(7).toInt());
+    *report+=QString().sprintf("%4d ",q->value(9).toInt());
 
     //
     // Start Date
     //
-    if(q->value(8).toDateTime().isNull()) {
+    if(q->value(10).toDateTime().isNull()) {
       *report+="  [none]  ";
     }
     else {
-      *report+=RDReport::center(q->value(8).toDateTime().toString("MM/dd/yy"),10)+" ";
+      *report+=RDReport::center(q->value(10).toDateTime().toString("MM/dd/yy"),10)+" ";
     }
 
     //
     // End Date
     //
-    if(q->value(9).toDateTime().isNull()) {
+    if(q->value(11).toDateTime().isNull()) {
       *report+="   TFN    ";
     }
     else {
-      *report+=RDReport::center(q->value(9).toDateTime().toString("MM/dd/yy"),10)+" ";
+      *report+=RDReport::center(q->value(11).toDateTime().toString("MM/dd/yy"),10)+" ";
     }
 
     //
     // Days of the Week
     //
-    if(q->value(10).toString()=="Y") {
+    if(q->value(12).toString()=="Y") {
       *report+="Su";
     }
     else {
       *report+="  ";
     }
-    if(q->value(11).toString()=="Y") {
+    if(q->value(13).toString()=="Y") {
       *report+="Mo";
     }
     else {
       *report+="  ";
     }
-    if(q->value(12).toString()=="Y") {
+    if(q->value(14).toString()=="Y") {
       *report+="Tu";
     }
     else {
       *report+="  ";
     }
-    if(q->value(13).toString()=="Y") {
+    if(q->value(15).toString()=="Y") {
       *report+="We";
     }
     else {
       *report+="  ";
     }
-    if(q->value(14).toString()=="Y") {
+    if(q->value(16).toString()=="Y") {
       *report+="Th";
     }
     else {
       *report+="  ";
     }
-    if(q->value(15).toString()=="Y") {
+    if(q->value(17).toString()=="Y") {
       *report+="Fr";
     }
     else {
       *report+="  ";
     }
-    if(q->value(16).toString()=="Y") {
+    if(q->value(18).toString()=="Y") {
       *report+="Sa ";
     }
     else {
@@ -507,12 +514,12 @@ void ListReports::GenerateCutReport(QString *report)
     //
     // Dayparts
     //
-    if(q->value(18).toTime().isNull()) {
+    if(q->value(20).toTime().isNull()) {
       *report+="[none]";
     }
     else {
-      *report+=q->value(17).toTime().toString("hh:mm:ss")+" - "+
-	q->value(18).toTime().toString("hh:mm:ss");
+      *report+=q->value(19).toTime().toString("hh:mm:ss")+" - "+
+	q->value(20).toTime().toString("hh:mm:ss");
     }
 
     //

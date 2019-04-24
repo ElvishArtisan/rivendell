@@ -18595,3 +18595,7 @@
 	* Modified the 'Rot' column in the 'Cart Report' in rdlibrary(1)
 	to display to show 'WTD' for 'By Weight' and 'ORD' for
 	'By Specified Order'.
+2019-04-24 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the 'Wht' column in the 'Cut Report' in rdlibrary(1)
+	to be 'W/O' and display weight or order values as appropriate
+	for the 'Schedule Cuts' setting.
