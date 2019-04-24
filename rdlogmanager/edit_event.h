@@ -79,6 +79,7 @@ class EditEvent : public QDialog
   void postimportUpData();
   void postimportDownData();
   void postimportLengthChangedData(int msecs);
+  void depthData();
   void artistData();
   void titleData();
   void saveData();
@@ -105,6 +106,9 @@ class EditEvent : public QDialog
   QButtonGroup *event_lib_type_group;
   QComboBox *event_group_box;
   QComboBox *event_sched_group_box;
+  QSpinBox* event_depth_spinbox;
+  QLabel *event_depth_label;
+  QPushButton *event_depth_none_button;
   QSpinBox* event_artist_sep_spinbox;
   QLabel *event_artist_sep_label;
   QPushButton *event_artist_none_button;

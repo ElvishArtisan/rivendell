@@ -112,6 +112,7 @@ class RDEventLine
   QString event_sched_group;
   QString event_have_code;
   QString event_have_code2;
+  int event_depth;
   int event_artist_sep;
   int event_title_sep;
   RDStation *event_station;

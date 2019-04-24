@@ -86,6 +86,8 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
     delete q;
     DropTable("STACK_SCHED_CODES",err_msg);
 
+    DropColumn("EVENTS","DEPTH");
+
     WriteSchemaVersion(--cur_schema);
   }
 

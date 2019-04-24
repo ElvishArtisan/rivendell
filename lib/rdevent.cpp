@@ -400,6 +400,18 @@ void RDEvent::setHaveCode2(QString str)
 }
 
 
+int RDEvent::depth()
+{
+  return GetIntValue("DEPTH");
+}
+
+
+void RDEvent::setDepth(int depth)
+{
+  SetRow("DEPTH",depth);
+}
+
+
 int RDEvent::artistSep()
 {
   return GetIntValue("ARTIST_SEP");

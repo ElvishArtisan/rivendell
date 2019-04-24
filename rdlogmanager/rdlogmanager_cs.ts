@@ -277,11 +277,11 @@ Chcete je uložit?</translation>
     </message>
     <message>
         <source>Cue to this event</source>
-        <translation>CUE k této události</translation>
+        <translation type="obsolete">CUE k této události</translation>
     </message>
     <message>
         <source>before scheduled start.  (First cart will have a STOP transition.)</source>
-        <translation>před naplánovaným začátkem. (První vozík bude mít přechod ZASTAVENÍ.)</translation>
+        <translation type="obsolete">před naplánovaným začátkem. (První vozík bude mít přechod ZASTAVENÍ.)</translation>
     </message>
     <message>
         <source>TIMED START</source>
@@ -289,7 +289,7 @@ Chcete je uložit?</translation>
     </message>
     <message>
         <source>Use hard start time</source>
-        <translation>Použít pevný počáteční čas</translation>
+        <translation type="obsolete">Použít pevný počáteční čas</translation>
     </message>
     <message>
         <source>Make Post Point</source>
@@ -301,15 +301,15 @@ Chcete je uložit?</translation>
     </message>
     <message>
         <source>Start immediately</source>
-        <translation>Spustit ihned</translation>
+        <translation type="obsolete">Spustit ihned</translation>
     </message>
     <message>
         <source>Make next</source>
-        <translation>Jako další</translation>
+        <translation type="obsolete">Jako další</translation>
     </message>
     <message>
         <source>Wait up to</source>
-        <translation>Počkat až do</translation>
+        <translation type="obsolete">Počkat až do</translation>
     </message>
     <message>
         <source>Play</source>
@@ -325,7 +325,7 @@ Chcete je uložit?</translation>
     </message>
     <message>
         <source>Transition if previous event ends before start time:</source>
-        <translation>Přechod, když předchozí událost končí před počátečním časem:</translation>
+        <translation type="obsolete">Přechod, když předchozí událost končí před počátečním časem:</translation>
     </message>
     <message>
         <source>ENFORCING LENGTH</source>
@@ -337,7 +337,7 @@ Chcete je uložit?</translation>
     </message>
     <message>
         <source>Warn if fill is over or under</source>
-        <translation>Varovat, když je automatické vyplnění větší nebo menší</translation>
+        <translation type="obsolete">Varovat, když je automatické vyplnění větší nebo menší</translation>
     </message>
     <message>
         <source>by at least</source>
@@ -377,35 +377,35 @@ Chcete je uložit?</translation>
     </message>
     <message>
         <source>Must have code</source>
-        <translation>Vynutit kód</translation>
+        <translation type="obsolete">Vynutit kód</translation>
     </message>
     <message>
         <source>Import carts scheduled</source>
-        <translation>Rozvrženy vozíky zavedení</translation>
+        <translation type="obsolete">Rozvrženy vozíky zavedení</translation>
     </message>
     <message>
         <source>prior to the start of this event.</source>
-        <translation>před začátkem této události.</translation>
+        <translation type="obsolete">před začátkem této události.</translation>
     </message>
     <message>
         <source>after the end of this event.</source>
-        <translation>po začátku této události.</translation>
+        <translation type="obsolete">po začátku této události.</translation>
     </message>
     <message>
         <source>First cart has a</source>
-        <translation>První vozík má</translation>
+        <translation type="obsolete">První vozík má</translation>
     </message>
     <message>
         <source>Imported carts have a</source>
-        <translation>Zavedené vozíky mají</translation>
+        <translation type="obsolete">Zavedené vozíky mají</translation>
     </message>
     <message>
         <source>transition.</source>
-        <translation>přechod.</translation>
+        <translation type="obsolete">přechod.</translation>
     </message>
     <message>
         <source>Import inline traffic with the</source>
-        <translation>Zavést vložený přenos s</translation>
+        <translation type="obsolete">Zavést vložený přenos s</translation>
     </message>
     <message>
         <source>[none]</source>
@@ -413,7 +413,7 @@ Chcete je uložit?</translation>
     </message>
     <message>
         <source>event.</source>
-        <translation>událost.</translation>
+        <translation type="obsolete">událost.</translation>
     </message>
     <message>
         <source>POST-IMPORT CARTS</source>
@@ -540,10 +540,6 @@ Chcete ji přepsat?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>and code</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Timed(Wait)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -589,6 +585,82 @@ Chcete ji přepsat?</translation>
     </message>
     <message>
         <source>Artist Separation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cue to This Event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use Hard Start Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start Immediately</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Make Next</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait Up To</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transition if Previous Event Ends Before Start Time:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Warn if Fill is Over or Under</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Before Scheduled Start.  (First Cart Will Have a STOP Transition.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Depth</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Must Have Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>and Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import Carts Scheduled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>After the End of This Event.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>First Cart Has a</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Imported Carts Have a</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transition.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import Inline Traffic with the</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Event.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Prior to the Start of This Event.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

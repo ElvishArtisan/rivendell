@@ -278,11 +278,11 @@ Vil du lagra?</translation>
     </message>
     <message>
         <source>Cue to this event</source>
-        <translation>Spol til denne hendinga</translation>
+        <translation type="obsolete">Spol til denne hendinga</translation>
     </message>
     <message>
         <source>before scheduled start.  (First cart will have a STOP transition.)</source>
-        <translation>før den planlagde starten (Fyrste korga får ein STOPP-overgang.)</translation>
+        <translation type="obsolete">før den planlagde starten (Fyrste korga får ein STOPP-overgang.)</translation>
     </message>
     <message>
         <source>TIMED START</source>
@@ -290,7 +290,7 @@ Vil du lagra?</translation>
     </message>
     <message>
         <source>Use hard start time</source>
-        <translation>Bruk hard starttid</translation>
+        <translation type="obsolete">Bruk hard starttid</translation>
     </message>
     <message>
         <source>Make Post Point</source>
@@ -302,15 +302,15 @@ Vil du lagra?</translation>
     </message>
     <message>
         <source>Start immediately</source>
-        <translation>Start med ein gong</translation>
+        <translation type="obsolete">Start med ein gong</translation>
     </message>
     <message>
         <source>Make next</source>
-        <translation>Gjer til neste</translation>
+        <translation type="obsolete">Gjer til neste</translation>
     </message>
     <message>
         <source>Wait up to</source>
-        <translation>Vent opp til</translation>
+        <translation type="obsolete">Vent opp til</translation>
     </message>
     <message>
         <source>Play</source>
@@ -330,7 +330,7 @@ Vil du lagra?</translation>
     </message>
     <message>
         <source>Transition if previous event ends before start time:</source>
-        <translation>Overgang viss førre hendinga sluttar før starttida:</translation>
+        <translation type="obsolete">Overgang viss førre hendinga sluttar før starttida:</translation>
     </message>
     <message>
         <source>ENFORCING LENGTH</source>
@@ -342,7 +342,7 @@ Vil du lagra?</translation>
     </message>
     <message>
         <source>Warn if fill is over or under</source>
-        <translation>Åtvar viss fyllet er over eller under</translation>
+        <translation type="obsolete">Åtvar viss fyllet er over eller under</translation>
     </message>
     <message>
         <source>by at least</source>
@@ -382,35 +382,35 @@ Vil du lagra?</translation>
     </message>
     <message>
         <source>Must have code</source>
-        <translation>Må ha kode</translation>
+        <translation type="obsolete">Må ha kode</translation>
     </message>
     <message>
         <source>Import carts scheduled</source>
-        <translation>Importer korger planlagt</translation>
+        <translation type="obsolete">Importer korger planlagt</translation>
     </message>
     <message>
         <source>prior to the start of this event.</source>
-        <translation>før starten av denne hendinga.</translation>
+        <translation type="obsolete">før starten av denne hendinga.</translation>
     </message>
     <message>
         <source>after the end of this event.</source>
-        <translation>etter slutten på denne hendinga.</translation>
+        <translation type="obsolete">etter slutten på denne hendinga.</translation>
     </message>
     <message>
         <source>First cart has a</source>
-        <translation>Fyrste korga har</translation>
+        <translation type="obsolete">Fyrste korga har</translation>
     </message>
     <message>
         <source>Imported carts have a</source>
-        <translation>Importerte korger har</translation>
+        <translation type="obsolete">Importerte korger har</translation>
     </message>
     <message>
         <source>transition.</source>
-        <translation>ein overgang.</translation>
+        <translation type="obsolete">ein overgang.</translation>
     </message>
     <message>
         <source>Import inline traffic with the</source>
-        <translation>Importer innlinje-trafikk med</translation>
+        <translation type="obsolete">Importer innlinje-trafikk med</translation>
     </message>
     <message>
         <source>[none]</source>
@@ -418,7 +418,7 @@ Vil du lagra?</translation>
     </message>
     <message>
         <source>event.</source>
-        <translation>hending.</translation>
+        <translation type="obsolete">hending.</translation>
     </message>
     <message>
         <source>POST-IMPORT CARTS</source>
@@ -549,10 +549,6 @@ Vil du byta henne ut?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>and code</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Timed(Wait)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -598,6 +594,82 @@ Vil du byta henne ut?</translation>
     </message>
     <message>
         <source>Artist Separation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cue to This Event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use Hard Start Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start Immediately</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Make Next</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait Up To</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transition if Previous Event Ends Before Start Time:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Warn if Fill is Over or Under</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Before Scheduled Start.  (First Cart Will Have a STOP Transition.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Depth</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Must Have Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>and Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import Carts Scheduled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>After the End of This Event.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>First Cart Has a</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Imported Carts Have a</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transition.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import Inline Traffic with the</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Event.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Prior to the Start of This Event.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
