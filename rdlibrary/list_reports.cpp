@@ -208,7 +208,7 @@ void ListReports::GenerateCartReport(QString *report)
     "CART.TITLE,"+             // 04
     "CART.ARTIST,"+            // 05
     "CART.CUT_QUANTITY,"+      // 06
-    "CART.PLAY_ORDER,"+        // 07
+    "CART.USE_WEIGHTING,"+     // 07
     "CART.ENFORCE_LENGTH,"+    // 08
     "CART.LENGTH_DEVIATION,"+  // 09
     "CART.OWNER "+             // 10
@@ -278,18 +278,11 @@ void ListReports::GenerateCartReport(QString *report)
       //
       // Play Order
       //
-      switch((RDCart::PlayOrder)q->value(7).toInt()) {
-      case RDCart::Sequence:
-	*report+="SEQ ";
-	break;
-
-      case RDCart::Random:
-	*report+="RND ";
-	break;
-
-      default:
-	*report+="??? ";
-	break;
+      if(q->value(7).toString()=="Y") {
+	*report+="WTD ";
+      }
+      else {
+	*report+="ORD ";
       }
 
       //

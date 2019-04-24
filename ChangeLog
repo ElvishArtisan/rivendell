@@ -18591,3 +18591,7 @@
 2019-04-24 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdlibrary(1) that caused the 'Cart Report' to
 	show duplicate lines for carts containing more than one cut.
+2019-04-24 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the 'Rot' column in the 'Cart Report' in rdlibrary(1)
+	to display to show 'WTD' for 'By Weight' and 'ORD' for
+	'By Specified Order'.
