@@ -18599,3 +18599,6 @@
 	* Changed the 'Wht' column in the 'Cut Report' in rdlibrary(1)
 	to be 'W/O' and display weight or order values as appropriate
 	for the 'Schedule Cuts' setting.
+2019-04-24 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdlibrary(1) that broke the 'Cart Data Dump (CSV)'
+	report.
