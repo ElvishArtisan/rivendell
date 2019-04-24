@@ -2,7 +2,7 @@
 //
 // List RDLibrary Reports
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -222,101 +222,106 @@ void ListReports::GenerateCartReport(QString *report)
     sql+=RDCartSearchText(list_filter,list_group,schedcode,true)+" && "+
       list_type_filter+" order by NUMBER";
   }
+  unsigned prev_cartnum=0;
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    //
-    // Cart Type
-    //
-    switch((RDCart::Type)q->value(0).toInt()) {
-    case RDCart::Audio:
-      *report+="  A  ";
-      break;
+    if(q->value(1).toUInt()!=prev_cartnum) { // So we don't show duplicates 
+      prev_cartnum=q->value(1).toUInt();
 
-    case RDCart::Macro:
-      *report+="  M  ";
-      break;
+      //
+      // Cart Type
+      //
+      switch((RDCart::Type)q->value(0).toInt()) {
+      case RDCart::Audio:
+	*report+="  A  ";
+	break;
 
-    default:
-      *report+="  ?  ";
-      break;
+      case RDCart::Macro:
+	*report+="  M  ";
+	break;
+
+      default:
+	*report+="  ?  ";
+	break;
+      }
+
+      //
+      // Cart Number
+      //
+      *report+=QString().sprintf("%06u ",q->value(1).toUInt());
+
+      //
+      // Group
+      //
+      *report+=RDReport::leftJustify(q->value(2).toString(),10)+" ";
+
+      //
+      // Length
+      //
+      *report+=RDReport::rightJustify(RDGetTimeLength(q->value(3).toInt(),false,false),5)+" ";
+
+      //
+      // Title
+      //
+      *report+=RDReport::leftJustify(q->value(4).toString(),31)+" ";
+
+      //
+      // Artist
+      //
+      *report+=RDReport::leftJustify(q->value(5).toString(),30)+" ";
+
+      //
+      // Cut Quantity
+      //
+      *report+=QString().sprintf("%4d ",q->value(6).toInt());
+
+      //
+      // Play Order
+      //
+      switch((RDCart::PlayOrder)q->value(7).toInt()) {
+      case RDCart::Sequence:
+	*report+="SEQ ";
+	break;
+
+      case RDCart::Random:
+	*report+="RND ";
+	break;
+
+      default:
+	*report+="??? ";
+	break;
+      }
+
+      //
+      // Enforce Length
+      //
+      if(q->value(8).toString()=="Y") {
+	*report+="Yes ";
+      }
+      else {
+	*report+="No  ";
+      }
+
+      //
+      // Length Deviation
+      //
+      *report+=RDReport::rightJustify(RDGetTimeLength(q->value(9).toInt(),false,true),7)+" ";
+
+      //
+      // Owner
+      //
+      if(q->value(10).toString().isEmpty()) {
+	*report+="[none]    ";
+      }
+      else {
+	*report+=RDReport::leftJustify(q->value(10).toString(),20);
+      }
+
+      //
+      // End of Line
+      //
+      *report+="\n";
     }
-
-    //
-    // Cart Number
-    //
-    *report+=QString().sprintf("%06u ",q->value(1).toUInt());
-
-    //
-    // Group
-    //
-    *report+=RDReport::leftJustify(q->value(2).toString(),10)+" ";
-
-    //
-    // Length
-    //
-    *report+=RDReport::rightJustify(RDGetTimeLength(q->value(3).toInt(),false,false),5)+" ";
-
-    //
-    // Title
-    //
-    *report+=RDReport::leftJustify(q->value(4).toString(),31)+" ";
-
-    //
-    // Artist
-    //
-    *report+=RDReport::leftJustify(q->value(5).toString(),30)+" ";
-
-    //
-    // Cut Quantity
-    //
-    *report+=QString().sprintf("%4d ",q->value(6).toInt());
-
-    //
-    // Play Order
-    //
-    switch((RDCart::PlayOrder)q->value(7).toInt()) {
-    case RDCart::Sequence:
-      *report+="SEQ ";
-      break;
-
-    case RDCart::Random:
-      *report+="RND ";
-      break;
-
-    default:
-      *report+="??? ";
-      break;
-    }
-
-    //
-    // Enforce Length
-    //
-    if(q->value(8).toString()=="Y") {
-      *report+="Yes ";
-    }
-    else {
-      *report+="No  ";
-    }
-
-    //
-    // Length Deviation
-    //
-    *report+=RDReport::rightJustify(RDGetTimeLength(q->value(9).toInt(),false,true),7)+" ";
-
-    //
-    // Owner
-    //
-    if(q->value(10).toString().isEmpty()) {
-      *report+="[none]    ";
-    }
-    else {
-      *report+=RDReport::leftJustify(q->value(10).toString(),20);
-    }
-
-    //
-    // End of Line
-    //
-    *report+="\n";
   }
   delete q;
 }
