@@ -656,7 +656,12 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
     // Reduce schedCL to match requested scheduler code
     if(event_have_code!=""||event_have_code2!="") {
       QStringList codes;
-      codes << event_have_code << event_have_code2;
+      if(event_have_code!="") {
+        codes << event_have_code;
+      }
+      if(event_have_code2!="") {
+        codes << event_have_code2;
+      }
       for(counter=0;counter<schedCL->getNumberOfItems();counter++) { 
         if(!schedCL->itemHasCodes(counter,codes)) {
           schedCL->removeItem(counter);

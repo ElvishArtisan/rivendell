@@ -279,11 +279,11 @@ horario</translation>
     </message>
     <message>
         <source>Cue to this event</source>
-        <translation>Señalar este evento</translation>
+        <translation type="obsolete">Señalar este evento</translation>
     </message>
     <message>
         <source>before scheduled start.  (First cart will have a STOP transition.)</source>
-        <translation>antes de su inicio programado  (el 1er cartucho tendrá transición PARAR)</translation>
+        <translation type="obsolete">antes de su inicio programado  (el 1er cartucho tendrá transición PARAR)</translation>
     </message>
     <message>
         <source>TIMED START</source>
@@ -291,7 +291,7 @@ horario</translation>
     </message>
     <message>
         <source>Use hard start time</source>
-        <translation>Usar inicio forzado</translation>
+        <translation type="obsolete">Usar inicio forzado</translation>
     </message>
     <message>
         <source>Make Post Point</source>
@@ -303,15 +303,15 @@ horario</translation>
     </message>
     <message>
         <source>Start immediately</source>
-        <translation>Iniciar de inmediato</translation>
+        <translation type="obsolete">Iniciar de inmediato</translation>
     </message>
     <message>
         <source>Make next</source>
-        <translation>Hacer siguiente</translation>
+        <translation type="obsolete">Hacer siguiente</translation>
     </message>
     <message>
         <source>Wait up to</source>
-        <translation>Espera hasta</translation>
+        <translation type="obsolete">Espera hasta</translation>
     </message>
     <message>
         <source>Play</source>
@@ -327,7 +327,7 @@ horario</translation>
     </message>
     <message>
         <source>Transition if previous event ends before start time:</source>
-        <translation>Transición si evento termina antes que éste inicie:</translation>
+        <translation type="obsolete">Transición si evento termina antes que éste inicie:</translation>
     </message>
     <message>
         <source>ENFORCING LENGTH</source>
@@ -363,27 +363,27 @@ horario</translation>
     </message>
     <message>
         <source>Import carts scheduled</source>
-        <translation>Importar carts programados</translation>
+        <translation type="obsolete">Importar carts programados</translation>
     </message>
     <message>
         <source>prior to the start of this event.</source>
-        <translation>antes del inicio de este evento.</translation>
+        <translation type="obsolete">antes del inicio de este evento.</translation>
     </message>
     <message>
         <source>after the end of this event.</source>
-        <translation>después del fin del evento.</translation>
+        <translation type="obsolete">después del fin del evento.</translation>
     </message>
     <message>
         <source>First cart has a</source>
-        <translation>Transic 1er cart</translation>
+        <translation type="obsolete">Transic 1er cart</translation>
     </message>
     <message>
         <source>Imported carts have a</source>
-        <translation>Transic. cart. importados</translation>
+        <translation type="obsolete">Transic. cart. importados</translation>
     </message>
     <message>
         <source>transition.</source>
-        <translation>.</translation>
+        <translation type="obsolete">.</translation>
     </message>
     <message>
         <source>POST-IMPORT CARTS</source>
@@ -487,7 +487,7 @@ Do you want to overwrite it?</source>
     </message>
     <message>
         <source>Warn if fill is over or under</source>
-        <translation>Advertir si relleno está encima o debajo </translation>
+        <translation type="obsolete">Advertir si relleno está encima o debajo </translation>
     </message>
     <message>
         <source>by at least</source>
@@ -499,11 +499,11 @@ Do you want to overwrite it?</source>
     </message>
     <message>
         <source>event.</source>
-        <translation>.</translation>
+        <translation type="obsolete">.</translation>
     </message>
     <message>
         <source>Import inline traffic with the</source>
-        <translation>Importar tráfico con el evento</translation>
+        <translation type="obsolete">Importar tráfico con el evento</translation>
     </message>
     <message>
         <source>, Inline Traffic</source>
@@ -519,7 +519,7 @@ Do you want to overwrite it?</source>
     </message>
     <message>
         <source>Must have code</source>
-        <translation>Con el código</translation>
+        <translation type="obsolete">Con el código</translation>
     </message>
     <message>
         <source>, Scheduler</source>
@@ -540,10 +540,6 @@ Do you want to overwrite it?</source>
     <message>
         <source>IMPORT</source>
         <translation>IMPORTAR</translation>
-    </message>
-    <message>
-        <source>and code</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Timed(Wait)</source>
@@ -591,6 +587,82 @@ Do you want to overwrite it?</source>
     </message>
     <message>
         <source>Artist Separation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cue to This Event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use Hard Start Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start Immediately</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Make Next</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait Up To</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transition if Previous Event Ends Before Start Time:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Warn if Fill is Over or Under</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Before Scheduled Start.  (First Cart Will Have a STOP Transition.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Depth</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Must Have Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>and Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import Carts Scheduled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>After the End of This Event.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>First Cart Has a</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Imported Carts Have a</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transition.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import Inline Traffic with the</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Event.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Prior to the Start of This Event.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

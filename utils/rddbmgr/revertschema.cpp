@@ -41,6 +41,15 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // NEW SCHEMA REVERSIONS GO HERE...
 
   //
+  // Revert 309
+  //
+  if((cur_schema==309)&&(set_schema<cur_schema)) {
+    DropColumn("EVENTS","DEPTH");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 308
   //
   if((cur_schema==308)&&(set_schema<cur_schema)) {

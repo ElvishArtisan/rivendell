@@ -18591,7 +18591,16 @@
 2019-04-23 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'STACK_SCHED_CODES' table to the database.
 	* Dropped the 'STACK_LINES.SCHED_CODES' field from the database.
+	* Added a 'EVENTS.DEPTH' field to the database.
 	* Incremented the database version to 308.
 	* Renamed the 'SchedCartList' class to 'RDSchedCartList' and
 	refactored it to be idiomatic Qt.
 	* Renamed the 'SchedRulesList' class to 'RDSchedRulesList'.
+2019-04-23 Patrick Linstruth <patrick@deltecent.com>
+	* Added scheduler depth in rdlogmanager(1).
+	* Added stack maintenance logging to rdmaint(8).
+	* Fixed regression in rdlogmanager(1) where scheduler codes
+	rules was treated as logical OR, not AND.
+2019-04-25 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'EVENTS.DEPTH' field to the database.
+	* Incremented the database version to 309.

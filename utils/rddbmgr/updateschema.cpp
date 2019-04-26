@@ -9733,6 +9733,16 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<309)&&(set_schema>cur_schema)) {
+    sql=QString("alter table EVENTS add column ")+
+      "DEPTH int(10) default -1 after SCHED_GROUP";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
 
   // NEW SCHEMA UPDATES GO HERE...
 

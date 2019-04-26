@@ -73,6 +73,8 @@ class RDEvent
   void setHaveCode(QString str);
   QString HaveCode2();
   void setHaveCode2(QString str);
+  int depth();
+  void setDepth(int depth);
   int artistSep();
   void setArtistSep(int artistsep);
   int titleSep();

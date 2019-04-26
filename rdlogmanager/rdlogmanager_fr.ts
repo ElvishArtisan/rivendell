@@ -228,19 +228,7 @@ Do you want to save?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cue to this event</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>before scheduled start.  (First cart will have a STOP transition.)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>TIMED START</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Use hard start time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -249,18 +237,6 @@ Do you want to save?</source>
     </message>
     <message>
         <source>Action If Previous Event Still Playing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start immediately</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Make next</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Wait up to</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -276,19 +252,11 @@ Do you want to save?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Transition if previous event ends before start time:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>ENFORCING LENGTH</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Use AutoFill</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Warn if fill is over or under</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -320,43 +288,7 @@ Do you want to save?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Must have code</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Import carts scheduled</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>prior to the start of this event.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>after the end of this event.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>First cart has a</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Imported carts have a</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>transition.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Import inline traffic with the</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>[none]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>event.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -478,10 +410,6 @@ Do you want to overwrite it?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>and code</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Timed(Wait)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -527,6 +455,82 @@ Do you want to overwrite it?</source>
     </message>
     <message>
         <source>Artist Separation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cue to This Event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Use Hard Start Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Start Immediately</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Make Next</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Wait Up To</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transition if Previous Event Ends Before Start Time:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Warn if Fill is Over or Under</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Before Scheduled Start.  (First Cart Will Have a STOP Transition.)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Depth</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Must Have Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>and Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import Carts Scheduled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>After the End of This Event.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>First Cart Has a</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Imported Carts Have a</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Transition.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import Inline Traffic with the</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Event.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Prior to the Start of This Event.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

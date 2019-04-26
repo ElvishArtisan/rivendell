@@ -337,10 +337,19 @@ void MainObject::PurgeStacks()
 	  RDSqlQuery::apply(sql);
 	}
 	delete q2;
+
+	rda->config()->
+	  log("rdmaint",RDConfig::LogInfo,QString().sprintf("Pruging %d lines from the stack for service '%s'",
+			stackid-stacksize,(const char *)q->value(0).toString()));
+
         sql=QString("delete from STACK_LINES where ")+
 	  "SERVICE_NAME=\""+RDEscapeString(q->value(0).toString())+"\" && "+
 	  QString().sprintf("SCHED_STACK_ID<=%d",stackid-stacksize);
 	RDSqlQuery::apply(sql);
+
+	rda->config()->
+	  log("rdmaint",RDConfig::LogInfo,QString().sprintf("Renumbering stack for service '%s'",
+			(const char *)q->value(0).toString()));
 
         sql=QString("update STACK_LINES set ")+
 	  QString().sprintf("SCHED_STACK_ID=SCHED_STACK_ID-%d where ",
