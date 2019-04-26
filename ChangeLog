@@ -18596,8 +18596,8 @@
 	* Renamed the 'SchedCartList' class to 'RDSchedCartList' and
 	refactored it to be idiomatic Qt.
 	* Renamed the 'SchedRulesList' class to 'RDSchedRulesList'.
-	* Added scheduler depth in rdlogmanager(1).
 2019-04-23 Patrick Linstruth <patrick@deltecent.com>
+	* Added scheduler depth in rdlogmanager(1).
 	* Added stack maintenance logging to rdmaint(8).
 	* Fixed regression in rdlogmanager(1) where scheduler codes
 	rules was treated as logical OR, not AND.
