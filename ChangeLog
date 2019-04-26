@@ -18605,3 +18605,6 @@
 2019-04-24 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'Cart Data Dump (fixed width)' report from
 	rdlibrary(1).
+2019-04-25 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in escaping JSON strings that failed to handle
+	control characters properly.

@@ -1070,23 +1070,39 @@ QString RDJsonField(const QString &name,unsigned value,int padding,bool final)
 QString RDJsonField(const QString &name,const QString &value,int padding,
 		    bool final)
 {
-  QString str=value;
+  QString ret;
   QString comma=",";
 
   if(final) {
     comma="";
   }
 
-  str.replace("\\","\\\\");
-  str.replace("\"","\\\"");
-  str.replace("/","\\/");
-  str.replace("\b","\\b");
-  str.replace("\f","\\f");
-  str.replace("\n","\\n");
-  str.replace("\r","\\r");
-  str.replace("\t","\\t");
+  for(int i=0;i<value.length();i++) {
+    QChar c=value.at(i);
+    switch(c.category()) {
+    case QChar::Other_Control:
+      ret+=QString().sprintf("\\u%04X",c.unicode());
+      break;
 
-  return RDJsonPadding(padding)+"\""+name+"\": \""+str+"\""+comma+"\r\n";
+    default:
+      switch(c.unicode()) {
+      case 0x22:   // Quote
+	ret+="\\\"";
+	break;
+
+      case 0x5C:   // Backslash
+	ret+="\\\\";
+	break;
+
+      default:
+	ret+=c;
+	break;
+      }
+      break;
+    }
+  }
+
+  return RDJsonPadding(padding)+"\""+name+"\": \""+ret+"\""+comma+"\r\n";
 }
 
 
