@@ -9739,7 +9739,11 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }
-
+    sql=QString("alter table CART add column ")+
+      "LAST_SCHED_DATETIME datetime after LAST_CUT_PLAYED";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
     WriteSchemaVersion(++cur_schema);
   }
 

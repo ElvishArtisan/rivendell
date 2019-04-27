@@ -45,6 +45,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   //
   if((cur_schema==309)&&(set_schema<cur_schema)) {
     DropColumn("EVENTS","DEPTH");
+    DropColumn("CART","LAST_SCHED_DATETIME");
 
     WriteSchemaVersion(--cur_schema);
   }

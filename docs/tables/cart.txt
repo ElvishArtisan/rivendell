@@ -32,6 +32,7 @@ AVERAGE_SEGUE_LENGTH int(10)
 AVERAGE_HOOK_LENGTH  int(10)
 CUT_QUANTITY         int(10)           > 1 for rotators
 LAST_CUT_PLAYED      int(10)           Offset for rotators
+LAST_SCHED_DATETIME  datetime          Last time cart was scheduled or played
 PLAY_ORDER           int(10)           0 = Sequence, 1 = Random
 VALIDITY             int(10)           0 = Always invalid, 1 = Conditionally
                                        valid, 2 = Always valid, 3 = Evergreen
