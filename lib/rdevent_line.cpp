@@ -341,10 +341,11 @@ bool RDEventLine::load()
     "AUTOFILL_SLOP,"+       // 13
     "NESTED_EVENT,"+        // 14
     "SCHED_GROUP,"+         // 15
-    "ARTIST_SEP,"+          // 16
-    "TITLE_SEP,"+           // 17
-    "HAVE_CODE,"+           // 18
-    "HAVE_CODE2	"+          // 19
+    "DEPTH,"+               // 16
+    "ARTIST_SEP,"+          // 17
+    "TITLE_SEP,"+           // 18
+    "HAVE_CODE,"+           // 19
+    "HAVE_CODE2	"+          // 20
     "from EVENTS where "+
     "NAME=\""+RDEscapeString(event_name)+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
@@ -375,10 +376,11 @@ bool RDEventLine::load()
   event_autofill_slop=q->value(13).toInt();
   event_nested_event=q->value(14).toString();
   event_sched_group=q->value(15).toString();
-  event_artist_sep=q->value(16).toInt();
-  event_title_sep=q->value(17).toInt();
-  event_have_code=q->value(18).toString();
-  event_have_code2=q->value(19).toString();
+  event_depth=q->value(16).toInt();
+  event_artist_sep=q->value(17).toInt();
+  event_title_sep=q->value(18).toInt();
+  event_have_code=q->value(19).toString();
+  event_have_code2=q->value(20).toString();
 
   delete q;
   event_preimport_list->load();
@@ -634,7 +636,7 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
       "CONCAT(GROUP_CONCAT(RPAD(SC.SCHED_CODE,11,' ') separator ''),'.') as SCHED_CODES"+
       " from CART LEFT JOIN CART_SCHED_CODES AS SC on (NUMBER=SC.CART_NUMBER)"+
       " where GROUP_NAME='"+RDEscapeString(schedGroup())+"'"+
-      " group by NUMBER";
+      " group by NUMBER order by CART.LAST_SCHED_DATETIME asc";
     RDSchedCartList *schedCL=new RDSchedCartList();
     q=new RDSqlQuery(sql);
     while(q->next()) {
@@ -895,8 +897,11 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
       //
       // Pick a random cart from those that are remaining.
       //
-      int r=rand();
-      int schedpos=r%schedCL->getNumberOfItems();
+      int depth=schedCL->getNumberOfItems();
+      if(event_depth>0&&event_depth<depth) {
+        depth=event_depth;
+      }
+      int schedpos=rand()%depth;
       sql=QString("insert into LOG_LINES set ")+
 	"LOG_NAME=\""+RDEscapeString(logname)+"\","+
 	QString().sprintf("LINE_ID=%d,",count)+
@@ -911,6 +916,11 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 	QString().sprintf("TRANS_TYPE=%d,",trans_type)+
 	"EXT_START_TIME="+RDCheckDateTime(time,"hh:mm:ss")+","+
 	QString().sprintf("EVENT_LENGTH=%d",event_length);
+      q=new RDSqlQuery(sql);
+      delete q;
+
+      sql=QString("update CART set LAST_SCHED_DATETIME=now() where ")+
+        QString().sprintf("NUMBER=%d",schedCL->getItemCartNumber(schedpos));
       q=new RDSqlQuery(sql);
       delete q;
 
