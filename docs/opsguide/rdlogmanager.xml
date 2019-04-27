@@ -309,11 +309,12 @@
       The <computeroutput>IMPORT</computeroutput> section then defines
       which (if any) source will be used
       for importing external scheduling events into the log.  Either
-      <computeroutput>Music</computeroutput>,
-      <computeroutput>Traffic</computeroutput> or
-      <computeroutput>None</computeroutput> can be selected.  If 
-      <computeroutput>Music</computeroutput> or
-      <computeroutput>Traffic</computeroutput> is selected,
+      <computeroutput>None</computeroutput>,
+      <computeroutput>From Music</computeroutput>,
+      <computeroutput>From Traffic</computeroutput> or
+      <computeroutput>Select From</computeroutput> can be selected.  If 
+      <computeroutput>From Music</computeroutput> or
+      <computeroutput>From Traffic</computeroutput> is selected,
       then RDLogManager will import any events from those sources that fall
       within the start and end times of the event (as supplied by the
       parent clock). These start and end times can be further broadened by
@@ -323,7 +324,7 @@
       types to be used for the first and subsequent imported elements can
       be specified with the <computeroutput>First cart has a</computeroutput>
       and <computeroutput>Imported carts have a</computeroutput>
-      controls.  If <computeroutput>Music</computeroutput> has been selected
+      controls.  If <computeroutput>From Music</computeroutput> has been selected
       as the import source, it is
       also possible to specify the event to use to import traffic breaks
       embedded in the music log with the 
@@ -331,6 +332,22 @@
       control.  (Configuration of the actual parser parameters for data
       importation is covered in the Rivendell Technical and Administration
       Guide).
+    </para>
+    <para>
+      If <computeroutput>Select From</computeroutput> has been selected, log events
+      will be created using carts from the selected group.
+      The <computeroutput>Artist Separation</computeroutput> option is used to
+      specify how many events must separate the same artist.
+      The <computeroutput>Title Separation</computeroutput> option is used to
+      specify how many events must separate the same title.
+      The <computeroutput>Must Have Code</computeroutput> and
+      <computeroutput>and Code</computeroutput> options tell the scheduler to
+      limit carts in the group to those that contain one or both scheduler codes.
+      The <computeroutput>Depth</computeroutput> option is used to
+      specify how deep the scheduler will look to choose a cart. For example,
+      if there are 200 carts available after artist and title separations and
+      depth is set to 20, the scheduler will randomly choose from the 20 least
+      recently scheduled carts rather than the entire group of 200.
     </para>
     <para>
       Finally, the list of log events (if any) to be inserted after the
