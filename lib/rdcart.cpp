@@ -666,6 +666,24 @@ void RDCart::setLastCutPlayed(unsigned cut) const
 }
 
 
+QDateTime RDCart::lastScheduledDateTime() const
+{
+  QDateTime value;
+  value=RDGetSqlValue("CART","NUMBER",cart_number,
+		     "LAST_SCHED_DATETIME").toDateTime();
+  if(value.isValid()) {
+    return value;
+  }
+  return QDateTime(QDate(),QTime());
+}
+
+
+void RDCart::setLastScheduledDateTime(const QDateTime &datetime) const
+{
+  SetRow("LAST_SCHED_DATETIME",datetime);
+}
+
+
 RDCart::PlayOrder RDCart::playOrder() const
 {
   return (RDCart::PlayOrder)RDGetSqlValue("CART","NUMBER",cart_number,

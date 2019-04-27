@@ -107,6 +107,8 @@ class RDCart
   void setCutQuantity(unsigned quan) const;
   unsigned lastCutPlayed() const;
   void setLastCutPlayed(unsigned cut) const;
+  QDateTime lastScheduledDateTime() const;
+  void setLastScheduledDateTime(const QDateTime &datetime) const;
   RDCart::PlayOrder playOrder() const;
   void setPlayOrder(RDCart::PlayOrder order) const;
   RDCart::Validity validity() const;
