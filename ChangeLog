@@ -18602,5 +18602,7 @@
 	* Fixed regression in rdlogmanager(1) where scheduler codes
 	rules was treated as logical OR, not AND.
 2019-04-25 Fred Gleason <fredg@paravelsystems.com>
+	* Added rdlogmanager(1) scheduler options to the Operations Guide.
 	* Added an 'EVENTS.DEPTH' field to the database.
+	* Added a 'CART.LAST_SCHED_DATETIME' field to the database.
 	* Incremented the database version to 309.
