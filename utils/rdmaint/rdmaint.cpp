@@ -339,7 +339,7 @@ void MainObject::PurgeStacks()
 	delete q2;
 
 	rda->config()->
-	  log("rdmaint",RDConfig::LogInfo,QString().sprintf("Pruging %d lines from the stack for service '%s'",
+	  log("rdmaint",RDConfig::LogInfo,QString().sprintf("Purging %d lines from the stack for service '%s'",
 			stackid-stacksize,(const char *)q->value(0).toString()));
 
         sql=QString("delete from STACK_LINES where ")+
