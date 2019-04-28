@@ -22,13 +22,18 @@
 #define RDCART_SEARCH_TEXT_H
 
 #include <qstring.h>
+#include <qstringlist.h>
 
 #include <rdstation.h>
 
 
 QString RDCartSearchText(QString filter,const QString &group,
 			 const QString &schedcode,bool incl_cuts);
+QString RDCartSearchText(QString filter,const QString &group,
+			 const QStringList &schedcodes,bool incl_cuts);
 QString RDAllCartSearchText(const QString &filter,const QString &schedcode,
+			    const QString &user,bool incl_cuts);
+QString RDAllCartSearchText(const QString &filter,const QStringList &schedcodes,
 			    const QString &user,bool incl_cuts);
 
 
