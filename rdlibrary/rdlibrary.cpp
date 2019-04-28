@@ -1324,7 +1324,6 @@ void MainWidget::RefreshList()
     sql+=QString().sprintf(" limit %d",RD_LIMITED_CART_SEARCH_QUANTITY);
   }
   q=new RDSqlQuery(sql);
-  fprintf(stderr,"rows=%d\n",q->size());
   int step=0;
   int count=0;
   lib_progress_dialog->setTotalSteps(q->size()/RDLIBRARY_STEP_SIZE);
