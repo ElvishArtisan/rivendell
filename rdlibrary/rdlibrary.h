@@ -88,7 +88,9 @@ class MainWidget : public QWidget
   void ripData();
   void reportsData();
   void playerShortcutData();
+#if 0
   void cartOnItemData(Q3ListViewItem *item);
+#endif
   void cartClickedData();
   void cartDoubleclickedData(Q3ListViewItem *,const QPoint &,int);
   void audioChangedData(int state);
@@ -130,6 +132,9 @@ class MainWidget : public QWidget
   QLabel *lib_group_label;
   QComboBox *lib_codes_box;
   QLabel *lib_codes_label;
+  QComboBox *lib_codes2_box;
+  QLabel *lib_codes2_label;
+  QLabel *lib_matches_label;
   QPushButton *lib_search_button;
   QPushButton *lib_clear_button;
   QPushButton *lib_add_button;
