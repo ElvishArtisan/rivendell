@@ -18619,4 +18619,4 @@
 	* Renamed the 'SchedRulesList' class to 'RDSchedRulesList'.
 2019-04-29 Fred Gleason <fredg@paravelsystems.com>
 	* Added code to normalize the case of group names in
-	'RDGroups::RDGroups()'.
+	'RDGroup::RDGroup()'.
