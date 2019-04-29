@@ -18608,5 +18608,6 @@
 2019-04-25 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in escaping JSON strings that failed to handle
 	control characters properly.
-2019-04-28 Patrick Linstruth <patrick@deltecent.com>
+2019-04-29 Patrick Linstruth <patrick@deltecent.com>
 	* Added second schedule code filter to rdlibrary(1).
+	* Change rdlibrary(1) minimum width from 850 to 975.
