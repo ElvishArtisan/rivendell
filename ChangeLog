@@ -18617,3 +18617,6 @@
 	* Renamed the 'SchedCartList' class to 'RDSchedCartList' and
 	refactored it to be idiomatic Qt.
 	* Renamed the 'SchedRulesList' class to 'RDSchedRulesList'.
+2019-04-29 Fred Gleason <fredg@paravelsystems.com>
+	* Added code to normalize the case of group names in
+	'RDGroups::RDGroups()'.

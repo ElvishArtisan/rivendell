@@ -45,6 +45,18 @@ RDGroup::RDGroup(QString name,bool create)
     q=new RDSqlQuery(sql);
     delete q;
   }
+  else {
+    //
+    // Normalize case
+    //
+    sql=QString("select NAME from GROUPS where ")+
+      "NAME=\""+RDEscapeString(name)+"\"";
+    q=new RDSqlQuery(sql);
+    if(q->first()) {
+      group_name=q->value(0).toString();
+    }
+    delete q;
+  }
 }
 
 
