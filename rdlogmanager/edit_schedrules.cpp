@@ -37,9 +37,8 @@
 #include "edit_schedcoderules.h"
 #include "globals.h"
 #include "list_clocks.h"
-#include "schedruleslist.h"
 
-EditSchedRules::EditSchedRules(QString clock,unsigned *artistsep,SchedRulesList *schedruleslist,bool *rules_modified,QWidget *parent)
+EditSchedRules::EditSchedRules(QString clock,unsigned *artistsep,RDSchedRulesList *schedruleslist,bool *rules_modified,QWidget *parent)
   : QDialog(parent)
 {
   setModal(true);
@@ -231,7 +230,7 @@ void EditSchedRules::importData()
     return;
   }
   delete listclocks;
-  SchedRulesList *import_list=new SchedRulesList(clockname,rda->config()); 
+  RDSchedRulesList *import_list=new RDSchedRulesList(clockname,rda->config()); 
 
   list_schedCodes_view->clear();
   for (int i=0; i<import_list->getNumberOfItems(); i++)  

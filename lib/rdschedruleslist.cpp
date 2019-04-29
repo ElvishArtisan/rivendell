@@ -1,8 +1,9 @@
-// schedruleslist.cpp
+// rdschedruleslist.cpp
 //
 // A class for handling the scheduling rules for rdlogmanager/edit clocks
 //
-//   Stefan Gabriel <stg@st-gabriel.de>
+//   (C) Copyright 2005 Stefan Gabriel <stg@st-gabriel.de>
+//   (C) Copyright 2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,12 +21,12 @@
 
 #include <qmessagebox.h>
 
-#include <rdclock.h>
-#include <rddb.h>
-#include <rdescape_string.h>
-#include <schedruleslist.h>
+#include "rdclock.h"
+#include "rddb.h"
+#include "rdescape_string.h"
+#include "rdschedruleslist.h"
 
-SchedRulesList::SchedRulesList(QString clockname,RDConfig *config)
+RDSchedRulesList::RDSchedRulesList(QString clockname,RDConfig *config)
 {
   QString sql;
   RDSqlQuery *q;
@@ -77,7 +78,7 @@ SchedRulesList::SchedRulesList(QString clockname,RDConfig *config)
   delete q;
 }
 
-SchedRulesList::~SchedRulesList()
+RDSchedRulesList::~RDSchedRulesList()
 {
   delete []sched_code;
   delete []max_row;
@@ -88,7 +89,7 @@ SchedRulesList::~SchedRulesList()
   delete []description;
 }
 
-void SchedRulesList::insertItem(int pos,int maxrow,int minwait,QString notafter,QString orafter,QString orafterii)
+void RDSchedRulesList::insertItem(int pos,int maxrow,int minwait,QString notafter,QString orafter,QString orafterii)
 {
   max_row[pos] = maxrow;
   min_wait[pos] = minwait;
@@ -97,47 +98,47 @@ void SchedRulesList::insertItem(int pos,int maxrow,int minwait,QString notafter,
   or_after_II[pos] = orafterii;
 }
 
-QString SchedRulesList::getItemSchedCode(int pos)
+QString RDSchedRulesList::getItemSchedCode(int pos)
 {
   return sched_code[pos];
 }
 
-int SchedRulesList::getItemMaxRow(int pos)
+int RDSchedRulesList::getItemMaxRow(int pos)
 {
   return max_row[pos];
 }
 
-int SchedRulesList::getItemMinWait(int pos)
+int RDSchedRulesList::getItemMinWait(int pos)
 {
   return min_wait[pos];
 }
 
-QString SchedRulesList::getItemNotAfter(int pos)
+QString RDSchedRulesList::getItemNotAfter(int pos)
 {
   return not_after[pos];
 }
 
-QString SchedRulesList::getItemOrAfter(int pos)
+QString RDSchedRulesList::getItemOrAfter(int pos)
 {
   return or_after[pos];
 }
 
-QString SchedRulesList::getItemOrAfterII(int pos)
+QString RDSchedRulesList::getItemOrAfterII(int pos)
 {
   return or_after_II[pos];
 }
 
-QString SchedRulesList::getItemDescription(int pos)
+QString RDSchedRulesList::getItemDescription(int pos)
 {
   return description[pos];
 }
 
-int SchedRulesList::getNumberOfItems(void)
+int RDSchedRulesList::getNumberOfItems(void)
 {
   return itemcounter;
 }
 
-void SchedRulesList::Save(QString clockname)
+void RDSchedRulesList::Save(QString clockname)
 {
   QString sql;
 

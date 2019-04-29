@@ -327,6 +327,16 @@ void MainObject::PurgeStacks()
     if (q1->next()) {
       stackid=q1->value(0).toUInt();
       if (stackid-stacksize > 0) {
+        sql=QString("select ID from STACK_LINES where ")+
+	  "SERVICE_NAME=\""+RDEscapeString(q->value(0).toString())+"\" && "+
+	  QString().sprintf("SCHED_STACK_ID<=%d",stackid-stacksize);
+	q2=new RDSqlQuery(sql);
+	while(q2->next()) {
+	  sql=QString("delete from STACK_SCHED_CODES where ")+
+	    QString().sprintf("STACK_LINES_ID=%u",q2->value(0).toUInt());
+	  RDSqlQuery::apply(sql);
+	}
+	delete q2;
         sql=QString("delete from STACK_LINES where ")+
 	  "SERVICE_NAME=\""+RDEscapeString(q->value(0).toString())+"\" && "+
 	  QString().sprintf("SCHED_STACK_ID<=%d",stackid-stacksize);

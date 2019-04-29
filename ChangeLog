@@ -18609,4 +18609,11 @@
 	* Fixed a bug in escaping JSON strings that failed to handle
 	control characters properly.
 2019-04-29 Fred Gleason <fredg@paravelsystems.com>
-	* Fixed a type in 'RDLogPlay::move()'.
+	* Fixed a typo in 'RDLogPlay::move()'.
+2019-04-29 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'STACK_SCHED_CODES' table to the database.
+	* Dropped the 'STACK_LINES.SCHED_CODES' field from the database.
+	* Incremented the database version to 308.
+	* Renamed the 'SchedCartList' class to 'RDSchedCartList' and
+	refactored it to be idiomatic Qt.
+	* Renamed the 'SchedRulesList' class to 'RDSchedRulesList'.

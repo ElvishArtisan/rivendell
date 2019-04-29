@@ -434,6 +434,14 @@ bool MainObject::DropColumn(const QString &tbl_name,const QString &col_name,
 }
 
 
+bool MainObject::DropIndex(const QString &tbl_name,const QString &idx_name,
+			   QString *err_msg) const
+{
+  QString sql=QString("alter table `")+tbl_name+"` drop index `"+idx_name+"`";
+  return RDSqlQuery::apply(sql,err_msg);
+}
+
+
 int main(int argc,char *argv[])
 {
   QApplication a(argc,argv,false);

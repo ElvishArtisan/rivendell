@@ -1,0 +1,11 @@
+              STACK_SCHED_CODES Table Layout for Rivendell
+
+The STACK_SCHED_CODES table holds the scheduler codes for rows in
+the 'STACK_LINES' table.
+
+
+FIELD NAME           TYPE               REMARKS
+------------------------------------------------------------------------
+ID                   int(10) unsigned   Primary key, auto_increment
+STACK_LINES_ID       int(10) unsigned   From STACK_LINES.ID
+SCHED_CODE           varchar(10)

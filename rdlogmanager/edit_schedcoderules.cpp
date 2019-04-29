@@ -31,12 +31,11 @@
 #include <qcombobox.h>
 
 #include <rd.h>
-#include <schedruleslist.h>
 
 #include "edit_schedcoderules.h"
 
 editSchedCodeRules::editSchedCodeRules(Q3ListViewItem *item,
-				       SchedRulesList *sched_rules_list,
+				       RDSchedRulesList *sched_rules_list,
 				       QWidget* parent)
     : QDialog(parent)
 {

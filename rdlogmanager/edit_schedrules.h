@@ -29,7 +29,7 @@
 #include <qvariant.h>
 
 #include <rdlistview.h>
-#include <schedruleslist.h>
+#include <rdschedruleslist.h>
 
 class QSpinBox;
 
@@ -38,7 +38,7 @@ class EditSchedRules : public QDialog
   Q_OBJECT
  public:
   EditSchedRules(QString clock,unsigned *artistsep,
-		 SchedRulesList *schedruleslist,bool *rules_modified,
+		 RDSchedRulesList *schedruleslist,bool *rules_modified,
 		 QWidget *parent=0);
   ~EditSchedRules();
   QSize sizeHint() const;
@@ -63,7 +63,7 @@ class EditSchedRules : public QDialog
   QString clockname;
   unsigned* edit_artistsep;
   bool* edit_rules_modified;
-  SchedRulesList* sched_rules_list;
+  RDSchedRulesList* sched_rules_list;
   bool edit_modified;
 };
 
