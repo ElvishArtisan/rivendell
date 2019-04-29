@@ -32,6 +32,17 @@
 RDLog::RDLog(const QString &name)
 {
   log_name=name;
+
+  //
+  // Normalize case
+  //
+  QString sql=QString("select NAME from LOGS where ")+
+    "NAME=\""+RDEscapeString(name)+"\"";
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(q->first()) {
+    log_name=q->value(0).toString();
+  }
+  delete q;
 }
 
 

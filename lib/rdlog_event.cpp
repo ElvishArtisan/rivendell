@@ -84,7 +84,9 @@ QString RDLogEvent::logName() const
 
 void RDLogEvent::setLogName(QString logname)
 {
-  log_name=logname;
+  RDLog *log=new RDLog(logname);
+  log_name=log->name();  // So we normalize the case
+  delete log;
 }
 
 

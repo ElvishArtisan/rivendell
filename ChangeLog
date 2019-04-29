@@ -18620,3 +18620,6 @@
 2019-04-29 Fred Gleason <fredg@paravelsystems.com>
 	* Added code to normalize the case of group names in
 	'RDGroup::RDGroup()'.
+2019-04-29 Fred Gleason <fredg@paravelsystems.com>
+	* Added code to normalize the case of log names in
+	'RDLog::RDLog()'.
