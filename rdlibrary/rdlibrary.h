@@ -88,9 +88,7 @@ class MainWidget : public QWidget
   void ripData();
   void reportsData();
   void playerShortcutData();
-#if 0
   void cartOnItemData(Q3ListViewItem *item);
-#endif
   void cartClickedData();
   void cartDoubleclickedData(Q3ListViewItem *,const QPoint &,int);
   void audioChangedData(int state);

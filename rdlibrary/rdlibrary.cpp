@@ -304,7 +304,6 @@ MainWidget::MainWidget(QWidget *parent)
   connect(lib_showmacro_box,SIGNAL(stateChanged(int)),
 	  this,SLOT(macroChangedData(int)));
 
-#if 0
   //
   // Show Cart Notes Checkbox
   //
@@ -314,7 +313,6 @@ MainWidget::MainWidget(QWidget *parent)
     new QLabel(lib_shownotes_box,tr("Show Note Bubbles"),this);
   lib_shownotes_label->setFont(button_font);
   lib_shownotes_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
-#endif
 
   //
   // Show Matches Checkbox
@@ -346,12 +344,10 @@ MainWidget::MainWidget(QWidget *parent)
 	  SLOT(cartDoubleclickedData(Q3ListViewItem *,const QPoint &,int)));
   connect(lib_cart_list,SIGNAL(selectionChanged()),
 	  this,SLOT(cartClickedData()));
-#if 0
   connect(lib_cart_list,SIGNAL(onItem(Q3ListViewItem *)),
 	  this,SLOT(cartOnItemData(Q3ListViewItem *)));
   connect(lib_shownotes_box,SIGNAL(toggled(bool)),
   	  lib_cart_list,SLOT(enableNoteBubbles(bool)));
-#endif
   lib_cart_list->addColumn("");
   lib_cart_list->setColumnAlignment(Icon,Qt::AlignHCenter);
   lib_cart_list->addColumn(tr("Cart"));
@@ -753,9 +749,7 @@ void MainWidget::editData()
 				     false,profile_ripping,this);
     edit_cart->exec();
     RefreshLine(item);
-#if 0
     cartOnItemData(item);
-#endif
     SendNotification(RDNotification::ModifyAction,item->text(Cart).toUInt());
     delete edit_cart;
     delete it;
@@ -937,7 +931,6 @@ void MainWidget::reportsData()
 }
 
 
-#if 0
 void MainWidget::cartOnItemData(Q3ListViewItem *item)
 {
   if((!lib_shownotes_box->isChecked())||(item==NULL)) {
@@ -946,7 +939,6 @@ void MainWidget::cartOnItemData(Q3ListViewItem *item)
   //  lib_cart_tip->
   //    setCartNumber(lib_cart_list->itemRect(item),item->text(Cart).toUInt());
 }
-#endif
 
 
 void MainWidget::cartClickedData()
@@ -1159,19 +1151,17 @@ void MainWidget::resizeEvent(QResizeEvent *e)
     lib_codes_label->setGeometry(195,40,130,20);
     lib_codes2_box->setGeometry(600,40,120,20);
     lib_codes2_label->setGeometry(460,40,130,20);
-    lib_matches_label->setGeometry(740,40,130,20);
-    lib_allowdrag_box->setGeometry(390,67,15,15);
-    lib_allowdrag_label->setGeometry(410,65,130,20);
+    lib_matches_label->setGeometry(740,40,140,20);
+    lib_showmatches_box->setGeometry(740,67,15,15);
+    lib_showmatches_label->setGeometry(760,65,200,20);
+    lib_allowdrag_box->setGeometry(560,67,15,15);
+    lib_allowdrag_label->setGeometry(580,65,130,20);
     lib_showaudio_box->setGeometry(70,67,15,15);
     lib_showaudio_label->setGeometry(90,65,130,20);
     lib_showmacro_box->setGeometry(230,67,15,15);
     lib_showmacro_label->setGeometry(250,65,130,20);
-#if 0
     lib_shownotes_box->setGeometry(390,67,15,15);
     lib_shownotes_label->setGeometry(410,65,130,20);
-#endif
-    lib_showmatches_box->setGeometry(550,67,15,15);
-    lib_showmatches_label->setGeometry(570,65,200,20);
     lib_cart_list->
       setGeometry(10,90,e->size().width()-20,e->size().height()-155);
     lib_add_button->setGeometry(10,e->size().height()-60,80,50);
@@ -1715,10 +1705,8 @@ void MainWidget::LoadGeometry()
   profile->setSource(geometry_file);
   resize(profile->intValue("RDLibrary","Width",sizeHint().width()),
 	 profile->intValue("RDLibrary","Height",sizeHint().height()));
-#if 0
   lib_shownotes_box->
     setChecked(profile->boolValue("RDLibrary","ShowNoteBubbles",true));
-#endif
   lib_allowdrag_box->
     setChecked(profile->boolValue("RDLibrary","AllowCartDragging",false));
 
@@ -1737,14 +1725,12 @@ void MainWidget::SaveGeometry()
   fprintf(file,"Width=%d\n",geometry().width());
   fprintf(file,"Height=%d\n",geometry().height());
   fprintf(file,"ShowNoteBubbles=");
-#if 0
   if(lib_shownotes_box->isChecked()) {
-    fprintf(file,"Yes\n");
+    fputs("Yes\n",file);
   }
   else {
-    fprintf(file,"No\n");
+    fputs("No\n",file);
   }
-#endif
   fprintf(file,"AllowCartDragging=");
   if(lib_allowdrag_box->isChecked()) {
     fprintf(file,"Yes\n");
