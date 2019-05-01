@@ -18629,3 +18629,6 @@
 2019-05-01 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed bugs in rd_import(7) that caused corruption of multi-byte
 	UTF-8 characters.
+2019-05-01 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed bugs in the 'Import' Web API call that caused import of
+	filenames containing multibyte UTF-8 characters to fail.

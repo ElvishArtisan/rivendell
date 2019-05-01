@@ -223,9 +223,13 @@ bool RDWaveFile::openWave(RDWaveData *data)
   vorbis_info *vorbis_info;
 #endif  // HAVE_VORBIS
   unsigned char tmc_buffer[4];
+  int fd=-1;
 
   wave_data=data;
-  if(!wave_file.open(QIODevice::ReadOnly)) {
+  if((fd=open(wave_file.name().toUtf8(),O_RDONLY))<0) {
+    return false;
+  }
+  if(!wave_file.open(fd,QIODevice::ReadOnly)) {
     return false;
   }
 
@@ -401,7 +405,6 @@ bool RDWaveFile::openWave(RDWaveData *data)
       }
 
       dlmp4.MP4Close(f, 0);
-
       return true;
 
 #else
@@ -1337,10 +1340,8 @@ int RDWaveFile::seekWave(int offset,int whence)
 	switch(whence) {
 	    case SEEK_SET:
 	      if(ov_pcm_seek(&vorbis_file,offset/(2*channels))==0) {
-		//printf("RDWaveFile::seekWave() = %d\n",offset);
 		return offset;
 	      }
-	      //printf("RDWaveFile::seekWave() = -1\n");
 	      return -1;
 	      break;
 

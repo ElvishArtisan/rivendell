@@ -160,7 +160,9 @@ RDAudioConvert::ErrorCode RDAudioConvert::convert()
   if(!RDAudioConvert::settingsValid(conv_settings)) {
     return RDAudioConvert::ErrorInvalidSettings;
   }
-  if(!QFile::exists(conv_src_filename)) {
+  struct stat stats;
+  memset(&stats,0,sizeof(stats));
+  if(stat((const char *)conv_src_filename.toUtf8(),&stats)!=0) {
     return RDAudioConvert::ErrorNoSource;
   }
   if(conv_dst_filename.isEmpty()) {
@@ -338,7 +340,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage1Convert(const QString &srcfile,
   // Try Libsndfile
   //
   memset(&sf_src_info,0,sizeof(sf_src_info));
-  if((sf_src=sf_open(srcfile,SFM_READ,&sf_src_info))!=NULL) {
+  if((sf_src=sf_open(srcfile.toUtf8(),SFM_READ,&sf_src_info))!=NULL) {
     err=Stage1SndFile(dstfile,sf_src,&sf_src_info);
     sf_close(sf_src);
     return RDAudioConvert::ErrorOk;
@@ -425,7 +427,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage1Vorbis(const QString &dstfile,
   //
   // Initialize Decoder
   //
-  if((fd=open(wave->getName(),O_RDONLY))<0) {
+  if((fd=open(wave->getName().toUtf8(),O_RDONLY))<0) {
     sf_close(sf_dst);
     return RDAudioConvert::ErrorNoSource;
   }
@@ -718,7 +720,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage1M4A(const QString &dstfile,
   //
   // Open source
   //
-  f = dlmp4.MP4Read(wave->getName());
+  f = dlmp4.MP4Read(wave->getName().toUtf8());
   if(f == MP4_INVALID_FILE_HANDLE)
     return RDAudioConvert::ErrorNoSource;
 
