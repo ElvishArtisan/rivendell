@@ -96,9 +96,12 @@ int main(int argc,char *argv[])
   printf("Please enter the File Name that you want to Import ==> ");
   if (fgets(filename,sizeof(filename),stdin) != NULL)
   {
+    if((0xFF&filename[strlen(filename)-1])<32) {
+      filename[strlen(filename)-1]=0;
+    }
   } 
   
-  printf("Do you want to Create Cart If Doesn't Exist - (Yes or No) ==> ");
+  printf("Do you want to Create Cart If Doesn't Exist - (Y/N) ==> ");
   if (fgets(buf,sizeof(buf),stdin) != NULL)
   {
     if (( buf[0] != '\n') && (buf[0] =='Y'))

@@ -18626,3 +18626,6 @@
 2019-04-30 Fred Gleason <fredg@paravelsystems.com>
 	* Added an appendix containing the 'GNU Free Documentation License'
 	to the Operations Guide.
+2019-05-01 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed bugs in rd_import(7) that caused corruption of multi-byte
+	UTF-8 characters.
