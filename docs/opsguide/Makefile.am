@@ -20,6 +20,7 @@
 ## Use automake to process this into a Makefile.in
 
 OPSGUIDE_HTML = appendix.filepath_wildcards.html\
+                appendix.gfdl.html\
                 appendix.gpio_switcher_devices.html\
                 appendix.gplv2.html\
                 appendix.metadata_wildcards.html\
@@ -279,6 +280,7 @@ OPSGUIDE_DEPS = $(OPSGUIDE_IMAGES) \
                 $(OPSGUIDE_ICONS) \
                 filepath_wildcards.xml\
                 gpio_switcher_devices.xml\
+                gfdl.xml\
                 gplv2.xml\
                 opsguide.xml\
                 overview.xml\

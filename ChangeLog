@@ -18623,3 +18623,6 @@
 2019-04-29 Fred Gleason <fredg@paravelsystems.com>
 	* Added code to normalize the case of log names in
 	'RDLog::RDLog()'.
+2019-04-30 Fred Gleason <fredg@paravelsystems.com>
+	* Added an appendix containing the 'GNU Free Documentation License'
+	to the Operations Guide.
