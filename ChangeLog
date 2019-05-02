@@ -18632,3 +18632,6 @@
 2019-05-01 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed bugs in the 'Import' Web API call that caused import of
 	filenames containing multibyte UTF-8 characters to fail.
+2019-05-02 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the 'rivendell-pypad' RPM package always to use
+	Python 3.6.
