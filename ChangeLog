@@ -18635,3 +18635,5 @@
 2019-05-02 Fred Gleason <fredg@paravelsystems.com>
 	* Modified the 'rivendell-pypad' RPM package always to use
 	Python 3.6.
+2019-05-02 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the package version to 3.0.0rc01.

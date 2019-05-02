@@ -1,6 +1,35 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
+v3.0.0rc01 -- 5/2/2019
+
+Second release candidate for v3.x.
+
+Please see the file 'UPGRADING' for important information.
+
+Changes:
+   SQL Cleanups. Cleaned up date-time handling in SQL calls to allow
+   proper operation with current MySQL/MariaDB releases.
+
+   RDLibrary Reports. Fixed bugs in the 'Cart Data Dump (CSV)' report and
+   removed the 'Cart Data Dump (fixed width)' report.
+
+   Licensing. Changed the licensing of the Rivendell Operations Guide to
+   be the GNU Free Documentation License.
+
+   Python Integration. Modified the 'rivendell-pypad' RPM package to always
+   use Python 3.6.
+
+   Various other bugfixes. See the 'ChangeLog' for details. 
+
+Database Update:
+   This version of Rivendell uses database schema version 308, and will
+   automatically upgrade any earlier versions. To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
+   to allow any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
 v3.0.0rc00 -- 3/22/2019
 
 First release candidate for v3.x.
