@@ -18632,3 +18632,5 @@
 2019-05-01 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed bugs in the 'Import' Web API call that caused import of
 	filenames containing multibyte UTF-8 characters to fail.
+2019-05-02 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed regression in scheduler when using two schedule codes.
