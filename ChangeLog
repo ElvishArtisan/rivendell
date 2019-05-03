@@ -18643,3 +18643,5 @@
 	* Cleaned up a compiler warning for rdimport(1).
 2019-05-03 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up a compiler warning for 'RDMacroEvent'.
+2019-05-03 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the package version to 3.0.0rc02.
