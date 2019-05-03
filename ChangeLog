@@ -18637,3 +18637,5 @@
 	Python 3.6.
 2019-05-02 Fred Gleason <fredg@paravelsystems.com>
 	* Updated the package version to 3.0.0rc01.
+2019-05-03 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression that broke audio importation in rdimport(1).
