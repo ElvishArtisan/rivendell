@@ -18639,3 +18639,5 @@
 	* Updated the package version to 3.0.0rc01.
 2019-05-03 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression that broke audio importation in rdimport(1).
+2019-05-03 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up a compiler warning for rdimport(1).
