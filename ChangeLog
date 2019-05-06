@@ -18647,7 +18647,5 @@
 	* Updated the package version to 3.0.0rc02.
 2019-05-06 Todd Baker <bakert@rfa.org>
 	* Modified apis/rivwebcapi/rivwebcapi/rd_editcart.h and
-	apis/rivwebcapi/rivwebcapi/rd_editcut.h to match the 
+	apis/rivwebcapi/rivwebcapi/rd_editcut.h to match the
 	respective rd_cart.h, rd_cuts.h files in the api.
-#
-
