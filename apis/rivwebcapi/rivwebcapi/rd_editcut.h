@@ -32,13 +32,13 @@ _MYRIVLIB_INIT_DECL
 struct edit_cut_values {
   int cut_evergreen;
   int use_cut_evergreen;
-  char cut_description[65];
+  char cut_description[257];
   int use_cut_description;
-  char cut_outcue[65];
+  char cut_outcue[257];
   int use_cut_outcue;
-  char cut_isrc[13];
+  char cut_isrc[49];
   int use_cut_isrc;
-  char cut_isci[33];
+  char cut_isci[129];
   int use_cut_isci;
   struct tm cut_start_datetime;
   int use_cut_start_datetime;
