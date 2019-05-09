@@ -132,6 +132,7 @@ class MainWidget : public QWidget
   QLabel *lib_codes_label;
   QComboBox *lib_codes2_box;
   QLabel *lib_codes2_label;
+  QLineEdit *lib_matches_edit;
   QLabel *lib_matches_label;
   QPushButton *lib_search_button;
   QPushButton *lib_clear_button;

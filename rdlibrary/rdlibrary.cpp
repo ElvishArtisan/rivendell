@@ -263,7 +263,10 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Results Counter
   //
-  lib_matches_label=new QLabel(this);
+  lib_matches_edit=new QLineEdit(this);
+  lib_matches_edit->setFont(default_font);
+  lib_matches_edit->setReadOnly(true);
+  lib_matches_label=new QLabel(lib_matches_edit,tr("Matching Carts:"),this);
   lib_matches_label->setFont(button_font);
 
   //
@@ -542,7 +545,7 @@ MainWidget::MainWidget(QWidget *parent)
 
 QSize MainWidget::sizeHint() const
 {
-  return QSize(975,600);
+  return QSize(1000,600);
 }
 
 
@@ -1151,7 +1154,8 @@ void MainWidget::resizeEvent(QResizeEvent *e)
     lib_codes_label->setGeometry(195,40,130,20);
     lib_codes2_box->setGeometry(600,40,120,20);
     lib_codes2_label->setGeometry(460,40,130,20);
-    lib_matches_label->setGeometry(740,40,140,20);
+    lib_matches_edit->setGeometry(835,40,65,20);
+    lib_matches_label->setGeometry(740,40,100,20);
     lib_showmatches_box->setGeometry(740,67,15,15);
     lib_showmatches_label->setGeometry(760,65,200,20);
     lib_allowdrag_box->setGeometry(560,67,15,15);
@@ -1426,7 +1430,7 @@ void MainWidget::RefreshList()
       qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
     }
   }
-  lib_matches_label->setText(QString().sprintf("%d Carts Match Filters",count));
+  lib_matches_edit->setText(QString().sprintf("%d",count));
   UpdateItemColor(l,validity,end_datetime,current_datetime);
   lib_progress_dialog->reset();
   delete q;
