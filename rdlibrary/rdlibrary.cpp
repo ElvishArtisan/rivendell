@@ -250,6 +250,26 @@ MainWidget::MainWidget(QWidget *parent)
 	  this,SLOT(groupActivatedData(const QString &)));
 
   //
+  // Scheduler Codes2 Filter
+  //
+  lib_codes2_box=new QComboBox(this);
+  lib_codes2_box->setFont(default_font);
+  lib_codes2_label=new QLabel(lib_codes2_box,tr("And Scheduler Code:"),this);
+  lib_codes2_label->setFont(button_font);
+  lib_codes2_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
+  connect(lib_codes2_box,SIGNAL(activated(const QString &)),
+	  this,SLOT(groupActivatedData(const QString &)));
+
+  //
+  // Results Counter
+  //
+  lib_matches_edit=new QLineEdit(this);
+  lib_matches_edit->setFont(default_font);
+  lib_matches_edit->setReadOnly(true);
+  lib_matches_label=new QLabel(lib_matches_edit,tr("Matching Carts:"),this);
+  lib_matches_label->setFont(button_font);
+
+  //
   // Show Allow Cart Drags Checkbox
   //
   lib_allowdrag_box=new QCheckBox(this);
@@ -525,7 +545,7 @@ MainWidget::MainWidget(QWidget *parent)
 
 QSize MainWidget::sizeHint() const
 {
-  return QSize(850,600);
+  return QSize(1000,600);
 }
 
 
@@ -581,10 +601,13 @@ void MainWidget::userData()
 
   lib_codes_box->clear();
   lib_codes_box->insertItem(tr("ALL"));
+  lib_codes2_box->clear();
+  lib_codes2_box->insertItem(tr("ALL"));
   sql=QString().sprintf("select CODE from SCHED_CODES");
   q=new RDSqlQuery(sql);
   while(q->next()) {
     lib_codes_box->insertItem(q->value(0).toString());
+    lib_codes2_box->insertItem(q->value(0).toString());
   }
   delete q;
   lib_search_button->setDisabled(true);
@@ -1129,16 +1152,20 @@ void MainWidget::resizeEvent(QResizeEvent *e)
     lib_group_label->setGeometry(10,40,55,20);
     lib_codes_box->setGeometry(330,40,120,20);
     lib_codes_label->setGeometry(195,40,130,20);
-    lib_allowdrag_box->setGeometry(470,42,15,15);
-    lib_allowdrag_label->setGeometry(490,40,130,20);
+    lib_codes2_box->setGeometry(600,40,120,20);
+    lib_codes2_label->setGeometry(460,40,130,20);
+    lib_matches_edit->setGeometry(835,40,65,20);
+    lib_matches_label->setGeometry(740,40,100,20);
+    lib_showmatches_box->setGeometry(740,67,15,15);
+    lib_showmatches_label->setGeometry(760,65,200,20);
+    lib_allowdrag_box->setGeometry(560,67,15,15);
+    lib_allowdrag_label->setGeometry(580,65,130,20);
     lib_showaudio_box->setGeometry(70,67,15,15);
     lib_showaudio_label->setGeometry(90,65,130,20);
     lib_showmacro_box->setGeometry(230,67,15,15);
     lib_showmacro_label->setGeometry(250,65,130,20);
     lib_shownotes_box->setGeometry(390,67,15,15);
     lib_shownotes_label->setGeometry(410,65,130,20);
-    lib_showmatches_box->setGeometry(550,67,15,15);
-    lib_showmatches_label->setGeometry(570,65,200,20);
     lib_cart_list->
       setGeometry(10,90,e->size().width()-20,e->size().height()-155);
     lib_add_button->setGeometry(10,e->size().height()-60,80,50);
@@ -1394,14 +1421,16 @@ void MainWidget::RefreshList()
       if(q->value(16).toUInt() > 1) {
         RefreshCuts(l,q->value(0).toUInt());
       }
+      count++;
     }
     cartnum=q->value(0).toUInt();
-    if(count++>RDLIBRARY_STEP_SIZE) {
+    if(count>RDLIBRARY_STEP_SIZE) {
       lib_progress_dialog->setProgress(++step);
       count=0;
       qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
     }
   }
+  lib_matches_edit->setText(QString().sprintf("%d",count));
   UpdateItemColor(l,validity,end_datetime,current_datetime);
   lib_progress_dialog->reset();
   delete q;
@@ -1413,18 +1442,21 @@ QString MainWidget::WhereClause() const
   QString sql="";
   QString type_filter=GetTypeFilter();
 
-  QString schedcode="";
+  QStringList schedcodes;
   if(lib_codes_box->currentText()!=tr("ALL")) {
-    schedcode=lib_codes_box->currentText();
+    schedcodes << lib_codes_box->currentText();
+  }
+  if(lib_codes2_box->currentText()!=tr("ALL")) {
+    schedcodes << lib_codes2_box->currentText();
   }
   if(lib_group_box->currentText()==QString(tr("ALL"))) {
-    sql+=RDAllCartSearchText(lib_filter_edit->text(),schedcode,
+    sql=RDAllCartSearchText(lib_filter_edit->text(),schedcodes,
 			  rda->user()->name(),true)+" && "+type_filter;
 
   }
   else {
-    sql+=RDCartSearchText(lib_filter_edit->text(),lib_group_box->currentText(),
-		       schedcode,true)+" && "+type_filter;      
+    sql=RDCartSearchText(lib_filter_edit->text(),lib_group_box->currentText(),
+		       schedcodes,true)+" && "+type_filter;      
   }
 
   return sql;
@@ -1698,10 +1730,10 @@ void MainWidget::SaveGeometry()
   fprintf(file,"Height=%d\n",geometry().height());
   fprintf(file,"ShowNoteBubbles=");
   if(lib_shownotes_box->isChecked()) {
-    fprintf(file,"Yes\n");
+    fputs("Yes\n",file);
   }
   else {
-    fprintf(file,"No\n");
+    fputs("No\n",file);
   }
   fprintf(file,"AllowCartDragging=");
   if(lib_allowdrag_box->isChecked()) {
