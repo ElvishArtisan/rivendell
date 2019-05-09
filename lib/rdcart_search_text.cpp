@@ -116,12 +116,38 @@ QString RDSchedSearchText(const QString &schedcode)
 }
 
 
+QString RDSchedSearchText(const QStringList &schedcodes)
+{
+  QString ret="";
+
+  for(int i=0;i<schedcodes.size();i++) {
+    ret+=QString().sprintf(" inner join CART_SCHED_CODES as S%d on (CART.NUMBER=S%d.CART_NUMBER and S%d.SCHED_CODE='%s')",i,i,i,(const char *)schedcodes.at(i));
+  }
+
+  return ret;
+}
+
+
 QString RDCartSearchText(QString filter,const QString &group,
 			 const QString &schedcode,bool incl_cuts)
 {
   QString ret="";
 
   ret+=RDSchedSearchText(schedcode);
+  ret+=QString(" where ")+RDBaseSearchText(filter,incl_cuts);
+  if(!group.isEmpty()) {
+    ret+=QString("&&(CART.GROUP_NAME=\"")+RDEscapeString(group)+"\")";
+  }
+
+  return ret;
+}
+
+QString RDCartSearchText(QString filter,const QString &group,
+			 const QStringList &schedcodes,bool incl_cuts)
+{
+  QString ret="";
+
+  ret+=RDSchedSearchText(schedcodes);
   ret+=QString(" where ")+RDBaseSearchText(filter,incl_cuts);
   if(!group.isEmpty()) {
     ret+=QString("&&(CART.GROUP_NAME=\"")+RDEscapeString(group)+"\")";
@@ -151,5 +177,27 @@ QString RDAllCartSearchText(const QString &filter,const QString &schedcode,
   search=search.left(search.length()-2)+QString(")");
   search+=QString("&&")+RDBaseSearchText(filter,incl_cuts);
 
+  return search;
+}
+
+QString RDAllCartSearchText(const QString &filter,const QStringList &schedcodes,
+			    const QString &user,bool incl_cuts)
+{
+  QString sql;
+  RDSqlQuery *q;
+  QString search="";
+
+  search+=RDSchedSearchText(schedcodes);
+  search+=" where (";
+  sql=QString("select GROUP_NAME from USER_PERMS where ")+
+    "USER_NAME=\""+RDEscapeString(user)+"\"";
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    search+=QString("(CART.GROUP_NAME=\"")+
+      RDEscapeString(q->value(0).toString())+"\")||";
+  }
+  delete q;
+  search=search.left(search.length()-2)+QString(")");
+  search+=QString("&&")+RDBaseSearchText(filter,incl_cuts);
   return search;
 }

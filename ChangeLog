@@ -18652,3 +18652,6 @@
 2019-05-09 Patrick Linstruth <patrick@deltecent.com>
 	* Fixed bug in clock schedule rules where "or After" schedule codes
 	were not displayed correctly.
+2019-05-09 Patrick Linstruth <patrick@deltecent.com>
+	* Added second schedule code filter to rdlibrary(1).
+	* Change rdlibrary(1) minimum width from 850 to 1000.
