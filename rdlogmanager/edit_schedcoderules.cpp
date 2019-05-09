@@ -146,7 +146,7 @@ editSchedCodeRules::editSchedCodeRules(Q3ListViewItem *item,
     }
   comboBox_not_after->setCurrentText(item->text(3));
   comboBox_or_after->setCurrentText(item->text(4));
-  comboBox_or_after->setCurrentText(item->text(5));
+  comboBox_or_after_II->setCurrentText(item->text(5));
 
   label_description = new QLabel(this);
   label_description->setGeometry( QRect( 200, 40, 300, 40 ) );

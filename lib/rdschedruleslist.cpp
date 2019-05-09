@@ -64,7 +64,7 @@ RDSchedRulesList::RDSchedRulesList(QString clockname,RDConfig *config)
       min_wait[i] = q1->value(1).toInt();
       not_after[i] = q1->value(2).toString();
       or_after[i] = q1->value(3).toString();
-      or_after_II[i] = q1->value(3).toString();
+      or_after_II[i] = q1->value(4).toString();
     }
     else {
       max_row[i] = 1;
