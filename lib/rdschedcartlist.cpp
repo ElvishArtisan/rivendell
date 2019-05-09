@@ -74,12 +74,14 @@ bool RDSchedCartList::itemHasCode(int itemnumber,const QString &test_code)
 
 bool RDSchedCartList::itemHasCodes(int itemnumber,const QStringList &test_codes)
 {
+  int matches=0;
+
   for(int i=0;i<test_codes.size();i++) {
     if(itemHasCode(itemnumber,test_codes.at(i))) {
-      return true;
+      matches++;
     }
   }
-  return false;
+  return(matches==test_codes.size());
 }
 
 

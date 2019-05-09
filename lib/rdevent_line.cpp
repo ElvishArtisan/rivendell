@@ -656,7 +656,12 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
     // Reduce schedCL to match requested scheduler code
     if(event_have_code!=""||event_have_code2!="") {
       QStringList codes;
-      codes << event_have_code << event_have_code2;
+      if(event_have_code!="") {
+        codes << event_have_code;
+      }
+      if(event_have_code2!="") {
+        codes << event_have_code2;
+      }
       for(counter=0;counter<schedCL->getNumberOfItems();counter++) { 
         if(!schedCL->itemHasCodes(counter,codes)) {
           schedCL->removeItem(counter);
@@ -890,8 +895,7 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
       //
       // Pick a random cart from those that are remaining.
       //
-      int r=rand();
-      int schedpos=r%schedCL->getNumberOfItems();
+      int schedpos=rand()%schedCL->getNumberOfItems();
       sql=QString("insert into LOG_LINES set ")+
 	"LOG_NAME=\""+RDEscapeString(logname)+"\","+
 	QString().sprintf("LINE_ID=%d,",count)+

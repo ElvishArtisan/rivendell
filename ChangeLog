@@ -18655,3 +18655,5 @@
 2019-05-09 Patrick Linstruth <patrick@deltecent.com>
 	* Added second schedule code filter to rdlibrary(1).
 	* Change rdlibrary(1) minimum width from 850 to 1000.
+2019-05-09 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed regression in scheduler when using two schedule codes.
