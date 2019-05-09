@@ -18608,9 +18608,6 @@
 2019-04-25 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in escaping JSON strings that failed to handle
 	control characters properly.
-2019-04-29 Patrick Linstruth <patrick@deltecent.com>
-	* Added second schedule code filter to rdlibrary(1).
-	* Change rdlibrary(1) minimum width from 850 to 975.
 2019-04-29 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a typo in 'RDLogPlay::move()'.
 2019-04-29 Fred Gleason <fredg@paravelsystems.com>
@@ -18648,3 +18645,6 @@
 	* Cleaned up a compiler warning for 'RDMacroEvent'.
 2019-05-03 Fred Gleason <fredg@paravelsystems.com>
 	* Updated the package version to 3.0.0rc02.
+2019-05-09 Patrick Linstruth <patrick@deltecent.com>
+	* Added second schedule code filter to rdlibrary(1).
+	* Change rdlibrary(1) minimum width from 850 to 1000.
