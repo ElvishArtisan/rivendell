@@ -120,6 +120,8 @@ class MainObject : public QObject
   bool ColumnExists(const QString &tbl_name,const QString &col_name) const;
   bool DropColumn(const QString &tbl_name,const QString &col_name,
 		  QString *err_msg=NULL) const;
+  bool DropIndex(const QString &tbl_name,const QString &idx_name,
+		 QString *err_msg=NULL) const;
   Command db_command;
   QString db_mysql_hostname;
   QString db_mysql_loginname;

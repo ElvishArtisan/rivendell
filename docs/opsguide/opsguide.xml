@@ -15,6 +15,7 @@
   <!ENTITY rml SYSTEM "rml.xml">
   <!ENTITY utilities SYSTEM "utilities.xml">
   <!ENTITY rdadmin SYSTEM "rdadmin.xml">
+  <!ENTITY gfdl SYSTEM "gfdl.xml">
   <!ENTITY gplv2 SYSTEM "gplv2.xml">
   <!ENTITY gpio_switcher_devices SYSTEM "gpio_switcher_devices.xml">
   <!ENTITY filepath_wildcards SYSTEM "filepath_wildcards.xml">
@@ -45,6 +46,7 @@
     &utilities;
   </part>
   <part xml:id="part.appendices" xmlns="http://docbook.org/ns/docbook" version="5.0">
+    &gfdl;
     &gplv2;
     &gpio_switcher_devices;
     &filepath_wildcards;

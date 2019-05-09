@@ -225,7 +225,6 @@ void RDMacroEvent::exec(int line)
   RDMacro rml;
   RDStation *station;
   QHostAddress addr;
-  RDMacro::Command cmd;
   emit started(line);
   switch(event_cmds[line]->command()) {
   case RDMacro::SP:   // Sleep

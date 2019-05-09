@@ -240,7 +240,7 @@ EditClock::EditClock(QString clockname,bool new_clock,
   //
   // Populate Data
   //
-  sched_rules_list = new SchedRulesList(clockname,rda->config());
+  sched_rules_list = new RDSchedRulesList(clockname,rda->config());
   edit_clock=new RDClock(rda->station());
   edit_clock->setName(clockname);
   edit_clock->load();

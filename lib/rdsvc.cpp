@@ -1410,6 +1410,15 @@ void RDSvc::remove(const QString &name)
   }
   delete q;
 
+  sql=QString("select ID from STACK_LINES where ")+
+    "SERVICE_NAME=\""+RDEscapeString(name)+"\"";
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    sql=QString("delete from STACK_SCHED_CODES where ")+
+      QString().sprintf("STACK_LINES_ID=%u",q->value(0).toUInt());
+    RDSqlQuery::apply(sql);
+  }
+  delete q;
   sql=QString("delete from STACK_LINES where ")+
     "SERVICE_NAME=\""+RDEscapeString(name)+"\"";
   RDSqlQuery::apply(sql);

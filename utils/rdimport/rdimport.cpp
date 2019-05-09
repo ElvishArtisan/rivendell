@@ -1480,14 +1480,18 @@ RDWaveFile *MainObject::FixFile(const QString &filename,RDWaveData *wavedata)
   //
   // Copy File
   //
-  import_temp_fix_filename=
-    QString(tempnam(RDTempDirectory::basePath(),"rdfix"))+QString(".wav");
-  if(import_temp_fix_filename.isNull()) {
+  char tempfile[PATH_MAX];
+  strncpy(tempfile,RDTempDirectory::basePath()+
+	  QString().sprintf("/rdimport%dXXXXXX",getpid()),PATH_MAX);
+  int dest_fd=mkstemp(tempfile);
+  if(dest_fd<0) {
     return NULL;
   }
-  if(!RDCopy(filename,import_temp_fix_filename)) {
+  import_temp_fix_filename=tempfile;
+  if(!RDCopy(filename,dest_fd)) {
     return NULL;
   }
+  close(dest_fd);
 
   //
   // Apply Fix

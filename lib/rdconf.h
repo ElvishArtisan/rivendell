@@ -84,6 +84,9 @@ bool RDIsSqlNull(const QString &table,const QString &name,unsigned test,
 QString RDGetTimeLength(int mseconds,bool leadzero=false,bool tenths=true);
 int RDSetTimeLength(const QString &string);
 bool RDCopy(const QString &srcfile,const QString &destfile);
+bool RDCopy(const QString &srcfile,int dest_fd);
+bool RDCopy(int src_fd,const QString &destfile);
+bool RDCopy(int src_fd,int dest_fd);
 bool RDWritePid(const QString &dirname,const QString &filename,int owner=-1,
 		int group=-1);
 void RDDeletePid(const QString &dirname,const QString &filename);

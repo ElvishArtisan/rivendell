@@ -70,6 +70,7 @@ RDWaveFile::RDWaveFile(QString file_name)
   // 
   // Initialize Class Structures
   //
+  wave_file_name=file_name;
   wave_file.setName(file_name);
   wave_data=NULL;
   recordable=false;
@@ -213,6 +214,7 @@ void RDWaveFile::nameWave(QString file_name)
     return;
   }
   wave_file.setName(file_name);
+  wave_file_name=file_name;
 }
 
 
@@ -223,12 +225,15 @@ bool RDWaveFile::openWave(RDWaveData *data)
   vorbis_info *vorbis_info;
 #endif  // HAVE_VORBIS
   unsigned char tmc_buffer[4];
+  int fd=-1;
 
   wave_data=data;
-  if(!wave_file.open(QIODevice::ReadOnly)) {
+  if((fd=open(wave_file_name.toUtf8(),O_RDONLY))<0) {
     return false;
   }
-
+  if(!wave_file.open(fd,QIODevice::ReadOnly)) {
+    return false;
+  }
   switch(GetType(wave_file.handle())) {
   case RDWaveFile::Wave:
     if(GetFmt(wave_file.handle())) {
@@ -401,7 +406,6 @@ bool RDWaveFile::openWave(RDWaveData *data)
       }
 
       dlmp4.MP4Close(f, 0);
-
       return true;
 
 #else
@@ -428,7 +432,7 @@ bool RDWaveFile::openWave(RDWaveData *data)
     data_chunk=true;
     format_chunk=true;
     wave_type=RDWaveFile::Ogg;
-    ReadNormalizeLevel(wave_file.name());
+    ReadNormalizeLevel(wave_file_name);
     ValidateMetadata();
     return true;
 #else
@@ -550,7 +554,7 @@ bool RDWaveFile::createWave(RDWaveData *data,unsigned ptr_offset)
 	}
         prev_mask = umask(0113);      // Set umask so files are user and group writable.
         rc=wave_file.open(QIODevice::ReadWrite|QIODevice::Truncate);
-	unlink((wave_file.name()+".energy").ascii());
+	unlink((wave_file_name+".energy").ascii());
         umask(prev_mask);
 	if(rc==false) {
 	  return false;
@@ -911,7 +915,7 @@ void RDWaveFile::resetWave()
 
 QString RDWaveFile::getName() const
 {
-  return wave_file.name();
+  return wave_file_name;
 }
 
 
@@ -1337,10 +1341,8 @@ int RDWaveFile::seekWave(int offset,int whence)
 	switch(whence) {
 	    case SEEK_SET:
 	      if(ov_pcm_seek(&vorbis_file,offset/(2*channels))==0) {
-		//printf("RDWaveFile::seekWave() = %d\n",offset);
 		return offset;
 	      }
-	      //printf("RDWaveFile::seekWave() = -1\n");
 	      return -1;
 	      break;
 
@@ -2442,7 +2444,7 @@ bool RDWaveFile::IsFlac(int fd)
 #ifdef HAVE_FLAC
   char buffer[5];
 
-  ID3_Tag id3_tag(Q3CString().sprintf("%s",(const char *)wave_file.name().utf8()));
+  ID3_Tag id3_tag(Q3CString().sprintf("%s",(const char *)wave_file_name.utf8()));
   lseek(fd,id3_tag.GetPrependedBytes(),SEEK_SET);
   if(read(fd,buffer,4)!=4) {
     return false;
@@ -3488,10 +3490,10 @@ void RDWaveFile::ReadId3Metadata()
     return;
   }
   bool using_rdxl=false;
-  TagLib::FileRef tagref(wave_file.name().toUtf8());
+  TagLib::FileRef tagref(wave_file_name.toUtf8());
   if(tagref.file()==NULL) {  // Take another look with ID3Lib
     ID3_Frame *frame=NULL;
-    ID3_Tag id3_tag(wave_file.name().toUtf8());
+    ID3_Tag id3_tag(wave_file_name.toUtf8());
     if((frame=id3_tag.Find(ID3FID_USERTEXT,ID3FN_DESCRIPTION,"rdxl"))!=NULL) {
       rdxl_contents=ID3_GetString(frame,ID3FN_TEXT);
       if(wave_data!=NULL) {
@@ -3515,7 +3517,7 @@ void RDWaveFile::ReadId3Metadata()
     if(name==QString::fromUtf8("牤硬")) {  // Mangled RD v2.x RDXL Frame
       using_rdxl=true;
       ID3_Frame *frame=NULL;
-      ID3_Tag id3_tag(wave_file.name().toUtf8());
+      ID3_Tag id3_tag(wave_file_name.toUtf8());
       if((frame=id3_tag.Find(ID3FID_USERTEXT,ID3FN_DESCRIPTION,"rdxl"))!=NULL) {
 	rdxl_contents=ID3_GetString(frame,ID3FN_TEXT);
 	if(wave_data!=NULL) {
@@ -4177,7 +4179,7 @@ bool RDWaveFile::GetFlacStreamInfo()
 {
 #if HAVE_FLAC
   FLAC__StreamMetadata sinfo;
-  if(!FLAC__metadata_get_streaminfo(Q3CString().sprintf("%s",(const char *)wave_file.name().utf8()),&sinfo)) {
+  if(!FLAC__metadata_get_streaminfo(Q3CString().sprintf("%s",(const char *)wave_file_name.utf8()),&sinfo)) {
     return false;
   }
   samples_per_sec=sinfo.data.stream_info.sample_rate;
@@ -4200,7 +4202,7 @@ void RDWaveFile::ReadFlacMetadata()
   QString composer;
   FLAC__StreamMetadata* tags;
   if(!FLAC__metadata_get_tags(Q3CString().
-	    sprintf("%s",(const char *)wave_file.name().utf8()),&tags)) {
+	    sprintf("%s",(const char *)wave_file_name.utf8()),&tags)) {
     return;
   }
   for(unsigned iCommentIndex=0;
@@ -4653,7 +4655,7 @@ void RDWaveFile::GetEnergy()
 {
   int file_ptr;
 
-  ReadEnergyFile(wave_file.name());
+  ReadEnergyFile(wave_file_name);
   
   if(!levl_chunk) {
     GetLevl(wave_file.handle());

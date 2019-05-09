@@ -97,6 +97,7 @@ EXTRA_DIST = audio_cards.txt\
              services.txt\
              sources.txt\
              stack_lines.txt\
+             stack_sched_codes.txt\
              stations.txt\
              switcher_nodes.txt\
              system.txt\

@@ -19,7 +19,7 @@
 ##
 
 # So python bytecompilation works correctly
-%define __python /usr/bin/python3.4
+%define __python /usr/bin/python3.6
 
 Summary: Radio Broadcast Automation System
 Name: rivendell
@@ -51,7 +51,7 @@ Requires: rivendell = @VERSION@, rivendell-webapi = @VERSION@
 
 %package pypad
 Summary: PyPAD Program Associated Data script system for Rivendell
-Requires: python34, python34-pycurl, python34-requests, python34-pyserial, python34-mysql
+Requires: python36, python36-pycurl, python36-requests, python36-pyserial, python36-mysql
 
 %package select
 Summary: The RDSelect system selector tool for Rivendell.
@@ -109,7 +109,7 @@ associated with.
 
 
 %build
-export PYTHON=/usr/bin/python3.4
+export PYTHON=/usr/bin/python3.6
 %configure --libexecdir=@libexecdir@ --sysconfdir=@sysconfdir@ @RDXPORTDEBUG@
 make -j 10
 
@@ -157,7 +157,7 @@ cp scripts/engine_conv.py $RPM_BUILD_ROOT/@DOC_PATH@
 cp scripts/init_template_host.py $RPM_BUILD_ROOT/@DOC_PATH@
 rm -f $RPM_BUILD_ROOT/etc/auto.rd.audiostore
 rm -rf $RPM_BUILD_ROOT%{_libdir}/rivendell/pypad/__pycache__
-rm -rf $RPM_BUILD_ROOT%{_libdir}/python3.4/site-packages/__pycache__
+rm -rf $RPM_BUILD_ROOT%{_libdir}/python3.6/site-packages/__pycache__
 
 %post
 /sbin/ldconfig
@@ -484,8 +484,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %files pypad
 %{_libdir}/rivendell/pypad/*
-%{_libdir}/python3.4/site-packages/pypad*
-%{_libdir}/python3.4/site-packages/__pycache__/pypad*
+%{_libdir}/python3.6/site-packages/pypad*
+%{_libdir}/python3.6/site-packages/__pycache__/pypad*
 
 
 %post pypad

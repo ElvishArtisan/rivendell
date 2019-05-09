@@ -1004,7 +1004,7 @@ void RDLogPlay::move(int from_line,int to_line)
   }
   if(to_line<size()) {
     if(logLine(to_line)->hasCustomTransition()) {
-      if(to_line>to_line) {
+      if(from_line>to_line) {
 	mod_line[1]=to_line;
       }
       else {

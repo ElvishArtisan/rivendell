@@ -111,8 +111,6 @@ int RD_ImportCart(struct rd_cartimport *cartimport[],
   long response_code;
   struct curl_httppost *first=NULL;
   struct curl_httppost *last=NULL;
-  char *arrayptr;
-  char checked_fname[BUFSIZ];
   int i;
   char cart_buffer[50];
   char cut_buffer[50];
@@ -121,34 +119,11 @@ int RD_ImportCart(struct rd_cartimport *cartimport[],
   char autotrim_buffer[50];
   char use_metadata_buffer[50];
   char create_flag[50];
-  char checked_group_name[50];
   long userlen = strlen(username);
   long passwdlen = strlen(passwd);
   char errbuf[CURL_ERROR_SIZE];
   CURLcode res;
   char user_agent_string[255];
-
-  /*   Check File name */
-  memset(checked_fname,'\0',sizeof(checked_fname));
-  arrayptr=&checked_fname[0];
-
-  for (i = 0 ; i < strlen(filename) ; i++) {
-    if (filename[i]>32) {
-      strncpy(arrayptr,&filename[i],1);
-      arrayptr++;
-    }
-  }
-  
-  /*   Check Group Name */
-  memset(checked_group_name,'\0',sizeof(checked_group_name));
-  arrayptr=&checked_group_name[0];
-
-  for (i = 0 ; i < strlen(group) ; i++) {
-    if (group[i]>32) {
-      strncpy(arrayptr,&group[i],1);
-      arrayptr++;
-    }
-  }
 
   if((curl=curl_easy_init())==NULL) {
     curl_easy_cleanup(curl);
@@ -260,7 +235,7 @@ int RD_ImportCart(struct rd_cartimport *cartimport[],
 	CURLFORM_PTRNAME,
 	"GROUP_NAME",
         CURLFORM_COPYCONTENTS,
-	checked_group_name,
+	group,
 	CURLFORM_END);
 
   curl_formadd(&first,
@@ -276,7 +251,7 @@ int RD_ImportCart(struct rd_cartimport *cartimport[],
 	CURLFORM_PTRNAME,
 	"FILENAME",
         CURLFORM_FILE,
-	checked_fname,
+	filename,
 	CURLFORM_END);
   
 

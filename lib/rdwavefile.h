@@ -1076,6 +1076,7 @@ class RDWaveFile
 #endif  // HAVE_VORBIS
    int WriteOggBuffer(char *buf,int size);
    unsigned FrameOffset(int msecs) const;
+   QString wave_file_name;
    QFile wave_file;
    RDWaveData *wave_data;
    bool recordable;                // Allow DATA chunk writes?

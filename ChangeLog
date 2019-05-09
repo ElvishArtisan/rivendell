@@ -18611,3 +18611,40 @@
 2019-04-29 Patrick Linstruth <patrick@deltecent.com>
 	* Added second schedule code filter to rdlibrary(1).
 	* Change rdlibrary(1) minimum width from 850 to 975.
+2019-04-29 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a typo in 'RDLogPlay::move()'.
+2019-04-29 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'STACK_SCHED_CODES' table to the database.
+	* Dropped the 'STACK_LINES.SCHED_CODES' field from the database.
+	* Incremented the database version to 308.
+	* Renamed the 'SchedCartList' class to 'RDSchedCartList' and
+	refactored it to be idiomatic Qt.
+	* Renamed the 'SchedRulesList' class to 'RDSchedRulesList'.
+2019-04-29 Fred Gleason <fredg@paravelsystems.com>
+	* Added code to normalize the case of group names in
+	'RDGroup::RDGroup()'.
+2019-04-29 Fred Gleason <fredg@paravelsystems.com>
+	* Added code to normalize the case of log names in
+	'RDLog::RDLog()'.
+2019-04-30 Fred Gleason <fredg@paravelsystems.com>
+	* Added an appendix containing the 'GNU Free Documentation License'
+	to the Operations Guide.
+2019-05-01 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed bugs in rd_import(7) that caused corruption of multi-byte
+	UTF-8 characters.
+2019-05-01 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed bugs in the 'Import' Web API call that caused import of
+	filenames containing multibyte UTF-8 characters to fail.
+2019-05-02 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the 'rivendell-pypad' RPM package always to use
+	Python 3.6.
+2019-05-02 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the package version to 3.0.0rc01.
+2019-05-03 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression that broke audio importation in rdimport(1).
+2019-05-03 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up a compiler warning for rdimport(1).
+2019-05-03 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up a compiler warning for 'RDMacroEvent'.
+2019-05-03 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the package version to 3.0.0rc02.

@@ -740,7 +740,7 @@ int RDSetTimeLength(const QString &str)
   return res;
 }
 
-
+/*
 bool RDCopy(const QString &srcfile,const QString &destfile)
 {
   int src_fd;
@@ -775,6 +775,81 @@ bool RDCopy(const QString &srcfile,const QString &destfile)
   free(buf);
   close(src_fd);
   close(dest_fd);
+  return true;
+}
+*/
+
+bool RDCopy(const QString &srcfile,const QString &destfile)
+{
+  int src_fd;
+  int dest_fd;
+
+  if((src_fd=open((const char *)srcfile,O_RDONLY))<0) {
+    return false;
+  }
+  if((dest_fd=open((const char *)destfile,O_WRONLY|O_CREAT,S_IWUSR))<0) {
+    close(src_fd);
+    return false;
+  }
+  bool ret=RDCopy(src_fd,dest_fd);
+  close(src_fd);
+  close(dest_fd);
+
+  return ret;
+}
+
+
+bool RDCopy(const QString &srcfile,int dest_fd)
+{
+  int src_fd;
+
+  if((src_fd=open((const char *)srcfile,O_RDONLY))<0) {
+    return false;
+  }
+  bool ret=RDCopy(src_fd,dest_fd);
+  close(src_fd);
+
+  return ret;
+}
+
+
+bool RDCopy(int src_fd,const QString &destfile)
+{
+  int dest_fd;
+
+  if((dest_fd=open((const char *)destfile,O_WRONLY|O_CREAT,S_IWUSR))<0) {
+    return false;
+  }
+  bool ret=RDCopy(src_fd,dest_fd);
+  close(dest_fd);
+
+  return ret;
+}
+
+
+bool RDCopy(int src_fd,int dest_fd)
+{
+  struct stat src_stat;
+  struct stat dest_stat;
+  char *buf=NULL;
+  int n;
+
+  if(fstat(src_fd,&src_stat)<0) {
+    return false;
+  }
+  if(fstat(dest_fd,&dest_stat)<0) {
+    return false;
+  }
+  if(fchmod(dest_fd,src_stat.st_mode)<0) {
+    return false;
+  }
+  buf=(char *)malloc(dest_stat.st_blksize);
+  while((n=read(src_fd,buf,dest_stat.st_blksize))==dest_stat.st_blksize) {
+    write(dest_fd,buf,dest_stat.st_blksize);
+  }
+  write(dest_fd,buf,n);
+  free(buf);
+
   return true;
 }
 
