@@ -18649,3 +18649,6 @@
 	* Modified apis/rivwebcapi/rivwebcapi/rd_editcart.h and
 	apis/rivwebcapi/rivwebcapi/rd_editcut.h to match the
 	respective rd_cart.h, rd_cuts.h files in the api.
+2019-05-09 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed bug in clock schedule rules where "or After" schedule codes
+	were not displayed correctly.
