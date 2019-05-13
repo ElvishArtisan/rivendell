@@ -545,7 +545,7 @@ MainWidget::MainWidget(QWidget *parent)
 
 QSize MainWidget::sizeHint() const
 {
-  return QSize(1090,600);
+  return QSize(1010,600);
 }
 
 
@@ -1148,24 +1148,24 @@ void MainWidget::resizeEvent(QResizeEvent *e)
     }
     lib_clear_button->setGeometry(e->size().width()-90,10,80,50);
     lib_filter_label->setGeometry(10,10,55,20);
-    lib_group_box->setGeometry(70,40,120,20);
     lib_group_label->setGeometry(10,40,55,20);
-    lib_codes_box->setGeometry(330,40,120,20);
-    lib_codes_label->setGeometry(195,40,130,20);
-    lib_codes2_box->setGeometry(600,40,120,20);
-    lib_codes2_label->setGeometry(460,40,130,20);
-    lib_matches_edit->setGeometry(835,40,65,20);
-    lib_matches_label->setGeometry(740,40,100,20);
-    lib_showmatches_box->setGeometry(740,67,15,15);
-    lib_showmatches_label->setGeometry(760,65,200,20);
-    lib_allowdrag_box->setGeometry(560,67,15,15);
-    lib_allowdrag_label->setGeometry(580,65,130,20);
-    lib_showaudio_box->setGeometry(70,67,15,15);
-    lib_showaudio_label->setGeometry(90,65,130,20);
-    lib_showmacro_box->setGeometry(230,67,15,15);
-    lib_showmacro_label->setGeometry(250,65,130,20);
-    lib_shownotes_box->setGeometry(390,67,15,15);
-    lib_shownotes_label->setGeometry(410,65,130,20);
+    lib_group_box->setGeometry(70,40,100,20);
+    lib_codes_label->setGeometry(165,40,130,20);
+    lib_codes_box->setGeometry(300,40,100,20);
+    lib_codes2_label->setGeometry(415,40,130,20);
+    lib_codes2_box->setGeometry(550,40,100,20);
+    lib_matches_label->setGeometry(660,40,100,20);
+    lib_matches_edit->setGeometry(755,40,65,20);
+    lib_showmatches_label->setGeometry(760,66,200,20);
+    lib_showmatches_box->setGeometry(740,68,15,15);
+    lib_allowdrag_label->setGeometry(580,66,130,20);
+    lib_allowdrag_box->setGeometry(560,68,15,15);
+    lib_showaudio_label->setGeometry(90,66,130,20);
+    lib_showaudio_box->setGeometry(70,68,15,15);
+    lib_showmacro_label->setGeometry(250,66,130,20);
+    lib_showmacro_box->setGeometry(230,68,15,15);
+    lib_shownotes_label->setGeometry(410,66,130,20);
+    lib_shownotes_box->setGeometry(390,68,15,15);
     lib_cart_list->
       setGeometry(10,90,e->size().width()-20,e->size().height()-155);
     lib_add_button->setGeometry(10,e->size().height()-60,80,50);
