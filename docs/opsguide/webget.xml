@@ -1,0 +1,38 @@
+<chapter xmlns="http://docbook.org/ns/docbook" xml:id="chapter.webget">
+  <title>Webget</title>
+  <sect1 xml:id="sect.webget.webget">
+    <title>Webget</title>
+    <para>
+      Webget is a web-based utility for downloading Rivendell audio content
+      from remote locations. It can be accessed at
+      <userinput>http://<replaceable>host-name</replaceable>/rd-bin/webget.html</userinput>, where <replaceable>host-name</replaceable> is the host name or
+      IP address of the Rivendell system.
+    </para>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="webget.webget_screen.png" scale="60"/>
+	</imageobject>
+	<caption><para>The Webget screen</para></caption>
+      </mediaobject>
+    </para>
+    <para>
+      Content in Webget is searched for on the basis of the Cart's
+      <computeroutput>Title</computeroutput> field. The format of the
+      downloaded audio can be specified. Credentials for a valid Rivendell user
+      that has the <computeroutput>Production Rights/Allow WebGet Login</computeroutput> 
+      priviledge enabled in <command>rdadmin</command><manvolnum>1</manvolnum>
+      must be provided. Click the <computeroutput>OK</computeroutput>
+      button to generate the audio.
+    </para>
+    <note>
+      If multiple carts with the specified title exist, then the cart
+      with the lowest <computeroutput>Cart Number</computeroutput> will
+      be used.
+    </note>
+    <note>
+      If the selected cart contains multiple cuts, then the cut with the
+      lowest <computeroutput>Cut Number</computeroutput> will be used.
+    </note>
+  </sect1>
+</chapter>

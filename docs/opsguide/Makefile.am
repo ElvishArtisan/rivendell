@@ -39,6 +39,7 @@ OPSGUIDE_HTML = appendix.filepath_wildcards.html\
                 chapter.rml.html\
                 chapter.utilities.html\
                 chapter.voicetracking.html\
+                chapter.webget.html\
                 index.html\
                 part.appendices.html\
                 part.rivendell_administration.html\
@@ -264,7 +265,8 @@ OPSGUIDE_IMAGES = rdadmin.audio_resource_information_dialog.png\
                   voicetracking.voice_tracker_dialog_track_1_playing.png\
                   voicetracking.voice_tracker_dialog_track_2_playing.png\
                   voicetracking.voice_tracker_dialog_track_completed.png\
-                  voicetracking.voice_tracker_dialog_track_selected.png
+                  voicetracking.voice_tracker_dialog_track_selected.png\
+                  webget.webget_screen.png
 
 OPSGUIDE_ICONS = chain.png\
                  mic16.png\
@@ -298,7 +300,8 @@ OPSGUIDE_DEPS = $(OPSGUIDE_IMAGES) \
                 wings_filter.xml\
                 rml.xml\
                 utilities.xml\
-                voicetracking.xml
+                voicetracking.xml\
+                webget.xml
 
 %.html:	$(OPSGUIDE_DEPS)\
                 ../../PACKAGE_VERSION

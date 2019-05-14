@@ -18670,3 +18670,5 @@
 2019-05-14 Fred Gleason <fredg@paravelsystems.com>
 	* Modified the query in the Webget service to always return
 	the lowest numbered matching cart/cut found.
+2019-05-14 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Webget' chapter to the Operations Guide.
