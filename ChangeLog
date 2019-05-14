@@ -18660,3 +18660,8 @@
 2019-05-13 Patrick Linstruth <patrick@deltecent.com>
 	* Fixed regression in rdlibrary(1) display when
 	realtime filtering is disabled.
+2019-05-14 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the Webget service that caused audio to be
+	generated with a normalization level of -100 dBFS.
+	* Fixed a bug in the Webget service that caused all audio to
+	be generated as monoaural.

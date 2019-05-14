@@ -134,6 +134,11 @@ void MainObject::ripcConnectedData(bool state)
     XmlExit("missing \"title\"",400,"webget.cpp",LINE_NUMBER);
   }
 
+  int channels;
+  if(!webget_post->getValue("channels",&channels)) {
+    XmlExit("missing \"channels\"",400,"webget.cpp",LINE_NUMBER);
+  }
+
   int samprate;
   if(!webget_post->getValue("samprate",&samprate)) {
     XmlExit("missing \"samprate\"",400,"webget.cpp",LINE_NUMBER);
@@ -184,11 +189,11 @@ void MainObject::ripcConnectedData(bool state)
   //
   RDSettings *settings=new RDSettings();
   settings->setFormat((RDSettings::Format)format);
-  settings->setChannels(1);
+  settings->setChannels(channels);
   settings->setSampleRate(samprate);
   settings->setBitRate(bitrate);
   settings->setQuality(quality);
-  settings->setNormalizationLevel(-100);
+  settings->setNormalizationLevel(-1);
 
   //
   // Generate Metadata
