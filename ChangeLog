@@ -18665,3 +18665,5 @@
 	generated with a normalization level of -100 dBFS.
 	* Fixed a bug in the Webget service that caused all audio to
 	be generated as monoaural.
+2019-05-14 Fred Gleason <fredg@paravelsystems.com>
+	* Removed 'web/webget/webget.py'.
