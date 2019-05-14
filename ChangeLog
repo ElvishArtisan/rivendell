@@ -18667,3 +18667,6 @@
 	be generated as monoaural.
 2019-05-14 Fred Gleason <fredg@paravelsystems.com>
 	* Removed 'web/webget/webget.py'.
+2019-05-14 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the query in the Webget service to always return
+	the lowest numbered matching cart/cut found.

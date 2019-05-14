@@ -169,7 +169,8 @@ void MainObject::ripcConnectedData(bool state)
     "CUTS.CUT_NAME from "+
     "CART left join CUTS on CART.NUMBER=CUTS.CART_NUMBER where "+
     "CART.TITLE=\""+RDEscapeString(title)+"\" && "+
-    QString().sprintf("CART.TYPE=%d",RDCart::Audio);
+    QString().sprintf("CART.TYPE=%d ",RDCart::Audio)+
+    "order by CUTS.CUT_NAME";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(q->first()) {
     cartnum=RDCut::cartNumber(q->value(0).toString());
