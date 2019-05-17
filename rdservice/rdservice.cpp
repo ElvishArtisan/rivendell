@@ -57,6 +57,8 @@ MainObject::MainObject(QObject *parent)
   QString err_msg;
   RDApplication::ErrorType err_type=RDApplication::ErrorOk;
 
+  svc_startup_target=MainObject::TargetAll;
+
   //
   // Open the syslog
   //
@@ -78,6 +80,23 @@ MainObject::MainObject(QObject *parent)
     syslog(LOG_ERR,"unable to open database [%s]",
 	   (const char *)err_msg.utf8());
     exit(2);
+  }
+
+  //
+  // Process Startup Options
+  //
+  for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
+    for(int j=0;j<MainObject::TargetAll;j++) {
+      MainObject::StartupTarget target=(MainObject::StartupTarget)j;
+      if(rda->cmdSwitch()->key(i)==TargetCommandString(target)) {
+	svc_startup_target=target;
+	rda->cmdSwitch()->setProcessed(i,true);
+      }
+    }
+    if(!rda->cmdSwitch()->processed(i)) {
+      fprintf(stderr,"rdservice: unknown command-line option\n");
+      exit(4);
+    }
   }
 
   //

@@ -6,7 +6,7 @@
   <refmeta>
     <refentrytitle>rdservice</refentrytitle>
     <manvolnum>8</manvolnum>
-    <refmiscinfo class='source'>October 2018</refmiscinfo>
+    <refmiscinfo class='source'>Mat 2019</refmiscinfo>
     <refmiscinfo class='manual'>Linux Audio Manual</refmiscinfo>
   </refmeta>
   <refnamediv>
@@ -30,6 +30,7 @@
   <refsynopsisdiv id='synopsis'>
     <cmdsynopsis>
       <command>rdservice</command>
+      <arg choice='opt'><replaceable>OPTIONS</replaceable></arg>
       <sbr/>
     </cmdsynopsis>
   </refsynopsisdiv>
@@ -41,12 +42,15 @@
     System, including <command>caed</command><manvolnum>8</manvolnum>,
     <command>rdcatchd</command><manvolnum>8</manvolnum>,
     <command>ripcd</command><manvolnum>8</manvolnum>,
+    <command>rdpadd</command><manvolnum>8</manvolnum>,
+    <command>rdpadengined</command><manvolnum>8</manvolnum>,
     <command>rdvairplayd</command><manvolnum>8</manvolnum>,
     <command>rdimport</command><manvolnum>1</manvolnum> (in dropbox mode)
     as well as periodic system maintenance tasks using
     <command>rdmaint</command><manvolnum>8</manvolnum>.
     It is normally invoked by the host's boot system
-    (such as Systemd) at system boot-time and runs continuously thereafter.
+    (such as <command>systemd</command><manvolnum>1</manvolnum>)
+    at system boot-time and runs continuously thereafter.
     There should only be one instance of
     <command>rdservice</command><manvolnum>8</manvolnum> running at any
     given time; attempts to start an additional instance will terminate
@@ -54,6 +58,40 @@
   </para>
   </refsect1>
   
+  <refsect1 id='options'><title>Options</title>
+  <variablelist remap='TP'>
+    <varlistentry>
+      <term>
+	<option>--end-startup-after-caed</option>
+      </term>
+      <term>
+	<option>--end-startup-after-ripcd</option>
+      </term>
+      <term>
+	<option>--end-startup-after-rdcatchd</option>
+      </term>
+      <term>
+	<option>--end-startup-after-rdpadd</option>
+      </term>
+      <term>
+	<option>--end-startup-after-rdpadengined</option>
+      </term>
+      <term>
+	<option>--end-startup-after-rdvairplayd</option>
+      </term>
+      <term>
+	<option>--end-startup-after-rdrepld</option>
+      </term>
+      <listitem>
+	<para>
+	  Skip the remainder of the startup sequence after the specified
+	  component is started. (Useless except for debugging).
+	</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+  </refsect1>
+
   <refsect1 id='exit_values'><title>Exit Values</title>
 <para>
   <segmentedlist>
@@ -66,6 +104,7 @@
     <seglistitem><seg>1</seg><seg>Prior instance found</seg></seglistitem>
     <seglistitem><seg>2</seg><seg>Unable to open database</seg></seglistitem>
     <seglistitem><seg>3</seg><seg>Unable to start a service component</seg></seglistitem>
+    <seglistitem><seg>4</seg><seg>Unrecognized command line option</seg></seglistitem>
   </segmentedlist>
 </para>
   </refsect1>
@@ -78,6 +117,14 @@
   <literal>, </literal>
   <citerefentry>
     <refentrytitle>rdimport</refentrytitle><manvolnum>1</manvolnum>
+  </citerefentry>
+  <literal>, </literal>
+  <citerefentry>
+    <refentrytitle>systemd</refentrytitle><manvolnum>1</manvolnum>
+  </citerefentry>
+  <literal>, </literal>
+  <citerefentry>
+    <refentrytitle>systemctl</refentrytitle><manvolnum>1</manvolnum>
   </citerefentry>
   </para>
   </refsect1>

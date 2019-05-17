@@ -44,6 +44,9 @@ class MainObject : public QObject
 {
   Q_OBJECT;
  public:
+  enum StartupTarget {TargetCaed=0,TargetRipcd=1,TargetRdcatchd=2,
+		      TargetRdpadd=3,TargetRdpadengined=4,
+		      TargetRdvairplayd=5,TargetRdrepld=6,TargetAll=7};
   MainObject(QObject *parent=0);
 
  private slots:
@@ -62,9 +65,11 @@ class MainObject : public QObject
   int GetMaintInterval() const;
   void RunEphemeralProcess(int id,const QString &program,
 			   const QStringList &args);
+  QString TargetCommandString(StartupTarget target) const;
   QMap<int,RDProcess *> svc_processes;
   QTimer *svc_maint_timer;
   QTimer *svc_exit_timer;
+  StartupTarget svc_startup_target;
 };
 
 

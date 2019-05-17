@@ -58,6 +58,10 @@ bool MainObject::Startup(QString *err_msg)
       svc_processes[RDSERVICE_CAED_ID]->errorText();
     return false;
   }
+  if(svc_startup_target==MainObject::TargetCaed) {
+    fprintf(stderr,"Startup target caed(8) reached\n");
+    return true;
+  }
 
   //
   // ripcd(8)
@@ -70,6 +74,10 @@ bool MainObject::Startup(QString *err_msg)
     *err_msg=tr("unable to start ripcd(8)")+": "+
       svc_processes[RDSERVICE_RIPCD_ID]->errorText();
     return false;
+  }
+  if(svc_startup_target==MainObject::TargetRipcd) {
+    fprintf(stderr,"Startup target ripcd(8) reached\n");
+    return true;
   }
 
   //
@@ -84,6 +92,10 @@ bool MainObject::Startup(QString *err_msg)
       svc_processes[RDSERVICE_RDCATCHD_ID]->errorText();
     return false;
   }
+  if(svc_startup_target==MainObject::TargetRdcatchd) {
+    fprintf(stderr,"Startup target rdcatchd(8) reached\n");
+    return true;
+  }
 
   //
   // rdpadd(8)
@@ -96,6 +108,10 @@ bool MainObject::Startup(QString *err_msg)
     *err_msg=tr("unable to start rdpadd(8)")+": "+
       svc_processes[RDSERVICE_RDPADD_ID]->errorText();
     return false;
+  }
+  if(svc_startup_target==MainObject::TargetRdpadd) {
+    fprintf(stderr,"Startup target rdpadd(8) reached\n");
+    return true;
   }
 
   //
@@ -118,6 +134,10 @@ bool MainObject::Startup(QString *err_msg)
       svc_processes[RDSERVICE_RDPADENGINED_ID]->errorText();
     return false;
   }
+  if(svc_startup_target==MainObject::TargetRdpadengined) {
+    fprintf(stderr,"Startup target rdpadengined(8) reached\n");
+    return true;
+  }
 
   //
   // rdvairplayd(8)
@@ -130,6 +150,10 @@ bool MainObject::Startup(QString *err_msg)
     *err_msg=tr("unable to start rdvairplayd(8)")+": "+
       svc_processes[RDSERVICE_RDVAIRPLAYD_ID]->errorText();
     return false;
+  }
+  if(svc_startup_target==MainObject::TargetRdvairplayd) {
+    fprintf(stderr,"Startup target rdvairplayd(8) reached\n");
+    return true;
   }
 
   //
@@ -150,6 +174,10 @@ bool MainObject::Startup(QString *err_msg)
     }
   }
   delete q;
+  if(svc_startup_target==MainObject::TargetRdrepld) {
+    fprintf(stderr,"Startup target rdrepld(8) reached\n");
+    return true;
+  }
 
   if(!StartDropboxes(err_msg)) {
     return false;
@@ -295,4 +323,36 @@ void MainObject::KillProgram(const QString &program)
     sleep(1);
     pids=RDGetPids(program);
   }
+}
+
+
+QString MainObject::TargetCommandString(MainObject::StartupTarget target) const
+{
+  switch(target) {
+  case MainObject::TargetCaed:
+    return QString("--end-startup-after-caed");
+
+  case MainObject::TargetRipcd:
+    return QString("--end-startup-after-ripcd");
+
+  case MainObject::TargetRdcatchd:
+    return QString("--end-startup-after-rdcatchd");
+
+  case MainObject::TargetRdpadd:
+    return QString("--end-startup-after-rdpadd");
+
+  case MainObject::TargetRdpadengined:
+    return QString("--end-startup-after-rdpadengined");
+
+  case MainObject::TargetRdvairplayd:
+    return QString("--end-startup-after-rdvairplayd");
+
+  case MainObject::TargetRdrepld:
+    return QString("--end-startup-after-rdrepld");
+
+  case MainObject::TargetAll:
+    break;
+  }
+
+  return QString();
 }

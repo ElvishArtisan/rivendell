@@ -18672,3 +18672,9 @@
 	the lowest numbered matching cart/cut found.
 2019-05-14 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'Webget' chapter to the Operations Guide.
+2019-05-17 Fred Gleason <fredg@paravelsystems.com>
+	* Added '--end-startup-after-caed', '--end-startup-after-ripcd',
+	'--end-startup-after-rdcatchd', '--end-startup-after-rdpadd',
+	'--end-startup-after-rdpadengined', '--end-startup-after-rdvairplayd',
+	and '--end-startup-after-rdrepld' command line switches to
+	rdservice(8).
