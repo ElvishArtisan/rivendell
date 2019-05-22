@@ -18678,3 +18678,6 @@
 	'--end-startup-after-rdpadengined', '--end-startup-after-rdvairplayd',
 	and '--end-startup-after-rdrepld' command line switches to
 	rdservice(8).
+2019-05-22 Patrick Linstruth <patrick@deltecent.com>
+	* Display error dialog in rdsoftkeys(1) if no defintions are
+	found in map file.
