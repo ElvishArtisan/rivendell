@@ -18686,3 +18686,6 @@
 	found in map file.
 2019-05-23 Patrick Linstruth <patrick@deltecent.com>
 	* Updated fonts in rmlsend(1) to match other applications.
+2019-05-23 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed regression with "State" label overlapping "Date" field
+	in rdgpimon(1).
