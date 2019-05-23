@@ -18678,3 +18678,6 @@
 	'--end-startup-after-rdpadengined', '--end-startup-after-rdvairplayd',
 	and '--end-startup-after-rdrepld' command line switches to
 	rdservice(8).
+2019-05-23 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed regression with "State" label overlapping "Date" field
+	in rdgpimon(1).
