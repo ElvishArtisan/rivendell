@@ -18684,3 +18684,5 @@
 2019-05-23 Patrick Linstruth <patrick@deltecent.com>
 	* Display error dialog in rdsoftkeys(1) if no defintions are
 	found in map file.
+2019-05-23 Patrick Linstruth <patrick@deltecent.com>
+	* Updated fonts in rmlsend(1) to match other applications.
