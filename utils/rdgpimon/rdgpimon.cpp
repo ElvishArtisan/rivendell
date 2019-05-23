@@ -216,7 +216,7 @@ MainWidget::MainWidget(QWidget *parent)
   label->setGeometry(110,423,sizeHint().width()-220,30);
 
   gpi_events_date_edit=new Q3DateEdit(this);
-  gpi_events_date_edit->setGeometry(155,453,90,20);
+  gpi_events_date_edit->setGeometry(155,453,100,20);
   gpi_events_date_edit->setDate(QDate::currentDate());
   connect(gpi_events_date_edit,SIGNAL(valueChanged(const QDate &)),
 	  this,SLOT(eventsDateChangedData(const QDate &)));
@@ -226,14 +226,14 @@ MainWidget::MainWidget(QWidget *parent)
   gpi_events_date_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   gpi_events_state_box=new QComboBox(this);
-  gpi_events_state_box->setGeometry(280,453,55,20);
+  gpi_events_state_box->setGeometry(330,453,55,20);
   gpi_events_state_box->insertItem(tr("On"));
   gpi_events_state_box->insertItem(tr("Off"));
   gpi_events_state_box->insertItem(tr("Both"));
   connect(gpi_events_state_box,SIGNAL(activated(int)),
 	  this,SLOT(eventsStateChangedData(int)));
   gpi_events_state_label=new QLabel(gpi_events_state_box,tr("State")+":",this);
-  gpi_events_state_label->setGeometry(225,453,50,20);
+  gpi_events_state_label->setGeometry(275,453,50,20);
   gpi_events_state_label->setFont(main_font);
   gpi_events_state_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
