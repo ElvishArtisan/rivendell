@@ -420,9 +420,6 @@ void RDCartDialog::groupActivatedData(const QString &group)
   if(cart_group!=NULL) {
     *cart_group=group;
   }
-  if(cart_group!=NULL) {
-    *cart_group=group;
-  }
 }
 
 
@@ -683,7 +680,7 @@ void RDCartDialog::RefreshCarts()
     group="";
   }
   QString schedcode=cart_schedcode_box->currentText();
-  if(group==QString(tr("ALL"))) {
+  if(schedcode==QString(tr("ALL"))) {
     schedcode="";
   }
   if(cart_type==RDCart::All) {
@@ -817,7 +814,7 @@ void RDCartDialog::BuildGroupList()
     for(int i=0;i<cart_group_box->count();i++) {
       if(*cart_group==cart_group_box->text(i)) {
 	cart_group_box->setCurrentItem(i);
-	return;
+	break;
       }
     }
   }
@@ -841,7 +838,7 @@ void RDCartDialog::BuildGroupList()
     for(int i=0;i<cart_schedcode_box->count();i++) {
       if(*cart_schedcode==cart_schedcode_box->text(i)) {
 	cart_schedcode_box->setCurrentItem(i);
-	return;
+	break;
       }
     }
   }
