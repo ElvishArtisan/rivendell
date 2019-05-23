@@ -80,13 +80,11 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Create Fonts
   //
-  QFont font("Helvetica",10,QFont::Normal);
-  font.setPixelSize(10);
+  QFont font("Helvetica",12,QFont::Normal);
+  font.setPixelSize(12);
   setFont(font);
-  QFont main_font("Helvetica",12,QFont::Bold);
-  main_font.setPixelSize(12);
-  QFont label_font("Helvetica",10,QFont::Bold);
-  label_font.setPixelSize(10);
+  QFont default_font("Helvetica",12,QFont::Bold);
+  default_font.setPixelSize(12);
 
   //
   // Create And Set Icon
@@ -99,10 +97,10 @@ MainWidget::MainWidget(QWidget *parent)
 
   host=new QLineEdit(this);
   host->setGeometry(80,10,180,25);
-  host->setFont(main_font);
+  host->setFont(default_font);
   QLabel *label=new QLabel(host,"Sent To:",this);
   label->setGeometry(10,16,65,14);
-  label->setFont(label_font);
+  label->setFont(default_font);
   label->setAlignment(Qt::AlignRight);
   for(unsigned i=0;i<rdcmdswitch->keys();i++) {
     if(rdcmdswitch->key(i)=="--to-host") {
@@ -116,7 +114,7 @@ MainWidget::MainWidget(QWidget *parent)
   port_box->setEditable(false);
   label=new QLabel(port_box,"Dest:",this);
   label->setGeometry(270,16,30,14);
-  label->setFont(label_font);
+  label->setFont(default_font);
   label->setAlignment(Qt::AlignRight);
   port_box->insertItem(tr("RML"));
   port_box->insertItem(tr("RML (no echo)"));
@@ -126,38 +124,38 @@ MainWidget::MainWidget(QWidget *parent)
 
   port_edit=new QLineEdit(this);
   port_edit->setGeometry(sizeHint().width()-60,10,50,25);
-  port_edit->setFont(main_font);
+  port_edit->setFont(default_font);
   port_edit->setDisabled(true);
   port_edit_label=new QLabel(port_edit,tr("UDP Port:"),this);
   port_edit_label->setGeometry(sizeHint().width()-130,16,65,14);
-  port_edit_label->setFont(label_font);
+  port_edit_label->setFont(default_font);
   port_edit_label->setAlignment(Qt::AlignRight);
   port_edit_label->setDisabled(true);
 
   command=new QLineEdit(this);
   command->setGeometry(80,40,sizeHint().width()-90,25);
-  command->setFont(main_font);
+  command->setFont(default_font);
   label=new QLabel(command,tr("Command:"),this);
   label->setGeometry(10,46,65,14);
-  label->setFont(label_font);
+  label->setFont(default_font);
   label->setAlignment(Qt::AlignRight);
 
   response=new QLineEdit(this);
   response->setGeometry(80,70,sizeHint().width()-90,25);
-  response->setFont(main_font);
+  response->setFont(default_font);
   response_label=new QLabel(response,tr("Response:"),this);
   response_label->setGeometry(10,76,65,14);
-  response_label->setFont(label_font);
+  response_label->setFont(default_font);
   response_label->setAlignment(Qt::AlignRight);
 
   send=new QPushButton(tr("&Send Command"),this);
   send->setGeometry(10,sizeHint().height()-50,120,40);
-  send->setFont(main_font);
+  send->setFont(default_font);
   connect(send,SIGNAL(clicked()),this,SLOT(sendCommand()));
 
   quit=new QPushButton("&Quit",this,"quit");
   quit->setGeometry(sizeHint().width()-80,sizeHint().height()-50,70,40);
-  quit->setFont(main_font);
+  quit->setFont(default_font);
   quit->setDefault(true);
   connect(quit,SIGNAL(clicked()),qApp,SLOT(quit()));
 
