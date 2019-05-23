@@ -157,6 +157,17 @@ MainWidget::MainWidget(QWidget *parent)
     }
     n++;
   }
+
+  //
+  // If no softkeys have been defined, gracefully exit
+  //
+  if (!key_macros.size()) {
+    QMessageBox::critical(this, tr("RDSoftKeys"),
+       tr(QString("No SoftKey definitions found in file\n%1")
+       .arg(map_filename)));
+    exit(1);
+  }
+
   if((key_macros.size()%key_columns)==0) {
     key_ysize-=60;
   }

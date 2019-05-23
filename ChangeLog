@@ -18681,3 +18681,6 @@
 2019-05-19 Patrick Linstruth <patrick@deltecent.com>
 	* Fixed bug in 'RDCartDialog' that caused an empty scheduler code
 	dropdown box.
+2019-05-23 Patrick Linstruth <patrick@deltecent.com>
+	* Display error dialog in rdsoftkeys(1) if no defintions are
+	found in map file.
