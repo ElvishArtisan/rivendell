@@ -2,7 +2,7 @@
 //
 // A LiveWire Node Driver for Rivendell
 //
-//   (C) Copyright 2007,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2007-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,6 +27,7 @@
 
 #include <rd.h>
 #include <rdlivewire.h>
+#include <rdsocketstrings.h>
 
 AString::AString()
   : QString()
@@ -92,24 +93,25 @@ RDLiveWire::RDLiveWire(unsigned id,QObject *parent)
   //
   // Connection Socket
   //
-  live_socket=new Q3Socket(this,"live_socket");
+  live_socket=new QTcpSocket(this);
   connect(live_socket,SIGNAL(connected()),this,SLOT(connectedData()));
   connect(live_socket,SIGNAL(connectionClosed()),
 	  this,SLOT(connectionClosedData()));
   connect(live_socket,SIGNAL(readyRead()),this,SLOT(readyReadData()));
-  connect(live_socket,SIGNAL(error(int)),this,SLOT(errorData(int)));
+  connect(live_socket,SIGNAL(error(QAbstracketSocket::SocketError)),
+	  this,SLOT(errorData(QAbstrackSocket::SocketError)));
 
   //
   // Watchdog Timers
   //
-  live_watchdog_timer=new QTimer(this,",live_watchdog_timer");
+  live_watchdog_timer=new QTimer(this);
   connect(live_watchdog_timer,SIGNAL(timeout()),this,SLOT(watchdogData()));
 
-  live_watchdog_timeout_timer=new QTimer(this,",live_watchdog_timeout_timer");
+  live_watchdog_timeout_timer=new QTimer(this);
   connect(live_watchdog_timeout_timer,SIGNAL(timeout()),
-	  this,SLOT(watchdogTimeoutData()));
+  	  this,SLOT(watchdogTimeoutData()));
 
-  live_holdoff_timer=new QTimer(this,",live_holdoff_timer");
+  live_holdoff_timer=new QTimer(this);
   connect(live_holdoff_timer,SIGNAL(timeout()),this,SLOT(holdoffData()));
 }
 
@@ -371,7 +373,7 @@ void RDLiveWire::connectionClosedData()
     live_watchdog_state=true;
     int holdoff=GetHoldoff();
     emit watchdogStateChanged(live_id,QString().sprintf(
-       "Connection to LiveWire node at %s:%d closed, attempting reconnect, holdoff = %d mS",
+       "connection to LiveWire node at %s:%d closed, attempting reconnect, holdoff = %d mS",
        (const char *)live_hostname,live_tcp_port,holdoff));
     live_holdoff_timer->start(holdoff,true);
   }
@@ -406,34 +408,28 @@ void RDLiveWire::readyReadData()
 }
 
 
-void RDLiveWire::errorData(int err)
+void RDLiveWire::errorData(QAbstractSocket::SocketError err)
 {
   int interval=RDLIVEWIRE_RECONNECT_MIN_INTERVAL;
 
-  switch((Q3Socket::Error)err) {
-      case Q3Socket::ErrConnectionRefused:
-	live_watchdog_state=true;
-	interval=GetHoldoff();
-	emit watchdogStateChanged(live_id,QString().sprintf(
-	 "Connection to LiveWire node at %s:%d refused, attempting reconnect, holdoff = %d mS",
-				  (const char *)live_hostname,
-				  live_tcp_port,interval));
-	live_holdoff_timer->start(interval,true);
-	break;
+  switch(err) {
+  case QAbstractSocket::ErrConnectionRefused:
+    live_watchdog_state=true;
+    interval=GetHoldoff();
+    emit watchdogStateChanged(live_id,QString().sprintf(
+      "connection to LiveWire node at %s:%d refused, attempting reconnect, holdoff = %d mS",
+      (const char *)live_hostname,
+      live_tcp_port,interval));
+    live_holdoff_timer->start(interval,true);
+    break;
 
-      case Q3Socket::ErrHostNotFound:
-	emit watchdogStateChanged(live_id,QString().sprintf(
-	  "Error on connection to LiveWire node at %s:%d: Host Not Found",
-				  (const char *)live_hostname,
-				  live_tcp_port));
-	break;
-
-      case Q3Socket::ErrSocketRead:
-	emit watchdogStateChanged(live_id,QString().sprintf(
-	  "Error on connection to LiveWire node at %s:%d: Socket Read Error",
-				  (const char *)live_hostname,
-				  live_tcp_port));
-	break;
+  default:
+    syslog(LOG_WARNING,
+	   "socket error on connection to LiveWire node at %s:%d: %s",
+	   (const char *)live_hostname,
+	   live_tcp_port,
+	   (const char *)RDSocketStrings(err));
+    break;
   }
 }
 
@@ -513,7 +509,7 @@ void RDLiveWire::watchdogTimeoutData()
   live_gpo_initialized=false;
   int holdoff=GetHoldoff();
   emit watchdogStateChanged(live_id,QString().sprintf(
-	 "Connection to LiveWire node at %s:%d lost, attempting reconnect, holdoff = %d mS",
+	 "connection to LiveWire node at %s:%d lost, attempting reconnect, holdoff = %d mS",
 	 (const char *)live_hostname,live_tcp_port,holdoff));
   live_holdoff_timer->start(holdoff,true);
 }
@@ -623,7 +619,7 @@ void RDLiveWire::ReadVersion(const QString &cmd)
 	}
 	if(f1[0]=="NGPI") {
 	  live_gpis=f1[1].toInt();
-	  QSignalMapper *mapper=new QSignalMapper(this,"gpi_mapper");
+	  QSignalMapper *mapper=new QSignalMapper(this);
 	  connect(mapper,SIGNAL(mapped(int)),this,SLOT(gpiTimeoutData(int)));
 	  for(int i=0;i<live_gpis;i++) {
 	    live_gpi_states.push_back(new bool[RD_LIVEWIRE_GPIO_BUNDLE_SIZE]);
@@ -647,7 +643,7 @@ void RDLiveWire::ReadVersion(const QString &cmd)
 	}
 	if(f1[0]=="NGPO") {
 	  live_gpos=f1[1].toInt();
-	  QSignalMapper *mapper=new QSignalMapper(this,"gpo_mapper");
+	  QSignalMapper *mapper=new QSignalMapper(this);
 	  connect(mapper,SIGNAL(mapped(int)),this,SLOT(gpoTimeoutData(int)));
 	  for(int i=0;i<live_gpos;i++) {
 	    live_gpo_states.push_back(new bool[RD_LIVEWIRE_GPIO_BUNDLE_SIZE]);
@@ -681,7 +677,7 @@ void RDLiveWire::ReadVersion(const QString &cmd)
   if(live_watchdog_state) {
     live_watchdog_state=false;
     emit watchdogStateChanged(live_id,QString().sprintf(
-	    "Connection to LiveWire node at %s:%d restored",
+	    "connection to LiveWire node at %s:%d restored",
 	 (const char *)live_hostname,live_tcp_port));
   }
   live_watchdog_timer->start(RDLIVEWIRE_WATCHDOG_INTERVAL,true);

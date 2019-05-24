@@ -18689,3 +18689,7 @@
 2019-05-23 Patrick Linstruth <patrick@deltecent.com>
 	* Fixed regression with "State" label overlapping "Date" field
 	in rdgpimon(1).
+2019-05-24 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDSocketStrings()' function in
+	'lib/rdsocketstrings.[cpp|h]'.
+	* Fixed a bug in 'RDLiveWire' that caused false watchdog triggers.

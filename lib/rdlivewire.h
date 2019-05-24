@@ -2,7 +2,7 @@
 //
 // A LiveWire Node Driver for Rivendell
 //
-//   (C) Copyright 2007,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2007-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,7 +25,7 @@
 
 #include <qstring.h>
 #include <qobject.h>
-#include <q3socket.h>
+#include <qtcpsocket.h>
 #include <qstringlist.h>
 #include <qtimer.h>
 
@@ -92,7 +92,7 @@ class RDLiveWire : public QObject
   void connectedData();
   void connectionClosedData();
   void readyReadData();
-  void errorData(int err);
+  void errorData(QAbstractSocket::SocketError err);
   void gpiTimeoutData(int id);
   void gpoTimeoutData(int id);
   void watchdogData();
@@ -131,7 +131,7 @@ class RDLiveWire : public QObject
   std::vector<QTimer *>live_gpi_timers;
   std::vector<QTimer *>live_gpo_timers;
   int live_gpos;
-  Q3Socket *live_socket;
+  QTcpSocket *live_socket;
   char live_buf[RD_LIVEWIRE_MAX_CMD_LENGTH];
   int live_ptr;
   bool live_connected;

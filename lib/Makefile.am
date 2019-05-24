@@ -208,6 +208,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdslotdialog.cpp rdslotdialog.h\
                         rdslotoptions.cpp rdslotoptions.h\
                         rdsocket.cpp rdsocket.h\
+                        rdsocketstrings.cpp rdsocketstrings.h\
                         rdsound_panel.cpp rdsound_panel.h\
                         rdstation.cpp rdstation.h\
                         rdstatus.cpp rdstatus.h\
