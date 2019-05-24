@@ -41,6 +41,7 @@ GpiLabel::GpiLabel(QWidget *parent)
   gpi_line_label->setFont(line_font);
   gpi_line_label->setAlignment(Qt::AlignHCenter|Qt::AlignVCenter);
   gpi_line_label->setPalette(Qt::gray);
+  gpi_line_label->setStyleSheet("background-color:"+QColor(Qt::gray).name());
 
   //
   // On Cart Label
@@ -98,9 +99,13 @@ void GpiLabel::setState(bool state)
 {
   if(state) {
     gpi_line_label->setPalette(Qt::green);
+    gpi_line_label->
+      setStyleSheet("background-color:"+QColor(Qt::green).name());
   }
   else {
     gpi_line_label->setPalette(Qt::gray);
+    gpi_line_label->
+      setStyleSheet("background-color:"+QColor(Qt::gray).name());
   }
 }
 

@@ -435,7 +435,7 @@ void MainWidget::eventsReportData()
 
 void MainWidget::gpiStateChangedData(int matrix,int line,bool state)
 {
-  // printf("gpiStateChanged(%d,%d,%d)\n",matrix,line,state);
+  //  printf("gpiStateChanged(%d,%d,%d)\n",matrix,line,state);
 
   if(gpi_type_box->currentItem()!=RDMatrix::GpioInput) {
     return;
@@ -454,7 +454,7 @@ void MainWidget::gpiStateChangedData(int matrix,int line,bool state)
 
 void MainWidget::gpoStateChangedData(int matrix,int line,bool state)
 {
-  // printf("gpoStateChanged(%d,%d,%d)\n",matrix,line,state);
+  //  printf("gpoStateChanged(%d,%d,%d)\n",matrix,line,state);
 
   if(gpi_type_box->currentItem()!=RDMatrix::GpioOutput) {
     return;

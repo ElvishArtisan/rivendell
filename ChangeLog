@@ -18693,3 +18693,6 @@
 	* Added an 'RDSocketStrings()' function in
 	'lib/rdsocketstrings.[cpp|h]'.
 	* Fixed a bug in 'RDLiveWire' that caused false watchdog triggers.
+2019-05-24 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdgpimon(1) that caused GPIO status
+	to fail to be displayed in the status widgets.
