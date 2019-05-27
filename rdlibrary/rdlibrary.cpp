@@ -1194,7 +1194,8 @@ void MainWidget::RefreshCuts(RDListViewItem *p,unsigned cartnum)
   QString sql;
   QDateTime current_datetime(QDate::currentDate(),QTime::currentTime());
   QDateTime end_datetime;
-  RDCart::Validity validity=RDCart::NeverValid;
+  RDCart::Validity cart_validity=RDCart::NeverValid;
+  RDCart::Validity cut_validity=RDCart::NeverValid;
 
   while ((i=p->firstChild())) {
     delete i;
@@ -1242,11 +1243,24 @@ void MainWidget::RefreshCuts(RDListViewItem *p,unsigned cartnum)
       else {
         l->setText(End,"TFN");
       }
-      validity=ValidateCut(q,5,validity,current_datetime);
       end_datetime=q->value(8).toDateTime();
-      UpdateItemColor(l,validity,end_datetime,current_datetime);
+      cut_validity=ValidateCut(q,5,RDCart::NeverValid,current_datetime);
+      UpdateItemColor(l,cut_validity,end_datetime,current_datetime);
+      cart_validity=ValidateCut(q,5,cart_validity,current_datetime);
+      UpdateItemColor(p,cart_validity,end_datetime,current_datetime);
     }
   }
+  else if(q->size()==1){
+    if(q->next()) {
+      cart_validity=ValidateCut(q,5,cart_validity,current_datetime);
+      end_datetime=q->value(8).toDateTime();
+      UpdateItemColor(p,cart_validity,end_datetime,current_datetime);
+    }
+  }
+  else {
+    p->setBackgroundColor(RD_CART_ERROR_COLOR);
+  }
+
   delete q;
 }
 
@@ -1257,8 +1271,6 @@ void MainWidget::RefreshList()
   RDListViewItem *l=NULL;
   QString type_filter;
   QDateTime current_datetime(QDate::currentDate(),QTime::currentTime());
-  unsigned cartnum=0;
-  RDCart::Validity validity=RDCart::NeverValid;
   QDateTime end_datetime;
 
   lib_cart_list->clear();
@@ -1296,60 +1308,29 @@ void MainWidget::RefreshList()
     "CART.VALIDITY,"+           // 22
     "GROUPS.COLOR,"+            // 23
     "CUTS.TALK_START_POINT,"+   // 24
-    "CUTS.TALK_END_POINT,"+     // 25
-    "CUTS.LENGTH,"+             // 26  offsets begin here
-    "CUTS.EVERGREEN,"+          // 27
-    "CUTS.START_DATETIME,"+     // 28
-    "CUTS.END_DATETIME,"+       // 29
-    "CUTS.START_DAYPART,"+      // 30
-    "CUTS.END_DAYPART,"+        // 31
-    "CUTS.MON,"+                // 32
-    "CUTS.TUE,"+                // 33
-    "CUTS.WED,"+                // 34
-    "CUTS.THU,"+                // 35
-    "CUTS.FRI,"+                // 36
-    "CUTS.SAT,"+                // 37
-    "CUTS.SUN "+                // 38
+    "CUTS.TALK_END_POINT "+     // 25
     "from CART left join GROUPS on CART.GROUP_NAME=GROUPS.NAME "+
     "left join CUTS on CART.NUMBER=CUTS.CART_NUMBER";
   sql+=WhereClause();
-  sql+=" order by CART.NUMBER";
+  sql+=" group by CART.NUMBER order by CART.NUMBER";
   if(lib_showmatches_box->isChecked()) {
     sql+=QString().sprintf(" limit %d",RD_LIMITED_CART_SEARCH_QUANTITY);
   }
   q=new RDSqlQuery(sql);
   int step=0;
   int count=0;
+  int matches=0;
   lib_progress_dialog->setTotalSteps(q->size()/RDLIBRARY_STEP_SIZE);
   lib_progress_dialog->setProgress(0);
   while(q->next()) {
     end_datetime=q->value(14).toDateTime();
-    if(q->value(0).toUInt()==cartnum) {
-      if((RDCart::Type)q->value(15).toUInt()==RDCart::Macro) {
-	validity=RDCart::AlwaysValid;
-      }
-      else {
-	validity=ValidateCut(q,26,validity,current_datetime);
-      }
-    }
-    else {
-      //
-      // Write availability color
-      //
-      UpdateItemColor(l,validity,q->value(14).toDateTime(),current_datetime);
 
-      //
-      // Start a new entry
-      //
-      if((RDCart::Type)q->value(15).toUInt()==RDCart::Macro) {
-	validity=RDCart::AlwaysValid;
-      }
-      else {
-	validity=ValidateCut(q,26,RDCart::NeverValid,current_datetime);
-      }
-      l=new RDListViewItem(lib_cart_list);
-      l->setExpandable(false);
-      switch((RDCart::Type)q->value(15).toUInt()) {
+    //
+    // Start a new entry
+    //
+    l=new RDListViewItem(lib_cart_list);
+    l->setExpandable(false);
+    switch((RDCart::Type)q->value(15).toUInt()) {
       case RDCart::Audio:
 	if(q->value(21).isNull()) {
 	  l->setPixmap(Icon,*lib_playout_map);
@@ -1366,73 +1347,70 @@ void MainWidget::RefreshList()
 	
       case RDCart::All:
 	break;
-      }
-      l->setText(Cart,QString().sprintf("%06d",q->value(0).toUInt()));
-      l->setText(Group,q->value(12).toString());
-      l->setTextColor(Group,q->value(23).toString(),QFont::Bold);
-      if(q->value(16).toUInt()==1) {
-	      l->setText(Length,RDGetTimeLength(q->value(1).toUInt()));
-              l->setText(Talk,RDGetTimeLength(q->value(25).toUInt()-q->value(24).toUInt()));
-      }
-      l->setText(Title,q->value(2).toString());
-      l->setText(Artist,q->value(3).toString());
-      if(!q->value(13).toDateTime().isNull()) {
-	l->setText(Start,q->value(13).toDateTime().
-		   toString("MM/dd/yyyy - hh:mm:ss"));
-      }
-      if(!q->value(14).toDateTime().isNull()) {
-	l->setText(End,q->value(14).toDateTime().
-		   toString("MM/dd/yyyy - hh:mm:ss"));
-      }
-      else {
-	l->setText(End,"TFN");
-      }
-      l->setText(Album,q->value(4).toString());
-      l->setText(Label,q->value(5).toString());
-      l->setText(Composer,q->value(9).toString());
-      l->setText(Conductor,q->value(11).toString());
-      l->setText(Publisher,q->value(10).toString());
-      l->setText(Client,q->value(6).toString());
-      l->setText(Agency,q->value(7).toString());
-      l->setText(UserDefined,q->value(8).toString());
-      l->setText(Cuts,q->value(16).toString());
-      l->setText(LastCutPlayed,q->value(17).toString());
-      l->setText(EnforceLength,q->value(18).toString());
-      l->setText(PreservePitch,q->value(19).toString());
-      l->setText(LengthDeviation,q->value(20).toString());
-      l->setText(OwnedBy,q->value(21).toString());
-      if(q->value(18).toString()=="Y") {
-	l->setTextColor(Length,QColor(RDLIBRARY_ENFORCE_LENGTH_COLOR),QFont::Bold);
-      }
-      else {
-	if((q->value(20).toUInt()>RDLIBRARY_MID_LENGTH_LIMIT)&&
-	   (q->value(18).toString()=="N")) {
-	  if(q->value(20).toUInt()>RDLIBRARY_MAX_LENGTH_LIMIT) {
-	    l->setTextColor(Length,QColor(RDLIBRARY_MAX_LENGTH_COLOR),QFont::Bold);
-	  }
-	  else {
-	    l->setTextColor(Length,QColor(RDLIBRARY_MID_LENGTH_COLOR),QFont::Bold);
-	  }
-	}
-	else {
-	  l->setTextColor(Length,QColor(Qt::black),QFont::Normal);
-	}
-      }
-      if(q->value(16).toUInt() > 1) {
-        RefreshCuts(l,q->value(0).toUInt());
-      }
-      count++;
     }
-    cartnum=q->value(0).toUInt();
+    l->setText(Cart,QString().sprintf("%06d",q->value(0).toUInt()));
+    l->setText(Group,q->value(12).toString());
+    l->setTextColor(Group,q->value(23).toString(),QFont::Bold);
+    if(q->value(16).toUInt()==1) {
+      l->setText(Length,RDGetTimeLength(q->value(1).toUInt()));
+      l->setText(Talk,RDGetTimeLength(q->value(25).toUInt()-q->value(24).toUInt()));
+    }
+    l->setText(Title,q->value(2).toString());
+    l->setText(Artist,q->value(3).toString());
+    if(!q->value(13).toDateTime().isNull()) {
+      l->setText(Start,q->value(13).toDateTime().
+		   toString("MM/dd/yyyy - hh:mm:ss"));
+    }
+    if(!q->value(14).toDateTime().isNull()) {
+      l->setText(End,q->value(14).toDateTime().
+		   toString("MM/dd/yyyy - hh:mm:ss"));
+    }
+    else {
+      l->setText(End,"TFN");
+    }
+    l->setText(Album,q->value(4).toString());
+    l->setText(Label,q->value(5).toString());
+    l->setText(Composer,q->value(9).toString());
+    l->setText(Conductor,q->value(11).toString());
+    l->setText(Publisher,q->value(10).toString());
+    l->setText(Client,q->value(6).toString());
+    l->setText(Agency,q->value(7).toString());
+    l->setText(UserDefined,q->value(8).toString());
+    l->setText(Cuts,q->value(16).toString());
+    l->setText(LastCutPlayed,q->value(17).toString());
+    l->setText(EnforceLength,q->value(18).toString());
+    l->setText(PreservePitch,q->value(19).toString());
+    l->setText(LengthDeviation,q->value(20).toString());
+    l->setText(OwnedBy,q->value(21).toString());
+    if(q->value(18).toString()=="Y") {
+      l->setTextColor(Length,QColor(RDLIBRARY_ENFORCE_LENGTH_COLOR),QFont::Bold);
+    }
+    else {
+      if((q->value(20).toUInt()>RDLIBRARY_MID_LENGTH_LIMIT)&&
+	   (q->value(18).toString()=="N")) {
+        if(q->value(20).toUInt()>RDLIBRARY_MAX_LENGTH_LIMIT) {
+          l->setTextColor(Length,QColor(RDLIBRARY_MAX_LENGTH_COLOR),QFont::Bold);
+        }
+        else {
+          l->setTextColor(Length,QColor(RDLIBRARY_MID_LENGTH_COLOR),QFont::Bold);
+        }
+      }
+      else {
+        l->setTextColor(Length,QColor(Qt::black),QFont::Normal);
+      }
+    }
+    RefreshCuts(l,q->value(0).toUInt());
+    matches++;
+    count++;
+
     if(count>RDLIBRARY_STEP_SIZE) {
       lib_progress_dialog->setProgress(++step);
       count=0;
       qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
     }
   }
-  lib_matches_edit->setText(QString().sprintf("%d",count));
-  UpdateItemColor(l,validity,end_datetime,current_datetime);
   lib_progress_dialog->reset();
+  lib_matches_edit->setText(QString().sprintf("%d",matches));
   delete q;
 }
 
@@ -1510,32 +1488,14 @@ void MainWidget::RefreshLine(RDListViewItem *item)
     "CART.VALIDITY,"+          // 21
     "GROUPS.COLOR,"+           // 22
     "CUTS.TALK_START_POINT,"+  // 23
-    "CUTS.TALK_END_POINT,"+    // 24
-    "CUTS.LENGTH,"+            // 25  offsets begin here
-    "CUTS.EVERGREEN,"+         // 26
-    "CUTS.START_DATETIME,"+    // 27
-    "CUTS.END_DATETIME,"+      // 28
-    "CUTS.START_DAYPART,"+     // 29
-    "CUTS.END_DAYPART,"+       // 30
-    "CUTS.MON,"+               // 31
-    "CUTS.TUE,"+               // 32
-    "CUTS.WED,"+               // 33
-    "CUTS.THU,"+               // 34
-    "CUTS.FRI,"+               // 35
-    "CUTS.SAT,"+               // 35
-    "CUTS.SUN "+               // 37
+    "CUTS.TALK_END_POINT "+    // 24
     "from CART left join GROUPS "+
     "on CART.GROUP_NAME=GROUPS.NAME left join CUTS on "+
     "CART.NUMBER=CUTS.CART_NUMBER where "+
-    QString().sprintf("CART.NUMBER=%u",item->text(Cart).toUInt());
+    QString().sprintf("CART.NUMBER=%u ",item->text(Cart).toUInt())+
+    "group by CART.NUMBER";
   RDSqlQuery *q=new RDSqlQuery(sql);
   while(q->next()) {
-    if((RDCart::Type)q->value(14).toUInt()==RDCart::Macro) {
-      validity=RDCart::AlwaysValid;
-    }
-    else {
-      validity=ValidateCut(q,25,validity,current_datetime);
-    }
     switch((RDCart::Type)q->value(14).toUInt()) {
     case RDCart::Audio:
       if(q->value(20).isNull()) {
@@ -1544,7 +1504,7 @@ void MainWidget::RefreshLine(RDListViewItem *item)
       else {
 	item->setPixmap(Icon,*lib_track_cart_map);
       }
-      if(q->value(Icon).toUInt()==0) {
+      if(q->value(0).toUInt()==0) {
 	item->setBackgroundColor(RD_CART_ERROR_COLOR);
       }
       else {
