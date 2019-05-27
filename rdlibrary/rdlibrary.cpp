@@ -1399,7 +1399,12 @@ void MainWidget::RefreshList()
         l->setTextColor(Length,QColor(Qt::black),QFont::Normal);
       }
     }
-    RefreshCuts(l,q->value(0).toUInt());
+    if((RDCart::Type)q->value(15).toUInt()!=RDCart::Macro) {
+      RefreshCuts(l,q->value(0).toUInt());
+    }
+    else {
+      l->setBackgroundColor(palette().color(QPalette::Active,QColorGroup::Base));
+    }
     matches++;
     count++;
 
