@@ -128,6 +128,7 @@ utils/rddgimport/rddgimport
 utils/rddiscimport/rddiscimport
 utils/rdcheckcuts/rdcheckcuts
 utils/rdmarkerset/rdmarkerset
+utils/rdmetadata/rdmetadata
 utils/rmlsend/rmlsend
 utils/rdpurgecasts/rdpurgecasts
 utils/rdchunk/rdchunk
