@@ -18696,3 +18696,6 @@
 2019-05-24 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdgpimon(1) that caused GPIO status
 	to fail to be displayed in the status widgets.
+2019-05-28 Patrick Linstruth <patrick@deltecent.com>
+	* Added RD_PREFIX to rddbmgr(1) path and process start error
+	message dialog to rddbconfig(1).
