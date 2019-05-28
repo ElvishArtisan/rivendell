@@ -699,8 +699,8 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
             *report+=QObject::tr(" with sched code(s): ")+HaveCode()+" "+HaveCode2();
           }
           *report+="\n";
+          schedCL->restore();
         }
-        schedCL->restore();
       }
       
       //
@@ -731,8 +731,8 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
             *report+=QObject::tr(" with sched code(s): ")+HaveCode()+" "+HaveCode2();
           }
           *report+="\n";
+          schedCL->restore();
         }
-        schedCL->restore();
       }
       
       // Clock Scheduler Rules
@@ -779,8 +779,8 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 	  *report+=time.toString("hh:mm:ss")+" "+
 	    QObject::tr("Rule broken: Max. in a Row/Min. Wait for ")+
 	    q->value(0).toString()+"\n";
+	  schedCL->restore();
 	}
-	schedCL->restore();
 
 	// do not play after
 	if(q->value(3).toString()!="") {
