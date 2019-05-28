@@ -27,6 +27,14 @@
 RDSchedCode::RDSchedCode(const QString &code)
 {
   sched_code=code;
+
+  //
+  // Get proper case for code
+  //
+  if(exists()) {
+    sched_code=RDGetSqlValue("SCHED_CODES","CODE",code,"CODE").
+      toString();
+  }
 }
 
 
