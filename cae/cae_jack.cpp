@@ -2,7 +2,7 @@
 //
 // The JACK Driver for the Core Audio Engine component of Rivendell
 //
-//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -440,9 +440,12 @@ void MainObject::jackClientStartData()
     QString cmd=RDDateDecode(q->value(1).toString(),QDate::currentDate(),
 			     cae_station,rd_config,
 			     rd_config->provisioningServiceName(rd_config->stationName()));
-    QStringList fields=cmd.split(" ");
-    jack_clients.push_back(new Q3Process(fields,this));
-    if(jack_clients.back()->start()) {
+    QStringList args=cmd.split(" ",QString::SkipEmptyParts);
+    QString program=args.at(0);
+    args.removeFirst();
+    jack_clients.push_back(new QProcess(this));
+    jack_clients.back()->start(program,args);
+    if(jack_clients.back()->waitForStarted()) {
       rd_config->log("caed",RDConfig::LogDebug,"started JACK Client \""+
 	      q->value(0).toString()+"\"");
     }
@@ -486,9 +489,13 @@ void MainObject::jackInit(RDStation *station)
   // Start Jack Server
   //
   if(station->startJack()) {
-    QStringList fields=station->jackCommandLine().split(" ");
-    Q3Process *proc=new Q3Process(fields,this);
-    if(proc->start()) {
+    QStringList args=
+      station->jackCommandLine().split(" ",QString::SkipEmptyParts);
+    QString program=args.at(0);
+    args.removeFirst();
+    QProcess *proc=new QProcess(this);
+    proc->start(program,args);
+    if(proc->waitForStarted()) {
       rd_config->log("caed",RDConfig::LogDebug,"JACK server started");
     }
     else {
@@ -707,7 +714,7 @@ void MainObject::jackInit(RDStation *station)
 void MainObject::jackFree()
 {
 #ifdef JACK
-  for(unsigned i=0;i<jack_clients.size();i++) {
+  for(int i=0;i<jack_clients.size();i++) {
     jack_clients[i]->kill();
     delete jack_clients[i];
   }

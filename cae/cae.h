@@ -31,7 +31,8 @@
 #include <qstring.h>
 #include <qsignalmapper.h>
 #include <qtimer.h>
-#include <q3process.h>
+//#include <q3process.h>
+#include <qprocess.h>
 #include <qudpsocket.h>
 
 #include <rdwavefile.h>
@@ -287,7 +288,7 @@ class MainObject : public QObject
   bool jack_activated;
 #ifdef JACK
   int jack_card;
-  std::vector<Q3Process *> jack_clients;
+  QList<QProcess *> jack_clients;
   RDWaveFile *jack_record_wave[RD_MAX_STREAMS];
   RDWaveFile *jack_play_wave[RD_MAX_STREAMS];
   short *jack_wave_buffer;
