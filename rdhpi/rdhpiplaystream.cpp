@@ -408,7 +408,6 @@ bool RDHPIPlayStream::play()
 #ifdef RPLAYSTREAM_SHOW_SLOTS
   printf("play() -- Card: %d  Stream: %d\n",card_number,stream_number);
 #endif  // RPLAYSTREAM_SHOW_SLOTS
-  syslog(LOG_ERR,"Play - 1\n");
   if(!is_open) {
     return false;
   }
