@@ -2,7 +2,7 @@
 //
 // System-Wide Values for Rivendell
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -365,7 +365,6 @@
 #define CAE_MAX_ARGS 10
 #define CAE_MAX_LENGTH 256
 #define CAE_POLL_INTERVAL 50
-#define CAE_MAX_CONNECTIONS 128
 
 /*
  * Default Sample Rate

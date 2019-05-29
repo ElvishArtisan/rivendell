@@ -541,7 +541,6 @@ void RDCae::DispatchCommand(RDCmdCache *cmd)
       for(int i=0;i<RD_MAX_CARDS;i++) {
 	for(int j=0;j<RD_MAX_STREAMS;j++) {
 	  if(cae_handle[i][j]==handle) {
-	    //emit playPositionChanged(handle,cae_output_positions[i][j]);
 	    emit playPositionChanged(handle,pos);
 	  }
 	}
