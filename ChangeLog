@@ -18697,5 +18697,5 @@
 	* Fixed a regression in rdgpimon(1) that caused GPIO status
 	to fail to be displayed in the status widgets.
 2019-05-29 Fred Gleason <fredg@paravelsystems.com>
-	* Refactored caed(8) to eliminated arbitrary limit on number of
+	* Refactored caed(8) to eliminate arbitrary limit on number of
 	client connections.
