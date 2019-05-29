@@ -18705,3 +18705,6 @@
 	* Removed 'Q3Process' dependency from caed(8).
 2019-05-29 Fred Gleason <fredg@paravelsystems.com>
 	* Removed stale debugging statement from 'rdhpi/rdplaystream.cpp'.
+2019-05-29 Fred Gleason <fredg@paravelsystems.com>
+	* Documented the 'Stop Recording' ['SR'] command in the CAE
+	API documentation.

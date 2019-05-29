@@ -546,6 +546,39 @@
   </sect2>
 
   <sect2>
+    <title><command>Stop Recording</command></title>
+    <para>
+      Stop recording of the specified record interface.
+    </para>
+    <para>
+      <userinput>SR <replaceable>card-num</replaceable>
+      <replaceable>stream-num</replaceable>!</userinput>
+    </para>
+    <variablelist>
+      <varlistentry>
+	<term>
+	  <replaceable>card-num</replaceable>
+	</term>
+	<listitem>
+	  <para>
+	    The number of the audio adapter.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>
+	  <replaceable>stream-num</replaceable>
+	</term>
+	<listitem>
+	  <para>
+	    The stream number.
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+  </sect2>
+
+  <sect2>
     <title><command>Record Start</command> (Receive Only)</title>
     <para>
       Receive-only signal to indicate recording has actually
