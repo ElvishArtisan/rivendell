@@ -29,10 +29,10 @@
 
 #include <qobject.h>
 #include <qstring.h>
-#include <q3socketdevice.h>
 #include <qsignalmapper.h>
 #include <qtimer.h>
 #include <q3process.h>
+#include <qudpsocket.h>
 
 #include <rdwavefile.h>
 
@@ -172,7 +172,7 @@ class MainObject : public QObject
   unsigned system_sample_rate;
   CaeServer *cae_server;
   Q_INT16 tcp_port;
-  Q3SocketDevice *meter_socket;
+  QUdpSocket *meter_socket;
   RDStation::AudioDriver cae_driver[RD_MAX_CARDS];
   int record_owner[RD_MAX_CARDS][RD_MAX_STREAMS];
   int record_length[RD_MAX_CARDS][RD_MAX_STREAMS];

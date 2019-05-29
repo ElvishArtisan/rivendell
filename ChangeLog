@@ -18699,3 +18699,5 @@
 2019-05-29 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored caed(8) to eliminate arbitrary limit on number of
 	client connections.
+2019-05-29 Fred Gleason <fredg@paravelsystems.com>
+	* Removed 'Q3SocketDevice' dependency from caed(8).

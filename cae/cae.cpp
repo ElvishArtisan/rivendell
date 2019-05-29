@@ -237,9 +237,9 @@ MainObject::MainObject(QObject *parent,const char *name)
   signal(SIGTERM,SigHandler);
 
   //
-  // Allocate Meter Socket
+  // Meter Socket
   //
-  meter_socket=new Q3SocketDevice(Q3SocketDevice::Datagram);
+  meter_socket=new QUdpSocket(this);
 
   //
   // Open Database
@@ -2171,8 +2171,8 @@ void MainObject::SendMeterOutputStatusUpdate(int card,int port,int stream)
 
 void MainObject::SendMeterUpdate(const QString &msg,int conn_id)
 {
-  meter_socket->writeBlock(msg,msg.length(),cae_server->peerAddress(conn_id),
-			   cae_server->meterPort(conn_id));
+  meter_socket->writeDatagram(msg,msg.length(),cae_server->peerAddress(conn_id),
+			      cae_server->meterPort(conn_id));
 }
 
 
