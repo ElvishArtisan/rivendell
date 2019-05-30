@@ -16742,3 +16742,7 @@
 	broke time display in rdlogedit(1).
 2018-11-21 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.19.3int02.
+2019-05-30 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdlibrary(1) that made it impossible to configure
+	more than 100 cuts in a cart using 'By Specified Order' scheduling
+	rules.
