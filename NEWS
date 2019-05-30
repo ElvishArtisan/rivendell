@@ -1,12 +1,15 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v2.19.3int00 -- 11/19/2018
+v2.19.3int03 -- 5/30/2019
 
 Changes:
    Fixed a regression in rdlogmanager(1) that caused embedded traffic
    events to get a zero link length when the break duration was not
    explicitly set in the music import data.
+
+   Fixed a bug in rdlibrary(1) that made it impossible to use more than
+   100 cuts in a cart using 'By Specified Order' scheduling rules.
 
    Various bug fixes. See the 'ChangeLog' for details.
 
