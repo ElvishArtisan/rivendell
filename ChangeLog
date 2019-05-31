@@ -18696,3 +18696,5 @@
 2019-05-24 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdgpimon(1) that caused GPIO status
 	to fail to be displayed in the status widgets.
+2019-05-30 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed bug in 'RDWaveFile' class that exhausted file handles.
