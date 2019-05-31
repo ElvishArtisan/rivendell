@@ -2,7 +2,7 @@
 //
 // Record a Rivendell Cut
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -433,10 +433,12 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent)
   cut_isrc_edit->setText(rec_cut->isrc(RDCut::FormattedIsrc));
   if(use_weight) {
     cut_weight_label->setText(tr("Weight"));
+    cut_weight_box->setRange(0,100);
     cut_weight_box->setValue(rec_cut->weight());
   }
   else {
     cut_weight_label->setText(tr("Order"));
+    cut_weight_box->setRange(1,RD_MAX_CUT_NUMBER);
     cut_weight_box->setValue(rec_cut->playOrder());
   }
   if(rec_cut->playCounter()>0) {
