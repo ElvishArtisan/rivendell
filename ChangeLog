@@ -18701,3 +18701,6 @@
 	background color codes were inaccurate.
 2019-05-31 Patrick Linstruth <patrick@deltecent.com>
 	* Fixed bug in rdlogmanager(1) deconflicting rules.
+2019-05-28 Patrick Linstruth <patrick@deltecent.com>
+	* Added RD_PREFIX to rddbmgr(1) path and process start error
+	message dialog to rddbconfig(1).
