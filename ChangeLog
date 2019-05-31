@@ -18696,3 +18696,6 @@
 2019-05-24 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdgpimon(1) that caused GPIO status
 	to fail to be displayed in the status widgets.
+2019-05-27 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed regression in rdlibrary(1) where matching count and
+	background color codes were inaccurate.
