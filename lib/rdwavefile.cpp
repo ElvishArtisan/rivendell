@@ -231,7 +231,7 @@ bool RDWaveFile::openWave(RDWaveData *data)
   if((fd=open(wave_file_name.toUtf8(),O_RDONLY))<0) {
     return false;
   }
-  if(!wave_file.open(fd,QIODevice::ReadOnly)) {
+  if(!wave_file.open(fd,QIODevice::ReadOnly,QFile::AutoCloseHandle)) {
     return false;
   }
   switch(GetType(wave_file.handle())) {
