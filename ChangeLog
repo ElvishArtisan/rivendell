@@ -18699,3 +18699,5 @@
 2019-05-27 Patrick Linstruth <patrick@deltecent.com>
 	* Fixed regression in rdlibrary(1) where matching count and
 	background color codes were inaccurate.
+2019-05-31 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed bug in rdlogmanager(1) deconflicting rules.
