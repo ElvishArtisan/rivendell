@@ -28,8 +28,9 @@
 #include <qmessagebox.h>
 #include <q3filedialog.h>
 
-#include <rdconfig.h>
-#include <dbversion.h>
+#include "rdconfig.h"
+#include "rdpaths.h"
+#include "dbversion.h"
 
 #include "../../icons/rivendell-22x22.xpm"
 
@@ -186,27 +187,33 @@ void MainWidget::mismatchData()
   QStringList args;
   args << QString("--modify");
   QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-  modifyProcess.start("rddbmgr", args);
-  modifyProcess.waitForFinished(-1);
+  modifyProcess.start(QString("%1/sbin/rddbmgr").arg(RD_PREFIX), args);
+  bool r=modifyProcess.waitForFinished(-1);
   QApplication::restoreOverrideCursor();
-  QString stderr=modifyProcess.readAllStandardError();
-  if (modifyProcess.exitCode()) {
-    QMessageBox::critical(this,tr("RDDbConfig Error"),stderr);
-  }
-  else {
-    if(!stderr.isEmpty()) {
-      QMessageBox::information(this,"Database Modified with Warnings",
-        QString().sprintf("Modified database to version %d with warnings:\n\n%s",
-          RD_VERSION_DATABASE,(const char *)stderr));
+  if(r) {
+    QString stderr=modifyProcess.readAllStandardError();
+    if (modifyProcess.exitCode()) {
+      QMessageBox::critical(this,tr("RDDbConfig Error"),stderr);
     }
     else {
-      QMessageBox::information(this,"Database Modified Successfully",
+      if(!stderr.isEmpty()) {
+        QMessageBox::information(this,"Database Modified with Warnings",
+          QString().sprintf("Modified database to version %d with warnings:\n\n%s",
+            RD_VERSION_DATABASE,(const char *)stderr));
+      }
+      else {
+        QMessageBox::information(this,"Database Modified Successfully",
+          QString().sprintf("Modified database to version %d", RD_VERSION_DATABASE));
+      }
+      rd_config->log("rddbconfig",RDConfig::LogInfo,
         QString().sprintf("Modified database to version %d", RD_VERSION_DATABASE));
-    }
-    rd_config->log("rddbconfig",RDConfig::LogInfo,
-      QString().sprintf("Modified database to version %d", RD_VERSION_DATABASE));
 
-    emit dbChanged();
+      emit dbChanged();
+    }
+  }
+  else {
+    QMessageBox::critical(this,tr("Database Update Error"),
+      QString("Error starting rddbmgr: code=%1").arg(modifyProcess.error()));
   }
 }
 
