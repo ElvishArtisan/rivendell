@@ -216,11 +216,11 @@
 
     <varlistentry>
       <term>
-	<option>--verbose</option>
+	<option>--quiet</option>
       </term>
       <listitem>
 	<para>
-	  Print messages to STDOUT describing progress.
+	  Disable printing of messages to STDOUT describing progress.
 	</para>
       </listitem>
     </varlistentry>
