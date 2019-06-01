@@ -18697,5 +18697,6 @@
 	* Fixed a regression in rdgpimon(1) that caused GPIO status
 	to fail to be displayed in the status widgets.
 2019-05-28 Patrick Linstruth <patrick@deltecent.com>
+	* Added an 'notification_test' test harness.
 	* Added rdmetadata(8) utility for setting cart metadata from the
 	command line.

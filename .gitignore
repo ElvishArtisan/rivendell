@@ -111,6 +111,7 @@ tests/db_charset_test
 tests/getpids_test
 tests/log_unlink_test
 tests/mcast_recv_test
+tests/notification_test
 tests/rdxml_parse_test
 tests/reserve_carts_test
 tests/sas_switch_torture
