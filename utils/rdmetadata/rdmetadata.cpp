@@ -36,7 +36,6 @@
 #include "rdapplication.h"
 #include "rdcart.h"
 #include "rdschedcode.h"
-#include "rdnotification.h"
 
 #include "rdmetadata.h"
 
@@ -45,17 +44,10 @@ MainObject::MainObject(QObject *parent)
 {
   QString err_msg;
 
-  verbose=false;
+  quiet=false;
   cartnum=0;
   year=0;
-
-  //
-  // Check for root permission
-  //
-  if(geteuid()!=0) {
-    fprintf(stderr,"rdmetadata: must be user \"root\"\n");
-    exit(256);
-  }
+  bpm=0;
 
   //
   // Open the Database
@@ -127,8 +119,8 @@ MainObject::MainObject(QObject *parent)
       rem_schedcode=rda->cmdSwitch()->value(i);
       rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(rda->cmdSwitch()->key(i)=="--verbose") {
-      verbose=true;
+    if(rda->cmdSwitch()->key(i)=="--quiet") {
+      quiet=true;
       rda->cmdSwitch()->setProcessed(i,true);
     }
     if(!rda->cmdSwitch()->processed(i)) {
@@ -184,6 +176,24 @@ MainObject::MainObject(QObject *parent)
 
 void MainObject::userChangedData()
 {
+  //
+  // Get User Context
+  //
+  disconnect(rda->ripc(),SIGNAL(userChanged()),this,SLOT(userChangedData()));
+
+  //
+  // Verify Permissions
+  //
+  if(!rda->user()->modifyCarts()) {
+    fprintf(stderr,"%s",
+      qPrintable(QString("rdmetadata: user \"%1\" has no modify carts permission\n")
+      .arg(rda->user()->name())));
+    rda->log(RDConfig::LogErr,
+            QString("rdmetadata: user \"%1\" has no modify carts permission\n")
+            .arg(rda->user()->name()));
+    exit(256);
+  }
+
   updateMetadata();
 
   exit(0);
@@ -204,17 +214,17 @@ void MainObject::updateMetadata()
 
   schedcodes=cart->schedCodesList();
 
-  if(!artist.isNull()) {
+  if(!artist.isEmpty()) {
     cart->setArtist(artist);
     Print(QString("rdmetadata: Set cart %1 artist to '%2'").arg(cartstring).arg(artist));
   }
 
-  if(!title.isNull()) {
+  if(!title.isEmpty()) {
     cart->setTitle(title);
     Print(QString("rdmetadata: Set cart %1 title to '%2'").arg(cartstring).arg(title));
   }
 
-  if(!album.isNull()) {
+  if(!album.isEmpty()) {
     cart->setAlbum(album);
     Print(QString("rdmetadata: Set cart %1 album to '%2'").arg(cartstring).arg(album));
   }
@@ -224,32 +234,32 @@ void MainObject::updateMetadata()
     Print(QString("rdmetadata: Set cart %1 year to '%2'").arg(cartstring).arg(year));
   }
 
-  if(!conductor.isNull()) {
+  if(!conductor.isEmpty()) {
     cart->setConductor(conductor);
     Print(QString("rdmetadata: Set cart %1 conductor to '%2'").arg(cartstring).arg(conductor));
   }
 
-  if(!label.isNull()) {
+  if(!label.isEmpty()) {
     cart->setLabel(label);
     Print(QString("rdmetadata: Set cart %1 label to '%2'").arg(cartstring).arg(label));
   }
 
-  if(!agency.isNull()) {
+  if(!agency.isEmpty()) {
     cart->setAgency(agency);
     Print(QString("rdmetadata: Set cart %1 agency to '%2'").arg(cartstring).arg(agency));
   }
 
-  if(!publisher.isNull()) {
+  if(!publisher.isEmpty()) {
     cart->setPublisher(publisher);
     Print(QString("rdmetadata: Set cart %1 publisher to '%2'").arg(cartstring).arg(publisher));
   }
 
-  if(!composer.isNull()) {
+  if(!composer.isEmpty()) {
     cart->setComposer(composer);
     Print(QString("rdmetadata: Set cart %1 composer to '%2'").arg(cartstring).arg(composer));
   }
 
-  if(!songid.isNull()) {
+  if(!songid.isEmpty()) {
     cart->setSongId(songid);
     Print(QString("rdmetadata: Set cart %1 songid to '%2'").arg(cartstring).arg(songid));
   }
@@ -271,16 +281,27 @@ void MainObject::updateMetadata()
 
   delete cart;
 
-  RDNotification *notify=new RDNotification(
-    RDNotification::CartType,RDNotification::ModifyAction,QVariant(cartnum));
+  SendNotification(RDNotification::ModifyAction,cartnum);
+}
+
+void MainObject::SendNotification(RDNotification::Action action,unsigned cartnum)
+{
+  RDNotification *notify=
+    new RDNotification(RDNotification::CartType,action,QVariant(cartnum));
   rda->ripc()->sendNotification(*notify);
   delete notify;
+
+  //
+  // Allow the notification to be processed
+  //
+  qApp->processEvents();
 }
+
 
 
 void MainObject::Print(const QString &msg)
 {
-  if(verbose) {
+  if(!quiet) {
     printf("%s\n",(const char *)msg);
   }
 }

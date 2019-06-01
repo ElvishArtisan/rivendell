@@ -29,6 +29,8 @@
 
 #include <QObject>
 
+#include "rdnotification.h"
+
 #define RDMETADATA_USAGE "--cart-number=<cart number> [options]\n\nThe following options are recognized:\n\n\
   --agency=<agency>\n\
   --album=<album>\n\
@@ -43,7 +45,7 @@
   --year=<year>\n\
   --add_schedcode=<schedcode>\n\
   --rem-schedcode=<schedcode>\n\
-  --verbose\n\
+  --quiet\n\
 \n"
 
 class MainObject : public QObject
@@ -57,8 +59,9 @@ class MainObject : public QObject
 
  private:
   void updateMetadata();
+  void SendNotification(RDNotification::Action action,unsigned cartnum);
   void Print(const QString &msg);
-  bool verbose;
+  bool quiet;
   unsigned cartnum;
   QString cartstring;
   QString artist;
