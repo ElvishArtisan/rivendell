@@ -18702,7 +18702,7 @@
 2019-05-31 Patrick Linstruth <patrick@deltecent.com>
 	* Fixed bug in rdlogmanager(1) deconflicting rules.
 2019-05-31 Patrick Linstruth <patrick@deltecent.com>
-	* Added RD_PREFIX to rddbmgr(1) path and process start error
+	* Added RD_PREFIX to rddbmgr(8) path and process start error
 	message dialog to rddbconfig(1).
 2019-05-31 Patrick Linstruth <patrick@deltecent.com>
 	* Fixed bug in 'RDWaveFile' class that exhausted file handles.
@@ -18710,3 +18710,6 @@
 	* Fixed a bug in rdlibrary(1) that made it impossible to configure
 	more than 100 cuts in a cart using 'By Specified Order' scheduling
 	rules.
+2019-06-02 Patrick Linstruth <patrick@deltecent.com>
+	* Added '--orphaned-audio', '--orphaned-carts', '--orphaned-cuts',
+	and '--orphaned-tracks' command line switches to rddbmgr(8).

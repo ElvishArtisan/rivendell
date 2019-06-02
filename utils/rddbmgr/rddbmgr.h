@@ -132,6 +132,11 @@ class MainObject : public QObject
   bool db_verbose;
   bool db_yes;
   bool db_no;
+  bool db_check_all;
+  bool db_check_orphaned_audio;
+  bool db_check_orphaned_tracks;
+  bool db_check_orphaned_carts;
+  bool db_check_orphaned_cuts;
   QString db_orphan_group_name;
   QString db_dump_cuts_dir;
   QString db_rehash;
