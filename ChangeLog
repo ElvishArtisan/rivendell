@@ -18713,3 +18713,7 @@
 2019-06-02 Patrick Linstruth <patrick@deltecent.com>
 	* Added '--orphaned-audio', '--orphaned-carts', '--orphaned-cuts',
 	and '--orphaned-tracks' command line switches to rddbmgr(8).
+2019-06-02 Patrick Linstruth <patrick@deltecent.com>
+	* Added a 'notification_test' test harness.
+	* Added rdmetadata(8) utility for setting cart metadata from the
+	command line.
