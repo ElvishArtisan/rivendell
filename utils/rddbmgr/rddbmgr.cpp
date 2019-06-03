@@ -53,6 +53,12 @@ MainObject::MainObject(QObject *parent)
   db_relink_audio="";
   db_relink_audio_move=false;
 
+  db_check_all=true;
+  db_check_orphaned_audio=false;
+  db_check_orphaned_carts=false;
+  db_check_orphaned_cuts=false;
+  db_check_orphaned_tracks=false;
+
   //
   // Check that we're 'root'
   //
@@ -203,6 +209,26 @@ MainObject::MainObject(QObject *parent)
     }
     if(cmd->key(i)=="--rehash") {
       db_rehash=cmd->value(i);
+      cmd->setProcessed(i,true);
+    }
+    if(cmd->key(i)=="--orphaned-audio") {
+      db_check_all=false;
+      db_check_orphaned_audio=true;
+      cmd->setProcessed(i,true);
+    }
+    if(cmd->key(i)=="--orphaned-carts") {
+      db_check_all=false;
+      db_check_orphaned_carts=true;
+      cmd->setProcessed(i,true);
+    }
+    if(cmd->key(i)=="--orphaned-cuts") {
+      db_check_all=false;
+      db_check_orphaned_cuts=true;
+      cmd->setProcessed(i,true);
+    }
+    if(cmd->key(i)=="--orphaned-tracks") {
+      db_check_all=false;
+      db_check_orphaned_tracks=true;
       cmd->setProcessed(i,true);
     }
 

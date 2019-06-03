@@ -204,6 +204,50 @@
 
     <varlistentry>
       <term>
+	<option>--orphaned-audio</option>
+      </term>
+      <listitem>
+	<para>
+	  Disable all checks. Add check for orphaned audio files.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--orphaned-carts</option>
+      </term>
+      <listitem>
+	<para>
+	  Disable all checks. Add check for orphaned carts.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--orphaned-cuts</option>
+      </term>
+      <listitem>
+	<para>
+	  Disable all checks. Add check for orphaned cuts.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>--orphaned-tracks</option>
+      </term>
+      <listitem>
+	<para>
+	  Disable all checks. Add check for orphaned voice tracks.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
 	<option>--rehash=</option><replaceable>target</replaceable>
       </term>
       <listitem>

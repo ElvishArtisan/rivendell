@@ -51,7 +51,7 @@ bool MainObject::Check(QString *err_msg)
   //
   // Recover Audio
   //
-  if(!db_relink_audio.isEmpty()) {
+  if((db_check_all)&&!db_relink_audio.isEmpty()) {
     RelinkAudio(db_relink_audio);
     return true;
   }
@@ -59,63 +59,79 @@ bool MainObject::Check(QString *err_msg)
   //
   // Check Table Attributes
   //
-  printf("Checking DB/table attributes...\n");
-  CheckTableAttributes();
-  printf("done.\n\n");
+  if(db_check_all) {
+    printf("Checking DB/table attributes...\n");
+    CheckTableAttributes();
+    printf("done.\n\n");
+  }
 
   //
   // Check for Orphaned Voice Tracks
   //
-  printf("Checking voice tracks...\n");
-  CheckOrphanedTracks();
-  printf("done.\n\n");
+  if(db_check_all||db_check_orphaned_tracks) {
+    printf("Checking voice tracks...\n");
+    CheckOrphanedTracks();
+    printf("done.\n\n");
+  }
 
   //
   // Check for stale reservations
   //
-  printf("Checking for stale cart reservations...\n");
-  CheckPendingCarts();
-  printf("done.\n\n");
+  if(db_check_all) {
+    printf("Checking for stale cart reservations...\n");
+    CheckPendingCarts();
+    printf("done.\n\n");
+  }
 
   //
   // Check for orphaned carts
   //
-  printf("Checking for orphaned carts...\n");
-  CheckOrphanedCarts();
-  printf("done.\n\n");
+  if(db_check_all||db_check_orphaned_carts) {
+    printf("Checking for orphaned carts...\n");
+    CheckOrphanedCarts();
+    printf("done.\n\n");
+  }
 
   //
   // Check for orphaned cuts
   //
-  printf("Checking for orphaned cuts...\n");
-  CheckOrphanedCuts();
-  printf("done.\n\n");
+  if(db_check_all||db_check_orphaned_cuts) {
+    printf("Checking for orphaned cuts...\n");
+    CheckOrphanedCuts();
+    printf("done.\n\n");
+  }
 
   //
   // Check Cart->Cut Counts
   //
-  printf("Checking cart->cuts counters...\n");
-  CheckCutCounts();
-  printf("done.\n\n");
+  if(db_check_all) {
+    printf("Checking cart->cuts counters...\n");
+    CheckCutCounts();
+    printf("done.\n\n");
+  }
 
   //
   // Check Orphaned Audio
   //
-  printf("Checking for orphaned audio...\n");
-  CheckOrphanedAudio();
-  printf("done.\n\n");
+  if(db_check_all||db_check_orphaned_audio) {
+    printf("Checking for orphaned audio...\n");
+    CheckOrphanedAudio();
+    printf("done.\n\n");
+  }
 
   //
   // Validating Audio Lengths
   //
-  printf("Validating audio lengths (this may take some time)...\n");
-  ValidateAudioLengths();
-  printf("done.\n\n");
+  if(db_check_all) {
+    printf("Validating audio lengths (this may take some time)...\n");
+    ValidateAudioLengths();
+    printf("done.\n\n");
+  }
 
   //
   // Rehash
   //
-  if(!db_rehash.isEmpty()) {
+  if((db_check_all)&&!db_rehash.isEmpty()) {
     printf("Checking hashes...\n");
     Rehash(db_rehash);
     printf("done.\n\n");
