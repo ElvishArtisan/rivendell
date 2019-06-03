@@ -37,6 +37,7 @@ noinst_PROGRAMS = audio_convert_test\
                   getpids_test\
                   log_unlink_test\
                   mcast_recv_test\
+                  notification_test\
                   rdxml_parse_test\
                   reserve_carts_test\
                   stringcode_test\
@@ -80,6 +81,10 @@ log_unlink_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
 dist_mcast_recv_test_SOURCES = mcast_recv_test.cpp mcast_recv_test.h
 nodist_mcast_recv_test_SOURCES = moc_mcast_recv_test.cpp
 mcast_recv_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
+
+dist_notification_test_SOURCES = notification_test.cpp notification_test.h
+nodist_notification_test_SOURCES = moc_notification_test.cpp
+notification_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
 
 dist_rdxml_parse_test_SOURCES = rdxml_parse_test.cpp rdxml_parse_test.h
 rdxml_parse_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support

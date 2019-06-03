@@ -40,6 +40,7 @@ SUBDIRS = $(ALSACONFIG_RD_OPT)\
           rdimport\
           rdmaint\
           rdmarkerset\
+          rdmetadata\
           rdpopup\
           rdpurgecasts\
           rdrender\

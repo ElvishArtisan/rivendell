@@ -37,6 +37,7 @@ all-local:	rdclilogedit.1\
                 rdexport.1\
                 rdimport.1\
                 rdmarkerset.8\
+                rdmetadata.1\
                 rdrender.1\
                 rmlsend.1\
                 rdservice.8
@@ -47,6 +48,7 @@ man_MANS = rdclilogedit.1\
            rdexport.1\
            rdimport.1\
            rdmarkerset.8\
+           rdmetadata.1\
            rdrender.1\
            rmlsend.1\
            rdservice.8
@@ -63,6 +65,8 @@ EXTRA_DIST = rdclilogedit.1\
              rdimport.xml\
              rdmarkerset.8\
              rdmarkerset.xml\
+             rdmetadata.1\
+             rdmetadata.xml\
              rdrender.1\
              rdrender.xml\
              rmlsend.1\
