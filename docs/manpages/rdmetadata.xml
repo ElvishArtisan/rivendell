@@ -5,7 +5,7 @@
   -->
   <refmeta>
     <refentrytitle>rdmetadata</refentrytitle>
-    <manvolnum>8</manvolnum>
+    <manvolnum>1</manvolnum>
     <refmiscinfo class='source'>May 2019</refmiscinfo>
     <refmiscinfo class='manual'>Linux Audio Manual</refmiscinfo>
   </refmeta>
@@ -37,7 +37,7 @@
 
   <refsect1 id='description'><title>Description</title>
   <para>
-    <command>rdmetadata</command><manvolnum>8</manvolnum> is a command-line
+    <command>rdmetadata</command><manvolnum>1</manvolnum> is a command-line
     tool for setting or altering cart metadata in the Rivendell Radio
     Automation System.
   </para>

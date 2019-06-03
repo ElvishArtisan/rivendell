@@ -25,7 +25,7 @@ MOC = @QT_MOC@
 moc_%.cpp:	%.h
 	$(MOC) $< -o $@
 
-sbin_PROGRAMS = rdmetadata
+bin_PROGRAMS = rdmetadata
 
 dist_rdmetadata_SOURCES = rdmetadata.cpp rdmetadata.h
 

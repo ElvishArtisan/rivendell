@@ -256,6 +256,7 @@ rm -rf $RPM_BUILD_ROOT
 @LOCAL_PREFIX@/bin/rddelete
 @LOCAL_PREFIX@/bin/rdexport
 @LOCAL_PREFIX@/bin/rdimport
+@LOCAL_PREFIX@/bin/rdmetadata
 @LOCAL_PREFIX@/bin/rdpurgecasts
 @LOCAL_PREFIX@/bin/rdmaint
 @LOCAL_PREFIX@/bin/rdcollect
@@ -383,11 +384,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/rdconvert.1.gz
 %{_mandir}/man1/rdexport.1.gz
 %{_mandir}/man1/rdimport.1.gz
+%{_mandir}/man1/rdmetadata.1.gz
 %{_mandir}/man1/rdrender.1.gz
 %{_mandir}/man1/rmlsend.1.gz
 %{_mandir}/man8/rddbmgr.8.gz
 %{_mandir}/man8/rdmarkerset.8.gz
-%{_mandir}/man8/rdmetadata.8.gz
 %{_mandir}/man8/rdservice.8.gz
 @DOC_PATH@/*
 @LOCAL_PREFIX@/@RD_LIB_PATH@/librd-@VERSION@.so
@@ -404,7 +405,6 @@ rm -rf $RPM_BUILD_ROOT
 @LOCAL_PREFIX@/sbin/rdpadengined
 @LOCAL_PREFIX@/sbin/sas_shim
 @LOCAL_PREFIX@/sbin/rdmarkerset
-@LOCAL_PREFIX@/sbin/rdmetadata
 @LOCAL_PREFIX@/sbin/rdcleandirs
 @LOCAL_PREFIX@/sbin/rddbmgr
 @HPI_FILE1@
