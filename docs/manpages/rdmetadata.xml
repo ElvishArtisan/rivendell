@@ -47,6 +47,19 @@
   <variablelist remap='TP'>
     <varlistentry>
       <term>
+	<option>--add-schedcode=</option><replaceable>schedcode</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Add scheduler code <replaceable>schedcode</replaceable> to
+          <replaceable>cart</replaceable>.
+	  Default action is to leave the scheduler codes unaltered.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
 	<option>--agency=</option><replaceable>agency</replaceable>
       </term>
       <listitem>
@@ -151,6 +164,19 @@
 
     <varlistentry>
       <term>
+	<option>--rem-schedcode=</option><replaceable>schedcode</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Remove scheduler code <replaceable>schedcode</replaceable> from
+          <replaceable>cart</replaceable>.
+	  Default action is to leave the scheduler codes unaltered.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
 	<option>--songid=</option><replaceable>songid</replaceable>
       </term>
       <listitem>
@@ -190,37 +216,11 @@
 
     <varlistentry>
       <term>
-	<option>--add-schedcode=</option><replaceable>schedcode</replaceable>
+	<option>--verbose</option>
       </term>
       <listitem>
 	<para>
-	  Add scheduler code <replaceable>schedcode</replaceable> to
-          <replaceable>cart</replaceable>.
-	  Default action is to leave the scheduler codes unaltered.
-	</para>
-      </listitem>
-    </varlistentry>
-
-    <varlistentry>
-      <term>
-	<option>--rem-schedcode=</option><replaceable>schedcode</replaceable>
-      </term>
-      <listitem>
-	<para>
-	  Remove scheduler code <replaceable>schedcode</replaceable> from
-          <replaceable>cart</replaceable>.
-	  Default action is to leave the scheduler codes unaltered.
-	</para>
-      </listitem>
-    </varlistentry>
-
-    <varlistentry>
-      <term>
-	<option>--quiet</option>
-      </term>
-      <listitem>
-	<para>
-	  Disable printing of messages to STDOUT describing progress.
+	  Print messages to STDOUT describing progress.
 	</para>
       </listitem>
     </varlistentry>

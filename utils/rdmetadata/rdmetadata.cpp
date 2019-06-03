@@ -44,7 +44,7 @@ MainObject::MainObject(QObject *parent)
 {
   QString err_msg;
 
-  quiet=false;
+  verbose=false;
   cartnum=0;
   year=0;
   bpm=0;
@@ -119,8 +119,8 @@ MainObject::MainObject(QObject *parent)
       rem_schedcode=rda->cmdSwitch()->value(i);
       rda->cmdSwitch()->setProcessed(i,true);
     }
-    if(rda->cmdSwitch()->key(i)=="--quiet") {
-      quiet=true;
+    if(rda->cmdSwitch()->key(i)=="--verbose") {
+      verbose=true;
       rda->cmdSwitch()->setProcessed(i,true);
     }
     if(!rda->cmdSwitch()->processed(i)) {
@@ -301,7 +301,7 @@ void MainObject::SendNotification(RDNotification::Action action,unsigned cartnum
 
 void MainObject::Print(const QString &msg)
 {
-  if(!quiet) {
+  if(verbose) {
     printf("%s\n",(const char *)msg);
   }
 }

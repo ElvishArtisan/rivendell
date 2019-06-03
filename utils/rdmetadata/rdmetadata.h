@@ -32,6 +32,7 @@
 #include "rdnotification.h"
 
 #define RDMETADATA_USAGE "--cart-number=<cart number> [options]\n\nThe following options are recognized:\n\n\
+  --add_schedcode=<schedcode>\n\
   --agency=<agency>\n\
   --album=<album>\n\
   --artist=<artist>\n\
@@ -40,12 +41,11 @@
   --conductor=<conductor>\n\
   --label=<label>\n\
   --publisher=<publisher>\n\
+  --rem-schedcode=<schedcode>\n\
   --songid=<songid>\n\
   --title=<title>\n\
   --year=<year>\n\
-  --add_schedcode=<schedcode>\n\
-  --rem-schedcode=<schedcode>\n\
-  --quiet\n\
+  --verbose\n\
 \n"
 
 class MainObject : public QObject
@@ -61,7 +61,7 @@ class MainObject : public QObject
   void updateMetadata();
   void SendNotification(RDNotification::Action action,unsigned cartnum);
   void Print(const QString &msg);
-  bool quiet;
+  bool verbose;
   unsigned cartnum;
   QString cartstring;
   QString artist;
