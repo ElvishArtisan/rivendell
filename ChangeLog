@@ -18731,3 +18731,6 @@
 2019-06-04 Fred Gleason <fredg@paravelsystems.com>
 	* Documented the 'Stop Recording' ['SR'] command in the CAE
 	API documentation.
+2019-06-04 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdimport(1) that caused a segfault when
+	processing an ID3 tag with a field that contained a null value.

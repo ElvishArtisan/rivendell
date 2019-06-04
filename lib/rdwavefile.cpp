@@ -3541,58 +3541,65 @@ void RDWaveFile::ReadId3Metadata()
   }
 
   if(!using_rdxl) {
-    for(TagLib::PropertyMap::ConstIterator it=tags.begin();it!=tags.end();++it) {
+    for(TagLib::PropertyMap::ConstIterator it=tags.begin();
+	it!=tags.end();++it) {
       QString name=QString::fromUtf8(it->first.toCString(true));
-      if(name=="TITLE") {
+      if((name=="TITLE")&&(it->second.size()!=0)) {
 	wave_data->
 	  setTitle(QString::fromUtf8(it->second.begin()->toCString(true)));
 	wave_data->setMetadataFound(true);
       }
-      if(name=="ARTIST") {
+      if((name=="ARTIST")&&(it->second.size()!=0)) {
 	wave_data->
 	  setArtist(QString::fromUtf8(it->second.begin()->toCString(true)));
 	wave_data->setMetadataFound(true);
       }
-      if(name=="ALBUM") {
+      if((name=="ALBUM")&&(it->second.size()!=0)) {
 	wave_data->
 	  setAlbum(QString::fromUtf8(it->second.begin()->toCString(true)));
 	wave_data->setMetadataFound(true);
       }
-      if(name=="COMPOSER") {
+      if((name=="COMPOSER")&&(it->second.size()!=0)) {
 	wave_data->
 	  setComposer(QString::fromUtf8(it->second.begin()->toCString(true)));
 	wave_data->setMetadataFound(true);
       }
-      if(name=="CONDUCTOR") {
+      if((name=="CONDUCTOR")&&(it->second.size()!=0)) {
 	wave_data->
 	  setConductor(QString::fromUtf8(it->second.begin()->toCString(true)));
 	wave_data->setMetadataFound(true);
       }
-      if(name=="PUBLISHER") {
+      if((name=="PUBLISHER")&&(it->second.size()!=0)) {
 	wave_data->
 	  setPublisher(QString::fromUtf8(it->second.begin()->toCString(true)));
 	wave_data->setMetadataFound(true);
       }
-      if(name=="ISRC") {
+      if((name=="ISRC")&&(it->second.size()!=0)) {
 	wave_data->
 	  setIsrc(QString::fromUtf8(it->second.begin()->toCString(true)));
 	wave_data->setMetadataFound(true);
       }
-      if(name=="COPYRIGHT") {
+      if((name=="COPYRIGHT")&&(it->second.size()!=0)) {
 	wave_data->
 	  setCopyrightNotice(QString::fromUtf8(it->second.begin()->
 					       toCString(true)));
 	wave_data->setMetadataFound(true);
       }
-      if(name=="YEAR") {
-	wave_data->
-	  setReleaseYear(QString(it->second.begin()->toCString(true)).toInt());
-	wave_data->setMetadataFound(true);
+      if((name=="YEAR")&&(it->second.size()!=0)) {
+	bool ok=false;
+	int year=QString(it->second.begin()->toCString(true)).toInt(&ok);
+	if(ok&&(year>0)) {
+	  wave_data->setReleaseYear(year);
+	  wave_data->setMetadataFound(true);
+	}
       }
       if(name=="BPM") {
-	wave_data->
-	  setBeatsPerMinute(QString(it->second.begin()->toCString(true)).toInt());
-	wave_data->setMetadataFound(true);
+	bool ok=false;
+	int beats=QString(it->second.begin()->toCString(true)).toInt(&ok);
+	if(ok&&(beats>0)) {
+	  wave_data->setBeatsPerMinute(beats);
+	  wave_data->setMetadataFound(true);
+	}
       }
       /*
       printf("TAG: %s = ",it->first.toCString(true));
