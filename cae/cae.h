@@ -2,7 +2,7 @@
 //
 // The Core Audio Engine component of Rivendell
 //
-//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,7 +18,6 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-
 #ifndef CAE_H
 #define CAE_H
 
@@ -30,14 +29,13 @@
 
 #include <qobject.h>
 #include <qstring.h>
-#include <q3socketdevice.h>
-#include <q3serversocket.h>
 #include <qsignalmapper.h>
 #include <qtimer.h>
-#include <q3process.h>
+//#include <q3process.h>
+#include <qprocess.h>
+#include <qudpsocket.h>
 
 #include <rdwavefile.h>
-#include <rdsocket.h>
 
 #ifdef HPI
 #include <rdhpisoundcard.h>
@@ -79,6 +77,8 @@ struct alsa_format {
 #include <rdconfig.h>
 #include <rdstation.h>
 
+#include "cae_server.h"
+
 #ifndef HAVE_SRC_CONV
 void src_int_to_float_array (const int *in, float *out, int len);
 void src_float_to_int_array (const float *in, int *out, int len);
@@ -101,37 +101,64 @@ void src_float_to_int_array (const float *in, int *out, int len);
 void SigHandler(int signum);
 extern RDConfig *rd_config;
 
-
 class MainObject : public QObject
 {
   Q_OBJECT
  public:
   MainObject(QObject *parent=0,const char *name=0);
-  ~MainObject();
-
- public slots:
-  void newConnection(int fd);
 
  private slots:
-  void socketData(int);
-  void socketKill(int);
+  void loadPlaybackData(int id,unsigned card,const QString &name);
+  void unloadPlaybackData(int id,unsigned handle);
+  void playPositionData(int id,unsigned handle,unsigned pos);
+  void playData(int id,unsigned handle,unsigned length,unsigned speed,
+		unsigned pitch_flag);
+  void stopPlaybackData(int id,unsigned handle);
+  void timescalingSupportData(int id,unsigned card);
+  void loadRecordingData(int id,unsigned card,unsigned port,unsigned coding,
+			unsigned channels,unsigned samprate,unsigned bitrate,
+			const QString &name);
+  void unloadRecordingData(int id,unsigned card,unsigned stream);
+  void recordData(int id,unsigned card,unsigned stream,unsigned len,
+		 int threshold_level);
+  void stopRecordingData(int id,unsigned card,unsigned stream);
+  void setInputVolumeData(int id,unsigned card,unsigned stream,int level);
+  void setOutputVolumeData(int id,unsigned card,unsigned stream,unsigned port,
+			  int level);
+  void fadeOutputVolumeData(int id,unsigned card,unsigned stream,unsigned port,
+			   int level,unsigned length);
+  void setInputLevelData(int id,unsigned card,unsigned stream,int level);
+  void setOutputLevelData(int id,unsigned card,unsigned port,int level);
+  void setInputModeData(int id,unsigned card,unsigned stream,unsigned mode);
+  void setOutputModeData(int id,unsigned card,unsigned stream,unsigned mode);
+  void setInputVoxLevelData(int id,unsigned card,unsigned stream,int level);
+  void setInputTypeData(int id,unsigned card,unsigned port,unsigned type);
+  void getInputStatusData(int id,unsigned card,unsigned port);
+  void setAudioPassthroughLevelData(int id,unsigned card,unsigned input,
+				    unsigned output,int level);
+  void setClockSourceData(int id,unsigned card,int input);
+  void setOutputStatusFlagData(int id,unsigned card,unsigned port,
+			       unsigned stream,bool state);
+  void openRtpCaptureChannelData(int id,unsigned card,unsigned port,
+				 uint16_t udp_port,unsigned samprate,
+				 unsigned chans);
+  void jackConnectPortsData(int id,const QString &out_name,
+			    const QString &in_name);
+  void jackDisconnectPortsData(int id,const QString &out_name,
+			       const QString &in_name);
+  void meterEnableData(int id,uint16_t udp_port,const QList<unsigned> &cards);
   void statePlayUpdate(int card,int stream,int state);
   void stateRecordUpdate(int card,int stream,int state);
   void updateMeters();
+  void connectionDroppedData(int id);
   
  private:
   void InitProvisioning() const;
   void InitMixers();
-  void ParseCommand(int);
-  void DispatchCommand(int);
   void KillSocket(int);
-  void BroadcastCommand(const char *);
-  void EchoCommand(int,const char *);
-  void EchoArgs(int,const char);
   bool CheckDaemon(QString);
   pid_t GetPid(QString pidfile);
   int GetNextHandle();
-  int GetHandle(int ch,int *card,int *stream);
   int GetHandle(int card,int stream);
   void ProbeCaps(RDStation *station);
   void ClearDriverEntries(RDStation *station);
@@ -144,16 +171,9 @@ class MainObject : public QObject
   void SendMeterUpdate(const QString &msg,int conn_id);
   bool debug;
   unsigned system_sample_rate;
+  CaeServer *cae_server;
   Q_INT16 tcp_port;
-  Q3ServerSocket *server;
-  Q3SocketDevice *meter_socket;
-  RDSocket *socket[CAE_MAX_CONNECTIONS];
-  Q_UINT16 meter_port[CAE_MAX_CONNECTIONS];
-  char args[CAE_MAX_CONNECTIONS][CAE_MAX_ARGS][CAE_MAX_LENGTH];
-  int istate[CAE_MAX_CONNECTIONS];
-  int argnum[CAE_MAX_CONNECTIONS];
-  int argptr[CAE_MAX_CONNECTIONS];
-  bool auth[CAE_MAX_CONNECTIONS];
+  QUdpSocket *meter_socket;
   RDStation::AudioDriver cae_driver[RD_MAX_CARDS];
   int record_owner[RD_MAX_CARDS][RD_MAX_STREAMS];
   int record_length[RD_MAX_CARDS][RD_MAX_STREAMS];
@@ -164,7 +184,6 @@ class MainObject : public QObject
   bool play_pitch[RD_MAX_CARDS][RD_MAX_STREAMS];
   bool port_status[RD_MAX_CARDS][RD_MAX_PORTS];
   bool output_status_flag[RD_MAX_CARDS][RD_MAX_PORTS][RD_MAX_STREAMS];
-  bool update_meters[RD_MAX_CARDS][CAE_MAX_CONNECTIONS];
   struct {
     int card;
     int stream;
@@ -269,7 +288,7 @@ class MainObject : public QObject
   bool jack_activated;
 #ifdef JACK
   int jack_card;
-  std::vector<Q3Process *> jack_clients;
+  QList<QProcess *> jack_clients;
   RDWaveFile *jack_record_wave[RD_MAX_STREAMS];
   RDWaveFile *jack_play_wave[RD_MAX_STREAMS];
   short *jack_wave_buffer;

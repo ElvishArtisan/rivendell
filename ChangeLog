@@ -18719,3 +18719,15 @@
 	command line.
 2019-06-03 Fred Gleason <fredg@paravelsystems.com>
 	* Moved rdmetadata(8) to rdmetadata(1).
+2019-06-04 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored caed(8) to eliminate arbitrary limit on number of
+	client connections.
+2019-06-04 Fred Gleason <fredg@paravelsystems.com>
+	* Removed 'Q3SocketDevice' dependency from caed(8).
+2019-06-04 Fred Gleason <fredg@paravelsystems.com>
+	* Removed 'Q3Process' dependency from caed(8).
+2019-06-04 Fred Gleason <fredg@paravelsystems.com>
+	* Removed stale debugging statement from 'rdhpi/rdplaystream.cpp'.
+2019-06-04 Fred Gleason <fredg@paravelsystems.com>
+	* Documented the 'Stop Recording' ['SR'] command in the CAE
+	API documentation.

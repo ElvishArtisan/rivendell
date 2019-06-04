@@ -2,7 +2,7 @@
 //
 // The Core Audio Engine component of Rivendell
 //
-//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,7 +19,7 @@
 //
 
 
-#include <qapplication.h>
+#include <qcoreapplication.h>
 #include <qobject.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -36,20 +36,16 @@
 #include <dlfcn.h>
 
 #include <qdir.h>
-#include <qsqldatabase.h>
-#include <qsessionmanager.h>
 
 #include <rdsocket.h>
 #include <rdconf.h>
 #include <rddb.h>
 #include <rdescape_string.h>
-#include <rddebug.h>
 #include <rdcmd_switch.h>
 #include <rdsvc.h>
 #include <rdsystem.h>
 #include <rdaudio_port.h>
 
-#include <cae_socket.h>
 #include <cae.h>
 
 volatile bool exiting=false;
@@ -96,9 +92,7 @@ MainObject::MainObject(QObject *parent,const char *name)
   //
   // Read Command Options
   //
-  RDCmdSwitch *cmd=
-    new RDCmdSwitch(qApp->argc(),qApp->argv(),"caed",CAED_USAGE);
-  delete cmd;
+  new RDCmdSwitch(qApp->argc(),qApp->argv(),"caed",CAED_USAGE);
 
   //
   // LogLine references rd_config
@@ -107,7 +101,7 @@ MainObject::MainObject(QObject *parent,const char *name)
   rd_config->load();
   rd_config->setModuleName("caed");
 
-  rd_config->log("caed",RDConfig::LogInfo,"cae starting");
+  syslog(LOG_INFO,"cae starting");
 
   //
   // Initialize Data Structures
@@ -128,17 +122,7 @@ MainObject::MainObject(QObject *parent,const char *name)
     play_handle[i].owner=-1;
   }
   next_play_handle=0;
-  for(int i=0;i<CAE_MAX_CONNECTIONS;i++) {
-    socket[i]=NULL;
-    meter_port[i]=0;
-    istate[i]=0;
-    argnum[i]=0;
-    argptr[i]=0;
-    auth[i]=false;
-    for(int j=0;j<RD_MAX_CARDS;j++) {
-      update_meters[j][i]=false;
-    }
-  }
+
   for(int i=0;i<RD_MAX_CARDS;i++) {
     cae_driver[i]=RDStation::None;
     for(int j=0;j<RD_MAX_STREAMS;j++) {
@@ -164,22 +148,98 @@ MainObject::MainObject(QObject *parent,const char *name)
   jack_client=NULL;
 #endif  // JACK
 
-  server=new CaeSocket(CAED_TCP_PORT,0,this,"socket");
-  if(!server->ok()) {
-    rd_config->log("caed",RDConfig::LogErr,
-		   "ERROR caed aborting - CaeSocket() server not ok");
+  cae_server=new CaeServer(rd_config,this);
+  if(!cae_server->listen(QHostAddress::Any,CAED_TCP_PORT)) {
+    syslog(LOG_ERR,"caed: failed to bind port %d",CAED_TCP_PORT);
     exit(1);
   }
-  connect(server,SIGNAL(connection(int)),this,SLOT(newConnection(int)));
+  connect(cae_server,SIGNAL(connectionDropped(int)),
+	  this,SLOT(connectionDroppedData(int)));
+  connect(cae_server,SIGNAL(loadPlaybackReq(int,unsigned,const QString &)),
+	  this,SLOT(loadPlaybackData(int,unsigned,const QString &)));
+  connect(cae_server,SIGNAL(unloadPlaybackReq(int,unsigned)),
+	  this,SLOT(unloadPlaybackData(int,unsigned)));
+  connect(cae_server,SIGNAL(playPositionReq(int,unsigned,unsigned)),
+	  this,SLOT(playPositionData(int,unsigned,unsigned)));
+  connect(cae_server,SIGNAL(playReq(int,unsigned,unsigned,unsigned,unsigned)),
+	  this,SLOT(playData(int,unsigned,unsigned,unsigned,unsigned)));
+  connect(cae_server,SIGNAL(stopPlaybackReq(int,unsigned)),
+	  this,SLOT(stopPlaybackData(int,unsigned)));
+  connect(cae_server,SIGNAL(timescalingSupportReq(int,unsigned)),
+	  this,SLOT(timescalingSupportData(int,unsigned)));
+  connect(cae_server,
+	  SIGNAL(loadRecordingReq(int,unsigned,unsigned,unsigned,unsigned,
+				  unsigned,unsigned,const QString &)),
+	  this,
+	  SLOT(loadRecordingData(int,unsigned,unsigned,unsigned,unsigned,
+				unsigned,unsigned,const QString &)));
+  connect(cae_server,SIGNAL(unloadRecordingReq(int,unsigned,unsigned)),
+	  this,SLOT(unloadRecordingData(int,unsigned,unsigned)));
+  connect(cae_server,SIGNAL(recordReq(int,unsigned,unsigned,unsigned,int)),
+	  this,SLOT(recordData(int,unsigned,unsigned,unsigned,int)));
+  connect(cae_server,SIGNAL(stopRecordingReq(int,unsigned,unsigned)),
+	  this,SLOT(stopRecordingData(int,unsigned,unsigned)));
+  connect(cae_server,SIGNAL(setInputVolumeReq(int,unsigned,unsigned,int)),
+	  this,SLOT(setInputVolumeData(int,unsigned,unsigned,int)));
+  connect(cae_server,
+	  SIGNAL(setOutputVolumeReq(int,unsigned,unsigned,unsigned,int)),
+	  this,
+	  SLOT(setOutputVolumeData(int,unsigned,unsigned,unsigned,int)));
+  connect(cae_server,SIGNAL(fadeOutputVolumeReq(int,unsigned,unsigned,
+						unsigned,int,unsigned)),
+	  this,SLOT(fadeOutputVolumeData(int,unsigned,unsigned,
+					 unsigned,int,unsigned)));
+  connect(cae_server,SIGNAL(setInputLevelReq(int,unsigned,unsigned,int)),
+	  this,SLOT(setInputLevelData(int,unsigned,unsigned,int)));
+  connect(cae_server,SIGNAL(setOutputLevelReq(int,unsigned,unsigned,int)),
+	  this,SLOT(setOutputLevelData(int,unsigned,unsigned,int)));
+  connect(cae_server,SIGNAL(setInputModeReq(int,unsigned,unsigned,unsigned)),
+	  this,SLOT(setInputModeData(int,unsigned,unsigned,unsigned)));
+  connect(cae_server,SIGNAL(setOutputModeReq(int,unsigned,unsigned,unsigned)),
+	  this,SLOT(setOutputModeData(int,unsigned,unsigned,unsigned)));
+  connect(cae_server,SIGNAL(setInputVoxLevelReq(int,unsigned,unsigned,int)),
+	  this,SLOT(setInputVoxLevelData(int,unsigned,unsigned,int)));
+  connect(cae_server,SIGNAL(setInputTypeReq(int,unsigned,unsigned,unsigned)),
+	  this,SLOT(setInputTypeData(int,unsigned,unsigned,unsigned)));
+  connect(cae_server,SIGNAL(getInputStatusReq(int,unsigned,unsigned)),
+	  this,SLOT(getInputStatusData(int,unsigned,unsigned)));
+  connect(cae_server,
+	SIGNAL(setAudioPassthroughLevelReq(int,unsigned,unsigned,unsigned,int)),
+	  this,
+	SLOT(setAudioPassthroughLevelData(int,unsigned,unsigned,unsigned,int)));
+  connect(cae_server,SIGNAL(setClockSourceReq(int,unsigned,int)),
+	  this,SLOT(setClockSourceData(int,unsigned,int)));
+  connect(cae_server,
+	  SIGNAL(setOutputStatusFlagReq(int,unsigned,unsigned,unsigned,bool)),
+	  this,
+	  SLOT(setOutputStatusFlagData(int,unsigned,unsigned,unsigned,bool)));
+  connect(cae_server,
+	  SIGNAL(openRtpCaptureChannelReq(int,unsigned,unsigned,uint16_t,
+					  unsigned,unsigned)),
+	  this,
+	  SLOT(openRtpCaptureChannelData(int,unsigned,unsigned,uint16_t,
+					unsigned,unsigned)));
+  connect(cae_server,
+	  SIGNAL(jackConnectPortsReq(int,const QString &,const QString &)),
+	  this,
+	  SLOT(jackConnectPortsData(int,const QString &,const QString &)));
+  connect(cae_server,
+	  SIGNAL(jackDisconnectPortsReq(int,const QString &,const QString &)),
+	  this,
+	  SLOT(jackDisconnectPortsData(int,const QString &,const QString &)));
+  connect(cae_server,
+	  SIGNAL(meterEnableReq(int,uint16_t,const QList<unsigned> &)),
+	  this,
+	  SLOT(meterEnableData(int,uint16_t,const QList<unsigned> &)));
 
   signal(SIGHUP,SigHandler);
   signal(SIGINT,SigHandler);
   signal(SIGTERM,SigHandler);
 
   //
-  // Allowcate Meter Socket
+  // Meter Socket
   //
-  meter_socket=new Q3SocketDevice(Q3SocketDevice::Datagram);
+  meter_socket=new QUdpSocket(this);
 
   //
   // Open Database
@@ -190,7 +250,7 @@ MainObject::MainObject(QObject *parent,const char *name)
   db.setPassword(rd_config->mysqlPassword());
   db.setHostName(rd_config->mysqlHostname());
   if(!db.open()) {
-    rd_config->log("caed",RDConfig::LogErr,"unable to connect to mySQL Server");
+    syslog(LOG_ERR,"unable to connect to mySQL Server");
     printf("caed: unable to connect to mySQL Server");
     exit(1);
   }
@@ -230,7 +290,7 @@ MainObject::MainObject(QObject *parent,const char *name)
   //
   // Meter Update Timer
   //
-  QTimer *timer=new QTimer(this,"meter_update_timer");
+  QTimer *timer=new QTimer(this);
   connect(timer,SIGNAL(timeout()),this,SLOT(updateMeters()));
   timer->start(RD_METER_UPDATE_INTERVAL);
 
@@ -297,19 +357,18 @@ MainObject::MainObject(QObject *parent,const char *name)
     if(sched_params.sched_priority>sched_get_priority_min(sched_policy)) {
       sched_params.sched_priority--;
     }
-    int r = pthread_setschedparam(pthread_self(),sched_policy,&sched_params);
-    if (r) {
-      result = r;
+    int r=pthread_setschedparam(pthread_self(),sched_policy,&sched_params);
+    if(r) {
+      result=r;
     }
     mlockall(MCL_CURRENT|MCL_FUTURE);
-    if (result){
-          rd_config->log("caed",RDConfig::LogWarning,QString().
-		  sprintf("Unable to set realtime scheduling: %s",
-			  strerror (result)));
-    } else {
-    rd_config->log("caed",RDConfig::LogInfo,QString().
-	    sprintf("using realtime scheduling, priority=%d",
-		    sched_params.sched_priority));
+    if(result) {
+      syslog(LOG_WARNING,"unable to set realtime scheduling: %s",
+	     strerror(result));
+    }
+    else {
+      syslog(LOG_DEBUG,"using realtime scheduling, priority=%d",
+	     sched_params.sched_priority);
     }
   }
 
@@ -329,45 +388,1059 @@ MainObject::MainObject(QObject *parent,const char *name)
   }
 */
   if(rd_config->enableMixerLogging()) {
-    rd_config->log("caed",RDConfig::LogNotice,"mixer logging enabled");
+    syslog(LOG_NOTICE,"mixer logging enabled");
   }
-  rd_config->log("caed",RDConfig::LogInfo,"cae started");
+  syslog(LOG_INFO,"cae started");
 }
 
 
-MainObject::~MainObject() {
-  delete server;
-}
-
-void MainObject::newConnection(int fd)
+void MainObject::loadPlaybackData(int id,unsigned card,const QString &name)
 {
-  int i=0;
+  QString wavename;
+  int new_stream=-1;
+  int handle;
 
-  while((i<CAE_MAX_CONNECTIONS)&&(socket[i]!=NULL)) {
-    i++;
-  }
-  if(i==CAE_MAX_CONNECTIONS) {      // Table full, drop it on the floor
-    rd_config->log("caed",RDConfig::LogErr,"connection refused due to full socket table");
-    close(fd);
+  wavename=rd_config->audioFileName(name);
+  switch(cae_driver[card]) {
+  case RDStation::Hpi:
+    if(!hpiLoadPlayback(card,wavename,&new_stream)) {
+      cae_server->
+	sendCommand(id,QString().sprintf("LP %d %s -1 -1 -!",card,
+					 (const char *)name.toUtf8()));
+      syslog(LOG_WARNING,"unable to allocate stream for card %d",card);
+      return;
+    }
+    break;
+
+  case RDStation::Alsa:
+    if(!alsaLoadPlayback(card,wavename,&new_stream)) {
+      cae_server->
+	sendCommand(id,QString().sprintf("LP %d %s -1 -1 -!",card,
+					 (const char *)name.toUtf8()));
+      syslog(LOG_WARNING,"unable to allocate stream for card %d",card);
+      return;
+    }
+    break;
+
+  case RDStation::Jack:
+    if(!jackLoadPlayback(card,wavename,&new_stream)) {
+      cae_server->
+	sendCommand(id,QString().sprintf("LP %d %s -1 -1 -!",card,
+					 (const char *)name.toUtf8()));
+      syslog(LOG_WARNING,"unable to allocate stream for card %d",card);
+      return;
+    }
+    break;
+
+  default:
+    cae_server->
+      sendCommand(id,QString().sprintf("LP %d %s -1 -1 -!",card,
+				       (const char *)name.toUtf8()));
     return;
   }
-  socket[i]=new RDSocket(i,this);
-  socket[i]->setSocket(fd);
-  connect(socket[i],SIGNAL(readyReadID(int)),this,SLOT(socketData(int)));
-  connect(socket[i],SIGNAL(connectionClosedID(int)),
-	  this,SLOT(socketKill(int)));
+  if((handle=GetHandle(card,new_stream))>=0) {
+    syslog(LOG_WARNING,
+	   "*** clearing stale stream assignment, card=%d  stream=%d ***",
+	   card,new_stream);
+    play_handle[handle].card=-1;
+    play_handle[handle].stream=-1;
+    play_handle[handle].owner=-1;
+  }
+  handle=GetNextHandle();
+  play_handle[handle].card=card;
+  play_handle[handle].stream=new_stream;
+  play_handle[handle].owner=id;
+  play_owner[card][new_stream]=id;
+  syslog(LOG_DEBUG,"LoadPlayback  Card: %d  Stream: %d  Name: %s  Handle: %d",
+	 card,new_stream,(const char *)wavename.toUtf8(),handle);
+  cae_server->
+    sendCommand(id,QString().sprintf("LP %d %s %d %d +!",card,
+				     (const char *)name.toUtf8(),
+				     new_stream,handle));
 }
 
 
-void MainObject::socketData(int ch)
+void MainObject::unloadPlaybackData(int id,unsigned handle)
 {
-  ParseCommand(ch);
+  int card=play_handle[handle].card;
+  int stream=play_handle[handle].stream;
+
+  if((play_owner[card][stream]==-1)||(play_owner[card][stream]==id)) {
+    switch(cae_driver[card]) {
+    case RDStation::Hpi:
+      if(hpiUnloadPlayback(card,stream)) {
+	play_owner[card][stream]=-1;
+	syslog(LOG_DEBUG,"UnloadPlayback - Card: %d  Stream: %d  Handle: %d",
+	       card,stream,handle);
+	cae_server->sendCommand(id,QString().sprintf("UP %d+!",handle));
+      }
+      else {
+	cae_server->sendCommand(id,QString().sprintf("UP %d-!",handle));
+      }
+      break;
+
+    case RDStation::Alsa:
+      if(alsaUnloadPlayback(card,stream)) {
+	play_owner[card][stream]=-1;
+	syslog(LOG_DEBUG,"UnloadPlayback - Card: %d  Stream: %d  Handle: %d",
+	       card,stream,handle);
+	cae_server->sendCommand(id,QString().sprintf("UP %d+!",handle));
+      }
+      else {
+	cae_server->sendCommand(id,QString().sprintf("UP %d-!",handle));
+      }
+      break;
+
+    case RDStation::Jack:
+      if(jackUnloadPlayback(card,stream)) {
+	play_owner[card][stream]=-1;
+	syslog(LOG_DEBUG,"UnloadPlayback - Card: %d  Stream: %d  Handle: %d",
+	       card,stream,handle);
+	cae_server->sendCommand(id,QString().sprintf("UP %d+!",handle));
+      }
+      else {
+	cae_server->sendCommand(id,QString().sprintf("UP %d-!",handle));
+      }
+      break;
+
+    default:
+      cae_server->sendCommand(id,QString().sprintf("UP %d-!",handle));
+      return;
+    }
+    play_handle[handle].card=-1;
+    play_handle[handle].stream=-1;
+    play_handle[handle].owner=-1;
+    return;
+  }
+  else {
+    cae_server->sendCommand(id,QString().sprintf("UP %d-!",handle));
+  }
 }
 
 
-void MainObject::socketKill(int ch)
+void MainObject::playPositionData(int id,unsigned handle,unsigned pos)
 {
-  KillSocket(ch);
+  int card=play_handle[handle].card;
+  int stream=play_handle[handle].stream;
+
+  if(play_owner[card][stream]==id) {
+    switch(cae_driver[card]) {
+    case RDStation::Hpi:
+      if(hpiPlaybackPosition(card,stream,pos)) {
+	syslog(LOG_DEBUG,
+	       "PlaybackPosition - Card: %d  Stream: %d  Pos: %d  Handle: %d",
+	       card,stream,pos,handle);
+	cae_server->sendCommand(id,QString().sprintf("PP %d %d +!",handle,pos));
+      }
+      else {
+	cae_server->sendCommand(id,QString().sprintf("PP %d %d -!",handle,pos));
+      }
+      break;
+      
+    case RDStation::Alsa:
+      if(alsaPlaybackPosition(card,stream,pos)) {
+	syslog(LOG_DEBUG,
+	       "PlaybackPosition - Card: %d  Stream: %d  Pos: %d  Handle: %d",
+	       card,stream,pos,handle);
+	cae_server->sendCommand(id,QString().sprintf("PP %d %d +!",handle,pos));
+      }
+      else {
+	cae_server->sendCommand(id,QString().sprintf("PP %d %d -!",handle,pos));
+      }
+      break;
+      
+    case RDStation::Jack:
+      if(jackPlaybackPosition(card,stream,pos)) {
+	syslog(LOG_DEBUG,
+	       "PlaybackPosition - Card: %d  Stream: %d  Pos: %d  Handle: %d",
+	       card,stream,pos,handle);
+	cae_server->sendCommand(id,QString().sprintf("PP %d %d +!",handle,pos));
+      }
+      else {
+	cae_server->sendCommand(id,QString().sprintf("PP %d %d -!",handle,pos));
+      }
+      break;
+      
+    default:
+      cae_server->sendCommand(id,QString().sprintf("PP %d %d -!",handle,pos));
+      return;
+    }
+    return;
+  }
+  cae_server->sendCommand(id,QString().sprintf("PP %d %d -!",handle,pos));
+}
+
+
+void MainObject::playData(int id,unsigned handle,unsigned length,unsigned speed,
+			  unsigned pitch_flag)
+{
+  int card=play_handle[handle].card;
+  int stream=play_handle[handle].stream;
+
+  play_length[card][stream]=length;
+  play_speed[card][stream]=speed;
+  switch(pitch_flag) {
+  case 0:
+    play_pitch[card][stream]=false;
+    break;
+
+  case 1:
+    play_pitch[card][stream]=true;
+    break;
+
+  default:
+    cae_server->
+      sendCommand(id,QString().sprintf("PY %u %u %u %u-!",
+				       handle,length,speed,pitch_flag));
+    return;
+  }
+  if(play_owner[card][stream]==id) {
+    switch(cae_driver[card]) {
+    case RDStation::Hpi:
+      if(!hpiPlay(card,stream,play_length[card][stream],
+		  play_speed[card][stream],play_pitch[card][stream],
+		  RD_ALLOW_NONSTANDARD_RATES)) {
+	cae_server->
+	  sendCommand(id,QString().sprintf("PY %u %u %u %u-!",
+					   handle,length,speed,pitch_flag));
+	return;
+      }
+      break;
+
+    case RDStation::Alsa:
+      if(!alsaPlay(card,stream,play_length[card][stream],
+		   play_speed[card][stream],play_pitch[card][stream],
+		   RD_ALLOW_NONSTANDARD_RATES)) {
+	cae_server->
+	  sendCommand(id,QString().sprintf("PY %u %u %u %u-!",
+					   handle,length,speed,pitch_flag));
+	return;
+      }
+      break;
+
+    case RDStation::Jack:
+      if(!jackPlay(card,stream,play_length[card][stream],
+		   play_speed[card][stream],play_pitch[card][stream],
+		   RD_ALLOW_NONSTANDARD_RATES)) {
+	cae_server->
+	  sendCommand(id,QString().sprintf("PY %u %u %u %u-!",
+					   handle,length,speed,pitch_flag));
+	return;
+      }
+      break;
+
+    default:
+      cae_server->
+	sendCommand(id,QString().sprintf("PY %u %u %u %u-!",
+					 handle,length,speed,pitch_flag));
+      return;
+    }
+    syslog(LOG_DEBUG,
+	   "Play - Card: %d  Stream: %d  Handle: %d  Length: %d  Speed: %d  Pitch: %d",
+	   card,stream,handle,play_length[card][stream],
+	   play_speed[card][stream],pitch_flag);
+    // No command echo for success -- statePlayUpdate() sends it!
+    return;
+  }
+  cae_server->
+    sendCommand(id,QString().sprintf("PY %u %u %u %u-!",
+				     handle,length,speed,pitch_flag));
+}
+
+
+void MainObject::stopPlaybackData(int id,unsigned handle)
+{
+  int card=play_handle[handle].card;
+  int stream=play_handle[handle].stream;
+  if(play_owner[card][stream]==id) {
+    switch(cae_driver[card]) {
+    case RDStation::Hpi:
+      if(!hpiStopPlayback(card,stream)) {
+	cae_server->sendCommand(id,QString().sprintf("SP %u-!",handle));
+	return;
+      }
+      break;
+
+    case RDStation::Alsa:
+      if(!alsaStopPlayback(card,stream)) {
+	cae_server->sendCommand(id,QString().sprintf("SP %u-!",handle));
+	return;
+      }
+      break;
+
+    case RDStation::Jack:
+      if(!jackStopPlayback(card,stream)) {
+	cae_server->sendCommand(id,QString().sprintf("SP %u-!",handle));
+	return;
+      }
+      break;
+
+    default:
+      cae_server->sendCommand(id,QString().sprintf("SP %u-!",handle));
+      return;
+    }
+    syslog(LOG_DEBUG,"StopPlayback - Card: %d  Stream: %d  Handle: %d",
+	   card,stream,handle);
+    return;
+  }
+  cae_server->sendCommand(id,QString().sprintf("SP %u-!",handle));
+}
+
+
+void MainObject::timescalingSupportData(int id,unsigned card)
+{
+  bool state=false;
+
+  switch(cae_driver[card]) {
+  case RDStation::Hpi:
+    state=hpiTimescaleSupported(card);
+    break;
+
+  case RDStation::Jack:
+    state=jackTimescaleSupported(card);
+    break;
+
+  case RDStation::Alsa:
+    state=alsaTimescaleSupported(card);
+    break;
+
+  case RDStation::None:
+    break;
+  }
+  if(state) {
+    cae_server->sendCommand(id,"TS+!");
+  }
+  else {
+    cae_server->sendCommand(id,"TS-!");
+  }
+}
+
+
+void MainObject::loadRecordingData(int id,unsigned card,unsigned port,
+				   unsigned coding,unsigned channels,
+				   unsigned samprate,unsigned bitrate,
+				   const QString &name)
+{
+  QString wavename;
+
+  if(record_owner[card][port]==-1) {
+    wavename=rd_config->audioFileName(name);
+    unlink(wavename);  // So we don't trainwreck any current playouts!
+    unlink(wavename+".energy");
+    switch(cae_driver[card]) {
+    case RDStation::Hpi:
+      if(!hpiLoadRecord(card,port,coding,channels,samprate,bitrate,
+			wavename)) {
+	cae_server->
+	  sendCommand(id,QString().sprintf("LR %u %u %u %u %u %u %s-!",
+					   card,port,coding,channels,samprate,
+				       bitrate,(const char *)name.toUtf8()));
+	return;
+      }
+      break;
+
+    case RDStation::Alsa:
+      if(!alsaLoadRecord(card,port,coding,channels,samprate,
+			 bitrate,wavename)) {
+	cae_server->
+	  sendCommand(id,QString().sprintf("LR %u %u %u %u %u %u %s-!",
+					   card,port,coding,channels,samprate,
+				       bitrate,(const char *)name.toUtf8()));
+	return;
+            }
+      break;
+      
+    case RDStation::Jack:
+      if(!jackLoadRecord(card,port,coding,channels,samprate,
+			 bitrate,wavename)) {
+	cae_server->
+	  sendCommand(id,QString().sprintf("LR %u %u %u %u %u %u %s-!",
+					   card,port,coding,channels,samprate,
+					  bitrate,(const char *)name.toUtf8()));
+	return;
+      }
+      break;
+
+    default:
+      cae_server->
+	sendCommand(id,QString().sprintf("LR %u %u %u %u %u %u %s-!",
+					 card,port,coding,channels,samprate,
+					 bitrate,(const char *)name.toUtf8()));
+      return;
+    }
+    syslog(LOG_DEBUG,
+	   "LoadRecord - Card: %d  Stream: %d  Coding: %d  Chans: %d  SampRate: %d  BitRate: %d  Name: %s",
+	   card,port,coding,channels,samprate,bitrate,
+	   (const char *)wavename.toUtf8());
+    record_owner[card][port]=id;
+    cae_server->
+      sendCommand(id,QString().sprintf("LR %u %u %u %u %u %u %s+!",
+				       card,port,coding,channels,samprate,
+				       bitrate,(const char *)name.toUtf8()));
+  }
+  else {
+    cae_server->
+      sendCommand(id,QString().sprintf("LR %u %u %u %u %u %u %s-!",
+				       card,port,coding,channels,samprate,
+				       bitrate,(const char *)name.toUtf8()));
+  }
+}
+
+
+void MainObject::unloadRecordingData(int id,unsigned card,unsigned stream)
+{
+  if((record_owner[card][stream]==-1)||(record_owner[card][stream]==id)) {
+    unsigned len=0;
+    switch(cae_driver[card]) {
+    case RDStation::Hpi:
+      if(!hpiUnloadRecord(card,stream,&len)) {
+	cae_server->sendCommand(id,QString().sprintf("UR %u %u-!",card,stream));
+	return;
+      }
+      break;
+
+    case RDStation::Alsa:
+      if(!alsaUnloadRecord(card,stream,&len)) {
+	cae_server->sendCommand(id,QString().sprintf("UR %u %u-!",card,stream));
+	return;
+      }
+      break;
+
+    case RDStation::Jack:
+      if(!jackUnloadRecord(card,stream,&len)) {
+	cae_server->sendCommand(id,QString().sprintf("UR %u %u-!",card,stream));
+	return;
+      }
+      break;
+
+    default:
+      cae_server->sendCommand(id,QString().sprintf("UR %u %u-!",card,stream));
+      return;
+    }
+    record_owner[card][stream]=-1;
+    syslog(LOG_DEBUG,"UnloadRecord - Card: %d  Stream: %d, Length: %u",
+	   card,stream,len);
+    cae_server->
+      sendCommand(id,QString().sprintf("UR %u %u %u+!",card,stream,
+		   (unsigned)((double)len*1000.0/(double)system_sample_rate)));
+    return;
+  }
+  else {
+    cae_server->sendCommand(id,QString().sprintf("UR %u %u-!",card,stream));
+    return;
+  }
+}
+
+
+void MainObject::recordData(int id,unsigned card,unsigned stream,unsigned len,
+			    int threshold_level)
+{
+  record_length[card][stream]=len;
+  record_threshold[card][stream]=threshold_level;
+  if(record_owner[card][stream]==id) {
+    switch(cae_driver[card]) {
+    case RDStation::Hpi:
+      if(!hpiRecord(card,stream,record_length[card][stream],
+		    record_threshold[card][stream])) {
+	cae_server->
+	  sendCommand(id,QString().sprintf("RD %u %u %u %d-!",
+					   card,stream,len,threshold_level));
+	return;
+      }
+      break;
+
+    case RDStation::Alsa:
+      if(!alsaRecord(card,stream,record_length[card][stream],
+		     record_threshold[card][stream])) {
+	cae_server->
+	  sendCommand(id,QString().sprintf("RD %u %u %u %d-!",
+					   card,stream,len,threshold_level));
+	return;
+      }
+      break;
+
+    case RDStation::Jack:
+      if(!jackRecord(card,stream,record_length[card][stream],
+		     record_threshold[card][stream])) {
+	cae_server->
+	  sendCommand(id,QString().sprintf("RD %u %u %u %d-!",
+					   card,stream,len,threshold_level));
+	return;
+      }
+      break;
+
+    default:
+      cae_server->
+	sendCommand(id,QString().sprintf("RD %u %u %u %d-!",
+					 card,stream,len,threshold_level));
+      return;
+    }
+    syslog(LOG_DEBUG,"Record - Card: %d  Stream: %d  Length: %d  Thres: %d",
+	   card,stream,record_length[card][stream],
+	   record_threshold[card][stream]);
+    // No positive echo required here!
+    return;
+  }
+  cae_server->
+    sendCommand(id,QString().sprintf("RD %u %u %u %d-!",
+				     card,stream,len,threshold_level));
+}
+
+
+void MainObject::stopRecordingData(int id,unsigned card,unsigned stream)
+{
+  switch(cae_driver[card]) {
+  case RDStation::Hpi:
+    if(!hpiStopRecord(card,stream)) {
+      cae_server->sendCommand(id,QString().sprintf("SR %u %u-!",card,stream));
+      return;
+    }
+    break;
+
+  case RDStation::Alsa:
+    if(!alsaStopRecord(card,stream)) {
+      cae_server->sendCommand(id,QString().sprintf("SR %u %u-!",card,stream));
+      return;
+    }
+    cae_server->sendCommand(id,QString().sprintf("SR %u %u+!",card,stream));
+    break;
+
+  case RDStation::Jack:
+    if(!jackStopRecord(card,stream)) {
+      cae_server->sendCommand(id,QString().sprintf("SR %u %u-!",card,stream));
+      return;
+    }
+    cae_server->sendCommand(id,QString().sprintf("SR %u %u+!",card,stream));
+    break;
+
+  default:
+    cae_server->sendCommand(id,QString().sprintf("SR %u %u-!",card,stream));
+    return;
+  }
+  syslog(LOG_DEBUG,"StopRecord - Card: %d  Stream: %d",card,stream);
+}
+
+
+void MainObject::setInputVolumeData(int id,unsigned card,unsigned stream,
+				    int level)
+{
+  switch(cae_driver[card]) {
+  case RDStation::Hpi:
+    if(!hpiSetInputVolume(card,stream,level)) {
+      cae_server->
+	sendCommand(id,QString().sprintf("IV %u %u %d-!",card,stream,level));
+      return;
+    }
+
+  case RDStation::Alsa:
+    if(!alsaSetInputVolume(card,stream,level)) {
+      cae_server->
+	sendCommand(id,QString().sprintf("IV %u %u %d-!",card,stream,level));
+      return;
+    }
+
+  case RDStation::Jack:
+    if(!jackSetInputVolume(card,stream,level)) {
+      cae_server->
+	sendCommand(id,QString().sprintf("IV %u %u %d-!",card,stream,level));
+      return;
+    }
+
+  default:
+    cae_server->
+      sendCommand(id,QString().sprintf("IV %u %u %d-!",card,stream,level));
+    return;
+  }
+  if(rd_config->enableMixerLogging()) {
+    syslog(LOG_DEBUG,"SetInputVolume - Card: %d  Stream: %d Level: %d",
+	   card,stream,level);
+  }
+  cae_server->
+    sendCommand(id,QString().sprintf("IV %u %u %d+!",card,stream,level));
+}
+
+
+void MainObject::setOutputVolumeData(int id,unsigned card,unsigned stream,
+				     unsigned port,int level)
+{
+  switch(cae_driver[card]) {
+  case RDStation::Hpi:
+    if(!hpiSetOutputVolume(card,stream,port,level)) {
+      cae_server->sendCommand(id,QString().sprintf("OV %u %u %u %d-!",
+						   card,stream,port,level));
+      return;
+    }
+    break;
+
+  case RDStation::Alsa:
+    if(!alsaSetOutputVolume(card,stream,port,level)) {
+      cae_server->sendCommand(id,QString().sprintf("OV %u %u %u %d-!",
+						   card,stream,port,level));
+      return;
+    }
+    break;
+
+  case RDStation::Jack:
+    if(!jackSetOutputVolume(card,stream,port,level)) {
+      cae_server->sendCommand(id,QString().sprintf("OV %u %u %u %d-!",
+						   card,stream,port,level));
+      return;
+    }
+    break;
+
+  default:
+    cae_server->sendCommand(id,QString().sprintf("OV %u %u %u %d-!",
+						 card,stream,port,level));
+    return;
+  }
+  if(rd_config->enableMixerLogging()) {
+    syslog(LOG_DEBUG,
+	   "SetOutputVolume - Card: %d  Stream: %d  Port: %d  Level: %d",
+	   card,stream,port,level);
+  }
+  cae_server->sendCommand(id,QString().sprintf("OV %u %u %u %d+!",
+					       card,stream,port,level));
+}
+
+
+void MainObject::fadeOutputVolumeData(int id,unsigned card,unsigned stream,
+				      unsigned port,int level,unsigned length)
+{
+  switch(cae_driver[card]) {
+  case RDStation::Hpi:
+    if(!hpiFadeOutputVolume(card,stream,port,level,length)) {
+      cae_server->
+	sendCommand(id,QString().sprintf("FV %u %u %u %d %u-!",
+					 card,stream,port,level,length));
+      return;
+    }
+    break;
+
+  case RDStation::Alsa:
+    if(!alsaFadeOutputVolume(card,stream,port,level,length)) {
+      cae_server->
+	sendCommand(id,QString().sprintf("FV %u %u %u %d %u-!",
+					 card,stream,port,level,length));
+      return;
+    }
+    break;
+
+  case RDStation::Jack:
+    if(!jackFadeOutputVolume(card,stream,port,level,length)) {
+      cae_server->
+	sendCommand(id,QString().sprintf("FV %u %u %u %d %u-!",
+					 card,stream,port,level,length));
+      return;
+    }
+    break;
+
+  default:
+    cae_server->
+      sendCommand(id,QString().sprintf("FV %u %u %u %d %u-!",
+				       card,stream,port,level,length));
+    return;
+  }
+  if(rd_config->enableMixerLogging()) {
+    syslog(LOG_DEBUG,
+     "FadeOutputVolume - Card: %d  Stream: %d  Port: %d  Level: %d  Length: %d",
+	   card,stream,port,level,length);
+  }
+  cae_server->
+    sendCommand(id,QString().sprintf("FV %u %u %u %d %u+!",
+				     card,stream,port,level,length));
+}
+
+
+void MainObject::setInputLevelData(int id,unsigned card,unsigned port,
+				   int level)
+{
+  switch(cae_driver[card]) {
+  case RDStation::Hpi:
+    if(!hpiSetInputLevel(card,port,level)) {
+      cae_server->sendCommand(id,QString().sprintf("IL %u %u %d-!",
+						   card,port,level));
+      return;
+    }
+    break;
+
+  case RDStation::Alsa:
+    if(!alsaSetInputLevel(card,port,level)) {
+      cae_server->sendCommand(id,QString().sprintf("IL %u %u %d-!",
+						   card,port,level));
+      return;
+    }
+    break;
+
+  case RDStation::Jack:
+    if(!jackSetInputLevel(card,port,level)) {
+      cae_server->sendCommand(id,QString().sprintf("IL %u %u %d-!",
+						   card,port,level));
+      return;
+    }
+    break;
+
+  default:
+    cae_server->sendCommand(id,QString().sprintf("IL %u %u %d-!",
+						 card,port,level));
+    return;
+  }
+  if(rd_config->enableMixerLogging()) {
+    syslog(LOG_DEBUG,"SetInputLevel - Card: %d  Port: %d  Level: %d",
+	   card,port,level);
+  }
+  cae_server->sendCommand(id,QString().sprintf("IL %u %u %d+!",
+					       card,port,level));
+}
+
+
+void MainObject::setOutputLevelData(int id,unsigned card,unsigned port,
+				    int level)
+{
+  switch(cae_driver[card]) {
+  case RDStation::Hpi:
+    if(!hpiSetOutputLevel(card,port,level)) {
+      cae_server->sendCommand(id,QString().sprintf("OL %u %u %d-!",
+						   card,port,level));
+      return;
+    }
+    break;
+
+  case RDStation::Alsa:
+    if(!alsaSetOutputLevel(card,port,level)) {
+      cae_server->sendCommand(id,QString().sprintf("OL %u %u %d-!",
+						   card,port,level));
+      return;
+    }
+    break;
+
+  case RDStation::Jack:
+    if(!jackSetOutputLevel(card,port,level)) {
+      cae_server->sendCommand(id,QString().sprintf("OL %u %u %d-!",
+						   card,port,level));
+      return;
+    }
+    break;
+
+  default:
+    cae_server->sendCommand(id,QString().sprintf("OL %u %u %d-!",
+						 card,port,level));
+    return;
+  }
+  if(rd_config->enableMixerLogging()) {
+    syslog(LOG_DEBUG,"SetOutputLevel - Card: %d  Port: %d  Level: %d",
+	   card,port,level);
+  }
+  cae_server->sendCommand(id,QString().sprintf("OL %u %u %d+!",
+					       card,port,level));
+}
+
+
+void MainObject::setInputModeData(int id,unsigned card,unsigned stream,
+				  unsigned mode)
+{
+  switch(cae_driver[card]) {
+  case RDStation::Hpi:
+    if(!hpiSetInputMode(card,stream,mode)) {
+      cae_server->sendCommand(id,QString().sprintf("IM %u %u %u-!",
+						   card,stream,mode));
+      return;
+    }
+    break;
+
+  case RDStation::Alsa:
+    if(!alsaSetInputMode(card,stream,mode)) {
+      cae_server->sendCommand(id,QString().sprintf("IM %u %u %u-!",
+						   card,stream,mode));
+      return;
+    }
+    break;
+
+  case RDStation::Jack:
+    if(!jackSetInputMode(card,stream,mode)) {
+      cae_server->sendCommand(id,QString().sprintf("IM %u %u %u-!",
+						   card,stream,mode));
+      return;
+    }
+    break;
+
+  default:
+    cae_server->sendCommand(id,QString().sprintf("IM %u %u %u-!",
+						 card,stream,mode));
+    return;
+  }
+  if(rd_config->enableMixerLogging()) {
+    syslog(LOG_DEBUG,"SetInputMode - Card: %d  Stream: %d  Mode: %d",
+	   card,stream,mode);
+  }
+  cae_server->sendCommand(id,QString().sprintf("IM %u %u %u+!",
+					       card,stream,mode));
+}
+
+
+void MainObject::setOutputModeData(int id,unsigned card,unsigned stream,
+				   unsigned mode)
+{
+  switch(cae_driver[card]) {
+  case RDStation::Hpi:
+    if(!hpiSetOutputMode(card,stream,mode)) {
+      cae_server->sendCommand(id,QString().sprintf("OM %u %u %u-!",
+						   card,stream,mode));
+      return;
+    }
+    break;
+
+  case RDStation::Alsa:
+    if(!alsaSetOutputMode(card,stream,mode)) {
+      cae_server->sendCommand(id,QString().sprintf("OM %u %u %u-!",
+						   card,stream,mode));
+      return;
+    }
+    break;
+
+  case RDStation::Jack:
+    if(!jackSetOutputMode(card,stream,mode)) {
+      cae_server->sendCommand(id,QString().sprintf("OM %u %u %u-!",
+						   card,stream,mode));
+      return;
+    }
+    break;
+
+  default:
+    cae_server->sendCommand(id,QString().sprintf("OM %u %u %u-!",
+						 card,stream,mode));
+    return;
+  }
+  if(rd_config->enableMixerLogging()) {
+    syslog(LOG_DEBUG,"SetOutputMode - Card: %d  Stream: %d  Mode: %d",
+	   card,stream,mode);
+  }
+  cae_server->sendCommand(id,QString().sprintf("OM %u %u %u+!",
+					       card,stream,mode));
+}
+
+
+void MainObject::setInputVoxLevelData(int id,unsigned card,unsigned stream,
+				      int level)
+{
+  switch(cae_driver[card]) {
+  case RDStation::Hpi:
+    if(!hpiSetInputVoxLevel(card,stream,level)) {
+      cae_server->sendCommand(id,QString().sprintf("IX %u %u %d-!",
+						   card,stream,level));
+      return;
+    }
+    break;
+
+  case RDStation::Alsa:
+    if(!alsaSetInputVoxLevel(card,stream,level)) {
+      cae_server->sendCommand(id,QString().sprintf("IX %u %u %d-!",
+						   card,stream,level));
+      return;
+    }
+    break;
+
+  case RDStation::Jack:
+    if(!jackSetInputVoxLevel(card,stream,level)) {
+      cae_server->sendCommand(id,QString().sprintf("IX %u %u %d-!",
+						   card,stream,level));
+      return;
+    }
+    break;
+
+  default:
+    cae_server->sendCommand(id,QString().sprintf("IX %u %u %d-!",
+						 card,stream,level));
+    return;
+  }
+  if(rd_config->enableMixerLogging()) {
+    syslog(LOG_DEBUG,"SetInputVOXLevel - Card: %d  Stream: %d  Level: %d",
+	   card,stream,level);
+  }
+  cae_server->sendCommand(id,QString().sprintf("IX %u %u %d+!",
+					       card,stream,level));
+}
+
+
+void MainObject::setInputTypeData(int id,unsigned card,unsigned port,
+				  unsigned type)
+{
+  switch(cae_driver[card]) {
+  case RDStation::Hpi:
+    if(!hpiSetInputType(card,port,type)) {
+      cae_server->sendCommand(id,QString().sprintf("IT %u %u %u-!",
+						   card,port,type));
+      return;
+    }
+    break;
+
+  case RDStation::Alsa:
+    if(!alsaSetInputType(card,port,type)) {
+      cae_server->sendCommand(id,QString().sprintf("IT %u %u %u-!",
+						   card,port,type));
+      return;
+    }
+    break;
+
+  case RDStation::Jack:
+    if(!jackSetInputType(card,port,type)) {
+      cae_server->sendCommand(id,QString().sprintf("IT %u %u %u-!",
+						   card,port,type));
+      return;
+    }
+    break;
+
+  default:
+    cae_server->sendCommand(id,QString().sprintf("IT %u %u %u-!",
+						 card,port,type));
+    return;
+  }
+  if(rd_config->enableMixerLogging()) {
+    syslog(LOG_DEBUG,"SetInputType - Card: %d  Port: %d  Type: %d",
+	   card,port,type);
+  }
+  cae_server->sendCommand(id,QString().sprintf("IT %u %u %u+!",
+					       card,port,type));
+}
+
+
+void MainObject::getInputStatusData(int id,unsigned card,unsigned port)
+{
+  if(hpiGetInputStatus(card,port)) {
+    cae_server->sendCommand(id,QString().sprintf("IS %d %d 0 +!",card,port));
+  }
+  else {
+    cae_server->sendCommand(id,QString().sprintf("IS %d %d 1 +!",card,port));
+  }
+}
+
+
+void MainObject::setAudioPassthroughLevelData(int id,unsigned card,
+					      unsigned input,unsigned output,
+					      int level)
+{
+  switch(cae_driver[card]) {
+  case RDStation::Hpi:
+    if(!hpiSetPassthroughLevel(card,input,output,level)) {
+      cae_server->sendCommand(id,QString().sprintf("AL %u %u %u %d-!",
+						   card,input,output,level));
+      return;
+    }
+    break;
+
+  case RDStation::Alsa:
+    if(!alsaSetPassthroughLevel(card,input,output,level)) {
+      cae_server->sendCommand(id,QString().sprintf("AL %u %u %u %d-!",
+						   card,input,output,level));
+      return;
+    }
+    break;
+
+  case RDStation::Jack:
+    if(!jackSetPassthroughLevel(card,input,output,level)) {
+      cae_server->sendCommand(id,QString().sprintf("AL %u %u %u %d-!",
+						   card,input,output,level));
+      return;
+    }
+    break;
+
+  default:
+    cae_server->sendCommand(id,QString().sprintf("AL %u %u %u %d-!",
+						 card,input,output,level));
+    return;
+  }
+  if(rd_config->enableMixerLogging()) {
+    syslog(LOG_DEBUG,
+	   "SetPassthroughLevel - Card: %d  InPort: %d  OutPort: %d Level: %d",
+	   card,input,output,level);
+  }
+  cae_server->sendCommand(id,QString().sprintf("AL %u %u %u %d+!",
+					       card,input,output,level));
+}
+
+
+void MainObject::setClockSourceData(int id,unsigned card,int input)
+{
+  if((card<0)||(input<0)) {
+    cae_server->sendCommand(id,QString().sprintf("CS %u %u-!",card,input));
+    return;
+  }
+  switch(cae_driver[card]) {
+  case RDStation::Hpi:
+    if(!hpiSetClockSource(card,input)) {
+      cae_server->sendCommand(id,QString().sprintf("CS %u %u-!",card,input));
+      return;
+    }
+
+  default:
+    cae_server->sendCommand(id,QString().sprintf("CS %u %u+!",card,input));
+    return;
+  }
+  if(rd_config->enableMixerLogging()) {
+    syslog(LOG_DEBUG,"SetClockSource - Card: %d  Source: %d",card,input);
+  }
+  cae_server->sendCommand(id,QString().sprintf("CS %u %u+!",card,input));
+}
+
+
+void MainObject::setOutputStatusFlagData(int id,unsigned card,unsigned port,
+					 unsigned stream,bool state)
+{
+  output_status_flag[card][port][stream]=state;
+  SendMeterOutputStatusUpdate(card,port,stream);
+  cae_server->sendCommand(id,QString().sprintf("OS %u %u %u %u+!",
+					       card,port,stream,state));
+}
+
+
+void MainObject::openRtpCaptureChannelData(int id,unsigned card,unsigned port,
+					   uint16_t udp_port,unsigned samprate,
+					   unsigned chans)
+{
+}
+
+
+void MainObject::jackConnectPortsData(int id,const QString &out_name,
+				      const QString &in_name)
+{
+  jackConnectPorts(out_name,in_name);
+}
+
+
+void MainObject::jackDisconnectPortsData(int id,const QString &out_name,
+					 const QString &in_name)
+{
+  jackDisconnectPorts(out_name,in_name);
+}
+
+
+void MainObject::meterEnableData(int id,uint16_t udp_port,
+				 const QList<unsigned> &cards)
+{
+  QString cmd=QString().sprintf("ME %u",0xFFFF&udp_port);
+  for(int i=0;i<cards.size();i++) {
+    cmd+=QString().sprintf(" %u",cards.at(i));
+  }
+  if((udp_port<0)||(udp_port>0xFFFF)) {
+    cae_server->sendCommand(id,cmd+"-!");
+    return;
+  }
+  cae_server->setMeterPort(id,udp_port);
+  for(int i=0;i<cards.size();i++) {
+    if((cards.at(i)<0)||(cards.at(i)>=RD_MAX_CARDS)) {
+      cae_server->sendCommand(id,cmd+"-!");
+      return;
+    }
+    cae_server->setMetersEnabled(id,cards.at(i),true);
+  }
+
+  cae_server->sendCommand(id,cmd+"+!");
+  SendMeterOutputStatusUpdate();
+}
+
+
+void MainObject::connectionDroppedData(int id)
+{
+  KillSocket(id);
 }
 
 
@@ -381,17 +1454,20 @@ void MainObject::statePlayUpdate(int card,int stream,int state)
   if(play_owner[card][stream]!=-1) {
     switch(state) {
 	case 1:   // Playing
-	  EchoCommand(play_owner[card][stream],(const char *)QString().
-		      sprintf("PY %d %d %d +!",handle,
-			      play_length[card][stream],
-			      play_speed[card][stream]));
+	  cae_server->sendCommand(play_owner[card][stream],
+				  (const char *)QString().
+				  sprintf("PY %d %d %d +!",handle,
+					  play_length[card][stream],
+					  play_speed[card][stream]));
 	  break;
 	case 2:   // Paused
-	  EchoCommand(play_owner[card][stream],(const char *)QString().
-		      sprintf("SP %d +!",handle));
+	  cae_server->
+	    sendCommand(play_owner[card][stream],(const char *)QString().
+			sprintf("SP %d +!",handle));
 	  break;
 	case 0:   // Stopped
-	  EchoCommand(play_owner[card][stream],(const char *)QString().
+	  cae_server->
+	    sendCommand(play_owner[card][stream],(const char *)QString().
 		      sprintf("SP %d +!",handle));
 	  break;
     }
@@ -404,21 +1480,24 @@ void MainObject::stateRecordUpdate(int card,int stream,int state)
   if(record_owner[card][stream]!=-1) {
     switch(state) {
 	case 0:    // Recording
-	  EchoCommand(record_owner[card][stream],(const char *)QString().
+	  cae_server->
+	    sendCommand(record_owner[card][stream],(const char *)QString().
 		      sprintf("RD %d %d %d %d +!",card,stream,
 			      record_length[card][stream],
 			      record_threshold[card][stream]));
 	  break;
 
 	case 4:    // Record Started
-	  EchoCommand(record_owner[card][stream],(const char *)QString().
+	  cae_server->
+	    sendCommand(record_owner[card][stream],(const char *)QString().
 		      sprintf("RS %d %d +!",card,stream));
 	  break;
 
 	case 2:    // Paused
 	case 3:    // Stopped
-	  EchoCommand(record_owner[card][stream],(const char *)QString().
-		      sprintf("SR %d %d +!",card,stream));
+	  cae_server->
+	    sendCommand(record_owner[card][stream],(const char *)QString().
+			sprintf("SR %d %d +!",card,stream));
 	  break;
     }
   }
@@ -434,7 +1513,7 @@ void MainObject::updateMeters()
     jackFree();
     alsaFree();
     hpiFree();
-    rd_config->log("caed",RDConfig::LogInfo,"cae exiting");
+    syslog(LOG_INFO,"cae exiting");
     exit(0);
   }
 
@@ -448,10 +1527,10 @@ void MainObject::updateMeters()
 	    if(hpiGetInputStatus(i,j)!=port_status[i][j]) {
 	      port_status[i][j]=hpiGetInputStatus(i,j);
 	      if(port_status[i][j]) {
-		BroadcastCommand(QString().sprintf("IS %d %d 0!",i,j));
+		cae_server->sendCommand(QString().sprintf("IS %d %d 0!",i,j));
 	      }
 	      else {
-		BroadcastCommand(QString().sprintf("IS %d %d 1!",i,j));
+		cae_server->sendCommand(QString().sprintf("IS %d %d 1!",i,j));
 	      }
 	    }
 	    if(hpiGetInputMeters(i,j,levels)) {
@@ -474,7 +1553,7 @@ void MainObject::updateMeters()
 	  for(int j=0;j<RD_MAX_PORTS;j++) {
 	    if(jackGetInputStatus(i,j)!=port_status[i][j]) {
 	      port_status[i][j]=!port_status[i][j];
-	      BroadcastCommand(QString().sprintf("IS %d %d %d",i,j,
+	      cae_server->sendCommand(QString().sprintf("IS %d %d %d",i,j,
 						 port_status[i][j]));
 	    }
 	    if(jackGetInputMeters(i,j,levels)) {
@@ -497,8 +1576,8 @@ void MainObject::updateMeters()
 	  for(int j=0;j<RD_MAX_PORTS;j++) {
 	    if(alsaGetInputStatus(i,j)!=port_status[i][j]) {
 	      port_status[i][j]=!port_status[i][j];
-	      BroadcastCommand(QString().sprintf("IS %d %d %d",i,j,
-						 port_status[i][j]));
+	      cae_server->sendCommand(QString().sprintf("IS %d %d %d",i,j,
+							port_status[i][j]));
 	    }
 	    if(alsaGetInputMeters(i,j,levels)) {
 	      SendMeterLevelUpdate("I",i,j,levels);
@@ -519,9 +1598,7 @@ void MainObject::updateMeters()
 	case RDStation::None:
 	  break;
     }
-    //
   }
-  //  SendMeterOutputStatusUpdate();
 }
 
 
@@ -654,1226 +1731,9 @@ void MainObject::InitMixers()
 }
 
 
-void MainObject::ParseCommand(int ch)
-{
-  char buf[256];
-  int c;
-
-  while((c=socket[ch]->readBlock(buf,256))>0) {
-    buf[c]=0;
-    // rd_config->log("caed",QString().sprintf("RCVD: %s",buf));
-    for(int i=0;i<c;i++) {
-      if(buf[i]==' ') {
-	if(argnum[ch]<CAE_MAX_ARGS) {
-	  args[ch][argnum[ch]][argptr[ch]]=0;
-	  argnum[ch]++;
-	  argptr[ch]=0;
-	}
-	else {
-	  if(debug) {
-	    printf("Argument list truncated!\n");
-	  }
-	}
-      }
-      if(buf[i]=='!') {
-	args[ch][argnum[ch]++][argptr[ch]]=0;
-	DispatchCommand(ch);
-	argnum[ch]=0;
-	argptr[ch]=0;
-	if(socket[ch]==NULL) {
-	  return;
-	}
-      }
-      if((isgraph(buf[i]))&&(buf[i]!='!')) {
-	if(argptr[ch]<CAE_MAX_LENGTH) {
-	  args[ch][argnum[ch]][argptr[ch]]=buf[i];
-	  argptr[ch]++;
-	}
-	else {
-	  if(debug) {
-	    printf("WARNING: argument truncated!\n");
-	  }
-	}
-      }
-    }
-  }
-}
-
-
-void MainObject::DispatchCommand(int ch)
-{
-  int card=-1;
-  int stream=-1;
-  int port=0;
-  int in_port=0;
-  int out_port=0;
-  int new_stream=-1;
-  int pos=0;
-  int coding=0;
-  int sample_rate=0;
-  int channels=0;
-  int bit_rate=0;
-  int flag=0;
-  int level=0;
-  int length=0;
-  int mode=0;
-  int type=0;
-  QString wavename;
-  char temp[256];
-  int handle;
-  QString in_jport;
-  QString out_jport;
-
-#ifdef PRINT_COMMANDS
-  printf("CAE: connection %d receiving ",ch);
-  for(int i=0;i<argnum[ch];i++) {
-    printf("%s ",args[ch][i]);
-  }
-  printf("\n");
-#endif  // PRINT_COMMANDS
-
-  //
-  // Calculate Card and Stream Numbers
-  //
-  sscanf(args[ch][1],"%d",&card);
-  sscanf(args[ch][2],"%d",&stream);
-
-/*
-  printf("RECEIVED:");
-  for(int i=0;i<argnum[ch];i++) {
-    printf(" %s",args[ch][i]);
-  }
-  printf("\n");
-*/
-
-  //
-  // Common Commands
-  // Authentication not required to execute these!
-  //
-  if(!strcmp(args[ch][0],"DC")) {  // Drop Connection
-    socket[ch]->close();
-    KillSocket(ch);
-    return;
-  }
-  if(!strcmp(args[ch][0],"PW")) {  // Password Authenticate
-    if(!strcmp(args[ch][1],rd_config->password())) {
-      auth[ch]=true;
-      EchoCommand(ch,"PW +!");
-      return;
-    }
-    else {
-      auth[ch]=false;
-      EchoCommand(ch,"PW -!");
-      return;
-    }
-  }
-
-  //
-  // Priviledged Commands
-  // Authentication required to execute these!
-  //
-  if(!auth[ch]) {
-    EchoArgs(ch,'-');
-    return;
-  }
-
-  if(!strcmp(args[ch][0],"LP")) {  // Load Playback
-    if(card<0) {
-      sprintf(temp,"LP %d %s -1 -1 -!",card,args[ch][2]);
-      EchoCommand(ch,temp);
-      return;
-    }
-    wavename = rd_config->audioFileName (QString(args[ch][2]));
-    switch(cae_driver[card]) {
-	case RDStation::Hpi:
-	  if(!hpiLoadPlayback(card,wavename,&new_stream)) {
-	    sprintf(temp,"LP %d %s -1 -1 -!",card,args[ch][2]);
-	    EchoCommand(ch,temp);
-	    rd_config->log("caed",RDConfig::LogErr,
-		    QString().sprintf("unable to allocate stream for card %d",
-				      card));
-	    return;
-	  }
-	  break;
-
-	case RDStation::Alsa:
-	  if(!alsaLoadPlayback(card,wavename,&new_stream)) {
-	    sprintf(temp,"LP %d %s -1 -1 -!",card,args[ch][2]);
-	    EchoCommand(ch,temp);
-	    rd_config->log("caed",RDConfig::LogErr,QString().
-		    sprintf("unable to allocate stream for card %d",
-			    card));
-	    return;
-	  }
-	  break;
-
-	case RDStation::Jack:
-	  if(!jackLoadPlayback(card,wavename,&new_stream)) {
-	    sprintf(temp,"LP %d %s -1 -1 -!",card,args[ch][2]);
-	    EchoCommand(ch,temp);
-	    rd_config->log("caed",RDConfig::LogErr,QString().
-		    sprintf("unable to allocate stream for card %d",
-			    card));
-	    return;
-	  }
-	  break;
-
-	default:
-	  sprintf(temp,"LP %d %s -1 -1 -!",card,args[ch][2]);
-	  EchoCommand(ch,temp);
-	  return;
-    }
-    if((handle=GetHandle(card,new_stream))>=0) {
-      rd_config->log("caed",RDConfig::LogErr,QString().
-	      sprintf("*** clearing stale stream assignment, card=%d  stream=%d ***",card,new_stream));
-      play_handle[handle].card=-1;
-      play_handle[handle].stream=-1;
-      play_handle[handle].owner=-1;
-    }
-    handle=GetNextHandle();
-    play_handle[handle].card=card;
-    play_handle[handle].stream=new_stream;
-    play_handle[handle].owner=ch;
-    play_owner[card][new_stream]=ch;
-    rd_config->log("caed",RDConfig::LogInfo,QString().
-	    sprintf("LoadPlayback  Card: %d  Stream: %d  Name: %s  Handle: %d",
-		    card,new_stream,(const char *)wavename,handle));
-    sprintf(temp,"LP %d %s %d %d +!",card,args[ch][2],new_stream,handle);
-    EchoCommand(ch,temp);
-    return;
-  }
-
-  if(!strcmp(args[ch][0],"UP")) {  // Unload Playback
-    if((handle=GetHandle(ch,&card,&stream))<0) {
-      EchoArgs(ch,'-');
-      return;
-    }
-    card=play_handle[handle].card;
-    stream=play_handle[handle].stream;
-    if((play_owner[card][stream]==-1)||(play_owner[card][stream]==ch)) {
-      switch(cae_driver[card]) {
-	  case RDStation::Hpi:
-	    if(hpiUnloadPlayback(card,stream)) {
-	      play_owner[card][stream]=-1;
-	      rd_config->log("caed",RDConfig::LogInfo,QString().
-		      sprintf("UnloadPlayback - Card: %d  Stream: %d  Handle: %d",
-			      card,stream,handle));
-	      EchoArgs(ch,'+');
-	    }
-	    else {
-	      EchoArgs(ch,'-');
-	    }
-	    break;
-	    
-	  case RDStation::Alsa:
-	    if(alsaUnloadPlayback(card,stream)) {
-	      play_owner[card][stream]=-1;
-	      rd_config->log("caed",RDConfig::LogInfo,QString().
-		      sprintf("UnloadPlayback - Card: %d  Stream: %d  Handle: %d",
-			      card,stream,handle));
-	      EchoArgs(ch,'+');
-	    }
-	    else {
-	      EchoArgs(ch,'-');
-	    }
-	    break;
-	    
-	  case RDStation::Jack:
-	    if(jackUnloadPlayback(card,stream)) {
-	      play_owner[card][stream]=-1;
-	      rd_config->log("caed",RDConfig::LogInfo,QString().
-		      sprintf("UnloadPlayback - Card: %d  Stream: %d  Handle: %d",
-			      card,stream,handle));
-	      EchoArgs(ch,'+');
-	    }
-	    else {
-	      EchoArgs(ch,'-');
-	    }
-	    break;
-	    
-	  default:
-	    EchoArgs(ch,'-');
-	    return;
-      }
-      play_handle[handle].card=-1;
-      play_handle[handle].stream=-1;
-      play_handle[handle].owner=-1;
-      return;
-    }
-    else {
-      EchoArgs(ch,'-');
-    }
-  }
-
-  if(!strcmp(args[ch][0],"PP")) {  // Playback Position
-    if((handle=GetHandle(ch,&card,&stream))<0) {
-      EchoArgs(ch,'-');
-      return;
-    }
-    card=play_handle[handle].card;
-    stream=play_handle[handle].stream;
-    if(play_owner[card][stream]==ch) {
-      if(sscanf(args[ch][2],"%d",&pos)!=1) {
-	EchoArgs(ch,'-');
-	return;
-      }
-      switch(cae_driver[card]) {
-	  case RDStation::Hpi:
-	    if(hpiPlaybackPosition(card,stream,pos)) {
-	      rd_config->log("caed",RDConfig::LogInfo,QString().
-		   sprintf("PlaybackPosition - Card: %d  Stream: %d  Pos: %d  Handle: %d",
-			   card,stream,pos,handle));
-	      EchoArgs(ch,'+');
-	    }
-	    else {
-	      rd_config->log("caed",RDConfig::LogNotice,QString().
-		   sprintf("*** PlaybackPosition out of bounds - Card: %d  Stream: %d  Pos: %d   Handle: %d***",
-			   card,stream,pos,handle));
-	      EchoArgs(ch,'-');
-	    }
-	    break;
-
-	  case RDStation::Alsa:
-	    if(alsaPlaybackPosition(card,stream,pos)) {
-	      rd_config->log("caed",RDConfig::LogInfo,QString().
-		   sprintf("PlaybackPosition - Card: %d  Stream: %d  Pos: %d  Handle: %d",
-			   card,stream,pos,handle));
-	      EchoArgs(ch,'+');
-	    }
-	    else {
-	      EchoArgs(ch,'-');
-	    }
-	    break;
-
-	  case RDStation::Jack:
-	    if(jackPlaybackPosition(card,stream,pos)) {
-	      rd_config->log("caed",RDConfig::LogInfo,QString().
-		   sprintf("PlaybackPosition - Card: %d  Stream: %d  Pos: %d  Handle: %d",
-			   card,stream,pos,handle));
-	      EchoArgs(ch,'+');
-	    }
-	    else {
-	      EchoArgs(ch,'-');
-	    }
-	    break;
-
-	  default:
-	    EchoArgs(ch,'-');
-	    return;
-      }
-      return;
-    }
-    EchoArgs(ch,'-');
-    return;
-  }
-
-  if(!strcmp(args[ch][0],"PY")) {  // Play
-    if((handle=GetHandle(ch,&card,&stream))<0) {
-      EchoArgs(ch,'-');
-      return;
-    }
-    card=play_handle[handle].card;
-    stream=play_handle[handle].stream;
-    if(sscanf(args[ch][2],"%d",&play_length[card][stream])!=1) {
-      EchoArgs(ch,'-');
-      return;
-    }
-    if(sscanf(args[ch][3],"%d",&play_speed[card][stream])!=1) {
-      EchoArgs(ch,'-');
-      return;
-    }
-    if(sscanf(args[ch][4],"%d",&flag)!=1) {
-      EchoArgs(ch,'-');
-      return;
-    }
-    switch(flag) {
-	case 0:
-	  play_pitch[card][stream]=false;
-	  break;
-	case 1:
-	  play_pitch[card][stream]=true;
-	  break;
-	default:
-	  EchoArgs(ch,'-');
-	  return;
-    }
-    if(play_owner[card][stream]==ch) {
-      switch(cae_driver[card]) {
-	  case RDStation::Hpi:
-	    if(!hpiPlay(card,stream,play_length[card][stream],
-			play_speed[card][stream],play_pitch[card][stream],
-			RD_ALLOW_NONSTANDARD_RATES)) {
-	      EchoArgs(ch,'-');
-	      return;
-	    }
-	    break;
-
-	  case RDStation::Alsa:
-	    if(!alsaPlay(card,stream,play_length[card][stream],
-			play_speed[card][stream],play_pitch[card][stream],
-			RD_ALLOW_NONSTANDARD_RATES)) {
-	      EchoArgs(ch,'-');
-	      return;
-	    }
-	    break;
-
-	  case RDStation::Jack:
-	    if(!jackPlay(card,stream,play_length[card][stream],
-			play_speed[card][stream],play_pitch[card][stream],
-			RD_ALLOW_NONSTANDARD_RATES)) {
-	      EchoArgs(ch,'-');
-	      return;
-	    }
-	    break;
-
-	  default:
-	      EchoArgs(ch,'-');
-	      return;
-      }
-      rd_config->log("caed",RDConfig::LogInfo,QString().
-       sprintf("Play - Card: %d  Stream: %d  Handle: %d  Length: %d  Speed: %d  Pitch: %d",
-	       card,stream,handle,play_length[card][stream],
-	       play_speed[card][stream],flag));
-      // No command echo for success -- statePlayUpdate() sends it!
-      return;
-    }
-    EchoArgs(ch,'-');
-    return;
-  }
-
-  if(!strcmp(args[ch][0],"SP")) {  // Stop Playback
-    if((handle=GetHandle(ch,&card,&stream))<0) {
-      EchoArgs(ch,'-');
-      return;
-    }
-    card=play_handle[handle].card;
-    stream=play_handle[handle].stream;
-    if(play_owner[card][stream]==ch) {
-      switch(cae_driver[card]) {
-	  case RDStation::Hpi:
-	    if(!hpiStopPlayback(card,stream)) {
-	      EchoArgs(ch,'-');
-	      return;
-	    }
-	    break;
-
-	  case RDStation::Alsa:
-	    if(!alsaStopPlayback(card,stream)) {
-	      EchoArgs(ch,'-');
-	      return;
-	    }
-	    break;
-
-	  case RDStation::Jack:
-	    if(!jackStopPlayback(card,stream)) {
-	      EchoArgs(ch,'-');
-	      return;
-	    }
-	    break;
-
-	  default:
-	    EchoArgs(ch,'-');
-	    return;
-      }
-      rd_config->log("caed",RDConfig::LogInfo,QString().
-	      sprintf("StopPlayback - Card: %d  Stream: %d  Handle: %d",
-		      card,stream,handle));
-      //      EchoArgs(ch,'+');
-      return;
-    }
-    EchoArgs(ch,'-');
-    return;
-  }
-
-  if(!strcmp(args[ch][0],"TS")) {  // Timescale Support
-    switch(cae_driver[card]) {
-	case RDStation::Hpi:
-	  if(!hpiTimescaleSupported(card)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-
-	case RDStation::Jack:
-	  if(!jackTimescaleSupported(card)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-
-	case RDStation::Alsa:
-	  if(!alsaTimescaleSupported(card)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-
-	default:
-	  EchoArgs(ch,'-');
-	  return;
-    }
-    EchoArgs(ch,'+');
-    return;
-  }
-
-  if(!strcmp(args[ch][0],"LR")) {  // Load Record
-    if((card<0)||(stream<0)) {
-      EchoArgs(ch,'-');
-      return;
-    }
-    if(record_owner[card][stream]==-1) {
-      if(sscanf(args[ch][3],"%d",&coding)!=1) {
-	EchoArgs(ch,'-');
-	return;
-      }
-      if(sscanf(args[ch][4],"%d",&channels)!=1) {
-	EchoArgs(ch,'-');
-	return;
-      }
-      if(sscanf(args[ch][5],"%d",&sample_rate)!=1) {
-	EchoArgs(ch,'-');
-	return;
-      }
-      if(sscanf(args[ch][6],"%d",&bit_rate)!=1) {
-	EchoArgs(ch,'-');
- 	return;
-      }
-      wavename = rd_config->audioFileName(QString(args[ch][7]));
-      unlink(wavename);  // So we don't trainwreck any current playouts!
-      unlink(wavename+".energy");
-      switch(cae_driver[card]) {
-	  case RDStation::Hpi:
-	    if(!hpiLoadRecord(card,stream,coding,channels,sample_rate,bit_rate,
-			      wavename)) {
-	      EchoArgs(ch,'-');
-	      return;
-	    }
-	    break;
-
-	  case RDStation::Alsa:
-	    if(!alsaLoadRecord(card,stream,coding,channels,sample_rate,
-			       bit_rate,wavename)) {
-	      EchoArgs(ch,'-');
-	      return;
-	    }
-	    break;
-
-	  case RDStation::Jack:
-	    if(!jackLoadRecord(card,stream,coding,channels,sample_rate,
-			       bit_rate,wavename)) {
-	      EchoArgs(ch,'-');
-	      return;
-	    }
-	    break;
-
-	  default:
-	    EchoArgs(ch,'-');
-	    return;
-      }
-      rd_config->log("caed",RDConfig::LogInfo,QString().
-	      sprintf("LoadRecord - Card: %d  Stream: %d  Coding: %d  Chans: %d  SampRate: %d  BitRate: %d  Name: %s",
-		      card,stream,coding,channels,sample_rate,bit_rate,
-		      (const char *)wavename));
-      record_owner[card][stream]=ch;
-      EchoArgs(ch,'+');
-    }
-    else {
-      EchoArgs(ch,'-');
-    }
-    return;
-  }
-
-  if(!strcmp(args[ch][0],"UR")) {  // Unload Record
-    if((card<0)||(stream<0)) {
-      EchoArgs(ch,'-');
-      return;
-    }
-    if((record_owner[card][stream]==-1)||(record_owner[card][stream]==ch)) {
-      unsigned len=0;
-      switch(cae_driver[card]) {
-	  case RDStation::Hpi:
-	    if(!hpiUnloadRecord(card,stream,&len)) {
-	      EchoArgs(ch,'-');
-	      return;
-	    }
-	    break;
-
-	  case RDStation::Alsa:
-	    if(!alsaUnloadRecord(card,stream,&len)) {
-	      EchoArgs(ch,'-');
-	      return;
-	    }
-	    break;
-
-	  case RDStation::Jack:
-	    if(!jackUnloadRecord(card,stream,&len)) {
-	      EchoArgs(ch,'-');
-	      return;
-	    }
-	    break;
-
-	  default:
-	    EchoArgs(ch,'-');
-	    return;
-      }
-      record_owner[card][stream]=-1;
-      rd_config->log("caed",RDConfig::LogInfo,QString().
-	      sprintf("UnloadRecord - Card: %d  Stream: %d, Length: %u",
-		      card,stream,len));
-      EchoCommand(ch,(const char *)QString().sprintf("UR %d %d %u +!",
-						     card,stream,
-	  (unsigned)((double)len*1000.0/(double)system_sample_rate)));
-      return;
-    }
-    else {
-      EchoArgs(ch,'-');
-      return;
-    }
-  }
-
-  if(!strcmp(args[ch][0],"RD")) {  // Record
-    if((card<0)||(stream<0)) {
-      EchoArgs(ch,'-');
-      return;
-    }
-    if(sscanf(args[ch][3],"%d",&record_length[card][stream])!=1) {
-      EchoArgs(ch,'-');
-      return;
-    }
-    if(sscanf(args[ch][4],"%d",&record_threshold[card][stream])!=1) {
-      EchoArgs(ch,'-');
-      return;
-    }
-    if(record_owner[card][stream]==ch) {
-      switch(cae_driver[card]) {
-	  case RDStation::Hpi:
-	    if(!hpiRecord(card,stream,record_length[card][stream],
-			  record_threshold[card][stream])) {
-	      EchoArgs(ch,'-');
-	      return;
-	    }
-	    break;
-
-	  case RDStation::Alsa:
-	    if(!alsaRecord(card,stream,record_length[card][stream],
-			  record_threshold[card][stream])) {
-	      EchoArgs(ch,'-');
-	      return;
-	    }
-	    break;
-
-	  case RDStation::Jack:
-	    if(!jackRecord(card,stream,record_length[card][stream],
-			  record_threshold[card][stream])) {
-	      EchoArgs(ch,'-');
-	      return;
-	    }
-	    break;
-
-	  default:
-	    EchoArgs(ch,'-');
-	    return;
-      }
-      rd_config->log("caed",RDConfig::LogInfo,QString().
-	      sprintf("Record - Card: %d  Stream: %d  Length: %d  Thres: %d",
-		      card,stream,record_length[card][stream],
-		      record_threshold[card][stream]));
-//      EchoArgs(ch,'+');
-      return;
-    }
-    EchoArgs(ch,'-');
-    return;
-  }
-
-  if(!strcmp(args[ch][0],"SR")) {  // Stop Record
-    if((card<0)||(stream<0)) {
-      EchoArgs(ch,'-');
-      return;
-    }
-    switch(cae_driver[card]) {
-	case RDStation::Hpi:
-	  if(!hpiStopRecord(card,stream)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-
-	case RDStation::Alsa:
-	  if(!alsaStopRecord(card,stream)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  EchoArgs(ch,'+');
-	  break;
-
-	case RDStation::Jack:
-	  if(!jackStopRecord(card,stream)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  EchoArgs(ch,'+');
-	  break;
-
-	default:
-	  EchoArgs(ch,'-');
-	  return;
-    }
-    rd_config->log("caed",RDConfig::LogInfo,QString().
-	    sprintf("StopRecord - Card: %d  Stream: %d",
-		    card,stream));
-    return;
-  }
-
-  if(!strcmp(args[ch][0],"CS")) {  // Set Clock Source
-    if((card<0)||(stream<0)) {
-      EchoArgs(ch,'-');
-      return;
-    }
-    switch(cae_driver[card]) {
-	case RDStation::Hpi:
-	  if(!hpiSetClockSource(card,stream)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-
-	default:
-	  EchoArgs(ch,'+');
-	  return;
-    }
-    if(rd_config->enableMixerLogging()) {
-      rd_config->log("caed",RDConfig::LogInfo,QString().
-	      sprintf("SetClockSource - Card: %d  Source: %d",card,stream));
-    }
-    EchoArgs(ch,'+');
-    return;
-  }
-
-  if(!strcmp(args[ch][0],"IV")) {  // Set Input Volume
-    if((card<0)||(stream<0)) {
-      EchoArgs(ch,'-');
-      return;
-    }
-    sscanf(args[ch][3],"%d",&level);
-    switch(cae_driver[card]) {
-	case RDStation::Hpi:
-	  if(!hpiSetInputVolume(card,stream,level)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-
-	case RDStation::Alsa:
-	  if(!alsaSetInputVolume(card,stream,level)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-
-	case RDStation::Jack:
-	  if(!jackSetInputVolume(card,stream,level)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-
-	default:
-	  EchoArgs(ch,'-');
-	  return;
-    }
-    if(rd_config->enableMixerLogging()) {
-      rd_config->log("caed",RDConfig::LogInfo,QString().
-	      sprintf("SetInputVolume - Card: %d  Stream: %d Level: %d",
-		      card,stream,level));
-    }
-    EchoArgs(ch,'+');
-    return;
-  }
-
-  if(!strcmp(args[ch][0],"OV")) {  // Set Output Volume
-    if((card<0)||(stream<0)) {
-      EchoArgs(ch,'-');
-      return;
-    }
-    sscanf(args[ch][3],"%d",&port);
-    sscanf(args[ch][4],"%d",&level);
-    switch(cae_driver[card]) {
-	case RDStation::Hpi:
-	  if(!hpiSetOutputVolume(card,stream,port,level)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-	  
-	case RDStation::Alsa:
-	  if(!alsaSetOutputVolume(card,stream,port,level)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-	  
-	case RDStation::Jack:
-	  if(!jackSetOutputVolume(card,stream,port,level)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-	  
-	default:
-	  EchoArgs(ch,'-');
-	  return;
-    }
-    if(rd_config->enableMixerLogging()) {
-      rd_config->log("caed",RDConfig::LogInfo,QString().
-	      sprintf("SetOutputVolume - Card: %d  Stream: %d  Port: %d  Level: %d",
-		      card,stream,port,level));
-    }
-    EchoArgs(ch,'+');
-    return;
-  }
-
-  if(!strcmp(args[ch][0],"FV")) {  // Fade Output Volume
-    if((card<0)||(stream<0)) {
-      EchoArgs(ch,'-');
-      return;
-    }
-    sscanf(args[ch][3],"%d",&port);
-    sscanf(args[ch][4],"%d",&level);
-    sscanf(args[ch][5],"%d",&length);
-    switch(cae_driver[card]) {
-	case RDStation::Hpi:
-	  if(!hpiFadeOutputVolume(card,stream,port,level,length)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-
-	case RDStation::Alsa:
-	  if(!alsaFadeOutputVolume(card,stream,port,level,length)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-
-	case RDStation::Jack:
-	  if(!jackFadeOutputVolume(card,stream,port,level,length)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-
-	default:
-	  EchoArgs(ch,'-');
-	  return;
-    }
-    if(rd_config->enableMixerLogging()) {
-      rd_config->log("caed",RDConfig::LogInfo,QString().
-	      sprintf("FadeOutputVolume - Card: %d  Stream: %d  Port: %d  Level: %d  Length: %d",
-		      card,stream,port,level,length));
-    }
-    EchoArgs(ch,'+');
-    return;
-  }
-
-  if(!strcmp(args[ch][0],"IL")) {  // Set Input Level
-    sscanf(args[ch][2],"%d",&port);
-    sscanf(args[ch][3],"%d",&level);
-    if((card<0)||(port<0)) {
-      EchoArgs(ch,'-');
-      return;
-    }
-    switch(cae_driver[card]) {
-	case RDStation::Hpi:
-	  if(!hpiSetInputLevel(card,port,level)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-	  
-	case RDStation::Alsa:
-	  if(!alsaSetInputLevel(card,port,level)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-	  
-	case RDStation::Jack:
-	  if(!jackSetInputLevel(card,port,level)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-	  
-	default:
-	  EchoArgs(ch,'-');
-	  return;
-    }
-    if(rd_config->enableMixerLogging()) {
-      rd_config->log("caed",RDConfig::LogInfo,QString().
-	      sprintf("SetInputLevel - Card: %d  Port: %d  Level: %d",
-		      card,port,level));
-    }
-    EchoArgs(ch,'+');
-    return;
-  }
-
-  if(!strcmp(args[ch][0],"OL")) {  // Set Output Level
-    sscanf(args[ch][2],"%d",&port);
-    sscanf(args[ch][3],"%d",&level);
-    if((card<0)||(port<0)) {
-      EchoArgs(ch,'-');
-      return;
-    }
-    switch(cae_driver[card]) {
-	case RDStation::Hpi:
-	  if(!hpiSetOutputLevel(card,port,level)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-
-	case RDStation::Alsa:
-	  if(!alsaSetOutputLevel(card,port,level)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-
-	case RDStation::Jack:
-	  if(!jackSetOutputLevel(card,port,level)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-
-	default:
-	  EchoArgs(ch,'-');
-	  return;
-    }
-    if(rd_config->enableMixerLogging()) {
-      rd_config->log("caed",RDConfig::LogInfo,QString().
-	      sprintf("SetOutputLevel - Card: %d  Port: %d  Level: %d",
-		      card,port,level));
-    }
-    EchoArgs(ch,'+');
-    return;
-  }
-
-  if(!strcmp(args[ch][0],"IM")) {  // Set Input Mode
-    sscanf(args[ch][2],"%d",&port);
-    sscanf(args[ch][3],"%d",&mode);
-    if((card<0)||(port<0)) {
-      EchoArgs(ch,'-');
-      return;
-    }
-    switch(cae_driver[card]) {
-	case RDStation::Hpi:
-	  if(!hpiSetInputMode(card,port,mode)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-
-	case RDStation::Alsa:
-	  if(!alsaSetInputMode(card,port,mode)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-
-	case RDStation::Jack:
-	  if(!jackSetInputMode(card,port,mode)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-
-	default:
-	  EchoArgs(ch,'-');
-	  return;
-    }
-    if(rd_config->enableMixerLogging()) {
-      rd_config->log("caed",RDConfig::LogInfo,QString().
-	      sprintf("SetInputMode - Card: %d  Port: %d  Mode: %d",
-		      card,port,mode));
-    }
-    EchoArgs(ch,'+');
-    return;
-  }
-
-  if(!strcmp(args[ch][0],"OM")) {  // Set Output Mode
-    sscanf(args[ch][2],"%d",&port);
-    sscanf(args[ch][3],"%d",&mode);
-    if((card<0)||(port<0)) {
-      EchoArgs(ch,'-');
-      return;
-    }
-    switch(cae_driver[card]) {
-	case RDStation::Hpi:
-	  if(!hpiSetOutputMode(card,port,mode)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-
-	case RDStation::Alsa:
-	  if(!alsaSetOutputMode(card,port,mode)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-
-	case RDStation::Jack:
-	  if(!jackSetOutputMode(card,port,mode)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-
-	default:
-	  EchoArgs(ch,'-');
-	  return;
-    }
-    if(rd_config->enableMixerLogging()) {
-      rd_config->log("caed",RDConfig::LogInfo,QString().
-	      sprintf("SetOutputMode - Card: %d  Port: %d  Mode: %d",
-		      card,port,mode));
-    }
-    EchoArgs(ch,'+');
-    return;
-  }
-
-  if(!strcmp(args[ch][0],"IX")) {  // Set Input VOX Level
-    if((card<0)||(stream<0)) {
-      EchoArgs(ch,'-');
-      return;
-    }
-    sscanf(args[ch][3],"%d",&level);
-    switch(cae_driver[card]) {
-	case RDStation::Hpi:
-	  if(!hpiSetInputVoxLevel(card,stream,level)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-
-	case RDStation::Alsa:
-	  if(!alsaSetInputVoxLevel(card,stream,level)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-
-	case RDStation::Jack:
-	  if(!jackSetInputVoxLevel(card,stream,level)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-
-	default:
-	  EchoArgs(ch,'-');
-	  return;
-    }
-    if(rd_config->enableMixerLogging()) {
-      rd_config->log("caed",RDConfig::LogInfo,QString().
-	      sprintf("SetInputVOXLevel - Card: %d  Stream: %d  Level: %d",
-		      card,stream,level));
-    }
-    EchoArgs(ch,'+');
-    return;
-  }
-
-  if(!strcmp(args[ch][0],"IT")) {  // Set Input Type
-    sscanf(args[ch][2],"%d",&port);
-    sscanf(args[ch][3],"%d",&type);
-    if((card<0)||(port<0)) {
-      EchoArgs(ch,'-');
-      return;
-    }
-    switch(cae_driver[card]) {
-	case RDStation::Hpi:
-	  if(!hpiSetInputType(card,port,type)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-
-	case RDStation::Alsa:
-	  if(!alsaSetInputType(card,port,type)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-
-	case RDStation::Jack:
-	  if(!jackSetInputType(card,port,type)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-
-	default:
-	  EchoArgs(ch,'-');
-	  return;
-    }
-    if(rd_config->enableMixerLogging()) {
-      rd_config->log("caed",RDConfig::LogInfo,QString().
-	      sprintf("SetInputType - Card: %d  Port: %d  Type: %d",
-		      card,port,type));
-    }
-    EchoArgs(ch,'+');
-    return;
-  }
-
-  if(!strcmp(args[ch][0],"AL")) {  // Set Passthrough Level
-    sscanf(args[ch][2],"%d",&in_port);
-    sscanf(args[ch][3],"%d",&out_port);
-    sscanf(args[ch][4],"%d",&level);
-    if((card<0)||(in_port<0)||(out_port<0)) {
-      EchoArgs(ch,'-');
-      return;
-    }
-    switch(cae_driver[card]) {
-	case RDStation::Hpi:
-	  if(!hpiSetPassthroughLevel(card,in_port,out_port,level)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-	  
-	case RDStation::Alsa:
-	  if(!alsaSetPassthroughLevel(card,in_port,out_port,level)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-	  
-	case RDStation::Jack:
-	  if(!jackSetPassthroughLevel(card,in_port,out_port,level)) {
-	    EchoArgs(ch,'-');
-	    return;
-	  }
-	  break;
-	  
-	default:
-	  EchoArgs(ch,'-');
-	  return;
-    }
-    if(rd_config->enableMixerLogging()) {
-      rd_config->log("caed",RDConfig::LogInfo,QString().
-	      sprintf("SetPassthroughLevel - Card: %d  InPort: %d  OutPort: %d Level: %d",
-		      card,in_port,out_port,level));
-    }
-    EchoArgs(ch,'+');
-    return;
-  }
-
-  if(!strcmp(args[ch][0],"IS")) {  // Input Status
-    sscanf(args[ch][2],"%d",&port);
-    if((card<0)||(port<0)) {
-      EchoArgs(ch,'-');
-      return;
-    }
-    if(hpiGetInputStatus(card,port)) {
-      EchoCommand(ch,QString().sprintf("IS %d %d 0 +!",card,port));
-    }
-    else {
-      EchoCommand(ch,QString().sprintf("IS %d %d 1 +!",card,port));
-    }
-    return;
-  }
-
-  if(!strcmp(args[ch][0],"ME")) {  // Meter Enable
-    sscanf(args[ch][1],"%d",&port);
-    if((port<0)||(port>0xFFFF)) {
-      EchoArgs(ch,'-');
-      return;
-    }
-    meter_port[ch]=port;
-    for(int i=2;i<argnum[ch];i++) {
-      sscanf(args[ch][i],"%d",&card);
-      if((card<0)||(card>=RD_MAX_CARDS)) {
-	EchoArgs(ch,'-');
-	return;
-      }
-      update_meters[card][ch]=true;
-    }
-
-    EchoArgs(ch,'+');
-    SendMeterOutputStatusUpdate();
-    return;
-  }
-
-  if(!strcmp(args[ch][0],"OS")) {  // Set Output Status Flag
-    sscanf(args[ch][1],"%d",&card);
-    sscanf(args[ch][2],"%d",&port);
-    sscanf(args[ch][3],"%d",&stream);
-    if((card<0)||(card>=RD_MAX_CARDS)||
-       (port<0)||(port>=RD_MAX_PORTS)||
-       (stream<0)||(stream>=RD_MAX_STREAMS)) {
-      EchoArgs(ch,'-');
-      return;
-    }
-    output_status_flag[card][port][stream]=args[ch][4][0]=='1';
-    SendMeterOutputStatusUpdate(card,port,stream);
-    EchoArgs(ch,'+');
-    return;
-  }
-
-  if(!strcmp(args[ch][0],"JC")) {  // Connect JACK Ports
-    pos=-1;
-    for(int i=0;i<argnum[ch];i++) {
-      if(args[ch][i][0]=='|') {
-	pos=i;
-      }
-    }
-    if(pos<0) {
-      return;
-    }
-    for(int i=1;i<pos;i++) {
-      out_jport+=args[ch][i];
-      out_jport+=" ";
-    }
-    out_jport=out_jport.left(out_jport.length()-1);
-    for(int i=pos+1;i<argnum[ch];i++) {
-      in_jport+=args[ch][i];
-      in_jport+=" ";
-    }
-    in_jport=in_jport.left(in_jport.length()-1);
-    jackConnectPorts(out_jport,in_jport);
-  }
-
-  if(!strcmp(args[ch][0],"JD")) {  // Disconnect JACK Ports
-    pos=-1;
-    for(int i=0;i<argnum[ch];i++) {
-      if(args[ch][i][0]=='|') {
-	pos=i;
-      }
-    }
-    if(pos<0) {
-      return;
-    }
-    for(int i=1;i<pos;i++) {
-      out_jport+=args[ch][i];
-      out_jport+=" ";
-    }
-    out_jport=out_jport.left(out_jport.length()-1);
-    for(int i=pos+1;i<argnum[ch];i++) {
-      in_jport+=args[ch][i];
-      in_jport+=" ";
-    }
-    in_jport=in_jport.left(in_jport.length()-1);
-    jackDisconnectPorts(out_jport,in_jport);
-  }
-}
-
-
 void MainObject::KillSocket(int ch)
 {
-  istate[ch]=0;
-  argnum[ch]=0;
-  argptr[ch]=0;
-  auth[ch]=false;
-  meter_port[ch]=0;
   for(int i=0;i<RD_MAX_CARDS;i++) {
-    update_meters[i][ch]=false;
     for(int j=0;j<RD_MAX_STREAMS;j++) {
       if(record_owner[i][j]==ch) {
 	unsigned len=0;
@@ -1891,7 +1751,7 @@ void MainObject::KillSocket(int ch)
 	      break;
 
 	    default:
-	      rd_config->log("caed",RDConfig::LogNotice,"tried to kill unowned socket!");
+	      syslog(LOG_NOTICE,"tried to kill unowned socket!");
 	      break;
 	}
 	record_length[i][j]=0;
@@ -1929,47 +1789,6 @@ void MainObject::KillSocket(int ch)
       }
     }
   }
-  delete socket[ch];
-  socket[ch]=NULL;
-}
-
-
-void MainObject::BroadcastCommand(const char *command)
-{
-  for(int i=0;i<CAE_MAX_CONNECTIONS;i++) {
-    if(auth[i]) {
-      EchoCommand(i,command);
-    }
-  }
-}
-
-
-void MainObject::EchoCommand(int ch,const char *command)
-{
-  if(socket[ch]->state()==Q3Socket::Connection) {
-#ifdef PRINT_COMMANDS
-    printf("CAE: Connection %d sending %s\n",ch,command);
-#endif  // PRINT_COMMANDS
-    socket[ch]->writeBlock(command,strlen(command));
-  }
-}
-
-
-void MainObject::EchoArgs(int ch,const char append)
-{
-  char command[CAE_MAX_LENGTH+2];
-  int l;
-
-  command[0]=0;
-  for(int i=0;i<argnum[ch];i++) {
-    strcat(command,args[ch][i]);
-    strcat(command," ");
-  }
-  l=strlen(command);
-  command[l]=append;
-  command[l+1]='!';
-  command[l+2]=0;
-  EchoCommand(ch,command);
 }
 
 
@@ -2008,26 +1827,6 @@ int MainObject::GetNextHandle()
   int handle=next_play_handle;
   next_play_handle++;
   next_play_handle&=0xFF;
-  return handle;
-}
-
-
-int MainObject::GetHandle(int ch,int *card,int *stream)
-{
-  int handle;
-
-  if(sscanf(args[ch][1],"%d",&handle)!=1) {
-    return -1;
-  }
-  if((handle<0)||(handle>=256)) {
-    return -1;
-  }
-  if((*card=play_handle[handle].card)<0) {
-    return -1;
-  }
-  if((*stream=play_handle[handle].stream<0)) {
-    return -1;
-  }
   return handle;
 }
 
@@ -2111,14 +1910,6 @@ void MainObject::ClearDriverEntries(RDStation *station)
 }
 
 
-/* This is an overloaded virtual function to tell a session manager not to restart this daemon. */
-void QApplication::saveState(QSessionManager &sm) {
-  sm.setRestartHint(QSessionManager::RestartNever);
-  rd_config->log("caed",RDConfig::LogDebug,"cae saveState(), set restart hint to Never");
-  return;
-};
-
-
 bool MainObject::CheckLame()
 {
 #ifdef HAVE_LAME
@@ -2144,8 +1935,8 @@ bool MainObject::LoadTwoLame()
 {
 #ifdef HAVE_TWOLAME
   if((twolame_handle=dlopen("libtwolame.so.0",RTLD_NOW))==NULL) {
-    rd_config->log("caed",RDConfig::LogInfo,
-	 "TwoLAME encoder library not found, MPEG L2 encoding not supported");
+    syslog(LOG_INFO,
+	   "TwoLAME encoder library not found, MPEG L2 encoding not supported");
     return false;
   }
   *(void **)(&twolame_init)=dlsym(twolame_handle,"twolame_init");
@@ -2169,11 +1960,12 @@ bool MainObject::LoadTwoLame()
     dlsym(twolame_handle,"twolame_encode_flush");
   *(void **)(&twolame_set_energy_levels)=
     dlsym(twolame_handle,"twolame_set_energy_levels");
-  rd_config->log("caed",RDConfig::LogInfo,
-	  "Found TwoLAME encoder library, MPEG L2 encoding supported");
+  syslog(LOG_INFO,
+	 "Found TwoLAME encoder library, MPEG L2 encoding supported");
   return true;
 #else
-  rd_config->log("caed",RDConfig::LogInfo,"MPEG L2 encoding not enabled");
+  syslog(LOG_INFO,"MPEG L2 encoding not enabled");
+
   return false;
 #endif  // HAVE_TWOLAME
 }
@@ -2195,7 +1987,9 @@ bool MainObject::InitTwoLameEncoder(int card,int stream,int chans,int samprate,
     break;
   }
   if((twolame_lameopts[card][stream]=twolame_init())==NULL) {
-    rd_config->log("caed",RDConfig::LogErr,QString().sprintf("unable to initialize twolame instance, card=%d, stream=%d",card,stream));
+    syslog(LOG_WARNING,
+	   "unable to initialize twolame instance, card=%d, stream=%d",
+	   card,stream);
     return false;
   }
   twolame_set_mode(twolame_lameopts[card][stream],mpeg_mode);
@@ -2205,8 +1999,8 @@ bool MainObject::InitTwoLameEncoder(int card,int stream,int chans,int samprate,
   twolame_set_bitrate(twolame_lameopts[card][stream],bitrate/1000);
   twolame_set_energy_levels(twolame_lameopts[card][stream],1);
   if(twolame_init_params(twolame_lameopts[card][stream])!=0) {
-    rd_config->log("caed",RDConfig::LogErr,QString().sprintf("invalid twolame parameters, card=%d, stream=%d, chans=%d, samprate=%d  bitrate=%d",
-					       card,stream,chans,samprate,bitrate));
+    syslog(LOG_WARNING,"invalid twolame parameters, card=%d, stream=%d, chans=%d, samprate=%d  bitrate=%d",
+	   card,stream,chans,samprate,bitrate);
     return false;
   }
   return true;
@@ -2231,8 +2025,8 @@ bool MainObject::LoadMad()
 {
 #ifdef HAVE_MAD
   if((mad_handle=dlopen("libmad.so.0",RTLD_NOW))==NULL) {
-    rd_config->log("caed",RDConfig::LogInfo,
-	 "MAD decoder library not found, MPEG L2 decoding not supported");
+    syslog(LOG_INFO,
+	   "MAD decoder library not found, MPEG L2 decoding not supported");
     return false;
   }
   *(void **)(&mad_stream_init)=
@@ -2251,11 +2045,11 @@ bool MainObject::LoadMad()
     dlsym(mad_handle,"mad_frame_finish");
   *(void **)(&mad_stream_finish)=
     dlsym(mad_handle,"mad_stream_finish");
-  rd_config->log("caed",RDConfig::LogInfo,
-	  "Found MAD decoder library, MPEG L2 decoding supported");
+  syslog(LOG_INFO,
+	 "Found MAD decoder library, MPEG L2 decoding supported");
   return true;
 #else
-  rd_config->log("caed",RDConfig::LogInfo,"MPEG L2 decoding not enabled");
+  syslog(LOG_INFO,"MPEG L2 decoding not enabled");
   return false;
 #endif  // HAVE_MAD
 }
@@ -2296,10 +2090,14 @@ void MainObject::FreeMadDecoder(int card,int stream)
 void MainObject::SendMeterLevelUpdate(const QString &type,int cardnum,
 				      int portnum,short levels[])
 {
-  for(int l=0;l<CAE_MAX_CONNECTIONS;l++) {
-    if((meter_port[l]>0)&&update_meters[cardnum][l]) {
+  QList<int> ids=cae_server->connectionIds();
+
+  for(int l=0;l<ids.size();l++) {
+    if((cae_server->meterPort(ids.at(l))>0)&&
+       cae_server->metersEnabled(ids.at(l),cardnum)) {
       SendMeterUpdate(QString().sprintf("ML %s %d %d %d %d",
-	       (const char *)type,cardnum,portnum,levels[0],levels[1]),l);
+		      (const char *)type,cardnum,portnum,levels[0],levels[1]),
+		      ids.at(l));
     }
   }
 }
@@ -2308,10 +2106,13 @@ void MainObject::SendMeterLevelUpdate(const QString &type,int cardnum,
 void MainObject::SendStreamMeterLevelUpdate(int cardnum,int streamnum,
 					    short levels[])
 {
-  for(int l=0;l<CAE_MAX_CONNECTIONS;l++) {
-    if((meter_port[l]>0)&&update_meters[cardnum][l]) {
+  QList<int> ids=cae_server->connectionIds();
+
+  for(int l=0;l<ids.size();l++) {
+    if((cae_server->meterPort(ids.at(l))>0)&&
+       cae_server->metersEnabled(ids.at(l),cardnum)) {
       SendMeterUpdate(QString().sprintf("MO %d %d %d %d",
-		  cardnum,streamnum,levels[0],levels[1]),l);
+		  cardnum,streamnum,levels[0],levels[1]),ids.at(l));
     }
   }
 }
@@ -2319,10 +2120,14 @@ void MainObject::SendStreamMeterLevelUpdate(int cardnum,int streamnum,
 
 void MainObject::SendMeterPositionUpdate(int cardnum,unsigned pos[])
 {
+  QList<int> ids=cae_server->connectionIds();
+
   for(unsigned k=0;k<RD_MAX_STREAMS;k++) {
-    for(int l=0;l<CAE_MAX_CONNECTIONS;l++) {
-      if((meter_port[l]>0)&&update_meters[cardnum][l]) {
-	SendMeterUpdate(QString().sprintf("MP %d %d %d",cardnum,k,pos[k]),l);
+    for(int l=0;l<ids.size();l++) {
+      if((cae_server->meterPort(ids.at(l))>0)&&
+	 cae_server->metersEnabled(ids.at(l),cardnum)) {
+	SendMeterUpdate(QString().sprintf("MP %d %d %d",cardnum,k,pos[k]),
+			ids.at(l));
       }
     }
   }
@@ -2331,14 +2136,17 @@ void MainObject::SendMeterPositionUpdate(int cardnum,unsigned pos[])
 
 void MainObject::SendMeterOutputStatusUpdate()
 {
+  QList<int> ids=cae_server->connectionIds();
+
   for(unsigned i=0;i<RD_MAX_CARDS;i++) {
     if(cae_driver[i]!=RDStation::None) {
       for(unsigned j=0;j<RD_MAX_PORTS;j++) {
 	for(unsigned k=0;k<RD_MAX_STREAMS;k++) {
-	  for(unsigned l=0;l<CAE_MAX_CONNECTIONS;l++) {
-	    if((meter_port[l]>0)&&update_meters[i][l]) {
+	  for(int l=0;l<ids.size();l++) {
+	    if((cae_server->meterPort(ids.at(l))>0)&&
+	       cae_server->metersEnabled(ids.at(l),i)) {
 	      SendMeterUpdate(QString().sprintf("MS %d %d %d %d",i,j,k,
-					  output_status_flag[i][j][k]),l);
+				      output_status_flag[i][j][k]),ids.at(l));
 	    }
 	  }
 	}
@@ -2350,27 +2158,30 @@ void MainObject::SendMeterOutputStatusUpdate()
 
 void MainObject::SendMeterOutputStatusUpdate(int card,int port,int stream)
 {
-  for(unsigned l=0;l<CAE_MAX_CONNECTIONS;l++) {
-    if((meter_port[l]>0)&&update_meters[card][l]) {
+  QList<int> ids=cae_server->connectionIds();
+
+  for(int l=0;l<ids.size();l++) {
+    if((cae_server->meterPort(ids.at(l))>0)&&
+       cae_server->metersEnabled(ids.at(l),card)) {
       SendMeterUpdate(QString().sprintf("MS %d %d %d %d",card,port,stream,
-				  output_status_flag[card][port][stream]),l);
+			    output_status_flag[card][port][stream]),ids.at(l));
     }
   }
 }
 
 void MainObject::SendMeterUpdate(const QString &msg,int conn_id)
 {
-  meter_socket->writeBlock(msg,msg.length(),socket[conn_id]->peerAddress(),
-			   meter_port[conn_id]);
+  meter_socket->writeDatagram(msg,msg.length(),cae_server->peerAddress(conn_id),
+			      cae_server->meterPort(conn_id));
 }
 
 
 int main(int argc,char *argv[])
 {
   int rc;
-  QApplication a(argc,argv,false);
+  QCoreApplication a(argc,argv,false);
   new MainObject(NULL,"main");
   rc=a.exec();
-  rd_config->log("caed",RDConfig::LogDebug,QString().sprintf("cae post a.exec() rc:%d", rc));
+  syslog(LOG_DEBUG,"cae post a.exec() rc: %d",rc);
   return rc;
 }
