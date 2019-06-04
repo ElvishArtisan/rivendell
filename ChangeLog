@@ -18513,6 +18513,7 @@
 2019-03-01 Patrick Linstruth <patrick@deltecent.com>
 	* Moved artist separation in rdlogmanager(1) from clocks to events.
 	* Added ability to disable artist and title separation for an event.
+	* Added an 'EVENTS.ARTISTS_SEP' field to the database.
 	* Incremented the database version to 307.
 2019-03-01 Patrick Linstruth <patrick@deltecent.com>
 	* Updated schema map for version 3.0 to database version 307.
