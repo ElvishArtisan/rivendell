@@ -18739,3 +18739,6 @@
 	* Added a 'AX_COUNT_CPUS()' autoconf macro.
 	* Modified the 'make rpm' target to use one less than the total
 	available CPU cores.
+2019-06-05 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug that caused exported WAV files to use invalid default
+	date expressions in the cart chunk.

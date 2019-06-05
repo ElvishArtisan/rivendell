@@ -122,6 +122,7 @@ RDWaveFile::RDWaveFile(QString file_name)
   cart_category="";
   cart_classification="";
   cart_out_cue="";
+  /*
   cart_start_date=QDate::currentDate();
   cart_start_time=QTime::currentTime();
   cart_end_date=QDate(CART_DEFAULT_END_YEAR,
@@ -130,6 +131,7 @@ RDWaveFile::RDWaveFile(QString file_name)
   cart_end_time=QTime(CART_DEFAULT_END_HOUR,
 		      CART_DEFAULT_END_MINUTE,
 		      CART_DEFAULT_END_SECOND);
+  */
   cart_producer_app_id="";
   cart_producer_app_ver="";
   cart_user_def="";
@@ -838,6 +840,11 @@ void RDWaveFile::closeWave(int samples)
   cart_category="";
   cart_classification="";
   cart_out_cue="";
+  cart_start_date=QDate();
+  cart_start_time=QTime();
+  cart_end_date=QDate();
+  cart_end_time=QTime();
+  /*
   cart_start_date=QDate::currentDate();
   cart_start_time=QTime::currentTime();
   cart_end_date=QDate(CART_DEFAULT_END_YEAR,
@@ -846,6 +853,7 @@ void RDWaveFile::closeWave(int samples)
   cart_end_time=QTime(CART_DEFAULT_END_HOUR,
 		      CART_DEFAULT_END_MINUTE,
 		      CART_DEFAULT_END_SECOND);
+  */
   cart_producer_app_id="";
   cart_producer_app_ver="";
   cart_user_def="";
@@ -4401,22 +4409,42 @@ bool RDWaveFile::MakeCart(unsigned ptr_offset)
     sprintf((char *)cart_chunk_data+388,"%s",
 	    (const char *)cart_out_cue.left(64));
   }
-  sprintf((char *)cart_chunk_data+452,"%04d/%02d/%02d",
-	  cart_start_date.year(),
-	  cart_start_date.month(),
-	  cart_start_date.day());
-  sprintf((char *)cart_chunk_data+462,"%02d:%02d:%02d",
-	  cart_start_time.hour(),
-	  cart_start_time.minute(),
-	  cart_start_time.second());
-  sprintf((char *)cart_chunk_data+470,"%04d/%02d/%02d",
-	  cart_end_date.year(),
-	  cart_end_date.month(),
-	  cart_end_date.day());
-  sprintf((char *)cart_chunk_data+480,"%02d:%02d:%02d",
-	  cart_end_time.hour(),
-	  cart_end_time.minute(),
-	  cart_end_time.second());
+  if(cart_start_date.isValid()) {
+    sprintf((char *)cart_chunk_data+452,"%04d-%02d-%02d",
+	    cart_start_date.year(),
+	    cart_start_date.month(),
+	    cart_start_date.day());
+  }
+  else {
+    sprintf((char *)cart_chunk_data+452,"1900-01-01");
+  }
+  if(cart_start_time.isValid()) {
+    sprintf((char *)cart_chunk_data+462,"%02d:%02d:%02d",
+	    cart_start_time.hour(),
+	    cart_start_time.minute(),
+	    cart_start_time.second());
+  }
+  else {
+    sprintf((char *)cart_chunk_data+462,"00:00:00");
+  }
+  if(cart_end_date.isValid()) {
+    sprintf((char *)cart_chunk_data+470,"%04d-%02d-%02d",
+	    cart_end_date.year(),
+	    cart_end_date.month(),
+	    cart_end_date.day());
+  }
+  else {
+    sprintf((char *)cart_chunk_data+470,"9999-12-31");
+  }
+  if(cart_end_time.isValid()) {
+    sprintf((char *)cart_chunk_data+480,"%02d:%02d:%02d",
+	    cart_end_time.hour(),
+	    cart_end_time.minute(),
+	    cart_end_time.second());
+  }
+  else {
+    sprintf((char *)cart_chunk_data+480,"23:59:59");
+  }
   snprintf((char *)cart_chunk_data+488,64,"%s",PACKAGE);
   snprintf((char *)cart_chunk_data+552,64,"%s",VERSION);
   if(!cart_user_def.isEmpty()) {
