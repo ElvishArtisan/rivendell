@@ -111,7 +111,7 @@ associated with.
 %build
 export PYTHON=/usr/bin/python3.6
 %configure --libexecdir=@libexecdir@ --sysconfdir=@sysconfdir@ @RDXPORTDEBUG@
-make -j 10
+make -j @CPUS_AVAIL@
 
 
 %install

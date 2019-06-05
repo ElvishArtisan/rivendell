@@ -18735,3 +18735,7 @@
 2019-06-04 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdimport(1) that caused a segfault when
 	processing an ID3 tag with a field that contained a null value.
+2019-06-05 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'AX_COUNT_CPUS()' autoconf macro.
+	* Modified the 'make rpm' target to use one less than the total
+	available CPU cores.

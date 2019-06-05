@@ -138,6 +138,20 @@ else
 fi
 
 #
+# Determine number of available CPU cores for building packages
+#
+AX_COUNT_CPUS([],[])
+if test $CPU_COUNT -lt 2 ; then
+   AC_SUBST(CPUS_AVAIL,1)
+else
+   if test $CPU_COUNT -gt 16 ; then
+      AC_SUBST(CPUS_AVAIL,16)
+   else
+      AC_SUBST(CPUS_AVAIL,$(($CPU_COUNT-1)))
+   fi
+fi
+
+#
 # Determine Distro
 #
 AR_GET_DISTRO()
