@@ -18742,3 +18742,6 @@
 2019-06-05 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug that caused exported WAV files to use invalid default
 	date expressions in the cart chunk.
+2019-06-05 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug that caused exported PCM24 WAV files to indicate
+	an incorrect 'dwLevelReference' value in the cart chunk.

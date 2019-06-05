@@ -122,16 +122,6 @@ RDWaveFile::RDWaveFile(QString file_name)
   cart_category="";
   cart_classification="";
   cart_out_cue="";
-  /*
-  cart_start_date=QDate::currentDate();
-  cart_start_time=QTime::currentTime();
-  cart_end_date=QDate(CART_DEFAULT_END_YEAR,
-		      CART_DEFAULT_END_MONTH,
-		      CART_DEFAULT_END_DAY);
-  cart_end_time=QTime(CART_DEFAULT_END_HOUR,
-		      CART_DEFAULT_END_MINUTE,
-		      CART_DEFAULT_END_SECOND);
-  */
   cart_producer_app_id="";
   cart_producer_app_ver="";
   cart_user_def="";
@@ -507,9 +497,6 @@ bool RDWaveFile::openWave(RDWaveData *data)
   lseek(wave_file.handle(),data_start,SEEK_SET);
   ValidateMetadata();
 
-  //  lseek(wave_file.handle(),SEEK_SET,0x845);
-  //  printf("PTR: 0x%04X\n",lseek(wave_file.handle(),SEEK_CUR,0));
-
   return true;
 }
 
@@ -844,16 +831,6 @@ void RDWaveFile::closeWave(int samples)
   cart_start_time=QTime();
   cart_end_date=QDate();
   cart_end_time=QTime();
-  /*
-  cart_start_date=QDate::currentDate();
-  cart_start_time=QTime::currentTime();
-  cart_end_date=QDate(CART_DEFAULT_END_YEAR,
-		      CART_DEFAULT_END_MONTH,
-		      CART_DEFAULT_END_DAY);
-  cart_end_time=QTime(CART_DEFAULT_END_HOUR,
-		      CART_DEFAULT_END_MINUTE,
-		      CART_DEFAULT_END_SECOND);
-  */
   cart_producer_app_id="";
   cart_producer_app_ver="";
   cart_user_def="";
@@ -4301,21 +4278,29 @@ bool RDWaveFile::MakeFmt()
   }
   if(format_tag==WAVE_FORMAT_PCM) {
     switch(bits_per_sample) {
-	case 8:
-	  block_align=channels;
-	  break;
-	case 16:
-	  block_align=2*channels;
-	  break;
-	case 24:
-	  block_align=3*channels;
-	  break;
-	case 32:
-	  block_align=4*channels;
-	  break;
-	default:
-	  return false;
-	  break;
+    case 8:
+      block_align=channels;
+      cart_level_ref=0x80;
+	break;
+
+    case 16:
+      block_align=2*channels;
+      cart_level_ref=0x8000;
+      break;
+
+    case 24:
+      block_align=3*channels;
+      cart_level_ref=0x800000;
+      break;
+
+    case 32:
+      block_align=4*channels;
+      cart_level_ref=0x80000000;
+      break;
+
+    default:
+      return false;
+      break;
     }
     avg_bytes_per_sec=block_align*samples_per_sec;
     cb_size=0;
