@@ -18745,3 +18745,7 @@
 2019-06-05 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug that caused exported PCM24 WAV files to indicate
 	an incorrect 'dwLevelReference' value in the cart chunk.
+2019-06-07 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdairplay(1) that caused changes in the ordering
+	of log events to fail to be properly reflected in the Full Log
+	list.

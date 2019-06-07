@@ -2,7 +2,7 @@
 //
 // The full log list for RDAirPlay
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -948,6 +948,7 @@ void ListLog::logInsertedData(int line)
       list_log_list->ensureItemVisible(item);
     }
   }
+  list_log_list->sort();
 }
 
 
@@ -967,6 +968,7 @@ void ListLog::logRemovedData(int line,int num,bool moving)
   if(!moving) {
     UpdateTimes(line,num);
   }
+  list_log_list->sort();
 }
 
 
