@@ -228,7 +228,7 @@ void CaeServer::ProcessCommand(int id,const QString &cmd)
   }
   if((f0.at(0)=="UP")&&(f0.size()==2)) {  // Unload Playback
     unsigned card=f0.at(1).toUInt(&ok);
-    if(ok&&(card<RD_MAX_CARDS)) {
+    if(ok) {
       emit unloadPlaybackReq(id,card);
       was_processed=true;
     }

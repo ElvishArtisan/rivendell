@@ -18749,3 +18749,7 @@
 	* Fixed a bug in rdairplay(1) that caused changes in the ordering
 	of log events to fail to be properly reflected in the Full Log
 	list.
+2019-06-07 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in caed(8) that caused the 'Unload Playback' ['UP']
+	command to be ignored when the 'handle' argument was greater
+	than 23.
