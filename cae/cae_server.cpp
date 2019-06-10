@@ -162,7 +162,7 @@ void CaeServer::readyReadData(int id)
       ProcessCommand(id,cae_connections.value(id)->accum);
     }
     else {
-      if(isalnum(0xFF&data[i])||(c=='_')||(c==' ')) {
+      if(isalnum(0xFF&data[i])||(c=='_')||(c=='-')||(c==' ')) {
 	cae_connections.value(id)->accum+=0xFF&data[i];
       }
     }

@@ -488,7 +488,6 @@ void RDCae::clockData()
 
 void RDCae::SendCommand(QString cmd)
 {
-  //printf("RDCae: SendCommand(%s)\n",(const char *)cmd);
   cae_socket->writeBlock((const char *)cmd,cmd.length());
 }
 

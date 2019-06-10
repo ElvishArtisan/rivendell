@@ -18756,3 +18756,6 @@
 2019-06-10 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'Channels=' directive from the '[Format]' section
 	of rd.conf(5).
+2019-06-10 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in caed(8) that caused mixer commands to
+	be applied with inverted sign.
