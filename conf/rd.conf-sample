@@ -145,11 +145,6 @@ RealtimePriority=9
 ; when transcoding files.
 TranscodingDelay=0
 
-[Format]
-; This value is used when testing and developing new features in the
-; audio drivers.  It should never be altered on a production system.
-Channels=2
-
 [Hacks]
 ; If you are getting no output level meter indications with an older
 ; ASI card (such as the ASI4215, ASI4113 or ASI4111), try uncommenting

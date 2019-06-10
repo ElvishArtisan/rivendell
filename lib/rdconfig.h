@@ -2,7 +2,7 @@
 //
 // A container class for a Rivendell Base Configuration
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -114,7 +114,6 @@ class RDConfig
   bool lockRdairplayMemory() const;
   QString caeLogfile() const;
   bool enableMixerLogging() const;
-  unsigned channels() const;
   uid_t uid() const;
   gid_t gid() const;
   uid_t pypadUid() const;
@@ -187,7 +186,6 @@ class RDConfig
   bool conf_disable_maint_checks;
   bool conf_lock_rdairplay_memory;
   std::vector<QString> conf_jack_ports[2];
-  unsigned conf_channels;
   uid_t conf_uid;
   gid_t conf_gid;
   uid_t conf_pypad_uid;

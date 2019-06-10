@@ -18753,3 +18753,6 @@
 	* Fixed a bug in caed(8) that caused the 'Unload Playback' ['UP']
 	command to be ignored when the 'handle' argument was greater
 	than 23.
+2019-06-10 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'Channels=' directive from the '[Format]' section
+	of rd.conf(5).

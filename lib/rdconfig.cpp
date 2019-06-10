@@ -2,7 +2,7 @@
 //
 // A container class for a Rivendell Base Configuration
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -452,12 +452,6 @@ bool RDConfig::lockRdairplayMemory() const
 }
 
 
-unsigned RDConfig::channels() const
-{
-  return conf_channels;
-}
-
-
 uid_t RDConfig::uid() const
 {
   return conf_uid;
@@ -675,7 +669,6 @@ bool RDConfig::load()
     profile->boolValue("Hacks","DisableMaintChecks",false);
   conf_lock_rdairplay_memory=
     profile->boolValue("Hacks","LockRdairplayMemory",false);
-  conf_channels=profile->intValue("Format","Channels",RD_DEFAULT_CHANNELS);
   if((user=getpwnam(profile->stringValue("Identity","AudioOwner")))!=NULL) {
     conf_uid=user->pw_uid;
   }
@@ -799,7 +792,6 @@ void RDConfig::clear()
   conf_use_stream_meters=false;
   conf_disable_maint_checks=false;
   conf_lock_rdairplay_memory=false;
-  conf_channels=RD_DEFAULT_CHANNELS;
   conf_uid=65535;
   conf_gid=65535;
   conf_pypad_uid=65535;
