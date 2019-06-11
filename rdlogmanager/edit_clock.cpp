@@ -107,6 +107,8 @@ EditClock::EditClock(QString clockname,bool new_clock,
   edit_clocks_list->setColumnAlignment(3,Qt::AlignRight);
   edit_clocks_list->addColumn(tr("Count"));
   edit_clocks_list->setColumnAlignment(4,Qt::AlignCenter);
+  edit_clocks_list->setColumnSortType(4,RDListView::LineSort);
+  edit_clocks_list->setHardSortColumn(4);
   connect(edit_clocks_list,
 	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
@@ -118,38 +120,38 @@ EditClock::EditClock(QString clockname,bool new_clock,
   //
   //  Add Button
   //
-  QPushButton *button=new QPushButton(this);
-  button->setGeometry(10,sizeHint().height()-210,80,50);
-  button->setFont(bold_font);
-  button->setText(tr("&Add"));
-  connect(button,SIGNAL(clicked()),this,SLOT(addData()));
+  edit_add_button=new QPushButton(this);
+  edit_add_button->setGeometry(10,sizeHint().height()-210,80,50);
+  edit_add_button->setFont(bold_font);
+  edit_add_button->setText(tr("&Add"));
+  connect(edit_add_button,SIGNAL(clicked()),this,SLOT(addData()));
 
   //
   //  Clone Button
   //
-  button=new QPushButton(this);
-  button->setGeometry(110,sizeHint().height()-210,80,50);
-  button->setFont(bold_font);
-  button->setText(tr("&Clone"));
-  connect(button,SIGNAL(clicked()),this,SLOT(cloneData()));
+  edit_clone_button=new QPushButton(this);
+  edit_clone_button->setGeometry(110,sizeHint().height()-210,80,50);
+  edit_clone_button->setFont(bold_font);
+  edit_clone_button->setText(tr("&Clone"));
+  connect(edit_clone_button,SIGNAL(clicked()),this,SLOT(cloneData()));
   
   //
   //  Edit Button
   //
-  button=new QPushButton(this);
-  button->setGeometry(210,sizeHint().height()-210,80,50);
-  button->setFont(bold_font);
-  button->setText(tr("&Edit"));
-  connect(button,SIGNAL(clicked()),this,SLOT(editData()));
+  edit_edit_button=new QPushButton(this);
+  edit_edit_button->setGeometry(210,sizeHint().height()-210,80,50);
+  edit_edit_button->setFont(bold_font);
+  edit_edit_button->setText(tr("&Edit"));
+  connect(edit_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
 
   //
   //  Delete Button
   //
-  button=new QPushButton(this);
-  button->setGeometry(310,sizeHint().height()-210,80,50);
-  button->setFont(bold_font);
-  button->setText(tr("&Delete"));
-  connect(button,SIGNAL(clicked()),this,SLOT(deleteData()));
+  edit_delete_button=new QPushButton(this);
+  edit_delete_button->setGeometry(310,sizeHint().height()-210,80,50);
+  edit_delete_button->setFont(bold_font);
+  edit_delete_button->setText(tr("&Delete"));
+  connect(edit_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
 
   //
   // Remarks
@@ -165,7 +167,7 @@ EditClock::EditClock(QString clockname,bool new_clock,
   //
   //  Scheduler-Rules button
   //
-  button=new QPushButton(this);
+  QPushButton *button=new QPushButton(this);
   button->setGeometry(CENTER_LINE+20,sizeHint().height()-60,70,50);
   button->setFont(bold_font);
   button->setText(tr("Scheduler\nRules"));
@@ -321,6 +323,9 @@ void EditClock::editData()
     return;
   }
   int line=item->text(4).toInt();
+  if(line<0) {
+    return;
+  }
   EditEventLine *edit_eventline=
     new EditEventLine(edit_clock->eventLine(line),edit_clock,line,this);
   if(edit_eventline->exec()<0) {
@@ -368,6 +373,7 @@ void EditClock::cloneData()
   edit_modified=true;
   RefreshList(line);
 }
+
 
 void EditClock::deleteData()
 {
@@ -624,6 +630,7 @@ void EditClock::RefreshList(int select_line)
   edit_clocks_list->clear();
   item=new RDListViewItem(edit_clocks_list);
   item->setText(2,tr("--- End of clock ---"));
+  item->setText(4,"-2");
   for(int i=edit_clock->size()-1;i>=0;i--) {
     if((eventline=edit_clock->eventLine(i))!=NULL) {
       item=new RDListViewItem(edit_clocks_list);
@@ -722,6 +729,10 @@ void EditClock::UpdateClock(int line)
   delete p;
   edit_clock_label->setPixmap(*map);
   delete map;
+
+  edit_clone_button->setDisabled(line<0);
+  edit_edit_button->setDisabled(line<0);
+  edit_delete_button->setDisabled(line<0);
 }
 
 

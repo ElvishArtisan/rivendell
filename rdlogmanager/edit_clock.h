@@ -83,6 +83,10 @@ class EditClock : public QDialog
   bool ValidateCode();
   ClockListView *edit_clocks_list;
   RDClock *edit_clock;
+  QPushButton *edit_add_button;
+  QPushButton *edit_clone_button;
+  QPushButton *edit_edit_button;
+  QPushButton *edit_delete_button;
   QPushButton *edit_color_button;
   QLabel *edit_clockname_label;
   QLineEdit *edit_shortname_edit;

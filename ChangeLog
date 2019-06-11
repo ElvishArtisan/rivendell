@@ -18759,3 +18759,6 @@
 2019-06-10 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in caed(8) that caused mixer commands to
 	be applied with inverted sign.
+2019-06-11 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdlogmanager(1) where the 'End of Clock' marker
+	appeared at the start rather than at the end of the segment list.
