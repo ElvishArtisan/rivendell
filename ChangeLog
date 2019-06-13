@@ -18765,3 +18765,6 @@
 2019-06-13 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdlibrary(1) that caused the cut list in the
 	'Edit Cart' dialog to be incorrectly sorted.
+2019-06-13 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdalsaconfig(8) that caused the device list
+	to be incorrectly sorted.
