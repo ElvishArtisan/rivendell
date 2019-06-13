@@ -18762,3 +18762,6 @@
 2019-06-11 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdlogmanager(1) where the 'End of Clock' marker
 	appeared at the start rather than at the end of the segment list.
+2019-06-13 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdlibrary(1) that caused the cut list in the
+	'Edit Cart' dialog to be incorrectly sorted.

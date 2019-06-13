@@ -137,6 +137,7 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
 
   rdcart_cut_list->addColumn(tr("Wt"));
   rdcart_cut_list->setColumnAlignment(0,Qt::AlignHCenter);
+  rdcart_cut_list->setColumnSortType(0,RDListView::LineSort);
 
   rdcart_cut_list->addColumn(tr("Description"));
   rdcart_cut_list->setColumnAlignment(1,Qt::AlignLeft);
