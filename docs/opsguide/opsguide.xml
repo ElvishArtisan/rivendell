@@ -16,6 +16,7 @@
   <!ENTITY rml SYSTEM "rml.xml">
   <!ENTITY utilities SYSTEM "utilities.xml">
   <!ENTITY rdadmin SYSTEM "rdadmin.xml">
+  <!ENTITY rddbconfig SYSTEM "rddbconfig.xml">
   <!ENTITY gfdl SYSTEM "gfdl.xml">
   <!ENTITY gplv2 SYSTEM "gplv2.xml">
   <!ENTITY gpio_switcher_devices SYSTEM "gpio_switcher_devices.xml">
@@ -43,6 +44,7 @@
   <part xml:id="part.rivendell_administration" xmlns="http://docbook.org/ns/docbook" version="5.0">
     <title>Rivendell Administration</title>
     &rdadmin;
+    &rddbconfig;
     &rml;
     &pad;
     &utilities;

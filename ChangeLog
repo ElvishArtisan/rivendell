@@ -18780,3 +18780,7 @@
 2019-06-17 Fred Gleason <fredg@paravelsystems.com>
 	* Updated the screenshot of the rdlibrary(1) Main Window in the
 	Operations Guide.
+2019-06-17 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDDbConfig' chapter to the Operations Guide.
+	* Removed the 'Backing Up and Restoring the Database' section
+	from the 'RDAdmin' chapter of the Operations Guide.

@@ -108,6 +108,10 @@ OPSGUIDE_HTML = appendix.filepath_wildcards.html\
                 sect.rdcatch.automating_switcher_operations.html\
                 sect.rdcatch.automating_uploads_downloads.html\
                 sect.rdcatch.the_rdcatch_main_window.html\
+                sect.rddbconfig.backing_up_and_restoring_the_database.html\
+                sect.rddbconfig.backing_up_the_database.html\
+                sect.rddbconfig.creating_a_new_database.html\
+                sect.rddbconfig.restoring_the_database_from_a_backup.html\
                 sect.rdlibrary.alternative_methods_of_audio_ingestion.html\
                 sect.rdlibrary.generating_library_reports.html\
                 sect.rdlibrary.library_maintenance.html\
@@ -225,6 +229,8 @@ OPSGUIDE_IMAGES = rdadmin.audio_resource_information_dialog.png\
                   rdcatch.edit_switcher_event_dialog.png\
                   rdcatch.edit_upload_dialog.png\
                   rdcatch.rdcatch_screenshot.png\
+                  rddbconfig.login_dialog.png\
+                  rddbconfig.rddbconfig_screenshot.png\
                   rdlibrary.cd_ripper_dialog.png\
                   rdlibrary.edit_cart_dialog.png\
                   rdlibrary.edit_cut_info_dialog.png\
@@ -292,6 +298,7 @@ OPSGUIDE_DEPS = $(OPSGUIDE_IMAGES) \
                 rdairplay.xml\
                 rdcartslots.xml\
                 rdcatch.xml\
+                rddbconfig.xml\
                 rdlibrary.xml\
                 rdlogedit.xml\
                 rdlogin.xml\
