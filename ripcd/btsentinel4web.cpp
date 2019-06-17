@@ -19,6 +19,7 @@
 //
 
 #include <stdlib.h>
+#include <syslog.h>
 
 #include <rdapplication.h>
 #include <rddb.h>
@@ -133,8 +134,8 @@ void BtSentinel4Web::processCommand(RDMacro *cmd)
 void BtSentinel4Web::connectedData()
 {
   bt_socket->writeBlock("*0U",3);
-  rda->config()->log("ripcd",RDConfig::LogInfo,"connected to BT Sentinel4Web device at "+
-		    bt_socket->peerAddress().toString());
+  syslog(LOG_INFO,"connected to BT Sentinel4Web device at %s",
+	 (const char *)bt_socket->peerAddress().toString().toUtf8());
 }
 
 
@@ -157,8 +158,8 @@ void BtSentinel4Web::readyReadData()
 
 void BtSentinel4Web::watchdogData()
 {
-  rda->config()->log("ripcd",RDConfig::LogWarning,"lost connection to BT Sentinel4Web device at "+
-		    bt_socket->peerAddress().toString());
+  syslog(LOG_WARNING,"lost connection to BT Sentinel4Web device at %s",
+	 (const char *)bt_socket->peerAddress().toString().toUtf8());
   bt_watchdog_reset_timer->start(BTSENTINEL4WEB_WATCHDOG_INTERVAL,true);
 }
 

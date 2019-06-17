@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for systems using Software Authority Protocol
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,6 +19,7 @@
 //
 
 #include <stdlib.h>
+#include <syslog.h>
 
 #include <qstringlist.h>
 
@@ -166,10 +167,10 @@ void SoftwareAuthority::connectedData()
 
 void SoftwareAuthority::connectionClosedData()
 {
-  LogLine(RDConfig::LogNotice,QString().
-	  sprintf("Connection to SoftwareAuthority device at %s:%d closed unexpectedly, attempting reconnect",
-		  (const char *)swa_ipaddress.toString(),
-		  swa_ipport));
+  syslog(LOG_WARNING,
+	 "connection to SoftwareAuthority device at %s:%d closed unexpectedly, attempting reconnect",
+	 (const char *)swa_ipaddress.toString().toUtf8(),
+	 swa_ipport);
   if(swa_stop_cart>0) {
     ExecuteMacroCart(swa_stop_cart);
   }
@@ -206,25 +207,25 @@ void SoftwareAuthority::errorData(int err)
 {
   switch((Q3Socket::Error)err) {
       case Q3Socket::ErrConnectionRefused:
-	LogLine(RDConfig::LogNotice,QString().sprintf(
-	  "Connection to SoftwareAuthority device at %s:%d refused, attempting reconnect",
-		  (const char *)swa_ipaddress.toString(),
-		  swa_ipport));
+	syslog(LOG_WARNING,
+	       "connection to SoftwareAuthority device at %s:%d refused, attempting reconnect",
+	       (const char *)swa_ipaddress.toString().toUtf8(),
+	       swa_ipport);
 	swa_reconnect_timer->start(SWAUTHORITY_RECONNECT_INTERVAL,true);
 	break;
 
       case Q3Socket::ErrHostNotFound:
-	LogLine(RDConfig::LogWarning,QString().sprintf(
-	  "Error on connection to SoftwareAuthority device at %s:%d: Host Not Found",
-		  (const char *)swa_ipaddress.toString(),
-		  swa_ipport));
+	syslog(LOG_WARNING,
+	       "error on connection to SoftwareAuthority device at %s:%d: Host Not Found",
+	       (const char *)swa_ipaddress.toString().toUtf8(),
+	       swa_ipport);
 	break;
 
       case Q3Socket::ErrSocketRead:
-	LogLine(RDConfig::LogWarning,QString().sprintf(
-	  "Error on connection to SoftwareAuthority device at %s:%d: Socket Read Error",
-				  (const char *)swa_ipaddress.toString(),
-				  swa_ipport));
+	syslog(LOG_WARNING,
+	       "error on connection to SoftwareAuthority device at %s:%d: Socket Read Error",
+	       (const char *)swa_ipaddress.toString().toUtf8(),
+	       swa_ipport);
 	break;
   }
 }
@@ -268,10 +269,10 @@ void SoftwareAuthority::DispatchCommand()
     return;
   }
   if(section=="login failure") {
-    LogLine(RDConfig::LogWarning,QString().sprintf(
-	    "Error on connection to SoftwareAuthority device at %s:%d: Login Failure",
-	    (const char *)swa_ipaddress.toString(),
-	    swa_ipport));
+    syslog(LOG_WARNING,
+	   "error on connection to SoftwareAuthority device at %s:%d: Login Failure",
+	   (const char *)swa_ipaddress.toString().toUtf8(),
+	   swa_ipport);
     swa_socket->close();
     return;
   }
@@ -347,10 +348,10 @@ void SoftwareAuthority::DispatchCommand()
       q=new RDSqlQuery(sql);
       delete q;
 
-      LogLine(RDConfig::LogInfo,QString().
-	      sprintf("Connection to SoftwareAuthority device at %s:%d established",
-		      (const char *)swa_ipaddress.toString(),
-		      swa_ipport));
+      syslog(LOG_INFO,
+	     "connection to SoftwareAuthority device at %s:%d established",
+	     (const char *)swa_ipaddress.toString().toUtf8(),
+	     swa_ipport);
       if(swa_start_cart>0) {
 	ExecuteMacroCart(swa_start_cart);
       }

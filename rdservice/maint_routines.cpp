@@ -19,6 +19,7 @@
 //
 
 #include <stdlib.h>
+#include <syslog.h>
 
 #include <rd.h>
 #include <rdapplication.h>
@@ -87,7 +88,7 @@ void MainObject::RunSystemMaintRoutine()
   RunEphemeralProcess(RDSERVICE_PURGECASTS_ID,
 		      QString(RD_PREFIX)+"/bin/rdpurgecasts",args);
 
-  rda->log(RDConfig::LogInfo,"ran system-wide maintenance routines");
+  syslog(LOG_INFO,"ran system-wide maintenance routines");
 }
 
 
@@ -96,7 +97,7 @@ void MainObject::RunLocalMaintRoutine()
   RunEphemeralProcess(RDSERVICE_LOCALMAINT_ID,
 		      QString(RD_PREFIX)+"/bin/rdmaint",QStringList());
 
-  rda->log(RDConfig::LogInfo,"ran local maintenance routines");
+  syslog(LOG_INFO,"ran local maintenance routines");
 }
 
 
@@ -118,7 +119,7 @@ void MainObject::RunEphemeralProcess(int id,const QString &program,
   if(!svc_processes[id]->process()->waitForStarted()) {
     QString err_msg=tr("unable to start")+"\""+program+"\": "+
       svc_processes[id]->errorText();
-    rda->log(RDConfig::LogWarning,err_msg);
+    syslog(LOG_WARNING,"%s",(const char *)err_msg.toUtf8());
     delete svc_processes[id];
     svc_processes.remove(id);
   }

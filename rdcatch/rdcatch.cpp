@@ -571,11 +571,6 @@ MainWidget::MainWidget(QWidget *parent)
   catch_resize=true;
 }
 
-void MainWidget::log(RDConfig::LogPriority prio,const QString &msg)
-{
-  rda->config()->log("RDCatch",prio,msg);
-}
-
 QSize MainWidget::sizeHint() const
 {
   return QSize(940,600);

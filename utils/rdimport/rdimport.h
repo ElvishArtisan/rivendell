@@ -73,7 +73,7 @@ class MainObject : public QObject
   void WriteTimestampCache(const QString &filename,const QDateTime &dt);
   bool SchedulerCodeExists(const QString &code) const;
   void ReadXmlFile(const QString &basename,RDWaveData *wavedata) const;
-  void Log(RDConfig::LogPriority prio,const QString &msg) const;
+  void Log(int prio,const QString &msg) const;
   void SendNotification(RDNotification::Action action,unsigned cartnum);
   unsigned import_file_key;
   RDGroup *import_group;

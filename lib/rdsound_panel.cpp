@@ -301,22 +301,10 @@ void RDSoundPanel::setRmls(int outnum,const QString &start_rml,
 }
 
 
-void RDSoundPanel::setLogName(const QString &logname)
-{
-  panel_logname=logname;
-}
-
-
 void RDSoundPanel::setSvcName(const QString &svcname)
 {
   panel_svcname=svcname;
   panel_svcname.replace(" ","_");
-}
-
-
-void RDSoundPanel::setLogfile(QString filename)
-{
-  panel_logfile=filename;
 }
 
 
@@ -569,12 +557,6 @@ void RDSoundPanel::acceptCartDrop(int row,int col,unsigned cartnum,
 
 void RDSoundPanel::changeUser()
 {
-  /*
-  if(panel_user!=NULL) {
-    delete panel_user;
-  }
-  panel_user=new RDUser(rda->ripc->user());
-  */
   panel_config_panels=rda->user()->configPanels();
   LoadPanels();
   panel_buttons[PanelOffset(panel_type,panel_number)]->show();

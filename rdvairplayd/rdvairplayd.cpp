@@ -22,6 +22,7 @@
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <syslog.h>
 #include <unistd.h>
 
 #include <qapplication.h>
@@ -237,8 +238,8 @@ void MainObject::ripcConnectedData(bool state)
 	rda->ripc()->sendRml(&rml);
       }
       else {
-	rda->log(RDConfig::LogWarning,QString().sprintf("vlog %d: ",mach+1)+
-		 "log \""+air_start_lognames[i]+"\" doesn't exist");
+	syslog(LOG_WARNING,"vlog %d: log \"%s\" doesn't exist",mach+1,
+	       (const char *)air_start_lognames[i].toUtf8());
       }
       delete q;
     }
@@ -286,9 +287,9 @@ void MainObject::logReloadedData(int log)
     }
   }
   else {
-    rda->log(RDConfig::LogWarning,QString().sprintf("vlog %d: ",mach+1)+
-	     QString().sprintf("line %d doesn't exist ",air_start_lines[log])+
-	     "in log \""+air_start_lognames[log]+"\"");
+    syslog(LOG_WARNING,"vlog %d: line %d doesn't exist in log \"%s\"",mach+1,
+	   air_start_lines[log],
+	   (const char *)air_start_lognames[log].toUtf8());
   }
   air_start_lognames[log]="";
 }
@@ -301,7 +302,7 @@ void MainObject::exitData()
       delete air_logs[i];
     }
     rda->airplayConf()->setVirtualExitCode(RDAirPlayConf::ExitClean);
-    rda->log(RDConfig::LogInfo,"exiting");
+    syslog(LOG_INFO,"exiting");
     exit(0);
   }
 }
@@ -310,27 +311,24 @@ void MainObject::exitData()
 void MainObject::SetAutoMode(int index)
 {
   air_logs[index]->setOpMode(RDAirPlayConf::Auto);
-  rda->log(RDConfig::LogInfo,
-	   QString().sprintf("log machine %d mode set to AUTOMATIC",
-			     index+RD_RDVAIRPLAY_LOG_BASE+1));
+  syslog(LOG_INFO,"log machine %d mode set to AUTOMATIC",
+	 index+RD_RDVAIRPLAY_LOG_BASE+1);
 }
 
 
 void MainObject::SetLiveAssistMode(int index)
 {
   air_logs[index]->setOpMode(RDAirPlayConf::LiveAssist);
-  rda->log(RDConfig::LogInfo,
-	   QString().sprintf("log machine %d mode set to LIVE ASSIST",
-			     index+RD_RDVAIRPLAY_LOG_BASE+1));
+  syslog(LOG_INFO,"log machine %d mode set to LIVE ASSIST",
+	  index+RD_RDVAIRPLAY_LOG_BASE+1);
 }
 
 
 void MainObject::SetManualMode(int index)
 {
   air_logs[index]->setOpMode(RDAirPlayConf::Manual);
-  rda->log(RDConfig::LogInfo,
-	   QString().sprintf("log machine %d mode set to MANUAL",
-			     index+RD_RDVAIRPLAY_LOG_BASE+1));
+  syslog(LOG_INFO,"log machine %d mode set to MANUAL",
+	 index+RD_RDVAIRPLAY_LOG_BASE+1);
 }
 
 

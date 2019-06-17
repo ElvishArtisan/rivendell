@@ -1416,7 +1416,6 @@ void RDLogPlay::transTimerData()
     }
     else {
       if(logline==NULL) {
-	rda->config()->log("log engine",RDConfig::LogNotice,"  invalid logline");
 	SetTransTimer();
 	return;
       }
@@ -1598,7 +1597,6 @@ void RDLogPlay::positionData(int id,int pos)
     return;
   }
   if(pos>logline->effectiveLength()) {
-    rda->config()->log("log engine",RDConfig::LogWarning,QString().sprintf("*** position out of bounds on signal: Line: %d  Cart: %d  Pos: %d ***",line,logline->cartNumber(),logline->playPosition()));
     return;
   }
   logline->setPlayPosition(pos);
@@ -1897,9 +1895,9 @@ bool RDLogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
 	  logline->setStatus(RDLogLine::Playing);
 	  playStateChangedData(playdeck->id(),RDPlayDeck::Finished);
 	  logline->setStatus(RDLogLine::Finished);
-	  rda->config()->log("log engine",RDConfig::LogErr,QString().
-		  sprintf("RDLogPlay::StartEvent(): no audio,CUT=%s",
-			  (const char *)logline->cutName()));
+	  syslog(LOG_WARNING,
+		 "log engine: RDLogPlay::StartEvent(): no audio,CUT=%s",
+		 (const char *)logline->cutName().toUtf8());
 	  rda->airplayConf()->setLogCurrentLine(play_id,nextLine());
 	  return false;
 	}
@@ -1913,7 +1911,7 @@ bool RDLogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
 			     playdeck->stream(),
 			     playdeck->port());
 	if((int)logline->playPosition()>logline->effectiveLength()) {
-	  rda->config()->log("log engine",RDConfig::LogWarning,QString().sprintf("*** position out of bounds: Line: %d  Cart: %d  Pos: %d ***",line,logline->cartNumber(),logline->playPosition()));
+	  syslog(LOG_DEBUG,"log engine: *** position out of bounds: Line: %d  Cart: %d  Pos: %d ***",line,logline->cartNumber(),logline->playPosition());
 	  logline->setPlayPosition(0);
 	}
 	playdeck->play(logline->playPosition(),-1,-1,duck_length);
@@ -1938,14 +1936,13 @@ bool RDLogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
 	*/
 	emit channelStarted(play_id,playdeck->channel(),
 			    playdeck->card(),playdeck->port());
-	rda->config()->log("log engine",RDConfig::LogInfo,QString().sprintf(
-		  "started audio cart: Line: %d  Cart: %u  Cut: %u Pos: %d  Card: %d  Stream: %d  Port: %d",
-		  line,logline->cartNumber(),
-		  playdeck->cut()->cutNumber(),
-		  logline->playPosition(),
-		  playdeck->card(),
-		  playdeck->stream(),
-		  playdeck->port()));
+	syslog(LOG_DEBUG,"log engine: started audio cart: Line: %d  Cart: %u  Cut: %u Pos: %d  Card: %d  Stream: %d  Port: %d",
+	       line,logline->cartNumber(),
+	       playdeck->cut()->cutNumber(),
+	       logline->playPosition(),
+	       playdeck->card(),
+	       playdeck->stream(),
+	       playdeck->port());
 
 	//
 	// Assign Next Event
@@ -1994,16 +1991,15 @@ bool RDLogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
 		    RDAirPlayConf::TrafficMacro,play_onair_flag);
 	  FinishEvent(line);
 	  emit transportChanged();
-	  rda->config()->log("log engine",RDConfig::LogInfo,QString().
-	     sprintf("asynchronously executed macro cart: Line: %d  Cart: %u",
-		     line,logline->cartNumber()));
+	  syslog(LOG_DEBUG,
+		 "log engine: asynchronously executed macro cart: Line: %d  Cart: %u",
+		 line,logline->cartNumber());
 	}
 	else {
 	  play_macro_deck->load(logline->cartNumber());
 	  play_macro_deck->setLine(line);
-	  rda->config()->log("log engine",RDConfig::LogInfo,QString().
-		  sprintf("started macro cart: Line: %d  Cart: %u",
-			  line,logline->cartNumber()));
+	  syslog(LOG_DEBUG,"log engine: started macro cart: Line: %d  Cart: %u",
+		 line,logline->cartNumber());
 	  play_macro_deck->exec();
 	}
 	break;
@@ -2066,10 +2062,8 @@ bool RDLogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
 	}
 	play_macro_deck->setLine(line);
 	play_macro_deck->exec();
-	rda->config()->log("log engine",RDConfig::LogInfo,QString().
-		sprintf("chained to log: Line: %d  Log: %s",
-			line,
-			(const char *)logline->markerLabel()));
+	syslog(LOG_DEBUG,"log engine: chained to log: Line: %d  Log: %s",
+	       line,(const char *)logline->markerLabel());
 	break;
 
       default:
@@ -2145,17 +2139,15 @@ void RDLogPlay::CleanupEvent(int id)
   }
   playdeck=(RDPlayDeck *)logline->playDeck();
   if(playdeck->cut()==NULL) {
-    rda->config()->log("log engine",RDConfig::LogErr,QString().
-	    sprintf("event failed: Line: %d  Cart: %u",line,
-		    logline->cartNumber()));
+    syslog(LOG_DEBUG,"log engine: event failed: Line: %d  Cart: %u",line,
+	   logline->cartNumber());
   }
   else {
-    rda->config()->log("log engine",RDConfig::LogInfo,QString().
-	    sprintf("finished event: Line: %d  Cart: %u  Cut: %u Card: %d  Stream: %d  Port: %d",
-		    line,logline->cartNumber(),
-		    playdeck->cut()->cutNumber(),
-		    playdeck->card(),
-		    playdeck->stream(),playdeck->port()));
+    syslog(LOG_DEBUG,"log engine: finished event: Line: %d  Cart: %u  Cut: %u Card: %d  Stream: %d  Port: %d",
+	   line,logline->cartNumber(),
+	   playdeck->cut()->cutNumber(),
+	   playdeck->card(),
+	   playdeck->stream(),playdeck->port());
   }
   RDLogLine *prev_logline;
   if((prev_logline=logLine(line-1))==NULL) {

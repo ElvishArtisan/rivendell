@@ -175,12 +175,6 @@ void MainObject::userData()
 }
 
 
-void MainObject::log(RDConfig::LogPriority prio,const QString &msg)
-{
-  rda->config()->log("rddelete",prio,msg);
-}
-
-
 void MainObject::DeleteCarts()
 {
   unsigned cartnum=0;

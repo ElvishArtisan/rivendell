@@ -64,7 +64,6 @@ class MainObject : public QObject
  private slots:
   void newConnectionData();
   void notificationReceivedData(const QString &msg,const QHostAddress &addr);
-  void log(RDConfig::LogPriority prio,const QString &msg);
   void sendRml(RDMacro *rml);
   void rmlEchoData();
   void rmlNoechoData();

@@ -21,7 +21,6 @@
 #ifndef RDCONFIG_H
 #define RDCONFIG_H
 
-#include <syslog.h>
 #include <unistd.h>
 
 #include <vector>
@@ -34,10 +33,6 @@
 class RDConfig
 {
  public:
-  enum LogFacility {LogNone=0,LogSyslog=1,LogFile=2};
-  enum LogPriority {LogEmerg=LOG_EMERG,LogAlert=LOG_ALERT,LogCrit=LOG_CRIT,
-		    LogErr=LOG_ERR,LogWarning=LOG_WARNING,LogNotice=LOG_NOTICE,
-		    LogInfo=LOG_INFO,LogDebug=LOG_DEBUG};
   enum RDSelectExitCode {RDSelectOk=0,RDSelectInvalidArguments=1,
 			 RDSelectNoSuchConfiguration=2,
 			 RDSelectModulesActive=3,
@@ -68,15 +63,7 @@ class RDConfig
   int mysqlHeartbeatInterval() const;
   QString mysqlEngine() const;
   QString createTablePostfix() const;
-  RDConfig::LogFacility logFacility() const;
-  void setLogFacility(RDConfig::LogFacility log_facility);
-  QString logDirectory() const;
-  void setLogDirectory(QString log_directory);
-  QString logCoreDumpDirectory() const;
-  QString logPattern() const;
-  void setLogPattern(QString log_pattern);
   bool logXloadDebugData() const;
-  void log(const QString &module,LogPriority prio,const QString &msg);
   bool provisioningCreateHost() const;
   QString provisioningHostTemplate() const;
   QHostAddress provisioningHostIpAddress() const;
@@ -104,15 +91,11 @@ class RDConfig
   QString audioStoreMountOptions() const;
   QString audioStoreCaeHostname() const;
   QString audioStoreXportHostname() const;
-  QString ripcdLogname() const;
-  QString airplayLogname() const;
-  QString catchdLogname() const;
   int jackConnections() const;
   QString jackPort(int num,int endpt) const;
   bool useStreamMeters() const;
   bool disableMaintChecks() const;
   bool lockRdairplayMemory() const;
-  QString caeLogfile() const;
   bool enableMixerLogging() const;
   uid_t uid() const;
   gid_t gid() const;
@@ -146,10 +129,6 @@ class RDConfig
   QString conf_mysql_engine;
   QString conf_create_table_postfix;
   int conf_mysql_heartbeat_interval;
-  RDConfig::LogFacility conf_log_facility;
-  QString conf_log_directory;
-  QString conf_log_core_dump_directory;
-  QString conf_log_pattern;
   bool conf_provisioning_create_host;
   QString conf_provisioning_host_template;
   QHostAddress conf_provisioning_host_ip_address;
@@ -179,9 +158,6 @@ class RDConfig
   QString conf_audio_store_mount_options;
   QString conf_audio_store_xport_hostname;
   QString conf_audio_store_cae_hostname;
-  QString conf_ripcd_logname;
-  QString conf_airplay_logname;
-  QString conf_catchd_logname;
   bool conf_use_stream_meters;
   bool conf_disable_maint_checks;
   bool conf_lock_rdairplay_memory;
@@ -192,7 +168,6 @@ class RDConfig
   gid_t conf_pypad_gid;
   uid_t conf_rn_rml_uid;
   gid_t conf_rn_rml_gid;
-  QString conf_cae_logfile;
   bool conf_enable_mixer_logging;
   bool conf_use_realtime;
   int conf_transcoding_delay;

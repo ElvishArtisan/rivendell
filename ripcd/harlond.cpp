@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the Harlond Virtual Mixer
 //
-//   (C) Copyright 2002-2012,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -17,6 +17,8 @@
 //   License along with this program; if not, write to the Free Software
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
+
+#include <syslog.h>
 
 #include <qstringlist.h>
 
@@ -201,10 +203,10 @@ void Harlond::socketConnectedData()
 void Harlond::socketDisconnectedData()
 {
   bt_watchdog_timer->start(HARLOND_RECONNECT_INTERVAL,true);
-  LogLine(RDConfig::LogWarning,tr("connection to harlond device at ")+
-	  bt_ip_address.toString()+
-	  QString().sprintf(":%d ",bt_tcp_port)+
-	  tr("closed unexpectedly, attempting reconnect"));
+  syslog(LOG_WARNING,
+	 "connection to harlond device at %s:%d closed, attempting reconnect",
+	 (const char *)bt_ip_address.toString().toUtf8(),
+	 bt_tcp_port);
   if(bt_stop_cart>0) {
     executeMacroCart(bt_stop_cart);
   }
@@ -234,16 +236,18 @@ void Harlond::socketErrorData(int err)
   bt_watchdog_timer->start(HARLOND_RECONNECT_INTERVAL,true);
   switch(err) {
   case Q3Socket::ErrConnectionRefused:
-  LogLine(RDConfig::LogWarning,tr("connection to harlond device at ")+
-	  bt_ip_address.toString()+QString().sprintf(":%d ",bt_tcp_port)+
-	  tr("refused, attempting reconnect"));
+    syslog(LOG_WARNING,
+	  "connection to harlond device at %s:%d refused, attempting reconnect",
+	   (const char *)bt_ip_address.toString().toUtf8(),
+	   bt_tcp_port);
     break;
 
   default:
-    LogLine(RDConfig::LogWarning,tr("received network error")+
-	    QString().sprintf(" %d ",err)+tr("from harlond device at ")+
-	    bt_ip_address.toString()+QString().sprintf(":%d ",bt_tcp_port)+", "+
-	    tr("attempting reconnect"));
+    syslog(LOG_WARNING,
+	   "received network error %d from harlond device at %s:%d, attempting reconnect",
+	   err,
+	   (const char *)bt_ip_address.toString().toUtf8(),
+	   bt_tcp_port);
     break;
   }
 }
@@ -265,16 +269,18 @@ void Harlond::ProcessResponse(const QString &str)
   if(cmds[0]=="PW") {
     if(cmds.size()==2) {
       if(cmds[1]=="+") {
-	LogLine(RDConfig::LogInfo,tr("connection to harlond device at ")+
-		bt_ip_address.toString()+QString().sprintf(":%d ",bt_tcp_port)+
-		tr("established"));
+	syslog(LOG_INFO,
+	       "connection to harlond device at %s:%d established",
+	       (const char *)bt_ip_address.toString().toUtf8(),
+	       bt_tcp_port);
 	bt_socket->writeBlock("SS!",3);
 	return;
       }
     }
-    LogLine(RDConfig::LogInfo,tr("connection to harlond device at ")+
-	    bt_ip_address.toString()+QString().sprintf(":%d ",bt_tcp_port)+
-	    tr("refused, invalid password"));
+    syslog(LOG_WARNING,
+	   "connection to harlond device at %s:%d refused, invalid password",
+	   (const char *)bt_ip_address.toString().toUtf8(),
+	   bt_tcp_port);
   }
 
   if(cmds[0]=="ON") {
@@ -375,7 +381,7 @@ bool Harlond::TakeCrosspoint(int input,int output)
   for(int i=1;i<input;i++) {
     RemoveCrosspoint(i,output);
   }
-  LogLine(RDConfig::LogNotice,QString().sprintf("inputs: %d",bt_inputs));
+  syslog(LOG_DEBUG,"inputs: %d",bt_inputs);
 
   for(int i=input+1;i<=bt_inputs;i++) {
     RemoveCrosspoint(i,output);

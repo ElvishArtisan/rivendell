@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the SAS USI Protocol (2 digit)
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,6 +19,7 @@
 //
 
 #include <stdlib.h>
+#include <syslog.h>
 
 #include <rdapplication.h>
 #include <rddb.h>
@@ -116,7 +117,7 @@ void Sas16000::processCommand(RDMacro *cmd)
 
 void Sas16000::SendCommand(char *str)
 {
-  LogLine(RDConfig::LogDebug,QString().sprintf("sending USI cmd: %s",(const char *)PrettifyCommand(str)));
+  syslog(LOG_DEBUG,"sending USI cmd: %s",(const char *)PrettifyCommand(str));
 
   sas_device->writeBlock(str,strlen(str));
 }

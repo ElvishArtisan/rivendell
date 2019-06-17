@@ -259,12 +259,12 @@ RDUser *RDApplication::user()
   return app_user;
 }
 
-
+/*
 void RDApplication::log(RDConfig::LogPriority prio,const QString &msg)
 {
   app_config->log(app_module_name,prio,msg);
 }
-
+*/
 
 bool RDApplication::dropTable(const QString &tbl_name)
 {

@@ -18,6 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <syslog.h>
+
 #include <qapplication.h>
 #include <qobject.h>
 #include <qtimer.h>
@@ -106,7 +108,7 @@ MainObject::MainObject(QObject *parent)
   connect(ripcd_kill_mapper,SIGNAL(mapped(int)),this,SLOT(killData(int)));
   server=new QTcpServer(this);
   if(!server->listen(QHostAddress::Any,RIPCD_TCP_PORT)) {
-    rda->log(RDConfig::LogErr,"unable to bind ripc port");
+    syslog(LOG_ERR,"unable to bind ripc port");
     exit(1);
   }
   connect(server,SIGNAL(newConnection()),this,SLOT(newConnectionData()));
@@ -186,7 +188,7 @@ MainObject::MainObject(QObject *parent)
   ripcd_garbage_timer=new QTimer(this);
   connect(ripcd_garbage_timer,SIGNAL(timeout()),this,SLOT(garbageData()));
 
-  LogLine(RDConfig::LogInfo,"started");
+  syslog(LOG_INFO,"started");
 }
 
 
@@ -194,11 +196,6 @@ MainObject::~MainObject()
 {
   delete server;
   delete ripcd_db;
-}
-
-void MainObject::log(RDConfig::LogPriority prio,const QString &msg)
-{
-  LogLine(prio,msg);
 }
 
 
@@ -222,7 +219,7 @@ void MainObject::newConnectionData()
   ripcd_kill_mapper->setMapping(ripcd_conns[i]->socket(),i);
   connect(ripcd_conns[i]->socket(),SIGNAL(connectionClosed()),
 	  ripcd_kill_mapper,SLOT(map()));
-  rda->log(RDConfig::LogDebug,QString().sprintf("added new connection %d",i));
+  syslog(LOG_DEBUG,"added new connection %d",i);
 }
 
 
@@ -231,11 +228,9 @@ void MainObject::notificationReceivedData(const QString &msg,
 {
   RDNotification *notify=new RDNotification();
 
-  syslog(LOG_NOTICE,"recv: %s\n",(const char *)msg.toUtf8());
-
   if(!notify->read(msg)) {
-    LogLine(RDConfig::LogWarning,
-	    "Invalid notification received from "+addr.toString());
+    syslog(LOG_DEBUG,"invalid notification received from %s",
+	   (const char *)addr.toString().toUtf8());
     delete notify;
     return;
   }
@@ -323,8 +318,7 @@ void MainObject::killData(int conn_id)
 {
   ripcd_conns[conn_id]->close();
   ripcd_garbage_timer->start(1,true);
-  rda->log(RDConfig::LogDebug,QString().sprintf("closed connection %d",
-						conn_id));
+  syslog(LOG_DEBUG,"closed connection %d",conn_id);
 }
 
 
@@ -343,7 +337,7 @@ void MainObject::exitTimerData()
 	delete ripcd_switcher[i];
       }
     }
-    LogLine(RDConfig::LogInfo,"ripcd exiting normally");
+    syslog(LOG_INFO,"ripcd exiting normally");
     exit(0);
   }
 }
@@ -356,8 +350,7 @@ void MainObject::garbageData()
       if(ripcd_conns[i]->isClosing()) {
 	delete ripcd_conns[i];
 	ripcd_conns[i]=NULL;
-	rda->log(RDConfig::LogDebug,
-		 QString().sprintf("cleaned up connection %d",i));
+	syslog(LOG_DEBUG,"cleaned up connection %d",i);
       }
     }
   }
@@ -514,7 +507,7 @@ bool MainObject::DispatchCommand(RipcdConnection *conn)
     msg=msg.left(msg.length()-1);
     RDNotification *notify=new RDNotification();
     if(!notify->read(msg)) {
-      LogLine(RDConfig::LogWarning,"invalid notification processed");
+      syslog(LOG_DEBUG,"invalid notification processed");
       delete notify;
       return true;
     }
@@ -579,9 +572,8 @@ void MainObject::ReadRmlSocket(QUdpSocket *sock,RDMacro::Role role,
 	  }
 	}
 	else {
-	  LogLine(RDConfig::LogDebug,
-		  QString("rejected rml: \"")+QString(buffer)+
-		  "\": on-air flag not active");
+	  syslog(LOG_DEBUG,
+		 "rejected rml: \"%s\": on-air flag not active",buffer);
 	  break;
 	}
       }
@@ -601,11 +593,10 @@ void MainObject::ReadRmlSocket(QUdpSocket *sock,RDMacro::Role role,
       }
     }
     else {
-      LogLine(RDConfig::LogWarning,
-	      QString().sprintf("received malformed rml: \"%s\" from %s:%u",
-				buffer,
-				(const char *)sock->peerAddress().toString(),
-				sock->peerPort()));
+      syslog(LOG_DEBUG,"received malformed rml: \"%s\" from %s:%u",
+	     buffer,
+	     (const char *)sock->peerAddress().toString().toUtf8(),
+	     sock->peerPort());
       if(echo) {
 	macro.setRole(RDMacro::Reply);
 	macro.setCommand(RDMacro::NN);
@@ -738,42 +729,6 @@ void MainObject::SendGpoCart(int ch,int matrix)
 				     ripcd_gpo_macro[matrix][i][1]));
   }
 }
-
-
-void LogLine(RDConfig::LogPriority prio,const QString &line)
-{
-  FILE *logfile;
-
-  rda->config()->log("ripcd",prio,line);
-
-  if((!rda->config()) || rda->config()->ripcdLogname().isEmpty()) {
-    return;
-  }
-
-  QDateTime current=QDateTime::currentDateTime();
-  logfile=fopen(rda->config()->ripcdLogname(),"a");
-  if(logfile==NULL) {
-    return;
-  }
-  chmod(rda->config()->ripcdLogname(),S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH);
-  fprintf(logfile,"%02d/%02d/%4d - %02d:%02d:%02d.%03d : %s\n",
-	  current.date().month(),
-	  current.date().day(),
-	  current.date().year(),
-	  current.time().hour(),
-	  current.time().minute(),
-	  current.time().second(),
-	  current.time().msec(),
-	  (const char *)line.utf8());
-  fclose(logfile);
-}
-
-/* This is an overloaded virtual function to tell a session manager not to restart this daemon. */
-void QApplication::saveState(QSessionManager &sm) {
-  sm.setRestartHint(QSessionManager::RestartNever);
-  LogLine(RDConfig::LogDebug,"ripcd saveState(), set restart hint to Never");
-  return;
-};
 
 
 int main(int argc,char *argv[])

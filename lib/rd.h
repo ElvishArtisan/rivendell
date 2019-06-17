@@ -71,13 +71,6 @@
 #define DEFAULT_MYSQL_COLLATION "utf8mb4_general_ci"
 
 /*
- * Default Logging Settings
- */
-#define DEFAULT_LOG_FACILITY "syslog"
-#define DEFAULT_LOG_CORE_DUMP_DIRECTORY "/"
-#define DEFAULT_LOG_PATTERN "%n-%Y%M%d.log"
-
-/*
  * ALSA Settings
  */
 #define RD_ALSA_DEFAULT_PERIOD_QUANTITY 4

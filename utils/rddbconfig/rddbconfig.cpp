@@ -3,7 +3,7 @@
 // A Qt-based application to configure, backup, and restore
 // the Rivendell database.
 //
-//   (C) Copyright 2009-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2009-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,6 +20,7 @@
 //
 
 #include <stdlib.h>
+#include <syslog.h>
 #include <unistd.h>
 #include <sys/types.h>
 
@@ -205,8 +206,7 @@ void MainWidget::mismatchData()
         QMessageBox::information(this,"Database Modified Successfully",
           QString().sprintf("Modified database to version %d", RD_VERSION_DATABASE));
       }
-      rd_config->log("rddbconfig",RDConfig::LogInfo,
-        QString().sprintf("Modified database to version %d", RD_VERSION_DATABASE));
+      syslog(LOG_INFO,"modified database to version %d",RD_VERSION_DATABASE);
 
       emit dbChanged();
     }
@@ -330,10 +330,9 @@ void MainWidget::backupData()
         QString().sprintf("Backed up %s database to %s",
           (const char *)rd_config->mysqlDbname(),
           (const char *)filename));
-      rd_config->log("rddbconfig",RDConfig::LogInfo,
-        QString().sprintf("Backed up %s database to %s",
-          (const char *)rd_config->mysqlDbname(),
-          (const char *)filename));
+      syslog(LOG_INFO,"backed up %s database to %s",
+	     (const char *)rd_config->mysqlDbname(),
+	     (const char *)filename);
     }
   }
 }
@@ -381,10 +380,9 @@ void MainWidget::restoreData()
         QString().sprintf("Restored %s database from %s",
           (const char *)rd_config->mysqlDbname(),
           (const char *)filename));
-      rd_config->log("rddbconfig",RDConfig::LogInfo,
-        QString().sprintf("Restored %s database from %s",
-          (const char *)rd_config->mysqlDbname(),
-          (const char *)filename));
+      syslog(LOG_INFO,"restored %s database from %s",
+	     (const char *)rd_config->mysqlDbname(),
+	     (const char *)filename);
     }
     emit updateLabels();
     startDaemons();

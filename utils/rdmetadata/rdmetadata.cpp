@@ -188,9 +188,6 @@ void MainObject::userChangedData()
     fprintf(stderr,"%s",
       qPrintable(QString("rdmetadata: user \"%1\" has no modify carts permission\n")
       .arg(rda->user()->name())));
-    rda->log(RDConfig::LogErr,
-            QString("rdmetadata: user \"%1\" has no modify carts permission\n")
-            .arg(rda->user()->name()));
     exit(256);
   }
 

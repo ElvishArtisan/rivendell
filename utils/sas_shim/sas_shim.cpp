@@ -101,7 +101,7 @@ MainObject::MainObject(QObject *parent)
   //
   // Detach
   //
-  RDDetach(rda->config()->logCoreDumpDirectory());
+  RDDetach("");
   FILE *pidfile=fopen("/var/run/sas_shim.pid","w");
   fprintf(pidfile,"%d",getpid());
   fclose(pidfile);

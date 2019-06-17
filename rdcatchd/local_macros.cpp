@@ -18,6 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <syslog.h>
+
 #include <rdapplication.h>
 #include <rdcart.h>
 #include <rduser.h>
@@ -180,9 +182,8 @@ void MainObject::RunLocalMacros(RDMacro *rml)
 	return;
       }
       else {
-	LogLine(RDConfig::LogWarning,QString().
-		sprintf("unable to handle RS macro for deck %d: device busy",
-			chan));
+	syslog(LOG_WARNING,"unable to handle RS macro for deck %d: device busy",
+	       chan);
 	if(rml->echoRequested()) {
 	  rml->acknowledge(false);
 	  rda->ripc()->sendRml(rml);

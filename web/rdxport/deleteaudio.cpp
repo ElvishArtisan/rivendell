@@ -2,7 +2,7 @@
 //
 // Rivendell web service portal -- DeleteAudio service
 //
-//   (C) Copyright 2010-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,6 +19,7 @@
 //
 
 #include <stdio.h>
+#include <syslog.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>

@@ -58,7 +58,7 @@ class RDApplication : public QObject
   RDStation *station();
   RDSystem *system();
   RDUser *user();
-  void log(RDConfig::LogPriority prio,const QString &msg);
+  //  void log(RDConfig::LogPriority prio,const QString &msg);
   bool dropTable(const QString &tbl_name);
   void addTempFile(const QString &pathname);
 

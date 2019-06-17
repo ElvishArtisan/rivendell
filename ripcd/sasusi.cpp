@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the SAS USI Protocol
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,6 +19,7 @@
 //
 
 #include <stdlib.h>
+#include <syslog.h>
 
 #include <rdapplication.h>
 #include <rddb.h>
@@ -339,10 +340,10 @@ void SasUsi::ipConnect()
 
 void SasUsi::connectedData()
 {
-  LogLine(RDConfig::LogInfo,QString().
-	  sprintf("Connection to SasUsi device at %s:%d established",
-		  (const char *)sas_ipaddress.toString(),
-		  sas_ipport));
+  syslog(LOG_INFO,
+	 "connection to SasUsi device at %s:%d established",
+	 (const char *)sas_ipaddress.toString().toUtf8(),
+	 sas_ipport);
   if(sas_start_cart>0) {
     ExecuteMacroCart(sas_start_cart);
   }
@@ -351,10 +352,10 @@ void SasUsi::connectedData()
 
 void SasUsi::connectionClosedData()
 {
-  LogLine(RDConfig::LogNotice,QString().
-	  sprintf("Connection to SasUsi device at %s:%d closed unexpectedly, attempting reconnect",
-		  (const char *)sas_ipaddress.toString(),
-		  sas_ipport));
+  syslog(LOG_WARNING,
+	 "connection to SasUsi device at %s:%d closed unexpectedly, attempting reconnect",
+	 (const char *)sas_ipaddress.toString().toUtf8(),
+	 sas_ipport);
   if(sas_stop_cart>0) {
     ExecuteMacroCart(sas_stop_cart);
   }
@@ -390,25 +391,25 @@ void SasUsi::errorData(int err)
 {
   switch((Q3Socket::Error)err) {
       case Q3Socket::ErrConnectionRefused:
-	LogLine(RDConfig::LogNotice,QString().sprintf(
-	  "Connection to SasUsi device at %s:%d refused, attempting reconnect",
-		  (const char *)sas_ipaddress.toString(),
-		  sas_ipport));
+	syslog(LOG_WARNING,
+	  "connection to SasUsi device at %s:%d refused, attempting reconnect",
+	  (const char *)sas_ipaddress.toString().toUtf8(),
+	  sas_ipport);
 	sas_reconnect_timer->start(SASUSI_RECONNECT_INTERVAL,true);
 	break;
 
       case Q3Socket::ErrHostNotFound:
-	LogLine(RDConfig::LogWarning,QString().sprintf(
-	  "Error on connection to SasUsi device at %s:%d: Host Not Found",
-		  (const char *)sas_ipaddress.toString(),
-		  sas_ipport));
+	syslog(LOG_WARNING,
+	       "error on connection to SasUsi device at %s:%d: Host Not Found",
+	       (const char *)sas_ipaddress.toString().toUtf8(),
+	       sas_ipport);
 	break;
 
       case Q3Socket::ErrSocketRead:
-	LogLine(RDConfig::LogWarning,QString().sprintf(
-	  "Error on connection to SasUsi device at %s:%d: Socket Read Error",
-				  (const char *)sas_ipaddress.toString(),
-				  sas_ipport));
+	syslog(LOG_WARNING,
+	       "error on connection to SasUsi device at %s:%d: Socket Read Error",
+	       (const char *)sas_ipaddress.toString().toUtf8(),
+	       sas_ipport);
 	break;
   }
 }
@@ -416,7 +417,7 @@ void SasUsi::errorData(int err)
 
 void SasUsi::SendCommand(char *str)
 {
-  LogLine(RDConfig::LogDebug,QString().sprintf("sending USI cmd: %s",(const char *)PrettifyCommand(str)));
+  syslog(LOG_DEBUG,"sending USI cmd: %s",(const char *)PrettifyCommand(str));
   switch(sas_porttype) {
   case RDMatrix::TtyPort:
     sas_device->writeBlock(str,strlen(str));
@@ -473,7 +474,8 @@ void SasUsi::DispatchCommand()
     }
   }
 
-  LogLine(RDConfig::LogDebug,QString().sprintf("received USI cmd: %s",(const char *)PrettifyCommand(sas_buffer)));
+  syslog(LOG_DEBUG,"received USI cmd: %s",
+	 (const char *)PrettifyCommand(sas_buffer));
 
 
   //
@@ -562,7 +564,6 @@ void SasUsi::DispatchCommand()
     for(unsigned i=0;i<sas_console_numbers.size();i++) {
       if((console==sas_console_numbers[i])&&(source==sas_source_numbers[i])) {
 	action=cmd.mid(1,1).toUInt(&ok);
-	LogLine(RDConfig::LogNotice,QString().sprintf("action: %u",action));
 	if(!ok) {
 	  return;
 	}

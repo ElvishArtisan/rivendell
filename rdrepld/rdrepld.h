@@ -42,7 +42,6 @@ class MainObject : public QObject
 
  private slots:
   void mainLoop();
-  void log(RDConfig::LogPriority prio,const QString &line);
 
  private:
   void ProcessCarts();

@@ -20,6 +20,7 @@
 
 #include <ctype.h>
 #include <stdio.h>
+#include <syslog.h>
 
 #include <qbytearray.h>
 #include <qstringlist.h>

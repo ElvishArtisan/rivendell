@@ -19,6 +19,7 @@
 //
 
 #include <stdlib.h>
+#include <syslog.h>
 
 #include <qtimer.h>
 
@@ -56,7 +57,8 @@ BtGpi16::BtGpi16(RDMatrix *matrix,QObject *parent)
     bt_device->setWordLength(tty->dataBits());
     bt_device->setParity(tty->parity());
     if(!bt_device->open(QIODevice::Unbuffered|QIODevice::ReadWrite)) {
-      LogLine(RDConfig::LogWarning,"unable to open serial device \""+tty->port()+"\".");
+      syslog(LOG_WARNING,"unable to open serial device \"%s\"",
+	     (const char *)tty->port().toUtf8());
     }
   }
   delete tty;

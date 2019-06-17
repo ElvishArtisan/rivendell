@@ -2,7 +2,7 @@
 //
 // A Utility for running periodic system maintenance.
 //
-//   (C) Copyright 2008-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2008-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,14 +18,15 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <limits.h>
+#include <ctype.h>
+#include <fcntl.h>
 #include <glob.h>
-#include <signal.h>
+#include <limits.h>
 #include <math.h>
+#include <signal.h>
+#include <syslog.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <fcntl.h>
-#include <ctype.h>
 
 #include <qapplication.h>
 #include <qdir.h>
@@ -165,15 +166,12 @@ void MainObject::PurgeCuts()
       RDCart *cart=new RDCart(q1->value(0).toUInt());
       if(cart->removeCut(rda->station(),rda->user(),q1->value(1).toString(),
 			 rda->config())) {
-	rda->config()->
-	  log("rdmaint",RDConfig::LogInfo,QString().sprintf("purged cut %s",
-			(const char *)q1->value(1).toString()));
+	syslog(LOG_INFO,"purged cut %s",
+	       (const char *)q1->value(1).toString().toUtf8());
       }
       else {
-	rda->config()->
-	  log("rdmaint",RDConfig::LogErr,QString().
-	      sprintf("unable to purge cut %s: audio deletion error",
-		      (const char *)q1->value(1).toString()));
+	syslog(LOG_WARNING,"unable to purge cut %s: audio deletion error",
+	       (const char *)q1->value(1).toString().toUtf8());
       }
       if(q->value(2).toString()=="Y") {  // Delete Empty Cart
 	sql=QString("select CUT_NAME from CUTS where ")+
@@ -181,9 +179,7 @@ void MainObject::PurgeCuts()
 	q2=new RDSqlQuery(sql);
 	if(!q2->first()) {
 	  cart->remove(rda->station(),rda->user(),rda->config());
-	  rda->config()->
-	    log("rdmaint",RDConfig::LogInfo,QString().
-		sprintf("deleted purged cart %06u",cart->number()));
+	  syslog(LOG_INFO,"deleted purged cart %06u",cart->number());
 	}
 	delete q2;
       }
@@ -207,9 +203,8 @@ void MainObject::PurgeLogs()
     "(PURGE_DATE<\""+dt.date().toString("yyyy-MM-dd")+"\")";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    rda->config()->
-      log("rdmain",RDConfig::LogInfo,QString().sprintf("purged log %s",
-		       (const char *)q->value(0).toString()));
+    syslog(LOG_INFO,"purged log %s",
+	   (const char *)q->value(0).toString().toUtf8());
     RDLog *log=new RDLog(q->value(0).toString());
     log->remove(rda->station(),rda->user(),rda->config());
     delete log;
@@ -368,11 +363,9 @@ void MainObject::RehashCuts()
     if((err=RDRehash::rehash(rda->station(),rda->user(),rda->config(),
 			     RDCut::cartNumber(q->value(0).toString()),
 			     RDCut::cutNumber(q->value(0).toString())))!=RDRehash::ErrorOk) {
-      rda->config()->
-	log("rdmaint",
-	    RDConfig::LogErr,QString().sprintf("failed to rehash cut %s [%s]",
-					       (const char *)q->value(0).toString(),
-					       (const char *)RDRehash::errorText(err)));
+      syslog(LOG_WARNING,"failed to rehash cut %s [%s]",
+	     (const char *)q->value(0).toString().toUtf8(),
+	     (const char *)RDRehash::errorText(err).toUtf8());
       
     }
     else {

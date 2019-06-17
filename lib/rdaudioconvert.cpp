@@ -20,6 +20,7 @@
 
 #include <stdint.h>
 #include <stdlib.h>
+#include <syslog.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/wait.h>
@@ -179,7 +180,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::convert()
   QString err_msg;
   if(!temp_dir->create(&err_msg)) {
     delete temp_dir;
-    rda->log(RDConfig::LogWarning,QString("Could not create "+err_msg));
+    syslog(LOG_WARNING,"Could not create %s",(const char *)err_msg.toUtf8());
     return RDAudioConvert::ErrorInternal;
   }
   tmpfile1=QString(temp_dir->path())+"/signed32_1.wav";
@@ -924,7 +925,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage2Convert(const QString &srcfile,
   //
   memset(&src_info,0,sizeof(src_info));
   if((src_sf=sf_open(srcfile,SFM_READ,&src_info))==NULL) {
-    rda->log(RDConfig::LogWarning,QString().sprintf("Could not open %s",(const char *)srcfile));
+    syslog(LOG_WARNING,"Could not open %s",(const char *)srcfile.toUtf8());
     return RDAudioConvert::ErrorInternal;
   }
   sf_command(src_sf,SFC_SET_NORM_FLOAT,NULL,SF_FALSE);
@@ -935,7 +936,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage2Convert(const QString &srcfile,
   dst_info.samplerate=conv_settings->sampleRate();
   if((dst_sf=sf_open(dstfile,SFM_WRITE,&dst_info))==NULL) {
     sf_close(src_sf);
-    rda->log(RDConfig::LogWarning,QString().sprintf("Could not open %s",(const char *)dstfile));
+    syslog(LOG_WARNING,"Could not open %s",(const char *)dstfile.toUtf8());
     return RDAudioConvert::ErrorInternal;
   }
 
@@ -974,7 +975,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage2Convert(const QString &srcfile,
     if((src_state=src_new(conv_src_converter,src_info.channels,&err))==NULL) {
       sf_close(src_sf);
       sf_close(dst_sf);
-      rda->log(RDConfig::LogWarning,QString().sprintf("%s",src_strerror(err)));
+      syslog(LOG_WARNING,"%s",src_strerror(err));
       return RDAudioConvert::ErrorInternal;
     }
     memset(&src_data,0,sizeof(src_data));
@@ -1025,7 +1026,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage2Convert(const QString &srcfile,
       src_data.input_frames=n;
       if((err=src_process(src_state,&src_data))!=0) {
         fprintf(stderr,"SRC Error: %s\n",src_strerror(err));
-        rda->log(RDConfig::LogWarning,QString().sprintf("%s",src_strerror(err)));
+        syslog(LOG_WARNING,"%s",src_strerror(err));
         return RDAudioConvert::ErrorInternal;
       }
       n=src_data.output_frames_gen;
@@ -1145,7 +1146,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage3Convert(const QString &srcfile,
   // Open Source File
   //
   if((src_sf=sf_open(srcfile,SFM_READ,&src_sf_info))==NULL) {
-    rda->log(RDConfig::LogWarning,QString().sprintf("%s",sf_strerror(NULL)));
+    syslog(LOG_WARNING,"%s",sf_strerror(NULL));
     return RDAudioConvert::ErrorInternal;
   }
 
@@ -1242,7 +1243,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage3Flac(SNDFILE *src_sf,
   case FLAC__STREAM_ENCODER_INIT_STATUS_INVALID_METADATA:
   default:
     delete flac;
-    rda->log(RDConfig::LogWarning,QString("flac->init() failure"));
+    syslog(LOG_WARNING,"flac->init() failure");
     return RDAudioConvert::ErrorInternal;
   }
 
@@ -1310,7 +1311,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage3Vorbis(SNDFILE *src_sf,
 				conv_settings->quality())) {
   case OV_EFAULT:
   default:
-    rda->log(RDConfig::LogWarning,QString("vorbis_encode_init_vbr() failure"));
+    syslog(LOG_WARNING,"vorbis_encode_init_vbr() failure");
     return RDAudioConvert::ErrorInternal;
 
   case OV_EINVAL:
@@ -1502,7 +1503,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage3Layer3(SNDFILE *src_sf,
   if((lameopts=lame_init())==NULL) {
     lame_close(lameopts);
     ::close(dst_fd);
-    rda->log(RDConfig::LogWarning,QString("lame_init() failure"));
+    syslog(LOG_WARNING,"lame_init() failure");
     return RDAudioConvert::ErrorInternal;
   }
   lame_set_mode(lameopts,mpeg_mode);
@@ -1641,7 +1642,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage3Layer2Wav(SNDFILE *src_sf,
   //
   if((lameopts=twolame_init())==NULL) {
     wave->closeWave();
-    rda->log(RDConfig::LogWarning,QString("twolame_init() failure"));
+    syslog(LOG_WARNING,"twolame_init() failure");
     return RDAudioConvert::ErrorInternal;
   }
   twolame_set_mode(lameopts,mpeg_mode);
@@ -1746,7 +1747,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage3Layer2(SNDFILE *src_sf,
   //
   if((lameopts=twolame_init())==NULL) {
     ::close(dst_fd);
-    rda->log(RDConfig::LogWarning,QString("twolame_init() failure"));
+    syslog(LOG_WARNING,"twolame_init() failure");
     return RDAudioConvert::ErrorInternal;
   }
   twolame_set_mode(lameopts,mpeg_mode);

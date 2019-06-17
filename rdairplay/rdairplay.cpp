@@ -74,11 +74,6 @@ RDHotkeys *rdhotkeys;
 //
 void SigHandler(int signo);
 
-void MainWidget::logLine(RDConfig::LogPriority prio,const QString &s)
-{
-  LogLine(prio,s);
-}
-
 MainWidget::MainWidget(QWidget *parent)
   :QWidget(parent)
 {
@@ -205,8 +200,6 @@ MainWidget::MainWidget(QWidget *parent)
   air_start_next=false;
   air_next_button=0;
   air_action_mode=StartButton::Play;
-
-  logfile=rda->config()->airplayLogname();
 
   str=QString("RDAirPlay")+" v"+VERSION+" - "+tr("Host:");
   setWindowTitle(str+" "+rda->config()->stationName());
@@ -562,7 +555,6 @@ MainWidget::MainWidget(QWidget *parent)
 		       rda->airplayConf()->flashPanel(),
 		       rda->airplayConf()->buttonLabelTemplate(),false,
 		       rdevent_player,rdcart_dialog,this);
-    air_panel->setLogfile(rda->config()->airplayLogname());
     air_panel->setGeometry(510,140,air_panel->sizeHint().width(),
 			 air_panel->sizeHint().height());
     air_panel->setPauseEnabled(rda->airplayConf()->panelPauseEnabled());
@@ -804,7 +796,7 @@ MainWidget::MainWidget(QWidget *parent)
     }
   }
 
-  LogLine(RDConfig::LogInfo,"RDAirPlay started");
+  syslog(LOG_INFO,"RDAirPlay started");
 }
 
 
@@ -1248,7 +1240,6 @@ void MainWidget::logRenamedData(int log)
     air_log_button[0]->setText(tr("Main Log")+"\n["+labelname+"]");
     SetCaption();
     if(air_panel) {
-      air_panel->setLogName(logname);
     }
     break;
 
@@ -1275,7 +1266,8 @@ void MainWidget::logReloadedData(int log)
   switch(log) {
   case 0:
     air_log_button[0]->setText(tr("Main Log")+"\n["+labelname+"]");
-    LogLine(RDConfig::LogInfo,"loaded log '"+air_log[0]->logName()+"' in Main Log");
+    syslog(LOG_INFO,"loaded log '%s' in Main Log",
+	   (const char *)air_log[0]->logName().toUtf8());
     if(air_log[0]->logName().isEmpty()) {
       if(air_panel!=NULL) {
 	air_panel->setSvcName(rda->airplayConf()->defaultSvc());
@@ -1290,12 +1282,14 @@ void MainWidget::logReloadedData(int log)
 
   case 1:
     air_log_button[1]->setText(tr("Aux 1 Log")+"\n["+labelname+"]");
-    LogLine(RDConfig::LogInfo,"loaded log '"+air_log[1]->logName()+"' in Aux 1 Log");
+    syslog(LOG_INFO,"loaded log '%s' in Aux 1 Log",
+	   (const char *)air_log[1]->logName().toUtf8());
     break;
 	
   case 2:
     air_log_button[2]->setText(tr("Aux 2 Log")+"\n["+labelname+"]");
-    LogLine(RDConfig::LogInfo,"loaded log '"+air_log[2]->logName()+"' in Aux 2 Log");
+    syslog(LOG_INFO,"loaded log '%s' in Aux Log 2",
+	   (const char *)air_log[2]->logName().toUtf8());
     break;
   }
   SetCaption();
@@ -1339,7 +1333,8 @@ void MainWidget::logReloadedData(int log)
 
 void MainWidget::userData()
 {
-  LogLine(RDConfig::LogInfo,"user changed to '"+rda->ripc()->user()+"'");
+  syslog(LOG_INFO,"user changed to '%s'",
+	 (const char *)rda->ripc()->user().toUtf8());
   SetCaption();
 
   //
@@ -2051,7 +2046,7 @@ void MainWidget::closeEvent(QCloseEvent *e)
       return;
     }
     rda->airplayConf()->setExitCode(RDAirPlayConf::ExitClean);
-    LogLine(RDConfig::LogInfo,"RDAirPlay exiting");
+    syslog(LOG_INFO,"RDAirPlay exiting");
     air_lock->unlock();
     exit(0);
   }
@@ -2065,7 +2060,7 @@ void MainWidget::closeEvent(QCloseEvent *e)
     delete air_log[i];
   }
   rda->airplayConf()->setExitCode(RDAirPlayConf::ExitClean);
-  LogLine(RDConfig::LogInfo,"RDAirPlay exiting");
+  syslog(LOG_INFO,"RDAirPlay exiting");
   air_lock->unlock();
   exit(0);
 }
@@ -2161,8 +2156,7 @@ void MainWidget::SetManualMode(int mach)
     air_button_list->setOpMode(RDAirPlayConf::Manual);
     air_post_counter->setDisabled(true);
   }
-  LogLine(RDConfig::LogInfo,
-	  QString().sprintf("log machine %d mode set to MANUAL",mach+1));
+  syslog(LOG_INFO,"log machine %d mode set to MANUAL",mach+1);
 }
 
 
@@ -2186,8 +2180,7 @@ void MainWidget::SetAutoMode(int mach)
     air_button_list->setOpMode(RDAirPlayConf::Auto);
     air_post_counter->setEnabled(true);
   }
-  LogLine(RDConfig::LogInfo,
-	  QString().sprintf("log machine %d mode set to AUTO",mach+1));
+  syslog(LOG_INFO,"log machine %d mode set to AUTO",mach+1);
 }
 
 
@@ -2211,8 +2204,7 @@ void MainWidget::SetLiveAssistMode(int mach)
     air_button_list->setOpMode(RDAirPlayConf::LiveAssist); 
     air_post_counter->setDisabled(true);
   }
-  LogLine(RDConfig::LogInfo,
-	  QString().sprintf("log machine %d mode set to LIVE ASSIST",mach+1));
+  syslog(LOG_INFO,"log machine %d mode set to LIVE ASSIST",mach+1);
 }
 
 
@@ -2425,34 +2417,6 @@ int main(int argc,char *argv[])
 
 
 QString logfile;
-
-
-void LogLine(RDConfig::LogPriority prio,const QString &line)
-{
-  FILE *file;
-
-  rda->config()->log("rdairplay",prio,line);
-
-  if(logfile.isEmpty()) {
-    return;
-  }
-
-  QDateTime current=QDateTime::currentDateTime();
-  if((file=fopen(logfile,"a"))==NULL) {
-    return;
-  }
-  chmod(logfile,S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH);
-  fprintf(file,"%02d/%02d/%4d - %02d:%02d:%02d.%03d : %s\n",
-	  current.date().month(),
-	  current.date().day(),
-	  current.date().year(),
-	  current.time().hour(),
-	  current.time().minute(),
-	  current.time().second(),
-	  current.time().msec(),
-	  (const char *)line);
-  fclose(file);
-}
 
 
 bool MainWidget::FirstPort(int index)

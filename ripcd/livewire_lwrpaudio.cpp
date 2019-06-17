@@ -2,7 +2,7 @@
 //
 // A Rivendell LWRP audio switcher driver for LiveWire networks.
 //
-//   (C) Copyright 2002-2013,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,6 +19,7 @@
 //
 
 #include <stdlib.h>
+#include <syslog.h>
 
 #include <rdapplication.h>
 #include <rddb.h>
@@ -167,9 +168,9 @@ void LiveWireLwrpAudio::processCommand(RDMacro *cmd)
 
 void LiveWireLwrpAudio::nodeConnectedData(unsigned id)
 {
-  LogLine(RDConfig::LogInfo,QString().
-	  sprintf("connection established to LiveWire node at \"%s\"",
-		  (const char *)livewire_nodes[id]->hostname()));
+  syslog(LOG_INFO,
+	 "connection established to LiveWire node at \"%s\"",
+	 (const char *)livewire_nodes[id]->hostname().toUtf8());
 }
 
 
@@ -232,5 +233,5 @@ void LiveWireLwrpAudio::destinationChangedData(unsigned id,RDLiveWireDestination
 
 void LiveWireLwrpAudio::watchdogStateChangedData(unsigned id,const QString &msg)
 {
-  LogLine(RDConfig::LogNotice,msg);
+  syslog(LOG_WARNING,msg);
 }

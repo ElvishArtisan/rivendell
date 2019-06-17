@@ -162,7 +162,6 @@ MainWidget::MainWidget(QWidget *parent)
 		       rda->panelConf()->flashPanel(),
 		       rda->panelConf()->buttonLabelTemplate(),true,
 		       panel_player,panel_cart_dialog,this);
-    panel_panel->setLogfile(rda->config()->airplayLogname());
     panel_panel->setGeometry(10,10,panel_panel->sizeHint().width(),
 			 panel_panel->sizeHint().height());
     panel_panel->setPauseEnabled(rda->panelConf()->panelPauseEnabled());

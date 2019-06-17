@@ -30,7 +30,6 @@
 // Global Objects
 //
 extern QString ripcd_active_locks[MAX_MATRICES];
-extern void LogLine(RDConfig::LogPriority prio,const QString &line);
 
 
 #endif  // GLOBALS_H

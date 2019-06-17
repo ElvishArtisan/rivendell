@@ -96,7 +96,6 @@ class MainWidget : public QWidget
   QSizePolicy sizePolicy() const;
 
  private slots:
-  void logLine(RDConfig::LogPriority prio,const QString &msg);
   void caeConnectedData(bool state);
   void ripcConnectedData(bool state);
   void rmlReceivedData(RDMacro *rml);

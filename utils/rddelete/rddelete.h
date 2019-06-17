@@ -2,7 +2,7 @@
 //
 // A Batch Deleter for Rivendell.
 //
-//   (C) Copyright 2013,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2013-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -44,7 +44,6 @@ class MainObject : public QObject
 
  private slots:
   void userData();
-  void log(RDConfig::LogPriority prio,const QString &line);
 
  private:
   void DeleteCarts();

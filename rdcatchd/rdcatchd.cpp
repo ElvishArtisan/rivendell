@@ -26,6 +26,7 @@
 #include <netdb.h>
 #include <ctype.h>
 #include <pwd.h>
+#include <syslog.h>
 #include <grp.h>
 #include <sys/types.h>
 #include <sys/wait.h>
@@ -60,54 +61,24 @@
 
 #include "rdcatchd.h"
 
-// Logging function that works within and outside the MainObject. 
-void LogLine(RDConfig::LogPriority prio,const QString &line)
-{
-  FILE *logfile;
-
-  rda->config()->log("rdcatchd",prio,line);
-
-  if(rda->config()->catchdLogname().isEmpty()) {
-    return;
-  }
-
-  QDateTime current=QDateTime::currentDateTime();
-  logfile=fopen(rda->config()->catchdLogname(),"a");
-  if(logfile==NULL) {
-    return;
-  }
-  chmod(rda->config()->catchdLogname(),S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH);
-  fprintf(logfile,"%02d/%02d/%4d - %02d:%02d:%02d.%03d : %s\n",
-	  current.date().month(),
-	  current.date().day(),
-	  current.date().year(),
-	  current.time().hour(),
-	  current.time().minute(),
-	  current.time().second(),
-	  current.time().msec(),
-	  (const char *)line);
-  fclose(logfile);
-}
-
-
 void SigHandler(int signum)
 {
   pid_t local_pid;
 
   switch(signum) {
-      case SIGINT:
-      case SIGTERM:
-	LogLine(RDConfig::LogNotice,"rdcatchd exiting");
-	exit(0);
-	break;
+  case SIGINT:
+  case SIGTERM:
+    syslog(LOG_INFO,"rdcatchd exiting");
+    exit(0);
+    break;
 
-      case SIGCHLD:
-	local_pid=waitpid(-1,NULL,WNOHANG);
-	while(local_pid>0) {
-	  local_pid=waitpid(-1,NULL,WNOHANG);
-	}
-	signal(SIGCHLD,SigHandler);
-	return;
+  case SIGCHLD:
+    local_pid=waitpid(-1,NULL,WNOHANG);
+    while(local_pid>0) {
+      local_pid=waitpid(-1,NULL,WNOHANG);
+    }
+    signal(SIGCHLD,SigHandler);
+    return;
   }
 }
 
@@ -453,19 +424,13 @@ MainObject::MainObject(QObject *parent)
       sp.sched_priority=rda->config()->realtimePriority()-1;
     }
     if(sched_setscheduler(getpid(),SCHED_FIFO,&sp)!=0) {
-      LogLine(RDConfig::LogWarning,
-	      QString().sprintf("unable to set realtime permissions, %s",
-				strerror(errno)));
+      syslog(LOG_DEBUG,"unable to set realtime permissions, %s",
+	     strerror(errno));
     }
     mlockall(MCL_CURRENT|MCL_FUTURE);
   }
 
-  LogLine(RDConfig::LogNotice,"rdcatchd started");
-}
-
-void MainObject::log(RDConfig::LogPriority prio,const QString &msg)
-{
-  LogLine(prio,msg);
+  syslog(LOG_INFO,"rdcatchd started");
 }
 
 
@@ -504,7 +469,7 @@ void MainObject::newConnectionData()
   catch_ready_mapper->setMapping(sock,i);
   connect(sock,SIGNAL(connectionClosed()),catch_kill_mapper,SLOT(map()));
   catch_kill_mapper->setMapping(sock,i);
-  rda->log(RDConfig::LogDebug,QString().sprintf("created connection %d",i));
+  syslog(LOG_DEBUG,"created connection %d",i);
 }
 
 
@@ -594,10 +559,9 @@ void MainObject::startTimerData(int id)
   BroadcastCommand(QString().sprintf("RE %d %d %d!",
 				     deck+1,catch_record_deck_status[deck],
 				     id));
-  LogLine(RDConfig::LogInfo,QString().
-	  sprintf("gpi start window closes: event: %d, gpi: %d:%d",
-		  id,catch_events[event].startMatrix(),
-		  catch_events[event].startLine()));
+  syslog(LOG_DEBUG,"gpi start window closes: event: %d, gpi: %d:%d",
+	 id,catch_events[event].startMatrix(),
+	 catch_events[event].startLine());
 }
 
 
@@ -631,19 +595,15 @@ void MainObject::engineData(int id)
   // Ignore inactive or non-existent events
   //
   if(event<0) {
-    LogLine(RDConfig::LogDebug,QString().
-	    sprintf("cannot find event %d, ignoring!",id));
+    syslog(LOG_DEBUG,"cannot find event %d, ignoring!",id);
     return;
   }
   if(!catch_events[event].isActive()) {
-    LogLine(RDConfig::LogDebug,QString().
-	    sprintf("event %d is marked inactive, ignoring",id));
+    syslog(LOG_DEBUG,"event %d is marked inactive, ignoring",id);
     return;
   }
   if(!catch_events[event].dayOfWeek(date.dayOfWeek())) {
-    LogLine(RDConfig::LogDebug,QString().
-	    sprintf("event %d is not valid for this DOW, ignoring",
-			      id));
+    syslog(LOG_DEBUG,"event %d is not valid for this DOW, ignoring",id);
     return;
   }
 
@@ -653,10 +613,9 @@ void MainObject::engineData(int id)
   if(catch_events[event].type()==RDRecording::Playout) {
     if(catch_playout_deck_status[catch_events[event].channel()-129]!=
        RDDeck::Idle) {
-      LogLine(RDConfig::LogWarning,QString().
-	      sprintf("playout deck P%d is busy for event %d, skipping",
-		      catch_events[event].channel()-128,
-		      catch_events[event].id()));
+      syslog(LOG_WARNING,"playout deck P%d is busy for event %d, skipping",
+	     catch_events[event].channel()-128,
+	     catch_events[event].id());
       WriteExitCode(event,RDRecording::DeviceBusy);
       BroadcastCommand(QString().sprintf("RE 0 %d %d %s!",RDDeck::Recording,
 					 catch_events[event].id(),
@@ -678,10 +637,9 @@ void MainObject::engineData(int id)
 			       catch_record_deck_status[catch_events[event].
 							channel()-1],
 			       catch_events[event].id()));
-      LogLine(RDConfig::LogWarning,QString().
-	      sprintf("record aborted: no such cut: %s, id: %d",
-		      (const char *)catch_events[event].cutName(),
-		      catch_events[event].id()));
+      syslog(LOG_WARNING,"record aborted: no such cut: %s, id: %d",
+	     (const char *)catch_events[event].cutName(),
+	     catch_events[event].id());
       return;
     }
     catch_record_card[catch_events[event].channel()-1]=-1;
@@ -716,9 +674,8 @@ void MainObject::engineData(int id)
       catch_swdelay[catch_events[event].channel()-1]=q->value(5).toInt();
     }
     else {
-      LogLine(RDConfig::LogNotice,QString().
-	      sprintf("id %d specified non-existent record deck, ignored",
-		      catch_events[event].id()));
+      syslog(LOG_DEBUG,"id %d specified non-existent record deck, ignored",
+	     catch_events[event].id());
       delete q;
       return;
     }
@@ -750,10 +707,9 @@ void MainObject::engineData(int id)
 		       catch_record_deck_status[catch_events[event].
 						channel()-1],
 					 catch_events[event].id()));
-      LogLine(RDConfig::LogNotice,QString().
-	      sprintf("gpi start window opens: event: %d, gpi: %d:%d",
-		      id,catch_events[event].startMatrix(),
-		      catch_events[event].startLine()));
+      syslog(LOG_DEBUG,"gpi start window opens: event: %d, gpi: %d:%d",
+	     id,catch_events[event].startMatrix(),
+	     catch_events[event].startLine());
       break;
     }
     break;
@@ -767,10 +723,9 @@ void MainObject::engineData(int id)
 			       catch_playout_deck_status[catch_events[event].
 							 channel()-129],
 			       catch_events[event].id()));
-      LogLine(RDConfig::LogNotice,QString().
-	      sprintf("playout aborted: no such cut: %s, id: %d",
-		      (const char *)catch_events[event].cutName(),
-		      catch_events[event].id()));
+      syslog(LOG_WARNING,"playout aborted: no such cut: %s, id: %d",
+	     (const char *)catch_events[event].cutName().toUtf8(),
+	     catch_events[event].id());
       return;
     }
     catch_playout_card[catch_events[event].channel()-129]=-1;
@@ -793,9 +748,8 @@ void MainObject::engineData(int id)
 	q->value(2).toInt();
     }
     else {
-      LogLine(RDConfig::LogDebug,QString().
-	      sprintf("id %d specified non-existent play deck, ignored",
-		      catch_events[event].id()));
+      syslog(LOG_DEBUG,"id %d specified non-existent play deck, ignored",
+	     catch_events[event].id());
       delete q;
       return;
     }
@@ -808,10 +762,9 @@ void MainObject::engineData(int id)
       WriteExitCode(event,RDRecording::NoCut);
       BroadcastCommand(QString().
 		       sprintf("RE 0 0 %d!",catch_events[event].id()));
-      LogLine(RDConfig::LogDebug,
-	      QString().sprintf("macro aborted: no such cart: %u, id: %d",
-				catch_events[event].macroCart(),
-				catch_events[event].id()));
+      syslog(LOG_WARNING,"macro aborted: no such cart: %u, id: %d",
+	     catch_events[event].macroCart(),
+	     catch_events[event].id());
       return;
     }
     StartMacroEvent(event);
@@ -826,10 +779,9 @@ void MainObject::engineData(int id)
       WriteExitCode(event,RDRecording::NoCut);
       BroadcastCommand(QString().
 		       sprintf("RE 0 0 %d!",catch_events[event].id()));
-      LogLine(RDConfig::LogDebug,QString().
-	      sprintf("download aborted: no such cut: %s, id: %d",
-		      (const char *)catch_events[event].cutName(),
-		      catch_events[event].id()));
+      syslog(LOG_WARNING,"download aborted: no such cut: %s, id: %d",
+	     (const char *)catch_events[event].cutName().toUtf8(),
+	     catch_events[event].id());
       return;
     }
 
@@ -854,8 +806,7 @@ void MainObject::engineData(int id)
 	catch_ripper_level=q->value(4).toInt();
       }
     else {
-      LogLine(RDConfig::LogWarning,
-	      "unable to load import audio configuration");
+      syslog(LOG_WARNING,"unable to load import audio configuration");
       delete q;
       return;
     }
@@ -872,10 +823,9 @@ void MainObject::engineData(int id)
       WriteExitCode(event,RDRecording::NoCut);
       BroadcastCommand(QString().
 		       sprintf("RE 0 0 %d!",catch_events[event].id()));
-      LogLine(RDConfig::LogNotice,QString().
-	      sprintf("upload aborted: no such cut: %s, id: %d",
-		      (const char *)catch_events[event].cutName(),
-		      catch_events[event].id()));
+      syslog(LOG_WARNING,"upload aborted: no such cut: %s, id: %d",
+	     (const char *)catch_events[event].cutName().toUtf8(),
+	     catch_events[event].id());
       return;
     }
     StartUploadEvent(event);
@@ -909,8 +859,7 @@ void MainObject::garbageData()
       if(catch_connections.at(i)->isClosing()) {
 	delete catch_connections.at(i);
 	catch_connections[i]=NULL;
-	rda->log(RDConfig::LogDebug,
-		 QString().sprintf("closed connection %d",i));
+	syslog(LOG_DEBUG,"closed connection %d",i);
       }
     }
   }
@@ -920,8 +869,7 @@ void MainObject::garbageData()
 void MainObject::isConnectedData(bool state)
 {
   if(!state) {
-    LogLine(RDConfig::LogErr,
-	    "aborting - unable to connect to Core AudioEngine");
+    syslog(LOG_ERR,"aborting - unable to connect to Core AudioEngine");
     exit(1);
   }
 }
@@ -934,8 +882,7 @@ void MainObject::recordLoadedData(int card,int stream)
   BroadcastCommand(QString().sprintf("RE %d %d %d!",
 				     deck,catch_record_deck_status[deck-1],
 				     catch_record_id[deck-1]));
-  LogLine(RDConfig::LogDebug,QString().
-	  sprintf("Loaded - Card: %d  Stream: %d\n",card,stream));
+  syslog(LOG_DEBUG,"Loaded - Card: %d  Stream: %d\n",card,stream);
 }
 
 
@@ -979,18 +926,14 @@ void MainObject::recordUnloadedData(int card,int stream,unsigned msecs)
 {
   int deck=GetRecordDeck(card,stream);
   if(deck<1) {
-    LogLine(RDConfig::LogDebug,QString().
-	    sprintf("invalid record deck:  Card: %d  Stream: %d",
-		    card,stream));
+    syslog(LOG_DEBUG,"invalid record deck:  Card: %d  Stream: %d",card,stream);
     return;
   }
   int event=GetEvent(catch_record_id[deck-1]);
   if(event<0) {
     catch_record_deck_status[deck-1]=RDDeck::Idle;
     catch_record_aborting[deck-1]=false;
-    LogLine(RDConfig::LogDebug,QString().
-	    sprintf("invalid record event:  Id: %d",
-		    catch_record_id[deck-1]));
+    syslog(LOG_DEBUG,"invalid record event:  Id: %d",catch_record_id[deck-1]);
     RunRmlRecordingCache(deck);
     return;
   }
@@ -1003,15 +946,13 @@ void MainObject::recordUnloadedData(int card,int stream,unsigned msecs)
     StartBatch(catch_events[event].id());
   }
   if(catch_record_aborting[deck-1]) {
-    LogLine(RDConfig::LogNotice,QString().
-	    sprintf("record aborted: cut %s",
-		    (const char *)catch_record_name[deck-1]));
+    syslog(LOG_INFO,"record aborted: cut %s",
+	   (const char *)catch_record_name[deck-1].toUtf8());
     WriteExitCodeById(catch_record_id[deck-1],RDRecording::Interrupted);
   }
   else {
-    LogLine(RDConfig::LogInfo,QString().
-	    sprintf("record complete: cut %s",
-		    (const char *)catch_record_name[deck-1]));
+    syslog(LOG_INFO,"record complete: cut %s",
+	   (const char *)catch_record_name[deck-1].toUtf8());
     WriteExitCodeById(catch_record_id[deck-1],RDRecording::Ok);
   }
   BroadcastCommand(QString().sprintf("RE %d %d %d!",
@@ -1084,9 +1025,8 @@ void MainObject::playStoppedData(int handle)
 
   catch_playout_status[deck-129]=false;
   catch_playout_event_player[deck-129]->stop();
-  LogLine(RDConfig::LogNotice,QString().
-	  sprintf("playout stopped: cut %s",
-		  (const char *)catch_playout_name[deck-129]));
+  syslog(LOG_INFO,"playout stopped: cut %s",
+	 (const char *)catch_playout_name[deck-129].toUtf8());
   if(debug) {
     printf("Playout stopped - Card: %d  Stream: %d\n",
 	   catch_playout_card[deck-129],
@@ -1101,9 +1041,8 @@ void MainObject::playUnloadedData(int handle)
 {
   int deck=GetPlayoutDeck(handle);
 
-  LogLine(RDConfig::LogInfo,QString().
-	  sprintf("play complete: cut %s",
-		  (const char *)catch_playout_name[deck-129]));
+  syslog(LOG_INFO,"play complete: cut %s",
+	 (const char *)catch_playout_name[deck-129].toUtf8());
   catch_playout_deck_status[deck-129]=RDDeck::Idle;
   WriteExitCodeById(catch_playout_id[deck-129],RDRecording::Ok);
   BroadcastCommand(QString().sprintf("RE %d %d %d!",deck,
@@ -1155,15 +1094,12 @@ void MainObject::meterData()
 
 void MainObject::eventFinishedData(int id)
 {
-  LogLine(RDConfig::LogDebug,QString().sprintf("eventFinishedData(%d)",id));
   if(catch_macro_event_id[id]>=0) {
-    LogLine(RDConfig::LogDebug,QString().
-	    sprintf("Clearing event_id: %d",catch_macro_event_id[id]));
+    syslog(LOG_DEBUG,"clearing event_id: %d",catch_macro_event_id[id]);
     if(catch_macro_event_id[id]<RDCATCHD_ERROR_ID_OFFSET) {
       int event=GetEvent(catch_macro_event_id[id]);
       if(event<0) {
-	LogLine(RDConfig::LogDebug,
-		"rdcatchd: processed eventFinishedData for unknown ID");
+	syslog(LOG_DEBUG,"processed eventFinishedData for unknown ID");
 	return;
       }
       catch_events[event].setStatus(RDDeck::Idle);
@@ -1239,12 +1175,10 @@ void MainObject::startupCartData()
     RDCart *cart=new RDCart(cartnum);
     if(cart->exists()) {
       ExecuteMacroCart(cart);
-      LogLine(RDConfig::LogInfo,QString().
-	      sprintf("ran startup cart %06u",cartnum));
+      syslog(LOG_INFO,"ran startup cart %06u",cartnum);
     }
     else {
-      LogLine(RDConfig::LogNotice,QString().
-	      sprintf("startup cart %06u was invalid",cartnum));
+      syslog(LOG_WARNING,"startup cart %06u was invalid",cartnum);
     }
     delete cart;
   }
@@ -1258,7 +1192,7 @@ bool MainObject::StartRecording(int event)
   QTime current_time=QTime::currentTime();
 
   if((event<0)||(event>=(int)catch_events.size())) {
-    LogLine(RDConfig::LogDebug,"invalid event offset received, ignored");
+    syslog(LOG_DEBUG,"invalid event offset received, ignored");
     return false;
   }
 
@@ -1272,9 +1206,8 @@ bool MainObject::StartRecording(int event)
     BroadcastCommand(QString().sprintf("RE %d %d %d!",
 				       deck,catch_record_deck_status[deck-1],
 				       catch_events[event].id()));
-    LogLine(RDConfig::LogWarning,QString().
-	    sprintf("invalid audio device for deck: %d, event: %d",
-		    deck,catch_events[event].id()));
+    syslog(LOG_WARNING,"invalid audio device for deck: %d, event: %d",
+	   deck,catch_events[event].id());
     return false;
   }
 
@@ -1287,9 +1220,9 @@ bool MainObject::StartRecording(int event)
     BroadcastCommand(QString().sprintf("RE %d %d %d!",
 				       deck,catch_record_deck_status[deck-1],
 				       catch_events[event].id()));
-    LogLine(RDConfig::LogNotice,QString().
-	    sprintf("device busy for deck: %d, event: %d | in use by event: %d",
-		    deck,catch_events[event].id(),catch_record_id[deck-1]));
+    syslog(LOG_WARNING,
+	   "device busy for deck: %d, event: %d | in use by event: %d",
+	   deck,catch_events[event].id(),catch_record_id[deck-1]);
     return false;
   }
 
@@ -1329,7 +1262,8 @@ bool MainObject::StartRecording(int event)
     QString str;
     str=rml->toString();
     rda->ripc()->sendRml(rml);
-    LogLine(RDConfig::LogDebug,QString("sending switcher command: ")+str);
+    syslog(LOG_DEBUG,"sending switcher command: \"%s\"",
+	   (const char *)str.toUtf8());
     delete rml;
   }
 
@@ -1369,7 +1303,7 @@ bool MainObject::StartRecording(int event)
 			 catch_record_card[deck-1],
 			 catch_record_stream[deck-1],
 			 (const char *)cut_name,length);
-  LogLine(RDConfig::LogInfo,str);
+  syslog(LOG_INFO,str);
 
   //
   // Cache Selected Fields
@@ -1434,9 +1368,8 @@ void MainObject::StartPlayout(int event)
 {
   unsigned deck=catch_events[event].channel();
   if((catch_playout_card[deck-129]<0)) {
-    LogLine(RDConfig::LogWarning,QString().
-	    sprintf("invalid audio device for deck: %d, event: %d",
-		    deck,catch_events[event].id()));
+    syslog(LOG_WARNING,	"invalid audio device for deck: %d, event: %d",
+	   deck,catch_events[event].id());
     return;
   }
 
@@ -1476,14 +1409,12 @@ void MainObject::StartPlayout(int event)
 			       catch_playout_stream[deck-129]);
   catch_events[event].setStatus(RDDeck::Recording);
 
-  LogLine(RDConfig::LogDebug,QString().
-	  sprintf("playout started: deck: %d, event %d",
-		  deck,catch_events[event].id()));
-  LogLine(RDConfig::LogDebug,QString().
-	  sprintf("  card %d, stream %d , cut=%s",
-		  catch_playout_card[deck-129],
-		  catch_playout_stream[deck-129],
-		  (const char *)catch_events[event].cutName()));
+  syslog(LOG_DEBUG,
+	 "playout started: deck: %d, event %d  card %d, stream %d , cut=%s",
+	 deck,catch_events[event].id(),
+	 catch_playout_card[deck-129],
+	 catch_playout_stream[deck-129],
+	 (const char *)catch_events[event].cutName().toUtf8());
 
   //
   // Cache Selected Fields
@@ -1497,22 +1428,19 @@ void MainObject::StartMacroEvent(int event)
 {
   RDCart *cart=new RDCart(catch_events[event].macroCart());
   if(!cart->exists()) {
-    LogLine(RDConfig::LogWarning,QString().
-	    sprintf("cart %u does not exist!",
-		    catch_events[event].macroCart()));
+    syslog(LOG_WARNING,"cart %u does not exist!",
+	   catch_events[event].macroCart());
     delete cart;
     return;
   }
   if(cart->type()!=RDCart::Macro) {
-    LogLine(RDConfig::LogWarning,QString().
-	    sprintf("%u is not a macro cart!",
-		    catch_events[event].macroCart()));
+    syslog(LOG_WARNING,"%u is not a macro cart!",
+	   catch_events[event].macroCart());
     delete cart;
     return;
   }
   if(ExecuteMacroCart(cart,catch_events[event].id(),event)) {
-    LogLine(RDConfig::LogInfo,QString().
-	  sprintf("executing macro cart: %u",catch_events[event].macroCart()));
+    syslog(LOG_INFO,"executing macro cart: %u",catch_events[event].macroCart());
   }
   delete cart;
 }
@@ -1529,7 +1457,7 @@ void MainObject::StartSwitchEvent(int event)
   rml->addArg(catch_events[event].switchInput());
   rml->addArg(catch_events[event].switchOutput());
   QString str=rml->toString();
-  LogLine(RDConfig::LogInfo,QString("sent switch event, rml: ")+str);
+  syslog(LOG_INFO,"sent switch event, rml: \"%s\"",(const char *)str.toUtf8());
   rda->ripc()->sendRml(rml);
   delete rml;
   if(catch_events[event].oneShot()) {
@@ -1569,7 +1497,7 @@ bool MainObject::ExecuteMacroCart(RDCart *cart,int id,int event)
 {
   int event_id=GetFreeEvent();
   if(event_id<0) {
-    LogLine(RDConfig::LogWarning,"unable to allocate event context!");
+    syslog(LOG_WARNING,"unable to allocate event context, id=%d",id);
     return false;
   }
   if(event!=-1) {
@@ -1900,7 +1828,7 @@ void MainObject::LoadEngine(bool adv_day)
   QString sql;
 
   catch_events.clear();
-  LogLine(RDConfig::LogInfo,"rdcatchd engine load starts...");
+  syslog(LOG_DEBUG,"rdcatchd engine load starts...");
   sql=LoadEventSql()+QString(" where STATION_NAME=\"")+
     RDEscapeString(rda->station()->name())+"\"";
   q=new RDSqlQuery(sql);
@@ -1908,9 +1836,9 @@ void MainObject::LoadEngine(bool adv_day)
     catch_events.push_back(CatchEvent(rda->station(),RDConfiguration()));
     LoadEvent(q,&catch_events.back(),true);
   }
-  LogLine(RDConfig::LogInfo,QString().sprintf("loaded %d events",(int)catch_events.size()));
+  syslog(LOG_DEBUG,"loaded %d events",(int)catch_events.size());
   delete q;
-  LogLine(RDConfig::LogInfo,"rdcatchd engine load ends");
+  syslog(LOG_DEBUG,"rdcatchd engine load ends");
 }
 
 
@@ -2185,40 +2113,35 @@ bool MainObject::AddEvent(int id)
     LoadEvent(q,&catch_events.back(),true);
     switch((RDRecording::Type)q->value(2).toInt()) {
     case RDRecording::Recording:
-      LogLine(RDConfig::LogNotice,QString().
-	      sprintf("loading event %d, Type: recording, Cut: %s",
-		      id,(const char *)q->value(4).toString()));
+      syslog(LOG_DEBUG,"loading event %d, Type: recording, Cut: %s",
+	     id,(const char *)q->value(4).toString().toUtf8());
       break;
 
     case RDRecording::Playout:
-      LogLine(RDConfig::LogNotice,QString().
-	      sprintf("loading event %d, Type: playout, Cut: %s",
-		      id,(const char *)q->value(4).toString()));
+      syslog(LOG_DEBUG,"loading event %d, Type: playout, Cut: %s",
+	     id,(const char *)q->value(4).toString().toUtf8());
       break;
 
     case RDRecording::MacroEvent:
-      LogLine(RDConfig::LogNotice,QString().
-	      sprintf("loading event %d, Type: macro, Cart: %d",
-		      id,q->value(23).toUInt()));
+      syslog(LOG_DEBUG,"loading event %d, Type: macro, Cart: %d",
+	     id,q->value(23).toUInt());
       break;
 
     case RDRecording::SwitchEvent:
-      LogLine(RDConfig::LogNotice,QString().sprintf(
-	    "loading event %d, Type: switch, Matrix: %d, Source: %d  Dest: %d",
-	    id,q->value(3).toInt(),q->value(24).toInt(),
-	    q->value(25).toInt()));
+      syslog(LOG_DEBUG,
+	     "loading event %d, Type: switch, Matrix: %d, Source: %d  Dest: %d",
+	     id,q->value(3).toInt(),q->value(24).toInt(),
+	     q->value(25).toInt());
       break;
 
     case RDRecording::Download:
-      LogLine(RDConfig::LogNotice,QString().
-	      sprintf("loading event %d, Type: download, Cut: %s",
-		      id,(const char *)q->value(4).toString()));
+      syslog(LOG_DEBUG,"loading event %d, Type: download, Cut: %s",
+	     id,(const char *)q->value(4).toString().toUtf8());
       break;
 
     case RDRecording::Upload:
-      LogLine(RDConfig::LogNotice,QString().
-	      sprintf("loading event %d, Type: upload, Cut: %s",
-		      id,(const char *)q->value(4).toString()));
+      syslog(LOG_DEBUG,"loading event %d, Type: upload, Cut: %s",
+	     id,(const char *)q->value(4).toString().toUtf8());
       break;
 
     case RDRecording::LastType:
@@ -2227,8 +2150,7 @@ bool MainObject::AddEvent(int id)
     delete q;
     return true;
   }
-  LogLine(RDConfig::LogDebug,QString().
-	  sprintf("event %d not found, not loaded",id));
+  syslog(LOG_DEBUG,"event %d not found, not loaded",id);
   delete q;
   return false;
 }
@@ -2238,50 +2160,42 @@ void MainObject::RemoveEvent(int id)
 {
   int event=GetEvent(id);
   if(event<0) {
-    LogLine(RDConfig::LogDebug,QString().
-	    sprintf("event %d not found, not removed",id));
+    syslog(LOG_DEBUG,"event %d not found, not removed",id);
     return;
   }
   switch(catch_events[event].type()) {
   case RDRecording::Recording:
-    LogLine(RDConfig::LogDebug,QString().
-	    sprintf("removed event %d, Type: recording, Cut: %s",
-		    id,(const char *)catch_events[event].cutName()));
+    syslog(LOG_DEBUG,"removed event %d, Type: recording, Cut: %s",
+	   id,(const char *)catch_events[event].cutName().toUtf8());
     break;
 	
   case RDRecording::Playout:
-    LogLine(RDConfig::LogDebug,QString().
-	    sprintf("removed event %d, Type: playout, Cut: %s",
-		    id,
-		    (const char *)catch_events[event].cutName()));
+    syslog(LOG_DEBUG,"removed event %d, Type: playout, Cut: %s",
+	   id,(const char *)catch_events[event].cutName().toUtf8());
     break;
 	
   case RDRecording::MacroEvent:
-    LogLine(RDConfig::LogDebug,QString().
-	    sprintf("removed event %d, Type: macro, Cart: %u",
-		    id,
-		    catch_events[event].macroCart()));
+    syslog(LOG_DEBUG,"removed event %d, Type: macro, Cart: %u",
+	   id,catch_events[event].macroCart());
     break;
 	
   case RDRecording::SwitchEvent:
-    LogLine(RDConfig::LogDebug,QString().sprintf(
-	    "removed event %d, Type: switch, Matrix: %d, Source: %d  Dest: %d",
-	    id,
-	    catch_events[event].channel(),
-	    catch_events[event].switchInput(),
-	    catch_events[event].switchOutput()));
+    syslog(LOG_DEBUG,
+	   "removed event %d, Type: switch, Matrix: %d, Source: %d  Dest: %d",
+	   id,
+	   catch_events[event].channel(),
+	   catch_events[event].switchInput(),
+	   catch_events[event].switchOutput());
     break;
 	
   case RDRecording::Download:
-    LogLine(RDConfig::LogDebug,QString().
-	    sprintf("removed event %d, Type: download, Cut: %s",
-		    id,(const char *)catch_events[event].cutName()));
+    syslog(LOG_DEBUG,"removed event %d, Type: download, Cut: %s",
+	   id,(const char *)catch_events[event].cutName().toUtf8());
     break;
 	
   case RDRecording::Upload:
-    LogLine(RDConfig::LogDebug,QString().
-	    sprintf("removed event %d, Type: upload, Cut: %s",
-		    id,(const char *)catch_events[event].cutName()));
+    syslog(LOG_DEBUG,"removed event %d, Type: upload, Cut: %s",
+	   id,(const char *)catch_events[event].cutName().toUtf8());
     break;
 
   case RDRecording::LastType:
@@ -2320,47 +2234,42 @@ void MainObject::PurgeEvent(int event)
   BroadcastCommand(QString().sprintf("PE %d!",catch_events[event].id()));
   switch(catch_events[event].type()) {
   case RDRecording::Recording:
-    LogLine(RDConfig::LogDebug,QString().
-	    sprintf("purged event %d, Type: recording, Cut: %s",
-		    catch_events[event].id(),
-		    (const char *)catch_events[event].cutName()));
+    syslog(LOG_DEBUG,"purged event %d, Type: recording, Cut: %s",
+	   catch_events[event].id(),
+	   (const char *)catch_events[event].cutName().toUtf8());
     break;
 
   case RDRecording::Playout:
-    LogLine(RDConfig::LogDebug,QString().
-	    sprintf("purged event %d, Type: playout, Cut: %s",
-		    catch_events[event].id(),
-		    (const char *)catch_events[event].cutName()));
+    syslog(LOG_DEBUG,"purged event %d, Type: playout, Cut: %s",
+	   catch_events[event].id(),
+	   (const char *)catch_events[event].cutName().toUtf8());
     break;
 
   case RDRecording::MacroEvent:
-    LogLine(RDConfig::LogDebug,QString().
-	    sprintf("purged event %d, Type: macro, Cart: %u",
-		    catch_events[event].id(),
-		    catch_events[event].macroCart()));
+    syslog(LOG_DEBUG,"purged event %d, Type: macro, Cart: %u",
+	   catch_events[event].id(),
+	   catch_events[event].macroCart());
     break;
 
   case RDRecording::SwitchEvent:
-    LogLine(RDConfig::LogDebug,QString().sprintf(
-	    "purged event %d, Type: switch, Matrix: %d, Source: %d  Dest: %d",
-	    catch_events[event].id(),
-	    catch_events[event].channel(),
-	    catch_events[event].switchInput(),
-	    catch_events[event].switchOutput()));
+    syslog(LOG_DEBUG,
+	   "purged event %d, Type: switch, Matrix: %d, Source: %d  Dest: %d",
+	   catch_events[event].id(),
+	   catch_events[event].channel(),
+	   catch_events[event].switchInput(),
+	   catch_events[event].switchOutput());
     break;
 
   case RDRecording::Download:
-    LogLine(RDConfig::LogDebug,QString().
-	    sprintf("purged event %d, Type: download, Cut: %s",
-		    catch_events[event].id(),
-		    (const char *)catch_events[event].cutName()));
+    syslog(LOG_DEBUG,"purged event %d, Type: download, Cut: %s",
+	   catch_events[event].id(),
+	   (const char *)catch_events[event].cutName().toUtf8());
     break;
 
   case RDRecording::Upload:
-    LogLine(RDConfig::LogDebug,QString().
-	    sprintf("purged event %d, Type: upload, Cut: %s",
-		    catch_events[event].id(),
-		    (const char *)catch_events[event].cutName()));
+    syslog(LOG_DEBUG,"purged event %d, Type: upload, Cut: %s",
+	   catch_events[event].id(),
+	   (const char *)catch_events[event].cutName().toUtf8());
     break;
 
   case RDRecording::LastType:
@@ -2572,7 +2481,6 @@ QString MainObject::GetFileExtension(QString filename)
 /* This is an overloaded virtual function to tell a session manager not to restart this daemon. */
 void QApplication::saveState(QSessionManager &sm) {
   sm.setRestartHint(QSessionManager::RestartNever);
-  LogLine(RDConfig::LogDebug,"rdcatchd saveState(), set restart hint to Never");
   return;
 };
 
@@ -2590,7 +2498,7 @@ bool MainObject::SendErrorMessage(CatchEvent *event,const QString &err_desc,
   //
   int event_id=GetFreeEvent();
   if(event_id<0) {
-    LogLine(RDConfig::LogWarning,"unable to allocate event context!");
+    syslog(LOG_WARNING,"unable to allocate event context, id=%d",event->id());
   }
   catch_macro_event_id[event_id]=event->id()+RDCATCHD_ERROR_ID_OFFSET;
   catch_event_pool[event_id]=
@@ -2600,9 +2508,8 @@ bool MainObject::SendErrorMessage(CatchEvent *event,const QString &err_desc,
 	  catch_event_mapper,SLOT(map()));
   bool res=catch_event_pool[event_id]->load(rml);
   catch_event_pool[event_id]->exec();
-  LogLine(RDConfig::LogNotice,QString().
-	  sprintf("executed error rml: id=%d, rml=\"%s\", res=%d",
-		  event->id(),(const char *)rml,res));
+  syslog(LOG_INFO,"executed error rml: id=%d, rml=\"%s\", res=%d",
+	 event->id(),(const char *)rml.toUtf8(),res);
   return true;
 }
 
@@ -2718,9 +2625,8 @@ void MainObject::StartBatch(int id)
     execl(bin,(const char *)bin,
 	  (const char *)QString().sprintf("--event-id=%d",id),
 	  (char *)NULL);
-    LogLine(RDConfig::LogErr,QString().
-	    sprintf("failed to exec %s --event-id=%d: %s",(const char *)bin,
-		    id,strerror(errno)));
+    syslog(LOG_ERR,"failed to exec %s --event-id=%d: %s",(const char *)bin,
+	   id,strerror(errno));
     exit(0);
   }
 }

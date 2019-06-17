@@ -2,7 +2,7 @@
 //
 // The sound panel widget
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -66,7 +66,6 @@ class RDSoundPanel : public QWidget
   void setRmls(int outnum,const QString &start_rml,const QString &stop_rml);
   void setLogName(const QString &logname);
   void setSvcName(const QString &svcname);
-  void setLogfile(QString filename);
   void play(RDAirPlayConf::PanelType type,int panel,int row,int col,
 	    RDLogLine::StartSource src,int mport=-1,bool pause_when_finished=false);
   bool pause(RDAirPlayConf::PanelType type,int panel,int row,int col,int mport=-1);
@@ -172,7 +171,6 @@ class RDSoundPanel : public QWidget
   bool panel_flash;
   int panel_flash_count;
   bool panel_flash_state;
-  QString panel_logname;
   QString panel_logfile;
   bool panel_timescaling_supported[PANEL_MAX_OUTPUTS];
   bool panel_config_panels;

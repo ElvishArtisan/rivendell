@@ -19,6 +19,7 @@
 //
 
 #include <ctype.h>
+#include <syslog.h>
 
 #include <qobject.h>
 #include <qapplication.h>
@@ -197,8 +198,7 @@ void RDRipc::reloadHeartbeat()
 
 void RDRipc::errorData(QAbstractSocket::SocketError err)
 {
-  rda->log(RDConfig::LogWarning,
-	   QString().sprintf("received socket error %d",err));
+  syslog(LOG_WARNING,"received socket error %d",err);
 }
 
 

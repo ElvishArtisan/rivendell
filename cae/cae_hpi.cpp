@@ -2,7 +2,7 @@
 //
 // The HPI Driver for the Core Audio Engine component of Rivendell
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,9 +18,11 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <cae.h>
+#include <syslog.h>
 
 #include <rddebug.h>
+
+#include "cae.h"
 
 void MainObject::hpiInit(RDStation *station)
 {
@@ -76,9 +78,8 @@ bool MainObject::hpiLoadPlayback(int card,QString wavename,int *stream)
   RDHPIPlayStream *playstream=new RDHPIPlayStream(sound_card);
   playstream->setCard(card);
   if(playstream->openWave(wavename)!=RDHPIPlayStream::Ok) {
-    rd_config->log("caed",RDConfig::LogNotice,QString().sprintf(
-            "Error: hpiLoadPlayback(%s)   openWave() failed to open file",
-            (const char *) wavename) );
+    syslog(LOG_WARNING,"hpiLoadPlayback(%s) openWave() failed to open file",
+	   (const char *)wavename.toUtf8());
     delete playstream;
     return false;
   }

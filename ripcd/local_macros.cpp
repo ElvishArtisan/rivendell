@@ -2,7 +2,7 @@
 //
 // Local RML Macros for the Rivendell Interprocess Communication Daemon
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,6 +20,7 @@
 
 #include <errno.h>
 #include <stdlib.h>
+#include <syslog.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 
@@ -36,10 +37,10 @@
 void MainObject::gpiChangedData(int matrix,int line,bool state)
 {
   if(state) {
-    LogLine(RDConfig::LogInfo,QString().sprintf("GPI %d:%d ON",matrix,line+1));
+    syslog(LOG_DEBUG,"GPI %d:%d ON",matrix,line+1);
   }
   else {
-    LogLine(RDConfig::LogInfo,QString().sprintf("GPI %d:%d OFF",matrix,line+1));
+    syslog(LOG_DEBUG,"GPI %d:%d OFF",matrix,line+1);
   }
   ripcd_gpi_state[matrix][line]=state;
   BroadcastCommand(QString().sprintf("GI %d %d %d %d!",matrix,line,state,
@@ -57,10 +58,10 @@ void MainObject::gpiChangedData(int matrix,int line,bool state)
 void MainObject::gpoChangedData(int matrix,int line,bool state)
 {
   if(state) {
-    LogLine(RDConfig::LogInfo,QString().sprintf("GPO %d:%d ON",matrix,line+1));
+    syslog(LOG_DEBUG,"GPO %d:%d ON",matrix,line+1);
   }
   else {
-    LogLine(RDConfig::LogInfo,QString().sprintf("GPO %d:%d OFF",matrix,line+1));
+    syslog(LOG_DEBUG,"GPO %d:%d OFF",matrix,line+1);
   }
   ripcd_gpo_state[matrix][line]=state;
   BroadcastCommand(QString().sprintf("GO %d %d %d %d!",matrix,line,state,
@@ -174,9 +175,9 @@ void MainObject::LoadLocalMacros()
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(!LoadSwitchDriver(q->value(0).toInt())) {
-      LogLine(RDConfig::LogErr,QString().
-	      sprintf("attempted to load unknown switcher driver for matrix %d",
-		      q->value(0).toInt()));
+      syslog(LOG_WARNING,
+	     "attempted to load unknown switcher driver for matrix %d",
+	     q->value(0).toInt());
     }
   }
   delete q;
@@ -242,8 +243,9 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
   RDMatrix::GpioType gpio_type;
   QByteArray data;
 
-  rda->log(RDConfig::LogInfo,QString("received rml: \'")+rml_in->toString()+
-	   "\' from "+rml_in->address().toString());
+  syslog(LOG_DEBUG,"received rml: \"%s\" from %s",
+	 (const char *)rml_in->toString().toUtf8(),
+	 (const char *)rml_in->address().toString().toUtf8());
 
   RDMacro *rml=new RDMacro();
   *rml=ForwardConvert(*rml_in);
@@ -316,8 +318,6 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
       BroadcastCommand(QString().sprintf("GC %d %d %d %d!",matrix_num,gpi,
 					 ripcd_gpi_macro[matrix_num][gpi][0],
 					 ripcd_gpi_macro[matrix_num][gpi][1]));
-      LogLine(RDConfig::LogWarning,QString().sprintf("cart: %u",
-		       ripcd_gpi_macro[matrix_num][gpi][rml->arg(3).toInt()]));
       break;
 
     case RDMatrix::GpioOutput:
@@ -485,18 +485,16 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
     if(fork()==0) {
       if(getuid()==0) {
 	if(setegid(rda->config()->gid())<0) {
-	  LogLine(RDConfig::LogWarning,QString().
-		  sprintf("unable to set group id %d for RDPopup",
-			  rda->config()->gid()));
+	  syslog(LOG_WARNING,"unable to set group id %d for RDPopup",
+		 rda->config()->gid());
 	  if(rml->echoRequested()) {
 	    rml->acknowledge(false);
 	    sendRml(rml);
 	  }
 	}
 	if(seteuid(rda->config()->uid())<0) {
-	  LogLine(RDConfig::LogWarning,QString().
-		  sprintf("unable to set user id %d for RDPopup",
-			  rda->config()->uid()));
+	  syslog(LOG_WARNING,"unable to set user id %d for RDPopup",
+		 rda->config()->uid());
 	  if(rml->echoRequested()) {
 	    rml->acknowledge(false);
 	    sendRml(rml);
@@ -508,7 +506,7 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
 			(const char *)rml->arg(0),
 			(const char *)rml->arg(1),
 			(const char *)RDEscapeString(rml->rollupArgs(2))))<0) {
-	LogLine(RDConfig::LogWarning,"RDPopup returned an error");
+	syslog(LOG_WARNING,"RDPopup returned an error");
       }
       exit(0);
     }
@@ -805,9 +803,9 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
     // Startup the new
     //
     if(!LoadSwitchDriver(matrix_num)) {
-      LogLine(RDConfig::LogErr,QString().
-            sprintf("attempted to load unknown switcher driver for matrix %d",
-		      matrix_num));
+      syslog(LOG_WARNING,
+	     "attempted to load unknown switcher driver for matrix %d",
+	     matrix_num);
     }
     break;
     
@@ -822,11 +820,11 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
     }
     if((rml->arg(0).toInt()==0)&&ripc_onair_flag) {
       BroadcastCommand("TA 0!");
-      LogLine(RDConfig::LogInfo,"onair flag OFF");
+      syslog(LOG_DEBUG,"onair flag OFF");
     }
     if((rml->arg(0).toInt()==1)&&(!ripc_onair_flag)) {
       BroadcastCommand("TA 1!");
-      LogLine(RDConfig::LogInfo,"onair flag ON");
+      syslog(LOG_DEBUG,"onair flag ON");
     }
     ripc_onair_flag=rml->arg(0).toInt();
     if(rml->echoRequested()) {
@@ -861,9 +859,8 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
       str+=(rml->arg(i)+" ");
     }
     str+=rml->arg(rml->argQuantity()-1);
-    LogLine(RDConfig::LogDebug,QString().
-	    sprintf("Sending \"%s\" to %s:%d",(const char *)str,
-		    (const char *)addr.toString(),rml->arg(1).toInt()));
+    syslog(LOG_DEBUG,"sending \"%s\" to %s:%d",(const char *)str.toUtf8(),
+	   (const char *)addr.toString().toUtf8(),rml->arg(1).toInt());
     data=RDStringToData(str);
     ripcd_rml_send->writeDatagram(data,addr,(Q_UINT16)(rml->arg(1).toInt()));
     if(rml->echoRequested()) {

@@ -2,7 +2,7 @@
 //
 // Rivendell web service portal
 //
-//   (C) Copyright 2010,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,14 +18,15 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <ctype.h>
+#include <fcntl.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <syslog.h>
+#include <openssl/sha.h>
 #include <sys/time.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <fcntl.h>
-#include <ctype.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <openssl/sha.h>
 
 #include <map>
 
@@ -448,8 +449,9 @@ void Xport::XmlExit(const QString &str,int code,const QString &srcfile,
     delete xport_post;
   }
   if(code>=400) {
-    rda->log(RDConfig::LogErr,QString().sprintf("%s '%s' %s",(const char *)str,(const char *)srcfile,
-      (srcline>0)?(const char *)QString().sprintf("line %d",srcline):""));
+    syslog(LOG_WARNING,"%s '%s' %s",
+	   (const char *)str.toUtf8(),(const char *)srcfile.toUtf8(),
+	   (srcline>0)?(const char *)QString().sprintf("line %d",srcline).toUtf8():"");
   }
 #ifdef RDXPORT_DEBUG
   if(srcline>0) {

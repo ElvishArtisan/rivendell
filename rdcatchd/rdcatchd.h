@@ -60,11 +60,6 @@
 #define RDCATCHD_HEARTBEAT_INTERVAL 10000
 #define RDCATCHD_ERROR_ID_OFFSET 1000000
 
-//
-// Function Prototypes
-//
-void LogLine(RDConfig::LogPriority prio,const QString &line);
-
 class ServerConnection
 {
  public:
@@ -127,7 +122,6 @@ class MainObject : public QObject
   void sysHeartbeatData();
   void updateXloadsData();
   void startupCartData();
-  void log(RDConfig::LogPriority prio,const QString &line);
   void notificationReceivedData(RDNotification *notify);
 
   //

@@ -82,7 +82,6 @@ class MainWidget : public QWidget
   QSizePolicy sizePolicy() const;
   
  private slots:
-  void log(RDConfig::LogPriority prio,const QString &msg);
   void resizeData();
   void connectedData(int serial,bool state);
   void nextEventData();

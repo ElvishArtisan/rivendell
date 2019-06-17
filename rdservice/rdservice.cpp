@@ -21,6 +21,7 @@
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <syslog.h>
 #include <unistd.h>
 #include <sys/types.h>
 
@@ -128,7 +129,7 @@ MainObject::MainObject(QObject *parent)
     svc_maint_timer->start(interval);
   }
   else {
-    rda->log(RDConfig::LogInfo,"maintenance checks disabled on this host!");
+    syslog(LOG_INFO,"maintenance checks disabled on this host");
   }
 
   if(!RDWritePid(RD_PID_DIR,"rdservice.pid",getuid())) {

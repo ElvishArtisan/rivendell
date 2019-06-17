@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the Quartz Type 1 Switcher Protocol
 //
-//   (C) Copyright 2002-2004,2008,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,6 +19,7 @@
 //
 
 #include <stdlib.h>
+#include <syslog.h>
 
 #include <qsignalmapper.h>
 
@@ -192,19 +193,18 @@ void Quartz1::ipConnect(int conn)
 
 void Quartz1::connectedData(int conn)
 {
-  LogLine(RDConfig::LogInfo,QString().
-	  sprintf("Connection to Quartz1 device at %s:%d established",
-			    (const char *)sas_ipaddress[conn].toString(),
-			    sas_ipport[conn]));
+  syslog(LOG_INFO,"connection to Quartz1 device at %s:%d established",
+	 (const char *)sas_ipaddress[conn].toString().toUtf8(),
+	 sas_ipport[conn]);
 }
 
 
 void Quartz1::connectionClosedData(int conn)
 {
-  LogLine(RDConfig::LogNotice,QString().
-	  sprintf("Connection to Quartz1 device at %s:%d closed unexpectedly, attempting reconnect",
-		  (const char *)sas_ipaddress[conn].toString(),
-		  sas_ipport[conn]));
+  syslog(LOG_WARNING,
+	 "connection to Quartz1 device at %s:%d closed unexpectedly, attempting reconnect",
+	 (const char *)sas_ipaddress[conn].toString().toUtf8(),
+	 sas_ipport[conn]);
   sas_reconnect_timer[conn]->start(QUARTZ1_RECONNECT_INTERVAL,true);
 }
 
@@ -213,25 +213,25 @@ void Quartz1::errorData(int conn,int err)
 {
   switch((Q3Socket::Error)err) {
       case Q3Socket::ErrConnectionRefused:
-	LogLine(RDConfig::LogNotice,QString().sprintf(
-	  "Connection to Quartz1 device at %s:%d refused, attempting reconnect",
-				  (const char *)sas_ipaddress[conn].toString(),
-				  sas_ipport[conn]));
+	syslog(LOG_NOTICE,
+	       "connection to Quartz1 device at %s:%d refused, attempting reconnect",
+	       (const char *)sas_ipaddress[conn].toString().toUtf8(),
+	       sas_ipport[conn]);
 	sas_reconnect_timer[conn]->start(QUARTZ1_RECONNECT_INTERVAL,true);
 	break;
 
       case Q3Socket::ErrHostNotFound:
-	LogLine(RDConfig::LogWarning,QString().sprintf(
-	  "Error on connection to Quartz1 device at %s:%d: Host Not Found",
-				  (const char *)sas_ipaddress[conn].toString(),
-				  sas_ipport[conn]));
+	syslog(LOG_WARNING,
+	       "error on connection to Quartz1 device at %s:%d: Host Not Found",
+	       (const char *)sas_ipaddress[conn].toString().toUtf8(),
+	       sas_ipport[conn]);
 	break;
 
       case Q3Socket::ErrSocketRead:
-	LogLine(RDConfig::LogWarning,QString().sprintf(
-	  "Error on connection to Quartz1 device at %s:%d: Socket Read Error",
-				  (const char *)sas_ipaddress[conn].toString(),
-				  sas_ipport[conn]));
+	syslog(LOG_WARNING,
+	       "error on connection to Quartz1 device at %s:%d: Socket Read Error",
+	       (const char *)sas_ipaddress[conn].toString().toUtf8(),
+	       sas_ipport[conn]);
 	break;
   }
 }

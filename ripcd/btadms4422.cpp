@@ -19,6 +19,7 @@
 //
 
 #include <stdlib.h>
+#include <syslog.h>
 
 #include <qtimer.h>
 
@@ -64,8 +65,8 @@ BtAdms4422::BtAdms4422(RDMatrix *matrix,QObject *parent)
 	writeBlock(QString().sprintf("*%uUM0\r\n",BTADMS4422_UNIT_ID),7);
     }
     else {
-      rda->config()->log("ripcd",RDConfig::LogWarning,
-			 "failed to open port \""+tty->port()+"\"");
+      syslog(LOG_WARNING,"failed to open port \"%s\"",
+	     (const char *)tty->port().toUtf8());
     }
   }
   delete tty;

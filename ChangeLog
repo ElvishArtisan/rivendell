@@ -18768,3 +18768,7 @@
 2019-06-13 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdalsaconfig(8) that caused the device list
 	to be incorrectly sorted.
+2019-06-17 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored logging system to use syslog(3) exclusively.
+	* Removed the 'Facility=', 'LogDirectory=', 'CoreDumpDirectory='
+	and 'LogPattern=' directives from rd.conf(5).

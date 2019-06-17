@@ -31,8 +31,6 @@
 extern RDAudioPort *rdaudioport_conf;
 extern RDEventPlayer *rdevent_player;
 extern RDCartDialog *rdcart_dialog;
-extern void LogLine(RDConfig::LogPriority prio,const QString &line);
-extern QString logfile;
 
 
 #endif  // GLOBALS_H

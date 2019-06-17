@@ -77,35 +77,6 @@ NewServiceNameRegex=[^*]*
 NewServiceNameGroup=0
 
 [Logs]
-; Set the method to be used for logging.  Possible values are:
-;  Syslog = Use the syslog facility.
-;    File = Log directly to a file.  See also the 'LogDirectory='
-;           and 'LogPattern=' parameters below.
-;    None = Don't generate logs at all.
-Facility=Syslog
-
-; The directory to write logs to.  Used only if the 'Facility=' 
-; parameter is set to 'File'.
-LogDirectory=/home/rd/rdlogs
-
-; The directory to to put core files in in the event of a daemon
-; crash.  For this to work, you must also configure your environment
-; to allow the generation of core dumps (e.g. 'ulimit -c unlimited').
-CoreDumpDirectory=/home/rd/rdlogs
-
-; The name of the file to send logs to.  The following wildcards can
-; be used:
-;  %d - The day of the month (01 - 31)
-;  %h - The hour (00 - 23)
-;  %M - The month (01 - 12)
-;  %m - The minute (00 - 59)
-;  %n - The name of the originating module --e.g. 'rdairplay', 'caed'.
-;  %s - The second (00 - 60)
-;  %Y - The four digit year
-; This parameter is used only if the 'Facility=' parameter is set to
-; 'File'.
-LogPattern=%n-%Y%M%d.log
-
 ; Log upload/download debug data.  You generally want to enable this only
 ; when debugging a specific upload/download problem, as *lots* of data
 ; can be generated.  Valid arguments are 'Yes' or 'No'.

@@ -19,6 +19,7 @@
 //
 
 #include <stdio.h>
+#include <syslog.h>
 
 #include <qstringlist.h>
 #include <qfileinfo.h>

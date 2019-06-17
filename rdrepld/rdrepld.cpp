@@ -19,6 +19,7 @@
 //
 
 #include <signal.h>
+#include <syslog.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 
@@ -118,7 +119,7 @@ MainObject::MainObject(QObject *parent)
   connect(repl_loop_timer,SIGNAL(timeout()),this,SLOT(mainLoop()));
   repl_loop_timer->start(RD_RDREPL_SCAN_INTERVAL,true);
 
-  rda->config()->log("rdrepld",RDConfig::LogNotice,"started");
+  syslog(LOG_INFO,"started");
 }
 
 
@@ -128,12 +129,6 @@ void MainObject::mainLoop()
   ProcessCarts();
   FreeReplicators();
   repl_loop_timer->start(RD_RDREPL_SCAN_INTERVAL,true);
-}
-
-
-void MainObject::log(RDConfig::LogPriority prio,const QString &msg)
-{
-  rda->config()->log("rdrepld",prio,msg);
 }
 
 
