@@ -18777,3 +18777,6 @@
 2019-06-17 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'UseStreamMeters=' directive from the '[Hacks]'
 	section of rd.conf(5).
+2019-06-17 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the screenshot of the rdlibrary(1) Main Window in the
+	Operations Guide.
