@@ -18774,3 +18774,6 @@
 	and 'LogPattern=' directives from rd.conf(5).
 2019-06-17 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the sas_shim(1) utility.
+2019-06-17 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'UseStreamMeters=' directive from the '[Hacks]'
+	section of rd.conf(5).

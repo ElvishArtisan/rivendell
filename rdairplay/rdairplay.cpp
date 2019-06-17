@@ -415,10 +415,7 @@ MainWidget::MainWidget(QWidget *parent)
   air_stereo_meter->setGeometry(50,70,air_stereo_meter->sizeHint().width(),
 				air_stereo_meter->sizeHint().height());
   air_stereo_meter->setMode(RDSegMeter::Peak);
- air_stereo_meter->setFocusPolicy(Qt::NoFocus);
-  if(rda->config()->useStreamMeters()) {
-    air_stereo_meter->hide();
-  }
+  air_stereo_meter->setFocusPolicy(Qt::NoFocus);
 
   //
   // Message Label

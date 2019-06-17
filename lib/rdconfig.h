@@ -93,7 +93,6 @@ class RDConfig
   QString audioStoreXportHostname() const;
   int jackConnections() const;
   QString jackPort(int num,int endpt) const;
-  bool useStreamMeters() const;
   bool disableMaintChecks() const;
   bool lockRdairplayMemory() const;
   bool enableMixerLogging() const;
@@ -158,7 +157,6 @@ class RDConfig
   QString conf_audio_store_mount_options;
   QString conf_audio_store_xport_hostname;
   QString conf_audio_store_cae_hostname;
-  bool conf_use_stream_meters;
   bool conf_disable_maint_checks;
   bool conf_lock_rdairplay_memory;
   std::vector<QString> conf_jack_ports[2];

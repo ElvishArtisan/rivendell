@@ -333,12 +333,6 @@ QString RDConfig::jackPort(int num,int endpt) const
 }
 
 
-bool RDConfig::useStreamMeters() const
-{
-  return conf_use_stream_meters;
-}
-
-
 bool RDConfig::disableMaintChecks() const
 {
   return conf_disable_maint_checks;
@@ -541,7 +535,7 @@ bool RDConfig::load()
   conf_alsa_period_size=
     profile->intValue("Alsa","PeriodSize",RD_ALSA_DEFAULT_PERIOD_SIZE);
   conf_alsa_channels_per_pcm=profile->intValue("Alsa","ChannelsPerPcm",-1);
-  conf_use_stream_meters=profile->boolValue("Hacks","UseStreamMeters",false);
+
   conf_disable_maint_checks=
     profile->boolValue("Hacks","DisableMaintChecks",false);
   conf_lock_rdairplay_memory=
@@ -658,7 +652,6 @@ void RDConfig::clear()
   conf_audio_store_cae_hostname="";
   conf_jack_ports[0].clear();
   conf_jack_ports[1].clear();
-  conf_use_stream_meters=false;
   conf_disable_maint_checks=false;
   conf_lock_rdairplay_memory=false;
   conf_uid=65535;

@@ -269,9 +269,6 @@ MainWidget::MainWidget(QWidget *parent)
 		panel_stereo_meter->sizeHint().height());
   panel_stereo_meter->setMode(RDSegMeter::Peak);
   panel_stereo_meter->setFocusPolicy(Qt::NoFocus);
-  if(rda->config()->useStreamMeters()) {
-    panel_stereo_meter->hide();
-  }
 
   //
   // Empty Cart

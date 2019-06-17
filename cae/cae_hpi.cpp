@@ -480,20 +480,6 @@ bool MainObject::hpiGetInputMeters(int card,int port,short levels[2])
 bool MainObject::hpiGetOutputMeters(int card,int port,short levels[2])
 {
 #ifdef HPI
-  if(rd_config->useStreamMeters()) {
-    //
-    //  This is UGLY, but needed to semi-support cards (like the ASI4215)
-    //  that lack output port metering.
-    //
-    for(int i=0;i<RD_MAX_STREAMS;i++) {
-      if(sound_card->getOutputVolume(card,i,port)>-10000) {
-	return sound_card->outputStreamMeter(card,i,levels);
-      }
-    }
-    levels[0]=-10000;
-    levels[1]=-10000;
-    return true;
-  }
   return sound_card->outputPortMeter(card,port,levels);
 #else
   return false;

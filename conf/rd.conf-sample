@@ -116,34 +116,10 @@ RealtimePriority=9
 ; when transcoding files.
 TranscodingDelay=0
 
-[Hacks]
-; If you are getting no output level meter indications with an older
-; ASI card (such as the ASI4215, ASI4113 or ASI4111), try uncommenting
-; the following line:
-; UseStreamMeters=Yes
 
+[Hacks]
 ; Completely disable maintenance checks on this host.
 ; DisableMaintChecks=Yes
 
 ; Lock memory in RDAirPlay
 ; LockRdairplayMemory=Yes
-
-;
-; Log Generation (old method, deprecated)
-;
-;  These sections are here strictly for backward compatibility.  See
-;  the [Logs] section for a much more powerful way to configure
-;  logging.
-;
-; [RDAirPlay]
-; Logfile=/home/rd/rdairplay.log
-;
-; [RDCatchd]
-; Logfile=/home/rd/rdcatchd.log
-;
-; [Ripcd]
-; Logfile=/home/rd/ripcd.log
-;
-; [Caed]
-; Logfile=/home/rd/caed.log
-; EnableMixerLogging=No
