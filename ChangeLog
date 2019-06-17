@@ -18772,3 +18772,5 @@
 	* Refactored logging system to use syslog(3) exclusively.
 	* Removed the 'Facility=', 'LogDirectory=', 'CoreDumpDirectory='
 	and 'LogPattern=' directives from rd.conf(5).
+2019-06-17 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the sas_shim(1) utility.

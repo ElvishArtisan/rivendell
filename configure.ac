@@ -573,7 +573,6 @@ AC_CONFIG_FILES([rivendell.spec \
     utils/rdselect_helper/Makefile \
     utils/rdsoftkeys/Makefile \
     utils/rmlsend/Makefile \
-    utils/sas_shim/Makefile \
     xdg/Makefile \
     xdg/rdalsaconfig-root-consolehelper \
     xdg/rddbconfig-root-consolehelper \
