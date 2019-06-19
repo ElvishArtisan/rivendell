@@ -18784,3 +18784,6 @@
 	* Added an 'RDDbConfig' chapter to the Operations Guide.
 	* Removed the 'Backing Up and Restoring the Database' section
 	from the 'RDAdmin' chapter of the Operations Guide.
+2019-06-19 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression that caused a compilation error when
+	M4A decoding support was enabled.

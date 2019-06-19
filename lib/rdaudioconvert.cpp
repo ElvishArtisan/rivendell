@@ -828,7 +828,7 @@ RDAudioConvert::ErrorCode RDAudioConvert::Stage1M4A(const QString &dstfile,
     UpdatePeak((const float*)sample_buffer, frameInfo.samples);
     
     if(sf_write_float(sf_dst, (const float*)sample_buffer, frameInfo.samples) != (sf_count_t)frameInfo.samples) {
-      rda->log(RDConfig::LogWarning,QString().sprintf("%s",sf_strerror(sf_dst)));
+      syslog(LOG_WARNING,"%s",sf_strerror(sf_dst));
       ret = RDAudioConvert::ErrorInternal;
       break;
     }
