@@ -87,7 +87,6 @@ OPSGUIDE_HTML = appendix.filepath_wildcards.html\
                 sect.gpio_switcher_devices.wheatnet_lio.html\
                 sect.gpio_switcher_devices.wheatnet_slio.html\
                 sect.gplv2.how_to_apply_these_terms_to_your_new_programs.html\
-                sect.rdadmin.backing_up_and_restoring_the_database.html\
                 sect.rdadmin.manage_groups.html\
                 sect.rdadmin.manage_hosts.html\
                 sect.rdadmin.manage_replicators.html\
@@ -108,7 +107,6 @@ OPSGUIDE_HTML = appendix.filepath_wildcards.html\
                 sect.rdcatch.automating_switcher_operations.html\
                 sect.rdcatch.automating_uploads_downloads.html\
                 sect.rdcatch.the_rdcatch_main_window.html\
-                sect.rddbconfig.backing_up_and_restoring_the_database.html\
                 sect.rddbconfig.backing_up_the_database.html\
                 sect.rddbconfig.creating_a_new_database.html\
                 sect.rddbconfig.restoring_the_database_from_a_backup.html\

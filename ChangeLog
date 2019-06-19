@@ -18787,3 +18787,6 @@
 2019-06-19 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression that caused a compilation error when
 	M4A decoding support was enabled.
+2019-06-19 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression that caused a compilation error when
+	rebuilding the Docbook 5 documentation.
