@@ -18798,3 +18798,5 @@
 	the ['DC'] 'Drop Connection' command.
 	* Fixed a bug in caed(8) that caused voicetracks to fail to be
 	saved properly.
+2019-06-20 Fred Gleason <fredg@paravelsystems.com>
+	* Updated 'CODINGSTYLE'.

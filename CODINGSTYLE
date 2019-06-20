@@ -1,201 +1,297 @@
 This is the CODINGSTYLE file for the Rivendell package.
 
-
 OVERVIEW:
+This file, CODINGSTYLE, describes the coding style guidelines for writing
+new code, how to submit patches to be incorporated into the official
+Rivendell Git repository, and other code related information. General info
+on the Rivendell project can be found at the http://www.rivendellaudio.org/
+web page and also in the 'README' and 'INSTALL' files.  
 
-Rivendell is a Free Software project to develop a radio broadcast automation
-system.  This file, CODINGSTYLE, describes how to get the Rivendell code,
-coding style guidelines for writing new code, how to submit patches to be
-incorporated into the official Rivendell CVS repository, and other code related
-information.  General info on the Rivendell project can be found at the
-http://www.rivendellaudio.org/ web page and also in the README and INSTALLATION
-files.  
-
-
-
-CODING STYLE GUIDELINES:
-Please try to write code that fits with the formating style already present.
-Some good basic guidelines:
-
-   LINE LENGTH -- Should be short enough to fit onto an eighty character line
-                  without wrapping.  This applies to ChangeLog 
-                  entries too!  While it's not always possible to follow this 
-                  rule (quoted literal strings being one place in particular 
-                  where it is sometimes necessary to violate it), sticking 
-                  with it wherever possible makes life much easier for those 
-                  using character mode editing sessions.
-
-   INDENTATION -- Should be two characters per level.
-
-   CLASS NAMES -- Should have the initial letter of each word capitalized, 
-                  e.g. 'ThisIsMyClass'.  If the class is part of librd, the
-                  name should be prefaced with the uppercase letters 'RD', 
-                  e.g. 'RDThisIsMyClass'.
-
-  METHOD NAMES -- Names of class methods should follow the general style used
-                  by Qt.  A special convention for Rivendell is to reserve
-                  names beginning with an uppercase letter for private classes
-                  only.
-
-VARIABLE NAMES -- Class variables should be prefaced with a short base name 
-                  that is common to all, followed by an underscore.  For
-                  example, the class 'MyClass' might use 'myclass_', as 
-                  in 'myclass_foo1', 'myclass_foo2', etc.  *All* variables
-                  should be lowercase only, with uppercase being reserved for
-                  class and method names.
-
-Doxygen is the code documenting system in place.  Doxygen style comments placed
-in header files can then be processed to generate friendly code documentation.
-More information on doxygen can be found here (
-http://www.stack.nl/~dimitri/doxygen/ ).  
-FIXME: doxygen code samples
+The code style used for Rivendell is a somewhat idiosyncratic mixture of
+the style generally used for Qt C++ programs combined with the classic UNIX
+C style. Some of the specifics include:
 
 
+LINE LENGTH:
+Should not be longer than 78 characters unless doing so would severely
+compromise the readability of the code. Where it is necessary to break a
+line, it should be done at a point that preserves maximum clarity and ease
+of reading.
 
-CVS GENERAL INFO:
+Good:
+  *report+=QString(" ")+
+    logLine(i)->startTime(RDLogLine::Logged).toString("hh:mm:ss")+
+    QString().sprintf(" - cart %06d [",logLine(i)->cartNumber())+
+    q->value(1).toString()+"] "+QObject::tr("is not playable")+"\n";
 
-CVS allows multiple developers to work simultaneously on a project. CVS does
-this by keeping a master version of the source code in a central repository on
-the cvs.rivendellaudio.org server.  Each developer "checks out" a copy of the
-source code to their personal workspace. This local copy of the source is
-called a sandbox.  Developers test and work on the source in their sandboxes
-until they reach a mile-point, such as implementing a new feature or fixing a
-bug.  Developers can then create a patch or commit their changes back to the
-central repository.  The CVS server auto-magically merges changes from multiple
-developers together.  Other developers periodically update their sandboxes to
-merge changes others have committed to the server.
-
-Conflicts normally are prevented by developers communicating and by working on
-different areas of the source code. It is important that only working code is
-committed back into the repository.
-
-Though CVS has one main program, cvs, that program has a lot of functionality
-which is accessed by giving the program different commands. The general syntax
-of the cvs program is:
-
-    cvs CVS_OPTIONS COMMAND COMMAND_OPTIONS
-
-A brief overview of CVS can be found online here (
-http://techweb.rfa.org/grauf/cvs.html ).
+Bad:
+  *report+=QString(" ")+logLine(i)->startTime(RDLogLine::Logged).toString("hh:mm:ss")+QString().sprintf(" - cart %06d [",logLine(i)->cartNumber())+q->value(1).toString()+"] "+QObject::tr("is not playable")+"\n";
 
 
+INDENTATION:
+Should be two spaces per level. This helps to keep the line length down.
 
-CVS READ:
+Good:
+  if(to_line<0) {
+    to_line=size();
+    for(int i=from_line;i<size();i++) {
+      if(logLine(i)->timeType()==RDLogLine::Hard) {
+	to_line=i;
+	i=size();
+	if(sched_time!=NULL) {
+	  *sched_time=logLine(i)->startTime(RDLogLine::Logged);
+	}
+      }
+    }
+  }
 
-Any user can get anonymous read-only access to the CVS repository using the
-pserver protocol.  The module one wishes to check out must be specified as the
-module-name (ex: rivendell).  cvs.rivendellaudio.org is configured with the
-username "cvs" and the password "cvs".  Access via the pserver protocol
-requires that a user login/logout.
-
-    cvs -d:pserver:cvs@cvs.rivendellaudio.org:/home/cvs/cvsroot login
-    cvs -d:pserver:cvs@cvs.rivendellaudio.org:/home/cvs/cvsroot checkout rivendell
-    cvs -d:pserver:cvs@cvs.rivendellaudio.org:/home/cvs/cvsroot logout
-
-
-
-
-SUBMITTING PATCHES:
-
-Contributions of patches with fixes or enhancements are welcome.  Posting a
-patch to the rivendell programmer mailing list (
-rivendell-prog@rivendellaudio.org
-http://www.rivendellaudio.org/mailman/listinfo/rivendell-prog ) is the best
-approach for anyone to contribute to the project.  Established Rivendell
-programmers can then review the patch and apply it to the official CVS tree.
-Users who contribute significant patches over time may earn the privilege of
-CVS write access.
-
-The cvs diff command may be used to generate patches from a CVS sandbox.  This
-allows for a user to checkout a cvs sandbox and make changes as needed by
-directly editing the files checked out.  When done making changes, the cvs
-utility can generate the differences, in patch file format, of the sandbox
-version to the repository version of a file.  Run the following commands from
-within the sandbox.
-
-    # see changes made to sandbox against what was checked out from the
-    # repository
-    cvs diff FILE
-
-    # see the difference between two versions of a file in the repository
-    cvs diff -rVERSION_NUMBER -rVERSION_NUMBER FILE
-
-Additional flags, such as "-u" can be added to produce a "unified context"
-style diff.  Similarly the output redirector can be used to send the patch to a
-file (which can then be emailed to the mailing list).   A sample command
-follows:
-
-    cvs diff -u FILE > /tmp/FILE_bugfix_2007.03.26.patch
+Bad:
+  if(to_line<0) {
+          to_line=size();
+	  for(int i=from_line;i<size();i++) {
+                  if(logLine(i)->timeType()==RDLogLine::Hard) {
+	                  to_line=i;
+	                  i=size();
+	                  if(sched_time!=NULL) {
+	                          *sched_time=logLine(i)->startTime(RDLogLine::Logged);
+	                  }
+                   }
+           }
+  }
 
 
+CURLY BRACES:
+Conditional statements (such as 'if' and 'for') should *always* use curly
+braces, even where the affected block is but one line long. The opening
+brace should be on the same line as the conditional and the closing one on
+a line by itself. This style greatly facilitates debugging, allowing a
+single line to be provisionally commented out or additional lines to be
+provisionally added without making the enclosing conditional syntactically
+invalid.
 
-CVS WRITE:
+Good:
+  if(i==12) {
+    printf("i is equal to twelve!\n");
+  }
 
-Contributors who have write access to the Rivendell CVS repository must use
-Secure Shell (ssh) as the secure transport for all non-anonymous CVS access.
-
-To get this set up, you will need to generate a public key and send it to
-Federico Grau <grauf@rfa.org> and the sysadmin team <sysadmins@rfa.org> at
-Radio Free Asia (RFA), along with the username one wishes to use.  As an
-example of how to create a public key, use the following command:
-
-	ssh-keygen -t dsa
-
-This should prompt you for the base filename to put the public and private keys
-in, as well as a passphrase (be sure to use a secure one).  Assuming that the
-default filenames were accepted, you should then have the following two files
-in '~/.ssh/':
-
-	id_dsa
-	id_dsa.pub
-
-The 'id_dsa.pub' file is the one that gets sent to don Fede.  The other is your
-secret key, and should be guarded accordingly.  You will need this key every
-time you access the CVS archive using your selected username.  Once (RFA) has
-set up your account, all you will need to do is change the CVSROOT string in
-your environment or set the cvs command to point to the new server.  The form
-of the environment string and a sample checkout command follow:
-
-	export CVSROOT=:ext:<username>@cvs.rivendellaudio.org:/home/cvs/cvsroot
-    cvs checkout rivendell
-
-A sample checkout command that does not use the environment variable follows:
-
-    cvs -d:ext:<username>@cvs.rivendellaudio.org:/home/cvs/cvsroot checkout rivendell
-
-You should now be able to checkout, update and commit material as before, the
-only difference being that CVS will prompt you for the passphrase of your
-private key each time you access the archive.  As a convenience the
-ssh-agent(1) and ssh-add(1) utilities can be used to securely hold private keys
-used for public key authentication without repeatedly prompting for
-passphrases.
+Bad:
+  if(i==12)
+    printf("i is equal to twelve!\n");
 
 
-CVS WRITE COMMIT CHECKLIST:
+PADDING WHITESPACE:
+Wherever possible, there should be no whitespace between constants/variables
+and operators. This helps to keep the line length down.
 
-Before committing changes back to the Rivendell CVS repository the following
-guidelines should be completed:
+Good:
+  for(int i=from_line;i<size();i++) {
+    if(logLine(i)->timeType()==RDLogLine::Hard) {
+      to_line=i;
+    }
+  }
 
-1) Successful update of CVS without conflicts.
-2) Successful compile of CVS without errors.
-3) Update the ChangeLog file at the base of the Rivendell source code tree.
-   The format of the ChangeLog file has the most recent changes at the bottom
-   of the file.  Entries start with a date stamp and have a format like:
+Bad:
+  for(int i = from_line; i < size(); i++) {
+    if(logLine(i)->timeType() == RDLogLine::Hard) {
+      to_line = i;
+    }
+  }
 
-    YYYY-MM-DD [HH:MM TIMEZONE] NAME <EMAIL>
+
+CLASS NAMES:
+Should have the initial letter of each word capitalized, e.g. 'ThisIsMyClass'.
+If the class is part of the librd convenience library (in 'lib/'), the name
+should be prefaced with the uppercase letters 'RD', e.g. 'RDThisIsMyClass'.
+
+
+METHOD NAMES:
+Public method names as well as signal and slot method names should follow
+the general style used by Qt. A special convention for Rivendell is to
+reserve names beginning with an uppercase letter for private methods only.
+
+Good:
+class RDLogPlay
+{
+ Q_OBJECT
+ public:
+  RDLogPlay(int id,RDEventPlayer *player,QObject *parent=0);
+  QString serviceName() const;
+  void setServiceName(const QString &svcname);
+
+ private slots:
+  void transTimerData();
+  void graceTimerData();
+
+ signals:
+  void renamed();
+  void reloaded();
+  void transportChanged();
+
+ private:
+  bool StartEvent(int line,RDLogLine::TransType trans_type,int trans_length,
+		  RDLogLine::StartSource src,int mport=-1,int duck_length=0);
+  bool StartAudioEvent(int line);
+};
+
+Bad:
+class RDLogPlay
+{
+ Q_OBJECT
+ public:
+  RDLogPlay(int id,RDEventPlayer *player,QObject *parent=0);
+  QString servicename() const;
+  void set_service_name(const QString &svcname);
+
+ private slots:
+  void TransTimerData();
+  void grace_timer_data();
+
+ signals:
+  void RENAMED();
+  void Reloaded();
+  void transport_changed();
+
+ private:
+  bool startEvent(int line,RDLogLine::TransType trans_type,int trans_length,
+		  RDLogLine::StartSource src,int mport=-1,int duck_length=0);
+  bool startAudioEvent(int line);
+};
+
+
+VARIABLE NAMES:
+*All* variables should be lowercase only, with uppercase being reserved for
+class and method names. Words should be separated by underscores.
+
+Good:
+  int log_position_number=1;
+
+Bad:
+  int logPositionNumnber=1;
+
+Class variables should be prefaced with a short base name that is common to
+all, followed by an underscore. For example, the class 'MyClass' might use
+'myclass_', as in 'myclass_foo1', 'myclass_foo2', etc. Local variables
+(including function parameter names) should be kept short, preferably a
+single word.
+
+
+SQL STATEMENTS:
+When embedding SQL statements in code, the following guidelines should be
+followed:
+
+1) All table and field names are uppercase-only, while SQL operators
+   should be all lowercase.
+
+Good:
+  sql="select FIELD1,FIELD2 from MY_TABLE where ID=2";
+
+Bad:
+  sql="SELECT FIELD1,FIELD2 FROM MY_TABLE WHERE ID=2";
+
+2) Long or complex SQL statements should be broken into multiple lines in
+   a manner to enhance the readability of both C++ and SQL. For 'select'
+   queries that return more than two fields per row, each field should be
+   commented with its ordinal number to assist in determining the
+   appropriate value to give to 'RDSqlQuery::value()' for referencing
+   the fields.
+
+Good:
+  sql=QString("select ")+
+    "CART.TITLE,"+         // 00
+    "CART.ARTIST,"+        // 01
+    "CART.PUBLISHER,"+     // 02
+    "CART.COMPOSER,"+      // 03
+    "CART.USAGE_CODE,"+    // 04
+    "CUTS.ISRC,"+          // 05
+    "CART.ALBUM,"+         // 06
+    "CART.LABEL,"+         // 07
+    "CUTS.ISCI,"+          // 08
+    "CART.CONDUCTOR,"+     // 09
+    "CART.USER_DEFINED,"+  // 10
+    "CART.SONG_ID,"+       // 11
+    "CUTS.DESCRIPTION,"+   // 12
+    "CUTS.OUTCUE "+        // 13
+    "from CART left join CUTS "+
+    "on CART.NUMBER=CUTS.CART_NUMBER where "+
+    "CUTS.CUT_NAME=\""+RDEscapeString(button->cutName())+"\"";
+
+Bad:
+  sql="select CART.TITLE,CART.ARTIST,CART.PUBLISHER,CART.COMPOSER,CART.USAGE_CODE,CUTS.ISRC,CART.ALBUM,CART.LABEL,CUTS.ISCI,CART.CONDUCTOR,CART.USER_DEFINED,"+ CART.SONG_ID,CUTS.DESCRIPTION,CUTS.OUTCUE from CART left join CUTS on CART.NUMBER=CUTS.CART_NUMBER where CUTS.CUT_NAME=\""+RDEscapeString(button->cutName())+"\"";
+
+
+SCHEMA CHANGES:
+Changes that alter the schema of the database must include:
+
+  A) Incrementation of the 'RD_VERSION_DATABASE' value in 'lib/dbversion.h'.
+
+  B) Code that implements the schema change, in the
+     'utils/rddbmgr/updateschema.cpp' file.
+
+  C) Code the implements an exact, perfect reversal of the schema change,
+     in the 'utils/rddbmgr/revertschema.cpp' file.
+
+  D) Updating of the schema map in the 'MainObject::InitializeSchemaMap()'
+     method in the 'utils/rddbmgr/schemamap.cpp' file. (See the comment at
+     the top of the method definition for details).
+
+  E) Update the table documentation appropriately in 'docs/tables/'.
+
+  F) [VERY IMPORTANT] - Document the changes to the schema in your
+     'ChangeLog' entry, including the new value of 'RD_VERSION_DATABASE'.
+
+
+CONTRIBUTING CHANGES:
+The master code repository for Rivendell resides at GitHub, and can be
+found at:
+
+      https://github.com/ElvishArtisan/rivendell
+
+Changes should be submitted in the form of a pull request [PR] against
+the 'master' branch. Information about drafting and submitting PRs can
+be found at:
+
+    https://help.github.com/en/articles/about-pull-requests
+
+
+PULL REQUEST CHECKLIST:
+Before submitting a pull request, the following guidelines should be
+completed:
+
+1) The code should compile without errors or warnings [the '-Werrors' switch
+   for gcc(1) is your friend here!].
+
+2) Add an entry to the 'ChangeLog' file at the base of the Rivendell source
+   code tree, describing your changes. The format of the ChangeLog file has
+   the most recent changes at the bottom of the file. Entries start with a
+   date stamp and have a format like:
+
+    YYYY-MM-DD NAME <EMAIL>
     * Description of change
 
-    A couple examples follow:
-    2007-01-09 19:00 EST Federico Grau <grauf@rfa.org> <donfede@casagrau.org>
-	* lib/rdcart.cpp lib/rdcut.cpp rdcatch/rdcatch.cpp; corrected i18n 
-        bug by replacing use of QT shortDayName() with libradio 
-        RGetShortDayNameEN() which will always return english day names 
-        regardless of configured locale.
-
-    2007-02-23 Fred Gleason <fredg@paravelsystems.com>
+For example:
+    2007-02-23 John Coder <coder@example.com>
 	* Modified the code in 'lib/rdimport_audio.cpp' to use the
 	'RDCart::setMetadata()' and 'RDCut::setMetadata()' methods.
-4) CVS Commit of the files changed using the ChangeLog snippet.
+
+3) If your change alters any user-visible aspect (UI or behavior), update
+   the user documentation appropriately. The documentation is written
+   in DocBook 5 markup, and can be found at the following locations in
+   the source tree:
+
+   Operations Guide - 'docs/opsguide/'
+
+   Manual pages - 'docs/manpages/'
+
+   Internal and public APIs - 'docs/apis/'.
+
+4) If you wish your work to be mentioned in the 'Credits' list displayed in
+   rdadmin(1), add or modify the appropriate entry in the 'AUTHORS' file.
+   Entries should be sorted by surname, then christian name of the author.
 
 
+QUESTIONS:
+Questions about coding style, or indeed any aspect of Rivendell development,
+are welcomed on the Rivendell-prog mailing list. Subscription information
+and list archives are available at:
 
+    http://caspian.paravelsystems.com/mailman/listinfo/rivendell-prog
