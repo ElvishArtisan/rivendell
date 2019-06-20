@@ -18790,3 +18790,6 @@
 2019-06-19 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression that caused a compilation error when
 	rebuilding the Docbook 5 documentation.
+2019-06-20 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the 'CaeServer::readyReadData()' method in
+	caed(8) for greater reiliency.

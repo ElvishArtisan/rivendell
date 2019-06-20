@@ -159,13 +159,19 @@ void CaeServer::readyReadData(int id)
   QByteArray data=cae_connections.value(id)->socket->readAll();
   for(int i=0;i<data.size();i++) {
     char c=0xFF&data[i];
-    if(c=='!') {
+    switch(c) {
+    case '!':
       ProcessCommand(id,cae_connections.value(id)->accum);
-    }
-    else {
-      if(isalnum(0xFF&data[i])||(c=='_')||(c=='-')||(c==' ')) {
-	cae_connections.value(id)->accum+=0xFF&data[i];
-      }
+      cae_connections.value(id)->accum="";
+      break;
+
+    case 10:
+    case 13:
+      break;
+
+    default:
+      cae_connections.value(id)->accum+=c;
+      break;
     }
   }
 }
