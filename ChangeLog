@@ -18793,3 +18793,8 @@
 2019-06-20 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored the 'CaeServer::readyReadData()' method in
 	caed(8) for greater reiliency.
+2019-06-20 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in caed(8) that caused a segfault when executing
+	the ['DC'] 'Drop Connection' command.
+	* Fixed a bug in caed(8) that caused voicetracks to fail to be
+	saved properly.

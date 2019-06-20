@@ -107,7 +107,7 @@ class CaeServer : public QObject
   void connectionClosedData(int id);
 
  private:
-  void ProcessCommand(int id,const QString &cmd);
+  bool ProcessCommand(int id,const QString &cmd);
   QMap<int,CaeServerConnection *> cae_connections;
   QTcpServer *cae_server;
   QSignalMapper *cae_ready_read_mapper;

@@ -27,6 +27,11 @@
 
 #include "cae_server.h"
 
+//
+// Uncomment this to send all protocol messages to syslog (DEBUG priority)
+//
+// #define __CAE_SERVER_LOG_PROTOCOL_MESSAGES
+
 CaeServerConnection::CaeServerConnection(QTcpSocket *sock)
 {
   socket=sock;
@@ -133,7 +138,9 @@ void CaeServer::sendCommand(const QString &cmd)
 
 void CaeServer::sendCommand(int id,const QString &cmd)
 {
-  //  syslog(LOG_DEBUG,"sending [%d]: %s",id,(const char *)cmd.toUtf8());
+#ifdef __CAE_SERVER_LOG_PROTOCOL_MESSAGES
+  syslog(LOG_DEBUG,"send[%d]: %s",id,(const char *)cmd.toUtf8());
+#endif  // __CAE_SERVER_LOG_PROTOCOL_MESSAGES
   cae_connections.value(id)->socket->write(cmd.toAscii());
 }
 
@@ -161,8 +168,9 @@ void CaeServer::readyReadData(int id)
     char c=0xFF&data[i];
     switch(c) {
     case '!':
-      ProcessCommand(id,cae_connections.value(id)->accum);
-      cae_connections.value(id)->accum="";
+      if(ProcessCommand(id,cae_connections.value(id)->accum)) {
+	return;
+      }
       break;
 
     case 10:
@@ -188,13 +196,19 @@ void CaeServer::connectionClosedData(int id)
 }
 
 
-void CaeServer::ProcessCommand(int id,const QString &cmd)
+bool CaeServer::ProcessCommand(int id,const QString &cmd)
 {
   CaeServerConnection *conn=cae_connections.value(id);
-  QStringList f0=cmd.split(" ",QString::SkipEmptyParts);
   bool ok=false;
+  QStringList f0=cmd.split(" ",QString::SkipEmptyParts);
 
-  //  syslog(LOG_DEBUG,"receiving [%d]: %s",id,(const char *)cmd.toUtf8());
+  if(f0.size()==0) {
+    return false;
+  }
+#ifdef __CAE_SERVER_LOG_PROTOCOL_MESSAGES
+  syslog(LOG_DEBUG,"recv[%d]: %s",id,(const char *)cmd.toUtf8());
+#endif  // __CAE_SERVER_LOG_PROTOCOL_MESSAGES
+
   cae_connections.value(id)->accum="";
 
   //
@@ -202,7 +216,7 @@ void CaeServer::ProcessCommand(int id,const QString &cmd)
   //
   if(f0.at(0)=="DC") {
     connectionClosedData(id);
-    return;
+    return true;
   }
 
   if(f0.at(0)=="PW") {
@@ -214,7 +228,7 @@ void CaeServer::ProcessCommand(int id,const QString &cmd)
       conn->authenticated=false;
       sendCommand(id,"PW -!");
     }
-    return;
+    return false;
   }  
 
   //
@@ -222,7 +236,7 @@ void CaeServer::ProcessCommand(int id,const QString &cmd)
   // Authentication required to execute these!
   //
   if(!conn->authenticated) {
-    return;
+    return false;
   }
   bool was_processed=false;
 
@@ -547,4 +561,6 @@ void CaeServer::ProcessCommand(int id,const QString &cmd)
   if(!was_processed) {  // Send generic error response
     sendCommand(id,f0.join(" ")+"-!");
   }
+
+  return false;
 }
