@@ -64,8 +64,6 @@ def ProcessPad(update):
 #
 # 'Main' function
 #
-syslog.openlog(sys.argv[0].split('/')[-1])
-
 rcvr=pypad.Receiver()
 try:
     rcvr.setConfigFile(sys.argv[3])

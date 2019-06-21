@@ -4,7 +4,7 @@
 #
 # Write PAD updates to a Shoutcast 1 instance
 #
-#   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+#   (C) Copyright 2018-2019 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as
@@ -71,8 +71,6 @@ def ProcessPad(update):
 #
 # 'Main' function
 #
-syslog.openlog(sys.argv[0].split('/')[-1])
-
 rcvr=pypad.Receiver()
 try:
     rcvr.setConfigFile(sys.argv[3])

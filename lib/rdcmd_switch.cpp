@@ -2,7 +2,7 @@
 //
 // Process Rivendell Command-Line Switches
 //
-//   (C) Copyright 2002-2005,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,7 +29,7 @@
 RDCmdSwitch::RDCmdSwitch(int argc,char *argv[],const char *modname,
 			 const char *usage)
 {
-  bool debug=false;
+  switch_debug=false;
 
   for(int i=1;i<argc;i++) {
     QString value=QString::fromUtf8(argv[i]);
@@ -42,7 +42,7 @@ RDCmdSwitch::RDCmdSwitch(int argc,char *argv[],const char *modname,
       exit(0);
     }
     if(value=="-d") {
-      debug=true;
+      switch_debug=true;
     }
     QStringList f0=value.split("=");
     if(f0.size()>=2) {
@@ -58,16 +58,6 @@ RDCmdSwitch::RDCmdSwitch(int argc,char *argv[],const char *modname,
       switch_values.push_back("");
       switch_processed.push_back(false);
     }
-  }
-
-  //
-  // Initialize Logging
-  //
-  if(debug) {
-    openlog(modname,LOG_PERROR,LOG_USER);
-  }
-  else {
-    openlog(modname,0,LOG_USER);
   }
 }
 
@@ -110,4 +100,10 @@ bool RDCmdSwitch::allProcessed() const
     }
   }
   return true;
+}
+
+
+bool RDCmdSwitch::debugActive() const
+{
+  return switch_debug;
 }

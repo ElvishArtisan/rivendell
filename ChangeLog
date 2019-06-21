@@ -18800,3 +18800,28 @@
 	saved properly.
 2019-06-20 Fred Gleason <fredg@paravelsystems.com>
 	* Updated 'CODINGSTYLE'.
+2019-06-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'SyslogFacility=' directive to the '[Identity']
+	section of rd.conf(5).
+	* Added a 'syslog.openlog()' call to the constructor of the
+	'PyPAD.Receiver' class.
+	* Removed the 'syslog.openlog()' call from the 'pypad_icecast2.py'
+	script.
+	* Removed the 'syslog.openlog()' call from the 'pypad_live365.py'
+	script.
+	* Removed the 'syslog.openlog()' call from the 'pypad_serial.py'
+	script.
+	* Removed the 'syslog.openlog()' call from the 'pypad_shoutcast1.py'
+	script.
+	* Removed the 'syslog.openlog()' call from the 'pypad_spinitron.py'
+	script.
+	* Removed the 'syslog.openlog()' call from the 'pypad_tunein.py'
+	script.
+	* Removed the 'syslog.openlog()' call from the 'pypad_urlwrite.py'
+	script.
+	* Removed the 'syslog.openlog()' call from the 'pypad_walltime.py'
+	script.
+	* Removed the 'syslog.openlog()' call from the 'pypad_xcmd.py'
+	script.
+	* Removed the 'syslog.openlog()' call from the 'pypad_xmpad.py'
+	script.

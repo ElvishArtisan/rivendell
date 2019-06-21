@@ -18,6 +18,7 @@
 #   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #
 
+import os.path
 import configparser
 import datetime
 import MySQLdb
@@ -25,6 +26,7 @@ import signal
 import selectors
 import socket
 import sys
+import syslog
 import json
 
 #
@@ -831,6 +833,15 @@ class Receiver(object):
         # So we exit cleanly when shutdown by rdpadengined(8)
         signal.signal(signal.SIGTERM,SigHandler)
 
+        # Open the configuration file
+        config=configparser.ConfigParser(interpolation=None)
+        config.readfp(open('/etc/rd.conf'))
+
+        # Open the syslog
+        pypad_name=sys.argv[0].split('/')[-1]
+        syslog.openlog(pypad_name,logoption=syslog.LOG_PID,facility=config.get('Identity','SyslogFacility',fallback=syslog.LOG_USER))
+
+        # Connect to the PAD feed
         sock=socket.socket(socket.AF_INET)
         conn=sock.connect((hostname,port))
         timeout=None

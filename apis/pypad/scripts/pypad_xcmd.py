@@ -191,12 +191,7 @@ def ProcessPad(update):
 #
 # Program Name
 #
-pypad_name=os.path.basename(__file__)
-
-#
-# Open Syslog
-#
-syslog.openlog(pypad_name,logoption=syslog.LOG_PID,facility=syslog.LOG_DAEMON)
+pypad_name=sys.argv[0].split('/')[-1]
 
 rcvr=pypad.Receiver()
 try:

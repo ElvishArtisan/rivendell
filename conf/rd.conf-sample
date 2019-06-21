@@ -21,6 +21,19 @@ PypadGroup=pypad
 RnRmlOwner=rivendell
 RnRmlGroup=rivendell
 
+; This entry defines what Facility number Rivendell will use when sending
+; messages to the syslog system. The following values are recognized:
+;    1 - USER (the default)
+;   16 - LOCAL0
+;   17 - LOCAL1
+;   18 - LOCAL2
+;   19 - LOCAL3
+;   20 - LOCAL4
+;   21 - LOCAL5
+;   22 - LOCAL6
+;   23 - LOCAL7
+SyslogFacility=1
+
 ; This password is used by the various Rivendell modules to log into 
 ; Rivendell system services [caed(8), ripcd(8), rdcatchd(8)].
 Password=letmein

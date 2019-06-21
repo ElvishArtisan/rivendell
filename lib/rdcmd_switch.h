@@ -2,7 +2,7 @@
 //
 // Process Rivendell Command-Line Switches
 //
-//   (C) Copyright 2002-2005,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,7 +24,6 @@
 #include <vector>
 #include <qstring.h>
 
-
 class RDCmdSwitch
 {
  public:
@@ -35,11 +34,13 @@ class RDCmdSwitch
   bool processed(unsigned n) const;
   void setProcessed(unsigned n,bool state);
   bool allProcessed() const;
+  bool debugActive() const;
 
  private:
   std::vector<QString> switch_keys;
   std::vector<QString> switch_values;
   std::vector<bool> switch_processed;
+  bool switch_debug;
 };
 
 

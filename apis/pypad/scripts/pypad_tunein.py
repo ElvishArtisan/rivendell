@@ -4,7 +4,7 @@
 #
 # Send PAD updates to TuneIn
 #
-#   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+#   (C) Copyright 2018-2019 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as
@@ -76,13 +76,7 @@ def ProcessPad(update):
 #
 # Program Name
 #
-pypad_name=os.path.basename(__file__)
-
-#
-# Open Syslog
-#
-syslog.openlog(pypad_name,logoption=syslog.LOG_PID,facility=syslog.LOG_DAEMON)
-
+pypad_name=sys.argv[0].split('/')[-1]
 
 #
 # Create Send Socket

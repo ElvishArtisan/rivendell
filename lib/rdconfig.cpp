@@ -18,14 +18,15 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <pwd.h>
 #include <grp.h>
+#include <pwd.h>
+#include <syslog.h>
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <net/if.h>
 #include <sys/ioctl.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 
 #include <qdatetime.h>
 #include <qmessagebox.h>
@@ -321,6 +322,12 @@ QString RDConfig::rnRmlGroup() const
 }
 
 
+int RDConfig::syslogFacility() const
+{
+  return conf_syslog_facility;
+}
+
+
 int RDConfig::jackConnections() const
 {
   return conf_jack_ports[0].size();
@@ -563,6 +570,7 @@ bool RDConfig::load()
 					   RD_DEFAULT_RN_RML_GROUP)))!=NULL) {
     conf_rn_rml_gid=groups->gr_gid;
   }
+  conf_syslog_facility=profile->intValue("Identity","SyslogFacility",LOG_USER);
 
   conf_enable_mixer_logging=profile->boolValue("Caed","EnableMixerLogging");
   conf_use_realtime=profile->boolValue("Tuning","UseRealtime",false);
@@ -642,6 +650,7 @@ void RDConfig::clear()
   conf_pypad_group="";
   conf_rn_rml_owner="";
   conf_rn_rml_group="";
+  conf_syslog_facility=LOG_USER;
   conf_audio_root=RD_AUDIO_ROOT;
   conf_audio_extension=RD_AUDIO_EXTENSION;
   conf_label=RD_DEFAULT_LABEL;

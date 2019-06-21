@@ -61,11 +61,6 @@ MainObject::MainObject(QObject *parent)
   svc_startup_target=MainObject::TargetAll;
 
   //
-  // Open the syslog
-  //
-  openlog("rdservice",LOG_PERROR,LOG_DAEMON);
-
-  //
   // Check for prior instance
   //
   if(RDGetPids("rdservice").size()>1) {

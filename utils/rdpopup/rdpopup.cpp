@@ -2,7 +2,7 @@
 //
 // A utility for displaying messages on the desktop
 //
-//   (C) Copyright 2009-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2009-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,6 +29,7 @@
 
 #include <rd.h>
 #include <rdcmd_switch.h>
+#include <rdconfig.h>
 
 #include <rdpopup.h>
 
@@ -75,7 +76,9 @@ int main(int argc,char *argv[])
   //
   // Open the syslog
   //
-  openlog("rdpopup",LOG_ODELAY,LOG_USER);
+  RDConfig *config=new RDConfig();
+  config->load();
+  openlog("rdpopup",LOG_ODELAY,config->syslogFacility());
 
   //
   // Get Severity Value

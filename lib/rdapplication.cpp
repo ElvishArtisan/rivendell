@@ -19,6 +19,7 @@
 //
 
 #include <stdlib.h>
+#include <syslog.h>
 
 #include <qapplication.h>
 #include <qobject.h>
@@ -134,6 +135,16 @@ bool RDApplication::open(QString *err_msg,RDApplication::ErrorType *err_type,
   app_config=new RDConfig();
   app_config->load();
   app_config->setModuleName(app_module_name);
+
+  //
+  // Initialize Logging
+  //
+  if(app_cmd_switch->debugActive()) {
+    openlog(app_command_name,LOG_PERROR,app_config->syslogFacility());
+  }
+  else {
+    openlog(app_command_name,0,app_config->syslogFacility());
+  }
 
   //
   // Check Rivendell Service Status
@@ -259,12 +270,6 @@ RDUser *RDApplication::user()
   return app_user;
 }
 
-/*
-void RDApplication::log(RDConfig::LogPriority prio,const QString &msg)
-{
-  app_config->log(app_module_name,prio,msg);
-}
-*/
 
 bool RDApplication::dropTable(const QString &tbl_name)
 {
