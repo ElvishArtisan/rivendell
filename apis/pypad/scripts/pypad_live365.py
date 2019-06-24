@@ -4,7 +4,7 @@
 #
 # Write PAD updates to Live365 stations
 #
-#   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+#   (C) Copyright 2018-2019 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as
@@ -52,9 +52,9 @@ def ProcessPad(update):
                     curl.perform()
                     code=curl.getinfo(pycurl.RESPONSE_CODE)
                     if (code<200) or (code>=300):
-                        syslog.syslog(syslog.LOG_WARNING,'['+section+'] returned response code '+str(code))
+                        update.syslog(syslog.LOG_WARNING,'['+section+'] returned response code '+str(code))
                 except pycurl.error:
-                    syslog.syslog(syslog.LOG_WARNING,'['+section+'] failed: '+curl.errstr())
+                    update.syslog(syslog.LOG_WARNING,'['+section+'] failed: '+curl.errstr())
                 curl.close()
             n=n+1
 

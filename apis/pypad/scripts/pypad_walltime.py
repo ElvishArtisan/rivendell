@@ -47,7 +47,7 @@ def ProcessPad(update):
                 try:
                     curl.perform()
                 except pycurl.error:
-                    syslog.syslog(syslog.LOG_WARNING,'['+section+'] failed: '+curl.errstr())
+                    update.syslog(syslog.LOG_WARNING,'['+section+'] failed: '+curl.errstr())
                 curl.close()
             n=n+1
 

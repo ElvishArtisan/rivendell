@@ -82,10 +82,11 @@ FIELD_EXTERNAL_ANNC_TYPE='externalAnncType'
 PAD_TCP_PORT=34289
 
 class Update(object):
-    def __init__(self,pad_data,config):
+    def __init__(self,pad_data,config,rd_config):
         self.__fields=pad_data
         #print('PAD: '+str(self.__fields))
         self.__config=config
+        self.__rd_config=rd_config
 
     def __fromIso8601(self,string):
         try:
@@ -326,6 +327,13 @@ class Update(object):
         except TypeError:
            return False;
         
+    def rivendellConfig(self):
+        """
+           Returns a parserconfig object containing the contents of the
+           current rd.conf(5) file.
+        """
+        return self.__rd_config
+
     def serviceName(self):
         """
            Returns the name of the service associated with this update (string).
@@ -734,6 +742,13 @@ class Update(object):
         if self.__config.get(section,log_dict[self.machine()]).lower()=='onair':
             return self.onairFlag()
 
+    def syslog(self,priority,msg):
+        """
+           Send a message to the syslog.
+        """
+        if((priority&248)==0):
+            priority=priority|(int(self.__rd_config.get('Identity','SyslogFacility',fallback=syslog.LOG_USER))<<3)
+        syslog.syslog(priority,msg)
 
         
 
@@ -833,13 +848,14 @@ class Receiver(object):
         # So we exit cleanly when shutdown by rdpadengined(8)
         signal.signal(signal.SIGTERM,SigHandler)
 
-        # Open the configuration file
-        config=configparser.ConfigParser(interpolation=None)
-        config.readfp(open('/etc/rd.conf'))
+        # Open rd.conf(5)
+        rd_config=configparser.ConfigParser(interpolation=None)
+        rd_config.readfp(open('/etc/rd.conf'))
 
         # Open the syslog
         pypad_name=sys.argv[0].split('/')[-1]
-        syslog.openlog(pypad_name,logoption=syslog.LOG_PID,facility=config.get('Identity','SyslogFacility',fallback=syslog.LOG_USER))
+        print('SyslogFacility: '+str(rd_config.get('Identity','SyslogFacility')))
+        syslog.openlog(pypad_name,logoption=syslog.LOG_PID,facility=int(rd_config.get('Identity','SyslogFacility',fallback=syslog.LOG_USER)))
 
         # Connect to the PAD feed
         sock=socket.socket(socket.AF_INET)
@@ -869,7 +885,7 @@ class Receiver(object):
                 if c[0]==10:
                     msg+=line.decode('utf-8')
                     if line.decode('utf-8')=="\r\n":
-                        self.__pypad_Process(Update(json.loads(msg),self.__config_parser))
+                        self.__pypad_Process(Update(json.loads(msg),self.__config_parser,rd_config))
                         msg=""
                     line=bytes()
                 if self.__timer_interval!=None:

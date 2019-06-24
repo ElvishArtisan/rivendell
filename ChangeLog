@@ -18827,3 +18827,6 @@
 	script.
 2019-06-24 Fred Gleason <fredg@paravelsystems.com>
 	* Added 'RDApplication::syslog()' methods.
+2019-06-24 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'pypad.rivendellConfig()' method.
+	* Added a 'pypad.syslog()' method.

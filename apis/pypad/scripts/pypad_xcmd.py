@@ -30,21 +30,9 @@ import xml.etree.ElementTree as ET
 import time
 import pypad
 
-
 def eprint(*args,**kwargs):
     print(pypad_name+': ',file=sys.stderr,end='')
     print(*args,file=sys.stderr)
-    syslog.syslog(syslog.LOG_ERR,*args)
-
-def iprint(*args,**kwargs):
-    print(pypad_name+': ',file=sys.stdout,end='')
-    print(*args,file=sys.stdout)
-    syslog.syslog(syslog.LOG_INFO,*args)
-
-def dprint(*args,**kwargs):
-    print(pypad_name+': ',file=sys.stdout,end='')
-    print(*args,file=sys.stdout)
-    syslog.syslog(syslog.LOG_DEBUG,*args)
 
 def XcmdResponse():
     resp_code={b'+':'Command processed successfully',b'!':'Unknown command',b'-':'Invalid argument',b'/':'Command processed partially'}
@@ -157,24 +145,24 @@ def ProcessPad(update):
                 send_sock.settimeout(5)
 
                 encoder=(update.config().get(section,'IpAddress'),int(update.config().get(section,'TcpPort')))
-                iprint('Connecting to {}:{}'.format(*encoder))
-                iprint(xcmd.decode('utf-8'))
+                update.syslog(syslog.LOG_INFO,'Connecting to {}:{}'.format(*encoder))
+                update.syslog(syslog.LOG_INFO,xcmd.decode('utf-8'))
 
                 try:
                     send_sock.connect(encoder)
                     send_sock.sendall(xcmd)
                     ack,response,respstr=XcmdResponse()
                     if response:
-                        iprint(respstr)
+                        update.syslog(syslog.LOG_INFO,respstr)
 
                 except OSError as e:
-                    eprint("Socket error: {0}".format(e))
+                    update.syslog(syslog.LOG_WARNING,"Socket error: {0}".format(e))
 
                 except IOError as e:
                     errno,strerror=e.args
-                    eprint("I/O error({0}): {1}".format(errno,strerror))
+                    update.syslog(syslog.LOG_WARNING,"I/O error({0}): {1}".format(errno,strerror))
 
-                iprint('Closing connection')
+                update.syslog(syslog.LOG_INFO,'Closing connection')
                 send_sock.close()
 
                 # Give the device time to process and close before sending another command
@@ -200,6 +188,4 @@ except IndexError:
     eprint('pypad_xcmd.py: USAGE: cmd <hostname> <port> <config>')
     sys.exit(1)
 rcvr.setPadCallback(ProcessPad)
-iprint('Started')
 rcvr.start(sys.argv[1],int(sys.argv[2]))
-iprint('Stopped')

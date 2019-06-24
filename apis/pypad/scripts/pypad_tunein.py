@@ -29,20 +29,6 @@ import syslog
 import pypad
 import configparser
 
-def eprint(*args,**kwargs):
-    print(pypad_name+': ',file=sys.stderr,end='')
-    print(*args,file=sys.stderr)
-    syslog.syslog(syslog.LOG_ERR,*args)
-
-def iprint(*args,**kwargs):
-    print(pypad_name+': ',file=sys.stdout,end='')
-    print(*args,file=sys.stdout)
-    syslog.syslog(syslog.LOG_INFO,*args)
-
-def isTrue(string):
-    l=['Yes','On','True','1']
-    return string.lower() in map(str.lower,l)
-
 def ProcessPad(update):
     if update.hasPadType(pypad.TYPE_NOW):
         n=1
@@ -56,21 +42,21 @@ def ProcessPad(update):
                 values['title']=update.resolvePadFields(update.config().get(section,'TitleString'),pypad.ESCAPE_NONE)
                 values['artist']=update.resolvePadFields(update.config().get(section,'ArtistString'),pypad.ESCAPE_NONE)
                 values['album']=update.resolvePadFields(update.config().get(section,'AlbumString'),pypad.ESCAPE_NONE)
-                iprint('Updating TuneIn: artist='+values['artist']+' title='+values['title']+' album='+values['album'])
+                update.syslog(syslog.LOG_INFO,'Updating TuneIn: artist='+values['artist']+' title='+values['title']+' album='+values['album'])
                 try:
                     response=requests.get('http://air.radiotime.com/Playing.ashx',params=values)
                     response.raise_for_status()
                 except requests.exceptions.RequestException as e:
-                    eprint(str(e))
+                    update.syslog(syslog.LOG_WARNING,str(e))
                 else:
                     xml=ET.fromstring(response.text)
                     status=xml.find('./head/status')
                     if(status.text!='200'):
-                        eprint('Update Failed: '+xml.find('./head/fault').text)
+                        update.syslog(syslog.LOG_WARNING,'Update Failed: '+xml.find('./head/fault').text)
                 n=n+1
             except configparser.NoSectionError:
                 if(n==1):
-                    eprint('No station config found')
+                    update.syslog(syslog.LOG_WARNING,'No station config found')
                 return
 
 #
@@ -93,6 +79,4 @@ except IndexError:
     eprint('pypad_tunein.py: USAGE: cmd <hostname> <port> <config>')
     sys.exit(1)
 rcvr.setPadCallback(ProcessPad)
-iprint('Started')
 rcvr.start(sys.argv[1],int(sys.argv[2]))
-iprint('Stopped')

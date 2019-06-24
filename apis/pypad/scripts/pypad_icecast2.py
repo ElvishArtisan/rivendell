@@ -30,20 +30,6 @@ import syslog
 import pypad
 import configparser
 
-def eprint(*args,**kwargs):
-    print(pypad_name+': ',file=sys.stderr,end='')
-    print(*args,file=sys.stderr)
-    syslog.syslog(syslog.LOG_ERR,*args)
-
-def iprint(*args,**kwargs):
-    print(pypad_name+': ',file=sys.stdout,end='')
-    print(*args,file=sys.stdout)
-    syslog.syslog(syslog.LOG_INFO,*args)
-
-def isTrue(string):
-    l=['Yes','On','True','1']
-    return string.lower() in map(str.lower,l)
-
 def ProcessPad(update):
     if update.hasPadType(pypad.TYPE_NOW):
         n=1
@@ -54,17 +40,17 @@ def ProcessPad(update):
                 values['mount']=update.config().get(section,'Mountpoint')
                 values['song']=update.resolvePadFields(update.config().get(section,'FormatString'),pypad.ESCAPE_NONE)
                 values['mode']='updinfo'
-                iprint('Updating '+update.config().get(section,'Hostname')+': song='+values['song'])
+                update.syslog(syslog.LOG_INFO,'Updating '+update.config().get(section,'Hostname')+': song='+values['song'])
                 url="http://%s:%s/admin/metadata" % (update.config().get(section,'Hostname'),update.config().get(section,'Tcpport'))
                 try:
                     response=requests.get(url,auth=HTTPBasicAuth(update.config().get(section,'Username'),update.config().get(section,'Password')),params=values)
                     response.raise_for_status()
                 except requests.exceptions.RequestException as e:
-                    eprint(str(e))
+                    update.syslog(syslog.LOG_WARNING,str(e))
                 n=n+1
             except configparser.NoSectionError:
                 if(n==1):
-                    eprint('No icecast config found')
+                    update.syslog(syslog.LOG_WARNING,'No icecast config found')
                 return
 
 #
@@ -87,6 +73,4 @@ except IndexError:
     eprint('pypad_icecast2: USAGE: cmd <hostname> <port> <config>')
     sys.exit(1)
 rcvr.setPadCallback(ProcessPad)
-iprint('Started')
 rcvr.start(sys.argv[1],int(sys.argv[2]))
-iprint('Stopped')
