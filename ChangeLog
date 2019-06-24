@@ -18825,5 +18825,5 @@
 	script.
 	* Removed the 'syslog.openlog()' call from the 'pypad_xmpad.py'
 	script.
-2019-06-21 Fred Gleason <fredg@paravelsystems.com>
+2019-06-24 Fred Gleason <fredg@paravelsystems.com>
 	* Added 'RDApplication::syslog()' methods.
