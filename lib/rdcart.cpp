@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Cart.
 //
-//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,6 +29,7 @@
 #include <qobject.h>
 
 #include <rd.h>
+#include <rdapplication.h>
 #include <rdconf.h>
 #include <rdconfig.h>
 #include <rdcart.h>
@@ -89,9 +90,8 @@ bool RDCart::selectCut(QString *cut,const QTime &time) const
   if(!exists()) {
     ret=(*cut=="");
     *cut="";
-    syslog(LOG_USER|LOG_WARNING,
-	   "RDCart::selectCut(): cart doesn't exist, CUT=%s",
-	   (const char *)cut);
+    rda->syslog(LOG_DEBUG,
+	   "RDCart::selectCut(): cart doesn't exist, CUT=%s",(const char *)cut);
     return ret;
   }
 

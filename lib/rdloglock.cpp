@@ -2,7 +2,7 @@
 //
 // Log locking routines for Rivendell
 //
-//   (C) Copyright 2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,6 +22,7 @@
 
 #include <qdatetime.h>
 
+#include "rdapplication.h"
 #include "rddb.h"
 #include "rdescape_string.h"
 #include "rdloglock.h"
@@ -145,8 +146,8 @@ void RDLogLock::updateLock(const QString &log_name,const QString &guid)
     "LOCK_GUID=\""+RDEscapeString(guid)+"\"";
   q=new RDSqlQuery(sql);
   if(q->numRowsAffected()==0) {
-    syslog(LOG_WARNING,"lock on log \"%s\" has evaporated!",
-	   (const char *)log_name);
+    rda->syslog(LOG_WARNING,"lock on log \"%s\" has evaporated!",
+		(const char *)log_name);
   }
   delete q;
 }

@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the BroadcastTools ADMS 44.22
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -65,8 +65,8 @@ BtAdms4422::BtAdms4422(RDMatrix *matrix,QObject *parent)
 	writeBlock(QString().sprintf("*%uUM0\r\n",BTADMS4422_UNIT_ID),7);
     }
     else {
-      syslog(LOG_WARNING,"failed to open port \"%s\"",
-	     (const char *)tty->port().toUtf8());
+      rda->syslog(LOG_WARNING,"failed to open port \"%s\"",
+		  (const char *)tty->port().toUtf8());
     }
   }
   delete tty;

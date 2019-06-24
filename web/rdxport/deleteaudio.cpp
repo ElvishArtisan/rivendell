@@ -66,7 +66,9 @@ void Xport::DeleteAudio()
   delete q;
   SendNotification(RDNotification::CartType,RDNotification::ModifyAction,
 		   QVariant(cartnum));
-  syslog(LOG_NOTICE,"unlink(%s): %s",(const char *)RDCut::pathName(cartnum,cutnum).utf8(),strerror(errno));
+  rda->syslog(LOG_DEBUG,"unlink(%s): %s",
+	      (const char *)RDCut::pathName(cartnum,cutnum).utf8(),
+	      strerror(errno));
   delete cut;
   XmlExit("OK",200,"deleteaudio.cpp",LINE_NUMBER);
 }

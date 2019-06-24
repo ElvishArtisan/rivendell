@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Podcast
 //
-//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,11 +22,12 @@
 
 #include <curl/curl.h>
 
-#include <rddb.h>
-#include <rdpodcast.h>
-#include <rdconf.h>
-#include <rdescape_string.h>
-#include <rdurl.h>
+#include "rdapplication.h"
+#include "rddb.h"
+#include "rdpodcast.h"
+#include "rdconf.h"
+#include "rdescape_string.h"
+#include "rdurl.h"
 
 //
 // CURL Callbacks
@@ -44,7 +45,7 @@ int PodcastErrorCallback(CURL *curl,curl_infotype type,char *msg,size_t size,
   }
   memset(&str,0,size+1);
   memcpy(str,msg,size);
-  syslog(LOG_DEBUG,"CURL MSG: %s",str);
+  rda->syslog(LOG_DEBUG,"CURL MSG: %s",str);
   return 0;
 }
 
@@ -307,7 +308,7 @@ bool RDPodcast::removeAudio(RDFeed *feed,QString *err_text,bool log_debug) const
   char userpwd[256];
 
   if((curl=curl_easy_init())==NULL) {
-    syslog(LOG_ERR,"unable to initialize curl library\n");
+    rda->syslog(LOG_ERR,"unable to initialize curl library\n");
     return false;
   }
   url=new Q3Url(feed->purgeUrl());

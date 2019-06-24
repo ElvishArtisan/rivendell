@@ -66,13 +66,13 @@ MainObject::MainObject(QObject *parent)
   //
   if(getuid()==0) {
     if(setgid(rda->config()->pypadGid())!=0) {
-      syslog(LOG_ERR,"unable to set GID to %d [%s], exiting",
-	     rda->config()->pypadGid(),strerror(errno));
+      rda->syslog(LOG_ERR,"unable to set GID to %d [%s], exiting",
+		  rda->config()->pypadGid(),strerror(errno));
       exit(1);
     }
     if(setuid(rda->config()->pypadUid())!=0) {
-      syslog(LOG_ERR,"unable to set UID to %d [%s], exiting",
-	     rda->config()->pypadUid(),strerror(errno));
+      rda->syslog(LOG_ERR,"unable to set UID to %d [%s], exiting",
+		  rda->config()->pypadUid(),strerror(errno));
       exit(1);
     }
   }
@@ -82,8 +82,8 @@ MainObject::MainObject(QObject *parent)
   //
   for(unsigned i=0;i<rda->cmdSwitch()->keys();i++) {
     if(!rda->cmdSwitch()->processed(i)) {
-      syslog(LOG_ERR,"unknown command option \"%s\"",
-	     (const char *)rda->cmdSwitch()->key(i).toUtf8());
+      rda->syslog(LOG_ERR,"unknown command option \"%s\"",
+		  (const char *)rda->cmdSwitch()->key(i).toUtf8());
       exit(2);
     }
   }
@@ -189,7 +189,7 @@ void MainObject::instanceFinishedData(int id)
   RDProcess *proc=pad_instances.value(id);
 
   if(proc->process()->exitStatus()!=QProcess::NormalExit) {
-    syslog(LOG_WARNING,"PyPAD script %d crashed\n",id);
+    rda->syslog(LOG_WARNING,"PyPAD script %d crashed\n",id);
     SetRunStatus(id,false,-1,proc->standardErrorData());
     proc->deleteLater();
     pad_instances.remove(id);
@@ -207,8 +207,8 @@ void MainObject::instanceFinishedData(int id)
   }
   else {
     if(!global_pad_exiting) {
-      syslog(LOG_WARNING,"PyPAD script ID %d exited with code %d",
-	     id,proc->process()->exitCode());
+      rda->syslog(LOG_WARNING,"PyPAD script ID %d exited with code %d",
+		  id,proc->process()->exitCode());
       SetRunStatus(id,false,proc->process()->exitCode(),
 		   proc->standardErrorData());
     }
@@ -252,8 +252,8 @@ void MainObject::StartScript(unsigned id,const QString &script_path)
   args.push_back(QString().sprintf("%u",RD_PAD_CLIENT_TCP_PORT));
   args.push_back(QString().sprintf("$%u",id));
   pad_instances.value(id)->start(RD_PYPAD_PYTHON_PATH,args);
-  syslog(LOG_INFO,"starting: "+proc->program()+" "+
-	 proc->arguments().join(" ").toUtf8());
+  rda->syslog(LOG_INFO,"starting: "+proc->program()+" "+
+	      proc->arguments().join(" ").toUtf8());
 }
 
 

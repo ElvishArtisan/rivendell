@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the 360 Systems AM16
 //
-//   (C) Copyright 2002-2013,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,8 +24,10 @@
 #include <fcntl.h>
 #include <syslog.h>
 
-#include <globals.h>
-#include <am16.h>
+#include <rdapplication.h>
+
+#include "am16.h"
+#include "globals.h"
 
 Am16::Am16(RDMatrix *matrix,QObject *parent)
   : Switcher(matrix,parent)
@@ -43,8 +45,8 @@ Am16::Am16(RDMatrix *matrix,QObject *parent)
   bt_data_ptr=0;
 
   if((bt_midi_socket=open(matrix->gpioDevice(),O_RDWR))<0) {
-    syslog(LOG_WARNING,"unable to open MIDI device at \"%s\"",
-	   (const char *)matrix->gpioDevice());
+    rda->syslog(LOG_WARNING,"unable to open MIDI device at \"%s\"",
+		(const char *)matrix->gpioDevice());
     return;
   }
   sockopt=O_NONBLOCK;
@@ -177,7 +179,7 @@ void Am16::readyReadData(int sock)
 
 void Am16::timeoutData()
 {
-  syslog(LOG_WARNING,
+  rda->syslog(LOG_WARNING,
 	 "AM16 driver: timed out waiting for crosspoint map, %lu event(s) lost",
 	 bt_pending_inputs.size());
   bt_pending_inputs.clear();
@@ -233,17 +235,17 @@ void Am16::ProcessMessage(char *msg,int len)
       break;
 
     case 0x7E:
-      syslog(LOG_NOTICE,"AM16 driver: data error");
+      rda->syslog(LOG_NOTICE,"AM16 driver: data error");
       break;
 
     case 0x7F:
-      syslog(LOG_NOTICE,
+      rda->syslog(LOG_NOTICE,
 	  "AM16 driver: memory protect mode is on, cannot change crosspoints");
       break;
 
     default:
-      syslog(LOG_NOTICE,"AM16 driver: received unknown ACK code [%d]",
-	     0xFF&msg[7]);
+      rda->syslog(LOG_NOTICE,"AM16 driver: received unknown ACK code [%d]",
+		  0xFF&msg[7]);
       break;
     }
     break;
@@ -252,8 +254,9 @@ void Am16::ProcessMessage(char *msg,int len)
     for(int i=0;i<len;i++) {
       str+=QString().sprintf("%02X ",0xFF&msg[i]);
     }
-    syslog(LOG_DEBUG,"AM16 driver: received unrecognized MIDI message [%s]",
-	   (const char *)str);
+    rda->syslog(LOG_DEBUG,
+		"AM16 driver: received unrecognized MIDI message [%s]",
+		(const char *)str);
     break;
   }
 }

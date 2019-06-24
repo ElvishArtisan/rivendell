@@ -26,6 +26,7 @@
 #include <qsignalmapper.h>
 
 #include <rd.h>
+#include <rdapplication.h>
 #include <rdlivewire.h>
 #include <rdsocketstrings.h>
 
@@ -424,11 +425,11 @@ void RDLiveWire::errorData(QAbstractSocket::SocketError err)
     break;
 
   default:
-    syslog(LOG_WARNING,
-	   "socket error on connection to LiveWire node at %s:%d: %s",
-	   (const char *)live_hostname,
-	   live_tcp_port,
-	   (const char *)RDSocketStrings(err));
+    rda->syslog(LOG_WARNING,
+		"socket error on connection to LiveWire node at %s:%d: %s",
+		(const char *)live_hostname,
+		live_tcp_port,
+		(const char *)RDSocketStrings(err));
     break;
   }
 }

@@ -2,7 +2,7 @@
 //
 // A container class for a Rivendell Log Line.
 //
-//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,6 +22,7 @@
 
 #include <qobject.h>
 
+#include "rdapplication.h"
 #include "rddb.h"
 #include "rdconf.h"
 #include "rd.h"
@@ -1590,7 +1591,9 @@ RDLogLine::State RDLogLine::setEvent(int mach,RDLogLine::TransType next_type,
     cart=new RDCart(log_cart_number);
     if(!cart->exists()) {
       delete cart;
-      syslog(LOG_USER|LOG_WARNING,"RDLogLine::setEvent(): no such cart, CART=%06u",log_cart_number);
+      rda->syslog(LOG_USER|LOG_DEBUG,
+		  "RDLogLine::setEvent(): no such cart, CART=%06u",
+		  log_cart_number);
       log_state=RDLogLine::NoCart;
       return RDLogLine::NoCart;
     }
@@ -1621,14 +1624,18 @@ RDLogLine::State RDLogLine::setEvent(int mach,RDLogLine::TransType next_type,
     if(!q->first()) {
       delete q;
       delete cart;
-      syslog(LOG_USER|LOG_WARNING,"RDLogLine::setEvent(): no cut record found, SQL=%s",(const char *)sql);
+      rda->syslog(LOG_DEBUG,
+		  "RDLogLine::setEvent(): no cut record found, SQL=%s",
+		  (const char *)sql);
       log_state=RDLogLine::NoCut;
       return RDLogLine::NoCut;
     }
     if(q->value(0).toInt()==0) {
       delete q;
       delete cart;
-      syslog(LOG_USER|LOG_WARNING,"RDLogLine::setEvent(): zero length cut audio, SQL=%s",(const char *)sql);
+      rda->syslog(LOG_DEBUG,
+		  "RDLogLine::setEvent(): zero length cut audio, SQL=%s",
+		  (const char *)sql);
       log_state=RDLogLine::NoCut;
       return RDLogLine::NoCut;
     }

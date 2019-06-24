@@ -18,9 +18,9 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <syslog.h>
-
 #include <qstringlist.h>
+
+#include <rdapplication.h>
 
 #include "globals.h"
 #include "harlond.h"
@@ -203,9 +203,9 @@ void Harlond::socketConnectedData()
 void Harlond::socketDisconnectedData()
 {
   bt_watchdog_timer->start(HARLOND_RECONNECT_INTERVAL,true);
-  syslog(LOG_WARNING,
+  rda->syslog(LOG_WARNING,
 	 "connection to harlond device at %s:%d closed, attempting reconnect",
-	 (const char *)bt_ip_address.toString().toUtf8(),
+	      (const char *)bt_ip_address.toString().toUtf8(),
 	 bt_tcp_port);
   if(bt_stop_cart>0) {
     executeMacroCart(bt_stop_cart);
@@ -236,17 +236,17 @@ void Harlond::socketErrorData(int err)
   bt_watchdog_timer->start(HARLOND_RECONNECT_INTERVAL,true);
   switch(err) {
   case Q3Socket::ErrConnectionRefused:
-    syslog(LOG_WARNING,
+    rda->syslog(LOG_WARNING,
 	  "connection to harlond device at %s:%d refused, attempting reconnect",
-	   (const char *)bt_ip_address.toString().toUtf8(),
+		(const char *)bt_ip_address.toString().toUtf8(),
 	   bt_tcp_port);
     break;
 
   default:
-    syslog(LOG_WARNING,
+    rda->syslog(LOG_WARNING,
 	   "received network error %d from harlond device at %s:%d, attempting reconnect",
-	   err,
-	   (const char *)bt_ip_address.toString().toUtf8(),
+		err,
+		(const char *)bt_ip_address.toString().toUtf8(),
 	   bt_tcp_port);
     break;
   }
@@ -269,18 +269,18 @@ void Harlond::ProcessResponse(const QString &str)
   if(cmds[0]=="PW") {
     if(cmds.size()==2) {
       if(cmds[1]=="+") {
-	syslog(LOG_INFO,
-	       "connection to harlond device at %s:%d established",
-	       (const char *)bt_ip_address.toString().toUtf8(),
+	rda->syslog(LOG_INFO,
+		    "connection to harlond device at %s:%d established",
+		    (const char *)bt_ip_address.toString().toUtf8(),
 	       bt_tcp_port);
 	bt_socket->writeBlock("SS!",3);
 	return;
       }
     }
-    syslog(LOG_WARNING,
+    rda->syslog(LOG_WARNING,
 	   "connection to harlond device at %s:%d refused, invalid password",
-	   (const char *)bt_ip_address.toString().toUtf8(),
-	   bt_tcp_port);
+		(const char *)bt_ip_address.toString().toUtf8(),
+		bt_tcp_port);
   }
 
   if(cmds[0]=="ON") {
@@ -381,7 +381,7 @@ bool Harlond::TakeCrosspoint(int input,int output)
   for(int i=1;i<input;i++) {
     RemoveCrosspoint(i,output);
   }
-  syslog(LOG_DEBUG,"inputs: %d",bt_inputs);
+  rda->syslog(LOG_DEBUG,"inputs: %d",bt_inputs);
 
   for(int i=input+1;i<=bt_inputs;i++) {
     RemoveCrosspoint(i,output);

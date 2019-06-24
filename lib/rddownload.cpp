@@ -2,7 +2,7 @@
 //
 // Download a File
 //
-//   (C) Copyright 2010,2016-2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -31,6 +31,7 @@
 #include <qfileinfo.h>
 
 #include <rd.h>
+#include <rdapplication.h>
 #include <rdsystemuser.h>
 #include <rddownload.h>
 
@@ -63,7 +64,7 @@ int DownloadErrorCallback(CURL *curl,curl_infotype type,char *msg,size_t size,
   }
   memset(&str,0,size+1);
   memcpy(str,msg,size);
-  syslog(LOG_DEBUG,"CURL MSG: %s",str);
+  rda->syslog(LOG_DEBUG,"CURL MSG: %s",str);
   return 0;
 }
 
@@ -189,8 +190,8 @@ RDDownload::ErrorCode RDDownload::runDownload(const QString &username,
     break;
 
   default:
-    syslog(LOG_ERR,"Unknown CURL Error [%d]: %s",
-	   curl_err,curl_easy_strerror(curl_err));
+    rda->syslog(LOG_ERR,"Unknown CURL Error [%d]: %s",
+		curl_err,curl_easy_strerror(curl_err));
     ret=RDDownload::ErrorUnspecified;
   }
   if(user!=NULL) {
@@ -199,9 +200,9 @@ RDDownload::ErrorCode RDDownload::runDownload(const QString &username,
     delete user;
   }
   if((curl_err!=CURLE_OK)&&log_debug) {
-    syslog(LOG_WARNING,"CURL download failed: url: %s  username: %s",
-	   (const char *)conv_src_url.toString(),
-	   (const char *)username);
+    rda->syslog(LOG_WARNING,"CURL download failed: url: %s  username: %s",
+		(const char *)conv_src_url.toString(),
+		(const char *)username);
   }
   curl_easy_cleanup(curl);
   fclose(f);

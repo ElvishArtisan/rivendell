@@ -2,7 +2,7 @@
 //
 // The On Air Playout Utility for Rivendell.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -120,9 +120,6 @@ MainWidget::MainWidget(QWidget *parent)
     QMessageBox::critical(this,"RDAirPlay - "+tr("Error"),err_msg);
     exit(1);
   }
-  //  connect(RDDbStatus(),SIGNAL(logText(RDConfig::LogPriority,const QString &)),
-  //	  this,SLOT(logLine(RDConfig::LogPriority,const QString &))); 
-
 
   //
   // Read Command Options
@@ -793,7 +790,7 @@ MainWidget::MainWidget(QWidget *parent)
     }
   }
 
-  syslog(LOG_INFO,"RDAirPlay started");
+  rda->syslog(LOG_INFO,"RDAirPlay started");
 }
 
 
@@ -1263,7 +1260,7 @@ void MainWidget::logReloadedData(int log)
   switch(log) {
   case 0:
     air_log_button[0]->setText(tr("Main Log")+"\n["+labelname+"]");
-    syslog(LOG_INFO,"loaded log '%s' in Main Log",
+    rda->syslog(LOG_INFO,"loaded log '%s' in Main Log",
 	   (const char *)air_log[0]->logName().toUtf8());
     if(air_log[0]->logName().isEmpty()) {
       if(air_panel!=NULL) {
@@ -1279,13 +1276,13 @@ void MainWidget::logReloadedData(int log)
 
   case 1:
     air_log_button[1]->setText(tr("Aux 1 Log")+"\n["+labelname+"]");
-    syslog(LOG_INFO,"loaded log '%s' in Aux 1 Log",
+    rda->syslog(LOG_INFO,"loaded log '%s' in Aux 1 Log",
 	   (const char *)air_log[1]->logName().toUtf8());
     break;
 	
   case 2:
     air_log_button[2]->setText(tr("Aux 2 Log")+"\n["+labelname+"]");
-    syslog(LOG_INFO,"loaded log '%s' in Aux Log 2",
+    rda->syslog(LOG_INFO,"loaded log '%s' in Aux Log 2",
 	   (const char *)air_log[2]->logName().toUtf8());
     break;
   }
@@ -1330,8 +1327,8 @@ void MainWidget::logReloadedData(int log)
 
 void MainWidget::userData()
 {
-  syslog(LOG_INFO,"user changed to '%s'",
-	 (const char *)rda->ripc()->user().toUtf8());
+  rda->syslog(LOG_INFO,"user changed to '%s'",
+	      (const char *)rda->ripc()->user().toUtf8());
   SetCaption();
 
   //
@@ -2043,7 +2040,7 @@ void MainWidget::closeEvent(QCloseEvent *e)
       return;
     }
     rda->airplayConf()->setExitCode(RDAirPlayConf::ExitClean);
-    syslog(LOG_INFO,"RDAirPlay exiting");
+    rda->syslog(LOG_INFO,"RDAirPlay exiting");
     air_lock->unlock();
     exit(0);
   }
@@ -2057,7 +2054,7 @@ void MainWidget::closeEvent(QCloseEvent *e)
     delete air_log[i];
   }
   rda->airplayConf()->setExitCode(RDAirPlayConf::ExitClean);
-  syslog(LOG_INFO,"RDAirPlay exiting");
+  rda->syslog(LOG_INFO,"RDAirPlay exiting");
   air_lock->unlock();
   exit(0);
 }
@@ -2153,7 +2150,7 @@ void MainWidget::SetManualMode(int mach)
     air_button_list->setOpMode(RDAirPlayConf::Manual);
     air_post_counter->setDisabled(true);
   }
-  syslog(LOG_INFO,"log machine %d mode set to MANUAL",mach+1);
+  rda->syslog(LOG_INFO,"log machine %d mode set to MANUAL",mach+1);
 }
 
 
@@ -2177,7 +2174,7 @@ void MainWidget::SetAutoMode(int mach)
     air_button_list->setOpMode(RDAirPlayConf::Auto);
     air_post_counter->setEnabled(true);
   }
-  syslog(LOG_INFO,"log machine %d mode set to AUTO",mach+1);
+  rda->syslog(LOG_INFO,"log machine %d mode set to AUTO",mach+1);
 }
 
 
@@ -2201,7 +2198,7 @@ void MainWidget::SetLiveAssistMode(int mach)
     air_button_list->setOpMode(RDAirPlayConf::LiveAssist); 
     air_post_counter->setDisabled(true);
   }
-  syslog(LOG_INFO,"log machine %d mode set to LIVE ASSIST",mach+1);
+  rda->syslog(LOG_INFO,"log machine %d mode set to LIVE ASSIST",mach+1);
 }
 
 

@@ -2,7 +2,7 @@
 //
 // The Rivendell Replicator Daemon
 //
-//   (C) Copyright 2010-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -119,7 +119,7 @@ MainObject::MainObject(QObject *parent)
   connect(repl_loop_timer,SIGNAL(timeout()),this,SLOT(mainLoop()));
   repl_loop_timer->start(RD_RDREPL_SCAN_INTERVAL,true);
 
-  syslog(LOG_INFO,"started");
+  rda->syslog(LOG_INFO,"started");
 }
 
 

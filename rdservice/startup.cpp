@@ -318,8 +318,8 @@ void MainObject::KillProgram(const QString &program)
   while(pids.size()>0) {
     for(int i=0;i<pids.size();i++) {
       kill(pids.at(i),SIGKILL);
-      syslog(LOG_WARNING,"killing unresponsive program \"%s\" [PID: %d]",
-	     (const char *)program.toUtf8(),pids.at(i));
+      rda->syslog(LOG_WARNING,"killing unresponsive program \"%s\" [PID: %d]",
+		  (const char *)program.toUtf8(),pids.at(i));
     }
     sleep(1);
     pids=RDGetPids(program);

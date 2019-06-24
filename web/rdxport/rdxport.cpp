@@ -449,9 +449,10 @@ void Xport::XmlExit(const QString &str,int code,const QString &srcfile,
     delete xport_post;
   }
   if(code>=400) {
-    syslog(LOG_WARNING,"%s '%s' %s",
-	   (const char *)str.toUtf8(),(const char *)srcfile.toUtf8(),
-	   (srcline>0)?(const char *)QString().sprintf("line %d",srcline).toUtf8():"");
+    rda->syslog(LOG_WARNING,"%s '%s' %s",
+		(const char *)str.toUtf8(),(const char *)srcfile.toUtf8(),
+		(srcline>0)?(const char *)QString().sprintf("line %d",srcline).
+		toUtf8():"");
   }
 #ifdef RDXPORT_DEBUG
   if(srcline>0) {

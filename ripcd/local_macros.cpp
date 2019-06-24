@@ -37,10 +37,10 @@
 void MainObject::gpiChangedData(int matrix,int line,bool state)
 {
   if(state) {
-    syslog(LOG_DEBUG,"GPI %d:%d ON",matrix,line+1);
+    rda->syslog(LOG_DEBUG,"GPI %d:%d ON",matrix,line+1);
   }
   else {
-    syslog(LOG_DEBUG,"GPI %d:%d OFF",matrix,line+1);
+    rda->syslog(LOG_DEBUG,"GPI %d:%d OFF",matrix,line+1);
   }
   ripcd_gpi_state[matrix][line]=state;
   BroadcastCommand(QString().sprintf("GI %d %d %d %d!",matrix,line,state,
@@ -58,10 +58,10 @@ void MainObject::gpiChangedData(int matrix,int line,bool state)
 void MainObject::gpoChangedData(int matrix,int line,bool state)
 {
   if(state) {
-    syslog(LOG_DEBUG,"GPO %d:%d ON",matrix,line+1);
+    rda->syslog(LOG_DEBUG,"GPO %d:%d ON",matrix,line+1);
   }
   else {
-    syslog(LOG_DEBUG,"GPO %d:%d OFF",matrix,line+1);
+    rda->syslog(LOG_DEBUG,"GPO %d:%d OFF",matrix,line+1);
   }
   ripcd_gpo_state[matrix][line]=state;
   BroadcastCommand(QString().sprintf("GO %d %d %d %d!",matrix,line,state,
@@ -175,9 +175,9 @@ void MainObject::LoadLocalMacros()
   q=new RDSqlQuery(sql);
   while(q->next()) {
     if(!LoadSwitchDriver(q->value(0).toInt())) {
-      syslog(LOG_WARNING,
-	     "attempted to load unknown switcher driver for matrix %d",
-	     q->value(0).toInt());
+      rda->syslog(LOG_WARNING,
+		  "attempted to load unknown switcher driver for matrix %d",
+		  q->value(0).toInt());
     }
   }
   delete q;
@@ -243,9 +243,9 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
   RDMatrix::GpioType gpio_type;
   QByteArray data;
 
-  syslog(LOG_DEBUG,"received rml: \"%s\" from %s",
-	 (const char *)rml_in->toString().toUtf8(),
-	 (const char *)rml_in->address().toString().toUtf8());
+  rda->syslog(LOG_DEBUG,"received rml: \"%s\" from %s",
+	      (const char *)rml_in->toString().toUtf8(),
+	      (const char *)rml_in->address().toString().toUtf8());
 
   RDMacro *rml=new RDMacro();
   *rml=ForwardConvert(*rml_in);
@@ -485,16 +485,16 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
     if(fork()==0) {
       if(getuid()==0) {
 	if(setegid(rda->config()->gid())<0) {
-	  syslog(LOG_WARNING,"unable to set group id %d for RDPopup",
-		 rda->config()->gid());
+	  rda->syslog(LOG_WARNING,"unable to set group id %d for RDPopup",
+		      rda->config()->gid());
 	  if(rml->echoRequested()) {
 	    rml->acknowledge(false);
 	    sendRml(rml);
 	  }
 	}
 	if(seteuid(rda->config()->uid())<0) {
-	  syslog(LOG_WARNING,"unable to set user id %d for RDPopup",
-		 rda->config()->uid());
+	  rda->syslog(LOG_WARNING,"unable to set user id %d for RDPopup",
+		      rda->config()->uid());
 	  if(rml->echoRequested()) {
 	    rml->acknowledge(false);
 	    sendRml(rml);
@@ -506,7 +506,7 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
 			(const char *)rml->arg(0),
 			(const char *)rml->arg(1),
 			(const char *)RDEscapeString(rml->rollupArgs(2))))<0) {
-	syslog(LOG_WARNING,"RDPopup returned an error");
+	rda->syslog(LOG_WARNING,"RDPopup returned an error");
       }
       exit(0);
     }
@@ -803,9 +803,9 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
     // Startup the new
     //
     if(!LoadSwitchDriver(matrix_num)) {
-      syslog(LOG_WARNING,
-	     "attempted to load unknown switcher driver for matrix %d",
-	     matrix_num);
+      rda->syslog(LOG_WARNING,
+		  "attempted to load unknown switcher driver for matrix %d",
+		  matrix_num);
     }
     break;
     
@@ -820,11 +820,11 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
     }
     if((rml->arg(0).toInt()==0)&&ripc_onair_flag) {
       BroadcastCommand("TA 0!");
-      syslog(LOG_DEBUG,"onair flag OFF");
+      rda->syslog(LOG_DEBUG,"onair flag OFF");
     }
     if((rml->arg(0).toInt()==1)&&(!ripc_onair_flag)) {
       BroadcastCommand("TA 1!");
-      syslog(LOG_DEBUG,"onair flag ON");
+      rda->syslog(LOG_DEBUG,"onair flag ON");
     }
     ripc_onair_flag=rml->arg(0).toInt();
     if(rml->echoRequested()) {
@@ -859,8 +859,8 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
       str+=(rml->arg(i)+" ");
     }
     str+=rml->arg(rml->argQuantity()-1);
-    syslog(LOG_DEBUG,"sending \"%s\" to %s:%d",(const char *)str.toUtf8(),
-	   (const char *)addr.toString().toUtf8(),rml->arg(1).toInt());
+    rda->syslog(LOG_DEBUG,"sending \"%s\" to %s:%d",(const char *)str.toUtf8(),
+		(const char *)addr.toString().toUtf8(),rml->arg(1).toInt());
     data=RDStringToData(str);
     ripcd_rml_send->writeDatagram(data,addr,(Q_UINT16)(rml->arg(1).toInt()));
     if(rml->echoRequested()) {

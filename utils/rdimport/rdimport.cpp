@@ -2,7 +2,7 @@
 //
 // A Batch Importer for Rivendell.
 //
-//   (C) Copyright 2002-2014,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -2025,7 +2025,7 @@ void MainObject::Log(int prio,const QString &msg) const
   QString m=msg;
 
   if (import_drop_box||import_log_syslog||import_log_file) {
-    syslog(prio,m.replace(QRegExp("^rdimport: "),"").simplified());
+    rda->syslog(prio,m.replace(QRegExp("^rdimport: "),"").simplified());
   }
   else {
     if(prio==LOG_ERR) {

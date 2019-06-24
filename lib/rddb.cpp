@@ -3,7 +3,7 @@
 //   Database driver with automatic reconnect
 //
 //   (C) Copyright 2007 Dan Mills <dmills@exponent.myzen.co.uk>
-//   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -34,6 +34,7 @@
 #include <QStringList>
 #include <QVariant>
 
+#include "rdapplication.h"
 #include "rddb.h"
 #include "rddbheartbeat.h"
 
@@ -58,7 +59,7 @@ RDSqlQuery::RDSqlQuery (const QString &query,bool reconnect):
     }
 
     fprintf(stderr,"%s\n",(const char *)err);
-    syslog(LOG_ERR,(const char *)err);
+    rda->syslog(LOG_ERR,(const char *)err);
   }
 
   if(isActive()) {
@@ -83,7 +84,7 @@ RDSqlQuery::RDSqlQuery (const QString &query,bool reconnect):
       +"["+lastError().text()+"]: "+query;
 
     fprintf(stderr,"%s\n",(const char *)err);
-    syslog(LOG_ERR,(const char *)err);
+    rda->syslog(LOG_ERR,(const char *)err);
   }
 }
 

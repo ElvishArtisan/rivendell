@@ -20,6 +20,7 @@
 
 #include <syslog.h>
 
+#include <rdapplication.h>
 #include <rddebug.h>
 
 #include "cae.h"
@@ -33,7 +34,7 @@ void MainObject::hpiInit(RDStation *station)
       play[i][j]=NULL;
     }
   }
-  sound_card=new RDHPISoundCard(this);
+  sound_card=new RDHPISoundCard(rd_config,this);
   sound_card->setFadeProfile(RD_FADE_TYPE);
   for(int i=0;i<sound_card->getCardQuantity();i++) {
     cae_driver[i]=RDStation::Hpi;
@@ -78,7 +79,8 @@ bool MainObject::hpiLoadPlayback(int card,QString wavename,int *stream)
   RDHPIPlayStream *playstream=new RDHPIPlayStream(sound_card);
   playstream->setCard(card);
   if(playstream->openWave(wavename)!=RDHPIPlayStream::Ok) {
-    syslog(LOG_WARNING,"hpiLoadPlayback(%s) openWave() failed to open file",
+    RDApplication::syslog(rd_config,LOG_DEBUG,
+			  "hpiLoadPlayback(%s) openWave() failed to open file",
 	   (const char *)wavename.toUtf8());
     delete playstream;
     return false;

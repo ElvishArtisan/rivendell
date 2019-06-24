@@ -2,7 +2,7 @@
 //
 // A Rivendell LWRP GPIO driver for LiveWire networks.
 //
-//   (C) Copyright 2013,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2013-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,8 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <syslog.h>
-
+#include <rdapplication.h>
 #include <rddb.h>
 #include <rdescape_string.h>
 
@@ -207,18 +206,19 @@ void LiveWireLwrpGpio::connectedData(unsigned id)
     gpio_gpo_limit=RD_LIVEWIRE_GPIO_BUNDLE_SIZE*gpio_livewire->gpos();
   }
 
-  syslog(LOG_DEBUG,"livewire LWRP gpio driver connected to %s at %s:%d",
-	 (const char *)gpio_livewire->deviceName(),
-	 (const char *)gpio_livewire->hostname(),
-	 0xFFFF&gpio_livewire->tcpPort());
+  rda->syslog(LOG_DEBUG,"livewire LWRP gpio driver connected to %s at %s:%d",
+	      (const char *)gpio_livewire->deviceName(),
+	      (const char *)gpio_livewire->hostname(),
+	      0xFFFF&gpio_livewire->tcpPort());
 }
 
 
 void LiveWireLwrpGpio::watchdogStateChangedData(unsigned id,const QString &msg)
 {
-  syslog(LOG_WARNING,"livewire LWRP driver watchdog update for device %s at %s:%d: %s",
-	 (const char *)gpio_livewire->deviceName(),
-	 (const char *)gpio_livewire->hostname(),
-	 0xFFFF&gpio_livewire->tcpPort(),
-	 (const char *)msg);
+  rda->syslog(LOG_WARNING,
+	      "livewire LWRP driver watchdog update for device %s at %s:%d: %s",
+	      (const char *)gpio_livewire->deviceName(),
+	      (const char *)gpio_livewire->hostname(),
+	      0xFFFF&gpio_livewire->tcpPort(),
+	      (const char *)msg);
 }

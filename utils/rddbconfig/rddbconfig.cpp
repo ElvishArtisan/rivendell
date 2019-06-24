@@ -29,9 +29,10 @@
 #include <qmessagebox.h>
 #include <q3filedialog.h>
 
-#include "rdconfig.h"
-#include "rdpaths.h"
-#include "dbversion.h"
+#include <dbversion.h>
+#include <rdapplication.h>
+#include <rdconfig.h>
+#include <rdpaths.h>
 
 #include "../../icons/rivendell-22x22.xpm"
 
@@ -204,9 +205,12 @@ void MainWidget::mismatchData()
       }
       else {
         QMessageBox::information(this,"Database Modified Successfully",
-          QString().sprintf("Modified database to version %d", RD_VERSION_DATABASE));
+          QString().sprintf("Modified database to version %d",
+			    RD_VERSION_DATABASE));
       }
-      syslog(LOG_INFO,"modified database to version %d",RD_VERSION_DATABASE);
+      RDApplication::syslog(rd_config,LOG_INFO,
+			    "modified database to version %d",
+			    RD_VERSION_DATABASE);
 
       emit dbChanged();
     }
@@ -330,9 +334,9 @@ void MainWidget::backupData()
         QString().sprintf("Backed up %s database to %s",
           (const char *)rd_config->mysqlDbname(),
           (const char *)filename));
-      syslog(LOG_INFO,"backed up %s database to %s",
-	     (const char *)rd_config->mysqlDbname(),
-	     (const char *)filename);
+      RDApplication::syslog(rd_config,LOG_INFO,"backed up %s database to %s",
+			    (const char *)rd_config->mysqlDbname(),
+			    (const char *)filename);
     }
   }
 }
@@ -380,9 +384,9 @@ void MainWidget::restoreData()
         QString().sprintf("Restored %s database from %s",
           (const char *)rd_config->mysqlDbname(),
           (const char *)filename));
-      syslog(LOG_INFO,"restored %s database from %s",
-	     (const char *)rd_config->mysqlDbname(),
-	     (const char *)filename);
+      RDApplication::syslog(rd_config,LOG_INFO,"restored %s database from %s",
+			    (const char *)rd_config->mysqlDbname(),
+			    (const char *)filename);
     }
     emit updateLabels();
     startDaemons();

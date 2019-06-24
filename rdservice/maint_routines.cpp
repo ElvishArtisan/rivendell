@@ -2,7 +2,7 @@
 //
 // Rivendell Maintenance Routines
 //
-//   (C) Copyright 2008-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2008-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -88,7 +88,7 @@ void MainObject::RunSystemMaintRoutine()
   RunEphemeralProcess(RDSERVICE_PURGECASTS_ID,
 		      QString(RD_PREFIX)+"/bin/rdpurgecasts",args);
 
-  syslog(LOG_INFO,"ran system-wide maintenance routines");
+  rda->syslog(LOG_INFO,"ran system-wide maintenance routines");
 }
 
 
@@ -97,7 +97,7 @@ void MainObject::RunLocalMaintRoutine()
   RunEphemeralProcess(RDSERVICE_LOCALMAINT_ID,
 		      QString(RD_PREFIX)+"/bin/rdmaint",QStringList());
 
-  syslog(LOG_INFO,"ran local maintenance routines");
+  rda->syslog(LOG_INFO,"ran local maintenance routines");
 }
 
 
@@ -119,7 +119,7 @@ void MainObject::RunEphemeralProcess(int id,const QString &program,
   if(!svc_processes[id]->process()->waitForStarted()) {
     QString err_msg=tr("unable to start")+"\""+program+"\": "+
       svc_processes[id]->errorText();
-    syslog(LOG_WARNING,"%s",(const char *)err_msg.toUtf8());
+    rda->syslog(LOG_WARNING,"%s",(const char *)err_msg.toUtf8());
     delete svc_processes[id];
     svc_processes.remove(id);
   }

@@ -2,7 +2,7 @@
 //
 // Connection to the Rivendell Interprocess Communication Daemon
 //
-//   (C) Copyright 2002-2003,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -198,7 +198,7 @@ void RDRipc::reloadHeartbeat()
 
 void RDRipc::errorData(QAbstractSocket::SocketError err)
 {
-  syslog(LOG_WARNING,"received socket error %d",err);
+  rda->syslog(LOG_DEBUG,"received socket error %d",err);
 }
 
 

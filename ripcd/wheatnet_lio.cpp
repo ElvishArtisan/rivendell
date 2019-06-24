@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for WheatNet LIO
 //
-//   (C) Copyright 2017-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,8 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <syslog.h>
-
+#include <rdapplication.h>
 #include <rddb.h>
 #include <rdescape_string.h>
 
@@ -171,9 +170,9 @@ void WheatnetLio::processCommand(RDMacro *cmd)
 
 void WheatnetLio::connectedData()
 {
-  syslog(LOG_INFO,
-	 "connection to WheatNet LIO device at %s:%u established",
-	 (const char *)lio_ip_address.toString(),0xffff&lio_ip_port);
+  rda->syslog(LOG_INFO,
+	      "connection to WheatNet LIO device at %s:%u established",
+	      (const char *)lio_ip_address.toString(),0xffff&lio_ip_port);
   lio_watchdog_active=false;
   SendCommand("<SYS?LIO>");
 }
@@ -228,9 +227,9 @@ void WheatnetLio::pollData()
 void WheatnetLio::watchdogData()
 {
   if(!lio_watchdog_active) {
-    syslog(LOG_WARNING,
-	   "connection to Wheatnet LIO device at %s:%u lost, attempting reconnect",
-	   (const char *)lio_ip_address.toString(),0xffff&lio_ip_port);
+    rda->syslog(LOG_WARNING,
+       "connection to Wheatnet LIO device at %s:%u lost, attempting reconnect",
+		(const char *)lio_ip_address.toString(),0xffff&lio_ip_port);
     lio_watchdog_active=true;
   }
   lio_socket->close();
@@ -334,10 +333,10 @@ void WheatnetLio::ProcessLioevent(int chan,QString &cmd)
       }
     }
     else {
-      syslog(LOG_WARNING,
+      rda->syslog(LOG_WARNING,
 	     "WheatNet device at %s:%d sent invalid LIOEVENT LVL update [%s]",
-	     (const char *)lio_ip_address.toString(),
-	     lio_ip_port,(const char *)cmd);
+		  (const char *)lio_ip_address.toString(),
+		  lio_ip_port,(const char *)cmd);
     }
     if((chan+1)==lio_gpios) {
       lio_watchdog_timer->stop();

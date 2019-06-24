@@ -28,10 +28,11 @@
 #include <qdatetime.h>
 
 #include <rd.h>
+#include <rdapplication.h>
 #include <rdcmd_switch.h>
 #include <rdconfig.h>
 
-#include <rdpopup.h>
+#include "rdpopup.h"
 
 //
 // Icons
@@ -74,7 +75,7 @@ int main(int argc,char *argv[])
   }
 
   //
-  // Open the syslog
+  // Open the config
   //
   RDConfig *config=new RDConfig();
   config->load();
@@ -128,7 +129,7 @@ int main(int argc,char *argv[])
   mb->exec();
   delete mb;
 
-  syslog(LOG_INFO,"\"%s\" acknowledged",argv[argc-1]);
+  RDApplication::syslog(config,LOG_INFO,"\"%s\" acknowledged",argv[argc-1]);
   closelog();
 
   return 0;

@@ -35,10 +35,10 @@
 
 
 RDHPISoundSelector::RDHPISoundSelector(RDHPISoundCard::DeviceClass dev_class,
-				       QWidget *parent)
+				       RDConfig *config,QWidget *parent)
   :Q3ListBox(parent)
 {  
-  sound_card=new RDHPISoundCard(this);
+  sound_card=new RDHPISoundCard(config,this);
 
   if(dev_class==RDHPISoundCard::PlayDevice) {
     for(int i=0;i<sound_card->getCardQuantity();i++) {

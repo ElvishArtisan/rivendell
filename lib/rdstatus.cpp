@@ -2,7 +2,7 @@
 //
 // Functions for getting system status.
 //
-//   (C) Copyright 2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2016-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -27,6 +27,7 @@
 #include <qstringlist.h>
 #include <qvariant.h>
 
+#include "rdapplication.h"
 #include "rdstatus.h"
 
 bool RDAudioStoreValid(RDConfig *config)
@@ -36,7 +37,7 @@ bool RDAudioStoreValid(RDConfig *config)
   bool ret=false;
 
   if((f=fopen("/etc/mtab","r"))==NULL) {
-    syslog(LOG_CRIT,"unable to read mtab(5) [%s]",strerror(errno));
+    rda->syslog(LOG_ERR,"unable to read mtab(5) [%s]",strerror(errno));
     return false;
   }
   if(config->audioStoreMountSource().isEmpty()) {  // Audio store is local

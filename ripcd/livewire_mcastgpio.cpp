@@ -2,7 +2,7 @@
 //
 // A Rivendell multicast GPIO driver for LiveWire networks.
 //
-//   (C) Copyright 2013,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2013-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -97,7 +97,8 @@ LiveWireMcastGpio::LiveWireMcastGpio(RDMatrix *matrix,QObject *parent)
   // GPIO Write Socket
   //
   if((livewire_gpio_write_socket=socket(PF_INET,SOCK_DGRAM,0))<0) {
-    syslog(LOG_ERR,"unable to create GPIO write socket [%s]",strerror(errno));
+    rda->syslog(LOG_ERR,"unable to create GPIO write socket [%s]",
+		strerror(errno));
     return;
   }
   sockopt=O_NONBLOCK;
@@ -108,7 +109,8 @@ LiveWireMcastGpio::LiveWireMcastGpio(RDMatrix *matrix,QObject *parent)
   sa.sin_addr.s_addr=
     htonl(matrix->ipAddress(RDMatrix::Primary).ip4Addr());
   if(bind(livewire_gpio_write_socket,(struct sockaddr *)&sa,sizeof(sa))<0) {
-    syslog(LOG_ERR,"unable to bind GPIO write socket [%s]",strerror(errno));
+    rda->syslog(LOG_ERR,"unable to bind GPIO write socket [%s]",
+		strerror(errno));
     return;
   }
 
@@ -116,7 +118,8 @@ LiveWireMcastGpio::LiveWireMcastGpio(RDMatrix *matrix,QObject *parent)
   // GPIO Read Socket
   //
   if((livewire_gpio_read_socket=socket(PF_INET,SOCK_DGRAM,0))<0) {
-    syslog(LOG_ERR,"unable to create GPIO read socket [%s]",strerror(errno));
+    rda->syslog(LOG_ERR,"unable to create GPIO read socket [%s]",
+		strerror(errno));
     return;
   }
   sockopt=O_NONBLOCK;
@@ -126,7 +129,7 @@ LiveWireMcastGpio::LiveWireMcastGpio(RDMatrix *matrix,QObject *parent)
   sa.sin_port=htons(RD_LIVEWIRE_GPIO_RECV_PORT);
   sa.sin_addr.s_addr=htonl(INADDR_ANY);
   if(bind(livewire_gpio_read_socket,(struct sockaddr *)&sa,sizeof(sa))<0) {
-    syslog(LOG_ERR,"unable to bind GPIO socket [%s]",strerror(errno));
+    rda->syslog(LOG_ERR,"unable to bind GPIO socket [%s]",strerror(errno));
     return;
   }
   livewire_gpio_notify=
@@ -409,7 +412,7 @@ void LiveWireMcastGpio::ProcessGpoOut(int chan,unsigned line,bool state)
 	htonl(livewire_surface_addresses[it->first].toIPv4Address());
     }
   }
-  syslog(LOG_NOTICE,"using %s",
+  rda->syslog(LOG_NOTICE,"using %s",
 	 (const char *)QHostAddress(ntohl(sa.sin_addr.s_addr)).toString());
   */
 
@@ -465,10 +468,10 @@ void LiveWireMcastGpio::subscribe(const uint32_t addr) const
   if(setsockopt(livewire_gpio_read_socket,SOL_IP,IP_ADD_MEMBERSHIP,&mreq,
 		sizeof(mreq))!=0) {
     if(errno!=EADDRINUSE) {
-      syslog(LOG_WARNING,"unable to subscribe to %s on %s [%s]",
-	     (const char *)AddressString(addr),
-	     (const char *)livewire_interface_addr.toString(),
-	     strerror(errno));
+      rda->syslog(LOG_WARNING,"unable to subscribe to %s on %s [%s]",
+		  (const char *)AddressString(addr),
+		  (const char *)livewire_interface_addr.toString(),
+		  strerror(errno));
     }
   }
 }
@@ -491,10 +494,10 @@ void LiveWireMcastGpio::unsubscribe(const uint32_t addr) const
   if(setsockopt(livewire_gpio_read_socket,SOL_IP,IP_DROP_MEMBERSHIP,&mreq,
 		sizeof(mreq))!=0) {
     if(errno!=ENODEV) {
-      syslog(LOG_WARNING,"unable to unsubscribe from %s on %s [%s]",
-	     (const char *)AddressString(addr),
-	     (const char *)livewire_interface_addr.toString(),
-	     strerror(errno));
+      rda->syslog(LOG_WARNING,"unable to unsubscribe from %s on %s [%s]",
+		  (const char *)AddressString(addr),
+		  (const char *)livewire_interface_addr.toString(),
+		  strerror(errno));
     }
   }
 }

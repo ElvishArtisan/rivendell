@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for WheatNet SLIO
 //
-//   (C) Copyright 2017-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,8 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <syslog.h>
-
+#include <rdapplication.h>
 #include <rddb.h>
 #include <rdescape_string.h>
 
@@ -168,9 +167,9 @@ void WheatnetSlio::processCommand(RDMacro *cmd)
 
 void WheatnetSlio::connectedData()
 {
-  syslog(LOG_INFO,
-	 "connection to WheatNet SLIO device at %s:%u established",
-	 (const char *)slio_ip_address.toString(),0xffff&slio_ip_port);
+  rda->syslog(LOG_INFO,
+	      "connection to WheatNet SLIO device at %s:%u established",
+	      (const char *)slio_ip_address.toString(),0xffff&slio_ip_port);
   slio_watchdog_active=false;
   SendCommand("<SYS?SLIO>");
 }
@@ -225,9 +224,9 @@ void WheatnetSlio::pollData()
 void WheatnetSlio::watchdogData()
 {
   if(!slio_watchdog_active) {
-    syslog(LOG_WARNING,
-	   "connection to Wheatnet SLIO device at %s:%u lost, attempting reconnect",
-	   (const char *)slio_ip_address.toString(),0xffff&slio_ip_port);
+    rda->syslog(LOG_WARNING,
+      "connection to Wheatnet SLIO device at %s:%u lost, attempting reconnect",
+		(const char *)slio_ip_address.toString(),0xffff&slio_ip_port);
     slio_watchdog_active=true;
   }
   slio_socket->close();
@@ -331,10 +330,10 @@ void WheatnetSlio::ProcessSlioevent(int chan,QString &cmd)
       }
     }
     else {
-      syslog(LOG_WARNING,
+      rda->syslog(LOG_WARNING,
 	     "WheatNet device at %s:%d sent invalid SLIOEVENT LVL update [%s]",
-	     (const char *)slio_ip_address.toString(),
-	     slio_ip_port,(const char *)cmd);
+		  (const char *)slio_ip_address.toString(),
+		  slio_ip_port,(const char *)cmd);
     }
     if(chan==slio_gpios) {
       slio_poll_timer->start(50,true);

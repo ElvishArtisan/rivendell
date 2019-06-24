@@ -2,7 +2,7 @@
 //
 // Local RML Macros for rdvairplayd(8)
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -61,7 +61,7 @@ void MainObject::rmlReceivedData(RDMacro *rml)
     }
     if(rml->argQuantity()==1) {   // Clear Log
       air_logs[index]->clear();
-      syslog(LOG_INFO,"unloaded log machine %d",rml->arg(0).toInt());
+      rda->syslog(LOG_INFO,"unloaded log machine %d",rml->arg(0).toInt());
     }
     else {  // Load Log
       logname=rml->arg(1);
@@ -74,20 +74,20 @@ void MainObject::rmlReceivedData(RDMacro *rml)
       }
       air_logs[index]->setLogName(logname);
       air_logs[index]->load();
-      syslog(LOG_INFO,"loaded log \"%s\" into log machine %d",
-	     (const char *)logname.toUtf8(),
-	     rml->arg(0).toInt());
+      rda->syslog(LOG_INFO,"loaded log \"%s\" into log machine %d",
+		  (const char *)logname.toUtf8(),
+		  rml->arg(0).toInt());
     }
     if(rml->argQuantity()==3) { // Start Log
       if(rml->arg(2).toInt()<air_logs[index]->size()) {
 	if(rml->arg(2).toInt()>=0) {  // Unconditional start
 	  if(air_logs[index]->play(rml->arg(2).toInt(),RDLogLine::StartMacro)) {	
-	    syslog(LOG_INFO,"started log machine %d at line %d",
-		   rml->arg(0).toInt(),rml->arg(2).toInt());
+	    rda->syslog(LOG_INFO,"started log machine %d at line %d",
+			rml->arg(0).toInt(),rml->arg(2).toInt());
 	  }
 	  else {
-	    syslog(LOG_WARNING,"log machine %d failed to start",
-		   rml->arg(0).toInt());
+	    rda->syslog(LOG_WARNING,"log machine %d failed to start",
+			rml->arg(0).toInt());
 	    if(rml->echoRequested()) {
 	      rml->acknowledge(false);
 	      rda->ripc()->sendRml(rml);
@@ -111,12 +111,12 @@ void MainObject::rmlReceivedData(RDMacro *rml)
 	    case RDLogLine::Play:
 	    case RDLogLine::Segue:
 	      if(air_logs[index]->play(0,RDLogLine::StartMacro)) {
-		syslog(LOG_INFO,"started log machine %d at line 0",
-		       rml->arg(0).toInt());
+		rda->syslog(LOG_INFO,"started log machine %d at line 0",
+			    rml->arg(0).toInt());
 	      }
 	      else {
-		syslog(LOG_WARNING,"log machine %d failed to start",
-		       rml->arg(0).toInt());
+		rda->syslog(LOG_WARNING,"log machine %d failed to start",
+			    rml->arg(0).toInt());
 		if(rml->echoRequested()) {
 		  rml->acknowledge(false);
 		  rda->ripc()->sendRml(rml);
@@ -163,8 +163,8 @@ void MainObject::rmlReceivedData(RDMacro *rml)
       return;
     }
     air_logs[index]->append(logname);
-    syslog(LOG_INFO,"appended log \"%s\" into log machine %d",
-	   (const char *)logname.toUtf8(),rml->arg(0).toInt());
+    rda->syslog(LOG_INFO,"appended log \"%s\" into log machine %d",
+		(const char *)logname.toUtf8(),rml->arg(0).toInt());
     break;
 
   case RDMacro::MN:    // Make Next
@@ -191,8 +191,8 @@ void MainObject::rmlReceivedData(RDMacro *rml)
       return;
     }
     air_logs[index]->makeNext(rml->arg(1).toInt());
-    syslog(LOG_INFO,"made line %d next in log machine %d",
-	   rml->arg(1).toInt(),rml->arg(0).toInt());
+    rda->syslog(LOG_INFO,"made line %d next in log machine %d",
+		rml->arg(1).toInt(),rml->arg(0).toInt());
     if(rml->echoRequested()) {
       rml->acknowledge(true);
       rda->ripc()->sendRml(rml);
@@ -224,12 +224,12 @@ void MainObject::rmlReceivedData(RDMacro *rml)
     }
     if(!air_logs[index]->running()) {
       if(air_logs[index]->play(rml->arg(1).toInt(),RDLogLine::StartMacro)) {
-	syslog(LOG_INFO,"started log machine %d at line %d",
-	       rml->arg(0).toInt(),rml->arg(2).toInt());
+	rda->syslog(LOG_INFO,"started log machine %d at line %d",
+		    rml->arg(0).toInt(),rml->arg(2).toInt());
       }
       else {
-	syslog(LOG_WARNING,"log machine %d failed to start",
-	       rml->arg(0).toInt());
+	rda->syslog(LOG_WARNING,"log machine %d failed to start",
+		    rml->arg(0).toInt());
 	if(rml->echoRequested()) {
 	  rml->acknowledge(false);
 	  rda->ripc()->sendRml(rml);
@@ -237,8 +237,8 @@ void MainObject::rmlReceivedData(RDMacro *rml)
 	return;
       }
     }
-    syslog(LOG_INFO,"started log machine %d at line %d",
-	   rml->arg(0).toInt(),rml->arg(1).toInt());
+    rda->syslog(LOG_INFO,"started log machine %d at line %d",
+		rml->arg(0).toInt(),rml->arg(1).toInt());
     if(rml->echoRequested()) {
       rml->acknowledge(true);
       rda->ripc()->sendRml(rml);
@@ -338,8 +338,8 @@ void MainObject::rmlReceivedData(RDMacro *rml)
       if(rml->argQuantity()==1) {
 	if(!air_logs[index]->
 	   play(air_logs[index]->nextLine(),RDLogLine::StartMacro)) {
-	  syslog(LOG_WARNING,"log machine %d failed to start",
-		 rml->arg(0).toInt());
+	  rda->syslog(LOG_WARNING,"log machine %d failed to start",
+		      rml->arg(0).toInt());
 	  if(rml->echoRequested()) {
 	    rml->acknowledge(false);
 	    rda->ripc()->sendRml(rml);
@@ -352,8 +352,8 @@ void MainObject::rmlReceivedData(RDMacro *rml)
 	  if(!air_logs[index]->play(air_logs[index]->nextLine(),
 				    RDLogLine::StartMacro,
 				    rml->arg(1).toInt()-1)) {
-	    syslog(LOG_WARNING,"log machine %d failed to start",
-		   rml->arg(0).toInt());
+	    rda->syslog(LOG_WARNING,"log machine %d failed to start",
+			rml->arg(0).toInt());
 	    if(rml->echoRequested()) {
 	      rml->acknowledge(false);
 	      rda->ripc()->sendRml(rml);
@@ -365,8 +365,8 @@ void MainObject::rmlReceivedData(RDMacro *rml)
 	  if(!air_logs[index]->
 	     play(air_logs[index]->nextLine(),RDLogLine::StartMacro,
 		  rml->arg(1).toInt()-1,rml->arg(2).toInt())) {
-	    syslog(LOG_WARNING,"log machine %d failed to start",
-		   rml->arg(0).toInt());
+	    rda->syslog(LOG_WARNING,"log machine %d failed to start",
+			rml->arg(0).toInt());
 	    if(rml->echoRequested()) {
 	      rml->acknowledge(false);
 	      rda->ripc()->sendRml(rml);
@@ -375,8 +375,8 @@ void MainObject::rmlReceivedData(RDMacro *rml)
 	  }
 	}
       }
-      syslog(LOG_INFO,"started log machine %d at line %d",
-	     rml->arg(0).toInt(),next_line);
+      rda->syslog(LOG_INFO,"started log machine %d at line %d",
+		  rml->arg(0).toInt(),next_line);
     }
     if(rml->echoRequested()) {
       rml->acknowledge(true);
@@ -408,7 +408,7 @@ void MainObject::rmlReceivedData(RDMacro *rml)
       for(int i=0;i<RD_RDVAIRPLAY_LOG_QUAN;i++) {
 	air_logs[i]->stop(true,0,fade);
       }
-      syslog(LOG_INFO,"stopped all logs");
+      rda->syslog(LOG_INFO,"stopped all logs");
     }
     else {
       if(rml->argQuantity()==3) {
@@ -417,7 +417,7 @@ void MainObject::rmlReceivedData(RDMacro *rml)
       else {
 	air_logs[index]->stop(true,0,fade);
       }
-      syslog(LOG_INFO,"stopped log machine %d",rml->arg(0).toInt());
+      rda->syslog(LOG_INFO,"stopped log machine %d",rml->arg(0).toInt());
       break;
     }
     if(rml->echoRequested()) {
@@ -446,8 +446,8 @@ void MainObject::rmlReceivedData(RDMacro *rml)
       for(int i=0;i<RD_RDVAIRPLAY_LOG_QUAN;i++) {
 	air_logs[i]->duckVolume(rml->arg(1).toInt()*100,rml->arg(2).toInt());
       }
-      syslog(LOG_INFO,"set volumne of all log machines to %d dBFS",
-	     rml->arg(1).toInt());
+      rda->syslog(LOG_INFO,"set volumne of all log machines to %d dBFS",
+		  rml->arg(1).toInt());
     }
     else {
       if(rml->argQuantity()==3) {
@@ -458,9 +458,9 @@ void MainObject::rmlReceivedData(RDMacro *rml)
 	air_logs[index]->duckVolume(rml->arg(1).toInt()*100,
 				    rml->arg(2).toInt(),rml->arg(3).toInt());
       }
-      syslog(LOG_INFO,"set volumne of log machine %d to %d dBFS",
-	     rml->arg(0).toInt(),
-	     rml->arg(1).toInt());
+      rda->syslog(LOG_INFO,"set volumne of log machine %d to %d dBFS",
+		  rml->arg(0).toInt(),
+		  rml->arg(1).toInt());
       break;
     }
     if(rml->echoRequested()) {
@@ -489,16 +489,16 @@ void MainObject::rmlReceivedData(RDMacro *rml)
     if(air_logs[index]->nextLine()>=0) {
       air_logs[index]->insert(air_logs[index]->nextLine(),
 			      rml->arg(1).toUInt(),RDLogLine::Play);
-      syslog(LOG_INFO,"inserted cart %06u at line %d on log machine %d",
-	     rml->arg(1).toUInt(),next_line,rml->arg(0).toInt());
+      rda->syslog(LOG_INFO,"inserted cart %06u at line %d on log machine %d",
+		  rml->arg(1).toUInt(),next_line,rml->arg(0).toInt());
     }
     else {
       air_logs[index]->insert(air_logs[index]->size(),
 			      rml->arg(1).toUInt(),RDLogLine::Play);
       air_logs[index]->makeNext(air_logs[index]->size()-1);
-      syslog(LOG_INFO,"inserted cart %06u at line %d on log machine %d",
-	     rml->arg(1).toUInt(),air_logs[index]->size()-1,
-	     rml->arg(0).toInt());
+      rda->syslog(LOG_INFO,"inserted cart %06u at line %d on log machine %d",
+		  rml->arg(1).toUInt(),air_logs[index]->size()-1,
+		  rml->arg(0).toInt());
     }
     if(rml->echoRequested()) {
       rml->acknowledge(true);
@@ -529,7 +529,7 @@ void MainObject::rmlReceivedData(RDMacro *rml)
       return;
     }
     else {
-      syslog(LOG_INFO,"refreshed log machine %d",rml->arg(0).toInt());
+      rda->syslog(LOG_INFO,"refreshed log machine %d",rml->arg(0).toInt());
     }
     if(rml->echoRequested()) {
       rml->acknowledge(true);
@@ -569,13 +569,14 @@ void MainObject::rmlReceivedData(RDMacro *rml)
     }
     if(rml->arg(0).lower()=="now") {
       air_logs[index]->setNowCart(rml->arg(2).toUInt());
-      syslog(LOG_INFO,"set default \"now\" cart to %06u on log machine %d",
-	     rml->arg(2).toUInt(),rml->arg(1).toInt());
+      rda->syslog(LOG_INFO,"set default \"now\" cart to %06u on log machine %d",
+		  rml->arg(2).toUInt(),rml->arg(1).toInt());
     }
     else {
       air_logs[index]->setNextCart(rml->arg(2).toUInt());
-      syslog(LOG_INFO,"set default \"next\" cart to %06u on log machine %d",
-	     rml->arg(2).toUInt(),rml->arg(1).toInt());
+      rda->syslog(LOG_INFO,
+		  "set default \"next\" cart to %06u on log machine %d",
+		  rml->arg(2).toUInt(),rml->arg(1).toInt());
     }
     if(rml->echoRequested()) {
       rml->acknowledge(true);

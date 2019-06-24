@@ -2,7 +2,7 @@
 //
 // Upload a File
 //
-//   (C) Copyright 2010,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -66,7 +66,7 @@ int UploadErrorCallback(CURL *curl,curl_infotype type,char *msg,size_t size,
   }
   memset(&str,0,size+1);
   memcpy(str,msg,size);
-  syslog(LOG_DEBUG,"CURL MSG: %s",str);
+  rda->syslog(LOG_DEBUG,"CURL MSG: %s",str);
   return 0;
 }
 
@@ -186,8 +186,8 @@ RDUpload::ErrorCode RDUpload::runUpload(const QString &username,
     break;
 
   default:
-    syslog(LOG_ERR,"Unknown CURL Error [%d]: %s",
-	   curl_err,curl_easy_strerror(curl_err));
+    rda->syslog(LOG_ERR,"Unknown CURL Error [%d]: %s",
+		curl_err,curl_easy_strerror(curl_err));
     ret=RDUpload::ErrorUnspecified;
     break;
   }
@@ -197,8 +197,8 @@ RDUpload::ErrorCode RDUpload::runUpload(const QString &username,
     delete user;
   }
   if((curl_err!=CURLE_OK)&&log_debug) {
-    syslog(LOG_WARNING,"CURL upload failed: url: %s  username: %s",
-	   (const char *)conv_dst_url.toString(),
+    rda->syslog(LOG_WARNING,"CURL upload failed: url: %s  username: %s",
+		(const char *)conv_dst_url.toString(),
 	   (const char *)username);
   }
   curl_easy_cleanup(curl);

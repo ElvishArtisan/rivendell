@@ -20,10 +20,11 @@
 
 #include <ctype.h>
 #include <stdio.h>
-#include <syslog.h>
 
 #include <qbytearray.h>
 #include <qstringlist.h>
+
+#include <rdapplication.h>
 
 #include "cae_server.h"
 
@@ -139,7 +140,8 @@ void CaeServer::sendCommand(const QString &cmd)
 void CaeServer::sendCommand(int id,const QString &cmd)
 {
 #ifdef __CAE_SERVER_LOG_PROTOCOL_MESSAGES
-  syslog(LOG_DEBUG,"send[%d]: %s",id,(const char *)cmd.toUtf8());
+  RDApplication::syslog(cae_config,LOG_DEBUG,
+			"send[%d]: %s",id,(const char *)cmd.toUtf8());
 #endif  // __CAE_SERVER_LOG_PROTOCOL_MESSAGES
   cae_connections.value(id)->socket->write(cmd.toAscii());
 }
@@ -157,7 +159,8 @@ void CaeServer::newConnectionData()
 
   cae_connections[sock->socketDescriptor()]=new CaeServerConnection(sock);
 
-  syslog(LOG_DEBUG,"added connection %d",sock->socketDescriptor());
+  RDApplication::syslog(cae_config,LOG_DEBUG,
+			"added connection %d",sock->socketDescriptor());
 }
 
 
@@ -192,7 +195,7 @@ void CaeServer::connectionClosedData(int id)
   delete cae_connections.value(id);
   cae_connections.remove(id);
 
-  syslog(LOG_DEBUG,"removed connection %d",id);
+  RDApplication::syslog(cae_config,LOG_DEBUG,"removed connection %d",id);
 }
 
 
@@ -206,7 +209,8 @@ bool CaeServer::ProcessCommand(int id,const QString &cmd)
     return false;
   }
 #ifdef __CAE_SERVER_LOG_PROTOCOL_MESSAGES
-  syslog(LOG_DEBUG,"recv[%d]: %s",id,(const char *)cmd.toUtf8());
+  RDApplication::syslog(cae_config,LOG_DEBUG,
+			"recv[%d]: %s",id,(const char *)cmd.toUtf8());
 #endif  // __CAE_SERVER_LOG_PROTOCOL_MESSAGES
 
   cae_connections.value(id)->accum="";

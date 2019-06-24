@@ -2,7 +2,7 @@
 //
 // Abstract base class for Rivendell Switcher/GPIO drivers.
 //
-//   (C) Copyright 2002-2007,2010,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -82,7 +82,7 @@ void Switcher::logBytes(uint8_t *data,int len)
   for(int i=0;i<len;i++) {
     str+=QString().sprintf("%02X ",0xff&data[i]);
   }
-  syslog(LOG_NOTICE,"bytes: %s",(const char *)str);
+  rda->syslog(LOG_NOTICE,"bytes: %s",(const char *)str);
 }
 
 

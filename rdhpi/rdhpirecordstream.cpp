@@ -2,7 +2,7 @@
 //
 //   A class for recording Microsoft WAV files.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,7 +30,9 @@
 #include <qstring.h>
 #include <qdatetime.h>
 
-#include <rdhpirecordstream.h>
+#include <rdapplication.h>
+
+#include "rdhpirecordstream.h"
 
 RDHPIRecordStream::RDHPIRecordStream(RDHPISoundCard *card,QWidget *parent) 
   :QObject(parent),RDWaveFile()
@@ -738,7 +740,8 @@ hpi_err_t RDHPIRecordStream::LogHpi(hpi_err_t err,int lineno)
 
   if(err!=0) {
     HPI_GetErrorText(err,err_txt);
-    syslog(LOG_NOTICE,"HPI Error: %s, %s line %d",err_txt,__FILE__,lineno);
+    RDApplication::syslog(sound_card->config(),LOG_NOTICE,
+			  "HPI Error: %s, %s line %d",err_txt,__FILE__,lineno);
   }
   return err;
 }

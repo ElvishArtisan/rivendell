@@ -108,7 +108,7 @@ MainObject::MainObject(QObject *parent)
   connect(ripcd_kill_mapper,SIGNAL(mapped(int)),this,SLOT(killData(int)));
   server=new QTcpServer(this);
   if(!server->listen(QHostAddress::Any,RIPCD_TCP_PORT)) {
-    syslog(LOG_ERR,"unable to bind ripc port");
+    rda->syslog(LOG_ERR,"unable to bind ripc port");
     exit(1);
   }
   connect(server,SIGNAL(newConnection()),this,SLOT(newConnectionData()));
@@ -188,7 +188,7 @@ MainObject::MainObject(QObject *parent)
   ripcd_garbage_timer=new QTimer(this);
   connect(ripcd_garbage_timer,SIGNAL(timeout()),this,SLOT(garbageData()));
 
-  syslog(LOG_INFO,"started");
+  rda->syslog(LOG_INFO,"started");
 }
 
 
@@ -219,7 +219,7 @@ void MainObject::newConnectionData()
   ripcd_kill_mapper->setMapping(ripcd_conns[i]->socket(),i);
   connect(ripcd_conns[i]->socket(),SIGNAL(connectionClosed()),
 	  ripcd_kill_mapper,SLOT(map()));
-  syslog(LOG_DEBUG,"added new connection %d",i);
+  rda->syslog(LOG_DEBUG,"added new connection %d",i);
 }
 
 
@@ -229,8 +229,8 @@ void MainObject::notificationReceivedData(const QString &msg,
   RDNotification *notify=new RDNotification();
 
   if(!notify->read(msg)) {
-    syslog(LOG_DEBUG,"invalid notification received from %s",
-	   (const char *)addr.toString().toUtf8());
+    rda->syslog(LOG_DEBUG,"invalid notification received from %s",
+		(const char *)addr.toString().toUtf8());
     delete notify;
     return;
   }
@@ -318,7 +318,7 @@ void MainObject::killData(int conn_id)
 {
   ripcd_conns[conn_id]->close();
   ripcd_garbage_timer->start(1,true);
-  syslog(LOG_DEBUG,"closed connection %d",conn_id);
+  rda->syslog(LOG_DEBUG,"closed connection %d",conn_id);
 }
 
 
@@ -337,7 +337,7 @@ void MainObject::exitTimerData()
 	delete ripcd_switcher[i];
       }
     }
-    syslog(LOG_INFO,"ripcd exiting normally");
+    rda->syslog(LOG_INFO,"ripcd exiting normally");
     exit(0);
   }
 }
@@ -350,7 +350,7 @@ void MainObject::garbageData()
       if(ripcd_conns[i]->isClosing()) {
 	delete ripcd_conns[i];
 	ripcd_conns[i]=NULL;
-	syslog(LOG_DEBUG,"cleaned up connection %d",i);
+	rda->syslog(LOG_DEBUG,"cleaned up connection %d",i);
       }
     }
   }
@@ -507,7 +507,7 @@ bool MainObject::DispatchCommand(RipcdConnection *conn)
     msg=msg.left(msg.length()-1);
     RDNotification *notify=new RDNotification();
     if(!notify->read(msg)) {
-      syslog(LOG_DEBUG,"invalid notification processed");
+      rda->syslog(LOG_DEBUG,"invalid notification processed");
       delete notify;
       return true;
     }
@@ -572,8 +572,8 @@ void MainObject::ReadRmlSocket(QUdpSocket *sock,RDMacro::Role role,
 	  }
 	}
 	else {
-	  syslog(LOG_DEBUG,
-		 "rejected rml: \"%s\": on-air flag not active",buffer);
+	  rda->syslog(LOG_DEBUG,
+		      "rejected rml: \"%s\": on-air flag not active",buffer);
 	  break;
 	}
       }
@@ -593,10 +593,10 @@ void MainObject::ReadRmlSocket(QUdpSocket *sock,RDMacro::Role role,
       }
     }
     else {
-      syslog(LOG_DEBUG,"received malformed rml: \"%s\" from %s:%u",
-	     buffer,
-	     (const char *)sock->peerAddress().toString().toUtf8(),
-	     sock->peerPort());
+      rda->syslog(LOG_DEBUG,"received malformed rml: \"%s\" from %s:%u",
+		  buffer,
+		  (const char *)sock->peerAddress().toString().toUtf8(),
+		  sock->peerPort());
       if(echo) {
 	macro.setRole(RDMacro::Reply);
 	macro.setCommand(RDMacro::NN);

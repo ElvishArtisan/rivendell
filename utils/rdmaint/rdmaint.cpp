@@ -166,12 +166,12 @@ void MainObject::PurgeCuts()
       RDCart *cart=new RDCart(q1->value(0).toUInt());
       if(cart->removeCut(rda->station(),rda->user(),q1->value(1).toString(),
 			 rda->config())) {
-	syslog(LOG_INFO,"purged cut %s",
-	       (const char *)q1->value(1).toString().toUtf8());
+	rda->syslog(LOG_INFO,"purged cut %s",
+		    (const char *)q1->value(1).toString().toUtf8());
       }
       else {
-	syslog(LOG_WARNING,"unable to purge cut %s: audio deletion error",
-	       (const char *)q1->value(1).toString().toUtf8());
+	rda->syslog(LOG_WARNING,"unable to purge cut %s: audio deletion error",
+		    (const char *)q1->value(1).toString().toUtf8());
       }
       if(q->value(2).toString()=="Y") {  // Delete Empty Cart
 	sql=QString("select CUT_NAME from CUTS where ")+
@@ -179,7 +179,7 @@ void MainObject::PurgeCuts()
 	q2=new RDSqlQuery(sql);
 	if(!q2->first()) {
 	  cart->remove(rda->station(),rda->user(),rda->config());
-	  syslog(LOG_INFO,"deleted purged cart %06u",cart->number());
+	  rda->syslog(LOG_INFO,"deleted purged cart %06u",cart->number());
 	}
 	delete q2;
       }
@@ -203,8 +203,8 @@ void MainObject::PurgeLogs()
     "(PURGE_DATE<\""+dt.date().toString("yyyy-MM-dd")+"\")";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    syslog(LOG_INFO,"purged log %s",
-	   (const char *)q->value(0).toString().toUtf8());
+    rda->syslog(LOG_INFO,"purged log %s",
+		(const char *)q->value(0).toString().toUtf8());
     RDLog *log=new RDLog(q->value(0).toString());
     log->remove(rda->station(),rda->user(),rda->config());
     delete log;
@@ -363,9 +363,9 @@ void MainObject::RehashCuts()
     if((err=RDRehash::rehash(rda->station(),rda->user(),rda->config(),
 			     RDCut::cartNumber(q->value(0).toString()),
 			     RDCut::cutNumber(q->value(0).toString())))!=RDRehash::ErrorOk) {
-      syslog(LOG_WARNING,"failed to rehash cut %s [%s]",
-	     (const char *)q->value(0).toString().toUtf8(),
-	     (const char *)RDRehash::errorText(err).toUtf8());
+      rda->syslog(LOG_WARNING,"failed to rehash cut %s [%s]",
+		  (const char *)q->value(0).toString().toUtf8(),
+		  (const char *)RDRehash::errorText(err).toUtf8());
       
     }
     else {

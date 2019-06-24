@@ -302,7 +302,7 @@ void MainObject::exitData()
       delete air_logs[i];
     }
     rda->airplayConf()->setVirtualExitCode(RDAirPlayConf::ExitClean);
-    syslog(LOG_INFO,"exiting");
+    rda->syslog(LOG_INFO,"exiting");
     exit(0);
   }
 }

@@ -296,6 +296,32 @@ void RDApplication::addTempFile(const QString &pathname)
 }
 
 
+void RDApplication::syslog(int priority,const char *fmt,...) const
+{
+  va_list args;
+
+  va_start(args,fmt);
+  if((priority&248)==0) {  // So custom one-off facility numbers still work
+    priority=priority|(app_config->syslogFacility()<<3);
+  }
+  vsyslog(priority,fmt,args);
+  va_end(args);
+}
+
+
+void RDApplication::syslog(RDConfig *config,int priority,const char *fmt,...)
+{
+  va_list args;
+
+  va_start(args,fmt);
+  if((priority&248)==0) {  // So custom one-off facility numbers still work
+    priority=priority|(config->syslogFacility()<<3);
+  }
+  vsyslog(priority,fmt,args);
+  va_end(args);
+}
+
+
 void RDApplication::userChangedData()
 {
   app_user->setName(app_ripc->user());

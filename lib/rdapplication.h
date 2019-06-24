@@ -21,6 +21,9 @@
 #ifndef RDAPPLICATION_H
 #define RDAPPLICATION_H
 
+#include <stdarg.h>
+#include <syslog.h>
+
 #include <qobject.h>
 #include <qstringlist.h>
 
@@ -61,6 +64,8 @@ class RDApplication : public QObject
   //  void log(RDConfig::LogPriority prio,const QString &msg);
   bool dropTable(const QString &tbl_name);
   void addTempFile(const QString &pathname);
+  void syslog(int priority,const char *fmt,...) const;
+  static void syslog(RDConfig *config,int priority,const char *fmt,...);
 
  private slots:
   void userChangedData();

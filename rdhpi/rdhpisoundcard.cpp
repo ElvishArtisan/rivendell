@@ -2,7 +2,7 @@
 //
 //   The audio card subsystem for the HPI Library.
 //
-//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,15 +19,20 @@
 //
 
 #include <syslog.h>
-
-#include <qtimer.h>
-#include <rdhpisoundcard.h>
-
 #include <unistd.h>
 
-RDHPISoundCard::RDHPISoundCard(QObject *parent)
+#include <qtimer.h>
+#include <unistd.h>
+
+#include <rdapplication.h>
+
+#include "rdhpisoundcard.h"
+
+RDHPISoundCard::RDHPISoundCard(RDConfig *config,QObject *parent)
   : QObject(parent)
 {
+  card_config=config;
+
   card_quantity=0;
   fade_type=RDHPISoundCard::Log;
   for(int i=0;i<HPI_MAX_ADAPTERS;i++) {
@@ -322,6 +327,12 @@ void RDHPISoundCard::setFadeProfile(RDHPISoundCard::FadeProfile profile)
     hpi_fade_type=HPI_VOLUME_AUTOFADE_LOG;
     break;
   }
+}
+
+
+RDConfig *RDHPISoundCard::config() const
+{
+  return card_config;
 }
 
 
@@ -1034,7 +1045,8 @@ hpi_err_t RDHPISoundCard::LogHpi(hpi_err_t err,int lineno)
 
   if(err!=0) {
     HPI_GetErrorText(err,err_txt);
-    syslog(LOG_NOTICE,"HPI Error: %s, %s line %d",err_txt,__FILE__,lineno);
+    RDApplication::syslog(card_config,LOG_NOTICE,
+			  "HPI Error: %s, %s line %d",err_txt,__FILE__,lineno);
   }
   return err;
 }

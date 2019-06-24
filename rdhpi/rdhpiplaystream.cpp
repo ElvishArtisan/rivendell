@@ -1,8 +1,8 @@
 //   rdhpiplaystream.cpp
 //
-//   A class for playing Microsoft WAV files.
+//   A class for playing Microsoft WAV file on AudioScience HPI devices.
 //
-//   (C) Copyright 2002-2007,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -31,8 +31,9 @@
 #include <qdatetime.h>
 
 #include <rd.h>
-#include <rdhpiplaystream.h>
-#include <rdhpisoundcard.h>
+#include <rdapplication.h>
+#include "rdhpiplaystream.h"
+#include "rdhpisoundcard.h"
 
 #define RDHPIPLAYSTREAM_USE_LOCAL_MUTEX
 
@@ -188,7 +189,7 @@ bool RDHPIPlayStream::formatSupported(RDWaveFile::Format format)
     for(int i=0;i<sound_card->getCardOutputStreams(card_number);i++) {
       if(LogHpi(HPI_OutStreamOpen(NULL,card_index[card_number],i,&hostream),
 		__LINE__)==0) {
-	syslog(LOG_NOTICE,"buffer_size: %u\n",dma_buffer_size);
+	RDApplication::syslog(sound_card->config(),LOG_DEBUG,"buffer_size: %u\n",dma_buffer_size);
 	found=true;
 	break;
       }
@@ -805,7 +806,7 @@ int RDHPIPlayStream::GetStream()
     if(LogHpi(HPI_OutStreamOpen(NULL,card_index[card_number],i,&hpi_stream),
 	      __LINE__)==0) {
       stream_number=i;
-//      syslog(LOG_ERR,"HPI allocating ostream: %d",stream_number);
+//      RDApplication::syslog(sound_card->config(),LOG_ERR,"HPI allocating ostream: %d",stream_number);
       return stream_number;
     }
   }
@@ -835,7 +836,8 @@ hpi_err_t RDHPIPlayStream::LogHpi(hpi_err_t err,int lineno)
 
   if(err!=0) {
     HPI_GetErrorText(err,err_txt);
-    syslog(LOG_NOTICE,"HPI Error: %s, %s line %d",err_txt,__FILE__,lineno);
+    RDApplication::syslog(sound_card->config(),LOG_NOTICE,
+			  "HPI Error: %s, %s line %d",err_txt,__FILE__,lineno);
   }
   return err;
 }

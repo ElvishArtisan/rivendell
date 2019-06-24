@@ -101,8 +101,8 @@ void CitadelXds::CheckIsciXreference()
     }
   }
   else {
-    syslog(LOG_WARNING,"unable to load ISCI cross reference file \"%s\"",
-	   (const char *)rda->system()->isciXreferencePath().toUtf8());
+    rda->syslog(LOG_WARNING,"unable to load ISCI cross reference file \"%s\"",
+		(const char *)rda->system()->isciXreferencePath().toUtf8());
   }
   delete fi;
 }
@@ -122,9 +122,10 @@ bool CitadelXds::LoadIsciXreference(const QString &filename)
   unsigned linenum=3;
 
   if((f=fopen(filename,"r"))==NULL) {
-    syslog(LOG_WARNING,"unable to load ISCI cross reference file \"%s\" [%s]",
-	   (const char *)rda->system()->isciXreferencePath().toUtf8(),
-	   strerror(errno));
+    rda->syslog(LOG_WARNING,
+		"unable to load ISCI cross reference file \"%s\" [%s]",
+		(const char *)rda->system()->isciXreferencePath().toUtf8(),
+		strerror(errno));
     return false;
   }
 
@@ -172,30 +173,31 @@ bool CitadelXds::LoadIsciXreference(const QString &filename)
 	      delete q;
 	    }
 	    else {
-	      syslog(LOG_WARNING,"invalid date in line %d of \"%s\"",
-		     linenum,(const char *)filename.toUtf8());
+	      rda->syslog(LOG_WARNING,"invalid date in line %d of \"%s\"",
+			  linenum,(const char *)filename.toUtf8());
 	    }
 	  }
 	  else {
-	    syslog(LOG_WARNING,
-		   "invalid FILENAME field \"%s\" in line %d of \"%s\"",
-		   (const char *)fields[8].toUtf8(),linenum,
-		   (const char *)filename.toUtf8());
+	    rda->syslog(LOG_WARNING,
+			"invalid FILENAME field \"%s\" in line %d of \"%s\"",
+			(const char *)fields[8].toUtf8(),linenum,
+			(const char *)filename.toUtf8());
 	  }
 	}
 	else {
-	  syslog(LOG_WARNING,"invalid date in line %d of \"%s\"",
-		 linenum,(const char *)filename.toUtf8());
+	  rda->syslog(LOG_WARNING,"invalid date in line %d of \"%s\"",
+		      linenum,(const char *)filename.toUtf8());
 	}
       }
       else {
-	syslog(LOG_DEBUG,"missing/invalid cart number in line %d of \"%s\"",
-	       linenum,(const char *)filename.toUtf8());
+	rda->syslog(LOG_DEBUG,
+		    "missing/invalid cart number in line %d of \"%s\"",
+		    linenum,(const char *)filename.toUtf8());
       }
     }
     else {
-      syslog(LOG_WARNING,"line %d malformed in \"%s\"",
-	     linenum,(const char *)filename.toUtf8());
+      rda->syslog(LOG_WARNING,"line %d malformed in \"%s\"",
+		  linenum,(const char *)filename.toUtf8());
     }
     linenum++;
   }
@@ -203,8 +205,8 @@ bool CitadelXds::LoadIsciXreference(const QString &filename)
   //
   // Clean Up
   //
-  syslog(LOG_INFO,"loaded ISCI cross reference file \"%s\"",
-	 (const char *)rda->system()->isciXreferencePath().toUtf8());
+  rda->syslog(LOG_INFO,"loaded ISCI cross reference file \"%s\"",
+	      (const char *)rda->system()->isciXreferencePath().toUtf8());
   fclose(f);
   return true;
 }
@@ -348,9 +350,10 @@ bool CitadelXds::PostCut(const QString &cutname,const QString &filename)
     break;
 
   default:
-    syslog(LOG_WARNING,"CitadelXds: audio conversion failed: %s, cutname: %s",
-	   (const char *)RDAudioConvert::errorText(conv_err).toUtf8(),
-	   (const char *)cutname.toUtf8());
+    rda->syslog(LOG_WARNING,
+		"CitadelXds: audio conversion failed: %s, cutname: %s",
+		(const char *)RDAudioConvert::errorText(conv_err).toUtf8(),
+		(const char *)cutname.toUtf8());
     delete conv;
     delete settings;
     return false;
@@ -371,18 +374,18 @@ bool CitadelXds::PostCut(const QString &cutname,const QString &filename)
     break;
 
   default:
-    syslog(LOG_WARNING,"CitadelXds: audio upload failed: %s",
-	   (const char *)RDUpload::errorText(upload_err).toUtf8());
+    rda->syslog(LOG_WARNING,"CitadelXds: audio upload failed: %s",
+		(const char *)RDUpload::errorText(upload_err).toUtf8());
     unlink(tempfile);
     delete upload;
     return false;
   }
   unlink(tempfile);
   delete upload;
-  syslog(LOG_INFO,"CitadelXds: uploaded cut %s to %s/%s",
-	 (const char *)cutname.toUtf8(),
-	 (const char *)config()->url().toUtf8(),
-	 (const char *)filename.toUtf8());
+  rda->syslog(LOG_INFO,"CitadelXds: uploaded cut %s to %s/%s",
+	      (const char *)cutname.toUtf8(),
+	      (const char *)config()->url().toUtf8(),
+	      (const char *)filename.toUtf8());
 
   return true;
 }
@@ -423,15 +426,16 @@ void CitadelXds::PurgeCuts()
 			      q->value(0).toInt());
 	q2=new RDSqlQuery(sql);
 	delete q2;
-	syslog(LOG_INFO,"purged \"%s\" for replicator \"%s\"",
-	       (const char *)url.toString().toUtf8(),
-	       (const char *)config()->name().toUtf8());
+	rda->syslog(LOG_INFO,"purged \"%s\" for replicator \"%s\"",
+		    (const char *)url.toString().toUtf8(),
+		    (const char *)config()->name().toUtf8());
       }
       else {
-	syslog(LOG_WARNING,"unable to delete \"%s\" for replicator \"%s\" [%s]",
-	       (const char *)url.toString().toUtf8(),
-	       (const char *)config()->name().toUtf8(),
-	       (const char *)RDDelete::errorText(conv_err).toUtf8());
+	rda->syslog(LOG_WARNING,
+		    "unable to delete \"%s\" for replicator \"%s\" [%s]",
+		    (const char *)url.toString().toUtf8(),
+		    (const char *)config()->name().toUtf8(),
+		    (const char *)RDDelete::errorText(conv_err).toUtf8());
       }
       delete conv;
     }

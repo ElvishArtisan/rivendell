@@ -2,7 +2,7 @@
 //
 //   Sound card subsystem for the HPI Library.
 //
-//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,7 +27,9 @@
 #include <qstring.h>
 #include <qtimer.h>
 
-#include <rdhpiinformation.h>
+#include <rdconfig.h>
+
+#include "rdhpiinformation.h"
 
 #include <asihpi/hpi.h>
 #ifndef HPI_VER
@@ -85,7 +87,7 @@ class RDHPISoundCard : public QObject
   enum TunerBand {Fm=0,FmStereo=1,Am=2,Tv=3};
   
   enum Subcarrier {Mpx=0,Rds=1};
-  RDHPISoundCard(QObject *parent=0);
+  RDHPISoundCard(RDConfig *config,QObject *parent=0);
   ~RDHPISoundCard();
   Driver driver() const;
   RDHPIInformation *hpiInformation(int card);
@@ -137,6 +139,7 @@ class RDHPISoundCard : public QObject
   RDHPISoundCard::FadeProfile getFadeProfile() const;
   unsigned short getInputPortError(int card,int port);
   void setFadeProfile(RDHPISoundCard::FadeProfile profile);
+  RDConfig *config() const;
   
  signals:
   void inputPortError(int card,int port);
@@ -230,6 +233,7 @@ class RDHPISoundCard : public QObject
    short input_port_meter_peak[HPI_MAX_ADAPTERS][HPI_MAX_NODES][HPI_MAX_CHANNELS];
    short output_port_meter_peak[HPI_MAX_ADAPTERS][HPI_MAX_NODES][HPI_MAX_CHANNELS];
    RDHPIInformation hpi_info[HPI_MAX_ADAPTERS];
+   RDConfig *card_config;
 };
 
 

@@ -2,7 +2,7 @@
 //
 // Rivendell Services Manager
 //
-//   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -64,7 +64,7 @@ MainObject::MainObject(QObject *parent)
   // Check for prior instance
   //
   if(RDGetPids("rdservice").size()>1) {
-    syslog(LOG_ERR,"prior instance found");
+    rda->syslog(LOG_ERR,"prior instance found");
     exit(1);
   }
 
@@ -73,8 +73,8 @@ MainObject::MainObject(QObject *parent)
   //
   rda=new RDApplication("rdservice","rdservice","\n\n",this);
   if(!rda->open(&err_msg,&err_type,false)) {
-    syslog(LOG_ERR,"unable to open database [%s]",
-	   (const char *)err_msg.utf8());
+    rda->syslog(LOG_ERR,"unable to open database [%s]",
+		(const char *)err_msg.utf8());
     exit(2);
   }
 
@@ -107,8 +107,8 @@ MainObject::MainObject(QObject *parent)
 
   if(!Startup(&err_msg)) {
     Shutdown();
-    syslog(LOG_ERR,"unable to start service component [%s]",
-	   (const char *)err_msg.toUtf8());
+    rda->syslog(LOG_ERR,"unable to start service component [%s]",
+		(const char *)err_msg.toUtf8());
     exit(3);
   }
 
@@ -124,12 +124,12 @@ MainObject::MainObject(QObject *parent)
     svc_maint_timer->start(interval);
   }
   else {
-    syslog(LOG_INFO,"maintenance checks disabled on this host");
+    rda->syslog(LOG_INFO,"maintenance checks disabled on this host");
   }
 
   if(!RDWritePid(RD_PID_DIR,"rdservice.pid",getuid())) {
-    syslog(LOG_WARNING,"unable to write pid file to \"%s/rdservice.pid\"",
-	   RD_PID_DIR);
+    rda->syslog(LOG_WARNING,"unable to write pid file to \"%s/rdservice.pid\"",
+		RD_PID_DIR);
   }
 }
 
@@ -148,7 +148,7 @@ void MainObject::exitData()
   if(global_exiting) {
     Shutdown();
     RDDeletePid(RD_PID_DIR,"rdservice.pid");
-    syslog(LOG_DEBUG,"shutting down normally");
+    rda->syslog(LOG_DEBUG,"shutting down normally");
     exit(0);
   }
 

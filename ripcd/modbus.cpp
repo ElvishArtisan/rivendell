@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for Modbus TCP
 //
-//   (C) Copyright 2017-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,7 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <syslog.h>
+#include <rdapplication.h>
 
 #include "modbus.h"
 
@@ -174,9 +174,9 @@ void Modbus::processCommand(RDMacro *cmd)
 
 void Modbus::connectedData()
 {
-  syslog(LOG_INFO,
-	 "connection to Modbus device at %s:%u established",
-	 (const char *)modbus_ip_address.toString(),0xffff&modbus_ip_port);
+  rda->syslog(LOG_INFO,
+	      "connection to Modbus device at %s:%u established",
+	      (const char *)modbus_ip_address.toString(),0xffff&modbus_ip_port);
   modbus_watchdog_active=false;
   pollInputs();
 }
@@ -349,9 +349,9 @@ void Modbus::resetStateData(int line)
 void Modbus::watchdogData()
 {
   if(!modbus_watchdog_active) {
-    syslog(LOG_WARNING,
-	   "connection to Modbus device at %s:%u lost, attempting reconnect",
-	   (const char *)modbus_ip_address.toString(),0xffff&modbus_ip_port);
+    rda->syslog(LOG_WARNING,
+	      "connection to Modbus device at %s:%u lost, attempting reconnect",
+	      (const char *)modbus_ip_address.toString(),0xffff&modbus_ip_port);
     modbus_watchdog_active=true;
   }
   modbus_socket->close();

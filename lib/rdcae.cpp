@@ -2,7 +2,7 @@
 //
 // Connection to the Rivendell Core Audio Engine
 //
-//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,6 +30,7 @@
 #include <qtimer.h>
 #include <qstringlist.h>
 
+#include <rdapplication.h>
 #include <rddb.h>
 #include <rdcae.h>
 #include <rddebug.h>
@@ -161,7 +162,8 @@ bool RDCae::loadPlay(int card,QString name,int *stream,int *handle)
     count++;
   }
   if(count>1000) {
-    syslog(LOG_ERR,"*** LoadPlay: CAE took %d mS to return stream for %s ***",
+    rda->syslog(LOG_ERR,
+		"*** LoadPlay: CAE took %d mS to return stream for %s ***",
 	   count,(const char *)name);
   }
   cae_handle[card][*stream]=*handle;
@@ -510,8 +512,8 @@ void RDCae::DispatchCommand(RDCmdCache *cmd)
     int handle=GetHandle(cmd->arg(4));
     int card=CardNumber(cmd->arg(1));
     int stream=StreamNumber(cmd->arg(3));
-    syslog(LOG_ERR,"*** RDCae::DispatchCommand: received unhandled play stream from CAE, handle=%d, card=%d, stream=%d, name=\"%s\" ***",
-	   handle,card,stream,cmd->arg(2));
+    rda->syslog(LOG_ERR,"*** RDCae::DispatchCommand: received unhandled play stream from CAE, handle=%d, card=%d, stream=%d, name=\"%s\" ***",
+		handle,card,stream,cmd->arg(2));
     
     unloadPlay(handle);
   }

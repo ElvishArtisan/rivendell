@@ -2,7 +2,7 @@
 //
 // A player class for Deck Events
 //
-//   (C) Copyright 2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2016-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,8 +20,9 @@
 
 #include <syslog.h>
 
-#include <rddb.h>
-#include <rdescape_string.h>
+#include "rdapplication.h"
+#include "rddb.h"
+#include "rdescape_string.h"
 
 #include "event_player.h"
 
@@ -100,7 +101,8 @@ void EventPlayer::timeoutData()
   // Dispatch current event
   //
   if(event_numbers[event_current_event]>(int)event_deck_events.size()) {
-    syslog(LOG_ERR,"playout cut event referenced non-existent deck event");
+    rda->syslog(LOG_ERR,
+		"playout cut event referenced non-existent deck event");
     return;
   }
   emit runCart(event_channel,event_numbers[event_current_event],

@@ -168,9 +168,9 @@ void LiveWireLwrpAudio::processCommand(RDMacro *cmd)
 
 void LiveWireLwrpAudio::nodeConnectedData(unsigned id)
 {
-  syslog(LOG_INFO,
-	 "connection established to LiveWire node at \"%s\"",
-	 (const char *)livewire_nodes[id]->hostname().toUtf8());
+  rda->syslog(LOG_INFO,
+	      "connection established to LiveWire node at \"%s\"",
+	      (const char *)livewire_nodes[id]->hostname().toUtf8());
 }
 
 
@@ -233,5 +233,5 @@ void LiveWireLwrpAudio::destinationChangedData(unsigned id,RDLiveWireDestination
 
 void LiveWireLwrpAudio::watchdogStateChangedData(unsigned id,const QString &msg)
 {
-  syslog(LOG_WARNING,msg);
+  rda->syslog(LOG_WARNING,msg);
 }

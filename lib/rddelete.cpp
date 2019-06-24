@@ -33,6 +33,7 @@
 #include <qfileinfo.h>
 
 #include <rd.h>
+#include <rdapplication.h>
 #include <rdsystemuser.h>
 #include <rddelete.h>
 
@@ -62,7 +63,7 @@ int DeleteErrorCallback(CURL *curl,curl_infotype type,char *msg,size_t size,
   }
   memset(&str,0,size+1);
   memcpy(str,msg,size);
-  syslog(LOG_DEBUG,"CURL MSG: %s",str);
+  rda->syslog(LOG_DEBUG,"CURL MSG: %s",str);
   return 0;
 }
 
@@ -94,7 +95,7 @@ RDDelete::ErrorCode RDDelete::runDelete(const QString &username,
   QString xml="";
 
   if((curl=curl_easy_init())==NULL) {
-    syslog(LOG_ERR,"unable to initialize curl library\n");
+    rda->syslog(LOG_ERR,"unable to initialize curl library\n");
     return RDDelete::ErrorInternal;
   }
   strncpy(urlstr,(const char *)(conv_target_url.protocol()+"://"+
@@ -160,7 +161,7 @@ RDDelete::ErrorCode RDDelete::runDelete(const QString &username,
     break;
   }
   if(log_debug) {
-    syslog(LOG_NOTICE,curl_easy_strerror(err));
+    rda->syslog(LOG_NOTICE,curl_easy_strerror(err));
   }
   curl_slist_free_all(cmds);
   curl_easy_cleanup(curl);

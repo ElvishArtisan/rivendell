@@ -193,18 +193,18 @@ void Quartz1::ipConnect(int conn)
 
 void Quartz1::connectedData(int conn)
 {
-  syslog(LOG_INFO,"connection to Quartz1 device at %s:%d established",
-	 (const char *)sas_ipaddress[conn].toString().toUtf8(),
-	 sas_ipport[conn]);
+  rda->syslog(LOG_INFO,"connection to Quartz1 device at %s:%d established",
+	      (const char *)sas_ipaddress[conn].toString().toUtf8(),
+	      sas_ipport[conn]);
 }
 
 
 void Quartz1::connectionClosedData(int conn)
 {
-  syslog(LOG_WARNING,
+  rda->syslog(LOG_WARNING,
 	 "connection to Quartz1 device at %s:%d closed unexpectedly, attempting reconnect",
-	 (const char *)sas_ipaddress[conn].toString().toUtf8(),
-	 sas_ipport[conn]);
+	      (const char *)sas_ipaddress[conn].toString().toUtf8(),
+	      sas_ipport[conn]);
   sas_reconnect_timer[conn]->start(QUARTZ1_RECONNECT_INTERVAL,true);
 }
 
@@ -213,25 +213,25 @@ void Quartz1::errorData(int conn,int err)
 {
   switch((Q3Socket::Error)err) {
       case Q3Socket::ErrConnectionRefused:
-	syslog(LOG_NOTICE,
-	       "connection to Quartz1 device at %s:%d refused, attempting reconnect",
-	       (const char *)sas_ipaddress[conn].toString().toUtf8(),
-	       sas_ipport[conn]);
+	rda->syslog(LOG_NOTICE,
+	  "connection to Quartz1 device at %s:%d refused, attempting reconnect",
+		    (const char *)sas_ipaddress[conn].toString().toUtf8(),
+		    sas_ipport[conn]);
 	sas_reconnect_timer[conn]->start(QUARTZ1_RECONNECT_INTERVAL,true);
 	break;
 
       case Q3Socket::ErrHostNotFound:
-	syslog(LOG_WARNING,
+	rda->syslog(LOG_WARNING,
 	       "error on connection to Quartz1 device at %s:%d: Host Not Found",
-	       (const char *)sas_ipaddress[conn].toString().toUtf8(),
-	       sas_ipport[conn]);
+		    (const char *)sas_ipaddress[conn].toString().toUtf8(),
+		    sas_ipport[conn]);
 	break;
 
       case Q3Socket::ErrSocketRead:
-	syslog(LOG_WARNING,
-	       "error on connection to Quartz1 device at %s:%d: Socket Read Error",
-	       (const char *)sas_ipaddress[conn].toString().toUtf8(),
-	       sas_ipport[conn]);
+	rda->syslog(LOG_WARNING,
+	    "error on connection to Quartz1 device at %s:%d: Socket Read Error",
+		    (const char *)sas_ipaddress[conn].toString().toUtf8(),
+		    sas_ipport[conn]);
 	break;
   }
 }
