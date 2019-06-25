@@ -1,0 +1,16 @@
+#
+# This is the syslog configuration file for Rivendell.
+#
+# After making changes to this file, do:
+#
+#     systemctl restart rsyslog
+#
+# to make them effective.
+#
+
+LOCAL7.INFO	/var/log/rivendell/operations
+
+#
+# Uncomment this line to enable debugging messages
+#
+# LOCAL7.DEBUG	/var/log/rivendell/debug

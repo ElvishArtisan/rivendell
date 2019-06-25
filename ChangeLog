@@ -18833,3 +18833,6 @@
 2019-06-25 Fred Gleason <fredg@paravelsystems.com>
 	* Adjusted to priority of 'operations' system events to use
 	LOG_INFO priority.
+2019-06-25 Fred Gleason <fredg@paravelsystems.com>
+	* Added a sample syslog.conf(5) snippet in 'conf/syslog.conf-sample'.
+	* Added a sample logrotate(5) snippet in 'conf/logrotate-sample'.

@@ -28,7 +28,7 @@ Release: @RPM_RELEASE@
 License: GPL
 Packager: Fred Gleason <fredg@paravelsystems.com>
 Source: rivendell-@VERSION@.tar.gz
-Requires: @MYSQL_PKG@, @QT4_MYSQL_PKG@, @APACHE_PKG@, curl, @USERMODE_PKG@, @CDDA2WAV_PKG@, rivendell-pypad = @VERSION@
+Requires: @MYSQL_PKG@, @QT4_MYSQL_PKG@, @APACHE_PKG@, curl, @USERMODE_PKG@, @CDDA2WAV_PKG@, rivendell-pypad = @VERSION@, rsyslog
 BuildRoot: /var/tmp/rivendell-@VERSION@
 Obsoletes: rivendell-base rivendell-opsguide
 Conflicts: rivendell-opsguide
@@ -121,6 +121,8 @@ rm -f $RPM_BUILD_ROOT/@LOCAL_PREFIX@/@RD_LIB_PATH@/libqmysqlutf*
 mkdir $RPM_BUILD_ROOT/.qt
 touch $RPM_BUILD_ROOT/.qt/qt
 rm -rf $RPM_BUILD_ROOT/@libexecdir@/logos
+mkdir -p $RPM_BUILD_ROOT/etc/logrotate.d
+cp conf/logrotate-sample $RPM_BUILD_ROOT/etc/logrotate.d/rivendell
 mkdir -p $RPM_BUILD_ROOT/@DOC_PATH@/logos
 cp icons/webget_logo.png $RPM_BUILD_ROOT/@DOC_PATH@/logos/
 cp AUTHORS $RPM_BUILD_ROOT/@DOC_PATH@/
@@ -132,9 +134,10 @@ cp README $RPM_BUILD_ROOT/@DOC_PATH@/
 cp UPGRADING $RPM_BUILD_ROOT/@DOC_PATH@/
 cp CODINGSTYLE $RPM_BUILD_ROOT/@DOC_PATH@/
 cp conf/*.conf $RPM_BUILD_ROOT/@DOC_PATH@/
-cp conf/rd.conf-sample $RPM_BUILD_ROOT/@DOC_PATH@/
+cat conf/rd.conf-sample | sed s/SyslogFacility=1/SyslogFacility=23/ > $RPM_BUILD_ROOT/@DOC_PATH@/rd.conf-sample
 cp conf/asound.conf-sample $RPM_BUILD_ROOT/@DOC_PATH@/
 mkdir -p $RPM_BUILD_ROOT/@DOC_PATH@/misc
+cp conf/syslog.conf-sample $RPM_BUILD_ROOT/@DOC_PATH@/
 cp docs/misc/colors $RPM_BUILD_ROOT/@DOC_PATH@/misc/
 cp docs/misc/reports.txt $RPM_BUILD_ROOT/@DOC_PATH@/misc/
 cp docs/misc/ALSA.txt $RPM_BUILD_ROOT/@DOC_PATH@/misc/
@@ -202,6 +205,11 @@ if test ! -e @libexecdir@/logos ; then
 fi
 if test ! -f @libexecdir@/logos/webget_logo.png ; then
     cp @DOC_PATH@/logos/webget_logo.png @libexecdir@/logos/webget_logo.png
+fi
+mkdir -p /var/log/rivendell
+if test ! -e /etc/rsyslog.d/rivendell.conf ; then
+    cp @DOC_PATH@/syslog.conf-sample /etc/rsyslog.d/rivendell.conf
+    /bin/systemctl restart rsyslog
 fi
 exit 0
 
@@ -362,6 +370,7 @@ rm -rf $RPM_BUILD_ROOT
 @LOCAL_PREFIX@/share/desktop-directories/rivendell-rivendell.directory
 @LOCAL_PREFIX@/share/desktop-directories/rivendell-utilities.directory
 /etc/xdg/menus/applications-merged/rivendell-rivendell.menu
+/etc/logrotate.d/rivendell
 /.qt/qt
 @libexecdir@/*.gif
 @libexecdir@/*.html

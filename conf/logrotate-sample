@@ -1,0 +1,18 @@
+#
+# This defines the rotation rules for the Rivendell syslogs.
+#
+
+/var/log/rivendell/operations
+/var/log/rivendell/debug
+{
+    missingok
+    daily
+    rotate 30
+    maxage 30
+    dateext
+    dateyesterday
+    sharedscripts
+    postrotate
+        /bin/kill -HUP `cat /var/run/syslogd.pid 2> /dev/null` 2> /dev/null || true
+    endscript
+}

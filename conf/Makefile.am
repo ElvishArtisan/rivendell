@@ -29,9 +29,11 @@ uninstall:
 	rm -f $(DESTDIR)/etc/pam.d/rivendell
 
 EXTRA_DIST = asound.conf-sample\
+             logrotate-sample\
              rd-bin.conf.in\
              rd.conf-sample\
-             rivendell.pam
+             rivendell.pam\
+             syslog.conf-sample
 
 CLEANFILES = *~
 DISTCLEANFILES = rdfeed.conf
