@@ -161,7 +161,7 @@ RDDelete::ErrorCode RDDelete::runDelete(const QString &username,
     break;
   }
   if(log_debug) {
-    rda->syslog(LOG_NOTICE,curl_easy_strerror(err));
+    rda->syslog(LOG_INFO,curl_easy_strerror(err));
   }
   curl_slist_free_all(cmds);
   curl_easy_cleanup(curl);

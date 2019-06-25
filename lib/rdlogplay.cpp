@@ -1936,7 +1936,7 @@ bool RDLogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
 	*/
 	emit channelStarted(play_id,playdeck->channel(),
 			    playdeck->card(),playdeck->port());
-	rda->syslog(LOG_DEBUG,"log engine: started audio cart: Line: %d  Cart: %u  Cut: %u Pos: %d  Card: %d  Stream: %d  Port: %d",
+	rda->syslog(LOG_INFO,"log engine: started audio cart: Line: %d  Cart: %u  Cut: %u Pos: %d  Card: %d  Stream: %d  Port: %d",
 	       line,logline->cartNumber(),
 	       playdeck->cut()->cutNumber(),
 	       logline->playPosition(),
@@ -1991,14 +1991,14 @@ bool RDLogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
 		    RDAirPlayConf::TrafficMacro,play_onair_flag);
 	  FinishEvent(line);
 	  emit transportChanged();
-	  rda->syslog(LOG_DEBUG,
+	  rda->syslog(LOG_INFO,
 	   "log engine: asynchronously executed macro cart: Line: %d  Cart: %u",
 		      line,logline->cartNumber());
 	}
 	else {
 	  play_macro_deck->load(logline->cartNumber());
 	  play_macro_deck->setLine(line);
-	  rda->syslog(LOG_DEBUG,
+	  rda->syslog(LOG_INFO,
 		      "log engine: started macro cart: Line: %d  Cart: %u",
 		      line,logline->cartNumber());
 	  play_macro_deck->exec();
@@ -2063,7 +2063,7 @@ bool RDLogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
 	}
 	play_macro_deck->setLine(line);
 	play_macro_deck->exec();
-	rda->syslog(LOG_DEBUG,"log engine: chained to log: Line: %d  Log: %s",
+	rda->syslog(LOG_INFO,"log engine: chained to log: Line: %d  Log: %s",
 		    line,(const char *)logline->markerLabel());
 	break;
 
@@ -2140,11 +2140,11 @@ void RDLogPlay::CleanupEvent(int id)
   }
   playdeck=(RDPlayDeck *)logline->playDeck();
   if(playdeck->cut()==NULL) {
-    rda->syslog(LOG_DEBUG,"log engine: event failed: Line: %d  Cart: %u",line,
+    rda->syslog(LOG_INFO,"log engine: event failed: Line: %d  Cart: %u",line,
 		logline->cartNumber());
   }
   else {
-    rda->syslog(LOG_DEBUG,"log engine: finished event: Line: %d  Cart: %u  Cut: %u Card: %d  Stream: %d  Port: %d",
+    rda->syslog(LOG_INFO,"log engine: finished event: Line: %d  Cart: %u  Cut: %u Card: %d  Stream: %d  Port: %d",
 		line,logline->cartNumber(),
 		playdeck->cut()->cutNumber(),
 		playdeck->card(),

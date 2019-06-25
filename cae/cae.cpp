@@ -394,7 +394,7 @@ MainObject::MainObject(QObject *parent,const char *name)
   }
 */
   if(rd_config->enableMixerLogging()) {
-    RDApplication::syslog(rd_config,LOG_NOTICE,"mixer logging enabled");
+    RDApplication::syslog(rd_config,LOG_INFO,"mixer logging enabled");
   }
   RDApplication::syslog(rd_config,LOG_INFO,"cae started");
 }
@@ -460,7 +460,7 @@ void MainObject::loadPlaybackData(int id,unsigned card,const QString &name)
   play_handle[handle].stream=new_stream;
   play_handle[handle].owner=id;
   play_owner[card][new_stream]=id;
-  RDApplication::syslog(rd_config,LOG_DEBUG,
+  RDApplication::syslog(rd_config,LOG_INFO,
 		     "LoadPlayback  Card: %d  Stream: %d  Name: %s  Handle: %d",
 	 card,new_stream,(const char *)wavename.toUtf8(),handle);
   cae_server->
@@ -480,7 +480,7 @@ void MainObject::unloadPlaybackData(int id,unsigned handle)
     case RDStation::Hpi:
       if(hpiUnloadPlayback(card,stream)) {
 	play_owner[card][stream]=-1;
-	RDApplication::syslog(rd_config,LOG_DEBUG,
+	RDApplication::syslog(rd_config,LOG_INFO,
 			    "UnloadPlayback - Card: %d  Stream: %d  Handle: %d",
 	       card,stream,handle);
 	cae_server->sendCommand(id,QString().sprintf("UP %d +!",handle));
@@ -493,7 +493,7 @@ void MainObject::unloadPlaybackData(int id,unsigned handle)
     case RDStation::Alsa:
       if(alsaUnloadPlayback(card,stream)) {
 	play_owner[card][stream]=-1;
-	RDApplication::syslog(rd_config,LOG_DEBUG,
+	RDApplication::syslog(rd_config,LOG_INFO,
 			    "UnloadPlayback - Card: %d  Stream: %d  Handle: %d",
 	       card,stream,handle);
 	cae_server->sendCommand(id,QString().sprintf("UP %d +!",handle));
@@ -506,7 +506,7 @@ void MainObject::unloadPlaybackData(int id,unsigned handle)
     case RDStation::Jack:
       if(jackUnloadPlayback(card,stream)) {
 	play_owner[card][stream]=-1;
-	RDApplication::syslog(rd_config,LOG_DEBUG,
+	RDApplication::syslog(rd_config,LOG_INFO,
 			    "UnloadPlayback - Card: %d  Stream: %d  Handle: %d",
 	       card,stream,handle);
 	cae_server->sendCommand(id,QString().sprintf("UP %d +!",handle));
@@ -540,7 +540,7 @@ void MainObject::playPositionData(int id,unsigned handle,unsigned pos)
     switch(cae_driver[card]) {
     case RDStation::Hpi:
       if(hpiPlaybackPosition(card,stream,pos)) {
-	RDApplication::syslog(rd_config,LOG_DEBUG,
+	RDApplication::syslog(rd_config,LOG_INFO,
 	       "PlaybackPosition - Card: %d  Stream: %d  Pos: %d  Handle: %d",
 	       card,stream,pos,handle);
 	cae_server->sendCommand(id,QString().sprintf("PP %d %d +!",handle,pos));
@@ -552,7 +552,7 @@ void MainObject::playPositionData(int id,unsigned handle,unsigned pos)
       
     case RDStation::Alsa:
       if(alsaPlaybackPosition(card,stream,pos)) {
-	RDApplication::syslog(rd_config,LOG_DEBUG,
+	RDApplication::syslog(rd_config,LOG_INFO,
 	       "PlaybackPosition - Card: %d  Stream: %d  Pos: %d  Handle: %d",
 	       card,stream,pos,handle);
 	cae_server->sendCommand(id,QString().sprintf("PP %d %d +!",handle,pos));
@@ -564,7 +564,7 @@ void MainObject::playPositionData(int id,unsigned handle,unsigned pos)
       
     case RDStation::Jack:
       if(jackPlaybackPosition(card,stream,pos)) {
-	RDApplication::syslog(rd_config,LOG_DEBUG,
+	RDApplication::syslog(rd_config,LOG_INFO,
 	       "PlaybackPosition - Card: %d  Stream: %d  Pos: %d  Handle: %d",
 	       card,stream,pos,handle);
 	cae_server->sendCommand(id,QString().sprintf("PP %d %d +!",handle,pos));
@@ -648,7 +648,7 @@ void MainObject::playData(int id,unsigned handle,unsigned length,unsigned speed,
 					 handle,length,speed,pitch_flag));
       return;
     }
-    RDApplication::syslog(rd_config,LOG_DEBUG,
+    RDApplication::syslog(rd_config,LOG_INFO,
 	   "Play - Card: %d  Stream: %d  Handle: %d  Length: %d  Speed: %d  Pitch: %d",
 	   card,stream,handle,play_length[card][stream],
 	   play_speed[card][stream],pitch_flag);
@@ -692,7 +692,7 @@ void MainObject::stopPlaybackData(int id,unsigned handle)
       cae_server->sendCommand(id,QString().sprintf("SP %u -!",handle));
       return;
     }
-    RDApplication::syslog(rd_config,LOG_DEBUG,
+    RDApplication::syslog(rd_config,LOG_INFO,
 			  "StopPlayback - Card: %d  Stream: %d  Handle: %d",
 	   card,stream,handle);
     return;
@@ -782,7 +782,7 @@ void MainObject::loadRecordingData(int id,unsigned card,unsigned port,
 					 bitrate,(const char *)name.toUtf8()));
       return;
     }
-    RDApplication::syslog(rd_config,LOG_DEBUG,
+    RDApplication::syslog(rd_config,LOG_INFO,
 	   "LoadRecord - Card: %d  Stream: %d  Coding: %d  Chans: %d  SampRate: %d  BitRate: %d  Name: %s",
 	   card,port,coding,channels,samprate,bitrate,
 	   (const char *)wavename.toUtf8());
@@ -832,7 +832,7 @@ void MainObject::unloadRecordingData(int id,unsigned card,unsigned stream)
       return;
     }
     record_owner[card][stream]=-1;
-    RDApplication::syslog(rd_config,LOG_DEBUG,
+    RDApplication::syslog(rd_config,LOG_INFO,
 			  "UnloadRecord - Card: %d  Stream: %d, Length: %u",
 	   card,stream,len);
     cae_server->
@@ -890,7 +890,7 @@ void MainObject::recordData(int id,unsigned card,unsigned stream,unsigned len,
 					 card,stream,len,threshold_level));
       return;
     }
-    RDApplication::syslog(rd_config,LOG_DEBUG,
+    RDApplication::syslog(rd_config,LOG_INFO,
 			"Record - Card: %d  Stream: %d  Length: %d  Thres: %d",
 	   card,stream,record_length[card][stream],
 	   record_threshold[card][stream]);
@@ -933,7 +933,7 @@ void MainObject::stopRecordingData(int id,unsigned card,unsigned stream)
     cae_server->sendCommand(id,QString().sprintf("SR %u %u -!",card,stream));
     return;
   }
-  RDApplication::syslog(rd_config,LOG_DEBUG,
+  RDApplication::syslog(rd_config,LOG_INFO,
 			"StopRecord - Card: %d  Stream: %d",card,stream);
 }
 
@@ -969,7 +969,7 @@ void MainObject::setInputVolumeData(int id,unsigned card,unsigned stream,
     return;
   }
   if(rd_config->enableMixerLogging()) {
-    RDApplication::syslog(rd_config,LOG_DEBUG,
+    RDApplication::syslog(rd_config,LOG_INFO,
 			  "SetInputVolume - Card: %d  Stream: %d Level: %d",
 			  card,stream,level);
   }
@@ -1012,7 +1012,7 @@ void MainObject::setOutputVolumeData(int id,unsigned card,unsigned stream,
     return;
   }
   if(rd_config->enableMixerLogging()) {
-    RDApplication::syslog(rd_config,LOG_DEBUG,
+    RDApplication::syslog(rd_config,LOG_INFO,
 	   "SetOutputVolume - Card: %d  Stream: %d  Port: %d  Level: %d",
 	   card,stream,port,level);
   }
@@ -1059,7 +1059,7 @@ void MainObject::fadeOutputVolumeData(int id,unsigned card,unsigned stream,
     return;
   }
   if(rd_config->enableMixerLogging()) {
-    RDApplication::syslog(rd_config,LOG_DEBUG,
+    RDApplication::syslog(rd_config,LOG_INFO,
      "FadeOutputVolume - Card: %d  Stream: %d  Port: %d  Level: %d  Length: %d",
 	   card,stream,port,level,length);
   }
@@ -1103,7 +1103,7 @@ void MainObject::setInputLevelData(int id,unsigned card,unsigned port,
     return;
   }
   if(rd_config->enableMixerLogging()) {
-    RDApplication::syslog(rd_config,LOG_DEBUG,
+    RDApplication::syslog(rd_config,LOG_INFO,
 			  "SetInputLevel - Card: %d  Port: %d  Level: %d",
 			  card,port,level);
   }
@@ -1146,7 +1146,7 @@ void MainObject::setOutputLevelData(int id,unsigned card,unsigned port,
     return;
   }
   if(rd_config->enableMixerLogging()) {
-    RDApplication::syslog(rd_config,LOG_DEBUG,
+    RDApplication::syslog(rd_config,LOG_INFO,
 			  "SetOutputLevel - Card: %d  Port: %d  Level: %d",
 			  card,port,level);
   }
@@ -1189,7 +1189,7 @@ void MainObject::setInputModeData(int id,unsigned card,unsigned stream,
     return;
   }
   if(rd_config->enableMixerLogging()) {
-    RDApplication::syslog(rd_config,LOG_DEBUG,
+    RDApplication::syslog(rd_config,LOG_INFO,
 			  "SetInputMode - Card: %d  Stream: %d  Mode: %d",
 	   card,stream,mode);
   }
@@ -1232,7 +1232,7 @@ void MainObject::setOutputModeData(int id,unsigned card,unsigned stream,
     return;
   }
   if(rd_config->enableMixerLogging()) {
-    RDApplication::syslog(rd_config,LOG_DEBUG,
+    RDApplication::syslog(rd_config,LOG_INFO,
 			  "SetOutputMode - Card: %d  Stream: %d  Mode: %d",
 			  card,stream,mode);
   }
@@ -1275,7 +1275,7 @@ void MainObject::setInputVoxLevelData(int id,unsigned card,unsigned stream,
     return;
   }
   if(rd_config->enableMixerLogging()) {
-    RDApplication::syslog(rd_config,LOG_DEBUG,
+    RDApplication::syslog(rd_config,LOG_INFO,
 			  "SetInputVOXLevel - Card: %d  Stream: %d  Level: %d",
 			  card,stream,level);
   }
@@ -1318,7 +1318,7 @@ void MainObject::setInputTypeData(int id,unsigned card,unsigned port,
     return;
   }
   if(rd_config->enableMixerLogging()) {
-    RDApplication::syslog(rd_config,LOG_DEBUG,
+    RDApplication::syslog(rd_config,LOG_INFO,
 			  "SetInputType - Card: %d  Port: %d  Type: %d",
 			  card,port,type);
   }
@@ -1373,7 +1373,7 @@ void MainObject::setAudioPassthroughLevelData(int id,unsigned card,
     return;
   }
   if(rd_config->enableMixerLogging()) {
-    RDApplication::syslog(rd_config,LOG_DEBUG,
+    RDApplication::syslog(rd_config,LOG_INFO,
 	   "SetPassthroughLevel - Card: %d  InPort: %d  OutPort: %d Level: %d",
 	   card,input,output,level);
   }
@@ -1400,7 +1400,7 @@ void MainObject::setClockSourceData(int id,unsigned card,int input)
     return;
   }
   if(rd_config->enableMixerLogging()) {
-    RDApplication::syslog(rd_config,LOG_DEBUG,
+    RDApplication::syslog(rd_config,LOG_INFO,
 			  "SetClockSource - Card: %d  Source: %d",card,input);
   }
   cae_server->sendCommand(id,QString().sprintf("CS %u %u +!",card,input));
@@ -1778,7 +1778,7 @@ void MainObject::KillSocket(int ch)
 	      break;
 
 	    default:
-	      RDApplication::syslog(rd_config,LOG_NOTICE,
+	      RDApplication::syslog(rd_config,LOG_DEBUG,
 				    "tried to kill unowned socket!");
 	      break;
 	}

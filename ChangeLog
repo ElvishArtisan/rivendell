@@ -18830,3 +18830,6 @@
 2019-06-24 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'pypad.rivendellConfig()' method.
 	* Added a 'pypad.syslog()' method.
+2019-06-25 Fred Gleason <fredg@paravelsystems.com>
+	* Adjusted to priority of 'operations' system events to use
+	LOG_INFO priority.

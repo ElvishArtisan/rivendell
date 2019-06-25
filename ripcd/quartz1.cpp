@@ -213,7 +213,7 @@ void Quartz1::errorData(int conn,int err)
 {
   switch((Q3Socket::Error)err) {
       case Q3Socket::ErrConnectionRefused:
-	rda->syslog(LOG_NOTICE,
+	rda->syslog(LOG_WARNING,
 	  "connection to Quartz1 device at %s:%d refused, attempting reconnect",
 		    (const char *)sas_ipaddress[conn].toString().toUtf8(),
 		    sas_ipport[conn]);

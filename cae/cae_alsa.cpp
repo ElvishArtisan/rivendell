@@ -723,7 +723,7 @@ void MainObject::alsaInit(RDStation *station)
       if(cae_driver[i]==RDStation::Alsa) {
 	station->setCardDriver(i,RDStation::Alsa);
 	if(snd_ctl_open(&snd_ctl,dev,0)<0) {
-	  RDApplication::syslog(rd_config,LOG_DEBUG,
+	  RDApplication::syslog(rd_config,LOG_INFO,
 				"no control device found for %s",
 		 (const char *)dev);
 	  station->

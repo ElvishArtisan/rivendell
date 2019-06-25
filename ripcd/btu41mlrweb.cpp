@@ -175,7 +175,7 @@ void BtU41MlrWeb::watchdogData()
 
 void BtU41MlrWeb::ProcessCommand(const QString &cmd)
 {
-  //  rda->syslog(LOG_NOTICE,"ProcessCommand(%s)\n",(const char *)cmd);
+  //  rda->syslog(LOG_DEBUG,"ProcessCommand(%s)\n",(const char *)cmd);
 
   QStringList cmds=cmd.split(",");
 

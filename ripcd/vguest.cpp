@@ -760,7 +760,7 @@ void VGuest::MetadataCommand(char *cmd,int len,int id)
       vguest_ping_response_timer[id]->stop();
     }
     else {
-      rda->syslog(LOG_DEBUG,
+      rda->syslog(LOG_INFO,
 	  "vGuest system at %s understands ping, activating timeout monitoring",
 		  (const char *)vguest_ipaddress[id].toString().toUtf8());
     }

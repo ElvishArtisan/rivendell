@@ -299,7 +299,7 @@ void SasUsi::processCommand(RDMacro *cmd)
 	  if(sas_relay_numbers[cmd->arg(2).toUInt()-1]>=0) {
 	    snprintf(str,256,"\x05R%d%04d\x0D\x0A",cmd_byte,
 		    sas_relay_numbers[cmd->arg(2).toUInt()-1]);
-	    rda->syslog(LOG_NOTICE,"USI: %s",
+	    rda->syslog(LOG_DEBUG,"USI: %s",
 			(const char *)PrettifyCommand(str));
 	    SendCommand(str);
 	    cmd->acknowledge(true);
@@ -418,7 +418,7 @@ void SasUsi::errorData(int err)
 
 void SasUsi::SendCommand(char *str)
 {
-  rda->syslog(LOG_DEBUG,"sending USI cmd: %s",
+  rda->syslog(LOG_INFO,"sending USI cmd: %s",
 	      (const char *)PrettifyCommand(str));
   switch(sas_porttype) {
   case RDMatrix::TtyPort:
@@ -476,7 +476,7 @@ void SasUsi::DispatchCommand()
     }
   }
 
-  rda->syslog(LOG_DEBUG,"received USI cmd: %s",
+  rda->syslog(LOG_INFO,"received USI cmd: %s",
 	      (const char *)PrettifyCommand(sas_buffer));
 
 

@@ -559,7 +559,7 @@ void MainObject::startTimerData(int id)
   BroadcastCommand(QString().sprintf("RE %d %d %d!",
 				     deck+1,catch_record_deck_status[deck],
 				     id));
-  rda->syslog(LOG_DEBUG,"gpi start window closes: event: %d, gpi: %d:%d",
+  rda->syslog(LOG_INFO,"gpi start window closes: event: %d, gpi: %d:%d",
 	      id,catch_events[event].startMatrix(),
 	      catch_events[event].startLine());
 }
@@ -674,7 +674,7 @@ void MainObject::engineData(int id)
       catch_swdelay[catch_events[event].channel()-1]=q->value(5).toInt();
     }
     else {
-      rda->syslog(LOG_DEBUG,"id %d specified non-existent record deck, ignored",
+      rda->syslog(LOG_INFO,"id %d specified non-existent record deck, ignored",
 		  catch_events[event].id());
       delete q;
       return;
@@ -707,7 +707,7 @@ void MainObject::engineData(int id)
 		       catch_record_deck_status[catch_events[event].
 						channel()-1],
 					 catch_events[event].id()));
-      rda->syslog(LOG_DEBUG,"gpi start window opens: event: %d, gpi: %d:%d",
+      rda->syslog(LOG_INFO,"gpi start window opens: event: %d, gpi: %d:%d",
 		  id,catch_events[event].startMatrix(),
 		  catch_events[event].startLine());
       break;
@@ -748,7 +748,7 @@ void MainObject::engineData(int id)
 	q->value(2).toInt();
     }
     else {
-      rda->syslog(LOG_DEBUG,"id %d specified non-existent play deck, ignored",
+      rda->syslog(LOG_INFO,"id %d specified non-existent play deck, ignored",
 		  catch_events[event].id());
       delete q;
       return;
@@ -1264,7 +1264,7 @@ bool MainObject::StartRecording(int event)
     QString str;
     str=rml->toString();
     rda->ripc()->sendRml(rml);
-    rda->syslog(LOG_DEBUG,"sending switcher command: \"%s\"",
+    rda->syslog(LOG_INFO,"sending switcher command: \"%s\"",
 		(const char *)str.toUtf8());
     delete rml;
   }
@@ -1411,7 +1411,7 @@ void MainObject::StartPlayout(int event)
 			       catch_playout_stream[deck-129]);
   catch_events[event].setStatus(RDDeck::Recording);
 
-  rda->syslog(LOG_DEBUG,
+  rda->syslog(LOG_INFO,
 	     "playout started: deck: %d, event %d  card %d, stream %d , cut=%s",
 	      deck,catch_events[event].id(),
 	      catch_playout_card[deck-129],
@@ -2238,25 +2238,25 @@ void MainObject::PurgeEvent(int event)
   BroadcastCommand(QString().sprintf("PE %d!",catch_events[event].id()));
   switch(catch_events[event].type()) {
   case RDRecording::Recording:
-    rda->syslog(LOG_DEBUG,"purged event %d, Type: recording, Cut: %s",
+    rda->syslog(LOG_INFO,"purged event %d, Type: recording, Cut: %s",
 		catch_events[event].id(),
 		(const char *)catch_events[event].cutName().toUtf8());
     break;
 
   case RDRecording::Playout:
-    rda->syslog(LOG_DEBUG,"purged event %d, Type: playout, Cut: %s",
+    rda->syslog(LOG_INFO,"purged event %d, Type: playout, Cut: %s",
 		catch_events[event].id(),
 		(const char *)catch_events[event].cutName().toUtf8());
     break;
 
   case RDRecording::MacroEvent:
-    rda->syslog(LOG_DEBUG,"purged event %d, Type: macro, Cart: %u",
+    rda->syslog(LOG_INFO,"purged event %d, Type: macro, Cart: %u",
 		catch_events[event].id(),
 		catch_events[event].macroCart());
     break;
 
   case RDRecording::SwitchEvent:
-    rda->syslog(LOG_DEBUG,
+    rda->syslog(LOG_INFO,
 	      "purged event %d, Type: switch, Matrix: %d, Source: %d  Dest: %d",
 		catch_events[event].id(),
 		catch_events[event].channel(),
@@ -2265,13 +2265,13 @@ void MainObject::PurgeEvent(int event)
     break;
 
   case RDRecording::Download:
-    rda->syslog(LOG_DEBUG,"purged event %d, Type: download, Cut: %s",
+    rda->syslog(LOG_INFO,"purged event %d, Type: download, Cut: %s",
 		catch_events[event].id(),
 		(const char *)catch_events[event].cutName().toUtf8());
     break;
 
   case RDRecording::Upload:
-    rda->syslog(LOG_DEBUG,"purged event %d, Type: upload, Cut: %s",
+    rda->syslog(LOG_INFO,"purged event %d, Type: upload, Cut: %s",
 		catch_events[event].id(),
 		(const char *)catch_events[event].cutName().toUtf8());
     break;

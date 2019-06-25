@@ -50,7 +50,7 @@ void Xport::SaveString()
   //
   // Process Request
   //
-  rda->syslog(LOG_NOTICE,"SAVESTRING: |%s|",(const char *)string.utf8());
+  rda->syslog(LOG_INFO,"SAVESTRING: |%s|",(const char *)string.utf8());
   printf("Content-type: application/xml; charset: UTF-8\n");
   printf("Status: 200\n\n");
   printf("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");

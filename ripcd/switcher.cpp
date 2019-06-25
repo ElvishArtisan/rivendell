@@ -82,7 +82,7 @@ void Switcher::logBytes(uint8_t *data,int len)
   for(int i=0;i<len;i++) {
     str+=QString().sprintf("%02X ",0xff&data[i]);
   }
-  rda->syslog(LOG_NOTICE,"bytes: %s",(const char *)str);
+  rda->syslog(LOG_INFO,"bytes: %s",(const char *)str);
 }
 
 

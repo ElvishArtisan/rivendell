@@ -37,10 +37,10 @@
 void MainObject::gpiChangedData(int matrix,int line,bool state)
 {
   if(state) {
-    rda->syslog(LOG_DEBUG,"GPI %d:%d ON",matrix,line+1);
+    rda->syslog(LOG_INFO,"GPI %d:%d ON",matrix,line+1);
   }
   else {
-    rda->syslog(LOG_DEBUG,"GPI %d:%d OFF",matrix,line+1);
+    rda->syslog(LOG_INFO,"GPI %d:%d OFF",matrix,line+1);
   }
   ripcd_gpi_state[matrix][line]=state;
   BroadcastCommand(QString().sprintf("GI %d %d %d %d!",matrix,line,state,
@@ -58,10 +58,10 @@ void MainObject::gpiChangedData(int matrix,int line,bool state)
 void MainObject::gpoChangedData(int matrix,int line,bool state)
 {
   if(state) {
-    rda->syslog(LOG_DEBUG,"GPO %d:%d ON",matrix,line+1);
+    rda->syslog(LOG_INFO,"GPO %d:%d ON",matrix,line+1);
   }
   else {
-    rda->syslog(LOG_DEBUG,"GPO %d:%d OFF",matrix,line+1);
+    rda->syslog(LOG_INFO,"GPO %d:%d OFF",matrix,line+1);
   }
   ripcd_gpo_state[matrix][line]=state;
   BroadcastCommand(QString().sprintf("GO %d %d %d %d!",matrix,line,state,
@@ -243,7 +243,7 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
   RDMatrix::GpioType gpio_type;
   QByteArray data;
 
-  rda->syslog(LOG_DEBUG,"received rml: \"%s\" from %s",
+  rda->syslog(LOG_INFO,"received rml: \"%s\" from %s",
 	      (const char *)rml_in->toString().toUtf8(),
 	      (const char *)rml_in->address().toString().toUtf8());
 
@@ -820,11 +820,11 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
     }
     if((rml->arg(0).toInt()==0)&&ripc_onair_flag) {
       BroadcastCommand("TA 0!");
-      rda->syslog(LOG_DEBUG,"onair flag OFF");
+      rda->syslog(LOG_INFO,"onair flag OFF");
     }
     if((rml->arg(0).toInt()==1)&&(!ripc_onair_flag)) {
       BroadcastCommand("TA 1!");
-      rda->syslog(LOG_DEBUG,"onair flag ON");
+      rda->syslog(LOG_INFO,"onair flag ON");
     }
     ripc_onair_flag=rml->arg(0).toInt();
     if(rml->echoRequested()) {
@@ -859,7 +859,7 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
       str+=(rml->arg(i)+" ");
     }
     str+=rml->arg(rml->argQuantity()-1);
-    rda->syslog(LOG_DEBUG,"sending \"%s\" to %s:%d",(const char *)str.toUtf8(),
+    rda->syslog(LOG_INFO,"sending \"%s\" to %s:%d",(const char *)str.toUtf8(),
 		(const char *)addr.toString().toUtf8(),rml->arg(1).toInt());
     data=RDStringToData(str);
     ripcd_rml_send->writeDatagram(data,addr,(Q_UINT16)(rml->arg(1).toInt()));

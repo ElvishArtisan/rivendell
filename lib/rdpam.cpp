@@ -48,12 +48,12 @@ int RDPamCallback(int num_msg, const struct pam_message **msg,
       break;
 
     case PAM_PROMPT_ECHO_ON:
-      rda->syslog(LOG_ERR,"unhandled PAM request: %s",msg[i]->msg);
+      rda->syslog(LOG_WARNING,"unhandled PAM request: %s",msg[i]->msg);
       break;
 
     case PAM_ERROR_MSG:
     case PAM_TEXT_INFO:
-      rda->syslog(LOG_NOTICE,"PAM message: %s",msg[i]->msg);
+      rda->syslog(LOG_INFO,"PAM message: %s",msg[i]->msg);
       break;
     }
   }
@@ -80,7 +80,7 @@ bool RDPam::authenticate(const QString &username,const QString &token)
   conv.conv=RDPamCallback;
   conv.appdata_ptr=(RDPam *)this;
   if((err=pam_start(system_pam_service,username,&conv,&pamh))!=PAM_SUCCESS) {
-    rda->syslog(LOG_NOTICE,"PAM Error: %s",pam_strerror(pamh,err));
+    rda->syslog(LOG_WARNING,"PAM Error: %s",pam_strerror(pamh,err));
     pam_end(pamh,err);
     CleanupPam();
     return false;

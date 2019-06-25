@@ -836,7 +836,7 @@ hpi_err_t RDHPIPlayStream::LogHpi(hpi_err_t err,int lineno)
 
   if(err!=0) {
     HPI_GetErrorText(err,err_txt);
-    RDApplication::syslog(sound_card->config(),LOG_NOTICE,
+    RDApplication::syslog(sound_card->config(),LOG_WARNING,
 			  "HPI Error: %s, %s line %d",err_txt,__FILE__,lineno);
   }
   return err;

@@ -235,16 +235,16 @@ void Am16::ProcessMessage(char *msg,int len)
       break;
 
     case 0x7E:
-      rda->syslog(LOG_NOTICE,"AM16 driver: data error");
+      rda->syslog(LOG_WARNING,"AM16 driver: data error");
       break;
 
     case 0x7F:
-      rda->syslog(LOG_NOTICE,
+      rda->syslog(LOG_WARNING,
 	  "AM16 driver: memory protect mode is on, cannot change crosspoints");
       break;
 
     default:
-      rda->syslog(LOG_NOTICE,"AM16 driver: received unknown ACK code [%d]",
+      rda->syslog(LOG_WARNING,"AM16 driver: received unknown ACK code [%d]",
 		  0xFF&msg[7]);
       break;
     }

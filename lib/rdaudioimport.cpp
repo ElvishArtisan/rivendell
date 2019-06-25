@@ -219,7 +219,7 @@ RDAudioImport::ErrorCode RDAudioImport::runImport(const QString &username,
     return RDAudioImport::ErrorUrlInvalid;
   }
   /*
-    rda->syslog(LOG_NOTICE,"CURL code: %d [%s]\n",curl_err,
+    rda->syslog(LOG_DEBUG,"CURL code: %d [%s]\n",curl_err,
     curl_easy_strerror(curl_err));
   */
 

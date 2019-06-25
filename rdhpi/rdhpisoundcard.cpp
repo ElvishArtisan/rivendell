@@ -1045,7 +1045,7 @@ hpi_err_t RDHPISoundCard::LogHpi(hpi_err_t err,int lineno)
 
   if(err!=0) {
     HPI_GetErrorText(err,err_txt);
-    RDApplication::syslog(card_config,LOG_NOTICE,
+    RDApplication::syslog(card_config,LOG_WARNING,
 			  "HPI Error: %s, %s line %d",err_txt,__FILE__,lineno);
   }
   return err;

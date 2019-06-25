@@ -412,7 +412,7 @@ void LiveWireMcastGpio::ProcessGpoOut(int chan,unsigned line,bool state)
 	htonl(livewire_surface_addresses[it->first].toIPv4Address());
     }
   }
-  rda->syslog(LOG_NOTICE,"using %s",
+  rda->syslog(LOG_DEBUG,"using %s",
 	 (const char *)QHostAddress(ntohl(sa.sin_addr.s_addr)).toString());
   */
 

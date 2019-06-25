@@ -229,7 +229,7 @@ void MainObject::notificationReceivedData(const QString &msg,
   RDNotification *notify=new RDNotification();
 
   if(!notify->read(msg)) {
-    rda->syslog(LOG_DEBUG,"invalid notification received from %s",
+    rda->syslog(LOG_INFO,"invalid notification received from %s",
 		(const char *)addr.toString().toUtf8());
     delete notify;
     return;
@@ -507,7 +507,7 @@ bool MainObject::DispatchCommand(RipcdConnection *conn)
     msg=msg.left(msg.length()-1);
     RDNotification *notify=new RDNotification();
     if(!notify->read(msg)) {
-      rda->syslog(LOG_DEBUG,"invalid notification processed");
+      rda->syslog(LOG_INFO,"invalid notification processed");
       delete notify;
       return true;
     }
@@ -572,7 +572,7 @@ void MainObject::ReadRmlSocket(QUdpSocket *sock,RDMacro::Role role,
 	  }
 	}
 	else {
-	  rda->syslog(LOG_DEBUG,
+	  rda->syslog(LOG_INFO,
 		      "rejected rml: \"%s\": on-air flag not active",buffer);
 	  break;
 	}
@@ -593,7 +593,7 @@ void MainObject::ReadRmlSocket(QUdpSocket *sock,RDMacro::Role role,
       }
     }
     else {
-      rda->syslog(LOG_DEBUG,"received malformed rml: \"%s\" from %s:%u",
+      rda->syslog(LOG_INFO,"received malformed rml: \"%s\" from %s:%u",
 		  buffer,
 		  (const char *)sock->peerAddress().toString().toUtf8(),
 		  sock->peerPort());

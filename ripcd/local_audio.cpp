@@ -368,7 +368,8 @@ hpi_err_t LocalAudio::LogHpi(hpi_err_t err,int lineno)
 
   if(err!=0) {
     HPI_GetErrorText(err,err_txt);
-    rda->syslog(LOG_NOTICE,"HPI Error: %s, %s line %d",err_txt,__FILE__,lineno);
+    rda->syslog(LOG_WARNING,"HPI Error: %s, %s line %d",err_txt,
+		__FILE__,lineno);
   }
   return err;
 }

@@ -117,7 +117,7 @@ void Sas16000::processCommand(RDMacro *cmd)
 
 void Sas16000::SendCommand(char *str)
 {
-  rda->syslog(LOG_DEBUG,"sending USI cmd: %s",
+  rda->syslog(LOG_INFO,"sending USI cmd: %s",
 	      (const char *)PrettifyCommand(str));
 
   sas_device->writeBlock(str,strlen(str));
