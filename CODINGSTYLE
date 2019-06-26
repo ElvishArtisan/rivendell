@@ -240,6 +240,45 @@ Changes that alter the schema of the database must include:
      'ChangeLog' entry, including the new value of 'RD_VERSION_DATABASE'.
 
 
+WRITING TO THE SYSLOG:
+Rivendell makes extensive use of the syslog(3) system found on all
+POSIX-compliant systems. Sending messages to the syslog should almost
+always be done by means of the following method in 'RDApplication':
+
+  void RDApplication::syslog(int priority,const char *format,...)
+
+The exception to the above is when the application context does not
+include a global RDApplication object --e.g. in caed(8). For those
+cases, the following static RDApplication method should be used:
+
+  void RDApplication::syslog(RDConfig *c,int priority,const char *format,...)
+
+For a discussion of the parameters of these methods, see the syslog(3) man
+page. The 'priority' parameter should be one of the following values:
+
+    LOG_ERR - Indicates that a fatal error has occurred; 'fatal' meaning
+              that the program is unable to continue and will now exit.
+
+LOG_WARNING - Indicates that a non-fatal error has occured; meaning
+              that the program will continue to operate, but with
+              possibly significant operational degradation. This would be
+              appropriate for things like failure to connect to an
+              external switcher or other device.
+
+   LOG_INFO - Information useful for tracking operational state --e.g.
+              a cart play-out has begun, a new Rivendell log has been
+              loaded, etc.
+
+  LOG_DEBUG - Information useful for tracking or verifying Rivendell
+              software internal state. These messages will not normally
+              be seen by users, but can be made visible to allow for
+	      program debugging.  
+
+NOTE: A 'facility' value should *not* be included in the 'priority'
+argument. The appropriate 'facility' value, as determined by the
+'SyslogFacility=' directive in rd.conf(5), will be added automatically.
+
+
 CONTRIBUTING CHANGES:
 The master code repository for Rivendell resides at GitHub, and can be
 found at:

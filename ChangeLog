@@ -18836,3 +18836,5 @@
 2019-06-25 Fred Gleason <fredg@paravelsystems.com>
 	* Added a sample syslog.conf(5) snippet in 'conf/syslog.conf-sample'.
 	* Added a sample logrotate(5) snippet in 'conf/logrotate-sample'.
+2019-06-26 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'WRITING TO THE SYSLOG' section to 'CODINGSTYLE'.
