@@ -18838,3 +18838,6 @@
 	* Added a sample logrotate(5) snippet in 'conf/logrotate-sample'.
 2019-06-26 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'WRITING TO THE SYSLOG' section to 'CODINGSTYLE'.
+2019-06-26 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for reading the following ID3 tags: 'LABEL',
+	'TIT2','TALB', 'TPUB', 'TCOM', 'TPE3', 'TYER', 'DATE' and 'TBPM'.
