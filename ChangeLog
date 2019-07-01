@@ -18843,3 +18843,6 @@
 	'TIT2','TALB', 'TPUB', 'TCOM', 'TPE3', 'TYER', 'DATE' and 'TBPM'.
 2019-07-01 Fred Gleason <fredg@paravelsystems.com>
 	* Removed debugging code from the PyPAD library.
+2019-07-01 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the RPM post-installation script that failed
+	to restart the syslog server.

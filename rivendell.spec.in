@@ -209,8 +209,8 @@ fi
 mkdir -p /var/log/rivendell
 if test ! -e /etc/rsyslog.d/rivendell.conf ; then
     cp @DOC_PATH@/syslog.conf-sample /etc/rsyslog.d/rivendell.conf
-    /bin/systemctl restart rsyslog
 fi
+/bin/systemctl restart rsyslog
 exit 0
 
 
