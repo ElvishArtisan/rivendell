@@ -18841,3 +18841,5 @@
 2019-06-26 Fred Gleason <fredg@paravelsystems.com>
 	* Added support for reading the following ID3 tags: 'LABEL',
 	'TIT2','TALB', 'TPUB', 'TCOM', 'TPE3', 'TYER', 'DATE' and 'TBPM'.
+2019-07-01 Fred Gleason <fredg@paravelsystems.com>
+	* Removed debugging code from the PyPAD library.

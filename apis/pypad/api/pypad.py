@@ -854,7 +854,6 @@ class Receiver(object):
 
         # Open the syslog
         pypad_name=sys.argv[0].split('/')[-1]
-        print('SyslogFacility: '+str(rd_config.get('Identity','SyslogFacility')))
         syslog.openlog(pypad_name,logoption=syslog.LOG_PID,facility=int(rd_config.get('Identity','SyslogFacility',fallback=syslog.LOG_USER)))
 
         # Connect to the PAD feed
