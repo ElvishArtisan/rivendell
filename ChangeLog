@@ -18846,3 +18846,5 @@
 2019-07-01 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the RPM post-installation script that failed
 	to restart the syslog server.
+2019-07-01 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to v3.0.0rc03.

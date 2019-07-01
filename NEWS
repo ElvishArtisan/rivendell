@@ -1,6 +1,26 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
+v3.0.0rc03 -- 7/1/2019
+
+Fourth release candidate for v3.x.
+
+Please see the file 'UPGRADING' for important information.
+
+Changes:
+   Added a 'SyslogFacility=' directive to rd.conf(5) to allow custom
+   syslog setups.
+
+   Numerous bugfixes. See the 'ChangeLog' for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 308, and will
+   automatically upgrade any earlier versions. To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
+   to allow any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
 v3.0.0rc02 -- 5/3/2019
 
 Third release candidate for v3.x.
