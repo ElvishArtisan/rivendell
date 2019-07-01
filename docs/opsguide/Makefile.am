@@ -32,6 +32,7 @@ OPSGUIDE_HTML = appendix.filepath_wildcards.html\
                 chapter.rdairplay.html\
                 chapter.rdcartslots.html\
                 chapter.rdcatch.html\
+                chapter.rddbconfig.html\
                 chapter.rdlibrary.html\
                 chapter.rdlogedit.html\
                 chapter.rdlogin.html\

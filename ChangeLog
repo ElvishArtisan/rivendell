@@ -18848,3 +18848,7 @@
 	to restart the syslog server.
 2019-07-01 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to v3.0.0rc03.
+2019-07-01 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug that caused the 'Overview' section of the
+	'Managing the Rivendell Database with RDDbConfig' chapter to be
+	omitted from the HTML version of the Operations Guide.
