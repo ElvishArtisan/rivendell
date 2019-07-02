@@ -65,6 +65,7 @@ def ProcessPad(update):
         print('        cartNumber(): %u / ' % update.padField(pypad.TYPE_NOW,pypad.FIELD_CART_NUMBER)+update.resolvePadFields("%n",pypad.ESCAPE_NONE))
         print('         cutNumber(): %u / ' % update.padField(pypad.TYPE_NOW,pypad.FIELD_CUT_NUMBER)+update.resolvePadFields("%j",pypad.ESCAPE_NONE))
         print('            length(): %u / ' % update.padField(pypad.TYPE_NOW,pypad.FIELD_LENGTH)+update.resolvePadFields("%h",pypad.ESCAPE_NONE))
+        print('      length()[secs]: N/A / '+update.resolvePadFields("%v",pypad.ESCAPE_NONE))
         try:
             print('              year(): %u / ' % update.padField(pypad.TYPE_NOW,pypad.FIELD_YEAR)+update.resolvePadFields("%y",pypad.ESCAPE_NONE))
         except TypeError:
@@ -104,6 +105,7 @@ def ProcessPad(update):
         print('        cartNumber(): %u / ' % update.padField(pypad.TYPE_NEXT,pypad.FIELD_CART_NUMBER)+update.resolvePadFields("%N",pypad.ESCAPE_NONE))
         print('         cutNumber(): %u / ' % update.padField(pypad.TYPE_NEXT,pypad.FIELD_CUT_NUMBER)+update.resolvePadFields("%J",pypad.ESCAPE_NONE))
         print('            length(): %u / ' % update.padField(pypad.TYPE_NEXT,pypad.FIELD_LENGTH)+update.resolvePadFields("%H",pypad.ESCAPE_NONE))
+        print('      length()[secs]: N/A / '+update.resolvePadFields("%V",pypad.ESCAPE_NONE))
         try:
             print('              year(): %u / ' % update.padField(pypad.TYPE_NEXT,pypad.FIELD_YEAR)+update.resolvePadFields("%Y",pypad.ESCAPE_NONE))
         except TypeError:

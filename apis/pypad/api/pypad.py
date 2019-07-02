@@ -410,7 +410,16 @@ class Update(object):
         string=self.__replaceWildcardPair('s','songId',string,esc)
         string=self.__replaceWildcardPair('t','title',string,esc)
         string=self.__replaceWildcardPair('u','userDefined',string,esc)
-        #string=self.__replaceWildcardPair('v',sfield,string,esc) # Length, rounded down
+        secs=self.__replaceWildcard('v','length','now','%v',ESCAPE_NONE) # Length, rounded down
+        if(secs==''):
+            string=string.replace('%v','0')
+        else:
+            string=string.replace('%v',str(int(secs)//1000))
+        secs=self.__replaceWildcard('V','length','next','%V',ESCAPE_NONE)
+        if(secs==''):
+            string=string.replace('%V','0')
+        else:
+            string=string.replace('%V',str(int(secs)//1000))
         #string=self.__replaceWildcardPair('w',sfield,string,esc) # Unassigned
         string=self.__replaceWildcardPair('x','lineId',string,esc) # Log Line ID
         string=self.__replaceWildcardPair('y','year',string,esc)

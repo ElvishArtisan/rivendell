@@ -18852,3 +18852,5 @@
 	* Fixed a bug that caused the 'Overview' section of the
 	'Managing the Rivendell Database with RDDbConfig' chapter to be
 	omitted from the HTML version of the Operations Guide.
+2019-07-02 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented the '%v'/'%V' metadata wildcards for PyPAD.
