@@ -18857,3 +18857,5 @@
 2019-07-02 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdpadengined(8) that prevented exited scripts
 	from being restarted in response to a 'ModifyAction' notification.
+2019-07-02 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a typo in the 'EditCart' call in 'docs/apis/web_api.xml'.

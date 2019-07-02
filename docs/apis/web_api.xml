@@ -1034,10 +1034,10 @@
 	</row>
 	<row>
 	  <entry>
-	    USER_CODE
+	    USAGE_CODE
 	  </entry>
 	  <entry>
-	    Set User Code
+	    Set Usage Code
 	  </entry>
 	  <entry>
 	    Optional
