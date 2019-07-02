@@ -2,7 +2,7 @@
 //
 // Rivendell PAD Consolidation Server
 //
-//   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -46,7 +46,8 @@ class MainObject : public QObject
   void exitData();
 
  private:
-  void StartScript(unsigned id,const QString &script_path);
+  bool ScriptIsActive(unsigned id) const;
+  void StartScript(unsigned id);
   void KillScript(unsigned id);
   void SetRunStatus(unsigned id,bool state,int exit_code=0,
 		    const QString &err_text=QString()) const;

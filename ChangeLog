@@ -18854,3 +18854,6 @@
 	omitted from the HTML version of the Operations Guide.
 2019-07-02 Fred Gleason <fredg@paravelsystems.com>
 	* Implemented the '%v'/'%V' metadata wildcards for PyPAD.
+2019-07-02 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdpadengined(8) that prevented exited scripts
+	from being restarted in response to a 'ModifyAction' notification.

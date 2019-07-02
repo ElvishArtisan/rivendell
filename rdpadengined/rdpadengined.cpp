@@ -130,13 +130,12 @@ void MainObject::ripcConnectedData(bool state)
   // Start Scripts
   //
   sql=QString("select ")+
-    "ID,"           // 00
-    "SCRIPT_PATH "  // 01
+    "ID "           // 00
     "from PYPAD_INSTANCES where "+
     "STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    StartScript(q->value(0).toUInt(),q->value(1).toString());
+    StartScript(q->value(0).toUInt());
   }
   delete q;
 }
@@ -150,16 +149,16 @@ void MainObject::notificationReceivedData(RDNotification *notify)
   if(notify->type()==RDNotification::PypadType) {
     int id=notify->id().toUInt();
     switch(notify->action()) {
-    case RDNotification::AddAction:
-      sql=QString("select SCRIPT_PATH from PYPAD_INSTANCES where ")+
+    case RDNotification::AddAction: 
+      sql=QString("select ID from PYPAD_INSTANCES where ")+
 	QString().sprintf("ID=%u && ",id)+
 	"STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\"";
       q=new RDSqlQuery(sql);
       if(q->first()) {
-	StartScript(id,q->value(0).toString());
+	StartScript(id);
       }
       delete q;
-      break;
+     break;
 
     case RDNotification::DeleteAction:
       pad_instances.value(id)->setPrivateData((void *)true);  // No Restart
@@ -167,7 +166,12 @@ void MainObject::notificationReceivedData(RDNotification *notify)
       break;
 
     case RDNotification::ModifyAction:
-      KillScript(id);
+      if(ScriptIsActive(id)) {
+	KillScript(id);
+      }
+      else {
+	StartScript(id);
+      }
       break;
 
     case RDNotification::NoAction:
@@ -198,11 +202,10 @@ void MainObject::instanceFinishedData(int id)
   if(proc->process()->exitCode()==0) {
     SetRunStatus(id,false);
     bool no_restart=(bool)proc->privateData();
-    QString script_path=proc->arguments().at(0);
     proc->deleteLater();
     pad_instances.remove(id);
     if(!no_restart) {
-      StartScript(id,script_path);
+      StartScript(id);
     }
   }
   else {
@@ -240,20 +243,39 @@ void MainObject::exitData()
 }
 
 
-void MainObject::StartScript(unsigned id,const QString &script_path)
+bool MainObject::ScriptIsActive(unsigned id) const
 {
-  RDProcess *proc=new RDProcess(id,this);
-  pad_instances[id]=proc;
-  connect(proc,SIGNAL(started(int)),this,SLOT(instanceStartedData(int)));
-  connect(proc,SIGNAL(finished(int)),this,SLOT(instanceFinishedData(int)));
-  QStringList args;
-  args.push_back(script_path);
-  args.push_back("localhost");
-  args.push_back(QString().sprintf("%u",RD_PAD_CLIENT_TCP_PORT));
-  args.push_back(QString().sprintf("$%u",id));
-  pad_instances.value(id)->start(RD_PYPAD_PYTHON_PATH,args);
-  rda->syslog(LOG_INFO,"starting: "+proc->program()+" "+
-	      proc->arguments().join(" ").toUtf8());
+  bool ret=false;
+
+  if(pad_instances.value(id)!=NULL) {
+    ret=pad_instances.value(id)->process()->state()!=QProcess::NotRunning;
+  }
+
+  return ret;
+}
+
+
+void MainObject::StartScript(unsigned id)
+{
+  QString sql=QString("select SCRIPT_PATH from PYPAD_INSTANCES where ")+
+    QString().sprintf("ID=%u && ",id)+
+    "STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\"";
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(q->first()) {
+    RDProcess *proc=new RDProcess(id,this);
+    pad_instances[id]=proc;
+    connect(proc,SIGNAL(started(int)),this,SLOT(instanceStartedData(int)));
+    connect(proc,SIGNAL(finished(int)),this,SLOT(instanceFinishedData(int)));
+    QStringList args;
+    args.push_back(q->value(0).toString());
+    args.push_back("localhost");
+    args.push_back(QString().sprintf("%u",RD_PAD_CLIENT_TCP_PORT));
+    args.push_back(QString().sprintf("$%u",id));
+    pad_instances.value(id)->start(RD_PYPAD_PYTHON_PATH,args);
+    rda->syslog(LOG_INFO,"starting: "+proc->program()+" "+
+		proc->arguments().join(" ").toUtf8());
+  }
+  delete q;
 }
 
 
