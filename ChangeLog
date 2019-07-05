@@ -18861,3 +18861,5 @@
 	* Fixed a typo in the 'EditCart' call in 'docs/apis/web_api.xml'.
 2019-07-05 Fred Gleason <fredg@paravelsystems.com>
 	* Added switcher support for Grass Valley Series 7000 protocol.
+2019-07-05 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.0.0rc03gvc7000_00.
