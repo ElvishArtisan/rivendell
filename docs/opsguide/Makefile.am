@@ -65,6 +65,7 @@ OPSGUIDE_HTML = appendix.filepath_wildcards.html\
                 sect.gpio_switcher_devices.btss44.html\
                 sect.gpio_switcher_devices.btss82.html\
                 sect.gpio_switcher_devices.btu41mlrweb.html\
+                sect.gpio_switcher_devices.gvc7000.html\
                 sect.gpio_switcher_devices.harlond.html\
                 sect.gpio_switcher_devices.kernelgpio.html\
                 sect.gpio_switcher_devices.livewire_lwrpaudio.html\
