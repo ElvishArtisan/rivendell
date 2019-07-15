@@ -177,12 +177,15 @@ void rlm_walltime_RLMPadDataSent(void *ptr,const struct rlm_svc *svc,
 		 rlm_walltime_addresses+16*i);
 	snprintf(password,1024,"user:%s",rlm_walltime_passwords+1024*i);
 	if(fork()==0) {
-	  execlp("curl","curl","-u",password,"-o","/dev/null","-s","-T",
-		 tempfile,url,(char *)NULL);
-	  RLMLog(ptr,LOG_WARNING,"rlm_icecast2: unable to execute curl(1)");
+	  char command[1024];
+	  snprintf(command,1024,
+		   "rdrlmcleanup curl -u %s -o /dev/null -s -T %s %s %s",
+		   password,tempfile,url,tempfile);
+	  execlp("/bin/sh","/bin/sh","-c",command,(char *)NULL);
+	  RLMLog(ptr,LOG_WARNING,"rlm_walltime: unable to execute curl(1)");
 	  exit(0);
 	}
-	RLMLog(ptr,LOG_INFO,"rlm_walltime: sending pad update!");
+	RLMLog(ptr,LOG_INFO,"rlm_walltime: sending pad update");
       }
     }
     else {

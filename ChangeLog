@@ -16748,3 +16748,7 @@
 	rules.
 2019-05-30 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 2.19.3int04.
+2019-07-15 Fred Gleason <fredg@paravelsystems.com>
+	* Added an rdrlmcleanup(1) script.
+	* Fixed a bug in the 'rlm_walltime' RLM that failed to clean up
+	stale temp files.
