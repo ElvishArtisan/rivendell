@@ -18859,3 +18859,5 @@
 	from being restarted in response to a 'ModifyAction' notification.
 2019-07-02 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a typo in the 'EditCart' call in 'docs/apis/web_api.xml'.
+2019-07-16 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.0.1.

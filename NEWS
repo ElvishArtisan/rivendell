@@ -1,6 +1,48 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
+v3.0.1 -- 7/16/2019
+
+This is the first production release of Rivendell 3.x. Many changes
+and enhancements have been made over v2.x; see the 'Changes' section
+below for a list of the major ones. If you are upgrading from previous
+v1.x or v2.x version of Rivendell, please see the file 'UPGRADING' for
+important information.
+
+Changes:
+   Rivendell is now Unicode UTF-8 clean.
+
+   Qt4 is now used throughout Rivendell instead of Qt3.
+
+   A multicast update system has been added that allows Rivendell
+   modules to update views syncronously in step with changes made in
+   other modules.
+
+   The Rivendell Loadable Modules system for processing PAD data has
+   been completely replaced by PyPAD, allowing PAD processing plug-ins
+   to be written in the popular Python scripting langauge. Backward
+   compatible replacement scripts for many of the RLM plug-ins supplied
+   in Rivendell v2.x are included.
+
+   Added a compatibility library to facilitate the use of the Rivendell
+   Web API in external applications.
+
+   A system of virtual log machines has been added, allowing play-out
+   of up to 23 logs simultaneously.
+
+   Rivendell is now fully systemd compatibile.
+
+   The Windows ports of rdlogedit(1) and rdlogmanager(1) have been
+   removed.
+
+Database Update:
+   This version of Rivendell uses database schema version 308, and will
+   automatically upgrade any earlier versions. To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
+   to allow any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
 v3.0.0rc03 -- 7/1/2019
 
 Fourth release candidate for v3.x.
