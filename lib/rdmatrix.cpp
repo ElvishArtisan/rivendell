@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Switcher Matrix
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -72,7 +72,8 @@ bool __mx_primary_controls[RDMatrix::LastType][RDMatrix::LastControl]=
     {0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0},  // WheatNet SLIO
     {0,0,1,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0},  // WheatNet LIO
     {0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0},  // BT Universale 4.1 MLR>>Web
-    {0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0}   // BT SS 2.1
+    {0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0},  // BT SS 2.1
+    {0,0,1,1,0,0,1,1,0,0,0,1,1,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0}   // GVC 7000
   };
 bool __mx_backup_controls[RDMatrix::LastType][RDMatrix::LastControl]=
   {
@@ -121,7 +122,8 @@ bool __mx_backup_controls[RDMatrix::LastType][RDMatrix::LastControl]=
     {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},  // WheatNet SLIO
     {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},  // WheatNet LIO
     {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},  // BT Universal 4.1 MLR>>Web
-    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}   // BT SS 2.1
+    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},  // BT SS 2.1
+    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}   // GVC 7000
   };
 
 int __mx_default_values[RDMatrix::LastType][RDMatrix::LastControl]=
@@ -171,7 +173,8 @@ int __mx_default_values[RDMatrix::LastType][RDMatrix::LastControl]=
     {1,0,0,55776,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0},  // WheatNet SLIO
     {1,0,0,55776,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0},  // WheatNet LIO
     {1,0,0,56,0,0,0,0,0,0,0,4,1,5,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0},  // BT Universal 4.1 MLR>>Web
-    {0,0,0,0,0,0,0,0,0,0,0,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0}   // BT SS 2.1
+    {0,0,0,0,0,0,0,0,0,0,0,2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0},   // BT SS 2.1
+    {1,0,0,12345,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0} // GVC 7000
   };
 
 RDMatrix::RDMatrix(const QString &station,int matrix)
@@ -755,6 +758,10 @@ QString RDMatrix::typeString(RDMatrix::Type type)
 
       case RDMatrix::BtU41MlrWeb:
 	return QString("BroadcastTools 4.1 MLR>>Web");
+	break;
+
+      case RDMatrix::Gvc7000:
+	return QString("Grass Valley 7000 Protocol");
 	break;
 
       default:

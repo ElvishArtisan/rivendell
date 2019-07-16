@@ -773,6 +773,33 @@
     </para>
   </sect1>
 
+  <sect1 xml:id="sect.gpio_switcher_devices.gvc7000">
+    <title>Grass Valley 7000 Protocol</title>
+    <variablelist>
+      <varlistentry>
+	<term>Driver Name:</term>
+	<listitem>
+	  <para>
+	    Grass Valley 7000 Protocol
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term>Supported RML Commands:</term>
+	<listitem>
+	  <para>
+	    <simplelist>
+	      <member>Switch Take ['<command>ST</command>']</member>
+	    </simplelist>
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+    <para>
+      Control is by means of a TCP/IP connection to port 12345.
+    </para>
+  </sect1>
+
   <sect1 xml:id="sect.gpio_switcher_devices.harlond">
     <title>Harlond Virtual Mixer</title>
     <variablelist>

@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Switcher Matrix
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -39,7 +39,7 @@ class RDMatrix
 	     LiveWireLwrpGpio=29,BtSentinel4Web=30,BtGpi16=31,ModemLines=32,
 	     SoftwareAuthority=33,Sas16000=34,RossNkScp=35,BtAdms4422=36,
 	     BtSs41Mlr=37,Modbus=38,KernelGpio=39,WheatnetSlio=40,
-	     WheatnetLio=41,BtU41MlrWeb=42,BtSs21=43,LastType=44};
+	     WheatnetLio=41,BtU41MlrWeb=42,BtSs21=43,Gvc7000=44,LastType=45};
   enum Endpoint {Input=0,Output=1};
   enum Mode {Stereo=0,Left=1,Right=2};
   enum VguestAttribute {VguestEngine=0,VguestDevice=1,VguestSurface=2,
