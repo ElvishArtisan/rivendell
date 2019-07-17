@@ -18863,3 +18863,5 @@
 	* Incremented the package version to 3.0.1.
 2019-07-16 Fred Gleason <fredg@paravelsystems.com>
 	* Added switcher support for Grass Valley Series 7000 protocol.
+2019-07-16 Fred Gleason <fredg@paravelsystems.com>
+	* Added an rdlogmanager(1) man page.

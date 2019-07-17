@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry id="stdin" xmlns="http://docbook.org/ns/docbook" version="5.0">
+  <!--
+      Header
+  -->
+  <refmeta>
+    <refentrytitle>rdlogmanager</refentrytitle>
+    <manvolnum>1</manvolnum>
+    <refmiscinfo class='source'>July 2019</refmiscinfo>
+    <refmiscinfo class='manual'>Linux Audio Manual</refmiscinfo>
+  </refmeta>
+  <refnamediv>
+    <refname>rdlogmanager</refname>
+    <refpurpose>
+      Module for generating Rivendell logs and reports
+    </refpurpose>
+  </refnamediv>
+  <info>
+    <author>
+      <personname>
+	<firstname>Fred</firstname>
+	<surname>Gleason</surname>
+	<email>fredg@paravelsystems.com</email>
+      </personname>
+      <contrib>Application Author</contrib>
+    </author>
+  </info>
+
+  <!--
+      Body
+  -->
+  <refsynopsisdiv id='synopsis'>
+    <cmdsynopsis>
+      <command>rdlogmanager</command>
+      <arg choice='opt'><replaceable>OPTIONS</replaceable></arg>
+      <sbr/>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+
+  <refsect1 id='description'><title>Description</title>
+  <para>
+    <command>rdlogmanager</command><manvolnum>1</manvolnum> is a
+    Rivendell module for generating logs and reports. When invoked with
+    no arguments, it will start up in GUI mode. Operation in GUI mode
+    is documented in the Rivendell Operations Guide.
+  </para>
+  <para>
+    If one or more options are given,
+    <command>rdlogmanager</command><manvolnum>1</manvolnum> will operate
+    in batch mode.
+  </para>
+  </refsect1>
+
+  <refsect1 id='mode_options'><title>Mode Options</title>
+  <para>
+    For operation in batch mode, exactly one of the following mode options
+    must be given:
+  </para>
+  <variablelist remap='TP'>
+    <varlistentry>
+      <term>
+	<option>-g</option>
+      </term>
+      <listitem>
+	<para>
+	  Generate a new log. The <option>-s</option> switch must also be
+	  given to specify the service (see below). Unless otherwise
+	  modified by the <option>-d</option> option (see below), a log will
+	  be generated for the day following the current day --i.e.
+	  &quot;tomorrow&quot;.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>-m</option>
+      </term>
+      <listitem>
+	<para>
+	  Merge the Music log. The <option>-s</option> switch must also be
+	  given to specify the service (see below). Unless otherwise
+	  modified by the <option>-d</option> option (see below), the merge
+	  will be done for the day following the current day --i.e.
+	  &quot;tomorrow&quot;.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>-t</option>
+      </term>
+      <listitem>
+	<para>
+	  Merge the Traffic log. The <option>-s</option> switch must also be
+	  given to specify the service (see below). Unless otherwise
+	  modified by a <option>-d</option> option (see below), the merge
+	  will be done for the day following the current day --i.e.
+	  &quot;tomorrow&quot;.
+	</para>
+      </listitem>
+    </varlistentry>
+
+    <varlistentry>
+      <term>
+	<option>-r
+	<arg choice='req'><replaceable>rpt-name</replaceable></arg>
+	</option>
+      </term>
+      <listitem>
+	<para>
+	  Generate a report, using the template named
+	  <replaceable>rpt-name</replaceable>. Unless otherwise
+	  modified by <option>-d</option> or <option>-e</option> options
+	  (see below), the report will be generated for the day before the
+	  current day --i.e. &quot;yesterday&quot;.
+	</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+</refsect1>
+
+<refsect1 id='modifier_options'><title>Modifier Options</title>
+<para>
+  Modifier options change the default parameters of the specified mode.
+</para>
+<variablelist remap='TP'>
+  <varlistentry>
+    <term>
+      <option>-d
+      <arg choice='req'><replaceable>days</replaceable></arg>
+      </option>
+    </term>
+    <listitem>
+      <para>
+	Specify a start date offset in days. For log operations, this will
+	be added to &quot;tomorrow's&quot; date to arrive at a target date,
+	whereas for report operations it will be added to
+	&quot;yesterday's&quot; date to arrive at a target date.
+	Default value is <userinput>0</userinput>.
+      </para>
+    </listitem>
+  </varlistentry>
+  <varlistentry>
+    <term>
+      <option>-e
+      <arg choice='req'><replaceable>days</replaceable></arg>
+      </option>
+    </term>
+    <listitem>
+      <para>
+	Specify an end date offset in days. This will be added to
+	&quot;yesterday's&quot;
+	date to arrive at a target end date. Valid only for certain report
+	types. Default value is <userinput>0</userinput>.
+      </para>
+    </listitem>
+  </varlistentry>
+  <varlistentry>
+    <term>
+      <option>-P</option>
+    </term>
+    <listitem>
+      <para>
+	Protect an existing target object --i.e. if the specified
+	operation has already been performed, do not overwrite the
+	prior result.
+      </para>
+    </listitem>
+  </varlistentry>
+  <varlistentry>
+    <term>
+      <option>-s
+      <arg choice='req'><replaceable>service-name</replaceable></arg>
+      </option>
+    </term>
+    <listitem>
+      <para>
+	Specify the name of the service for a log operation. Required
+	when the the <option>-g</option>, <option>-m</option> or
+	<option>-t</option> modes are specified (see above).
+      </para>
+    </listitem>
+  </varlistentry>
+</variablelist>
+</refsect1>
+
+<refsect1>
+  <title>BUGS</title>
+  <para>
+    The syntax of <command>rdlogmanager</command><manvolnum>1</manvolnum>'s
+    switches is decidedly grotty, nor does it conform to the
+    &quot;long-form&quot; switch conventions used in most other
+    Rivendell commands.
+  </para>
+</refsect1>
+
+<refsect1 id='see_also'><title>See Also</title>
+<para>
+  <citerefentry>
+    <refentrytitle>rdclilogedit</refentrytitle><manvolnum>1</manvolnum>
+  </citerefentry>
+  <literal>,</literal>
+  <citerefentry>
+    <refentrytitle>rdrender</refentrytitle><manvolnum>1</manvolnum>
+  </citerefentry>
+</para>
+</refsect1>
+
+</refentry>
+

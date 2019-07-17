@@ -2,7 +2,7 @@
 ##
 ## docs/manpages/automake.am for Rivendell
 ##
-## (C) Copyright 2015-2017 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2015-2019 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -36,6 +36,7 @@ all-local:	rdclilogedit.1\
                 rddbmgr.8\
                 rdexport.1\
                 rdimport.1\
+                rdlogmanager.1\
                 rdmarkerset.8\
                 rdmetadata.1\
                 rdrender.1\
@@ -47,6 +48,7 @@ man_MANS = rdclilogedit.1\
            rddbmgr.8\
            rdexport.1\
            rdimport.1\
+           rdlogmanager.1\
            rdmarkerset.8\
            rdmetadata.1\
            rdrender.1\
@@ -63,6 +65,8 @@ EXTRA_DIST = rdclilogedit.1\
              rdexport.xml\
              rdimport.1\
              rdimport.xml\
+             rdlogmanager.1\
+             rdlogmanager.xml\
              rdmarkerset.8\
              rdmarkerset.xml\
              rdmetadata.1\
