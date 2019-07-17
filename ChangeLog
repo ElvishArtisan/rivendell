@@ -18865,3 +18865,5 @@
 	* Added switcher support for Grass Valley Series 7000 protocol.
 2019-07-16 Fred Gleason <fredg@paravelsystems.com>
 	* Added an rdlogmanager(1) man page.
+2019-07-16 Fred Gleason <fredg@paravelsystems.com>
+	* Added an rdairplay(1) man page.

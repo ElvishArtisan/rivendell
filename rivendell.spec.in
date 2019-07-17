@@ -388,6 +388,7 @@ rm -rf $RPM_BUILD_ROOT
 /etc/pam.d/rddbconfig-root
 /etc/pam.d/rivendell
 /lib/systemd/system/rivendell.service
+%{_mandir}/man1/rdairplay.1.gz
 %{_mandir}/man1/rdclilogedit.1.gz
 %{_mandir}/man1/rdconvert.1.gz
 %{_mandir}/man1/rdexport.1.gz

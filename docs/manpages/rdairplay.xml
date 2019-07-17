@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry id="stdin" xmlns="http://docbook.org/ns/docbook" version="5.0">
+  <!--
+      Header
+  -->
+  <refmeta>
+    <refentrytitle>rdairplay</refentrytitle>
+    <manvolnum>1</manvolnum>
+    <refmiscinfo class='source'>July 2019</refmiscinfo>
+    <refmiscinfo class='manual'>Linux Audio Manual</refmiscinfo>
+  </refmeta>
+  <refnamediv>
+    <refname>rdairplay</refname>
+    <refpurpose>
+      Module for playing Rivendell logs
+    </refpurpose>
+  </refnamediv>
+  <info>
+    <author>
+      <personname>
+	<firstname>Fred</firstname>
+	<surname>Gleason</surname>
+	<email>fredg@paravelsystems.com</email>
+      </personname>
+      <contrib>Application Author</contrib>
+    </author>
+  </info>
+
+  <!--
+      Body
+  -->
+  <refsynopsisdiv id='synopsis'>
+    <cmdsynopsis>
+      <command>rdairplay</command>
+      <arg choice='opt'><replaceable>log-spec</replaceable>=<arg choice='opt'>:<replaceable>next-line</replaceable><arg choice='opt'>+</arg></arg></arg>
+      <sbr/>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+
+  <refsect1 id='description'><title>Description</title>
+  <para>
+    Where <replaceable>log-spec</replaceable> refers to one of the three
+    log machines (<userinput>--log1</userinput>, <userinput>--log2</userinput>
+    or <userinput>--log3</userinput>, referring to the
+    <computeroutput>Main Log</computeroutput>,
+    <computeroutput>Aux 1 Log</computeroutput>,
+    <computeroutput>Aux 2 Log</computeroutput> log machines, respectively)
+    and <replaceable>nextline</replaceable>
+    to the line number to do a 'make next' to after the log is loaded
+    (default = <userinput>0</userinput>). If the
+    <userinput>+</userinput> is appended, then the log is started after the
+    'make next'.
+  </para>
+  </refsect1>
+
+  <refsect1 id='examples'><title>Examples</title>
+  <variablelist remap='TP'>
+    <varlistentry>
+      <term>
+	<userinput>rdairplay --log1=MyLog</userinput>
+      </term>
+      <listitem>
+	<para>
+	  Load <userinput>MyLog</userinput> into the Main Log machine
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<userinput>rdairplay --log2=MyLog:14+</userinput>
+      </term>
+      <listitem>
+	<para>
+	  Load <userinput>MyLog</userinput> into the Aux Log 1 machine,
+	  'Make Next' to line <userinput>14</userinput> and then start the log.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<userinput>rdairplay --log1=YourLog --log2=MyLog</userinput>
+      </term>
+      <listitem>
+	<para>
+	  Load <userinput>YourLog</userinput> into the Main Log machine
+	  and <userinput>MyLog</userinput> into the Aux Log 1 machine.
+	</para>
+      </listitem>
+    </varlistentry>
+
+  </variablelist>
+</refsect1>
+
+</refentry>
+

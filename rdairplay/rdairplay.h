@@ -2,7 +2,7 @@
 //
 // The On Air Playout Utility for Rivendell.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -85,7 +85,7 @@
 #define METER_INTERVAL 20
 #define MASTER_TIMER_INTERVAL 100
 #define MESSAGE_WIDGET_WIDTH 410
-#define RDAIRPLAY_USAGE "[<log-spec>=[:<nextline>[+]]] [...]\n\nWhere <log-spec> refers to one of the three log machines\n('--log1', '--log2' or '--log3') and <nextline> to the line number\nto do a 'make next' to after the log is loaded (default = 0). If the\n'+' is appended, then the log is started after the 'make next'.\n\nExamples:\n rdairplay --log1=MyLog\n    Load 'MyLog' into the Main Log machine\n\n rdairplay --log2=MyLog:14+\n    Load 'MyLog' into the Aux Log 1 machine, 'Make Next'\n    to line 14 and then start the log.\n\n rdairplay --log1=YourLog --log2=MyLog\n    Load 'YourLog' into the Main Log machine and 'MyLog' into the\n    Aux Log 1 machine.\n"
+#define RDAIRPLAY_USAGE "[OPTIONS]\n"
 
 class MainWidget : public QWidget
 {

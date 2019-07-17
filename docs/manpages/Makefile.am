@@ -31,7 +31,8 @@
 %.8:	%.xml
 	xsltproc $(DOCBOOK_STYLESHEETS)/manpages/docbook.xsl $<
 
-all-local:	rdclilogedit.1\
+all-local:	rdairplay.1\
+                rdclilogedit.1\
                 rdconvert.1\
                 rddbmgr.8\
                 rdexport.1\
@@ -43,7 +44,8 @@ all-local:	rdclilogedit.1\
                 rmlsend.1\
                 rdservice.8
 
-man_MANS = rdclilogedit.1\
+man_MANS = rdairplay.1\
+           rdclilogedit.1\
            rdconvert.1\
            rddbmgr.8\
            rdexport.1\
@@ -55,7 +57,9 @@ man_MANS = rdclilogedit.1\
            rmlsend.1\
            rdservice.8
 
-EXTRA_DIST = rdclilogedit.1\
+EXTRA_DIST = rdairplay.1\
+             rdairplay.xml\
+             rdclilogedit.1\
              rdclilogedit.xml\
              rdconvert.1\
              rdconvert.xml\
