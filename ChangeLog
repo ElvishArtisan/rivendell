@@ -18871,3 +18871,5 @@
 	* Added 'RDHttpServer' class.
 	* Added 'loadGroup' method to 'RDGroupList' class.
 	* Added 'RDNexus' class.
+	* Added rdnexusd(8).
+	* Added minimum and maximum talk lengths to to 'RDWaveData' class.

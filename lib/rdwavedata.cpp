@@ -485,6 +485,29 @@ void RDWaveData::setLengthDeviation(int msecs)
 }
 
 
+int RDWaveData::minimumTalkLength() const
+{
+  return data_minimum_talk_length;
+}
+
+
+void RDWaveData::setMinimumTalkLength(int msecs)
+{
+  data_minimum_talk_length=msecs;
+}
+
+
+int RDWaveData::maximumTalkLength() const
+{
+  return data_maximum_talk_length;
+}
+
+
+void RDWaveData::setMaximumTalkLength(int msecs)
+{
+  data_maximum_talk_length=msecs;
+}
+
 int RDWaveData::averageSegueLength() const
 {
   return data_average_segue_length;
