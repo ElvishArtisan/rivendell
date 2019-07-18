@@ -16752,3 +16752,6 @@
 	* Added an rdrlmcleanup(1) script.
 	* Fixed a bug in the 'rlm_walltime' RLM that failed to clean up
 	stale temp files.
+2019-07-18 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in log rendering that caused custom transitions
+	to be rendered as a PLAY transition.
