@@ -18870,3 +18870,4 @@
 2019-07-18 Patrick Linstruth <patrick@deltecent.com>
 	* Added 'RDHttpServer' class.
 	* Added 'loadGroup' method to 'RDGroupList' class.
+	* Added 'RDNexus' class.
