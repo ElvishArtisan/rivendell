@@ -18869,3 +18869,4 @@
 	* Added an rdairplay(1) man page.
 2019-07-18 Patrick Linstruth <patrick@deltecent.com>
 	* Added 'RDHttpServer' class.
+	* Added 'loadGroup' method to 'RDGroupList' class.
