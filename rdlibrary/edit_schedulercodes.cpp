@@ -69,7 +69,7 @@ EditSchedulerCodes::EditSchedulerCodes(QString *sched_codes,
 
 
   //
-  // Services Selector
+  // Schduler Codes Selector
   //
   codes_sel=new RDListSelector(this);
   codes_sel->setFont(listfont);
