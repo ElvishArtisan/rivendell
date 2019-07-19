@@ -49,6 +49,7 @@ class MainWidget : public QWidget
   void quitMainWidget();
   void manageSchedCodes();
   void manageReplicatorsData();
+  void manageNexusData();
   void systemInfoData();
   
  private:
