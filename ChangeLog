@@ -18884,3 +18884,4 @@
 	* Removed the sending of modification notifications when Cancel
 	button pressed in rdlibrary(1).
 	* Added rdnexusd(8) to rdservice(8).
+	* Added ability to see import template offsets in rdadmin(1).
