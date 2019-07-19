@@ -1010,7 +1010,11 @@ void EditCart::okData()
 void EditCart::cancelData()
 {
   unsigned len;
+  int modified=-1;
   if((lib_cart_list_edit==NULL)&&(rdcart_cart->type()==RDCart::Audio)) {
+    //
+    // TBD:Update lengths only if they have changed
+    //
     len=rdcart_cart->calculateAverageLength(&rdcart_length_deviation);
     rdcart_cart->setLengthDeviation(rdcart_length_deviation);
     if(!rdcart_controls.enforce_length_box->isChecked()) {
@@ -1020,7 +1024,7 @@ void EditCart::cancelData()
 			      QTime().msecsTo(rdcart_controls.
 					      forced_length_edit->time()));
   }
-  done(-1);
+  done(modified);
 }
 
 
