@@ -537,6 +537,7 @@ AC_CONFIG_FILES([rivendell.spec \
     rdlogedit/Makefile \
     rdlogmanager/Makefile \
     rdmonitor/Makefile \
+    rdnexusd/Makefile \
     rdpanel/Makefile \
     rdrepld/Makefile \
     rdpadd/Makefile \
