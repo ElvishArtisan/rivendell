@@ -39,7 +39,6 @@ void MainObject::Shutdown()
   }
 }
 
-
 void MainObject::ShutdownDropboxes()
 {
   for(QMap<int,RDProcess *>::iterator it=svc_processes.begin();

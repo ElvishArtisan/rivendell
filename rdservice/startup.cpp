@@ -28,7 +28,7 @@
 #include <rdconf.h>
 #include <rdescape_string.h>
 #include <rdpaths.h>
-
+#include "rdnexus.h"
 #include "rdservice.h"
 
 bool MainObject::Startup(QString *err_msg)
@@ -40,6 +40,7 @@ bool MainObject::Startup(QString *err_msg)
   //
   // Kill Stale Programs
   //
+  KillProgram("rdnexusd");
   KillProgram("rdrepld");
   KillProgram("rdvairplayd");
   KillProgram("rdpadengined");
@@ -180,6 +181,21 @@ bool MainObject::Startup(QString *err_msg)
     return true;
   }
 
+  //
+  // Start Nexus Daemon
+  //
+  if(!StartNexusDaemon(err_msg)) {
+    return false;
+  }
+ 
+  if(svc_startup_target==MainObject::TargetRdnexusd) {
+    fprintf(stderr,"Startup target rdnexusd(8) reached\n");
+    return true;
+  }
+
+  //
+  // Start Dropboxes
+  //
   if(!StartDropboxes(err_msg)) {
     return false;
   }
@@ -310,6 +326,36 @@ bool MainObject::StartDropboxes(QString *err_msg)
   return true;
 }
 
+bool MainObject::StartNexusDaemon(QString *err_msg)
+{
+  QStringList args;
+  RDNexus *nexus;
+
+  //
+  // Get Nexus Server Settings
+  //
+  RDNexusServer server;
+  nexus=new RDNexus();
+  nexus->nexusServer(server);
+  delete nexus;
+
+  if(server.enabled&&server.host==rda->station()->name()) {
+    args.clear();
+    args.push_back(QString("--server=%1").arg(server.address));
+    args.push_back(QString("--port=%1").arg(server.port));
+    args.push_back(QString("--enable-http-server"));
+  }
+
+  svc_processes[RDSERVICE_NEXUS_ID]=new RDProcess(RDSERVICE_NEXUS_ID,this);
+  svc_processes[RDSERVICE_NEXUS_ID]->start(QString("%1/sbin/rdnexusd").arg(RD_PREFIX),args);
+  if(!svc_processes[RDSERVICE_NEXUS_ID]->process()->waitForStarted(-1)) {
+    *err_msg=tr(QString("unable to start rdnexusd: %2")
+      .arg(svc_processes[RDSERVICE_NEXUS_ID]->errorText()));
+    return false;
+  }
+
+  return true;
+}
 
 void MainObject::KillProgram(const QString &program)
 {
@@ -350,6 +396,9 @@ QString MainObject::TargetCommandString(MainObject::StartupTarget target) const
 
   case MainObject::TargetRdrepld:
     return QString("--end-startup-after-rdrepld");
+
+  case MainObject::TargetRdnexusd:
+    return QString("--end-startup-after-rdnexusd");
 
   case MainObject::TargetAll:
     break;

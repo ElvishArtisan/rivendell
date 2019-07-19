@@ -37,7 +37,8 @@
 #define RDSERVICE_LOCALMAINT_ID 7
 #define RDSERVICE_SYSTEMMAINT_ID 8
 #define RDSERVICE_PURGECASTS_ID 9
-#define RDSERVICE_LAST_ID 10
+#define RDSERVICE_NEXUS_ID 10
+#define RDSERVICE_LAST_ID 11
 #define RDSERVICE_FIRST_DROPBOX_ID 100
 
 class MainObject : public QObject
@@ -46,7 +47,8 @@ class MainObject : public QObject
  public:
   enum StartupTarget {TargetCaed=0,TargetRipcd=1,TargetRdcatchd=2,
 		      TargetRdpadd=3,TargetRdpadengined=4,
-		      TargetRdvairplayd=5,TargetRdrepld=6,TargetAll=7};
+		      TargetRdvairplayd=5,TargetRdrepld=6,
+		      TargetRdnexusd=7,TargetAll=8};
   MainObject(QObject *parent=0);
 
  private slots:
@@ -57,9 +59,11 @@ class MainObject : public QObject
  private:
   bool Startup(QString *err_msg);
   bool StartDropboxes(QString *err_msg);
+  bool StartNexusDaemon(QString *err_msg);
   void KillProgram(const QString &program);
   void Shutdown();
   void ShutdownDropboxes();
+  void ShutdownSchedulers();
   void RunSystemMaintRoutine();
   void RunLocalMaintRoutine();
   int GetMaintInterval() const;

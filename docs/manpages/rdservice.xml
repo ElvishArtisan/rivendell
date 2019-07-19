@@ -6,7 +6,7 @@
   <refmeta>
     <refentrytitle>rdservice</refentrytitle>
     <manvolnum>8</manvolnum>
-    <refmiscinfo class='source'>Mat 2019</refmiscinfo>
+    <refmiscinfo class='source'>July 2019</refmiscinfo>
     <refmiscinfo class='manual'>Linux Audio Manual</refmiscinfo>
   </refmeta>
   <refnamediv>
@@ -45,6 +45,7 @@
     <command>rdpadd</command><manvolnum>8</manvolnum>,
     <command>rdpadengined</command><manvolnum>8</manvolnum>,
     <command>rdvairplayd</command><manvolnum>8</manvolnum>,
+    <command>rdnexusd</command><manvolnum>8</manvolnum>,
     <command>rdimport</command><manvolnum>1</manvolnum> (in dropbox mode)
     as well as periodic system maintenance tasks using
     <command>rdmaint</command><manvolnum>8</manvolnum>.
@@ -81,6 +82,9 @@
       </term>
       <term>
 	<option>--end-startup-after-rdrepld</option>
+      </term>
+      <term>
+	<option>--end-startup-after-rdnexusd</option>
       </term>
       <listitem>
 	<para>

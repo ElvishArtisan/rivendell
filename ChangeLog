@@ -18883,3 +18883,4 @@
 	* Added playout notifications to 'RDLogPlay' class.
 	* Removed the sending of modification notifications when Cancel
 	button pressed in rdlibrary(1).
+	* Added rdnexusd(8) to rdservice(8).
