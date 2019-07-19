@@ -99,6 +99,10 @@ class RDCart
   unsigned calculateAverageLength(unsigned *max_dev=0) const;
   unsigned averageLength() const;
   void setAverageLength(unsigned length) const;
+  unsigned minimumTalkLength() const;
+  void setMinimumTalkLength(unsigned length) const;
+  unsigned maximumTalkLength() const;
+  void setMaximumTalkLength(unsigned length) const;
   unsigned averageSegueLength() const;
   void setAverageSegueLength(unsigned length) const;
   unsigned averageHookLength() const;
@@ -131,6 +135,10 @@ class RDCart
   void setUseEventLength(bool state) const;
   void setPending(const QString &station_name);
   void clearPending() const;
+#if 0
+  unsigned extCartId() const;
+  void setExtCartId(unsigned id);
+#endif
   QString macros() const;
   void setMacros(const QString &cmds) const;
   bool validateLengths(int len) const;

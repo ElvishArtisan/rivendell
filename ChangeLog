@@ -18878,3 +18878,5 @@
 	notification types to 'RDNotification' class.
 	* Added MoveAction, StartAction, and StopAction actions to
 	'RDNotification' class.
+	* Added minimum and maximum talk lengths to 'RDCart' class and
+	'CART' table.

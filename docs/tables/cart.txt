@@ -28,6 +28,8 @@ USAGE_CODE           int(11)           0=Feature, 1=Theme Open,
 FORCED_LENGTH        int(10)           Playout this length, 0 = don't timeshift
 AVERAGE_LENGTH       int(10)
 LENGTH_DEVIATION     int(10)           Maximum variation of underlying cuts
+MINIMUM_TALK_LENGTH  int(10)           Minimum talk length of underlying cuts
+MAXIMUM_TALK_LENGTH  int(10)           Maximum talk length of underlying cuts
 AVERAGE_SEGUE_LENGTH int(10)
 AVERAGE_HOOK_LENGTH  int(10)
 CUT_QUANTITY         int(10)           > 1 for rotators
