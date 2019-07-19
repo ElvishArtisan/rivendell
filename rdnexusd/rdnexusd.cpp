@@ -453,6 +453,9 @@ bool MainObject::cartNotification(RDNotification *notify,bool queue)
       nexus->groupStations(cart->groupName(),stationmaplist);
 
       for(int i=0;i<stationmaplist.size();i++) {
+        if(stationmaplist.at(i).station.isEmpty()) {
+          continue;
+        }
         nexus->setStation(stationmaplist.at(i).station);
 
         RDNexusSongInfo info;
