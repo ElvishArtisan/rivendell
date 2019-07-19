@@ -2509,4 +2509,19 @@
       to be replicated should be taken.
     </para>
   </sect1>
+  <sect1 xml:id="sect.rdadmin.manage_nexus">
+    <title>Managing MusicMaster Nexus Integration</title>
+    <para>
+      Rivendell provides integration to the MusicMaster Nexus interface. The following Nexus functions are supported:
+    </para>
+    <para>
+      <computeroutput>Settings</computeroutput> tab.
+    </para>
+    <para>
+      <computeroutput>Stations</computeroutput> tab.
+    </para>
+    <para>
+      <computeroutput>Field Map</computeroutput> tab.
+    </para>
+  </sect1>
 </chapter>
