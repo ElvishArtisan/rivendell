@@ -1,0 +1,13 @@
+                  NEXUS_FIELDS Table Layout for Rivendell
+
+The NEXUS_FIELDS table contains mappings between Rivendell database rows
+and MusicMaster Nexus fields.
+
+FIELD NAME           TYPE              REMARKS
+--------------------------------------------------------------------------
+ID                   int(11)           Primary Key
+STATION              varchar(255)      Nexus Station (Database)
+RD_NAME              varchar(255)      Rivendell Name
+NEXUS_NAME           varchar(255)      MusicMaster Field Name
+NEXUS_ID             int(11)           MusicMaster Field ID
+

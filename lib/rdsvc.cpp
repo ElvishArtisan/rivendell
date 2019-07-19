@@ -311,8 +311,25 @@ void RDSvc::setPreimportCommand(ImportSource src,const QString &path) const
 
 int RDSvc::importOffset(ImportSource src,ImportField field) const
 {
-  QString fieldname=SourceString(src)+FieldString(field)+"OFFSET";
-  return RDGetSqlValue("SERVICES","NAME",svc_name,fieldname).toInt();
+  QString parser_table;
+  QString parser_name;
+  QString src_str="";
+
+  //
+  // Set Import Source
+  //
+  if(importTemplate(src).isEmpty()) {
+    src_str=SourceString(src);
+    parser_table="SERVICES";
+    parser_name=svc_name;
+  }
+  else {
+    src_str="";
+    parser_table="IMPORT_TEMPLATES";
+    parser_name=importTemplate(src);
+  }
+  QString fieldname=src_str+FieldString(field)+"OFFSET";
+  return RDGetSqlValue(parser_table,"NAME",parser_name,fieldname).toInt();
 }
 
 
@@ -326,8 +343,25 @@ void RDSvc::setImportOffset(ImportSource src,ImportField field,int offset)
 
 int RDSvc::importLength(ImportSource src,ImportField field) const
 {
-  QString fieldname=SourceString(src)+FieldString(field)+"LENGTH";
-  return RDGetSqlValue("SERVICES","NAME",svc_name,fieldname).toInt();
+  QString parser_table;
+  QString parser_name;
+  QString src_str="";
+
+  //
+  // Set Import Source
+  //
+  if(importTemplate(src).isEmpty()) {
+    src_str=SourceString(src);
+    parser_table="SERVICES";
+    parser_name=svc_name;
+  }
+  else {
+    src_str="";
+    parser_table="IMPORT_TEMPLATES";
+    parser_name=importTemplate(src);
+  }
+  QString fieldname=src_str+FieldString(field)+"LENGTH";
+  return RDGetSqlValue(parser_table,"NAME",parser_name,fieldname).toInt();
 }
 
 
@@ -917,7 +951,7 @@ bool RDSvc::linkLog(RDSvc::ImportSource src,const QDate &date,
     "IMPORTER_LINES.STATION_NAME=\""+
     RDEscapeString(svc_station->name())+"\" && "+
     QString().sprintf("IMPORTER_LINES.PROCESS_ID=%u && ",getpid())+
-    "IMPORTER_LINES.EVENT_USED=\"N\"";
+    "IMPORTER_LINES.EVENT_USED=\"N\" order by START_HOUR,START_SECS";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     event=true;
@@ -1114,6 +1148,11 @@ bool RDSvc::create(const QString &name,QString *err_msg,
       q=new RDSqlQuery(sql);
       delete q;
     }
+
+    sql=QString("insert into NEXUS_STATIONS set RD_SERVICE=\"")+
+      RDEscapeString(name)+"\"";
+    q=new RDSqlQuery(sql);
+    delete q;
   }
   else {    // Base on Existing Service
     sql=QString("select ")+
@@ -1339,6 +1378,11 @@ bool RDSvc::create(const QString &name,QString *err_msg,
       delete q1;
     }
     delete q;
+
+    sql=QString("insert into NEXUS_STATIONS set RD_SERVICE=\"")+
+      RDEscapeString(name)+"\"";
+    q=new RDSqlQuery(sql);
+    delete q;
   }
 
   return true;
@@ -1429,6 +1473,10 @@ void RDSvc::remove(const QString &name)
 
   sql=QString("delete from LOGS where ")+
     "SERVICE=\""+RDEscapeString(name)+"\"";
+  RDSqlQuery::apply(sql);
+
+  sql=QString("delete from NEXUS_STATIONS where ")+
+    "RD_SERVICE=\""+RDEscapeString(name)+"\"";
   RDSqlQuery::apply(sql);
 }
 

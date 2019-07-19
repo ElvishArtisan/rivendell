@@ -18887,3 +18887,9 @@
 	* Added ability to see import template offsets in rdadmin(1).
 	* Added 'list' method to 'RDStation' class.
 	* Added 'MusicMaster Nexus' button and dialog to rdadmin(1).
+	* Added 'NEXUS_FIELDS','NEXUS_QUEUE','NEXUS_SERVER',
+	and 'NEXUS_STATIONS' tables.
+	* Added 'MINIMUM_TALK_LENGTH' and 'MAXIMUM_TALK_LENGTH' rows
+	to 'CART' table.
+	* Added 'MusicMaster Nexus' import template.
+	* Incremented the database version to 309.

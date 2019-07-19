@@ -1,0 +1,14 @@
+                  NEXUS_STATIONS Table Layout for Rivendell
+
+The NEXUS_STATIONS table contains mappings and other information
+between Rivendell and MusicMaster Nexus.
+
+FIELD NAME           TYPE              REMARKS
+--------------------------------------------------------------------------
+STATION              varchar(255)      Nexus Station (Database)
+CATEGORY             varchar(10)       Default MusicMaster Category
+AUTO_MERGE           enum('N','Y')     Auto Merge MusicMaster Schedules
+RD_SERVICE           varchar(10)       Rivendell Service
+RD_GROUP_NAME        varchar(10)       Default Rivendell Group
+RD_SCHED_CODE        varchar(11)       Default Rivendell Scheduler Code
+
