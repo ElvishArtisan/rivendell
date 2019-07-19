@@ -18880,3 +18880,4 @@
 	* Added minimum and maximum talk lengths to 'RDCart' class and
 	'CART' table.
 	* Added rdnexusd(8).
+	* Added playout notifications to 'RDLogPlay' class.

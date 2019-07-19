@@ -1944,6 +1944,8 @@ bool RDLogPlay::StartEvent(int line,RDLogLine::TransType trans_type,
 	       playdeck->stream(),
 	       playdeck->port());
 
+        SendNotification(RDNotification::StartAction,logline);
+
 	//
 	// Assign Next Event
 	//
@@ -2150,6 +2152,9 @@ void RDLogPlay::CleanupEvent(int id)
 		playdeck->card(),
 		playdeck->stream(),playdeck->port());
   }
+
+  SendNotification(RDNotification::StopAction,logline);
+
   RDLogLine *prev_logline;
   if((prev_logline=logLine(line-1))==NULL) {
   }
@@ -3182,3 +3187,21 @@ void RDLogPlay::LogTraffic(RDLogLine *logline,RDLogLine::PlaySource src,
     "ISCI=\""+RDEscapeString(logline->isci())+"\"";
   RDSqlQuery::apply(sql);
 }
+
+void RDLogPlay::SendNotification(RDNotification::Action action,
+                                  RDLogLine *logline)
+{
+  RDNotification *notify=
+    new RDNotification(RDNotification::PlayoutCartNumType,action,QVariant(logline->cartNumber()));
+  rda->ripc()->sendNotification(*notify);
+  delete notify;
+
+  if(logline->extEventId().toUInt()) {
+    RDNotification *notify=
+      new RDNotification(RDNotification::PlayoutExtIdType,action,QVariant(logline->extEventId()));
+    rda->ripc()->sendNotification(*notify);
+    delete notify;
+  }
+}
+
+
