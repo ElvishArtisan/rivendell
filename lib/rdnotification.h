@@ -21,34 +21,45 @@
 #ifndef RDNOTIFICATION_H
 #define RDNOTIFICATION_H
 
-#include <qstring.h>
-#include <qvariant.h>
+#include <QString>
+#include <QVariant>
+#include <QDateTime>
 
 class RDNotification
 {
  public:
   enum Type {NullType=0,CartType=1,LogType=2,PypadType=3,DropboxType=4,
-	     CatchEventType=5,LastType=6};
+	     CatchEventType=5,PlayoutCartNumType=6,PlayoutExtIdType=7,
+             LogExtIdType=8,LastType=9};
   enum Action {NoAction=0,AddAction=1,DeleteAction=2,ModifyAction=3,
-	       LastAction=4};
+	       MoveAction=4,StartAction=5,StopAction=6,LastAction=7};
   RDNotification(Type type,Action action,const QVariant &id);
+  RDNotification(Type type,Action action,const QVariant &id,const QVariant &arg);
   RDNotification();
   Type type() const;
   void setType(Type type);
   Action action() const;
   void setAction(Action action);
   QVariant id() const;
+  void setArg(const QVariant arg);
+  QVariant arg() const;
   void setId(const QVariant id);
+  QDateTime dateTime() const;
+  void setDateTime(const QDateTime datetime);
   bool isValid() const;
   bool read(const QString &str);
   QString write() const;
   static QString typeString(Type type);
   static QString actionString(Action action);
+  static QString dateTimeString(QDateTime datetime);
 
  private:
+  enum Position {PosNotify=0,PosType=1,PosAction=2,PosTimeStamp=3,PosId=4,PosArg=4};
   Type notify_type;
   Action notify_action;
+  QDateTime notify_datetime;
   QVariant notify_id;
+  QVariant notify_arg;
 };
 
 

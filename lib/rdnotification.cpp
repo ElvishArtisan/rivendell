@@ -20,13 +20,26 @@
 
 #include <QStringList>
 
+#include <stdio.h>
+
 #include "rdnotification.h"
 
 RDNotification::RDNotification(Type type,Action action,const QVariant &id)
 {
   notify_type=type;
   notify_action=action;
+  notify_datetime=QDateTime(QDateTime::currentDateTime());
   notify_id=id;
+  notify_arg=QVariant();
+}
+
+RDNotification::RDNotification(Type type,Action action,const QVariant &id,const QVariant &arg)
+{
+  notify_type=type;
+  notify_action=action;
+  notify_datetime=QDateTime(QDateTime::currentDateTime());
+  notify_id=id;
+  notify_arg=arg;
 }
 
 
@@ -73,6 +86,30 @@ void RDNotification::setId(const QVariant id)
 }
 
 
+QVariant RDNotification::arg() const
+{
+  return notify_arg;
+}
+
+
+void RDNotification::setArg(const QVariant arg)
+{
+  notify_arg=arg;
+}
+
+
+QDateTime RDNotification::dateTime() const
+{
+  return notify_datetime;
+}
+
+
+void RDNotification::setDateTime(const QDateTime datetime)
+{
+  notify_datetime=datetime;
+}
+
+
 bool RDNotification::isValid() const
 {
   return true;
@@ -86,47 +123,44 @@ bool RDNotification::read(const QString &str)
   notify_id=QVariant();
 
   QStringList args=str.split(" ");
-  if(args.size()==4) {
-    if(args[0]!="NOTIFY") {
+  if(args.size()>=5) {
+    if(args[PosNotify]!="NOTIFY") {
       return false;
     }
+    notify_datetime=QDateTime::fromString(args[PosTimeStamp],Qt::ISODate);
     for(int i=0;i<RDNotification::LastType;i++) {
       RDNotification::Type type=(RDNotification::Type)i;
-      if(args[1]==RDNotification::typeString(type)) {
+      if(args[PosType]==RDNotification::typeString(type)) {
 	notify_type=type;
 	switch(type) {
-	case RDNotification::CartType:
-	  notify_id=QVariant(args[3].toUInt());
-	  break;
+	  case RDNotification::LogType:
+          case RDNotification::DropboxType:
+            notify_id=QVariant(args[PosId]);
+            break;
 
-	case RDNotification::LogType:
-	  notify_id=QVariant(args[3]);
-	  break;
+          case RDNotification::CartType:
+          case RDNotification::CatchEventType:
+          case RDNotification::PypadType:
+          case RDNotification::PlayoutCartNumType:
+          case RDNotification::PlayoutExtIdType:
+            notify_id=QVariant(args[PosId].toUInt());
+            break;
 
-	case RDNotification::PypadType:
-	  notify_id=QVariant(args[3].toUInt());
-	  break;
+          case RDNotification::LogExtIdType: 
+            notify_id=QVariant(args[PosId].toUInt());
+            notify_arg=QVariant(args[PosArg]);
+            break;
 
-	case RDNotification::DropboxType:
-	  notify_id=QVariant(args[3]);
-	  break;
-
-	case RDNotification::CatchEventType:
-	  notify_id=QVariant(args[3].toUInt());
-	  break;
-
-	case RDNotification::NullType:
-	case RDNotification::LastType:
-	  break;
-	}
+          case RDNotification::NullType:
+          case RDNotification::LastType:
+            return false;
+        }
       }
     }
-    if(notify_type==RDNotification::NullType) {
-      return false;
-    }
+
     for(int i=0;i<RDNotification::LastAction;i++) {
       RDNotification::Action action=(RDNotification::Action)i;
-      if(args[2]==RDNotification::actionString(action)) {
+      if(args[PosAction]==RDNotification::actionString(action)) {
 	notify_action=action;
       }
     }
@@ -140,37 +174,41 @@ bool RDNotification::read(const QString &str)
 
 QString RDNotification::write() const
 {
-  QString ret="";
+  QStringList list;
 
-  ret+="NOTIFY ";
-  ret+=RDNotification::typeString(notify_type)+" ";
-  ret+=RDNotification::actionString(notify_action)+" ";
-  switch(notify_type) {
-  case RDNotification::CartType: 
-    ret+=QString().sprintf("%u",notify_id.toUInt());
-    break;
-
-  case RDNotification::LogType: 
-    ret+=notify_id.toString();
-    break;
-
-  case RDNotification::PypadType: 
-    ret+=QString().sprintf("%u",notify_id.toUInt());
-    break;
-
-  case RDNotification::DropboxType: 
-    ret+=notify_id.toString();
-    break;
-
-  case RDNotification::CatchEventType: 
-    ret+=QString().sprintf("%u",notify_id.toUInt());
-    break;
-
-  case RDNotification::NullType:
-  case RDNotification::LastType:
-    break;
+  list.insert(PosNotify,"NOTIFY");
+  list.insert(PosType,RDNotification::typeString(notify_type));
+  list.insert(PosAction,RDNotification::actionString(notify_action));
+  if(notify_datetime.isValid()) {
+    list.insert(PosTimeStamp,QDateTime(notify_datetime).toString(Qt::ISODate));
   }
-  return ret;
+  else {
+    list.insert(PosTimeStamp,QDateTime(QDateTime::currentDateTime()).toString(Qt::ISODate));
+  }
+  switch(notify_type) {
+    case RDNotification::LogType: 
+    case RDNotification::DropboxType: 
+      list.insert(PosId,notify_id.toString());
+      break;
+
+    case RDNotification::CartType: 
+    case RDNotification::PypadType: 
+    case RDNotification::CatchEventType: 
+    case RDNotification::PlayoutCartNumType: 
+    case RDNotification::PlayoutExtIdType: 
+      list.insert(PosId,QString().sprintf("%u",notify_id.toUInt()));
+      break;
+
+    case RDNotification::LogExtIdType: 
+      list.insert(PosId,QString().sprintf("%u",notify_id.toUInt()));
+      list.insert(PosArg,notify_arg.toString());
+      break;
+
+    default:
+      break;
+  }
+
+  return list.join(" ");
 }
 
 
@@ -199,10 +237,23 @@ QString RDNotification::typeString(RDNotification::Type type)
     ret="CATCH_EVENT";
     break;
 
+  case RDNotification::PlayoutCartNumType:
+    ret="PLAYOUT_CART";
+    break;
+
+  case RDNotification::PlayoutExtIdType:
+    ret="PLAYOUT_EXTID";
+    break;
+
+  case RDNotification::LogExtIdType:
+    ret="LOG_EXTID";
+    break;
+
   case RDNotification::NullType:
   case RDNotification::LastType:
     break;
   }
+
   return ret;
 }
 
@@ -224,9 +275,28 @@ QString RDNotification::actionString(Action action)
     ret="MODIFY";
     break;
 
+  case RDNotification::StartAction:
+    ret="START";
+    break;
+
+  case RDNotification::StopAction:
+    ret="STOP";
+    break;
+
+  case RDNotification::MoveAction:
+    ret="MOVE";
+    break;
+
   case RDNotification::NoAction:
   case RDNotification::LastAction:
     break;
   }
+
   return ret;
 }
+
+QString RDNotification::dateTimeString(QDateTime datetime)
+{
+  return datetime.toString(Qt::ISODate);
+}
+

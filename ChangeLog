@@ -18873,3 +18873,8 @@
 	* Added 'RDNexus' class.
 	* Added rdnexusd(8).
 	* Added minimum and maximum talk lengths to to 'RDWaveData' class.
+	* Added timestamp and optional argument to 'RDNotification' class.
+	* Added PlayoutCartNumType, PlayoutExtIdType, and LogExtIdType
+	notification types to 'RDNotification' class.
+	* Added MoveAction, StartAction, and StopAction actions to
+	'RDNotification' class.
