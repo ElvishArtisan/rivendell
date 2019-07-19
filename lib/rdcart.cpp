@@ -849,19 +849,6 @@ void RDCart::setUseEventLength(bool state) const
 }
 
 
-#if 0
-unsigned RDCart::extCartId() const
-{
-  return RDGetSqlValue("CART","NUMBER",cart_number,"EXT_CART_ID").toUInt();
-}
-
-
-void RDCart::setExtCartId(unsigned id)
-{
-  SetRow("EXT_CART_ID",id);
-}
-#endif
-
 void RDCart::setPending(const QString &station_name)
 {
   QString sql;

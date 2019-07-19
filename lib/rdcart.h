@@ -135,10 +135,6 @@ class RDCart
   void setUseEventLength(bool state) const;
   void setPending(const QString &station_name);
   void clearPending() const;
-#if 0
-  unsigned extCartId() const;
-  void setExtCartId(unsigned id);
-#endif
   QString macros() const;
   void setMacros(const QString &cmds) const;
   bool validateLengths(int len) const;
