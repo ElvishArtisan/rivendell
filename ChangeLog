@@ -18871,7 +18871,6 @@
 	* Added 'RDHttpServer' class.
 	* Added 'loadGroup' method to 'RDGroupList' class.
 	* Added 'RDNexus' class.
-	* Added rdnexusd(8).
 	* Added minimum and maximum talk lengths to to 'RDWaveData' class.
 	* Added timestamp and optional argument to 'RDNotification' class.
 	* Added PlayoutCartNumType, PlayoutExtIdType, and LogExtIdType
@@ -18880,3 +18879,4 @@
 	'RDNotification' class.
 	* Added minimum and maximum talk lengths to 'RDCart' class and
 	'CART' table.
+	* Added rdnexusd(8).
