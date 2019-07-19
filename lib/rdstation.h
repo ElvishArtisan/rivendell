@@ -109,6 +109,7 @@ class RDStation
   void setCardInputs(int cardnum,int inputs) const;
   int cardOutputs(int cardnum) const;
   void setCardOutputs(int cardnum,int outputs) const;
+  QStringList list();
   static bool create(const QString &name,QString *err_msg,
 		     const QString &exemplar="",
 		     const QHostAddress &hostaddr=QHostAddress());

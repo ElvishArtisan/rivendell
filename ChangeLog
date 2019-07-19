@@ -18885,3 +18885,4 @@
 	button pressed in rdlibrary(1).
 	* Added rdnexusd(8) to rdservice(8).
 	* Added ability to see import template offsets in rdadmin(1).
+	* Added 'list' method to 'RDStation' class.
