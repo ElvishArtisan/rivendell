@@ -18867,3 +18867,7 @@
 	* Added an rdlogmanager(1) man page.
 2019-07-16 Fred Gleason <fredg@paravelsystems.com>
 	* Added an rdairplay(1) man page.
+2019-07-19 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug that broke the 'Switch Take' ['ST'],
+	'Switch Add' ['SA'] and 'Switch Remove' ['SR'] RMLs when
+	using the 'Local Audio Adapter' driver.
