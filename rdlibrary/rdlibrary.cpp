@@ -750,10 +750,11 @@ void MainWidget::editData()
 
     EditCart *edit_cart=new EditCart(item->text(Cart).toUInt(),&lib_import_path,
 				     false,profile_ripping,this);
-    edit_cart->exec();
-    RefreshLine(item);
-    cartOnItemData(item);
-    SendNotification(RDNotification::ModifyAction,item->text(Cart).toUInt());
+    if(edit_cart->exec()==0) {
+      RefreshLine(item);
+      cartOnItemData(item);
+      SendNotification(RDNotification::ModifyAction,item->text(Cart).toUInt());
+    }
     delete edit_cart;
     delete it;
   }
@@ -763,18 +764,18 @@ void MainWidget::editData()
 	new EditCart(0,&lib_import_path,false,profile_ripping,this,"",
 				       lib_cart_list);
     
-      edit_cart->exec();
-      delete edit_cart;
-    
-      it=new Q3ListViewItemIterator(lib_cart_list);
-      while(it->current()) {
-        if (it->current()->isSelected() && !it->current()->parent()) {
-          RefreshLine((RDListViewItem *)it->current());
-	  SendNotification(RDNotification::ModifyAction,
+      if(edit_cart->exec()==0) {   // -1=Cancel 0=Ok
+        it=new Q3ListViewItemIterator(lib_cart_list);
+        while(it->current()) {
+          if (it->current()->isSelected() && !it->current()->parent()) {
+            RefreshLine((RDListViewItem *)it->current());
+            SendNotification(RDNotification::ModifyAction,
 			   it->current()->text(1).toUInt());
+          }
+          ++(*it);
         }
-        ++(*it);
       }
+      delete edit_cart;
       delete it;
     }
   }
@@ -1112,8 +1113,7 @@ void MainWidget::notificationReceivedData(RDNotification *notify)
       }
       break;
 
-    case RDNotification::NoAction:
-    case RDNotification::LastAction:
+    default:
       break;
     }
   }

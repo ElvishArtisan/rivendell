@@ -18881,3 +18881,5 @@
 	'CART' table.
 	* Added rdnexusd(8).
 	* Added playout notifications to 'RDLogPlay' class.
+	* Removed the sending of modification notifications when Cancel
+	button pressed in rdlibrary(1).
