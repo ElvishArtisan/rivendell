@@ -18871,3 +18871,6 @@
 	* Fixed a bug that broke the 'Switch Take' ['ST'],
 	'Switch Add' ['SA'] and 'Switch Remove' ['SR'] RMLs when
 	using the 'Local Audio Adapter' driver.
+2019-07-19 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'HttpUserAgent=' directive to the '[Identity]' section
+	of rd.conf(5).

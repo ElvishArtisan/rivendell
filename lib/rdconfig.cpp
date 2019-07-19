@@ -86,9 +86,15 @@ void RDConfig::setModuleName(const QString &modname)
 }
 
 
-QString RDConfig::userAgent() const
+QString RDConfig::userAgent(const QString &modname) const
 {
-  return RDConfig::userAgent(conf_module_name);
+  if(!conf_http_user_agent.isEmpty()) {
+    return conf_http_user_agent;
+  }
+  if(modname.isEmpty()) {
+    return QString("Mozilla/5.0")+" rivendell/"+VERSION;
+  }
+  return QString("Mozilla/5.0 rivendell/")+VERSION+" ("+modname+")";
 }
 
 
@@ -482,6 +488,7 @@ bool RDConfig::load()
   conf_rn_rml_group=
     profile->stringValue("Identity","RnRmlGroup",RD_DEFAULT_RN_RML_GROUP);
   conf_label=profile->stringValue("Identity","Label",RD_DEFAULT_LABEL);
+  conf_http_user_agent=profile->stringValue("Identity","HttpUserAgent");
 
   conf_audio_store_mount_source=
     profile->stringValue("AudioStore","MountSource");
@@ -644,6 +651,7 @@ void RDConfig::clear()
   conf_alsa_channels_per_pcm=-1;
   conf_station_name="";
   conf_password="";
+  conf_http_user_agent="";
   conf_audio_owner="";
   conf_audio_group="";
   conf_pypad_owner="";
@@ -679,15 +687,6 @@ void RDConfig::clear()
   conf_sas_base_cart=1;
   conf_sas_tty_device="";
   conf_destinations.clear();
-}
-
-
-QString RDConfig::userAgent(const QString &modname)
-{
-  if(modname.isEmpty()) {
-    return QString("Mozilla/5.0")+" rivendell/"+VERSION;
-  }
-  return QString("Mozilla/5.0 rivendell/")+VERSION+" ("+modname+")";
 }
 
 
