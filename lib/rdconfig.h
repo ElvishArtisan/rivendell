@@ -54,7 +54,7 @@ class RDConfig
   void setFilename(QString filename);
   QString moduleName() const;
   void setModuleName(const QString &modname);
-  QString userAgent() const;
+  QString userAgent(const QString &modname="") const;
   QString mysqlHostname() const;
   QString mysqlUsername() const;
   QString mysqlDbname() const;
@@ -114,7 +114,6 @@ class RDConfig
   QString destination(unsigned n);
   bool load();
   void clear();
-  static QString userAgent(const QString &modname);
   static QString createTablePostfix(const QString &engine);
   static QString rdselectExitCodeText(RDSelectExitCode code);
 
@@ -159,6 +158,7 @@ class RDConfig
   QString conf_audio_store_mount_options;
   QString conf_audio_store_xport_hostname;
   QString conf_audio_store_cae_hostname;
+  QString conf_http_user_agent;
   bool conf_disable_maint_checks;
   bool conf_lock_rdairplay_memory;
   std::vector<QString> conf_jack_ports[2];

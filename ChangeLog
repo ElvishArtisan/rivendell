@@ -18867,7 +18867,14 @@
 	* Added an rdlogmanager(1) man page.
 2019-07-16 Fred Gleason <fredg@paravelsystems.com>
 	* Added an rdairplay(1) man page.
-2019-07-18 Patrick Linstruth <patrick@deltecent.com>
+2019-07-19 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug that broke the 'Switch Take' ['ST'],
+	'Switch Add' ['SA'] and 'Switch Remove' ['SR'] RMLs when
+	using the 'Local Audio Adapter' driver.
+2019-07-19 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'HttpUserAgent=' directive to the '[Identity]' section
+	of rd.conf(5).
+2019-07-20 Patrick Linstruth <patrick@deltecent.com>
 	* Added 'RDHttpServer' class.
 	* Added 'loadGroup' method to 'RDGroupList' class.
 	* Added 'RDNexus' class.

@@ -508,9 +508,9 @@ bool CaeServer::ProcessCommand(int id,const QString &cmd)
     if(ok&&(card<RD_MAX_CARDS)) {
       unsigned input=f0.at(2).toUInt(&ok);
       if(ok&&(input<RD_MAX_PORTS)) {
-	unsigned output=f0.at(2).toUInt(&ok);
+	unsigned output=f0.at(3).toUInt(&ok);
 	if(ok&&(output<RD_MAX_PORTS)) {
-	  int level=f0.at(3).toUInt(&ok);
+	  int level=f0.at(4).toInt(&ok);
 	  if(ok) {
 	    emit setAudioPassthroughLevelReq(id,card,input,output,level);
 	    was_processed=true;

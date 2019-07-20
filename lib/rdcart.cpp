@@ -1739,7 +1739,7 @@ bool RDCart::removeCutAudio(RDStation *station,RDUser *user,unsigned cart_num,
     curl_easy_setopt(curl,CURLOPT_URL,url);
     curl_easy_setopt(curl,CURLOPT_HTTPPOST,first);
     curl_easy_setopt(curl,CURLOPT_USERAGENT,
-		     (const char *)RDConfig::userAgent(""));
+		     (const char *)rda->config()->userAgent());
     curl_easy_setopt(curl,CURLOPT_TIMEOUT,RD_CURL_TIMEOUT);
     curl_easy_setopt(curl,CURLOPT_WRITEFUNCTION,CartWriteCallback);
     curl_easy_setopt(curl,CURLOPT_WRITEDATA,&xml);

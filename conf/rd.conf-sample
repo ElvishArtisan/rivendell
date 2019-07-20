@@ -41,6 +41,11 @@ Password=letmein
 ; This entry is what will appear in RDSelect's list for this configuration.
 Label=Default (Local)
 
+; This entry will override the default value of the HTTP_USER_AGENT header
+; used when making HTTP requests. Rarely needed!
+;HttpUserAgent=Mozilla/5.0 rivendell/3.0
+
+
 [mySQL]
 ; The connection parameters for the MySQL server.
 Hostname=localhost
