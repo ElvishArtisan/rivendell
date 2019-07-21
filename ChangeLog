@@ -18874,3 +18874,6 @@
 2019-07-19 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'HttpUserAgent=' directive to the '[Identity]' section
 	of rd.conf(5).
+2019-07-20 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed a regression in rdlibrary(1) where macro cart entries turn
+	RED after viewing.
