@@ -1399,7 +1399,7 @@ void MainWidget::RefreshList()
         l->setTextColor(Length,QColor(Qt::black),QFont::Normal);
       }
     }
-    if((RDCart::Type)q->value(15).toUInt()!=RDCart::Macro) {
+    if((RDCart::Type)q->value(15).toUInt()==RDCart::Audio) {
       RefreshCuts(l,q->value(0).toUInt());
     }
     else {
@@ -1579,7 +1579,9 @@ void MainWidget::RefreshLine(RDListViewItem *item)
       }
     }
 
-    RefreshCuts(item,item->text(Cart).toUInt());
+    if((RDCart::Type)q->value(14).toUInt()==RDCart::Audio) {
+      RefreshCuts(item,item->text(Cart).toUInt());
+    }
   }
   delete q;
 }

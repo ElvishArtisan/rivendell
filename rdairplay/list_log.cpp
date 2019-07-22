@@ -850,7 +850,7 @@ void ListLog::nextButtonData()
 
 void ListLog::loadButtonData()
 {
-  QString name=list_log->logName().left(list_log->logName().length()-4);
+  QString name=list_log->logName();
   QString svcname=list_log->serviceName();
   QString err_msg;
   RDLog *edit_log;
