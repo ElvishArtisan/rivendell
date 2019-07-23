@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the SAS32000
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -122,7 +122,7 @@ void Sas32000::processCommand(RDMacro *cmd)
 	}
 	sprintf(str,"DL%02d%c%03d",cmd->arg(1).toInt(),sign,
 		10*abs(cmd->arg(2).toInt()));
-	sas_device->writeBlock(str,8);
+	sas_device->write(str,8);
 	cmd->acknowledge(true);
 	emit rmlEcho(cmd);
 	break;
@@ -140,7 +140,7 @@ void Sas32000::runQueue()
   if(sas_commands.size()==0) {
     return;
   }
-  sas_device->writeBlock((const char *)sas_commands.front(),7);
+  sas_device->write((const char *)sas_commands.front(),7);
   sas_commands.pop();
   if(sas_commands.size()==0) {
     sas_timer->stop();

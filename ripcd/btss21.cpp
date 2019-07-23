@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the BroadcastTools SS 2.1
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -104,12 +104,11 @@ void BtSs21::processCommand(RDMacro *cmd)
     }
     if(cmd->arg(1).toInt()==0) {
       str=QString().sprintf("*%dM",BTSS21_UNIT_ID);
-      bt_device->writeBlock(str,str.length());
+      bt_device->write(str,str.length());
     }
     else {
-      str=QString().sprintf("*%d%d",BTSS21_UNIT_ID,
-			    cmd->arg(1).toInt());
-      bt_device->writeBlock(str,str.length());
+      str=QString().sprintf("*%d%d",BTSS21_UNIT_ID,cmd->arg(1).toInt());
+      bt_device->write(str,str.length());
     }
     cmd->acknowledge(true);
     emit rmlEcho(cmd);

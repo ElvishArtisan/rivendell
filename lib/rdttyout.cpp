@@ -2,7 +2,7 @@
 //
 // Output a string on a Rivendell TTY
 //
-//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,9 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <rdtty.h>
-#include <rdttyout.h>
-
+#include "rdtty.h"
+#include "rdttyout.h"
 
 bool RDTtyOut(const QString &station,unsigned port_id,const QString &str)
 {
@@ -39,23 +38,23 @@ bool RDTtyOut(const QString &station,unsigned port_id,const QString &str)
     delete tty_entry;
     return false;
   }
-  tty_device->writeBlock((const char *)str,strlen((const char *)str));
+  tty_device->write((const char *)str,strlen((const char *)str));
   switch(tty_entry->termination()) {
-      case RDTty::CrTerm:
-	tty_device->putch(13);
-	break;
+  case RDTty::CrTerm:
+    tty_device->putch(13);
+    break;
 
-      case RDTty::LfTerm:
-	tty_device->putch(10);
-	break;
+  case RDTty::LfTerm:
+    tty_device->putch(10);
+    break;
 
-      case RDTty::CrLfTerm:
-	tty_device->putch(13);
-	tty_device->putch(10);
-	break;
+  case RDTty::CrLfTerm:
+    tty_device->putch(13);
+    tty_device->putch(10);
+    break;
 
-      default:
-	break;
+  case RDTty::NoTerm:
+    break;
   }
   tty_device->close();
   delete tty_device;

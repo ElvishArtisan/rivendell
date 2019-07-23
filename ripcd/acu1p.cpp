@@ -2,7 +2,7 @@
 //
 // Rivendell switcher driver for the Sine Systems ACU-1 (Prophet)
 //
-//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -63,7 +63,7 @@ Acu1p::Acu1p(RDMatrix *matrix,QObject *parent)
   str[1]=ACU1P_UNIT_ID;
   str[2]=0x38;
   str[3]=bt_gpo_mask;
-  bt_device->writeBlock(str,4);
+  bt_device->write(str,4);
 
   //
   // Interval OneShots
@@ -166,7 +166,7 @@ void Acu1p::processCommand(RDMacro *cmd)
     else {
       if(cmd->arg(3).toInt()==-1) {  // Clear input
 	bt_gpi_mask[cmd->arg(2).toInt()-1]=false;
-	bt_device->writeBlock("*0SPA",5);
+	bt_device->write("*0SPA",5);
       }
       else { 
 	if(cmd->arg(4).toInt()==0) {  // Turn ON
@@ -217,7 +217,7 @@ void Acu1p::processCommand(RDMacro *cmd)
       str[1]=ACU1P_UNIT_ID;
       str[2]=0x31;
       str[3]=0x01<<(cmd->arg(1).toInt()-1);
-      bt_device->writeBlock(str,4);
+      bt_device->write(str,4);
     }
     cmd->acknowledge(true);
     emit rmlEcho(cmd);
@@ -235,7 +235,7 @@ void Acu1p::processCommand(RDMacro *cmd)
       str[1]=ACU1P_UNIT_ID;
       str[2]=0x32;
       str[3]=0x01<<(cmd->arg(1).toInt()-1);
-      bt_device->writeBlock(str,4);
+      bt_device->write(str,4);
     }
     cmd->acknowledge(true);
     emit rmlEcho(cmd);
@@ -259,7 +259,7 @@ void Acu1p::processCommand(RDMacro *cmd)
       str[3]=0x01<<(cmd->arg(1).toInt()-1);
       str[4]=~str[3];
     }
-    bt_device->writeBlock(str,5);
+    bt_device->write(str,5);
     cmd->acknowledge(true);
     emit rmlEcho(cmd);
     break;
@@ -275,7 +275,7 @@ void Acu1p::processCommand(RDMacro *cmd)
 void Acu1p::pollData()
 {
   uint8_t data[]={0xAA,ACU1P_UNIT_ID,0x39};
-  bt_device->writeBlock((char *)data,3);
+  bt_device->write((char *)data,3);
 }
 
 
@@ -284,7 +284,7 @@ void Acu1p::readyReadData(int sock)
   char data[255];
   int n=0;
 
-  while((n=bt_device->readBlock(data,255))>0) {
+  while((n=bt_device->read(data,255))>0) {
     if(n==2) {
       ProcessGpi(256*(0xFF&data[1])+(0xFF&data[0]));
     }
@@ -334,7 +334,7 @@ void Acu1p::SetRelay(int gpo,bool state)
   str[1]=ACU1P_UNIT_ID;
   str[2]=0x38;
   str[3]=bt_gpo_mask;
-  bt_device->writeBlock(str,4);
+  bt_device->write(str,4);
 }
 
 
@@ -347,5 +347,5 @@ void Acu1p::PulseRelay(int gpo)
   str[1]=ACU1P_UNIT_ID;
   str[2]=0x52;
   str[3]=mask;
-  bt_device->writeBlock(str,4);
+  bt_device->write(str,4);
 }

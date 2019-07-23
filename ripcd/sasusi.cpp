@@ -422,7 +422,7 @@ void SasUsi::SendCommand(char *str)
 	      (const char *)PrettifyCommand(str));
   switch(sas_porttype) {
   case RDMatrix::TtyPort:
-    sas_device->writeBlock(str,strlen(str));
+    sas_device->write(str,strlen(str));
     break;
 
   case RDMatrix::TcpPort:

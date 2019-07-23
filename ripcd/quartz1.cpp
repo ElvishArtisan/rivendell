@@ -254,16 +254,16 @@ void Quartz1::SendCommand(const char *str)
   // LogLine(QString().sprintf("SENDING: %s",str));
   for(int i=0;i<2;i++) {
     switch(sas_porttype[i]) {
-	case RDMatrix::TtyPort:
-	    sas_device[i]->writeBlock(str,strlen(str));
-	    break;
+    case RDMatrix::TtyPort:
+      sas_device[i]->write(str,strlen(str));
+      break;
       
-	case RDMatrix::TcpPort:
-	    sas_socket[i]->writeBlock(str,strlen(str));
-	    break;
+    case RDMatrix::TcpPort:
+      sas_socket[i]->writeBlock(str,strlen(str));
+      break;
 
-	case RDMatrix::NoPort:
-	    break;
+    case RDMatrix::NoPort:
+      break;
     }
   }
 }

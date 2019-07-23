@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the SAS64000
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -111,7 +111,7 @@ void Sas64000::SendCommand(RDMacro *cmd,const char *format)
     emit rmlEcho(cmd);
   }
   sprintf(str,format,cmd->arg(1).toInt(),cmd->arg(2).toInt());
-  sas_device->writeBlock(str,7);
+  sas_device->write(str,7);
   cmd->acknowledge(true);
   emit rmlEcho(cmd);
 }

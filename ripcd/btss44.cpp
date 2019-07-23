@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the BroadcastTools SS 4.4
 //
-//   (C) Copyright 2002-2005,2009,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -154,7 +154,7 @@ void BtSs44::processCommand(RDMacro *cmd)
 	      else {
 		sprintf(str,"*%dOR%dF",BTSS44_UNIT_ID,cmd->arg(2).toInt()-4);
 	      }
-	      bt_device->writeBlock(str,6);
+	      bt_device->write(str,6);
 	      emit gpoChanged(bt_matrix,cmd->arg(2).toInt()-1,false);
 	    }
 	  }
@@ -169,7 +169,7 @@ void BtSs44::processCommand(RDMacro *cmd)
 	else {
 	  if(cmd->arg(3).toInt()==-1) {  // Clear input
 	    bt_gpi_mask[cmd->arg(2).toInt()-1]=false;
-	    bt_device->writeBlock("*0SPA",5);
+	    bt_device->write("*0SPA",5);
 	  }
 	  else { 
 	    if(cmd->arg(4).toInt()==0) {  // Turn ON
@@ -187,7 +187,7 @@ void BtSs44::processCommand(RDMacro *cmd)
 		else {
 		  sprintf(str,"*%dOR%dL",BTSS44_UNIT_ID,cmd->arg(2).toInt()-4);
 		}
-		bt_device->writeBlock(str,6);
+		bt_device->write(str,6);
 		emit gpoChanged(bt_matrix,cmd->arg(2).toInt()-1,true);
 	      }
 	    }
@@ -207,7 +207,7 @@ void BtSs44::processCommand(RDMacro *cmd)
 		else {
 		  sprintf(str,"*%dOR%dP",BTSS44_UNIT_ID,cmd->arg(2).toInt()-4);
 		}
-		bt_device->writeBlock(str,6);
+		bt_device->write(str,6);
 		emit gpoChanged(bt_matrix,cmd->arg(2).toInt()-1,true);
 		bt_gpo_oneshot->start(cmd->arg(2).toInt()-1,500);
 	      }
@@ -229,7 +229,7 @@ void BtSs44::processCommand(RDMacro *cmd)
 	}
 	sprintf(str,"*%d%02d%d",BTSS44_UNIT_ID,
 		cmd->arg(1).toInt(),cmd->arg(2).toInt());
-	bt_device->writeBlock(str,5);
+	bt_device->write(str,5);
 	cmd->acknowledge(true);
 	emit rmlEcho(cmd);
 	break;
@@ -243,7 +243,7 @@ void BtSs44::processCommand(RDMacro *cmd)
 	}
 	sprintf(str,"*%d%02dM%d",BTSS44_UNIT_ID,
 		cmd->arg(1).toInt(),cmd->arg(2).toInt());
-	bt_device->writeBlock(str,6);
+	bt_device->write(str,6);
 	cmd->acknowledge(true);
 	emit rmlEcho(cmd);
 	break;
@@ -257,21 +257,21 @@ void BtSs44::processCommand(RDMacro *cmd)
 	}
 	if(cmd->arg(1).toInt()==0) {
 	  sprintf(str,"*%dM%d",BTSS44_UNIT_ID,cmd->arg(2).toInt());
-	  bt_device->writeBlock(str,4);
+	  bt_device->write(str,4);
 	}
 	else {
 	  sprintf(str,"*%d%02d%d",BTSS44_UNIT_ID,
 		  cmd->arg(1).toInt(),cmd->arg(2).toInt());
-	  bt_device->writeBlock(str,5);
+	  bt_device->write(str,5);
 	  for(int i=1;i<cmd->arg(1).toInt();i++) {
 	    sprintf(str,"*%d%02dM%d",BTSS44_UNIT_ID,
 		    i,cmd->arg(2).toInt());
-	    bt_device->writeBlock(str,6);
+	    bt_device->write(str,6);
 	  }
 	  for(int i=cmd->arg(1).toInt()+1;i<5;i++) {
 	    sprintf(str,"*%d%02dM%d",BTSS44_UNIT_ID,
 		    i,cmd->arg(2).toInt());
-	    bt_device->writeBlock(str,6);
+	    bt_device->write(str,6);
 	  }
 	}
 	cmd->acknowledge(true);
@@ -292,7 +292,7 @@ void BtSs44::processStatus()
   int n;
   int gpi;
 
-  while((n=bt_device->readBlock(buffer,255))>0) {
+  while((n=bt_device->read(buffer,255))>0) {
     for(int i=0;i<n;i++) {
       switch(bt_istate) {
 	  case 0:
@@ -406,7 +406,7 @@ void BtSs44::processStatus()
 void BtSs44::gpiOneshotData(int value)
 {
   bt_gpi_mask[value]=false;
-  bt_device->writeBlock("*0SPA",5);
+  bt_device->write("*0SPA",5);
 }
 
 

@@ -120,7 +120,7 @@ void Sas16000::SendCommand(char *str)
   rda->syslog(LOG_INFO,"sending USI cmd: %s",
 	      (const char *)PrettifyCommand(str));
 
-  sas_device->writeBlock(str,strlen(str));
+  sas_device->write(str,strlen(str));
 }
 
 

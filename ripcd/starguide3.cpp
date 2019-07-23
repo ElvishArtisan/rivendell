@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the StarGuide III Satellite Receiver
 //
-//   (C) Copyright 2002-2005,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -129,33 +129,33 @@ void StarGuide3::processCommand(RDMacro *cmd)
     return;
   }
   switch(sg_feed[input].mode()) {
-      case RDMatrix::Left:
-	route='1';
-	break;
+  case RDMatrix::Left:
+    route='1';
+    break;
 	
-      case RDMatrix::Right:
-	route='2';
-	break;
+  case RDMatrix::Right:
+    route='2';
+    break;
 	
-      default:
-	route='0';
-	break;
+  default:
+    route='0';
+    break;
   }
   switch(cmd->command()) {
-      case RDMacro::ST:
-	sprintf(str,"SP A,P,%d\rSP A,S,%d\rAM %c,0%c\r",
-		sg_feed[input].providerId(),
-		sg_feed[input].serviceId(),
-		output+'A',
-		route);
-	sg_device->writeBlock(str,strlen(str));
-	cmd->acknowledge(true);
-	emit rmlEcho(cmd);
-	break;
+  case RDMacro::ST:
+    sprintf(str,"SP A,P,%d\rSP A,S,%d\rAM %c,0%c\r",
+	    sg_feed[input].providerId(),
+	    sg_feed[input].serviceId(),
+	    output+'A',
+	    route);
+    sg_device->write(str,strlen(str));
+    cmd->acknowledge(true);
+    emit rmlEcho(cmd);
+    break;
 	
-      default:
-	cmd->acknowledge(false);
-	emit rmlEcho(cmd);
-	break;
+  default:
+    cmd->acknowledge(false);
+    emit rmlEcho(cmd);
+    break;
   }
 }

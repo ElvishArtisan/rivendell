@@ -609,7 +609,7 @@ void VGuest::SendCommand(char *str,int len)
     switch(vguest_porttype[i]) {
       case RDMatrix::TtyPort:
 	if(vguest_device[i]!=NULL) {
-	  vguest_device[i]->writeBlock(str,len);
+	  vguest_device[i]->write(str,len);
 	}
 	break;
 	

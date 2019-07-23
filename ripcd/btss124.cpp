@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the BroadcastTools SS 12.4
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -103,7 +103,7 @@ void BtSs124::processCommand(RDMacro *cmd)
 	}
 	sprintf(str,"*%d%02d%d",BTSS124_UNIT_ID,
 		cmd->arg(1).toInt(),cmd->arg(2).toInt());
-	bt_device->writeBlock(str,5);
+	bt_device->write(str,5);
 	cmd->acknowledge(true);
 	emit rmlEcho(cmd);
 	break;
@@ -117,7 +117,7 @@ void BtSs124::processCommand(RDMacro *cmd)
 	}
 	sprintf(str,"*%d%02dM%d",BTSS124_UNIT_ID,
 		cmd->arg(1).toInt(),cmd->arg(2).toInt());
-	bt_device->writeBlock(str,6);
+	bt_device->write(str,6);
 	cmd->acknowledge(true);
 	emit rmlEcho(cmd);
 	break;
@@ -131,21 +131,21 @@ void BtSs124::processCommand(RDMacro *cmd)
 	}
 	if(cmd->arg(1).toInt()==0) {
 	  sprintf(str,"*%dM%d",BTSS124_UNIT_ID,cmd->arg(2).toInt());
-	  bt_device->writeBlock(str,4);
+	  bt_device->write(str,4);
 	}
 	else {
 	  sprintf(str,"*%d%02d%d",BTSS124_UNIT_ID,
 		  cmd->arg(1).toInt(),cmd->arg(2).toInt());
-	  bt_device->writeBlock(str,5);
+	  bt_device->write(str,5);
 	  for(int i=1;i<cmd->arg(1).toInt();i++) {
 	    sprintf(str,"*%d%02dM%d",BTSS124_UNIT_ID,
 		    i,cmd->arg(2).toInt());
-	    bt_device->writeBlock(str,6);
+	    bt_device->write(str,6);
 	  }
 	  for(int i=cmd->arg(1).toInt()+1;i<9;i++) {
 	    sprintf(str,"*%d%02dM%d",BTSS124_UNIT_ID,
 		    i,cmd->arg(2).toInt());
-	    bt_device->writeBlock(str,6);
+	    bt_device->write(str,6);
 	  }
 	}
 	cmd->acknowledge(true);
