@@ -18880,3 +18880,6 @@
 2019-07-22 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdairplay(1) that caused a spurious 'Log
 	in use' error to be generated when attempting to save a log.
+2019-07-23 Dennis Graiani <dennis.graiani@gmail.com>
+	* Modified rdwavefile.cpp to set Segue End marker to the End Audio
+	marker when importing audio from AudioVAULT.
