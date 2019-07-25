@@ -174,8 +174,7 @@ void MainObject::notificationReceivedData(RDNotification *notify)
       }
       break;
 
-    case RDNotification::NoAction:
-    case RDNotification::LastAction:
+    default:
       break;
     }
   }
