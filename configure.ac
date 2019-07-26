@@ -550,6 +550,7 @@ AC_CONFIG_FILES([rivendell.spec \
     systemd/rivendell.service \
     tests/Makefile \
     utils/Makefile \
+    utils/musicmaster/Makefile \
     utils/rdalsaconfig/Makefile \
     utils/rdcheckcuts/Makefile \
     utils/rdcleandirs/Makefile \
