@@ -240,6 +240,10 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)
+@LOCAL_PREFIX@/bin/mmping
+@LOCAL_PREFIX@/bin/mmpublish
+@LOCAL_PREFIX@/bin/mmsonginfo
+@LOCAL_PREFIX@/bin/mmsync
 @LOCAL_PREFIX@/bin/rdadmin
 @LOCAL_PREFIX@/bin/rdairplay
 @LOCAL_PREFIX@/bin/rdpanel
