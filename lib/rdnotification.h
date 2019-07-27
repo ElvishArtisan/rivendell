@@ -54,7 +54,7 @@ class RDNotification
   static QString dateTimeString(QDateTime datetime);
 
  private:
-  enum Position {PosNotify=0,PosType=1,PosAction=2,PosTimeStamp=3,PosId=4,PosArg=4};
+  enum Position {PosNotify=0,PosType=1,PosAction=2,PosTimeStamp=3,PosId=4,PosArg=5};
   Type notify_type;
   Action notify_action;
   QDateTime notify_datetime;

@@ -121,6 +121,7 @@ bool RDNotification::read(const QString &str)
   notify_type=RDNotification::NullType;
   notify_action=RDNotification::NoAction;
   notify_id=QVariant();
+  notify_arg=QVariant();
 
   QStringList args=str.split(" ");
   if(args.size()>=5) {
@@ -141,11 +142,11 @@ bool RDNotification::read(const QString &str)
           case RDNotification::CartType:
           case RDNotification::CatchEventType:
           case RDNotification::PypadType:
-          case RDNotification::PlayoutCartNumType:
-          case RDNotification::PlayoutExtIdType:
             notify_id=QVariant(args[PosId].toUInt());
             break;
 
+          case RDNotification::PlayoutCartNumType:
+          case RDNotification::PlayoutExtIdType:
           case RDNotification::LogExtIdType: 
             notify_id=QVariant(args[PosId].toUInt());
             notify_arg=QVariant(args[PosArg]);
@@ -194,11 +195,11 @@ QString RDNotification::write() const
     case RDNotification::CartType: 
     case RDNotification::PypadType: 
     case RDNotification::CatchEventType: 
-    case RDNotification::PlayoutCartNumType: 
-    case RDNotification::PlayoutExtIdType: 
       list.insert(PosId,QString().sprintf("%u",notify_id.toUInt()));
       break;
 
+    case RDNotification::PlayoutCartNumType: 
+    case RDNotification::PlayoutExtIdType: 
     case RDNotification::LogExtIdType: 
       list.insert(PosId,QString().sprintf("%u",notify_id.toUInt()));
       list.insert(PosArg,notify_arg.toString());
