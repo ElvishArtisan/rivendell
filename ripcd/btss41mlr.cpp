@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the BroadcastTools SS 4.1 MLR
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -132,12 +132,12 @@ void BtSs41Mlr::processCommand(RDMacro *cmd)
 	}
 	if(cmd->arg(1).toInt()==0) {
 	  str=QString().sprintf("*%dMA",BTSS41MLR_UNIT_ID);
-	  bt_device->writeBlock(str,str.length());
+	  bt_device->write(str,str.length());
 	}
 	else {
 	  str=QString().sprintf("*%d%02d",BTSS41MLR_UNIT_ID,
 				cmd->arg(1).toInt());
-	  bt_device->writeBlock(str,str.length());
+	  bt_device->write(str,str.length());
 	}
 	cmd->acknowledge(true);
 	emit rmlEcho(cmd);
@@ -156,7 +156,7 @@ void BtSs41Mlr::readyReadData()
   char buffer[256];
   int n;
 
-  while((n=bt_device->readBlock(buffer,255))>0) {
+  while((n=bt_device->read(buffer,255))>0) {
     for(int i=0;i<n;i++) {
       switch(0xFF&buffer[i]) {
       case 10:
@@ -179,7 +179,7 @@ void BtSs41Mlr::readyReadData()
 void BtSs41Mlr::gpiOneshotData(int value)
 {
   bt_gpi_mask[value]=false;
-  bt_device->writeBlock("*0SPA",5);
+  bt_device->write("*0SPA",5);
 }
 
 

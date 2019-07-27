@@ -18883,3 +18883,5 @@
 2019-07-23 Dennis Graiani <dennis.graiani@gmail.com>
 	* Modified rdwavefile.cpp to set Segue End marker to the End Audio
 	marker when importing audio from AudioVAULT.
+2019-07-27 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed regressions that made serial device operation unreliable.
