@@ -26,7 +26,6 @@
 #include <QDomDocument>
 #include <QString>
 #include <QStringList>
-#include <QDebug>
 
 #include <curl/curl.h>
 #include <syslog.h>
@@ -911,7 +910,13 @@ bool RDNexus::updateSongs(RDNexusSongInfoList &infolist)
 
     song=doc.createElement("song");
     songlist.appendChild(song);
-    song.setAttribute("cutId",infolist.at(i).cutid);
+
+    if(infolist.at(i).songid) {
+      song.setAttribute("songId",infolist.at(i).songid);
+    }
+    else {
+      song.setAttribute("cutId",infolist.at(i).cutid);
+    }
 
     addSongTag(doc,song,"NUMBER",QString::number(infolist.at(i).cutid));
     addSongTag(doc,song,"ARTIST",infolist.at(i).artist);
@@ -993,6 +998,37 @@ int RDNexus::publishMetadata(RDNexusIdList &list)
   }
 
   return count;
+}
+
+bool RDNexus::publishSchedule(QDateTime start,QDateTime end)
+{
+  QDomDocument doc;
+  QDomElement c;
+  QDomElement e;
+  QDomText t;
+
+  prepareRequest(doc,"publishSchedule");
+  addRequestAttribute(doc,"station",nexus_station);
+
+  QDomElement root = doc.documentElement();
+  c = doc.createElement("contents");
+  root.appendChild(c);
+
+  e = doc.createElement("startTime");
+  c.appendChild(e);
+  t = doc.createTextNode(start.toString(RDNEXUS_DATETIME_HOUR));
+  e.appendChild(t);
+
+  e = doc.createElement("endTime");
+  c.appendChild(e);
+  t = doc.createTextNode(end.toString(RDNEXUS_DATETIME_HOUR));
+  e.appendChild(t);
+
+  if(!nexusRequest(doc)) {
+    return false;
+  }
+
+  return true;
 }
 
 //
@@ -1591,6 +1627,9 @@ bool RDNexus::exists(int id,RDNexus::IdType type)
 }
 
 
+//
+// Searches MusicMaster song list for Song ID or Cut ID
+//
 bool RDNexus::exists(int id,RDNexus::IdType type,const RDNexusSongInfoList &list)
 {
   for(int i=0;i<list.size();i++) {
@@ -1603,5 +1642,23 @@ bool RDNexus::exists(int id,RDNexus::IdType type,const RDNexusSongInfoList &list
   }
 
   return false;
+}
+
+//
+// Searches MusicMaster song list for Artist and Title and returns
+// matching Song ID.
+//
+int RDNexus::exists(QString artist,QString title,const RDNexusSongInfoList &list)
+{
+  artist=artist.toLower();
+  title=title.toLower();
+
+  for(int i=0;i<list.size();i++) {
+    if(list.at(i).artist.toLower()==artist&&list.at(i).title.toLower()==title) {
+      return i;
+    }
+  }
+
+  return -1;
 }
 

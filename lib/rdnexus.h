@@ -328,6 +328,7 @@ class RDNexus : public QObject
     bool getStationInfo(RDNexusStationInfo &info);
     bool getCategoryList(RDNexusCategoryList &list);
     int publishMetadata(RDNexusIdList &list);
+    bool publishSchedule(QDateTime start,QDateTime end);
     bool getSchedule(QDateTime start,QDateTime end,RDNexusElementList &list);
     bool getFieldList(RDNexusFieldList &list);
     void getFieldMapList(RDNexusFieldMapList &fieldmaplist);
@@ -357,6 +358,7 @@ class RDNexus : public QObject
     int indexOfHistoryId(int historyid,RDNexusElementList &list);
     bool exists(int id,RDNexus::IdType type);
     bool exists(int id,RDNexus::IdType type,const RDNexusSongInfoList &list);
+    int exists(QString artist,QString title,const RDNexusSongInfoList &list);
     bool groupServices(const QString &group,QStringList &list);
     bool groupStations(const QString &group,RDNexusStationMapList &list);
     void saveStationMap(const RDNexusStationMap &station);
