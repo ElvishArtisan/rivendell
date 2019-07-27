@@ -2,6 +2,7 @@
 //
 // The Rivendell MusicMaster Nexus Daemon
 //
+//   Patrick Linstruth <patrick@deltecent.com>
 //   (C) Copyright 2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
@@ -162,23 +163,9 @@ MainObject::MainObject(QObject *parent)
     exit(1);
   }
 
-#if 0
-  if(nexusd_station.isEmpty()) {
-    qFatal("%s: aborting - no Nexus station specified",qPrintable(nexusd_app));
-    exit(1);
-  }
-#endif
-
   if(nexusd_name.isEmpty()) {
     nexusd_name=nexusd_server;
   }
-
-#if 0
-  if(nexusd_enable_http_server&&nexusd_group.isEmpty()) {
-    qFatal("%s: aborting - '--enable-http-server' requires '--group'",qPrintable(nexusd_app));
-    exit(1);
-  }
-#endif
 
   ::signal(SIGINT,SigHandler);
   ::signal(SIGTERM,SigHandler);
@@ -188,19 +175,6 @@ MainObject::MainObject(QObject *parent)
   if(!RDWritePid(RD_PID_DIR,RDNEXUSD_PID)) {
     qFatal("%s: aborting - can't write pid file",qPrintable(nexusd_app));
     exit(1);
-  }
-#endif
-
-#if 0
-  //
-  // Rivendell Service
-  //
-  if(!nexusd_service.isEmpty()) {
-    nexusd_svc=new RDSvc(nexusd_service,rda->station(),rda->config(),this);
-
-    if(!nexusd_svc->exists()) {
-      qFatal("%s: aborting - service '%s' does not exist",qPrintable(nexusd_app),qPrintable(nexusd_service));
-    }
   }
 #endif
 
@@ -220,9 +194,6 @@ MainObject::MainObject(QObject *parent)
   nexus->setDebug(nexusd_debug);
 
   nexus->setServer(nexusd_server,nexusd_port);
-#if 0
-  nexus->setStation(nexusd_station);
-#endif
 
   //
   // Start Nexus HTTP Server for Push Requests
@@ -295,9 +266,6 @@ void MainObject::publishMetaDataSlot(QString &station,RDNexusIdList &list)
   // Set Rivendell Service and Nexus Station
   //
   nexus->setStation(nexusd_station);
-#if 0
-  nexus->setService(nexusd_service);
-#endif
 
   nexus->getSongInfo(list,RDNexus::SongId,songlist);
 
@@ -355,9 +323,6 @@ void MainObject::publishScheduleSlot(QString &station,RDNexusElementList &list)
   // Set Rivendell Service and Nexus Station
   //
   nexus->setStation(nexusd_station);
-#if 0
-  nexus->setService(nexusd_service);
-#endif
 
   //
   // Obtain log date from first element
@@ -424,6 +389,7 @@ void MainObject::notificationReceivedSlot(RDNotification *notify)
 bool MainObject::cartNotification(RDNotification *notify,bool queue)
 {
   unsigned cartnum;
+  QString group;
   int r=false;
 
   cartnum=notify->id().toInt();
@@ -442,6 +408,8 @@ bool MainObject::cartNotification(RDNotification *notify,bool queue)
     notify->setAction(RDNotification::DeleteAction);
   }
 
+  group=cart->groupName();
+
   switch(notify->action()) {
     case RDNotification::AddAction:
     case RDNotification::ModifyAction:
@@ -450,7 +418,7 @@ bool MainObject::cartNotification(RDNotification *notify,bool queue)
       // Add/Modify Nexus Stations for Rivendell Group
       //
       RDNexusStationMapList stationmaplist;
-      nexus->groupStations(cart->groupName(),stationmaplist);
+      nexus->groupStations(group,stationmaplist);
 
       for(int i=0;i<stationmaplist.size();i++) {
         if(stationmaplist.at(i).station.isEmpty()) {
@@ -478,8 +446,14 @@ bool MainObject::cartNotification(RDNotification *notify,bool queue)
           info.category=nexus->stationCategory();  // Set default category
           r=nexus->importSong(info);
         }
-        if(!r&&queue) {
+
+        //
+        // If the request failed and we didn't get a Nexus Message ID,
+        // queue the message to try again later.
+        //
+        if(!r&&!nexus->responseMessageId()&&queue) {
           queueNotification(notify,nexus->responseError());
+          delete cart;
           return r;
         }
       }
@@ -498,8 +472,9 @@ bool MainObject::cartNotification(RDNotification *notify,bool queue)
         nexus->setStation(stationmaplist.at(i).station);
         syslog(LOG_INFO,QString("Deleting cart %1 from %2:%3").arg(cartnum).arg(nexusd_name).arg(nexus->station()));
         if(!(r=nexus->deleteSong(cartnum,RDNexus::CutId))) {
-          if(queue) {
+          if(!nexus->responseMessageId()&&queue) {
             queueNotification(notify,nexus->responseError());
+            delete cart;
             return r;
           }
         }
@@ -510,6 +485,8 @@ bool MainObject::cartNotification(RDNotification *notify,bool queue)
     default:
       break;
   }
+
+  delete cart;
 
   return r;
 }
@@ -525,10 +502,11 @@ bool MainObject::cartNotification(RDNotification *notify,bool queue)
 bool MainObject::playoutNotification(RDNotification *notify,bool queue)
 {
   unsigned historyid=notify->id().toUInt();
+  QString service=notify->arg().toString();
   QString mode;
   int r=false;
 
-  fprintf(stderr,"Playout notification: historyid=%d queue=%d\n",historyid,queue);
+  fprintf(stderr,"Playout notification: historyid=%d service=%s queue=%d\n",historyid,(const char *)service,queue);
 
   if (!historyid) {
     return r;
@@ -549,15 +527,27 @@ bool MainObject::playoutNotification(RDNotification *notify,bool queue)
 
   QString airtime=notify->dateTime().toString(RDNEXUS_DATETIME);
 
-  if(!(r=nexus->reconcileElement(historyid,mode,airtime))) {
-    syslog(LOG_ERR,QString("Failed %1 reconciliation for historyid %2 to %3: %4").arg(mode).arg(historyid).arg(nexusd_name).arg(nexus->responseError()));
+  RDNexusStationMapList stationmaplist;
+  nexus->stationMapList(stationmaplist);
 
-    if(queue) {
-      queueNotification(notify,nexus->responseError());
+  for(int i=0;i<stationmaplist.size();i++) {
+    if(stationmaplist.at(i).station.isEmpty()||stationmaplist.at(i).service!=service) {
+      continue;
     }
-  }
-  else {
-    syslog(LOG_INFO,QString("Sent %1 reconciliation for historyid %2 to %3").arg(mode).arg(historyid).arg(nexusd_name));
+
+    nexusd_station=stationmaplist.at(i).station;
+    nexus->setStation(nexusd_station);
+
+    if(!(r=nexus->reconcileElement(historyid,mode,airtime))) {
+      syslog(LOG_ERR,QString("Failed %1 reconciliation for historyid %2 to %3:%4: %5").arg(mode).arg(historyid).arg(nexusd_server).arg(nexusd_station).arg(nexus->responseError()));
+
+      if(!nexus->responseMessageId()&&queue) {
+        queueNotification(notify,nexus->responseError());
+      }
+    }
+    else {
+      syslog(LOG_INFO,QString("Sent %1 reconciliation for historyid %2 to %3:%4: %5").arg(mode).arg(historyid).arg(nexusd_server).arg(nexusd_station).arg(nexus->responseError()));
+    }
   }
 
   return r;
