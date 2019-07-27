@@ -3077,7 +3077,7 @@ bool RDWaveFile::GetAv10(int fd)
 		if(ok) {
 		  if(wave_data!=NULL) {
 		    wave_data->setSegueStartPos(pos);
-		    wave_data->setSegueEndPos(pos+offset);
+		    wave_data->setSegueEndPos(wave_data->endPos());
 		    wave_data->setMetadataFound(true);
 		  }
 		}
