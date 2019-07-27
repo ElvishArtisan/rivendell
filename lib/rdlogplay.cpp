@@ -3192,13 +3192,13 @@ void RDLogPlay::SendNotification(RDNotification::Action action,
                                   RDLogLine *logline)
 {
   RDNotification *notify=
-    new RDNotification(RDNotification::PlayoutCartNumType,action,QVariant(logline->cartNumber()));
+    new RDNotification(RDNotification::PlayoutCartNumType,action,QVariant(logline->cartNumber()),serviceName());
   rda->ripc()->sendNotification(*notify);
   delete notify;
 
   if(logline->extEventId().toUInt()) {
     RDNotification *notify=
-      new RDNotification(RDNotification::PlayoutExtIdType,action,QVariant(logline->extEventId()));
+      new RDNotification(RDNotification::PlayoutExtIdType,action,QVariant(logline->extEventId()),serviceName());
     rda->ripc()->sendNotification(*notify);
     delete notify;
   }
