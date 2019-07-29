@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the BroadcastTools 8x2
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -100,14 +100,14 @@ void Bt8x2::processCommand(RDMacro *cmd)
 	}
 	if(cmd->arg(1).toInt()==0) {
 	  sprintf(str,"*m%d\x0d",cmd->arg(2).toInt());
-	  bt_device->writeBlock(str,4);
+	  bt_device->write(str,4);
 	}
 	else {
 	  sprintf(str,"*M%01d\x0d",cmd->arg(2).toInt());
-	  bt_device->writeBlock(str,4);
+	  bt_device->write(str,4);
 	  sprintf(str,"*%01d%01d0\x0d",
 		  cmd->arg(1).toInt(),3+cmd->arg(2).toInt());
-	  bt_device->writeBlock(str,5);
+	  bt_device->write(str,5);
 	}
 	cmd->acknowledge(true);
 	emit rmlEcho(cmd);
@@ -122,7 +122,7 @@ void Bt8x2::processCommand(RDMacro *cmd)
 	}
 	sprintf(str,"*%01d%01d0\x0d",
 		cmd->arg(1).toInt(),3+cmd->arg(2).toInt());
-	bt_device->writeBlock(str,5);
+	bt_device->write(str,5);
 	cmd->acknowledge(true);
 	emit rmlEcho(cmd);
 	break;
@@ -136,7 +136,7 @@ void Bt8x2::processCommand(RDMacro *cmd)
 	}
 	sprintf(str,"*%01d%01d0\x0d",
 		cmd->arg(1).toInt(),5+cmd->arg(2).toInt());
-	bt_device->writeBlock(str,5);
+	bt_device->write(str,5);
 	cmd->acknowledge(true);
 	emit rmlEcho(cmd);
 	break;

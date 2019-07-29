@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the BroadcastTools 16x1
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -100,11 +100,11 @@ void Bt16x1::processCommand(RDMacro *cmd)
 	}
 	if(cmd->arg(1).toInt()==0) {
 	  sprintf(str,"*m\x0d");
-	  bt_device->writeBlock(str,3);
+	  bt_device->write(str,3);
 	}
 	else {
 	  sprintf(str,"*%02d\x0d",cmd->arg(1).toInt());
-	  bt_device->writeBlock(str,4);
+	  bt_device->write(str,4);
 	}
 	cmd->acknowledge(true);
 	emit rmlEcho(cmd);

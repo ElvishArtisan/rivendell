@@ -107,7 +107,7 @@ void MainObject::ttyScanData()
 
   for(int i=0;i<MAX_TTYS;i++) {
     if(ripcd_tty_dev[i]!=NULL) {
-      while((n=ripcd_tty_dev[i]->readBlock(buf,255))>0) {
+      while((n=ripcd_tty_dev[i]->read(buf,255))>0) {
 	ripcd_tty_trap[i]->scan(buf,n);
       }
     }
@@ -269,7 +269,7 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
       sscanf((const char *)rml->arg(i),"%x",&d);
       bin_buf[i-1]=0xFF&d;
     }
-    ripcd_tty_dev[tty_port]->writeBlock(bin_buf,rml->argQuantity()-1);
+    ripcd_tty_dev[tty_port]->write(bin_buf,rml->argQuantity()-1);
     rml->acknowledge(true);
     sendRml(rml);
     return;

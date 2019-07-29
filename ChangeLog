@@ -18883,7 +18883,9 @@
 2019-07-23 Dennis Graiani <dennis.graiani@gmail.com>
 	* Modified rdwavefile.cpp to set Segue End marker to the End Audio
 	marker when importing audio from AudioVAULT.
-2019-07-26 Patrick Linstruth <patrick@deltecent.com>
+2019-07-27 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed regressions that made serial device operation unreliable.
+2019-07-28 Patrick Linstruth <patrick@deltecent.com>
 	* Added 'RDHttpServer' class.
 	* Added 'loadGroup' method to 'RDGroupList' class.
 	* Added 'RDNexus' class.

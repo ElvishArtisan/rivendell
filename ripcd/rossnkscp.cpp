@@ -103,7 +103,7 @@ void RossNkScp::processCommand(RDMacro *cmd)
 	sprintf(str,"X%03d,%03d,%d\x0d",cmd->arg(2).toInt()-1,
 		cmd->arg(1).toInt()-1,ross_breakaway);
 	syslog(LOG_WARNING,"sent: %s\n",str);
-	ross_device->writeBlock(str,11);
+	ross_device->write(str,11);
 	cmd->acknowledge(true);
 	emit rmlEcho(cmd);
 	break;
