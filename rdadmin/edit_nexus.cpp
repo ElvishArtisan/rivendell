@@ -334,7 +334,7 @@ StationsTab::StationsTab(RDNexus *nexus_object,QWidget *parent)
   layout->addRow("MusicMaster Nexus Station:",stations_combobox);
   layout->addRow("Default Rivendell Group:",group_combobox);
   layout->addRow("Default Rivendell Scheduler Code:",sched_code_combobox);
-  layout->addRow("Default Music Master Category:",category_combobox);
+  layout->addRow("Default MusicMaster Category:",category_combobox);
   layout->addRow("Automatically Merge Logs:",automerge_box);
 
   setLayout(layout);
