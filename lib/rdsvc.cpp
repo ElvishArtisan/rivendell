@@ -787,6 +787,7 @@ bool RDSvc::generateLog(const QDate &date,const QString &logname,
       QString().sprintf("TYPE=%d,",RDLogLine::Chain)+
       QString().sprintf("SOURCE=%d,",RDLogLine::Template)+
       QString().sprintf("TRANS_TYPE=%d,",RDLogLine::Segue)+
+      QString().sprintf("TIME_TYPE=%d,",RDLogLine::Relative)+
       "LABEL=\""+RDEscapeString(nextname)+"\"";
     q=new RDSqlQuery(sql);
     delete q;
