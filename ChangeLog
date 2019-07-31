@@ -18888,7 +18888,9 @@
 2019-07-29 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdlogmanager(1) that caused a 'no default column
 	value' SQL error when generating a log.
-2019-07-30 Patrick Linstruth <patrick@deltecent.com>
+2019-07-31 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version 3.0.2.
+2019-08-01 Patrick Linstruth <patrick@deltecent.com>
 	* Added 'RDHttpServer' class.
 	* Added 'loadGroup' method to 'RDGroupList' class.
 	* Added 'RDNexus' class.
