@@ -1,6 +1,33 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
+v3.0.2 -- 7/31/2019
+
+This is a bugfix release of Rivendell.
+
+Changes:
+   New Switcher Device. Added support for switchers using the Grass
+   Valley 7000 series protocol.
+
+   Fixed a problem with the Local Audio Adapter switcher driver that
+   caused incorrect operation with the 'Switch Add' ['SA'], 'Switch Remove'
+   ['SR'] and 'Switch Take' ['ST'] RMLs.
+
+   Fixed a regression in rdlibrary(1) that caused macro carts entries
+   to turn red after being viewed.
+
+   Fixed regressions that made operations with serial devices unreliable.
+
+   Other enhancements and bugfixes. See the 'ChangeLog' for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 308, and will
+   automatically upgrade any earlier versions. To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
+   to allow any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
 v3.0.1 -- 7/16/2019
 
 This is the first production release of Rivendell 3.x. Many changes
