@@ -334,9 +334,12 @@ void MainWidget::systemSettingsData()
 
 void MainWidget::manageNexusData()
 {
-  EditNexus *d=new EditNexus(this);
-  d->exec();
-  delete d;
+  if (QMessageBox::question(this,tr("Nexus Warning"),QString("MusicMaster Nexus integration is currently in development status and is not intended for use in a production environment. Using this software may cause data loss. Would you like to continue?"),(QMessageBox::No|QMessageBox::Yes)) == QMessageBox::Yes) {
+    QMessageBox::information(this,tr("Bug Reports"),QString("Please report bugs and suggestions at https://github.com/deltecent/rivendell/issues."));
+    EditNexus *d=new EditNexus(this);
+    d->exec();
+    delete d;
+  }
 }
 
 
