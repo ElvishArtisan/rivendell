@@ -1469,31 +1469,30 @@ void MainWidget::RefreshLine(RDListViewItem *item)
   RDCart::Validity validity=RDCart::NeverValid;
   QDateTime current_datetime(QDate::currentDate(),QTime::currentTime());
   QString sql=QString("select ")+
-    "CART.FORCED_LENGTH,"+     // 00
-    "CART.TITLE,"+             // 01
-    "CART.ARTIST,"+            // 02
-    "CART.ALBUM,"+             // 03
-    "CART.LABEL,"+             // 04
-    "CART.CLIENT,"+            // 05
-    "CART.AGENCY,"+            // 06
-    "CART.USER_DEFINED,"+      // 07
-    "CART.COMPOSER,"+          // 08
-    "CART.CONDUCTOR,"+         // 09
-    "CART.PUBLISHER,"+         // 10
-    "CART.GROUP_NAME,"+        // 11
-    "CART.START_DATETIME,"+    // 12
-    "CART.END_DATETIME,"+      // 13
-    "CART.TYPE,"+              // 14
-    "CART.CUT_QUANTITY,"+      // 15
-    "CART.LAST_CUT_PLAYED,"+   // 16
-    "CART.ENFORCE_LENGTH,"+    // 17
-    "CART.PRESERVE_PITCH,"+    // 18
-    "CART.LENGTH_DEVIATION,"+  // 19
-    "CART.OWNER,"+             // 20
-    "CART.VALIDITY,"+          // 21
-    "GROUPS.COLOR,"+           // 22
-    "CUTS.TALK_START_POINT,"+  // 23
-    "CUTS.TALK_END_POINT "+    // 24
+    "CART.FORCED_LENGTH,"+       // 00
+    "CART.TITLE,"+               // 01
+    "CART.ARTIST,"+              // 02
+    "CART.ALBUM,"+               // 03
+    "CART.LABEL,"+               // 04
+    "CART.CLIENT,"+              // 05
+    "CART.AGENCY,"+              // 06
+    "CART.USER_DEFINED,"+        // 07
+    "CART.COMPOSER,"+            // 08
+    "CART.CONDUCTOR,"+           // 09
+    "CART.PUBLISHER,"+           // 10
+    "CART.GROUP_NAME,"+          // 11
+    "CART.START_DATETIME,"+      // 12
+    "CART.END_DATETIME,"+        // 13
+    "CART.TYPE,"+                // 14
+    "CART.CUT_QUANTITY,"+        // 15
+    "CART.LAST_CUT_PLAYED,"+     // 16
+    "CART.ENFORCE_LENGTH,"+      // 17
+    "CART.PRESERVE_PITCH,"+      // 18
+    "CART.LENGTH_DEVIATION,"+    // 19
+    "CART.OWNER,"+               // 20
+    "CART.VALIDITY,"+            // 21
+    "CART.MINUMUM_TALK_LENGTH,"+ // 22
+    "GROUPS.COLOR"+              // 23
     "from CART left join GROUPS "+
     "on CART.GROUP_NAME=GROUPS.NAME left join CUTS on "+
     "CART.NUMBER=CUTS.CART_NUMBER where "+
@@ -1526,10 +1525,10 @@ void MainWidget::RefreshLine(RDListViewItem *item)
       break;
     }
     item->setText(Group,q->value(11).toString());
-    item->setTextColor(Group,q->value(22).toString(),QFont::Bold);
+    item->setTextColor(Group,q->value(23).toString(),QFont::Bold);
     if(q->value(15).toUInt()==1) {
 	    item->setText(Length,RDGetTimeLength(q->value(0).toUInt()));
-            item->setText(Talk,RDGetTimeLength(q->value(24).toUInt()-q->value(23).toUInt()));
+            item->setText(Talk,RDGetTimeLength(q->value(22).toUInt()));
     }
     item->setText(Title,q->value(1).toString());
     item->setText(Artist,q->value(2).toString());
