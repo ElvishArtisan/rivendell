@@ -22,6 +22,7 @@
   <!ENTITY gpio_switcher_devices SYSTEM "gpio_switcher_devices.xml">
   <!ENTITY filepath_wildcards SYSTEM "filepath_wildcards.xml">
   <!ENTITY metadata_wildcards SYSTEM "metadata_wildcards.xml">
+  <!ENTITY nexus_integration SYSTEM "nexus_integration.xml">
   <!ENTITY rivendell_filter SYSTEM "rivendell_filter.xml">
   <!ENTITY wings_filter SYSTEM "wings_filter.xml">
 ]>
@@ -55,6 +56,7 @@
     &gpio_switcher_devices;
     &filepath_wildcards;
     &metadata_wildcards;
+    &nexus_integration;
     &rivendell_filter;
     &wings_filter;
   </part>

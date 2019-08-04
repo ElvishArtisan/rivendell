@@ -2584,5 +2584,10 @@
 	</caption>
       </mediaobject>
     </para>
+    <para>
+      Information on how to configure MusicMaster Nexus to work Rivendell's integration can
+      be found in the <link linkend="appendix.nexus_integration">Nexus Integration</link>
+      appendix section.
+    </para>
   </sect1>
 </chapter>
