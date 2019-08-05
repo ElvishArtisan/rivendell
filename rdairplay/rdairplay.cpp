@@ -830,10 +830,6 @@ void MainWidget::ripcConnectedData(bool state)
   QString sql;
   RDSqlQuery *q;
   RDMacro rml;
-  rml.setRole(RDMacro::Cmd);
-  addr.setAddress("127.0.0.1");
-  rml.setAddress(addr);
-  rml.setEchoRequested(false);
 
   //
   // Check Channel Assignments
@@ -902,6 +898,11 @@ void MainWidget::ripcConnectedData(bool state)
 	"NAME=\""+RDEscapeString(air_start_logname[i])+"\"";
       q=new RDSqlQuery(sql);
       if(q->first()) {
+	rml.clear();
+	rml.setRole(RDMacro::Cmd);
+	addr.setAddress("127.0.0.1");
+	rml.setAddress(addr);
+	rml.setEchoRequested(false);
 	rml.setCommand(RDMacro::LL);  // Load Log
 	rml.addArg(i+1);
 	rml.addArg(air_start_logname[i]);

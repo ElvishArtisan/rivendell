@@ -18895,3 +18895,6 @@
 	Ports' ['JC'] and 'Disconnect Jack Ports' ['JD'] RMLs.
 2019-08-05 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version 3.0.3.
+2019-08-05 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdairplay(1) where only the first log machine
+	set to 'load specified log' would do so.
