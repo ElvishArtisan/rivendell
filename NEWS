@@ -1,6 +1,22 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
+v3.0.3 -- 8/5/2019
+
+This is a bugfix release of Rivendell.
+
+Changes:
+   Fixed a regression in ripcd(8) that broke the 'Connect Jack
+   Ports' ['JC'] and 'Disconnect Jack Ports' ['JD'] RMLs.
+
+Database Update:
+   This version of Rivendell uses database schema version 308, and will
+   automatically upgrade any earlier versions. To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
+   to allow any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
 v3.0.2 -- 7/31/2019
 
 This is a bugfix release of Rivendell.
