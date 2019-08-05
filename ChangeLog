@@ -18890,3 +18890,6 @@
 	value' SQL error when generating a log.
 2019-07-31 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version 3.0.2.
+2019-08-05 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in ripcd(8) that broke the 'Connect Jack
+	Ports' ['JC'] and 'Disconnect Jack Ports' ['JD'] RMLs.
