@@ -18901,3 +18901,6 @@
 2019-08-05 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdvairplayd(8) where only the first log machine
 	set to 'load specified log' would do so.
+2019-08-06 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored ripcd(8) to manage JACK port [dis]connections directly,
+	rather than by delegation to caed(8).

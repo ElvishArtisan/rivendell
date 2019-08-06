@@ -377,18 +377,6 @@ void RDCae::setPlayPortActive(int card,int port,int stream)
 }
 
 
-void RDCae::connectJackPorts(const QString &out,const QString &in)
-{
-  SendCommand(QString("JC ")+out+" "+in+"!");
-}
-
-
-void RDCae::disconnectJackPorts(const QString &out,const QString &in)
-{
-  SendCommand(QString("JD ")+out+" "+in+"!");
-}
-
-
 void RDCae::readyData()
 {
   readyData(0,0,"");

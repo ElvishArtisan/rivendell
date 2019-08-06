@@ -188,6 +188,17 @@ MainObject::MainObject(QObject *parent)
   ripcd_garbage_timer=new QTimer(this);
   connect(ripcd_garbage_timer,SIGNAL(timeout()),this,SLOT(garbageData()));
 
+  //
+  // JACK
+  //
+#ifdef JACK
+  ripcd_start_jack_timer=new QTimer(this);
+  ripcd_start_jack_timer->setSingleShot(true);
+  connect(ripcd_start_jack_timer, SIGNAL(timeout()),this,SLOT(startJackData()));
+  ripcd_start_jack_timer->start(5000);
+#endif  // JACK
+
+
   rda->syslog(LOG_INFO,"started");
 }
 
@@ -337,7 +348,7 @@ void MainObject::exitTimerData()
 	delete ripcd_switcher[i];
       }
     }
-    rda->syslog(LOG_INFO,"ripcd exiting normally");
+    rda->syslog(LOG_INFO,"exiting normally");
     exit(0);
   }
 }
@@ -354,6 +365,99 @@ void MainObject::garbageData()
       }
     }
   }
+}
+
+
+void MainObject::startJackData()
+{
+#ifdef JACK
+  jack_options_t jackopts=JackNullOption;
+  jack_status_t jackstat=JackFailure;
+
+  //
+  // Attempt to Connect to Jack Server
+  //
+  jackopts=JackNoStartServer;
+  if(rda->station()->jackServerName().isEmpty()) {
+    ripcd_jack_client=jack_client_open("rivendell-ripcd",jackopts,&jackstat);
+  }
+  else {
+    ripcd_jack_client=
+      jack_client_open("rivendell-ripcd",jackopts,&jackstat,
+		       (const char *)rda->station()->jackServerName());
+  }
+  if(ripcd_jack_client==NULL) {
+    if((jackstat&JackInvalidOption)!=0) {
+      fprintf (stderr, "invalid or unsupported JACK option\n");
+      rda->syslog(LOG_WARNING,"invalid or unsupported JACK option");
+    }
+
+    if((jackstat&JackServerError)!=0) {
+      fprintf (stderr, "communication error with the JACK server\n");
+      rda->syslog(LOG_WARNING,"communication error with the JACK server");
+    }
+
+    if((jackstat&JackNoSuchClient)!=0) {
+      fprintf (stderr, "requested JACK client does not exist\n");
+      rda->syslog(LOG_WARNING,"requested JACK client does not exist");
+    }
+
+    if((jackstat&JackLoadFailure)!=0) {
+      fprintf (stderr, "unable to load internal JACK client\n");
+      rda->syslog(LOG_WARNING,"unable to load internal JACK client");
+    }
+
+    if((jackstat&JackInitFailure)!=0) {
+      fprintf (stderr, "unable to initialize JACK client\n");
+      rda->syslog(LOG_WARNING,"unable to initialize JACK client");
+    }
+
+    if((jackstat&JackShmFailure)!=0) {
+      fprintf (stderr, "unable to access JACK shared memory\n");
+      rda->syslog(LOG_WARNING,"unable to access JACK shared memory");
+    }
+
+    if((jackstat&JackVersionError)!=0) {
+      fprintf (stderr, "JACK protocol version mismatch\n");
+      rda->syslog(LOG_WARNING,"JACK protocol version mismatch");
+    }
+
+    if((jackstat&JackServerStarted)!=0) {
+      fprintf (stderr, "JACK server started\n");
+      rda->syslog(LOG_WARNING,"JACK server started");
+    }
+
+    if((jackstat&JackServerFailed)!=0) {
+      fprintf (stderr, "unable to communication with JACK server\n");
+      rda->syslog(LOG_WARNING,"unable to communicate with JACK server");
+    }
+
+    if((jackstat&JackNameNotUnique)!=0) {
+      fprintf (stderr, "JACK client name not unique\n");
+      rda->syslog(LOG_WARNING,"JACK client name not unique");
+    }
+
+    if((jackstat&JackFailure)!=0) {
+      fprintf (stderr, "JACK general failure\n");
+      rda->syslog(LOG_WARNING,"JACK general failure");
+    }
+    fprintf (stderr, "no connection to JACK server\n");
+    rda->syslog(LOG_WARNING,"no connection to JACK server");
+    return;
+  }
+  //  jack_connected=true;
+  //  jack_set_process_callback(jack_client,JackProcess,0);
+  //  jack_set_sample_rate_callback(jack_client,JackSampleRate,0);
+  //jack_set_port_connect_callback(jack_client,JackPortConnectCB,this);
+#ifdef HAVE_JACK_INFO_SHUTDOWN
+  //  jack_on_info_shutdown(jack_client,JackInfoShutdown,0);
+#else
+  //  jack_on_shutdown(jack_client,JackShutdown,0);
+#endif  // HAVE_JACK_INFO_SHUTDOWN
+  rda->syslog(LOG_INFO,"connected to JACK server");
+
+
+#endif  // JACK
 }
 
 

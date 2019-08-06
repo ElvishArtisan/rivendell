@@ -97,8 +97,6 @@ class CaeServer : public QObject
 			      unsigned stream,bool state);
   void openRtpCaptureChannelReq(int id,unsigned card,unsigned port,uint16_t udp_port,
 				unsigned samprate,unsigned chans);
-  void jackConnectPortsReq(int id,const QString &out_name,const QString &in_name);
-  void jackDisconnectPortsReq(int id,const QString &out_name,const QString &in_name);
   void meterEnableReq(int id,uint16_t udp_port,const QList<unsigned> &cards);
 
  private slots:

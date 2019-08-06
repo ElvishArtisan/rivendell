@@ -75,8 +75,6 @@ class RDCae : public QObject
   void requestTimescale(int card);
   bool playPortActive(int card,int port,int except_stream=-1);
   void setPlayPortActive(int card,int port,int stream);
-  void connectJackPorts(const QString &out,const QString &in);
-  void disconnectJackPorts(const QString &out,const QString &in);
 
  signals:
   void isConnected(bool state);

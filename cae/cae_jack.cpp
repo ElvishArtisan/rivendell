@@ -1370,28 +1370,6 @@ bool MainObject::jackSetPassthroughLevel(int card,int in_port,int out_port,
 }
 
 
-void MainObject::jackConnectPorts(const QString &out,const QString &in)
-{
-#ifdef JACK
-  if(jack_card<0) {
-    return;
-  }
-  jack_connect(jack_client,(const char *)in,(const char *)out);  
-#endif  // JACK
-}
-
-
-void MainObject::jackDisconnectPorts(const QString &out,const QString &in)
-{
-#ifdef JACK
-  if(jack_card<0) {
-    return;
-  }
-  jack_disconnect(jack_client,(const char *)in,(const char *)out);  
-#endif  // JACK
-}
-
-
 int MainObject::GetJackOutputStream()
 {
 #ifdef JACK

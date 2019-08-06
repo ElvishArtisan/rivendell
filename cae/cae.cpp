@@ -223,14 +223,6 @@ MainObject::MainObject(QObject *parent,const char *name)
 	  SLOT(openRtpCaptureChannelData(int,unsigned,unsigned,uint16_t,
 					unsigned,unsigned)));
   connect(cae_server,
-	  SIGNAL(jackConnectPortsReq(int,const QString &,const QString &)),
-	  this,
-	  SLOT(jackConnectPortsData(int,const QString &,const QString &)));
-  connect(cae_server,
-	  SIGNAL(jackDisconnectPortsReq(int,const QString &,const QString &)),
-	  this,
-	  SLOT(jackDisconnectPortsData(int,const QString &,const QString &)));
-  connect(cae_server,
 	  SIGNAL(meterEnableReq(int,uint16_t,const QList<unsigned> &)),
 	  this,
 	  SLOT(meterEnableData(int,uint16_t,const QList<unsigned> &)));
@@ -1421,20 +1413,6 @@ void MainObject::openRtpCaptureChannelData(int id,unsigned card,unsigned port,
 					   uint16_t udp_port,unsigned samprate,
 					   unsigned chans)
 {
-}
-
-
-void MainObject::jackConnectPortsData(int id,const QString &out_name,
-				      const QString &in_name)
-{
-  jackConnectPorts(out_name,in_name);
-}
-
-
-void MainObject::jackDisconnectPortsData(int id,const QString &out_name,
-					 const QString &in_name)
-{
-  jackDisconnectPorts(out_name,in_name);
 }
 
 

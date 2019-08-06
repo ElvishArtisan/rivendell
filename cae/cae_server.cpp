@@ -542,14 +542,7 @@ bool CaeServer::ProcessCommand(int id,const QString &cmd)
       }
     }
   }
-  if((f0.at(0)=="JC")&&(f0.size()==3)) {  // Connect Jack Ports
-    emit jackConnectPortsReq(id,f0.at(1),f0.at(2));
-    was_processed=true;
-  }
-  if((f0.at(0)=="JD")&&(f0.size()==3)) {  // Disconnect Jack Ports
-    emit jackDisconnectPortsReq(id,f0.at(1),f0.at(2));
-    was_processed=true;
-  }
+
   if((f0.at(0)=="ME")&&(f0.size()>=3)) {  // Meter Enable
     uint16_t udp_port=0xFFFF&f0.at(1).toUInt(&ok);
     if(ok) {
