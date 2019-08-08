@@ -18906,3 +18906,5 @@
 	rather than by delegation to caed(8).
 2019-08-08 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version 3.0.3jacktest0.
+2019-08-08 Fred Gleason <fredg@paravelsystems.com>
+	* Reverted the package version 3.0.3.
