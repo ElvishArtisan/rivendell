@@ -18904,3 +18904,5 @@
 2019-08-06 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored ripcd(8) to manage JACK port [dis]connections directly,
 	rather than by delegation to caed(8).
+2019-08-08 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version 3.0.3jacktest0.
