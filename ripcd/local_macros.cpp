@@ -242,6 +242,7 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
   int d;
   RDMatrix::GpioType gpio_type;
   QByteArray data;
+  int err;
 
   rda->syslog(LOG_INFO,"received rml: \"%s\" from %s",
 	      (const char *)rml_in->toString().toUtf8(),
@@ -399,6 +400,7 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
     break;
 
   case RDMacro::JC:
+#ifdef JACK
     if(rml->argQuantity()!=2) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
@@ -406,14 +408,45 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
       }
       return;
     }
-    rda->cae()->connectJackPorts(rml->arg(0),rml->arg(1));
+    if(ripcd_jack_client!=NULL) {
+      if((err=jack_connect(ripcd_jack_client,rml->arg(1).toUtf8(),
+			   rml->arg(0).toUtf8()))==0) {
+	rda->syslog(LOG_DEBUG,
+		    "executed JACK port connection \"%s %s\"",
+		    (const char *)rml->arg(0).toUtf8(),
+		    (const char *)rml->arg(1).toUtf8());
+      }
+      else {
+	if(err!=EEXIST) {
+	  rda->syslog(LOG_WARNING,
+		      "JACK port connection \"%s %s\" failed, err: %d",
+		      (const char *)rml->arg(0).toUtf8(),
+		      (const char *)rml->arg(1).toUtf8(),
+		      err);
+	}
+      }
+    }
+    else {
+      if(rml->echoRequested()) {
+	rml->acknowledge(false);
+	sendRml(rml);
+      }
+      return;
+    }
     if(rml->echoRequested()) {
       rml->acknowledge(true);
       sendRml(rml);
     }
+#else
+    if(rml->echoRequested()) {
+      rml->acknowledge(false);
+      sendRml(rml);
+    }
+#endif  // JACK
     break;
 
   case RDMacro::JD:
+#ifdef JACK
     if(rml->argQuantity()!=2) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
@@ -421,11 +454,39 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
       }
       return;
     }
-    rda->cae()->disconnectJackPorts(rml->arg(0),rml->arg(1));
+    if(ripcd_jack_client!=NULL) {
+      if((err=jack_disconnect(ripcd_jack_client,rml->arg(1).toUtf8(),
+			   rml->arg(0).toUtf8()))==0) {
+	rda->syslog(LOG_DEBUG,
+		    "executed JACK port disconnection \"%s %s\"",
+		    (const char *)rml->arg(0).toUtf8(),
+		    (const char *)rml->arg(1).toUtf8());
+      }
+      else {
+	rda->syslog(LOG_WARNING,
+		    "JACK port disconnection \"%s %s\" failed, err: %d",
+		    (const char *)rml->arg(0).toUtf8(),
+		    (const char *)rml->arg(1).toUtf8(),
+		    err);
+      }
+    }
+    else {
+      if(rml->echoRequested()) {
+	rml->acknowledge(false);
+	sendRml(rml);
+      }
+      return;
+    }
     if(rml->echoRequested()) {
       rml->acknowledge(true);
       sendRml(rml);
     }
+#else
+    if(rml->echoRequested()) {
+      rml->acknowledge(false);
+      sendRml(rml);
+    }
+#endif  // JACK
     break;
       
   case RDMacro::LO:

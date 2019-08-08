@@ -2,7 +2,7 @@
 //
 // Rivendell Interprocess Communication Daemon
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -31,6 +31,10 @@
 #include <qtcpserver.h>
 #include <qtimer.h>
 #include <qudpsocket.h>
+
+#ifdef JACK
+#include <jack/jack.h>
+#endif  // JACK
 
 #include <rdnotification.h>
 #include <rdsocket.h>
@@ -79,6 +83,7 @@ class MainObject : public QObject
   void killData(int conn_id);
   void exitTimerData();
   void garbageData();
+  void startJackData();
   
  private:
   void SetUser(QString username);
@@ -132,6 +137,10 @@ class MainObject : public QObject
   unsigned ripc_macro_cart[RD_MAX_MACRO_TIMERS];
   RDMulticaster *ripcd_notification_mcaster;
   QTimer *ripcd_garbage_timer;
+#ifdef JACK
+  jack_client_t *ripcd_jack_client;
+  QTimer *ripcd_start_jack_timer;
+#endif  // JACK
 };
 
 

@@ -142,10 +142,6 @@ class MainObject : public QObject
   void openRtpCaptureChannelData(int id,unsigned card,unsigned port,
 				 uint16_t udp_port,unsigned samprate,
 				 unsigned chans);
-  void jackConnectPortsData(int id,const QString &out_name,
-			    const QString &in_name);
-  void jackDisconnectPortsData(int id,const QString &out_name,
-			       const QString &in_name);
   void meterEnableData(int id,uint16_t udp_port,const QList<unsigned> &cards);
   void statePlayUpdate(int card,int stream,int state);
   void stateRecordUpdate(int card,int stream,int state);

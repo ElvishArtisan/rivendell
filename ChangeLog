@@ -18893,7 +18893,26 @@
 2019-08-05 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in ripcd(8) that broke the 'Connect Jack
 	Ports' ['JC'] and 'Disconnect Jack Ports' ['JD'] RMLs.
-2019-08-05 Patrick Linstruth <patrick@deltecent.com>
+2019-08-05 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version 3.0.3.
+2019-08-05 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdairplay(1) where only the first log machine
+	set to 'load specified log' would do so.
+2019-08-05 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdvairplayd(8) where only the first log machine
+	set to 'load specified log' would do so.
+2019-08-06 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored ripcd(8) to manage JACK port [dis]connections directly,
+	rather than by delegation to caed(8).
+2019-08-08 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version 3.0.3jacktest0.
+2019-08-08 Fred Gleason <fredg@paravelsystems.com>
+	* Reverted the package version 3.0.3.
+2019-08-08 Fred Gleason <fredg@paravelsystems.com>
+	* Added a check in the 'JACK Client Configuration' dialog in
+	rdadmin(1) to remove trailing whitespace in the
+	'Command Line' field.
+2019-08-08 Patrick Linstruth <patrick@deltecent.com>
 	* Added 'RDHttpServer' class.
 	* Added 'loadGroup' method to 'RDGroupList' class.
 	* Added 'RDNexus' class.

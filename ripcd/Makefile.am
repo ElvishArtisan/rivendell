@@ -129,7 +129,12 @@ nodist_ripcd_SOURCES = moc_am16.cpp\
                        moc_wheatnet_lio.cpp\
                        moc_wheatnet_slio.cpp
 
-ripcd_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @LIBHPI@ -lQt3Support
+ripcd_LDADD = @LIB_RDLIBS@\
+              @LIBVORBIS@\
+              @QT4_LIBS@\
+              @LIBHPI@\
+              @LIBJACK@\
+              -lQt3Support
 
 CLEANFILES = *~\
              *.idb\
