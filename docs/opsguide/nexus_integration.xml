@@ -1,0 +1,18 @@
+<appendix xmlns="http://docbook.org/ns/docbook" xml:id="appendix.nexus_integration">
+  <title>MusicMaster Nexus Integration</title>
+  <sect1 xml:id="nexus_integration.overview">
+    <title>Overview</title>
+    <para>
+    </para>
+  </sect1>
+  <sect1 xml:id="nexus_integration.fields">
+    <title>Fields</title>
+    <para>
+    </para>
+  </sect1>
+  <sect1 xml:id="nexus_integration.mmserver_ini">
+    <title>MMServer.ini</title>
+    <para>
+    </para>
+  </sect1>
+</appendix>
