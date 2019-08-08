@@ -18908,3 +18908,7 @@
 	* Incremented the package version 3.0.3jacktest0.
 2019-08-08 Fred Gleason <fredg@paravelsystems.com>
 	* Reverted the package version 3.0.3.
+2019-08-08 Fred Gleason <fredg@paravelsystems.com>
+	* Added a check in the 'JACK Client Configuration' dialog in
+	rdadmin(1) to remove trailing whitespace in the
+	'Command Line' field.

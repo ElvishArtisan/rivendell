@@ -114,7 +114,7 @@ int EditJackClient::exec(QString *desc,QString *cmd)
 void EditJackClient::okData()
 {
   *edit_description=edit_jack_description_edit->text();
-  *edit_command_line=edit_jack_command_line_edit->text();
+  *edit_command_line=edit_jack_command_line_edit->text().trimmed();
   done(0);
 }
 
