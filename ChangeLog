@@ -18915,3 +18915,6 @@
 2019-08-09 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdlogedit(1) that caused hard start log items
 	to have the Hour field doubled.
+2019-08-09 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored 'RDClock' to store events on the heap rather than
+	on the stack.

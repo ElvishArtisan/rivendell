@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Log Manager Clock.
 //
-//   (C) Copyright 2002-2004,2008,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -116,10 +116,10 @@ void RDClock::clear()
 
 RDEventLine *RDClock::eventLine(int line)
 {
-  if((line<0)||((unsigned)line>=clock_events.size())) {
+  if((line<0)||(line>=clock_events.size())) {
     return NULL;
   }
-  return &clock_events[line];
+  return clock_events.at(line);
 }
 
 
@@ -163,11 +163,11 @@ bool RDClock::load()
     "order by START_TIME";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    clock_events.push_back(RDEventLine(clock_station));
-    clock_events.back().setName(q->value(0).toString());
-    clock_events.back().setStartTime(QTime().addMSecs(q->value(1).toInt()));
-    clock_events.back().setLength(q->value(2).toInt());
-    clock_events.back().load();
+    clock_events.push_back(new RDEventLine(clock_station));
+    clock_events.back()->setName(q->value(0).toString());
+    clock_events.back()->setStartTime(QTime().addMSecs(q->value(1).toInt()));
+    clock_events.back()->setLength(q->value(2).toInt());
+    clock_events.back()->load();
   }
   delete q;
   return true;
@@ -212,12 +212,13 @@ bool RDClock::save()
     "CLOCK_NAME=\""+RDEscapeString(clock_name)+"\"";
   q=new RDSqlQuery(sql);
   delete q;
-  for(unsigned i=0;i<clock_events.size();i++) {
+  for(int i=0;i<clock_events.size();i++) {
     sql=QString("insert into CLOCK_LINES set ")+
       "CLOCK_NAME=\""+RDEscapeString(clock_name)+"\","+
-      "EVENT_NAME=\""+RDEscapeString(clock_events[i].name())+"\","+
-      QString().sprintf("START_TIME=%d,",QTime().msecsTo(clock_events[i].startTime()))+
-      QString().sprintf("LENGTH=%d",clock_events[i].length());
+      "EVENT_NAME=\""+RDEscapeString(clock_events.at(i)->name())+"\","+
+      QString().sprintf("START_TIME=%d,",
+			QTime().msecsTo(clock_events.at(i)->startTime()))+
+      QString().sprintf("LENGTH=%d",clock_events.at(i)->length());
     q=new RDSqlQuery(sql);
     delete q;
   }
@@ -236,22 +237,25 @@ bool RDClock::insert(const QString &event_name,int line)
   }
   delete q;
   if(line>=size()) {
-    clock_events.push_back(RDEventLine(clock_station));
+    clock_events.push_back(new RDEventLine(clock_station));
   }
   else {
-    std::vector<RDEventLine>::iterator it=clock_events.begin()+line;
-    clock_events.insert(it,1,RDEventLine(clock_station));
+    clock_events.insert(line,new RDEventLine(clock_station));
+    //    QList<RDEventLine *>::iterator it=clock_events.begin()+line;
+    //clock_events.insert(it,1,RDEventLine(clock_station));
   }
-  clock_events[line].setName(event_name);
-  clock_events[line].load();
+  clock_events.at(line)->setName(event_name);
+  clock_events.at(line)->load();
   return true;
 }
 
 
 void RDClock::remove(int line)
 {
-  std::vector<RDEventLine>::iterator it=clock_events.begin()+line;
-  clock_events.erase(it,it+1);
+  delete clock_events[line];
+  clock_events.removeAt(line);
+  //  std::vector<RDEventLine>::iterator it=clock_events.begin()+line;
+  //  clock_events.erase(it,it+1);
 }
 
 
@@ -266,7 +270,7 @@ void RDClock::move(int from_line,int to_line)
     src_offset=1;
     dest_offset=0;
   }
-  insert(clock_events[from_line].name(),to_line+dest_offset);
+  insert(clock_events.at(from_line)->name(),to_line+dest_offset);
   if((to_line+1)>=size()) {
     to_line=clock_events.size()-1;
     dest_offset=0;
@@ -286,13 +290,14 @@ bool RDClock::validate(const QTime &start_time,int length,int except_line)
 {
   QTime end_time=start_time.addMSecs(length);
   QTime end;
-  for(unsigned i=0;i<clock_events.size();i++) {
-    if(i!=(unsigned)except_line) {
-      end=clock_events[i].startTime().addMSecs(clock_events[i].length());
-      if((start_time>=clock_events[i].startTime())&&(start_time<end)) {
+  for(int i=0;i<clock_events.size();i++) {
+    if(i!=except_line) {
+      end=clock_events.at(i)->startTime().
+	addMSecs(clock_events.at(i)->length());
+      if((start_time>=clock_events.at(i)->startTime())&&(start_time<end)) {
 	return false;
       }
-      if(((end_time>clock_events[i].startTime())&&
+      if(((end_time>clock_events.at(i)->startTime())&&
 	  (end_time<end))||
 	 ((start_time<end)&&(end_time>end))) {
 	return false;
