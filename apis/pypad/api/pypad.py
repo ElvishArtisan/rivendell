@@ -84,7 +84,6 @@ PAD_TCP_PORT=34289
 class Update(object):
     def __init__(self,pad_data,config,rd_config):
         self.__fields=pad_data
-        #print('PAD: '+str(self.__fields))
         self.__config=config
         self.__rd_config=rd_config
 
@@ -726,17 +725,20 @@ class Update(object):
            section - The '[<section>]' of the INI configuration from which
                      to take the parameters.
         """
+        result=True
         try:
             if self.__config.get(section,'ProcessNullUpdates')=='0':
-                return True
+                result=result and True
             if self.__config.get(section,'ProcessNullUpdates')=='1':
-                return self.hasPadType(pypad.TYPE_NOW)
+                result=result and self.hasPadType(pypad.TYPE_NOW)
             if self.__config.get(section,'ProcessNullUpdates')=='2':
-                return self.hasPadType(pypad.TYPE_NEXT)
+                result=result and self.hasPadType(pypad.TYPE_NEXT)
             if self.__config.get(section,'ProcessNullUpdates')=='3':
-                return self.hasPadType(pypad.TYPE_NOW) and self.hasPadType(pypad.TYPE_NEXT)
+                result=result and self.hasPadType(pypad.TYPE_NOW) and self.hasPadType(pypad.TYPE_NEXT)
         except configparser.NoOptionError:
-            return True
+            result=result and True
+        except configparser.NoSectionError:
+            result=result and True
 
         log_dict={1: 'MasterLog',2: 'Aux1Log',3: 'Aux2Log',
                   101: 'VLog101',102: 'VLog102',103: 'VLog103',104: 'VLog104',
@@ -744,12 +746,21 @@ class Update(object):
                   109: 'VLog109',110: 'VLog110',111: 'VLog111',112: 'VLog112',
                   113: 'VLog113',114: 'VLog114',115: 'VLog115',116: 'VLog116',
                   117: 'VLog117',118: 'VLog118',119: 'VLog119',120: 'VLog120'}
-        if self.__config.get(section,log_dict[self.machine()]).lower()=='yes':
-            return True
-        if self.__config.get(section,log_dict[self.machine()]).lower()=='no':
-            return False
-        if self.__config.get(section,log_dict[self.machine()]).lower()=='onair':
-            return self.onairFlag()
+        try:
+            #print('machine(): '+str(self.machine()))
+            if self.__config.get(section,log_dict[self.machine()]).lower()=='yes':
+                result=result and True
+            if self.__config.get(section,log_dict[self.machine()]).lower()=='no':
+                result=result and False
+            if self.__config.get(section,log_dict[self.machine()]).lower()=='onair':
+                result=result and self.onairFlag()
+        except configparser.NoOptionError:
+            result=result and False
+        except configparser.NoSectionError:
+            result=result and False
+        #print('result: '+str(result))
+        return result
+
 
     def syslog(self,priority,msg):
         """

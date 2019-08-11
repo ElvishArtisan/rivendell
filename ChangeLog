@@ -18918,3 +18918,10 @@
 2019-08-09 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored 'RDClock' to store events on the heap rather than
 	on the stack.
+2019-08-11 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'pypad.update.shouldBeProcessed()' method
+	that caused log selection directives to be ignored.
+	* Refactored the 'pypad_icecast2.py' script to work properly with
+	the fixed 'pypad.update.shouldBeProcessed()' method.
+	* Refactored the 'pypad_shoutcast2.py' script to work properly with
+	the fixed 'pypad.update.shouldBeProcessed()' method.

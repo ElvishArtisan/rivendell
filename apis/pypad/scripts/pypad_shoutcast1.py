@@ -27,23 +27,18 @@ import pycurl
 import pypad
 from io import BytesIO
 
-last_updates={}
-
 def eprint(*args,**kwargs):
     print(*args,file=sys.stderr,**kwargs)
 
 def ProcessPad(update):
-    try:
-        last_updates[update.machine()]
-    except KeyError:
-        last_updates[update.machine()]=None
-
-    n=1
-    try:
+    if update.hasPadType(pypad.TYPE_NOW):
+        n=1
         while(True):
+            #
+            # First, get all of our configuration values
+            #
             section='Shoutcast'+str(n)
-            if update.shouldBeProcessed(section) and update.hasPadType(pypad.TYPE_NOW) and (last_updates[update.machine()] != update.startDateTimeString(pypad.TYPE_NOW)):
-                last_updates[update.machine()]=update.startDateTimeString(pypad.TYPE_NOW)
+            try:
                 song=update.resolvePadFields(update.config().get(section,'FormatString'),pypad.ESCAPE_URL)
                 url='http://'+update.config().get(section,'Hostname')+':'+str(update.config().get(section,'Tcpport'))+'/admin.cgi?pass='+update.escape(update.config().get(section,'Password'),pypad.ESCAPE_URL)+'&mode=updinfo&song='+song
                 curl=pycurl.Curl()
@@ -55,6 +50,13 @@ def ProcessPad(update):
                 #
                 headers.append('User-Agent: '+'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.2) Gecko/20070219 Firefox/2.0.0.2')
                 curl.setopt(curl.HTTPHEADER,headers);
+            except configparser.NoSectionError:
+                return
+
+            #
+            # Now, send the update
+            #
+            if update.shouldBeProcessed(section):
                 try:
                     curl.perform()
                     code=curl.getinfo(pycurl.RESPONSE_CODE)
@@ -65,8 +67,6 @@ def ProcessPad(update):
                 curl.close()
             n=n+1
 
-    except configparser.NoSectionError:
-        return
 
 #
 # 'Main' function
