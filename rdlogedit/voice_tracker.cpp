@@ -2,7 +2,7 @@
 //
 // A Rivendell Voice Tracker
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -2619,8 +2619,8 @@ void VoiceTracker::RefreshLine(RDListViewItem *item)
   }
   if(!logline->startTime(RDLogLine::Logged).isNull()) {
     if(logline->timeType()==RDLogLine::Hard) {
-      item->setText(1,logline->startTime(RDLogLine::Imported).
-		    toString("Hhh:mm:ss.zzz").left(11));
+      item->setText(1,"H"+logline->startTime(RDLogLine::Imported).
+		    toString("hh:mm:ss.zzz").left(11));
     }
     else {
       item->setText(1,logline->startTime(RDLogLine::Imported).

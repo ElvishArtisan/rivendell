@@ -18912,7 +18912,15 @@
 	* Added a check in the 'JACK Client Configuration' dialog in
 	rdadmin(1) to remove trailing whitespace in the
 	'Command Line' field.
-2019-08-08 Patrick Linstruth <patrick@deltecent.com>
+2019-08-09 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdlogedit(1) that caused hard start log items
+	to have the Hour field doubled.
+2019-08-09 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored 'RDClock' to store events on the heap rather than
+	on the stack.
+2019-08-12 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'py-compile' to the 'CLEANFILES' rule in 'Makefile.am'.
+2019-08-12 Patrick Linstruth <patrick@deltecent.com>
 	* Added 'RDHttpServer' class.
 	* Added 'loadGroup' method to 'RDGroupList' class.
 	* Added 'RDNexus' class.

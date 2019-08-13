@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Log Manager Clock
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -60,7 +60,7 @@ class RDClock
    QString clock_short_name;
    QColor clock_color;
    QString clock_remarks;
-   std::vector<RDEventLine> clock_events;
+   QList<RDEventLine *> clock_events;
    unsigned artistsep;
    bool rules_modified;
    RDStation *clock_station;

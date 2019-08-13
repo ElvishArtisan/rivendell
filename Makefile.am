@@ -97,7 +97,8 @@ CLEANFILES = *~\
              *.rpm\
              *.tar.gz\
              *.tgz\
-             *.zip
+             *.zip\
+             py-compile
 
 DISTCLEANFILES = config.guess\
                  config.sub\
