@@ -16755,3 +16755,5 @@
 2019-07-18 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in log rendering that caused custom transitions
 	to be rendered as a PLAY transition.
+2019-08-13 Fred Gleason <fredg@paravelsystems.com>
+	* Removed extraneous newline at end of version string.
