@@ -726,38 +726,42 @@ class Update(object):
                      to take the parameters.
         """
         result=True
-        try:
-            if self.__config.get(section,'ProcessNullUpdates')=='0':
+        if self.__config.has_section(section):
+            if self.__config.has_option(section,'ProcessNullUpdates'):
+                if self.__config.get(section,'ProcessNullUpdates')=='0':
+                    result=result and True
+                if self.__config.get(section,'ProcessNullUpdates')=='1':
+                    result=result and self.hasPadType(pypad.TYPE_NOW)
+                if self.__config.get(section,'ProcessNullUpdates')=='2':
+                    result=result and self.hasPadType(pypad.TYPE_NEXT)
+                if self.__config.get(section,'ProcessNullUpdates')=='3':
+                    result=result and self.hasPadType(pypad.TYPE_NOW) and self.hasPadType(pypad.TYPE_NEXT)
+            else:
                 result=result and True
-            if self.__config.get(section,'ProcessNullUpdates')=='1':
-                result=result and self.hasPadType(pypad.TYPE_NOW)
-            if self.__config.get(section,'ProcessNullUpdates')=='2':
-                result=result and self.hasPadType(pypad.TYPE_NEXT)
-            if self.__config.get(section,'ProcessNullUpdates')=='3':
-                result=result and self.hasPadType(pypad.TYPE_NOW) and self.hasPadType(pypad.TYPE_NEXT)
-        except configparser.NoOptionError:
-            result=result and True
-        except configparser.NoSectionError:
-            result=result and True
 
-        log_dict={1: 'MasterLog',2: 'Aux1Log',3: 'Aux2Log',
-                  101: 'VLog101',102: 'VLog102',103: 'VLog103',104: 'VLog104',
-                  105: 'VLog105',106: 'VLog106',107: 'VLog107',108: 'VLog108',
-                  109: 'VLog109',110: 'VLog110',111: 'VLog111',112: 'VLog112',
-                  113: 'VLog113',114: 'VLog114',115: 'VLog115',116: 'VLog116',
-                  117: 'VLog117',118: 'VLog118',119: 'VLog119',120: 'VLog120'}
-        try:
-            #print('machine(): '+str(self.machine()))
-            if self.__config.get(section,log_dict[self.machine()]).lower()=='yes':
-                result=result and True
-            if self.__config.get(section,log_dict[self.machine()]).lower()=='no':
+            log_dict={1: 'MasterLog',2: 'Aux1Log',3: 'Aux2Log',
+                      101: 'VLog101',102: 'VLog102',103: 'VLog103',104: 'VLog104',
+                      105: 'VLog105',106: 'VLog106',107: 'VLog107',108: 'VLog108',
+                      109: 'VLog109',110: 'VLog110',111: 'VLog111',112: 'VLog112',
+                      113: 'VLog113',114: 'VLog114',115: 'VLog115',116: 'VLog116',
+                      117: 'VLog117',118: 'VLog118',119: 'VLog119',120: 'VLog120'}
+            option=log_dict[self.machine()]
+            if self.__config.has_option(section,option):
+                if self.__config.get(section,option).lower()=='yes':
+                    result=result and True
+                else:
+                    if self.__config.get(section,option).lower()=='no':
+                        result=result and False
+                    else:
+                        if self.__config.get(section,option).lower()=='onair':
+                            result=result and self.onairFlag()
+                        else:
+                            result=result and False
+            else:
                 result=result and False
-            if self.__config.get(section,log_dict[self.machine()]).lower()=='onair':
-                result=result and self.onairFlag()
-        except configparser.NoOptionError:
+        else:
             result=result and False
-        except configparser.NoSectionError:
-            result=result and False
+        #print('machine(): '+str(self.machine()))
         #print('result: '+str(result))
         return result
 

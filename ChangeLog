@@ -18925,3 +18925,5 @@
 	the fixed 'pypad.update.shouldBeProcessed()' method.
 	* Refactored the 'pypad_shoutcast2.py' script to work properly with
 	the fixed 'pypad.update.shouldBeProcessed()' method.
+2019-08-14 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the 'pypad.Update.shouldBeProcessed()' method to be LBYL.
