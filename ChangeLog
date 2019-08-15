@@ -18927,3 +18927,5 @@
 	the fixed 'pypad.update.shouldBeProcessed()' method.
 2019-08-14 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored the 'pypad.Update.shouldBeProcessed()' method to be LBYL.
+2019-08-15 Patrick Linstruth <patrick@deltecent.com>
+	* Added 'pypad_httpget.py' script.
