@@ -18920,3 +18920,6 @@
 	on the stack.
 2019-08-12 Fred Gleason <fredg@paravelsystems.com>
 	* Added 'py-compile' to the 'CLEANFILES' rule in 'Makefile.am'.
+2019-08-29 Patrick Linstruth <patrick@deltecent.com>
+	* Modified caed(8) to skip JACK startup, rather than crash, if
+	no command line is specified in rdadmin(1).
