@@ -18920,3 +18920,15 @@
 	on the stack.
 2019-08-12 Fred Gleason <fredg@paravelsystems.com>
 	* Added 'py-compile' to the 'CLEANFILES' rule in 'Makefile.am'.
+2019-08-20 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'DROPBOXES.LOG_TO_SYSLOG' field to the database.
+	* Incremented the database version to 309.
+	* Added a 'Log Events in Syslog' checkbox to the
+	'Dropbox Configuration' dialog in rdadmin(1).
+	* Added special name logic to RDApplication to detect when a
+	dropbox is being started.
+	* Modified the '--log-filename=' switch in rdimport(1) to accept
+	both directory and filename components.
+	* Removed the '--log-directory=' switch from rdimport(1).
+	* Added an 'ID' column to the list of dropbox configurations in the
+	'Rivendell Dropbox Configurations; dialog in rdadmin(1).
