@@ -18935,3 +18935,6 @@
 2019-08-21 Fred Gleason <fredg@paravelsystems.com>
 	* Added code to dump the parent query to STDERR when an invalid
 	'RDSqlQuery::value()' is requested.
+2019-08-21 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored code to eliminate 'QSqlQuery::value: not positioned
+	on a valid record' errors when starting rdairplay(1).
