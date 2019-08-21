@@ -78,7 +78,7 @@ RDLogPlay::RDLogPlay(int id,RDEventPlayer *player,QObject *parent)
   //
   play_pad_socket=new RDUnixSocket(this);
   if(!play_pad_socket->connectToAbstract(RD_PAD_SOURCE_UNIX_ADDRESS)) {
-    fprintf(stderr,"RDLogPlat: unable to connect to rdpadd\n");
+    fprintf(stderr,"RDLogPlay: unable to connect to rdpadd\n");
   }
 
   //
@@ -154,9 +154,11 @@ RDLogPlay::RDLogPlay(int id,RDEventPlayer *player,QObject *parent)
   // Transition Timers
   //
   play_trans_timer=new QTimer(this);
+  play_trans_timer->setSingleShot(true);
   connect(play_trans_timer,SIGNAL(timeout()),
 	  this,SLOT(transTimerData()));
   play_grace_timer=new QTimer(this);
+  play_grace_timer->setSingleShot(true);
   connect(play_grace_timer,SIGNAL(timeout()),
 	  this,SLOT(graceTimerData()));
 }
@@ -1164,10 +1166,8 @@ RDLogLine::TransType RDLogPlay::nextTrans()
 RDLogLine::TransType RDLogPlay::nextTrans(int line)
 {
   RDLogLine *logline;
-
-//  if((logline=logLine(nextLine(line)))!=NULL) {
-
   int next_line; 
+
   next_line=nextLine(line);
   logline=logLine(next_line);
   if(logline!=NULL) {
@@ -1395,12 +1395,35 @@ void RDLogPlay::transTimerData()
   RDLogLine *logline=NULL;
   int grace=0;
   int trans_line=play_trans_line;
+  int running_events=runningEvents(lines);
 
   if(play_grace_timer->isActive()) {
     play_grace_timer->stop();
   }
 
   if(play_op_mode==RDAirPlayConf::Auto) {
+    if((logline=logLine(play_trans_line))!=NULL) {
+      if(logline->graceTime()==-1) {  // Make Next
+	makeNext(play_trans_line);
+	SetTransTimer();
+	return;
+      }
+      if(logline->graceTime()>0) {
+	if(running_events>0) {
+	  if(logline->transType()==RDLogLine::Stop) {
+	    logline->setTransType(RDLogLine::Play);
+	  }
+	  logline->setStartTime(RDLogLine::Predicted,logline->
+				startTime(RDLogLine::Predicted).
+				addMSecs(grace));
+	  play_grace_line=play_trans_line;
+	  play_grace_timer->start(logline->graceTime());
+	  return;
+	}
+	else {
+	}
+      }
+    }
     if(!GetNextPlayable(&play_trans_line,false)) {
       SetTransTimer();
       return;
@@ -1408,44 +1431,11 @@ void RDLogPlay::transTimerData()
     if((logline=logLine(play_trans_line))!=NULL) {
       grace=logline->graceTime();
     }
-    if((runningEvents(lines)==0)) {
+    if(running_events==0) {
       makeNext(play_trans_line);
       if(logline->transType()!=RDLogLine::Stop || grace>=0) {
         StartEvent(trans_line,RDLogLine::Play,0,RDLogLine::StartTime);
       } 
-    }
-    else {
-      if(logline==NULL) {
-	SetTransTimer();
-	return;
-      }
-      switch(logline->graceTime()) {
-	  case 0:
-	    makeNext(play_trans_line);
-	    if(play_trans_length==0) {
-	      StartEvent(trans_line,RDLogLine::Play,0,RDLogLine::StartTime);
-	    }
-	    else {
-	      StartEvent(trans_line,RDLogLine::Segue,play_trans_length,
-			 RDLogLine::StartTime);
-	    }
-	    break;
-
-	  case -1:
-	    makeNext(play_trans_line);
-	    break;
-	    
-	  default:
-	    if(logline->transType()==RDLogLine::Stop) {
-	      logline->setTransType(RDLogLine::Play);
-	    }
-	    logline->setStartTime(RDLogLine::Predicted,logline->
-				  startTime(RDLogLine::Predicted).
-				  addMSecs(grace));
-	    play_grace_line=play_trans_line;
-	    play_grace_timer->start(grace,true);
-	    break;
-      }
     }
   }
   SetTransTimer();
@@ -1460,9 +1450,6 @@ void RDLogPlay::graceTimerData()
   if(play_op_mode==RDAirPlayConf::Auto) {
     if(!GetNextPlayable(&line,false)) {
       SetTransTimer();
-      return;
-    }
-    if(line!=play_grace_line) {
       return;
     }
     if((runningEvents(lines)==0)) {
@@ -2525,7 +2512,7 @@ void RDLogPlay::SetTransTimer(QTime current_time,bool stop)
   }
   if(next_line>=0) {
     play_trans_line=next_line;
-    play_trans_timer->start(current_time.msecsTo(next_time),true);
+    play_trans_timer->start(current_time.msecsTo(next_time));
   }
 }
 
@@ -2754,13 +2741,18 @@ void RDLogPlay::Stopped(int id)
   CleanupEvent(id);
   UpdateStartTimes(line);
   emit stopped(line);
+  LogTraffic(logLine(line),(RDLogLine::PlaySource)(play_id+1),
+	     RDAirPlayConf::TrafficStop,play_onair_flag);
+  if(play_grace_timer->isActive()) {  // Pending Hard Time Event
+    play_grace_timer->stop();
+    play_grace_timer->start(0);
+    return;
+  }
   AdvanceActiveEvent();
   UpdatePostPoint();
   if(runningEvents(lines)==0) {
     next_channel=0;
   }
- LogTraffic(logLine(line),(RDLogLine::PlaySource)(play_id+1),
-	    RDAirPlayConf::TrafficStop,play_onair_flag);
   emit transportChanged();
 }
 

@@ -18938,3 +18938,10 @@
 2019-08-21 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored code to eliminate 'QSqlQuery::value: not positioned
 	on a valid record' errors when starting rdairplay(1).
+2019-08-21 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdairplay(1) where a hard time with a 'Make Next'
+	attribute would instead be treated as 'Start Immediately' if
+	the target event was unplayable.
+	* Fixed a bug in rdairplay(1) where a hard time with a 'Wait up to'
+	attribute would instead be treated as 'Start Immediately' if
+	the target event was unplayable.
