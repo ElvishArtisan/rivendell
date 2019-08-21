@@ -95,6 +95,18 @@ int RDSqlQuery::columns() const
 }
 
 
+QVariant RDSqlQuery::value(int index) const
+{
+  QVariant ret=QSqlQuery::value(index);
+
+  if(!ret.isValid()) {
+    fprintf(stderr,"for query: %s\n\n",(const char *)executedQuery().toUtf8());
+  }
+
+  return ret;
+}
+
+
 QVariant RDSqlQuery::run(const QString &sql,bool *ok)
 {
   QVariant ret;
