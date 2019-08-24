@@ -18947,3 +18947,6 @@
 	the target event was unplayable.
 2019-08-21 Fred Gleason <fredg@paravelsystems.com>
 	* Re-indented switch() statements in 'lib/rdlogplay.cpp'.
+2019-08-24 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored rdalsaconfig(8) to use ALSA device IDs rather than
+	ordinal numbers in asound.confO(5).
