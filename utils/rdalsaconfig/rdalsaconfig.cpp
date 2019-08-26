@@ -136,7 +136,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   alsa_system_model=new RDAlsaModel(rda->system()->sampleRate(),this);
   alsa_system_list->setModel(alsa_system_model);
-  LoadConfig();
+  LoadConfig(alsa_filename);
 
   //
   // Daemon Management
@@ -199,7 +199,7 @@ void MainWidget::saveData()
   StartDaemons();
   */
 
-  SaveConfig();
+  SaveConfig(alsa_filename);
 
   qApp->quit();
 }
@@ -246,7 +246,7 @@ void MainWidget::closeEvent(QCloseEvent *e)
 }
 
 
-void MainWidget::LoadConfig()
+void MainWidget::LoadConfig(const QString &filename)
 {
   FILE *f=NULL;
   char line[1024];
@@ -258,7 +258,7 @@ void MainWidget::LoadConfig()
   bool active_line=false;
   QModelIndex index;
 
-  if((f=fopen(RD_ASOUNDRC_FILE,"r"))==NULL) {
+  if((f=fopen(filename.toUtf8(),"r"))==NULL) {
     return;
   }
   while(fgets(line,1024,f)!=NULL) {
@@ -330,9 +330,9 @@ void MainWidget::LoadConfig()
 }
 
 
-void MainWidget::SaveConfig() const
+void MainWidget::SaveConfig(const QString &filename) const
 {
-  QString tempfile=QString(RD_ASOUNDRC_FILE)+"-temp";
+  QString tempfile=filename+"-temp";
   FILE *f=NULL;
 
   if((f=fopen(tempfile.toUtf8(),"w"))==NULL) {
@@ -363,7 +363,7 @@ void MainWidget::SaveConfig() const
   fprintf(f,"%s\n",END_MARKER);
 
   fclose(f);
-  rename(tempfile.toUtf8(),RD_ASOUNDRC_FILE);
+  rename(tempfile.toUtf8(),filename.toUtf8());
 }
 
 

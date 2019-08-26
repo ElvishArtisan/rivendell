@@ -53,8 +53,8 @@ class MainWidget : public QWidget
   void closeEvent(QCloseEvent *e);
 
  private:
-  void LoadConfig();
-  void SaveConfig() const;
+  void LoadConfig(const QString &filename);
+  void SaveConfig(const QString &filename) const;
   QLabel *alsa_system_label;
   QLabel *alsa_description_label;
   QListView *alsa_system_list;

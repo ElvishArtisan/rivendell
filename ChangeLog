@@ -18956,3 +18956,6 @@
 2019-08-26 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdalsaconfig(8) that caused a 'Service not
 	active' error to be generated at startup.
+2019-08-26 Fred Gleason <fredg@paravelsystems.com>
+	* Reimplemented the '--asoundrc-file=' directive in
+	rdalsaconfig(8).
