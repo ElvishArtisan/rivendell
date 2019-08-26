@@ -87,7 +87,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Open the Database
   //
   rda=new RDApplication("RDAlsaConfig","rdalsaconfig",RDALSACONFIG_USAGE,this);
-  if(!rda->open(&err_msg)) {
+  if(!rda->open(&err_msg,NULL,false)) {
     QMessageBox::critical(this,"RDAlsaConfig - "+tr("Error"),err_msg);
     exit(1);
   }

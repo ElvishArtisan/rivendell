@@ -18953,3 +18953,6 @@
 2019-08-26 Fred Gleason <fredg@paravelsystems.com>
 	* Updated rdalsaconfig(8) to include a 'rate <sr>' line in
 	each asound.conf(5) entry.
+2019-08-26 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdalsaconfig(8) that caused a 'Service not
+	active' error to be generated at startup.
