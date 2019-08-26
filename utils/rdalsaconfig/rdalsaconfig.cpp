@@ -28,6 +28,8 @@
 #include <rd.h>
 #include <rdcmd_switch.h>
 
+#include <rdapplication.h>
+
 #include <alsaitem.h>
 #include <rdalsaconfig.h>
 
@@ -66,6 +68,8 @@ void StartDaemons()
 MainWidget::MainWidget(QWidget *parent)
   : QWidget(parent)
 {
+  QString err_msg;
+
   setWindowTitle(tr("RDAlsaConfig")+" v"+VERSION);
 
   //
@@ -78,6 +82,15 @@ MainWidget::MainWidget(QWidget *parent)
   //
   setMinimumWidth(sizeHint().width());
   setMinimumHeight(sizeHint().height());
+
+  //
+  // Open the Database
+  //
+  rda=new RDApplication("RDAlsaConfig","rdalsaconfig",RDALSACONFIG_USAGE,this);
+  if(!rda->open(&err_msg)) {
+    QMessageBox::critical(this,"RDAlsaConfig - "+tr("Error"),err_msg);
+    exit(1);
+  }
 
   //
   // Generate Fonts
@@ -121,7 +134,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Load Available Devices and Configuration
   //
-  alsa_system_model=new RDAlsaModel();
+  alsa_system_model=new RDAlsaModel(rda->system()->sampleRate(),this);
   alsa_system_list->setModel(alsa_system_model);
   LoadConfig();
 
@@ -336,6 +349,7 @@ void MainWidget::SaveConfig() const
     fprintf(f,"  card %s\n",
 	    (const char *)alsa_system_model->card(indexes.at(i))->id().toUtf8());
     fprintf(f,"  device %d\n",alsa_system_model->pcmNumber(indexes.at(i)));
+    fprintf(f,"  rate %u\n",rda->system()->sampleRate());
     if(alsa_system_model->card(indexes.at(i))->id()=="Axia") {
       fprintf(f,"  channels 2\n");
     }

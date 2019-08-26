@@ -26,9 +26,11 @@
 
 #include <rdalsamodel.h>
 
-RDAlsaModel::RDAlsaModel(QObject *parent)
+RDAlsaModel::RDAlsaModel(unsigned samprate,QObject *parent)
   : QAbstractListModel(parent)
 {
+  model_sample_rate=samprate;
+
   LoadSystemConfig();
 }
 
@@ -42,6 +44,19 @@ int RDAlsaModel::rowCount(const QModelIndex &parent) const
   }
 
   return rows;
+}
+
+
+Qt::ItemFlags RDAlsaModel::flags(const QModelIndex &index) const
+{
+  Qt::ItemFlags flags=QAbstractListModel::flags(index);
+
+  if((model_alsa_cards.at(model_card_index.at(index.row()))->id()=="Axia")&&
+     (model_sample_rate!=48000)) {
+    flags=flags&Qt::ItemIsEnabled;
+  }
+
+  return flags;
 }
 
 

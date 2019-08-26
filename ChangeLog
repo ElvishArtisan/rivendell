@@ -18950,3 +18950,6 @@
 2019-08-24 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored rdalsaconfig(8) to use ALSA device IDs rather than
 	ordinal numbers in asound.conf(5).
+2019-08-26 Fred Gleason <fredg@paravelsystems.com>
+	* Updated rdalsaconfig(8) to include a 'rate <sr>' line in
+	each asound.conf(5) entry.

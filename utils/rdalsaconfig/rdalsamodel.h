@@ -36,8 +36,9 @@ class RDAlsaModel : public QAbstractListModel
 {
   Q_OBJECT;
  public:
-  RDAlsaModel(QObject *parent=0);
+  RDAlsaModel(unsigned samprate,QObject *parent=0);
   int rowCount(const QModelIndex &parent=QModelIndex()) const;
+  Qt::ItemFlags flags(const QModelIndex &index) const;
   QVariant data(const QModelIndex &index,int role=Qt::DisplayRole) const;
   QVariant headerData(int section,Qt::Orientation orient,
 		      int role=Qt::DisplayRole) const;
@@ -50,6 +51,7 @@ class RDAlsaModel : public QAbstractListModel
   QList<RDAlsaCard *> model_alsa_cards;
   QList<int> model_card_index;
   QList<int> model_pcm_index;
+  unsigned model_sample_rate;
 };
 
 
