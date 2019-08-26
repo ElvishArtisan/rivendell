@@ -18959,3 +18959,6 @@
 2019-08-26 Fred Gleason <fredg@paravelsystems.com>
 	* Reimplemented the '--asoundrc-file=' directive in
 	rdalsaconfig(8).
+2019-08-26 Fred Gleason <fredg@paravelsystems.com>
+	* Reimplemented the '--manage-daemons' directive in
+	rdalsaconfig(8).

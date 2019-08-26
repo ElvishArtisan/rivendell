@@ -179,27 +179,9 @@ QSizePolicy MainWidget::sizePolicy() const
 
 void MainWidget::saveData()
 {
-  /*
-  AlsaItem *item=NULL;
-
-  for(int i=0;i<RD_MAX_CARDS;i++) {
-    if((item=(AlsaItem *)alsa_config_list->item(i))==NULL) {
-      alsa_alsa->setRivendellCard(i,-1);
-    }
-    else {
-      alsa_alsa->setRivendellCard(i,item->cardNumber());
-    }
-  }
-  if(!alsa_alsa->save(alsa_filename)) {
-    QMessageBox::warning(this,tr("RDAlsaConfig error"),
-			 tr(QString("Unable to save configuration to \"")+
-			    alsa_filename+"\""));
-    return;
-  }
-  StartDaemons();
-  */
-
   SaveConfig(alsa_filename);
+
+  StartDaemons();
 
   qApp->quit();
 }
