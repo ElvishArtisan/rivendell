@@ -43,6 +43,7 @@ RDAlsaCard::RDAlsaCard(snd_ctl_t *ctl,int index)
       card_pcm_names.push_back(snd_pcm_info_get_name(pcm_info)+
 			       QString().sprintf("[%02d]",pcm+1));
       snd_ctl_pcm_next_device(ctl,&pcm);
+      card_enableds.push_back(false);
     }
   }
   snd_pcm_info_free(pcm_info);
@@ -83,6 +84,18 @@ QString RDAlsaCard::longName() const
 QString RDAlsaCard::mixerName() const
 {
   return card_long_name;
+}
+
+
+bool RDAlsaCard::isEnabled(int pcm_num) const
+{
+  return card_enableds.at(pcm_num);
+}
+
+
+void RDAlsaCard::setEnabled(int pcm_num,bool state)
+{
+  card_enableds[pcm_num]=state;
 }
 
 

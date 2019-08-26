@@ -45,6 +45,10 @@ class RDAlsaModel : public QAbstractListModel
   QModelIndex indexOf(const QString &card_id,int pcm_num) const;
   RDAlsaCard *card(const QModelIndex &index) const;
   int pcmNumber(const QModelIndex &index) const;
+  bool isEnabled(int row) const;
+  void setEnabled(int row,bool state);
+  bool loadConfig(const QString &filename);
+  bool saveConfig(const QString &filename);
 
  private:
   void LoadSystemConfig();
@@ -52,6 +56,7 @@ class RDAlsaModel : public QAbstractListModel
   QList<int> model_card_index;
   QList<int> model_pcm_index;
   unsigned model_sample_rate;
+  QStringList model_other_lines;
 };
 
 

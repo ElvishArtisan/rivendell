@@ -65,4 +65,12 @@ class MainWidget : public QWidget
 };
 
 
+class Autogen : public QObject
+{
+  Q_OBJECT
+ public:
+  Autogen();
+};
+
+
 #endif  // RDALSACONFIG_H

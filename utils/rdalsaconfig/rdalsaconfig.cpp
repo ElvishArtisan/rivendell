@@ -43,6 +43,7 @@
 //
 QString alsa_filename;
 bool alsa_autogen=false;
+bool alsa_rewrite=false;
 bool alsa_manage_daemons=false;
 bool alsa_daemon_start_needed=false;
 
@@ -230,6 +231,21 @@ void MainWidget::closeEvent(QCloseEvent *e)
 
 void MainWidget::LoadConfig(const QString &filename)
 {
+  if(!alsa_system_model->loadConfig(filename)) {
+    return;
+  }
+  for(int i=0;i<alsa_system_model->rowCount();i++) {
+    if(alsa_system_model->isEnabled(i)) {
+      alsa_system_list->selectionModel()->
+	select(alsa_system_model->index(i,0),QItemSelectionModel::Select);
+    }
+    else {
+      alsa_system_list->selectionModel()->
+	select(alsa_system_model->index(i,0),QItemSelectionModel::Deselect);
+    }
+  }
+
+  /*
   FILE *f=NULL;
   char line[1024];
   int istate=0;
@@ -309,11 +325,20 @@ void MainWidget::LoadConfig(const QString &filename)
     }
   }
   fclose(f);
+  */
 }
 
 
 void MainWidget::SaveConfig(const QString &filename) const
 {
+  for(int i=0;i<alsa_system_model->rowCount();i++) {
+    QItemSelectionModel *sel=alsa_system_list->selectionModel();
+    alsa_system_model->setEnabled(i,sel->isRowSelected(i,QModelIndex()));
+  }
+  alsa_system_model->saveConfig(filename);
+
+
+  /*
   QString tempfile=filename+"-temp";
   FILE *f=NULL;
 
@@ -346,6 +371,51 @@ void MainWidget::SaveConfig(const QString &filename) const
 
   fclose(f);
   rename(tempfile.toUtf8(),filename.toUtf8());
+  */
+}
+
+
+Autogen::Autogen()
+  : QObject()
+{
+  QString err_msg;
+
+  //
+  // Open the Database
+  //
+  rda=new RDApplication("RDAlsaConfig","rdalsaconfig",RDALSACONFIG_USAGE);
+  if(!rda->open(&err_msg,NULL,false)) {
+    fprintf(stderr,"rdalsaconfig: unable to open database [%s]\n",
+	    (const char *)err_msg.toUtf8());
+    exit(1);
+  }
+
+  StopDaemons();
+
+  RDAlsaModel *model=new RDAlsaModel(rda->system()->sampleRate());
+  if(alsa_rewrite) {
+    if(!model->loadConfig(alsa_filename)) {
+      fprintf(stderr,"rdalsaconfig: unable to load file \"%s\"\n",
+	      (const char *)alsa_filename.toUtf8());
+      StartDaemons();
+      exit(1);
+    }
+  }
+  if(alsa_autogen) {
+    for(int i=0;i<model->rowCount();i++) {
+      model->setEnabled(i,true);
+    }
+  }
+  if(!model->saveConfig(alsa_filename)) {
+    fprintf(stderr,"rdalsaconfig: unable to load file \"%s\"\n",
+	    (const char *)alsa_filename.toUtf8());
+    StartDaemons();
+    exit(1);
+  }
+
+  StartDaemons();
+
+  exit(0);
 }
 
 
@@ -364,9 +434,18 @@ int main(int argc,char *argv[])
     if(cmd->key(i)=="--autogen") {
       alsa_autogen=true;
     }
+    if(cmd->key(i)=="--rewrite") {
+      alsa_rewrite=true;
+    }
     if(cmd->key(i)=="--manage-daemons") {
       alsa_manage_daemons=true;
     }
+  }
+
+  if(alsa_autogen||alsa_rewrite) {
+    QCoreApplication a(argc,argv);
+    new Autogen();
+    return a.exec();
   }
 
   //

@@ -24,6 +24,7 @@
 
 #include <qstringlist.h>
 
+#include <rdapplication.h>
 #include <rdalsamodel.h>
 
 RDAlsaModel::RDAlsaModel(unsigned samprate,QObject *parent)
@@ -148,6 +149,164 @@ RDAlsaCard *RDAlsaModel::card(const QModelIndex &index) const
 int RDAlsaModel::pcmNumber(const QModelIndex &index) const
 {
   return model_pcm_index.at(index.row());
+}
+
+
+bool RDAlsaModel::isEnabled(int row) const
+{
+  return model_alsa_cards.at(model_card_index.at(row))->
+    isEnabled(model_pcm_index.at(row));
+}
+
+
+void RDAlsaModel::setEnabled(int row,bool state)
+{
+  return model_alsa_cards.at(model_card_index.at(row))->
+    setEnabled(model_pcm_index.at(row),state);
+}
+
+
+bool RDAlsaModel::loadConfig(const QString &filename)
+{
+  FILE *f=NULL;
+  char line[1024];
+  int istate=0;
+  int port=0;
+  QString card_id=0;
+  int card_num=0;
+  bool ok=false;
+  int device=0;
+  QStringList list;
+  bool active_line=false;
+  QModelIndex index;
+
+  if((f=fopen(filename.toUtf8(),"r"))==NULL) {
+    return false;
+  }
+  while(fgets(line,1024,f)!=NULL) {
+    QString str=line;
+    str.replace("\n","");
+    if(str==START_MARKER) {
+      active_line=true;
+    }
+    if(str==END_MARKER) {
+      active_line=false;
+    }
+    if((str!=START_MARKER)&&(str!=END_MARKER)) {
+      if(active_line) {
+	switch(istate) {
+	case 0:
+	  if(str.left(6)=="pcm.rd") {
+	    port=str.mid(6,1).toInt();
+	    istate=1;
+	  }
+	  else {
+	    if(str.left(6)=="ctl.rd") {
+	      istate=10;
+	    }
+	    else {
+	      model_other_lines.push_back(str+"\n");
+	    }
+	  }
+	  break;
+
+	case 1:
+	  list=str.split(" ",QString::SkipEmptyParts);
+	  if(list[0]=="}") {
+	    if((port>=0)&&(port<RD_MAX_CARDS)) {
+	      for(int i=0;i<model_alsa_cards.size();i++) {
+		RDAlsaCard *card=model_alsa_cards.at(i);
+		card_num=card_id.toUInt(&ok);
+		if(ok) {
+		  if(card_num==card->index()) {
+		    if((device>=0)&&(device<card->pcmQuantity())) {
+		      card->setEnabled(device,true);
+		    }
+		  }
+		}
+		else {
+		  if(card_id==card->id()) {
+		    if((device>=0)&&(device<card->pcmQuantity())) {
+		      card->setEnabled(device,true);
+		    }
+		  }
+		}
+	      }
+	    }
+	    card_id="";
+	    device=0;
+	    istate=0;
+	  }
+	  else {
+	    if(list.size()==2) {
+	      if(list[0]=="card") {
+		card_id=list[1].trimmed();
+	      }
+	      if(list[0]=="device") {
+		device=list[1].toInt();
+	      }
+	    }
+	  }
+	  break;
+
+	case 10:
+	  if(str.left(1)=="}") {
+	    istate=0;
+	  }
+	  break;
+	}
+      }
+      else {
+	model_other_lines.push_back(str+"\n");
+      }
+    }
+  }
+  fclose(f);
+
+  return true;
+}
+
+
+bool RDAlsaModel::saveConfig(const QString &filename)
+{
+  QString tempfile=filename+"-temp";
+  FILE *f=NULL;
+  int index=0;
+
+  if((f=fopen(tempfile.toUtf8(),"w"))==NULL) {
+    return false;
+  }
+  for(int i=0;i<model_other_lines.size();i++) {
+    fprintf(f,model_other_lines.at(i));
+  }
+  fprintf(f,"%s\n",START_MARKER);
+  for(int i=0;i<model_alsa_cards.size();i++) {
+    RDAlsaCard *card=model_alsa_cards.at(i);
+    for(int j=0;j<card->pcmQuantity();j++) {
+      if(card->isEnabled(j)) {
+	fprintf(f,"pcm.rd%d {\n",index);
+	fprintf(f,"  type hw\n");
+	fprintf(f,"  card %s\n",(const char *)card->id().toUtf8());
+	fprintf(f,"  device %d\n",j);
+	fprintf(f,"  rate %u\n",rda->system()->sampleRate());
+	if(card->id()=="Axia") {
+	  fprintf(f,"  channels 2\n");
+	}
+	fprintf(f,"}\n");
+	fprintf(f,"ctl.rd%d {\n",index);
+	fprintf(f,"  type hw\n");
+	fprintf(f,"  card %s\n",(const char *)card->id().toUtf8());
+	fprintf(f,"}\n");
+	index++;
+      }
+    }
+  }
+  fprintf(f,"%s\n",END_MARKER);
+
+  fclose(f);
+  rename(tempfile.toUtf8(),filename.toUtf8());
+
+  return true;
 }
 
 

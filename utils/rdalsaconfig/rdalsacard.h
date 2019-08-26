@@ -38,6 +38,8 @@ class RDAlsaCard
   QString mixerName() const;
   int pcmQuantity() const;
   QString pcmName(int n) const;
+  bool isEnabled(int pcm_num) const;
+  void setEnabled(int pcm_num,bool state);
   QString dump() const;
 
  private:
@@ -48,6 +50,7 @@ class RDAlsaCard
   QString card_long_name;
   QString card_mixer_name;
   QStringList card_pcm_names;
+  QList<bool> card_enableds;
 };
 
 
