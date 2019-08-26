@@ -32,6 +32,7 @@
 	xsltproc $(DOCBOOK_STYLESHEETS)/manpages/docbook.xsl $<
 
 all-local:	rdairplay.1\
+                rdalsaconfig.1\
                 rdclilogedit.1\
                 rdconvert.1\
                 rddbmgr.8\
@@ -45,6 +46,7 @@ all-local:	rdairplay.1\
                 rdservice.8
 
 man_MANS = rdairplay.1\
+           rdalsaconfig.1\
            rdclilogedit.1\
            rdconvert.1\
            rddbmgr.8\
@@ -59,6 +61,8 @@ man_MANS = rdairplay.1\
 
 EXTRA_DIST = rdairplay.1\
              rdairplay.xml\
+             rdalsaconfig.1\
+             rdalsaconfig.xml\
              rdclilogedit.1\
              rdclilogedit.xml\
              rdconvert.1\

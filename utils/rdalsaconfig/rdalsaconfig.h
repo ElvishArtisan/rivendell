@@ -30,7 +30,7 @@
 #include <rd.h>
 #include "rdalsamodel.h"
 
-#define RDALSACONFIG_USAGE "[--asoundrc-file=<filename>] [--autogen] [--manage-daemons]\n\nGenerate an ALSA sound card configuration for Rivendell.\n\nThe following options are available:\n\n --asoundrc-file=<filename>\n     Read and write configuration from <filename> (default value \n     \"/etc/asound.conf\").\n\n --autogen\n     Generate and save a configuration containing all available PCM devices\n     and then exit.\n\n --manage-daemons\n     Restart the Rivendell daemons as necessary to make configuration\n     changes active (requires root permission).\n\n"
+#define RDALSACONFIG_USAGE "[options]\n"
 
 void StopDaemons();
 void StartDaemons();

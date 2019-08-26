@@ -18965,3 +18965,5 @@
 2019-08-26 Fred Gleason <fredg@paravelsystems.com>
 	* Reimplemented the '--autogen' directive in rdalsaconfig(8).
 	* Added a '--rewrite' directive in rdalsaconfig(8).
+2019-08-26 Fred Gleason <fredg@paravelsystems.com>
+	* Added an rdalsaconfig(1) man page.
