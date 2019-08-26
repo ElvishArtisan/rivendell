@@ -714,10 +714,10 @@ void MainObject::timescalingSupportData(int id,unsigned card)
     break;
   }
   if(state) {
-    cae_server->sendCommand(id,"TS +!");
+    cae_server->sendCommand(id,QString().sprintf("TS %u +!",card));
   }
   else {
-    cae_server->sendCommand(id,"TS -!");
+    cae_server->sendCommand(id,QString().sprintf("TS %u -!",card));
   }
 }
 
