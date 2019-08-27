@@ -31,33 +31,31 @@ import configparser
 
 def ProcessPad(update):
     if update.hasPadType(pypad.TYPE_NOW):
-        n=1
-        while(True):
             section='Station'+str(n)
+        n=1
+        while(update.config().has_section(section)):
+            values={}
+            values['id']=update.config().get(section,'StationID')
+            values['partnerId']=update.config().get(section,'PartnerID')
+            values['partnerKey']=update.config().get(section,'PartnerKey')
+            values['title']=update.resolvePadFields(update.config().get(section,'TitleString'),pypad.ESCAPE_NONE)
+            values['artist']=update.resolvePadFields(update.config().get(section,'ArtistString'),pypad.ESCAPE_NONE)
+            values['album']=update.resolvePadFields(update.config().get(section,'AlbumString'),pypad.ESCAPE_NONE)
+            update.syslog(syslog.LOG_INFO,'Updating TuneIn: artist='+values['artist']+' title='+values['title']+' album='+values['album'])
             try:
-                values={}
-                values['id']=update.config().get(section,'StationID')
-                values['partnerId']=update.config().get(section,'PartnerID')
-                values['partnerKey']=update.config().get(section,'PartnerKey')
-                values['title']=update.resolvePadFields(update.config().get(section,'TitleString'),pypad.ESCAPE_NONE)
-                values['artist']=update.resolvePadFields(update.config().get(section,'ArtistString'),pypad.ESCAPE_NONE)
-                values['album']=update.resolvePadFields(update.config().get(section,'AlbumString'),pypad.ESCAPE_NONE)
-                update.syslog(syslog.LOG_INFO,'Updating TuneIn: artist='+values['artist']+' title='+values['title']+' album='+values['album'])
-                try:
-                    response=requests.get('http://air.radiotime.com/Playing.ashx',params=values)
-                    response.raise_for_status()
-                except requests.exceptions.RequestException as e:
-                    update.syslog(syslog.LOG_WARNING,str(e))
-                else:
-                    xml=ET.fromstring(response.text)
-                    status=xml.find('./head/status')
-                    if(status.text!='200'):
-                        update.syslog(syslog.LOG_WARNING,'Update Failed: '+xml.find('./head/fault').text)
-                n=n+1
-            except configparser.NoSectionError:
-                if(n==1):
-                    update.syslog(syslog.LOG_WARNING,'No station config found')
-                return
+                response=requests.get('http://air.radiotime.com/Playing.ashx',params=values)
+                response.raise_for_status()
+            except requests.exceptions.RequestException as e:
+                update.syslog(syslog.LOG_WARNING,str(e))
+            else:
+                xml=ET.fromstring(response.text)
+                status=xml.find('./head/status')
+                if(status.text!='200'):
+                    update.syslog(syslog.LOG_WARNING,'Update Failed: '+xml.find('./head/fault').text)
+            n=n+1
+            section='Station'+str(n)
+        if(n==1):
+            update.syslog(syslog.LOG_WARNING,'No station config found')
 
 #
 # Program Name
