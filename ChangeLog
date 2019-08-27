@@ -18981,3 +18981,6 @@
 2019-08-26 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the 'pypad_ando.py' PyPAD script that caused
 	an infinite loop.
+2019-08-26 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'pypad_filewrite.py' PyPAD script that caused
+	an infinite loop.

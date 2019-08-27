@@ -4,7 +4,7 @@
 #
 # Write PAD updates to files
 #
-#   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+#   (C) Copyright 2018-2019 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as
@@ -29,21 +29,19 @@ def eprint(*args,**kwargs):
 
 def ProcessPad(update):
     n=1
-    try:
-        while(True):
-            section='File'+str(n)
-            if update.shouldBeProcessed(section):
-                fmtstr=update.config().get(section,'FormatString')
-                mode='w'
-                if update.config().get(section,'Append')=='1':
-                    mode='a'
-                f=open(update.resolveFilepath(update.config().get(section,'Filename'),update.dateTime()),mode)
-                f.write(update.resolvePadFields(fmtstr,int(update.config().get(section,'Encoding'))))
-                f.close()
-            n=n+1
+    section='File'+str(n)
+    while(update.config().has_section(section)):
+        if update.shouldBeProcessed(section):
+            fmtstr=update.config().get(section,'FormatString')
+            mode='w'
+            if update.config().get(section,'Append')=='1':
+                mode='a'
+            f=open(update.resolveFilepath(update.config().get(section,'Filename'),update.dateTime()),mode)
+            f.write(update.resolvePadFields(fmtstr,int(update.config().get(section,'Encoding'))))
+            f.close()
+        n=n+1
+        section='File'+str(n)
 
-    except configparser.NoSectionError:
-        return
 
 #
 # 'Main' function
