@@ -18925,5 +18925,56 @@
 	the fixed 'pypad.update.shouldBeProcessed()' method.
 	* Refactored the 'pypad_shoutcast2.py' script to work properly with
 	the fixed 'pypad.update.shouldBeProcessed()' method.
+2019-08-12 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'py-compile' to the 'CLEANFILES' rule in 'Makefile.am'.
 2019-08-14 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored the 'pypad.Update.shouldBeProcessed()' method to be LBYL.
+2019-08-20 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'DROPBOXES.LOG_TO_SYSLOG' field to the database.
+	* Incremented the database version to 309.
+	* Added a 'Log Events in Syslog' checkbox to the
+	'Dropbox Configuration' dialog in rdadmin(1).
+	* Added special name logic to RDApplication to detect when a
+	dropbox is being started.
+	* Modified the '--log-filename=' switch in rdimport(1) to accept
+	both directory and filename components.
+	* Removed the '--log-directory=' switch from rdimport(1).
+	* Added an 'ID' column to the list of dropbox configurations in the
+	'Rivendell Dropbox Configurations; dialog in rdadmin(1).
+2019-08-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added code to dump the parent query to STDERR when an invalid
+	'RDSqlQuery::value()' is requested.
+2019-08-21 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored code to eliminate 'QSqlQuery::value: not positioned
+	on a valid record' errors when starting rdairplay(1).
+2019-08-21 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdairplay(1) where a hard time with a 'Make Next'
+	attribute would instead be treated as 'Start Immediately' if
+	the target event was unplayable.
+	* Fixed a bug in rdairplay(1) where a hard time with a 'Wait up to'
+	attribute would instead be treated as 'Start Immediately' if
+	the target event was unplayable.
+2019-08-21 Fred Gleason <fredg@paravelsystems.com>
+	* Re-indented switch() statements in 'lib/rdlogplay.cpp'.
+2019-08-24 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored rdalsaconfig(8) to use ALSA device IDs rather than
+	ordinal numbers in asound.conf(5).
+2019-08-26 Fred Gleason <fredg@paravelsystems.com>
+	* Updated rdalsaconfig(8) to include a 'rate <sr>' line in
+	each asound.conf(5) entry.
+2019-08-26 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdalsaconfig(8) that caused a 'Service not
+	active' error to be generated at startup.
+2019-08-26 Fred Gleason <fredg@paravelsystems.com>
+	* Reimplemented the '--asoundrc-file=' directive in
+	rdalsaconfig(8).
+2019-08-26 Fred Gleason <fredg@paravelsystems.com>
+	* Reimplemented the '--manage-daemons' directive in
+	rdalsaconfig(8).
+2019-08-26 Fred Gleason <fredg@paravelsystems.com>
+	* Reimplemented the '--autogen' directive in rdalsaconfig(8).
+	* Added a '--rewrite' directive in rdalsaconfig(8).
+2019-08-26 Fred Gleason <fredg@paravelsystems.com>
+	* Added an rdalsaconfig(1) man page.
+2019-08-26 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in caed(8) that broke timescaling support.

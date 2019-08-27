@@ -2,7 +2,7 @@
 //
 // QListBoxItem for ALSA PCM devices. 
 //
-//   (C) Copyright 2009-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2009-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -29,38 +29,37 @@ AlsaItem::AlsaItem(Q3ListBox *listbox,const QString &text)
 AlsaItem::AlsaItem(const QString &text)
   : Q3ListBoxText(text)
 {
-  alsa_card=-1;
-  alsa_device=-1;
+  alsa_card_number=-1;
+  alsa_pcm_number=-1;
 }
 
 
 AlsaItem::AlsaItem(const AlsaItem &item)
 {
-  setText(item.text());
-  setCard(item.card());
-  setDevice(item.device());
+  setCardNumber(item.cardNumber());
+  setPcmNumber(item.pcmNumber());
 }
 
 
-int AlsaItem::card() const
+int AlsaItem::cardNumber() const
 {
-  return alsa_card;
+  return alsa_card_number;
 }
 
 
-void AlsaItem::setCard(int card)
+void AlsaItem::setCardNumber(int cardnum)
 {
-  alsa_card=card;
+  alsa_card_number=cardnum;
 }
 
 
-int AlsaItem::device() const
+int AlsaItem::pcmNumber() const
 {
-  return alsa_device;
+  return alsa_pcm_number;
 }
 
 
-void AlsaItem::setDevice(int device)
+void AlsaItem::setPcmNumber(int pcmnum)
 {
-  alsa_device=device;
+  alsa_pcm_number=pcmnum;
 }

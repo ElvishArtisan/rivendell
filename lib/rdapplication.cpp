@@ -112,6 +112,8 @@ bool RDApplication::open(QString *err_msg,RDApplication::ErrorType *err_type,
   int schema=0;
   QString db_err;
   bool skip_db_check=false;
+  int persistent_dropbox_id=-1;
+  bool ok=false;
 
   if(err_type!=NULL) {
     *err_type=RDApplication::ErrorOk;
@@ -125,6 +127,13 @@ bool RDApplication::open(QString *err_msg,RDApplication::ErrorType *err_type,
   for(unsigned i=0;i<app_cmd_switch->keys();i++) {
     if(app_cmd_switch->key(i)=="--skip-db-check") {
       skip_db_check=true;
+      app_cmd_switch->setProcessed(i,true);
+    }
+    if(app_cmd_switch->key(i)=="--persistent-dropbox-id") {
+      persistent_dropbox_id=app_cmd_switch->value(i).toUInt(&ok);
+      if(ok) {
+	app_command_name=QString().sprintf("dropbox[%u]",persistent_dropbox_id);
+      }
       app_cmd_switch->setProcessed(i,true);
     }
   }

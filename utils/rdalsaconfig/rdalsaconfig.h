@@ -2,7 +2,7 @@
 //
 // A Qt-based application to display info about ALSA cards.
 //
-//   (C) Copyright 2009-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2009-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,15 +22,15 @@
 #define RDALSACONFIG_H
 
 #include <qwidget.h>
-#include <q3listbox.h>
+#include <qlistview.h>
 #include <qlabel.h>
 
 #include <rdtransportbutton.h>
 
 #include <rd.h>
-#include <rdalsa.h>
+#include "rdalsamodel.h"
 
-#define RDALSACONFIG_USAGE "[--asoundrc-file=<filename>] [--autogen] [--manage-daemons]\n\nGenerate an ALSA sound card configuration for Rivendell.\n\nThe following options are available:\n\n --asoundrc-file=<filename>\n     Read and write configuration from <filename> (default value \n     \"/etc/asound.conf\").\n\n --autogen\n     Generate and save a configuration containing all available PCM devices\n     and then exit.\n\n --manage-daemons\n     Restart the Rivendell daemons as necessary to make configuration\n     changes active (requires root permission).\n\n"
+#define RDALSACONFIG_USAGE "[options]\n"
 
 void StopDaemons();
 void StartDaemons();
@@ -45,8 +45,6 @@ class MainWidget : public QWidget
   QSizePolicy sizePolicy() const;
 
  private slots:
-  void upData();
-  void downData();
   void saveData();
   void cancelData();
 
@@ -55,18 +53,15 @@ class MainWidget : public QWidget
   void closeEvent(QCloseEvent *e);
 
  private:
-  void LoadList(Q3ListBox *system,Q3ListBox *config);
-  bool PcmUnused(int card,int device);
-  void MoveItem(Q3ListBox *src,Q3ListBox *dest);
+  void LoadConfig(const QString &filename);
+  void SaveConfig(const QString &filename) const;
   QLabel *alsa_system_label;
-  Q3ListBox *alsa_system_list;
-  QLabel *alsa_config_label;
-  Q3ListBox *alsa_config_list;
-  RDTransportButton *alsa_up_button;
-  RDTransportButton *alsa_down_button;
+  QLabel *alsa_description_label;
+  QListView *alsa_system_list;
+  RDAlsaModel *alsa_system_model;
+  QStringList alsa_other_lines;
   QPushButton *alsa_save_button;
   QPushButton *alsa_cancel_button;
-  RDAlsa *alsa_alsa;
 };
 
 
@@ -74,7 +69,7 @@ class Autogen : public QObject
 {
   Q_OBJECT
  public:
-  Autogen(QObject *parent=0);
+  Autogen();
 };
 
 

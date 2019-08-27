@@ -430,7 +430,12 @@ void LogLineBox::setEvent(int line,RDLogLine::TransType next_type,
   case RDLogLine::Cart:
     line_comment_label->hide();
     cart=new RDCart(logline->cartNumber());
-    cut=new RDCut(logline->cartNumber(),logline->cutNumber());
+    if(logline->cutNumber()>0) {
+      cut=new RDCut(logline->cartNumber(),logline->cutNumber());
+    }
+    else {
+      cut=NULL;
+    }
     if(!cart->exists()) {
       line_cart_label->
 	setText(QString().sprintf("%06u",logline->cartNumber()));
@@ -453,15 +458,15 @@ void LogLineBox::setEvent(int line,RDLogLine::TransType next_type,
 	break;
       }
       setBackgroundColor(QColor(LOGLINEBOX_MISSING_COLOR));
-      delete cart;
-      delete cut;
     }
     else {
       if(((cart->forcedLength()==0)&&(cart->type()==RDCart::Audio))||
 	 (line_logline->state()==RDLogLine::NoCut)) {
 	line_cart_label->
 	  setText(QString().sprintf("%06u",logline->cartNumber()));
-	line_description_label->setText(cut->description());
+	if(cut!=NULL) {
+	  line_description_label->setText(cut->description());
+	}
 	line_artist_label->setText(tr("[NO AUDIO AVAILABLE]"));
 	line_cut_label->clear();
 	line_group_label->clear();
@@ -474,8 +479,6 @@ void LogLineBox::setEvent(int line,RDLogLine::TransType next_type,
 	line_icon_label->setPixmap(*line_playout_map);
 	line_title_label->setText(logline->title());
 	setBackgroundColor(QColor(LOGLINEBOX_MISSING_COLOR));
-	delete cart;
-	delete cut;
       }
       else {
 	line_cart_label->
@@ -557,12 +560,14 @@ void LogLineBox::setEvent(int line,RDLogLine::TransType next_type,
 	  line_cut_label->clear();
 	  line_outcue_label->setText(tr("[NO VALID CUT AVAILABLE]"));
 	}
-	delete cart;
-	delete cut;
 	setMode(line_mode);
 	line_title_label->show();
 	line_artist_label->show();
       }
+    }
+    delete cart;
+    if(cut!=NULL) {
+      delete cut;
     }
     break;
     

@@ -33,6 +33,7 @@ class RDSqlQuery : public QSqlQuery
  public:
   RDSqlQuery(const QString &query = QString::null,bool reconnect=true);
   int columns() const;
+  QVariant value(int index) const;
   static QVariant run(const QString &sql,bool *ok=NULL);
   static bool apply(const QString &sql,QString *err_msg=NULL);
   static int rows(const QString &sql);

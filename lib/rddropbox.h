@@ -64,6 +64,8 @@ class RDDropbox
   void setEnddateOffset(int offset) const;
   bool fixBrokenFormats() const;
   void setFixBrokenFormats(bool state) const;
+  bool logToSyslog() const;
+  void setLogToSyslog(bool state) const;
   QString logPath() const;
   void setLogPath(const QString &path) const;
   bool createDates() const;

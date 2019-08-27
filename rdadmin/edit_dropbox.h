@@ -73,7 +73,10 @@ class EditDropbox : public QDialog
   QLabel *box_force_to_mono_label;
   QLineEdit *box_metadata_pattern_edit;
   QLineEdit *box_user_defined_edit;
+  QCheckBox *box_log_to_syslog_check;
+  QLabel *box_log_path_label;
   QLineEdit *box_log_path_edit;
+  QPushButton *box_log_path_button;
   QCheckBox *box_delete_source_box;
   QCheckBox *box_normalization_box;
   QLabel *box_normalization_level_label;

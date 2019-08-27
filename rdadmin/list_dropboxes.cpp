@@ -110,6 +110,8 @@ ListDropboxes::ListDropboxes(const QString &stationname,QWidget *parent)
   list_dropboxes_view=new RDListView(this);
   list_dropboxes_view->setFont(list_font);
   list_dropboxes_view->setAllColumnsShowFocus(true);
+  list_dropboxes_view->addColumn(tr("ID"));
+  list_dropboxes_view->setColumnAlignment(0,Qt::AlignVCenter|Qt::AlignRight);
   list_dropboxes_view->addColumn(tr("Group"));
   list_dropboxes_view->setColumnAlignment(0,Qt::AlignVCenter|Qt::AlignLeft);
   list_dropboxes_view->addColumn(tr("Path"));
@@ -328,16 +330,22 @@ void ListDropboxes::RefreshItem(RDListViewItem *item)
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString().sprintf("select DROPBOXES.ID,DROPBOXES.GROUP_NAME,\
-                         DROPBOXES.PATH,DROPBOXES.NORMALIZATION_LEVEL,\
-                         DROPBOXES.AUTOTRIM_LEVEL,\
-                         DROPBOXES.TO_CART,DROPBOXES.USE_CARTCHUNK_ID,\
-                         DROPBOXES.DELETE_CUTS,DROPBOXES.METADATA_PATTERN,\
-                         DROPBOXES.FIX_BROKEN_FORMATS,\
-                         DROPBOXES.SET_USER_DEFINED,GROUPS.COLOR \
-                         from DROPBOXES left join GROUPS on \
-                         DROPBOXES.GROUP_NAME=GROUPS.NAME \
-                         where DROPBOXES.ID=%d",item->id());
+  sql=QString("select ")+
+    "DROPBOXES.ID,"+                   // 00
+    "DROPBOXES.GROUP_NAME,"+           // 01
+    "DROPBOXES.PATH,"+                 // 02
+    "DROPBOXES.NORMALIZATION_LEVEL,"+  // 03
+    "DROPBOXES.AUTOTRIM_LEVEL,"+       // 04
+    "DROPBOXES.TO_CART,"+              // 05
+    "DROPBOXES.USE_CARTCHUNK_ID,"+     // 06
+    "DROPBOXES.DELETE_CUTS,"+          // 07
+    "DROPBOXES.METADATA_PATTERN,"+     // 08
+    "DROPBOXES.FIX_BROKEN_FORMATS,"+   // 09
+    "DROPBOXES.SET_USER_DEFINED,"+     // 10
+    "GROUPS.COLOR "+                   // 11
+    "from DROPBOXES left join GROUPS on "+
+    "DROPBOXES.GROUP_NAME=GROUPS.NAME where "+
+    QString().sprintf("DROPBOXES.ID=%d",item->id());
   q=new RDSqlQuery(sql);
   if(q->next()) {
     WriteItem(item,q);
@@ -349,35 +357,36 @@ void ListDropboxes::RefreshItem(RDListViewItem *item)
 void ListDropboxes::WriteItem(RDListViewItem *item,RDSqlQuery *q)
 {
   item->setId(q->value(0).toInt());
-  item->setText(0,q->value(1).toString());
-  item->setTextColor(0,q->value(11).toString(),QFont::Bold);
-  item->setText(1,q->value(2).toString());
+  item->setText(0,QString().sprintf("%d",q->value(0).toInt()));
+  item->setText(1,q->value(1).toString());
+  item->setTextColor(1,q->value(11).toString(),QFont::Bold);
+  item->setText(2,q->value(2).toString());
   if(q->value(3).toInt()<0) {
-    item->setText(2,QString().sprintf("%d",q->value(3).toInt()/100));
-  }
-  else {
-    item->setText(2,tr("[off]"));
-  }
-  if(q->value(4).toInt()<0) {
-    item->setText(3,QString().sprintf("%d",q->value(4).toInt()/100));
+    item->setText(3,QString().sprintf("%d",q->value(3).toInt()/100));
   }
   else {
     item->setText(3,tr("[off]"));
   }
+  if(q->value(4).toInt()<0) {
+    item->setText(4,QString().sprintf("%d",q->value(4).toInt()/100));
+  }
+  else {
+    item->setText(4,tr("[off]"));
+  }
   if(q->value(5).toUInt()>0) {
-    item->setText(4,QString().sprintf("%06u",q->value(5).toUInt()));
+    item->setText(5,QString().sprintf("%06u",q->value(5).toUInt()));
   }
   else {
-    item->setText(4,tr("[auto]"));
+    item->setText(5,tr("[auto]"));
   }
-  item->setText(5,q->value(6).toString());
-  item->setText(6,q->value(7).toString());
+  item->setText(6,q->value(6).toString());
+  item->setText(7,q->value(7).toString());
   if(q->value(8).toString().isEmpty()) {
-    item->setText(7,tr("[none]"));
+    item->setText(8,tr("[none]"));
   }
   else {
-    item->setText(7,q->value(8).toString());
+    item->setText(8,q->value(8).toString());
   }
-  item->setText(8,q->value(9).toString());
-  item->setText(9,q->value(10).toString());
+  item->setText(9,q->value(9).toString());
+  item->setText(10,q->value(10).toString());
 }
