@@ -19015,3 +19015,6 @@
 2019-08-26 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the 'pypad_urlwrite.py' PyPAD script that caused
 	an infinite loop.
+2019-08-26 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'pypad_walltime.py' PyPAD script that caused
+	an infinite loop.
