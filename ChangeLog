@@ -18987,3 +18987,7 @@
 2019-08-26 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the 'pypad_inno713.py' PyPAD script that caused
 	an infinite loop.
+2019-08-26 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdadmin(1) that allowed more than one PyPAD
+	instance to be selected at a time in the 'List PyPAD Instances'
+	dialog.

@@ -75,6 +75,7 @@ ListPypads::ListPypads(RDStation *station,QWidget *parent)
   // Instances List Box
   //
   list_list_view=new RDListView(this);
+  list_list_view->setSelectionMode(Q3ListView::Single);
   list_list_view->setAllColumnsShowFocus(true);
   list_list_view->setItemMargin(5);
   list_list_view->addColumn(" ");
@@ -198,7 +199,9 @@ void ListPypads::addData()
     RDListViewItem *item=new RDListViewItem(list_list_view);
     item->setId(id);
     RefreshItem(item);
+    list_list_view->clearSelection();
     list_list_view->ensureItemVisible(item);
+    list_list_view->setCurrentItem(item);
     item->setSelected(true);
     RDNotification notify=RDNotification(RDNotification::PypadType,
 					 RDNotification::AddAction,id);
