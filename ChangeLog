@@ -18978,3 +18978,6 @@
 	* Added an rdalsaconfig(1) man page.
 2019-08-26 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in caed(8) that broke timescaling support.
+2019-08-26 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'pypad_ando.py' PyPAD script that caused
+	an infinite loop.
