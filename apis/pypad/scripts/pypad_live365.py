@@ -33,7 +33,7 @@ def eprint(*args,**kwargs):
 def ProcessPad(update):
     n=1
     section='Station'+str(n)
-    while(True):
+    while(update.config().has_section(section)):
         if update.shouldBeProcessed(section) and update.hasPadType(pypad.TYPE_NOW):
             member=update.escape(update.config().get(section,'MemberName'),pypad.ESCAPE_URL)
             password=update.escape(update.config().get(section,'Password'),pypad.ESCAPE_URL)
