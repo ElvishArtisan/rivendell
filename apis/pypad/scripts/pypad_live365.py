@@ -32,34 +32,32 @@ def eprint(*args,**kwargs):
 
 def ProcessPad(update):
     n=1
-    try:
-        while(True):
-            section='Station'+str(n)
-            if update.shouldBeProcessed(section) and update.hasPadType(pypad.TYPE_NOW):
-                member=update.escape(update.config().get(section,'MemberName'),pypad.ESCAPE_URL)
-                password=update.escape(update.config().get(section,'Password'),pypad.ESCAPE_URL)
-                title=update.resolvePadFields(update.config().get(section,'TitleString'),pypad.ESCAPE_URL)
-                artist=update.resolvePadFields(update.config().get(section,'ArtistString'),pypad.ESCAPE_URL)
-                album=update.resolvePadFields(update.config().get(section,'AlbumString'),pypad.ESCAPE_URL)
-                seconds=str(update.padField(pypad.TYPE_NOW,pypad.FIELD_LENGTH)//1000)
-                buf=BytesIO()
-                curl=pycurl.Curl()
-                url='http://www.live365.com/cgi-bin/add_song.cgi?member_name='+member+'&password='+password+'&version=2&filename=Rivendell&seconds='+seconds+'&title='+title+'&artist='+artist+'&album='+album
-                curl.setopt(curl.URL,url)
-                curl.setopt(curl.WRITEDATA,buf)
-                curl.setopt(curl.FOLLOWLOCATION,True)
-                try:
-                    curl.perform()
-                    code=curl.getinfo(pycurl.RESPONSE_CODE)
-                    if (code<200) or (code>=300):
-                        update.syslog(syslog.LOG_WARNING,'['+section+'] returned response code '+str(code))
-                except pycurl.error:
-                    update.syslog(syslog.LOG_WARNING,'['+section+'] failed: '+curl.errstr())
-                curl.close()
-            n=n+1
+    section='Station'+str(n)
+    while(True):
+        if update.shouldBeProcessed(section) and update.hasPadType(pypad.TYPE_NOW):
+            member=update.escape(update.config().get(section,'MemberName'),pypad.ESCAPE_URL)
+            password=update.escape(update.config().get(section,'Password'),pypad.ESCAPE_URL)
+            title=update.resolvePadFields(update.config().get(section,'TitleString'),pypad.ESCAPE_URL)
+            artist=update.resolvePadFields(update.config().get(section,'ArtistString'),pypad.ESCAPE_URL)
+            album=update.resolvePadFields(update.config().get(section,'AlbumString'),pypad.ESCAPE_URL)
+            seconds=str(update.padField(pypad.TYPE_NOW,pypad.FIELD_LENGTH)//1000)
+            buf=BytesIO()
+            curl=pycurl.Curl()
+            url='http://www.live365.com/cgi-bin/add_song.cgi?member_name='+member+'&password='+password+'&version=2&filename=Rivendell&seconds='+seconds+'&title='+title+'&artist='+artist+'&album='+album
+            curl.setopt(curl.URL,url)
+            curl.setopt(curl.WRITEDATA,buf)
+            curl.setopt(curl.FOLLOWLOCATION,True)
+            try:
+                curl.perform()
+                code=curl.getinfo(pycurl.RESPONSE_CODE)
+                if (code<200) or (code>=300):
+                    update.syslog(syslog.LOG_WARNING,'['+section+'] returned response code '+str(code))
+            except pycurl.error:
+                update.syslog(syslog.LOG_WARNING,'['+section+'] failed: '+curl.errstr())
+            curl.close()
+        n=n+1
+        section='Station'+str(n)
 
-    except configparser.NoSectionError:
-        return
 
 #
 # 'Main' function
