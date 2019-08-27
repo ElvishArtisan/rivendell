@@ -32,27 +32,25 @@ def eprint(*args,**kwargs):
 
 def ProcessPad(update):
     n=1
-    try:
-        while(True):
-            section='Serial'+str(n)
-            if update.shouldBeProcessed(section):
-                devname=update.config().get(section,'Device')
-                speed=int(update.config().get(section,'Speed'))
-                parity=serial.PARITY_NONE
-                if int(update.config().get(section,'Parity'))==1:
-                    parity=serial.PARITY_EVEN
-                if int(update.config().get(section,'Parity'))==2:
-                    parity=serial.PARITY_ODD
-                bytesize=int(update.config().get(section,'WordSize'))
-                dev=serial.Serial(devname,speed,parity=parity,bytesize=bytesize)
-                fmtstr=update.config().get(section,'FormatString')
-                esc=int(update.config().get(section,'Encoding'))
-                dev.write(update.resolvePadFields(fmtstr,esc).encode('utf-8'))
-                dev.close()
-            n=n+1
+    section='Serial'+str(n)
+    while(update.config().has_section(section)):
+        if update.shouldBeProcessed(section):
+            devname=update.config().get(section,'Device')
+            speed=int(update.config().get(section,'Speed'))
+            parity=serial.PARITY_NONE
+            if int(update.config().get(section,'Parity'))==1:
+                parity=serial.PARITY_EVEN
+            if int(update.config().get(section,'Parity'))==2:
+                parity=serial.PARITY_ODD
+            bytesize=int(update.config().get(section,'WordSize'))
+            dev=serial.Serial(devname,speed,parity=parity,bytesize=bytesize)
+            fmtstr=update.config().get(section,'FormatString')
+            esc=int(update.config().get(section,'Encoding'))
+            dev.write(update.resolvePadFields(fmtstr,esc).encode('utf-8'))
+            dev.close()
+        n=n+1
+        section='Serial'+str(n)
 
-    except configparser.NoSectionError:
-        return
 
 #
 # 'Main' function
