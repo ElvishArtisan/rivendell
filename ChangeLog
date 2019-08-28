@@ -19037,3 +19037,5 @@
 	* Fixed a bug in rdlogmanager(1) that caused newly added events
 	to be incorrectly sorted in the event list in the 'Edit Clock'
 	dialog.
+2019-08-28 Patrick Linstruth <patrick@deltecent.com>
+	* Added 'pypad_httpget.py' script.
