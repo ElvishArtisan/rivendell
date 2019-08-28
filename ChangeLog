@@ -19027,3 +19027,13 @@
 2019-08-28 Fred Gleason <fredg@paravelsystems.com>
 	* Added a statement to explicitly disable sorting of the
 	events list in the 'List Clocks' dialog in rdlogmanager(1).
+2019-08-28 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdlogmanager(1) that threw a segfault when
+	adding an event to the end of the event list in the 'Edit
+	Clock' dialog.
+2019-08-28 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the 'RDClock::insert()' method to calculate the
+	ordinal position of the inserted event automatically.
+	* Fixed a bug in rdlogmanager(1) that caused newly added events
+	to be incorrectly sorted in the event list in the 'Edit Clock'
+	dialog.

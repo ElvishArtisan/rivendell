@@ -226,27 +226,42 @@ bool RDClock::save()
 }
 
 
-bool RDClock::insert(const QString &event_name,int line)
+int RDClock::insert(const QString &event_name,const QTime &time,int len)
 {
+  int line=-1;
+
   QString sql=QString("select NAME from EVENTS where ")+
     "NAME=\""+RDEscapeString(event_name)+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;
-    return false;
+    return -1;
   }
   delete q;
-  if(line>=size()) {
-    clock_events.push_back(new RDEventLine(clock_station));
+  if((clock_events.size()==0)||(time<clock_events.at(0)->startTime())) {
+    line=0;
+    clock_events.insert(0,new RDEventLine(clock_station));
   }
   else {
-    clock_events.insert(line,new RDEventLine(clock_station));
-    //    QList<RDEventLine *>::iterator it=clock_events.begin()+line;
-    //clock_events.insert(it,1,RDEventLine(clock_station));
+    for(int i=0;i<clock_events.size()-1;i++) {
+      if((time>clock_events.at(i)->startTime())&&
+	 (time<clock_events.at(i+1)->startTime())) {
+	line=i+1;
+	clock_events.insert(line,new RDEventLine(clock_station));
+	break;
+      }
+    }
+    if(line<0) {
+      line=clock_events.size();
+      clock_events.push_back(new RDEventLine(clock_station));
+    }
   }
   clock_events.at(line)->setName(event_name);
+  clock_events.at(line)->setStartTime(time);
+  clock_events.at(line)->setLength(len);
   clock_events.at(line)->load();
-  return true;
+
+  return line;
 }
 
 
@@ -254,35 +269,6 @@ void RDClock::remove(int line)
 {
   delete clock_events[line];
   clock_events.removeAt(line);
-  //  std::vector<RDEventLine>::iterator it=clock_events.begin()+line;
-  //  clock_events.erase(it,it+1);
-}
-
-
-void RDClock::move(int from_line,int to_line)
-{
-  int src_offset=0;
-  int dest_offset=1;
-  RDEventLine *srcline;
-  RDEventLine *destline;
-
-  if(to_line<from_line) {
-    src_offset=1;
-    dest_offset=0;
-  }
-  insert(clock_events.at(from_line)->name(),to_line+dest_offset);
-  if((to_line+1)>=size()) {
-    to_line=clock_events.size()-1;
-    dest_offset=0;
-  }
-
-  if(((destline=eventLine(to_line+dest_offset))==NULL)||
-     (srcline=eventLine(from_line+src_offset))==NULL) {
-    remove(to_line+dest_offset);
-    return;
-  }
-  *destline=*srcline;
-  remove(from_line+src_offset);
 }
 
 

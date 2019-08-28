@@ -2,7 +2,7 @@
 //
 // Edit Rivendell Log Clock
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -289,26 +289,22 @@ void EditClock::addData()
 {
   int line=0;
   RDEventLine eventline(rda->station());
-
-  RDListViewItem *item=(RDListViewItem *)edit_clocks_list->selectedItem();
-  if(item!=NULL) {
-    if(item->text(4).isEmpty()) {
-      line=edit_clock->size();
-    }
-    else {
-      line=item->text(4).toInt();
-    }
-  }
   EditEventLine *edit_eventline=
     new EditEventLine(&eventline,edit_clock,-1,this);
   if(edit_eventline->exec()<0) {
     return;
   }
   delete edit_eventline;
-  edit_clock->insert(eventline.name(),line);
-  edit_clock->eventLine(line)->setStartTime(eventline.startTime());
-  edit_clock->eventLine(line)->setLength(eventline.length());
-  edit_clock->eventLine(line)->load();
+  if(line<0) {
+    line=edit_clock->size();
+  }
+  line=edit_clock->
+    insert(eventline.name(),eventline.startTime(),eventline.length());
+  if(line<0) {
+    QMessageBox::warning(this,"RDLogManager - "+tr("Error"),
+			 tr("That event does not exist."));
+    return;
+  }
   edit_modified=true;
   RefreshList(line);
 }
@@ -367,10 +363,13 @@ void EditClock::cloneData()
     return;
   }
   delete edit_eventline;
-  edit_clock->insert(eventline.name(),line);
-  edit_clock->eventLine(line)->setStartTime(eventline.startTime());
-  edit_clock->eventLine(line)->setLength(eventline.length());
-  edit_clock->eventLine(line)->load();
+  line=edit_clock->
+    insert(eventline.name(),eventline.startTime(),eventline.length());
+  if(line<0) {
+    QMessageBox::warning(this,"RDLogManager - "+tr("Error"),
+			 tr("That event does not exist."));
+    return;
+  }
   edit_modified=true;
   RefreshList(line);
 }
@@ -526,8 +525,8 @@ void EditClock::doubleClickedData(Q3ListViewItem *item,const QPoint &,int)
 
 void EditClock::colorData()
 {
-  QColor color=QColorDialog::getColor(edit_color_button->backgroundColor(),
-				      this,"color_dialog");
+  QColor color=
+    QColorDialog::getColor(edit_color_button->backgroundColor(),this);
   if(color.isValid()) {
     edit_color_button->setPalette(QPalette(color,backgroundColor()));
   }
@@ -620,18 +619,10 @@ void EditClock::Save()
 void EditClock::RefreshList(int select_line)
 {
   UpdateClock();
-  RDListViewItem *prev_item=(RDListViewItem *)edit_clocks_list->selectedItem();
-
-  if((prev_item!=NULL)&&(select_line>=0)) {
-    select_line=prev_item->text(4).toInt();
-  }
   RDListViewItem *item;
   RDEventLine *eventline;
 
   edit_clocks_list->clear();
-  item=new RDListViewItem(edit_clocks_list);
-  item->setText(2,tr("--- End of clock ---"));
-  item->setText(4,"-2");
   for(int i=edit_clock->size()-1;i>=0;i--) {
     if((eventline=edit_clock->eventLine(i))!=NULL) {
       item=new RDListViewItem(edit_clocks_list);
