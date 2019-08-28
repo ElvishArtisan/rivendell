@@ -100,6 +100,7 @@ EditClock::EditClock(QString clockname,bool new_clock,
   edit_clocks_list->setGeometry(10,35,CENTER_LINE-20,sizeHint().height()-250);
   edit_clocks_list->setAllColumnsShowFocus(true);
   edit_clocks_list->setItemMargin(5);
+  edit_clocks_list->setSorting(-1);
   edit_clocks_list->addColumn(tr("Start"));
   edit_clocks_list->addColumn(tr("End"));
   edit_clocks_list->addColumn(tr("Event"));
