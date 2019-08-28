@@ -19042,3 +19042,6 @@
 2019-08-29 Patrick Linstruth <patrick@deltecent.com>
 	* Modified caed(8) to skip JACK startup, rather than crash, if
 	no command line is specified in rdadmin(1).
+2019-08-28 Fred Gleason <fredg@paravelsystems.com>
+	* Added the '%l' wildcard (unpadded month 1-12) to the filepath
+	wildcards.
