@@ -19039,3 +19039,6 @@
 	dialog.
 2019-08-28 Patrick Linstruth <patrick@deltecent.com>
 	* Added 'pypad_httpget.py' script.
+2019-08-29 Patrick Linstruth <patrick@deltecent.com>
+	* Modified caed(8) to skip JACK startup, rather than crash, if
+	no command line is specified in rdadmin(1).
