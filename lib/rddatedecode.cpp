@@ -114,6 +114,10 @@ QString RDDateDecode(QString str,const QDate &date,RDStation *station,
 	field=QString().sprintf("%03d",date.dayOfYear());
 	break;
 
+      case 'l':   // Unpadded Month (1 - 12)
+	field=QString().sprintf("%d",date.month());
+	break;
+
       case 'm':   // Month (01 - 12)
 	field=QString().sprintf("%02d",date.month());
 	break;
@@ -292,6 +296,10 @@ QString RDDateTimeDecode(QString str,const QDateTime &datetime,
 	field=QString().sprintf("%2d",datetime.time().hour());
 	break;
 
+      case 'l':   // Unpadded Month (1 - 12)
+	field=QString().sprintf("%d",datetime.date().month());
+	break;
+	    
       case 'M':   // Minute, zero padded
 	field=QString().sprintf("%02d",datetime.time().minute());
 	break;

@@ -26,6 +26,8 @@ install-exec-am:
 	cp pypad_ando.exemplar $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_ando.exemplar
 	../../../helpers/install_python.sh pypad_filewrite.py $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_filewrite.py
 	cp pypad_filewrite.exemplar $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_filewrite.exemplar
+	../../../helpers/install_python.sh pypad_httpget.py $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_httpget.py
+	cp pypad_httpget.exemplar $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_httpget.exemplar
 	../../../helpers/install_python.sh pypad_icecast2.py $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_icecast2.py
 	cp pypad_icecast2.exemplar $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_icecast2.exemplar
 	../../../helpers/install_python.sh pypad_inno713.py $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_inno713.py
@@ -62,6 +64,8 @@ uninstall-local:
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_ando.py
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_filewrite.exemplar
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_filewrite.py
+	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_httpget.exemplar
+	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_httpget.py
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_icecast2.exemplar
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_icecast2.py
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_inno713.exemplar
@@ -97,6 +101,8 @@ EXTRA_DIST = pypad_ando.exemplar\
              pypad_ando.py\
              pypad_filewrite.exemplar\
              pypad_filewrite.py\
+             pypad_httpget.exemplar\
+             pypad_httpget.py\
              pypad_icecast2.exemplar\
              pypad_icecast2.py\
              pypad_inno713.exemplar\
