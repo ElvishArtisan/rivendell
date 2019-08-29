@@ -492,18 +492,24 @@ void MainObject::jackInit(RDStation *station)
   if(station->startJack()) {
     QStringList args=
       station->jackCommandLine().split(" ",QString::SkipEmptyParts);
-    QString program=args.at(0);
-    args.removeFirst();
-    QProcess *proc=new QProcess(this);
-    proc->start(program,args);
-    if(proc->waitForStarted()) {
-      RDApplication::syslog(rd_config,LOG_INFO,"JACK server started");
+    if(args.size()) {
+      QString program=args.at(0);
+      args.removeFirst();
+      QProcess *proc=new QProcess(this);
+      proc->start(program,args);
+      if(proc->waitForStarted()) {
+        RDApplication::syslog(rd_config,LOG_INFO,"JACK server started");
+      }
+      else {
+        RDApplication::syslog(rd_config,LOG_WARNING,
+			    "failed to start JACK server");
+      }
+      sleep(1);
     }
     else {
-      RDApplication::syslog(rd_config,LOG_WARNING,
-			    "failed to start JACK server");
+        RDApplication::syslog(rd_config,LOG_WARNING,
+			    "could not start JACK server: no command line specified");
     }
-    sleep(1);
   }
 
   //

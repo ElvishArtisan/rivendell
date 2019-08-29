@@ -226,18 +226,19 @@ bool MainObject::StartDropboxes(QString *err_msg)
     "DELETE_CUTS,"+              // 08
     "METADATA_PATTERN,"+         // 09
     "FIX_BROKEN_FORMATS,"+       // 10
-    "LOG_PATH,"+                 // 11
-    "DELETE_SOURCE,"+            // 12
-    "STARTDATE_OFFSET,"+         // 13
-    "ENDDATE_OFFSET,"+           // 14
-    "ID,"+                       // 15
-    "IMPORT_CREATE_DATES,"+      // 16
-    "CREATE_STARTDATE_OFFSET,"+  // 17
-    "CREATE_ENDDATE_OFFSET,"+    // 18
-    "SET_USER_DEFINED,"+         // 19
-    "FORCE_TO_MONO,"+            // 20
-    "SEGUE_LEVEL,"+              // 21
-    "SEGUE_LENGTH "+             // 22
+    "LOG_TO_SYSLOG,"+            // 11
+    "LOG_PATH,"+                 // 12
+    "DELETE_SOURCE,"+            // 13
+    "STARTDATE_OFFSET,"+         // 14
+    "ENDDATE_OFFSET,"+           // 15
+    "ID,"+                       // 16
+    "IMPORT_CREATE_DATES,"+      // 17
+    "CREATE_STARTDATE_OFFSET,"+  // 18
+    "CREATE_ENDDATE_OFFSET,"+    // 19
+    "SET_USER_DEFINED,"+         // 20
+    "FORCE_TO_MONO,"+            // 21
+    "SEGUE_LEVEL,"+              // 22
+    "SEGUE_LENGTH "+             // 23
     "from DROPBOXES where "+
     "STATION_NAME=\""+RDEscapeString(rda->config()->stationName())+"\"";
   q=new RDSqlQuery(sql);
@@ -245,7 +246,7 @@ bool MainObject::StartDropboxes(QString *err_msg)
     QStringList args;
 
     args.push_back(QString().sprintf("--persistent-dropbox-id=%d",
-				     q->value(15).toInt()));
+				     q->value(16).toInt()));
     args.push_back("--drop-box");
     sql=QString("select SCHED_CODE from DROPBOX_SCHED_CODES where ")+
       QString().sprintf("DROPBOX_ID=%d",q->value(0).toInt());
@@ -265,11 +266,11 @@ bool MainObject::StartDropboxes(QString *err_msg)
     if(q->value(6).toString()=="Y") {
       args.push_back("--use-cartchunk-cutid");
     }
-    if(q->value(21).toInt()<1) {
+    if(q->value(22).toInt()<1) {
       args.push_back(QString().sprintf("--segue-level=%d",
-				       q->value(21).toInt()));
+				       q->value(22).toInt()));
       args.push_back(QString().sprintf("--segue-length=%u",
-				       q->value(22).toUInt()));
+				       q->value(23).toUInt()));
     }
     if(q->value(7).toString()=="Y") {
       args.push_back("--title-from-cartchunk-cutid");
@@ -277,7 +278,7 @@ bool MainObject::StartDropboxes(QString *err_msg)
     if(q->value(8).toString()=="Y") {
       args.push_back("--delete-cuts");
     }
-    if(q->value(20).toString()=="Y") {
+    if(q->value(21).toString()=="Y") {
       args.push_back("--to-mono");
     }
     if(!q->value(9).toString().isEmpty()) {
@@ -286,29 +287,29 @@ bool MainObject::StartDropboxes(QString *err_msg)
     if(q->value(10).toString()=="Y") {
       args.push_back("--fix-broken-formats");
     }
-    if(q->value(12).toString()=="Y") {
+    if(q->value(13).toString()=="Y") {
       args.push_back("--delete-source");
     }
-    if(q->value(16).toString()=="Y") {
+    if(q->value(17).toString()=="Y") {
       args.push_back(QString().sprintf("--create-startdate-offset=%d",
-				       q->value(17).toInt()));
-      args.push_back(QString().sprintf("--create-enddate-offset=%d",
 				       q->value(18).toInt()));
+      args.push_back(QString().sprintf("--create-enddate-offset=%d",
+				       q->value(19).toInt()));
     }
-    if(!q->value(19).toString().isEmpty()) {
-      args.push_back(QString("--set-user-defined=")+q->value(19).toString());
+    if(!q->value(20).toString().isEmpty()) {
+      args.push_back(QString("--set-user-defined=")+q->value(20).toString());
     }
     args.push_back(QString().sprintf("--startdate-offset=%d",
-				     q->value(13).toInt()));
-    args.push_back(QString().sprintf("--enddate-offset=%d",
 				     q->value(14).toInt()));
-    if(!q->value(11).toString().isEmpty()) {
-      QFileInfo *fileinfo=new QFileInfo(q->value(11).toString());
-      args.push_back(QString().sprintf("--log-filename=%s",
-				     (const char *)fileinfo->fileName()));
-      args.push_back(QString().sprintf("--log-directory=%s",
-				     (const char *)fileinfo->absolutePath()));
-      args.push_back("--verbose");
+    args.push_back(QString().sprintf("--enddate-offset=%d",
+				     q->value(15).toInt()));
+    if(RDBool(q->value(11).toString())) {
+      args.push_back("--log-syslog");
+    }
+    else {
+      if(!q->value(12).toString().isEmpty()) {
+	args.push_back("--log-filename="+q->value(12).toString());
+      }
     }
     args.push_back(q->value(1).toString());
     args.push_back(q->value(2).toString());

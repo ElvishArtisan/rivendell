@@ -48,9 +48,8 @@ class RDClock
    int size() const;
    bool load();
    bool save();
-   bool insert(const QString &event_name,int line);
+   int insert(const QString &event_name,const QTime &start,int len);
    void remove(int line);
-   void move(int from_line,int to_line);
    bool validate(const QTime &start_time,int length,int except_line=-1);
    bool generateLog(int hour,const QString &logname,const QString &svc_name,
 		    QString *errors);

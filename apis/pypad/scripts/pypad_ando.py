@@ -32,14 +32,13 @@ def eprint(*args,**kwargs):
 
 def ProcessTimer(config):
     n=1
-    while(True):
+    section='System'+str(n)
+    while(config.has_section(section)):
+        send_sock.sendto('HB'.encode('utf-8'),
+                         (config.get(section,'IpAddress'),int(config.get(section,'UdpPort'))))
+        n=n+1
         section='System'+str(n)
-        try:
-            send_sock.sendto('HB'.encode('utf-8'),
-                             (config.get(section,'IpAddress'),int(config.get(section,'UdpPort'))))
-            n=n+1
-        except configparser.NoSectionError:
-            return
+    return
 
 def ProcessPad(update):
     try:
@@ -48,27 +47,25 @@ def ProcessPad(update):
         last_updates[update.machine()]=None
 
     n=1
-    while(True):
+    section='System'+str(n)
+    while(update.config().has_section(section)):
         section='System'+str(n)
-        try:
-            if update.shouldBeProcessed(section) and update.hasPadType(pypad.TYPE_NOW) and (last_updates[update.machine()] != update.startDateTimeString(pypad.TYPE_NOW)):
-                last_updates[update.machine()]=update.startDateTimeString(pypad.TYPE_NOW)
-                title=update.resolvePadFields(update.config().get(section,'Title'),pypad.ESCAPE_NONE)
-                artist=update.resolvePadFields(update.config().get(section,'Artist'),pypad.ESCAPE_NONE)
-                album=update.resolvePadFields(update.config().get(section,'Album'),pypad.ESCAPE_NONE)
-                label=update.resolvePadFields(update.config().get(section,'Label'),pypad.ESCAPE_NONE)
-                secs=update.padField(pypad.TYPE_NOW,pypad.FIELD_LENGTH)
-                duration=('%02d:' % (secs//60000))+('%02d' % ((secs%60000)//1000))
-                group=update.padField(pypad.TYPE_NOW,pypad.FIELD_GROUP_NAME)
-                if update.config().get(section,'Label')=='':
-                    msg='^'+artist+'~'+title+'~'+duration+'~'+group+'~'+album+'~'+str(update.padField(pypad.TYPE_NOW,pypad.FIELD_CART_NUMBER))+'|'
-                else:
-                    msg='^'+artist+'~'+title+'~'+duration+'~'+group+'~'+str(update.padField(pypad.TYPE_NOW,pypad.FIELD_CART_NUMBER))+'~'+album+'~'+label+'|'
-                send_sock.sendto(msg.encode('utf-8'),
-                                 (update.config().get(section,'IpAddress'),int(update.config().get(section,'UdpPort'))))
-            n=n+1
-        except configparser.NoSectionError:
-            return
+        if update.shouldBeProcessed(section) and update.hasPadType(pypad.TYPE_NOW) and (last_updates[update.machine()] != update.startDateTimeString(pypad.TYPE_NOW)):
+            last_updates[update.machine()]=update.startDateTimeString(pypad.TYPE_NOW)
+            title=update.resolvePadFields(update.config().get(section,'Title'),pypad.ESCAPE_NONE)
+            artist=update.resolvePadFields(update.config().get(section,'Artist'),pypad.ESCAPE_NONE)
+            album=update.resolvePadFields(update.config().get(section,'Album'),pypad.ESCAPE_NONE)
+            label=update.resolvePadFields(update.config().get(section,'Label'),pypad.ESCAPE_NONE)
+            secs=update.padField(pypad.TYPE_NOW,pypad.FIELD_LENGTH)
+            duration=('%02d:' % (secs//60000))+('%02d' % ((secs%60000)//1000))
+            group=update.padField(pypad.TYPE_NOW,pypad.FIELD_GROUP_NAME)
+            if update.config().get(section,'Label')=='':
+                msg='^'+artist+'~'+title+'~'+duration+'~'+group+'~'+album+'~'+str(update.padField(pypad.TYPE_NOW,pypad.FIELD_CART_NUMBER))+'|'
+            else:
+                msg='^'+artist+'~'+title+'~'+duration+'~'+group+'~'+str(update.padField(pypad.TYPE_NOW,pypad.FIELD_CART_NUMBER))+'~'+album+'~'+label+'|'
+            send_sock.sendto(msg.encode('utf-8'),
+                             (update.config().get(section,'IpAddress'),int(update.config().get(section,'UdpPort'))))
+        n=n+1
 
 #
 # 'Main' function

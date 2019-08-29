@@ -1,10 +1,10 @@
 #!%PYTHON_BANGPATH%
 
-# pypad_shoutcast1.py
+# pypad_httpget.py
 #
-# Write PAD updates to a Shoutcast 1 instance
+# Write PAD updates to HTTP GET URL
 #
-#   (C) Copyright 2018-2019 Fred Gleason <fredg@paravelsystems.com>
+#   (C) Copyright 2019 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as
@@ -21,10 +21,10 @@
 #
 
 import sys
-import syslog
 import configparser
 import pycurl
 import pypad
+import syslog
 from io import BytesIO
 
 def eprint(*args,**kwargs):
@@ -34,39 +34,36 @@ def ProcessPad(update):
     if update.hasPadType(pypad.TYPE_NOW):
         n=1
         while(True):
-            #
-            # First, get all of our configuration values
-            #
-            section='Shoutcast'+str(n)
+            section='Url'+str(n)
             try:
-                song=update.resolvePadFields(update.config().get(section,'FormatString'),pypad.ESCAPE_URL)
-                url='http://'+update.config().get(section,'Hostname')+':'+str(update.config().get(section,'Tcpport'))+'/admin.cgi?pass='+update.escape(update.config().get(section,'Password'),pypad.ESCAPE_URL)+'&mode=updinfo&song='+song
+                url=update.resolvePadFields(update.config().get(section,'URL'),pypad.ESCAPE_URL)
+                buf=BytesIO()
                 curl=pycurl.Curl()
                 curl.setopt(curl.URL,url)
-                headers=[]
-                #
-                # D.N.A.S v1.9.8 refuses to process updates with the default
-                # CURL user-agent value, hence we lie to it.
-                #
-                headers.append('User-Agent: '+'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.2) Gecko/20070219 Firefox/2.0.0.2')
-                curl.setopt(curl.HTTPHEADER,headers);
+                curl.setopt(curl.WRITEDATA,buf)
+                curl.setopt(curl.FOLLOWLOCATION,True)
+
             except configparser.NoSectionError:
+                if(n==1):
+                    update.syslog(syslog.LOG_WARNING,'No httpget config found')
                 return
 
-            #
-            # Now, send the update
-            #
             if update.shouldBeProcessed(section):
                 try:
                     curl.perform()
                     code=curl.getinfo(pycurl.RESPONSE_CODE)
                     if (code<200) or (code>=300):
                         update.syslog(syslog.LOG_WARNING,'['+section+'] returned response code '+str(code))
+                    else:
+                        update.syslog(syslog.LOG_NOTICE,'['+section+'] successful')
+
                 except pycurl.error:
                     update.syslog(syslog.LOG_WARNING,'['+section+'] failed: '+curl.errstr())
-                curl.close()
-            n=n+1
+                    update.syslog(syslog.LOG_WARNING,'['+section+'] URL: '+url)
 
+                curl.close()
+
+            n=n+1
 
 #
 # 'Main' function
@@ -75,7 +72,7 @@ rcvr=pypad.Receiver()
 try:
     rcvr.setConfigFile(sys.argv[3])
 except IndexError:
-    eprint('pypad_shoutcast1.py: USAGE: cmd <hostname> <port> <config>')
+    eprint('pypad_httpget.py: USAGE: cmd <hostname> <port> <config>')
     sys.exit(1)
 rcvr.setPadCallback(ProcessPad)
 rcvr.start(sys.argv[1],int(sys.argv[2]))

@@ -1686,6 +1686,19 @@
 	  </varlistentry>
 	  <varlistentry>
 	    <term>
+	      <computeroutput>Log events in Syslog</computeroutput>
+	    </term>
+	    <listitem>
+	      <para>
+		If ticked, log messages for this dropbox will be sent to
+		the system syslog. Otherwise, these events will be sent to
+		the file specified by the
+		<computeroutput>Log File:</computeroutput> setting below.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>
 	      <computeroutput>Log File:</computeroutput>
 	    </term>
 	    <listitem>

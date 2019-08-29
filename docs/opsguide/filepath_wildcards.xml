@@ -239,7 +239,7 @@
 	      <term><userinput>l</userinput></term>
 	      <listitem>
 		<para>
-		  [unassigned]
+		  Month, unpadded (1-12)
 		</para>
 	      </listitem>
 	    </varlistentry>

@@ -30,14 +30,13 @@ class AlsaItem : public Q3ListBoxText
   AlsaItem(Q3ListBox *listbox,const QString &text=QString::null);
   AlsaItem(const QString &text=QString::null);
   AlsaItem(const AlsaItem &item);
-  int card() const;
-  void setCard(int card);
-  int device() const;
-  void setDevice(int device);
-
+  int cardNumber() const;
+  void setCardNumber(int cardnum);
+  int pcmNumber() const;
+  void setPcmNumber(int pcmnum);
  private:
-  int alsa_card;
-  int alsa_device;
+  int alsa_card_number;
+  int alsa_pcm_number;
 };
 
 

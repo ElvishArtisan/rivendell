@@ -9734,6 +9734,22 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
   }
 
   if((cur_schema<309)&&(set_schema>cur_schema)) {
+    sql=QString("alter table DROPBOXES add column ")+
+      "LOG_TO_SYSLOG enum('N','Y') not null "+
+      "default 'Y' after FIX_BROKEN_FORMATS";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("update DROPBOXES set LOG_TO_SYSLOG='N' where ")+
+      "LOG_PATH is not null";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
+  if((cur_schema<310)&&(set_schema>cur_schema)) {
     sql="alter table CART add column MINIMUM_TALK_LENGTH int unsigned default 0 after AVERAGE_HOOK_LENGTH";
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
@@ -9829,6 +9845,11 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
 
     WriteSchemaVersion(++cur_schema);
   }
+=======
+    WriteSchemaVersion(++cur_schema);
+  }
+
+>>>>>>> upstream/master
 
   // NEW SCHEMA UPDATES GO HERE...
 

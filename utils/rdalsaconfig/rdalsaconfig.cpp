@@ -2,7 +2,7 @@
 //
 // A Qt-based application to display info about ALSA cards.
 //
-//   (C) Copyright 2009-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2009-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,7 +25,10 @@
 #include <qapplication.h>
 #include <qmessagebox.h>
 
+#include <rd.h>
 #include <rdcmd_switch.h>
+
+#include <rdapplication.h>
 
 #include <alsaitem.h>
 #include <rdalsaconfig.h>
@@ -40,6 +43,7 @@
 //
 QString alsa_filename;
 bool alsa_autogen=false;
+bool alsa_rewrite=false;
 bool alsa_manage_daemons=false;
 bool alsa_daemon_start_needed=false;
 
@@ -65,6 +69,8 @@ void StartDaemons()
 MainWidget::MainWidget(QWidget *parent)
   : QWidget(parent)
 {
+  QString err_msg;
+
   setWindowTitle(tr("RDAlsaConfig")+" v"+VERSION);
 
   //
@@ -79,6 +85,15 @@ MainWidget::MainWidget(QWidget *parent)
   setMinimumHeight(sizeHint().height());
 
   //
+  // Open the Database
+  //
+  rda=new RDApplication("RDAlsaConfig","rdalsaconfig",RDALSACONFIG_USAGE,this);
+  if(!rda->open(&err_msg,NULL,false)) {
+    QMessageBox::critical(this,"RDAlsaConfig - "+tr("Error"),err_msg);
+    exit(1);
+  }
+
+  //
   // Generate Fonts
   //
   QFont font("Helvetica",12,QFont::Normal);
@@ -87,36 +102,21 @@ MainWidget::MainWidget(QWidget *parent)
   label_font.setPixelSize(12);
 
   //
-  // Available Devices
+  // ALSA Sound Devices
   //
-  alsa_system_list=new Q3ListBox(this);
+  alsa_system_list=new QListView(this);
   alsa_system_list->setFont(font);
+  alsa_system_list->setSelectionMode(QAbstractItemView::MultiSelection);
   alsa_system_label=
-    new QLabel(alsa_system_list,tr("Available Sound Devices"),this);
+    new QLabel(alsa_system_list,tr("ALSA Sound Devices"),this);
   alsa_system_label->setFont(label_font);
   alsa_system_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-
-  //
-  // Up Button
-  //
-  alsa_up_button=new RDTransportButton(RDTransportButton::Up,this);
-  connect(alsa_up_button,SIGNAL(clicked()),this,SLOT(upData()));
-
-  //
-  // Down Button
-  //
-  alsa_down_button=
-    new RDTransportButton(RDTransportButton::Down,this);
-  connect(alsa_down_button,SIGNAL(clicked()),this,SLOT(downData()));
-
-  //
-  // Selected Devices
-  //
-  alsa_config_list=new Q3ListBox(this);
-  alsa_config_list->setFont(font);
-  alsa_config_label=new QLabel(alsa_config_list,tr("Active Sound Devices"),this);
-  alsa_config_label->setFont(label_font);
-  alsa_config_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
+  alsa_description_label=new QLabel(this);
+  alsa_description_label->
+    setText(tr("Select the audio devices to dedicate for use with Rivendell. (Devices so dedicated will be unavailable for use with other applications.)"));
+  alsa_description_label->setFont(font);
+  alsa_description_label->setAlignment(Qt::AlignLeft|Qt::AlignTop);
+  alsa_description_label->setWordWrap(true);
 
   //
   // Save Button
@@ -135,9 +135,9 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Load Available Devices and Configuration
   //
-  alsa_alsa=new RDAlsa();
-  alsa_alsa->load(alsa_filename);
-  LoadList(alsa_system_list,alsa_config_list);
+  alsa_system_model=new RDAlsaModel(rda->system()->sampleRate(),this);
+  alsa_system_list->setModel(alsa_system_model);
+  LoadConfig(alsa_filename);
 
   //
   // Daemon Management
@@ -168,7 +168,7 @@ MainWidget::~MainWidget()
 
 QSize MainWidget::sizeHint() const
 {
-  return QSize(400,300);
+  return QSize(400,400);
 }
 
 
@@ -178,42 +178,12 @@ QSizePolicy MainWidget::sizePolicy() const
 }
 
 
-void MainWidget::upData()
-{
-  MoveItem(alsa_config_list,alsa_system_list);
-}
-
-
-void MainWidget::downData()
-{
-  if(alsa_config_list->count()>=RD_MAX_CARDS) {
-    return;
-  }
-  MoveItem(alsa_system_list,alsa_config_list);
-}
-
-
 void MainWidget::saveData()
 {
-  AlsaItem *item=NULL;
+  SaveConfig(alsa_filename);
 
-  for(int i=0;i<RD_MAX_CARDS;i++) {
-    if((item=(AlsaItem *)alsa_config_list->item(i))==NULL) {
-      alsa_alsa->setRivendellCard(i,-1);
-      alsa_alsa->setRivendellDevice(i,-1);
-    }
-    else {
-      alsa_alsa->setRivendellCard(i,item->card());
-      alsa_alsa->setRivendellDevice(i,item->device());
-    }
-  }
-  if(!alsa_alsa->save(alsa_filename)) {
-    QMessageBox::warning(this,tr("RDAlsaConfig error"),
-			 tr(QString("Unable to save configuration to \"")+
-			    alsa_filename+"\""));
-    return;
-  }
   StartDaemons();
+
   qApp->quit();
 }
 
@@ -227,14 +197,10 @@ void MainWidget::cancelData()
 
 void MainWidget::resizeEvent(QResizeEvent *e)
 {
-  alsa_system_label->setGeometry(20,5,size().width()-20,20);
+  alsa_system_label->setGeometry(10,5,size().width()-20,20);
+  alsa_description_label->setGeometry(10,25,size().width()-20,50);
   alsa_system_list->
-    setGeometry(10,25,size().width()-20,(size().height()-120)/2);
-  alsa_up_button->setGeometry(size().width()-120,size().height()/2-28,50,30);
-  alsa_down_button->setGeometry(size().width()-60,size().height()/2-28,50,30);
-  alsa_config_label->setGeometry(20,size().height()/2-10,size().width()/2,20);
-  alsa_config_list->setGeometry(10,size().height()/2+10,
-			      size().width()-20,(size().height()-120)/2);
+    setGeometry(10,75,size().width()-20,size().height()-130);
   alsa_save_button->
     setGeometry(size().width()-120,size().height()-40,50,30);
   alsa_cancel_button->
@@ -263,88 +229,188 @@ void MainWidget::closeEvent(QCloseEvent *e)
 }
 
 
-void MainWidget::LoadList(Q3ListBox *system,Q3ListBox *config)
+void MainWidget::LoadConfig(const QString &filename)
 {
-  for(unsigned i=0;i<alsa_alsa->cards();i++) {
-    for(int j=0;j<alsa_alsa->pcmDevices(i);j++) {
-      if(PcmUnused(i,j)) {
-	AlsaItem *item=
-	  new AlsaItem(alsa_alsa->cardLongName(i)+" - "+
-		       alsa_alsa->pcmName(i,j));
-	item->setCard(i);
-	item->setDevice(j);
-	system->insertItem(item);
+  if(!alsa_system_model->loadConfig(filename)) {
+    return;
+  }
+  for(int i=0;i<alsa_system_model->rowCount();i++) {
+    if(alsa_system_model->isEnabled(i)) {
+      alsa_system_list->selectionModel()->
+	select(alsa_system_model->index(i,0),QItemSelectionModel::Select);
+    }
+    else {
+      alsa_system_list->selectionModel()->
+	select(alsa_system_model->index(i,0),QItemSelectionModel::Deselect);
+    }
+  }
+
+  /*
+  FILE *f=NULL;
+  char line[1024];
+  int istate=0;
+  int port=0;
+  QString card_id=0;
+  int device=0;
+  QStringList list;
+  bool active_line=false;
+  QModelIndex index;
+
+  if((f=fopen(filename.toUtf8(),"r"))==NULL) {
+    return;
+  }
+  while(fgets(line,1024,f)!=NULL) {
+    QString str=line;
+    str.replace("\n","");
+    if(str==START_MARKER) {
+      active_line=true;
+    }
+    if(str==END_MARKER) {
+      active_line=false;
+    }
+    if((str!=START_MARKER)&&(str!=END_MARKER)) {
+      if(active_line) {
+	switch(istate) {
+	case 0:
+	  if(str.left(6)=="pcm.rd") {
+	    port=str.mid(6,1).toInt();
+	    istate=1;
+	  }
+	  else {
+	    if(str.left(6)=="ctl.rd") {
+	      istate=10;
+	    }
+	    else {
+	      alsa_other_lines.push_back(str+"\n");
+	    }
+	  }
+	  break;
+
+	case 1:
+	  list=str.split(" ",QString::SkipEmptyParts);
+	  if(list[0]=="}") {
+	    if((port>=0)&&(port<RD_MAX_CARDS)) {
+	      index=alsa_system_model->indexOf(card_id,device);
+	      if(index.isValid()) {
+		alsa_system_list->selectionModel()->
+		  select(index,QItemSelectionModel::Select);
+	      }
+	    }
+	    card_id="";
+	    device=0;
+	    istate=0;
+	  }
+	  else {
+	    if(list.size()==2) {
+	      if(list[0]=="card") {
+		card_id=list[1].trimmed();
+	      }
+	      if(list[0]=="device") {
+		device=list[1].toInt();
+	      }
+	    }
+	  }
+	  break;
+
+	case 10:
+	  if(str.left(1)=="}") {
+	    istate=0;
+	  }
+	  break;
+	}
+      }
+      else {
+	alsa_other_lines.push_back(str+"\n");
       }
     }
   }
-  system->sort();
-
-  for(int i=0;i<RD_MAX_CARDS;i++) {
-    if(alsa_alsa->rivendellCard(i)>=0) {
-      AlsaItem *item=
-	new AlsaItem(alsa_alsa->cardLongName(alsa_alsa->rivendellCard(i))+" - "+
-		     alsa_alsa->pcmName(alsa_alsa->rivendellCard(i),
-					alsa_alsa->rivendellDevice(i)));
-      item->setCard(alsa_alsa->rivendellCard(i));
-      item->setDevice(alsa_alsa->rivendellDevice(i));
-      config->insertItem(item);
-    }
-  }
-  config->sort();
+  fclose(f);
+  */
 }
 
 
-bool MainWidget::PcmUnused(int card,int device)
+void MainWidget::SaveConfig(const QString &filename) const
 {
-  for(int i=0;i<RD_MAX_CARDS;i++) {
-    if((card==alsa_alsa->rivendellCard(i))&&
-       (device==alsa_alsa->rivendellDevice(i))) {
-      return false;
-    }
+  for(int i=0;i<alsa_system_model->rowCount();i++) {
+    QItemSelectionModel *sel=alsa_system_list->selectionModel();
+    alsa_system_model->setEnabled(i,sel->isRowSelected(i,QModelIndex()));
   }
-  return true;
-}
+  alsa_system_model->saveConfig(filename);
 
 
-void MainWidget::MoveItem(Q3ListBox *src,Q3ListBox *dest)
-{
-  AlsaItem *item=(AlsaItem *)src->selectedItem();
-  if(item==NULL) {
+  /*
+  QString tempfile=filename+"-temp";
+  FILE *f=NULL;
+
+  if((f=fopen(tempfile.toUtf8(),"w"))==NULL) {
     return;
   }
-  dest->insertItem(new AlsaItem(*item));  // Force a deep copy
-  dest->sort();
-  delete item;
+  for(int i=0;i<alsa_other_lines.size();i++) {
+    fprintf(f,alsa_other_lines.at(i));
+  }
+  fprintf(f,"%s\n",START_MARKER);
+  QModelIndexList indexes=alsa_system_list->selectionModel()->selectedIndexes();
+  for(int i=0;i<indexes.size();i++) {
+    fprintf(f,"pcm.rd%d {\n",i);
+    fprintf(f,"  type hw\n");
+    fprintf(f,"  card %s\n",
+	    (const char *)alsa_system_model->card(indexes.at(i))->id().toUtf8());
+    fprintf(f,"  device %d\n",alsa_system_model->pcmNumber(indexes.at(i)));
+    fprintf(f,"  rate %u\n",rda->system()->sampleRate());
+    if(alsa_system_model->card(indexes.at(i))->id()=="Axia") {
+      fprintf(f,"  channels 2\n");
+    }
+    fprintf(f,"}\n");
+    fprintf(f,"ctl.rd%d {\n",i);
+    fprintf(f,"  type hw\n");
+    fprintf(f,"  card %s\n",
+	    (const char *)alsa_system_model->card(indexes.at(i))->id().toUtf8());
+    fprintf(f,"}\n");
+  }
+  fprintf(f,"%s\n",END_MARKER);
+
+  fclose(f);
+  rename(tempfile.toUtf8(),filename.toUtf8());
+  */
 }
 
 
-Autogen::Autogen(QObject *parent)
+Autogen::Autogen()
+  : QObject()
 {
-  StopDaemons();
+  QString err_msg;
 
   //
-  // Load Available Devices
+  // Open the Database
   //
-  RDAlsa *alsa=new RDAlsa();
-  alsa->load(alsa_filename);
-
-  //
-  // Build Configuration
-  //
-  int slot=0;
-  for(unsigned i=0;i<alsa->cards();i++) {
-    for(int j=0;j<alsa->pcmDevices(i);j++) {
-      alsa->setRivendellCard(slot,i);
-      alsa->setRivendellDevice(slot,j);
-      slot++;
-    }
+  rda=new RDApplication("RDAlsaConfig","rdalsaconfig",RDALSACONFIG_USAGE);
+  if(!rda->open(&err_msg,NULL,false)) {
+    fprintf(stderr,"rdalsaconfig: unable to open database [%s]\n",
+	    (const char *)err_msg.toUtf8());
+    exit(1);
   }
 
-  //
-  // Save Configuration
-  //
-  if(!alsa->save(alsa_filename)) {
-    exit(256);
+  StopDaemons();
+
+  RDAlsaModel *model=new RDAlsaModel(rda->system()->sampleRate());
+  if(alsa_rewrite) {
+    if(!model->loadConfig(alsa_filename)) {
+      fprintf(stderr,"rdalsaconfig: unable to load file \"%s\"\n",
+	      (const char *)alsa_filename.toUtf8());
+      StartDaemons();
+      exit(1);
+    }
+  }
+  if(alsa_autogen) {
+    for(int i=0;i<model->rowCount();i++) {
+      model->setEnabled(i,true);
+    }
+  }
+  if(!model->saveConfig(alsa_filename)) {
+    fprintf(stderr,"rdalsaconfig: unable to load file \"%s\"\n",
+	    (const char *)alsa_filename.toUtf8());
+    StartDaemons();
+    exit(1);
   }
 
   StartDaemons();
@@ -368,16 +434,16 @@ int main(int argc,char *argv[])
     if(cmd->key(i)=="--autogen") {
       alsa_autogen=true;
     }
+    if(cmd->key(i)=="--rewrite") {
+      alsa_rewrite=true;
+    }
     if(cmd->key(i)=="--manage-daemons") {
       alsa_manage_daemons=true;
     }
   }
 
-  //
-  // Autogenerate a full configuration
-  //
-  if(alsa_autogen) {
-    QApplication a(argc,argv,false);
+  if(alsa_autogen||alsa_rewrite) {
+    QCoreApplication a(argc,argv);
     new Autogen();
     return a.exec();
   }
