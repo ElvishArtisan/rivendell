@@ -1189,6 +1189,10 @@ files, causing any whose files remain to be imported again.</source>
         <source>Segue Length:</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Log events in Syslog</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditEncoder</name>
@@ -4497,6 +4501,10 @@ FINALIDADE PARTICULAR.  Aperte o botão VER LICENÇA para mais detalhes.</transl
     </message>
     <message>
         <source>D&amp;uplicate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>ID</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

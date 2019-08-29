@@ -4,7 +4,7 @@
 #
 # Send PAD updates via UDP
 #
-#   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+#   (C) Copyright 2018-2019 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as
@@ -30,16 +30,17 @@ def eprint(*args,**kwargs):
 
 def ProcessPad(update):
     n=1
-    while(True):
+    section='Udp'+str(n)
+    while(update.config().has_section(section)):
+        if update.shouldBeProcessed(section):
+            fmtstr=update.config().get(section,'FormatString')
+            send_sock.sendto(update.resolvePadFields(fmtstr,int(update.config().get(section,'Encoding'))).encode('utf-8'),
+                             (update.config().get(section,'IpAddress'),int(update.config().get(section,'UdpPort'))))
+        n=n+1
         section='Udp'+str(n)
-        try:
-            if update.shouldBeProcessed(section):
-                fmtstr=update.config().get(section,'FormatString')
-                send_sock.sendto(update.resolvePadFields(fmtstr,int(update.config().get(section,'Encoding'))).encode('utf-8'),
-                                 (update.config().get(section,'IpAddress'),int(update.config().get(section,'UdpPort'))))
-            n=n+1
-        except configparser.NoSectionError:
-            return
+    if(n==1):
+        update.syslog(syslog.LOG_WARNING,'No UDP config found')
+
 
 #
 # 'Main' function

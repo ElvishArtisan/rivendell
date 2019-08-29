@@ -300,6 +300,19 @@ void RDDropbox::setFixBrokenFormats(bool state) const
 }
 
 
+bool RDDropbox::logToSyslog() const
+{
+  return RDBool(RDGetSqlValue("DROPBOXES","ID",box_id,"LOG_TO_SYSLOG").
+		toString());  
+}
+
+
+void RDDropbox::setLogToSyslog(bool state) const
+{
+  SetRow("LOG_TO_SYSLOG",state);
+}
+
+
 QString RDDropbox::logPath() const
 {
   return RDGetSqlValue("DROPBOXES","ID",box_id,"LOG_PATH").toString();

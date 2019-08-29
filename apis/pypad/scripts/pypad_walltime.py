@@ -32,27 +32,25 @@ def eprint(*args,**kwargs):
 
 def ProcessPad(update):
     n=1
-    try:
-        while(True):
-            section='Walltime'+str(n)
-            if update.shouldBeProcessed(section):
-                fmtstr=update.config().get(section,'FormatString')
-                buf=BytesIO(update.resolvePadFields(fmtstr,pypad.ESCAPE_NONE).encode('utf-8'))
-                curl=pycurl.Curl()
-                curl.setopt(curl.URL,'http://'+update.config().get(section,'IpAddress')+'/webwidget');
-                curl.setopt(curl.USERNAME,'user')
-                curl.setopt(curl.PASSWORD,update.config().get(section,'Password'))
-                curl.setopt(curl.UPLOAD,True)
-                curl.setopt(curl.READDATA,buf)
-                try:
-                    curl.perform()
-                except pycurl.error:
-                    update.syslog(syslog.LOG_WARNING,'['+section+'] failed: '+curl.errstr())
-                curl.close()
-            n=n+1
+    section='Walltime'+str(n)
+    while(update.config().has_section(section)):
+        if update.shouldBeProcessed(section):
+            fmtstr=update.config().get(section,'FormatString')
+            buf=BytesIO(update.resolvePadFields(fmtstr,pypad.ESCAPE_NONE).encode('utf-8'))
+            curl=pycurl.Curl()
+            curl.setopt(curl.URL,'http://'+update.config().get(section,'IpAddress')+'/webwidget');
+            curl.setopt(curl.USERNAME,'user')
+            curl.setopt(curl.PASSWORD,update.config().get(section,'Password'))
+            curl.setopt(curl.UPLOAD,True)
+            curl.setopt(curl.READDATA,buf)
+            try:
+                curl.perform()
+            except pycurl.error:
+                update.syslog(syslog.LOG_WARNING,'['+section+'] failed: '+curl.errstr())
+            curl.close()
+        n=n+1
+        section='Walltime'+str(n)
 
-    except configparser.NoSectionError:
-        return
 
 #
 # 'Main' function

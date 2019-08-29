@@ -175,7 +175,7 @@ Você quer salvar?</translation>
     </message>
     <message>
         <source>--- End of clock ---</source>
-        <translation>-- Fim do Relógio --</translation>
+        <translation type="obsolete">-- Fim do Relógio --</translation>
     </message>
     <message>
         <source>Invalid Code</source>
@@ -208,6 +208,14 @@ Você quer salvar?</translation>
     </message>
     <message>
         <source>Are you sure you want to delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>That event does not exist.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

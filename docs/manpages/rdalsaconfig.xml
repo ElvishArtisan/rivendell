@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry id="stdin" xmlns="http://docbook.org/ns/docbook" version="5.0">
+  <!--
+      Header
+  -->
+  <refmeta>
+    <refentrytitle>rdalsaconfig</refentrytitle>
+    <manvolnum>1</manvolnum>
+    <refmiscinfo class='source'>August 2019</refmiscinfo>
+    <refmiscinfo class='manual'>Linux Audio Manual</refmiscinfo>
+  </refmeta>
+  <refnamediv>
+    <refname>rdalsaconfig</refname>
+    <refpurpose>
+      Utility for managing Rivendell ALSA configuration
+    </refpurpose>
+  </refnamediv>
+  <info>
+    <author>
+      <personname>
+	<firstname>Fred</firstname>
+	<surname>Gleason</surname>
+	<email>fredg@paravelsystems.com</email>
+      </personname>
+      <contrib>Application Author</contrib>
+    </author>
+  </info>
+
+  <!--
+      Body
+  -->
+  <refsynopsisdiv id='synopsis'>
+    <cmdsynopsis>
+      <command>rdalsaconfig</command>
+      <arg choice='opt'><replaceable>options</replaceable></arg>
+      <sbr/>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+
+  <refsect1 id='description'><title>Description</title>
+  <para>
+    When invoked with no options,
+    <command>rdalsaconfig</command><manvolnum>1</manvolnum> will
+    query the system for the list of available ALSA PCM devices and
+    display the results in a GUI applet, with the device(s) currently
+    configured for use by Rivendell highlighted. The user may select and/or
+    deselect devices for Rivendell and save the result.
+  </para>
+  </refsect1>
+
+  <refsect1 id='options'><title>Options</title>
+  <variablelist remap='TP'>
+    <varlistentry>
+      <term>
+	<option>--asoundrc-file=<replaceable>filename</replaceable></option>
+      </term>
+      <listitem>
+	<para>
+	  Load and save the Rivendell configuration file from
+	  <replaceable>filename</replaceable>. Default value is
+	  <userinput>/etc/asound.conf</userinput>.
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<option>--autogen</option>
+      </term>
+      <listitem>
+	<para>
+	  Generate and save a Rivendell configuration containing all
+	  available ALSA PCM devices, then exit. This option is mutually
+	  exclusive with the <command>--rewrite</command> option (see below).
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<option>--manage-daemons</option>
+      </term>
+      <listitem>
+	<para>
+	  Restart the Rivendell service as necessary to make configuration
+	  changes active (requires root permission).
+	</para>
+      </listitem>
+    </varlistentry>
+    <varlistentry>
+      <term>
+	<option>--rewrite</option>
+      </term>
+      <listitem>
+	<para>
+	  Load the current Rivendell configuration, save it back to the
+	  same location, then exit (useful for upgrading an existing v2.x
+	  configuration to the enhanced v3.x format). This option is mutually
+	  exclusive with the <command>--autogen</command> option (see above).
+	</para>
+      </listitem>
+    </varlistentry>
+
+  </variablelist>
+</refsect1>
+
+</refentry>
+

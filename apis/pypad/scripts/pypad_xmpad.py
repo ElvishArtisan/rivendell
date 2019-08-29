@@ -149,24 +149,22 @@ def ProcessTimer(config):
 
 def ProcessPad(update):
     n=1
-    try:
-        while(True):
-            section='Serial'+str(n)
-            if update.shouldBeProcessed(section) and update.hasPadType(pypad.TYPE_NOW):
-                dev=OpenSerialDevice(update.config(),section)
-                b4=MakeB4(update,section)
-                a4=MakeA4(update,section)
-                a5=MakeA5(update,section)
-                dev.write(b4.encode('utf-8'))
-                dev.write(b4.encode('utf-8'))
-                dev.write(b4.encode('utf-8'))
-                dev.write(a4.encode('utf-8'))
-                dev.write(a5.encode('utf-8'))
-                dev.close()
-            n=n+1
+    section='Serial'+str(n)
+    while(update.config().has_section(section)):
+        if update.shouldBeProcessed(section) and update.hasPadType(pypad.TYPE_NOW):
+            dev=OpenSerialDevice(update.config(),section)
+            b4=MakeB4(update,section)
+            a4=MakeA4(update,section)
+            a5=MakeA5(update,section)
+            dev.write(b4.encode('utf-8'))
+            dev.write(b4.encode('utf-8'))
+            dev.write(b4.encode('utf-8'))
+            dev.write(a4.encode('utf-8'))
+            dev.write(a5.encode('utf-8'))
+            dev.close()
+        n=n+1
+        section='Serial'+str(n)
 
-    except configparser.NoSectionError:
-        return
 
 #
 # 'Main' function

@@ -34,24 +34,36 @@ def ProcessPad(update):
     if update.hasPadType(pypad.TYPE_NOW):
         n=1
         while(True):
+            #
+            # First, get all of our configuration values
+            #
             section='Icecast'+str(n)
             try:
                 values={}
                 values['mount']=update.config().get(section,'Mountpoint')
                 values['song']=update.resolvePadFields(update.config().get(section,'FormatString'),pypad.ESCAPE_NONE)
                 values['mode']='updinfo'
-                update.syslog(syslog.LOG_INFO,'Updating '+update.config().get(section,'Hostname')+': song='+values['song'])
-                url="http://%s:%s/admin/metadata" % (update.config().get(section,'Hostname'),update.config().get(section,'Tcpport'))
-                try:
-                    response=requests.get(url,auth=HTTPBasicAuth(update.config().get(section,'Username'),update.config().get(section,'Password')),params=values)
-                    response.raise_for_status()
-                except requests.exceptions.RequestException as e:
-                    update.syslog(syslog.LOG_WARNING,str(e))
-                n=n+1
+                hostname=update.config().get(section,'Hostname')
+                tcpport=update.config().get(section,'Tcpport')
+                username=update.config().get(section,'Username')
+                password=update.config().get(section,'Password')
+                url="http://%s:%s/admin/metadata" % (hostname,tcpport)
             except configparser.NoSectionError:
                 if(n==1):
                     update.syslog(syslog.LOG_WARNING,'No icecast config found')
                 return
+
+            #
+            # Now, send the update
+            #
+            if update.shouldBeProcessed(section):
+                try:
+                    response=requests.get(url,auth=HTTPBasicAuth(username,password),params=values)
+                    response.raise_for_status()
+                    update.syslog(syslog.LOG_INFO,'Updating '+hostname+': song='+values['song'])
+                except requests.exceptions.RequestException as e:
+                    update.syslog(syslog.LOG_WARNING,str(e))
+            n=n+1
 
 #
 # Program Name

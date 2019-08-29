@@ -40,6 +40,19 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
   // NEW SCHEMA REVERSIONS GO HERE...
 
+
+  //
+  // Revert 309
+  //
+  if((cur_schema==309)&&(set_schema<cur_schema)) {
+    sql=QString("alter table DROPBOXES drop column LOG_TO_SYSLOG");
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
   //
   // Revert 308
   //

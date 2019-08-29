@@ -4,7 +4,7 @@
 #
 # Send CICs via UDP or serial
 #
-#   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+#   (C) Copyright 2018-2019 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as
@@ -61,31 +61,30 @@ def FilterField(string):
 
 def ProcessPad(update):
     n=1
-    while(True):
-        section='Udp'+str(n)
-        try:
-            if update.shouldBeProcessed(section) and update.hasPadType(pypad.TYPE_NOW) and update.hasService():
-                packet='0:'+update.serviceProgramCode()+':'+update.config().get(section,'IsciPrefix')+FilterField(update.padField(pypad.TYPE_NOW,pypad.FIELD_EXTERNAL_EVENT_ID))+':*'
-                try:
-                    #
-                    # Use serial output
-                    #
-                    tty_dev=update.config().get(section,'TtyDevice')
-                    speed=int(update.config().get(section,'TtySpeed'))
-                    parity=serial.PARITY_NONE
-                    dev=serial.Serial(tty_dev,speed,parity=parity,bytesize=8)
-                    dev.write(packet.encode('utf-8'))
-                    dev.close()
+    section='Udp'+str(n)
+    while(update.config().has_section(section)):
+        if update.shouldBeProcessed(section) and update.hasPadType(pypad.TYPE_NOW) and update.hasService():
+            packet='0:'+update.serviceProgramCode()+':'+update.config().get(section,'IsciPrefix')+FilterField(update.padField(pypad.TYPE_NOW,pypad.FIELD_EXTERNAL_EVENT_ID))+':*'
+            try:
+                #
+                # Use serial output
+                #
+                tty_dev=update.config().get(section,'TtyDevice')
+                speed=int(update.config().get(section,'TtySpeed'))
+                parity=serial.PARITY_NONE
+                dev=serial.Serial(tty_dev,speed,parity=parity,bytesize=8)
+                dev.write(packet.encode('utf-8'))
+                dev.close()
 
-                except configparser.NoOptionError:
-                    #
-                    # Use UDP output
-                    #
-                    send_sock.sendto(packet.encode('utf-8'),
+            except configparser.NoOptionError:
+                #
+                # Use UDP output
+                #
+                send_sock.sendto(packet.encode('utf-8'),
                                      (update.config().get(section,'IpAddress'),int(update.config().get(section,'UdpPort'))))
-            n=n+1
-        except configparser.NoSectionError:
-            return
+        n=n+1
+        section='Udp'+str(n)
+
 
 #
 # 'Main' function

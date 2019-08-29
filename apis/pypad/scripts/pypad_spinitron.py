@@ -48,70 +48,68 @@ def ProcessPad(update):
         last_updates[update.machine()]=None
 
     n=1
-    try:
-        while(True):
-            section='Spinitron'+str(n)
-            if update.shouldBeProcessed(section) and update.hasPadType(pypad.TYPE_NOW) and (last_updates[update.machine()] != update.startDateTimeString(pypad.TYPE_NOW)):
-                last_updates[update.machine()]=update.startDateTimeString(pypad.TYPE_NOW)
-                title=update.resolvePadFields(update.config().get(section,'Title'),pypad.ESCAPE_JSON)
-                artist=update.resolvePadFields(update.config().get(section,'Artist'),pypad.ESCAPE_JSON)
-                album=update.resolvePadFields(update.config().get(section,'Album'),pypad.ESCAPE_JSON)
-                label=update.resolvePadFields(update.config().get(section,'Label'),pypad.ESCAPE_JSON)
-                composer=update.resolvePadFields(update.config().get(section,'Composer'),pypad.ESCAPE_JSON)
-                conductor=update.resolvePadFields(update.config().get(section,'Conductor'),pypad.ESCAPE_JSON)
-                notes=update.resolvePadFields(update.config().get(section,'Notes'),pypad.ESCAPE_JSON)
+    section='Spinitron'+str(n)
+    while(update.config().has_section(section)):
+        if update.shouldBeProcessed(section) and update.hasPadType(pypad.TYPE_NOW) and (last_updates[update.machine()] != update.startDateTimeString(pypad.TYPE_NOW)):
+            last_updates[update.machine()]=update.startDateTimeString(pypad.TYPE_NOW)
+            title=update.resolvePadFields(update.config().get(section,'Title'),pypad.ESCAPE_JSON)
+            artist=update.resolvePadFields(update.config().get(section,'Artist'),pypad.ESCAPE_JSON)
+            album=update.resolvePadFields(update.config().get(section,'Album'),pypad.ESCAPE_JSON)
+            label=update.resolvePadFields(update.config().get(section,'Label'),pypad.ESCAPE_JSON)
+            composer=update.resolvePadFields(update.config().get(section,'Composer'),pypad.ESCAPE_JSON)
+            conductor=update.resolvePadFields(update.config().get(section,'Conductor'),pypad.ESCAPE_JSON)
+            notes=update.resolvePadFields(update.config().get(section,'Notes'),pypad.ESCAPE_JSON)
 
-                json='{\r\n'
-                pmode=update.config().get(section,'PlaylistMode')
-                if pmode=='Full':
-                    json+='  "live": false\r\n'
-                if pmode=='Assist':
-                    json+='  "live:" true\r\n'
-                if pmode=='Follow':
-                    if update.mode()=='Automatic':
-                        json+='  "live": false,\r\n'
-                    else:
-                        json+='  "live": true,\r\n'
-                duration=str(update.padField(pypad.TYPE_NOW,pypad.FIELD_LENGTH)//1000)
-                year=update.padField(pypad.TYPE_NOW,pypad.FIELD_YEAR)
-                if year==None:
-                    json+='  "released": null,\r\n'
+            json='{\r\n'
+            pmode=update.config().get(section,'PlaylistMode')
+            if pmode=='Full':
+                json+='  "live": false\r\n'
+            if pmode=='Assist':
+                json+='  "live:" true\r\n'
+            if pmode=='Follow':
+                if update.mode()=='Automatic':
+                    json+='  "live": false,\r\n'
                 else:
-                    json+='  "released": '+str(year)+',\r\n'
-                json+='  "duration": '+duration+',\r\n'
-                json+=JsonField(update,'artist',artist)
-                json+=JsonField(update,'release',album)
-                json+=JsonField(update,'label',label)
-                json+=JsonField(update,'song',title)
-                json+=JsonField(update,'composer',composer)
-                json+=JsonField(update,'conductor',conductor)
-                json+=JsonField(update,'note',notes)
-                json+=JsonField(update,'isrc',update.padField(pypad.TYPE_NOW,pypad.FIELD_ISRC),True)
-                json+='}\r\n'
-                send_buf=BytesIO(json.encode('utf-8'))
-                recv_buf=BytesIO()
-                curl=pycurl.Curl()
-                curl.setopt(curl.URL,'https://spinitron.com/api/spins')
-                headers=[]
-                headers.append('Authorization: Bearer '+update.config().get(section,'APIKey'))
-                headers.append('Content-Type: application/json')
-                headers.append('Content-Length: '+str(len(json.encode('utf-8'))))
-                curl.setopt(curl.HTTPHEADER,headers);
-                curl.setopt(curl.POST,True)
-                curl.setopt(curl.READDATA,send_buf)
-                curl.setopt(curl.WRITEDATA,recv_buf)
-                try:
-                    curl.perform()
-                    code=curl.getinfo(pycurl.RESPONSE_CODE)
-                    if (code<200) or (code>=300):
-                        update.syslog(syslog.LOG_WARNING,'['+section+'] returned response code '+str(code))
-                except pycurl.error:
-                    update.syslog(syslog.LOG_WARNING,'['+section+'] failed: '+curl.errstr())
-                curl.close()
-            n=n+1
+                    json+='  "live": true,\r\n'
+            duration=str(update.padField(pypad.TYPE_NOW,pypad.FIELD_LENGTH)//1000)
+            year=update.padField(pypad.TYPE_NOW,pypad.FIELD_YEAR)
+            if year==None:
+                json+='  "released": null,\r\n'
+            else:
+                json+='  "released": '+str(year)+',\r\n'
+            json+='  "duration": '+duration+',\r\n'
+            json+=JsonField(update,'artist',artist)
+            json+=JsonField(update,'release',album)
+            json+=JsonField(update,'label',label)
+            json+=JsonField(update,'song',title)
+            json+=JsonField(update,'composer',composer)
+            json+=JsonField(update,'conductor',conductor)
+            json+=JsonField(update,'note',notes)
+            json+=JsonField(update,'isrc',update.padField(pypad.TYPE_NOW,pypad.FIELD_ISRC),True)
+            json+='}\r\n'
+            send_buf=BytesIO(json.encode('utf-8'))
+            recv_buf=BytesIO()
+            curl=pycurl.Curl()
+            curl.setopt(curl.URL,'https://spinitron.com/api/spins')
+            headers=[]
+            headers.append('Authorization: Bearer '+update.config().get(section,'APIKey'))
+            headers.append('Content-Type: application/json')
+            headers.append('Content-Length: '+str(len(json.encode('utf-8'))))
+            curl.setopt(curl.HTTPHEADER,headers);
+            curl.setopt(curl.POST,True)
+            curl.setopt(curl.READDATA,send_buf)
+            curl.setopt(curl.WRITEDATA,recv_buf)
+            try:
+                curl.perform()
+                code=curl.getinfo(pycurl.RESPONSE_CODE)
+                if (code<200) or (code>=300):
+                    update.syslog(syslog.LOG_WARNING,'['+section+'] returned response code '+str(code))
+            except pycurl.error:
+                update.syslog(syslog.LOG_WARNING,'['+section+'] failed: '+curl.errstr())
+            curl.close()
+        n=n+1
+        section='Spinitron'+str(n)
 
-    except configparser.NoSectionError:
-        return
 
 #
 # 'Main' function

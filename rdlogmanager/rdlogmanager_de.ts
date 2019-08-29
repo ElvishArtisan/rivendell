@@ -169,7 +169,7 @@ Wollen Sie sie speichern?</translation>
     </message>
     <message>
         <source>--- End of clock ---</source>
-        <translation>--- Ende der Uhr ---</translation>
+        <translation type="obsolete">--- Ende der Uhr ---</translation>
     </message>
     <message>
         <source>Invalid Code</source>
@@ -206,6 +206,14 @@ Wollen Sie sie speichern?</translation>
     </message>
     <message>
         <source>Are you sure you want to delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>That event does not exist.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -170,7 +170,7 @@ Vil du lagra?</translation>
     </message>
     <message>
         <source>--- End of clock ---</source>
-        <translation>--- Slutt på klokka ---</translation>
+        <translation type="obsolete">--- Slutt på klokka ---</translation>
     </message>
     <message>
         <source>Invalid Code</source>
@@ -207,6 +207,14 @@ Vil du lagra?</translation>
     </message>
     <message>
         <source>Are you sure you want to delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>That event does not exist.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

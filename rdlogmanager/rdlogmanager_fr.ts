@@ -152,10 +152,6 @@ Do you want to save?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>--- End of clock ---</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Invalid Code</source>
         <translation type="unfinished"></translation>
     </message>
@@ -190,6 +186,14 @@ Do you want to save?</source>
     </message>
     <message>
         <source>Are you sure you want to delete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>That event does not exist.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

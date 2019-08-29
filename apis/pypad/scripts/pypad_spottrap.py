@@ -4,7 +4,7 @@
 #
 # Output Now & Next data on the basis of Group and Length.
 #
-#   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+#   (C) Copyright 2018-2019 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as
@@ -38,21 +38,20 @@ def ProcessPad(update):
         last_updates[update.machine()]=None
 
     n=1
-    while(True):
+    section='Rule'+str(n)
+    while(update.config().has_section(section)):
+        if update.shouldBeProcessed(section) and update.hasPadType(pypad.TYPE_NOW) and (last_updates[update.machine()] != update.startDateTimeString(pypad.TYPE_NOW)):
+            last_updates[update.machine()]=update.startDateTimeString(pypad.TYPE_NOW)
+            length=update.padField(pypad.TYPE_NOW,pypad.FIELD_LENGTH)
+            if update.padField(pypad.TYPE_NOW,pypad.FIELD_GROUP_NAME)==update.config().get(section,'GroupName') and length>=int(update.config().get(section,'MinimumLength')) and length<=int(update.config().get(section,'MaximumLength')):
+                msg=update.resolvePadFields(update.config().get(section,'FormatString'),pypad.ESCAPE_NONE)
+            else:
+                msg=update.resolvePadFields(update.config().get(section,'DefaultFormatString'),pypad.ESCAPE_NONE)
+            send_sock.sendto(msg.encode('utf-8'),
+                             (update.config().get(section,'IpAddress'),int(update.config().get(section,'UdpPort'))))
+        n=n+1
         section='Rule'+str(n)
-        try:
-            if update.shouldBeProcessed(section) and update.hasPadType(pypad.TYPE_NOW) and (last_updates[update.machine()] != update.startDateTimeString(pypad.TYPE_NOW)):
-                last_updates[update.machine()]=update.startDateTimeString(pypad.TYPE_NOW)
-                length=update.padField(pypad.TYPE_NOW,pypad.FIELD_LENGTH)
-                if update.padField(pypad.TYPE_NOW,pypad.FIELD_GROUP_NAME)==update.config().get(section,'GroupName') and length>=int(update.config().get(section,'MinimumLength')) and length<=int(update.config().get(section,'MaximumLength')):
-                    msg=update.resolvePadFields(update.config().get(section,'FormatString'),pypad.ESCAPE_NONE)
-                else:
-                    msg=update.resolvePadFields(update.config().get(section,'DefaultFormatString'),pypad.ESCAPE_NONE)
-                send_sock.sendto(msg.encode('utf-8'),
-                                 (update.config().get(section,'IpAddress'),int(update.config().get(section,'UdpPort'))))
-            n=n+1
-        except configparser.NoSectionError:
-            return
+
 
 #
 # 'Main' function
