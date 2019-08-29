@@ -741,6 +741,14 @@ void DiskRipper::modifyCartLabelData()
   while(item!=NULL) {
     if(item->isSelected()) {
       int track=item->text(0).toInt()-1;
+      if(rip_wave_datas[track]->artist().isEmpty()&&
+               rip_artist_edit->text()!=rip_wave_datas[track]->artist()) {
+        rip_wave_datas[track]->setArtist(rip_artist_edit->text());
+      }
+      if(rip_wave_datas[track]->album().isEmpty()&&
+               rip_album_edit->text()!=rip_wave_datas[track]->album()) {
+        rip_wave_datas[track]->setAlbum(rip_album_edit->text());
+      }
       if(rip_wavedata_dialog->exec(rip_wave_datas[track])==0) {
 	item->setText(2,rip_wave_datas[track]->title());
       }
