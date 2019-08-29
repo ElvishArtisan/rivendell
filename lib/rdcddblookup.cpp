@@ -49,9 +49,9 @@ RDCddbLookup::RDCddbLookup(FILE *profile_msgs,QObject *parent)
   //
   // Socket
   //
-  lookup_socket=new Q3Socket(this,"lookup_socket");
+  lookup_socket=new QTcpSocket(this);
   connect(lookup_socket,SIGNAL(readyRead()),this,SLOT(readyReadData()));
-  connect(lookup_socket,SIGNAL(error(int)),this,SLOT(errorData(int)));
+  connect(lookup_socket,SIGNAL(error(QAbstractSocket::SocketError)),this,SLOT(errorData(QAbstractSocket::SocketError)));
 }
 
 
@@ -72,6 +72,10 @@ void RDCddbLookup::lookupRecord(const QString &cdda_dir,const QString &cdda_dev,
 			       const QString &username,const QString &appname,
 				const QString &appver)
 {
+  if(lookup_record->tracks()==0) {
+    return;
+  }
+
   lookup_username=username;
   lookup_appname=appname;
   lookup_appver=appver;
@@ -249,18 +253,20 @@ void RDCddbLookup::readyReadData()
 }
 
 
-void RDCddbLookup::errorData(int err)
+void RDCddbLookup::errorData(QAbstractSocket::SocketError err)
 {
   switch(err) {
-      case Q3Socket::ErrConnectionRefused:
+      case QTcpSocket::ErrConnectionRefused:
 	printf("CDDB: Connection Refused!\n");
 	break;
-      case Q3Socket::ErrHostNotFound:
+      case QTcpSocket::ErrHostNotFound:
 	printf("CDDB: Host Not Found!\n");
 	break;
-      case Q3Socket::ErrSocketRead:
+      case QTcpSocket::ErrSocketRead:
 	printf("CDDB: Socket Read Error!\n");
 	break;
+      default:
+        break;
   }
   lookup_state=0;
   emit done(RDCddbLookup::NetworkError);
