@@ -9845,11 +9845,6 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
 
     WriteSchemaVersion(++cur_schema);
   }
-=======
-    WriteSchemaVersion(++cur_schema);
-  }
-
->>>>>>> upstream/master
 
   // NEW SCHEMA UPDATES GO HERE...
 
