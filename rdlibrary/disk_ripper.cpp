@@ -444,6 +444,11 @@ void DiskRipper::ripDiskButtonData()
   }
 
   //
+  // Set Artist and Album
+  //
+  SetArtistAlbum();
+
+  //
   // Rip
   //
   tracks=0;
@@ -503,7 +508,9 @@ void DiskRipper::ripDiskButtonData()
     item->setText(5,"");
     item=(RDListViewItem *)item->nextSibling();
   }
-  rip_cdrom->eject();
+
+//  rip_cdrom->eject();
+
   if(rip_aborting) {
     QMessageBox::information(this,tr("Rip Complete"),tr("Rip aborted!"));
   }
@@ -737,18 +744,13 @@ void DiskRipper::setSingleButtonData()
 
 void DiskRipper::modifyCartLabelData()
 {
+  SetArtistAlbum();
+
   RDListViewItem *item=(RDListViewItem *)rip_track_list->firstChild();
+
   while(item!=NULL) {
     if(item->isSelected()) {
       int track=item->text(0).toInt()-1;
-      if(rip_wave_datas[track]->artist().isEmpty()&&
-               rip_artist_edit->text()!=rip_wave_datas[track]->artist()) {
-        rip_wave_datas[track]->setArtist(rip_artist_edit->text());
-      }
-      if(rip_wave_datas[track]->album().isEmpty()&&
-               rip_album_edit->text()!=rip_wave_datas[track]->album()) {
-        rip_wave_datas[track]->setAlbum(rip_album_edit->text());
-      }
       if(rip_wavedata_dialog->exec(rip_wave_datas[track])==0) {
 	item->setText(2,rip_wave_datas[track]->title());
       }
@@ -784,6 +786,8 @@ void DiskRipper::clearSelectionData()
 void DiskRipper::mediaChangedData()
 {
   RDListViewItem *l;
+
+  QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
   rip_isrc_read=false;
   rip_cutnames.clear();
@@ -821,6 +825,8 @@ void DiskRipper::mediaChangedData()
     lookupRecord(rip_cdda_dir.path(),rda->libraryConf()->ripperDevice(),
 		 rda->libraryConf()->cddbServer(),8880,
 		 RIPPER_CDDB_USER,PACKAGE_NAME,VERSION);
+
+  QApplication::restoreOverrideCursor();
 }
 
 
@@ -1154,6 +1160,23 @@ QString DiskRipper::BuildTrackName(int start_track,int end_track) const
     item=(RDListViewItem *)item->nextSibling();
   }
   return ret;
+}
+
+
+void DiskRipper::SetArtistAlbum()
+{
+  RDListViewItem *item=(RDListViewItem *)rip_track_list->firstChild();
+
+  while(item!=NULL) {
+    int track=item->text(0).toInt()-1;
+    if(rip_wave_datas[track]->artist().isEmpty()) {
+      rip_wave_datas[track]->setArtist(rip_artist_edit->text());
+    }
+    if(rip_wave_datas[track]->album().isEmpty()) {
+      rip_wave_datas[track]->setAlbum(rip_album_edit->text());
+    }
+    item=(RDListViewItem *)item->nextSibling();
+  }
 }
 
 
