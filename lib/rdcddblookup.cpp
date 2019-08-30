@@ -179,7 +179,7 @@ void RDCddbLookup::readyReadData()
       case 200:   // Exact Match
 	f0=line.split(" ");
 	if(f0.size()>=4) {
-	  lookup_record->setDiscId(f0[2].toInt(&ok,16));
+	  lookup_record->setDiscId(f0[2].toUInt(&ok,16));
 	  if(!ok) {
 	    FinishCddbLookup(RDCddbLookup::ProtocolError);
 	  }
