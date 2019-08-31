@@ -25,13 +25,13 @@
 #include <qregexp.h>
 #include <qdatetime.h>
 #include <q3process.h>
-#include <qstringlist.h>
 
 #include <rdcddblookup.h>
 #include <rdprofile.h>
 
-RDCddbLookup::RDCddbLookup(FILE *profile_msgs,QObject *parent)
-  : QObject(parent)
+RDCddbLookup::RDCddbLookup(const QString &caption,FILE *profile_msgs,
+			   QWidget *parent)
+  : QDialog(parent)
 {
   lookup_state=0;
   lookup_profile_msgs=profile_msgs;
@@ -46,18 +46,44 @@ RDCddbLookup::RDCddbLookup(FILE *profile_msgs,QObject *parent)
     lookup_hostname=getenv("HOSTNAME");
   }
 
+  setWindowTitle(caption+" - "+tr("CDDB Query"));
+
+  QFont label_font("Helvetica",12,QFont::Bold);
+  label_font.setPixelSize(12);
+
+  lookup_titles_label=new QLabel(tr("Multiple Matches Found!"),this);
+  lookup_titles_label->setAlignment(Qt::AlignCenter|Qt::AlignVCenter);
+  lookup_titles_label->setFont(label_font);
+
+  lookup_titles_box=new QComboBox(this);
+
+  lookup_ok_button=new QPushButton(tr("OK"),this);
+  lookup_ok_button->setFont(label_font);
+  connect(lookup_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
+
+  lookup_cancel_button=new QPushButton(tr("Cancel"),this);
+  lookup_cancel_button->setFont(label_font);
+  connect(lookup_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
+
   //
   // Socket
   //
   lookup_socket=new QTcpSocket(this);
   connect(lookup_socket,SIGNAL(readyRead()),this,SLOT(readyReadData()));
-  connect(lookup_socket,SIGNAL(error(QAbstractSocket::SocketError)),this,SLOT(errorData(QAbstractSocket::SocketError)));
+  connect(lookup_socket,SIGNAL(error(QAbstractSocket::SocketError)),
+	  this,SLOT(errorData(QAbstractSocket::SocketError)));
 }
 
 
 RDCddbLookup::~RDCddbLookup()
 {
   delete lookup_socket;
+}
+
+
+QSize RDCddbLookup::sizeHint() const
+{
+  return QSize(400,120);
 }
 
 
@@ -139,7 +165,7 @@ void RDCddbLookup::readyReadData()
   while(lookup_socket->canReadLine()) {
     line=QString::fromUtf8(lookup_socket->readLine());
     Profile("recevied from server: \""+line+"\"");
-    sscanf((const char *)line,"%d",&code);
+    code=line.split(" ").at(0).toInt();
     switch(lookup_state) {
     case 0:    // Login Banner
       if((code==200)||(code==201)) {
@@ -158,6 +184,16 @@ void RDCddbLookup::readyReadData()
 
     case 1:    // Handshake Response
       if((code==200)||(code==402)) {
+	SendToServer("proto 6");
+	lookup_state=2;
+      }
+      else {
+	FinishCddbLookup(RDCddbLookup::ProtocolError);
+      }
+      break;
+
+    case 2:    // Protocol Level Response
+      if(code==201) {
 	snprintf(buffer,2048,"cddb query %08x %d",
 		lookup_record->discId(),lookup_record->tracks());
 	for(int i=0;i<lookup_record->tracks();i++) {
@@ -167,14 +203,14 @@ void RDCddbLookup::readyReadData()
 	snprintf(offset,256," %d",lookup_record->discLength()/75);
 	strcat(buffer,offset);
 	SendToServer(buffer);
-	lookup_state=2;
+	lookup_state=3;
       }
       else {
 	FinishCddbLookup(RDCddbLookup::ProtocolError);
       }
       break;
 
-    case 2:    // Query Response
+    case 3:    // Query Response
       switch(code) {
       case 200:   // Exact Match
 	f0=line.split(" ");
@@ -192,11 +228,17 @@ void RDCddbLookup::readyReadData()
 		   (const char *)lookup_record->discGenre().utf8(),
 		   lookup_record->discId());
 	  SendToServer(buffer);
-	  lookup_state=3;		
+	  lookup_state=5;		
 	}
 	else {
 	  FinishCddbLookup(RDCddbLookup::ProtocolError);
 	}
+	break;
+
+      case 210:   // Multiple Exact Matches
+	lookup_titles_box->clear();
+	lookup_titles_key.clear();
+	lookup_state=4;
 	break;
 
       case 211:   // Inexact Match
@@ -209,16 +251,58 @@ void RDCddbLookup::readyReadData()
       }
       break;
 
-    case 3:    // Read Response
+    case 4:    // Process Multiple Matches
+      if(line.trimmed()==".") {
+	Profile("Match list complete, showing chooser dialog...");
+	if(exec()) {
+	  f0=lookup_titles_key.at(lookup_titles_box->currentItem()).
+	    split(" ",QString::SkipEmptyParts);
+	  if(f0.size()!=2) {
+	    FinishCddbLookup(RDCddbLookup::ProtocolError);
+	  }
+	  lookup_record->setDiscId(f0.at(1).toUInt(&ok,16));
+	  if(!ok) {
+	    FinishCddbLookup(RDCddbLookup::ProtocolError);
+	  }
+	  lookup_record->setDiscGenre(f0.at(0));
+	  f0=lookup_titles_box->currentText().split("/");
+	  if(f0.size()==2) {
+	    lookup_record->setDiscTitle(f0.at(1).trimmed());
+	  }
+	  else {
+	    lookup_record->setDiscTitle(lookup_titles_box->currentText().trimmed());
+	  }
+	  snprintf(buffer,2048,"cddb read %s %08x\n",
+		   (const char *)lookup_record->discGenre().utf8(),
+		   lookup_record->discId());
+	  SendToServer(buffer);
+	  lookup_state=5;	
+	}
+	else {
+	  FinishCddbLookup(RDCddbLookup::NoMatch);
+	}
+      }
+      else {
+	f0.clear();
+	f0=line.split(" ");
+	lookup_titles_key.push_back(f0.at(0).trimmed()+" "+
+				    f0.at(1).trimmed());
+	f0.removeFirst();
+	f0.removeFirst();
+	lookup_titles_box->insertItem(lookup_titles_box->count(),f0.join(" ").trimmed());
+      }
+      break;
+
+    case 5:    // Read Response
       if((code==210)) {
-	lookup_state=4;
+	lookup_state=6;
       }
       else {
 	FinishCddbLookup(RDCddbLookup::ProtocolError);
       }
       break;
 	  
-    case 4:    // Record Lines
+    case 6:    // Record Lines
       if(line[0]!='#') {   // Ignore Comments
 	if(line[0]=='.') {  // Done
 	  FinishCddbLookup(RDCddbLookup::ExactMatch);
@@ -273,12 +357,38 @@ void RDCddbLookup::errorData(QAbstractSocket::SocketError err)
 }
 
 
+void RDCddbLookup::okData()
+{
+  done(true);
+}
+
+
+void RDCddbLookup::cancelData()
+{
+  done(false);
+}
+
+
+void RDCddbLookup::resizeEvent(QResizeEvent *e)
+{
+  int w=size().width();
+  int h=size().height();
+
+  lookup_titles_label->setGeometry(15,2,w-30,20);
+
+  lookup_titles_box->setGeometry(10,24,w-20,20);
+
+  lookup_ok_button->setGeometry(w-180,h-60,80,50);
+  lookup_cancel_button->setGeometry(w-90,h-60,80,50);
+}
+
+
 void RDCddbLookup::FinishCddbLookup(RDCddbLookup::Result res)
 {
   SendToServer("quit");
   lookup_socket->close();
   lookup_state=0;
-  emit done(res);
+  emit lookupDone(res);
   Profile("CDDB lookup finished");
 }
 

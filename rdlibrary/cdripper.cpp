@@ -124,12 +124,12 @@ CdRipper::CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
   // CDDB Stuff
   //
   if(rip_profile_rip) {
-    rip_cddb_lookup=new RDCddbLookup(stdout,this);
+    rip_cddb_lookup=new RDCddbLookup("RDLibrary",stdout,this);
   }
   else {
-    rip_cddb_lookup=new RDCddbLookup(NULL,this);
+    rip_cddb_lookup=new RDCddbLookup("RDLibrary",NULL,this);
   }
-  connect(rip_cddb_lookup,SIGNAL(done(RDCddbLookup::Result)),
+  connect(rip_cddb_lookup,SIGNAL(lookupDone(RDCddbLookup::Result)),
 	  this,SLOT(cddbDoneData(RDCddbLookup::Result)));
 
   //

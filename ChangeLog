@@ -19053,3 +19053,5 @@
 	text fields when modifying cart labels.
 2019-08-31 Fred Gleason <fredg@paravelsystems.com>
 	* Updated ripper profiling code in rdlibrary(1) to be UTF-8 clean.
+2019-08-31 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored 'RDCddbLookup' to use CDDB protocol level 6.
