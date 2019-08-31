@@ -479,7 +479,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   event_artist_none_button=new QPushButton(this);
   event_artist_none_button->setGeometry(CENTER_LINE+570,383,40,20);
   event_artist_none_button->setFont(font);
-  event_artist_none_button->setText(tr("none"));
+  event_artist_none_button->setText(tr("None"));
   connect(event_artist_none_button,SIGNAL(clicked()),this,SLOT(artistData()));
 
 // Title Separation SpinBox
