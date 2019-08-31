@@ -1,8 +1,8 @@
 // disk_ripper.cpp
 //
-// CD Ripper Dialog for Rivendell.
+// CD Disk Ripper Dialog for Rivendell.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -904,6 +904,14 @@ void DiskRipper::selectionChangedData()
   while(item!=NULL) {
     int track=item->text(0).toInt();
     if(item->isSelected()) {
+      if(item->text(4)==tr("Data Track")) {
+	rip_setcut_button->setEnabled(false);
+	rip_setall_button->setEnabled(false);
+	rip_setsingle_button->setEnabled(false);
+	rip_cartlabel_button->setEnabled(false);
+	rip_clear_button->setEnabled(true);
+	return;
+      }
       if(item->id()>0) {
 	FocusSelection(item->id());
 	rip_setcut_button->setEnabled(false);
