@@ -19039,9 +19039,15 @@
 	dialog.
 2019-08-28 Patrick Linstruth <patrick@deltecent.com>
 	* Added 'pypad_httpget.py' script.
-2019-08-29 Patrick Linstruth <patrick@deltecent.com>
+2019-08-28 Patrick Linstruth <patrick@deltecent.com>
 	* Modified caed(8) to skip JACK startup, rather than crash, if
 	no command line is specified in rdadmin(1).
 2019-08-28 Fred Gleason <fredg@paravelsystems.com>
 	* Added the '%l' wildcard (unpadded month 1-12) to the filepath
 	wildcards.
+2019-08-29 Patrick Linstruth <patrick@deltecent.com>
+	* Refactored 'RDCddbLookup' class to use 'QTcpSocket' class
+	instead of 'Q3Socket'.
+2019-08-29 Patrick Linstruth <patrick@deltecent.com>
+	* Modified rdlibrary(1) Rip Disk dialog to use Artist and Album
+	text fields when modifying cart labels.
