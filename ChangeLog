@@ -19045,3 +19045,5 @@
 2019-08-28 Fred Gleason <fredg@paravelsystems.com>
 	* Added the '%l' wildcard (unpadded month 1-12) to the filepath
 	wildcards.
+2019-08-31 Patrick Linstruth <patrick@deltecent.com>
+	* Remove deleted scheduler codes from rdlogmanager(1) events.

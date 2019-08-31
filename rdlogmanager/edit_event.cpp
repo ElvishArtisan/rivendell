@@ -500,7 +500,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   event_title_none_button->setText(tr("None"));
   connect(event_title_none_button,SIGNAL(clicked()),this,SLOT(titleData()));
 
-// Must have code..
+  // Must have code..
 
   event_have_code_label=new QLabel(tr("Must have code"),this);
   event_have_code_label->setFont(bold_font);
@@ -508,13 +508,6 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   
   event_have_code_box=new QComboBox(this);
   event_have_code_box->setGeometry(CENTER_LINE+510,427,100,20);
-  event_have_code_box->insertItem("");
-  sql2="select CODE from SCHED_CODES order by CODE";
-  q2=new RDSqlQuery(sql2);
-  while(q2->next()) {
-    event_have_code_box->insertItem(q2->value(0).toString());
-  }
-  delete q2;
 
   // And code
 
@@ -524,10 +517,17 @@ EditEvent::EditEvent(QString eventname,bool new_event,
 
   event_have_code2_box=new QComboBox(this);
   event_have_code2_box->setGeometry(CENTER_LINE+510,448,100,20);
+
+  //
+  // Fill scheduler codes
+  //
+  event_have_code_box->insertItem("");
   event_have_code2_box->insertItem("");
+
   sql2="select CODE from SCHED_CODES order by CODE";
   q2=new RDSqlQuery(sql2);
   while(q2->next()) {
+    event_have_code_box->insertItem(q2->value(0).toString());
     event_have_code2_box->insertItem(q2->value(0).toString());
   }
   delete q2;
@@ -790,8 +790,12 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   }
   event_artist_sep_spinbox->setValue(event_event->artistSep());
   event_title_sep_spinbox->setValue(event_event->titleSep());
-  event_have_code_box->setCurrentText(event_event->HaveCode());
-  event_have_code2_box->setCurrentText(event_event->HaveCode2());
+  if(event_have_code_box->findText(event_event->HaveCode())!=-1) {
+    event_have_code_box->setCurrentText(event_event->HaveCode());
+  }
+  if(event_have_code_box->findText(event_event->HaveCode2())!=-1) {
+    event_have_code2_box->setCurrentText(event_event->HaveCode2());
+  }
   QColor color=event_event->color();
   if(color.isValid()) {
     event_color_button->setPalette(QPalette(color,backgroundColor()));
