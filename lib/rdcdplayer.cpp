@@ -2,7 +2,7 @@
 //
 // Abstract a Linux CDROM Device.
 //
-//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -550,7 +550,7 @@ void RDCdPlayer::Profile(const QString &msg)
   if(cdrom_profile_msgs!=NULL) {
     fprintf(cdrom_profile_msgs,"%s | RDCdPlayer::%s\n",
 	    (const char *)QTime::currentTime().toString("hh:mm:ss.zzz"),
-	    (const char *)msg);
+	    (const char *)msg.toUtf8());
   }
 }
 

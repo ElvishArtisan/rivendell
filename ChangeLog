@@ -19051,3 +19051,5 @@
 2019-08-29 Patrick Linstruth <patrick@deltecent.com>
 	* Modified rdlibrary(1) Rip Disk dialog to use Artist and Album
 	text fields when modifying cart labels.
+2019-08-31 Fred Gleason <fredg@paravelsystems.com>
+	* Updated ripper profiling code in rdlibrary(1) to be UTF-8 clean.
