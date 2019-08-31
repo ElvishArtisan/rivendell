@@ -793,7 +793,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   if(event_have_code_box->findText(event_event->HaveCode())!=-1) {
     event_have_code_box->setCurrentText(event_event->HaveCode());
   }
-  if(event_have_code_box->findText(event_event->HaveCode2())!=-1) {
+  if(event_have_code2_box->findText(event_event->HaveCode2())!=-1) {
     event_have_code2_box->setCurrentText(event_event->HaveCode2());
   }
   QColor color=event_event->color();
