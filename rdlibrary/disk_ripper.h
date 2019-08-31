@@ -88,6 +88,7 @@ class DiskRipper : public QDialog
   void RipTrack(int track,int end_track,QString cutname,QString title);
   void UpdateRipButton();
   QString BuildTrackName(int start_track,int end_track) const;
+  void SetArtistAlbum();
   void SendNotification(RDNotification::Action action,unsigned cartnum);
   RDCdPlayer *rip_cdrom;
   RDCddbRecord rip_cddb_record;

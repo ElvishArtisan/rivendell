@@ -19048,3 +19048,6 @@
 2019-08-29 Patrick Linstruth <patrick@deltecent.com>
 	* Refactored 'RDCddbLookup' class to use 'QTcpSocket' class
 	instead of 'Q3Socket'.
+2019-08-29 Patrick Linstruth <patrick@deltecent.com>
+	* Modified rdlibrary(1) Rip Disk dialog to use Artist and Album
+	text fields when modifying cart labels.
