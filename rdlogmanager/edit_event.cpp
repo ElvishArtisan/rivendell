@@ -479,7 +479,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   event_artist_none_button=new QPushButton(this);
   event_artist_none_button->setGeometry(CENTER_LINE+570,383,40,20);
   event_artist_none_button->setFont(font);
-  event_artist_none_button->setText(tr("None"));
+  event_artist_none_button->setText(tr("none"));
   connect(event_artist_none_button,SIGNAL(clicked()),this,SLOT(artistData()));
 
 // Title Separation SpinBox
@@ -521,8 +521,8 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   //
   // Fill scheduler codes
   //
-  event_have_code_box->insertItem("");
-  event_have_code2_box->insertItem("");
+  event_have_code_box->insertItem("[None]");
+  event_have_code2_box->insertItem("[None]");
 
   sql2="select CODE from SCHED_CODES order by CODE";
   q2=new RDSqlQuery(sql2);
@@ -1480,13 +1480,24 @@ void EditEvent::Save()
   event_event->setSchedGroup(event_sched_group_box->currentText());  
   event_event->setArtistSep(event_artist_sep_spinbox->value());
   event_event->setTitleSep(event_title_sep_spinbox->value());
-  event_event->setHaveCode(event_have_code_box->currentText());
-  if (event_have_code_box->currentText() != QString("")) {
+  event_event->setHaveCode("");
+  event_event->setHaveCode2("");
+  if(event_have_code_box->currentIndex()>0) {
+    event_event->setHaveCode(event_have_code_box->currentText());
+  }
+  if(event_have_code2_box->currentIndex()>0) {
     event_event->setHaveCode2(event_have_code2_box->currentText());
-  } else {
-    // save second code as first code when first code isn't defined
-    event_event->setHaveCode(event_have_code2_box->currentText());
-    event_event->setHaveCode2(QString(""));
+  }
+
+  // If both codes are the same, remove second code
+  if (event_event->HaveCode()==event_event->HaveCode2()) {
+    event_event->setHaveCode2("");
+  }
+
+  // Save second code as first code when first code isn't defined
+  if (event_event->HaveCode().isEmpty()) {
+    event_event->setHaveCode(event_event->HaveCode2());
+    event_event->setHaveCode2("");
   }
 
   event_preimport_list->setEventName(event_name);

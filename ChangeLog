@@ -19047,3 +19047,5 @@
 	wildcards.
 2019-08-31 Patrick Linstruth <patrick@deltecent.com>
 	* Remove deleted scheduler codes from rdlogmanager(1) events.
+	* Changed empty scheduler code selection from "" to "[none]" in
+	rdlogmanager(1) event editor.
