@@ -1,8 +1,8 @@
 // cdripper.cpp
 //
-// CD Ripper Dialog for Rivendell.
+// CD Track Ripper Dialog for Rivendell.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -31,7 +31,6 @@
 #include <qmessagebox.h>
 #include <qcheckbox.h>
 #include <qstringlist.h>
-//Added by qt3to4:
 #include <QLabel>
 #include <QResizeEvent>
 #include <QCloseEvent>
@@ -358,6 +357,10 @@ void CdRipper::trackSelectionChangedData()
 
   while(item!=NULL) {
     if(item->isSelected()) {
+      if(item->text(4)==tr("Data Track")) {
+	rip_rip_button->setDisabled(true);
+	return;
+      }
       titles.push_back(item->text(2));
     }
     item=item->nextSibling();
