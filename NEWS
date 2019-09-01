@@ -1,6 +1,46 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
+v3.0.3int0 -- 8/31/2019
+
+This is an interrim, limited distribution test release of Rivedell.
+
+Changes:
+   Fixed a bug in rdairplay(1) and rdvairplayd(8) where only the first
+   log machine set to 'load specified log' would do so.
+
+   Fixed a bug in rdlogedit(1) that caused hard start log items
+   to have the Hour field doubled.
+
+   Refactored the Python 'pypad.Update.shouldBeProcessed()' method
+   to work correctly when using try: blocks in a PyPAD script.
+
+   Refactored the PyPAD scripts to route updates properly in accordance
+   with log directives in their configuration file.
+
+   Fixed a bug that broke dropbox logging to individual files.
+
+   Refactored rdalsaconfig(1) to be more robust and intuitive.
+
+   Fixed a bug in caed(8) that broke timescaling support.
+
+   Added a 'pypad_httpget.py' PyPAD script.
+
+   Fixed bugs in rdlibrary(1) that broke CD ripping.
+
+   Updated CDDB code to use protocol level 6 (UTF-8 enabled).
+
+   Added an '%l' wildcard to Filepath Wildcards for 'unpadded month'.
+
+
+Database Update:
+   This version of Rivendell uses database schema version 309, and will
+   automatically upgrade any earlier versions. To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
+   to allow any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
 v3.0.3 -- 8/5/2019
 
 This is a bugfix release of Rivendell.
