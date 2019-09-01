@@ -19068,3 +19068,5 @@
 	* Incremented the package version to 3.0.3int0.
 2019-08-31 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed an indentation error in 'apis/pypad/scripts/pypad_tunein.py'.
+2019-08-31 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.0.3int1.
