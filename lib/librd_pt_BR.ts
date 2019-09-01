@@ -1210,6 +1210,25 @@ Cor</translation>
     </message>
 </context>
 <context>
+    <name>RDCddbLookup</name>
+    <message>
+        <source>CDDB Query</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Multiple Matches Found!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancelar</translation>
+    </message>
+</context>
+<context>
     <name>RDCueEdit</name>
     <message>
         <source>&amp;Audition</source>

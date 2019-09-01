@@ -19051,6 +19051,25 @@
 2019-08-29 Patrick Linstruth <patrick@deltecent.com>
 	* Modified rdlibrary(1) Rip Disk dialog to use Artist and Album
 	text fields when modifying cart labels.
+2019-08-31 Fred Gleason <fredg@paravelsystems.com>
+	* Updated ripper profiling code in rdlibrary(1) to be UTF-8 clean.
+2019-08-31 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored 'RDCddbLookup' to use CDDB protocol level 6.
+2019-08-31 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the Disk Ripper in rdlibrary(1) that allowed
+	data tracks to be ripped.
+2019-08-31 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the CD Track Ripper in rdlibrary(1) that allowed
+	data tracks to be ripped.
+2019-08-31 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the CD player polling interval ('RDCDPLAYER_CLOCK_INTERVAL')
+	from 100 mS to 1000 mS.
+2019-08-31 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.0.3int0.
+2019-08-31 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed an indentation error in 'apis/pypad/scripts/pypad_tunein.py'.
+2019-08-31 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.0.3int1.
 2019-09-01 Patrick Linstruth <patrick@deltecent.com>
 	* Added 'RDHttpServer' class.
 	* Added 'loadGroup' method to 'RDGroupList' class.
