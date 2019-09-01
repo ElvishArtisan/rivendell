@@ -33,7 +33,7 @@
 //
 // Driver Settings
 //
-#define RDCDPLAYER_CLOCK_INTERVAL 100
+#define RDCDPLAYER_CLOCK_INTERVAL 1000
 #define RDCDPLAYER_BUTTON_DELAY 100
 
 class RDCdPlayer : public QObject

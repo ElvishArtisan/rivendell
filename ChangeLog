@@ -19061,3 +19061,6 @@
 2019-08-31 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the CD Track Ripper in rdlibrary(1) that allowed
 	data tracks to be ripped.
+2019-08-31 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the CD player polling interval ('RDCDPLAYER_CLOCK_INTERVAL')
+	from 100 mS to 1000 mS.

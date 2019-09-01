@@ -379,7 +379,9 @@ void RDCdPlayer::clockData()
   //
   // Media Status
   //
+  Profile("calling ioctl(CDROM_MEDIA_CHANGED)");
   if(ioctl(cdrom_fd,CDROM_MEDIA_CHANGED,NULL)==0) {
+    Profile("ioctl(CDROM_MEDIA_CHANGED) success");
     new_state=true;
     if(cdrom_old_state==false) {
       Profile("ReadToc() started");
@@ -391,6 +393,7 @@ void RDCdPlayer::clockData()
     }
   }
   else {
+    Profile("ioctl(CDROM_MEDIA_CHANGED) failure");
     new_state=false;
     if(cdrom_old_state==true) {
       Profile("emitting ejected()");
