@@ -25,7 +25,7 @@
 #include <stdio.h>
 
 #include <qobject.h>
-#include <q3socket.h>
+#include <qtcpsocket.h>
 #include <rdcddbrecord.h>
 
 //
@@ -62,7 +62,7 @@ class RDCddbLookup : public QObject
 
   private slots:
    void readyReadData();
-   void errorData(int);
+   void errorData(QAbstractSocket::SocketError);
 
   signals:
    void done(RDCddbLookup::Result);
@@ -77,7 +77,7 @@ class RDCddbLookup : public QObject
    void SendToServer(const QString &msg);
    void Profile(const QString &msg);
    RDCddbRecord *lookup_record;
-   Q3Socket *lookup_socket;
+   QTcpSocket *lookup_socket;
    int lookup_state;
    QString lookup_username;
    QString lookup_appname;
