@@ -2,7 +2,7 @@
 //
 //   A Qt class for accessing the FreeDB CD Database.
 //
-//   (C) Copyright 2003,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2003-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -24,9 +24,14 @@
 
 #include <stdio.h>
 
-#include <qobject.h>
+#include <qcombobox.h>
+#include <qdialog.h>
+#include <qlabel.h>
+#include <qpushbutton.h>
+#include <qstringlist.h>
 #include <qtcpsocket.h>
-#include <rdcddbrecord.h>
+
+#include "rdcddbrecord.h"
 
 //
 // Default Settings
@@ -43,31 +48,37 @@
  * database server.  
  **/
 
-class RDCddbLookup : public QObject
+class RDCddbLookup : public QDialog
 {
   Q_OBJECT
-  public:
-   enum Result {ExactMatch=0,PartialMatch=1,NoMatch=2,
-		ProtocolError=3,NetworkError=4};
-   RDCddbLookup(FILE *profile_msgs,QObject *parent=0);
-   ~RDCddbLookup();
-   void setCddbRecord(RDCddbRecord *);
-   void lookupRecord(const QString &cdda_dir,const QString &cdda_dev,
-		     const QString &hostname,
-		     Q_UINT16 port=RDCDDBLOOKUP_DEFAULT_PORT,
-		     const QString &username="",
-		     const QString &appname=PACKAGE_NAME,
-		     const QString &ver=VERSION);
-   bool readIsrc(const QString &cdda_dir,const QString &cdda_dev);
+ public:
+  enum Result {ExactMatch=0,PartialMatch=1,NoMatch=2,
+	       ProtocolError=3,NetworkError=4};
+  RDCddbLookup(const QString &caption,FILE *profile_msgs,QWidget *parent=0);
+  ~RDCddbLookup();
+  QSize sizeHint() const;
+  void setCddbRecord(RDCddbRecord *);
+  void lookupRecord(const QString &cdda_dir,const QString &cdda_dev,
+		    const QString &hostname,
+		    Q_UINT16 port=RDCDDBLOOKUP_DEFAULT_PORT,
+		    const QString &username="",
+		    const QString &appname=PACKAGE_NAME,
+		    const QString &ver=VERSION);
+  bool readIsrc(const QString &cdda_dir,const QString &cdda_dev);
 
-  private slots:
-   void readyReadData();
-   void errorData(QAbstractSocket::SocketError);
+ private slots:
+  void readyReadData();
+  void errorData(QAbstractSocket::SocketError);
+  void okData();
+  void cancelData();
 
-  signals:
-   void done(RDCddbLookup::Result);
+ signals:
+  void lookupDone(RDCddbLookup::Result);
 
-  private:
+ protected:
+  void resizeEvent(QResizeEvent *e);
+
+ private:
    void FinishCddbLookup(RDCddbLookup::Result res);
    QString DecodeString(QString &str);
    void ParsePair(QString *line,QString *tag,QString *value,int *index);
@@ -76,6 +87,11 @@ class RDCddbLookup : public QObject
    bool ReadIsrcs(const QString &cdda_dir,const QString &cdda_dev);
    void SendToServer(const QString &msg);
    void Profile(const QString &msg);
+   QLabel *lookup_titles_label;
+   QComboBox *lookup_titles_box;
+   QStringList lookup_titles_key;
+   QPushButton *lookup_ok_button;
+   QPushButton *lookup_cancel_button;
    RDCddbRecord *lookup_record;
    QTcpSocket *lookup_socket;
    int lookup_state;

@@ -2,7 +2,7 @@
 //
 // Abstract a Linux CDROM Device.
 //
-//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -379,7 +379,9 @@ void RDCdPlayer::clockData()
   //
   // Media Status
   //
+  Profile("calling ioctl(CDROM_MEDIA_CHANGED)");
   if(ioctl(cdrom_fd,CDROM_MEDIA_CHANGED,NULL)==0) {
+    Profile("ioctl(CDROM_MEDIA_CHANGED) success");
     new_state=true;
     if(cdrom_old_state==false) {
       Profile("ReadToc() started");
@@ -391,6 +393,7 @@ void RDCdPlayer::clockData()
     }
   }
   else {
+    Profile("ioctl(CDROM_MEDIA_CHANGED) failure");
     new_state=false;
     if(cdrom_old_state==true) {
       Profile("emitting ejected()");
@@ -550,7 +553,7 @@ void RDCdPlayer::Profile(const QString &msg)
   if(cdrom_profile_msgs!=NULL) {
     fprintf(cdrom_profile_msgs,"%s | RDCdPlayer::%s\n",
 	    (const char *)QTime::currentTime().toString("hh:mm:ss.zzz"),
-	    (const char *)msg);
+	    (const char *)msg.toUtf8());
   }
 }
 
