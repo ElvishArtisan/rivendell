@@ -19080,3 +19080,7 @@
 2019-09-02 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the 'pypad' module that caused the DB connection
 	to be opened in 'latin1' mode.
+2019-09-02 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the 'pypad' module so as not to throw a
+	'UnicodeDecodeError' exception when processing a PAD update
+	containing an invalid UTF-8 character.

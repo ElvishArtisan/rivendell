@@ -908,8 +908,9 @@ class Receiver(object):
                 c=sock.recv(1)
                 line+=c
                 if c[0]==10:
-                    msg+=line.decode('utf-8')
-                    if line.decode('utf-8')=="\r\n":
+                    linebytes=line.decode('utf-8','replace')
+                    msg+=linebytes
+                    if linebytes=='\r\n':
                         self.__pypad_Process(Update(json.loads(msg),self.__config_parser,rd_config))
                         msg=""
                     line=bytes()
