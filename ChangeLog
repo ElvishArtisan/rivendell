@@ -19077,3 +19077,6 @@
 2019-09-02 Fred Gleason <fredg@paravelsystems.com>
 	* Removed text labels from the transport button in the cue
 	editor in rdairplay(1).
+2019-09-02 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'pypad' module that caused the DB connection
+	to be opened in 'latin1' mode.
