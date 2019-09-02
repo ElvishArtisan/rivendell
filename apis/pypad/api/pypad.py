@@ -797,7 +797,9 @@ class Receiver(object):
 
     def __openDb(self):
         creds=self.__getDbCredentials()
-        return MySQLdb.connect(creds[2],creds[0],creds[1],creds[3])
+        return MySQLdb.connect(user=creds[0],password=creds[1],
+                               host=creds[2],database=creds[3],
+                               charset='utf8mb4')
 
     def setPadCallback(self,callback):
         """
@@ -906,8 +908,9 @@ class Receiver(object):
                 c=sock.recv(1)
                 line+=c
                 if c[0]==10:
-                    msg+=line.decode('utf-8')
-                    if line.decode('utf-8')=="\r\n":
+                    linebytes=line.decode('utf-8','replace')
+                    msg+=linebytes
+                    if linebytes=='\r\n':
                         self.__pypad_Process(Update(json.loads(msg),self.__config_parser,rd_config))
                         msg=""
                     line=bytes()

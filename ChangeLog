@@ -19070,7 +19070,23 @@
 	* Fixed an indentation error in 'apis/pypad/scripts/pypad_tunein.py'.
 2019-08-31 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.0.3int1.
-2019-09-01 Patrick Linstruth <patrick@deltecent.com>
+2019-08-31 Patrick Linstruth <patrick@deltecent.com>
+	* Remove deleted scheduler codes from rdlogmanager(1) events.
+	* Changed empty scheduler code selection from "" to "[none]" in
+	rdlogmanager(1) event editor.
+2019-09-02 Fred Gleason <fredg@paravelsystems.com>
+	* Removed text labels from the transport button in the cue
+	editor in rdairplay(1).
+2019-09-02 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'pypad' module that caused the DB connection
+	to be opened in 'latin1' mode.
+2019-09-02 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the 'pypad' module so as not to throw a
+	'UnicodeDecodeError' exception when processing a PAD update
+	containing an invalid UTF-8 character.
+2019-09-02 Patrick Linstruth <patrick@deltecent.com>
+	* Refactored 'pypad_tunein.py' ProcessPad while loop.
+2019-09-02 Patrick Linstruth <patrick@deltecent.com>
 	* Added 'RDHttpServer' class.
 	* Added 'loadGroup' method to 'RDGroupList' class.
 	* Added 'RDNexus' class.
@@ -19098,3 +19114,4 @@
 	"Talk" column.
 	* Added 'MusicMaster Nexus' import template.
 	* Incremented the database version to 310.
+=======

@@ -1240,18 +1240,6 @@ ze &amp;souboru</translation>
 <context>
     <name>RDCueEdit</name>
     <message>
-        <source>&amp;Audition</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Pause</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Stop</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Start</source>
         <translation type="unfinished"></translation>
     </message>

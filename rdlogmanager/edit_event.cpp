@@ -500,7 +500,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   event_title_none_button->setText(tr("None"));
   connect(event_title_none_button,SIGNAL(clicked()),this,SLOT(titleData()));
 
-// Must have code..
+  // Must have code..
 
   event_have_code_label=new QLabel(tr("Must have code"),this);
   event_have_code_label->setFont(bold_font);
@@ -508,13 +508,6 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   
   event_have_code_box=new QComboBox(this);
   event_have_code_box->setGeometry(CENTER_LINE+510,427,100,20);
-  event_have_code_box->insertItem("");
-  sql2="select CODE from SCHED_CODES order by CODE";
-  q2=new RDSqlQuery(sql2);
-  while(q2->next()) {
-    event_have_code_box->insertItem(q2->value(0).toString());
-  }
-  delete q2;
 
   // And code
 
@@ -524,10 +517,17 @@ EditEvent::EditEvent(QString eventname,bool new_event,
 
   event_have_code2_box=new QComboBox(this);
   event_have_code2_box->setGeometry(CENTER_LINE+510,448,100,20);
-  event_have_code2_box->insertItem("");
+
+  //
+  // Fill scheduler codes
+  //
+  event_have_code_box->insertItem("[None]");
+  event_have_code2_box->insertItem("[None]");
+
   sql2="select CODE from SCHED_CODES order by CODE";
   q2=new RDSqlQuery(sql2);
   while(q2->next()) {
+    event_have_code_box->insertItem(q2->value(0).toString());
     event_have_code2_box->insertItem(q2->value(0).toString());
   }
   delete q2;
@@ -790,8 +790,12 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   }
   event_artist_sep_spinbox->setValue(event_event->artistSep());
   event_title_sep_spinbox->setValue(event_event->titleSep());
-  event_have_code_box->setCurrentText(event_event->HaveCode());
-  event_have_code2_box->setCurrentText(event_event->HaveCode2());
+  if(event_have_code_box->findText(event_event->HaveCode())!=-1) {
+    event_have_code_box->setCurrentText(event_event->HaveCode());
+  }
+  if(event_have_code2_box->findText(event_event->HaveCode2())!=-1) {
+    event_have_code2_box->setCurrentText(event_event->HaveCode2());
+  }
   QColor color=event_event->color();
   if(color.isValid()) {
     event_color_button->setPalette(QPalette(color,backgroundColor()));
@@ -1476,13 +1480,24 @@ void EditEvent::Save()
   event_event->setSchedGroup(event_sched_group_box->currentText());  
   event_event->setArtistSep(event_artist_sep_spinbox->value());
   event_event->setTitleSep(event_title_sep_spinbox->value());
-  event_event->setHaveCode(event_have_code_box->currentText());
-  if (event_have_code_box->currentText() != QString("")) {
+  event_event->setHaveCode("");
+  event_event->setHaveCode2("");
+  if(event_have_code_box->currentIndex()>0) {
+    event_event->setHaveCode(event_have_code_box->currentText());
+  }
+  if(event_have_code2_box->currentIndex()>0) {
     event_event->setHaveCode2(event_have_code2_box->currentText());
-  } else {
-    // save second code as first code when first code isn't defined
-    event_event->setHaveCode(event_have_code2_box->currentText());
-    event_event->setHaveCode2(QString(""));
+  }
+
+  // If both codes are the same, remove second code
+  if (event_event->HaveCode()==event_event->HaveCode2()) {
+    event_event->setHaveCode2("");
+  }
+
+  // Save second code as first code when first code isn't defined
+  if (event_event->HaveCode().isEmpty()) {
+    event_event->setHaveCode(event_event->HaveCode2());
+    event_event->setHaveCode2("");
   }
 
   event_preimport_list->setEventName(event_name);
