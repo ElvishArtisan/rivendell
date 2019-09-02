@@ -19074,3 +19074,6 @@
 	* Remove deleted scheduler codes from rdlogmanager(1) events.
 	* Changed empty scheduler code selection from "" to "[none]" in
 	rdlogmanager(1) event editor.
+2019-09-02 Fred Gleason <fredg@paravelsystems.com>
+	* Removed text labels from the transport button in the cue
+	editor in rdairplay(1).

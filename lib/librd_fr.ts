@@ -1117,16 +1117,12 @@ La Couleur</translation>
 <context>
     <name>RDCueEdit</name>
     <message>
-        <source>&amp;Audition</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Pause</source>
-        <translation>&amp;Pause</translation>
+        <translation type="obsolete">&amp;Pause</translation>
     </message>
     <message>
         <source>&amp;Stop</source>
-        <translation>&amp;Stop</translation>
+        <translation type="obsolete">&amp;Stop</translation>
     </message>
     <message>
         <source>Start</source>

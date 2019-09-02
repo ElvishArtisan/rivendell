@@ -118,7 +118,7 @@ RDCueEdit::RDCueEdit(RDCae *cae,int card,int port,QWidget *parent)
   edit_audition_button->
     setPalette(QPalette(backgroundColor(),QColor(Qt::gray)));
   edit_audition_button->setFont(button_font);
-  edit_audition_button->setText(tr("&Audition"));
+  //  edit_audition_button->setText(tr("&Audition"));
   connect(edit_audition_button,SIGNAL(clicked()),
 	  this,SLOT(auditionButtonData()));
 
@@ -130,7 +130,7 @@ RDCueEdit::RDCueEdit(RDCae *cae,int card,int port,QWidget *parent)
   edit_pause_button->
     setPalette(QPalette(backgroundColor(),QColor(Qt::gray)));
   edit_pause_button->setFont(button_font);
-  edit_pause_button->setText(tr("&Pause"));
+  //  edit_pause_button->setText(tr("&Pause"));
   connect(edit_pause_button,SIGNAL(clicked()),this,SLOT(pauseButtonData()));
 
   //
@@ -142,7 +142,7 @@ RDCueEdit::RDCueEdit(RDCae *cae,int card,int port,QWidget *parent)
   edit_stop_button->
     setPalette(QPalette(backgroundColor(),QColor(Qt::gray)));
   edit_stop_button->setFont(button_font);
-  edit_stop_button->setText(tr("&Stop"));
+  //  edit_stop_button->setText(tr("&Stop"));
   connect(edit_stop_button,SIGNAL(clicked()),this,SLOT(stopButtonData()));
 
   //
