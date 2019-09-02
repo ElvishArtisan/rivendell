@@ -19084,3 +19084,5 @@
 	* Modified the 'pypad' module so as not to throw a
 	'UnicodeDecodeError' exception when processing a PAD update
 	containing an invalid UTF-8 character.
+2019-09-02 Patrick Linstruth <patrick@deltecent.com>
+	* Refactored 'pypad_tunein.py' ProcessPad while loop.
