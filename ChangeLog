@@ -19086,3 +19086,6 @@
 	containing an invalid UTF-8 character.
 2019-09-02 Patrick Linstruth <patrick@deltecent.com>
 	* Refactored 'pypad_tunein.py' ProcessPad while loop.
+2019-09-03 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'RDCart::setYear()' that caused invalid SQL to be
+	generated when given a null year.

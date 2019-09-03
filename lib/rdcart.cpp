@@ -253,7 +253,12 @@ int RDCart::year() const
 
 void RDCart::setYear(int year)
 {
-  SetRow("YEAR",QString().sprintf("%04d-01-01",year));
+  if((year>0)&&(year<10000)) {
+    SetRow("YEAR",QString().sprintf("%04d-01-01",year));
+  }
+  else {
+    SetRow("YEAR");
+  }
   metadata_changed=true;
 }
 
