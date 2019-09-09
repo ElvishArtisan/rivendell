@@ -417,6 +417,13 @@ int RDConfig::transcodingDelay() const
   return conf_transcoding_delay;
 }
 
+
+int RDConfig::serviceTimeout() const
+{
+  return conf_service_timeout;
+}
+
+
 // Don't use this method in application code, use RDTempDirectory()
 QString RDConfig::tempDirectory()
 {
@@ -583,6 +590,8 @@ bool RDConfig::load()
   conf_use_realtime=profile->boolValue("Tuning","UseRealtime",false);
   conf_realtime_priority=profile->intValue("Tuning","RealtimePriority",9);
   conf_transcoding_delay=profile->intValue("Tuning","TranscodingDelay");
+  conf_service_timeout=
+    profile->intValue("Tuning","ServiceTimeout",RD_DEFAULT_SERVICE_TIMEOUT);
   conf_temp_directory=profile->stringValue("Tuning","TempDirectory","");
   conf_sas_station=profile->stringValue("SASFilter","Station","");
   conf_sas_matrix=profile->intValue("SASFilter","Matrix",0);
@@ -681,6 +690,7 @@ void RDConfig::clear()
   conf_use_realtime=false;
   conf_realtime_priority=9;
   conf_transcoding_delay=0;
+  conf_service_timeout=RD_DEFAULT_SERVICE_TIMEOUT;
   conf_temp_directory="";
   conf_sas_station="";
   conf_sas_matrix=-1;

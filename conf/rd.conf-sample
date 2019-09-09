@@ -125,7 +125,12 @@ ChannelsPerPcm=-1
 ;
 
 [Tuning]
-; This section defines the realtime parameters used when running
+; This directive tells Rivendell modules how long to wait for the
+; 'rivendell' systemd service to become active (seconds). Default
+; value is '30'.
+ServiceTimeout=30
+
+; These directives define the realtime parameters used when running
 ; audio components.  Normally, these are useful only for debugging.
 UseRealtime=Yes
 RealtimePriority=9

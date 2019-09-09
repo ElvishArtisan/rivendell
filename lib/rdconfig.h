@@ -106,6 +106,7 @@ class RDConfig
   bool useRealtime();
   int realtimePriority();
   int transcodingDelay() const;
+  int serviceTimeout() const;
   QString tempDirectory();
   QString sasStation() const;
   int sasMatrix() const;
@@ -172,6 +173,7 @@ class RDConfig
   bool conf_use_realtime;
   int conf_transcoding_delay;
   int conf_realtime_priority;
+  int conf_service_timeout;
   QString conf_temp_directory;
   QString conf_sas_station;
   int conf_sas_matrix;
