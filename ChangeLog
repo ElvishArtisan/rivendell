@@ -19096,3 +19096,6 @@
 2019-09-09 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'ServiceTimeout=' directive to the '[Tuning]' section
 	of rd.conf(5).
+2019-09-09 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed a bug in rdlibrary(1) multi-edit where an empty 'Year
+	Released' field clears the date from selected carts.
