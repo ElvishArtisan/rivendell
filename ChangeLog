@@ -19093,3 +19093,6 @@
 	* Fixed a regression in rdairplay(1) and rdvairplayd(8) that
 	caused hard timed events with the 'Start Immediately' attribute
 	to fail to start if one or more other events were playing.
+2019-09-09 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed a bug in rdlibrary(1) multi-edit where an empty 'Year
+	Released' field clears the date from selected carts.
