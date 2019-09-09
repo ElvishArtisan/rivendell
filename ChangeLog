@@ -19099,3 +19099,6 @@
 2019-09-09 Patrick Linstruth <patrick@deltecent.com>
 	* Fixed a bug in rdlibrary(1) multi-edit where an empty 'Year
 	Released' field clears the date from selected carts.
+2019-09-09 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdairplay(1) that caused the log name displayed
+	on the title bar to have its last four characters truncated.

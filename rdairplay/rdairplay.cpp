@@ -2096,7 +2096,7 @@ void MainWidget::SetCaption()
   setWindowTitle(QString("RDAirPlay")+" v"+VERSION+" - "+tr("Host")+": "+
 		 rda->config()->stationName()+" "+
 		 tr("User:")+" "+rda->ripc()->user()+" "+
-		 tr("Log:")+" "+log.left(log.length()-4)+" "+
+		 tr("Log:")+" "+log+" "+
 		 tr("Service:")+" "+air_log[0]->serviceName());
 }
 
