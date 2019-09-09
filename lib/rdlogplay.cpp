@@ -1431,11 +1431,9 @@ void RDLogPlay::transTimerData()
     if((logline=logLine(play_trans_line))!=NULL) {
       grace=logline->graceTime();
     }
-    if(running_events==0) {
-      makeNext(play_trans_line);
-      if(logline->transType()!=RDLogLine::Stop || grace>=0) {
-        StartEvent(trans_line,RDLogLine::Play,0,RDLogLine::StartTime);
-      } 
+    makeNext(play_trans_line);
+    if(logline->transType()!=RDLogLine::Stop || grace>=0) {
+      StartEvent(trans_line,RDLogLine::Play,0,RDLogLine::StartTime);
     }
   }
   SetTransTimer();

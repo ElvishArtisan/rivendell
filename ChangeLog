@@ -19089,3 +19089,7 @@
 2019-09-03 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'RDCart::setYear()' that caused invalid SQL to be
 	generated when given a null year.
+2019-09-05 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdairplay(1) and rdvairplayd(8) that
+	caused hard timed events with the 'Start Immediately' attribute
+	to fail to start if one or more other events were playing.
