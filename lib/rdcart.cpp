@@ -253,12 +253,7 @@ int RDCart::year() const
 
 void RDCart::setYear(int year)
 {
-  if((year>0)&&(year<10000)) {
-    SetRow("YEAR",QString().sprintf("%04d-01-01",year));
-  }
-  else {
-    SetRow("YEAR");
-  }
+  SetRow("YEAR",QString().sprintf("%04d-01-01",year));
   metadata_changed=true;
 }
 
@@ -616,6 +611,32 @@ unsigned RDCart::averageLength() const
 void RDCart::setAverageLength(unsigned length) const
 {
   SetRow("AVERAGE_LENGTH",length);
+}
+
+
+unsigned RDCart::minimumTalkLength() const
+{
+  return RDGetSqlValue("CART","NUMBER",cart_number,
+		      "MINIMUM_TALK_LENGTH").toUInt();
+}
+
+
+void RDCart::setMinimumTalkLength(unsigned length) const
+{
+  SetRow("MINIMUM_TALK_LENGTH",length);
+}
+
+
+unsigned RDCart::maximumTalkLength() const
+{
+  return RDGetSqlValue("CART","NUMBER",cart_number,
+		      "MAXIMUM_TALK_LENGTH").toUInt();
+}
+
+
+void RDCart::setMaximumTalkLength(unsigned length) const
+{
+  SetRow("MAXIMUM_TALK_LENGTH",length);
 }
 
 
@@ -1016,6 +1037,8 @@ void RDCart::updateLength(bool enforce_length,unsigned length)
   long long total=0;
   long long segue_total=0;
   long long hook_total=0;
+  long long min_talk_len=LLONG_MAX;
+  long long max_talk_len=0;
   unsigned weight_total=0;
   unsigned weight = 0;
   QDateTime end_date;
@@ -1025,7 +1048,8 @@ void RDCart::updateLength(bool enforce_length,unsigned length)
   QString sql=QString().
     sprintf("select LENGTH,SEGUE_START_POINT,SEGUE_END_POINT,START_POINT,\
              SUN,MON,TUE,WED,THU,FRI,SAT,START_DAYPART,END_DAYPART,\
-             HOOK_START_POINT,HOOK_END_POINT,WEIGHT,END_DATETIME \
+             HOOK_START_POINT,HOOK_END_POINT,WEIGHT,END_DATETIME,\
+             TALK_START_POINT,TALK_END_POINT \
              from CUTS where (CUT_NAME like \"%06d%%\")&&(LENGTH>0)",
 	    cart_number);
   RDSqlQuery *q=new RDSqlQuery(sql);
@@ -1047,6 +1071,12 @@ void RDCart::updateLength(bool enforce_length,unsigned length)
       segue_total+=(q->value(1).toInt()-q->value(3).toInt()) * weight;
     }
     hook_total+=(q->value(14).toUInt()-q->value(13).toUInt()) * weight;
+    if(min_talk_len>q->value(18).toUInt()-q->value(17).toUInt()) {
+      min_talk_len=q->value(18).toUInt()-q->value(17).toUInt();
+    }
+    if(max_talk_len<q->value(18).toUInt()-q->value(17).toUInt()) {
+      max_talk_len=q->value(18).toUInt()-q->value(17).toUInt();
+    }
     weight_total += weight;
   }
   if(weight_total>0) {
@@ -1065,6 +1095,8 @@ void RDCart::updateLength(bool enforce_length,unsigned length)
       setForcedLength(0);
     }
   }
+  setMinimumTalkLength(min_talk_len);
+  setMaximumTalkLength(max_talk_len);
   setCutQuantity(q->size());
   delete q;
 
@@ -1355,61 +1387,63 @@ QString RDCart::xmlSql(bool include_cuts)
     "CART.LENGTH_DEVIATION,"+      // 16
     "CART.AVERAGE_SEGUE_LENGTH,"+  // 17
     "CART.AVERAGE_HOOK_LENGTH,"+   // 18
-    "CART.CUT_QUANTITY,"+          // 19
-    "CART.LAST_CUT_PLAYED,"+       // 20
-    "CART.VALIDITY,"+              // 21
-    "CART.ENFORCE_LENGTH,"+        // 22
-    "CART.ASYNCRONOUS,"+           // 23
-    "CART.OWNER,"+                 // 24
-    "CART.METADATA_DATETIME,"+     // 25
-    "CART.CONDUCTOR,"+             // 26
-    "CART.MACROS,"+                // 27
-    "CART.SONG_ID ";               // 28
+    "CART.MINIMUM_TALK_LENGTH,"+   // 19
+    "CART.MAXIMUM_TALK_LENGTH,"+   // 20
+    "CART.CUT_QUANTITY,"+          // 21
+    "CART.LAST_CUT_PLAYED,"+       // 22
+    "CART.VALIDITY,"+              // 23
+    "CART.ENFORCE_LENGTH,"+        // 24
+    "CART.ASYNCRONOUS,"+           // 25
+    "CART.OWNER,"+                 // 26
+    "CART.METADATA_DATETIME,"+     // 27
+    "CART.CONDUCTOR,"+             // 28
+    "CART.MACROS,"+                // 29
+    "CART.SONG_ID ";               // 30
   if(include_cuts) {
     sql+=QString(",")+
-      "CUTS.CUT_NAME,"+            // 29
-      "CUTS.EVERGREEN,"+           // 30
-      "CUTS.DESCRIPTION,"+         // 31
-      "CUTS.OUTCUE,"+              // 32
-      "CUTS.ISRC,"+                // 33
-      "CUTS.ISCI,"+                // 34
-      "CUTS.LENGTH,"+              // 35
-      "CUTS.ORIGIN_DATETIME,"+     // 36
-      "CUTS.START_DATETIME,"+      // 37
-      "CUTS.END_DATETIME,"+        // 38
-      "CUTS.SUN,"+                 // 39
-      "CUTS.MON,"+                 // 40
-      "CUTS.TUE,"+                 // 41
-      "CUTS.WED,"+                 // 42
-      "CUTS.THU,"+                 // 43
-      "CUTS.FRI,"+                 // 44
-      "CUTS.SAT,"+                 // 45
-      "CUTS.START_DAYPART,"+       // 46
-      "CUTS.END_DAYPART,"+         // 47
-      "CUTS.ORIGIN_NAME,"+         // 48
-      "CUTS.ORIGIN_LOGIN_NAME,"+   // 49
-      "CUTS.SOURCE_HOSTNAME,"+     // 50
-      "CUTS.WEIGHT,"+              // 51
-      "CUTS.LAST_PLAY_DATETIME,"+  // 52
-      "CUTS.PLAY_COUNTER,"+        // 53
-      "CUTS.LOCAL_COUNTER,"+       // 54
-      "CUTS.VALIDITY,"+            // 55
-      "CUTS.CODING_FORMAT,"+       // 56
-      "CUTS.SAMPLE_RATE,"+         // 57
-      "CUTS.BIT_RATE,"+            // 58
-      "CUTS.CHANNELS,"+            // 59
-      "CUTS.PLAY_GAIN,"+           // 60
-      "CUTS.START_POINT,"+         // 61
-      "CUTS.END_POINT,"+           // 62
-      "CUTS.FADEUP_POINT,"+        // 63
-      "CUTS.FADEDOWN_POINT,"+      // 64
-      "CUTS.SEGUE_START_POINT,"+   // 65
-      "CUTS.SEGUE_END_POINT,"+     // 66
-      "CUTS.SEGUE_GAIN,"+          // 67
-      "CUTS.HOOK_START_POINT,"+    // 68
-      "CUTS.HOOK_END_POINT,"+      // 69
-      "CUTS.TALK_START_POINT,"+    // 70
-      "CUTS.TALK_END_POINT "+      // 71
+      "CUTS.CUT_NAME,"+            // 31
+      "CUTS.EVERGREEN,"+           // 32
+      "CUTS.DESCRIPTION,"+         // 33
+      "CUTS.OUTCUE,"+              // 34
+      "CUTS.ISRC,"+                // 35
+      "CUTS.ISCI,"+                // 36
+      "CUTS.LENGTH,"+              // 37
+      "CUTS.ORIGIN_DATETIME,"+     // 38
+      "CUTS.START_DATETIME,"+      // 39
+      "CUTS.END_DATETIME,"+        // 40
+      "CUTS.SUN,"+                 // 41
+      "CUTS.MON,"+                 // 42
+      "CUTS.TUE,"+                 // 43
+      "CUTS.WED,"+                 // 44
+      "CUTS.THU,"+                 // 45
+      "CUTS.FRI,"+                 // 46
+      "CUTS.SAT,"+                 // 47
+      "CUTS.START_DAYPART,"+       // 48
+      "CUTS.END_DAYPART,"+         // 49
+      "CUTS.ORIGIN_NAME,"+         // 50
+      "CUTS.ORIGIN_LOGIN_NAME,"+   // 51
+      "CUTS.SOURCE_HOSTNAME,"+     // 52
+      "CUTS.WEIGHT,"+              // 53
+      "CUTS.LAST_PLAY_DATETIME,"+  // 54
+      "CUTS.PLAY_COUNTER,"+        // 55
+      "CUTS.LOCAL_COUNTER,"+       // 56
+      "CUTS.VALIDITY,"+            // 57
+      "CUTS.CODING_FORMAT,"+       // 58
+      "CUTS.SAMPLE_RATE,"+         // 59
+      "CUTS.BIT_RATE,"+            // 60
+      "CUTS.CHANNELS,"+            // 61
+      "CUTS.PLAY_GAIN,"+           // 62
+      "CUTS.START_POINT,"+         // 63
+      "CUTS.END_POINT,"+           // 64
+      "CUTS.FADEUP_POINT,"+        // 65
+      "CUTS.FADEDOWN_POINT,"+      // 66
+      "CUTS.SEGUE_START_POINT,"+   // 67
+      "CUTS.SEGUE_END_POINT,"+     // 68
+      "CUTS.SEGUE_GAIN,"+          // 69
+      "CUTS.HOOK_START_POINT,"+    // 70
+      "CUTS.HOOK_END_POINT,"+      // 71
+      "CUTS.TALK_START_POINT,"+    // 72
+      "CUTS.TALK_END_POINT "+      // 73
       "from CART left join CUTS "+
       "on CART.NUMBER=CUTS.CART_NUMBER ";
   }
@@ -1465,18 +1499,22 @@ QString RDCart::xml(RDSqlQuery *q,bool include_cuts,
 			 "0"+RDGetTimeLength(q->value(17).toUInt(),true));
     xml+="  "+RDXmlField("averageHookLength",
 			 "0"+RDGetTimeLength(q->value(18).toUInt(),true));
-    xml+="  "+RDXmlField("cutQuantity",q->value(19).toUInt());
-    xml+="  "+RDXmlField("lastCutPlayed",q->value(20).toUInt());
-    xml+="  "+RDXmlField("enforceLength",RDBool(q->value(22).toString()));
-    xml+="  "+RDXmlField("asyncronous",RDBool(q->value(23).toString()));
-    xml+="  "+RDXmlField("owner",q->value(24).toString());
-    xml+="  "+RDXmlField("metadataDatetime",q->value(25).toDateTime());
-    xml+="  "+RDXmlField("songId",q->value(28).toString());
+    xml+="  "+RDXmlField("minimumTalkLength",
+			 "0"+RDGetTimeLength(q->value(19).toUInt(),true));
+    xml+="  "+RDXmlField("maximumTalkLength",
+			 "0"+RDGetTimeLength(q->value(20).toUInt(),true));
+    xml+="  "+RDXmlField("cutQuantity",q->value(21).toUInt());
+    xml+="  "+RDXmlField("lastCutPlayed",q->value(22).toUInt());
+    xml+="  "+RDXmlField("enforceLength",RDBool(q->value(24).toString()));
+    xml+="  "+RDXmlField("asyncronous",RDBool(q->value(25).toString()));
+    xml+="  "+RDXmlField("owner",q->value(26).toString());
+    xml+="  "+RDXmlField("metadataDatetime",q->value(27).toDateTime());
+    xml+="  "+RDXmlField("songId",q->value(30).toString());
     switch((RDCart::Type)q->value(1).toInt()) {
     case RDCart::Audio:
       if(include_cuts) {
 	cartnum=q->value(0).toUInt();
-	if(q->value(29).toString().isEmpty()) {
+	if(q->value(31).toString().isEmpty()) {
 	  xml+="  <cutList/>\n";
 	}
 	else {
@@ -1497,7 +1535,7 @@ QString RDCart::xml(RDSqlQuery *q,bool include_cuts,
       break;
 
     case RDCart::Macro:
-      mlist=q->value(27).toString().split("!");
+      mlist=q->value(29).toString().split("!");
       if(mlist.size()==0) {
 	xml+="  <macroList/>\n";
       }
@@ -1842,6 +1880,18 @@ unsigned RDCart::readXml(std::vector<RDWaveData> *data,const QString &xml)
       if(f0[i].contains("<averageSegueLength>")) {
 	cartdata.
 	  setAverageSegueLength(RDSetTimeLength(GetXmlValue("averageSegueLength",f0[i]).
+					   toString()));
+	cartdata.setMetadataFound(true);
+      }
+      if(f0[i].contains("<minimumTalkLength>")) {
+	cartdata.
+	  setMinimumTalkLength(RDSetTimeLength(GetXmlValue("minimumTalkLength",f0[i]).
+					   toString()));
+	cartdata.setMetadataFound(true);
+      }
+      if(f0[i].contains("<maximumTalkLength>")) {
+	cartdata.
+	  setMaximumTalkLength(RDSetTimeLength(GetXmlValue("maximumTalkLength",f0[i]).
 					   toString()));
 	cartdata.setMetadataFound(true);
       }

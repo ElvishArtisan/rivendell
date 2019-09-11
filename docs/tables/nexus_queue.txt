@@ -1,0 +1,12 @@
+                  NEXUS_QUEUE Table Layout for Rivendell
+
+The NEXUS_QUEUE table holds notifications that could not be sent
+to a MusicMaster Nexus server.
+
+FIELD NAME           TYPE              REMARKS
+--------------------------------------------------------------------------
+ID                   int(11)           Primary Key
+NOTIFICATION         varchar(255)
+ERROR                varchar(255)
+CREATED              timestamp
+
