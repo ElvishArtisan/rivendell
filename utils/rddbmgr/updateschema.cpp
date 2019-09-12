@@ -9749,6 +9749,102 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<310)&&(set_schema>cur_schema)) {
+    sql="alter table CART add column MINIMUM_TALK_LENGTH int unsigned default 0 after AVERAGE_HOOK_LENGTH";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql="alter table CART add column MAXIMUM_TALK_LENGTH int unsigned default 0 after MINIMUM_TALK_LENGTH";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("create table if not exists NEXUS_FIELDS (")+
+      "STATION varchar(255) NOT NULL,"+
+      "RD_NAME varchar(255),"+
+      "NEXUS_NAME varchar(255),"+
+      "NEXUS_ID int(11))"+
+      " charset utf8mb4 collate utf8mb4_general_ci"+
+      db_table_create_postfix;
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("create table if not exists NEXUS_QUEUE (")+
+      "ID int auto_increment not null primary key,"+
+      "NOTIFICATION varchar(255),"+
+      "ERROR varchar(255),"+
+      "CREATED timestamp default current_timestamp)"+
+      " charset utf8mb4 collate utf8mb4_general_ci"+
+      db_table_create_postfix;
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("create table if not exists NEXUS_SERVER (")+
+      "ENABLED enum('N','Y') default 'N',"+
+      "ADDRESS varchar(50) NOT NULL,"+
+      "PORT int(11) NOT NULL DEFAULT 8080,"+
+      "STATION_NAME varchar(64))"+
+      " charset utf8mb4 collate utf8mb4_general_ci"+
+      db_table_create_postfix;
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("create table if not exists NEXUS_STATIONS (")+
+      "STATION varchar(255) not null,"+
+      "CATEGORY varchar(10) not null,"+
+      "AUTO_MERGE enum('N','Y') default 'N',"+
+      "RD_SERVICE varchar(10) not null,"+
+      "RD_GROUP_NAME varchar(10) not null,"+
+      "RD_SCHED_CODE varchar(11) not null)"+
+      " charset utf8mb4 collate utf8mb4_general_ci"+
+      db_table_create_postfix;
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    q=new RDSqlQuery("select NAME from SERVICES",false);
+    while(q->next()) {
+      sql=QString("insert into NEXUS_STATIONS set ")+
+	  "RD_SERVICE=\""+RDEscapeString(q->value(0).toString())+"\"";
+      if(!RDSqlQuery::apply(sql,err_msg)) {
+        return false;
+      }
+    }
+    delete q;
+
+    sql=QString("insert into IMPORT_TEMPLATES set ")+
+      "NAME='MusicMaster Nexus',"+
+      "HOURS_OFFSET=0,"+
+      "HOURS_LENGTH=2,"+
+      "MINUTES_OFFSET=3,"+
+      "MINUTES_LENGTH=2,"+
+      "SECONDS_OFFSET=6,"+
+      "SECONDS_LENGTH=2,"+
+      "DATA_OFFSET=10,"+
+      "DATA_LENGTH=6,"+
+      "CART_OFFSET=20,"+
+      "CART_LENGTH=6,"+
+      "TITLE_OFFSET=30,"+
+      "TITLE_LENGTH=60,"+
+      "LEN_HOURS_OFFSET=0,"+
+      "LEN_HOURS_LENGTH=0,"+
+      "LEN_MINUTES_OFFSET=95,"+
+      "LEN_MINUTES_LENGTH=2,"+
+      "LEN_SECONDS_OFFSET=98,"+
+      "LEN_SECONDS_LENGTH=2,"+
+      "EVENT_ID_OFFSET=101,"+
+      "EVENT_ID_LENGTH=10";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    length_update_required=true;
+
+    WriteSchemaVersion(++cur_schema);
+  }
 
   // NEW SCHEMA UPDATES GO HERE...
 

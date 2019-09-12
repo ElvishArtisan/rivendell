@@ -19104,3 +19104,14 @@
 	on the title bar to have its last four characters truncated.
 2019-09-09 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.0.3int2.
+2019-09-12 Patrick Linstruth <patrick@deltecent.com>
+	* Added minimum and maximum talk lengths to 'RDCart' and
+	'RDWaveData' classes.
+	* Database changes for Nexus MusicMaster Integration.
+	* Added a 'CART.MINIMUM_TALK_LENGTH' field to the database.
+	* Added a 'CART.MAXIMUM_TALK_LENGTH' field to the database.
+	* Added 'NEXUS_FIELDS' table.
+	* Added 'NEXUS_QUEUE' table.
+	* Added 'NEXUS_SERVER' table.
+	* Added 'NEXUS_STATIONS' table.
+	* Incremented the database version to 310.

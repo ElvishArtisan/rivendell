@@ -111,6 +111,10 @@ class RDWaveData
   void setAverageLength(int msecs);
   int lengthDeviation() const;
   void setLengthDeviation(int msecs);
+  int minimumTalkLength() const;
+  void setMinimumTalkLength(int msecs);
+  int maximumTalkLength() const;
+  void setMaximumTalkLength(int msecs);
   int averageSegueLength() const;
   void setAverageSegueLength(int msecs);
   int averageHookLength() const;
@@ -237,6 +241,8 @@ class RDWaveData
   int data_forced_length;
   int data_average_length;
   int data_length_deviation;
+  int data_minimum_talk_length;
+  int data_maximum_talk_length;
   int data_average_segue_length;
   int data_average_hook_length;
   int data_cut_quantity;
