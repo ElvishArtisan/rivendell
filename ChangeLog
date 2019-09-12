@@ -19115,3 +19115,5 @@
 	* Added 'NEXUS_SERVER' table.
 	* Added 'NEXUS_STATIONS' table.
 	* Incremented the database version to 310.
+2019-09-12 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.0.3int3.
