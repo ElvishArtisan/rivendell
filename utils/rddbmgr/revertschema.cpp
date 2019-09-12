@@ -40,6 +40,26 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
   // NEW SCHEMA REVERSIONS GO HERE...
 
+  //
+  // Revert 310
+  //
+  if((cur_schema==310)&&(set_schema<cur_schema)) {
+    DropColumn("CART","MINIMUM_TALK_LENGTH");
+    DropColumn("CART","MAXIMUM_TALK_LENGTH");
+
+    DropTable("NEXUS_FIELDS",err_msg);
+    DropTable("NEXUS_QUEUE",err_msg);
+    DropTable("NEXUS_SERVER",err_msg);
+    DropTable("NEXUS_STATIONS",err_msg);
+
+    sql=QString("delete from IMPORT_TEMPLATES where ")+
+      "NAME='MusicMaster Nexus'";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(--cur_schema);
+  }
 
   //
   // Revert 309
