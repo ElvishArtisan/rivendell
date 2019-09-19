@@ -1,9 +1,7 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v3.0.3int3 -- 9/12/2019
-
-This is an interrim, limited distribution test release of Rivedell.
+v3.1.0 -- 9/19/2019
 
 Changes:
    Fixed a bug in rdairplay(1) and rdvairplayd(8) where only the first
@@ -32,9 +30,10 @@ Changes:
 
    Added an '%l' wildcard to Filepath Wildcards for 'unpadded month'.
 
+   Other Bugfixes, see the ChangeLog for details.
 
 Database Update:
-   This version of Rivendell uses database schema version 309, and will
+   This version of Rivendell uses database schema version 310, and will
    automatically upgrade any earlier versions. To see the current schema
    version prior to upgrade, see RDAdmin->SystemInfo.
 
