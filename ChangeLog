@@ -19122,3 +19122,6 @@
 2019-09-25 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rddbmgr(8) that caused a segfault when processing
 	a SQL error.
+2019-09-27 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdimport(1) that caused it to throw an exception
+	when given a '--metadata-pattern' of less than three characters.
