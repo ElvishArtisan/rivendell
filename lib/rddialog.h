@@ -37,6 +37,7 @@ class RDDialog : public QDialog
   QFont sectionLabelFont() const;
   QFont labelFont() const;
   QFont subLabelFont() const;
+  QFont progressFont() const;
   QFont dataFont() const;
 
  private:
@@ -46,6 +47,7 @@ class RDDialog : public QDialog
   QFont dialog_section_label_font;
   QFont dialog_label_font;
   QFont dialog_sub_label_font;
+  QFont dialog_progress_font;
   QFont dialog_data_font;
   RDConfig *dialog_config;
 };

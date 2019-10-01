@@ -2,7 +2,7 @@
 //
 // A widget to select a Rivendell Group.
 //
-//   (C) Copyright 2002-2006,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,39 +18,23 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qpushbutton.h>
-#include <qlabel.h>
-//Added by qt3to4:
-#include <QCloseEvent>
-#include <rddb.h>
-#include <qdatetime.h>
-
-#include <rdescape_string.h>
-#include <rdlist_groups.h>
+#include "rddb.h"
+#include "rdescape_string.h"
+#include "rdlist_groups.h"
 
 RDListGroups::RDListGroups(QString *groupname,const QString &username,
 			   QWidget *parent)
-  : QDialog(parent,"",true)
+  : RDDialog(parent)
 {
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   group_name=groupname;
 
-  setCaption(tr("Select Group"));
-
-  // 
-  // Create Fonts
-  //
-  QFont button_font=QFont("Helvetica",12,QFont::Bold);
-  button_font.setPixelSize(12);
-  QFont label_font=QFont("Helvetica",12,QFont::Bold);
-  label_font.setPixelSize(12);
+  setWindowTitle(tr("Select Group"));
 
   //
   // Cart List
@@ -75,7 +59,7 @@ RDListGroups::RDListGroups(QString *groupname,const QString &username,
   //
   QPushButton *button=new QPushButton(tr("&OK"),this,"ok_button");
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
-  button->setFont(button_font);
+  button->setFont(buttonFont());
   button->setDefault(true);
   connect(button,SIGNAL(clicked()),this,SLOT(okData()));
 
@@ -84,18 +68,13 @@ RDListGroups::RDListGroups(QString *groupname,const QString &username,
   //
   button=new QPushButton(tr("&Cancel"),this,"cancel_button");
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
-  button->setFont(button_font);
+  button->setFont(buttonFont());
   connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //
   // Populate Data
   //
   BuildGroupList(username);
-}
-
-
-RDListGroups::~RDListGroups()
-{
 }
 
 

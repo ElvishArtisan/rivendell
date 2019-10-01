@@ -840,6 +840,10 @@
         <source>The cart title must be unique!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Add Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddLog</name>
@@ -899,47 +903,47 @@
     <name>RDAudioSettingsDialog</name>
     <message>
         <source>Edit Settings</source>
-        <translation>Rediger innstillingar</translation>
+        <translation type="obsolete">Rediger innstillingar</translation>
     </message>
     <message>
         <source>Default &amp;Format:</source>
-        <translation>Standard&amp;format:</translation>
+        <translation type="obsolete">Standard&amp;format:</translation>
     </message>
     <message>
         <source>Default &amp;Channels:</source>
-        <translation>Standard tal på &amp;kanalar:</translation>
+        <translation type="obsolete">Standard tal på &amp;kanalar:</translation>
     </message>
     <message>
         <source>Default &amp;Sample Rate:</source>
-        <translation>Standard &amp;punktprøverate:</translation>
+        <translation type="obsolete">Standard &amp;punktprøverate:</translation>
     </message>
     <message>
         <source>Default &amp;Bitrate:</source>
-        <translation>Standard &amp;bitrate:</translation>
+        <translation type="obsolete">Standard &amp;bitrate:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Avbryt</translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
     </message>
     <message>
         <source>PCM16</source>
-        <translation>PCM16</translation>
+        <translation type="obsolete">PCM16</translation>
     </message>
     <message>
         <source>OggVorbis</source>
-        <translation>Ogg Vorbis</translation>
+        <translation type="obsolete">Ogg Vorbis</translation>
     </message>
     <message>
         <source>MPEG Layer 2</source>
-        <translation>MPEG lag 2</translation>
+        <translation type="obsolete">MPEG lag 2</translation>
     </message>
     <message>
         <source>MPEG Layer 3</source>
-        <translation>MPEG lag 3</translation>
+        <translation type="obsolete">MPEG lag 3</translation>
     </message>
 </context>
 <context>
@@ -2205,16 +2209,8 @@ Sjekk eksportoppsettet ditt og prøv att.</translation>
 <context>
     <name>RDListLogs</name>
     <message>
-        <source>NAME</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>DESCRIPTION</source>
-        <translation type="unfinished">SKILDRING</translation>
-    </message>
-    <message>
-        <source>SERVICE</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">SKILDRING</translation>
     </message>
     <message>
         <source>OK</source>
@@ -2231,6 +2227,18 @@ Sjekk eksportoppsettet ditt og prøv att.</translation>
     <message>
         <source>ALL</source>
         <translation type="obsolete">ALLE</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

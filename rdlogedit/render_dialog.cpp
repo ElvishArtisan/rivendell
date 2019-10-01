@@ -238,7 +238,7 @@ void RenderDialog::selectData()
   else {
     QString cutname;
     RDCutDialog *d=
-      new RDCutDialog(&cutname,NULL,NULL,NULL,false,true,true,this);
+      new RDCutDialog(&cutname,"RDLogEdit",NULL,NULL,NULL,false,true,true,this);
     if(d->exec()==0) {
       render_to_cartnum=RDCut::cartNumber(cutname);
       render_to_cutnum=RDCut::cutNumber(cutname);

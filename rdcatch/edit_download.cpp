@@ -478,7 +478,7 @@ void EditDownload::urlChangedData(const QString &str)
 void EditDownload::selectCartData()
 {
   RDCutDialog *cut=
-    new RDCutDialog(&edit_cutname,edit_filter,NULL,NULL,false,true);
+    new RDCutDialog(&edit_cutname,"RDCatch",edit_filter,NULL,NULL,false,true);
   switch(cut->exec()) {
   case 0:
     edit_description_edit->setText(RDCutPath(edit_cutname));

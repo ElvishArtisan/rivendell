@@ -250,7 +250,8 @@ void ListCasts::addCartData()
 {
   QString cutname;
   RDCutDialog *cd=
-    new RDCutDialog(&cutname,&cast_filter,&cast_group,&cast_schedcode);
+    new RDCutDialog(&cutname,"RDCastManager",&cast_filter,&cast_group,
+		    &cast_schedcode);
   if(cd->exec()!=0) {
     delete cd;
     return;

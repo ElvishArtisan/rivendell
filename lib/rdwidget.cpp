@@ -68,6 +68,12 @@ QFont RDWidget::subLabelFont() const
 }
 
 
+QFont RDWidget::progressFont() const
+{
+  return widget_progress_font;
+}
+
+
 QFont RDWidget::dataFont() const
 {
   return widget_data_font;
@@ -108,6 +114,9 @@ void RDWidget::MakeFonts()
 
   widget_sub_label_font=QFont(family,label_size,QFont::Normal);
   widget_sub_label_font.setPixelSize(label_size);
+
+  widget_progress_font=QFont(family,label_size+4,QFont::Bold);
+  widget_progress_font.setPixelSize(label_size+4);
 
   widget_data_font=QFont(family,data_size,QFont::Normal);
   widget_data_font.setPixelSize(data_size);

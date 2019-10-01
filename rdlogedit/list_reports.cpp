@@ -19,6 +19,7 @@
 //
 
 #include <qmessagebox.h>
+#include <qpushbutton.h>
 
 #include <rdconf.h>
 #include <rddatedialog.h>

@@ -31,7 +31,7 @@
 
 RDCddbLookup::RDCddbLookup(const QString &caption,FILE *profile_msgs,
 			   QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   lookup_state=0;
   lookup_profile_msgs=profile_msgs;
@@ -48,21 +48,18 @@ RDCddbLookup::RDCddbLookup(const QString &caption,FILE *profile_msgs,
 
   setWindowTitle(caption+" - "+tr("CDDB Query"));
 
-  QFont label_font("Helvetica",12,QFont::Bold);
-  label_font.setPixelSize(12);
-
   lookup_titles_label=new QLabel(tr("Multiple Matches Found!"),this);
   lookup_titles_label->setAlignment(Qt::AlignCenter|Qt::AlignVCenter);
-  lookup_titles_label->setFont(label_font);
+  lookup_titles_label->setFont(labelFont());
 
   lookup_titles_box=new QComboBox(this);
 
   lookup_ok_button=new QPushButton(tr("OK"),this);
-  lookup_ok_button->setFont(label_font);
+  lookup_ok_button->setFont(buttonFont());
   connect(lookup_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   lookup_cancel_button=new QPushButton(tr("Cancel"),this);
-  lookup_cancel_button->setFont(label_font);
+  lookup_cancel_button->setFont(buttonFont());
   connect(lookup_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //

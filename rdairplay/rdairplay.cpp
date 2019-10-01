@@ -547,6 +547,7 @@ MainWidget::MainWidget(QWidget *parent)
 		       rda->airplayConf()->panels(RDAirPlayConf::StationPanel),
 		       rda->airplayConf()->panels(RDAirPlayConf::UserPanel),
 		       rda->airplayConf()->flashPanel(),
+		       "RDAirPlay",
 		       rda->airplayConf()->buttonLabelTemplate(),false,
 		       rdevent_player,rdcart_dialog,this);
     air_panel->setGeometry(510,140,air_panel->sizeHint().width(),

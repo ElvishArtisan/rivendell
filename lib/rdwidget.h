@@ -37,6 +37,7 @@ class RDWidget : public QWidget
   QFont sectionLabelFont() const;
   QFont labelFont() const;
   QFont subLabelFont() const;
+  QFont progressFont() const;
   QFont dataFont() const;
 
  private:
@@ -46,6 +47,7 @@ class RDWidget : public QWidget
   QFont widget_section_label_font;
   QFont widget_label_font;
   QFont widget_sub_label_font;
+  QFont widget_progress_font;
   QFont widget_data_font;
   RDConfig *widget_config;
 };

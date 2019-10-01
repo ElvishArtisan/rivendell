@@ -2,7 +2,7 @@
 //
 // Slot Editor for RDCartSlots.
 //
-//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,16 +21,14 @@
 #ifndef RDSLOTDIALOG_H
 #define RDSLOTDIALOG_H
 
-#include <qdialog.h>
 #include <qlabel.h>
 #include <qcombobox.h>
 #include <qpushbutton.h>
-//Added by qt3to4:
-#include <QResizeEvent>
 
+#include <rddialog.h>
 #include <rdslotoptions.h>
 
-class RDSlotDialog : public QDialog
+class RDSlotDialog : public RDDialog
 {
   Q_OBJECT
  public:

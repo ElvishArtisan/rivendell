@@ -840,6 +840,10 @@
         <source>This cart already exists.</source>
         <translation>Este Cartão já Existe.</translation>
     </message>
+    <message>
+        <source>Add Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddLog</name>
@@ -899,47 +903,47 @@
     <name>RDAudioSettingsDialog</name>
     <message>
         <source>Edit Settings</source>
-        <translation>Editar Configurações</translation>
+        <translation type="obsolete">Editar Configurações</translation>
     </message>
     <message>
         <source>Default &amp;Format:</source>
-        <translation>&amp;Formato Padrão:</translation>
+        <translation type="obsolete">&amp;Formato Padrão:</translation>
     </message>
     <message>
         <source>Default &amp;Channels:</source>
-        <translation>&amp;Canais Padrão:</translation>
+        <translation type="obsolete">&amp;Canais Padrão:</translation>
     </message>
     <message>
         <source>Default &amp;Sample Rate:</source>
-        <translation>&amp;Taxa de Amostragem Padrão:</translation>
+        <translation type="obsolete">&amp;Taxa de Amostragem Padrão:</translation>
     </message>
     <message>
         <source>Default &amp;Bitrate:</source>
-        <translation>&amp;Taxa de Bits Padrão:</translation>
+        <translation type="obsolete">&amp;Taxa de Bits Padrão:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>PCM16</source>
-        <translation>PCM16</translation>
+        <translation type="obsolete">PCM16</translation>
     </message>
     <message>
         <source>OggVorbis</source>
-        <translation>OggVorbis</translation>
+        <translation type="obsolete">OggVorbis</translation>
     </message>
     <message>
         <source>MPEG Layer 2</source>
-        <translation>MPEG Layer 2</translation>
+        <translation type="obsolete">MPEG Layer 2</translation>
     </message>
     <message>
         <source>MPEG Layer 3</source>
-        <translation>MPEG Layer 3</translation>
+        <translation type="obsolete">MPEG Layer 3</translation>
     </message>
 </context>
 <context>
@@ -2216,15 +2220,15 @@ Por Favor, cheque suas configurações e tenbte outra vez.</translation>
     </message>
     <message>
         <source>NAME</source>
-        <translation>NOME</translation>
+        <translation type="obsolete">NOME</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation>DESCRIÇÃO</translation>
+        <translation type="obsolete">DESCRIÇÃO</translation>
     </message>
     <message>
         <source>SERVICE</source>
-        <translation>SERVIÇO</translation>
+        <translation type="obsolete">SERVIÇO</translation>
     </message>
     <message>
         <source>OK</source>
@@ -2237,6 +2241,18 @@ Por Favor, cheque suas configurações e tenbte outra vez.</translation>
     <message>
         <source>ALL</source>
         <translation type="obsolete">TODOS</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

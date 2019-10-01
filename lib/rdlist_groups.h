@@ -2,7 +2,7 @@
 //
 // A widget to select a Rivendell Group.
 //
-//   (C) Copyright 2002-2006,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,18 +21,17 @@
 #ifndef RDLIST_GROUPS_H
 #define RDLIST_GROUPS_H
 
-#include <qdialog.h>
 #include <q3listview.h>
-#include <qpushbutton.h>
-//Added by qt3to4:
-#include <QCloseEvent>
 
-class RDListGroups : public QDialog
+#include <qpushbutton.h>
+
+#include <rddialog.h>
+
+class RDListGroups : public RDDialog
 {
  Q_OBJECT
  public:
  RDListGroups(QString *groupname,const QString &username,QWidget *parent=0);
- ~RDListGroups();
  QSize sizeHint() const;
  QSizePolicy sizePolicy() const;
 

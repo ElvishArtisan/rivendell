@@ -2,7 +2,7 @@
 //
 // Audio File Importation Dialog for Rivendell.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,27 +23,23 @@
 
 #include <sys/types.h>
 #include <unistd.h>
-#include <qdialog.h>
-#include <q3listview.h>
+
+#include <q3buttongroup.h>
+
 #include <qlabel.h>
 #include <qlineedit.h>
-#include <q3progressbar.h>
 #include <qtimer.h>
 #include <qfile.h>
 #include <qspinbox.h>
 #include <qcombobox.h>
 #include <qcheckbox.h>
-#include <q3textedit.h>
-#include <q3buttongroup.h>
 #include <qradiobutton.h>
-//Added by qt3to4:
-#include <QCloseEvent>
-#include <QPaintEvent>
 
 #include <rdaudioexport.h>
 #include <rdaudioimport.h>
 #include <rdbusybar.h>
 #include <rdcut.h>
+#include <rddialog.h>
 #include <rdexport_settings_dialog.h>
 #include <rdsettings.h>
 #include <rdwavedata.h>
@@ -54,7 +50,7 @@
 #define IMPORT_BAR_INTERVAL 500
 #define IMPORT_TEMP_BASENAME "rdlib"
 
-class RDImportAudio : public QDialog
+class RDImportAudio : public RDDialog
 {
  Q_OBJECT
  public:

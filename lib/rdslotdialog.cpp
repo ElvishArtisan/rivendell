@@ -2,7 +2,7 @@
 //
 // Slot Editor for RDCartSlots.
 //
-//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -32,7 +32,7 @@
 #include "rdslotdialog.h"
 
 RDSlotDialog::RDSlotDialog(const QString &caption,QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   edit_caption=caption;
   edit_options=NULL;
@@ -43,17 +43,7 @@ RDSlotDialog::RDSlotDialog(const QString &caption,QWidget *parent)
   setMinimumWidth(sizeHint().width());
   setMinimumHeight(sizeHint().height());
 
-  setCaption(caption+" - "+tr("Edit Slot Options"));
-
-  //
-  // Create Fonts
-  //
-  QFont label_font=QFont("Helvetica",12,QFont::Bold);
-  label_font.setPixelSize(12);
-  QFont button_font=QFont("Helvetica",14,QFont::Bold);
-  button_font.setPixelSize(14);
-  QFont counter_font=QFont("Helvetica",24,QFont::Bold);
-  counter_font.setPixelSize(24);
+  setWindowTitle(caption+" - "+tr("Edit Slot Options"));
 
   //
   // Slot Mode
@@ -65,8 +55,8 @@ RDSlotDialog::RDSlotDialog(const QString &caption,QWidget *parent)
     edit_mode_box->insertItem(RDSlotOptions::modeText((RDSlotOptions::Mode)i));
   }
   edit_mode_label=new QLabel(tr("Slot Mode:"),this);
-  edit_mode_label->setFont(label_font);
-  edit_mode_label->setAlignment(Qt::AlignRight);
+  edit_mode_label->setFont(labelFont());
+  edit_mode_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Hook Mode
@@ -75,8 +65,8 @@ RDSlotDialog::RDSlotDialog(const QString &caption,QWidget *parent)
   edit_hook_box->insertItem(tr("Full Cart"));
   edit_hook_box->insertItem(tr("Hook"));
   edit_hook_label=new QLabel(tr("Play Mode:"),this);
-  edit_hook_label->setFont(label_font);
-  edit_hook_label->setAlignment(Qt::AlignRight);
+  edit_hook_label->setFont(labelFont());
+  edit_hook_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Stop Action
@@ -87,15 +77,15 @@ RDSlotDialog::RDSlotDialog(const QString &caption,QWidget *parent)
       insertItem(RDSlotOptions::stopActionText((RDSlotOptions::StopAction)i));
   }
   edit_stop_action_label=new QLabel(tr("At Playout End:"),this);
-  edit_stop_action_label->setFont(label_font);
-  edit_stop_action_label->setAlignment(Qt::AlignRight);
+  edit_stop_action_label->setFont(labelFont());
+  edit_stop_action_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   //  Ok Button
   //
   edit_ok_button=new QPushButton(this);
   edit_ok_button->setDefault(true);
-  edit_ok_button->setFont(label_font);
+  edit_ok_button->setFont(buttonFont());
   edit_ok_button->setText(tr("&OK"));
   connect(edit_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
@@ -103,7 +93,7 @@ RDSlotDialog::RDSlotDialog(const QString &caption,QWidget *parent)
   //  Cancel Button
   //
   edit_cancel_button=new QPushButton(this);
-  edit_cancel_button->setFont(label_font);
+  edit_cancel_button->setFont(buttonFont());
   edit_cancel_button->setText(tr("&Cancel"));
   connect(edit_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 }

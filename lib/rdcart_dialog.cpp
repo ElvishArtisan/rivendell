@@ -2,7 +2,7 @@
 //
 // A widget to select a Rivendell Cart.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,27 +21,23 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include <qpushbutton.h>
-#include <qlabel.h>
-#include <qsqlquery.h>
-#include <qdatetime.h>
-#include <qapplication.h>
-#include <qeventloop.h>
 #include <q3filedialog.h>
+
+#include <qapplication.h>
 #include <qmessagebox.h>
 
-#include <rdapplication.h>
-#include <rdaudioimport.h>
-#include <rdcart_dialog.h>
-#include <rdcart_search_text.h>
-#include <rdconf.h>
-#include <rddb.h>
-#include <rdescape_string.h>
-#include <rdgroup.h>
-#include <rdprofile.h>
-#include <rdsettings.h>
-#include <rdtextvalidator.h>
-#include <rdwavefile.h>
+#include "rdapplication.h"
+#include "rdaudioimport.h"
+#include "rdcart_dialog.h"
+#include "rdcart_search_text.h"
+#include "rdconf.h"
+#include "rddb.h"
+#include "rdescape_string.h"
+#include "rdgroup.h"
+#include "rdprofile.h"
+#include "rdsettings.h"
+#include "rdtextvalidator.h"
+#include "rdwavefile.h"
 
 //
 // Icons
@@ -51,7 +47,7 @@
 
 RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
 			   QWidget *parent)
-  : QDialog(parent,"",true)
+  : RDDialog(parent)
 {
   //
   // Fix the Window Size
@@ -80,15 +76,7 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   cart_import_path=RDGetHomeDir();
   cart_import_file_filter=RD_AUDIO_FILE_FILTER;
 
-  setCaption(tr("Select Cart"));
-
-  // 
-  // Create Fonts
-  //
-  QFont button_font=QFont("Helvetica",12,QFont::Bold);
-  button_font.setPixelSize(12);
-  QFont progress_font=QFont("Helvetica",16,QFont::Bold);
-  progress_font.setPixelSize(16);
+  setWindowTitle(tr("Select Cart"));
 
   //
   // Create Icons
@@ -111,7 +99,7 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   cart_progress_dialog->setCaption(" ");
   QLabel *label=new QLabel(tr("Please Wait..."),cart_progress_dialog);
   label->setAlignment(Qt::AlignCenter);
-  label->setFont(progress_font);
+  label->setFont(progressFont());
   cart_progress_dialog->setLabel(label);
   cart_progress_dialog->setCancelButton(NULL);
   cart_progress_dialog->setMinimumDuration(2000);
@@ -125,7 +113,7 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   cart_filter_edit->setValidator(validator);
   cart_filter_label=new QLabel(cart_filter_edit,tr("Cart Filter:"),this);
   cart_filter_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-  cart_filter_label->setFont(button_font);
+  cart_filter_label->setFont(labelFont());
   connect(cart_filter_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(filterChangedData(const QString &)));
 
@@ -134,7 +122,7 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   //
   cart_search_button=new QPushButton(this);
   cart_search_button->setText(tr("&Search"));
-  cart_search_button->setFont(button_font);
+  cart_search_button->setFont(buttonFont());
   connect(cart_search_button,SIGNAL(clicked()),this,SLOT(filterSearchedData()));
 
   //
@@ -142,7 +130,7 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   //
   cart_clear_button=new QPushButton(this);
   cart_clear_button->setText(tr("C&lear"));
-  cart_clear_button->setFont(button_font);
+  cart_clear_button->setFont(buttonFont());
   connect(cart_clear_button,SIGNAL(clicked()),this,SLOT(filterClearedData()));
 
   //
@@ -151,7 +139,7 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   cart_group_box=new RDComboBox(this);
   cart_group_label=new QLabel(cart_group_box,tr("Group:"),this);
   cart_group_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-  cart_group_label->setFont(button_font);
+  cart_group_label->setFont(labelFont());
   connect(cart_group_box,SIGNAL(activated(const QString &)),
 	  this,SLOT(groupActivatedData(const QString &)));
 
@@ -162,7 +150,7 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   cart_schedcode_label=
     new QLabel(cart_schedcode_box,tr("Scheduler Code:"),this);
   cart_schedcode_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-  cart_schedcode_label->setFont(button_font);
+  cart_schedcode_label->setFont(labelFont());
   connect(cart_schedcode_box,SIGNAL(activated(const QString &)),
 	  this,SLOT(schedcodeActivatedData(const QString &)));
 
@@ -176,7 +164,7 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
 	       QString().sprintf(" %d ",
 		      RD_LIMITED_CART_SEARCH_QUANTITY)+tr("Matches"),this);
   cart_limit_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-  cart_limit_label->setFont(button_font);
+  cart_limit_label->setFont(labelFont());
   connect(cart_limit_box,SIGNAL(stateChanged(int)),
 	  this,SLOT(limitChangedData(int)));
 
@@ -194,7 +182,7 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
 	  this,
 	  SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
   cart_cart_label=new QLabel(cart_cart_list,"Carts",this);
-  cart_cart_label->setFont(button_font);
+  cart_cart_label->setFont(labelFont());
   cart_cart_list->addColumn("");
   cart_cart_list->setColumnAlignment(0,Qt::AlignHCenter);
 
@@ -255,7 +243,7 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   // Send to Editor Button
   //
   cart_editor_button=new QPushButton(tr("Send to\n&Editor"),this);
-  cart_editor_button->setFont(button_font);
+  cart_editor_button->setFont(buttonFont());
   connect(cart_editor_button,SIGNAL(clicked()),this,SLOT(editorData()));
   if(rda->station()->editorPath().isEmpty()) {
     cart_editor_button->hide();
@@ -265,7 +253,7 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   // Load From File Button
   //
   cart_file_button=new QPushButton(tr("Load From\n&File"),this);
-  cart_file_button->setFont(button_font);
+  cart_file_button->setFont(buttonFont());
   connect(cart_file_button,SIGNAL(clicked()),this,SLOT(loadFileData()));
   if(rda->station()->editorPath().isEmpty()) {
     cart_file_button->hide();
@@ -275,14 +263,14 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   // OK Button
   //
   cart_ok_button=new QPushButton(tr("&OK"),this);
-  cart_ok_button->setFont(button_font);
+  cart_ok_button->setFont(buttonFont());
   connect(cart_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
   // Cancel Button
   //
   cart_cancel_button=new QPushButton(tr("&Cancel"),this);
-  cart_cancel_button->setFont(button_font);
+  cart_cancel_button->setFont(buttonFont());
   connect(cart_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 }
 

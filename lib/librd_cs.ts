@@ -844,6 +844,10 @@
         <source>The cart title must be unique!</source>
         <translation>Název vozíku musí být jedinečný!</translation>
     </message>
+    <message>
+        <source>Add Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddLog</name>
@@ -903,47 +907,47 @@
     <name>RDAudioSettingsDialog</name>
     <message>
         <source>Edit Settings</source>
-        <translation>Upravit nastavení</translation>
+        <translation type="obsolete">Upravit nastavení</translation>
     </message>
     <message>
         <source>Default &amp;Format:</source>
-        <translation>Výchozí &amp;formát:</translation>
+        <translation type="obsolete">Výchozí &amp;formát:</translation>
     </message>
     <message>
         <source>Default &amp;Channels:</source>
-        <translation>Výchozí &amp;kanály:</translation>
+        <translation type="obsolete">Výchozí &amp;kanály:</translation>
     </message>
     <message>
         <source>Default &amp;Sample Rate:</source>
-        <translation>Výchozí &amp;vzorkovací kmitočet:</translation>
+        <translation type="obsolete">Výchozí &amp;vzorkovací kmitočet:</translation>
     </message>
     <message>
         <source>Default &amp;Bitrate:</source>
-        <translation>Výchozí &amp;datový tok:</translation>
+        <translation type="obsolete">Výchozí &amp;datový tok:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Zrušit</translation>
+        <translation type="obsolete">&amp;Zrušit</translation>
     </message>
     <message>
         <source>PCM16</source>
-        <translation>PCM16</translation>
+        <translation type="obsolete">PCM16</translation>
     </message>
     <message>
         <source>OggVorbis</source>
-        <translation>OggVorbis</translation>
+        <translation type="obsolete">OggVorbis</translation>
     </message>
     <message>
         <source>MPEG Layer 2</source>
-        <translation>MPEG Layer 2</translation>
+        <translation type="obsolete">MPEG Layer 2</translation>
     </message>
     <message>
         <source>MPEG Layer 3</source>
-        <translation>MPEG Layer 3</translation>
+        <translation type="obsolete">MPEG Layer 3</translation>
     </message>
 </context>
 <context>
@@ -2225,15 +2229,15 @@ Bitte Kofiguration prüfen und erneut versuchen.</translation>
     </message>
     <message>
         <source>NAME</source>
-        <translation>NÁZEV</translation>
+        <translation type="obsolete">NÁZEV</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation>POPIS</translation>
+        <translation type="obsolete">POPIS</translation>
     </message>
     <message>
         <source>SERVICE</source>
-        <translation>SLUŽBA</translation>
+        <translation type="obsolete">SLUŽBA</translation>
     </message>
     <message>
         <source>OK</source>
@@ -2242,6 +2246,18 @@ Bitte Kofiguration prüfen und erneut versuchen.</translation>
     <message>
         <source>Cancel</source>
         <translation>Zrušit</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -32,16 +32,17 @@
 #include "rdsound_panel.h"
 
 RDSoundPanel::RDSoundPanel(int cols,int rows,int station_panels,
-			   int user_panels,bool flash,
+			   int user_panels,bool flash,const QString &caption,
 			   const QString &label_template,bool extended,
 			   RDEventPlayer *player,RDCartDialog *cart_dialog,
 			   QWidget *parent)
-  : QWidget(parent)
+  : RDWidget(parent)
 {
   panel_playmode_box=NULL;
   panel_button_columns=cols;
   panel_button_rows=rows;
   panel_cue_port=-1;
+  panel_caption=caption;
   if(extended) {
     panel_tablename="EXTENDED_PANELS";
     panel_name_tablename="EXTENDED_PANEL_NAMES";
@@ -80,12 +81,6 @@ RDSoundPanel::RDSoundPanel(int cols,int rows,int station_panels,
   panel_onair_flag=false;
 
   //
-  // Create Fonts
-  //
-  QFont button_font=QFont("Helvetica",14,QFont::Bold);
-  button_font.setPixelSize(14);
-
-  //
   // Load Buttons
   //
   panel_mapper=new QSignalMapper(this);
@@ -97,7 +92,7 @@ RDSoundPanel::RDSoundPanel(int cols,int rows,int station_panels,
   // Panel Selector
   //
   panel_selector_box=new RDComboBox(this);
-  panel_selector_box->setFont(button_font);
+  panel_selector_box->setFont(buttonFont());
   panel_selector_box->addIgnoredKey(Qt::Key_Space);
   panel_selector_box->
     setGeometry((15+PANEL_BUTTON_SIZE_X)*(panel_button_columns-5),
@@ -128,7 +123,7 @@ RDSoundPanel::RDSoundPanel(int cols,int rows,int station_panels,
   // Play Mode Box
   //
   panel_playmode_box=new QComboBox(this);
-  panel_playmode_box->setFont(button_font);
+  panel_playmode_box->setFont(buttonFont());
   panel_playmode_box->
     setGeometry((15+PANEL_BUTTON_SIZE_X)*(panel_button_columns-3)-5,
 		(15+PANEL_BUTTON_SIZE_Y)*panel_button_rows,
@@ -146,7 +141,7 @@ RDSoundPanel::RDSoundPanel(int cols,int rows,int station_panels,
     setGeometry((15+PANEL_BUTTON_SIZE_X)*(panel_button_columns-2),
 		(15+PANEL_BUTTON_SIZE_Y)*panel_button_rows,
 		PANEL_BUTTON_SIZE_X,50);
-  panel_reset_button->setFont(button_font);
+  panel_reset_button->setFont(buttonFont());
   panel_reset_button->setText(tr("Reset"));
   panel_reset_button->setFlashColor(QColor(RDPANEL_RESET_FLASH_COLOR));
   panel_reset_button->setFocusPolicy(Qt::NoFocus);
@@ -160,7 +155,7 @@ RDSoundPanel::RDSoundPanel(int cols,int rows,int station_panels,
     setGeometry((15+PANEL_BUTTON_SIZE_X)*(panel_button_columns-1),
 		(15+PANEL_BUTTON_SIZE_Y)*panel_button_rows,
 		PANEL_BUTTON_SIZE_X,50);
-  panel_all_button->setFont(button_font);
+  panel_all_button->setFont(buttonFont());
   panel_all_button->setText(tr("All"));
   panel_all_button->setFlashColor(QColor(RDPANEL_RESET_FLASH_COLOR));
   panel_all_button->setFocusPolicy(Qt::NoFocus);
@@ -175,7 +170,7 @@ RDSoundPanel::RDSoundPanel(int cols,int rows,int station_panels,
     setGeometry((15+PANEL_BUTTON_SIZE_X)*(panel_button_columns-1),
 		(15+PANEL_BUTTON_SIZE_Y)*panel_button_rows,
 		PANEL_BUTTON_SIZE_X,50);
-  panel_setup_button->setFont(button_font);
+  panel_setup_button->setFont(buttonFont());
   panel_setup_button->setText(tr("Setup"));
   panel_setup_button->setFlashColor(QColor(RDPANEL_SETUP_FLASH_COLOR));
   panel_setup_button->setFocusPolicy(Qt::NoFocus);
@@ -185,8 +180,9 @@ RDSoundPanel::RDSoundPanel(int cols,int rows,int station_panels,
   // Button Dialog Box
   //
   panel_button_dialog=
-    new RDButtonDialog(rda->station()->name(),panel_label_template,
-		       panel_cart_dialog,panel_svcname,this);
+    new RDButtonDialog(rda->station()->name(),panel_caption,
+		       panel_label_template,panel_cart_dialog,panel_svcname,
+		       this);
 
   //
   // CAE Setup

@@ -2,7 +2,7 @@
 //
 //   A widget for editing a list of integer values.
 //
-//   (C) Copyright 2008,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2008-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -18,27 +18,17 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <rdintegerdialog.h>
-#include <rdintegeredit.h>
-//Added by qt3to4:
-#include <QLabel>
+#include "rdintegerdialog.h"
+#include "rdintegeredit.h"
 
 RDIntegerEdit::RDIntegerEdit(const QString &lbl,int low,int high,
 			     QWidget *parent)
-  : QWidget(parent)
+  : RDWidget(parent)
 {
   edit_low=low;
   edit_high=high;
 
-  setCaption(tr("Set Value"));
-
-  //
-  // Generate Fonts
-  //
-  QFont label_font=QFont("Helvetica",12,QFont::Bold);
-  label_font.setPixelSize(12);
-  QFont button_font=QFont("Helvetica",10,QFont::Bold);
-  button_font.setPixelSize(10);
+  setWindowTitle(tr("Set Value"));
 
   //
   // Values List
@@ -50,20 +40,20 @@ RDIntegerEdit::RDIntegerEdit(const QString &lbl,int low,int high,
   //
   edit_label=new QLabel(edit_values_box,lbl,this);
   edit_label->setAlignment(Qt::AlignCenter);
-  edit_label->setFont(label_font);
+  edit_label->setFont(labelFont());
 
   //
   // Add Button
   //
   edit_add_button=new QPushButton(tr("Add"),this);
-  edit_add_button->setFont(button_font);
+  edit_add_button->setFont(buttonFont());
   connect(edit_add_button,SIGNAL(clicked()),this,SLOT(addData()));
 
   //
   // Delete Button
   //
   edit_delete_button=new QPushButton(tr("Delete"),this);
-  edit_delete_button->setFont(button_font);
+  edit_delete_button->setFont(buttonFont());
   connect(edit_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
 }
 

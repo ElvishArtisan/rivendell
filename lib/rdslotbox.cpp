@@ -2,7 +2,7 @@
 //
 // Cart slot label widget for RDCartSlot
 //
-//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,18 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qpainter.h>
-//Added by qt3to4:
-#include <QDropEvent>
-#include <QPaintEvent>
-#include <QPixmap>
-#include <QLabel>
-#include <QMouseEvent>
-#include <QDragEnterEvent>
-
 #include "rdconf.h"
-#include "rdplay_deck.h"
-
 #include "rdnownext.h"
 #include "rdslotbox.h"
 
@@ -37,7 +26,7 @@
 #include "../icons/rml5.xpm"
 
 RDSlotBox::RDSlotBox(RDPlayDeck *deck,RDAirPlayConf *conf,QWidget *parent)
-  : QWidget(parent)
+  : RDWidget(parent)
 {
   line_deck=deck;
   line_airplay_conf=conf;
@@ -45,19 +34,6 @@ RDSlotBox::RDSlotBox(RDPlayDeck *deck,RDAirPlayConf *conf,QWidget *parent)
   line_logline=NULL;
   line_mode=RDSlotOptions::LastMode;
   log_id=-1;
-
-  //
-  // Create Font
-  //
-  line_bold_font=QFont("Helvetica",12,QFont::Bold);
-  line_bold_font.setPixelSize(12);
-  line_font=QFont("Helvetica",12,QFont::Normal);
-  line_font.setPixelSize(12);
-  talk_font=QFont("Helvetica",12,QFont::Bold);
-  talk_font.setPixelSize(12);
-  QFont outcue_font=QFont("Helvetica",12,QFont::Normal);
-  outcue_font.setPixelSize(12);
-  outcue_font.setItalic(true);
 
   //
   // Create Icons
@@ -70,26 +46,26 @@ RDSlotBox::RDSlotBox(RDPlayDeck *deck,RDAirPlayConf *conf,QWidget *parent)
   //
   line_unchanged_stop_palette=palette();
   line_unchanged_stop_palette.setColor(QPalette::Active,QColorGroup::Highlight,
-			     QColor(BAR_UNCHANGED_STOPPING_COLOR));
+				       QColor(BAR_UNCHANGED_STOPPING_COLOR));
   line_unchanged_stop_palette.setColor(QPalette::Inactive,
 				       QColorGroup::Highlight,
-			     QColor(BAR_UNCHANGED_STOPPING_COLOR));
+				       QColor(BAR_UNCHANGED_STOPPING_COLOR));
   line_unchanged_play_palette=palette();
   line_unchanged_play_palette.setColor(QPalette::Active,QColorGroup::Highlight,
-			     QColor(BAR_UNCHANGED_TRANSITION_COLOR));
+				       QColor(BAR_UNCHANGED_TRANSITION_COLOR));
   line_unchanged_play_palette.setColor(QPalette::Inactive,
 				       QColorGroup::Highlight,
-			     QColor(BAR_UNCHANGED_TRANSITION_COLOR));
+				       QColor(BAR_UNCHANGED_TRANSITION_COLOR));
   line_changed_stop_palette=palette();
   line_changed_stop_palette.setColor(QPalette::Active,QColorGroup::Highlight,
-			     QColor(BAR_CHANGED_STOPPING_COLOR));
+				     QColor(BAR_CHANGED_STOPPING_COLOR));
   line_changed_stop_palette.setColor(QPalette::Inactive,QColorGroup::Highlight,
-			     QColor(BAR_CHANGED_STOPPING_COLOR));
+				     QColor(BAR_CHANGED_STOPPING_COLOR));
   line_changed_play_palette=palette();
   line_changed_play_palette.setColor(QPalette::Active,QColorGroup::Highlight,
-			     QColor(BAR_CHANGED_TRANSITION_COLOR));
+				     QColor(BAR_CHANGED_TRANSITION_COLOR));
   line_changed_play_palette.setColor(QPalette::Inactive,QColorGroup::Highlight,
-			     QColor(BAR_CHANGED_TRANSITION_COLOR));
+				     QColor(BAR_CHANGED_TRANSITION_COLOR));
   line_time_palette=palette();
   line_hard_palette=palette();
   line_hard_palette.setColor(QPalette::Active,QColorGroup::Foreground,
@@ -131,7 +107,6 @@ RDSlotBox::RDSlotBox(RDPlayDeck *deck,RDAirPlayConf *conf,QWidget *parent)
   line_up_label=new QLabel(this);
   line_up_label->setGeometry(45,65,65,16);
   line_up_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-  line_up_label->setFont(line_font);
   line_up_label->hide();
 
   //
@@ -148,7 +123,6 @@ RDSlotBox::RDSlotBox(RDPlayDeck *deck,RDAirPlayConf *conf,QWidget *parent)
   line_down_label=new QLabel(this);
   line_down_label->setGeometry(sizeHint().width()-72,65,65,16);
   line_down_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-  line_down_label->setFont(line_font);
   line_down_label->hide();
 
   //
@@ -156,13 +130,14 @@ RDSlotBox::RDSlotBox(RDPlayDeck *deck,RDAirPlayConf *conf,QWidget *parent)
   //
   line_description_label=new QLabel(this);
   line_description_label->setGeometry((sizeHint().width()/2),49,(sizeHint().width()/2 -10),16);
-  line_description_label->setFont(line_font);
 
   //
   // Outcue
   //
   line_outcue_label=new QLabel(this);
   line_outcue_label->setGeometry(45,49, (sizeHint().width()/2 -50),16);
+  QFont outcue_font=font();
+  outcue_font.setItalic(true);
   line_outcue_label->setFont(outcue_font);
 
   //
@@ -170,7 +145,6 @@ RDSlotBox::RDSlotBox(RDPlayDeck *deck,RDAirPlayConf *conf,QWidget *parent)
   //
   line_artist_label=new QLabel(this);
   line_artist_label->setGeometry(45,36,sizeHint().width()-50,16);
-  line_artist_label->setFont(line_font);
   line_artist_label->hide();
 
   //
@@ -178,7 +152,7 @@ RDSlotBox::RDSlotBox(RDPlayDeck *deck,RDAirPlayConf *conf,QWidget *parent)
   //
   line_title_label=new QLabel(this);
   line_title_label->setGeometry(45,18,sizeHint().width()-50,18);
-  line_title_label->setFont(line_bold_font);
+  line_title_label->setFont(labelFont());
 
   //
   // Icon
@@ -191,28 +165,26 @@ RDSlotBox::RDSlotBox(RDPlayDeck *deck,RDAirPlayConf *conf,QWidget *parent)
   //
   line_cart_label=new QLabel(this);
   line_cart_label->setGeometry(65,3,53,16);
-  line_cart_label->setFont(line_font);
 
   //
   // Cut
   //
   line_cut_label=new QLabel(this);
   line_cut_label->setGeometry(120,3,24,16);
-  line_cut_label->setFont(line_font);
 
   //
   // Group
   //
   line_group_label=new QLabel(this);
   line_group_label->setGeometry(147,3,75,16);
-  line_group_label->setFont(line_bold_font);
+  line_group_label->setFont(labelFont());
 
   //
   // Talk Time
   //
   line_talktime_label=new QLabel(this);
   line_talktime_label->setGeometry(313,3,21,16);
-  line_talktime_label->setFont(talk_font);
+  line_talktime_label->setFont(labelFont());
   line_talktime_label->setAlignment(Qt::AlignRight);
 
   //
@@ -220,7 +192,6 @@ RDSlotBox::RDSlotBox(RDPlayDeck *deck,RDAirPlayConf *conf,QWidget *parent)
   //
   line_length_label=new QLabel(this);
   line_length_label->setGeometry(337,3,40,16);
-  line_length_label->setFont(line_font);
   line_length_label->setAlignment(Qt::AlignRight);
 
   SetColor(QColor(LABELBOX_BACKGROUND_COLOR));

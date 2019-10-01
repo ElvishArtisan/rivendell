@@ -19132,3 +19132,6 @@
 	classes.
 2019-10-01 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'RDAudioSettingsDialog' class.
+2019-10-01 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored dialogs in the convenience library to use the
+	'RDDialog' and 'RDWidget' base classes.

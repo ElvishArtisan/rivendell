@@ -23,6 +23,8 @@
 RDDialog::RDDialog(QWidget *parent,Qt::WindowFlags f)
   : QDialog(parent,f)
 {
+  setModal(true);
+
   dialog_config=rda->config();
   MakeFonts();
   setFont(dataFont());
@@ -67,6 +69,12 @@ QFont RDDialog::subLabelFont() const
 }
 
 
+QFont RDDialog::progressFont() const
+{
+  return dialog_progress_font;
+}
+
+
 QFont RDDialog::dataFont() const
 {
   return dialog_data_font;
@@ -107,6 +115,9 @@ void RDDialog::MakeFonts()
 
   dialog_sub_label_font=QFont(family,label_size,QFont::Normal);
   dialog_sub_label_font.setPixelSize(label_size);
+
+  dialog_progress_font=QFont(family,label_size+4,QFont::Bold);
+  dialog_progress_font.setPixelSize(label_size+4);
 
   dialog_data_font=QFont(family,data_size,QFont::Normal);
   dialog_data_font.setPixelSize(data_size);

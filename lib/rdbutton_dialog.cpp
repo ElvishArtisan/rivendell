@@ -2,7 +2,7 @@
 //
 // Button Editor for SoundPanel
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,50 +28,35 @@
 #include <rdbutton_dialog.h>
 #include <rdconf.h>
 
-RDButtonDialog::RDButtonDialog(QString station_name,
+RDButtonDialog::RDButtonDialog(QString station_name,const QString &caption,
 			       const QString &label_template,
 			       RDCartDialog *cart_dialog,const QString &svcname,
 			       QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   setModal(true);
 
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
-  setCaption(tr("Edit Button"));
+  setWindowTitle(caption+" - "+tr("Edit Button"));
   edit_station_name=station_name;
   edit_label_template=label_template;
   edit_cart_dialog=cart_dialog;
   edit_svcname=svcname;
 
   //
-  // Create Fonts
-  //
-  QFont font=QFont("Helvetica",12,QFont::Normal);
-  font.setPixelSize(12);
-  QFont label_font=QFont("Helvetica",12,QFont::Bold);
-  label_font.setPixelSize(12);
-  QFont button_font=QFont("Helvetica",14,QFont::Bold);
-  button_font.setPixelSize(14);
-  QFont counter_font=QFont("Helvetica",24,QFont::Bold);
-  counter_font.setPixelSize(24);
-
-  //
   // Button Label
   //
   edit_label_edit=new QLineEdit(this,"edit_label_edit");
   edit_label_edit->setGeometry(60,10,300,20);
-  edit_label_edit->setFont(font);
   QLabel *label=new QLabel(edit_label_edit,tr("Label:"),
 			   this,"edit_label_label");
   label->setGeometry(10,12,45,16);
-  label->setFont(label_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight);
 
   //
@@ -79,11 +64,10 @@ RDButtonDialog::RDButtonDialog(QString station_name,
   //
   edit_cart_edit=new QLineEdit(this,"edit_cart_edit");
   edit_cart_edit->setGeometry(60,34,300,20);
-  edit_cart_edit->setFont(font);
   edit_cart_edit->setReadOnly(true);
   label=new QLabel(edit_cart_edit,tr("Cart:"),this,"edit_cart_label");
   label->setGeometry(10,36,45,16);
-  label->setFont(label_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight);
 
   //
@@ -91,7 +75,7 @@ RDButtonDialog::RDButtonDialog(QString station_name,
   //
   QPushButton *button=new QPushButton(this,"cart_button");
   button->setGeometry(55,60,80,50);
-  button->setFont(label_font);
+  button->setFont(buttonFont());
   button->setText(tr("Set\nCart"));
   connect(button,SIGNAL(clicked()),this,SLOT(setCartData()));
   
@@ -100,7 +84,7 @@ RDButtonDialog::RDButtonDialog(QString station_name,
   //
   button=new QPushButton(this,"cart_button");
   button->setGeometry(145,60,80,50);
-  button->setFont(label_font);
+  button->setFont(buttonFont());
   button->setText(tr("Clear"));
   connect(button,SIGNAL(clicked()),this,SLOT(clearCartData()));
   
@@ -109,7 +93,7 @@ RDButtonDialog::RDButtonDialog(QString station_name,
   //
   edit_color_button=new QPushButton(this,"edit_color_button");
   edit_color_button->setGeometry(sizeHint().width()-135,60,80,50);
-  edit_color_button->setFont(label_font);
+  edit_color_button->setFont(buttonFont());
   edit_color_button->setText(tr("Set\nColor"));
   connect(edit_color_button,SIGNAL(clicked()),this,SLOT(setColorData()));
   
@@ -119,7 +103,7 @@ RDButtonDialog::RDButtonDialog(QString station_name,
   button=new QPushButton(this,"ok_button");
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
-  button->setFont(label_font);
+  button->setFont(buttonFont());
   button->setText(tr("&OK"));
   connect(button,SIGNAL(clicked()),this,SLOT(okData()));
 
@@ -128,7 +112,7 @@ RDButtonDialog::RDButtonDialog(QString station_name,
   //
   button=new QPushButton(this,"cancel_button");
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
-  button->setFont(label_font);
+  button->setFont(buttonFont());
   button->setText(tr("&Cancel"));
   connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
 }

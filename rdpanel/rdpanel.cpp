@@ -160,6 +160,7 @@ MainWidget::MainWidget(QWidget *parent)
 		       rda->panelConf()->panels(RDAirPlayConf::StationPanel),
 		       rda->panelConf()->panels(RDAirPlayConf::UserPanel),
 		       rda->panelConf()->flashPanel(),
+		       "RDPanel",
 		       rda->panelConf()->buttonLabelTemplate(),true,
 		       panel_player,panel_cart_dialog,this);
     panel_panel->setGeometry(10,10,panel_panel->sizeHint().width(),

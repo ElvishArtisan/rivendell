@@ -2,7 +2,7 @@
 //
 // Cart slot label widget for RDCartSlot
 //
-//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,28 +21,24 @@
 #ifndef RDSLOTBOX_H
 #define RDSLOTBOX_H
 
-#include <qwidget.h>
-#include <qtimer.h>
-#include <qdatetime.h>
-#include <qpushbutton.h>
 #include <q3progressbar.h>
+
+#include <qdatetime.h>
+#include <qlabel.h>
+#include <qpushbutton.h>
 #include <qpalette.h>
 #include <qpixmap.h>
-#include <qlabel.h>
-//Added by qt3to4:
-#include <QDragEnterEvent>
-#include <QDropEvent>
-#include <QMouseEvent>
-#include <QPaintEvent>
+#include <qtimer.h>
 
+#include <rdairplay_conf.h>
+#include <rdcartdrag.h>
 #include <rdlabel.h>
 #include <rdlog_line.h>
 #include <rdlog_event.h>
 #include <rdplaymeter.h>
 #include <rdplay_deck.h>
-#include <rdcartdrag.h>
 #include <rdslotoptions.h>
-#include <rdairplay_conf.h>
+#include <rdwidget.h>
 
 //
 // Widget Settings
@@ -50,7 +46,7 @@
 #define RDSLOTBOX_FULL_HEIGHT 85
 #define RDSLOTBOX_HALF_HEIGHT 50
 
-class RDSlotBox : public QWidget
+class RDSlotBox : public RDWidget
 {
   Q_OBJECT
  public:

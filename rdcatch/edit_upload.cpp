@@ -493,7 +493,7 @@ void EditUpload::selectCartData()
 {
   QString str;
 
-  RDCutDialog *cut=new RDCutDialog(&edit_cutname,edit_filter);
+  RDCutDialog *cut=new RDCutDialog(&edit_cutname,"RDCatch",edit_filter);
   switch(cut->exec()) {
   case 0:
     edit_description_edit->setText(RDCutPath(edit_cutname));

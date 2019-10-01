@@ -679,7 +679,8 @@ void MainWidget::addData()
   LockUser();
 
   RDAddCart *add_cart=new RDAddCart(&lib_default_group,&cart_type,&cart_title,
-				    rda->user()->name(),rda->system(),this);
+				    "RDLibrary",rda->user()->name(),
+				    rda->system(),this);
   if((cart_num=add_cart->exec())<0) {
     delete add_cart;
     UnlockUser();

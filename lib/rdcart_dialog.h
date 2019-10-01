@@ -2,7 +2,7 @@
 //
 // A widget to select a Rivendell Cart.
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,26 +21,22 @@
 #ifndef RDCART_DIALOG_H
 #define RDCART_DIALOG_H
 
-#include <qdialog.h>
 #include <qlineedit.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
 #include <q3progressdialog.h>
 #include <qcheckbox.h>
-//Added by qt3to4:
-#include <QPixmap>
-#include <QResizeEvent>
-#include <QCloseEvent>
 
-#include <rdsimpleplayer.h>
-#include <rdlistviewitem.h>
+#include <rdbusydialog.h>
 #include <rdcart.h>
 #include <rdcombobox.h>
-#include <rdbusydialog.h>
+#include <rddialog.h>
+#include <rdlistviewitem.h>
+#include <rdsimpleplayer.h>
 
 #define RDCART_DIALOG_STEP_SIZE 1000
 
-class RDCartDialog : public QDialog
+class RDCartDialog : public RDDialog
 {
  Q_OBJECT
  public:

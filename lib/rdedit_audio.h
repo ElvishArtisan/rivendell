@@ -1,8 +1,8 @@
 // rdedit_audio.h
 //
-// Edit Rivendell Audio
+// Rivendell Audio Marker Editor
 //
-//   (C) Copyright 2002-2006,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,31 +21,31 @@
 #ifndef RDEDIT_AUDIO_H
 #define RDEDIT_AUDIO_H
 
-#include <qdialog.h>
+#include <q3pointarray.h>
+#include <q3popupmenu.h>
+#include <q3rangecontrol.h>
+
 #include <qscrollbar.h>
 #include <qpixmap.h>
 #include <qimage.h>
 #include <qlineedit.h>
-#include <q3pointarray.h>
 #include <qcursor.h>
-#include <q3popupmenu.h>
 #include <qlabel.h>
 #include <qspinbox.h>
 #include <qtimer.h>
 #include <qnamespace.h>
 #include <qcheckbox.h>
 
-#include <q3rangecontrol.h>
-
-#include <rdmarker_edit.h>
-#include <rdtransportbutton.h>
-#include <rdstereometer.h>
-#include <rdwavefile.h>
-#include <rdpushbutton.h>
-#include <rdmarker_button.h>
 #include <rdcart.h>
 #include <rdcut.h>
+#include <rddialog.h>
+#include <rdmarker_button.h>
+#include <rdmarker_edit.h>
 #include <rdpeaksexport.h>
+#include <rdpushbutton.h>
+#include <rdstereometer.h>
+#include <rdtransportbutton.h>
+#include <rdwavefile.h>
 
 //
 // Widget Settings
@@ -68,7 +68,7 @@
 #define EDITAUDIO_WAVEFORM_COLOR Qt::black
 #define EDITAUDIO_HIGHLIGHT_COLOR colorGroup().mid()
 
-class RDEditAudio : public QDialog
+class RDEditAudio : public RDDialog
 {
   Q_OBJECT
  public:

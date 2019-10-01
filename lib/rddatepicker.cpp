@@ -1,8 +1,8 @@
 // rddatepicker.cpp
 //
-// A Qt-based application for testing General Purpose Outputs (GPO).
+// A Calendar Widget.
 //
-//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -19,36 +19,20 @@
 //
 
 
-#include <qwidget.h>
-#include <qstring.h>
-#include <qlabel.h>
-#include <qpalette.h>
-//Added by qt3to4:
 #include <QMouseEvent>
 
-#include <rddatepicker.h>
+#include "rddatepicker.h"
 
-//
-// Global Classes
-//
 RDDatePicker::RDDatePicker(int low_year,int high_year,QWidget *parent)
-  :QWidget(parent)
+  : RDWidget(parent)
 {
   pick_low_year=low_year;
   pick_high_year=high_year;
 
   //
-  // Generate Fonts
-  //
-  QFont font=QFont("Helvetica",12,QFont::Normal);
-  font.setPixelSize(12);
-  QFont header_font=QFont("Helvetica",12,QFont::Bold);
-  header_font.setPixelSize(12);
-
-  //
   // Month
   //
-  pick_month_box=new QComboBox(this,"pick_month_box");
+  pick_month_box=new QComboBox(this);
   pick_month_box->setGeometry(0,0,120,26);
   for(int i=1;i<13;i++) {
     pick_month_box->insertItem(QDate::longMonthName(i));
@@ -60,7 +44,7 @@ RDDatePicker::RDDatePicker(int low_year,int high_year,QWidget *parent)
   // Year
   //
   if((high_year-low_year)<=10) {
-    pick_year_box=new QComboBox(this,"pick_year_box");
+    pick_year_box=new QComboBox(this);
     pick_year_box->setGeometry(130,0,90,26);
     for(int i=low_year;i<(high_year+1);i++) {
       pick_year_box->insertItem(QString().sprintf("%04d",i));
@@ -70,7 +54,7 @@ RDDatePicker::RDDatePicker(int low_year,int high_year,QWidget *parent)
     pick_year_spin=NULL;
   }
   else {
-    pick_year_spin=new QSpinBox(this,"pick_year_spin");
+    pick_year_spin=new QSpinBox(this);
     pick_year_spin->setGeometry(160,0,60,26);
     pick_year_spin->setRange(low_year,high_year);
     pick_year_box=NULL;
@@ -89,47 +73,47 @@ RDDatePicker::RDDatePicker(int low_year,int high_year,QWidget *parent)
 			   palette().color(QPalette::Active,
 					   QPalette::Mid));
 
-  QLabel *label=new QLabel(tr("Mo"),this,"monday_label");
+  QLabel *label=new QLabel(tr("Mo"),this);
   label->setGeometry(RDDATEPICKER_X_ORIGIN,30,30,30);
-  label->setFont(header_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignCenter);
 
-  label=new QLabel(tr("Tu"),this,"tuesday_label");
+  label=new QLabel(tr("Tu"),this);
   label->setGeometry(RDDATEPICKER_X_ORIGIN+RDDATEPICKER_X_INTERVAL,
 		     RDDATEPICKER_Y_ORIGIN,30,30);
-  label->setFont(header_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignCenter);
 
-  label=new QLabel(tr("We"),this,"wednesday_label");
+  label=new QLabel(tr("We"),this);
   label->setGeometry(RDDATEPICKER_X_ORIGIN+RDDATEPICKER_X_INTERVAL*2,
 		     RDDATEPICKER_Y_ORIGIN,30,30);
-  label->setFont(header_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignCenter);
 
-  label=new QLabel(tr("Th"),this,"thursday_label");
+  label=new QLabel(tr("Th"),this);
   label->setGeometry(RDDATEPICKER_X_ORIGIN+RDDATEPICKER_X_INTERVAL*3,
 		     RDDATEPICKER_Y_ORIGIN,30,30);
-  label->setFont(header_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignCenter);
 
-  label=new QLabel(tr("Fr"),this,"friday_label");
+  label=new QLabel(tr("Fr"),this);
   label->setGeometry(RDDATEPICKER_X_ORIGIN+RDDATEPICKER_X_INTERVAL*4,
 		     RDDATEPICKER_Y_ORIGIN,30,30);
-  label->setFont(header_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignCenter);
 
-  label=new QLabel(tr("Sa"),this,"saturday_label");
+  label=new QLabel(tr("Sa"),this);
   label->setGeometry(RDDATEPICKER_X_ORIGIN+RDDATEPICKER_X_INTERVAL*5,
 		     RDDATEPICKER_Y_ORIGIN,30,30);
-  label->setFont(header_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignCenter);
   label->setPalette(weekend_palette);
   label->setAutoFillBackground(true);
 
-  label=new QLabel(tr("Su"),this,"sunday_label");
+  label=new QLabel(tr("Su"),this);
   label->setGeometry(RDDATEPICKER_X_ORIGIN+RDDATEPICKER_X_INTERVAL*6,
 		     RDDATEPICKER_Y_ORIGIN,30,30);
-  label->setFont(header_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignCenter);
   label->setPalette(weekend_palette);
   label->setAutoFillBackground(true);
@@ -137,7 +121,7 @@ RDDatePicker::RDDatePicker(int low_year,int high_year,QWidget *parent)
 
   for(int i=0;i<6;i++) {
     for(int j=0;j<7;j++) {
-      pick_date_label[i][j]=new QLabel(this,"date_label");
+      pick_date_label[i][j]=new QLabel(this);
       pick_date_label[i][j]->
 	setGeometry(RDDATEPICKER_X_ORIGIN+RDDATEPICKER_X_INTERVAL*j,
 		    RDDATEPICKER_Y_ORIGIN+20+RDDATEPICKER_Y_INTERVAL*i,30,30);

@@ -2,7 +2,7 @@
 //
 // A Dialog Box for using an RDCueEdit widget.
 //
-//   (C) Copyright 2002-2013,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -18,17 +18,14 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-
 #ifndef RDCUEEDITDIALOG_H
 #define RDCUEEDITDIALOG_H
 
-#include <qdialog.h>
-
+#include <rdcueedit.h>
+#include <rddialog.h>
 #include <rdlog_line.h>
 
-#include <rdcueedit.h>
-
-class RDCueEditDialog : public QDialog
+class RDCueEditDialog : public RDDialog
 {
  Q_OBJECT
  public:

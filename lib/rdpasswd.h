@@ -2,7 +2,7 @@
 //
 // Set Password Widget for Rivendell.
 //
-//   (C) Copyright 2002,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,13 +21,11 @@
 #ifndef RDPASSWD_H
 #define RDPASSWD_H
 
-#include <qdialog.h>
 #include <qlineedit.h>
-#include <q3textedit.h>
-#include <qpixmap.h>
-#include <qradiobutton.h>
 
-class RDPasswd : public QDialog
+#include <rddialog.h>
+
+class RDPasswd : public RDDialog
 {
   Q_OBJECT
   public:

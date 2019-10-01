@@ -2,7 +2,7 @@
 //
 // A widget to select a Rivendell Cut.
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,13 +22,7 @@
 #include <stdio.h>
 
 #include <qpushbutton.h>
-#include <qlabel.h>
-#include <qsqlquery.h>
 #include <qapplication.h>
-#include <qeventloop.h>
-//Added by qt3to4:
-#include <QCloseEvent>
-#include <QPixmap>
 
 #include "rdadd_cart.h"
 #include "rdapplication.h"
@@ -47,12 +41,14 @@
 #include "../icons/rml5.xpm"
 
 
-RDCutDialog::RDCutDialog(QString *cutname,QString *filter,QString *group,
+RDCutDialog::RDCutDialog(QString *cutname,const QString &caption,
+			 QString *filter,QString *group,
 			 QString *schedcode,bool show_clear,bool allow_add,
 			 bool exclude_tracks,QWidget *parent)
-  : QDialog(parent,"",true)
+  : RDDialog(parent)
 {
   cut_cutname=cutname;
+  cut_caption=caption;
   cut_exclude_tracks=exclude_tracks;
   cut_group=group;
   cut_schedcode=schedcode;
@@ -67,21 +63,13 @@ RDCutDialog::RDCutDialog(QString *cutname,QString *filter,QString *group,
     local_filter=false;
   }
 
-  setCaption(tr("Select Cut"));
+  setWindowTitle(caption+" - "+tr("Select Cut"));
 
   //
   // Create Icons
   //
   cut_playout_map=new QPixmap(play_xpm);
   cut_macro_map=new QPixmap(rml5_xpm);
-
-  //
-  // Generate Fonts
-  //
-  QFont label_font("Helvetica",12,QFont::Bold);
-  label_font.setPixelSize(12);
-  QFont progress_font("Helvetica",16,QFont::Bold);
-  progress_font.setPixelSize(16);
 
   //
   // Fix the Window Size
@@ -101,7 +89,7 @@ RDCutDialog::RDCutDialog(QString *cutname,QString *filter,QString *group,
   cut_progress_dialog->setCaption(" ");
   QLabel *label=new QLabel(tr("Please Wait..."),cut_progress_dialog);
   label->setAlignment(Qt::AlignCenter);
-  label->setFont(progress_font);
+  label->setFont(progressFont());
   cut_progress_dialog->setLabel(label);
   cut_progress_dialog->setCancelButton(NULL);
   cut_progress_dialog->setMinimumDuration(2000);
@@ -113,7 +101,7 @@ RDCutDialog::RDCutDialog(QString *cutname,QString *filter,QString *group,
   label=new QLabel(cut_filter_edit,tr("Cart Filter:"),this);
   label->setGeometry(10,10,85,20);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-  label->setFont(label_font);
+  label->setFont(labelFont());
   connect(cut_filter_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(filterChangedData(const QString &)));
 
@@ -123,7 +111,7 @@ RDCutDialog::RDCutDialog(QString *cutname,QString *filter,QString *group,
   cut_search_button=new QPushButton(this);
   cut_search_button->setGeometry(sizeHint().width()-140,8,60,24);
   cut_search_button->setText(tr("&Search"));
-  cut_search_button->setFont(label_font);
+  cut_search_button->setFont(buttonFont());
   connect(cut_search_button,SIGNAL(clicked()),this,SLOT(searchButtonData()));
 
   //
@@ -131,7 +119,7 @@ RDCutDialog::RDCutDialog(QString *cutname,QString *filter,QString *group,
   //
   cut_clear_button=new QPushButton(this);
   cut_clear_button->setGeometry(sizeHint().width()-70,8,60,24);
-  cut_clear_button->setFont(label_font);
+  cut_clear_button->setFont(buttonFont());
   cut_clear_button->setText(tr("C&lear"));
   connect(cut_clear_button,SIGNAL(clicked()),this,SLOT(clearData()));
 
@@ -143,7 +131,7 @@ RDCutDialog::RDCutDialog(QString *cutname,QString *filter,QString *group,
   label=new QLabel(cut_filter_edit,tr("Group:"),this);
   label->setGeometry(10,40,85,20);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-  label->setFont(label_font);
+  label->setFont(labelFont());
   connect(cut_group_box,SIGNAL(activated(const QString &)),
 	  this,SLOT(groupActivatedData(const QString &)));
 
@@ -155,7 +143,7 @@ RDCutDialog::RDCutDialog(QString *cutname,QString *filter,QString *group,
   cut_schedcode_label=new QLabel(cut_schedcode_box,tr("Scheduler Code:"),this);
   cut_schedcode_label->setGeometry(260,40,115,20);
   cut_schedcode_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-  cut_schedcode_label->setFont(label_font);
+  cut_schedcode_label->setFont(labelFont());
   connect(cut_schedcode_box,SIGNAL(activated(const QString &)),
 	  this,SLOT(groupActivatedData(const QString &)));
 
@@ -170,7 +158,7 @@ RDCutDialog::RDCutDialog(QString *cutname,QString *filter,QString *group,
 				     RD_LIMITED_CART_SEARCH_QUANTITY)+tr("Matches"),this);
   label->setGeometry(120,70,300,20);
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-  label->setFont(label_font);
+  label->setFont(labelFont());
   connect(cart_limit_box,SIGNAL(stateChanged(int)),
 	  this,SLOT(limitChangedData(int)));
 
@@ -187,7 +175,7 @@ RDCutDialog::RDCutDialog(QString *cutname,QString *filter,QString *group,
 	  this,SLOT(cartClickedData(Q3ListViewItem *)));
   label=new QLabel(cut_cart_list,tr("Carts"),this);
   label->setGeometry(15,100,100,20);
-  label->setFont(label_font);
+  label->setFont(labelFont());
   cut_cart_list->addColumn("");
   cut_cart_list->setColumnAlignment(0,Qt::AlignHCenter);
   cut_cart_list->addColumn(tr("Number"));
@@ -208,7 +196,7 @@ RDCutDialog::RDCutDialog(QString *cutname,QString *filter,QString *group,
   cut_cut_list->setItemMargin(5);
   label=new QLabel(cut_cut_list,tr("Cuts"),this);
   label->setGeometry(325,100,100,20);
-  label->setFont(label_font);
+  label->setFont(labelFont());
   cut_cut_list->addColumn(tr("Description"));
   cut_cut_list->setColumnAlignment(0,Qt::AlignLeft);
 
@@ -223,7 +211,7 @@ RDCutDialog::RDCutDialog(QString *cutname,QString *filter,QString *group,
   //
   button=new QPushButton(tr("&Add New\nCart"),this);
   button->setGeometry(10,sizeHint().height()-60,80,50);
-  button->setFont(label_font);
+  button->setFont(buttonFont());
   connect(button,SIGNAL(clicked()),this,SLOT(addButtonData()));
   if(!allow_add) {
     button->hide();
@@ -233,7 +221,7 @@ RDCutDialog::RDCutDialog(QString *cutname,QString *filter,QString *group,
   // Clear Button
   //
   button=new QPushButton(tr("&Clear"),this);
-  button->setFont(label_font);
+  button->setFont(buttonFont());
   connect(button,SIGNAL(clicked()),this,SLOT(clearButtonData()));
   if(!show_clear) {
     button->hide();
@@ -251,7 +239,7 @@ RDCutDialog::RDCutDialog(QString *cutname,QString *filter,QString *group,
   cut_ok_button=new QPushButton(tr("&OK"),this);
   cut_ok_button->
     setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
-  cut_ok_button->setFont(label_font);
+  cut_ok_button->setFont(buttonFont());
   cut_ok_button->setDefault(true);
   connect(cut_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
@@ -261,7 +249,7 @@ RDCutDialog::RDCutDialog(QString *cutname,QString *filter,QString *group,
   cut_cancel_button=new QPushButton(tr("&Cancel"),this);
   cut_cancel_button->
     setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
-  cut_cancel_button->setFont(label_font);
+  cut_cancel_button->setFont(buttonFont());
   connect(cut_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //
@@ -397,7 +385,8 @@ void RDCutDialog::addButtonData()
   int cart_num=-1;
 
   RDAddCart *add_cart=new RDAddCart(&cart_group,&cart_type,&cart_title,
-				    rda->user()->name(),rda->system(),this);
+				    cut_caption,rda->user()->name(),
+				    rda->system(),this);
   if((cart_num=add_cart->exec())<0) {
     delete add_cart;
     return;

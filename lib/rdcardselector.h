@@ -1,8 +1,8 @@
 // rdcardselector.h
 //
-// Audio Card Selector Widget for Rivendell
+// Audio Channel Assignments Widget for Rivendell
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,13 +21,13 @@
 #ifndef RDCARDSELECTOR_H
 #define RDCARDSELECTOR_H
 
-#include <qwidget.h>
 #include <qspinbox.h>
 #include <qlabel.h>
 
 #include <rd.h>
+#include <rdwidget.h>
 
-class RDCardSelector : public QWidget
+class RDCardSelector : public RDWidget
 {
   Q_OBJECT
   public:

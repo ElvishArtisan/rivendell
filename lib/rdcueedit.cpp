@@ -2,7 +2,7 @@
 //
 // Cueing Editor for RDLogLine-based Events
 //
-//   (C) Copyright 2013,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2013-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,18 +20,14 @@
 
 #include <qpainter.h>
 #include <qmessagebox.h>
-//Added by qt3to4:
-#include <QWheelEvent>
-#include <Q3Frame>
-#include <QLabel>
-#include <QMouseEvent>
-#include <QKeyEvent>
 
-#include <rdconf.h>
-#include <rdcueedit.h>
+#include <q3frame.h>
+
+#include "rdconf.h"
+#include "rdcueedit.h"
 
 RDCueEdit::RDCueEdit(RDCae *cae,int card,int port,QWidget *parent)
-  : QWidget(parent)
+  : RDWidget(parent)
 {
   edit_cae=cae;
   edit_play_card=card;
@@ -43,18 +39,6 @@ RDCueEdit::RDCueEdit(RDCae *cae,int card,int port,QWidget *parent)
   edit_event_player=NULL;
   edit_start_rml="";
   edit_stop_rml="";
-
-  //
-  // Create Fonts
-  //
-  QFont radio_font=QFont("Helvetica",10,QFont::Normal);
-  radio_font.setPixelSize(10);
-  QFont label_font=QFont("Helvetica",12,QFont::Bold);
-  label_font.setPixelSize(12);
-  QFont button_font=QFont("Helvetica",12,QFont::Bold);
-  button_font.setPixelSize(12);
-  QFont counter_font=QFont("Helvetica",20,QFont::Bold);
-  counter_font.setPixelSize(20);
 
   //
   // Create Palettes
@@ -77,13 +61,13 @@ RDCueEdit::RDCueEdit(RDCae *cae,int card,int port,QWidget *parent)
   edit_up_label=new QLabel("00:00:00",this);
   edit_up_label->setGeometry(5,8,70,14);
   edit_up_label->setBackgroundColor(Qt::white);
-  edit_up_label->setFont(label_font);
+  edit_up_label->setFont(labelFont());
   edit_up_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   edit_down_label=new QLabel("00:00:00",this);
   edit_down_label->setGeometry(sizeHint().width()-110,8,70,14);
   edit_down_label->setBackgroundColor(Qt::white);
-  edit_down_label->setFont(label_font);
+  edit_down_label->setFont(labelFont());
   edit_down_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -117,7 +101,7 @@ RDCueEdit::RDCueEdit(RDCae *cae,int card,int port,QWidget *parent)
   edit_audition_button->setGeometry(sizeHint().width()/2-130,90,80,50);
   edit_audition_button->
     setPalette(QPalette(backgroundColor(),QColor(Qt::gray)));
-  edit_audition_button->setFont(button_font);
+  edit_audition_button->setFont(buttonFont());
   //  edit_audition_button->setText(tr("&Audition"));
   connect(edit_audition_button,SIGNAL(clicked()),
 	  this,SLOT(auditionButtonData()));
@@ -129,7 +113,7 @@ RDCueEdit::RDCueEdit(RDCae *cae,int card,int port,QWidget *parent)
   edit_pause_button->setGeometry(sizeHint().width()/2-40,90,80,50);
   edit_pause_button->
     setPalette(QPalette(backgroundColor(),QColor(Qt::gray)));
-  edit_pause_button->setFont(button_font);
+  edit_pause_button->setFont(buttonFont());
   //  edit_pause_button->setText(tr("&Pause"));
   connect(edit_pause_button,SIGNAL(clicked()),this,SLOT(pauseButtonData()));
 
@@ -141,7 +125,7 @@ RDCueEdit::RDCueEdit(RDCae *cae,int card,int port,QWidget *parent)
   edit_stop_button->setOnColor(QColor(Qt::red));
   edit_stop_button->
     setPalette(QPalette(backgroundColor(),QColor(Qt::gray)));
-  edit_stop_button->setFont(button_font);
+  edit_stop_button->setFont(buttonFont());
   //  edit_stop_button->setText(tr("&Stop"));
   connect(edit_stop_button,SIGNAL(clicked()),this,SLOT(stopButtonData()));
 
@@ -155,7 +139,7 @@ RDCueEdit::RDCueEdit(RDCae *cae,int card,int port,QWidget *parent)
   edit_start_button->setFlashPeriod(RD_CUEEDITOR_BUTTON_FLASH_PERIOD);
   edit_start_button->setPalette(QPalette(QColor(RD_CUEEDITOR_START_MARKER),
 					   backgroundColor()));
-  edit_start_button->setFont(button_font);
+  edit_start_button->setFont(buttonFont());
   edit_start_button->setText(tr("Start"));
   connect(edit_start_button,SIGNAL(clicked()),this,SLOT(startClickedData()));
 
@@ -169,7 +153,7 @@ RDCueEdit::RDCueEdit(RDCae *cae,int card,int port,QWidget *parent)
   edit_end_button->setFlashPeriod(RD_CUEEDITOR_BUTTON_FLASH_PERIOD);
   edit_end_button->setPalette(QPalette(QColor(RD_CUEEDITOR_START_MARKER),
 				       backgroundColor()));
-  edit_end_button->setFont(button_font);
+  edit_end_button->setFont(buttonFont());
   edit_end_button->setText(tr("End"));
   connect(edit_end_button,SIGNAL(clicked()),this,SLOT(endClickedData()));
 
@@ -183,7 +167,7 @@ RDCueEdit::RDCueEdit(RDCae *cae,int card,int port,QWidget *parent)
   edit_recue_button->setFlashPeriod(RD_CUEEDITOR_BUTTON_FLASH_PERIOD);
   edit_recue_button->setPalette(QPalette(QColor(RD_CUEEDITOR_START_MARKER),
 				       backgroundColor()));
-  edit_recue_button->setFont(button_font);
+  edit_recue_button->setFont(buttonFont());
   edit_recue_button->setText(tr("&Recue"));
   connect(edit_recue_button,SIGNAL(clicked()),this,SLOT(recue()));
 

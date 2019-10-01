@@ -2,7 +2,7 @@
 //
 // Scheduler code editor dialog
 //
-//  (C) Copyright 2014,2016 Fred Gleason <fredg@paravelsystems.com>
+//  (C) Copyright 2014-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   Based on original code by Stefan Gabriel <stg@st-gabriel.de>
 //
@@ -22,38 +22,22 @@
 
 #include <qpainter.h>
 #include <qmessagebox.h>
-//Added by qt3to4:
-#include <QResizeEvent>
-#include <QCloseEvent>
-#include <QPaintEvent>
 
-#include <rddb.h>
+#include "rddb.h"
 #include "rdschedcodes_dialog.h"
 
 RDSchedCodesDialog::RDSchedCodesDialog(QWidget *parent)
-  : QDialog(parent,"",true)
+  : RDDialog(parent)
 {
-  setCaption(tr("Select Scheduler Codes"));
-
-  //
-  // Create Fonts
-  //
-  QFont font("Helvetica",11,QFont::Bold);
-  font.setPixelSize(11);
-
-  QFont listfont("Helvetica",11);
-  font.setPixelSize(11);
-
+  setWindowTitle(tr("Select Scheduler Codes"));
 
   //
   // Services Selector
   //
   codes_sel=new RDListSelector(this);
-  codes_sel->setFont(listfont);
   codes_sel->sourceSetLabel(tr("Available Codes"));
 
   remove_codes_sel=new RDListSelector(this);
-  remove_codes_sel->setFont(listfont);
   remove_codes_sel->sourceSetLabel(tr("Available Codes"));
   remove_codes_sel->destSetLabel(tr("REMOVE from Carts"));
   
@@ -62,14 +46,14 @@ RDSchedCodesDialog::RDSchedCodesDialog(QWidget *parent)
   //
   edit_ok_button=new QPushButton(tr("&OK"),this);
   edit_ok_button->setDefault(true);
-  edit_ok_button->setFont(font);
+  edit_ok_button->setFont(buttonFont());
   connect(edit_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
   //  Cancel Button
   //
   edit_cancel_button=new QPushButton(tr("&Cancel"),this);
-  edit_cancel_button->setFont(font);
+  edit_cancel_button->setFont(buttonFont());
   connect(edit_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 }
 

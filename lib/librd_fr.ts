@@ -810,6 +810,10 @@
         <source>The cart title must be unique!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Add Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddLog</name>
@@ -864,48 +868,12 @@
 <context>
     <name>RDAudioSettingsDialog</name>
     <message>
-        <source>Edit Settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Default &amp;Format:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Default &amp;Channels:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Default &amp;Sample Rate:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Default &amp;Bitrate:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Annuler</translation>
-    </message>
-    <message>
-        <source>PCM16</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>OggVorbis</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>MPEG Layer 2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>MPEG Layer 3</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">&amp;Annuler</translation>
     </message>
 </context>
 <context>
@@ -1955,18 +1923,6 @@ Do you want to overwrite it?</source>
 <context>
     <name>RDListLogs</name>
     <message>
-        <source>NAME</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>DESCRIPTION</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>SERVICE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1976,6 +1932,18 @@ Do you want to overwrite it?</source>
     </message>
     <message>
         <source>Select Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
