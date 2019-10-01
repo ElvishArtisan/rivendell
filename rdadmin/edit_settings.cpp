@@ -1,4 +1,4 @@
-// edit_station.cpp
+// edit_settings.cpp
 //
 // Edit Rivendell System-Wide Configuration
 //
@@ -23,7 +23,6 @@
 #include <qapplication.h>
 #include <qmessagebox.h>
 
-#include <rdaudiosettings_dialog.h>
 #include <rdconf.h>
 #include <rddb.h>
 #include <rdescape_string.h>

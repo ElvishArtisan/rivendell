@@ -19130,3 +19130,5 @@
 	* Added an 'RDWidget' class.
 	* Refactored rdadmin(1) to use 'RDDialog' and 'RDWidget' base
 	classes.
+2019-10-01 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'RDAudioSettingsDialog' class.
