@@ -2,7 +2,7 @@
 //
 // Edit Rivendell Netcatcher Configuration
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,7 +23,6 @@
 
 #include <vector>
 
-#include <qdialog.h>
 #include <qsqldatabase.h>
 #include <qcombobox.h>
 #include <qpushbutton.h>
@@ -32,11 +31,12 @@
 #include <qlineedit.h>
 
 #include <rddeck.h>
+#include <rddialog.h>
 #include <rdcardselector.h>
 #include <rdstation.h>
 #include <rdcatch_conf.h>
 
-class EditDecks : public QDialog
+class EditDecks : public RDDialog
 {
   Q_OBJECT
   public:

@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Livewire GPIO Slot Association
 //
-//   (C) Copyright 2013-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2013-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,14 +21,14 @@
 #ifndef EDIT_LIVEWIREGPIO_H
 #define EDIT_LIVEWIREGPIO_H
 
-#include <qdialog.h>
 #include <qspinbox.h>
 #include <qlineedit.h>
 #include <qhostaddress.h>
 
+#include <rddialog.h>
 #include <rdmatrix.h>
 
-class EditLiveWireGpio : public QDialog
+class EditLiveWireGpio : public RDDialog
 {
  Q_OBJECT
  public:

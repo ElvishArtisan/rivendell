@@ -2,7 +2,7 @@
 //
 // Edit Rivendell System-wide Settings.
 //
-//   (C) Copyright 2009-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2009-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,22 +21,21 @@
 #ifndef EDIT_SETTINGS_H
 #define EDIT_SETTINGS_H
 
-#include <map>
+#include <q3listview.h>
 
 #include <qcheckbox.h>
 #include <qcombobox.h>
 #include <qdialog.h>
-#include <qspinbox.h>
-#include <qpushbutton.h>
 #include <qlabel.h>
 #include <qlineedit.h>
+#include <qpushbutton.h>
+#include <qspinbox.h>
 
-#include <q3listview.h>
-
-#include <rdsystem.h>
 #include <rdaudiosettings.h>
+#include <rddialog.h>
+#include <rdsystem.h>
 
-class EditSettings : public QDialog
+class EditSettings : public RDDialog
 {
   Q_OBJECT
   public:

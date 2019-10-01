@@ -2,7 +2,7 @@
 //
 // List Rivendell Livewire GPIO Slot Associations
 //
-//   (C) Copyright 2013-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2013-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,58 +18,35 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <q3buttongroup.h>
+#include "globals.h"
 
-#include <rdstation.h>
-#include <rdescape_string.h>
 #include <rddb.h>
-#include <globals.h>
-#include <list_livewiregpios.h>
-#include <edit_livewiregpio.h>
+#include <rdescape_string.h>
+
+#include "edit_livewiregpio.h"
+#include "list_livewiregpios.h"
 
 ListLiveWireGpios::ListLiveWireGpios(RDMatrix *matrix,int slot_quan,
 				     QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   setModal(true);
 
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
 
   list_matrix=matrix;
   list_slot_quan=slot_quan;
   setWindowTitle("RDAdmin - "+tr("Livewire GPIO Source Assignments"));
 
   //
-  // Create Fonts
-  //
-  QFont font=QFont("Helvetica",12,QFont::Bold);
-  font.setPixelSize(12);
-  QFont small_font=QFont("Helvetica",10,QFont::Bold);
-  small_font.setPixelSize(10);
-
-  //
   // Matrix List Box
   //
   list_view=new RDListView(this);
-  list_view->setGeometry(10,24,sizeHint().width()-20,sizeHint().height()-94);
-  QLabel *label=new QLabel(list_view,tr("Switchers:"),this);
-  label->setFont(font);
-  label->setGeometry(14,5,85,19);
+  list_title_label=new QLabel(list_view,tr("Switchers:"),this);
+  list_title_label->setFont(labelFont());
   list_view->setAllColumnsShowFocus(true);
   list_view->setItemMargin(5);
   list_view->addColumn(tr("Lines"));
@@ -87,33 +64,28 @@ ListLiveWireGpios::ListLiveWireGpios(RDMatrix *matrix,int slot_quan,
   //
   //  Edit Button
   //
-  QPushButton *edit_button=new QPushButton(this);
-  edit_button->setGeometry(10,sizeHint().height()-60,80,50);
-  edit_button->setFont(font);
-  edit_button->setText(tr("&Edit"));
-  connect(edit_button,SIGNAL(clicked()),this,SLOT(editData()));
+  list_edit_button=new QPushButton(this);
+  list_edit_button->setFont(buttonFont());
+  list_edit_button->setText(tr("&Edit"));
+  connect(list_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
 
   //
   //  Ok Button
   //
-  QPushButton *ok_button=new QPushButton(this);
-  ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,
-			    80,50);
-  ok_button->setDefault(true);
-  ok_button->setFont(font);
-  ok_button->setText(tr("&OK"));
-  connect(ok_button,SIGNAL(clicked()),this,SLOT(okData()));
+  list_ok_button=new QPushButton(this);
+  list_ok_button->setDefault(true);
+  list_ok_button->setFont(buttonFont());
+  list_ok_button->setText(tr("&OK"));
+  connect(list_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
   //  Cancel Button
   //
-  QPushButton *cancel_button=new QPushButton(this);
-  cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
-			    80,50);
-  cancel_button->setDefault(true);
-  cancel_button->setFont(font);
-  cancel_button->setText(tr("&Cancel"));
-  connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
+  list_cancel_button=new QPushButton(this);
+  list_cancel_button->setDefault(true);
+  list_cancel_button->setFont(buttonFont());
+  list_cancel_button->setText(tr("&Cancel"));
+  connect(list_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 }
 
 
@@ -205,6 +177,16 @@ void ListLiveWireGpios::okData()
 void ListLiveWireGpios::cancelData()
 {
   done(-1);
+}
+
+
+void ListLiveWireGpios::resizeEvent(QResizeEvent *e)
+{
+  list_view->setGeometry(10,24,size().width()-20,size().height()-94);
+  list_title_label->setGeometry(14,5,85,19);
+  list_edit_button->setGeometry(10,size().height()-60,80,50);
+  list_ok_button->setGeometry(size().width()-180,size().height()-60,80,50);
+  list_cancel_button->setGeometry(size().width()-90,size().height()-60,80,50);
 }
 
 

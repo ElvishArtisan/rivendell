@@ -2,7 +2,7 @@
 //
 // List Rivendell Matrices
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,17 +21,16 @@
 #ifndef LIST_MATRICES_H
 #define LIST_MATRICES_H
 
-#include <qdialog.h>
 #include <q3listview.h>
-#include <q3textedit.h>
-#include <qpixmap.h>
-#include <qradiobutton.h>
-#include <qsqldatabase.h>
+
+#include <qlabel.h>
+#include <qpushbutton.h>
 
 #include <rd.h>
+#include <rddialog.h>
 #include <rdmatrix.h>
 
-class ListMatrices : public QDialog
+class ListMatrices : public RDDialog
 {
  Q_OBJECT
  public:
@@ -47,12 +46,20 @@ class ListMatrices : public QDialog
    void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
    void closeData();
 
+ protected:
+  void resizeEvent(QResizeEvent *e);
+
   private:
    void DeleteMatrix(int matrix);
    void RefreshList();
    void AddList(int matrix_num);
    void RefreshRecord(Q3ListViewItem *item);
+   QLabel *list_title_label;
    Q3ListView *list_view;
+   QPushButton *list_add_button;
+   QPushButton *list_edit_button;
+   QPushButton *list_delete_button;
+   QPushButton *list_close_button;
    QString list_station;
    bool list_matrix_modified[MAX_MATRICES];
 };

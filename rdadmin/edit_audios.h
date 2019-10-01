@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Audio Port Configuration
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,7 +21,6 @@
 #ifndef EDIT_AUDIOS_H
 #define EDIT_AUDIOS_H
 
-#include <qdialog.h>
 #include <qsqldatabase.h>
 #include <qcombobox.h>
 #include <qradiobutton.h>
@@ -31,11 +30,12 @@
 
 #include <rd.h>
 #include <rdaudio_port.h>
+#include <rddialog.h>
 #include <rdstation.h>
 
 #include "help_audios.h"
 
-class EditAudioPorts : public QDialog
+class EditAudioPorts : public RDDialog
 {
   Q_OBJECT
  public:

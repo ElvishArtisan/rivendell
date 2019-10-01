@@ -2,7 +2,7 @@
 //
 // List Rivendell LiveWire Nodes
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,16 +21,15 @@
 #ifndef LIST_NODES_H
 #define LIST_NODES_H
 
-#include <qdialog.h>
-#include <qlabel.h>
 #include <qpushbutton.h>
 
-#include <rduser.h>
-#include <rdmatrix.h>
+#include <rddialog.h>
 #include <rdlistview.h>
 #include <rdlistviewitem.h>
+#include <rdmatrix.h>
+#include <rduser.h>
 
-class ListNodes : public QDialog
+class ListNodes : public RDDialog
 {
  Q_OBJECT
  public:
@@ -45,12 +44,19 @@ class ListNodes : public QDialog
   void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
   void closeData();
 
+ protected:
+  void resizeEvent(QResizeEvent *e);
+
  private:
   void RefreshList();
   void RefreshItem(RDListViewItem *item);
   void PurgeEndpoints(const QString &tablename);
   RDMatrix *list_matrix;
   RDListView *list_list_view;
+  QPushButton *list_add_button;
+  QPushButton *list_edit_button;
+  QPushButton *list_delete_button;
+  QPushButton *list_close_button;
 };
 
 

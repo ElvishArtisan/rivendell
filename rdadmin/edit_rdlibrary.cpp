@@ -2,7 +2,7 @@
 //
 // Edit an RDLibrary Configuration
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -39,27 +39,17 @@
 
 EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
 			     QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   setModal(true);
 
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   lib_lib=new RDLibraryConf(station->name());
-
-  //
-  // Create Fonts
-  //
-  QFont small_font=QFont("Helvetica",12,QFont::Bold);
-  small_font.setPixelSize(12);
-  QFont big_font=QFont("Helvetica",14,QFont::Bold);
-  big_font.setPixelSize(14);
 
   //
   // Text Validator
@@ -75,236 +65,278 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   // Input Configuration
   //
   lib_input_card=new RDCardSelector(this);
-  lib_input_card->setGeometry(10,29,120,117);
-  QLabel *label=new QLabel(lib_input_card,tr("INPUT"),this);
-  label->setGeometry(10,10,110,19);
-  label->setFont(big_font);
-  label->setAlignment(Qt::AlignCenter);
+  lib_input_card->setGeometry(sizeHint().width()/5,29,120,117);
+  QLabel *label=new QLabel(lib_input_card,tr("Input"),this);
+  label->setGeometry(sizeHint().width()/5,10,120,19);
+  //  label->setGeometry(10,10,110,19);
+  label->setFont(sectionLabelFont());
+  label->setAlignment(Qt::AlignCenter|Qt::AlignVCenter);
 
   //
   // Output Configuration
   //
   lib_output_card=new RDCardSelector(this);
-  lib_output_card->setGeometry(170,29,120,87);
-  label=new QLabel(lib_output_card,tr("OUTPUT"),this);
-  label->setGeometry(170,10,110,19);
-  label->setFont(big_font);
+  lib_output_card->setGeometry(4*sizeHint().width()/5-120,29,120,87);
+  label=new QLabel(lib_output_card,tr("Output"),this);
+  label->setGeometry(4*sizeHint().width()/5-120,10,110,19);
+  label->setFont(sectionLabelFont());
   label->setAlignment(Qt::AlignCenter);
 
   //
   // Settings
   //
   QLabel *setting_label=new QLabel(tr("Settings"),this);
-  setting_label->setGeometry(25,79,120,19);
-  setting_label->setFont(big_font);
+  setting_label->setGeometry(25,80,120,19);
+  setting_label->setFont(sectionLabelFont());
   setting_label->setAlignment(Qt::AlignRight|Qt::TextShowMnemonic);
 
   //
   // Maximum Record Length
   //
   lib_maxlength_time=new Q3TimeEdit(this);
-  lib_maxlength_time->setGeometry(160,100,85,19);
+  lib_maxlength_time->setGeometry(190,100,85,19);
   QLabel *lib_maxlength_label=
     new QLabel(lib_maxlength_time,tr("&Max Record Time:"),this);
-  lib_maxlength_label->setGeometry(25,101,130,19);
-  lib_maxlength_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  lib_maxlength_label->setFont(labelFont());
+  lib_maxlength_label->setGeometry(25,101,160,19);
+  lib_maxlength_label->
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // VOX threshold
   //
   lib_vox_spin=new QSpinBox(this);
-  lib_vox_spin->setGeometry(160,122,40,19);
+  lib_vox_spin->setGeometry(190,122,40,19);
   lib_vox_spin->setMinValue(-99);
   lib_vox_spin->setMaxValue(0);
   QLabel *lib_vox_spin_label=
     new QLabel(lib_vox_spin,tr("&VOX Threshold:"),this);
-  lib_vox_spin_label->setGeometry(25,122,130,19);
-  lib_vox_spin_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  lib_vox_spin_label->setFont(labelFont());
+  lib_vox_spin_label->setGeometry(25,122,160,19);
+  lib_vox_spin_label->
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   QLabel *lib_vox_spin_unit=new QLabel(tr("dbFS"),this);
-  lib_vox_spin_unit->setGeometry(205,122,120,19);
-  lib_vox_spin_unit->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  lib_vox_spin_unit->setFont(labelFont());
+  lib_vox_spin_unit->setGeometry(235,122,120,19);
+  lib_vox_spin_unit->
+    setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // AutoTrim threshold
   //
   lib_trim_spin=new QSpinBox(this);
-  lib_trim_spin->setGeometry(160,144,40,19);
+  lib_trim_spin->setGeometry(190,144,40,19);
   lib_trim_spin->setMinValue(-99);
   lib_trim_spin->setMaxValue(0);
   QLabel *lib_trim_spin_label=
     new QLabel(lib_trim_spin,tr("&AutoTrim Threshold:"),this);
-  lib_trim_spin_label->setGeometry(25,144,130,19);
-  lib_trim_spin_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  lib_trim_spin_label->setFont(labelFont());
+  lib_trim_spin_label->setGeometry(25,144,160,19);
+  lib_trim_spin_label->
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   QLabel *lib_trim_spin_unit=new QLabel(tr("dbFS"),this);
-  lib_trim_spin_unit->setGeometry(205,144,120,19);
-  lib_trim_spin_unit->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  lib_trim_spin_unit->setFont(labelFont());
+  lib_trim_spin_unit->setGeometry(235,144,120,19);
+  lib_trim_spin_unit->
+    setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Tail Preroll
   //
   lib_preroll_spin=new QSpinBox(this);
-  lib_preroll_spin->setGeometry(160,166,50,19);
+  lib_preroll_spin->setGeometry(190,166,50,19);
   lib_preroll_spin->setMinValue(0);
   lib_preroll_spin->setMaxValue(10000);
   lib_preroll_spin->setLineStep(100);
   QLabel *lib_preroll_spin_label=
     new QLabel(lib_preroll_spin,tr("&Tail Preroll:"),this);
-  lib_preroll_spin_label->setGeometry(25,166,130,19);
-  lib_preroll_spin_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  lib_preroll_spin_label->setFont(labelFont());
+  lib_preroll_spin_label->setGeometry(25,166,160,19);
+  lib_preroll_spin_label->
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   QLabel *lib_preroll_spin_unit=new QLabel(tr("milliseconds"),this);
-  lib_preroll_spin_unit->setGeometry(215,166,120,19);
-  lib_preroll_spin_unit->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  lib_preroll_spin_unit->setFont(labelFont());
+  lib_preroll_spin_unit->setGeometry(245,166,120,19);
+  lib_preroll_spin_unit->
+    setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Ripper Device
   //
   lib_ripdev_edit=new QLineEdit(this);
-  lib_ripdev_edit->setGeometry(160,188,100,19);
+  lib_ripdev_edit->setGeometry(190,188,100,19);
   lib_ripdev_edit->setValidator(validator);
   QLabel *lib_ripdev_label=
     new QLabel(lib_ripdev_edit,tr("&Ripper Device:"),this);
-  lib_ripdev_label->setGeometry(25,188,130,19);
-  lib_ripdev_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  lib_ripdev_label->setFont(labelFont());
+  lib_ripdev_label->setGeometry(25,188,160,19);
+  lib_ripdev_label->
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Paranoia Level
   //
   lib_paranoia_box=new QComboBox(this);
-  lib_paranoia_box->setGeometry(160,210,100,19);
+  lib_paranoia_box->setGeometry(190,210,100,19);
   QLabel *lib_paranoia_label=
     new QLabel(lib_paranoia_box,tr("&Paranoia Level:"),this);
-  lib_paranoia_label->setGeometry(25,210,130,19);
-  lib_paranoia_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  lib_paranoia_label->setFont(labelFont());
+  lib_paranoia_label->setGeometry(25,210,160,19);
+  lib_paranoia_label->
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Read ISRC
   //
   lib_isrc_box=new QComboBox(this);
-  lib_isrc_box->setGeometry(160,232,60,19);
+  lib_isrc_box->setGeometry(190,232,60,19);
   QLabel *lib_isrc_label=
     new QLabel(lib_isrc_box,tr("&Read ISRCs from CD:"),this);
-  lib_isrc_label->setGeometry(25,232,130,19);
-  lib_isrc_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  lib_isrc_label->setFont(labelFont());
+  lib_isrc_label->setGeometry(25,232,160,19);
+  lib_isrc_label->
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // FreeDB Server
   //
   lib_cddb_edit=new QLineEdit(this);
-  lib_cddb_edit->setGeometry(160,254,160,19);
+  lib_cddb_edit->setGeometry(190,254,160,19);
   lib_cddb_edit->setValidator(validator);
   QLabel *lib_cddb_label=new QLabel(lib_cddb_edit,tr("&FreeDB Server:"),this);
-  lib_cddb_label->setGeometry(25,254,130,19);
-  lib_cddb_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  lib_cddb_label->setFont(labelFont());
+  lib_cddb_label->setGeometry(25,254,160,19);
+  lib_cddb_label->
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Format
   //
   lib_format_box=new QComboBox(this);
-  lib_format_box->setGeometry(160,278,150,19);
+  lib_format_box->setGeometry(190,278,150,19);
   connect(lib_format_box,SIGNAL(activated(int)),this,SLOT(formatData(int)));
   QLabel *lib_format_label=new QLabel(lib_format_box,tr("&Format:"),this);
-
-  lib_format_label->setGeometry(25,278,130,19);
-  lib_format_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  lib_format_label->setFont(labelFont());
+  lib_format_label->setGeometry(25,278,160,19);
+  lib_format_label->
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Bitrate
   //
   lib_bitrate_box=new QComboBox(this);
-  lib_bitrate_box->setGeometry(160,302,130,19);
+  lib_bitrate_box->setGeometry(190,302,130,19);
   QLabel *lib_bitrate_label=new QLabel(lib_bitrate_box,tr("&Bitrate:"),this);
-  lib_bitrate_label->setGeometry(25,302,130,19);
-  lib_bitrate_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  lib_bitrate_label->setFont(labelFont());
+  lib_bitrate_label->setGeometry(25,302,160,19);
+  lib_bitrate_label->
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Enable Editor
   //
   lib_editor_box=new QComboBox(this);
-  lib_editor_box->setGeometry(160,326,60,19);
+  lib_editor_box->setGeometry(190,326,60,19);
   lib_editor_box->insertItem(tr("No"));
   lib_editor_box->insertItem(tr("Yes"));
   QLabel *lib_editor_label=
     new QLabel(lib_editor_box,tr("Allow E&xternal Editing:"),this);
-  lib_editor_label->setGeometry(25,326,130,19);
-  lib_editor_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  lib_editor_label->setFont(labelFont());
+  lib_editor_label->setGeometry(25,326,160,19);
+  lib_editor_label->
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Sample Rate Converter
   //
   lib_converter_box=new QComboBox(this);
-  lib_converter_box->setGeometry(160,350,sizeHint().width()-170,19);
+  lib_converter_box->setGeometry(190,350,sizeHint().width()-200,19);
   int conv=0;
   while(src_get_name(conv)!=NULL) {
     lib_converter_box->insertItem(src_get_name(conv++));
   }
   QLabel *lib_converter_label=
     new QLabel(lib_converter_box,tr("Sample Rate Converter:"),this);
-  lib_converter_label->setGeometry(10,350,145,19);
-  lib_converter_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  lib_converter_label->setFont(labelFont());
+  lib_converter_label->setGeometry(10,350,175,19);
+  lib_converter_label->
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Limit Searches at Startup
   //
   lib_limit_search_box=new QComboBox(this);
-  lib_limit_search_box->setGeometry(160,374,80,19);
+  lib_limit_search_box->setGeometry(190,374,80,19);
   lib_limit_search_box->insertItem(tr("No"));
   lib_limit_search_box->insertItem(tr("Yes"));
   lib_limit_search_box->insertItem(tr("Previous"));
   QLabel *lib_limit_search_label=
     new QLabel(lib_limit_search_box,tr("Limit Searches at Startup")+":",this);
-  lib_limit_search_label->setGeometry(10,374,145,19);
-  lib_limit_search_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  lib_limit_search_label->setFont(labelFont());
+  lib_limit_search_label->setGeometry(10,374,175,19);
+  lib_limit_search_label->
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Defaults
   //
   QLabel *default_label=new QLabel(tr("Defaults"),this);
-  default_label->setGeometry(25,408,120,19);
-  default_label->setFont(big_font);
+  default_label->setGeometry(25,412,120,19);
+  default_label->setFont(sectionLabelFont());
   default_label->setAlignment(Qt::AlignRight|Qt::TextShowMnemonic);
 
   //
   // Default Channels
   //
   lib_channels_box=new QComboBox(this);
-  lib_channels_box->setGeometry(160,430,60,19);
+  lib_channels_box->setGeometry(190,430,60,19);
   QLabel *lib_channels_label=new QLabel(lib_channels_box,tr("&Channels:"),this);
-  lib_channels_label->setGeometry(25,430,130,19);
-  lib_channels_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  lib_channels_label->setFont(labelFont());
+  lib_channels_label->setGeometry(25,430,160,19);
+  lib_channels_label->
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Default Record Mode
   //
   lib_recmode_box=new QComboBox(this);
-  lib_recmode_box->setGeometry(160,454,100,19);
+  lib_recmode_box->setGeometry(190,454,100,19);
   QLabel *lib_recmode_label=new QLabel(lib_recmode_box,tr("Record Mode:"),this);
-  lib_recmode_label->setGeometry(25,454,130,19);
-  lib_recmode_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  lib_recmode_label->setFont(labelFont());
+  lib_recmode_label->setGeometry(25,454,160,19);
+  lib_recmode_label->
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Default Trim State
   //
   lib_trimstate_box=new QComboBox(this);
-  lib_trimstate_box->setGeometry(160,478,100,19);
+  lib_trimstate_box->setGeometry(190,478,100,19);
   QLabel *lib_trimstate_label=
     new QLabel(lib_trimstate_box,tr("AutoTrim:"),this);
-  lib_trimstate_label->setGeometry(25,478,130,19);
-  lib_trimstate_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  lib_trimstate_label->setFont(labelFont());
+  lib_trimstate_label->setGeometry(25,478,160,19);
+  lib_trimstate_label->
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Normalization Level
   //
   lib_riplevel_spin=new QSpinBox(this);
-  lib_riplevel_spin->setGeometry(160,502,40,19);
+  lib_riplevel_spin->setGeometry(190,502,40,19);
   lib_riplevel_spin->setMinValue(-99);
   lib_riplevel_spin->setMaxValue(0);
   QLabel *lib_riplevel_spin_label=
     new QLabel(lib_riplevel_spin,tr("Normalization Level:"),this);
-  lib_riplevel_spin_label->setGeometry(25,502,130,19);
-  lib_riplevel_spin_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  lib_riplevel_spin_label->setFont(labelFont());
+  lib_riplevel_spin_label->setGeometry(25,502,160,19);
+  lib_riplevel_spin_label->
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   QLabel *lib_riplevel_spin_unit=new QLabel(tr("dbFS"),this);
-  lib_riplevel_spin_unit->setGeometry(205,502,120,19);
-  lib_riplevel_spin_unit->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
+  lib_riplevel_spin_unit->setFont(labelFont());
+  lib_riplevel_spin_unit->setGeometry(235,502,120,19);
+  lib_riplevel_spin_unit->
+    setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   //  Ok Button
@@ -312,7 +344,7 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   QPushButton *ok_button=new QPushButton(this);
   ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   ok_button->setDefault(true);
-  ok_button->setFont(small_font);
+  ok_button->setFont(buttonFont());
   ok_button->setText(tr("&OK"));
   connect(ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
@@ -322,7 +354,7 @@ EditRDLibrary::EditRDLibrary(RDStation *station,RDStation *cae_station,
   QPushButton *cancel_button=new QPushButton(this);
   cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
-  cancel_button->setFont(small_font);
+  cancel_button->setFont(buttonFont());
   cancel_button->setText(tr("&Cancel"));
   connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
@@ -421,7 +453,7 @@ EditRDLibrary::~EditRDLibrary()
 
 QSize EditRDLibrary::sizeHint() const
 {
-  return QSize(375,606);
+  return QSize(405,606);
 } 
 
 

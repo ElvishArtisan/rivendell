@@ -2,7 +2,7 @@
 //
 // Edit a PyPAD Instance Configuration
 //
-//   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,7 +24,7 @@
 #include "edit_pypad.h"
 
 EditPypad::EditPypad(int id,QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   edit_id=id;
 
@@ -33,15 +33,10 @@ EditPypad::EditPypad(int id,QWidget *parent)
 		 " ["+tr("ID")+QString().sprintf(": %u]",id));
 
   //
-  // Fonts
-  //
-  QFont label_font(font().family(),font().pointSize(),QFont::Bold);
-
-  //
   // Script Path
   //
   edit_script_path_label=new QLabel(tr("Script Path")+":",this);
-  edit_script_path_label->setFont(label_font);
+  edit_script_path_label->setFont(labelFont());
   edit_script_path_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   edit_script_path_edit=new QLineEdit(this);
   edit_script_path_edit->setReadOnly(true);
@@ -50,7 +45,7 @@ EditPypad::EditPypad(int id,QWidget *parent)
   // Description
   //
   edit_description_label=new QLabel(tr("Description")+":",this);
-  edit_description_label->setFont(label_font);
+  edit_description_label->setFont(labelFont());
   edit_description_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   edit_description_edit=new QLineEdit(this);
 
@@ -58,7 +53,7 @@ EditPypad::EditPypad(int id,QWidget *parent)
   // Configuration
   //
   edit_config_label=new QLabel(tr("Configuration"),this);
-  edit_config_label->setFont(label_font);
+  edit_config_label->setFont(labelFont());
   edit_config_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   edit_config_text=new QTextEdit(this);
   edit_config_text->setAcceptRichText(false);
@@ -68,14 +63,14 @@ EditPypad::EditPypad(int id,QWidget *parent)
   // OK Button
   //
   edit_ok_button=new QPushButton(tr("OK"),this);
-  edit_ok_button->setFont(label_font);
+  edit_ok_button->setFont(buttonFont());
   connect(edit_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
   // Cancel Button
   //
   edit_cancel_button=new QPushButton(tr("Cancel"),this);
-  edit_cancel_button->setFont(label_font);
+  edit_cancel_button->setFont(buttonFont());
   connect(edit_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //

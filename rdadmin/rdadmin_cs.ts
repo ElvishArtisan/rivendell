@@ -420,7 +420,7 @@ a záloha původní databáze uložena v </translation>
     </message>
     <message>
         <source>&amp;New Replicator Name:</source>
-        <translation>Název nového &amp;kopírovacího stroje:</translation>
+        <translation type="obsolete">Název nového &amp;kopírovacího stroje:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -445,6 +445,10 @@ a záloha původní databáze uložena v </translation>
     <message>
         <source>A replicator with that name already exists!</source>
         <translation>Kopírovací stroj s tímto názvem již existuje!</translation>
+    </message>
+    <message>
+        <source>Replicator Name:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1662,6 +1666,14 @@ Pořád ještě chcete povolit přesměrování?</translation>
         <source>Invalid Cart Number!</source>
         <translation>Neplatné číslo vozíku!</translation>
     </message>
+    <message>
+        <source>ON Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OFF Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditGroup</name>
@@ -2728,11 +2740,11 @@ GPIOs</source>
     </message>
     <message>
         <source>INPUT</source>
-        <translation>VSTUP</translation>
+        <translation type="obsolete">VSTUP</translation>
     </message>
     <message>
         <source>OUTPUT</source>
-        <translation>VÝSTUP</translation>
+        <translation type="obsolete">VÝSTUP</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -2960,6 +2972,14 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
         <source>Normalization Level:</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Input</source>
+        <translation type="unfinished">Vstup</translation>
+    </message>
+    <message>
+        <source>Output</source>
+        <translation type="unfinished">Výstup</translation>
+    </message>
 </context>
 <context>
     <name>EditRDLogedit</name>
@@ -2969,11 +2989,11 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
     </message>
     <message>
         <source>INPUT</source>
-        <translation>VSTUP</translation>
+        <translation type="obsolete">VSTUP</translation>
     </message>
     <message>
         <source>OUTPUT</source>
-        <translation>VÝSTUP</translation>
+        <translation type="obsolete">VÝSTUP</translation>
     </message>
     <message>
         <source>Voice Tracker Settings</source>
@@ -3154,6 +3174,14 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
     <message>
         <source>Configure RDLogedit</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Input</source>
+        <translation type="unfinished">Vstup</translation>
+    </message>
+    <message>
+        <source>Output</source>
+        <translation type="unfinished">Výstup</translation>
     </message>
 </context>
 <context>
@@ -3407,11 +3435,11 @@ in order to populate the audio resources database.</source>
     </message>
     <message>
         <source>Linux Export Path:</source>
-        <translation>Cesta pro vyvedení v Linuxu:</translation>
+        <translation type="obsolete">Cesta pro vyvedení v Linuxu:</translation>
     </message>
     <message>
         <source>Windows Export Path:</source>
-        <translation>Cesta pro vyvedení ve Windows:</translation>
+        <translation type="obsolete">Cesta pro vyvedení ve Windows:</translation>
     </message>
     <message>
         <source>Export Event Types:</source>
@@ -3502,11 +3530,11 @@ in order to populate the audio resources database.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Linux Post Export Cmd:</source>
+        <source>Export Path:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Windows Post Export Cmd:</source>
+        <source>Post Export Cmd:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3546,11 +3574,11 @@ in order to populate the audio resources database.</source>
     </message>
     <message>
         <source>CART</source>
-        <translation>VOZÍK</translation>
+        <translation type="obsolete">VOZÍK</translation>
     </message>
     <message>
         <source>TITLE</source>
-        <translation>NÁZEV</translation>
+        <translation type="obsolete">NÁZEV</translation>
     </message>
     <message>
         <source>&amp;Save List</source>
@@ -3605,7 +3633,15 @@ Přepsat?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Mcast Address for Notifications</source>
+        <source>Cart</source>
+        <translation type="unfinished">Vozík</translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished">Název</translation>
+    </message>
+    <message>
+        <source>Multicast Address for Notifications</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4486,7 +4522,7 @@ Permissions</source>
         <source>This program is free software, and comes with ABSOLUTELY NO WARRANTY,
 not even the implied warranties of MERCHANTIBILITY or FITNESS FOR A
 PARTICULAR PURPOSE.  Touch the &quot;View License&quot; button for details.</source>
-        <translation>Tento program je svobodným softwarem a je šířen v naději, že bude užitečný, ale
+        <translation type="obsolete">Tento program je svobodným softwarem a je šířen v naději, že bude užitečný, ale
 BEZ JAKÉKOLI ZÁRUKY; také bez předpokládané záruky PRODEJNOSTI nebo
 POUŽITELNOSTI PRO NĚJAKÝ URČITÝ ÚČEL: Více podrobností naleznete v
 GNU Library General Public License. Klepněte na tlačítko pro zobrazení povolení.</translation>
@@ -4524,6 +4560,10 @@ GNU Library General Public License. Klepněte na tlačítko pro zobrazení povol
     <message>
         <source>View
 &amp;Credits</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This program is free software, and comes with ABSOLUTELY NO WARRANTY, not even the implied warranties of MERCHANTIBILITY or FITNESS FOR A PARTICULAR PURPOSE. Touch the &quot;View License&quot; button for details.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

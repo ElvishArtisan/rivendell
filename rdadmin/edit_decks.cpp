@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell RDCatch Deck Configuration
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -40,7 +40,7 @@
 #include "globals.h"
 
 EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   setModal(true);
 
@@ -56,14 +56,6 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   setWindowTitle("RDAdmin - "+tr("Configure RDCatch"));
 
   //
-  // Create Fonts
-  //
-  QFont small_font=QFont("Helvetica",12,QFont::Bold);
-  small_font.setPixelSize(12);
-  QFont big_font=QFont("Helvetica",14,QFont::Bold);
-  big_font.setPixelSize(14);
-
-  //
   // Create RDCatchConf
   //
   edit_catch_conf=new RDCatchConf(station->name());
@@ -77,7 +69,7 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   connect(edit_record_deck_box,SIGNAL(activated(int)),
 	  this,SLOT(recordDeckActivatedData(int)));
   QLabel *label=new QLabel(edit_record_deck_box,tr("Record Deck"),this);
-  label->setFont(small_font);
+  label->setFont(sectionLabelFont());
   label->setGeometry(35,14,100,22);
   label->setAlignment(Qt::AlignRight);
 
@@ -86,7 +78,7 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   //
   label=new QLabel(tr("Settings"),this);
   label->setGeometry(10,40,100,24);
-  label->setFont(big_font);
+  label->setFont(sectionLabelFont());
 
   //
   // Card Selector
@@ -106,6 +98,7 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   connect(edit_monitor_box,SIGNAL(valueChanged(int)),
 	  this,SLOT(monitorPortChangedData(int)));
   edit_monitor_label=new QLabel(edit_monitor_box,tr("Monitor Port:"),this);
+  edit_monitor_label->setFont(labelFont());
   edit_monitor_label->setGeometry(10,112,112,19);
   edit_monitor_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -115,6 +108,7 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   edit_default_on_box->insertItem(tr("On"));
   edit_default_on_label=
     new QLabel(edit_default_on_box,tr("Monitor defaults to"),this);
+  edit_default_on_label->setFont(labelFont());
   edit_default_on_label->setGeometry(195,112,105,19);
   edit_default_on_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -127,6 +121,7 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   connect(edit_format_box,SIGNAL(activated(int)),
 	  this,SLOT(formatActivatedData(int)));
   label=new QLabel(edit_format_box,tr("Format:"),this);
+  label->setFont(labelFont());
   label->setGeometry(10,136,110,24);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -137,6 +132,7 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   edit_bitrate_box->setGeometry(125,160,140,24);
   edit_bitrate_box->setInsertionPolicy(QComboBox::NoInsert);
   edit_bitrate_label=new QLabel(edit_bitrate_box,tr("Bit Rate:"),this);
+  edit_bitrate_label->setFont(labelFont());
   edit_bitrate_label->setGeometry(10,160,110,24);
   edit_bitrate_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -147,6 +143,7 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   edit_swstation_box->setGeometry(125,190,250,24);
   edit_swstation_box->setInsertionPolicy(QComboBox::NoInsert);
   edit_swstation_label=new QLabel(edit_swstation_box,tr("Switcher Host:"),this);
+  edit_swstation_label->setFont(labelFont());
   edit_swstation_label->setGeometry(10,190,110,24);
   edit_swstation_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   connect(edit_swstation_box,SIGNAL(activated(const QString &)),
@@ -160,6 +157,7 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   edit_swmatrix_box->setInsertionPolicy(QComboBox::NoInsert);
   edit_swmatrix_box->setDisabled(true);
   edit_swmatrix_label=new QLabel(edit_swmatrix_box,tr("Switcher Matrix:"),this);
+  edit_swmatrix_label->setFont(labelFont());
   edit_swmatrix_label->setGeometry(10,214,110,24);
   edit_swmatrix_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   edit_swmatrix_label->setDisabled(true);
@@ -174,6 +172,7 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   edit_swoutput_box->setInsertionPolicy(QComboBox::NoInsert);
   edit_swoutput_box->setDisabled(true);
   edit_swoutput_label=new QLabel(edit_swoutput_box,tr("Switcher Output:"),this);
+  edit_swoutput_label->setFont(labelFont());
   edit_swoutput_label->setGeometry(10,238,110,24);
   edit_swoutput_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   edit_swoutput_label->setDisabled(true);
@@ -186,10 +185,12 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   edit_swdelay_box->setRange(0,20);
   edit_swdelay_box->setDisabled(true);
   edit_swdelay_label=new QLabel(edit_swdelay_box,tr("Switcher Delay:"),this);
+  edit_swdelay_label->setFont(labelFont());
   edit_swdelay_label->setGeometry(10,262,110,24);
   edit_swdelay_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   edit_swdelay_label->setDisabled(true);
   edit_swdelay_unit=new QLabel(edit_swdelay_box,tr("1/10 sec"),this);
+  edit_swdelay_unit->setFont(labelFont());
   edit_swdelay_unit->setGeometry(170,262,60,24);
   edit_swdelay_unit->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   edit_swdelay_unit->setDisabled(true);
@@ -202,7 +203,7 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   //
   label=new QLabel(tr("Defaults"),this);
   label->setGeometry(10,276,100,24);
-  label->setFont(big_font);
+  label->setFont(sectionLabelFont());
 
   //
   // Default Channels
@@ -211,6 +212,7 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   edit_channels_box->setGeometry(125,300,60,24);
   edit_channels_box->setInsertionPolicy(QComboBox::NoInsert);
   label=new QLabel(edit_channels_box,tr("Channels:"),this);
+  label->setFont(labelFont());
   label->setGeometry(10,300,110,24);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -222,6 +224,7 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   edit_threshold_box->setSuffix(" dB");
   edit_threshold_box->setRange(-100,0);
   label=new QLabel(edit_threshold_box,tr("Trim Threshold:"),this);
+  label->setFont(labelFont());
   label->setGeometry(10,324,110,24);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -230,11 +233,12 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   //
   label=new QLabel(tr("Host-Wide Settings"),this);
   label->setGeometry(10,369,200,24);
-  label->setFont(big_font);
+  label->setFont(sectionLabelFont());
 
   edit_errorrml_edit=new QLineEdit(this);
   edit_errorrml_edit->setGeometry(125,393,248,24);
   label=new QLabel(edit_errorrml_edit,tr("Error RML:"),this);
+  label->setFont(labelFont());
   label->setGeometry(10,393,110,24);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -247,7 +251,7 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   connect(edit_play_deck_box,SIGNAL(activated(int)),
 	  this,SLOT(playDeckActivatedData(int)));
   label=new QLabel(edit_play_deck_box,tr("Play Deck"),this);
-  label->setFont(small_font);
+  label->setFont(sectionLabelFont());
   label->setGeometry(390,14,80,22);
   label->setAlignment(Qt::AlignRight);
 
@@ -264,13 +268,14 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   //
   edit_event_section_label=new QLabel(tr("Event Carts"),this);
   edit_event_section_label->setGeometry(395,99,100,24);
-  edit_event_section_label->setFont(big_font);
+  edit_event_section_label->setFont(sectionLabelFont());
 
   QSignalMapper *mapper=new QSignalMapper(this);
   connect(mapper,SIGNAL(mapped(int)),this,SLOT(eventCartSelectedData(int)));
   for(unsigned i=0;i<RD_CUT_EVENT_ID_QUAN;i+=2) {
     for(unsigned j=0;j<2;j++) {
       edit_event_labels[i+j]=new QLabel(QString().sprintf("%u:",i+j+1),this);
+      edit_event_labels[i+j]->setFont(labelFont());
       edit_event_labels[i+j]->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
       edit_event_labels[i+j]->setGeometry(387+165*j,126+14*i,20,20);
 
@@ -280,6 +285,7 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
 	setValidator(new QIntValidator(1,RD_MAX_CART_NUMBER,this));
 
       edit_event_buttons[i+j]=new QPushButton(tr("Select"),this);
+      edit_event_buttons[i+j]->setFont(subButtonFont());
       edit_event_buttons[i+j]->setGeometry(477+165*j,124+14*i,60,24);
       mapper->setMapping(edit_event_buttons[i+j],i+j);
       connect(edit_event_buttons[i+j],SIGNAL(clicked()),
@@ -293,7 +299,7 @@ EditDecks::EditDecks(RDStation *station,RDStation *cae_station,QWidget *parent)
   QPushButton *close_button=new QPushButton(this);
   close_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			    80,50);
-  close_button->setFont(small_font);
+  close_button->setFont(buttonFont());
   close_button->setText(tr("&Close"));
   close_button->setDefault(true);
   connect(close_button,SIGNAL(clicked()),this,SLOT(closeData()));

@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Workstation
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,24 +21,21 @@
 #ifndef EDIT_STATION_H
 #define EDIT_STATION_H
 
-#include <qdialog.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qpixmap.h>
+#include <qcombobox.h>
 #include <qcheckbox.h>
 #include <qgroupbox.h>
-#include <qlineedit.h>
-#include <qcombobox.h>
-#include <qspinbox.h>
-#include <qpushbutton.h>
 #include <qlabel.h>
+#include <qlineedit.h>
+#include <qpushbutton.h>
+#include <qspinbox.h>
 
-#include <rdstation.h>
+#include <rddialog.h>
+#include <rdcardselector.h>
 #include <rdcatch_connect.h>
 #include <rdripc.h>
-#include <rdcardselector.h>
+#include <rdstation.h>
 
-class EditStation : public QDialog
+class EditStation : public RDDialog
 {
   Q_OBJECT
   public:

@@ -328,10 +328,6 @@ atualizada para a Versão</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;New Replicator Name:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;OK</source>
         <translation type="unfinished"></translation>
     </message>
@@ -353,6 +349,10 @@ atualizada para a Versão</translation>
     </message>
     <message>
         <source>A replicator with that name already exists!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Replicator Name:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1537,6 +1537,14 @@ Do you still want to enable redireciton?</source>
         <source>Invalid Cart Number!</source>
         <translation>Númerodo Cartão Inválido!</translation>
     </message>
+    <message>
+        <source>ON Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OFF Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditGroup</name>
@@ -2616,11 +2624,11 @@ GPIOs</source>
     </message>
     <message>
         <source>INPUT</source>
-        <translation>ENTRADA</translation>
+        <translation type="obsolete">ENTRADA</translation>
     </message>
     <message>
         <source>OUTPUT</source>
-        <translation>SAÍDA</translation>
+        <translation type="obsolete">SAÍDA</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -2846,16 +2854,24 @@ configured to run the CAE service in order to populate the audio resources datab
         <source>Normalization Level:</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Input</source>
+        <translation type="unfinished">Entrada</translation>
+    </message>
+    <message>
+        <source>Output</source>
+        <translation type="unfinished">Saída</translation>
+    </message>
 </context>
 <context>
     <name>EditRDLogedit</name>
     <message>
         <source>INPUT</source>
-        <translation type="unfinished">ENTRADA</translation>
+        <translation type="obsolete">ENTRADA</translation>
     </message>
     <message>
         <source>OUTPUT</source>
-        <translation type="unfinished">SAÍDA</translation>
+        <translation type="obsolete">SAÍDA</translation>
     </message>
     <message>
         <source>Voice Tracker Settings</source>
@@ -3034,6 +3050,14 @@ configured to run the CAE service in order to populate the audio resources datab
     <message>
         <source>Configure RDLogedit</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Input</source>
+        <translation type="unfinished">Entrada</translation>
+    </message>
+    <message>
+        <source>Output</source>
+        <translation type="unfinished">Saída</translation>
     </message>
 </context>
 <context>
@@ -3284,11 +3308,11 @@ in order to populate the audio resources database.</source>
     </message>
     <message>
         <source>Linux Export Path:</source>
-        <translation>Pasta de exp. - Linux:</translation>
+        <translation type="obsolete">Pasta de exp. - Linux:</translation>
     </message>
     <message>
         <source>Windows Export Path:</source>
-        <translation>Pasta de exp. - Windows:</translation>
+        <translation type="obsolete">Pasta de exp. - Windows:</translation>
     </message>
     <message>
         <source>Export Event Types:</source>
@@ -3379,11 +3403,11 @@ in order to populate the audio resources database.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Linux Post Export Cmd:</source>
+        <source>Export Path:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Windows Post Export Cmd:</source>
+        <source>Post Export Cmd:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3419,14 +3443,6 @@ in order to populate the audio resources database.</source>
     </message>
     <message>
         <source>The following duplicate titles must be corrected before &quot;Allow Duplicate Values&quot; can be turned off.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>CART</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>TITLE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3476,11 +3492,19 @@ Overwrite?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Mcast Address for Notifications</source>
+        <source>Unable to write file &quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Unable to write file &quot;</source>
+        <source>Cart</source>
+        <translation type="unfinished">Cartão</translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished">Título</translation>
+    </message>
+    <message>
+        <source>Multicast Address for Notifications</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4355,7 +4379,7 @@ Permissions</source>
         <source>This program is free software, and comes with ABSOLUTELY NO WARRANTY,
 not even the implied warranties of MERCHANTIBILITY or FITNESS FOR A
 PARTICULAR PURPOSE.  Touch the &quot;View License&quot; button for details.</source>
-        <translation>Este Programa e um Software Livre, a não ABSOLUTAMENTE NENHUMA GARANTIA,
+        <translation type="obsolete">Este Programa e um Software Livre, a não ABSOLUTAMENTE NENHUMA GARANTIA,
 nem mesmo as garantias de COMERCIALIZAÇÃO  ou de ADEQUAÇÃO PARA ALGUMA 
 FINALIDADE PARTICULAR.  Aperte o botão VER LICENÇA para mais detalhes.</translation>
     </message>
@@ -4388,6 +4412,10 @@ FINALIDADE PARTICULAR.  Aperte o botão VER LICENÇA para mais detalhes.</transl
     <message>
         <source>View
 &amp;Credits</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This program is free software, and comes with ABSOLUTELY NO WARRANTY, not even the implied warranties of MERCHANTIBILITY or FITNESS FOR A PARTICULAR PURPOSE. Touch the &quot;View License&quot; button for details.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

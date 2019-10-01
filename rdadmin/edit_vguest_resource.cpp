@@ -2,7 +2,7 @@
 //
 // Edit a vGuest Resource Record.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,13 +22,13 @@
 
 #include <rdtextvalidator.h>
 
-#include <edit_vguest_resource.h>
+#include "edit_vguest_resource.h"
 
 EditVguestResource::EditVguestResource(RDMatrix::VguestType type,
 				       int *enginenum,int *devicenum,
 				       int *surfacenum,int *relaynum,
 				       QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   setModal(true);
 
@@ -41,18 +41,8 @@ EditVguestResource::EditVguestResource(RDMatrix::VguestType type,
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
-
-  //
-  // Create Fonts
-  //
-  QFont bold_font=QFont("Helvetica",12,QFont::Bold);
-  bold_font.setPixelSize(12);
-  QFont font=QFont("Helvetica",12,QFont::Normal);
-  font.setPixelSize(12);
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   //
   // Logitek Engine Number
@@ -61,7 +51,7 @@ EditVguestResource::EditVguestResource(RDMatrix::VguestType type,
   edit_enginenum_edit->setGeometry(135,10,50,20);
   QLabel *label=new QLabel(edit_enginenum_edit,tr("Engine (Hex): "),this);
   label->setGeometry(10,10,120,20);
-  label->setFont(bold_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -71,7 +61,7 @@ EditVguestResource::EditVguestResource(RDMatrix::VguestType type,
   edit_devicenum_edit->setGeometry(135,36,50,20);
   label=new QLabel(edit_devicenum_edit,tr("Device (Hex): "),this);
   label->setGeometry(10,36,120,20);
-  label->setFont(bold_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -81,7 +71,7 @@ EditVguestResource::EditVguestResource(RDMatrix::VguestType type,
   edit_surfacenum_edit->setGeometry(135,62,50,20);
   label=new QLabel(edit_surfacenum_edit,tr("Surface (Hex): "),this);
   label->setGeometry(10,62,120,20);
-  label->setFont(bold_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -92,7 +82,7 @@ EditVguestResource::EditVguestResource(RDMatrix::VguestType type,
   edit_relaynum_label=
     new QLabel(edit_relaynum_edit,tr("Bus/Relay (Hex): "),this);
   edit_relaynum_label->setGeometry(10,88,120,20);
-  edit_relaynum_label->setFont(bold_font);
+  edit_relaynum_label->setFont(labelFont());
   edit_relaynum_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -101,7 +91,7 @@ EditVguestResource::EditVguestResource(RDMatrix::VguestType type,
   QPushButton *button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
-  button->setFont(bold_font);
+  button->setFont(buttonFont());
   button->setText(tr("&OK"));
   connect(button,SIGNAL(clicked()),this,SLOT(okData()));
 
@@ -111,7 +101,7 @@ EditVguestResource::EditVguestResource(RDMatrix::VguestType type,
   button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
-  button->setFont(bold_font);
+  button->setFont(buttonFont());
   button->setText(tr("&Cancel"));
   connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
@@ -145,7 +135,7 @@ EditVguestResource::EditVguestResource(RDMatrix::VguestType type,
 
 QSize EditVguestResource::sizeHint() const
 {
-  return QSize(400,174);
+  return QSize(200,190);
 }
 
 

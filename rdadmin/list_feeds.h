@@ -2,7 +2,7 @@
 //
 // List Rivendell Feeds
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,14 +21,12 @@
 #ifndef LIST_FEEDS_H
 #define LIST_FEEDS_H
 
-#include <qdialog.h>
-#include <qpixmap.h>
-#include <qradiobutton.h>
 #include <qpushbutton.h>
 
+#include <rddialog.h>
 #include <rdlistviewitem.h>
 
-class ListFeeds : public QDialog
+class ListFeeds : public RDDialog
 {
   Q_OBJECT
  public:

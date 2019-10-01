@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Group
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,7 +21,6 @@
 #ifndef EDIT_GROUP_H
 #define EDIT_GROUP_H
 
-#include <qdialog.h>
 #include <q3listbox.h>
 #include <q3textedit.h>
 #include <qpixmap.h>
@@ -32,10 +31,11 @@
 #include <qlabel.h>
 #include <qpushbutton.h>
 
+#include <rddialog.h>
 #include <rdgroup.h>
 #include <rdlistselector.h>
 
-class EditGroup : public QDialog
+class EditGroup : public RDDialog
 {
  Q_OBJECT
  public:

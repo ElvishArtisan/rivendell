@@ -2,7 +2,7 @@
 //
 // List Rivendell GPIOs
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,26 +18,17 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <q3textedit.h>
-#include <qpainter.h>
-#include <qmessagebox.h>
-
 #include <rd.h>
 #include <rdapplication.h>
 #include <rddb.h>
 #include <rdescape_string.h>
-#include <rdmacro.h>
-#include <rdpasswd.h>
-#include <rdstation.h>
 
 #include "edit_gpi.h"
 #include "globals.h"
 #include "list_gpis.h"
 
 ListGpis::ListGpis(RDMatrix *matrix,RDMatrix::GpioType type,QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   setModal(true);
 
@@ -67,16 +58,7 @@ ListGpis::ListGpis(RDMatrix *matrix,RDMatrix::GpioType type,QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-
-  //
-  // Create Fonts
-  //
-  QFont bold_font=QFont("Helvetica",12,QFont::Bold);
-  bold_font.setPixelSize(12);
-  QFont font=QFont("Helvetica",12,QFont::Normal);
-  font.setPixelSize(12);
+  setMinimumSize(sizeHint());
 
   //
   // Gpis List Box
@@ -84,7 +66,7 @@ ListGpis::ListGpis(RDMatrix *matrix,RDMatrix::GpioType type,QWidget *parent)
   list_list_view=new Q3ListView(this);
   list_list_label=
     new QLabel(list_list_view,list_label,this);
-  list_list_label->setFont(bold_font);
+  list_list_label->setFont(labelFont());
   list_list_view->setAllColumnsShowFocus(true);
   list_list_view->setItemMargin(5);
   connect(list_list_view,
@@ -119,7 +101,7 @@ ListGpis::ListGpis(RDMatrix *matrix,RDMatrix::GpioType type,QWidget *parent)
   //  Edit Button
   //
   list_edit_button=new QPushButton(this);
-  list_edit_button->setFont(bold_font);
+  list_edit_button->setFont(buttonFont());
   list_edit_button->setText(tr("&Edit"));
   connect(list_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
 
@@ -128,7 +110,7 @@ ListGpis::ListGpis(RDMatrix *matrix,RDMatrix::GpioType type,QWidget *parent)
   //
   list_ok_button=new QPushButton(this);
   list_ok_button->setDefault(true);
-  list_ok_button->setFont(bold_font);
+  list_ok_button->setFont(buttonFont());
   list_ok_button->setText(tr("&OK"));
   connect(list_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
@@ -136,7 +118,7 @@ ListGpis::ListGpis(RDMatrix *matrix,RDMatrix::GpioType type,QWidget *parent)
   //  Cancel Button
   //
   list_cancel_button=new QPushButton(this);
-  list_cancel_button->setFont(bold_font);
+  list_cancel_button->setFont(buttonFont());
   list_cancel_button->setText(tr("&Cancel"));
   connect(list_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 

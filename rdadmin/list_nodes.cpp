@@ -18,10 +18,6 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <q3textedit.h>
-#include <qpainter.h>
 #include <qmessagebox.h>
 
 #include <rd.h>
@@ -34,7 +30,7 @@
 #include "edit_endpoint.h"
 
 ListNodes::ListNodes(RDMatrix *matrix,QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   setModal(true);
 
@@ -44,25 +40,12 @@ ListNodes::ListNodes(RDMatrix *matrix,QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
-
-  //
-  // Create Fonts
-  //
-  QFont bold_font=QFont("Helvetica",12,QFont::Bold);
-  bold_font.setPixelSize(12);
-  QFont font=QFont("Helvetica",12,QFont::Normal);
-  font.setPixelSize(12);
+  setMinimumSize(sizeHint());
 
   //
   // Nodes List Box
   //
   list_list_view=new RDListView(this);
-  list_list_view->
-    setGeometry(10,10,sizeHint().width()-20,sizeHint().height()-80);
   list_list_view->setAllColumnsShowFocus(true);
   list_list_view->setItemMargin(5);
   list_list_view->addColumn(tr("HOSTNAME"));
@@ -81,39 +64,35 @@ ListNodes::ListNodes(RDMatrix *matrix,QWidget *parent)
   //
   //  Add Button
   //
-  QPushButton *button=new QPushButton(this);
-  button->setGeometry(10,sizeHint().height()-60,80,50);
-  button->setFont(bold_font);
-  button->setText(tr("&Add"));
-  connect(button,SIGNAL(clicked()),this,SLOT(addData()));
+  list_add_button=new QPushButton(this);
+  list_add_button->setFont(buttonFont());
+  list_add_button->setText(tr("&Add"));
+  connect(list_add_button,SIGNAL(clicked()),this,SLOT(addData()));
 
   //
   //  Edit Button
   //
-  button=new QPushButton(this);
-  button->setGeometry(100,sizeHint().height()-60,80,50);
-  button->setFont(bold_font);
-  button->setText(tr("&Edit"));
-  connect(button,SIGNAL(clicked()),this,SLOT(editData()));
+  list_edit_button=new QPushButton(this);
+  list_edit_button->setFont(buttonFont());
+  list_edit_button->setText(tr("&Edit"));
+  connect(list_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
 
   //
   //  Delete Button
   //
-  button=new QPushButton(this);
-  button->setGeometry(190,sizeHint().height()-60,80,50);
-  button->setFont(bold_font);
-  button->setText(tr("&Delete"));
-  connect(button,SIGNAL(clicked()),this,SLOT(deleteData()));
+  list_delete_button=new QPushButton(this);
+  list_delete_button->setFont(buttonFont());
+  list_delete_button->setText(tr("&Delete"));
+  connect(list_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
 
   //
   //  Close Button
   //
-  button=new QPushButton(this);
-  button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
-  button->setDefault(true);
-  button->setFont(bold_font);
-  button->setText(tr("&Close"));
-  connect(button,SIGNAL(clicked()),this,SLOT(closeData()));
+  list_close_button=new QPushButton(this);
+  list_close_button->setDefault(true);
+  list_close_button->setFont(buttonFont());
+  list_close_button->setText(tr("&Close"));
+  connect(list_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 
   //
   // Load Values
@@ -200,6 +179,16 @@ void ListNodes::closeData()
   PurgeEndpoints("INPUTS");
   PurgeEndpoints("OUTPUTS");
   done(0);
+}
+
+
+void ListNodes::resizeEvent(QResizeEvent *e)
+{
+  list_list_view->setGeometry(10,10,size().width()-20,size().height()-80);
+  list_add_button->setGeometry(10,size().height()-60,80,50);
+  list_edit_button->setGeometry(100,size().height()-60,80,50);
+  list_delete_button->setGeometry(190,size().height()-60,80,50);
+  list_close_button->setGeometry(size().width()-90,size().height()-60,80,50);
 }
 
 

@@ -3,7 +3,7 @@
 // Add scheduler codes dialog
 //
 //   (C) Copyright Stefan Gabriel <stg@st-gabriel.de>
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,10 +23,11 @@
 #define ADD_SCHEDCODES_H
 
 #include <qcheckbox.h>
-#include <qdialog.h>
 #include <qlineedit.h>
 
-class AddSchedCode : public QDialog
+#include <rddialog.h>
+
+class AddSchedCode : public RDDialog
 {
   Q_OBJECT
   public:
@@ -40,8 +41,8 @@ class AddSchedCode : public QDialog
    void cancelData();
 
   private:
-   QLineEdit *schedCode_name_edit;
-   QString *schedCode_schedCode;
+   QLineEdit *schedcode_name_edit;
+   QString *schedcode_schedCode;
 };
 
 #endif  // ADD_SCHEDCODES_H

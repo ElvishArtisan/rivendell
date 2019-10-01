@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Endpoint
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,7 +28,7 @@ EditEndpoint::EditEndpoint(RDMatrix::Type type,RDMatrix::Endpoint endpoint,
 			   int pointnum,QString *pointname,QString *feedname,
 			   RDMatrix::Mode *mode,int *enginenum,int *devicenum,
 			   QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   setModal(true);
 
@@ -62,14 +62,6 @@ EditEndpoint::EditEndpoint(RDMatrix::Type type,RDMatrix::Endpoint endpoint,
   setMaximumHeight(sizeHint().height());
 
   //
-  // Create Fonts
-  //
-  QFont bold_font=QFont("Helvetica",12,QFont::Bold);
-  bold_font.setPixelSize(12);
-  QFont font=QFont("Helvetica",12,QFont::Normal);
-  font.setPixelSize(12);
-
-  //
   // Text Validator
   //
   RDTextValidator *validator=new RDTextValidator(this);
@@ -82,7 +74,7 @@ EditEndpoint::EditEndpoint(RDMatrix::Type type,RDMatrix::Endpoint endpoint,
   edit_endpoint_edit->setValidator(validator);
   QLabel *label=new QLabel(edit_endpoint_edit,tr("Name: "),this);
   label->setGeometry(10,13,60,20);
-  label->setFont(bold_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight);
 
   //
@@ -93,7 +85,7 @@ EditEndpoint::EditEndpoint(RDMatrix::Type type,RDMatrix::Endpoint endpoint,
   edit_feed_edit->setValidator(validator);
   label=new QLabel(edit_feed_edit,tr("Feed: "),this);
   label->setGeometry(10,43,60,20);
-  label->setFont(bold_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight);
   if((edit_type!=RDMatrix::Unity4000)||(edit_endpoint!=RDMatrix::Input)) {
     edit_feed_edit->hide();
@@ -113,7 +105,7 @@ EditEndpoint::EditEndpoint(RDMatrix::Type type,RDMatrix::Endpoint endpoint,
     edit_mode_box->setGeometry(195,40,85,24);
     label->setGeometry(130,43,60,20);
   }
-  label->setFont(bold_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight);
   if(((edit_type!=RDMatrix::Unity4000)&&(edit_type!=RDMatrix::StarGuideIII))||
      (edit_endpoint!=RDMatrix::Input)) {
@@ -134,7 +126,7 @@ EditEndpoint::EditEndpoint(RDMatrix::Type type,RDMatrix::Endpoint endpoint,
     label->setText(tr("Provider ID:"));
   }
   label->setGeometry(10,36,120,20);
-  label->setFont(bold_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   if((edit_type!=RDMatrix::LogitekVguest)&&
      ((edit_type!=RDMatrix::StarGuideIII)||(edit_endpoint!=RDMatrix::Input))) {
@@ -152,7 +144,7 @@ EditEndpoint::EditEndpoint(RDMatrix::Type type,RDMatrix::Endpoint endpoint,
     label->setText(tr("Service ID:"));
   }
   label->setGeometry(10,62,120,20);
-  label->setFont(bold_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   if((edit_type!=RDMatrix::LogitekVguest)&&
      ((edit_type!=RDMatrix::StarGuideIII)||(edit_endpoint!=RDMatrix::Input))) {
@@ -166,7 +158,7 @@ EditEndpoint::EditEndpoint(RDMatrix::Type type,RDMatrix::Endpoint endpoint,
   QPushButton *button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
-  button->setFont(bold_font);
+  button->setFont(buttonFont());
   button->setText(tr("&OK"));
   connect(button,SIGNAL(clicked()),this,SLOT(okData()));
 
@@ -175,7 +167,7 @@ EditEndpoint::EditEndpoint(RDMatrix::Type type,RDMatrix::Endpoint endpoint,
   //
   button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
-  button->setFont(bold_font);
+  button->setFont(buttonFont());
   button->setText(tr("&Cancel"));
   connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
 

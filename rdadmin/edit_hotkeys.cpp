@@ -2,7 +2,7 @@
 //
 // Edit the Hot Key Configuration for a Rivendell Workstation.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,7 +19,6 @@
 //
 
 #include <qsignalmapper.h>
-#include <qdialog.h>
 #include <qstring.h>
 #include <qpushbutton.h>
 #include <qmessagebox.h>
@@ -34,7 +33,7 @@
 
 EditHotkeys::EditHotkeys(const QString &station,const QString &module,
 			 QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   setModal(true);
 
@@ -45,16 +44,6 @@ EditHotkeys::EditHotkeys(const QString &station,const QString &module,
   hotkey_module=module;
   station_hotkeys= new RDHotkeys(hotkey_conf,hotkey_module);
   myhotkeylist = new RDHotKeyList();
-
-  //
-  // Create Fonts
-  //
-  QFont normal_font=QFont("Helvetica",12,QFont::Normal);
-  normal_font.setPixelSize(12);
-  QFont font=QFont("Helvetica",12,QFont::Bold);
-  font.setPixelSize(12);
-  QFont section_font=QFont("Helvetica",14,QFont::Bold);
-  section_font.setPixelSize(14);
 
   //
   // Fix the Window Size
@@ -73,9 +62,8 @@ EditHotkeys::EditHotkeys(const QString &station,const QString &module,
   list_view=new Q3ListView(this);
   list_view->setGeometry(10,24,320,220);
   QLabel *label=new QLabel(list_view,tr("Host Hot Key Configurations"),this);
-  label->setFont(font);
+  label->setFont(labelFont());
   label->setGeometry(14,5,sizeHint().width()-28,19);
-  //list_view->setItemMargin(5);
   list_view->setSorting(-1);
   list_view->addColumn(tr("Button / Function "));
   list_view->setColumnAlignment(0,Qt::AlignLeft|Qt::AlignVCenter);
@@ -89,46 +77,50 @@ EditHotkeys::EditHotkeys(const QString &station,const QString &module,
 	  this,SLOT(showCurrentKey()));
 
   //  Keystroke Value field
-  keystroke = new QLineEdit(this);
+  keystroke=new QLineEdit(this);
   keystroke->setFocusPolicy(Qt::StrongFocus);
   keystroke->setGeometry(sizeHint().width()-270,sizeHint().height()-210,200,35);
   
   
   // Set Button
   //
-  QPushButton *set_button = new QPushButton(this);
+  QPushButton *set_button=new QPushButton(this);
   set_button->setGeometry(sizeHint().width()-290,sizeHint().height()-160,60,30);
   set_button->setDefault(true);
-  set_button->setFont(font);
+  set_button->setFont(buttonFont());
   set_button->setText(tr("Set"));
-  connect(set_button,SIGNAL(clicked()), this, SLOT(SetButtonClicked()) );
+  connect(set_button,SIGNAL(clicked()),this,SLOT(SetButtonClicked()) );
   
   // Clear Button
   //
-  QPushButton *clear_button = new QPushButton(this);
-  clear_button->setGeometry(sizeHint().width()-215,sizeHint().height()-160,60,30);
+  QPushButton *clear_button=new QPushButton(this);
+  clear_button->
+    setGeometry(sizeHint().width()-215,sizeHint().height()-160,60,30);
   clear_button->setDefault(true);
-  clear_button->setFont(font);
+  clear_button->setFont(buttonFont());
   clear_button->setText(tr("Clear"));
-  connect(clear_button,SIGNAL(clicked()), this, SLOT(clearCurrentItem()) );
+  connect(clear_button,SIGNAL(clicked()),this,SLOT(clearCurrentItem()) );
   
   // Clear All Hot Keys Button
   //
-  QPushButton *clear_all_button = new QPushButton(this);
-  clear_all_button->setGeometry(sizeHint().width()-140,sizeHint().height()-160,130,30);
+  QPushButton *clear_all_button=new QPushButton(this);
+  clear_all_button->
+    setGeometry(sizeHint().width()-140,sizeHint().height()-160,130,30);
   clear_all_button->setDefault(true);
-  clear_all_button->setFont(font);
+  clear_all_button->setFont(buttonFont());
   clear_all_button->setText(tr("Clear All Hotkeys"));
   connect(clear_all_button,SIGNAL(clicked()), this,SLOT(clearAll_Hotkeys()) );
   
   // Clone Host Drop Box
   //
   clone_from_host_box=new QComboBox(this);
-  clone_from_host_box->setGeometry(sizeHint().width()-295,sizeHint().height()-110,130,30);
+  clone_from_host_box->
+    setGeometry(sizeHint().width()-295,sizeHint().height()-110,130,30);
   clone_from_host_label=
     new QLabel(clone_from_host_box,tr("Set From Host:"),this);
-  clone_from_host_label->setFont(font);
-  clone_from_host_label->setGeometry(sizeHint().width()-420,sizeHint().height()-110,120,30);
+  clone_from_host_label->setFont(labelFont());
+  clone_from_host_label->
+    setGeometry(sizeHint().width()-420,sizeHint().height()-110,120,30);
   clone_from_host_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   sql=QString().sprintf("select NAME from STATIONS");
   q=new RDSqlQuery(sql);
@@ -149,7 +141,7 @@ EditHotkeys::EditHotkeys(const QString &station,const QString &module,
   QPushButton *save_button=new QPushButton(this);
   save_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   save_button->setDefault(true);
-  save_button->setFont(font);
+  save_button->setFont(buttonFont());
   save_button->setText(tr("Save"));
   connect(save_button,SIGNAL(clicked()),this,SLOT(save()));
   
@@ -157,16 +149,16 @@ EditHotkeys::EditHotkeys(const QString &station,const QString &module,
   //  Cancel Button
   //
   QPushButton *cancel_button=new QPushButton(this);
-  cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
-			     80,50);
-  cancel_button->setFont(font);
+  cancel_button->
+    setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
+  cancel_button->setFont(buttonFont());
   cancel_button->setText(tr("Cancel"));
   
   connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancel()));
   
   keystrokecount=0;
-  AltKeyHit  = false;
-  CtrlKeyHit = false;
+  alt_key_hit=false;
+  ctrl_key_hit=false;
   
   RefreshList();
 }
@@ -305,12 +297,12 @@ void EditHotkeys::keyPressEvent (QKeyEvent *e)
 
   if (e->key() == Qt::Key_Alt)  {
     keystrokecount++;
-    AltKeyHit = true;
+    alt_key_hit = true;
   }
 
   if (e->key() == Qt::Key_Control)  {
     keystrokecount++;
-    CtrlKeyHit = true;
+    ctrl_key_hit = true;
   }
 }
 
@@ -324,8 +316,8 @@ void EditHotkeys::keyReleaseEvent (QKeyEvent *e)
     keystroke->setText("");
     hotkeystrokes=QString("");
     keystrokecount = 0;
-    AltKeyHit = false;
-    CtrlKeyHit = false;
+    alt_key_hit = false;
+    ctrl_key_hit = false;
     return;
   }
 
@@ -365,12 +357,12 @@ void EditHotkeys::keyReleaseEvent (QKeyEvent *e)
   if ((e->key() == Qt::Key_Alt) ||
       (e->key() == Qt::Key_Control)) {
     if (keystrokecount != 0 ) hotkeystrokes = QString ("");
-    if (AltKeyHit) {
-      AltKeyHit = false;
+    if (alt_key_hit) {
+      alt_key_hit = false;
       if (keystrokecount > 0) keystrokecount--;
     }
-    if (CtrlKeyHit) {
-      CtrlKeyHit = false;
+    if (ctrl_key_hit) {
+      ctrl_key_hit = false;
       if (keystrokecount > 0) keystrokecount--;
     }
     keystroke->setText(hotkeystrokes);
@@ -384,12 +376,12 @@ void EditHotkeys::keyReleaseEvent (QKeyEvent *e)
   if (!e->isAutoRepeat()) {
     if (keystrokecount == 0)
       hotkeystrokes = QString ("");
-    if (AltKeyHit) {
+    if (alt_key_hit) {
       hotkeystrokes =  (*myhotkeylist).GetKeyCode(Qt::Key_Alt);
       hotkeystrokes +=  QString(" + ");
     }
-    if (CtrlKeyHit) {
-      if (AltKeyHit) {
+    if (ctrl_key_hit) {
+      if (alt_key_hit) {
 	hotkeystrokes +=  (*myhotkeylist).GetKeyCode(Qt::Key_Control);
 	hotkeystrokes += QString (" + ");
       }

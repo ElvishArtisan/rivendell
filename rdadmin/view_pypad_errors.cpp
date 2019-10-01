@@ -2,7 +2,7 @@
 //
 // View the Edit Log for a PyPAD Instance
 //
-//   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,16 +23,11 @@
 #include "view_pypad_errors.h"
 
 ViewPypadErrors::ViewPypadErrors(int id,QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   setMinimumSize(sizeHint());
   setWindowTitle(tr("Script Error Log")+
 		 " ["+tr("ID")+QString().sprintf(": %d]",id)); 
-
-  //
-  // Fonts
-  //
-  QFont label_font(font().family(),font().pointSize(),QFont::Bold);
 
   //
   // Viewer
@@ -51,7 +46,7 @@ ViewPypadErrors::ViewPypadErrors(int id,QWidget *parent)
   // Close Button
   //
   view_close_button=new QPushButton(tr("Close"),this);
-  view_close_button->setFont(label_font);
+  view_close_button->setFont(buttonFont());
   connect(view_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 }
 

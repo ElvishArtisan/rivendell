@@ -2,7 +2,7 @@
 //
 // List Rivendell Replication Configurations
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,16 +20,7 @@
 
 #include <math.h>
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
 #include <qmessagebox.h>
-#include <q3buttongroup.h>
 
 #include <rdcart.h>
 #include <rddb.h>
@@ -43,7 +34,7 @@
 #include "list_replicator_carts.h"
 
 ListReplicators::ListReplicators(QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   setModal(true);
 
@@ -56,20 +47,10 @@ ListReplicators::ListReplicators(QWidget *parent)
   setWindowTitle("RDAdmin - "+tr("Rivendell Replicators"));
 
   //
-  // Create Fonts
-  //
-  QFont font=QFont("Helvetica",12,QFont::Bold);
-  font.setPixelSize(12);
-  QFont list_font=QFont("Helvetica",12,QFont::Normal);
-  list_font.setPixelSize(12);
-  QFont small_font=QFont("Helvetica",10,QFont::Normal);
-  small_font.setPixelSize(10);
-
-  //
   //  Add Button
   //
   list_add_button=new QPushButton(this);
-  list_add_button->setFont(font);
+  list_add_button->setFont(buttonFont());
   list_add_button->setText(tr("&Add"));
   connect(list_add_button,SIGNAL(clicked()),this,SLOT(addData()));
 
@@ -77,7 +58,7 @@ ListReplicators::ListReplicators(QWidget *parent)
   //  Edit Button
   //
   list_edit_button=new QPushButton(this);
-  list_edit_button->setFont(font);
+  list_edit_button->setFont(buttonFont());
   list_edit_button->setText(tr("&Edit"));
   connect(list_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
 
@@ -85,7 +66,7 @@ ListReplicators::ListReplicators(QWidget *parent)
   //  Delete Button
   //
   list_delete_button=new QPushButton(this);
-  list_delete_button->setFont(font);
+  list_delete_button->setFont(buttonFont());
   list_delete_button->setText(tr("&Delete"));
   connect(list_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
 
@@ -93,7 +74,7 @@ ListReplicators::ListReplicators(QWidget *parent)
   //  List Carts Button
   //
   list_list_button=new QPushButton(this);
-  list_list_button->setFont(font);
+  list_list_button->setFont(buttonFont());
   list_list_button->setText(tr("&List\nCarts"));
   connect(list_list_button,SIGNAL(clicked()),this,SLOT(listData()));
 
@@ -102,7 +83,7 @@ ListReplicators::ListReplicators(QWidget *parent)
   //
   list_close_button=new QPushButton(this);
   list_close_button->setDefault(true);
-  list_close_button->setFont(font);
+  list_close_button->setFont(buttonFont());
   list_close_button->setText(tr("&Close"));
   connect(list_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 
@@ -110,7 +91,6 @@ ListReplicators::ListReplicators(QWidget *parent)
   // Replicator List
   //
   list_replicators_view=new RDListView(this);
-  list_replicators_view->setFont(list_font);
   list_replicators_view->setAllColumnsShowFocus(true);
   list_replicators_view->setItemMargin(5);
   list_replicators_view->addColumn(tr("NAME"));
@@ -119,7 +99,7 @@ ListReplicators::ListReplicators(QWidget *parent)
   list_replicators_view->addColumn(tr("HOST"));
   QLabel *list_box_label=
     new QLabel(list_replicators_view,tr("&Replicators:"),this);
-  list_box_label->setFont(font);
+  list_box_label->setFont(labelFont());
   list_box_label->setGeometry(14,11,85,19);
   connect(list_replicators_view,
 	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),

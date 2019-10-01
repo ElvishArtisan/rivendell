@@ -18,22 +18,9 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qstring.h>
 #include <qpushbutton.h>
-#include <q3textedit.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <q3buttongroup.h>
-#include <qsqldatabase.h>
-#include <qimage.h>
-//Added by qt3to4:
-#include <QPixmap>
-#include <QLabel>
 
 #include <rdlabel.h>
-#include <rdstation.h>
 #include <rd.h>
 #include <dbversion.h>
 
@@ -49,17 +36,15 @@
 #include "xpm_info_banner2.cpp"
 
 InfoDialog::InfoDialog(QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   setModal(true);
 
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   setWindowTitle("RDAdmin - "+tr("System Information"));
 
@@ -70,12 +55,6 @@ InfoDialog::InfoDialog(QWidget *parent)
   title_font.setPixelSize(22);
   QFont slogan_font=QFont("Helvetica",14,QFont::Normal);
   slogan_font.setPixelSize(14);
-  QFont button_font=QFont("Helvetica",12,QFont::Bold);
-  button_font.setPixelSize(12);
-  QFont bold_font=QFont("Helvetica",10,QFont::Bold);
-  bold_font.setPixelSize(10);
-  QFont font=QFont("Helvetica",10,QFont::Normal);
-  font.setPixelSize(10);
 
   //
   // Banners
@@ -116,35 +95,37 @@ InfoDialog::InfoDialog(QWidget *parent)
   //
   label=new QLabel(tr("Version")+" "+VERSION,this);
   label->setGeometry(10,73,200,14);
-  label->setFont(font);
+  label->setFont(subLabelFont());
 
   label=new QLabel(tr("Database Schema")+
 		   QString().sprintf(" %d",RD_VERSION_DATABASE),this);
-  label->setGeometry(210,73,120,14);
+  label->setGeometry(210,73,sizeHint().width()-220,14);
   label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
-  label->setFont(font);
+  label->setFont(subLabelFont());
 
   //
   // Signature
   //
   label=new QLabel(QString::fromUtf8(RD_COPYRIGHT_NOTICE),this);
   label->setGeometry(10,87,sizeHint().width()-20,14);
-  label->setFont(font);
+  label->setFont(subLabelFont());
 
   //
   // Disclaimer
   //
   label=new RDLabel(this);
   label->setGeometry(10,104,sizeHint().width()-20,60);
-  label->setFont(font);
-  label->setText(tr("This program is free software, and comes with ABSOLUTELY NO WARRANTY,\nnot even the implied warranties of MERCHANTIBILITY or FITNESS FOR A\nPARTICULAR PURPOSE.  Touch the \"View License\" button for details."));
+  label->setFont(subLabelFont());
+  label->setWordWrap(true);
+  label->setText(tr("This program is free software, and comes with ABSOLUTELY NO WARRANTY, not even the implied warranties of MERCHANTIBILITY or FITNESS FOR A PARTICULAR PURPOSE. Touch the \"View License\" button for details."));
+  //  label->setText(tr("This program is free software, and comes with ABSOLUTELY NO WARRANTY,\nnot even the implied warranties of MERCHANTIBILITY or FITNESS FOR A\nPARTICULAR PURPOSE.  Touch the \"View License\" button for details."));
 
   //
   // Credits Button
   //
   QPushButton *button=new QPushButton(this);
   button->setGeometry(sizeHint().width()/2-145,174,80,50);
-  button->setFont(button_font);
+  button->setFont(buttonFont());
   button->setText(tr("View\n&Credits"));
   connect(button,SIGNAL(clicked()),this,SLOT(viewCreditsData()));
 
@@ -153,7 +134,7 @@ InfoDialog::InfoDialog(QWidget *parent)
   //
   button=new QPushButton(this);
   button->setGeometry(sizeHint().width()/2-45,174,80,50);
-  button->setFont(button_font);
+  button->setFont(buttonFont());
   button->setText(tr("View\n&License"));
   connect(button,SIGNAL(clicked()),this,SLOT(viewLicenseData()));
 
@@ -161,9 +142,8 @@ InfoDialog::InfoDialog(QWidget *parent)
   //  Close Button
   //
   button=new QPushButton(this);
-  button->setGeometry(sizeHint().width()-90,sizeHint().height()-90,
-			    80,50);
-  button->setFont(button_font);
+  button->setGeometry(sizeHint().width()-90,sizeHint().height()-90,80,50);
+  button->setFont(buttonFont());
   button->setText(tr("&Close"));
   button->setDefault(true);
   connect(button,SIGNAL(clicked()),this,SLOT(closeData()));

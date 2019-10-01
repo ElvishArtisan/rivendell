@@ -20,15 +20,7 @@
 #ifndef INFO_DIALOG_H
 #define INFO_DIALOG_H
 
-#include <qdialog.h>
-#include <qsqldatabase.h>
-#include <qcombobox.h>
-#include <qcheckbox.h>
-#include <qspinbox.h>
-#include <qlabel.h>
-#include <qlineedit.h>
-
-#include <rdtty.h>
+#include <rddialog.h>
 
 //
 // Globals
@@ -36,7 +28,7 @@
 extern const unsigned char xpm_infobanner1[];
 extern const unsigned char xpm_infobanner2[];
 
-class InfoDialog : public QDialog
+class InfoDialog : public RDDialog
 {
  Q_OBJECT
  public:

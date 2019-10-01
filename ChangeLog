@@ -19125,3 +19125,8 @@
 2019-09-27 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdimport(1) that caused it to throw an exception
 	when given a '--metadata-pattern' of less than three characters.
+2019-10-01 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDDialog' class.
+	* Added an 'RDWidget' class.
+	* Refactored rdadmin(1) to use 'RDDialog' and 'RDWidget' base
+	classes.

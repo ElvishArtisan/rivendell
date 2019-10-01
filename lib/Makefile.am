@@ -111,6 +111,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rddebug.cpp rddebug.h\
                         rddeck.cpp rddeck.h\
                         rddelete.cpp rddelete.h\
+                        rddialog.cpp rddialog.h\
                         rddownload.cpp rddownload.h\
                         rddropbox.cpp rddropbox.h\
                         rdedit_audio.cpp rdedit_audio.h\
@@ -240,6 +241,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdwavepainter.cpp rdwavepainter.h\
                         rdweb.cpp rdweb.h\
                         rdwebresult.cpp rdwebresult.h\
+                        rdwidget.cpp rdwidget.h\
                         rdxport_interface.h
 
 
@@ -272,6 +274,7 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rddatepicker.cpp\
                           moc_rddbheartbeat.cpp\
                           moc_rddelete.cpp\
+                          moc_rddialog.cpp\
                           moc_rddownload.cpp\
                           moc_rdedit_audio.cpp\
                           moc_rdedit_panel_name.cpp\
@@ -333,7 +336,8 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdunixserver.cpp\
                           moc_rdunixsocket.cpp\
                           moc_rdupload.cpp\
-                          moc_rdwavedata_dialog.cpp
+                          moc_rdwavedata_dialog.cpp\
+                          moc_rdwidget.cpp
 
 librd_la_LDFLAGS = -release $(VERSION)
 

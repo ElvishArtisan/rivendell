@@ -2,7 +2,7 @@
 //
 // Edit Rivendell Channel GPIO Settings
 //
-//   (C) Copyright 2013-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2013-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,15 +21,15 @@
 #ifndef EDIT_CHANNELGPIOS_H
 #define EDIT_CHANNELGPIOS_H
 
-#include <qdialog.h>
 #include <qspinbox.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
 #include <qcombobox.h>
 
 #include <rdairplay_conf.h>
+#include <rddialog.h>
 
-class EditChannelGpios : public QDialog
+class EditChannelGpios : public RDDialog
 {
  Q_OBJECT
  public:

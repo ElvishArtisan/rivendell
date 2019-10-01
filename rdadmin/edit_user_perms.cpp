@@ -2,7 +2,7 @@
 //
 // Edit Rivendell User/Group Permissions
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,7 +26,7 @@
 #include "edit_user_perms.h"
 
 EditUserPerms::EditUserPerms(RDUser *user,QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   setModal(true);
 
@@ -38,18 +38,10 @@ EditUserPerms::EditUserPerms(RDUser *user,QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   setWindowTitle("RDAdmin - "+tr("User: ")+user_user->name());
-
-  //
-  // Create Fonts
-  //
-  QFont font=QFont("Helvetica",12,QFont::Bold);
-  font.setPixelSize(12);
 
   //
   // Groups Selector
@@ -65,7 +57,7 @@ EditUserPerms::EditUserPerms(RDUser *user,QWidget *parent)
   QPushButton *ok_button=new QPushButton(this);
   ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   ok_button->setDefault(true);
-  ok_button->setFont(font);
+  ok_button->setFont(buttonFont());
   ok_button->setText(tr("&OK"));
   connect(ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
@@ -75,7 +67,7 @@ EditUserPerms::EditUserPerms(RDUser *user,QWidget *parent)
   QPushButton *cancel_button=new QPushButton(this);
   cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
-  cancel_button->setFont(font);
+  cancel_button->setFont(buttonFont());
   cancel_button->setText(tr("&Cancel"));
   connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 

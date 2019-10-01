@@ -2,7 +2,7 @@
 //
 // Edit Rivendell System-Wide Configuration
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,51 +18,34 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
 #include <q3filedialog.h>
-#include <qfile.h>
-#include <qdatetime.h>
-#include <q3progressdialog.h>
+
 #include <qapplication.h>
-#include <q3filedialog.h>
+#include <qmessagebox.h>
 
-#include <rdescape_string.h>
-#include <rddb.h>
-#include <rdconf.h>
 #include <rdaudiosettings_dialog.h>
+#include <rdconf.h>
+#include <rddb.h>
+#include <rdescape_string.h>
 
-#include <edit_settings.h>
-#include <globals.h>
+#include "edit_settings.h"
+#include "globals.h"
 
 EditSettings::EditSettings(QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   setModal(true);
 
   QString sql;
   RDSqlQuery *q;
 
-  //
-  // Create Fonts
-  //
-  QFont font=QFont("Helvetica",12,QFont::Bold);
-  font.setPixelSize(12);
-
-  QFont normal_font=QFont("Helvetica",12,QFont::Normal);
-  normal_font.setPixelSize(12);
-
   y_pos=0;
 
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   edit_system=new RDSystem();
 
@@ -74,17 +57,17 @@ EditSettings::EditSettings(QWidget *parent)
   // System Sample Rate
   //
   edit_sample_rate_box=new QComboBox(this);
-  edit_sample_rate_box->setGeometry(200,10,70,20);
+  edit_sample_rate_box->setGeometry(250,10,70,20);
   edit_sample_rate_box->insertItem("32000");
   edit_sample_rate_box->insertItem("44100");
   edit_sample_rate_box->insertItem("48000");
   QLabel *label=new QLabel(edit_sample_rate_box,tr("System Sample Rate:"),this);
-  label->setGeometry(10,10,185,20);
-  label->setFont(font);
+  label->setGeometry(10,10,235,20);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   label=new QLabel(tr("samples/second"),this);
-  label->setGeometry(275,10,sizeHint().width()-285,20);
-  label->setFont(font);
+  label->setGeometry(325,10,sizeHint().width()-285,20);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
@@ -97,7 +80,7 @@ EditSettings::EditSettings(QWidget *parent)
   label=
     new QLabel(edit_duplicate_carts_box,tr("Allow Duplicate Cart Titles"),this);
   label->setGeometry(40,30,sizeHint().width()-50,20);
-  label->setFont(font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   edit_fix_duplicate_carts_box=new QCheckBox(this);
@@ -105,7 +88,7 @@ EditSettings::EditSettings(QWidget *parent)
   edit_fix_duplicate_carts_label=new QLabel(edit_fix_duplicate_carts_box,
 			 tr("Auto-Correct Duplicate Cart Titles"),this);
   edit_fix_duplicate_carts_label->setGeometry(50,50,sizeHint().width()-60,20);
-  edit_fix_duplicate_carts_label->setFont(font);
+  edit_fix_duplicate_carts_label->setFont(labelFont());
   edit_fix_duplicate_carts_label->
     setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
@@ -113,42 +96,42 @@ EditSettings::EditSettings(QWidget *parent)
   // ISCI Cross Reference Path
   //
   edit_isci_path_edit=new QLineEdit(this);
-  edit_isci_path_edit->setGeometry(200,76,sizeHint().width()-210,20);
+  edit_isci_path_edit->setGeometry(250,76,sizeHint().width()-260,20);
   label=new QLabel(edit_isci_path_edit,tr("ISCI Cross Reference Path:"),this);
-  label->setGeometry(10,76,185,20);
-  label->setFont(font);
+  label->setGeometry(10,76,235,20);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Notification Address
   //
   edit_notification_address_edit=new QLineEdit(this);
-  edit_notification_address_edit->setGeometry(200,98,150,20);
-  label=new QLabel(edit_notification_address_edit,tr("Mcast Address for Notifications"),this);
-  label->setGeometry(10,98,185,20);
-  label->setFont(font);
+  edit_notification_address_edit->setGeometry(250,98,150,20);
+  label=new QLabel(edit_notification_address_edit,tr("Multicast Address for Notifications"),this);
+  label->setGeometry(10,98,235,20);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Maximum POST Size
   //
   edit_maxpost_spin=new QSpinBox(this);
-  edit_maxpost_spin->setGeometry(200,120,60,20);
+  edit_maxpost_spin->setGeometry(250,120,60,20);
   edit_maxpost_spin->setRange(1,1000);
   label=new QLabel(edit_maxpost_spin,tr("Maximum Remote Post Length:"),this);
-  label->setGeometry(10,120,185,20);
-  label->setFont(font);
+  label->setGeometry(10,120,235,20);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   label=new QLabel(tr("Mbytes"),this);
-  label->setGeometry(265,120,60,20);
-  label->setFont(font);
+  label->setGeometry(315,120,60,20);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Temporary Cart Group
   //
   edit_temp_cart_group_box=new QComboBox(this);
-  edit_temp_cart_group_box->setGeometry(200,141,100,20);
+  edit_temp_cart_group_box->setGeometry(250,141,100,20);
   sql="select NAME from GROUPS order by NAME";
   q=new RDSqlQuery(sql);
   while(q->next()) {
@@ -156,8 +139,8 @@ EditSettings::EditSettings(QWidget *parent)
   }
   delete q;
   label=new QLabel(edit_temp_cart_group_box,tr("Temporary Cart Group:"),this);
-  label->setGeometry(10,141,185,20);
-  label->setFont(font);
+  label->setGeometry(10,141,235,20);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
@@ -170,7 +153,7 @@ EditSettings::EditSettings(QWidget *parent)
   label=
     new QLabel(edit_show_user_list_box,tr("Show User List in RDLogin"),this);
   label->setGeometry(40,163,sizeHint().width()-50,20);
-  label->setFont(font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
@@ -180,21 +163,21 @@ EditSettings::EditSettings(QWidget *parent)
   edit_duplicate_label->setText(tr("The following duplicate titles must be corrected before \"Allow Duplicate Values\" can be turned off."));
   edit_duplicate_label->setWordWrap(true);
   edit_duplicate_label->setGeometry(15,186,sizeHint().width()-30,50);
-  edit_duplicate_label->setFont(normal_font);
+  edit_duplicate_label->setFont(subLabelFont());
   edit_duplicate_label->hide();
   edit_duplicate_list=new Q3ListView(this);
   edit_duplicate_list->setGeometry(10,234,sizeHint().width()-20,215);
   edit_duplicate_list->setItemMargin(5);
   edit_duplicate_list->setAllColumnsShowFocus(true);
-  edit_duplicate_list->addColumn(tr("CART"));
+  edit_duplicate_list->addColumn(tr("Cart"));
   edit_duplicate_list->setColumnAlignment(0,Qt::AlignCenter);
-  edit_duplicate_list->addColumn(tr("TITLE"));
+  edit_duplicate_list->addColumn(tr("Title"));
   edit_duplicate_list->setColumnAlignment(1,Qt::AlignLeft);
   edit_duplicate_list->hide();
   edit_save_button=new QPushButton(this);
   edit_save_button->
     setGeometry(sizeHint().width()-85,454,70,25);
-  edit_save_button->setFont(normal_font);
+  edit_save_button->setFont(buttonFont());
   edit_save_button->setText(tr("&Save List"));
   connect(edit_save_button,SIGNAL(clicked()),this,SLOT(saveData()));
   edit_save_button->hide();
@@ -205,7 +188,7 @@ EditSettings::EditSettings(QWidget *parent)
   edit_ok_button=new QPushButton(this);
   edit_ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,
 				  80,50);
-  edit_ok_button->setFont(font);
+  edit_ok_button->setFont(buttonFont());
   edit_ok_button->setText(tr("&OK"));
   connect(edit_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
@@ -215,7 +198,7 @@ EditSettings::EditSettings(QWidget *parent)
   edit_cancel_button=new QPushButton(this);
   edit_cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 				  80,50);
-  edit_cancel_button->setFont(font);
+  edit_cancel_button->setFont(buttonFont());
   edit_cancel_button->setText(tr("&Cancel"));
   connect(edit_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 

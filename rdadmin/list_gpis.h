@@ -2,7 +2,7 @@
 //
 // List Rivendell GPIs
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,16 +21,15 @@
 #ifndef LIST_GPIS_H
 #define LIST_GPIS_H
 
-#include <qdialog.h>
-#include <qsqldatabase.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
 #include <q3listview.h>
 
-#include <rduser.h>
+#include <rddialog.h>
 #include <rdmatrix.h>
+#include <rduser.h>
 
-class ListGpis : public QDialog
+class ListGpis : public RDDialog
 {
  Q_OBJECT
  public:

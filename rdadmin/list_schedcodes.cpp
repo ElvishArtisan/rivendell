@@ -3,7 +3,7 @@
 // The scheduler codes dialog for rdadmin
 //
 //   Stefan Gabriel <stg@st-gabriel.de>
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsyustems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsyustems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,51 +19,34 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <q3listbox.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
 #include <qmessagebox.h>
-#include <q3buttongroup.h>
 
-#include <rddb.h>
 #include <rdcart.h>
+#include <rddb.h>
 #include <rdescape_string.h>
 #include <rdtextfile.h>
 
-#include <edit_schedcodes.h>
-#include <add_schedcodes.h>
-#include <list_schedcodes.h>
+#include "add_schedcodes.h"
+#include "edit_schedcodes.h"
+#include "list_schedcodes.h"
 
 ListSchedCodes::ListSchedCodes(QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   setModal(true);
 
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
 
   setWindowTitle("RDAdmin  - "+tr("Rivendell Scheduler Codes List"));
-
-  //
-  // Create Fonts
-  //
-  QFont font=QFont("Helvetica",12,QFont::Bold);
-  font.setPixelSize(12);
-  QFont small_font=QFont("Helvetica",10,QFont::Normal);
-  small_font.setPixelSize(10);
 
   //
   //  Add Button
   //
   list_add_button=new QPushButton(this);
-  list_add_button->setFont(font);
+  list_add_button->setFont(buttonFont());
   list_add_button->setText(tr("&Add"));
   connect(list_add_button,SIGNAL(clicked()),this,SLOT(addData()));
 
@@ -71,7 +54,7 @@ ListSchedCodes::ListSchedCodes(QWidget *parent)
   //  Edit Button
   //
   list_edit_button=new QPushButton(this);
-  list_edit_button->setFont(font);
+  list_edit_button->setFont(buttonFont());
   list_edit_button->setText(tr("&Edit"));
   connect(list_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
 
@@ -79,7 +62,7 @@ ListSchedCodes::ListSchedCodes(QWidget *parent)
   //  Delete Button
   //
   list_delete_button=new QPushButton(this);
-  list_delete_button->setFont(font);
+  list_delete_button->setFont(buttonFont());
   list_delete_button->setText(tr("&Delete"));
   connect(list_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
 
@@ -88,7 +71,7 @@ ListSchedCodes::ListSchedCodes(QWidget *parent)
   //
   list_close_button=new QPushButton(this);
   list_close_button->setDefault(true);
-  list_close_button->setFont(font);
+  list_close_button->setFont(buttonFont());
   list_close_button->setText(tr("&Close"));
   connect(list_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 
@@ -101,7 +84,7 @@ ListSchedCodes::ListSchedCodes(QWidget *parent)
   list_schedCodes_view->addColumn(tr("DESCRIPTION"));
   QLabel *list_box_label=
     new QLabel(list_schedCodes_view,tr("Scheduler Codes:"),this);
-  list_box_label->setFont(font);
+  list_box_label->setFont(buttonFont());
   list_box_label->setGeometry(14,11,200,19);
   connect(list_schedCodes_view,
 	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),

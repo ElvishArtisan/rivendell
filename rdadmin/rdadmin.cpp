@@ -25,7 +25,6 @@
 
 #include <qapplication.h>
 #include <qwindowsstyle.h>
-#include <qwidget.h>
 #include <qpainter.h>
 #include <qmessagebox.h>
 #include <qpushbutton.h>
@@ -77,8 +76,8 @@ void PrintError(const QString &str,bool interactive)
 }
 
 
-MainWidget::MainWidget(QWidget *parent)
-  : QWidget(parent)
+MainWidget::MainWidget(RDConfig *config,RDWidget *parent)
+  : RDWidget(config,parent)
 {
   QString str;
   QString err_msg;
@@ -91,15 +90,6 @@ MainWidget::MainWidget(QWidget *parent)
   setMaximumWidth(sizeHint().width());
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
-
-  //
-  // Create Fonts
-  //
-  QFont font=QFont("Helvetica",12,QFont::Bold);
-  font.setPixelSize(12);
-  QFont default_font("Helvetica",12,QFont::Normal);
-  default_font.setPixelSize(12);
-  qApp->setFont(default_font);
 
   //
   // Create And Set Icon
@@ -154,13 +144,13 @@ MainWidget::MainWidget(QWidget *parent)
   QLabel *name_label=new QLabel(this);
   name_label->setGeometry(0,5,sizeHint().width(),20);
   name_label->setAlignment(Qt::AlignVCenter|Qt::AlignCenter);
-  name_label->setFont(font);
+  name_label->setFont(labelFont());
   name_label->setText(tr("User")+": "+rda->user()->name());
 
   QLabel *description_label=new QLabel(this);
   description_label->setGeometry(0,24,sizeHint().width(),14);
   description_label->setAlignment(Qt::AlignVCenter|Qt::AlignCenter);
-  name_label->setFont(font);
+  name_label->setFont(labelFont());
   description_label->setText(rda->user()->description());
 
   //
@@ -168,7 +158,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   QPushButton *users_button=new QPushButton(this);
   users_button->setGeometry(10,50,80,60);
-  users_button->setFont(font);
+  users_button->setFont(buttonFont());
   users_button->setText(tr("Manage\n&Users"));
   connect(users_button,SIGNAL(clicked()),this,SLOT(manageUsersData()));
 
@@ -177,7 +167,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   QPushButton *groups_button=new QPushButton(this);
   groups_button->setGeometry(10,120,80,60);
-  groups_button->setFont(font);
+  groups_button->setFont(buttonFont());
   groups_button->setText(tr("Manage\n&Groups"));
   connect(groups_button,SIGNAL(clicked()),this,SLOT(manageGroupsData()));
   
@@ -186,7 +176,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   QPushButton *services_button=new QPushButton(this);
   services_button->setGeometry(100,50,80,60);
-  services_button->setFont(font);
+  services_button->setFont(buttonFont());
   services_button->setText(tr("Manage\n&Services"));
   connect(services_button,SIGNAL(clicked()),this,SLOT(manageServicesData()));
   
@@ -195,7 +185,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   QPushButton *stations_button=new QPushButton(this);
   stations_button->setGeometry(100,120,80,60);
-  stations_button->setFont(font);
+  stations_button->setFont(buttonFont());
   stations_button->setText(tr("Manage\nHo&sts"));
   connect(stations_button,SIGNAL(clicked()),this,SLOT(manageStationsData()));
   
@@ -204,7 +194,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   QPushButton *reports_button=new QPushButton(this);
   reports_button->setGeometry(190,50,80,60);
-  reports_button->setFont(font);
+  reports_button->setFont(buttonFont());
   reports_button->setText(tr("Manage\nR&eports"));
   connect(reports_button,SIGNAL(clicked()),this,SLOT(reportsData()));
 
@@ -213,7 +203,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   QPushButton *podcasts_button=new QPushButton(this);
   podcasts_button->setGeometry(280,50,80,60);
-  podcasts_button->setFont(font);
+  podcasts_button->setFont(buttonFont());
   podcasts_button->setText(tr("Manage\n&Feeds"));
   connect(podcasts_button,SIGNAL(clicked()),this,SLOT(podcastsData()));
 
@@ -222,7 +212,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   QPushButton *system_button=new QPushButton(this);
   system_button->setGeometry(190,120,80,60);
-  system_button->setFont(font);
+  system_button->setFont(buttonFont());
   system_button->setText(tr("System\nSettings"));
   connect(system_button,SIGNAL(clicked()),this,SLOT(systemSettingsData()));
 
@@ -231,7 +221,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   QPushButton *schedcodes_button=new QPushButton(this);
   schedcodes_button->setGeometry(280,120,80,60);
-  schedcodes_button->setFont(font);
+  schedcodes_button->setFont(buttonFont());
   schedcodes_button->setText(tr("Scheduler\nCodes"));
   connect(schedcodes_button,SIGNAL(clicked()),this,SLOT(manageSchedCodes()));
 
@@ -240,7 +230,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   QPushButton *repl_button=new QPushButton(this);
   repl_button->setGeometry(100,190,80,60);
-  repl_button->setFont(font);
+  repl_button->setFont(buttonFont());
   repl_button->setText(tr("Manage\nReplicators"));
   connect(repl_button,SIGNAL(clicked()),this,SLOT(manageReplicatorsData()));
 
@@ -249,7 +239,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   QPushButton *info_button=new QPushButton(this);
   info_button->setGeometry(190,190,80,60);
-  info_button->setFont(font);
+  info_button->setFont(buttonFont());
   info_button->setText(tr("System\nInfo"));
   connect(info_button,SIGNAL(clicked()),this,SLOT(systemInfoData()));
 
@@ -258,7 +248,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   QPushButton *quit_button=new QPushButton(this);
   quit_button->setGeometry(10,sizeHint().height()-70,sizeHint().width()-20,60);
-  quit_button->setFont(font);
+  quit_button->setFont(buttonFont());
   quit_button->setText(tr("&Quit"));
   connect(quit_button,SIGNAL(clicked()),this,SLOT(quitMainWidget()));
 }
@@ -397,7 +387,9 @@ int main(int argc,char *argv[])
 	     QTextCodec::locale(),".");
   a.installTranslator(&tr);
 
-  MainWidget *w=new MainWidget();
+  RDConfig *config=new RDConfig();
+  config->load();
+  MainWidget *w=new MainWidget(config);
   a.setMainWidget(w);
   w->setGeometry(QRect(QPoint(0,0),w->sizeHint()));
   w->show();

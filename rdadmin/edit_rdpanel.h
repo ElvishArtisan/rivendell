@@ -2,7 +2,7 @@
 //
 // Edit an RDPanel Configuration
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,18 +21,16 @@
 #ifndef EDIT_RDPANEL_H
 #define EDIT_RDPANEL_H
 
-#include <qdialog.h>
-#include <qlineedit.h>
-#include <qcombobox.h>
-#include <qspinbox.h>
-#include <q3datetimeedit.h>
-#include <qlabel.h>
 #include <qcheckbox.h>
-#include <q3buttongroup.h>
+#include <qcombobox.h>
+#include <qlineedit.h>
+#include <qlabel.h>
+#include <qspinbox.h>
 
 #include <rd.h>
 #include <rdairplay_conf.h>
 #include <rdcardselector.h>
+#include <rddialog.h>
 #include <rdstation.h>
 
 /*
@@ -41,7 +39,7 @@
 #define LOG_PLAY_PORTS 2
 #define MAX_MANUAL_SEGUE 10
 
-class EditRDPanel : public QDialog
+class EditRDPanel : public RDDialog
 {
  Q_OBJECT
  public:

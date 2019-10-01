@@ -2,7 +2,7 @@
 //
 // Edit an RDAirPlay Configuration
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,7 +21,6 @@
 #ifndef EDIT_RDAIRPLAY_H
 #define EDIT_RDAIRPLAY_H
 
-#include <qdialog.h>
 #include <qlineedit.h>
 #include <qcombobox.h>
 #include <qspinbox.h>
@@ -33,6 +32,7 @@
 #include <rd.h>
 #include <rdairplay_conf.h>
 #include <rdcardselector.h>
+#include <rddialog.h>
 #include <rdstation.h>
 
 /*
@@ -41,7 +41,7 @@
 #define LOG_PLAY_PORTS 2
 #define MAX_MANUAL_SEGUE 10
 
-class EditRDAirPlay : public QDialog
+class EditRDAirPlay : public RDDialog
 {
  Q_OBJECT
  public:

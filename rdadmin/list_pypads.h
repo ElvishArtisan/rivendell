@@ -2,7 +2,7 @@
 //
 // List PyPAD Instances
 //
-//   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,16 +21,16 @@
 #ifndef LIST_PYPADS_H
 #define LIST_PYPADS_H
 
-#include <qdialog.h>
 #include <qpixmap.h>
 #include <qpushbutton.h>
 #include <qtimer.h>
 
+#include <rddialog.h>
 #include <rdlistview.h>
 #include <rdlistviewitem.h>
 #include <rdstation.h>
 
-class ListPypads : public QDialog
+class ListPypads : public RDDialog
 {
  Q_OBJECT
  public:

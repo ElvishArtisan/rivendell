@@ -2,7 +2,7 @@
 //
 // Add a Rivendell Workstation
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,7 +18,6 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
 #include <qstring.h>
 #include <qpushbutton.h>
 #include <q3listbox.h>
@@ -40,7 +39,7 @@
 #include "edit_station.h"
 
 AddStation::AddStation(QString *stationname,QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   setModal(true);
 
@@ -57,12 +56,6 @@ AddStation::AddStation(QString *stationname,QWidget *parent)
   setWindowTitle("RDAdmin - "+tr("Add Host"));
 
   //
-  // Create Fonts
-  //
-  QFont font=QFont("Helvetica",12,QFont::Bold);
-  font.setPixelSize(12);
-
-  //
   // Text Validator
   //
   RDTextValidator *validator=new RDTextValidator(this);
@@ -76,7 +69,7 @@ AddStation::AddStation(QString *stationname,QWidget *parent)
   add_name_edit->setValidator(validator);
   QLabel *label=new QLabel(add_name_edit,tr("New &Host Name:"),this);
   label->setGeometry(10,10,115,19);
-  label->setFont(font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -86,7 +79,7 @@ AddStation::AddStation(QString *stationname,QWidget *parent)
   add_exemplar_box->setGeometry(130,35,sizeHint().width()-140,19);
   label=new QLabel(add_exemplar_box,tr("Base Host On:"),this);
   label->setGeometry(10,35,115,19);
-  label->setFont(font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -96,7 +89,7 @@ AddStation::AddStation(QString *stationname,QWidget *parent)
   ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,
 			 80,50);
   ok_button->setDefault(true);
-  ok_button->setFont(font);
+  ok_button->setFont(buttonFont());
   ok_button->setText(tr("&OK"));
   connect(ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
@@ -106,7 +99,7 @@ AddStation::AddStation(QString *stationname,QWidget *parent)
   QPushButton *cancel_button=new QPushButton(this);
   cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
-  cancel_button->setFont(font);
+  cancel_button->setFont(buttonFont());
   cancel_button->setText(tr("&Cancel"));
   connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 

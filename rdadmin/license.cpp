@@ -30,35 +30,23 @@ extern const unsigned char global_credits[];
 extern const unsigned char global_gpl2[];
 
 License::License(QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
-
-  //
-  // Create Fonts
-  //
-  QFont button_font=QFont("Helvetica",14,QFont::Bold);
-  button_font.setPixelSize(14);
+  setMinimumSize(sizeHint());
 
   license_edit=new QTextEdit(this);
-  license_edit->
-    setGeometry(10,10,sizeHint().width()-20,sizeHint().height()-80);
   license_edit->setReadOnly(true);
 
   //
   // Close Button
   //
-  QPushButton *button=new QPushButton(this,"close_button");
-  button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
-  button->setFont(button_font);
-  button->setText(tr("&Close"));
-  connect(button,SIGNAL(clicked()),this,SLOT(closeData()));
+  close_button=new QPushButton(this);
+  close_button->setFont(buttonFont());
+  close_button->setText(tr("&Close"));
+  connect(close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 }
 
 
@@ -96,4 +84,12 @@ void License::exec(License::Text lic)
 void License::closeData()
 {
   done(0);
+}
+
+
+void License::resizeEvent(QResizeEvent *e)
+{
+  license_edit->
+    setGeometry(10,10,size().width()-20,size().height()-80);
+  close_button->setGeometry(size().width()-90,size().height()-60,80,50);
 }

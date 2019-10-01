@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell LiveWire Node
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,7 +18,6 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qmessagebox.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
 
@@ -29,7 +28,7 @@
 #include <view_node_info.h>
 
 ViewNodeInfo::ViewNodeInfo(QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   setModal(true);
 
@@ -38,18 +37,8 @@ ViewNodeInfo::ViewNodeInfo(QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
-
-  //
-  // Create Fonts
-  //
-  QFont bold_font=QFont("Helvetica",12,QFont::Bold);
-  bold_font.setPixelSize(12);
-  QFont font=QFont("Helvetica",12,QFont::Normal);
-  font.setPixelSize(12);
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   //
   // LiveWire Driver
@@ -72,7 +61,7 @@ ViewNodeInfo::ViewNodeInfo(QWidget *parent)
   view_hostname_edit->setReadOnly(true);
   QLabel *label=new QLabel(view_hostname_edit,tr("Hostname:"),this);
   label->setGeometry(10,10,80,20);
-  label->setFont(bold_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -83,7 +72,7 @@ ViewNodeInfo::ViewNodeInfo(QWidget *parent)
   view_tcpport_edit->setReadOnly(true);
   label=new QLabel(view_tcpport_edit,tr("Port:"),this);
   label->setGeometry(305,10,30,20);
-  label->setFont(bold_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -94,7 +83,7 @@ ViewNodeInfo::ViewNodeInfo(QWidget *parent)
   view_system_edit->setReadOnly(true);
   label=new QLabel(view_system_edit,tr("System Version:"),this);
   label->setGeometry(10,32,120,20);
-  label->setFont(bold_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -105,7 +94,7 @@ ViewNodeInfo::ViewNodeInfo(QWidget *parent)
   view_protocol_edit->setReadOnly(true);
   label=new QLabel(view_protocol_edit,tr("Protocol Version:"),this);
   label->setGeometry(210,32,120,20);
-  label->setFont(bold_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -116,7 +105,7 @@ ViewNodeInfo::ViewNodeInfo(QWidget *parent)
   view_sources_edit->setReadOnly(true);
   label=new QLabel(view_sources_edit,tr("Sources:"),this);
   label->setGeometry(10,54,60,20);
-  label->setFont(bold_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -127,7 +116,7 @@ ViewNodeInfo::ViewNodeInfo(QWidget *parent)
   view_destinations_edit->setReadOnly(true);
   label=new QLabel(view_destinations_edit,tr("Destinations:"),this);
   label->setGeometry(120,54,100,20);
-  label->setFont(bold_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -138,7 +127,7 @@ ViewNodeInfo::ViewNodeInfo(QWidget *parent)
   view_channels_edit->setReadOnly(true);
   label=new QLabel(view_channels_edit,tr("Channels:"),this);
   label->setGeometry(260,54,95,20);
-  label->setFont(bold_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -149,7 +138,7 @@ ViewNodeInfo::ViewNodeInfo(QWidget *parent)
   view_gpis_edit->setReadOnly(true);
   label=new QLabel(view_gpis_edit,tr("GPIs:"),this);
   label->setGeometry(10,76,120,20);
-  label->setFont(bold_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -160,7 +149,7 @@ ViewNodeInfo::ViewNodeInfo(QWidget *parent)
   view_gpos_edit->setReadOnly(true);
   label=new QLabel(view_gpos_edit,tr("GPOs:"),this);
   label->setGeometry(210,76,90,20);
-  label->setFont(bold_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -168,7 +157,7 @@ ViewNodeInfo::ViewNodeInfo(QWidget *parent)
   //
   label=new QLabel(view_gpos_edit,tr("Sources"),this);
   label->setGeometry(15,98,90,20);
-  label->setFont(bold_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   view_sources_view=new RDListView(this);
   view_sources_view->setGeometry(10,118,sizeHint().width()-20,200);
@@ -177,17 +166,17 @@ ViewNodeInfo::ViewNodeInfo(QWidget *parent)
   view_sources_view->addColumn(tr("#"));
   view_sources_view->setColumnAlignment(0,Qt::AlignCenter);
   view_sources_view->setColumnSortType(0,RDListView::LineSort);
-  view_sources_view->addColumn(tr("CHAN"));
-  view_sources_view->setColumnAlignment(1,Qt::AlignCenter);
-  view_sources_view->addColumn(tr("NAME"));
+  view_sources_view->addColumn(tr("Input #"));
+  view_sources_view->setColumnAlignment(1,Qt::AlignRight);
+  view_sources_view->addColumn(tr("Name"));
   view_sources_view->setColumnAlignment(2,Qt::AlignLeft);
-  view_sources_view->addColumn(tr("ACTIVE"));
+  view_sources_view->addColumn(tr("Active"));
   view_sources_view->setColumnAlignment(3,Qt::AlignCenter);
-  view_sources_view->addColumn(tr("SHAREABLE"));
+  view_sources_view->addColumn(tr("Shareable"));
   view_sources_view->setColumnAlignment(4,Qt::AlignCenter);
-  view_sources_view->addColumn(tr("CHANS"));
+  view_sources_view->addColumn(tr("Chans"));
   view_sources_view->setColumnAlignment(5,Qt::AlignCenter);
-  view_sources_view->addColumn(tr("GAIN"));
+  view_sources_view->addColumn(tr("Gain"));
   view_sources_view->setColumnAlignment(6,Qt::AlignCenter);
 
   //
@@ -195,7 +184,7 @@ ViewNodeInfo::ViewNodeInfo(QWidget *parent)
   //
   label=new QLabel(view_gpos_edit,tr("Destinations"),this);
   label->setGeometry(15,325,90,20);
-  label->setFont(bold_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   view_destinations_view=new RDListView(this);
   view_destinations_view->
@@ -205,15 +194,15 @@ ViewNodeInfo::ViewNodeInfo(QWidget *parent)
   view_destinations_view->addColumn(tr("#"));
   view_destinations_view->setColumnAlignment(0,Qt::AlignCenter);
   view_destinations_view->setColumnSortType(0,RDListView::LineSort);
-  view_destinations_view->addColumn(tr("CHAN"));
-  view_destinations_view->setColumnAlignment(1,Qt::AlignCenter);
-  view_destinations_view->addColumn(tr("NAME"));
+  view_destinations_view->addColumn(tr("Output #"));
+  view_destinations_view->setColumnAlignment(1,Qt::AlignRight);
+  view_destinations_view->addColumn(tr("Name"));
   view_destinations_view->setColumnAlignment(2,Qt::AlignLeft);
-  view_destinations_view->addColumn(tr("CHANS"));
+  view_destinations_view->addColumn(tr("Chans"));
   view_destinations_view->setColumnAlignment(3,Qt::AlignCenter);
-  view_destinations_view->addColumn(tr("LOAD"));
+  view_destinations_view->addColumn(tr("Load"));
   view_destinations_view->setColumnAlignment(4,Qt::AlignCenter);
-  view_destinations_view->addColumn(tr("GAIN"));
+  view_destinations_view->addColumn(tr("Gain"));
   view_destinations_view->setColumnAlignment(5,Qt::AlignCenter);
 
   //
@@ -222,7 +211,7 @@ ViewNodeInfo::ViewNodeInfo(QWidget *parent)
   QPushButton *button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   button->setDefault(true);
-  button->setFont(bold_font);
+  button->setFont(buttonFont());
   button->setText(tr("&Close"));
   connect(button,SIGNAL(clicked()),this,SLOT(closeData()));
 }
@@ -315,7 +304,12 @@ void ViewNodeInfo::closeData()
 void ViewNodeInfo::WriteSourceItem(RDLiveWireSource *src,RDListViewItem *item)
 {
   item->setLine(src->slotNumber());
-  item->setText(1,QString().sprintf("%05d",src->channelNumber()));
+  if(src->channelNumber()<=0) {
+    item->setText(1,tr("[unassigned]"));
+  }
+  else {
+    item->setText(1,QString().sprintf("%d",src->channelNumber()));
+  }
   item->setText(2,src->primaryName());
   if(src->rtpEnabled()) {
     item->setText(3,tr("Yes"));
@@ -339,7 +333,7 @@ void ViewNodeInfo::WriteDestinationItem(RDLiveWireDestination *dst,
 {
   item->setLine(dst->slotNumber());
   item->
-    setText(1,QString().sprintf("%05u",view_base_output+dst->slotNumber()-1));
+    setText(1,QString().sprintf("%u",view_base_output+dst->slotNumber()-1));
   item->setText(2,dst->primaryName());
   item->setText(3,QString().sprintf("%d",dst->channels()));
   item->setText(4,RDLiveWireDestination::loadString(dst->load()));

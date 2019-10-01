@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Matrix
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,17 +21,17 @@
 #ifndef EDIT_MATRIX_H
 #define EDIT_MATRIX_H
 
-#include <qdialog.h>
 #include <qcombobox.h>
 #include <qspinbox.h>
 #include <qlabel.h>
 #include <qlineedit.h>
 #include <qpushbutton.h>
 
-#include <rduser.h>
+#include <rddialog.h>
 #include <rdmatrix.h>
+#include <rduser.h>
 
-class EditMatrix : public QDialog
+class EditMatrix : public RDDialog
 {
  Q_OBJECT
  public:

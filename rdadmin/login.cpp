@@ -2,7 +2,7 @@
 //
 // Login widget for RDAdmin.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -37,7 +37,7 @@
 #include <login.h>
 
 Login::Login(QString *username,QString *password,QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   setModal(true);
 
@@ -54,12 +54,6 @@ Login::Login(QString *username,QString *password,QWidget *parent)
   login_password=password;
 
   //
-  // Create Fonts
-  //
-  QFont font=QFont("Helvetica",12,QFont::Bold);
-  font.setPixelSize(12);
-
-  //
   // Text Validator
   //
   RDTextValidator *validator=new RDTextValidator(this);
@@ -69,7 +63,7 @@ Login::Login(QString *username,QString *password,QWidget *parent)
   //
   QPushButton *ok_button=new QPushButton(this);
   ok_button->setGeometry(10,60,100,55);
-  ok_button->setFont(font);
+  ok_button->setFont(buttonFont());
   ok_button->setText(tr("&OK"));
   ok_button->setDefault(true);
   connect(ok_button,SIGNAL(clicked()),this,SLOT(okData()));
@@ -79,7 +73,7 @@ Login::Login(QString *username,QString *password,QWidget *parent)
   //
   QPushButton *cancel_button=new QPushButton(this);
   cancel_button->setGeometry(120,60,100,55);
-  cancel_button->setFont(font);
+  cancel_button->setFont(buttonFont());
   cancel_button->setText(tr("&Cancel"));
   connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
@@ -92,8 +86,8 @@ Login::Login(QString *username,QString *password,QWidget *parent)
   login_name_edit->setFocus();
   login_name_edit->setValidator(validator);
   QLabel *login_name_label=new QLabel(login_name_edit,tr("User &Name:"),this);
+  login_name_label->setFont(labelFont());
   login_name_label->setGeometry(10,10,85,19);
-  login_name_label->setFont(font);
   login_name_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
@@ -107,9 +101,9 @@ Login::Login(QString *username,QString *password,QWidget *parent)
   QLabel *login_password_label=
     new QLabel(login_password_edit,tr("&Password:"),this);
   login_password_label->setGeometry(10,31,85,19);
-  login_password_label->setFont(font);
-  login_password_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
-
+  login_password_label->setFont(labelFont());
+  login_password_label->
+    setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 }
 
 

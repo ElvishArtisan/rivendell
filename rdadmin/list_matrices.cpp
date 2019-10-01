@@ -2,7 +2,7 @@
 //
 // List Rivendell Matrices
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,16 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
 #include <qmessagebox.h>
-#include <q3buttongroup.h>
 
 #include <rdapplication.h>
 #include <rddb.h>
@@ -39,28 +30,17 @@
 #include "list_matrices.h"
 
 ListMatrices::ListMatrices(QString station,QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   setModal(true);
 
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
 
   list_station=station;
   setWindowTitle("RDAdmin - "+tr("Rivendell Switcher List"));
-
-  //
-  // Create Fonts
-  //
-  QFont font=QFont("Helvetica",12,QFont::Bold);
-  font.setPixelSize(12);
-  QFont small_font=QFont("Helvetica",10,QFont::Bold);
-  small_font.setPixelSize(10);
 
   //
   // Initialize Data Structures
@@ -73,10 +53,8 @@ ListMatrices::ListMatrices(QString station,QWidget *parent)
   // Matrix List Box
   //
   list_view=new Q3ListView(this,"list_box");
-  list_view->setGeometry(10,24,sizeHint().width()-20,sizeHint().height()-94);
-  QLabel *label=new QLabel(list_view,tr("Switchers:"),this);
-  label->setFont(font);
-  label->setGeometry(14,5,85,19);
+  list_title_label=new QLabel(list_view,tr("Switchers:"),this);
+  list_title_label->setFont(labelFont());
   list_view->setAllColumnsShowFocus(true);
   list_view->setItemMargin(5);
   list_view->addColumn(tr("MATRIX"));
@@ -93,40 +71,35 @@ ListMatrices::ListMatrices(QString station,QWidget *parent)
   //
   //  Add Button
   //
-  QPushButton *add_button=new QPushButton(this);
-  add_button->setGeometry(10,sizeHint().height()-60,80,50);
-  add_button->setFont(font);
-  add_button->setText(tr("&Add"));
-  connect(add_button,SIGNAL(clicked()),this,SLOT(addData()));
+  list_add_button=new QPushButton(this);
+  list_add_button->setFont(buttonFont());
+  list_add_button->setText(tr("&Add"));
+  connect(list_add_button,SIGNAL(clicked()),this,SLOT(addData()));
 
   //
   //  Edit Button
   //
-  QPushButton *edit_button=new QPushButton(this);
-  edit_button->setGeometry(100,sizeHint().height()-60,80,50);
-  edit_button->setFont(font);
-  edit_button->setText(tr("&Edit"));
-  connect(edit_button,SIGNAL(clicked()),this,SLOT(editData()));
+  list_edit_button=new QPushButton(this);
+  list_edit_button->setFont(buttonFont());
+  list_edit_button->setText(tr("&Edit"));
+  connect(list_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
 
   //
   //  Delete Button
   //
-  QPushButton *delete_button=new QPushButton(this);
-  delete_button->setGeometry(190,sizeHint().height()-60,80,50);
-  delete_button->setFont(font);
-  delete_button->setText(tr("&Delete"));
-  connect(delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
+  list_delete_button=new QPushButton(this);
+  list_delete_button->setFont(buttonFont());
+  list_delete_button->setText(tr("&Delete"));
+  connect(list_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
 
   //
   //  Close Button
   //
-  QPushButton *close_button=new QPushButton(this);
-  close_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
-			    80,50);
-  close_button->setDefault(true);
-  close_button->setFont(font);
-  close_button->setText(tr("&Close"));
-  connect(close_button,SIGNAL(clicked()),this,SLOT(closeData()));
+  list_close_button=new QPushButton(this);
+  list_close_button->setDefault(true);
+  list_close_button->setFont(buttonFont());
+  list_close_button->setText(tr("&Close"));
+  connect(list_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 }
 
 
@@ -237,6 +210,17 @@ void ListMatrices::closeData()
   }
   delete rmt_station;
   done(0);
+}
+
+
+void ListMatrices::resizeEvent(QResizeEvent *e)
+{
+  list_view->setGeometry(10,24,size().width()-20,size().height()-94);
+  list_title_label->setGeometry(14,5,85,19);
+  list_add_button->setGeometry(10,size().height()-60,80,50);
+  list_edit_button->setGeometry(100,size().height()-60,80,50);
+  list_delete_button->setGeometry(190,size().height()-60,80,50);
+  list_close_button->setGeometry(size().width()-90,size().height()-60,80,50);
 }
 
 

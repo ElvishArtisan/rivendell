@@ -92,6 +92,10 @@ class RDConfig
   QString audioStoreMountOptions() const;
   QString audioStoreCaeHostname() const;
   QString audioStoreXportHostname() const;
+  QString fontFamily() const;
+  int fontButtonSize() const;
+  int fontLabelSize() const;
+  int fontDataSize() const;
   int jackConnections() const;
   QString jackPort(int num,int endpt) const;
   bool disableMaintChecks() const;
@@ -159,6 +163,10 @@ class RDConfig
   QString conf_audio_store_mount_options;
   QString conf_audio_store_xport_hostname;
   QString conf_audio_store_cae_hostname;
+  QString conf_font_family;
+  int conf_font_button_size;
+  int conf_font_label_size;
+  int conf_font_data_size;
   QString conf_http_user_agent;
   bool conf_disable_maint_checks;
   bool conf_lock_rdairplay_memory;

@@ -2,7 +2,7 @@
 //
 // List Rivendell Groups
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,16 +20,7 @@
 
 #include <math.h>
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
 #include <qmessagebox.h>
-#include <q3buttongroup.h>
 
 #include <rdapplication.h>
 #include <rdcart.h>
@@ -45,33 +36,22 @@
 #include "rename_group.h"
 
 ListGroups::ListGroups(QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   setModal(true);
 
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
 
   setWindowTitle("RDAdmin - "+tr("Rivendell Group List"));
-
-  //
-  // Create Fonts
-  //
-  QFont font=QFont("Helvetica",12,QFont::Bold);
-  font.setPixelSize(12);
-  QFont list_font=QFont("Helvetica",12,QFont::Normal);
-  list_font.setPixelSize(12);
-  QFont small_font=QFont("Helvetica",10,QFont::Normal);
-  small_font.setPixelSize(10);
 
   //
   //  Add Button
   //
   list_add_button=new QPushButton(this);
-  list_add_button->setFont(font);
+  list_add_button->setFont(buttonFont());
   list_add_button->setText(tr("&Add"));
   connect(list_add_button,SIGNAL(clicked()),this,SLOT(addData()));
 
@@ -79,7 +59,7 @@ ListGroups::ListGroups(QWidget *parent)
   //  Edit Button
   //
   list_edit_button=new QPushButton(this);
-  list_edit_button->setFont(font);
+  list_edit_button->setFont(buttonFont());
   list_edit_button->setText(tr("&Edit"));
   connect(list_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
 
@@ -87,7 +67,7 @@ ListGroups::ListGroups(QWidget *parent)
   //  Rename Button
   //
   list_rename_button=new QPushButton(this);
-  list_rename_button->setFont(font);
+  list_rename_button->setFont(buttonFont());
   list_rename_button->setText(tr("&Rename"));
   connect(list_rename_button,SIGNAL(clicked()),this,SLOT(renameData()));
 
@@ -95,7 +75,7 @@ ListGroups::ListGroups(QWidget *parent)
   //  Delete Button
   //
   list_delete_button=new QPushButton(this);
-  list_delete_button->setFont(font);
+  list_delete_button->setFont(buttonFont());
   list_delete_button->setText(tr("&Delete"));
   connect(list_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
 
@@ -103,7 +83,7 @@ ListGroups::ListGroups(QWidget *parent)
   //  Report Button
   //
   list_report_button=new QPushButton(this);
-  list_report_button->setFont(font);
+  list_report_button->setFont(buttonFont());
   list_report_button->setText(tr("Generate\n&Report"));
   connect(list_report_button,SIGNAL(clicked()),this,SLOT(reportData()));
 
@@ -112,7 +92,7 @@ ListGroups::ListGroups(QWidget *parent)
   //
   list_close_button=new QPushButton(this);
   list_close_button->setDefault(true);
-  list_close_button->setFont(font);
+  list_close_button->setFont(buttonFont());
   list_close_button->setText(tr("&Close"));
   connect(list_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 
@@ -120,7 +100,6 @@ ListGroups::ListGroups(QWidget *parent)
   // Group List
   //
   list_groups_view=new RDListView(this);
-  list_groups_view->setFont(list_font);
   list_groups_view->setAllColumnsShowFocus(true);
   list_groups_view->addColumn(tr("NAME"));
   list_groups_view->addColumn(tr("DESCRIPTION"));
@@ -139,7 +118,7 @@ ListGroups::ListGroups(QWidget *parent)
   list_groups_view->addColumn(tr("NOW & NEXT"));
   list_groups_view->setColumnAlignment(8,Qt::AlignHCenter);
   QLabel *list_box_label=new QLabel(list_groups_view,tr("&Groups:"),this);
-  list_box_label->setFont(font);
+  list_box_label->setFont(labelFont());
   list_box_label->setGeometry(14,11,85,19);
   connect(list_groups_view,
 	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),

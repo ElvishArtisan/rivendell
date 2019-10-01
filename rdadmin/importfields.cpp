@@ -2,7 +2,7 @@
 //
 // Import Parser Parameters for RDAdmin.
 //
-// (C) Copyright 2010-2018 Fred Gleason <fredg@paravelsystems.com>
+// (C) Copyright 2010-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,7 +23,7 @@
 #include <importfields.h>
 
 ImportFields::ImportFields(QWidget *parent)
-  : QWidget(parent)
+  : RDWidget(parent)
 {
   QLabel *label;
   import_changed=false;
@@ -32,7 +32,7 @@ ImportFields::ImportFields(QWidget *parent)
   // Traffic Cartname Parser Data Section
   //
   label=new QLabel(tr("Cart Number:"),this);
-  label->setGeometry(0,0,120,19);
+  label->setGeometry(0,0,125,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
@@ -63,7 +63,7 @@ ImportFields::ImportFields(QWidget *parent)
   // Title Parser Data Section
   //
   label=new QLabel(tr("Title:"),this);
-  label->setGeometry(0,21,120,19);
+  label->setGeometry(0,21,125,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
@@ -94,7 +94,7 @@ ImportFields::ImportFields(QWidget *parent)
   // Traffic Start Hours Parser Data Section
   //
   label=new QLabel(tr("Start Time - Hours:"),this);
-  label->setGeometry(0,42,120,19);
+  label->setGeometry(0,42,125,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
@@ -125,7 +125,7 @@ ImportFields::ImportFields(QWidget *parent)
   // Traffic Start Minutes Parser Data Section
   //
   label=new QLabel(tr("Start Time - Minutes:"),this);
-  label->setGeometry(0,63,120,19);
+  label->setGeometry(0,63,125,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
@@ -156,7 +156,7 @@ ImportFields::ImportFields(QWidget *parent)
   // Traffic Start Seconds Parser Data Section
   //
   label=new QLabel(tr("Start Time - Seconds:"),this);
-  label->setGeometry(0,84,120,19);
+  label->setGeometry(0,84,125,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
@@ -187,7 +187,7 @@ ImportFields::ImportFields(QWidget *parent)
   // Traffic Length Hours Parser Data Section
   //
   label=new QLabel(tr("Length - Hours:"),this);
-  label->setGeometry(0,106,120,19);
+  label->setGeometry(0,106,125,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
@@ -218,7 +218,7 @@ ImportFields::ImportFields(QWidget *parent)
   // Traffic Length Minutes Parser Data Section
   //
   label=new QLabel(tr("Length - Minutes:"),this);
-  label->setGeometry(0,127,120,19);
+  label->setGeometry(0,127,125,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
@@ -249,7 +249,7 @@ ImportFields::ImportFields(QWidget *parent)
   // Traffic Length Seconds Parser Data Section
   //
   label=new QLabel(tr("Length - Seconds:"),this);
-  label->setGeometry(0,148,120,19);
+  label->setGeometry(0,148,125,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
@@ -280,7 +280,7 @@ ImportFields::ImportFields(QWidget *parent)
   // Traffic GUID Parser Data Section
   //
   label=new QLabel(tr("Globally Unique ID:"),this);
-  label->setGeometry(0,169,120,19);
+  label->setGeometry(0,169,125,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
@@ -311,7 +311,7 @@ ImportFields::ImportFields(QWidget *parent)
   // Traffic Event ID Parser Data Section
   //
   label=new QLabel(tr("Event ID:"),this);
-  label->setGeometry(0,190,120,19);
+  label->setGeometry(0,190,125,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
@@ -342,7 +342,7 @@ ImportFields::ImportFields(QWidget *parent)
   // Traffic Announcement Type Parser Data Section
   //
   label=new QLabel(tr("Annc. Type:"),this);
-  label->setGeometry(0,211,120,19);
+  label->setGeometry(0,211,125,19);
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //

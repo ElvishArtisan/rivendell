@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Report
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,18 +18,6 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <q3buttongroup.h>
-
 #include <rd.h>
 #include <rdapplication.h>
 #include <rddb.h>
@@ -43,7 +31,7 @@
 #include "test_import.h"
 
 EditReport::EditReport(QString rptname,QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   setModal(true);
 
@@ -63,16 +51,6 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   setWindowTitle("RDAdmin - "+tr("Edit Report")+" "+rptname);
 
   //
-  // Create Fonts
-  //
-  QFont font=QFont("Helvetica",12,QFont::Bold);
-  font.setPixelSize(12);
-  QFont check_font=QFont("Helvetica",12,QFont::Normal);
-  check_font.setPixelSize(12);
-  QFont section_font=QFont("Helvetica",14,QFont::Bold);
-  section_font.setPixelSize(14);
-
-  //
   // Text Validator
   //
   RDTextValidator *validator=new RDTextValidator(this);
@@ -81,77 +59,77 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   // Report Description
   //
   edit_description_edit=new QLineEdit(this);
-  edit_description_edit->setGeometry(170,10,sizeHint().width()-180,19);
+  edit_description_edit->setGeometry(200,10,sizeHint().width()-210,19);
   edit_description_edit->setMaxLength(64);
   QLabel *label=
     new QLabel(edit_description_edit,tr("&Report Description:"),this);
-  label->setGeometry(10,10,155,19);
-  label->setFont(font);
+  label->setGeometry(10,10,185,19);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Export Filter Type
   //
   edit_filter_box=new QComboBox(this);
-  edit_filter_box->setGeometry(170,31,sizeHint().width()-180,19);
+  edit_filter_box->setGeometry(200,31,sizeHint().width()-210,19);
   for(int i=0;i<(int)RDReport::LastFilter;i++) {
     edit_filter_box->
       insertItem(RDReport::filterText((RDReport::ExportFilter)i));
   }
   label=new QLabel(edit_description_edit,tr("Export &Filter:"),this);
-  label->setGeometry(10,31,155,19);
-  label->setFont(font);
+  label->setGeometry(10,31,185,19);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Station ID
   //
   edit_stationid_edit=new QLineEdit(this);
-  edit_stationid_edit->setGeometry(170,52,180,19);
+  edit_stationid_edit->setGeometry(200,52,180,19);
   edit_stationid_edit->setMaxLength(16);
   edit_stationid_edit->setValidator(validator);
   label=new QLabel(edit_stationid_edit,tr("Station ID:"),this);
-  label->setGeometry(10,52,155,19);
-  label->setFont(font);
+  label->setGeometry(10,52,185,19);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Cart Number Parameters
   //
   label=new QLabel(tr("Cart Number Parameters:"),this);
-  label->setGeometry(10,73,155,19);
-  label->setFont(font);
+  label->setGeometry(10,73,185,19);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   
   edit_cartzeros_box=new QCheckBox(this);
-  edit_cartzeros_box->setGeometry(170,75,15,15);
+  edit_cartzeros_box->setGeometry(200,75,15,15);
   connect(edit_cartzeros_box,SIGNAL(toggled(bool)),
 	  this,SLOT(leadingZerosToggled(bool)));
   label=new QLabel(edit_cartzeros_box,tr("Use Leading Zeros"),this);
-  label->setGeometry(187,73,120,19);
-  label->setFont(check_font);
+  label->setGeometry(217,73,120,19);
+  label->setFont(subLabelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   edit_cartdigits_spin=new QSpinBox(this);
-  edit_cartdigits_spin->setGeometry(350,73,40,19);
+  edit_cartdigits_spin->setGeometry(380,73,40,19);
   edit_cartdigits_spin->setRange(1,6);
   edit_cartdigits_label=new QLabel(edit_cartdigits_spin,tr("Digits:"),this);
-  edit_cartdigits_label->setGeometry(300,73,45,19);
-  edit_cartdigits_label->setFont(check_font);
+  edit_cartdigits_label->setGeometry(330,73,45,19);
+  edit_cartdigits_label->setFont(subLabelFont());
   edit_cartdigits_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Station Type
   //
   edit_stationtype_box=new QComboBox(this);
-  edit_stationtype_box->setGeometry(170,94,70,19);
+  edit_stationtype_box->setGeometry(200,94,70,19);
   for(int i=0;i<RDReport::TypeLast;i++) {
     edit_stationtype_box->
       insertItem(RDReport::stationTypeText((RDReport::StationType)i));
   }
   label=new QLabel(edit_stationtype_box,tr("Station Type:"),this);
-  label->setGeometry(10,94,155,19);
-  label->setFont(font);
+  label->setGeometry(10,94,185,19);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -162,7 +140,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   edit_linesperpage_spin->setRange(10,200);
   label=new QLabel(edit_linesperpage_spin,tr("Lines per Page:"),this);
   label->setGeometry(255,94,100,19);
-  label->setFont(font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   edit_linesperpage_spin->hide();
   label->hide();
@@ -171,96 +149,74 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   // Service Name
   //
   edit_servicename_edit=new QLineEdit(this);
-  edit_servicename_edit->setGeometry(170,115,sizeHint().width()-180,19);
+  edit_servicename_edit->setGeometry(200,115,sizeHint().width()-210,19);
   edit_servicename_edit->setMaxLength(64);
   label=new QLabel(edit_servicename_edit,tr("Ser&vice Name:"),this);
-  label->setGeometry(10,115,155,19);
-  label->setFont(font);
+  label->setGeometry(10,115,185,19);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Station Format
   //
   edit_stationformat_edit=new QLineEdit(this);
-  edit_stationformat_edit->setGeometry(170,136,sizeHint().width()-180,19);
+  edit_stationformat_edit->setGeometry(200,136,sizeHint().width()-210,19);
   edit_stationformat_edit->setMaxLength(64);
   label=new QLabel(edit_stationformat_edit,tr("Station &Format:"),this);
-  label->setGeometry(10,136,155,19);
-  label->setFont(font);
+  label->setGeometry(10,136,185,19);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Linux Export Path
   //
   edit_path_edit=new QLineEdit(this);
-  edit_path_edit->setGeometry(170,157,sizeHint().width()-180,19);
+  edit_path_edit->setGeometry(200,157,sizeHint().width()-210,19);
   edit_path_edit->setMaxLength(255);
   edit_path_edit->setValidator(validator);
-  label=new QLabel(edit_path_edit,tr("Linux Export Path:"),this);
-  label->setGeometry(10,157,155,19);
-  label->setFont(font);
+  label=new QLabel(edit_path_edit,tr("Export Path:"),this);
+  label->setGeometry(10,157,185,19);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Linux Post Export Command
   //
   edit_postexport_cmd_edit=new QLineEdit(this);
-  edit_postexport_cmd_edit->setGeometry(170,178,sizeHint().width()-180,19);
+  edit_postexport_cmd_edit->setGeometry(200,178,sizeHint().width()-210,19);
   edit_postexport_cmd_edit->setValidator(validator);
-  label=new QLabel(edit_path_edit,tr("Linux Post Export Cmd:"),this);
-  label->setGeometry(10,178,155,19);
-  label->setFont(font);
-  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-
-  //
-  // Windows Export Path
-  //
-  edit_winpath_edit=new QLineEdit(this);
-  edit_winpath_edit->setGeometry(170,199,sizeHint().width()-180,19);
-  edit_winpath_edit->setMaxLength(255);
-  label=new QLabel(edit_winpath_edit,tr("Windows Export Path:"),this);
-  label->setGeometry(10,199,155,19);
-  label->setFont(font);
-  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-
-  //
-  // Windows Post Export Command
-  //
-  edit_winpostexport_cmd_edit=new QLineEdit(this);
-  edit_winpostexport_cmd_edit->setGeometry(170,219,sizeHint().width()-180,19);
-  edit_winpostexport_cmd_edit->setValidator(validator);
-  label=new QLabel(edit_path_edit,tr("Windows Post Export Cmd:"),this);
-  label->setGeometry(10,219,155,19);
-  label->setFont(font);
+  label=new QLabel(edit_path_edit,tr("Post Export Cmd:"),this);
+  label->setGeometry(10,178,185,19);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Type Selectors
   //
   label=new QLabel(tr("Export Event Types:"),this);
-  label->setGeometry(10,240,155,19);
-  label->setFont(font);
+  label->setGeometry(10,200,185,19);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   edit_traffic_box=new QCheckBox(this);
-  edit_traffic_box->setGeometry(170,242,15,15);
+  edit_traffic_box->setGeometry(200,202,15,15);
   edit_traffic_label=new QLabel(tr("Traffic"),this);
-  edit_traffic_label->setGeometry(187,241,80,19);
-  edit_traffic_label->setFont(check_font);
+  edit_traffic_label->setGeometry(217,201,80,19);
+  edit_traffic_label->setFont(subLabelFont());
   edit_traffic_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   
   edit_music_box=new QCheckBox(this);
-  edit_music_box->setGeometry(270,243,15,15);
+  edit_music_box->setGeometry(300,203,15,15);
   edit_music_label=new QLabel(tr("Music"),this);
-  edit_music_label->setGeometry(287,241,80,19);
-  edit_music_label->setFont(check_font);
+  edit_music_label->setGeometry(317,201,80,19);
+  edit_music_label->setFont(subLabelFont());
   edit_music_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   edit_generic_box=new QCheckBox(this);
-  edit_generic_box->setGeometry(370,243,15,15);
+  edit_generic_box->setGeometry(400,203,15,15);
   label=new QLabel(tr("All"),this);
-  label->setGeometry(387,241,80,19);
-  label->setFont(check_font);
+  label->setGeometry(417,201,80,19);
+  label->setFont(subLabelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   connect(edit_generic_box,SIGNAL(toggled(bool)),
 	  this,SLOT(genericEventsToggledData(bool)));
@@ -269,59 +225,59 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   // Force Event Source Selectors
   //
   label=new QLabel(tr("Export Events From:"),this);
-  label->setGeometry(10,262,155,19);
-  label->setFont(font);
+  label->setGeometry(10,222,185,19);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   edit_forcetraffic_box=new QCheckBox(this);
-  edit_forcetraffic_box->setGeometry(170,264,15,15);
+  edit_forcetraffic_box->setGeometry(200,224,15,15);
   label=new QLabel(tr("Traffic Log"),this);
-  label->setGeometry(187,262,80,19);
-  label->setFont(check_font);
+  label->setGeometry(217,222,80,19);
+  label->setFont(subLabelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   
   edit_forcemusic_box=new QCheckBox(this);
-  edit_forcemusic_box->setGeometry(270,264,15,15);
+  edit_forcemusic_box->setGeometry(300,224,15,15);
   label=new QLabel(tr("Music Log"),this);
-  label->setGeometry(287,262,80,19);
-  label->setFont(check_font);
+  label->setGeometry(317,222,80,19);
+  label->setFont(subLabelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Include Only On Air Events
   //
   edit_onairflag_box=new QComboBox(this);
-  edit_onairflag_box->setGeometry(170,283,60,19);
+  edit_onairflag_box->setGeometry(200,243,60,19);
   edit_onairflag_box->insertItem(tr("No"));
   edit_onairflag_box->insertItem(tr("Yes"));
   label=new QLabel(edit_onairflag_box,tr("Include Only OnAir Events:"),this);
-  label->setGeometry(10,283,155,19);
-  label->setFont(font);
+  label->setGeometry(10,243,185,19);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Daypart Filter
   //
   edit_daypart_check=new QCheckBox(this);
-  edit_daypart_check->setGeometry(60,313,15,15);
+  edit_daypart_check->setGeometry(60,273,15,15);
   edit_daypart_label=
     new QLabel(edit_daypart_check,tr("Filter by Daypart"),this);
-  edit_daypart_label->setGeometry(edit_daypart_check->geometry().x()+20,313,155,19);
-  edit_daypart_label->setFont(font);
+  edit_daypart_label->setGeometry(edit_daypart_check->geometry().x()+20,273,155,19);
+  edit_daypart_label->setFont(labelFont());
   edit_daypart_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   edit_starttime_edit=new Q3TimeEdit(this);
-  edit_starttime_edit->setGeometry(150,334,80,20);
+  edit_starttime_edit->setGeometry(150,294,80,20);
   edit_starttime_label=new QLabel(edit_starttime_edit,tr("Start Time:"),this);
-  edit_starttime_label->setGeometry(65,334,80,20);
-  edit_starttime_label->setFont(font);
+  edit_starttime_label->setGeometry(65,294,80,20);
+  edit_starttime_label->setFont(labelFont());
   edit_starttime_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   edit_endtime_edit=new Q3TimeEdit(this);
-  edit_endtime_edit->setGeometry(335,334,80,20);
+  edit_endtime_edit->setGeometry(335,294,80,20);
   edit_endtime_label=new QLabel(edit_endtime_edit,tr("End Time:"),this);
-  edit_endtime_label->setGeometry(250,334,80,20);
-  edit_endtime_label->setFont(font);
+  edit_endtime_label->setGeometry(250,294,80,20);
+  edit_endtime_label->setFont(labelFont());
   edit_endtime_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   connect(edit_daypart_check,SIGNAL(toggled(bool)),
@@ -339,7 +295,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   edit_service_sel=new RDListSelector(this);
   edit_service_sel->
     setGeometry((sizeHint().width()-edit_service_sel->sizeHint().width())/2,
-		373,edit_service_sel->sizeHint().width(),
+		333,edit_service_sel->sizeHint().width(),
 		edit_service_sel->sizeHint().height());
   edit_service_sel->sourceSetLabel(tr("Available Services"));
   edit_service_sel->destSetLabel(tr("Source Services"));
@@ -350,7 +306,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   edit_station_sel=new RDListSelector(this);
   edit_station_sel->
     setGeometry((sizeHint().width()-edit_station_sel->sizeHint().width())/2,
-		477,edit_station_sel->sizeHint().width(),
+		437,edit_station_sel->sizeHint().width(),
 		edit_station_sel->sizeHint().height());
   edit_station_sel->sourceSetLabel(tr("Available Hosts"));
   edit_station_sel->destSetLabel(tr("Source Hosts"));
@@ -361,16 +317,16 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   edit_group_sel=new RDListSelector(this);
   edit_group_sel->
     setGeometry((sizeHint().width()-edit_group_sel->sizeHint().width())/2,
-		593,edit_group_sel->sizeHint().width(),
+		553,edit_group_sel->sizeHint().width(),
 		edit_group_sel->sizeHint().height());
   edit_group_sel->sourceSetLabel(tr("Available Groups"));
   edit_group_sel->destSetLabel(tr("Allowed Groups"));
 
   edit_group_box=new QCheckBox(this);
-  edit_group_box->setGeometry(60,574,15,15);
+  edit_group_box->setGeometry(60,534,15,15);
   label=new QLabel(edit_group_box,tr("Filter by Groups"),this);
-  label->setGeometry(edit_group_box->geometry().x()+20,573,155,19);
-  label->setFont(font);
+  label->setGeometry(edit_group_box->geometry().x()+20,533,155,19);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   connect(edit_group_box,SIGNAL(toggled(bool)),
 	  edit_group_sel,SLOT(setEnabled(bool)));
@@ -382,7 +338,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   QPushButton *button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
-  button->setFont(font);
+  button->setFont(buttonFont());
   button->setText(tr("&OK"));
   connect(button,SIGNAL(clicked()),this,SLOT(okData()));
 
@@ -391,7 +347,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   //
   button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
-  button->setFont(font);
+  button->setFont(buttonFont());
   button->setText(tr("&Cancel"));
   connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
@@ -411,9 +367,6 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   edit_path_edit->setText(edit_report->exportPath(RDReport::Linux));
   edit_postexport_cmd_edit->
     setText(edit_report->postExportCommand(RDReport::Linux));
-  edit_winpath_edit->setText(edit_report->exportPath(RDReport::Windows));
-  edit_winpostexport_cmd_edit->
-    setText(edit_report->postExportCommand(RDReport::Windows));
   edit_traffic_box->
     setChecked(edit_report->exportTypeEnabled(RDReport::Traffic));
   edit_music_box->
@@ -501,7 +454,7 @@ EditReport::~EditReport()
 
 QSize EditReport::sizeHint() const
 {
-  return QSize(500,749);
+  return QSize(530,709);
 } 
 
 
@@ -546,9 +499,6 @@ void EditReport::okData()
   edit_report->setExportPath(RDReport::Linux,edit_path_edit->text());
   edit_report->
     setPostExportCommand(RDReport::Linux,edit_postexport_cmd_edit->text());
-  edit_report->setExportPath(RDReport::Windows,edit_winpath_edit->text());
-  edit_report->
-    setPostExportCommand(RDReport::Windows,edit_winpostexport_cmd_edit->text());
   edit_report->
     setExportTypeEnabled(RDReport::Traffic,edit_traffic_box->isChecked());
   edit_report->

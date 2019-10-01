@@ -2,7 +2,7 @@
 //
 // Edit a PyPAD Instance Configuration
 //
-//   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,13 +21,14 @@
 #ifndef EDIT_PYPAD_H
 #define EDIT_PYPAD_H
 
-#include <qdialog.h>
 #include <qlabel.h>
 #include <qlineedit.h>
 #include <qpushbutton.h>
 #include <qtextedit.h>
 
-class EditPypad : public QDialog
+#include <rddialog.h>
+
+class EditPypad : public RDDialog
 {
  Q_OBJECT
  public:

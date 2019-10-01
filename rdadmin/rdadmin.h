@@ -22,19 +22,20 @@
 #ifndef RDADMIN_H
 #define RDADMIN_H
 
-#include <qwidget.h>
 #include <qsize.h>
 #include <qsizepolicy.h>
 #include <qsqldatabase.h>
 #include <qpixmap.h>
 
+#include <rdwidget.h>
+
 #define RDADMIN_USAGE "\n"
 
-class MainWidget : public QWidget
+class MainWidget : public RDWidget
 {
   Q_OBJECT
  public:
-  MainWidget(QWidget *parent=0);
+  MainWidget(RDConfig *config,RDWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
   
