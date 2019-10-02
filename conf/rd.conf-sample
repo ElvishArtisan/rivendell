@@ -84,8 +84,8 @@ ButtonSize=
 ; 'LabelSize=' specifies the size of the font to be used for field labels.
 LabelSize=
 
-; 'DataSize=' specifies the size of the font to be used for field data.
-DataSize=
+; 'DefaultSize=' specifies the size of the font to be used for field data.
+DefaultSize=
 
 [Provisioning]
 ; If CreateHost=Yes, a Host entry will be automatically created in the DB

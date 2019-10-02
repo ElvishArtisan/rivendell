@@ -2,7 +2,7 @@
 //
 // The wall clock widget for Rivendell
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,15 +21,10 @@
 #ifndef WALL_CLOCK_H
 #define WALL_CLOCK_H
 
-#include <qdatetime.h>
-#include <qtimer.h>
-#include <qevent.h>
-
-#include <qpushbutton.h>
-
 #include <rdairplay_conf.h>
+#include <rdpushbutton.h>
 
-class WallClock : public QPushButton
+class WallClock : public RDPushButton
 {
   Q_OBJECT
  public:

@@ -751,11 +751,19 @@ DU LOG</translation>
     </message>
     <message>
         <source>Aux1</source>
-        <translation>Aux1</translation>
+        <translation type="obsolete">Aux1</translation>
     </message>
     <message>
         <source>Aux2</source>
-        <translation>Aux2</translation>
+        <translation type="obsolete">Aux2</translation>
+    </message>
+    <message>
+        <source>A1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>A2</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

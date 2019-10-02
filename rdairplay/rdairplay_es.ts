@@ -746,11 +746,11 @@ LISTA</translation>
         <translation>Manual</translation>
     </message>
     <message>
-        <source>Aux1</source>
+        <source>A1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Aux2</source>
+        <source>A2</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

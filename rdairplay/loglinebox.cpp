@@ -2,7 +2,7 @@
 //
 // On Air Playout Utility for Rivendell.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,9 +20,7 @@
 
 #include <qpainter.h>
 
-#include <rdapplication.h>
 #include <rdconf.h>
-#include <rdplay_deck.h>
 #include <rdnownext.h>
 
 #include "colors.h"
@@ -39,7 +37,7 @@
 #include "../icons/music.xpm"
 
 LogLineBox::LogLineBox(RDAirPlayConf *conf,QWidget *parent)
-  : QWidget(parent)
+  : RDWidget(parent)
 {
   line_status=RDLogLine::Scheduled;
   line_type=RDLogLine::UnknownType;
@@ -60,16 +58,12 @@ LogLineBox::LogLineBox(RDAirPlayConf *conf,QWidget *parent)
   line_description_template=conf->descriptionTemplate();
 
   //
-  // Create Font
+  // Assign Fonts
   //
-  line_bold_font=QFont("Helvetica",12,QFont::Bold);
-  line_bold_font.setPixelSize(12);
-  line_font=QFont("Helvetica",12,QFont::Normal);
-  line_font.setPixelSize(12);
-  talk_font=QFont("Helvetica",12,QFont::Bold);
-  talk_font.setPixelSize(12);
-  QFont outcue_font=QFont("Helvetica",12,QFont::Normal);
-  outcue_font.setPixelSize(12);
+  line_bold_font=labelFont();
+  line_font=font();
+  talk_font=labelFont();
+  QFont outcue_font=font();
   outcue_font.setItalic(true);
 
   //

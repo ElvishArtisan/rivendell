@@ -21,104 +21,16 @@
 #include "rddialog.h"
 
 RDDialog::RDDialog(QWidget *parent,Qt::WindowFlags f)
-  : QDialog(parent,f)
+  : QDialog(parent,f), RDFontSet(font())
 {
   setModal(true);
-
-  dialog_config=rda->config();
-  MakeFonts();
-  setFont(dataFont());
+  setFont(defaultFont());
 }
 
 
 RDDialog::RDDialog(RDConfig *config,QWidget *parent,Qt::WindowFlags f)
-  : QDialog(parent,f)
+  : QDialog(parent,f), RDFontSet(font(),config)
 {
-  dialog_config=config;
-  MakeFonts();
-}
-
-
-QFont RDDialog::buttonFont() const
-{
-  return dialog_button_font;
-}
-
-
-QFont RDDialog::subButtonFont() const
-{
-  return dialog_sub_button_font;
-}
-
-
-QFont RDDialog::sectionLabelFont() const
-{
-  return dialog_section_label_font;
-}
-
-
-QFont RDDialog::labelFont() const
-{
-  return dialog_label_font;
-}
-
-
-QFont RDDialog::subLabelFont() const
-{
-  return dialog_sub_label_font;
-}
-
-
-QFont RDDialog::progressFont() const
-{
-  return dialog_progress_font;
-}
-
-
-QFont RDDialog::dataFont() const
-{
-  return dialog_data_font;
-}
-
-
-void RDDialog::MakeFonts()
-{
-  QString family=font().family();
-  int button_size=font().pixelSize();
-  int label_size=font().pixelSize();
-  int data_size=font().pixelSize();
-
-  if(!dialog_config->fontFamily().isEmpty()) {
-    family=dialog_config->fontFamily();
-  }
-  if(dialog_config->fontButtonSize()>0) {
-    button_size=dialog_config->fontButtonSize();
-  }
-  if(dialog_config->fontLabelSize()>0) {
-    label_size=dialog_config->fontLabelSize();
-  }
-  if(dialog_config->fontDataSize()>0) {
-    data_size=dialog_config->fontDataSize();
-  }
-
-  dialog_button_font=QFont(family,button_size,QFont::Bold);
-  dialog_button_font.setPixelSize(button_size);
-
-  dialog_sub_button_font=QFont(family,button_size-2,QFont::Normal);
-  dialog_sub_button_font.setPixelSize(button_size-2);
-
-  dialog_section_label_font=QFont(family,label_size+2,QFont::Bold);
-  dialog_section_label_font.setPixelSize(label_size+2);
-
-  dialog_label_font=QFont(family,label_size,QFont::Bold);
-  dialog_label_font.setPixelSize(label_size);
-
-  dialog_sub_label_font=QFont(family,label_size,QFont::Normal);
-  dialog_sub_label_font.setPixelSize(label_size);
-
-  dialog_progress_font=QFont(family,label_size+4,QFont::Bold);
-  dialog_progress_font.setPixelSize(label_size+4);
-
-  dialog_data_font=QFont(family,data_size,QFont::Normal);
-  dialog_data_font.setPixelSize(data_size);
+  setModal(true);
+  setFont(defaultFont());
 }

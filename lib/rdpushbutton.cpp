@@ -2,7 +2,7 @@
 //
 //   An flashing button widget.
 //
-//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -31,21 +31,21 @@
 
 
 RDPushButton::RDPushButton(QWidget *parent=0)
-  :  QPushButton(parent)
+  : QPushButton(parent), RDFontSet(font())
 {
   Init();
 }
 
 
 RDPushButton::RDPushButton(const QString &text,QWidget *parent)
-  : QPushButton(text,parent)
+  : QPushButton(text,parent), RDFontSet(font())
 {
   Init();
 }
 
 RDPushButton::RDPushButton(const QIcon &icon,const QString &text,
 			   QWidget *parent)
-  : QPushButton(text,parent)
+  : QPushButton(text,parent), RDFontSet(font())
 {
   Init();
 }

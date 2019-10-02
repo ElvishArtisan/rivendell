@@ -18,50 +18,25 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-
 #ifndef RDAIRPLAY_H
 #define RDAIRPLAY_H
 
-#include <vector>
-#include <map>
-
-#include <qwidget.h>
-#include <qsize.h>
-#include <qsizepolicy.h>
-#include <qsqldatabase.h>
-#include <qtimer.h>
-#include <qsignalmapper.h>
-#include <qpalette.h>
-#include <qpixmap.h>
 #include <qsplashscreen.h>
-#include <qfontmetrics.h>
 
-#include <rd.h>
 #include <rdemptycart.h>
 #include <rdhotkeylist.h>
 #include <rdhotkeys.h>
 #include <rdinstancelock.h>
-#include <rdlabel.h>
-#include <rdlogplay.h>
-#include <rdmacro.h>
-#include <rdplay_deck.h>
-#include <rdpushbutton.h>
-#include <rdripc.h>
 #include <rdsound_panel.h>
 #include <rdstereometer.h>
-#include <rdttydevice.h>
-#include <rdunixsocket.h>
-#include <rduser.h>
+#include <rdwidget.h>
 
 #include "button_log.h"
 #include "colors.h"
-#include "list_log.h"
-#include "loglinebox.h"
 #include "mode_display.h"
 #include "post_counter.h"
 #include "pie_counter.h"
 #include "stop_counter.h"
-#include "start_button.h"
 
 //
 // Debug Settings
@@ -87,11 +62,11 @@
 #define MESSAGE_WIDGET_WIDTH 410
 #define RDAIRPLAY_USAGE "[OPTIONS]\n"
 
-class MainWidget : public QWidget
+class MainWidget : public RDWidget
 {
   Q_OBJECT
  public:
-  MainWidget(QWidget *parent=0);
+  MainWidget(RDConfig *config,QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 

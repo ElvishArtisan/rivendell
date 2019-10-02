@@ -2,7 +2,7 @@
 //
 // Event Editor for RDAirPlay
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,40 +18,18 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qpushbutton.h>
-#include <qlabel.h>
 #include <qpainter.h>
 #include <qmessagebox.h>
 
-#include <rdapplication.h>
-#include <rdconf.h>
-
 #include "edit_event.h"
-#include "globals.h"
 
 EditEvent::EditEvent(RDLogPlay *log,RDCae *cae,QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
-  setModal(true);
-
   edit_log=log;
   edit_cae=cae;
   edit_height=385;
   setWindowTitle("RDAirPlay - "+tr("Edit Event"));
-
-  //
-  // Create Fonts
-  //
-  QFont radio_font=QFont("Helvetica",10,QFont::Normal);
-  radio_font.setPixelSize(10);
-  QFont label_font=QFont("Helvetica",12,QFont::Bold);
-  label_font.setPixelSize(12);
-  QFont button_font=QFont("Helvetica",12,QFont::Bold);
-  button_font.setPixelSize(12);
-  QFont notes_font=QFont("Helvetica",16,QFont::Normal);
-  notes_font.setPixelSize(16);
-  QFont counter_font=QFont("Helvetica",20,QFont::Bold);
-  counter_font.setPixelSize(20);
 
   //
   // Time Type
@@ -72,47 +50,47 @@ EditEvent::EditEvent(RDLogPlay *log,RDCae *cae,QWidget *parent)
   //
   // Grace Time
   //
-  edit_grace_group
-    =new Q3ButtonGroup(1,Qt::Vertical,
-		      tr("Action If Previous Event Still Playing"),this);
-  edit_grace_group->setFont(label_font);
-  edit_grace_group->setRadioButtonExclusive(true);
+  edit_grace_bgroup=new QButtonGroup(this);
+  connect(edit_grace_bgroup,SIGNAL(buttonClicked(int)),
+	  this,SLOT(graceClickedData(int)));
+  edit_grace_bgroup->setExclusive(true);
+  edit_grace_group=
+    new QGroupBox(tr("Action If Previous Event Still Playing"),this);
+  edit_grace_group->setFont(labelFont());
   QRadioButton *radio_button=
     new QRadioButton(tr("Start Immediately"),edit_grace_group);
-  edit_grace_group->insert(radio_button);
-  radio_button->setFont(radio_font);
+  edit_grace_bgroup->addButton(radio_button,0);
+  radio_button->setFont(subLabelFont());
   radio_button=new QRadioButton(tr("Make Next"),edit_grace_group);
-  edit_grace_group->insert(radio_button);
-  radio_button->setFont(radio_font);
+  edit_grace_bgroup->addButton(radio_button,1);
+  radio_button->setFont(subLabelFont());
   radio_button=new QRadioButton(tr("Wait up to"),edit_grace_group);
-  edit_grace_group->insert(radio_button);
-  radio_button->setFont(radio_font);
+  edit_grace_bgroup->addButton(radio_button,2);
+  radio_button->setFont(subLabelFont());
   edit_grace_edit=new RDTimeEdit(this);
   edit_grace_edit->setDisplay(RDTimeEdit::Minutes|RDTimeEdit::Seconds|
 			      RDTimeEdit::Tenths);
   connect(edit_timetype_box,SIGNAL(toggled(bool)),
 	  this,SLOT(timeToggledData(bool)));
-  connect(edit_grace_group,SIGNAL(clicked(int)),
-	  this,SLOT(graceClickedData(int)));
 
   //
   // Transition Type
   //
   edit_transtype_box=new QComboBox(this);
-  edit_timetype_label->setFont(label_font);
+  edit_timetype_label->setFont(labelFont());
   edit_transtype_box->insertItem(tr("Play"));
   edit_transtype_box->insertItem(tr("Segue"));
   edit_transtype_box->insertItem(tr("Stop"));  
-  edit_time_label=
+  edit_transtype_label=
     new QLabel(edit_transtype_box,tr("Start Transition Type:"),this);
-  edit_time_label->setFont(label_font);
-  edit_time_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  edit_transtype_label->setFont(labelFont());
+  edit_transtype_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   // Overlap Box
   edit_overlap_box=new QCheckBox(this);
   edit_overlap_label=
     new QLabel(edit_overlap_box,tr("No Fade at Segue Out"),this);
-  edit_overlap_label->setFont(button_font);
+  edit_overlap_label->setFont(labelFont());
   edit_overlap_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   
 
@@ -141,9 +119,8 @@ EditEvent::EditEvent(RDLogPlay *log,RDCae *cae,QWidget *parent)
   // Cart Notes
   //
   edit_cart_notes_label=new QLabel(tr("Cart Notes"),this);
-  edit_cart_notes_label->setFont(label_font);
-  edit_cart_notes_text=new Q3TextEdit(this);
-  edit_cart_notes_text->setFont(notes_font);
+  edit_cart_notes_label->setFont(labelFont());
+  edit_cart_notes_text=new QTextEdit(this);
   edit_cart_notes_text->setReadOnly(true);
 
   //
@@ -151,7 +128,7 @@ EditEvent::EditEvent(RDLogPlay *log,RDCae *cae,QWidget *parent)
   //
   edit_ok_button=new QPushButton(this);
   edit_ok_button->setDefault(true);
-  edit_ok_button->setFont(button_font);
+  edit_ok_button->setFont(buttonFont());
   edit_ok_button->setText(tr("&OK"));
   connect(edit_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
@@ -159,7 +136,7 @@ EditEvent::EditEvent(RDLogPlay *log,RDCae *cae,QWidget *parent)
   //  Cancel Button
   //
   edit_cancel_button=new QPushButton(this);
-  edit_cancel_button->setFont(button_font);
+  edit_cancel_button->setFont(buttonFont());
   edit_cancel_button->setText(tr("&Cancel"));
   connect(edit_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 }
@@ -203,17 +180,17 @@ int EditEvent::exec(int line)
   timeChangedData(edit_time_edit->time());
   switch(edit_logline->graceTime()) {
       case -1:
-	edit_grace_group->setButton(1);
+	edit_grace_bgroup->button(1)->setChecked(true);
 	graceClickedData(1);
 	break;
 
       case 0:
-	edit_grace_group->setButton(0);
+	edit_grace_bgroup->button(0)->setChecked(true);
 	graceClickedData(0);
 	break;
 
       default:
-	edit_grace_group->setButton(2);
+	edit_grace_bgroup->button(2)->setChecked(true);
 	graceClickedData(2);
 	edit_grace_edit->setTime(QTime().addMSecs(edit_logline->graceTime()));
 	break;
@@ -243,9 +220,9 @@ int EditEvent::exec(int line)
   else {
     edit_time_edit->setTime(QTime());
   }
-  setCaption("RDAirPlay - "+
-	     QString().sprintf("%d - ",edit_logline->cartNumber())+
-	     edit_logline->title());
+  setWindowTitle("RDAirPlay - "+
+		 QString().sprintf("%d - ",edit_logline->cartNumber())+
+		 edit_logline->title());
   edit_cart_notes_text->setText(edit_logline->cartNotes());
   switch(edit_logline->type()) {
   case RDLogLine::Cart:
@@ -253,12 +230,12 @@ int EditEvent::exec(int line)
        (edit_logline->forcedLength()<=0)) {
       edit_cue_edit->hide();
       if(edit_logline->cartNotes().isEmpty()) {
-	edit_height=170;
+	edit_height=195;
 	edit_cart_notes_label->hide();
 	edit_cart_notes_text->hide();
       }
       else {
-	edit_height=350;
+	edit_height=375;
 	edit_cart_notes_label->show();
 	edit_cart_notes_text->show();
       }
@@ -267,12 +244,12 @@ int EditEvent::exec(int line)
       edit_cue_edit->initialize(edit_logline);
       edit_cue_edit->show();
       if(edit_logline->cartNotes().isEmpty()) {
-	edit_height=335;
+	edit_height=360;
 	edit_cart_notes_label->hide();
 	edit_cart_notes_text->hide();
       }
       else {
-	edit_height=515;
+	edit_height=540;
 	edit_cart_notes_label->show();
 	edit_cart_notes_text->show();
       }
@@ -282,12 +259,12 @@ int EditEvent::exec(int line)
   case RDLogLine::Macro:
     edit_cue_edit->hide();
     if(edit_logline->cartNotes().isEmpty()) {
-      edit_height=170;
+      edit_height=195;
       edit_cart_notes_label->hide();
       edit_cart_notes_text->hide();
     }
     else {
-      edit_height=300;
+      edit_height=325;
       edit_cart_notes_label->show();
       edit_cart_notes_text->show();
     }
@@ -298,7 +275,7 @@ int EditEvent::exec(int line)
     edit_cue_edit->hide();
     edit_cart_notes_label->hide();
     edit_cart_notes_text->hide();
-    edit_height=170;
+    edit_height=195;
     break;
 
   case RDLogLine::Track:
@@ -306,7 +283,7 @@ int EditEvent::exec(int line)
     edit_cue_edit->hide();
     edit_cart_notes_label->hide();
     edit_cart_notes_text->hide();
-    edit_height=170;
+    edit_height=195;
     break;
 
   case RDLogLine::Chain:
@@ -314,26 +291,21 @@ int EditEvent::exec(int line)
     edit_cue_edit->hide();
     edit_cart_notes_label->hide();
     edit_cart_notes_text->hide();
-    edit_height=170;
+    edit_height=195;
     break;
 
   default:
     edit_cue_edit->hide();
-    edit_height=170;
+    edit_height=195;
     break;
   }
 
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
-  edit_ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,
-			      80,50);
-  edit_cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
-				  80,50);
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
+
   resize(sizeHint());
 
   return QDialog::exec();
@@ -345,7 +317,7 @@ void EditEvent::timeChangedData(const QTime &time)
   QString str;
 
   if(edit_timetype_box->isChecked()) {
-    edit_time_label->setText(tr("Transition If Previous Cart Ends Before")+
+    edit_transtype_label->setText(tr("Transition If Previous Cart Ends Before")+
 			     " "+edit_time_edit->time().
 			     toString("hh:mm:ss.zzz").left(10)+":");
   }
@@ -359,14 +331,14 @@ void EditEvent::timeToggledData(bool state)
   edit_time_edit->setEnabled(state);
   edit_grace_group->setEnabled(state);
   if(state) {
-    graceClickedData(edit_grace_group->selectedId());
-    edit_time_label->setText(tr("Transition If Previous Cart Ends Before")+
+    graceClickedData(edit_grace_bgroup->checkedId());
+    edit_transtype_label->setText(tr("Transition If Previous Cart Ends Before")+
 			     " "+edit_time_edit->time().
 			     toString("hh:mm:ss.zzz").left(10)+":");
   }
   else {
     edit_grace_edit->setDisabled(true);
-    edit_time_label->setText(tr("Start Transition Type:"));
+    edit_transtype_label->setText(tr("Start Transition Type:"));
   }
 }
 
@@ -402,7 +374,7 @@ void EditEvent::okData()
      (edit_logline->status()==RDLogLine::Paused)) {
     if(edit_timetype_box->isChecked()) {
       edit_logline->setTimeType(RDLogLine::Hard);
-      switch(edit_grace_group->selectedId()) {
+      switch(edit_grace_bgroup->checkedId()) {
 	  case 0:
 	    edit_logline->setGraceTime(0);
 	    break;
@@ -469,28 +441,36 @@ void EditEvent::cancelData()
 
 void EditEvent::resizeEvent(QResizeEvent *e)
 {
-  edit_time_edit->setGeometry(85,19,85,20);
-  edit_grace_group->setGeometry(175,11,435,50);
-  edit_grace_edit->setGeometry(538,31,65,20);
-  edit_transtype_box->setGeometry(485,68,110,26);
   edit_timetype_box->setGeometry(10,22,15,15);
-  edit_time_label->setGeometry(190,68,290,26);
   edit_timetype_label->setGeometry(30,21,85,17);
+  edit_time_edit->setGeometry(85,19,85,20);
+
+  edit_grace_group->setGeometry(175,11,435,50);
+  edit_grace_bgroup->button(0)->setGeometry(10,21,145,20);
+  edit_grace_bgroup->button(1)->setGeometry(155,21,105,20);
+  edit_grace_bgroup->button(2)->setGeometry(265,21,95,20);
+  edit_grace_edit->setGeometry(538,31,65,20);
+
   edit_overlap_box->setGeometry(30,72,15,15);
-  edit_overlap_label->setGeometry(50,68,130,26);
-  edit_horizrule_label->setGeometry(0,100,size().width(),3);
-  edit_cue_edit->setGeometry(20,110,edit_cue_edit->sizeHint().width(),
+  edit_overlap_label->setGeometry(50,68,400,26);
+
+  edit_transtype_label->setGeometry(10,90,470,26);
+  edit_transtype_box->setGeometry(485,90,110,26);
+
+  edit_horizrule_label->setGeometry(0,122,size().width(),3);
+
+  edit_cue_edit->setGeometry(20,132,edit_cue_edit->sizeHint().width(),
 			     edit_cue_edit->sizeHint().height());
   if(edit_cue_edit->isShown()) {
     edit_cart_notes_label->
-      setGeometry(15,105+edit_cue_edit->sizeHint().height(),
+      setGeometry(15,127+edit_cue_edit->sizeHint().height(),
 		  size().width()-20,20);
-    edit_cart_notes_text->setGeometry(10,125+edit_cue_edit->sizeHint().height(),
+    edit_cart_notes_text->setGeometry(10,147+edit_cue_edit->sizeHint().height(),
 				      size().width()-20,100);
   }
   else {
-    edit_cart_notes_label->setGeometry(15,105,size().width()-20,20);
-    edit_cart_notes_text->setGeometry(10,125,size().width()-20,100);
+    edit_cart_notes_label->setGeometry(15,127,size().width()-20,20);
+    edit_cart_notes_text->setGeometry(10,147,size().width()-20,100);
   }
   edit_ok_button->setGeometry(size().width()-180,size().height()-60,80,50);
   edit_cancel_button->setGeometry(size().width()-90,size().height()-60,80,50);

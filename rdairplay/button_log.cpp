@@ -2,7 +2,7 @@
 //
 // The button log widget for RDAirPlay
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,20 +18,11 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qtimer.h>
-#include <qpixmap.h>
-#include <qpainter.h>
-
-#include <rdapplication.h>
-#include <rdlistviewitem.h>
-
 #include "button_log.h"
-#include "colors.h"
-#include "globals.h"
 
 ButtonLog::ButtonLog(RDLogPlay *log,RDCae *cae,int id,RDAirPlayConf *conf,
 		     bool allow_pause,QWidget *parent)
-  : QWidget(parent)
+  : RDWidget(parent)
 {
   log_id=id;
   log_log=log;
@@ -40,9 +31,6 @@ ButtonLog::ButtonLog(RDLogPlay *log,RDCae *cae,int id,RDAirPlayConf *conf,
   log_op_mode=RDAirPlayConf::LiveAssist;
   log_time_mode=RDAirPlayConf::TwentyFourHour;
   log_pause_enabled=allow_pause;
-
-  QFont font=QFont("Helvetica",14,QFont::Bold);
-  font.setPixelSize(14);
 
   //
   // Set Mappings

@@ -24,32 +24,14 @@
 #include <qwidget.h>
 #include <qfont.h>
 
-#include <rdapplication.h>
+#include <rdfontset.h>
 
-class RDWidget : public QWidget
+class RDWidget : public QWidget, public RDFontSet
 {
   Q_OBJECT;
  public:
   RDWidget(QWidget *parent=0,Qt::WindowFlags f=0);
   RDWidget(RDConfig *config,QWidget *parent=0,Qt::WindowFlags f=0);
-  QFont buttonFont() const;
-  QFont subButtonFont() const;
-  QFont sectionLabelFont() const;
-  QFont labelFont() const;
-  QFont subLabelFont() const;
-  QFont progressFont() const;
-  QFont dataFont() const;
-
- private:
-  void MakeFonts();
-  QFont widget_button_font;
-  QFont widget_sub_button_font;
-  QFont widget_section_label_font;
-  QFont widget_label_font;
-  QFont widget_sub_label_font;
-  QFont widget_progress_font;
-  QFont widget_data_font;
-  RDConfig *widget_config;
 };
 
 

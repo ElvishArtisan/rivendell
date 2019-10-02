@@ -20,34 +20,17 @@
 
 #include <errno.h>
 #include <math.h>
-#include <unistd.h>
-#include <signal.h>
 #include <sys/mman.h>
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <sys/wait.h>
-#include <syslog.h>
 
 #include <qapplication.h>
 #include <qmessagebox.h>
-#include <qsignalmapper.h>
 #include <qtranslator.h>
 
-#include <rd.h>
-#include <rdapplication.h>
 #include <rdconf.h>
-#include <rdaudio_port.h>
-#include <rdcart_search_text.h>
-#include <rdmixer.h>
-#include <rdcart_dialog.h>
-#include <rdmacro.h>
-#include <rdcmd_switch.h>
 #include <rdgetpasswd.h>
 #include <rddatedecode.h>
-#include <rddb.h>
 #include <rdescape_string.h>
-#include <rdhotkeys.h>
-#include <rdhotkeylist.h>
 
 #include "globals.h"
 #include "rdairplay.h"
@@ -74,8 +57,8 @@ RDHotkeys *rdhotkeys;
 //
 void SigHandler(int signo);
 
-MainWidget::MainWidget(QWidget *parent)
-  :QWidget(parent)
+MainWidget::MainWidget(RDConfig *config,QWidget *parent)
+  : RDWidget(config,parent)
 {
   prog_ptr=this;
   QString str;
@@ -177,13 +160,8 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Generate Fonts
   //
-  QFont default_font("Helvetica",12,QFont::Normal);
-  default_font.setPixelSize(12);
-  qApp->setFont(default_font);
-  QFont button_font=QFont("Helvetica",16,QFont::Bold);
-  button_font.setPixelSize(16);
   for(unsigned i=0;i<AIR_MESSAGE_FONT_QUANTITY;i++) {
-    air_message_fonts[i]=QFont("helvetica",12+2*i,QFont::Normal);
+    air_message_fonts[i]=QFont(font().family(),12+2*i,QFont::Normal);
     air_message_fonts[i].setPixelSize(12+2*i);
     air_message_metrics[i]=new QFontMetrics(air_message_fonts[i]);
   }
@@ -480,7 +458,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   air_add_button=new RDPushButton(this);
   air_add_button->setGeometry(10,sizeHint().height()-65,80,60);
-  air_add_button->setFont(button_font);
+  air_add_button->setFont(bigButtonFont());
   air_add_button->setText(tr("ADD"));
  air_add_button->setFocusPolicy(Qt::NoFocus);
   connect(air_add_button,SIGNAL(clicked()),this,SLOT(addButtonData()));
@@ -490,7 +468,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   air_delete_button=new RDPushButton(this);
   air_delete_button->setGeometry(100,sizeHint().height()-65,80,60);
-  air_delete_button->setFont(button_font);
+  air_delete_button->setFont(bigButtonFont());
   air_delete_button->setText(tr("DEL"));
   air_delete_button->setFlashColor(AIR_FLASH_COLOR);
  air_delete_button->setFocusPolicy(Qt::NoFocus);
@@ -501,7 +479,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   air_move_button=new RDPushButton(this);
   air_move_button->setGeometry(190,sizeHint().height()-65,80,60);
-  air_move_button->setFont(button_font);
+  air_move_button->setFont(bigButtonFont());
   air_move_button->setText(tr("MOVE"));
   air_move_button->setFlashColor(AIR_FLASH_COLOR);
  air_move_button->setFocusPolicy(Qt::NoFocus);
@@ -512,7 +490,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   air_copy_button=new RDPushButton(this);
   air_copy_button->setGeometry(280,sizeHint().height()-65,80,60);
-  air_copy_button->setFont(button_font);
+  air_copy_button->setFont(bigButtonFont());
   air_copy_button->setText(tr("COPY"));
   air_copy_button->setFlashColor(AIR_FLASH_COLOR);
   air_copy_button->setFocusPolicy(Qt::NoFocus);
@@ -523,7 +501,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   air_refresh_label=new RDLabel(this);
   air_refresh_label->setGeometry(390,sizeHint().height()-65,120,60);
-  air_refresh_label->setFont(button_font);
+  air_refresh_label->setFont(bigButtonFont());
   QPalette p=palette();
   p.setColor(QColorGroup::Foreground,Qt::red);
   air_refresh_label->setPalette(p);
@@ -676,7 +654,7 @@ MainWidget::MainWidget(QWidget *parent)
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
     air_log_button[i]=new QPushButton(this);
     air_log_button[i]->setGeometry(647+i*123,sizeHint().height()-65,118,60);
-    air_log_button[i]->setFont(button_font);
+    air_log_button[i]->setFont(bigButtonFont());
     air_log_button[i]->setFocusPolicy(Qt::NoFocus);
     mapper->setMapping(air_log_button[i],i);
     connect(air_log_button[i],SIGNAL(clicked()),mapper,SLOT(map()));
@@ -707,7 +685,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   air_panel_button=new QPushButton(this);
   air_panel_button->setGeometry(562,sizeHint().height()-65,80,60);
-  air_panel_button->setFont(button_font);
+  air_panel_button->setFont(bigButtonFont());
   air_panel_button->setText(tr("Sound\nPanel"));
   air_panel_button->setPalette(active_color);
   air_panel_button->setFocusPolicy(Qt::NoFocus);
@@ -2404,7 +2382,9 @@ int main(int argc,char *argv[])
   //
   // Start Event Loop
   //
-  MainWidget *w=new MainWidget();
+  RDConfig *config=new RDConfig();
+  config->load();
+  MainWidget *w=new MainWidget(config);
   a.setMainWidget(w);
   w->setGeometry(QRect(QPoint(0,0),w->sizeHint()));
   w->show();

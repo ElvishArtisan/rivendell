@@ -24,32 +24,14 @@
 #include <qdialog.h>
 #include <qfont.h>
 
-#include <rdapplication.h>
+#include <rdfontset.h>
 
-class RDDialog : public QDialog
+class RDDialog : public QDialog, public RDFontSet
 {
   Q_OBJECT;
  public:
   RDDialog(QWidget *parent=0,Qt::WindowFlags f=0);
   RDDialog(RDConfig *config,QWidget *parent=0,Qt::WindowFlags f=0);
-  QFont buttonFont() const;
-  QFont subButtonFont() const;
-  QFont sectionLabelFont() const;
-  QFont labelFont() const;
-  QFont subLabelFont() const;
-  QFont progressFont() const;
-  QFont dataFont() const;
-
- private:
-  void MakeFonts();
-  QFont dialog_button_font;
-  QFont dialog_sub_button_font;
-  QFont dialog_section_label_font;
-  QFont dialog_label_font;
-  QFont dialog_sub_label_font;
-  QFont dialog_progress_font;
-  QFont dialog_data_font;
-  RDConfig *dialog_config;
 };
 
 

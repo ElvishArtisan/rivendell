@@ -2,7 +2,7 @@
 //
 //   An flashing button widget.
 //
-//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -28,13 +28,15 @@
 //Added by qt3to4:
 #include <QMouseEvent>
 
+#include <rdfontset.h>
+
 /*
  * Widget Defaults
  */
 #define RDPUSHBUTTON_DEFAULT_FLASH_PERIOD 300
 #define RDPUSHBUTTON_DEFAULT_FLASH_COLOR Qt::blue
 
-class RDPushButton : public QPushButton
+class RDPushButton : public QPushButton, public RDFontSet
 {
   Q_OBJECT
  public:

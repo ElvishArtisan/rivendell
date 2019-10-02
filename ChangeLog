@@ -19135,3 +19135,6 @@
 2019-10-01 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored dialogs in the convenience library to use the
 	'RDDialog' and 'RDWidget' base classes.
+2019-10-02 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored rdairplay(1) to use the 'RDDialog' and 'RDWidget'
+	base classes.

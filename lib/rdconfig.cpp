@@ -171,9 +171,9 @@ int RDConfig::fontLabelSize() const
 }
 
 
-int RDConfig::fontDataSize() const
+int RDConfig::fontDefaultSize() const
 {
-  return conf_font_data_size;
+  return conf_font_default_size;
 }
 
 
@@ -536,7 +536,7 @@ bool RDConfig::load()
   conf_font_family=profile->stringValue("Fonts","Family");
   conf_font_button_size=profile->intValue("Fonts","ButtonSize",-1);
   conf_font_label_size=profile->intValue("Fonts","LabelSize",-1);
-  conf_font_data_size=profile->intValue("Fonts","DataSize",-1);
+  conf_font_default_size=profile->intValue("Fonts","DefaultSize",-1);
 
   conf_provisioning_create_host=
     profile->boolValue("Provisioning","CreateHost");
@@ -707,7 +707,7 @@ void RDConfig::clear()
   conf_font_family="";
   conf_font_button_size=-1;
   conf_font_label_size=-1;
-  conf_font_data_size=-1;
+  conf_font_default_size=-1;
   conf_audio_store_cae_hostname="";
   conf_jack_ports[0].clear();
   conf_jack_ports[1].clear();

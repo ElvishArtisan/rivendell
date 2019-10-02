@@ -2,7 +2,7 @@
 //
 // The post counter widget for Rivendell
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,18 +21,15 @@
 #ifndef POST_COUNTER_H
 #define POST_COUNTER_H
 
-#include <qpushbutton.h>
-#include <qdatetime.h>
-#include <qlabel.h>
-
 #include <rdairplay_conf.h>
+#include <rdpushbutton.h>
 
 //
 // Settings
 //
 #define POST_COUNTER_MARGIN 1000
 
-class PostCounter : public QPushButton
+class PostCounter : public RDPushButton
 {
  Q_OBJECT
  public:
@@ -56,8 +53,6 @@ class PostCounter : public QPushButton
   int post_offset;
   bool post_offset_valid;
   bool post_running;
-  QFont post_large_font;
-  QFont post_small_font;
   QPalette post_early_palette;
   QPalette post_ontime_palette;
   QPalette post_late_palette;
@@ -66,4 +61,4 @@ class PostCounter : public QPushButton
   QTime post_set_time;
 };
 
-#endif
+#endif  // POST_COUNTER_H

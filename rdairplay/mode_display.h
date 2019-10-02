@@ -2,7 +2,7 @@
 //
 // The mode display widget for RDAirPlay in Rivendell
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,12 +21,8 @@
 #ifndef MODE_DISPLAY_H
 #define MODE_DISPLAY_H
 
-#include <qpushbutton.h>
-#include <qlabel.h>
-#include <qpalette.h>
-#include <qpixmap.h>
-
 #include <rdairplay_conf.h>
+#include <rdpushbutton.h>
 
 //
 // Widget Settings
@@ -34,7 +30,7 @@
 #define MANUAL_LABEL "Manual"
 #define AUTO_LABEL "Automatic"
 
-class ModeDisplay : public QPushButton
+class ModeDisplay : public RDPushButton
 {
  Q_OBJECT
  public:
@@ -51,9 +47,6 @@ class ModeDisplay : public QPushButton
   QPalette auto_color;
   QPalette manual_color;
   QPalette live_assist_color;
-  QFont mode_large_font;
-  QFont mode_small_font;
-  QFont mode_tiny_font;
 };
 
-#endif
+#endif  // MODE_DISPLAY_H
