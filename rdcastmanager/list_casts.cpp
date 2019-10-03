@@ -2,7 +2,7 @@
 //
 // List Rivendell Casts
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,38 +18,15 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <math.h>
-#include <stdlib.h>
-#include <unistd.h>
-
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <q3buttongroup.h>
-#include <qdatetime.h>
-#include <qfile.h>
 #include <qapplication.h>
-#include <q3filedialog.h>
+#include <qfiledialog.h>
+#include <qmessagebox.h>
 
-#include <rdapplication.h>
 #include <rdcastsearch.h>
 #include <rdconf.h>
-#include <rdcut.h>
 #include <rdcut_dialog.h>
-#include <rddb.h>
 #include <rdescape_string.h>
 #include <rdfeedlog.h>
-#include <rdpodcast.h>
-#include <rdsettings.h>
-#include <rdtextfile.h>
-#include <rdwavefile.h>
-#include <rdurl.h>
 
 #include "edit_cast.h"
 #include "globals.h"
@@ -64,7 +41,7 @@
 #include "../icons/whiteball.xpm"
 
 ListCasts::ListCasts(unsigned feed_id,QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   setModal(true);
 
@@ -73,20 +50,9 @@ ListCasts::ListCasts(unsigned feed_id,QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
 
   setWindowTitle("RDCastManager - "+tr("Podcast List"));
-
-  //
-  // Create Fonts
-  //
-  QFont font=QFont("Helvetica",12,QFont::Bold);
-  font.setPixelSize(12);
-  QFont list_font=QFont("Helvetica",12,QFont::Normal);
-  list_font.setPixelSize(12);
-  QFont small_font=QFont("Helvetica",10,QFont::Normal);
-  small_font.setPixelSize(10);
 
   //
   // Create Icons
@@ -104,10 +70,9 @@ ListCasts::ListCasts(unsigned feed_id,QWidget *parent)
   // Progress Dialog
   //
   list_progress_dialog=
-    new Q3ProgressDialog(tr("Uploading Audio..."),"Cancel",4,this,NULL);
-  list_progress_dialog->setCaption(tr("Progress"));
+    new QProgressDialog(tr("Uploading Audio..."),tr("Cancel"),0,list_feed->totalPostSteps(),this);
+  list_progress_dialog->setWindowTitle("RDCastManager - "+tr("Progress"));
   list_progress_dialog->setMinimumDuration(0);
-  list_progress_dialog->setTotalSteps(list_feed->totalPostSteps());
   connect(list_feed,SIGNAL(postProgressChanged(int)),
 	  this,SLOT(postProgressChangedData(int)));
 
@@ -117,7 +82,7 @@ ListCasts::ListCasts(unsigned feed_id,QWidget *parent)
   list_filter_edit=new QLineEdit(this);
   list_filter_label=
     new QLabel(list_filter_edit,tr("Filter:"),this);
-  list_filter_label->setFont(font);
+  list_filter_label->setFont(labelFont());
   list_filter_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   connect(list_filter_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(filterChangedData(const QString &)));
@@ -128,7 +93,7 @@ ListCasts::ListCasts(unsigned feed_id,QWidget *parent)
   list_unexpired_check=new QCheckBox(this);
   list_unexpired_label=
     new QLabel(list_unexpired_check,tr("Only Show Unexpired Casts"),this);
-  list_unexpired_label->setFont(font);
+  list_unexpired_label->setFont(labelFont());
   list_unexpired_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   connect(list_unexpired_check,SIGNAL(toggled(bool)),
 	  this,SLOT(notexpiredToggledData(bool)));
@@ -139,7 +104,7 @@ ListCasts::ListCasts(unsigned feed_id,QWidget *parent)
   list_active_check=new QCheckBox(this);
   list_active_label=
     new QLabel(list_active_check,tr("Only Show Active Casts"),this);
-  list_active_label->setFont(font);
+  list_active_label->setFont(labelFont());
   list_active_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   connect(list_active_check,SIGNAL(toggled(bool)),
 	  this,SLOT(activeToggledData(bool)));
@@ -175,7 +140,7 @@ ListCasts::ListCasts(unsigned feed_id,QWidget *parent)
   //  Post Cart Button
   //
   list_cart_button=new QPushButton(this);
-  list_cart_button->setFont(font);
+  list_cart_button->setFont(buttonFont());
   list_cart_button->setText(tr("Post From\nCar&t/Cut"));
   connect(list_cart_button,SIGNAL(clicked()),this,SLOT(addCartData()));
 
@@ -183,7 +148,7 @@ ListCasts::ListCasts(unsigned feed_id,QWidget *parent)
   //  Post File Button
   //
   list_file_button=new QPushButton(this);
-  list_file_button->setFont(font);
+  list_file_button->setFont(buttonFont());
   list_file_button->setText(tr("Post From\n&File"));
   connect(list_file_button,SIGNAL(clicked()),this,SLOT(addFileData()));
 
@@ -191,7 +156,7 @@ ListCasts::ListCasts(unsigned feed_id,QWidget *parent)
   //  Edit Button
   //
   list_edit_button=new QPushButton(this);
-  list_edit_button->setFont(font);
+  list_edit_button->setFont(buttonFont());
   list_edit_button->setText(tr("&Edit"));
   connect(list_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
 
@@ -199,7 +164,7 @@ ListCasts::ListCasts(unsigned feed_id,QWidget *parent)
   //  Delete Button
   //
   list_delete_button=new QPushButton(this);
-  list_delete_button->setFont(font);
+  list_delete_button->setFont(buttonFont());
   list_delete_button->setText(tr("&Delete"));
   connect(list_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
 
@@ -207,7 +172,7 @@ ListCasts::ListCasts(unsigned feed_id,QWidget *parent)
   //  Report Button
   //
   list_report_button=new QPushButton(this);
-  list_report_button->setFont(font);
+  list_report_button->setFont(buttonFont());
   list_report_button->setText(tr("Subscription\n&Report"));
   connect(list_report_button,SIGNAL(clicked()),this,SLOT(reportData()));
 
@@ -216,7 +181,7 @@ ListCasts::ListCasts(unsigned feed_id,QWidget *parent)
   //
   list_close_button=new QPushButton(this);
   list_close_button->setDefault(true);
-  list_close_button->setFont(font);
+  list_close_button->setFont(buttonFont());
   list_close_button->setText(tr("&Close"));
   connect(list_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 
@@ -277,7 +242,8 @@ void ListCasts::addCartData()
 
 void ListCasts::addFileData()
 {
-  QString srcfile=Q3FileDialog::getOpenFileName("",RD_AUDIO_FILE_FILTER,this);
+  QString srcfile=
+    QFileDialog::getOpenFileName(this,"RDCastManager","",RD_AUDIO_FILE_FILTER);
   if(srcfile.isNull()) {
     return;
   }
@@ -330,11 +296,11 @@ void ListCasts::deleteData()
     return;
   }
 
-  Q3ProgressDialog *pd=
-    new Q3ProgressDialog(tr("Deleting Podcast..."),"Cancel",2,this,NULL);
+  QProgressDialog *pd=
+    new QProgressDialog(tr("Deleting Podcast..."),"Cancel",0,2,this);
   pd->setCaption(tr("Progress"));
   pd->setMinimumDuration(0);
-  pd->setProgress(0);
+  pd->setValue(0);
   qApp->processEvents();
   sleep(1);
   qApp->processEvents();
@@ -350,7 +316,7 @@ void ListCasts::deleteData()
       return;
     }
   }
-  pd->setProgress(1);
+  pd->setValue(1);
   qApp->processEvents();
   sql=QString().sprintf("delete from PODCASTS where ID=%u",item->id());
   q=new RDSqlQuery(sql);
@@ -414,8 +380,8 @@ void ListCasts::activeToggledData(bool state)
 
 void ListCasts::postProgressChangedData(int step)
 {
-  list_progress_dialog->setProgress(step);
-  if(step==list_progress_dialog->totalSteps()) {
+  list_progress_dialog->setValue(step);
+  if(step==list_progress_dialog->maximum()) {
     list_progress_dialog->reset();
   }
   qApp->processEvents();
@@ -441,7 +407,7 @@ void ListCasts::resizeEvent(QResizeEvent *e)
   list_file_button->setGeometry(100,size().height()-60,80,50);
   list_edit_button->setGeometry(190,size().height()-60,80,50);
   list_delete_button->setGeometry(280,size().height()-60,80,50);
-  list_report_button->setGeometry(415,size().height()-60,80,50);
+  list_report_button->setGeometry(400,size().height()-60,110,50);
   list_close_button->setGeometry(size().width()-90,size().height()-60,80,50);
 }
 

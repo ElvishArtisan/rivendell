@@ -288,6 +288,10 @@ Podcast trotzdem löschen?</translation>
         <source>Continue deleting cast?</source>
         <translation>Pokračovat v mazání podcastu?</translation>
     </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MainWidget</name>

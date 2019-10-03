@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Cast
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,23 +21,20 @@
 #ifndef EDIT_CAST_H
 #define EDIT_CAST_H
 
-#include <vector>
 
-#include <qdialog.h>
-#include <q3textedit.h>
-#include <qspinbox.h>
-#include <qlineedit.h>
-#include <qsqldatabase.h>
+#include <qbuttongroup.h>
 #include <qcombobox.h>
-#include <q3datetimeedit.h>
+#include <qdatetimeedit.h>
 #include <qlabel.h>
+#include <qlineedit.h>
 #include <qpushbutton.h>
-#include <q3buttongroup.h>
+#include <qtextedit.h>
 
+#include <rddialog.h>
 #include <rdfeed.h>
 #include <rdpodcast.h>
 
-class EditCast : public QDialog
+class EditCast : public RDDialog
 {
  Q_OBJECT
  public:
@@ -61,7 +58,7 @@ class EditCast : public QDialog
   QLineEdit *cast_item_title_edit;
   QLineEdit *cast_item_author_edit;
   QLineEdit *cast_item_origin_edit;
-  Q3TextEdit *cast_item_description_edit;
+  QTextEdit *cast_item_description_edit;
   QLineEdit *cast_item_category_edit;
   QLineEdit *cast_item_comments_edit;
   QLineEdit *cast_item_sourcetext_edit;
@@ -70,9 +67,9 @@ class EditCast : public QDialog
   QComboBox *cast_item_expiration_box;
   QLabel *cast_item_expiration_label;
   QPushButton *cast_item_expiration_button;
-  Q3DateEdit *cast_item_expiration_edit;
-  Q3DateTimeEdit *cast_item_effective_edit;
-  Q3ButtonGroup *cast_item_status_group;
+  QDateEdit *cast_item_expiration_edit;
+  QDateTimeEdit *cast_item_effective_edit;
+  QButtonGroup *cast_item_status_group;
   int cast_ypos;
   RDPodcast::Status cast_status;
 };
