@@ -18,45 +18,24 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <stdlib.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <signal.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <math.h>
-#include <linux/cdrom.h>
-
 #include <qapplication.h>
-#include <qcheckbox.h>
-#include <q3filedialog.h>
 #include <qmessagebox.h>
-#include <qpushbutton.h>
 
-#include <rd.h>
-#include <rdapplication.h>
 #include <rdaudioimport.h>
-#include <rdcart.h>
 #include <rdcdripper.h>
 #include <rdconf.h>
-#include <rdcut.h>
 #include <rdcut_dialog.h>
-#include <rddb.h>
-#include <rdescape_string.h>
 #include <rdgroup.h>
 #include <rdlist_groups.h>
 #include <rdtempdirectory.h>
-#include <rdwavefile.h>
 
 #include "disk_ripper.h"
 #include "globals.h"
 
 DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
 		       bool profile_rip,QWidget *parent) 
-  : QDialog(parent)
+  : RDDialog(parent)
 {
-  setModal(true);
-
   rip_isrc_read=false;
   rip_filter_text=filter;
   rip_group_text=group;
@@ -64,21 +43,12 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   rip_profile_rip=profile_rip;
   rip_aborting=false;
 
+  setWindowTitle("RDLibrary - "+tr("Rip Disk"));
+
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-
-  //
-  // Generate Fonts
-  //
-  QFont button_font=QFont("Helvetica",12,QFont::Bold);
-  button_font.setPixelSize(12);
-  QFont label_font=QFont("Helvetica",12,QFont::Bold);
-  label_font.setPixelSize(12);
-
-  setWindowTitle("RDLibrary - "+tr("Rip Disk"));
+  setMinimumSize(sizeHint());
 
   //
   // Create Dialogs
@@ -132,7 +102,7 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   //
   QLabel *label=new QLabel(tr("Artist:"),this);
   label->setGeometry(10,10,50,18);
-  label->setFont(label_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   rip_artist_edit=new QLineEdit(this);
 
@@ -141,7 +111,7 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   //
   label=new QLabel(tr("Album:"),this);
   label->setGeometry(10,32,50,18);
-  label->setFont(label_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   rip_album_edit=new QLineEdit(this);
 
@@ -150,9 +120,9 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   //
   label=new QLabel(tr("Other:"),this);
   label->setGeometry(10,54,50,16);
-  label->setFont(label_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight);
-  rip_other_edit=new Q3TextEdit(this);
+  rip_other_edit=new QTextEdit(this);
   rip_other_edit->setReadOnly(true);
 
   //
@@ -163,7 +133,7 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   rip_apply_box->setDisabled(true);
   rip_apply_label=
     new QLabel(rip_apply_box,tr("Apply FreeDB Values to Carts"),this);
-  rip_apply_label->setFont(label_font);
+  rip_apply_label->setFont(labelFont());
   rip_apply_label->setAlignment(Qt::AlignLeft);
   rip_apply_box->setChecked(false);
   rip_apply_label->setDisabled(true);
@@ -183,7 +153,7 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
 	  this,
 	  SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
   rip_track_label=new QLabel(rip_track_list,tr("Tracks"),this);
-  rip_track_label->setFont(label_font);
+  rip_track_label->setFont(sectionLabelFont());
   rip_track_list->addColumn(tr("TRACK"));
   rip_track_list->setColumnAlignment(0,Qt::AlignHCenter);
   rip_track_list->addColumn(tr("LENGTH"));
@@ -200,14 +170,14 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   //
   // Progress Bars
   //
-  rip_disk_bar=new Q3ProgressBar(this);
+  rip_disk_bar=new QProgressBar(this);
   rip_diskbar_label=new QLabel(tr("Disk Progress"),this);
-  rip_diskbar_label->setFont(label_font);
+  rip_diskbar_label->setFont(labelFont());
   rip_diskbar_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   rip_diskbar_label->setDisabled(true);
-  rip_track_bar=new Q3ProgressBar(this);
+  rip_track_bar=new QProgressBar(this);
   rip_trackbar_label=new QLabel(tr("Track Progress"),this);
-  rip_trackbar_label->setFont(label_font);
+  rip_trackbar_label->setFont(labelFont());
   rip_trackbar_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   rip_trackbar_label->setDisabled(true);
 
@@ -235,7 +205,7 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   // Set Cut Button
   //
   rip_setcut_button=new QPushButton(tr("Set\n&Cart/Cut"),this);
-  rip_setcut_button->setFont(button_font);
+  rip_setcut_button->setFont(buttonFont());
   rip_setcut_button->setDisabled(true);
   connect(rip_setcut_button,SIGNAL(clicked()),this,SLOT(setCutButtonData()));
 
@@ -243,7 +213,7 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   // Set Multi Tracks Button
   //
   rip_setall_button=new QPushButton(tr("Add Cart\nPer Track"),this);
-  rip_setall_button->setFont(button_font);
+  rip_setall_button->setFont(buttonFont());
   rip_setall_button->setDisabled(true);
   connect(rip_setall_button,SIGNAL(clicked()),this,SLOT(setMultiButtonData()));
 
@@ -251,7 +221,7 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   // Set Single Button
   //
   rip_setsingle_button=new QPushButton(tr("Add Single\nCart"),this);
-  rip_setsingle_button->setFont(button_font);
+  rip_setsingle_button->setFont(buttonFont());
   rip_setsingle_button->setDisabled(true);
   connect(rip_setsingle_button,SIGNAL(clicked()),
 	  this,SLOT(setSingleButtonData()));
@@ -260,7 +230,7 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   // Set Cart Label Button
   //
   rip_cartlabel_button=new QPushButton(tr("Modify\nCart Label"),this);
-  rip_cartlabel_button->setFont(button_font);
+  rip_cartlabel_button->setFont(buttonFont());
   rip_cartlabel_button->setDisabled(true);
   connect(rip_cartlabel_button,SIGNAL(clicked()),
 	  this,SLOT(modifyCartLabelData()));
@@ -269,7 +239,7 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   // Clear Selection Button
   //
   rip_clear_button=new QPushButton(tr("Clear\nSelection"),this);
-  rip_clear_button->setFont(button_font);
+  rip_clear_button->setFont(buttonFont());
   rip_clear_button->setDisabled(true);
   connect(rip_clear_button,SIGNAL(clicked()),this,SLOT(clearSelectionData()));
 
@@ -279,7 +249,7 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   rip_normalize_box=new QCheckBox(this);
   rip_normalize_box->setChecked(true);
   rip_normalizebox_label=new QLabel(rip_normalize_box,tr("Normalize"),this);
-  rip_normalizebox_label->setFont(label_font);
+  rip_normalizebox_label->setFont(labelFont());
   rip_normalizebox_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   connect(rip_normalize_box,SIGNAL(toggled(bool)),
 	  this,SLOT(normalizeCheckData(bool)));
@@ -290,10 +260,10 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   rip_normalize_spin=new QSpinBox(this);
   rip_normalize_spin->setRange(-30,0);
   rip_normalize_label=new QLabel(rip_normalize_spin,tr("Level:"),this);
-  rip_normalize_label->setFont(label_font);
+  rip_normalize_label->setFont(labelFont());
   rip_normalize_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   rip_normalize_unit=new QLabel(tr("dBFS"),this);
-  rip_normalize_unit->setFont(label_font);
+  rip_normalize_unit->setFont(labelFont());
   rip_normalize_unit->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
@@ -302,7 +272,7 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   rip_autotrim_box=new QCheckBox(this);
   rip_autotrim_box->setChecked(true);
   rip_autotrimbox_label=new QLabel(rip_autotrim_box,tr("Autotrim"),this);
-  rip_autotrimbox_label->setFont(label_font);
+  rip_autotrimbox_label->setFont(labelFont());
   rip_autotrimbox_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   connect(rip_autotrim_box,SIGNAL(toggled(bool)),
 	  this,SLOT(autotrimCheckData(bool)));
@@ -313,10 +283,10 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   rip_autotrim_spin=new QSpinBox(this);
   rip_autotrim_spin->setRange(-99,0);
   rip_autotrim_label=new QLabel(rip_autotrim_spin,tr("Level:"),this);
-  rip_autotrim_label->setFont(label_font);
+  rip_autotrim_label->setFont(labelFont());
   rip_autotrim_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   rip_autotrim_unit=new QLabel(tr("dBFS"),this);
-  rip_autotrim_unit->setFont(label_font);
+  rip_autotrim_unit->setFont(labelFont());
   rip_autotrim_unit->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
@@ -324,14 +294,14 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   //
   rip_channels_box=new QComboBox(this);
   rip_channels_label=new QLabel(rip_channels_box,tr("Channels:"),this);
-  rip_channels_label->setFont(label_font);
+  rip_channels_label->setFont(labelFont());
   rip_channels_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Rip Disc Button
   //
   rip_rip_button=new QPushButton(tr("&Rip\nDisc"),this);
-  rip_rip_button->setFont(button_font);
+  rip_rip_button->setFont(buttonFont());
   connect(rip_rip_button,SIGNAL(clicked()),this,SLOT(ripDiskButtonData()));
   rip_rip_button->setDisabled(true);
 
@@ -339,7 +309,7 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   // Close Button
   //
   rip_close_button=new QPushButton(tr("&Close"),this);
-  rip_close_button->setFont(button_font);
+  rip_close_button->setFont(buttonFont());
   connect(rip_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 
   //
@@ -430,7 +400,7 @@ void DiskRipper::ripDiskButtonData()
       tracks++;
     }
   }
-  rip_disk_bar->setTotalSteps(tracks);
+  rip_disk_bar->setMaximum(tracks);
 
   //
   // Read ISRCs
@@ -471,8 +441,7 @@ void DiskRipper::ripDiskButtonData()
       rip_channels_box->setDisabled(true);
       rip_autotrim_box->setDisabled(true);
       rip_autotrim_spin->setDisabled(true);
-      rip_disk_bar->setProgress(tracks++);
-      rip_disk_bar->setPercentageVisible(true);
+      rip_disk_bar->setValue(tracks++);
       int start_track=item->text(0).toInt();
       int end_track=rip_end_track[item->text(0).toInt()-1];
       RipTrack(start_track,end_track,rip_cutnames[item->text(0).toInt()-1],
@@ -497,7 +466,6 @@ void DiskRipper::ripDiskButtonData()
   rip_channels_box->setEnabled(true);
   rip_autotrim_box->setEnabled(true);
   rip_autotrim_spin->setEnabled(true);
-  rip_disk_bar->setPercentageVisible(false);
   rip_disk_bar->reset();
   rip_diskbar_label->setDisabled(true);
   rip_trackbar_label->setDisabled(true);
@@ -1052,9 +1020,9 @@ void DiskRipper::RipTrack(int track,int end_track,QString cutname,QString title)
   else {
     ripper=new RDCdRipper(NULL,this);
   }
-  rip_track_bar->setTotalSteps(ripper->totalSteps()+1);
+  rip_track_bar->setMaximum(ripper->totalSteps()+1);
   connect(ripper,SIGNAL(progressChanged(int)),
-	  rip_track_bar,SLOT(setProgress(int)));
+	  rip_track_bar,SLOT(setValue(int)));
   connect(rip_rip_button,SIGNAL(clicked()),ripper,SLOT(abort()));
   RDAudioImport *conv=NULL;
   RDSettings *settings=NULL;
@@ -1123,8 +1091,7 @@ void DiskRipper::RipTrack(int track,int end_track,QString cutname,QString title)
   delete ripper;
   unlink(tmpfile);
   rmdir(tmpdir);
-  rip_track_bar->setProgress(0);
-  rip_track_bar->setPercentageVisible(true);
+  rip_track_bar->setValue(0);
 
   delete cart;
   delete cut;

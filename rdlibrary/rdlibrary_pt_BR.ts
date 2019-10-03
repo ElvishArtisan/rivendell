@@ -435,10 +435,6 @@ Rip</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Rip Track</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Title:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -457,6 +453,18 @@ Rip</source>
     <message>
         <source>Rip CD</source>
         <translation type="unfinished">Extrair CD</translation>
+    </message>
+    <message>
+        <source>Rip
+Track</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DiskGauge</name>
+    <message>
+        <source>Free</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1016,23 +1024,23 @@ limite do sistema!   Você ainda quer salvar?</translation>
     <name>Filter</name>
     <message>
         <source>Library Filter</source>
-        <translation>Filtro </translation>
+        <translation type="obsolete">Filtro </translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>C&amp;lear</source>
-        <translation>&amp;Limpar</translation>
+        <translation type="obsolete">&amp;Limpar</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>&amp;Filter:</source>
-        <translation>&amp;Filtrar:</translation>
+        <translation type="obsolete">&amp;Filtrar:</translation>
     </message>
 </context>
 <context>
@@ -1468,6 +1476,10 @@ Você ainda quer deletá-lo?</translation>
     </message>
     <message>
         <source>Matching Carts:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

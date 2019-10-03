@@ -2,7 +2,7 @@
 //
 // The macro cart editor for RDLibrary.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,23 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <unistd.h>
-
-#include <qbitmap.h>
-#include <qdialog.h>
 #include <qstring.h>
-#include <q3listview.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <q3buttongroup.h>
-
-#include <rd.h>
-#include <rdapplication.h>
-#include <rdaudio_exists.h>
 
 #include "cdripper.h"
 #include "edit_macro.h"
@@ -42,9 +26,8 @@
 #include "macro_cart.h"
 #include "record_cut.h"
 
-
 MacroCart::MacroCart(RDCart *cart,QWidget *parent)
-  : QWidget(parent)
+  : RDWidget(parent)
 {
   rdcart_length=0;
   rdcart_cart=cart;
@@ -53,19 +36,11 @@ MacroCart::MacroCart(RDCart *cart,QWidget *parent)
   rdcart_allow_modification=rda->user()->modifyCarts();
 
   //
-  // Generate Fonts
-  //
-  QFont button_font=QFont("Helvetica",12,QFont::Bold);
-  button_font.setPixelSize(12);
-  QFont line_edit_font=QFont("Helvetica",12,QFont::Normal);
-  line_edit_font.setPixelSize(12);
-
-  //
   // Add Macro Button
   //
   rdcart_add_button=new QPushButton(this);
   rdcart_add_button->setGeometry(10,0,80,50);
-  rdcart_add_button->setFont(button_font);
+  rdcart_add_button->setFont(buttonFont());
   rdcart_add_button->setText(tr("Add"));
   rdcart_add_button->setEnabled(false);
   connect(rdcart_add_button,SIGNAL(clicked()),this,SLOT(addMacroData()));
@@ -75,7 +50,7 @@ MacroCart::MacroCart(RDCart *cart,QWidget *parent)
   //
   rdcart_delete_button=new QPushButton(this);
   rdcart_delete_button->setGeometry(10,60,80,50);
-  rdcart_delete_button->setFont(button_font);
+  rdcart_delete_button->setFont(buttonFont());
   rdcart_delete_button->setText(tr("Delete"));
   rdcart_delete_button->setEnabled(false);
   connect(rdcart_delete_button,SIGNAL(clicked()),this,SLOT(deleteMacroData()));
@@ -85,7 +60,7 @@ MacroCart::MacroCart(RDCart *cart,QWidget *parent)
   //
   rdcart_copy_button=new QPushButton(this);
   rdcart_copy_button->setGeometry(10,120,80,50);
-  rdcart_copy_button->setFont(button_font);
+  rdcart_copy_button->setFont(buttonFont());
   rdcart_copy_button->setText(tr("Copy"));
   rdcart_copy_button->setEnabled(false);
   connect(rdcart_copy_button,SIGNAL(clicked()),this,SLOT(copyMacroData()));
@@ -95,7 +70,7 @@ MacroCart::MacroCart(RDCart *cart,QWidget *parent)
   //
   paste_macro_button=new QPushButton(this);
   paste_macro_button->setGeometry(10,180,80,50);
-  paste_macro_button->setFont(button_font);
+  paste_macro_button->setFont(buttonFont());
   paste_macro_button->setText(tr("Paste"));
   paste_macro_button->setDisabled(true);
   paste_macro_button->setEnabled(false);
@@ -129,7 +104,7 @@ MacroCart::MacroCart(RDCart *cart,QWidget *parent)
 
   rdcart_macro_list_label=new QLabel(rdcart_macro_list,tr("Macros"),this);
   rdcart_macro_list_label->setGeometry(105,345,430,22);
-  rdcart_macro_list_label->setFont(QFont("Helvetica",16,QFont::Bold));
+  rdcart_macro_list_label->setFont(progressFont());
 
   RefreshList();
 
@@ -138,7 +113,7 @@ MacroCart::MacroCart(RDCart *cart,QWidget *parent)
   //
   rdcart_edit_button=new QPushButton(this);
   rdcart_edit_button->setGeometry(550,0,80,50);
-  rdcart_edit_button->setFont(button_font);
+  rdcart_edit_button->setFont(buttonFont());
   rdcart_edit_button->setText(tr("Edit"));
   rdcart_edit_button->setEnabled(false);
   connect(rdcart_edit_button,SIGNAL(clicked()),this,SLOT(editMacroData()));
@@ -148,7 +123,7 @@ MacroCart::MacroCart(RDCart *cart,QWidget *parent)
   //
   rdcart_runline_button=new QPushButton(this);
   rdcart_runline_button->setGeometry(550,120,80,50);
-  rdcart_runline_button->setFont(button_font);
+  rdcart_runline_button->setFont(buttonFont());
   rdcart_runline_button->setText(tr("Run\nLine"));
   rdcart_runline_button->setEnabled(false);
   connect(rdcart_runline_button,SIGNAL(clicked()),
@@ -159,7 +134,7 @@ MacroCart::MacroCart(RDCart *cart,QWidget *parent)
   //
   rdcart_runcart_button=new QPushButton(this);
   rdcart_runcart_button->setGeometry(550,180,80,50);
-  rdcart_runcart_button->setFont(button_font);
+  rdcart_runcart_button->setFont(buttonFont());
   rdcart_runcart_button->setText(tr("Run\nCart"));
   connect(rdcart_runcart_button,SIGNAL(clicked()),
 	  this,SLOT(runCartMacroData()));

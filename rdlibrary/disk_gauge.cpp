@@ -2,7 +2,7 @@
 //
 // Disk Gauge Widget for RDLibrary.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -32,30 +32,23 @@
 #include "globals.h"
 
 DiskGauge::DiskGauge(int samp_rate,int chans,QWidget *parent)
-  : QWidget(parent)
+  : RDWidget(parent)
 {
   disk_sample_rate=samp_rate;
   disk_channels=chans;
 
-  //
-  // Generate Fonts
-  //
-  QFont label_font("Helvetica",12,QFont::Bold);
-  label_font.setPixelSize(12);
-
-  disk_label=new QLabel("Free:",this);
+  disk_label=new QLabel(tr("Free")+":",this);
   disk_label->setGeometry(0,0,50,sizeHint().height());
-  disk_label->setFont(label_font);
+  disk_label->setFont(labelFont());
   disk_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   disk_label->setDisabled(true);
 
-  disk_bar=new Q3ProgressBar(this);
-  disk_bar->setPercentageVisible(false);
+  disk_bar=new QProgressBar(this);
   disk_bar->setGeometry(55,0,sizeHint().width()-55,sizeHint().height());
   disk_bar->setDisabled(true);
 
   disk_space_label=new QLabel(this);
-  disk_space_label->setFont(label_font);
+  disk_space_label->setFont(labelFont());
   disk_space_label->setAlignment(Qt::AlignCenter);
   disk_space_label->setDisabled(true);
 
@@ -92,8 +85,8 @@ void DiskGauge::update()
      RDAudioStore::ErrorOk) {
     uint64_t free_min=GetMinutes(conv->freeBytes());
     uint64_t total_min=GetMinutes(conv->totalBytes());
-    disk_bar->setTotalSteps(total_min);
-    disk_bar->setProgress(free_min);
+    disk_bar->setMaximum(total_min);
+    disk_bar->setValue(free_min);
     disk_space_label->setText(QString().sprintf("%luh %02lum",free_min/60,
 						free_min-60*(free_min/60)));
     disk_label->setEnabled(true);

@@ -3,7 +3,7 @@
 // Edit the scheduler codes of a cart
 //
 //   (C) Copyright Stefan Gabriel <stg@st-gabriel.de>
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,28 +19,23 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
 #include <qpainter.h>
 #include <qmessagebox.h>
 
-#include <rddb.h>
-#include <edit_schedulercodes.h>
-
+#include "edit_schedulercodes.h"
 
 EditSchedulerCodes::EditSchedulerCodes(QString *sched_codes,
 				       QString *remove_codes,QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
-  setModal(true);
-
   edit_sched_codes=sched_codes;
   edit_remove_codes=remove_codes;
 
   QString sql;
   RDSqlQuery *q;
   QString str;
+
+  setWindowTitle("RDLibrary - "+tr("Select Scheduler Codes"));
 
   //
   // Fix the Window Size
@@ -56,23 +51,10 @@ EditSchedulerCodes::EditSchedulerCodes(QString *sched_codes,
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  setWindowTitle("RDLibrary - "+tr("Select Scheduler Codes"));
-
-  //
-  // Create Fonts
-  //
-  QFont font=QFont("Helvetica",11,QFont::Bold);
-  font.setPixelSize(11);
-
-  QFont listfont=QFont("Helvetica",11);
-  font.setPixelSize(11);
-
-
   //
   // Services Selector
   //
   codes_sel=new RDListSelector(this);
-  codes_sel->setFont(listfont);
   codes_sel->setGeometry(10,10,380,200);
   codes_sel->sourceSetLabel(tr("Available Codes"));
   if(edit_remove_codes==NULL) {
@@ -82,7 +64,6 @@ EditSchedulerCodes::EditSchedulerCodes(QString *sched_codes,
     codes_sel->destSetLabel(tr("ASSIGN to Carts"));
     
     remove_codes_sel=new RDListSelector(this);
-    remove_codes_sel->setFont(listfont);
     remove_codes_sel->setGeometry(sizeHint().width()+10,10,380,200);
     remove_codes_sel->sourceSetLabel(tr("Available Codes"));
     remove_codes_sel->destSetLabel(tr("REMOVE from Carts"));
@@ -97,7 +78,7 @@ EditSchedulerCodes::EditSchedulerCodes(QString *sched_codes,
   else  
     ok_button->setGeometry(2*sizeHint().width()-180,sizeHint().height()-60,80,50);
   ok_button->setDefault(true);
-  ok_button->setFont(font);
+  ok_button->setFont(buttonFont());
   ok_button->setText(tr("&OK"));
   connect(ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
@@ -111,7 +92,7 @@ EditSchedulerCodes::EditSchedulerCodes(QString *sched_codes,
   else			     
     cancel_button->setGeometry(2*sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
-  cancel_button->setFont(font);
+  cancel_button->setFont(buttonFont());
   cancel_button->setText(tr("&Cancel"));
   connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 

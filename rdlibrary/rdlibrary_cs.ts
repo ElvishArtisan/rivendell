@@ -441,7 +441,7 @@ vytahování</translation>
     </message>
     <message>
         <source>Rip Track</source>
-        <translation>Vytáhnout stopu</translation>
+        <translation type="obsolete">Vytáhnout stopu</translation>
     </message>
     <message>
         <source>Title:</source>
@@ -462,6 +462,18 @@ vytahování</translation>
     <message>
         <source>Rip CD</source>
         <translation type="unfinished">Vytáhnout z CD</translation>
+    </message>
+    <message>
+        <source>Rip
+Track</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DiskGauge</name>
+    <message>
+        <source>Free</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1030,23 +1042,23 @@ poznámky</translation>
     <name>Filter</name>
     <message>
         <source>Library Filter</source>
-        <translation>Filtr knihovny</translation>
+        <translation type="obsolete">Filtr knihovny</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>C&amp;lear</source>
-        <translation>&amp;Vyprázdnit</translation>
+        <translation type="obsolete">&amp;Vyprázdnit</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>&amp;Filter:</source>
-        <translation>&amp;Filtr:</translation>
+        <translation type="obsolete">&amp;Filtr:</translation>
     </message>
 </context>
 <context>
@@ -1493,6 +1505,10 @@ Přesto smazat?</translation>
     </message>
     <message>
         <source>Matching Carts:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

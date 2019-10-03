@@ -434,10 +434,6 @@ Rip</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Rip Track</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Title:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -456,6 +452,18 @@ Rip</source>
     <message>
         <source>Rip CD</source>
         <translation type="unfinished">Ripp CD</translation>
+    </message>
+    <message>
+        <source>Rip
+Track</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DiskGauge</name>
+    <message>
+        <source>Free</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1014,23 +1022,23 @@ Notes</source>
     <name>Filter</name>
     <message>
         <source>Library Filter</source>
-        <translation>Bibliotekfilter</translation>
+        <translation type="obsolete">Bibliotekfilter</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>C&amp;lear</source>
-        <translation>&amp;Tøm</translation>
+        <translation type="obsolete">&amp;Tøm</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Avbryt</translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
     </message>
     <message>
         <source>&amp;Filter:</source>
-        <translation>&amp;Filter:</translation>
+        <translation type="obsolete">&amp;Filter:</translation>
     </message>
 </context>
 <context>
@@ -1466,6 +1474,10 @@ Vil du sletta ho likevel?</translation>
     </message>
     <message>
         <source>Matching Carts:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
