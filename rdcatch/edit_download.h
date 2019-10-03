@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Download Event
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,22 +21,18 @@
 #ifndef EDIT_DOWNLOAD_H
 #define EDIT_DOWNLOAD_H
 
-#include <vector>
+#include <qdatetimeedit.h>
 
-#include <qdialog.h>
-#include <qsqldatabase.h>
-#include <qlineedit.h>
-#include <q3datetimeedit.h>
 #include <qcombobox.h>
 #include <qcheckbox.h>
 #include <qspinbox.h>
 #include <qlabel.h>
 
-#include <rdrecording.h>
 #include <rddeck.h>
-#include <rdcart.h>
+#include <rddialog.h>
+#include <rdrecording.h>
 
-class EditDownload : public QDialog
+class EditDownload : public RDDialog
 {
  Q_OBJECT
  public:
@@ -65,7 +61,7 @@ class EditDownload : public QDialog
   RDRecording *edit_recording;
   QCheckBox *edit_active_button;
   QComboBox *edit_station_box;
-  Q3TimeEdit *edit_starttime_edit;
+  QTimeEdit *edit_starttime_edit;
   QLineEdit *edit_description_edit;
   QLineEdit *edit_url_edit;
   QLabel *edit_username_label;

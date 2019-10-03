@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Netcatch Cart Event
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,22 +21,17 @@
 #ifndef EDIT_SWITCHEVENT_H
 #define EDIT_SWITCHEVENT_H
 
-#include <vector>
-
-#include <qdialog.h>
-#include <qsqldatabase.h>
-#include <qlineedit.h>
-#include <q3datetimeedit.h>
-#include <qcombobox.h>
 #include <qcheckbox.h>
-#include <qlabel.h>
-
-#include <rdrecording.h>
-#include <rddeck.h>
-#include <rdmatrix.h>
+#include <qcombobox.h>
+#include <qdatetimeedit.h>
 #include <qspinbox.h>
 
-class EditSwitchEvent : public QDialog
+#include <rddeck.h>
+#include <rddialog.h>
+#include <rdmatrix.h>
+#include <rdrecording.h>
+
+class EditSwitchEvent : public RDDialog
 {
  Q_OBJECT
  public:
@@ -71,7 +66,7 @@ class EditSwitchEvent : public QDialog
   RDRecording *edit_recording;
   QCheckBox *edit_active_button;
   QComboBox *edit_station_box;
-  Q3TimeEdit *edit_starttime_edit;
+  QTimeEdit *edit_starttime_edit;
   QLineEdit *edit_description_edit;
   QComboBox *edit_matrix_box;
   QComboBox *edit_input_box;

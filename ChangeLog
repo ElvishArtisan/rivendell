@@ -19142,3 +19142,6 @@
 	* Added support for posting podcast content via SFTP.
 	* Refactored rdcastmanager(1) to use the 'RDDialog' and 'RDWidget'
 	base classes.
+2019-10-02 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored rdcatch(1) to use the 'RDDialog' and 'RDWidget'
+	base classes.

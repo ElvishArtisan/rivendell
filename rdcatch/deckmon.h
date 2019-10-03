@@ -2,7 +2,7 @@
 //
 // Monitor a Rivendell Netcatcher Deck
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,16 +21,15 @@
 #ifndef DECKMON_H
 #define DECKMON_H
 
-#include <q3frame.h>
 #include <qlabel.h>
-#include <qpalette.h>
 #include <qpushbutton.h>
 
+#include <rddeck.h>
+#include <rdframe.h>
 #include <rdplaymeter.h>
 #include <rdrecording.h>
-#include <rddeck.h>
 
-class DeckMon : public Q3Frame
+class DeckMon : public RDFrame
 {
   Q_OBJECT
  public:
@@ -39,10 +38,6 @@ class DeckMon : public Q3Frame
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
   void enableMonitorButton(bool state);
-
- public slots:
-  void setGeometry(int x,int y,int w,int h);
-  void setGeometry(const QRect &r);
 
  public slots:
   void setMonitor(bool state);

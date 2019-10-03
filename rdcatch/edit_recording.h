@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Netcatch Recording
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,21 +21,19 @@
 #ifndef EDIT_RECORDING_H
 #define EDIT_RECORDING_H
 
-#include <vector>
 
 #include <qbuttongroup.h>
-#include <qdialog.h>
-#include <qlineedit.h>
-#include <q3datetimeedit.h>
 #include <qcombobox.h>
 #include <qcheckbox.h>
+#include <qdatetimeedit.h>
 #include <qspinbox.h>
 #include <qlabel.h>
 
-#include <rdrecording.h>
 #include <rddeck.h>
+#include <rddialog.h>
+#include <rdrecording.h>
 
-class EditRecording : public QDialog
+class EditRecording : public RDDialog
 {
  Q_OBJECT
  public:
@@ -90,20 +88,20 @@ class EditRecording : public QDialog
   QButtonGroup *edit_endtype_group;
   QLabel *edit_endtime_label;
   QLabel *edit_endlength_label;
-  Q3TimeEdit *edit_starttime_edit;
-  Q3TimeEdit *edit_endtime_edit;
-  Q3TimeEdit *edit_endlength_edit;
+  QTimeEdit *edit_starttime_edit;
+  QTimeEdit *edit_endtime_edit;
+  QTimeEdit *edit_endlength_edit;
   QLabel *edit_start_startwindow_label;
-  Q3TimeEdit *edit_start_startwindow_edit;
+  QTimeEdit *edit_start_startwindow_edit;
   QLabel *edit_start_endwindow_label;
-  Q3TimeEdit *edit_start_endwindow_edit;
+  QTimeEdit *edit_start_endwindow_edit;
   QLabel *edit_end_startwindow_label;
   QCheckBox *edit_multirec_box;
   QLabel *edit_maxlength_label;
-  Q3TimeEdit *edit_maxlength_edit;
-  Q3TimeEdit *edit_end_startwindow_edit;
+  QTimeEdit *edit_maxlength_edit;
+  QTimeEdit *edit_end_startwindow_edit;
   QLabel *edit_end_endwindow_label;
-  Q3TimeEdit *edit_end_endwindow_edit;
+  QTimeEdit *edit_end_endwindow_edit;
   QLabel *edit_startmatrix_label;
   QSpinBox *edit_startmatrix_spin;
   QLabel *edit_startline_label;
@@ -113,9 +111,9 @@ class EditRecording : public QDialog
   QLabel *edit_endline_label;
   QSpinBox *edit_endline_spin;
   QLabel *edit_startlength_label;
-  Q3TimeEdit *edit_startlength_edit;
+  QTimeEdit *edit_startlength_edit;
   QLabel *edit_startoffset_label;
-  Q3TimeEdit *edit_startoffset_edit;
+  QTimeEdit *edit_startoffset_edit;
   std::vector<int> *edit_added_events;
   QComboBox *edit_channels_box;
   QCheckBox *edit_autotrim_box;

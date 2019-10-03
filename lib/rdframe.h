@@ -1,6 +1,6 @@
-// rdwidget.h
+// rdframe.h
 //
-// Base class for Rivendell widgets.
+// Base class for Rivendell QFrame-based widgets.
 //
 //   (C) Copyright 2019 Fred Gleason <fredg@paravelsystems.com>
 //
@@ -18,20 +18,20 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef RDWIDGET_H
-#define RDWIDGET_H
+#ifndef RDFRAME_H
+#define RDFRAME_H
 
 #include <qwidget.h>
 
 #include <rdfontset.h>
 
-class RDWidget : public QWidget, public RDFontSet
+class RDFrame : public QFrame, public RDFontSet
 {
   Q_OBJECT;
  public:
-  RDWidget(QWidget *parent=0,Qt::WindowFlags f=0);
-  RDWidget(RDConfig *config,QWidget *parent=0,Qt::WindowFlags f=0);
+  RDFrame(QWidget *parent=0,Qt::WindowFlags f=0);
+  RDFrame(RDConfig *config,QWidget *parent=0,Qt::WindowFlags f=0);
 };
 
 
-#endif  // RDWIDGET_H
+#endif  // RDFRAME_H

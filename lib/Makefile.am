@@ -128,6 +128,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdfontset.cpp rdfontset.h\
                         rdformpost.cpp rdformpost.h\
                         rdflacdecode.cpp rdflacdecode.h\
+                        rdframe.cpp rdframe.h\
                         rdgain_envelope.cpp rdgain_envelope.h\
                         rdget_ath.cpp rdget_ath.h\
                         rdgetpasswd.cpp rdgetpasswd.h\
@@ -282,6 +283,7 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdexception_dialog.cpp\
                           moc_rdexport_settings_dialog.cpp\
                           moc_rdfeed.cpp\
+                          moc_rdframe.cpp\
                           moc_rdget_ath.cpp\
                           moc_rdgetpasswd.cpp\
                           moc_rdgpio.cpp\

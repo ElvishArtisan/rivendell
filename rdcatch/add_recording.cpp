@@ -2,7 +2,7 @@
 //
 // Add a Rivendell RDCatch Event
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,23 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <vector>
-
-#include <qdialog.h>
-#include <qstring.h>
 #include <qpushbutton.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qpainter.h>
 #include <qevent.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
-
-#include <rddb.h>
-#include <rd.h>
-#include <rdstation.h>
-#include <rdcut_dialog.h>
-#include <rdcut_path.h>
 
 #include "add_recording.h"
 #include "edit_recording.h"
@@ -47,39 +32,25 @@
 extern RDStation *rdstation_conf;
 
 AddRecording::AddRecording(int id,QString *filter,QWidget *parent)
-  : QDialog(parent,Qt::WStyle_Customize|Qt::WStyle_DialogBorder)
+  : RDDialog(parent,Qt::WStyle_Customize|Qt::WStyle_DialogBorder)
 {
-  setModal(true);
+  add_id=id;
+  add_filter=filter;
 
   setWindowTitle("RDCatch");
 
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
-
-  //
-  // Generate Fonts
-  //
-  QFont button_font=QFont("Helvetica",12,QFont::Bold);
-  button_font.setPixelSize(12);
-  QFont label_font=QFont("Helvetica",12,QFont::Bold);
-  label_font.setPixelSize(12);
-  QFont day_font=QFont("Helvetica",12,QFont::Normal);
-  day_font.setPixelSize(12);
-
-  add_id=id;
-  add_filter=filter;
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   //
   // Title Label
   //
   QLabel *label=new QLabel(tr("Schedule a:"),this,"title_label");
   label->setGeometry(0,0,sizeHint().width(),30);
-  label->setFont(label_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignCenter);
 
   //
@@ -87,7 +58,7 @@ AddRecording::AddRecording(int id,QString *filter,QWidget *parent)
   //
   QPushButton *button=new QPushButton(this,"recording_button");
   button->setGeometry(10,30,sizeHint().width()-20,50);
-  button->setFont(button_font);
+  button->setFont(buttonFont());
   button->setText(tr("&Recording"));
   button->setDisabled(true);
   QString sql=QString("select CHANNEL from DECKS \
@@ -104,7 +75,7 @@ AddRecording::AddRecording(int id,QString *filter,QWidget *parent)
   //
   button=new QPushButton(this,"playout_button");
   button->setGeometry(10,80,sizeHint().width()-20,50);
-  button->setFont(button_font);
+  button->setFont(buttonFont());
   button->setText(tr("&Playout"));
   button->setDisabled(true);
   sql=QString("select CHANNEL from DECKS where (CARD_NUMBER>=0)&&")+
@@ -121,7 +92,7 @@ AddRecording::AddRecording(int id,QString *filter,QWidget *parent)
   //
   button=new QPushButton(this,"download_button");
   button->setGeometry(10,130,sizeHint().width()-20,50);
-  button->setFont(button_font);
+  button->setFont(buttonFont());
   button->setText(tr("&Download"));
   connect(button,SIGNAL(clicked()),this,SLOT(downloadData()));
 
@@ -130,7 +101,7 @@ AddRecording::AddRecording(int id,QString *filter,QWidget *parent)
   //
   button=new QPushButton(this,"upload_button");
   button->setGeometry(10,180,sizeHint().width()-20,50);
-  button->setFont(button_font);
+  button->setFont(buttonFont());
   button->setText(tr("&Upload"));
   connect(button,SIGNAL(clicked()),this,SLOT(uploadData()));
 
@@ -139,7 +110,7 @@ AddRecording::AddRecording(int id,QString *filter,QWidget *parent)
   //
   button=new QPushButton(this,"macro_button");
   button->setGeometry(10,230,sizeHint().width()-20,50);
-  button->setFont(button_font);
+  button->setFont(buttonFont());
   button->setText(tr("&Macro Cart"));
   connect(button,SIGNAL(clicked()),this,SLOT(macroData()));
 
@@ -148,7 +119,7 @@ AddRecording::AddRecording(int id,QString *filter,QWidget *parent)
   //
   button=new QPushButton(this,"switch_button");
   button->setGeometry(10,280,sizeHint().width()-20,50);
-  button->setFont(button_font);
+  button->setFont(buttonFont());
   button->setText(tr("&Switch Event"));
   connect(button,SIGNAL(clicked()),this,SLOT(switchData()));
 
@@ -157,7 +128,7 @@ AddRecording::AddRecording(int id,QString *filter,QWidget *parent)
   //
   button=new QPushButton(this,"cancel_button");
   button->setGeometry(10,350,sizeHint().width()-20,50);
-  button->setFont(button_font);
+  button->setFont(buttonFont());
   button->setText(tr("&Cancel"));
   button->setDefault(true);
   connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));

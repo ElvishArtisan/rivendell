@@ -22,7 +22,6 @@
 #define RDDIALOG_H
 
 #include <qdialog.h>
-#include <qfont.h>
 
 #include <rdfontset.h>
 

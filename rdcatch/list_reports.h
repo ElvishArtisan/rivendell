@@ -2,7 +2,7 @@
 //
 // List and Generate RDCatch Reports
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,13 +21,11 @@
 #ifndef LIST_REPORTS_H
 #define LIST_REPORTS_H
 
-#include <qdialog.h>
 #include <qcombobox.h>
-#include <qsqldatabase.h>
 
-#include <rdsvc.h>
+#include <rddialog.h>
 
-class ListReports : public QDialog
+class ListReports : public RDDialog
 {
  Q_OBJECT
  public:
