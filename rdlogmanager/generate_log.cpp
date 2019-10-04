@@ -2,7 +2,7 @@
 //
 // Generate a Rivendell Log
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,21 +18,10 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <stdlib.h>
-
-#include <qdialog.h>
-#include <qstring.h>
-#include <q3datetimeedit.h>
 #include <qmessagebox.h>
-#include <qfile.h>
-#include <qtimer.h>
 
-#include <rd.h>
-#include <rdapplication.h>
 #include <rddatedecode.h>
-#include <rddb.h>
 #include <rddatedialog.h>
-#include <rdexception_dialog.h>
 #include <rdlog.h>
 #include <rdsvc.h>
 #include <rdtextfile.h>
@@ -50,10 +39,8 @@
 
 GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
 			 QDate *cmd_date)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
-  setModal(true);
-
   QStringList services_list;
   bool  cmdservicefit=false;
   cmdswitch=cmd_switch;
@@ -68,20 +55,8 @@ GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
-
-  //
-  // Create Fonts
-  //
-  QFont bold_font=QFont("Helvetica",12,QFont::Bold);
-  bold_font.setPixelSize(12);
-  QFont font=QFont("Helvetica",12,QFont::Normal);
-  font.setPixelSize(12);
-  QFont small_font=QFont("Helvetica",10,QFont::Bold);
-  small_font.setPixelSize(10);
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   //
   // Create Icons
@@ -93,8 +68,8 @@ GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
   //
   // Progress Dialog
   //
-  gen_progress_dialog=new Q3ProgressDialog(tr("Generating Log..."),tr("Cancel"),
-					  24,this,"gen_progress_dialog",true);
+  gen_progress_dialog=
+    new QProgressDialog(tr("Generating Log..."),tr("Cancel"),0,24,this);
   gen_progress_dialog->setCaption("Progress");
   gen_progress_dialog->setCancelButton(NULL);
 
@@ -105,7 +80,7 @@ GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
   connect(gen_service_box,SIGNAL(activated(int)),
 	  this,SLOT(serviceActivatedData(int)));
   gen_service_label=new QLabel(gen_service_box,tr("Service:"),this);
-  gen_service_label->setFont(bold_font);
+  gen_service_label->setFont(labelFont());
   gen_service_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   QString sql="select NAME from SERVICES";
@@ -125,23 +100,24 @@ GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
   //
   // Date
   //
-  gen_date_edit=new Q3DateEdit(this);
+  gen_date_edit=new QDateEdit(this);
+  gen_date_edit->setDisplayFormat("MM/dd/yyyy");
   gen_date_label=new QLabel(gen_date_edit,tr("Date:"),this);
-  gen_date_label->setFont(bold_font);
+  gen_date_label->setFont(labelFont());
   gen_date_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   if (cmdswitch==0)
   gen_date_edit->setDate(QDate::currentDate().addDays(1));
   else
     gen_date_edit->setDate(*cmddate);
 
-  connect(gen_date_edit,SIGNAL(valueChanged(const QDate &)),
+  connect(gen_date_edit,SIGNAL(dateChanged(const QDate &)),
 	  this,SLOT(dateChangedData(const QDate &)));
 
   //
   // Date Select Button
   //
   gen_select_button=new QPushButton(this);
-  gen_select_button->setFont(bold_font);
+  gen_select_button->setFont(subButtonFont());
   gen_select_button->setText(tr("&Select"));
   connect(gen_select_button,SIGNAL(clicked()),this,SLOT(selectDateData()));
 
@@ -149,7 +125,7 @@ GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
   //  Create Log Button
   //
   gen_create_button=new QPushButton(this);
-  gen_create_button->setFont(bold_font);
+  gen_create_button->setFont(buttonFont());
   gen_create_button->setText(tr("&Create New Log"));
   connect(gen_create_button,SIGNAL(clicked()),this,SLOT(createData()));
 
@@ -157,7 +133,7 @@ GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
   //  Merge Music Log Button
   //
   gen_music_button=new QPushButton(this);
-  gen_music_button->setFont(bold_font);
+  gen_music_button->setFont(buttonFont());
   gen_music_button->setText(tr("Merge &Music"));
   connect(gen_music_button,SIGNAL(clicked()),this,SLOT(musicData()));
 
@@ -165,7 +141,7 @@ GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
   //  Merge Traffic Log Button
   //
   gen_traffic_button=new QPushButton(this);
-  gen_traffic_button->setFont(bold_font);
+  gen_traffic_button->setFont(buttonFont());
   gen_traffic_button->setText(tr("Merge &Traffic"));
   connect(gen_traffic_button,SIGNAL(clicked()),this,SLOT(trafficData()));
 
@@ -175,15 +151,15 @@ GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
   // Headers
   //
   gen_import_label=new QLabel(tr("Import Data"),this);
-  gen_import_label->setFont(bold_font);
+  gen_import_label->setFont(labelFont());
   gen_import_label->setAlignment(Qt::AlignCenter);
 
   gen_available_label=new QLabel(tr("Available"),this);
-  gen_available_label->setFont(small_font);
+  gen_available_label->setFont(subLabelFont());
   gen_available_label->setAlignment(Qt::AlignCenter);
 
   gen_merged_label=new QLabel(tr("Merged"),this);
-  gen_merged_label->setFont(small_font);
+  gen_merged_label->setFont(subLabelFont());
   gen_merged_label->setAlignment(Qt::AlignCenter);
 
   //
@@ -191,12 +167,12 @@ GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
   //
   gen_mus_avail_label=new QLabel(this);
   gen_mus_avail_label->setPixmap(*gen_whiteball_map);
-  gen_mus_avail_label->setFont(small_font);
+  gen_mus_avail_label->setFont(subLabelFont());
   gen_mus_avail_label->setAlignment(Qt::AlignCenter);
 
   gen_mus_merged_label=new QLabel(this);
   gen_mus_merged_label->setPixmap(*gen_whiteball_map);
-  gen_mus_merged_label->setFont(small_font);
+  gen_mus_merged_label->setFont(subLabelFont());
   gen_mus_merged_label->setAlignment(Qt::AlignCenter);
 
   //
@@ -204,12 +180,12 @@ GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
   //
   gen_tfc_avail_label=new QLabel(this);
   gen_tfc_avail_label->setPixmap(*gen_whiteball_map);
-  gen_tfc_avail_label->setFont(small_font);
+  gen_tfc_avail_label->setFont(subLabelFont());
   gen_tfc_avail_label->setAlignment(Qt::AlignCenter);
 
   gen_tfc_merged_label=new QLabel(this);
   gen_tfc_merged_label->setPixmap(*gen_whiteball_map);
-  gen_tfc_merged_label->setFont(small_font);
+  gen_tfc_merged_label->setFont(subLabelFont());
   gen_tfc_merged_label->setAlignment(Qt::AlignCenter);
 
 
@@ -218,7 +194,7 @@ GenerateLog::GenerateLog(QWidget *parent,int cmd_switch,QString *cmd_service,
   //
   gen_close_button=new QPushButton(this);
   gen_close_button->setDefault(true);
-  gen_close_button->setFont(bold_font);
+  gen_close_button->setFont(buttonFont());
   gen_close_button->setText(tr("C&lose"));
   connect(gen_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 
@@ -340,7 +316,7 @@ void GenerateLog::createData()
   //
   srand(QTime::currentTime().msec());
   connect(svc,SIGNAL(generationProgress(int)),
-	  gen_progress_dialog,SLOT(setProgress(int)));
+	  gen_progress_dialog,SLOT(setValue(int)));
   if(!svc->generateLog(gen_date_edit->date(),
 		       RDDateDecode(svc->nameTemplate(),gen_date_edit->date(),
 				    rda->station(),rda->config(),svc->name()),
@@ -350,7 +326,7 @@ void GenerateLog::createData()
 		       &unused_report,rda->user(),&err_msg)) {
     QMessageBox::warning(this,"RDLogManager - "+tr("Error"),
 			 tr("Unable to generate log")+": "+err_msg);
-    gen_progress_dialog->setProgress(gen_progress_dialog->totalSteps());
+    gen_progress_dialog->setValue(gen_progress_dialog->maximum());
     delete svc;
     delete log;
     return;
@@ -449,7 +425,7 @@ void GenerateLog::musicData()
     }
   }
   connect(svc,SIGNAL(generationProgress(int)),
-	  gen_progress_dialog,SLOT(setProgress(int)));
+	  gen_progress_dialog,SLOT(setValue(int)));
   QString report;
   if(!svc->linkLog(RDSvc::Music,gen_date_edit->date(),logname,&report,rda->user(),
 		   &err_msg)) {
@@ -508,7 +484,7 @@ void GenerateLog::trafficData()
     }
   }
   connect(svc,SIGNAL(generationProgress(int)),
-	  gen_progress_dialog,SLOT(setProgress(int)));
+	  gen_progress_dialog,SLOT(setValue(int)));
 
   QString report;
   if(!svc->linkLog(RDSvc::Traffic,gen_date_edit->date(),logname,&report,rda->user(),

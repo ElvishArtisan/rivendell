@@ -19151,3 +19151,6 @@
 2019-10-04 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored rdlogedit(1) to use the 'RDDialog' and 'RDWidget'
 	base classes.
+2019-10-04 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored rdlogmanager(1) to use the 'RDDialog' and 'RDWidget'
+	base classes.

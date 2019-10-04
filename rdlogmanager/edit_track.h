@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell LogManager Track
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,11 +21,12 @@
 #ifndef EDIT_TRACK_H
 #define EDIT_TRACK_H
 
-#include <qdialog.h>
 #include <qpushbutton.h>
-#include <q3textedit.h>
+#include <qtextedit.h>
 
-class EditTrack : public QDialog
+#include <rddialog.h>
+
+class EditTrack : public RDDialog
 {
  Q_OBJECT
  public:
@@ -39,10 +40,13 @@ class EditTrack : public QDialog
 
  protected:
   void closeEvent(QCloseEvent *e);
+  void resizeEvent(QResizeEvent *e);
 
  private:
   QString *edit_text;
-  Q3TextEdit *edit_text_edit;
+  QTextEdit *edit_text_edit;
+  QPushButton *edit_ok_button;
+  QPushButton *edit_cancel_button;
 };
 
 

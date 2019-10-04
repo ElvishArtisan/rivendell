@@ -2,7 +2,7 @@
 //
 // Edit RDLogManager Service Associations
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,15 +21,10 @@
 #ifndef EDIT_PERMS_H
 #define EDIT_PERMS_H
 
-#include <qdialog.h>
-#include <qsqldatabase.h>
-//Added by qt3to4:
-#include <QCloseEvent>
-
+#include <rddialog.h>
 #include <rdlistselector.h>
-#include <rdsvc.h>
 
-class EditPerms : public QDialog
+class EditPerms : public RDDialog
 {
   Q_OBJECT
  public:

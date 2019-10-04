@@ -2,7 +2,7 @@
 //
 // The Log Manager Utility for Rivendell.
 //
-//   (C) Copyright 2002-2015 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,15 +21,11 @@
 #ifndef RDLOGMANAGER_H
 #define RDLOGMANAGER_H
 
-#include <qwidget.h>
-#include <qsize.h>
-#include <qsizepolicy.h>
 #include <qlabel.h>
-#include <q3listview.h>
 #include <qpushbutton.h>
-#include <qpixmap.h>
 
 #include <rdlog_line.h>
+#include <rdwidget.h>
 
 #define RDLOGMANAGER_USAGE "[OPTIONS]\n"
 
@@ -43,11 +39,11 @@ extern int RunReportOperation(int argc,char *argv[],const QString &rptname,
 			      bool protect_existing,int start_offset,
 			      int end_offset);
 
-class MainWidget : public QWidget
+class MainWidget : public RDWidget
 {
  Q_OBJECT
  public:
-  MainWidget(QWidget *parent=0);
+  MainWidget(RDConfig *c,QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
   

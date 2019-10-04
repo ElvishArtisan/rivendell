@@ -2,7 +2,7 @@
 //
 // Add a Rivendell LogManager Event
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,42 +18,23 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qpainter.h>
-#include <qpushbutton.h>
-
-#include <q3buttongroup.h>
-
-#include <rdpasswd.h>
 #include <rdtextvalidator.h>
 
 #include "add_event.h"
 #include "edit_event.h"
 
 AddEvent::AddEvent(QString *logname,QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
-  setModal(true);
-
   event_name=logname;
-
-  //
-  // Fix the Window Size
-  //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
 
   setWindowTitle("RDLogManager - "+tr("Add Log Event"));
 
   //
-  // Create Fonts
+  // Fix the Window Size
   //
-  QFont font=QFont("Helvetica",12,QFont::Bold);
-  font.setPixelSize(12);
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   //
   // Create Validators
@@ -100,7 +81,7 @@ AddEvent::AddEvent(QString *logname,QWidget *parent)
   QLabel *event_name_label=
     new QLabel(event_name_edit,tr("&New Event Name:"),this);
   event_name_label->setGeometry(10,11,130,19);
-  event_name_label->setFont(font);
+  event_name_label->setFont(labelFont());
   event_name_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
@@ -109,7 +90,7 @@ AddEvent::AddEvent(QString *logname,QWidget *parent)
   QPushButton *ok_button=new QPushButton(this);
   ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   ok_button->setDefault(true);
-  ok_button->setFont(font);
+  ok_button->setFont(buttonFont());
   ok_button->setText(tr("&OK"));
   connect(ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
@@ -119,7 +100,7 @@ AddEvent::AddEvent(QString *logname,QWidget *parent)
   QPushButton *cancel_button=new QPushButton(this);
   cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
-  cancel_button->setFont(font);
+  cancel_button->setFont(buttonFont());
   cancel_button->setText(tr("&Cancel"));
   connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 

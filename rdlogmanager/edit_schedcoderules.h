@@ -22,25 +22,23 @@
 #ifndef EDIT_SCHEDCODERULES_H
 #define EDIT_SCHEDCODERULES_H
 
-#include <qdialog.h>
+#include <qcombobox.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
-#include <qcombobox.h>
-#include <qvariant.h>
+#include <qspinbox.h>
 
+#include <rddialog.h>
 #include <rdschedruleslist.h>
 
 #include "clock_listview.h"
 
-class QSpinBox;
-
-class editSchedCodeRules : public QDialog
+class EditSchedCodeRules : public RDDialog
 {
   Q_OBJECT
  public:
-  editSchedCodeRules(Q3ListViewItem *item, RDSchedRulesList *sched_rules_list,
+  EditSchedCodeRules(Q3ListViewItem *item, RDSchedRulesList *sched_rules_list,
 		     QWidget *parent=0);
-  ~editSchedCodeRules();
+  ~EditSchedCodeRules();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 
@@ -49,26 +47,25 @@ class editSchedCodeRules : public QDialog
   void cancelData();
 
  private:
-  QPushButton* buttonOk;
-  QPushButton* buttonCancel;
-  QLabel* label_code_name;
-  QLabel* label_max_row;
-  QLabel* label_min_wait;
-  QLabel* label_not_after;
-  QLabel* label_or_after;
-  QLabel* label_or_after_II;
-  QSpinBox* spinBox_max_row;
-  QSpinBox* spinBox_min_wait;
-  QLabel* label_code;
-  QComboBox* comboBox_not_after;
-  QComboBox* comboBox_or_after;
-  QComboBox* comboBox_or_after_II;
-  QLabel* label_description;
-  Q3ListViewItem *item_edit; 
+  QPushButton* edit_ok_button;
+  QPushButton* edit_cancel_button;
+  QLabel* edit_code_name_label;
+  QLabel* edit_max_row_label;
+  QLabel* edit_min_wait_label;
+  QLabel* edit_not_after_label;
+  QLabel* edit_or_after_label;
+  QLabel* edit_or_after_label_II;
+  QSpinBox* edit_max_row_spin;
+  QSpinBox* edit_min_wait_spin;
+  QLabel* edit_code_label;
+  QComboBox* edit_not_after_box;
+  QComboBox* edit_or_after_box;
+  QComboBox* edit_or_after_box_II;
+  QLabel* edit_description_label;
+  Q3ListViewItem *edit_edit_item; 
  
  protected:
   void closeEvent(QCloseEvent *e);
 };
 
-#endif
-
+#endif  // EDIT_SCHEDCODERULES_H

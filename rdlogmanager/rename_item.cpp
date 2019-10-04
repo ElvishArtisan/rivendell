@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell LogManager Note
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,24 +18,15 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <q3textedit.h>
-#include <qpainter.h>
 #include <qmessagebox.h>
 
-#include <rd.h>
-#include <rddb.h>
-#include <rdevent.h>
 #include <rdtextvalidator.h>
 
 #include "rename_item.h"
 
 RenameItem::RenameItem(QString *text,QString table,QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
-  setModal(true);
-
   edit_text=text;
   edit_tablename=table;
 
@@ -44,18 +35,8 @@ RenameItem::RenameItem(QString *text,QString table,QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
-
-  //
-  // Create Fonts
-  //
-  QFont bold_font=QFont("Helvetica",12,QFont::Bold);
-  bold_font.setPixelSize(12);
-  QFont font=QFont("Helvetica",12,QFont::Normal);
-  font.setPixelSize(12);
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   //
   // Create Validators
@@ -101,7 +82,7 @@ RenameItem::RenameItem(QString *text,QString table,QWidget *parent)
   QPushButton *button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
-  button->setFont(bold_font);
+  button->setFont(buttonFont());
   button->setText(tr("&OK"));
   connect(button,SIGNAL(clicked()),this,SLOT(okData()));
 
@@ -110,7 +91,7 @@ RenameItem::RenameItem(QString *text,QString table,QWidget *parent)
   //
   button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
-  button->setFont(bold_font);
+  button->setFont(buttonFont());
   button->setText(tr("&Cancel"));
   connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
 }

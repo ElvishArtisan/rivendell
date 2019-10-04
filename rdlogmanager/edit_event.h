@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Log Event
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,27 +21,21 @@
 #ifndef EDIT_EVENT_H
 #define EDIT_EVENT_H
 
-#include <vector>
 
-#include <qdialog.h>
-#include <qgroupbox.h>
-#include <qlabel.h>
-#include <qpushbutton.h>
-#include <qradiobutton.h>
-#include <qcheckbox.h>
-#include <qlineedit.h>
-#include <q3datetimeedit.h>
-#include <qspinbox.h>
-#include <qcombobox.h>
 #include <qbuttongroup.h>
-#include <q3textedit.h>
+#include <qcheckbox.h>
+#include <qcombobox.h>
+#include <qdatetimeedit.h>
+#include <qgroupbox.h>
+#include <qlineedit.h>
+#include <qradiobutton.h>
+#include <qspinbox.h>
+#include <qtextedit.h>
 
+#include <rddialog.h>
 #include <rdemptycart.h>
 #include <rdevent.h>
-#include <rdevent_line.h>
 #include <rdsimpleplayer.h>
-#include <rdtransportbutton.h>
-#include <rduser.h>
 
 #include "import_listview.h"
 #include "lib_listview.h"
@@ -51,7 +45,7 @@
 //
 #define CENTER_LINE 400
 
-class EditEvent : public QDialog
+class EditEvent : public RDDialog
 {
  Q_OBJECT
  public:
@@ -122,7 +116,7 @@ class EditEvent : public QDialog
   QLabel *event_position_label;
   QLabel *event_position_unit;
   QCheckBox *event_position_box;
-  Q3TimeEdit *event_position_edit;
+  QTimeEdit *event_position_edit;
   QLabel *event_timetype_header;
   QCheckBox *event_timetype_box;
   QLabel *event_timetype_label;
@@ -134,23 +128,23 @@ class EditEvent : public QDialog
   QRadioButton *event_immediate_button;
   QRadioButton *event_next_button;
   QRadioButton *event_wait_button;
-  Q3TimeEdit *event_grace_edit;
+  QTimeEdit *event_grace_edit;
   QComboBox *event_transtype_box;
   QCheckBox *event_autofill_box;
   QCheckBox *event_autofill_slop_box;
   QLabel *event_autofill_slop_label1;
   QLabel *event_autofill_slop_label;
-  Q3TimeEdit *event_autofill_slop_edit;
+  QTimeEdit *event_autofill_slop_edit;
   QCheckBox *event_timescale_box;
   ImportListView *event_preimport_list;
   QLineEdit *event_preimport_length_edit;
   RDTransportButton *event_preimport_up_button;
   RDTransportButton *event_preimport_down_button;
   QButtonGroup *event_source_group;
-  Q3TimeEdit *event_startslop_edit;
+  QTimeEdit *event_startslop_edit;
   QLabel *event_startslop_label;
   QLabel *event_startslop_unit;
-  Q3TimeEdit *event_endslop_edit;
+  QTimeEdit *event_endslop_edit;
   QLabel *event_endslop_label;
   QLabel *event_endslop_unit;
   QComboBox *event_firsttrans_box;
@@ -171,10 +165,9 @@ class EditEvent : public QDialog
   bool event_new_event;
   std::vector<QString> *event_new_events;
   RDSimplePlayer *event_player;
-  Q3TextEdit *event_remarks_edit;
+  QTextEdit *event_remarks_edit;
   RDEmptyCart *event_empty_cart;
 };
 
 
-#endif
-
+#endif  // EDIT_EVENT_H

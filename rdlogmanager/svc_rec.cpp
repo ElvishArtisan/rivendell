@@ -2,7 +2,7 @@
 //
 // Calendar widget.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,13 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qwidget.h>
-#include <qstring.h>
-#include <qlabel.h>
 #include <QMouseEvent>
-#include <qpalette.h>
 
-#include <rddb.h>
 #include <rdescape_string.h>
 
 #include "svc_rec.h"
@@ -33,7 +28,7 @@
 // Global Classes
 //
 SvcRec::SvcRec(const QString &svcname,QWidget *parent)
-  :QWidget(parent)
+  : RDWidget(parent)
 {
   QString sql;
   RDSqlQuery *q;
@@ -42,10 +37,8 @@ SvcRec::SvcRec(const QString &svcname,QWidget *parent)
   //
   // Generate Fonts
   //
-  pick_day_font[0]=QFont("Helvetica",12,QFont::Normal);
-  pick_day_font[0].setPixelSize(12);
-  pick_day_font[1]=QFont("Helvetica",12,QFont::Bold);
-  pick_day_font[1].setPixelSize(12);
+  pick_day_font[0]=font();
+  pick_day_font[1]=labelFont();
 
   //
   // Generate Date Boundaries
