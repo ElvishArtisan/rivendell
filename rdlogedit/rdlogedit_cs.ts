@@ -32,39 +32,39 @@
     </message>
     <message>
         <source>Start at:</source>
-        <translation>Začít na:</translation>
+        <translation type="obsolete">Začít na:</translation>
     </message>
     <message>
         <source>Action If Previous Event Still Playing</source>
-        <translation>Činnost, když předchozí událost ještě běží</translation>
+        <translation type="obsolete">Činnost, když předchozí událost ještě běží</translation>
     </message>
     <message>
         <source>Start Immediately</source>
-        <translation>Spustit ihned</translation>
+        <translation type="obsolete">Spustit ihned</translation>
     </message>
     <message>
         <source>Make Next</source>
-        <translation>Jako další</translation>
+        <translation type="obsolete">Jako další</translation>
     </message>
     <message>
         <source>Wait up to</source>
-        <translation>Počkat až do</translation>
+        <translation type="obsolete">Počkat až do</translation>
     </message>
     <message>
         <source>Play</source>
-        <translation>Přehrát</translation>
+        <translation type="obsolete">Přehrát</translation>
     </message>
     <message>
         <source>Segue</source>
-        <translation>Přechod</translation>
+        <translation type="obsolete">Přechod</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation>Zastavit</translation>
+        <translation type="obsolete">Zastavit</translation>
     </message>
     <message>
         <source>Transition Type:</source>
-        <translation>Typ přechodu:</translation>
+        <translation type="obsolete">Typ přechodu:</translation>
     </message>
     <message>
         <source>Log Name</source>
@@ -80,19 +80,15 @@
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>Transition If Previous Cart Ends Before</source>
-        <translation>Přechod, když předchozí vozík skončí dříve</translation>
-    </message>
-    <message>
-        <source>Transition Type</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Přechod, když předchozí vozík skončí dříve</translation>
     </message>
 </context>
 <context>
@@ -504,39 +500,39 @@ jež jsou pro vybranou službu zakázány!</translation>
     </message>
     <message>
         <source>Start at:</source>
-        <translation>Začít na:</translation>
+        <translation type="obsolete">Začít na:</translation>
     </message>
     <message>
         <source>Action If Previous Event Still Playing</source>
-        <translation>Činnost, když předchozí událost ještě běží</translation>
+        <translation type="obsolete">Činnost, když předchozí událost ještě běží</translation>
     </message>
     <message>
         <source>Start Immediately</source>
-        <translation>Spustit ihned</translation>
+        <translation type="obsolete">Spustit ihned</translation>
     </message>
     <message>
         <source>Make Next</source>
-        <translation>Jako další</translation>
+        <translation type="obsolete">Jako další</translation>
     </message>
     <message>
         <source>Wait up to</source>
-        <translation>Počkat až do</translation>
+        <translation type="obsolete">Počkat až do</translation>
     </message>
     <message>
         <source>Play</source>
-        <translation>Přehrát</translation>
+        <translation type="obsolete">Přehrát</translation>
     </message>
     <message>
         <source>Segue</source>
-        <translation>Přechod</translation>
+        <translation type="obsolete">Přechod</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation>Zastavit</translation>
+        <translation type="obsolete">Zastavit</translation>
     </message>
     <message>
         <source>Transition Type:</source>
-        <translation>Typ přechodu:</translation>
+        <translation type="obsolete">Typ přechodu:</translation>
     </message>
     <message>
         <source>Cart</source>
@@ -558,15 +554,15 @@ vozík</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>Transition If Previous Cart Ends Before</source>
-        <translation>Přechod, když předchozí vozík skončí dříve</translation>
+        <translation type="obsolete">Přechod, když předchozí vozík skončí dříve</translation>
     </message>
     <message>
         <source>Missing Cart</source>
@@ -592,15 +588,11 @@ vybrané služby!</translation>
     </message>
     <message>
         <source>Duplicate Start Time</source>
-        <translation>Zdvojený čas začátku</translation>
+        <translation type="obsolete">Zdvojený čas začátku</translation>
     </message>
     <message>
         <source>An event is already scheduled with this start time!</source>
-        <translation>Již existuje událost s tímto začátečním časem!</translation>
-    </message>
-    <message>
-        <source>Transition Type</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Již existuje událost s tímto začátečním časem!</translation>
     </message>
 </context>
 <context>
@@ -611,35 +603,35 @@ vybrané služby!</translation>
     </message>
     <message>
         <source>Start at:</source>
-        <translation>Začít na:</translation>
+        <translation type="obsolete">Začít na:</translation>
     </message>
     <message>
         <source>Action If Previous Event Still Playing</source>
-        <translation>Činnost, když předchozí událost ještě běží</translation>
+        <translation type="obsolete">Činnost, když předchozí událost ještě běží</translation>
     </message>
     <message>
         <source>Start Immediately</source>
-        <translation>Spustit ihned</translation>
+        <translation type="obsolete">Spustit ihned</translation>
     </message>
     <message>
         <source>Make Next</source>
-        <translation>Jako další</translation>
+        <translation type="obsolete">Jako další</translation>
     </message>
     <message>
         <source>Wait up to</source>
-        <translation>Počkat až do</translation>
+        <translation type="obsolete">Počkat až do</translation>
     </message>
     <message>
         <source>Play</source>
-        <translation>Přehrát</translation>
+        <translation type="obsolete">Přehrát</translation>
     </message>
     <message>
         <source>Segue</source>
-        <translation>Přechod</translation>
+        <translation type="obsolete">Přechod</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation>Zastavit</translation>
+        <translation type="obsolete">Zastavit</translation>
     </message>
     <message>
         <source>Comment</source>
@@ -651,23 +643,19 @@ vybrané služby!</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>Transition If Previous Cart Ends Before</source>
-        <translation>Přechod, když předchozí vozík skončí dříve</translation>
+        <translation type="obsolete">Přechod, když předchozí vozík skončí dříve</translation>
     </message>
     <message>
         <source>Transition Type:</source>
         <translation type="obsolete">Typ přechodu:</translation>
-    </message>
-    <message>
-        <source>Transition Type</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -678,35 +666,35 @@ vybrané služby!</translation>
     </message>
     <message>
         <source>Start at:</source>
-        <translation>Začít na:</translation>
+        <translation type="obsolete">Začít na:</translation>
     </message>
     <message>
         <source>Action If Previous Event Still Playing</source>
-        <translation>Činnost, když předchozí událost ještě běží</translation>
+        <translation type="obsolete">Činnost, když předchozí událost ještě běží</translation>
     </message>
     <message>
         <source>Start Immediately</source>
-        <translation>Spustit ihned</translation>
+        <translation type="obsolete">Spustit ihned</translation>
     </message>
     <message>
         <source>Make Next</source>
-        <translation>Jako další</translation>
+        <translation type="obsolete">Jako další</translation>
     </message>
     <message>
         <source>Wait up to</source>
-        <translation>Počkat až do</translation>
+        <translation type="obsolete">Počkat až do</translation>
     </message>
     <message>
         <source>Play</source>
-        <translation>Přehrát</translation>
+        <translation type="obsolete">Přehrát</translation>
     </message>
     <message>
         <source>Segue</source>
-        <translation>Přechod</translation>
+        <translation type="obsolete">Přechod</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation>Zastavit</translation>
+        <translation type="obsolete">Zastavit</translation>
     </message>
     <message>
         <source>Comment</source>
@@ -714,19 +702,19 @@ vybrané služby!</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>Transition If Previous Cart Ends Before</source>
-        <translation>Přechod, když předchozí vozík skončí dříve</translation>
+        <translation type="obsolete">Přechod, když předchozí vozík skončí dříve</translation>
     </message>
     <message>
         <source>Transition Type:</source>
-        <translation>Typ přechodu:</translation>
+        <translation type="obsolete">Typ přechodu:</translation>
     </message>
 </context>
 <context>

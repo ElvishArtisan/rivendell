@@ -32,39 +32,39 @@
     </message>
     <message>
         <source>Start at:</source>
-        <translation>Inicia en:</translation>
+        <translation type="obsolete">Inicia en:</translation>
     </message>
     <message>
         <source>Action If Previous Event Still Playing</source>
-        <translation>Acción si el evento previo no ha terminado</translation>
+        <translation type="obsolete">Acción si el evento previo no ha terminado</translation>
     </message>
     <message>
         <source>Start Immediately</source>
-        <translation>Iniciar de inmediato</translation>
+        <translation type="obsolete">Iniciar de inmediato</translation>
     </message>
     <message>
         <source>Make Next</source>
-        <translation>Convertir en el siguente</translation>
+        <translation type="obsolete">Convertir en el siguente</translation>
     </message>
     <message>
         <source>Wait up to</source>
-        <translation>Espe. hasta</translation>
+        <translation type="obsolete">Espe. hasta</translation>
     </message>
     <message>
         <source>Play</source>
-        <translation>Reproducir</translation>
+        <translation type="obsolete">Reproducir</translation>
     </message>
     <message>
         <source>Segue</source>
-        <translation>Segue</translation>
+        <translation type="obsolete">Segue</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation>Parar</translation>
+        <translation type="obsolete">Parar</translation>
     </message>
     <message>
         <source>Transition Type:</source>
-        <translation>Tipo de transición:</translation>
+        <translation type="obsolete">Tipo de transición:</translation>
     </message>
     <message>
         <source>Log Name</source>
@@ -80,19 +80,15 @@
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;Aceptar</translation>
+        <translation type="obsolete">&amp;Aceptar</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>Transition If Previous Cart Ends Before</source>
-        <translation>Transic. si cart. previo termina antes de</translation>
-    </message>
-    <message>
-        <source>Transition Type</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Transic. si cart. previo termina antes de</translation>
     </message>
 </context>
 <context>
@@ -504,39 +500,39 @@ desactivados para el servicio actual!
     </message>
     <message>
         <source>Start at:</source>
-        <translation>Inicia en:</translation>
+        <translation type="obsolete">Inicia en:</translation>
     </message>
     <message>
         <source>Action If Previous Event Still Playing</source>
-        <translation>Acción si el evento previo no ha terminado</translation>
+        <translation type="obsolete">Acción si el evento previo no ha terminado</translation>
     </message>
     <message>
         <source>Start Immediately</source>
-        <translation>Iniciar de inmediato</translation>
+        <translation type="obsolete">Iniciar de inmediato</translation>
     </message>
     <message>
         <source>Make Next</source>
-        <translation>Convertir en el siguente</translation>
+        <translation type="obsolete">Convertir en el siguente</translation>
     </message>
     <message>
         <source>Wait up to</source>
-        <translation>Esp. hasta</translation>
+        <translation type="obsolete">Esp. hasta</translation>
     </message>
     <message>
         <source>Play</source>
-        <translation>Reproducir</translation>
+        <translation type="obsolete">Reproducir</translation>
     </message>
     <message>
         <source>Segue</source>
-        <translation>Segue</translation>
+        <translation type="obsolete">Segue</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation>Parar</translation>
+        <translation type="obsolete">Parar</translation>
     </message>
     <message>
         <source>Transition Type:</source>
-        <translation>Tipo de transición:</translation>
+        <translation type="obsolete">Tipo de transición:</translation>
     </message>
     <message>
         <source>Cart</source>
@@ -558,15 +554,15 @@ cartucho</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;Aceptar</translation>
+        <translation type="obsolete">&amp;Aceptar</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>Transition If Previous Cart Ends Before</source>
-        <translation>Transic. si cart. previo termina antes de</translation>
+        <translation type="obsolete">Transic. si cart. previo termina antes de</translation>
     </message>
     <message>
         <source>Missing Cart</source>
@@ -592,15 +588,11 @@ desactivado para el servicio especificado!</translation>
     </message>
     <message>
         <source>Duplicate Start Time</source>
-        <translation>Tiempo de inicio duplicado</translation>
+        <translation type="obsolete">Tiempo de inicio duplicado</translation>
     </message>
     <message>
         <source>An event is already scheduled with this start time!</source>
-        <translation>¡Se programó un evento para esta misma hora de inicio!</translation>
-    </message>
-    <message>
-        <source>Transition Type</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">¡Se programó un evento para esta misma hora de inicio!</translation>
     </message>
 </context>
 <context>
@@ -611,35 +603,35 @@ desactivado para el servicio especificado!</translation>
     </message>
     <message>
         <source>Start at:</source>
-        <translation>Inicia en:</translation>
+        <translation type="obsolete">Inicia en:</translation>
     </message>
     <message>
         <source>Action If Previous Event Still Playing</source>
-        <translation>Acción si el evento previo no ha terminado</translation>
+        <translation type="obsolete">Acción si el evento previo no ha terminado</translation>
     </message>
     <message>
         <source>Start Immediately</source>
-        <translation>Iniciar de inmediato</translation>
+        <translation type="obsolete">Iniciar de inmediato</translation>
     </message>
     <message>
         <source>Make Next</source>
-        <translation>Convertir en el siguente</translation>
+        <translation type="obsolete">Convertir en el siguente</translation>
     </message>
     <message>
         <source>Wait up to</source>
-        <translation>Esp. hasta</translation>
+        <translation type="obsolete">Esp. hasta</translation>
     </message>
     <message>
         <source>Play</source>
-        <translation>Reproducir</translation>
+        <translation type="obsolete">Reproducir</translation>
     </message>
     <message>
         <source>Segue</source>
-        <translation>Segue</translation>
+        <translation type="obsolete">Segue</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation>Parar</translation>
+        <translation type="obsolete">Parar</translation>
     </message>
     <message>
         <source>Comment</source>
@@ -651,23 +643,19 @@ desactivado para el servicio especificado!</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;Aceptar</translation>
+        <translation type="obsolete">&amp;Aceptar</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>Transition If Previous Cart Ends Before</source>
-        <translation>Transic. si cart. previo termina antes de</translation>
+        <translation type="obsolete">Transic. si cart. previo termina antes de</translation>
     </message>
     <message>
         <source>Transition Type:</source>
         <translation type="obsolete">Tipo de transición:</translation>
-    </message>
-    <message>
-        <source>Transition Type</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -678,35 +666,35 @@ desactivado para el servicio especificado!</translation>
     </message>
     <message>
         <source>Start at:</source>
-        <translation>Inicia en:</translation>
+        <translation type="obsolete">Inicia en:</translation>
     </message>
     <message>
         <source>Action If Previous Event Still Playing</source>
-        <translation>Acción si el evento previo no ha terminado</translation>
+        <translation type="obsolete">Acción si el evento previo no ha terminado</translation>
     </message>
     <message>
         <source>Start Immediately</source>
-        <translation>Iniciar de inmediato</translation>
+        <translation type="obsolete">Iniciar de inmediato</translation>
     </message>
     <message>
         <source>Make Next</source>
-        <translation>Convertir en el siguente</translation>
+        <translation type="obsolete">Convertir en el siguente</translation>
     </message>
     <message>
         <source>Wait up to</source>
-        <translation>Esp. hasta</translation>
+        <translation type="obsolete">Esp. hasta</translation>
     </message>
     <message>
         <source>Play</source>
-        <translation>Reproducir</translation>
+        <translation type="obsolete">Reproducir</translation>
     </message>
     <message>
         <source>Segue</source>
-        <translation>Segue</translation>
+        <translation type="obsolete">Segue</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation>Parar</translation>
+        <translation type="obsolete">Parar</translation>
     </message>
     <message>
         <source>Comment</source>
@@ -714,19 +702,19 @@ desactivado para el servicio especificado!</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;Aceptar</translation>
+        <translation type="obsolete">&amp;Aceptar</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>Transition If Previous Cart Ends Before</source>
-        <translation>Transic. si cart. previo termina antes de</translation>
+        <translation type="obsolete">Transic. si cart. previo termina antes de</translation>
     </message>
     <message>
         <source>Transition Type:</source>
-        <translation>Tipo de transición:</translation>
+        <translation type="obsolete">Tipo de transición:</translation>
     </message>
 </context>
 <context>

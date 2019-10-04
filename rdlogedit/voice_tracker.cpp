@@ -21,27 +21,16 @@
 #include <math.h>
 #include <sys/time.h>
 
-#include <qdialog.h>
-#include <qpushbutton.h>
-#include <qsqldatabase.h>
 #include <qmessagebox.h>
-#include <qdatetime.h>
-#include <qapplication.h>
 
-#include <rdapplication.h>
 #include <rdconf.h>
-#include <rdcart.h>
-#include <rd.h>
-#include <rdlog.h>
 #include <rdsvc.h>
 #include <rdedit_audio.h>
 #include <rdimport_audio.h>
 #include <rdrehash.h>
-#include <rdwavedata.h>
 
 #include "edit_track.h"
 #include "globals.h"
-#include "import_track.h"
 #include "voice_tracker.h"
 
 //
@@ -59,10 +48,9 @@
 
 VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
 			   QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   setAttribute(Qt::WA_PaintOutsidePaintEvent);
-  setModal(true);
 
   edit_log_name=logname;
   edit_import_path=import_path;
@@ -94,6 +82,8 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   menu_clicked_point=-1;
   edit_shift_pressed=false;
 
+  setWindowTitle("RDLogEdit - "+tr("Voice Tracker"));
+
   //
   // Fix the Window Size
   //
@@ -101,20 +91,6 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   setMinimumHeight(sizeHint().height());
   setMaximumWidth(sizeHint().width());
   setMaximumHeight(sizeHint().height());
-
-  setWindowTitle("RDLogEdit - "+tr("Voice Tracker"));
-
-  //
-  // Create Fonts
-  //
-  QFont font=QFont("Helvetica",12,QFont::Bold);
-  font.setPixelSize(12);
-  QFont label_font=QFont("Hevetica",12,QFont::Normal);
-  label_font.setPixelSize(12);
-  QFont small_font=QFont("Helvetica",10,QFont::Bold);
-  small_font.setPixelSize(10);
-  QFont timer_font=QFont("Helvetica",20,QFont::Bold);
-  timer_font.setPixelSize(20);
 
   //
   // Create Icons
@@ -283,7 +259,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   track_track1_button=new QPushButton(this);
   track_track1_button->setGeometry(sizeHint().width()-90,15,70,70);
   track_track1_button->setPalette(track_start_palette);
-  track_track1_button->setFont(font);
+  track_track1_button->setFont(buttonFont());
   track_track1_button->setText(tr("Start"));
   connect(track_track1_button,SIGNAL(clicked()),this,SLOT(track1Data()));
 
@@ -293,7 +269,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   track_record_button=new QPushButton(this);
   track_record_button->setGeometry(sizeHint().width()-90,95,70,70);
   track_record_button->setPalette(track_record_palette);
-  track_record_button->setFont(font);
+  track_record_button->setFont(buttonFont());
   track_record_button->setText(tr("Record"));
   connect(track_record_button,SIGNAL(clicked()),this,SLOT(recordData()));
 
@@ -303,7 +279,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   track_track2_button=new QPushButton(this);
   track_track2_button->setGeometry(sizeHint().width()-90,175,70,70);
   track_track2_button->setPalette(track_start_palette);
-  track_track2_button->setFont(font);
+  track_track2_button->setFont(buttonFont());
   track_track2_button->setText(tr("Start"));
   connect(track_track2_button,SIGNAL(clicked()),this,SLOT(track2Data()));
   if(!rda->logeditConf()->enableSecondStart()) {
@@ -321,7 +297,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
     track_finished_button->setGeometry(sizeHint().width()-90,175,70,70);
   }
   track_finished_button->setPalette(track_done_palette);
-  track_finished_button->setFont(font);
+  track_finished_button->setFont(buttonFont());
   track_finished_button->setText(tr("Save"));
   connect(track_finished_button,SIGNAL(clicked()),this,SLOT(finishedData()));
 
@@ -331,7 +307,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   track_previous_button=new QPushButton(this);
   track_previous_button->
     setGeometry(sizeHint().width()-290,sizeHint().height()-60,80,50);
-  track_previous_button->setFont(font);
+  track_previous_button->setFont(buttonFont());
   track_previous_button->setText(tr("&Previous\nTrack"));
   connect(track_previous_button,SIGNAL(clicked()),this,SLOT(previousData()));
 
@@ -341,7 +317,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   track_next_button=new QPushButton(this);
   track_next_button->
     setGeometry(sizeHint().width()-200,sizeHint().height()-60,80,50);
-  track_next_button->setFont(font);
+  track_next_button->setFont(buttonFont());
   track_next_button->setText(tr("&Next\nTrack"));
   connect(track_next_button,SIGNAL(clicked()),this,SLOT(nextData()));
 
@@ -381,24 +357,24 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   edit_length_label->setText("-:--:--.-");
   edit_length_label->setGeometry(565,255,110,25);
   edit_length_label->setAlignment(Qt::AlignCenter);
-  edit_length_label->setFont(timer_font);
+  edit_length_label->setFont(timerFont());
 
   //
   // Tracks Remaining Readout
   //
   QLabel *label=new QLabel(tr("Remaining"),this);
   label->setGeometry(555,288,116,14);
-  label->setFont(small_font);
+  label->setFont(subLabelFont());
   label->setAlignment(Qt::AlignHCenter);
   label->setPalette(QPalette(backgroundColor(),colorGroup().mid()));  
   edit_tracks_remaining_label=new QLabel(this);
   edit_tracks_remaining_label->setText("0");
   edit_tracks_remaining_label->setGeometry(565,313,40,18);
   edit_tracks_remaining_label->setAlignment(Qt::AlignCenter);
-  edit_tracks_remaining_label->setFont(label_font);
+  edit_tracks_remaining_label->setFont(labelFont());
   label=new QLabel(tr("Tracks"),this);
   label->setGeometry(565,300,40,14);
-  label->setFont(small_font);
+  label->setFont(subLabelFont());
   label->setAlignment(Qt::AlignHCenter);
   label->setPalette(QPalette(backgroundColor(),colorGroup().mid()));  
 
@@ -406,7 +382,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   edit_time_remaining_label->setText("0:00:00.0");
   edit_time_remaining_label->setGeometry(615,313,60,18);
   edit_time_remaining_label->setAlignment(Qt::AlignCenter);
-  edit_time_remaining_label->setFont(label_font);
+  edit_time_remaining_label->setFont(labelFont());
   edit_time_remaining_palette[0]=edit_time_remaining_label->palette();
   edit_time_remaining_palette[1]=edit_time_remaining_label->palette();
   edit_time_remaining_palette[1].
@@ -415,7 +391,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
     setColor(QPalette::Inactive,QColorGroup::Foreground,Qt::red);
   label=new QLabel(tr("Time"),this);
   label->setGeometry(615,300,60,14);
-  label->setFont(small_font);
+  label->setFont(subLabelFont());
   label->setAlignment(Qt::AlignHCenter);
   label->setPalette(QPalette(backgroundColor(),colorGroup().mid()));  
 
@@ -461,7 +437,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   track_reset_button=new QPushButton(this);
   track_reset_button->
     setGeometry(sizeHint().width()-90,sizeHint().height()-160,70,70);
-  track_reset_button->setFont(font);
+  track_reset_button->setFont(buttonFont());
   track_reset_button->setText(tr("Do Over"));
   connect(track_reset_button,SIGNAL(clicked()),this,SLOT(resetData()));
 
@@ -470,7 +446,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   //
   track_post_button=new QPushButton(this);
   track_post_button->setGeometry(sizeHint().width()-90,360,70,70);
-  track_post_button->setFont(font);
+  track_post_button->setFont(buttonFont());
   track_post_button->setText(tr("Hit Post"));
   connect(track_post_button,SIGNAL(clicked()),this,SLOT(postData()));
 
@@ -479,7 +455,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   //
   track_insert_button=new QPushButton(this);
   track_insert_button->setGeometry(20,sizeHint().height()-60,80,50);
-  track_insert_button->setFont(font);
+  track_insert_button->setFont(buttonFont());
   track_insert_button->setText(tr("Insert\nTrack"));
   connect(track_insert_button,SIGNAL(clicked()),this,SLOT(insertData()));
 
@@ -488,7 +464,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   //
   track_delete_button=new QPushButton(this);
   track_delete_button->setGeometry(110,sizeHint().height()-60,80,50);
-  track_delete_button->setFont(font);
+  track_delete_button->setFont(buttonFont());
   track_delete_button->setText(tr("Delete\nTrack"));
   connect(track_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
 
@@ -498,7 +474,7 @@ VoiceTracker::VoiceTracker(const QString &logname,QString *import_path,
   track_close_button=new QPushButton(this);
   track_close_button->
     setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
-  track_close_button->setFont(font);
+  track_close_button->setFont(buttonFont());
   track_close_button->setText(tr("&Close"));
   connect(track_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 
@@ -3077,7 +3053,7 @@ void VoiceTracker::DrawTrackMap(int trackno)
     }
     else {
       wpg[0]->begin(edit_wave_map[0]);
-      wpg[0]->setFont(QFont("Helvetica",12,QFont::Bold));
+      wpg[0]->setFont(labelFont());
       wpg[0]->setPen(TRACKER_TEXT_COLOR);
       wpg[0]->setBackgroundColor(backgroundColor());
       wpg[0]->eraseRect(0,0,edit_wave_map[0]->size().width(),
@@ -3159,7 +3135,7 @@ void VoiceTracker::DrawTrackMap(int trackno)
       p=new QPainter(edit_wave_map[1]);
       if(track_loaded) {
 	p->setBackgroundColor(backgroundColor());
-	p->setFont(QFont("Helvetica",12,QFont::Bold));
+	p->setFont(labelFont());
 	p->setPen(TRACKER_TEXT_COLOR);
 	p->eraseRect(0,0,edit_wave_map[1]->size().width(),
 		     edit_wave_map[1]->size().height());
@@ -3171,7 +3147,7 @@ void VoiceTracker::DrawTrackMap(int trackno)
 		     edit_wave_map[1]->size().height());
       }
       if(track_start_time>QTime(0,0,0)) {
-        p->setFont(QFont("Helvetica",12,QFont::Bold));
+        p->setFont(labelFont());
 	p->setPen(TRACKER_TEXT_COLOR);
         p->drawText(550,75,tr("Start")+" "+
 		    track_start_time.toString("h:mm:ss"));
@@ -3200,7 +3176,7 @@ void VoiceTracker::DrawTrackMap(int trackno)
 		    TRACKER_Y_HEIGHT/4,
 		    track_recording_pos/TRACKER_MSECS_PER_PIXEL,
 		    TRACKER_Y_HEIGHT/2,TRACKER_RECORD_COLOR);
-	p->setFont(QFont("Helvetica",12,QFont::Bold));
+	p->setFont(labelFont());
         if(track_start_time>QTime(0,0,0)) {
 	  p->setPen(TRACKER_TEXT_COLOR);
 	  track_time=track_start_time;
@@ -3214,7 +3190,7 @@ void VoiceTracker::DrawTrackMap(int trackno)
 
       default:
 	wpg[1]->begin(edit_wave_map[1]);
-	wpg[1]->setFont(QFont("Helvetica",12,QFont::Bold));
+	wpg[1]->setFont(labelFont());
 	wpg[1]->setPen(TRACKER_TEXT_COLOR);
 	wpg[1]->setBackgroundColor(back_color);
 	wpg[1]->eraseRect(0,0,edit_wave_map[1]->size().width(),
@@ -3325,7 +3301,7 @@ void VoiceTracker::DrawTrackMap(int trackno)
 	back_color=Qt::lightGray;
       }
       wpg[2]->begin(edit_wave_map[2]);
-      wpg[2]->setFont(QFont("Helvetica",12,QFont::Bold));
+      wpg[2]->setFont(labelFont());
       wpg[2]->setBackgroundColor(back_color);
       wpg[2]->eraseRect(0,0,edit_wave_map[2]->size().width(),
 			edit_wave_map[2]->size().height());

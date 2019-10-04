@@ -2,7 +2,7 @@
 //
 // Add a Rivendell RDCatch Event
 //
-//   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,16 +21,11 @@
 #ifndef ADD_META_H
 #define ADD_META_H
 
-#include <qdialog.h>
-#include <qsqldatabase.h>
-#include <qlineedit.h>
-#include <q3datetimeedit.h>
-#include <qcombobox.h>
-#include <qcheckbox.h>
-#include <qspinbox.h>
 #include <qlabel.h>
 
-class AddMeta : public QDialog
+#include <rddialog.h>
+
+class AddMeta : public RDDialog
 {
   Q_OBJECT
  public:

@@ -2,7 +2,7 @@
 //
 // The Log Editor Utility for Rivendell.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,38 +18,14 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <signal.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <unistd.h>
-
 #include <qapplication.h>
-#include <qwindowsstyle.h>
-#include <qwidget.h>
-#include <qpainter.h>
-#include <q3sqlpropertymap.h>
 #include <qmessagebox.h>
-#include <qpushbutton.h>
-#include <qlabel.h>
-#include <qlabel.h>
-#include <q3listview.h>
-#include <qtextcodec.h>
 #include <qtranslator.h>
-#include <qsettings.h>
-#include <qpixmap.h>
-#include <qpainter.h>
 
-#include <rd.h>
 #include <rdadd_log.h>
-#include <rdapplication.h>
-#include <rdcmd_switch.h>
 #include <rdconf.h>
-#include <rddb.h>
 #include <rdescape_string.h>
-#include <rdloglock.h>
-#include <rdmixer.h>
 #include <rdreport.h>
-#include <rdstation.h>
 #include <rdtextfile.h>
 
 #include "edit_log.h"
@@ -73,8 +49,8 @@
 RDCartDialog *log_cart_dialog;
 bool import_running=false;
 
-MainWidget::MainWidget(QWidget *parent)
-  :QWidget(parent)
+MainWidget::MainWidget(RDConfig *c,QWidget *parent)
+  : RDWidget(c,parent)
 {
   QString err_msg;
 
@@ -85,8 +61,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
 
   //
   // Open the Database
@@ -127,15 +102,6 @@ MainWidget::MainWidget(QWidget *parent)
   rda->ripc()
     ->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 
-  // 
-  // Create Fonts
-  //
-  QFont default_font("Helvetica",12,QFont::Normal);
-  default_font.setPixelSize(12);
-  qApp->setFont(default_font);
-  QFont button_font=QFont("Helvetica",12,QFont::Bold);
-  button_font.setPixelSize(12);
-
   //
   // Create Icons
   //
@@ -159,7 +125,6 @@ MainWidget::MainWidget(QWidget *parent)
   // Log List
   //
   log_log_list=new Q3ListView(this);
-  log_log_list->setFont(default_font);
   log_log_list->setAllColumnsShowFocus(true);
   log_log_list->setSelectionMode(Q3ListView::Extended);
   log_log_list->setItemMargin(5);
@@ -200,7 +165,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Add Button
   //
   log_add_button=new QPushButton(this);
-  log_add_button->setFont(button_font);
+  log_add_button->setFont(buttonFont());
   log_add_button->setText(tr("&Add"));
   connect(log_add_button,SIGNAL(clicked()),this,SLOT(addData()));
 
@@ -208,7 +173,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Edit Button
   //
   log_edit_button=new QPushButton(this);
-  log_edit_button->setFont(button_font);
+  log_edit_button->setFont(buttonFont());
   log_edit_button->setText(tr("&Edit"));
   connect(log_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
 
@@ -216,7 +181,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Delete Button
   //
   log_delete_button=new QPushButton(this);
-  log_delete_button->setFont(button_font);
+  log_delete_button->setFont(buttonFont());
   log_delete_button->setText(tr("&Delete"));
   connect(log_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
 
@@ -224,7 +189,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Tracker Button
   //
   log_track_button=new QPushButton(this);
-  log_track_button->setFont(button_font);
+  log_track_button->setFont(buttonFont());
   log_track_button->setText(tr("Voice\n&Tracker"));
   connect(log_track_button,SIGNAL(clicked()),this,SLOT(trackData()));
 
@@ -232,7 +197,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Log Report Button
   //
   log_report_button=new QPushButton(this);
-  log_report_button->setFont(button_font);
+  log_report_button->setFont(buttonFont());
   log_report_button->setText(tr("Log\nReport"));
   connect(log_report_button,SIGNAL(clicked()),this,SLOT(reportData()));
 
@@ -240,7 +205,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Close Button
   //
   log_close_button=new QPushButton(this);
-  log_close_button->setFont(button_font);
+  log_close_button->setFont(buttonFont());
   log_close_button->setText(tr("&Close"));
   connect(log_close_button,SIGNAL(clicked()),this,SLOT(quitMainWidget()));
 
@@ -902,7 +867,9 @@ int main(int argc,char *argv[])
   //
   // Start Event Loop
   //
-  MainWidget *w=new MainWidget();
+  RDConfig *config=new RDConfig();
+  config->load();
+  MainWidget *w=new MainWidget(config);
   a.setMainWidget(w);
   w->setGeometry(QRect(QPoint(w->geometry().x(),w->geometry().y()),
 		 w->sizeHint()));

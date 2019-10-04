@@ -31,42 +31,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Start at:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Action If Previous Event Still Playing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start Immediately</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Make Next</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Wait up to</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Play</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Segue</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Stop</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Transition Type:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Log Name</source>
         <translation type="unfinished"></translation>
     </message>
@@ -76,22 +40,6 @@
     </message>
     <message>
         <source>Log Description</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Transition If Previous Cart Ends Before</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Transition Type</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -425,42 +373,6 @@ for the selected service!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Start at:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Action If Previous Event Still Playing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start Immediately</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Make Next</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Wait up to</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Play</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Segue</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Stop</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Transition Type:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Cart</source>
         <translation type="unfinished"></translation>
     </message>
@@ -475,18 +387,6 @@ for the selected service!</source>
     <message>
         <source>Select
 Cart</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Transition If Previous Cart Ends Before</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -510,55 +410,11 @@ group for the specified service!</source>
         <source>No Fade on Segue Out</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Duplicate Start Time</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>An event is already scheduled with this start time!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Transition Type</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>EditMarker</name>
     <message>
         <source>Edit Log Marker</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start at:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Action If Previous Event Still Playing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start Immediately</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Make Next</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Wait up to</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Play</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Segue</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Stop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -569,22 +425,6 @@ group for the specified service!</source>
         <source>Label</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>&amp;OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Transition If Previous Cart Ends Before</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Transition Type</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>EditTrack</name>
@@ -593,55 +433,7 @@ group for the specified service!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Start at:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Action If Previous Event Still Playing</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Start Immediately</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Make Next</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Wait up to</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Play</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Segue</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Stop</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Comment</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Transition If Previous Cart Ends Before</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Transition Type:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

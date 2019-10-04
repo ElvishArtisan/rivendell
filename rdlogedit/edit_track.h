@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Voice Track Log Entry
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,56 +21,26 @@
 #ifndef EDIT_TRACK_H
 #define EDIT_TRACK_H
 
-#include <qdialog.h>
-#include <q3datetimeedit.h>
-#include <qcombobox.h>
 #include <qlineedit.h>
-#include <qlabel.h>
-#include <qcheckbox.h>
-#include <q3buttongroup.h>
-#include <qradiobutton.h>
-#include <qspinbox.h>
 
-#include <rdlog_line.h>
-#include <rdtimeedit.h>
+#include "edit_event.h"
 
-class EditTrack : public QDialog
+class EditTrack : public EditEvent
 {
   Q_OBJECT
  public:
   EditTrack(RDLogLine *,QWidget *parent=0);
-  ~EditTrack();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
-  
- private slots:
-  void timeChangedData(const QTime &);
-  void timeToggledData(bool state);
-  void graceClickedData(int id);
-  void selectTimeData(int);
-  void okData();
-  void cancelData();
 
  protected:
-  void closeEvent(QCloseEvent *e);
+  bool saveData();
 
  private:
-  RDLogLine *edit_logline;
-  RDTimeEdit *edit_time_edit;
-  QLabel *edit_time_label;
-  QCheckBox *edit_timetype_box;
-  QLabel *edit_timetype_label;
-  QCheckBox *edit_time_box;
-  QComboBox *edit_transtype_box;
   QCheckBox *edit_overlap_box;
   QLabel *edit_overlap_label;
   QLineEdit *edit_comment_edit;
-  Q3ButtonGroup *edit_grace_group;
-  QFont normal_font;
-  Q3TimeEdit *edit_grace_box;
-  QLabel *edit_grace_label;
 };
 
 
-#endif
-
+#endif  // EDIT_TRACK_H

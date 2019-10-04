@@ -37,6 +37,7 @@ class RDFontSet
   QFont subLabelFont() const;
   QFont progressFont() const;
   QFont bannerFont() const;
+  QFont timerFont() const;
   QFont defaultFont() const;
 
  private:
@@ -49,6 +50,7 @@ class RDFontSet
   QFont font_sub_label_font;
   QFont font_progress_font;
   QFont font_banner_font;
+  QFont font_timer_font;
   QFont font_default_font;
   RDConfig *font_config;
 };

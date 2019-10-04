@@ -82,6 +82,12 @@ QFont RDFontSet::bannerFont() const
 }
 
 
+QFont RDFontSet::timerFont() const
+{
+  return font_timer_font;
+}
+
+
 QFont RDFontSet::defaultFont() const
 {
   return font_default_font;
@@ -131,6 +137,9 @@ void RDFontSet::MakeFonts(const QFont &default_font)
 
   font_banner_font=QFont(family,26,QFont::Normal);
   font_banner_font.setPixelSize(26);
+
+  font_timer_font=QFont(family,20,QFont::Normal);
+  font_timer_font.setPixelSize(20);
 
   font_default_font=QFont(family,default_size,QFont::Normal);
   font_default_font.setPixelSize(default_size);

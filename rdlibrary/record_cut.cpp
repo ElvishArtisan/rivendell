@@ -319,7 +319,7 @@ RecordCut::RecordCut(RDCart *cart,QString cut,bool use_weight,QWidget *parent)
   rec_timer=new QTimer(this);
   connect(rec_timer,SIGNAL(timeout()),this,SLOT(recTimerData()));
   rec_timer_label=new QLabel(this);
-  rec_timer_label->setFont(bigButtonFont());
+  rec_timer_label->setFont(timerFont());
   rec_timer_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   rec_timer_label->setText(RDGetTimeLength(rec_length,true));
 

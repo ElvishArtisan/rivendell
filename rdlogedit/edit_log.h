@@ -1,8 +1,8 @@
 // edit_log.h
 //
-// Create a Rivendell Log
+// Edit a Rivendell Log
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,27 +21,12 @@
 #ifndef EDIT_LOG_H
 #define EDIT_LOG_H
 
-#include <vector>
-
-#include <qcheckbox.h>
-#include <qcombobox.h>
-#include <qdialog.h>
 #include <qgroupbox.h>
-#include <qlabel.h>
-#include <qlineedit.h>
-
-#include <q3datetimeedit.h>
 
 #include <rdcart_dialog.h>
+#include <rddialog.h>
 #include <rdgroup_list.h>
-#include <rdlistview.h>
-#include <rdlog.h>
-#include <rdlog_event.h>
 #include <rdloglock.h>
-#include <rdnotification.h>
-#include <rdsimpleplayer.h>
-#include <rdtransportbutton.h>
-#include <rduser.h>
 
 #include "drop_listview.h"
 #include "list_reports.h"
@@ -52,7 +37,7 @@
 //
 #define END_MARKER_ID -2
 
-class EditLog : public QDialog
+class EditLog : public RDDialog
 {
  Q_OBJECT
  public:
