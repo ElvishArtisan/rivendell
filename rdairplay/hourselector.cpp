@@ -2,7 +2,7 @@
 //
 // Hour Selector widget for RDAirPlay
 //
-//   (C) Copyright 2012-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,19 +18,11 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qsignalmapper.h>
-
 #include "hourselector.h"
 
 HourSelector::HourSelector(QWidget *parent)
-  : QWidget(parent)
+  : RDWidget(parent)
 {
-  //
-  // Fonts
-  //
-  QFont font("helvetica",16,QFont::Bold);
-  font.setPixelSize(16);
-
   //
   // Palettes
   //
@@ -44,7 +36,7 @@ HourSelector::HourSelector(QWidget *parent)
   connect(mapper,SIGNAL(mapped(int)),this,SLOT(hourClicked(int)));
   for(unsigned i=0;i<24;i++) {
     hour_button[i]=new QPushButton(this);
-    hour_button[i]->setFont(font);
+    hour_button[i]->setFont(bigButtonFont());
     hour_button[i]->setDisabled(true);
     mapper->setMapping(hour_button[i],i);
     connect(hour_button[i],SIGNAL(clicked()),mapper,SLOT(map()));
