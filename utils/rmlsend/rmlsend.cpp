@@ -2,7 +2,7 @@
 //
 // A utility for sending RML Commands
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,41 +18,13 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <sys/types.h>
-#include <sys/socket.h>
 #include <arpa/inet.h>
-#include <unistd.h>
-#include <stdlib.h>
 #include <netdb.h>
-#include <stdio.h>
-#include <signal.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <ctype.h>
 
 #include <qapplication.h>
-#include <qwindowsstyle.h>
-#include <qwidget.h>
-#include <qpushbutton.h>
 #include <qlineedit.h>
-#include <qfont.h>
-#include <q3socketdevice.h>
-#include <qhostaddress.h>
 #include <qmessagebox.h>
-#include <qtimer.h>
-#include <q3textstream.h>
-#include <qrect.h>
-#include <qpoint.h>
-#include <qpainter.h>
-#include <qstring.h>
-#include <qlabel.h>
-#include <qtextcodec.h>
 #include <qtranslator.h>
-#include <qsettings.h>
-#include <QPixmap>
-
-#include <rdcmd_switch.h>
 
 #include "rmlsend.h"
 
@@ -66,25 +38,14 @@
 //
 RDCmdSwitch *rdcmdswitch=NULL;
 
-MainWidget::MainWidget(QWidget *parent)
-  :QWidget(parent)
+MainWidget::MainWidget(RDConfig *c,QWidget *parent)
+  : RDWidget(c,parent)
 {
   //
   // Set Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
-
-  //
-  // Create Fonts
-  //
-  QFont font("Helvetica",12,QFont::Normal);
-  font.setPixelSize(12);
-  setFont(font);
-  QFont default_font("Helvetica",12,QFont::Bold);
-  default_font.setPixelSize(12);
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   //
   // Create And Set Icon
@@ -97,10 +58,9 @@ MainWidget::MainWidget(QWidget *parent)
 
   host=new QLineEdit(this);
   host->setGeometry(80,10,180,25);
-  host->setFont(default_font);
   QLabel *label=new QLabel(host,"Sent To:",this);
   label->setGeometry(10,16,65,14);
-  label->setFont(default_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight);
   for(unsigned i=0;i<rdcmdswitch->keys();i++) {
     if(rdcmdswitch->key(i)=="--to-host") {
@@ -113,8 +73,8 @@ MainWidget::MainWidget(QWidget *parent)
   port_box->setGeometry(305,10,130,25);
   port_box->setEditable(false);
   label=new QLabel(port_box,"Dest:",this);
-  label->setGeometry(270,16,30,14);
-  label->setFont(default_font);
+  label->setGeometry(265,16,35,14);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight);
   port_box->insertItem(tr("RML"));
   port_box->insertItem(tr("RML (no echo)"));
@@ -124,38 +84,35 @@ MainWidget::MainWidget(QWidget *parent)
 
   port_edit=new QLineEdit(this);
   port_edit->setGeometry(sizeHint().width()-60,10,50,25);
-  port_edit->setFont(default_font);
   port_edit->setDisabled(true);
   port_edit_label=new QLabel(port_edit,tr("UDP Port:"),this);
   port_edit_label->setGeometry(sizeHint().width()-130,16,65,14);
-  port_edit_label->setFont(default_font);
+  port_edit_label->setFont(labelFont());
   port_edit_label->setAlignment(Qt::AlignRight);
   port_edit_label->setDisabled(true);
 
   command=new QLineEdit(this);
   command->setGeometry(80,40,sizeHint().width()-90,25);
-  command->setFont(default_font);
   label=new QLabel(command,tr("Command:"),this);
   label->setGeometry(10,46,65,14);
-  label->setFont(default_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight);
 
   response=new QLineEdit(this);
   response->setGeometry(80,70,sizeHint().width()-90,25);
-  response->setFont(default_font);
   response_label=new QLabel(response,tr("Response:"),this);
   response_label->setGeometry(10,76,65,14);
-  response_label->setFont(default_font);
+  response_label->setFont(labelFont());
   response_label->setAlignment(Qt::AlignRight);
 
   send=new QPushButton(tr("&Send Command"),this);
   send->setGeometry(10,sizeHint().height()-50,120,40);
-  send->setFont(default_font);
+  send->setFont(buttonFont());
   connect(send,SIGNAL(clicked()),this,SLOT(sendCommand()));
 
   quit=new QPushButton("&Quit",this,"quit");
   quit->setGeometry(sizeHint().width()-80,sizeHint().height()-50,70,40);
-  quit->setFont(default_font);
+  quit->setFont(buttonFont());
   quit->setDefault(true);
   connect(quit,SIGNAL(clicked()),qApp,SLOT(quit()));
 
@@ -489,7 +446,6 @@ int main(int argc,char *argv[])
     return a.exec();
   }
   else {
-    QApplication::setStyle(new QWindowsStyle);
     QApplication a(argc,argv);
     
     //
@@ -520,7 +476,9 @@ int main(int argc,char *argv[])
     //
     // Start Event Loop
     //
-    MainWidget *w=new MainWidget();
+    RDConfig *config=new RDConfig();
+    config->load();
+    MainWidget *w=new MainWidget(config);
     a.setMainWidget(w);
     w->show();
     return a.exec();

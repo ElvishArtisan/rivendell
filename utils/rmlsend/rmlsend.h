@@ -2,7 +2,7 @@
 //
 // A utility for sending RML Commands
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,18 +21,15 @@
 #ifndef RMLSEND_H
 #define RMLSEND_H
 
-#include <qcombobox.h>
-#include <qlabel.h>
-#include <qlineedit.h>
-#include <qpushbutton.h>
-#include <qsize.h>
-#include <qsizepolicy.h>
 #include <q3socketdevice.h>
 #include <q3textstream.h>
-#include <qtimer.h>
-#include <qwidget.h>
+
+#include <qcombobox.h>
+#include <qlabel.h>
+#include <qpushbutton.h>
 
 #include <rd.h>
+#include <rdwidget.h>
 
 //
 // Settings
@@ -41,12 +38,12 @@
 #define RMLSEND_DEFAULT_ADDR "localhost"
 #define RMLSEND_DEFAULT_PORT 5859
 
-class MainWidget : public QWidget
+class MainWidget : public RDWidget
 {
   Q_OBJECT
  public:
   enum DestMode {Rml=0,RmlNoEcho=1,Manual=2};
-  MainWidget(QWidget *parent=0);
+  MainWidget(RDConfig *c,QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
   
