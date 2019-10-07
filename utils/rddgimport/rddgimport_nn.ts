@@ -99,5 +99,9 @@
         <source>Unknown command option</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Open File</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>

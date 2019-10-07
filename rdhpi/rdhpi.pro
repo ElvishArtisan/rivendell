@@ -24,14 +24,12 @@
 # purely for the sake of i18n support.
 #
 
-SOURCES += rdhpicardselector.cpp
 SOURCES += rdhpiinformation.cpp
 SOURCES += rdhpiplaystream.cpp
 SOURCES += rdhpirecordstream.cpp
 SOURCES += rdhpisoundcard.cpp
 SOURCES += rdhpisoundselector.cpp
 
-HEADERS += rdhpicardselector.h
 HEADERS += rdhpiinformation.h
 HEADERS += rdhpiplaystream.h
 HEADERS += rdhpirecordstream.h

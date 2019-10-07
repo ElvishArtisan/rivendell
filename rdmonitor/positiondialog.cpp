@@ -2,7 +2,7 @@
 //
 // Dialog to set RDMonitor screen position.
 //
-//   (C) Copyright 2013-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2013-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,44 +20,31 @@
 
 #include "positiondialog.h"
 
-PositionDialog::PositionDialog(QDesktopWidget *dw,RDMonitorConfig *config,
-			       QWidget *parent)
-  : QDialog(parent)
+PositionDialog::PositionDialog(QDesktopWidget *dw,RDMonitorConfig *mconfig,
+			       RDConfig *config,QWidget *parent)
+  : RDDialog(config,parent)
 {
-  setModal(true);
   pos_desktop_widget=dw;
-  pos_config=config;
+  pos_config=mconfig;
 
   setWindowTitle("RDMonitor");
-
-  //
-  // Fonts
-  //
-  QFont button_font("helvetica",12,QFont::Bold);
-  button_font.setPixelSize(12);
-
-  QFont list_font("helvetica",12,QFont::Normal);
-  list_font.setPixelSize(12);
 
   //
   // Screen Number
   //
   pos_screen_number_box=new QComboBox(this);
-  pos_screen_number_box->setFont(list_font);
   pos_screen_number_label=
     new QLabel(pos_screen_number_box,tr("Screen")+":",this);
-  pos_screen_number_label->setFont(button_font);
+  pos_screen_number_label->setFont(labelFont());
   pos_screen_number_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Position
   //
   pos_position_box=new QComboBox(this);
-  pos_position_box->setFont(list_font);
-  pos_position_box->setFont(list_font);
   pos_position_label=
     new QLabel(pos_position_box,tr("Position")+":",this);
-  pos_position_label->setFont(button_font);
+  pos_position_label->setFont(labelFont());
   pos_position_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   for(int i=0;i<RDMonitorConfig::LastPosition;i++) {
     pos_position_box->
@@ -68,34 +55,32 @@ PositionDialog::PositionDialog(QDesktopWidget *dw,RDMonitorConfig *config,
   // X Offset
   //
   pos_x_offset_spin=new QSpinBox(this);
-  pos_x_offset_spin->setFont(list_font);
   pos_x_offset_spin->setRange(0,99);
   pos_x_offset_label=new QLabel(pos_x_offset_spin,tr("X Offset")+":",this);
-  pos_x_offset_label->setFont(button_font);
+  pos_x_offset_label->setFont(labelFont());
   pos_x_offset_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Y Offset
   //
   pos_y_offset_spin=new QSpinBox(this);
-  pos_y_offset_spin->setFont(list_font);
   pos_y_offset_spin->setRange(0,99);
   pos_y_offset_label=new QLabel(pos_y_offset_spin,tr("Y Offset")+":",this);
-  pos_y_offset_label->setFont(button_font);
+  pos_y_offset_label->setFont(labelFont());
   pos_y_offset_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // OK Button
   //
   pos_ok_button=new QPushButton(tr("OK"),this);
-  pos_ok_button->setFont(button_font);
+  pos_ok_button->setFont(buttonFont());
   connect(pos_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
   // Cancel Button
   //
   pos_cancel_button=new QPushButton(tr("Cancel"),this);
-  pos_cancel_button->setFont(button_font);
+  pos_cancel_button->setFont(buttonFont());
   connect(pos_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   setMaximumSize(sizeHint());

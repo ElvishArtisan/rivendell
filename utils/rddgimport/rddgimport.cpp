@@ -2,7 +2,7 @@
 //
 // A Qt-based application for importing Dial Global CDN downloads
 //
-//   (C) Copyright 2012-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,28 +18,19 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <stdlib.h>
-#include <stdio.h>
 #include <errno.h>
 
+#include <qfiledialog.h>
+
 #include <qapplication.h>
-#include <qwindowsstyle.h>
-#include <qtextcodec.h>
-#include <q3filedialog.h>
 #include <qmessagebox.h>
 #include <qtranslator.h>
-#include <qstringlist.h>
-#include <qfile.h>
 
-#include <rdapplication.h>
 #include <rdaudioimport.h>
-#include <rdcart.h>
 #include <rdconf.h>
-#include <rdcut.h>
 #include <rddatedecode.h>
 #include <rddatedialog.h>
 #include <rdescape_string.h>
-#include <rdgroup.h>
 
 #include "rddgimport.h"
 
@@ -48,8 +39,8 @@
 //
 #include "../../icons/rivendell-22x22.xpm"
 
-MainWidget::MainWidget(QWidget *parent)
-  : QWidget(parent)
+MainWidget::MainWidget(RDConfig *c,QWidget *parent)
+  : RDWidget(c,parent)
 {
   QString sql;
   RDSqlQuery *q;
@@ -87,19 +78,9 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Set Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
 
   SetCaption();
-
-  //
-  // Fonts
-  //
-  QFont main_font("helvetica",12,QFont::Normal);
-  main_font.setPixelSize(12);
-  setFont(main_font);
-  QFont label_font("helvetica",12,QFont::Bold);
-  label_font.setPixelSize(12);
 
   //
   // Configuration Elements
@@ -114,7 +95,7 @@ MainWidget::MainWidget(QWidget *parent)
   connect(dg_service_box,SIGNAL(activated(int)),
 	  this,SLOT(serviceActivatedData(int)));
   dg_service_label=new QLabel(dg_service_box,tr("Service:"),this);
-  dg_service_label->setFont(label_font);
+  dg_service_label->setFont(labelFont());
   dg_service_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -124,10 +105,10 @@ MainWidget::MainWidget(QWidget *parent)
   connect(dg_filename_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(filenameChangedData(const QString &)));
   dg_filename_label=new QLabel(dg_filename_edit,tr("Filename:"),this);
-  dg_filename_label->setFont(label_font);
+  dg_filename_label->setFont(labelFont());
   dg_filename_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   dg_filename_button=new QPushButton(tr("Select"),this);
-  dg_filename_button->setFont(main_font);
+  dg_filename_button->setFont(subButtonFont());
   connect(dg_filename_button,SIGNAL(clicked()),
 	  this,SLOT(filenameSelectedData()));
 
@@ -137,10 +118,10 @@ MainWidget::MainWidget(QWidget *parent)
   dg_date_edit=new Q3DateEdit(this);
   dg_date_edit->setDate(QDate::currentDate());
   dg_date_label=new QLabel(dg_date_edit,tr("Date:"),this);
-  dg_date_label->setFont(label_font);
+  dg_date_label->setFont(labelFont());
   dg_date_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   dg_date_button=new QPushButton(tr("Select"),this);
-  dg_date_button->setFont(main_font);
+  dg_date_button->setFont(subButtonFont());
   connect(dg_date_button,SIGNAL(clicked()),
 	  this,SLOT(dateSelectedData()));
 
@@ -156,14 +137,14 @@ MainWidget::MainWidget(QWidget *parent)
   dg_messages_text=new Q3TextEdit(this);
   dg_messages_text->setReadOnly(true);
   dg_messages_label=new QLabel(dg_service_box,tr("Messages"),this);
-  dg_messages_label->setFont(label_font);
+  dg_messages_label->setFont(labelFont());
   dg_messages_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Process Button
   //
   dg_process_button=new QPushButton(tr("Process"),this);
-  dg_process_button->setFont(label_font);
+  dg_process_button->setFont(buttonFont());
   dg_process_button->setDisabled(true);
   connect(dg_process_button,SIGNAL(clicked()),this,SLOT(processData()));
 
@@ -171,7 +152,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Close Button
   //
   dg_close_button=new QPushButton(tr("Close"),this);
-  dg_close_button->setFont(label_font);
+  dg_close_button->setFont(buttonFont());
   connect(dg_close_button,SIGNAL(clicked()),this,SLOT(quitMainWidget()));
 
   //
@@ -226,8 +207,9 @@ void MainWidget::filenameSelectedData()
     filename=RDGetHomeDir();
   }
   filename=
-    Q3FileDialog::getOpenFileName(filename,tr("Text Files")+" (*.txt *.TXT);;"+
-				 tr("All Files")+" (*.*)",this);
+    QFileDialog::getOpenFileName(this,"RDDgImport - "+tr("Open File"),filename,
+                                 tr("Text Files")+" (*.txt *.TXT);;"+
+				 tr("All Files")+" (*.*)");
   if(!filename.isEmpty()) {
     dg_filename_edit->setText(filename);
     filenameChangedData(filename);
@@ -664,7 +646,9 @@ int main(int argc,char *argv[])
   //
   // Start Event Loop
   //
-  MainWidget *w=new MainWidget();
+  RDConfig *config=new RDConfig();
+  config->load();
+  MainWidget *w=new MainWidget(config);
   a.setMainWidget(w);
   w->setGeometry(QRect(QPoint(0,0),w->sizeHint()));
   w->show();

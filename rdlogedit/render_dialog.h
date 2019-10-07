@@ -2,7 +2,7 @@
 //
 // Log Rendering Dialog for Rivendell.
 //
-//   (C) Copyright 2017-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,21 +21,11 @@
 #ifndef RENDER_DIALOG_H
 #define RENDER_DIALOG_H
 
-#include <qcheckbox.h>
-#include <qcombobox.h>
-#include <q3datetimeedit.h>
-#include <qdialog.h>
-#include <qlabel.h>
-#include <qlineedit.h>
-#include <q3progressdialog.h>
+#include <qdatetimeedit.h>
 
-#include <rdbusybar.h>
-#include <rdconfig.h>
 #include <rdcut_dialog.h>
-#include <rdsettings.h>
+#include <rddialog.h>
 #include <rdlog_event.h>
-#include <rdsystem.h>
-#include <rduser.h>
 
 //
 // Widget Settings
@@ -43,7 +33,7 @@
 #define IMPORT_BAR_INTERVAL 500
 #define IMPORT_TEMP_BASENAME "rdlib"
 
-class RenderDialog : public QDialog
+class RenderDialog : public RDDialog
 {
  Q_OBJECT
  public:
@@ -84,7 +74,7 @@ class RenderDialog : public QDialog
   QLineEdit *render_filename_edit;
   QLabel *render_starttime_label;
   QComboBox *render_starttime_box;
-  Q3TimeEdit *render_starttime_edit;
+  QTimeEdit *render_starttime_edit;
   QLabel *render_audiosettings_label;
   QLineEdit *render_audiosettings_edit;
   QPushButton *render_audiosettings_button;

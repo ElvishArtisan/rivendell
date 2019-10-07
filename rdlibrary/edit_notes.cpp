@@ -2,7 +2,7 @@
 //
 // Edit Cart Notes.
 //
-//   (C) Copyright 2009-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2009-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,36 +18,24 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <rddb.h>
-#include <rdescape_string.h>
-
 #include "edit_notes.h"
 
 EditNotes::EditNotes(RDCart *cart,QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
-  setModal(true);
-
   notes_cart=cart;
   setWindowTitle("RDLibrary - "+tr("Notes for cart")+
 	     QString().sprintf(" %06u [",cart->number())+cart->title()+"]");
 
   //
-  // Create Fonts
-  //
-  QFont button_font=QFont("helvetica",12,QFont::Bold);
-  button_font.setPixelSize(12);
-
-  //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
 
   //
   // Variable Name
   //
-  notes_view=new Q3TextView(this);
+  notes_view=new QTextEdit(this);
   notes_view->setTextFormat(Qt::PlainText);
   notes_view->setReadOnly(false);
 
@@ -56,7 +44,7 @@ EditNotes::EditNotes(RDCart *cart,QWidget *parent)
   //
   notes_ok_button=new QPushButton(this);
   notes_ok_button->setDefault(true);
-  notes_ok_button->setFont(button_font);
+  notes_ok_button->setFont(buttonFont());
   notes_ok_button->setText(tr("&OK"));
   notes_ok_button->setDefault(true);
   connect(notes_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
@@ -65,7 +53,7 @@ EditNotes::EditNotes(RDCart *cart,QWidget *parent)
   //  Cancel Button
   //
   notes_cancel_button=new QPushButton(this);
-  notes_cancel_button->setFont(button_font);
+  notes_cancel_button->setFont(buttonFont());
   notes_cancel_button->setText(tr("&Cancel"));
   connect(notes_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 

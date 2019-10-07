@@ -2,7 +2,7 @@
 //
 // A Qt-based application for importing TM Century GoldDisc CDs
 //
-//   (C) Copyright 2013,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2013-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,40 +21,31 @@
 #ifndef RDDISCIMPORT_H
 #define RDDISCIMPORT_H
 
-#include <vector>
-#include <map>
+#include <q3progressbar.h>
 
 #include <qcheckbox.h>
-#include <qwidget.h>
-#include <qsize.h>
-#include <qsizepolicy.h>
 #include <qlabel.h>
 #include <qcombobox.h>
 #include <qlineedit.h>
-#include <qpushbutton.h>
 #include <qspinbox.h>
-#include <q3progressbar.h>
-//Added by qt3to4:
-#include <QResizeEvent>
 
 #include <rdaudioimport.h>
 #include <rdcdplayer.h>
 #include <rdcdripper.h>
-#include <rdconfig.h>
-#include <rddb.h>
 #include <rdgroup.h>
 #include <rdlistview.h>
 #include <rdtransportbutton.h>
+#include <rdwidget.h>
 
-#include <metalibrary.h>
+#include "metalibrary.h"
 
 #define RDDISCIMPORT_USAGE "\n"
 
-class MainWidget : public QWidget
+class MainWidget : public RDWidget
 {
   Q_OBJECT
  public:
-  MainWidget(QWidget *parent=0);
+  MainWidget(RDConfig *c,QWidget *parent=0);
   QSize sizeHint() const;
 
  private slots:

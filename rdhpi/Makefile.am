@@ -50,15 +50,13 @@ all:
 	lrelease-qt4 rdhpi.pro
 
 lib_LTLIBRARIES = librdhpi.la
-dist_librdhpi_la_SOURCES = rdhpicardselector.cpp rdhpicardselector.h\
-                           rdhpiinformation.cpp rdhpiinformation.h\
+dist_librdhpi_la_SOURCES = rdhpiinformation.cpp rdhpiinformation.h\
                            rdhpiplaystream.cpp rdhpiplaystream.h\
                            rdhpirecordstream.cpp rdhpirecordstream.h\
                            rdhpisoundcard.cpp rdhpisoundcard.h\
                            rdhpisoundselector.cpp rdhpisoundselector.h
 
-nodist_librdhpi_la_SOURCES = moc_rdhpicardselector.cpp\
-                             moc_rdhpiplaystream.cpp\
+nodist_librdhpi_la_SOURCES = moc_rdhpiplaystream.cpp\
                              moc_rdhpirecordstream.cpp\
                              moc_rdhpisoundcard.cpp\
                              moc_rdhpisoundselector.cpp

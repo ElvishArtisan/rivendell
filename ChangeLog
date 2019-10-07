@@ -19190,3 +19190,5 @@
 2019-10-07 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored rdlogin(1) to use the 'RDDialog' and 'RDWidget'
 	base classes.
+2019-10-07 Fred Gleason <fredg@paravelsystems.com>
+	* Removed remaining references to 'helvetica' fonts.

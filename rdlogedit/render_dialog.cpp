@@ -2,7 +2,7 @@
 //
 // Render Log Dialog for Rivendell.
 //
-//   (C) Copyright 2017-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,18 +18,12 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <stdlib.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <signal.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <q3filedialog.h>
+#include <qfiledialog.h>
+
 #include <qlineedit.h>
 #include <qmessagebox.h>
 #include <qpushbutton.h>
 
-#include <rd.h>
 #include <rdconf.h>
 #include <rdexport_settings_dialog.h>
 #include <rdrenderer.h>
@@ -38,11 +32,8 @@
 
 RenderDialog::RenderDialog(RDStation *station,RDSystem *system,RDConfig *config,
 			   QWidget *parent)
-
-  : QDialog(parent)
+  : RDDialog(parent)
 {
-  setModal(true);
-
   render_station=station;
   render_system=system;
   render_config=config;
@@ -52,23 +43,18 @@ RenderDialog::RenderDialog(RDStation *station,RDSystem *system,RDConfig *config,
 
   setWindowTitle("RDLogEdit - "+tr("Render Log"));
 
-  QFont button_font("helvetica",12,QFont::Bold);
-  button_font.setPixelSize(12);
-
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   //
   // Dialogs
   //
   render_progress_dialog=
     new Q3ProgressDialog(tr("Rendering Log..."),tr("Cancel"),0,this,"",true);
-  render_progress_dialog->setCaption("RDLogEdit - "+tr("Render Progress"));
+  render_progress_dialog->setWindowTitle("RDLogEdit - "+tr("Render Progress"));
 
   //
   // Settings
@@ -90,7 +76,7 @@ RenderDialog::RenderDialog(RDStation *station,RDSystem *system,RDConfig *config,
   render_to_box->insertItem(tr("File"));
   connect(render_to_box,SIGNAL(activated(int)),this,SLOT(toChangedData(int)));
   render_to_label=new QLabel(tr("Render To")+":",this);
-  render_to_label->setFont(button_font);
+  render_to_label->setFont(labelFont());
   render_to_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -101,7 +87,7 @@ RenderDialog::RenderDialog(RDStation *station,RDSystem *system,RDConfig *config,
   connect(render_filename_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(filenameChangedData(const QString &)));
   render_filename_label=new QLabel(tr("Cart/Cut")+":",this);
-  render_filename_label->setFont(button_font);
+  render_filename_label->setFont(labelFont());
   render_filename_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   render_filename_button=new QPushButton(tr("Select"),this);
   connect(render_filename_button,SIGNAL(clicked()),this,SLOT(selectData()));
@@ -113,7 +99,7 @@ RenderDialog::RenderDialog(RDStation *station,RDSystem *system,RDConfig *config,
   render_audiosettings_edit->setReadOnly(true);
   render_audiosettings_edit->setText(render_settings->description());
   render_audiosettings_label=new QLabel(tr("Audio Parameters")+":",this);
-  render_audiosettings_label->setFont(button_font);
+  render_audiosettings_label->setFont(labelFont());
   render_audiosettings_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   render_audiosettings_button=new QPushButton(tr("Set"),this);
   connect(render_audiosettings_button,SIGNAL(clicked()),
@@ -128,9 +114,10 @@ RenderDialog::RenderDialog(RDStation *station,RDSystem *system,RDConfig *config,
   connect(render_starttime_box,SIGNAL(activated(int)),
 	  this,SLOT(starttimeSourceData(int)));
   render_starttime_label=new QLabel(tr("Virtual Start Time")+":",this);
-  render_starttime_label->setFont(button_font);
+  render_starttime_label->setFont(labelFont());
   render_starttime_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-  render_starttime_edit=new Q3TimeEdit(this);
+  render_starttime_edit=new QTimeEdit(this);
+  render_starttime_edit->setDisplayFormat("hh:mm:ss");
   render_starttime_edit->setDisabled(true);
 
   //
@@ -140,7 +127,7 @@ RenderDialog::RenderDialog(RDStation *station,RDSystem *system,RDConfig *config,
   render_events_box->insertItem(tr("All Events"));
   render_events_box->insertItem(tr("Only Selected Events"));
   render_events_label=new QLabel(tr("Include")+":",this);
-  render_events_label->setFont(button_font);
+  render_events_label->setFont(labelFont());
   render_events_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -150,7 +137,7 @@ RenderDialog::RenderDialog(RDStation *station,RDSystem *system,RDConfig *config,
   render_ignorestop_box->insertItem(tr("Stop Rendering"));
   render_ignorestop_box->insertItem(tr("Treat as PLAY"));
   render_ignorestop_label=new QLabel(tr("At STOP transition")+":",this);
-  render_ignorestop_label->setFont(button_font);
+  render_ignorestop_label->setFont(labelFont());
   render_ignorestop_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -159,7 +146,7 @@ RenderDialog::RenderDialog(RDStation *station,RDSystem *system,RDConfig *config,
   render_render_button=new QPushButton(tr("&Render"),this);
   render_render_button->
     setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
-  render_render_button->setFont(button_font);
+  render_render_button->setFont(buttonFont());
   render_render_button->setDefault(true);
   connect(render_render_button,SIGNAL(clicked()),this,SLOT(renderData()));
 
@@ -169,7 +156,7 @@ RenderDialog::RenderDialog(RDStation *station,RDSystem *system,RDConfig *config,
   render_cancel_button=new QPushButton(tr("&Cancel"),this);
   render_cancel_button->
     setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
-  render_cancel_button->setFont(button_font);
+  render_cancel_button->setFont(buttonFont());
   render_cancel_button->setDefault(true);
   connect(render_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 }
@@ -227,8 +214,8 @@ void RenderDialog::selectData()
 {
   if(render_to_box->currentItem()) {
     QString filename=
-      Q3FileDialog::getSaveFileName(render_save_path,RD_AUDIO_FILE_FILTER,
-				   this,"","RDLogEdit - "+tr("Render Log"));
+      QFileDialog::getSaveFileName(this,"RDLogEdit - "+tr("Render Log"),
+				   render_save_path,RD_AUDIO_FILE_FILTER);
     if(!filename.isEmpty()) {
       render_filename_edit->setText(filename);
       filenameChangedData(filename);
@@ -258,7 +245,7 @@ void RenderDialog::starttimeSourceData(int item)
 
 void RenderDialog::audiosettingsData()
 {
-  RDExportSettingsDialog *d=new RDExportSettingsDialog(render_settings);
+  RDExportSettingsDialog *d=new RDExportSettingsDialog(render_settings,this);
   if(d->exec()==0) {
     render_audiosettings_edit->setText(render_settings->description());
   }
