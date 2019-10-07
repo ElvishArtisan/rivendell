@@ -2,7 +2,7 @@
 //
 // The User Login/Logout Utility for Rivendell.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -34,8 +34,8 @@
 //
 #include "../icons/rivendell-22x22.xpm"
 
-MainWidget::MainWidget(QWidget *parent)
-  :QWidget(parent)
+MainWidget::MainWidget(RDConfig *c,QWidget *parent)
+  : RDWidget(c,parent)
 {
   login_resize=false;
   login_user_width=160;
@@ -48,24 +48,8 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
   setMaximumHeight(sizeHint().height());
-
-  //
-  // Generate Fonts
-  //
-  QFont default_font("Helvetica",12,QFont::Normal);
-  default_font.setPixelSize(12);
-  qApp->setFont(default_font);
-  QFont button_font=QFont("Helvetica",12,QFont::Bold);
-  button_font.setPixelSize(12);
-  QFont label_font=QFont("Helvetica",16,QFont::Bold);
-  label_font.setPixelSize(12);
-  QFont small_label_font=QFont("Helvetica",12,QFont::Bold);
-  small_label_font.setPixelSize(12);
-  QFont line_edit_font=QFont("Helvetica",12,QFont::Normal);
-  line_edit_font.setPixelSize(12);
 
   //
   // Create And Set Icon
@@ -105,7 +89,7 @@ MainWidget::MainWidget(QWidget *parent)
   // User Label
   //
   login_label=new QLabel(this);
-  login_label->setFont(label_font);
+  login_label->setFont(sectionLabelFont());
   login_label->setAlignment(Qt::AlignCenter);
   login_label->setText(tr("Current User: unknown"));
 
@@ -113,9 +97,8 @@ MainWidget::MainWidget(QWidget *parent)
   // User Name
   //
   login_username_box=new QComboBox(this);
-  login_username_box->setFont(line_edit_font);
   login_username_box->setFocus();
-  QFontMetrics fm(line_edit_font);
+  QFontMetrics fm(font());
   sql="select LOGIN_NAME from USERS where ADMIN_CONFIG_PRIV=\"N\"\
        order by LOGIN_NAME";
   q=new RDSqlQuery(sql);
@@ -131,7 +114,7 @@ MainWidget::MainWidget(QWidget *parent)
     login_user_width=900;
   }
   login_username_label=new QLabel(login_username_box,tr("&Username:"),this);
-  login_username_label->setFont(small_label_font);
+  login_username_label->setFont(labelFont());
   login_username_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   if(rda->system()->showUserList()) {
     login_username_edit->hide();
@@ -144,10 +127,9 @@ MainWidget::MainWidget(QWidget *parent)
   // Password
   //
   login_password_edit=new QLineEdit(this);
-  login_password_edit->setFont(line_edit_font);
   login_password_edit->setEchoMode(QLineEdit::Password);
   login_password_label=new QLabel(login_password_edit,tr("&Password:"),this);
-  login_password_label->setFont(small_label_font);
+  login_password_label->setFont(labelFont());
   login_password_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   connect(login_password_edit,SIGNAL(returnPressed()),this,SLOT(loginData()));
 
@@ -155,7 +137,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Login Button
   //
   login_button=new QPushButton(this);
-  login_button->setFont(button_font);
+  login_button->setFont(buttonFont());
   login_button->setText(tr("&Set User"));
   connect(login_button,SIGNAL(clicked()),this,SLOT(loginData()));
 
@@ -163,7 +145,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Logout Button
   //
   logout_button=new QPushButton(this);
-  logout_button->setFont(button_font);
+  logout_button->setFont(buttonFont());
   logout_button->setText(tr("&Default\nUser"));
   connect(logout_button,SIGNAL(clicked()),this,SLOT(logoutData()));
 
@@ -171,7 +153,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Cancel Button
   //
   cancel_button=new QPushButton(this);
-  cancel_button->setFont(button_font);
+  cancel_button->setFont(buttonFont());
   cancel_button->setText(tr("&Cancel"));
   connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
@@ -317,7 +299,9 @@ int main(int argc,char *argv[])
   //
   // Start Event Loop
   //
-  MainWidget *w=new MainWidget();
+  RDConfig *config=new RDConfig();
+  config->load();
+  MainWidget *w=new MainWidget(config);
   a.setMainWidget(w);
   w->setGeometry(QRect(QPoint(0,0),w->sizeHint()));
   w->show();
