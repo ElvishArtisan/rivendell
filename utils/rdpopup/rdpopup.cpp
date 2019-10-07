@@ -18,19 +18,16 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <syslog.h>
 
 #include <qapplication.h>
-#include <qwindowsstyle.h>
 #include <qmessagebox.h>
-#include <qdatetime.h>
+#include <qwindowsstyle.h>
 
 #include <rd.h>
 #include <rdapplication.h>
 #include <rdcmd_switch.h>
 #include <rdconfig.h>
+#include <rdfontset.h>
 
 #include "rdpopup.h"
 
@@ -123,9 +120,9 @@ int main(int argc,char *argv[])
     break;
   }
   mb->setWindowIcon(QPixmap(rivendell_22x22_xpm));
-  QFont font("helvetica",16,QFont::Bold);
-  font.setPixelSize(16);
-  mb->setFont(font);
+
+  RDFontSet *fs=new RDFontSet(config);
+  mb->setFont(fs->progressFont());
   mb->exec();
   delete mb;
 

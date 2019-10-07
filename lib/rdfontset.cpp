@@ -34,6 +34,19 @@ RDFontSet::RDFontSet(const QFont &default_font,RDConfig *c)
 }
 
 
+RDFontSet::RDFontSet(RDConfig *c)
+{
+  if(c==NULL) {
+    font_config=rda->config();
+  }
+  else {
+    font_config=c;
+  }
+  MakeFonts(QFont(font_config->fontFamily(),font_config->fontDefaultSize(),
+		  QFont::Normal));
+}
+
+
 QFont RDFontSet::buttonFont() const
 {
   return font_button_font;

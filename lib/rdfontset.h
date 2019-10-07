@@ -29,6 +29,7 @@ class RDFontSet
 {
  public:
   RDFontSet(const QFont &default_font,RDConfig *c=NULL);
+  RDFontSet(RDConfig *c=NULL);
   QFont buttonFont() const;
   QFont bigButtonFont() const;
   QFont subButtonFont() const;
