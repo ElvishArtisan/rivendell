@@ -21,13 +21,12 @@
 #ifndef RDLISTSVCS_H
 #define RDLISTSVCS_H
 
-#include <qdialog.h>
 #include <q3listbox.h>
 #include <qpushbutton.h>
-//Added by qt3to4:
-#include <QResizeEvent>
 
-class RDListSvcs : public QDialog
+#include <rddialog.h>
+
+class RDListSvcs : public RDDialog
 {
   Q_OBJECT
  public:

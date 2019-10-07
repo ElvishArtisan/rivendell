@@ -2,7 +2,7 @@
 //
 // A dialog to edit the contents of an RDWaveData.
 //
-//   (C) Copyright 2014,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2014-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,25 +18,14 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qvalidator.h>
-//Added by qt3to4:
-#include <QCloseEvent>
-#include <QResizeEvent>
-#include <QLabel>
-
 #include "rdwavedata_dialog.h"
 
 RDWaveDataDialog::RDWaveDataDialog(const QString &caption,QWidget *parent)
-  : QDialog(parent,"",true)
+  : RDDialog(parent)
 {
   wave_caption=caption;
-  setCaption(caption+" - "+tr("Edit Cart Label"));
 
-  //
-  // Fonts
-  //
-  QFont label_font("helvetica",12,QFont::Bold);
-  label_font.setPixelSize(12);
+  setWindowTitle(caption+" - "+tr("Edit Cart Label"));
 
   //
   // Dialogs
@@ -47,7 +36,7 @@ RDWaveDataDialog::RDWaveDataDialog(const QString &caption,QWidget *parent)
   // Title
   //
   wave_title_label=new QLabel(tr("Title")+":",this);
-  wave_title_label->setFont(label_font);
+  wave_title_label->setFont(labelFont());
   wave_title_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   wave_title_edit=new QLineEdit(this);
   wave_title_edit->setMaxLength(255);
@@ -56,7 +45,7 @@ RDWaveDataDialog::RDWaveDataDialog(const QString &caption,QWidget *parent)
   // Artist
   //
   wave_artist_label=new QLabel(tr("Artist")+":",this);
-  wave_artist_label->setFont(label_font);
+  wave_artist_label->setFont(labelFont());
   wave_artist_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   wave_artist_edit=new QLineEdit(this);
   wave_artist_edit->setMaxLength(255);
@@ -65,7 +54,7 @@ RDWaveDataDialog::RDWaveDataDialog(const QString &caption,QWidget *parent)
   // Year
   //
   wave_year_label=new QLabel(tr("Year")+":",this);
-  wave_year_label->setFont(label_font);
+  wave_year_label->setFont(labelFont());
   wave_year_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   wave_year_edit=new QLineEdit(this);
   wave_year_edit->setMaxLength(4);
@@ -75,7 +64,7 @@ RDWaveDataDialog::RDWaveDataDialog(const QString &caption,QWidget *parent)
   // Usage
   //
   wave_usage_label=new QLabel(tr("Usage")+":",this);
-  wave_usage_label->setFont(label_font);
+  wave_usage_label->setFont(labelFont());
   wave_usage_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   wave_usage_box=new QComboBox(this);
   for(int i=0;i<(int)RDCart::UsageLast;i++) {
@@ -86,14 +75,14 @@ RDWaveDataDialog::RDWaveDataDialog(const QString &caption,QWidget *parent)
   // Scheduler Codes
   //
   wave_sched_button=new QPushButton(tr("Scheduler Codes"),this);
-  wave_sched_button->setFont(label_font);
+  wave_sched_button->setFont(buttonFont());
   connect(wave_sched_button,SIGNAL(clicked()),this,SLOT(schedClickedData()));
 
   //
   // Song ID
   //
   wave_songid_label=new QLabel(tr("Song ID")+":",this);
-  wave_songid_label->setFont(label_font);
+  wave_songid_label->setFont(labelFont());
   wave_songid_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   wave_songid_edit=new QLineEdit(this);
   wave_songid_edit->setMaxLength(32);
@@ -102,7 +91,7 @@ RDWaveDataDialog::RDWaveDataDialog(const QString &caption,QWidget *parent)
   // Beats Per Minute
   //
   wave_bpm_label=new QLabel(tr("Beats per Minute")+":",this);
-  wave_bpm_label->setFont(label_font);
+  wave_bpm_label->setFont(labelFont());
   wave_bpm_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   wave_bpm_spin=new QSpinBox(this);
   wave_bpm_spin->setRange(0,300);
@@ -112,7 +101,7 @@ RDWaveDataDialog::RDWaveDataDialog(const QString &caption,QWidget *parent)
   // Album
   //
   wave_album_label=new QLabel(tr("Album")+":",this);
-  wave_album_label->setFont(label_font);
+  wave_album_label->setFont(labelFont());
   wave_album_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   wave_album_edit=new QLineEdit(this);
   wave_album_edit->setMaxLength(255);
@@ -121,7 +110,7 @@ RDWaveDataDialog::RDWaveDataDialog(const QString &caption,QWidget *parent)
   // Label
   //
   wave_label_label=new QLabel(tr("Label")+":",this);
-  wave_label_label->setFont(label_font);
+  wave_label_label->setFont(labelFont());
   wave_label_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   wave_label_edit=new QLineEdit(this);
   wave_label_edit->setMaxLength(64);
@@ -130,7 +119,7 @@ RDWaveDataDialog::RDWaveDataDialog(const QString &caption,QWidget *parent)
   // Client
   //
   wave_client_label=new QLabel(tr("Client")+":",this);
-  wave_client_label->setFont(label_font);
+  wave_client_label->setFont(labelFont());
   wave_client_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   wave_client_edit=new QLineEdit(this);
   wave_client_edit->setMaxLength(64);
@@ -139,7 +128,7 @@ RDWaveDataDialog::RDWaveDataDialog(const QString &caption,QWidget *parent)
   // Agency
   //
   wave_agency_label=new QLabel(tr("Agency")+":",this);
-  wave_agency_label->setFont(label_font);
+  wave_agency_label->setFont(labelFont());
   wave_agency_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   wave_agency_edit=new QLineEdit(this);
   wave_agency_edit->setMaxLength(64);
@@ -148,7 +137,7 @@ RDWaveDataDialog::RDWaveDataDialog(const QString &caption,QWidget *parent)
   // Publisher
   //
   wave_publisher_label=new QLabel(tr("Publisher")+":",this);
-  wave_publisher_label->setFont(label_font);
+  wave_publisher_label->setFont(labelFont());
   wave_publisher_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   wave_publisher_edit=new QLineEdit(this);
   wave_publisher_edit->setMaxLength(64);
@@ -157,7 +146,7 @@ RDWaveDataDialog::RDWaveDataDialog(const QString &caption,QWidget *parent)
   // Composer
   //
   wave_composer_label=new QLabel(tr("Composer")+":",this);
-  wave_composer_label->setFont(label_font);
+  wave_composer_label->setFont(labelFont());
   wave_composer_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   wave_composer_edit=new QLineEdit(this);
   wave_composer_edit->setMaxLength(64);
@@ -166,7 +155,7 @@ RDWaveDataDialog::RDWaveDataDialog(const QString &caption,QWidget *parent)
   // Conductor
   //
   wave_conductor_label=new QLabel(tr("Conductor")+":",this);
-  wave_conductor_label->setFont(label_font);
+  wave_conductor_label->setFont(labelFont());
   wave_conductor_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   wave_conductor_edit=new QLineEdit(this);
   wave_conductor_edit->setMaxLength(64);
@@ -175,7 +164,7 @@ RDWaveDataDialog::RDWaveDataDialog(const QString &caption,QWidget *parent)
   // User Defined
   //
   wave_userdef_label=new QLabel(tr("User Defined")+":",this);
-  wave_userdef_label->setFont(label_font);
+  wave_userdef_label->setFont(labelFont());
   wave_userdef_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   wave_userdef_edit=new QLineEdit(this);
   wave_userdef_edit->setMaxLength(255);
@@ -184,14 +173,14 @@ RDWaveDataDialog::RDWaveDataDialog(const QString &caption,QWidget *parent)
   // OK Button
   //
   wave_ok_button=new QPushButton(tr("OK"),this);
-  wave_ok_button->setFont(label_font);
+  wave_ok_button->setFont(buttonFont());
   connect(wave_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
   // Cancel Button
   //
   wave_cancel_button=new QPushButton(tr("Cancel"),this);
-  wave_cancel_button->setFont(label_font);
+  wave_cancel_button->setFont(buttonFont());
   connect(wave_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 }
 

@@ -121,7 +121,6 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdevent_line.cpp rdevent_line.h\
                         rdevent_player.cpp rdevent_player.h\
                         rdeventimportlist.cpp rdeventimportlist.h\
-                        rdexception_dialog.cpp rdexception_dialog.h\
                         rdexport_settings_dialog.cpp rdexport_settings_dialog.h\
                         rdfeed.cpp rdfeed.h\
                         rdfeedlog.cpp rdfeedlog.h\
@@ -143,8 +142,6 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdidvalidator.cpp rdidvalidator.h\
                         rdimport_audio.cpp rdimport_audio.h\
                         rdinstancelock.cpp rdinstancelock.h\
-                        rdintegeredit.cpp rdintegeredit.h\
-                        rdintegerdialog.cpp rdintegerdialog.h\
                         rd.h\
                         rdkernelgpio.cpp rdkernelgpio.h\
                         rdlabel.cpp rdlabel.h\
@@ -280,7 +277,6 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdedit_panel_name.cpp\
                           moc_rdemptycart.cpp\
                           moc_rdevent_player.cpp\
-                          moc_rdexception_dialog.cpp\
                           moc_rdexport_settings_dialog.cpp\
                           moc_rdfeed.cpp\
                           moc_rdframe.cpp\
@@ -291,8 +287,6 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdhotkeys.cpp\
                           moc_rdhotkeylist.cpp\
                           moc_rdimport_audio.cpp\
-                          moc_rdintegeredit.cpp\
-                          moc_rdintegerdialog.cpp\
                           moc_rdkernelgpio.cpp\
                           moc_rdlabel.cpp\
                           moc_rdlineedit.cpp\

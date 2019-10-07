@@ -2,7 +2,7 @@
 //
 // Edit Rivendell Audio Settings
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,15 +21,14 @@
 #ifndef RDEXPORT_SETTINGS_DIALOG_H
 #define RDEXPORT_SETTINGS_DIALOG_H
 
-#include <qdialog.h>
-#include <qlineedit.h>
 #include <qcombobox.h>
-#include <qspinbox.h>
 #include <qlabel.h>
+#include <qspinbox.h>
 
+#include <rddialog.h>
 #include <rdsettings.h>
 
-class RDExportSettingsDialog : public QDialog
+class RDExportSettingsDialog : public RDDialog
 {
   Q_OBJECT
   public:

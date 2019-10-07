@@ -1677,59 +1677,51 @@ Opravdu chcete uložit?</translation>
     <name>RDExceptionDialog</name>
     <message>
         <source>Rivendell Exception Report</source>
-        <translation>Zpráva o chybě Rivendellu</translation>
+        <translation type="obsolete">Zpráva o chybě Rivendellu</translation>
     </message>
     <message>
         <source>&amp;Save</source>
-        <translation>&amp;Uložit</translation>
+        <translation type="obsolete">&amp;Uložit</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Zavřít</translation>
+        <translation type="obsolete">&amp;Zavřít</translation>
     </message>
     <message>
         <source>Text (*.txt *.TXT)
 All Files (*.*)</source>
-        <translation>Text (*.txt *.TXT)
+        <translation type="obsolete">Text (*.txt *.TXT)
 Všechny soubory (*.*)</translation>
     </message>
     <message>
         <source>Export File</source>
-        <translation>Vyvést soubor</translation>
+        <translation type="obsolete">Vyvést soubor</translation>
     </message>
     <message>
         <source>The file</source>
-        <translation>Soubor</translation>
+        <translation type="obsolete">Soubor</translation>
     </message>
     <message>
         <source>already exists!
 Overwrite?</source>
-        <translation>Již existuje!
+        <translation type="obsolete">Již existuje!
 Přepsat?</translation>
     </message>
     <message>
         <source>File Exists</source>
-        <translation>Soubor již existuje</translation>
+        <translation type="obsolete">Soubor již existuje</translation>
     </message>
     <message>
         <source>Unable to open file</source>
-        <translation>Nelze otevřít soubor</translation>
+        <translation type="obsolete">Nelze otevřít soubor</translation>
     </message>
     <message>
         <source>for writing!</source>
-        <translation>pro zápis!</translation>
+        <translation type="obsolete">pro zápis!</translation>
     </message>
     <message>
         <source>File Error</source>
-        <translation>Chyba souboru</translation>
-    </message>
-    <message>
-        <source>already exists!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Overwrite?</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Chyba souboru</translation>
     </message>
 </context>
 <context>
@@ -2157,30 +2149,30 @@ Bitte Kofiguration prüfen und erneut versuchen.</translation>
     <name>RDIntegerDialog</name>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Zrušit</translation>
+        <translation type="obsolete">&amp;Zrušit</translation>
     </message>
     <message>
         <source>Set Value</source>
-        <translation>Nastavit hodnotu</translation>
+        <translation type="obsolete">Nastavit hodnotu</translation>
     </message>
 </context>
 <context>
     <name>RDIntegerEdit</name>
     <message>
         <source>Add</source>
-        <translation>Přidat</translation>
+        <translation type="obsolete">Přidat</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Smazat</translation>
+        <translation type="obsolete">Smazat</translation>
     </message>
     <message>
         <source>Set Value</source>
-        <translation>Nastavit hodnotu</translation>
+        <translation type="obsolete">Nastavit hodnotu</translation>
     </message>
 </context>
 <context>

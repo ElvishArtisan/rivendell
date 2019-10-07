@@ -1668,59 +1668,51 @@ Are you sure you want to save?</source>
     <name>RDExceptionDialog</name>
     <message>
         <source>Rivendell Exception Report</source>
-        <translation>Relatório de Exceções do Rivendell</translation>
+        <translation type="obsolete">Relatório de Exceções do Rivendell</translation>
     </message>
     <message>
         <source>&amp;Save</source>
-        <translation>&amp;Salvar</translation>
+        <translation type="obsolete">&amp;Salvar</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Fechar</translation>
+        <translation type="obsolete">&amp;Fechar</translation>
     </message>
     <message>
         <source>Text (*.txt *.TXT)
 All Files (*.*)</source>
-        <translation>Textos (*.txt *.TXT)
+        <translation type="obsolete">Textos (*.txt *.TXT)
 Todos os Arquivos (*.*)</translation>
     </message>
     <message>
         <source>Export File</source>
-        <translation>Exportar Arquivo</translation>
+        <translation type="obsolete">Exportar Arquivo</translation>
     </message>
     <message>
         <source>The file</source>
-        <translation>O Arquivo</translation>
+        <translation type="obsolete">O Arquivo</translation>
     </message>
     <message>
         <source>already exists!
 Overwrite?</source>
-        <translation>já Existe! 
+        <translation type="obsolete">já Existe! 
 Sobreescrever?</translation>
     </message>
     <message>
         <source>File Exists</source>
-        <translation>Arquivo Existente</translation>
+        <translation type="obsolete">Arquivo Existente</translation>
     </message>
     <message>
         <source>Unable to open file</source>
-        <translation>Não foi Possível abrir o arquivo</translation>
+        <translation type="obsolete">Não foi Possível abrir o arquivo</translation>
     </message>
     <message>
         <source>for writing!</source>
-        <translation>para escrita!</translation>
+        <translation type="obsolete">para escrita!</translation>
     </message>
     <message>
         <source>File Error</source>
-        <translation>Erro no Arquivo</translation>
-    </message>
-    <message>
-        <source>already exists!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Overwrite?</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Erro no Arquivo</translation>
     </message>
 </context>
 <context>
@@ -2148,30 +2140,30 @@ Por Favor, cheque suas configurações e tenbte outra vez.</translation>
     <name>RDIntegerDialog</name>
     <message>
         <source>Set Value</source>
-        <translation>Selecionar Valor</translation>
+        <translation type="obsolete">Selecionar Valor</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
 </context>
 <context>
     <name>RDIntegerEdit</name>
     <message>
         <source>Set Value</source>
-        <translation>Selecionar Valor</translation>
+        <translation type="obsolete">Selecionar Valor</translation>
     </message>
     <message>
         <source>Add</source>
-        <translation>Adicionar</translation>
+        <translation type="obsolete">Adicionar</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Deletar</translation>
+        <translation type="obsolete">Deletar</translation>
     </message>
 </context>
 <context>

@@ -1481,63 +1481,6 @@ Are you sure you want to save?</source>
     </message>
 </context>
 <context>
-    <name>RDExceptionDialog</name>
-    <message>
-        <source>Rivendell Exception Report</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Save</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Close</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Text (*.txt *.TXT)
-All Files (*.*)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export File</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>already exists!
-Overwrite?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>File Exists</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to open file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>for writing!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>File Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>already exists!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Overwrite?</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>RDExportSettingsDialog</name>
     <message>
         <source>Edit Export Settings</source>
@@ -1871,30 +1814,11 @@ Do you want to overwrite it?</source>
     <name>RDIntegerDialog</name>
     <message>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Annuler</translation>
-    </message>
-    <message>
-        <source>Set Value</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>RDIntegerEdit</name>
-    <message>
-        <source>Add</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Set Value</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">&amp;Annuler</translation>
     </message>
 </context>
 <context>

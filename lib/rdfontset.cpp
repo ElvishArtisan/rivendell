@@ -53,6 +53,12 @@ QFont RDFontSet::buttonFont() const
 }
 
 
+QFont RDFontSet::hugeButtonFont() const
+{
+  return font_huge_button_font;
+}
+
+
 QFont RDFontSet::bigButtonFont() const
 {
   return font_big_button_font;
@@ -101,6 +107,12 @@ QFont RDFontSet::timerFont() const
 }
 
 
+QFont RDFontSet::smallTimerFont() const
+{
+  return font_small_timer_font;
+}
+
+
 QFont RDFontSet::defaultFont() const
 {
   return font_default_font;
@@ -130,6 +142,9 @@ void RDFontSet::MakeFonts(const QFont &default_font)
   font_button_font=QFont(family,button_size,QFont::Bold);
   font_button_font.setPixelSize(button_size);
 
+  font_huge_button_font=QFont(family,button_size+24,QFont::DemiBold);
+  font_huge_button_font.setPixelSize(button_size+24);
+
   font_big_button_font=QFont(family,button_size+4,QFont::DemiBold);
   font_big_button_font.setPixelSize(button_size+4);
 
@@ -153,6 +168,9 @@ void RDFontSet::MakeFonts(const QFont &default_font)
 
   font_timer_font=QFont(family,20,QFont::Normal);
   font_timer_font.setPixelSize(20);
+
+  font_small_timer_font=QFont(family,default_size+2,QFont::Normal);
+  font_small_timer_font.setPixelSize(default_size+2);
 
   font_default_font=QFont(family,default_size,QFont::Normal);
   font_default_font.setPixelSize(default_size);

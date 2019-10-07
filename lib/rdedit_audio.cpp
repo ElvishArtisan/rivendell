@@ -2749,7 +2749,7 @@ void RDEditAudio::DrawWave(int xsize,int ysize,int chan,QString label,
     //
     // Time Tick Marks
     //
-    p->setFont(QFont("Helvetica",8,QFont::Normal));
+    p->setFont(subLabelFont());
     for(unsigned i=0;i<2*edit_peaks->energySize();
 	i+=(int)(edit_factor_x*(double)edit_sample_rate/576.0)) {
       offset=(int)((double)(i-origin_x)/edit_factor_x);
@@ -2809,14 +2809,14 @@ void RDEditAudio::DrawWave(int xsize,int ysize,int chan,QString label,
 
     p->setPen(QColor(Qt::red));
     if(!label.isEmpty()) {
-      p->setFont(QFont("Helvetica",24,QFont::Normal));
+      p->setFont(bannerFont());
       p->drawText(10,28-ysize/2,label);
     }
     p->setPen(QColor(Qt::black));
     p->drawLine(0,0,xsize-3,0);
   }
   else {
-    p->setFont(QFont("Helvetica",24,QFont::Bold));
+    p->setFont(bannerFont());
     p->drawText(270,0,"No Energy Data");
   }
   delete p;

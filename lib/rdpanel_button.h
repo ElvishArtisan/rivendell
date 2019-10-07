@@ -2,7 +2,7 @@
 //
 // The SoundPanel Button for RDAirPlay.
 //
-//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,26 +21,12 @@
 #ifndef RDPANEL_BUTTON_H
 #define RDPANEL_BUTTON_H
 
-#include <qdatetime.h>
-#include <qpushbutton.h>
-#include <qstring.h>
-#include <qpalette.h>
-#include <qtimer.h>
-//Added by qt3to4:
-#include <QDragEnterEvent>
-#include <QDropEvent>
-#include <QMouseEvent>
-#include <QKeyEvent>
-
-#include <rdstation.h>
-#include <rdairplay_conf.h>
+#include <rdpushbutton.h>
 #include <rdplay_deck.h>
-#include <rdlog_line.h>
-#include <rdcartdrag.h>
 
 #define RDPANEL_BUTTON_MARGIN 5
 
-class RDPanelButton : public QPushButton
+class RDPanelButton : public RDPushButton
 {
  Q_OBJECT
  public:

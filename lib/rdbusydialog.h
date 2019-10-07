@@ -2,7 +2,7 @@
 //
 //   A 'progress dialog' widget that shows busy state.
 //
-//   (C) Copyright 2010,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -21,14 +21,10 @@
 #ifndef RDBUSYDIALOG_H
 #define RDBUSYDIALOG_H
 
-#include <qdialog.h>
-#include <qlabel.h>
-//Added by qt3to4:
-#include <QResizeEvent>
-
 #include <rdbusybar.h>
+#include <rddialog.h>
 
-class RDBusyDialog : public QDialog
+class RDBusyDialog : public RDDialog
 {
   Q_OBJECT;
  public:

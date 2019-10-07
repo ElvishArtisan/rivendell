@@ -31,6 +31,7 @@ class RDFontSet
   RDFontSet(const QFont &default_font,RDConfig *c=NULL);
   RDFontSet(RDConfig *c=NULL);
   QFont buttonFont() const;
+  QFont hugeButtonFont() const;
   QFont bigButtonFont() const;
   QFont subButtonFont() const;
   QFont sectionLabelFont() const;
@@ -39,11 +40,13 @@ class RDFontSet
   QFont progressFont() const;
   QFont bannerFont() const;
   QFont timerFont() const;
+  QFont smallTimerFont() const;
   QFont defaultFont() const;
 
  private:
   void MakeFonts(const QFont &default_font);
   QFont font_button_font;
+  QFont font_huge_button_font;
   QFont font_big_button_font;
   QFont font_sub_button_font;
   QFont font_section_label_font;
@@ -52,6 +55,7 @@ class RDFontSet
   QFont font_progress_font;
   QFont font_banner_font;
   QFont font_timer_font;
+  QFont font_small_timer_font;
   QFont font_default_font;
   RDConfig *font_config;
 };

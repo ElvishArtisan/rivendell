@@ -1666,59 +1666,51 @@ Are you sure you want to save?</source>
     <name>RDExceptionDialog</name>
     <message>
         <source>Rivendell Exception Report</source>
-        <translation>Unntaksrapport frå Rivendell</translation>
+        <translation type="obsolete">Unntaksrapport frå Rivendell</translation>
     </message>
     <message>
         <source>&amp;Save</source>
-        <translation>&amp;Lagre</translation>
+        <translation type="obsolete">&amp;Lagre</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>Lu&amp;kk</translation>
+        <translation type="obsolete">Lu&amp;kk</translation>
     </message>
     <message>
         <source>Text (*.txt *.TXT)
 All Files (*.*)</source>
-        <translation>Tekst (*.txt *.TXT)
+        <translation type="obsolete">Tekst (*.txt *.TXT)
 Alle filer (*.*)</translation>
     </message>
     <message>
         <source>Export File</source>
-        <translation>Eksporter fil</translation>
+        <translation type="obsolete">Eksporter fil</translation>
     </message>
     <message>
         <source>The file</source>
-        <translation>Fila</translation>
+        <translation type="obsolete">Fila</translation>
     </message>
     <message>
         <source>already exists!
 Overwrite?</source>
-        <translation>finst frå før!
+        <translation type="obsolete">finst frå før!
 Skriv over?</translation>
     </message>
     <message>
         <source>File Exists</source>
-        <translation>Fila finst</translation>
+        <translation type="obsolete">Fila finst</translation>
     </message>
     <message>
         <source>Unable to open file</source>
-        <translation>Greier ikkje opna fila</translation>
+        <translation type="obsolete">Greier ikkje opna fila</translation>
     </message>
     <message>
         <source>for writing!</source>
-        <translation>for skriving!</translation>
+        <translation type="obsolete">for skriving!</translation>
     </message>
     <message>
         <source>File Error</source>
-        <translation>Filfeil</translation>
-    </message>
-    <message>
-        <source>already exists!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Overwrite?</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Filfeil</translation>
     </message>
 </context>
 <context>
@@ -2145,31 +2137,12 @@ Sjekk eksportoppsettet ditt og prøv att.</translation>
 <context>
     <name>RDIntegerDialog</name>
     <message>
-        <source>Set Value</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Avbryt</translation>
-    </message>
-</context>
-<context>
-    <name>RDIntegerEdit</name>
-    <message>
-        <source>Set Value</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
     </message>
 </context>
 <context>
