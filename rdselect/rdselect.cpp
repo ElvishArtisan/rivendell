@@ -2,7 +2,7 @@
 //
 // System Selector for Rivendell
 //
-//   (C) Copyright 2012-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,30 +18,16 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/mount.h>
-#include <errno.h>
-
 #include <qapplication.h>
 #include <qdesktopwidget.h>
 #include <qdir.h>
-#include <qlabel.h>
 #include <qmessagebox.h>
-#include <qpainter.h>
 #include <qprocess.h>
-#include <qtextcodec.h>
 #include <qtranslator.h>
-#include <qwindowsstyle.h>
 
-#include <rd.h>
-#include <rdconf.h>
-#include <rdcmd_switch.h>
+#include <dbversion.h>
 #include <rdpaths.h>
 #include <rdstatus.h>
-#include <dbversion.h>
 
 #include "rdselect.h"
 
@@ -52,8 +38,8 @@
 #include "../icons/greencheckmark.xpm"
 #include "../icons/redx.xpm"
 
-MainWidget::MainWidget(QWidget *parent)
-  :QWidget(parent)
+MainWidget::MainWidget(RDConfig *c,QWidget *parent)
+  : RDWidget(c,parent)
 {
   //
   // Read Command Options
@@ -103,19 +89,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-
-  //
-  // Generate Fonts
-  //
-  QFont default_font("Helvetica",12,QFont::Normal);
-  default_font.setPixelSize(12);
-  qApp->setFont(default_font);
-  QFont button_font=QFont("Helvetica",12,QFont::Bold);
-  button_font.setPixelSize(12);
-  QFont label_font=QFont("Helvetica",16,QFont::Bold);
-  label_font.setPixelSize(16);
+  setMinimumSize(sizeHint());
 
   //
   // Create And Set Icons
@@ -158,27 +132,26 @@ MainWidget::MainWidget(QWidget *parent)
   // Current System Label
   //
   select_current_label=new QLabel(this);
-  select_current_label->setFont(label_font);
+  select_current_label->setFont(progressFont());
   select_current_label->setAlignment(Qt::AlignCenter);
 
   //
   // Selector Box
   //
   select_box=new Q3ListBox(this);
-  select_box->setFont(default_font);
   connect(select_box,SIGNAL(doubleClicked(Q3ListBoxItem *)),
 	  this,SLOT(doubleClickedData(Q3ListBoxItem *)));
   for(unsigned i=0;i<select_configs.size();i++) {
     select_box->insertItem(select_configs[i]->label());
   }
   select_label=new QLabel(select_box,tr("Available Systems"),this);
-  select_label->setFont(button_font);
+  select_label->setFont(labelFont());
 
   //
   // Ok Button
   //
   ok_button=new QPushButton(this);
-  ok_button->setFont(button_font);
+  ok_button->setFont(buttonFont());
   ok_button->setText(tr("Select"));
   connect(ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
@@ -186,7 +159,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Cancel Button
   //
   cancel_button=new QPushButton(this,"cancel_button");
-  cancel_button->setFont(button_font);
+  cancel_button->setFont(buttonFont());
   cancel_button->setText(tr("&Cancel"));
   connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
@@ -335,7 +308,9 @@ int main(int argc,char *argv[])
   //
   // Start Event Loop
   //
-  MainWidget *w=new MainWidget();
+  RDConfig *config=new RDConfig();
+  config->load();
+  MainWidget *w=new MainWidget(config);
   a.setMainWidget(w);
   w->show();
   return a.exec();
