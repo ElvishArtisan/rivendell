@@ -18,20 +18,13 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/types.h>
-
 #include <qapplication.h>
 #include <qmessagebox.h>
 
-#include <rd.h>
-#include <rdcmd_switch.h>
-
 #include <rdapplication.h>
 
-#include <alsaitem.h>
-#include <rdalsaconfig.h>
+#include "alsaitem.h"
+#include "rdalsaconfig.h"
 
 //
 // Icons
@@ -66,8 +59,8 @@ void StartDaemons()
 }
 
 
-MainWidget::MainWidget(QWidget *parent)
-  : QWidget(parent)
+MainWidget::MainWidget(RDConfig *c,QWidget *parent)
+  : RDWidget(c,parent)
 {
   QString err_msg;
 
@@ -81,8 +74,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
 
   //
   // Open the Database
@@ -94,27 +86,17 @@ MainWidget::MainWidget(QWidget *parent)
   }
 
   //
-  // Generate Fonts
-  //
-  QFont font("Helvetica",12,QFont::Normal);
-  font.setPixelSize(12);
-  QFont label_font("Helvetica",12,QFont::Bold);
-  label_font.setPixelSize(12);
-
-  //
   // ALSA Sound Devices
   //
   alsa_system_list=new QListView(this);
-  alsa_system_list->setFont(font);
   alsa_system_list->setSelectionMode(QAbstractItemView::MultiSelection);
   alsa_system_label=
     new QLabel(alsa_system_list,tr("ALSA Sound Devices"),this);
-  alsa_system_label->setFont(label_font);
+  alsa_system_label->setFont(labelFont());
   alsa_system_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   alsa_description_label=new QLabel(this);
   alsa_description_label->
     setText(tr("Select the audio devices to dedicate for use with Rivendell. (Devices so dedicated will be unavailable for use with other applications.)"));
-  alsa_description_label->setFont(font);
   alsa_description_label->setAlignment(Qt::AlignLeft|Qt::AlignTop);
   alsa_description_label->setWordWrap(true);
 
@@ -122,14 +104,14 @@ MainWidget::MainWidget(QWidget *parent)
   // Save Button
   //
   alsa_save_button=new QPushButton(tr("Save"),this);
-  alsa_save_button->setFont(label_font);
+  alsa_save_button->setFont(buttonFont());
   connect(alsa_save_button,SIGNAL(clicked()),this,SLOT(saveData()));
 
   //
   // Cancel Button
   //
   alsa_cancel_button=new QPushButton(tr("Cancel"),this);
-  alsa_cancel_button->setFont(label_font);
+  alsa_cancel_button->setFont(buttonFont());
   connect(alsa_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //
@@ -158,11 +140,6 @@ MainWidget::MainWidget(QWidget *parent)
     }
   }
   StopDaemons();
-}
-
-
-MainWidget::~MainWidget()
-{
 }
 
 
@@ -202,9 +179,9 @@ void MainWidget::resizeEvent(QResizeEvent *e)
   alsa_system_list->
     setGeometry(10,75,size().width()-20,size().height()-130);
   alsa_save_button->
-    setGeometry(size().width()-120,size().height()-40,50,30);
+    setGeometry(size().width()-140,size().height()-40,60,30);
   alsa_cancel_button->
-    setGeometry(size().width()-60,size().height()-40,50,30);
+    setGeometry(size().width()-70,size().height()-40,60,30);
 }
 
 
@@ -451,9 +428,10 @@ int main(int argc,char *argv[])
   //
   // Start GUI
   //
-  QApplication::setStyle(RD_GUI_STYLE);
   QApplication a(argc,argv);
-  MainWidget *w=new MainWidget();
+  RDConfig *config=new RDConfig();
+  config->load();
+  MainWidget *w=new MainWidget(config);
   a.setMainWidget(w);
   w->setGeometry(QRect(QPoint(0,0),w->sizeHint()));
   w->show();
