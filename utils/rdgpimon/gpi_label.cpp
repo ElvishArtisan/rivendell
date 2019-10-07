@@ -2,7 +2,7 @@
 //
 // A Qt-based application for testing general purpose input (GPI) devices.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,27 +18,19 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <gpi_label.h>
+#include "gpi_label.h"
 
 GpiLabel::GpiLabel(QWidget *parent)
-  : QWidget(parent)
+  : RDWidget(parent)
 {
   gpi_line=-1;
-
-  //
-  // Generate Fonts
-  //
-  QFont line_font("Helvetica",18,QFont::Bold);
-  line_font.setPixelSize(18);
-  QFont cart_font("Helvetica",12,QFont::Bold);
-  cart_font.setPixelSize(12);
 
   //
   // Line Label
   //
   gpi_line_label=new QLabel(this);
   gpi_line_label->setGeometry(0,0,59,33);
-  gpi_line_label->setFont(line_font);
+  gpi_line_label->setFont(bigButtonFont());
   gpi_line_label->setAlignment(Qt::AlignHCenter|Qt::AlignVCenter);
   gpi_line_label->setPalette(Qt::gray);
   gpi_line_label->setStyleSheet("background-color:"+QColor(Qt::gray).name());
@@ -52,7 +44,7 @@ GpiLabel::GpiLabel(QWidget *parent)
   p.setColor(QPalette::Disabled,QColorGroup::Foreground,Qt::darkGreen);
   gpi_oncart_label=new QLabel(this);
   gpi_oncart_label->setGeometry(0,33,59,16);
-  gpi_oncart_label->setFont(cart_font);
+  gpi_oncart_label->setFont(labelFont());
   gpi_oncart_label->setAlignment(Qt::AlignHCenter|Qt::AlignTop);
   gpi_oncart_label->setPalette(p);
 
@@ -64,7 +56,7 @@ GpiLabel::GpiLabel(QWidget *parent)
   p.setColor(QPalette::Disabled,QColorGroup::Foreground,Qt::darkRed);
   gpi_offcart_label=new QLabel(this);
   gpi_offcart_label->setGeometry(0,49,59,16);
-  gpi_offcart_label->setFont(cart_font);
+  gpi_offcart_label->setFont(labelFont());
   gpi_offcart_label->setAlignment(Qt::AlignHCenter|Qt::AlignTop);
   gpi_offcart_label->setPalette(p);
 }
