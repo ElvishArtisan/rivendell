@@ -2,7 +2,7 @@
 //
 // A utility for sending RML Commands
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,29 +18,17 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <stdlib.h>
 #include <netdb.h>
-#include <sys/types.h>
-#include <sys/socket.h>
 #include <arpa/inet.h>
 
-#include <qtranslator.h>
 #include <qapplication.h>
-#include <qwindowsstyle.h>
-#include <qtextcodec.h>
-#include <qsignalmapper.h>
-#include <qpushbutton.h>
 #include <qmessagebox.h>
-#include <qsettings.h>
-#include <QCloseEvent>
-#include <QPixmap>
-
 #include <rdprofile.h>
-#include <rd.h>
-#include <rdcmd_switch.h>
-#include <rdconfig.h>
+#include <qpushbutton.h>
+#include <qsignalmapper.h>
+#include <qtranslator.h>
 
-#include <rdsoftkeys.h>
+#include "rdsoftkeys.h"
 
 //
 // Icons
@@ -48,7 +36,7 @@
 #include "../icons/rivendell-22x22.xpm"
 
 MainWidget::MainWidget(QWidget *parent)
-  : QWidget(parent)
+  : RDWidget(parent)
 {
   key_ysize=70;
 
@@ -66,14 +54,6 @@ MainWidget::MainWidget(QWidget *parent)
     }
   }
   delete cmd;
-
-  //
-  // Generate Font
-  //
-  QFont font("Helvetica",12,QFont::Bold);
-  font.setPixelSize(12);
-  QFont label_font("Helvetica",18,QFont::Bold);
-  label_font.setPixelSize(18);
 
   setWindowTitle(QString("RDSoftKeys")+" v"+VERSION);
 

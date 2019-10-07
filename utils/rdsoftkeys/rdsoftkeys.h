@@ -2,7 +2,7 @@
 //
 // A utility for sending RML Commands
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,15 +21,9 @@
 #ifndef RDSOFTKEYS_H
 #define RDSOFTKEYS_H
 
-#include <vector>
-
-#include <qsize.h>
-#include <qsizepolicy.h>
-#include <qpixmap.h>
 #include <q3socketdevice.h>
-#include <qwidget.h>
 
-#include <rdmacro.h>
+#include <rdwidget.h>
 
 //
 // Settings
@@ -37,7 +31,7 @@
 #define RDSOFTKEYS_USAGE "[--map-file=<filename>]\n\nWhere <filename> is the name of the file load soft key definitions from.\nThe default value is master Rivendell configuration file.\n"
 #define RDSOFTKEYS_DEFAULT_COLUMNS 1
 
-class MainWidget : public QWidget
+class MainWidget : public RDWidget
 {
   Q_OBJECT
  public:
