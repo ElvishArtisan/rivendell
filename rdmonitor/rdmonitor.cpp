@@ -2,7 +2,7 @@
 //
 // System Monitor for Rivendell
 //
-//   (C) Copyright 2012-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,26 +19,15 @@
 //
 
 #include <signal.h>
-#include <stdlib.h>
-#include <unistd.h>
 
 #include <qapplication.h>
 #include <qdir.h>
-#include <qfontmetrics.h>
-#include <qlabel.h>
 #include <qmessagebox.h>
 #include <qpainter.h>
 #include <qprocess.h>
-#include <qsqldatabase.h>
-#include <qstringlist.h>
 #include <qtranslator.h>
 
 #include <dbversion.h>
-#include <rd.h>
-#include <rdaudioinfo.h>
-#include <rdcmd_switch.h>
-#include <rdmonitor_config.h>
-#include <rdstation.h>
 #include <rdstatus.h>
 
 #include "rdmonitor.h"
@@ -60,9 +49,8 @@ void SigHandler(int signo)
   }
 }
 
-MainWidget::MainWidget(QWidget *parent)
-  : QWidget(parent,(Qt::WindowFlags)(Qt::WStyle_Customize|Qt::WStyle_NoBorder|Qt::WStyle_StaysOnTop))
-    //  : QWidget(parent,"",(Qt::WindowFlags)(Qt::WStyle_Customize|Qt::WStyle_NoBorder|Qt::WStyle_StaysOnTop|Qt::WX11BypassWM|Qt::WA_AlwaysShowToolTips))
+MainWidget::MainWidget(RDConfig *c,QWidget *parent)
+  : RDWidget(c,parent,(Qt::WindowFlags)(Qt::WStyle_Customize|Qt::WStyle_NoBorder|Qt::WStyle_StaysOnTop))
 {
   QString str;
   mon_dialog_x=0;
@@ -82,11 +70,9 @@ MainWidget::MainWidget(QWidget *parent)
   setGeometry(0,0,0,0);
 
   //
-  // Generate Fonts
+  // Process Fonts
   //
-  QFont font=QFont("Helvetica",12,QFont::Bold);
-  font.setPixelSize(12);
-  mon_metrics=new QFontMetrics(font);
+  mon_metrics=new QFontMetrics(font());
 
   //
   // Create And Set Icon
@@ -111,7 +97,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Name Label
   //
   mon_name_label=new QLabel(this);
-  mon_name_label->setFont(font);
+  mon_name_label->setFont(labelFont());
 
   //
   // Status Icons
@@ -516,7 +502,9 @@ int main(int argc,char *argv[])
   //
   // Start Event Loop
   //
-  MainWidget *w=new MainWidget();
+  RDConfig *config=new RDConfig();
+  config->load();
+  MainWidget *w=new MainWidget(config);
   a.setMainWidget(w);
   w->show();
   return a.exec();

@@ -2,7 +2,7 @@
 //
 // System Monitor Applet for Rivendell
 //
-//   (C) Copyright 2012-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,31 +22,23 @@
 #ifndef RDMONITOR_H
 #define RDMONITOR_H
 
-#include <vector>
-
-#include <qwidget.h>
-#include <qsize.h>
-#include <qsizepolicy.h>
-#include <qlabel.h>
 #include <qtimer.h>
-#include <qdesktopwidget.h>
-#include <qfontmetrics.h>
 #include <QMouseEvent>
 
 #include <rdconfig.h>
 #include <rdmonitor_config.h>
+#include <rdwidget.h>
 
 #include "positiondialog.h"
-//#include "status_tip.h"
 
 #define RDSELECT_WIDTH 400
 #define RDSELECT_HEIGHT 300
 
-class MainWidget : public QWidget
+class MainWidget : public RDWidget
 {
   Q_OBJECT
  public:
-  MainWidget(QWidget *parent=0);
+  MainWidget(RDConfig *c,QWidget *parent=0);
   QSizePolicy sizePolicy() const;
 
  private slots:
