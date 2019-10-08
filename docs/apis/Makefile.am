@@ -35,6 +35,13 @@ all-local:	cae.html\
                 cae.pdf\
                 catchd.html\
                 catchd.pdf\
+                fonts.html\
+                fonts.pdf\
+                fonts.rdadmin.configure_rdairplay_screenshot.png\
+                fonts.rdairplay_screenshot.png\
+                fonts.rdcartslots_screenshot.png\
+                fonts.rdcastmanager.uploading_audio_screenshot.png\
+                fonts.rdlibrary.edit_audio_screenshot.png\
                 notification.html\
                 notification.pdf\
                 ripc.html\
@@ -48,6 +55,19 @@ EXTRA_DIST = cae.html\
              catchd.html\
              catchd.pdf\
              catchd.xml\
+             fonts.html\
+             fonts.pdf\
+             fonts.xml\
+             fonts.rdadmin.configure_rdairplay_screenshot.png\
+             fonts.rdadmin.configure_rdairplay_screenshot.xcf\
+             fonts.rdairplay_screenshot.png\
+             fonts.rdairplay_screenshot.xcf\
+             fonts.rdcartslots_screenshot.png\
+             fonts.rdcartslots_screenshot.xcf\
+             fonts.rdcastmanager.uploading_audio_screenshot.png\
+             fonts.rdcastmanager.uploading_audio_screenshot.xcf\
+             fonts.rdlibrary.edit_audio_screenshot.png\
+             fonts.rdlibrary.edit_audio_screenshot.xcf\
              notification.html\
              notification.pdf\
              notification.xml\
