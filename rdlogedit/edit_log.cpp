@@ -1245,10 +1245,10 @@ void EditLog::resizeEvent(QResizeEvent *e)
   edit_logname_label->setGeometry(155,11,size().width()-500,18);
   edit_logname_label_label->setGeometry(80,11,70,18);
   edit_modified_label->setGeometry(60,14,20,18);
-  edit_origin_label->setGeometry(size().width()-300,11,200,18);
-  edit_origin_label_label->setGeometry(size().width()-345,11,40,18);
   edit_track_label->setGeometry(size().width()-425,11,40,18);
   edit_track_label_label->setGeometry(size().width()-510,11,80,18);
+  edit_origin_label->setGeometry(size().width()-320,11,310,18);
+  edit_origin_label_label->setGeometry(size().width()-370,11,45,18);
   edit_description_edit->setGeometry(110,40,size().width()-390,20);
   edit_description_label->setGeometry(10,40,95,20);
   edit_purgedate_box->setGeometry(size().width()-255,42,15,15);
