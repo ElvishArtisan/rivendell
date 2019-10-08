@@ -1,6 +1,6 @@
 //   rdpushbutton.h
 //
-//   An flashing button widget.
+//   A flashing button widget.
 //
 //   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
@@ -28,7 +28,7 @@
 //Added by qt3to4:
 #include <QMouseEvent>
 
-#include <rdfontset.h>
+#include <rdfontengine.h>
 
 /*
  * Widget Defaults
@@ -36,7 +36,7 @@
 #define RDPUSHBUTTON_DEFAULT_FLASH_PERIOD 300
 #define RDPUSHBUTTON_DEFAULT_FLASH_COLOR Qt::blue
 
-class RDPushButton : public QPushButton, public RDFontSet
+class RDPushButton : public QPushButton, public RDFontEngine
 {
   Q_OBJECT
  public:

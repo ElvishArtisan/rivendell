@@ -23,9 +23,9 @@
 
 #include <qwidget.h>
 
-#include <rdfontset.h>
+#include <rdfontengine.h>
 
-class RDFrame : public QFrame, public RDFontSet
+class RDFrame : public QFrame, public RDFontEngine
 {
   Q_OBJECT;
  public:

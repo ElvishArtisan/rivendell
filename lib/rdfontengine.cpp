@@ -1,6 +1,6 @@
-// rdfontset.cpp
+// rdfontengine.cpp
 //
-// Base set of fonts for Rivendell UIs
+// Engine for calculating fonts in Rivnedell UIs
 //
 //   (C) Copyright 2019 Fred Gleason <fredg@paravelsystems.com>
 //
@@ -20,9 +20,9 @@
 
 #include <rdapplication.h>
 
-#include "rdfontset.h"
+#include "rdfontengine.h"
 
-RDFontSet::RDFontSet(const QFont &default_font,RDConfig *c)
+RDFontEngine::RDFontEngine(const QFont &default_font,RDConfig *c)
 {
   if(c==NULL) {
     font_config=rda->config();
@@ -34,7 +34,7 @@ RDFontSet::RDFontSet(const QFont &default_font,RDConfig *c)
 }
 
 
-RDFontSet::RDFontSet(RDConfig *c)
+RDFontEngine::RDFontEngine(RDConfig *c)
 {
   if(c==NULL) {
     font_config=rda->config();
@@ -47,85 +47,98 @@ RDFontSet::RDFontSet(RDConfig *c)
 }
 
 
-QFont RDFontSet::buttonFont() const
+QFont RDFontEngine::buttonFont() const
 {
   return font_button_font;
 }
 
 
-QFont RDFontSet::hugeButtonFont() const
+QFont RDFontEngine::hugeButtonFont() const
 {
   return font_huge_button_font;
 }
 
 
-QFont RDFontSet::bigButtonFont() const
+QFont RDFontEngine::bigButtonFont() const
 {
   return font_big_button_font;
 }
 
 
-QFont RDFontSet::subButtonFont() const
+QFont RDFontEngine::subButtonFont() const
 {
   return font_sub_button_font;
 }
 
 
-QFont RDFontSet::sectionLabelFont() const
+QFont RDFontEngine::sectionLabelFont() const
 {
   return font_section_label_font;
 }
 
 
-QFont RDFontSet::labelFont() const
+QFont RDFontEngine::labelFont() const
 {
   return font_label_font;
 }
 
 
-QFont RDFontSet::subLabelFont() const
+QFont RDFontEngine::subLabelFont() const
 {
   return font_sub_label_font;
 }
 
 
-QFont RDFontSet::progressFont() const
+QFont RDFontEngine::progressFont() const
 {
   return font_progress_font;
 }
 
 
-QFont RDFontSet::bannerFont() const
+QFont RDFontEngine::bannerFont() const
 {
   return font_banner_font;
 }
 
 
-QFont RDFontSet::timerFont() const
+QFont RDFontEngine::timerFont() const
 {
   return font_timer_font;
 }
 
 
-QFont RDFontSet::smallTimerFont() const
+QFont RDFontEngine::smallTimerFont() const
 {
   return font_small_timer_font;
 }
 
 
-QFont RDFontSet::defaultFont() const
+QFont RDFontEngine::defaultFont() const
 {
   return font_default_font;
 }
 
 
-void RDFontSet::MakeFonts(const QFont &default_font)
+void RDFontEngine::MakeFonts(const QFont &default_font)
 {
-  QString family=default_font.family();
-  int button_size=default_font.pixelSize();
-  int label_size=default_font.pixelSize();
-  int default_size=default_font.pixelSize();
+  /*
+  printf("family: %s  pixelSize: %d  pointSize: %d\n",
+	 (const char *)default_font.family().toUtf8(),
+	 default_font.pixelSize(),
+	 default_font.pointSize());
+  */
 
+  //
+  // Default Font Values
+  //
+  QString family="System";
+  int button_size=12;
+  int label_size=11;
+  int default_size=11;
+
+  //
+  // Overrides from rd.conf(5)
+  //
   if(!font_config->fontFamily().isEmpty()) {
     family=font_config->fontFamily();
   }
@@ -139,6 +152,9 @@ void RDFontSet::MakeFonts(const QFont &default_font)
     default_size=font_config->fontDefaultSize();
   }
 
+  //
+  // Generate Fonts
+  //
   font_button_font=QFont(family,button_size,QFont::Bold);
   font_button_font.setPixelSize(button_size);
 

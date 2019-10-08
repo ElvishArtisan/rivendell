@@ -1,6 +1,6 @@
-// rdfontset.h
+// rdfontengine.h
 //
-// Base set of fonts for Rivendell UIs
+// Engine for calculating fonts in Rivnedell UIs
 //
 //   (C) Copyright 2019 Fred Gleason <fredg@paravelsystems.com>
 //
@@ -18,18 +18,18 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef RDFONTSET_H
-#define RDFONTSET_H
+#ifndef RDFONTENGINE_H
+#define RDFONTENGINE_H
 
 #include <qfont.h>
 
 #include <rdapplication.h>
 
-class RDFontSet
+class RDFontEngine
 {
  public:
-  RDFontSet(const QFont &default_font,RDConfig *c=NULL);
-  RDFontSet(RDConfig *c=NULL);
+  RDFontEngine(const QFont &default_font,RDConfig *c=NULL);
+  RDFontEngine(RDConfig *c=NULL);
   QFont buttonFont() const;
   QFont hugeButtonFont() const;
   QFont bigButtonFont() const;
@@ -61,4 +61,4 @@ class RDFontSet
 };
 
 
-#endif  // RDFONTSET_H
+#endif  // RDFONTENGINE_H

@@ -23,9 +23,9 @@
 
 #include <qdialog.h>
 
-#include <rdfontset.h>
+#include <rdfontengine.h>
 
-class RDDialog : public QDialog, public RDFontSet
+class RDDialog : public QDialog, public RDFontEngine
 {
   Q_OBJECT;
  public:

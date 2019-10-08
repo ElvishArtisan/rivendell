@@ -21,14 +21,14 @@
 #include "rdframe.h"
 
 RDFrame::RDFrame(QWidget *parent,Qt::WindowFlags f)
-  : QFrame(parent,f), RDFontSet(font())
+  : QFrame(parent,f), RDFontEngine(font())
 {
   setFont(defaultFont());
 }
 
 
 RDFrame::RDFrame(RDConfig *config,QWidget *parent,Qt::WindowFlags f)
-  : QFrame(parent,f), RDFontSet(font(),config)
+  : QFrame(parent,f), RDFontEngine(font(),config)
 {
   setFont(defaultFont());
 }

@@ -1,6 +1,6 @@
 //   rdpushbutton.cpp
 //
-//   An flashing button widget.
+//   A flashing button widget.
 //
 //   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
@@ -31,21 +31,21 @@
 
 
 RDPushButton::RDPushButton(QWidget *parent=0)
-  : QPushButton(parent), RDFontSet(font())
+  : QPushButton(parent), RDFontEngine(font())
 {
   Init();
 }
 
 
 RDPushButton::RDPushButton(const QString &text,QWidget *parent)
-  : QPushButton(text,parent), RDFontSet(font())
+  : QPushButton(text,parent), RDFontEngine(font())
 {
   Init();
 }
 
 RDPushButton::RDPushButton(const QIcon &icon,const QString &text,
 			   QWidget *parent)
-  : QPushButton(text,parent), RDFontSet(font())
+  : QPushButton(text,parent), RDFontEngine(font())
 {
   Init();
 }

@@ -20,8 +20,6 @@
 
 #include <qpainter.h>
 
-#include <rdfontset.h>
-
 #include "colors.h"
 #include "mode_display.h"
 

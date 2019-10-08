@@ -69,23 +69,22 @@ CaeHostname=
 XportHostname=
 
 [Fonts]
-; Directives in the [Fonts] section allows the font used by Rivendell to
-; be specified, with the default being to use the font specified by
-; the underlying window manager. It should seldom be necessary to
-; change these!
+; Directives in the [Fonts] section allows the fonts used by Rivendell to
+; be specified, with the default being to use the 'System' font. It should
+; seldom be necessary to change these!
 
 ; 'Family=' can be used to specify the name of the font to use
 ; --e.g. 'Helvetica'.
-Family=
+;Family=System
 
 ; 'ButtonSize=' specifies the size of the font to be used for button labels.
-ButtonSize=
+;ButtonSize=12
 
 ; 'LabelSize=' specifies the size of the font to be used for field labels.
-LabelSize=
+;LabelSize=11
 
 ; 'DefaultSize=' specifies the size of the font to be used for field data.
-DefaultSize=
+;DefaultSize=11
 
 [Provisioning]
 ; If CreateHost=Yes, a Host entry will be automatically created in the DB

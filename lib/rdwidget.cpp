@@ -21,14 +21,14 @@
 #include "rdwidget.h"
 
 RDWidget::RDWidget(QWidget *parent,Qt::WindowFlags f)
-  : QWidget(parent,f), RDFontSet(font())
+  : QWidget(parent,f), RDFontEngine(font())
 {
   setFont(defaultFont());
 }
 
 
 RDWidget::RDWidget(RDConfig *config,QWidget *parent,Qt::WindowFlags f)
-  : QWidget(parent,f), RDFontSet(font(),config)
+  : QWidget(parent,f), RDFontEngine(font(),config)
 {
   setFont(defaultFont());
 }

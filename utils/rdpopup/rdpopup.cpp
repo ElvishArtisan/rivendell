@@ -27,7 +27,7 @@
 #include <rdapplication.h>
 #include <rdcmd_switch.h>
 #include <rdconfig.h>
-#include <rdfontset.h>
+#include <rdfontengine.h>
 
 #include "rdpopup.h"
 
@@ -121,7 +121,7 @@ int main(int argc,char *argv[])
   }
   mb->setWindowIcon(QPixmap(rivendell_22x22_xpm));
 
-  RDFontSet *fs=new RDFontSet(config);
+  RDFontEngine *fs=new RDFontEngine(config);
   mb->setFont(fs->progressFont());
   mb->exec();
   delete mb;

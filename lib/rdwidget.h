@@ -23,9 +23,9 @@
 
 #include <qwidget.h>
 
-#include <rdfontset.h>
+#include <rdfontengine.h>
 
-class RDWidget : public QWidget, public RDFontSet
+class RDWidget : public QWidget, public RDFontEngine
 {
   Q_OBJECT;
  public:

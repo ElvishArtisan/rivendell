@@ -22,7 +22,6 @@
 #include <qpainter.h>
 
 #include <rdapplication.h>
-#include <rdfontset.h>
 
 #include "colors.h"
 #include "globals.h"

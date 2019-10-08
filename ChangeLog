@@ -19195,3 +19195,7 @@
 2019-10-08 Fred Gleason <fredg@paravelsystems.com>
 	* Adjusted position of 'Origin' field in the 'Edit Log' dialog
 	in rdlogedit(1).
+2019-10-08 Fred Gleason <fredg@paravelsystems.com>
+	* Renamed the 'RDFontSet' class to 'RDFontEngine'.
+	* Modified the font calculation algorithm in
+	'RDFontEngine::MakeFonts()' to use fixed defaults.

@@ -21,7 +21,7 @@
 #include "rddialog.h"
 
 RDDialog::RDDialog(QWidget *parent,Qt::WindowFlags f)
-  : QDialog(parent,f), RDFontSet(font())
+  : QDialog(parent,f), RDFontEngine(font())
 {
   setModal(true);
   setFont(defaultFont());
@@ -29,7 +29,7 @@ RDDialog::RDDialog(QWidget *parent,Qt::WindowFlags f)
 
 
 RDDialog::RDDialog(RDConfig *config,QWidget *parent,Qt::WindowFlags f)
-  : QDialog(parent,f), RDFontSet(font(),config)
+  : QDialog(parent,f), RDFontEngine(font(),config)
 {
   setModal(true);
   setFont(defaultFont());
