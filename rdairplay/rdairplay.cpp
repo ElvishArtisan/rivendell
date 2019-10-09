@@ -1811,11 +1811,6 @@ void MainWidget::refreshStatusChangedData(bool active)
   else {
     air_refresh_label->setText("");
   }
-  //
-  // FIXME: Disabled in 2.10.3caefix05 due to segfault problems.
-  //        Do we really need this?
-  //
-  //  qApp->processEvents();
 }
 
 
@@ -1831,6 +1826,9 @@ void MainWidget::keyPressEvent(QKeyEvent *e)
 {
  switch(e->key()) {
  case Qt::Key_Space:
+   if(rda->airplayConf()->barAction()&&(air_log[0]->nextLine()>=0)) {
+     air_log[0]->play(air_log[0]->nextLine(),RDLogLine::StartManual);
+   }
    break;
 
  case Qt::Key_X:

@@ -30,6 +30,8 @@ StartButton::StartButton(bool allow_pause,QWidget *parent)
   start_time=QTime();
   start_allow_pause=allow_pause;
 
+  setFocusPolicy(Qt::NoFocus);
+
   //
   // Create Font
   //
