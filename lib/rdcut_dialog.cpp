@@ -385,7 +385,7 @@ void RDCutDialog::addButtonData()
   int cart_num=-1;
 
   RDAddCart *add_cart=new RDAddCart(&cart_group,&cart_type,&cart_title,
-				    cut_caption,rda->user()->name(),
+				    rda->user()->name(),cut_caption,
 				    rda->system(),this);
   if((cart_num=add_cart->exec())<0) {
     delete add_cart;
