@@ -19201,7 +19201,7 @@
 	'RDFontEngine::MakeFonts()' to use fixed defaults.
 2019-10-08 Fred Gleason <fredg@paravelsystems.com>
 	* Documented the font management system in 'docs/apis/fonts.xml'
-	(built as 'docs/apis/fonts.pdf'.
+	(built as 'docs/apis/fonts.pdf').
 2019-10-09 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdairplay(1) that caused space bar presses to
 	start the next event in the Main Log even when 'Space Bar Action'
