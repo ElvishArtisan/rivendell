@@ -3124,8 +3124,8 @@ void VoiceTracker::DrawTrackMap(int trackno)
         }	    
       }
       wpg[0]->setPen(TRACKER_TEXT_COLOR);
-      wpg[0]->drawText(5,14,edit_logline[0]->title()+" - "+
-		       edit_logline[0]->artist());
+      wpg[0]->drawText(5,14,edit_logline[0]->
+		       resolveWildcards(rda->logeditConf()->waveformCaption()));
       wpg[0]->end();
     }
     break;
@@ -3392,8 +3392,8 @@ void VoiceTracker::DrawTrackMap(int trackno)
 	DrawRubberBand(wpg[2],2);
       }
       wpg[2]->setPen(TRACKER_TEXT_COLOR);
-      wpg[2]->drawText(5,14,edit_logline[2]->title()+" - "+
-		       edit_logline[2]->artist());
+      wpg[2]->drawText(5,14,edit_logline[2]->
+		       resolveWildcards(rda->logeditConf()->waveformCaption()));
       if(track_recording && (edit_deck[2]->state()==RDPlayDeck::Playing ||
 			     edit_deck[2]->state()==RDPlayDeck::Stopping)) {
 	int talk_len=edit_logline[2]->talkLength();

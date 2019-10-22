@@ -181,19 +181,31 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   validator->setRange(1,999999);
 
   //
+  // Waveform Caption
+  //
+  lib_waveform_caption_edit=new QLineEdit(this);
+  lib_waveform_caption_edit->setGeometry(180,268,sizeHint().width()-190,19);
+  lib_waveform_caption_edit->setValidator(validator);
+  QLabel *lib_waveform_caption_label=
+    new QLabel(lib_waveform_caption_edit,tr("WaveForm Caption:"),this);
+  lib_waveform_caption_label->setFont(labelFont());
+  lib_waveform_caption_label->setGeometry(25,268,150,19);
+  lib_waveform_caption_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+
+  //
   // Play Start Cart
   //
   lib_startcart_edit=new QLineEdit(this);
-  lib_startcart_edit->setGeometry(180,268,70,19);
+  lib_startcart_edit->setGeometry(180,290,70,19);
   lib_startcart_edit->setValidator(validator);
   QLabel *lib_startcart_label=
     new QLabel(lib_startcart_edit,tr("Play &Start Cart:"),this);
   lib_startcart_label->setFont(labelFont());
-  lib_startcart_label->setGeometry(25,268,150,19);
+  lib_startcart_label->setGeometry(25,290,150,19);
   lib_startcart_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   QPushButton *button=new QPushButton(this);
   button->setFont(subButtonFont());
-  button->setGeometry(260,266,55,23);
+  button->setGeometry(260,288,55,23);
   button->setText(tr("Select"));
   connect(button,SIGNAL(clicked()),this,SLOT(selectStartData()));
 
@@ -201,16 +213,16 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   // Play End Cart
   //
   lib_endcart_edit=new QLineEdit(this);
-  lib_endcart_edit->setGeometry(180,292,70,19);
+  lib_endcart_edit->setGeometry(180,314,70,19);
   lib_endcart_edit->setValidator(validator);
   QLabel *lib_endcart_label=
     new QLabel(lib_endcart_edit,tr("Play &End Cart:"),this);
   lib_endcart_label->setFont(labelFont());
-  lib_endcart_label->setGeometry(25,292,150,19);
+  lib_endcart_label->setGeometry(25,314,150,19);
   lib_endcart_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   button=new QPushButton(this);
   button->setFont(subButtonFont());
-  button->setGeometry(260,290,55,23);
+  button->setGeometry(260,310,55,23);
   button->setText(tr("Select"));
   connect(button,SIGNAL(clicked()),this,SLOT(selectEndData()));
 
@@ -218,16 +230,16 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   // Record Start Cart
   //
   lib_recstartcart_edit=new QLineEdit(this);
-  lib_recstartcart_edit->setGeometry(180,316,70,19);
+  lib_recstartcart_edit->setGeometry(180,338,70,19);
   lib_recstartcart_edit->setValidator(validator);
   QLabel *lib_recstartcart_label=
     new QLabel(lib_recstartcart_edit,tr("&Record Start Cart:"),this);
   lib_recstartcart_label->setFont(labelFont());
-  lib_recstartcart_label->setGeometry(25,316,150,19);
+  lib_recstartcart_label->setGeometry(25,338,150,19);
   lib_recstartcart_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   button=new QPushButton(this);
   button->setFont(subButtonFont());
-  button->setGeometry(260,314,55,23);
+  button->setGeometry(260,336,55,23);
   button->setText(tr("Select"));
   connect(button,SIGNAL(clicked()),this,SLOT(selectRecordStartData()));
 
@@ -235,16 +247,16 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   // Record End Cart
   //
   lib_recendcart_edit=new QLineEdit(this);
-  lib_recendcart_edit->setGeometry(180,340,70,19);
+  lib_recendcart_edit->setGeometry(180,362,70,19);
   lib_recendcart_edit->setValidator(validator);
   QLabel *lib_recendcart_label=
     new QLabel(lib_recendcart_edit,tr("Re&cord End Cart:"),this);
   lib_recendcart_label->setFont(labelFont());
-  lib_recendcart_label->setGeometry(25,340,150,19);
+  lib_recendcart_label->setGeometry(25,362,150,19);
   lib_recendcart_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   button=new QPushButton(this);
   button->setFont(subButtonFont());
-  button->setGeometry(260,338,55,23);
+  button->setGeometry(260,360,55,23);
   button->setText(tr("Select"));
   connect(button,SIGNAL(clicked()),this,SLOT(selectRecordEndData()));
 
@@ -252,21 +264,21 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   // Default Channels
   //
   lib_channels_box=new QComboBox(this);
-  lib_channels_box->setGeometry(180,364,60,19);
+  lib_channels_box->setGeometry(180,386,60,19);
   QLabel *lib_channels_label=new QLabel(lib_channels_box,tr("&Channels:"),this);
   lib_channels_label->setFont(labelFont());
-  lib_channels_label->setGeometry(25,364,150,19);
+  lib_channels_label->setGeometry(25,386,150,19);
   lib_channels_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Default Transition Type
   //
   lib_default_transtype_box=new QComboBox(this);
-  lib_default_transtype_box->setGeometry(180,388,100,19);
+  lib_default_transtype_box->setGeometry(180,410,100,19);
   QLabel *lib_default_transtype_label=
     new QLabel(lib_default_transtype_box,tr("Default Transition:"),this);
   lib_default_transtype_label->setFont(labelFont());
-  lib_default_transtype_label->setGeometry(25,388,150,19);
+  lib_default_transtype_label->setGeometry(25,410,150,19);
   lib_default_transtype_label->
     setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   lib_default_transtype_box->insertItem(tr("Play"));
@@ -317,6 +329,7 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   lib_maxlength_time->setTime(QTime().addMSecs(lib_lib->maxLength()));
   lib_threshold_spin->setValue(lib_lib->trimThreshold()/100);
   lib_normalization_spin->setValue(lib_lib->ripperLevel()/100);
+  lib_waveform_caption_edit->setText(lib_lib->waveformCaption());
   unsigned cart=lib_lib->startCart();
   if(cart>0) {
     lib_startcart_edit->setText(QString().sprintf("%06u",cart));
@@ -371,7 +384,7 @@ EditRDLogedit::~EditRDLogedit()
 
 QSize EditRDLogedit::sizeHint() const
 {
-  return QSize(395,478);
+  return QSize(395,500);
 } 
 
 
@@ -440,6 +453,7 @@ void EditRDLogedit::okData()
   lib_lib->setTrimThreshold(lib_threshold_spin->value()*100);
   lib_lib->setRipperLevel(lib_normalization_spin->value()*100);
   lib_lib->setTailPreroll(lib_preroll_spin->value());
+  lib_lib->setWaveformCaption(lib_waveform_caption_edit->text());
   if(lib_startcart_edit->text().isEmpty()) {
     lib_lib->setStartCart(0);
   }

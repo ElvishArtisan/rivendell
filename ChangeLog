@@ -19214,3 +19214,10 @@
 2019-10-21 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed the font used for labels in the 'Edit RDLogEdit' dialog
 	in rdadmin(1).
+2019-10-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDLOGEDIT.WAVEFORM_CAPTION' field to the database.
+	* Incremented the database version to 311.
+	* Added a 'WaveForm Caption' control to the 'Edit RDLogEdit' dialog
+	in rdadmin(1).
+	* Implemented the 'WaveForm Caption' setting in the Voicetracker
+	dialog in rdlogedit(1).

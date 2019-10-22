@@ -3183,6 +3183,10 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
         <source>Output</source>
         <translation type="unfinished">Výstup</translation>
     </message>
+    <message>
+        <source>WaveForm Caption:</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditRDPanel</name>

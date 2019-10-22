@@ -41,6 +41,15 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // NEW SCHEMA REVERSIONS GO HERE...
 
   //
+  // Revert 311
+  //
+  if((cur_schema==311)&&(set_schema<cur_schema)) {
+    DropColumn("RDLOGEDIT","WAVEFORM_CAPTION");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 310
   //
   if((cur_schema==310)&&(set_schema<cur_schema)) {

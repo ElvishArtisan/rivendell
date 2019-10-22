@@ -62,6 +62,7 @@ class EditRDLogedit : public RDDialog
   QSpinBox *lib_threshold_spin;
   QSpinBox *lib_normalization_spin;
   Q3TimeEdit *lib_maxlength_time;
+  QLineEdit *lib_waveform_caption_edit;
   QLineEdit *lib_startcart_edit;
   QLineEdit *lib_endcart_edit;
   QLineEdit *lib_recstartcart_edit;
@@ -72,4 +73,4 @@ class EditRDLogedit : public RDDialog
 };
 
 
-#endif
+#endif  // EDIT_RDLOGEDIT_H

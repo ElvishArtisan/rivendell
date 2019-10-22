@@ -53,6 +53,8 @@ class RDLogeditConf
   void setMaxLength(unsigned length) const;
   unsigned tailPreroll() const;
   void setTailPreroll(unsigned length) const;
+  QString waveformCaption() const;
+  void setWaveformCaption(const QString &str);
   unsigned startCart() const;
   void setStartCart(unsigned cartnum) const;
   unsigned endCart() const;
@@ -73,6 +75,7 @@ class RDLogeditConf
   void SetRow(const QString &param,int value) const;
   void SetRow(const QString &param,unsigned value) const;
   void SetRow(const QString &param,bool value) const;
+  void SetRow(const QString &param,const QString &value) const;
   QString lib_station;
 };
 

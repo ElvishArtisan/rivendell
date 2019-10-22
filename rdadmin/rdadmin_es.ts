@@ -3171,6 +3171,10 @@ computador para obtener los recursos de audio de dicho equipo.</translation>
         <source>Output</source>
         <translation type="unfinished">Salida</translation>
     </message>
+    <message>
+        <source>WaveForm Caption:</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditRDPanel</name>

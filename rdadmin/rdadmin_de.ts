@@ -3083,6 +3083,10 @@ configured to run the CAE service in order to populate the audio resources datab
         <source>Output</source>
         <translation type="unfinished">Ausgang</translation>
     </message>
+    <message>
+        <source>WaveForm Caption:</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditRDPanel</name>
