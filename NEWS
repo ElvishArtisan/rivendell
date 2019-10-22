@@ -1,9 +1,13 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v3.1.0int0 -- 10/9/2019
+v3.1.0int1 -- 10/21/2019
 
 Changes:
+   Voice Tracker. Added the ability to configure the caption displayed
+   for the first and third voicetrack waveforms in the Voicetracker
+   dialog in rdlogedit(1).
+
    Display Fonts. Reworked the font management system to permit the fonts
    used in the UI to be specified in rd.conf(5).
 
