@@ -205,6 +205,7 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   lib_endcart_edit->setValidator(validator);
   QLabel *lib_endcart_label=
     new QLabel(lib_endcart_edit,tr("Play &End Cart:"),this);
+  lib_endcart_label->setFont(labelFont());
   lib_endcart_label->setGeometry(25,292,150,19);
   lib_endcart_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   button=new QPushButton(this);
@@ -221,6 +222,7 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   lib_recstartcart_edit->setValidator(validator);
   QLabel *lib_recstartcart_label=
     new QLabel(lib_recstartcart_edit,tr("&Record Start Cart:"),this);
+  lib_recstartcart_label->setFont(labelFont());
   lib_recstartcart_label->setGeometry(25,316,150,19);
   lib_recstartcart_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   button=new QPushButton(this);
@@ -237,6 +239,7 @@ EditRDLogedit::EditRDLogedit(RDStation *station,RDStation *cae_station,
   lib_recendcart_edit->setValidator(validator);
   QLabel *lib_recendcart_label=
     new QLabel(lib_recendcart_edit,tr("Re&cord End Cart:"),this);
+  lib_recendcart_label->setFont(labelFont());
   lib_recendcart_label->setGeometry(25,340,150,19);
   lib_recendcart_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   button=new QPushButton(this);

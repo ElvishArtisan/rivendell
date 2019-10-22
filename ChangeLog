@@ -19211,3 +19211,6 @@
 2019-10-17 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in the 'Select Cut' ['RDCutDialog'] that
 	caused 'Group:' dropdown list to be empty.
+2019-10-21 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed the font used for labels in the 'Edit RDLogEdit' dialog
+	in rdadmin(1).
