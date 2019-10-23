@@ -19227,3 +19227,5 @@
 	* Added an 'RDStringToHex()' function to 'lib/rd.conf.cpp'.
 	* Fixed bugs in 'RDWaveFile' that caused strings of null characters
 	to be written into unfilled CartChunk string fields.
+2019-10-22 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.1.0int2.
