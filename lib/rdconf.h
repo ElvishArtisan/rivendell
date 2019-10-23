@@ -110,6 +110,7 @@ bool RDProcessActive(const QString &cmd);
 bool RDProcessActive(const QStringList &cmds);
 bool RDModulesActive();
 QByteArray RDStringToData(const QString &str);
+QString RDStringToHex(const QString &str);
 QList<pid_t> RDGetPids(const QString &program);
 
 #endif   // RDCONF_H

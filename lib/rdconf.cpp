@@ -1209,6 +1209,19 @@ QByteArray RDStringToData(const QString &str)
 }
 
 
+QString RDStringToHex(const QString &str)
+{
+  QByteArray bytes=str.toUtf8();
+  QString ret="";
+
+  for(int i=0;i<bytes.length();i++) {
+    ret+=QString().sprintf("%02X ",0xFF&bytes[i]);
+  }
+
+  return ret;
+}
+
+
 QList<pid_t> RDGetPids(const QString &program)
 {
   QList<pid_t> pids;
