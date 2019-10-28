@@ -19233,3 +19233,6 @@
 	* Fixed a regression in 'rdxport.cgi' that caused a check of the
 	Rivendell services to be triggered each time a WebAPI function was
 	invoked.
+2019-10-28 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdimport(1) that caused a segfault when
+	invoked with the '--metadata-pattern' and '--log-syslog' switches.

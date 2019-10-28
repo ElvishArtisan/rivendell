@@ -2011,7 +2011,7 @@ void MainObject::Log(int prio,const QString &msg) const
   FILE *f=NULL;
 
   if(import_log_syslog) {
-    rda->syslog(prio,msg.trimmed());
+    rda->syslog(prio,"%s",(const char *)msg.trimmed().toUtf8());
   }
   if(!import_log_filename.isEmpty()) {
     QDateTime now=QDateTime::currentDateTime();
