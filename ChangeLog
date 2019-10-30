@@ -19241,3 +19241,5 @@
 	startup.
 2019-10-30 Fred Gleason <fredg@paravelsystems.com>
 	* Added an rd.conf(5) man page.
+2019-10-30 Fred Gleason <fredg@paravelsystems.com>
+	* Added an rdsoftkeys(1) man page.

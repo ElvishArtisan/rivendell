@@ -46,7 +46,8 @@ all-local:	rdairplay.1\
                 rdmetadata.1\
                 rdrender.1\
                 rmlsend.1\
-                rdservice.8
+                rdservice.8\
+                rdsoftkeys.1
 
 man_MANS = rdairplay.1\
            rdalsaconfig.1\
@@ -61,7 +62,8 @@ man_MANS = rdairplay.1\
            rdmetadata.1\
            rdrender.1\
            rmlsend.1\
-           rdservice.8
+           rdservice.8\
+           rdsoftkeys.1
 
 EXTRA_DIST = rdairplay.1\
              rdairplay.xml\
@@ -90,7 +92,9 @@ EXTRA_DIST = rdairplay.1\
              rmlsend.1\
              rmlsend.xml\
              rdservice.8\
-             rdservice.xml
+             rdservice.xml\
+             rdsoftkeys.1\
+             rdsoftkeys.xml
 
 CLEANFILES = *~
 MAINTAINERCLEANFILES = *~\
