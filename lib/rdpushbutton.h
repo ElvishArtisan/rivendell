@@ -25,7 +25,6 @@
 #include <qpushbutton.h>
 #include <qpixmap.h>
 #include <qcolor.h>
-//Added by qt3to4:
 #include <QMouseEvent>
 
 #include <rdfontengine.h>
@@ -41,9 +40,14 @@ class RDPushButton : public QPushButton, public RDFontEngine
   Q_OBJECT
  public:
   enum ClockSource {InternalClock=0,ExternalClock=1};
-  RDPushButton(QWidget *parent);
-  RDPushButton(const QString &text,QWidget *parent);
-  RDPushButton(const QIcon &icon,const QString &text,QWidget *parent);
+  RDPushButton(QWidget *parent,RDConfig *c=NULL);
+  RDPushButton(const QString &text,QWidget *parent,RDConfig *c=NULL);
+  RDPushButton(const QIcon &icon,const QString &text,QWidget *parent,
+	       RDConfig *c=NULL);
+  QString text() const;
+  void setText(const QString &str);
+  bool wordWrap() const;
+  void setWordWrap(bool state);
   QColor flashColor() const;
   void setFlashColor(QColor color);
   int flashPeriod() const;
@@ -78,6 +82,9 @@ class RDPushButton : public QPushButton, public RDFontEngine
   void flashOn();
   void flashOff();
   void Init();
+  void ComposeText();
+  QString plain_text;
+  bool word_wrap_enabled;
   bool flash_state;
   int flash_period;
   bool flashing_enabled;
@@ -88,7 +95,6 @@ class RDPushButton : public QPushButton, public RDFontEngine
   int button_id;
   ClockSource flash_clock_source;
 };
-
 
 
 #endif  // RDPUSHBUTTON_H

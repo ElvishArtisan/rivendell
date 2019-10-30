@@ -22,8 +22,7 @@
 #define RDSOFTKEYS_H
 
 #include <q3socketdevice.h>
-
-#include <rdwidget.h>
+#include <qwidget.h>
 
 //
 // Settings
@@ -31,7 +30,7 @@
 #define RDSOFTKEYS_USAGE "[--map-file=<filename>]\n\nWhere <filename> is the name of the file load soft key definitions from.\nThe default value is master Rivendell configuration file.\n"
 #define RDSOFTKEYS_DEFAULT_COLUMNS 1
 
-class MainWidget : public RDWidget
+class MainWidget : public QWidget
 {
   Q_OBJECT
  public:
@@ -44,7 +43,6 @@ class MainWidget : public RDWidget
   void closeEvent(QCloseEvent *e);
 
  private:
-  QString WrapText(QWidget *w,const QString &text);
   QPixmap *key_icon_map;
   Q3SocketDevice *key_socket;
   unsigned key_columns;

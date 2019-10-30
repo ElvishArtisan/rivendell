@@ -24,9 +24,11 @@
 #include <qapplication.h>
 #include <qmessagebox.h>
 #include <rdprofile.h>
-#include <qpushbutton.h>
 #include <qsignalmapper.h>
 #include <qtranslator.h>
+
+#include <rdfontengine.h>
+#include <rdpushbutton.h>
 
 #include "rdsoftkeys.h"
 
@@ -36,7 +38,7 @@
 #include "../icons/rivendell-22x22.xpm"
 
 MainWidget::MainWidget(QWidget *parent)
-  : RDWidget(parent)
+  : QWidget(parent)
 {
   key_ysize=70;
 
@@ -45,7 +47,6 @@ MainWidget::MainWidget(QWidget *parent)
   //
   RDConfig *config=new RDConfig();
   QString map_filename=config->filename();
-  delete config;
   RDCmdSwitch *cmd=
     new RDCmdSwitch(qApp->argc(),qApp->argv(),"rdsoftkeys",RDSOFTKEYS_USAGE);
   for(unsigned i=0;i<cmd->keys();i++) {
@@ -71,7 +72,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Create Buttons
   //
-  QPushButton *button;
+  RDPushButton *button;
   QString rmlcmd;
   int n=0;
   QString color_name;
@@ -96,13 +97,12 @@ MainWidget::MainWidget(QWidget *parent)
       if(rmlcmd.at(i)==':') {
 	key_macros.push_back(rmlcmd.right(rmlcmd.length()-(i+1)));
 	key_addrs.push_back(rmlcmd.left(i));
-	button=new QPushButton(this);
+	button=new RDPushButton(this,config);
 	button->setGeometry(10+90*col,10+60*row,80,50);
-	button->
-	  setText(WrapText(button,profile->
-			   stringValue("SoftKeys",QString().
-				       sprintf("Legend%d",n+1),
-				       QString().sprintf("Button %d",n+1))));
+	button->setWordWrap(true);
+	button->setText(
+	     profile->stringValue("SoftKeys",QString().sprintf("Legend%d",n+1),
+				  QString().sprintf("Button %d",n+1)));
 	if(!(color_name=profile->stringValue("SoftKeys",
 					QString().sprintf("Color%d",n+1),"")).
 	   isEmpty()) {
@@ -155,10 +155,8 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Set Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 }
 
 
@@ -206,60 +204,6 @@ void MainWidget::buttonData(int id)
 void MainWidget::closeEvent(QCloseEvent *e)
 {
   exit(0);
-}
-
-
-QString MainWidget::WrapText(QWidget *w,const QString &text)
-{
-  QFontMetrics fm(w->font());
-  QString str;
-  QString residue = text;
-  bool space_found=false;
-  int l;
-  int lines=0;
-
-  if(!text.isEmpty()) {	  
-    while(!residue.isEmpty()) {
-      space_found=false;
-      for(int i=(int)residue.length();i>=0;i--) {
-	      if((i==((int)residue.length()))||(residue.at(i).isSpace())) {
-	  if(fm.boundingRect(residue.left(i)).width()<=w->width()-6) {
-	    space_found=true;
-	    if(!str.isEmpty()) {
-	      str+="\n";
-	      if(++lines==3) {
-		return str;
-	      }
-	    }
-	    str+=residue.left(i);
-	    if(i==(int)residue.length()) {
-	      return str;
-	    }
-	    residue=residue.right(residue.length()-i-1);
-	  }
-	}
-      }
-      if(!space_found) {
-	l=residue.length();
-	for(int i=l;i>=0;i--) {
-	  if(fm.boundingRect(residue.left(i)).width()<=(w->width()-6)) {
-	    if(!str.isEmpty()) {
-	      str+="\n";
-	      if(++lines==3) {
-		return str;
-	      }
-	    }
-	    str+=residue.left(i);
-	    if(i==(int)residue.length()) {
-	      return str;
-	    }
-	    residue=residue.right(residue.length()-i-1);
-	  }
-	}
-      }
-    }
-  }
-  return text;
 }
 
 
