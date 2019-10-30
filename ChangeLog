@@ -19236,3 +19236,8 @@
 2019-10-28 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdimport(1) that caused a segfault when
 	invoked with the '--metadata-pattern' and '--log-syslog' switches.
+2019-10-30 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdsoftkeys(1) that threw a segfault at
+	startup.
+2019-10-30 Fred Gleason <fredg@paravelsystems.com>
+	* Added an rd.conf(5) man page.
