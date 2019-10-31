@@ -1,7 +1,7 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v3.1.0int1 -- 10/21/2019
+v3.2.0 -- 10/31/2019
 
 Changes:
    Voice Tracker. Added the ability to configure the caption displayed
@@ -14,7 +14,7 @@ Changes:
    Various bug fixes. See the 'ChangeLog' for details.
 
 Database Update:
-   This version of Rivendell uses database schema version 310, and will
+   This version of Rivendell uses database schema version 311, and will
    automatically upgrade any earlier versions. To see the current schema
    version prior to upgrade, see RDAdmin->SystemInfo.
 
