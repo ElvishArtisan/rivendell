@@ -2522,4 +2522,85 @@
       to be replicated should be taken.
     </para>
   </sect1>
+  <sect1 xml:id="sect.rdadmin.manage_nexus">
+    <title>Managing MusicMaster Nexus Integration</title>
+    <para>
+      Rivendell provides integration to the MusicMaster Nexus interface. The following Nexus functions are supported:
+    </para>
+    <para>
+      <itemizedlist>
+        <listitem>
+          New carts added in RDLibrary are automatically added to your MusicMaster song library.
+        </listitem>
+        <listitem>
+          Carts deleted in RDLibrary are automatically deleted from your MusicMaster song library.
+        </listitem>
+        <listitem>
+          Metadata changes in RDLibrary are automatically pushed to your MusicMaster song library.
+        </listitem>
+        <listitem>
+          New songs added in MusicMaster are automatically added to RDLibrary.
+        </listitem>
+        <listitem>
+          Songs deleted in MusicMaster are automatically deleted from RDLibrary.
+        </listitem>
+        <listitem>
+          Metadata changes in MusicMaster are automatically pushed to RDLibrary.
+        </listitem>
+        <listitem>
+          RDAirPlay automatically keeps your MusicMaster playout history up to date.
+        </listitem>
+        <listitem>
+          Published MusicMaster logs are automatically exported and optionally merge them.
+        </listitem>
+      </itemizedlist>
+    </para>
+    <para>
+      Realtime log changes are not currently supported.
+    </para>
+    <para>
+      <computeroutput>Settings</computeroutput> tab.
+    </para>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="rdadmin.nexus_settings_tab.png" scale="45"/>
+	</imageobject>
+	<caption>
+	  <para>Nexus Settings Tab</para>
+	</caption>
+      </mediaobject>
+    </para>
+    <para>
+      <computeroutput>Stations</computeroutput> tab.
+    </para>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="rdadmin.nexus_stations_tab.png" scale="45"/>
+	</imageobject>
+	<caption>
+	  <para>Nexus Stations Tab</para>
+	</caption>
+      </mediaobject>
+    </para>
+    <para>
+      <computeroutput>Field Map</computeroutput> tab.
+    </para>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="rdadmin.nexus_field_map_tab.png" scale="45"/>
+	</imageobject>
+	<caption>
+	  <para>Nexus Field Map Tab</para>
+	</caption>
+      </mediaobject>
+    </para>
+    <para>
+      Information on how to configure MusicMaster Nexus to work Rivendell's integration can
+      be found in the <link linkend="appendix.nexus_integration">Nexus Integration</link>
+      appendix section.
+    </para>
+  </sect1>
 </chapter>

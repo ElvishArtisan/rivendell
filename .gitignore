@@ -86,6 +86,7 @@ rdlogedit/rdlogedit
 rdlogin/rdlogin
 rdlogmanager/rdlogmanager
 rdmonitor/rdmonitor
+rdnexusd/rdnexusd
 rdpadd/rdpadd
 rdpadengined/rdpadengined
 rdpanel/rdpanel
@@ -122,6 +123,10 @@ tests/test_pam
 tests/timer_test
 tests/upload_test
 tests/wav_chunk_test
+utils/musicmaster/mmping
+utils/musicmaster/mmpublish
+utils/musicmaster/mmsonginfo
+utils/musicmaster/mmsync
 utils/rdauth/rdauth
 utils/rdconvert/rdconvert
 utils/rdhpiinfo/rdhpiinfo

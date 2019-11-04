@@ -48,6 +48,7 @@ SUBDIRS = icons\
           rdlogin\
           rdlogmanager\
           rdmonitor\
+          rdnexusd\
           rdpanel\
           rdrepld\
           rdpadd\

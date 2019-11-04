@@ -444,8 +444,7 @@ void MainObject::notificationReceivedData(RDNotification *notify)
       UpdateEvent(notify->id().toUInt());
       break;
 
-    case RDNotification::NoAction:
-    case RDNotification::LastAction:
+    default:
       break;
     }
   }

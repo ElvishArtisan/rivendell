@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry id="stdin" xmlns="http://docbook.org/ns/docbook" version="5.0">
+  <!--
+      Header
+  -->
+  <refmeta>
+    <refentrytitle>rdnexusd</refentrytitle>
+    <manvolnum>8</manvolnum>
+    <refmiscinfo class='source'>July 2019</refmiscinfo>
+    <refmiscinfo class='manual'>Linux Audio Manual</refmiscinfo>
+  </refmeta>
+  <refnamediv>
+    <refname>rdnexusd</refname>
+    <refpurpose>Rivendell MusicMaster Nexus Daemon</refpurpose>
+  </refnamediv>
+  <info>
+    <author>
+      <personname>
+	<firstname>Patrick</firstname>
+	<surname>Linstruth</surname>
+	<email>patrick@deltecent.com</email>
+      </personname>
+      <contrib>Application Author</contrib>
+    </author>
+  </info>
+
+  <!--
+      Body
+  -->
+  <refsynopsisdiv id='synopsis'>
+    <cmdsynopsis>
+      <command>rdnexusd</command>
+      <arg choice='opt'><replaceable>OPTIONS</replaceable></arg>
+      <sbr/>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+
+  <refsect1 id='description'><title>Description</title>
+  <para>
+    <command>rdnexusd</command><manvolnum>8</manvolnum> manages the interface
+    between the Rivendell Radio Automation System and MusicMaster Nexus.
+    It is normally configured by <command>rdadmin</command>
+    <manvolnum>1</manvolnum> and invoked by <command>rdservice</command>
+    <manvolnum>8</manvolnum>.
+    There should only be one instance of
+    <command>rdnexusd</command><manvolnum>8</manvolnum> running at any
+    given time.
+  </para>
+  </refsect1>
+  
+  <refsect1 id='options'><title>Options</title>
+  <variablelist remap='TP'>
+    <varlistentry>
+      <term>
+	<option>--server</option>
+      </term>
+      <term>
+	<option>--port</option>
+      </term>
+      <term>
+	<option>--enable-http-server</option>
+      </term>
+    </varlistentry>
+  </variablelist>
+  </refsect1>
+
+  <refsect1 id='exit_values'><title>Exit Values</title>
+<para>
+  <segmentedlist>
+    <?dbhtml list-presentation="tabular"?>
+    <?dbfo   list-presentation="tabular"?>
+    <!-- Is there a way to suppress the title line entirely? -->
+    <segtitle></segtitle>
+    <segtitle></segtitle>
+    <seglistitem><seg>0</seg><seg>Normal shutdown</seg></seglistitem>
+  </segmentedlist>
+</para>
+  </refsect1>
+
+  <refsect1 id='see_also'><title>See Also</title>
+  <para>
+  <citerefentry>
+    <refentrytitle>rdadmin</refentrytitle><manvolnum>1</manvolnum>
+  </citerefentry>
+  </para>
+  </refsect1>
+
+
+</refentry>
+

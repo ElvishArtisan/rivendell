@@ -578,15 +578,63 @@ void EditSvc::textChangedData(const QString &)
 
 void EditSvc::tfcTemplateActivatedData(int index)
 {
+  //
+  // Save stored template
+  //
+  QString t;
+
+  t=svc_svc->importTemplate(RDSvc::Traffic);
+
+  //
+  // Temporarily set selected template
+  //
+  if(svc_tfc_import_template_box->currentItem()==0) {
+    svc_svc->setImportTemplate(RDSvc::Traffic,"");
+  }
+  else {
+    svc_svc->setImportTemplate(RDSvc::Traffic,
+			       svc_tfc_import_template_box->currentText());
+  }
+
+  svc_tfc_fields->setFields(svc_svc,RDSvc::Traffic);
   svc_tfc_fields->setEnabled(index==0);
   import_changed=true;
+
+  //
+  // Restore saved template
+  //
+  svc_svc->setImportTemplate(RDSvc::Traffic,t);
 }
 
 
 void EditSvc::musTemplateActivatedData(int index)
 {
+  //
+  // Save stored template
+  //
+  QString t;
+
+  t=svc_svc->importTemplate(RDSvc::Music);
+
+  //
+  // Temporarily set selected template
+  //
+  if(svc_mus_import_template_box->currentItem()==0) {
+    svc_svc->setImportTemplate(RDSvc::Music,"");
+  }
+  else {
+    svc_svc->setImportTemplate(RDSvc::Music,
+			       svc_mus_import_template_box->currentText());
+  }
+
+  svc_mus_fields->setFields(svc_svc,RDSvc::Music);
   svc_mus_fields->setEnabled(index==0);
   import_changed=true;
+
+  //
+  // Restore saved template
+  //
+  svc_svc->setImportTemplate(RDSvc::Music,t);
 }
 
 
@@ -653,6 +701,7 @@ void EditSvc::Save()
     setPreimportCommand(RDSvc::Traffic,svc_tfc_preimport_cmd_edit->text());
   if(svc_tfc_import_template_box->currentItem()==0) {
     svc_svc->setImportTemplate(RDSvc::Traffic,"");
+    svc_tfc_fields->readFields(svc_svc,RDSvc::Traffic);
   }
   else {
     svc_svc->setImportTemplate(RDSvc::Traffic,
@@ -660,11 +709,11 @@ void EditSvc::Save()
   }
   svc_svc->setLabelCart(RDSvc::Traffic,svc_tfc_label_cart_edit->text());
   svc_svc->setTrackString(RDSvc::Traffic,svc_tfc_track_edit->text());
-  svc_tfc_fields->readFields(svc_svc,RDSvc::Traffic);
   svc_svc->setImportPath(RDSvc::Music,svc_mus_path_edit->text());
   svc_svc->setPreimportCommand(RDSvc::Music,svc_mus_preimport_cmd_edit->text());
   if(svc_mus_import_template_box->currentItem()==0) {
     svc_svc->setImportTemplate(RDSvc::Music,"");
+    svc_mus_fields->readFields(svc_svc,RDSvc::Music);
   }
   else {
     svc_svc->setImportTemplate(RDSvc::Music,
@@ -673,7 +722,6 @@ void EditSvc::Save()
   svc_svc->setBreakString(svc_mus_break_edit->text());
   svc_svc->setTrackString(RDSvc::Music,svc_mus_track_edit->text());
   svc_svc->setLabelCart(RDSvc::Music,svc_mus_label_cart_edit->text());
-  svc_mus_fields->readFields(svc_svc,RDSvc::Music);
   import_changed=false;
   if(svc_voice_group_box->currentItem()==0) {
     svc_svc->setTrackGroup("");

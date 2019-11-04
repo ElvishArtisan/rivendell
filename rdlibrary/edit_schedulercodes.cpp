@@ -52,7 +52,7 @@ EditSchedulerCodes::EditSchedulerCodes(QString *sched_codes,
   setMaximumHeight(sizeHint().height());
 
   //
-  // Services Selector
+  // Schduler Codes Selector
   //
   codes_sel=new RDListSelector(this);
   codes_sel->setGeometry(10,10,380,200);

@@ -2,7 +2,7 @@
 //
 // A container class for Rivendell Groups
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,6 +27,9 @@ RDGroupList::RDGroupList()
 }
 
 
+//
+// Load list_groups with groups for specified service
+//
 void RDGroupList::loadSvc(QString svcname)
 {
   QString sql;
@@ -36,6 +39,25 @@ void RDGroupList::loadSvc(QString svcname)
   sql=QString().sprintf("select GROUP_NAME from AUDIO_PERMS where\
                          SERVICE_NAME=\"%s\"",
 			(const char *)svcname);
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    list_groups.push_back(QString(q->value(0).toString()));
+  }
+  delete q;
+}
+
+//
+// Load list_groups with services for specified group
+//
+void RDGroupList::loadGroup(QString groupname)
+{
+  QString sql;
+  RDSqlQuery *q;
+
+  clear();
+  sql=QString().sprintf("select SERVICE_NAME from AUDIO_PERMS where\
+                         GROUP_NAME=\"%s\"",
+			(const char *)groupname);
   q=new RDSqlQuery(sql);
   while(q->next()) {
     list_groups.push_back(QString(q->value(0).toString()));
@@ -65,12 +87,29 @@ QString RDGroupList::group(unsigned n) const
 }
 
 
-bool RDGroupList::isGroupValid(QString group)
+bool RDGroupList::isGroupValid(QString name)
 {
   for(unsigned i=0;i<list_groups.size();i++) {
-      if(list_groups[i].upper()==group.upper()) {
+      if(list_groups[i].upper()==name.upper()) {
       return true;
     }
   }
   return false;
+}
+
+
+//
+// Return service name for index n
+//
+QString RDGroupList::service(unsigned n) const
+{
+  return group(n);
+}
+
+//
+// Return true to service name exists
+//
+bool RDGroupList::isServiceValid(QString name)
+{
+  return isGroupValid(name);
 }

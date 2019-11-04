@@ -33,12 +33,12 @@
 #include <qtextcodec.h>
 #include <qtranslator.h>
 
-#include <rd.h>
-#include <rdapplication.h>
-#include <rdconf.h>
-#include <rddb.h>
-#include <rddbheartbeat.h>
-#include <rdescape_string.h>
+#include "rd.h"
+#include "rdapplication.h"
+#include "rdconf.h"
+#include "rddb.h"
+#include "rddbheartbeat.h"
+#include "rdescape_string.h"
 
 #include "edit_settings.h"
 #include "globals.h"
@@ -51,6 +51,7 @@
 #include "list_svcs.h"
 #include "list_stations.h"
 #include "list_users.h"
+#include "edit_nexus.h"
 #include "login.h"
 #include "rdadmin.h"
 
@@ -226,6 +227,15 @@ MainWidget::MainWidget(RDConfig *config,RDWidget *parent)
   connect(schedcodes_button,SIGNAL(clicked()),this,SLOT(manageSchedCodes()));
 
   //
+  // Manage MusicMaster Nexus
+  //
+  QPushButton *nexus_button=new QPushButton(this);
+  nexus_button->setGeometry(10,190,80,60);
+  nexus_button->setFont(buttonFont());
+  nexus_button->setText(tr("MusicMaster\nNexus"));
+  connect(nexus_button,SIGNAL(clicked()),this,SLOT(manageNexusData()));
+
+  //
   // Manage Replicators Button
   //
   QPushButton *repl_button=new QPushButton(this);
@@ -309,6 +319,17 @@ void MainWidget::systemSettingsData()
   EditSettings *edit_settings=new EditSettings(this);
   edit_settings->exec();
   delete edit_settings;
+}
+
+
+void MainWidget::manageNexusData()
+{
+  if (QMessageBox::question(this,tr("Nexus Warning"),QString("MusicMaster Nexus integration is currently in development status and is not intended for use in a production environment. Using this software may cause data loss. Would you like to continue?"),(QMessageBox::No|QMessageBox::Yes)) == QMessageBox::Yes) {
+    QMessageBox::information(this,tr("Bug Reports"),QString("Please report bugs and suggestions at https://github.com/deltecent/rivendell/issues."));
+    EditNexus *d=new EditNexus(this);
+    d->exec();
+    delete d;
+  }
 }
 
 

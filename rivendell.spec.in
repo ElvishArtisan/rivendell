@@ -240,6 +240,10 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root)
+@LOCAL_PREFIX@/bin/mmping
+@LOCAL_PREFIX@/bin/mmpublish
+@LOCAL_PREFIX@/bin/mmsonginfo
+@LOCAL_PREFIX@/bin/mmsync
 @LOCAL_PREFIX@/bin/rdadmin
 @LOCAL_PREFIX@/bin/rdairplay
 @LOCAL_PREFIX@/bin/rdpanel
@@ -403,12 +407,14 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man8/rddbmgr.8.gz
 %{_mandir}/man8/rdmarkerset.8.gz
 %{_mandir}/man8/rdservice.8.gz
+%{_mandir}/man8/rdnexusd.8.gz
 @DOC_PATH@/*
 @LOCAL_PREFIX@/@RD_LIB_PATH@/librd-@VERSION@.so
 @LOCAL_PREFIX@/@RD_LIB_PATH@/librd.a
 @LOCAL_PREFIX@/@RD_LIB_PATH@/librd.la
 @LOCAL_PREFIX@/@RD_LIB_PATH@/librd.so
 @LOCAL_PREFIX@/sbin/rdservice
+@LOCAL_PREFIX@/sbin/rdnexusd
 @LOCAL_PREFIX@/sbin/caed
 @LOCAL_PREFIX@/sbin/ripcd
 @LOCAL_PREFIX@/sbin/rdcatchd

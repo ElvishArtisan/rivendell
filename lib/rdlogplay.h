@@ -191,6 +191,7 @@ class RDLogPlay : public QObject,public RDLogEvent
 		     bool final=false) const;
   void LogTraffic(RDLogLine *logline,RDLogLine::PlaySource src,
 		  RDAirPlayConf::TrafficAction action,bool onair_flag) const;
+  void SendNotification(RDNotification::Action action, RDLogLine *logline);
   RDCae *play_cae;
   RDAirPlayConf::OpMode play_op_mode;
   int play_slot_id[LOGPLAY_MAX_PLAYS];

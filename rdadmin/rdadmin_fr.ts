@@ -4668,6 +4668,19 @@ Replicators</source>
         <source>User</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>MusicMaster
+Nexus</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Nexus Warning</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Bug Reports</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>QObject</name>

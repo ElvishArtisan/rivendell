@@ -76,6 +76,7 @@ dist_rdadmin_SOURCES = add_feed.cpp add_feed.h\
                        edit_jack_client.cpp edit_jack_client.h\
                        edit_livewiregpio.cpp edit_livewiregpio.h\
                        edit_matrix.cpp edit_matrix.h\
+                       edit_nexus.cpp edit_nexus.h\
                        edit_node.cpp edit_node.h\
                        edit_pypad.cpp edit_pypad.h\
                        edit_rdairplay.cpp edit_rdairplay.h\
@@ -156,6 +157,7 @@ nodist_rdadmin_SOURCES = global_credits.c\
                          moc_edit_jack_client.cpp\
                          moc_edit_livewiregpio.cpp\
                          moc_edit_matrix.cpp\
+                         moc_edit_nexus.cpp\
                          moc_edit_node.cpp\
                          moc_edit_pypad.cpp\
                          moc_edit_rdairplay.cpp\

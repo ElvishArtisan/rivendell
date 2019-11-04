@@ -47,6 +47,7 @@ all-local:	rdairplay.1\
                 rdrender.1\
                 rmlsend.1\
                 rdservice.8\
+                rdnexusd.8\
                 rdsoftkeys.1
 
 man_MANS = rdairplay.1\
@@ -63,6 +64,7 @@ man_MANS = rdairplay.1\
            rdrender.1\
            rmlsend.1\
            rdservice.8\
+           rdnexusd.8\
            rdsoftkeys.1
 
 EXTRA_DIST = rdairplay.1\
@@ -93,6 +95,8 @@ EXTRA_DIST = rdairplay.1\
              rmlsend.xml\
              rdservice.8\
              rdservice.xml\
+             rdnexusd.8\
+             rdnexusd.xml\
              rdsoftkeys.1\
              rdsoftkeys.xml
 

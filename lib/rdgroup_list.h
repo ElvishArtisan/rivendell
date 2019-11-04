@@ -31,10 +31,13 @@ class RDGroupList
  public:
   RDGroupList();
   void loadSvc(QString svcname);
+  void loadGroup(QString groupname);
   void clear();
   int size() const;
   QString group(unsigned n) const;
+  QString service(unsigned n) const;
   bool isGroupValid(QString group);
+  bool isServiceValid(QString group);
 
  private:
   vector<QString> list_groups;

@@ -139,6 +139,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdhash.cpp rdhash.h\
                         rdhotkeys.cpp rdhotkeys.h\
                         rdhotkeylist.cpp rdhotkeylist.h\
+                        rdhttpserver.cpp rdhttpserver.h\
                         rdidvalidator.cpp rdidvalidator.h\
                         rdimport_audio.cpp rdimport_audio.h\
                         rdinstancelock.cpp rdinstancelock.h\
@@ -174,6 +175,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdmonitor_config.cpp rdmonitor_config.h\
 			rdmp4.cpp rdmp4.h\
                         rdmulticaster.cpp rdmulticaster.h\
+                        rdnexus.cpp rdnexus.h\
                         rdnotification.cpp rdnotification.h\
                         rdnownext.cpp rdnownext.h\
                         rdoneshot.cpp rdoneshot.h\
@@ -286,6 +288,7 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdgpioselector.cpp\
                           moc_rdhotkeys.cpp\
                           moc_rdhotkeylist.cpp\
+                          moc_rdhttpserver.cpp\
                           moc_rdimport_audio.cpp\
                           moc_rdkernelgpio.cpp\
                           moc_rdlabel.cpp\
@@ -303,6 +306,7 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdmarker_bar.cpp\
                           moc_rdmarker_edit.cpp\
                           moc_rdmulticaster.cpp\
+                          moc_rdnexus.cpp\
                           moc_rdoneshot.cpp\
                           moc_rdpanel_button.cpp\
                           moc_rdpasswd.cpp\

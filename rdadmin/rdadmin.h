@@ -50,6 +50,7 @@ class MainWidget : public RDWidget
   void quitMainWidget();
   void manageSchedCodes();
   void manageReplicatorsData();
+  void manageNexusData();
   void systemInfoData();
   
  private:

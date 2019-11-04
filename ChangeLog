@@ -19245,3 +19245,23 @@
 	* Added an rdsoftkeys(1) man page.
 2019-10-31 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.2.0.
+2019-11-03 Patrick Linstruth <patrick@deltecent.com>
+	* Added 'RDHttpServer' class.
+	* Added 'loadGroup' method to 'RDGroupList' class.
+	* Added 'RDNexus' class.
+	* Added timestamp and optional argument to 'RDNotification' class.
+	* Added PlayoutCartNumType, PlayoutExtIdType, and LogExtIdType
+	notification types to 'RDNotification' class.
+	* Added MoveAction, StartAction, and StopAction actions to
+	'RDNotification' class.
+	* Added rdnexusd(8).
+	* Added playout notifications to 'RDLogPlay' class.
+	* Removed the sending of modification notifications when Cancel
+	button pressed in rdlibrary(1).
+	* Added rdnexusd(8) to rdservice(8).
+	* Added ability to see import template offsets in rdadmin(1).
+	* Added 'list' method to 'RDStation' class.
+	* Added 'MusicMaster Nexus' button and dialog to rdadmin(1).
+	* Modified rdlibrary(1) to use 'CART.MINIMUM_TALK_LENGTH' for
+	"Talk" column.
+	* Added 'MusicMaster Nexus' import template.

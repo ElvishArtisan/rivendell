@@ -703,6 +703,24 @@ void RDStation::setCardOutputs(int cardnum,int outputs) const
 }
 
 
+//
+// Returns list of hosts (stations)
+//
+QStringList RDStation::list()
+{
+  QStringList hostlist;
+
+  QString sql="select NAME from STATIONS";
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  while(q->next()) {
+    hostlist.append(q->value(0).toString());
+  }
+  delete q;
+
+  return hostlist;
+}
+
+
 bool RDStation::create(const QString &name,QString *err_msg,
 		       const QString &exemplar,const QHostAddress &hostaddr)
 {

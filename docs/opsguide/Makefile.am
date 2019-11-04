@@ -24,6 +24,7 @@ OPSGUIDE_HTML = appendix.filepath_wildcards.html\
                 appendix.gpio_switcher_devices.html\
                 appendix.gplv2.html\
                 appendix.metadata_wildcards.html\
+                appendix.nexus_integration.html\
                 appendix.rivendell_filter.html\
                 appendix.wings_filter.html\
                 chapter.overview.html\
@@ -293,6 +294,7 @@ OPSGUIDE_DEPS = $(OPSGUIDE_IMAGES) \
                 opsguide.xml\
                 overview.xml\
                 metadata_wildcards.xml\
+                nexus_integration.xml\
                 pad.xml\
                 rdadmin.xml\
                 rdairplay.xml\
