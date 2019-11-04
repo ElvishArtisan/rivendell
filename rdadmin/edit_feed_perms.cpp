@@ -2,7 +2,7 @@
 //
 // Edit Rivendell RSS Feed Permissions
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,7 +18,6 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
 #include <qstring.h>
 #include <qpushbutton.h>
 #include <q3listbox.h>
@@ -38,7 +37,7 @@
 #include "edit_feed_perms.h"
 
 EditFeedPerms::EditFeedPerms(RDUser *user,QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   setModal(true);
 
@@ -58,12 +57,6 @@ EditFeedPerms::EditFeedPerms(RDUser *user,QWidget *parent)
   setWindowTitle("RDAdmin - "+tr("User: ")+feed_user->name());
 
   //
-  // Create Fonts
-  //
-  QFont font=QFont("Helvetica",12,QFont::Bold);
-  font.setPixelSize(12);
-
-  //
   // Feeds Selector
   //
   feed_host_sel=new RDListSelector(this);
@@ -77,7 +70,7 @@ EditFeedPerms::EditFeedPerms(RDUser *user,QWidget *parent)
   QPushButton *ok_button=new QPushButton(this);
   ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   ok_button->setDefault(true);
-  ok_button->setFont(font);
+  ok_button->setFont(buttonFont());
   ok_button->setText(tr("&OK"));
   connect(ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
@@ -87,7 +80,7 @@ EditFeedPerms::EditFeedPerms(RDUser *user,QWidget *parent)
   QPushButton *cancel_button=new QPushButton(this);
   cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
-  cancel_button->setFont(font);
+  cancel_button->setFont(buttonFont());
   cancel_button->setText(tr("&Cancel"));
   connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 

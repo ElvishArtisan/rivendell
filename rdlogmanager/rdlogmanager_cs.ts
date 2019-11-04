@@ -732,6 +732,41 @@ existující událostí.</translation>
     </message>
 </context>
 <context>
+    <name>EditSchedCodeRules</name>
+    <message>
+        <source>Edit Rules for Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;OK</source>
+        <translation type="unfinished">&amp;OK</translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished">Z&amp;rušit</translation>
+    </message>
+    <message>
+        <source>Code:</source>
+        <translation type="unfinished">Kód:</translation>
+    </message>
+    <message>
+        <source>Max. in a row:</source>
+        <translation type="unfinished">Nejvíce za sebou:</translation>
+    </message>
+    <message>
+        <source>Min. wait:</source>
+        <translation type="unfinished">Nejmenší doba čekání:</translation>
+    </message>
+    <message>
+        <source>Do not schedule after:</source>
+        <translation type="unfinished">Nezařazovat po:</translation>
+    </message>
+    <message>
+        <source>Or after:</source>
+        <translation type="unfinished">nebo po:</translation>
+    </message>
+</context>
+<context>
     <name>EditSchedRules</name>
     <message>
         <source>&amp;Edit</source>
@@ -1540,35 +1575,31 @@ data</translation>
     <name>editSchedCodeRules</name>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Z&amp;rušit</translation>
+        <translation type="obsolete">Z&amp;rušit</translation>
     </message>
     <message>
         <source>Code:</source>
-        <translation>Kód:</translation>
+        <translation type="obsolete">Kód:</translation>
     </message>
     <message>
         <source>Max. in a row:</source>
-        <translation>Nejvíce za sebou:</translation>
+        <translation type="obsolete">Nejvíce za sebou:</translation>
     </message>
     <message>
         <source>Min. wait:</source>
-        <translation>Nejmenší doba čekání:</translation>
+        <translation type="obsolete">Nejmenší doba čekání:</translation>
     </message>
     <message>
         <source>Do not schedule after:</source>
-        <translation>Nezařazovat po:</translation>
+        <translation type="obsolete">Nezařazovat po:</translation>
     </message>
     <message>
         <source>Or after:</source>
-        <translation>nebo po:</translation>
-    </message>
-    <message>
-        <source>Edit Rules for Code</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">nebo po:</translation>
     </message>
 </context>
 </TS>

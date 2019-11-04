@@ -21,35 +21,14 @@
 #ifndef RDCARTSLOT_H
 #define RDCARTSLOT_H
 
-#include <vector>
-
-#include <qwidget.h>
-#include <qdatetime.h>
-#include <qlabel.h>
-#include <qpushbutton.h>
-#include <qsignalmapper.h>
-
-#include <rdpushbutton.h>
-
 #include <rdcart_dialog.h>
-#include <rdcart.h>
-#include <rduser.h>
-#include <rdlog_line.h>
-#include <rdplay_deck.h>
-#include <rdpanel_button.h>
-#include <rdbutton_dialog.h>
-#include <rdbutton_panel.h>
-#include <rdripc.h>
-#include <rdcombobox.h>
-#include <rdsvc.h>
-#include <rdslotbox.h>
-#include <rdslotdialog.h>
-#include <rdslotoptions.h>
 #include <rdcueeditdialog.h>
 #include <rdlistsvcs.h>
-#include <rdairplay_conf.h>
+#include <rdslotbox.h>
+#include <rdslotdialog.h>
+#include <rdwidget.h>
 
-class RDCartSlot : public QWidget
+class RDCartSlot : public RDWidget
 {
  Q_OBJECT
  public:

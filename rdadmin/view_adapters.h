@@ -21,17 +21,15 @@
 #ifndef VIEW_ADAPTER_H
 #define VIEW_ADAPTER_H
 
-#include <qdialog.h>
-#include <qcombobox.h>
-#include <qcheckbox.h>
-#include <qspinbox.h>
 #include <qlabel.h>
-#include <qlineedit.h>
+#include <qpushbutton.h>
+#include <q3textedit.h>
 
-#include <rdtty.h>
+#include <rddialog.h>
 #include <rdstation.h>
+#include <rdtty.h>
 
-class ViewAdapters : public QDialog
+class ViewAdapters : public RDDialog
 {
  Q_OBJECT
  public:
@@ -41,6 +39,14 @@ class ViewAdapters : public QDialog
 
  private slots:
   void closeData();
+
+ protected:
+  void resizeEvent (QResizeEvent *e);
+
+ private:
+  QLabel *view_title_label;
+  Q3TextEdit *view_text_edit;
+  QPushButton *view_close_button;
 };
 
 

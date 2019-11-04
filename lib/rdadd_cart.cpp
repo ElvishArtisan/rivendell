@@ -2,7 +2,7 @@
 //
 // Add a Rivendell Cart
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,34 +18,19 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <math.h>
-
-#include <qdialog.h>
-#include <qstring.h>
 #include <qpushbutton.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
 #include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <q3buttongroup.h>
-//Added by qt3to4:
-#include <QCloseEvent>
 
-#include <rdsystem.h>
 #include <rddb.h>
-#include <rdpasswd.h>
-#include <rdgroup.h>
-#include <rdtextvalidator.h>
-#include <rdadd_cart.h>
 #include <rdescape_string.h>
+#include <rdgroup.h>
+
+#include "rdadd_cart.h"
 
 RDAddCart::RDAddCart(QString *group,RDCart::Type *type,QString *title,
-		     const QString &username,RDSystem *system,
-		     QWidget *parent)
-  : QDialog(parent,"",true)
+		     const QString &username,const QString &caption,
+		     RDSystem *system,QWidget *parent)
+  : RDDialog(parent)
 {
   QString sql;
   RDSqlQuery *q;
@@ -57,30 +42,22 @@ RDAddCart::RDAddCart(QString *group,RDCart::Type *type,QString *title,
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
-  setCaption("Add Cart");
-
-  //
-  // Generate Fonts
-  //
-  QFont label_font("Helvetica",12,QFont::Bold);
-  label_font.setPixelSize(12);
+  setWindowTitle(caption+" - "+tr("Add Cart"));
 
   //
   // Group
   //
-  cart_group_box=new QComboBox(this,"cart_group_box");
+  cart_group_box=new QComboBox(this);
   cart_group_box->setGeometry(145,11,160,19);
   QLabel *cart_group_label=
     new QLabel(cart_group_box,tr("&Group:"),this,
 	       "cart_group_label");
   cart_group_label->setGeometry(10,11,130,19);
   cart_group_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
-  cart_group_label->setFont(label_font);
+  cart_group_label->setFont(labelFont());
   sql=QString("select GROUP_NAME from USER_PERMS where ")+
     "USER_NAME=\""+RDEscapeString(username)+"\" order by GROUP_NAME";
   q=new RDSqlQuery(sql);
@@ -97,29 +74,27 @@ RDAddCart::RDAddCart(QString *group,RDCart::Type *type,QString *title,
   //
   // Cart Number
   //
-  cart_number_edit=new QLineEdit(this,"cart_number_edit");
+  cart_number_edit=new QLineEdit(this);
   cart_number_edit->setGeometry(145,32,60,19);
   cart_number_edit->setMaxLength(6);
   QIntValidator *validator=new QIntValidator(this,"validator");
   validator->setRange(1,999999);
   cart_number_edit->setValidator(validator);
   QLabel *cart_number_label=
-    new QLabel(cart_number_edit,tr("&New Cart Number:"),this,
-				       "cart_number_label");
+    new QLabel(cart_number_edit,tr("&New Cart Number:"),this);
   cart_number_label->setGeometry(10,32,130,19);
-  cart_number_label->setFont(label_font);
+  cart_number_label->setFont(labelFont());
   cart_number_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   // Cart Type
   //
-  cart_type_box=new QComboBox(this,"cart_type_box");
+  cart_type_box=new QComboBox(this);
   cart_type_box->setGeometry(145,53,100,19);
   QLabel *cart_type_label=
-    new QLabel(cart_type_box,tr("&New Cart Type:"),this,
-				       "cart_type_label");
+    new QLabel(cart_type_box,tr("&New Cart Type:"),this);
   cart_type_label->setGeometry(10,53,130,19);
-  cart_type_label->setFont(label_font);
+  cart_type_label->setFont(labelFont());
   cart_type_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
   if((*cart_type==RDCart::All)||(*cart_type==RDCart::Audio)) {
     cart_type_box->insertItem(tr("Audio"));
@@ -140,35 +115,34 @@ RDAddCart::RDAddCart(QString *group,RDCart::Type *type,QString *title,
   //
   // Cart Title
   //
-  cart_title_edit=new QLineEdit(this,"cart_title_edit");
+  cart_title_edit=new QLineEdit(this);
   cart_title_edit->setGeometry(145,73,sizeHint().width()-155,19);
   cart_title_edit->setMaxLength(255);
   //  cart_title_edit->setValidator(text_validator);
   cart_title_edit->setText(tr("[new cart]"));
   QLabel *cart_title_label=
-    new QLabel(cart_title_edit,tr("&New Cart Title:"),this,
-				       "cart_title_label");
+    new QLabel(cart_title_edit,tr("&New Cart Title:"),this);
   cart_title_label->setGeometry(10,73,130,19);
-  cart_title_label->setFont(label_font);
+  cart_title_label->setFont(labelFont());
   cart_title_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
   //  Ok Button
   //
-  QPushButton *ok_button=new QPushButton(this,"ok_button");
+  QPushButton *ok_button=new QPushButton(this);
   ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   ok_button->setDefault(true);
-  ok_button->setFont(label_font);
+  ok_button->setFont(buttonFont());
   ok_button->setText(tr("&OK"));
   connect(ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
   //  Cancel Button
   //
-  QPushButton *cancel_button=new QPushButton(this,"cancel_button");
+  QPushButton *cancel_button=new QPushButton(this);
   cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
-  cancel_button->setFont(label_font);
+  cancel_button->setFont(buttonFont());
   cancel_button->setText(tr("&Cancel"));
   connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 

@@ -2,7 +2,7 @@
 //
 // Select a Rivendell Log
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,12 +18,6 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qpushbutton.h>
-#include <qdatetime.h>
-//Added by qt3to4:
-#include <QResizeEvent>
-#include <QCloseEvent>
-
 #include "rdapplication.h"
 #include "rddb.h"
 #include "rdescape_string.h"
@@ -31,25 +25,16 @@
 
 RDListLogs::RDListLogs(QString *logname,RDLogFilter::FilterMode mode,
 		       QWidget *parent)
-  : QDialog(parent,"",true)
+  : RDDialog(parent)
 {
   list_logname=logname;
 
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
 
-  //
-  // Generate Fonts
-  //
-  QFont button_font("Helvetica",12,QFont::Bold);
-  button_font.setPixelSize(12);
-
-  setCaption(tr("Select Log"));
+  setWindowTitle(tr("Select Log"));
 
   //
   // Log Filter
@@ -69,18 +54,18 @@ RDListLogs::RDListLogs(QString *logname,RDLogFilter::FilterMode mode,
 	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,
 	  SLOT(doubleClickedData(Q3ListViewItem *,const QPoint &,int)));
-  list_log_list->addColumn(tr("NAME"));
+  list_log_list->addColumn(tr("Name"));
   list_log_list->setColumnAlignment(0,Qt::AlignLeft);
-  list_log_list->addColumn(tr("DESCRIPTION"));
+  list_log_list->addColumn(tr("Description"));
   list_log_list->setColumnAlignment(1,Qt::AlignLeft);
-  list_log_list->addColumn(tr("SERVICE"));
+  list_log_list->addColumn(tr("Service"));
   list_log_list->setColumnAlignment(2,Qt::AlignLeft);
 
   //
   // OK Button
   //
   list_ok_button=new QPushButton(this);
-  list_ok_button->setFont(button_font);
+  list_ok_button->setFont(buttonFont());
   list_ok_button->setText(tr("OK"));
   connect(list_ok_button,SIGNAL(clicked()),this,SLOT(okButtonData()));
 
@@ -88,7 +73,7 @@ RDListLogs::RDListLogs(QString *logname,RDLogFilter::FilterMode mode,
   // Cancel Button
   //
   list_cancel_button=new QPushButton(this);
-  list_cancel_button->setFont(button_font);
+  list_cancel_button->setFont(buttonFont());
   list_cancel_button->setText(tr("Cancel"));
   list_cancel_button->setDefault(true);
   connect(list_cancel_button,SIGNAL(clicked()),this,SLOT(cancelButtonData()));

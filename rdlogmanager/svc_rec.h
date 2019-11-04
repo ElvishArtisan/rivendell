@@ -2,7 +2,7 @@
 //
 // A Calendar Widget.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,16 +21,12 @@
 #ifndef SVC_REC_H
 #define SVC_REC_H
 
-#include <qwidget.h>
-#include <qsize.h>
-#include <qsizepolicy.h>
-#include <qpushbutton.h>
-#include <qcolor.h>
-#include <qstring.h>
+#include <qcombobox.h>
 #include <qdatetime.h>
 #include <qlabel.h>
-#include <qcombobox.h>
 #include <qspinbox.h>
+
+#include <rdwidget.h>
 
 //
 // Display Settings
@@ -40,7 +36,7 @@
 #define SVC_REC_Y_ORIGIN 30
 #define SVC_REC_Y_INTERVAL 20
 
-class SvcRec : public QWidget
+class SvcRec : public RDWidget
 {
   Q_OBJECT
  public:

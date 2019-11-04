@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry id="stdin" xmlns="http://docbook.org/ns/docbook" version="5.0">
+  <!--
+      Header
+  -->
+  <refmeta>
+    <refentrytitle>rdsoftkeys</refentrytitle>
+    <manvolnum>1</manvolnum>
+    <refmiscinfo class='source'>October 2019</refmiscinfo>
+    <refmiscinfo class='manual'>Linux Audio Manual</refmiscinfo>
+  </refmeta>
+  <refnamediv>
+    <refname>rdsoftkeys</refname>
+    <refpurpose>
+      Simple button panel for sending Rivendell Macro Language (RML) commands
+    </refpurpose>
+  </refnamediv>
+  <info>
+    <author>
+      <personname>
+	<firstname>Fred</firstname>
+	<surname>Gleason</surname>
+	<email>fredg@paravelsystems.com</email>
+      </personname>
+      <contrib>Application Author</contrib>
+    </author>
+  </info>
+
+  <!--
+      Body
+  -->
+  <refsynopsisdiv id='synopsis'>
+    <cmdsynopsis>
+      <command>rdsoftkeys</command>
+      <arg choice='opt'><userinput>--map-file=</userinput><replaceable>filename</replaceable></arg>
+      <sbr/>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+
+  <refsect1 id='description'><title>Description</title>
+  <para>
+    <command>rdsoftkeys</command><manvolnum>1</manvolnum> is a small
+    utility that can be configured to present the user with a set of push
+    buttons, each of which, when clicked, will send a specified RML command
+    to a local or remote Rivendell host.
+  </para>
+  <para>
+    If started with no arguments,
+    <command>rdsoftkeys</command><manvolnum>1</manvolnum> will look in
+    the <userinput>[SoftKeys]</userinput> section of
+    <userinput>/etc/rd.conf</userinput> for button programming information.
+  </para>
+  </refsect1>
+
+  <refsect1 id='options'><title>Options</title>
+  <variablelist remap='TP'>
+    <varlistentry>
+      <term>
+	<option>--from-file=</option><replaceable>filename</replaceable>
+      </term>
+      <listitem>
+	<para>
+	  Look in the <replaceable>filename</replaceable> file for button
+	  programming information rather than
+	  <userinput>/etc/rd.conf</userinput>.
+	</para>
+      </listitem>
+    </varlistentry>
+  </variablelist>
+</refsect1>
+
+<refsect1 id='programming_buttons'><title>Programming Buttons</title>
+<para>
+  Button programming information is contained in a
+  <userinput>[SoftKeys]</userinput> section, which can contain the
+  following directives:
+</para>
+ <variablelist>
+   <varlistentry>
+     <term>
+       <userinput>Columns = <replaceable>cols</replaceable></userinput>
+     </term>
+     <listitem>
+       <para>
+	 The maximum number of buttons to place in a single row. If
+	 more than this number of buttons are programmed,
+	 <command>rdsoftkeys</command><manvolnum>1</manvolnum> will
+	 use multiple rows. Default is to place all buttons in a 
+	 single row.
+       </para>
+     </listitem>
+   </varlistentry>
+   <varlistentry>
+     <term>
+       <userinput>Legend<replaceable>num</replaceable> = <replaceable>text</replaceable></userinput>
+     </term>
+     <listitem>
+       <para>
+	 Put <replaceable>text</replaceable> on button number
+	 <replaceable>num</replaceable>. Button numbers must start with
+	 <userinput>1</userinput> and be incremented for each additional
+	 button desired.
+       </para>
+     </listitem>
+   </varlistentry>
+   <varlistentry>
+     <term>
+       <userinput>Color<replaceable>num</replaceable> = <replaceable>color</replaceable></userinput>
+     </term>
+     <listitem>
+       <para>
+	 Use <replaceable>color</replaceable> for the background color of
+	 button <replaceable>num</replaceable>. Button numbers must start with
+	 <userinput>1</userinput> and be incremented for each additional
+	 button desired.
+       </para>
+       <para>
+	 <replaceable>color</replaceable> can be English color names --e.g.
+	 <userinput>red</userinput> or <userinput>blue</userinput>, or
+	 specified in standard HTML notation --e.g.
+	 <userinput>#FF0000</userinput>, <userinput>#0000FF</userinput>.
+       </para>
+     </listitem>
+   </varlistentry>
+   <varlistentry>
+     <term>
+       <userinput>Command<replaceable>num</replaceable> =
+       <replaceable>address</replaceable>:<replaceable>rml</replaceable></userinput>
+     </term>
+     <listitem>
+       <para>
+	 Send the RML command <replaceable>rml</replaceable> on button number
+	 <replaceable>num</replaceable> to
+	 <replaceable>address</replaceable>. Button numbers must start with
+	 <userinput>1</userinput> and be incremented for each additional
+	 button desired.
+       </para>
+     </listitem>
+   </varlistentry>
+ </variablelist>
+ <refsect2 id='programming_buttons.example'><title>Example</title>
+   <para>
+     The following example will create three buttons, each of which
+     will send a <userinput>PN</userinput> RML to an rdairplay(1)
+     instance at <userinput>rd.example.com</userinput>:
+   </para>
+   <literallayout>
+[SoftKeys]
+Columns=2
+
+Command1=rd.example.com:PN 1!
+Legend1=Start Main Log
+Color1=red
+
+Command2=rd.example.com:PN 2!
+Legend2=Start Aux Log 1
+Color2=#00FF00
+
+Command3=rd.example.com:PN 3!
+Legend3=Start Aux Log 2
+Color3=blue
+   </literallayout>
+
+ </refsect2>
+
+</refsect1>
+</refentry>
+

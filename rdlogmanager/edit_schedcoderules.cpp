@@ -19,29 +19,14 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <math.h>
-
-#include <qdialog.h>
-#include <qstring.h>
-#include <q3textedit.h>
-#include <qpainter.h>
-#include <qmessagebox.h>
-#include <qsqldatabase.h>
-#include <qspinbox.h>
-#include <qcombobox.h>
-
-#include <rd.h>
-
 #include "edit_schedcoderules.h"
 
-editSchedCodeRules::editSchedCodeRules(Q3ListViewItem *item,
+EditSchedCodeRules::EditSchedCodeRules(Q3ListViewItem *item,
 				       RDSchedRulesList *sched_rules_list,
 				       QWidget* parent)
-    : QDialog(parent)
+  : RDDialog(parent)
 {
-  setModal(true);
-
-  item_edit = item;
+  edit_edit_item=item;
 
   //
   // Fix the Window Size
@@ -53,143 +38,138 @@ editSchedCodeRules::editSchedCodeRules(Q3ListViewItem *item,
     
   setWindowTitle("RDLogManager - "+tr("Edit Rules for Code"));
 
-  // Create Font
-  QFont font=QFont("Helvetica",12,QFont::Bold);
-  font.setPixelSize(12);
+  edit_ok_button=new QPushButton(this);
+  edit_ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
+  edit_ok_button->setText(tr("&OK"));
+  edit_ok_button->setDefault(true);
+  edit_ok_button->setFont(buttonFont());
+  connect(edit_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
-  buttonOk = new QPushButton(this);
-  buttonOk->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
-  buttonOk->setText( tr( "&OK" ) );
-  buttonOk->setDefault( true );
-  buttonOk->setFont( font );
-  connect( buttonOk, SIGNAL( clicked() ), this, SLOT( okData() ) );
-
-  buttonCancel = new QPushButton(this);
-  buttonCancel->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
-  buttonCancel->setText( tr( "&Cancel" ) );
-  buttonCancel->setFont( font );
-  connect( buttonCancel, SIGNAL( clicked() ), this, SLOT( cancelData() ) );
+  edit_cancel_button=new QPushButton(this);
+  edit_cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
+  edit_cancel_button->setText(tr("&Cancel"));
+  edit_cancel_button->setFont(buttonFont());
+  connect(edit_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
   
-  label_code_name = new QLabel(this);
-  label_code_name->setGeometry( QRect( 40, 10, 150, 20 ) );
-  label_code_name->setText( tr( "Code:" ) );
-  label_code_name->setFont( font ); 
-  label_code_name->setAlignment( int( Qt::AlignVCenter | Qt::AlignRight ) );
+  edit_code_name_label=new QLabel(this);
+  edit_code_name_label->setGeometry(QRect(40,10,150,20));
+  edit_code_name_label->setText(tr("Code:"));
+  edit_code_name_label->setFont(labelFont()); 
+  edit_code_name_label->setAlignment(int(Qt::AlignVCenter | Qt::AlignRight));
 
-  label_max_row = new QLabel(this);
-  label_max_row->setGeometry( QRect( 30, 80, 160, 20 ) );
-  label_max_row->setText( tr( "Max. in a row:" ) );
-  label_max_row->setFont( font ); 
-  label_max_row->setAlignment( int( Qt::AlignVCenter | Qt::AlignRight ) );
+  edit_max_row_label=new QLabel(this);
+  edit_max_row_label->setGeometry(QRect(30,80,160,20));
+  edit_max_row_label->setText(tr("Max. in a row:"));
+  edit_max_row_label->setFont(labelFont()); 
+  edit_max_row_label->setAlignment(int(Qt::AlignVCenter | Qt::AlignRight));
 
-  label_min_wait = new QLabel(this);
-  label_min_wait->setGeometry( QRect( 30, 110, 160, 20 ) );
-  label_min_wait->setText( tr( "Min. wait:" ) );
-  label_min_wait->setFont( font ); 
-  label_min_wait->setAlignment( int( Qt::AlignVCenter | Qt::AlignRight ) );
+  edit_min_wait_label=new QLabel(this);
+  edit_min_wait_label->setGeometry(QRect(30,110,160,20));
+  edit_min_wait_label->setText(tr("Min. wait:"));
+  edit_min_wait_label->setFont(labelFont()); 
+  edit_min_wait_label->setAlignment(int(Qt::AlignVCenter | Qt::AlignRight));
 
-  label_not_after = new QLabel(this);
-  label_not_after->setGeometry( QRect( 30, 140, 160, 20 ) );
-  label_not_after->setText( tr( "Do not schedule after:" ) );
-  label_not_after->setFont( font ); 
-  label_not_after->setAlignment( int( Qt::AlignVCenter | Qt::AlignRight ) );
+  edit_not_after_label=new QLabel(this);
+  edit_not_after_label->setGeometry(QRect(30,140,160,20));
+  edit_not_after_label->setText(tr("Do not schedule after:"));
+  edit_not_after_label->setFont(labelFont()); 
+  edit_not_after_label->setAlignment(int(Qt::AlignVCenter | Qt::AlignRight));
 
-  label_or_after = new QLabel(this);
-  label_or_after->setGeometry( QRect( 30, 180, 160, 20 ) );
-  label_or_after->setText( tr( "Or after:" ) );
-  label_or_after->setFont( font ); 
-  label_or_after->setAlignment( int( Qt::AlignVCenter | Qt::AlignRight ) );
+  edit_or_after_label=new QLabel(this);
+  edit_or_after_label->setGeometry(QRect(30,180,160,20));
+  edit_or_after_label->setText(tr("Or after:"));
+  edit_or_after_label->setFont(labelFont()); 
+  edit_or_after_label->setAlignment(int(Qt::AlignVCenter | Qt::AlignRight));
 
-  label_or_after_II = new QLabel(this);
-  label_or_after_II->setGeometry( QRect( 30, 220, 160, 20 ) );
-  label_or_after_II->setText( tr( "Or after:" ) );
-  label_or_after_II->setFont( font ); 
-  label_or_after_II->setAlignment( int( Qt::AlignVCenter | Qt::AlignRight ) );
+  edit_or_after_label_II=new QLabel(this);
+  edit_or_after_label_II->setGeometry(QRect(30,220,160,20));
+  edit_or_after_label_II->setText(tr("Or after:"));
+  edit_or_after_label_II->setFont(labelFont()); 
+  edit_or_after_label_II->setAlignment(int(Qt::AlignVCenter | Qt::AlignRight));
   
-  spinBox_max_row = new QSpinBox(this);
-  spinBox_max_row->setGeometry( QRect( 200, 80, 70, 20 ) );
-  spinBox_max_row->setMaxValue( 999 );
-  spinBox_max_row->setLineStep( 1 );
-  spinBox_max_row->setValue( item->text(1).toInt() );
+  edit_max_row_spin=new QSpinBox(this);
+  edit_max_row_spin->setGeometry(QRect(200,80,70,20));
+  edit_max_row_spin->setMaxValue(999);
+  edit_max_row_spin->setLineStep(1);
+  edit_max_row_spin->setValue(item->text(1).toInt());
 
-  spinBox_min_wait = new QSpinBox(this);
-  spinBox_min_wait->setGeometry( QRect( 200, 110, 70, 20 ) );
-  spinBox_min_wait->setMaxValue( 999 );
-  spinBox_max_row->setLineStep( 1 );
-  spinBox_min_wait->setValue( item->text(2).toInt() );
+  edit_min_wait_spin=new QSpinBox(this);
+  edit_min_wait_spin->setGeometry(QRect(200,110,70,20));
+  edit_min_wait_spin->setMaxValue(999);
+  edit_max_row_spin->setLineStep(1);
+  edit_min_wait_spin->setValue(item->text(2).toInt());
   
-  label_code = new QLabel(this);
-  label_code->setGeometry( QRect( 200, 10, 90, 20 ) );
-  label_code->setAlignment( int( Qt::AlignVCenter | Qt::AlignLeft ) );
-  label_code->setText( item->text(0) );
+  edit_code_label=new QLabel(this);
+  edit_code_label->setGeometry(QRect(200,10,90,20));
+  edit_code_label->setAlignment(int(Qt::AlignVCenter | Qt::AlignLeft));
+  edit_code_label->setText(item->text(0));
     
-  comboBox_not_after = new QComboBox( FALSE, this);
-  comboBox_not_after->setGeometry( QRect( 200, 140, 180, 30 ) );
-  comboBox_not_after->setDuplicatesEnabled( FALSE );
+  edit_not_after_box=new QComboBox(FALSE,this);
+  edit_not_after_box->setGeometry(QRect(200,140,180,30));
+  edit_not_after_box->setDuplicatesEnabled(FALSE);
 
-  comboBox_or_after = new QComboBox( FALSE, this);
-  comboBox_or_after->setGeometry( QRect( 200, 180, 180, 30 ) );
-  comboBox_or_after->setDuplicatesEnabled( FALSE );
+  edit_or_after_box=new QComboBox(FALSE,this);
+  edit_or_after_box->setGeometry(QRect(200,180,180,30));
+  edit_or_after_box->setDuplicatesEnabled(FALSE);
 
-  comboBox_or_after_II = new QComboBox( FALSE, this);
-  comboBox_or_after_II->setGeometry( QRect( 200, 220, 180, 30 ) );
-  comboBox_or_after_II->setDuplicatesEnabled( FALSE );
+  edit_or_after_box_II=new QComboBox(FALSE,this);
+  edit_or_after_box_II->setGeometry(QRect(200,220,180,30));
+  edit_or_after_box_II->setDuplicatesEnabled(FALSE);
 
-  comboBox_not_after->insertItem("");
-  comboBox_or_after->insertItem("");
-  comboBox_or_after_II->insertItem("");
-  for (int i=0; i<sched_rules_list->getNumberOfItems(); i++)
-    {
-      comboBox_not_after->insertItem(sched_rules_list->getItemSchedCode(i));
-      comboBox_or_after->insertItem(sched_rules_list->getItemSchedCode(i));
-      comboBox_or_after_II->insertItem(sched_rules_list->getItemSchedCode(i));
-    }
-  comboBox_not_after->setCurrentText(item->text(3));
-  comboBox_or_after->setCurrentText(item->text(4));
-  comboBox_or_after_II->setCurrentText(item->text(5));
+  edit_not_after_box->insertItem("");
+  edit_or_after_box->insertItem("");
+  edit_or_after_box_II->insertItem("");
+  for (int i=0; i<sched_rules_list->getNumberOfItems(); i++) {
+    edit_not_after_box->insertItem(sched_rules_list->getItemSchedCode(i));
+    edit_or_after_box->insertItem(sched_rules_list->getItemSchedCode(i));
+    edit_or_after_box_II->insertItem(sched_rules_list->getItemSchedCode(i));
+  }
+  edit_not_after_box->setCurrentText(item->text(3));
+  edit_or_after_box->setCurrentText(item->text(4));
+  edit_or_after_box_II->setCurrentText(item->text(5));
 
-  label_description = new QLabel(this);
-  label_description->setGeometry( QRect( 200, 40, 300, 40 ) );
-  label_description->setAlignment( int( Qt::AlignTop | Qt::AlignLeft ) );
-  label_description->setText( item->text(6) );
+  edit_description_label=new QLabel(this);
+  edit_description_label->setGeometry(QRect(200,40,300,40));
+  edit_description_label->setAlignment(int(Qt::AlignTop | Qt::AlignLeft));
+  edit_description_label->setText(item->text(6));
 }
 
 
-editSchedCodeRules::~editSchedCodeRules()
+EditSchedCodeRules::~EditSchedCodeRules()
 {
 }
 
-QSize editSchedCodeRules::sizeHint() const
+QSize EditSchedCodeRules::sizeHint() const
 {
   return QSize(500,350);
 } 
 
 
-QSizePolicy editSchedCodeRules::sizePolicy() const
+QSizePolicy EditSchedCodeRules::sizePolicy() const
 {
   return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
 }
 
 
 
-void editSchedCodeRules::okData()
+void EditSchedCodeRules::okData()
 {
-  item_edit->setText(1,spinBox_max_row->text());  
-  item_edit->setText(2,spinBox_min_wait->text());  
-  item_edit->setText(3,comboBox_not_after->currentText());  
-  item_edit->setText(4,comboBox_or_after->currentText());  
-  item_edit->setText(5,comboBox_or_after_II->currentText());  
+  edit_edit_item->setText(1,edit_max_row_spin->text());  
+  edit_edit_item->setText(2,edit_min_wait_spin->text());  
+  edit_edit_item->setText(3,edit_not_after_box->currentText());  
+  edit_edit_item->setText(4,edit_or_after_box->currentText());  
+  edit_edit_item->setText(5,edit_or_after_box_II->currentText());  
   done(0);
 }
 
 
-void editSchedCodeRules::cancelData()
+void EditSchedCodeRules::cancelData()
 {
   done(-1);
 }
 
 
-void editSchedCodeRules::closeEvent(QCloseEvent *e)
+void EditSchedCodeRules::closeEvent(QCloseEvent *e)
 {
   cancelData();
 }

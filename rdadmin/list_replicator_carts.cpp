@@ -2,7 +2,7 @@
 //
 // List Rivendell Replicator Carts
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,24 +18,11 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <math.h>
-
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <q3buttongroup.h>
-
 #include <rdcart.h>
 #include <rddb.h>
-#include <rdtextfile.h>
 #include <rdescape_string.h>
 #include <rdreplicator.h>
+#include <rdtextfile.h>
 
 #include "add_replicator.h"
 #include "edit_replicator.h"
@@ -45,25 +32,14 @@
 #include "../icons/rml5.xpm"
 
 ListReplicatorCarts::ListReplicatorCarts(QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   setModal(true);
 
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-
-  //
-  // Create Fonts
-  //
-  QFont font=QFont("Helvetica",12,QFont::Bold);
-  font.setPixelSize(12);
-  QFont list_font=QFont("Helvetica",12,QFont::Normal);
-  list_font.setPixelSize(12);
-  QFont small_font=QFont("Helvetica",10,QFont::Normal);
-  small_font.setPixelSize(10);
+  setMinimumSize(sizeHint());
 
   //
   // Create Icons
@@ -81,7 +57,7 @@ ListReplicatorCarts::ListReplicatorCarts(QWidget *parent)
   //  Repost Button
   //
   list_repost_button=new QPushButton(this);
-  list_repost_button->setFont(font);
+  list_repost_button->setFont(buttonFont());
   list_repost_button->setText(tr("&Repost"));
   connect(list_repost_button,SIGNAL(clicked()),this,SLOT(repostData()));
 
@@ -89,7 +65,7 @@ ListReplicatorCarts::ListReplicatorCarts(QWidget *parent)
   //  Repost All Button
   //
   list_repost_all_button=new QPushButton(this);
-  list_repost_all_button->setFont(font);
+  list_repost_all_button->setFont(buttonFont());
   list_repost_all_button->setText(tr("Repost\n&All"));
   connect(list_repost_all_button,SIGNAL(clicked()),this,SLOT(repostAllData()));
 
@@ -98,7 +74,7 @@ ListReplicatorCarts::ListReplicatorCarts(QWidget *parent)
   //
   list_close_button=new QPushButton(this);
   list_close_button->setDefault(true);
-  list_close_button->setFont(font);
+  list_close_button->setFont(buttonFont());
   list_close_button->setText(tr("&Close"));
   connect(list_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 
@@ -106,7 +82,6 @@ ListReplicatorCarts::ListReplicatorCarts(QWidget *parent)
   // Replicator List
   //
   list_view=new RDListView(this);
-  list_view->setFont(list_font);
   list_view->setAllColumnsShowFocus(true);
   list_view->setItemMargin(5);
   list_view->addColumn(" ");
@@ -115,7 +90,7 @@ ListReplicatorCarts::ListReplicatorCarts(QWidget *parent)
   list_view->addColumn(tr("LAST POSTED"));
   list_view->addColumn(tr("POSTED FILENAME"));
   QLabel *list_box_label=new QLabel(list_view,tr("&Active Carts:"),this);
-  list_box_label->setFont(font);
+  list_box_label->setFont(labelFont());
   list_box_label->setGeometry(14,11,85,19);
 }
 

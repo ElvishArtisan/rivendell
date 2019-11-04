@@ -2,7 +2,7 @@
 //
 // On Air Playout Utility for Rivendell.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,31 +21,16 @@
 #ifndef LOGLINEBOX_H
 #define LOGLINEBOX_H
 
-#include <qwidget.h>
-#include <qsize.h>
-#include <qsizepolicy.h>
-#include <qtimer.h>
-#include <qdatetime.h>
-#include <qpushbutton.h>
 #include <q3progressbar.h>
-#include <qpalette.h>
-#include <qpixmap.h>
-//Added by qt3to4:
-#include <QDropEvent>
-#include <QPaintEvent>
-#include <QLabel>
-#include <QMouseEvent>
-#include <QDragEnterEvent>
 
+#include <qpixmap.h>
+
+#include <rdairplay_conf.h>
+#include <rdcartdrag.h>
 #include <rdlabel.h>
 #include <rdlog_line.h>
 #include <rdlog_event.h>
-#include <rdplay_deck.h>
-#include <rdairplay_conf.h>
-#include <rdcartdrag.h>
-
-#include <mode_display.h>
-#include <colors.h>
+#include <rdwidget.h>
 
 //
 // Widget Settings
@@ -53,7 +38,7 @@
 #define LOGLINEBOX_FULL_HEIGHT 85
 #define LOGLINEBOX_HALF_HEIGHT 50
 
-class LogLineBox : public QWidget
+class LogLineBox : public RDWidget
 {
   Q_OBJECT
  public:
@@ -151,4 +136,4 @@ class LogLineBox : public QWidget
 };
 
 
-#endif 
+#endif  // LOGLINEBOX_H

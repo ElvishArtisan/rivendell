@@ -21,13 +21,13 @@
 #ifndef RDALSACONFIG_H
 #define RDALSACONFIG_H
 
-#include <qwidget.h>
 #include <qlistview.h>
 #include <qlabel.h>
-
-#include <rdtransportbutton.h>
+#include <qpushbutton.h>
 
 #include <rd.h>
+#include <rdwidget.h>
+
 #include "rdalsamodel.h"
 
 #define RDALSACONFIG_USAGE "[options]\n"
@@ -35,12 +35,11 @@
 void StopDaemons();
 void StartDaemons();
 
-class MainWidget : public QWidget
+class MainWidget : public RDWidget
 {
   Q_OBJECT
  public:
-  MainWidget(QWidget *parent=0);
-  ~MainWidget();
+  MainWidget(RDConfig *c,QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 

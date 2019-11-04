@@ -2,7 +2,7 @@
 //
 // A Dedicated Cart Wall Utility for Rivendell.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -50,8 +50,8 @@ RDCartDialog *panel_cart_dialog;
 //
 #include "../icons/rdpanel-22x22.xpm"
 
-MainWidget::MainWidget(QWidget *parent)
-  : QWidget(parent)
+MainWidget::MainWidget(RDConfig *c,QWidget *parent)
+  : RDWidget(c,parent)
 {
   QPixmap panel_skin_pixmap;
   QString err_msg;
@@ -60,17 +60,9 @@ MainWidget::MainWidget(QWidget *parent)
   // Fix the Window Size
   //
 #ifndef RESIZABLE
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 #endif  // RESIZABLE
-
-  //
-  // Generate Fonts
-  //
-  QFont button_font=QFont("Helvetica",16,QFont::Bold);
-  button_font.setPixelSize(16);
 
   //
   // Create Icons
@@ -160,6 +152,7 @@ MainWidget::MainWidget(QWidget *parent)
 		       rda->panelConf()->panels(RDAirPlayConf::StationPanel),
 		       rda->panelConf()->panels(RDAirPlayConf::UserPanel),
 		       rda->panelConf()->flashPanel(),
+		       "RDPanel",
 		       rda->panelConf()->buttonLabelTemplate(),true,
 		       panel_player,panel_cart_dialog,this);
     panel_panel->setGeometry(10,10,panel_panel->sizeHint().width(),
@@ -395,7 +388,9 @@ int main(int argc,char *argv[])
 	     QTextCodec::locale(),".");
   a.installTranslator(&tr);
 
-  MainWidget *w=new MainWidget();
+  RDConfig *config=new RDConfig();
+  config->load();
+  MainWidget *w=new MainWidget(config);
   a.setMainWidget(w);
   w->setGeometry(QRect(QPoint(0,0),w->sizeHint()));
   w->show();

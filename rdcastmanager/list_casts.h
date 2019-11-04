@@ -2,7 +2,7 @@
 //
 // List Rivendell Casts
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,19 +21,14 @@
 #ifndef LIST_CASTS_H
 #define LIST_CASTS_H
 
-#include <qdialog.h>
-#include <qpixmap.h>
-#include <qradiobutton.h>
-#include <qpushbutton.h>
-#include <qlineedit.h>
 #include <qcheckbox.h>
-#include <qlabel.h>
-#include <q3progressdialog.h>
+#include <qprogressdialog.h>
 
+#include <rddialog.h>
 #include <rdfeed.h>
 #include <rdlistviewitem.h>
 
-class ListCasts : public QDialog
+class ListCasts : public RDDialog
 {
   Q_OBJECT
  public:
@@ -81,7 +76,7 @@ class ListCasts : public QDialog
   QCheckBox *list_unexpired_check;
   QLabel *list_active_label;
   QCheckBox *list_active_check;
-  Q3ProgressDialog *list_progress_dialog;
+  QProgressDialog *list_progress_dialog;
   RDFeed *list_feed;
 };
 

@@ -240,6 +240,13 @@ Changes that alter the schema of the database must include:
      'ChangeLog' entry, including the new value of 'RD_VERSION_DATABASE'.
 
 
+FONT MANGEMENT:
+All fonts used in Rivendell are managed by the RDFontEngine class, which
+provides them on the basis of abstract "roles" so as to provide consistency
+across the entire set of modules. See the file 'docs/apis/fonts.pdf' for
+a detailed description of this sub-system, including screenshot examples.
+
+
 WRITING TO THE SYSLOG:
 Rivendell makes extensive use of the syslog(3) system found on all
 POSIX-compliant systems. Sending messages to the syslog should almost

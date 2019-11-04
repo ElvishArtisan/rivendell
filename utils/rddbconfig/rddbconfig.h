@@ -22,26 +22,20 @@
 #ifndef RDDBCONFIG_H
 #define RDDBCONFIG_H
 
-#include <qwidget.h>
-#include <q3listbox.h>
-#include <qlabel.h>
 #include <qmessagebox.h>
+#include <qpushbutton.h>
 
-#include <rdtransportbutton.h>
-
-#include <rd.h>
-#include <rdconfig.h>
+#include <rdwidget.h>
 
 #include "db.h"
 
 #define RDDBCONFIG_USAGE "\n\n";
 
-class MainWidget : public QWidget
+class MainWidget : public RDWidget
 {
   Q_OBJECT
-
  public:
-  MainWidget(QWidget *parent=0);
+  MainWidget(RDConfig *c,QWidget *parent=0);
   ~MainWidget();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;

@@ -2,7 +2,7 @@
 //
 // Edit the Hot Keys Configuration for a  Workstation
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,19 +21,20 @@
 #ifndef EDIT_HOTKEYS_H
 #define EDIT_HOTKEYS_H
 
-#include <qdialog.h>
+#include <vector>
+
 #include <qlineedit.h>
 #include <q3listview.h>
 #include <qcombobox.h>
 #include <qpushbutton.h>
 #include <qlabel.h>
 
-#include <vector>
+#include <rdairplay_conf.h>
+#include <rddialog.h>
 #include <rdhotkeys.h>
 #include <rdhotkeylist.h>
-#include <rdairplay_conf.h>
 
-class EditHotkeys : public QDialog
+class EditHotkeys : public RDDialog
 {
   Q_OBJECT
  public:
@@ -77,8 +78,8 @@ class EditHotkeys : public QDialog
   QPushButton *cancel_button;
   int  keystrokecount;
   bool keyupdated;
-  bool AltKeyHit ;
-  bool CtrlKeyHit;
+  bool alt_key_hit;
+  bool ctrl_key_hit;
   RDHotKeyList *myhotkeylist ;
   int current_station_clone_item;
 };

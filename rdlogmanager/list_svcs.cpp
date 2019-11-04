@@ -2,7 +2,7 @@
 //
 // List Rivendell Services and Report Ages
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,12 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qmessagebox.h>
-#include <qdatetime.h>
-
-#include <rddb.h>
 #include <rdescape_string.h>
-#include <rdlog.h>
 
 #include "globals.h"
 #include "list_svcs.h"
@@ -31,25 +26,14 @@
 #include "pick_report_dates.h"
 
 ListSvcs::ListSvcs(QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
-  setModal(true);
-
   setWindowTitle("RDLogManager - "+tr("Rivendell Services"));
 
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-
-  //
-  // Create Fonts
-  //
-  QFont bold_font=QFont("Helvetica",12,QFont::Bold);
-  bold_font.setPixelSize(12);
-  QFont font=QFont("Helvetica",12,QFont::Normal);
-  font.setPixelSize(12);
+  setMinimumSize(sizeHint());
 
   //
   // Log List
@@ -70,7 +54,7 @@ ListSvcs::ListSvcs(QWidget *parent)
   //  Generate Report Button
   //
   list_generate_button=new QPushButton(this);
-  list_generate_button->setFont(bold_font);
+  list_generate_button->setFont(buttonFont());
   list_generate_button->setText(tr("&Generate\nReports"));
   connect(list_generate_button,SIGNAL(clicked()),this,SLOT(generateData()));
 
@@ -78,7 +62,7 @@ ListSvcs::ListSvcs(QWidget *parent)
   //  Purge Button
   //
   list_purge_button=new QPushButton(this);
-  list_purge_button->setFont(bold_font);
+  list_purge_button->setFont(buttonFont());
   list_purge_button->setText(tr("&Purge\nData"));
   connect(list_purge_button,SIGNAL(clicked()),this,SLOT(purgeData()));
 
@@ -87,7 +71,7 @@ ListSvcs::ListSvcs(QWidget *parent)
   //
   list_close_button=new QPushButton(this);
   list_close_button->setDefault(true);
-  list_close_button->setFont(bold_font);
+  list_close_button->setFont(buttonFont());
   list_close_button->setText(tr("C&lose"));
   connect(list_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 

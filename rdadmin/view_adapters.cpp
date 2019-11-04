@@ -2,7 +2,7 @@
 //
 // Display Audio Adapter Information
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,50 +18,37 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qpushbutton.h>
-#include <q3textedit.h>
-#include <qlabel.h>
-
 #include <rd.h>
 
 #include "view_adapters.h"
 
 ViewAdapters::ViewAdapters(RDStation *rdstation,QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   setModal(true);
 
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
 
   setWindowTitle("RDADmin - "+tr("Audio Resource Information"));
 
   //
   // Create Fonts
   //
-  QFont font=QFont("Helvetica",16,QFont::Bold);
-  font.setPixelSize(16);
-  QFont button_font=QFont("Helvetica",14,QFont::Bold);
-  button_font.setPixelSize(14);
 
   //
   // Title
   //
-  QLabel *label=new QLabel(tr("Audio Resources on")+" "+rdstation->name(),this);
-  label->setGeometry(15,10,sizeHint().width()-20,16);
-  label->setFont(font);
+  view_title_label=new QLabel(tr("Audio Resources on")+" "+rdstation->name(),this);
+  view_title_label->setFont(labelFont());
 
   //
   // Resource List
   //
-  Q3TextEdit *text_edit=new Q3TextEdit(this,"adapter_edit");
-  text_edit->setGeometry(10,28,sizeHint().width()-20,sizeHint().height()-98);
-  text_edit->setReadOnly(true);
+  view_text_edit=new Q3TextEdit(this,"adapter_edit");
+  view_text_edit->setReadOnly(true);
   QString text;
   if(rdstation->scanned()) {
     text+=tr("SUPPORTED AUDIO DRIVERS\n");
@@ -153,18 +140,16 @@ ViewAdapters::ViewAdapters(RDStation *rdstation,QWidget *parent)
     text=tr("NO DATA AVAILABLE\n\n");
     text+=tr("Please start the Rivendell daemons on this host (by executing, as user 'root', the command \"systemctl start rivendell\") in order to populate the audio resources database.");
   }
-  text_edit->setText(text);
+  view_text_edit->setText(text);
 
   //
   //  Close Button
   //
-  QPushButton *button=new QPushButton(this,"close_button");
-  button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
-			    80,50);
-  button->setFont(button_font);
-  button->setText(tr("&Close"));
-  button->setDefault(true);
-  connect(button,SIGNAL(clicked()),this,SLOT(closeData()));
+  view_close_button=new QPushButton(this);
+  view_close_button->setFont(buttonFont());
+  view_close_button->setText(tr("&Close"));
+  view_close_button->setDefault(true);
+  connect(view_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 }
 
 
@@ -183,4 +168,12 @@ QSizePolicy ViewAdapters::sizePolicy() const
 void ViewAdapters::closeData()
 {
   done(0);
+}
+
+
+void ViewAdapters::resizeEvent (QResizeEvent *e)
+{
+  view_title_label->setGeometry(15,10,size().width()-20,16);
+  view_text_edit->setGeometry(10,28,size().width()-20,size().height()-98);
+  view_close_button->setGeometry(size().width()-90,size().height()-60,80,50);
 }

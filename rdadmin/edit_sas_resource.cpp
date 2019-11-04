@@ -26,7 +26,7 @@
 
 EditSasResource::EditSasResource(int *enginenum,int *devicenum,int *relaynum,
 				 QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   setModal(true);
 
@@ -38,48 +38,38 @@ EditSasResource::EditSasResource(int *enginenum,int *devicenum,int *relaynum,
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
-
-  //
-  // Create Fonts
-  //
-  QFont bold_font=QFont("Helvetica",12,QFont::Bold);
-  bold_font.setPixelSize(12);
-  QFont font=QFont("Helvetica",12,QFont::Normal);
-  font.setPixelSize(12);
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   //
   // Console Number
   //
   edit_enginenum_edit=new QLineEdit(this);
-  edit_enginenum_edit->setGeometry(135,10,50,20);
+  edit_enginenum_edit->setGeometry(165,10,50,20);
   QLabel *label=new QLabel(edit_enginenum_edit,tr("Console Number: "),this);
-  label->setGeometry(10,10,120,20);
-  label->setFont(bold_font);
+  label->setGeometry(10,10,150,20);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Source Number
   //
   edit_devicenum_edit=new QLineEdit(this);
-  edit_devicenum_edit->setGeometry(135,36,50,20);
+  edit_devicenum_edit->setGeometry(165,36,50,20);
   label=new QLabel(edit_devicenum_edit,tr("Source Number: "),this);
-  label->setGeometry(10,36,120,20);
-  label->setFont(bold_font);
+  label->setGeometry(10,36,150,20);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Opto/Relay Number
   //
   edit_relaynum_edit=new QLineEdit(this);
-  edit_relaynum_edit->setGeometry(135,62,50,20);
+  edit_relaynum_edit->setGeometry(165,62,50,20);
   edit_relaynum_label=
     new QLabel(edit_relaynum_edit,tr("Opto/Relay Number: "),this);
-  edit_relaynum_label->setGeometry(10,62,120,20);
-  edit_relaynum_label->setFont(bold_font);
+  edit_relaynum_label->setGeometry(10,62,150,20);
+  edit_relaynum_label->setFont(labelFont());
   edit_relaynum_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -88,7 +78,7 @@ EditSasResource::EditSasResource(int *enginenum,int *devicenum,int *relaynum,
   QPushButton *button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
-  button->setFont(bold_font);
+  button->setFont(buttonFont());
   button->setText(tr("&OK"));
   connect(button,SIGNAL(clicked()),this,SLOT(okData()));
 
@@ -98,7 +88,7 @@ EditSasResource::EditSasResource(int *enginenum,int *devicenum,int *relaynum,
   button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
-  button->setFont(bold_font);
+  button->setFont(buttonFont());
   button->setText(tr("&Cancel"));
   connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
 

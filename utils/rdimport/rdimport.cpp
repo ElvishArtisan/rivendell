@@ -1629,13 +1629,25 @@ bool MainObject::RunPattern(const QString &pattern,const QString &filename,
   QDate date;
 
   //
+  // Sanity Check
+  //
+  if(pattern.length()<2) {
+    return false;
+  }
+
+  //
   // Initialize Pattern Parser
   //
   if((pattern.at(0)=='%')&&(pattern.at(1)!='%')) {
     field=pattern.at(1);
     value="";
-    delimiter=pattern.at(2);
-    ptr=3;
+    if(pattern.length()>=3) {
+      delimiter=pattern.at(2);
+      ptr=3;
+    }
+    else {
+      ptr=2;
+    }
     macro_active=true;
   }
   else {
@@ -1645,7 +1657,8 @@ bool MainObject::RunPattern(const QString &pattern,const QString &filename,
 
   for(int i=0;i<=filename.length();i++) {
     if(macro_active) {
-      if((filename.at(i)==delimiter)||(i==filename.length())) {
+      if(((!delimiter.isNull())&&(filename.at(i)==delimiter))||
+	 (i==filename.length())) {
 	switch(field.toAscii()) {
 	case 'a':
 	  wavedata->setArtist(value);
@@ -1998,7 +2011,7 @@ void MainObject::Log(int prio,const QString &msg) const
   FILE *f=NULL;
 
   if(import_log_syslog) {
-    rda->syslog(prio,msg.trimmed());
+    rda->syslog(prio,"%s",(const char *)msg.trimmed().toUtf8());
   }
   if(!import_log_filename.isEmpty()) {
     QDateTime now=QDateTime::currentDateTime();

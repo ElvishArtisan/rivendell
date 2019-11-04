@@ -32,35 +32,35 @@
     </message>
     <message>
         <source>Start at:</source>
-        <translation>Start på:</translation>
+        <translation type="obsolete">Start på:</translation>
     </message>
     <message>
         <source>Action If Previous Event Still Playing</source>
-        <translation>Handling viss den førre hendinga spelar enno</translation>
+        <translation type="obsolete">Handling viss den førre hendinga spelar enno</translation>
     </message>
     <message>
         <source>Start Immediately</source>
-        <translation>Start med ein gong</translation>
+        <translation type="obsolete">Start med ein gong</translation>
     </message>
     <message>
         <source>Make Next</source>
-        <translation>Gjer til neste</translation>
+        <translation type="obsolete">Gjer til neste</translation>
     </message>
     <message>
         <source>Wait up to</source>
-        <translation>Vent opp til</translation>
+        <translation type="obsolete">Vent opp til</translation>
     </message>
     <message>
         <source>Play</source>
-        <translation>Spel</translation>
+        <translation type="obsolete">Spel</translation>
     </message>
     <message>
         <source>Segue</source>
-        <translation>Krysston</translation>
+        <translation type="obsolete">Krysston</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation>Stopp</translation>
+        <translation type="obsolete">Stopp</translation>
     </message>
     <message>
         <source>Overlap</source>
@@ -68,7 +68,7 @@
     </message>
     <message>
         <source>Transition Type:</source>
-        <translation>Overgangstype:</translation>
+        <translation type="obsolete">Overgangstype:</translation>
     </message>
     <message>
         <source>Log Name</source>
@@ -84,19 +84,15 @@
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Avbryt</translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
     </message>
     <message>
         <source>Transition If Previous Cart Ends Before</source>
-        <translation>Overgang viss førre korg endar før</translation>
-    </message>
-    <message>
-        <source>Transition Type</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Overgang viss førre korg endar før</translation>
     </message>
 </context>
 <context>
@@ -511,35 +507,35 @@ skrudd av for denne tenesta!</translation>
     </message>
     <message>
         <source>Start at:</source>
-        <translation>Start på:</translation>
+        <translation type="obsolete">Start på:</translation>
     </message>
     <message>
         <source>Action If Previous Event Still Playing</source>
-        <translation>Handling viss den førre hendinga spelar enno</translation>
+        <translation type="obsolete">Handling viss den førre hendinga spelar enno</translation>
     </message>
     <message>
         <source>Start Immediately</source>
-        <translation>Start med ein gong</translation>
+        <translation type="obsolete">Start med ein gong</translation>
     </message>
     <message>
         <source>Make Next</source>
-        <translation>Gjer til neste</translation>
+        <translation type="obsolete">Gjer til neste</translation>
     </message>
     <message>
         <source>Wait up to</source>
-        <translation>Vent opp til</translation>
+        <translation type="obsolete">Vent opp til</translation>
     </message>
     <message>
         <source>Play</source>
-        <translation>Spel</translation>
+        <translation type="obsolete">Spel</translation>
     </message>
     <message>
         <source>Segue</source>
-        <translation>Krysston</translation>
+        <translation type="obsolete">Krysston</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation>Stopp</translation>
+        <translation type="obsolete">Stopp</translation>
     </message>
     <message>
         <source>Overlap</source>
@@ -547,7 +543,7 @@ skrudd av for denne tenesta!</translation>
     </message>
     <message>
         <source>Transition Type:</source>
-        <translation>Overgangstype:</translation>
+        <translation type="obsolete">Overgangstype:</translation>
     </message>
     <message>
         <source>No Fade When Segueing At End</source>
@@ -572,15 +568,15 @@ Cart</source>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Avbryt</translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
     </message>
     <message>
         <source>Transition If Previous Cart Ends Before</source>
-        <translation>Overgang viss førre korg endar før</translation>
+        <translation type="obsolete">Overgang viss førre korg endar før</translation>
     </message>
     <message>
         <source>Missing Cart</source>
@@ -604,18 +600,6 @@ som er skrudd av for denne tenesta!</translation>
         <source>No Fade on Segue Out</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Duplicate Start Time</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>An event is already scheduled with this start time!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Transition Type</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>EditMarker</name>
@@ -625,35 +609,35 @@ som er skrudd av for denne tenesta!</translation>
     </message>
     <message>
         <source>Start at:</source>
-        <translation>Start på:</translation>
+        <translation type="obsolete">Start på:</translation>
     </message>
     <message>
         <source>Action If Previous Event Still Playing</source>
-        <translation>Handling viss den førre hendinga spelar enno</translation>
+        <translation type="obsolete">Handling viss den førre hendinga spelar enno</translation>
     </message>
     <message>
         <source>Start Immediately</source>
-        <translation>Start med ein gong</translation>
+        <translation type="obsolete">Start med ein gong</translation>
     </message>
     <message>
         <source>Make Next</source>
-        <translation>Gjer til neste</translation>
+        <translation type="obsolete">Gjer til neste</translation>
     </message>
     <message>
         <source>Wait up to</source>
-        <translation>Vent opp til</translation>
+        <translation type="obsolete">Vent opp til</translation>
     </message>
     <message>
         <source>Play</source>
-        <translation>Spel</translation>
+        <translation type="obsolete">Spel</translation>
     </message>
     <message>
         <source>Segue</source>
-        <translation>Krysston</translation>
+        <translation type="obsolete">Krysston</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation>Stopp</translation>
+        <translation type="obsolete">Stopp</translation>
     </message>
     <message>
         <source>Overlap</source>
@@ -669,23 +653,19 @@ som er skrudd av for denne tenesta!</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Avbryt</translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
     </message>
     <message>
         <source>Transition If Previous Cart Ends Before</source>
-        <translation>Overgang viss førre korg endar før</translation>
+        <translation type="obsolete">Overgang viss førre korg endar før</translation>
     </message>
     <message>
         <source>Transition Type:</source>
         <translation type="obsolete">Overgangstype:</translation>
-    </message>
-    <message>
-        <source>Transition Type</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -696,35 +676,35 @@ som er skrudd av for denne tenesta!</translation>
     </message>
     <message>
         <source>Start at:</source>
-        <translation>Start på:</translation>
+        <translation type="obsolete">Start på:</translation>
     </message>
     <message>
         <source>Action If Previous Event Still Playing</source>
-        <translation>Handling viss den førre hendinga spelar enno</translation>
+        <translation type="obsolete">Handling viss den førre hendinga spelar enno</translation>
     </message>
     <message>
         <source>Start Immediately</source>
-        <translation>Start med ein gong</translation>
+        <translation type="obsolete">Start med ein gong</translation>
     </message>
     <message>
         <source>Make Next</source>
-        <translation>Gjer til neste</translation>
+        <translation type="obsolete">Gjer til neste</translation>
     </message>
     <message>
         <source>Wait up to</source>
-        <translation>Vent opp til</translation>
+        <translation type="obsolete">Vent opp til</translation>
     </message>
     <message>
         <source>Play</source>
-        <translation>Spel</translation>
+        <translation type="obsolete">Spel</translation>
     </message>
     <message>
         <source>Segue</source>
-        <translation>Krysston</translation>
+        <translation type="obsolete">Krysston</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation>Stopp</translation>
+        <translation type="obsolete">Stopp</translation>
     </message>
     <message>
         <source>Overlap</source>
@@ -736,19 +716,19 @@ som er skrudd av for denne tenesta!</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Avbryt</translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
     </message>
     <message>
         <source>Transition If Previous Cart Ends Before</source>
-        <translation>Overgang viss førre korg endar før</translation>
+        <translation type="obsolete">Overgang viss førre korg endar før</translation>
     </message>
     <message>
         <source>Transition Type:</source>
-        <translation>Overgangstype:</translation>
+        <translation type="obsolete">Overgangstype:</translation>
     </message>
 </context>
 <context>

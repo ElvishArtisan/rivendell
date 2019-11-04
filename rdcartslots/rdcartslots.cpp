@@ -2,7 +2,7 @@
 //
 // A Dedicated Cart Slot Utility for Rivendell.
 //
-//   (C) Copyright 2012-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,27 +18,10 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <stdlib.h>
-#include <math.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <signal.h>
-
-#include <qmessagebox.h>
 #include <qapplication.h>
-#include <qwindowsstyle.h>
+#include <qmessagebox.h>
 #include <qtranslator.h>
-#include <qtextcodec.h>
-#include <qpainter.h>
-#include <qpixmap.h>
-//Added by qt3to4:
-#include <QCloseEvent>
-#include <QPaintEvent>
 
-#include <dbversion.h>
-#include <rd.h>
-#include <rdapplication.h>
-#include <rddbheartbeat.h>
 #include <rdescape_string.h>
 
 #include "rdcartslots.h"
@@ -48,17 +31,10 @@
 //
 #include "../icons/rdcartslots-22x22.xpm"
 
-MainWidget::MainWidget(QWidget *parent)
-  : QWidget(parent)
+MainWidget::MainWidget(RDConfig *c,QWidget *parent)
+  : RDWidget(c,parent)
 {
   QString err_msg;
-
-  //
-  // Force a reasonable default font.
-  //
-  QFont mfont("helvetica",12,QFont::Normal);
-  mfont.setPixelSize(12);
-  qApp->setFont(mfont);
 
   //
   // Open the Database
@@ -261,7 +237,9 @@ int main(int argc,char *argv[])
 	     QTextCodec::locale(),".");
   a.installTranslator(&tr);
 
-  MainWidget *w=new MainWidget();
+  RDConfig *config=new RDConfig();
+  config->load();
+  MainWidget *w=new MainWidget(config);
   a.setMainWidget(w);
   w->setGeometry(QRect(QPoint(0,0),w->sizeHint()));
   w->show();

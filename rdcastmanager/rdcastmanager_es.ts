@@ -228,6 +228,10 @@ Suscripción</translation>
         <source>Continue deleting cast?</source>
         <translation> ¿Continuar eliminando podcasts?</translation>
     </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MainWidget</name>

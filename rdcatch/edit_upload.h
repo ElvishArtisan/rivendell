@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Upload Event
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,23 +21,17 @@
 #ifndef EDIT_UPLOAD_H
 #define EDIT_UPLOAD_H
 
-#include <vector>
-
-#include <qdialog.h>
-#include <qsqldatabase.h>
-#include <qlineedit.h>
-#include <q3datetimeedit.h>
 #include <qcombobox.h>
 #include <qcheckbox.h>
-#include <qspinbox.h>
+#include <qdatetimeedit.h>
 #include <qlabel.h>
+#include <qspinbox.h>
 
-#include <rdrecording.h>
 #include <rddeck.h>
-#include <rdcart.h>
-#include <rdsettings.h>
+#include <rddialog.h>
+#include <rdrecording.h>
 
-class EditUpload : public QDialog
+class EditUpload : public RDDialog
 {
  Q_OBJECT
  public:
@@ -69,7 +63,7 @@ class EditUpload : public QDialog
   RDSettings edit_settings;
   QCheckBox *edit_active_button;
   QComboBox *edit_station_box;
-  Q3TimeEdit *edit_starttime_edit;
+  QTimeEdit *edit_starttime_edit;
   QComboBox *edit_feed_box;
   QLineEdit *edit_description_edit;
   QLineEdit *edit_url_edit;

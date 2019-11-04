@@ -1,8 +1,8 @@
 // rddatedialog.h
 //
-// A Dialog Box for using an RDatePicker widget.
+// A Dialog Box for using an RDDatePicker widget.
 //
-//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -22,23 +22,14 @@
 #ifndef RDDATEDIALOG_H
 #define RDDATEDIALOG_H
 
-#include <qdialog.h>
-#include <qsize.h>
-#include <qsizepolicy.h>
-#include <qpushbutton.h>
-#include <qcolor.h>
-#include <qstring.h>
-#include <qdatetime.h>
-#include <qlabel.h>
-
 #include <rddatepicker.h>
+#include <rddialog.h>
 
-class RDDateDialog : public QDialog
+class RDDateDialog : public RDDialog
 {
  Q_OBJECT
  public:
   RDDateDialog(int low_year,int high_year,QWidget *parent=0);
-  ~RDDateDialog();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 

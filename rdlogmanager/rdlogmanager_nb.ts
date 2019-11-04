@@ -741,6 +741,41 @@ ei anna hending som finst frå før.</translation>
     </message>
 </context>
 <context>
+    <name>EditSchedCodeRules</name>
+    <message>
+        <source>Edit Rules for Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;OK</source>
+        <translation type="unfinished">&amp;OK</translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished">&amp;Avbryt</translation>
+    </message>
+    <message>
+        <source>Code:</source>
+        <translation type="unfinished">Kode:</translation>
+    </message>
+    <message>
+        <source>Max. in a row:</source>
+        <translation type="unfinished">Maks på ei rad:</translation>
+    </message>
+    <message>
+        <source>Min. wait:</source>
+        <translation type="unfinished">Min. venting:</translation>
+    </message>
+    <message>
+        <source>Do not schedule after:</source>
+        <translation type="unfinished">Ikkje planlegg etter:</translation>
+    </message>
+    <message>
+        <source>Or after:</source>
+        <translation type="unfinished">Eller etter:</translation>
+    </message>
+</context>
+<context>
     <name>EditSchedRules</name>
     <message>
         <source>&amp;Edit</source>
@@ -1533,35 +1568,31 @@ data</translation>
     <name>editSchedCodeRules</name>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Avbryt</translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
     </message>
     <message>
         <source>Code:</source>
-        <translation>Kode:</translation>
+        <translation type="obsolete">Kode:</translation>
     </message>
     <message>
         <source>Max. in a row:</source>
-        <translation>Maks på ei rad:</translation>
+        <translation type="obsolete">Maks på ei rad:</translation>
     </message>
     <message>
         <source>Min. wait:</source>
-        <translation>Min. venting:</translation>
+        <translation type="obsolete">Min. venting:</translation>
     </message>
     <message>
         <source>Do not schedule after:</source>
-        <translation>Ikkje planlegg etter:</translation>
+        <translation type="obsolete">Ikkje planlegg etter:</translation>
     </message>
     <message>
         <source>Or after:</source>
-        <translation>Eller etter:</translation>
-    </message>
-    <message>
-        <source>Edit Rules for Code</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Eller etter:</translation>
     </message>
 </context>
 </TS>

@@ -2,7 +2,7 @@
 //
 // Edit Rivendell User/Group Permissions
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,12 +21,12 @@
 #ifndef EDIT_USER_PERMS_H
 #define EDIT_USER_PERMS_H
 
-#include <qdialog.h>
+#include <rddialog.h>
 #include <rdlistselector.h>
 
 #include <rduser.h>
 
-class EditUserPerms : public QDialog
+class EditUserPerms : public RDDialog
 {
   Q_OBJECT
  public:
@@ -45,5 +45,4 @@ class EditUserPerms : public QDialog
 };
 
 
-#endif
-
+#endif  // EDIT_USER_PERMS_H

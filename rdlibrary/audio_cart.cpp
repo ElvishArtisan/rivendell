@@ -2,7 +2,7 @@
 //
 // The audio cart editor for RDLibrary.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,31 +18,14 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qpixmap.h>
-#include <unistd.h>
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <q3listview.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <q3buttongroup.h>
 #include <qapplication.h>
+#include <qmessagebox.h>
 
-#include <rdapplication.h>
-#include <rdcut.h>
-#include <rdcddbrecord.h>
-#include <rdwavedata.h>
-#include <rd.h>
-#include <rdconf.h>
-#include <rdimport_audio.h>
 #include <rdaudio_exists.h>
+#include <rdconf.h>
 #include <rdedit_audio.h>
 #include <rdescape_string.h>
+#include <rdimport_audio.h>
 
 #include "audio_cart.h"
 #include "cdripper.h"
@@ -54,7 +37,7 @@ bool import_active=false;
 
 AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
 		     bool select_cut,bool profile_rip,QWidget *parent)
-  : QWidget(parent)
+  : RDWidget(parent)
 {
   rdcart_import_metadata=true;
   rdcart_controls=controls;
@@ -64,25 +47,15 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   rdcart_profile_rip=profile_rip;
   rdcart_modification_allowed=rda->user()->editAudio()&&cart->owner().isEmpty();
 
-//setWindowTitle("RDLibrary - "+tr("Edit Cart")+QString().sprintf(" %u",rdcart_cart->number())+" ["+
-//   rdcart_cart->title()+"]");
-
-  //
-  // Generate Fonts
-  //
-  QFont button_font=QFont("Helvetica",12,QFont::Bold);
-  button_font.setPixelSize(12);
-  QFont line_edit_font=QFont("Helvetica",12,QFont::Normal);
-  line_edit_font.setPixelSize(12);
   QColor system_button_text_color = palette().active().buttonText();
 
   //
   // Progress Dialog
   //
-  rdcart_progress_dialog=new Q3ProgressDialog(this);
+  rdcart_progress_dialog=new QProgressDialog(this);
   rdcart_progress_dialog->setLabelText(tr("Copying audio..."));
   rdcart_progress_dialog->setCancelButton(NULL);
-  rdcart_progress_dialog->setTotalSteps(10);
+  rdcart_progress_dialog->setMaximum(10);
   rdcart_progress_dialog->setMinimumDuration(1000);
 
   //
@@ -90,7 +63,7 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   //
   QPushButton *add_cut_button=new QPushButton(this);
   add_cut_button->setGeometry(10,0,80,50);
-  add_cut_button->setFont(button_font);
+  add_cut_button->setFont(buttonFont());
   add_cut_button->setText(tr("Add"));
   connect(add_cut_button,SIGNAL(clicked()),this,SLOT(addCutData()));
 
@@ -99,7 +72,7 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   //
   QPushButton *delete_cut_button=new QPushButton(this);
   delete_cut_button->setGeometry(10,60,80,50);
-  delete_cut_button->setFont(button_font);
+  delete_cut_button->setFont(buttonFont());
   delete_cut_button->setText(tr("Delete"));
   connect(delete_cut_button,SIGNAL(clicked()),this,SLOT(deleteCutData()));
 
@@ -108,7 +81,7 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   //
   QPushButton *copy_cut_button=new QPushButton(this);
   copy_cut_button->setGeometry(10,120,80,50);
-  copy_cut_button->setFont(button_font);
+  copy_cut_button->setFont(buttonFont());
   copy_cut_button->setText(tr("Copy"));
   connect(copy_cut_button,SIGNAL(clicked()),this,SLOT(copyCutData()));
 
@@ -117,7 +90,7 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   //
   paste_cut_button=new QPushButton(this);
   paste_cut_button->setGeometry(10,180,80,50);
-  paste_cut_button->setFont(button_font);
+  paste_cut_button->setFont(buttonFont());
   paste_cut_button->setText(tr("Paste"));
   connect(paste_cut_button,SIGNAL(clicked()),this,SLOT(pasteCutData()));
 
@@ -188,10 +161,10 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   //
   QPixmap *pix=new QPixmap(QSize(70,40));
   QPainter *p=new QPainter(pix);
-  QFontMetrics *m=new QFontMetrics(button_font);
+  QFontMetrics *m=new QFontMetrics(buttonFont());
   p->fillRect(0,0,70,40,palette().color(QPalette::Active,QColorGroup::Button));
   p->setPen(QColor(system_button_text_color));
-  p->setFont(button_font);
+  p->setFont(buttonFont());
   p->drawText((70-m->width(tr("Cut Info")))/2,15,tr("Cut Info"));
   p->drawLine(10,19,60,19);
   p->drawText((70-m->width(tr("Record")))/2,33,tr("Record"));
@@ -206,7 +179,7 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   //
   QPushButton *ext_editor_cut_button=new QPushButton(this);
   ext_editor_cut_button->setGeometry(550,60,80,50);
-  ext_editor_cut_button->setFont(button_font);
+  ext_editor_cut_button->setFont(buttonFont());
   ext_editor_cut_button->setText(tr("Edit\nAudio"));
   connect(ext_editor_cut_button,SIGNAL(clicked()),
 	  this,SLOT(extEditorCutData()));
@@ -222,7 +195,7 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   //
   QPushButton *edit_cut_button=new QPushButton(this);
   edit_cut_button->setGeometry(550,60+yoffset,80,50);
-  edit_cut_button->setFont(button_font);
+  edit_cut_button->setFont(buttonFont());
   edit_cut_button->setText(tr("Edit\nMarkers"));
   connect(edit_cut_button,SIGNAL(clicked()),this,SLOT(editCutData()));
 
@@ -230,10 +203,10 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   // Import Cut Button
   //
   p=new QPainter(pix);
-  m=new QFontMetrics(button_font);
+  m=new QFontMetrics(buttonFont());
   p->fillRect(0,0,70,40,palette().color(QPalette::Active,QColorGroup::Button));
   p->setPen(QColor(system_button_text_color));
-  p->setFont(button_font);
+  p->setFont(buttonFont());
   p->drawText((70-m->width(tr("Import")))/2,15,tr("Import"));
   p->drawLine(10,19,60,19);
   p->drawText((70-m->width(tr("Export")))/2,33,tr("Export"));
@@ -248,7 +221,7 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   //
   QPushButton *rip_cut_button=new QPushButton(this);
   rip_cut_button->setGeometry(550,180+yoffset,80,50);
-  rip_cut_button->setFont(button_font);
+  rip_cut_button->setFont(buttonFont());
   rip_cut_button->setText(tr("Rip CD"));
   connect(rip_cut_button,SIGNAL(clicked()),this,SLOT(ripCutData()));
 
@@ -691,7 +664,7 @@ void AudioCart::doubleClickedData(Q3ListViewItem *,const QPoint &,int)
 
 void AudioCart::copyProgressData(const QVariant &step)
 {
-  rdcart_progress_dialog->setProgress(step.toInt());
+  rdcart_progress_dialog->setValue(step.toInt());
   qApp->processEvents();
 }
 

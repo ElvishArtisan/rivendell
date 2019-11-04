@@ -2,7 +2,7 @@
 //
 // A Rivendell Voice Tracker
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,29 +21,12 @@
 #ifndef VOICE_TRACKER_H
 #define VOICE_TRACKER_H
 
-#include <qdialog.h>
-#include <q3listview.h>
-#include <qpixmap.h>
-#include <qradiobutton.h>
-#include <qsqldatabase.h>
-#include <qpushbutton.h>
-#include <qlineedit.h>
-#include <qlabel.h>
-#include <qpixmap.h>
-#include <qtimer.h>
-#include <qcursor.h>
-#include <q3popupmenu.h>
-
-#include <rdcart.h>
-#include <rdcut.h>
+#include <rddialog.h>
 #include <rdevent_player.h>
 #include <rdgroup.h>
 #include <rdlog.h>
-#include <rdlog_event.h>
 #include <rdloglock.h>
-#include <rdnotification.h>
 #include <rdplay_deck.h>
-#include <rdsettings.h>
 #include <rdstereometer.h>
 #include <rdtransportbutton.h>
 #include <rdwavepainter.h>
@@ -75,7 +58,7 @@
 #define TRACKER_SCROLL_SCALE 2
 #define TRACKER_FORCED_SEGUE 1000
 
-class VoiceTracker : public QDialog
+class VoiceTracker : public RDDialog
 {
   Q_OBJECT
  public:

@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell TTY Configuration
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,18 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <q3textedit.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <q3buttongroup.h>
-
 #include <rdapplication.h>
 #include <rddb.h>
-#include <rdmacro.h>
 #include <rdstation.h>
 #include <rdtextvalidator.h>
 
@@ -37,7 +27,7 @@
 #include "globals.h"
 
 EditTtys::EditTtys(QString station,QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   setModal(true);
 
@@ -56,12 +46,6 @@ EditTtys::EditTtys(QString station,QWidget *parent)
   setWindowTitle("RDAdmin- "+tr("Edit Serial Ports"));
 
   //
-  // Create Fonts
-  //
-  QFont font=QFont("Helvetica",12,QFont::Bold);
-  font.setPixelSize(12);
-
-  //
   // Text Validator
   //
   RDTextValidator *validator=new RDTextValidator(this);
@@ -74,9 +58,9 @@ EditTtys::EditTtys(QString station,QWidget *parent)
   edit_port_box->setInsertionPolicy(QComboBox::NoInsertion);
   connect(edit_port_box,SIGNAL(activated(int)),this,SLOT(idSelectedData()));
   QLabel *label=new QLabel(edit_port_box,tr("Port ID:"),this);
-  label->setGeometry(10,14,60,22);
-  label->setFont(font);
-  label->setAlignment(Qt::AlignRight);
+  label->setGeometry(10,10,60,24);
+  label->setFont(labelFont());
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Enable Button
@@ -86,9 +70,9 @@ EditTtys::EditTtys(QString station,QWidget *parent)
   connect(edit_enable_button,SIGNAL(stateChanged(int)),
 	  this,SLOT(enableButtonData(int)));
   label=new QLabel(edit_enable_button,tr("Enabled"),this);
-  label->setGeometry(200,14,60,22);
-  label->setFont(font);
-  label->setAlignment(Qt::AlignRight);
+  label->setGeometry(200,10,60,22);
+  label->setFont(labelFont());
+  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // The TTY Port
@@ -97,9 +81,9 @@ EditTtys::EditTtys(QString station,QWidget *parent)
   edit_port_edit->setGeometry(145,54,100,20);
   edit_port_edit->setValidator(validator);
   edit_port_label=new QLabel(edit_port_edit,tr("TTY Device:"),this);
-  edit_port_label->setGeometry(20,56,120,22);
-  edit_port_label->setFont(font);
-  edit_port_label->setAlignment(Qt::AlignRight);
+  edit_port_label->setGeometry(20,54,120,20);
+  edit_port_label->setFont(labelFont());
+  edit_port_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   
   //
   // Baudrate Selector
@@ -108,9 +92,9 @@ EditTtys::EditTtys(QString station,QWidget *parent)
   edit_baudrate_box->setGeometry(145,80,90,24);
   edit_baudrate_box->setInsertionPolicy(QComboBox::NoInsertion);
   edit_baudrate_label=new QLabel(edit_baudrate_box,tr("Baud Rate:"),this);
-  edit_baudrate_label->setGeometry(20,84,120,22);
-  edit_baudrate_label->setFont(font);
-  edit_baudrate_label->setAlignment(Qt::AlignRight);
+  edit_baudrate_label->setGeometry(20,80,120,24);
+  edit_baudrate_label->setFont(labelFont());
+  edit_baudrate_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Parity Selector
@@ -119,9 +103,9 @@ EditTtys::EditTtys(QString station,QWidget *parent)
   edit_parity_box->setGeometry(145,108,90,24); 
   edit_parity_box->setInsertionPolicy(QComboBox::NoInsertion);
   edit_parity_label=new QLabel(edit_parity_box,tr("Parity:"),this);
-  edit_parity_label->setGeometry(20,110,120,22);
-  edit_parity_label->setFont(font);
-  edit_parity_label->setAlignment(Qt::AlignRight);
+  edit_parity_label->setGeometry(20,108,120,24);
+  edit_parity_label->setFont(labelFont());
+  edit_parity_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Data Bits Selector
@@ -130,9 +114,9 @@ EditTtys::EditTtys(QString station,QWidget *parent)
   edit_databits_box->setGeometry(145,136,60,24);
   edit_databits_box->setInsertionPolicy(QComboBox::NoInsertion);
   edit_databits_label=new QLabel(edit_databits_box,tr("Data Bits:"),this);
-  edit_databits_label->setGeometry(20,138,120,22);
-  edit_databits_label->setFont(font);
-  edit_databits_label->setAlignment(Qt::AlignRight);
+  edit_databits_label->setGeometry(20,136,120,24);
+  edit_databits_label->setFont(labelFont());
+  edit_databits_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Stop Bits Selector
@@ -141,9 +125,9 @@ EditTtys::EditTtys(QString station,QWidget *parent)
   edit_stopbits_box->setGeometry(145,164,60,24);
   edit_stopbits_box->setInsertionPolicy(QComboBox::NoInsertion);
   edit_stopbits_label=new QLabel(edit_stopbits_box,tr("Stop Bits:"),this);
-  edit_stopbits_label->setGeometry(20,166,120,22);
-  edit_stopbits_label->setFont(font);
-  edit_stopbits_label->setAlignment(Qt::AlignRight);
+  edit_stopbits_label->setGeometry(20,164,120,24);
+  edit_stopbits_label->setFont(labelFont());
+  edit_stopbits_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Termination Character Selector
@@ -153,16 +137,16 @@ EditTtys::EditTtys(QString station,QWidget *parent)
   edit_termination_box->setInsertionPolicy(QComboBox::NoInsertion);
   edit_termination_label=
     new QLabel(edit_termination_box,tr("Terminator:"),this);
-  edit_termination_label->setGeometry(20,194,120,22);
-  edit_termination_label->setFont(font);
-  edit_termination_label->setAlignment(Qt::AlignRight);
+  edit_termination_label->setGeometry(20,192,120,24);
+  edit_termination_label->setFont(labelFont());
+  edit_termination_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   //  Close Button
   //
   QPushButton *close_button=new QPushButton(this);
   close_button->setGeometry(210,230,80,50);
-  close_button->setFont(font);
+  close_button->setFont(buttonFont());
   close_button->setText(tr("&Close"));
   connect(close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 

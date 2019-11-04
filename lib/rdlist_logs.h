@@ -2,7 +2,7 @@
 //
 // Select a Rivendell Log
 //
-//   (C) Copyright 2007,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2007-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 // The RDListLogs class creates a basic dialog that displays a list of logs
 // (log name, description, and service) and allows the user to select one.  If
@@ -26,16 +26,13 @@
 #ifndef RDLIST_LOGS_H
 #define RDLIST_LOGS_H
 
-#include <qdialog.h>
 #include <q3listview.h>
 #include <qpushbutton.h>
-//Added by qt3to4:
-#include <QResizeEvent>
-#include <QCloseEvent>
 
+#include <rddialog.h>
 #include <rdlogfilter.h>
 
-class RDListLogs : public QDialog
+class RDListLogs : public RDDialog
 {
   Q_OBJECT
 

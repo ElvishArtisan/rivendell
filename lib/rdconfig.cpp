@@ -153,6 +153,30 @@ QString RDConfig::audioStoreXportHostname() const
 }
 
 
+QString RDConfig::fontFamily() const
+{
+  return conf_font_family;
+}
+
+
+int RDConfig::fontButtonSize() const
+{
+  return conf_font_button_size;
+}
+
+
+int RDConfig::fontLabelSize() const
+{
+  return conf_font_label_size;
+}
+
+
+int RDConfig::fontDefaultSize() const
+{
+  return conf_font_default_size;
+}
+
+
 QString RDConfig::mysqlHostname() const
 {
   return conf_mysql_hostname;
@@ -417,6 +441,13 @@ int RDConfig::transcodingDelay() const
   return conf_transcoding_delay;
 }
 
+
+int RDConfig::serviceTimeout() const
+{
+  return conf_service_timeout;
+}
+
+
 // Don't use this method in application code, use RDTempDirectory()
 QString RDConfig::tempDirectory()
 {
@@ -502,6 +533,11 @@ bool RDConfig::load()
   conf_audio_store_xport_hostname=
     profile->stringValue("AudioStore","XportHostname","localhost");
 
+  conf_font_family=profile->stringValue("Fonts","Family");
+  conf_font_button_size=profile->intValue("Fonts","ButtonSize",-1);
+  conf_font_label_size=profile->intValue("Fonts","LabelSize",-1);
+  conf_font_default_size=profile->intValue("Fonts","DefaultSize",-1);
+
   conf_provisioning_create_host=
     profile->boolValue("Provisioning","CreateHost");
   conf_provisioning_host_template=
@@ -583,6 +619,8 @@ bool RDConfig::load()
   conf_use_realtime=profile->boolValue("Tuning","UseRealtime",false);
   conf_realtime_priority=profile->intValue("Tuning","RealtimePriority",9);
   conf_transcoding_delay=profile->intValue("Tuning","TranscodingDelay");
+  conf_service_timeout=
+    profile->intValue("Tuning","ServiceTimeout",RD_DEFAULT_SERVICE_TIMEOUT);
   conf_temp_directory=profile->stringValue("Tuning","TempDirectory","");
   conf_sas_station=profile->stringValue("SASFilter","Station","");
   conf_sas_matrix=profile->intValue("SASFilter","Matrix",0);
@@ -666,6 +704,10 @@ void RDConfig::clear()
   conf_audio_store_mount_type="";
   conf_audio_store_mount_options=RD_DEFAULT_AUDIO_STORE_MOUNT_OPTIONS;
   conf_audio_store_xport_hostname="";
+  conf_font_family="";
+  conf_font_button_size=-1;
+  conf_font_label_size=-1;
+  conf_font_default_size=-1;
   conf_audio_store_cae_hostname="";
   conf_jack_ports[0].clear();
   conf_jack_ports[1].clear();
@@ -681,6 +723,7 @@ void RDConfig::clear()
   conf_use_realtime=false;
   conf_realtime_priority=9;
   conf_transcoding_delay=0;
+  conf_service_timeout=RD_DEFAULT_SERVICE_TIMEOUT;
   conf_temp_directory="";
   conf_sas_station="";
   conf_sas_matrix=-1;

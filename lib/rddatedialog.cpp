@@ -1,8 +1,8 @@
 // rddatedialog.cpp
 //
-// A Qt-based application for testing General Purpose Outputs (GPO).
+// A Dialog Box for using an RDDatePicker widget.
 //
-//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -37,14 +37,9 @@
 // Global Classes
 //
 RDDateDialog::RDDateDialog(int low_year,int high_year,QWidget *parent)
-  :QDialog(parent,"",true)
+  : RDDialog(parent)
 {
-  QFont font;
-
-  font=QFont("Helvetica",12,QFont::Bold);
-  font.setPixelSize(12);
-
-  setCaption(tr("Select Date"));
+  setWindowTitle(tr("Select Date"));
 
   //
   // Datepicker
@@ -59,7 +54,7 @@ RDDateDialog::RDDateDialog(int low_year,int high_year,QWidget *parent)
   //
   QPushButton *button=new QPushButton(this,"ok_button");
   button->setGeometry(sizeHint().width()-130,sizeHint().height()-40,50,30);
-  button->setFont(font);
+  button->setFont(buttonFont());
   button->setText(tr("&OK"));
   connect(button,SIGNAL(clicked()),this,SLOT(okData()));
 
@@ -68,14 +63,9 @@ RDDateDialog::RDDateDialog(int low_year,int high_year,QWidget *parent)
   //
   button=new QPushButton(this,"cancel_button");
   button->setGeometry(sizeHint().width()-65,sizeHint().height()-40,55,30);
-  button->setFont(font);
+  button->setFont(buttonFont());
   button->setText(tr("&Cancel"));
   connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
-}
-
-
-RDDateDialog::~RDDateDialog()
-{
 }
 
 

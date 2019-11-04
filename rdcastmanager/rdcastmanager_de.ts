@@ -277,6 +277,10 @@ Podcast trotzdem löschen?</translation>
         <source>Continue deleting cast?</source>
         <translation>Löschen des Podcasts fortsetzen?</translation>
     </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MainWidget</name>

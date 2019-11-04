@@ -402,6 +402,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/rdmetadata.1.gz
 %{_mandir}/man1/rdrender.1.gz
 %{_mandir}/man1/rmlsend.1.gz
+%{_mandir}/man1/rdsoftkeys.1.gz
+%{_mandir}/man5/rd.conf.5.gz
 %{_mandir}/man8/rddbmgr.8.gz
 %{_mandir}/man8/rdmarkerset.8.gz
 %{_mandir}/man8/rdservice.8.gz

@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Group
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,7 +20,6 @@
 
 #include <math.h>
 
-#include <qdialog.h>
 #include <qstring.h>
 #include <qpushbutton.h>
 #include <q3listbox.h>
@@ -41,7 +40,7 @@
 #include "edit_group.h"
 
 EditGroup::EditGroup(QString group,QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   setModal(true);
 
@@ -61,12 +60,6 @@ EditGroup::EditGroup(QString group,QWidget *parent)
   setWindowTitle("RDAdmin - "+tr("Group: ")+group);
 
   //
-  // Create Fonts
-  //
-  QFont font=QFont("Helvetica",12,QFont::Bold);
-  font.setPixelSize(12);
-
-  //
   // Text Validator
   //
   RDTextValidator *validator=new RDTextValidator(this);
@@ -78,7 +71,7 @@ EditGroup::EditGroup(QString group,QWidget *parent)
   group_name_edit->setMaxLength(10);
   group_name_edit->setReadOnly(true);
   group_name_label=new QLabel(group_name_edit,tr("&Group Name:"),this);
-  group_name_label->setFont(font);
+  group_name_label->setFont(labelFont());
   group_name_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -89,7 +82,7 @@ EditGroup::EditGroup(QString group,QWidget *parent)
   group_description_edit->setValidator(validator);
   group_description_label=
     new QLabel(group_description_edit,tr("Group &Description:"),this);
-  group_description_label->setFont(font);
+  group_description_label->setFont(labelFont());
   group_description_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -100,7 +93,7 @@ EditGroup::EditGroup(QString group,QWidget *parent)
   group_title_edit->setValidator(validator);
   group_title_label=
     new QLabel(group_title_edit,tr("Default Import &Title:"),this);
-  group_title_label->setFont(font);
+  group_title_label->setFont(labelFont());
   group_title_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -111,7 +104,7 @@ EditGroup::EditGroup(QString group,QWidget *parent)
   group_carttype_box->insertItem(tr("Macro"));
   group_carttype_label=
     new QLabel(group_carttype_box,tr("Default Cart &Type:"),this);
-  group_carttype_label->setFont(font);
+  group_carttype_label->setFont(labelFont());
   group_carttype_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -122,13 +115,13 @@ EditGroup::EditGroup(QString group,QWidget *parent)
   group_lowcart_box->setSpecialValueText(tr("None"));
   group_cartrange_label=
     new QLabel(group_lowcart_box,tr("Default Cart Number:"),this);
-  group_cartrange_label->setFont(font);
+  group_cartrange_label->setFont(labelFont());
   group_cartrange_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   group_highcart_box=new QSpinBox(this);
   group_highcart_box->setRange(1,999999);
   group_highcart_label=
     new QLabel(group_highcart_box,tr("to"),this);
-  group_highcart_label->setFont(font);
+  group_highcart_label->setFont(labelFont());
   group_highcart_label->setAlignment(Qt::AlignCenter);
   connect(group_lowcart_box,SIGNAL(valueChanged(int)),
 	  this,SLOT(lowCartChangedData(int)));
@@ -139,7 +132,7 @@ EditGroup::EditGroup(QString group,QWidget *parent)
   group_enforcerange_box=new QCheckBox(this);
   group_enforcerange_label=
     new QLabel(group_enforcerange_box,tr("Enforce Cart Range"),this);
-  group_enforcerange_label->setFont(font);
+  group_enforcerange_label->setFont(labelFont());
   group_enforcerange_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
@@ -149,16 +142,17 @@ EditGroup::EditGroup(QString group,QWidget *parent)
   group_traffic_label=
     new QLabel(group_traffic_check,tr("Include this group in Traffic reports"),
 	       this);
-  group_traffic_label->setFont(font);
+  group_traffic_label->setFont(labelFont());
   group_traffic_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Music Report Checkbox
   //
   group_music_check=new QCheckBox(this);
-  group_music_label=new QLabel(group_music_check,tr("Include this group in Music reports"),
-		   this);
-  group_music_label->setFont(font);
+  group_music_label=
+    new QLabel(group_music_check,tr("Include this group in Music reports"),
+	       this);
+  group_music_label->setFont(labelFont());
   group_music_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
@@ -171,11 +165,11 @@ EditGroup::EditGroup(QString group,QWidget *parent)
   group_cutlife_spin->setRange(0,999);
   group_cutlife_label=
     new QLabel(group_cutlife_check,tr("Set End Date/Time to"),this);
-  group_cutlife_label->setFont(font);
+  group_cutlife_label->setFont(labelFont());
   group_cutlife_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   group_cutlife_unit=
     new QLabel(group_cutlife_check,tr("days after cut creation"),this);
-  group_cutlife_unit->setFont(font);
+  group_cutlife_unit->setFont(labelFont());
   group_cutlife_unit->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
@@ -188,17 +182,17 @@ EditGroup::EditGroup(QString group,QWidget *parent)
   group_shelflife_spin->setRange(0,30);
   group_shelflife_label=
     new QLabel(group_shelflife_check,tr("Purge expired cuts after"),this);
-  group_shelflife_label->setFont(font);
+  group_shelflife_label->setFont(labelFont());
   group_shelflife_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   group_shelflife_unit=
     new QLabel(group_shelflife_check,tr("days"),this);
-  group_shelflife_unit->setFont(font);
+  group_shelflife_unit->setFont(labelFont());
   group_shelflife_unit->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   group_delete_carts_check=new QCheckBox(this);
   group_delete_carts_label=
     new QLabel(group_delete_carts_check,tr("Delete cart if empty"),this);
-  group_delete_carts_label->setFont(font);
+  group_delete_carts_label->setFont(labelFont());
   group_delete_carts_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
@@ -207,7 +201,7 @@ EditGroup::EditGroup(QString group,QWidget *parent)
   group_nownext_check=new QCheckBox(this);
   group_nownext_label=
     new QLabel(group_nownext_check,tr("Transmit Now && Next data"),this);
-  group_nownext_label->setFont(font);
+  group_nownext_label->setFont(labelFont());
   group_nownext_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
@@ -219,7 +213,7 @@ EditGroup::EditGroup(QString group,QWidget *parent)
   //  Color Button
   //
   group_color_button=new QPushButton(this);
-  group_color_button->setFont(font);
+  group_color_button->setFont(buttonFont());
   group_color_button->setText(tr("C&olor"));
   connect(group_color_button,SIGNAL(clicked()),this,SLOT(colorData()));
 
@@ -228,7 +222,7 @@ EditGroup::EditGroup(QString group,QWidget *parent)
   //
   group_ok_button=new QPushButton(this);
   group_ok_button->setDefault(true);
-  group_ok_button->setFont(font);
+  group_ok_button->setFont(buttonFont());
   group_ok_button->setText(tr("&OK"));
   connect(group_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
@@ -236,7 +230,7 @@ EditGroup::EditGroup(QString group,QWidget *parent)
   //  Cancel Button
   //
   group_cancel_button=new QPushButton(this);
-  group_cancel_button->setFont(font);
+  group_cancel_button->setFont(buttonFont());
   group_cancel_button->setText(tr("&Cancel"));
   connect(group_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 

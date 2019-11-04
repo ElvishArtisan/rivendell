@@ -1,8 +1,8 @@
 //   rdpushbutton.cpp
 //
-//   An flashing button widget.
+//   A flashing button widget.
 //
-//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -30,24 +30,54 @@
 #include <rdpushbutton.h>
 
 
-RDPushButton::RDPushButton(QWidget *parent=0)
-  :  QPushButton(parent)
+RDPushButton::RDPushButton(QWidget *parent=0,RDConfig *c)
+  : QPushButton(parent), RDFontEngine(font(),c)
 {
   Init();
 }
 
 
-RDPushButton::RDPushButton(const QString &text,QWidget *parent)
-  : QPushButton(text,parent)
+RDPushButton::RDPushButton(const QString &text,QWidget *parent,RDConfig *c)
+  : QPushButton(text,parent), RDFontEngine(font(),c)
 {
+  plain_text=text;
   Init();
 }
 
 RDPushButton::RDPushButton(const QIcon &icon,const QString &text,
-			   QWidget *parent)
-  : QPushButton(text,parent)
+			   QWidget *parent,RDConfig *c)
+  : QPushButton(text,parent), RDFontEngine(font(),c)
 {
+  plain_text=text;
   Init();
+}
+
+
+QString RDPushButton::text() const
+{
+  return plain_text;
+}
+
+
+void RDPushButton::setText(const QString &str)
+{
+  plain_text=str;
+  ComposeText();
+}
+
+
+bool RDPushButton::wordWrap() const
+{
+  return word_wrap_enabled;
+}
+
+
+void RDPushButton::setWordWrap(bool state)
+{
+  if(word_wrap_enabled!=state) {
+    word_wrap_enabled=state;
+    ComposeText();
+  }
 }
 
 
@@ -267,6 +297,52 @@ void RDPushButton::flashOff()
 }
 
 
+void RDPushButton::ComposeText()
+{
+  int lines;
+  QStringList f0=plain_text.split(" ",QString::SkipEmptyParts);
+  QFont font(buttonFont().family(),(double)size().height()/2.0,QFont::Bold);
+  QString accum;
+  QString text;
+  int height;
+  bool singleton;
+  int w=90*size().width()/100;
+  int h=90*size().height()/100;
+
+  if(word_wrap_enabled) {
+    do {
+      singleton=false;
+      accum="";
+      text="";
+      font=QFont(font.family(),font.pointSize()-2,QFont::Bold);
+      QFontMetrics fm(font);
+      lines=1;
+      for(int i=0;i<f0.size();i++) {
+	if((fm.width(accum+f0.at(i)+" "))>w) {
+	  if(fm.width(f0.at(i))>w) {
+	    singleton=true;
+	    break;
+	  }
+	  lines++;
+	  accum=f0.at(i)+" ";
+	  text+="\n";
+	}
+	else {
+	  accum+=f0.at(i)+" ";
+	}
+	text+=f0.at(i)+" ";
+      }
+      height=lines*fm.lineSpacing();
+    } while(singleton||(((height>h))&&(font.pointSize()>6)));
+    QPushButton::setText(text.trimmed());
+    QPushButton::setFont(font);
+  }
+  else {
+    QPushButton::setText(plain_text);
+  }
+}
+
+
 void RDPushButton::Init()
 {
   flash_timer=new QTimer();
@@ -277,6 +353,7 @@ void RDPushButton::Init()
   flash_clock_source=RDPushButton::InternalClock;
   flash_period=RDPUSHBUTTON_DEFAULT_FLASH_PERIOD;
   setFlashColor(RDPUSHBUTTON_DEFAULT_FLASH_COLOR);
+  word_wrap_enabled=false;
   button_id=-1;
 }
 

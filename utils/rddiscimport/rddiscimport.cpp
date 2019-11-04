@@ -2,7 +2,7 @@
 //
 // A Qt-based application for importing TM Century GoldDisc CDs
 //
-//   (C) Copyright 2013,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2013-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,39 +18,21 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <errno.h>
+#include <q3filedialog.h>
 
 #include <qapplication.h>
-#include <qwindowsstyle.h>
-#include <qtextcodec.h>
-#include <q3filedialog.h>
 #include <qmessagebox.h>
-#include <qstringlist.h>
-#include <q3filedialog.h>
-//Added by qt3to4:
-#include <QTranslator>
-#include <QLabel>
-#include <QResizeEvent>
+#include <qtranslator.h>
 
-#include <rdapplication.h>
-#include <rdaudioimport.h>
-#include <rdcart.h>
 #include <rdconf.h>
-#include <rdcut.h>
-#include <rddatedecode.h>
-#include <rddatedialog.h>
-#include <rdescape_string.h>
-#include <rdgroup.h>
 #include <rdlistviewitem.h>
 #include <rdprofile.h>
 #include <rdwavedata.h>
 
 #include "rddiscimport.h"
 
-MainWidget::MainWidget(QWidget *parent)
-  : QWidget(parent)
+MainWidget::MainWidget(RDConfig *c,QWidget *parent)
+  : RDWidget(c,parent)
 {
   QString err_msg;
 
@@ -81,8 +63,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Set Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
 
   SetCaption();
 
@@ -90,16 +71,6 @@ MainWidget::MainWidget(QWidget *parent)
   // Get Temporary File
   //
   dg_tempfile=RDTempFile();
-
-  //
-  // Fonts
-  //
-  QFont main_font("helvetica",12,QFont::Normal);
-  main_font.setPixelSize(12);
-  setFont(main_font);
-  QFont label_font("helvetica",12,QFont::Bold);
-  label_font.setPixelSize(12);
-  setFont(main_font);
 
   //
   // Configuration Elements
@@ -131,10 +102,10 @@ MainWidget::MainWidget(QWidget *parent)
   //
   dg_indexfile_edit=new QLineEdit(this);
   dg_indexfile_label=new QLabel(dg_indexfile_edit,tr("Index File")+":",this);
-  dg_indexfile_label->setFont(label_font);
+  dg_indexfile_label->setFont(labelFont());
   dg_indexfile_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   dg_indexfile_button=new QPushButton(tr("Select"),this);
-  dg_indexfile_button->setFont(main_font);
+  dg_indexfile_button->setFont(buttonFont());
   connect(dg_indexfile_button,SIGNAL(clicked()),
 	  this,SLOT(indexFileSelectedData()));
 
@@ -143,7 +114,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   dg_group_box=new QComboBox(this);
   dg_group_label=new QLabel(dg_group_box,tr("Destination Group")+":",this);
-  dg_group_label->setFont(label_font);
+  dg_group_label->setFont(labelFont());
   dg_group_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   connect(dg_group_box,SIGNAL(activated(int)),
 	  this,SLOT(groupActivatedData(int)));
@@ -153,7 +124,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   dg_userdef_edit=new QLineEdit(this);
   dg_userdef_label=new QLabel(dg_userdef_edit,tr("User Defined")+":",this);
-  dg_userdef_label->setFont(label_font);
+  dg_userdef_label->setFont(labelFont());
   dg_userdef_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -185,13 +156,13 @@ MainWidget::MainWidget(QWidget *parent)
   // Progress Bars
   //
   dg_disc_label=new QLabel(tr("Disk Progress"),this);
-  dg_disc_label->setFont(label_font);
+  dg_disc_label->setFont(labelFont());
   dg_disc_label->setDisabled(true);
   dg_disc_bar=new Q3ProgressBar(this);
   dg_disc_bar->setDisabled(true);
 
   dg_track_label=new QLabel(tr("Track Progress"),this);
-  dg_track_label->setFont(label_font);
+  dg_track_label->setFont(labelFont());
   dg_track_label->setDisabled(true);
   dg_track_bar=new Q3ProgressBar(this);
   dg_track_bar->setTotalSteps(dg_ripper->totalSteps()+1);
@@ -204,7 +175,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   dg_discid_edit=new QLineEdit(this);
   dg_discid_label=new QLabel(dg_discid_edit,tr("Disc ID")+":",this);
-  dg_discid_label->setFont(label_font);
+  dg_discid_label->setFont(labelFont());
   dg_discid_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   connect(dg_discid_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(discIdChangedData(const QString &)));
@@ -213,7 +184,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Rip Button
   //
   dg_rip_button=new QPushButton(tr("Rip Disc"),this);
-  dg_rip_button->setFont(label_font);
+  dg_rip_button->setFont(buttonFont());
   connect(dg_rip_button,SIGNAL(clicked()),this,SLOT(ripData()));
 
   //
@@ -224,15 +195,15 @@ MainWidget::MainWidget(QWidget *parent)
   dg_channels_box->insertItem("2");
   dg_channels_box->setCurrentItem(rda->libraryConf()->defaultChannels()-1);
   dg_channels_label=new QLabel(dg_channels_box,tr("Channels")+":",this);
-  dg_channels_label->setFont(label_font);
+  dg_channels_label->setFont(labelFont());
   dg_channels_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Autotrim Check Box
   //
   dg_autotrim_box=new QCheckBox(tr("Autotrim"),this);
+  dg_autotrim_box->setFont(labelFont());
   dg_autotrim_box->setChecked(true);
-  dg_autotrim_box->setFont(label_font);
   dg_autotrim_box->setChecked(rda->libraryConf()->trimThreshold()!=0);
   connect(dg_autotrim_box,SIGNAL(toggled(bool)),
 	  this,SLOT(autotrimCheckData(bool)));
@@ -244,18 +215,18 @@ MainWidget::MainWidget(QWidget *parent)
   dg_autotrim_spin->setRange(-99,0);
   dg_autotrim_spin->setValue(rda->libraryConf()->trimThreshold()/100);
   dg_autotrim_label=new QLabel(dg_autotrim_spin,tr("Level")+":",this);
-  dg_autotrim_label->setFont(label_font);
+  dg_autotrim_label->setFont(labelFont());
   dg_autotrim_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   dg_autotrim_unit=new QLabel(tr("dBFS"),this);
-  dg_autotrim_unit->setFont(label_font);
+  dg_autotrim_unit->setFont(labelFont());
   dg_autotrim_unit->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Normalize Check Box
   //
   dg_normalize_box=new QCheckBox(tr("Normalize"),this);
+  dg_normalize_box->setFont(labelFont());
   dg_normalize_box->setChecked(true);
-  dg_normalize_box->setFont(label_font);
   dg_normalize_box->setChecked(rda->libraryConf()->ripperLevel()!=0);
   connect(dg_normalize_box,SIGNAL(toggled(bool)),
 	  this,SLOT(normalizeCheckData(bool)));
@@ -267,10 +238,10 @@ MainWidget::MainWidget(QWidget *parent)
   dg_normalize_spin->setRange(-30,0);
   dg_normalize_spin->setValue(rda->libraryConf()->ripperLevel()/100);
   dg_normalize_label=new QLabel(dg_normalize_spin,tr("Level:"),this);
-  dg_normalize_label->setFont(label_font);
+  dg_normalize_label->setFont(labelFont());
   dg_normalize_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   dg_normalize_unit=new QLabel(tr("dBFS"),this);
-  dg_normalize_unit->setFont(label_font);
+  dg_normalize_unit->setFont(labelFont());
   dg_normalize_unit->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
@@ -283,7 +254,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Close Button
   //
   dg_close_button=new QPushButton(tr("Close"),this);
-  dg_close_button->setFont(label_font);
+  dg_close_button->setFont(buttonFont());
   connect(dg_close_button,SIGNAL(clicked()),this,SLOT(quitMainWidget()));
 
   LoadConfig();
@@ -738,7 +709,9 @@ int main(int argc,char *argv[])
   //
   // Start Event Loop
   //
-  MainWidget *w=new MainWidget();
+  RDConfig *config=new RDConfig();
+  config->load();
+  MainWidget *w=new MainWidget(config);
   a.setMainWidget(w);
   w->setGeometry(QRect(QPoint(0,0),w->sizeHint()));
   w->show();

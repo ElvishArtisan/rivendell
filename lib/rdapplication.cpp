@@ -341,40 +341,50 @@ void RDApplication::userChangedData()
  bool RDApplication::CheckService(QString *err_msg)
 {
   bool ret=false;
-  QStringList args;
-  QProcess *proc=new QProcess(this);
+  int trial=config()->serviceTimeout();
 
-  args.push_back("--property");
-  args.push_back("ActiveState");
-  args.push_back("show");
-  args.push_back("rivendell");
-  proc->start("systemctl",args);
-  proc->waitForFinished();
-  if(proc->exitStatus()!=QProcess::NormalExit) {
-    *err_msg=tr("systemctl(1) crashed.");
+  if(trial<=0) {
+    trial=1;
   }
-  else {
-    if(proc->exitCode()!=0) {
-      *err_msg=tr("systemctl(1) returned exit code")+
-	QString().sprintf(" %d:\n",proc->exitCode())+
-	proc->readAllStandardError();
+  while((!ret)&&(trial>0)) {
+    QStringList args;
+    QProcess *proc=new QProcess(this);
+
+    args.push_back("--property");
+    args.push_back("ActiveState");
+    args.push_back("show");
+    args.push_back("rivendell");
+    proc->start("systemctl",args);
+    proc->waitForFinished();
+    if(proc->exitStatus()!=QProcess::NormalExit) {
+      *err_msg=tr("systemctl(1) crashed.");
     }
     else {
-      *err_msg=tr("Rivendell service is not active.");
-      QStringList f0=QString(proc->readAllStandardOutput()).
-	split("\n",QString::SkipEmptyParts);
-      for(int i=0;i<f0.size();i++) {
-	QStringList f1=f0.at(i).trimmed().split("=");
-	if((f1.size()==2)&&(f1.at(0)=="ActiveState")) {
-	  ret=f1.at(1).toLower()=="active";
-	  if(ret) {
-	    *err_msg=tr("OK");
+      if(proc->exitCode()!=0) {
+	*err_msg=tr("systemctl(1) returned exit code")+
+	  QString().sprintf(" %d:\n",proc->exitCode())+
+	  proc->readAllStandardError();
+      }
+      else {
+	*err_msg=tr("Rivendell service is not active.");
+	QStringList f0=QString(proc->readAllStandardOutput()).
+	  split("\n",QString::SkipEmptyParts);
+	for(int i=0;i<f0.size();i++) {
+	  QStringList f1=f0.at(i).trimmed().split("=");
+	  if((f1.size()==2)&&(f1.at(0)=="ActiveState")) {
+	    ret=f1.at(1).toLower()=="active";
+	    if(ret) {
+	      *err_msg=tr("OK");
+	    }
 	  }
 	}
       }
     }
+    delete proc;
+
+    trial--;
+    sleep(1);
   }
-  delete proc;
 
   return ret;
 }

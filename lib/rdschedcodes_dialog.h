@@ -2,7 +2,7 @@
 //
 // Scheduler code editor dialog
 //
-//  (C) Copyright 2014,2016 Fred Gleason <fredg@paravelsystems.com>
+//  (C) Copyright 2014-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   Based on original code by Stefan Gabriel <stg@st-gabriel.de>
 //
@@ -23,18 +23,14 @@
 #ifndef RDSCHEDCODE_DIALOG_H
 #define RDSCHEDCODE_DIALOG_H
 
-#include <qdialog.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
 #include <qstringlist.h>
-//Added by qt3to4:
-#include <QPaintEvent>
-#include <QResizeEvent>
-#include <QCloseEvent>
 
+#include <rddialog.h>
 #include <rdlistselector.h>
 
-class RDSchedCodesDialog : public QDialog
+class RDSchedCodesDialog : public RDDialog
 {
   Q_OBJECT
  public:

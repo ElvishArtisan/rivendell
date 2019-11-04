@@ -2,7 +2,7 @@
 //
 // Audio File Importation Dialog for Rivendell.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -48,7 +48,7 @@ RDImportAudio::RDImportAudio(QString cutname,QString *path,
 			     RDSettings *settings,bool *import_metadata,
 			     RDWaveData *wavedata,RDCut *clipboard,
 			     bool *running,QWidget *parent) 
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   import_default_settings=settings;
   import_path=path;
@@ -62,25 +62,13 @@ RDImportAudio::RDImportAudio(QString cutname,QString *path,
   import_import_conv=NULL;
   import_export_conv=NULL;
 
-  setCaption(tr("Import/Export Audio File"));
+  setWindowTitle(tr("Import/Export Audio File"));
 
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
-
-  //
-  // Generate Fonts
-  //
-  QFont button_font=QFont("Helvetica",12,QFont::Bold);
-  button_font.setPixelSize(12);
-  QFont label_font=QFont("Helvetica",12,QFont::Bold);
-  label_font.setPixelSize(12);
-  QFont mode_font=QFont("Helvetica",14,QFont::Bold);
-  mode_font.setPixelSize(14);
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   //
   // Mode Group
@@ -96,7 +84,7 @@ RDImportAudio::RDImportAudio(QString cutname,QString *path,
   import_importmode_button=new QRadioButton(tr("Import File"), this);
   import_mode_group->insert(import_importmode_button);
   import_importmode_button->setGeometry(10,10,sizeHint().width()-40,15);
-  import_importmode_button->setFont(mode_font);
+  import_importmode_button->setFont(sectionLabelFont());
   import_importmode_button->setChecked(true);
 
   //
@@ -109,7 +97,7 @@ RDImportAudio::RDImportAudio(QString cutname,QString *path,
   import_in_filename_label=
     new QLabel(import_in_filename_edit,tr("Filename:"),this);
   import_in_filename_label->setGeometry(10,30,70,20);
-  import_in_filename_label->setFont(label_font);
+  import_in_filename_label->setFont(labelFont());
   import_in_filename_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
 
   //
@@ -126,7 +114,7 @@ RDImportAudio::RDImportAudio(QString cutname,QString *path,
   import_in_metadata_box=new QCheckBox(tr("Import file metadata"),this);
   import_in_metadata_box->setGeometry(95,56,160,15);
   import_in_metadata_box->setChecked(*import_import_metadata);
-  import_in_metadata_box->setFont(label_font);
+  import_in_metadata_box->setFont(labelFont());
 
   //
   // Input Channels
@@ -136,7 +124,7 @@ RDImportAudio::RDImportAudio(QString cutname,QString *path,
   import_channels_label=
     new QLabel(import_channels_box,tr("Channels:"),this);
   import_channels_label->setGeometry(230,54,75,20);
-  import_channels_label->setFont(label_font);
+  import_channels_label->setFont(labelFont());
   import_channels_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -145,7 +133,7 @@ RDImportAudio::RDImportAudio(QString cutname,QString *path,
   import_autotrim_box=new QCheckBox(tr("Autotrim"),this);
   import_autotrim_box->setGeometry(95,82,80,15);
   import_autotrim_box->setChecked(true);
-  import_autotrim_box->setFont(label_font);
+  import_autotrim_box->setFont(labelFont());
   connect(import_autotrim_box,SIGNAL(toggled(bool)),
 	  this,SLOT(autotrimCheckData(bool)));
 
@@ -157,11 +145,11 @@ RDImportAudio::RDImportAudio(QString cutname,QString *path,
   import_autotrim_spin->setRange(-99,0);
   import_autotrim_label=new QLabel(import_autotrim_spin,tr("Level:"),this);
   import_autotrim_label->setGeometry(185,80,45,20);
-  import_autotrim_label->setFont(label_font);
+  import_autotrim_label->setFont(labelFont());
   import_autotrim_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   import_autotrim_unit=new QLabel(tr("dBFS"),this);
   import_autotrim_unit->setGeometry(280,80,40,20);
-  import_autotrim_unit->setFont(label_font);
+  import_autotrim_unit->setFont(labelFont());
   import_autotrim_unit->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
@@ -170,7 +158,7 @@ RDImportAudio::RDImportAudio(QString cutname,QString *path,
   import_exportmode_button=new QRadioButton(tr("Export File"),this);
   import_mode_group->insert(import_exportmode_button);
   import_exportmode_button->setGeometry(10,120,sizeHint().width()-40,15);
-  import_exportmode_button->setFont(mode_font);
+  import_exportmode_button->setFont(sectionLabelFont());
 
   //
   // Output Filename
@@ -183,7 +171,7 @@ RDImportAudio::RDImportAudio(QString cutname,QString *path,
   import_out_filename_label=
     new QLabel(import_out_filename_edit,tr("Filename:"),this);
   import_out_filename_label->setGeometry(10,140,70,20);
-  import_out_filename_label->setFont(label_font);
+  import_out_filename_label->setFont(labelFont());
   import_out_filename_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
 
   //
@@ -200,7 +188,7 @@ RDImportAudio::RDImportAudio(QString cutname,QString *path,
   import_out_metadata_box=new QCheckBox(tr("Export file metadata"),this);
   import_out_metadata_box->setGeometry(95,161,sizeHint().width()-210,15);
   import_out_metadata_box->setChecked(*import_import_metadata);
-  import_out_metadata_box->setFont(label_font);
+  import_out_metadata_box->setFont(labelFont());
 
   //
   // Output Format
@@ -211,7 +199,7 @@ RDImportAudio::RDImportAudio(QString cutname,QString *path,
   import_format_edit->setText(import_settings->description());
   import_format_label=new QLabel(import_out_filename_edit,tr("Format:"),this);
   import_format_label->setGeometry(10,181,70,20);
-  import_format_label->setFont(label_font);
+  import_format_label->setFont(labelFont());
   import_format_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
 
   //
@@ -234,7 +222,7 @@ RDImportAudio::RDImportAudio(QString cutname,QString *path,
   import_normalize_box=new QCheckBox(tr("Normalize"),this);
   import_normalize_box->setGeometry(10,262,113,15);
   import_normalize_box->setChecked(true);
-  import_normalize_box->setFont(label_font);
+  import_normalize_box->setFont(labelFont());
   connect(import_normalize_box,SIGNAL(toggled(bool)),
 	  this,SLOT(normalizeCheckData(bool)));
 
@@ -246,11 +234,11 @@ RDImportAudio::RDImportAudio(QString cutname,QString *path,
   import_normalize_spin->setRange(-30,0);
   import_normalize_label=new QLabel(import_normalize_spin,tr("Level:"),this);
   import_normalize_label->setGeometry(110,260,45,20);
-  import_normalize_label->setFont(label_font);
+  import_normalize_label->setFont(labelFont());
   import_normalize_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   import_normalize_unit=new QLabel(tr("dBFS"),this);
   import_normalize_unit->setGeometry(205,260,40,20);
-  import_normalize_unit->setFont(label_font);
+  import_normalize_unit->setFont(labelFont());
   import_normalize_unit->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
@@ -259,7 +247,7 @@ RDImportAudio::RDImportAudio(QString cutname,QString *path,
   import_import_button=new QPushButton(tr("&Import"),this);
   import_import_button->
     setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
-  import_import_button->setFont(button_font);
+  import_import_button->setFont(buttonFont());
   connect(import_import_button,SIGNAL(clicked()),this,SLOT(importData()));
 
   //
@@ -268,7 +256,7 @@ RDImportAudio::RDImportAudio(QString cutname,QString *path,
   import_cancel_button=new QPushButton(tr("&Cancel"),this);
   import_cancel_button->
     setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
-  import_cancel_button->setFont(button_font);
+  import_cancel_button->setFont(buttonFont());
   import_cancel_button->setDefault(true);
   connect(import_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 

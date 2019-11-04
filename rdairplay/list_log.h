@@ -2,7 +2,7 @@
 //
 // The full log list widget for RDAirPlay.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,16 +21,7 @@
 #ifndef LIST_LOG_H
 #define LIST_LOG_H
 
-#include <qwidget.h>
-#include <qdatetime.h>
-#include <qlabel.h>
-#include <qpixmap.h>
-#include <qpushbutton.h>
-
-#include <rdairplay_conf.h>
-#include <rdlistview.h>
-#include <rdlistviewitem.h>
-#include <rdlogplay.h>
+#include <rdwidget.h>
 
 #include "edit_event.h"
 #include "hourselector.h"
@@ -39,7 +30,7 @@
 
 #define END_MARKER_ID -2
 
-class ListLog : public QWidget
+class ListLog : public RDWidget
 {
  Q_OBJECT
  public:

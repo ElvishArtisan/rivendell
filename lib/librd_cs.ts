@@ -844,6 +844,10 @@
         <source>The cart title must be unique!</source>
         <translation>Název vozíku musí být jedinečný!</translation>
     </message>
+    <message>
+        <source>Add Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddLog</name>
@@ -883,15 +887,15 @@
 <context>
     <name>RDApplication</name>
     <message>
-        <source>systemctl(1) returned exit code</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>OK</source>
         <translation type="unfinished">OK</translation>
     </message>
     <message>
         <source>systemctl(1) crashed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>systemctl(1) returned exit code</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -903,47 +907,47 @@
     <name>RDAudioSettingsDialog</name>
     <message>
         <source>Edit Settings</source>
-        <translation>Upravit nastavení</translation>
+        <translation type="obsolete">Upravit nastavení</translation>
     </message>
     <message>
         <source>Default &amp;Format:</source>
-        <translation>Výchozí &amp;formát:</translation>
+        <translation type="obsolete">Výchozí &amp;formát:</translation>
     </message>
     <message>
         <source>Default &amp;Channels:</source>
-        <translation>Výchozí &amp;kanály:</translation>
+        <translation type="obsolete">Výchozí &amp;kanály:</translation>
     </message>
     <message>
         <source>Default &amp;Sample Rate:</source>
-        <translation>Výchozí &amp;vzorkovací kmitočet:</translation>
+        <translation type="obsolete">Výchozí &amp;vzorkovací kmitočet:</translation>
     </message>
     <message>
         <source>Default &amp;Bitrate:</source>
-        <translation>Výchozí &amp;datový tok:</translation>
+        <translation type="obsolete">Výchozí &amp;datový tok:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Zrušit</translation>
+        <translation type="obsolete">&amp;Zrušit</translation>
     </message>
     <message>
         <source>PCM16</source>
-        <translation>PCM16</translation>
+        <translation type="obsolete">PCM16</translation>
     </message>
     <message>
         <source>OggVorbis</source>
-        <translation>OggVorbis</translation>
+        <translation type="obsolete">OggVorbis</translation>
     </message>
     <message>
         <source>MPEG Layer 2</source>
-        <translation>MPEG Layer 2</translation>
+        <translation type="obsolete">MPEG Layer 2</translation>
     </message>
     <message>
         <source>MPEG Layer 3</source>
-        <translation>MPEG Layer 3</translation>
+        <translation type="obsolete">MPEG Layer 3</translation>
     </message>
 </context>
 <context>
@@ -1673,59 +1677,51 @@ Opravdu chcete uložit?</translation>
     <name>RDExceptionDialog</name>
     <message>
         <source>Rivendell Exception Report</source>
-        <translation>Zpráva o chybě Rivendellu</translation>
+        <translation type="obsolete">Zpráva o chybě Rivendellu</translation>
     </message>
     <message>
         <source>&amp;Save</source>
-        <translation>&amp;Uložit</translation>
+        <translation type="obsolete">&amp;Uložit</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Zavřít</translation>
+        <translation type="obsolete">&amp;Zavřít</translation>
     </message>
     <message>
         <source>Text (*.txt *.TXT)
 All Files (*.*)</source>
-        <translation>Text (*.txt *.TXT)
+        <translation type="obsolete">Text (*.txt *.TXT)
 Všechny soubory (*.*)</translation>
     </message>
     <message>
         <source>Export File</source>
-        <translation>Vyvést soubor</translation>
+        <translation type="obsolete">Vyvést soubor</translation>
     </message>
     <message>
         <source>The file</source>
-        <translation>Soubor</translation>
+        <translation type="obsolete">Soubor</translation>
     </message>
     <message>
         <source>already exists!
 Overwrite?</source>
-        <translation>Již existuje!
+        <translation type="obsolete">Již existuje!
 Přepsat?</translation>
     </message>
     <message>
         <source>File Exists</source>
-        <translation>Soubor již existuje</translation>
+        <translation type="obsolete">Soubor již existuje</translation>
     </message>
     <message>
         <source>Unable to open file</source>
-        <translation>Nelze otevřít soubor</translation>
+        <translation type="obsolete">Nelze otevřít soubor</translation>
     </message>
     <message>
         <source>for writing!</source>
-        <translation>pro zápis!</translation>
+        <translation type="obsolete">pro zápis!</translation>
     </message>
     <message>
         <source>File Error</source>
-        <translation>Chyba souboru</translation>
-    </message>
-    <message>
-        <source>already exists!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Overwrite?</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Chyba souboru</translation>
     </message>
 </context>
 <context>
@@ -2153,30 +2149,30 @@ Bitte Kofiguration prüfen und erneut versuchen.</translation>
     <name>RDIntegerDialog</name>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Zrušit</translation>
+        <translation type="obsolete">&amp;Zrušit</translation>
     </message>
     <message>
         <source>Set Value</source>
-        <translation>Nastavit hodnotu</translation>
+        <translation type="obsolete">Nastavit hodnotu</translation>
     </message>
 </context>
 <context>
     <name>RDIntegerEdit</name>
     <message>
         <source>Add</source>
-        <translation>Přidat</translation>
+        <translation type="obsolete">Přidat</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Smazat</translation>
+        <translation type="obsolete">Smazat</translation>
     </message>
     <message>
         <source>Set Value</source>
-        <translation>Nastavit hodnotu</translation>
+        <translation type="obsolete">Nastavit hodnotu</translation>
     </message>
 </context>
 <context>
@@ -2225,15 +2221,15 @@ Bitte Kofiguration prüfen und erneut versuchen.</translation>
     </message>
     <message>
         <source>NAME</source>
-        <translation>NÁZEV</translation>
+        <translation type="obsolete">NÁZEV</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation>POPIS</translation>
+        <translation type="obsolete">POPIS</translation>
     </message>
     <message>
         <source>SERVICE</source>
-        <translation>SLUŽBA</translation>
+        <translation type="obsolete">SLUŽBA</translation>
     </message>
     <message>
         <source>OK</source>
@@ -2242,6 +2238,18 @@ Bitte Kofiguration prüfen und erneut versuchen.</translation>
     <message>
         <source>Cancel</source>
         <translation>Zrušit</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

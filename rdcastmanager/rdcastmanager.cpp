@@ -2,7 +2,7 @@
 //
 // A PodCast Management Utility for Rivendell.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,27 +18,10 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <signal.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <unistd.h>
-
 #include <qapplication.h>
-#include <qwindowsstyle.h>
-#include <qwidget.h>
-#include <qpushbutton.h>
-#include <qlabel.h>
-#include <qtextcodec.h>
 #include <qtranslator.h>
-#include <qsettings.h>
-#include <qpainter.h>
 #include <qmessagebox.h>
 
-#include <dbversion.h>
-#include <rd.h>
-#include <rdapplication.h>
-#include <rdconf.h>
-#include <rddb.h>
 #include <rdescape_string.h>
 #include <rdpodcast.h>
 
@@ -60,8 +43,8 @@ QString cast_filter;
 QString cast_group;
 QString cast_schedcode;
 
-MainWidget::MainWidget(QWidget *parent)
-  : QWidget(parent)
+MainWidget::MainWidget(RDConfig *c,QWidget *parent)
+  : RDWidget(c,parent)
 {
   QString str1;
   QString str2;
@@ -72,8 +55,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
 
   //
   // Open the Database/
@@ -105,16 +87,8 @@ MainWidget::MainWidget(QWidget *parent)
   // RIPC Connection
   //
   connect(rda,SIGNAL(userChanged()),this,SLOT(userChangedData()));
-  rda->ripc()->connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
-
-  // 
-  // Create Fonts
-  //
-  QFont default_font("Helvetica",12,QFont::Normal);
-  default_font.setPixelSize(12);
-  qApp->setFont(default_font);
-  QFont button_font=QFont("Helvetica",12,QFont::Bold);
-  button_font.setPixelSize(12);
+  rda->ripc()->
+    connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
 
   //
   // Create Icons
@@ -128,7 +102,6 @@ MainWidget::MainWidget(QWidget *parent)
   // Feed List
   //
   cast_feed_list=new RDListView(this);
-  cast_feed_list->setFont(default_font);
   cast_feed_list->setAllColumnsShowFocus(true);
   cast_feed_list->setItemMargin(5);
   connect(cast_feed_list,
@@ -150,7 +123,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Open Button
   //
   cast_open_button=new QPushButton(this);
-  cast_open_button->setFont(button_font);
+  cast_open_button->setFont(buttonFont());
   cast_open_button->setText(tr("&View\nFeed"));
   connect(cast_open_button,SIGNAL(clicked()),this,SLOT(openData()));
 
@@ -158,7 +131,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Close Button
   //
   cast_close_button=new QPushButton(this);
-  cast_close_button->setFont(button_font);
+  cast_close_button->setFont(buttonFont());
   cast_close_button->setText(tr("&Close"));
   connect(cast_close_button,SIGNAL(clicked()),this,SLOT(quitMainWidget()));
 
@@ -345,7 +318,9 @@ int main(int argc,char *argv[])
   //
   // Start Event Loop
   //
-  MainWidget *w=new MainWidget();
+  RDConfig *config=new RDConfig();
+  config->load();
+  MainWidget *w=new MainWidget(config);
   a.setMainWidget(w);
   w->setGeometry(w->geometry().x(),w->geometry().y(),w->sizeHint().width(),w->sizeHint().height());
   w->show();

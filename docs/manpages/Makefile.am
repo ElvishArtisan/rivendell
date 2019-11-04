@@ -28,12 +28,15 @@
 	xsltproc $(DOCBOOK_STYLESHEETS)/fo/docbook.xsl $< | fop - -pdf $@
 %.1:	%.xml
 	xsltproc $(DOCBOOK_STYLESHEETS)/manpages/docbook.xsl $<
+%.5:	%.xml
+	xsltproc $(DOCBOOK_STYLESHEETS)/manpages/docbook.xsl $<
 %.8:	%.xml
 	xsltproc $(DOCBOOK_STYLESHEETS)/manpages/docbook.xsl $<
 
 all-local:	rdairplay.1\
                 rdalsaconfig.1\
                 rdclilogedit.1\
+                rd.conf.5\
                 rdconvert.1\
                 rddbmgr.8\
                 rdexport.1\
@@ -44,11 +47,13 @@ all-local:	rdairplay.1\
                 rdrender.1\
                 rmlsend.1\
                 rdservice.8\
-                rdnexusd.8
+                rdnexusd.8\
+                rdsoftkeys.1
 
 man_MANS = rdairplay.1\
            rdalsaconfig.1\
            rdclilogedit.1\
+           rd.conf.5\
            rdconvert.1\
            rddbmgr.8\
            rdexport.1\
@@ -59,7 +64,8 @@ man_MANS = rdairplay.1\
            rdrender.1\
            rmlsend.1\
            rdservice.8\
-           rdnexusd.8
+           rdnexusd.8\
+           rdsoftkeys.1
 
 EXTRA_DIST = rdairplay.1\
              rdairplay.xml\
@@ -67,6 +73,8 @@ EXTRA_DIST = rdairplay.1\
              rdalsaconfig.xml\
              rdclilogedit.1\
              rdclilogedit.xml\
+             rd.conf.5\
+             rd.conf.xml\
              rdconvert.1\
              rdconvert.xml\
              rddbmgr.8\
@@ -88,11 +96,14 @@ EXTRA_DIST = rdairplay.1\
              rdservice.8\
              rdservice.xml\
              rdnexusd.8\
-             rdnexusd.xml
+             rdnexusd.xml\
+             rdsoftkeys.1\
+             rdsoftkeys.xml
 
 CLEANFILES = *~
 MAINTAINERCLEANFILES = *~\
                        *.1\
+                       *.5\
                        *.8\
                        *.html\
                        *.pdf\

@@ -2,7 +2,7 @@
 //
 // List Rivendell Feeds
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,21 +22,11 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qpushbutton.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
 #include <qlabel.h>
-#include <qpainter.h>
-#include <qevent.h>
 #include <qmessagebox.h>
-#include <q3buttongroup.h>
-#include <q3progressdialog.h>
 #include <qapplication.h>
 
 #include <rdapplication.h>
-#include <rdcart.h>
 #include <rddb.h>
 #include <rdescape_string.h>
 #include <rdfeedlog.h>
@@ -49,7 +39,7 @@
 #include "list_feeds.h"
 
 ListFeeds::ListFeeds(QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   setModal(true);
 
@@ -62,20 +52,10 @@ ListFeeds::ListFeeds(QWidget *parent)
   setWindowTitle("RDAdmin - "+tr("Rivendell Feed List"));
 
   //
-  // Create Fonts
-  //
-  QFont font=QFont("Helvetica",12,QFont::Bold);
-  font.setPixelSize(12);
-  QFont list_font=QFont("Helvetica",12,QFont::Normal);
-  list_font.setPixelSize(12);
-  QFont small_font=QFont("Helvetica",10,QFont::Normal);
-  small_font.setPixelSize(10);
-
-  //
   //  Add Button
   //
   list_add_button=new QPushButton(this);
-  list_add_button->setFont(font);
+  list_add_button->setFont(buttonFont());
   list_add_button->setText(tr("&Add"));
   connect(list_add_button,SIGNAL(clicked()),this,SLOT(addData()));
 
@@ -83,7 +63,7 @@ ListFeeds::ListFeeds(QWidget *parent)
   //  Edit Button
   //
   list_edit_button=new QPushButton(this);
-  list_edit_button->setFont(font);
+  list_edit_button->setFont(buttonFont());
   list_edit_button->setText(tr("&Edit"));
   connect(list_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
 
@@ -91,7 +71,7 @@ ListFeeds::ListFeeds(QWidget *parent)
   //  Delete Button
   //
   list_delete_button=new QPushButton(this);
-  list_delete_button->setFont(font);
+  list_delete_button->setFont(buttonFont());
   list_delete_button->setText(tr("&Delete"));
   connect(list_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
 
@@ -100,7 +80,7 @@ ListFeeds::ListFeeds(QWidget *parent)
   //
   list_close_button=new QPushButton(this);
   list_close_button->setDefault(true);
-  list_close_button->setFont(font);
+  list_close_button->setFont(buttonFont());
   list_close_button->setText(tr("&Close"));
   connect(list_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 
@@ -108,7 +88,6 @@ ListFeeds::ListFeeds(QWidget *parent)
   // Group List
   //
   list_feeds_view=new RDListView(this);
-  list_feeds_view->setFont(list_font);
   list_feeds_view->setAllColumnsShowFocus(true);
   list_feeds_view->addColumn(tr("Key"));
   list_feeds_view->setColumnAlignment(0,Qt::AlignCenter);
@@ -121,7 +100,7 @@ ListFeeds::ListFeeds(QWidget *parent)
   list_feeds_view->addColumn(tr("Creation Date"));
   list_feeds_view->setColumnAlignment(4,Qt::AlignCenter);
   QLabel *list_box_label=new QLabel(list_feeds_view,tr("&Feeds:"),this);
-  list_box_label->setFont(font);
+  list_box_label->setFont(labelFont());
   list_box_label->setGeometry(14,11,85,19);
   connect(list_feeds_view,
 	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),

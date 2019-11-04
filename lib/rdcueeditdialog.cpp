@@ -2,7 +2,7 @@
 //
 // A Dialog Box for using an RDCueEdit widget.
 //
-//   (C) Copyright 2002-2013,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -21,18 +21,13 @@
 #include <qapplication.h>
 #include <qpushbutton.h>
 
-#include <rdcueeditdialog.h>
+#include "rdcueeditdialog.h"
 
 RDCueEditDialog::RDCueEditDialog(RDCae *cae,int play_card,int play_port,
 				 const QString &caption,QWidget *parent)
-  :QDialog(parent,"",true)
+  : RDDialog(parent)
 {
-  QFont font;
-
-  font=QFont("Helvetica",12,QFont::Bold);
-  font.setPixelSize(12);
-
-  setCaption(caption+" - "+tr("Set Cue Point"));
+  setWindowTitle(caption+" - "+tr("Set Cue Point"));
 
   //
   // Cue Editor
@@ -47,7 +42,7 @@ RDCueEditDialog::RDCueEditDialog(RDCae *cae,int play_card,int play_port,
   //
   QPushButton *button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-170,sizeHint().height()-60,80,50);
-  button->setFont(font);
+  button->setFont(buttonFont());
   button->setText(tr("&OK"));
   connect(button,SIGNAL(clicked()),this,SLOT(okData()));
 
@@ -56,7 +51,7 @@ RDCueEditDialog::RDCueEditDialog(RDCae *cae,int play_card,int play_port,
   //
   button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
-  button->setFont(font);
+  button->setFont(buttonFont());
   button->setText(tr("&Cancel"));
   connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
 }

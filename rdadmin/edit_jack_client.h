@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Jack Client Configuration
 //
-//   (C) Copyright 2012-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,14 +21,14 @@
 #ifndef EDIT_JACK_CLIENT_H
 #define EDIT_JACK_CLIENT_H
 
-#include <qdialog.h>
 #include <qlineedit.h>
 #include <qpushbutton.h>
 #include <qlabel.h>
 
+#include <rddialog.h>
 #include <rdstation.h>
 
-class EditJackClient : public QDialog
+class EditJackClient : public RDDialog
 {
  Q_OBJECT
  public:

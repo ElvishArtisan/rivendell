@@ -22,18 +22,14 @@
 #ifndef EDIT_SCHEDRULES_H
 #define EDIT_SCHEDRULES_H
 
-#include <qdialog.h>
 #include <qlabel.h>
-#include <qpushbutton.h>
-#include <q3listview.h>
-#include <qvariant.h>
+#include <qspinbox.h>
 
+#include <rddialog.h>
 #include <rdlistview.h>
 #include <rdschedruleslist.h>
 
-class QSpinBox;
-
-class EditSchedRules : public QDialog
+class EditSchedRules : public RDDialog
 {
   Q_OBJECT
  public:
@@ -57,17 +53,15 @@ class EditSchedRules : public QDialog
  private:
   void Load();
   void Close();
-  QLabel* artistSepLabel;
-  QSpinBox* artistSepSpinBox;
-  RDListView *list_schedCodes_view;
-  QString clockname;
+  QLabel* edit_artist_sep_label;
+  QSpinBox* edit_artist_sep_spin;
+  RDListView *edit_schedcodes_view;
+  QString edit_clockname;
   unsigned* edit_artistsep;
   bool* edit_rules_modified;
-  RDSchedRulesList* sched_rules_list;
+  RDSchedRulesList* edit_sched_rules_list;
   bool edit_modified;
 };
 
 
-
-#endif
-
+#endif  // EDIT_SCHEDRULES_H

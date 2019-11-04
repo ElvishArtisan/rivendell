@@ -1,8 +1,8 @@
-// filter.h
+// rdframe.cpp
 //
-// Set Filter Widget for RDLibrary.
+// Base class for Rivendell modal widgets.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,33 +18,17 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef FILTER_H
-#define FILTER_H
+#include "rdframe.h"
 
-#include <qdialog.h>
-#include <qlineedit.h>
-#include <q3textedit.h>
-#include <qpixmap.h>
-#include <qradiobutton.h>
-
-class Filter : public QDialog
+RDFrame::RDFrame(QWidget *parent,Qt::WindowFlags f)
+  : QFrame(parent,f), RDFontEngine(font())
 {
-  Q_OBJECT
-  public:
-   Filter(QString *filter,QWidget *parent=0);
-   QSize sizeHint() const;
-   QSizePolicy sizePolicy() const;
-
-  private slots:
-   void okData();
-   void clearData();
-   void cancelData();
-
-  private:
-   QString *filter_text;
-   QLineEdit *filter_text_edit;
-};
+  setFont(defaultFont());
+}
 
 
-#endif
-
+RDFrame::RDFrame(RDConfig *config,QWidget *parent,Qt::WindowFlags f)
+  : QFrame(parent,f), RDFontEngine(font(),config)
+{
+  setFont(defaultFont());
+}

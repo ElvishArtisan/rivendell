@@ -2,7 +2,7 @@
 //
 // Edit a SoundPanel Panel Name
 //
-//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,25 +24,17 @@
 #include <rdedit_panel_name.h>
 
 RDEditPanelName::RDEditPanelName(QString *panelname,QWidget *parent)
-  : QDialog(parent,"",true)
+  : RDDialog(parent)
 {
   panel_name=panelname;
 
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
-  setCaption(tr("Edit Panel Name"));
-
-  //
-  // Create Fonts
-  //
-  QFont font=QFont("Helvetica",12,QFont::Bold);
-  font.setPixelSize(12);
+  setWindowTitle(tr("Edit Panel Name"));
 
   //
   // Panel Name
@@ -55,7 +47,7 @@ RDEditPanelName::RDEditPanelName(QString *panelname,QWidget *parent)
   QLabel *panel_name_label=new QLabel(panel_name_edit,tr("Panel &Name:"),this,
 				       "panel_name_label");
   panel_name_label->setGeometry(10,13,80,19);
-  panel_name_label->setFont(font);
+  panel_name_label->setFont(labelFont());
   panel_name_label->setAlignment(Qt::AlignRight|Qt::TextShowMnemonic);
 
   //
@@ -64,7 +56,7 @@ RDEditPanelName::RDEditPanelName(QString *panelname,QWidget *parent)
   QPushButton *ok_button=new QPushButton(this,"ok_button");
   ok_button->setGeometry(sizeHint().width()-180,45,80,50);
   ok_button->setDefault(true);
-  ok_button->setFont(font);
+  ok_button->setFont(buttonFont());
   ok_button->setText(tr("&OK"));
   connect(ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
@@ -73,7 +65,7 @@ RDEditPanelName::RDEditPanelName(QString *panelname,QWidget *parent)
   //
   QPushButton *cancel_button=new QPushButton(this,"cancel_button");
   cancel_button->setGeometry(sizeHint().width()-90,45,80,50);
-  cancel_button->setFont(font);
+  cancel_button->setFont(buttonFont());
   cancel_button->setText(tr("&Cancel"));
   connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 }

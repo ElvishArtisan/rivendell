@@ -2,7 +2,7 @@
 //
 // Select a Rivendell Log
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,20 +30,12 @@
 #include "list_logs.h"
 
 ListLogs::ListLogs(RDLogPlay *log,QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
-  setModal(true);
-
   //
   // Fix the Window Size
   //
   setMinimumSize(sizeHint());
-
-  //
-  // Generate Fonts
-  //
-  QFont button_font("Helvetica",12,QFont::Bold);
-  button_font.setPixelSize(12);
 
   list_log=log;
   setWindowTitle("RDAirPlay - "+tr("Select Log"));
@@ -77,35 +69,35 @@ ListLogs::ListLogs(RDLogPlay *log,QWidget *parent)
   // Load Button
   //
   list_load_button=new QPushButton(tr("Load"),this);
-  list_load_button->setFont(button_font);
+  list_load_button->setFont(buttonFont());
   connect(list_load_button,SIGNAL(clicked()),this,SLOT(loadButtonData()));
 
   //
   // Unload Button
   //
   list_unload_button=new QPushButton(tr("Unload"),this);
-  list_unload_button->setFont(button_font);
+  list_unload_button->setFont(buttonFont());
   connect(list_unload_button,SIGNAL(clicked()),this,SLOT(unloadButtonData()));
 
   //
   // Save Button
   //
   list_save_button=new QPushButton(tr("Save"),this);
-  list_save_button->setFont(button_font);
+  list_save_button->setFont(buttonFont());
   connect(list_save_button,SIGNAL(clicked()),this,SLOT(saveButtonData()));
 
   //
   // Save As Button
   //
   list_saveas_button=new QPushButton(tr("Save As"),this);
-  list_saveas_button->setFont(button_font);
+  list_saveas_button->setFont(buttonFont());
   connect(list_saveas_button,SIGNAL(clicked()),this,SLOT(saveAsButtonData()));
 
   //
   // Cancel Button
   //
   list_cancel_button=new QPushButton(tr("Cancel"),this);
-  list_cancel_button->setFont(button_font);
+  list_cancel_button->setFont(buttonFont());
   list_cancel_button->setDefault(true);
   connect(list_cancel_button,SIGNAL(clicked()),this,SLOT(cancelButtonData()));
 

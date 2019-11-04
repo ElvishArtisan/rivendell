@@ -2,7 +2,7 @@
 ##
 ## Use automake to process this into a Makefile.in
 ##
-##   (C) Copyright 2002-2005,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+##   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -43,11 +43,11 @@ bin_PROGRAMS = rdlogedit
 dist_rdlogedit_SOURCES = add_meta.cpp add_meta.h\
                          drop_listview.cpp drop_listview.h\
                          edit_chain.cpp edit_chain.h\
+                         edit_event.cpp edit_event.h\
                          edit_log.cpp edit_log.h\
                          edit_logline.cpp edit_logline.h\
                          edit_marker.cpp edit_marker.h\
                          edit_track.cpp edit_track.h\
-                         import_track.cpp import_track.h\
                          list_listviewitem.cpp list_listviewitem.h\
                          list_reports.cpp list_reports.h\
                          log_listview.cpp log_listview.h\
@@ -58,11 +58,11 @@ dist_rdlogedit_SOURCES = add_meta.cpp add_meta.h\
 nodist_rdlogedit_SOURCES = moc_add_meta.cpp\
                            moc_drop_listview.cpp\
                            moc_edit_chain.cpp\
+                           moc_edit_event.cpp\
                            moc_edit_log.cpp\
                            moc_edit_logline.cpp\
                            moc_edit_marker.cpp\
                            moc_edit_track.cpp\
-                           moc_import_track.cpp\
                            moc_list_reports.cpp\
                            moc_log_listview.cpp\
                            moc_rdlogedit.cpp\

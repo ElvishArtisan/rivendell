@@ -2,7 +2,7 @@
 //
 // Edit A Rivendell Log Clock
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,16 +21,12 @@
 #ifndef EDIT_CLOCK_H
 #define EDIT_CLOCK_H
 
-#include <vector>
 
-#include <qdialog.h>
 #include <qlabel.h>
-#include <qpushbutton.h>
-#include <qcombobox.h>
-#include <qvariant.h>
-#include <q3textedit.h>
+#include <qtextedit.h>
 
 #include <rdclock.h>
+#include <rddialog.h>
 #include <rdschedruleslist.h>
 
 #include "clock_listview.h"
@@ -42,7 +38,7 @@
 #define PIE_X_MARGIN 100
 #define PIE_Y_MARGIN 125
 
-class EditClock : public QDialog
+class EditClock : public RDDialog
 {
  Q_OBJECT
  public:
@@ -58,9 +54,7 @@ class EditClock : public QDialog
   void editData();
   void deleteData();
   void svcData();
-//
   void schedRules();
-//
   void saveData();
   void saveAsData();
   void doubleClickedData(Q3ListViewItem *,const QPoint &,int);
@@ -98,9 +92,8 @@ class EditClock : public QDialog
   bool edit_new_clock;
   std::vector<QString> *edit_new_clocks;
   RDSchedRulesList* sched_rules_list;
-  Q3TextEdit *edit_remarks_edit;
+  QTextEdit *edit_remarks_edit;
 };
 
 
-#endif
-
+#endif  // EDIT_CLOCK_H

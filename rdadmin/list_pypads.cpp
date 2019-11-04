@@ -2,7 +2,7 @@
 //
 // List PyPAD Instances
 //
-//   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -41,7 +41,7 @@
 #include "../icons/redball.xpm"
 
 ListPypads::ListPypads(RDStation *station,QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   list_station=station;
 
@@ -56,14 +56,6 @@ ListPypads::ListPypads(RDStation *station,QWidget *parent)
   //
   setMinimumWidth(sizeHint().width());
   setMinimumHeight(sizeHint().height());
-
-  //
-  // Create Fonts
-  //
-  QFont bold_font=QFont("Helvetica",12,QFont::Bold);
-  bold_font.setPixelSize(12);
-  QFont font=QFont("Helvetica",12,QFont::Normal);
-  font.setPixelSize(12);
 
   //
   // Icons
@@ -97,7 +89,7 @@ ListPypads::ListPypads(RDStation *station,QWidget *parent)
   //  Add Button
   //
   list_add_button=new QPushButton(this);
-  list_add_button->setFont(bold_font);
+  list_add_button->setFont(buttonFont());
   list_add_button->setText(tr("&Add"));
   connect(list_add_button,SIGNAL(clicked()),this,SLOT(addData()));
 
@@ -105,7 +97,7 @@ ListPypads::ListPypads(RDStation *station,QWidget *parent)
   //  Edit Button
   //
   list_edit_button=new QPushButton(this);
-  list_edit_button->setFont(bold_font);
+  list_edit_button->setFont(buttonFont());
   list_edit_button->setText(tr("&Edit"));
   connect(list_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
 
@@ -113,7 +105,7 @@ ListPypads::ListPypads(RDStation *station,QWidget *parent)
   //  Delete Button
   //
   list_delete_button=new QPushButton(this);
-  list_delete_button->setFont(bold_font);
+  list_delete_button->setFont(buttonFont());
   list_delete_button->setText(tr("&Delete"));
   connect(list_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
 
@@ -121,7 +113,7 @@ ListPypads::ListPypads(RDStation *station,QWidget *parent)
   //  Error Button
   //
   list_error_button=new QPushButton(this);
-  list_error_button->setFont(bold_font);
+  list_error_button->setFont(buttonFont());
   list_error_button->setText(tr("&Error\nLog"));
   connect(list_error_button,SIGNAL(clicked()),this,SLOT(errorData()));
 
@@ -130,7 +122,7 @@ ListPypads::ListPypads(RDStation *station,QWidget *parent)
   //
   list_close_button=new QPushButton(this);
   list_close_button->setDefault(true);
-  list_close_button->setFont(bold_font);
+  list_close_button->setFont(buttonFont());
   list_close_button->setText(tr("&Close"));
   connect(list_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 

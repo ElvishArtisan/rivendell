@@ -2,7 +2,7 @@
 //
 // View the Edit Log for a PyPAD Instance
 //
-//   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,11 +21,12 @@
 #ifndef VIEW_PYPAD_ERRORS_H
 #define VIEW_PYPAD_ERRORS_H
 
-#include <qdialog.h>
 #include <qpushbutton.h>
 #include <qtextedit.h>
 
-class ViewPypadErrors : public QDialog
+#include <rddialog.h>
+
+class ViewPypadErrors : public RDDialog
 {
  Q_OBJECT
  public:

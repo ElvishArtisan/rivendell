@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Workstation Configuration
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,16 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qpainter.h>
-#include <qevent.h>
 #include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <q3buttongroup.h>
-#include <qvalidator.h>
 
 #include <rdapplication.h>
 #include <rdcatch_connect.h>
@@ -37,26 +28,25 @@
 #include <rdescape_string.h>
 #include <rdtextvalidator.h>
 
-#include "view_adapters.h"
 #include "edit_audios.h"
 #include "edit_cartslots.h"
 #include "edit_decks.h"
-#include "list_dropboxes.h"
-#include "list_hostvars.h"
 #include "edit_jack.h"
-#include "list_matrices.h"
-#include "list_pypads.h"
 #include "edit_rdairplay.h"
-
 #include "edit_rdlibrary.h"
 #include "edit_rdlogedit.h"
 #include "edit_rdpanel.h"
 #include "edit_station.h"
 #include "edit_ttys.h"
 #include "globals.h"
+#include "list_dropboxes.h"
+#include "list_hostvars.h"
+#include "list_matrices.h"
+#include "list_pypads.h"
+#include "view_adapters.h"
 
 EditStation::EditStation(QString sname,QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   setModal(true);
 
@@ -64,14 +54,6 @@ EditStation::EditStation(QString sname,QWidget *parent)
   QString sql;
   int item=0;
   char temp[256];
-
-  //
-  // Create Fonts
-  //
-  QFont font=QFont("Helvetica",12,QFont::Bold);
-  font.setPixelSize(12);
-  QFont small_font=QFont("Helvetica",10,QFont::Normal);
-  small_font.setPixelSize(10);
 
   //
   // Fix the Window Size
@@ -101,7 +83,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   station_name_edit=new QLineEdit(this);
   station_name_edit->setReadOnly(true);
   station_name_label=new QLabel(station_name_edit,tr("Ho&st Name:"),this);
-  station_name_label->setFont(font);
+  station_name_label->setFont(labelFont());
   station_name_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -111,7 +93,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   station_short_name_edit->setMaxLength(64);
   station_short_name_label=
     new QLabel(station_short_name_edit,tr("Short Name:"),this);
-  station_short_name_label->setFont(font);
+  station_short_name_label->setFont(labelFont());
   station_short_name_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -122,7 +104,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   station_description_edit->setValidator(validator);
   station_description_label=
     new QLabel(station_description_edit,tr("&Description:"),this);
-  station_description_label->setFont(font);
+  station_description_label->setFont(labelFont());
   station_description_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -132,7 +114,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   station_default_name_edit->setEditable(false);
   station_default_name_label=
     new QLabel(station_default_name_edit,tr("Default &User:"),this);
-  station_default_name_label->setFont(font);
+  station_default_name_label->setFont(labelFont());
   station_default_name_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -143,7 +125,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   station_address_edit->setValidator(validator);
   station_address_label=
     new QLabel(station_address_edit,tr("&IP Address:"),this);
-  station_address_label->setFont(font);
+  station_address_label->setFont(labelFont());
   station_address_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -153,7 +135,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   station_audio_editor_edit->setMaxLength(191);
   station_audio_editor_label=
     new QLabel(station_audio_editor_edit,tr("Audio Editor")+":",this);
-  station_audio_editor_label->setFont(font);
+  station_audio_editor_label->setFont(labelFont());
   station_audio_editor_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -163,7 +145,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   station_report_editor_edit->setMaxLength(191);
   station_report_editor_label=
     new QLabel(station_report_editor_edit,tr("Report Editor")+":",this);
-  station_report_editor_label->setFont(font);
+  station_report_editor_label->setFont(labelFont());
   station_report_editor_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -174,7 +156,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   station_timeoffset_box->setSuffix(tr(" mS"));
   station_timeoffset_label=
     new QLabel(station_timeoffset_box,tr("&Time Offset:"),this);
-  station_timeoffset_label->setFont(font);
+  station_timeoffset_label->setFont(labelFont());
   station_timeoffset_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -185,11 +167,11 @@ EditStation::EditStation(QString sname,QWidget *parent)
   station_startup_cart_edit->setValidator(macro_validator);
   station_startup_cart_label=
     new QLabel(station_startup_cart_edit,tr("&Startup Cart:"),this);
-  station_startup_cart_label->setFont(font);
+  station_startup_cart_label->setFont(labelFont());
   station_startup_cart_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   station_startup_select_button=new QPushButton(tr("Select"),this);
-  station_startup_select_button->setFont(small_font);
+  station_startup_select_button->setFont(subButtonFont());
   connect(station_startup_select_button,SIGNAL(clicked()),
 	  this,SLOT(selectClicked()));
 
@@ -199,17 +181,18 @@ EditStation::EditStation(QString sname,QWidget *parent)
   station_cue_sel=new RDCardSelector(this);
   station_cue_sel_label=
     new QLabel(station_cue_sel,tr("Cue &Output:"),this);
-  station_cue_sel_label->setFont(font);
+  station_cue_sel_label->setFont(labelFont());
   station_cue_sel_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   station_start_cart_edit=new QLineEdit(this);
   station_start_cart_edit->setValidator(macro_validator);
   station_start_cart_label=
     new QLabel(station_start_cart_edit,tr("Start Cart")+":",this);
+  station_start_cart_label->setFont(subLabelFont());
   station_start_cart_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   station_start_cart_button=new QPushButton(tr("Select"),this);
-  station_start_cart_button->setFont(small_font);
+  station_start_cart_button->setFont(subButtonFont());
   connect(station_start_cart_button,SIGNAL(clicked()),
 	  this,SLOT(startCartClickedData()));
 
@@ -217,10 +200,11 @@ EditStation::EditStation(QString sname,QWidget *parent)
   station_stop_cart_edit->setValidator(macro_validator);
   station_stop_cart_label=
     new QLabel(station_stop_cart_edit,tr("Stop Cart")+":",this);
+  station_stop_cart_label->setFont(subLabelFont());
   station_stop_cart_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   station_stop_cart_button=new QPushButton(tr("Select"),this);
-  station_stop_cart_button->setFont(small_font);
+  station_stop_cart_button->setFont(subButtonFont());
   connect(station_stop_cart_button,SIGNAL(clicked()),
 	  this,SLOT(stopCartClickedData()));
 
@@ -230,7 +214,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   station_heartbeat_box=new QCheckBox(this);
   station_heartbeat_label=
     new QLabel(station_heartbeat_box,tr("Enable Heartbeat"),this);
-  station_heartbeat_label->setFont(font);
+  station_heartbeat_label->setFont(labelFont());
   station_heartbeat_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   connect(station_heartbeat_box,SIGNAL(toggled(bool)),
 	  this,SLOT(heartbeatToggledData(bool)));
@@ -241,7 +225,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   station_filter_box=new QCheckBox(this);
   station_filter_label=
     new QLabel(station_filter_box,tr("Use Realtime Filtering"),this);
-  station_filter_label->setFont(font);
+  station_filter_label->setFont(labelFont());
   station_filter_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
@@ -250,10 +234,10 @@ EditStation::EditStation(QString sname,QWidget *parent)
   station_hbcart_edit=new QLineEdit(this);
   station_hbcart_edit->setValidator(macro_validator);
   station_hbcart_label=new QLabel(station_hbcart_edit,tr("Cart:"),this);
-  station_hbcart_label->setFont(font);
+  station_hbcart_label->setFont(labelFont());
   station_hbcart_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   station_hbcart_button=new QPushButton(this);
-  station_hbcart_button->setFont(font);
+  station_hbcart_button->setFont(subButtonFont());
   station_hbcart_button->setText(tr("Select"));
   connect(station_hbcart_button,SIGNAL(clicked()),
 	  this,SLOT(heartbeatClickedData()));
@@ -265,10 +249,10 @@ EditStation::EditStation(QString sname,QWidget *parent)
   station_hbinterval_spin->setRange(1,300);
   station_hbinterval_label=
     new QLabel(station_hbinterval_spin,tr("Interval:"),this);
-  station_hbinterval_label->setFont(font);
+  station_hbinterval_label->setFont(labelFont());
   station_hbinterval_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   station_hbinterval_unit=new QLabel(tr("secs"),this);
-  station_hbinterval_unit->setFont(font);
+  station_hbinterval_unit->setFont(labelFont());
   station_hbinterval_unit->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
@@ -277,15 +261,16 @@ EditStation::EditStation(QString sname,QWidget *parent)
   station_maint_box=new QCheckBox(this);
   station_maint_label=
     new QLabel(station_maint_box,tr("Include in System Maintenance Pool"),this);
-  station_maint_label->setFont(font);
+  station_maint_label->setFont(labelFont());
   station_maint_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Enable Drag & Drop Checkbox
   //
   station_dragdrop_box=new QCheckBox(this);
-  station_dragdrop_label=new QLabel(station_dragdrop_box,tr("Enable Drag && Drop"),this);
-  station_dragdrop_label->setFont(font);
+  station_dragdrop_label=
+    new QLabel(station_dragdrop_box,tr("Enable Drag && Drop"),this);
+  station_dragdrop_label->setFont(labelFont());
   station_dragdrop_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
@@ -295,7 +280,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   station_panel_enforce_label=
     new QLabel(station_panel_enforce_box,
 	       tr("Allow Drops on Panels not in Setup Mode"),this);
-  station_panel_enforce_label->setFont(font);
+  station_panel_enforce_label->setFont(labelFont());
   station_panel_enforce_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   connect(station_dragdrop_box,SIGNAL(toggled(bool)),
 	  station_panel_enforce_label,SLOT(setEnabled(bool)));
@@ -306,7 +291,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   // System Services Section
   //
   station_systemservices_groupbox=new QGroupBox(tr("System Services"),this);
-  station_systemservices_groupbox->setFont(font);
+  station_systemservices_groupbox->setFont(labelFont());
 
   //
   // HTTP Service Host
@@ -315,7 +300,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   station_http_station_box->setEditable(false);
   station_http_station_label=
     new QLabel(station_http_station_box,tr("HTTP Xport:"),this);
-  station_http_station_label->setFont(font);
+  station_http_station_label->setFont(labelFont());
   station_http_station_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -327,14 +312,14 @@ EditStation::EditStation(QString sname,QWidget *parent)
 	  this,SLOT(caeStationActivatedData(const QString &)));
   station_cae_station_label=
     new QLabel(station_cae_station_box,tr("Core Audio Engine:"),this);
-  station_cae_station_label->setFont(font);
+  station_cae_station_label->setFont(labelFont());
   station_cae_station_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // RDLibrary Configuration Button
   //
   station_rdlibrary_button=new QPushButton(this);
-  station_rdlibrary_button->setFont(font);
+  station_rdlibrary_button->setFont(buttonFont());
   station_rdlibrary_button->setText(tr("RD&Library"));
   connect(station_rdlibrary_button,SIGNAL(clicked()),this,SLOT(editLibraryData()));
 
@@ -342,7 +327,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   // RDCatch Configuration Button
   //
   station_rdcatch_button=new QPushButton(this);
-  station_rdcatch_button->setFont(font);
+  station_rdcatch_button->setFont(buttonFont());
   station_rdcatch_button->setText(tr("RDCatch"));
   connect(station_rdcatch_button,SIGNAL(clicked()),this,SLOT(editDeckData()));
 
@@ -350,7 +335,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   // RDAirPlay Configuration Button
   //
   station_rdairplay_button=new QPushButton(this);
-  station_rdairplay_button->setFont(font);
+  station_rdairplay_button->setFont(buttonFont());
   station_rdairplay_button->setText(tr("RDAirPlay"));
   connect(station_rdairplay_button,SIGNAL(clicked()),
 	  this,SLOT(editAirPlayData()));
@@ -359,7 +344,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   // RDPanel Configuration Button
   //
   station_rdpanel_button=new QPushButton(this);
-  station_rdpanel_button->setFont(font);
+  station_rdpanel_button->setFont(buttonFont());
   station_rdpanel_button->setText(tr("RDPanel"));
   connect(station_rdpanel_button,SIGNAL(clicked()),this,SLOT(editPanelData()));
 
@@ -367,7 +352,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   // RDLogEdit Configuration Button
   //
   station_rdlogedit_button=new QPushButton(this);
-  station_rdlogedit_button->setFont(font);
+  station_rdlogedit_button->setFont(buttonFont());
   station_rdlogedit_button->setText(tr("RDLogEdit"));
   connect(station_rdlogedit_button,SIGNAL(clicked()),
 	  this,SLOT(editLogEditData()));
@@ -376,7 +361,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   // RDCartSlots Configuration Button
   //
   station_rdcartslots_button=new QPushButton(this);
-  station_rdcartslots_button->setFont(font);
+  station_rdcartslots_button->setFont(buttonFont());
   station_rdcartslots_button->setText(tr("RDCart\nSlots"));
   connect(station_rdcartslots_button,SIGNAL(clicked()),
 	  this,SLOT(editCartSlotsData()));
@@ -385,7 +370,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   // Dropboxes Configuration Button
   //
   station_dropboxes_button=new QPushButton(this);
-  station_dropboxes_button->setFont(font);
+  station_dropboxes_button->setFont(buttonFont());
   station_dropboxes_button->setText(tr("Dropboxes"));
   connect(station_dropboxes_button,SIGNAL(clicked()),
 	  this,SLOT(editDropboxesData()));
@@ -394,7 +379,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   // Switcher Configuration Button
   //
   station_switchers_button=new QPushButton(this);
-  station_switchers_button->setFont(font);
+  station_switchers_button->setFont(buttonFont());
   station_switchers_button->setText(tr("Switchers\nGPIO"));
   connect(station_switchers_button,SIGNAL(clicked()),
 	  this,SLOT(editSwitcherData()));
@@ -403,7 +388,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   // Host Variables Configuration Button
   //
   station_hostvars_button=new QPushButton(this);
-  station_hostvars_button->setFont(font);
+  station_hostvars_button->setFont(buttonFont());
   station_hostvars_button->setText(tr("Host\nVariables"));
   connect(station_hostvars_button,SIGNAL(clicked()),
 	  this,SLOT(editHostvarsData()));
@@ -412,7 +397,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   // Audio Ports Configuration Button
   //
   station_audioports_button=new QPushButton(this);
-  station_audioports_button->setFont(font);
+  station_audioports_button->setFont(buttonFont());
   station_audioports_button->setText(tr("ASI Audio\nPorts"));
   connect(station_audioports_button,SIGNAL(clicked()),
 	  this,SLOT(editAudioData()));
@@ -421,7 +406,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   // TTY Configuration Button
   //
   station_ttys_button=new QPushButton(this);
-  station_ttys_button->setFont(font);
+  station_ttys_button->setFont(buttonFont());
   station_ttys_button->setText(tr("Serial\nPorts"));
   connect(station_ttys_button,SIGNAL(clicked()),this,SLOT(editTtyData()));
 
@@ -429,7 +414,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   // View Adapters (Audio Resources) Configuration Button
   //
   station_adapters_button=new QPushButton(this);
-  station_adapters_button->setFont(font);
+  station_adapters_button->setFont(buttonFont());
   station_adapters_button->setText(tr("Audio\nResources"));
   connect(station_adapters_button,SIGNAL(clicked()),
 	  this,SLOT(viewAdaptersData()));
@@ -438,7 +423,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   // JACK Settings Button
   //
   station_jack_button=new QPushButton(this);
-  station_jack_button->setFont(font);
+  station_jack_button->setFont(buttonFont());
   station_jack_button->setText(tr("JACK\nSettings"));
   connect(station_jack_button,SIGNAL(clicked()),this,SLOT(jackSettingsData()));
 
@@ -446,7 +431,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   // PyPAD Instances Button
   //
   station_pypad_button=new QPushButton(this);
-  station_pypad_button->setFont(font);
+  station_pypad_button->setFont(buttonFont());
   station_pypad_button->setText(tr("PyPAD\nInstances"));
   connect(station_pypad_button,SIGNAL(clicked()),
 	  this,SLOT(pypadInstancesData()));
@@ -456,7 +441,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   //
   station_ok_button=new QPushButton(this);
   station_ok_button->setDefault(true);
-  station_ok_button->setFont(font);
+  station_ok_button->setFont(buttonFont());
   station_ok_button->setText(tr("&OK"));
   connect(station_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
@@ -464,7 +449,7 @@ EditStation::EditStation(QString sname,QWidget *parent)
   // Cancel Button
   //
   station_cancel_button=new QPushButton(this);
-  station_cancel_button->setFont(font);
+  station_cancel_button->setFont(buttonFont());
   station_cancel_button->setText(tr("&Cancel"));
   connect(station_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
@@ -590,7 +575,8 @@ EditStation::~EditStation()
 
 QSize EditStation::sizeHint() const
 {
-  return QSize(395,744);
+  return QSize(415,744);
+  //  return QSize(395,744);
 } 
 
 
@@ -900,13 +886,13 @@ void EditStation::stopCartClickedData()
 
 void EditStation::resizeEvent(QResizeEvent *e)
 {
-  station_name_edit->setGeometry(115,11,size().width()-125,19);
+  station_name_edit->setGeometry(115,11,size().width()-120,19);
   station_name_label->setGeometry(10,11,100,19);
 
-  station_short_name_edit->setGeometry(115,32,size().width()-125,19);
+  station_short_name_edit->setGeometry(115,32,size().width()-120,19);
   station_short_name_label->setGeometry(10,32,100,19);
 
-  station_description_edit->setGeometry(115,53,size().width()-125,19);
+  station_description_edit->setGeometry(115,53,size().width()-120,19);
   station_description_label->setGeometry(10,53,100,19);
 
   station_default_name_edit->setGeometry(115,74,160,19);
@@ -915,10 +901,10 @@ void EditStation::resizeEvent(QResizeEvent *e)
   station_address_edit->setGeometry(115,95,120,19);
   station_address_label->setGeometry(10,95,100,19);
 
-  station_audio_editor_edit->setGeometry(115,116,size().width()-130,19);
+  station_audio_editor_edit->setGeometry(115,116,size().width()-120,19);
   station_audio_editor_label->setGeometry(10,116,100,19);
 
-  station_report_editor_edit->setGeometry(115,137,size().width()-130,19);
+  station_report_editor_edit->setGeometry(115,137,size().width()-120,19);
   station_report_editor_label->setGeometry(10,137,100,19);
 
   station_timeoffset_box->setGeometry(115,158,80,19);
@@ -926,24 +912,24 @@ void EditStation::resizeEvent(QResizeEvent *e)
 
   station_startup_cart_edit->setGeometry(115,179,60,19);
   station_startup_cart_label->setGeometry(10,179,100,19);
-  station_startup_select_button->setGeometry(180,179,50,22);
+  station_startup_select_button->setGeometry(180,178,50,22);
 
   station_cue_sel->setGeometry(90,200,110,117);
   station_cue_sel_label->setGeometry(10,200,100,19);
 
-  station_start_cart_edit->setGeometry(270,200,60,20);
-  station_start_cart_label->setGeometry(205,200,60,20);
-  station_start_cart_button->setGeometry(335,199,50,22);
+  station_start_cart_edit->setGeometry(290,200,60,20);
+  station_start_cart_label->setGeometry(205,200,80,20);
+  station_start_cart_button->setGeometry(355,199,50,22);
 
-  station_stop_cart_edit->setGeometry(270,222,60,20);
-  station_stop_cart_label->setGeometry(205,222,60,20);
-  station_stop_cart_button->setGeometry(335,221,50,22);
+  station_stop_cart_edit->setGeometry(290,222,60,20);
+  station_stop_cart_label->setGeometry(205,222,80,20);
+  station_stop_cart_button->setGeometry(355,221,50,22);
 
   station_heartbeat_box->setGeometry(10,247,15,15);
   station_heartbeat_label->setGeometry(30,245,150,20);
 
   station_filter_box->setGeometry(210,247,15,15);
-  station_filter_label->setGeometry(230,247,150,20);
+  station_filter_label->setGeometry(230,245,150,20);
 
   station_hbcart_edit->setGeometry(65,269,60,19);
   station_hbcart_label->setGeometry(10,269,50,19);
@@ -970,33 +956,33 @@ void EditStation::resizeEvent(QResizeEvent *e)
   station_cae_station_box->setGeometry(145,396,size().width()-165,19);
   station_cae_station_label->setGeometry(11,396,130,19);
 
-  station_rdlibrary_button->setGeometry(20,434,80,50);
+  station_rdlibrary_button->setGeometry(30,434,80,50);
 
-  station_rdcatch_button->setGeometry(110,434,80,50);
+  station_rdcatch_button->setGeometry(120,434,80,50);
 
-  station_rdairplay_button->setGeometry(200,434,80,50);
+  station_rdairplay_button->setGeometry(210,434,80,50);
 
-  station_rdpanel_button->setGeometry(290,434,80,50);
+  station_rdpanel_button->setGeometry(300,434,80,50);
 
-  station_rdlogedit_button->setGeometry(20,494,80,50);
+  station_rdlogedit_button->setGeometry(30,494,80,50);
 
-  station_rdcartslots_button->setGeometry(110,494,80,50);
+  station_rdcartslots_button->setGeometry(120,494,80,50);
 
-  station_dropboxes_button->setGeometry(200,494,80,50);
+  station_dropboxes_button->setGeometry(210,494,80,50);
 
-  station_switchers_button->setGeometry(290,494,80,50);
+  station_switchers_button->setGeometry(300,494,80,50);
 
-  station_hostvars_button->setGeometry(20,554,80,50);
+  station_hostvars_button->setGeometry(30,554,80,50);
 
-  station_audioports_button->setGeometry(110,554,80,50);
+  station_audioports_button->setGeometry(120,554,80,50);
 
-  station_ttys_button->setGeometry(200,554,80,50);
+  station_ttys_button->setGeometry(210,554,80,50);
 
-  station_adapters_button->setGeometry(290,554,80,50);
+  station_adapters_button->setGeometry(300,554,80,50);
 
-  station_jack_button->setGeometry(110,614,80,50);
+  station_jack_button->setGeometry(120,614,80,50);
 
-  station_pypad_button->setGeometry(200,614,80,50);
+  station_pypad_button->setGeometry(210,614,80,50);
 
   station_ok_button->setGeometry(size().width()-180,size().height()-60,80,50);
   station_cancel_button->

@@ -2,7 +2,7 @@
 //
 // Library Utility for Rivendell.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,28 +21,13 @@
 #ifndef RDLIBRARY_H
 #define RDLIBRARY_H
 
-#include <qdialog.h>
-#include <qsize.h>
-#include <qsizepolicy.h>
-#include <qsqldatabase.h>
-#include <rdlistview.h>
+#include <qprogressdialog.h>
+
 #include <rdsimpleplayer.h>
-#include <qpushbutton.h>
 #include <qcombobox.h>
-#include <qlabel.h>
 #include <qcheckbox.h>
-#include <qpixmap.h>
-#include <q3progressdialog.h>
-#include <qtimer.h>
 
-#include <rdstation.h>
-#include <rdcart.h>
-#include <rduser.h>
-#include <rdripc.h>
-#include <rdlibrary_conf.h>
-#include <rdlistviewitem.h>
-
-#include <rdconfig.h>
+#include <rdwidget.h>
 
 #include "disk_gauge.h"
 #include "lib_listview.h"
@@ -61,7 +46,7 @@
 
 #define RDLIBRARY_USAGE "[--profile-ripping]\n\n--profile-ripping\n     Print profiling information to stdout when performing rips from\n     optical media.\n\n"
 
-class MainWidget : public QWidget
+class MainWidget : public RDWidget
 {
  Q_OBJECT
  public:
@@ -70,7 +55,7 @@ class MainWidget : public QWidget
 		Publisher=13,Client=14,Agency=15,UserDefined=16,
 		Cuts=17,LastCutPlayed=18,EnforceLength=19,PreservePitch=20,
 		LengthDeviation=21,OwnedBy=22};
-  MainWidget(QWidget *parent=0);
+  MainWidget(RDConfig *c,QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 
@@ -161,7 +146,7 @@ class MainWidget : public QWidget
   QString lib_import_path;
   QPixmap *lib_rivendell_map;
   RDStation::FilterMode lib_filter_mode;
-  Q3ProgressDialog *lib_progress_dialog;
+  QProgressDialog *lib_progress_dialog;
   bool profile_ripping;
   bool lib_edit_pending;
   bool lib_user_changed;

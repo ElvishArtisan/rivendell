@@ -2,7 +2,7 @@
 //
 // Select a Rivendell Log
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,16 +21,15 @@
 #ifndef LIST_LOGS_H
 #define LIST_LOGS_H
 
-#include <qsqldatabase.h>
-#include <qdialog.h>
 #include <q3listview.h>
 #include <qpushbutton.h>
 
+#include <rddialog.h>
 #include <rdlogfilter.h>
 #include <rdloglock.h>
 #include <rdlogplay.h>
 
-class ListLogs : public QDialog
+class ListLogs : public RDDialog
 {
   Q_OBJECT
 

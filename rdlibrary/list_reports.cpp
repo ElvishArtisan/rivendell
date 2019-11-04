@@ -18,15 +18,10 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
 #include <qpushbutton.h>
-#include <qstringlist.h>
 
-#include <rdapplication.h>
-#include <rdcart.h>
 #include <rdcart_search_text.h>
 #include <rdconf.h>
-#include <rddb.h>
 #include <rdreport.h>
 #include <rdtextfile.h>
 
@@ -36,30 +31,20 @@
 ListReports::ListReports(const QString &filter,const QString &type_filter,
 			 const QString &group,const QString &schedcode,
 			 QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
-  setModal(true);
-
   list_filter=filter;
   list_type_filter=type_filter;
   list_group=group;
   list_schedcode=schedcode;
 
-  //
-  // Fix the Window Size
-  //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
-
   setWindowTitle("RDLibrary - "+tr("Select Report"));
 
   //
-  // Create Fonts
+  // Fix the Window Size
   //
-  QFont font=QFont("Helvetica",12,QFont::Bold);
-  font.setPixelSize(12);
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   //
   // Reports List
@@ -71,7 +56,7 @@ ListReports::ListReports(const QString &filter,const QString &type_filter,
   list_reports_box->insertItem(tr("Cart Data Dump (CSV)"));
   list_reports_label=new QLabel(list_reports_box,tr("Type:"),this);
   list_reports_label->setGeometry(10,10,35,19);
-  list_reports_label->setFont(font);
+  list_reports_label->setFont(labelFont());
   list_reports_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   connect(list_reports_box,SIGNAL(activated(int)),
 	  this,SLOT(typeActivatedData(int)));
@@ -86,7 +71,7 @@ ListReports::ListReports(const QString &filter,const QString &type_filter,
   list_fieldnames_label=
     new QLabel(list_fieldnames_check,tr("Prepend Field Names"),this);
   list_fieldnames_label->setGeometry(75,32,sizeHint().width()-75,19);
-  list_fieldnames_label->setFont(font);
+  list_fieldnames_label->setFont(labelFont());
   list_fieldnames_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   list_fieldnames_label->setDisabled(true);
 
@@ -97,7 +82,7 @@ ListReports::ListReports(const QString &filter,const QString &type_filter,
   generate_button->
     setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   generate_button->setDefault(true);
-  generate_button->setFont(font);
+  generate_button->setFont(buttonFont());
   generate_button->setText(tr("&Generate"));
   connect(generate_button,SIGNAL(clicked()),this,SLOT(generateData()));
 
@@ -107,7 +92,7 @@ ListReports::ListReports(const QString &filter,const QString &type_filter,
   QPushButton *close_button=new QPushButton(this);
   close_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
-  close_button->setFont(font);
+  close_button->setFont(buttonFont());
   close_button->setText(tr("&Close"));
   connect(close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 }

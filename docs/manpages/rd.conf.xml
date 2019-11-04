@@ -1,0 +1,825 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<refentry id="stdin" xmlns="http://docbook.org/ns/docbook" version="5.0">
+  <!--
+      Header
+  -->
+  <refmeta>
+    <refentrytitle>rd.conf</refentrytitle>
+    <manvolnum>5</manvolnum>
+    <refmiscinfo class='source'>October 2019</refmiscinfo>
+    <refmiscinfo class='manual'>Linux Audio Manual</refmiscinfo>
+  </refmeta>
+  <refnamediv>
+    <refname>rd.conf</refname>
+    <refpurpose>Configuration file for the Rivendell Radio Automation System</refpurpose>
+  </refnamediv>
+  <info>
+    <author>
+      <personname>
+	<firstname>Fred</firstname>
+	<surname>Gleason</surname>
+	<email>fredg@paravelsystems.com</email>
+      </personname>
+      <contrib>Application Author</contrib>
+    </author>
+  </info>
+
+  <!--
+      Body
+  -->
+  <refsynopsisdiv id='synopsis'>
+    <para>
+      The <command>/etc/rd.conf</command> file is the primary
+      configuration file for the Rivendell Radio Automation System. In order
+      to support multiple Rivendell configurations by means of the
+      <command>rdselect</command><manvolnum>1</manvolnum> tool, it is
+      customary for this file to be a symbolic link to an actual configuration
+      file located in the <userinput>/etc/rivendell.d/</userinput> 
+      sub-directory.
+    </para>
+  </refsynopsisdiv>
+
+  <refsect1 id='description'><title>Description</title>
+  <para>
+    The file format consists of sections, each of which contain configuration
+    information in the form of keyword/value pairs. Each section begins with
+    with the name of the section in <userinput>[]</userinput> brackets,
+    followed by zero or more keyword/value pairs, with the keyword and value
+    separated by an <userinput>=</userinput> sign. Lines starting with
+    <userinput>;</userinput> are ignored, as are blank lines.
+  </para>
+  <para>
+    For example:
+  </para>
+  <literallayout>
+    [Section1]
+    ; This is a comment.
+    Keyword1=value1
+    Keyword2=value2
+    Keyword3=value3
+  </literallayout>
+  </refsect1>
+
+  <refsect1 id='sections_keywords'><title>Sections/Keywords</title>
+  <para>
+    Following are the sections and keywords for <command>rd.conf</command>
+  </para>
+  <variablelist>
+    <varlistentry>
+      <term>
+	<userinput>[Identity]</userinput>
+      </term>
+      <listitem>
+	<variablelist>
+	  <varlistentry>
+	    <term>
+	      <userinput>AudioOwner = <replaceable>user</replaceable></userinput>
+	    </term>
+	    <listitem>
+	      <para>
+		The name of the user that will own the files in the audio store.
+		This should be a &quot;system&quot; account, not an actual
+		user. Default value is <userinput>rivendell</userinput>.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>
+	      <userinput>AudioGroup = <replaceable>group</replaceable></userinput>
+	    </term>
+	    <listitem>
+	      <para>
+		The name of the group that will own the files in the audio
+		store. This should be a &quot;system&quot; account, not an
+		actual user. Default value is <userinput>rivendell</userinput>.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>
+	      <userinput>PypadOwner = <replaceable>user</replaceable></userinput>
+	    </term>
+	    <listitem>
+	      <para>
+		The name of the user used to execute PyPAD scripts.
+		This should be a &quot;system&quot; account, not an actual
+		user. Default value is <userinput>pypad</userinput>.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>
+	      <userinput>PypadGroup = <replaceable>group</replaceable></userinput>
+	    </term>
+	    <listitem>
+	      <para>
+		The name of the group used to execute PyPAD scripts.
+		This should be a &quot;system&quot; account, not an actual
+		user. Default value is <userinput>pypad</userinput>.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>
+	      <userinput>RnRmlOwner = <replaceable>user</replaceable></userinput>
+	    </term>
+	    <listitem>
+	      <para>
+		The name of the user used to execute <command>RN</command> RMLs.
+		This should be a &quot;system&quot; account, not an actual
+		user. Default value is <userinput>rivendell</userinput>.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>
+	      <userinput>RnRmlGroup = <replaceable>group</replaceable></userinput>
+	    </term>
+	    <listitem>
+	      <para>
+		The name of the group used to execute <command>RN</command>
+		RMLs. This should be a &quot;system&quot; account, not an
+		actual user. Default value is <userinput>rivendell</userinput>.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>
+	      <userinput>SyslogFacility = <replaceable>facility</replaceable></userinput>
+	    </term>
+	    <listitem>
+	      <para>
+		The facility number Rivendell will use when sending messages
+		to the syslog system. The following values are recognized:
+	      </para>
+	      <simplelist>
+		<member><userinput>1</userinput> - USER (the default)</member>
+		<member><userinput>16</userinput> - LOCAL0</member>
+		<member><userinput>17</userinput> - LOCAL1</member>
+		<member><userinput>18</userinput> - LOCAL2</member>
+		<member><userinput>19</userinput> - LOCAL3</member>
+		<member><userinput>20</userinput> - LOCAL4</member>
+		<member><userinput>21</userinput> - LOCAL5</member>
+		<member><userinput>22</userinput> - LOCAL6</member>
+		<member><userinput>23</userinput> - LOCAL7</member>
+	      </simplelist>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>
+	      <userinput>Password = <replaceable>passwd</replaceable></userinput>
+	    </term>
+	    <listitem>
+	      <para>
+		The password used by Rivendell modules when connecting to
+		Rivendell system services.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>
+	      <userinput>Label = <replaceable>string</replaceable></userinput>
+	    </term>
+	    <listitem>
+	      <para>
+		The identifier string that will appear in
+		<command>rdselect</command><manvolnum>1</manvolnum> list
+		for this configuration.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	  <varlistentry>
+	    <term>
+	      <userinput>HttpUserAgent = <replaceable>string</replaceable></userinput>
+	    </term>
+	    <listitem>
+	      <para>
+		Override the default string that would be sent as the value
+		of the <userinput>HTTP_USER_AGENT</userinput> header with
+		<replaceable>string</replaceable> when
+		making HTTP connections. It should seldom be necessary to
+		change this.
+	      </para>
+	    </listitem>
+	  </varlistentry>
+	</variablelist>
+      </listitem>
+   </varlistentry>
+ </variablelist>
+ <variablelist>
+   <varlistentry>
+     <term>
+       <userinput>[mySQL]</userinput>
+     </term>
+     <listitem>
+       <para>
+	 This section contains access credentials and attributes for the
+	 MySQL/MariaDB RDBMS server.
+       </para>
+       <variablelist>
+	 <varlistentry>
+	   <term>
+	     <userinput>Hostname = <replaceable>addr</replaceable></userinput>
+	   </term>
+	   <listitem>
+	     <para>
+	       The hostname or IP address of the database server. Default
+	       value is <userinput>localhost</userinput>.
+	     </para>
+	   </listitem>
+	 </varlistentry>
+	 <varlistentry>
+	   <term>
+	     <userinput>Loginname = <replaceable>name</replaceable></userinput>
+	   </term>
+	   <listitem>
+	     <para>
+	       The user name to use when connecting to the database server.
+	       This parameter has no default value.
+	     </para>
+	   </listitem>
+	 </varlistentry>
+	 <varlistentry>
+	   <term>
+	     <userinput>Password = <replaceable>passwd</replaceable></userinput>
+	   </term>
+	   <listitem>
+	     <para>
+	       The password to use when connecting to the database server.
+	       This parameter has no default value.
+	     </para>
+	   </listitem>
+	 </varlistentry>
+	 <varlistentry>
+	   <term>
+	     <userinput>Database = <replaceable>name</replaceable></userinput>
+	   </term>
+	   <listitem>
+	     <para>
+	       The name of the database to use when connecting to the database
+	       server. Default value is <userinput>Rivendell</userinput>.
+	     </para>
+	   </listitem>
+	 </varlistentry>
+	 <varlistentry>
+	   <term>
+	     <userinput>Driver = <replaceable>plugin-name</replaceable></userinput>
+	   </term>
+	   <listitem>
+	     <para>
+	       The name of the Qt SQL driver plug-in to use when connecting to
+	       the database server. Consult the Qt documentation for the list
+	       of available values. Default value is
+	       <userinput>QMYSQL3</userinput>. It should seldom be necessary
+	       to change this.
+	     </para>
+	   </listitem>
+	 </varlistentry>
+	 <varlistentry>
+	   <term>
+	     <userinput>HeartbeatInterval = <replaceable>secs</replaceable></userinput>
+	   </term>
+	   <listitem>
+	     <para>
+	       The interval, in seconds, between keep-alive messages to the
+	       database server. Default value is <userinput>360</userinput>.
+	     </para>
+	   </listitem>
+	 </varlistentry>
+	 <varlistentry>
+	   <term>
+	     <userinput>Engine = <replaceable>type</replaceable></userinput>
+	   </term>
+	   <listitem>
+	     <para>
+	       The engine type that will be used when creating new
+	       tables in the database. Consult the database server
+	       documentation for the list of supported types. Default
+	       value is <userinput>MyISAM</userinput>.
+	     </para>
+	   </listitem>
+	 </varlistentry>
+       </variablelist>
+     </listitem>
+   </varlistentry>
+ </variablelist>
+ <variablelist>
+   <varlistentry>
+     <term>
+       <userinput>[AudioStore]</userinput>
+     </term>
+     <listitem>
+       <para>
+	 This section contains information regarding the location of
+	 the audio store.
+       </para>
+       <variablelist>
+	 <varlistentry>
+	   <term>
+	     <userinput>MountSource = <replaceable>path</replaceable></userinput>
+	   </term>
+	   <listitem>
+	     <para>
+	       The path to the audio store, in the format used by the
+	       first field (fs_spec) of
+	       <command>fstab</command><manvolnum>5</manvolnum>. If the audio
+	       store is located in the root filesystem 
+	       [<userinput>/</userinput>], this value
+	       should be left blank. This parameter has no default value.
+	     </para>
+	   </listitem>
+	 </varlistentry>
+	 <varlistentry>
+	   <term>
+	     <userinput>MountType = <replaceable>type</replaceable></userinput>
+	   </term>
+	   <listitem>
+	     <para>
+	       The type of filesystem used by the audio store, as used in
+	       the third field (fs_vfstype) of
+	       <command>fstab</command><manvolnum>5</manvolnum>. If the audio
+	       store is located in the root filesystem 
+	       [<userinput>/</userinput>], this value
+	       should be left blank. This parameter has no default value.
+	     </para>
+	   </listitem>
+	 </varlistentry>
+	 <varlistentry>
+	   <term>
+	     <userinput>MountOptions = <replaceable>opts</replaceable></userinput>
+	   </term>
+	   <listitem>
+	     <para>
+	       The options used when mounting filesystem used by the audio
+	       store, as used in the fourth field (fs_mntops) of
+	       <command>fstab</command><manvolnum>5</manvolnum>. Default
+	       value is <userinput>defaults</userinput>.	       
+	     </para>
+	   </listitem>
+	 </varlistentry>
+	 <varlistentry>
+	   <term>
+	     <userinput>CaeHostname = <replaceable>address</replaceable></userinput>
+	   </term>
+	   <listitem>
+	     <para>
+	       The hostname or IP address of the system to which to delegate
+	       Core Audio Engine services.
+	     </para>
+	     <para>
+	       <emphasis>WARNING:</emphasis> Use of this parameter is
+	       deprecated; use the
+	       <computeroutput>Core Audio Engine</computeroutput> setting
+	       in <command>rdadmin</command><manvolnum>1</manvolnum> instead!
+	     </para>
+	   </listitem>
+	 </varlistentry>
+	 <varlistentry>
+	   <term>
+	     <userinput>XportHostname = <replaceable>address</replaceable></userinput>
+	   </term>
+	   <listitem>
+	     <para>
+	       The hostname or IP address of the system to which to delegate
+	       HTTP Xport services.
+	     </para>
+	     <para>
+	       <emphasis>WARNING:</emphasis> Use of this parameter is
+	       deprecated; use the
+	       <computeroutput>HTTP Xport</computeroutput> setting
+	       in <command>rdadmin</command><manvolnum>1</manvolnum> instead!
+	     </para>
+	   </listitem>
+	 </varlistentry>
+       </variablelist>
+     </listitem>
+   </varlistentry>
+ </variablelist>
+
+ <variablelist>
+   <varlistentry>
+     <term>
+       <userinput>[Fonts]</userinput>
+     </term>
+     <listitem>
+       <para>
+	 This section contains hints concerning the fonts to be used when
+	 drawing the various widgets in Rivendell. The font engine uses these
+	 values to calculate various related fonts.
+       </para>
+       <variablelist>
+	 <varlistentry>
+	   <term>
+	     <userinput>Family = <replaceable>name</replaceable></userinput>
+	   </term>
+	   <listitem>
+	     <para>
+	       The name of the font family to be used for dialogs. Default
+	       value is <userinput>System</userinput>.
+	     </para>
+	   </listitem>
+	 </varlistentry>
+	 <varlistentry>
+	   <term>
+	     <userinput>ButtonSize = <replaceable>pixels</replaceable></userinput>
+	   </term>
+	   <listitem>
+	     <para>
+	       The height, in pixels, of the font used for most pushbuttons.
+	       Default value is <userinput>12</userinput>.
+	     </para>
+	   </listitem>
+	 </varlistentry>
+	 <varlistentry>
+	   <term>
+	     <userinput>LabelSize = <replaceable>pixels</replaceable></userinput>
+	   </term>
+	   <listitem>
+	     <para>
+	       The height, in pixels, of the font used for most labels.
+	       Default value is <userinput>11</userinput>.
+	     </para>
+	   </listitem>
+	 </varlistentry>
+	 <varlistentry>
+	   <term>
+	     <userinput>DefaultSize = <replaceable>pixels</replaceable></userinput>
+	   </term>
+	   <listitem>
+	     <para>
+	       The height, in pixels, of the font used for most data elements.
+	       Default value is <userinput>11</userinput>.
+	     </para>
+	   </listitem>
+	 </varlistentry>
+       </variablelist>
+     </listitem>
+   </varlistentry>
+ </variablelist>
+
+ <variablelist>
+   <varlistentry>
+     <term>
+       <userinput>[Provisioning]</userinput>
+     </term>
+     <listitem>
+       <para>
+	 This section can be used to enable the automatic creation of
+	 Rivendell Host and Service entries. Useful for automatic provisioning
+	 of 'cloud' instances.
+       </para>
+       <variablelist>
+	 <varlistentry>
+	   <term>
+	     <userinput>CreateHost = Yes</userinput>|<userinput>No</userinput>
+	   </term>
+	   <listitem>
+	     <para>
+	       If set to <userinput>Yes</userinput>, a Host entry will be
+	       automatically created in the database when the
+	       &quot;rivendell&quot; system service is started, using the
+	       Host definition specified in
+	       <userinput>NewHostTemplate =</userinput> as the template.
+	       The new host entry will be assigned the IP address bound to
+	       the network interface specified by
+	       <userinput>NewHostIpAddress =</userinput> ('lo' by default).
+	       The new host's Short Name can be populated using the
+	       <userinput>NewHostShortName =</userinput> parameter, which
+	       takes a Perl-style regex to capture the required text from
+	       the full host name, using the captured group from the regex
+	       specified in <userinput>NewHostShortNameGroup =</userinput>.
+	     </para>
+	   </listitem>
+	 </varlistentry>
+	 <varlistentry>
+	   <term>
+	     <userinput>NewHostTemplate = <replaceable>hostname</replaceable></userinput>
+	   </term>
+	   <listitem>
+	     <para>
+	       The name of an existing Host entry in the database to use
+	       as a template when provisioning a new Host.
+	     </para>
+	   </listitem>
+	 </varlistentry>
+	 <varlistentry>
+	   <term>
+	     <userinput>NewHostIpAddress = <replaceable>ifc-name</replaceable></userinput>
+	   </term>
+	   <listitem>
+	     <para>
+	       The name of an existing network interface from which to
+	       extract the IP address of a newly provisioned Host.
+	     </para>
+	   </listitem>
+	 </varlistentry>
+	 <varlistentry>
+	   <term>
+	     <userinput>NewHostShortNameRegex = <replaceable>regex</replaceable></userinput>
+	   </term>
+	   <listitem>
+	     <para>
+	       A regular express to use when setting the Short Name of a
+	       newly provisioned Host from the system host name.
+	     </para>
+	   </listitem>
+	 </varlistentry>
+	 <varlistentry>
+	   <term>
+	     <userinput>NewHostShortNameGroup = <replaceable>regex</replaceable></userinput>
+	   </term>
+	   <listitem>
+	     <para>
+	       The number of the captured regex group value to be used by the
+	       <userinput>NewHostShortNameRegex = </userinput> parameter.
+	     </para>
+	   </listitem>
+	 </varlistentry>
+	 <varlistentry>
+	   <term>
+	     <userinput>CreateService = Yes</userinput>|<userinput>No</userinput>
+	   </term>
+	   <listitem>
+	     <para>
+	       If set to <userinput>Yes</userinput>, a Service entry will be
+	       automatically created in the database when the
+	       &quot;rivendell&quot; system service is started, using the
+	       Service definition specified in
+	       <userinput>NewServiceTemplate =</userinput> as the template.
+	       The new service's name is determined by the
+	       <userinput>NewServiceNameRegex =</userinput> parameter,
+	       which takes a Perl-style regex to capture the required text
+	       from the full host name, using the captured group from the
+	       regex specified in
+	       <userinput>NewServiceNameGroup =</userinput>.
+	     </para>
+	   </listitem>
+	 </varlistentry>
+	 <varlistentry>
+	   <term>
+	     <userinput>NewServiceTemplate = <replaceable>svc-name</replaceable></userinput>
+	   </term>
+	   <listitem>
+	     <para>
+	       The name of an existing Service entry in the database to use
+	       as a template when provisioning a new Service.
+	     </para>
+	   </listitem>
+	 </varlistentry>
+	 <varlistentry>
+	   <term>
+	     <userinput>NewServiceNameRegex = <replaceable>regex</replaceable></userinput>
+	   </term>
+	   <listitem>
+	     <para>
+	       A regular expression to use when setting the Service Name of a
+	       newly provisioned Host from the system host name.
+	     </para>
+	   </listitem>
+	 </varlistentry>
+	 <varlistentry>
+	   <term>
+	     <userinput>NewServiceNameGroup = <replaceable>regex</replaceable></userinput>
+	   </term>
+	   <listitem>
+	     <para>
+	       The number of the captured regex group value to be used by the
+	       <userinput>NewServiceNameRegex = </userinput> parameter.
+	     </para>
+	   </listitem>
+	 </varlistentry>
+       </variablelist>
+     </listitem>
+   </varlistentry>
+ </variablelist>
+
+ <variablelist>
+   <varlistentry>
+     <term>
+       <userinput>[Logs]</userinput>
+     </term>
+     <listitem>
+       <para>
+	 This section contains directives for activating creation of logs
+	 of internal Rivendell state. Mostly useful for debugging!
+       </para>
+       <variablelist>
+	 <varlistentry>
+	   <term>
+	     <userinput>LogXloadDebugData = Yes</userinput>|<userinput>No</userinput>
+	   </term>
+	   <listitem>
+	     <para>
+	       Log upload/download debug data in syslog. You generally want
+	       to enable this only when debugging a specific upload/download
+	       problem, as *lots* of data can be generated. Default value
+	       is <userinput>No</userinput>.
+	     </para>
+	   </listitem>
+	 </varlistentry>
+       </variablelist>
+     </listitem>
+   </varlistentry>
+ </variablelist>
+
+ <variablelist>
+   <varlistentry>
+     <term>
+       <userinput>[Alsa]</userinput>
+     </term>
+     <listitem>
+       <para>
+	 This section contains directives for tuning Rivendell's interaction
+	 with ALSA audio devices. These should seldom need to be changed.
+       </para>
+       <variablelist>
+	 <varlistentry>
+	   <term>
+	     <userinput>PeriodQuantity = <replaceable>period-quan</replaceable></userinput>
+	   </term>
+	   <listitem>
+	     <para>
+	       The number of buffer periods to use when interacting with
+	       ALSA devices. Default value is <userinput>4</userinput>.
+	     </para>
+	   </listitem>
+	 </varlistentry>
+       </variablelist>
+       <variablelist>
+	 <varlistentry>
+	   <term>
+	     <userinput>PeriodSize = <replaceable>frames</replaceable></userinput>
+	   </term>
+	   <listitem>
+	     <para>
+	       The number of PCM frames to include in each period when
+	       interacting with ALSA devices. Default value is
+	       <userinput>1024</userinput>.
+	     </para>
+	   </listitem>
+	 </varlistentry>
+       </variablelist>
+       <variablelist>
+	 <varlistentry>
+	   <term>
+	     <userinput>ChannelsPerPcm = <replaceable>channels</replaceable></userinput>
+	   </term>
+	   <listitem>
+	     <para>
+	       Force the ALSA driver to use the specified number of channels. 
+	       Useful for dealing with certain device types. Default value is
+	       <userinput>-1</userinput>, which disables this feature.
+	     </para>
+	   </listitem>
+	 </varlistentry>
+       </variablelist>
+     </listitem>
+   </varlistentry>
+ </variablelist>
+
+ <variablelist>
+   <varlistentry>
+     <term>
+       <userinput>[Tuning]</userinput>
+     </term>
+     <listitem>
+       <para>
+	 This section contains miscellaneous directives for tuning various
+	 aspects of Rivendell.
+       </para>
+       <variablelist>
+	 <varlistentry>
+	   <term>
+	     <userinput>ServiceTimeout = <replaceable>secs</replaceable></userinput>
+	   </term>
+	   <listitem>
+	     <para>
+	       Instruct Rivendell modules to wait for the &quot;rivendell&quot;
+	       systemd service at startup to become available for
+	       <replaceable>secs</replaceable> seconds before returning an
+	       error. Default value is <userinput>30</userinput>.
+	     </para>
+	   </listitem>
+	 </varlistentry>
+       </variablelist>
+       <variablelist>
+	 <varlistentry>
+	   <term>
+	     <userinput>TranscodingDelay = <replaceable>msec</replaceable></userinput>
+	   </term>
+	   <listitem>
+	     <para>
+	       Introduce a delay of <replaceable>msec</replaceable>
+	       milliseconds in each iteration of the converter loop when
+	       transcoding files. The can be helpful in preventing
+	       saturation of network links when transcoding large files,
+	       at the cost of slower operation.
+	       Default value is <userinput>0</userinput>.
+	     </para>
+	   </listitem>
+	 </varlistentry>
+       </variablelist>
+       <variablelist>
+	 <varlistentry>
+	   <term>
+	     <userinput>UseRealtime = Yes</userinput>|<userinput>No</userinput>
+	   </term>
+	   <listitem>
+	     <para>
+	       Enable realtime priority in
+	       <command>caed</command><manvolnum>8</manvolnum>. Default
+	       value is <userinput>No</userinput>. Mostly useful for
+	       debugging.
+	     </para>
+	   </listitem>
+	 </varlistentry>
+       </variablelist>
+       <variablelist>
+	 <varlistentry>
+	   <term>
+	     <userinput>RealtimePriority = <replaceable>prio</replaceable></userinput>
+	   </term>
+	   <listitem>
+	     <para>
+	       Use a realtime priority of <replaceable>prio</replaceable>
+	       for <command>caed</command><manvolnum>8</manvolnum>. Default
+	       value is <userinput>9</userinput>. Mostly useful for
+	       debugging.
+	     </para>
+	   </listitem>
+	 </varlistentry>
+       </variablelist>
+     </listitem>
+   </varlistentry>
+ </variablelist>
+
+ <variablelist>
+   <varlistentry>
+     <term>
+       <userinput>[Hacks]</userinput>
+     </term>
+     <listitem>
+       <para>
+	 Short term and transient &quot;fixes&quot; to various problems.
+	 Use only if you know what you are doing!
+       </para>
+       <variablelist>
+	 <varlistentry>
+	   <term>
+	     <userinput>DisableMaintChecks = Yes</userinput>|<userinput>No</userinput>
+	   </term>
+	   <listitem>
+	     <para>
+	       Completely disable maintenance checks on this host.
+	       Default value is <userinput>No</userinput>.
+	     </para>
+	   </listitem>
+	 </varlistentry>
+       </variablelist>
+       <variablelist>
+	 <varlistentry>
+	   <term>
+	     <userinput>LockRdairplayMemory = Yes</userinput>|<userinput>No</userinput>
+	   </term>
+	   <listitem>
+	     <para>
+	       Lock memory in RDAirPlay.
+	       Default value is <userinput>No</userinput>.
+	     </para>
+	   </listitem>
+	 </varlistentry>
+       </variablelist>
+     </listitem>
+   </varlistentry>
+ </variablelist>
+
+ <variablelist>
+   <varlistentry>
+     <term>
+       <userinput>[SoftKeys]</userinput>
+     </term>
+     <listitem>
+       <para>
+	 This section is used for button definitions for
+	 <command>rdsoftkeys</command><manvolnum>1</manvolnum>. See the
+	 <command>rdsoftkeys</command><manvolnum>1</manvolnum> man page
+	 for specifics.
+       </para>
+     </listitem>
+   </varlistentry>
+ </variablelist>
+</refsect1>
+
+<refsect1 id='see_also'><title>See Also</title>
+<para>
+  <citerefentry>
+    <refentrytitle>fstab</refentrytitle><manvolnum>5</manvolnum>
+  </citerefentry>,
+  <citerefentry>
+    <refentrytitle>syslog</refentrytitle><manvolnum>3</manvolnum>
+  </citerefentry>
+</para>
+</refsect1>
+
+</refentry>
+

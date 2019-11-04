@@ -2,7 +2,7 @@
 //
 // A Services/Reports Management Dialog.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -42,15 +42,8 @@
 // Global Classes
 //
 SvcRecDialog::SvcRecDialog(const QString &svcname,QWidget *parent)
-  :QDialog(parent)
+  : RDDialog(parent)
 {
-  setModal(true);
-
-  QFont font;
-
-  font=QFont("Helvetica",12,QFont::Bold);
-  font.setPixelSize(12);
-
   setWindowTitle("RDLogManager - "+svcname+" "+tr("Report Data"));
 
   //
@@ -69,7 +62,7 @@ SvcRecDialog::SvcRecDialog(const QString &svcname,QWidget *parent)
   date_delete_button=new QPushButton(this);
   date_delete_button->
     setGeometry(10,sizeHint().height()-60,80,50);
-  date_delete_button->setFont(font);
+  date_delete_button->setFont(buttonFont());
   date_delete_button->setText(tr("&Purge\nData"));
   connect(date_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
   date_delete_button->setEnabled(rda->user()->deleteRec()&&
@@ -80,7 +73,7 @@ SvcRecDialog::SvcRecDialog(const QString &svcname,QWidget *parent)
   //
   QPushButton *button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
-  button->setFont(font);\
+  button->setFont(buttonFont());
   button->setText(tr("&Close"));
   button->setDefault(true);
   connect(button,SIGNAL(clicked()),this,SLOT(closeData()));

@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Log Event
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,21 +18,13 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <qcombobox.h>
-#include <qpainter.h>
-#include <qmessagebox.h>
 #include <qcolordialog.h>
+#include <qmessagebox.h>
+#include <qpainter.h>
 
-#include <rd.h>
-#include <rdapplication.h>
-#include <rdcart.h>
 #include <rdcart_search_text.h>
 #include <rdconf.h>
-#include <rddb.h>
 #include <rdescape_string.h>
-#include <rdeventimportlist.h>
 
 #include "add_event.h"
 #include "edit_event.h"
@@ -47,32 +39,21 @@
 
 EditEvent::EditEvent(QString eventname,bool new_event,
 		     std::vector<QString> *new_events,QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
-  setModal(true);
-
   event_saved=false;
   event_name=eventname;
   event_new_event=new_event;
   event_new_events=new_events;
   event_event=new RDEvent(eventname);
+
   setWindowTitle("RDLogManager - "+tr("Editing Event")+" - "+event_event->name());
 
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
-
-  //
-  // Create Fonts
-  //
-  QFont bold_font=QFont("Helvetica",10,QFont::Bold);
-  bold_font.setPixelSize(10);
-  QFont font=QFont("Helvetica",10,QFont::Normal);
-  font.setPixelSize(10);
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   //
   // Create Icons
@@ -86,24 +67,24 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   // Text Filter
   //
   event_lib_filter_edit=new QLineEdit(this);
-  event_lib_filter_edit->setGeometry(55,10,CENTER_LINE-70,14);
+  event_lib_filter_edit->setGeometry(55,2,CENTER_LINE-70,20);
   connect(event_lib_filter_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(filterChangedData(const QString &)));
   QLabel *label=new QLabel(event_lib_filter_edit,tr("Filter:"),this);
-  label->setFont(bold_font);
-  label->setGeometry(10,10,40,14);
+  label->setFont(labelFont());
+  label->setGeometry(5,2,45,20);
   label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
 
   //
   // Group Filter
   //
   event_group_box=new QComboBox(this);
-  event_group_box->setGeometry(55,30,CENTER_LINE-70,18);
+  event_group_box->setGeometry(55,25,CENTER_LINE-70,20);
   connect(event_group_box,SIGNAL(activated(const QString &)),
 	  this,SLOT(filterActivatedData(const QString &)));
   label=new QLabel(event_group_box,tr("Group:"),this);
-  label->setFont(bold_font);
-  label->setGeometry(10,30,40,18);
+  label->setFont(labelFont());
+  label->setGeometry(5,25,45,20);
   label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
 
   //
@@ -117,7 +98,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   rbutton->setGeometry(55,55,15,15);
   event_lib_type_group->addButton(rbutton,0);
   label=new QLabel(rbutton,tr("All"),this);
-  label->setFont(bold_font);
+  label->setFont(labelFont());
   label->setGeometry(75,55,30,15);
   label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   rbutton->setChecked(true);
@@ -126,7 +107,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   rbutton->setGeometry(125,55,15,15);
   event_lib_type_group->addButton(rbutton,1);
   label=new QLabel(rbutton,tr("Audio Only"),this);
-  label->setFont(bold_font);
+  label->setFont(labelFont());
   label->setGeometry(145,55,80,15);
   label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
 
@@ -134,7 +115,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   rbutton->setGeometry(235,55,15,15);
   event_lib_type_group->addButton(rbutton,2);
   label=new QLabel(rbutton,tr("Macros Only"),this);
-  label->setFont(bold_font);
+  label->setFont(labelFont());
   label->setGeometry(255,55,80,15);
   label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
 
@@ -192,12 +173,12 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   //
   // Remarks
   //
-  event_remarks_edit=new Q3TextEdit(this);
+  event_remarks_edit=new QTextEdit(this);
   event_remarks_edit->
     setGeometry(10,sizeHint().height()-150,CENTER_LINE-20,140);
   event_remarks_edit->setTextFormat(Qt::PlainText);
   label=new QLabel(event_remarks_edit,tr("REMARKS"),this);
-  label->setFont(bold_font);
+  label->setFont(labelFont());
   label->setGeometry(15,sizeHint().height()-165,100,15);
   label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
 
@@ -218,7 +199,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   // Pre-Position Log Section
   //
   event_position_header=new QLabel(tr("PRE-POSITION LOG"),this);
-  event_position_header->setFont(bold_font);
+  event_position_header->setFont(labelFont());
   event_position_header->setGeometry(CENTER_LINE+15,10,200,16);
 
   event_position_box=new QCheckBox(this);
@@ -227,25 +208,25 @@ EditEvent::EditEvent(QString eventname,bool new_event,
 	  this,SLOT(prepositionToggledData(bool)));
   event_position_label=
     new QLabel(event_position_box,tr("Cue to this event"),this);
-  event_position_label->setFont(bold_font);
+  event_position_label->setFont(labelFont());
   event_position_label->setGeometry(CENTER_LINE+35,27,150,22);
   event_position_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
-  event_position_edit=new Q3TimeEdit(this);
+  event_position_edit=new QTimeEdit(this);
   event_position_edit->setGeometry(CENTER_LINE+144,26,60,22);
-  event_position_edit->setDisplay(Q3TimeEdit::Minutes|Q3TimeEdit::Seconds);
+  event_position_edit->setDisplayFormat("mm:ss");
   event_position_unit=new QLabel(event_position_box,
      tr("before scheduled start.  (First cart will have a STOP transition.)"),
 				 this);
-  event_position_unit->setFont(bold_font);
+  event_position_unit->setFont(labelFont());
   event_position_unit->setGeometry(CENTER_LINE+212,27,
-				   sizeHint().width()-CENTER_LINE-232,22);
+				   sizeHint().width()-CENTER_LINE-227,22);
   event_position_unit->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
 
   //
   // Timed Start Section
   //
   event_timetype_header=new QLabel(tr("TIMED START"),this);
-  event_timetype_header->setFont(bold_font);
+  event_timetype_header->setFont(labelFont());
   event_timetype_header->setGeometry(CENTER_LINE+15,62,200,16);
 
   //
@@ -256,7 +237,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   event_timetype_label=
     new QLabel(event_timetype_box,tr("Use hard start time"),this);
   event_timetype_label->setGeometry(CENTER_LINE+35,84,120,16);
-  event_timetype_label->setFont(bold_font);
+  event_timetype_label->setFont(labelFont());
   event_timetype_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
@@ -266,7 +247,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   event_post_box->setGeometry(CENTER_LINE+35,108,15,15);
   event_post_label=new QLabel(event_post_box,tr("Make Post Point"),this);
   event_post_label->setGeometry(CENTER_LINE+55,107,95,16);
-  event_post_label->setFont(bold_font);
+  event_post_label->setFont(labelFont());
   event_post_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
@@ -274,26 +255,26 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   //
   event_grace_groupbox=
     new QGroupBox(tr("Action If Previous Event Still Playing"),this);
-  event_grace_groupbox->setFont(bold_font);
+  event_grace_groupbox->setFont(labelFont());
   event_grace_groupbox->
     setGeometry(CENTER_LINE+160,77,sizeHint().width()-CENTER_LINE-200,45);
   event_grace_group=new QButtonGroup(this);
   event_immediate_button=new QRadioButton(tr("Start immediately"),this);
   event_immediate_button->setGeometry(CENTER_LINE+170,100,160,15);
-  event_immediate_button->setFont(font);
+  event_immediate_button->setFont(subLabelFont());
   event_grace_group->addButton(event_immediate_button,0);
   event_next_button=new QRadioButton(tr("Make next"),this);
   event_next_button->setGeometry(CENTER_LINE+310,100,160,15);
-  event_next_button->setFont(font);
+  event_next_button->setFont(subLabelFont());
   event_grace_group->addButton(event_next_button,1);
   event_wait_button=new QRadioButton(tr("Wait up to"),this);
   event_wait_button->setGeometry(CENTER_LINE+420,100,160,15);
-  event_wait_button->setFont(font);
+  event_wait_button->setFont(subLabelFont());
   event_grace_group->addButton(event_wait_button,2);
 
-  event_grace_edit=new Q3TimeEdit(this);
+  event_grace_edit=new QTimeEdit(this);
   event_grace_edit->setGeometry(CENTER_LINE+500,95,60,20);
-  event_grace_edit->setDisplay(Q3TimeEdit::Minutes|Q3TimeEdit::Seconds);
+  event_grace_edit->setDisplayFormat("mm:ss");
   connect(event_timetype_box,SIGNAL(toggled(bool)),
 	  this,SLOT(timeToggledData(bool)));
   connect(event_grace_group,SIGNAL(buttonClicked(int)),
@@ -313,20 +294,20 @@ EditEvent::EditEvent(QString eventname,bool new_event,
     new QLabel(event_transtype_box,
 	       tr("Transition if previous event ends before start time:"),this);
   event_time_label->setGeometry(CENTER_LINE+15,131,370,26);
-  event_time_label->setFont(bold_font);
+  event_time_label->setFont(labelFont());
   event_time_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Enforcing Length Section
   //
   label=new QLabel(tr("ENFORCING LENGTH"),this);
-  label->setFont(bold_font);
+  label->setFont(labelFont());
   label->setGeometry(CENTER_LINE+15,162,200,16);
 
   event_autofill_box=new QCheckBox(this,"event_autofill_box");
   event_autofill_box->setGeometry(CENTER_LINE+100,182,15,15);
   label=new QLabel(event_autofill_box,tr("Use AutoFill"),this);
-  label->setFont(bold_font);
+  label->setFont(labelFont());
   label->setGeometry(CENTER_LINE+120,184,150,15);
   label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
 
@@ -337,23 +318,23 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   event_autofill_slop_label1=
     new QLabel(event_autofill_slop_box,tr("Warn if fill is over or under"),
 	       this);
-  event_autofill_slop_label1->setFont(font);
-  event_autofill_slop_label1->setGeometry(CENTER_LINE+230,184,140,15);
+  event_autofill_slop_label1->setFont(subLabelFont());
+  event_autofill_slop_label1->setGeometry(CENTER_LINE+230,184,170,15);
   event_autofill_slop_label1->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
-  event_autofill_slop_edit=new Q3TimeEdit(this);
-  event_autofill_slop_edit->setGeometry(CENTER_LINE+440,179,60,22);
-  event_autofill_slop_edit->setDisplay(Q3TimeEdit::Minutes|Q3TimeEdit::Seconds);
+  event_autofill_slop_edit=new QTimeEdit(this);
+  event_autofill_slop_edit->setGeometry(CENTER_LINE+470,179,60,22);
+  event_autofill_slop_edit->setDisplayFormat("mm:ss");
   event_autofill_slop_label=
     new QLabel(event_autofill_slop_edit,tr("by at least"),this);
-  event_autofill_slop_label->setGeometry(CENTER_LINE+370,184,65,15);
-  event_autofill_slop_label->setFont(font);
+  event_autofill_slop_label->setGeometry(CENTER_LINE+400,184,65,15);
+  event_autofill_slop_label->setFont(subLabelFont());
   event_autofill_slop_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   event_timescale_box=new QCheckBox(this);
   event_timescale_box->setGeometry(CENTER_LINE+250,182,15,15);
   label=new QLabel(event_timescale_box,tr("Use Timescaling"),this);
-  label->setFont(bold_font);
+  label->setFont(labelFont());
   label->setGeometry(CENTER_LINE+270,182,150,15);
   label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   event_timescale_box->hide();
@@ -363,7 +344,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   // Pre-Import Carts Section
   //
   label=new QLabel(tr("PRE-IMPORT CARTS"),this);
-  label->setFont(bold_font);
+  label->setFont(labelFont());
   label->setGeometry(CENTER_LINE+15,210,200,16);
 
   //
@@ -373,7 +354,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   event_preimport_length_edit->setGeometry(sizeHint().width()-140,208,80,20);
   event_preimport_length_edit->setReadOnly(true);
   label=new QLabel(event_preimport_length_edit,tr("Len:"),this);
-  label->setFont(bold_font);
+  label->setFont(labelFont());
   label->setGeometry(sizeHint().width()-330,210,185,16);
   label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
 
@@ -413,7 +394,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   // Import Section
   //
   label=new QLabel(tr("IMPORT"),this);
-  label->setFont(bold_font);
+  label->setFont(labelFont());
   label->setGeometry(CENTER_LINE+15,362,200,16);
   
   event_source_group=new QButtonGroup(this);
@@ -422,33 +403,33 @@ EditEvent::EditEvent(QString eventname,bool new_event,
 	  this,SLOT(importClickedData(int)));
   rbutton=new QRadioButton(this);
   event_source_group->addButton(rbutton,0);
-  rbutton->setGeometry(CENTER_LINE+100,362,15,15);
+  rbutton->setGeometry(CENTER_LINE+80,362,15,15);
   label=new QLabel(rbutton,tr("None"),this);
-  label->setFont(bold_font);
-  label->setGeometry(CENTER_LINE+120,362,150,15);
+  label->setFont(labelFont());
+  label->setGeometry(CENTER_LINE+100,362,150,15);
   label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   
   rbutton=new QRadioButton(this);
   event_source_group->addButton(rbutton,1);
-  rbutton->setGeometry(CENTER_LINE+200,362,15,15);
+  rbutton->setGeometry(CENTER_LINE+160,362,15,15);
   label=new QLabel(rbutton,tr("From Traffic"),this);
-  label->setFont(bold_font);
-  label->setGeometry(CENTER_LINE+220,362,150,15);
+  label->setFont(labelFont());
+  label->setGeometry(CENTER_LINE+180,362,150,15);
   label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   
   rbutton=new QRadioButton(this);
-  rbutton->setGeometry(CENTER_LINE+300,362,15,15);
+  rbutton->setGeometry(CENTER_LINE+280,362,15,15);
   event_source_group->addButton(rbutton,2);
   label=new QLabel(rbutton,tr("From Music"),this);
-  label->setFont(bold_font);
-  label->setGeometry(CENTER_LINE+320,362,150,15);
+  label->setFont(labelFont());
+  label->setGeometry(CENTER_LINE+300,362,150,15);
   label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   
   rbutton=new QRadioButton(this);
   rbutton->setGeometry(CENTER_LINE+400,362,15,15);
   event_source_group->addButton(rbutton,3);
   label=new QLabel(rbutton,tr("Select from:"),this);
-  label->setFont(bold_font);
+  label->setFont(labelFont());
   label->setGeometry(CENTER_LINE+420,362,150,15);
   label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   
@@ -467,56 +448,60 @@ EditEvent::EditEvent(QString eventname,bool new_event,
 // Artist Separation SpinBox
 
   event_artist_sep_label=new QLabel(tr("Artist Separation"),this);
-  event_artist_sep_label->setFont(bold_font);
-  event_artist_sep_label->setGeometry(CENTER_LINE+420,383,100,20);
+  event_artist_sep_label->setFont(defaultFont());
+  event_artist_sep_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  event_artist_sep_label->setGeometry(CENTER_LINE+410,383,100,20);
   
   event_artist_sep_spinbox=new QSpinBox(this);
-  event_artist_sep_spinbox->setGeometry(CENTER_LINE+510,383,53,20);
+  event_artist_sep_spinbox->setGeometry(CENTER_LINE+515,383,53,20);
   event_artist_sep_spinbox->setMinValue( -1 );
   event_artist_sep_spinbox->setMaxValue( 50000 );
   event_artist_sep_spinbox->setSpecialValueText("None");
 
   event_artist_none_button=new QPushButton(this);
-  event_artist_none_button->setGeometry(CENTER_LINE+570,383,40,20);
-  event_artist_none_button->setFont(font);
+  event_artist_none_button->setGeometry(CENTER_LINE+575,383,40,20);
+  event_artist_none_button->setFont(subButtonFont());
   event_artist_none_button->setText(tr("None"));
   connect(event_artist_none_button,SIGNAL(clicked()),this,SLOT(artistData()));
 
 // Title Separation SpinBox
 
   event_title_sep_label=new QLabel(tr("Title Separation"),this);
-  event_title_sep_label->setFont(bold_font);
-  event_title_sep_label->setGeometry(CENTER_LINE+420,404,100,20);
+  event_title_sep_label->setFont(defaultFont());
+  event_title_sep_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  event_title_sep_label->setGeometry(CENTER_LINE+410,404,100,20);
   
   event_title_sep_spinbox=new QSpinBox(this);
-  event_title_sep_spinbox->setGeometry(CENTER_LINE+510,404,53,20);
+  event_title_sep_spinbox->setGeometry(CENTER_LINE+515,404,53,20);
   event_title_sep_spinbox->setMinValue( -1 );
   event_title_sep_spinbox->setMaxValue( 50000 );
   event_title_sep_spinbox->setSpecialValueText("None");
 
   event_title_none_button=new QPushButton(this);
-  event_title_none_button->setGeometry(CENTER_LINE+570,404,40,20);
-  event_title_none_button->setFont(font);
+  event_title_none_button->setGeometry(CENTER_LINE+575,404,40,20);
+  event_title_none_button->setFont(subButtonFont());
   event_title_none_button->setText(tr("None"));
   connect(event_title_none_button,SIGNAL(clicked()),this,SLOT(titleData()));
 
   // Must have code..
 
   event_have_code_label=new QLabel(tr("Must have code"),this);
-  event_have_code_label->setFont(bold_font);
-  event_have_code_label->setGeometry(CENTER_LINE+420,427,100,20);
+  event_have_code_label->setFont(defaultFont());
+  event_have_code_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  event_have_code_label->setGeometry(CENTER_LINE+410,427,100,20);
   
   event_have_code_box=new QComboBox(this);
-  event_have_code_box->setGeometry(CENTER_LINE+510,427,100,20);
+  event_have_code_box->setGeometry(CENTER_LINE+515,427,100,20);
 
   // And code
 
   event_have_code2_label=new QLabel(tr("and code"),this);
-  event_have_code2_label->setFont(bold_font);
-  event_have_code2_label->setGeometry(CENTER_LINE+420,448,100,20);
+  event_have_code2_label->setFont(defaultFont());
+  event_have_code2_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  event_have_code2_label->setGeometry(CENTER_LINE+410,448,100,20);
 
   event_have_code2_box=new QComboBox(this);
-  event_have_code2_box->setGeometry(CENTER_LINE+510,448,100,20);
+  event_have_code2_box->setGeometry(CENTER_LINE+515,448,100,20);
 
   //
   // Fill scheduler codes
@@ -537,31 +522,31 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   // Start Slop Time
   //
   event_startslop_label=new QLabel(tr("Import carts scheduled"),this);
-  event_startslop_label->setFont(bold_font);
+  event_startslop_label->setFont(defaultFont());
   event_startslop_label->setGeometry(CENTER_LINE+30,383,140,22);
   event_startslop_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
-  event_startslop_edit=new Q3TimeEdit(this);
-  event_startslop_edit->setGeometry(CENTER_LINE+171,383,60,22);
-  event_startslop_edit->setDisplay(Q3TimeEdit::Minutes|Q3TimeEdit::Seconds);
+  event_startslop_edit=new QTimeEdit(this);
+  event_startslop_edit->setGeometry(CENTER_LINE+166,383,60,22);
+  event_startslop_edit->setDisplayFormat("mm:ss");
   event_startslop_unit=new QLabel(tr("prior to the start of this event."),this);
-  event_startslop_unit->setFont(bold_font);
-  event_startslop_unit->setGeometry(CENTER_LINE+235,383,
-		     sizeHint().width()-CENTER_LINE-460,22);
+  event_startslop_unit->setFont(defaultFont());
+  event_startslop_unit->setGeometry(CENTER_LINE+230,383,
+		     sizeHint().width()-CENTER_LINE-450,22);
   event_startslop_unit->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   
   //
   // End Slop Time
   //
   event_endslop_label=new QLabel(tr("Import carts scheduled"),this);
-  event_endslop_label->setFont(bold_font);
+  event_endslop_label->setFont(defaultFont());
   event_endslop_label->setGeometry(CENTER_LINE+30,404,140,22);
   event_endslop_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
-  event_endslop_edit=new Q3TimeEdit(this);
-  event_endslop_edit->setGeometry(CENTER_LINE+171,404,60,22);
-  event_endslop_edit->setDisplay(Q3TimeEdit::Minutes|Q3TimeEdit::Seconds);
+  event_endslop_edit=new QTimeEdit(this);
+  event_endslop_edit->setGeometry(CENTER_LINE+166,404,60,22);
+  event_endslop_edit->setDisplayFormat("mm:ss");
   event_endslop_unit=new QLabel(tr("after the end of this event."),this);
-  event_endslop_unit->setFont(bold_font);
-  event_endslop_unit->setGeometry(CENTER_LINE+235,404,
+  event_endslop_unit->setFont(defaultFont());
+  event_endslop_unit->setGeometry(CENTER_LINE+230,404,
 				  sizeHint().width()-CENTER_LINE-460,22);
   event_endslop_unit->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   
@@ -570,7 +555,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   //
   event_firsttrans_label=
     new QLabel(tr("First cart has a"),this);
-  event_firsttrans_label->setFont(bold_font);
+  event_firsttrans_label->setFont(defaultFont());
   event_firsttrans_label->setGeometry(CENTER_LINE+30,428,140,22);
   event_firsttrans_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   event_firsttrans_box=new QComboBox(this);
@@ -579,7 +564,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   event_firsttrans_box->insertItem(tr("Segue"));
   event_firsttrans_box->insertItem(tr("Stop"));
   event_firsttrans_unit=new QLabel("transition.",this);
-  event_firsttrans_unit->setFont(bold_font);
+  event_firsttrans_unit->setFont(defaultFont());
   event_firsttrans_unit->setGeometry(CENTER_LINE+215,428,
 		     sizeHint().width()-CENTER_LINE-450,22);
   event_firsttrans_unit->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
@@ -588,7 +573,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   // Default Transition Type
   //
   event_defaulttrans_label=new QLabel(tr("Imported carts have a"),this);
-  event_defaulttrans_label->setFont(bold_font);
+  event_defaulttrans_label->setFont(defaultFont());
   event_defaulttrans_label->setGeometry(CENTER_LINE+30,451,180,22);
   event_defaulttrans_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   event_defaulttrans_box=new QComboBox(this);
@@ -597,7 +582,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   event_defaulttrans_box->insertItem(tr("Segue"));
   event_defaulttrans_box->insertItem(tr("Stop"));
   event_defaulttrans_unit=new QLabel(tr("transition."),this);
-  event_defaulttrans_unit->setFont(bold_font);
+  event_defaulttrans_unit->setFont(defaultFont());
   event_defaulttrans_unit->setGeometry(CENTER_LINE+255,451,
 		     sizeHint().width()-CENTER_LINE-420,22);
   event_defaulttrans_unit->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
@@ -606,22 +591,22 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   // Nested Event
   //
   event_nestevent_label=new QLabel(tr("Import inline traffic with the"),this);
-  event_nestevent_label->setFont(bold_font);
+  event_nestevent_label->setFont(defaultFont());
   event_nestevent_label->setGeometry(CENTER_LINE+30,474,190,22);
   event_nestevent_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   event_nestevent_box=new QComboBox(this);
-  event_nestevent_box->setGeometry(CENTER_LINE+183,474,365,22);
+  event_nestevent_box->setGeometry(CENTER_LINE+193,474,365,22);
   event_nestevent_box->insertItem(tr("[none]"));
   event_nestevent_unit=new QLabel(tr("event."),this);
-  event_nestevent_unit->setFont(bold_font);
-  event_nestevent_unit->setGeometry(CENTER_LINE+553,474,40,22);
+  event_nestevent_unit->setFont(defaultFont());
+  event_nestevent_unit->setGeometry(CENTER_LINE+563,474,40,22);
   event_nestevent_unit->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   
   //
   // Post-Import Carts Section
   //
   label=new QLabel(tr("POST-IMPORT CARTS"),this);
-  label->setFont(bold_font);
+  label->setFont(labelFont());
   label->setGeometry(CENTER_LINE+15,505,200,16);
   
   //
@@ -631,7 +616,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   event_postimport_length_edit->setGeometry(sizeHint().width()-140,503,80,20);
   event_postimport_length_edit->setReadOnly(true);
   label=new QLabel(event_postimport_length_edit,tr("Len:"),this);
-  label->setFont(bold_font);
+  label->setFont(labelFont());
   label->setGeometry(sizeHint().width()-330,505,185,16);
   label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
 
@@ -671,7 +656,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   //
   QPushButton *button=new QPushButton(this);
   button->setGeometry(CENTER_LINE+10,sizeHint().height()-60,80,50);
-  button->setFont(bold_font);
+  button->setFont(buttonFont());
   button->setText(tr("&Save"));
   connect(button,SIGNAL(clicked()),this,SLOT(saveData()));
 
@@ -680,7 +665,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   //
   button=new QPushButton(this);
   button->setGeometry(CENTER_LINE+100,sizeHint().height()-60,80,50);
-  button->setFont(bold_font);
+  button->setFont(buttonFont());
   button->setText(tr("Save &As"));
   connect(button,SIGNAL(clicked()),this,SLOT(saveAsData()));
 
@@ -690,7 +675,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   button=new QPushButton(this);
   button->setGeometry(CENTER_LINE+(sizeHint().width()-CENTER_LINE)/2-85,
 		      sizeHint().height()-60,80,50);
-  button->setFont(bold_font);
+  button->setFont(buttonFont());
   button->setText(tr("&Services\nList"));
   connect(button,SIGNAL(clicked()),this,SLOT(svcData()));
 
@@ -701,7 +686,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   event_color_button->
     setGeometry(CENTER_LINE+(sizeHint().width()-CENTER_LINE)/2+5,
 		sizeHint().height()-60,80,50);
-  event_color_button->setFont(bold_font);
+  event_color_button->setFont(buttonFont());
   event_color_button->setText(tr("C&olor"));
   connect(event_color_button,SIGNAL(clicked()),this,SLOT(colorData()));
 
@@ -711,7 +696,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
-  button->setFont(bold_font);
+  button->setFont(buttonFont());
   button->setText(tr("&OK"));
   connect(button,SIGNAL(clicked()),this,SLOT(okData()));
 
@@ -720,7 +705,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   //
   button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
-  button->setFont(bold_font);
+  button->setFont(buttonFont());
   button->setText(tr("&Cancel"));
   connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
 

@@ -2,7 +2,7 @@
 //
 // Add a Rivendell Cart
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,22 +21,21 @@
 #ifndef RDADD_CART_H
 #define RDADD_CART_H
 
-#include <qdialog.h>
 #include <qcombobox.h>
 #include <qlineedit.h>
-//Added by qt3to4:
-#include <QCloseEvent>
 
 #include <rdcart.h>
-#include <rduser.h>
+#include <rddialog.h>
 #include <rdsystem.h>
+#include <rduser.h>
 
-class RDAddCart : public QDialog
+class RDAddCart : public RDDialog
 {
   Q_OBJECT
   public:
    RDAddCart(QString *group,RDCart::Type *type,QString *title,
-	     const QString &username,RDSystem *system,QWidget *parent=0);
+	     const QString &caption,const QString &username,
+	     RDSystem *system,QWidget *parent=0);
    QSize sizeHint() const;
    QSizePolicy sizePolicy() const;
 

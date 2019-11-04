@@ -2,7 +2,7 @@
 //
 // Prompt for a password.
 //
-//   (C) Copyright 2006-2007,2016 Fred Gleason <fredg@salemradiolabs.com>
+//   (C) Copyright 2006-2019 Fred Gleason <fredg@salemradiolabs.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -26,7 +26,7 @@
 #include <rdgetpasswd.h>
 
 RDGetPasswd::RDGetPasswd(QString *passwd,QWidget *parent)
-  : QDialog(parent,"",true)
+  : RDDialog(parent)
 {
   pw_password=passwd;
 
@@ -38,13 +38,7 @@ RDGetPasswd::RDGetPasswd(QString *passwd,QWidget *parent)
   setMinimumHeight(sizeHint().height());
   setMaximumHeight(sizeHint().height());
 
-  setCaption(tr("Enter Password"));
-
-  //
-  // Create Fonts
-  //
-  QFont font=QFont("Helvetica",12,QFont::Bold);
-  font.setPixelSize(12);
+  setWindowTitle(tr("Enter Password"));
 
   //
   // Label
@@ -56,27 +50,27 @@ RDGetPasswd::RDGetPasswd(QString *passwd,QWidget *parent)
   //
   // Password
   //
-  pw_password_edit=new QLineEdit(this,"pw_password_edit");
+  pw_password_edit=new QLineEdit(this);
   pw_password_edit->setGeometry(10,30,sizeHint().width()-20,20);
   pw_password_edit->setEchoMode(QLineEdit::Password);
 
   //
   //  Ok Button
   //
-  QPushButton *ok_button=new QPushButton(this,"ok_button");
+  QPushButton *ok_button=new QPushButton(this);
   ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   ok_button->setDefault(true);
-  ok_button->setFont(font);
+  ok_button->setFont(buttonFont());
   ok_button->setText(tr("&OK"));
   connect(ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
   //  Cancel Button
   //
-  QPushButton *cancel_button=new QPushButton(this,"cancel_button");
+  QPushButton *cancel_button=new QPushButton(this);
   cancel_button->
     setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
-  cancel_button->setFont(font);
+  cancel_button->setFont(buttonFont());
   cancel_button->setText(tr("&Cancel"));
   connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 }

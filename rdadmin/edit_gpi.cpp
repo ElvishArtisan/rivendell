@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Gpi
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,7 +30,7 @@
 
 EditGpi::EditGpi(int gpi,int *oncart,QString *ondesc,
 		 int *offcart,QString *offdesc,QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   setModal(true);
 
@@ -50,38 +50,27 @@ EditGpi::EditGpi(int gpi,int *oncart,QString *ondesc,
   setMaximumHeight(sizeHint().height());
 
   //
-  // Create Fonts
-  //
-  QFont label_font=QFont("Helvetica",14,QFont::Bold);
-  label_font.setPixelSize(14);
-  QFont bold_font=QFont("Helvetica",12,QFont::Bold);
-  bold_font.setPixelSize(12);
-  QFont font=QFont("Helvetica",12,QFont::Normal);
-  font.setPixelSize(12);
-
-  //
   // Text Validator
   //
   RDTextValidator *validator=new RDTextValidator(this);
 
   //
-  // On Section Label
+  // On Group
   //
-  QLabel *label=new QLabel("ON Transition",this);
-  label->setGeometry(30,10,120,20);
-  label->setFont(label_font);
-  label->setAlignment(Qt::AlignCenter);
+  edit_on_group=new QGroupBox(this);
+  edit_on_group->setFont(sectionLabelFont());
+  edit_on_group->setGeometry(10,10,sizeHint().width()-20,72);
+  edit_on_group->setTitle(tr("ON Transition"));
 
   //
   // On Cart Macro Cart
   //
   edit_onmacro_edit=new QLineEdit(this);
   edit_onmacro_edit->setGeometry(120,30,60,20);
-  edit_onmacro_edit->setFont(font);
   edit_onmacro_edit->setValidator(validator);
-  label=new QLabel(tr("Cart Number: "),this);
+  QLabel *label=new QLabel(tr("Cart Number: "),this);
   label->setGeometry(15,30,100,20);
-  label->setFont(bold_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -89,7 +78,7 @@ EditGpi::EditGpi(int gpi,int *oncart,QString *ondesc,
   //
   QPushButton *button=new QPushButton(this);
   button->setGeometry(190,30,60,20);
-  button->setFont(font);
+  button->setFont(subButtonFont());
   button->setText(tr("&Select"));
   connect(button,SIGNAL(clicked()),this,SLOT(selectOnData()));
 
@@ -98,7 +87,7 @@ EditGpi::EditGpi(int gpi,int *oncart,QString *ondesc,
   //
   button=new QPushButton(this);
   button->setGeometry(270,30,60,20);
-  button->setFont(font);
+  button->setFont(subButtonFont());
   button->setText(tr("C&lear"));
   connect(button,SIGNAL(clicked()),this,SLOT(clearOnData()));
 
@@ -107,31 +96,29 @@ EditGpi::EditGpi(int gpi,int *oncart,QString *ondesc,
   //
   edit_ondescription_edit=new QLineEdit(this);
   edit_ondescription_edit->setGeometry(120,52,sizeHint().width()-140,20);
-  edit_ondescription_edit->setFont(font);
   edit_ondescription_edit->setReadOnly(true);
   label=new QLabel(tr("Description: "),this);
   label->setGeometry(15,52,100,20);
-  label->setFont(bold_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
-  // Off Section Label
+  // Off Group
   //
-  label=new QLabel("OFF Transition",this);
-  label->setGeometry(30,90,120,20);
-  label->setFont(label_font);
-  label->setAlignment(Qt::AlignCenter);
+  edit_off_group=new QGroupBox(this);
+  edit_off_group->setFont(sectionLabelFont());
+  edit_off_group->setGeometry(10,90,sizeHint().width()-20,72);
+  edit_off_group->setTitle(tr("OFF Transition"));
 
   //
   // Off Cart Macro Cart
   //
   edit_offmacro_edit=new QLineEdit(this);
   edit_offmacro_edit->setGeometry(120,110,60,20);
-  edit_offmacro_edit->setFont(font);
   edit_offmacro_edit->setValidator(validator);
   label=new QLabel(tr("Cart Number: "),this);
   label->setGeometry(15,110,100,20);
-  label->setFont(bold_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -139,7 +126,7 @@ EditGpi::EditGpi(int gpi,int *oncart,QString *ondesc,
   //
   button=new QPushButton(this);
   button->setGeometry(190,110,60,20);
-  button->setFont(font);
+  button->setFont(subButtonFont());
   button->setText(tr("&Select"));
   connect(button,SIGNAL(clicked()),this,SLOT(selectOffData()));
 
@@ -148,7 +135,7 @@ EditGpi::EditGpi(int gpi,int *oncart,QString *ondesc,
   //
   button=new QPushButton(this);
   button->setGeometry(270,110,60,20);
-  button->setFont(font);
+  button->setFont(subButtonFont());
   button->setText(tr("C&lear"));
   connect(button,SIGNAL(clicked()),this,SLOT(clearOffData()));
 
@@ -157,11 +144,10 @@ EditGpi::EditGpi(int gpi,int *oncart,QString *ondesc,
   //
   edit_offdescription_edit=new QLineEdit(this);
   edit_offdescription_edit->setGeometry(120,132,sizeHint().width()-140,20);
-  edit_offdescription_edit->setFont(font);
   edit_offdescription_edit->setReadOnly(true);
   label=new QLabel(tr("Description: "),this);
   label->setGeometry(15,132,100,20);
-  label->setFont(bold_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -170,7 +156,7 @@ EditGpi::EditGpi(int gpi,int *oncart,QString *ondesc,
   button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
-  button->setFont(bold_font);
+  button->setFont(buttonFont());
   button->setText(tr("&OK"));
   connect(button,SIGNAL(clicked()),this,SLOT(okData()));
 
@@ -180,7 +166,7 @@ EditGpi::EditGpi(int gpi,int *oncart,QString *ondesc,
   button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
-  button->setFont(bold_font);
+  button->setFont(buttonFont());
   button->setText(tr("&Cancel"));
   connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
@@ -310,21 +296,4 @@ void EditGpi::okData()
 void EditGpi::cancelData()
 {
   done(-1);
-}
-
-
-void EditGpi::paintEvent(QPaintEvent *e)
-{
-  QPainter *p=new QPainter(this);
-  p->drawLine(10,20,sizeHint().width()-10,20);
-  p->drawLine(sizeHint().width()-10,20,sizeHint().width()-10,82);
-  p->drawLine(sizeHint().width()-10,82,10,82);
-  p->drawLine(10,82,10,20);
-
-  p->drawLine(10,100,sizeHint().width()-10,100);
-  p->drawLine(sizeHint().width()-10,10,sizeHint().width()-10,162);
-  p->drawLine(sizeHint().width()-10,162,10,162);
-  p->drawLine(10,162,10,100);
-
-  delete p;
 }

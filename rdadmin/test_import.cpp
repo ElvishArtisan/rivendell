@@ -2,7 +2,7 @@
 //
 // Test a Rivendell Log Import
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -36,7 +36,7 @@
 #include "test_import.h"
 
 TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   setModal(true);
 
@@ -49,8 +49,7 @@ TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
 
   switch(test_src) {
   case RDSvc::Traffic:
@@ -63,19 +62,11 @@ TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent)
   }
 
   //
-  // Create Fonts
-  //
-  QFont font=QFont("Helvetica",12,QFont::Bold);
-  font.setPixelSize(12);
-  QFont section_font=QFont("Helvetica",14,QFont::Bold);
-  section_font.setPixelSize(14);
-
-  //
   // Date Selector
   //
   test_date_edit=new Q3DateEdit(this);
   test_date_label=new QLabel(test_date_edit,tr("Test Date:"),this);
-  test_date_label->setFont(font);
+  test_date_label->setFont(labelFont());
   test_date_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   test_date_edit->setDate(current_date);
   connect(test_date_edit,SIGNAL(valueChanged(const QDate &)),
@@ -86,7 +77,7 @@ TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent)
   //
   QPushButton *button=new QPushButton(this);
   button->setGeometry(200,5,60,30);
-  button->setFont(font);
+  button->setFont(subButtonFont());
   button->setText(tr("&Select"));
   connect(button,SIGNAL(clicked()),this,SLOT(selectData()));
 
@@ -94,7 +85,7 @@ TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent)
   // Import Button
   //
   test_import_button=new QPushButton(this);
-  test_import_button->setFont(font);
+  test_import_button->setFont(buttonFont());
   test_import_button->setText(tr("&Import"));
   connect(test_import_button,SIGNAL(clicked()),this,SLOT(importData()));
 
@@ -106,7 +97,7 @@ TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent)
   test_filename_label=
     new QLabel(test_filename_edit,tr("Using source file:"),this);
   test_filename_label->setGeometry(15,115,sizeHint().width()-30,18);
-  test_filename_label->setFont(font);
+  test_filename_label->setFont(labelFont());
 
   //
   // Events List
@@ -130,13 +121,13 @@ TestImport::TestImport(RDSvc *svc,RDSvc::ImportSource src,QWidget *parent)
   test_events_list->setColumnSortType(0,RDListView::LineSort);
   test_events_label=new QLabel(test_events_list,tr("Imported Events"),this);
   test_events_label->setGeometry(15,160,sizeHint().width()-30,18);
-  test_events_label->setFont(font);
+  test_events_label->setFont(labelFont());
 
   //
   //  Close Button
   //
   test_close_button=new QPushButton(this);
-  test_close_button->setFont(font);
+  test_close_button->setFont(buttonFont());
   test_close_button->setText(tr("&Close"));
   connect(test_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 

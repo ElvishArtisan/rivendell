@@ -2,7 +2,7 @@
 //
 // Record a Rivendell cut.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -27,25 +27,19 @@
 #include <qcheckbox.h>
 #include <qcombobox.h>
 #include <qdatetimeedit.h>
-#include <qdialog.h>
 #include <qgroupbox.h>
-#include <qlabel.h>
 #include <qlineedit.h>
-#include <qtimer.h>
 #include <qradiobutton.h>
 #include <qspinbox.h>
 
-#include <rdtransportbutton.h>
+#include <rddialog.h>
 #include <rdstereometer.h>
-#include <rdwavefile.h>
-#include <rdcae.h>
-#include <rdcart.h>
-#include <rdcut.h>
 #include <rdtimeedit.h>
+#include <rdwavefile.h>
 
 #include "globals.h"
 
-class RecordCut : public QDialog
+class RecordCut : public RDDialog
 {
   Q_OBJECT
   public:

@@ -2,7 +2,7 @@
 //
 // List and Generate Log Reports
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,6 +19,7 @@
 //
 
 #include <qmessagebox.h>
+#include <qpushbutton.h>
 
 #include <rdconf.h>
 #include <rddatedialog.h>
@@ -32,10 +33,8 @@ ListReports::ListReports(const QString &logname,const QString &description,
 			 const QString service_name,const QDate &start_date,
 			 const QDate &end_date,bool auto_refresh,
 			 RDLogEvent *events,QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
-  setModal(true);
-
   list_log_name=logname;
   list_description=description;
   list_service_name=service_name;
@@ -44,23 +43,13 @@ ListReports::ListReports(const QString &logname,const QString &description,
   list_auto_refresh=auto_refresh;
   list_events=events;
 
+  setWindowTitle("RDLogEdit - "+tr("Reports"));
+
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
-
-  setCaption("RDLogEdit - "+tr("Reports"));
-
-  //
-  // Create Fonts
-  //
-  QFont font=QFont("Helvetica",12,QFont::Bold);
-  font.setPixelSize(12);
-  QFont select_font=QFont("Helvetica",12,QFont::Normal);
-  select_font.setPixelSize(12);
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   //
   // Reports List
@@ -72,7 +61,7 @@ ListReports::ListReports(const QString &logname,const QString &description,
   QLabel *list_reports_label=
     new QLabel(list_reports_box,tr("Type:"),this);
   list_reports_label->setGeometry(10,10,35,19);
-  list_reports_label->setFont(font);
+  list_reports_label->setFont(labelFont());
   list_reports_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -82,11 +71,11 @@ ListReports::ListReports(const QString &logname,const QString &description,
   list_date_edit->setGeometry(110,34,100,19);
   QLabel *list_date_label=new QLabel(list_date_edit,tr("Effective Date:"),this);
   list_date_label->setGeometry(10,34,95,19);
-  list_date_label->setFont(font);
+  list_date_label->setFont(labelFont());
   list_date_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   QPushButton *button=new QPushButton(this);
   button->setGeometry(215,32,60,24);
-  button->setFont(select_font);
+  button->setFont(subButtonFont());
   button->setText(tr("&Select"));
   connect(button,SIGNAL(clicked()),this,SLOT(selectDateData()));
   list_date_edit->setDate(QDate::currentDate());
@@ -97,7 +86,7 @@ ListReports::ListReports(const QString &logname,const QString &description,
   button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
-  button->setFont(font);
+  button->setFont(buttonFont());
   button->setText(tr("&Generate"));
   connect(button,SIGNAL(clicked()),this,SLOT(generateData()));
 
@@ -106,7 +95,7 @@ ListReports::ListReports(const QString &logname,const QString &description,
   //
   button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
-  button->setFont(font);
+  button->setFont(buttonFont());
   button->setText(tr("&Close"));
   connect(button,SIGNAL(clicked()),this,SLOT(closeData()));
 }

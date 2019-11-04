@@ -2,7 +2,7 @@
 //
 // Edit Rivendell Log Grid
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,70 +18,44 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <vector>
-
-#include <math.h>
-
-#include <qdialog.h>
-#include <qstring.h>
-#include <q3textedit.h>
-#include <qpainter.h>
 #include <qmessagebox.h>
-#include <qcolordialog.h>
+#include <qpainter.h>
 #include <qsignalmapper.h>
 
-#include <rd.h>
-#include <rddb.h>
 #include <rdescape_string.h>
-#include <rdevent.h>
 
+#include "edit_clock.h"
 #include "edit_grid.h"
 #include "list_clocks.h"
-#include "edit_clock.h"
 
 EditGrid::EditGrid(QString servicename,QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
-  setModal(true);
-
   QString sql;
+  edit_servicename=servicename;
 
   setWindowTitle("RDLogManager - "+tr("Edit Grid")+": "+servicename);
-  edit_servicename=servicename;
 
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
-
-  //
-  // Create Fonts
-  //
-  QFont bold_font=QFont("Helvetica",12,QFont::Bold);
-  bold_font.setPixelSize(12);
-  QFont font=QFont("Helvetica",12,QFont::Normal);
-  font.setPixelSize(12);
-  QFont button_font("Helvetica",10,QFont::Normal);
-  button_font.setPixelSize(10);
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   //
   // Hour Buttons
   //
-  QLabel *label;
+  //  QLabel *label;
   QSignalMapper *mapper=new QSignalMapper(this);
   connect(mapper,SIGNAL(mapped(int)),this,SLOT(hourButtonData(int)));
   for(int i=0;i<5;i++) {
-    label=new QLabel(QDate::longDayName(i+1),this);
-    label->setGeometry(20,14+75*i,90,16);
-    label->setFont(bold_font);
-    label->setAlignment(Qt::AlignCenter);
+    edit_day_boxes[i]=new QGroupBox(QDate::longDayName(i+1),this);
+    edit_day_boxes[i]->setFont(labelFont());
+    edit_day_boxes[i]->setGeometry(5,11+75*i,sizeHint().width()-5,65);
     for(int j=0;j<24;j++) {
       edit_hour_button[i][j]=new RDPushButton(this);
       edit_hour_button[i][j]->setGeometry(10+42*j,30+75*i,42,40);
-      edit_hour_button[i][j]->setFont(button_font);
+      edit_hour_button[i][j]->setFont(subButtonFont());
       edit_hour_button[i][j]->setId(24*i+j);
       LabelButton(i+1,j,"---");
       mapper->setMapping(edit_hour_button[i][j],24*i+j);
@@ -91,14 +65,13 @@ EditGrid::EditGrid(QString servicename,QWidget *parent)
     }
   }
   for(int i=5;i<7;i++) {
-    label=new QLabel(QDate::longDayName(i+1),this);
-    label->setGeometry(20,44+75*i,90,16);
-    label->setFont(bold_font);
-    label->setAlignment(Qt::AlignCenter);
+    edit_day_boxes[i]=new QGroupBox(QDate::longDayName(i+1),this);
+    edit_day_boxes[i]->setFont(labelFont());
+    edit_day_boxes[i]->setGeometry(5,41+75*i,sizeHint().width()-5,65);
     for(int j=0;j<24;j++) {
       edit_hour_button[i][j]=new RDPushButton(this);
       edit_hour_button[i][j]->setGeometry(10+42*j,60+75*i,42,40);
-      edit_hour_button[i][j]->setFont(button_font);
+      edit_hour_button[i][j]->setFont(subButtonFont());
       edit_hour_button[i][j]->setId(24*i+j);
       LabelButton(i+1,j,"---");
       mapper->setMapping(edit_hour_button[i][j],24*i+j);
@@ -124,7 +97,7 @@ EditGrid::EditGrid(QString servicename,QWidget *parent)
   QPushButton *all_button=new QPushButton(this);
   all_button->setGeometry(10,sizeHint().height()-60,80,50);
   all_button->setDefault(false);
-  all_button->setFont(bold_font);
+  all_button->setFont(buttonFont());
   all_button->setText(tr("Change\n&All"));
   connect(all_button,SIGNAL(clicked()),this,SLOT(allHourButtonData()));
                       
@@ -134,7 +107,7 @@ EditGrid::EditGrid(QString servicename,QWidget *parent)
   QPushButton *button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
   button->setDefault(true);
-  button->setFont(bold_font);
+  button->setFont(buttonFont());
   button->setText(tr("&Close"));
   connect(button,SIGNAL(clicked()),this,SLOT(closeData()));
 
@@ -280,6 +253,7 @@ void EditGrid::closeData()
 
 void EditGrid::paintEvent(QPaintEvent *e)
 {
+  /*
   QPainter *p=new QPainter(this);
   p->setPen(Qt::black);
   for(int i=0;i<5;i++) {
@@ -289,6 +263,7 @@ void EditGrid::paintEvent(QPaintEvent *e)
     p->drawRect(5,51+75*i,sizeHint().width()-10,55);
   }
   p->end();
+  */
 }
 
 

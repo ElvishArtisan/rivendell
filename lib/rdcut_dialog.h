@@ -2,7 +2,7 @@
 //
 // A widget to select a Rivendell Cut.
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,29 +21,24 @@
 #ifndef RDCUT_DIALOG_H
 #define RDCUT_DIALOG_H
 
-#include <qdialog.h>
 #include <q3listview.h>
-#include <qlineedit.h>
-#include <qpushbutton.h>
-#include <qcombobox.h>
 #include <q3progressdialog.h>
-#include <qcheckbox.h>
-//Added by qt3to4:
-#include <QPixmap>
-#include <QLabel>
-#include <QCloseEvent>
 
+#include <qcombobox.h>
+#include <qcheckbox.h>
+
+#include <rddialog.h>
 #include <rdlistviewitem.h>
 
 #define RDCUT_DIALOG_STEP_SIZE 1000
 
-class RDCutDialog : public QDialog
+class RDCutDialog : public RDDialog
 {
  Q_OBJECT
  public:
-  RDCutDialog(QString *cutname,QString *filter=0,QString *group=0,
-	      QString *schedcode=NULL,bool show_clear=false,
-	      bool allow_add=false,bool exclude_tracks=false,QWidget *parent=0);
+ RDCutDialog(QString *cutname,const QString &caption,QString *filter=0,
+	     QString *group=0,QString *schedcode=NULL,bool show_clear=false,
+	     bool allow_add=false,bool exclude_tracks=false,QWidget *parent=0);
   ~RDCutDialog();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -96,6 +91,7 @@ class RDCutDialog : public QDialog
   bool cut_allow_clear;
   bool cut_exclude_tracks;
   Q3ProgressDialog *cut_progress_dialog;
+  QString cut_caption;
 };
 
 

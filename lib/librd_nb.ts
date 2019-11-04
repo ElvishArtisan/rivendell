@@ -840,6 +840,10 @@
         <source>The cart title must be unique!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Add Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddLog</name>
@@ -879,15 +883,15 @@
 <context>
     <name>RDApplication</name>
     <message>
-        <source>systemctl(1) returned exit code</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>OK</source>
         <translation type="unfinished">OK</translation>
     </message>
     <message>
         <source>systemctl(1) crashed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>systemctl(1) returned exit code</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -899,47 +903,47 @@
     <name>RDAudioSettingsDialog</name>
     <message>
         <source>Edit Settings</source>
-        <translation>Rediger innstillingar</translation>
+        <translation type="obsolete">Rediger innstillingar</translation>
     </message>
     <message>
         <source>Default &amp;Format:</source>
-        <translation>Standard&amp;format:</translation>
+        <translation type="obsolete">Standard&amp;format:</translation>
     </message>
     <message>
         <source>Default &amp;Channels:</source>
-        <translation>Standard tal på &amp;kanalar:</translation>
+        <translation type="obsolete">Standard tal på &amp;kanalar:</translation>
     </message>
     <message>
         <source>Default &amp;Sample Rate:</source>
-        <translation>Standard &amp;punktprøverate:</translation>
+        <translation type="obsolete">Standard &amp;punktprøverate:</translation>
     </message>
     <message>
         <source>Default &amp;Bitrate:</source>
-        <translation>Standard &amp;bitrate:</translation>
+        <translation type="obsolete">Standard &amp;bitrate:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Avbryt</translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
     </message>
     <message>
         <source>PCM16</source>
-        <translation>PCM16</translation>
+        <translation type="obsolete">PCM16</translation>
     </message>
     <message>
         <source>OggVorbis</source>
-        <translation>Ogg Vorbis</translation>
+        <translation type="obsolete">Ogg Vorbis</translation>
     </message>
     <message>
         <source>MPEG Layer 2</source>
-        <translation>MPEG lag 2</translation>
+        <translation type="obsolete">MPEG lag 2</translation>
     </message>
     <message>
         <source>MPEG Layer 3</source>
-        <translation>MPEG lag 3</translation>
+        <translation type="obsolete">MPEG lag 3</translation>
     </message>
 </context>
 <context>
@@ -1662,59 +1666,51 @@ Are you sure you want to save?</source>
     <name>RDExceptionDialog</name>
     <message>
         <source>Rivendell Exception Report</source>
-        <translation>Unntaksrapport frå Rivendell</translation>
+        <translation type="obsolete">Unntaksrapport frå Rivendell</translation>
     </message>
     <message>
         <source>&amp;Save</source>
-        <translation>&amp;Lagre</translation>
+        <translation type="obsolete">&amp;Lagre</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>Lu&amp;kk</translation>
+        <translation type="obsolete">Lu&amp;kk</translation>
     </message>
     <message>
         <source>Text (*.txt *.TXT)
 All Files (*.*)</source>
-        <translation>Tekst (*.txt *.TXT)
+        <translation type="obsolete">Tekst (*.txt *.TXT)
 Alle filer (*.*)</translation>
     </message>
     <message>
         <source>Export File</source>
-        <translation>Eksporter fil</translation>
+        <translation type="obsolete">Eksporter fil</translation>
     </message>
     <message>
         <source>The file</source>
-        <translation>Fila</translation>
+        <translation type="obsolete">Fila</translation>
     </message>
     <message>
         <source>already exists!
 Overwrite?</source>
-        <translation>finst frå før!
+        <translation type="obsolete">finst frå før!
 Skriv over?</translation>
     </message>
     <message>
         <source>File Exists</source>
-        <translation>Fila finst</translation>
+        <translation type="obsolete">Fila finst</translation>
     </message>
     <message>
         <source>Unable to open file</source>
-        <translation>Greier ikkje opna fila</translation>
+        <translation type="obsolete">Greier ikkje opna fila</translation>
     </message>
     <message>
         <source>for writing!</source>
-        <translation>for skriving!</translation>
+        <translation type="obsolete">for skriving!</translation>
     </message>
     <message>
         <source>File Error</source>
-        <translation>Filfeil</translation>
-    </message>
-    <message>
-        <source>already exists!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Overwrite?</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Filfeil</translation>
     </message>
 </context>
 <context>
@@ -2141,31 +2137,12 @@ Sjekk eksportoppsettet ditt og prøv att.</translation>
 <context>
     <name>RDIntegerDialog</name>
     <message>
-        <source>Set Value</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Avbryt</translation>
-    </message>
-</context>
-<context>
-    <name>RDIntegerEdit</name>
-    <message>
-        <source>Set Value</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Add</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">&amp;Avbryt</translation>
     </message>
 </context>
 <context>
@@ -2205,16 +2182,8 @@ Sjekk eksportoppsettet ditt og prøv att.</translation>
 <context>
     <name>RDListLogs</name>
     <message>
-        <source>NAME</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>DESCRIPTION</source>
-        <translation type="unfinished">SKILDRING</translation>
-    </message>
-    <message>
-        <source>SERVICE</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">SKILDRING</translation>
     </message>
     <message>
         <source>OK</source>
@@ -2231,6 +2200,18 @@ Sjekk eksportoppsettet ditt og prøv att.</translation>
     <message>
         <source>ALL</source>
         <translation type="obsolete">ALLE</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

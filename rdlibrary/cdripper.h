@@ -21,31 +21,20 @@
 #ifndef CDRIPPER_H
 #define CDRIPPER_H
 
-#include <sys/types.h>
-#include <unistd.h>
-#include <qdialog.h>
-#include <qlabel.h>
+#include <qprogressbar.h>
+
 #include <qlineedit.h>
-#include <q3progressbar.h>
-#include <qtimer.h>
 #include <qdir.h>
-#include <qfile.h>
 #include <qspinbox.h>
-#include <qcombobox.h>
 #include <qcheckbox.h>
 #include <q3textedit.h>
-#include <QResizeEvent>
-#include <QCloseEvent>
 
-#include <rdcut.h>
-#include <rdtransportbutton.h>
-#include <rdcdplayer.h>
-#include <rdcddbrecord.h>
+#include <rddialog.h>
 #include <rdcddblookup.h>
-#include <rdlistview.h>
-#include <rdlibrary_conf.h>
+#include <rdcdplayer.h>
+#include <rdtransportbutton.h>
 
-class CdRipper : public QDialog
+class CdRipper : public RDDialog
 {
   Q_OBJECT
  public:
@@ -105,7 +94,7 @@ class CdRipper : public QDialog
   RDTransportButton *rip_eject_button;
   RDTransportButton *rip_play_button;
   RDTransportButton *rip_stop_button;
-  Q3ProgressBar *rip_bar;
+  QProgressBar *rip_bar;
   QLabel *rip_normalize_label;
   QCheckBox *rip_normalize_box;
   QLabel *rip_normalize_box_label;

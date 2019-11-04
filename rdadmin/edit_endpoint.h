@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Endpoint
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,16 +21,16 @@
 #ifndef EDIT_ENDPOINT_H
 #define EDIT_ENDPOINT_H
 
-#include <qdialog.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
 #include <qlineedit.h>
 #include <qcombobox.h>
 
-#include <rduser.h>
+#include <rddialog.h>
 #include <rdmatrix.h>
+#include <rduser.h>
 
-class EditEndpoint : public QDialog
+class EditEndpoint : public RDDialog
 {
  Q_OBJECT
  public:

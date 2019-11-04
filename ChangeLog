@@ -19086,18 +19086,174 @@
 	containing an invalid UTF-8 character.
 2019-09-02 Patrick Linstruth <patrick@deltecent.com>
 	* Refactored 'pypad_tunein.py' ProcessPad while loop.
-2019-09-02 Patrick Linstruth <patrick@deltecent.com>
+2019-09-03 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'RDCart::setYear()' that caused invalid SQL to be
+	generated when given a null year.
+2019-09-05 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdairplay(1) and rdvairplayd(8) that
+	caused hard timed events with the 'Start Immediately' attribute
+	to fail to start if one or more other events were playing.
+2019-09-09 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'ServiceTimeout=' directive to the '[Tuning]' section
+	of rd.conf(5).
+2019-09-09 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed a bug in rdlibrary(1) multi-edit where an empty 'Year
+	Released' field clears the date from selected carts.
+2019-09-09 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdairplay(1) that caused the log name displayed
+	on the title bar to have its last four characters truncated.
+2019-09-09 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.0.3int2.
+2019-09-12 Patrick Linstruth <patrick@deltecent.com>
+	* Added minimum and maximum talk lengths to 'RDCart' and
+	'RDWaveData' classes.
+	* Database changes for Nexus MusicMaster Integration.
+	* Added a 'CART.MINIMUM_TALK_LENGTH' field to the database.
+	* Added a 'CART.MAXIMUM_TALK_LENGTH' field to the database.
+	* Added 'NEXUS_FIELDS' table.
+	* Added 'NEXUS_QUEUE' table.
+	* Added 'NEXUS_SERVER' table.
+	* Added 'NEXUS_STATIONS' table.
+	* Incremented the database version to 310.
+2019-09-12 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.0.3int3.
+2019-09-19 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.1.0.
+2019-09-25 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rddbmgr(8) that caused a segfault when processing
+	a SQL error.
+2019-09-27 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdimport(1) that caused it to throw an exception
+	when given a '--metadata-pattern' of less than three characters.
+2019-10-01 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDDialog' class.
+	* Added an 'RDWidget' class.
+	* Refactored rdadmin(1) to use 'RDDialog' and 'RDWidget' base
+	classes.
+2019-10-01 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'RDAudioSettingsDialog' class.
+2019-10-01 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored dialogs in the convenience library to use the
+	'RDDialog' and 'RDWidget' base classes.
+2019-10-02 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored rdairplay(1) to use the 'RDDialog' and 'RDWidget'
+	base classes.
+2019-10-03 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for posting podcast content via SFTP.
+	* Refactored rdcastmanager(1) to use the 'RDDialog' and 'RDWidget'
+	base classes.
+2019-10-03 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored rdcatch(1) to use the 'RDDialog' and 'RDWidget'
+	base classes.
+2019-10-03 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored rdlibrary(1) to use the 'RDDialog' and 'RDWidget'
+	base classes.
+2019-10-04 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored rdlogedit(1) to use the 'RDDialog' and 'RDWidget'
+	base classes.
+2019-10-04 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored rdlogmanager(1) to use the 'RDDialog' and 'RDWidget'
+	base classes.
+2019-10-07 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored rdmonitor(1) to use the 'RDDialog' and 'RDWidget'
+	base classes.
+2019-10-07 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored rdpanel(1) to use the 'RDDialog' and 'RDWidget'
+	base classes.
+2019-10-07 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored rdselect(8) to use the 'RDDialog' and 'RDWidget'
+	base classes.
+2019-10-07 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored rdalsaconfig(8) to use the 'RDDialog' and 'RDWidget'
+	base classes.
+2019-10-07 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored rddbconfig(8) to use the 'RDDialog' and 'RDWidget'
+	base classes.
+2019-10-07 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored rdgpimon(1) to use the 'RDDialog' and 'RDWidget'
+	base classes.
+2019-10-07 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored rdpopup(1) to use the 'RDDialog' and 'RDWidget'
+	base classes.
+2019-10-07 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored rdsoftkeys(1) to use the 'RDDialog' and 'RDWidget'
+	base classes.
+2019-10-07 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored rmlsend(1) to use the 'RDDialog' and 'RDWidget'
+	base classes.
+2019-10-07 Fred Gleason <fredg@paravelsystems.com>
+	* Replaced references to 'helvetica' fonts to use font engine
+	values in 'lib/'.
+2019-10-07 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored rdcartslots(1) to use the 'RDDialog' and 'RDWidget'
+	base classes.
+2019-10-07 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored rdlogin(1) to use the 'RDDialog' and 'RDWidget'
+	base classes.
+2019-10-07 Fred Gleason <fredg@paravelsystems.com>
+	* Removed remaining references to 'helvetica' fonts.
+2019-10-08 Fred Gleason <fredg@paravelsystems.com>
+	* Adjusted position of 'Origin' field in the 'Edit Log' dialog
+	in rdlogedit(1).
+2019-10-08 Fred Gleason <fredg@paravelsystems.com>
+	* Renamed the 'RDFontSet' class to 'RDFontEngine'.
+	* Modified the font calculation algorithm in
+	'RDFontEngine::MakeFonts()' to use fixed defaults.
+2019-10-08 Fred Gleason <fredg@paravelsystems.com>
+	* Documented the font management system in 'docs/apis/fonts.xml'
+	(built as 'docs/apis/fonts.pdf').
+2019-10-09 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdairplay(1) that caused space bar presses to
+	start the next event in the Main Log even when 'Space Bar Action'
+	was set to 'None'.
+2019-10-09 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.1.0int0
+2019-10-17 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in the 'Select Cut' ['RDCutDialog'] that
+	caused 'Group:' dropdown list to be empty.
+2019-10-21 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed the font used for labels in the 'Edit RDLogEdit' dialog
+	in rdadmin(1).
+2019-10-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDLOGEDIT.WAVEFORM_CAPTION' field to the database.
+	* Incremented the database version to 311.
+	* Added a 'WaveForm Caption' control to the 'Edit RDLogEdit' dialog
+	in rdadmin(1).
+	* Implemented the 'WaveForm Caption' setting in the Voicetracker
+	dialog in rdlogedit(1).
+2019-10-21 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.1.0int1.
+2019-10-22 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RDStringToHex()' function to 'lib/rd.conf.cpp'.
+	* Fixed bugs in 'RDWaveFile' that caused strings of null characters
+	to be written into unfilled CartChunk string fields.
+2019-10-22 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.1.0int2.
+2019-10-28 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'rdxport.cgi' that caused a check of the
+	Rivendell services to be triggered each time a WebAPI function was
+	invoked.
+2019-10-28 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdimport(1) that caused a segfault when
+	invoked with the '--metadata-pattern' and '--log-syslog' switches.
+2019-10-30 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdsoftkeys(1) that threw a segfault at
+	startup.
+2019-10-30 Fred Gleason <fredg@paravelsystems.com>
+	* Added an rd.conf(5) man page.
+2019-10-30 Fred Gleason <fredg@paravelsystems.com>
+	* Added an rdsoftkeys(1) man page.
+2019-10-31 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.2.0.
+2019-11-03 Patrick Linstruth <patrick@deltecent.com>
 	* Added 'RDHttpServer' class.
 	* Added 'loadGroup' method to 'RDGroupList' class.
 	* Added 'RDNexus' class.
-	* Added minimum and maximum talk lengths to to 'RDWaveData' class.
 	* Added timestamp and optional argument to 'RDNotification' class.
 	* Added PlayoutCartNumType, PlayoutExtIdType, and LogExtIdType
 	notification types to 'RDNotification' class.
 	* Added MoveAction, StartAction, and StopAction actions to
 	'RDNotification' class.
-	* Added minimum and maximum talk lengths to 'RDCart' class and
-	'CART' table.
 	* Added rdnexusd(8).
 	* Added playout notifications to 'RDLogPlay' class.
 	* Removed the sending of modification notifications when Cancel
@@ -19106,12 +19262,6 @@
 	* Added ability to see import template offsets in rdadmin(1).
 	* Added 'list' method to 'RDStation' class.
 	* Added 'MusicMaster Nexus' button and dialog to rdadmin(1).
-	* Added 'NEXUS_FIELDS','NEXUS_QUEUE','NEXUS_SERVER',
-	and 'NEXUS_STATIONS' tables.
-	* Added 'MINIMUM_TALK_LENGTH' and 'MAXIMUM_TALK_LENGTH' rows
-	to 'CART' table.
 	* Modified rdlibrary(1) to use 'CART.MINIMUM_TALK_LENGTH' for
 	"Talk" column.
 	* Added 'MusicMaster Nexus' import template.
-	* Incremented the database version to 310.
-=======

@@ -185,6 +185,19 @@ void RDLogeditConf::setTailPreroll(unsigned length) const
 }
 
 
+QString RDLogeditConf::waveformCaption() const
+{
+  return RDGetSqlValue("RDLOGEDIT","STATION",lib_station,"WAVEFORM_CAPTION").
+    toString();
+}
+
+
+void RDLogeditConf::setWaveformCaption(const QString &str)
+{
+  SetRow("WAVEFORM_CAPTION",str);
+}
+
+
 unsigned RDLogeditConf::startCart() const
 {
   return RDGetSqlValue("RDLOGEDIT","STATION",lib_station,"START_CART").toUInt();
@@ -334,6 +347,19 @@ void RDLogeditConf::SetRow(const QString &param,unsigned value) const
 
   sql=QString("update RDLOGEDIT set ")+
     param+QString().sprintf("=%d where ",value)+
+    "STATION=\""+RDEscapeString(lib_station)+"\"",
+  q=new RDSqlQuery(sql);
+  delete q;
+}
+
+
+void RDLogeditConf::SetRow(const QString &param,const QString &value) const
+{
+  RDSqlQuery *q;
+  QString sql;
+
+  sql=QString("update RDLOGEDIT set ")+
+    param+"=\""+RDEscapeString(value)+"\" where "+
     "STATION=\""+RDEscapeString(lib_station)+"\"",
   q=new RDSqlQuery(sql);
   delete q;

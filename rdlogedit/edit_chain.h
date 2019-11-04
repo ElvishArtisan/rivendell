@@ -1,8 +1,8 @@
 // edit_chain.h
 //
-// Edit a Rivendell Log Entry
+// Edit a Rivendell Chain-To event
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,56 +21,43 @@
 #ifndef EDIT_CHAIN_H
 #define EDIT_CHAIN_H
 
-#include <qdialog.h>
-#include <q3datetimeedit.h>
+#include <qbuttongroup.h>
 #include <qcombobox.h>
-#include <qlineedit.h>
-#include <qlabel.h>
 #include <qcheckbox.h>
-#include <q3buttongroup.h>
+#include <qdatetimeedit.h>
+#include <qgroupbox.h>
+#include <qpushbutton.h>
 #include <qradiobutton.h>
-#include <qspinbox.h>
 
+#include <rddialog.h>
 #include <rdlog_line.h>
 #include <rdtimeedit.h>
 
-class EditChain : public QDialog
+#include "edit_event.h"
+
+class EditChain : public EditEvent
 {
   Q_OBJECT
  public:
   EditChain(RDLogLine *,QWidget *parent=0);
-  ~EditChain();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
   
  private slots:
-  void timeChangedData(const QTime &);
-  void timeToggledData(bool state);
-  void graceClickedData(int id);
-  void selectTimeData(int);
-  void selectLogData();
+   void selectLogData();
   void labelChangedData(const QString &);
-  void okData();
-  void cancelData();
 
  protected:
-  void closeEvent(QCloseEvent *e);
+  bool saveData();
+  void resizeEvent(QResizeEvent *e);
 
  private:
-  RDLogLine *edit_logline;
-  RDTimeEdit *edit_time_edit;
-  QLabel *edit_time_label;
-  QCheckBox *edit_timetype_box;
-  QLabel *edit_timetype_label;
-  QCheckBox *edit_time_box;
-  QComboBox *edit_transtype_box;
+  QLabel *edit_comment_label;
   QLineEdit *edit_comment_edit;
+  QLabel *edit_label_label;
   QLineEdit *edit_label_edit;
-  Q3ButtonGroup *edit_grace_group;
-  QFont normal_font;
-  Q3TimeEdit *edit_grace_box;
+  QPushButton *edit_select_button;
 };
 
 
-#endif
-
+#endif  // EDIT_CHAIN_H

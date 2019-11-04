@@ -2,7 +2,7 @@
 //
 // A Qt-based application for testing general purpose input (GPI) devices.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,23 +21,13 @@
 #ifndef RDGPIMON_H
 #define RDGPIMON_H
 
-#include <qwidget.h>
-#include <qsize.h>
-#include <qsizepolicy.h>
-#include <qpushbutton.h>
-#include <qcolor.h>
-#include <qstring.h>
-#include <qsignalmapper.h>
-#include <qlabel.h>
-#include <qsqldatabase.h>
-#include <qcombobox.h>
-#include <qpixmap.h>
 #include <q3datetimeedit.h>
-#include <qtimer.h>
 
-#include <rdlistview.h>
+#include <qcombobox.h>
+
 #include <rdmatrix.h>
 #include <rdtransportbutton.h>
+#include <rdwidget.h>
 
 #include "gpi_label.h"
 
@@ -46,11 +36,11 @@
 #define GPIMON_COLS 8
 #define RDGPIMON_USAGE "\n"
 
-class MainWidget : public QWidget
+class MainWidget : public RDWidget
 {
   Q_OBJECT
  public:
-   MainWidget(QWidget *parent=0);
+  MainWidget(RDConfig *c,QWidget *parent=0);
    ~MainWidget();
    QSize sizeHint() const;
    QSizePolicy sizePolicy() const;

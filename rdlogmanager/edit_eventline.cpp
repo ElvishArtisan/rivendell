@@ -1,8 +1,8 @@
 // edit_eventline.cpp
 //
-// Edit Rivendell Log Eventline
+// Edit A Rivendell Log Clock Event
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,47 +18,32 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <q3textedit.h>
-#include <qpainter.h>
 #include <qmessagebox.h>
-#include <qpushbutton.h>
 
-#include <rd.h>
-#include <rddb.h>
-#include <rdevent.h>
 #include <rdtextvalidator.h>
 
-#include <list_events.h>
-#include <edit_eventline.h>
+#include "edit_eventline.h"
+#include "list_events.h"
 
 EditEventLine::EditEventLine(RDEventLine *eventline,RDClock *clock,int line,
 			     QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
-  setModal(true);
-
-  setWindowTitle("RDLogManager - "+tr("Edit Event Assignment"));
   edit_eventline=eventline;
   edit_clock=clock;
   edit_line=line;
 
+  setWindowTitle("RDLogManager - "+tr("Edit Event Assignment"));
+
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   //
   // Create Fonts
   //
-  QFont bold_font=QFont("Helvetica",12,QFont::Bold);
-  bold_font.setPixelSize(12);
-  QFont font=QFont("Helvetica",12,QFont::Normal);
-  font.setPixelSize(12);
 
   //
   // Text Validator
@@ -101,7 +86,7 @@ EditEventLine::EditEventLine(RDEventLine *eventline,RDClock *clock,int line,
   edit_eventname_edit->setValidator(validator);
   QLabel *label=new QLabel(edit_eventname_edit,tr("Event:"),this);
   label->setGeometry(10,12,50,18);
-  label->setFont(bold_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -109,7 +94,7 @@ EditEventLine::EditEventLine(RDEventLine *eventline,RDClock *clock,int line,
   //
   QPushButton *button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-60,7,50,30);
-  button->setFont(font);
+  button->setFont(subButtonFont());
   button->setText(tr("Select"));
   connect(button,SIGNAL(clicked()),this,SLOT(selectData()));
 
@@ -120,10 +105,9 @@ EditEventLine::EditEventLine(RDEventLine *eventline,RDClock *clock,int line,
   edit_starttime_edit->setGeometry(150,40,70,20);
   edit_starttime_edit->
     setDisplay(RDTimeEdit::Minutes|RDTimeEdit::Seconds|RDTimeEdit::Tenths);
-  edit_starttime_edit->setFont(font);
   label=new QLabel(edit_starttime_edit,tr("Start Time:"),this);
   label->setGeometry(65,42,80,20);
-  label->setFont(bold_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -135,7 +119,7 @@ EditEventLine::EditEventLine(RDEventLine *eventline,RDClock *clock,int line,
     setDisplay(RDTimeEdit::Minutes|RDTimeEdit::Seconds|RDTimeEdit::Tenths);
   label=new QLabel(edit_endtime_edit,tr("End Time:"),this);
   label->setGeometry(250,42,70,20);
-  label->setFont(bold_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -144,7 +128,7 @@ EditEventLine::EditEventLine(RDEventLine *eventline,RDClock *clock,int line,
   button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
-  button->setFont(bold_font);
+  button->setFont(buttonFont());
   button->setText(tr("&OK"));
   connect(button,SIGNAL(clicked()),this,SLOT(okData()));
 
@@ -153,7 +137,7 @@ EditEventLine::EditEventLine(RDEventLine *eventline,RDClock *clock,int line,
   //
   button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
-  button->setFont(bold_font);
+  button->setFont(buttonFont());
   button->setText(tr("&Cancel"));
   connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
 

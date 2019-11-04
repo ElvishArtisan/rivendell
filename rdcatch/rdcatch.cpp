@@ -19,40 +19,15 @@
 //
 
 #include <assert.h>
-#include <unistd.h>
 
 #include <qapplication.h>
-#include <qwindowsstyle.h>
-#include <qwidget.h>
-#include <qpainter.h>
-#include <q3sqlpropertymap.h>
 #include <qmessagebox.h>
-#include <qpushbutton.h>
-#include <qlabel.h>
-#include <qlabel.h>
-#include <q3listview.h>
-#include <qsignalmapper.h>
-#include <qtextcodec.h>
 #include <qtranslator.h>
-#include <qlayout.h>
 
 #include <rdprofile.h>
-#include <rd.h>
-#include <rdapplication.h>
-#include <rdaudio_port.h>
-#include <rdcatch.h>
 #include <rdconf.h>
-#include <rdcut.h>
-#include <rdcut_path.h>
-#include <rddeck.h>
-#include <rdedit_audio.h>
 #include <rdescape_string.h>
 #include <rdmixer.h>
-#include <rdripc.h>
-#include <rdsettings.h>
-#include <rdstation.h>
-#include <rduser.h>
-#include <dbversion.h>
 
 #include "add_recording.h"
 #include "colors.h"
@@ -65,6 +40,7 @@
 #include "list_reports.h"
 #include "edit_switchevent.h"
 #include "edit_upload.h"
+#include "rdcatch.h"
 
 //
 // Global Resources
@@ -106,8 +82,8 @@ QString CatchConnector::stationName()
 
 
 
-MainWidget::MainWidget(QWidget *parent)
-  : QWidget(parent)
+MainWidget::MainWidget(RDConfig *c,QWidget *parent)
+  : RDWidget(c,parent)
 {
   QString str;
   QString err_msg;
@@ -148,21 +124,6 @@ MainWidget::MainWidget(QWidget *parent)
   //
   setMinimumWidth(sizeHint().width());
   setMinimumHeight(sizeHint().height());
-
-  //
-  // Generate Fonts
-  //
-  QFont default_font("Helvetica",12,QFont::Normal);
-  default_font.setPixelSize(12);
-  qApp->setFont(default_font);
-  QFont list_font=QFont("Helvetica",12,QFont::Normal);
-  list_font.setPixelSize(12);
-  QFont label_font=QFont("Helvetica",10,QFont::Bold);
-  label_font.setPixelSize(10);
-  QFont button_font=QFont("Helvetica",12,QFont::Bold);
-  button_font.setPixelSize(12);
-  QFont clock_font=QFont("Helvetica",18,QFont::Bold);
-  clock_font.setPixelSize(18);
 
   //
   // Create Icons
@@ -326,21 +287,21 @@ MainWidget::MainWidget(QWidget *parent)
   catch_show_active_label=new QLabel(catch_show_active_box,
 				     tr("Show Only Active Events"),
 				     this,"catch_show_active_label");
-  catch_show_active_label->setFont(label_font);
+  catch_show_active_label->setFont(labelFont());
   catch_show_active_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   connect(catch_show_active_box,SIGNAL(toggled(bool)),
 	  this,SLOT(filterChangedData(bool)));
   catch_show_today_box=new QCheckBox(this);
   catch_show_today_label=
     new QLabel(catch_show_active_box,tr("Show Only Today's Events"),this);
-  catch_show_today_label->setFont(label_font);
+  catch_show_today_label->setFont(labelFont());
   catch_show_today_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   connect(catch_show_today_box,SIGNAL(toggled(bool)),
 	  this,SLOT(filterChangedData(bool)));
 
   catch_dow_box=new QComboBox(this);
   catch_dow_label=new QLabel(catch_dow_box,tr("Show DayOfWeek:"),this);
-  catch_dow_label->setFont(label_font);
+  catch_dow_label->setFont(labelFont());
   catch_dow_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   catch_dow_box->insertItem(tr("All"));
   catch_dow_box->insertItem(tr("Weekdays"));
@@ -356,7 +317,7 @@ MainWidget::MainWidget(QWidget *parent)
   catch_type_box=new QComboBox(this);
   connect(catch_type_box,SIGNAL(activated(int)),this,SLOT(filterActivatedData(int)));
   catch_type_label=new QLabel(catch_type_box,tr("Show Event Type")+":",this);
-  catch_type_label->setFont(label_font);
+  catch_type_label->setFont(labelFont());
   catch_type_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   for(int i=0;i<RDRecording::LastType;i++) {
     catch_type_box->insertItem(*(catch_type_maps[i]),
@@ -377,7 +338,6 @@ MainWidget::MainWidget(QWidget *parent)
   catch_recordings_list=new CatchListView(this);
   catch_recordings_list->setAllColumnsShowFocus(true);
   catch_recordings_list->setItemMargin(5);
-  catch_recordings_list->setFont(list_font);
   connect(catch_recordings_list,SIGNAL(selectionChanged(Q3ListViewItem *)),
 	  this,SLOT(selectionChangedData(Q3ListViewItem *)));
   connect(catch_recordings_list,
@@ -457,7 +417,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Add Button
   //
   catch_add_button=new QPushButton(this);
-  catch_add_button->setFont(button_font);
+  catch_add_button->setFont(buttonFont());
   catch_add_button->setText(tr("&Add"));
   connect(catch_add_button,SIGNAL(clicked()),this,SLOT(addData()));
 
@@ -465,7 +425,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Edit Button
   //
   catch_edit_button=new QPushButton(this);
-  catch_edit_button->setFont(button_font);
+  catch_edit_button->setFont(buttonFont());
   catch_edit_button->setText(tr("&Edit"));
   connect(catch_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
 
@@ -473,7 +433,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Delete Button
   //
   catch_delete_button=new QPushButton(this);
-  catch_delete_button->setFont(button_font);
+  catch_delete_button->setFont(buttonFont());
   catch_delete_button->setText(tr("&Delete"));
   connect(catch_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
 
@@ -481,7 +441,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Scroll Button
   //
   catch_scroll_button=new QPushButton(this);
-  catch_scroll_button->setFont(button_font);
+  catch_scroll_button->setFont(buttonFont());
   catch_scroll_button->setText(tr("Scroll"));
   connect(catch_scroll_button,SIGNAL(clicked()),this,SLOT(scrollButtonData()));
 
@@ -489,7 +449,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Reports Button
   //
   catch_reports_button=new QPushButton(this);
-  catch_reports_button->setFont(button_font);
+  catch_reports_button->setFont(buttonFont());
   catch_reports_button->setText(tr("Reports"));
   connect(catch_reports_button,SIGNAL(clicked()),this,SLOT(reportsButtonData()));
 
@@ -497,7 +457,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Wall Clock
   //
   catch_clock_label=new QLabel("00:00:00",this);
-  catch_clock_label->setFont(clock_font);
+  catch_clock_label->setFont(progressFont());
   catch_clock_label->setAlignment(Qt::AlignCenter);
   catch_clock_timer=new QTimer(this);
   connect(catch_clock_timer,SIGNAL(timeout()),this,SLOT(clockData()));
@@ -530,7 +490,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Close Button
   //
   catch_close_button=new QPushButton(this);
-  catch_close_button->setFont(button_font);
+  catch_close_button->setFont(buttonFont());
   catch_close_button->setText(tr("&Close"));
   catch_close_button->setFocus();
   catch_close_button->setDefault(true);
@@ -1335,14 +1295,14 @@ void MainWidget::resizeEvent(QResizeEvent *e)
     deck_height=catch_monitor_view->geometry().y()+
       catch_monitor_view->geometry().height();
   }
-  catch_show_active_label->setGeometry(35,deck_height+5,140,20);
+  catch_show_active_label->setGeometry(35,deck_height+4,155,20);
   catch_show_active_box->setGeometry(15,deck_height+7,15,15);
-  catch_show_today_label->setGeometry(205,deck_height+5,145,20);
-  catch_show_today_box->setGeometry(185,deck_height+7,15,15);
-  catch_dow_label->setGeometry(370,deck_height+5,125,20);
-  catch_dow_box->setGeometry(500,deck_height+4,120,20);
-  catch_type_label->setGeometry(630,deck_height+5,125,20);
-  catch_type_box->setGeometry(760,deck_height+4,140,20);
+  catch_show_today_label->setGeometry(225,deck_height+4,170,20);
+  catch_show_today_box->setGeometry(205,deck_height+7,15,15);
+  catch_dow_label->setGeometry(400,deck_height+4,125,20);
+  catch_dow_box->setGeometry(530,deck_height+4,120,20);
+  catch_type_label->setGeometry(660,deck_height+4,125,20);
+  catch_type_box->setGeometry(790,deck_height+4,140,20);
   catch_recordings_list->
     setGeometry(10,deck_height+25,e->size().width()-20,
 		e->size().height()-90-deck_height);
@@ -2156,7 +2116,9 @@ int main(int argc,char *argv[])
   //
   // Start Event Loop
   //
-  MainWidget *w=new MainWidget();
+  RDConfig *config=new RDConfig();
+  config->load();
+  MainWidget *w=new MainWidget(config);
   a.setMainWidget(w);
   w->show();
   return a.exec();

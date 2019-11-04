@@ -2,7 +2,7 @@
 //
 // The stop counter widget for Rivendell
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,31 +18,19 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qpixmap.h>
 #include <qpainter.h>
 
-#include <rdapplication.h>
-
-#include "globals.h"
 #include "stop_counter.h"
 
 StopCounter::StopCounter(QWidget *parent)
-  : QPushButton(parent)
+  : RDPushButton(parent)
 {
   stop_running=false;
 
-  //
-  // Generate Fonts
-  //
-  stop_text_font=QFont("Helvetica",12,QFont::Normal);
-  stop_text_font.setPixelSize(12);
-  stop_time_font=QFont("Helvetica",26,QFont::Normal);
-  stop_time_font.setPixelSize(26);
-  
-  time_format = "hh:mm:ss";
+  time_format="hh:mm:ss";
   stop_text=tr("Next Stop [none]");  
-  old_stop_running = true;
-  old_msecs = 0;
+  old_stop_running=true;
+  old_msecs=0;
   setTime(QTime());
   setState(false);
 }
@@ -141,10 +129,10 @@ void StopCounter::UpdateTime()
     p->fillRect(0,0,sizeHint().width()-2,sizeHint().height()-2,
 		backgroundColor());
     p->setPen(QColor(system_button_text_color));
-    p->setFont(stop_text_font);
+    p->setFont(subLabelFont());
     p->drawText((sizeHint().width()-2-p->fontMetrics().width(stop_text))/2,22,
 		stop_text);
-    p->setFont(stop_time_font);
+    p->setFont(bannerFont());
     if (msecs < 0){
       /* HACK HACK HACK TODO */
       /* msecs is **PROBABLY** in the next day 

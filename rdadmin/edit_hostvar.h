@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Host Variable
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,7 +21,6 @@
 #ifndef EDIT_HOSTVAR_H
 #define EDIT_HOSTVAR_H
 
-#include <qdialog.h>
 #include <q3listbox.h>
 #include <q3textedit.h>
 #include <qpixmap.h>
@@ -31,10 +30,11 @@
 #include <qcombobox.h>
 #include <qspinbox.h>
 
-#include <rdstation.h>
 #include <rdcatch_connect.h>
+#include <rddialog.h>
+#include <rdstation.h>
 
-class EditHostvar : public QDialog
+class EditHostvar : public RDDialog
 {
   Q_OBJECT
  public:

@@ -99,8 +99,8 @@ RDLiveWire::RDLiveWire(unsigned id,QObject *parent)
   connect(live_socket,SIGNAL(connectionClosed()),
 	  this,SLOT(connectionClosedData()));
   connect(live_socket,SIGNAL(readyRead()),this,SLOT(readyReadData()));
-  connect(live_socket,SIGNAL(error(QAbstracketSocket::SocketError)),
-	  this,SLOT(errorData(QAbstrackSocket::SocketError)));
+  connect(live_socket,SIGNAL(error(QAbstractSocket::SocketError)),
+	  this,SLOT(errorData(QAbstractSocket::SocketError)));
 
   //
   // Watchdog Timers

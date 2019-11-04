@@ -393,7 +393,7 @@ y un respaldo de la base de datos se guardó en </translation>
     </message>
     <message>
         <source>&amp;New Replicator Name:</source>
-        <translation>&amp;Nombre del Replicad.:</translation>
+        <translation type="obsolete">&amp;Nombre del Replicad.:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -418,6 +418,10 @@ y un respaldo de la base de datos se guardó en </translation>
     <message>
         <source>A replicator with that name already exists!</source>
         <translation>¡Un replicador con ese nombre ya existe!</translation>
+    </message>
+    <message>
+        <source>Replicator Name:</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1665,6 +1669,14 @@ al URL especificado.
         <source>Invalid Cart Number!</source>
         <translation>¡Número de cartucho inválido!</translation>
     </message>
+    <message>
+        <source>ON Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OFF Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditGroup</name>
@@ -2730,11 +2742,11 @@ GPIOs</source>
     </message>
     <message>
         <source>INPUT</source>
-        <translation>ENTRADA</translation>
+        <translation type="obsolete">ENTRADA</translation>
     </message>
     <message>
         <source>OUTPUT</source>
-        <translation>SALIDA</translation>
+        <translation type="obsolete">SALIDA</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -2948,6 +2960,14 @@ equipo configurado para ejecutar CAE para obtener la información de audio.</tra
         <source>Normalization Level:</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Input</source>
+        <translation type="unfinished">Entrada</translation>
+    </message>
+    <message>
+        <source>Output</source>
+        <translation type="unfinished">Salida</translation>
+    </message>
 </context>
 <context>
     <name>EditRDLogedit</name>
@@ -2957,11 +2977,11 @@ equipo configurado para ejecutar CAE para obtener la información de audio.</tra
     </message>
     <message>
         <source>INPUT</source>
-        <translation>ENTRADA</translation>
+        <translation type="obsolete">ENTRADA</translation>
     </message>
     <message>
         <source>OUTPUT</source>
-        <translation>SALIDA</translation>
+        <translation type="obsolete">SALIDA</translation>
     </message>
     <message>
         <source>Voice Tracker Settings</source>
@@ -3141,6 +3161,18 @@ computador para obtener los recursos de audio de dicho equipo.</translation>
     </message>
     <message>
         <source>Configure RDLogedit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Input</source>
+        <translation type="unfinished">Entrada</translation>
+    </message>
+    <message>
+        <source>Output</source>
+        <translation type="unfinished">Salida</translation>
+    </message>
+    <message>
+        <source>WaveForm Caption:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3395,11 +3427,11 @@ in order to populate the audio resources database.</source>
     </message>
     <message>
         <source>Linux Export Path:</source>
-        <translation>Exportar en (Linux):</translation>
+        <translation type="obsolete">Exportar en (Linux):</translation>
     </message>
     <message>
         <source>Windows Export Path:</source>
-        <translation>Exportar en (Windows):</translation>
+        <translation type="obsolete">Exportar en (Windows):</translation>
     </message>
     <message>
         <source>Export Event Types:</source>
@@ -3490,11 +3522,11 @@ in order to populate the audio resources database.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Linux Post Export Cmd:</source>
+        <source>Export Path:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Windows Post Export Cmd:</source>
+        <source>Post Export Cmd:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3557,11 +3589,11 @@ in order to populate the audio resources database.</source>
     </message>
     <message>
         <source>CART</source>
-        <translation>CARTUCHO</translation>
+        <translation type="obsolete">CARTUCHO</translation>
     </message>
     <message>
         <source>TITLE</source>
-        <translation>TÍTULO</translation>
+        <translation type="obsolete">TÍTULO</translation>
     </message>
     <message>
         <source>&amp;Save List</source>
@@ -3612,11 +3644,19 @@ Overwrite?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Mcast Address for Notifications</source>
+        <source>Unable to write file &quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Unable to write file &quot;</source>
+        <source>Cart</source>
+        <translation type="unfinished">Cartucho</translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished">Título</translation>
+    </message>
+    <message>
+        <source>Multicast Address for Notifications</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4458,7 +4498,7 @@ Permissions</source>
         <source>This program is free software, and comes with ABSOLUTELY NO WARRANTY,
 not even the implied warranties of MERCHANTIBILITY or FITNESS FOR A
 PARTICULAR PURPOSE.  Touch the &quot;View License&quot; button for details.</source>
-        <translation>Este programa es Software Libre, y se proporciona SIN GARANTÍAS DE NINGÚN 
+        <translation type="obsolete">Este programa es Software Libre, y se proporciona SIN GARANTÍAS DE NINGÚN 
 TIPO, ni siquiera las garantías MERCANTILES implícitas o LA CONVENIENCIA
 PARA UN PROPÓSITO PARTICULAR.  Oprima el botón &quot;Ver licencia&quot; para detalles.</translation>
     </message>
@@ -4491,6 +4531,10 @@ PARA UN PROPÓSITO PARTICULAR.  Oprima el botón &quot;Ver licencia&quot; para d
     <message>
         <source>View
 &amp;Credits</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This program is free software, and comes with ABSOLUTELY NO WARRANTY, not even the implied warranties of MERCHANTIBILITY or FITNESS FOR A PARTICULAR PURPOSE. Touch the &quot;View License&quot; button for details.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

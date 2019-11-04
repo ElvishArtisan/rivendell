@@ -1,9 +1,8 @@
-
 // button_log.h
 //
 // The button play widget for RDAirPlay.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,19 +21,8 @@
 #ifndef BUTTON_LOG_H
 #define BUTTON_LOG_H
 
-#include <qwidget.h>
-#include <qdatetime.h>
-#include <qlabel.h>
-#include <qpushbutton.h>
+#include <rdwidget.h>
 
-#include <rdlistview.h>
-#include <rdlistviewitem.h>
-#include <rdairplay_conf.h>
-
-#include <rdairplay_conf.h>
-#include <rdlogplay.h>
-
-#include "edit_event.h"
 #include "list_log.h"
 #include "loglinebox.h"
 #include "start_button.h"
@@ -45,7 +33,7 @@
 #define BUTTON_PLAY_BUTTONS 3
 #define BUTTON_TOTAL_BUTTONS 7
 
-class ButtonLog : public QWidget
+class ButtonLog : public RDWidget
 {
  Q_OBJECT
  public:

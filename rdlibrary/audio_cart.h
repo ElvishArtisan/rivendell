@@ -2,7 +2,7 @@
 //
 // The audio cart editor for RDLibrary.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,32 +21,18 @@
 #ifndef AUDIO_CART_H
 #define AUDIO_CART_H
 
-#include <vector>
-
-#include <qwidget.h>
-#include <qlabel.h>
-#include <q3listbox.h>
-#include <qcombobox.h>
-#include <q3textedit.h>
-#include <qpixmap.h>
-#include <qcheckbox.h>
-#include <qsqldatabase.h>
-#include <qlineedit.h>
-#include <qcheckbox.h>
-#include <qpushbutton.h>
-#include <q3progressdialog.h>
+#include <qprogressdialog.h>
 
 #include <rdcart.h>
-#include <rdlibrary_conf.h>
-#include <rdlistview.h>
 #include <rdlistviewitem.h>
+#include <rdwidget.h>
 
 #include "audio_controls.h"
 #include "globals.h"
 
 extern bool import_active;
 
-class AudioCart : public QWidget
+class AudioCart : public RDWidget
 {
   Q_OBJECT
  public:
@@ -92,7 +78,7 @@ class AudioCart : public QWidget
   bool rdcart_select_cut;
   AudioControls *rdcart_controls;
   QPushButton *paste_cut_button;
-  Q3ProgressDialog *rdcart_progress_dialog;
+  QProgressDialog *rdcart_progress_dialog;
   bool rdcart_modification_allowed;
   bool rdcart_import_metadata;
   bool rdcart_profile_rip;
@@ -100,5 +86,4 @@ class AudioCart : public QWidget
 };
 
 
-#endif
-
+#endif  // AUDIO_CART_H

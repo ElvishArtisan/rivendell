@@ -2,7 +2,7 @@
 //
 // Create a Rivendell Log
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,12 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <math.h>
-
 #include <qmessagebox.h>
-//Added by qt3to4:
-#include <QLabel>
-#include <QCloseEvent>
 
 #include "rdapplication.h"
 #include "rddb.h"
@@ -34,7 +29,7 @@
 RDAddLog::RDAddLog(QString *logname,QString *svcname,
 		   RDLogFilter::FilterMode mode,const QString &caption,
 		   QWidget *parent)
-  : QDialog(parent,"",true)
+  : RDDialog(parent)
 {
   QStringList services_list;
   QString sql;
@@ -53,12 +48,6 @@ RDAddLog::RDAddLog(QString *logname,QString *svcname,
   setCaption(tr("Create Log"));
 
   //
-  // Create Fonts
-  //
-  QFont button_font=QFont("Helvetica",12,QFont::Bold);
-  button_font.setPixelSize(12);
-
-  //
   // Validator
   //
   RDIdValidator *v=new RDIdValidator(this);
@@ -73,7 +62,7 @@ RDAddLog::RDAddLog(QString *logname,QString *svcname,
   add_name_edit->setValidator(v);
   QLabel *label=new QLabel(add_name_edit,tr("&New Log Name:"),this);
   label->setGeometry(10,13,100,19);
-  label->setFont(button_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight);
   connect(add_name_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(nameChangedData(const QString &)));
@@ -85,7 +74,7 @@ RDAddLog::RDAddLog(QString *logname,QString *svcname,
   add_service_box->setGeometry(115,33,100,19);
   label=new QLabel(add_name_edit,tr("&Service:"),this);
   label->setGeometry(10,33,100,19);
-  label->setFont(button_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight);
 
   //
@@ -95,7 +84,7 @@ RDAddLog::RDAddLog(QString *logname,QString *svcname,
   add_ok_button->
     setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   add_ok_button->setDefault(true);
-  add_ok_button->setFont(button_font);
+  add_ok_button->setFont(buttonFont());
   add_ok_button->setText(tr("&OK"));
   add_ok_button->setDisabled(true);
   connect(add_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
@@ -106,7 +95,7 @@ RDAddLog::RDAddLog(QString *logname,QString *svcname,
   add_cancel_button=new QPushButton(this);
   add_cancel_button->
     setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
-  add_cancel_button->setFont(button_font);
+  add_cancel_button->setFont(buttonFont());
   add_cancel_button->setText(tr("&Cancel"));
   connect(add_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 

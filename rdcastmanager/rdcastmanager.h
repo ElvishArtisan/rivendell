@@ -21,29 +21,19 @@
 #ifndef RDCASTMANAGER_H
 #define RDCASTMANAGER_H
 
-#include <vector>
-
-#include <qsize.h>
-#include <qsizepolicy.h>
-#include <qsqldatabase.h>
 #include <qpushbutton.h>
-#include <qpixmap.h>
-#include <qwidget.h>
 
-#include <rdlistview.h>
-#include <rduser.h>
-#include <rdripc.h>
-#include <rdlibrary_conf.h>
-#include <rdlog_line.h>
 #include <rdconfig.h>
+#include <rdlog_line.h>
+#include <rdwidget.h>
 
 #define RDCASTMANAGER_USAGE "\n"
 
-class MainWidget : public QWidget
+class MainWidget : public RDWidget
 {
  Q_OBJECT
  public:
-  MainWidget(QWidget *parent=0);
+  MainWidget(RDConfig *c,QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
   

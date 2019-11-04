@@ -2,7 +2,7 @@
 //
 // Edit a SoundPanel Panel Name
 //
-//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,10 +21,11 @@
 #ifndef RDEDIT_PANEL_NAME_H
 #define RDEDIT_PANEL_NAME_H
 
-#include <qdialog.h>
 #include <qlineedit.h>
 
-class RDEditPanelName : public QDialog
+#include <rddialog.h>
+
+class RDEditPanelName : public RDDialog
 {
   Q_OBJECT
  public:

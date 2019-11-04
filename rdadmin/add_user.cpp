@@ -2,7 +2,7 @@
 //
 // Add a Rivendell User
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,7 +20,6 @@
 
 #include <math.h>
 
-#include <qdialog.h>
 #include <qstring.h>
 #include <qpushbutton.h>
 #include <q3listbox.h>
@@ -39,7 +38,7 @@
 #include <rdescape_string.h>
 
 AddUser::AddUser(QString *username,QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   setModal(true);
 
@@ -56,12 +55,6 @@ AddUser::AddUser(QString *username,QWidget *parent)
   setWindowTitle("RDAdmin - "+tr("Add User"));
 
   //
-  // Create Fonts
-  //
-  QFont font=QFont("Helvetica",12,QFont::Bold);
-  font.setPixelSize(12);
-
-  //
   // User Name
   //
   user_name_edit=new QLineEdit(this);
@@ -69,7 +62,7 @@ AddUser::AddUser(QString *username,QWidget *parent)
   user_name_edit->setMaxLength(255);
   QLabel *user_name_label=new QLabel(user_name_edit,tr("&New User Name:"),this);
   user_name_label->setGeometry(10,13,110,19);
-  user_name_label->setFont(font);
+  user_name_label->setFont(labelFont());
   user_name_label->setAlignment(Qt::AlignRight|Qt::TextShowMnemonic);
 
   //
@@ -78,7 +71,7 @@ AddUser::AddUser(QString *username,QWidget *parent)
   QPushButton *ok_button=new QPushButton(this);
   ok_button->setGeometry(size().width()-180,size().height()-60,80,50);
   ok_button->setDefault(true);
-  ok_button->setFont(font);
+  ok_button->setFont(buttonFont());
   ok_button->setText(tr("&OK"));
   connect(ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
@@ -87,7 +80,7 @@ AddUser::AddUser(QString *username,QWidget *parent)
   //
   QPushButton *cancel_button=new QPushButton(this);
   cancel_button->setGeometry(size().width()-90,size().height()-60,80,50);
-  cancel_button->setFont(font);
+  cancel_button->setFont(buttonFont());
   cancel_button->setText(tr("&Cancel"));
   connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 }

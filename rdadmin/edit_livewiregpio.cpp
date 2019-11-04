@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Livewire GPIO Slot Association
 //
-//   (C) Copyright 2013-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2013-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,7 +28,7 @@
 
 EditLiveWireGpio::EditLiveWireGpio(int slot,int *source,QHostAddress *addr,
 				   QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   setModal(true);
 
@@ -46,20 +46,12 @@ EditLiveWireGpio::EditLiveWireGpio(int slot,int *source,QHostAddress *addr,
   setWindowTitle("RDAdmin - "+tr("Edit GPIO Source"));
 
   //
-  // Create Fonts
-  //
-  QFont bold_font=QFont("Helvetica",12,QFont::Bold);
-  bold_font.setPixelSize(12);
-  QFont font=QFont("Helvetica",12,QFont::Normal);
-  font.setPixelSize(12);
-
-  //
   // GPIO Lines
   //
   QLabel *label=new QLabel(tr("GPIO Lines")+
 			QString().sprintf(" %d - %d",5*slot+1,5*slot+5),this);
   label->setGeometry(10,10,sizeHint().width()-20,20);
-  label->setFont(bold_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignCenter);
 
   //
@@ -71,7 +63,7 @@ EditLiveWireGpio::EditLiveWireGpio(int slot,int *source,QHostAddress *addr,
   edit_source_number_spin->setSpecialValueText(tr("None"));
   label=new QLabel(tr("Livewire Source: "),this);
   label->setGeometry(10,32,115,20);
-  label->setFont(bold_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
 
   //
@@ -81,7 +73,7 @@ EditLiveWireGpio::EditLiveWireGpio(int slot,int *source,QHostAddress *addr,
   edit_ip_address_edit->setGeometry(130,54,120,20);
   label=new QLabel(tr("Surface Address: "),this);
   label->setGeometry(10,54,115,20);
-  label->setFont(bold_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
 
   //
@@ -90,7 +82,7 @@ EditLiveWireGpio::EditLiveWireGpio(int slot,int *source,QHostAddress *addr,
   QPushButton *button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
-  button->setFont(bold_font);
+  button->setFont(buttonFont());
   button->setText(tr("&OK"));
   connect(button,SIGNAL(clicked()),this,SLOT(okData()));
 
@@ -98,9 +90,8 @@ EditLiveWireGpio::EditLiveWireGpio(int slot,int *source,QHostAddress *addr,
   //  Cancel Button
   //
   button=new QPushButton(this);
-  button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
-			     80,50);
-  button->setFont(bold_font);
+  button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
+  button->setFont(buttonFont());
   button->setText(tr("&Cancel"));
   connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
 

@@ -2,7 +2,7 @@
 //
 //   A List Selector Widget.
 //
-//   (C) Copyright 2002,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -21,52 +21,35 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <qwidget.h>
-#include <q3hbox.h>
-#include <q3vbox.h>
 #include <qstring.h>
 #include <qpixmap.h>
 #include <qpixmap.h>
-//Added by qt3to4:
-#include <QLabel>
 
 #include <rdlistselector.h>
 
 RDListSelector::RDListSelector(QWidget *parent)
-  : Q3HBox(parent)
+  : RDWidget(parent)
 {
-  QFont font;
-
-  //
-  // Generate Font
-  //
-  font=QFont("Helvetica",10,QFont::Bold);
-  font.setPixelSize(10);
-
-  setSpacing(10);
-
-  Q3VBox *source_box=new Q3VBox(this,"source_box");
-  list_source_label=new QLabel(source_box,"list_source_label");
-  list_source_label->setFont(font);
+  list_source_label=new QLabel(this);
+  list_source_label->setFont(labelFont());
   list_source_label->setText(tr("Available Services"));
   list_source_label->setAlignment(Qt::AlignCenter);
-  list_source_box=new Q3ListBox(source_box,"list_source_box");
+  list_source_box=new Q3ListBox(this);
 
-  Q3VBox *button_box=new Q3VBox(this,"button_box");
-  list_add_button=new QPushButton(button_box,"list_add_button");
+  list_add_button=new QPushButton(this);
   list_add_button->setText(tr("Add >>"));
   list_add_button->setDisabled(true);
   connect(list_add_button,SIGNAL(clicked()),this,SLOT(addData()));
-  list_remove_button=new QPushButton(button_box,"list_add_button");
+  list_remove_button=new QPushButton(this);
   list_remove_button->setText(tr("<< Remove"));
   list_remove_button->setDisabled(true);
   connect(list_remove_button,SIGNAL(clicked()),this,SLOT(removeData()));
 
-  Q3VBox *dest_box=new Q3VBox(this,"dest_box");
-  list_dest_label=new QLabel(dest_box,"list_dest_label");
-  list_dest_label->setFont(font);
+  list_dest_label=new QLabel(this);
+  list_dest_label->setFont(labelFont());
   list_dest_label->setText(tr("Active Services"));
   list_dest_label->setAlignment(Qt::AlignCenter);
-  list_dest_box=new Q3ListBox(dest_box,"list_dest_box");
+  list_dest_box=new Q3ListBox(this);
 }
 
 
@@ -248,6 +231,22 @@ void RDListSelector::removeData()
     list_add_button->setEnabled(true);
     list_dest_box->setCurrentItem(-1);
   }
+}
+
+
+void RDListSelector::resizeEvent(QResizeEvent *e)
+{
+  int w=size().width();
+  int h=size().height();
+
+  list_source_label->setGeometry(0,0,w/3,12);
+  list_source_box->setGeometry(0,12,w/3,h-12);
+
+  list_add_button->setGeometry(w/3+20,20,w/3-40,h/3-16);
+  list_remove_button->setGeometry(w/3+20,2*h/3-8,w/3-40,h/3-16);
+
+  list_dest_label->setGeometry(2*w/3,0,w/3,12);
+  list_dest_box->setGeometry(2*w/3,12,w/3,h-12);
 }
 
 

@@ -2,7 +2,7 @@
 //
 // List Rivendell Log Clocks
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,19 +18,10 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qstring.h>
-#include <q3textedit.h>
-#include <qpainter.h>
 #include <qmessagebox.h>
-#include <qpixmap.h>
 #include <qpainter.h>
 
-#include <rd.h>
-#include <rdapplication.h>
-#include <rddb.h>
 #include <rdescape_string.h>
-#include <rdevent.h>
 
 #include "add_clock.h"
 #include "edit_clock.h"
@@ -39,34 +30,24 @@
 #include "rename_item.h"
 
 ListClocks::ListClocks(QString *clockname,QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
-  setModal(true);
-
   QStringList services_list;
-  setWindowTitle("RDLogManager - "+tr("Log Clocks"));
   edit_clockname=clockname;
+
+  setWindowTitle("RDLogManager - "+tr("Log Clocks"));
 
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-
-  //
-  // Create Fonts
-  //
-  QFont bold_font=QFont("Helvetica",12,QFont::Bold);
-  bold_font.setPixelSize(12);
-  QFont font=QFont("Helvetica",12,QFont::Normal);
-  font.setPixelSize(12);
+  setMinimumSize(sizeHint());
 
   //
   // Event Filter
   //
   edit_filter_box=new QComboBox(this);
   edit_filter_label=new QLabel(edit_filter_box,tr("Filter:"),this);
-  edit_filter_label->setFont(bold_font);
+  edit_filter_label->setFont(labelFont());
   edit_filter_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   connect(edit_filter_box,SIGNAL(activated(int)),
 	  this,SLOT(filterActivatedData(int)));
@@ -89,7 +70,7 @@ ListClocks::ListClocks(QString *clockname,QWidget *parent)
   //  Add Button
   //
   edit_add_button=new QPushButton(this);
-  edit_add_button->setFont(bold_font);
+  edit_add_button->setFont(buttonFont());
   edit_add_button->setText(tr("&Add"));
   connect(edit_add_button,SIGNAL(clicked()),this,SLOT(addData()));
     
@@ -97,7 +78,7 @@ ListClocks::ListClocks(QString *clockname,QWidget *parent)
   //  Edit Button
   //
   edit_edit_button=new QPushButton(this);
-  edit_edit_button->setFont(bold_font);
+  edit_edit_button->setFont(buttonFont());
   edit_edit_button->setText(tr("&Edit"));
   connect(edit_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
     
@@ -105,7 +86,7 @@ ListClocks::ListClocks(QString *clockname,QWidget *parent)
   //  Delete Button
   //
   edit_delete_button=new QPushButton(this);
-  edit_delete_button->setFont(bold_font);
+  edit_delete_button->setFont(buttonFont());
   edit_delete_button->setText(tr("&Delete"));
   connect(edit_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
     
@@ -113,7 +94,7 @@ ListClocks::ListClocks(QString *clockname,QWidget *parent)
   //  Rename Button
   //
   edit_rename_button=new QPushButton(this);
-  edit_rename_button->setFont(bold_font);
+  edit_rename_button->setFont(buttonFont());
   edit_rename_button->setText(tr("&Rename"));
   connect(edit_rename_button,SIGNAL(clicked()),this,SLOT(renameData()));
     
@@ -121,7 +102,7 @@ ListClocks::ListClocks(QString *clockname,QWidget *parent)
   //  Close Button
   //
   edit_close_button=new QPushButton(this);
-  edit_close_button->setFont(bold_font);
+  edit_close_button->setFont(buttonFont());
   edit_close_button->setText(tr("C&lose"));
   connect(edit_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 
@@ -129,7 +110,7 @@ ListClocks::ListClocks(QString *clockname,QWidget *parent)
   //  Clear Button
   //
   edit_clear_button=new QPushButton(this);
-  edit_clear_button->setFont(bold_font);
+  edit_clear_button->setFont(buttonFont());
   edit_clear_button->setText(tr("C&lear"));
   connect(edit_clear_button,SIGNAL(clicked()),this,SLOT(clearData()));
 
@@ -137,7 +118,7 @@ ListClocks::ListClocks(QString *clockname,QWidget *parent)
   //  OK Button
   //
   edit_ok_button=new QPushButton(this);
-  edit_ok_button->setFont(bold_font);
+  edit_ok_button->setFont(buttonFont());
   edit_ok_button->setText(tr("&OK"));
   connect(edit_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
@@ -145,7 +126,7 @@ ListClocks::ListClocks(QString *clockname,QWidget *parent)
   //  Cancel Button
   //
   edit_cancel_button=new QPushButton(this);
-  edit_cancel_button->setFont(bold_font);
+  edit_cancel_button->setFont(buttonFont());
   edit_cancel_button->setText(tr("&Cancel"));
   connect(edit_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 

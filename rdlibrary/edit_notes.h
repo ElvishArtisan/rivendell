@@ -2,7 +2,7 @@
 //
 // Edit Cart Notes.
 //
-//   (C) Copyright 2009-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2009-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,14 +21,13 @@
 #ifndef EDIT_NOTES_H
 #define EDIT_NOTES_H
 
-#include <qdialog.h>
-#include <qsqldatabase.h>
 #include <qpushbutton.h>
-#include <q3textview.h>
+#include <qtextedit.h>
 
 #include <rdcart.h>
+#include <rddialog.h>
 
-class EditNotes : public QDialog
+class EditNotes : public RDDialog
 {
  Q_OBJECT
  public:
@@ -44,7 +43,7 @@ class EditNotes : public QDialog
   void cancelData();
 
  private:
-  Q3TextView *notes_view;
+  QTextEdit *notes_view;
   QPushButton *notes_ok_button;
   QPushButton *notes_cancel_button;
   RDCart *notes_cart;

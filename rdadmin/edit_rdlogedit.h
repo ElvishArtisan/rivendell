@@ -2,7 +2,7 @@
 //
 // Edit an RDLogEdit Configuration
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,18 +21,17 @@
 #ifndef EDIT_RDLOGEDIT_H
 #define EDIT_RDLOGEDIT_H
 
-#include <qdialog.h>
-#include <qsqldatabase.h>
 #include <qlineedit.h>
 #include <qcombobox.h>
 #include <qspinbox.h>
 #include <q3datetimeedit.h>
 
-#include <rdstation.h>
-#include <rdlogedit_conf.h>
 #include <rdcardselector.h>
+#include <rddialog.h>
+#include <rdlogedit_conf.h>
+#include <rdstation.h>
 
-class EditRDLogedit : public QDialog
+class EditRDLogedit : public RDDialog
 {
   Q_OBJECT
  public:
@@ -63,6 +62,7 @@ class EditRDLogedit : public QDialog
   QSpinBox *lib_threshold_spin;
   QSpinBox *lib_normalization_spin;
   Q3TimeEdit *lib_maxlength_time;
+  QLineEdit *lib_waveform_caption_edit;
   QLineEdit *lib_startcart_edit;
   QLineEdit *lib_endcart_edit;
   QLineEdit *lib_recstartcart_edit;
@@ -73,4 +73,4 @@ class EditRDLogedit : public QDialog
 };
 
 
-#endif
+#endif  // EDIT_RDLOGEDIT_H

@@ -2,7 +2,7 @@
 //
 // A Qt-based application for importing Dial Global CDN downloads
 //
-//   (C) Copyright 2012-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,24 +21,17 @@
 #ifndef RDDGIMPORT_H
 #define RDDGIMPORT_H
 
-#include <vector>
-#include <map>
-
-#include <qwidget.h>
-#include <qsize.h>
-#include <qsizepolicy.h>
-#include <qlabel.h>
-#include <qcombobox.h>
-#include <qlineedit.h>
-#include <qpushbutton.h>
-#include <qdatetime.h>
 #include <q3datetimeedit.h>
 #include <q3textedit.h>
 
+#include <qcombobox.h>
+#include <qlineedit.h>
+#include <qpushbutton.h>
+
 #include <rdbusybar.h>
-#include <rddb.h>
 #include <rdgroup.h>
 #include <rdsvc.h>
+#include <rdwidget.h>
 
 #include "event.h"
 
@@ -46,11 +39,11 @@
 #define RDDGIMPORT_KILLDATE_OFFSET 7
 #define RDDGIMPORT_FILE_EXTENSION "mp3"
 
-class MainWidget : public QWidget
+class MainWidget : public RDWidget
 {
   Q_OBJECT
  public:
-   MainWidget(QWidget *parent=0);
+  MainWidget(RDConfig *c,QWidget *parent=0);
    QSize sizeHint() const;
 
  private slots:

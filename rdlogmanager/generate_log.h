@@ -2,7 +2,7 @@
 //
 // Generate a Rivendell Log
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,19 +21,17 @@
 #ifndef GENERATE_LOG_H
 #define GENERATE_LOG_H
 
-#include <qcombobox.h>
-#include <q3datetimeedit.h>
-#include <qdialog.h>
-#include <qlabel.h>
-#include <qpixmap.h>
-#include <q3progressdialog.h>
-#include <qpushbutton.h>
 
+#include <qcombobox.h>
+#include <qdatetimeedit.h>
+#include <qprogressdialog.h>
+
+#include <rddialog.h>
 #include <rdnotification.h>
 
 #define GENERATE_LOG_FILESCAN_INTERVAL 5000
 
-class GenerateLog : public QDialog
+class GenerateLog : public RDDialog
 {
  Q_OBJECT
  public:
@@ -60,12 +58,12 @@ class GenerateLog : public QDialog
   QLabel *gen_service_label;
   QComboBox *gen_service_box;
   QLabel *gen_date_label;
-  Q3DateEdit *gen_date_edit;
+  QDateEdit *gen_date_edit;
   QPushButton *gen_select_button;
   QLabel *gen_import_label;
   QLabel *gen_available_label;
   QLabel *gen_merged_label;
-  Q3ProgressDialog *gen_progress_dialog;
+  QProgressDialog *gen_progress_dialog;
   QPushButton *gen_create_button;
   QPushButton *gen_music_button;
   QPushButton *gen_traffic_button;

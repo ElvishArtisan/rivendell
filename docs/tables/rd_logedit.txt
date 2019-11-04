@@ -16,6 +16,7 @@ ENABLE_SECOND_START  enum('N','Y')
 DEFAULT_CHANNELS     int(10) unsigned 
 MAXLENGTH            int(11)           Max record length, in sec
 TAIL_PREROLL	     int(10) unsigned
+WAVEFORM_CAPTION     varchar(64)
 START_CART           int(10) unsigned
 END_CART             int(10) unsigned
 REC_START_CART       int(10) unsigned

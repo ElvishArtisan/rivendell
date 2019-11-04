@@ -2,7 +2,7 @@
 //
 // The Start Button for RDAirPlay Rivendell
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,15 +21,10 @@
 #ifndef START_BUTTON_H
 #define START_BUTTON_H
 
-#include <qdatetime.h>
-#include <qpushbutton.h>
-#include <qstring.h>
-#include <qpalette.h>
-
-#include <rdcart.h>
 #include <rdairplay_conf.h>
+#include <rdpushbutton.h>
 
-class StartButton : public QPushButton
+class StartButton : public RDPushButton
 {
  Q_OBJECT
  public:

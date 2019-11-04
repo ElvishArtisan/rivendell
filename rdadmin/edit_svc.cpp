@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Service
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -34,7 +34,7 @@
 #include "test_import.h"
 
 EditSvc::EditSvc(QString svc,QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   setModal(true);
 
@@ -56,14 +56,6 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   setWindowTitle("RDAdmin - "+tr("Edit Service"));
 
   //
-  // Create Fonts
-  //
-  QFont font=QFont("Helvetica",12,QFont::Bold);
-  font.setPixelSize(12);
-  QFont section_font=QFont("Helvetica",14,QFont::Bold);
-  section_font.setPixelSize(14);
-
-  //
   // Text Validators
   //
   RDTextValidator *validator=new RDTextValidator(this);
@@ -75,7 +67,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   //
   QLabel *label=new QLabel("General",this);
   label->setGeometry(10,10,120,24);
-  label->setFont(section_font);
+  label->setFont(sectionLabelFont());
   label->setAlignment(Qt::AlignLeft);
 
   //
@@ -177,7 +169,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   //
   QPushButton *button=new QPushButton(this);
   button->setGeometry(455,31,150,50);
-  button->setFont(font);
+  button->setFont(buttonFont());
   button->setText(tr("Configure \n&Autofill Carts"));
   connect(button,SIGNAL(clicked()),this,SLOT(autofillData()));
 
@@ -239,7 +231,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   //
   button=new QPushButton(this);
   button->setGeometry(625,31,150,50);
-  button->setFont(font);
+  button->setFont(buttonFont());
   button->setText(tr("Enable &Hosts"));
   connect(button,SIGNAL(clicked()),this,SLOT(enableHostsData()));
 
@@ -248,7 +240,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   //
   label=new QLabel(tr("Traffic Data Import"),this);
   label->setGeometry(10,213,160,24);
-  label->setFont(section_font);
+  label->setFont(sectionLabelFont());
   label->setAlignment(Qt::AlignLeft);
 
   //
@@ -277,31 +269,6 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   connect(svc_tfc_preimport_cmd_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(textChangedData(const QString &)));
 
-  /*
-  //
-  // Windows Traffic Import Path
-  //
-  svc_tfc_win_path_edit=new QLineEdit(this);
-  svc_tfc_win_path_edit->setGeometry(185,276,240,19);
-  svc_tfc_win_path_edit->setMaxLength(255);
-  label=new QLabel(svc_tfc_win_path_edit,tr("Windows Import Path:"),this);
-  label->setGeometry(10,276,170,19);
-  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-  connect(svc_tfc_win_path_edit,SIGNAL(textChanged(const QString &)),
-	  this,SLOT(textChangedData(const QString &)));
-
-  //
-  // Linux Traffic Preimport Command
-  //
-  svc_tfc_win_preimport_cmd_edit=new QLineEdit(this);
-  svc_tfc_win_preimport_cmd_edit->setGeometry(185,297,240,19);
-  label=new QLabel(svc_tfc_win_preimport_cmd_edit,
-		   tr("Windows Preimport Command:"),this);
-  label->setGeometry(10,297,170,19);
-  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-  connect(svc_tfc_win_preimport_cmd_edit,SIGNAL(textChanged(const QString &)),
-	  this,SLOT(textChangedData(const QString &)));
-  */
   //
   // Note Cart
   //
@@ -349,7 +316,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   //
   button=new QPushButton(this);
   button->setGeometry(360,339,60,40);
-  button->setFont(font);
+  button->setFont(buttonFont());
   button->setText(tr("Test \n&Traffic"));
   connect(button,SIGNAL(clicked()),this,SLOT(trafficData()));
 
@@ -358,7 +325,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   //
   label=new QLabel(tr("Music Data Import"),this);
   label->setGeometry(445,213,160,24);
-  label->setFont(section_font);
+  label->setFont(sectionLabelFont());
   label->setAlignment(Qt::AlignLeft);
 
   //
@@ -446,7 +413,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   //
   button=new QPushButton(this);
   button->setGeometry(795,360,60,40);
-  button->setFont(font);
+  button->setFont(buttonFont());
   button->setText(tr("Test \n&Music"));
   connect(button,SIGNAL(clicked()),this,SLOT(musicData()));
 
@@ -456,7 +423,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
-  button->setFont(font);
+  button->setFont(buttonFont());
   button->setText(tr("&OK"));
   connect(button,SIGNAL(clicked()),this,SLOT(okData()));
 
@@ -466,7 +433,7 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
-  button->setFont(font);
+  button->setFont(buttonFont());
   button->setText(tr("&Cancel"));
   connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
 

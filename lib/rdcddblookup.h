@@ -25,13 +25,13 @@
 #include <stdio.h>
 
 #include <qcombobox.h>
-#include <qdialog.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
 #include <qstringlist.h>
 #include <qtcpsocket.h>
 
-#include "rdcddbrecord.h"
+#include <rdcddbrecord.h>
+#include <rddialog.h>
 
 //
 // Default Settings
@@ -48,7 +48,7 @@
  * database server.  
  **/
 
-class RDCddbLookup : public QDialog
+class RDCddbLookup : public RDDialog
 {
   Q_OBJECT
  public:

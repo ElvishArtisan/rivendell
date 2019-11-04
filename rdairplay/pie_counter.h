@@ -21,15 +21,10 @@
 #ifndef PIE_COUNTER_H
 #define PIE_COUNTER_H
 
-#include <qwidget.h>
-#include <qdatetime.h>
 #include <qlabel.h>
-#include <qpixmap.h>
 
-#include <rdlog_line.h>
 #include <rdairplay_conf.h>
-
-#include "mode_display.h"
+#include <rdwidget.h>
 
 //
 // Inner pie timer
@@ -48,7 +43,7 @@
 #define PIE_Y_PADDING 7
 
 
-class PieCounter : public QWidget
+class PieCounter : public RDWidget
 {
  Q_OBJECT
  public:

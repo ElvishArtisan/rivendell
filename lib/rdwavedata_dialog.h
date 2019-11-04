@@ -2,7 +2,7 @@
 //
 // A dialog to edit the contents of an RDWaveData.
 //
-//   (C) Copyright 2014,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2014-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,21 +21,14 @@
 #ifndef RDWAVEDATA_DIALOG_H
 #define RDWAVEDATA_DIALOG_H
 
-#include <qdialog.h>
 #include <qlineedit.h>
-#include <qlabel.h>
-#include <qpushbutton.h>
-#include <qcombobox.h>
 #include <qspinbox.h>
-//Added by qt3to4:
-#include <QResizeEvent>
-#include <QCloseEvent>
 
 #include <rdcombobox.h>
-#include <rdcart.h>
+#include <rddialog.h>
 #include <rdschedcodes_dialog.h>
 
-class RDWaveDataDialog : public QDialog
+class RDWaveDataDialog : public RDDialog
 {
  Q_OBJECT
  public:

@@ -18,31 +18,12 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <stdlib.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <signal.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <math.h>
-#include <linux/cdrom.h>
-#include <qpushbutton.h>
-#include <q3filedialog.h>
 #include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <qstringlist.h>
-#include <QLabel>
-#include <QResizeEvent>
-#include <QCloseEvent>
 
-#include <rd.h>
-#include <rdapplication.h>
 #include <rdaudioimport.h>
-#include <rdconf.h>
 #include <rdcdripper.h>
-#include <rdcut.h>
+#include <rdconf.h>
 #include <rdtempdirectory.h>
-#include <rdwavefile.h>
 
 #include "cdripper.h"
 #include "globals.h"
@@ -55,27 +36,10 @@ bool ripper_running;
 
 CdRipper::CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
 		   bool profile_rip,QWidget *parent) 
-  : QDialog(parent)
+  : RDDialog(parent)
 {
-  setModal(true);
-
   rip_profile_rip=profile_rip;
   rip_isrc_read=false;
-
-  //
-  // Fix the Window Size
-  //
-  setMinimumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-
-  //
-  // Generate Fonts
-  //
-  QFont button_font=QFont("Helvetica",12,QFont::Bold);
-  button_font.setPixelSize(12);
-  QFont label_font=QFont("Helvetica",12,QFont::Bold);
-  label_font.setPixelSize(12);
-
   rip_conf=conf;
   rip_cddb_record=rec;
   rip_track[0]=-1;
@@ -83,6 +47,11 @@ CdRipper::CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
   rip_title=NULL;
 
   setWindowTitle("RDLibrary - "+tr("Rip CD"));
+
+  //
+  // Fix the Window Size
+  //
+  setMinimumSize(sizeHint());
 
   //
   // Create Temporary Directory
@@ -135,7 +104,7 @@ CdRipper::CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
   // Title Selector
   //
   rip_title_label=new QLabel(tr("Title:"),this);
-  rip_title_label->setFont(label_font);
+  rip_title_label->setFont(labelFont());
   rip_title_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   rip_title_box=new QComboBox(this);
   rip_title_box->insertItem(tr("[none]"));
@@ -144,7 +113,7 @@ CdRipper::CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
   // Artist Label
   //
   rip_artist_label=new QLabel(tr("Artist:"),this);
-  rip_artist_label->setFont(label_font);
+  rip_artist_label->setFont(labelFont());
   rip_artist_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   rip_artist_edit=new QLineEdit(this);
 
@@ -152,7 +121,7 @@ CdRipper::CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
   // Album Edit
   //
   rip_album_label=new QLabel(tr("Album:"),this);
-  rip_album_label->setFont(label_font);
+  rip_album_label->setFont(labelFont());
   rip_album_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   rip_album_edit=new QLineEdit(this);
 
@@ -160,7 +129,7 @@ CdRipper::CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
   // Other Edit
   //
   rip_other_label=new QLabel(tr("Other:"),this);
-  rip_other_label->setFont(label_font);
+  rip_other_label->setFont(labelFont());
   rip_other_label->setAlignment(Qt::AlignRight);
   rip_other_edit=new Q3TextEdit(this);
   rip_other_edit->setReadOnly(true);
@@ -173,7 +142,7 @@ CdRipper::CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
   rip_apply_box->setDisabled(true);
   rip_apply_label=
     new QLabel(rip_apply_box,tr("Apply FreeDB Values to Cart"),this);
-  rip_apply_label->setFont(label_font);
+  rip_apply_label->setFont(labelFont());
   rip_apply_label->setAlignment(Qt::AlignLeft);
   rip_apply_box->setChecked(false);
   rip_apply_label->setDisabled(true);
@@ -189,7 +158,7 @@ CdRipper::CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
   connect(rip_track_list,SIGNAL(selectionChanged()),
 	  this,SLOT(trackSelectionChangedData()));
   rip_track_label=new QLabel(rip_track_list,tr("Tracks"),this);
-  rip_track_label->setFont(label_font);
+  rip_track_label->setFont(labelFont());
   rip_track_list->addColumn(tr("TRACK"));
   rip_track_list->setColumnAlignment(0,Qt::AlignHCenter);
   rip_track_list->addColumn(tr("LENGTH"));
@@ -204,7 +173,7 @@ CdRipper::CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
   //
   // Progress Bar
   //
-  rip_bar=new Q3ProgressBar(this);
+  rip_bar=new QProgressBar(this);
 
   //
   // Eject Button
@@ -230,7 +199,7 @@ CdRipper::CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
   // Rip Track Button
   //
   rip_rip_button=new QPushButton(tr("&Rip\nTrack"),this);
-  rip_rip_button->setFont(button_font);
+  rip_rip_button->setFont(buttonFont());
   rip_rip_button->setDisabled(true);
   connect(rip_rip_button,SIGNAL(clicked()),this,SLOT(ripTrackButtonData()));
 
@@ -240,7 +209,7 @@ CdRipper::CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
   rip_normalize_box=new QCheckBox(this);
   rip_normalize_box->setChecked(true);
   rip_normalize_box_label=new QLabel(rip_normalize_box,tr("Normalize"),this);
-  rip_normalize_box_label->setFont(label_font);
+  rip_normalize_box_label->setFont(labelFont());
   rip_normalize_box_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   connect(rip_normalize_box,SIGNAL(toggled(bool)),
 	  this,SLOT(normalizeCheckData(bool)));
@@ -251,10 +220,10 @@ CdRipper::CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
   rip_normalize_spin=new QSpinBox(this);
   rip_normalize_spin->setRange(-30,0);
   rip_normalize_label=new QLabel(rip_normalize_spin,tr("Level:"),this);
-  rip_normalize_label->setFont(label_font);
+  rip_normalize_label->setFont(labelFont());
   rip_normalize_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   rip_normalize_unit=new QLabel(tr("dBFS"),this);
-  rip_normalize_unit->setFont(label_font);
+  rip_normalize_unit->setFont(labelFont());
   rip_normalize_unit->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
@@ -263,7 +232,7 @@ CdRipper::CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
   rip_autotrim_box=new QCheckBox(this);
   rip_autotrim_box->setChecked(true);
   rip_autotrim_box_label=new QLabel(rip_autotrim_box,tr("Autotrim"),this);
-  rip_autotrim_box_label->setFont(label_font);
+  rip_autotrim_box_label->setFont(labelFont());
   rip_autotrim_box_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   connect(rip_autotrim_box,SIGNAL(toggled(bool)),
 	  this,SLOT(autotrimCheckData(bool)));
@@ -274,10 +243,10 @@ CdRipper::CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
   rip_autotrim_spin=new QSpinBox(this);
   rip_autotrim_spin->setRange(-99,0);
   rip_autotrim_label=new QLabel(rip_autotrim_spin,tr("Level:"),this);
-  rip_autotrim_label->setFont(label_font);
+  rip_autotrim_label->setFont(labelFont());
   rip_autotrim_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   rip_autotrim_unit=new QLabel(tr("dBFS"),this);
-  rip_autotrim_unit->setFont(label_font);
+  rip_autotrim_unit->setFont(labelFont());
   rip_autotrim_unit->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
@@ -285,14 +254,14 @@ CdRipper::CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
   //
   rip_channels_box=new QComboBox(this);
   rip_channels_label=new QLabel(rip_channels_box,tr("Channels:"),this);
-  rip_channels_label->setFont(label_font);
+  rip_channels_label->setFont(labelFont());
   rip_channels_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Close Button
   //
   rip_close_button=new QPushButton("&Close",this);
-  rip_close_button->setFont(button_font);
+  rip_close_button->setFont(buttonFont());
   connect(rip_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 
   //
@@ -486,8 +455,8 @@ void CdRipper::ripTrackButtonData()
   }
   disconnect(rip_rip_button,SIGNAL(clicked()),this,SLOT(ripTrackButtonData()));
   connect(rip_rip_button,SIGNAL(clicked()),ripper,SLOT(abort()));
-  rip_bar->setTotalSteps(ripper->totalSteps()+1);
-  connect(ripper,SIGNAL(progressChanged(int)),rip_bar,SLOT(setProgress(int)));
+  rip_bar->setMaximum(ripper->totalSteps()+1);
+  connect(ripper,SIGNAL(progressChanged(int)),rip_bar,SLOT(setValue(int)));
   RDAudioImport *conv=NULL;
   RDSettings *settings=NULL;
   ripper->setDevice(rip_conf->ripperDevice());
@@ -558,18 +527,16 @@ void CdRipper::ripTrackButtonData()
   delete ripper;
   unlink(tmpfile);
   rmdir(tmpdir);
-  rip_bar->setPercentageVisible(false);
   rip_bar->reset();
   rip_eject_button->setEnabled(true);
   rip_play_button->setEnabled(true);
   rip_stop_button->setEnabled(true);
-  rip_rip_button->setText(tr("Rip Track"));
+  rip_rip_button->setText(tr("Rip\nTrack"));
   connect(rip_rip_button,SIGNAL(clicked()),this,SLOT(ripTrackButtonData()));
   rip_close_button->setEnabled(true);
   rip_cdrom->unlock();
   rip_done=true;
-  rip_bar->setProgress(0);
-  rip_bar->setPercentageVisible(true);
+  rip_bar->setValue(0);
 }
 
 

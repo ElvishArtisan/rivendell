@@ -22,10 +22,12 @@
 #ifndef LICENSE_H
 #define LICENSE_H
 
-#include <qdialog.h>
+#include <qpushbutton.h>
 #include <qtextedit.h>
 
-class License : public QDialog
+#include <rddialog.h>
+
+class License : public RDDialog
 {
  Q_OBJECT
  public:
@@ -40,8 +42,12 @@ class License : public QDialog
  private slots:
   void closeData();
 
+ protected:
+  void resizeEvent(QResizeEvent *e);
+
  private:
   QTextEdit *license_edit;
+  QPushButton *close_button;
 };
 
 

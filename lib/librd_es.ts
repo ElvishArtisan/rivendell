@@ -840,6 +840,10 @@
         <source>The cart title must be unique!</source>
         <translation>¡El título del cartucho debe ser único!</translation>
     </message>
+    <message>
+        <source>Add Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddLog</name>
@@ -879,19 +883,19 @@
 <context>
     <name>RDApplication</name>
     <message>
-        <source>systemctl(1) returned exit code</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>systemctl(1) crashed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <source>systemctl(1) returned exit code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Rivendell service is not active.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -899,47 +903,47 @@
     <name>RDAudioSettingsDialog</name>
     <message>
         <source>Edit Settings</source>
-        <translation>Editar parámetros</translation>
+        <translation type="obsolete">Editar parámetros</translation>
     </message>
     <message>
         <source>Default &amp;Format:</source>
-        <translation>Formato por &amp;Omisión:</translation>
+        <translation type="obsolete">Formato por &amp;Omisión:</translation>
     </message>
     <message>
         <source>Default &amp;Channels:</source>
-        <translation>&amp;Canales por omisión:</translation>
+        <translation type="obsolete">&amp;Canales por omisión:</translation>
     </message>
     <message>
         <source>Default &amp;Sample Rate:</source>
-        <translation>&amp;Sampleo por omisión:</translation>
+        <translation type="obsolete">&amp;Sampleo por omisión:</translation>
     </message>
     <message>
         <source>Default &amp;Bitrate:</source>
-        <translation>&amp;Tasa de bits por omisión:</translation>
+        <translation type="obsolete">&amp;Tasa de bits por omisión:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;Aceptar</translation>
+        <translation type="obsolete">&amp;Aceptar</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>PCM16</source>
-        <translation>PCM16</translation>
+        <translation type="obsolete">PCM16</translation>
     </message>
     <message>
         <source>OggVorbis</source>
-        <translation>OggVorbis</translation>
+        <translation type="obsolete">OggVorbis</translation>
     </message>
     <message>
         <source>MPEG Layer 2</source>
-        <translation>MPEG Capa 2</translation>
+        <translation type="obsolete">MPEG Capa 2</translation>
     </message>
     <message>
         <source>MPEG Layer 3</source>
-        <translation>MPEG Capa 3</translation>
+        <translation type="obsolete">MPEG Capa 3</translation>
     </message>
 </context>
 <context>
@@ -1666,59 +1670,51 @@ Are you sure you want to save?</source>
     <name>RDExceptionDialog</name>
     <message>
         <source>Rivendell Exception Report</source>
-        <translation>Reporte de excepciones</translation>
+        <translation type="obsolete">Reporte de excepciones</translation>
     </message>
     <message>
         <source>&amp;Save</source>
-        <translation>&amp;Guardar</translation>
+        <translation type="obsolete">&amp;Guardar</translation>
     </message>
     <message>
         <source>&amp;Close</source>
-        <translation>&amp;Cerrar</translation>
+        <translation type="obsolete">&amp;Cerrar</translation>
     </message>
     <message>
         <source>Text (*.txt *.TXT)
 All Files (*.*)</source>
-        <translation>Texto (*.txt *.TXT)
+        <translation type="obsolete">Texto (*.txt *.TXT)
 Todos los archivos (*.*)</translation>
     </message>
     <message>
         <source>Export File</source>
-        <translation>Exportar archivo</translation>
+        <translation type="obsolete">Exportar archivo</translation>
     </message>
     <message>
         <source>The file</source>
-        <translation>El archivo </translation>
+        <translation type="obsolete">El archivo </translation>
     </message>
     <message>
         <source>already exists!
 Overwrite?</source>
-        <translation>ya existe.
+        <translation type="obsolete">ya existe.
 ¿Sobreescribir?</translation>
     </message>
     <message>
         <source>File Exists</source>
-        <translation>El archivo ya existe</translation>
+        <translation type="obsolete">El archivo ya existe</translation>
     </message>
     <message>
         <source>Unable to open file</source>
-        <translation>¡No es posible abrir el archivo</translation>
+        <translation type="obsolete">¡No es posible abrir el archivo</translation>
     </message>
     <message>
         <source>for writing!</source>
-        <translation>para escritura!</translation>
+        <translation type="obsolete">para escritura!</translation>
     </message>
     <message>
         <source>File Error</source>
-        <translation>Error de archivo</translation>
-    </message>
-    <message>
-        <source>already exists!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Overwrite?</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Error de archivo</translation>
     </message>
 </context>
 <context>
@@ -2146,30 +2142,30 @@ Do you still want to proceed?</source>
     <name>RDIntegerDialog</name>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;Aceptar</translation>
+        <translation type="obsolete">&amp;Aceptar</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>Set Value</source>
-        <translation>Asignar valor</translation>
+        <translation type="obsolete">Asignar valor</translation>
     </message>
 </context>
 <context>
     <name>RDIntegerEdit</name>
     <message>
         <source>Add</source>
-        <translation>Añadir</translation>
+        <translation type="obsolete">Añadir</translation>
     </message>
     <message>
         <source>Delete</source>
-        <translation>Borrar</translation>
+        <translation type="obsolete">Borrar</translation>
     </message>
     <message>
         <source>Set Value</source>
-        <translation>Colocar valor</translation>
+        <translation type="obsolete">Colocar valor</translation>
     </message>
 </context>
 <context>
@@ -2218,15 +2214,15 @@ Do you still want to proceed?</source>
     </message>
     <message>
         <source>NAME</source>
-        <translation>NOMBRE</translation>
+        <translation type="obsolete">NOMBRE</translation>
     </message>
     <message>
         <source>DESCRIPTION</source>
-        <translation>DESCRIPCIÓN</translation>
+        <translation type="obsolete">DESCRIPCIÓN</translation>
     </message>
     <message>
         <source>SERVICE</source>
-        <translation>SERVICIO</translation>
+        <translation type="obsolete">SERVICIO</translation>
     </message>
     <message>
         <source>OK</source>
@@ -2235,6 +2231,18 @@ Do you still want to proceed?</source>
     <message>
         <source>Cancel</source>
         <translation>Cancelar</translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

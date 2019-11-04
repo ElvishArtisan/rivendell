@@ -734,6 +734,41 @@ evento existente.</translation>
     </message>
 </context>
 <context>
+    <name>EditSchedCodeRules</name>
+    <message>
+        <source>Edit Rules for Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;OK</source>
+        <translation type="unfinished">&amp;OK</translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished">&amp;Cancelar</translation>
+    </message>
+    <message>
+        <source>Code:</source>
+        <translation type="unfinished">Código:</translation>
+    </message>
+    <message>
+        <source>Max. in a row:</source>
+        <translation type="unfinished">Max. na Sequência:</translation>
+    </message>
+    <message>
+        <source>Min. wait:</source>
+        <translation type="unfinished">Min. Espera:</translation>
+    </message>
+    <message>
+        <source>Do not schedule after:</source>
+        <translation type="unfinished">Não agende depois de:</translation>
+    </message>
+    <message>
+        <source>Or after:</source>
+        <translation type="unfinished">Ou depois de:</translation>
+    </message>
+</context>
+<context>
     <name>EditSchedRules</name>
     <message>
         <source>&amp;Edit</source>
@@ -1534,35 +1569,31 @@ Dados</translation>
     <name>editSchedCodeRules</name>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>Code:</source>
-        <translation>Código:</translation>
+        <translation type="obsolete">Código:</translation>
     </message>
     <message>
         <source>Max. in a row:</source>
-        <translation>Max. na Sequência:</translation>
+        <translation type="obsolete">Max. na Sequência:</translation>
     </message>
     <message>
         <source>Min. wait:</source>
-        <translation>Min. Espera:</translation>
+        <translation type="obsolete">Min. Espera:</translation>
     </message>
     <message>
         <source>Do not schedule after:</source>
-        <translation>Não agende depois de:</translation>
+        <translation type="obsolete">Não agende depois de:</translation>
     </message>
     <message>
         <source>Or after:</source>
-        <translation>Ou depois de:</translation>
-    </message>
-    <message>
-        <source>Edit Rules for Code</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Ou depois de:</translation>
     </message>
 </context>
 </TS>

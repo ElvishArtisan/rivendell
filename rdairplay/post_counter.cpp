@@ -2,7 +2,7 @@
 //
 // The post counter widget for Rivendell
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,21 +28,13 @@
 #include "post_counter.h"
 
 PostCounter::PostCounter(QWidget *parent)
-  : QPushButton(parent)
+  : RDPushButton(parent)
 {
   post_running=false;
   post_time_format="hh:mm:ss";
   post_time=QTime();
   post_offset=0;
   post_offset_valid=false;
-
-  //
-  // Generate Fonts
-  //
-  post_small_font=QFont("Helvetica",12,QFont::Normal);
-  post_small_font.setPixelSize(12);
-  post_large_font=QFont("Helvetica",26,QFont::Normal);
-  post_large_font.setPixelSize(26);
 
   //
   // Generate Palettes
@@ -175,10 +167,10 @@ void PostCounter::UpdateDisplay()
   QPainter *p=new QPainter(&pix);
   p->fillRect(0,0,size().width()-2,size().height()-2,color);
   p->setPen(QColor(system_button_text_color));
-  p->setFont(post_small_font);
+  p->setFont(subLabelFont());
   p->drawText((size().width()-2-p->
 	       fontMetrics().width(point))/2,22,point);
-  p->setFont(post_large_font);
+  p->setFont(bannerFont());
   p->drawText((size().width()-2-p->
 	       fontMetrics().width(state))/2,48,state);
   p->end();

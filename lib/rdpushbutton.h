@@ -1,8 +1,8 @@
 //   rdpushbutton.h
 //
-//   An flashing button widget.
+//   A flashing button widget.
 //
-//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -25,8 +25,9 @@
 #include <qpushbutton.h>
 #include <qpixmap.h>
 #include <qcolor.h>
-//Added by qt3to4:
 #include <QMouseEvent>
+
+#include <rdfontengine.h>
 
 /*
  * Widget Defaults
@@ -34,14 +35,19 @@
 #define RDPUSHBUTTON_DEFAULT_FLASH_PERIOD 300
 #define RDPUSHBUTTON_DEFAULT_FLASH_COLOR Qt::blue
 
-class RDPushButton : public QPushButton
+class RDPushButton : public QPushButton, public RDFontEngine
 {
   Q_OBJECT
  public:
   enum ClockSource {InternalClock=0,ExternalClock=1};
-  RDPushButton(QWidget *parent);
-  RDPushButton(const QString &text,QWidget *parent);
-  RDPushButton(const QIcon &icon,const QString &text,QWidget *parent);
+  RDPushButton(QWidget *parent,RDConfig *c=NULL);
+  RDPushButton(const QString &text,QWidget *parent,RDConfig *c=NULL);
+  RDPushButton(const QIcon &icon,const QString &text,QWidget *parent,
+	       RDConfig *c=NULL);
+  QString text() const;
+  void setText(const QString &str);
+  bool wordWrap() const;
+  void setWordWrap(bool state);
   QColor flashColor() const;
   void setFlashColor(QColor color);
   int flashPeriod() const;
@@ -76,6 +82,9 @@ class RDPushButton : public QPushButton
   void flashOn();
   void flashOff();
   void Init();
+  void ComposeText();
+  QString plain_text;
+  bool word_wrap_enabled;
   bool flash_state;
   int flash_period;
   bool flashing_enabled;
@@ -86,7 +95,6 @@ class RDPushButton : public QPushButton
   int button_id;
   ClockSource flash_clock_source;
 };
-
 
 
 #endif  // RDPUSHBUTTON_H

@@ -810,6 +810,10 @@
         <source>The cart title must be unique!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Add Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddLog</name>
@@ -845,67 +849,31 @@
 <context>
     <name>RDApplication</name>
     <message>
-        <source>systemctl(1) returned exit code</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>systemctl(1) crashed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>systemctl(1) returned exit code</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Rivendell service is not active.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAudioSettingsDialog</name>
     <message>
-        <source>Edit Settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Default &amp;Format:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Default &amp;Channels:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Default &amp;Sample Rate:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Default &amp;Bitrate:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Annuler</translation>
-    </message>
-    <message>
-        <source>PCM16</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>OggVorbis</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>MPEG Layer 2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>MPEG Layer 3</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">&amp;Annuler</translation>
     </message>
 </context>
 <context>
@@ -1513,63 +1481,6 @@ Are you sure you want to save?</source>
     </message>
 </context>
 <context>
-    <name>RDExceptionDialog</name>
-    <message>
-        <source>Rivendell Exception Report</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Save</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Close</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Text (*.txt *.TXT)
-All Files (*.*)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Export File</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>The file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>already exists!
-Overwrite?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>File Exists</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to open file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>for writing!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>File Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>already exists!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Overwrite?</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>RDExportSettingsDialog</name>
     <message>
         <source>Edit Export Settings</source>
@@ -1903,30 +1814,11 @@ Do you want to overwrite it?</source>
     <name>RDIntegerDialog</name>
     <message>
         <source>&amp;OK</source>
-        <translation type="unfinished">&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation type="unfinished">&amp;Annuler</translation>
-    </message>
-    <message>
-        <source>Set Value</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>RDIntegerEdit</name>
-    <message>
-        <source>Add</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Delete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Set Value</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">&amp;Annuler</translation>
     </message>
 </context>
 <context>
@@ -1955,18 +1847,6 @@ Do you want to overwrite it?</source>
 <context>
     <name>RDListLogs</name>
     <message>
-        <source>NAME</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>DESCRIPTION</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>SERVICE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1976,6 +1856,18 @@ Do you want to overwrite it?</source>
     </message>
     <message>
         <source>Select Log</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Service</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -2,7 +2,7 @@
 //
 // The Library Utility for Rivendell.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,47 +18,24 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <unistd.h>
-#include <signal.h>
-#include <sys/types.h>
 #include <sys/wait.h>
 
 #include <qapplication.h>
-#include <qwindowsstyle.h>
-#include <qeventloop.h>
-#include <qwidget.h>
-#include <qpainter.h>
-#include <q3sqlpropertymap.h>
 #include <qmessagebox.h>
-#include <qlabel.h>
-#include <qtextcodec.h>
-#include <qtranslator.h>
-#include <qlabel.h>
-#include <q3listview.h>
-#include <q3progressdialog.h>
-#include <qtooltip.h>
-#include <qstylefactory.h>
-#include <qkeysequence.h>
 #include <qshortcut.h>
+#include <qtranslator.h>
 
 #include <curl/curl.h>
 
-#include <dbversion.h>
-#include <rd.h>
 #include <rdadd_cart.h>
-#include <rdapplication.h>
-#include <rdaudio_port.h>
 #include <rdcart_search_text.h>
 #include <rdconf.h>
 #include <rdescape_string.h>
-#include <rdmixer.h>
 #include <rdprofile.h>
-#include <rdtextvalidator.h>
 
 #include "cdripper.h"
 #include "disk_ripper.h"
 #include "edit_cart.h"
-#include "filter.h"
 #include "globals.h"
 #include "list_reports.h"
 #include "rdlibrary.h"
@@ -85,8 +62,8 @@ void SigHandler(int signo);
 #include "../icons/track_cart.xpm"
 #include "../icons/rdlibrary-22x22.xpm"
 
-MainWidget::MainWidget(QWidget *parent)
-  :QWidget(parent)
+MainWidget::MainWidget(RDConfig *c,QWidget *parent)
+  : RDWidget(c,parent)
 {
   QString err_msg;
 
@@ -98,24 +75,12 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
 
   //
   // Initialize LibCurl
   //
   curl_global_init(CURL_GLOBAL_ALL);
-
-  //
-  // Generate Fonts
-  //
-  QFont default_font("Helvetica",12,QFont::Normal);
-  default_font.setPixelSize(12);
-  qApp->setFont(default_font);
-  QFont button_font=QFont("Helvetica",12,QFont::Bold);
-  button_font.setPixelSize(12);
-  QFont filter_font=QFont("Helvetica",16,QFont::Bold);
-  filter_font.setPixelSize(16);
 
   //
   // Create Icons
@@ -130,13 +95,12 @@ MainWidget::MainWidget(QWidget *parent)
   // Progress Dialog
   //
   lib_progress_dialog=
-    new Q3ProgressDialog(tr("Please Wait..."),"Cancel",10,this,
-			"lib_progress_dialog",false,
+    new QProgressDialog(tr("Please Wait..."),tr("Cancel"),0,10,this,
 			Qt::WStyle_Customize|Qt::WStyle_NormalBorder);
   lib_progress_dialog->setCaption(" ");
   QLabel *label=new QLabel(tr("Please Wait..."),lib_progress_dialog);
   label->setAlignment(Qt::AlignCenter);
-  label->setFont(filter_font);
+  label->setFont(progressFont());
   lib_progress_dialog->setLabel(label);
   lib_progress_dialog->setCancelButton(NULL);
   lib_progress_dialog->setMinimumDuration(2000);
@@ -195,9 +159,8 @@ MainWidget::MainWidget(QWidget *parent)
   // Filter
   //
   lib_filter_edit=new QLineEdit(this);
-  lib_filter_edit->setFont(default_font);
   lib_filter_label=new QLabel(lib_filter_edit,tr("Filter:"),this);
-  lib_filter_label->setFont(button_font);
+  lib_filter_label->setFont(labelFont());
   lib_filter_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   connect(lib_filter_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(filterChangedData(const QString &)));
@@ -208,7 +171,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Filter Search Button
   //
   lib_search_button=new QPushButton(tr("&Search"),this);
-  lib_search_button->setFont(button_font);
+  lib_search_button->setFont(buttonFont());
   connect(lib_search_button,SIGNAL(clicked()),this,SLOT(searchClickedData()));
   switch(lib_filter_mode) {
   case RDStation::FilterSynchronous:
@@ -223,7 +186,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Filter Clear Button
   //
   lib_clear_button=new QPushButton(tr("&Clear"),this);
-  lib_clear_button->setFont(button_font);
+  lib_clear_button->setFont(buttonFont());
   lib_clear_button->setDisabled(true);
   connect(lib_clear_button,SIGNAL(clicked()),this,SLOT(clearClickedData()));
 
@@ -231,9 +194,8 @@ MainWidget::MainWidget(QWidget *parent)
   // Group Filter
   //
   lib_group_box=new QComboBox(this);
-  lib_group_box->setFont(default_font);
   lib_group_label=new QLabel(lib_group_box,tr("Group:"),this);
-  lib_group_label->setFont(button_font);
+  lib_group_label->setFont(labelFont());
   lib_group_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   connect(lib_group_box,SIGNAL(activated(const QString &)),
 	  this,SLOT(groupActivatedData(const QString &)));
@@ -242,9 +204,8 @@ MainWidget::MainWidget(QWidget *parent)
   // Scheduler Codes Filter
   //
   lib_codes_box=new QComboBox(this);
-  lib_codes_box->setFont(default_font);
   lib_codes_label=new QLabel(lib_codes_box,tr("Scheduler Code:"),this);
-  lib_codes_label->setFont(button_font);
+  lib_codes_label->setFont(labelFont());
   lib_codes_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   connect(lib_codes_box,SIGNAL(activated(const QString &)),
 	  this,SLOT(groupActivatedData(const QString &)));
@@ -253,9 +214,8 @@ MainWidget::MainWidget(QWidget *parent)
   // Scheduler Codes2 Filter
   //
   lib_codes2_box=new QComboBox(this);
-  lib_codes2_box->setFont(default_font);
   lib_codes2_label=new QLabel(lib_codes2_box,tr("And Scheduler Code:"),this);
-  lib_codes2_label->setFont(button_font);
+  lib_codes2_label->setFont(labelFont());
   lib_codes2_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
   connect(lib_codes2_box,SIGNAL(activated(const QString &)),
 	  this,SLOT(groupActivatedData(const QString &)));
@@ -264,10 +224,9 @@ MainWidget::MainWidget(QWidget *parent)
   // Results Counter
   //
   lib_matches_edit=new QLineEdit(this);
-  lib_matches_edit->setFont(default_font);
   lib_matches_edit->setReadOnly(true);
   lib_matches_label=new QLabel(lib_matches_edit,tr("Matching Carts:"),this);
-  lib_matches_label->setFont(button_font);
+  lib_matches_label->setFont(labelFont());
 
   //
   // Show Allow Cart Drags Checkbox
@@ -276,7 +235,7 @@ MainWidget::MainWidget(QWidget *parent)
   lib_allowdrag_box->setChecked(false);
   lib_allowdrag_label=
     new QLabel(lib_allowdrag_box,tr("Allow Cart Dragging"),this);
-  lib_allowdrag_label->setFont(button_font);
+  lib_allowdrag_label->setFont(labelFont());
   lib_allowdrag_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   connect(lib_allowdrag_box,SIGNAL(stateChanged(int)),
 	  this,SLOT(dragsChangedData(int)));
@@ -291,7 +250,7 @@ MainWidget::MainWidget(QWidget *parent)
   lib_showaudio_box=new QCheckBox(this);
   lib_showaudio_box->setChecked(true);
   lib_showaudio_label=new QLabel(lib_showaudio_box,tr("Show Audio Carts"),this);
-  lib_showaudio_label->setFont(button_font);
+  lib_showaudio_label->setFont(labelFont());
   lib_showaudio_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   connect(lib_showaudio_box,SIGNAL(stateChanged(int)),
 	  this,SLOT(audioChangedData(int)));
@@ -302,7 +261,7 @@ MainWidget::MainWidget(QWidget *parent)
   lib_showmacro_box=new QCheckBox(this);
   lib_showmacro_box->setChecked(true);
   lib_showmacro_label=new QLabel(lib_showmacro_box,tr("Show Macro Carts"),this);
-  lib_showmacro_label->setFont(button_font);
+  lib_showmacro_label->setFont(labelFont());
   lib_showmacro_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   connect(lib_showmacro_box,SIGNAL(stateChanged(int)),
 	  this,SLOT(macroChangedData(int)));
@@ -314,7 +273,7 @@ MainWidget::MainWidget(QWidget *parent)
   lib_shownotes_box->setChecked(true);
   lib_shownotes_label=
     new QLabel(lib_shownotes_box,tr("Show Note Bubbles"),this);
-  lib_shownotes_label->setFont(button_font);
+  lib_shownotes_label->setFont(labelFont());
   lib_shownotes_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
 
   //
@@ -325,7 +284,7 @@ MainWidget::MainWidget(QWidget *parent)
     new QLabel(lib_showmatches_box,tr("Show Only First ")+
 	       QString().sprintf("%d",RD_LIMITED_CART_SEARCH_QUANTITY)+
 	       tr(" Matches"),this);
-  lib_showmatches_label->setFont(button_font);
+  lib_showmatches_label->setFont(labelFont());
   lib_showmatches_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   connect(lib_showmatches_box,SIGNAL(stateChanged(int)),
 	  this,SLOT(searchLimitChangedData(int)));
@@ -334,7 +293,6 @@ MainWidget::MainWidget(QWidget *parent)
   // Cart List
   //
   lib_cart_list=new LibListView(this);
-  lib_cart_list->setFont(default_font);
   lib_cart_list->setAllColumnsShowFocus(true);
   lib_cart_list->setItemMargin(5);
   lib_cart_list->setSelectionMode(Q3ListView::Extended);
@@ -425,7 +383,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Add Button
   //
   lib_add_button=new QPushButton(this);
-  lib_add_button->setFont(button_font);
+  lib_add_button->setFont(buttonFont());
   lib_add_button->setText(tr("&Add"));
   connect(lib_add_button,SIGNAL(clicked()),this,SLOT(addData()));
 
@@ -433,7 +391,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Edit Button
   //
   lib_edit_button=new QPushButton(this);
-  lib_edit_button->setFont(button_font);
+  lib_edit_button->setFont(buttonFont());
   lib_edit_button->setText(tr("&Edit"));
   lib_edit_button->setEnabled(false);
   connect(lib_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
@@ -442,7 +400,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Delete Button
   //
   lib_delete_button=new QPushButton(this);
-  lib_delete_button->setFont(button_font);
+  lib_delete_button->setFont(buttonFont());
   lib_delete_button->setText(tr("&Delete"));
   lib_delete_button->setEnabled(false);
   connect(lib_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
@@ -451,7 +409,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Run Macro Button
   //
   lib_macro_button=new QPushButton(this);
-  lib_macro_button->setFont(button_font);
+  lib_macro_button->setFont(buttonFont());
   lib_macro_button->setText(tr("Run\n&Macro"));
   lib_macro_button->setEnabled(false);
   lib_macro_button->setVisible(false);
@@ -467,7 +425,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Rip Button
   //
   lib_rip_button=new QPushButton(this);
-  lib_rip_button->setFont(button_font);
+  lib_rip_button->setFont(buttonFont());
   lib_rip_button->setText(tr("&Rip\nCD"));
   connect(lib_rip_button,SIGNAL(clicked()),this,SLOT(ripData()));
 
@@ -475,7 +433,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Reports Button
   //
   lib_reports_button=new QPushButton(this);
-  lib_reports_button->setFont(button_font);
+  lib_reports_button->setFont(buttonFont());
   lib_reports_button->setText(tr("Re&ports"));
   connect(lib_reports_button,SIGNAL(clicked()),this,SLOT(reportsData()));
 
@@ -483,7 +441,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Close Button
   //
   lib_close_button=new QPushButton(this);
-  lib_close_button->setFont(button_font);
+  lib_close_button->setFont(buttonFont());
   lib_close_button->setText(tr("&Close"));
   connect(lib_close_button,SIGNAL(clicked()),this,SLOT(quitMainWidget()));
 
@@ -679,7 +637,8 @@ void MainWidget::addData()
   LockUser();
 
   RDAddCart *add_cart=new RDAddCart(&lib_default_group,&cart_type,&cart_title,
-				    rda->user()->name(),rda->system(),this);
+				    rda->user()->name(),"RDLibrary",
+				    rda->system(),this);
   if((cart_num=add_cart->exec())<0) {
     delete add_cart;
     UnlockUser();
@@ -1320,8 +1279,8 @@ void MainWidget::RefreshList()
   int step=0;
   int count=0;
   int matches=0;
-  lib_progress_dialog->setTotalSteps(q->size()/RDLIBRARY_STEP_SIZE);
-  lib_progress_dialog->setProgress(0);
+  lib_progress_dialog->setMaximum(q->size()/RDLIBRARY_STEP_SIZE);
+  lib_progress_dialog->setValue(0);
   while(q->next()) {
     end_datetime=q->value(14).toDateTime();
 
@@ -1409,7 +1368,7 @@ void MainWidget::RefreshList()
     count++;
 
     if(count>RDLIBRARY_STEP_SIZE) {
-      lib_progress_dialog->setProgress(++step);
+      lib_progress_dialog->setValue(++step);
       count=0;
       qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
     }
@@ -1788,7 +1747,9 @@ int main(int argc,char *argv[])
   //
   // Start Event Loop
   //
-  MainWidget *w=new MainWidget();
+  RDConfig *config=new RDConfig();
+  config->load();
+  MainWidget *w=new MainWidget(config);
   a.setMainWidget(w);
   w->show();
   return a.exec();

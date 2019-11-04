@@ -732,6 +732,41 @@ einem bereits existierendem Event.</translation>
     </message>
 </context>
 <context>
+    <name>EditSchedCodeRules</name>
+    <message>
+        <source>Edit Rules for Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;OK</source>
+        <translation type="unfinished">&amp;OK</translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished">Abbre&amp;chen</translation>
+    </message>
+    <message>
+        <source>Code:</source>
+        <translation type="unfinished">Code:</translation>
+    </message>
+    <message>
+        <source>Max. in a row:</source>
+        <translation type="unfinished">Max. hintereinander:</translation>
+    </message>
+    <message>
+        <source>Min. wait:</source>
+        <translation type="unfinished">Mindestwartezeit:</translation>
+    </message>
+    <message>
+        <source>Do not schedule after:</source>
+        <translation type="unfinished">Plane nicht nach:</translation>
+    </message>
+    <message>
+        <source>Or after:</source>
+        <translation type="unfinished">oder nach:</translation>
+    </message>
+</context>
+<context>
     <name>EditSchedRules</name>
     <message>
         <source>&amp;Edit</source>
@@ -1530,35 +1565,31 @@ Data</source>
     <name>editSchedCodeRules</name>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Abbre&amp;chen</translation>
+        <translation type="obsolete">Abbre&amp;chen</translation>
     </message>
     <message>
         <source>Code:</source>
-        <translation>Code:</translation>
+        <translation type="obsolete">Code:</translation>
     </message>
     <message>
         <source>Max. in a row:</source>
-        <translation>Max. hintereinander:</translation>
+        <translation type="obsolete">Max. hintereinander:</translation>
     </message>
     <message>
         <source>Min. wait:</source>
-        <translation>Mindestwartezeit:</translation>
+        <translation type="obsolete">Mindestwartezeit:</translation>
     </message>
     <message>
         <source>Do not schedule after:</source>
-        <translation>Plane nicht nach:</translation>
+        <translation type="obsolete">Plane nicht nach:</translation>
     </message>
     <message>
         <source>Or after:</source>
-        <translation>oder nach:</translation>
-    </message>
-    <message>
-        <source>Edit Rules for Code</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">oder nach:</translation>
     </message>
 </context>
 </TS>

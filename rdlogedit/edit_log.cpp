@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Log
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,25 +18,12 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <math.h>
-
-#include <qdialog.h>
-#include <qevent.h>
-#include <qgroupbox.h>
-#include <qlabel.h>
 #include <qmessagebox.h>
 #include <qpainter.h>
-#include <qstring.h>
 
-#include <rd.h>
 #include <rdadd_log.h>
-#include <rdapplication.h>
 #include <rdconf.h>
 #include <rddatedialog.h>
-#include <rddb.h>
-#include <rddebug.h>
-#include <rdlogedit_conf.h>
-#include <rdtextfile.h>
 #include <rdtextvalidator.h>
 
 #include "add_meta.h"
@@ -63,7 +50,7 @@
 EditLog::EditLog(QString logname,QString *filter,QString *group,
 		 QString *schedcode,vector<RDLogLine> *clipboard,
 		 vector<QString> *new_logs,QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   setModal(true);
 
@@ -103,20 +90,6 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   setMinimumWidth(sizeHint().width());
   setMinimumHeight(sizeHint().height());
 
-  //
-  // Create Fonts
-  //
-  QFont modified_font=QFont("Helvetica",18,QFont::Bold);
-  modified_font.setPixelSize(18);
-  QFont button_font=QFont("Helvetica",12,QFont::Bold);
-  button_font.setPixelSize(12);
-  QFont label_font=QFont("Helvetica",12,QFont::Bold);
-  label_font.setPixelSize(12);
-  QFont title_font=QFont("Helvetica",12,QFont::Normal);
-  title_font.setPixelSize(12);
-  QFont length_font=QFont("Helvetica",10,QFont::Bold);
-  length_font.setPixelSize(10);
-  
   //
   // Create Icons
   //
@@ -165,14 +138,13 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   edit_modified_label=new QLabel(this);
   edit_modified_label->setBackgroundColor(QColor(system_mid_color));
   edit_modified_label->setAlignment(Qt::AlignCenter|Qt::AlignVCenter);
-  edit_modified_label->setFont(modified_font);
+  edit_modified_label->setFont(progressFont());
   edit_logname_label=new QLabel(logname,this);
   edit_logname_label->setBackgroundColor(QColor(system_mid_color));
   edit_logname_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-  edit_logname_label->setFont(title_font);
   edit_logname_label_label=new QLabel(tr("Log Name:"),this);
   edit_logname_label_label->setBackgroundColor(QColor(system_mid_color));
-  edit_logname_label_label->setFont(label_font);
+  edit_logname_label_label->setFont(labelFont());
   edit_logname_label_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -181,10 +153,9 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   edit_track_label=new QLabel(this);
   edit_track_label->setBackgroundColor(QColor(system_mid_color));
   edit_track_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-  edit_track_label->setFont(title_font);
   edit_track_label_label=new QLabel(tr("Tracks:"),this);
   edit_track_label_label->setBackgroundColor(QColor(system_mid_color));
-  edit_track_label_label->setFont(label_font);
+  edit_track_label_label->setFont(labelFont());
   edit_track_label_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -196,10 +167,9 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
 	       this);
   edit_origin_label->setBackgroundColor(QColor(system_mid_color));
   edit_origin_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-  edit_origin_label->setFont(title_font);
   edit_origin_label_label=new QLabel(tr("Origin:"),this);
   edit_origin_label_label->setBackgroundColor(QColor(system_mid_color));
-  edit_origin_label_label->setFont(label_font);
+  edit_origin_label_label->setFont(labelFont());
   edit_origin_label_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -211,7 +181,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
 	  this,SLOT(descriptionChangedData(const QString &)));
   edit_description_label=
     new QLabel(edit_description_edit,tr("Description:"),this);
-  edit_description_label->setFont(label_font);
+  edit_description_label->setFont(labelFont());
   edit_description_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -219,11 +189,11 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   //
   edit_purgedate_box=new QCheckBox(this);
   edit_purgedate_label=new QLabel(edit_purgedate_box,tr("Delete on"),this);
-  edit_purgedate_label->setFont(label_font);
+  edit_purgedate_label->setFont(labelFont());
   edit_purgedate_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   edit_purgedate_edit=new Q3DateEdit(this);
   edit_purgedate_button=new QPushButton(tr("Select"),this);
-  edit_purgedate_button->setFont(label_font);
+  edit_purgedate_button->setFont(buttonFont());
   connect(edit_purgedate_box,SIGNAL(toggled(bool)),
 	  this,SLOT(purgeDateToggledData(bool)));
   connect(edit_purgedate_box,SIGNAL(toggled(bool)),
@@ -242,7 +212,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   edit_service_edit=new QLineEdit(this);
   edit_service_edit->setReadOnly(true);
   edit_service_label=new QLabel(edit_service_box,tr("Service:"),this);
-  edit_service_label->setFont(label_font);
+  edit_service_label->setFont(labelFont());
   edit_service_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);  
   connect(edit_service_box,SIGNAL(activated(const QString &)),
 	  this,SLOT(serviceActivatedData(const QString &)));
@@ -257,7 +227,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   edit_autorefresh_edit->setReadOnly(true);
   edit_autorefresh_label=
     new QLabel(edit_autorefresh_box,tr("Enable AutoRefresh:"),this);
-  edit_autorefresh_label->setFont(label_font);
+  edit_autorefresh_label->setFont(labelFont());
   edit_autorefresh_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);  
   connect(edit_autorefresh_box,SIGNAL(activated(int)),
 	  this,SLOT(autorefreshChangedData(int)));
@@ -267,7 +237,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   //
   edit_startdate_edit=new Q3DateEdit(this);
   edit_startdate_label=new QLabel(edit_startdate_edit,tr("Start Date:"),this);
-  edit_startdate_label->setFont(label_font);
+  edit_startdate_label->setFont(labelFont());
   edit_startdate_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);  
   connect(edit_startdate_edit,SIGNAL(valueChanged(const QDate &)),
 	  this,SLOT(dateValueChangedData(const QDate &)));
@@ -278,7 +248,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   //
   edit_enddate_edit=new Q3DateEdit(this);
   edit_enddate_label=new QLabel(edit_startdate_edit,tr("End Date:"),this);
-  edit_enddate_label->setFont(label_font);
+  edit_enddate_label->setFont(labelFont());
   edit_enddate_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);  
   connect(edit_enddate_edit,SIGNAL(valueChanged(const QDate &)),
 	  this,SLOT(dateValueChangedData(const QDate &)));
@@ -291,7 +261,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
 	  this,SLOT(startDateEnabledData(bool)));
   edit_startdate_box_label=
     new QLabel(edit_startdate_box,tr("Start Date Enabled"),this);
-  edit_startdate_box_label->setFont(label_font);
+  edit_startdate_box_label->setFont(labelFont());
   edit_startdate_box_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
@@ -302,21 +272,21 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
 	  this,SLOT(endDateEnabledData(bool)));
   edit_enddate_box_label=
     new QLabel(edit_enddate_box,tr("End Date Enabled"),this);
-  edit_enddate_box_label->setFont(label_font);
+  edit_enddate_box_label->setFont(labelFont());
   edit_enddate_box_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);  
 
   //
   // Time Counter Section
   //
   edit_time_groupbox=new QGroupBox(tr("Run Length"),this);
-  edit_time_groupbox->setFont(label_font);
+  edit_time_groupbox->setFont(labelFont());
 
   //
   // Stop Time Counter
   //
   edit_stoptime_edit=new QLineEdit(this);
   edit_stoptime_label=new QLabel(edit_stoptime_edit,tr("Next Stop:"),this);
-  edit_stoptime_label->setFont(label_font);
+  edit_stoptime_label->setFont(labelFont());
   edit_stoptime_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);  
 
   //
@@ -324,7 +294,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   //
   edit_endtime_edit=new QLineEdit(this);
   edit_endtime_label=new QLabel(edit_endtime_edit,tr("Log End:"),this);
-  edit_endtime_label->setFont(label_font);
+  edit_endtime_label->setFont(labelFont());
   edit_endtime_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);  
 
   //
@@ -382,7 +352,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   //
   edit_cart_button=new QPushButton(this);
   edit_cart_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
-  edit_cart_button->setFont(button_font);
+  edit_cart_button->setFont(buttonFont());
   edit_cart_button->setText(tr("Insert\nCart"));
   connect(edit_cart_button,SIGNAL(clicked()),
 	  this,SLOT(insertCartButtonData()));
@@ -392,7 +362,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   //
   edit_marker_button=new QPushButton(this);
   edit_marker_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
-  edit_marker_button->setFont(button_font);
+  edit_marker_button->setFont(buttonFont());
   edit_marker_button->setText(tr("Insert\nMeta"));
   connect(edit_marker_button,SIGNAL(clicked()),
 	  this,SLOT(insertMarkerButtonData()));
@@ -402,7 +372,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   //
   edit_edit_button=new QPushButton(this);
   edit_edit_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
-  edit_edit_button->setFont(button_font);
+  edit_edit_button->setFont(buttonFont());
   edit_edit_button->setText(tr("Edit"));
   connect(edit_edit_button,SIGNAL(clicked()),this,SLOT(editButtonData()));
 
@@ -411,7 +381,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   //
   edit_delete_button=new QPushButton(this);
   edit_delete_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
-  edit_delete_button->setFont(button_font);
+  edit_delete_button->setFont(buttonFont());
   edit_delete_button->setText(tr("Delete"));
   connect(edit_delete_button,SIGNAL(clicked()),this,SLOT(deleteButtonData()));
 
@@ -434,7 +404,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   //
   edit_cut_button=new QPushButton(this);
   edit_cut_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
-  edit_cut_button->setFont(button_font);
+  edit_cut_button->setFont(buttonFont());
   edit_cut_button->setText(tr("Cut"));
   connect(edit_cut_button,SIGNAL(clicked()),this,SLOT(cutButtonData()));
 
@@ -443,7 +413,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   //
   edit_copy_button=new QPushButton(this);
   edit_copy_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
-  edit_copy_button->setFont(button_font);
+  edit_copy_button->setFont(buttonFont());
   edit_copy_button->setText(tr("Copy"));
   connect(edit_copy_button,SIGNAL(clicked()),this,SLOT(copyButtonData()));
 
@@ -452,7 +422,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   //
   edit_paste_button=new QPushButton(this);
   edit_paste_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
-  edit_paste_button->setFont(button_font);
+  edit_paste_button->setFont(buttonFont());
   edit_paste_button->setText(tr("Paste"));
   connect(edit_paste_button,SIGNAL(clicked()),this,SLOT(pasteButtonData()));
 
@@ -460,7 +430,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   //  Save Button
   //
   edit_save_button=new QPushButton(this);
-  edit_save_button->setFont(button_font);
+  edit_save_button->setFont(buttonFont());
   edit_save_button->setText(tr("&Save"));
   edit_save_button->setDisabled(true);
   connect(edit_save_button,SIGNAL(clicked()),this,SLOT(saveData()));
@@ -469,7 +439,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   //  Save As Button
   //
   edit_saveas_button=new QPushButton(this);
-  edit_saveas_button->setFont(button_font);
+  edit_saveas_button->setFont(buttonFont());
   edit_saveas_button->setText(tr("Save")+"\n"+tr("As"));
   connect(edit_saveas_button,SIGNAL(clicked()),this,SLOT(saveasData()));
 
@@ -477,7 +447,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   //  Render Button
   //
   edit_renderas_button=new QPushButton(this);
-  edit_renderas_button->setFont(button_font);
+  edit_renderas_button->setFont(buttonFont());
   edit_renderas_button->setText(tr("Render"));
   connect(edit_renderas_button,SIGNAL(clicked()),this,SLOT(renderasData()));
 
@@ -485,7 +455,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   //  Reports Button
   //
   edit_reports_button=new QPushButton(this);
-  edit_reports_button->setFont(button_font);
+  edit_reports_button->setFont(buttonFont());
   edit_reports_button->setText(tr("&Reports"));
   connect(edit_reports_button,SIGNAL(clicked()),this,SLOT(reportsData()));
 
@@ -502,7 +472,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   //
   edit_ok_button=new QPushButton(this);
   edit_ok_button->setDefault(true);
-  edit_ok_button->setFont(button_font);
+  edit_ok_button->setFont(buttonFont());
   edit_ok_button->setText(tr("&OK"));
   connect(edit_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
@@ -510,7 +480,7 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   //  Cancel Button
   //
   edit_cancel_button=new QPushButton(this);
-  edit_cancel_button->setFont(button_font);
+  edit_cancel_button->setFont(buttonFont());
   edit_cancel_button->setText(tr("&Cancel"));
   connect(edit_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
@@ -1275,10 +1245,10 @@ void EditLog::resizeEvent(QResizeEvent *e)
   edit_logname_label->setGeometry(155,11,size().width()-500,18);
   edit_logname_label_label->setGeometry(80,11,70,18);
   edit_modified_label->setGeometry(60,14,20,18);
-  edit_origin_label->setGeometry(size().width()-300,11,200,18);
-  edit_origin_label_label->setGeometry(size().width()-345,11,40,18);
   edit_track_label->setGeometry(size().width()-425,11,40,18);
   edit_track_label_label->setGeometry(size().width()-510,11,80,18);
+  edit_origin_label->setGeometry(size().width()-320,11,310,18);
+  edit_origin_label_label->setGeometry(size().width()-370,11,45,18);
   edit_description_edit->setGeometry(110,40,size().width()-390,20);
   edit_description_label->setGeometry(10,40,95,20);
   edit_purgedate_box->setGeometry(size().width()-255,42,15,15);
@@ -1300,7 +1270,7 @@ void EditLog::resizeEvent(QResizeEvent *e)
   edit_startdate_box_label->setGeometry(270,96,175,20);
   edit_enddate_box_label->setGeometry(450,96,140,20);
 
-  edit_time_groupbox->setGeometry(624,65,136,59);
+  edit_time_groupbox->setGeometry(620,65,140,59);
   edit_stoptime_label->setGeometry(625,82,65,18);
   edit_stoptime_edit->setGeometry(695,82,60,18);
   edit_endtime_label->setGeometry(625,102,65,18);
@@ -1339,14 +1309,6 @@ void EditLog::paintEvent(QPaintEvent *e)
   p->fillRect(60,8,size().width()-120,24,QColor(system_mid_color));
   p->fillRect(9,size().height()-130,size().width()-20,60,
 	      QColor(system_mid_color));
-  /*
-  p->setPen(Qt::black);
-  p->setBrush(Qt::black);
-  p->drawLine(624,70,760,70);
-  p->drawLine(760,70,760,124);
-  p->drawLine(760,124,624,124);
-  p->drawLine(624,124,624,70);
-  */
   p->end();
   delete p;
 }

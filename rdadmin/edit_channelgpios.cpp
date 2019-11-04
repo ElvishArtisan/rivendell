@@ -2,7 +2,7 @@
 //
 // Edit Rivendell Channel GPIO Settings
 //
-//   (C) Copyright 2013-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2013-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,7 +22,7 @@
 
 EditChannelGpios::EditChannelGpios(RDAirPlayConf *conf,
 				   RDAirPlayConf::Channel chan,QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   setModal(true);
 
@@ -32,25 +32,17 @@ EditChannelGpios::EditChannelGpios(RDAirPlayConf *conf,
   setWindowTitle("RDAdmin - "+tr("Edit Channel GPIOs"));
 
   //
-  // Fonts
-  //
-  QFont title_font("helvetica",14,QFont::Bold);
-  title_font.setPixelSize(14);
-  QFont label_font("helvetica",12,QFont::Bold);
-  label_font.setPixelSize(12);
-
-  //
   // Title
   //
   edit_title_label=new QLabel(RDAirPlayConf::channelText(chan),this);
-  edit_title_label->setFont(title_font);
+  edit_title_label->setFont(sectionLabelFont());
   edit_title_label->setAlignment(Qt::AlignCenter);
 
   //
   // Start GPI
   //
   edit_start_gpi_label=new QLabel(tr("Start GPI:"),this);
-  edit_start_gpi_label->setFont(label_font);
+  edit_start_gpi_label->setFont(labelFont());
   edit_start_gpi_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
 
   edit_start_gpi_matrix_spin=new QSpinBox(this);
@@ -77,7 +69,7 @@ EditChannelGpios::EditChannelGpios(RDAirPlayConf *conf,
   // Start GPO
   //
   edit_start_gpo_label=new QLabel(tr("Start GPO:"),this);
-  edit_start_gpo_label->setFont(label_font);
+  edit_start_gpo_label->setFont(labelFont());
   edit_start_gpo_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
 
   edit_start_gpo_matrix_spin=new QSpinBox(this);
@@ -93,7 +85,7 @@ EditChannelGpios::EditChannelGpios(RDAirPlayConf *conf,
   // Stop GPI
   //
   edit_stop_gpi_label=new QLabel(tr("Stop GPI:"),this);
-  edit_stop_gpi_label->setFont(label_font);
+  edit_stop_gpi_label->setFont(labelFont());
   edit_stop_gpi_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
 
   edit_stop_gpi_matrix_spin=new QSpinBox(this);
@@ -109,7 +101,7 @@ EditChannelGpios::EditChannelGpios(RDAirPlayConf *conf,
   // Stop GPO
   //
   edit_stop_gpo_label=new QLabel(tr("Stop GPO:"),this);
-  edit_stop_gpo_label->setFont(label_font);
+  edit_stop_gpo_label->setFont(labelFont());
   edit_stop_gpo_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
 
   edit_stop_gpo_matrix_spin=new QSpinBox(this);
@@ -125,7 +117,7 @@ EditChannelGpios::EditChannelGpios(RDAirPlayConf *conf,
   // Signaling Type
   //
   edit_gpio_type_label=new QLabel(tr("Signalling Type:"),this);
-  edit_gpio_type_label->setFont(label_font);
+  edit_gpio_type_label->setFont(labelFont());
   edit_gpio_type_label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
 
   edit_gpio_type_box=new QComboBox(this);
@@ -136,11 +128,11 @@ EditChannelGpios::EditChannelGpios(RDAirPlayConf *conf,
   // Buttons
   //
   edit_ok_button=new QPushButton(tr("OK"),this);
-  edit_ok_button->setFont(label_font);
+  edit_ok_button->setFont(buttonFont());
   connect(edit_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   edit_cancel_button=new QPushButton(tr("Cancel"),this);
-  edit_cancel_button->setFont(label_font);
+  edit_cancel_button->setFont(buttonFont());
   connect(edit_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //

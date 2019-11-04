@@ -2,7 +2,7 @@
 //
 // Monitor a Rivendell RDCatch Deck
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,10 +18,6 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <rd.h>
-#include <rdcut.h>
-#include <rdcart.h>
-#include <rddb.h>
 #include <rdescape_string.h>
 
 #include "colors.h"
@@ -29,7 +25,7 @@
 #include "globals.h"
 
 DeckMon::DeckMon(QString station,unsigned channel,QWidget *parent)
-  : Q3Frame(parent)
+  : RDFrame(parent)
 {
   mon_station=station;
   mon_channel=channel;
@@ -37,16 +33,6 @@ DeckMon::DeckMon(QString station,unsigned channel,QWidget *parent)
   setFrameStyle(Box|Raised);
   setLineWidth(1);
   setMidLineWidth(2);
-
-  //
-  // Generate Fonts
-  //
-  QFont small_font=QFont("Helvetica",6,QFont::Bold);
-  small_font.setPixelSize(6);
-  QFont label_font("Helvetica",12,QFont::Normal);
-  label_font.setPixelSize(12);
-  QFont event_font("Helvetica",12,QFont::Bold);
-  event_font.setPixelSize(12);
 
   //
   // Generate Palettes
@@ -63,7 +49,7 @@ DeckMon::DeckMon(QString station,unsigned channel,QWidget *parent)
   // Station/Channel
   //
   mon_station_label=new QLabel(this);
-  mon_station_label->setFont(label_font);
+  mon_station_label->setFont(defaultFont());
   if((mon_channel>0)&&(mon_channel<(MAX_DECKS+1))) {
     mon_station_label->
       setText(mon_station+QString().sprintf(" : %uR",mon_channel));
@@ -77,7 +63,7 @@ DeckMon::DeckMon(QString station,unsigned channel,QWidget *parent)
   // Monitor Button
   //
   mon_monitor_button=new QPushButton(this);
-  mon_monitor_button->setFont(small_font);
+  mon_monitor_button->setFont(subButtonFont());
   mon_monitor_button->setText(tr("MON"));
   mon_monitor_palette=new QPalette(QColor(BUTTON_MONITOR_FLASHING_COLOR),
 				   backgroundColor());
@@ -91,7 +77,7 @@ DeckMon::DeckMon(QString station,unsigned channel,QWidget *parent)
   // Abort Button
   //
   mon_abort_button=new QPushButton(this);
-  mon_abort_button->setFont(small_font);
+  mon_abort_button->setFont(subButtonFont());
   mon_abort_button->setText(tr("ABORT"));
   mon_abort_button->setDisabled(true);
   connect(mon_abort_button,SIGNAL(clicked()),this,SLOT(abortButtonData()));
@@ -100,13 +86,13 @@ DeckMon::DeckMon(QString station,unsigned channel,QWidget *parent)
   // Cut
   //
   mon_cut_label=new QLabel(this);
-  mon_cut_label->setFont(label_font);
+  mon_cut_label->setFont(defaultFont());
 
   //
   // Event Indicator
   //
   mon_event_label=new QLabel(this);
-  mon_event_label->setFont(event_font);
+  mon_event_label->setFont(labelFont());
   mon_event_label->setAlignment(Qt::AlignCenter);
   mon_event_label->setFrameStyle(Q3Frame::Panel|Q3Frame::Sunken);
   mon_event_label->setPalette(mon_dark_palette);
@@ -118,7 +104,7 @@ DeckMon::DeckMon(QString station,unsigned channel,QWidget *parent)
   // Status
   //
   mon_status_label=new QLabel(tr("OFFLINE"),this);
-  mon_status_label->setFont(label_font);
+  mon_status_label->setFont(defaultFont());
 
   //
   // Audio Meter
@@ -158,18 +144,6 @@ QSizePolicy DeckMon::sizePolicy() const
 void DeckMon::enableMonitorButton(bool state)
 {
   mon_monitor_button->setEnabled(state);
-}
-
-
-void DeckMon::setGeometry(int x,int y,int w,int h)
-{
-  Q3Frame::setGeometry(x,y,w,h);
-}
-
-
-void DeckMon::setGeometry(const QRect &r)
-{
-  setGeometry(r.x(),r.y(),r.width(),r.height());
 }
 
 
@@ -290,7 +264,6 @@ void DeckMon::resizeEvent(QResizeEvent *e)
   mon_status_label->setGeometry(e->size().width()-320,6,80,18);
   mon_left_meter->setGeometry(e->size().width()-235,6,225,10);
   mon_right_meter->setGeometry(e->size().width()-235,16,225,10);
-  Q3Frame::resizeEvent(e);
 }
 
 

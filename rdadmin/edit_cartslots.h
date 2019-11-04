@@ -2,7 +2,7 @@
 //
 // Edit Rivendell CartSlot Configuration
 //
-//   (C) Copyright 2012-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,16 +21,16 @@
 #ifndef EDIT_CARTSLOTS_H
 #define EDIT_CARTSLOTS_H
 
-#include <qdialog.h>
 #include <qspinbox.h>
 #include <qlineedit.h>
 #include <qcombobox.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
 
+#include <rddialog.h>
 #include <rdstation.h>
 
-class EditCartSlots : public QDialog
+class EditCartSlots : public RDDialog
 {
   Q_OBJECT
  public:

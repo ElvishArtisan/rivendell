@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Jack Client Configuration
 //
-//   (C) Copyright 2012-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,7 +25,7 @@
 #include <edit_jack_client.h>
 
 EditJackClient::EditJackClient(RDStation *station,QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   setModal(true);
 
@@ -43,20 +43,12 @@ EditJackClient::EditJackClient(RDStation *station,QWidget *parent)
 		 edit_station->name());
 
   //
-  // Create Fonts
-  //
-  QFont normal_font=QFont("Helvetica",12,QFont::Normal);
-  normal_font.setPixelSize(12);
-  QFont font=QFont("Helvetica",12,QFont::Bold);
-  font.setPixelSize(12);
-
-  //
   // JACK Client Description
   //
   edit_jack_description_edit=new QLineEdit(this);
   edit_jack_description_label=
     new QLabel(edit_jack_description_edit,tr("Description:"),this);
-  edit_jack_description_label->setFont(font);
+  edit_jack_description_label->setFont(labelFont());
   edit_jack_description_label->
     setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
@@ -66,7 +58,7 @@ EditJackClient::EditJackClient(RDStation *station,QWidget *parent)
   edit_jack_command_line_edit=new QLineEdit(this);
   edit_jack_command_line_label=
     new QLabel(edit_jack_command_line_edit,tr("Command Line:"),this);
-  edit_jack_command_line_label->setFont(font);
+  edit_jack_command_line_label->setFont(labelFont());
   edit_jack_command_line_label->
     setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
@@ -75,7 +67,7 @@ EditJackClient::EditJackClient(RDStation *station,QWidget *parent)
   //
   edit_ok_button=new QPushButton(this);
   edit_ok_button->setDefault(true);
-  edit_ok_button->setFont(font);
+  edit_ok_button->setFont(buttonFont());
   edit_ok_button->setText(tr("&OK"));
   connect(edit_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
@@ -83,7 +75,7 @@ EditJackClient::EditJackClient(RDStation *station,QWidget *parent)
   //  Cancel Button
   //
   edit_cancel_button=new QPushButton(this);
-  edit_cancel_button->setFont(font);
+  edit_cancel_button->setFont(buttonFont());
   edit_cancel_button->setText(tr("&Cancel"));
   connect(edit_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 }

@@ -2,7 +2,7 @@
 //
 // A Qt-based application for testing General Purpose Input (GPI) devices.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,25 +18,11 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <stdlib.h>
-
 #include <qapplication.h>
-#include <qwindowsstyle.h>
-#include <qwidget.h>
-#include <qpushbutton.h>
-#include <qrect.h>
-#include <qpoint.h>
-#include <qpainter.h>
-#include <qstring.h>
 #include <qmessagebox.h>
-#include <qlineedit.h>
-#include <qtextcodec.h>
 #include <qtranslator.h>
 
-#include <rdapplication.h>
-#include <rddb.h>
 #include <rdescape_string.h>
-#include <rdlistviewitem.h>
 #include <rdreport.h>
 #include <rdtextfile.h>
 
@@ -47,8 +33,8 @@
 //
 #include "../icons/rivendell-22x22.xpm"
 
-MainWidget::MainWidget(QWidget *parent)
-  :QWidget(parent)
+MainWidget::MainWidget(RDConfig *c,QWidget *parent)
+  : RDWidget(c,parent)
 {
   QString err_msg;
 
@@ -78,23 +64,8 @@ MainWidget::MainWidget(QWidget *parent)
   //
   // Set Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
-
-  //
-  // Create Fonts
-  //
-  QFont font("helvetica",10,QFont::Normal);
-  font.setPixelSize(10);
-  setFont(font);
-  QFont list_font("helvetica",12,QFont::Normal);
-  list_font.setPixelSize(12);
-  QFont main_font("helvetica",12,QFont::Bold);
-  main_font.setPixelSize(12);
-  QFont title_font("helvetica",14,QFont::Bold);
-  title_font.setPixelSize(14);
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   //
   // Create And Set Icon
@@ -135,7 +106,7 @@ MainWidget::MainWidget(QWidget *parent)
   gpi_type_box->insertItem(tr("GPO (Outputs)"));
   QLabel *label=new QLabel(gpi_type_box,tr("Show:"),this);
   label->setGeometry(20,10,55,21);
-  label->setFont(main_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   connect(gpi_type_box,SIGNAL(activated(int)),
 	  this,SLOT(matrixActivatedData(int)));
@@ -150,7 +121,7 @@ MainWidget::MainWidget(QWidget *parent)
   }
   label=new QLabel(gpi_matrix_box,tr("Matrix:"),this);
   label->setGeometry(220,10,55,21);
-  label->setFont(main_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   connect(gpi_matrix_box,SIGNAL(activated(int)),
 	  this,SLOT(matrixActivatedData(int)));
@@ -190,7 +161,7 @@ MainWidget::MainWidget(QWidget *parent)
   //
   label=new QLabel(tr("Green = ON Cart"),this);
   label->setGeometry(200,370,300,12);
-  label->setFont(main_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   QPalette p=palette();
   p.setColor(QPalette::Active,QColorGroup::Foreground,Qt::darkGreen);
@@ -200,7 +171,7 @@ MainWidget::MainWidget(QWidget *parent)
 
   label=new QLabel(tr("Red = OFF Cart"),this);
   label->setGeometry(200,392,300,12);
-  label->setFont(main_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   p.setColor(QPalette::Active,QColorGroup::Foreground,Qt::darkRed);
   p.setColor(QPalette::Inactive,QColorGroup::Foreground,Qt::darkRed);
@@ -211,7 +182,7 @@ MainWidget::MainWidget(QWidget *parent)
   // Events Log
   //
   label=new QLabel(tr("Events Log"),this);
-  label->setFont(title_font);
+  label->setFont(sectionLabelFont());
   label->setAlignment(Qt::AlignCenter);
   label->setGeometry(110,423,sizeHint().width()-220,30);
 
@@ -222,7 +193,7 @@ MainWidget::MainWidget(QWidget *parent)
 	  this,SLOT(eventsDateChangedData(const QDate &)));
   gpi_events_date_label=new QLabel(gpi_events_date_edit,tr("Date")+":",this);
   gpi_events_date_label->setGeometry(100,453,50,20);
-  gpi_events_date_label->setFont(main_font);
+  gpi_events_date_label->setFont(labelFont());
   gpi_events_date_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   gpi_events_state_box=new QComboBox(this);
@@ -234,11 +205,10 @@ MainWidget::MainWidget(QWidget *parent)
 	  this,SLOT(eventsStateChangedData(int)));
   gpi_events_state_label=new QLabel(gpi_events_state_box,tr("State")+":",this);
   gpi_events_state_label->setGeometry(275,453,50,20);
-  gpi_events_state_label->setFont(main_font);
+  gpi_events_state_label->setFont(labelFont());
   gpi_events_state_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   gpi_events_list=new RDListView(this);
-  gpi_events_list->setFont(main_font);
   gpi_events_list->setGeometry(110,480,sizeHint().width()-220,230);
   gpi_events_list->setItemMargin(5);
   gpi_events_list->setSelectionMode(Q3ListView::NoSelection);
@@ -256,7 +226,7 @@ MainWidget::MainWidget(QWidget *parent)
 
   gpi_events_scroll_button=new QPushButton(tr("Scroll"),this);
   gpi_events_scroll_button->setGeometry(sizeHint().width()-100,510,80,50);
-  gpi_events_scroll_button->setFont(main_font);
+  gpi_events_scroll_button->setFont(buttonFont());
   connect(gpi_events_scroll_button,SIGNAL(clicked()),
 	  this,SLOT(eventsScrollData()));
   gpi_scroll_color=palette();
@@ -275,7 +245,7 @@ MainWidget::MainWidget(QWidget *parent)
 
   gpi_events_report_button=new QPushButton(tr("Report"),this);
   gpi_events_report_button->setGeometry(sizeHint().width()-100,570,80,50);
-  gpi_events_report_button->setFont(main_font);
+  gpi_events_report_button->setFont(buttonFont());
   connect(gpi_events_report_button,SIGNAL(clicked()),
 	  this,SLOT(eventsReportData()));
 
@@ -776,7 +746,9 @@ int main(int argc,char *argv[])
   //
   // Start Event Loop
   //
-  MainWidget *w=new MainWidget();
+  RDConfig *config=new RDConfig();
+  config->load();
+  MainWidget *w=new MainWidget(config);
   a.setMainWidget(w);
   w->setGeometry(QRect(QPoint(0,0),w->sizeHint()));
   w->show();

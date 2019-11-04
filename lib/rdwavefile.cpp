@@ -2740,20 +2740,20 @@ bool RDWaveFile::GetCart(int fd)
 
   if(wave_data!=NULL) {
     wave_data->setMetadataFound(true);
-    wave_data->setTitle(cart_title);
-    wave_data->setArtist(cart_artist);
+    wave_data->setTitle(QString(cart_title).remove(QChar(0)));
+    wave_data->setArtist(QString(cart_artist).remove(QChar(0)));
     wave_data->setCutId(cart_cut_id);
-    wave_data->setClient(cart_client_id);
-    wave_data->setCategory(cart_category);
-    wave_data->setClassification(cart_classification);
-    wave_data->setOutCue(cart_out_cue);
+    wave_data->setClient(QString(cart_client_id).remove(QChar(0)));
+    wave_data->setCategory(QString(cart_category).remove(QChar(0)));
+    wave_data->setClassification(QString(cart_classification).remove(QChar(0)));
+    wave_data->setOutCue(QString(cart_out_cue).remove(QChar(0)));
     wave_data->setStartDate(cart_start_date);
     wave_data->setStartTime(cart_start_time);
     wave_data->setEndDate(cart_end_date);
     wave_data->setEndTime(cart_end_time);
-    wave_data->setUserDefined(cart_user_def);
-    wave_data->setUrl(cart_url);
-    wave_data->setTagText(cart_tag_text);
+    wave_data->setUserDefined(QString(cart_user_def).remove(QChar(0)));
+    wave_data->setUrl(QString(cart_url).remove(QChar(0)));
+    wave_data->setTagText(QString(cart_tag_text).remove(QChar(0)));
     for(int i=0;i<MAX_TIMERS;i++) {
       if((cart_timer_label[i]=="SEGs")||(cart_timer_label[i]=="SEC1")) {
 	wave_data->setSegueStartPos((int)(1000.0*((double)cart_timer_sample[i])/
@@ -2831,12 +2831,12 @@ bool RDWaveFile::GetBext(int fd)
 
   if(wave_data!=NULL) {
     wave_data->setMetadataFound(true);
-    wave_data->setDescription(bext_description);
-    wave_data->setOriginator(bext_originator);
-    wave_data->setOriginatorReference(bext_originator_ref);
+    wave_data->setDescription(bext_description.remove(QChar(0)));
+    wave_data->setOriginator(bext_originator.remove(QChar(0)));
+    wave_data->setOriginatorReference(bext_originator_ref.remove(QChar(0)));
     wave_data->setOriginationDate(bext_origination_date);
     wave_data->setOriginationTime(bext_origination_time);
-    wave_data->setCodingHistory(bext_coding_history);
+    wave_data->setCodingHistory(bext_coding_history.remove(QChar(0)));
   }
   return true;
 }
@@ -2984,9 +2984,9 @@ bool RDWaveFile::GetScot(int fd)
   }
   if(wave_data!=NULL) {
     wave_data->setMetadataFound(true);
-    wave_data->setTitle(scot_title.stripWhiteSpace());
-    wave_data->setArtist(scot_artist.stripWhiteSpace());
-    wave_data->setUserDefined(scot_etc.stripWhiteSpace());
+    wave_data->setTitle(scot_title.remove(QChar(0)).trimmed());
+    wave_data->setArtist(scot_artist.remove(QChar(0)).trimmed());
+    wave_data->setUserDefined(scot_etc.remove(QChar(0)).trimmed());
     wave_data->setReleaseYear(scot_year);
     wave_data->setCutId(QString().sprintf("%u",cartnum));
     wave_data->setTalkStartPos(0);

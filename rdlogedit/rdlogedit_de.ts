@@ -32,39 +32,39 @@
     </message>
     <message>
         <source>Start at:</source>
-        <translation>Starte um:</translation>
+        <translation type="obsolete">Starte um:</translation>
     </message>
     <message>
         <source>Action If Previous Event Still Playing</source>
-        <translation>Aktion wenn vorheriges Event noch läuft</translation>
+        <translation type="obsolete">Aktion wenn vorheriges Event noch läuft</translation>
     </message>
     <message>
         <source>Start Immediately</source>
-        <translation>Sofort starten</translation>
+        <translation type="obsolete">Sofort starten</translation>
     </message>
     <message>
         <source>Make Next</source>
-        <translation>Als Nächstes</translation>
+        <translation type="obsolete">Als Nächstes</translation>
     </message>
     <message>
         <source>Wait up to</source>
-        <translation>Warte bis zu</translation>
+        <translation type="obsolete">Warte bis zu</translation>
     </message>
     <message>
         <source>Play</source>
-        <translation>Abspielen</translation>
+        <translation type="obsolete">Abspielen</translation>
     </message>
     <message>
         <source>Segue</source>
-        <translation>Übergang</translation>
+        <translation type="obsolete">Übergang</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation>Stop</translation>
+        <translation type="obsolete">Stop</translation>
     </message>
     <message>
         <source>Transition Type:</source>
-        <translation>Übergangstyp:</translation>
+        <translation type="obsolete">Übergangstyp:</translation>
     </message>
     <message>
         <source>Log Name</source>
@@ -80,19 +80,15 @@
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Abbre&amp;chen</translation>
+        <translation type="obsolete">Abbre&amp;chen</translation>
     </message>
     <message>
         <source>Transition If Previous Cart Ends Before</source>
-        <translation>Übergang wenn der vorheriger Cart eher aufhört</translation>
-    </message>
-    <message>
-        <source>Transition Type</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Übergang wenn der vorheriger Cart eher aufhört</translation>
     </message>
 </context>
 <context>
@@ -504,39 +500,39 @@ die für den gewählten Service ungültig sind!</translation>
     </message>
     <message>
         <source>Start at:</source>
-        <translation>Starte um:</translation>
+        <translation type="obsolete">Starte um:</translation>
     </message>
     <message>
         <source>Action If Previous Event Still Playing</source>
-        <translation>Aktion wenn vorheriges Event noch läuft</translation>
+        <translation type="obsolete">Aktion wenn vorheriges Event noch läuft</translation>
     </message>
     <message>
         <source>Start Immediately</source>
-        <translation>Sofort starten</translation>
+        <translation type="obsolete">Sofort starten</translation>
     </message>
     <message>
         <source>Make Next</source>
-        <translation>Als Nächstes</translation>
+        <translation type="obsolete">Als Nächstes</translation>
     </message>
     <message>
         <source>Wait up to</source>
-        <translation>Warte bis zu</translation>
+        <translation type="obsolete">Warte bis zu</translation>
     </message>
     <message>
         <source>Play</source>
-        <translation>Abspielen</translation>
+        <translation type="obsolete">Abspielen</translation>
     </message>
     <message>
         <source>Segue</source>
-        <translation>Übergang</translation>
+        <translation type="obsolete">Übergang</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation>Stop</translation>
+        <translation type="obsolete">Stop</translation>
     </message>
     <message>
         <source>Transition Type:</source>
-        <translation>Übergangstyp:</translation>
+        <translation type="obsolete">Übergangstyp:</translation>
     </message>
     <message>
         <source>Cart</source>
@@ -558,15 +554,15 @@ auswählen</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Abbre&amp;chen</translation>
+        <translation type="obsolete">Abbre&amp;chen</translation>
     </message>
     <message>
         <source>Transition If Previous Cart Ends Before</source>
-        <translation>Übergang wenn der vorheriger Cart eher aufhört</translation>
+        <translation type="obsolete">Übergang wenn der vorheriger Cart eher aufhört</translation>
     </message>
     <message>
         <source>Missing Cart</source>
@@ -592,15 +588,11 @@ Gruppe des ausgewählten Service!</translation>
     </message>
     <message>
         <source>Duplicate Start Time</source>
-        <translation>Doppelte Startzeit</translation>
+        <translation type="obsolete">Doppelte Startzeit</translation>
     </message>
     <message>
         <source>An event is already scheduled with this start time!</source>
-        <translation>Es existiert bereits ein Event mit dieser Startzeit!</translation>
-    </message>
-    <message>
-        <source>Transition Type</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">Es existiert bereits ein Event mit dieser Startzeit!</translation>
     </message>
 </context>
 <context>
@@ -611,35 +603,35 @@ Gruppe des ausgewählten Service!</translation>
     </message>
     <message>
         <source>Start at:</source>
-        <translation>Starte um:</translation>
+        <translation type="obsolete">Starte um:</translation>
     </message>
     <message>
         <source>Action If Previous Event Still Playing</source>
-        <translation>Aktion wenn vorheriges Event noch läuft</translation>
+        <translation type="obsolete">Aktion wenn vorheriges Event noch läuft</translation>
     </message>
     <message>
         <source>Start Immediately</source>
-        <translation>Sofort starten</translation>
+        <translation type="obsolete">Sofort starten</translation>
     </message>
     <message>
         <source>Make Next</source>
-        <translation>Als Nächstes</translation>
+        <translation type="obsolete">Als Nächstes</translation>
     </message>
     <message>
         <source>Wait up to</source>
-        <translation>Warte bis zu</translation>
+        <translation type="obsolete">Warte bis zu</translation>
     </message>
     <message>
         <source>Play</source>
-        <translation>Abspielen</translation>
+        <translation type="obsolete">Abspielen</translation>
     </message>
     <message>
         <source>Segue</source>
-        <translation>Übergang</translation>
+        <translation type="obsolete">Übergang</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation>Stop</translation>
+        <translation type="obsolete">Stop</translation>
     </message>
     <message>
         <source>Comment</source>
@@ -651,23 +643,19 @@ Gruppe des ausgewählten Service!</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Abbre&amp;chen</translation>
+        <translation type="obsolete">Abbre&amp;chen</translation>
     </message>
     <message>
         <source>Transition If Previous Cart Ends Before</source>
-        <translation>Übergang wenn der vorheriger Cart eher aufhört</translation>
+        <translation type="obsolete">Übergang wenn der vorheriger Cart eher aufhört</translation>
     </message>
     <message>
         <source>Transition Type:</source>
         <translation type="obsolete">Übergangstyp:</translation>
-    </message>
-    <message>
-        <source>Transition Type</source>
-        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -678,35 +666,35 @@ Gruppe des ausgewählten Service!</translation>
     </message>
     <message>
         <source>Start at:</source>
-        <translation>Starte um:</translation>
+        <translation type="obsolete">Starte um:</translation>
     </message>
     <message>
         <source>Action If Previous Event Still Playing</source>
-        <translation>Aktion wenn vorheriges Event noch läuft</translation>
+        <translation type="obsolete">Aktion wenn vorheriges Event noch läuft</translation>
     </message>
     <message>
         <source>Start Immediately</source>
-        <translation>Sofort starten</translation>
+        <translation type="obsolete">Sofort starten</translation>
     </message>
     <message>
         <source>Make Next</source>
-        <translation>Als Nächstes</translation>
+        <translation type="obsolete">Als Nächstes</translation>
     </message>
     <message>
         <source>Wait up to</source>
-        <translation>Warte bis zu</translation>
+        <translation type="obsolete">Warte bis zu</translation>
     </message>
     <message>
         <source>Play</source>
-        <translation>Abspielen</translation>
+        <translation type="obsolete">Abspielen</translation>
     </message>
     <message>
         <source>Segue</source>
-        <translation>Übergang</translation>
+        <translation type="obsolete">Übergang</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation>Stop</translation>
+        <translation type="obsolete">Stop</translation>
     </message>
     <message>
         <source>Comment</source>
@@ -714,19 +702,19 @@ Gruppe des ausgewählten Service!</translation>
     </message>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;OK</translation>
+        <translation type="obsolete">&amp;OK</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>Abbre&amp;chen</translation>
+        <translation type="obsolete">Abbre&amp;chen</translation>
     </message>
     <message>
         <source>Transition If Previous Cart Ends Before</source>
-        <translation>Übergang wenn der vorheriger Cart eher aufhört</translation>
+        <translation type="obsolete">Übergang wenn der vorheriger Cart eher aufhört</translation>
     </message>
     <message>
         <source>Transition Type:</source>
-        <translation>Übergangstyp:</translation>
+        <translation type="obsolete">Übergangstyp:</translation>
     </message>
 </context>
 <context>

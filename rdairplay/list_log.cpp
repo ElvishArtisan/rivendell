@@ -18,21 +18,12 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qtimer.h>
-#include <qpixmap.h>
-#include <qpainter.h>
 #include <qmessagebox.h>
 
 #include <rdapplication.h>
 #include <rdconf.h>
-#include <rddb.h>
-#include <rddebug.h>
-#include <rdlistviewitem.h>
-#include <rdlog.h>
 
-#include "button_log.h"
 #include "colors.h"
-#include "globals.h"
 #include "list_log.h"
 
 #include "../icons/play.xpm"
@@ -46,7 +37,7 @@
 
 ListLog::ListLog(RDLogPlay *log,RDCae *cae,int id,bool allow_pause,
 		 QWidget *parent)
-  : QWidget(parent)
+  : RDWidget(parent)
 {
   list_id=id;
   list_log=log;
@@ -59,19 +50,6 @@ ListLog::ListLog(RDLogPlay *log,RDCae *cae,int id,bool allow_pause,
   list_playbutton_mode=ListLog::ButtonDisabled;
   list_audition_head_playing=false;
   list_audition_tail_playing=false;
-
-  //
-  // Create Fonts
-  //
-  QFont list_font=QFont("Helvetica",12,QFont::Normal);
-  list_font.setPixelSize(12);
-  setFont(list_font);
-  QFont label_font=QFont("Helvetica",12,QFont::Bold);
-  label_font.setPixelSize(12);
-  QFont font=QFont("Helvetica",14,QFont::Bold);
-  font.setPixelSize(14);
-  QFont name_font=QFont("Helvetica",18,QFont::Bold);
-  name_font.setPixelSize(18);
 
   //
   // Create Icons
@@ -159,7 +137,6 @@ ListLog::ListLog(RDLogPlay *log,RDCae *cae,int id,bool allow_pause,
   // Log List
   //
   list_log_list=new LibListView(this);
-  list_log_list->setFont(list_font);
   int y=0;
   int h=sizeHint().height()-60;
   if(rda->airplayConf()->showCounters()) {
@@ -229,7 +206,7 @@ ListLog::ListLog(RDLogPlay *log,RDCae *cae,int id,bool allow_pause,
   // Time Counter Section
   //
   QGroupBox *groupbox=new QGroupBox(tr("Run Length"),this);
-  groupbox->setFont(label_font);
+  groupbox->setFont(labelFont());
   groupbox->setGeometry(336,sizeHint().height()-116,146,58);
   if(!rda->airplayConf()->showCounters()) {
     groupbox->hide();
@@ -242,7 +219,7 @@ ListLog::ListLog(RDLogPlay *log,RDCae *cae,int id,bool allow_pause,
   list_stoptime_edit->setGeometry(407,sizeHint().height()-100,70,18);
   list_stoptime_label=new QLabel(list_stoptime_edit,tr("Next Stop:"),this);
   list_stoptime_label->setGeometry(337,sizeHint().height()-100,65,18);
-  list_stoptime_label->setFont(label_font);
+  list_stoptime_label->setFont(labelFont());
   list_stoptime_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);  
   list_stoptime_label->setBackgroundColor(QColor(system_mid_color));
   if(!rda->airplayConf()->showCounters()) {
@@ -257,7 +234,7 @@ ListLog::ListLog(RDLogPlay *log,RDCae *cae,int id,bool allow_pause,
   list_endtime_edit->setGeometry(407,sizeHint().height()-80,70,18);
   list_endtime_label=new QLabel(list_endtime_edit,tr("Log End:"),this);
   list_endtime_label->setGeometry(337,sizeHint().height()-80,65,18);
-  list_endtime_label->setFont(label_font);
+  list_endtime_label->setFont(labelFont());
   list_endtime_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);  
   list_endtime_label->setBackgroundColor(QColor(system_mid_color));
   if(!rda->airplayConf()->showCounters()) {
@@ -270,7 +247,7 @@ ListLog::ListLog(RDLogPlay *log,RDCae *cae,int id,bool allow_pause,
   //
   list_take_button=new QPushButton(this);
   list_take_button->setGeometry(10,sizeHint().height()-55,80,50);
-  list_take_button->setFont(font);
+  list_take_button->setFont(bigButtonFont());
   list_take_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
   list_take_button->setText(tr("Select"));
   list_take_button->setFocusPolicy(Qt::NoFocus);
@@ -282,7 +259,7 @@ ListLog::ListLog(RDLogPlay *log,RDCae *cae,int id,bool allow_pause,
   //
   list_head_button=new QPushButton(this);
   list_head_button->setGeometry(10,sizeHint().height()-113,80,50);
-  list_head_button->setFont(font);
+  list_head_button->setFont(bigButtonFont());
   list_head_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
   list_head_button->setText(tr("Audition\nHead"));
   list_head_button->setFocusPolicy(Qt::NoFocus);
@@ -296,7 +273,7 @@ ListLog::ListLog(RDLogPlay *log,RDCae *cae,int id,bool allow_pause,
   //
   list_tail_button=new QPushButton(this);
   list_tail_button->setGeometry(90,sizeHint().height()-113,80,50);
-  list_tail_button->setFont(font);
+  list_tail_button->setFont(bigButtonFont());
   list_tail_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
   list_tail_button->setText(tr("Audition\nTail"));
   list_tail_button->setFocusPolicy(Qt::NoFocus);
@@ -310,7 +287,7 @@ ListLog::ListLog(RDLogPlay *log,RDCae *cae,int id,bool allow_pause,
   //
   list_play_button=new QPushButton(this);
   list_play_button->setGeometry(10,sizeHint().height()-55,80,50);
-  list_play_button->setFont(font);
+  list_play_button->setFont(bigButtonFont());
   list_play_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
   list_play_button->setText(tr("Start"));
   list_play_button->setDisabled(true);
@@ -322,7 +299,7 @@ ListLog::ListLog(RDLogPlay *log,RDCae *cae,int id,bool allow_pause,
   //
   list_next_button=new QPushButton(this);
   list_next_button->setGeometry(90,sizeHint().height()-55,80,50);
-  list_next_button->setFont(font);
+  list_next_button->setFont(bigButtonFont());
   list_next_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
   list_next_button->setText(tr("Make\nNext"));
   list_next_button->setDisabled(true);
@@ -334,7 +311,7 @@ ListLog::ListLog(RDLogPlay *log,RDCae *cae,int id,bool allow_pause,
   //
   list_modify_button=new QPushButton(this);
   list_modify_button->setGeometry(170,sizeHint().height()-55,80,50);
-  list_modify_button->setFont(font);
+  list_modify_button->setFont(bigButtonFont());
   list_modify_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
   list_modify_button->setText(tr("Modify"));
   list_modify_button->setDisabled(true);
@@ -346,7 +323,7 @@ ListLog::ListLog(RDLogPlay *log,RDCae *cae,int id,bool allow_pause,
   //
   list_scroll_button=new QPushButton(this);
   list_scroll_button->setGeometry(250,sizeHint().height()-55,80,50);
-  list_scroll_button->setFont(font);
+  list_scroll_button->setFont(bigButtonFont());
   list_scroll_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
   list_scroll_button->setText(tr("Scroll"));
   list_scroll_button->setFocusPolicy(Qt::NoFocus);
@@ -358,7 +335,7 @@ ListLog::ListLog(RDLogPlay *log,RDCae *cae,int id,bool allow_pause,
   //
   list_refresh_button=new QPushButton(this);
   list_refresh_button->setGeometry(330,sizeHint().height()-55,80,50);
-  list_refresh_button->setFont(font);
+  list_refresh_button->setFont(bigButtonFont());
   list_refresh_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
   list_refresh_button->setText(tr("Refresh\nLog"));
   list_refresh_button->setDisabled(true);
@@ -372,7 +349,7 @@ ListLog::ListLog(RDLogPlay *log,RDCae *cae,int id,bool allow_pause,
   list_load_button=new QPushButton(this);
   list_load_button->setGeometry(sizeHint().width()-90,sizeHint().height()-55,
 				80,50);
-  list_load_button->setFont(font);
+  list_load_button->setFont(bigButtonFont());
   list_load_button->setPalette(QPalette(QColor(system_button_color),QColor(system_mid_color)));
   list_load_button->setText(tr("Select\nLog"));
   list_load_button->setFocusPolicy(Qt::NoFocus);

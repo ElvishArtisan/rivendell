@@ -2,7 +2,7 @@
 //
 // Add a Rivendell Log Manager Clock
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,17 +21,10 @@
 #ifndef ADD_CLOCK_H
 #define ADD_CLOCK_H
 
-#include <qdialog.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qpixmap.h>
-#include <qcheckbox.h>
-#include <qsqldatabase.h>
-#include <qlineedit.h>
-
 #include <rdclock.h>
+#include <rddialog.h>
 
-class AddClock : public QDialog
+class AddClock : public RDDialog
 {
   Q_OBJECT
  public:

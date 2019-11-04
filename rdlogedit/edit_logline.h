@@ -1,8 +1,8 @@
 // edit_logline.h
 //
-// Edit a Rivendell Log Entry
+// Edit a Rivendell cart event
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,22 +21,13 @@
 #ifndef EDIT_LOGLINE_H
 #define EDIT_LOGLINE_H
 
-#include <qdialog.h>
-#include <q3datetimeedit.h>
-#include <qcombobox.h>
-#include <qlineedit.h>
-#include <qlabel.h>
-#include <qcheckbox.h>
-#include <q3buttongroup.h>
-#include <qspinbox.h>
-
 #include <rdcart_dialog.h>
 #include <rdlog_event.h>
-#include <rdlog_line.h>
 #include <rdgroup_list.h>
-#include <rdtimeedit.h>
 
-class EditLogLine : public QDialog
+#include "edit_event.h"
+
+class EditLogLine : public EditEvent
 {
   Q_OBJECT
  public:
@@ -49,24 +40,12 @@ class EditLogLine : public QDialog
   
  private slots:
   void selectCartData();
-  void timeChangedData(const QTime &);
-  void timeToggledData(bool state);
-  void graceClickedData(int id);
-  void okData();
-  void cancelData();
 
  protected:
-  void closeEvent(QCloseEvent *e);
+  bool saveData();
   
  private:
   void FillCart(int cartnum);
-  RDLogLine *edit_logline;
-  RDTimeEdit *edit_time_edit;
-  QLabel *edit_time_label;
-  QCheckBox *edit_timetype_box;
-  QLabel *edit_timetype_label;
-  QCheckBox *edit_time_box;
-  QComboBox *edit_transtype_box;
   QCheckBox *edit_overlap_box;
   QLabel *edit_overlap_label;
   QLineEdit *edit_cart_edit;
@@ -76,8 +55,6 @@ class EditLogLine : public QDialog
   QString *edit_filter;
   QString *edit_group;
   QString *edit_schedcode;
-  Q3ButtonGroup *edit_grace_group;
-  RDTimeEdit *edit_grace_edit;
   QString edit_service;
   RDGroupList *edit_group_list;
   RDLogEvent *edit_log_event;
@@ -85,5 +62,4 @@ class EditLogLine : public QDialog
 };
 
 
-#endif
-
+#endif  // EDIT_LOGLINE_H

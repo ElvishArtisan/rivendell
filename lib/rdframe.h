@@ -1,8 +1,8 @@
-// rdintegerdialog.h
+// rdframe.h
 //
-// A widget to set an integer value.
+// Base class for Rivendell QFrame-based widgets.
 //
-//   (C) Copyright 2008,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,35 +18,20 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef RDINTEGERDIALOG_H
-#define RDINTEGERDIALOG_H
+#ifndef RDFRAME_H
+#define RDFRAME_H
 
-#include <qdialog.h>
-#include <qspinbox.h>
-//Added by qt3to4:
-#include <QCloseEvent>
+#include <qwidget.h>
 
-class RDIntegerDialog : public QDialog
+#include <rdfontengine.h>
+
+class RDFrame : public QFrame, public RDFontEngine
 {
- Q_OBJECT
+  Q_OBJECT;
  public:
-  RDIntegerDialog(int *value,const QString &lbl,int low,int high,
-		  QWidget *parent=0);
-  ~RDIntegerDialog();
-  QSize sizeHint() const;
-  QSizePolicy sizePolicy() const;
-
- private slots:
-  void okData();
-  void cancelData();
-
- protected:
-  void closeEvent(QCloseEvent *e);
-
- private:
-  QSpinBox *int_value_box;
-  int *int_value;
+  RDFrame(QWidget *parent=0,Qt::WindowFlags f=0);
+  RDFrame(RDConfig *config,QWidget *parent=0,Qt::WindowFlags f=0);
 };
 
 
-#endif
+#endif  // RDFRAME_H

@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Host Variable
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,7 +18,6 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
 #include <qstring.h>
 #include <qpushbutton.h>
 #include <q3listbox.h>
@@ -43,17 +42,11 @@
 
 EditHostvar::EditHostvar(QString station,QString var,QString *varvalue,
 			 QString *remark,QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   setModal(true);
   edit_varvalue=varvalue;
   edit_remark=remark;
-
-  //
-  // Create Fonts
-  //
-  QFont font=QFont("Helvetica",12,QFont::Bold);
-  font.setPixelSize(12);
 
   setWindowTitle("RDAdmin - "+tr("Edit Host Variable"));
 
@@ -73,7 +66,7 @@ EditHostvar::EditHostvar(QString station,QString var,QString *varvalue,
   edit_name_edit->setReadOnly(true);
   QLabel *label=new QLabel(edit_name_edit,tr("Variable Name:"),this);
   label->setGeometry(10,11,110,19);
-  label->setFont(font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
@@ -84,7 +77,7 @@ EditHostvar::EditHostvar(QString station,QString var,QString *varvalue,
   edit_varvalue_edit->setMaxLength(255);
   label=new QLabel(edit_varvalue_edit,tr("Variable Value:"),this);
   label->setGeometry(10,33,110,19);
-  label->setFont(font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
@@ -95,7 +88,7 @@ EditHostvar::EditHostvar(QString station,QString var,QString *varvalue,
   edit_remark_edit->setMaxLength(255);
   label=new QLabel(edit_remark_edit,tr("Remark:"),this);
   label->setGeometry(10,55,110,19);
-  label->setFont(font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter|Qt::TextShowMnemonic);
 
   //
@@ -104,7 +97,7 @@ EditHostvar::EditHostvar(QString station,QString var,QString *varvalue,
   QPushButton *ok_button=new QPushButton(this);
   ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   ok_button->setDefault(true);
-  ok_button->setFont(font);
+  ok_button->setFont(buttonFont());
   ok_button->setText(tr("&OK"));
   connect(ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
@@ -112,9 +105,9 @@ EditHostvar::EditHostvar(QString station,QString var,QString *varvalue,
   //  Cancel Button
   //
   QPushButton *cancel_button=new QPushButton(this);
-  cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
-			     80,50);
-  cancel_button->setFont(font);
+  cancel_button->
+    setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
+  cancel_button->setFont(buttonFont());
   cancel_button->setText(tr("&Cancel"));
   connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 

@@ -53,7 +53,7 @@ Xport::Xport(QObject *parent)
   // Open the Database
   //
   rda=new RDApplication("rdxport.cgi","rdxport.cgi",RDXPORT_CGI_USAGE,this);
-  if(!rda->open(&err_msg)) {
+  if(!rda->open(&err_msg,NULL,false)) {
     printf("Content-type: text/html\n");
     printf("Status: 500\n");
     printf("\n");

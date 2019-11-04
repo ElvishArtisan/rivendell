@@ -2,7 +2,7 @@
 //
 // List Rivendell Services
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,13 +21,14 @@
 #ifndef LIST_SVCS_H
 #define LIST_SVCS_H
 
-#include <qdialog.h>
 #include <q3listbox.h>
-#include <q3textedit.h>
-#include <qpixmap.h>
-#include <qradiobutton.h>
 
-class ListSvcs : public QDialog
+#include <qlabel.h>
+#include <qpushbutton.h>
+
+#include <rddialog.h>
+
+class ListSvcs : public RDDialog
 {
   Q_OBJECT
  public:
@@ -42,13 +43,19 @@ class ListSvcs : public QDialog
   void deleteData();
   void doubleClickedData(Q3ListBoxItem *);
   void closeData();
-  
+
+ protected:
+  void resizeEvent(QResizeEvent *e);
+
  private:
   void RefreshList(QString svcname="");
+  QLabel *list_title_label;
   Q3ListBox *list_box;
+  QPushButton *list_add_button;
+  QPushButton *list_edit_button;
+  QPushButton *list_delete_button;
+  QPushButton *list_close_button;
 };
 
 
-#endif
-
-
+#endif  // LIST_SVCS_H

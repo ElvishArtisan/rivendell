@@ -35,7 +35,7 @@ RDCartSlot::RDCartSlot(int slotnum,RDRipc *ripc,RDCae *cae,RDStation *station,
 		       RDCueEditDialog *cue_dialog,
 		       const QString &caption,RDAirPlayConf *conf,
 		       QWidget *parent)
-  : QWidget(parent)
+  : RDWidget(parent)
 {
   slot_number=slotnum;
   slot_ripc=ripc;
@@ -48,7 +48,6 @@ RDCartSlot::RDCartSlot(int slotnum,RDRipc *ripc,RDCae *cae,RDStation *station,
   slot_cue_dialog=cue_dialog;
   slot_caption=caption;
   slot_airplay_conf=conf;
-
   slot_svc_names=NULL;
   slot_stop_requested=false;
   slot_logline=new RDLogLine();
@@ -59,14 +58,6 @@ RDCartSlot::RDCartSlot(int slotnum,RDRipc *ripc,RDCae *cae,RDStation *station,
   slot_breakaway_length=0;
   slot_timescaling_active=false;
   slot_temp_cart=false;
-
-  //
-  // Fonts
-  //
-  QFont big_font("helvetica",36,QFont::Bold);
-  big_font.setPixelSize(36);
-  QFont mid_font("helvetica",14,QFont::Bold);
-  mid_font.setPixelSize(14);
 
   //
   // Palettes
@@ -99,7 +90,7 @@ RDCartSlot::RDCartSlot(int slotnum,RDRipc *ripc,RDCae *cae,RDStation *station,
   //
   slot_start_button=new QPushButton(QString().sprintf("%d",slotnum+1),this);
   slot_start_button->setGeometry(0,0,sizeHint().height(),sizeHint().height());
-  slot_start_button->setFont(big_font);
+  slot_start_button->setFont(hugeButtonFont());
   slot_start_button->setDisabled(true);
   connect(slot_start_button,SIGNAL(clicked()),this,SLOT(startData()));
 
@@ -124,7 +115,7 @@ RDCartSlot::RDCartSlot(int slotnum,RDRipc *ripc,RDCae *cae,RDStation *station,
   slot_load_button->
     setGeometry(sizeHint().height()+5+slot_box->sizeHint().width()+5,0,
 		sizeHint().height(),sizeHint().height());
-  slot_load_button->setFont(mid_font);
+  slot_load_button->setFont(buttonFont());
   connect(slot_load_button,SIGNAL(clicked()),this,SLOT(loadData()));
 
   //
@@ -134,7 +125,7 @@ RDCartSlot::RDCartSlot(int slotnum,RDRipc *ripc,RDCae *cae,RDStation *station,
   slot_options_button->
     setGeometry(2*sizeHint().height()+10+slot_box->sizeHint().width()+5,0,
 		sizeHint().height(),sizeHint().height());
-  slot_options_button->setFont(mid_font);
+  slot_options_button->setFont(buttonFont());
   connect(slot_options_button,SIGNAL(clicked()),this,SLOT(optionsData()));
 
   updateOptions();

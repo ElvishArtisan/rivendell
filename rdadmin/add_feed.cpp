@@ -2,7 +2,7 @@
 //
 // Add a Rivendell RSS Feed
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -36,7 +36,7 @@
 #include "globals.h"
 
 AddFeed::AddFeed(unsigned *id,QString *keyname,QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   setModal(true);
 
@@ -54,14 +54,6 @@ AddFeed::AddFeed(unsigned *id,QString *keyname,QWidget *parent)
   setWindowTitle("RDADmin - "+tr("Add RSS Feed"));
 
   //
-  // Create Fonts
-  //
-  QFont font=QFont("Helvetica",12,QFont::Bold);
-  font.setPixelSize(12);
-  QFont user_font=QFont("Helvetica",12,QFont::Normal);
-  user_font.setPixelSize(12);
-
-  //
   // Enable Users Checkbox
   //
   feed_users_box=new QCheckBox(this);
@@ -69,7 +61,6 @@ AddFeed::AddFeed(unsigned *id,QString *keyname,QWidget *parent)
   feed_users_box->setChecked(true);
   QLabel *label=new QLabel(feed_users_box,tr("Enable Feed for All Users"),this);
   label->setGeometry(60,38,sizeHint().width()-60,19);
-  label->setFont(user_font);
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
@@ -86,7 +77,7 @@ AddFeed::AddFeed(unsigned *id,QString *keyname,QWidget *parent)
   feed_keyname_edit->setValidator(validator);
   label=new QLabel(feed_keyname_edit,tr("&New Feed Name:"),this);
   label->setGeometry(10,11,130,19);
-  label->setFont(font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -95,7 +86,7 @@ AddFeed::AddFeed(unsigned *id,QString *keyname,QWidget *parent)
   QPushButton *ok_button=new QPushButton(this);
   ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   ok_button->setDefault(true);
-  ok_button->setFont(font);
+  ok_button->setFont(buttonFont());
   ok_button->setText(tr("&OK"));
   connect(ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
@@ -105,7 +96,7 @@ AddFeed::AddFeed(unsigned *id,QString *keyname,QWidget *parent)
   QPushButton *cancel_button=new QPushButton(this);
   cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
 			     80,50);
-  cancel_button->setFont(font);
+  cancel_button->setFont(buttonFont());
   cancel_button->setText(tr("&Cancel"));
   connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 }

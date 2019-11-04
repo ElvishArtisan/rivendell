@@ -67,7 +67,6 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdaudioexport.cpp rdaudioexport.h\
                         rdaudioimport.cpp rdaudioimport.h\
                         rdaudioinfo.cpp rdaudioinfo.h\
-                        rdaudiosettings_dialog.cpp rdaudiosettings_dialog.h\
                         rdaudiosettings.cpp rdaudiosettings.h\
                         rdaudiostore.cpp rdaudiostore.h\
                         rdbusybar.cpp rdbusybar.h\
@@ -111,6 +110,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rddebug.cpp rddebug.h\
                         rddeck.cpp rddeck.h\
                         rddelete.cpp rddelete.h\
+                        rddialog.cpp rddialog.h\
                         rddownload.cpp rddownload.h\
                         rddropbox.cpp rddropbox.h\
                         rdedit_audio.cpp rdedit_audio.h\
@@ -121,12 +121,13 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdevent_line.cpp rdevent_line.h\
                         rdevent_player.cpp rdevent_player.h\
                         rdeventimportlist.cpp rdeventimportlist.h\
-                        rdexception_dialog.cpp rdexception_dialog.h\
                         rdexport_settings_dialog.cpp rdexport_settings_dialog.h\
                         rdfeed.cpp rdfeed.h\
                         rdfeedlog.cpp rdfeedlog.h\
+                        rdfontengine.cpp rdfontengine.h\
                         rdformpost.cpp rdformpost.h\
                         rdflacdecode.cpp rdflacdecode.h\
+                        rdframe.cpp rdframe.h\
                         rdgain_envelope.cpp rdgain_envelope.h\
                         rdget_ath.cpp rdget_ath.h\
                         rdgetpasswd.cpp rdgetpasswd.h\
@@ -142,8 +143,6 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdidvalidator.cpp rdidvalidator.h\
                         rdimport_audio.cpp rdimport_audio.h\
                         rdinstancelock.cpp rdinstancelock.h\
-                        rdintegeredit.cpp rdintegeredit.h\
-                        rdintegerdialog.cpp rdintegerdialog.h\
                         rd.h\
                         rdkernelgpio.cpp rdkernelgpio.h\
                         rdlabel.cpp rdlabel.h\
@@ -242,6 +241,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdwavepainter.cpp rdwavepainter.h\
                         rdweb.cpp rdweb.h\
                         rdwebresult.cpp rdwebresult.h\
+                        rdwidget.cpp rdwidget.h\
                         rdxport_interface.h
 
 
@@ -252,7 +252,6 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdaudioexport.cpp\
                           moc_rdaudioimport.cpp\
                           moc_rdaudioinfo.cpp\
-                          moc_rdaudiosettings_dialog.cpp\
                           moc_rdaudiostore.cpp\
                           moc_rdbusybar.cpp\
                           moc_rdbusydialog.cpp\
@@ -274,14 +273,15 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rddatepicker.cpp\
                           moc_rddbheartbeat.cpp\
                           moc_rddelete.cpp\
+                          moc_rddialog.cpp\
                           moc_rddownload.cpp\
                           moc_rdedit_audio.cpp\
                           moc_rdedit_panel_name.cpp\
                           moc_rdemptycart.cpp\
                           moc_rdevent_player.cpp\
-                          moc_rdexception_dialog.cpp\
                           moc_rdexport_settings_dialog.cpp\
                           moc_rdfeed.cpp\
+                          moc_rdframe.cpp\
                           moc_rdget_ath.cpp\
                           moc_rdgetpasswd.cpp\
                           moc_rdgpio.cpp\
@@ -290,8 +290,6 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdhotkeylist.cpp\
                           moc_rdhttpserver.cpp\
                           moc_rdimport_audio.cpp\
-                          moc_rdintegeredit.cpp\
-                          moc_rdintegerdialog.cpp\
                           moc_rdkernelgpio.cpp\
                           moc_rdlabel.cpp\
                           moc_rdlineedit.cpp\
@@ -337,7 +335,8 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdunixserver.cpp\
                           moc_rdunixsocket.cpp\
                           moc_rdupload.cpp\
-                          moc_rdwavedata_dialog.cpp
+                          moc_rdwavedata_dialog.cpp\
+                          moc_rdwidget.cpp
 
 librd_la_LDFLAGS = -release $(VERSION)
 

@@ -336,10 +336,6 @@ Rip</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Rip Track</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Title:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -357,6 +353,18 @@ Rip</source>
     </message>
     <message>
         <source>Rip CD</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Rip
+Track</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DiskGauge</name>
+    <message>
+        <source>Free</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -837,29 +845,6 @@ Notes</source>
     </message>
 </context>
 <context>
-    <name>Filter</name>
-    <message>
-        <source>Library Filter</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>C&amp;lear</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Filter:</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>ListReports</name>
     <message>
         <source>Cart Report</source>
@@ -1183,6 +1168,10 @@ Do you still want to delete it?</source>
     </message>
     <message>
         <source>Matching Carts:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

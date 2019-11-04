@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell User
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,20 +22,17 @@
 #define EDIT_USER_H
 
 #include <q3buttongroup.h>
-#include <qdialog.h>
-#include <q3listbox.h>
-#include <q3textedit.h>
-#include <qpixmap.h>
+
 #include <qcheckbox.h>
-#include <qsqldatabase.h>
 #include <qlineedit.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
 #include <qspinbox.h>
 
+#include <rddialog.h>
 #include <rduser.h>
 
-class EditUser : public QDialog
+class EditUser : public RDDialog
 {
   Q_OBJECT
  public:

@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Jack Configuration
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,7 +22,6 @@
 #define EDIT_JACK_H
 
 #include <qcheckbox.h>
-#include <qdialog.h>
 #include <qlabel.h>
 #include <qlineedit.h>
 #include <q3listview.h>
@@ -31,12 +30,13 @@
 #include <qspinbox.h>
 #include <q3textedit.h>
 
+#include <rddialog.h>
 #include <rdlistview.h>
 #include <rdstation.h>
 
 #define EDITJACK_DEFAULT_SERVERNAME QObject::tr("(default)")
 
-class EditJack : public QDialog
+class EditJack : public RDDialog
 {
  Q_OBJECT
  public:

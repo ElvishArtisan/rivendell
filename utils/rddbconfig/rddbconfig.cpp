@@ -44,8 +44,8 @@
 //
 // Globals
 //
-MainWidget::MainWidget(QWidget *parent)
-  : QWidget(parent)
+MainWidget::MainWidget(RDConfig *c,QWidget *parent)
+  : RDWidget(c,parent)
 {
   QString err_msg;
 
@@ -65,35 +65,24 @@ MainWidget::MainWidget(QWidget *parent)
   rd_config->load();
   rd_config->setModuleName("rddbconfig");
 
-  setWindowTitle(tr("RDDbConfig")+" v"+VERSION);
 
   //
   // Create And Set Icon
   //
   setWindowIcon(QPixmap(rivendell_22x22_xpm));
+  setWindowTitle(tr("RDDbConfig")+" v"+VERSION);
 
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-
-  //
-  // Generate Fonts
-  //
-  QFont font("Helvetica",12,QFont::Normal);
-  font.setPixelSize(12);
-  QFont label_font("Helvetica",12,QFont::Bold);
-  label_font.setPixelSize(12);
-  QFont day_font=QFont("Helvetica",12,QFont::Normal);
-  day_font.setPixelSize(12);
+  setMinimumSize(sizeHint());
 
   //
   // Labels
   //
   QLabel *label=new QLabel(tr("Select an operation:"),this);
   label->setGeometry(0,90,sizeHint().width(),16);
-  label->setFont(label_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignCenter);
 
   label_hostname=new QLabel(QString().sprintf("SQL Server: %s",
@@ -123,28 +112,28 @@ MainWidget::MainWidget(QWidget *parent)
   // Create Button
   //
   db_create_button=new QPushButton(tr("Create"),this);
-  db_create_button->setFont(label_font);
+  db_create_button->setFont(buttonFont());
   connect(db_create_button,SIGNAL(clicked()),this,SLOT(createData()));
 
   //
   // Backup Button
   //
   db_backup_button=new QPushButton(tr("Backup"),this);
-  db_backup_button->setFont(label_font);
+  db_backup_button->setFont(buttonFont());
   connect(db_backup_button,SIGNAL(clicked()),this,SLOT(backupData()));
 
   //
   // Restore Button
   //
   db_restore_button=new QPushButton(tr("Restore"),this);
-  db_restore_button->setFont(label_font);
+  db_restore_button->setFont(buttonFont());
   connect(db_restore_button,SIGNAL(clicked()),this,SLOT(restoreData()));
 
   //
   // Close Button
   //
   db_close_button=new QPushButton(tr("Close"),this);
-  db_close_button->setFont(label_font);
+  db_close_button->setFont(buttonFont());
   connect(db_close_button,SIGNAL(clicked()),this,SLOT(closeData()));
 
   //
@@ -453,9 +442,10 @@ int main(int argc,char *argv[])
   //
   // Start GUI
   //
-  QApplication::setStyle(RD_GUI_STYLE);
+  RDConfig *config=new RDConfig();
+  config->load();
   QApplication a(argc,argv);
-  MainWidget *w=new MainWidget();
+  MainWidget *w=new MainWidget(config);
   a.setMainWidget(w);
   return a.exec();
 }

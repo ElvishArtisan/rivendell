@@ -2,7 +2,7 @@
 //
 // Add a Rivendell RDCatch Event
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,50 +18,30 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
-#include <qstring.h>
 #include <qpushbutton.h>
-#include <qpainter.h>
-#include <qevent.h>
-#include <qmessagebox.h>
-#include <qcheckbox.h>
-#include <qsqldatabase.h>
 
 #include <rd.h>
 #include <rdlog_line.h>
 
-#include <add_meta.h>
+#include "add_meta.h"
 
 AddMeta::AddMeta(QWidget *parent)
-  : QDialog(parent,Qt::WStyle_Customize|Qt::WStyle_DialogBorder)
+  : RDDialog(parent)
 {
-  setModal(true);
-  setWindowTitle("");
+  setWindowTitle("RDLogEdit");
 
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
-
-  //
-  // Generate Fonts
-  //
-  QFont button_font=QFont("Helvetica",12,QFont::Bold);
-  button_font.setPixelSize(12);
-  QFont label_font=QFont("Helvetica",12,QFont::Bold);
-  label_font.setPixelSize(12);
-  QFont day_font=QFont("Helvetica",12,QFont::Normal);
-  day_font.setPixelSize(12);
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   //
   // Title Label
   //
   QLabel *label=new QLabel(tr("Insert a:"),this);
   label->setGeometry(0,0,sizeHint().width(),30);
-  label->setFont(label_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignCenter);
 
   //
@@ -69,7 +49,7 @@ AddMeta::AddMeta(QWidget *parent)
   //
   QPushButton *button=new QPushButton(this);
   button->setGeometry(10,30,sizeHint().width()-20,50);
-  button->setFont(button_font);
+  button->setFont(buttonFont());
   button->setText(tr("&Marker"));
   connect(button,SIGNAL(clicked()),this,SLOT(markerData()));
 
@@ -78,7 +58,7 @@ AddMeta::AddMeta(QWidget *parent)
   //
   button=new QPushButton(this);
   button->setGeometry(10,80,sizeHint().width()-20,50);
-  button->setFont(button_font);
+  button->setFont(buttonFont());
   button->setText(tr("Voice &Track"));
   connect(button,SIGNAL(clicked()),this,SLOT(trackData()));
 
@@ -87,7 +67,7 @@ AddMeta::AddMeta(QWidget *parent)
   //
   button=new QPushButton(this);
   button->setGeometry(10,130,sizeHint().width()-20,50);
-  button->setFont(button_font);
+  button->setFont(buttonFont());
   button->setText(tr("Log C&hain"));
   connect(button,SIGNAL(clicked()),this,SLOT(chainData()));
 
@@ -96,7 +76,7 @@ AddMeta::AddMeta(QWidget *parent)
   //
   button=new QPushButton(this);
   button->setGeometry(10,sizeHint().height()-60,sizeHint().width()-20,50);
-  button->setFont(button_font);
+  button->setFont(buttonFont());
   button->setText(tr("&Cancel"));
   button->setDefault(true);
   connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
@@ -110,7 +90,7 @@ AddMeta::~AddMeta()
 
 QSize AddMeta::sizeHint() const
 {
-  return QSize(200,240);
+  return QSize(200,260);
 } 
 
 

@@ -23,12 +23,10 @@
 
 #include <vector>
 
-#include <qwidget.h>
 #include <qdatetime.h>
 #include <qlabel.h>
 #include <qsignalmapper.h>
 
-#include <rdpushbutton.h>
 
 #include <rdbutton_dialog.h>
 #include <rdbutton_panel.h>
@@ -37,6 +35,8 @@
 #include <rdcombobox.h>
 #include <rdevent_player.h>
 #include <rdpanel_button.h>
+#include <rdpushbutton.h>
+#include <rdwidget.h>
 
 //
 // Widget Settings
@@ -46,13 +46,13 @@
 #define PANEL_MAX_OUTPUTS 5
 #define PANEL_SCAN_INTERVAL 10000
 
-class RDSoundPanel : public QWidget
+class RDSoundPanel : public RDWidget
 {
  Q_OBJECT
  public:
   RDSoundPanel(int cols,int rows,int station_panels,int user_panels,bool flash,
-	       const QString &label_template,bool extended,
-	       RDEventPlayer *player,RDCartDialog *cart_dialog,
+	       const QString &caption,const QString &label_template,
+	       bool extended,RDEventPlayer *player,RDCartDialog *cart_dialog,
 	       QWidget *parent=0);
   ~RDSoundPanel();
   QSize sizeHint() const;
@@ -183,6 +183,7 @@ class RDSoundPanel : public QWidget
   RDCartDialog *panel_cart_dialog;
   bool panel_onair_flag;
   QTimer *panel_scan_timer;
+  QString panel_caption;
 };
 
 #endif  // RDSOUND_PANEL_H

@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell GPI
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,16 +21,17 @@
 #ifndef EDIT_GPI_H
 #define EDIT_GPI_H
 
-#include <qdialog.h>
-#include <qlabel.h>
-#include <qpushbutton.h>
-#include <qlineedit.h>
 #include <qcombobox.h>
+#include <qgroupbox.h>
+#include <qlabel.h>
+#include <qlineedit.h>
+#include <qpushbutton.h>
 
-#include <rduser.h>
+#include <rddialog.h>
 #include <rdmatrix.h>
+#include <rduser.h>
 
-class EditGpi : public QDialog
+class EditGpi : public RDDialog
 {
  Q_OBJECT
  public:
@@ -48,7 +49,6 @@ class EditGpi : public QDialog
   void cancelData();
 
  private:
-  void paintEvent(QPaintEvent *e);
   int edit_gpi;
   int *edit_oncart;
   QLineEdit *edit_ondescription_edit;
@@ -60,6 +60,8 @@ class EditGpi : public QDialog
   QString edit_group;
   QString *edit_ondescription;
   QString *edit_offdescription;
+  QGroupBox *edit_on_group;
+  QGroupBox *edit_off_group;
 };
 
 

@@ -2,7 +2,7 @@
 //
 // Button Editor for SoundPanel
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,19 +21,20 @@
 #ifndef RDBUTTON_DIALOG_H
 #define RDBUTTON_DIALOG_H
 
-#include <qdialog.h>
 #include <qcombobox.h>
 #include <qlineedit.h>
 
+#include <rddialog.h>
 #include <rdpanel_button.h>
 #include <rdcart_dialog.h>
 
-class RDButtonDialog : public QDialog
+class RDButtonDialog : public RDDialog
 {
   Q_OBJECT
  public:
-  RDButtonDialog(QString station_name,const QString &label_template,
-		 RDCartDialog *cart_dialog,const QString &svcname,
+  RDButtonDialog(QString station_name,const QString &caption,
+		 const QString &label_template,RDCartDialog *cart_dialog,
+		 const QString &svcname,
 		 QWidget *parent=0);
   ~RDButtonDialog();
   QSize sizeHint() const;

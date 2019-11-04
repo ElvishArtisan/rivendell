@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell LiveWire Node
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,7 +30,7 @@
 #include "view_node_info.h"
 
 EditNode::EditNode(int *id,RDMatrix *matrix,QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   setModal(true);
 
@@ -48,22 +48,13 @@ EditNode::EditNode(int *id,RDMatrix *matrix,QWidget *parent)
   setMaximumHeight(sizeHint().height());
 
   //
-  // Create Fonts
-  //
-  QFont bold_font=QFont("Helvetica",12,QFont::Bold);
-  bold_font.setPixelSize(12);
-  QFont font=QFont("Helvetica",12,QFont::Normal);
-  font.setPixelSize(12);
-
-  //
   // Node Hostname
   //
   edit_hostname_edit=new QLineEdit(this);
   edit_hostname_edit->setGeometry(90,10,190,20);
-  QLabel *label=
-    new QLabel(edit_hostname_edit,tr("Hostname: "),this);
+  QLabel *label=new QLabel(edit_hostname_edit,tr("Hostname: "),this);
   label->setGeometry(10,10,80,20);
-  label->setFont(bold_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -74,7 +65,7 @@ EditNode::EditNode(int *id,RDMatrix *matrix,QWidget *parent)
   edit_tcpport_spin->setRange(0,0xFFFF);
   label=new QLabel(edit_tcpport_spin,tr("Port: "),this);
   label->setGeometry(290,10,45,20);
-  label->setFont(bold_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -84,7 +75,7 @@ EditNode::EditNode(int *id,RDMatrix *matrix,QWidget *parent)
   edit_description_edit->setGeometry(90,32,sizeHint().width()-100,20);
   label=new QLabel(edit_description_edit,tr("Description: "),this);
   label->setGeometry(10,32,80,20);
-  label->setFont(bold_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -94,10 +85,9 @@ EditNode::EditNode(int *id,RDMatrix *matrix,QWidget *parent)
   edit_output_spin->setGeometry(90,54,60,20);
   edit_output_spin->setRange(0,0x7FFF);
   edit_output_spin->setSpecialValueText(tr("None"));
-  label=
-    new QLabel(edit_output_spin,tr("First Output: "),this);
+  label=new QLabel(edit_output_spin,tr("First Output: "),this);
   label->setGeometry(10,54,80,20);
-  label->setFont(bold_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -109,10 +99,9 @@ EditNode::EditNode(int *id,RDMatrix *matrix,QWidget *parent)
   edit_password_edit->setText("********");
   connect(edit_password_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(passwordChangedData(const QString &)));
-  label=
-    new QLabel(edit_password_edit,tr("Password: "),this);
+  label=new QLabel(edit_password_edit,tr("Password: "),this);
   label->setGeometry(160,54,80,20);
-  label->setFont(bold_font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -120,7 +109,7 @@ EditNode::EditNode(int *id,RDMatrix *matrix,QWidget *parent)
   //
   QPushButton *button=new QPushButton(this);
   button->setGeometry(10,sizeHint().height()-60,80,50);
-  button->setFont(bold_font);
+  button->setFont(buttonFont());
   button->setText(tr("&View Node\nInfo"));
   connect(button,SIGNAL(clicked()),this,SLOT(viewData()));
 
@@ -130,7 +119,7 @@ EditNode::EditNode(int *id,RDMatrix *matrix,QWidget *parent)
   button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   button->setDefault(true);
-  button->setFont(bold_font);
+  button->setFont(buttonFont());
   button->setText(tr("&OK"));
   connect(button,SIGNAL(clicked()),this,SLOT(okData()));
 
@@ -138,9 +127,8 @@ EditNode::EditNode(int *id,RDMatrix *matrix,QWidget *parent)
   //  Cancel Button
   //
   button=new QPushButton(this);
-  button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
-			     80,50);
-  button->setFont(bold_font);
+  button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
+  button->setFont(buttonFont());
   button->setText(tr("&Cancel"));
   connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
@@ -240,7 +228,7 @@ void EditNode::okData()
       QString().sprintf("MATRIX=%d,",edit_matrix->matrix())+
       "HOSTNAME=\""+RDEscapeString(edit_hostname_edit->text())+"\","+
       QString().sprintf("TCP_PORT=%d,",edit_tcpport_spin->value())+
-      "DESCRIPTION=\""+RDEscapeString(edit_description_edit->text())+"\""+
+      "DESCRIPTION=\""+RDEscapeString(edit_description_edit->text())+"\","+
       QString().sprintf("BASE_OUTPUT=%d,",edit_output_spin->value())+
       "PASSWORD=\""+RDEscapeString(edit_password)+"\"";
     q=new RDSqlQuery(sql);

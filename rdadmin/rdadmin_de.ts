@@ -353,10 +353,6 @@ worden. Aktuelle Version</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>&amp;New Replicator Name:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;OK</source>
         <translation type="unfinished">&amp;OK</translation>
     </message>
@@ -378,6 +374,10 @@ worden. Aktuelle Version</translation>
     </message>
     <message>
         <source>A replicator with that name already exists!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Replicator Name:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1565,6 +1565,14 @@ Do you still want to enable redireciton?</source>
         <source>Invalid Cart Number!</source>
         <translation>Ungültige Cartnummer!</translation>
     </message>
+    <message>
+        <source>ON Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OFF Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditGroup</name>
@@ -2640,11 +2648,11 @@ GPIOs</source>
     </message>
     <message>
         <source>INPUT</source>
-        <translation>EINGANG</translation>
+        <translation type="obsolete">EINGANG</translation>
     </message>
     <message>
         <source>OUTPUT</source>
-        <translation>AUSGANG</translation>
+        <translation type="obsolete">AUSGANG</translation>
     </message>
     <message>
         <source>Settings</source>
@@ -2870,16 +2878,24 @@ configured to run the CAE service in order to populate the audio resources datab
         <source>Normalization Level:</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Input</source>
+        <translation type="unfinished">Eingang</translation>
+    </message>
+    <message>
+        <source>Output</source>
+        <translation type="unfinished">Ausgang</translation>
+    </message>
 </context>
 <context>
     <name>EditRDLogedit</name>
     <message>
         <source>INPUT</source>
-        <translation type="unfinished">EINGANG</translation>
+        <translation type="obsolete">EINGANG</translation>
     </message>
     <message>
         <source>OUTPUT</source>
-        <translation type="unfinished">AUSGANG</translation>
+        <translation type="obsolete">AUSGANG</translation>
     </message>
     <message>
         <source>Voice Tracker Settings</source>
@@ -3057,6 +3073,18 @@ configured to run the CAE service in order to populate the audio resources datab
     </message>
     <message>
         <source>Configure RDLogedit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Input</source>
+        <translation type="unfinished">Eingang</translation>
+    </message>
+    <message>
+        <source>Output</source>
+        <translation type="unfinished">Ausgang</translation>
+    </message>
+    <message>
+        <source>WaveForm Caption:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3297,11 +3325,11 @@ in order to populate the audio resources database.</source>
     </message>
     <message>
         <source>Linux Export Path:</source>
-        <translation>Linux-Exportpfad:</translation>
+        <translation type="obsolete">Linux-Exportpfad:</translation>
     </message>
     <message>
         <source>Windows Export Path:</source>
-        <translation>Windows-Exportpfad:</translation>
+        <translation type="obsolete">Windows-Exportpfad:</translation>
     </message>
     <message>
         <source>Export Event Types:</source>
@@ -3392,11 +3420,11 @@ in order to populate the audio resources database.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Linux Post Export Cmd:</source>
+        <source>Export Path:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Windows Post Export Cmd:</source>
+        <source>Post Export Cmd:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3432,14 +3460,6 @@ in order to populate the audio resources database.</source>
     </message>
     <message>
         <source>The following duplicate titles must be corrected before &quot;Allow Duplicate Values&quot; can be turned off.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>CART</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>TITLE</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3489,11 +3509,19 @@ Overwrite?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Mcast Address for Notifications</source>
+        <source>Unable to write file &quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Unable to write file &quot;</source>
+        <source>Cart</source>
+        <translation type="unfinished">Cart</translation>
+    </message>
+    <message>
+        <source>Title</source>
+        <translation type="unfinished">Titel</translation>
+    </message>
+    <message>
+        <source>Multicast Address for Notifications</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4371,7 +4399,7 @@ Permissions</source>
         <source>This program is free software, and comes with ABSOLUTELY NO WARRANTY,
 not even the implied warranties of MERCHANTIBILITY or FITNESS FOR A
 PARTICULAR PURPOSE.  Touch the &quot;View License&quot; button for details.</source>
-        <translation>Dieses Programm ist freie Software und kommt mit ABSOLUT KEINER GARANTIE
+        <translation type="obsolete">Dieses Programm ist freie Software und kommt mit ABSOLUT KEINER GARANTIE
 nicht einmal die implizierte Garantie der ANWENDBARKEIT oder EIGNUNG FÜR EINEN
 BESTIMMTEN ZWECK. Drücken Sie auf &quot;Lizenz anzeigen&quot; für Details.</translation>
     </message>
@@ -4408,6 +4436,10 @@ anzeigen</translation>
     <message>
         <source>View
 &amp;Credits</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This program is free software, and comes with ABSOLUTELY NO WARRANTY, not even the implied warranties of MERCHANTIBILITY or FITNESS FOR A PARTICULAR PURPOSE. Touch the &quot;View License&quot; button for details.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

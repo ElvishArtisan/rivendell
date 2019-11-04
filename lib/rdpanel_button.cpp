@@ -2,7 +2,7 @@
 //
 // The SoundPanel Button for RDAirPlay.
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,21 +18,17 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <rdconf.h>
-#include <rdpanel_button.h>
 
-#include <qpixmap.h>
 #include <qpainter.h>
-#include <QDropEvent>
-#include <QMouseEvent>
-#include <QKeyEvent>
-#include <QDragEnterEvent>
 
 #include <rdcartdrag.h>
+#include <rdconf.h>
+
+#include "rdpanel_button.h"
 
 RDPanelButton::RDPanelButton(int row,int col,RDStation *station,bool flash,
 			     QWidget *parent)
-  : QPushButton(parent)
+  : RDPushButton(parent)
 {
   button_row=row;
   button_col=col;
@@ -432,10 +428,8 @@ void RDPanelButton::WriteKeycap(int secs)
   //
   // Button Title
   //
-  QFont font("helvetica",13,QFont::Normal);
-  font.setPixelSize(13);
-  QFontMetrics m(font);
-  p->setFont(font);
+  QFontMetrics m(buttonFont());
+  p->setFont(buttonFont());
   p->drawText(RDPANEL_BUTTON_MARGIN,m.lineSpacing(),
 	      GetNextLine(&text,m,size().width()-2-3*RDPANEL_BUTTON_MARGIN));
   p->drawText(RDPANEL_BUTTON_MARGIN,2*m.lineSpacing(),
@@ -448,9 +442,7 @@ void RDPanelButton::WriteKeycap(int secs)
   //
   if(!button_text.isEmpty()) {
     if(secs<0) {
-      QFont out_font("helvetica",13,QFont::Normal);
-      out_font.setPixelSize(13);
-      p->setFont(out_font);
+      p->setFont(smallTimerFont());
       if(button_pause_when_finished) {
         p->drawText(RDPANEL_BUTTON_MARGIN,size().height()-2-RDPANEL_BUTTON_MARGIN,"Finished");
         }
@@ -469,19 +461,15 @@ void RDPanelButton::WriteKeycap(int secs)
     else {
       if(secs>8) {
         p->drawText(RDPANEL_BUTTON_MARGIN,size().height()-2-RDPANEL_BUTTON_MARGIN,
-		  RDGetTimeLength(1000*(secs+1),true,false));
-        }
+		    RDGetTimeLength(1000*(secs+1),true,false));
+      }
       else {
-        QFont out_font("helvetica",18,QFont::Bold);
-        out_font.setPixelSize(18);
-        p->setFont(out_font);
+        p->setFont(timerFont());
         QString secstr=QString().sprintf(":%d",secs+1);
         p->drawText(RDPANEL_BUTTON_MARGIN,size().height()-2-RDPANEL_BUTTON_MARGIN,secstr);
         }
-      QFont out_font("helvetica",18,QFont::Bold);
-      out_font.setPixelSize(18);
-      p->setFont(out_font);
-      QFontMetrics om(out_font);
+      p->setFont(bannerFont());
+      QFontMetrics om(timerFont());
       p->drawText(size().width()-2-om.width(button_output_text)-
 		  RDPANEL_BUTTON_MARGIN,
 		  size().height()-2-RDPANEL_BUTTON_MARGIN,button_output_text);

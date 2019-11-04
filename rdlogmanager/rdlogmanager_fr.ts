@@ -661,6 +661,41 @@ already existing event.</source>
     </message>
 </context>
 <context>
+    <name>EditSchedCodeRules</name>
+    <message>
+        <source>Edit Rules for Code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Code:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Max. in a row:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Min. wait:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Do not schedule after:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Or after:</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>EditSchedRules</name>
     <message>
         <source>&amp;Edit</source>
@@ -1361,41 +1396,6 @@ Data</source>
     </message>
     <message>
         <source>Are you sure you want to delete report data for</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>editSchedCodeRules</name>
-    <message>
-        <source>&amp;OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Code:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Max. in a row:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Min. wait:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Do not schedule after:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Or after:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Edit Rules for Code</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

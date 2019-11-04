@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<article xmlns="http://docbook.org/ns/docbook" version="5.0">
+<info>
+  <title>Rivendell Font Management</title>
+  <author>
+    <personname>
+      <firstname>Fred</firstname>
+      <surname>Gleason</surname>
+      <email>fredg@paravelsystems.com</email>
+    </personname>
+  </author>
+</info>
+
+<sect1 xml:id="overview">
+  <title>Overview</title>
+  <para>
+    Fonts in Rivendell are managed by the <code>RDFontEngine</code> class,
+    which generates them based on a set of abstract &quot;roles&quot; from a
+    small group of parameters provided in the <code>[Fonts]</code> section
+    of <command>rd.conf</command><manvolnum>5</manvolnum>. The intent is to
+    provide a consistent look-and-feel throughout the various Rivendell
+    user modules while providing a convenient means for local customization.
+  </para>
+</sect1>
+
+<sect1 xml:id="sect.accessing_fonts">
+  <title>Accessing Fonts</title>
+  <para>
+    The simplest method for gaining access to Rivendell fonts is to
+    inherit from one of the following classes:
+  </para>
+  <simplelist>
+    <member><code>RDDialog</code></member>
+    <member><code>RDFrame</code></member>
+    <member><code>RDPushButton</code></member>
+    <member><code>RDWidget</code></member>
+  </simplelist>
+  <para>
+    Each of these classes (as well as <code>RDFontEngine</code> itself)
+    provides the following font methods:
+  </para>
+  <sect2 xml:id="sect.accessing_fonts.button_fonts">
+    <title>Button Fonts</title>
+    <variablelist>
+      <varlistentry>
+	<term><code>buttonFont()</code></term>
+	<listitem>
+	  <para>
+	    Font for use in <code>QPushButton</code> widgets used for
+	    primary navigation, such as the &quot;OK&quot; and
+	    &quot;Cancel&quot; button found in most dialogs in
+	    <command>rdadmin</command><manvolnum>1</manvolnum>.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><code>hugeButtonFont()</code></term>
+	<listitem>
+	  <para>
+	    Font for use in <code>QPushButton</code> widgets requiring
+	    an especially large font, such as the numbered &quot;line&quot;
+	    buttons in <command>rdcartslots</command><manvolnum>1</manvolnum>.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><code>bigButtonFont()</code></term>
+	<listitem>
+	  <para>
+	    Font for use in <code>QPushButton</code> widgets requiring
+	    a large font, such as the &quot;Add&quot;, &quot;Move&quot;,
+	    &quot;Delete&quot; and &quot;Copy&quot; buttons in
+	    <command>rdairplay</command><manvolnum>1</manvolnum>.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><code>subButtonFont()</code></term>
+	<listitem>
+	  <para>
+	    Font for use in <code>QPushButton</code> widgets used for
+	    subsidiary navigation, such as &quot;Select&quot; buttons
+	    used to invoke file pickers.
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+  </sect2>
+
+  <sect2 xml:id="sect.accessing_fonts.label_fonts">
+    <title>Label Fonts</title>
+    <variablelist>
+      <varlistentry>
+	<term><code>labelFont()</code></term>
+	<listitem>
+	  <para>
+	    Font for use in <code>QLabel</code> widgets used for
+	    item labeling, such as the various output names in the
+	    Configure RDAirPlay dialog in
+	    <command>rdadmin</command><manvolnum>1</manvolnum>.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><code>sectionLabelFont()</code></term>
+	<listitem>
+	  <para>
+	    Font for use in <code>QLabel</code> widgets used for
+	    identifying major sections within a particular dialog,
+	    such as the &quot;Channel Assignments&quot;, 
+	    &quot;Log Settings&quot;, &quot;Display Settings&quot;
+	    and &quot;Start/Stop Settings&quot; sections of the Configure
+	    RDAirPlay dialog in
+	    <command>rdadmin</command><manvolnum>1</manvolnum>.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><code>subLabelFont()</code></term>
+	<listitem>
+	  <para>
+	    Font for use in <code>QLabel</code> widgets used for
+	    sub-item labeling, such as the &quot;Card&quot; and
+	    &quot;Port&quot; fields in the Configure RDAirPlay dialog in
+	    <command>rdadmin</command><manvolnum>1</manvolnum>.
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+  </sect2>
+
+  <sect2 xml:id="sect.accessing_fonts.miscellaneous_fonts">
+    <title>Miscellaneous Fonts</title>
+    <variablelist>
+      <varlistentry>
+	<term><code>progressFont()</code></term>
+	<listitem>
+	  <para>
+	    Font for use in <code>QProgressBar</code> widgets used for
+	    showing progress on long-running operations, such as posting
+	    a podcast in 
+	    <command>rdcastmanager</command><manvolnum>1</manvolnum>.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><code>bannerFont()</code></term>
+	<listitem>
+	  <para>
+	    Font for use where a large display font is needed, such
+	    as the &quot;L&quot; and &quot;R&quot; channel markers on
+	    the waveform display in the Edit Audio dialog in
+	    <command>rdlibrary</command><manvolnum>1</manvolnum>.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><code>timerFont()</code></term>
+	<listitem>
+	  <para>
+	    Font for use in timer displays, such as the one in the
+	    Cut Info/Record dialog in
+	    <command>rdlibrary</command><manvolnum>1</manvolnum>.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><code>smallTimerFont()</code></term>
+	<listitem>
+	  <para>
+	    Font for use in small timer displays, such as the one on
+	    SoundPanel buttons in
+	    <command>rdairplay</command><manvolnum>1</manvolnum>.
+	  </para>
+	</listitem>
+      </varlistentry>
+    </variablelist>
+  </sect2>
+
+  <sect2 xml:id="sect.accessing_fonts.the_default_font">
+    <title>The Default Font</title>
+    <para>
+      The <code>defaultFont()</code> method returns a font that can
+      also be obtained by calling the <code>font()</code> method of
+      <code>RDDialog</code>, <code>RDFrame</code>, <code>RDPushButton</code>
+      and <code>RDWidget</code> classes. As implied by its name, this font
+      will also be assigned by default to any child widgets of those classes.
+      This font should be used for all data element classes
+      (<code>QLineEdit</code>, <code>QComboBox</code>, <code>QTextEdit</code>,
+      etc.)
+    </para>
+  </sect2>
+</sect1>
+
+<sect1 xml:id="sect.examples">
+  <title>Examples</title>
+  <sect2 xml:id="sect.examples.rdairplay">
+    <title>RDAirPlay</title>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="fonts.rdairplay_screenshot.png" scale="45"/>
+	</imageobject>
+	<caption>
+	  <para>
+	    Examples of <code>bigButtonFont()</code>,
+	    <code>smallTimerFont()</code> and <code>timerFont()</code>
+	  </para>
+	</caption>
+      </mediaobject>
+    </para>    
+  </sect2>
+  <sect2 xml:id="sect.examples.rdcartslots">
+    <title>RDCartSlots</title>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="fonts.rdcartslots_screenshot.png" scale="45"/>
+	</imageobject>
+	<caption>
+	  <para>
+	    Example of <code>hugeButtonFont()</code>
+	  </para>
+	</caption>
+      </mediaobject>
+    </para>
+  </sect2>
+  <sect2 xml:id="sect.examples.rdadmin.configure_rdairplay">
+    <title>RDAdmin - Configure RDAirPlay</title>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="fonts.rdadmin.configure_rdairplay_screenshot.png" scale="45"/>
+	</imageobject>
+	<caption>
+	  <para>
+	    Examples of <code>buttonFont()</code>,
+	    <code>subButtonFont()</code>,
+	    <code>labelFontFont()</code>,
+	    <code>sectionLabelFont()</code> and
+	    <code>subLabelFont()</code>
+	  </para>
+	</caption>
+      </mediaobject>
+    </para>
+  </sect2>
+  <sect2 xml:id="sect.examples.rdlibrary.edit_audio_screenshot">
+    <title>RDLibrary - Edit Audio</title>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="fonts.rdlibrary.edit_audio_screenshot.png" scale="45"/>
+	</imageobject>
+	<caption>
+	  <para>
+	    Example of <code>bannerFont()</code>
+	  </para>
+	</caption>
+      </mediaobject>
+    </para>
+  </sect2>
+  <sect2 xml:id="sect.examples.rdcastmanager.uploading_audio_screenshot">
+    <title>RDCastManager - Uploading Audio</title>
+    <para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata align="center" fileref="fonts.rdcastmanager.uploading_audio_screenshot.png" scale="45"/>
+	</imageobject>
+	<caption>
+	  <para>
+	    Example of <code>progressFont()</code>
+	  </para>
+	</caption>
+      </mediaobject>
+    </para>
+  </sect2>
+
+</sect1>
+</article>

@@ -2,7 +2,7 @@
 //
 // Edit Rivendell CartSlot Configuration
 //
-//   (C) Copyright 2012-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -19,7 +19,6 @@
 //
 
 #include <qmessagebox.h>
-//Added by qt3to4:
 #include <QCloseEvent>
 #include <QLabel>
 
@@ -34,7 +33,7 @@
 
 EditCartSlots::EditCartSlots(RDStation *station,RDStation *cae_station,
 			     QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   setModal(true);
 
@@ -56,21 +55,11 @@ EditCartSlots::EditCartSlots(RDStation *station,RDStation *cae_station,
   setWindowTitle("RDAdmin - "+tr("Edit CartSlots"));
 
   //
-  // Fonts
-  //
-  QFont font("helvetica",12,QFont::Normal);
-  font.setPixelSize(12);
-  QFont label_font("helvetica",12,QFont::Bold);
-  label_font.setPixelSize(12);
-  QFont title_font("helvetica",14,QFont::Bold);
-  title_font.setPixelSize(14);
-
-  //
   // Global Settings
   //
   QLabel *label=new QLabel(tr("Global Settings"),this);
   label->setGeometry(10,10,sizeHint().width()-20,20);
-  label->setFont(title_font);
+  label->setFont(sectionLabelFont());
   label->setAlignment(Qt::AlignCenter);  
 
   //
@@ -83,7 +72,7 @@ EditCartSlots::EditCartSlots(RDStation *station,RDStation *cae_station,
 	  this,SLOT(quantityChangedData(int)));
   label=new QLabel(edit_slot_columns_spin,tr("Slot Columns:"),this);
   label->setGeometry(10,32,112,20);
-  label->setFont(font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -96,7 +85,7 @@ EditCartSlots::EditCartSlots(RDStation *station,RDStation *cae_station,
 	  this,SLOT(quantityChangedData(int)));
   label=new QLabel(edit_slot_rows_spin,tr("Slot Rows:"),this);
   label->setGeometry(10,54,112,20);
-  label->setFont(font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -108,19 +97,19 @@ EditCartSlots::EditCartSlots(RDStation *station,RDStation *cae_station,
 	  this,SLOT(slotChangedData(int)));
   label=new QLabel(edit_slot_box,tr("Slot"),this);
   label->setGeometry(10,98,92,20);
-  label->setFont(title_font);
+  label->setFont(sectionLabelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   label=new QLabel(tr("Settings"),this);
   label->setGeometry(172,98,sizeHint().width()-172,20);
-  label->setFont(title_font);
+  label->setFont(sectionLabelFont());
 
   //
   // Channel Assignments
   //
   label=new QLabel(tr("Channel Assignments"),this);
   label->setGeometry(10,123,sizeHint().width()-20,20);
-  label->setFont(label_font);
+  label->setFont(sectionLabelFont());
   label->setAlignment(Qt::AlignCenter);  
 
   //
@@ -134,7 +123,7 @@ EditCartSlots::EditCartSlots(RDStation *station,RDStation *cae_station,
 	  this,SLOT(cardChangedData(int)));
   label=new QLabel(edit_card_spin,tr("Card:"),this);
   label->setGeometry(10,145,112,20);
-  label->setFont(font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -146,7 +135,7 @@ EditCartSlots::EditCartSlots(RDStation *station,RDStation *cae_station,
   edit_input_spin->setSpecialValueText(tr("None"));
   label=new QLabel(edit_input_spin,tr("Input Port:"),this);
   label->setGeometry(10,167,112,20);
-  label->setFont(font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -158,7 +147,7 @@ EditCartSlots::EditCartSlots(RDStation *station,RDStation *cae_station,
   edit_output_spin->setSpecialValueText(tr("None"));
   label=new QLabel(edit_output_spin,tr("Output Port:"),this);
   label->setGeometry(10,189,112,20);
-  label->setFont(font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -166,7 +155,7 @@ EditCartSlots::EditCartSlots(RDStation *station,RDStation *cae_station,
   //
   label=new QLabel(tr("Default Settings"),this);
   label->setGeometry(10,218,sizeHint().width()-20,20);
-  label->setFont(label_font);
+  label->setFont(sectionLabelFont());
   label->setAlignment(Qt::AlignCenter);
 
   //
@@ -177,7 +166,7 @@ EditCartSlots::EditCartSlots(RDStation *station,RDStation *cae_station,
   edit_service_label=
     new QLabel(edit_service_box,tr("Service:"),this);
   edit_service_label->setGeometry(10,240,112,20);
-  edit_service_label->setFont(font);
+  edit_service_label->setFont(labelFont());
   edit_service_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   sql="select NAME from SERVICES order by NAME";
   q=new RDSqlQuery(sql);
@@ -198,7 +187,7 @@ EditCartSlots::EditCartSlots(RDStation *station,RDStation *cae_station,
   connect(edit_mode_box,SIGNAL(activated(int)),this,SLOT(modeData(int)));
   label=new QLabel(edit_mode_box,tr("Slot Mode:"),this);
   label->setGeometry(10,262,112,20);
-  label->setFont(font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -211,7 +200,7 @@ EditCartSlots::EditCartSlots(RDStation *station,RDStation *cae_station,
   edit_play_mode_box->insertItem(tr("Hook"));
   edit_play_mode_label=new QLabel(edit_play_mode_box,tr("Play Mode:"),this);
   edit_play_mode_label->setGeometry(10,284,112,20);
-  edit_play_mode_label->setFont(font);
+  edit_play_mode_label->setFont(labelFont());
   edit_play_mode_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -227,7 +216,7 @@ EditCartSlots::EditCartSlots(RDStation *station,RDStation *cae_station,
   edit_cartaction_label=
     new QLabel(edit_cartaction_box,tr("At Startup:"),this);
   edit_cartaction_label->setGeometry(10,306,112,20);
-  edit_cartaction_label->setFont(font);
+  edit_cartaction_label->setFont(labelFont());
   edit_cartaction_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -238,11 +227,11 @@ EditCartSlots::EditCartSlots(RDStation *station,RDStation *cae_station,
   edit_cart_edit->setReadOnly(true);
   edit_cart_label=new QLabel(edit_cart_edit,tr("Cart:"),this);
   edit_cart_label->setGeometry(10,333,132,20);
-  edit_cart_label->setFont(font);
+  edit_cart_label->setFont(labelFont());
   edit_cart_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   edit_cart_button=new QPushButton(tr("Select"),this);
-  edit_cart_button->setGeometry(212,333,65,26);
-  edit_cart_button->setFont(font);
+  edit_cart_button->setGeometry(212,333,50,20);
+  edit_cart_button->setFont(subButtonFont());
   connect(edit_cart_button,SIGNAL(clicked()),this,SLOT(cartSelectData()));
 
   //
@@ -257,7 +246,7 @@ EditCartSlots::EditCartSlots(RDStation *station,RDStation *cae_station,
   }
   edit_stop_action_label=new QLabel(edit_stop_action_box,tr("At Playout End:"),this);
   edit_stop_action_label->setGeometry(10,360,112,20);
-  edit_stop_action_label->setFont(font);
+  edit_stop_action_label->setFont(labelFont());
   edit_stop_action_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -265,7 +254,7 @@ EditCartSlots::EditCartSlots(RDStation *station,RDStation *cae_station,
   //
   QPushButton *button=new QPushButton(tr("Close"),this);
   button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
-  button->setFont(label_font);
+  button->setFont(buttonFont());
   connect(button,SIGNAL(clicked()),this,SLOT(closeData()));
 
   //

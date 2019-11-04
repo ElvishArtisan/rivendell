@@ -223,6 +223,10 @@ Car&amp;t/Cut</source>
         <source>Continue deleting cast?</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MainWidget</name>

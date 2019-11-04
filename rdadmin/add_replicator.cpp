@@ -2,7 +2,7 @@
 //
 // Add a Rivendell Replicator Configuration
 //
-//   (C) Copyright 2010-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,7 +18,6 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qdialog.h>
 #include <qstring.h>
 #include <qpushbutton.h>
 #include <q3listbox.h>
@@ -39,7 +38,7 @@
 #include "add_replicator.h"
 
 AddReplicator::AddReplicator(QString *rname,QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   setModal(true);
 
@@ -56,17 +55,9 @@ AddReplicator::AddReplicator(QString *rname,QWidget *parent)
   setWindowTitle("RDAdmin - "+tr("Add Replicator"));
 
   //
-  // Create Fonts
-  //
-  QFont font=QFont("Helvetica",12,QFont::Bold);
-  font.setPixelSize(12);
-  QFont user_font=QFont("Helvetica",12,QFont::Normal);
-  user_font.setPixelSize(12);
-
-  //
   // Text Validator
   //
-  RDTextValidator *validator=new RDTextValidator(this,"validator");
+  RDTextValidator *validator=new RDTextValidator(this);
 
   //
   // Replicator Name
@@ -75,9 +66,9 @@ AddReplicator::AddReplicator(QString *rname,QWidget *parent)
   repl_name_edit->setGeometry(145,11,sizeHint().width()-150,19);
   repl_name_edit->setMaxLength(10);
   repl_name_edit->setValidator(validator);
-  QLabel *label=new QLabel(repl_name_edit,tr("&New Replicator Name:"),this);
+  QLabel *label=new QLabel(repl_name_edit,tr("Replicator Name:"),this);
   label->setGeometry(10,11,130,19);
-  label->setFont(font);
+  label->setFont(labelFont());
   label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
@@ -86,7 +77,7 @@ AddReplicator::AddReplicator(QString *rname,QWidget *parent)
   QPushButton *ok_button=new QPushButton(this);
   ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
   ok_button->setDefault(true);
-  ok_button->setFont(font);
+  ok_button->setFont(buttonFont());
   ok_button->setText(tr("&OK"));
   connect(ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
@@ -96,7 +87,7 @@ AddReplicator::AddReplicator(QString *rname,QWidget *parent)
   QPushButton *cancel_button=new QPushButton(this);
   cancel_button->
     setGeometry(sizeHint().width()-90,sizeHint().height()-60,80,50);
-  cancel_button->setFont(font);
+  cancel_button->setFont(buttonFont());
   cancel_button->setText(tr("&Cancel"));
   connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 }

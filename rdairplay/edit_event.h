@@ -2,7 +2,7 @@
 //
 // Event Editor for RDAirPlay
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,28 +21,18 @@
 #ifndef EDIT_EVENT_H
 #define EDIT_EVENT_H
 
-#include <qdialog.h>
-#include <qcombobox.h>
-#include <qlabel.h>
-#include <q3datetimeedit.h>
-#include <qradiobutton.h>
-#include <q3buttongroup.h>
+#include <qbuttongroup.h>
 #include <qcheckbox.h>
-#include <qspinbox.h>
-#include <q3textedit.h>
-#include <qtimer.h>
+#include <qcombobox.h>
+#include <qgroupbox.h>
+#include <qradiobutton.h>
+#include <qtextedit.h>
 
-#include <rdcae.h>
 #include <rdcueedit.h>
+#include <rddialog.h>
 #include <rdlogplay.h>
-#include <rdmarker_edit.h>
-#include <rdplay_deck.h>
-#include <rdpushbutton.h>
-#include <rdslider.h>
-#include <rdtimeedit.h>
-#include <rdtransportbutton.h>
 
-class EditEvent : public QDialog
+class EditEvent : public RDDialog
 {
   Q_OBJECT
  public:
@@ -73,17 +63,17 @@ class EditEvent : public QDialog
   bool edit_time_changed;
   QCheckBox *edit_timetype_box;
   QLabel *edit_timetype_label;
-  Q3ButtonGroup *edit_grace_group;
+  QGroupBox *edit_grace_group;
+  QButtonGroup *edit_grace_bgroup;
   RDTimeEdit *edit_grace_edit;
-  QLabel *edit_time_label;
-  QComboBox *edit_transtype_box;
   QLabel *edit_transtype_label;
+  QComboBox *edit_transtype_box;
   QCheckBox *edit_overlap_box;
   QLabel *edit_overlap_label;
   RDCueEdit *edit_cue_edit;
   QFont normal_font;
   QLabel *edit_cart_notes_label;
-  Q3TextEdit *edit_cart_notes_text;
+  QTextEdit *edit_cart_notes_text;
   QPushButton *edit_ok_button;
   QPushButton *edit_cancel_button;
   QLabel *edit_horizrule_label;

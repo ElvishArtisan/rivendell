@@ -2,7 +2,7 @@
 //
 // List SAS Resources
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,16 +21,15 @@
 #ifndef LIST_SAS_RESOURCES_H
 #define LIST_SAS_RESOURCES_H
 
-#include <qdialog.h>
-#include <qsqldatabase.h>
 #include <qlabel.h>
 #include <qpushbutton.h>
 #include <q3listview.h>
 
-#include <rduser.h>
+#include <rddialog.h>
 #include <rdmatrix.h>
+#include <rduser.h>
 
-class ListSasResources : public QDialog
+class ListSasResources : public RDDialog
 {
  Q_OBJECT
  public:
@@ -44,10 +43,17 @@ class ListSasResources : public QDialog
   void okData();
   void cancelData();
 
+ protected:
+  void resizeEvent(QResizeEvent *e);
+
  private:
   void RefreshList();
   RDMatrix *list_matrix;
+  QLabel *list_title_label;
   Q3ListView *list_list_view;
+  QPushButton *list_edit_button;
+  QPushButton *list_ok_button;
+  QPushButton *list_cancel_button;
   int list_size;
   QString list_table;
 };

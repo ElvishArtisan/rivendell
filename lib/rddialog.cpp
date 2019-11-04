@@ -1,8 +1,8 @@
-// rdexception_dialog.h
+// rddialog.cpp
 //
-// A dialog for displaying exception reports.
+// Base class for Rivendell modal dialogs.
 //
-//   (C) Copyright 2002-2005,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,28 +18,19 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef RDEXCEPTION_DIALOG_H
-#define RDEXCEPTION_DIALOG_H
+#include "rddialog.h"
 
-#include <qdialog.h>
-#include <q3textview.h>
-
-class RDExceptionDialog : public QDialog
+RDDialog::RDDialog(QWidget *parent,Qt::WindowFlags f)
+  : QDialog(parent,f), RDFontEngine(font())
 {
- Q_OBJECT
- public:
-  RDExceptionDialog(QString report,QWidget *parent=0);
-  ~RDExceptionDialog();
-  QSize sizeHint() const;
-  QSizePolicy sizePolicy() const;
-
- private slots:
-  void saveData();
-  void closeData();
-
- private:
-  Q3TextView *report_view;
-};
+  setModal(true);
+  setFont(defaultFont());
+}
 
 
-#endif
+RDDialog::RDDialog(RDConfig *config,QWidget *parent,Qt::WindowFlags f)
+  : QDialog(parent,f), RDFontEngine(font(),config)
+{
+  setModal(true);
+  setFont(defaultFont());
+}

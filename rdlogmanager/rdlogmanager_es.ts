@@ -734,6 +734,41 @@ un evento ya existente.</translation>
     </message>
 </context>
 <context>
+    <name>EditSchedCodeRules</name>
+    <message>
+        <source>Edit Rules for Code</source>
+        <translation type="unfinished">Editar reglas para el código</translation>
+    </message>
+    <message>
+        <source>&amp;OK</source>
+        <translation type="unfinished">&amp;Aceptar</translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished">&amp;Cancelar</translation>
+    </message>
+    <message>
+        <source>Code:</source>
+        <translation type="unfinished">Código:</translation>
+    </message>
+    <message>
+        <source>Max. in a row:</source>
+        <translation type="unfinished">Máx. por fila:</translation>
+    </message>
+    <message>
+        <source>Min. wait:</source>
+        <translation type="unfinished">Espera Mín.:</translation>
+    </message>
+    <message>
+        <source>Do not schedule after:</source>
+        <translation type="unfinished">No programar después de:</translation>
+    </message>
+    <message>
+        <source>Or after:</source>
+        <translation type="unfinished">O después de:</translation>
+    </message>
+</context>
+<context>
     <name>EditSchedRules</name>
     <message>
         <source>&amp;Edit</source>
@@ -1543,35 +1578,35 @@ Datos</translation>
     <name>editSchedCodeRules</name>
     <message>
         <source>&amp;OK</source>
-        <translation>&amp;Aceptar</translation>
+        <translation type="obsolete">&amp;Aceptar</translation>
     </message>
     <message>
         <source>&amp;Cancel</source>
-        <translation>&amp;Cancelar</translation>
+        <translation type="obsolete">&amp;Cancelar</translation>
     </message>
     <message>
         <source>Code:</source>
-        <translation>Código:</translation>
+        <translation type="obsolete">Código:</translation>
     </message>
     <message>
         <source>Max. in a row:</source>
-        <translation>Máx. por fila:</translation>
+        <translation type="obsolete">Máx. por fila:</translation>
     </message>
     <message>
         <source>Min. wait:</source>
-        <translation>Espera Mín.:</translation>
+        <translation type="obsolete">Espera Mín.:</translation>
     </message>
     <message>
         <source>Do not schedule after:</source>
-        <translation>No programar después de:</translation>
+        <translation type="obsolete">No programar después de:</translation>
     </message>
     <message>
         <source>Or after:</source>
-        <translation>O después de:</translation>
+        <translation type="obsolete">O después de:</translation>
     </message>
     <message>
         <source>Edit Rules for Code</source>
-        <translation>Editar reglas para el código</translation>
+        <translation type="obsolete">Editar reglas para el código</translation>
     </message>
 </context>
 </TS>

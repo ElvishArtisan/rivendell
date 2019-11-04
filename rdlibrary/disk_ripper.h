@@ -21,34 +21,19 @@
 #ifndef DISK_RIPPER_H
 #define DISK_RIPPER_H
 
-#include <vector>
-#include <sys/types.h>
-#include <unistd.h>
-#include <qdialog.h>
-#include <qdir.h>
-#include <q3listview.h>
-#include <qlabel.h>
-#include <qlineedit.h>
-#include <q3progressbar.h>
-#include <qtimer.h>
-#include <qfile.h>
-#include <qspinbox.h>
-#include <qcombobox.h>
-#include <qcheckbox.h>
-#include <q3textedit.h>
+#include <qprogressbar.h>
+#include <qtextedit.h>
 
-#include <rdcdplayer.h>
-#include <rdcddbrecord.h>
+#include <qcheckbox.h>
+#include <qdir.h>
+
 #include <rdcddblookup.h>
-#include <rdlistviewitem.h>
-#include <rdnotification.h>
+#include <rdcdplayer.h>
+#include <rddialog.h>
 #include <rdtransportbutton.h>
 #include <rdwavedata_dialog.h>
 
-#include <rdlibrary_conf.h>
-#include <rd.h>
-
-class DiskRipper : public QDialog
+class DiskRipper : public RDDialog
 {
   Q_OBJECT
  public:
@@ -100,7 +85,7 @@ class DiskRipper : public QDialog
   QPushButton *rip_close_button;
   QLineEdit *rip_album_edit;
   QLineEdit *rip_artist_edit;
-  Q3TextEdit *rip_other_edit;
+  QTextEdit *rip_other_edit;
   QCheckBox *rip_apply_box;
   QLabel *rip_apply_label;
   RDTransportButton *rip_eject_button;
@@ -115,9 +100,9 @@ class DiskRipper : public QDialog
   QString rip_track;
   QString rip_title;
   QLabel *rip_diskbar_label;
-  Q3ProgressBar *rip_disk_bar;
+  QProgressBar *rip_disk_bar;
   QLabel *rip_trackbar_label;
-  Q3ProgressBar *rip_track_bar;
+  QProgressBar *rip_track_bar;
   QCheckBox *rip_normalize_box;
   QSpinBox *rip_normalize_spin;
   QLabel *rip_normalize_label;
@@ -146,5 +131,4 @@ class DiskRipper : public QDialog
 };
 
 
-#endif
-
+#endif  // DISK_RIPPER_H

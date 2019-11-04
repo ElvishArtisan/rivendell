@@ -2,7 +2,7 @@
 //
 // A wall-clock widget with date.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,26 +18,15 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <stdio.h>
-#include <string.h>
-
 #include <qpainter.h>
-#include <qpalette.h>
-#include <qpixmap.h>
-#include <qdatetime.h>
-#include <qfontmetrics.h>
-#include <qsize.h>
-#include <qevent.h>
 
-#include <rdapplication.h>
 #include <rdconf.h>
 
 #include "colors.h"
-#include "globals.h"
 #include "wall_clock.h"
 
 WallClock::WallClock(QWidget *parent)
-  :QPushButton(parent)
+  : RDPushButton(parent)
 {
   time_offset=rda->station()->timeOffset();
   previous_time=QTime::currentTime().addMSecs(time_offset);
@@ -50,11 +39,7 @@ WallClock::WallClock(QWidget *parent)
   //
   // Generate Fonts
   //
-  label_font=QFont("Helvetica",10,QFont::Normal);
-  label_font.setPixelSize(10);
-  label_metrics=new QFontMetrics(label_font);
-  time_font=QFont("Helvetica",26,QFont::Normal);
-  time_font.setPixelSize(26);
+  label_metrics=new QFontMetrics(subLabelFont());
 
   connect(this,SIGNAL(clicked()),this,SLOT(clickedData()));
 }
@@ -158,9 +143,9 @@ void WallClock::tickClock()
     p.fillRect(0,0,width()-2,height()-2,backgroundColor());
     p.setPen(QColor(system_button_text_color));
   }
-  p.setFont(label_font);
+  p.setFont(subLabelFont());
   p.drawText((size().width()-2-p.fontMetrics().width(date))/2,22,date);
-  p.setFont(time_font);
+  p.setFont(bannerFont());
   p.drawText((size().width()-2-p.fontMetrics().width(accum))/2,48,accum);
   p.end();
   setPixmap(*pix);

@@ -35,7 +35,7 @@
 ListVguestResources::ListVguestResources(RDMatrix *matrix,
 					 RDMatrix::VguestType type,int size,
 					 QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   setModal(true);
 
@@ -49,28 +49,14 @@ ListVguestResources::ListVguestResources(RDMatrix *matrix,
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
-
-  //
-  // Create Fonts
-  //
-  QFont bold_font=QFont("Helvetica",12,QFont::Bold);
-  bold_font.setPixelSize(12);
-  QFont font=QFont("Helvetica",12,QFont::Normal);
-  font.setPixelSize(12);
+  setMinimumSize(sizeHint());
 
   //
   // Resources List Box
   //
   list_list_view=new Q3ListView(this);
-  list_list_view->
-    setGeometry(10,24,sizeHint().width()-20,sizeHint().height()-94);
-  QLabel *label=new QLabel(list_list_view,list_table,this);
-  label->setFont(bold_font);
-  label->setGeometry(14,5,85,19);
+  list_title_label=new QLabel(list_list_view,list_table,this);
+  list_title_label->setFont(labelFont());
   list_list_view->setAllColumnsShowFocus(true);
   list_list_view->setItemMargin(5);
   switch(list_type) {
@@ -110,31 +96,27 @@ ListVguestResources::ListVguestResources(RDMatrix *matrix,
   //
   //  Edit Button
   //
-  QPushButton *button=new QPushButton(this);
-  button->setGeometry(10,sizeHint().height()-60,80,50);
-  button->setFont(bold_font);
-  button->setText(tr("&Edit"));
-  connect(button,SIGNAL(clicked()),this,SLOT(editData()));
+  list_edit_button=new QPushButton(this);
+  list_edit_button->setFont(buttonFont());
+  list_edit_button->setText(tr("&Edit"));
+  connect(list_edit_button,SIGNAL(clicked()),this,SLOT(editData()));
 
   //
   //  Ok Button
   //
-  button=new QPushButton(this);
-  button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
-  button->setDefault(true);
-  button->setFont(bold_font);
-  button->setText(tr("&OK"));
-  connect(button,SIGNAL(clicked()),this,SLOT(okData()));
+  list_ok_button=new QPushButton(this);
+  list_ok_button->setDefault(true);
+  list_ok_button->setFont(buttonFont());
+  list_ok_button->setText(tr("&OK"));
+  connect(list_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
   //  Cancel Button
   //
-  button=new QPushButton(this);
-  button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
-			     80,50);
-  button->setFont(bold_font);
-  button->setText(tr("&Cancel"));
-  connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
+  list_cancel_button=new QPushButton(this);
+  list_cancel_button->setFont(buttonFont());
+  list_cancel_button->setText(tr("&Cancel"));
+  connect(list_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //
   // Load Values
@@ -306,6 +288,16 @@ void ListVguestResources::okData()
 void ListVguestResources::cancelData()
 {
   done(-1);
+}
+
+
+void ListVguestResources::resizeEvent(QResizeEvent *e)
+{
+  list_title_label->setGeometry(14,5,85,19);
+  list_list_view->setGeometry(10,24,size().width()-20,size().height()-94);
+  list_edit_button->setGeometry(10,size().height()-60,80,50);
+  list_ok_button->setGeometry(size().width()-180,size().height()-60,80,50);
+  list_cancel_button->setGeometry(size().width()-90,size().height()-60,80,50);
 }
 
 

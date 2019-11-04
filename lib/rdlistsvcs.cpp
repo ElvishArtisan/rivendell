@@ -2,7 +2,7 @@
 //
 // Service Picker dialog
 //
-//   (C) Copyright 2012,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,36 +18,19 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qcolordialog.h>
-//Added by qt3to4:
-#include <QResizeEvent>
-
-#include <rddb.h>
-#include <rdcart.h>
-#include <rdcart_dialog.h>
-#include <rd.h>
-#include <rdconf.h>
-
 #include "rdlistsvcs.h"
 
 RDListSvcs::RDListSvcs(const QString &caption,QWidget *parent)
-  : QDialog(parent)
+  : RDDialog(parent)
 {
   edit_caption=caption;
 
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
 
-  setCaption(caption+" - "+tr("Rivendell Services"));
-
-  //
-  // Fonts
-  //
-  QFont label_font("helvetica",12,QFont::Bold);
-  label_font.setPixelSize(12);
+  setWindowTitle(caption+" - "+tr("Rivendell Services"));
 
   //
   // Services
@@ -61,7 +44,7 @@ RDListSvcs::RDListSvcs(const QString &caption,QWidget *parent)
   //
   edit_ok_button=new QPushButton(this);
   edit_ok_button->setDefault(true);
-  edit_ok_button->setFont(label_font);
+  edit_ok_button->setFont(buttonFont());
   edit_ok_button->setText(tr("&OK"));
   connect(edit_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
@@ -69,7 +52,7 @@ RDListSvcs::RDListSvcs(const QString &caption,QWidget *parent)
   //  Cancel Button
   //
   edit_cancel_button=new QPushButton(this);
-  edit_cancel_button->setFont(label_font);
+  edit_cancel_button->setFont(buttonFont());
   edit_cancel_button->setText(tr("&Cancel"));
   connect(edit_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 }

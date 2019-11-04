@@ -68,6 +68,24 @@ MountOptions=defaults
 CaeHostname=
 XportHostname=
 
+[Fonts]
+; Directives in the [Fonts] section allows the fonts used by Rivendell to
+; be specified, with the default being to use the 'System' font. It should
+; seldom be necessary to change these!
+
+; 'Family=' can be used to specify the name of the font to use
+; --e.g. 'Helvetica'.
+;Family=System
+
+; 'ButtonSize=' specifies the size of the font to be used for button labels.
+;ButtonSize=12
+
+; 'LabelSize=' specifies the size of the font to be used for field labels.
+;LabelSize=11
+
+; 'DefaultSize=' specifies the size of the font to be used for field data.
+;DefaultSize=11
+
 [Provisioning]
 ; If CreateHost=Yes, a Host entry will be automatically created in the DB
 ; when the 'rivendell' system service is started, using the Host definition
@@ -125,7 +143,12 @@ ChannelsPerPcm=-1
 ;
 
 [Tuning]
-; This section defines the realtime parameters used when running
+; This directive tells Rivendell modules how long to wait for the
+; 'rivendell' systemd service to become active (seconds). Default
+; value is '30'.
+ServiceTimeout=30
+
+; These directives define the realtime parameters used when running
 ; audio components.  Normally, these are useful only for debugging.
 UseRealtime=Yes
 RealtimePriority=9

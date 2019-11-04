@@ -22,6 +22,8 @@
 
 #include <curl/curl.h>
 
+#include <qurl.h>
+
 #include "rdapplication.h"
 #include "rddb.h"
 #include "rdpodcast.h"
@@ -301,7 +303,7 @@ bool RDPodcast::removeAudio(RDFeed *feed,QString *err_text,bool log_debug) const
   CURL *curl=NULL;
   struct curl_slist *cmds=NULL;
   CURLcode err;
-  Q3Url *url;
+  QUrl *url;
   bool ret=true;
   QString currentdir;
   char urlstr[1024];
@@ -311,7 +313,7 @@ bool RDPodcast::removeAudio(RDFeed *feed,QString *err_text,bool log_debug) const
     rda->syslog(LOG_ERR,"unable to initialize curl library\n");
     return false;
   }
-  url=new Q3Url(feed->purgeUrl());
+  url=new QUrl(feed->purgeUrl());
   strncpy(urlstr,(const char *)(url->protocol()+"://"+url->host()+"/").utf8(),
 	  1024);
   curl_easy_setopt(curl,CURLOPT_URL,urlstr);
@@ -324,19 +326,32 @@ bool RDPodcast::removeAudio(RDFeed *feed,QString *err_text,bool log_debug) const
     curl_easy_setopt(curl,CURLOPT_VERBOSE,1);
     curl_easy_setopt(curl,CURLOPT_DEBUGFUNCTION,PodcastErrorCallback);
   }
-  currentdir="";
-  if(!url->dirPath().right(url->dirPath().length()-1).isEmpty()) {
-    currentdir=url->dirPath().right(url->dirPath().length()-1)+"/";
+  if(url->scheme()=="ftp") {
+    currentdir="";
+    if(!url->dirPath().right(url->dirPath().length()-1).isEmpty()) {
+      currentdir=url->dirPath().right(url->dirPath().length()-1)+"/";
+    }
+    if(!url->fileName().isEmpty()) {
+      currentdir+=url->fileName()+"/";
+    }
+    if(!currentdir.isEmpty()) {
+      cmds=curl_slist_append(cmds,QString().sprintf("cwd %s",
+						    (const char *)currentdir));
+    }
+    cmds=curl_slist_append(cmds, QString().sprintf("dele %s",
+						   (const char *)audioFilename()));
   }
-  if(!url->fileName().isEmpty()) {
-    currentdir+=url->fileName()+"/";
+  if(url->scheme()=="sftp") {
+    cmds=curl_slist_append(cmds,("rm "+url->path()+"/"+audioFilename()).toUtf8());
   }
-  if(!currentdir.isEmpty()) {
-    cmds=curl_slist_append(cmds,QString().sprintf("cwd %s",
-						  (const char *)currentdir));
+  if(cmds==NULL) {
+    if(err_text!=NULL) {
+      *err_text="\""+url->scheme()+"\" scheme does not support remote deletion";
+      delete url;
+      curl_easy_cleanup(curl);
+      return false;
+    }
   }
-  cmds=curl_slist_append(cmds, QString().sprintf("dele %s",
-	    (const char *)audioFilename()));
   curl_easy_setopt(curl,CURLOPT_QUOTE,cmds);
   switch((err=curl_easy_perform(curl))) {
   case CURLE_OK:
