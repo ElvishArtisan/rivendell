@@ -544,22 +544,22 @@ EditMatrix::EditMatrix(RDMatrix *matrix,QWidget *parent)
   edit_porttype2_box->
     setCurrentItem((int)edit_matrix->portType(RDMatrix::Backup));
   switch((RDMatrix::PortType)edit_porttype_box->currentItem()) {
-      case RDMatrix::TtyPort:
-	edit_port_box->setCurrentItem(edit_matrix->port(RDMatrix::Primary));
-	edit_port2_box->setCurrentItem(edit_matrix->port(RDMatrix::Backup));
-	break;
+  case RDMatrix::TtyPort:
+    edit_port_box->setCurrentItem(edit_matrix->port(RDMatrix::Primary));
+    edit_port2_box->setCurrentItem(edit_matrix->port(RDMatrix::Backup));
+    break;
 
-      case RDMatrix::TcpPort:
-	edit_ipaddress_edit->
-	  setText(edit_matrix->ipAddress(RDMatrix::Primary).toString());
-	edit_ipport_spin->setValue(edit_matrix->ipPort(RDMatrix::Primary));
-	edit_ipaddress2_edit->
-	  setText(edit_matrix->ipAddress(RDMatrix::Backup).toString());
-	edit_ipport2_spin->setValue(edit_matrix->ipPort(RDMatrix::Backup));
-	break;
+  case RDMatrix::TcpPort:
+    edit_ipaddress_edit->
+      setText(edit_matrix->ipAddress(RDMatrix::Primary).toString());
+    edit_ipport_spin->setValue(edit_matrix->ipPort(RDMatrix::Primary));
+    edit_ipaddress2_edit->
+      setText(edit_matrix->ipAddress(RDMatrix::Backup).toString());
+    edit_ipport2_spin->setValue(edit_matrix->ipPort(RDMatrix::Backup));
+    break;
 
-    case RDMatrix::NoPort:
-      break;
+  case RDMatrix::NoPort:
+    break;
   }
   edit_card_box->setValue(edit_matrix->card());
   edit_inputs_box->setValue(edit_matrix->inputs());
@@ -1192,27 +1192,27 @@ bool EditMatrix::WriteMatrix()
   // Ensure Sane Values
   //
   switch((RDMatrix::PortType)edit_porttype_box->currentItem()) {
-    case RDMatrix::TcpPort:
-      if(!addr.setAddress(edit_ipaddress_edit->text())) {
-	QMessageBox::warning(this,"RDAdmin - "+tr("Invalid Address"),
-			     tr("The primary IP address is invalid!"));
-	return false;
-      }
-      break;
+  case RDMatrix::TcpPort:
+    if(!addr.setAddress(edit_ipaddress_edit->text())) {
+      QMessageBox::warning(this,"RDAdmin - "+tr("Invalid Address"),
+			   tr("The primary IP address is invalid!"));
+      return false;
+    }
+    break;
       
-    case RDMatrix::TtyPort:
-      tty=new RDTty(rda->station()->name(),edit_port_box->currentIndex());
-      if(!tty->active()) {
-	QMessageBox::information(this,"RDAdmin - "+tr("Error"),
+  case RDMatrix::TtyPort:
+    tty=new RDTty(rda->station()->name(),edit_port_box->currentIndex());
+    if(!tty->active()) {
+      QMessageBox::information(this,"RDAdmin - "+tr("Error"),
 			       tr("The primary serial device is not active!"));
-	delete tty;
-	return false;
-      }
       delete tty;
-      break;
+      return false;
+    }
+    delete tty;
+    break;
 
-    case RDMatrix::NoPort:
-      break;
+  case RDMatrix::NoPort:
+    break;
   }
 
   if(RDMatrix::controlActive(type,RDMatrix::Backup,RDMatrix::PortTypeControl)) {
@@ -1257,41 +1257,41 @@ bool EditMatrix::WriteMatrix()
   }
 
   switch((RDMatrix::PortType)edit_porttype_box->currentItem()) {
-    case RDMatrix::TtyPort:
-      edit_matrix->setPortType(RDMatrix::Primary,RDMatrix::TtyPort);
-      edit_matrix->setPort(RDMatrix::Primary,edit_port_box->currentItem());
-      edit_matrix->setIpAddress(RDMatrix::Primary,QHostAddress());
-      edit_matrix->setIpPort(RDMatrix::Primary,0);
-      break;
+  case RDMatrix::TtyPort:
+    edit_matrix->setPortType(RDMatrix::Primary,RDMatrix::TtyPort);
+    edit_matrix->setPort(RDMatrix::Primary,edit_port_box->currentItem());
+    edit_matrix->setIpAddress(RDMatrix::Primary,QHostAddress());
+    edit_matrix->setIpPort(RDMatrix::Primary,0);
+    break;
       
-    case RDMatrix::TcpPort:
-      edit_matrix->setPortType(RDMatrix::Primary,RDMatrix::TcpPort);
-      edit_matrix->setPort(RDMatrix::Primary,-1);
-      edit_matrix->setIpAddress(RDMatrix::Primary,addr);
-      edit_matrix->setIpPort(RDMatrix::Primary,edit_ipport_spin->value());
-      break;
+  case RDMatrix::TcpPort:
+    edit_matrix->setPortType(RDMatrix::Primary,RDMatrix::TcpPort);
+    edit_matrix->setPort(RDMatrix::Primary,-1);
+    edit_matrix->setIpAddress(RDMatrix::Primary,addr);
+    edit_matrix->setIpPort(RDMatrix::Primary,edit_ipport_spin->value());
+    break;
   
-    case RDMatrix::NoPort:
-      break;
+  case RDMatrix::NoPort:
+    break;
 }
   switch((RDMatrix::PortType)edit_porttype2_box->currentItem()) {
-    case RDMatrix::TtyPort:
-      edit_matrix->setPortType(RDMatrix::Backup,RDMatrix::TtyPort);
-      edit_matrix->setPort(RDMatrix::Backup,edit_port2_box->currentItem());
-      edit_matrix->setIpAddress(RDMatrix::Backup,QHostAddress());
-      edit_matrix->setIpPort(RDMatrix::Backup,0);
-      break;
+  case RDMatrix::TtyPort:
+    edit_matrix->setPortType(RDMatrix::Backup,RDMatrix::TtyPort);
+    edit_matrix->setPort(RDMatrix::Backup,edit_port2_box->currentItem());
+    edit_matrix->setIpAddress(RDMatrix::Backup,QHostAddress());
+    edit_matrix->setIpPort(RDMatrix::Backup,0);
+    break;
       
-    case RDMatrix::TcpPort:
-      edit_matrix->setPortType(RDMatrix::Backup,RDMatrix::TcpPort);
-      edit_matrix->setPort(RDMatrix::Backup,-1);
-      edit_matrix->setIpAddress(RDMatrix::Backup,addr2);
-      edit_matrix->setIpPort(RDMatrix::Backup,edit_ipport2_spin->value());
-      break;
+  case RDMatrix::TcpPort:
+    edit_matrix->setPortType(RDMatrix::Backup,RDMatrix::TcpPort);
+    edit_matrix->setPort(RDMatrix::Backup,-1);
+    edit_matrix->setIpAddress(RDMatrix::Backup,addr2);
+    edit_matrix->setIpPort(RDMatrix::Backup,edit_ipport2_spin->value());
+    break;
       
-    case RDMatrix::NoPort:
-      edit_matrix->setPortType(RDMatrix::Backup,RDMatrix::NoPort);
-      break;
+  case RDMatrix::NoPort:
+    edit_matrix->setPortType(RDMatrix::Backup,RDMatrix::NoPort);
+    break;
   }
   if(edit_layer_box->currentItem()==0) {
     edit_matrix->setLayer('V');
@@ -1339,15 +1339,15 @@ void EditMatrix::WriteGpioTable(RDMatrix::GpioType type)
   QString tablename;
   int line_quan=0;
   switch(type) {
-    case RDMatrix::GpioInput:
-      tablename="GPIS";
-      line_quan=edit_gpis_box->value();
-      break;
+  case RDMatrix::GpioInput:
+    tablename="GPIS";
+    line_quan=edit_gpis_box->value();
+    break;
 
-    case RDMatrix::GpioOutput:
-      tablename="GPOS";
-      line_quan=edit_gpos_box->value();
-      break;
+  case RDMatrix::GpioOutput:
+    tablename="GPOS";
+    line_quan=edit_gpos_box->value();
+    break;
   }
 
   if(!RDMatrix::controlActive(edit_matrix->type(),
