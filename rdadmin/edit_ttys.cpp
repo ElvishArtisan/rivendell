@@ -325,63 +325,81 @@ void EditTtys::ReadRecord(int id)
   edit_tty=new RDTty(edit_station,id,true);
   edit_port_edit->setText(edit_tty->port());
   switch(edit_tty->baudRate()) {
-      case 50:
-	edit_baudrate_box->setCurrentItem(0);
-	break;
-      case 75:
-	edit_baudrate_box->setCurrentItem(1);
-	break;
-      case 110:
-	edit_baudrate_box->setCurrentItem(2);
-	break;
-      case 134:
-	edit_baudrate_box->setCurrentItem(3);
-	break;
-      case 150:
-	edit_baudrate_box->setCurrentItem(4);
-	break;
-      case 200:
-	edit_baudrate_box->setCurrentItem(5);
-	break;
-      case 300:
-	edit_baudrate_box->setCurrentItem(6);
-	break;
-      case 600:
-	edit_baudrate_box->setCurrentItem(7);
-	break;
-      case 1200:
-	edit_baudrate_box->setCurrentItem(8);
-	break;
-      case 1800:
-	edit_baudrate_box->setCurrentItem(9);
-	break;
-      case 2400:
-	edit_baudrate_box->setCurrentItem(10);
-	break;
-      case 4800:
-	edit_baudrate_box->setCurrentItem(11);
-	break;
-      case 9600:
-	edit_baudrate_box->setCurrentItem(12);
-	break;
-      case 19200:
-	edit_baudrate_box->setCurrentItem(13);
-	break;
-      case 38400:
-	edit_baudrate_box->setCurrentItem(14);
-	break;
-      case 57600:
-	edit_baudrate_box->setCurrentItem(15);
-	break;
-      case 115200:
-	edit_baudrate_box->setCurrentItem(16);
-	break;
-      case 230400:
-	edit_baudrate_box->setCurrentItem(17);
-	break;
-      default:
-	edit_baudrate_box->setCurrentItem(12);
-	break;	
+  case 50:
+    edit_baudrate_box->setCurrentItem(0);
+    break;
+
+  case 75:
+    edit_baudrate_box->setCurrentItem(1);
+    break;
+
+  case 110:
+    edit_baudrate_box->setCurrentItem(2);
+    break;
+
+  case 134:
+    edit_baudrate_box->setCurrentItem(3);
+    break;
+
+  case 150:
+    edit_baudrate_box->setCurrentItem(4);
+    break;
+
+  case 200:
+    edit_baudrate_box->setCurrentItem(5);
+    break;
+
+  case 300:
+    edit_baudrate_box->setCurrentItem(6);
+    break;
+
+  case 600:
+    edit_baudrate_box->setCurrentItem(7);
+    break;
+
+  case 1200:
+    edit_baudrate_box->setCurrentItem(8);
+    break;
+
+  case 1800:
+    edit_baudrate_box->setCurrentItem(9);
+    break;
+
+  case 2400:
+    edit_baudrate_box->setCurrentItem(10);
+    break;
+
+  case 4800:
+    edit_baudrate_box->setCurrentItem(11);
+    break;
+
+  case 9600:
+    edit_baudrate_box->setCurrentItem(12);
+    break;
+
+  case 19200:
+    edit_baudrate_box->setCurrentItem(13);
+    break;
+
+  case 38400:
+    edit_baudrate_box->setCurrentItem(14);
+    break;
+
+  case 57600:
+    edit_baudrate_box->setCurrentItem(15);
+    break;
+
+  case 115200:
+    edit_baudrate_box->setCurrentItem(16);
+    break;
+
+  case 230400:
+    edit_baudrate_box->setCurrentItem(17);
+    break;
+
+  default:
+    edit_baudrate_box->setCurrentItem(12);
+    break;	
   }
   edit_parity_box->setCurrentItem(edit_tty->parity());
   edit_databits_box->setCurrentItem(edit_tty->dataBits()-5);
