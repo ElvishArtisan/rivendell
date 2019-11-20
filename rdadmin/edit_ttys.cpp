@@ -18,8 +18,12 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <qmessagebox.h>
+
 #include <rdapplication.h>
 #include <rddb.h>
+#include <rdescape_string.h>
+#include <rdmatrix.h>
 #include <rdstation.h>
 #include <rdtextvalidator.h>
 
@@ -238,6 +242,34 @@ void EditTtys::idSelectedData()
 
 void EditTtys::enableButtonData(int state)
 {
+  QString sql;
+  RDSqlQuery *q;
+
+  if(!state) {
+    sql=QString("select ")+
+      "NAME,"+    // 00
+      "MATRIX,"+  // 01
+      "TYPE "+    // 02
+      "from MATRICES where "+
+      "STATION_NAME=\""+RDEscapeString(edit_station)+"\" && "+
+      QString().sprintf("(PORT_TYPE=%d && PORT=%d) || ",
+			RDMatrix::TtyPort,edit_port_box->currentIndex())+
+      QString().sprintf("(PORT_TYPE_2=%d && PORT_2=%d)",
+			RDMatrix::TtyPort,edit_port_box->currentIndex());
+    q=new RDSqlQuery(sql);
+    if(q->first()) {
+      QMessageBox::information(this,"RDAdmin - "+tr("Error"),
+			       tr("This port is currently in use by the following Switcher/GPIO device")+":\n"+
+			       "\t"+tr("Matrix")+QString().sprintf(": %d.\n",q->value(1).toInt())+
+			       "\t"+tr("Type")+": "+RDMatrix::typeString((RDMatrix::Type)q->value(2).toInt())+"\n"+
+			       "\t"+tr("Description")+": "+q->value(0).toString());
+      delete q;
+      edit_enable_button->setChecked(true);
+      return;
+    }
+    delete q;
+  }
+
   if(state==0) {  // Off
     SetEnable(false);
   }

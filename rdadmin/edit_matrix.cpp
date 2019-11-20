@@ -30,6 +30,7 @@
 #include <rdescape_string.h>
 #include <rdmatrix.h>
 #include <rdtextvalidator.h>
+#include <rdtty.h>
 
 #include "globals.h"
 #include "edit_user.h"
@@ -1185,6 +1186,7 @@ bool EditMatrix::WriteMatrix()
   QHostAddress addr;
   QHostAddress addr2;
   RDMatrix::Type type=edit_matrix->type();
+  RDTty *tty=NULL;
 
   //
   // Ensure Sane Values
@@ -1192,13 +1194,24 @@ bool EditMatrix::WriteMatrix()
   switch((RDMatrix::PortType)edit_porttype_box->currentItem()) {
     case RDMatrix::TcpPort:
       if(!addr.setAddress(edit_ipaddress_edit->text())) {
-	QMessageBox::warning(this,tr("Invalid Address"),
+	QMessageBox::warning(this,"RDAdmin - "+tr("Invalid Address"),
 			     tr("The primary IP address is invalid!"));
 	return false;
       }
       break;
       
-    default:
+    case RDMatrix::TtyPort:
+      tty=new RDTty(rda->station()->name(),edit_port_box->currentIndex());
+      if(!tty->active()) {
+	QMessageBox::information(this,"RDAdmin - "+tr("Error"),
+			       tr("The primary serial device is not active!"));
+	delete tty;
+	return false;
+      }
+      delete tty;
+      break;
+
+    case RDMatrix::NoPort:
       break;
   }
 
@@ -1228,6 +1241,14 @@ bool EditMatrix::WriteMatrix()
 	  return false;
 	}
       }
+      tty=new RDTty(rda->station()->name(),edit_port2_box->currentIndex());
+      if(!tty->active()) {
+	QMessageBox::information(this,"RDAdmin - "+tr("Error"),
+			       tr("The backup serial device is not active!"));
+	delete tty;
+	return false;
+      }
+      delete tty;
       break;
 		  
     case RDMatrix::NoPort:
