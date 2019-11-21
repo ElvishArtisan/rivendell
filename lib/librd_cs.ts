@@ -761,6 +761,10 @@
         <source>No carts found in group</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>-- End of List --</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddCart</name>

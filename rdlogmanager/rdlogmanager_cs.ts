@@ -1061,15 +1061,15 @@ Opětovné sloučení tato data smaže. Sloučit znovu?</translation>
     </message>
     <message>
         <source>Set PLAY Transition</source>
-        <translation>Nastavit přechod PŘEHRÁT</translation>
+        <translation type="obsolete">Nastavit přechod PŘEHRÁT</translation>
     </message>
     <message>
         <source>Set SEGUE Transition</source>
-        <translation>Nastavit přechod PŘECHOD</translation>
+        <translation type="obsolete">Nastavit přechod PŘECHOD</translation>
     </message>
     <message>
         <source>Set STOP Transition</source>
-        <translation>Nastavit přechod ZASTAVIT</translation>
+        <translation type="obsolete">Nastavit přechod ZASTAVIT</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -1102,6 +1102,18 @@ Opětovné sloučení tato data smaže. Sloučit znovu?</translation>
     <message>
         <source>STOP</source>
         <translation>ZASTAVIT</translation>
+    </message>
+    <message>
+        <source>PLAY Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SEGUE Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>STOP Transition</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

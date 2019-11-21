@@ -1061,15 +1061,15 @@ Einbinden wird diese entfernen. Fortfahren?</translation>
     </message>
     <message>
         <source>Set PLAY Transition</source>
-        <translation>PLAY-Übergang setzen</translation>
+        <translation type="obsolete">PLAY-Übergang setzen</translation>
     </message>
     <message>
         <source>Set SEGUE Transition</source>
-        <translation>SEGUE-Übergang setzen</translation>
+        <translation type="obsolete">SEGUE-Übergang setzen</translation>
     </message>
     <message>
         <source>Set STOP Transition</source>
-        <translation>STOP-Übergang setzen</translation>
+        <translation type="obsolete">STOP-Übergang setzen</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -1102,6 +1102,18 @@ Einbinden wird diese entfernen. Fortfahren?</translation>
     <message>
         <source>STOP</source>
         <translation>STOP</translation>
+    </message>
+    <message>
+        <source>PLAY Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SEGUE Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>STOP Transition</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

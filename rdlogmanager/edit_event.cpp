@@ -47,7 +47,8 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   event_new_events=new_events;
   event_event=new RDEvent(eventname);
 
-  setWindowTitle("RDLogManager - "+tr("Editing Event")+" - "+event_event->name());
+  setWindowTitle("RDLogManager - "+tr("Editing Event")+" - "+
+		 event_event->name());
 
   //
   // Fix the Window Size
@@ -398,7 +399,6 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   label->setGeometry(CENTER_LINE+15,362,200,16);
   
   event_source_group=new QButtonGroup(this);
-  //  event_source_group->hide();
   connect(event_source_group,SIGNAL(buttonClicked(int)),
 	  this,SLOT(importClickedData(int)));
   rbutton=new QRadioButton(this);
@@ -433,9 +433,9 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   label->setGeometry(CENTER_LINE+420,362,150,15);
   label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   
-
-// Scheduler Group
-
+  //
+  // Scheduler Group
+  //
   event_sched_group_box=new QComboBox(this);
   event_sched_group_box->setGeometry(CENTER_LINE+510,359,100,20);
   QString sql2="select NAME from GROUPS order by NAME";
@@ -444,9 +444,10 @@ EditEvent::EditEvent(QString eventname,bool new_event,
     event_sched_group_box->insertItem(q2->value(0).toString());
   }
   delete q2;
- 
-// Artist Separation SpinBox
 
+  // 
+  // Artist Separation SpinBox
+  //
   event_artist_sep_label=new QLabel(tr("Artist Separation"),this);
   event_artist_sep_label->setFont(defaultFont());
   event_artist_sep_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -464,8 +465,9 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   event_artist_none_button->setText(tr("None"));
   connect(event_artist_none_button,SIGNAL(clicked()),this,SLOT(artistData()));
 
-// Title Separation SpinBox
-
+  //
+  // Title Separation SpinBox
+  //
   event_title_sep_label=new QLabel(tr("Title Separation"),this);
   event_title_sep_label->setFont(defaultFont());
   event_title_sep_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -483,8 +485,9 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   event_title_none_button->setText(tr("None"));
   connect(event_title_none_button,SIGNAL(clicked()),this,SLOT(titleData()));
 
+  //
   // Must have code..
-
+  //
   event_have_code_label=new QLabel(tr("Must have code"),this);
   event_have_code_label->setFont(defaultFont());
   event_have_code_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -493,8 +496,9 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   event_have_code_box=new QComboBox(this);
   event_have_code_box->setGeometry(CENTER_LINE+515,427,100,20);
 
+  //
   // And code
-
+  //
   event_have_code2_label=new QLabel(tr("and code"),this);
   event_have_code2_label->setFont(defaultFont());
   event_have_code2_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -516,7 +520,6 @@ EditEvent::EditEvent(QString eventname,bool new_event,
     event_have_code2_box->insertItem(q2->value(0).toString());
   }
   delete q2;
-
 
   //
   // Start Slop Time
@@ -797,14 +800,6 @@ EditEvent::EditEvent(QString eventname,bool new_event,
     }
   }
   delete q;
-
-  if(!new_event) {
-    event_preimport_list->load(event_name,RDEventImportList::PreImport);
-    event_preimport_list->refreshList();
-    event_postimport_list->load(event_name,RDEventImportList::PostImport);
-    event_postimport_list->refreshList();
-  }
-
   prepositionToggledData(event_position_box->isChecked());
   timeToggledData(event_timetype_box->isChecked());
   importClickedData(event_source_group->checkedId());
@@ -1086,7 +1081,7 @@ void EditEvent::preimportUpData()
 {
   int line;
   Q3ListViewItem *item=event_preimport_list->selectedItem();
-  if(item==NULL) {
+  if((item==NULL)||(item->text(6).isEmpty())) {
     return;
   }
   if((line=item->text(6).toInt())<1) {
@@ -1104,10 +1099,10 @@ void EditEvent::preimportDownData()
 {
   int line;
   Q3ListViewItem *item=event_preimport_list->selectedItem();
-  if(item==NULL) {
+  if((item==NULL)||(item->text(6).isEmpty())) {
     return;
   }
-  if((line=item->text(6).toInt())>=(event_preimport_list->childCount()-1)) {
+  if((line=item->text(6).toInt())>=(event_preimport_list->childCount()-2)) {
     event_preimport_list->setSelected(item,true);
     event_preimport_list->ensureItemVisible(item);
     return;
@@ -1474,12 +1469,16 @@ void EditEvent::Save()
     event_event->setHaveCode2(event_have_code2_box->currentText());
   }
 
+  //
   // If both codes are the same, remove second code
+  //
   if (event_event->HaveCode()==event_event->HaveCode2()) {
     event_event->setHaveCode2("");
   }
 
+  //
   // Save second code as first code when first code isn't defined
+  //
   if (event_event->HaveCode().isEmpty()) {
     event_event->setHaveCode(event_event->HaveCode2());
     event_event->setHaveCode2("");

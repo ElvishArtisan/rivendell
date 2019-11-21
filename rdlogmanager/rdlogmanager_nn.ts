@@ -1066,15 +1066,15 @@ Flettar du på nytt, vil du fjerna desse dataa. Flett på nytt?</translation>
     </message>
     <message>
         <source>Set PLAY Transition</source>
-        <translation>Set SPEL-overgang</translation>
+        <translation type="obsolete">Set SPEL-overgang</translation>
     </message>
     <message>
         <source>Set SEGUE Transition</source>
-        <translation>Set KRYSSTONING-overgang</translation>
+        <translation type="obsolete">Set KRYSSTONING-overgang</translation>
     </message>
     <message>
         <source>Set STOP Transition</source>
-        <translation>Set STOPP-overgang</translation>
+        <translation type="obsolete">Set STOPP-overgang</translation>
     </message>
     <message>
         <source>Set OVERLAP Transition</source>
@@ -1115,6 +1115,18 @@ Flettar du på nytt, vil du fjerna desse dataa. Flett på nytt?</translation>
     <message>
         <source>OVERLAP</source>
         <translation type="obsolete">OVERLAPP</translation>
+    </message>
+    <message>
+        <source>PLAY Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SEGUE Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>STOP Transition</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

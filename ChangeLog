@@ -19252,3 +19252,7 @@
 	* Reindented switch statements in 'rdadmin/edit_matrix.cpp'.
 2019-11-20 Fred Gleason <fredg@paravelsystems.com>
 	* Reindented switch statements in 'rdadmin/edit_ttys.cpp'.
+2019-11-21 Fred Gleason <fredg@paravelsystems.com>
+	* Restored 'End of List' markers to the 'PRE-IMPORT CARTS' and
+	'POST-IMPORT CARTS' lists in the 'Editing Event' dialog in
+	rdlogmanager(1).

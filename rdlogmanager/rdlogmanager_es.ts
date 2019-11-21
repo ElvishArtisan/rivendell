@@ -1055,15 +1055,15 @@ removerá estos datos.  ¿Remezclar?</translation>
     </message>
     <message>
         <source>Set PLAY Transition</source>
-        <translation>Asignar transición REPROD</translation>
+        <translation type="obsolete">Asignar transición REPROD</translation>
     </message>
     <message>
         <source>Set SEGUE Transition</source>
-        <translation>Asignar transición SEGUE</translation>
+        <translation type="obsolete">Asignar transición SEGUE</translation>
     </message>
     <message>
         <source>Set STOP Transition</source>
-        <translation>Asignar transición PARAR</translation>
+        <translation type="obsolete">Asignar transición PARAR</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -1104,6 +1104,18 @@ removerá estos datos.  ¿Remezclar?</translation>
     <message>
         <source>Edit Voice Track</source>
         <translation>Editar pista de voz</translation>
+    </message>
+    <message>
+        <source>PLAY Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SEGUE Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>STOP Transition</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

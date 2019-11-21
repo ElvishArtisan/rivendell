@@ -1063,15 +1063,15 @@ Re-agregar removerá estes dados.  Re-agregar? </translation>
     </message>
     <message>
         <source>Set PLAY Transition</source>
-        <translation>Setar transição SIMPLES</translation>
+        <translation type="obsolete">Setar transição SIMPLES</translation>
     </message>
     <message>
         <source>Set SEGUE Transition</source>
-        <translation>Setar transição SOBRE</translation>
+        <translation type="obsolete">Setar transição SOBRE</translation>
     </message>
     <message>
         <source>Set STOP Transition</source>
-        <translation>Setar transição PARE</translation>
+        <translation type="obsolete">Setar transição PARE</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -1104,6 +1104,18 @@ Re-agregar removerá estes dados.  Re-agregar? </translation>
     <message>
         <source>STOP</source>
         <translation>PARE</translation>
+    </message>
+    <message>
+        <source>PLAY Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SEGUE Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>STOP Transition</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
