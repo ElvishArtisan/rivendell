@@ -59,6 +59,7 @@ class EditEvent : public RDDialog
   void filterChangedData(const QString &str);
   void filterActivatedData(const QString &str);
   void filterClickedData(int id);
+  void searchData();
   void cartClickedData(Q3ListViewItem *item);
   void prepositionToggledData(bool state);
   void timeToggledData(bool);
@@ -110,6 +111,7 @@ class EditEvent : public RDDialog
   QComboBox* event_have_code2_box;
   QLabel *event_have_code2_label;
   LibListView *event_lib_list;
+  QPushButton *event_search_button;
   QPixmap *event_playout_map;
   QPixmap *event_macro_map;
   QLabel *event_position_header;

@@ -68,13 +68,27 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   // Text Filter
   //
   event_lib_filter_edit=new QLineEdit(this);
-  event_lib_filter_edit->setGeometry(55,2,CENTER_LINE-70,20);
+  if(rda->station()->filterMode()==RDStation::FilterAsynchronous) {
+    event_lib_filter_edit->setGeometry(55,2,CENTER_LINE-135,20);
+    connect(event_lib_filter_edit,SIGNAL(returnPressed()),
+	    this,SLOT(searchData()));
+  }
+  else {
+    event_lib_filter_edit->setGeometry(55,2,CENTER_LINE-70,20);
+  }
   connect(event_lib_filter_edit,SIGNAL(textChanged(const QString &)),
 	  this,SLOT(filterChangedData(const QString &)));
   QLabel *label=new QLabel(event_lib_filter_edit,tr("Filter:"),this);
   label->setFont(labelFont());
   label->setGeometry(5,2,45,20);
   label->setAlignment(Qt::AlignVCenter|Qt::AlignRight);
+  event_search_button=new QPushButton(tr("Search"),this);
+  event_search_button->setFont(subButtonFont());
+  event_search_button->setGeometry(CENTER_LINE-70,2,60,20);
+  event_search_button->setDisabled(true);
+  connect(event_search_button,SIGNAL(clicked()),this,SLOT(searchData()));
+  event_search_button->
+    setVisible(rda->station()->filterMode()==RDStation::FilterAsynchronous);
 
   //
   // Group Filter
@@ -94,7 +108,6 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   event_lib_type_group=new QButtonGroup(this);
   connect(event_lib_type_group,SIGNAL(buttonClicked(int)),
 	  this,SLOT(filterClickedData(int)));
-
   QRadioButton *rbutton=new QRadioButton(this);
   rbutton->setGeometry(55,55,15,15);
   event_lib_type_group->addButton(rbutton,0);
@@ -698,7 +711,9 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   //
   button=new QPushButton(this);
   button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
-  button->setDefault(true);
+  if(rda->station()->filterMode()==RDStation::FilterSynchronous) {
+    button->setDefault(true);
+  }
   button->setFont(buttonFont());
   button->setText(tr("&OK"));
   connect(button,SIGNAL(clicked()),this,SLOT(okData()));
@@ -830,19 +845,41 @@ QSizePolicy EditEvent::sizePolicy() const
 
 void EditEvent::filterChangedData(const QString &str)
 {
-  RefreshLibrary();
+  if(rda->station()->filterMode()==RDStation::FilterSynchronous) {
+    RefreshLibrary();
+  }
+  else {
+    event_search_button->setEnabled(true);
+  }
 }
 
 
 void EditEvent::filterActivatedData(const QString &str)
 {
-  RefreshLibrary();
+  if(rda->station()->filterMode()==RDStation::FilterSynchronous) {
+    RefreshLibrary();
+  }
+  else {
+    event_search_button->setEnabled(true);
+  }
 }
 
 
 void EditEvent::filterClickedData(int id)
 {
+  if(rda->station()->filterMode()==RDStation::FilterSynchronous) {
+    RefreshLibrary();
+  }
+  else {
+    event_search_button->setEnabled(true);
+  }
+}
+
+
+void EditEvent::searchData()
+{
   RefreshLibrary();
+  event_search_button->setDisabled(true);
 }
 
 

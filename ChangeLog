@@ -19256,3 +19256,6 @@
 	* Restored 'End of List' markers to the 'PRE-IMPORT CARTS' and
 	'POST-IMPORT CARTS' lists in the 'Editing Event' dialog in
 	rdlogmanager(1).
+2019-11-21 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented support for non-realtime library filtering in the
+	'Editing Event' dialog in rdlogmanager(1).
