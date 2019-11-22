@@ -3166,11 +3166,11 @@ bool RDWaveFile::GetAir1(int fd)
   AIR1_chunk_data[2047]=0;
   if(wave_data!=NULL) {
     wave_data->setTitle(cutString((char *)AIR1_chunk_data,0x102,27).
-			stripWhiteSpace());
+			trimmed().remove(QChar(0)));
     wave_data->setArtist(cutString((char *)AIR1_chunk_data,0x147,27).
-			stripWhiteSpace());
+			 trimmed().remove(QChar(0)));
     wave_data->setAlbum(cutString((char *)AIR1_chunk_data,0x163,27).
-			stripWhiteSpace());
+			trimmed().remove(QChar(0)));
     wave_data->setReleaseYear(cutString((char *)AIR1_chunk_data,0x17F,4).
 			      toInt());
     wave_data->setMetadataFound(true);
@@ -3368,44 +3368,44 @@ bool RDWaveFile::ReadTmcMetadata(int fd)
 void RDWaveFile::ReadTmcTag(const QString tag,const QString value)
 {
   if(tag=="TITLE") {
-    wave_data->setTitle(value.stripWhiteSpace());
+    wave_data->setTitle(value.trimmed().remove(QChar(0)));
     wave_data->setMetadataFound(true);
   }
   if(tag=="ARTIST") {
-    wave_data->setArtist(value.stripWhiteSpace());
+    wave_data->setArtist(value.trimmed().remove(QChar(0)));
     wave_data->setMetadataFound(true);
   }
   if(tag=="COMPOSER") {
-    wave_data->setComposer(value.stripWhiteSpace());
+    wave_data->setComposer(value.trimmed().remove(QChar(0)));
     wave_data->setMetadataFound(true);
   }
   if(tag=="PUBLISHER") {
-    wave_data->setPublisher(value.stripWhiteSpace());
+    wave_data->setPublisher(value.trimmed().remove(QChar(0)));
     wave_data->setMetadataFound(true);
   }
   if(tag=="LICENSE") {
-    wave_data->setLicensingOrganization(value.stripWhiteSpace());
+    wave_data->setLicensingOrganization(value.trimmed().remove(QChar(0)));
     wave_data->setMetadataFound(true);
   }
   if(tag=="LABEL") {
-    wave_data->setLabel(value.stripWhiteSpace());
+    wave_data->setLabel(value.trimmed().remove(QChar(0)));
     wave_data->setMetadataFound(true);
   }
   if(tag=="ALBUM") {
-    wave_data->setAlbum(value.stripWhiteSpace());
+    wave_data->setAlbum(value.trimmed().remove(QChar(0)));
     wave_data->setMetadataFound(true);
   }
   if(tag=="YEAR") {
-    wave_data->setReleaseYear(value.stripWhiteSpace().toInt());
+    wave_data->setReleaseYear(value.trimmed().remove(QChar(0)).toInt());
     wave_data->setMetadataFound(true);
   }
   if(tag=="INTRO") {
     wave_data->setTalkStartPos(0);
-    wave_data->setTalkEndPos(RDSetTimeLength(value.stripWhiteSpace()));
+    wave_data->setTalkEndPos(RDSetTimeLength(value.trimmed().remove(QChar(0))));
     wave_data->setMetadataFound(true);
   }
   if(tag=="AUX") {
-    wave_data->setSegueStartPos(RDSetTimeLength(value.stripWhiteSpace()));
+    wave_data->setSegueStartPos(RDSetTimeLength(value.trimmed().remove(QChar(0))));
     wave_data->setMetadataFound(true);
   }
   if(tag=="END") {
@@ -3413,7 +3413,7 @@ void RDWaveFile::ReadTmcTag(const QString tag,const QString value)
     wave_data->setMetadataFound(true);
   }
   if(tag=="TMCIREF") {
-    wave_data->setTmciSongId(value.stripWhiteSpace());
+    wave_data->setTmciSongId(value.trimmed().remove(QChar(0)));
     wave_data->setMetadataFound(true);
   }
   if(tag=="BPM") {
@@ -3422,11 +3422,11 @@ void RDWaveFile::ReadTmcTag(const QString tag,const QString value)
   }
   if(tag=="ISRC") {
     QString str=value;
-    wave_data->setIsrc(str.remove(" ").stripWhiteSpace());
+    wave_data->setIsrc(str.remove(" ").trimmed().remove(QChar(0)));
     wave_data->setMetadataFound(true);
   }
   if(tag=="PLINE") {
-    wave_data->setCopyrightNotice(value.stripWhiteSpace());
+    wave_data->setCopyrightNotice(value.trimmed().remove(QChar(0)));
     wave_data->setMetadataFound(true);
   }
 }
