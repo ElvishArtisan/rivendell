@@ -359,6 +359,7 @@ int RDCartDialog::exec(int *cartnum,RDCart::Type type,QString *svcname,
     }
     item=(RDListViewItem *)item->nextSibling();
   }
+  cart_filter_edit->setFocus();
   return QDialog::exec();
 }
 
