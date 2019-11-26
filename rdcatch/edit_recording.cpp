@@ -593,7 +593,7 @@ void EditRecording::activateStationData(int id,bool use_temp)
   if(edit_deck!=NULL) {
     delete edit_deck;
   }
-  edit_deck=new RDDeck(f0[0],f0[1].toInt());
+  edit_deck=new RDDeck(f0[0],f0[1].left(f0[1].length()-1).toInt());
   if(edit_channels_box->count()>0) {
     edit_channels_box->setCurrentItem(edit_deck->defaultChannels()-1);
   }
@@ -602,7 +602,6 @@ void EditRecording::activateStationData(int id,bool use_temp)
     "(STATION_NAME=\""+RDEscapeString(edit_deck->switchStation())+"\")&&"+
     QString().sprintf("(MATRIX=%d)",edit_deck->switchMatrix());
   q=new RDSqlQuery(sql);
-  
   while(q->next()) {
     edit_source_box->insertItem(q->value(0).toString());
   }

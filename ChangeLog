@@ -19271,3 +19271,6 @@
 	* Removed 'Q3Socket' dependencies from 'RDCatchConnect'.
 2019-11-26 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.2.0int0.
+2019-11-26 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdcatch(1) that caused the 'Source' dropdown
+	in the 'Edit Recording' dialog to fail to be populated properly.
