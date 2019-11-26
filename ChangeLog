@@ -19263,3 +19263,5 @@
 	* Fixed a regression in rdimport(1) that caused null characters to
 	be written to cart metadata fields when importing files containing
 	an 'AIR1' RIFF chunk.
+2019-11-26 Fred Gleason <fredg@paravelsystems.com>
+	* Removed 'Q3Socket' dependencies from 'RDCatchConnect'.

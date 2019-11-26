@@ -40,14 +40,14 @@ RDCatchConnect::RDCatchConnect(int serial,QObject *parent)
   //
   // TCP Connection
   //
-  cc_socket=new Q3Socket(this,"cc_socket");
+  cc_socket=new QTcpSocket(this);
   connect(cc_socket,SIGNAL(connected()),this,SLOT(connectedData()));
   connect(cc_socket,SIGNAL(readyRead()),this,SLOT(readyData()));
 
   //
   // Start the heartbeat timer
   //
-  cc_heartbeat_timer=new QTimer(this,"cc_heartbeat_timer");
+  cc_heartbeat_timer=new QTimer(this);
   connect(cc_heartbeat_timer,SIGNAL(timeout()),
 	  this,SLOT(heartbeatTimeoutData()));
   cc_heartbeat_timer->start(CC_HEARTBEAT_INTERVAL,true);
