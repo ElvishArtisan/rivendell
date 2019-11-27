@@ -394,7 +394,7 @@ bool EditCartEvent::CheckEvent(bool include_myself)
   QString sql=QString("select ID from RECORDINGS where ")+
     "(STATION_NAME=\""+RDEscapeString(edit_station_box->currentText())+"\")&&"+
     QString().sprintf("(TYPE=%d)&&",RDRecording::MacroEvent)+
-    "START_TIME=\""+RDEscapeString(edit_starttime_edit->time().
+    "(START_TIME=\""+RDEscapeString(edit_starttime_edit->time().
 				   toString("hh:mm:ss"))+"\")&&"+
     QString().sprintf("(MACRO_CART=%u)",edit_destination_edit->text().toUInt());
   if(edit_sun_button->isChecked()) {

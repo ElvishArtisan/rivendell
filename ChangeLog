@@ -19279,3 +19279,6 @@
 2019-11-27 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdcatchd(8) that could cause download
 	events to hang in an active state.
+2019-11-27 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug that threw a SQL error when clicking 'OK' on the
+	'Edit Cart Event' dialog in rdcatch(1).
