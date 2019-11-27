@@ -19276,3 +19276,6 @@
 	in the 'Edit Recording' dialog to fail to be populated properly.
 2019-11-27 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdcatchd(8) that broke audio metering.
+2019-11-27 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdcatchd(8) that could cause download
+	events to hang in an active state.

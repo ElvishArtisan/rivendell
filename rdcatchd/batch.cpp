@@ -237,6 +237,7 @@ void MainObject::RunDownload(CatchEvent *evt)
   rda->syslog(LOG_INFO,"deleting file %s, id=%d",
 	      (const char *)evt->tempName().toUtf8(),evt->id());
   unlink(evt->tempName());
+  catch_connect->setExitCode(evt->id(),RDRecording::Ok,"OK");
 }
 
 void MainObject::RunUpload(CatchEvent *evt)
