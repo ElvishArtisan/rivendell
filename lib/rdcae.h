@@ -21,13 +21,11 @@
 #ifndef RDCAE_H
 #define RDCAE_H
 
-#include <vector>
-
-#include <qsqldatabase.h>
-#include <qstring.h>
-#include <qobject.h>
 #include <q3socketdevice.h>
+
 #include <qlabel.h>
+#include <qobject.h>
+#include <qlist.h>
 
 #include <rd.h>
 #include <rdcmd_cache.h>
@@ -45,7 +43,7 @@ class RDCae : public QObject
   RDCae(RDStation *station,RDConfig *config,QObject *parent=0);
   ~RDCae();
   void connectHost();
-  void enableMetering(std::vector<int> *cards);
+  void enableMetering(QList<int> *cards);
   bool loadPlay(int card,QString name,int *stream,int *handle);
   void unloadPlay(int handle);
   void positionPlay(int handle,int pos);

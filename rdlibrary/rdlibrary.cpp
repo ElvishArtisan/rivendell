@@ -516,7 +516,7 @@ QSizePolicy MainWidget::sizePolicy() const
 void MainWidget::caeConnectedData(bool state)
 {
   if(state) {
-    std::vector<int> cards;
+    QList<int> cards;
     cards.push_back(rda->libraryConf()->inputCard());
     cards.push_back(rda->libraryConf()->outputCard());
     rda->cae()->enableMetering(&cards);

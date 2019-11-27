@@ -296,7 +296,7 @@ QSizePolicy MainWidget::sizePolicy() const
 
 void MainWidget::caeConnectedData(bool state)
 {
-  std::vector<int> cards;
+  QList<int> cards;
 
   cards.push_back(rda->airplayConf()->card(RDAirPlayConf::SoundPanel1Channel));
   cards.push_back(rda->airplayConf()->card(RDAirPlayConf::SoundPanel2Channel));

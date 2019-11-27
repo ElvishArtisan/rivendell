@@ -144,7 +144,7 @@ QSize MainWidget::sizeHint() const
 
 void MainWidget::caeConnectedData(bool state)
 {
-  std::vector<int> cards;
+  QList<int> cards;
 
   QString sql=QString("select CARD from CARTSLOTS where ")+
     "STATION_NAME=\""+RDEscapeString(rda->config()->stationName())+"\"";

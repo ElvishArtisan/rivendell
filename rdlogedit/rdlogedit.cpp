@@ -235,7 +235,7 @@ void MainWidget::connectedData(bool state)
 
 void MainWidget::caeConnectedData(bool state)
 {
-  std::vector<int> cards;
+  QList<int> cards;
   RDLogeditConf *conf=new RDLogeditConf(rda->config()->stationName());
 
   cards.push_back(conf->inputCard());

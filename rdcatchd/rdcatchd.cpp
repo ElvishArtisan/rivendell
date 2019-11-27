@@ -868,6 +868,20 @@ void MainObject::garbageData()
 
 void MainObject::isConnectedData(bool state)
 {
+  if(state) {
+    QList<int> cards;
+    QString sql=QString("select CARD_NUMBER from DECKS where ")+
+      "STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\" && "+
+      "CARD_NUMBER>=0";
+    RDSqlQuery *q=new RDSqlQuery(sql);
+    while(q->next()) {
+      if(!cards.contains(q->value(0).toInt())) {
+	cards.push_back(q->value(0).toInt());
+      }
+    }
+    delete q;
+    rda->cae()->enableMetering(&cards);
+  }
   if(!state) {
     rda->syslog(LOG_ERR,"aborting - unable to connect to Core AudioEngine");
     exit(1);
