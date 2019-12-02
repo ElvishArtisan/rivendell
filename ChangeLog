@@ -19282,3 +19282,5 @@
 2019-11-27 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug that threw a SQL error when clicking 'OK' on the
 	'Edit Cart Event' dialog in rdcatch(1).
+2019-12-02 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.2.0int1.
