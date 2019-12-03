@@ -19284,3 +19284,6 @@
 	'Edit Cart Event' dialog in rdcatch(1).
 2019-12-02 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.2.0int1.
+2019-12-03 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdcatch(1) that caused DOW flags to fail to be
+	updated correctly on the event list after making a change.

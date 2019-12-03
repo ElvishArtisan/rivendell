@@ -1636,23 +1636,44 @@ void MainWidget::RefreshRow(RDSqlQuery *q,RDListViewItem *item)
   if(RDBool(q->value(7).toString())) {       // Sun
     item->setText(7,tr("Su"));
   }
+  else {
+    item->setText(7,"");
+  }
   if(RDBool(q->value(8).toString())) {       // Mon
     item->setText(8,tr("Mo"));
+  }
+  else {
+    item->setText(8,"");
   }
   if(RDBool(q->value(9).toString())) {       // Tue
     item->setText(9,tr("Tu"));
   }
+  else {
+    item->setText(9,"");
+  }
   if(RDBool(q->value(10).toString())) {       // Wed
     item->setText(10,tr("We"));
+  }
+  else {
+    item->setText(10,"");
   }
   if(RDBool(q->value(11).toString())) {      // Thu
     item->setText(11,tr("Th"));
   }
+  else {
+    item->setText(11,"");
+  }
   if(RDBool(q->value(12).toString())) {      // Fri
     item->setText(12,tr("Fr"));
   }
+  else {
+    item->setText(12,"");
+  }
   if(RDBool(q->value(13).toString())) {      // Sat
     item->setText(13,tr("Sa"));
+  }
+  else {
+    item->setText(13,"");
   }
   switch((RDRecording::Type)q->value(26).toInt()) {
   case RDRecording::Recording:
