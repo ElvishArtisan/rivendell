@@ -19302,3 +19302,5 @@
 	to be inserted when generating a log.
 2019-12-04 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.2.0int2.
+2019-12-04 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdconvert that caused a segfault at startup.
