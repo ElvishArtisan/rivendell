@@ -756,6 +756,7 @@ void MainObject::LoadGpiTable()
       q->value(3).toInt();
   }
   delete q;
+  rda->syslog(LOG_DEBUG,"GPIO table settings reloaded");
 }
 
 

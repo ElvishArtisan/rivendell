@@ -19294,3 +19294,6 @@
 	* Fixed a bug in ripcd(8) that caused input and output counts to
 	be calculated incorrectly for Software Authority protocol devices
 	containing holes in the input and/or output lists.
+2019-12-04 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdgpimon(1) that caused incorrect state indications
+	to be displayed after switching to a different page.
