@@ -19300,3 +19300,5 @@
 2019-12-04 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdlogmanager(1) that caused spurious log events
 	to be inserted when generating a log.
+2019-12-04 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.2.0int2.
