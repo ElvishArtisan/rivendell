@@ -255,7 +255,7 @@ void SoftwareAuthority::DispatchCommand()
   QString section=line_in.lower().replace(">>","");
 
   //
-  // Startup Sequence.  Get the input and output lists.
+  // Startup Sequence. Get initial GPIO states and the input and output lists.
   //
   if(section=="login successful") {
     sprintf(buffer,"gpistat %d\x0D\x0A",swa_card);      // Request GPI States
@@ -305,7 +305,6 @@ void SoftwareAuthority::DispatchCommand()
       delete q;
       return;
     }
-    swa_inputs++;
     f0=line_in.split("\t",QString::KeepEmptyParts);
     name=f0[1];
     if(f0.size()>=7) {
@@ -329,6 +328,9 @@ void SoftwareAuthority::DispatchCommand()
 	"STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\","+
 	QString().sprintf("MATRIX=%d,",swa_matrix)+
 	QString().sprintf("NUMBER=%d",f0[0].toInt());
+    }
+    if(f0[0].toInt()>swa_inputs) {
+      swa_inputs=f0[0].toInt();
     }
     delete q;
     q=new RDSqlQuery(sql);
@@ -357,7 +359,6 @@ void SoftwareAuthority::DispatchCommand()
       }
       return;
     }
-    swa_outputs++;
     f0=line_in.split("\t",QString::KeepEmptyParts);
     name=f0[1];
     if(f0.size()>=6) {
@@ -381,6 +382,9 @@ void SoftwareAuthority::DispatchCommand()
 	"STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\","+
 	QString().sprintf("MATRIX=%d,",swa_matrix)+
 	QString().sprintf("NUMBER=%d",f0[0].toInt());
+    }
+    if(f0[0].toInt()>swa_outputs) {
+      swa_outputs=f0[0].toInt();
     }
     delete q;
     q=new RDSqlQuery(sql);

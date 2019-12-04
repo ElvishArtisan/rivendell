@@ -19290,3 +19290,7 @@
 2019-12-03 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdgpimon(1) that caused GPIO cart displays to
 	fail to accurately reflect current state.
+2019-12-04 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in ripcd(8) that caused input and output counts to
+	be calculated incorrectly for Software Authority protocol devices
+	containing holes in the input and/or output lists.
