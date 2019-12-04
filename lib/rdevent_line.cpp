@@ -507,7 +507,7 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
   // Pre-Import Carts
   //
   postimport_length=0;
-  for(int i=0;i<event_preimport_list->size();i++) {
+  for(int i=0;i<event_preimport_list->size()-1;i++) {
     RDEventImportItem *i_item=event_preimport_list->item(i);
     sql=QString("insert into LOG_LINES set ")+
       "LOG_NAME=\""+RDEscapeString(logname)+"\","+
@@ -960,7 +960,7 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
   //
   // Post-Import Carts
   //
-  for(int i=0;i<event_postimport_list->size();i++) {
+  for(int i=0;i<event_postimport_list->size()-1;i++) {
     RDEventImportItem *i_item=event_postimport_list->item(i);
     sql=QString("insert into LOG_LINES set ")+
       "LOG_NAME=\""+RDEscapeString(logname)+"\","+
