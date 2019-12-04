@@ -19287,3 +19287,6 @@
 2019-12-03 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdcatch(1) that caused DOW flags to fail to be
 	updated correctly on the event list after making a change.
+2019-12-03 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdgpimon(1) that caused GPIO cart displays to
+	fail to accurately reflect current state.
