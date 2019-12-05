@@ -2678,6 +2678,7 @@ bool RDWaveFile::GetCart(int fd)
   unsigned chunk_size;
   char *tag_buffer=NULL;
   int i,j;
+  QMultiMap<QString,int> timer_map;
 
   /*
    * Load the chunk
@@ -2717,6 +2718,11 @@ bool RDWaveFile::GetCart(int fd)
       j++;
     }
   }
+  for(i=0;i<MAX_TIMERS;i++) {
+    if(!cart_timer_label[i].isEmpty()) {
+      timer_map.insert(cart_timer_label[i],cart_timer_sample[i]);
+    }
+  }
   if(wave_type==RDWaveFile::Wave) {
     cart_url=cutString((char *)cart_chunk_data,1024,1024);
 
@@ -2740,6 +2746,10 @@ bool RDWaveFile::GetCart(int fd)
 
   if(wave_data!=NULL) {
     wave_data->setMetadataFound(true);
+
+    //
+    // Process Text Metadata
+    //
     wave_data->setTitle(QString(cart_title).remove(QChar(0)));
     wave_data->setArtist(QString(cart_artist).remove(QChar(0)));
     wave_data->setCutId(cart_cut_id);
@@ -2754,6 +2764,37 @@ bool RDWaveFile::GetCart(int fd)
     wave_data->setUserDefined(QString(cart_user_def).remove(QChar(0)));
     wave_data->setUrl(QString(cart_url).remove(QChar(0)));
     wave_data->setTagText(QString(cart_tag_text).remove(QChar(0)));
+
+    //
+    // Process Timers
+    //
+    if(timer_map.count("AUDs")==2) {  // ENCO-style AUD timer
+      QList<int> aud_timers=timer_map.values("AUDs");
+      double start=0.0;
+      double end=0.0;
+      if(aud_timers.at(0)<aud_timers.at(1)) {
+	start=(double)aud_timers.at(0);
+	end=(double)aud_timers.at(1);
+      }
+      else {
+	start=(double)aud_timers.at(1);
+	end=(double)aud_timers.at(0);
+      }
+      wave_data->setStartPos((int)(1000.0*start/((double)getSamplesPerSec())));
+      wave_data->setEndPos((int)(1000.0*end/((double)getSamplesPerSec())));
+    }
+    else {
+      for(int i=0;i<MAX_TIMERS;i++) {
+	if(cart_timer_label[i]=="AUDs") {
+	  wave_data->setStartPos((int)(1000.0*((double)cart_timer_sample[i])/
+				       ((double)getSamplesPerSec())));
+	}
+	if(cart_timer_label[i]=="AUDe") {
+	  wave_data->setEndPos((int)(1000.0*((double)cart_timer_sample[i])/
+				     ((double)getSamplesPerSec())));
+	}
+      }
+    }
     for(int i=0;i<MAX_TIMERS;i++) {
       if((cart_timer_label[i]=="SEGs")||(cart_timer_label[i]=="SEC1")) {
 	wave_data->setSegueStartPos((int)(1000.0*((double)cart_timer_sample[i])/
@@ -2765,24 +2806,16 @@ bool RDWaveFile::GetCart(int fd)
       }
       if(cart_timer_label[i]=="INTs") {
 	wave_data->setTalkStartPos((int)(1000.0*((double)cart_timer_sample[i])/
-					  ((double)getSamplesPerSec())));
+					 ((double)getSamplesPerSec())));
       }
       if(cart_timer_label[i]=="INTe") {
 	wave_data->setTalkEndPos((int)(1000.0*((double)cart_timer_sample[i])/
-					((double)getSamplesPerSec())));
+				       ((double)getSamplesPerSec())));
       }
       if((cart_timer_label[i]=="INT ")||(cart_timer_label[i]=="INT1")) {
 	wave_data->setTalkStartPos(0);
 	wave_data->setTalkEndPos((int)(1000.0*((double)cart_timer_sample[i])/
-					((double)getSamplesPerSec())));
-      }
-      if(cart_timer_label[i]=="AUDs") {
-	wave_data->setStartPos((int)(1000.0*((double)cart_timer_sample[i])/
-					  ((double)getSamplesPerSec())));
-      }
-      if(cart_timer_label[i]=="AUDe") {
-	wave_data->setEndPos((int)(1000.0*((double)cart_timer_sample[i])/
-					((double)getSamplesPerSec())));
+				       ((double)getSamplesPerSec())));
       }
     }
   }
