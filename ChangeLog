@@ -19307,3 +19307,5 @@
 2019-12-05 Fred Gleason <fredg@paravelsystems.com>
 	* Implemented a work-around for importing CartChunk data containing
 	a buggy ENCO implemention of the 'AUD' CartChunk timer.
+2019-12-05 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.2.0int3.
