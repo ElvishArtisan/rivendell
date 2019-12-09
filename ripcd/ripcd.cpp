@@ -619,6 +619,11 @@ bool MainObject::DispatchCommand(RipcdConnection *conn)
     BroadcastCommand("ON "+msg+"!",conn->id());
     ripcd_notification_mcaster->
       send(msg,rda->system()->notificationAddress(),RD_NOTIFICATION_PORT);
+    rda->syslog(LOG_DEBUG,"sent notification: \"%s\" to %s:%d",
+		(const char *)msg.toUtf8(),
+		(const char *)rda->system()->notificationAddress().
+		toString().toUtf8(),
+		RD_NOTIFICATION_PORT);
     delete notify;
   }
 

@@ -19309,3 +19309,6 @@
 	a buggy ENCO implemention of the 'AUD' CartChunk timer.
 2019-12-05 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.2.0int3.
+2019-12-09 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the rdxport service that could cause MODIFY
+	notifications to fail to be sent by the 'SaveLog' WebAPI call.
