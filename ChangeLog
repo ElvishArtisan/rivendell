@@ -19320,3 +19320,5 @@
 2019-12-09 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in the rdxport service that caused the
 	ListCuts WebAPI call to return corrupt data.
+2019-12-09 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.2.0int5.
