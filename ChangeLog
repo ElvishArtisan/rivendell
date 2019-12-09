@@ -19315,3 +19315,5 @@
 2019-12-09 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdcatchd(8) that failed to send a MODIFY
 	notification at the end of a Record or Download event.
+2019-12-09 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.2.0int4.
