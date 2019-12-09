@@ -66,16 +66,28 @@ void MainObject::catchConnectedData(int serial,bool state)
     exit(256);
   }
 
+  connect(rda,SIGNAL(userChanged()),this,SLOT(userChangedData()));
+  rda->ripc()->
+    connectHost("localhost",RIPCD_TCP_PORT,rda->config()->password());
+}
+
+
+void MainObject::userChangedData()
+{
   //
   // Dispatch Handler
   //
   switch(batch_event->type()) {
   case RDRecording::Recording:
     RunImport(batch_event);
+    SendNotification(RDNotification::CartType,RDNotification::ModifyAction,
+		     RDCut::cartNumber(batch_event->cutName()));
     break;
 
   case RDRecording::Download:
     RunDownload(batch_event);
+    SendNotification(RDNotification::CartType,RDNotification::ModifyAction,
+		     RDCut::cartNumber(batch_event->cutName()));
     break;
 
   case RDRecording::Upload:
@@ -87,6 +99,15 @@ void MainObject::catchConnectedData(int serial,bool state)
     exit(256);
   }
 
+  QTimer *timer=new QTimer(this);
+  timer->setSingleShot(true);
+  connect(timer,SIGNAL(timeout()),this,SLOT(exitData()));
+  timer->start(5000);  // So notifications have a chance to propagate
+}
+
+
+void MainObject::exitData()
+{
   exit(0);
 }
 
@@ -95,7 +116,6 @@ void MainObject::RunBatch(RDCmdSwitch *cmd)
 {
   bool ok=false;
   int id=-1;
-  //  unsigned schema=0;
 
   //
   // Set Process Priority
@@ -239,6 +259,7 @@ void MainObject::RunDownload(CatchEvent *evt)
   unlink(evt->tempName());
   catch_connect->setExitCode(evt->id(),RDRecording::Ok,"OK");
 }
+
 
 void MainObject::RunUpload(CatchEvent *evt)
 {

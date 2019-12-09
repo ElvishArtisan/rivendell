@@ -978,6 +978,9 @@ void MainObject::recordUnloadedData(int card,int stream,unsigned msecs)
   if(debug) {
     printf("Unloaded - Card: %d  Stream: %d\n",card,stream);
   }
+  SendNotification(RDNotification::CartType,
+		   RDNotification::ModifyAction,
+		   RDCut::cartNumber(catch_events[event].cutName()));
   if(catch_events[event].oneShot()) {
     PurgeEvent(event);
   }
@@ -2649,6 +2652,16 @@ void MainObject::StartBatch(int id)
 		id,strerror(errno));
     exit(0);
   }
+}
+
+
+void MainObject::SendNotification(RDNotification::Type type,
+				  RDNotification::Action action,
+				  const QVariant &id)
+{
+  RDNotification *notify=new RDNotification(type,action,id);
+  rda->ripc()->sendNotification(*notify);
+  delete notify;
 }
 
 

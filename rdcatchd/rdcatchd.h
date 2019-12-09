@@ -128,6 +128,8 @@ class MainObject : public QObject
   // batch.cpp
   //
   void catchConnectedData(int serial,bool state);
+  void userChangedData();
+  void exitData();
 
  private:
   //
@@ -193,6 +195,8 @@ class MainObject : public QObject
   void RunRmlRecordingCache(int chan);
   void StartRmlRecording(int chan,int cartnum,int cutnum,int maxlen);
   void StartBatch(int id);
+  void SendNotification(RDNotification::Type type,RDNotification::Action,
+			const QVariant &id);
   QString GetTempRecordingName(int id) const;
   QString catch_default_user;
   QString catch_host;

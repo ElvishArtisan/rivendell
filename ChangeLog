@@ -19312,3 +19312,6 @@
 2019-12-09 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the rdxport service that could cause MODIFY
 	notifications to fail to be sent by the 'SaveLog' WebAPI call.
+2019-12-09 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdcatchd(8) that failed to send a MODIFY
+	notification at the end of a Record or Download event.
