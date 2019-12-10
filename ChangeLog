@@ -19322,3 +19322,6 @@
 	ListCuts WebAPI call to return corrupt data.
 2019-12-09 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.2.0int5.
+2019-12-10 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdadmin(1) that caused controls to be
+	hidden in the 'Edit Report' dialog.

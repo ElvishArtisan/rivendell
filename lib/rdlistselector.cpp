@@ -242,8 +242,8 @@ void RDListSelector::resizeEvent(QResizeEvent *e)
   list_source_label->setGeometry(0,0,w/3,12);
   list_source_box->setGeometry(0,12,w/3,h-12);
 
-  list_add_button->setGeometry(w/3+20,20,w/3-40,h/3-16);
-  list_remove_button->setGeometry(w/3+20,2*h/3-8,w/3-40,h/3-16);
+  list_add_button->setGeometry(w/3+20,20,w/3-40,25);
+  list_remove_button->setGeometry(w/3+20,2*h/3-3,w/3-40,25);
 
   list_dest_label->setGeometry(2*w/3,0,w/3,12);
   list_dest_box->setGeometry(2*w/3,12,w/3,h-12);
