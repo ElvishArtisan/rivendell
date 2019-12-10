@@ -1317,14 +1317,6 @@ Report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Report Complete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Report generated in</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>File Exists</source>
         <translation type="unfinished"></translation>
     </message>

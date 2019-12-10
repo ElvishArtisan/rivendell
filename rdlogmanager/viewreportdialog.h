@@ -1,6 +1,6 @@
-// pick_report_date.h
+// viewreportdialog.h
 //
-// Select a Set of Dates for a Rivendell Report
+// Offer to display a generated report.
 //
 //   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
 //
@@ -18,38 +18,39 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef PICK_REPORT_DATE_H
-#define PICK_REPORT_DATE_H
+#ifndef VIEWREPORTDIALOG_H
+#define VIEWREPORTDIALOG_H
 
 #include <qcombobox.h>
 #include <qdatetimeedit.h>
+#include <qpushbutton.h>
 
 #include <rddialog.h>
 
-#include "viewreportdialog.h"
-
-class PickReportDates : public RDDialog
+class ViewReportDialog : public RDDialog
 {
   Q_OBJECT
  public:
-  PickReportDates(const QString &svcname,QWidget *parent=0);
-  ~PickReportDates();
+  ViewReportDialog(QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
+
+ public slots:
+  int exec(const QString &rpt_filename);
   
  private slots:
-  void selectStartDateData();
-  void selectEndDateData();
-  void generateData();
+  void viewData();
   void closeData();
 
+ protected:
+  void resizeEvent(QResizeEvent *e);
+
  private:
-  QComboBox *edit_report_box;
-  QDateEdit *edit_startdate_edit;
-  QDateEdit *edit_enddate_edit;
-  QString edit_svcname;
-  ViewReportDialog *edit_viewreport_dialog;
+  QLabel *view_message_label;
+  QPushButton *view_view_button;
+  QPushButton *view_close_button;
+  QString view_report_filename;
 };
 
 
-#endif  // PIC_REPORT_DATES_H
+#endif  // VIEWREPORTDIALOG_H

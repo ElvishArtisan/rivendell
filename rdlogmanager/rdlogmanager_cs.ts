@@ -1497,15 +1497,11 @@ zprávu</translation>
     </message>
     <message>
         <source>Report Complete</source>
-        <translation>Zpráva úplná</translation>
+        <translation type="obsolete">Zpráva úplná</translation>
     </message>
     <message>
         <source>Report complete!</source>
         <translation type="obsolete">Zpráva úplná!</translation>
-    </message>
-    <message>
-        <source>Report generated in</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>File Exists</source>

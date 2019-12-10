@@ -1490,15 +1490,11 @@ rapport</translation>
     </message>
     <message>
         <source>Report Complete</source>
-        <translation>Rapporten ferdig</translation>
+        <translation type="obsolete">Rapporten ferdig</translation>
     </message>
     <message>
         <source>Report complete!</source>
         <translation type="obsolete">Rapporten er ferdig!</translation>
-    </message>
-    <message>
-        <source>Report generated in</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>File Exists</source>

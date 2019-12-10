@@ -24,6 +24,7 @@
 #include <qstring.h>
 
 bool RDTextFile(const QString &data,bool delete_on_exit=true);
+bool RDTextViewer(const QString &filename);
 
 
 #endif  // RDTEXTFILE_H

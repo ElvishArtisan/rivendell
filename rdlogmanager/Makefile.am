@@ -65,7 +65,8 @@ dist_rdlogmanager_SOURCES = add_clock.cpp add_clock.h\
                             rdlogmanager.cpp rdlogmanager.h\
                             rename_item.cpp rename_item.h\
                             svc_rec.cpp svc_rec.h\
-                            svc_rec_dialog.cpp svc_rec_dialog.h
+                            svc_rec_dialog.cpp svc_rec_dialog.h\
+                            viewreportdialog.cpp viewreportdialog.h
 
 nodist_rdlogmanager_SOURCES = moc_add_clock.cpp\
                               moc_add_event.cpp\
@@ -91,7 +92,8 @@ nodist_rdlogmanager_SOURCES = moc_add_clock.cpp\
                               moc_rdlogmanager.cpp\
                               moc_rename_item.cpp\
                               moc_svc_rec.cpp\
-                              moc_svc_rec_dialog.cpp
+                              moc_svc_rec_dialog.cpp\
+                              moc_viewreportdialog.cpp
 
 rdlogmanager_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
 

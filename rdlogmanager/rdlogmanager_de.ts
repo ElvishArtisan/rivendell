@@ -1487,15 +1487,11 @@ Report</translation>
     </message>
     <message>
         <source>Report Complete</source>
-        <translation>Report komplett</translation>
+        <translation type="obsolete">Report komplett</translation>
     </message>
     <message>
         <source>Report complete!</source>
         <translation type="obsolete">Report komplett!</translation>
-    </message>
-    <message>
-        <source>Report generated in</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>File Exists</source>

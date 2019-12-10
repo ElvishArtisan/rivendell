@@ -47,6 +47,11 @@ PickReportDates::PickReportDates(const QString &svcname,QWidget *parent)
   setMinimumSize(sizeHint());
 
   //
+  // Dialogs
+  //
+  edit_viewreport_dialog=new ViewReportDialog(this);
+
+  //
   // Report List
   //
   edit_report_box=new QComboBox(this);
@@ -121,6 +126,7 @@ PickReportDates::PickReportDates(const QString &svcname,QWidget *parent)
 
 PickReportDates::~PickReportDates()
 {
+  delete edit_viewreport_dialog;
 }
 
 
@@ -205,9 +211,7 @@ void PickReportDates::generateData()
 			 edit_enddate_edit->date(),rda->station(),&out_path);
   switch(report->errorCode()) {
   case RDReport::ErrorOk:
-    QMessageBox::information(this,"RDLogManager - "+tr("Report Complete"),
-			     tr("Report generated in")+" \""+out_path+
-			     "\".");
+    edit_viewreport_dialog->exec(out_path);
     break;
 
   case RDReport::ErrorCantOpen:

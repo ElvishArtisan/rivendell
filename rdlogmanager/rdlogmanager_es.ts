@@ -1500,15 +1500,11 @@ Reporte</translation>
     </message>
     <message>
         <source>Report Complete</source>
-        <translation>Reporte completado</translation>
+        <translation type="obsolete">Reporte completado</translation>
     </message>
     <message>
         <source>Report complete!</source>
         <translation type="obsolete">¡Reporte completado!</translation>
-    </message>
-    <message>
-        <source>Report generated in</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>File Exists</source>
