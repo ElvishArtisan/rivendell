@@ -1324,6 +1324,22 @@ Report</source>
         <source>Report generated in</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>File Exists</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to open report file at</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The report file already exists.  Overwrite?</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RenameItem</name>

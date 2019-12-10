@@ -19325,3 +19325,6 @@
 2019-12-10 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdadmin(1) that caused controls to be
 	hidden in the 'Edit Report' dialog.
+2019-12-10 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed typos in UI strings in rdlogmanager(1)'s 'Pick Report Dates'
+	dialog.
