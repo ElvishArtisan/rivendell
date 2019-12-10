@@ -19332,3 +19332,5 @@
 	* Added an 'RDTextViewer()' function.
 	* Added the ability to view a report at time of generation in
 	rdlogmanager(1).
+2019-12-10 Fred Gleason <fredg@paravelsystems.com>
+	* Refromatted the switch() statements in 'rdairplay/list_log.cpp'.

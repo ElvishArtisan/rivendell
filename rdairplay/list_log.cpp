@@ -449,104 +449,104 @@ void ListLog::setActionMode(RDAirPlayConf::ActionMode mode,int *cartnum)
     return;
   }
   switch(mode) {
-      case RDAirPlayConf::Normal:
-	list_log_list->setSelectionMode(Q3ListView::Extended);
-	list_log_list->setPalette(palette());
-	list_take_button->hide();
-	list_play_button->show();
-	list_next_button->show();
-	list_modify_button->show();
-	list_scroll_button->show();
-	list_refresh_button->show();
-	list_load_button->show();
-	break;
+  case RDAirPlayConf::Normal:
+    list_log_list->setSelectionMode(Q3ListView::Extended);
+    list_log_list->setPalette(palette());
+    list_take_button->hide();
+    list_play_button->show();
+    list_next_button->show();
+    list_modify_button->show();
+    list_scroll_button->show();
+    list_refresh_button->show();
+    list_load_button->show();
+    break;
 
-      case RDAirPlayConf::AddTo:
-	list_log_list->setSelectionMode(Q3ListView::Single);
-	list_log_list->setPalette(list_list_to_color);
-	list_take_button->setText(ADD_TO_MODE_TITLE);
-	list_take_button->setPalette(list_to_color);
-	list_take_button->show();
-	list_play_button->hide();
-	list_next_button->hide();
-	list_modify_button->hide();
-	list_scroll_button->hide();
-	list_refresh_button->hide();
-	list_load_button->hide();
-	break;
+  case RDAirPlayConf::AddTo:
+    list_log_list->setSelectionMode(Q3ListView::Single);
+    list_log_list->setPalette(list_list_to_color);
+    list_take_button->setText(ADD_TO_MODE_TITLE);
+    list_take_button->setPalette(list_to_color);
+    list_take_button->show();
+    list_play_button->hide();
+    list_next_button->hide();
+    list_modify_button->hide();
+    list_scroll_button->hide();
+    list_refresh_button->hide();
+    list_load_button->hide();
+    break;
 
-      case RDAirPlayConf::DeleteFrom:
-	list_log_list->setSelectionMode(Q3ListView::Single);
-	list_log_list->setPalette(list_list_from_color);
-	list_take_button->setText(DELETE_FROM_MODE_TITLE);
-	list_take_button->setPalette(list_from_color);
-	list_take_button->show();
-	list_play_button->hide();
-	list_next_button->hide();
-	list_modify_button->hide();
-	list_scroll_button->hide();
-	list_refresh_button->hide();
-	list_load_button->hide();
-	break;
+  case RDAirPlayConf::DeleteFrom:
+    list_log_list->setSelectionMode(Q3ListView::Single);
+    list_log_list->setPalette(list_list_from_color);
+    list_take_button->setText(DELETE_FROM_MODE_TITLE);
+    list_take_button->setPalette(list_from_color);
+    list_take_button->show();
+    list_play_button->hide();
+    list_next_button->hide();
+    list_modify_button->hide();
+    list_scroll_button->hide();
+    list_refresh_button->hide();
+    list_load_button->hide();
+    break;
 
-      case RDAirPlayConf::MoveFrom:
-	list_log_list->setSelectionMode(Q3ListView::Single);
-	list_log_list->setPalette(list_list_from_color);
-	list_take_button->setText(MOVE_FROM_MODE_TITLE);
-	list_take_button->setPalette(list_from_color);
-	list_take_button->show();
-	list_play_button->hide();
-	list_next_button->hide();
-	list_modify_button->hide();
-	list_scroll_button->hide();
-	list_refresh_button->hide();
-	list_load_button->hide();
-	break;
+  case RDAirPlayConf::MoveFrom:
+    list_log_list->setSelectionMode(Q3ListView::Single);
+    list_log_list->setPalette(list_list_from_color);
+    list_take_button->setText(MOVE_FROM_MODE_TITLE);
+    list_take_button->setPalette(list_from_color);
+    list_take_button->show();
+    list_play_button->hide();
+    list_next_button->hide();
+    list_modify_button->hide();
+    list_scroll_button->hide();
+    list_refresh_button->hide();
+    list_load_button->hide();
+    break;
 
-      case RDAirPlayConf::MoveTo:
-	list_log_list->setSelectionMode(Q3ListView::Single);
-	list_log_list->setPalette(list_list_to_color);
-	list_take_button->setText(MOVE_TO_MODE_TITLE);
-	list_take_button->setPalette(list_to_color);
-	list_take_button->show();
-	list_play_button->hide();
-	list_next_button->hide();
-	list_modify_button->hide();
-	list_scroll_button->hide();
-	list_refresh_button->hide();
-	list_load_button->hide();
-	break;
+  case RDAirPlayConf::MoveTo:
+    list_log_list->setSelectionMode(Q3ListView::Single);
+    list_log_list->setPalette(list_list_to_color);
+    list_take_button->setText(MOVE_TO_MODE_TITLE);
+    list_take_button->setPalette(list_to_color);
+    list_take_button->show();
+    list_play_button->hide();
+    list_next_button->hide();
+    list_modify_button->hide();
+    list_scroll_button->hide();
+    list_refresh_button->hide();
+    list_load_button->hide();
+    break;
 
-      case RDAirPlayConf::CopyFrom:
-	list_log_list->setSelectionMode(Q3ListView::Single);
-	list_log_list->setPalette(list_list_from_color);
-	list_take_button->setText(COPY_FROM_MODE_TITLE);
-	list_take_button->setPalette(list_from_color);
-	list_take_button->show();
-	list_play_button->hide();
-	list_next_button->hide();
-	list_modify_button->hide();
-	list_scroll_button->hide();
-	list_refresh_button->hide();
-	list_load_button->hide();
-	break;
+  case RDAirPlayConf::CopyFrom:
+    list_log_list->setSelectionMode(Q3ListView::Single);
+    list_log_list->setPalette(list_list_from_color);
+    list_take_button->setText(COPY_FROM_MODE_TITLE);
+    list_take_button->setPalette(list_from_color);
+    list_take_button->show();
+    list_play_button->hide();
+    list_next_button->hide();
+    list_modify_button->hide();
+    list_scroll_button->hide();
+    list_refresh_button->hide();
+    list_load_button->hide();
+    break;
 
-      case RDAirPlayConf::CopyTo:
-	list_log_list->setSelectionMode(Q3ListView::Single);
-	list_log_list->setPalette(list_list_to_color);
-	list_take_button->setText(COPY_TO_MODE_TITLE);
-	list_take_button->setPalette(list_to_color);
-	list_take_button->show();
-	list_play_button->hide();
-	list_next_button->hide();
-	list_modify_button->hide();
-	list_scroll_button->hide();
-	list_refresh_button->hide();
-	list_load_button->hide();
-	break;
+  case RDAirPlayConf::CopyTo:
+    list_log_list->setSelectionMode(Q3ListView::Single);
+    list_log_list->setPalette(list_list_to_color);
+    list_take_button->setText(COPY_TO_MODE_TITLE);
+    list_take_button->setPalette(list_to_color);
+    list_take_button->show();
+    list_play_button->hide();
+    list_next_button->hide();
+    list_modify_button->hide();
+    list_scroll_button->hide();
+    list_refresh_button->hide();
+    list_load_button->hide();
+    break;
 
-      default:
-	break;
+  default:
+    break;
   }
   if(mode==RDAirPlayConf::Normal) {
     list_scroll=list_suspended_scroll;
@@ -601,75 +601,75 @@ void ListLog::takeButtonData()
 
   RDLogLine::Status status=CurrentStatus();
   switch(list_action_mode) {
-      case RDAirPlayConf::AddTo:
-      case RDAirPlayConf::MoveTo:
-      case RDAirPlayConf::CopyTo:
-	switch(status) {
-	    case RDLogLine::Finished:
-	    case RDLogLine::Playing:
-	    case RDLogLine::Paused:
-	    case RDLogLine::Finishing:
-	      return;
+  case RDAirPlayConf::AddTo:
+  case RDAirPlayConf::MoveTo:
+  case RDAirPlayConf::CopyTo:
+    switch(status) {
+    case RDLogLine::Finished:
+    case RDLogLine::Playing:
+    case RDLogLine::Paused:
+    case RDLogLine::Finishing:
+      return;
 	      
-	    default:
-	      line=list_log_list->currentItem()->text(15).toInt();
-	      break;
-	}
-	break;
+    default:
+      line=list_log_list->currentItem()->text(15).toInt();
+      break;
+    }
+    break;
 	  
-      case RDAirPlayConf::CopyFrom:
-	line=list_log_list->currentItem()->text(15).toInt();
-	if(list_log->logLine(line)!=NULL) {
-	  switch(list_log->logLine(line)->type()) {
-	      case RDLogLine::Marker:
-	      case RDLogLine::OpenBracket:
-	      case RDLogLine::CloseBracket:
-	      case RDLogLine::Chain:
-	      case RDLogLine::Track:
-	      case RDLogLine::MusicLink:
-	      case RDLogLine::TrafficLink:
-	      case RDLogLine::UnknownType:
-		return;
+  case RDAirPlayConf::CopyFrom:
+    line=list_log_list->currentItem()->text(15).toInt();
+    if(list_log->logLine(line)!=NULL) {
+      switch(list_log->logLine(line)->type()) {
+      case RDLogLine::Marker:
+      case RDLogLine::OpenBracket:
+      case RDLogLine::CloseBracket:
+      case RDLogLine::Chain:
+      case RDLogLine::Track:
+      case RDLogLine::MusicLink:
+      case RDLogLine::TrafficLink:
+      case RDLogLine::UnknownType:
+	return;
 		
-	      default:
-		break;
-	  }
-	}
-	break;
-
-      case RDAirPlayConf::MoveFrom:
-	switch(status) {
-	    case RDLogLine::Finished:
-	    case RDLogLine::Playing:
-	    case RDLogLine::Paused:
-	    case RDLogLine::Finishing:
-	      return;
-	      
-	    default:
-	      line=list_log_list->currentItem()->text(15).toInt();
-	      break;
-	}
-	break;
-
-      case RDAirPlayConf::DeleteFrom:
-	switch(status) {
-	    case RDLogLine::Finished:
-	    case RDLogLine::Playing:
-	    case RDLogLine::Finishing:
-	      return;
-	      
-	    default:
-	      line=list_log_list->currentItem()->text(15).toInt();
-              // Don't try delete "end of log" or other invalid log entries.
-              if (line<0) {
-                return;
-              }
-	      break;
-	}
-	break;
-
       default:
 	break;
+      }
+    }
+    break;
+
+  case RDAirPlayConf::MoveFrom:
+    switch(status) {
+    case RDLogLine::Finished:
+    case RDLogLine::Playing:
+    case RDLogLine::Paused:
+    case RDLogLine::Finishing:
+      return;
+	      
+    default:
+      line=list_log_list->currentItem()->text(15).toInt();
+      break;
+    }
+    break;
+
+  case RDAirPlayConf::DeleteFrom:
+    switch(status) {
+    case RDLogLine::Finished:
+    case RDLogLine::Playing:
+    case RDLogLine::Finishing:
+      return;
+	      
+    default:
+      line=list_log_list->currentItem()->text(15).toInt();
+      // Don't try delete "end of log" or other invalid log entries.
+      if (line<0) {
+	return;
+      }
+      break;
+    }
+    break;
+
+  default:
+    break;
   }
   emit selectClicked(list_id,line,status);
 }
@@ -732,34 +732,34 @@ void ListLog::playButtonData()
   }
 
   switch(list_playbutton_mode) {
-      case ListLog::ButtonPlay:
-	switch(CurrentStatus()) {
-	    case RDLogLine::Scheduled:
-	    case RDLogLine::Paused:
-	      if(line<0) {
-		return;
-	      }
-	      list_log->play(line,RDLogLine::StartManual);
-	      ClearSelection();
-	      break;
+  case ListLog::ButtonPlay:
+    switch(CurrentStatus()) {
+    case RDLogLine::Scheduled:
+    case RDLogLine::Paused:
+      if(line<0) {
+	return;
+      }
+      list_log->play(line,RDLogLine::StartManual);
+      ClearSelection();
+      break;
 	      
-	    default:
-	      break;
-	}
-	break;
+    default:
+      break;
+    }
+    break;
 
-      case ListLog::ButtonStop:
-	if(list_pause_allowed) {
-	  list_log->pause(line);
-	}
-	else {
-	  list_log->stop(line);
-	}
-	ClearSelection();
-	break;
+  case ListLog::ButtonStop:
+    if(list_pause_allowed) {
+      list_log->pause(line);
+    }
+    else {
+      list_log->stop(line);
+    }
+    ClearSelection();
+    break;
 
-      case ListLog::ButtonDisabled:
-	break;
+  case ListLog::ButtonDisabled:
+    break;
   }
 }
 
@@ -983,27 +983,27 @@ void ListLog::selectionChangedData()
     return;
   }  
   switch(CurrentStatus()) {
-      case RDLogLine::Scheduled:
-      case RDLogLine::Paused:
-	SetPlaybuttonMode(ListLog::ButtonPlay);
-	list_modify_button->setEnabled(true);
-	list_next_button->setEnabled(true);
-	break;
+  case RDLogLine::Scheduled:
+  case RDLogLine::Paused:
+    SetPlaybuttonMode(ListLog::ButtonPlay);
+    list_modify_button->setEnabled(true);
+    list_next_button->setEnabled(true);
+    break;
 
-      case RDLogLine::Playing:
-	SetPlaybuttonMode(ListLog::ButtonStop);
-	list_modify_button->setEnabled(true);
-	list_next_button->setDisabled(true);
-	break;
+  case RDLogLine::Playing:
+    SetPlaybuttonMode(ListLog::ButtonStop);
+    list_modify_button->setEnabled(true);
+    list_next_button->setDisabled(true);
+    break;
 
-      case RDLogLine::Finished:
-	SetPlaybuttonMode(ListLog::ButtonDisabled);
-	list_modify_button->setDisabled(true);
-	list_next_button->setDisabled(true);
-	break;
+  case RDLogLine::Finished:
+    SetPlaybuttonMode(ListLog::ButtonDisabled);
+    list_modify_button->setDisabled(true);
+    list_next_button->setDisabled(true);
+    break;
 
-      default:
-	break;
+  default:
+    break;
   }
   if(item->text(15).toInt()>=0) {
     list_endtime_edit->setText(RDGetTimeLength(list_log->
@@ -1103,66 +1103,69 @@ void ListLog::RefreshItem(RDListViewItem *l,int line)
     return;
   }
   switch(log_line->timeType()) {
-      case RDLogLine::Hard:
-	l->setText(1,QString("T")+
-		   TimeString(log_line->startTime(RDLogLine::Logged)));
-	l->setText(8,QString("T")+
-		   TimeString(log_line->startTime(RDLogLine::Logged)));
-	for(int i=0;i<list_log_list->columns();i++) {
-	  l->setTextColor(i,LOG_HARDTIME_TEXT_COLOR,QFont::Bold);
-	}
-	l->setText(14,"N");
-	break;
-      default:
-	if(!log_line->startTime(RDLogLine::Logged).isNull()) {
-	  l->setText(8,TimeString(log_line->startTime(RDLogLine::Logged)));
-	}
-	else {
-	  l->setText(8,"");
-	}
-	for(int i=0;i<list_log_list->columns();i++) {
-	  l->setTextColor(i,LOG_RELATIVE_TEXT_COLOR,QFont::Normal);
-	}
-	l->setText(14,"");
-	break;
+  case RDLogLine::Hard:
+    l->setText(1,QString("T")+
+	       TimeString(log_line->startTime(RDLogLine::Logged)));
+    l->setText(8,QString("T")+
+	       TimeString(log_line->startTime(RDLogLine::Logged)));
+    for(int i=0;i<list_log_list->columns();i++) {
+      l->setTextColor(i,LOG_HARDTIME_TEXT_COLOR,QFont::Bold);
+    }
+    l->setText(14,"N");
+    break;
+
+  default:
+    if(!log_line->startTime(RDLogLine::Logged).isNull()) {
+      l->setText(8,TimeString(log_line->startTime(RDLogLine::Logged)));
+    }
+    else {
+      l->setText(8,"");
+    }
+    for(int i=0;i<list_log_list->columns();i++) {
+      l->setTextColor(i,LOG_RELATIVE_TEXT_COLOR,QFont::Normal);
+    }
+    l->setText(14,"");
+    break;
   }
   switch(log_line->transType()) {
-      case RDLogLine::Play:
-	l->setText(3,tr("PLAY"));
-	l->setTextColor(3,l->textColor(2),QFont::Normal);
-	break;
-      case RDLogLine::Stop:
-	l->setText(3,tr("STOP"));
-	l->setTextColor(3,l->textColor(2),QFont::Normal);
-	break;
-      case RDLogLine::Segue:
-	l->setText(3,tr("SEGUE"));
-	if(log_line->hasCustomTransition()) {
-	  l->setTextColor(3,RD_CUSTOM_TRANSITION_COLOR,QFont::Bold);
-	}
-	else {
-	  if(log_line->timeType()==RDLogLine::Hard) {
-	    l->setTextColor(3,l->textColor(2),QFont::Bold);
-	  }
-	  else {
-	    l->setTextColor(3,l->textColor(2),QFont::Normal);
-	  }
-	}
-	break;
+  case RDLogLine::Play:
+    l->setText(3,tr("PLAY"));
+    l->setTextColor(3,l->textColor(2),QFont::Normal);
+    break;
 
-      default:
-	break;
+  case RDLogLine::Stop:
+    l->setText(3,tr("STOP"));
+    l->setTextColor(3,l->textColor(2),QFont::Normal);
+    break;
+
+  case RDLogLine::Segue:
+    l->setText(3,tr("SEGUE"));
+    if(log_line->hasCustomTransition()) {
+      l->setTextColor(3,RD_CUSTOM_TRANSITION_COLOR,QFont::Bold);
+    }
+    else {
+      if(log_line->timeType()==RDLogLine::Hard) {
+	l->setTextColor(3,l->textColor(2),QFont::Bold);
+      }
+      else {
+	l->setTextColor(3,l->textColor(2),QFont::Normal);
+      }
+    }
+    break;
+
+  default:
+    break;
   }
   switch(log_line->type()) {
-      case RDLogLine::Cart:
-	switch(log_line->source()) {
-	    case RDLogLine::Tracker:
-	      l->setPixmap(0,*list_track_cart_map);
-	      break;
+  case RDLogLine::Cart:
+    switch(log_line->source()) {
+    case RDLogLine::Tracker:
+      l->setPixmap(0,*list_track_cart_map);
+      break;
 
-	    default:
-	      l->setPixmap(0,*list_playout_map);
-	      break;
+    default:
+      l->setPixmap(0,*list_playout_map);
+      break;
 	}
 	l->setText(2,RDGetTimeLength(log_line->effectiveLength(),false,false));
 	l->setText(4,QString().
@@ -1246,27 +1249,27 @@ void ListLog::RefreshItem(RDListViewItem *l,int line)
   SetPlaybuttonMode(ListLog::ButtonDisabled);
   list_modify_button->setDisabled(true);
   switch(log_line->state()) {
-      case RDLogLine::NoCart:
-	if(log_line->type()==RDLogLine::Cart) {
-	  l->setPixmap(0,NULL);
-	  l->setText(8,"");
-	  l->setText(3,"");
-	  l->setText(5,tr("[CART NOT FOUND]"));
-	}
-	break;
+  case RDLogLine::NoCart:
+    if(log_line->type()==RDLogLine::Cart) {
+      l->setPixmap(0,NULL);
+      l->setText(8,"");
+      l->setText(3,"");
+      l->setText(5,tr("[CART NOT FOUND]"));
+    }
+    break;
 
-      case RDLogLine::NoCut:
-	if(log_line->type()==RDLogLine::Cart) {
-	  l->setText(6,tr("[NO VALID CUT AVAILABLE]"));
-	}
-	break;
+  case RDLogLine::NoCut:
+    if(log_line->type()==RDLogLine::Cart) {
+      l->setText(6,tr("[NO VALID CUT AVAILABLE]"));
+    }
+    break;
 
-      default:
-	if((log_line->type()==RDLogLine::Cart)&&
-	   (log_line->effectiveLength()==0)) {
-	  l->setText(6,tr("[NO AUDIO AVAILABLE]"));
-	}
-	break;
+  default:
+    if((log_line->type()==RDLogLine::Cart)&&
+       (log_line->effectiveLength()==0)) {
+      l->setText(6,tr("[NO AUDIO AVAILABLE]"));
+    }
+    break;
   }
   list_log->transportEvents(lines);
   for(int i=0;i<TRANSPORT_QUANTITY;i++) {
@@ -1341,29 +1344,29 @@ void ListLog::UpdateTimes(int removed_line,int num_lines)
     }
     if((logline=list_log->logLine(line))!=NULL) {
       switch((RDLogLine::Status)next->text(16).toInt()) {
-	  case RDLogLine::Scheduled:
-	  case RDLogLine::Paused:
-	    switch(logline->timeType()) {
-		case RDLogLine::Hard:
-		  next->setText(1,QString(tr("T"))+
-			  TimeString(logline->startTime(RDLogLine::Logged)));
-		  break;
+      case RDLogLine::Scheduled:
+      case RDLogLine::Paused:
+	switch(logline->timeType()) {
+	case RDLogLine::Hard:
+	  next->setText(1,QString(tr("T"))+
+			TimeString(logline->startTime(RDLogLine::Logged)));
+	  break;
 		  
-		default:
-		  if(!logline->startTime(RDLogLine::Predicted).isNull()) {
-		    next->setText(1,
-		        TimeString(logline->startTime(RDLogLine::Predicted)));
-		  }
-		  else {
-		    next->setText(1,"");
-		  }
-		  break;
-	    }
-	    break;
+	default:
+	  if(!logline->startTime(RDLogLine::Predicted).isNull()) {
+	    next->setText(1,
+			  TimeString(logline->startTime(RDLogLine::Predicted)));
+	  }
+	  else {
+	    next->setText(1,"");
+	  }
+	  break;
+	}
+	break;
 
-	  default:
-	    next->setText(1,TimeString(logline->startTime(RDLogLine::Actual)));
-	    break;
+      default:
+	next->setText(1,TimeString(logline->startTime(RDLogLine::Actual)));
+	break;
       }
       next=(RDListViewItem *)next->nextSibling();
     }
@@ -1462,25 +1465,25 @@ void ListLog::SetPlaybuttonMode(ListLog::PlayButtonMode mode)
     return;
   }
   switch(mode) {
-      case ListLog::ButtonPlay:
-	list_play_button->setEnabled(true);
-	list_play_button->setText(tr("Start"));
-	break;
+  case ListLog::ButtonPlay:
+    list_play_button->setEnabled(true);
+    list_play_button->setText(tr("Start"));
+    break;
 
-      case ListLog::ButtonStop:
-	list_play_button->setEnabled(true);
-	if(list_pause_allowed) {
-	  list_play_button->setText(tr("Pause"));
-	}
-	else {
-	  list_play_button->setText(tr("Stop"));
-	}
-	break;
+  case ListLog::ButtonStop:
+    list_play_button->setEnabled(true);
+    if(list_pause_allowed) {
+      list_play_button->setText(tr("Pause"));
+    }
+    else {
+      list_play_button->setText(tr("Stop"));
+    }
+    break;
 
-      case ListLog::ButtonDisabled:
-	list_play_button->setDisabled(true);
-	list_play_button->setText(tr("Start"));
-	break;
+  case ListLog::ButtonDisabled:
+    list_play_button->setDisabled(true);
+    list_play_button->setText(tr("Start"));
+    break;
   }
   list_playbutton_mode=mode;
 }
