@@ -525,7 +525,6 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
       QString().sprintf("EVENT_LENGTH=%d",event_length);
     RDSqlQuery::apply(sql);
     count++;
-    time=time.addMSecs(i_item->cartNumber());
     trans_type=event_default_transtype;
     time_type=RDLogLine::Relative;
     post_point=false;
@@ -1180,11 +1179,16 @@ bool RDEventLine::linkLog(RDLogEvent *e,RDLog *log,const QString &svcname,
       }
     }
 
+    //
+    // Insert imported event
+    //
     e->insert(e->size(),1);
     logline=e->logLine(e->size()-1);
     logline->setId(e->nextId());
     logline->setSource(event_src);
-    logline->setStartTime(RDLogLine::Logged,time);
+    logline->
+      setStartTime(RDLogLine::Logged,
+		   QTime(start_start_hour,0,0).addSecs(q->value(1).toInt()));
     logline->setGraceTime(grace_time);
     logline->setTimeType(time_type);
     logline->setTransType(trans_type);

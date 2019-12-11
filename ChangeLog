@@ -19334,3 +19334,6 @@
 	rdlogmanager(1).
 2019-12-10 Fred Gleason <fredg@paravelsystems.com>
 	* Reformatted the switch() statements in 'rdairplay/list_log.cpp'.
+2019-12-11 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdlogmanager(1) that caused incorrect
+	logged start times to be generated for imported events.
