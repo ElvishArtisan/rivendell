@@ -19340,3 +19340,5 @@
 2019-12-11 Fred Gleason <fredg@paravelsystems.com>
 	* Modified the Full Log widget in rdairplay(1) to display logged
 	start times even when the references cart does not exist.
+2019-12-11 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.2.0int6.
