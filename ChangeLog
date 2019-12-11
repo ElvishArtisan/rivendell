@@ -19337,3 +19337,6 @@
 2019-12-11 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdlogmanager(1) that caused incorrect
 	logged start times to be generated for imported events.
+2019-12-11 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the Full Log widget in rdairplay(1) to display logged
+	start times even when the references cart does not exist.

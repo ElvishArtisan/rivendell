@@ -1252,7 +1252,13 @@ void ListLog::RefreshItem(RDListViewItem *l,int line)
   case RDLogLine::NoCart:
     if(log_line->type()==RDLogLine::Cart) {
       l->setPixmap(0,NULL);
-      l->setText(8,"");
+      if(log_line->startTime(RDLogLine::Logged).isNull()) {
+	l->setText(8,"");
+      }
+      else {
+	l->setText(8,
+		   log_line->startTime(RDLogLine::Logged).toString("hh:mm:ss"));
+      }
       l->setText(3,"");
       l->setText(5,tr("[CART NOT FOUND]"));
     }
