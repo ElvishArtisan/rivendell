@@ -19342,3 +19342,5 @@
 	start times even when the references cart does not exist.
 2019-12-11 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.2.0int6.
+2019-12-13 Fred Gleason <fredg@paravelsystems.com>
+	* Removed dead code from 'lib/rdevent_line.cpp'.

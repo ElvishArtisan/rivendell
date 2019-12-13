@@ -538,16 +538,16 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
   //
   if(event_import_source==RDEventLine::Traffic || event_import_source==RDEventLine::Music) {
     switch(event_import_source) {
-	case RDEventLine::Traffic:
-	  link_type=RDLogLine::TrafficLink;
-	  break;
+    case RDEventLine::Traffic:
+      link_type=RDLogLine::TrafficLink;
+      break;
 	  
-	case RDEventLine::Music:
-	  link_type=RDLogLine::MusicLink;
-	  break;
+    case RDEventLine::Music:
+      link_type=RDLogLine::MusicLink;
+      break;
 	  
-	default:
-	  break;
+    default:
+      break;
     }
     QTime end_start_time=event_start_time.addMSecs(event_length);
 
@@ -757,14 +757,9 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 	  "from STACK_LINES left join STACK_SCHED_CODES "+
 	  "on STACK_LINES.ID=STACK_SCHED_CODES.STACK_LINES_ID where "+
 	  "STACK_LINES.SERVICE_NAME=\""+RDEscapeString(svcname)+"\" && "+
-	  QString().sprintf("STACK_LINES.SCHED_STACK_ID > %d && ",stackid-range)+
+	  QString().sprintf("STACK_LINES.SCHED_STACK_ID > %d && ",
+			    stackid-range)+
 	  "STACK_SCHED_CODES.SCHED_CODE=\""+RDEscapeString(wstr)+"\"";
-	/*
-	sql=QString("select CART from STACK_LINES where ")+
-	  "SERVICE_NAME=\""+RDEscapeString(svcname)+"\" && "+
-	  QString().sprintf("SCHED_STACK_ID > %d && ",stackid-range)+
-	  "SCHED_CODES like \"%%"+RDEscapeString(wstr)+"%%\"";
-	*/
 	q1=new RDSqlQuery(sql);
 	if(q1->size()>=allowed || allowed==0) {
 	  for(counter=0;counter<schedCL->getNumberOfItems();counter++) {
@@ -793,12 +788,6 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 	    "STACK_LINES.SERVICE_NAME=\""+RDEscapeString(svcname)+"\" && "+
 	    QString().sprintf("STACK_LINES.SCHED_STACK_ID=%d && ",stackid-1)+
 	    "STACK_SCHED_CODES.SCHED_CODE=\""+RDEscapeString(wstr)+"\"";
-	  /*
-	  sql=QString("select CART from STACK_LINES where ")+
-	    "SERVICE_NAME=\""+RDEscapeString(svcname)+"\" && "+
-	    QString().sprintf("SCHED_STACK_ID=%d && ",stackid-1)+
-	    "SCHED_CODES like \"%"+RDEscapeString(wstr)+"%\"";
-	  */
 	  q1=new RDSqlQuery(sql);
 	  if(q1->size()>0) {
 	    for(counter=0;counter<schedCL->getNumberOfItems();counter++) {
@@ -827,11 +816,6 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 	    "on STACK_LINES.ID=STACK_SCHED_CODES.STACK_LINES_ID where "+
 	    QString().sprintf("STACK_LINES.SCHED_STACK_ID=%d && ",stackid-1)+
 	    "STACK_SCHED_CODES.SCHED_CODE=\""+RDEscapeString(wstr)+"\"";
-	  /*
-	  sql=QString("select CART from STACK_LINES where ")+
-	    QString().sprintf("SCHED_STACK_ID=%d && ",stackid-1)+
-	    "SCHED_CODES like \"%"+RDEscapeString(wstr)+"%\"";
-	  */
 	  q1=new RDSqlQuery(sql);
 	  if(q1->size()>0) {	
 	    for(counter=0;counter<schedCL->getNumberOfItems();counter++) {
@@ -860,11 +844,6 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 	    "on STACK_LINES.ID=STACK_SCHED_CODES.STACK_LINES_ID where "+
 	    QString().sprintf("STACK_LINES.SCHED_STACK_ID=%d && ",stackid-1)+
 	    "STACK_SCHED_CODES.SCHED_CODE=\""+RDEscapeString(wstr)+"\"";
-	  /*
-	  sql=QString("select CART from STACK_LINES where ")+
-	    QString().sprintf("SCHED_STACK_ID=%d && ",stackid-1)+
-	    "SCHED_CODES like \"%"+RDEscapeString(wstr)+"%\"";
-	  */
 	  q1=new RDSqlQuery(sql);
 	  if(q1->size()>0) {
 	    for(counter=0;counter<schedCL->getNumberOfItems();counter++) {
@@ -928,19 +907,6 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 	  "SCHED_CODE=\""+RDEscapeString(codes.at(i))+"\"";
 	RDSqlQuery::apply(sql);
       }
-      /*
-      sql=QString("insert into STACK_LINES set ")+
-	"SERVICE_NAME=\""+RDEscapeString(svcname)+"\","+
-	"SCHEDULED_AT=now(),"+
-	QString().sprintf("SCHED_STACK_ID=%u,",stackid)+
-	QString().sprintf("CART=%u,",schedCL->getItemCartNumber(schedpos))+
-	"ARTIST=\""+RDEscapeString(schedCL->getItemArtist(schedpos))+"\","+
-	"SCHED_CODES=\""+RDEscapeString(schedCL->getItemSchedCodes(schedpos))+
-	"\"";
-      q=new RDSqlQuery(sql);
-      delete q;
-      */
-
       delete schedCL;
     }
     else {
