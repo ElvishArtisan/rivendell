@@ -19350,3 +19350,5 @@
 	* Made the main window and 'Edit Log' dialog window size persistent.
 	* Changed the 'Time' column in the 'Full Log Widget' in rdairplay(1)
 	to 'Sch. Time'.
+2019-12-13 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.2.0int7.
