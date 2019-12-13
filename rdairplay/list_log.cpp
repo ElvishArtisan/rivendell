@@ -154,7 +154,7 @@ ListLog::ListLog(RDLogPlay *log,RDCae *cae,int id,bool allow_pause,
   list_log_list->setItemMargin(5);
   list_log_list->addColumn("");
   list_log_list->setColumnAlignment(0,Qt::AlignHCenter);
-  list_log_list->addColumn(tr("Est Time"));
+  list_log_list->addColumn(tr("Est. Time"));
   list_log_list->setColumnAlignment(1,Qt::AlignRight);
   list_log_list->addColumn(tr("Len"));
   list_log_list->setColumnAlignment(2,Qt::AlignRight);
@@ -168,7 +168,7 @@ ListLog::ListLog(RDLogPlay *log,RDCae *cae,int id,bool allow_pause,
   list_log_list->setColumnAlignment(6,Qt::AlignLeft);
   list_log_list->addColumn(tr("Group"));
   list_log_list->setColumnAlignment(7,Qt::AlignHCenter);
-  list_log_list->addColumn(tr("Time"));
+  list_log_list->addColumn(tr("Sch. Time"));
   list_log_list->setColumnAlignment(8,Qt::AlignHCenter);
   list_log_list->addColumn(tr("Album"));
   list_log_list->setColumnAlignment(9,Qt::AlignLeft);

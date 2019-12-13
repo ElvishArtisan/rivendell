@@ -19344,3 +19344,9 @@
 	* Incremented the package version to 3.2.0int6.
 2019-12-13 Fred Gleason <fredg@paravelsystems.com>
 	* Removed dead code from 'lib/rdevent_line.cpp'.
+2019-12-13 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Show Start Time As' control to the 'Edit Log' dialog
+	in rdlogedit(1).
+	* Made the main window and 'Edit Log' dialog window size persistent.
+	* Changed the 'Time' column in the 'Full Log Widget' in rdairplay(1)
+	to 'Sch. Time'.

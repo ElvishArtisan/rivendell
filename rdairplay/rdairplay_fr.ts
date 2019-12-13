@@ -404,10 +404,6 @@ la Fin</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Est Time</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Len</source>
         <translation type="unfinished"></translation>
     </message>
@@ -429,10 +425,6 @@ la Fin</translation>
     </message>
     <message>
         <source>Group</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -465,6 +457,14 @@ la Fin</translation>
     </message>
     <message>
         <source>Status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Est. Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sch. Time</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

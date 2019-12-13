@@ -365,6 +365,26 @@ for the selected service!</source>
         <source>Run Length</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Scheduled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Show Start Times As</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Sch. Time</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Estimated</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Est. Time</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditLogLine</name>
