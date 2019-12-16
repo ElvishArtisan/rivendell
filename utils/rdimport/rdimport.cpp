@@ -498,7 +498,7 @@ MainObject::MainObject(QObject *parent)
   for(unsigned i=0;i<import_add_scheduler_codes.size();i++) {
     if(!SchedulerCodeExists(import_add_scheduler_codes[i])) {
       Log(LOG_ERR,QString().sprintf("rdimport: scheduler code \"%s\" does not exist\n",
-	      (const char *)import_add_scheduler_codes[i].utf8()));
+	      (const char *)import_add_scheduler_codes[i].toUtf8()));
       exit(2);
     }
   }
@@ -644,7 +644,7 @@ MainObject::MainObject(QObject *parent)
   if(import_add_scheduler_codes.size()>0) {
     Log(LOG_INFO,QString(" Adding Scheduler Code(s):\n"));
     for(unsigned i=0;i<import_add_scheduler_codes.size();i++) {
-      Log(LOG_INFO,QString().sprintf(" %s\n",(const char *)import_add_scheduler_codes[i].utf8()));
+      Log(LOG_INFO,QString().sprintf(" %s\n",(const char *)import_add_scheduler_codes[i].toUtf8()));
     }
   }
   if(!import_set_user_defined.isEmpty()) {
@@ -750,7 +750,7 @@ MainObject::MainObject(QObject *parent)
   import_fadeup_marker->dump();
   Log(LOG_INFO,QString(" Files to process:\n"));
   for(unsigned i=import_file_key;i<rda->cmdSwitch()->keys();i++) {
-    Log(LOG_INFO,QString().sprintf("   \"%s\"\n",(const char *)rda->cmdSwitch()->key(i)));
+    Log(LOG_INFO,QString().sprintf("   \"%s\"\n",(const char *)rda->cmdSwitch()->key(i).toUtf8()));
   }
 
   // 
@@ -963,13 +963,13 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   else {
     if(import_fix_broken_formats) {
       Log(LOG_WARNING,QString().sprintf(" File \"%s\" appears to be malformed, trying workaround ... ",
-		       (const char *)RDGetBasePart(filename).utf8()));
+		       (const char *)RDGetBasePart(filename).toUtf8()));
       delete wavefile;
       if((wavefile=FixFile(filename,wavedata))==NULL) {
 	Log(LOG_WARNING,QString().sprintf("failed.\n"));
 	Log(LOG_WARNING,QString().sprintf(
 		" File \"%s\" is not readable or not a recognized format, skipping...\n",
-		(const char *)RDGetBasePart(filename).utf8()));
+		(const char *)RDGetBasePart(filename).toUtf8()));
 	delete wavefile;
 	delete wavedata;
 	delete effective_group;
@@ -989,7 +989,7 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
     else {
       Log(LOG_WARNING,QString().sprintf(
         " File \"%s\" is not readable or not a recognized format, skipping...\n",
-        (const char *)RDGetBasePart(filename).utf8()));
+        (const char *)RDGetBasePart(filename).toUtf8()));
       delete wavefile;
       delete wavedata;
       delete effective_group;
@@ -1010,14 +1010,14 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
     if(wavedata->validateDateTimes()) {
       Log(LOG_WARNING,QString().sprintf(
 	      " File \"%s\": End date/time cannot be prior to start date/time, ignoring...\n",
-	      (const char *)filename.utf8()));
+	      (const char *)filename.toUtf8()));
     }
     if(groupname!=effective_group->name()) {
       delete effective_group;
       effective_group=new RDGroup(groupname);
       if(!effective_group->exists()) {
 	Log(LOG_WARNING,QString().sprintf(" Specified group \"%s\" from file \"%s\" does not exist, using default group...\n",
-		(const char *)groupname,(const char *)filename.utf8()));
+		(const char *)groupname,(const char *)filename.toUtf8()));
 	delete effective_group;
 	effective_group=new RDGroup(import_group->name());
       }
@@ -1040,7 +1040,7 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
 	(!effective_group->cartNumberValid(*cartnum)))) {
       Log(LOG_WARNING,QString().sprintf(
 	      " File \"%s\" has an invalid or out of range Cart Number, skipping...\n",
-	      (const char *)RDGetBasePart(filename).utf8()));
+	      (const char *)RDGetBasePart(filename).toUtf8()));
       wavefile->closeWave();
       delete wavefile;
       delete wavedata;
@@ -1109,19 +1109,19 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   conv->setUseMetadata(cart_created);
   if(wavedata->title().length()==0 || ( (wavedata->title().length()>0) && (wavedata->title()[0] == '\0')) ) {
     Log(LOG_INFO,QString().sprintf(" Importing file \"%s\" to cart %06u ... ",
-		(const char *)RDGetBasePart(filename).utf8(),*cartnum));
+		(const char *)RDGetBasePart(filename).toUtf8(),*cartnum));
   }
   else {
     if(import_string_title.isNull()) {
       Log(LOG_INFO,QString().sprintf(" Importing file \"%s\" [%s] to cart %06u ... ",
-		  (const char *)RDGetBasePart(filename).utf8(),
-		  (const char *)wavedata->title().stripWhiteSpace().utf8(),
+		  (const char *)RDGetBasePart(filename).toUtf8(),
+		  (const char *)wavedata->title().stripWhiteSpace().toUtf8(),
 				     *cartnum));
     }
     else {
       Log(LOG_INFO,QString().sprintf(" Importing file \"%s\" [%s] to cart %06u ... ",
-		  (const char *)RDGetBasePart(filename).utf8(),
-		  (const char *)import_string_title.stripWhiteSpace().utf8(),
+		  (const char *)RDGetBasePart(filename).toUtf8(),
+		  (const char *)import_string_title.stripWhiteSpace().toUtf8(),
 		  *cartnum));
     }
   }
@@ -1135,7 +1135,7 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   default:
     Log(LOG_INFO,QString().sprintf(" %s, skipping %s...\n",
 	    (const char *)RDAudioImport::errorText(conv_err,audio_conv_err),
-	    (const char *)filename.utf8()));
+	    (const char *)filename.toUtf8()));
     if(cart_created) {
       cart->remove(rda->station(),rda->user(),rda->config());
     }
@@ -1174,10 +1174,10 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
      ((wavedata->title().length()>0)&&(wavedata->title()[0] == '\0'))) {
     QString title=effective_group->generateTitle(filename);
     if((!wavedata->metadataFound())&&(!wavedata->description().isEmpty())) {
-      cut->setDescription(title.utf8());
+      cut->setDescription(title);
     }
     if(cart_created) {
-      cart->setTitle(title.utf8());
+      cart->setTitle(title);
     }
   }
   if(import_title_from_cartchunk_cutid) {    
@@ -1336,8 +1336,8 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   delete effective_group;
 
   if(import_delete_source) {
-    unlink(filename.utf8());
-    Log(LOG_INFO,QString().sprintf(" Deleted file \"%s\"\n",(const char *)RDGetBasePart(filename).utf8()));
+    unlink(filename.toUtf8());
+    Log(LOG_INFO,QString().sprintf(" Deleted file \"%s\"\n",(const char *)RDGetBasePart(filename).toUtf8()));
   }
   if(!import_run) {
     exit(0);
@@ -2027,12 +2027,12 @@ void MainObject::Log(int prio,const QString &msg) const
   }
 
   if(prio==LOG_ERR) {
-    fprintf(stderr,"%s",(const char *)msg);
+    fprintf(stderr,"%s",(const char *)msg.toUtf8());
     fflush(stderr);
   }
   else {
     if(import_verbose) {
-      fprintf(stdout,"%s",(const char *)msg);
+      fprintf(stdout,"%s",(const char *)msg.toUtf8());
       fflush(stdout);
     }
   }

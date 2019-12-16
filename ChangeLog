@@ -19352,3 +19352,6 @@
 	to 'Sch. Time'.
 2019-12-13 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.2.0int7.
+2019-12-13 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdimport(1) that caused UTF-8 multibyte characters
+	in filenames to be corrupted.
