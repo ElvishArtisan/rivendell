@@ -57,7 +57,6 @@ class MainObject : public QObject
  private:
   enum Result {Success=0,FileBad=1,NoCart=2,NoCut=3};
   void RunDropBox();
-  void ProcessFileList(const QString &flist);
   void ProcessFileEntry(const QString &entry);
   MainObject::Result ImportFile(const QString &filename,unsigned *cartnum);
   void VerifyFile(const QString &filename,unsigned *cartnum);

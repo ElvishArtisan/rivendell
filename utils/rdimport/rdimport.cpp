@@ -750,7 +750,16 @@ MainObject::MainObject(QObject *parent)
   import_fadeup_marker->dump();
   Log(LOG_INFO,QString(" Files to process:\n"));
   for(unsigned i=import_file_key;i<rda->cmdSwitch()->keys();i++) {
-    Log(LOG_INFO,QString().sprintf("   \"%s\"\n",(const char *)rda->cmdSwitch()->key(i).toUtf8()));
+    if(rda->cmdSwitch()->key(i)=="-") {
+      if(!import_stdin_specified) {
+	Log(LOG_INFO,"   [stdin]\n");
+	import_stdin_specified=true;
+      }
+    }
+    else {
+      Log(LOG_INFO,QString().sprintf("   \"%s\"\n",
+			  (const char *)rda->cmdSwitch()->key(i).toUtf8()));
+    }
   }
 
   // 
@@ -787,52 +796,14 @@ void MainObject::userData()
   }
   else {
     for(unsigned i=import_file_key;i<rda->cmdSwitch()->keys();i++) {
-      ProcessFileList(rda->cmdSwitch()->key(i));
+      ProcessFileEntry(rda->cmdSwitch()->key(i));
     }
     if(import_stdin_specified) {
-      bool quote_mode=false;
-      bool escape_mode=false;
-      char buffer[PATH_MAX];
-      unsigned ptr=0;
-      while((ptr<PATH_MAX)&&(read(0,buffer+ptr,1)==1)) {
-	if(quote_mode) {
-	  if(buffer[ptr]=='\"') {
-	    quote_mode=false;
-	  }
-	  else {
-	    ptr++;
-	  }
-	}
-	else {
-	  if(escape_mode) {
-	    ptr++;
-	    escape_mode=false;
-	  }
-	  else {
-	    if(buffer[ptr]=='\"') {
-	      quote_mode=true;
-	    }
-	    else {
-	      if(buffer[ptr]=='\\') {
-		escape_mode=true;
-	      }
-	      else {
-		if(isspace(buffer[ptr])) {
-		  buffer[ptr]=0;
-		  ProcessFileList(buffer);
-		  ptr=0;
-		}
-		else {
-		  ptr++;
-		}
-	      }
-	    }
-	  }
-	}
-      }
-      if(ptr>0) {
-	buffer[ptr]=0;
-	ProcessFileList(buffer);
+      QTextStream in_stream(stdin,QIODevice::ReadOnly);
+      QString line=in_stream.readLine();
+      while(!line.isNull()) {
+	ProcessFileEntry(line);
+	line=in_stream.readLine();
       }
     }
   }
@@ -873,7 +844,7 @@ void MainObject::RunDropBox()
     // Scan for Eligible Imports
     //
     for(unsigned i=import_file_key;i<rda->cmdSwitch()->keys();i++) {
-      ProcessFileList(rda->cmdSwitch()->key(i));
+      ProcessFileEntry(rda->cmdSwitch()->key(i));
     }
 
     //
@@ -895,17 +866,6 @@ void MainObject::RunDropBox()
 }
 
 
-void MainObject::ProcessFileList(const QString &flist)
-{
-  QString entry;
-
-  for(int i=0;i<flist.length();i++) {
-    entry+=flist.at(i);
-  }
-  ProcessFileEntry(entry);
-}
-
-
 void MainObject::ProcessFileEntry(const QString &entry)
 {
   glob_t globbuf;
@@ -917,7 +877,7 @@ void MainObject::ProcessFileEntry(const QString &entry)
   }
   globbuf.gl_offs=RDIMPORT_GLOB_SIZE;
   while((globbuf.gl_pathc==RDIMPORT_GLOB_SIZE)||(gflags==GLOB_MARK)) {
-    glob(RDEscapeString(entry),gflags,NULL,&globbuf);
+    glob(RDEscapeString(entry.toUtf8()),gflags,NULL,&globbuf);
     if((globbuf.gl_pathc==0)&&(gflags==GLOB_MARK)&&(!import_drop_box)) {
       Log(LOG_WARNING,QString().sprintf(" Unable to open \"%s\", skipping...\n",
 	      (const char *)entry));
