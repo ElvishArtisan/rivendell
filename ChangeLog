@@ -19361,3 +19361,5 @@
 2019-12-17 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdexport(1) that caused output filenames containing
 	multi-byte UTF-8 characters to be corrupt.
+2019-12-17 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.2.0int8.
