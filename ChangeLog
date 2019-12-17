@@ -19358,3 +19358,6 @@
 2019-12-16 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdimport(1) that caused non-Latin1 characters
 	to be corrupted when using standard input.
+2019-12-17 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdexport(1) that caused output filenames containing
+	multi-byte UTF-8 characters to be corrupt.
