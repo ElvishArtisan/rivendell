@@ -262,6 +262,8 @@ void LocalAudio::InitializeHpi(RDMatrix *matrix)
   hpi_handle_t block;
   size_t value_size=0;
   size_t value_items=0;
+  hpi_err_t hpi_err;
+  char err_txt[200];
 
   bt_gpis=0;
   bt_gpos=0;
@@ -269,14 +271,18 @@ void LocalAudio::InitializeHpi(RDMatrix *matrix)
   //
   // Open Mixer
   //
-  if(HPI_MixerOpen(NULL,bt_card,&bt_mixer)!=0) {
+  if(LogHpi(HPI_MixerOpen(NULL,bt_card,&bt_mixer),__LINE__)!=0) {
     UpdateDb(matrix);
     return;
   }
   memset(&cntl,0,sizeof(cntl));
   cntl.wSrcNodeType=HPI_SOURCENODE_ADAPTER;
-  if(HPI_Object_BlockHandle(bt_mixer,HPI_SOURCENODE_ADAPTER,0,0,0,
-			    "GPIO",&block)!=0) {
+  if((hpi_err=HPI_Object_BlockHandle(bt_mixer,HPI_SOURCENODE_ADAPTER,0,0,0,
+				     "GPIO",&block))!=0) {
+    HPI_GetErrorText(hpi_err,err_txt);
+    rda->syslog(LOG_DEBUG,
+		"matrix %d: unable to open HPI block object \"GPIO\" [%s]",
+		bt_card,(const char *)err_txt);
     UpdateDb(matrix);
     return;
   }
