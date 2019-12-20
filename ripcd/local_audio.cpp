@@ -240,6 +240,8 @@ void LocalAudio::pollData()
     for(int i=0;i<bt_gpis;i++) {
       if((bt_gpi_values[i]=='T')!=bt_gpi_states[i]) {
 	bt_gpi_states[i]=(bt_gpi_values[i]=='T');
+	rda->syslog(LOG_DEBUG,"LocalAudio: emitting gpiChanged(%d,%d,%d)",
+		    matrixNumber(),i,bt_gpi_states[i]);
 	emit gpiChanged(matrixNumber(),i,bt_gpi_states[i]);
       }
     }
@@ -335,8 +337,9 @@ void LocalAudio::InitializeHpi(RDMatrix *matrix)
     UpdateDb(matrix);
     return;
   }
-
   UpdateDb(matrix);
+
+  rda->syslog(LOG_DEBUG,"HPI GPIO started");
 #endif  // HPI
 }
 
