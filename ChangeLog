@@ -19371,3 +19371,7 @@
 2019-12-20 Fred Gleason <fredg@paravelsystems.com>
 	* Added a debugging message to the 'LocalAudio::pollData()' method
 	in ripcd(8).
+2019-12-23 Fred Gleason <fredg@paravelsystems.com>
+	* Added a work-around in the 'PyPAD.Receiver().__openDb()' method
+	to work with versions of MySQLdb that do not support the
+	'password=' parameter in 'MySQLdb.connect()'.
