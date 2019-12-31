@@ -37,6 +37,7 @@
 //
 #define LOGLINEBOX_FULL_HEIGHT 85
 #define LOGLINEBOX_HALF_HEIGHT 50
+#define LOGLINEBOX_DRAG_THRESHOLD 20
 
 class LogLineBox : public RDWidget
 {
@@ -127,6 +128,7 @@ class LogLineBox : public RDWidget
   QPixmap *line_traffic_map;
   QPixmap *line_music_map;
   int line_move_count;
+  QPoint line_drag_start_pos;
   RDLogLine::Status line_status;
   QString line_title_template;
   QString line_artist_template;

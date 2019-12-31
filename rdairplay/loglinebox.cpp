@@ -783,20 +783,25 @@ void LogLineBox::mousePressEvent(QMouseEvent *e)
 {
   QWidget::mousePressEvent(e);
   line_move_count=3;
+  line_drag_start_pos=e->pos();
 }
 
 
 void LogLineBox::mouseMoveEvent(QMouseEvent *e)
 {
   QWidget::mouseMoveEvent(e);
-  line_move_count--;
-  if(line_move_count==0) {
-    if(line_allow_drags&&(line_logline!=NULL)) {
-      RDCartDrag *d=
-	new RDCartDrag(line_logline->cartNumber(),line_icon_label->pixmap(),
-		       line_group_label->palette().
-		       color(QColorGroup::Foreground),this);
-      d->dragCopy();
+  
+  if((e->pos()-line_drag_start_pos).manhattanLength()>
+     LOGLINEBOX_DRAG_THRESHOLD) {
+    line_move_count--;
+    if(line_move_count==0) {
+      if(line_allow_drags&&(line_logline!=NULL)) {
+	RDCartDrag *d=
+	  new RDCartDrag(line_logline->cartNumber(),line_icon_label->pixmap(),
+			 line_group_label->palette().
+			 color(QColorGroup::Foreground),this);
+	d->dragCopy();
+      }
     }
   }
 }
@@ -805,6 +810,7 @@ void LogLineBox::mouseMoveEvent(QMouseEvent *e)
 void LogLineBox::mouseReleaseEvent(QMouseEvent *e)
 {
   line_move_count=-1;
+  line_drag_start_pos=QPoint();
 }
 
 
