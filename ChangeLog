@@ -19379,3 +19379,7 @@
 	* Tweaked the 'LogLineBox::mouseMoveEvent()' method in rdairplay(1)
 	to require a cursor movement of at least 20 pixels before generating
 	a cart drag.
+2020-01-02 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'rivwebcapi' validate_tm() function that caused
+	dates containing '29 February' to always fail regardless of leap-year
+	validity.
