@@ -1448,6 +1448,10 @@ void RDCut::disconnect(QObject *receiver,const char *member) const
 
 QString RDCut::xml(RDSqlQuery *q,bool absolute,RDSettings *settings)
 {
+  //
+  // The 'RDSqlQuery *q' query should be generated using the field
+  // definitions provided by 'RDCart::xmlSql()'.
+  //
   QString xml="";
 
   xml+="<cut>\n";
@@ -1465,19 +1469,19 @@ QString RDCut::xml(RDSqlQuery *q,bool absolute,RDSettings *settings)
     xml+="  "+RDXmlField("originDatetime","");
   }
   else {
-    xml+="  "+RDXmlField("originDatetime",q->value(36).toDateTime());
+    xml+="  "+RDXmlField("originDatetime",q->value(38).toDateTime());
   }
   if(q->value(39).isNull()) {
     xml+="  "+RDXmlField("startDatetime","");
   }
   else {
-    xml+="  "+RDXmlField("startDatetime",q->value(37).toDateTime());
+    xml+="  "+RDXmlField("startDatetime",q->value(39).toDateTime());
   }
   if(q->value(40).isNull()) {
     xml+="  "+RDXmlField("endDatetime","");
   }
   else {
-    xml+="  "+RDXmlField("endDatetime",q->value(38).toDateTime());
+    xml+="  "+RDXmlField("endDatetime",q->value(40).toDateTime());
   }
   xml+="  "+RDXmlField("sun",RDBool(q->value(41).toString()));
   xml+="  "+RDXmlField("mon",RDBool(q->value(42).toString()));

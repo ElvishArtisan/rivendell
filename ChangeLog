@@ -19383,3 +19383,7 @@
 	* Fixed a bug in the 'rivwebcapi' validate_tm() function that caused
 	dates containing '29 February' to always fail regardless of leap-year
 	validity.
+2020-01-03 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in the Web API that caused the
+	'origindatetime', 'startdatetime' and 'enddatetime' to be incorrect
+	and/or corrupt in served XML documents.
