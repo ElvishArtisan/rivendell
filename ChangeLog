@@ -19387,3 +19387,5 @@
 	* Fixed a regression in the Web API that caused the
 	'origindatetime', 'startdatetime' and 'enddatetime' to be incorrect
 	and/or corrupt in served XML documents.
+2020-01-04 Fred Gleason <fredg@paravelsystems.com>
+	* Updated RD_COPYRIGHT_NOTICE for 2020.
