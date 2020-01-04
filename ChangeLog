@@ -19392,3 +19392,6 @@
 2020-01-04 Fred Gleason <fredg@paravelsystems.com>
 	* Modified the example CounterPoint log import file to have unique
 	GUID values for each line.
+2020-01-04 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'pypad_xds.py' PyPAD script that could cause it
+	to emit duplicate CIC updates.

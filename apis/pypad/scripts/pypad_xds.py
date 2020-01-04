@@ -4,7 +4,7 @@
 #
 # Send CICs via UDP or serial
 #
-#   (C) Copyright 2018-2019 Fred Gleason <fredg@paravelsystems.com>
+#   (C) Copyright 2018-2020 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as
@@ -25,6 +25,11 @@ import socket
 import configparser
 import serial
 import pypad
+
+#
+# For supressing redundant 'now' updates
+#
+last_updates={}
 
 def eprint(*args,**kwargs):
     print(*args,file=sys.stderr,**kwargs)
@@ -60,10 +65,16 @@ def FilterField(string):
 
 
 def ProcessPad(update):
+    try:
+        last_updates[update.machine()]
+    except KeyError:
+        last_updates[update.machine()]=None
+
     n=1
     section='Udp'+str(n)
     while(update.config().has_section(section)):
-        if update.shouldBeProcessed(section) and update.hasPadType(pypad.TYPE_NOW) and update.hasService():
+        if update.shouldBeProcessed(section) and update.hasPadType(pypad.TYPE_NOW) and update.hasService() and (last_updates[update.machine()] != update.startDateTimeString(pypad.TYPE_NOW)):
+            last_updates[update.machine()]=update.startDateTimeString(pypad.TYPE_NOW)
             packet='0:'+update.serviceProgramCode()+':'+update.config().get(section,'IsciPrefix')+FilterField(update.padField(pypad.TYPE_NOW,pypad.FIELD_EXTERNAL_EVENT_ID))+':*'
             try:
                 #
