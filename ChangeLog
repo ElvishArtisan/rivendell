@@ -19395,3 +19395,6 @@
 2020-01-04 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in the 'pypad_xds.py' PyPAD script that could cause it
 	to emit duplicate CIC updates.
+2020-01-04 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'Repetitions=' and 'RepetitionDelay=' directive to the
+	configuration of the 'pypad_xds.py' PyPAD script.
