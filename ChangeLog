@@ -19389,3 +19389,6 @@
 	and/or corrupt in served XML documents.
 2020-01-04 Fred Gleason <fredg@paravelsystems.com>
 	* Updated RD_COPYRIGHT_NOTICE for 2020.
+2020-01-04 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the example CounterPoint log import file to have unique
+	GUID values for each line.
