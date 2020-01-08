@@ -19398,3 +19398,5 @@
 2020-01-04 Fred Gleason <fredg@paravelsystems.com>
 	* Added 'Repetitions=' and 'RepetitionDelay=' directive to the
 	configuration of the 'pypad_xds.py' PyPAD script.
+2020-01-08 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.2.0int10.
