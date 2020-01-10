@@ -2,7 +2,7 @@
 //
 // Upload a File
 //
-//   (C) Copyright 2010-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -107,7 +107,6 @@ RDUpload::ErrorCode RDUpload::runUpload(const QString &username,
   FILE *f;
   RDUpload::ErrorCode ret=RDUpload::ErrorOk;
   RDSystemUser *user=NULL;
-  char url[1024];
   char userpwd[256];
 
   //
@@ -130,13 +129,17 @@ RDUpload::ErrorCode RDUpload::runUpload(const QString &username,
   }
 
   //
-  // Write out URL as a C string before passing to curl_easy_setopt(), 
-  // otherwise some versions of LibCurl will throw a 'bad/illegal format' 
-  // error.
+  // Write out an encoded URL
   //
-  strncpy(url,conv_dst_url.toString(conv_dst_url.protocol().lower()=="http").utf8(),
-	  1024);
-  curl_easy_setopt(curl,CURLOPT_URL,url);
+  QByteArray url=conv_dst_url.toEncoded(QUrl::RemoveUserInfo);
+
+  //
+  // An URL anchor element will never occur here, so treat any '#' 
+  // characters as part of the path.
+  //
+  url.replace("#","%23");
+
+  curl_easy_setopt(curl,CURLOPT_URL,(const char *)url);
   curl_easy_setopt(curl,CURLOPT_UPLOAD,1);
   curl_easy_setopt(curl,CURLOPT_READDATA,f);
   curl_easy_setopt(curl,CURLOPT_INFILESIZE,(long)conv_src_size);
