@@ -19404,3 +19404,5 @@
 	* Removed all Qt3Support dependencies from the 'RDUpload' class.
 	* Removed all Qt3Support dependencies from the 'RDDownload' class.
 	* Added a 'test_download' test harness.
+2020-01-10 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.2.0int11.
