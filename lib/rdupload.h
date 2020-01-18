@@ -2,7 +2,7 @@
 //
 // Upload a File
 //
-//   (C) Copyright 2010,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,7 +22,7 @@
 #define RDUPLOAD_H
 
 #include <qobject.h>
-#include <q3url.h>
+#include <qurl.h>
 
 class RDUpload : public QObject
 {
@@ -55,7 +55,7 @@ class RDUpload : public QObject
   friend int UploadProgressCallback(void *clientp,double dltotal,double dlnow,
 				    double ultotal,double ulnow);
   QString conv_src_filename;
-  Q3Url conv_dst_url;
+  QUrl conv_dst_url;
   bool conv_aborting;
   uint conv_src_size;
 };
