@@ -1113,8 +1113,8 @@ void MainWidget::resizeEvent(QResizeEvent *e)
     lib_codes_box->setGeometry(300,40,100,20);
     lib_codes2_label->setGeometry(415,40,130,20);
     lib_codes2_box->setGeometry(550,40,100,20);
-    lib_matches_label->setGeometry(660,40,100,20);
-    lib_matches_edit->setGeometry(755,40,65,20);
+    lib_matches_label->setGeometry(670,40,100,20);
+    lib_matches_edit->setGeometry(775,40,65,20);
     lib_showmatches_label->setGeometry(760,66,200,20);
     lib_showmatches_box->setGeometry(740,68,15,15);
     lib_allowdrag_label->setGeometry(580,66,130,20);
