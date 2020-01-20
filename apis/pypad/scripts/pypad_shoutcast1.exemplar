@@ -1,11 +1,11 @@
-; This is the sample configuration for the 'pypad_shoutcast1.py' script for 
-; Rivendell, which can be used to update the metadata on an Shoutcast 1.x 
+; This is the sample configuration for the 'pypad_shoutcast1.py' script for
+; Rivendell, which can be used to update the metadata on an Shoutcast 1.x
 ; server using Now & Next data.
 
 
 ; Section Header
 ;
-; One section per Shoutcast server instance is configured, starting with 
+; One section per Shoutcast server instance is configured, starting with
 ; 'Shoutcast1' and working up consecutively
 [Shoutcast1]
 
@@ -30,7 +30,11 @@ Tcpport=8000
 ; The list of available wildcards can be found in the 'metadata_wildcards.txt'
 ; file in the Rivendell documentation directory.
 ;
-FormatString=%a%20-%20%t
+FormatString=%a - %t
+
+; SID of the stream to upgrade only the stream desired.
+; Just exchange with the SID of your stream.  
+Sid=1
 
 ; Log Selection
 ;
