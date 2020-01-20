@@ -23,7 +23,7 @@
 import sys
 import syslog
 import configparser
-import pycurl
+import requests
 import pypad
 from io import BytesIO
 
@@ -32,41 +32,23 @@ def eprint(*args,**kwargs):
 
 def ProcessPad(update):
     if update.hasPadType(pypad.TYPE_NOW):
-        n=1
-        while(True):
-            #
-            # First, get all of our configuration values
-            #
-            section='Shoutcast'+str(n)
+        for section in update.config().sections():
             try:
                 song=update.resolvePadFields(update.config().get(section,'FormatString'),pypad.ESCAPE_URL)
-                url='http://'+update.config().get(section,'Hostname')+':'+str(update.config().get(section,'Tcpport'))+'/admin.cgi?pass='+update.escape(update.config().get(section,'Password'),pypad.ESCAPE_URL)+'&mode=updinfo&song='+song
-                curl=pycurl.Curl()
-                curl.setopt(curl.URL,url)
-                headers=[]
-                #
-                # D.N.A.S v1.9.8 refuses to process updates with the default
-                # CURL user-agent value, hence we lie to it.
-                #
-                headers.append('User-Agent: '+'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.2) Gecko/20070219 Firefox/2.0.0.2')
-                curl.setopt(curl.HTTPHEADER,headers);
+                url="http://%s:%s/admin.cgi" % (update.config().get(section,'Hostname'),str(update.config().get(section,'Tcpport')))
+                headers = {'user-agent': 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.2) Gecko/20070219 Firefox/2.0.0.2'}
+                payload={'pass': update.escape(update.config().get(section,'Password'),pypad.ESCAPE_URL),
+                         'mode': 'updinfo',
+                         'song': song,
+                         'sid': update.escape(update.config().get(section,'Sid'),pypad.ESCAPE_URL)}
             except configparser.NoSectionError:
                 return
-
-            #
-            # Now, send the update
-            #
             if update.shouldBeProcessed(section):
                 try:
-                    curl.perform()
-                    code=curl.getinfo(pycurl.RESPONSE_CODE)
-                    if (code<200) or (code>=300):
-                        update.syslog(syslog.LOG_WARNING,'['+section+'] returned response code '+str(code))
-                except pycurl.error:
-                    update.syslog(syslog.LOG_WARNING,'['+section+'] failed: '+curl.errstr())
-                curl.close()
-            n=n+1
-
+                    r = requests.get(url, params=payload, headers=headers)
+                    update.syslog(syslog.LOG_INFO,'[PyPAD][%s] Update exit code: %s' % (section,str(r.status_code)))
+                except requests.exceptions.RequestException as e:
+                    update.syslog(syslog.LOG_WARNING,'[PyPAD][Shoutcast1] Update failed: ' + str(e))
 
 #
 # 'Main' function
