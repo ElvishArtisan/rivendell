@@ -25,6 +25,7 @@ import syslog
 import configparser
 import requests
 import pypad
+import string
 from io import BytesIO
 
 def eprint(*args,**kwargs):
@@ -34,13 +35,14 @@ def ProcessPad(update):
     if update.hasPadType(pypad.TYPE_NOW):
         for section in update.config().sections():
             try:
-                song=update.resolvePadFields(update.config().get(section,'FormatString'),pypad.ESCAPE_URL)
+                song=update.resolvePadFields(update.config().get(section,'FormatString'),pypad.ESCAPE_NONE)
                 url="http://%s:%s/admin.cgi" % (update.config().get(section,'Hostname'),str(update.config().get(section,'Tcpport')))
                 headers = {'user-agent': 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.2) Gecko/20070219 Firefox/2.0.0.2'}
                 payload={'pass': update.escape(update.config().get(section,'Password'),pypad.ESCAPE_URL),
                          'mode': 'updinfo',
-                         'song': song,
+                         'song': song.strip(string.punctuation),
                          'sid': update.escape(update.config().get(section,'Sid'),pypad.ESCAPE_URL)}
+                update.syslog(syslog.LOG_INFO,'[PyPAD][%s] Payload: %s' % (section,str(payload)))
             except configparser.NoSectionError:
                 return
             if update.shouldBeProcessed(section):
