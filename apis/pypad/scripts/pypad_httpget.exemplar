@@ -14,7 +14,20 @@
 ; The list of available wildcards can be found in the 'metadata_wildcards.txt'
 ; file in the Rivendell documentation directory.
 ;
+; NOTE: Any "reserved" characters used in the URL that are not being used
+;       for a "reserved purpose" must be URL encoded
+;       as per RFC 3986. This includes all multi-byte UTF-8 characters.
+;       See https://en.wikipedia.org/wiki/Percent-encoding for details.
+;
 URL=https://someplace.com/metadata.php?key=somekey&artist=%a&title=%t
+
+; Username. Used for HTTP Basic Authentication. Optional.
+;
+Username=
+
+; Password. Used for HTTP Basic Authentication. Optional.
+;
+Password=
 
 ; Log Selection
 ;
