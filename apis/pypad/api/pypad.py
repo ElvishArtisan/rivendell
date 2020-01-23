@@ -2,7 +2,7 @@
 #
 # PAD processor for Rivendell
 #
-#   (C) Copyright 2018-2019 Fred Gleason <fredg@paravelsystems.com>
+#   (C) Copyright 2018-2020 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as
@@ -28,6 +28,7 @@ import socket
 import sys
 import syslog
 import json
+from urllib.parse import quote
 
 #
 # Enumerated Constants (sort of)
@@ -102,27 +103,7 @@ class Update(object):
         return string
 
     def __escapeWeb(self,string):
-        string=string.replace("%","%25")
-        string=string.replace(" ","%20")
-        string=string.replace("<","%3C")
-        string=string.replace(">","%3E")
-        string=string.replace("#","%23")
-        string=string.replace("\"","%22")
-        string=string.replace("{","%7B")
-        string=string.replace("}","%7D")
-        string=string.replace("|","%7C")
-        string=string.replace("\\","%5C")
-        string=string.replace("^","%5E")
-        string=string.replace("[","%5B")
-        string=string.replace("]","%5D")
-        string=string.replace("`","%60")
-        string=string.replace("\a","%07")
-        string=string.replace("\b","%08")
-        string=string.replace("\f","%0C")
-        string=string.replace("\n","%0A")
-        string=string.replace("\r","%0D")
-        string=string.replace("\t","%09")
-        string=string.replace("\v","%0B")
+        string=quote(string)
         return string
 
     def __escapeJson(self,string):

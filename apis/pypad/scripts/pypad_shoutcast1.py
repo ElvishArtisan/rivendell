@@ -4,7 +4,7 @@
 #
 # Write PAD updates to a Shoutcast 1 instance
 #
-#   (C) Copyright 2018-2019 Fred Gleason <fredg@paravelsystems.com>
+#   (C) Copyright 2018-2020 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as
@@ -39,7 +39,7 @@ def ProcessPad(update):
             #
             section='Shoutcast'+str(n)
             try:
-                song=update.resolvePadFields(update.config().get(section,'FormatString'),pypad.ESCAPE_URL)
+                song=update.escape(update.resolvePadFields(update.config().get(section,'FormatString'),pypad.ESCAPE_NONE),pypad.ESCAPE_URL)
                 url='http://'+update.config().get(section,'Hostname')+':'+str(update.config().get(section,'Tcpport'))+'/admin.cgi?pass='+update.escape(update.config().get(section,'Password'),pypad.ESCAPE_URL)+'&mode=updinfo&song='+song
                 curl=pycurl.Curl()
                 curl.setopt(curl.URL,url)
