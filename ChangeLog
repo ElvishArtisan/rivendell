@@ -19417,3 +19417,5 @@
 2020-01-23 Fred Gleason <fredg@paravelsystems.com>
 	* Added 'Username=' and 'Password=' directives to the
 	'pypad_httpget.py' script for use for HTTP Basic Authentication.
+2020-01-24 Fred Gleason <fredg@paravelsystems.com>
+	* Switched from MM/DD/YYYY to DD MMM YYYY date formats in 'NEWS'.
