@@ -19409,3 +19409,15 @@
 2020-01-18 Fred Gleason <fredg@paravelsystems.com>
 	* Adjusted the position of the 'Matching Carts' readout on the
 	main window of rdlibrary(1).
+2020-01-23 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'pypad-shoutcast1.py' script that threw an
+	exception when processing PAD containing multi-type UTF-8 characters.
+	* Added a 'python36-urllib3' dependency to the 'rivendell-pypad'
+	RPM package.
+2020-01-23 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'Username=' and 'Password=' directives to the
+	'pypad_httpget.py' script for use for HTTP Basic Authentication.
+2020-01-24 Fred Gleason <fredg@paravelsystems.com>
+	* Switched from MM/DD/YYYY to DD MMM YYYY date formats in 'NEWS'.
+2020-01-24 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.2.1.

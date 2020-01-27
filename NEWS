@@ -1,7 +1,20 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v3.2.0 -- 10/31/2019
+v3.2.1 -- 24 January 2020
+
+Changes:
+   Numerous bug fixes. See the 'ChangeLog' for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 311, and will
+   automatically upgrade any earlier versions. To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
+   to allow any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
+v3.2.0 -- 31 October 2019
 
 Changes:
    Voice Tracker. Added the ability to configure the caption displayed
@@ -21,7 +34,7 @@ Database Update:
    Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
    to allow any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v3.1.0 -- 9/19/2019
+v3.1.0 -- 19 September 2019
 
 Changes:
    Fixed a bug in rdairplay(1) and rdvairplayd(8) where only the first
@@ -60,7 +73,7 @@ Database Update:
    Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
    to allow any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v3.0.3 -- 8/5/2019
+v3.0.3 -- 5 August 2019
 
 This is a bugfix release of Rivendell.
 
@@ -76,7 +89,7 @@ Database Update:
    Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
    to allow any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v3.0.2 -- 7/31/2019
+v3.0.2 -- 31 July 2019
 
 This is a bugfix release of Rivendell.
 
@@ -103,7 +116,7 @@ Database Update:
    Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
    to allow any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v3.0.1 -- 7/16/2019
+v3.0.1 -- 16 July 2019
 
 This is the first production release of Rivendell 3.x. Many changes
 and enhancements have been made over v2.x; see the 'Changes' section
@@ -145,7 +158,7 @@ Database Update:
    Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
    to allow any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v3.0.0rc03 -- 7/1/2019
+v3.0.0rc03 -- 1 July 2019
 
 Fourth release candidate for v3.x.
 
@@ -165,7 +178,7 @@ Database Update:
    Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
    to allow any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v3.0.0rc02 -- 5/3/2019
+v3.0.0rc02 -- 3 May 2019
 
 Third release candidate for v3.x.
 
@@ -183,7 +196,7 @@ Database Update:
    Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
    to allow any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v3.0.0rc01 -- 5/2/2019
+v3.0.0rc01 -- 2 May 2019
 
 Second release candidate for v3.x.
 
@@ -212,7 +225,7 @@ Database Update:
    Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
    to allow any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v3.0.0rc00 -- 3/22/2019
+v3.0.0rc00 -- 22 March 2019
 
 First release candidate for v3.x.
 
@@ -239,7 +252,7 @@ Database Update:
    Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
    to allow any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v3.0.0beta00 -- 1/17/2019
+v3.0.0beta00 -- 17 January 2019
 
 First beta release for v3.x.
 
@@ -254,7 +267,7 @@ Database Update:
    Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
    to allow any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v3.0.0alpha05 -- 1/11/2019
+v3.0.0alpha05 -- 11 January 2019
 
 Fifth alpha release for v3.x.
 
@@ -276,7 +289,7 @@ Database Update:
    Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
    to allow any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v3.0.0alpha04 -- 11/16/2018
+v3.0.0alpha04 -- 16 November 2018
 
 Fourth alpha release for v3.x.
 
@@ -293,7 +306,7 @@ Database Update:
    Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
    to allow any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v3.0.0alpha03 -- 11/2/2018
+v3.0.0alpha03 -- 2 November 2018
 
 Third alpha release for v3.x.
 
@@ -310,7 +323,7 @@ Database Update:
    Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
    to allow any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v3.0.0alpha01 -- 10/29/2018
+v3.0.0alpha01 -- 29 October 2018
 
 Second alpha release for v3.x.
 
@@ -325,7 +338,7 @@ Database Update:
    Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
    to allow any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v3.0.0alpha00 -- 10/19/2018
+v3.0.0alpha00 -- 19 October 2018
 
 Initial alpha release for v3.x.
 
@@ -337,7 +350,7 @@ Database Update:
    Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
    to allow any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v2.19.2int01 -- 5/8/2018
+v2.19.2int01 -- 8 May 2018
 
 Changes:
    Fixed a bug that caused the 'Switcher Matrix' and
@@ -359,7 +372,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v2.19.2 -- 4/14/2018
+v2.19.2 -- 14 April 2018
 
 Changes:
    HPI Support. Fixed a regression in the HPI support layer that broke
@@ -373,7 +386,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v2.19.1 -- 3/27/2018
+v2.19.1 -- 27 March 2018
 
 Changes:
    HPI Support. Implemented support for DMA bus-mastering for AudioScience
@@ -397,7 +410,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v2.19.0 -- 2/22/2018
+v2.19.0 -- 22 February 2918
 
 Changes:
    Log Locking. Implemented a system-wide protocol to prevent changes
@@ -422,7 +435,7 @@ Database Update:
    any necessary changes to the database schema to be applied.
 
 -------------------------------------------------------------------------------
-v2.18.2 -- 12/29/2017
+v2.18.2 -- 29 December 2017
 
 Changes:
    Fixed a bug that caused creation of new clocks in rdlogmanager(1) to
@@ -437,7 +450,7 @@ Database Update:
    any necessary changes to the database schema to be applied.
 
 -------------------------------------------------------------------------------
-v2.18.1 -- 12/22/2017
+v2.18.1 -- 22 December 2017
 
 Changes:
    Fixed a bug that caused creation and initialization of a new Rivendell
@@ -452,7 +465,7 @@ Database Update:
    any necessary changes to the database schema to be applied.
 
 -------------------------------------------------------------------------------
-v2.18.0 -- 12/21/2017
+v2.18.0 -- 21 December 2017
 
 Changes:
    Documentation Overhaul. The Rivendell Operations Guide has been
@@ -522,7 +535,7 @@ Database Update:
    any necessary changes to the database schema to be applied.
 
 -------------------------------------------------------------------------------
-v2.17.0 -- 10/11/2017
+v2.17.0 -- 11 October 2017
 
 Changes:
    New RML. Added the 'Air Gate' ['AG'] RML to permit conditional execution
@@ -570,7 +583,7 @@ Database Update:
    any necessary changes to the database schema to be applied.
 
 -------------------------------------------------------------------------------
-v2.16.0 --  6/2/2017
+v2.16.0 --  2 June 2017
 
 Changes:
    Audio Store Hashing. Rivendell now automatically generates a SHA1 hash
@@ -604,7 +617,7 @@ Database Update:
    any necessary changes to the database schema to be applied.
 
 -------------------------------------------------------------------------------
-v2.15.3 --  3/24/2017
+v2.15.3 --  24 March 2017
 
 Changes:
    TagStation RLM.  Added an RLM for generating TagStation events for
@@ -632,7 +645,7 @@ Database Update:
    any necessary changes to the database schema to be applied.
 
 -------------------------------------------------------------------------------
-v2.15.2 --  1/13/2017
+v2.15.2 --  13 January 2017
 
 Changes:
    WallTime RLM.  Refactored the 'rlm_walltime' RLM to be compatible with
@@ -661,7 +674,7 @@ Database Update:
    any necessary changes to the database schema to be applied.
 
 -------------------------------------------------------------------------------
-v2.15.1 --  8/5/2016
+v2.15.1 --  5 August 2016
 
 Changes:
    WAV File Format. Tweak WAV file export format to enhance compatibility
@@ -678,7 +691,7 @@ Database Update:
    any necessary changes to the database schema to be applied.
 
 -------------------------------------------------------------------------------
-v2.15.0 --  7/29/2016
+v2.15.0 --  29 July 2016
 
 Changes:
    RDExport Enhancements.  Added switches to control audio format of
@@ -704,7 +717,7 @@ Database Update:
    any necessary changes to the database schema to be applied.
 
 -------------------------------------------------------------------------------
-v2.14.1 --  6/11/2016
+v2.14.1 --  11 June 2016
 
 Changes:
    Fixed regressions in processing NULL date values.
@@ -718,7 +731,7 @@ Database Update:
    any necessary changes to the database schema to be applied.
 
 -------------------------------------------------------------------------------
-v2.14.0 --  6/10/2016
+v2.14.0 --  10 June 2016
 
 Changes:
    Event Recording.  Added the ability to capture real-time events in
@@ -744,7 +757,7 @@ Database Update:
    any necessary changes to the database schema to be applied.
 
 -------------------------------------------------------------------------------
-v2.13.0 --  5/10/2016
+v2.13.0 --  10 May 2016
 
 Changes:
    New RLM.  Added a 'rlm_walltime' RLM for the Paravel Systems WallTime
@@ -767,7 +780,7 @@ Database Update:
    any necessary changes to the database schema to be applied.
 
 -------------------------------------------------------------------------------
-v2.12.0 --  4/14/2016
+v2.12.0 --  14 April 2016
 
 Changes:
    Sequential Cut Play-Out.  Cuts can now be configured on a per-cart basis
@@ -805,7 +818,7 @@ Database Update:
    any necessary changes to the database schema to be applied.
 
 -------------------------------------------------------------------------------
-v2.11.0 --  9/18/2015
+v2.11.0 --  18 September 2015
 
 Changes:
    New RDCatch Up/Download Protocols.  Added support for 'sftp' and 'scp'
@@ -835,7 +848,7 @@ Database Update:
    any necessary changes to the database schema to be applied.
 
 -------------------------------------------------------------------------------
-v2.10.3 --  2/24/2015
+v2.10.3 --  24 February 2015
 
 Changes:
    New RLM.  Added a Rivendell Loadable Module for the Live365 'Add Song'
@@ -863,7 +876,7 @@ Database Update:
    any necessary changes to the database schema to be applied.
 
 -------------------------------------------------------------------------------
-v2.10.2 --  11/26/2014
+v2.10.2 --  26 November 2014
 
 Changes:
    RDImport Enhancements.  Added '--clear-datetimes' and
@@ -886,7 +899,7 @@ Database Update:
    any necessary changes to the database schema to be applied.
 
 -------------------------------------------------------------------------------
-v2.10.1 --  11/4/2014
+v2.10.1 --  4 November 2014
 
 Changes:
    RDHpiInfo Enhancements.  Added DSP utilization and profiling data
@@ -906,7 +919,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v2.10.0 --  10/28/2014
+v2.10.0 --  28 October 2014
 
 Changes:
    Updated Translation.  A new French translation has applied, courtesy
@@ -939,7 +952,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v2.9.3 --  9/18/2014
+v2.9.3 --  18 September 2014
 
 Changes:
    Fixed a DSP bug that caused audio distortion in the Local Audio Adapter
@@ -955,7 +968,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v2.9.2 --  9/11/2014
+v2.9.2 --  11 September 2014
 
 Changes:
    Fixed a regression that broke report generation.
@@ -970,7 +983,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v2.9.1 --  9/10/2014
+v2.9.1 --  10 September 2014
 
 Changes:
    RDImport Enhancements.  Added '--cart-number-offset' and
@@ -995,7 +1008,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v2.9.0 --  6/4/2014
+v2.9.0 --  4 June 2014
 
 Changes:
    Cart Notes Display.  'Cart Notes' information can now be displayed in
@@ -1033,7 +1046,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v2.8.2 --  5/16/2014
+v2.8.2 --  16 May 2014
 
 Changes:
    This is a maintenance release of Rivendell.  It fixes several bugs,
@@ -1054,7 +1067,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v2.8.1 --  2/28/2014
+v2.8.1 --  28 February 2014
 
 Changes:
    New Switcher Device.  Added support for the Broadcast Tools Sentinel4Web
@@ -1073,7 +1086,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v2.8.0 --  2/14/2014
+v2.8.0 --  14 February 2014
 
 Changes:
    Drag and Drop Configurability.  It is now possible to enable/disable
@@ -1104,7 +1117,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v2.7.0 --  1/17/2014
+v2.7.0 -- 17 January 2014
 
 Changes:
    Cart Label Customization.  It is now possible to customize the fields
@@ -1143,7 +1156,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v2.6.2 --  1/03/2014
+v2.6.2 --  3 January 2014
 
 Changes:
    Fixed a bug in RDLogEdit that threw a segfault when dropping a cart
@@ -1157,7 +1170,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v2.6.1 --  1/02/2014
+v2.6.1 --  2 January 2014
 
 Changes:
    Drag and Drop.  Added the ability to drag and drop carts within and
@@ -1176,7 +1189,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v2.6.0 -- 12/13/2013
+v2.6.0 -- 13 December 2013
 
 Changes:
    RDDiscImport Utility.  A utility has been added for bulk importation
@@ -1203,7 +1216,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v2.5.5 -- 11/19/2013
+v2.5.5 -- 19 November 2013
 
 If upgrading from a v1.x version of Rivendell, be sure to read the
 'UPGRADING' file before proceeding for important information.
@@ -1240,7 +1253,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v2.5.4 -- 11/01/2013
+v2.5.4 -- 1 November 2013
 
 If upgrading from a v1.x version of Rivendell, be sure to read the
 'UPGRADING' file before proceeding for important information.
@@ -1263,7 +1276,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v2.5.3 -- 10/04/2013
+v2.5.3 -- 4 October 2013
 
 If upgrading from a v1.x version of Rivendell, be sure to read the
 'UPGRADING' file before proceeding for important information.
@@ -1291,7 +1304,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v2.5.2 -- 07/03/2013
+v2.5.2 -- 3 July 2013
 
 If upgrading from a v1.x version of Rivendell, be sure to read the
 'UPGRADING' file before proceeding for important information.
@@ -1316,7 +1329,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v2.5.1 -- 05/22/2013
+v2.5.1 -- 22 May 2013
 
 If upgrading from a v1.x version of Rivendell, be sure to read the
 'UPGRADING' file before proceeding for important information.
@@ -1338,7 +1351,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v2.5.0 -- 04/01/2013
+v2.5.0 -- 1 April 2013
 
 If upgrading from a v1.x version of Rivendell, be sure to read the
 'UPGRADING' file before proceeding for important information.
@@ -1363,7 +1376,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v2.4.0 -- 01/28/2013
+v2.4.0 -- 28 January 2013
 
 If upgrading from a v1.x version of Rivendell, be sure to read the
 'UPGRADING' file before proceeding for important information.
@@ -1389,7 +1402,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v2.3.0 -- 12/21/2012
+v2.3.0 -- 21 December 2012
 
 If upgrading from a v1.x version of Rivendell, be sure to read the
 'UPGRADING' file before proceeding for important information.
@@ -1425,7 +1438,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v2.2.1 -- 10/23/2012
+v2.2.1 -- 23 October 2012
 
 If upgrading from a v1.x version of Rivendell, be sure to read the
 'UPGRADING' file before proceeding for important information.
@@ -1457,7 +1470,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v2.2.0 -- 8/31/2012
+v2.2.0 -- 31 August 2012
 
 If upgrading from a v1.x version of Rivendell, be sure to read the
 'UPGRADING' file before proceeding for important information.
@@ -1489,7 +1502,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v2.1.5 -- 7/27/2012
+v2.1.5 -- 27 July 2012
 
 If upgrading from a v1.x version of Rivendell, be sure to read the
 'UPGRADING' file before proceeding for important information.
@@ -1521,7 +1534,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v2.1.4 -- 5/11/2012
+v2.1.4 -- 11 May 2012
 
 If upgrading from a v1.x version of Rivendell, be sure to read the
 'UPGRADING' file before proceeding for important information.
@@ -1556,7 +1569,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v2.1.3 -- 2/20/2012
+v2.1.3 -- 20 February 2012
 
 If upgrading from a v1.x version of Rivendell, be sure to read the
 'UPGRADING' file before proceeding for important information.
@@ -1585,7 +1598,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v2.1.2 -- 12/30/2011
+v2.1.2 -- 30 December 2011
 
 If upgrading from a v1.x version of Rivendell, be sure to read the
 'UPGRADING' file before proceeding for important information.
@@ -1610,7 +1623,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v2.1.1 -- 11/03/2011
+v2.1.1 -- 3 November 2011
 
 Changes:
    Fixed a regression that broke display of the Library in the Edit Event
@@ -1624,7 +1637,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v2.1.0 -- 11/02/2011
+v2.1.0 -- 2 November 2011
 
 If upgrading from a v1.x version of Rivendell, be sure to read the
 'UPGRADING' file before proceeding for important information.
@@ -1667,7 +1680,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v2.0.2 -- 06/01/2011
+v2.0.2 -- 1 June 2011
 
 If upgrading from a v1.x version of Rivendell, be sure to read the
 'UPGRADING' file before proceeding for important information.
@@ -1703,7 +1716,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v2.0.1 -- 04/05/2011
+v2.0.1 -- 5 April 2011
 
 This is the first production release of Rivendell 2.x.  All changes made
 since 2.0.0rc1 have involved fixes for reported bugs and improved 
@@ -1724,7 +1737,7 @@ Database Update:
    may take significantly longer to execute than is commonly the case;
    users are cautioned to allow for ample time operationally.
 -------------------------------------------------------------------------------
-v2.0.0rc1 -- 03/11/2011
+v2.0.0rc1 -- 11 March 2011
 
 This is the second release candidate of Rivendell 2.x.  All changes made
 since 2.0.0rc0 have involved fixes for reported bugs and improved 
@@ -1745,7 +1758,7 @@ Database Update:
    may take significantly longer to execute than is commonly the case;
    users are cautioned to allow for ample time operationally.
 -------------------------------------------------------------------------------
-v2.0.0rc0 -- 02/16/2011
+v2.0.0rc0 -- 16 February 2011
 
 This is the first release candidate of Rivendell 2.x.  All changes made
 since 2.0.0beta1 have involved fixes for reported bugs and improved 
@@ -1766,7 +1779,7 @@ Database Update:
    may take significantly longer to execute than is commonly the case;
    users are cautioned to allow for ample time operationally.
 -------------------------------------------------------------------------------
-v2.0.0beta1 -- 10/11/2010
+v2.0.0beta1 -- 11 October 2010
 
 This is the second BETA release of Rivendell 2.x.  Some of the changes
 include:
@@ -1792,7 +1805,7 @@ Database Update:
    may take significantly longer to execute than is commonly the case;
    users are cautioned to allow for ample time operationally.
 -------------------------------------------------------------------------------
-v2.0.0beta0 -- 08/19/2010
+v2.0.0beta0 -- 19 August 2010
 
 This is the initial BETA release of Rivendell 2.x.  Some of the major changes
 over 1.x include:
@@ -1830,7 +1843,7 @@ Database Update:
    may take significantly longer to execute than is commonly the case;
    users are cautioned to allow for ample time operationally.
 -------------------------------------------------------------------------------
-v1.7.0 -- 02/22/2010
+v1.7.0 -- 22 February 2010
 
 Changes:
    Log Import Format Presets.  Added preset import configurations in 
@@ -1869,7 +1882,7 @@ Database Update:
    may take significantly longer to execute than is commonly the case;
    users are cautioned to allow for ample time operationally.
 -------------------------------------------------------------------------------
-v1.6.0 -- 12/17/2009
+v1.6.0 -- 17 December 2009
 
 Changes:
    New RLM Plug-in.  A new plug-in for the Liquid Compass Internet encoder has
@@ -1889,7 +1902,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v1.5.2 -- 08/25/2009
+v1.5.2 -- 25 August 2009
 
 This is a maintenance release of Rivendell.  The following issues have been
 corrected:
@@ -1912,7 +1925,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v1.5.1 -- 08/12/2009
+v1.5.1 -- 12 August 2009
 
 Changes:
   New Translation.  A German-language (DE) translation has been added.
@@ -1937,7 +1950,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v1.5.0 -- 07/08/2009
+v1.5.0 -- 8 July 2009
 
 Changes:
   New RLM Plug-in.  A new plugin-in for the Innovonics model 713 RDS
@@ -1958,7 +1971,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v1.4.0 -- 04/10/2009
+v1.4.0 -- 10 April 2009
 
 Changes:
   Unique Cart Titles.  It is now possible to configure the system (in
@@ -1984,7 +1997,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v1.3.0 -- 03/18/2009
+v1.3.0 -- 18 March 2009
 
 Changes:
    Podcast System Enhancements.  Support has been added to allow
@@ -2019,7 +2032,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v1.2.2 -- 01/13/2009
+v1.2.2 -- 13 January 2009
 
 This is a maintenance release of Rivendell.  The following issues have been
 corrected:
@@ -2043,7 +2056,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v1.2.1 -- 12/29/2008
+v1.2.1 -- 29 December 2008
 
 This is a maintenance release of Rivendell.  The following issues have been
 corrected:
@@ -2062,7 +2075,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v1.2.0 -- 12/11/2008
+v1.2.0 -- 11 December 2008
 
 Changes:
    RDCatch Download Events.  An 'Event Offset' setting has been added to
@@ -2119,7 +2132,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v1.1.1 -- 11/11/2008
+v1.1.1 -- 11 November 2008
 
 This is a maintenance release of Rivendell.  The following issues have been
 corrected:
@@ -2150,7 +2163,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v1.1.0 -- 10/23/2008
+v1.1.0 -- 23 October 2008
 
 Changes:
    Custom Encoders.  It's now possible to configure Rivendell on a
@@ -2188,7 +2201,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v1.0.1 -- 08/15/2008
+v1.0.1 -- 15 August 2008
 
 Changes:
    Incremented the version number to 1.0.1.
@@ -2201,7 +2214,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v1.0.0rc6 -- 08/19/2008
+v1.0.0rc6 -- 19 August 2008
 
 Changes:
    Fixed a problem where ripped cuts would show an incorrect length if
@@ -2222,7 +2235,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v1.0.0rc5 -- 08/08/2008
+v1.0.0rc5 -- 8 August 2008
 
 Changes:
    Fixed broken compile on gcc-4.3.x.
@@ -2240,7 +2253,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v1.0.0rc4 -- 07/23/2008
+v1.0.0rc4 -- 23 July 2008
 
 Changes:
    Fixed a bug that caused audio imports to be assigned incorrect Start and
@@ -2254,7 +2267,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v1.0.0rc3 -- 07/22/2008
+v1.0.0rc3 -- 22 July 2008
 
 Changes:
    Rivendell Import Filter.  An import filter for importing carts from
@@ -2271,7 +2284,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v1.0.0rc2 -- 07/07/2008
+v1.0.0rc2 -- 7 July 2008
 
 Changes:
    AMB-OS AMR-100 Receiver Support.  Support has been added for importing
@@ -2295,7 +2308,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v1.0.0rc1 -- 04/24/2008
+v1.0.0rc1 -- 24 April 2008
 
 Changes:
    Skinnable Modules.  It's now possible to specify a 1024x738 pixel 
@@ -2303,7 +2316,7 @@ Changes:
 
    Bugfixes.  See the ChangeLog for details.
 -------------------------------------------------------------------------------
-v1.0.0rc0 -- 04/10/2008
+v1.0.0rc0 -- 10 April 2008
 
 Changes:
    New Switcher Device.  Support has been added for the 'Quartz' line
@@ -2336,7 +2349,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v0.9.84 -- 01/03/2008
+v0.9.84 -- 3 January 2008
 
 Changes:
    Podcasting Subsystem.  A major new subsystem has been added that permits
@@ -2372,7 +2385,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v0.9.82 -- 09/17/2007
+v0.9.82 -- 17 September 2007
 
 Changes:
    OVERLAP Transition.  A new transition type, called 'OVERLAP' has been
@@ -2417,7 +2430,7 @@ Database Update:
    any necessary changes to the database schema to be applied.
 
 -------------------------------------------------------------------------------
-v0.9.81 -- 07/13/2007
+v0.9.81 -- 13 July 2007
 
 Changes:
    Automatic Dropbox Mode.  A new dialog, 'RDAdmin->ManageHosts->Dropboxes'
@@ -2467,7 +2480,7 @@ Database Update:
    As always, be sure to run RDAdmin immediately after upgrading to allow 
    any necessary changes to the database schema to be applied.
 -------------------------------------------------------------------------------
-v0.9.80 -- 03/01/2007
+v0.9.80 -- 1 March 2007
 
 Changes:
    SAS Router Support.  The SAS USI driver has been enhanced so that 
@@ -2502,7 +2515,7 @@ Database Update:
    upgrading to allow any necessary changes to the database schema to
    be applied.
 -------------------------------------------------------------------------------
-v0.9.79 -- 12/05/2006
+v0.9.79 -- 5 December 2006
 
 Changes:
    Pausing SoundPanel Buttons -- It is now possible to configure
@@ -2535,7 +2548,7 @@ Database Update:
    be applied.
 
 -------------------------------------------------------------------------------
-v0.9.77 -- 12/01/2006
+v0.9.77 -- 1 December 2006
 
 This is a bugfix version of Rivendell.  Issues addressed include the
 following:
@@ -2569,7 +2582,7 @@ Database Update:
    be applied.
 
 -------------------------------------------------------------------------------
-v0.9.76 -- 11/27/2006
+v0.9.76 -- 27 November 2006
 
 Changes:
    New/Extended RMLs -- A new 'Toggle On Air Flag' [TA] RML has been
@@ -2636,7 +2649,7 @@ Database Update:
    be applied.
 
 -------------------------------------------------------------------------------
-v0.9.74 -- 09/18/2006
+v0.9.74 -- 18 September 2006
 
 This is a bugfix version of Rivendell.  Issues addressed include the
 following:
@@ -2673,7 +2686,7 @@ Database Update:
    upgrading to allow any necessary changes to the database schema to
    be applied.
 -------------------------------------------------------------------------------
-v0.9.73 -- 09/11/2006
+v0.9.73 -- 11 September 2006
 
 Changes:
    Group Colors -- It is now possible to assign a color to each cart
@@ -2709,7 +2722,7 @@ Database Update:
    be applied.
 
 -------------------------------------------------------------------------------
-v0.9.71 -- 08/14/2006
+v0.9.71 -- 14 August 2006
 
 Changes:
    Copying Carts from SoundPanel in RDAirPlay.  It's now possible to
@@ -2737,7 +2750,7 @@ Database Update:
    be applied.
 
 -------------------------------------------------------------------------------
-v0.9.70 -- 08/03/2006
+v0.9.70 -- 3 August 2006
 
 Changes:
    PAM Authentication Module.  Allows the Rivendell user/group
@@ -2767,7 +2780,7 @@ Database Update:
    be applied.
 
 -------------------------------------------------------------------------------
-v0.9.69 -- 07/20/2006
+v0.9.69 -- 20 July 2006
 
 Changes:
    Voicetracking.  A major new feature in this version, voicetracking
@@ -2806,7 +2819,7 @@ Database Update:
    be applied.
 
 -------------------------------------------------------------------------------
-v0.9.68 -- 03/20/2006
+v0.9.68 -- 20 March 2006
 
 Changes:
    Fixed a bug that broke CHAIN-TO events.
@@ -2825,7 +2838,7 @@ Database Update:
    be applied.
 
 -------------------------------------------------------------------------------
-v0.9.67 -- 03/16/2006
+v0.9.67 -- 16 March 2006
 
 Changes:
    Audio Metadata Import Enhancements.  Rivendell will now recognize
@@ -2855,7 +2868,7 @@ Changes:
    Many BugFixes.  See the ChangeLog for details.
 
 -------------------------------------------------------------------------------
-v0.9.66 -- 02/15/2006
+v0.9.66 -- 15 February 2006
 
 Changes:
    CD Ripper Enhancements.  Major enhancements have been made to the
@@ -2903,7 +2916,7 @@ Database Update:
 
  
 -------------------------------------------------------------------------------
-v0.9.65 -- 01/25/2006
+v0.9.65 -- 25 January 2006
 
 This is a bugfix release of Rivendell.  Among the issues corrected
 are:
@@ -2930,7 +2943,7 @@ Database Update:
    be applied.
 
 -------------------------------------------------------------------------------
-v0.9.64 -- 01/04/2006
+v0.9.64 -- 4 January 2006
 
 Changes:
    Waveform Visualization Optimization.  Major work has been done on
@@ -2953,7 +2966,7 @@ Database Update:
    be applied.
 
 -------------------------------------------------------------------------------
-v0.9.63 -- 12/16/2005
+v0.9.63 -- 16 December 2005
 
 Changes:
    Version and Help Switches.  Every Rivendell module can now be
@@ -2989,7 +3002,7 @@ Database Update:
    be applied.
 
 -------------------------------------------------------------------------------
-v0.9.62 -- 11/29/2005
+v0.9.62 -- 29 November 2005
 
 This is a bugfix release of Rivendell.  Among the issues corrected
 are:
@@ -3016,7 +3029,7 @@ Database Update:
    be applied.
 
 -------------------------------------------------------------------------------
-v0.9.61 -- 11/22/2005
+v0.9.61 -- 22 November 2005
 
 Changes:
    RDLibrary Useability Tweaks.  When new carts are created in
@@ -3045,7 +3058,7 @@ Database Update:
    be applied.
 
 -------------------------------------------------------------------------------
-v0.9.60 -- 11/15/2005
+v0.9.60 -- 15 November 2005
 
 Changes:
    ELR/Report Data Handling.  ELR/Report data is now managed on a
@@ -3077,14 +3090,14 @@ Database Update:
    be applied.
 
 -------------------------------------------------------------------------------
-v0.9.58 -- 11/04/2005
+v0.9.58 -- 4 November 2005
 
 This release fixes a minor bug in the KDE desktop integration code for
 the RPM packaging.  For users who do not install from RPM, there is no
 difference between this version and v0.9.57. 
 
 -------------------------------------------------------------------------------
-v0.9.57 -- 11/03/2005
+v0.9.57 -- 3 November 2005
 
 This is primarily a bugfix release of Rivendell.  Some minor user
 interface tweaks have also been added:
@@ -3122,7 +3135,7 @@ Database Update:
    be applied.
 
 -------------------------------------------------------------------------------
-v0.9.55 -- 10/11/2005
+v0.9.55 -- 11 October 2005
 
 This is a maintenance/bugfix release of Rivendell.  The following
 issues have been addressed:
@@ -3155,7 +3168,7 @@ Database Update:
    be applied.
 
 -------------------------------------------------------------------------------
-v0.9.54 -- 10/06/2005
+v0.9.54 -- 6 October 2005
 
 This is primarily a bugfix release of Rivendell.  Some minor user
 interface tweaks have also been added:
@@ -3189,7 +3202,7 @@ Database Update:
    be applied.
 
 -------------------------------------------------------------------------------
-v0.9.53 -- 09/28/2005
+v0.9.53 -- 28 September 2005
 
 Changes:
    RDCatch Enhancements.  It is now possible to configure a single
@@ -3230,7 +3243,7 @@ Database Update:
    be applied.
 
 -------------------------------------------------------------------------------
-v0.9.51 -- 08/31/2005
+v0.9.51 -- 31 August 2005
 
 This version of Rivendell is mostly a bugfix/cleanup release.  Changes
 are noted below.
@@ -3254,7 +3267,7 @@ Changes:
    Various bugfixes.  See the ChangeLog for details.
 
 -------------------------------------------------------------------------------
-v0.9.49 -- 08/09/2005
+v0.9.49 -- 90 August 2005
 
 Changes:
    Fixed a stupid bug that broke browsing in the Cart Selector and Cut
@@ -3279,7 +3292,7 @@ Database Update:
    be applied.
 
 -------------------------------------------------------------------------------
-v0.9.48 -- 08/07/2005
+v0.9.48 -- 7 August 2005
 
 Changes:
    Upload Events in RDCatch.  It's now possible to schedule the
@@ -3325,7 +3338,7 @@ Database Update:
    be applied.
 
 -------------------------------------------------------------------------------
-v0.9.47 -- 07/29/2005
+v0.9.47 -- 29 July 2005
 
 Changes:
    Download Events in RDCatch.  It's now possible to schedule the
@@ -3375,7 +3388,7 @@ Database Update:
    be applied.
 
 -------------------------------------------------------------------------------
-v0.9.45 -- 07/18/2005
+v0.9.45 -- 18 July 2005
 
 Changes:
    Full Disk Ripping.  It's now possible (by touching the 'Rip Disk'
@@ -3405,7 +3418,7 @@ Changes:
    logs.  See the ChangeLog for details.
   
 -------------------------------------------------------------------------------
-v0.9.38 -- 07/01/2005
+v0.9.38 -- 1 July 2005
 
 Changes:
    Security System Cleanups.  A lot of time in this release has gone 
@@ -3436,7 +3449,7 @@ Changes:
    details.
 
 -------------------------------------------------------------------------------
-v0.9.34 -- 06/01/2005
+v0.9.34 -- 1 June 2005
 
 Changes:
    TSX Timescaling Support.  If you have an AudioScience series 61xx
@@ -3463,7 +3476,7 @@ Changes:
    for details.
 
 -------------------------------------------------------------------------------
-v0.9.32 -- 05/10/2005
+v0.9.32 -- 10 May 2005
 
 Changes:
    Direct ALSA Support.  It is now possible to use up to eight ALSA
@@ -3494,20 +3507,20 @@ Changes:
    Bugfixed.  As always, lots of these!  See the ChangeLog for details. 
 
 -------------------------------------------------------------------------------
-v0.9.26 -- 02/14/2005
+v0.9.26 -- 14 February 2005
 
 Changes:
    RDLogManger:  Change the log generation logic to allow event
    overscheduling.
 
 -------------------------------------------------------------------------------
-v0.9.25 -- 02/08/2005
+v0.9.25 -- 8 February 2005
 
 Changes:
    RDLogManager bugfixes.  See the ChangeLog.
 
 -------------------------------------------------------------------------------
-v0.9.24 -- 02/01/2005
+v0.9.24 -- 1 February 2005
 
 Changes:
    RDLogManager usability enhancements.
@@ -3515,37 +3528,37 @@ Changes:
    Various bugfixes.  See the ChangeLog.
 
 -------------------------------------------------------------------------------
-v0.9.23 -- 01/31/2005
+v0.9.23 -- 31 January 2005
 
 Changes:
    Various bugfixes.  See the ChangeLog.
 
 -------------------------------------------------------------------------------
-v0.9.22 -- 01/31/2005
+v0.9.22 -- 31 January 2005
 
 Changes:
    Various bugfixes.  See the ChangeLog.
 
 -------------------------------------------------------------------------------
-v0.9.21 -- 01/28/2005
+v0.9.21 -- 28 January 2005
 
 Changes:
    Various bugfixes.  See the ChangeLog.
 
 -------------------------------------------------------------------------------
-v0.9.20 -- 01/27/2005
+v0.9.20 -- 27 January 2005
 
 Changes:   
    Various bugfixes.  See the ChangeLog.
 
 -------------------------------------------------------------------------------
-v0.9.19 -- 01/26/2005
+v0.9.19 -- 26 January 2005
 
 Changes:
    Various bugfixes.  See the ChangeLog.
 
 -------------------------------------------------------------------------------
-v0.9.18 -- 01/21/2005
+v0.9.18 -- 21 January 2005
 
 Changes:
    Added support for the SAS 32KD Audio Switcher.
@@ -3556,7 +3569,7 @@ Changes:
      'Switch Take With Gain' [SG]
      'Switch Crosspoint Gain' [SX]
 -------------------------------------------------------------------------------
-v0.9.17 -- 01/17/2005
+v0.9.17 -- 17 January 2005
 
 Changes:
    Added RDImport to the RPM build for SuSE 9.2.
@@ -3570,17 +3583,17 @@ Changes:
 
    Lots of bugfixes.  See the ChangeLog.
 -------------------------------------------------------------------------------
-v0.9.16 -- 12/27/2004
+v0.9.16 -- 27 December 2004
 
 Changes:
    Bugfixes for RDAirPlay and the init script.  See the ChangeLog.
 -------------------------------------------------------------------------------
-v0.9.15 -- 12/17/2004
+v0.9.15 -- 17 Decem,ber 2004
 
 Changes:
    Bugfixes for RDLibrary and RDAirPlay.  See the ChangeLog.
 -------------------------------------------------------------------------------
-v0.9.14 -- 12/15/2004
+v0.9.14 -- 15 December 2004
 
 Changes:
    Added automated database backups -- see the 'Database Backup' [DB] RML.
@@ -3635,7 +3648,7 @@ Changes:
    And, as always, swatted a huge slew of bugs.  See the ChangeLog for
    details.
 -------------------------------------------------------------------------------
-v0.9.0 -- 08/18/2004
+v0.9.0 -- 18 August 2004
 
 Changes:
    A new log generation and merge utility has been added, called
@@ -3648,7 +3661,7 @@ Changes:
 
    Numerous bugfixes.  See the ChangeLog.
 -------------------------------------------------------------------------------
-v0.8.0 -- 06/26/2004
+v0.8.0 -- 26 June 2004
 
 Changes:
    The audio driver infrastructure has been completely rewritten to
@@ -3663,17 +3676,17 @@ Changes:
 
    A bushel of bugfixes throughout.  See the ChangeLog for details.
 -------------------------------------------------------------------------------
-v0.7.9 -- 02/11/2004
+v0.7.9 -- 11 February 2004
 
 RDCatch improvements.
 
 -------------------------------------------------------------------------------
-v0.7.8 -- 02/11/2004
+v0.7.8 -- 11 February 2004
 
 Test build for Sherrod Munday at SRN.
 
 -------------------------------------------------------------------------------
-v0.7.3 -- 01/28/2004
+v0.7.3 -- 28 January 2004
 
 Various bugfixes and UI tweaks.
 
@@ -3684,14 +3697,14 @@ Major changes:
    It's now possible to schedule a "switcher event" in RDCatch.
 
 -------------------------------------------------------------------------------
-v0.7.0 -- 01/22/2004
+v0.7.0 -- 22 January 2004
 
 Major changes:
 
    Macro carts are now implemented.
 
 -------------------------------------------------------------------------------
-v0.5.0 -- 12/09/2004
+v0.5.0 -- 21 November 2003
 
 The initial BETA release.  Testing version only!!
 
@@ -3710,7 +3723,7 @@ RDLogEdit -- Generate and edit air logs
 RDAirPlay -- On-air playout application
 
 -------------------------------------------------------------------------------
-v0.1.0 -- 4/28/2002
+v0.1.0 -- 1 August 2002
 
 The initial "Friendship 7" release.  Contains two programs:
 
