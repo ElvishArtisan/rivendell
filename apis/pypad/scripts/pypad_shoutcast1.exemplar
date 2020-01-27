@@ -1,0 +1,102 @@
+; This is the sample configuration for the 'pypad_shoutcast1.py' script for
+; Rivendell, which can be used to update the metadata on a Shoutcast
+; server using Now & Next data.
+
+
+; Section Header
+;
+; One section per Shoutcast server instance is configured, starting with
+; 'Shoutcast1' and working up consecutively
+[Shoutcast1]
+
+; Username
+;
+; The username for the Shoutcast server instance to which to send updates.
+; (This option is seldom required).
+Username=
+
+; Password
+;
+; The password of the Shoutcast server instance to which to send updates.
+Password=changeme
+
+; Host Name
+;
+; The fully-qualified domain name or IP address of the Shoutcast server
+Hostname=shoutcast.example.com
+
+; Host Port
+;
+; The TCP port number of the Shoutcast server
+Tcpport=8000
+
+; Format String.  The metadata to be sent each time RDAirPlay changes
+; play state, including any wildcards as placeholders for metadata values.
+;
+; The list of available wildcards can be found in the 'metadata_wildcards.txt'
+; file in the Rivendell documentation directory.
+;
+FormatString=%a - %t
+
+; Log Selection
+;
+; Set the status for each log to 'Yes', 'No' or 'Onair' to indicate whether
+; state changes on that log should be output to this account.  If set
+; to 'Onair', then output will be generated only if RDAirPlays OnAir flag
+; is active.
+MasterLog=Yes
+Aux1Log=Yes
+Aux2Log=Yes
+VLog101=No
+VLog102=No
+VLog103=No
+VLog104=No
+VLog105=No
+VLog106=No
+VLog107=No
+VLog108=No
+VLog109=No
+VLog110=No
+VLog111=No
+VLog112=No
+VLog113=No
+VLog114=No
+VLog115=No
+VLog116=No
+VLog117=No
+VLog118=No
+VLog119=No
+VLog120=No
+
+
+; Additional Shoutcast server instances can be configured by adding new
+; sections...
+;
+;[Shoutcast2]
+;Password=letmein
+;Hostname=anotherone.example.com
+;Tcpport=80
+;FormatString=%t by %a
+;MasterLog=Yes
+;Aux1Log=No
+;Aux2Log=Onair
+;VLog101=No
+;VLog102=No
+;VLog103=No
+;VLog104=No
+;VLog105=No
+;VLog106=No
+;VLog107=No
+;VLog108=No
+;VLog109=No
+;VLog110=No
+;VLog111=No
+;VLog112=No
+;VLog113=No
+;VLog114=No
+;VLog115=No
+;VLog116=No
+;VLog117=No
+;VLog118=No
+;VLog119=No
+;VLog120=No
