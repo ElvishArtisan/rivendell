@@ -50,7 +50,12 @@ RDCmdSwitch::RDCmdSwitch(int argc,char *argv[],const char *modname,
       for(int i=2;i<f0.size();i++) {
 	f0[1]+="="+f0[i];
       }
-      switch_values.push_back(f0[1]);
+      if(f0[1].isEmpty()) {
+	switch_values.push_back("");
+      }
+      else {
+	switch_values.push_back(f0[1]);
+      }
       switch_processed.push_back(false);
     }
     else {
