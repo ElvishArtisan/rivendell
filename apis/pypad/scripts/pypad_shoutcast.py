@@ -35,7 +35,6 @@ def ProcessPad(update):
     if update.hasPadType(pypad.TYPE_NOW):
         for section in update.config().sections():
             try:
-                update.syslog(syslog.LOG_INFO,'[PyPAD][%s] Version : %s' % (section,str(version)))
                 song=update.resolvePadFields(update.config().get(section,'FormatString'),pypad.ESCAPE_NONE)
                 url="http://%s:%s/admin.cgi" % (update.config().get(section,'Hostname'),str(update.config().get(section,'Tcpport')))
                 headers = {'user-agent': 'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.2) Gecko/20070219 Firefox/2.0.0.2'}
@@ -43,7 +42,6 @@ def ProcessPad(update):
                          'mode': 'updinfo',
                          'song': song.strip(string.punctuation),
                          'sid': update.escape(update.config().get(section,'Sid'),pypad.ESCAPE_NONE)}
-
             except configparser.NoSectionError:
                 return
 
