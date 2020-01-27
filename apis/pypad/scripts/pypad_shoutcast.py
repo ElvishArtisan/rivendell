@@ -27,7 +27,6 @@ import requests
 import pypad
 import string
 import urllib
-from io import BytesIO
 
 def eprint(*args,**kwargs):
     print(*args,file=sys.stderr,**kwargs)
