@@ -35,7 +35,6 @@ def ProcessPad(update):
     if update.hasPadType(pypad.TYPE_NOW):
         for section in update.config().sections():
             try:
-                version = update.config().get(section,'Version')
                 update.syslog(syslog.LOG_INFO,'[PyPAD][%s] Version : %s' % (section,str(version)))
                 song=update.resolvePadFields(update.config().get(section,'FormatString'),pypad.ESCAPE_NONE)
                 url="http://%s:%s/admin.cgi" % (update.config().get(section,'Hostname'),str(update.config().get(section,'Tcpport')))
