@@ -45,13 +45,7 @@ def ProcessPad(update):
                          'mode': 'updinfo',
                          'song': song.strip(string.punctuation),
                          'sid': update.escape(update.config().get(section,'Sid'),pypad.ESCAPE_NONE)}
-#                if version == "1":
-#                    payload['song']=song.strip(string.punctuation)
-#                    payload['sid']=update.escape(update.config().get(section,'Sid'),pypad.ESCAPE_NONE)
-#                if version == "2":
-#                    payload['song']=song.strip(string.punctuation)
-#                    payload['sid']=update.escape(update.config().get(section,'Sid'),pypad.ESCAPE_NONE)
-                update.syslog(syslog.LOG_INFO,'[PyPAD][%s] Payload: %s' % (section,str(payload)))
+
             except configparser.NoSectionError:
                 return
 
