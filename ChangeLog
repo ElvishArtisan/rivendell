@@ -19426,3 +19426,6 @@
 2020-01-27 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'RDCmdSwitch' that caused empty argument values
 	to be returned as a null QString.
+2020-01-27 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'datdecode_test' that made it impossible to
+	test empty strings.
