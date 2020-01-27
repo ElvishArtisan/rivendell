@@ -1,6 +1,21 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
+v3.2.1int0 -- 27 January 2020
+
+Changes:
+   Filepath Wildcards. Added a 'delta-seconds' modifier to the format for
+   filepath wildcards to allow specification of a +/- time offset. See
+   Appendix D 'Filepath Wildcards' in the Operations Guide for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 311, and will
+   automatically upgrade any earlier versions. To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
+   to allow any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
 v3.2.1 -- 24 January 2020
 
 Changes:
