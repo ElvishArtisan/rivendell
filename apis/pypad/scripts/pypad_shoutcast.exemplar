@@ -32,8 +32,9 @@ Tcpport=8000
 ;
 FormatString=%a - %t
 
-; SID of the stream to upgrade only the stream desired.
-; Just exchange with the SID of your stream.  
+; SID of the stream to upgrade only the desired stream.
+; This parameter will affect only DNASv2 Server
+; Just exchange with the SID of your stream.
 Sid=1
 
 ; Log Selection
