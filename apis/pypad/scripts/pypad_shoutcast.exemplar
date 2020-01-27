@@ -24,6 +24,11 @@ Hostname=shoutcast.example.com
 ; The TCP port number of the Shoutcast server
 Tcpport=8000
 
+; SID of the stream to upgrade only the desired stream.
+; This parameter will affect only DNASv2 Server
+; Just exchange with the SID of your stream.
+Sid=1
+
 ; Format String.  The metadata to be sent each time RDAirPlay changes
 ; play state, including any wildcards as placeholders for metadata values.
 ;
@@ -31,11 +36,6 @@ Tcpport=8000
 ; file in the Rivendell documentation directory.
 ;
 FormatString=%a - %t
-
-; SID of the stream to upgrade only the desired stream.
-; This parameter will affect only DNASv2 Server
-; Just exchange with the SID of your stream.
-Sid=1
 
 ; Log Selection
 ;
@@ -75,6 +75,7 @@ VLog120=No
 ;Password=letmein
 ;Hostname=anotherone.example.com
 ;Tcpport=80
+;Sid=1
 ;FormatString=%t by %a
 ;MasterLog=Yes
 ;Aux1Log=No
