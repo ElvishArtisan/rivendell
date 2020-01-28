@@ -114,6 +114,7 @@ tests/log_unlink_test
 tests/mcast_recv_test
 tests/notification_test
 tests/rdxml_parse_test
+tests/readcd_test
 tests/reserve_carts_test
 tests/sas_switch_torture
 tests/sas_torture

@@ -19434,3 +19434,7 @@
 2020-01-28 Fred Gleason <fredg@paravelsystems.com>
 	* Added a section concerning default configuration files to the
 	'PULL REQUEST CHECKLIST' section of 'CODINGSTYLE'.
+2020-01-28 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'libmusicbrainz5' dependency.
+	* Added a 'libdiscid' dependency.
+	* Added a 'readcd_test' test harness.

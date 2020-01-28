@@ -3,7 +3,7 @@ dnl
 dnl Autoconf configuration for Rivendell.
 dnl Use autoconf to process this into a configure script
 dnl
-dnl   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+dnl   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 dnl
 dnl   This program is free software; you can redistribute it and/or modify
 dnl   it under the terms of the GNU General Public License version 2 as
@@ -235,6 +235,11 @@ else
     AC_MSG_ERROR([*** LibParanoia not found ***])
   fi
 fi
+
+#
+# Check for MusicBrainz support libraries (libdiscid and libmusicbrainz)
+#
+PKG_CHECK_MODULES(MUSICBRAINZ,libdiscid libmusicbrainz5,,[AC_MSG_ERROR([*** LibMusicBrainz not found ***])])
 
 #
 # Check for Id3Lib

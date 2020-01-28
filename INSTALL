@@ -22,6 +22,14 @@ LibCurl, v7.19.0 or later
 A client-side URL transfer library. Included with most distros, or
 available at: http://curl.haxx.se/libcurl/.
 
+LibDiscId, v0.6.2 or later
+A library for reading the attributes of audio CDs.
+Available at https://musicbrainz.org/
+
+LibMusicBrainz, v5.0.1 or later
+A library for accessing the MusicBrainz open music encyclopedia
+Available at https://musicbrainz.org/
+
 LibParanoia
 A library for ripping audio CDs. Included in most distributions, but also 
 available from http://www.xiph.org/paranoia/.
