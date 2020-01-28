@@ -19431,3 +19431,6 @@
 	test empty strings.
 2020-01-27 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.2.1int0.
+2020-01-28 Fred Gleason <fredg@paravelsystems.com>
+	* Added a section concerning default configuration files to the
+	'PULL REQUEST CHECKLIST' section of 'CODINGSTYLE'.
