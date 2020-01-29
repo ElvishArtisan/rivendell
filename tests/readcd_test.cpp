@@ -86,8 +86,8 @@ MainObject::MainObject(QObject *parent)
   printf("             FreeDB DiscID: %s\n",discid_get_freedb_id(disc));
   printf("        MusicBrainz DiscID: %s\n",discid_get_id(disc));
   printf("MusicBrainz Submission URL: %s\n",discid_get_submission_url(disc));
-  printf("Media Catalog Number (MCN): %s\n",discid_get_mcn(disc));
   if(extended) {
+    printf("Media Catalog Number (MCN): %s\n",discid_get_mcn(disc));
     int first=discid_get_first_track_num(disc);
     int last=discid_get_last_track_num(disc);
     for(int i=first;i<=last;i++) {

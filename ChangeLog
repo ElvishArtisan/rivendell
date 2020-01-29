@@ -19438,3 +19438,5 @@
 	* Added a 'libmusicbrainz5' dependency.
 	* Added a 'libdiscid' dependency.
 	* Added a 'readcd_test' test harness.
+2020-01-29 Fred Gleason <fredg@paravelsystems.com>
+	* Moved MCN to extended attributes in the 'readcd_test' harness.
