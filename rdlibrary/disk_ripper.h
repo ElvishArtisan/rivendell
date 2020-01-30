@@ -76,7 +76,7 @@ class DiskRipper : public RDDialog
   void SetArtistAlbum();
   void SendNotification(RDNotification::Action action,unsigned cartnum);
   RDCdPlayer *rip_cdrom;
-  RDCddbRecord rip_cddb_record;
+  RDDiscRecord rip_cddb_record;
   RDCddbLookup *rip_cddb_lookup;
   QLabel *rip_track_label;
   Q3ListView *rip_track_list;
@@ -125,7 +125,7 @@ class DiskRipper : public RDDialog
   std::vector<RDWaveData *> rip_wave_datas;
   bool rip_aborting;
   bool rip_profile_rip;
-  bool rip_isrc_read;
+  //  bool rip_isrc_read;
   RDWaveDataDialog *rip_wavedata_dialog;
 };
 

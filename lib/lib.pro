@@ -2,7 +2,7 @@
 #
 # The lib/ QMake project file for Rivendell.
 #
-# (C) Copyright 2003-2018 Fred Gleason <fredg@paravelsystems.com>
+# (C) Copyright 2003-2020 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as
@@ -57,7 +57,7 @@ SOURCES += rdcartdrag.cpp
 SOURCES += rdcatch_connect.cpp
 SOURCES += rdcddblookup.cpp
 SOURCES += rdcdplayer.cpp
-SOURCES += rdcddbrecord.cpp
+SOURCES += rddiscrecord.cpp
 SOURCES += rdcheck_version.cpp
 SOURCES += rdclock.cpp
 SOURCES += rdcmd_cache.cpp
@@ -75,6 +75,7 @@ SOURCES += rddatedecode.cpp
 SOURCES += rddatepicker.cpp
 SOURCES += rddatetime.cpp
 SOURCES += rddb.cpp
+SOURCES += rddisclookup.cpp
 SOURCES += rddbheartbeat.cpp
 SOURCES += rddebug.cpp
 SOURCES += rddeck.cpp
@@ -189,7 +190,8 @@ HEADERS += rdcartdrag.h
 HEADERS += rdcatch_connect.h
 HEADERS += rdcddblookup.h
 HEADERS += rdcdplayer.h
-HEADERS += rdcddbrecord.h
+HEADERS += rddiscrecord.h
+HEADERS += rddisclookup.h
 HEADERS += rdcheck_version.h
 HEADERS += rdclock.h
 HEADERS += rdcmd_cache.h

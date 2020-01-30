@@ -45,7 +45,7 @@ panel_copy_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@ -lQt3S
 
 dist_rdcatch_copy_SOURCES = rdcatch_copy.cpp rdcatch_copy.h
 nodist_rdcatch_copy_SOURCES = moc_rdcatch_copy.cpp
-rdcatch_copy_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
+rdcatch_copy_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@ -lQt3Support
 
 dist_rivendell_filter_SOURCES = rivendell_filter.cpp rivendell_filter.h
 nodist_rivendell_filter_SOURCES = moc_rivendell_filter.cpp

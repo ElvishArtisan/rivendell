@@ -36,7 +36,7 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
 		       bool profile_rip,QWidget *parent) 
   : RDDialog(parent)
 {
-  rip_isrc_read=false;
+  //  rip_isrc_read=false;
   rip_filter_text=filter;
   rip_group_text=group;
   rip_schedcode_text=schedcode;
@@ -380,6 +380,7 @@ void DiskRipper::ripDiskButtonData()
   }
   rip_disk_bar->setMaximum(tracks);
 
+  /*
   //
   // Read ISRCs
   //
@@ -389,6 +390,7 @@ void DiskRipper::ripDiskButtonData()
     }
     rip_isrc_read=true;
   }
+  */
 
   //
   // Set Artist and Album
@@ -732,7 +734,7 @@ void DiskRipper::mediaChangedData()
 
   QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 
-  rip_isrc_read=false;
+  //  rip_isrc_read=false;
   rip_cutnames.clear();
   rip_end_track.clear();
   for(unsigned i=0;i<rip_wave_datas.size();i++) {

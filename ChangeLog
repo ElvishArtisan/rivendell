@@ -19443,3 +19443,7 @@
 2020-01-29 Fred Gleason <fredg@paravelsystems.com>
 	* Refactored the 'RDCddbLookup' class into 'RDCddbLookup' and
 	'RDDiscLookup'.
+2020-01-30 Fred Gleason <fredg@paravelsystems.com>
+	* Renamed the 'RDCddbRecord' class to 'RDDiscRecord'.
+	* Removed support for CD-TEXT from the CD rippers.
+	* Removed the icedax(1) dependency.

@@ -26,6 +26,7 @@
 #include <discid/discid.h>
 
 #include <rdcmd_switch.h>
+#include <rddisclookup.h>
 
 #include "readcd_test.h"
 
@@ -88,11 +89,25 @@ MainObject::MainObject(QObject *parent)
   printf("MusicBrainz Submission URL: %s\n",discid_get_submission_url(disc));
   if(extended) {
     printf("Media Catalog Number (MCN): %s\n",discid_get_mcn(disc));
+
+    printf("ISRCs:\n");
     int first=discid_get_first_track_num(disc);
     int last=discid_get_last_track_num(disc);
     for(int i=first;i<=last;i++) {
-      printf("             Track %02d ISRC: %s\n",i,
-	     discid_get_track_isrc(disc,i));
+      QString isrc=discid_get_track_isrc(disc,i);
+      printf("%02d ",i);
+      printf("%s  ",(const char *)isrc.toUtf8());
+      if(RDDiscLookup::isrcIsValid(isrc)) {
+	printf("ok: yes  ");
+      }
+      else {
+	printf("ok: no   ");
+      }
+      printf("formatted: %s  ",
+	     (const char *)RDDiscLookup::formattedIsrc(isrc).toUtf8());
+      printf("normalized: %s  ",
+	     (const char *)RDDiscLookup::normalizedIsrc(isrc).toUtf8());
+      printf("\n");
     }
   }
 

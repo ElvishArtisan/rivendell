@@ -7,10 +7,6 @@ system before building Rivendell:
 Apache Web Server
 Included with most distros, or available from: http://www.apache.org/.
 
-Cdda2Wav
-A CD ripper engine. Included in most distributions, but also available from 
-http://www.cdda2wav.de/.
-
 Expat
 A stream-oriented XML parser library. Available at https://libexpat.github.io/.
 

@@ -1406,6 +1406,29 @@ Cartucho</translation>
     </message>
 </context>
 <context>
+    <name>RDDiscLookup</name>
+    <message>
+        <source>Multiple Matches Found!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancelar</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to read CD.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RDEditAudio</name>
     <message>
         <source>&amp;Save</source>

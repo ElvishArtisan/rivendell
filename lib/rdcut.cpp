@@ -24,22 +24,20 @@
 #include <fcntl.h>
 
 #include <qobject.h>
-//Added by qt3to4:
-#include <Q3Signal>
 
-#include <rd.h>
-#include <rdconf.h>
-#include <rdwavefile.h>
-
-#include <rdcut.h>
-#include <rdtextvalidator.h>
-#include <rdconfig.h>
-#include <rddb.h>
-#include <rdescape_string.h>
-#include <rdgroup.h>
-#include <rdweb.h>
-#include <rdcopyaudio.h>
-#include <rdtrimaudio.h>
+#include "rd.h"
+#include "rdconf.h"
+#include "rdconfig.h"
+#include "rdcopyaudio.h"
+#include "rdcut.h"
+#include "rddb.h"
+#include "rddisclookup.h"
+#include "rdescape_string.h"
+#include "rdgroup.h"
+#include "rdtextvalidator.h"
+#include "rdtrimaudio.h"
+#include "rdwavefile.h"
+#include "rdweb.h"
 
 //
 // Global Classes
@@ -222,13 +220,10 @@ QString RDCut::isrc(IsrcFormat fmt) const
 {
   QString str= RDGetSqlValue("CUTS","CUT_NAME",cut_name,"ISRC").
     toString();
-  if((fmt==RDCut::RawIsrc)||(str.length()!=12)) {
+  if((fmt==RDCut::RawIsrc)||(!RDDiscLookup::isrcIsValid(str))) {
     return str;
   }
-  str.insert(2,"-");
-  str.insert(6,"-");
-  str.insert(9,"-");
-  return str;
+  return RDDiscLookup::formattedIsrc(str);
 }
 
 

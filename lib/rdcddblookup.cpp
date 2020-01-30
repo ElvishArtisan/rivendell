@@ -1,6 +1,6 @@
 //   rdcddblookup.cpp
 //
-//   A Qt class for accessing the FreeDB CD Database.
+//   RDDiscLookup instance class for accessing the FreeDB CD Database.
 //
 //   (C) Copyright 2003-2020 Fred Gleason <fredg@paravelsystems.com>
 //
@@ -54,12 +54,14 @@ RDCddbLookup::~RDCddbLookup()
 }
 
 
+QString RDCddbLookup::sourceName() const
+{
+  return QString("FreeDB");
+}
+
+
 void RDCddbLookup::lookupRecord()
 {
-  if(cddbRecord()->tracks()==0) {
-    return;
-  }
-
   lookup_username=rda->user()->name();
   lookup_hostname=rda->libraryConf()->cddbServer();
   lookup_appname="rivendell";

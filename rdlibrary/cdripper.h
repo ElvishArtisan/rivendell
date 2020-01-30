@@ -38,7 +38,7 @@ class CdRipper : public RDDialog
 {
   Q_OBJECT
  public:
-  CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
+  CdRipper(QString cutname,RDDiscRecord *rec,RDLibraryConf *conf,
 	   bool profile_rip,QWidget *parent=0);
   ~CdRipper();
   QSize sizeHint() const;
@@ -70,8 +70,8 @@ class CdRipper : public RDDialog
   void Profile(const QString &msg);
   RDLibraryConf *rip_conf;
   RDCdPlayer *rip_cdrom;
-  RDCddbRecord *rip_cddb_record;
-  RDCddbLookup *rip_cddb_lookup;
+  RDDiscRecord *rip_cddb_record;
+  RDDiscLookup *rip_cddb_lookup;
   RDCut *rip_cut;
   QLabel *rip_track_label;
   RDListView *rip_track_list;
@@ -110,7 +110,6 @@ class CdRipper : public RDDialog
   QLabel *rip_autotrim_unit;   
   bool rip_done;
   bool rip_profile_rip;
-  bool rip_isrc_read;
 };
 
 

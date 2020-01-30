@@ -2,7 +2,7 @@
 //
 // CD Track Ripper Dialog for Rivendell.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -34,12 +34,12 @@
 //
 bool ripper_running;
 
-CdRipper::CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
+CdRipper::CdRipper(QString cutname,RDDiscRecord *rec,RDLibraryConf *conf,
 		   bool profile_rip,QWidget *parent) 
   : RDDialog(parent)
 {
   rip_profile_rip=profile_rip;
-  rip_isrc_read=false;
+  //  rip_isrc_read=false;
   rip_conf=conf;
   rip_cddb_record=rec;
   rip_track[0]=-1;
@@ -410,12 +410,14 @@ void CdRipper::ripTrackButtonData()
   //
   // Read ISRCs
   //
+  /*
   if(!rip_isrc_read) {
     if(rda->libraryConf()->readIsrc()) {
       rip_cddb_lookup->readIsrc();
     }
     rip_isrc_read=true;
   }
+  */
 
   //
   // Rip from disc
@@ -534,7 +536,7 @@ void CdRipper::mediaChangedData()
 {
   Q3ListViewItem *l;
 
-  rip_isrc_read=false;
+  //  rip_isrc_read=false;
   rip_track_list->clear();
   rip_track[0]=-1;
   rip_track[1]=-1;

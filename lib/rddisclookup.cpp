@@ -22,11 +22,13 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include <qmessagebox.h>
-#include <qtimer.h>
-#include <qregexp.h>
 #include <qdatetime.h>
+#include <qmessagebox.h>
 #include <q3process.h>
+#include <qregexp.h>
+#include <qtimer.h>
+
+#include <discid/discid.h>
 
 #include "rdtempdirectory.h"
 #include "rddisclookup.h"
@@ -36,6 +38,7 @@ RDDiscLookup::RDDiscLookup(const QString &caption,FILE *profile_msgs,
 			   QWidget *parent)
   : RDDialog(parent)
 {
+  lookup_caption=caption;
   lookup_profile_msgs=profile_msgs;
 
   lookup_titles_label=new QLabel(tr("Multiple Matches Found!"),this);
@@ -51,34 +54,6 @@ RDDiscLookup::RDDiscLookup(const QString &caption,FILE *profile_msgs,
   lookup_cancel_button=new QPushButton(tr("Cancel"),this);
   lookup_cancel_button->setFont(buttonFont());
   connect(lookup_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
-
-  //
-  // Create Temporary Directory
-  //
-  char path[PATH_MAX];
-  strncpy(path,RDTempDirectory::basePath(),PATH_MAX);
-  strcat(path,"/XXXXXX");
-  if(mkdtemp(path)==NULL) {
-    QMessageBox::warning(this,caption+" - "+tr("Ripper Error"),
-			 tr("Unable to create temporary directory!"));
-  }
-  else {
-    lookup_cdda_dir.setPath(path);
-  }
-  profile("created temp directory \""+lookup_cdda_dir.path()+"\"");
-}
-
-
-RDDiscLookup::~RDDiscLookup()
-{
-  QStringList files=lookup_cdda_dir.entryList();
-  for(int i=0;i<files.size();i++) {
-    if((files[i]!=".")&&(files[i]!="..")) {
-      lookup_cdda_dir.remove(files[i]);
-    }
-  }
-  rmdir(lookup_cdda_dir.path());
-  profile("deleted temp directory \""+lookup_cdda_dir.path()+"\"");
 }
 
 
@@ -88,7 +63,7 @@ QSize RDDiscLookup::sizeHint() const
 }
 
 
-void RDDiscLookup::setCddbRecord(RDCddbRecord *rec)
+void RDDiscLookup::setCddbRecord(RDDiscRecord *rec)
 {
   lookup_record=rec;
 }
@@ -96,21 +71,59 @@ void RDDiscLookup::setCddbRecord(RDCddbRecord *rec)
 
 void RDDiscLookup::lookup()
 {
-  profile("starting CD-TEXT lookup");
-  if(ReadCdText(lookup_cdda_dir.path(),rda->libraryConf()->ripperDevice())) {
-    emit lookupDone(RDDiscLookup::ExactMatch);
-    profile("CD-TEXT lookup success");
+  if(cddbRecord()->tracks()==0) {
     return;
   }
-  profile("CD-TEXT lookup failure");
 
+  //
+  // Get some basic disc parameters (CDDB DiskID, MusicBrainz mbid and,
+  // if enabled in rdadmin(1), MCN and ISRCs).
+  //
+  DiscId *disc=discid_new();
+  if(rda->libraryConf()->readIsrc()) {
+    if(discid_read(disc,rda->libraryConf()->ripperDevice().toUtf8())==0) {
+      QMessageBox::warning(this,caption()+" - "+tr("Error"),
+			 tr("Unable to read CD.")+
+			   "\n["+QString(discid_get_error_msg(disc))+"]");
+      discid_free(disc);
+      return;
+    }
+  }
+  else {
+    if(discid_read_sparse(disc,rda->libraryConf()->ripperDevice().toUtf8(),0)==0) {
+      QMessageBox::warning(this,caption()+" - "+tr("Error"),
+			 tr("Unable to read CD.")+
+			   "\n["+QString(discid_get_error_msg(disc))+"]");
+      discid_free(disc);
+      return;
+    }
+  }
+  cddbRecord()->setDiscId(QString(discid_get_freedb_id(disc)).toUInt(NULL,16));
+  cddbRecord()->setMbId(discid_get_id(disc));
+  cddbRecord()->setMbSubmissionUrl(discid_get_submission_url(disc));
+  if(rda->libraryConf()->readIsrc()) {
+    cddbRecord()->setMcn(discid_get_mcn(disc));
+    int first=discid_get_first_track_num(disc);
+    int last=discid_get_last_track_num(disc);
+    for(int i=first;i<=last;i++) {
+      if((i-first)<lookup_record->tracks()) {
+	cddbRecord()->setIsrc(i-first,
+		  RDDiscLookup::normalizedIsrc(discid_get_track_isrc(disc,i)));
+      }
+    }
+  }
+  discid_free(disc);
+
+  //
+  // Call the low-level driver to complete the lookup.
+  //
   lookupRecord();
 }
 
 
-bool RDDiscLookup::readIsrc()
+QString RDDiscLookup::caption()
 {
-  return ReadIsrcs(lookup_cdda_dir.path(),rda->libraryConf()->ripperDevice());
+  return lookup_caption;
 }
 
 
@@ -140,7 +153,7 @@ void RDDiscLookup::resizeEvent(QResizeEvent *e)
 }
 
 
-RDCddbRecord *RDDiscLookup::cddbRecord()
+RDDiscRecord *RDDiscLookup::cddbRecord()
 {
   return lookup_record;
 }
@@ -168,129 +181,93 @@ QStringList *RDDiscLookup::titlesKey()
 }
 
 
-bool RDDiscLookup::ReadCdText(const QString &cdda_dir,const QString &cdda_dev)
+bool RDDiscLookup::isrcIsValid(const QString &isrc)
 {
-  RDProfile *title_profile=new RDProfile();
-  bool ret=false;
-  QString str;
-  QString cmd;
+  //
+  // For formatting rules for International Standard Recording Codes,
+  // see https://en.wikipedia.org/wiki/International_Standard_Recording_Code
+  //
+  // NOTE: This makes no attempt to validate that the Country or Registrant
+  //       codes actually exist in the IFPI registry!
+  //
+  QString str=isrc;
+  bool valid=false;
 
-  //
-  // Write the Track Title Data to a Temp File
-  //
-  QByteArray output;
-  Q3Process *proc=new Q3Process(this);
-  proc->addArgument("cdda2wav");
-  proc->addArgument("-D");
-  proc->addArgument(cdda_dev);
-  proc->addArgument("--info-only");
-  proc->addArgument("-v");
-  proc->addArgument("titles");
-  proc->setWorkingDirectory(cdda_dir);
-  if(!proc->start()) {
-    delete proc;
-    profile("cdda2wav failed to start!");
+  str.replace("-","");
+  if(str.length()!=12) {
     return false;
   }
-  while(proc->isRunning()) {
-    output=proc->readStderr();
-    if(output.size()>0) {  // Work around icedax(1)'s idiotic user prompt
-      if(strncmp(output,"load cdrom please and press enter",33)==0) {
-	proc->kill();
-	delete proc;
-	profile("cdda2wav returned \""+output+"\", killing it!");
-	return false;
-      }
-    }
-  }
-  if(!proc->normalExit()) {
-    profile("cdda2wav crashed!");
-    delete proc;
-    return false;
-  }
-  if(proc->exitStatus()!=0) {
-    profile("cdda2wav return exit code "+
-	    QString().sprintf("%d",proc->exitStatus()));
-    delete proc;
-    return false;
-  }
-  delete proc;
 
   //
-  // Read the Track Title Data File
+  // This could probably be done much more compactly with a regex.
   //
-  for(int i=0;i<lookup_record->tracks();i++) {
-    title_profile->setSource(cdda_dir+QString().sprintf("/audio_%02d.inf",i+1));
-    str=title_profile->stringValue("","Albumtitle","");
-    str.remove("'");
-    if((!str.isEmpty())&&(str!="''")) {
-      lookup_record->setDiscTitle(str);
-      profile("setting DiscTitle to \""+str+"\"");
-      ret=true;
-    }
+  for(int i=0;i<12;i++) {
+    QChar::Category category=str.at(i).category();
+    switch(i) {
+    case 0:  // Country Code
+    case 1:
+      valid=(category==QChar::Letter_Uppercase)||
+	(category==QChar::Letter_Lowercase);
+      break;
 
-    str=title_profile->stringValue("","Albumperformer","");
-    str.remove("'");
-    if((!str.isEmpty())&&(str!="''")) {
-      lookup_record->setDiscArtist(str);
-      profile("setting DiscArtist to \""+str+"\"");
-      ret=true;
-    }
+    case 2:  // Registrant Code
+    case 3:
+    case 4:
+      valid=(category==QChar::Letter_Uppercase)||
+	(category==QChar::Letter_Lowercase)||
+	(category==QChar::Number_DecimalDigit);
+      break;
 
-    str=title_profile->stringValue("","Tracktitle","");
-    str.remove("'");
-    if((!str.isEmpty())&&(str!="''")) {
-      lookup_record->setTrackTitle(i,str);
-      profile("setting TrackTitle "+QString().sprintf("%d",i+1)+" to \""+str+"\"");
-      ret=true;
+    case 5:  // Designation Code
+    case 6:
+    case 7:
+    case 8:
+    case 9:
+    case 10:
+    case 11:
+      valid=(category==QChar::Number_DecimalDigit);
+      break;
     }
-
-    str=title_profile->stringValue("","Performer","");
-    str.remove("'");
-    if((!str.isEmpty())&&(str!="''")) {
-      lookup_record->setTrackArtist(i,str);
-      profile("setting TrackArtist "+QString().sprintf("%d",i+1)+" to \""+str+"\"");
-      ret=true;
+    if(!valid) {
+      return false;
     }
   }
-  return ret;
+
+  return true;
 }
 
 
-bool RDDiscLookup::ReadIsrcs(const QString &cdda_dir,const QString &cdda_dev)
+QString RDDiscLookup::formattedIsrc(const QString &isrc,bool *ok)
 {
-  int err=0;
-  RDProfile *title_profile=new RDProfile();
-  RDProfile *isrc_profile=new RDProfile();
-  bool ret=false;
-  QString str;
-  QString cmd;
-
-  //
-  // Write the ISRC Data to a Temp File
-  //
-  cmd=QString("CURDIR=`pwd`;cd ")+
-    cdda_dir+";cdda2wav -D "+cdda_dev+
-    " --info-only -v trackid 2> /dev/null;cd $CURDIR";
-  if((err=system(cmd))!=0) {
-    return false;
-  }
-
-  //
-  // Read the ISRC Data File
-  //
-  for(int i=0;i<lookup_record->tracks();i++) {
-    isrc_profile->setSource(cdda_dir+QString().sprintf("/audio_%02d.inf",i+1));
-    str=isrc_profile->stringValue("","ISRC","");
-    str.remove("'");
-    str.remove("-");
-    if((!str.isEmpty())&&(str!="''")) {
-      lookup_record->setIsrc(i,str);
-      ret=true;
+  if(RDDiscLookup::isrcIsValid(isrc)) {
+    if(ok!=NULL) {
+      *ok=true;
     }
+    QString str=isrc;
+    str.insert(2,"-");
+    str.insert(6,"-");
+    str.insert(9,"-");
+    return str.toUpper();
   }
-  delete title_profile;
-  delete isrc_profile;
+  if(ok!=NULL) {
+    *ok=false;
+  }
+  return QString();
+}
 
-  return ret;
+
+QString RDDiscLookup::normalizedIsrc(const QString &isrc,bool *ok)
+{
+  if(RDDiscLookup::isrcIsValid(isrc)) {
+    if(ok!=NULL) {
+      *ok=true;
+    }
+    QString str=isrc;
+    str.replace("-","");
+    return str.toUpper();
+  }
+  if(ok!=NULL) {
+    *ok=false;
+  }
+  return QString();
 }

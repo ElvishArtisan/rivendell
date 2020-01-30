@@ -25,13 +25,12 @@
 #include <stdio.h>
 
 #include <qcombobox.h>
-#include <qdir.h> 
 #include <qlabel.h>
 #include <qpushbutton.h>
 #include <qstringlist.h>
 #include <qtcpsocket.h>
 
-#include <rdcddbrecord.h>
+#include <rddiscrecord.h>
 #include <rddialog.h>
 
 class RDDiscLookup : public RDDialog
@@ -41,44 +40,45 @@ class RDDiscLookup : public RDDialog
   enum Result {ExactMatch=0,PartialMatch=1,NoMatch=2,
   	       ProtocolError=3,NetworkError=4};
   RDDiscLookup(const QString &caption,FILE *profile_msgs,QWidget *parent=0);
-  ~RDDiscLookup();
   QSize sizeHint() const;
-  void setCddbRecord(RDCddbRecord *);
+  virtual QString sourceName() const=0;
+  void setCddbRecord(RDDiscRecord *);
   void lookup();
-  bool readIsrc();
+  static bool isrcIsValid(const QString &isrc);
+  static QString formattedIsrc(const QString &isrc,bool *ok=NULL);
+  static QString normalizedIsrc(const QString &isrc,bool *ok=NULL);
 
  signals:
   void lookupDone(RDDiscLookup::Result);
 
  protected slots:
-  virtual void lookupRecord()=0;
+  QString caption();
   void okData();
   void cancelData();
 
  protected:
+  virtual void lookupRecord()=0;
   void resizeEvent(QResizeEvent *e);
-  RDCddbRecord *cddbRecord();
+  RDDiscRecord *cddbRecord();
   void profile(const QString &msg);
   QComboBox *titlesBox();
   QStringList *titlesKey();
 
  private:
-   bool ReadCdText(const QString &cdda_dir,const QString &cdda_dev);
-   bool ReadIsrcs(const QString &cdda_dir,const QString &cdda_dev);
    QLabel *lookup_titles_label;
    QComboBox *lookup_titles_box;
    QStringList lookup_titles_key;
    QPushButton *lookup_ok_button;
    QPushButton *lookup_cancel_button;
-   RDCddbRecord *lookup_record;
+   RDDiscRecord *lookup_record;
    QTcpSocket *lookup_socket;
    int lookup_state;
    QString lookup_username;
    QString lookup_appname;
    QString lookup_appver;
    QString lookup_hostname;
-   QDir lookup_cdda_dir;
    FILE *lookup_profile_msgs;
+   QString lookup_caption;
 };
 
 #endif  // RDDISCLOOKUP_H

@@ -553,7 +553,7 @@ void AudioCart::ripCutData()
     return;
   }
   cutname=item->text(12);
-  RDCddbRecord *rec=new RDCddbRecord();
+  RDDiscRecord *rec=new RDDiscRecord();
   CdRipper *ripper=new CdRipper(cutname,rec,rda->libraryConf(),rdcart_profile_rip);
   if((track=ripper->exec(&title,&artist,&album))>=0) {
     if((rdcart_controls->title_edit->text().isEmpty()||

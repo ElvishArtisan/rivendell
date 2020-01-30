@@ -84,7 +84,6 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdcatch_conf.cpp rdcatch_conf.h\
                         rdcatch_connect.cpp rdcatch_connect.h\
                         rdcddblookup.cpp rdcddblookup.h\
-                        rdcddbrecord.cpp rdcddbrecord.h\
                         rdcdplayer.cpp rdcdplayer.h\
                         rdcdripper.cpp rdcdripper.h\
                         rdcheck_version.cpp rdcheck_version.h\
@@ -112,6 +111,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rddelete.cpp rddelete.h\
                         rddialog.cpp rddialog.h\
                         rddisclookup.cpp rddisclookup.h\
+                        rddiscrecord.cpp rddiscrecord.h\
                         rddownload.cpp rddownload.h\
                         rddropbox.cpp rddropbox.h\
                         rdedit_audio.cpp rdedit_audio.h\
