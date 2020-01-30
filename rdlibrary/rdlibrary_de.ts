@@ -452,14 +452,6 @@ abbrechen</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Ripper Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to create temporary directory!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Rip CD</source>
         <translation type="unfinished">CD rippen</translation>
     </message>
@@ -685,14 +677,6 @@ Rippen</translation>
     <message>
         <source>Rip aborted!</source>
         <translation>Rip abgebrochen!</translation>
-    </message>
-    <message>
-        <source>Ripper Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to create temporary directory!</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Track</source>

@@ -452,14 +452,6 @@ vytahování</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Ripper Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to create temporary directory!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Rip CD</source>
         <translation type="unfinished">Vytáhnout z CD</translation>
     </message>
@@ -686,14 +678,6 @@ z CD</translation>
         <source>Rip aborted!</source>
         <translation>Vytažení
 zrušeno!</translation>
-    </message>
-    <message>
-        <source>Ripper Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to create temporary directory!</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Track</source>

@@ -452,14 +452,6 @@ Lectura</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Ripper Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to create temporary directory!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Rip CD</source>
         <translation type="unfinished">Leer CD</translation>
     </message>
@@ -686,14 +678,6 @@ Disco</translation>
         <source>Rip aborted!</source>
         <translation>¡Lectura
 Abortada!</translation>
-    </message>
-    <message>
-        <source>Ripper Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to create temporary directory!</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Track</source>

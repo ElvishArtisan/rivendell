@@ -344,14 +344,6 @@ Rip</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Ripper Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to create temporary directory!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Rip CD</source>
         <translation type="unfinished"></translation>
     </message>
@@ -521,14 +513,6 @@ Disk</source>
     </message>
     <message>
         <source>Rip aborted!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Ripper Error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Unable to create temporary directory!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

@@ -2,7 +2,7 @@
 //
 // CD Ripper Dialog for Rivendell
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -57,7 +57,7 @@ class CdRipper : public RDDialog
   void mediaChangedData();
   void playedData(int);
   void stoppedData();
-  void cddbDoneData(RDCddbLookup::Result);
+  void cddbDoneData(RDDiscLookup::Result);
   void normalizeCheckData(bool);
   void autotrimCheckData(bool);
   void closeData();
@@ -110,7 +110,6 @@ class CdRipper : public RDDialog
   QLabel *rip_autotrim_unit;   
   bool rip_done;
   bool rip_profile_rip;
-  QDir rip_cdda_dir;
   bool rip_isrc_read;
 };
 

@@ -2,7 +2,7 @@
 //
 //   A Qt class for accessing the FreeDB CD Database.
 //
-//   (C) Copyright 2003-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2003-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -26,41 +26,17 @@
 #include <qdatetime.h>
 #include <q3process.h>
 
-#include <rdcddblookup.h>
-#include <rdprofile.h>
+#include "rdapplication.h"
+#include "rdcddblookup.h"
+#include "rdprofile.h"
 
 RDCddbLookup::RDCddbLookup(const QString &caption,FILE *profile_msgs,
 			   QWidget *parent)
-  : RDDialog(parent)
+  : RDDiscLookup(caption,profile_msgs,parent)
 {
   lookup_state=0;
-  lookup_profile_msgs=profile_msgs;
-
-  //
-  // Get the Hostname
-  //
-  if(getenv("HOSTNAME")==NULL) {
-    lookup_hostname=RDCDDBLOOKUP_DEFAULT_HOSTNAME;
-  }
-  else {
-    lookup_hostname=getenv("HOSTNAME");
-  }
 
   setWindowTitle(caption+" - "+tr("CDDB Query"));
-
-  lookup_titles_label=new QLabel(tr("Multiple Matches Found!"),this);
-  lookup_titles_label->setAlignment(Qt::AlignCenter|Qt::AlignVCenter);
-  lookup_titles_label->setFont(labelFont());
-
-  lookup_titles_box=new QComboBox(this);
-
-  lookup_ok_button=new QPushButton(tr("OK"),this);
-  lookup_ok_button->setFont(buttonFont());
-  connect(lookup_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
-
-  lookup_cancel_button=new QPushButton(tr("Cancel"),this);
-  lookup_cancel_button->setFont(buttonFont());
-  connect(lookup_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
   //
   // Socket
@@ -78,72 +54,19 @@ RDCddbLookup::~RDCddbLookup()
 }
 
 
-QSize RDCddbLookup::sizeHint() const
+void RDCddbLookup::lookupRecord()
 {
-  return QSize(400,120);
-}
-
-
-void RDCddbLookup::setCddbRecord(RDCddbRecord *rec)
-{
-  lookup_record=rec;
-}
-
-
-void RDCddbLookup::lookupRecord(const QString &cdda_dir,const QString &cdda_dev,
-			       const QString &hostname,Q_UINT16 port,
-			       const QString &username,const QString &appname,
-				const QString &appver)
-{
-  if(lookup_record->tracks()==0) {
+  if(cddbRecord()->tracks()==0) {
     return;
   }
 
-  lookup_username=username;
-  lookup_appname=appname;
-  lookup_appver=appver;
+  lookup_username=rda->user()->name();
+  lookup_hostname=rda->libraryConf()->cddbServer();
+  lookup_appname="rivendell";
+  lookup_appver=VERSION;
 
-  Profile("starting CD-TEXT lookup");
-  if(!cdda_dir.isEmpty()) {
-    if(ReadCdText(cdda_dir,cdda_dev)) {
-      emit done(RDCddbLookup::ExactMatch);
-      Profile("CD-TEXT lookup success");
-      return;
-    }
-  }
-  Profile("CD-TEXT lookup failure");
-
-  Profile("starting CDDB lookup");
-  if(!hostname.isEmpty()) {
-    //
-    // Set Up Default User
-    //
-    if(lookup_username.isEmpty()) {
-      if(getenv("USER")==NULL) {
-	lookup_username=RDCDDBLOOKUP_DEFAULT_USER;
-      }
-      else {
-	lookup_username=getenv("USER");
-      }
-    }
-    
-    //
-    // Get the Hostname
-    //
-    if(getenv("HOSTNAME")==NULL) {
-      lookup_hostname=RDCDDBLOOKUP_DEFAULT_HOSTNAME;
-    }
-    else {
-      lookup_hostname=getenv("HOSTNAME");
-    }
-    lookup_socket->connectToHost(hostname,port);
-  }
-}
-
-
-bool RDCddbLookup::readIsrc(const QString &cdda_dir,const QString &cdda_dev)
-{
-  return ReadIsrcs(cdda_dir,cdda_dev);
+  profile("starting CDDB lookup");
+  lookup_socket->connectToHost(lookup_hostname,RDCDDBLOOKUP_DEFAULT_PORT);
 }
 
 
@@ -161,7 +84,7 @@ void RDCddbLookup::readyReadData()
 
   while(lookup_socket->canReadLine()) {
     line=QString::fromUtf8(lookup_socket->readLine());
-    Profile("recevied from server: \""+line+"\"");
+    profile("recevied from server: \""+line+"\"");
     code=line.split(" ").at(0).toInt();
     switch(lookup_state) {
     case 0:    // Login Banner
@@ -192,12 +115,12 @@ void RDCddbLookup::readyReadData()
     case 2:    // Protocol Level Response
       if(code==201) {
 	snprintf(buffer,2048,"cddb query %08x %d",
-		lookup_record->discId(),lookup_record->tracks());
-	for(int i=0;i<lookup_record->tracks();i++) {
-	  snprintf(offset,256," %d",lookup_record->trackOffset(i));
+		cddbRecord()->discId(),cddbRecord()->tracks());
+	for(int i=0;i<cddbRecord()->tracks();i++) {
+	  snprintf(offset,256," %d",cddbRecord()->trackOffset(i));
 	  strcat(buffer,offset);
 	}
-	snprintf(offset,256," %d",lookup_record->discLength()/75);
+	snprintf(offset,256," %d",cddbRecord()->discLength()/75);
 	strcat(buffer,offset);
 	SendToServer(buffer);
 	lookup_state=3;
@@ -212,18 +135,18 @@ void RDCddbLookup::readyReadData()
       case 200:   // Exact Match
 	f0=line.split(" ");
 	if(f0.size()>=4) {
-	  lookup_record->setDiscId(f0[2].toUInt(&ok,16));
+	  cddbRecord()->setDiscId(f0[2].toUInt(&ok,16));
 	  if(!ok) {
 	    FinishCddbLookup(RDCddbLookup::ProtocolError);
 	  }
-	  lookup_record->setDiscGenre(f0[1]);
+	  cddbRecord()->setDiscGenre(f0[1]);
 	  f0.erase(f0.begin());
 	  f0.erase(f0.begin());
 	  f0.erase(f0.begin());
-	  lookup_record->setDiscTitle(f0.join(" "));
+	  cddbRecord()->setDiscTitle(f0.join(" "));
 	  snprintf(buffer,2048,"cddb read %s %08x\n",
-		   (const char *)lookup_record->discGenre().utf8(),
-		   lookup_record->discId());
+		   (const char *)cddbRecord()->discGenre().utf8(),
+		   cddbRecord()->discId());
 	  SendToServer(buffer);
 	  lookup_state=5;		
 	}
@@ -233,8 +156,8 @@ void RDCddbLookup::readyReadData()
 	break;
 
       case 210:   // Multiple Exact Matches
-	lookup_titles_box->clear();
-	lookup_titles_key.clear();
+	titlesBox()->clear();
+	titlesKey()->clear();
 	lookup_state=4;
 	break;
 
@@ -250,28 +173,28 @@ void RDCddbLookup::readyReadData()
 
     case 4:    // Process Multiple Matches
       if(line.trimmed()==".") {
-	Profile("Match list complete, showing chooser dialog...");
+	profile("Match list complete, showing chooser dialog...");
 	if(exec()) {
-	  f0=lookup_titles_key.at(lookup_titles_box->currentItem()).
+	  f0=titlesKey()->at(titlesBox()->currentItem()).
 	    split(" ",QString::SkipEmptyParts);
 	  if(f0.size()!=2) {
 	    FinishCddbLookup(RDCddbLookup::ProtocolError);
 	  }
-	  lookup_record->setDiscId(f0.at(1).toUInt(&ok,16));
+	  cddbRecord()->setDiscId(f0.at(1).toUInt(&ok,16));
 	  if(!ok) {
 	    FinishCddbLookup(RDCddbLookup::ProtocolError);
 	  }
-	  lookup_record->setDiscGenre(f0.at(0));
-	  f0=lookup_titles_box->currentText().split("/");
+	  cddbRecord()->setDiscGenre(f0.at(0));
+	  f0=titlesBox()->currentText().split("/");
 	  if(f0.size()==2) {
-	    lookup_record->setDiscTitle(f0.at(1).trimmed());
+	    cddbRecord()->setDiscTitle(f0.at(1).trimmed());
 	  }
 	  else {
-	    lookup_record->setDiscTitle(lookup_titles_box->currentText().trimmed());
+	    cddbRecord()->setDiscTitle(titlesBox()->currentText().trimmed());
 	  }
 	  snprintf(buffer,2048,"cddb read %s %08x\n",
-		   (const char *)lookup_record->discGenre().utf8(),
-		   lookup_record->discId());
+		   (const char *)cddbRecord()->discGenre().utf8(),
+		   cddbRecord()->discId());
 	  SendToServer(buffer);
 	  lookup_state=5;	
 	}
@@ -282,11 +205,11 @@ void RDCddbLookup::readyReadData()
       else {
 	f0.clear();
 	f0=line.split(" ");
-	lookup_titles_key.push_back(f0.at(0).trimmed()+" "+
+	titlesKey()->push_back(f0.at(0).trimmed()+" "+
 				    f0.at(1).trimmed());
 	f0.removeFirst();
 	f0.removeFirst();
-	lookup_titles_box->insertItem(lookup_titles_box->count(),f0.join(" ").trimmed());
+	titlesBox()->insertItem(titlesBox()->count(),f0.join(" ").trimmed());
       }
       break;
 
@@ -306,26 +229,26 @@ void RDCddbLookup::readyReadData()
 	}
 	ParsePair(&line,&tag,&value,&index);
 	if(tag=="DTITLE") {
-	  lookup_record->setDiscTitle(value.left(value.length()-1));
+	  cddbRecord()->setDiscTitle(value.left(value.length()-1));
 	}
 	if(tag=="DYEAR") {
-	  lookup_record->setDiscYear(value.toUInt());
+	  cddbRecord()->setDiscYear(value.toUInt());
 	}
 	if(tag=="EXTD") {
-	  lookup_record->
-	    setDiscExtended(lookup_record->discExtended()+
+	  cddbRecord()->
+	    setDiscExtended(cddbRecord()->discExtended()+
 			    DecodeString(value));
 	}
 	if(tag=="PLAYORDER") {
-	  lookup_record->setDiscPlayOrder(value);
+	  cddbRecord()->setDiscPlayOrder(value);
 	}
 	if((tag=="TTITLE")&&(index!=-1)) {
-	  lookup_record->setTrackTitle(index,value.left(value.length()-1));
+	  cddbRecord()->setTrackTitle(index,value.left(value.length()-1));
 	}
 	if((tag=="EXTT")&&(index!=-1)) {
-	  lookup_record->
+	  cddbRecord()->
 	    setTrackExtended(index,
-			     lookup_record->trackExtended(index)+value);
+			     cddbRecord()->trackExtended(index)+value);
 	}
       }
       break;
@@ -354,39 +277,13 @@ void RDCddbLookup::errorData(QAbstractSocket::SocketError err)
 }
 
 
-void RDCddbLookup::okData()
-{
-  done(true);
-}
-
-
-void RDCddbLookup::cancelData()
-{
-  done(false);
-}
-
-
-void RDCddbLookup::resizeEvent(QResizeEvent *e)
-{
-  int w=size().width();
-  int h=size().height();
-
-  lookup_titles_label->setGeometry(15,2,w-30,20);
-
-  lookup_titles_box->setGeometry(10,24,w-20,20);
-
-  lookup_ok_button->setGeometry(w-180,h-60,80,50);
-  lookup_cancel_button->setGeometry(w-90,h-60,80,50);
-}
-
-
 void RDCddbLookup::FinishCddbLookup(RDCddbLookup::Result res)
 {
   SendToServer("quit");
   lookup_socket->close();
   lookup_state=0;
   emit lookupDone(res);
-  Profile("CDDB lookup finished");
+  profile("CDDB lookup finished");
 }
 
 
@@ -438,133 +335,8 @@ int RDCddbLookup::GetIndex(QString *tag)
 }
 
 
-bool RDCddbLookup::ReadCdText(const QString &cdda_dir,const QString &cdda_dev)
-{
-  RDProfile *title_profile=new RDProfile();
-  bool ret=false;
-  QString str;
-  QString cmd;
-
-  //
-  // Write the Track Title Data to a Temp File
-  //
-  QByteArray output;
-  Q3Process *proc=new Q3Process(this);
-  proc->addArgument("cdda2wav");
-  proc->addArgument("-D");
-  proc->addArgument(cdda_dev);
-  proc->addArgument("--info-only");
-  proc->addArgument("-v");
-  proc->addArgument("titles");
-  proc->setWorkingDirectory(cdda_dir);
-  if(!proc->start()) {
-    delete proc;
-    return false;
-  }
-  while(proc->isRunning()) {
-    output=proc->readStderr();
-    if(output.size()>0) {  // Work around icedax(1)'s idiotic user prompt
-      if(strncmp(output,"load cdrom please and press enter",33)==0) {
-	proc->kill();
-	delete proc;
-	return false;
-      }
-    }
-  }
-  if((!proc->normalExit())||(proc->exitStatus()!=0)) {
-    delete proc;
-    return false;
-  }
-  delete proc;
-
-  //
-  // Read the Track Title Data File
-  //
-  for(int i=0;i<lookup_record->tracks();i++) {
-    title_profile->setSource(cdda_dir+QString().sprintf("/audio_%02d.inf",i+1));
-    str=title_profile->stringValue("","Albumtitle","");
-    str.remove("'");
-    if((!str.isEmpty())&&(str!="''")) {
-      lookup_record->setDiscTitle(str);
-      ret=true;
-    }
-
-    str=title_profile->stringValue("","Albumperformer","");
-    str.remove("'");
-    if((!str.isEmpty())&&(str!="''")) {
-      lookup_record->setDiscArtist(str);
-      ret=true;
-    }
-
-    str=title_profile->stringValue("","Tracktitle","");
-    str.remove("'");
-    if((!str.isEmpty())&&(str!="''")) {
-      lookup_record->setTrackTitle(i,str);
-      ret=true;
-    }
-
-    str=title_profile->stringValue("","Performer","");
-    str.remove("'");
-    if((!str.isEmpty())&&(str!="''")) {
-      lookup_record->setTrackArtist(i,str);
-      ret=true;
-    }
-  }
-  return ret;
-}
-
-
-bool RDCddbLookup::ReadIsrcs(const QString &cdda_dir,const QString &cdda_dev)
-{
-  int err=0;
-  RDProfile *title_profile=new RDProfile();
-  RDProfile *isrc_profile=new RDProfile();
-  bool ret=false;
-  QString str;
-  QString cmd;
-
-  //
-  // Write the ISRC Data to a Temp File
-  //
-  cmd=QString("CURDIR=`pwd`;cd ")+
-    cdda_dir+";cdda2wav -D "+cdda_dev+
-    " --info-only -v trackid 2> /dev/null;cd $CURDIR";
-  if((err=system(cmd))!=0) {
-    return false;
-  }
-
-  //
-  // Read the ISRC Data File
-  //
-  for(int i=0;i<lookup_record->tracks();i++) {
-    isrc_profile->setSource(cdda_dir+QString().sprintf("/audio_%02d.inf",i+1));
-    str=isrc_profile->stringValue("","ISRC","");
-    str.remove("'");
-    str.remove("-");
-    if((!str.isEmpty())&&(str!="''")) {
-      lookup_record->setIsrc(i,str);
-      ret=true;
-    }
-  }
-  delete title_profile;
-  delete isrc_profile;
-
-  return ret;
-}
-
-
 void RDCddbLookup::SendToServer(const QString &msg)
 {
   lookup_socket->writeBlock(msg+"\n",msg.length()+1);
-  Profile("sent to server: \""+msg+"\"");
-}
-
-
-void RDCddbLookup::Profile(const QString &msg)
-{
-  if(lookup_profile_msgs!=NULL) {
-    printf("%s | RDCddbLookup::%s\n",
-	    (const char *)QTime::currentTime().toString("hh:mm:ss.zzz"),
-	   (const char *)msg.toUtf8());
-  }
+  profile("sent to server: \""+msg+"\"");
 }

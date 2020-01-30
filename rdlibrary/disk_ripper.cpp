@@ -2,7 +2,7 @@
 //
 // CD Disk Ripper Dialog for Rivendell.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -56,20 +56,6 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   rip_wavedata_dialog=new RDWaveDataDialog("RDLibrary",this);
 
   //
-  // Create Temporary Directory
-  //
-  char path[PATH_MAX];
-  strncpy(path,RDTempDirectory::basePath(),PATH_MAX);
-  strcat(path,"/XXXXXX");
-  if(mkdtemp(path)==NULL) {
-    QMessageBox::warning(this,"RDLibrary - "+tr("Ripper Error"),
-			 tr("Unable to create temporary directory!"));
-  }
-  else {
-    rip_cdda_dir.setPath(path);
-  }
-
-  //
   // The CDROM Drive
   //
   if(rip_profile_rip) {
@@ -94,8 +80,8 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   else {
     rip_cddb_lookup=new RDCddbLookup("RDLibrary",NULL,this);
   }
-  connect(rip_cddb_lookup,SIGNAL(lookupDone(RDCddbLookup::Result)),
-	  this,SLOT(cddbDoneData(RDCddbLookup::Result)));
+  connect(rip_cddb_lookup,SIGNAL(lookupDone(RDDiscLookup::Result)),
+	  this,SLOT(cddbDoneData(RDDiscLookup::Result)));
 
   //
   // Artist Label
@@ -326,14 +312,6 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
 
 DiskRipper::~DiskRipper()
 {
-  QStringList files=rip_cdda_dir.entryList();
-  for(int i=0;i<files.size();i++) {
-    if((files[i]!=".")&&(files[i]!="..")) {
-      rip_cdda_dir.remove(files[i]);
-    }
-  }
-  rmdir(rip_cdda_dir.path());
-
   rip_cdrom->close();
   delete rip_cdrom;
   delete rip_track_list;
@@ -407,8 +385,7 @@ void DiskRipper::ripDiskButtonData()
   //
   if(!rip_isrc_read) {
     if(rda->libraryConf()->readIsrc()) {
-      rip_cddb_lookup->
-	readIsrc(rip_cdda_dir.path(),rda->libraryConf()->ripperDevice());
+      rip_cddb_lookup->readIsrc();
     }
     rip_isrc_read=true;
   }
@@ -476,8 +453,6 @@ void DiskRipper::ripDiskButtonData()
     item->setText(5,"");
     item=(RDListViewItem *)item->nextSibling();
   }
-
-//  rip_cdrom->eject();
 
   if(rip_aborting) {
     QMessageBox::information(this,tr("Rip Complete"),tr("Rip aborted!"));
@@ -789,10 +764,7 @@ void DiskRipper::mediaChangedData()
   rip_cddb_record.clear();
   rip_cdrom->setCddbRecord(&rip_cddb_record);
   rip_cddb_lookup->setCddbRecord(&rip_cddb_record);
-  rip_cddb_lookup->
-    lookupRecord(rip_cdda_dir.path(),rda->libraryConf()->ripperDevice(),
-		 rda->libraryConf()->cddbServer(),8880,
-		 RIPPER_CDDB_USER,PACKAGE_NAME,VERSION);
+  rip_cddb_lookup->lookup();
 
   QApplication::restoreOverrideCursor();
 }
@@ -812,10 +784,10 @@ void DiskRipper::stoppedData()
 }
 
 
-void DiskRipper::cddbDoneData(RDCddbLookup::Result result)
+void DiskRipper::cddbDoneData(RDDiscLookup::Result result)
 {
   switch(result) {
-      case RDCddbLookup::ExactMatch:
+      case RDDiscLookup::ExactMatch:
 	if(rip_cdrom->status()!=RDCdPlayer::Ok) {
 	  return;
 	}
@@ -835,7 +807,7 @@ void DiskRipper::cddbDoneData(RDCddbLookup::Result result)
 	rip_apply_box->setEnabled(true);
 	rip_apply_label->setEnabled(true);
 	break;
-      case RDCddbLookup::PartialMatch:
+      case RDDiscLookup::PartialMatch:
 	rip_track=-1;
 	printf("Partial Match!\n");
 	break;

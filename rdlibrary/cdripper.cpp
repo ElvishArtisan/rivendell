@@ -54,20 +54,6 @@ CdRipper::CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
   setMinimumSize(sizeHint());
 
   //
-  // Create Temporary Directory
-  //
-  char path[PATH_MAX];
-  strncpy(path,RDTempDirectory::basePath(),PATH_MAX);
-  strcat(path,"/XXXXXX");
-  if(mkdtemp(path)==NULL) {
-    QMessageBox::warning(this,"RDLibrary - "+tr("Ripper Error"),
-			 tr("Unable to create temporary directory!"));
-  }
-  else {
-    rip_cdda_dir.setPath(path);
-  }
-
-  //
   // Target Cut
   //
   rip_cut=new RDCut(cutname);
@@ -97,8 +83,8 @@ CdRipper::CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
   else {
     rip_cddb_lookup=new RDCddbLookup("RDLibrary",NULL,this);
   }
-  connect(rip_cddb_lookup,SIGNAL(lookupDone(RDCddbLookup::Result)),
-	  this,SLOT(cddbDoneData(RDCddbLookup::Result)));
+  connect(rip_cddb_lookup,SIGNAL(lookupDone(RDDiscLookup::Result)),
+	  this,SLOT(cddbDoneData(RDDiscLookup::Result)));
 
   //
   // Title Selector
@@ -278,14 +264,6 @@ CdRipper::CdRipper(QString cutname,RDCddbRecord *rec,RDLibraryConf *conf,
 
 CdRipper::~CdRipper()
 {
-  QStringList files=rip_cdda_dir.entryList();
-  for(int i=0;i<files.size();i++) {
-    if((files[i]!=".")&&(files[i]!="..")) {
-      rip_cdda_dir.remove(files[i]);
-    }
-  }
-  rmdir(rip_cdda_dir.path());
-
   rip_cdrom->close();
   delete rip_cdrom;
   delete rip_track_list;
@@ -434,7 +412,7 @@ void CdRipper::ripTrackButtonData()
   //
   if(!rip_isrc_read) {
     if(rda->libraryConf()->readIsrc()) {
-      rip_cddb_lookup->readIsrc(rip_cdda_dir.path(),rip_conf->ripperDevice());
+      rip_cddb_lookup->readIsrc();
     }
     rip_isrc_read=true;
   }
@@ -575,9 +553,7 @@ void CdRipper::mediaChangedData()
   rip_cdrom->setCddbRecord(rip_cddb_record);
   rip_cddb_lookup->setCddbRecord(rip_cddb_record);
   Profile("starting metadata lookup");
-  rip_cddb_lookup->lookupRecord(rip_cdda_dir.path(),rip_conf->ripperDevice(),
-				rip_conf->cddbServer(),8880,
-				RIPPER_CDDB_USER,PACKAGE_NAME,VERSION);
+  rip_cddb_lookup->lookup();
   Profile("metadata lookup finished");
 }
 
@@ -596,10 +572,10 @@ void CdRipper::stoppedData()
 }
 
 
-void CdRipper::cddbDoneData(RDCddbLookup::Result result)
+void CdRipper::cddbDoneData(RDDiscLookup::Result result)
 {
   switch(result) {
-  case RDCddbLookup::ExactMatch:
+  case RDDiscLookup::ExactMatch:
     if(rip_cdrom->status()!=RDCdPlayer::Ok) {
       return;
     }
@@ -618,7 +594,7 @@ void CdRipper::cddbDoneData(RDCddbLookup::Result result)
     trackSelectionChangedData();
     break;
 
-  case RDCddbLookup::PartialMatch:
+  case RDDiscLookup::PartialMatch:
     rip_track[0]=-1;
     rip_track[1]=-1;
     printf("Partial Match!\n");
