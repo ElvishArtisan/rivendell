@@ -41,6 +41,26 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // NEW SCHEMA REVERSIONS GO HERE...
 
   //
+  // Revert 313
+  //
+  if((cur_schema==313)&&(set_schema<cur_schema)) {
+    DropColumn("CUTS","RELEASE_MBID");
+    DropColumn("CUTS","TRACK_MBID");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
+  // Revert 312
+  //
+  if((cur_schema==312)&&(set_schema<cur_schema)) {
+    DropColumn("RDLIBRARY","MB_SERVER");
+    DropColumn("RDLIBRARY","CD_SERVER_TYPE");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 311
   //
   if((cur_schema==311)&&(set_schema<cur_schema)) {

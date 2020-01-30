@@ -111,9 +111,11 @@ dist_librd_la_SOURCES = dbversion.h\
                         rddelete.cpp rddelete.h\
                         rddialog.cpp rddialog.h\
                         rddisclookup.cpp rddisclookup.h\
+                        rddisclookup_factory.cpp rddisclookup_factory.h\
                         rddiscrecord.cpp rddiscrecord.h\
                         rddownload.cpp rddownload.h\
                         rddropbox.cpp rddropbox.h\
+                        rddummylookup.cpp rddummylookup.h\
                         rdedit_audio.cpp rdedit_audio.h\
                         rdedit_panel_name.cpp rdedit_panel_name.h\
                         rdemptycart.cpp rdemptycart.h\
@@ -275,6 +277,7 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rddialog.cpp\
                           moc_rddisclookup.cpp\
                           moc_rddownload.cpp\
+                          moc_rddummylookup.cpp\
                           moc_rdedit_audio.cpp\
                           moc_rdedit_panel_name.cpp\
                           moc_rdemptycart.cpp\

@@ -25,6 +25,7 @@
 #include <rdcdripper.h>
 #include <rdconf.h>
 #include <rdcut_dialog.h>
+#include <rddisclookup_factory.h>
 #include <rdgroup.h>
 #include <rdlist_groups.h>
 #include <rdtempdirectory.h>
@@ -72,15 +73,17 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   rip_cdrom->open();
 
   //
-  // CDDB Stuff
+  // Disc Metadata Lookup
   //
   if(rip_profile_rip) {
-    rip_cddb_lookup=new RDCddbLookup("RDLibrary",stdout,this);
+    rip_disc_lookup=RDDiscLookupFactory(rda->libraryConf()->cdServerType(),
+					"RDLibrary",stdout,this);
   }
   else {
-    rip_cddb_lookup=new RDCddbLookup("RDLibrary",NULL,this);
+    rip_disc_lookup=RDDiscLookupFactory(rda->libraryConf()->cdServerType(),
+					"RDLibrary",NULL,this);
   }
-  connect(rip_cddb_lookup,SIGNAL(lookupDone(RDDiscLookup::Result)),
+  connect(rip_disc_lookup,SIGNAL(lookupDone(RDDiscLookup::Result)),
 	  this,SLOT(cddbDoneData(RDDiscLookup::Result)));
 
   //
@@ -117,12 +120,15 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   rip_apply_box=new QCheckBox(this);
   rip_apply_box->setChecked(true);
   rip_apply_box->setDisabled(true);
-  rip_apply_label=
-    new QLabel(rip_apply_box,tr("Apply FreeDB Values to Carts"),this);
+  rip_apply_label=new QLabel(rip_apply_box,tr("Apply")+" "+
+			     rip_disc_lookup->sourceName()+" "+
+			     tr("Values to Carts"),this);
   rip_apply_label->setFont(labelFont());
   rip_apply_label->setAlignment(Qt::AlignLeft);
   rip_apply_box->setChecked(false);
   rip_apply_label->setDisabled(true);
+  rip_apply_box->setVisible(!rip_disc_lookup->sourceName().isNull());
+  rip_apply_label->setVisible(!rip_disc_lookup->sourceName().isNull());
 
   //
   // Track List
@@ -379,18 +385,6 @@ void DiskRipper::ripDiskButtonData()
     }
   }
   rip_disk_bar->setMaximum(tracks);
-
-  /*
-  //
-  // Read ISRCs
-  //
-  if(!rip_isrc_read) {
-    if(rda->libraryConf()->readIsrc()) {
-      rip_cddb_lookup->readIsrc();
-    }
-    rip_isrc_read=true;
-  }
-  */
 
   //
   // Set Artist and Album
@@ -763,10 +757,10 @@ void DiskRipper::mediaChangedData()
     }
     l->setText(1,RDGetTimeLength(rip_cdrom->trackLength(i)));
   }
-  rip_cddb_record.clear();
-  rip_cdrom->setCddbRecord(&rip_cddb_record);
-  rip_cddb_lookup->setCddbRecord(&rip_cddb_record);
-  rip_cddb_lookup->lookup();
+  rip_disc_record.clear();
+  rip_cdrom->setCddbRecord(&rip_disc_record);
+  rip_disc_lookup->setCddbRecord(&rip_disc_record);
+  rip_disc_lookup->lookup();
 
   QApplication::restoreOverrideCursor();
 }
@@ -793,17 +787,17 @@ void DiskRipper::cddbDoneData(RDDiscLookup::Result result)
 	if(rip_cdrom->status()!=RDCdPlayer::Ok) {
 	  return;
 	}
-	rip_artist_edit->setText(rip_cddb_record.discArtist());
-	rip_album_edit->setText(rip_cddb_record.discAlbum());
-	rip_other_edit->setText(rip_cddb_record.discExtended());
-	for(int i=0;i<rip_cddb_record.tracks();i++) {
+	rip_artist_edit->setText(rip_disc_record.discArtist());
+	rip_album_edit->setText(rip_disc_record.discAlbum());
+	rip_other_edit->setText(rip_disc_record.discExtended());
+	for(int i=0;i<rip_disc_record.tracks();i++) {
 	  rip_track_list->findItem(QString().sprintf("%d",i+1),0)->
-	    setText(2,rip_cddb_record.trackTitle(i));
+	    setText(2,rip_disc_record.trackTitle(i));
 	  rip_track_list->findItem(QString().sprintf("%d",i+1),0)->
-	    setText(3,rip_cddb_record.trackExtended(i));
-	  rip_wave_datas[i]->setTitle(rip_cddb_record.trackTitle(i));
-	  rip_wave_datas[i]->setArtist(rip_cddb_record.discArtist());
-	  rip_wave_datas[i]->setAlbum(rip_cddb_record.discAlbum());
+	    setText(3,rip_disc_record.trackExtended(i));
+	  rip_wave_datas[i]->setTitle(rip_disc_record.trackTitle(i));
+	  rip_wave_datas[i]->setArtist(rip_disc_record.discArtist());
+	  rip_wave_datas[i]->setAlbum(rip_disc_record.discAlbum());
 	}
 	rip_apply_box->setChecked(true);
 	rip_apply_box->setEnabled(true);
@@ -1032,7 +1026,7 @@ void DiskRipper::RipTrack(int track,int end_track,QString cutname,QString title)
     case RDAudioImport::ErrorOk:
       cart->setMetadata(rip_wave_datas[track-1]);
       cut->setDescription(rip_wave_datas[track-1]->title());
-      cut->setIsrc(rip_cddb_record.isrc(rip_track_number-1));
+      cut->setIsrc(rip_disc_record.isrc(rip_track_number-1));
       cart->clearPending();
       SendNotification(RDNotification::AddAction,cart->number());
       break;

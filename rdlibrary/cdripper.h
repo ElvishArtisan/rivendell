@@ -70,8 +70,8 @@ class CdRipper : public RDDialog
   void Profile(const QString &msg);
   RDLibraryConf *rip_conf;
   RDCdPlayer *rip_cdrom;
-  RDDiscRecord *rip_cddb_record;
-  RDDiscLookup *rip_cddb_lookup;
+  RDDiscRecord *rip_disc_record;
+  RDDiscLookup *rip_disc_lookup;
   RDCut *rip_cut;
   QLabel *rip_track_label;
   RDListView *rip_track_list;

@@ -23,6 +23,7 @@
 #include <rdaudioimport.h>
 #include <rdcdripper.h>
 #include <rdconf.h>
+#include <rddisclookup_factory.h>
 #include <rdtempdirectory.h>
 
 #include "cdripper.h"
@@ -41,7 +42,7 @@ CdRipper::CdRipper(QString cutname,RDDiscRecord *rec,RDLibraryConf *conf,
   rip_profile_rip=profile_rip;
   //  rip_isrc_read=false;
   rip_conf=conf;
-  rip_cddb_record=rec;
+  rip_disc_record=rec;
   rip_track[0]=-1;
   rip_track[1]=-1;
   rip_title=NULL;
@@ -75,15 +76,17 @@ CdRipper::CdRipper(QString cutname,RDDiscRecord *rec,RDLibraryConf *conf,
   rip_cdrom->open();
 
   //
-  // CDDB Stuff
+  // Disc Metadata Lookup
   //
   if(rip_profile_rip) {
-    rip_cddb_lookup=new RDCddbLookup("RDLibrary",stdout,this);
+    rip_disc_lookup=RDDiscLookupFactory(rda->libraryConf()->cdServerType(),
+					"RDLibrary",stdout,this);
   }
   else {
-    rip_cddb_lookup=new RDCddbLookup("RDLibrary",NULL,this);
+    rip_disc_lookup=RDDiscLookupFactory(rda->libraryConf()->cdServerType(),
+					"RDLibrary",NULL,this);
   }
-  connect(rip_cddb_lookup,SIGNAL(lookupDone(RDDiscLookup::Result)),
+  connect(rip_disc_lookup,SIGNAL(lookupDone(RDDiscLookup::Result)),
 	  this,SLOT(cddbDoneData(RDDiscLookup::Result)));
 
   //
@@ -121,17 +124,20 @@ CdRipper::CdRipper(QString cutname,RDDiscRecord *rec,RDLibraryConf *conf,
   rip_other_edit->setReadOnly(true);
 
   //
-  // Apply FreeDB Check Box
+  // Apply Metadata Check Box
   //
   rip_apply_box=new QCheckBox(this);
   rip_apply_box->setChecked(true);
   rip_apply_box->setDisabled(true);
-  rip_apply_label=
-    new QLabel(rip_apply_box,tr("Apply FreeDB Values to Cart"),this);
+  rip_apply_label=new QLabel(rip_apply_box,tr("Apply")+" "+
+			     rip_disc_lookup->sourceName()+" "+
+			     tr("Values to Cart"),this);
   rip_apply_label->setFont(labelFont());
   rip_apply_label->setAlignment(Qt::AlignLeft);
   rip_apply_box->setChecked(false);
   rip_apply_label->setDisabled(true);
+  rip_apply_box->setVisible(!rip_disc_lookup->sourceName().isNull());
+  rip_apply_label->setVisible(!rip_disc_lookup->sourceName().isNull());
 
   //
   // Track List
@@ -408,18 +414,6 @@ void CdRipper::ripTrackButtonData()
   }
 
   //
-  // Read ISRCs
-  //
-  /*
-  if(!rip_isrc_read) {
-    if(rda->libraryConf()->readIsrc()) {
-      rip_cddb_lookup->readIsrc();
-    }
-    rip_isrc_read=true;
-  }
-  */
-
-  //
   // Rip from disc
   //
   RDAudioImport::ErrorCode conv_err;
@@ -536,7 +530,6 @@ void CdRipper::mediaChangedData()
 {
   Q3ListViewItem *l;
 
-  //  rip_isrc_read=false;
   rip_track_list->clear();
   rip_track[0]=-1;
   rip_track[1]=-1;
@@ -551,11 +544,11 @@ void CdRipper::mediaChangedData()
     }
     l->setText(1,RDGetTimeLength(rip_cdrom->trackLength(i)));
   }
-  rip_cddb_record->clear();
-  rip_cdrom->setCddbRecord(rip_cddb_record);
-  rip_cddb_lookup->setCddbRecord(rip_cddb_record);
+  rip_disc_record->clear();
+  rip_cdrom->setCddbRecord(rip_disc_record);
+  rip_disc_lookup->setCddbRecord(rip_disc_record);
   Profile("starting metadata lookup");
-  rip_cddb_lookup->lookup();
+  rip_disc_lookup->lookup();
   Profile("metadata lookup finished");
 }
 
@@ -581,14 +574,14 @@ void CdRipper::cddbDoneData(RDDiscLookup::Result result)
     if(rip_cdrom->status()!=RDCdPlayer::Ok) {
       return;
     }
-    rip_artist_edit->setText(rip_cddb_record->discArtist());
-    rip_album_edit->setText(rip_cddb_record->discAlbum());
-    rip_other_edit->setText(rip_cddb_record->discExtended());
-    for(int i=0;i<rip_cddb_record->tracks();i++) {
+    rip_artist_edit->setText(rip_disc_record->discArtist());
+    rip_album_edit->setText(rip_disc_record->discAlbum());
+    rip_other_edit->setText(rip_disc_record->discExtended());
+    for(int i=0;i<rip_disc_record->tracks();i++) {
       rip_track_list->findItem(QString().sprintf("%d",i+1),0)->
-	setText(2,rip_cddb_record->trackTitle(i));
+	setText(2,rip_disc_record->trackTitle(i));
       rip_track_list->findItem(QString().sprintf("%d",i+1),0)->
-	setText(3,rip_cddb_record->trackExtended(i));
+	setText(3,rip_disc_record->trackExtended(i));
     }
     rip_apply_box->setChecked(true);
     rip_apply_box->setEnabled(true);

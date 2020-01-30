@@ -302,7 +302,7 @@ Do you still want to delete?</source>
     </message>
     <message>
         <source>Apply FreeDB Values to Cart</source>
-        <translation>Bruk FreeDB-opplysningar på korga</translation>
+        <translation type="obsolete">Bruk FreeDB-opplysningar på korga</translation>
     </message>
     <message>
         <source>Tracks</source>
@@ -450,6 +450,14 @@ Rip</source>
 Track</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Apply</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Values to Cart</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>DiskGauge</name>
@@ -478,7 +486,7 @@ Track</source>
     </message>
     <message>
         <source>Apply FreeDB Values to Carts</source>
-        <translation>Bruk FreeDB-opplysningar på korgene</translation>
+        <translation type="obsolete">Bruk FreeDB-opplysningar på korgene</translation>
     </message>
     <message>
         <source>Tracks</source>
@@ -714,6 +722,14 @@ Selection</source>
     </message>
     <message>
         <source>Unable to allocate cart in group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Apply</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Values to Carts</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

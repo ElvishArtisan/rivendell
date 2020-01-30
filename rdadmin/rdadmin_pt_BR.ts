@@ -2874,6 +2874,18 @@ configured to run the CAE service in order to populate the audio resources datab
         <source>Output</source>
         <translation type="unfinished">Saída</translation>
     </message>
+    <message>
+        <source>&amp;CD Metadata Source:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FreeDB Server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MusicBrainz Server</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditRDLogedit</name>

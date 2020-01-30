@@ -1431,6 +1431,10 @@ Cartão</translation>
         <source>Unable to read CD.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Unknown</source>
+        <translation type="obsolete">Desconhecido</translation>
+    </message>
 </context>
 <context>
     <name>RDEditAudio</name>

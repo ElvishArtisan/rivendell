@@ -19447,3 +19447,13 @@
 	* Renamed the 'RDCddbRecord' class to 'RDDiscRecord'.
 	* Removed support for CD-TEXT from the CD rippers.
 	* Removed the icedax(1) dependency.
+2020-01-30 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'RDLIBRARY.CD_SERVER_TYPE' field to the database.
+	* Added an 'RDLIBRARY.MB_SERVER' field to the database.
+	* Incremented the database version to 312.
+	* Added a 'CD Metadata Source' dropdown to the 'Configure RDLibrary'
+	dialog in rdadmin(1).
+	* Added a 'Dummy' CD metadata lookup source in the 'RDDummyLookup'
+	class.
+	* Added a 'CUTS.TRACK_MBID' field to the database.
+	* Added a 'CUTS.RELEASE_MBID' field to the database.

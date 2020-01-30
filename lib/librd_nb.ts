@@ -1425,6 +1425,10 @@ Cart</source>
         <source>Unable to read CD.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Unknown</source>
+        <translation type="obsolete">Ukjent</translation>
+    </message>
 </context>
 <context>
     <name>RDEditAudio</name>

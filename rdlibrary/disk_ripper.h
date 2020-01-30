@@ -76,8 +76,8 @@ class DiskRipper : public RDDialog
   void SetArtistAlbum();
   void SendNotification(RDNotification::Action action,unsigned cartnum);
   RDCdPlayer *rip_cdrom;
-  RDDiscRecord rip_cddb_record;
-  RDCddbLookup *rip_cddb_lookup;
+  RDDiscRecord rip_disc_record;
+  RDDiscLookup *rip_disc_lookup;
   QLabel *rip_track_label;
   Q3ListView *rip_track_list;
   QPushButton *rip_rip_button;

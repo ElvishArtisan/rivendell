@@ -2980,6 +2980,18 @@ equipo configurado para ejecutar CAE para obtener la información de audio.</tra
         <source>Output</source>
         <translation type="unfinished">Salida</translation>
     </message>
+    <message>
+        <source>&amp;CD Metadata Source:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FreeDB Server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MusicBrainz Server</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditRDLogedit</name>

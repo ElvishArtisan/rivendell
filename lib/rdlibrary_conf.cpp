@@ -263,6 +263,19 @@ void RDLibraryConf::setRipperLevel(int level) const
 }
 
 
+RDLibraryConf::CdServerType RDLibraryConf::cdServerType() const
+{
+  return (RDLibraryConf::CdServerType)RDGetSqlValue("RDLIBRARY","ID",lib_id,
+						    "CD_SERVER_TYPE").toInt();  
+}
+
+
+void RDLibraryConf::setCdServerType(RDLibraryConf::CdServerType type) const
+{
+  SetRow("CD_SERVER_TYPE",(unsigned)type);
+}
+
+
 QString RDLibraryConf::cddbServer() const
 {
   return RDGetSqlValue("RDLIBRARY","ID",lib_id,"CDDB_SERVER").toString();
@@ -272,6 +285,18 @@ QString RDLibraryConf::cddbServer() const
 void RDLibraryConf::setCddbServer(QString server) const
 {
   SetRow("CDDB_SERVER",server);
+}
+
+
+QString RDLibraryConf::mbServer() const
+{
+  return RDGetSqlValue("RDLIBRARY","ID",lib_id,"MB_SERVER").toString();
+}
+
+
+void RDLibraryConf::setMbServer(QString server) const
+{
+  SetRow("MB_SERVER",server);
 }
 
 
@@ -376,6 +401,30 @@ void RDLibraryConf::getSettings(RDSettings *s) const
     s->setSampleRate(q->value(0).toUInt());
   }
   delete q;
+}
+
+
+QString RDLibraryConf::cdServerTypeText(RDLibraryConf::CdServerType type)
+{
+  QString ret=QObject::tr("Unknown");
+
+  switch(type) {
+  case RDLibraryConf::DummyType:
+    ret="None";
+    break;
+
+  case RDLibraryConf::CddbType:
+    ret="FreeDB";
+    break;
+
+  case RDLibraryConf::MusicBrainzType:
+    ret="MusicBrainz";
+    break;
+
+  case RDLibraryConf::LastType:
+    break;
+  }
+  return ret;
 }
 
 
