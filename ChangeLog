@@ -2984,7 +2984,7 @@
 	* Fixed up font sizing for SuSE 9.1 in 'rdadmin/edit_rdlibrary.cpp'.
 	* Fixed up font sizing for SuSE 9.1 in 'rdadmin/edit_decks.cpp'.
 	* Fixed up font sizing for SuSE 9.1 in 'rdadmin/edit_ttys.cpp'.
-	* Added a default font specification in 
+	* Added a default font specification in
 	'rdlogmanager/rdlogmanager.cpp'.
 	* Fixed up font sizing for SuSE 9.1 in 'rdlogmanager/add_event.cpp'.
 	* Fixed up font sizing for SuSE 9.1 in 'rdlogmanager/add_clock.cpp'.
@@ -4338,7 +4338,7 @@
 	* Added the 'tr()' wrapper to strings in 'rdcatch/deckmon.cpp'.
 	* Added the 'tr()' wrapper to strings in 'rdcatch/edit_cartevent.cpp'.
 	* Added the 'tr()' wrapper to strings in 'rdcatch/edit_recording.cpp'.
-	* Added the 'tr()' wrapper to strings in 
+	* Added the 'tr()' wrapper to strings in
 	'rdcatch/edit_switchevent.cpp'.
 	* Added the 'tr()' wrapper to strings in 'rdcatch/rdcatch.cpp'.
 	* Added the 'tr()' wrapper to strings in 'rdlibrary/add_cart.cpp'.
@@ -8526,12 +8526,12 @@
         * Added option to stop only audio on a specific port in rdairplay/log_play.cpp (for macro use)
         * Added option to fade out when stopping audio in rdairplay/log_play.cpp (for macro use)
         * Added CopyTo, AddTo, DeleteFrom panel buttons to rdairplay/rdairplay.cpp
-        * Added "Overlap" transition to lib/rdlog_event.cpp, lib/rdlog_line.cpp, lib/rdlog_line.h, 
-          rdadmin/edit_rdairplay.cpp, rdadmin/edit_rdlogedit.cpp, rdairplay/button_log.cpp, 
-          rdairplay/edit_event.cpp, rdairplay/list_log.cpp, rdairplay/loglinebox.cpp, 
-          rdairplay/log_play.cpp, rdairplay/log_play.cpp, rdairplay/pie_counter.cpp, 
+        * Added "Overlap" transition to lib/rdlog_event.cpp, lib/rdlog_line.cpp, lib/rdlog_line.h,
+          rdadmin/edit_rdairplay.cpp, rdadmin/edit_rdlogedit.cpp, rdairplay/button_log.cpp,
+          rdairplay/edit_event.cpp, rdairplay/list_log.cpp, rdairplay/loglinebox.cpp,
+          rdairplay/log_play.cpp, rdairplay/log_play.cpp, rdairplay/pie_counter.cpp,
           rdlogedit/edit_chain.cpp, rdlogedit/edit_log.cpp, rdlogedit/edit_logline.cpp,
-          rdlogedit/edit_marker.cpp, rdlogedit/edit_track.cpp, rdlogedit/log_listview.cpp, 
+          rdlogedit/edit_marker.cpp, rdlogedit/edit_track.cpp, rdlogedit/log_listview.cpp,
           rdlogedit/voice_tracker.cpp, rdlogmanager/edit_event.cpp, rdlogmanager/import_listview.cpp,
         * Added macros PD and MD to lib/rdmacro.cpp and lib/rdmacro.h
         * Added setDuckVolume() and duckVolume() methods to lib/rdpanel_button.cpp
@@ -9153,7 +9153,7 @@
 2007-12-9 Dan Mills <dmills@exponent.myzen.co.uk>
 	*lib/rdwavefile.cpp; Added code to (hopefully) make this work on
 	big endian hardware (PPC), alsa is still going to be broken, but
-	jack might now work. 
+	jack might now work.
 2007-12-12 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'STATIONS.FILTER_MODE' field to the database.
 	* Added 'RDStation::filterMode()' and
@@ -9668,7 +9668,7 @@
 	whose title contained a quotation mark to fail to import properly.
 	* Modified 'rdadmin/edit_svc.cpp' to allow the length of the
 	'title' field of log import files to be up to 255 characters
-	long. 
+	long.
 2008-08-04 Fred Gleason <fredg@paravelsystems.com>
 	* Modified 'lib/rdcart.cpp' to allow use of string values
 	containing special characters.
@@ -19434,3 +19434,6 @@
 2020-01-28 Fred Gleason <fredg@paravelsystems.com>
 	* Added a section concerning default configuration files to the
 	'PULL REQUEST CHECKLIST' section of 'CODINGSTYLE'.
+2020-01-31 Gabriele Fergola <workino@gmail.com>
+  * Create pypad_shoutcast.py to update metadata on shoutcast v1 e v2
+	  with utf8 support.
