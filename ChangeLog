@@ -19421,3 +19421,16 @@
 	* Switched from MM/DD/YYYY to DD MMM YYYY date formats in 'NEWS'.
 2020-01-24 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.2.1.
+2020-01-27 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'delta-seconds' modifier to Filepath Wildcards.
+2020-01-27 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'RDCmdSwitch' that caused empty argument values
+	to be returned as a null QString.
+2020-01-27 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'datdecode_test' that made it impossible to
+	test empty strings.
+2020-01-27 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.2.1int0.
+2020-01-28 Fred Gleason <fredg@paravelsystems.com>
+	* Added a section concerning default configuration files to the
+	'PULL REQUEST CHECKLIST' section of 'CODINGSTYLE'.

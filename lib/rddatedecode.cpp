@@ -2,7 +2,7 @@
 //
 // Decode Rivendell Date Macros
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -32,17 +32,58 @@ QString RDDateDecode(QString str,const QDate &date,RDStation *station,
   bool initial_case=false;
   QString field;
   int offset=0;
+  int dsecs=0;
+  QString dsecs_str;
 
   for(int i=0;i<str.length();i++) {
     field="";
     offset=0;
-    if(str.at(i)!='%') {
+    if(str.at(i)!=QChar('%')) {
       string+=str.at(i);
     }
     else {
+      if(i>=(str.length()-1)) {  // Out of characters to examine!
+	return str;
+      }
+
+      //
+      // Delta Seconds Modifier
+      //
+      dsecs=0;
+      dsecs_str="";
       i++;
       offset++;
-      if(((const char *)str)[i]=='^') {
+      if((str.at(i)==QChar('+'))||(str.at(i)==QChar('-'))||
+	 (str.at(i).category()==QChar::Number_DecimalDigit)) {
+	dsecs_str=str.at(i);
+	i++;
+	offset++;
+	while((i<str.length()-1)&&
+	      (str.at(i).category()==QChar::Number_DecimalDigit)) {
+	  dsecs_str+=str.at(i);
+	  dsecs=dsecs_str.toInt();
+	  i++;
+	  offset++;
+	}
+	i--;
+	offset--;
+      }
+      else {
+	i--;
+	offset--;
+      }
+      QDate dt(date.addDays(dsecs/86400));
+
+      if(i>=(str.length()-1)) {  // Out of characters to examine!
+	return str;
+      }
+
+      //
+      // All Upcase Modifier
+      //
+      i++;
+      offset++;
+      if(str.at(i)==QChar('^')) {
 	upper_case=true;
 	i++;
 	offset++;
@@ -50,7 +91,11 @@ QString RDDateDecode(QString str,const QDate &date,RDStation *station,
       else {
 	upper_case=false;
       }
-      if(((const char *)str)[i]=='$') {
+
+      //
+      // Initial Upcase Modifier
+      //
+      if(str.at(i)==QChar('$')) {
 	initial_case=true;
 	i++;
 	offset++;
@@ -58,68 +103,72 @@ QString RDDateDecode(QString str,const QDate &date,RDStation *station,
       else {
 	initial_case=false;
       }
-      switch(((const char *)str)[i]) {
+
+      //
+      // Wildcard Lookup
+      //
+      switch(str.at(i).latin1()) {
       case 'a':   // Abbreviated weekday name
-	field=QDate::shortDayName(date.dayOfWeek()).lower();
+	field=QDate::shortDayName(dt.dayOfWeek()).lower();
 	break;
 
       case 'A':   // Full weekday name
-	field=QDate::longDayName(date.dayOfWeek()).lower();
+	field=QDate::longDayName(dt.dayOfWeek()).lower();
 	break;
 
       case 'b':   // Abbreviated month name
       case 'h':
-	field=QDate::shortMonthName(date.month()).lower();
+	field=QDate::shortMonthName(dt.month()).lower();
       break;
 
       case 'B':   // Full month name
-	field=QDate::longMonthName(date.month()).lower();
+	field=QDate::longMonthName(dt.month()).lower();
 	break;
 
       case 'C':   // Century
-	field=QString().sprintf("%02d",date.year()/100);
+	field=QString().sprintf("%02d",dt.year()/100);
 	break;
 
       case 'd':   // Day (01 - 31)
-	field=QString().sprintf("%02d",date.day());
+	field=QString().sprintf("%02d",dt.day());
 	break;
 
       case 'D':   // Date (mm-dd-yy)
-	field=date.toString("dd-MM-yy");
+	field=dt.toString("dd-MM-yy");
 	break;
 
       case 'e':   // Day ( 1 - 31)
-	field=QString().sprintf("%2d",date.day());
+	field=QString().sprintf("%2d",dt.day());
 	break;
 
       case 'E':   // Day (1 - 31)
-	field=QString().sprintf("%d",date.day());
+	field=QString().sprintf("%d",dt.day());
 	break;
 
       case 'F':   // Date (yyyy-mm-dd)
-	field=date.toString("yyyy-MM-dd");
+	field=dt.toString("yyyy-MM-dd");
 	break;
 
       case 'g':   // Two digit year number (as per ISO 8601)
-	date.weekNumber(&yearnum);
+	dt.weekNumber(&yearnum);
 	field=QString().sprintf("%02d",yearnum-2000);
 	break;
 
       case 'G':   // Four digit year number (as per ISO 8601)
-	date.weekNumber(&yearnum);
+	dt.weekNumber(&yearnum);
 	field=QString().sprintf("%04d",yearnum);
 	break;
 
       case 'j':   // Day of year
-	field=QString().sprintf("%03d",date.dayOfYear());
+	field=QString().sprintf("%03d",dt.dayOfYear());
 	break;
 
       case 'l':   // Unpadded Month (1 - 12)
-	field=QString().sprintf("%d",date.month());
+	field=QString().sprintf("%d",dt.month());
 	break;
 
       case 'm':   // Month (01 - 12)
-	field=QString().sprintf("%02d",date.month());
+	field=QString().sprintf("%02d",dt.month());
 	break;
 
       case 'r':   // Rivendell Host Name
@@ -137,16 +186,16 @@ QString RDDateDecode(QString str,const QDate &date,RDStation *station,
 	break;
 
       case 'u':   // Day of week (numeric, 1..7, 1=Monday)
-	field=QString().sprintf("%d",date.dayOfWeek());
+	field=QString().sprintf("%d",dt.dayOfWeek());
 	break;
 	    
       case 'V':   // Week number (as per ISO 8601)
       case 'W':
-	field=QString().sprintf("%d",date.weekNumber());
+	field=QString().sprintf("%d",dt.weekNumber());
       break;
 
       case 'w':   // Day of week (numeric, 0..6, 0=Sunday)
-	dow=date.dayOfWeek();
+	dow=dt.dayOfWeek();
 	if(dow==7) {
 	  dow=0;
 	}
@@ -154,11 +203,11 @@ QString RDDateDecode(QString str,const QDate &date,RDStation *station,
 	break;
 	    
       case 'y':   // Year (yy)
-	field=QString().sprintf("%02d",date.year()-2000);
+	field=QString().sprintf("%02d",dt.year()-2000);
 	break;
 
       case 'Y':   // Year (yyyy)
-	field=QString().sprintf("%04d",date.year());
+	field=QString().sprintf("%04d",dt.year());
 	break;
 
       case '%':   // Literal '%'
@@ -194,17 +243,58 @@ QString RDDateTimeDecode(QString str,const QDateTime &datetime,
   bool initial_case=false;
   QString field;
   int offset=0;
+  int dsecs=0;
+  QString dsecs_str;
 
   for(int i=0;i<str.length();i++) {
     field="";
     offset=0;
-    if(str.at(i)!='%') {
+    if(str.at(i)!=QChar('%')) {
       string+=str.at(i);
     }
     else {
+      if(i>=(str.length()-1)) {  // Out of characters to examine!
+	return str;
+      }
+
+      //
+      // Delta Seconds Modifier
+      //
+      dsecs=0;
+      dsecs_str="";
       i++;
       offset++;
-      if(((const char *)str)[i]=='^') {
+      if((str.at(i)==QChar('+'))||(str.at(i)==QChar('-'))||
+	 (str.at(i).category()==QChar::Number_DecimalDigit)) {
+	dsecs_str=str.at(i);
+	i++;
+	offset++;
+	while((i<str.length()-1)&&
+	      (str.at(i).category()==QChar::Number_DecimalDigit)) {
+	  dsecs_str+=str.at(i);
+	  dsecs=dsecs_str.toInt();
+	  i++;
+	  offset++;
+	}
+	i--;
+	offset--;
+      }
+      else {
+	i--;
+	offset--;
+      }
+      QDateTime dt(datetime.addSecs(dsecs));
+      if(i>=(str.length()-1)) {  // Out of characters to examine!
+	return str;
+      }
+
+
+      //
+      // All Upcase Modifier
+      //
+      i++;
+      offset++;
+      if(str.at(i)==QChar('^')) {
 	upper_case=true;
 	i++;
 	offset++;
@@ -212,7 +302,11 @@ QString RDDateTimeDecode(QString str,const QDateTime &datetime,
       else {
 	upper_case=false;
       }
-      if(((const char *)str)[i]=='$') {
+
+      //
+      // Initial Upcase Modifier
+      //
+      if(str.at(i)==QChar('$')) {
 	initial_case=true;
 	i++;
 	offset++;
@@ -220,96 +314,100 @@ QString RDDateTimeDecode(QString str,const QDateTime &datetime,
       else {
 	initial_case=false;
       }
-      switch(((const char *)str)[i]) {
+
+      //
+      // Wildcard Lookup
+      //
+      switch(str.at(i).toLatin1()) {
       case 'a':   // Abbreviated weekday name
-	field=QDate::shortDayName(datetime.date().dayOfWeek()).lower();
+	field=QDate::shortDayName(dt.date().dayOfWeek()).lower();
 	break;
 
       case 'A':   // Full weekday name
-	field=QDate::longDayName(datetime.date().dayOfWeek()).lower();
+	field=QDate::longDayName(dt.date().dayOfWeek()).lower();
 	break;
 
       case 'b':   // Abbreviated month name
       case 'h':
-	field=QDate::shortMonthName(datetime.date().month()).lower();
+	field=QDate::shortMonthName(dt.date().month()).lower();
       break;
 
       case 'B':   // Full month name
-	field=QDate::longMonthName(datetime.date().month()).lower();
+	field=QDate::longMonthName(dt.date().month()).lower();
 	break;
 
       case 'C':   // Century
-	field=QString().sprintf("%02d",datetime.date().year()/100);
+	field=QString().sprintf("%02d",dt.date().year()/100);
 	break;
 
       case 'd':   // Day (01 - 31)
-	field=QString().sprintf("%02d",datetime.date().day());
+	field=QString().sprintf("%02d",dt.date().day());
 	break;
 
       case 'D':   // Date (mm-dd-yy)
-	field=datetime.date().toString("MM-dd-yy");
+	field=dt.date().toString("MM-dd-yy");
 	break;
 
       case 'e':   // Day ( 1 - 31)
-	field=QString().sprintf("%2d",datetime.date().day());
+	field=QString().sprintf("%2d",dt.date().day());
 	break;
 
       case 'E':   // Day (1 - 31)
-	field=QString().sprintf("%d",datetime.date().day());
+	field=QString().sprintf("%d",dt.date().day());
 	break;
 
       case 'F':   // Date (yyyy-mm-dd)
-	field=datetime.date().toString("yyyy-MM-dd");
+	field=dt.date().toString("yyyy-MM-dd");
 	break;
 
       case 'g':   // Two digit year number (as per ISO 8601)
-	datetime.date().weekNumber(&yearnum);
+	dt.date().weekNumber(&yearnum);
 	field=QString().sprintf("%02d",yearnum-2000);
 	break;
 
       case 'G':   // Four digit year number (as per ISO 8601)
-	datetime.date().weekNumber(&yearnum);
+	dt.date().weekNumber(&yearnum);
 	field=QString().sprintf("%04d",yearnum);
 	break;
 
       case 'H':   // Hour, zero padded, 24 hour
-	field=QString().sprintf("%02d",datetime.time().hour());
+	field=QString().sprintf("%02d",dt.time().hour());
 	break;
 
       case 'I':   // Hour, zero padded, 12 hour
-	field=QString().sprintf("%02d",datetime.time().hour()%12);
+	field=QString().sprintf("%02d",dt.time().hour()%12);
 	break;
 
       case 'i':   // Hour, space padded, 12 hour
-	field=QString().sprintf("%2d",datetime.time().hour()%12);
+	field=QString().sprintf("%2d",dt.time().hour()%12);
 	break;
 
       case 'J':   // Hour, unpadded, 12 hour
-	field=QString().sprintf("%d",datetime.time().hour()%12);
+	field=QString().sprintf("%d",dt.time().hour()%12);
 	break;
 
       case 'j':   // Day of year
-	field=QString().sprintf("%03d",datetime.date().dayOfYear());
+	field=QString().sprintf("%03d",dt.date().dayOfYear());
 	break;
 
       case 'k':   // Hour, space padded, 24 hour
-	field=QString().sprintf("%2d",datetime.time().hour());
+	field=QString().sprintf("%2d",dt.time().hour());
 	break;
 
       case 'l':   // Unpadded Month (1 - 12)
-	field=QString().sprintf("%d",datetime.date().month());
+	field=QString().sprintf("%d",dt.date().month());
 	break;
 	    
       case 'M':   // Minute, zero padded
-	field=QString().sprintf("%02d",datetime.time().minute());
+	field=QString().sprintf("%02d",dt.time().minute());
 	break;
 
       case 'm':   // Month (01 - 12)
-	field=QString().sprintf("%02d",datetime.date().month());
+	field=QString().sprintf("%02d",dt.date().month());
 	break;
 	    
       case 'p':   // AM/PM string
-	field=datetime.time().toString("ap");
+	field=dt.time().toString("ap");
 	break;
 	    
       case 'r':   // Rivendell Host Name
@@ -321,7 +419,7 @@ QString RDDateTimeDecode(QString str,const QDateTime &datetime,
 	break;
 
       case 'S':   // Second (SS)
-	field=QString().sprintf("%02d",datetime.time().second());
+	field=QString().sprintf("%02d",dt.time().second());
 	break;
 
       case 's':   // Service name
@@ -331,16 +429,16 @@ QString RDDateTimeDecode(QString str,const QDateTime &datetime,
 	break;
 
       case 'u':   // Day of week (numeric, 1..7, 1=Monday)
-	field=QString().sprintf("%d",datetime.date().dayOfWeek());
+	field=QString().sprintf("%d",dt.date().dayOfWeek());
 	break;
     
       case 'V':   // Week number (as per ISO 8601)
       case 'W':
-	field=QString().sprintf("%d",datetime.date().weekNumber());
+	field=QString().sprintf("%d",dt.date().weekNumber());
       break;
 
       case 'w':   // Day of week (numeric, 0..6, 0=Sunday)
-	dow=datetime.date().dayOfWeek();
+	dow=dt.date().dayOfWeek();
 	if(dow==7) {
 	  dow=0;
 	}
@@ -348,11 +446,11 @@ QString RDDateTimeDecode(QString str,const QDateTime &datetime,
 	break;
 
       case 'y':   // Year (yy)
-	field=QString().sprintf("%02d",datetime.date().year()-2000);
+	field=QString().sprintf("%02d",dt.date().year()-2000);
 	break;
 
       case 'Y':   // Year (yyyy)
-	field=QString().sprintf("%04d",datetime.date().year());
+	field=QString().sprintf("%04d",dt.date().year());
 	break;
 
       case '%':   // Literal '%'

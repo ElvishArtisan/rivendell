@@ -10,7 +10,7 @@
       A date/time wildcard in Rivendell has the following form:
     </para>
     <para>
-      <userinput>%<replaceable>&lt;meta-char&gt;</replaceable><replaceable>&lt;fmt-char&gt;</replaceable></userinput>
+      <userinput>%<replaceable>&lt;delta-secs&gt;</replaceable><replaceable>&lt;meta-char&gt;</replaceable><replaceable>&lt;fmt-char&gt;</replaceable></userinput>
     </para>
     <para>
       where:
@@ -21,6 +21,16 @@
 	<listitem>
 	  <para>
 	    A literal percent.
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><userinput><replaceable>&lt;delta-secs&gt;</replaceable></userinput></term>
+	<listitem>
+	  <para>
+	    Optional. A time offset, in seconds, to apply to the base date-time
+	    (normally, the current wall time). Default value is
+	    <userinput>0</userinput>.
 	  </para>
 	</listitem>
       </varlistentry>
@@ -535,6 +545,22 @@
 	</listitem>
       </varlistentry>
       <varlistentry>
+	<term><userinput>%86400A</userinput></term>
+	<listitem>
+	  <para>
+	    <code>saturday</code>
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><userinput>%-86400A</userinput></term>
+	<listitem>
+	  <para>
+	    <code>thursday</code>
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
 	<term><userinput>%a</userinput></term>
 	<listitem>
 	  <para>
@@ -563,6 +589,38 @@
 	<listitem>
 	  <para>
 	    <code>034</code>
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><userinput>%H:%M:%S</userinput></term>
+	<listitem>
+	  <para>
+	    <code>14:34:26</code>
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><userinput>%3600H:%3600M:%3600S</userinput></term>
+	<listitem>
+	  <para>
+	    <code>15:34:26</code>
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><userinput>%1800H:%1800M:%1800S</userinput></term>
+	<listitem>
+	  <para>
+	    <code>15:04:26</code>
+	  </para>
+	</listitem>
+      </varlistentry>
+      <varlistentry>
+	<term><userinput>%-1800H:%-1800M:%-1800S</userinput></term>
+	<listitem>
+	  <para>
+	    <code>14:04:26</code>
 	  </para>
 	</listitem>
       </varlistentry>
