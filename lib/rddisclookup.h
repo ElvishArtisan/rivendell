@@ -26,6 +26,7 @@
 
 #include <qcombobox.h>
 #include <qlabel.h>
+#include <qpixmap.h>
 #include <qpushbutton.h>
 #include <qstringlist.h>
 #include <qtcpsocket.h>
@@ -40,7 +41,9 @@ class RDDiscLookup : public RDDialog
   enum Result {ExactMatch=0,NoMatch=1,LookupError=2};
   RDDiscLookup(const QString &caption,FILE *profile_msgs,QWidget *parent=0);
   QSize sizeHint() const;
-  virtual QString sourceName() const=0;
+  virtual QString sourceName() const;
+  virtual QPixmap sourceLogo() const;
+  virtual QString sourceUrl() const;
   void setCddbRecord(RDDiscRecord *);
   void lookup();
   static bool isrcIsValid(const QString &isrc);
@@ -58,7 +61,7 @@ class RDDiscLookup : public RDDialog
  protected:
   virtual void lookupRecord()=0;
   void resizeEvent(QResizeEvent *e);
-  RDDiscRecord *discRecord();
+  RDDiscRecord *discRecord() const;
   void profile(const QString &msg);
   QComboBox *titlesBox();
   QStringList *titlesKey();

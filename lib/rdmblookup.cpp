@@ -40,6 +40,8 @@
 
 #include "rdmblookup.h"
 
+#include "../icons/musicbrainz-159x25.xpm"
+
 QString err_str="OK";
 RDDiscLookup::Result result_code=RDDiscLookup::ExactMatch;
 
@@ -54,6 +56,22 @@ RDMbLookup::RDMbLookup(const QString &caption,FILE *profile_msgs,
 QString RDMbLookup::sourceName() const
 {
   return QString("MusicBrainz");
+}
+
+
+QPixmap RDMbLookup::sourceLogo() const
+{
+  return QPixmap(musicbrainz_159x25_xpm);
+}
+
+
+QString RDMbLookup::sourceUrl() const
+{
+  if(discRecord()->discReleaseMbId().isEmpty()) {
+    return QString();
+  }
+  return "https://"+rda->libraryConf()->mbServer()+"/release/"+
+    discRecord()->discReleaseMbId();
 }
 
 

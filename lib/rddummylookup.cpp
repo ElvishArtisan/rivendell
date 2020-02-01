@@ -28,12 +28,7 @@ RDDummyLookup::RDDummyLookup(const QString &caption,FILE *profile_msgs,
 }
 
 
-QString RDDummyLookup::sourceName() const
-{
-  return QString();
-}
-
-
 void RDDummyLookup::lookupRecord()
 {
+  emit lookupDone(RDDiscLookup::NoMatch,"OK");
 }

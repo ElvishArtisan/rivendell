@@ -25,6 +25,7 @@
 #include <rdconf.h>
 #include <rddisclookup_factory.h>
 #include <rdtempdirectory.h>
+#include <rdtextfile.h>
 
 #include "cdripper.h"
 #include "globals.h"
@@ -40,7 +41,6 @@ CdRipper::CdRipper(QString cutname,RDDiscRecord *rec,RDLibraryConf *conf,
   : RDDialog(parent)
 {
   rip_profile_rip=profile_rip;
-  //  rip_isrc_read=false;
   rip_conf=conf;
   rip_disc_record=rec;
   rip_track[0]=-1;
@@ -138,6 +138,17 @@ CdRipper::CdRipper(QString cutname,RDDiscRecord *rec,RDLibraryConf *conf,
   rip_apply_label->setDisabled(true);
   rip_apply_box->setVisible(!rip_disc_lookup->sourceName().isNull());
   rip_apply_label->setVisible(!rip_disc_lookup->sourceName().isNull());
+
+  //
+  // Web Browser Button
+  //
+  rip_browser_button=new QPushButton(this);
+  rip_browser_button->setPixmap(rip_disc_lookup->sourceLogo());
+  rip_browser_button->setDisabled(true);
+  connect(rip_browser_button,SIGNAL(clicked()),this,SLOT(openBrowserData()));
+  if(rip_disc_lookup->sourceLogo().isNull()) {
+    rip_browser_button->hide();
+  }
 
   //
   // Track List
@@ -284,7 +295,7 @@ CdRipper::~CdRipper()
 
 QSize CdRipper::sizeHint() const
 {
-  return QSize(470,606);
+  return QSize(730,606);
 }
 
 
@@ -586,6 +597,7 @@ void CdRipper::lookupDoneData(RDDiscLookup::Result result,const QString &err_msg
     rip_apply_box->setChecked(true);
     rip_apply_box->setEnabled(true);
     rip_apply_label->setEnabled(true);
+    rip_browser_button->setDisabled(rip_disc_lookup->sourceUrl().isNull());
     trackSelectionChangedData();
     break;
 
@@ -620,6 +632,12 @@ void CdRipper::autotrimCheckData(bool state)
 }
 
 
+void CdRipper::openBrowserData()
+{
+  RDWebBrowser(rip_disc_lookup->sourceUrl());
+}
+
+
 void CdRipper::closeData()
 {
   if(rip_done) {
@@ -643,6 +661,7 @@ void CdRipper::resizeEvent(QResizeEvent *e)
   rip_other_edit->setGeometry(65,75,size().width()-125,60);
   rip_apply_box->setGeometry(65,140,15,15);
   rip_apply_label->setGeometry(85,140,250,20);
+  rip_browser_button->setGeometry(size().width()-260,139,200,35);
   rip_track_list->setGeometry(10,178,size().width()-110,size().height()-290);
   rip_track_label->setGeometry(10,162,100,14);
   rip_bar->setGeometry(10,size().height()-100,size().width()-112,20);

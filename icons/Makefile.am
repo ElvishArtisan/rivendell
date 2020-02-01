@@ -283,6 +283,8 @@ EXTRA_DIST = admin.xpm\
              mic16.xpm\
              music.png\
              music.xpm\
+             musicbrainz-159x25.xpm\
+             musicbrainz.svg\
              note.xpm\
              note2.xpm\
              notemarker.png\

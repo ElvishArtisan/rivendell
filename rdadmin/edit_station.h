@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Workstation
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -92,6 +92,8 @@ class EditStation : public RDDialog
    QLineEdit *station_audio_editor_edit;
    QLabel *station_report_editor_label;
    QLineEdit *station_report_editor_edit;
+   QLabel *station_web_browser_label;
+   QLineEdit *station_web_browser_edit;
    QLabel *station_timeoffset_label;
    QSpinBox *station_timeoffset_box;
    QLabel *station_startup_cart_label;

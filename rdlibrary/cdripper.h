@@ -21,13 +21,14 @@
 #ifndef CDRIPPER_H
 #define CDRIPPER_H
 
-#include <qprogressbar.h>
-
-#include <qlineedit.h>
-#include <qdir.h>
-#include <qspinbox.h>
-#include <qcheckbox.h>
 #include <q3textedit.h>
+
+#include <qcheckbox.h>
+#include <qdir.h>
+#include <qlineedit.h>
+#include <qpixmap.h>
+#include <qprogressbar.h>
+#include <qspinbox.h>
 
 #include <rddialog.h>
 #include <rdcddblookup.h>
@@ -60,6 +61,7 @@ class CdRipper : public RDDialog
   void lookupDoneData(RDDiscLookup::Result,const QString &err_msg);
   void normalizeCheckData(bool);
   void autotrimCheckData(bool);
+  void openBrowserData();
   void closeData();
 
  protected:
@@ -91,6 +93,7 @@ class CdRipper : public RDDialog
   Q3TextEdit *rip_other_edit;
   QCheckBox *rip_apply_box;
   QLabel *rip_apply_label;
+  QPushButton *rip_browser_button;
   RDTransportButton *rip_eject_button;
   RDTransportButton *rip_play_button;
   RDTransportButton *rip_stop_button;

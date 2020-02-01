@@ -41,6 +41,15 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // NEW SCHEMA REVERSIONS GO HERE...
 
   //
+  // Revert 314
+  //
+  if((cur_schema==314)&&(set_schema<cur_schema)) {
+    DropColumn("STATIONS","BROWSER_PATH");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 313
   //
   if((cur_schema==313)&&(set_schema<cur_schema)) {

@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Workstation.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -267,6 +267,19 @@ QString RDStation::reportEditorPath() const
 void RDStation::setReportEditorPath(const QString &cmd)
 {
   SetRow("REPORT_EDITOR_PATH",cmd);
+}
+
+
+QString RDStation::browserPath() const
+{
+  return RDGetSqlValue("STATIONS","NAME",station_name,"BROWSER_PATH").
+    toString();
+}
+
+
+void RDStation::setBrowserPath(const QString &cmd) const
+{
+  SetRow("BROWSER_PATH",cmd);
 }
 
 

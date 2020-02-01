@@ -63,6 +63,24 @@ QSize RDDiscLookup::sizeHint() const
 }
 
 
+QString RDDiscLookup::sourceName() const
+{
+  return QString();
+}
+
+
+QPixmap RDDiscLookup::sourceLogo() const
+{
+  return QPixmap();
+}
+
+
+QString RDDiscLookup::sourceUrl() const
+{
+  return QString();
+}
+
+
 void RDDiscLookup::setCddbRecord(RDDiscRecord *rec)
 {
   lookup_record=rec;
@@ -153,7 +171,7 @@ void RDDiscLookup::resizeEvent(QResizeEvent *e)
 }
 
 
-RDDiscRecord *RDDiscLookup::discRecord()
+RDDiscRecord *RDDiscLookup::discRecord() const
 {
   return lookup_record;
 }

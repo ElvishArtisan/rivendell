@@ -29,7 +29,6 @@ class RDDummyLookup : public RDDiscLookup
   Q_OBJECT
  public:
   RDDummyLookup(const QString &caption,FILE *profile_msgs,QWidget *parent=0);
-  QString sourceName() const;
 
  protected:
   void lookupRecord();

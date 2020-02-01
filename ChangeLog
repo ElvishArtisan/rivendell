@@ -19464,3 +19464,12 @@
 	to fail to save MBIDs to the database after a successful rip.
 	* Fixed a bug in the disc track ripper in rdlibrary(1)that caused it
 	to fail to save MBIDs to the database after a successful rip.
+2020-02-02 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'STATIONS.BROWSER_PATH' field to the database.
+	* Incremented the database version to 314.
+	* Added a 'Web Browser' control to the 'Edit Host' dialog in
+	rdadmin(1).
+	* Added a MusicBrainz record lookup button to the full disc ripper
+	in rdlibrary(1).
+	* Added a MusicBrainz record lookup button to the disc track ripper
+	in rdlibrary(1).

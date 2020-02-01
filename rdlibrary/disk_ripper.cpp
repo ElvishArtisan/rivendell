@@ -29,6 +29,7 @@
 #include <rdgroup.h>
 #include <rdlist_groups.h>
 #include <rdtempdirectory.h>
+#include <rdtextfile.h>
 
 #include "disk_ripper.h"
 #include "globals.h"
@@ -37,7 +38,6 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
 		       bool profile_rip,QWidget *parent) 
   : RDDialog(parent)
 {
-  //  rip_isrc_read=false;
   rip_filter_text=filter;
   rip_group_text=group;
   rip_schedcode_text=schedcode;
@@ -116,7 +116,7 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   rip_other_edit->setReadOnly(true);
 
   //
-  // Apply FreeDB Check Box
+  // Apply Lookup Data Check Box
   //
   rip_apply_box=new QCheckBox(this);
   rip_apply_box->setChecked(true);
@@ -130,6 +130,17 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   rip_apply_label->setDisabled(true);
   rip_apply_box->setVisible(!rip_disc_lookup->sourceName().isNull());
   rip_apply_label->setVisible(!rip_disc_lookup->sourceName().isNull());
+
+  //
+  // Web Browser Button
+  //
+  rip_browser_button=new QPushButton(this);
+  rip_browser_button->setPixmap(rip_disc_lookup->sourceLogo());
+  rip_browser_button->setDisabled(true);
+  connect(rip_browser_button,SIGNAL(clicked()),this,SLOT(openBrowserData()));
+  if(rip_disc_lookup->sourceLogo().isNull()) {
+    rip_browser_button->hide();
+  }
 
   //
   // Track List
@@ -470,6 +481,7 @@ void DiskRipper::ejectedData()
   rip_apply_box->setChecked(false);
   rip_apply_box->setDisabled(true);
   rip_apply_label->setDisabled(true);
+  rip_browser_button->setDisabled(true);
 }
 
 
@@ -804,6 +816,7 @@ void DiskRipper::lookupDoneData(RDDiscLookup::Result result,
     rip_apply_box->setChecked(true);
     rip_apply_box->setEnabled(true);
     rip_apply_label->setEnabled(true);
+    rip_browser_button->setDisabled(rip_disc_lookup->sourceUrl().isNull());
     break;
 
   case RDDiscLookup::NoMatch:
@@ -878,6 +891,12 @@ void DiskRipper::selectionChangedData()
 }
 
 
+void DiskRipper::openBrowserData()
+{
+  RDWebBrowser(rip_disc_lookup->sourceUrl());
+}
+
+
 void DiskRipper::doubleClickedData(Q3ListViewItem *item,const QPoint &pt,
 				   int col)
 {
@@ -904,6 +923,7 @@ void DiskRipper::resizeEvent(QResizeEvent *e)
   rip_other_edit->setGeometry(65,53,size().width()-125,60);
   rip_apply_box->setGeometry(65,118,15,15);
   rip_apply_label->setGeometry(85,118,250,20);
+  rip_browser_button->setGeometry(size().width()-260,117,200,35);
   rip_track_label->setGeometry(100,140,100,14);
   rip_track_list->setGeometry(100,156,size().width()-202,size().height()-342);
   rip_diskbar_label->setGeometry(10,size().height()-174,size().width()-110,20);

@@ -61,6 +61,7 @@ class DiskRipper : public RDDialog
   void normalizeCheckData(bool);
   void autotrimCheckData(bool);
   void selectionChangedData();
+  void openBrowserData();
   void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
   void closeData();
   
@@ -88,6 +89,7 @@ class DiskRipper : public RDDialog
   QTextEdit *rip_other_edit;
   QCheckBox *rip_apply_box;
   QLabel *rip_apply_label;
+  QPushButton *rip_browser_button;
   RDTransportButton *rip_eject_button;
   RDTransportButton *rip_play_button;
   RDTransportButton *rip_stop_button;
@@ -125,7 +127,6 @@ class DiskRipper : public RDDialog
   std::vector<RDWaveData *> rip_wave_datas;
   bool rip_aborting;
   bool rip_profile_rip;
-  //  bool rip_isrc_read;
   RDWaveDataDialog *rip_wavedata_dialog;
 };
 

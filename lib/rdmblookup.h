@@ -32,6 +32,8 @@ class RDMbLookup : public RDDiscLookup
  public:
   RDMbLookup(const QString &caption,FILE *profile_msgs,QWidget *parent=0);
   QString sourceName() const;
+  QPixmap sourceLogo() const;
+  QString sourceUrl() const;
 
  protected:
   void lookupRecord();

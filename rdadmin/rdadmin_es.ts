@@ -3933,6 +3933,10 @@ Ports</source>
 Instances</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Web Browser</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditSvc</name>
