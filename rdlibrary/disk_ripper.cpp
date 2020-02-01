@@ -1032,6 +1032,8 @@ void DiskRipper::RipTrack(int track,int end_track,QString cutname,QString title)
       cart->setMetadata(rip_wave_datas[track-1]);
       cut->setDescription(rip_wave_datas[track-1]->title());
       cut->setIsrc(rip_disc_record.isrc(rip_track_number-1));
+      cut->setTrackMbId(rip_disc_record.trackMbId(rip_track_number-1));
+      cut->setReleaseMbId(rip_disc_record.discReleaseMbId());
       cart->clearPending();
       SendNotification(RDNotification::AddAction,cart->number());
       break;

@@ -154,6 +154,7 @@ RDDiscLookup::Result RDMbLookup::ProcessRelease(MusicBrainz5::CRelease *release)
   //
   // Extract Basic Release Data
   //
+  discRecord()->setDiscReleaseMbId(QString::fromUtf8(release->ID().c_str()));
   discRecord()->setDiscAlbum(QString::fromUtf8(release->Title().c_str()));
   //discRecord()->setDiscGenre();
   QStringList f0=QString::fromUtf8(release->Date().c_str()).split("-");
@@ -184,13 +185,10 @@ RDDiscLookup::Result RDMbLookup::ProcessRelease(MusicBrainz5::CRelease *release)
     //
     // Get Labels
     //
-    MusicBrainz5::CLabelInfoList *labels=
-      metadata.Release()->LabelInfoList();
+    MusicBrainz5::CLabelInfoList *labels=metadata.Release()->LabelInfoList();
     if(labels) {
-      std::cout << *labels << std::endl;
-      discRecord()->
-	setDiscLabel(QString::fromUtf8(labels->Item(0)->
-				       Label()->Name().c_str()));
+      discRecord()->setDiscLabel(QString::fromUtf8(labels->Item(0)->
+						   Label()->Name().c_str()));
     }
 
     //

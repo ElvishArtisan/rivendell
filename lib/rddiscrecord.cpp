@@ -109,6 +109,18 @@ void RDDiscRecord::setDiscMbId(const QString &str)
 }
 
 
+QString RDDiscRecord::discReleaseMbId() const
+{
+  return disc_disc_release_mb_id;
+}
+
+
+void RDDiscRecord::setDiscReleaseMbId(const QString &mbid)
+{
+  disc_disc_release_mb_id=mbid;
+}
+
+
 QString RDDiscRecord::mbSubmissionUrl() const
 {
   return disc_mb_submission_url;

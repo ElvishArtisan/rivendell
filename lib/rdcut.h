@@ -59,6 +59,10 @@ class RDCut
   void setIsrc(const QString &isrc) const;
   QString isci() const;
   void setIsci(const QString &isci) const;
+  QString trackMbId() const;
+  void setTrackMbId(const QString &mbid);
+  QString releaseMbId() const;
+  void setReleaseMbId(const QString &mbid);
   QString sha1Hash() const;
   void setSha1Hash(const QString &str);
   unsigned length() const;

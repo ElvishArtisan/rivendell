@@ -239,6 +239,30 @@ QString RDCut::isci() const
 }
 
 
+QString RDCut::trackMbId() const
+{
+  return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"TRACK_MBID").toString();
+}
+
+
+void RDCut::setTrackMbId(const QString &mbid)
+{
+  SetRow("TRACK_MBID",mbid);
+}
+
+
+QString RDCut::releaseMbId() const
+{
+  return RDGetSqlValue("CUTS","CUT_NAME",cut_name,"RELEASE_MBID").toString();
+}
+
+
+void RDCut::setReleaseMbId(const QString &mbid)
+{
+  SetRow("RELEASE_MBID",mbid);
+}
+
+
 void RDCut::setIsci(const QString &isci) const
 {
   SetRow("ISCI",isci);

@@ -49,6 +49,8 @@ class RDDiscRecord
   void setMcn(const QString &mcn);
   QString discMbId() const;
   void setDiscMbId(const QString &str);
+  QString discReleaseMbId() const;
+  void setDiscReleaseMbId(const QString &mbid);
   QString mbSubmissionUrl() const;
   void setMbSubmissionUrl(const QString &url);
   QString discTitle() const;
@@ -88,6 +90,7 @@ class RDDiscRecord
   unsigned disc_disc_id;
   QString disc_mcn;
   QString disc_disc_mb_id;
+  QString disc_disc_release_mb_id;
   QString disc_mb_submission_url;
   unsigned disc_disc_length;
   QString disc_disc_title;

@@ -19459,3 +19459,8 @@
 	* Added a 'CUTS.RELEASE_MBID' field to the database.
 2020-02-02 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'MusicBrainz' CD metadata lookup method in 'RDMbLookup'.
+2020-02-02 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the full disc ripper in rdlibrary(1)that caused it
+	to fail to save MBIDs to the database after a successful rip.
+	* Fixed a bug in the disc track ripper in rdlibrary(1)that caused it
+	to fail to save MBIDs to the database after a successful rip.

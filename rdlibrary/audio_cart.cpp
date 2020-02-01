@@ -565,6 +565,8 @@ void AudioCart::ripCutData()
     rdcart_controls->album_edit->setText(album);
     RDCut *cut=new RDCut(cutname);
     cut->setIsrc(rec->isrc(track));
+    cut->setTrackMbId(rec->trackMbId(track));
+    cut->setReleaseMbId(rec->discReleaseMbId());
     delete cut;
   }
   if(cut_clipboard==NULL) {
