@@ -2409,6 +2409,45 @@ Por Favor, cheque suas configurações e tenbte outra vez.</translation>
     </message>
 </context>
 <context>
+    <name>RDMbLookup</name>
+    <message>
+        <source>Connection Exception</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last Result</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>LastHTTPCode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>LastErrorMessage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Timeout Exception</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Authentication Exception</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fetch Exception</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Request Exception</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Lookup</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RDPanelButton</name>
     <message>
         <source>No Audio</source>

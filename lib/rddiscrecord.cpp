@@ -97,15 +97,15 @@ void RDDiscRecord::setMcn(const QString &mcn)
 }
 
 
-QString RDDiscRecord::mbID() const
+QString RDDiscRecord::discMbId() const
 {
-  return disc_mb_id;
+  return disc_disc_mb_id;
 }
 
 
-void RDDiscRecord::setMbId(const QString &str)
+void RDDiscRecord::setDiscMbId(const QString &str)
 {
-  disc_mb_id=str;
+  disc_disc_mb_id=str;
 }
 
 
@@ -205,6 +205,18 @@ void RDDiscRecord::setDiscGenre(QString genre)
 }
 
 
+QString RDDiscRecord::discLabel() const
+{
+  return disc_disc_label;
+}
+
+
+void RDDiscRecord::setDiscLabel(const QString &str)
+{
+  disc_disc_label=str;
+}
+
+
 QString RDDiscRecord::discExtended() const
 {
   return disc_disc_extended;
@@ -297,6 +309,18 @@ void RDDiscRecord::setTrackArtist(int track,QString artist)
 }
 
 
+QString RDDiscRecord::trackMbId(int track) const
+{
+  return disc_track_mbid[track];
+}
+
+
+void RDDiscRecord::setTrackMbId(int track,const QString &str)
+{
+  disc_track_mbid[track]=str;
+}
+
+
 QString RDDiscRecord::isrc(int track) const
 {
   if(track<CDROM_LEADOUT) {
@@ -311,4 +335,36 @@ void RDDiscRecord::setIsrc(int track,QString isrc)
   if(track<CDROM_LEADOUT) {
     disc_track_isrc[track]=isrc;
   }
+}
+
+
+QString RDDiscRecord::dump()
+{
+  QString ret="RDDiscRecord::dump()\n";
+
+  ret+=QString().sprintf("tracks: %d\n",tracks());
+  ret+=QString().sprintf("discLength: %d\n",discLength());
+  ret+=QString().sprintf("discId: %08x\n",discId());
+  ret+="mcn: "+mcn()+"\n";
+  ret+="discMbId: "+discMbId()+"\n";
+  ret+="mbSubmissionUrl: "+mbSubmissionUrl()+"\n";
+  ret+="discTitle: "+discTitle()+"\n";
+  ret+="discArtist: "+discArtist()+"\n";
+  ret+="discAlbum: "+discAlbum()+"\n";
+  ret+="discAuthor: "+discAuthor()+"\n";
+  ret+=QString().sprintf("discYear: %u\n",discYear());
+  ret+="discGenre: "+discGenre()+"\n";
+  ret+="discLabel: "+discLabel()+"\n";
+  ret+="discExtended: "+discExtended()+"\n";
+  ret+="discPlayOrder: "+discPlayOrder()+"\n";
+  for(int i=0;i<tracks();i++) {
+    QString num=QString().sprintf("(%d): ",i+1);
+    ret+="trackOffset"+num+QString().sprintf("%u",trackOffset(i))+"\n";
+    ret+="trackTitle"+num+trackTitle(i)+"\n";
+    ret+="trackExtended"+num+trackExtended(i)+"\n";
+    ret+="trackMbId"+num+trackMbId(i)+"\n";
+    ret+="isrc"+num+isrc(i)+"\n";
+  }
+
+  return ret;
 }

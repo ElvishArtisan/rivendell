@@ -57,7 +57,7 @@ class DiskRipper : public RDDialog
   void mediaChangedData();
   void playedData(int);
   void stoppedData();
-  void cddbDoneData(RDDiscLookup::Result);
+  void lookupDoneData(RDDiscLookup::Result,const QString &err_msg);
   void normalizeCheckData(bool);
   void autotrimCheckData(bool);
   void selectionChangedData();

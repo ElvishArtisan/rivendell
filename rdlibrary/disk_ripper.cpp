@@ -83,8 +83,9 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
     rip_disc_lookup=RDDiscLookupFactory(rda->libraryConf()->cdServerType(),
 					"RDLibrary",NULL,this);
   }
-  connect(rip_disc_lookup,SIGNAL(lookupDone(RDDiscLookup::Result)),
-	  this,SLOT(cddbDoneData(RDDiscLookup::Result)));
+  connect(rip_disc_lookup,
+	  SIGNAL(lookupDone(RDDiscLookup::Result,const QString &)),
+	  this,SLOT(lookupDoneData(RDDiscLookup::Result,const QString &)));
 
   //
   // Artist Label
@@ -780,36 +781,40 @@ void DiskRipper::stoppedData()
 }
 
 
-void DiskRipper::cddbDoneData(RDDiscLookup::Result result)
+void DiskRipper::lookupDoneData(RDDiscLookup::Result result,
+			      const QString &err_msg)
 {
   switch(result) {
-      case RDDiscLookup::ExactMatch:
-	if(rip_cdrom->status()!=RDCdPlayer::Ok) {
-	  return;
-	}
-	rip_artist_edit->setText(rip_disc_record.discArtist());
-	rip_album_edit->setText(rip_disc_record.discAlbum());
-	rip_other_edit->setText(rip_disc_record.discExtended());
-	for(int i=0;i<rip_disc_record.tracks();i++) {
-	  rip_track_list->findItem(QString().sprintf("%d",i+1),0)->
-	    setText(2,rip_disc_record.trackTitle(i));
-	  rip_track_list->findItem(QString().sprintf("%d",i+1),0)->
-	    setText(3,rip_disc_record.trackExtended(i));
-	  rip_wave_datas[i]->setTitle(rip_disc_record.trackTitle(i));
-	  rip_wave_datas[i]->setArtist(rip_disc_record.discArtist());
-	  rip_wave_datas[i]->setAlbum(rip_disc_record.discAlbum());
-	}
-	rip_apply_box->setChecked(true);
-	rip_apply_box->setEnabled(true);
-	rip_apply_label->setEnabled(true);
-	break;
-      case RDDiscLookup::PartialMatch:
-	rip_track=-1;
-	printf("Partial Match!\n");
-	break;
-      default:
-	rip_track=-1;
-	break;
+  case RDDiscLookup::ExactMatch:
+    if(rip_cdrom->status()!=RDCdPlayer::Ok) {
+      return;
+    }
+    rip_artist_edit->setText(rip_disc_record.discArtist());
+    rip_album_edit->setText(rip_disc_record.discAlbum());
+    rip_other_edit->setText(rip_disc_record.discExtended());
+    for(int i=0;i<rip_disc_record.tracks();i++) {
+      rip_track_list->findItem(QString().sprintf("%d",i+1),0)->
+	setText(2,rip_disc_record.trackTitle(i));
+      rip_track_list->findItem(QString().sprintf("%d",i+1),0)->
+	setText(3,rip_disc_record.trackExtended(i));
+      rip_wave_datas[i]->setTitle(rip_disc_record.trackTitle(i));
+      rip_wave_datas[i]->setArtist(rip_disc_record.discArtist());
+      rip_wave_datas[i]->setAlbum(rip_disc_record.discAlbum());
+    }
+    rip_apply_box->setChecked(true);
+    rip_apply_box->setEnabled(true);
+    rip_apply_label->setEnabled(true);
+    break;
+
+  case RDDiscLookup::NoMatch:
+    rip_track=-1;
+    break;
+
+  case RDDiscLookup::LookupError:
+    QMessageBox::warning(this,"RDLibrary - "+rip_disc_lookup->sourceName()+
+			 " "+tr("Lookup Error"),err_msg);
+    rip_track=-1;
+    break;
   }
 }
 

@@ -55,7 +55,7 @@ class RDCddbLookup : public RDDiscLookup
   void lookupRecord();
 
  private:
-   void FinishCddbLookup(RDCddbLookup::Result res);
+  void FinishCddbLookup(RDCddbLookup::Result res,const QString &err_msg);
    QString DecodeString(QString &str);
    void ParsePair(QString *line,QString *tag,QString *value,int *index);
    int GetIndex(QString *tag);

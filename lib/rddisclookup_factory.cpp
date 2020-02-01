@@ -20,8 +20,9 @@
 //
 
 #include "rdcddblookup.h"
-#include "rddummylookup.h"
 #include "rddisclookup_factory.h"
+#include "rddummylookup.h"
+#include "rdmblookup.h"
 
 RDDiscLookup *RDDiscLookupFactory(RDLibraryConf::CdServerType type,
 				  const QString &caption,
@@ -39,6 +40,9 @@ RDDiscLookup *RDDiscLookupFactory(RDLibraryConf::CdServerType type,
     break;
 
   case RDLibraryConf::MusicBrainzType:
+    ret=new RDMbLookup(caption,profile_msgs,parent);
+    break;
+
   case RDLibraryConf::LastType:
     break;
   }

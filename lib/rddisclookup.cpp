@@ -71,7 +71,7 @@ void RDDiscLookup::setCddbRecord(RDDiscRecord *rec)
 
 void RDDiscLookup::lookup()
 {
-  if(cddbRecord()->tracks()==0) {
+  if(discRecord()->tracks()==0) {
     return;
   }
 
@@ -98,16 +98,16 @@ void RDDiscLookup::lookup()
       return;
     }
   }
-  cddbRecord()->setDiscId(QString(discid_get_freedb_id(disc)).toUInt(NULL,16));
-  cddbRecord()->setMbId(discid_get_id(disc));
-  cddbRecord()->setMbSubmissionUrl(discid_get_submission_url(disc));
+  discRecord()->setDiscId(QString(discid_get_freedb_id(disc)).toUInt(NULL,16));
+  discRecord()->setDiscMbId(discid_get_id(disc));
+  discRecord()->setMbSubmissionUrl(discid_get_submission_url(disc));
   if(rda->libraryConf()->readIsrc()) {
-    cddbRecord()->setMcn(discid_get_mcn(disc));
+    discRecord()->setMcn(discid_get_mcn(disc));
     int first=discid_get_first_track_num(disc);
     int last=discid_get_last_track_num(disc);
     for(int i=first;i<=last;i++) {
       if((i-first)<lookup_record->tracks()) {
-	cddbRecord()->setIsrc(i-first,
+	discRecord()->setIsrc(i-first,
 		  RDDiscLookup::normalizedIsrc(discid_get_track_isrc(disc,i)));
       }
     }
@@ -129,13 +129,13 @@ QString RDDiscLookup::caption()
 
 void RDDiscLookup::okData()
 {
-  done(true);
+  done(lookup_titles_box->currentIndex());
 }
 
 
 void RDDiscLookup::cancelData()
 {
-  done(false);
+  done(-1);
 }
 
 
@@ -153,7 +153,7 @@ void RDDiscLookup::resizeEvent(QResizeEvent *e)
 }
 
 
-RDDiscRecord *RDDiscLookup::cddbRecord()
+RDDiscRecord *RDDiscLookup::discRecord()
 {
   return lookup_record;
 }

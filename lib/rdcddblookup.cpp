@@ -83,6 +83,7 @@ void RDCddbLookup::readyReadData()
   char offset[256];
   QStringList f0;
   bool ok=false;
+  int index_line;
 
   while(lookup_socket->canReadLine()) {
     line=QString::fromUtf8(lookup_socket->readLine());
@@ -100,7 +101,8 @@ void RDCddbLookup::readyReadData()
 	lookup_state=1;
       }
       else {
-	FinishCddbLookup(RDCddbLookup::ProtocolError);
+	FinishCddbLookup(RDCddbLookup::LookupError,
+			 "Unexpected response from CDDB server");
       }
       break;
 
@@ -110,25 +112,27 @@ void RDCddbLookup::readyReadData()
 	lookup_state=2;
       }
       else {
-	FinishCddbLookup(RDCddbLookup::ProtocolError);
+	FinishCddbLookup(RDCddbLookup::LookupError,
+			 "Unexpected response from CDDB server");
       }
       break;
 
     case 2:    // Protocol Level Response
       if(code==201) {
 	snprintf(buffer,2048,"cddb query %08x %d",
-		cddbRecord()->discId(),cddbRecord()->tracks());
-	for(int i=0;i<cddbRecord()->tracks();i++) {
-	  snprintf(offset,256," %d",cddbRecord()->trackOffset(i));
+		discRecord()->discId(),discRecord()->tracks());
+	for(int i=0;i<discRecord()->tracks();i++) {
+	  snprintf(offset,256," %d",discRecord()->trackOffset(i));
 	  strcat(buffer,offset);
 	}
-	snprintf(offset,256," %d",cddbRecord()->discLength()/75);
+	snprintf(offset,256," %d",discRecord()->discLength()/75);
 	strcat(buffer,offset);
 	SendToServer(buffer);
 	lookup_state=3;
       }
       else {
-	FinishCddbLookup(RDCddbLookup::ProtocolError);
+	FinishCddbLookup(RDCddbLookup::LookupError,
+			 "Unexpected response from CDDB server");
       }
       break;
 
@@ -137,23 +141,25 @@ void RDCddbLookup::readyReadData()
       case 200:   // Exact Match
 	f0=line.split(" ");
 	if(f0.size()>=4) {
-	  cddbRecord()->setDiscId(f0[2].toUInt(&ok,16));
+	  discRecord()->setDiscId(f0[2].toUInt(&ok,16));
 	  if(!ok) {
-	    FinishCddbLookup(RDCddbLookup::ProtocolError);
+	    FinishCddbLookup(RDCddbLookup::LookupError,
+			     "Invalid discid received from CDDB server");
 	  }
-	  cddbRecord()->setDiscGenre(f0[1]);
+	  discRecord()->setDiscGenre(f0[1]);
 	  f0.erase(f0.begin());
 	  f0.erase(f0.begin());
 	  f0.erase(f0.begin());
-	  cddbRecord()->setDiscTitle(f0.join(" "));
+	  discRecord()->setDiscTitle(f0.join(" "));
 	  snprintf(buffer,2048,"cddb read %s %08x\n",
-		   (const char *)cddbRecord()->discGenre().utf8(),
-		   cddbRecord()->discId());
+		   (const char *)discRecord()->discGenre().utf8(),
+		   discRecord()->discId());
 	  SendToServer(buffer);
 	  lookup_state=5;		
 	}
 	else {
-	  FinishCddbLookup(RDCddbLookup::ProtocolError);
+	  FinishCddbLookup(RDCddbLookup::LookupError,
+			   "Unexpected response from CDDB server");
 	}
 	break;
 
@@ -164,11 +170,12 @@ void RDCddbLookup::readyReadData()
 	break;
 
       case 211:   // Inexact Match
-	FinishCddbLookup(RDCddbLookup::PartialMatch);
+	FinishCddbLookup(RDCddbLookup::NoMatch,"OK");
 	break;
 
       default:
-	FinishCddbLookup(RDCddbLookup::ProtocolError);
+	FinishCddbLookup(RDCddbLookup::LookupError,
+			 "Unexpected response from CDDB server");
 	break;
       }
       break;
@@ -176,32 +183,33 @@ void RDCddbLookup::readyReadData()
     case 4:    // Process Multiple Matches
       if(line.trimmed()==".") {
 	profile("Match list complete, showing chooser dialog...");
-	if(exec()) {
-	  f0=titlesKey()->at(titlesBox()->currentItem()).
-	    split(" ",QString::SkipEmptyParts);
+	if((index_line=exec())>=0) {
+	  f0=titlesKey()->at(index_line).split(" ",QString::SkipEmptyParts);
 	  if(f0.size()!=2) {
-	    FinishCddbLookup(RDCddbLookup::ProtocolError);
+	    FinishCddbLookup(RDCddbLookup::LookupError,
+			     "Unexpected response from CDDB server");
 	  }
-	  cddbRecord()->setDiscId(f0.at(1).toUInt(&ok,16));
+	  discRecord()->setDiscId(f0.at(1).toUInt(&ok,16));
 	  if(!ok) {
-	    FinishCddbLookup(RDCddbLookup::ProtocolError);
+	    FinishCddbLookup(RDCddbLookup::LookupError,
+			     "Invalid discid received from CDDB server");
 	  }
-	  cddbRecord()->setDiscGenre(f0.at(0));
+	  discRecord()->setDiscGenre(f0.at(0));
 	  f0=titlesBox()->currentText().split("/");
 	  if(f0.size()==2) {
-	    cddbRecord()->setDiscTitle(f0.at(1).trimmed());
+	    discRecord()->setDiscTitle(f0.at(1).trimmed());
 	  }
 	  else {
-	    cddbRecord()->setDiscTitle(titlesBox()->currentText().trimmed());
+	    discRecord()->setDiscTitle(titlesBox()->currentText().trimmed());
 	  }
 	  snprintf(buffer,2048,"cddb read %s %08x\n",
-		   (const char *)cddbRecord()->discGenre().utf8(),
-		   cddbRecord()->discId());
+		   (const char *)discRecord()->discGenre().utf8(),
+		   discRecord()->discId());
 	  SendToServer(buffer);
 	  lookup_state=5;	
 	}
 	else {
-	  FinishCddbLookup(RDCddbLookup::NoMatch);
+	  FinishCddbLookup(RDCddbLookup::NoMatch,"OK");
 	}
       }
       else {
@@ -220,37 +228,38 @@ void RDCddbLookup::readyReadData()
 	lookup_state=6;
       }
       else {
-	FinishCddbLookup(RDCddbLookup::ProtocolError);
+	FinishCddbLookup(RDCddbLookup::LookupError,
+			 "Unexpected response from CDDB server");
       }
       break;
 	  
     case 6:    // Record Lines
       if(line[0]!='#') {   // Ignore Comments
 	if(line[0]=='.') {  // Done
-	  FinishCddbLookup(RDCddbLookup::ExactMatch);
+	  FinishCddbLookup(RDCddbLookup::ExactMatch,"OK");
 	}
 	ParsePair(&line,&tag,&value,&index);
 	if(tag=="DTITLE") {
-	  cddbRecord()->setDiscTitle(value.left(value.length()-1));
+	  discRecord()->setDiscTitle(value.left(value.length()-1));
 	}
 	if(tag=="DYEAR") {
-	  cddbRecord()->setDiscYear(value.toUInt());
+	  discRecord()->setDiscYear(value.toUInt());
 	}
 	if(tag=="EXTD") {
-	  cddbRecord()->
-	    setDiscExtended(cddbRecord()->discExtended()+
+	  discRecord()->
+	    setDiscExtended(discRecord()->discExtended()+
 			    DecodeString(value));
 	}
 	if(tag=="PLAYORDER") {
-	  cddbRecord()->setDiscPlayOrder(value);
+	  discRecord()->setDiscPlayOrder(value);
 	}
 	if((tag=="TTITLE")&&(index!=-1)) {
-	  cddbRecord()->setTrackTitle(index,value.left(value.length()-1));
+	  discRecord()->setTrackTitle(index,value.left(value.length()-1));
 	}
 	if((tag=="EXTT")&&(index!=-1)) {
-	  cddbRecord()->
+	  discRecord()->
 	    setTrackExtended(index,
-			     cddbRecord()->trackExtended(index)+value);
+			     discRecord()->trackExtended(index)+value);
 	}
       }
       break;
@@ -261,30 +270,35 @@ void RDCddbLookup::readyReadData()
 
 void RDCddbLookup::errorData(QAbstractSocket::SocketError err)
 {
+  QString err_msg="Network error";
   switch(err) {
-      case QTcpSocket::ErrConnectionRefused:
-	printf("CDDB: Connection Refused!\n");
-	break;
-      case QTcpSocket::ErrHostNotFound:
-	printf("CDDB: Host Not Found!\n");
-	break;
-      case QTcpSocket::ErrSocketRead:
-	printf("CDDB: Socket Read Error!\n");
-	break;
-      default:
-        break;
+  case QTcpSocket::ErrConnectionRefused:
+    err_msg="Connection to \""+rda->libraryConf()->cddbServer()+"\" refused";
+    break;
+
+  case QTcpSocket::ErrHostNotFound:
+    err_msg="Host \""+rda->libraryConf()->cddbServer()+"\" not found";
+    break;
+
+  case QTcpSocket::ErrSocketRead:
+    err_msg="Socket read error";
+    break;
+
+  default:
+    break;
   }
   lookup_state=0;
-  emit done(RDCddbLookup::NetworkError);
+  emit lookupDone(RDCddbLookup::LookupError,err_msg);
 }
 
 
-void RDCddbLookup::FinishCddbLookup(RDCddbLookup::Result res)
+void RDCddbLookup::FinishCddbLookup(RDCddbLookup::Result res,
+				    const QString &err_msg)
 {
   SendToServer("quit");
   lookup_socket->close();
   lookup_state=0;
-  emit lookupDone(res);
+  emit lookupDone(res,err_msg);
   profile("CDDB lookup finished");
 }
 

@@ -37,8 +37,7 @@ class RDDiscLookup : public RDDialog
 {
   Q_OBJECT
  public:
-  enum Result {ExactMatch=0,PartialMatch=1,NoMatch=2,
-  	       ProtocolError=3,NetworkError=4};
+  enum Result {ExactMatch=0,NoMatch=1,LookupError=2};
   RDDiscLookup(const QString &caption,FILE *profile_msgs,QWidget *parent=0);
   QSize sizeHint() const;
   virtual QString sourceName() const=0;
@@ -49,7 +48,7 @@ class RDDiscLookup : public RDDialog
   static QString normalizedIsrc(const QString &isrc,bool *ok=NULL);
 
  signals:
-  void lookupDone(RDDiscLookup::Result);
+  void lookupDone(RDDiscLookup::Result,const QString &err_msg);
 
  protected slots:
   QString caption();
@@ -59,7 +58,7 @@ class RDDiscLookup : public RDDialog
  protected:
   virtual void lookupRecord()=0;
   void resizeEvent(QResizeEvent *e);
-  RDDiscRecord *cddbRecord();
+  RDDiscRecord *discRecord();
   void profile(const QString &msg);
   QComboBox *titlesBox();
   QStringList *titlesKey();

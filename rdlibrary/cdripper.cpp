@@ -86,8 +86,8 @@ CdRipper::CdRipper(QString cutname,RDDiscRecord *rec,RDLibraryConf *conf,
     rip_disc_lookup=RDDiscLookupFactory(rda->libraryConf()->cdServerType(),
 					"RDLibrary",NULL,this);
   }
-  connect(rip_disc_lookup,SIGNAL(lookupDone(RDDiscLookup::Result)),
-	  this,SLOT(cddbDoneData(RDDiscLookup::Result)));
+  connect(rip_disc_lookup,SIGNAL(lookupDone(RDDiscLookup::Result,const QString &)),
+	  this,SLOT(lookupDoneData(RDDiscLookup::Result,const QString &)));
 
   //
   // Title Selector
@@ -567,7 +567,7 @@ void CdRipper::stoppedData()
 }
 
 
-void CdRipper::cddbDoneData(RDDiscLookup::Result result)
+void CdRipper::lookupDoneData(RDDiscLookup::Result result,const QString &err_msg)
 {
   switch(result) {
   case RDDiscLookup::ExactMatch:
@@ -589,13 +589,14 @@ void CdRipper::cddbDoneData(RDDiscLookup::Result result)
     trackSelectionChangedData();
     break;
 
-  case RDDiscLookup::PartialMatch:
+  case RDDiscLookup::NoMatch:
     rip_track[0]=-1;
     rip_track[1]=-1;
-    printf("Partial Match!\n");
     break;
 
-  default:
+  case RDDiscLookup::LookupError:
+    QMessageBox::warning(this,"RDLibrary - "+rip_disc_lookup->sourceName()+
+			 " "+tr("Lookup Error"),err_msg);
     rip_track[0]=-1;
     rip_track[1]=-1;
     break;

@@ -458,6 +458,10 @@ Track</source>
         <source>Values to Cart</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Lookup Error</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>DiskGauge</name>
@@ -730,6 +734,10 @@ Selection</source>
     </message>
     <message>
         <source>Values to Carts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Lookup Error</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
