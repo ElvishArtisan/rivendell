@@ -23,6 +23,7 @@
 #include <musicbrainz5/ArtistCredit.h>
 #include <musicbrainz5/Disc.h>
 #include <musicbrainz5/HTTPFetch.h>
+#include <musicbrainz5/ISRC.h>
 #include <musicbrainz5/Label.h>
 #include <musicbrainz5/LabelInfo.h>
 #include <musicbrainz5/Medium.h>
@@ -196,7 +197,7 @@ RDDiscLookup::Result RDMbLookup::ProcessRelease(MusicBrainz5::CRelease *release)
   // Extract Extended Release Data
   //
   MusicBrainz5::CQuery::tParamMap params;
-  params["inc"]="artists labels recordings";
+  params["inc"]="artists labels recordings isrcs";
   MusicBrainz5::CMetadata metadata=mbq.Query("release",release->ID(),"",params);
   if(metadata.Release()) {
     //
@@ -238,7 +239,14 @@ RDDiscLookup::Result RDMbLookup::ProcessRelease(MusicBrainz5::CRelease *release)
 	    setTrackTitle(k,QString::fromUtf8(recording->Title().c_str()));
 	  discRecord()->
 	    setTrackMbId(k,QString::fromUtf8(recording->ID().c_str()));
-	  //std::cout << k << ": " << recording->Title() << std::endl;
+	  MusicBrainz5::CISRCList *isrcs=recording->ISRCList();
+	  if(isrcs) {
+	    if(isrcs->NumItems()>0) {
+	      discRecord()->
+		setIsrc(k,RDDiscLookup::normalizedIsrc(QString::fromUtf8(isrcs->
+						       Item(0)->ID().c_str())));
+	    }
+	  }
 	}
       }
     }

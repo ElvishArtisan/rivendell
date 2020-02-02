@@ -333,6 +333,17 @@ void RDDiscRecord::setTrackMbId(int track,const QString &str)
 }
 
 
+bool RDDiscRecord::hasIsrcs() const
+{
+  for(int i=0;i<tracks();i++) {
+    if(isrc(i).isEmpty()) {
+      return false;
+    }
+  }
+  return true;
+}
+
+
 QString RDDiscRecord::isrc(int track) const
 {
   if(track<CDROM_LEADOUT) {

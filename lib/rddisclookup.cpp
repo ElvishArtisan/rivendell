@@ -94,48 +94,52 @@ void RDDiscLookup::lookup()
   }
 
   //
-  // Get some basic disc parameters (CDDB DiskID, MusicBrainz mbid and,
-  // if enabled in rdadmin(1), MCN and ISRCs).
+  // Get some basic disc parameters,
   //
   DiscId *disc=discid_new();
-  if(rda->libraryConf()->readIsrc()) {
-    if(discid_read(disc,rda->libraryConf()->ripperDevice().toUtf8())==0) {
-      QMessageBox::warning(this,caption()+" - "+tr("Error"),
-			 tr("Unable to read CD.")+
-			   "\n["+QString(discid_get_error_msg(disc))+"]");
-      discid_free(disc);
-      return;
-    }
-  }
-  else {
-    if(discid_read_sparse(disc,rda->libraryConf()->ripperDevice().toUtf8(),0)==0) {
-      QMessageBox::warning(this,caption()+" - "+tr("Error"),
-			 tr("Unable to read CD.")+
-			   "\n["+QString(discid_get_error_msg(disc))+"]");
-      discid_free(disc);
-      return;
-    }
+  if(discid_read_sparse(disc,rda->libraryConf()->ripperDevice().toUtf8(),0)==0) {
+    QMessageBox::warning(this,caption()+" - "+tr("Error"),
+		       tr("Unable to read CD.")+
+		       "\n["+QString::fromUtf8(discid_get_error_msg(disc))+"]");
+    discid_free(disc);
+    return;
   }
   discRecord()->setDiscId(QString(discid_get_freedb_id(disc)).toUInt(NULL,16));
   discRecord()->setDiscMbId(discid_get_id(disc));
   discRecord()->setMbSubmissionUrl(discid_get_submission_url(disc));
-  if(rda->libraryConf()->readIsrc()) {
+
+  //
+  // Call the low-level driver to do its lookup.
+  //
+  lookupRecord();
+
+  //
+  // If the low-level driver didn't find ISRCs, and the user has requested
+  // them, try to find them on the disc.
+  //
+  // WARNING: This operation can be VERY expensive if the disc does not in
+  //          fact contain ISRCs!
+  //
+  if((!discRecord()->hasIsrcs())&&rda->libraryConf()->readIsrc()) {
+    if(discid_read(disc,rda->libraryConf()->ripperDevice().toUtf8())==0) {
+      QMessageBox::warning(this,caption()+" - "+tr("Error"),
+		       tr("Unable to read CD.")+
+		       "\n["+QString::fromUtf8(discid_get_error_msg(disc))+"]");
+      discid_free(disc);
+      return;
+    }
     discRecord()->setMcn(discid_get_mcn(disc));
     int first=discid_get_first_track_num(disc);
     int last=discid_get_last_track_num(disc);
     for(int i=first;i<=last;i++) {
-      if((i-first)<lookup_record->tracks()) {
+      if((i-first)<discRecord()->tracks()) {
 	discRecord()->setIsrc(i-first,
 		  RDDiscLookup::normalizedIsrc(discid_get_track_isrc(disc,i)));
       }
     }
   }
-  discid_free(disc);
 
-  //
-  // Call the low-level driver to complete the lookup.
-  //
-  lookupRecord();
+  discid_free(disc);
 }
 
 

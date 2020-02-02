@@ -19475,3 +19475,5 @@
 	in rdlibrary(1).
 2020-02-01 Fred Gleason <fredg@paravelsystems.com>
 	* Added support for saving Label data from MusicBrainz releases.
+2020-02-02 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for reading ISRCs from MusicBrainz.

@@ -81,6 +81,7 @@ class RDDiscRecord
   void setTrackArtist(int track,QString artist);
   QString trackMbId(int track) const;
   void setTrackMbId(int track,const QString &str);
+  bool hasIsrcs() const;
   QString isrc(int track) const;
   void setIsrc(int track,QString isrc);
   QString dump();
