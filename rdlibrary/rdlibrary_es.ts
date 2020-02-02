@@ -472,6 +472,10 @@ Track</source>
         <source>Lookup Error</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Label:</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>DiskGauge</name>

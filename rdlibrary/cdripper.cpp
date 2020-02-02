@@ -115,6 +115,14 @@ CdRipper::CdRipper(QString cutname,RDDiscRecord *rec,RDLibraryConf *conf,
   rip_album_edit=new QLineEdit(this);
 
   //
+  // Label Edit
+  //
+  rip_label_label=new QLabel(tr("Label:"),this);
+  rip_label_label->setFont(labelFont());
+  rip_label_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  rip_label_edit=new QLineEdit(this);
+
+  //
   // Other Edit
   //
   rip_other_label=new QLabel(tr("Other:"),this);
@@ -295,7 +303,7 @@ CdRipper::~CdRipper()
 
 QSize CdRipper::sizeHint() const
 {
-  return QSize(730,606);
+  return QSize(730,628);
 }
 
 
@@ -305,11 +313,12 @@ QSizePolicy CdRipper::sizePolicy() const
 }
 
 
-int CdRipper::exec(QString *title,QString *artist,QString *album)
+int CdRipper::exec(QString *title,QString *artist,QString *album,QString *label)
 {
   rip_title=title;
   rip_artist=artist;
   rip_album=album;
+  rip_label=label;
   return QDialog::exec();
 }
 
@@ -422,6 +431,7 @@ void CdRipper::ripTrackButtonData()
     *rip_title=rip_title_box->currentText();
     *rip_artist=rip_artist_edit->text();
     *rip_album=rip_album_edit->text();
+    *rip_label=rip_label_edit->text();
   }
 
   //
@@ -587,6 +597,7 @@ void CdRipper::lookupDoneData(RDDiscLookup::Result result,const QString &err_msg
     }
     rip_artist_edit->setText(rip_disc_record->discArtist());
     rip_album_edit->setText(rip_disc_record->discAlbum());
+    rip_label_edit->setText(rip_disc_record->discLabel());
     rip_other_edit->setText(rip_disc_record->discExtended());
     for(int i=0;i<rip_disc_record->tracks();i++) {
       rip_track_list->findItem(QString().sprintf("%d",i+1),0)->
@@ -657,28 +668,30 @@ void CdRipper::resizeEvent(QResizeEvent *e)
   rip_artist_edit->setGeometry(65,31,size().width()-125,18);
   rip_album_label->setGeometry(10,54,50,18);
   rip_album_edit->setGeometry(65,53,size().width()-125,18);
-  rip_other_label->setGeometry(10,76,50,16);
-  rip_other_edit->setGeometry(65,75,size().width()-125,60);
-  rip_apply_box->setGeometry(65,140,15,15);
-  rip_apply_label->setGeometry(85,140,250,20);
-  rip_browser_button->setGeometry(size().width()-260,139,200,35);
-  rip_track_list->setGeometry(10,178,size().width()-110,size().height()-290);
-  rip_track_label->setGeometry(10,162,100,14);
+  rip_label_label->setGeometry(10,76,50,18);
+  rip_label_edit->setGeometry(65,75,size().width()-125,18);
+  rip_other_label->setGeometry(10,98,50,16);
+  rip_other_edit->setGeometry(65,97,size().width()-125,60);
+  rip_apply_box->setGeometry(65,162,15,15);
+  rip_apply_label->setGeometry(85,162,250,20);
+  rip_browser_button->setGeometry(size().width()-260,161,200,35);
+  rip_track_list->setGeometry(10,200,size().width()-110,size().height()-290);
+  rip_track_label->setGeometry(10,184,100,14);
   rip_bar->setGeometry(10,size().height()-100,size().width()-112,20);
-  rip_eject_button->setGeometry(size().width()-90,178,80,50);
-  rip_play_button->setGeometry(size().width()-90,238,80,50);
-  rip_stop_button->setGeometry(size().width()-90,298,80,50);
-  rip_rip_button->setGeometry(size().width()-90,402,80,50);
+  rip_eject_button->setGeometry(size().width()-90,200,80,50);
+  rip_play_button->setGeometry(size().width()-90,260,80,50);
+  rip_stop_button->setGeometry(size().width()-90,320,80,50);
+  rip_rip_button->setGeometry(size().width()-90,424,80,50);
   rip_normalize_box->setGeometry(10,size().height()-76,20,20);
   rip_normalize_box_label->setGeometry(30,size().height()-76,85,20);
-  rip_normalize_spin->setGeometry(170,size().height()-76,40,20);
   rip_normalize_label->setGeometry(120,size().height()-76,45,20);
-  rip_normalize_unit->setGeometry(215,size().height()-76,40,20);
-  rip_autotrim_box->setGeometry(10,size().height()-52,20,20);
+  rip_normalize_spin->setGeometry(170,size().height()-76,50,20);
+  rip_normalize_unit->setGeometry(225,size().height()-76,40,20);
   rip_autotrim_box_label->setGeometry(30,size().height()-52,85,20);
-  rip_autotrim_spin->setGeometry(170,size().height()-52,40,20);
+  rip_autotrim_box->setGeometry(10,size().height()-52,20,20);
   rip_autotrim_label->setGeometry(120,size().height()-52,45,20);
-  rip_autotrim_unit->setGeometry(215,size().height()-52,40,20);
+  rip_autotrim_spin->setGeometry(170,size().height()-52,50,20);
+  rip_autotrim_unit->setGeometry(225,size().height()-52,40,20);
   rip_channels_box->setGeometry(90,size().height()-28,50,20);
   rip_channels_label->setGeometry(10,size().height()-28,75,20);
   rip_close_button->setGeometry(size().width()-90,size().height()-60,80,50);

@@ -46,7 +46,7 @@ class CdRipper : public RDDialog
   QSizePolicy sizePolicy() const;
 
  public slots:
-  int exec(QString *title,QString *artist,QString *album);
+   int exec(QString *title,QString *artist,QString *album,QString *label);
 
  private slots:
   void trackSelectionChangedData();
@@ -83,10 +83,13 @@ class CdRipper : public RDDialog
   QString *rip_title;
   QString *rip_artist;
   QString *rip_album;
+  QString *rip_label;
   QLabel *rip_title_label;
   QComboBox *rip_title_box;
   QLabel *rip_album_label;
   QLineEdit *rip_album_edit;
+  QLabel *rip_label_label;
+  QLineEdit *rip_label_edit;
   QLabel *rip_artist_label;
   QLineEdit *rip_artist_edit;
   QLabel *rip_other_label;

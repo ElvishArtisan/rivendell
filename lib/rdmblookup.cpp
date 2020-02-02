@@ -95,9 +95,23 @@ void RDMbLookup::lookupRecord()
 	titlesBox()->clear();
 	for(int i=0;i<releases->NumItems();i++) {
 	  MusicBrainz5::CRelease *release=releases->Item(i);
+	  QString barcode=RDDiscLookup::
+	    formattedUpcA(QString::fromUtf8(release->Barcode().c_str()));
+	  MusicBrainz5::CMediumList *media=release->MediumList();
+	  QString format="";
+	  for(int j=0;j<media->NumItems();j++) {
+	    format=QString::fromUtf8(media->Item(j)->Format().c_str())+" | ";
+	  }
+	  format=format.left(format.length()-3);
+	  QString title=QString::fromUtf8(release->Title().c_str())+"\n";
+	  if(!format.isEmpty()) {
+	    title+=" ["+format+"]";
+	  }
+	  if(!barcode.isEmpty()) {
+	    title+=" [UPC "+barcode+"]";
+	  }
 	  titlesKey()->push_back(QString::fromUtf8(release->Title().c_str()));
-	  titlesBox()->insertItem(titlesBox()->count(),
-				  QString::fromUtf8(release->Title().c_str()));
+	  titlesBox()->insertItem(titlesBox()->count(),title);
 	}
 	if((index=exec())>=0) {
 	  result_code=ProcessRelease(releases->Item(index));

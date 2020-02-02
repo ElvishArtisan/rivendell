@@ -812,6 +812,7 @@ void DiskRipper::lookupDoneData(RDDiscLookup::Result result,
       rip_wave_datas[i]->setTitle(rip_disc_record.trackTitle(i));
       rip_wave_datas[i]->setArtist(rip_disc_record.discArtist());
       rip_wave_datas[i]->setAlbum(rip_disc_record.discAlbum());
+      rip_wave_datas[i]->setLabel(rip_disc_record.discLabel());
     }
     rip_apply_box->setChecked(true);
     rip_apply_box->setEnabled(true);
@@ -940,14 +941,14 @@ void DiskRipper::resizeEvent(QResizeEvent *e)
   rip_clear_button->setGeometry(size().width()-90,480,80,50);
   rip_normalizebox_label->setGeometry(30,size().height()-78,85,20);
   rip_normalize_box->setGeometry(10,size().height()-78,20,20);
-  rip_normalize_spin->setGeometry(170,size().height()-79,40,20);
   rip_normalize_label->setGeometry(120,size().height()-78,45,20);
-  rip_normalize_unit->setGeometry(215,size().height()-78,40,20);
+  rip_normalize_spin->setGeometry(170,size().height()-79,50,20);
+  rip_normalize_unit->setGeometry(225,size().height()-78,40,20);
   rip_autotrimbox_label->setGeometry(30,size().height()-54,85,20);
   rip_autotrim_box->setGeometry(10,size().height()-54,20,20);
-  rip_autotrim_spin->setGeometry(170,size().height()-54,40,20);
   rip_autotrim_label->setGeometry(120,size().height()-54,45,20);
-  rip_autotrim_unit->setGeometry(215,size().height()-54,40,20);
+  rip_autotrim_spin->setGeometry(170,size().height()-54,50,20);
+  rip_autotrim_unit->setGeometry(225,size().height()-54,40,20);
   rip_channels_label->setGeometry(10,size().height()-30,75,20);
   rip_channels_box->setGeometry(90,size().height()-30,50,20);
   rip_rip_button->setGeometry(size().width()-200,size().height()-60,80,50);

@@ -49,6 +49,9 @@ class RDDiscLookup : public RDDialog
   static bool isrcIsValid(const QString &isrc);
   static QString formattedIsrc(const QString &isrc,bool *ok=NULL);
   static QString normalizedIsrc(const QString &isrc,bool *ok=NULL);
+  static bool upcAIsValid(const QString &barcode);
+  static QString formattedUpcA(const QString &barcode,bool *ok=NULL);
+  static QString normalizedUpcA(const QString &barcode,bool *ok=NULL);
 
  signals:
   void lookupDone(RDDiscLookup::Result,const QString &err_msg);

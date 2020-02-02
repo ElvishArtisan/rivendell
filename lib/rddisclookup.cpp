@@ -59,7 +59,7 @@ RDDiscLookup::RDDiscLookup(const QString &caption,FILE *profile_msgs,
 
 QSize RDDiscLookup::sizeHint() const
 {
-  return QSize(400,120);
+  return QSize(400,140);
 }
 
 
@@ -164,7 +164,7 @@ void RDDiscLookup::resizeEvent(QResizeEvent *e)
 
   lookup_titles_label->setGeometry(15,2,w-30,20);
 
-  lookup_titles_box->setGeometry(10,24,w-20,20);
+  lookup_titles_box->setGeometry(10,24,w-20,40);
 
   lookup_ok_button->setGeometry(w-180,h-60,80,50);
   lookup_cancel_button->setGeometry(w-90,h-60,80,50);
@@ -283,6 +283,68 @@ QString RDDiscLookup::normalizedIsrc(const QString &isrc,bool *ok)
     QString str=isrc;
     str.replace("-","");
     return str.toUpper();
+  }
+  if(ok!=NULL) {
+    *ok=false;
+  }
+  return QString();
+}
+
+
+bool RDDiscLookup::upcAIsValid(const QString &barcode)
+{
+  //
+  // For formatting rules for UPC-A barcodes, see
+  // https://en.wikipedia.org/wiki/Universal_Product_Code
+  //
+  QString str=barcode;
+
+  str.replace("-","");
+  str.replace(" ","");
+  if(str.length()!=12) {
+    return false;
+  }
+
+  for(int i=0;i<12;i++) {
+    if(str.at(i).category()!=QChar::Number_DecimalDigit) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+
+QString RDDiscLookup::formattedUpcA(const QString &barcode,bool *ok)
+{
+  if(RDDiscLookup::upcAIsValid(barcode)) {
+    if(ok!=NULL) {
+      *ok=true;
+    }
+    QString str=barcode;
+    str.insert(1," ");
+    str.insert(6,"-");
+    str.insert(12,"-");
+    str.insert(14," ");
+    return str;
+  }
+  if(ok!=NULL) {
+    *ok=false;
+  }
+  return QString();
+}
+
+
+QString RDDiscLookup::normalizedUpcA(const QString &barcode,bool *ok)
+{
+  if(RDDiscLookup::upcAIsValid(barcode)) {
+    if(ok!=NULL) {
+      *ok=true;
+    }
+    QString str=barcode;
+    str.replace("-","");
+    str.replace(" ","");
+    return str;
   }
   if(ok!=NULL) {
     *ok=false;
