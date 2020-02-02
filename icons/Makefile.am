@@ -270,6 +270,8 @@ EXTRA_DIST = admin.xpm\
              chain.png\
              chain.xpm\
              checkmark.xpm\
+             cover_art_default-60x60.xcf\
+             cover_art_default-60x60.xpm\
              download.xpm\
              ex.xpm\
              fillstart.xpm\

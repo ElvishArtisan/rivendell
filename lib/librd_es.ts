@@ -2431,6 +2431,10 @@ Do you still want to proceed?</source>
         <source>Lookup</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Resource Not Found</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDPanelButton</name>

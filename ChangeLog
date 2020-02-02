@@ -19477,3 +19477,7 @@
 	* Added support for saving Label data from MusicBrainz releases.
 2020-02-02 Fred Gleason <fredg@paravelsystems.com>
 	* Added support for reading ISRCs from MusicBrainz.
+2020-02-02 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'libcoverart' dependency.
+	* Added support for displaying cover art in the MusicBrainz release
+	chooser.

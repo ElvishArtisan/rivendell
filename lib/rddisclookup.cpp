@@ -168,7 +168,8 @@ void RDDiscLookup::resizeEvent(QResizeEvent *e)
 
   lookup_titles_label->setGeometry(15,2,w-30,20);
 
-  lookup_titles_box->setGeometry(10,24,w-20,40);
+  lookup_titles_box->
+    setGeometry(10,24,w-20,lookup_titles_box->sizeHint().height());
 
   lookup_ok_button->setGeometry(w-180,h-60,80,50);
   lookup_cancel_button->setGeometry(w-90,h-60,80,50);

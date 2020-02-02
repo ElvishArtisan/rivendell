@@ -18,6 +18,10 @@ LibCurl, v7.19.0 or later
 A client-side URL transfer library. Included with most distros, or
 available at: http://curl.haxx.se/libcurl/.
 
+LibCoverArt, v1.0.0 or later
+A library for accessing the MusicBrainz Cover Art Archive.
+Available at https://musicbrainz.org/
+
 LibDiscId, v0.6.2 or later
 A library for reading the attributes of audio CDs.
 Available at https://musicbrainz.org/

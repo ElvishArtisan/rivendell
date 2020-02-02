@@ -22,6 +22,9 @@
 #ifndef RDMBLOOKUP_H
 #define RDMBLOOKUP_H
 
+#include <qdir.h>
+#include <qicon.h>
+
 #include <musicbrainz5/Release.h>
 
 #include <rddisclookup.h>
@@ -31,6 +34,8 @@ class RDMbLookup : public RDDiscLookup
   Q_OBJECT
  public:
   RDMbLookup(const QString &caption,FILE *profile_msgs,QWidget *parent=0);
+  ~RDMbLookup();
+  QSize sizeHint() const;
   QString sourceName() const;
   QPixmap sourceLogo() const;
   QString sourceUrl() const;
@@ -40,6 +45,9 @@ class RDMbLookup : public RDDiscLookup
 
  private:
   RDDiscLookup::Result ProcessRelease(MusicBrainz5::CRelease *release);
+  QIcon GetReleaseCover(const QString &mbid) const;
+  QIcon *cover_art_default_icon;
+  QDir *temp_directory;
 };
 
 #endif  // RDMBLOOKUP_H

@@ -19,6 +19,13 @@
 //
 //
 
+#include <errno.h>
+
+#include <fstream>
+
+#include <coverart/CoverArt.h>
+#include <coverart/HTTPFetch.h>
+
 #include <musicbrainz5/Artist.h>
 #include <musicbrainz5/ArtistCredit.h>
 #include <musicbrainz5/Disc.h>
@@ -37,11 +44,16 @@
 #include <musicbrainz5/RelationListList.h>
 #include <musicbrainz5/Track.h>
 
-#include <QMessageBox>
+#include <qdir.h>
+#include <qmessagebox.h>
+#include <qpixmap.h>
+#include <qpixmapcache.h>
 
+#include "rdconf.h"
 #include "rdmblookup.h"
 
 #include "../icons/musicbrainz-159x25.xpm"
+#include "../icons/cover_art_default-60x60.xpm"
 
 QString err_str="OK";
 RDDiscLookup::Result result_code=RDDiscLookup::ExactMatch;
@@ -51,6 +63,49 @@ RDMbLookup::RDMbLookup(const QString &caption,FILE *profile_msgs,
   : RDDiscLookup(caption,profile_msgs,parent)
 {
   setWindowTitle(caption+" - MusicBrainz "+tr("Lookup"));
+
+  cover_art_default_icon=new QIcon(cover_art_default_60x60_xpm);
+
+  titlesBox()->setIconSize(QSize(60,60));
+
+  char tempdir[PATH_MAX];
+
+  //
+  // Create temporary directory
+  //
+  temp_directory=NULL;
+  strncpy(tempdir,"/tmp",PATH_MAX);
+  if(getenv("TEMP")!=NULL) {
+    strncpy(tempdir,getenv("TEMP"),PATH_MAX);
+  }
+  strncat(tempdir,"/rivendell-XXXXXX",PATH_MAX-strlen(tempdir));
+  if(mkdtemp(tempdir)==NULL) {
+    rda->syslog(LOG_WARNING,"unable to create temporary directory [%s]",
+		strerror(errno));
+  }
+  temp_directory=new QDir(tempdir);
+  rda->syslog(LOG_DEBUG,
+	      "using working directory \"%s\" for cover art processing",
+	      (const char *)temp_directory->path().toUtf8());
+}
+
+
+RDMbLookup::~RDMbLookup()
+{
+  QStringList files=temp_directory->entryList(QDir::Files);
+  for(int i=0;i<files.size();i++) {
+    unlink((temp_directory->path()+"/"+files[i]).toUtf8());
+  }
+  rmdir(temp_directory->path().toUtf8());
+  rda->syslog(LOG_DEBUG,"deleted working directory \"%s\"",
+	      (const char *)temp_directory->path().toUtf8());
+  delete temp_directory;
+}
+
+
+QSize RDMbLookup::sizeHint() const
+{
+  return QSize(500,160);
 }
 
 
@@ -112,7 +167,7 @@ void RDMbLookup::lookupRecord()
 	    title+=" [UPC "+barcode+"]";
 	  }
 	  titlesKey()->push_back(QString::fromUtf8(release->Title().c_str()));
-	  titlesBox()->insertItem(titlesBox()->count(),title);
+	  titlesBox()->insertItem(titlesBox()->count(),GetReleaseCover(QString::fromUtf8(release->ID().c_str())),title);
 	}
 	if((index=exec())>=0) {
 	  result_code=ProcessRelease(releases->Item(index));
@@ -173,6 +228,16 @@ void RDMbLookup::lookupRecord()
       "  "+tr("LastErrorMessage")+": "+
       QString::fromUtf8(mbq.LastErrorMessage().c_str());
     result_code=RDDiscLookup::LookupError;
+  }
+  catch (MusicBrainz5::CResourceNotFoundError &err) {
+    err_str="  "+tr("Resource Not Found")+"\n"+
+      "  "+tr("Last Result")+": "+\
+      QString().sprintf("%d",mbq.LastResult())+"\n"+
+      "  "+tr("LastHTTPCode")+": "+
+      QString().sprintf("%d",mbq.LastHTTPCode())+"\n"+
+      "  "+tr("LastErrorMessage")+": "+
+      QString::fromUtf8(mbq.LastErrorMessage().c_str());
+    result_code=RDDiscLookup::NoMatch;
   }
   emit lookupDone(result_code,err_str);
 }
@@ -252,4 +317,67 @@ RDDiscLookup::Result RDMbLookup::ProcessRelease(MusicBrainz5::CRelease *release)
     }
   }
   return RDDiscLookup::ExactMatch;
+}
+
+
+QIcon RDMbLookup::GetReleaseCover(const QString &mbid) const
+{
+  CoverArtArchive::CCoverArt ca((QString("rivendell-")+VERSION).toStdString());
+  err_str="";
+
+  try {
+    QPixmap pix;
+    QString key="$coverart-front-"+mbid;
+
+    if(QPixmapCache::find(key,&pix)) {
+      return QIcon(pix);
+    }
+
+    std::vector<unsigned char> image=ca.FetchFront(mbid.toStdString());
+    if(image.size()) {
+      std::stringstream filename;
+      filename << temp_directory->path().toStdString() << "/" <<
+	mbid.toStdString();
+
+      std::ofstream front(filename.str().c_str());
+      front.write((const char *)&image[0],image.size());
+      front.close();
+
+      pix=QPixmap(QString(filename.str().c_str()));
+      unlink(QString::fromUtf8(filename.str().c_str()).toUtf8());
+      if((pix.width()==0)||(pix.height()==0)) {
+	return *cover_art_default_icon;
+      }
+      QPixmapCache::insert(key,pix);
+      return QIcon(pix);
+    }
+  }
+
+  catch (CoverArtArchive::CConnectionError &err) {
+    err_str="ConnectionError when downloading coverart ["+
+      QString::fromUtf8(ca.LastErrorMessage().c_str())+"]";
+  }
+  catch (CoverArtArchive::CTimeoutError &err) {
+    err_str="TimeoutError when downloading coverart ["+
+      QString::fromUtf8(ca.LastErrorMessage().c_str())+"]";
+  }
+  catch (CoverArtArchive::CAuthenticationError &err) {
+    err_str="AuthenticationError when downloading coverart ["+
+      QString::fromUtf8(ca.LastErrorMessage().c_str())+"]";
+  }
+  catch (CoverArtArchive::CFetchError &err) {
+    err_str="FetchError when downloading coverart ["+
+      QString::fromUtf8(ca.LastErrorMessage().c_str())+"]";
+  }
+  catch (CoverArtArchive::CRequestError &err) {
+    err_str="RequestError when downloading coverart ["+
+      QString::fromUtf8(ca.LastErrorMessage().c_str())+"]";
+  }
+  catch (CoverArtArchive::CResourceNotFoundError &err) {
+  }
+
+  if(!err_str.isEmpty()) {
+    rda->syslog(LOG_WARNING,"%s",(const char *)err_str.toUtf8());
+  }
+  return *cover_art_default_icon;
 }

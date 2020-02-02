@@ -234,9 +234,10 @@ else
 fi
 
 #
-# Check for MusicBrainz support libraries (libdiscid and libmusicbrainz)
+# Check for MusicBrainz support libraries
+# (libdiscid, libmusicbrainz and libcoverart)
 #
-PKG_CHECK_MODULES(MUSICBRAINZ,libdiscid libmusicbrainz5,,[AC_MSG_ERROR([*** LibMusicBrainz not found ***])])
+PKG_CHECK_MODULES(MUSICBRAINZ,libdiscid libmusicbrainz5 libcoverart,,[AC_MSG_ERROR([*** LibMusicBrainz not found ***])])
 
 #
 # Check for Id3Lib
