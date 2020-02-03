@@ -689,9 +689,9 @@ void CdRipper::resizeEvent(QResizeEvent *e)
   rip_apply_label->setGeometry(85,162,250,20);
   rip_browser_button->setGeometry(size().width()-260,161,200,35);
   rip_browser_label->setGeometry(size().width()-260,161,200,35);
-  rip_track_list->setGeometry(10,200,size().width()-110,size().height()-290);
+  rip_track_list->setGeometry(10,200,size().width()-110,size().height()-305);
   rip_track_label->setGeometry(10,184,100,14);
-  rip_bar->setGeometry(10,size().height()-100,size().width()-112,20);
+  rip_bar->setGeometry(10,size().height()-100,size().width()-110,20);
   rip_eject_button->setGeometry(size().width()-90,200,80,50);
   rip_play_button->setGeometry(size().width()-90,260,80,50);
   rip_stop_button->setGeometry(size().width()-90,320,80,50);
