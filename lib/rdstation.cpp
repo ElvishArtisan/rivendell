@@ -476,38 +476,38 @@ void RDStation::setScanned(bool state) const
 bool RDStation::haveCapability(Capability cap) const
 {
   switch(cap) {
-      case RDStation::HaveOggenc:
-	return RDBool(RDGetSqlValue("STATIONS","NAME",station_name,
-				  "HAVE_OGGENC").toString());
-	break;
-
-      case RDStation::HaveOgg123:
-	return RDBool(RDGetSqlValue("STATIONS","NAME",station_name,
+  case RDStation::HaveOggenc:
+    return RDBool(RDGetSqlValue("STATIONS","NAME",station_name,
+				"HAVE_OGGENC").toString());
+    break;
+ 
+  case RDStation::HaveOgg123:
+    return RDBool(RDGetSqlValue("STATIONS","NAME",station_name,
 				  "HAVE_OGG123").toString());
-	break;
+    break;
 
-      case RDStation::HaveFlac:
-	return RDBool(RDGetSqlValue("STATIONS","NAME",station_name,
+  case RDStation::HaveFlac:
+    return RDBool(RDGetSqlValue("STATIONS","NAME",station_name,
 				  "HAVE_FLAC").toString());
-	break;
+    break;
 
-      case RDStation::HaveLame:
-	return RDBool(RDGetSqlValue("STATIONS","NAME",station_name,
+  case RDStation::HaveLame:
+    return RDBool(RDGetSqlValue("STATIONS","NAME",station_name,
 				  "HAVE_LAME").toString());
-	break;
+    break;
 
-      case RDStation::HaveMp4Decode:
-	return RDBool(RDGetSqlValue("STATIONS","NAME",station_name,
-				  "HAVE_MP4_DECODE").toString());
+  case RDStation::HaveMp4Decode:
+    return RDBool(RDGetSqlValue("STATIONS","NAME",station_name,
+				"HAVE_MP4_DECODE").toString());
 
-      case RDStation::HaveMpg321:
-	return RDBool(RDGetSqlValue("STATIONS","NAME",station_name,
-				  "HAVE_MPG321").toString());
+  case RDStation::HaveMpg321:
+    return RDBool(RDGetSqlValue("STATIONS","NAME",station_name,
+				"HAVE_MPG321").toString());
 
-      case RDStation::HaveTwoLame:
-	return RDBool(RDGetSqlValue("STATIONS","NAME",station_name,
-				  "HAVE_TWOLAME").toString());
-	break;
+  case RDStation::HaveTwoLame:
+    return RDBool(RDGetSqlValue("STATIONS","NAME",station_name,
+				"HAVE_TWOLAME").toString());
+    break;
   }
   return false;
 }
@@ -516,33 +516,33 @@ bool RDStation::haveCapability(Capability cap) const
 void RDStation::setHaveCapability(Capability cap,bool state) const
 {
   switch(cap) {
-      case RDStation::HaveOggenc:
-	SetRow("HAVE_OGGENC",state);
-	break;
+  case RDStation::HaveOggenc:
+    SetRow("HAVE_OGGENC",state);
+    break;
 
-      case RDStation::HaveOgg123:
-	SetRow("HAVE_OGG123",state);
-	break;
+  case RDStation::HaveOgg123:
+    SetRow("HAVE_OGG123",state);
+    break;
 
-      case RDStation::HaveFlac:
-	SetRow("HAVE_FLAC",state);
-	break;
+  case RDStation::HaveFlac:
+    SetRow("HAVE_FLAC",state);
+    break;
 
-      case RDStation::HaveLame:
-	SetRow("HAVE_LAME",state);
-	break;
+  case RDStation::HaveLame:
+    SetRow("HAVE_LAME",state);
+    break;
 
-      case RDStation::HaveMp4Decode:
-	SetRow("HAVE_MP4_DECODE",state);
-	break;
+  case RDStation::HaveMp4Decode:
+    SetRow("HAVE_MP4_DECODE",state);
+    break;
 
-      case RDStation::HaveMpg321:
-	SetRow("HAVE_MPG321",state);
-	break;
+  case RDStation::HaveMpg321:
+    SetRow("HAVE_MPG321",state);
+    break;
 
-      case RDStation::HaveTwoLame:
-	SetRow("HAVE_TWOLAME",state);
-	break;
+  case RDStation::HaveTwoLame:
+    SetRow("HAVE_TWOLAME",state);
+    break;
   }
 }
 
@@ -595,20 +595,20 @@ void RDStation::setCardDriver(int cardnum,AudioDriver driver) const
 QString RDStation::driverVersion(AudioDriver driver) const
 {
   switch(driver) {
-      case RDStation::None:
-	return QString();
+  case RDStation::None:
+    return QString();
 
-      case RDStation::Hpi:
-	return RDGetSqlValue("STATIONS","NAME",station_name,"HPI_VERSION").
-	  toString();
+  case RDStation::Hpi:
+    return RDGetSqlValue("STATIONS","NAME",station_name,"HPI_VERSION").
+      toString();
 
-      case RDStation::Jack:
-	return RDGetSqlValue("STATIONS","NAME",station_name,"JACK_VERSION").
-	  toString();
+  case RDStation::Jack:
+    return RDGetSqlValue("STATIONS","NAME",station_name,"JACK_VERSION").
+      toString();
 
-      case RDStation::Alsa:
-	return RDGetSqlValue("STATIONS","NAME",station_name,"ALSA_VERSION").
-	  toString();
+  case RDStation::Alsa:
+    return RDGetSqlValue("STATIONS","NAME",station_name,"ALSA_VERSION").
+      toString();
   }
   return QString();
 }
@@ -617,20 +617,20 @@ QString RDStation::driverVersion(AudioDriver driver) const
 void RDStation::setDriverVersion(AudioDriver driver,QString ver) const
 {
   switch(driver) {
-      case RDStation::None:
-	break;
+  case RDStation::None:
+    break;
 
-      case RDStation::Hpi:
-	SetRow("HPI_VERSION",ver);
-	break;
+  case RDStation::Hpi:
+    SetRow("HPI_VERSION",ver);
+    break;
 
-      case RDStation::Jack:
-	SetRow("JACK_VERSION",ver);
-	break;
+  case RDStation::Jack:
+    SetRow("JACK_VERSION",ver);
+    break;
 
-      case RDStation::Alsa:
-	SetRow("ALSA_VERSION",ver);
-	break;
+  case RDStation::Alsa:
+    SetRow("ALSA_VERSION",ver);
+    break;
   }
 }
 

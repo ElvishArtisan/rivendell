@@ -19490,3 +19490,5 @@
 	* Modified both CD rippers in rdlibrary(1) to display a
 	'MusicBrainz' button only when the host station has been configured
 	to use a browser.
+2020-02-03 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up switch() statment formatting in 'RDStation'.
