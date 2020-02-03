@@ -132,14 +132,26 @@ DiskRipper::DiskRipper(QString *filter,QString *group,QString *schedcode,
   rip_apply_label->setVisible(!rip_disc_lookup->sourceName().isNull());
 
   //
-  // Web Browser Button
+  // Web Browser Button/Label
   //
   rip_browser_button=new QPushButton(this);
   rip_browser_button->setPixmap(rip_disc_lookup->sourceLogo());
   rip_browser_button->setDisabled(true);
+  rip_browser_label=new QLabel(this);
+  rip_browser_label->setPixmap(rip_disc_lookup->sourceLogo());
+  rip_browser_label->setDisabled(true);
   connect(rip_browser_button,SIGNAL(clicked()),this,SLOT(openBrowserData()));
   if(rip_disc_lookup->sourceLogo().isNull()) {
     rip_browser_button->hide();
+    rip_browser_label->hide();
+  }
+  else {
+    if(rda->station()->browserPath().isEmpty()) {
+      rip_browser_button->hide();
+    }
+    else {
+      rip_browser_label->hide();
+    }
   }
 
   //
@@ -482,6 +494,7 @@ void DiskRipper::ejectedData()
   rip_apply_box->setDisabled(true);
   rip_apply_label->setDisabled(true);
   rip_browser_button->setDisabled(true);
+  rip_browser_label->setDisabled(true);
 }
 
 
@@ -818,6 +831,7 @@ void DiskRipper::lookupDoneData(RDDiscLookup::Result result,
     rip_apply_box->setEnabled(true);
     rip_apply_label->setEnabled(true);
     rip_browser_button->setDisabled(rip_disc_lookup->sourceUrl().isNull());
+    rip_browser_label->setDisabled(rip_disc_lookup->sourceUrl().isNull());
     break;
 
   case RDDiscLookup::NoMatch:
@@ -925,6 +939,7 @@ void DiskRipper::resizeEvent(QResizeEvent *e)
   rip_apply_box->setGeometry(65,118,15,15);
   rip_apply_label->setGeometry(85,118,250,20);
   rip_browser_button->setGeometry(size().width()-260,117,200,35);
+  rip_browser_label->setGeometry(size().width()-260,117,200,35);
   rip_track_label->setGeometry(100,140,100,14);
   rip_track_list->setGeometry(100,156,size().width()-202,size().height()-342);
   rip_diskbar_label->setGeometry(10,size().height()-174,size().width()-110,20);

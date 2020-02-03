@@ -153,9 +153,21 @@ CdRipper::CdRipper(QString cutname,RDDiscRecord *rec,RDLibraryConf *conf,
   rip_browser_button=new QPushButton(this);
   rip_browser_button->setPixmap(rip_disc_lookup->sourceLogo());
   rip_browser_button->setDisabled(true);
+  rip_browser_label=new QLabel(this);
+  rip_browser_label->setPixmap(rip_disc_lookup->sourceLogo());
+  rip_browser_label->setDisabled(true);
   connect(rip_browser_button,SIGNAL(clicked()),this,SLOT(openBrowserData()));
   if(rip_disc_lookup->sourceLogo().isNull()) {
     rip_browser_button->hide();
+    rip_browser_label->hide();
+  }
+  else {
+    if(rda->station()->browserPath().isEmpty()) {
+      rip_browser_button->hide();
+    }
+    else {
+      rip_browser_label->hide();
+    }
   }
 
   //
@@ -609,6 +621,7 @@ void CdRipper::lookupDoneData(RDDiscLookup::Result result,const QString &err_msg
     rip_apply_box->setEnabled(true);
     rip_apply_label->setEnabled(true);
     rip_browser_button->setDisabled(rip_disc_lookup->sourceUrl().isNull());
+    rip_browser_label->setDisabled(rip_disc_lookup->sourceUrl().isNull());
     trackSelectionChangedData();
     break;
 
@@ -675,6 +688,7 @@ void CdRipper::resizeEvent(QResizeEvent *e)
   rip_apply_box->setGeometry(65,162,15,15);
   rip_apply_label->setGeometry(85,162,250,20);
   rip_browser_button->setGeometry(size().width()-260,161,200,35);
+  rip_browser_label->setGeometry(size().width()-260,161,200,35);
   rip_track_list->setGeometry(10,200,size().width()-110,size().height()-290);
   rip_track_label->setGeometry(10,184,100,14);
   rip_bar->setGeometry(10,size().height()-100,size().width()-112,20);

@@ -90,6 +90,7 @@ class DiskRipper : public RDDialog
   QCheckBox *rip_apply_box;
   QLabel *rip_apply_label;
   QPushButton *rip_browser_button;
+  QLabel *rip_browser_label;
   RDTransportButton *rip_eject_button;
   RDTransportButton *rip_play_button;
   RDTransportButton *rip_stop_button;
