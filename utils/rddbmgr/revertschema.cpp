@@ -2,7 +2,7 @@
 //
 // Revert Rivendell DB schema
 //
-//   (C) Copyright 2018-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -54,7 +54,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   //
   if((cur_schema==313)&&(set_schema<cur_schema)) {
     DropColumn("CUTS","RELEASE_MBID");
-    DropColumn("CUTS","TRACK_MBID");
+    DropColumn("CUTS","RECORDING_MBID");
 
     WriteSchemaVersion(--cur_schema);
   }

@@ -302,7 +302,7 @@ RDDiscLookup::Result RDMbLookup::ProcessRelease(MusicBrainz5::CRelease *release)
 	discRecord()->
 	  setTrackTitle(k,QString::fromUtf8(recording->Title().c_str()));
 	discRecord()->
-	  setTrackMbId(k,QString::fromUtf8(recording->ID().c_str()));
+	  setTrackRecordingMbId(k,QString::fromUtf8(recording->ID().c_str()));
 	MusicBrainz5::CISRCList *isrcs=recording->ISRCList();
 	if(isrcs) {
 	  if(isrcs->NumItems()>0) {

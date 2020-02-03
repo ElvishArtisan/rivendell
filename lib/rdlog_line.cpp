@@ -2,7 +2,7 @@
 //
 // A container class for a Rivendell Log Line.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -118,6 +118,8 @@ void RDLogLine::clear()
   log_publisher="";
   log_composer="";
   log_isrc="";
+  log_recording_mbid="";
+  log_release_mbid="";
   log_album="";
   log_year=QDate();
   log_isci="";
@@ -822,6 +824,30 @@ QString RDLogLine::isrc() const
 void RDLogLine::setIsrc(const QString &string)
 {
   log_isrc=string;
+}
+
+
+QString RDLogLine::recordingMbId() const
+{
+  return log_recording_mbid;
+}
+
+
+void RDLogLine::setRecordingMbId(const QString &mbid)
+{
+  log_recording_mbid=mbid;
+}
+
+
+QString RDLogLine::releaseMbId() const
+{
+  return log_release_mbid;
+}
+
+
+void RDLogLine::setReleaseMbId(const QString &mbid)
+{
+  log_release_mbid=mbid;
 }
 
 
@@ -1555,23 +1581,44 @@ void RDLogLine::setStartSource(RDLogLine::StartSource src)
 }
 
 
-QString RDLogLine::resolveWildcards(QString pattern)
+QString RDLogLine::resolveWildcards(QString pattern,int log_id)
 {
-  pattern.replace("%n",QString().sprintf("%06u",cartNumber()));
-  pattern.replace("%h",QString().sprintf("%d",effectiveLength()));
-  pattern.replace("%g",groupName());
-  pattern.replace("%t",title());
+  //  MAINTAINERS'S NOTE: These mappings must be kept in sync with those
+  //                      in 'apis/PyPAD/api/PyPAD.py'!
+
   pattern.replace("%a",artist());
-  pattern.replace("%l",album());
-  pattern.replace("%y",year().toString("yyyy"));
   pattern.replace("%b",label());
+  pattern.replace("%c",client());
+  pattern=RDLogLine::resolveNowNextDateTime(pattern,"%d(",startDatetime());
+  pattern.replace("%e",agency());
+  // %f [unassigned]
+  pattern.replace("%g",groupName());
+  pattern.replace("%h",QString().sprintf("%d",effectiveLength()));
+  pattern.replace("%i",description());
+  pattern.replace("%j",QString().sprintf("%03d",cutNumber()));
+  // %k rdimport(1) parameter
+  pattern.replace("%l",album());
+  pattern.replace("%m",composer());
+  pattern.replace("%n",QString().sprintf("%06u",cartNumber()));
+  pattern.replace("%o",outcue());
+  pattern.replace("%p",publisher());
+  // %q rdimport(1) parameter
   pattern.replace("%r",conductor());
   pattern.replace("%s",songId());
-  pattern.replace("%c",client());
-  pattern.replace("%e",agency());
-  pattern.replace("%m",composer());
-  pattern.replace("%p",publisher());
+  pattern.replace("%t",title());
   pattern.replace("%u",userDefined());
+  pattern.replace("%v",QString().sprintf("%d",effectiveLength()/1000));
+  pattern.replace("%wi",isrc());
+  pattern.replace("%wm",recordingMbId());
+  pattern.replace("%wr",releaseMbId());
+  if(log_id<0) {
+    pattern.replace("%x",QString().sprintf("%d",id()));
+  }
+  else {
+    pattern.replace("%x",QString().sprintf("%d",log_id));
+  }
+  pattern.replace("%y",QString().sprintf("%d",year().year()));
+  // %z Log Line Number
 
   return pattern;
 }
@@ -1618,7 +1665,9 @@ RDLogLine::State RDLogLine::setEvent(int mach,RDLogLine::TransType next_type,
       "OUTCUE,"+                // 10
       "ISRC,"+                  // 11
       "ISCI,"+                  // 12
-      "DESCRIPTION "+           // 13
+      "DESCRIPTION,"+           // 13
+      "RECORDING_MBID,"+        // 14
+      "RELEASE_MBID "+          // 15
       "from CUTS where CUT_NAME=\""+RDEscapeString(log_cut_name)+"\"";
     q=new RDSqlQuery(sql);
     if(!q->first()) {
@@ -1748,6 +1797,8 @@ RDLogLine::State RDLogLine::setEvent(int mach,RDLogLine::TransType next_type,
     log_isrc=q->value(11).toString();
     log_isci=q->value(12).toString();
     log_description=q->value(13).toString();
+    log_recording_mbid=q->value(14).toString();
+    log_release_mbid=q->value(15).toString();
     log_segue_gain_cut=q->value(5).toInt();
     delete q;
     delete cart;
@@ -1817,7 +1868,6 @@ void RDLogLine::loadCart(int cartnum,RDLogLine::TransType next_type,int mach,
     "CART.ARTIST,"+                // 03
     "CART.ALBUM,"+                 // 04
     "CART.YEAR,"+                  // 05
-    //    "CART.ISRC,"+                  // 06
     "CART.LABEL,"+                 // 06
     "CART.CLIENT,"+                // 07
     "CART.AGENCY,"+                // 08
@@ -1999,6 +2049,12 @@ QString RDLogLine::xml(int line) const
   ret+="    "+RDXmlField("markerComment",markerComment());
   ret+="    "+RDXmlField("markerLabel",markerLabel());
 
+  ret+="    "+RDXmlField("description",description());
+  ret+="    "+RDXmlField("isrc",isrc());
+  ret+="    "+RDXmlField("isci",isci());
+  ret+="    "+RDXmlField("recordingMbId",recordingMbId());
+  ret+="    "+RDXmlField("releaseMbId",releaseMbId());
+
   ret+="    "+RDXmlField("originUser",originUser());
   ret+="    "+RDXmlField("originDateTime",originDateTime());
   ret+="    "+RDXmlField("startPoint",startPoint(RDLogLine::CartPointer),
@@ -2055,6 +2111,37 @@ QString RDLogLine::xml(int line) const
 
   ret+="  </logLine>\n";
 
+  return ret;
+}
+
+
+QString RDLogLine::resolveNowNextDateTime(const QString &str,
+					  const QString &code,
+					  const QDateTime &dt)
+{
+  int ptr=0;
+  std::vector<QString> dts;
+  QString ret=str;
+
+  while((ptr=ret.find(code,ptr))>=0) {
+    for(int i=ptr+3;i<ret.length();i++) {
+      if(ret.at(i)==')') {
+	dts.push_back(ret.mid(ptr+3,i-ptr-3));
+	ptr+=(i-ptr-3);
+	break;
+      }
+    }
+  }
+  if(dt.isValid()&&(!dt.time().isNull())) {
+    for(unsigned i=0;i<dts.size();i++) {
+      ret.replace(code+dts[i]+")",dt.toString(dts[i]));
+    }
+  }
+  else {
+    for(unsigned i=0;i<dts.size();i++) {
+      ret.replace(code+dts[i]+")","");
+    }
+  }
   return ret;
 }
 

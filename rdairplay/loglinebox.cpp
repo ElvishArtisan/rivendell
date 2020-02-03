@@ -21,7 +21,6 @@
 #include <qpainter.h>
 
 #include <rdconf.h>
-#include <rdnownext.h>
 
 #include "colors.h"
 #include "globals.h"
@@ -523,7 +522,7 @@ void LogLineBox::setEvent(int line,RDLogLine::TransType next_type,
 	   line_logline->originUser().isEmpty()||
 	   (!line_logline->originDateTime().isValid())) {
 	  line_title_label->
-	    setText(RDResolveNowNext(line_title_template,line_logline,line));
+	    setText(line_logline->resolveWildcards(line_title_template));
 	}
 	else {
 	  line_title_label->setText(line_logline->title()+" -- "+
@@ -532,10 +531,9 @@ void LogLineBox::setEvent(int line,RDLogLine::TransType next_type,
 				    toString("M/d hh:mm"));
 	}
 	line_description_label->
-	  setText(RDResolveNowNext(line_description_template,line_logline,
-				   line));
+	  setText(line_logline->resolveWildcards(line_description_template));
 	line_artist_label->
-	  setText(RDResolveNowNext(line_artist_template,line_logline,line));
+	  setText(line_logline->resolveWildcards(line_artist_template));	
 	line_up_label->
 	  setText(RDGetTimeLength(line_logline->playPosition(),true,true));
 	line_down_label->
@@ -546,8 +544,8 @@ void LogLineBox::setEvent(int line,RDLogLine::TransType next_type,
 	if(logline->cutNumber()>=0) {
 	  line_cut_label->
 	    setText(QString().sprintf("%03u",logline->cutNumber()));
-	  line_outcue_label->
-	    setText(RDResolveNowNext(line_outcue_template,line_logline,line));
+	line_outcue_label->
+	  setText(line_logline->resolveWildcards(line_outcue_template));
 	}
 	else {
 	  setBackgroundColor(QColor(LOGLINEBOX_MISSING_COLOR));
@@ -662,15 +660,14 @@ void LogLineBox::setEvent(int line,RDLogLine::TransType next_type,
     line_length_label->
       setText(RDGetTimeLength(line_logline->effectiveLength(),
 			      false,false));
-
     line_title_label->
-      setText(RDResolveNowNext(line_title_template,line_logline,line));
+      setText(line_logline->resolveWildcards(line_title_template));
     line_description_label->
-      setText(RDResolveNowNext(line_description_template,line_logline,line));
+      setText(line_logline->resolveWildcards(line_description_template));
     line_artist_label->
-      setText(RDResolveNowNext(line_artist_template,line_logline,line));
+      setText(line_logline->resolveWildcards(line_artist_template));	
     line_outcue_label->
-      setText(RDResolveNowNext(line_outcue_template,line_logline,line));
+      setText(line_logline->resolveWildcards(line_outcue_template));	
     delete cart;
     delete cut;
     setMode(line_mode);

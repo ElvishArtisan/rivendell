@@ -2,7 +2,7 @@
 //
 // A container class for a Rivendell Log Line.
 //
-//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -142,6 +142,10 @@ class RDLogLine
   void setIsrc(const QString &string);
   QString isci() const;
   void setIsci(const QString &string);
+  QString recordingMbId() const;
+  void setRecordingMbId(const QString &mbid);
+  QString releaseMbId() const;
+  void setReleaseMbId(const QString &mbid);
   QString label() const;
   void setLabel(const QString &label);
   QString conductor() const;
@@ -251,7 +255,7 @@ class RDLogLine
   void setLinkEmbedded(bool state);
   RDLogLine::StartSource startSource() const;
   void setStartSource(RDLogLine::StartSource src);
-  QString resolveWildcards(QString pattern);
+  QString resolveWildcards(QString pattern,int log_id=-1);
   RDLogLine::State setEvent(int mach,RDLogLine::TransType next_type,
 			    bool timescale,int len=-1);
   void loadCart(int cartnum,RDLogLine::TransType next_type,int mach,
@@ -259,6 +263,8 @@ class RDLogLine
 		int len=-1);
   void refreshPointers();
   QString xml(int line) const;
+  static QString resolveNowNextDateTime(const QString &str,const QString &code,
+					const QDateTime &dt);
   static QString resolveWildcards(unsigned cartnum,const QString &pattern);
   static QString startSourceText(RDLogLine::StartSource src);
   static QString transText(RDLogLine::TransType trans);
@@ -306,6 +312,8 @@ class RDLogLine
   QString log_publisher;
   QString log_composer;
   QString log_isrc;
+  QString log_recording_mbid;
+  QString log_release_mbid;
   QString log_isci;
   QDate log_year;
   QString log_label;

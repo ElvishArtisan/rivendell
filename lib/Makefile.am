@@ -179,7 +179,6 @@ dist_librd_la_SOURCES = dbversion.h\
 			rdmp4.cpp rdmp4.h\
                         rdmulticaster.cpp rdmulticaster.h\
                         rdnotification.cpp rdnotification.h\
-                        rdnownext.cpp rdnownext.h\
                         rdoneshot.cpp rdoneshot.h\
                         rdpam.cpp rdpam.h\
                         rdpanel_button.cpp rdpanel_button.h\

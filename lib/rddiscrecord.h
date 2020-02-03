@@ -44,11 +44,11 @@ class RDDiscRecord
   unsigned discLength() const;
   void setDiscLength(unsigned len);
   unsigned discId() const;
+  QString discMbId() const;
+  void setDiscMbId(const QString &mbid);
   void setDiscId(unsigned id);
   QString mcn() const;
   void setMcn(const QString &mcn);
-  QString discMbId() const;
-  void setDiscMbId(const QString &str);
   QString discReleaseMbId() const;
   void setDiscReleaseMbId(const QString &mbid);
   QString mbSubmissionUrl() const;
@@ -79,8 +79,8 @@ class RDDiscRecord
   void setTrackExtended(int track,QString text);
   QString trackArtist(int track) const;
   void setTrackArtist(int track,QString artist);
-  QString trackMbId(int track) const;
-  void setTrackMbId(int track,const QString &str);
+  QString trackRecordingMbId(int track) const;
+  void setTrackRecordingMbId(int track,const QString &str);
   bool hasIsrcs() const;
   QString isrc(int track) const;
   void setIsrc(int track,QString isrc);
@@ -89,8 +89,8 @@ class RDDiscRecord
  private:
   int disc_tracks;
   unsigned disc_disc_id;
-  QString disc_mcn;
   QString disc_disc_mb_id;
+  QString disc_mcn;
   QString disc_disc_release_mb_id;
   QString disc_mb_submission_url;
   unsigned disc_disc_length;
@@ -106,9 +106,9 @@ class RDDiscRecord
   QString disc_track_title[CDROM_LEADOUT];
   QString disc_track_extended[CDROM_LEADOUT];
   QString disc_track_artist[CDROM_LEADOUT];
-  QString disc_track_mbid[CDROM_LEADOUT];
   QString disc_track_isrc[CDROM_LEADOUT];
   unsigned disc_track_offset[CDROM_LEADOUT];
+  QString disc_track_recording_mb_id[CDROM_LEADOUT];
 };
 
 

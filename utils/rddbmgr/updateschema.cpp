@@ -9879,13 +9879,13 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
 
   if((cur_schema<313)&&(set_schema>cur_schema)) {
     sql=QString("alter table CUTS add column ")+
-      "TRACK_MBID varchar(40) after ISCI";
+      "RECORDING_MBID varchar(40) after ISCI";
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }
 
     sql=QString("alter table CUTS add column ")+
-      "RELEASE_MBID varchar(40) after TRACK_MBID";
+      "RELEASE_MBID varchar(40) after RECORDING_MBID";
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }

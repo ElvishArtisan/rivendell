@@ -31,7 +31,6 @@
 #include "rdlog.h"
 #include "rdlogplay.h"
 #include "rdmixer.h"
-#include "rdnownext.h"
 #include "rdsvc.h"
 #include "rdweb.h"
 

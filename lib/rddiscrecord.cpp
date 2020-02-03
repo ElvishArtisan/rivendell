@@ -39,12 +39,14 @@ void RDDiscRecord::clear()
   disc_disc_genre="";
   disc_disc_extended="";
   disc_disc_playorder="";
+  disc_disc_release_mb_id="";
   for(int i=0;i<CDROM_LEADOUT;i++) {
     disc_track_title[i]="";
     disc_track_extended[i]="";
     disc_track_artist[i]="";
     disc_track_isrc[i]="";
     disc_track_offset[i]=0;
+    disc_track_recording_mb_id[i]="";
   }
 }
 
@@ -85,6 +87,18 @@ void RDDiscRecord::setDiscId(unsigned id)
 }
 
 
+QString RDDiscRecord::discMbId() const
+{
+  return disc_disc_mb_id;
+}
+
+
+void RDDiscRecord::setDiscMbId(const QString &mbid)
+{
+  disc_disc_mb_id=mbid;
+}
+
+
 QString RDDiscRecord::mcn() const
 {
   return disc_mcn;
@@ -97,15 +111,15 @@ void RDDiscRecord::setMcn(const QString &mcn)
 }
 
 
-QString RDDiscRecord::discMbId() const
+QString RDDiscRecord::trackRecordingMbId(int track) const
 {
-  return disc_disc_mb_id;
+  return disc_track_recording_mb_id[track];
 }
 
 
-void RDDiscRecord::setDiscMbId(const QString &str)
+void RDDiscRecord::setTrackRecordingMbId(int track,const QString &str)
 {
-  disc_disc_mb_id=str;
+  disc_track_recording_mb_id[track]=str;
 }
 
 
@@ -321,18 +335,6 @@ void RDDiscRecord::setTrackArtist(int track,QString artist)
 }
 
 
-QString RDDiscRecord::trackMbId(int track) const
-{
-  return disc_track_mbid[track];
-}
-
-
-void RDDiscRecord::setTrackMbId(int track,const QString &str)
-{
-  disc_track_mbid[track]=str;
-}
-
-
 bool RDDiscRecord::hasIsrcs() const
 {
   for(int i=0;i<tracks();i++) {
@@ -385,7 +387,7 @@ QString RDDiscRecord::dump()
     ret+="trackOffset"+num+QString().sprintf("%u",trackOffset(i))+"\n";
     ret+="trackTitle"+num+trackTitle(i)+"\n";
     ret+="trackExtended"+num+trackExtended(i)+"\n";
-    ret+="trackMbId"+num+trackMbId(i)+"\n";
+    ret+="trackRecordingMbId"+num+trackRecordingMbId(i)+"\n";
     ret+="isrc"+num+isrc(i)+"\n";
   }
 
