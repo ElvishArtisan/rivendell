@@ -19481,3 +19481,8 @@
 	* Added a 'libcoverart' dependency.
 	* Added support for displaying cover art in the MusicBrainz release
 	chooser.
+2020-02-03 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the MusicBrainz CD lookup that caused it to
+	confound track info in multi-disc releases.
+	* Fixed a bug in the MusicBrainz CD lookup that caused it to
+	segfault when processing release with no Label information.

@@ -262,7 +262,7 @@ RDDiscLookup::Result RDMbLookup::ProcessRelease(MusicBrainz5::CRelease *release)
   // Extract Extended Release Data
   //
   MusicBrainz5::CQuery::tParamMap params;
-  params["inc"]="artists labels recordings isrcs";
+  params["inc"]="artists labels recordings isrcs discids";
   MusicBrainz5::CMetadata metadata=mbq.Query("release",release->ID(),"",params);
   if(metadata.Release()) {
     //
@@ -284,7 +284,7 @@ RDDiscLookup::Result RDMbLookup::ProcessRelease(MusicBrainz5::CRelease *release)
     // Get Labels
     //
     MusicBrainz5::CLabelInfoList *labels=metadata.Release()->LabelInfoList();
-    if(labels) {
+    if(labels&&labels->Item(0)) {
       discRecord()->setDiscLabel(QString::fromUtf8(labels->Item(0)->
 						   Label()->Name().c_str()));
     }
@@ -292,25 +292,23 @@ RDDiscLookup::Result RDMbLookup::ProcessRelease(MusicBrainz5::CRelease *release)
     //
     // Get Per-Track Data
     //
-    MusicBrainz5::CMediumList *media=metadata.Release()->MediumList();
-    if(media) {
-      for(int j=0;j<media->NumItems();j++) {
-	MusicBrainz5::CMedium *medium=media->Item(j);
-	MusicBrainz5::CTrackList *tracks=medium->TrackList();
-	for(int k=0;k<tracks->NumItems();k++) {
-	  MusicBrainz5::CTrack *track=tracks->Item(k);
-	  MusicBrainz5::CRecording *recording=track->Recording();
-	  discRecord()->
-	    setTrackTitle(k,QString::fromUtf8(recording->Title().c_str()));
-	  discRecord()->
-	    setTrackMbId(k,QString::fromUtf8(recording->ID().c_str()));
-	  MusicBrainz5::CISRCList *isrcs=recording->ISRCList();
-	  if(isrcs) {
-	    if(isrcs->NumItems()>0) {
-	      discRecord()->
-		setIsrc(k,RDDiscLookup::normalizedIsrc(QString::fromUtf8(isrcs->
-						       Item(0)->ID().c_str())));
-	    }
+    MusicBrainz5::CMediumList media=metadata.Release()->MediaMatchingDiscID(discRecord()->discMbId().toStdString());
+    for(int j=0;j<media.NumItems();j++) {
+      MusicBrainz5::CMedium *medium=media.Item(j);
+      MusicBrainz5::CTrackList *tracks=medium->TrackList();
+      for(int k=0;k<tracks->NumItems();k++) {
+	MusicBrainz5::CTrack *track=tracks->Item(k);
+	MusicBrainz5::CRecording *recording=track->Recording();
+	discRecord()->
+	  setTrackTitle(k,QString::fromUtf8(recording->Title().c_str()));
+	discRecord()->
+	  setTrackMbId(k,QString::fromUtf8(recording->ID().c_str()));
+	MusicBrainz5::CISRCList *isrcs=recording->ISRCList();
+	if(isrcs) {
+	  if(isrcs->NumItems()>0) {
+	    discRecord()->
+	      setIsrc(k,RDDiscLookup::normalizedIsrc(QString::fromUtf8(isrcs->
+								       Item(0)->ID().c_str())));
 	  }
 	}
       }
