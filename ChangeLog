@@ -19492,3 +19492,6 @@
 	to use a browser.
 2020-02-03 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up switch() statment formatting in 'RDStation'.
+2020-02-03 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdadmin(1) that caused the 'STATIONS.BROWSER_PATH'
+	field to not be propgated to new host instances.
