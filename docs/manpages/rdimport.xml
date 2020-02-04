@@ -6,7 +6,7 @@
   <refmeta>
     <refentrytitle>rdimport</refentrytitle>
     <manvolnum>1</manvolnum>
-    <refmiscinfo class='source'>June 2016</refmiscinfo>
+    <refmiscinfo class='source'>February 2020</refmiscinfo>
     <refmiscinfo class='manual'>Linux Audio Manual</refmiscinfo>
   </refmeta>
   <refnamediv>
@@ -398,13 +398,6 @@
 	  </varlistentry>
 
 	  <varlistentry>
-	    <term><userinput>%l</userinput></term>
-	    <listitem>
-	      <para>Album</para>
-	    </listitem>
-	  </varlistentry>
-
-	  <varlistentry>
 	    <term><userinput>%r</userinput></term>
 	    <listitem>
 	      <para>Conductor</para>
@@ -429,6 +422,27 @@
 	    <term><userinput>%u</userinput></term>
 	    <listitem>
 	      <para>User Defined</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>%wi</userinput></term>
+	    <listitem>
+	      <para>International Standard Recording Code [ISRC]</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>%wm</userinput></term>
+	    <listitem>
+	      <para>MusicBrainz Recording ID</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>%wr</userinput></term>
+	    <listitem>
+	      <para>MusicBrainz Release ID</para>
 	    </listitem>
 	  </varlistentry>
 

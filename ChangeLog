@@ -19508,3 +19508,6 @@
 2020-02-03 Fred Gleason <fredg@paravelsystems.com>
 	* Implemented the '%wm' ['MusicBrainz Recording ID'] and '%wr'
 	['MusicBrainz Release ID'] metadata wildcards for PyPAD.
+2020-02-04 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for the '%wi', '%wm' and '%wr' wildcards to
+	the '--metadata-pattern=' switch in rdimport(1).

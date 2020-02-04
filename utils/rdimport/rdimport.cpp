@@ -2,7 +2,7 @@
 //
 // A Batch Importer for Rivendell.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -41,6 +41,7 @@
 #include <rdconf.h>
 #include <rdcut.h>
 #include <rddatedecode.h>
+#include <rddisclookup.h>
 #include <rdescape_string.h>
 #include <rdlibrary_conf.h>
 #include <rdtempdirectory.h>
@@ -1579,6 +1580,7 @@ bool MainObject::RunPattern(const QString &pattern,const QString &filename,
   bool macro_active=false;
   int ptr=0;
   QChar field;
+  QChar subfield;
   QString value;
   QChar delimiter;
   bool found_cartnum=false;
@@ -1601,12 +1603,31 @@ bool MainObject::RunPattern(const QString &pattern,const QString &filename,
   if((pattern.at(0)=='%')&&(pattern.at(1)!='%')) {
     field=pattern.at(1);
     value="";
-    if(pattern.length()>=3) {
-      delimiter=pattern.at(2);
-      ptr=3;
+    if(field==QChar('w')) {
+      if(pattern.length()>=4) {
+	subfield=pattern.at(2);
+	delimiter=pattern.at(3);
+	ptr=4;
+      }
+      else {
+	if(pattern.length()>=3) {
+	  subfield=pattern.at(2);
+	  delimiter=QChar();
+	  ptr=3;
+	}
+	else {
+	  ptr=2;
+	}
+      }
     }
     else {
-      ptr=2;
+      if(pattern.length()>=3) {
+	delimiter=pattern.at(2);
+	ptr=3;
+      }
+      else {
+	ptr=2;
+      }
     }
     macro_active=true;
   }
@@ -1617,14 +1638,14 @@ bool MainObject::RunPattern(const QString &pattern,const QString &filename,
 
   for(int i=0;i<=filename.length();i++) {
     if(macro_active) {
-      if(((!delimiter.isNull())&&(filename.at(i)==delimiter))||
-	 (i==filename.length())) {
+      if((i==filename.length())||
+	 ((!delimiter.isNull())&&(filename.at(i)==delimiter))) {
 	switch(field.toAscii()) {
 	case 'a':
 	  wavedata->setArtist(value);
 	  wavedata->setMetadataFound(true);
 	  break;
-  
+
 	case 'b':
 	  wavedata->setLabel(value);
 	  wavedata->setMetadataFound(true);
@@ -1742,6 +1763,31 @@ bool MainObject::RunPattern(const QString &pattern,const QString &filename,
 	  wavedata->setMetadataFound(true);
 	  break;
 
+	case 'w':
+	  switch(subfield.toAscii()) {
+	  case 'i':
+	    if(RDDiscLookup::isrcIsValid(value)) {
+	      wavedata->setIsrc(RDDiscLookup::normalizedIsrc(value));
+	      wavedata->setMetadataFound(true);
+	    }
+	    else {
+	      Log(LOG_ERR,"invalid ISRC \""+value+"\"\n");
+	      exit(1);
+	    }
+	    break;
+
+	  case 'm':
+	    wavedata->setRecordingMbId(value);
+	    wavedata->setMetadataFound(true);
+	    break;
+
+	  case 'r':
+	    wavedata->setReleaseMbId(value);
+	    wavedata->setMetadataFound(true);
+	    break;
+	  }
+	  break;
+
 	case 'y':
 	  wavedata->setReleaseYear(value.toInt());
 	  wavedata->setMetadataFound(true);
@@ -1753,12 +1799,35 @@ bool MainObject::RunPattern(const QString &pattern,const QString &filename,
 	}
 	if((pattern.at(ptr)=='%')&&(pattern.at(ptr+1)!='%')) {
 	  field=pattern.at(ptr+1);
-	  delimiter=pattern.at(ptr+2);
-	  ptr+=3;
-	  macro_active=true;
+	  if(field==QChar('w')) {
+	    if(pattern.length()>(ptr+3)) {
+	      delimiter=pattern.at(ptr+3);
+	    }
+	    else {
+	      delimiter=QChar();
+	    }
+	    subfield=pattern.at(ptr+2);
+	    ptr+=4;
+	    macro_active=true;
+	  }
+	  else {
+	    if(pattern.length()>(ptr+2)) {
+	      delimiter=pattern.at(ptr+2);
+	    }
+	    else {
+	      delimiter=QChar();
+	    }
+	    ptr+=3;
+	    macro_active=true;
+	  }
 	}
 	else {
-	  delimiter=pattern.at(ptr);
+	  if(pattern.length()>ptr) {
+	    delimiter=pattern.at(ptr);
+	  }
+	  else {
+	    delimiter=QChar();
+	  }
 	  ptr++;
 	  macro_active=false;
 	}
@@ -1776,9 +1845,17 @@ bool MainObject::RunPattern(const QString &pattern,const QString &filename,
       }
       if((pattern.at(ptr)=='%')&&(pattern.at(ptr+1)!='%')) {
 	field=pattern.at(ptr+1);
-	delimiter=pattern.at(ptr+2);
-	ptr+=3;
-	macro_active=true;
+	if(field==QChar('w')) {
+	  delimiter=pattern.at(ptr+3);
+	  subfield=pattern.at(ptr+2);
+	  ptr+=4;
+	  macro_active=true;
+	}
+	else {
+	  delimiter=pattern.at(ptr+2);
+	  ptr+=3;
+	  macro_active=true;
+	}
       }
       else {
 	delimiter=pattern.at(ptr);
@@ -1801,6 +1878,9 @@ bool MainObject::VerifyPattern(const QString &pattern)
 	return false;
       }
       macro_active=true;
+      if(i>=(pattern.length()-1)) {
+	return false;
+      }
       switch(pattern.at(++i).toAscii()) {
       case 'a':
       case 'b':
@@ -1823,6 +1903,18 @@ bool MainObject::VerifyPattern(const QString &pattern)
       case 'u':
       case 'y':
       case '%':
+	break;
+
+      case 'w':
+	if(i>=(pattern.length()-1)) {
+	  return false;
+	}
+	switch(pattern.at(++i).toAscii()) {
+	case 'i':
+	case 'm':
+	case 'r':
+	  break;
+	}
 	break;
 
       default:
