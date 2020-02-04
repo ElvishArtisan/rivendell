@@ -712,6 +712,13 @@
 	    </varlistentry>
 
 	    <varlistentry>
+	      <term><userinput>isrc</userinput></term>
+	      <listitem>
+		<para>International Standard Recording Code [ISRC]</para>
+	      </listitem>
+	    </varlistentry>
+
+	    <varlistentry>
 	      <term><userinput>label</userinput></term>
 	      <listitem>
 		<para>Record Label Name (rights holder)</para>
@@ -729,6 +736,20 @@
 	      <term><userinput>publisher</userinput></term>
 	      <listitem>
 		<para>Music Publisher (rights holder)</para>
+	      </listitem>
+	    </varlistentry>
+
+	    <varlistentry>
+	      <term><userinput>recording-mbid</userinput></term>
+	      <listitem>
+		<para>MusicBrainz Recording ID</para>
+	      </listitem>
+	    </varlistentry>
+
+	    <varlistentry>
+	      <term><userinput>release-mbid</userinput></term>
+	      <listitem>
+		<para>MusicBrainz Release ID</para>
 	      </listitem>
 	    </varlistentry>
 

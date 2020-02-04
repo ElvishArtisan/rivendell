@@ -19511,3 +19511,6 @@
 2020-02-04 Fred Gleason <fredg@paravelsystems.com>
 	* Added support for the '%wi', '%wm' and '%wr' wildcards to
 	the '--metadata-pattern=' switch in rdimport(1).
+2020-02-04 Fred Gleason <fredg@paravelsystems.com>
+	* Added '--set-string-isrc', '--set-string-recording-mbid' and
+	'--set-string-release-mbid' switches to rdimport(1).

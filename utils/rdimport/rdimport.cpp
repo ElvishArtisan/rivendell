@@ -382,6 +382,24 @@ MainObject::MainObject(QObject *parent)
       import_string_outcue=rda->cmdSwitch()->value(i);
       rda->cmdSwitch()->setProcessed(i,true);
     }
+    if(rda->cmdSwitch()->key(i)=="--set-string-isrc") {
+      if(RDDiscLookup::isrcIsValid(rda->cmdSwitch()->value(i))) {
+	import_string_isrc=rda->cmdSwitch()->value(i);
+	rda->cmdSwitch()->setProcessed(i,true);
+      }
+      else {
+	Log(LOG_ERR,"invalid ISRC \""+rda->cmdSwitch()->value(i)+"\"\n");
+	exit(1);
+      }
+    }
+    if(rda->cmdSwitch()->key(i)=="--set-string-recording-mbid") {
+      import_string_recording_mbid=rda->cmdSwitch()->value(i);
+      rda->cmdSwitch()->setProcessed(i,true);
+    }
+    if(rda->cmdSwitch()->key(i)=="--set-string-release-mbid") {
+      import_string_release_mbid=rda->cmdSwitch()->value(i);
+      rda->cmdSwitch()->setProcessed(i,true);
+    }
     if(rda->cmdSwitch()->key(i)=="--set-string-publisher") {
       import_string_publisher=rda->cmdSwitch()->value(i);
       rda->cmdSwitch()->setProcessed(i,true);
@@ -723,6 +741,15 @@ MainObject::MainObject(QObject *parent)
   }
   if(!import_string_outcue.isNull()) {
     Log(LOG_INFO,QString().sprintf(" Outcue set to: %s\n",(const char *)import_string_outcue));
+  }
+  if(!import_string_isrc.isNull()) {
+    Log(LOG_INFO,QString().sprintf(" ISRC set to: %s\n",(const char *)import_string_isrc));
+  }
+  if(!import_string_recording_mbid.isNull()) {
+    Log(LOG_INFO,QString().sprintf(" MusicBrainz recording ID set to: %s\n",(const char *)import_string_recording_mbid));
+  }
+  if(!import_string_release_mbid.isNull()) {
+    Log(LOG_INFO,QString().sprintf(" MusicBrainz release ID set to: %s\n",(const char *)import_string_release_mbid));
   }
   if(!import_string_publisher.isNull()) {
     Log(LOG_INFO,QString().sprintf(" Publisher set to: %s\n",(const char *)import_string_publisher));
@@ -1214,6 +1241,15 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   }
   if(!import_string_outcue.isNull()) {
     cut->setOutcue(import_string_outcue);
+  }
+  if(!import_string_isrc.isNull()) {
+    cut->setIsrc(RDDiscLookup::normalizedIsrc(import_string_isrc));
+  }
+  if(!import_string_recording_mbid.isNull()) {
+    cut->setRecordingMbId(import_string_recording_mbid);
+  }
+  if(!import_string_release_mbid.isNull()) {
+    cut->setReleaseMbId(import_string_release_mbid);
   }
   if(!import_string_publisher.isNull()) {
     cart->setPublisher(import_string_publisher);
