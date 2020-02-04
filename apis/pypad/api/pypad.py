@@ -131,7 +131,7 @@ class Update(object):
 
     def __replaceWildcardPair(self,wildcard,sfield,string,esc):
         string=self.__replaceWildcard(wildcard,sfield,'now',string,esc);
-        string=self.__replaceWildcard(wildcard.upper(),sfield,'next',string,esc);
+        string=self.__replaceWildcard(wildcard[0].upper()+wildcard[1:],sfield,'next',string,esc);
         return string;
 
     def __findDatetimePattern(self,pos,wildcard,string):
@@ -366,7 +366,8 @@ class Update(object):
         """
         #
         # MAINTAINER'S NOTE: These mappings must be kept in sync with
-        #                    those in 'lib/rdnownext.cpp'!
+        #                    those of the 'RDLogLine::resolveWildcards()'
+        #                    method in 'lib/rdlog_line.cpp'.
         #
         string=self.__replaceWildcardPair('a','artist',string,esc)
         string=self.__replaceWildcardPair('b','label',string,esc)
@@ -379,13 +380,13 @@ class Update(object):
         string=self.__replaceWildcardPair('h','length',string,esc)
         string=self.__replaceWildcardPair('i','description',string,esc)
         string=self.__replaceWildcardPair('j','cutNumber',string,esc)
-        #string=self.__replaceWildcardPair('k',sfield,string,esc) # Start time for rdimport
+        # %k - Assigned for use for the Start Time for rdimport(1)
         string=self.__replaceWildcardPair('l','album',string,esc)
         string=self.__replaceWildcardPair('m','composer',string,esc)
         string=self.__replaceWildcardPair('n','cartNumber',string,esc)
         string=self.__replaceWildcardPair('o','outcue',string,esc)
         string=self.__replaceWildcardPair('p','publisher',string,esc)
-        #string=self.__replaceWildcardPair('q',sfield,string,esc) # Start date for rdimport
+        # %q - Assigned for use for the Start Date for rdimport(1)
         string=self.__replaceWildcardPair('r','conductor',string,esc)
         string=self.__replaceWildcardPair('s','songId',string,esc)
         string=self.__replaceWildcardPair('t','title',string,esc)
@@ -400,7 +401,8 @@ class Update(object):
             string=string.replace('%V','0')
         else:
             string=string.replace('%V',str(int(secs)//1000))
-        #string=self.__replaceWildcardPair('w',sfield,string,esc) # Unassigned
+        string=self.__replaceWildcardPair('wm','recordingMbId',string,esc)
+        string=self.__replaceWildcardPair('wr','releaseMbId',string,esc)
         string=self.__replaceWildcardPair('x','lineId',string,esc) # Log Line ID
         string=self.__replaceWildcardPair('y','year',string,esc)
         string=self.__replaceWildcardPair('z','lineNumber',string,esc) # Log Line #

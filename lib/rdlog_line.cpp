@@ -1584,7 +1584,8 @@ void RDLogLine::setStartSource(RDLogLine::StartSource src)
 QString RDLogLine::resolveWildcards(QString pattern,int log_id)
 {
   //  MAINTAINERS'S NOTE: These mappings must be kept in sync with those
-  //                      in 'apis/PyPAD/api/PyPAD.py'!
+  //                      of the 'resolvePadFields()' method in
+  //                      'apis/PyPAD/api/PyPAD.py'!
 
   pattern.replace("%a",artist());
   pattern.replace("%b",label());

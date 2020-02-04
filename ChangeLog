@@ -19505,3 +19505,6 @@
 	['MusicBrainz Release ID'] metadata wildcards.
 2020-02-03 Fred Gleason <fredg@paravelsystems.com>
 	* Tweaked the layout of the disc track ripper in rdlibrary(1).
+2020-02-03 Fred Gleason <fredg@paravelsystems.com>
+	* Implemented the '%wm' ['MusicBrainz Recording ID'] and '%wr'
+	['MusicBrainz Release ID'] metadata wildcards for PyPAD.

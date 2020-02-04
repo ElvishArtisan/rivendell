@@ -3096,6 +3096,8 @@ QString RDLogPlay::GetPadJson(const QString &name,RDLogLine *ll,
     ret+=RDJsonField("description",ll->description(),4+padding);
     ret+=RDJsonField("isrc",ll->isrc(),4+padding);
     ret+=RDJsonField("isci",ll->isci(),4+padding);
+    ret+=RDJsonField("recordingMbId",ll->recordingMbId(),4+padding);
+    ret+=RDJsonField("releaseMbId",ll->releaseMbId(),4+padding);
     ret+=RDJsonField("externalEventId",ll->extEventId(),4+padding);
     ret+=RDJsonField("externalData",ll->extData(),4+padding);
     ret+=RDJsonField("externalAnncType",ll->extAnncType(),4+padding,true);
