@@ -1862,6 +1862,22 @@ RDLogLine::State RDLogLine::setEvent(int mach,RDLogLine::TransType next_type,
 void RDLogLine::loadCart(int cartnum,RDLogLine::TransType next_type,int mach,
 			 bool timescale,RDLogLine::TransType type,int len)
 {
+  loadCart(cartnum);
+
+  if(len>=0) {
+    log_forced_length=len;
+    log_enforce_length=true;
+  }
+  if(type!=RDLogLine::NoTrans) {
+    log_trans_type=type;
+  }
+  log_state=setEvent(mach,next_type,timescale);
+  log_timescaling_active=log_enforce_length&&timescale;
+}
+
+
+void RDLogLine::loadCart(int cartnum,int cutnum)
+{
   QString sql=QString("select ")+
     "CART.TYPE,"+                  // 00
     "CART.GROUP_NAME,"+            // 01
@@ -1919,7 +1935,6 @@ void RDLogLine::loadCart(int cartnum,RDLogLine::TransType next_type,int mach,
   log_artist=q->value(3).toString();
   log_album=q->value(4).toString();
   log_year=q->value(5).toDate();
-  //  log_isrc=q->value(6).toString();
   log_label=q->value(6).toString();
   log_client=q->value(7).toString();
   log_agency=q->value(8).toString();
@@ -1931,15 +1946,9 @@ void RDLogLine::loadCart(int cartnum,RDLogLine::TransType next_type,int mach,
   log_play_order=(RDCart::PlayOrder)q->value(15).toInt();
   log_start_datetime=q->value(16).toDateTime();
   log_end_datetime=q->value(17).toDateTime();
+  log_forced_length=q->value(12).toUInt();
+  log_enforce_length=RDBool(q->value(18).toString());
   log_preserve_pitch=RDBool(q->value(19).toString());
-  if(len<0) {
-    log_forced_length=q->value(12).toUInt();
-    log_enforce_length=RDBool(q->value(18).toString());
-  }
-  else {
-    log_forced_length=len;
-    log_enforce_length=true;
-  }
   log_now_next_enabled=RDBool(q->value(20).toString());
   log_asyncronous=RDBool(q->value(21).toString());
   log_publisher=q->value(22).toString();
@@ -1949,12 +1958,89 @@ void RDLogLine::loadCart(int cartnum,RDLogLine::TransType next_type,int mach,
   log_cart_notes=q->value(26).toString();
   log_group_color=QColor(q->value(27).toString());
   log_play_source=RDLogLine::UnknownSource;
-  if(type!=RDLogLine::NoTrans) {
-    log_trans_type=type;
-  }
   delete q;
-  log_state=setEvent(mach,next_type,timescale);
-  log_timescaling_active=log_enforce_length&&timescale;
+
+  if(cutnum>0) {
+    sql=QString("select ")+
+      "LENGTH,"+                // 00
+      "START_POINT,"+           // 01
+      "END_POINT,"+             // 02
+      "SEGUE_START_POINT,"+     // 03
+      "SEGUE_END_POINT,"+       // 04
+      "SEGUE_GAIN,"+            // 05
+      "TALK_START_POINT,"+      // 06
+      "TALK_END_POINT,"+        // 07
+      "HOOK_START_POINT,"+      // 08
+      "HOOK_END_POINT,"+        // 09
+      "OUTCUE,"+                // 10
+      "ISRC,"+                  // 11
+      "ISCI,"+                  // 12
+      "DESCRIPTION,"+           // 13
+      "RECORDING_MBID,"+        // 14
+      "RELEASE_MBID "+          // 15
+      "from CUTS where CUT_NAME=\""+RDCut::cutName(cartnum,cutnum)+"\"";
+    q=new RDSqlQuery(sql);
+    if(q->first()) {
+      if(log_hook_mode &&(q->value(8).toInt()>=0)&&(q->value(9).toInt()>=0)) {
+	log_start_point[0]=q->value(8).toInt();
+	log_end_point[0]=q->value(9).toInt();
+	log_segue_start_point[0]=-1;
+	log_segue_end_point[0]=-1;
+	log_talk_start=-1;
+	log_talk_end=-1;
+      }
+      else {
+       log_start_point[0]=q->value(1).toInt();
+       log_end_point[0]=q->value(2).toInt();
+       if(log_start_point[RDLogLine::LogPointer]>=0 ||
+          log_end_point[RDLogLine::LogPointer]>=0) {
+         log_effective_length=log_end_point[RDLogLine::LogPointer]-
+           log_start_point[RDLogLine::LogPointer];
+       }
+       else {
+         log_effective_length=q->value(0).toUInt();
+       }
+       log_segue_start_point[0]=q->value(3).toInt();
+       log_segue_end_point[0]=q->value(4).toInt();
+       log_talk_start=q->value(6).toInt();
+       log_talk_end=q->value(7).toInt();
+      }
+      log_hook_start=q->value(8).toInt();
+      log_hook_end=q->value(9).toInt();
+      if(log_talk_end>log_end_point[RDLogLine::LogPointer] && 
+        log_end_point[RDLogLine::LogPointer]>=0) {
+       log_talk_end=log_end_point[RDLogLine::LogPointer];
+      }
+      if(log_talk_end<log_start_point[RDLogLine::LogPointer]) {
+       log_talk_end=0;
+       log_talk_start=0;
+      }
+      else {
+       if(log_talk_start<log_start_point[RDLogLine::LogPointer]) {
+         log_talk_start=0;
+         log_talk_end-=log_start_point[RDLogLine::LogPointer];
+       }
+       if(log_talk_start>log_end_point[RDLogLine::LogPointer] &&
+          log_end_point[RDLogLine::LogPointer]>=0) {
+         log_talk_start=0;
+         log_talk_end=0;
+       }
+      }
+      log_talk_length=log_talk_end-log_talk_start;
+    }
+    if(segueStartPoint(RDLogLine::AutoPointer)>=0) {
+      log_average_segue_length=segueStartPoint(RDLogLine::AutoPointer)-
+       startPoint(RDLogLine::AutoPointer);
+    }
+    log_outcue=q->value(10).toString();
+    log_isrc=q->value(11).toString();
+    log_isci=q->value(12).toString();
+    log_description=q->value(13).toString();
+    log_recording_mbid=q->value(14).toString();
+    log_release_mbid=q->value(15).toString();
+    log_segue_gain_cut=q->value(5).toInt();
+    delete q;
+  }
 }
 
 
@@ -2147,10 +2233,11 @@ QString RDLogLine::resolveNowNextDateTime(const QString &str,
 }
 
 
-QString RDLogLine::resolveWildcards(unsigned cartnum,const QString &pattern)
+QString RDLogLine::resolveWildcards(unsigned cartnum,const QString &pattern,
+				    int cutnum)
 {
   RDLogLine logline;
-  logline.loadCart(cartnum,RDLogLine::Play,0,false);
+  logline.loadCart(cartnum,cutnum);
   return logline.resolveWildcards(pattern);
 }
 

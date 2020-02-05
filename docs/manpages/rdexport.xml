@@ -248,7 +248,9 @@
 	  <varlistentry>
 	    <term><userinput>%g</userinput></term>
 	    <listitem>
-	      <para>Rivendell group name</para>
+	      <para>
+		Rivendell Group Name
+	      </para>
 	    </listitem>
 	  </varlistentry>
 
@@ -337,9 +339,44 @@
 	  </varlistentry>
 
 	  <varlistentry>
+	    <term><userinput>%v</userinput></term>
+	    <listitem>
+	      <para>Event length in seconds (rounded down)</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>%wi</userinput></term>
+	    <listitem>
+	      <para>International Standard Recording Code [ISRC]</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>%wm</userinput></term>
+	    <listitem>
+	      <para>MusicBrainz Recording ID</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>%wr</userinput></term>
+	    <listitem>
+	      <para>MusicBrainz Release ID</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
 	    <term><userinput>%y</userinput></term>
 	    <listitem>
 	      <para>Release Year</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><userinput>%%</userinput></term>
+	    <listitem>
+	      <para>A literal '%'</para>
 	    </listitem>
 	  </varlistentry>
 

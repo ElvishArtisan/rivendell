@@ -466,27 +466,9 @@ void MainObject::ExportCut(RDCart *cart,RDCut *cut)
 QString MainObject::ResolveOutputName(RDCart *cart,RDCut *cut,
 				      const QString &exten)
 {
-  QString name=export_metadata_pattern;
-
-  name.replace("%a",cart->artist());
-  name.replace("%b",cart->label());
-  name.replace("%c",cart->client());
-  name.replace("%e",cart->agency());
-  name.replace("%g",cart->groupName());
-  name.replace("%h",QString().sprintf("%d",cut->length()));
-  name.replace("%i",cut->description());
-  name.replace("%j",QString().sprintf("%03d",RDCut::cutNumber(cut->cutName())));
-  name.replace("%l",cart->album());
-  name.replace("%m",cart->composer());
-  name.replace("%n",QString().sprintf("%06u",cart->number()));
-  name.replace("%o",cut->outcue());
-  name.replace("%p",cart->publisher());
-  name.replace("%r",cart->conductor());
-  name.replace("%s",cart->songId());
-  name.replace("%t",cart->title());
-  name.replace("%u",cart->userDefined());
-  name.replace("%y",QString().sprintf("%d",cart->year()));
-
+  QString name=
+    RDLogLine::resolveWildcards(cart->number(),export_metadata_pattern,
+				cut->cutNumber());
   QString ret=SanitizePath(name);
   if(!export_allow_clobber) {
     int count=1;

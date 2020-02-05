@@ -261,11 +261,13 @@ class RDLogLine
   void loadCart(int cartnum,RDLogLine::TransType next_type,int mach,
 		bool timescale,RDLogLine::TransType type=RDLogLine::NoTrans,
 		int len=-1);
+  void loadCart(int cartnum,int cutnum=-1);
   void refreshPointers();
   QString xml(int line) const;
   static QString resolveNowNextDateTime(const QString &str,const QString &code,
 					const QDateTime &dt);
-  static QString resolveWildcards(unsigned cartnum,const QString &pattern);
+  static QString resolveWildcards(unsigned cartnum,const QString &pattern,
+				  int cutnum=-1);
   static QString startSourceText(RDLogLine::StartSource src);
   static QString transText(RDLogLine::TransType trans);
   static QString typeText(RDLogLine::Type type);
