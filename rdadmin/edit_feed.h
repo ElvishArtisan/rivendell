@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Feed
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -28,8 +28,7 @@
 #include <qlineedit.h>
 #include <qpushbutton.h>
 #include <qspinbox.h>
-
-#include <q3textedit.h>
+#include <qtextedit.h>
 
 #include <rddialog.h>
 #include <rdfeed.h>
@@ -58,7 +57,7 @@ class EditFeed : public RDDialog
   RDFeed *feed_feed;
   QLineEdit *feed_keyname_edit;
   QLineEdit *feed_channel_title_edit;
-  Q3TextEdit *feed_channel_description_edit;
+  QTextEdit *feed_channel_description_edit;
   QLineEdit *feed_channel_category_edit;
   QLineEdit *feed_channel_link_edit;
   QLineEdit *feed_channel_copyright_edit;
@@ -71,9 +70,9 @@ class EditFeed : public RDDialog
   QLineEdit *feed_purge_username_edit;
   QLabel *feed_purge_password_label;
   QLineEdit *feed_purge_password_edit;
-  Q3TextEdit *feed_header_xml_edit;
-  Q3TextEdit *feed_channel_xml_edit;
-  Q3TextEdit *feed_item_xml_edit;
+  QTextEdit *feed_header_xml_edit;
+  QTextEdit *feed_channel_xml_edit;
+  QTextEdit *feed_item_xml_edit;
   QSpinBox *feed_max_shelf_life_spin;
   QCheckBox *feed_autopost_box;
   QCheckBox *feed_keep_metadata_box;

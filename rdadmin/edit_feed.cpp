@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Feed
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,13 +20,12 @@
 
 #include <math.h>
 
-#include <qpushbutton.h>
-#include <qpainter.h>
+#include <qdatetime.h>
 #include <qevent.h>
 #include <qmessagebox.h>
 #include <qpainter.h>
-#include <qdatetime.h>
-#include <q3url.h>
+#include <qpushbutton.h>
+#include <qurl.h>
 
 #include <rdapplication.h>
 #include <rdexport_settings_dialog.h>
@@ -149,7 +148,8 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   //
   // Channel Description
   //
-  feed_channel_description_edit=new Q3TextEdit(this);
+  feed_channel_description_edit=new QTextEdit(this);
+  feed_channel_description_edit->setAcceptRichText(false);
   feed_channel_description_edit->setGeometry(115,192,375,76);
   feed_channel_description_label=
     new QLabel(feed_channel_description_edit,tr("Description:"),this);
@@ -369,7 +369,8 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   //
   // Header XML
   //
-  feed_header_xml_edit=new Q3TextEdit(this);
+  feed_header_xml_edit=new QTextEdit(this);
+  feed_header_xml_edit->setAcceptRichText(false);
   feed_header_xml_edit->setGeometry(615,10,365,76);
   feed_header_xml_label=new QLabel(feed_header_xml_edit,tr("Header XML:"),this);
   feed_header_xml_label->setGeometry(520,10,90,19);
@@ -379,7 +380,8 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   //
   // Channel XML
   //
-  feed_channel_xml_edit=new Q3TextEdit(this);
+  feed_channel_xml_edit=new QTextEdit(this);
+  feed_channel_xml_edit->setAcceptRichText(false);
   feed_channel_xml_edit->setGeometry(615,88,365,176);
   feed_channel_xml_label=
     new QLabel(feed_channel_xml_edit,tr("Channel XML:"),this);
@@ -390,7 +392,8 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   //
   // Item XML
   //
-  feed_item_xml_edit=new Q3TextEdit(this);
+  feed_item_xml_edit=new QTextEdit(this);
+  feed_item_xml_edit->setAcceptRichText(false);
   feed_item_xml_edit->setGeometry(615,270,365,250);
   feed_item_xml_label=new QLabel(feed_item_xml_edit,tr("Item XML:"),this);
   feed_item_xml_label->setGeometry(520,270,90,19);
@@ -426,16 +429,16 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   feed_channel_link_edit->setText(feed_feed->channelLink());
   feed_channel_copyright_edit->setText(feed_feed->channelCopyright());
   feed_channel_webmaster_edit->setText(feed_feed->channelWebmaster());
-  feed_channel_description_edit->setText(feed_feed->channelDescription());
+  feed_channel_description_edit->setPlainText(feed_feed->channelDescription());
   feed_channel_language_edit->setText(feed_feed->channelLanguage());
   feed_base_url_edit->setText(feed_feed->baseUrl());
   feed_base_preamble_edit->setText(feed_feed->basePreamble());
   feed_purge_url_edit->setText(feed_feed->purgeUrl());
   feed_purge_username_edit->setText(feed_feed->purgeUsername());
   feed_purge_password_edit->setText(feed_feed->purgePassword());
-  feed_header_xml_edit->setText(feed_feed->headerXml());
-  feed_channel_xml_edit->setText(feed_feed->channelXml());
-  feed_item_xml_edit->setText(feed_feed->itemXml());
+  feed_header_xml_edit->setPlainText(feed_feed->headerXml());
+  feed_channel_xml_edit->setPlainText(feed_feed->channelXml());
+  feed_item_xml_edit->setPlainText(feed_feed->itemXml());
   feed_max_shelf_life_spin->setValue(feed_feed->maxShelfLife());
   feed_autopost_box->setChecked(feed_feed->enableAutopost());
   feed_keep_metadata_box->setChecked(feed_feed->keepMetadata());
@@ -479,7 +482,7 @@ QSizePolicy EditFeed::sizePolicy() const
 
 void EditFeed::purgeUrlChangedData(const QString &str)
 {
-  Q3Url url(str);
+  QUrl url(str);
   QString protocol=url.protocol();
   if(((protocol=="ftp")||(protocol=="sftp"))&&
      (!feed_redirect_check->isChecked())) {
