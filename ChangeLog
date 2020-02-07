@@ -19536,3 +19536,6 @@
 2020-02-07 Fred Gleason <fredg@paravelsystems.com>
 	* Removed Q3Support dependencies from the 'Editing Feed' dialog
 	in rdadmin(1).
+2020-02-07 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the default character encoding for podcasts from
+	'ISO-8859-1' to 'UTF-8'.
