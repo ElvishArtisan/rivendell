@@ -19526,3 +19526,6 @@
 	* Added '--set-string-isci' switch to rdimport(1).
 	* Added support for the '%wc' wildcard to the '--metadata-pattern='
 	switch in rdexport(1).
+2020-02-07 Fred Gleason <fredg@paravelsystems.com>
+	* Tweaked the CD rippers to display the 'hourglass' icon
+	appropriately.

@@ -22,6 +22,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <qapplication.h>
 #include <qdatetime.h>
 #include <qmessagebox.h>
 #include <q3process.h>
@@ -96,6 +97,7 @@ void RDDiscLookup::lookup()
   //
   // Get some basic disc parameters,
   //
+  QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
   DiscId *disc=discid_new();
   if(discid_read_sparse(disc,rda->libraryConf()->ripperDevice().toUtf8(),0)==0) {
     QMessageBox::warning(this,caption()+" - "+tr("Error"),
@@ -107,6 +109,7 @@ void RDDiscLookup::lookup()
   discRecord()->setDiscId(QString(discid_get_freedb_id(disc)).toUInt(NULL,16));
   discRecord()->setDiscMbId(discid_get_id(disc));
   discRecord()->setMbSubmissionUrl(discid_get_submission_url(disc));
+  QApplication::restoreOverrideCursor();
 
   //
   // Call the low-level driver to do its lookup.
@@ -120,6 +123,7 @@ void RDDiscLookup::lookup()
   // WARNING: This operation can be VERY expensive if the disc does not in
   //          fact contain ISRCs!
   //
+  QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
   if((!discRecord()->hasIsrcs())&&rda->libraryConf()->readIsrc()) {
     if(discid_read(disc,rda->libraryConf()->ripperDevice().toUtf8())==0) {
       QMessageBox::warning(this,caption()+" - "+tr("Error"),
@@ -138,6 +142,7 @@ void RDDiscLookup::lookup()
       }
     }
   }
+  QApplication::restoreOverrideCursor();
 
   discid_free(disc);
 }

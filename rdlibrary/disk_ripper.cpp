@@ -752,9 +752,6 @@ void DiskRipper::mediaChangedData()
 {
   RDListViewItem *l;
 
-  QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
-
-  //  rip_isrc_read=false;
   rip_cutnames.clear();
   rip_end_track.clear();
   for(unsigned i=0;i<rip_wave_datas.size();i++) {
@@ -786,9 +783,8 @@ void DiskRipper::mediaChangedData()
   rip_disc_record.clear();
   rip_cdrom->setCddbRecord(&rip_disc_record);
   rip_disc_lookup->setCddbRecord(&rip_disc_record);
-  rip_disc_lookup->lookup();
 
-  QApplication::restoreOverrideCursor();
+  rip_disc_lookup->lookup();
 }
 
 

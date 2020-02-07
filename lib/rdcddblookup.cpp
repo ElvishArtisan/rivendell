@@ -21,10 +21,13 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include <qtimer.h>
-#include <qregexp.h>
-#include <qdatetime.h>
+
 #include <q3process.h>
+
+#include <qapplication.h>
+#include <qdatetime.h>
+#include <qregexp.h>
+#include <qtimer.h>
 
 #include "rdapplication.h"
 #include "rdcddblookup.h"
@@ -62,6 +65,8 @@ QString RDCddbLookup::sourceName() const
 
 void RDCddbLookup::lookupRecord()
 {
+  QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
   lookup_username=rda->user()->name();
   lookup_hostname=rda->libraryConf()->cddbServer();
   lookup_appname="rivendell";
@@ -183,7 +188,9 @@ void RDCddbLookup::readyReadData()
     case 4:    // Process Multiple Matches
       if(line.trimmed()==".") {
 	profile("Match list complete, showing chooser dialog...");
+	QApplication::restoreOverrideCursor();
 	if((index_line=exec())>=0) {
+	  QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	  f0=titlesKey()->at(index_line).split(" ",QString::SkipEmptyParts);
 	  if(f0.size()!=2) {
 	    FinishCddbLookup(RDCddbLookup::LookupError,
@@ -288,6 +295,7 @@ void RDCddbLookup::errorData(QAbstractSocket::SocketError err)
     break;
   }
   lookup_state=0;
+  QApplication::restoreOverrideCursor();
   emit lookupDone(RDCddbLookup::LookupError,err_msg);
 }
 
@@ -298,6 +306,7 @@ void RDCddbLookup::FinishCddbLookup(RDCddbLookup::Result res,
   SendToServer("quit");
   lookup_socket->close();
   lookup_state=0;
+  QApplication::restoreOverrideCursor();
   emit lookupDone(res,err_msg);
   profile("CDDB lookup finished");
 }

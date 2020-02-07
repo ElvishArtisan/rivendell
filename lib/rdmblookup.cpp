@@ -44,6 +44,7 @@
 #include <musicbrainz5/RelationListList.h>
 #include <musicbrainz5/Track.h>
 
+#include <qapplication.h>
 #include <qdir.h>
 #include <qmessagebox.h>
 #include <qpixmap.h>
@@ -133,6 +134,8 @@ QString RDMbLookup::sourceUrl() const
 
 void RDMbLookup::lookupRecord()
 {
+  QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
+
   MusicBrainz5::CQuery 
     mbq((const char *)(QString("rivendell-")+VERSION).toUtf8(),
 	  (const char *)rda->libraryConf()->mbServer().toUtf8());
@@ -169,10 +172,13 @@ void RDMbLookup::lookupRecord()
 	  titlesKey()->push_back(QString::fromUtf8(release->Title().c_str()));
 	  titlesBox()->insertItem(titlesBox()->count(),GetReleaseCover(QString::fromUtf8(release->ID().c_str())),title);
 	}
+	QApplication::restoreOverrideCursor();
 	if((index=exec())>=0) {
+	  QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	  result_code=ProcessRelease(releases->Item(index));
 	}
 	else {
+	  QApplication::setOverrideCursor(QCursor(Qt::WaitCursor));
 	  result_code=RDDiscLookup::NoMatch;	  
 	}
       }
@@ -239,6 +245,7 @@ void RDMbLookup::lookupRecord()
       QString::fromUtf8(mbq.LastErrorMessage().c_str());
     result_code=RDDiscLookup::NoMatch;
   }
+  QApplication::restoreOverrideCursor();
   emit lookupDone(result_code,err_str);
 }
 
