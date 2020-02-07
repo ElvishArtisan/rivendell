@@ -1609,6 +1609,7 @@ QString RDLogLine::resolveWildcards(QString pattern,int log_id)
   pattern.replace("%t",title());
   pattern.replace("%u",userDefined());
   pattern.replace("%v",QString().sprintf("%d",effectiveLength()/1000));
+  pattern.replace("%wc",isci());
   pattern.replace("%wi",isrc());
   pattern.replace("%wm",recordingMbId());
   pattern.replace("%wr",releaseMbId());

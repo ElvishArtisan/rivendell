@@ -124,6 +124,7 @@ class MainObject : public QObject
   QString import_string_description;
   QString import_string_outcue;
   QString import_string_isrc;
+  QString import_string_isci;
   QString import_string_recording_mbid;
   QString import_string_release_mbid;
   QString import_string_publisher;

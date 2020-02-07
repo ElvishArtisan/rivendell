@@ -382,6 +382,10 @@ MainObject::MainObject(QObject *parent)
       import_string_outcue=rda->cmdSwitch()->value(i);
       rda->cmdSwitch()->setProcessed(i,true);
     }
+    if(rda->cmdSwitch()->key(i)=="--set-string-isci") {
+      import_string_isci=rda->cmdSwitch()->value(i);
+      rda->cmdSwitch()->setProcessed(i,true);
+    }
     if(rda->cmdSwitch()->key(i)=="--set-string-isrc") {
       if(RDDiscLookup::isrcIsValid(rda->cmdSwitch()->value(i))) {
 	import_string_isrc=rda->cmdSwitch()->value(i);
@@ -741,6 +745,9 @@ MainObject::MainObject(QObject *parent)
   }
   if(!import_string_outcue.isNull()) {
     Log(LOG_INFO,QString().sprintf(" Outcue set to: %s\n",(const char *)import_string_outcue));
+  }
+  if(!import_string_isci.isNull()) {
+    Log(LOG_INFO,QString().sprintf(" ISCI set to: %s\n",(const char *)import_string_isci));
   }
   if(!import_string_isrc.isNull()) {
     Log(LOG_INFO,QString().sprintf(" ISRC set to: %s\n",(const char *)import_string_isrc));
@@ -1241,6 +1248,9 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   }
   if(!import_string_outcue.isNull()) {
     cut->setOutcue(import_string_outcue);
+  }
+  if(!import_string_isci.isNull()) {
+    cut->setIsci(import_string_isci);
   }
   if(!import_string_isrc.isNull()) {
     cut->setIsrc(RDDiscLookup::normalizedIsrc(import_string_isrc));
@@ -1801,6 +1811,11 @@ bool MainObject::RunPattern(const QString &pattern,const QString &filename,
 
 	case 'w':
 	  switch(subfield.toAscii()) {
+	  case 'c':
+	    wavedata->setIsci(value);
+	    wavedata->setMetadataFound(true);
+	    break;
+
 	  case 'i':
 	    if(RDDiscLookup::isrcIsValid(value)) {
 	      wavedata->setIsrc(RDDiscLookup::normalizedIsrc(value));

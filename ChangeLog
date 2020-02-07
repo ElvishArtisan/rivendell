@@ -19517,3 +19517,12 @@
 2020-02-05 Fred Gleason <fredg@paravelsystems.com>
 	* Added support for the '%wi', '%wm' and '%wr' wildcards to
 	the '--metadata-pattern=' switch in rdexport(1).
+2020-02-07 Fred Gleason <fredg@paravelsystems.com>
+	* Added a '%wc' ['Industry Standard Commercial Identification (ISCI)
+	Code'] metadata wildcard.
+	* Implemented the '%wc' metadata wildcard for PyPAD.
+	* Added support for the '%wc' wildcards to the '--metadata-pattern='
+	switch in rdimport(1).
+	* Added '--set-string-isci' switch to rdimport(1).
+	* Added support for the '%wc' wildcard to the '--metadata-pattern='
+	switch in rdexport(1).

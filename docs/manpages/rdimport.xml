@@ -426,6 +426,13 @@
 	  </varlistentry>
 
 	  <varlistentry>
+	    <term><userinput>%wc</userinput></term>
+	    <listitem>
+	      <para>Industry Standard Commercial Identification [ISCI] Code</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
 	    <term><userinput>%wi</userinput></term>
 	    <listitem>
 	      <para>International Standard Recording Code [ISRC]</para>
@@ -712,6 +719,13 @@
 	    </varlistentry>
 
 	    <varlistentry>
+	      <term><userinput>isci</userinput></term>
+	      <listitem>
+		<para>Industry Standard Commercial Identification [ISCI] Code</para>
+	      </listitem>
+	    </varlistentry>
+
+	    <varlistentry>
 	      <term><userinput>isrc</userinput></term>
 	      <listitem>
 		<para>International Standard Recording Code [ISRC]</para>
@@ -937,10 +951,6 @@
 
 <refsect1 id='see_also'><title>See Also</title>
 <para>
-  <citerefentry>
-    <refentrytitle>rdimport</refentrytitle><manvolnum>1</manvolnum>
-  </citerefentry>
-  <literal>,</literal>
   <citerefentry>
     <refentrytitle>rdexport</refentrytitle><manvolnum>1</manvolnum>
   </citerefentry>

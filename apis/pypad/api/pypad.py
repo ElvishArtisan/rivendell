@@ -401,6 +401,8 @@ class Update(object):
             string=string.replace('%V','0')
         else:
             string=string.replace('%V',str(int(secs)//1000))
+        string=self.__replaceWildcardPair('wc','isci',string,esc)
+        string=self.__replaceWildcardPair('wi','isrc',string,esc)
         string=self.__replaceWildcardPair('wm','recordingMbId',string,esc)
         string=self.__replaceWildcardPair('wr','releaseMbId',string,esc)
         string=self.__replaceWildcardPair('x','lineId',string,esc) # Log Line ID

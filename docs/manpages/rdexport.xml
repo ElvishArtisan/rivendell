@@ -346,6 +346,13 @@
 	  </varlistentry>
 
 	  <varlistentry>
+	    <term><userinput>%wc</userinput></term>
+	    <listitem>
+	      <para>Industry Standard Commercial Identification [ISCI] Code</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
 	    <term><userinput>%wi</userinput></term>
 	    <listitem>
 	      <para>International Standard Recording Code [ISRC]</para>
