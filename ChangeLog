@@ -19529,3 +19529,5 @@
 2020-02-07 Fred Gleason <fredg@paravelsystems.com>
 	* Tweaked the CD rippers to display the 'hourglass' icon
 	appropriately.
+2020-02-07 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up a compiler warning in 'lib/rdcae.cpp'.
