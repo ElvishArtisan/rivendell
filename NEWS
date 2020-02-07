@@ -1,15 +1,28 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v3.2.1int0 -- 27 January 2020
+v3.2.1int1 -- 7 February 2020
 
 Changes:
+   MusicBrainz Integration. The CD rippers in rdlibrary(1) can now be
+   configured to use MusicBrainz as a metadata source in addition to
+   FreeDB. (Configured in RDAdmin->ManageHosts->RDlibrary).
+
+   CD-TEXT Support. Removed support for CD-TEXT.
+
+   Metadata Wildcards. Support for the following metadata wildcards has
+   been added:
+      '%wc' - Industry Standard Commercial Identification (ISCI) code
+      '%wi' - International Standard Recording Code (ISRC)
+      '%wm' - MusicBrainz recording ID
+      '%wr' - MusicBrainz release ID
+
    Filepath Wildcards. Added a 'delta-seconds' modifier to the format for
    filepath wildcards to allow specification of a +/- time offset. See
    Appendix D 'Filepath Wildcards' in the Operations Guide for details.
 
 Database Update:
-   This version of Rivendell uses database schema version 311, and will
+   This version of Rivendell uses database schema version 314, and will
    automatically upgrade any earlier versions. To see the current schema
    version prior to upgrade, see RDAdmin->SystemInfo.
 
