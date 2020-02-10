@@ -41,8 +41,6 @@
 ListFeeds::ListFeeds(QWidget *parent)
   : RDDialog(parent)
 {
-  setModal(true);
-
   //
   // Fix the Window Size
   //
@@ -89,16 +87,17 @@ ListFeeds::ListFeeds(QWidget *parent)
   //
   list_feeds_view=new RDListView(this);
   list_feeds_view->setAllColumnsShowFocus(true);
+  list_feeds_view->setItemMargin(5);
   list_feeds_view->addColumn(tr("Key"));
-  list_feeds_view->setColumnAlignment(0,Qt::AlignCenter);
+  list_feeds_view->setColumnAlignment(0,Qt::AlignCenter|Qt::AlignVCenter);
   list_feeds_view->addColumn(tr("Title"));
-  list_feeds_view->setColumnAlignment(1,Qt::AlignLeft);
+  list_feeds_view->setColumnAlignment(1,Qt::AlignLeft|Qt::AlignVCenter);
   list_feeds_view->addColumn(tr("AutoPost"));
-  list_feeds_view->setColumnAlignment(2,Qt::AlignCenter);
+  list_feeds_view->setColumnAlignment(2,Qt::AlignCenter|Qt::AlignVCenter);
   list_feeds_view->addColumn(tr("Keep Metadata"));
-  list_feeds_view->setColumnAlignment(3,Qt::AlignCenter);
+  list_feeds_view->setColumnAlignment(3,Qt::AlignCenter|Qt::AlignVCenter);
   list_feeds_view->addColumn(tr("Creation Date"));
-  list_feeds_view->setColumnAlignment(4,Qt::AlignCenter);
+  list_feeds_view->setColumnAlignment(4,Qt::AlignCenter|Qt::AlignVCenter);
   QLabel *list_box_label=new QLabel(list_feeds_view,tr("&Feeds:"),this);
   list_box_label->setFont(labelFont());
   list_box_label->setGeometry(14,11,85,19);

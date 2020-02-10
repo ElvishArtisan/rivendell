@@ -19539,3 +19539,6 @@
 2020-02-07 Fred Gleason <fredg@paravelsystems.com>
 	* Changed the default character encoding for podcasts from
 	'ISO-8859-1' to 'UTF-8'.
+2020-02-10 Fred Gleason <fredg@paravelsys tems.com>
+	* Cleaned up UI alignment in the 'Rivendell Feed List' dialog in
+	rdadmin(1).
