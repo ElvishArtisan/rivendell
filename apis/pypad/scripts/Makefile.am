@@ -20,7 +20,7 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-install-exec-am:	
+install-exec-am:
 	mkdir -p $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad
 	../../../helpers/install_python.sh pypad_ando.py $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_ando.py
 	cp pypad_ando.exemplar $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_ando.exemplar
@@ -38,8 +38,8 @@ install-exec-am:
 	cp pypad_liqcomp.exemplar $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_liqcomp.exemplar
 	../../../helpers/install_python.sh pypad_serial.py $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_serial.py
 	cp pypad_serial.exemplar $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_serial.exemplar
-	../../../helpers/install_python.sh pypad_shoutcast1.py $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_shoutcast1.py
-	cp pypad_shoutcast1.exemplar $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_shoutcast1.exemplar
+	../../../helpers/install_python.sh pypad_shoutcast.py $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_shoutcast.py
+	cp pypad_shoutcast.exemplar $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_shoutcast.exemplar
 	../../../helpers/install_python.sh pypad_spinitron.py $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_spinitron.py
 	cp pypad_spinitron.exemplar $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_spinitron.exemplar
 	../../../helpers/install_python.sh pypad_spottrap.py $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_spottrap.py
@@ -59,7 +59,7 @@ install-exec-am:
 	../../../helpers/install_python.sh pypad_xmpad.py $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_xmpad.py
 	cp pypad_xmpad.exemplar $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_xmpad.exemplar
 
-uninstall-local:	
+uninstall-local:
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_ando.exemplar
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_ando.py
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_filewrite.exemplar
@@ -76,8 +76,8 @@ uninstall-local:
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_liqcomp.py
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_serial.exemplar
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_serial.py
-	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_shoutcast1.exemplar
-	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_shoutcast1.py
+	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_shoutcast.exemplar
+	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_shoutcast.py
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_spinitron.exemplar
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_spinitron.py
 	rm -f $(DESTDIR)$(prefix)/@RD_LIB_PATH@/rivendell/pypad/pypad_spottrap.exemplar
@@ -113,8 +113,8 @@ EXTRA_DIST = pypad_ando.exemplar\
              pypad_live365.py\
              pypad_serial.exemplar\
              pypad_serial.py\
-             pypad_shoutcast1.exemplar\
-             pypad_shoutcast1.py\
+             pypad_shoutcast.exemplar\
+             pypad_shoutcast.py\
              pypad_spinitron.exemplar\
              pypad_spinitron.py\
              pypad_spottrap.exemplar\
