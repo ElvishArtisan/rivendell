@@ -20,8 +20,6 @@
 
 #include <qdialog.h>
 #include <qstring.h>
-#include <qpushbutton.h>
-#include <qlabel.h>
 #include <qmessagebox.h>
 #include <qdatetime.h>
 
@@ -44,22 +42,10 @@ AddFeed::AddFeed(unsigned *id,QString *keyname,QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   setWindowTitle("RDADmin - "+tr("Add RSS Feed"));
-
-  //
-  // Enable Users Checkbox
-  //
-  feed_users_box=new QCheckBox(this);
-  feed_users_box->setGeometry(40,40,15,15);
-  feed_users_box->setChecked(true);
-  QLabel *label=new QLabel(feed_users_box,tr("Enable Feed for All Users"),this);
-  label->setGeometry(60,38,sizeHint().width()-60,19);
-  label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Text Validator
@@ -70,33 +56,54 @@ AddFeed::AddFeed(unsigned *id,QString *keyname,QWidget *parent)
   // Feed Name
   //
   feed_keyname_edit=new QLineEdit(this);
-  feed_keyname_edit->setGeometry(145,11,sizeHint().width()-150,19);
   feed_keyname_edit->setMaxLength(8);
   feed_keyname_edit->setValidator(validator);
-  label=new QLabel(feed_keyname_edit,tr("&New Feed Name:"),this);
-  label->setGeometry(10,11,130,19);
-  label->setFont(labelFont());
-  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  feed_keyname_label=new QLabel(feed_keyname_edit,tr("&New Feed Name:"),this);
+  feed_keyname_label->setFont(labelFont());
+  feed_keyname_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+
+  //
+  // Exemplar
+  //
+  feed_exemplar_box=new QComboBox(this);
+  feed_exemplar_box->insertItem(0,tr("Empty Feed Config"));
+  QString sql=QString("select KEY_NAME from FEEDS order by KEY_NAME");
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  while(q->next()) {
+    feed_exemplar_box->
+      insertItem(feed_exemplar_box->count(),q->value(0).toString());
+  }
+  delete q;
+  feed_exemplar_label=
+    new QLabel(feed_exemplar_box,tr("Base Feed On")+": ",this);
+  feed_exemplar_label->setFont(labelFont());
+  feed_exemplar_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+
+  //
+  // Enable Users Checkbox
+  //
+  feed_users_box=new QCheckBox(this);
+  feed_users_box->setChecked(true);
+  feed_users_label=
+    new QLabel(feed_users_box,tr("Enable Feed for All Users"),this);
+  feed_users_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   //  Ok Button
   //
-  QPushButton *ok_button=new QPushButton(this);
-  ok_button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
-  ok_button->setDefault(true);
-  ok_button->setFont(buttonFont());
-  ok_button->setText(tr("&OK"));
-  connect(ok_button,SIGNAL(clicked()),this,SLOT(okData()));
+  feed_ok_button=new QPushButton(this);
+  feed_ok_button->setDefault(true);
+  feed_ok_button->setFont(buttonFont());
+  feed_ok_button->setText(tr("&OK"));
+  connect(feed_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
   //  Cancel Button
   //
-  QPushButton *cancel_button=new QPushButton(this);
-  cancel_button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
-			     80,50);
-  cancel_button->setFont(buttonFont());
-  cancel_button->setText(tr("&Cancel"));
-  connect(cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
+  feed_cancel_button=new QPushButton(this);
+  feed_cancel_button->setFont(buttonFont());
+  feed_cancel_button->setText(tr("&Cancel"));
+  connect(feed_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 }
 
 
@@ -108,7 +115,7 @@ AddFeed::~AddFeed()
 
 QSize AddFeed::sizeHint() const
 {
-  return QSize(250,124);
+  return QSize(290,153);
 } 
 
 
@@ -120,62 +127,41 @@ QSizePolicy AddFeed::sizePolicy() const
 
 void AddFeed::okData()
 {
-  QString sql;
-  RDSqlQuery *q;
-  RDSqlQuery *q1;
+  QString err_msg;
+  QString exemplar="";
 
-  sql=QString("select KEY_NAME from FEEDS where ")+
-    "KEY_NAME=\""+RDEscapeString(feed_keyname_edit->text())+"\"";
-  q=new RDSqlQuery(sql);
-  if(q->first()) {
-    QMessageBox::warning(this,tr("Add Feed Error"),
-			 tr("A feed with that key name already exists!"));
-    delete q;
-    return;
+  if(feed_exemplar_box->currentIndex()!=0) {
+    exemplar=feed_exemplar_box->currentText();
   }
-  delete q;
-
-  //
-  // Create Default Feed Perms
-  //
-  if(feed_users_box->isChecked()) {
-    sql=QString("select LOGIN_NAME from USERS where ")+
-      "(ADMIN_USERS_PRIV='N')&&(ADMIN_CONFIG_PRIV='N')";
-    q=new RDSqlQuery(sql);
-    while(q->next()) {
-      sql=QString("insert into FEED_PERMS set ")+
-	"USER_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
-	"KEY_NAME=\""+RDEscapeString(feed_keyname_edit->text())+"\"";
-      q1=new RDSqlQuery(sql);
-      delete q1;
-    }
-    delete q;
+  *feed_id=RDFeed::create(feed_keyname_edit->text(),feed_users_box->isChecked(),
+			  &err_msg,exemplar);
+  if(*feed_id!=0) {
+    *feed_keyname=feed_keyname_edit->text();
+    done(0);
   }
-
-  //
-  // Create Feed
-  //
-  sql=QString("insert into FEEDS set ")+
-    "KEY_NAME=\""+RDEscapeString(feed_keyname_edit->text())+"\","+
-    "ORIGIN_DATETIME=now(),"+
-    "HEADER_XML=\""+RDEscapeString(DEFAULT_HEADER_XML)+"\","+
-    "CHANNEL_XML=\""+RDEscapeString(DEFAULT_CHANNEL_XML)+"\","+
-    "ITEM_XML=\""+RDEscapeString(DEFAULT_ITEM_XML)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
-  sql=QString("select ID from FEEDS where ")+
-    "KEY_NAME=\""+RDEscapeString(feed_keyname_edit->text())+"\"";
-  q=new RDSqlQuery(sql);
-  if(q->first()) {
-    *feed_id=q->value(0).toUInt();
+  else {
+    QMessageBox::warning(this,"RDAdmin - "+tr("Add Feed Error"),err_msg);
   }
-  delete q;
-  *feed_keyname=feed_keyname_edit->text();
-  done(0);
 }
 
 
 void AddFeed::cancelData()
 {
   done(-1);
+}
+
+
+void AddFeed::resizeEvent(QResizeEvent *e)
+{
+  feed_keyname_label->setGeometry(10,11,120,19);
+  feed_keyname_edit->setGeometry(135,11,sizeHint().width()-140,19);
+
+  feed_exemplar_label->setGeometry(10,35,120,19);
+  feed_exemplar_box->setGeometry(135,35,sizeHint().width()-140,19);
+
+  feed_users_box->setGeometry(40,65,15,15);
+  feed_users_label->setGeometry(60,63,sizeHint().width()-60,19);
+
+  feed_ok_button->setGeometry(size().width()-180,size().height()-60,80,50);
+  feed_cancel_button->setGeometry(size().width()-90,size().height()-60,80,50);
 }

@@ -22,9 +22,10 @@
 #include <unistd.h>
 #include <stdlib.h>
 
+#include <qapplication.h>
 #include <qlabel.h>
 #include <qmessagebox.h>
-#include <qapplication.h>
+#include <qprogressdialog.h>
 
 #include <rdapplication.h>
 #include <rddb.h>
@@ -220,15 +221,15 @@ void ListFeeds::deleteData()
   RDPodcast *cast;
   sql=QString().sprintf("select ID from PODCASTS where FEED_ID=%d",item->id());
   q=new RDSqlQuery(sql);
-  Q3ProgressDialog *pd=
-    new Q3ProgressDialog(tr("Deleting Audio..."),tr("Cancel"),q->size()+1,this,
-			 NULL);
+  QProgressDialog *pd=new QProgressDialog(tr("Deleting Audio..."),
+					  tr("Cancel"),0,q->size()+1,this);
   pd->setCaption(tr("Deleting"));
-  pd->setProgress(0);
+  pd->setValue(0);
+  pd->show();
   qApp->processEvents();
   sleep(1);
   while(q->next()) {
-    pd->setProgress(pd->progress()+1);
+    pd->setValue(pd->value()+1);
     qApp->processEvents();
     cast=new RDPodcast(rda->config(),q->value(0).toUInt());
     cast->removeAudio(feed,&errs,rda->config()->logXloadDebugData());

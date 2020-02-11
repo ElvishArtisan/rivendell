@@ -19553,3 +19553,7 @@
 	* Added a 'Select Member Feeds' button to the 'Feed' dialog in
 	rdadmin(1).
 	* Added an 'RSS Superfeed' selection dialog to rdadmin(1).
+2020-02-11 Fred Gleason <fredg@paravelsys tems.com>
+	* Added an 'RDFeed::create()' method.
+	* Added a 'Base Feed On' dropdown to the 'Add RSS Feed' dialog
+	in rdadmin(1).

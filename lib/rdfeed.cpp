@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell RSS Feed
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,23 +20,31 @@
 
 #include <math.h>
 
-#include <qfile.h>
-#include <q3url.h>
 #include <qapplication.h>
+#include <qfile.h>
+#include <qurl.h>
 
-#include <rddb.h>
-#include <rdfeed.h>
-#include <rdconf.h>
-#include <rdlibrary_conf.h>
-#include <rdescape_string.h>
-#include <rdwavefile.h>
-#include <rdpodcast.h>
-#include <rdcart.h>
-#include <rdcut.h>
-#include <rdaudioexport.h>
-#include <rdaudioconvert.h>
-#include <rdtempdirectory.h>
-#include <rdupload.h>
+#include "rdapplication.h"
+#include "rdaudioconvert.h"
+#include "rdaudioexport.h"
+#include "rdcart.h"
+#include "rdcut.h"
+#include "rdconf.h"
+#include "rddb.h"
+#include "rdescape_string.h"
+#include "rdfeed.h"
+#include "rdlibrary_conf.h"
+#include "rdpodcast.h"
+#include "rdtempdirectory.h"
+#include "rdupload.h"
+#include "rdwavefile.h"
+
+//
+// Default XML Templates
+//
+#define DEFAULT_HEADER_XML "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<rss version=\"2.0\">"
+#define DEFAULT_CHANNEL_XML "<title>%TITLE%</title>\n<description>%DESCRIPTION%</description>\n<category>%CATEGORY%</category>\n<link>%LINK%</link>\n<language>%LANGUAGE%</language>\n<copyright>%COPYRIGHT%</copyright>\n<lastBuildDate>%BUILD_DATE%</lastBuildDate>\n<pubDate>%PUBLISH_DATE%</pubDate>\n<webMaster>%WEBMASTER%</webMaster>\n<generator>%GENERATOR%</generator>"
+#define DEFAULT_ITEM_XML "<title>%ITEM_TITLE%</title>\n<link>%ITEM_LINK%</link>\n<guid isPermaLink=\"false\">%ITEM_GUID%</guid>\n<description>%ITEM_DESCRIPTION%</description>\n<author>%ITEM_AUTHOR%</author>\n<comments>%ITEM_COMMENTS%</comments>\n<source url=\"%ITEM_SOURCE_URL%\">%ITEM_SOURCE_TEXT%</source>\n<enclosure url=\"%ITEM_AUDIO_URL%\" length=\"%ITEM_AUDIO_LENGTH%\"  type=\"audio/mpeg\" />\n<category>%ITEM_CATEGORY%</category>\n<pubDate>%ITEM_PUBLISH_DATE%</pubDate>"
 
 RDFeed::RDFeed(const QString &keyname,RDConfig *config,QObject *parent)
   : QObject(parent)
@@ -514,7 +522,7 @@ void RDFeed::setMediaLinkMode(RDFeed::MediaLinkMode mode) const
 QString RDFeed::audioUrl(RDFeed::MediaLinkMode mode,
 			 const QString &cgi_hostname,unsigned cast_id)
 {
-  Q3Url url(baseUrl());
+  QUrl url(baseUrl());
   QString ret;
   RDPodcast *cast;
 
@@ -766,6 +774,163 @@ unsigned RDFeed::postFile(RDStation *station,const QString &srcfile,Error *err,
 int RDFeed::totalPostSteps() const
 {
   return RDFEED_TOTAL_POST_STEPS;
+}
+
+
+unsigned RDFeed::create(const QString &keyname,bool enable_users,
+			QString *err_msg,const QString &exemplar)
+{
+  QString sql;
+  RDSqlQuery *q;
+  RDSqlQuery *q1;
+  unsigned feed_id=0;
+  bool ok=false;
+
+  //
+  // Sanity Checks
+  //
+  sql=QString("select KEY_NAME from FEEDS where ")+
+    "KEY_NAME=\""+RDEscapeString(keyname)+"\"";
+  q=new RDSqlQuery(sql);
+  if(q->first()) {
+    *err_msg=tr("A feed with that key name already exists!");
+    delete q;
+    return 0;
+  }
+  delete q;
+
+  if(exemplar.isEmpty()) {
+    //
+    // Create Feed
+    //
+    sql=QString("insert into FEEDS set ")+
+      "KEY_NAME=\""+RDEscapeString(keyname)+"\","+
+      "ORIGIN_DATETIME=now(),"+
+      "HEADER_XML=\""+RDEscapeString(DEFAULT_HEADER_XML)+"\","+
+      "CHANNEL_XML=\""+RDEscapeString(DEFAULT_CHANNEL_XML)+"\","+
+      "ITEM_XML=\""+RDEscapeString(DEFAULT_ITEM_XML)+"\"";
+    q=new RDSqlQuery(sql);
+    feed_id=q->lastInsertId().toUInt();
+    delete q;
+  }
+  else {
+    sql=QString("select ")+
+      "IS_SUPERFEED,"+         // 00
+      "CHANNEL_TITLE,"+        // 01
+      "CHANNEL_DESCRIPTION,"+  // 02
+      "CHANNEL_CATEGORY,"+     // 03
+      "CHANNEL_LINK,"+         // 04
+      "CHANNEL_COPYRIGHT,"+    // 05
+      "CHANNEL_WEBMASTER,"+    // 06
+      "CHANNEL_LANGUAGE,"+     // 07
+      "BASE_URL,"+             // 08
+      "BASE_PREAMBLE,"+        // 09
+      "PURGE_URL,"+            // 10
+      "PURGE_USERNAME,"+       // 11
+      "PURGE_PASSWORD,"+       // 12
+      "HEADER_XML,"+           // 13
+      "CHANNEL_XML,"+          // 14
+      "ITEM_XML,"+             // 15
+      "CAST_ORDER,"+           // 16
+      "MAX_SHELF_LIFE,"+       // 17
+      "ENABLE_AUTOPOST,"+      // 18
+      "KEEP_METADATA,"+        // 19
+      "UPLOAD_FORMAT,"+        // 20
+      "UPLOAD_CHANNELS,"+      // 21
+      "UPLOAD_SAMPRATE,"+      // 22
+      "UPLOAD_BITRATE,"+       // 23
+      "UPLOAD_QUALITY,"+       // 24
+      "UPLOAD_EXTENSION,"+     // 25
+      "NORMALIZE_LEVEL,"+      // 26
+      "REDIRECT_PATH,"+        // 27
+      "MEDIA_LINK_MODE "+      // 28
+      "from FEEDS where "+
+      "KEY_NAME=\""+RDEscapeString(exemplar)+"\"";
+    q=new RDSqlQuery(sql);
+    if(q->first()) {
+      sql=QString("insert into FEEDS set ")+
+	"KEY_NAME=\""+RDEscapeString(keyname)+"\","+
+	"IS_SUPERFEED=\""+q->value(0).toString()+"\","+
+	"CHANNEL_TITLE=\""+RDEscapeString(q->value(1).toString())+"\","+
+	"CHANNEL_DESCRIPTION=\""+RDEscapeString(q->value(2).toString())+"\","+
+	"CHANNEL_CATEGORY=\""+RDEscapeString(q->value(3).toString())+"\","+
+	"CHANNEL_LINK=\""+RDEscapeString(q->value(4).toString())+"\","+
+	"CHANNEL_COPYRIGHT=\""+RDEscapeString(q->value(5).toString())+"\","+
+	"CHANNEL_WEBMASTER=\""+RDEscapeString(q->value(6).toString())+"\","+
+	"CHANNEL_LANGUAGE=\""+RDEscapeString(q->value(7).toString())+"\","+
+	"BASE_URL=\""+RDEscapeString(q->value(8).toString())+"\","+
+	"BASE_PREAMBLE=\""+RDEscapeString(q->value(9).toString())+"\","+
+	"PURGE_URL=\""+RDEscapeString(q->value(10).toString())+"\","+
+	"PURGE_USERNAME=\""+RDEscapeString(q->value(11).toString())+"\","+
+	"PURGE_PASSWORD=\""+RDEscapeString(q->value(12).toString())+"\","+
+	"HEADER_XML=\""+RDEscapeString(q->value(13).toString())+"\","+
+	"CHANNEL_XML=\""+RDEscapeString(q->value(14).toString())+"\","+
+	"ITEM_XML=\""+RDEscapeString(q->value(15).toString())+"\","+
+	"CAST_ORDER=\""+RDEscapeString(q->value(16).toString())+"\","+
+	QString().sprintf("MAX_SHELF_LIFE=%d,",q->value(17).toInt())+
+	"LAST_BUILD_DATETIME=now(),"+
+	"ORIGIN_DATETIME=now(),"+
+	"ENABLE_AUTOPOST=\""+RDEscapeString(q->value(18).toString())+"\","+
+	"KEEP_METADATA=\""+RDEscapeString(q->value(19).toString())+"\","+
+	QString().sprintf("UPLOAD_FORMAT=%d,",q->value(20).toInt())+
+	QString().sprintf("UPLOAD_CHANNELS=%d,",q->value(21).toInt())+
+	QString().sprintf("UPLOAD_SAMPRATE=%d,",q->value(22).toInt())+
+	QString().sprintf("UPLOAD_BITRATE=%d,",q->value(23).toInt())+
+	QString().sprintf("UPLOAD_QUALITY=%d,",q->value(24).toInt())+
+	"UPLOAD_EXTENSION=\""+RDEscapeString(q->value(25).toString())+"\","+
+	QString().sprintf("NORMALIZE_LEVEL=%d,",q->value(26).toInt())+
+	"REDIRECT_PATH=\""+RDEscapeString(q->value(27).toString())+"\","+
+	QString().sprintf("MEDIA_LINK_MODE=%d",q->value(28).toInt());
+      feed_id=RDSqlQuery::run(sql,&ok).toUInt();
+      if(!ok) {
+	*err_msg=tr("Unable to insert new feed record!");
+	delete q;
+	return 0;
+      }
+
+      //
+      // Duplicate member feed references
+      //
+      if(q->value(0).toString()=="Y") {
+	sql=QString("select MEMBER_KEY_NAME ")+
+	  "from FEED_KEY_NAMES where "+
+	  "KEY_NAME=\""+RDEscapeString(exemplar)+"\"";
+	q1=new RDSqlQuery(sql);
+	while(q1->next()) {
+	  sql=QString("insert into FEED_KEY_NAMES set ")+
+	    "KEY_NAME=\""+RDEscapeString(keyname)+"\","+
+	    "MEMBER_KEY_NAME=\""+RDEscapeString(q1->value(0).toString())+"\"";
+	  RDSqlQuery::apply(sql);
+	}
+	delete q1;
+      }
+    }
+    else {
+      *err_msg=tr("Exemplar feed")+" \""+exemplar+"\" "+tr("does not exist!");
+      delete q;
+      return 0;
+    }
+    delete q;
+  }
+
+  //
+  // Create Default Feed Perms
+  //
+  if(enable_users) {
+    sql=QString("select LOGIN_NAME from USERS where ")+
+      "(ADMIN_USERS_PRIV='N')&&(ADMIN_CONFIG_PRIV='N')";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("insert into FEED_PERMS set ")+
+	"USER_NAME=\""+RDEscapeString(q->value(0).toString())+"\","+
+	"KEY_NAME=\""+RDEscapeString(keyname)+"\"";
+      q1=new RDSqlQuery(sql);
+      delete q1;
+    }
+    delete q;
+  }
+
+  return feed_id;
 }
 
 

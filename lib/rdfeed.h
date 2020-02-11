@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell RSS Feed
 //
-//   (C) Copyright 2002-2007,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,7 +21,6 @@
 #ifndef RDFEED_H
 #define RDFEED_H
 
-#include <qsqldatabase.h>
 #include <qobject.h>
 
 #include <rdconfig.h>
@@ -115,6 +114,8 @@ class RDFeed : public QObject
   unsigned postFile(RDStation *station,const QString &srcfile,Error *err,
 		    bool log_debug,RDConfig *config);
   int totalPostSteps() const;
+  static unsigned create(const QString &keyname,bool enable_users,
+			 QString *err_msg,const QString &exemplar="");
   static QString errorString(RDFeed::Error err);
 
  signals:

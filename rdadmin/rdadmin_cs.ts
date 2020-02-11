@@ -236,14 +236,22 @@ a záloha původní databáze uložena v </translation>
     </message>
     <message>
         <source>Add Feed Error</source>
-        <translation>Chyba při přidávání přívodu</translation>
+        <translation type="unfinished">Chyba při přidávání přívodu</translation>
     </message>
     <message>
         <source>A feed with that key name already exists!</source>
-        <translation>Přívod s tímto názvem klíče již existuje!</translation>
+        <translation type="obsolete">Přívod s tímto názvem klíče již existuje!</translation>
     </message>
     <message>
         <source>Add RSS Feed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Empty Feed Config</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Base Feed On</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

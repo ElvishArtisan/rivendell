@@ -245,14 +245,22 @@ y un respaldo de la base de datos se guardó en </translation>
     </message>
     <message>
         <source>Add Feed Error</source>
-        <translation>Error añadiendo feed</translation>
+        <translation type="unfinished">Error añadiendo feed</translation>
     </message>
     <message>
         <source>A feed with that key name already exists!</source>
-        <translation>¡Un feed con ese nombre ya existe!</translation>
+        <translation type="obsolete">¡Un feed con ese nombre ya existe!</translation>
     </message>
     <message>
         <source>Add RSS Feed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Empty Feed Config</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Base Feed On</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
