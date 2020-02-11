@@ -2,7 +2,7 @@
 //
 // List Rivendell Feeds
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -92,12 +92,14 @@ ListFeeds::ListFeeds(QWidget *parent)
   list_feeds_view->setColumnAlignment(0,Qt::AlignCenter|Qt::AlignVCenter);
   list_feeds_view->addColumn(tr("Title"));
   list_feeds_view->setColumnAlignment(1,Qt::AlignLeft|Qt::AlignVCenter);
-  list_feeds_view->addColumn(tr("AutoPost"));
+  list_feeds_view->addColumn(tr("Superfeed"));
   list_feeds_view->setColumnAlignment(2,Qt::AlignCenter|Qt::AlignVCenter);
-  list_feeds_view->addColumn(tr("Keep Metadata"));
+  list_feeds_view->addColumn(tr("AutoPost"));
   list_feeds_view->setColumnAlignment(3,Qt::AlignCenter|Qt::AlignVCenter);
-  list_feeds_view->addColumn(tr("Creation Date"));
+  list_feeds_view->addColumn(tr("Keep Metadata"));
   list_feeds_view->setColumnAlignment(4,Qt::AlignCenter|Qt::AlignVCenter);
+  list_feeds_view->addColumn(tr("Creation Date"));
+  list_feeds_view->setColumnAlignment(5,Qt::AlignCenter|Qt::AlignVCenter);
   QLabel *list_box_label=new QLabel(list_feeds_view,tr("&Feeds:"),this);
   list_box_label->setFont(labelFont());
   list_box_label->setGeometry(14,11,85,19);
@@ -117,7 +119,7 @@ ListFeeds::~ListFeeds()
 
 QSize ListFeeds::sizeHint() const
 {
-  return QSize(400,280);
+  return QSize(500,280);
 } 
 
 
@@ -293,9 +295,16 @@ void ListFeeds::RefreshList()
   RDListViewItem *item;
 
   list_feeds_view->clear();
-  q=new 
-    RDSqlQuery("select ID,KEY_NAME,CHANNEL_TITLE,ENABLE_AUTOPOST,\
-                KEEP_METADATA,ORIGIN_DATETIME from FEEDS");
+  sql=QString("select ")+
+    "ID,"+               // 00
+    "KEY_NAME,"+         // 01
+    "CHANNEL_TITLE,"+    // 02
+    "IS_SUPERFEED,"+     // 03
+    "ENABLE_AUTOPOST,"+  // 04
+    "KEEP_METADATA,"+    // 05
+    "ORIGIN_DATETIME "+  // 06
+    "from FEEDS";
+  q=new RDSqlQuery(sql);
   while (q->next()) {
     item=new RDListViewItem(list_feeds_view);
     item->setId(q->value(0).toInt());
@@ -303,7 +312,8 @@ void ListFeeds::RefreshList()
     item->setText(1,q->value(2).toString());
     item->setText(2,q->value(3).toString());
     item->setText(3,q->value(4).toString());
-    item->setText(4,q->value(5).toDateTime().toString("MM/dd/yyyy"));
+    item->setText(4,q->value(5).toString());
+    item->setText(5,q->value(6).toDateTime().toString("MM/dd/yyyy"));
   }
   delete q;
 }
@@ -314,16 +324,23 @@ void ListFeeds::RefreshItem(RDListViewItem *item)
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString().sprintf("select KEY_NAME,CHANNEL_TITLE,ENABLE_AUTOPOST,\
-                         KEEP_METADATA,ORIGIN_DATETIME from FEEDS \
-                         where ID=%d",item->id());
+  sql=QString("select ")+
+    "KEY_NAME,"+         // 00
+    "CHANNEL_TITLE,"+    // 01
+    "IS_SUPERFEED,"+     // 02
+    "ENABLE_AUTOPOST,"+  // 03
+    "KEEP_METADATA,"+    // 04
+    "ORIGIN_DATETIME "+  // 05
+    "from FEEDS where "+
+    QString().sprintf("ID=%d",item->id());
   q=new RDSqlQuery(sql);
   if(q->next()) {
     item->setText(0,q->value(0).toString());
     item->setText(1,q->value(1).toString());
     item->setText(2,q->value(2).toString());
     item->setText(3,q->value(3).toString());
-    item->setText(4,q->value(4).toDateTime().toString("MM/dd/yyyy"));
+    item->setText(4,q->value(4).toString());
+    item->setText(5,q->value(5).toDateTime().toString("MM/dd/yyyy"));
   }
   delete q;
 }

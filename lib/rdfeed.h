@@ -43,6 +43,8 @@ class RDFeed : public QObject
   QString keyName() const;
   unsigned id() const;
   bool exists() const;
+  bool isSuperfeed() const;
+  void setIsSuperfeed(bool state) const;
   QString channelTitle() const;
   void setChannelTitle(const QString &str) const;
   QString channelDescription() const;

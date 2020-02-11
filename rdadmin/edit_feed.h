@@ -44,6 +44,8 @@ class EditFeed : public RDDialog
   QSizePolicy sizePolicy() const;
 
  private slots:
+  void isSuperfeedChangedData(int n);
+  void selectSubfeedsData();
   void purgeUrlChangedData(const QString &str);
   void purgeUsernameChangedData(const QString &username);
   void setFormatData();
@@ -51,11 +53,17 @@ class EditFeed : public RDDialog
   void redirectToggledData(bool state);
   void okData();
   void cancelData();
+
+ protected:
+  void resizeEvent(QResizeEvent *e);
   
  private:
-  void RedirectChanged(bool state);
   RDFeed *feed_feed;
+  QLabel *feed_keyname_label;
   QLineEdit *feed_keyname_edit;
+  QLabel *feed_is_superfeed_label;
+  QPushButton *feed_is_superfeed_button;
+  QComboBox *feed_is_superfeed_box;
   QLineEdit *feed_channel_title_edit;
   QTextEdit *feed_channel_description_edit;
   QLineEdit *feed_channel_category_edit;
@@ -84,9 +92,10 @@ class EditFeed : public RDDialog
   QLineEdit *feed_extension_edit;
   QComboBox *feed_castorder_box;
   QComboBox *feed_media_link_mode_box;
-  QCheckBox *feed_redirect_check;
   QLabel *feed_redirect_label;
-  QLineEdit *feed_redirect_edit;
+  QCheckBox *feed_redirect_check;
+  QLabel *feed_redirect_url_label;
+  QLineEdit *feed_redirect_url_edit;
   QPushButton *feed_format_button;
   QGroupBox *feed_channel_section_groupbox;
   QLabel *feed_channel_title_label;
@@ -109,6 +118,8 @@ class EditFeed : public RDDialog
   QLabel *feed_castorder_label;
   QLabel *feed_media_link_mode_label;
   QLabel *feed_extension_label;
+  QPushButton *feed_ok_button;
+  QPushButton *feed_cancel_button;
   QLabel *feed_header_xml_label;
   QLabel *feed_channel_xml_label;
   QLabel *feed_item_xml_label;

@@ -1604,6 +1604,31 @@ Pořád ještě chcete povolit přesměrování?</translation>
         <source>Channel Values</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>No</source>
+        <translation type="unfinished">Ne</translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation type="unfinished">Ano</translation>
+    </message>
+    <message>
+        <source>Is Superfeed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The Feed Redirection URL is invalid!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select Member
+Feeds</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditFeedPerms</name>
@@ -4997,6 +5022,10 @@ Stále ještě jej chcete smazat?</translation>
     <message>
         <source>Deleting</source>
         <translation>Mazání</translation>
+    </message>
+    <message>
+        <source>Superfeed</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

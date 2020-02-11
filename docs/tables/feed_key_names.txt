@@ -1,0 +1,10 @@
+               FEED_KEY_NAMES Table Layout for Rivendell
+
+The FEED_KEY_NAMES table the mappings of actual RSS feeds with super
+feeds.
+
+FIELD NAME           TYPE              REMARKS
+---------------------------------------------------------------
+ID                   int(10) unsigned  Primary key, auto increment
+KEY_NAME             varchar(8)
+MEMBER_KEY_NAME      varchar(8)

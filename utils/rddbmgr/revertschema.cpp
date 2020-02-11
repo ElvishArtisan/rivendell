@@ -41,6 +41,17 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // NEW SCHEMA REVERSIONS GO HERE...
 
   //
+  // Revert 315
+  //
+  if((cur_schema==315)&&(set_schema<cur_schema)) {
+    DropTable("FEED_KEY_NAMES");
+    DropIndex("FEEDS","IS_SUPERFEED_IDX");
+    DropColumn("FEEDS","IS_SUPERFEED");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 314
   //
   if((cur_schema==314)&&(set_schema<cur_schema)) {

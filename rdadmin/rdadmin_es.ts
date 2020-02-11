@@ -1607,6 +1607,31 @@ al URL especificado.
         <source>Channel Values</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>No</source>
+        <translation type="unfinished">No</translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation type="unfinished">Sí</translation>
+    </message>
+    <message>
+        <source>Is Superfeed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The Feed Redirection URL is invalid!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select Member
+Feeds</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditFeedPerms</name>
@@ -4964,6 +4989,10 @@ Do you still want to delete it?</source>
     <message>
         <source>Deleting</source>
         <translation>Borrando</translation>
+    </message>
+    <message>
+        <source>Superfeed</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

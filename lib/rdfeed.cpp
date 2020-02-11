@@ -81,6 +81,20 @@ bool RDFeed::exists() const
 }
 
 
+bool RDFeed::isSuperfeed() const
+{
+  return RDBool(RDGetSqlValue("FEEDS","KEY_NAME",feed_keyname,"IS_SUPERFEED").
+		toString());
+  
+}
+
+
+void RDFeed::setIsSuperfeed(bool state) const
+{
+  SetRow("IS_SUPERFEED",RDYesNo(state));
+}
+
+
 QString RDFeed::keyName() const
 {
   return feed_keyname;

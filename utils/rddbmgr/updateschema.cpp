@@ -9903,6 +9903,30 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<315)&&(set_schema>cur_schema)) {
+    sql=QString("alter table FEEDS add column ")+
+      "IS_SUPERFEED enum('N','Y') default 'N' after KEY_NAME";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table FEEDS add index IS_SUPERFEED_IDX(IS_SUPERFEED)");
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("create table FEED_KEY_NAMES (")+
+      "KEY_NAME varchar(8) not null,"+
+      "MEMBER_KEY_NAME varchar(8) not null,"+
+      "index KEY_NAME_IDX(KEY_NAME),"+
+      "index MEMBER_KEY_NAME_IDX(MEMBER_KEY_NAME))";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
+
 
   // NEW SCHEMA UPDATES GO HERE...
 

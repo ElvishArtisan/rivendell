@@ -1475,6 +1475,31 @@ Do you still want to enable redireciton?</source>
         <source>Channel Values</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>No</source>
+        <translation type="unfinished">Não</translation>
+    </message>
+    <message>
+        <source>Yes</source>
+        <translation type="unfinished">Sim</translation>
+    </message>
+    <message>
+        <source>Is Superfeed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The Feed Redirection URL is invalid!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select Member
+Feeds</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditFeedPerms</name>
@@ -4822,6 +4847,10 @@ Você ainda quer Deletar?</translation>
     </message>
     <message>
         <source>Deleting</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Superfeed</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

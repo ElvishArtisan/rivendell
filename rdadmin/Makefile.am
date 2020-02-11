@@ -2,7 +2,7 @@
 ##
 ## Automake.am for rivendell/rdadmin
 ##
-## (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -88,6 +88,7 @@ dist_rdadmin_SOURCES = add_feed.cpp add_feed.h\
                        edit_schedcodes.cpp edit_schedcodes.h\
                        edit_settings.cpp edit_settings.h\
                        edit_station.cpp edit_station.h\
+                       edit_superfeed.cpp edit_superfeed.h\
                        edit_svc.cpp edit_svc.h\
                        edit_svc_perms.cpp edit_svc_perms.h\
                        edit_ttys.cpp edit_ttys.h\
@@ -168,6 +169,7 @@ nodist_rdadmin_SOURCES = global_credits.c\
                          moc_edit_schedcodes.cpp\
                          moc_edit_settings.cpp\
                          moc_edit_station.cpp\
+                         moc_edit_superfeed.cpp\
                          moc_edit_svc.cpp\
                          moc_edit_svc_perms.cpp\
                          moc_edit_ttys.cpp\

@@ -1,6 +1,6 @@
-// dbversion.h
+// edit_superfeed.h
 //
-// The Current Database Schema Version for Rivendell
+// Edit Rivendell Superfeed
 //
 //   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
@@ -18,13 +18,31 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef DBVERSION_H
-#define DBVERSION_H
+#ifndef EDIT_SUPERFEED_H
+#define EDIT_SUPERFEED_H
 
-/*
- * Current Database Version
- */
-#define RD_VERSION_DATABASE 315
+#include <rddialog.h>
+#include <rdlistselector.h>
+
+#include <rdfeed.h>
+
+class EditSuperfeed : public RDDialog
+{
+  Q_OBJECT
+ public:
+  EditSuperfeed(RDFeed *feed,QWidget *parent=0);
+  ~EditSuperfeed();
+  QSize sizeHint() const;
+  QSizePolicy sizePolicy() const;
+  
+ private slots:
+  void okData();
+  void cancelData();
+
+ private:
+  RDListSelector *feed_host_sel;
+  RDFeed *feed_feed;
+};
 
 
-#endif  // DBVERSION_H
+#endif  // EDIT_SUPERFEED_H

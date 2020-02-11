@@ -19542,3 +19542,14 @@
 2020-02-10 Fred Gleason <fredg@paravelsys tems.com>
 	* Cleaned up UI alignment in the 'Rivendell Feed List' dialog in
 	rdadmin(1).
+2020-02-11 Fred Gleason <fredg@paravelsys tems.com>
+	* Added a 'FEEDS.IS_SUPERFEED' field to the database.
+	* Added a 'FEED_KEY_NAMES' table to the database.
+	* Incremented the database version to 315.
+	* Added a 'Superfeed' column to the feed list in the 'Rivendell
+	Feed List' dialog in rdadmin(1).
+	* Added an 'Is Superfeed' dropdown to the 'Feed' dialog in
+	rdadmin(1).
+	* Added a 'Select Member Feeds' button to the 'Feed' dialog in
+	rdadmin(1).
+	* Added an 'RSS Superfeed' selection dialog to rdadmin(1).
