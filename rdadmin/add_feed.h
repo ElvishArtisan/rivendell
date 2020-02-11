@@ -39,6 +39,7 @@ class AddFeed : public RDDialog
   QSizePolicy sizePolicy() const;
 
  private slots:
+  void keynameChangedData(const QString &str);
   void okData();
   void cancelData();
 

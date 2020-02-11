@@ -50,7 +50,8 @@ AddFeed::AddFeed(unsigned *id,QString *keyname,QWidget *parent)
   //
   // Text Validator
   //
-  RDTextValidator *validator=new RDTextValidator(this,"validator");
+  RDTextValidator *validator=new RDTextValidator(this);
+  validator->addBannedChar(' ');
 
   //
   // Feed Name
@@ -58,6 +59,8 @@ AddFeed::AddFeed(unsigned *id,QString *keyname,QWidget *parent)
   feed_keyname_edit=new QLineEdit(this);
   feed_keyname_edit->setMaxLength(8);
   feed_keyname_edit->setValidator(validator);
+  connect(feed_keyname_edit,SIGNAL(textChanged(const QString &)),
+	  this,SLOT(keynameChangedData(const QString &)));
   feed_keyname_label=new QLabel(feed_keyname_edit,tr("&New Feed Name:"),this);
   feed_keyname_label->setFont(labelFont());
   feed_keyname_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -95,6 +98,7 @@ AddFeed::AddFeed(unsigned *id,QString *keyname,QWidget *parent)
   feed_ok_button->setDefault(true);
   feed_ok_button->setFont(buttonFont());
   feed_ok_button->setText(tr("&OK"));
+  feed_ok_button->setDisabled(true);
   connect(feed_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
@@ -122,6 +126,12 @@ QSize AddFeed::sizeHint() const
 QSizePolicy AddFeed::sizePolicy() const
 {
   return QSizePolicy(QSizePolicy::Fixed,QSizePolicy::Fixed);
+}
+
+
+void AddFeed::keynameChangedData(const QString &str)
+{
+  feed_ok_button->setDisabled(str.isEmpty());
 }
 
 

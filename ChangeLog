@@ -19557,3 +19557,6 @@
 	* Added an 'RDFeed::create()' method.
 	* Added a 'Base Feed On' dropdown to the 'Add RSS Feed' dialog
 	in rdadmin(1).
+2020-02-11 Fred Gleason <fredg@paravelsys tems.com>
+	* Added a check to the 'Add RSS Feed' dialog in rdadmin(1) to
+	prevent creation of feeds with a blank name.
