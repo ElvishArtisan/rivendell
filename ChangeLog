@@ -19536,3 +19536,6 @@
 2020-02-14 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in the BroadcastTools SS16.4 switcher driver
 	that could cause deadlocks and intermittent operation.
+2020-02-14 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in the BroadcastTools SS4.4 switcher driver
+	that could cause deadlocks and intermittent operation.
