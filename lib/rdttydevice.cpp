@@ -55,6 +55,8 @@ bool RDTTYDevice::open(QIODevice::OpenMode mode)
   int flags=O_NONBLOCK|O_NOCTTY;
   struct termios term;
 
+  QIODevice::open(mode);
+
   tty_mode=mode;
   if((mode&QIODevice::ReadWrite)==QIODevice::ReadWrite) {
     flags|=O_RDWR;

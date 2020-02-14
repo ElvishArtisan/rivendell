@@ -19533,3 +19533,6 @@
 	* Cleaned up a compiler warning in 'lib/rdcae.cpp'.
 2020-02-07 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.2.1int1.
+2020-02-14 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in the BroadcastTools SS16.4 switcher driver
+	that could cause deadlocks and intermittent operation.

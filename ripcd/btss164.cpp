@@ -53,6 +53,7 @@ BtSs164::BtSs164(RDMatrix *matrix,QObject *parent)
   //
   RDTty *tty=new RDTty(rda->station()->name(),matrix->port(RDMatrix::Primary));
   bt_device=new RDTTYDevice();
+  connect(bt_device,SIGNAL(readyRead()),this,SLOT(processStatus()));
   if(tty->active()) {
     bt_device->setName(tty->port());
     bt_device->setSpeed(tty->baudRate());
@@ -69,13 +70,6 @@ BtSs164::BtSs164(RDMatrix *matrix,QObject *parent)
   connect(bt_gpi_oneshot,SIGNAL(timeout(int)),this,SLOT(gpiOneshotData(int)));
   bt_gpo_oneshot=new RDOneShot(this);
   connect(bt_gpo_oneshot,SIGNAL(timeout(int)),this,SLOT(gpoOneshotData(int)));
-
-  //
-  // The Poll Timer
-  //
-  QTimer *timer=new QTimer(this,"poll_timer");
-  connect(timer,SIGNAL(timeout()),this,SLOT(processStatus()));
-  timer->start(BTSS164_POLL_INTERVAL);
 }
 
 
