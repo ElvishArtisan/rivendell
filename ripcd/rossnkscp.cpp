@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the Ross NK switchers via the SCP/A
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -46,7 +46,7 @@ RossNkScp::RossNkScp(RDMatrix *matrix,QObject *parent)
     ross_device->setSpeed(tty->baudRate());
     ross_device->setWordLength(tty->dataBits());
     ross_device->setParity(tty->parity());
-    ross_device->open(QIODevice::Unbuffered|QIODevice::ReadWrite);
+    ross_device->open(QIODevice::Unbuffered|QIODevice::WriteOnly);
   }
   delete tty;
 }
