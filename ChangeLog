@@ -19566,3 +19566,6 @@
 2020-02-14 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up the device access mode in the BroadcastTools SS12.4
 	switcher driver.
+2020-02-14 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up the device access mode in the BroadcastTools SS2.1
+	switcher driver.
