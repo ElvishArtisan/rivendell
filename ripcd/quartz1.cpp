@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the Quartz Type 1 Switcher Protocol
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -81,7 +81,8 @@ Quartz1::Quartz1(RDMatrix *matrix,QObject *parent)
 		  sas_device[i]->setSpeed(tty->baudRate());
 		  sas_device[i]->setWordLength(tty->dataBits());
 		  sas_device[i]->setParity(tty->parity());
-		  sas_device[i]->open(QIODevice::Unbuffered|QIODevice::ReadWrite);
+		  sas_device[i]->open(QIODevice::Unbuffered|
+				      QIODevice::WriteOnly);
 	      }
 	      delete tty;
 	      

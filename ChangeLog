@@ -19581,3 +19581,5 @@
 2020-02-14 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in the BroadcastTools SS 8.2 switcher driver
 	that could cause deadlocks and intermittent operation.
+2020-02-14 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up the device access mode in the Quartz 1 switcher driver.
