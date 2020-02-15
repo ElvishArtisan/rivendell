@@ -19578,3 +19578,6 @@
 2020-02-14 Fred Gleason <fredg@paravelsystems.com>
 	* Removed superflous poll interface define from the Broadcast Tools
 	SS 4.4 switcher driver.
+2020-02-14 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in the BroadcastTools SS 8.2 switcher driver
+	that could cause deadlocks and intermittent operation.
