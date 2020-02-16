@@ -19598,3 +19598,6 @@
 2020-02-16 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up the device access mode in the SAS 64000 switcher
 	driver.
+2020-02-16 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up the device access mode in the SAS 64000gpi switcher
+	driver.
