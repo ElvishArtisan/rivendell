@@ -19604,3 +19604,5 @@
 2020-02-16 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up the device access mode in the SAS USI switcher
 	driver.
+2020-02-16 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Q3Socket dependency from the SAS USI switcher driver.
