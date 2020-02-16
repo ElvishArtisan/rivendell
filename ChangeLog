@@ -19586,3 +19586,6 @@
 2020-02-14 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up the device access mode in the Ross NK SCP/A switcher
 	driver.
+2020-02-16 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up the device access mode in the SAS 16000 switcher
+	driver.
