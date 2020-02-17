@@ -19618,3 +19618,8 @@
 2020-02-17 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up the tty device access mode in the vGuest switcher
 	driver.
+2020-02-17 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Q3Socket dependency from the WheatNet SLIO switcher
+	driver.
+	* Removed Q3Socket dependency from the WheatNet LIO switcher
+	driver.
