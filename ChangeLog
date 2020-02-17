@@ -19633,3 +19633,6 @@
 	* Removed Q3Socket dependency from the Quartz 1 switcher driver.
 2020-02-17 Fred Gleason <fredg@paravelsystems.com>
 	* Removed Q3Socket dependency from the Harlond switcher driver.
+2020-02-17 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Q3Socket dependency from the Broadcast Tools Sentinel4Web
+	switcher driver.
