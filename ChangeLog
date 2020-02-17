@@ -19609,6 +19609,9 @@
 2020-02-16 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up the device access mode in the SAS USI switcher
 	driver.
-2020-02-16 Fred Gleason <fredg@paravelsystems.com>
+2020-02-17 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up the device access mode in the Starguide 3 switcher
+	driver.
+2020-02-17 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up the device access mode in the Unity 4000 switcher
 	driver.
