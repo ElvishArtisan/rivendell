@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the StarGuide III Satellite Receiver
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -73,7 +73,7 @@ StarGuide3::StarGuide3(RDMatrix *matrix,QObject *parent)
     sg_device->setSpeed(tty->baudRate());
     sg_device->setWordLength(tty->dataBits());
     sg_device->setParity(tty->parity());
-    sg_device->open(QIODevice::Unbuffered|QIODevice::ReadWrite);
+    sg_device->open(QIODevice::Unbuffered|QIODevice::WriteOnly);
   }
   delete tty;
 }
