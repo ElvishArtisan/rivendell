@@ -19626,3 +19626,6 @@
 2020-02-17 Fred Gleason <fredg@paravelsystems.com>
 	* Removed Q3Socket dependency from the Software Authority switcher
 	driver.
+2020-02-17 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Q3Socket dependency from the Modbus switcher
+	driver.
