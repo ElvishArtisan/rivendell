@@ -55,62 +55,62 @@ Quartz1::Quartz1(RDMatrix *matrix,QObject *parent)
   //
   // Reconnection Timers
   //
-  QSignalMapper *mapper=new QSignalMapper(this,"reconnect_mapper");
+  QSignalMapper *mapper=new QSignalMapper(this);
   connect(mapper,SIGNAL(mapped(int)),this,SLOT(ipConnect(int)));
   for(int i=0;i<2;i++) {
-      sas_reconnect_timer[i]=new QTimer(this,"sas_reconnect_timer");
-      mapper->setMapping(sas_reconnect_timer[i],i);
-      connect(sas_reconnect_timer[i],SIGNAL(timeout()),mapper,SLOT(map()));
+    sas_reconnect_timer[i]=new QTimer(this);
+    mapper->setMapping(sas_reconnect_timer[i],i);
+    connect(sas_reconnect_timer[i],SIGNAL(timeout()),mapper,SLOT(map()));
   }
 
   //
   // Initialize the connections
   //
-  QSignalMapper *connected_mapper=new QSignalMapper(this,"connected_mapper");
+  QSignalMapper *connected_mapper=new QSignalMapper(this);
   connect(connected_mapper,SIGNAL(mapped(int)),this,SLOT(connectedData(int)));
-  QSignalMapper *closed_mapper=new QSignalMapper(this,"closed_mapper");
+  QSignalMapper *closed_mapper=new QSignalMapper(this);
   connect(closed_mapper,SIGNAL(mapped(int)),
 	  this,SLOT(connectionClosedData(int)));
   for(int i=0;i<2;i++) {
-      switch(sas_porttype[i]) {
-	  case RDMatrix::TtyPort:
-	      tty=new RDTty(rda->station()->name(),sas_port[i]);
-	      sas_device[i]=new RDTTYDevice();
-	      if(tty->active()) {
-		  sas_device[i]->setName(tty->port());
-		  sas_device[i]->setSpeed(tty->baudRate());
-		  sas_device[i]->setWordLength(tty->dataBits());
-		  sas_device[i]->setParity(tty->parity());
-		  sas_device[i]->open(QIODevice::Unbuffered|
-				      QIODevice::WriteOnly);
-	      }
-	      delete tty;
-	      
-	  case RDMatrix::TcpPort:
-	      sas_socket[i]=new Q3Socket(this,"sas_socket");
-	      connected_mapper->setMapping(sas_socket[i],i);
-	      connect(sas_socket[i],SIGNAL(connected()),
-		      connected_mapper,SLOT(map()));
-	      closed_mapper->setMapping(sas_socket[i],i);
-	      connect(sas_socket[i],SIGNAL(connectionClosed()),
-		      closed_mapper,SLOT(map()));
-	      switch(i) {
-		  case 0:
-		      connect(sas_socket[i],SIGNAL(error(int)),
-			      this,SLOT(error0Data(int)));
-		      break;
-
-		  case 1:
-		      connect(sas_socket[i],SIGNAL(error(int)),
-			      this,SLOT(error1Data(int)));
-		      break;
-	      }
-	      ipConnect(i);
-	      break;
-	      
-	  case RDMatrix::NoPort:
-	      break;
+    switch(sas_porttype[i]) {
+    case RDMatrix::TtyPort:
+      tty=new RDTty(rda->station()->name(),sas_port[i]);
+      sas_device[i]=new RDTTYDevice();
+      if(tty->active()) {
+	sas_device[i]->setName(tty->port());
+	sas_device[i]->setSpeed(tty->baudRate());
+	sas_device[i]->setWordLength(tty->dataBits());
+	sas_device[i]->setParity(tty->parity());
+	sas_device[i]->open(QIODevice::Unbuffered|
+			    QIODevice::WriteOnly);
       }
+      delete tty;
+	      
+    case RDMatrix::TcpPort:
+      sas_socket[i]=new QTcpSocket(this);
+      connected_mapper->setMapping(sas_socket[i],i);
+      connect(sas_socket[i],SIGNAL(connected()),
+	      connected_mapper,SLOT(map()));
+      closed_mapper->setMapping(sas_socket[i],i);
+      connect(sas_socket[i],SIGNAL(disconnected()),
+	      closed_mapper,SLOT(map()));
+      switch(i) {
+      case 0:
+	connect(sas_socket[i],SIGNAL(error(QAbstractSocket::SocketError)),
+		this,SLOT(error0Data(QAbstractSocket::SocketError)));
+	break;
+
+      case 1:
+	connect(sas_socket[i],SIGNAL(error(QAbstractSocket::SocketError)),
+		this,SLOT(error1Data(QAbstractSocket::SocketError)));
+	break;
+      }
+      ipConnect(i);
+      break;
+	      
+    case RDMatrix::NoPort:
+      break;
+    }
   }
 }
 
@@ -210,41 +210,42 @@ void Quartz1::connectionClosedData(int conn)
 }
 
 
-void Quartz1::errorData(int conn,int err)
+void Quartz1::errorData(int conn,QAbstractSocket::SocketError err)
 {
-  switch((Q3Socket::Error)err) {
-      case Q3Socket::ErrConnectionRefused:
-	rda->syslog(LOG_WARNING,
+  switch(err) {
+  case QAbstractSocket::ConnectionRefusedError:
+    rda->syslog(LOG_WARNING,
 	  "connection to Quartz1 device at %s:%d refused, attempting reconnect",
-		    (const char *)sas_ipaddress[conn].toString().toUtf8(),
-		    sas_ipport[conn]);
-	sas_reconnect_timer[conn]->start(QUARTZ1_RECONNECT_INTERVAL,true);
-	break;
+		(const char *)sas_ipaddress[conn].toString().toUtf8(),
+		sas_ipport[conn]);
+    sas_reconnect_timer[conn]->start(QUARTZ1_RECONNECT_INTERVAL,true);
+    break;
 
-      case Q3Socket::ErrHostNotFound:
-	rda->syslog(LOG_WARNING,
+  case QAbstractSocket::HostNotFoundError:
+    rda->syslog(LOG_WARNING,
 	       "error on connection to Quartz1 device at %s:%d: Host Not Found",
-		    (const char *)sas_ipaddress[conn].toString().toUtf8(),
-		    sas_ipport[conn]);
-	break;
+		(const char *)sas_ipaddress[conn].toString().toUtf8(),
+		sas_ipport[conn]);
+    break;
 
-      case Q3Socket::ErrSocketRead:
-	rda->syslog(LOG_WARNING,
-	    "error on connection to Quartz1 device at %s:%d: Socket Read Error",
-		    (const char *)sas_ipaddress[conn].toString().toUtf8(),
-		    sas_ipport[conn]);
-	break;
+  default:
+    rda->syslog(LOG_WARNING,
+		"error %d on connection to Quartz1 device at %s:%d",
+		err,
+		(const char *)sas_ipaddress[conn].toString().toUtf8(),
+		sas_ipport[conn]);
+    break;
   }
 }
 
 
-void Quartz1::error0Data(int err)
+void Quartz1::error0Data(QAbstractSocket::SocketError err)
 {
     errorData(0,err);
 }
 
 
-void Quartz1::error1Data(int err)
+void Quartz1::error1Data(QAbstractSocket::SocketError err)
 {
     errorData(1,err);
 }
