@@ -2,7 +2,7 @@
 //
 //   A QSocket object with connection-ID.
 //
-//   (C) Copyright 2002,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -22,9 +22,9 @@
 #define RDSOCKET_H
 
 #include <qobject.h>
-#include <q3socket.h>
+#include <qtcpsocket.h>
 
-class RDSocket : public Q3Socket
+class RDSocket : public QTcpSocket
 {
   Q_OBJECT
  public:
@@ -37,7 +37,7 @@ class RDSocket : public Q3Socket
   void delayedCloseFinishedID(int id);
   void readyReadID(int id);
   void bytesWrittenID(int nbytes,int id);
-  void errorID(int error,int id);
+  void errorID(QAbstractSocket::SocketError error,int id);
   
  private slots:
   void hostFoundData();
@@ -46,7 +46,7 @@ class RDSocket : public Q3Socket
   void delayedCloseFinishedData();
   void readyReadData();
   void bytesWrittenData(int nbytes);
-  void errorData(int error);
+  void errorData(QAbstractSocket::SocketError error);
   
  private:
   int id_num;

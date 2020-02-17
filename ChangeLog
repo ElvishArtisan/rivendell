@@ -19639,3 +19639,5 @@
 2020-02-17 Fred Gleason <fredg@paravelsystems.com>
 	* Removed Q3Socket dependency from the Broadcast Tools MLR>>Web
 	switcher driver.
+2020-02-17 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Q3Socket dependency from the vGuest switcher driver.
