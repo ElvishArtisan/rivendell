@@ -235,7 +235,7 @@ VGuest::VGuest(RDMatrix *matrix,QObject *parent)
 	vguest_device[i]->setSpeed(tty->baudRate());
 	vguest_device[i]->setWordLength(tty->dataBits());
 	vguest_device[i]->setParity(tty->parity());
-	vguest_device[i]->open(QIODevice::Unbuffered|QIODevice::ReadWrite);
+	vguest_device[i]->open(QIODevice::Unbuffered|QIODevice::WriteOnly);
       }
       delete tty;
     }

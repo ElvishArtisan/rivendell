@@ -19615,3 +19615,6 @@
 2020-02-17 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up the device access mode in the Unity 4000 switcher
 	driver.
+2020-02-17 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up the tty device access mode in the vGuest switcher
+	driver.
