@@ -19641,3 +19641,6 @@
 	switcher driver.
 2020-02-17 Fred Gleason <fredg@paravelsystems.com>
 	* Removed Q3Socket dependency from the vGuest switcher driver.
+2020-02-18 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in the implmenetation of the 'Set Serial Trap'
+	['SI'] RML that could cause deadlocks and intermittent operation.
