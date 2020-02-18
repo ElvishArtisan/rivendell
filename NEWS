@@ -1,7 +1,7 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v3.2.1int1 -- 7 February 2020
+v3.2.1int2 -- 18 February 2020
 
 Changes:
    MusicBrainz Integration. The CD rippers in rdlibrary(1) can now be

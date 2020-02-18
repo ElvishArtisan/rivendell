@@ -19644,3 +19644,5 @@
 2020-02-18 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in the implmenetation of the 'Set Serial Trap'
 	['SI'] RML that could cause deadlocks and intermittent operation.
+2020-02-18 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.2.1int2.
