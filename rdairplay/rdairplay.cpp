@@ -2,7 +2,7 @@
 //
 // The On Air Playout Utility for Rivendell.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -290,8 +290,6 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
     connect(air_log[i],SIGNAL(reloaded()),reload_mapper,SLOT(map()));
     rename_mapper->setMapping(air_log[i],i);
     connect(air_log[i],SIGNAL(renamed()),rename_mapper,SLOT(map()));
-    connect(air_log[i],SIGNAL(refreshStatusChanged(bool)),
-	    this,SLOT(refreshStatusChangedData(bool)));
     connect(air_log[i],SIGNAL(channelStarted(int,int,int,int)),
 	    this,SLOT(logChannelStartedData(int,int,int,int)));
     connect(air_log[i],SIGNAL(channelStopped(int,int,int,int)),
@@ -395,12 +393,12 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   //
   // Message Label
   //
-  air_message_label=new RDLabel(this);
+  air_message_label=new QLabel(this);
   air_message_label->setGeometry(sizeHint().width()-425,70,
 		MESSAGE_WIDGET_WIDTH,air_stereo_meter->sizeHint().height());
   air_message_label->setStyleSheet("background-color: "+
 				   QColor(LOGLINEBOX_BACKGROUND_COLOR).name());
-  air_message_label->setWordWrapEnabled(true);
+  air_message_label->setWordWrap(true);
   air_message_label->setLineWidth(1);
   air_message_label->setMidLineWidth(1);
   air_message_label->setFrameStyle(Q3Frame::Box|Q3Frame::Raised);
@@ -495,17 +493,6 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   air_copy_button->setFlashColor(AIR_FLASH_COLOR);
   air_copy_button->setFocusPolicy(Qt::NoFocus);
   connect(air_copy_button,SIGNAL(clicked()),this,SLOT(copyButtonData()));
-
-  //
-  // Refresh Indicator
-  //
-  air_refresh_label=new RDLabel(this);
-  air_refresh_label->setGeometry(390,sizeHint().height()-65,120,60);
-  air_refresh_label->setFont(bigButtonFont());
-  QPalette p=palette();
-  p.setColor(QColorGroup::Foreground,Qt::red);
-  air_refresh_label->setPalette(p);
-  air_refresh_label->setAlignment(Qt::AlignCenter);
 
   //
   // Meter Timer
@@ -1800,17 +1787,6 @@ void MainWidget::timeModeData(RDAirPlayConf::TimeMode mode)
   }
   air_stop_counter->setTimeMode(mode);
   air_post_counter->setTimeMode(mode);
-}
-
-
-void MainWidget::refreshStatusChangedData(bool active)
-{
-  if(active) {
-    air_refresh_label->setText(tr("LOG\nREFRESHING"));
-  }
-  else {
-    air_refresh_label->setText("");
-  }
 }
 
 

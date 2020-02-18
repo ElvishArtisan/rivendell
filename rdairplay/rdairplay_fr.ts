@@ -679,7 +679,7 @@ de sons</translation>
     <message>
         <source>LOG
 REFRESHING</source>
-        <translation>MISE A JOUR
+        <translation type="obsolete">MISE A JOUR
 DU LOG</translation>
     </message>
     <message>

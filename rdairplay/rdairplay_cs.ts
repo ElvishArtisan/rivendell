@@ -675,7 +675,7 @@ panel</translation>
     <message>
         <source>LOG
 REFRESHING</source>
-        <translation>ZÁPIS
+        <translation type="obsolete">ZÁPIS
 OBNOVEN</translation>
     </message>
     <message>
