@@ -2,7 +2,7 @@
 //
 // Cart slot label widget for RDCartSlot
 //
-//   (C) Copyright 2012-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2012-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -32,7 +32,6 @@
 
 #include <rdairplay_conf.h>
 #include <rdcartdrag.h>
-#include <rdlabel.h>
 #include <rdlog_line.h>
 #include <rdlog_event.h>
 #include <rdplaymeter.h>

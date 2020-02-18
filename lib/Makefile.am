@@ -147,7 +147,6 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdinstancelock.cpp rdinstancelock.h\
                         rd.h\
                         rdkernelgpio.cpp rdkernelgpio.h\
-                        rdlabel.cpp rdlabel.h\
                         rdlibrary_conf.cpp rdlibrary_conf.h\
                         rdlineedit.cpp rdlineedit.h\
                         rdlistselector.cpp rdlistselector.h\
@@ -293,7 +292,6 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdhotkeylist.cpp\
                           moc_rdimport_audio.cpp\
                           moc_rdkernelgpio.cpp\
-                          moc_rdlabel.cpp\
                           moc_rdlineedit.cpp\
                           moc_rdlist_groups.cpp\
                           moc_rdlist_logs.cpp\

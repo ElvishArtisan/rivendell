@@ -2,7 +2,7 @@
 //
 // On Air Playout Utility for Rivendell.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -186,11 +186,11 @@ LogLineBox::LogLineBox(RDAirPlayConf *conf,QWidget *parent)
   //
   // Marker Comment
   //
-  line_comment_label=new RDLabel(this);
+  line_comment_label=new QLabel(this);
   line_comment_label->setGeometry(5,18,sizeHint().width()-10,62);
   line_comment_label->setFont(line_font);
   line_comment_label->setAlignment(Qt::AlignTop|Qt::AlignLeft);
-  line_comment_label->setWordWrapEnabled(true);
+  line_comment_label->setWordWrap(true);
   line_comment_label->hide();
 
   //
