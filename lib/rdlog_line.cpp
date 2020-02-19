@@ -1619,7 +1619,12 @@ QString RDLogLine::resolveWildcards(QString pattern,int log_id)
   else {
     pattern.replace("%x",QString().sprintf("%d",log_id));
   }
-  pattern.replace("%y",QString().sprintf("%d",year().year()));
+  if(year().isValid()) {
+    pattern.replace("%y",QString().sprintf("%d",year().year()));
+  }
+  else {
+    pattern.replace("%y","");
+  }
   // %z Log Line Number
 
   return pattern;

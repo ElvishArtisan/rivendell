@@ -122,7 +122,10 @@ class Update(object):
             if isinstance(self.__fields['padUpdate'][stype][sfield],str):
                 string=string.replace('%'+wildcard,self.escape(self.__fields['padUpdate'][stype][sfield],esc))
             else:
-                string=string.replace('%'+wildcard,str(self.__fields['padUpdate'][stype][sfield]))
+                if self.__fields['padUpdate'][stype][sfield] is None:
+                    string=string.replace('%'+wildcard,'')
+                else :
+                    string=string.replace('%'+wildcard,str(self.__fields['padUpdate'][stype][sfield]))
         except TypeError:
             string=string.replace('%'+wildcard,'')
         except KeyError:

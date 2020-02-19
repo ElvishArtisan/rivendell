@@ -19653,3 +19653,7 @@
 	* Removed the 'RDLabel' widget.
 2020-02-19 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'Disconnect All Jack Ports' ['JZ'] RML.
+2020-02-19 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug with the '%y' metadata wildcard where garbage would
+	be returned if a valid year had not been set.
+	* Added a 'metadata_wildcard_test' harness.
