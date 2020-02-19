@@ -493,6 +493,57 @@ void MainObject::RunLocalMacros(RDMacro *rml_in)
 #endif  // JACK
     break;
       
+  case RDMacro::JZ:
+#ifdef JACK
+    if(rml->argQuantity()!=0) {
+      if(rml->echoRequested()) {
+	rml->acknowledge(false);
+	sendRml(rml);
+      }
+      return;
+    }
+    if(ripcd_jack_client!=NULL) {
+      const char **outputs=jack_get_ports(ripcd_jack_client,NULL,
+					JACK_DEFAULT_AUDIO_TYPE,
+					JackPortIsOutput);
+      if(outputs) {
+	int i=0;
+	while(outputs[i]!=0) {
+	  jack_port_t *oport=jack_port_by_name(ripcd_jack_client,outputs[i]);
+	  const char **inputs=
+	    jack_port_get_all_connections(ripcd_jack_client,oport);
+	  if(inputs) {
+	    int j=0;
+	    while(inputs[j]!=0) {
+	      if((err=jack_disconnect(ripcd_jack_client,outputs[i],inputs[j]))==0) {
+		rda->syslog(LOG_DEBUG,
+			    "executed JACK port disconnection \"%s %s\"",
+			    inputs[j],outputs[i]);
+	      }
+	      else {
+		rda->syslog(LOG_WARNING,
+			    "JACK port disconnection \"%s %s\" failed, err: %d",
+			    inputs[j],outputs[i],err);
+	      }
+	      j++;
+	    }
+	  }
+	  i++;
+	}
+      }
+      if(rml->echoRequested()) {
+	rml->acknowledge(true);
+	sendRml(rml);
+      }
+    }
+#else
+    if(rml->echoRequested()) {
+      rml->acknowledge(false);
+      sendRml(rml);
+    }
+#endif  // JACK
+    break;
+
   case RDMacro::LO:
     if(rml->argQuantity()>2) {
       if(rml->echoRequested()) {

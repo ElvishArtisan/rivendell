@@ -19651,3 +19651,5 @@
 	when updating the Label Widget.
 2020-02-18 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'RDLabel' widget.
+2020-02-19 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Disconnect All Jack Ports' ['JZ'] RML.
