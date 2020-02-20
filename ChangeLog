@@ -19573,3 +19573,5 @@
 	* Added a 'delete_test' test harness.
 2020-02-20 Fred Gleason <fredg@paravelsystems.com>
 	* Rebased 'RDUpload' to 'RDTransfer'.
+2020-02-20 Fred Gleason <fredg@paravelsystems.com>
+	* Rebased 'RDDownload' to 'RDTransfer'.
