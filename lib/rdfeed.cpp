@@ -736,7 +736,7 @@ unsigned RDFeed::postCut(RDUser *user,RDStation *station,
   unsigned cast_id=CreateCast(&destfile,length,cut->length());
   delete cut;
   cast=new RDPodcast(feed_config,cast_id);
-  upload=new RDUpload(this);
+  upload=new RDUpload(rda->config(),this);
   upload->setSourceFile(tmpfile);
   upload->setDestinationUrl(purgeUrl()+"/"+cast->audioFilename());
   switch((upload_err=upload->runUpload(purgeUsername(),purgePassword(),
@@ -855,7 +855,7 @@ unsigned RDFeed::postFile(RDStation *station,const QString &srcfile,Error *err,
 
   unsigned cast_id=CreateCast(&destfile,length,time_length);
   RDPodcast *cast=new RDPodcast(feed_config,cast_id);
-  upload=new RDUpload(this);
+  upload=new RDUpload(rda->config(),this);
   upload->setSourceFile(tmpfile);
   upload->setDestinationUrl(purgeUrl()+"/"+cast->audioFilename());
   switch((upload_err=upload->runUpload(purgeUsername(),purgePassword(),

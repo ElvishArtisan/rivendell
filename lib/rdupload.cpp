@@ -71,10 +71,22 @@ int UploadErrorCallback(CURL *curl,curl_infotype type,char *msg,size_t size,
 }
 
 
-RDUpload::RDUpload(QObject *parent)
-  : QObject(parent)
+RDUpload::RDUpload(RDConfig *c,QObject *parent)
+  : RDTransfer(c,parent)
 {
   conv_aborting=false;
+}
+
+
+QStringList RDUpload::supportedSchemes() const
+{
+  QStringList schemes;
+
+  schemes.push_back("file");
+  schemes.push_back("ftp");
+  schemes.push_back("sftp");
+
+  return schemes;
 }
 
 
@@ -108,6 +120,10 @@ RDUpload::ErrorCode RDUpload::runUpload(const QString &username,
   RDUpload::ErrorCode ret=RDUpload::ErrorOk;
   RDSystemUser *user=NULL;
   char userpwd[256];
+
+  if(!urlIsSupported(conv_dst_url)) {
+    return RDUpload::ErrorUnsupportedProtocol;
+  }
 
   //
   // Validate User for file: transfers

@@ -21,10 +21,11 @@
 #ifndef RDUPLOAD_H
 #define RDUPLOAD_H
 
-#include <qobject.h>
 #include <qurl.h>
 
-class RDUpload : public QObject
+#include <rdtransfer.h>
+
+class RDUpload : public RDTransfer
 {
   Q_OBJECT;
  public:
@@ -34,7 +35,8 @@ class RDUpload : public QObject
 		  ErrorUnspecified=8,ErrorInvalidUser=9,ErrorAborted=10,
 		  ErrorInvalidLogin=11,ErrorRemoteAccess=12,
 		  ErrorRemoteConnection=13};
-  RDUpload(QObject *parent=0);
+  RDUpload(RDConfig *c,QObject *parent=0);
+  QStringList supportedSchemes() const;
   void setSourceFile(const QString &filename);
   void setDestinationUrl(const QString &url);
   int totalSteps() const;

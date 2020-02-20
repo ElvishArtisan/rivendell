@@ -19571,3 +19571,5 @@
 	* Added 'file' support to 'RDDelete'.
 	* Refactored RSS generation to occur in 'RDFeed'.
 	* Added a 'delete_test' test harness.
+2020-02-20 Fred Gleason <fredg@paravelsystems.com>
+	* Rebased 'RDUpload' to 'RDTransfer'.

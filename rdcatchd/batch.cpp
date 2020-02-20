@@ -2,7 +2,7 @@
 //
 // Batch Routines for the Rivendell netcatcher daemon
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -314,7 +314,7 @@ void MainObject::RunUpload(CatchEvent *evt)
 	      (const char *)evt->tempName().toUtf8(),
 	      (const char *)evt->resolvedUrl().toUtf8(),
 	      evt->id());
-  RDUpload *conv=new RDUpload(this);
+  RDUpload *conv=new RDUpload(rda->config(),this);
   conv->setSourceFile(evt->tempName());
   conv->setDestinationUrl(evt->resolvedUrl());
   QString url_username=evt->urlUsername();
