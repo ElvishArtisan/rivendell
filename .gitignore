@@ -108,6 +108,7 @@ tests/audio_peaks_test
 tests/datedecode_test
 tests/dateparse_test
 tests/db_charset_test
+tests/delete_test
 tests/download_test
 tests/getpids_test
 tests/log_unlink_test

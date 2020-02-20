@@ -63,6 +63,8 @@ class EditFeed : public RDDialog
   QLineEdit *feed_keyname_edit;
   QLabel *feed_is_superfeed_label;
   QPushButton *feed_is_superfeed_button;
+  QCheckBox *feed_audience_metrics_check;
+  QLabel *feed_audience_metrics_label;
   QComboBox *feed_is_superfeed_box;
   QLineEdit *feed_channel_title_edit;
   QTextEdit *feed_channel_description_edit;

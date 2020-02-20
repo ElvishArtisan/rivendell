@@ -224,7 +224,8 @@ void ListCasts::addCartData()
   unsigned cast_id=list_feed->postCut(rda->user(),rda->station(),cutname,&err,
 				      rda->config()->logXloadDebugData(),rda->config());
   if(err!=RDFeed::ErrorOk) {
-    QMessageBox::warning(this,tr("Posting Error"),RDFeed::errorString(err));
+    QMessageBox::warning(this,"RDCastManager - "+tr("Posting Error"),
+			 RDFeed::errorString(err));
     return;
   }
   EditCast *edit_cast=new EditCast(cast_id,this);
@@ -249,7 +250,8 @@ void ListCasts::addFileData()
   unsigned cast_id=list_feed->postFile(rda->station(),srcfile,&err,
 				       rda->config()->logXloadDebugData(),rda->config());
   if(err!=RDFeed::ErrorOk) {
-    QMessageBox::warning(this,tr("Posting Error"),RDFeed::errorString(err));
+    QMessageBox::warning(this,"RDCastManager - "+tr("Posting Error"),
+			 RDFeed::errorString(err));
     return;
   }
   EditCast *edit_cast=new EditCast(cast_id,this);
@@ -287,7 +289,7 @@ void ListCasts::deleteData()
   if(item==NULL) {
     return;
   }
-  if(QMessageBox::question(this,tr("Delete Podcast"),
+  if(QMessageBox::question(this,"RDCastManager - "+tr("Delete Podcast"),
 			   tr("Are you sure you want to delete this podcast?"),
 			   QMessageBox::Yes,QMessageBox::No)==
      QMessageBox::No) {
@@ -304,7 +306,7 @@ void ListCasts::deleteData()
   qApp->processEvents();
   RDPodcast *cast=new RDPodcast(rda->config(),item->id());
   if(!cast->removeAudio(list_feed,&err_text,rda->config()->logXloadDebugData())) {
-    if(QMessageBox::warning(this,tr("Remote Error"),
+    if(QMessageBox::warning(this,"RDCastManager - "+tr("Remote Error"),
 			    tr("Unable to delete remote audio!\n")+
 			    tr("The server said: \"")+err_text+"\".\n\n"+
 			    tr("Continue deleting cast?"),
@@ -324,6 +326,13 @@ void ListCasts::deleteData()
   q=new RDSqlQuery(sql);
   delete q;
 
+  if(!list_feed->audienceMetrics()) {
+    if(!list_feed->postXml(&err_text)) {
+      QMessageBox::warning(this,"RDCastManager - "+tr("Remote Error"),
+			    tr("Unable to update remote XML data!\n")+
+			   tr("The server said: \"")+err_text+"\".");
+    }
+  }
   RDDeleteCastCount(list_feed_id,item->id());
 
   pd->reset();

@@ -40,6 +40,16 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
   // NEW SCHEMA REVERSIONS GO HERE...
 
+
+  //
+  // Revert 316
+  //
+  if((cur_schema==316)&&(set_schema<cur_schema)) {
+    DropColumn("FEEDS","AUDIENCE_METRICS");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
   //
   // Revert 315
   //

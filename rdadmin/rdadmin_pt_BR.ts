@@ -1504,6 +1504,10 @@ Do you still want to enable redireciton?</source>
 Feeds</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Collect Audience Metrics</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditFeedPerms</name>
@@ -4855,6 +4859,14 @@ Você ainda quer Deletar?</translation>
     </message>
     <message>
         <source>Superfeed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Failed to delete remote feed XML.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

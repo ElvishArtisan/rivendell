@@ -409,6 +409,8 @@ void EditCast::reportData()
 
 void EditCast::okData()
 {
+  QString err_msg;
+
   cast_cast->setItemTitle(cast_item_title_edit->text());
   cast_cast->setItemAuthor(cast_item_author_edit->text());
   cast_cast->setItemCategory(cast_item_category_edit->text());
@@ -445,6 +447,9 @@ void EditCast::okData()
   cast_feed->
     setLastBuildDateTime(RDLocalToUtc(QDateTime(QDate::currentDate(),
 						QTime::currentTime())));
+
+  if(!cast_feed->postXml(&err_msg)) {
+  }
   done(0);
 }
 

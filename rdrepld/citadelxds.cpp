@@ -24,6 +24,8 @@
 #include <syslog.h>
 #include <errno.h>
 
+#include <q3url.h>
+
 #include <qfileinfo.h>
 #include <qdatetime.h>
 

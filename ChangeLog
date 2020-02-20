@@ -19560,3 +19560,14 @@
 2020-02-11 Fred Gleason <fredg@paravelsys tems.com>
 	* Added a check to the 'Add RSS Feed' dialog in rdadmin(1) to
 	prevent creation of feeds with a blank name.
+2020-02-20 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'FEEDS.AUDIENCE_METRICS' field to the database.
+	* Incremented the database version to 316.
+	* Added a 'Collect Audience Metrics' checkbox to the 'Feed'
+	dialog in rdadmin(1).
+	* Added an 'RDTransfer' base class.
+	* Rebased 'RDDelete' to 'RDTransfer'.
+	* Added 'sftp' support to 'RDDelete'.
+	* Added 'file' support to 'RDDelete'.
+	* Refactored RSS generation to occur in 'RDFeed'.
+	* Added a 'delete_test' test harness.

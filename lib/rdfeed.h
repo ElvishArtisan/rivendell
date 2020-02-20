@@ -23,10 +23,12 @@
 
 #include <qobject.h>
 
+#include <rdapplication.h>
 #include <rdconfig.h>
-#include <rduser.h>
-#include <rdstation.h>
 #include <rdsettings.h>
+#include <rdstation.h>
+#include <rduser.h>
+#include <rdweb.h>
 
 #define RDFEED_TOTAL_POST_STEPS 4
 
@@ -44,6 +46,8 @@ class RDFeed : public QObject
   bool exists() const;
   bool isSuperfeed() const;
   void setIsSuperfeed(bool state) const;
+  bool audienceMetrics() const;
+  void setAudienceMetrics(bool state);
   QString channelTitle() const;
   void setChannelTitle(const QString &str) const;
   QString channelDescription() const;
@@ -74,6 +78,7 @@ class RDFeed : public QObject
   void setChannelXml(const QString &str);
   QString itemXml() const;
   void setItemXml(const QString &str);
+  QString feedUrl() const;
   bool castOrder() const;
   void setCastOrder(bool state) const;
   int maxShelfLife() const;
@@ -108,12 +113,15 @@ class RDFeed : public QObject
   void setMediaLinkMode(RDFeed::MediaLinkMode mode) const;
   QString audioUrl(RDFeed::MediaLinkMode mode,const QString &cgi_hostname,
 		   unsigned cast_id);
+  bool postXml(QString *err_msg);
+  bool deleteXml(QString *err_msg);
   unsigned postCut(RDUser *user,RDStation *station,
 		   const QString &cutname,Error *err,bool log_debug,
 		   RDConfig *config);
   unsigned postFile(RDStation *station,const QString &srcfile,Error *err,
 		    bool log_debug,RDConfig *config);
   int totalPostSteps() const;
+  QString rssXml(QString *err_msg,bool *ok=NULL);
   static unsigned create(const QString &keyname,bool enable_users,
 			 QString *err_msg,const QString &exemplar="");
   static QString errorString(RDFeed::Error err);
@@ -123,6 +131,8 @@ class RDFeed : public QObject
 
  private:
   unsigned CreateCast(QString *filename,int bytes,int msecs) const;
+  QString ResolveChannelWildcards(RDSqlQuery *chan_q);
+  QString ResolveItemWildcards(RDSqlQuery *item_q,RDSqlQuery *chan_q);
   QString GetTempFilename() const;
   void SetRow(const QString &param,int value) const;
   void SetRow(const QString &param,const QString &value) const;
@@ -130,7 +140,12 @@ class RDFeed : public QObject
               const QString &format) const;
   QString feed_keyname;
   unsigned feed_id;
+  QString feed_cgi_hostname;
   RDConfig *feed_config;
+  QByteArray feed_xml;
+  int feed_xml_ptr;
+  friend size_t __RDFeed_Readfunction_Callback(char *buffer,size_t size,
+					       size_t nitems,void *userdata);
 };
 
 

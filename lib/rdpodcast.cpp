@@ -25,10 +25,11 @@
 #include <qurl.h>
 
 #include "rdapplication.h"
-#include "rddb.h"
-#include "rdpodcast.h"
 #include "rdconf.h"
+#include "rddb.h"
+#include "rddelete.h"
 #include "rdescape_string.h"
+#include "rdpodcast.h"
 #include "rdurl.h"
 
 //
@@ -300,79 +301,21 @@ void RDPodcast::setStatus(RDPodcast::Status status)
 
 bool RDPodcast::removeAudio(RDFeed *feed,QString *err_text,bool log_debug) const
 {
-  CURL *curl=NULL;
-  struct curl_slist *cmds=NULL;
-  CURLcode err;
-  QUrl *url;
-  bool ret=true;
-  QString currentdir;
-  char urlstr[1024];
-  char userpwd[256];
-
-  if((curl=curl_easy_init())==NULL) {
-    rda->syslog(LOG_ERR,"unable to initialize curl library\n");
+  RDDelete::ErrorCode conv_err;
+  QUrl url(feed->purgeUrl()+"/"+audioFilename());
+  RDDelete *conv=new RDDelete(rda->config());
+  if(!conv->urlIsSupported(url)) {
+    *err_text="unsupported url scheme";
+    delete conv;
     return false;
   }
-  url=new QUrl(feed->purgeUrl());
-  strncpy(urlstr,(const char *)(url->protocol()+"://"+url->host()+"/").utf8(),
-	  1024);
-  curl_easy_setopt(curl,CURLOPT_URL,urlstr);
-  strncpy(userpwd,(feed->purgeUsername()+":"+feed->purgePassword()).utf8(),256);
-  curl_easy_setopt(curl,CURLOPT_USERPWD,userpwd);
-  curl_easy_setopt(curl,CURLOPT_HTTPAUTH,CURLAUTH_ANY);
-  curl_easy_setopt(curl,CURLOPT_USERAGENT,
-		   (const char *)podcast_config->userAgent().utf8());
-  if(log_debug) {
-    curl_easy_setopt(curl,CURLOPT_VERBOSE,1);
-    curl_easy_setopt(curl,CURLOPT_DEBUGFUNCTION,PodcastErrorCallback);
-  }
-  if(url->scheme()=="ftp") {
-    currentdir="";
-    if(!url->dirPath().right(url->dirPath().length()-1).isEmpty()) {
-      currentdir=url->dirPath().right(url->dirPath().length()-1)+"/";
-    }
-    if(!url->fileName().isEmpty()) {
-      currentdir+=url->fileName()+"/";
-    }
-    if(!currentdir.isEmpty()) {
-      cmds=curl_slist_append(cmds,QString().sprintf("cwd %s",
-						    (const char *)currentdir));
-    }
-    cmds=curl_slist_append(cmds, QString().sprintf("dele %s",
-						   (const char *)audioFilename()));
-  }
-  if(url->scheme()=="sftp") {
-    cmds=curl_slist_append(cmds,("rm "+url->path()+"/"+audioFilename()).toUtf8());
-  }
-  if(cmds==NULL) {
-    if(err_text!=NULL) {
-      *err_text="\""+url->scheme()+"\" scheme does not support remote deletion";
-      delete url;
-      curl_easy_cleanup(curl);
-      return false;
-    }
-  }
-  curl_easy_setopt(curl,CURLOPT_QUOTE,cmds);
-  switch((err=curl_easy_perform(curl))) {
-  case CURLE_OK:
-#ifdef CURLE_QUOTE_ERROR
-  case CURLE_QUOTE_ERROR:  // In case the file is already gone
-#endif  // CURLE_QUOTE_ERROR
-    ret=true;
-    break;
+  conv->setTargetUrl(url);
+  conv_err=conv->runDelete(feed->purgeUsername(),feed->purgePassword(),
+			   rda->config()->logXloadDebugData());
+  *err_text=RDDelete::errorText(conv_err);
+  delete conv;
 
-  default:
-    ret=false;
-    break;
-  }
-  if(err_text!=NULL) {
-    *err_text=curl_easy_strerror(err);
-  }
-  curl_slist_free_all(cmds);
-  curl_easy_cleanup(curl);
-  delete url;
-    
-  return ret;
+  return conv_err==RDDelete::ErrorOk;
 }
 
 

@@ -1,8 +1,8 @@
-// dbversion.h
+// delete_test.h
 //
-// The Current Database Schema Version for Rivendell
+// Test Rivendell remote file deletion routines. 
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,13 +18,26 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef DBVERSION_H
-#define DBVERSION_H
+#ifndef DELETE_TEST_H
+#define DELETE_TEST_H
 
-/*
- * Current Database Version
- */
-#define RD_VERSION_DATABASE 316
+#include <list>
+
+#include <qobject.h>
+#include <qurl.h>
+
+#define DELETE_TEST_USAGE "[options]\n\nTest the Rivendell deletion routines\n\nOptions are:\n--username=<username>\n\n--password=<password>\n\n--target-url=<url>\n\n"
+
+class MainObject : public QObject
+{
+ public:
+  MainObject(QObject *parent=0);
+
+ private:
+  QString username;
+  QString password;
+  QUrl target_url;
+};
 
 
-#endif  // DBVERSION_H
+#endif  // DELETE_TEST_H

@@ -227,6 +227,11 @@ Car&amp;t/Cut</source>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Unable to update remote XML data!
+</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MainWidget</name>

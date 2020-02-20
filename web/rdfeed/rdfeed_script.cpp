@@ -2,7 +2,7 @@
 //
 // An RSS Feed Generator for Rivendell.
 //
-//   (C) Copyright 2002-2007,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -48,7 +48,6 @@ MainObject::MainObject(QObject *parent)
   :QObject(parent)
 {
   QString err_msg;
-
   char keyname[10];
   int cast_id=-1;
   bool count;
@@ -143,35 +142,13 @@ MainObject::MainObject(QObject *parent)
 
 void MainObject::ServeRss(const char *keyname,bool count)
 {
-  QString sql;
-  RDSqlQuery *q;
-  RDSqlQuery *q1;
+  QString err_msg;
+  bool ok=false;
 
-  sql=QString("select ")+
-    "CHANNEL_TITLE,"+        // 00
-    "CHANNEL_DESCRIPTION,"+  // 01
-    "CHANNEL_CATEGORY,"+     // 02
-    "CHANNEL_LINK,"+         // 03
-    "CHANNEL_COPYRIGHT,"+    // 04
-    "CHANNEL_WEBMASTER,"+    // 05
-    "CHANNEL_LANGUAGE,"+     // 06
-    "LAST_BUILD_DATETIME,"+  // 07
-    "ORIGIN_DATETIME,"+      // 08
-    "HEADER_XML,"+           // 09
-    "CHANNEL_XML,"+          // 10
-    "ITEM_XML,"+             // 11
-    "BASE_URL,"+             // 12
-    "ID,"+                   // 13
-    "UPLOAD_EXTENSION,"+     // 14
-    "CAST_ORDER,"+           // 15
-    "REDIRECT_PATH,"+        // 16
-    "BASE_PREAMBLE "+        // 17
-    "from FEEDS where "+
-    "KEY_NAME=\""+RDEscapeString(keyname)+"\"";
-  q=new RDSqlQuery(sql);
-  if(!q->first()) {
+  RDFeed *feed=new RDFeed(keyname,rda->config(),this);
+  if(!feed->exists()) {
     printf("Content-type: text/html\n\n");
-    printf("rdfeed: no feed matches the supplied key name\n");
+    printf("no feed matches the supplied key name\n");
     exit(0);
   }
 
@@ -185,9 +162,8 @@ void MainObject::ServeRss(const char *keyname,bool count)
   //
   // Redirect if necessary
   //
-  if(!q->value(16).toString().isEmpty()) {
-    Redirect(q->value(16).toString());
-    delete q;
+  if(!feed->redirectPath().isEmpty()) {
+    Redirect(feed->redirectPath());
     exit(0);
   }
 
@@ -195,53 +171,17 @@ void MainObject::ServeRss(const char *keyname,bool count)
   // Generate CGI Header
   //
   printf("Content-type: application/rss+xml; charset=UTF-8\n\n");
-  
-  //
-  // Render Header XML
-  //
-  printf("%s\n",(const char *)q->value(9).toString().utf8());
 
   //
-  // Render Channel XML
+  // Generate the XML
   //
-  printf("<channel>\n");
-  printf("%s\n",(const char *)ResolveChannelWildcards(q).utf8());
-
-  //
-  // Render Item XML
-  //
-  sql=QString("select ")+
-    "ITEM_TITLE,"+          // 00
-    "ITEM_DESCRIPTION,"+    // 01
-    "ITEM_CATEGORY,"+       // 02
-    "ITEM_LINK,"+           // 03
-    "ITEM_AUTHOR,"+         // 04
-    "ITEM_SOURCE_TEXT,"+    // 05
-    "ITEM_SOURCE_URL,"+     // 06
-    "ITEM_COMMENTS,"+       // 07
-    "AUDIO_FILENAME,"+      // 08
-    "AUDIO_LENGTH,"+        // 09
-    "AUDIO_TIME,"+          // 10
-    "EFFECTIVE_DATETIME,"+  // 11
-    "ID "+                  // 12
-    "from PODCASTS where "+
-    QString().sprintf("(FEED_ID=%d)&&",q->value(13).toUInt())+
-    QString().sprintf("(STATUS=%d) ",RDPodcast::StatusActive)+
-    "order by ORIGIN_DATETIME";
-  if(q->value(15).toString()=="N") {
-    sql+=" desc";
+  QString xml=feed->rssXml(&err_msg,&ok);
+  if(!ok) {
+    printf("Content-type: text/html\n\n");
+    printf("%s\n",(const char *)err_msg.toUtf8());
+    exit(0);
   }
-  q1=new RDSqlQuery(sql);
-  while(q1->next()) {
-    printf("<item>\n");
-    printf("%s\n",(const char *)ResolveItemWildcards(keyname,q1,q).utf8());
-    printf("</item>\n");
-  }
-  delete q1;
-
-  printf("</channel>\n");
-  printf("</rss>\n");
-  delete q;
+  printf("%s\r\n",(const char *)xml.toUtf8());
 
   exit(0);
 }
@@ -273,63 +213,6 @@ void MainObject::ServeLink(const char *keyname,int cast_id,bool count)
   delete q;
 
   exit(0);
-}
-
-
-QString MainObject::ResolveChannelWildcards(RDSqlQuery *chan_q)
-{
-  QString ret=chan_q->value(10).toString();
-  //  ret.replace("%TITLE%",chan_q->value(0).toString());
-  ret.replace("%TITLE%",RDXmlEscape(chan_q->value(0).toString()));
-  ret.replace("%DESCRIPTION%",RDXmlEscape(chan_q->value(1).toString()));
-  ret.replace("%CATEGORY%",RDXmlEscape(chan_q->value(2).toString()));
-  ret.replace("%LINK%",RDXmlEscape(chan_q->value(3).toString()));
-  ret.replace("%COPYRIGHT%",RDXmlEscape(chan_q->value(4).toString()));
-  ret.replace("%WEBMASTER%",RDXmlEscape(chan_q->value(5).toString()));
-  ret.replace("%LANGUAGE%",RDXmlEscape(chan_q->value(6).toString()));
-  ret.replace("%BUILD_DATE%",chan_q->value(7).toDateTime().
-	      toString("ddd, d MMM yyyy hh:mm:ss ")+"GMT");
-  ret.replace("%PUBLISH_DATE%",chan_q->value(8).toDateTime().
-	      toString("ddd, d MMM yyyy hh:mm:ss ")+"GMT");
-  ret.replace("%GENERATOR%",QString("Rivendell ")+VERSION);
-
-  return ret;
-}
-
-
-QString MainObject::ResolveItemWildcards(const QString &keyname,
-					 RDSqlQuery *item_q,RDSqlQuery *chan_q)
-{
-  RDFeed *feed=new RDFeed(keyname,rda->config());
-  QString ret=chan_q->value(11).toString();
-  ret.replace("%ITEM_TITLE%",RDXmlEscape(item_q->value(0).toString()));
-  ret.replace("%ITEM_DESCRIPTION%",
-	      RDXmlEscape(item_q->value(1).toString()));
-  ret.replace("%ITEM_CATEGORY%",
-	      RDXmlEscape(item_q->value(2).toString()));
-  ret.replace("%ITEM_LINK%",RDXmlEscape(item_q->value(3).toString()));
-  ret.replace("%ITEM_AUTHOR%",RDXmlEscape(item_q->value(4).toString()));
-  ret.replace("%ITEM_SOURCE_TEXT%",
-	      RDXmlEscape(item_q->value(5).toString()));
-  ret.replace("%ITEM_SOURCE_URL%",
-	      RDXmlEscape(item_q->value(6).toString()));
-  ret.replace("%ITEM_COMMENTS%",
-	      RDXmlEscape(item_q->value(7).toString()));
-  ret.replace("%ITEM_AUDIO_URL%",
-	      (const char *)RDXmlEscape(feed->
-	        audioUrl(RDFeed::LinkCounted,server_name,
-			 item_q->value(12).toUInt())));
-  ret.replace("%ITEM_AUDIO_LENGTH%",item_q->value(9).toString());
-  ret.replace("%ITEM_AUDIO_TIME%",
-	      RDGetTimeLength(item_q->value(10).toInt(),false,false));
-  ret.replace("%ITEM_PUBLISH_DATE%",item_q->value(11).toDateTime().
-	      toString("ddd, d MMM yyyy hh:mm:ss ")+"GMT");
-  ret.replace("%ITEM_GUID%",RDPodcast::guid(chan_q->value(12).toString(),
-					    item_q->value(8).toString(),
-					    chan_q->value(11).toUInt(),
-					    item_q->value(12).toUInt()));
-  delete feed;
-  return ret;
 }
 
 

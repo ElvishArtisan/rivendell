@@ -1640,6 +1640,10 @@ al URL especificado.
 Feeds</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Collect Audience Metrics</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditFeedPerms</name>
@@ -5000,6 +5004,14 @@ Do you still want to delete it?</source>
     </message>
     <message>
         <source>Superfeed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Failed to delete remote feed XML.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -9926,6 +9926,20 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<316)&&(set_schema>cur_schema)) {
+    sql=QString("alter table FEEDS add column ")+
+      "AUDIENCE_METRICS enum('N','Y') default 'N' after IS_SUPERFEED";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("update FEEDS set AUDIENCE_METRICS='Y'");
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
 
 
   // NEW SCHEMA UPDATES GO HERE...

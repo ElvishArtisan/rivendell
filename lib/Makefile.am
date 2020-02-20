@@ -226,6 +226,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdtimeengine.cpp rdtimeengine.h\
                         rdtimeevent.cpp rdtimeevent.h\
                         rdtransportbutton.cpp rdtransportbutton.h\
+                        rdtransfer.cpp rdtransfer.h\
                         rdtrimaudio.cpp rdtrimaudio.h\
                         rdtty.cpp rdtty.h\
                         rdttydevice.cpp rdttydevice.h\
@@ -331,6 +332,7 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdsvc.cpp\
                           moc_rdtimeedit.cpp\
                           moc_rdtimeengine.cpp\
+                          moc_rdtransfer.cpp\
                           moc_rdtransportbutton.cpp\
                           moc_rdtrimaudio.cpp\
                           moc_rdttydevice.cpp\

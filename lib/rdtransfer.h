@@ -1,8 +1,8 @@
-// dbversion.h
+// rdtransfer.h
 //
-// The Current Database Schema Version for Rivendell
+// Abstract base class for Rivendell remote data tranfer methods
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,13 +18,30 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef DBVERSION_H
-#define DBVERSION_H
+#ifndef RDTRANSFER_H
+#define RDTRANSFER_H
 
-/*
- * Current Database Version
- */
-#define RD_VERSION_DATABASE 316
+#include <qobject.h>
+#include <qstringlist.h>
+#include <qurl.h>
+
+#include <rdconfig.h>
+
+class RDTransfer : public QObject
+{
+  Q_OBJECT;
+ public:
+  RDTransfer(RDConfig *c,QObject *parent=0);
+  virtual QStringList supportedSchemes() const=0;
+  bool urlIsSupported(const QString &url);
+  bool urlIsSupported(const QUrl &url);
+
+ protected:
+  RDConfig *config() const;
+
+ private:
+  RDConfig *xfer_config;
+};
 
 
-#endif  // DBVERSION_H
+#endif  // RDTRANSFER_H

@@ -238,6 +238,17 @@ void ListFeeds::deleteData()
   delete q;
 
   //
+  // Delete Remote XML
+  //
+  if(!feed->audienceMetrics()) {
+    if(!feed->deleteXml(&errs)) {
+      QMessageBox::warning(this,"RDAdmin - "+tr("Error"),
+			   tr("Failed to delete remote feed XML.")+
+			   "["+errs+"].");
+    }
+  }
+
+  //
   // Delete Cast Entries
   //
   sql=QString().sprintf("delete from PODCASTS where FEED_ID=%d",item->id());
