@@ -19253,3 +19253,5 @@
 2020-02-21 Fred Gleason <fredg@paravelsystems.com>
 	* Added a syslog message for each CIC update in the 'pypad_xds.py'
 	script.
+2020-02-21 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to v3.2.0fix0.
