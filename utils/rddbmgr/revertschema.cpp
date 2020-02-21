@@ -42,6 +42,15 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
 
   //
+  // Revert 317
+  //
+  if((cur_schema==317)&&(set_schema<cur_schema)) {
+    DropColumn("USERS","EMAIL_ADDRESS");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 316
   //
   if((cur_schema==316)&&(set_schema<cur_schema)) {

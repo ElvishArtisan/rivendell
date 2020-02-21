@@ -19578,3 +19578,11 @@
 2020-02-20 Fred Gleason <fredg@paravelsystems.com>
 	* Updated the URL scheme check code in the 'Edit Feed' dialog
 	in rdadmin(1).
+2020-02-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'USERS.EMAIL_ADDRESS' field to the database.
+	* Added 'RDUser::emailAddress()', 'RDUser::setEmaiAddress()' and
+	'RDUser::emailContact()' methods.
+	* Added 'RDUser::emailIsValid()' and 'RDUser::emailContact()'
+	static methods.
+	* Added logic to rdcastmanager(1) to insert the author's e-mail
+	contact automatically when posting a new episode.

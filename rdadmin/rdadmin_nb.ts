@@ -4280,6 +4280,10 @@ Permissions</source>
         <source>Allow &amp;WebGet Login</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>E-Mail Address</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditUserPerms</name>

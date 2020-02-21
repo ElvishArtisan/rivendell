@@ -1197,11 +1197,22 @@ unsigned RDFeed::CreateCast(QString *filename,int bytes,int msecs) const
   RDSqlQuery *q;
   RDSqlQuery *q1;
   unsigned cast_id=0;
-
+  /*
   sql=QString().sprintf("select CHANNEL_TITLE,CHANNEL_DESCRIPTION,\
                          CHANNEL_CATEGORY,CHANNEL_LINK,MAX_SHELF_LIFE,\
                          UPLOAD_FORMAT,UPLOAD_EXTENSION from FEEDS \
                          where ID=%u",feed_id);
+  */
+  sql=QString("select ")+
+    "CHANNEL_TITLE,"+        // 00
+    "CHANNEL_DESCRIPTION,"+  // 01
+    "CHANNEL_CATEGORY,"+     // 02
+    "CHANNEL_LINK,"+         // 03
+    "MAX_SHELF_LIFE,"+       // 04
+    "UPLOAD_FORMAT,"+        // 05
+    "UPLOAD_EXTENSION "+     // 06
+    "from FEEDS where "+
+    QString().sprintf("ID=%u",feed_id);
   q=new RDSqlQuery(sql);
   if(!q->first()) {
     delete q;
@@ -1218,6 +1229,7 @@ unsigned RDFeed::CreateCast(QString *filename,int bytes,int msecs) const
     "ITEM_CATEGORY=\""+RDEscapeString(q->value(2).toString())+"\","+
     "ITEM_LINK=\""+RDEscapeString(q->value(3).toString())+"\","+
     QString().sprintf("SHELF_LIFE=%d,",q->value(4).toInt())+
+    "ITEM_AUTHOR=\""+RDEscapeString(rda->user()->emailContact())+"\","+
     "EFFECTIVE_DATETIME=UTC_TIMESTAMP(),"+
     "ORIGIN_DATETIME=UTC_TIMESTAMP()";
   q1=new RDSqlQuery(sql);
