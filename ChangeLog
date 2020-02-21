@@ -19250,3 +19250,6 @@
 	whitespace to be generated in the 'EXT_DATA', 'EXT_EVENT',
 	'EXT_ANNC_TYPE' and 'EXT_CART_NAME' log fields when importing
 	from a CounterPoint format log.
+2020-02-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added a syslog message for each CIC update in the 'pypad_xds.py'
+	script.
