@@ -46,7 +46,6 @@ class EditFeed : public RDDialog
  private slots:
   void isSuperfeedChangedData(int n);
   void selectSubfeedsData();
-  void purgeUrlChangedData(const QString &str);
   void purgeUsernameChangedData(const QString &username);
   void setFormatData();
   void normalizeCheckData(bool state);

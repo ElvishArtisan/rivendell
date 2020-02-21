@@ -19575,3 +19575,6 @@
 	* Rebased 'RDUpload' to 'RDTransfer'.
 2020-02-20 Fred Gleason <fredg@paravelsystems.com>
 	* Rebased 'RDDownload' to 'RDTransfer'.
+2020-02-20 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the URL scheme check code in the 'Edit Feed' dialog
+	in rdadmin(1).

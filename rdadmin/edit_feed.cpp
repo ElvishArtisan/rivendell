@@ -28,7 +28,9 @@
 #include <qurl.h>
 
 #include <rdapplication.h>
+#include <rddelete.h>
 #include <rdexport_settings_dialog.h>
+#include <rdupload.h>
 
 #include "edit_feed.h"
 #include "edit_superfeed.h"
@@ -159,8 +161,6 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   //
   feed_purge_url_edit=new QLineEdit(this);
   feed_purge_url_edit->setMaxLength(255);
-  connect(feed_purge_url_edit,SIGNAL(textChanged(const QString &)),
-	  this,SLOT(purgeUrlChangedData(const QString &)));
   feed_purge_url_label=
     new QLabel(feed_purge_url_edit,tr("Audio Upload URL:"),this);
   feed_purge_url_label->setFont(labelFont());
@@ -522,23 +522,6 @@ void EditFeed::selectSubfeedsData()
 }
 
 
-void EditFeed::purgeUrlChangedData(const QString &str)
-{
-  QUrl url(str);
-  QString protocol=url.protocol();
-  if(((protocol=="ftp")||(protocol=="sftp"))&&
-     (!feed_redirect_check->isChecked())) {
-    feed_purge_username_label->setEnabled(true);
-    feed_purge_username_edit->setEnabled(true);
-  }
-  else {
-    feed_purge_username_label->setDisabled(true);
-    feed_purge_username_edit->setDisabled(true);
-  }
-  purgeUsernameChangedData(feed_purge_username_edit->text());
-}
-
-
 void EditFeed::purgeUsernameChangedData(const QString &username)
 {
   feed_purge_password_label->
@@ -586,6 +569,18 @@ void EditFeed::redirectToggledData(bool state)
 
 void EditFeed::okData()
 {
+  RDDelete *d=new RDDelete(rda->config(),this);
+  RDUpload *u=new RDUpload(rda->config(),this);
+  if((!d->urlIsSupported(feed_purge_url_edit->text()))||
+     (!u->urlIsSupported(feed_purge_url_edit->text()))) {
+    QMessageBox::warning(this,"RDAdmin - "+tr("Error"),
+			 tr("Audio Upload URL has unsupported scheme!"));
+    delete d;
+    delete u;
+    return;
+  }
+  delete d;
+  delete u;
   if(feed_redirect_check->isChecked()) {
     QUrl url(feed_redirect_url_edit->text());
     if(url.isValid()&&(!url.isRelative()&&(!url.host().isEmpty()))) {

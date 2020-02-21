@@ -1641,6 +1641,10 @@ Feeds</source>
         <source>Collect Audience Metrics</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Audio Upload URL has unsupported scheme!</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditFeedPerms</name>
