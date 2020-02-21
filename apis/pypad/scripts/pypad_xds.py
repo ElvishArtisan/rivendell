@@ -25,6 +25,7 @@ import socket
 import configparser
 import serial
 import time
+import syslog
 import pypad
 
 #
@@ -77,6 +78,7 @@ def ProcessPad(update):
         if update.shouldBeProcessed(section) and update.hasPadType(pypad.TYPE_NOW) and update.hasService() and (last_updates[update.machine()] != update.startDateTimeString(pypad.TYPE_NOW)):
             last_updates[update.machine()]=update.startDateTimeString(pypad.TYPE_NOW)
             packet='0:'+update.serviceProgramCode()+':'+update.config().get(section,'IsciPrefix')+FilterField(update.padField(pypad.TYPE_NOW,pypad.FIELD_EXTERNAL_EVENT_ID))+':*'
+            update.syslog(syslog.LOG_INFO,'sending CIC update "'+packet+'"')
             reps=range(1)
             if(update.config().has_option(section,'Repetitions')):
                 reps=range(update.config().getint(section,'Repetitions'))

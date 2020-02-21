@@ -1161,10 +1161,10 @@ bool RDEventLine::linkLog(RDLogEvent *e,RDLog *log,const QString &svcname,
     logline->setExtStartTime(QTime().addSecs(3600*start_start_hour+
 					     q->value(1).toInt()));
     logline->setExtLength(q->value(2).toInt());
-    logline->setExtData(q->value(3).toString());
-    logline->setExtEventId(q->value(4).toString());
-    logline->setExtAnncType(q->value(5).toString());
-    logline->setExtCartName(q->value(6).toString());
+    logline->setExtData(q->value(3).toString().trimmed());
+    logline->setExtEventId(q->value(4).toString().trimmed());
+    logline->setExtAnncType(q->value(5).toString().trimmed());
+    logline->setExtCartName(q->value(6).toString().trimmed());
     logline->setEventLength(event_length);
     logline->setLinkEventName(event_name);
     logline->setLinkStartTime(link_logline->linkStartTime());
