@@ -19245,3 +19245,8 @@
 	* Added an rdsoftkeys(1) man page.
 2019-10-31 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.2.0.
+2020-02-21 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdlogmanager(1) that caused trailer
+	whitespace to be generated in the 'EXT_DATA', 'EXT_EVENT',
+	'EXT_ANNC_TYPE' and 'EXT_CART_NAME' log fields when importing
+	from a CounterPoint format log.
