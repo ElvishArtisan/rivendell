@@ -9914,9 +9914,14 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
       return false;
     }
 
-    sql=QString("create table FEED_KEY_NAMES (")+
+    sql=QString("create table SUPERFEED_MAPS (")+
+      "ID int unsigned primary key auto_increment,"+
+      "FEED_ID int unsigned not null,"+
+      "MEMBER_FEED_ID int unsigned not null,"+
       "KEY_NAME varchar(8) not null,"+
       "MEMBER_KEY_NAME varchar(8) not null,"+
+      "index FEED_ID_IDX(FEED_ID),"+
+      "index MEMBER_FEED_ID_IDX(MEMBER_FEED_ID),"+
       "index KEY_NAME_IDX(KEY_NAME),"+
       "index MEMBER_KEY_NAME_IDX(MEMBER_KEY_NAME))";
     if(!RDSqlQuery::apply(sql,err_msg)) {
@@ -9949,7 +9954,6 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
 
     WriteSchemaVersion(++cur_schema);
   }
-
 
 
   // NEW SCHEMA UPDATES GO HERE...

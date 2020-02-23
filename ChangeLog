@@ -19544,7 +19544,7 @@
 	rdadmin(1).
 2020-02-11 Fred Gleason <fredg@paravelsys tems.com>
 	* Added a 'FEEDS.IS_SUPERFEED' field to the database.
-	* Added a 'FEED_KEY_NAMES' table to the database.
+	* Added a 'SUPERFEED_MAPS' table to the database.
 	* Incremented the database version to 315.
 	* Added a 'Superfeed' column to the feed list in the 'Rivendell
 	Feed List' dialog in rdadmin(1).
@@ -19586,3 +19586,6 @@
 	static methods.
 	* Added logic to rdcastmanager(1) to insert the author's e-mail
 	contact automatically when posting a new episode.
+2020-02-21 Fred Gleason <fredg@paravelsystems.com>
+	* Tweaked controls to be disabled for superfeeds in the 'Edit Feed'
+	dialog in rdadmin(1).

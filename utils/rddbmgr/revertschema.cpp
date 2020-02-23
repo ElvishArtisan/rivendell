@@ -63,7 +63,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // Revert 315
   //
   if((cur_schema==315)&&(set_schema<cur_schema)) {
-    DropTable("FEED_KEY_NAMES");
+    DropTable("SUPERFEED_MAPS");
     DropIndex("FEEDS","IS_SUPERFEED_IDX");
     DropColumn("FEEDS","IS_SUPERFEED");
 
