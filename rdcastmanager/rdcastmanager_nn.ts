@@ -285,6 +285,10 @@ Vil du halda fram med å sletta podkasten?</translation>
 </source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Feed</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MainWidget</name>
@@ -340,6 +344,10 @@ straum</translation>
     </message>
     <message>
         <source>Unknown command option</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Superfeed</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

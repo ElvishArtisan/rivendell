@@ -1048,19 +1048,11 @@ files, causing any whose files remain to be imported again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Audio Upload URL:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Username:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Password:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Upload Format:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1077,10 +1069,6 @@ files, causing any whose files remain to be imported again.</source>
     </message>
     <message>
         <source>dBFS</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Audio Download URL:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1210,6 +1198,18 @@ Feeds</source>
     </message>
     <message>
         <source>Audio Upload URL has unsupported scheme!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Audio Format:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Upload URL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Download URL</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

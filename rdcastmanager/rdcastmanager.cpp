@@ -2,7 +2,7 @@
 //
 // A PodCast Management Utility for Rivendell.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -110,14 +110,21 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
 	  SLOT(feedDoubleclickedData(Q3ListViewItem *,const QPoint &,int)));
   cast_feed_list->addColumn("");
   cast_feed_list->setColumnAlignment(0,Qt::AlignCenter);
+
   cast_feed_list->addColumn(tr("Key Name"));
   cast_feed_list->setColumnAlignment(1,Qt::AlignHCenter);
+
   cast_feed_list->addColumn(tr("Feed Name"));
   cast_feed_list->setColumnAlignment(2,Qt::AlignLeft);
-  cast_feed_list->addColumn(tr("Description"));
-  cast_feed_list->setColumnAlignment(3,Qt::AlignLeft);
-  cast_feed_list->addColumn(tr("Casts"));
+
+  cast_feed_list->addColumn(tr("Superfeed"));
   cast_feed_list->setColumnAlignment(3,Qt::AlignCenter);
+
+  cast_feed_list->addColumn(tr("Description"));
+  cast_feed_list->setColumnAlignment(4,Qt::AlignLeft);
+
+  cast_feed_list->addColumn(tr("Casts"));
+  cast_feed_list->setColumnAlignment(5,Qt::AlignCenter);
 
   //
   // Open Button
@@ -169,7 +176,7 @@ void MainWidget::openData()
   if(item==NULL) {
     return;
   }
-  ListCasts *casts=new ListCasts(item->id(),this);
+  ListCasts *casts=new ListCasts(item->id(),item->text(3)=="Y",this);
   casts->exec();
   RefreshItem(item);
   delete casts;
@@ -208,14 +215,15 @@ void MainWidget::RefreshItem(RDListViewItem *item)
 
   sql=QString("select ")+
     "CHANNEL_TITLE,"+        // 00
-    "CHANNEL_DESCRIPTION,"+  // 01
-    "ID "+                   // 02
+    "IS_SUPERFEED,"+         // 01
+    "CHANNEL_DESCRIPTION,"+  // 02
+    "ID "+                   // 03
     "from FEEDS where "+
     "KEY_NAME=\""+RDEscapeString(item->text(1))+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     sql=QString().sprintf("select STATUS from PODCASTS where FEED_ID=%u",
-			  q->value(2).toUInt());
+			  q->value(3).toUInt());
     q1=new RDSqlQuery(sql);
     while(q1->next()) {
       total++;
@@ -238,7 +246,8 @@ void MainWidget::RefreshItem(RDListViewItem *item)
     }
     item->setText(2,q->value(0).toString());
     item->setText(3,q->value(1).toString());
-    item->setText(4,QString().sprintf("%d / %d",active,total));
+    item->setText(4,q->value(2).toString());
+    item->setText(5,QString().sprintf("%d / %d",active,total));
   }
   delete q;
 }

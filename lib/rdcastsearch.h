@@ -2,7 +2,7 @@
 //
 // SQL search clause for RDCastManager
 //
-//   (C) Copyright 2009,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2009-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,9 +21,7 @@
 #ifndef RDCASTSEARCH_H
 #define RDCASTSEARCH_H
 
-QString RDCastSearch(int feed_id,const QString &filter,bool unexp_only,
-		     bool active_only);
-QString RDCastSearch(const QString &keyname,const QString &filter,
+QString RDCastSearch(const QString &keyname,bool is_super,const QString &filter,
 		     bool unexp_only,bool active_only);
 
 

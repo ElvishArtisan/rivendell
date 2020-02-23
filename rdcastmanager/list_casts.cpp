@@ -40,10 +40,11 @@
 #include "../icons/greenball.xpm"
 #include "../icons/whiteball.xpm"
 
-ListCasts::ListCasts(unsigned feed_id,QWidget *parent)
+ListCasts::ListCasts(unsigned feed_id,bool is_super,QWidget *parent)
   : RDDialog(parent)
 {
   list_feed_id=feed_id;
+  list_is_superfeed=is_super;
 
   //
   // Fix the Window Size
@@ -125,10 +126,14 @@ ListCasts::ListCasts(unsigned feed_id,QWidget *parent)
   list_casts_view->setColumnAlignment(4,Qt::AlignRight);
   list_casts_view->addColumn(tr("Description"));
   list_casts_view->setColumnAlignment(5,Qt::AlignLeft);
+
+  list_casts_view->addColumn(tr("Feed"));
+  list_casts_view->setColumnAlignment(6,Qt::AlignLeft);
+
   list_casts_view->addColumn(tr("Category"));
-  list_casts_view->setColumnAlignment(6,Qt::AlignCenter);
-  list_casts_view->addColumn(tr("Link"));
   list_casts_view->setColumnAlignment(7,Qt::AlignCenter);
+  list_casts_view->addColumn(tr("Link"));
+  list_casts_view->setColumnAlignment(8,Qt::AlignCenter);
   connect(list_casts_view,
 	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,
@@ -427,7 +432,8 @@ void ListCasts::RefreshList()
 
   list_casts_view->clear();
   sql=QString("select ID from PODCASTS ")+
-    RDCastSearch(list_feed_id,list_filter_edit->text(),
+    RDCastSearch(list_feed->keyName(),list_is_superfeed,
+		 list_filter_edit->text(),
 		 list_unexpired_check->isChecked(),
 		 list_active_check->isChecked())+
 		 " order by ORIGIN_DATETIME";
@@ -446,9 +452,19 @@ void ListCasts::RefreshItem(RDListViewItem *item)
   QString sql;
   RDSqlQuery *q;
 
-  sql=QString().sprintf("select STATUS,ITEM_TITLE,ORIGIN_DATETIME,SHELF_LIFE,\
-                         AUDIO_TIME,ITEM_DESCRIPTION,ITEM_CATEGORY,ITEM_LINK \
-                         from PODCASTS where ID=%d",item->id());
+  sql=QString("select ")+
+    "PODCASTS.STATUS,"+            // 00
+    "PODCASTS.ITEM_TITLE,"+        // 01
+    "PODCASTS.ORIGIN_DATETIME,"+   // 02
+    "PODCASTS.SHELF_LIFE,"+        // 03
+    "PODCASTS.AUDIO_TIME,"+        // 04
+    "PODCASTS.ITEM_DESCRIPTION,"+  // 05
+    "FEEDS.KEY_NAME,"+             // 06
+    "PODCASTS.ITEM_CATEGORY,"+     // 07
+    "PODCASTS.ITEM_LINK "+         // 08
+    "from PODCASTS left join FEEDS "+
+    "on PODCASTS.FEED_ID=FEEDS.ID where "+
+    QString().sprintf("PODCASTS.ID=%d",item->id());
   q=new RDSqlQuery(sql);
   if(q->first()) {
     switch((RDPodcast::Status)q->value(0).toUInt()) {
@@ -478,6 +494,7 @@ void ListCasts::RefreshItem(RDListViewItem *item)
     item->setText(5,q->value(5).toString());
     item->setText(6,q->value(6).toString());
     item->setText(7,q->value(7).toString());
+    item->setText(8,q->value(8).toString());
   }
   delete q;
 }

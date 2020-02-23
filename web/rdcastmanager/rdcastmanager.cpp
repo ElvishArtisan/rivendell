@@ -560,7 +560,7 @@ void MainObject::ServeListCasts()
     "ITEM_CATEGORY,"+    // 05
     "AUDIO_TIME "+       // 06
     "from PODCASTS "+
-    RDCastSearch(cast_feed_id,filter,unexp_only,active_only)+
+    RDCastSearch(cast_key_name,false,filter,unexp_only,active_only)+
     " order by ORIGIN_DATETIME desc";
   q=new RDSqlQuery(sql);
   while(q->next()) {

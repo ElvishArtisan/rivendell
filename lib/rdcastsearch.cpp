@@ -48,21 +48,39 @@ QString RDCastSearchString(const QString &filter,bool unexp_only,
   return ret;
 }
 
-QString RDCastSearch(int feed_id,const QString &filter,bool unexp_only,
-		     bool active_only)
-{
-  QString ret=QString().sprintf("where (FEED_ID=%d)",feed_id);
-  ret+=RDCastSearchString(filter,unexp_only,active_only);
 
-  return ret;
-}
-
-
-QString RDCastSearch(const QString &keyname,const QString &filter,
+QString RDCastSearch(const QString &keyname,bool is_super,const QString &filter,
 		     bool unexp_only,bool active_only)
 {
-  QString ret=QString("where (KEY_NAME=\"")+
+  QString sql;
+  RDSqlQuery *q;
+  QString ret=QString("where (.KEY_NAME=\"")+
     RDEscapeString(keyname)+"\")";
+
+  if(is_super) {
+    ret="where ";
+    sql=QString("select ")+
+      "MEMBER_FEED_ID "+  // 00
+      "from SUPERFEED_MAPS where "+
+      "KEY_NAME=\""+RDEscapeString(keyname)+"\"";
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      ret+=QString().sprintf("PODCASTS.FEED_ID=%u || ",q->value(0).toUInt());
+    }
+    delete q;
+    ret=ret.left(ret.length()-3);
+  }
+  else {
+    sql=QString("select ")+
+      "ID "+  // 00
+      "from FEEDS where "+
+      "KEY_NAME=\""+RDEscapeString(keyname)+"\"";
+    q=new RDSqlQuery(sql);
+    if(q->first()) {
+      ret=QString().sprintf("where PODCASTS.FEED_ID=%u ",q->value(0).toUInt());
+    }
+    delete q;
+  }
   ret+=RDCastSearchString(filter,unexp_only,active_only);
 
   return ret;

@@ -23,6 +23,8 @@
 #include <rddb.h>
 #include <rdescape_string.h>
 
+#include <qmap.h>
+
 #include "edit_superfeed.h"
 
 EditSuperfeed::EditSuperfeed(RDFeed *feed,QWidget *parent)
@@ -72,7 +74,9 @@ EditSuperfeed::EditSuperfeed(RDFeed *feed,QWidget *parent)
   //
   // Populate Fields
   //
-  sql=QString("select MEMBER_KEY_NAME from FEED_KEY_NAMES where ")+
+  sql=QString("select ")+
+    "MEMBER_KEY_NAME "+  // 00
+    "from SUPERFEED_MAPS where "+
     "KEY_NAME=\""+RDEscapeString(feed_feed->keyName())+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
@@ -115,18 +119,33 @@ void EditSuperfeed::okData()
   QString sql;
 
   //
+  // Feed ID Map
+  //
+  QMap<QString,unsigned> feed_ids;
+  sql=QString("select KEY_NAME,ID from FEEDS");
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    feed_ids[q->value(0).toString()]=q->value(1).toUInt();
+  }
+  delete q;
+
+  //
   // Add New Groups
   //
   for(unsigned i=0;i<feed_host_sel->destCount();i++) {
-    sql=QString("select MEMBER_KEY_NAME from FEED_KEY_NAMES where ")+
+    sql=QString("select ")+
+      "MEMBER_KEY_NAME "  // 00
+      "from SUPERFEED_MAPS where "+
       "KEY_NAME=\""+RDEscapeString(feed_feed->keyName())+"\" && "
       "MEMBER_KEY_NAME=\""+RDEscapeString(feed_host_sel->destText(i))+"\"";
     q=new RDSqlQuery(sql);
     if(q->size()==0) {
       delete q;
-      sql=QString("insert into FEED_KEY_NAMES (KEY_NAME,MEMBER_KEY_NAME) ")+
-	"values (\""+RDEscapeString(feed_feed->keyName())+
-	"\",\""+RDEscapeString(feed_host_sel->destText(i))+"\")";
+      sql=QString("insert into SUPERFEED_MAPS set ")+
+	"KEY_NAME=\""+RDEscapeString(feed_feed->keyName())+"\","+
+	"MEMBER_KEY_NAME=\""+RDEscapeString(feed_host_sel->destText(i))+"\","+
+	QString().sprintf("FEED_ID=%u,",feed_ids.value(feed_feed->keyName()))+
+	QString().sprintf("MEMBER_FEED_ID=%u",feed_ids.value(feed_host_sel->destText(i)));
       q=new RDSqlQuery(sql);
     }
     delete q;
@@ -135,7 +154,7 @@ void EditSuperfeed::okData()
   //
   // Delete Old Groups
   //
-  sql=QString("delete from FEED_KEY_NAMES where ")+
+  sql=QString("delete from SUPERFEED_MAPS where ")+
     "KEY_NAME=\""+RDEscapeString(feed_feed->keyName())+"\"";
   for(unsigned i=0;i<feed_host_sel->destCount();i++) {
     sql+=QString(" && MEMBER_KEY_NAME<>\"")+

@@ -1471,7 +1471,7 @@ files, causing any whose files remain to be imported again.</source>
     </message>
     <message>
         <source>Audio Upload URL:</source>
-        <translation>URL subida audio:</translation>
+        <translation type="obsolete">URL subida audio:</translation>
     </message>
     <message>
         <source>Username:</source>
@@ -1483,7 +1483,7 @@ files, causing any whose files remain to be imported again.</source>
     </message>
     <message>
         <source>Upload Format:</source>
-        <translation>Formato de subida:</translation>
+        <translation type="obsolete">Formato de subida:</translation>
     </message>
     <message>
         <source>S&amp;et</source>
@@ -1503,7 +1503,7 @@ files, causing any whose files remain to be imported again.</source>
     </message>
     <message>
         <source>Audio Download URL:</source>
-        <translation>URL descarga audio:</translation>
+        <translation type="obsolete">URL descarga audio:</translation>
     </message>
     <message>
         <source>Keep Expired Metadata</source>
@@ -1646,6 +1646,18 @@ Feeds</source>
     </message>
     <message>
         <source>Audio Upload URL has unsupported scheme!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Audio Format:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Upload URL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Download URL</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

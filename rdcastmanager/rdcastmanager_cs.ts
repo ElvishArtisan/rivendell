@@ -297,6 +297,10 @@ Podcast trotzdem löschen?</translation>
 </source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Feed</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>MainWidget</name>
@@ -352,6 +356,10 @@ přívod</translation>
     </message>
     <message>
         <source>Unknown command option</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Superfeed</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

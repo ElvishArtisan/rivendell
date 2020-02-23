@@ -260,12 +260,14 @@ void ListFeeds::deleteData()
   //
   sql=QString("delete from FEED_PERMS where ")+
     "KEY_NAME=\""+RDEscapeString(feedname)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
+  RDSqlQuery::apply(sql);
+  sql=QString("delete from SUPERFEED_MAPS where ")+
+    "KEY_NAME=\""+RDEscapeString(feedname)+"\" || "+
+    "MEMBER_KEY_NAME=\""+RDEscapeString(feedname)+"\"";
+  RDSqlQuery::apply(sql);
   sql=QString("delete from FEEDS where ")+
     "KEY_NAME=\""+RDEscapeString(feedname)+"\"";
-  q=new RDSqlQuery(sql);
-  delete q;
+  RDSqlQuery::apply(sql);
   RDDeleteFeedLog(feedname);
   item->setSelected(false);
 

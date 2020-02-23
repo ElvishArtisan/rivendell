@@ -129,6 +129,24 @@ void RDFeed::setIsSuperfeed(bool state) const
 }
 
 
+QStringList RDFeed::isSubfeedOf() const
+{
+  QStringList ret;
+
+  QString sql=QString("select ")+
+    "KEY_NAME "+  // 00
+    "from SUPERFEED_MAPS where "+
+    "MEMBER_KEY_NAME=\""+RDEscapeString(keyName())+"\"";
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  while(q->next()) {
+    ret.push_back(q->value(0).toString());
+  }
+  delete q;
+
+  return ret;
+}
+
+
 bool RDFeed::audienceMetrics() const
 {
   return RDBool(RDGetSqlValue("FEEDS","KEY_NAME",feed_keyname,
@@ -636,6 +654,19 @@ bool RDFeed::postXml(QString *err_msg)
   }
   curl_easy_cleanup(curl);
 
+  //
+  // Update Enclosing Superfeeds
+  //
+  QStringList superfeeds=isSubfeedOf();
+  for(int i=0;i<superfeeds.size();i++) {
+    QString err_msg2;
+    RDFeed *feed=new RDFeed(superfeeds.at(i),feed_config,this);
+    if(!feed->postXml(&err_msg2)) {
+      *err_msg+="\n"+err_msg2;
+    }
+    delete feed;
+  }
+
   return ret;
 }
 
@@ -958,6 +989,22 @@ QString RDFeed::rssXml(QString *err_msg,bool *ok)
   //
   // Render Item XML
   //
+  QString where;
+  if(isSuperfeed()) {
+    sql=QString("select ")+
+      "MEMBER_FEED_ID "+
+      "from SUPERFEED_MAPS where "+
+      QString().sprintf("FEED_ID=%d",q->value(13).toUInt());
+    q1=new RDSqlQuery(sql);
+    while(q1->next()) {
+      where+=QString().sprintf("(FEED_ID=%u) || ",q1->value(0).toUInt());
+    }
+    delete q1;
+    where=("("+where.left(where.length()-4)+") && ");
+  }
+  else {
+    where =QString().sprintf("(FEED_ID=%u)&&",q->value(13).toUInt());
+  }
   sql=QString("select ")+
     "ITEM_TITLE,"+          // 00
     "ITEM_DESCRIPTION,"+    // 01
@@ -973,7 +1020,8 @@ QString RDFeed::rssXml(QString *err_msg,bool *ok)
     "EFFECTIVE_DATETIME,"+  // 11
     "ID "+                  // 12
     "from PODCASTS where "+
-    QString().sprintf("(FEED_ID=%d)&&",q->value(13).toUInt())+
+    where+
+    //QString().sprintf("(FEED_ID=%d)&&",q->value(13).toUInt())+
     QString().sprintf("(STATUS=%d) ",RDPodcast::StatusActive)+
     "order by ORIGIN_DATETIME";
   if(q->value(15).toString()=="N") {
@@ -1116,14 +1164,19 @@ unsigned RDFeed::create(const QString &keyname,bool enable_users,
       // Duplicate member feed references
       //
       if(q->value(0).toString()=="Y") {
-	sql=QString("select MEMBER_KEY_NAME ")+
-	  "from FEED_KEY_NAMES where "+
+	sql=QString("select ")+
+	  "MEMBER_KEY_NAME,"+  // 00
+	  "FEED_ID,"+          // 01
+	  "MEMBER_FEED_ID "+   // 02
+	  "from SUPERFEED_MAPS where "+
 	  "KEY_NAME=\""+RDEscapeString(exemplar)+"\"";
 	q1=new RDSqlQuery(sql);
 	while(q1->next()) {
-	  sql=QString("insert into FEED_KEY_NAMES set ")+
+	  sql=QString("insert into SUPERFEED_MAPS set ")+
 	    "KEY_NAME=\""+RDEscapeString(keyname)+"\","+
-	    "MEMBER_KEY_NAME=\""+RDEscapeString(q1->value(0).toString())+"\"";
+	    "MEMBER_KEY_NAME=\""+RDEscapeString(q1->value(0).toString())+"\","+
+	    QString().sprintf("FEED_ID=%u,",q1->value(1).toUInt())+
+	    QString().sprintf("MEMBER_FEED_ID=%u",q1->value(2).toUInt());
 	  RDSqlQuery::apply(sql);
 	}
 	delete q1;

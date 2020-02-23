@@ -162,7 +162,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   feed_purge_url_edit=new QLineEdit(this);
   feed_purge_url_edit->setMaxLength(255);
   feed_purge_url_label=
-    new QLabel(feed_purge_url_edit,tr("Audio Upload URL:"),this);
+    new QLabel(feed_purge_url_edit,tr("Upload URL")+":",this);
   feed_purge_url_label->setFont(labelFont());
   feed_purge_url_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -194,7 +194,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   //
   feed_format_edit=new QLineEdit(this);
   feed_format_edit->setReadOnly(true);
-  feed_format_label=new QLabel(feed_format_edit,tr("Upload Format:"),this);
+  feed_format_label=new QLabel(feed_format_edit,tr("Audio Format:"),this);
   feed_format_label->setFont(labelFont());
   feed_format_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   feed_format_button=new QPushButton(this);
@@ -232,7 +232,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   feed_base_url_edit=new QLineEdit(this);
   feed_base_url_edit->setMaxLength(255);
   feed_base_url_label=
-    new QLabel(feed_base_url_edit,tr("Audio Download URL:"),this);
+    new QLabel(feed_base_url_edit,tr("Download URL")+":",this);
   feed_base_url_label->setFont(labelFont());
   feed_base_url_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -465,34 +465,34 @@ void EditFeed::isSuperfeedChangedData(int n)
   feed_redirect_url_label->setEnabled(redirected);
   feed_redirect_url_edit->setEnabled(redirected);
 
-  feed_base_url_edit->setDisabled(redirected||superfeed);
-  feed_purge_url_edit->setDisabled(redirected||superfeed);
-  feed_purge_username_label->setDisabled(redirected||superfeed);
-  feed_purge_username_edit->setDisabled(redirected||superfeed);
-  feed_purge_password_label->setDisabled(redirected||superfeed);
-  feed_purge_password_edit->setDisabled(redirected||superfeed);
+  feed_base_url_edit->setDisabled(redirected);
+  feed_purge_url_edit->setDisabled(redirected);
+  feed_purge_username_label->setDisabled(redirected);
+  feed_purge_username_edit->setDisabled(redirected);
+  feed_purge_password_label->setDisabled(redirected);
+  feed_purge_password_edit->setDisabled(redirected);
 
   feed_max_shelf_life_spin->setDisabled(redirected||superfeed);
   feed_autopost_box->setDisabled(redirected||superfeed);
-  feed_keep_metadata_box->setDisabled(redirected||superfeed);
+  feed_keep_metadata_box->setDisabled(redirected);
+  feed_keep_metadata_label->setDisabled(redirected);
   feed_format_edit->setDisabled(redirected||superfeed);
   feed_normalize_box->setDisabled(redirected||superfeed);
   feed_extension_edit->setDisabled(redirected||superfeed);
-  feed_castorder_box->setDisabled(redirected||superfeed);
+  feed_castorder_box->setDisabled(redirected);
   feed_format_button->setDisabled(redirected||superfeed);
-  feed_base_url_label->setDisabled(redirected||superfeed);
-  feed_base_preamble_label->setDisabled(redirected||superfeed);
-  feed_purge_url_label->setDisabled(redirected||superfeed);
+  feed_base_url_label->setDisabled(redirected);
+  feed_base_preamble_label->setDisabled(redirected);
+  feed_purge_url_label->setDisabled(redirected);
   feed_max_shelf_life_label->setDisabled(redirected||superfeed);
   feed_max_shelf_life_unit_label->setDisabled(redirected||superfeed);
   feed_autopost_label->setDisabled(redirected||superfeed);
-  feed_keep_metadata_label->setDisabled(redirected||superfeed);
   feed_format_label->setDisabled(redirected||superfeed);
   feed_normalize_check_label->setDisabled(redirected||superfeed);
   feed_normalize_unit_label->setDisabled(redirected||superfeed);
-  feed_castorder_label->setDisabled(redirected||superfeed);
+  feed_castorder_label->setDisabled(redirected);
   feed_extension_label->setDisabled(redirected||superfeed);
-  feed_channel_section_groupbox->setDisabled(redirected||superfeed);
+  feed_channel_section_groupbox->setDisabled(redirected);
 
   feed_normalize_label->
     setDisabled(redirected||superfeed||(!feed_normalize_box->isChecked()));

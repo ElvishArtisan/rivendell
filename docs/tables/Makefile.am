@@ -52,7 +52,6 @@ EXTRA_DIST = audio_cards.txt\
              extended_panels.txt\
              feed_perms.txt\
              feeds.txt\
-             feeds_key_names.txt\
              gpio_events.txt\
              gpis.txt\
              gpos.txt\
@@ -100,6 +99,7 @@ EXTRA_DIST = audio_cards.txt\
              stack_lines.txt\
              stack_sched_codes.txt\
              stations.txt\
+             superfeed_maps.txt\
              switcher_nodes.txt\
              system.txt\
              triggers.txt\
