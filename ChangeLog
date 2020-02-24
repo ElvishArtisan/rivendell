@@ -19671,3 +19671,6 @@
 2020-02-23 Fred Gleason <fredg@paravelsystems.com>
 	* Added '-lexpat' to the '--libs' output for the 'rivwebcapi'
 	pkg-config profile.
+2020-02-24 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the 'AR_GET_DISTRO()' autoconf macro to use
+	'/etc/os-release'.
