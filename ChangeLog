@@ -19668,3 +19668,6 @@
 2020-02-21 Fred Gleason <fredg@paravelsystems.com>
 	* Added a syslog message for each CIC update in the 'pypad_xds.py'
 	script.
+2020-02-23 Fred Gleason <fredg@paravelsystems.com>
+	* Added '-lexpat' to the '--libs' output for the 'rivwebcapi'
+	pkg-config profile.
