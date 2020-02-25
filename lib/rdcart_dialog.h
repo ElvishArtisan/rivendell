@@ -21,11 +21,11 @@
 #ifndef RDCART_DIALOG_H
 #define RDCART_DIALOG_H
 
-#include <qlineedit.h>
-#include <qlabel.h>
-#include <qpushbutton.h>
-#include <q3progressdialog.h>
 #include <qcheckbox.h>
+#include <qlabel.h>
+#include <qlineedit.h>
+#include <qprogressdialog.h>
+#include <qpushbutton.h>
 
 #include <rdbusydialog.h>
 #include <rdcart.h>
@@ -104,7 +104,7 @@ class RDCartDialog : public RDDialog
   QString *cart_service;
   int cart_service_quan;
   RDStation::FilterMode cart_filter_mode;
-  Q3ProgressDialog *cart_progress_dialog;
+  QProgressDialog *cart_progress_dialog;
   QString cart_import_path;
   QString cart_import_file_filter;
   bool *cart_temp_allowed;

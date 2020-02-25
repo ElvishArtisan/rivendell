@@ -19,6 +19,7 @@
 //
 
 #include <q3filedialog.h>
+#include <q3progressdialog.h>
 
 #include <qapplication.h>
 #include <qmessagebox.h>

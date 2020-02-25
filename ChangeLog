@@ -19698,3 +19698,6 @@
 	dialog.
 2020-02-25 Fred Gleason <fredg@paravelsystems.com>
 	* Added captioning to the 'Select Cart' dialog.
+2020-02-25 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'Q3ProgressDialog' dependency from the 'Select Cart'
+	dialog.

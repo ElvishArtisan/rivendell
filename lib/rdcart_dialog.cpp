@@ -94,8 +94,7 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   // Progress Dialog
   //
   cart_progress_dialog=
-    new Q3ProgressDialog(tr("Please Wait..."),"Cancel",10,this,
-			"cart_progress_dialog",false,
+    new QProgressDialog(tr("Please Wait..."),tr("Cancel"),0,10,this,
 			Qt::WStyle_Customize|Qt::WStyle_NormalBorder);
   cart_progress_dialog->setCaption(" ");
   QLabel *label=new QLabel(tr("Please Wait..."),cart_progress_dialog);
@@ -722,8 +721,8 @@ void RDCartDialog::RefreshCarts()
   q=new RDSqlQuery(sql);
   int step=0;
   int count=0;
-  cart_progress_dialog->setTotalSteps(q->size()/RDCART_DIALOG_STEP_SIZE);
-  cart_progress_dialog->setProgress(0);
+  cart_progress_dialog->setMaximum(q->size()/RDCART_DIALOG_STEP_SIZE);
+  cart_progress_dialog->setValue(0);
   while(q->next()) {
     l=new RDListViewItem(cart_cart_list);
     l->setId(q->value(10).toUInt());
@@ -760,7 +759,7 @@ void RDCartDialog::RefreshCarts()
       l->setText(12,"TFN");
     }
     if(count++>RDCART_DIALOG_STEP_SIZE) {
-      cart_progress_dialog->setProgress(++step);
+      cart_progress_dialog->setValue(++step);
       count=0;
       QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
     }

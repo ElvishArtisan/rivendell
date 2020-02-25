@@ -22,6 +22,8 @@
 #include <unistd.h>
 #include <stdlib.h>
 
+#include <q3progressdialog.h>
+
 #include <qlabel.h>
 #include <qmessagebox.h>
 #include <qapplication.h>
