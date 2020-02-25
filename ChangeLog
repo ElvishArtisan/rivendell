@@ -19690,3 +19690,6 @@
 	dialog.
 2020-02-25 Fred Gleason <fredg@paravelsystems.com>
 	* Added captioning to the 'Import Audio' dialog.
+2020-02-25 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'Q3Frame' dependency from 'RDBusyBar'.
+	* Add stylesheet support for color rendering in RDBusyBar.
