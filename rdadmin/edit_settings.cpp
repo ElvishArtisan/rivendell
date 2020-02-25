@@ -2,7 +2,7 @@
 //
 // Edit Rivendell System-Wide Configuration
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,10 +18,10 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <q3filedialog.h>
 #include <q3progressdialog.h>
 
 #include <qapplication.h>
+#include <qfiledialog.h>
 #include <qmessagebox.h>
 
 #include <rdconf.h>
@@ -256,7 +256,9 @@ void EditSettings::duplicatesCheckedData(bool state)
 void EditSettings::saveData()
 {
   QString filename=RDGetHomeDir();
-  filename=Q3FileDialog::getSaveFileName(filename,"Text Files *.txt",this);
+  filename=QFileDialog::getSaveFileName(this,"RDAdmin - "+tr("Save text file"),
+					filename,
+					"Text files (*.txt);;All files (*.*)");
   if(filename.isNull()) {
     return;
   }
