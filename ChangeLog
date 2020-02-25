@@ -19710,3 +19710,5 @@
 2020-02-25 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'Q3ProgressDialog' dependency from the 'Select Cut'
 	dialog.
+2020-02-25 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'Q3ProgressDialog' dependency from rdadmin(1).

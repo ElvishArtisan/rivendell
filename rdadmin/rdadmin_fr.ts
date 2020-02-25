@@ -2974,6 +2974,10 @@ Overwrite?</source>
         <source>Save text file</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Progress</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditStation</name>
