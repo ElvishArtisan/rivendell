@@ -1229,6 +1229,10 @@ ze &amp;souboru</translation>
         <source>End</source>
         <translation type="unfinished">Konec</translation>
     </message>
+    <message>
+        <source>Open Audio File</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDCddbLookup</name>

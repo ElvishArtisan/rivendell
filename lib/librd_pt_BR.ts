@@ -1220,6 +1220,10 @@ Cor</translation>
         <source>End</source>
         <translation type="unfinished">Fim</translation>
     </message>
+    <message>
+        <source>Open Audio File</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDCddbLookup</name>

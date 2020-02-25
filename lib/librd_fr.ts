@@ -1070,6 +1070,10 @@ La Couleur</translation>
         <source>End</source>
         <translation type="unfinished">Fin</translation>
     </message>
+    <message>
+        <source>Open Audio File</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDCddbLookup</name>

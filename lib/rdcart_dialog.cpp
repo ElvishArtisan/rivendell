@@ -45,9 +45,11 @@
 #include "../icons/rml5.xpm"
 
 RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
-			   QWidget *parent)
+			   const QString &caption,QWidget *parent)
   : RDDialog(parent)
 {
+  cart_caption=caption;
+
   //
   // Fix the Window Size
   //
@@ -75,7 +77,7 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   cart_import_path=RDGetHomeDir();
   cart_import_file_filter=RD_AUDIO_FILE_FILTER;
 
-  setWindowTitle(tr("Select Cart"));
+  setWindowTitle(caption+" - "+tr("Select Cart"));
 
   //
   // Create Icons
@@ -514,7 +516,9 @@ void RDCartDialog::loadFileData()
   RDWaveData wavedata;
   QString err_msg;
 
-  filename=QFileDialog::getOpenFileName(this,"Caption",cart_import_path,
+  filename=QFileDialog::getOpenFileName(this,cart_caption+" - "+
+					tr("Open Audio File"),
+					cart_import_path,
 					cart_import_file_filter);
   if(!filename.isEmpty()) {
     cart_import_path=RDGetPathPart(filename);

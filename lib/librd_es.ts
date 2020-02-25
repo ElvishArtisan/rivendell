@@ -1220,6 +1220,10 @@ Color</translation>
         <source>End</source>
         <translation type="unfinished">Final</translation>
     </message>
+    <message>
+        <source>Open Audio File</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDCddbLookup</name>
