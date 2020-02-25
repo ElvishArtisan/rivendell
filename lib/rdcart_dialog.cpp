@@ -2,7 +2,7 @@
 //
 // A widget to select a Rivendell Cart.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,9 +21,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include <q3filedialog.h>
-
 #include <qapplication.h>
+#include <qfiledialog.h>
 #include <qmessagebox.h>
 
 #include "rdapplication.h"
@@ -515,8 +514,8 @@ void RDCartDialog::loadFileData()
   RDWaveData wavedata;
   QString err_msg;
 
-  filename=Q3FileDialog::getOpenFileName(cart_import_path,
-					cart_import_file_filter,this);
+  filename=QFileDialog::getOpenFileName(this,"Caption",cart_import_path,
+					cart_import_file_filter);
   if(!filename.isEmpty()) {
     cart_import_path=RDGetPathPart(filename);
 

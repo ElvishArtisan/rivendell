@@ -19693,3 +19693,6 @@
 2020-02-25 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'Q3Frame' dependency from 'RDBusyBar'.
 	* Add stylesheet support for color rendering in RDBusyBar.
+2020-02-25 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'Q3FileDialog' dependency from the 'Select Cart'
+	dialog.
