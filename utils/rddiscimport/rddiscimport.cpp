@@ -2,7 +2,7 @@
 //
 // A Qt-based application for importing TM Century GoldDisc CDs
 //
-//   (C) Copyright 2013-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2013-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,9 +18,8 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <q3filedialog.h>
-
 #include <qapplication.h>
+#include <qfiledialog.h>
 #include <qmessagebox.h>
 #include <qtranslator.h>
 
@@ -287,9 +286,10 @@ void MainWidget::indexFileSelectedData()
   QString filename;
   int lines;
 
-  filename=Q3FileDialog::getOpenFileName(dg_indexfile_edit->text(),
-					"CSV Files *.csv",this,"",
-					tr("RDDiscImport - Open Index File"));
+  filename=QFileDialog::getOpenFileName(this,"RDDiscImport - "+
+					tr("Open Index File"),
+					dg_indexfile_edit->text(),
+					"CSV files (*.csv);;All files (*.*)");
   dg_metalibrary->clear();
   if((lines=dg_metalibrary->load(filename))<0) {
     QMessageBox::warning(this,"RDDiscImport - "+tr("Read Error"),
