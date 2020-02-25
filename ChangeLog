@@ -19682,3 +19682,6 @@
 	* Reverted the leading '0' fix to the 'CounterPoint Traffic
 	Reconciliation' report generator.
 	* Added a 'CounterPoint Traffic Reconciliation v2' report.
+2020-02-25 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'Q3ButtonGroup' dependency from the 'Import Audio'
+	dialog.

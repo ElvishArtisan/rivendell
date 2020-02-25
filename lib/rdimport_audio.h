@@ -2,7 +2,7 @@
 //
 // Audio File Importation Dialog for Rivendell.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,8 +24,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#include <q3buttongroup.h>
-
+#include <qbuttongroup.h>
 #include <qlabel.h>
 #include <qlineedit.h>
 #include <qtimer.h>
@@ -92,7 +91,7 @@ class RDImportAudio : public RDDialog
   RDSettings *import_default_settings;
   RDCut *import_clipboard;
   bool *import_running;
-  Q3ButtonGroup *import_mode_group;
+  QButtonGroup *import_mode_group;
   QRadioButton *import_importmode_button;
   QRadioButton *import_exportmode_button;
   QLabel *import_in_filename_label;

@@ -2,7 +2,7 @@
 //
 // Audio File Importation Dialog for Rivendell.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -31,10 +31,6 @@
 #include <qmessagebox.h>
 #include <qcheckbox.h>
 #include <qpainter.h>
-//Added by qt3to4:
-#include <QCloseEvent>
-#include <QPaintEvent>
-#include <QLabel>
 
 #include "rd.h"
 #include "rdapplication.h"
@@ -73,16 +69,15 @@ RDImportAudio::RDImportAudio(QString cutname,QString *path,
   //
   // Mode Group
   //
-  import_mode_group=new Q3ButtonGroup(this);
-  import_mode_group->hide();
-  connect(import_mode_group,SIGNAL(clicked(int)),
+  import_mode_group=new QButtonGroup(this);
+  connect(import_mode_group,SIGNAL(buttonClicked(int)),
 	  this,SLOT(modeClickedData(int)));
 
   //
   // Input Mode Button
   //
   import_importmode_button=new QRadioButton(tr("Import File"), this);
-  import_mode_group->insert(import_importmode_button);
+  import_mode_group->addButton(import_importmode_button,0);
   import_importmode_button->setGeometry(10,10,sizeHint().width()-40,15);
   import_importmode_button->setFont(sectionLabelFont());
   import_importmode_button->setChecked(true);
@@ -156,7 +151,7 @@ RDImportAudio::RDImportAudio(QString cutname,QString *path,
   // Output Mode Button
   //
   import_exportmode_button=new QRadioButton(tr("Export File"),this);
-  import_mode_group->insert(import_exportmode_button);
+  import_mode_group->addButton(import_exportmode_button,1);
   import_exportmode_button->setGeometry(10,120,sizeHint().width()-40,15);
   import_exportmode_button->setFont(sectionLabelFont());
 
@@ -270,7 +265,7 @@ RDImportAudio::RDImportAudio(QString cutname,QString *path,
   import_channels_box->setCurrentItem(settings->channels()-1);
 
   filenameChangedData("");
-  modeClickedData(import_mode_group->selectedId());
+  modeClickedData(import_mode_group->checkedId());
 }
 
 
@@ -352,6 +347,7 @@ int RDImportAudio::exec(bool enable_import,bool enable_export)
 
 void RDImportAudio::modeClickedData(int id)
 {
+  printf("modeClickedData(%d)\n",id);
   import_in_filename_label->setDisabled(id);
   import_in_filename_edit->setDisabled(id);
   import_in_metadata_box->setDisabled(id||(import_wavedata==NULL));
@@ -469,7 +465,7 @@ void RDImportAudio::importData()
     import_export_conv->abort();
     return;
   }
-  if(import_mode_group->selectedId()==0) {
+  if(import_mode_group->checkedId()==0) {
     Import();
   }
   else {
