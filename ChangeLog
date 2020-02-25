@@ -19712,3 +19712,6 @@
 	dialog.
 2020-02-25 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'Q3ProgressDialog' dependency from rdadmin(1).
+2020-02-25 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed the layout of the 'Matching Carts' field in rdlibrary(1)'s
+	main window when Realtime Filtering is disabled.
