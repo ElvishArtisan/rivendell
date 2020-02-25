@@ -27,7 +27,7 @@
 #include <math.h>
 
 #include <qpushbutton.h>
-#include <q3filedialog.h>
+#include <qfiledialog.h>
 #include <qmessagebox.h>
 #include <qcheckbox.h>
 #include <qpainter.h>
@@ -347,7 +347,6 @@ int RDImportAudio::exec(bool enable_import,bool enable_export)
 
 void RDImportAudio::modeClickedData(int id)
 {
-  printf("modeClickedData(%d)\n",id);
   import_in_filename_label->setDisabled(id);
   import_in_filename_edit->setDisabled(id);
   import_in_metadata_box->setDisabled(id||(import_wavedata==NULL));
@@ -401,14 +400,13 @@ void RDImportAudio::selectInputFileData()
   QString filename;
 
   if(import_in_filename_edit->text().isEmpty()) {
-    filename=
-      Q3FileDialog::getOpenFileName(*import_path,
-				   import_file_filter,this);
+    filename=QFileDialog::getOpenFileName(this,"Audio Dialog",*import_path,
+					  import_file_filter);
   }
   else {
-    filename=
-      Q3FileDialog::getOpenFileName(import_in_filename_edit->text(),
-				   import_file_filter,this);
+    filename=QFileDialog::getOpenFileName(this,"Audio Dialog",
+					  import_in_filename_edit->text(),
+					  import_file_filter);
   }
   if(!filename.isEmpty()) {
     import_in_filename_edit->setText(filename);
@@ -425,12 +423,13 @@ void RDImportAudio::selectOutputFileData()
 				 import_settings->format())+")";
 
   if(import_out_filename_edit->text().isEmpty()) {
-    filename=
-      Q3FileDialog::getSaveFileName(*import_path,filter,this);
+    filename=QFileDialog::getSaveFileName(this,"Audio Export",*import_path,
+					  filter);
   }
   else {
-    filename=Q3FileDialog::getSaveFileName(import_out_filename_edit->text(),
-					  filter,this);
+    filename=QFileDialog::getSaveFileName(this,"Audio Export",
+					  import_out_filename_edit->text(),
+					  filter);
   }
   if(!filename.isEmpty()) {
     import_out_filename_edit->

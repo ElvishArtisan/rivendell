@@ -19685,3 +19685,6 @@
 2020-02-25 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'Q3ButtonGroup' dependency from the 'Import Audio'
 	dialog.
+2020-02-25 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'Q3FileDialog' dependency from the 'Import Audio'
+	dialog.
