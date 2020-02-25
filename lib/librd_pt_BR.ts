@@ -2166,6 +2166,14 @@ Por Favor, cheque suas configurações e tenbte outra vez.</translation>
         <source>Export Error</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Select Audio File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save Audio File</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDIntegerDialog</name>

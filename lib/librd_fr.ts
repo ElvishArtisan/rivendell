@@ -1828,6 +1828,14 @@ Do you want to overwrite it?</source>
         <source>Export Error</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Select Audio File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save Audio File</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDIntegerDialog</name>

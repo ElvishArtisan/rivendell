@@ -55,7 +55,8 @@ class RDImportAudio : public RDDialog
  public:
  RDImportAudio(QString cutname,QString *path,RDSettings *settings,
 	       bool *import_metadata,RDWaveData *wavedata,
-	       RDCut *clipboard,bool *running,QWidget *parent=0);
+	       RDCut *clipboard,bool *running,const QString &caption,
+	       QWidget *parent=0);
   ~RDImportAudio();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -128,6 +129,7 @@ class RDImportAudio : public RDDialog
   RDWaveData *import_wavedata;
   RDAudioImport *import_import_conv;
   RDAudioExport *import_export_conv;
+  QString import_caption;
 };
 
 

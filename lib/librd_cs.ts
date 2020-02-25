@@ -2171,6 +2171,14 @@ Bitte Kofiguration prüfen und erneut versuchen.</translation>
         <source>Abort</source>
         <translation>Zrušit</translation>
     </message>
+    <message>
+        <source>Select Audio File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save Audio File</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDIntegerDialog</name>

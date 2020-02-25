@@ -43,7 +43,8 @@
 RDImportAudio::RDImportAudio(QString cutname,QString *path,
 			     RDSettings *settings,bool *import_metadata,
 			     RDWaveData *wavedata,RDCut *clipboard,
-			     bool *running,QWidget *parent) 
+			     bool *running,const QString &caption,
+			     QWidget *parent) 
   : RDDialog(parent)
 {
   import_default_settings=settings;
@@ -54,11 +55,12 @@ RDImportAudio::RDImportAudio(QString cutname,QString *path,
   import_wavedata=wavedata;
   import_clipboard=clipboard;
   import_running=running;
+  import_caption=caption;
   import_file_filter=RD_AUDIO_FILE_FILTER;
   import_import_conv=NULL;
   import_export_conv=NULL;
 
-  setWindowTitle(tr("Import/Export Audio File"));
+  setWindowTitle(caption+" - "+tr("Import/Export Audio File"));
 
   //
   // Fix the Window Size
@@ -400,11 +402,14 @@ void RDImportAudio::selectInputFileData()
   QString filename;
 
   if(import_in_filename_edit->text().isEmpty()) {
-    filename=QFileDialog::getOpenFileName(this,"Audio Dialog",*import_path,
+    filename=QFileDialog::getOpenFileName(this,import_caption+" - "+
+					  tr("Select Audio File"),
+					  *import_path,
 					  import_file_filter);
   }
   else {
-    filename=QFileDialog::getOpenFileName(this,"Audio Dialog",
+    filename=QFileDialog::getOpenFileName(this,import_caption+" - "+
+					  tr("Select Audio File"),
 					  import_in_filename_edit->text(),
 					  import_file_filter);
   }
@@ -423,11 +428,14 @@ void RDImportAudio::selectOutputFileData()
 				 import_settings->format())+")";
 
   if(import_out_filename_edit->text().isEmpty()) {
-    filename=QFileDialog::getSaveFileName(this,"Audio Export",*import_path,
+    filename=QFileDialog::getSaveFileName(this,import_caption+" - "+
+					  tr("Save Audio File"),
+					  *import_path,
 					  filter);
   }
   else {
-    filename=QFileDialog::getSaveFileName(this,"Audio Export",
+    filename=QFileDialog::getSaveFileName(this,import_caption+" - "+
+					  tr("Save Audio File"),
 					  import_out_filename_edit->text(),
 					  filter);
   }

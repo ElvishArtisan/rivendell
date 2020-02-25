@@ -2160,6 +2160,14 @@ Do you still want to proceed?</source>
         <source>Abort</source>
         <translation>Abortar</translation>
     </message>
+    <message>
+        <source>Select Audio File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save Audio File</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDIntegerDialog</name>

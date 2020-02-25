@@ -2160,6 +2160,14 @@ Sjekk eksportoppsettet ditt og prøv att.</translation>
         <source>Abort</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Select Audio File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save Audio File</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDIntegerDialog</name>

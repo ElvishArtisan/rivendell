@@ -600,7 +600,7 @@ void AudioCart::importCutData()
   RDImportAudio *import=new RDImportAudio(cutname,rdcart_import_path,
 					  &settings,&rdcart_import_metadata,
 					  &wavedata,cut_clipboard,
-					  &import_active);
+					  &import_active,"RDLibrary",this);
   import->enableAutotrim(rda->libraryConf()->defaultTrimState());
   import->setAutotrimLevel(rda->libraryConf()->trimThreshold());
   import->enableNormalization(rda->libraryConf()->ripperLevel()!=0);
