@@ -19678,3 +19678,7 @@
 	* Fixed a bug in the 'CounterPoint Traffic Reconciliation' report
 	generator in rdlogmanager(1) that caused it to omit the leading '0'
 	from values in the 'Scheduled event length' column.
+2020-02-25 Fred Gleason <fredg@paravelsystems.com>
+	* Reverted the leading '0' fix to the 'CounterPoint Traffic
+	Reconciliation' report generator.
+	* Added a 'CounterPoint Traffic Reconciliation v2' report.
