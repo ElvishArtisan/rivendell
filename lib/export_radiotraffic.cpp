@@ -2,7 +2,7 @@
 //
 // Export a Rivendell Report to RadioTraffic.com
 //
-//   (C) Copyright 2002-2005,2009,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -75,7 +75,7 @@ bool RDReport::ExportRadioTraffic(const QString &filename,
     *strm << q->value(4).toTime().toString("hh:mm:ss")+" ";
     *strm << q->value(2).toDateTime().toString("hh:mm:ss")+" ";
     if(q->value(5).toInt()>0) {
-      *strm << RDGetTimeLength(q->value(5).toInt(),true,false)+" ";
+      *strm << QString("0")+RDGetTimeLength(q->value(5).toInt(),true,false)+" ";
     }
     else {
       *strm << "00:00:00 ";
