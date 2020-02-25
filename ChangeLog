@@ -19707,3 +19707,6 @@
 	* Removed the 'Q3FileDialog' dependency from rddbconfig(8).
 2020-02-25 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'Q3FileDialog' dependency from rddiscimport(1).
+2020-02-25 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'Q3ProgressDialog' dependency from the 'Select Cut'
+	dialog.

@@ -21,6 +21,8 @@
 #ifndef RENDER_DIALOG_H
 #define RENDER_DIALOG_H
 
+#include <q3progressdialog.h>
+
 #include <qdatetimeedit.h>
 
 #include <rdcut_dialog.h>

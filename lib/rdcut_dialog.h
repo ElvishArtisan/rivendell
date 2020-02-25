@@ -2,7 +2,7 @@
 //
 // A widget to select a Rivendell Cut.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,10 +22,10 @@
 #define RDCUT_DIALOG_H
 
 #include <q3listview.h>
-#include <q3progressdialog.h>
 
 #include <qcombobox.h>
 #include <qcheckbox.h>
+#include <qprogressdialog.h>
 
 #include <rddialog.h>
 #include <rdlistviewitem.h>
@@ -90,7 +90,7 @@ class RDCutDialog : public RDDialog
   QPixmap *cut_macro_map;
   bool cut_allow_clear;
   bool cut_exclude_tracks;
-  Q3ProgressDialog *cut_progress_dialog;
+  QProgressDialog *cut_progress_dialog;
   QString cut_caption;
 };
 
