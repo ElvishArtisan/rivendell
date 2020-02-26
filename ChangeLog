@@ -19725,3 +19725,7 @@
 	* Removed the 'Q3ProgressBar' dependency from rdlogedit(1).
 2020-02-26 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'Q3ProgressBar' dependency from rddiscimport(1).
+2020-02-26 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdairplay(1) that would cause a hard-timed log
+	event with a 'wait' parameter set to attempt to play the event
+	twice.

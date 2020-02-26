@@ -2703,6 +2703,9 @@ void RDLogPlay::Playing(int id)
   if (isRefreshable()&&play_log->autoRefresh()) {
     refresh();
   }
+  if((logline->timeType()==RDLogLine::Hard)&&(play_grace_timer->isActive())) {
+    play_grace_timer->stop();
+  }
   LogPlayEvent(logline);
   emit transportChanged();
 }
