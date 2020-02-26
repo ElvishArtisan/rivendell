@@ -19723,3 +19723,5 @@
 	* Added sanity check code to 'RDRender'.
 2020-02-26 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'Q3ProgressBar' dependency from rdlogedit(1).
+2020-02-26 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'Q3ProgressBar' dependency from rddiscimport(1).
