@@ -21,10 +21,9 @@
 #ifndef LOGLINEBOX_H
 #define LOGLINEBOX_H
 
-#include <q3progressbar.h>
-
 #include <qlabel.h>
 #include <qpixmap.h>
+#include <qprogressbar.h>
 
 #include <rdairplay_conf.h>
 #include <rdcartdrag.h>
@@ -97,7 +96,7 @@ class LogLineBox : public RDWidget
   QLabel *line_up_label;
   QLabel *line_down_label;
   QLabel *line_comment_label;
-  Q3ProgressBar *line_position_bar;
+  QProgressBar *line_position_bar;
   QTimer *line_countdown_timer;
   QTime line_end_time;
   int log_id;
