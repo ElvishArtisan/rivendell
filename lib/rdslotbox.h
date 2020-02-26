@@ -21,13 +21,13 @@
 #ifndef RDSLOTBOX_H
 #define RDSLOTBOX_H
 
-#include <q3progressbar.h>
 
 #include <qdatetime.h>
 #include <qlabel.h>
-#include <qpushbutton.h>
 #include <qpalette.h>
 #include <qpixmap.h>
+#include <qprogressbar.h>
+#include <qpushbutton.h>
 #include <qtimer.h>
 
 #include <rdairplay_conf.h>
@@ -89,7 +89,7 @@ class RDSlotBox : public RDWidget
   QLabel *line_talktime_label;
   QLabel *line_up_label;
   QLabel *line_down_label;
-  Q3ProgressBar *line_position_bar;
+  QProgressBar *line_position_bar;
   QTime line_end_time;
   int log_id;
   RDLogLine *line_logline;

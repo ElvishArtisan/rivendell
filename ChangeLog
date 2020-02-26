@@ -19717,3 +19717,5 @@
 	main window when Realtime Filtering is disabled.
 2020-02-26 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'Q3ProgressBar' dependency from rdairplay(1).
+2020-02-26 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'Q3ProgressBar' dependency from rdcartslots(1).
