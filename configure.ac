@@ -75,6 +75,11 @@ AC_PROG_CXX
 AC_PROG_LIBTOOL
 AC_LANG(C++)
 
+#
+# ADD C++11 for dbus system required for (std::function and reinterpret_cast)
+#
+CXXFLAGS="$CXXFLAGS -std=c++11"
+
 # to avoid rpath usage :
 # http://wiki.debian.net/index.cgi?RpathIssue
 case ${host} in
@@ -118,7 +123,7 @@ AC_ARG_ENABLE(rdxport-debug,[  --enable-rdxport-debug  enable DEBUG support for 
 #
 # Check for Qt4 (Mandatory)
 #
-PKG_CHECK_MODULES(QT4,QtCore QtGui QtNetwork QtSql QtXml Qt3Support,,[AC_MSG_ERROR([*** Qt4 not found ***])])
+PKG_CHECK_MODULES(QT4,QtCore QtGui QtNetwork QtSql QtDBus QtXml Qt3Support,,[AC_MSG_ERROR([*** Qt4 not found ***])])
 AC_CHECK_PROG(MOC_NAME,moc-qt4,[moc-qt4],[moc])
 AC_SUBST(QT_MOC,$MOC_NAME)
 
@@ -300,7 +305,7 @@ if test -z $MP4V2_DISABLED ; then
     if test $MP4V2_FOUND ; then
        AC_DEFINE(HAVE_MP4_LIBS)
     fi
-  fi  
+  fi
 fi
 
 #
@@ -372,7 +377,7 @@ if test $HPI_FOUND ; then
     AC_SUBST(HPI_FILE2,$LIB_PATH/librdhpi.a)
     AC_SUBST(HPI_FILE3,$LIB_PATH/librdhpi.la)
     AC_SUBST(HPI_FILE4,$LIB_PATH/librdhpi.so)
-  else 
+  else
     AC_SUBST(LIBHPI,"")
     AC_SUBST(HPI_FILE1,"")
     AC_SUBST(HPI_FILE2,"")
@@ -397,10 +402,10 @@ if test $JACK_FOUND ; then
     AC_SUBST(LIBJACK,-ljack)
     SRC_NEEDED=yes
     USING_JACK=yes
-  else 
+  else
     AC_SUBST(LIBJACK,"")
   fi
-else 
+else
   AC_SUBST(LIBJACK,"")
 fi
 
@@ -413,10 +418,10 @@ if test $ALSA_FOUND ; then
     AC_SUBST(LIBALSA,-lasound)
     SRC_NEEDED=yes
     USING_ALSA=yes
-  else 
+  else
     AC_SUBST(LIBALSA,"")
   fi
-else 
+else
   AC_SUBST(LIBALSA,"")
 fi
 AM_CONDITIONAL([ALSA_RD_AM], [test "$USING_ALSA" = yes])
@@ -454,7 +459,7 @@ dnl  AC_SUBST(RPM_ROOT,/usr/src/redhat)
 else
 dnl  AC_SUBST(RPM_ROOT,/usr/src/packages)
   AC_SUBST(VENDOR,suse)
-fi 
+fi
 AC_SUBST(RPM_DATESTAMP,`date +%a\ %b\ %d\ %Y`)
 
 #

@@ -37,6 +37,11 @@
 #include "wall_clock.h"
 
 //
+// INCLUDE GLOBAL DBUS API
+//
+#include "dbusmodule.h"
+
+//
 // Global Resources
 //
 RDAudioPort *rdaudioport_conf;
@@ -141,6 +146,28 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
       exit(2);
     }
   }
+  //
+  // INCLUDE Create Module with path /RdAirPlay
+  //
+  MainWidget *core = this;
+  DbusModule *module = new DbusModule("/RDAirPlay");
+  QObject *obj = new QObject();
+
+  //
+  // Add Testing method for get version
+  //
+  DbusMethod<QString(),QString> *method_version = new DbusMethod<QString(),QString>();
+  method_version->changePointer([core]() {
+    return QString("1.0");
+  });
+  module->addDBusMethod("version",method_version);
+
+  //
+  // Enable this api.
+  //
+  DbusLinkPart *part = new DbusLinkPart(obj);
+  part->setModule(module);
+  module->link(part);
 
   //
   // Fix the Window Size
