@@ -19729,3 +19729,7 @@
 	* Fixed a bug in rdairplay(1) that would cause a hard-timed log
 	event with a 'wait' parameter set to attempt to play the event
 	twice.
+2020-03-09 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rddbmgr(8) that threw a SQL error when attempting
+	to modify a DB containing tables set to use character set UTF-8
+	to schema 297.
