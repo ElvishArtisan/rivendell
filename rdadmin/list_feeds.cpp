@@ -92,7 +92,7 @@ ListFeeds::ListFeeds(QWidget *parent)
   list_feeds_view->addColumn(tr("Key"));
   list_feeds_view->setColumnAlignment(0,Qt::AlignCenter|Qt::AlignVCenter);
   list_feeds_view->addColumn(tr("Title"));
-  list_feeds_view->setColumnAlignment(1,Qt::AlignLeft|Qt::AlignVCenter);
+  list_feeds_view->setColumnAlignment(1,Qt::AlignLeft);
   list_feeds_view->addColumn(tr("Superfeed"));
   list_feeds_view->setColumnAlignment(2,Qt::AlignCenter|Qt::AlignVCenter);
   list_feeds_view->addColumn(tr("AutoPost"));
