@@ -135,8 +135,8 @@ MainWidget::MainWidget(RDConfig *config,RDWidget *parent)
   //
   // Cart Dialog
   //
-  admin_cart_dialog=
-    new RDCartDialog(&admin_filter,&admin_group,&admin_schedcode,this);
+  admin_cart_dialog=new RDCartDialog(&admin_filter,&admin_group,
+				     &admin_schedcode,"RDAdmin",this);
 
   //
   // User Labels

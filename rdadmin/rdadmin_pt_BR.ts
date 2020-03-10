@@ -1197,6 +1197,14 @@ files, causing any whose files remain to be imported again.</source>
         <source>Log events in Syslog</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Select Directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select Log File</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditEncoder</name>
@@ -3570,6 +3578,14 @@ Overwrite?</source>
     </message>
     <message>
         <source>Multicast Address for Notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save text file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Progress</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

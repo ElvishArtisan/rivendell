@@ -2,7 +2,7 @@
 //
 // Edit an RDPanel Configuration
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,7 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <q3filedialog.h>
+#include <qfiledialog.h>
 #include <qmessagebox.h>
 #include <qpushbutton.h>
 
@@ -427,8 +427,9 @@ QSizePolicy EditRDPanel::sizePolicy() const
 void EditRDPanel::selectSkinData()
 {
  QString filename=air_skin_edit->text();
-  filename=Q3FileDialog::getOpenFileName(filename,RD_IMAGE_FILE_FILTER,this,"",
-					tr("Select Image File"));
+  filename=QFileDialog::getOpenFileName(this,"RDAdmin - "+
+					tr("Select Image File"),filename,
+					RD_IMAGE_FILE_FILTER);
   if(!filename.isNull()) {
     air_skin_edit->setText(filename);
   }

@@ -87,7 +87,7 @@ bool MainObject::ModifyCharset(const QString &charset,
   while(q->next()) {
     QStringList f0=q->value(1).toString().split("_");
     QString prev_charset=f0.at(0);
-    if(q->value(1).toString().toLower()!=collation) {
+    if(q->value(1).toString().toLower()!=charset) {
       RewriteTable(q->value(0).toString(),
 		   prev_charset,q->value(1).toString(),charset,collation);
     }

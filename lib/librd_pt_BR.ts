@@ -761,6 +761,10 @@
         <source>-- End of List --</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>CounterPoint Traffic Reconciliation v2</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddCart</name>
@@ -1215,6 +1219,14 @@ Cor</translation>
     <message>
         <source>End</source>
         <translation type="unfinished">Fim</translation>
+    </message>
+    <message>
+        <source>Open Audio File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancelar</translation>
     </message>
 </context>
 <context>
@@ -2160,6 +2172,14 @@ Por Favor, cheque suas configurações e tenbte outra vez.</translation>
     </message>
     <message>
         <source>Export Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select Audio File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save Audio File</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -685,7 +685,7 @@ panel</translation>
     <message>
         <source>LOG
 REFRESHING</source>
-        <translation>LOGGEN
+        <translation type="obsolete">LOGGEN
 LASTAR PÅ NYTT</translation>
     </message>
     <message>

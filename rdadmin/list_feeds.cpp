@@ -221,11 +221,10 @@ void ListFeeds::deleteData()
   RDPodcast *cast;
   sql=QString().sprintf("select ID from PODCASTS where FEED_ID=%d",item->id());
   q=new RDSqlQuery(sql);
-  QProgressDialog *pd=new QProgressDialog(tr("Deleting Audio..."),
-					  tr("Cancel"),0,q->size()+1,this);
-  pd->setCaption(tr("Deleting"));
+  QProgressDialog *pd=new QProgressDialog(tr("Deleting Audio..."),tr("Cancel"),
+					  0,q->size()+1,this);
+  pd->setWindowTitle("RDAdmin - "+tr("Deleting"));
   pd->setValue(0);
-  pd->show();
   qApp->processEvents();
   sleep(1);
   while(q->next()) {

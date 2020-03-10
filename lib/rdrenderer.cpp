@@ -496,17 +496,27 @@ bool RDRenderer::Render(const QString &outfile,RDLogEvent *log,RDSettings *s,
 	sf_count_t frames=0;
 	if((lls.at(i+1)->transType()==RDLogLine::Segue)&&
 	   (lls.at(i)->segueStartPoint()>=0)) {
-	  frames=FramesFromMsec(lls.at(i)->segueStartPoint()-
-				lls.at(i)->startPoint());
-	  current_time=
-	    current_time.addMSecs(lls.at(i)->segueStartPoint()-
+	  if(lls.at(i)->segueStartPoint()>lls.at(i)->startPoint()) {
+	    frames=FramesFromMsec(lls.at(i)->segueStartPoint()-
 				  lls.at(i)->startPoint());
+	    current_time=
+	      current_time.addMSecs(lls.at(i)->segueStartPoint()-
+				    lls.at(i)->startPoint());
+	  }
+	  else {
+	    frames=0;
+	  }
 	}
 	else {
-	  frames=FramesFromMsec(lls.at(i)->endPoint()-
-				lls.at(i)->startPoint());
-	  current_time=current_time.addMSecs(lls.at(i)->endPoint()-
-					     lls.at(i)->startPoint());
+	  if(lls.at(i)->endPoint()>lls.at(i)->startPoint()) {
+	    frames=FramesFromMsec(lls.at(i)->endPoint()-
+				  lls.at(i)->startPoint());
+	    current_time=current_time.addMSecs(lls.at(i)->endPoint()-
+					       lls.at(i)->startPoint());
+	  }
+	  else {
+	    frames=0;
+	  }
 	}
 	pcm=new float[frames*s->channels()];
 	memset(pcm,0,frames*s->channels()*sizeof(float));

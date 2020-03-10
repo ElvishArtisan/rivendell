@@ -681,7 +681,7 @@ de Sons</translation>
     <message>
         <source>LOG
 REFRESHING</source>
-        <translation>ATUALIZANDO
+        <translation type="obsolete">ATUALIZANDO
 LISTA</translation>
     </message>
     <message>

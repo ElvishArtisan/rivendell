@@ -2,7 +2,7 @@
 //
 // On Air Playout Utility for Rivendell.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -139,9 +139,9 @@ LogLineBox::LogLineBox(RDAirPlayConf *conf,QWidget *parent)
   //
   // Position Slider
   //
-  line_position_bar=new Q3ProgressBar(this);
+  line_position_bar=new QProgressBar(this);
   line_position_bar->setGeometry(75,66,sizeHint().width()-150,13);
-  line_position_bar->setPercentageVisible(false);
+  line_position_bar->setTextVisible(false);
   line_position_bar->hide();
 
   //
@@ -186,11 +186,11 @@ LogLineBox::LogLineBox(RDAirPlayConf *conf,QWidget *parent)
   //
   // Marker Comment
   //
-  line_comment_label=new RDLabel(this);
+  line_comment_label=new QLabel(this);
   line_comment_label->setGeometry(5,18,sizeHint().width()-10,62);
   line_comment_label->setFont(line_font);
   line_comment_label->setAlignment(Qt::AlignTop|Qt::AlignLeft);
-  line_comment_label->setWordWrapEnabled(true);
+  line_comment_label->setWordWrap(true);
   line_comment_label->hide();
 
   //
@@ -539,8 +539,8 @@ void LogLineBox::setEvent(int line,RDLogLine::TransType next_type,
 	line_down_label->
 	  setText(RDGetTimeLength(line_logline->effectiveLength()-
 				  line_logline->playPosition(),true,true));
-	line_position_bar->setTotalSteps(line_logline->effectiveLength());
-	line_position_bar->setProgress(line_logline->playPosition());
+	line_position_bar->setMaximum(line_logline->effectiveLength());
+	line_position_bar->setValue(line_logline->playPosition());
 	if(logline->cutNumber()>=0) {
 	  line_cut_label->
 	    setText(QString().sprintf("%03u",logline->cutNumber()));
@@ -687,7 +687,7 @@ void LogLineBox::setTimer(int msecs)
   line_up_label->setText(RDGetTimeLength(msecs,true,true));
   line_down_label->
     setText(RDGetTimeLength(line_logline->effectiveLength()-msecs,true,true));
-  line_position_bar->setProgress(msecs);
+  line_position_bar->setValue(msecs);
 }
 
 

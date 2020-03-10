@@ -25,12 +25,13 @@
 #include <sys/types.h>
 
 #include <qapplication.h>
-#include <qprocess.h>
+#include <qfiledialog.h>
 #include <qmessagebox.h>
-#include <q3filedialog.h>
+#include <qprocess.h>
 
 #include <dbversion.h>
 #include <rdapplication.h>
+#include <rdconf.h>
 #include <rdconfig.h>
 #include <rdpaths.h>
 
@@ -298,9 +299,10 @@ void MainWidget::backupData()
       (const char *)rd_config->mysqlDbname()));
     return;
   }
-
-  filename=Q3FileDialog::getSaveFileName("rivendell.sql",
-    "MySQL (*.sql)",this,"open file dialog","Enter the MySQL Backup Filename");
+  filename=QFileDialog::getSaveFileName(this,"RDDbConfig - "+
+					tr("Enter the MySQL Backup Filename"),
+					RDHomeDir(),
+					"MySQL files (*.sql);;All files (*.*)");
 
   if (!filename.isEmpty()) {
     QProcess backupProcess(this);
@@ -340,10 +342,11 @@ void MainWidget::restoreData()
       tr("Could not open Rivendell database."));
     return;
   }
-
-  filename=Q3FileDialog::getOpenFileName("",
-    "MySQL (*.sql);;All Files(*)",this,"open file dialog",
-    "Choose the MySQL Backup File to Restore");
+  filename=
+    QFileDialog::getOpenFileName(this,"RDDbConfig - "+
+				 tr("Choose the MySQL Backup File to Restore"),
+				 RDHomeDir(),
+				 "MySQL files (*.sql);;All files (*.*)");
 
   if(!filename.isEmpty()) {
     if (QMessageBox::question(this,tr("Restore Entire Database"),tr("Are you sure you want to restore your entire Rivendell database?"),(QMessageBox::No|QMessageBox::Yes)) != QMessageBox::Yes) {

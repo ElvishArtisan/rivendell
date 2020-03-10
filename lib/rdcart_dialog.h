@@ -2,7 +2,7 @@
 //
 // A widget to select a Rivendell Cart.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,11 +21,11 @@
 #ifndef RDCART_DIALOG_H
 #define RDCART_DIALOG_H
 
-#include <qlineedit.h>
-#include <qlabel.h>
-#include <qpushbutton.h>
-#include <q3progressdialog.h>
 #include <qcheckbox.h>
+#include <qlabel.h>
+#include <qlineedit.h>
+#include <qprogressdialog.h>
+#include <qpushbutton.h>
 
 #include <rdbusydialog.h>
 #include <rdcart.h>
@@ -41,7 +41,7 @@ class RDCartDialog : public RDDialog
  Q_OBJECT
  public:
   RDCartDialog(QString *filter,QString *group,QString *schedcode,
-	       QWidget *parent=0);
+	       const QString &caption,QWidget *parent=0);
   ~RDCartDialog();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -104,7 +104,7 @@ class RDCartDialog : public RDDialog
   QString *cart_service;
   int cart_service_quan;
   RDStation::FilterMode cart_filter_mode;
-  Q3ProgressDialog *cart_progress_dialog;
+  QProgressDialog *cart_progress_dialog;
   QString cart_import_path;
   QString cart_import_file_filter;
   bool *cart_temp_allowed;
@@ -112,7 +112,8 @@ class RDCartDialog : public RDDialog
   QString cart_user_password;
   RDBusyDialog *cart_busy_dialog;
   RDSimplePlayer *cart_player;
+  QString cart_caption;
 };
 
 
-#endif
+#endif  // RDCART_DIALOG_H

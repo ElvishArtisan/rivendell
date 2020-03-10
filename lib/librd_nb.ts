@@ -761,6 +761,10 @@
         <source>-- End of List --</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>CounterPoint Traffic Reconciliation v2</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddCart</name>
@@ -1214,6 +1218,14 @@ farge</translation>
     <message>
         <source>End</source>
         <translation type="unfinished">Slutten</translation>
+    </message>
+    <message>
+        <source>Open Audio File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2154,6 +2166,14 @@ Sjekk eksportoppsettet ditt og prøv att.</translation>
     </message>
     <message>
         <source>Abort</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select Audio File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save Audio File</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

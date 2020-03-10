@@ -39,6 +39,7 @@ noinst_PROGRAMS = audio_convert_test\
                   getpids_test\
                   log_unlink_test\
                   mcast_recv_test\
+                  metadata_wildcard_test\
                   notification_test\
                   rdxml_parse_test\
                   readcd_test\
@@ -86,6 +87,10 @@ getpids_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@ -lQt
 dist_log_unlink_test_SOURCES = log_unlink_test.cpp log_unlink_test.h
 nodist_log_unlink_test_SOURCES = moc_log_unlink_test.cpp
 log_unlink_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@ -lQt3Support
+
+dist_metadata_wildcard_test_SOURCES = metadata_wildcard_test.cpp metadata_wildcard_test.h
+nodist_metadata_wildcard_test_SOURCES = moc_metadata_wildcard_test.cpp
+metadata_wildcard_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@ -lQt3Support
 
 dist_mcast_recv_test_SOURCES = mcast_recv_test.cpp mcast_recv_test.h
 nodist_mcast_recv_test_SOURCES = moc_mcast_recv_test.cpp

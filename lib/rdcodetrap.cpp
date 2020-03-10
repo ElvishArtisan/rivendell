@@ -2,7 +2,7 @@
 //
 //   A class for trapping arbitrary character sequences.
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -37,7 +37,7 @@ RDCodeTrap::~RDCodeTrap()
 
 void RDCodeTrap::addTrap(int id,const char *code,int length)
 {
-  for(unsigned i=0;i<trap_events.size();i++) {
+  for(int i=0;i<trap_events.size();i++) {
     if(length==trap_events[i].length) {
       if((trap_events[i].id==id)&&
 	 (!strncmp(code,trap_events[i].code,length))) {
@@ -45,7 +45,7 @@ void RDCodeTrap::addTrap(int id,const char *code,int length)
       }
     }
   }
-  trap_events.push_back(RTrapEvent());
+  trap_events.push_back(RDTrapEvent());
   trap_events.back().id=id;
   trap_events.back().code=new char[length];
   memcpy(trap_events.back().code,code,length);
@@ -56,10 +56,10 @@ void RDCodeTrap::addTrap(int id,const char *code,int length)
 
 void RDCodeTrap::removeTrap(int id)
 {
-  for(unsigned i=0;i<trap_events.size();i++) {
+  for(int i=0;i<trap_events.size();i++) {
     if(trap_events[i].id==id) {
       delete trap_events[i].code;
-      vector<RTrapEvent>::iterator it=trap_events.begin()+i;
+      QList<RDTrapEvent>::iterator it=trap_events.begin()+i;
       trap_events.erase(it,it+1);
       i--;
     }
@@ -69,11 +69,11 @@ void RDCodeTrap::removeTrap(int id)
 
 void RDCodeTrap::removeTrap(const char *code,int length)
 {
-  for(unsigned i=0;i<trap_events.size();i++) {
+  for(int i=0;i<trap_events.size();i++) {
     if(length==trap_events[i].length) {
       if(!strncmp(code,trap_events[i].code,length)) {
 	delete trap_events[i].code;
-	vector<RTrapEvent>::iterator it=trap_events.begin()+i;
+	QList<RDTrapEvent>::iterator it=trap_events.begin()+i;
 	trap_events.erase(it,it+1);
 	i--;
       }
@@ -84,12 +84,12 @@ void RDCodeTrap::removeTrap(const char *code,int length)
 
 void RDCodeTrap::removeTrap(int id,const char *code,int length)
 {
-  for(unsigned i=0;i<trap_events.size();i++) {
+  for(int i=0;i<trap_events.size();i++) {
     if(length==trap_events[i].length) {
       if((trap_events[i].id==id)&&
 	 (!strncmp(code,trap_events[i].code,length))) {
 	delete trap_events[i].code;
-	vector<RTrapEvent>::iterator it=trap_events.begin()+i;
+	QList<RDTrapEvent>::iterator it=trap_events.begin()+i;
 	trap_events.erase(it,it+1);
 	i--;
       }
@@ -100,7 +100,7 @@ void RDCodeTrap::removeTrap(int id,const char *code,int length)
 
 void RDCodeTrap::scan(const char *buf,int length)
 {
-  for(unsigned i=0;i<trap_events.size();i++) {
+  for(int i=0;i<trap_events.size();i++) {
     for(int j=0;j<length;j++) {
       if(buf[j]==trap_events[i].code[trap_events[i].istate]) {
 	trap_events[i].istate++;

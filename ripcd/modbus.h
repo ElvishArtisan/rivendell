@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for Modbus TCP
 //
-//   (C) Copyright 2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,7 +25,7 @@
 #include <vector>
 
 #include <qsignalmapper.h>
-#include <q3socket.h>
+#include <qtcpsocket.h>
 #include <qtimer.h>
 
 #include <rd.h>
@@ -53,7 +53,7 @@ class Modbus : public Switcher
  private slots:
   void connectedData();
   void readyReadData();
-  void errorData(int err);
+  void errorData(QAbstractSocket::SocketError err);
   void pollInputs();
   void resetStateData(int line);
   void watchdogData();
@@ -65,7 +65,7 @@ class Modbus : public Switcher
   int modbus_istate;
   int modbus_input_bytes;
   std::vector<char> modbus_input_states;
-  Q3Socket *modbus_socket;
+  QTcpSocket *modbus_socket;
   QTimer *modbus_poll_timer;
   QTimer *modbus_watchdog_timer;
   bool modbus_watchdog_active;

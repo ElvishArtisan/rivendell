@@ -19245,6 +19245,7 @@
 	* Added an rdsoftkeys(1) man page.
 2019-10-31 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.2.0.
+<<<<<<< HEAD
 2019-11-20 Fred Gleason <fredg@paravelsystems.com>
 	* Added interlocks to the 'Edit Switcher' and 'Edit Serial Ports'
 	dialogs in rdadmin(1) to prohibit use of a disabled serial device.
@@ -19533,6 +19534,7 @@
 	* Cleaned up a compiler warning in 'lib/rdcae.cpp'.
 2020-02-07 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.2.1int1.
+<<<<<<< HEAD
 2020-02-07 Fred Gleason <fredg@paravelsystems.com>
 	* Removed Q3Support dependencies from the 'Editing Feed' dialog
 	in rdadmin(1).
@@ -19560,6 +19562,132 @@
 2020-02-11 Fred Gleason <fredg@paravelsys tems.com>
 	* Added a check to the 'Add RSS Feed' dialog in rdadmin(1) to
 	prevent creation of feeds with a blank name.
+2020-02-14 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in the BroadcastTools SS16.4 switcher driver
+	that could cause deadlocks and intermittent operation.
+2020-02-14 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in the BroadcastTools SS4.4 switcher driver
+	that could cause deadlocks and intermittent operation.
+2020-02-14 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up the device access mode in the BroadcastTools 10x1
+	switcher driver.
+2020-02-14 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up the device access mode in the BroadcastTools 16x1
+	switcher driver.
+2020-02-14 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up the device access mode in the BroadcastTools 8x2
+	switcher driver.
+2020-02-14 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in the BroadcastTools ACS8.2 switcher driver
+	that could cause deadlocks and intermittent operation.
+2020-02-14 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in the BroadcastTools ADMS 44.22 switcher driver
+	that could cause deadlocks and intermittent operation.
+2020-02-14 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in the BroadcastTools GPI-16 switcher driver
+	that could cause deadlocks and intermittent operation.
+2020-02-14 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in the BroadcastTools SRC-16 switcher driver
+	that could cause deadlocks and intermittent operation.
+2020-02-14 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in the BroadcastTools SRC-8 III switcher driver
+	that could cause deadlocks and intermittent operation.
+2020-02-14 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up the device access mode in the BroadcastTools SS12.4
+	switcher driver.
+2020-02-14 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up the device access mode in the BroadcastTools SS2.1
+	switcher driver.
+2020-02-14 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in the BroadcastTools SS 4.1 MLR switcher driver
+	that could cause deadlocks and intermittent operation.
+2020-02-14 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in the BroadcastTools SS 4.2 switcher driver
+	that could cause deadlocks and intermittent operation.
+2020-02-14 Fred Gleason <fredg@paravelsystems.com>
+	* Removed superflous poll interface define from the Broadcast Tools
+	SS 4.4 switcher driver.
+2020-02-14 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in the BroadcastTools SS 8.2 switcher driver
+	that could cause deadlocks and intermittent operation.
+2020-02-14 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up the device access mode in the Quartz 1 switcher driver.
+2020-02-14 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up the device access mode in the Ross NK SCP/A switcher
+	driver.
+2020-02-16 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up the device access mode in the SAS 16000 switcher
+	driver.
+2020-02-16 Fred Gleason <fredg@paravelsystems.com>
+	* Removed a bogus Q3Socket dependency from the SAS 16000 switcher
+	driver.
+2020-02-16 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up the device access mode in the SAS 32000 switcher
+	driver.
+2020-02-16 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up the device access mode in the SAS 64000 switcher
+	driver.
+2020-02-16 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up the device access mode in the SAS 64000gpi switcher
+	driver.
+2020-02-16 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up the device access mode in the SAS USI switcher
+	driver.
+2020-02-16 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Q3Socket dependency from the SAS USI switcher driver.
+2020-02-16 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up the device access mode in the SAS USI switcher
+	driver.
+2020-02-17 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up the device access mode in the Starguide 3 switcher
+	driver.
+2020-02-17 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up the device access mode in the Unity 4000 switcher
+	driver.
+2020-02-17 Fred Gleason <fredg@paravelsystems.com>
+	* Cleaned up the tty device access mode in the vGuest switcher
+	driver.
+2020-02-17 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Q3Socket dependency from the WheatNet SLIO switcher
+	driver.
+	* Removed Q3Socket dependency from the WheatNet LIO switcher
+	driver.
+2020-02-17 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Q3Socket dependency from the Software Authority switcher
+	driver.
+2020-02-17 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Q3Socket dependency from the Modbus switcher
+	driver.
+2020-02-17 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Q3Socket dependency from the Quartz 1 switcher driver.
+2020-02-17 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Q3Socket dependency from the Harlond switcher driver.
+2020-02-17 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Q3Socket dependency from the Broadcast Tools Sentinel4Web
+	switcher driver.
+2020-02-17 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Q3Socket dependency from the Broadcast Tools MLR>>Web
+	switcher driver.
+2020-02-17 Fred Gleason <fredg@paravelsystems.com>
+	* Removed Q3Socket dependency from the vGuest switcher driver.
+2020-02-18 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in the implmenetation of the 'Set Serial Trap'
+	['SI'] RML that could cause deadlocks and intermittent operation.
+2020-02-18 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.2.1int2.
+2020-02-18 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdairplay(1) that could cause random segfaults
+	when updating the Label Widget.
+2020-02-18 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'RDLabel' widget.
+2020-02-19 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Disconnect All Jack Ports' ['JZ'] RML.
+2020-02-19 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug with the '%y' metadata wildcard where garbage would
+	be returned if a valid year had not been set.
+	* Added a 'metadata_wildcard_test' harness.
+2020-02-19 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.2.1int3.
 2020-02-20 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'FEEDS.AUDIENCE_METRICS' field to the database.
 	* Incremented the database version to 316.
@@ -19589,5 +19717,78 @@
 2020-02-21 Fred Gleason <fredg@paravelsystems.com>
 	* Tweaked controls to be disabled for superfeeds in the 'Edit Feed'
 	dialog in rdadmin(1).
+2020-02-21 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdlogmanager(1) that caused trailer
+	whitespace to be generated in the 'EXT_DATA', 'EXT_EVENT',
+	'EXT_ANNC_TYPE' and 'EXT_CART_NAME' log fields when importing
+	from a CounterPoint format log.
+2020-02-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added a syslog message for each CIC update in the 'pypad_xds.py'
+	script.
 2020-02-23 Fred Gleason <fredg@paravelsystems.com>
 	* Implemented superfeed in 'rdfeed.xml'.
+2020-02-23 Fred Gleason <fredg@paravelsystems.com>
+	* Added '-lexpat' to the '--libs' output for the 'rivwebcapi'
+	pkg-config profile.
+2020-02-24 Fred Gleason <fredg@paravelsystems.com>
+	* Refactored the 'AR_GET_DISTRO()' autoconf macro to use
+	'/etc/os-release'.
+2020-02-25 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'CounterPoint Traffic Reconciliation' report
+	generator in rdlogmanager(1) that caused it to omit the leading '0'
+	from values in the 'Scheduled event length' column.
+2020-02-25 Fred Gleason <fredg@paravelsystems.com>
+	* Reverted the leading '0' fix to the 'CounterPoint Traffic
+	Reconciliation' report generator.
+	* Added a 'CounterPoint Traffic Reconciliation v2' report.
+2020-02-25 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'Q3ButtonGroup' dependency from the 'Import Audio'
+	dialog.
+2020-02-25 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'Q3FileDialog' dependency from the 'Import Audio'
+	dialog.
+2020-02-25 Fred Gleason <fredg@paravelsystems.com>
+	* Added captioning to the 'Import Audio' dialog.
+2020-02-25 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'Q3Frame' dependency from 'RDBusyBar'.
+	* Add stylesheet support for color rendering in RDBusyBar.
+2020-02-25 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'Q3FileDialog' dependency from the 'Select Cart'
+	dialog.
+2020-02-25 Fred Gleason <fredg@paravelsystems.com>
+	* Added captioning to the 'Select Cart' dialog.
+2020-02-25 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'Q3ProgressDialog' dependency from the 'Select Cart'
+	dialog.
+2020-02-25 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'Q3FileDialog' dependency from rdadmin(1).
+2020-02-25 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'Q3FileDialog' dependency from rddbconfig(8).
+2020-02-25 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'Q3FileDialog' dependency from rddiscimport(1).
+2020-02-25 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'Q3ProgressDialog' dependency from the 'Select Cut'
+	dialog.
+2020-02-25 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'Q3ProgressDialog' dependency from rdadmin(1).
+2020-02-25 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed the layout of the 'Matching Carts' field in rdlibrary(1)'s
+	main window when Realtime Filtering is disabled.
+2020-02-26 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'Q3ProgressBar' dependency from rdairplay(1).
+2020-02-26 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'Q3ProgressBar' dependency from rdcartslots(1).
+2020-02-26 Fred Gleason <fredg@paravelsystems.com>
+	* Added sanity check code to 'RDRender'.
+2020-02-26 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'Q3ProgressBar' dependency from rdlogedit(1).
+2020-02-26 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'Q3ProgressBar' dependency from rddiscimport(1).
+2020-02-26 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdairplay(1) that would cause a hard-timed log
+	event with a 'wait' parameter set to attempt to play the event
+	twice.
+2020-03-09 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rddbmgr(8) that threw a SQL error when attempting
+	to modify a DB containing tables set to use character set UTF-8
+	to schema 297.

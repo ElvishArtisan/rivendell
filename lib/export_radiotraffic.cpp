@@ -2,7 +2,7 @@
 //
 // Export a Rivendell Report to RadioTraffic.com
 //
-//   (C) Copyright 2002-2005,2009,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,8 +30,20 @@
 
 bool RDReport::ExportRadioTraffic(const QString &filename,
 				  const QDate &startdate,const QDate &enddate,
-				  const QString &mixtable)
+				  const QString &mixtable,int version)
 {
+  //
+  // Maintainer's Note: 
+  // This method implements the 'CounterPoint' reconciliation format as
+  // documented in 'docs/misc/scheduler_formats.ods'.
+  //
+  // The 'version' field is for maintaining bug-for-bug backwards
+  // compatibility. Recognized values are:
+  //     0 - The original implementation. This is missing a leading '0'
+  //         column 3 ['Scheduled event length'].
+  //
+  //     1 - Fixes the 'missing leading zero' error in column 3.
+  //
   QString sql;
   RDSqlQuery *q;
   QString air_fmt;
@@ -75,6 +87,9 @@ bool RDReport::ExportRadioTraffic(const QString &filename,
     *strm << q->value(4).toTime().toString("hh:mm:ss")+" ";
     *strm << q->value(2).toDateTime().toString("hh:mm:ss")+" ";
     if(q->value(5).toInt()>0) {
+      if(version>0) {
+	*strm << QString("0");
+      }
       *strm << RDGetTimeLength(q->value(5).toInt(),true,false)+" ";
     }
     else {

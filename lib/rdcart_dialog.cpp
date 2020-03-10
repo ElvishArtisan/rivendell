@@ -2,7 +2,7 @@
 //
 // A widget to select a Rivendell Cart.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,9 +21,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include <q3filedialog.h>
-
 #include <qapplication.h>
+#include <qfiledialog.h>
 #include <qmessagebox.h>
 
 #include "rdapplication.h"
@@ -46,9 +45,11 @@
 #include "../icons/rml5.xpm"
 
 RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
-			   QWidget *parent)
+			   const QString &caption,QWidget *parent)
   : RDDialog(parent)
 {
+  cart_caption=caption;
+
   //
   // Fix the Window Size
   //
@@ -76,7 +77,7 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   cart_import_path=RDGetHomeDir();
   cart_import_file_filter=RD_AUDIO_FILE_FILTER;
 
-  setWindowTitle(tr("Select Cart"));
+  setWindowTitle(caption+" - "+tr("Select Cart"));
 
   //
   // Create Icons
@@ -93,8 +94,7 @@ RDCartDialog::RDCartDialog(QString *filter,QString *group,QString *schedcode,
   // Progress Dialog
   //
   cart_progress_dialog=
-    new Q3ProgressDialog(tr("Please Wait..."),"Cancel",10,this,
-			"cart_progress_dialog",false,
+    new QProgressDialog(tr("Please Wait..."),tr("Cancel"),0,10,this,
 			Qt::WStyle_Customize|Qt::WStyle_NormalBorder);
   cart_progress_dialog->setCaption(" ");
   QLabel *label=new QLabel(tr("Please Wait..."),cart_progress_dialog);
@@ -515,8 +515,10 @@ void RDCartDialog::loadFileData()
   RDWaveData wavedata;
   QString err_msg;
 
-  filename=Q3FileDialog::getOpenFileName(cart_import_path,
-					cart_import_file_filter,this);
+  filename=QFileDialog::getOpenFileName(this,cart_caption+" - "+
+					tr("Open Audio File"),
+					cart_import_path,
+					cart_import_file_filter);
   if(!filename.isEmpty()) {
     cart_import_path=RDGetPathPart(filename);
 
@@ -719,8 +721,8 @@ void RDCartDialog::RefreshCarts()
   q=new RDSqlQuery(sql);
   int step=0;
   int count=0;
-  cart_progress_dialog->setTotalSteps(q->size()/RDCART_DIALOG_STEP_SIZE);
-  cart_progress_dialog->setProgress(0);
+  cart_progress_dialog->setMaximum(q->size()/RDCART_DIALOG_STEP_SIZE);
+  cart_progress_dialog->setValue(0);
   while(q->next()) {
     l=new RDListViewItem(cart_cart_list);
     l->setId(q->value(10).toUInt());
@@ -757,7 +759,7 @@ void RDCartDialog::RefreshCarts()
       l->setText(12,"TFN");
     }
     if(count++>RDCART_DIALOG_STEP_SIZE) {
-      cart_progress_dialog->setProgress(++step);
+      cart_progress_dialog->setValue(++step);
       count=0;
       QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);
     }

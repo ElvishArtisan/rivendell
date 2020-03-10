@@ -41,6 +41,9 @@
 
 #include "rddbmgr.h"
 
+#define RDDBMGR_CHARSET_STRING "pRiKaZiDatFoO"
+#define RDDBMGR_COLLATION_STRING "pRiKaZiDatBaR"
+
 bool MainObject::Check(QString *err_msg)
 {
   if(GetCurrentSchema()!=RD_VERSION_DATABASE) {
@@ -222,6 +225,7 @@ void MainObject::RewriteTable(const QString &tblname,
 			      const QString &new_charset,
 			      const QString &new_collation)
 {
+  QString err_msg;
   QProcess *proc=NULL;
   QStringList args;
   QString tempdir=RDTempDir();
@@ -229,7 +233,9 @@ void MainObject::RewriteTable(const QString &tblname,
     return;
   }
   QString filename=tempdir+"/table.sql";
-  QString temp_filename=tempdir+"/table-temp.sql";
+  QString temp1_filename=tempdir+"/table-temp1.sql";
+  QString temp2_filename=tempdir+"/table-temp2.sql";
+  QString temp3_filename=tempdir+"/table-temp3.sql";
   QString out_filename=tempdir+"/table-out.sql";
   /*
   printf("table \"%s\" using: %s\n",
@@ -256,28 +262,36 @@ void MainObject::RewriteTable(const QString &tblname,
   delete proc;
 
   //
-  // Modify COLLATION
+  // Stage 1
   //
-  args.clear();
-  args.push_back("s/"+old_collation+"/"+new_collation+"/g");
-  args.push_back(filename);
-  proc=new QProcess(this);
-  proc->setStandardOutputFile(temp_filename);
-  proc->start("sed",args);
-  proc->waitForFinished(-1);
-  delete proc;
+  if(!RewriteFile(filename,old_collation,
+		  temp1_filename,RDDBMGR_COLLATION_STRING,
+		  &err_msg)) {
+    fprintf(stderr,"rddbmgr: %s\n",err_msg.toUtf8().constData());
+    exit(1);
+  }
+  if(!RewriteFile(temp1_filename,old_charset,
+		  temp2_filename,RDDBMGR_CHARSET_STRING,
+		  &err_msg)) {
+    fprintf(stderr,"rddbmgr: %s\n",err_msg.toUtf8().constData());
+    exit(1);
+  }
 
   //
-  // Modify CHARSET
+  // Stage 2
   //
-  args.clear();
-  args.push_back("s/"+old_charset+"/"+new_charset+"/g");
-  args.push_back(temp_filename);
-  proc=new QProcess(this);
-  proc->setStandardOutputFile(out_filename);
-  proc->start("sed",args);
-  proc->waitForFinished(-1);
-  delete proc;
+  if(!RewriteFile(temp2_filename,RDDBMGR_COLLATION_STRING,
+		  temp3_filename,new_collation,
+		  &err_msg)) {
+    fprintf(stderr,"rddbmgr: %s\n",err_msg.toUtf8().constData());
+    exit(1);
+  }
+  if(!RewriteFile(temp3_filename,RDDBMGR_CHARSET_STRING,
+		  out_filename,new_charset,
+		  &err_msg)) {
+    fprintf(stderr,"rddbmgr: %s\n",err_msg.toUtf8().constData());
+    exit(1);
+  }
 
   //
   // Push Back Modified Table
@@ -293,15 +307,73 @@ void MainObject::RewriteTable(const QString &tblname,
   proc->setStandardInputFile(out_filename);
   proc->start("mysql",args);
   proc->waitForFinished(-1);
+  if(proc->exitStatus()!=QProcess::NormalExit) {
+    fprintf(stderr,
+	    "rddbmgr: \"mysql %s\" crashed when rewriting table \"%s\"\n",
+	    args.join(" ").toUtf8().constData(),tblname.toUtf8().constData());
+    fprintf(stderr,"rddbmgr: source SQL data in \"%s\"\n",
+	    out_filename.toUtf8().constData());
+    exit(1);
+    }
+  if(proc->exitCode()!=0) {
+    fprintf(stderr,
+	    "rddbmgr: \"mysql %s\" returned exit code %d [%s] when rewriting table \"%s\"\n",
+	    args.join(" ").toUtf8().constData(),
+	    proc->exitCode(),proc->readAllStandardError().constData(),
+	    tblname.toUtf8().constData());
+    fprintf(stderr,"rddbmgr: source SQL data in \"%s\"\n",
+	    out_filename.toUtf8().constData());
+    exit(1);
+  }
   delete proc;
 
   //
   // Clean Up
   //
   unlink(filename.toUtf8());
-  unlink(temp_filename.toUtf8());
+  unlink(temp1_filename.toUtf8());
+  unlink(temp2_filename.toUtf8());
+  unlink(temp3_filename.toUtf8());
   unlink(out_filename.toUtf8());
   rmdir(tempdir);
+}
+
+
+bool MainObject::RewriteFile(const QString &old_filename,
+			     const QString &old_str, 
+			     const QString &new_filename,
+			     const QString &new_str,
+			     QString *err_msg)
+{
+  QStringList args;
+  QProcess *proc=NULL;
+
+  args.clear();
+  args.push_back(QString("s/")+old_str+"/"+new_str+"/g");
+  args.push_back(old_filename);
+  proc=new QProcess(this);
+  proc->setStandardOutputFile(new_filename);
+  proc->start("sed",args);
+  proc->waitForFinished(-1);
+  if(proc->exitStatus()!=QProcess::NormalExit) {
+    *err_msg=QString("\"sed ")+args.join(" ")+"\" "+
+      "crashed when rewriting file \""+old_filename+"\" "+
+      "to \""+new_filename+"\"";
+    delete proc;
+    return false;
+  }
+  if(proc->exitCode()!=0) {
+    *err_msg=QString("\"sed ")+args.join(" ")+"\" "+
+      "returned exit code "+QString().sprintf("%d",proc->exitCode())+
+      "["+QString::fromUtf8(proc->readAllStandardError())+"] "+
+      " when rewriting file \""+old_filename+"\" "+
+      "to \""+new_filename+"\"";
+    delete proc;
+    return false;
+  }
+  delete proc;
+
+  return true;
 }
 
 

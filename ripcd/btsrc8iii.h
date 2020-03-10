@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the BroadcastTools SRC-8 III
 //
-//   (C) Copyright 2002-2005,2010,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,7 +30,6 @@
 #include <switcher.h>
 
 #define BTSRC8III_UNIT_ID 0
-#define BTSRC8III_POLL_INTERVAL 100
 #define BTSRC8III_GPIO_PINS 8
 
 class BtSrc8Iii : public Switcher

@@ -679,7 +679,7 @@ sonidos</translation>
     <message>
         <source>LOG
 REFRESHING</source>
-        <translation>LEYENDO
+        <translation type="obsolete">LEYENDO
 LISTA</translation>
     </message>
     <message>

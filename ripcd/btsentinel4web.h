@@ -2,7 +2,7 @@
 //
 // Rivendell switcher driver for the BroadcastTools Sentinel4Web AES switcher
 //
-//   (C) Copyright 2002-2013,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -25,8 +25,8 @@
 
 #include <vector>
 
-#include <q3socket.h>
 #include <qhostaddress.h>
+#include <qtcpsocket.h>
 #include <qtimer.h>
 
 #include <rd.h>
@@ -56,13 +56,13 @@ class BtSentinel4Web : public Switcher
 
  private slots:
   void connectedData();
-  void errorData(int err);
+  void errorData(QAbstractSocket::SocketError err);
   void readyReadData();
   void watchdogData();
   void watchdogResetData();
 
  private:
-  Q3Socket *bt_socket;
+  QTcpSocket *bt_socket;
   QHostAddress bt_address;
   uint16_t bt_port;
   QTimer *bt_watchdog_timer;

@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the BroadcastTools SS 4.1 MLR
 //
-//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,7 +30,6 @@
 #include <switcher.h>
 
 #define BTSS41MLR_UNIT_ID 0
-#define BTSS41MLR_POLL_INTERVAL 100
 #define BTSS41MLR_GPIO_PINS 16
 
 class BtSs41Mlr : public Switcher

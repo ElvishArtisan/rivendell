@@ -675,7 +675,7 @@ Panel</translation>
     <message>
         <source>LOG
 REFRESHING</source>
-        <translation>LOG
+        <translation type="obsolete">LOG
 AKTUALISIERT</translation>
     </message>
     <message>

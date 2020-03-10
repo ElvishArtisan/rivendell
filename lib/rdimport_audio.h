@@ -2,7 +2,7 @@
 //
 // Audio File Importation Dialog for Rivendell.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,8 +24,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-#include <q3buttongroup.h>
-
+#include <qbuttongroup.h>
 #include <qlabel.h>
 #include <qlineedit.h>
 #include <qtimer.h>
@@ -56,7 +55,8 @@ class RDImportAudio : public RDDialog
  public:
  RDImportAudio(QString cutname,QString *path,RDSettings *settings,
 	       bool *import_metadata,RDWaveData *wavedata,
-	       RDCut *clipboard,bool *running,QWidget *parent=0);
+	       RDCut *clipboard,bool *running,const QString &caption,
+	       QWidget *parent=0);
   ~RDImportAudio();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -92,7 +92,7 @@ class RDImportAudio : public RDDialog
   RDSettings *import_default_settings;
   RDCut *import_clipboard;
   bool *import_running;
-  Q3ButtonGroup *import_mode_group;
+  QButtonGroup *import_mode_group;
   QRadioButton *import_importmode_button;
   QRadioButton *import_exportmode_button;
   QLabel *import_in_filename_label;
@@ -129,6 +129,7 @@ class RDImportAudio : public RDDialog
   RDWaveData *import_wavedata;
   RDAudioImport *import_import_conv;
   RDAudioExport *import_export_conv;
+  QString import_caption;
 };
 
 

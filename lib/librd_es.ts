@@ -761,6 +761,10 @@
         <source>-- End of List --</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>CounterPoint Traffic Reconciliation v2</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddCart</name>
@@ -1215,6 +1219,14 @@ Color</translation>
     <message>
         <source>End</source>
         <translation type="unfinished">Final</translation>
+    </message>
+    <message>
+        <source>Open Audio File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancelar</translation>
     </message>
 </context>
 <context>
@@ -2155,6 +2167,14 @@ Do you still want to proceed?</source>
     <message>
         <source>Abort</source>
         <translation>Abortar</translation>
+    </message>
+    <message>
+        <source>Select Audio File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save Audio File</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

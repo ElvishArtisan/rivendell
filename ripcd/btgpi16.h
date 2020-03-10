@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the BroadcastTools GPI-16
 //
-//   (C) Copyright 2002-2005,2010,2014,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,7 +30,6 @@
 #include <switcher.h>
 
 #define BTGPI16_UNIT_ID 0
-#define BTGPI16_POLL_INTERVAL 100
 #define BTGPI16_GPIO_PINS 16
 
 class BtGpi16 : public Switcher
@@ -48,16 +47,11 @@ class BtGpi16 : public Switcher
 
  private slots:
   void processStatus();
-  //  void gpiOneshotData(int value);
-  //  void gpoOneshotData(int value);
 
  private:
   RDTTYDevice *bt_device;
-  //  RDOneShot *bt_gpi_oneshot;
-  //  RDOneShot *bt_gpo_oneshot;
   int bt_matrix;
   int bt_gpis;
-  //  int bt_gpos;
   int bt_istate;
   bool bt_gpi_state[BTGPI16_GPIO_PINS];
   bool bt_gpi_mask[BTGPI16_GPIO_PINS];

@@ -2,7 +2,7 @@
 //
 // Rivendell switcher driver for the BroadcastTools Sentinel4Web AES switcher
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -36,9 +36,10 @@ BtSentinel4Web::BtSentinel4Web(RDMatrix *matrix,QObject *parent)
   //
   // Socket
   //
-  bt_socket=new Q3Socket(this);
+  bt_socket=new QTcpSocket(this);
   connect(bt_socket,SIGNAL(connected()),this,SLOT(connectedData()));
-  connect(bt_socket,SIGNAL(error(int)),this,SLOT(errorData(int)));
+  connect(bt_socket,SIGNAL(error(QAbstractSocket::SocketError)),
+	  this,SLOT(errorData(QAbstractSocket::SocketError)));
   connect(bt_socket,SIGNAL(readyRead()),this,SLOT(readyReadData()));
 
   //
@@ -139,7 +140,7 @@ void BtSentinel4Web::connectedData()
 }
 
 
-void BtSentinel4Web::errorData(int err)
+void BtSentinel4Web::errorData(QAbstractSocket::SocketError err)
 {
   watchdogData();
 }
@@ -167,9 +168,10 @@ void BtSentinel4Web::watchdogData()
 void BtSentinel4Web::watchdogResetData()
 {
   delete bt_socket;
-  bt_socket=new Q3Socket(this);
+  bt_socket=new QTcpSocket(this);
   connect(bt_socket,SIGNAL(connected()),this,SLOT(connectedData()));
-  connect(bt_socket,SIGNAL(error(int)),this,SLOT(errorData(int)));
+  connect(bt_socket,SIGNAL(error(QAbstractSocket::SocketError)),
+	  this,SLOT(errorData(QAbstractSocket::SocketError)));
   connect(bt_socket,SIGNAL(readyRead()),this,SLOT(readyReadData()));
 
   bt_socket->connectToHost(bt_address.toString(),bt_port);

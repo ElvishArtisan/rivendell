@@ -1,7 +1,7 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v3.2.1int1 -- 7 February 2020
+v3.2.1int3 -- 19 February 2020
 
 Changes:
    MusicBrainz Integration. The CD rippers in rdlibrary(1) can now be
@@ -20,6 +20,8 @@ Changes:
    Filepath Wildcards. Added a 'delta-seconds' modifier to the format for
    filepath wildcards to allow specification of a +/- time offset. See
    Appendix D 'Filepath Wildcards' in the Operations Guide for details.
+
+   New RML. Added a 'Disconnect All Jack Ports' ['JZ'] RML.
 
 Database Update:
    This version of Rivendell uses database schema version 314, and will
