@@ -29,11 +29,11 @@
     </message>
     <message>
         <source>Source Text:</source>
-        <translation>Kjeldetekst:</translation>
+        <translation type="obsolete">Kjeldetekst:</translation>
     </message>
     <message>
         <source>Source URL:</source>
-        <translation>Kjeldeadresse:</translation>
+        <translation type="obsolete">Kjeldeadresse:</translation>
     </message>
     <message>
         <source>Comments URL:</source>

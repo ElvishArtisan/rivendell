@@ -29,11 +29,11 @@
     </message>
     <message>
         <source>Source Text:</source>
-        <translation>Zdrojový text:</translation>
+        <translation type="obsolete">Zdrojový text:</translation>
     </message>
     <message>
         <source>Source URL:</source>
-        <translation>Adresa (URL) zdroje:</translation>
+        <translation type="obsolete">Adresa (URL) zdroje:</translation>
     </message>
     <message>
         <source>Comments URL:</source>

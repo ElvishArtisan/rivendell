@@ -33,11 +33,11 @@
     </message>
     <message>
         <source>Source Text:</source>
-        <translation>Texto Fonte:</translation>
+        <translation type="obsolete">Texto Fonte:</translation>
     </message>
     <message>
         <source>Source URL:</source>
-        <translation>Fonte URL:</translation>
+        <translation type="obsolete">Fonte URL:</translation>
     </message>
     <message>
         <source>Comments URL:</source>

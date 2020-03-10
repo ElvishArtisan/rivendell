@@ -73,11 +73,11 @@
     </message>
     <message>
         <source>Source Text:</source>
-        <translation>Texto fuente:</translation>
+        <translation type="obsolete">Texto fuente:</translation>
     </message>
     <message>
         <source>Source URL:</source>
-        <translation>URL fuente:</translation>
+        <translation type="obsolete">URL fuente:</translation>
     </message>
     <message>
         <source>Episode

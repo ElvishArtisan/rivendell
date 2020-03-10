@@ -19,7 +19,6 @@
 //
 
 #include <qmessagebox.h>
-#include <qradiobutton.h>
 
 #include <rdconf.h>
 #include <rddatedialog.h>
@@ -31,8 +30,6 @@
 EditCast::EditCast(unsigned cast_id,QWidget *parent)
   : RDDialog(parent)
 {
-  int ypos=0;
-
   cast_cast=new RDPodcast(rda->config(),cast_id);
   cast_feed=new RDFeed(cast_cast->feedId(),rda->config());
   cast_status=cast_cast->status();
@@ -42,31 +39,23 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   // Item Media Link
   //
   cast_item_medialink_edit=new QLineEdit(this);
-  cast_item_medialink_edit->setGeometry(135,10,sizeHint().width()-145,20);
   cast_item_medialink_edit->setReadOnly(true);
-  QLabel *cast_item_medialink_label=
+  cast_item_medialink_label=
     new QLabel(cast_item_medialink_edit,tr("Media Link:"),this);
-  cast_item_medialink_label->setGeometry(20,10,110,20);
   cast_item_medialink_label->setFont(labelFont());
   cast_item_medialink_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   if(cast_feed->mediaLinkMode()==RDFeed::LinkNone) {
     cast_item_medialink_edit->hide();
     cast_item_medialink_label->hide();
-    ypos=10;
-  }
-  else {
-    ypos=42;
   }
 
   //
   // Item Title
   //
   cast_item_title_edit=new QLineEdit(this);
-  cast_item_title_edit->setGeometry(135,ypos,sizeHint().width()-145,20);
   cast_item_title_edit->setMaxLength(255);
-  QLabel *cast_item_title_label=
+  cast_item_title_label=
     new QLabel(cast_item_title_edit,tr("Title:"),this);
-  cast_item_title_label->setGeometry(20,ypos,110,20);
   cast_item_title_label->setFont(labelFont());
   cast_item_title_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -74,11 +63,9 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   // Item Author
   //
   cast_item_author_edit=new QLineEdit(this);
-  cast_item_author_edit->setGeometry(135,ypos+22,sizeHint().width()-145,20);
   cast_item_author_edit->setMaxLength(255);
-  QLabel *cast_item_author_label=
+  cast_item_author_label=
     new QLabel(cast_item_author_edit,tr("Author E-Mail:"),this);
-  cast_item_author_label->setGeometry(20,ypos+22,110,20);
   cast_item_author_label->setFont(labelFont());
   cast_item_author_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -86,11 +73,9 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   // Item Category
   //
   cast_item_category_edit=new QLineEdit(this);
-  cast_item_category_edit->setGeometry(135,ypos+44,sizeHint().width()-145,20);
   cast_item_category_edit->setMaxLength(64);
-  QLabel *cast_item_category_label=
+  cast_item_category_label=
     new QLabel(cast_item_category_edit,tr("Category:"),this);
-  cast_item_category_label->setGeometry(20,ypos+44,110,20);
   cast_item_category_label->setFont(labelFont());
   cast_item_category_label->
     setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -99,11 +84,9 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   // Item Link
   //
   cast_item_link_edit=new QLineEdit(this);
-  cast_item_link_edit->setGeometry(135,ypos+66,sizeHint().width()-145,20);
   cast_item_link_edit->setMaxLength(255);
-  QLabel *cast_item_link_label=
+  cast_item_link_label=
     new QLabel(cast_item_link_edit,tr("Link URL:"),this);
-  cast_item_link_label->setGeometry(20,ypos+66,110,20);
   cast_item_link_label->setFont(labelFont());
   cast_item_link_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
@@ -111,187 +94,136 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   // Item Description
   //
   cast_item_description_edit=new QTextEdit(this);
-  cast_item_description_edit->
-    setGeometry(135,ypos+88,sizeHint().width()-145,76);
-  QLabel *cast_item_description_label=
+  cast_item_description_label=
     new QLabel(cast_item_description_edit,tr("Description:"),this);
-  cast_item_description_label->setGeometry(20,ypos+88,110,20);
   cast_item_description_label->setFont(labelFont());
   cast_item_description_label->
     setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
-  // Item Source Text
-  //
-  cast_item_sourcetext_edit=new QLineEdit(this);
-  cast_item_sourcetext_edit->
-    setGeometry(135,ypos+169,sizeHint().width()-145,20);
-  cast_item_sourcetext_edit->setMaxLength(64);
-  QLabel *cast_item_sourcetext_label=
-    new QLabel(cast_item_sourcetext_edit,tr("Source Text:"),this);
-  cast_item_sourcetext_label->setGeometry(20,ypos+169,110,20);
-  cast_item_sourcetext_label->setFont(labelFont());
-  cast_item_sourcetext_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-
-  //
-  // Item Source URL
-  //
-  cast_item_sourceurl_edit=new QLineEdit(this);
-  cast_item_sourceurl_edit->setGeometry(135,ypos+191,sizeHint().width()-145,20);
-  cast_item_sourceurl_edit->setMaxLength(64);
-  QLabel *cast_item_sourceurl_label=
-    new QLabel(cast_item_sourceurl_edit,tr("Source URL:"),this);
-  cast_item_sourceurl_label->setGeometry(20,ypos+191,110,20);
-  cast_item_sourceurl_label->setFont(labelFont());
-  cast_item_sourceurl_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-
-  //
   // Item Comments
   //
   cast_item_comments_edit=new QLineEdit(this);
-  cast_item_comments_edit->setGeometry(135,ypos+213,sizeHint().width()-145,20);
   cast_item_comments_edit->setMaxLength(64);
-  QLabel *cast_item_comments_label=
+  cast_item_comments_label=
     new QLabel(cast_item_comments_edit,tr("Comments URL:"),this);
-  cast_item_comments_label->setGeometry(10,ypos+213,120,20);
   cast_item_comments_label->setFont(labelFont());
   cast_item_comments_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-
-  cast_ypos=233+ypos;
 
   //
   // Effective DateTime
   //
   cast_item_effective_edit=new QDateTimeEdit(this);
-  cast_item_effective_edit->
-    setGeometry(135,cast_ypos,165,20);
-  QLabel *label=new QLabel(cast_item_effective_edit,tr("Air Date/Time:"),this);
-  label->setGeometry(20,cast_ypos,110,20);
-  label->setFont(labelFont());
-  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-  QPushButton *button=new QPushButton(this);
-  button->setGeometry(310,cast_ypos,50,20);
-  button->setFont(subButtonFont());
-  button->setText(tr("&Select"));
-  connect(button,SIGNAL(clicked()),this,SLOT(effectiveSelectData()));
-  cast_ypos+=22;
+  cast_item_effective_label=
+    new QLabel(cast_item_effective_edit,tr("Air Date/Time:"),this);
+  cast_item_effective_label->setFont(labelFont());
+  cast_item_effective_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  cast_item_effective_button=new QPushButton(this);
+  cast_item_effective_button->setFont(subButtonFont());
+  cast_item_effective_button->setText(tr("&Select"));
+  connect(cast_item_effective_button,SIGNAL(clicked()),
+	  this,SLOT(effectiveSelectData()));
 
   //
   // Item Origin
   //
   cast_item_origin_edit=new QLineEdit(this);
   cast_item_origin_edit->setReadOnly(true);
-  cast_item_origin_edit->setGeometry(135,cast_ypos,165,20);
   cast_item_origin_edit->setMaxLength(64);
-  QLabel *cast_item_origin_label=
+  cast_item_origin_label=
     new QLabel(cast_item_origin_edit,tr("Posted At:"),this);
-  cast_item_origin_label->setGeometry(20,cast_ypos,110,20);
   cast_item_origin_label->setFont(labelFont());
   cast_item_origin_label->
     setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-  cast_ypos+=22;
 
   //
   // Item Expiration
   //
   cast_item_expiration_box=new QComboBox(this);
-  cast_item_expiration_box->setGeometry(135,cast_ypos,50,20);
   cast_item_expiration_box->insertItem(tr("No"));
   cast_item_expiration_box->insertItem(tr("Yes"));
   connect(cast_item_expiration_box,SIGNAL(activated(int)),
 	  this,SLOT(expirationSelectedData(int)));
-  label=new QLabel(cast_item_expiration_box,tr("Cast Expires:"),this);
-  label->setGeometry(20,cast_ypos,110,20);
-  label->setFont(labelFont());
-  label->
+  cast_item_expiration_box_label=
+    new QLabel(cast_item_expiration_box,tr("Cast Expires:"),this);
+  cast_item_expiration_box_label->setFont(labelFont());
+  cast_item_expiration_box_label->
     setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-  cast_ypos+=22;
   cast_item_expiration_box->setEnabled(cast_status!=RDPodcast::StatusExpired);
-  label->setEnabled(cast_status!=RDPodcast::StatusExpired);
+  cast_item_expiration_box_label->setEnabled(cast_status!=RDPodcast::StatusExpired);
 
   cast_item_expiration_edit=new QDateEdit(this);
-  cast_item_expiration_edit->setGeometry(135,cast_ypos,95,20);
   cast_item_expiration_label=
     new QLabel(cast_item_expiration_edit,tr("Expires On:"),this);
-  cast_item_expiration_label->setGeometry(20,cast_ypos,110,20);
   cast_item_expiration_label->setFont(labelFont());
   cast_item_expiration_label->
     setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   cast_item_expiration_button=new QPushButton(this);
-  cast_item_expiration_button->setGeometry(240,cast_ypos,50,20);
   cast_item_expiration_button->setFont(subButtonFont());
   cast_item_expiration_button->setText(tr("&Select"));
   connect(cast_item_expiration_button,SIGNAL(clicked()),
 	  this,SLOT(expirationSelectData()));
-  cast_ypos+=27;
   cast_item_expiration_edit->setEnabled(cast_status!=RDPodcast::StatusExpired);
   cast_item_expiration_label->
     setEnabled(cast_status!=RDPodcast::StatusExpired);
   cast_item_expiration_button->
     setEnabled(cast_status!=RDPodcast::StatusExpired);
 
+
+
   //
   // Cast Status
   //
   cast_item_status_group=new QButtonGroup(this);
   cast_item_status_group->setExclusive(true);
-  //  cast_item_status_group->hide();
 
-  QRadioButton *rbutton=new QRadioButton(this);
-  rbutton->setGeometry(140,cast_ypos,15,15);
-  cast_item_status_group->addButton(rbutton,0);
-  label=new QLabel(rbutton,tr("Hold"),this);
-  label->setFont(subButtonFont());
-  label->setGeometry(160,cast_ypos,30,15);
-  label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
-  rbutton->setChecked(true);
-  label->setEnabled(cast_status!=RDPodcast::StatusExpired);
-  rbutton->setEnabled(cast_status!=RDPodcast::StatusExpired);
+  cast_hold_rbutton=new QRadioButton(this);
+  cast_item_status_group->addButton(cast_hold_rbutton,0);
+  cast_hold_label=new QLabel(cast_hold_rbutton,tr("Hold"),this);
+  cast_hold_label->setFont(subButtonFont());
+  cast_hold_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
+  cast_hold_rbutton->setChecked(true);
+  cast_hold_label->setEnabled(cast_status!=RDPodcast::StatusExpired);
+  cast_hold_rbutton->setEnabled(cast_status!=RDPodcast::StatusExpired);
 
-  rbutton=new QRadioButton(this);
-  rbutton->setGeometry(210,cast_ypos,15,15);
-  cast_item_status_group->addButton(rbutton,1);
-  label=new QLabel(rbutton,tr("Active"),this);
-  label->setFont(subLabelFont());
-  label->setGeometry(230,cast_ypos,80,15);
-  label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
-  label->setEnabled(cast_status!=RDPodcast::StatusExpired);
-  label=new QLabel(tr("Posting Status:"),this);
-  label->setGeometry(20,cast_ypos-1,110,20);
-  label->setFont(labelFont());
-  label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-  label->setEnabled(cast_status!=RDPodcast::StatusExpired);
-  rbutton->setEnabled(cast_status!=RDPodcast::StatusExpired);
+  cast_active_rbutton=new QRadioButton(this);
+  cast_item_status_group->addButton(cast_active_rbutton,1);
+  cast_active_label=new QLabel(cast_active_rbutton,tr("Active"),this);
+  cast_active_label->setFont(subLabelFont());
+  cast_active_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
+  cast_active_label->setEnabled(cast_status!=RDPodcast::StatusExpired);
+  cast_status_label=new QLabel(tr("Posting Status:"),this);
+  cast_status_label->setFont(labelFont());
+  cast_status_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  cast_status_label->setEnabled(cast_status!=RDPodcast::StatusExpired);
+  cast_active_rbutton->setEnabled(cast_status!=RDPodcast::StatusExpired);
 
   //
   //  Report Button
   //
-  button=new QPushButton(this);
-  button->setGeometry(10,sizeHint().height()-60,80,50);
-  button->setFont(buttonFont());
-  button->setText(tr("Episode\n&Report"));
-  connect(button,SIGNAL(clicked()),this,SLOT(reportData()));
+  cast_report_button=new QPushButton(this);
+  cast_report_button->setFont(buttonFont());
+  cast_report_button->setText(tr("Episode\n&Report"));
+  connect(cast_report_button,SIGNAL(clicked()),this,SLOT(reportData()));
 
   //
   //  Ok Button
   //
-  button=new QPushButton(this);
-  button->setGeometry(sizeHint().width()-180,sizeHint().height()-60,80,50);
-  button->setDefault(true);
-  button->setFont(buttonFont());
-  button->setText(tr("&OK"));
-  connect(button,SIGNAL(clicked()),this,SLOT(okData()));
+  cast_ok_button=new QPushButton(this);
+  cast_ok_button->setDefault(true);
+  cast_ok_button->setFont(buttonFont());
+  cast_ok_button->setText(tr("&OK"));
+  connect(cast_ok_button,SIGNAL(clicked()),this,SLOT(okData()));
 
   //
   //  Cancel Button
   //
-  button=new QPushButton(this);
-  button->setGeometry(sizeHint().width()-90,sizeHint().height()-60,
-			     80,50);
-  button->setFont(buttonFont());
-  button->setText(tr("&Cancel"));
-  connect(button,SIGNAL(clicked()),this,SLOT(cancelData()));
+  cast_cancel_button=new QPushButton(this);
+  cast_cancel_button->setFont(buttonFont());
+  cast_cancel_button->setText(tr("&Cancel"));
+  connect(cast_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
 
+  //******** END ***********
   //
   // Populate Values
   //
@@ -304,8 +236,6 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
 				 toString("MM/dd/yyyy - hh:mm:ss"));
   cast_item_category_edit->setText(cast_cast->itemCategory());
   cast_item_link_edit->setText(cast_cast->itemLink());
-  cast_item_sourcetext_edit->setText(cast_cast->itemSourceText());
-  cast_item_sourceurl_edit->setText(cast_cast->itemSourceUrl());
   cast_item_description_edit->setText(cast_cast->itemDescription());
   cast_item_comments_edit->setText(cast_cast->itemComments());
   cast_item_effective_edit->
@@ -335,10 +265,7 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
 }
 
 
@@ -351,7 +278,7 @@ EditCast::~EditCast()
 
 QSize EditCast::sizeHint() const
 {
-  return QSize(640,cast_ypos+92);
+  return QSize(640,420);
 } 
 
 
@@ -416,8 +343,6 @@ void EditCast::okData()
   cast_cast->setItemAuthor(cast_item_author_edit->text());
   cast_cast->setItemCategory(cast_item_category_edit->text());
   cast_cast->setItemLink(cast_item_link_edit->text());
-  cast_cast->setItemSourceText(cast_item_sourcetext_edit->text());
-  cast_cast->setItemSourceUrl(cast_item_sourceurl_edit->text());
   cast_cast->setItemDescription(cast_item_description_edit->text());
   cast_cast->setItemComments(cast_item_comments_edit->text());
   cast_cast->
@@ -459,4 +384,65 @@ void EditCast::okData()
 void EditCast::cancelData()
 {
   done(-1);
+}
+
+
+void EditCast::resizeEvent(QResizeEvent *e)
+{
+  int ypos=0;
+  int w=size().width();
+  int h=size().height();
+
+  cast_item_medialink_edit->setGeometry(135,10,size().width()-145,20);
+  cast_item_medialink_label->setGeometry(20,10,110,20);
+  if(cast_feed->mediaLinkMode()==RDFeed::LinkNone) {
+    ypos=10;
+  }
+  else {
+    ypos=42;
+  }
+  cast_item_title_edit->setGeometry(135,ypos,size().width()-145,20);
+  cast_item_title_label->setGeometry(20,ypos,110,20);
+  cast_item_author_edit->setGeometry(135,ypos+22,size().width()-145,20);
+  cast_item_author_label->setGeometry(20,ypos+22,110,20);
+  cast_item_category_edit->setGeometry(135,ypos+44,size().width()-145,20);
+  cast_item_category_label->setGeometry(20,ypos+44,110,20);
+  cast_item_link_edit->setGeometry(135,ypos+66,size().width()-145,20);
+  cast_item_link_label->setGeometry(20,ypos+66,110,20);
+  cast_item_description_label->setGeometry(20,ypos+88,110,20);
+  cast_item_description_edit->
+    setGeometry(135,ypos+88,size().width()-145,h-ypos-297);
+
+  // "Comments URL"
+  cast_item_comments_edit->setGeometry(135,h-207,size().width()-145,20);
+  cast_item_comments_label->setGeometry(10,h-207,120,20);
+
+  // "Air Date/Time"
+  cast_item_effective_edit->setGeometry(135,h-185,165,20);
+  cast_item_effective_label->setGeometry(20,h-185,110,20);
+  cast_item_effective_button->setGeometry(310,h-185,50,20);
+
+  // "Posted At"
+  cast_item_origin_edit->setGeometry(135,h-163,165,20);
+  cast_item_origin_label->setGeometry(20,h-163,110,20);
+
+  // "Cast Expires"
+  cast_item_expiration_box->setGeometry(135,h-141,50,20);
+  cast_item_expiration_box_label->setGeometry(20,h-141,110,20);
+
+  // "Expires On"
+  cast_item_expiration_edit->setGeometry(135,h-119,95,20);
+  cast_item_expiration_label->setGeometry(20,h-119,110,20);
+  cast_item_expiration_button->setGeometry(240,h-119,50,20);
+
+  // "Posting Status"
+  cast_hold_rbutton->setGeometry(140,h-92,15,15);
+  cast_hold_label->setGeometry(160,h-92,30,15);
+  cast_active_rbutton->setGeometry(210,h-92,15,15);
+  cast_active_label->setGeometry(230,h-92,80,15);
+  cast_status_label->setGeometry(20,h-92,110,20);
+
+  cast_report_button->setGeometry(10,size().height()-60,80,50);
+  cast_ok_button->setGeometry(size().width()-180,size().height()-60,80,50);
+  cast_cancel_button->setGeometry(size().width()-90,size().height()-60,80,50);
 }

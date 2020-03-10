@@ -19801,3 +19801,6 @@
 2020-03-10 Fred Gleason <fredg@paravelsystems.com>
 	* Cleaned up formatting of the RSS feeds in rdadmin(1)'s 'List Feeds'
 	dialog.
+2020-03-10 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'Source URL' and 'Source Text' controls from the
+	'Edit Cast' dialog in rdcastmanager(1).

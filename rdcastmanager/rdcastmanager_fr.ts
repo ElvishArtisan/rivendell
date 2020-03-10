@@ -28,14 +28,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Source Text:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Source URL:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Comments URL:</source>
         <translation type="unfinished"></translation>
     </message>
