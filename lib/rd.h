@@ -605,4 +605,9 @@
  */
 #define RD_DEFAULT_SERVICE_TIMEOUT 30
 
+/*
+ * File Extension for RSS XML Feed Files
+ */
+#define RD_RSS_XML_FILE_EXTENSION "rss"
+
 #endif  // RD_H

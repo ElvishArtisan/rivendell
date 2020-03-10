@@ -18,6 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <qmessagebox.h>
 #include <qradiobutton.h>
 
 #include <rdconf.h>
@@ -448,7 +449,8 @@ void EditCast::okData()
     setLastBuildDateTime(RDLocalToUtc(QDateTime(QDate::currentDate(),
 						QTime::currentTime())));
 
-  if(!cast_feed->postXml(&err_msg)) {
+  if(!cast_feed->postXmlConditional("RDCastManager",this)) {
+    return;
   }
   done(0);
 }

@@ -633,6 +633,10 @@ void EditFeed::okData()
   feed_feed->setMediaLinkMode((RDFeed::MediaLinkMode)feed_media_link_mode_box->
 			      currentItem());
 
+  if(!feed_feed->postXmlConditional("RDAdmin",this)) {
+    return;
+  }
+
   done(0);
 }
 

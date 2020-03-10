@@ -24,6 +24,7 @@
 
 #include <qapplication.h>
 #include <qfile.h>
+#include <qmessagebox.h>
 #include <qurl.h>
 
 #include "rdapplication.h"
@@ -45,8 +46,11 @@
 //
 // Default XML Templates
 //
-#define DEFAULT_HEADER_XML "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<rss version=\"2.0\">"
-#define DEFAULT_CHANNEL_XML "<title>%TITLE%</title>\n<description>%DESCRIPTION%</description>\n<category>%CATEGORY%</category>\n<link>%LINK%</link>\n<language>%LANGUAGE%</language>\n<copyright>%COPYRIGHT%</copyright>\n<lastBuildDate>%BUILD_DATE%</lastBuildDate>\n<pubDate>%PUBLISH_DATE%</pubDate>\n<webMaster>%WEBMASTER%</webMaster>\n<generator>%GENERATOR%</generator>"
+//#define DEFAULT_HEADER_XML "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<rss version=\"2.0\">"
+#define DEFAULT_HEADER_XML "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\">"
+
+//#define DEFAULT_CHANNEL_XML "<title>%TITLE%</title>\n<description>%DESCRIPTION%</description>\n<category>%CATEGORY%</category>\n<link>%LINK%</link>\n<language>%LANGUAGE%</language>\n<copyright>%COPYRIGHT%</copyright>\n<lastBuildDate>%BUILD_DATE%</lastBuildDate>\n<pubDate>%PUBLISH_DATE%</pubDate>\n<webMaster>%WEBMASTER%</webMaster>\n<generator>%GENERATOR%</generator>"
+#define DEFAULT_CHANNEL_XML "<title>%TITLE%</title>\n<description>%DESCRIPTION%</description>\n<category>%CATEGORY%</category>\n<link>%LINK%</link>\n<language>%LANGUAGE%</language>\n<copyright>%COPYRIGHT%</copyright>\n<lastBuildDate>%BUILD_DATE%</lastBuildDate>\n<pubDate>%PUBLISH_DATE%</pubDate>\n<webMaster>%WEBMASTER%</webMaster>\n<generator>%GENERATOR%</generator>\n<atom:link href=\"%FEED_URL%\" rel=\"self\" type=\"application/rss+xml\" >"
 #define DEFAULT_ITEM_XML "<title>%ITEM_TITLE%</title>\n<link>%ITEM_LINK%</link>\n<guid isPermaLink=\"false\">%ITEM_GUID%</guid>\n<description>%ITEM_DESCRIPTION%</description>\n<author>%ITEM_AUTHOR%</author>\n<comments>%ITEM_COMMENTS%</comments>\n<source url=\"%ITEM_SOURCE_URL%\">%ITEM_SOURCE_TEXT%</source>\n<enclosure url=\"%ITEM_AUDIO_URL%\" length=\"%ITEM_AUDIO_LENGTH%\"  type=\"audio/mpeg\" />\n<category>%ITEM_CATEGORY%</category>\n<pubDate>%ITEM_PUBLISH_DATE%</pubDate>"
 
 size_t __RDFeed_Readfunction_Callback(char *buffer,size_t size,size_t nitems,
@@ -370,7 +374,7 @@ void RDFeed::setItemXml(const QString &str)
 
 QString RDFeed::feedUrl() const
 {
-  return purgeUrl()+"/"+keyName()+".rss";
+  return purgeUrl()+"/"+keyName()+"."+RD_RSS_XML_FILE_EXTENSION;
 }
 
 
@@ -668,6 +672,23 @@ bool RDFeed::postXml(QString *err_msg)
   }
 
   return ret;
+}
+
+
+bool RDFeed::postXmlConditional(const QString &caption,QWidget *widget)
+{
+  QString err_msg;
+
+  if(!audienceMetrics()) {
+    if(!postXml(&err_msg)) {
+      QMessageBox::warning(widget,caption+" - "+tr("Error"),
+			   tr("XML data upload failed!")+"\n"+
+			   "["+err_msg+"]");
+      return false;
+    }
+  }
+
+  return true;
 }
 
 
@@ -1318,7 +1339,7 @@ unsigned RDFeed::CreateCast(QString *filename,int bytes,int msecs) const
 QString RDFeed::ResolveChannelWildcards(RDSqlQuery *chan_q)
 {
   QString ret=chan_q->value(10).toString();
-  //  ret.replace("%TITLE%",chan_q->value(0).toString());
+
   ret.replace("%TITLE%",RDXmlEscape(chan_q->value(0).toString()));
   ret.replace("%DESCRIPTION%",RDXmlEscape(chan_q->value(1).toString()));
   ret.replace("%CATEGORY%",RDXmlEscape(chan_q->value(2).toString()));
@@ -1331,6 +1352,8 @@ QString RDFeed::ResolveChannelWildcards(RDSqlQuery *chan_q)
   ret.replace("%PUBLISH_DATE%",chan_q->value(8).toDateTime().
 	      toString("ddd, d MMM yyyy hh:mm:ss ")+"GMT");
   ret.replace("%GENERATOR%",QString("Rivendell ")+VERSION);
+  ret.replace("%FEED_URL%",RDXmlEscape(chan_q->value(12).toString())+"/"+
+	      RDXmlEscape(keyName()+"."+RD_RSS_XML_FILE_EXTENSION));
 
   return ret;
 }
@@ -1346,10 +1369,18 @@ QString RDFeed::ResolveItemWildcards(RDSqlQuery *item_q,RDSqlQuery *chan_q)
 	      RDXmlEscape(item_q->value(2).toString()));
   ret.replace("%ITEM_LINK%",RDXmlEscape(item_q->value(3).toString()));
   ret.replace("%ITEM_AUTHOR%",RDXmlEscape(item_q->value(4).toString()));
-  ret.replace("%ITEM_SOURCE_TEXT%",
-	      RDXmlEscape(item_q->value(5).toString()));
-  ret.replace("%ITEM_SOURCE_URL%",
-	      RDXmlEscape(item_q->value(6).toString()));
+  if(chan_q->value(1).toString()=="Y") {  // Audience Metrics
+    ret.replace("%ITEM_SOURCE_TEXT%",
+		RDXmlEscape(item_q->value(5).toString()));
+    ret.replace("%ITEM_SOURCE_URL%",
+		RDXmlEscape(item_q->value(6).toString()));
+  }
+  else {
+    ret.replace("%ITEM_SOURCE_TEXT%",
+		RDXmlEscape(chan_q->value(0).toString()));
+    ret.replace("%ITEM_SOURCE_URL%",
+		RDXmlEscape(baseUrl()+"/"+keyName()));    
+  }
   ret.replace("%ITEM_COMMENTS%",
 	      RDXmlEscape(item_q->value(7).toString()));
   if(chan_q->value(18).toString()=="Y") {

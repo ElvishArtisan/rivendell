@@ -115,6 +115,7 @@ class RDFeed : public QObject
   QString audioUrl(RDFeed::MediaLinkMode mode,const QString &cgi_hostname,
 		   unsigned cast_id);
   bool postXml(QString *err_msg);
+  bool postXmlConditional(const QString &caption,QWidget *widget);
   bool deleteXml(QString *err_msg);
   unsigned postCut(RDUser *user,RDStation *station,
 		   const QString &cutname,Error *err,bool log_debug,
