@@ -1066,20 +1066,47 @@ RDMacro MainObject::ForwardConvert(const RDMacro &rml) const
 void MainObject::RunCommand(const QString &user,const QString &group,
 			    const QString &cmd) const
 {
+  //
+  // Maintainer's Note: Everything passed to execv() must be either in
+  //                    local or heap storage. *Don't* pass (const char *)
+  //                    references from Qt directly!
+  //
+
+  //
+  // Build the command
+  //
   QStringList f0=cmd.split(" ",QString::SkipEmptyParts);
+  char userarg[256];
+  strncpy(userarg,user.toUtf8().constData(),255);
+  char grouparg[256];
+  strncpy(grouparg,group.toUtf8().constData(),255);
   const char *args[f0.size()+6];
   args[0]=RD_RUNUSER;
   args[1]="-u";
-  args[2]=user.toUtf8();
+  args[2]=userarg;
   args[3]="-g";
-  args[4]=group.toUtf8();
+  args[4]=grouparg;
+  QList<char *> rargs;
   for(int i=0;i<f0.size();i++) {
-    args[5+i]=f0.at(i).toUtf8();
+    rargs.push_back((char *)malloc(f0.at(i).toUtf8().length()+1));
+    strcpy(rargs.back(),f0.at(i).toUtf8());
+    args[5+i]=rargs.back();
   }
   args[5+f0.size()]=(char *)NULL;
+
+  //
+  // Run it
+  //
   if(vfork()==0) {
     execv(RD_RUNUSER,(char * const *)args);
-    exit(0);
+    exit(0);  // Just in case...
+  }
+
+  //
+  // Free the heap storage
+  //
+  for(int i=0;i<rargs.size();i++) {
+    free(rargs.at(i));
   }
 }
 

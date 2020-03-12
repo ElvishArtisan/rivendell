@@ -19735,3 +19735,6 @@
 	to schema 297.
 2020-03-12 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to v3.2.1int4.
+2020-03-12 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a race in ripcd(8) that caused arguments to the
+	'Run Shell Command' ['RN'] macro to be corrupted.
