@@ -19733,3 +19733,5 @@
 	* Fixed a bug in rddbmgr(8) that threw a SQL error when attempting
 	to modify a DB containing tables set to use character set UTF-8
 	to schema 297.
+2020-03-12 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to v3.2.1int4.
