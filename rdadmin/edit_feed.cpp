@@ -386,7 +386,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   feed_channel_webmaster_edit->setText(feed_feed->channelWebmaster());
   feed_channel_description_edit->setPlainText(feed_feed->channelDescription());
   feed_channel_language_edit->setText(feed_feed->channelLanguage());
-  feed_base_url_edit->setText(feed_feed->baseUrl());
+  feed_base_url_edit->setText(feed_feed->baseUrl(""));
   feed_base_preamble_edit->setText(feed_feed->basePreamble());
   feed_purge_url_edit->setText(feed_feed->purgeUrl());
   feed_purge_username_edit->setText(feed_feed->purgeUsername());

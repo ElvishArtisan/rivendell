@@ -177,6 +177,7 @@ ListCasts::ListCasts(unsigned feed_id,bool is_super,QWidget *parent)
   list_report_button=new QPushButton(this);
   list_report_button->setFont(buttonFont());
   list_report_button->setText(tr("Subscription\n&Report"));
+  list_report_button->setEnabled(list_feed->audienceMetrics());
   connect(list_report_button,SIGNAL(clicked()),this,SLOT(reportData()));
 
   //

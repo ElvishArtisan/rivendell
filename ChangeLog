@@ -19804,3 +19804,7 @@
 2020-03-10 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'Source URL' and 'Source Text' controls from the
 	'Edit Cast' dialog in rdcastmanager(1).
+2020-03-12 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug where '<enclosure>' tags in RSS Superfeeds were rendered
+	with an incorrect 'url=' attribute.
+	* Added indentation formatting on RSS XML feeds.

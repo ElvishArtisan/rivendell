@@ -63,7 +63,8 @@ class RDFeed : public QObject
   void setChannelWebmaster(const QString &str) const;
   QString channelLanguage() const;
   void setChannelLanguage(const QString &str);
-  QString baseUrl() const;
+  QString baseUrl(const QString &subfeed_key_name) const;
+  QString baseUrl(int subfeed_feed_id) const;
   void setBaseUrl(const QString &str) const;
   QString basePreamble() const;
   void setBasePreamble(const QString &str) const;

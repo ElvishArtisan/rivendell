@@ -204,6 +204,7 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   cast_report_button=new QPushButton(this);
   cast_report_button->setFont(buttonFont());
   cast_report_button->setText(tr("Episode\n&Report"));
+  cast_report_button->setEnabled(cast_feed->audienceMetrics());
   connect(cast_report_button,SIGNAL(clicked()),this,SLOT(reportData()));
 
   //
