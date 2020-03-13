@@ -19738,3 +19738,8 @@
 2020-03-12 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a race in ripcd(8) that caused arguments to the
 	'Run Shell Command' ['RN'] macro to be corrupted.
+2020-03-13 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'Edit Event' dialog in rdlogmanager(1)
+	that caused the Transition Type dropdown to be greyed-out when
+	the 'IMPORT' controls were set to use the built-in music
+	scheduler.

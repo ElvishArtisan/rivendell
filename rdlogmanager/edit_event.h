@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Log Event
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -120,7 +120,7 @@ class EditEvent : public RDDialog
   QCheckBox *event_position_box;
   QTimeEdit *event_position_edit;
   QLabel *event_timetype_header;
-  QCheckBox *event_timetype_box;
+  QCheckBox *event_timetype_check;
   QLabel *event_timetype_label;
   QCheckBox *event_post_box;
   QLabel *event_post_label;
