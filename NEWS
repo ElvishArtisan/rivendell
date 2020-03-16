@@ -1,12 +1,12 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v3.2.1int3 -- 19 February 2020
+v3.3.0 -- 16 March 2020
 
 Changes:
    MusicBrainz Integration. The CD rippers in rdlibrary(1) can now be
-   configured to use MusicBrainz as a metadata source in addition to
-   FreeDB. (Configured in RDAdmin->ManageHosts->RDlibrary).
+   configured to use MusicBrainz as a metadata source as an alternative
+   to FreeDB. (Configured in RDAdmin->ManageHosts->RDlibrary).
 
    CD-TEXT Support. Removed support for CD-TEXT.
 
@@ -22,6 +22,10 @@ Changes:
    Appendix D 'Filepath Wildcards' in the Operations Guide for details.
 
    New RML. Added a 'Disconnect All Jack Ports' ['JZ'] RML.
+
+   New Report. Added a 'CounterPoint Traffic Reconciliation v2' report.
+
+   Multiple bugfixes. See 'ChangeLog' for details.
 
 Database Update:
    This version of Rivendell uses database schema version 314, and will

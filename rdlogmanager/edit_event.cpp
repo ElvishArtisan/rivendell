@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Log Event
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -246,10 +246,10 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   //
   // Time Type
   //
-  event_timetype_box=new QCheckBox(this);
-  event_timetype_box->setGeometry(CENTER_LINE+15,85,15,15);
+  event_timetype_check=new QCheckBox(this);
+  event_timetype_check->setGeometry(CENTER_LINE+15,85,15,15);
   event_timetype_label=
-    new QLabel(event_timetype_box,tr("Use hard start time"),this);
+    new QLabel(event_timetype_check,tr("Use hard start time"),this);
   event_timetype_label->setGeometry(CENTER_LINE+35,84,120,16);
   event_timetype_label->setFont(labelFont());
   event_timetype_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
@@ -289,7 +289,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   event_grace_edit=new QTimeEdit(this);
   event_grace_edit->setGeometry(CENTER_LINE+500,95,60,20);
   event_grace_edit->setDisplayFormat("mm:ss");
-  connect(event_timetype_box,SIGNAL(toggled(bool)),
+  connect(event_timetype_check,SIGNAL(toggled(bool)),
 	  this,SLOT(timeToggledData(bool)));
   connect(event_grace_group,SIGNAL(buttonClicked(int)),
 	  this,SLOT(graceClickedData(int)));
@@ -415,7 +415,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   connect(event_source_group,SIGNAL(buttonClicked(int)),
 	  this,SLOT(importClickedData(int)));
   rbutton=new QRadioButton(this);
-  event_source_group->addButton(rbutton,0);
+  event_source_group->addButton(rbutton,RDEventLine::None);
   rbutton->setGeometry(CENTER_LINE+80,362,15,15);
   label=new QLabel(rbutton,tr("None"),this);
   label->setFont(labelFont());
@@ -423,7 +423,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
   
   rbutton=new QRadioButton(this);
-  event_source_group->addButton(rbutton,1);
+  event_source_group->addButton(rbutton,RDEventLine::Traffic);
   rbutton->setGeometry(CENTER_LINE+160,362,15,15);
   label=new QLabel(rbutton,tr("From Traffic"),this);
   label->setFont(labelFont());
@@ -432,7 +432,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   
   rbutton=new QRadioButton(this);
   rbutton->setGeometry(CENTER_LINE+280,362,15,15);
-  event_source_group->addButton(rbutton,2);
+  event_source_group->addButton(rbutton,RDEventLine::Music);
   label=new QLabel(rbutton,tr("From Music"),this);
   label->setFont(labelFont());
   label->setGeometry(CENTER_LINE+300,362,150,15);
@@ -440,7 +440,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   
   rbutton=new QRadioButton(this);
   rbutton->setGeometry(CENTER_LINE+400,362,15,15);
-  event_source_group->addButton(rbutton,3);
+  event_source_group->addButton(rbutton,RDEventLine::Scheduler);
   label=new QLabel(rbutton,tr("Select from:"),this);
   label->setFont(labelFont());
   label->setGeometry(CENTER_LINE+420,362,150,15);
@@ -745,13 +745,13 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   int grace=0;
   switch(event_event->timeType()) {
   case RDLogLine::Relative:
-    event_timetype_box->setChecked(false);
+    event_timetype_check->setChecked(false);
     event_grace_group->button(0)->setChecked(true);
     timeToggledData(false);
     break;
 	
   case RDLogLine::Hard:
-    event_timetype_box->setChecked(true);
+    event_timetype_check->setChecked(true);
     event_post_box->setChecked(event_event->postPoint());
     event_transtype_box->setCurrentItem(event_event->firstTransType());
     switch((grace=event_event->graceTime())) {
@@ -816,7 +816,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   }
   delete q;
   prepositionToggledData(event_position_box->isChecked());
-  timeToggledData(event_timetype_box->isChecked());
+  timeToggledData(event_timetype_check->isChecked());
   importClickedData(event_source_group->checkedId());
   preimportChangedData(event_preimport_list->childCount());
   SetPostTransition();
@@ -897,11 +897,11 @@ void EditEvent::cartClickedData(Q3ListViewItem *item)
 void EditEvent::prepositionToggledData(bool state)
 {
   event_position_edit->setEnabled(state);
-  event_timetype_box->setDisabled(state);
+  event_timetype_check->setDisabled(state);
   event_timetype_header->setDisabled(state);
   event_timetype_label->setDisabled(state);
   event_preimport_list->setAllowFirstTrans(!state);
-  if(event_timetype_box->isChecked()) {
+  if(event_timetype_check->isChecked()) {
     event_grace_groupbox->setDisabled(state);
     event_immediate_button->setDisabled(state);
     event_next_button->setDisabled(state);
@@ -919,7 +919,7 @@ void EditEvent::prepositionToggledData(bool state)
     event_preimport_list->setForceTrans(RDLogLine::Stop);
   }
   else {
-    if(event_timetype_box->isChecked()) {
+    if(event_timetype_check->isChecked()) {
       event_preimport_list->
 	setForceTrans((RDLogLine::TransType)event_transtype_box->
 		      currentItem());
@@ -956,10 +956,15 @@ void EditEvent::timeToggledData(bool state)
     }
   }
   event_preimport_list->refreshList();
+  event_time_label->
+    setEnabled((event_source_group->checkedId()==RDEventLine::Scheduler)||
+	       state);
+  event_transtype_box->
+    setEnabled((event_source_group->checkedId()==RDEventLine::Scheduler)||
+	       state);
   if(state) {
     graceClickedData(event_grace_group->checkedId());
     event_time_label->setEnabled(true);
-    event_transtype_box->setEnabled(true);
     timeTransitionData(2);
     event_position_box->setDisabled(true);
     event_position_edit->setDisabled(true);
@@ -973,8 +978,6 @@ void EditEvent::timeToggledData(bool state)
   else {
     event_post_box->setChecked(false);
     event_grace_edit->setDisabled(true);
-    event_time_label->setDisabled(true);
-    event_transtype_box->setDisabled(true);
     if(event_position_box->isChecked()) {
       event_position_edit->setEnabled(true);
     }
@@ -998,8 +1001,8 @@ void EditEvent::graceClickedData(int id)
 {
   switch(id) {
   case 0:
-    event_post_label->setEnabled(event_timetype_box->isChecked());
-    event_post_box->setEnabled(event_timetype_box->isChecked());
+    event_post_label->setEnabled(event_timetype_check->isChecked());
+    event_post_box->setEnabled(event_timetype_check->isChecked());
     timeTransitionData(RDLogLine::Stop);
     event_grace_edit->setDisabled(true);
     break;
@@ -1024,7 +1027,7 @@ void EditEvent::graceClickedData(int id)
 
 void EditEvent::timeTransitionData(int id)
 {
-  if(event_timetype_box->isChecked()) {
+  if(event_timetype_check->isChecked()) {
     event_preimport_list->
       setForceTrans((RDLogLine::TransType)event_transtype_box->currentItem());
   }
@@ -1062,7 +1065,11 @@ void EditEvent::importClickedData(int id)
   event_endslop_edit->setEnabled(statesched);
   event_endslop_label->setEnabled(statesched);
   event_endslop_unit->setEnabled(statesched);
-  if((!event_timetype_box->isChecked())&&(!event_position_box->isChecked())) {
+  event_time_label->setEnabled((id==RDEventLine::Scheduler)||
+			       (event_timetype_check->isChecked()));
+  event_transtype_box->setEnabled((id==RDEventLine::Scheduler)||
+				  (event_timetype_check->isChecked()));
+  if((!event_timetype_check->isChecked())&&(!event_position_box->isChecked())) {
     if((state&&(event_preimport_list->childCount()==0))||(!state)) {
       event_firsttrans_box->setEnabled(state);
       event_firsttrans_label->setEnabled(state);
@@ -1094,7 +1101,7 @@ void EditEvent::importClickedData(int id)
 void EditEvent::preimportChangedData(int size)
 {
   if((size==0)&&(event_source_group->checkedId()!=0)&&
-     (!event_position_box->isChecked())&&(!event_timetype_box->isChecked())) {
+     (!event_position_box->isChecked())&&(!event_timetype_check->isChecked())) {
     event_firsttrans_box->setEnabled(true);
     event_firsttrans_label->setEnabled(true);
     event_firsttrans_unit->setEnabled(true);
@@ -1394,7 +1401,7 @@ void EditEvent::RefreshLibrary()
 void EditEvent::SetPostTransition()
 {
   if((event_position_box->isChecked())||
-     (event_timetype_box->isChecked())||
+     (event_timetype_check->isChecked())||
      (event_preimport_list->childCount()!=0)||
      (event_source_group->checkedId()!=0)) {
     event_postimport_list->setAllowStop(false);
@@ -1408,7 +1415,7 @@ void EditEvent::SetPostTransition()
       event_postimport_list->setForceTrans(RDLogLine::Stop);
     }
     else {
-      if(event_timetype_box->isChecked()) {
+      if(event_timetype_check->isChecked()) {
 	event_postimport_list->
 	  setForceTrans((RDLogLine::TransType)event_transtype_box->
 			currentItem());
@@ -1439,7 +1446,7 @@ void EditEvent::Save()
   else {
     event_event->setPreposition(-1);
   }
-  if(event_timetype_box->isChecked()) {
+  if(event_timetype_check->isChecked()) {
     event_event->setTimeType(RDLogLine::Hard);
     event_event->setPostPoint(event_post_box->isChecked());
     event_event->setFirstTransType((RDLogLine::TransType)
@@ -1478,7 +1485,7 @@ void EditEvent::Save()
     setImportSource((RDEventLine::ImportSource)event_source_group->checkedId());
   event_event->setStartSlop(QTime().msecsTo(event_startslop_edit->time()));
   event_event->setEndSlop(QTime().msecsTo(event_endslop_edit->time()));
-  if(!event_timetype_box->isChecked()) {
+  if(!event_timetype_check->isChecked()) {
     event_event->
       setFirstTransType((RDLogLine::TransType)event_firsttrans_box->
 			currentItem());
@@ -1540,7 +1547,7 @@ QString EditEvent::GetProperties()
     properties+=tr("Cue")+
       "(-"+event_position_edit->time().toString("mm:ss")+")";
   }
-  if(event_timetype_box->isChecked()) {
+  if(event_timetype_check->isChecked()) {
     trans_type=(RDLogLine::TransType)event_transtype_box->currentItem();
   }
   else {
@@ -1580,7 +1587,7 @@ QString EditEvent::GetProperties()
     break;
   }
 
-  if(event_timetype_box->isChecked()) {
+  if(event_timetype_check->isChecked()) {
     switch(event_grace_group->checkedId()) {
     case 0:
       properties+=tr(", Timed(Start)");
