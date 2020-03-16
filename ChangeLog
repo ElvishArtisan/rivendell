@@ -19743,3 +19743,5 @@
 	that caused the Transition Type dropdown to be greyed-out when
 	the 'IMPORT' controls were set to use the built-in music
 	scheduler.
+2020-03-16 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to v3.3.0.
