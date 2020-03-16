@@ -59,6 +59,8 @@ class RDFeed : public QObject
   void setChannelLink(const QString &str) const;
   QString channelCopyright() const;
   void setChannelCopyright(const QString &str) const;
+  QString channelEditor() const;
+  void setChannelEditor(const QString &str) const;
   QString channelWebmaster() const;
   void setChannelWebmaster(const QString &str) const;
   QString channelLanguage() const;

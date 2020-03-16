@@ -13,6 +13,7 @@ CHANNEL_DESCRIPTION  text
 CHANNEL_CATEGORY     varchar(64)
 CHANNEL_LINK         varchar(191)
 CHANNEL_COPYRIGHT    varchar(64)
+CHANNEL_EDITOR       varchar(64)
 CHANNEL_WEBMASTER    varchar(64)
 CHANNEL_LANGUAGE     varchar(5)
 BASE_URL             varchar(191)

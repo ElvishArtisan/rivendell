@@ -19816,3 +19816,12 @@
 	that caused the Transition Type dropdown to be greyed-out when
 	the 'IMPORT' controls were set to use the built-in music
 	scheduler.
+2020-03-16 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the maximum length of RSS <channel> entries to match
+	the current DB schema in the 'Edit Feed' dialog in rdadmin(1).
+	* Added a 'FEEDS.CHANNEL_EDITOR' field to the database.
+	* Incremented the database version to 318.
+	* Added 'RDFeed::channelEditor()' and
+	'RDFeed::setChannelEditor()' methods.
+	* Added an 'Editor' control to the 'Channel' controls in the
+	'Edit Feed' dialog in rdadmin(1).

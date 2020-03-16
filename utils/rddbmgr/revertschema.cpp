@@ -42,6 +42,15 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
 
   //
+  // Revert 318
+  //
+  if((cur_schema==318)&&(set_schema<cur_schema)) {
+    DropColumn("FEEDS","CHANNEL_EDITOR");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 317
   //
   if((cur_schema==317)&&(set_schema<cur_schema)) {

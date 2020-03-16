@@ -70,6 +70,9 @@ class EditFeed : public RDDialog
   QLineEdit *feed_channel_category_edit;
   QLineEdit *feed_channel_link_edit;
   QLineEdit *feed_channel_copyright_edit;
+  QLabel *feed_channel_editor_label;
+  QLineEdit *feed_channel_editor_edit;
+  QLabel *feed_channel_webmaster_label;
   QLineEdit *feed_channel_webmaster_edit;
   QLineEdit *feed_channel_language_edit;
   QLineEdit *feed_base_url_edit;
@@ -103,7 +106,6 @@ class EditFeed : public RDDialog
   QLabel *feed_channel_category_label;
   QLabel *feed_channel_link_label;
   QLabel *feed_channel_copyright_label;
-  QLabel *feed_channel_webmaster_label;
   QLabel *feed_channel_language_label;
   QLabel *feed_channel_description_label;
   QLabel *feed_base_url_label;

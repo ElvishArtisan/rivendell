@@ -1668,6 +1668,10 @@ Feeds</source>
         <source>Download URL</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Editor:</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditFeedPerms</name>
