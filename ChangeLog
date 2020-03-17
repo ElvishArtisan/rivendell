@@ -19825,3 +19825,8 @@
 	'RDFeed::setChannelEditor()' methods.
 	* Added an 'Editor' control to the 'Channel' controls in the
 	'Edit Feed' dialog in rdadmin(1).
+2020-03-16 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RSS_SCHEMAS' table to the database.
+	* Incremented the database version to 319.
+	* Added an 'RSS Schema' dropdown to the 'Edit Feed' dialog in
+	rdadmin(1).

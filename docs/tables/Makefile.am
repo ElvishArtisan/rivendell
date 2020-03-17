@@ -2,7 +2,7 @@
 ##
 ## docs/tables/automake.am for Rivendell
 ##
-## (C) Copyright 2002-2018 Fred Gleason <fredg@salemradiolabs.com>
+## (C) Copyright 2002-2020 Fred Gleason <fredg@salemradiolabs.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -91,6 +91,7 @@ EXTRA_DIST = audio_cards.txt\
              report_services.txt\
              report_stations.txt\
              reports.txt\
+             rss_schemas.txt\
              rule_lines.txt\
              service_clocks.txt\
              service_perms.txt\

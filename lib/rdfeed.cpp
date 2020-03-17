@@ -359,6 +359,19 @@ void RDFeed::setPurgePassword(const QString &str) const
 }
 
 
+RDFeed::RssSchema RDFeed::rssSchema() const
+{
+  return (RDFeed::RssSchema)RDGetSqlValue("FEEDS","KEY_NAME",feed_keyname,
+					  "RSS_SCHEMA").toUInt();
+}
+
+
+void RDFeed::setRssSchema(RDFeed::RssSchema schema) const
+{
+  SetRow("RSS_SCHEMA",(unsigned)schema);
+}
+
+
 QString RDFeed::headerXml() const
 {
   return RDGetSqlValue("FEEDS","KEY_NAME",feed_keyname,"HEADER_XML").
@@ -991,36 +1004,45 @@ QString RDFeed::rssXml(QString *err_msg,bool *ok)
   QString sql;
   RDSqlQuery *q;
   RDSqlQuery *q1;
+  RDFeed::RssSchema rss_schema=rssSchema();
+  QString schema_table="RSS_SCHEMAS";
 
   if(ok!=NULL) {
     *ok=false;
   }
+  if(rss_schema==RDFeed::CustomSchema) {
+    schema_table="FEEDS";
+  }
   sql=QString("select ")+
-    "CHANNEL_TITLE,"+        // 00
-    "CHANNEL_DESCRIPTION,"+  // 01
-    "CHANNEL_CATEGORY,"+     // 02
-    "CHANNEL_LINK,"+         // 03
-    "CHANNEL_COPYRIGHT,"+    // 04
-
-    "CHANNEL_EDITOR,"+       // 05
-
-    "CHANNEL_WEBMASTER,"+    // 06
-    "CHANNEL_LANGUAGE,"+     // 07
-    "LAST_BUILD_DATETIME,"+  // 08
-    "ORIGIN_DATETIME,"+      // 09
-    "HEADER_XML,"+           // 10
-    "CHANNEL_XML,"+          // 11
-    "ITEM_XML,"+             // 12
-    "BASE_URL,"+             // 13
-    "ID,"+                   // 14
-    "UPLOAD_EXTENSION,"+     // 15
-    "CAST_ORDER,"+           // 16
-    "REDIRECT_PATH,"+        // 17
-    "BASE_PREAMBLE,"+        // 18
-    "AUDIENCE_METRICS,"+     // 19
-    "IS_SUPERFEED "+         // 20
-    "from FEEDS where "+
-    "KEY_NAME=\""+RDEscapeString(keyName())+"\"";
+    "FEEDS.CHANNEL_TITLE,"+        // 00
+    "FEEDS.CHANNEL_DESCRIPTION,"+  // 01
+    "FEEDS.CHANNEL_CATEGORY,"+     // 02
+    "FEEDS.CHANNEL_LINK,"+         // 03
+    "FEEDS.CHANNEL_COPYRIGHT,"+    // 04
+    "FEEDS.CHANNEL_EDITOR,"+       // 05
+    "FEEDS.CHANNEL_WEBMASTER,"+    // 06
+    "FEEDS.CHANNEL_LANGUAGE,"+     // 07
+    "FEEDS.LAST_BUILD_DATETIME,"+  // 08
+    "FEEDS.ORIGIN_DATETIME,"+      // 09
+    schema_table+".HEADER_XML,"+   // 10
+    schema_table+".CHANNEL_XML,"+  // 11
+    schema_table+".ITEM_XML,"+     // 12
+    "FEEDS.BASE_URL,"+             // 13
+    "FEEDS.ID,"+                   // 14
+    "FEEDS.UPLOAD_EXTENSION,"+     // 15
+    "FEEDS.CAST_ORDER,"+           // 16
+    "FEEDS.REDIRECT_PATH,"+        // 17
+    "FEEDS.BASE_PREAMBLE,"+        // 18
+    "FEEDS.AUDIENCE_METRICS,"+     // 19
+    "FEEDS.IS_SUPERFEED ";         // 20
+  if(rss_schema==RDFeed::CustomSchema) {
+    sql+="from FEEDS where ";
+  }
+  else {
+    sql+=QString("from FEEDS left join RSS_SCHEMAS ")+
+      "on FEEDS.RSS_SCHEMA=RSS_SCHEMAS.ID where ";
+  }
+  sql+="FEEDS.KEY_NAME=\""+RDEscapeString(keyName())+"\"";
   q=new RDSqlQuery(sql);
   if(!q->first()) {
     *err_msg="no feed matches the supplied key name";
@@ -1298,6 +1320,103 @@ QString RDFeed::errorString(RDFeed::Error err)
 }
 
 
+QString RDFeed::rssSchemaString(RDFeed::RssSchema schema)
+{
+  QString ret="Unknown";
+
+  switch(schema) {
+  case RDFeed::CustomSchema:
+    ret="[custom schema]";
+    break;
+
+  case RDFeed::Rss202Schema:
+    ret="RSS 2.0.2";
+    break;
+
+  case RDFeed::LastSchema:
+    break;
+  }
+
+  return ret;
+}
+
+
+QString RDFeed::rssHeaderTemplate(RDFeed::RssSchema schema)
+{
+  QString ret;
+
+  switch(schema) {
+  case RDFeed::Rss202Schema:
+    ret=QString("<?xml version=\"1.0\" encoding=\"UTF-8\"?>")+"\n"+
+      "<rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\">\n";
+    break;
+
+  case RDFeed::CustomSchema:
+  case RDFeed::LastSchema:
+    break;
+  }
+
+  return ret;
+}
+
+
+QString RDFeed::rssChannelTemplate(RDFeed::RssSchema schema)
+{
+  QString ret;
+
+  switch(schema) {
+  case RDFeed::Rss202Schema:
+    ret=QString("<title>%TITLE%</title>\n")+
+      "<description>%DESCRIPTION%</description>\n"+
+      "<category>%CATEGORY%</category>\n"+
+      "<link>%LINK%</link>\n"+
+      "<language>%LANGUAGE%</language>\n"+
+      "<copyright>%COPYRIGHT%</copyright>\n"+
+      "<lastBuildDate>%BUILD_DATE%</lastBuildDate>\n"+
+      "<pubDate>%PUBLISH_DATE%</pubDate>\n"+
+      "<managingEditor>%EDITOR%</managingEditor>\n"+
+      "<webMaster>%WEBMASTER%</webMaster>\n"+
+      "<generator>%GENERATOR%</generator>\n"+
+      "<image>%IMAGE%</image>\n"+
+      "<atom:link href=\"%FEED_URL%\" rel=\"self\" type=\"application/rss+xml\" />\n";
+    break;
+
+  case RDFeed::CustomSchema:
+  case RDFeed::LastSchema:
+    break;
+  }
+
+  return ret;
+}
+
+
+QString RDFeed::rssItemTemplate(RDFeed::RssSchema schema)
+{
+  QString ret;
+
+  switch(schema) {
+  case RDFeed::Rss202Schema:
+    ret=QString("<title>%ITEM_TITLE%</title>\n")+
+      "<link>%ITEM_LINK%</link>\n"+
+      "<guid isPermaLink=\"false\">%ITEM_GUID%</guid>\n"+
+      "<description>%ITEM_DESCRIPTION%</description>\n"+
+      "<author>%ITEM_AUTHOR%</author>\n"+
+      "<comments>%ITEM_COMMENTS%</comments>\n"+
+      "<source url=\"%ITEM_SOURCE_URL%\">%ITEM_SOURCE_TEXT%</source>\n"+
+      "<enclosure url=\"%ITEM_AUDIO_URL%\" length=\"%ITEM_AUDIO_LENGTH%\"  type=\"audio/mpeg\" />\n"+
+      "<category>%ITEM_CATEGORY%</category>\n"+
+      "<pubDate>%ITEM_PUBLISH_DATE%</pubDate>\n";
+    break;
+
+  case RDFeed::CustomSchema:
+  case RDFeed::LastSchema:
+    break;
+  }
+
+  return ret;
+}
+
+
 unsigned RDFeed::CreateCast(QString *filename,int bytes,int msecs) const
 {
   QString sql;
@@ -1391,7 +1510,7 @@ QString RDFeed::ResolveChannelWildcards(RDSqlQuery *chan_q)
 
 QString RDFeed::ResolveItemWildcards(RDSqlQuery *item_q,RDSqlQuery *chan_q)
 {
-  QString ret="      "+chan_q->value(11).toString();
+  QString ret="      "+chan_q->value(12).toString();
 
   ret.replace("\n","\r\n      ");
   ret.replace("%ITEM_TITLE%",RDXmlEscape(item_q->value(0).toString()));

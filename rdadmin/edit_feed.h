@@ -44,11 +44,12 @@ class EditFeed : public RDDialog
   QSizePolicy sizePolicy() const;
 
  private slots:
-  void isSuperfeedChangedData(int n);
+   //  void isSuperfeedChangedData(int n);
+  void comboboxActivatedData(int n);
+  void checkboxToggledData(bool state);
+  void lineeditChangedData(const QString &str);
   void selectSubfeedsData();
-  void purgeUsernameChangedData(const QString &username);
   void setFormatData();
-  void normalizeCheckData(bool state);
   void redirectToggledData(bool state);
   void okData();
   void cancelData();
@@ -57,6 +58,7 @@ class EditFeed : public RDDialog
   void resizeEvent(QResizeEvent *e);
   
  private:
+  void UpdateControlState();
   RDFeed *feed_feed;
   QLabel *feed_keyname_label;
   QLineEdit *feed_keyname_edit;
@@ -82,6 +84,8 @@ class EditFeed : public RDDialog
   QLineEdit *feed_purge_username_edit;
   QLabel *feed_purge_password_label;
   QLineEdit *feed_purge_password_edit;
+  QLabel *feed_rss_schema_label;
+  QComboBox *feed_rss_schema_box;
   QTextEdit *feed_header_xml_edit;
   QTextEdit *feed_channel_xml_edit;
   QTextEdit *feed_item_xml_edit;
@@ -90,7 +94,7 @@ class EditFeed : public RDDialog
   QCheckBox *feed_keep_metadata_box;
   RDSettings feed_settings;
   QLineEdit *feed_format_edit;
-  QCheckBox *feed_normalize_box;
+  QCheckBox *feed_normalize_check;
   QLabel *feed_normalize_label;
   QSpinBox *feed_normalize_spin;
   QLineEdit *feed_extension_edit;

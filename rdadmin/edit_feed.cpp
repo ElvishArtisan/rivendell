@@ -39,6 +39,9 @@
 EditFeed::EditFeed(const QString &feed,QWidget *parent)
   : RDDialog(parent)
 {
+  QString sql;
+  RDSqlQuery *q=NULL;
+
   //
   // Fix the Window Size
   //
@@ -63,7 +66,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   feed_is_superfeed_box->insertItem(0,tr("No"));
   feed_is_superfeed_box->insertItem(1,tr("Yes"));
   connect(feed_is_superfeed_box,SIGNAL(activated(int)),
-	  this,SLOT(isSuperfeedChangedData(int)));
+	  this,SLOT(comboboxActivatedData(int)));
   feed_is_superfeed_label=new QLabel(tr("Is Superfeed")+":",this);
   feed_is_superfeed_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   feed_is_superfeed_label->setFont(labelFont());
@@ -183,7 +186,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   feed_purge_username_edit=new QLineEdit(this);
   feed_purge_username_edit->setMaxLength(64);
   connect(feed_purge_username_edit,SIGNAL(textChanged(const QString &)),
-	  this,SLOT(purgeUsernameChangedData(const QString &)));
+	  this,SLOT(lineeditChangedData(const QString &)));
   feed_purge_username_label=
     new QLabel(feed_purge_username_edit,tr("Username:"),this);
   feed_purge_username_label->setFont(labelFont());
@@ -216,14 +219,14 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   //
   // Normalize Check Box
   //
-  feed_normalize_box=new QCheckBox(this);
-  feed_normalize_box->setChecked(true);
+  feed_normalize_check=new QCheckBox(this);
+  feed_normalize_check->setChecked(true);
   feed_normalize_check_label=
-    new QLabel(feed_normalize_box,tr("Normalize"),this);
+    new QLabel(feed_normalize_check,tr("Normalize"),this);
   feed_normalize_check_label->setFont(labelFont());
   feed_normalize_check_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-  connect(feed_normalize_box,SIGNAL(toggled(bool)),
-	  this,SLOT(normalizeCheckData(bool)));
+  connect(feed_normalize_check,SIGNAL(toggled(bool)),
+	  this,SLOT(checkboxToggledData(bool)));
 
   //
   // Normalize Level
@@ -340,6 +343,27 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   feed_redirect_url_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
+  // RSS Schema
+  //
+  feed_rss_schema_box=new QComboBox(this);
+  sql=QString("select ")+
+    "ID,"+    // 00
+    "NAME "+  // 01
+    "from RSS_SCHEMAS order by NAME";
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    feed_rss_schema_box->
+      insertItem(feed_rss_schema_box->count(),q->value(1).toString(),
+		 q->value(0).toUInt());
+  }
+  delete q;
+  connect(feed_rss_schema_box,SIGNAL(activated(int)),
+	  this,SLOT(comboboxActivatedData(int)));
+  feed_rss_schema_label=new QLabel(tr("RSS Schema")+":",this);
+  feed_rss_schema_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  feed_rss_schema_label->setFont(labelFont());
+
+  //
   // Header XML
   //
   feed_header_xml_edit=new QTextEdit(this);
@@ -403,6 +427,13 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   feed_purge_url_edit->setText(feed_feed->purgeUrl());
   feed_purge_username_edit->setText(feed_feed->purgeUsername());
   feed_purge_password_edit->setText(feed_feed->purgePassword());
+  RDFeed::RssSchema schema=feed_feed->rssSchema();
+  for(int i=0;i<feed_rss_schema_box->count();i++) {
+    if(feed_rss_schema_box->itemData(i).toInt()==schema) {
+      feed_rss_schema_box->setCurrentItem(i);
+      continue;
+    }
+  }
   feed_header_xml_edit->setPlainText(feed_feed->headerXml());
   feed_channel_xml_edit->setPlainText(feed_feed->channelXml());
   feed_item_xml_edit->setPlainText(feed_feed->itemXml());
@@ -417,21 +448,21 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   feed_extension_edit->setText(feed_feed->uploadExtension());
   feed_format_edit->setText(feed_settings.description());
   if(feed_feed->normalizeLevel()>0) {
-    feed_normalize_box->setChecked(false);
+    feed_normalize_check->setChecked(false);
   }
   else {
-    feed_normalize_box->setChecked(true);
+    feed_normalize_check->setChecked(true);
     feed_normalize_spin->setValue(feed_feed->normalizeLevel()/1000);
   }
   feed_castorder_box->setCurrentItem(feed_feed->castOrder());
   feed_media_link_mode_box->setCurrentItem((int)feed_feed->mediaLinkMode());
   feed_redirect_url_edit->setText(feed_feed->redirectPath());
   feed_redirect_check->setChecked(!feed_redirect_url_edit->text().isEmpty());
-  normalizeCheckData(feed_normalize_box->isChecked());
 
-  isSuperfeedChangedData(0);
   connect(feed_redirect_check,SIGNAL(toggled(bool)),
 	  this,SLOT(redirectToggledData(bool)));
+
+  UpdateControlState();
 }
 
 
@@ -447,84 +478,22 @@ QSizePolicy EditFeed::sizePolicy() const
 }
 
 
-void EditFeed::isSuperfeedChangedData(int n)
+
+void EditFeed::comboboxActivatedData(int n)
 {
-  bool superfeed=feed_is_superfeed_box->currentIndex();
-  bool redirected=feed_redirect_check->isChecked();
+  UpdateControlState();
+}
 
-  feed_is_superfeed_label->setDisabled(redirected);
-  feed_is_superfeed_box->setDisabled(redirected);
-  feed_is_superfeed_button->setDisabled(redirected||(!superfeed));
 
-  feed_audience_metrics_check->setDisabled(redirected);
-  feed_audience_metrics_label->setDisabled(redirected);
+void EditFeed::checkboxToggledData(bool state)
+{
+  UpdateControlState();
+}
 
-  feed_channel_title_edit->setDisabled(redirected);
-  feed_channel_description_edit->setDisabled(redirected);
-  feed_channel_category_edit->setDisabled(redirected);
-  feed_channel_link_edit->setDisabled(redirected);
-  feed_channel_copyright_edit->setDisabled(redirected);
-  feed_channel_editor_label->setDisabled(redirected);
-  feed_channel_editor_edit->setDisabled(redirected);
-  feed_channel_webmaster_label->setDisabled(redirected);
-  feed_channel_webmaster_edit->setDisabled(redirected);
-  feed_channel_language_edit->setDisabled(redirected);
-  feed_channel_title_label->setDisabled(redirected);
-  feed_channel_category_label->setDisabled(redirected);
-  feed_channel_link_label->setDisabled(redirected);
-  feed_channel_copyright_label->setDisabled(redirected);
-  feed_channel_language_label->setDisabled(redirected);
-  feed_channel_description_label->setDisabled(redirected);
 
-  feed_redirect_url_label->setEnabled(redirected);
-  feed_redirect_url_edit->setEnabled(redirected);
-
-  feed_base_url_edit->setDisabled(redirected);
-  feed_purge_url_edit->setDisabled(redirected);
-  feed_purge_username_label->setDisabled(redirected);
-  feed_purge_username_edit->setDisabled(redirected);
-  feed_purge_password_label->setDisabled(redirected);
-  feed_purge_password_edit->setDisabled(redirected);
-
-  feed_max_shelf_life_spin->setDisabled(redirected||superfeed);
-  feed_autopost_box->setDisabled(redirected||superfeed);
-  feed_keep_metadata_box->setDisabled(redirected);
-  feed_keep_metadata_label->setDisabled(redirected);
-  feed_format_edit->setDisabled(redirected||superfeed);
-  feed_normalize_box->setDisabled(redirected||superfeed);
-  feed_extension_edit->setDisabled(redirected||superfeed);
-  feed_castorder_box->setDisabled(redirected);
-  feed_format_button->setDisabled(redirected||superfeed);
-  feed_base_url_label->setDisabled(redirected);
-  feed_base_preamble_label->setDisabled(redirected);
-  feed_purge_url_label->setDisabled(redirected);
-  feed_max_shelf_life_label->setDisabled(redirected||superfeed);
-  feed_max_shelf_life_unit_label->setDisabled(redirected||superfeed);
-  feed_autopost_label->setDisabled(redirected||superfeed);
-  feed_format_label->setDisabled(redirected||superfeed);
-  feed_normalize_check_label->setDisabled(redirected||superfeed);
-  feed_normalize_unit_label->setDisabled(redirected||superfeed);
-  feed_castorder_label->setDisabled(redirected);
-  feed_extension_label->setDisabled(redirected||superfeed);
-  feed_channel_section_groupbox->setDisabled(redirected);
-
-  feed_normalize_label->
-    setDisabled(redirected||superfeed||(!feed_normalize_box->isChecked()));
-  feed_normalize_spin->
-    setDisabled(redirected||superfeed||(!feed_normalize_box->isChecked()));
-  feed_normalize_unit_label->
-    setDisabled(redirected||superfeed||(!feed_normalize_box->isChecked()));
-  feed_media_link_mode_box->setDisabled(redirected||superfeed);
-  feed_media_link_mode_label->setDisabled(redirected||superfeed);
-
-  feed_header_xml_label->setDisabled(redirected);
-  feed_header_xml_edit->setDisabled(redirected);
-
-  feed_channel_xml_label->setDisabled(redirected);
-  feed_channel_xml_edit->setDisabled(redirected);
-
-  feed_item_xml_label->setDisabled(redirected|superfeed);
-  feed_item_xml_edit->setDisabled(redirected||superfeed);
+void EditFeed::lineeditChangedData(const QString &str)
+{
+  UpdateControlState();
 }
 
 
@@ -533,17 +502,6 @@ void EditFeed::selectSubfeedsData()
   EditSuperfeed *d=new EditSuperfeed(feed_feed,this);
   d->exec();
   delete d;
-}
-
-
-void EditFeed::purgeUsernameChangedData(const QString &username)
-{
-  feed_purge_password_label->
-    setDisabled(username.isEmpty()||feed_purge_url_edit->text().isEmpty()||
-		feed_redirect_check->isChecked());
-  feed_purge_password_edit->
-    setDisabled(username.isEmpty()||feed_purge_url_edit->text().isEmpty()||
-		feed_redirect_check->isChecked());
 }
 
 
@@ -556,13 +514,6 @@ void EditFeed::setFormatData()
   feed_format_edit->setText(feed_settings.description());
 }
 
-
-void EditFeed::normalizeCheckData(bool state)
-{
-  feed_normalize_label->setEnabled(state);
-  feed_normalize_spin->setEnabled(state);
-  feed_normalize_unit_label->setEnabled(state);
-}
 
 void EditFeed::redirectToggledData(bool state)
 {
@@ -577,7 +528,7 @@ void EditFeed::redirectToggledData(bool state)
 	return;
     }
   }
-  isSuperfeedChangedData(0);
+  UpdateControlState();
 }
 
 
@@ -624,6 +575,9 @@ void EditFeed::okData()
   feed_feed->setPurgeUrl(feed_purge_url_edit->text());
   feed_feed->setPurgeUsername(feed_purge_username_edit->text());
   feed_feed->setPurgePassword(feed_purge_password_edit->text());
+  feed_feed->
+    setRssSchema((RDFeed::RssSchema)feed_rss_schema_box->
+		 itemData(feed_rss_schema_box->currentIndex()).toUInt());
   feed_feed->setHeaderXml(feed_header_xml_edit->text());
   feed_feed->setChannelXml(feed_channel_xml_edit->text());
   feed_feed->setItemXml(feed_item_xml_edit->text());
@@ -638,7 +592,7 @@ void EditFeed::okData()
   feed_feed->setUploadBitRate(feed_settings.bitRate());
   feed_feed->setUploadQuality(feed_settings.quality());
   feed_feed->setUploadExtension(feed_extension_edit->text());
-  if(feed_normalize_box->isChecked()) {
+  if(feed_normalize_check->isChecked()) {
     feed_feed->setNormalizeLevel(feed_normalize_spin->value()*1000);
   }
   else {
@@ -703,7 +657,7 @@ void EditFeed::resizeEvent(QResizeEvent *e)
   feed_format_label->setGeometry(5,398,145,20);
   feed_format_button->setGeometry(450,398,40,24);
 
-  feed_normalize_box->setGeometry(155,422,15,15);
+  feed_normalize_check->setGeometry(155,422,15,15);
   feed_normalize_check_label->setGeometry(175,420,83,20);
   feed_normalize_spin->setGeometry(295,418,40,20);
   feed_normalize_label->setGeometry(245,418,45,20);
@@ -737,15 +691,111 @@ void EditFeed::resizeEvent(QResizeEvent *e)
   feed_redirect_url_edit->setGeometry(85,626,405,20);
   feed_redirect_url_label->setGeometry(40,626,40,19);
 
-  feed_header_xml_edit->setGeometry(615,10,size().width()-625,76);
-  feed_header_xml_label->setGeometry(520,10,90,19);
+  feed_rss_schema_label->setGeometry(520,10,90,19);
+  feed_rss_schema_box->setGeometry(615,10,200,19);
 
-  feed_channel_xml_edit->setGeometry(615,88,size().width()-625,216);
-  feed_channel_xml_label->setGeometry(520,88,90,19);
+  feed_header_xml_label->setGeometry(520,32,90,19);
+  feed_header_xml_edit->setGeometry(615,32,size().width()-625,76);
 
-  feed_item_xml_edit->setGeometry(615,310,size().width()-625,240);
-  feed_item_xml_label->setGeometry(520,310,90,19);
+  feed_channel_xml_label->setGeometry(520,110,90,19);
+  feed_channel_xml_edit->setGeometry(615,110,size().width()-625,216);
+
+  feed_item_xml_label->setGeometry(520,332,90,19);
+  feed_item_xml_edit->setGeometry(615,332,size().width()-625,240);
 
   feed_ok_button->setGeometry(size().width()-180,size().height()-60,80,50);
   feed_cancel_button->setGeometry(size().width()-90,size().height()-60,80,50);
+}
+
+
+void EditFeed::UpdateControlState()
+{
+  bool superfeed=feed_is_superfeed_box->currentIndex();
+  bool redirected=feed_redirect_check->isChecked();
+  bool custom_schema=
+    feed_rss_schema_box->itemData(feed_rss_schema_box->currentIndex()).toInt()==
+    RDFeed::CustomSchema;
+
+  feed_is_superfeed_label->setDisabled(redirected);
+  feed_is_superfeed_box->setDisabled(redirected);
+  feed_is_superfeed_button->setDisabled(redirected||(!superfeed));
+
+  feed_audience_metrics_check->setDisabled(redirected);
+  feed_audience_metrics_label->setDisabled(redirected);
+
+  feed_channel_title_edit->setDisabled(redirected);
+  feed_channel_description_edit->setDisabled(redirected);
+  feed_channel_category_edit->setDisabled(redirected);
+  feed_channel_link_edit->setDisabled(redirected);
+  feed_channel_copyright_edit->setDisabled(redirected);
+  feed_channel_editor_label->setDisabled(redirected);
+  feed_channel_editor_edit->setDisabled(redirected);
+  feed_channel_webmaster_label->setDisabled(redirected);
+  feed_channel_webmaster_edit->setDisabled(redirected);
+  feed_channel_language_edit->setDisabled(redirected);
+  feed_channel_title_label->setDisabled(redirected);
+  feed_channel_category_label->setDisabled(redirected);
+  feed_channel_link_label->setDisabled(redirected);
+  feed_channel_copyright_label->setDisabled(redirected);
+  feed_channel_language_label->setDisabled(redirected);
+  feed_channel_description_label->setDisabled(redirected);
+
+  feed_redirect_url_label->setEnabled(redirected);
+  feed_redirect_url_edit->setEnabled(redirected);
+
+  feed_base_url_edit->setDisabled(redirected);
+  feed_purge_url_edit->setDisabled(redirected);
+  feed_purge_username_label->setDisabled(redirected);
+  feed_purge_username_edit->setDisabled(redirected);
+  feed_purge_password_label->setDisabled(redirected);
+  feed_purge_password_edit->setDisabled(redirected);
+
+  feed_max_shelf_life_spin->setDisabled(redirected||superfeed);
+  feed_autopost_box->setDisabled(redirected||superfeed);
+  feed_keep_metadata_box->setDisabled(redirected);
+  feed_keep_metadata_label->setDisabled(redirected);
+  feed_format_edit->setDisabled(redirected||superfeed);
+  feed_normalize_check->setDisabled(redirected||superfeed);
+  feed_extension_edit->setDisabled(redirected||superfeed);
+  feed_castorder_box->setDisabled(redirected);
+  feed_format_button->setDisabled(redirected||superfeed);
+  feed_base_url_label->setDisabled(redirected);
+  feed_base_preamble_label->setDisabled(redirected);
+  feed_purge_url_label->setDisabled(redirected);
+  feed_max_shelf_life_label->setDisabled(redirected||superfeed);
+  feed_max_shelf_life_unit_label->setDisabled(redirected||superfeed);
+  feed_autopost_label->setDisabled(redirected||superfeed);
+  feed_format_label->setDisabled(redirected||superfeed);
+  feed_normalize_check_label->setDisabled(redirected||superfeed);
+  feed_normalize_unit_label->setDisabled(redirected||superfeed);
+  feed_castorder_label->setDisabled(redirected);
+  feed_extension_label->setDisabled(redirected||superfeed);
+  feed_channel_section_groupbox->setDisabled(redirected);
+
+  feed_normalize_label->
+    setDisabled(redirected||superfeed||(!feed_normalize_check->isChecked()));
+  feed_normalize_spin->
+    setDisabled(redirected||superfeed||(!feed_normalize_check->isChecked()));
+  feed_normalize_unit_label->
+    setDisabled(redirected||superfeed||(!feed_normalize_check->isChecked()));
+  feed_media_link_mode_box->setDisabled(redirected||superfeed);
+  feed_media_link_mode_label->setDisabled(redirected||superfeed);
+
+  feed_header_xml_label->setDisabled(redirected||(!custom_schema));
+  feed_header_xml_edit->setDisabled(redirected||(!custom_schema));
+
+  feed_channel_xml_label->setDisabled(redirected||(!custom_schema));
+  feed_channel_xml_edit->setDisabled(redirected||(!custom_schema));
+
+  feed_item_xml_label->setDisabled(redirected||superfeed||(!custom_schema));
+  feed_item_xml_edit->setDisabled(redirected||superfeed||(!custom_schema));
+
+  feed_purge_password_label->
+    setDisabled(feed_purge_username_edit->text().isEmpty()||
+		feed_purge_url_edit->text().isEmpty()||
+		feed_redirect_check->isChecked());
+  feed_purge_password_edit->
+    setDisabled(feed_purge_username_edit->text().isEmpty()||
+		feed_purge_url_edit->text().isEmpty()||
+		feed_redirect_check->isChecked());
 }

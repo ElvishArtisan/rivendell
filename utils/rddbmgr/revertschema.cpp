@@ -42,6 +42,40 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
 
   //
+  // Revert 319
+  //
+  if((cur_schema==319)&&(set_schema<cur_schema)) {
+    sql=QString("select ID,RSS_SCHEMA from FEEDS where RSS_SCHEMA!=0");
+    q=new RDSqlQuery(sql);
+    while(q->next()) {
+      sql=QString("select ")+
+	"HEADER_XML,"+   // 00
+	"CHANNEL_XML,"+  // 01
+	"ITEM_XML "+     // 02
+	"from RSS_SCHEMAS where "+
+	QString().sprintf("ID=%u",q->value(1).toUInt());
+      q1=new RDSqlQuery(sql);
+      if(q1->first()) {
+	QString("update FEEDS set ")+
+	  "HEADER_XML=\""+RDEscapeString(q1->value(0).toString())+"\","+
+	  "CHANNEL_XML=\""+RDEscapeString(q1->value(1).toString())+"\","+
+	  "ITEM_XML=\""+RDEscapeString(q1->value(2).toString())+"\" "+
+	  "where "+
+	  QString().sprintf("ID=%u",q->value(0).toUInt());
+	if(!RDSqlQuery::apply(sql,err_msg)) {
+	  return false;
+	}
+      }
+      delete q1;
+    }
+    delete q;
+    DropColumn("FEEDS","RSS_SCHEMA");
+    DropTable("RSS_SCHEMAS");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 318
   //
   if((cur_schema==318)&&(set_schema<cur_schema)) {

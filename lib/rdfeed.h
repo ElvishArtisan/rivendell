@@ -39,6 +39,7 @@ class RDFeed : public QObject
   enum Error {ErrorOk=0,ErrorNoFile=1,ErrorCannotOpenFile=2,
 	      ErrorUnsupportedType=3,ErrorUploadFailed=4,ErrorGeneral=5};
   enum MediaLinkMode {LinkNone=0,LinkDirect=1,LinkCounted=2};
+  enum RssSchema {CustomSchema=0,Rss202Schema=1,LastSchema=2};
   RDFeed(const QString &keyname,RDConfig *config,QObject *parent=0);
   RDFeed(unsigned id,RDConfig *config,QObject *parent=0);
   QString keyName() const;
@@ -76,6 +77,8 @@ class RDFeed : public QObject
   void setPurgeUsername(const QString &str) const;
   QString purgePassword() const;
   void setPurgePassword(const QString &str) const;
+  RssSchema rssSchema() const;
+  void setRssSchema(RssSchema schema) const;
   QString headerXml() const;
   void setHeaderXml(const QString &str);
   QString channelXml() const;
@@ -130,6 +133,10 @@ class RDFeed : public QObject
   static unsigned create(const QString &keyname,bool enable_users,
 			 QString *err_msg,const QString &exemplar="");
   static QString errorString(RDFeed::Error err);
+  static QString rssSchemaString(RDFeed::RssSchema schema);
+  static QString rssHeaderTemplate(RssSchema schema);
+  static QString rssChannelTemplate(RssSchema schema);
+  static QString rssItemTemplate(RssSchema schema);
 
  signals:
   void postProgressChanged(int step);

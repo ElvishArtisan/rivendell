@@ -1524,6 +1524,10 @@ Feeds</source>
         <source>Editor:</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>RSS Schema</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditFeedPerms</name>

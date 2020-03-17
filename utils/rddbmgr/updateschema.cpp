@@ -23,6 +23,7 @@
 #include <rdcart.h>
 #include <rddb.h>
 #include <rdescape_string.h>
+#include <rdfeed.h>
 #include <rdpaths.h>
 
 #include "rddbmgr.h"
@@ -9958,6 +9959,51 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
   if((cur_schema<318)&&(set_schema>cur_schema)) {
     sql=QString("alter table FEEDS add column ")+
       "CHANNEL_EDITOR varchar(64) after CHANNEL_COPYRIGHT";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
+  if((cur_schema<319)&&(set_schema>cur_schema)) {
+    sql=QString("create table RSS_SCHEMAS (")+
+      "ID int unsigned primary key,"+
+      "NAME varchar(64) unique not null,"+
+      "HEADER_XML text,"+
+      "CHANNEL_XML text,"+
+      "ITEM_XML text,"+
+      "index NAME_IDX(NAME))";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    for(int i=0;i<RDFeed::LastSchema;i++) {
+      RDFeed::RssSchema schema=(RDFeed::RssSchema)i;
+      sql=QString("insert into RSS_SCHEMAS set ")+
+	QString().sprintf("ID=%u,",schema)+
+	"NAME=\""+RDEscapeString(RDFeed::rssSchemaString(schema))+"\"";
+      if(!RDFeed::rssHeaderTemplate(schema).isEmpty()) {
+	sql+=",HEADER_XML=\""+
+	  RDEscapeString(RDFeed::rssHeaderTemplate(schema))+
+	  "\"";
+      }
+      if(!RDFeed::rssChannelTemplate(schema).isEmpty()) {
+	sql+=",CHANNEL_XML=\""+
+	  RDEscapeString(RDFeed::rssChannelTemplate(schema))+"\"";
+      }
+      if(!RDFeed::rssItemTemplate(schema).isEmpty()) {
+	sql+=",ITEM_XML=\""+
+	  RDEscapeString(RDFeed::rssItemTemplate(schema))+
+	  "\"";
+      }
+      if(!RDSqlQuery::apply(sql,err_msg)) {
+	return false;
+      }
+    }
+
+    sql=QString("alter table FEEDS add column ")+
+      "RSS_SCHEMA int unsigned not null default 0 after PURGE_PASSWORD";
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }
