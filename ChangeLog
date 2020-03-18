@@ -19745,3 +19745,7 @@
 	scheduler.
 2020-03-16 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to v3.3.0.
+2020-03-18 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdairplay(1) that caused two events to be
+	started by a single spacebar tap if a SoundPanel event had been
+	played previously.
