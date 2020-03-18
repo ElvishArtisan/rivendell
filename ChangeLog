@@ -19830,3 +19830,7 @@
 	* Incremented the database version to 319.
 	* Added an 'RSS Schema' dropdown to the 'Edit Feed' dialog in
 	rdadmin(1).
+2020-03-18 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdairplay(1) that caused two events to be
+	started by a single spacebar tap if a SoundPanel event had been
+	played previously.

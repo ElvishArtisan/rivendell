@@ -40,6 +40,7 @@ RDPanelButton::RDPanelButton(int row,int col,RDStation *station,bool flash,
   button_move_count=-1;
   button_allow_drags=false;
   clear();
+  setFocusPolicy(Qt::NoFocus);
 }
 
 
