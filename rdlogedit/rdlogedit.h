@@ -28,6 +28,9 @@
 
 #include "list_listviewitem.h"
 
+#define RDLOGEDIT_POSITION_FILENAME ".rdlogedit"
+#define RDLOGEDIT_DEFAULT_WIDTH 640
+#define RDLOGEDIT_DEFAULT_HEIGHT 480
 #define RDLOGEDIT_USAGE "\n"
 
 class MainWidget : public RDWidget
@@ -65,6 +68,8 @@ class MainWidget : public RDWidget
   void SendNotification(RDNotification::Action action,const QString &logname);
   void LockList();
   void UnlockList();
+  void LoadPositions() const;
+  void SavePositions() const;
   QString log_filename;
   QString log_import_path;
   QLabel *log_user_label;

@@ -2,7 +2,7 @@
 //
 // Rivendell database management utility
 //
-//   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,8 +22,6 @@
 #define RDDBMGR_H
 
 #include <qobject.h>
-//Added by qt3to4:
-#include <QSqlQuery>
 
 #include <rdconfig.h>
 #include <rdstation.h>
@@ -47,6 +45,9 @@ class MainObject : public QObject
 		    const QString &old_collation,
 		    const QString &new_charset,
 		    const QString &new_collation);
+  bool RewriteFile(const QString &old_filename,const QString &old_str, 
+		   const QString &new_filename,const QString &new_str,
+		   QString *err_msg);
   void RelinkAudio(const QString &srcdir) const;
   void CheckOrphanedTracks() const;
   void CheckCutCounts() const;

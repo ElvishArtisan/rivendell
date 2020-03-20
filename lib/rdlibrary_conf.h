@@ -2,7 +2,7 @@
 //
 // Abstract RDLibrary Configuration
 //
-//   (C) Copyright 2002-2003,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,8 +21,7 @@
 #ifndef RDLIBRARY_CONF_H
 #define RDLIBRARY_CONF_H
 
-#include <qsqldatabase.h>
-
+#include <rdconfig.h>
 #include <rdsettings.h>
 
 class RDLibraryConf
@@ -30,6 +29,7 @@ class RDLibraryConf
  public:
   enum RecordMode {Manual=0,Vox=1};
   enum SearchLimit {LimitNo=0,LimitYes=1,LimitPrevious=2};
+  enum CdServerType {DummyType=0,CddbType=1,MusicBrainzType=2,LastType=3};
   RDLibraryConf(const QString &station);
   QString station() const;
   int inputCard() const;
@@ -66,8 +66,12 @@ class RDLibraryConf
   void setParanoiaLevel(int level) const;
   int ripperLevel() const;
   void setRipperLevel(int level) const;
+  CdServerType cdServerType() const;
+  void setCdServerType(CdServerType type) const;
   QString cddbServer() const;
   void setCddbServer(QString server) const;
+  QString mbServer() const;
+  void setMbServer(QString server) const;
   bool readIsrc() const;
   void setReadIsrc(bool state) const;
   bool enableEditor() const;
@@ -79,6 +83,7 @@ class RDLibraryConf
   void setLimitSearch(RDLibraryConf::SearchLimit lmt) const;
   bool searchLimited() const;
   void setSearchLimited(bool state) const;
+  static QString cdServerTypeText(CdServerType type);
 
  private:
   void SetRow(const QString &param,int value) const;

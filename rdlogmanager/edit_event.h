@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Log Event
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -59,6 +59,7 @@ class EditEvent : public RDDialog
   void filterChangedData(const QString &str);
   void filterActivatedData(const QString &str);
   void filterClickedData(int id);
+  void searchData();
   void cartClickedData(Q3ListViewItem *item);
   void prepositionToggledData(bool state);
   void timeToggledData(bool);
@@ -110,6 +111,7 @@ class EditEvent : public RDDialog
   QComboBox* event_have_code2_box;
   QLabel *event_have_code2_label;
   LibListView *event_lib_list;
+  QPushButton *event_search_button;
   QPixmap *event_playout_map;
   QPixmap *event_macro_map;
   QLabel *event_position_header;
@@ -118,7 +120,7 @@ class EditEvent : public RDDialog
   QCheckBox *event_position_box;
   QTimeEdit *event_position_edit;
   QLabel *event_timetype_header;
-  QCheckBox *event_timetype_box;
+  QCheckBox *event_timetype_check;
   QLabel *event_timetype_label;
   QCheckBox *event_post_box;
   QLabel *event_post_label;

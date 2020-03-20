@@ -66,6 +66,8 @@ class RDStation
   void setEditorPath(const QString &cmd);
   QString reportEditorPath() const;
   void setReportEditorPath(const QString &cmd);
+  QString browserPath() const;
+  void setBrowserPath(const QString &cmd) const;
   RDStation::FilterMode filterMode() const;
   void setFilterMode(RDStation::FilterMode mode) const;
   bool startJack() const;

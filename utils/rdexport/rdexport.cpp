@@ -57,7 +57,7 @@ MainObject::MainObject(QObject *parent)
   //
   rda=new RDApplication("rdexport","rdexport",RDEXPORT_USAGE,this);
   if(!rda->open(&err_msg)) {
-    fprintf(stderr,"rdexport: %s\n",(const char *)err_msg);
+    fprintf(stderr,"rdexport: %s\n",(const char *)err_msg.toUtf8());
     exit(1);
   }
 
@@ -153,7 +153,7 @@ MainObject::MainObject(QObject *parent)
       }
       if(!ok) {
 	fprintf(stderr,"rdexport: unknown format \"%s\"\n",
-		(const char *)export_format);
+		(const char *)export_format.toUtf8());
 	exit(256);
       }
       rda->cmdSwitch()->setProcessed(i,true);
@@ -198,7 +198,7 @@ MainObject::MainObject(QObject *parent)
     }
     if(!rda->cmdSwitch()->processed(i)) {
       fprintf(stderr,"rdrepld: unknown command option \"%s\"\n",
-	      (const char *)rda->cmdSwitch()->key(i));
+	      (const char *)rda->cmdSwitch()->key(i).toUtf8());
       exit(2);
     }
   }
@@ -227,7 +227,7 @@ MainObject::MainObject(QObject *parent)
       str+=bad_groups[i]+", ";
     }
     str=str.left(str.length()-2);
-    fprintf(stderr,"rdexport: %s\n",(const char *)str);
+    fprintf(stderr,"rdexport: %s\n",(const char *)str.toUtf8());
     exit(256);
   }
 
@@ -252,7 +252,7 @@ void MainObject::userData()
   //
   if(!rda->user()->editAudio()) {
     fprintf(stderr,"rdexport: user \"%s\" has no edit audio permission\n",
-	    (const char *)rda->user()->name());
+	    (const char *)rda->user()->name().toUtf8());
     exit(256);
   }
 
@@ -358,7 +358,7 @@ void MainObject::ExportCut(RDCart *cart,RDCut *cut)
   if((info_err=info->runInfo(rda->user()->name(),rda->user()->password()))!=
      RDAudioInfo::ErrorOk) {
     fprintf(stderr,"rdexport: error getting cut info [%s]\n",
-	    (const char *)RDAudioInfo::errorText(info_err));
+	    (const char *)RDAudioInfo::errorText(info_err).toUtf8());
     if(export_continue_after_error) {
       return;
     }
@@ -431,7 +431,7 @@ void MainObject::ExportCut(RDCart *cart,RDCut *cut)
   if((export_err=conv->runExport(rda->user()->name(),rda->user()->password(),
 				 &conv_err))==RDAudioExport::ErrorOk) {
     QStringList f0=conv->destinationFile().split("/");
-    printf("%s\n",(const char *)f0[f0.size()-1]);
+    printf("%s\n",(const char *)f0.at(f0.size()-1).toUtf8());
     if(export_xml) {
       FILE *f=NULL;
       f0=conv->destinationFile().split(".",QString::KeepEmptyParts);
@@ -442,15 +442,17 @@ void MainObject::ExportCut(RDCart *cart,RDCut *cut)
       filename+="xml";
       if((f=fopen(filename,"w"))!=NULL) {
 	fprintf(f,"%s\n",
-		(const char *)cart->xml(true,true,&settings,cut->cutNumber()));
+		(const char *)cart->xml(true,true,&settings,cut->cutNumber()).
+		toUtf8());
 	fclose(f);
       }
     }
   }
   else {
     fprintf(stderr,"rdexport: exporter error for output file \"%s\" [%s]\n",
-	    (const char *)conv->destinationFile(),
-	    (const char *)RDAudioExport::errorText(export_err,conv_err));
+	    (const char *)conv->destinationFile().toUtf8(),
+	    (const char *)RDAudioExport::errorText(export_err,conv_err).
+	    toUtf8());
     if(!export_continue_after_error) {
       exit(256);
     }
@@ -464,27 +466,9 @@ void MainObject::ExportCut(RDCart *cart,RDCut *cut)
 QString MainObject::ResolveOutputName(RDCart *cart,RDCut *cut,
 				      const QString &exten)
 {
-  QString name=export_metadata_pattern;
-
-  name.replace("%a",cart->artist());
-  name.replace("%b",cart->label());
-  name.replace("%c",cart->client());
-  name.replace("%e",cart->agency());
-  name.replace("%g",cart->groupName());
-  name.replace("%h",QString().sprintf("%d",cut->length()));
-  name.replace("%i",cut->description());
-  name.replace("%j",QString().sprintf("%03d",RDCut::cutNumber(cut->cutName())));
-  name.replace("%l",cart->album());
-  name.replace("%m",cart->composer());
-  name.replace("%n",QString().sprintf("%06u",cart->number()));
-  name.replace("%o",cut->outcue());
-  name.replace("%p",cart->publisher());
-  name.replace("%r",cart->conductor());
-  name.replace("%s",cart->songId());
-  name.replace("%t",cart->title());
-  name.replace("%u",cart->userDefined());
-  name.replace("%y",QString().sprintf("%d",cart->year()));
-
+  QString name=
+    RDLogLine::resolveWildcards(cart->number(),export_metadata_pattern,
+				cut->cutNumber());
   QString ret=SanitizePath(name);
   if(!export_allow_clobber) {
     int count=1;
@@ -522,7 +506,7 @@ QString MainObject::SanitizePath(const QString &pathname) const
 void MainObject::Verbose(const QString &msg)
 {
   if(export_verbose) {
-    fprintf(stderr,"%s\n",(const char *)msg);
+    fprintf(stderr,"%s\n",(const char *)msg.toUtf8());
   }
 }
 

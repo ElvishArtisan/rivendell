@@ -2,7 +2,7 @@
 //
 // Edit an RDLibrry Configuration
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -41,7 +41,8 @@ class EditRDLibrary : public RDDialog
   QSizePolicy sizePolicy() const;
 
  private slots:
-  void formatData(int);
+  void formatData(int n);
+  void cdServerTypeData(int n);
   void okData();
   void cancelData();
 
@@ -63,12 +64,15 @@ class EditRDLibrary : public RDDialog
   QComboBox *lib_paranoia_box;
   QComboBox *lib_isrc_box;
   QSpinBox *lib_riplevel_spin;
-  QLineEdit *lib_cddb_edit;
+  QComboBox *lib_cd_server_type_box;
+  QLabel *lib_cd_server_label;
+  QLineEdit *lib_cddb_server_edit;
+  QLineEdit *lib_mb_server_edit;
   QComboBox *lib_editor_box;
   QComboBox *lib_converter_box;
   QComboBox *lib_limit_search_box;
 };
 
 
-#endif
+#endif  // EDIT_RDLIBRARY_H
 

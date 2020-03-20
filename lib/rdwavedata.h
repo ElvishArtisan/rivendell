@@ -2,7 +2,7 @@
 //
 //   A Container Class for Audio Meta Data.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -99,6 +99,10 @@ class RDWaveData
   void setIsrc(const QString &str);
   QString isci() const;
   void setIsci(const QString &str);
+  QString recordingMbId() const;
+  void setRecordingMbId(const QString &mbid);
+  QString releaseMbId() const;
+  void setReleaseMbId(const QString &mbid);
   QString mcn() const;
   void setMcn(const QString &str);
   QString outCue() const;
@@ -233,6 +237,8 @@ class RDWaveData
   QString data_coding_history;
   QString data_isrc;
   QString data_isci;
+  QString data_recording_mbid;
+  QString data_release_mbid;
   QString data_mcn;
   QString data_out_cue;
   EndType data_end_type;

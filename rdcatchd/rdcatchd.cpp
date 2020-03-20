@@ -867,6 +867,20 @@ void MainObject::garbageData()
 
 void MainObject::isConnectedData(bool state)
 {
+  if(state) {
+    QList<int> cards;
+    QString sql=QString("select CARD_NUMBER from DECKS where ")+
+      "STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\" && "+
+      "CARD_NUMBER>=0";
+    RDSqlQuery *q=new RDSqlQuery(sql);
+    while(q->next()) {
+      if(!cards.contains(q->value(0).toInt())) {
+	cards.push_back(q->value(0).toInt());
+      }
+    }
+    delete q;
+    rda->cae()->enableMetering(&cards);
+  }
   if(!state) {
     rda->syslog(LOG_ERR,"aborting - unable to connect to Core AudioEngine");
     exit(1);
@@ -963,6 +977,9 @@ void MainObject::recordUnloadedData(int card,int stream,unsigned msecs)
   if(debug) {
     printf("Unloaded - Card: %d  Stream: %d\n",card,stream);
   }
+  SendNotification(RDNotification::CartType,
+		   RDNotification::ModifyAction,
+		   RDCut::cartNumber(catch_events[event].cutName()));
   if(catch_events[event].oneShot()) {
     PurgeEvent(event);
   }
@@ -2634,6 +2651,16 @@ void MainObject::StartBatch(int id)
 		id,strerror(errno));
     exit(0);
   }
+}
+
+
+void MainObject::SendNotification(RDNotification::Type type,
+				  RDNotification::Action action,
+				  const QVariant &id)
+{
+  RDNotification *notify=new RDNotification(type,action,id);
+  rda->ripc()->sendNotification(*notify);
+  delete notify;
 }
 
 

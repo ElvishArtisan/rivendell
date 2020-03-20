@@ -601,6 +601,10 @@ Do you want to overwrite it?</source>
         <source>Artist Separation</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Search</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditEventLine</name>
@@ -1055,15 +1059,15 @@ removerá estos datos.  ¿Remezclar?</translation>
     </message>
     <message>
         <source>Set PLAY Transition</source>
-        <translation>Asignar transición REPROD</translation>
+        <translation type="obsolete">Asignar transición REPROD</translation>
     </message>
     <message>
         <source>Set SEGUE Transition</source>
-        <translation>Asignar transición SEGUE</translation>
+        <translation type="obsolete">Asignar transición SEGUE</translation>
     </message>
     <message>
         <source>Set STOP Transition</source>
-        <translation>Asignar transición PARAR</translation>
+        <translation type="obsolete">Asignar transición PARAR</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -1104,6 +1108,18 @@ removerá estos datos.  ¿Remezclar?</translation>
     <message>
         <source>Edit Voice Track</source>
         <translation>Editar pista de voz</translation>
+    </message>
+    <message>
+        <source>PLAY Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SEGUE Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>STOP Transition</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1484,14 +1500,26 @@ Reporte</translation>
     </message>
     <message>
         <source>Report Complete</source>
-        <translation>Reporte completado</translation>
+        <translation type="obsolete">Reporte completado</translation>
     </message>
     <message>
         <source>Report complete!</source>
         <translation type="obsolete">¡Reporte completado!</translation>
     </message>
     <message>
-        <source>Report generated in</source>
+        <source>File Exists</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to open report file at</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The report file already exists.  Overwrite?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

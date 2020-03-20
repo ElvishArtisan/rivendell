@@ -2,7 +2,7 @@
 //
 // Download a File
 //
-//   (C) Copyright 2010,2016-2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2010-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -22,7 +22,7 @@
 #define RDDOWNLOAD_H
 
 #include <qobject.h>
-#include <q3url.h>
+#include <qurl.h>
 
 #include <rdconfig.h>
 
@@ -56,7 +56,7 @@ class RDDownload : public QObject
   void UpdateProgress(int step);
   friend int DownloadProgressCallback(void *clientp,double dltotal,double dlnow,
 				      double ultotal,double ulnow);
-  Q3Url conv_src_url;
+  QUrl conv_src_url;
   QString conv_dst_filename;
   bool conv_aborting;
   uint conv_dst_size;

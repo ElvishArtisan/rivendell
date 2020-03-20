@@ -507,7 +507,7 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
   // Pre-Import Carts
   //
   postimport_length=0;
-  for(int i=0;i<event_preimport_list->size();i++) {
+  for(int i=0;i<event_preimport_list->size()-1;i++) {
     RDEventImportItem *i_item=event_preimport_list->item(i);
     sql=QString("insert into LOG_LINES set ")+
       "LOG_NAME=\""+RDEscapeString(logname)+"\","+
@@ -525,7 +525,6 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
       QString().sprintf("EVENT_LENGTH=%d",event_length);
     RDSqlQuery::apply(sql);
     count++;
-    time=time.addMSecs(i_item->cartNumber());
     trans_type=event_default_transtype;
     time_type=RDLogLine::Relative;
     post_point=false;
@@ -539,16 +538,16 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
   //
   if(event_import_source==RDEventLine::Traffic || event_import_source==RDEventLine::Music) {
     switch(event_import_source) {
-	case RDEventLine::Traffic:
-	  link_type=RDLogLine::TrafficLink;
-	  break;
+    case RDEventLine::Traffic:
+      link_type=RDLogLine::TrafficLink;
+      break;
 	  
-	case RDEventLine::Music:
-	  link_type=RDLogLine::MusicLink;
-	  break;
+    case RDEventLine::Music:
+      link_type=RDLogLine::MusicLink;
+      break;
 	  
-	default:
-	  break;
+    default:
+      break;
     }
     QTime end_start_time=event_start_time.addMSecs(event_length);
 
@@ -758,14 +757,9 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 	  "from STACK_LINES left join STACK_SCHED_CODES "+
 	  "on STACK_LINES.ID=STACK_SCHED_CODES.STACK_LINES_ID where "+
 	  "STACK_LINES.SERVICE_NAME=\""+RDEscapeString(svcname)+"\" && "+
-	  QString().sprintf("STACK_LINES.SCHED_STACK_ID > %d && ",stackid-range)+
+	  QString().sprintf("STACK_LINES.SCHED_STACK_ID > %d && ",
+			    stackid-range)+
 	  "STACK_SCHED_CODES.SCHED_CODE=\""+RDEscapeString(wstr)+"\"";
-	/*
-	sql=QString("select CART from STACK_LINES where ")+
-	  "SERVICE_NAME=\""+RDEscapeString(svcname)+"\" && "+
-	  QString().sprintf("SCHED_STACK_ID > %d && ",stackid-range)+
-	  "SCHED_CODES like \"%%"+RDEscapeString(wstr)+"%%\"";
-	*/
 	q1=new RDSqlQuery(sql);
 	if(q1->size()>=allowed || allowed==0) {
 	  for(counter=0;counter<schedCL->getNumberOfItems();counter++) {
@@ -794,12 +788,6 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 	    "STACK_LINES.SERVICE_NAME=\""+RDEscapeString(svcname)+"\" && "+
 	    QString().sprintf("STACK_LINES.SCHED_STACK_ID=%d && ",stackid-1)+
 	    "STACK_SCHED_CODES.SCHED_CODE=\""+RDEscapeString(wstr)+"\"";
-	  /*
-	  sql=QString("select CART from STACK_LINES where ")+
-	    "SERVICE_NAME=\""+RDEscapeString(svcname)+"\" && "+
-	    QString().sprintf("SCHED_STACK_ID=%d && ",stackid-1)+
-	    "SCHED_CODES like \"%"+RDEscapeString(wstr)+"%\"";
-	  */
 	  q1=new RDSqlQuery(sql);
 	  if(q1->size()>0) {
 	    for(counter=0;counter<schedCL->getNumberOfItems();counter++) {
@@ -828,11 +816,6 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 	    "on STACK_LINES.ID=STACK_SCHED_CODES.STACK_LINES_ID where "+
 	    QString().sprintf("STACK_LINES.SCHED_STACK_ID=%d && ",stackid-1)+
 	    "STACK_SCHED_CODES.SCHED_CODE=\""+RDEscapeString(wstr)+"\"";
-	  /*
-	  sql=QString("select CART from STACK_LINES where ")+
-	    QString().sprintf("SCHED_STACK_ID=%d && ",stackid-1)+
-	    "SCHED_CODES like \"%"+RDEscapeString(wstr)+"%\"";
-	  */
 	  q1=new RDSqlQuery(sql);
 	  if(q1->size()>0) {	
 	    for(counter=0;counter<schedCL->getNumberOfItems();counter++) {
@@ -861,11 +844,6 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 	    "on STACK_LINES.ID=STACK_SCHED_CODES.STACK_LINES_ID where "+
 	    QString().sprintf("STACK_LINES.SCHED_STACK_ID=%d && ",stackid-1)+
 	    "STACK_SCHED_CODES.SCHED_CODE=\""+RDEscapeString(wstr)+"\"";
-	  /*
-	  sql=QString("select CART from STACK_LINES where ")+
-	    QString().sprintf("SCHED_STACK_ID=%d && ",stackid-1)+
-	    "SCHED_CODES like \"%"+RDEscapeString(wstr)+"%\"";
-	  */
 	  q1=new RDSqlQuery(sql);
 	  if(q1->size()>0) {
 	    for(counter=0;counter<schedCL->getNumberOfItems();counter++) {
@@ -929,19 +907,6 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 	  "SCHED_CODE=\""+RDEscapeString(codes.at(i))+"\"";
 	RDSqlQuery::apply(sql);
       }
-      /*
-      sql=QString("insert into STACK_LINES set ")+
-	"SERVICE_NAME=\""+RDEscapeString(svcname)+"\","+
-	"SCHEDULED_AT=now(),"+
-	QString().sprintf("SCHED_STACK_ID=%u,",stackid)+
-	QString().sprintf("CART=%u,",schedCL->getItemCartNumber(schedpos))+
-	"ARTIST=\""+RDEscapeString(schedCL->getItemArtist(schedpos))+"\","+
-	"SCHED_CODES=\""+RDEscapeString(schedCL->getItemSchedCodes(schedpos))+
-	"\"";
-      q=new RDSqlQuery(sql);
-      delete q;
-      */
-
       delete schedCL;
     }
     else {
@@ -960,7 +925,7 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
   //
   // Post-Import Carts
   //
-  for(int i=0;i<event_postimport_list->size();i++) {
+  for(int i=0;i<event_postimport_list->size()-1;i++) {
     RDEventImportItem *i_item=event_postimport_list->item(i);
     sql=QString("insert into LOG_LINES set ")+
       "LOG_NAME=\""+RDEscapeString(logname)+"\","+
@@ -1180,21 +1145,26 @@ bool RDEventLine::linkLog(RDLogEvent *e,RDLog *log,const QString &svcname,
       }
     }
 
+    //
+    // Insert imported event
+    //
     e->insert(e->size(),1);
     logline=e->logLine(e->size()-1);
     logline->setId(e->nextId());
     logline->setSource(event_src);
-    logline->setStartTime(RDLogLine::Logged,time);
+    logline->
+      setStartTime(RDLogLine::Logged,
+		   QTime(start_start_hour,0,0).addSecs(q->value(1).toInt()));
     logline->setGraceTime(grace_time);
     logline->setTimeType(time_type);
     logline->setTransType(trans_type);
     logline->setExtStartTime(QTime().addSecs(3600*start_start_hour+
 					     q->value(1).toInt()));
     logline->setExtLength(q->value(2).toInt());
-    logline->setExtData(q->value(3).toString());
-    logline->setExtEventId(q->value(4).toString());
-    logline->setExtAnncType(q->value(5).toString());
-    logline->setExtCartName(q->value(6).toString());
+    logline->setExtData(q->value(3).toString().trimmed());
+    logline->setExtEventId(q->value(4).toString().trimmed());
+    logline->setExtAnncType(q->value(5).toString().trimmed());
+    logline->setExtCartName(q->value(6).toString().trimmed());
     logline->setEventLength(event_length);
     logline->setLinkEventName(event_name);
     logline->setLinkStartTime(link_logline->linkStartTime());

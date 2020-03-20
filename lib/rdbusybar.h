@@ -22,12 +22,12 @@
 #ifndef RDBUSYBAR_H
 #define RDBUSYBAR_H
 
-#include <qwidget.h>
-#include <q3frame.h>
+#include <qframe.h>
 #include <qlabel.h>
 #include <qtimer.h>
+#include <qwidget.h>
 
-class RDBusyBar : public Q3Frame
+class RDBusyBar : public QFrame
 {
   Q_OBJECT
 

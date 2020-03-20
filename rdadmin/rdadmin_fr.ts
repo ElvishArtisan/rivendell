@@ -925,6 +925,14 @@ files, causing any whose files remain to be imported again.</source>
         <source>Log events in Syslog</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Select Directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select Log File</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditEndpoint</name>
@@ -1754,6 +1762,18 @@ GPIOs</source>
         <source>Edit Switcher</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The primary serial device is not active!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The backup serial device is not active!</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditPypad</name>
@@ -2330,6 +2350,18 @@ configured to run the CAE service in order to populate the audio resources datab
     </message>
     <message>
         <source>Output</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>&amp;CD Metadata Source:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FreeDB Server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MusicBrainz Server</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2938,6 +2970,14 @@ Overwrite?</source>
         <source>Multicast Address for Notifications</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Save text file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Progress</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditStation</name>
@@ -3149,6 +3189,10 @@ Ports</source>
     <message>
         <source>PyPAD
 Instances</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Web Browser</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3390,6 +3434,26 @@ must be saved.  Save now?</source>
     </message>
     <message>
         <source>Edit Serial Ports</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Matrix</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This port is currently in use by the following Switcher/GPIO device</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

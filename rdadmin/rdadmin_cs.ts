@@ -1302,6 +1302,14 @@ files, causing any whose files remain to be imported again.</source>
         <source>Log events in Syslog</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Select Directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select Log File</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditEncoder</name>
@@ -2198,6 +2206,18 @@ SAS</translation>
 GPIOs</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The primary serial device is not active!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The backup serial device is not active!</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditNowNext</name>
@@ -2980,6 +3000,18 @@ nastaveném pro běh služby CAE pro naplnění databáze se zdroji zvuku.</tran
         <source>Output</source>
         <translation type="unfinished">Výstup</translation>
     </message>
+    <message>
+        <source>&amp;CD Metadata Source:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>FreeDB Server</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>MusicBrainz Server</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditRDLogedit</name>
@@ -3648,6 +3680,14 @@ Přepsat?</translation>
         <source>Multicast Address for Notifications</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Save text file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Progress</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditStation</name>
@@ -3898,6 +3938,10 @@ Ports</source>
     <message>
         <source>PyPAD
 Instances</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Web Browser</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4231,6 +4275,26 @@ uloženo. Uložit nyní?</translation>
     </message>
     <message>
         <source>Edit Serial Ports</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Matrix</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This port is currently in use by the following Switcher/GPIO device</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

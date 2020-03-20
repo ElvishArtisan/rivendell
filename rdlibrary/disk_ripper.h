@@ -2,7 +2,7 @@
 //
 // CD Disk Ripper Dialog for Rivendell
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -57,10 +57,11 @@ class DiskRipper : public RDDialog
   void mediaChangedData();
   void playedData(int);
   void stoppedData();
-  void cddbDoneData(RDCddbLookup::Result);
+  void lookupDoneData(RDDiscLookup::Result,const QString &err_msg);
   void normalizeCheckData(bool);
   void autotrimCheckData(bool);
   void selectionChangedData();
+  void openBrowserData();
   void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
   void closeData();
   
@@ -76,8 +77,8 @@ class DiskRipper : public RDDialog
   void SetArtistAlbum();
   void SendNotification(RDNotification::Action action,unsigned cartnum);
   RDCdPlayer *rip_cdrom;
-  RDCddbRecord rip_cddb_record;
-  RDCddbLookup *rip_cddb_lookup;
+  RDDiscRecord rip_disc_record;
+  RDDiscLookup *rip_disc_lookup;
   QLabel *rip_track_label;
   Q3ListView *rip_track_list;
   QPushButton *rip_rip_button;
@@ -88,6 +89,8 @@ class DiskRipper : public RDDialog
   QTextEdit *rip_other_edit;
   QCheckBox *rip_apply_box;
   QLabel *rip_apply_label;
+  QPushButton *rip_browser_button;
+  QLabel *rip_browser_label;
   RDTransportButton *rip_eject_button;
   RDTransportButton *rip_play_button;
   RDTransportButton *rip_stop_button;
@@ -125,8 +128,6 @@ class DiskRipper : public RDDialog
   std::vector<RDWaveData *> rip_wave_datas;
   bool rip_aborting;
   bool rip_profile_rip;
-  QDir rip_cdda_dir;
-  bool rip_isrc_read;
   RDWaveDataDialog *rip_wavedata_dialog;
 };
 

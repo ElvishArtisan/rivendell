@@ -599,6 +599,10 @@ Chcete ji přepsat?</translation>
         <source>Artist Separation</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Search</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditEventLine</name>
@@ -1061,15 +1065,15 @@ Opětovné sloučení tato data smaže. Sloučit znovu?</translation>
     </message>
     <message>
         <source>Set PLAY Transition</source>
-        <translation>Nastavit přechod PŘEHRÁT</translation>
+        <translation type="obsolete">Nastavit přechod PŘEHRÁT</translation>
     </message>
     <message>
         <source>Set SEGUE Transition</source>
-        <translation>Nastavit přechod PŘECHOD</translation>
+        <translation type="obsolete">Nastavit přechod PŘECHOD</translation>
     </message>
     <message>
         <source>Set STOP Transition</source>
-        <translation>Nastavit přechod ZASTAVIT</translation>
+        <translation type="obsolete">Nastavit přechod ZASTAVIT</translation>
     </message>
     <message>
         <source>Delete</source>
@@ -1102,6 +1106,18 @@ Opětovné sloučení tato data smaže. Sloučit znovu?</translation>
     <message>
         <source>STOP</source>
         <translation>ZASTAVIT</translation>
+    </message>
+    <message>
+        <source>PLAY Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SEGUE Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>STOP Transition</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1481,14 +1497,26 @@ zprávu</translation>
     </message>
     <message>
         <source>Report Complete</source>
-        <translation>Zpráva úplná</translation>
+        <translation type="obsolete">Zpráva úplná</translation>
     </message>
     <message>
         <source>Report complete!</source>
         <translation type="obsolete">Zpráva úplná!</translation>
     </message>
     <message>
-        <source>Report generated in</source>
+        <source>File Exists</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to open report file at</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The report file already exists.  Overwrite?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

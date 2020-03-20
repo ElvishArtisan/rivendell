@@ -2,7 +2,7 @@
 //
 // A Qt-based application for importing TM Century GoldDisc CDs
 //
-//   (C) Copyright 2013-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2013-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,12 +21,12 @@
 #ifndef RDDISCIMPORT_H
 #define RDDISCIMPORT_H
 
-#include <q3progressbar.h>
 
 #include <qcheckbox.h>
-#include <qlabel.h>
 #include <qcombobox.h>
+#include <qlabel.h>
 #include <qlineedit.h>
+#include <qprogressbar.h>
 #include <qspinbox.h>
 
 #include <rdaudioimport.h>
@@ -78,9 +78,9 @@ class MainWidget : public RDWidget
   QLineEdit *dg_userdef_edit;
   RDListView *dg_track_list;
   QLabel *dg_disc_label;
-  Q3ProgressBar *dg_disc_bar;
+  QProgressBar *dg_disc_bar;
   QLabel *dg_track_label;
-  Q3ProgressBar *dg_track_bar;
+  QProgressBar *dg_track_bar;
   QLabel *dg_discid_label;
   QLineEdit *dg_discid_edit;
   QPushButton *dg_rip_button;

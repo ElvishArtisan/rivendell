@@ -26,6 +26,8 @@
 
 #include <rddialog.h>
 
+#include "viewreportdialog.h"
+
 class PickReportDates : public RDDialog
 {
   Q_OBJECT
@@ -46,6 +48,7 @@ class PickReportDates : public RDDialog
   QDateEdit *edit_startdate_edit;
   QDateEdit *edit_enddate_edit;
   QString edit_svcname;
+  ViewReportDialog *edit_viewreport_dialog;
 };
 
 

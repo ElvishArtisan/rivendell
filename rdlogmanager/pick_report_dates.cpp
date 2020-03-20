@@ -47,6 +47,11 @@ PickReportDates::PickReportDates(const QString &svcname,QWidget *parent)
   setMinimumSize(sizeHint());
 
   //
+  // Dialogs
+  //
+  edit_viewreport_dialog=new ViewReportDialog(this);
+
+  //
   // Report List
   //
   edit_report_box=new QComboBox(this);
@@ -121,6 +126,7 @@ PickReportDates::PickReportDates(const QString &svcname,QWidget *parent)
 
 PickReportDates::~PickReportDates()
 {
+  delete edit_viewreport_dialog;
 }
 
 
@@ -166,7 +172,7 @@ void PickReportDates::selectEndDateData()
 void PickReportDates::generateData()
 {
   if(edit_startdate_edit->date()>edit_enddate_edit->date()) {
-    QMessageBox::warning(this,tr("Invalid Date Range"),
+    QMessageBox::warning(this,"RDLogManager - "+tr("Invalid Date Range"),
 		 tr("The end date cannot be earlier than the start date!"));
     return;
   }
@@ -174,14 +180,14 @@ void PickReportDates::generateData()
     new RDReport(edit_report_box->currentText(),rda->station(),rda->config(),this);
   if((edit_startdate_edit->date()!=edit_enddate_edit->date())&&
      (!RDReport::multipleDaysAllowed(report->filter()))) {
-    QMessageBox::warning(this,tr("Invalid Date Range"),
+    QMessageBox::warning(this,"RDLogManager - "+tr("Invalid Date Range"),
 			 tr("This report type cannot span multiple dates!"));
     delete report;
     return;
   }
   if((edit_startdate_edit->date().month()!=edit_enddate_edit->date().month())&&
      (!RDReport::multipleMonthsAllowed(report->filter()))) {
-    QMessageBox::warning(this,tr("Invalid Date Range"),
+    QMessageBox::warning(this,"RDLogManager - "+tr("Invalid Date Range"),
 			 tr("This report type cannot span multiple months!"));
     delete report;
     return;
@@ -192,8 +198,8 @@ void PickReportDates::generateData()
 		 edit_svcname);
   QFile file(filename);
   if(file.exists()) {
-    if(QMessageBox::question(this,"File Exists",
-			     "The report file already exists.  Overwrite?",
+    if(QMessageBox::question(this,"RDLogManager - "+tr("File Exists"),
+			     tr("The report file already exists.  Overwrite?"),
 			     QMessageBox::Yes,QMessageBox::No)!=
        QMessageBox::Yes) {
       delete report;
@@ -204,19 +210,18 @@ void PickReportDates::generateData()
   report->generateReport(edit_startdate_edit->date(),
 			 edit_enddate_edit->date(),rda->station(),&out_path);
   switch(report->errorCode()) {
-      case RDReport::ErrorOk:
-	QMessageBox::information(this,tr("Report Complete"),
-				 tr("Report generated in")+" \""+out_path+
-				 "\".");
-	break;
+  case RDReport::ErrorOk:
+    edit_viewreport_dialog->exec(out_path);
+    break;
 
-      case RDReport::ErrorCantOpen:
-	QMessageBox::warning(this,"File Error","Unable to open report file at"+
-			     QString("\"")+out_path+"\"!");
-	break;
+  case RDReport::ErrorCantOpen:
+    QMessageBox::warning(this,"RDLogManager - "+tr("File Error"),
+			 tr("Unable to open report file at")+
+			 QString("\"")+out_path+"\"!");
+    break;
 
-      case RDReport::ErrorCanceled:
-	break;
+  case RDReport::ErrorCanceled:
+    break;
   }
   delete report;
 }

@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Report Descriptor
 //
-//   (C) Copyright 2002-2006,2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -37,7 +37,7 @@ class RDReport
 		     CounterPoint=7,Music1=8,MusicSummary=9,WideOrbit=10,
 		     NprSoundExchange=11,MusicPlayout=12,NaturalLog=13,
 		     MusicClassical=14,MrMaster=15,SpinCount=16,CutLog=17,
-		     LastFilter=18};
+		     CounterPoint2=18,LastFilter=19};
   enum ExportOs {Linux=0,Windows=1};
   enum ExportType {Generic=0,Traffic=1,Music=2};
   enum StationType {TypeOther=0,TypeAm=1,TypeFm=2,TypeLast=3};
@@ -112,7 +112,8 @@ class RDReport
   bool ExportNprSoundEx(const QString &filename,const QDate &startdate,
 			const QDate &enddate,const QString &mixtable);
   bool ExportRadioTraffic(const QString &filename,const QDate &startdate,
-			  const QDate &enddate,const QString &mixtable);
+			  const QDate &enddate,const QString &mixtable,
+			  int version);
   bool ExportMusicClassical(const QString &filename,const QDate &startdate,
 			    const QDate &enddate,const QString &mixtable);
   bool ExportMusicPlayout(const QString &filename,const QDate &startdate,

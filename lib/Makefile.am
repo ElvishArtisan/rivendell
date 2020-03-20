@@ -20,7 +20,7 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" @QT4_CFLAGS@ -Wno-strict-aliasing -DQT3_SUPPORT -I/usr/include/Qt3Support -I/usr/include/taglib
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" @QT4_CFLAGS@ @MUSICBRAINZ_CFLAGS@ -Wno-strict-aliasing -DQT3_SUPPORT -I/usr/include/Qt3Support -I/usr/include/taglib
 MOC = @QT_MOC@
 CWRAP = ../helpers/cwrap
 
@@ -84,7 +84,6 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdcatch_conf.cpp rdcatch_conf.h\
                         rdcatch_connect.cpp rdcatch_connect.h\
                         rdcddblookup.cpp rdcddblookup.h\
-                        rdcddbrecord.cpp rdcddbrecord.h\
                         rdcdplayer.cpp rdcdplayer.h\
                         rdcdripper.cpp rdcdripper.h\
                         rdcheck_version.cpp rdcheck_version.h\
@@ -111,8 +110,12 @@ dist_librd_la_SOURCES = dbversion.h\
                         rddeck.cpp rddeck.h\
                         rddelete.cpp rddelete.h\
                         rddialog.cpp rddialog.h\
+                        rddisclookup.cpp rddisclookup.h\
+                        rddisclookup_factory.cpp rddisclookup_factory.h\
+                        rddiscrecord.cpp rddiscrecord.h\
                         rddownload.cpp rddownload.h\
                         rddropbox.cpp rddropbox.h\
+                        rddummylookup.cpp rddummylookup.h\
                         rdedit_audio.cpp rdedit_audio.h\
                         rdedit_panel_name.cpp rdedit_panel_name.h\
                         rdemptycart.cpp rdemptycart.h\
@@ -145,7 +148,6 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdinstancelock.cpp rdinstancelock.h\
                         rd.h\
                         rdkernelgpio.cpp rdkernelgpio.h\
-                        rdlabel.cpp rdlabel.h\
                         rdlibrary_conf.cpp rdlibrary_conf.h\
                         rdlineedit.cpp rdlineedit.h\
                         rdlistselector.cpp rdlistselector.h\
@@ -170,6 +172,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdmarker_button.cpp rdmarker_button.h\
                         rdmarker_edit.cpp rdmarker_edit.h\
                         rdmatrix.cpp rdmatrix.h\
+                        rdmblookup.cpp rdmblookup.h\
                         rdmeteraverage.cpp rdmeteraverage.h\
                         rdmixer.cpp rdmixer.h\
                         rdmonitor_config.cpp rdmonitor_config.h\
@@ -177,7 +180,6 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdmulticaster.cpp rdmulticaster.h\
                         rdnexus.cpp rdnexus.h\
                         rdnotification.cpp rdnotification.h\
-                        rdnownext.cpp rdnownext.h\
                         rdoneshot.cpp rdoneshot.h\
                         rdpam.cpp rdpam.h\
                         rdpanel_button.cpp rdpanel_button.h\
@@ -274,7 +276,9 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rddbheartbeat.cpp\
                           moc_rddelete.cpp\
                           moc_rddialog.cpp\
+                          moc_rddisclookup.cpp\
                           moc_rddownload.cpp\
+                          moc_rddummylookup.cpp\
                           moc_rdedit_audio.cpp\
                           moc_rdedit_panel_name.cpp\
                           moc_rdemptycart.cpp\
@@ -291,7 +295,6 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdhttpserver.cpp\
                           moc_rdimport_audio.cpp\
                           moc_rdkernelgpio.cpp\
-                          moc_rdlabel.cpp\
                           moc_rdlineedit.cpp\
                           moc_rdlist_groups.cpp\
                           moc_rdlist_logs.cpp\
@@ -305,6 +308,7 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdmacro_event.cpp\
                           moc_rdmarker_bar.cpp\
                           moc_rdmarker_edit.cpp\
+                          moc_rdmblookup.cpp\
                           moc_rdmulticaster.cpp\
                           moc_rdnexus.cpp\
                           moc_rdoneshot.cpp\

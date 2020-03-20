@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for Wheatnet LIO devices
 //
-//   (C) Copyright 2017 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2017-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -24,7 +24,7 @@
 #include <vector>
 
 #include <qsignalmapper.h>
-#include <q3socket.h>
+#include <qtcpsocket.h>
 #include <qtimer.h>
 
 #include <rd.h>
@@ -52,7 +52,7 @@ class WheatnetLio : public Switcher
  private slots:
   void connectedData();
   void readyReadData();
-  void errorData(int err);
+  void errorData(QAbstractSocket::SocketError err);
   void resetStateData(int line);
   void pollData();
   void watchdogData();
@@ -63,7 +63,7 @@ class WheatnetLio : public Switcher
   void ProcessLioevent(int chan,QString &cmd);
   void ProcessCommand(const QString &cmd);
   void SendCommand(const QString &cmd);
-  Q3Socket *lio_socket;
+  QTcpSocket *lio_socket;
   QTimer *lio_watchdog_timer;
   bool lio_watchdog_active;
   QHostAddress lio_ip_address;

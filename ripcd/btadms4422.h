@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for the BroadcastTools ADMS 44.22
 //
-//   (C) Copyright 2002-2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,7 +30,6 @@
 #include <switcher.h>
 
 #define BTADMS4422_UNIT_ID 0
-#define BTADMS4422_POLL_INTERVAL 100
 #define BTADMS4422_GPI_PINS 16
 
 class BtAdms4422 : public Switcher

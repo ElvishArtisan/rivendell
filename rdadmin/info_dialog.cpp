@@ -2,7 +2,7 @@
 //
 // Display System Information for Rivendell
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -20,9 +20,10 @@
 
 #include <qpushbutton.h>
 
-#include <rdlabel.h>
-#include <rd.h>
+#include <qlabel.h>
+
 #include <dbversion.h>
+#include <rd.h>
 
 #include "info_dialog.h"
 #include "license.h"
@@ -38,8 +39,6 @@
 InfoDialog::InfoDialog(QWidget *parent)
   : RDDialog(parent)
 {
-  setModal(true);
-
   //
   // Fix the Window Size
   //
@@ -113,7 +112,7 @@ InfoDialog::InfoDialog(QWidget *parent)
   //
   // Disclaimer
   //
-  label=new RDLabel(this);
+  label=new QLabel(this);
   label->setGeometry(10,104,sizeHint().width()-20,60);
   label->setFont(subLabelFont());
   label->setWordWrap(true);

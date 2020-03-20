@@ -2,7 +2,7 @@
 //
 // On Air Playout Utility for Rivendell.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,7 +21,6 @@
 #include <qpainter.h>
 
 #include <rdconf.h>
-#include <rdnownext.h>
 
 #include "colors.h"
 #include "globals.h"
@@ -140,9 +139,9 @@ LogLineBox::LogLineBox(RDAirPlayConf *conf,QWidget *parent)
   //
   // Position Slider
   //
-  line_position_bar=new Q3ProgressBar(this);
+  line_position_bar=new QProgressBar(this);
   line_position_bar->setGeometry(75,66,sizeHint().width()-150,13);
-  line_position_bar->setPercentageVisible(false);
+  line_position_bar->setTextVisible(false);
   line_position_bar->hide();
 
   //
@@ -187,11 +186,11 @@ LogLineBox::LogLineBox(RDAirPlayConf *conf,QWidget *parent)
   //
   // Marker Comment
   //
-  line_comment_label=new RDLabel(this);
+  line_comment_label=new QLabel(this);
   line_comment_label->setGeometry(5,18,sizeHint().width()-10,62);
   line_comment_label->setFont(line_font);
   line_comment_label->setAlignment(Qt::AlignTop|Qt::AlignLeft);
-  line_comment_label->setWordWrapEnabled(true);
+  line_comment_label->setWordWrap(true);
   line_comment_label->hide();
 
   //
@@ -523,7 +522,7 @@ void LogLineBox::setEvent(int line,RDLogLine::TransType next_type,
 	   line_logline->originUser().isEmpty()||
 	   (!line_logline->originDateTime().isValid())) {
 	  line_title_label->
-	    setText(RDResolveNowNext(line_title_template,line_logline,line));
+	    setText(line_logline->resolveWildcards(line_title_template));
 	}
 	else {
 	  line_title_label->setText(line_logline->title()+" -- "+
@@ -532,22 +531,21 @@ void LogLineBox::setEvent(int line,RDLogLine::TransType next_type,
 				    toString("M/d hh:mm"));
 	}
 	line_description_label->
-	  setText(RDResolveNowNext(line_description_template,line_logline,
-				   line));
+	  setText(line_logline->resolveWildcards(line_description_template));
 	line_artist_label->
-	  setText(RDResolveNowNext(line_artist_template,line_logline,line));
+	  setText(line_logline->resolveWildcards(line_artist_template));	
 	line_up_label->
 	  setText(RDGetTimeLength(line_logline->playPosition(),true,true));
 	line_down_label->
 	  setText(RDGetTimeLength(line_logline->effectiveLength()-
 				  line_logline->playPosition(),true,true));
-	line_position_bar->setTotalSteps(line_logline->effectiveLength());
-	line_position_bar->setProgress(line_logline->playPosition());
+	line_position_bar->setMaximum(line_logline->effectiveLength());
+	line_position_bar->setValue(line_logline->playPosition());
 	if(logline->cutNumber()>=0) {
 	  line_cut_label->
 	    setText(QString().sprintf("%03u",logline->cutNumber()));
-	  line_outcue_label->
-	    setText(RDResolveNowNext(line_outcue_template,line_logline,line));
+	line_outcue_label->
+	  setText(line_logline->resolveWildcards(line_outcue_template));
 	}
 	else {
 	  setBackgroundColor(QColor(LOGLINEBOX_MISSING_COLOR));
@@ -662,15 +660,14 @@ void LogLineBox::setEvent(int line,RDLogLine::TransType next_type,
     line_length_label->
       setText(RDGetTimeLength(line_logline->effectiveLength(),
 			      false,false));
-
     line_title_label->
-      setText(RDResolveNowNext(line_title_template,line_logline,line));
+      setText(line_logline->resolveWildcards(line_title_template));
     line_description_label->
-      setText(RDResolveNowNext(line_description_template,line_logline,line));
+      setText(line_logline->resolveWildcards(line_description_template));
     line_artist_label->
-      setText(RDResolveNowNext(line_artist_template,line_logline,line));
+      setText(line_logline->resolveWildcards(line_artist_template));	
     line_outcue_label->
-      setText(RDResolveNowNext(line_outcue_template,line_logline,line));
+      setText(line_logline->resolveWildcards(line_outcue_template));	
     delete cart;
     delete cut;
     setMode(line_mode);
@@ -690,7 +687,7 @@ void LogLineBox::setTimer(int msecs)
   line_up_label->setText(RDGetTimeLength(msecs,true,true));
   line_down_label->
     setText(RDGetTimeLength(line_logline->effectiveLength()-msecs,true,true));
-  line_position_bar->setProgress(msecs);
+  line_position_bar->setValue(msecs);
 }
 
 
@@ -783,20 +780,25 @@ void LogLineBox::mousePressEvent(QMouseEvent *e)
 {
   QWidget::mousePressEvent(e);
   line_move_count=3;
+  line_drag_start_pos=e->pos();
 }
 
 
 void LogLineBox::mouseMoveEvent(QMouseEvent *e)
 {
   QWidget::mouseMoveEvent(e);
-  line_move_count--;
-  if(line_move_count==0) {
-    if(line_allow_drags&&(line_logline!=NULL)) {
-      RDCartDrag *d=
-	new RDCartDrag(line_logline->cartNumber(),line_icon_label->pixmap(),
-		       line_group_label->palette().
-		       color(QColorGroup::Foreground),this);
-      d->dragCopy();
+  
+  if((e->pos()-line_drag_start_pos).manhattanLength()>
+     LOGLINEBOX_DRAG_THRESHOLD) {
+    line_move_count--;
+    if(line_move_count==0) {
+      if(line_allow_drags&&(line_logline!=NULL)) {
+	RDCartDrag *d=
+	  new RDCartDrag(line_logline->cartNumber(),line_icon_label->pixmap(),
+			 line_group_label->palette().
+			 color(QColorGroup::Foreground),this);
+	d->dragCopy();
+      }
     }
   }
 }
@@ -805,6 +807,7 @@ void LogLineBox::mouseMoveEvent(QMouseEvent *e)
 void LogLineBox::mouseReleaseEvent(QMouseEvent *e)
 {
   line_move_count=-1;
+  line_drag_start_pos=QPoint();
 }
 
 

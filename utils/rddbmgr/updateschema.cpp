@@ -9857,6 +9857,53 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<312)&&(set_schema>cur_schema)) {
+    sql=QString("alter table RDLIBRARY add column ")+
+      "CD_SERVER_TYPE int unsigned not null default 2 after RIPPER_LEVEL";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("update RDLIBRARY set CD_SERVER_TYPE=1");
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table RDLIBRARY add column ")+
+      "MB_SERVER varchar(64) default 'musicbrainz.org' after CDDB_SERVER";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
+  if((cur_schema<313)&&(set_schema>cur_schema)) {
+    sql=QString("alter table CUTS add column ")+
+      "RECORDING_MBID varchar(40) after ISCI";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table CUTS add column ")+
+      "RELEASE_MBID varchar(40) after RECORDING_MBID";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
+  if((cur_schema<314)&&(set_schema>cur_schema)) {
+    sql=QString("alter table STATIONS add column ")+
+      "BROWSER_PATH varchar(191) default 'firefox' after REPORT_EDITOR_PATH";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
+
   // NEW SCHEMA UPDATES GO HERE...
 
   //

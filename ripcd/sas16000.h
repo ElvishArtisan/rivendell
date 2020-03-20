@@ -23,7 +23,6 @@
 
 #include <vector>
 
-#include <q3socket.h>
 #include <qhostaddress.h>
 
 #include <rd.h>

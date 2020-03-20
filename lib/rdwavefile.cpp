@@ -2678,6 +2678,7 @@ bool RDWaveFile::GetCart(int fd)
   unsigned chunk_size;
   char *tag_buffer=NULL;
   int i,j;
+  QMultiMap<QString,int> timer_map;
 
   /*
    * Load the chunk
@@ -2717,6 +2718,11 @@ bool RDWaveFile::GetCart(int fd)
       j++;
     }
   }
+  for(i=0;i<MAX_TIMERS;i++) {
+    if(!cart_timer_label[i].isEmpty()) {
+      timer_map.insert(cart_timer_label[i],cart_timer_sample[i]);
+    }
+  }
   if(wave_type==RDWaveFile::Wave) {
     cart_url=cutString((char *)cart_chunk_data,1024,1024);
 
@@ -2740,6 +2746,10 @@ bool RDWaveFile::GetCart(int fd)
 
   if(wave_data!=NULL) {
     wave_data->setMetadataFound(true);
+
+    //
+    // Process Text Metadata
+    //
     wave_data->setTitle(QString(cart_title).remove(QChar(0)));
     wave_data->setArtist(QString(cart_artist).remove(QChar(0)));
     wave_data->setCutId(cart_cut_id);
@@ -2754,6 +2764,37 @@ bool RDWaveFile::GetCart(int fd)
     wave_data->setUserDefined(QString(cart_user_def).remove(QChar(0)));
     wave_data->setUrl(QString(cart_url).remove(QChar(0)));
     wave_data->setTagText(QString(cart_tag_text).remove(QChar(0)));
+
+    //
+    // Process Timers
+    //
+    if(timer_map.count("AUDs")==2) {  // ENCO-style AUD timer
+      QList<int> aud_timers=timer_map.values("AUDs");
+      double start=0.0;
+      double end=0.0;
+      if(aud_timers.at(0)<aud_timers.at(1)) {
+	start=(double)aud_timers.at(0);
+	end=(double)aud_timers.at(1);
+      }
+      else {
+	start=(double)aud_timers.at(1);
+	end=(double)aud_timers.at(0);
+      }
+      wave_data->setStartPos((int)(1000.0*start/((double)getSamplesPerSec())));
+      wave_data->setEndPos((int)(1000.0*end/((double)getSamplesPerSec())));
+    }
+    else {
+      for(int i=0;i<MAX_TIMERS;i++) {
+	if(cart_timer_label[i]=="AUDs") {
+	  wave_data->setStartPos((int)(1000.0*((double)cart_timer_sample[i])/
+				       ((double)getSamplesPerSec())));
+	}
+	if(cart_timer_label[i]=="AUDe") {
+	  wave_data->setEndPos((int)(1000.0*((double)cart_timer_sample[i])/
+				     ((double)getSamplesPerSec())));
+	}
+      }
+    }
     for(int i=0;i<MAX_TIMERS;i++) {
       if((cart_timer_label[i]=="SEGs")||(cart_timer_label[i]=="SEC1")) {
 	wave_data->setSegueStartPos((int)(1000.0*((double)cart_timer_sample[i])/
@@ -2765,24 +2806,16 @@ bool RDWaveFile::GetCart(int fd)
       }
       if(cart_timer_label[i]=="INTs") {
 	wave_data->setTalkStartPos((int)(1000.0*((double)cart_timer_sample[i])/
-					  ((double)getSamplesPerSec())));
+					 ((double)getSamplesPerSec())));
       }
       if(cart_timer_label[i]=="INTe") {
 	wave_data->setTalkEndPos((int)(1000.0*((double)cart_timer_sample[i])/
-					((double)getSamplesPerSec())));
+				       ((double)getSamplesPerSec())));
       }
       if((cart_timer_label[i]=="INT ")||(cart_timer_label[i]=="INT1")) {
 	wave_data->setTalkStartPos(0);
 	wave_data->setTalkEndPos((int)(1000.0*((double)cart_timer_sample[i])/
-					((double)getSamplesPerSec())));
-      }
-      if(cart_timer_label[i]=="AUDs") {
-	wave_data->setStartPos((int)(1000.0*((double)cart_timer_sample[i])/
-					  ((double)getSamplesPerSec())));
-      }
-      if(cart_timer_label[i]=="AUDe") {
-	wave_data->setEndPos((int)(1000.0*((double)cart_timer_sample[i])/
-					((double)getSamplesPerSec())));
+				       ((double)getSamplesPerSec())));
       }
     }
   }
@@ -3166,11 +3199,11 @@ bool RDWaveFile::GetAir1(int fd)
   AIR1_chunk_data[2047]=0;
   if(wave_data!=NULL) {
     wave_data->setTitle(cutString((char *)AIR1_chunk_data,0x102,27).
-			stripWhiteSpace());
+			trimmed().remove(QChar(0)));
     wave_data->setArtist(cutString((char *)AIR1_chunk_data,0x147,27).
-			stripWhiteSpace());
+			 trimmed().remove(QChar(0)));
     wave_data->setAlbum(cutString((char *)AIR1_chunk_data,0x163,27).
-			stripWhiteSpace());
+			trimmed().remove(QChar(0)));
     wave_data->setReleaseYear(cutString((char *)AIR1_chunk_data,0x17F,4).
 			      toInt());
     wave_data->setMetadataFound(true);
@@ -3368,44 +3401,44 @@ bool RDWaveFile::ReadTmcMetadata(int fd)
 void RDWaveFile::ReadTmcTag(const QString tag,const QString value)
 {
   if(tag=="TITLE") {
-    wave_data->setTitle(value.stripWhiteSpace());
+    wave_data->setTitle(value.trimmed().remove(QChar(0)));
     wave_data->setMetadataFound(true);
   }
   if(tag=="ARTIST") {
-    wave_data->setArtist(value.stripWhiteSpace());
+    wave_data->setArtist(value.trimmed().remove(QChar(0)));
     wave_data->setMetadataFound(true);
   }
   if(tag=="COMPOSER") {
-    wave_data->setComposer(value.stripWhiteSpace());
+    wave_data->setComposer(value.trimmed().remove(QChar(0)));
     wave_data->setMetadataFound(true);
   }
   if(tag=="PUBLISHER") {
-    wave_data->setPublisher(value.stripWhiteSpace());
+    wave_data->setPublisher(value.trimmed().remove(QChar(0)));
     wave_data->setMetadataFound(true);
   }
   if(tag=="LICENSE") {
-    wave_data->setLicensingOrganization(value.stripWhiteSpace());
+    wave_data->setLicensingOrganization(value.trimmed().remove(QChar(0)));
     wave_data->setMetadataFound(true);
   }
   if(tag=="LABEL") {
-    wave_data->setLabel(value.stripWhiteSpace());
+    wave_data->setLabel(value.trimmed().remove(QChar(0)));
     wave_data->setMetadataFound(true);
   }
   if(tag=="ALBUM") {
-    wave_data->setAlbum(value.stripWhiteSpace());
+    wave_data->setAlbum(value.trimmed().remove(QChar(0)));
     wave_data->setMetadataFound(true);
   }
   if(tag=="YEAR") {
-    wave_data->setReleaseYear(value.stripWhiteSpace().toInt());
+    wave_data->setReleaseYear(value.trimmed().remove(QChar(0)).toInt());
     wave_data->setMetadataFound(true);
   }
   if(tag=="INTRO") {
     wave_data->setTalkStartPos(0);
-    wave_data->setTalkEndPos(RDSetTimeLength(value.stripWhiteSpace()));
+    wave_data->setTalkEndPos(RDSetTimeLength(value.trimmed().remove(QChar(0))));
     wave_data->setMetadataFound(true);
   }
   if(tag=="AUX") {
-    wave_data->setSegueStartPos(RDSetTimeLength(value.stripWhiteSpace()));
+    wave_data->setSegueStartPos(RDSetTimeLength(value.trimmed().remove(QChar(0))));
     wave_data->setMetadataFound(true);
   }
   if(tag=="END") {
@@ -3413,7 +3446,7 @@ void RDWaveFile::ReadTmcTag(const QString tag,const QString value)
     wave_data->setMetadataFound(true);
   }
   if(tag=="TMCIREF") {
-    wave_data->setTmciSongId(value.stripWhiteSpace());
+    wave_data->setTmciSongId(value.trimmed().remove(QChar(0)));
     wave_data->setMetadataFound(true);
   }
   if(tag=="BPM") {
@@ -3422,11 +3455,11 @@ void RDWaveFile::ReadTmcTag(const QString tag,const QString value)
   }
   if(tag=="ISRC") {
     QString str=value;
-    wave_data->setIsrc(str.remove(" ").stripWhiteSpace());
+    wave_data->setIsrc(str.remove(" ").trimmed().remove(QChar(0)));
     wave_data->setMetadataFound(true);
   }
   if(tag=="PLINE") {
-    wave_data->setCopyrightNotice(value.stripWhiteSpace());
+    wave_data->setCopyrightNotice(value.trimmed().remove(QChar(0)));
     wave_data->setMetadataFound(true);
   }
 }

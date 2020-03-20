@@ -33,8 +33,6 @@
 EditReport::EditReport(QString rptname,QWidget *parent)
   : RDDialog(parent)
 {
-  setModal(true);
-
   QString sql;
   RDSqlQuery *q;
   bool ok=false;
@@ -42,10 +40,8 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMaximumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
-  setMaximumHeight(sizeHint().height());
+  setMinimumSize(sizeHint());
+  setMaximumSize(sizeHint());
 
   edit_report=new RDReport(rptname,rda->station(),rda->config());
   setWindowTitle("RDAdmin - "+tr("Edit Report")+" "+rptname);
@@ -293,10 +289,7 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   // Service Selector
   //
   edit_service_sel=new RDListSelector(this);
-  edit_service_sel->
-    setGeometry((sizeHint().width()-edit_service_sel->sizeHint().width())/2,
-		333,edit_service_sel->sizeHint().width(),
-		edit_service_sel->sizeHint().height());
+  edit_service_sel->setGeometry(75,333,380,80);
   edit_service_sel->sourceSetLabel(tr("Available Services"));
   edit_service_sel->destSetLabel(tr("Source Services"));
   
@@ -304,10 +297,12 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   // Station Selector
   //
   edit_station_sel=new RDListSelector(this);
-  edit_station_sel->
+  edit_station_sel->setGeometry(75,437,380,80);
+    /*
     setGeometry((sizeHint().width()-edit_station_sel->sizeHint().width())/2,
 		437,edit_station_sel->sizeHint().width(),
 		edit_station_sel->sizeHint().height());
+    */
   edit_station_sel->sourceSetLabel(tr("Available Hosts"));
   edit_station_sel->destSetLabel(tr("Source Hosts"));
 
@@ -315,17 +310,19 @@ EditReport::EditReport(QString rptname,QWidget *parent)
   // Group Selector
   //
   edit_group_sel=new RDListSelector(this);
-  edit_group_sel->
+  edit_group_sel->setGeometry(75,553,380,80);
+  /*
     setGeometry((sizeHint().width()-edit_group_sel->sizeHint().width())/2,
 		553,edit_group_sel->sizeHint().width(),
 		edit_group_sel->sizeHint().height());
+  */
   edit_group_sel->sourceSetLabel(tr("Available Groups"));
   edit_group_sel->destSetLabel(tr("Allowed Groups"));
 
   edit_group_box=new QCheckBox(this);
-  edit_group_box->setGeometry(60,534,15,15);
+  edit_group_box->setGeometry(60,531,15,15);
   label=new QLabel(edit_group_box,tr("Filter by Groups"),this);
-  label->setGeometry(edit_group_box->geometry().x()+20,533,155,19);
+  label->setGeometry(edit_group_box->geometry().x()+20,532,155,19);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
   connect(edit_group_box,SIGNAL(toggled(bool)),

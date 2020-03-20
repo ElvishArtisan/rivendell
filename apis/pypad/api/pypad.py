@@ -2,7 +2,7 @@
 #
 # PAD processor for Rivendell
 #
-#   (C) Copyright 2018-2019 Fred Gleason <fredg@paravelsystems.com>
+#   (C) Copyright 2018-2020 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as
@@ -28,6 +28,7 @@ import socket
 import sys
 import syslog
 import json
+from urllib.parse import quote
 
 #
 # Enumerated Constants (sort of)
@@ -102,27 +103,7 @@ class Update(object):
         return string
 
     def __escapeWeb(self,string):
-        string=string.replace("%","%25")
-        string=string.replace(" ","%20")
-        string=string.replace("<","%3C")
-        string=string.replace(">","%3E")
-        string=string.replace("#","%23")
-        string=string.replace("\"","%22")
-        string=string.replace("{","%7B")
-        string=string.replace("}","%7D")
-        string=string.replace("|","%7C")
-        string=string.replace("\\","%5C")
-        string=string.replace("^","%5E")
-        string=string.replace("[","%5B")
-        string=string.replace("]","%5D")
-        string=string.replace("`","%60")
-        string=string.replace("\a","%07")
-        string=string.replace("\b","%08")
-        string=string.replace("\f","%0C")
-        string=string.replace("\n","%0A")
-        string=string.replace("\r","%0D")
-        string=string.replace("\t","%09")
-        string=string.replace("\v","%0B")
+        string=quote(string)
         return string
 
     def __escapeJson(self,string):
@@ -141,7 +122,10 @@ class Update(object):
             if isinstance(self.__fields['padUpdate'][stype][sfield],str):
                 string=string.replace('%'+wildcard,self.escape(self.__fields['padUpdate'][stype][sfield],esc))
             else:
-                string=string.replace('%'+wildcard,str(self.__fields['padUpdate'][stype][sfield]))
+                if self.__fields['padUpdate'][stype][sfield] is None:
+                    string=string.replace('%'+wildcard,'')
+                else :
+                    string=string.replace('%'+wildcard,str(self.__fields['padUpdate'][stype][sfield]))
         except TypeError:
             string=string.replace('%'+wildcard,'')
         except KeyError:
@@ -150,7 +134,7 @@ class Update(object):
 
     def __replaceWildcardPair(self,wildcard,sfield,string,esc):
         string=self.__replaceWildcard(wildcard,sfield,'now',string,esc);
-        string=self.__replaceWildcard(wildcard.upper(),sfield,'next',string,esc);
+        string=self.__replaceWildcard(wildcard[0].upper()+wildcard[1:],sfield,'next',string,esc);
         return string;
 
     def __findDatetimePattern(self,pos,wildcard,string):
@@ -385,7 +369,8 @@ class Update(object):
         """
         #
         # MAINTAINER'S NOTE: These mappings must be kept in sync with
-        #                    those in 'lib/rdnownext.cpp'!
+        #                    those of the 'RDLogLine::resolveWildcards()'
+        #                    method in 'lib/rdlog_line.cpp'.
         #
         string=self.__replaceWildcardPair('a','artist',string,esc)
         string=self.__replaceWildcardPair('b','label',string,esc)
@@ -398,13 +383,13 @@ class Update(object):
         string=self.__replaceWildcardPair('h','length',string,esc)
         string=self.__replaceWildcardPair('i','description',string,esc)
         string=self.__replaceWildcardPair('j','cutNumber',string,esc)
-        #string=self.__replaceWildcardPair('k',sfield,string,esc) # Start time for rdimport
+        # %k - Assigned for use for the Start Time for rdimport(1)
         string=self.__replaceWildcardPair('l','album',string,esc)
         string=self.__replaceWildcardPair('m','composer',string,esc)
         string=self.__replaceWildcardPair('n','cartNumber',string,esc)
         string=self.__replaceWildcardPair('o','outcue',string,esc)
         string=self.__replaceWildcardPair('p','publisher',string,esc)
-        #string=self.__replaceWildcardPair('q',sfield,string,esc) # Start date for rdimport
+        # %q - Assigned for use for the Start Date for rdimport(1)
         string=self.__replaceWildcardPair('r','conductor',string,esc)
         string=self.__replaceWildcardPair('s','songId',string,esc)
         string=self.__replaceWildcardPair('t','title',string,esc)
@@ -419,7 +404,10 @@ class Update(object):
             string=string.replace('%V','0')
         else:
             string=string.replace('%V',str(int(secs)//1000))
-        #string=self.__replaceWildcardPair('w',sfield,string,esc) # Unassigned
+        string=self.__replaceWildcardPair('wc','isci',string,esc)
+        string=self.__replaceWildcardPair('wi','isrc',string,esc)
+        string=self.__replaceWildcardPair('wm','recordingMbId',string,esc)
+        string=self.__replaceWildcardPair('wr','releaseMbId',string,esc)
         string=self.__replaceWildcardPair('x','lineId',string,esc) # Log Line ID
         string=self.__replaceWildcardPair('y','year',string,esc)
         string=self.__replaceWildcardPair('z','lineNumber',string,esc) # Log Line #
@@ -797,9 +785,14 @@ class Receiver(object):
 
     def __openDb(self):
         creds=self.__getDbCredentials()
-        return MySQLdb.connect(user=creds[0],password=creds[1],
-                               host=creds[2],database=creds[3],
-                               charset='utf8mb4')
+        try:
+            return MySQLdb.connect(user=creds[0],passwd=creds[1],
+                                   host=creds[2],database=creds[3],
+                                   charset='utf8mb4')
+        except TypeError:
+            return MySQLdb.connect(user=creds[0],password=creds[1],
+                                   host=creds[2],database=creds[3],
+                                   charset='utf8mb4')
 
     def setPadCallback(self,callback):
         """

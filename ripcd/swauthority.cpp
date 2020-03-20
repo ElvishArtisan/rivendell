@@ -2,7 +2,7 @@
 //
 // A Rivendell switcher driver for systems using Software Authority Protocol
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -61,13 +61,14 @@ SoftwareAuthority::SoftwareAuthority(RDMatrix *matrix,QObject *parent)
   //
   // Initialize the connection
   //
-  swa_socket=new Q3Socket(this);
+  swa_socket=new QTcpSocket(this);
   connect(swa_socket,SIGNAL(connected()),this,SLOT(connectedData()));
   connect(swa_socket,SIGNAL(connectionClosed()),
 	  this,SLOT(connectionClosedData()));
   connect(swa_socket,SIGNAL(readyRead()),
 	  this,SLOT(readyReadData()));
-  connect(swa_socket,SIGNAL(error(int)),this,SLOT(errorData(int)));
+  connect(swa_socket,SIGNAL(error(QAbstractSocket::SocketError)),
+	  this,SLOT(errorData(QAbstractSocket::SocketError)));
   ipConnect();
 }
 
@@ -203,30 +204,31 @@ void SoftwareAuthority::readyReadData()
 }
 
 
-void SoftwareAuthority::errorData(int err)
+void SoftwareAuthority::errorData(QAbstractSocket::SocketError err)
 {
-  switch((Q3Socket::Error)err) {
-      case Q3Socket::ErrConnectionRefused:
-	rda->syslog(LOG_WARNING,
-	       "connection to SoftwareAuthority device at %s:%d refused, attempting reconnect",
-		    (const char *)swa_ipaddress.toString().toUtf8(),
-		    swa_ipport);
-	swa_reconnect_timer->start(SWAUTHORITY_RECONNECT_INTERVAL,true);
-	break;
+  switch(err) {
+  case QAbstractSocket::ConnectionRefusedError:
+    rda->syslog(LOG_WARNING,
+		"connection to SoftwareAuthority device at %s:%d refused, attempting reconnect",
+		(const char *)swa_ipaddress.toString().toUtf8(),
+		swa_ipport);
+    swa_reconnect_timer->start(SWAUTHORITY_RECONNECT_INTERVAL,true);
+    break;
 
-      case Q3Socket::ErrHostNotFound:
-	rda->syslog(LOG_WARNING,
-	       "error on connection to SoftwareAuthority device at %s:%d: Host Not Found",
-		    (const char *)swa_ipaddress.toString().toUtf8(),
-		    swa_ipport);
-	break;
+  case QAbstractSocket::HostNotFoundError:
+    rda->syslog(LOG_WARNING,
+		"error on connection to SoftwareAuthority device at %s:%d: Host Not Found",
+		(const char *)swa_ipaddress.toString().toUtf8(),
+		swa_ipport);
+    break;
 
-      case Q3Socket::ErrSocketRead:
-	rda->syslog(LOG_WARNING,
-	       "error on connection to SoftwareAuthority device at %s:%d: Socket Read Error",
-		    (const char *)swa_ipaddress.toString().toUtf8(),
-		    swa_ipport);
-	break;
+  default:
+    rda->syslog(LOG_WARNING,
+		"error %d on connection to SoftwareAuthority device at %s:%d",
+		err,
+		(const char *)swa_ipaddress.toString().toUtf8(),
+		swa_ipport);
+    break;
   }
 }
 
@@ -255,7 +257,7 @@ void SoftwareAuthority::DispatchCommand()
   QString section=line_in.lower().replace(">>","");
 
   //
-  // Startup Sequence.  Get the input and output lists.
+  // Startup Sequence. Get initial GPIO states and the input and output lists.
   //
   if(section=="login successful") {
     sprintf(buffer,"gpistat %d\x0D\x0A",swa_card);      // Request GPI States
@@ -305,7 +307,6 @@ void SoftwareAuthority::DispatchCommand()
       delete q;
       return;
     }
-    swa_inputs++;
     f0=line_in.split("\t",QString::KeepEmptyParts);
     name=f0[1];
     if(f0.size()>=7) {
@@ -329,6 +330,9 @@ void SoftwareAuthority::DispatchCommand()
 	"STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\","+
 	QString().sprintf("MATRIX=%d,",swa_matrix)+
 	QString().sprintf("NUMBER=%d",f0[0].toInt());
+    }
+    if(f0[0].toInt()>swa_inputs) {
+      swa_inputs=f0[0].toInt();
     }
     delete q;
     q=new RDSqlQuery(sql);
@@ -357,7 +361,6 @@ void SoftwareAuthority::DispatchCommand()
       }
       return;
     }
-    swa_outputs++;
     f0=line_in.split("\t",QString::KeepEmptyParts);
     name=f0[1];
     if(f0.size()>=6) {
@@ -381,6 +384,9 @@ void SoftwareAuthority::DispatchCommand()
 	"STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\","+
 	QString().sprintf("MATRIX=%d,",swa_matrix)+
 	QString().sprintf("NUMBER=%d",f0[0].toInt());
+    }
+    if(f0[0].toInt()>swa_outputs) {
+      swa_outputs=f0[0].toInt();
     }
     delete q;
     q=new RDSqlQuery(sql);

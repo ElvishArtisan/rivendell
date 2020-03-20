@@ -2,7 +2,7 @@
 #
 # The lib/ QMake project file for Rivendell.
 #
-# (C) Copyright 2003-2018 Fred Gleason <fredg@paravelsystems.com>
+# (C) Copyright 2003-2020 Fred Gleason <fredg@paravelsystems.com>
 #
 #   This program is free software; you can redistribute it and/or modify
 #   it under the terms of the GNU General Public License version 2 as
@@ -57,7 +57,7 @@ SOURCES += rdcartdrag.cpp
 SOURCES += rdcatch_connect.cpp
 SOURCES += rdcddblookup.cpp
 SOURCES += rdcdplayer.cpp
-SOURCES += rdcddbrecord.cpp
+SOURCES += rddiscrecord.cpp
 SOURCES += rdcheck_version.cpp
 SOURCES += rdclock.cpp
 SOURCES += rdcmd_cache.cpp
@@ -75,11 +75,15 @@ SOURCES += rddatedecode.cpp
 SOURCES += rddatepicker.cpp
 SOURCES += rddatetime.cpp
 SOURCES += rddb.cpp
+SOURCES += rddisclookup.cpp
 SOURCES += rddbheartbeat.cpp
 SOURCES += rddebug.cpp
 SOURCES += rddeck.cpp
 SOURCES += rddialog.cpp
+SOURCES += rddisclookup.cpp
+SOURCES += rddisclookup_factory.cpp
 SOURCES += rddropbox.cpp
+SOURCES += rddummylookup.cpp
 SOURCES += rdedit_audio.cpp
 SOURCES += rdedit_panel_name.cpp
 SOURCES += rdemptycart.cpp
@@ -100,7 +104,6 @@ SOURCES += rdhash.cpp
 SOURCES += rdidvalidator.cpp
 SOURCES += rdimport_audio.cpp
 SOURCES += rdkernelgpio.cpp
-SOURCES += rdlabel.cpp
 SOURCES += rdlibrary_conf.cpp
 SOURCES += rdlineedit.cpp
 SOURCES += rdlist_logs.cpp
@@ -120,6 +123,7 @@ SOURCES += rdmacro_event.cpp
 SOURCES += rdmarker_button.cpp
 SOURCES += rdmarker_edit.cpp
 SOURCES += rdmatrix.cpp
+SOURCES += rdmblookup.cpp
 SOURCES += rdmonitor_config.cpp
 SOURCES += rdnotification.cpp
 SOURCES += rdoneshot.cpp
@@ -189,7 +193,8 @@ HEADERS += rdcartdrag.h
 HEADERS += rdcatch_connect.h
 HEADERS += rdcddblookup.h
 HEADERS += rdcdplayer.h
-HEADERS += rdcddbrecord.h
+HEADERS += rddiscrecord.h
+HEADERS += rddisclookup.h
 HEADERS += rdcheck_version.h
 HEADERS += rdclock.h
 HEADERS += rdcmd_cache.h
@@ -211,7 +216,10 @@ HEADERS += rddbheartbeat.h
 HEADERS += rddebug.h
 HEADERS += rddeck.h
 HEADERS += rddialog.h
+HEADERS += rddisclookup.h
+HEADERS += rddisclookup_factory.h
 HEADERS += rddropbox.h
+HEADERS += rddummylookup.h
 HEADERS += rdedit_audio.h
 HEADERS += rdedit_panel_name.h
 HEADERS += rdemptycart.h
@@ -233,7 +241,6 @@ HEADERS += rdhash.h
 HEADERS += rdidvalidator.h
 HEADERS += rdimport_audio.h
 HEADERS += rdkernelgpio.h
-HEADERS += rdlabel.h
 HEADERS += rdlibrary_conf.h
 HEADERS += rdlineedit.h
 HEADERS += rdlist_groups.h
@@ -253,6 +260,7 @@ HEADERS += rdmacro_event.h
 HEADERS += rdmarker_button.h
 HEADERS += rdmarker_edit.h
 HEADERS += rdmatrix.h
+HEADERS += rdmblookup.h
 HEADERS += rdmonitor_config.h
 HEADERS += rdnotification.h
 HEADERS += rdoneshot.h

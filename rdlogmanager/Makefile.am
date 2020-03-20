@@ -1,6 +1,6 @@
 ## Makefile.am
 ##
-## (C) Copyright 2002-2006,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -18,7 +18,7 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -I$(top_srcdir)/lib @QT4_CFLAGS@ -DQT3_SUPPORT -I/usr/include/Qt3Support
+AM_CPPFLAGS = -Wall -DPREFIX=\"$(prefix)\" -I$(top_srcdir)/lib @QT4_CFLAGS@ @MUSICBRAINZ_CFLAGS@ -DQT3_SUPPORT -I/usr/include/Qt3Support
 LIBS = -L$(top_srcdir)/lib
 MOC = @QT_MOC@
 
@@ -65,7 +65,8 @@ dist_rdlogmanager_SOURCES = add_clock.cpp add_clock.h\
                             rdlogmanager.cpp rdlogmanager.h\
                             rename_item.cpp rename_item.h\
                             svc_rec.cpp svc_rec.h\
-                            svc_rec_dialog.cpp svc_rec_dialog.h
+                            svc_rec_dialog.cpp svc_rec_dialog.h\
+                            viewreportdialog.cpp viewreportdialog.h
 
 nodist_rdlogmanager_SOURCES = moc_add_clock.cpp\
                               moc_add_event.cpp\
@@ -91,9 +92,10 @@ nodist_rdlogmanager_SOURCES = moc_add_clock.cpp\
                               moc_rdlogmanager.cpp\
                               moc_rename_item.cpp\
                               moc_svc_rec.cpp\
-                              moc_svc_rec_dialog.cpp
+                              moc_svc_rec_dialog.cpp\
+                              moc_viewreportdialog.cpp
 
-rdlogmanager_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ -lQt3Support
+rdlogmanager_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@ -lQt3Support
 
 EXTRA_DIST = rdlogmanager.pro\
              rdlogmanager_cs.ts\

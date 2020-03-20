@@ -1,8 +1,8 @@
-//   rdcddbrecord.h
+//   rddiscrecord.h
 //
-//   A Container Class for CDDB Data.
+//   Container Class for Compact Disc Metadata
 //
-//   (C) Copyright 2003,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2003-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -19,8 +19,8 @@
 //
 //
 
-#ifndef RDCDDBRECORD_H
-#define RDCDDBRECORD_H
+#ifndef RDDISCRECORD_H
+#define RDDISCRECORD_H
 
 #include <qstring.h>
 #include <linux/cdrom.h>
@@ -31,20 +31,28 @@
  * @author Fred Gleason <fredg@paravelsystems.com>
  **/
 
-class RDCddbRecord
+class RDDiscRecord
 {
   public:
   /**
-   * Create an RDCddbRecord object
+   * Create an RDDiscRecord object
    **/
-  RDCddbRecord();
+  RDDiscRecord();
   void clear();
   int tracks() const;
   void setTracks(int num);
   unsigned discLength() const;
   void setDiscLength(unsigned len);
   unsigned discId() const;
+  QString discMbId() const;
+  void setDiscMbId(const QString &mbid);
   void setDiscId(unsigned id);
+  QString mcn() const;
+  void setMcn(const QString &mcn);
+  QString discReleaseMbId() const;
+  void setDiscReleaseMbId(const QString &mbid);
+  QString mbSubmissionUrl() const;
+  void setMbSubmissionUrl(const QString &url);
   QString discTitle() const;
   void setDiscTitle(QString title);
   QString discArtist() const;
@@ -57,6 +65,8 @@ class RDCddbRecord
   void setDiscYear(unsigned year);
   QString discGenre() const;
   void setDiscGenre(QString genre);
+  QString discLabel() const;
+  void setDiscLabel(const QString &str);
   QString discExtended() const;
   void setDiscExtended(QString text);
   QString discPlayOrder() const;
@@ -69,29 +79,37 @@ class RDCddbRecord
   void setTrackExtended(int track,QString text);
   QString trackArtist(int track) const;
   void setTrackArtist(int track,QString artist);
+  QString trackRecordingMbId(int track) const;
+  void setTrackRecordingMbId(int track,const QString &str);
+  bool hasIsrcs() const;
   QString isrc(int track) const;
   void setIsrc(int track,QString isrc);
-  QString mcn(int track) const;
-  void setMcn(int track,QString mcn);
+  QString dump();
 
  private:
-  int cddb_tracks;
-  unsigned cddb_disc_id;
-  unsigned cddb_disc_length;
-  QString cddb_disc_title;
-  QString cddb_disc_artist;
-  QString cddb_disc_album;
-  QString cddb_disc_author;
-  unsigned cddb_disc_year;
-  QString cddb_disc_genre;
-  QString cddb_disc_extended;
-  QString cddb_disc_playorder;
-  QString cddb_track_title[CDROM_LEADOUT];
-  QString cddb_track_extended[CDROM_LEADOUT];
-  QString cddb_track_artist[CDROM_LEADOUT];
-  QString cddb_track_isrc[CDROM_LEADOUT];
-  unsigned cddb_track_offset[CDROM_LEADOUT];
+  int disc_tracks;
+  unsigned disc_disc_id;
+  QString disc_disc_mb_id;
+  QString disc_mcn;
+  QString disc_disc_release_mb_id;
+  QString disc_mb_submission_url;
+  unsigned disc_disc_length;
+  QString disc_disc_title;
+  QString disc_disc_artist;
+  QString disc_disc_album;
+  QString disc_disc_author;
+  unsigned disc_disc_year;
+  QString disc_disc_genre;
+  QString disc_disc_label;
+  QString disc_disc_extended;
+  QString disc_disc_playorder;
+  QString disc_track_title[CDROM_LEADOUT];
+  QString disc_track_extended[CDROM_LEADOUT];
+  QString disc_track_artist[CDROM_LEADOUT];
+  QString disc_track_isrc[CDROM_LEADOUT];
+  unsigned disc_track_offset[CDROM_LEADOUT];
+  QString disc_track_recording_mb_id[CDROM_LEADOUT];
 };
 
 
-#endif  // RDCDDBRECORD_H
+#endif  // RDDISCRECORD_H

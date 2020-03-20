@@ -36,6 +36,8 @@
 // Widget Settings
 //
 #define END_MARKER_ID -2
+#define RDLOGEDIT_EDITLOG_DEFAULT_WIDTH 950
+#define RDLOGEDIT_EDITLOG_DEFAULT_HEIGHT 600
 
 class EditLog : public RDDialog
 {
@@ -61,6 +63,7 @@ class EditLog : public RDDialog
   void autorefreshChangedData(int index);
   void startDateEnabledData(bool);
   void endDateEnabledData(bool);
+  void timestyleChangedData(int index);
   void insertCartButtonData();
   void insertMarkerButtonData();
   void clickedData(Q3ListViewItem *item);
@@ -91,6 +94,7 @@ class EditLog : public RDDialog
   void DeleteLines(int line,int count);
   void SaveLog();
   void RefreshLine(RDListViewItem *item);
+  void SetStartTimeField(RDListViewItem *item);
   void RefreshList();
   void UpdateSelection();
   void RenumberList(int line);
@@ -145,6 +149,8 @@ class EditLog : public RDDialog
   QLabel *edit_origin_label;
   QLabel *edit_track_label_label;
   QLabel *edit_track_label;
+  QLabel *edit_timestyle_label;
+  QComboBox *edit_timestyle_box;
   bool edit_changed;
   QPushButton *edit_cart_button;
   QPushButton *edit_marker_button;

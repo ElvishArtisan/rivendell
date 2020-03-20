@@ -546,6 +546,7 @@ void AudioCart::ripCutData()
   QString title;
   QString artist;
   QString album;
+  QString label;
 
   RDListViewItem *item=NULL;
   std::vector<QString> cutnames;
@@ -553,9 +554,9 @@ void AudioCart::ripCutData()
     return;
   }
   cutname=item->text(12);
-  RDCddbRecord *rec=new RDCddbRecord();
+  RDDiscRecord *rec=new RDDiscRecord();
   CdRipper *ripper=new CdRipper(cutname,rec,rda->libraryConf(),rdcart_profile_rip);
-  if((track=ripper->exec(&title,&artist,&album))>=0) {
+  if((track=ripper->exec(&title,&artist,&album,&label))>=0) {
     if((rdcart_controls->title_edit->text().isEmpty()||
 	(rdcart_controls->title_edit->text()==tr("[new cart]")))&&
        (!title.isEmpty())) {
@@ -563,8 +564,11 @@ void AudioCart::ripCutData()
     }
     rdcart_controls->artist_edit->setText(artist);
     rdcart_controls->album_edit->setText(album);
+    rdcart_controls->label_edit->setText(label);
     RDCut *cut=new RDCut(cutname);
     cut->setIsrc(rec->isrc(track));
+    cut->setRecordingMbId(rec->trackRecordingMbId(track));
+    cut->setReleaseMbId(rec->discReleaseMbId());
     delete cut;
   }
   if(cut_clipboard==NULL) {
@@ -596,7 +600,7 @@ void AudioCart::importCutData()
   RDImportAudio *import=new RDImportAudio(cutname,rdcart_import_path,
 					  &settings,&rdcart_import_metadata,
 					  &wavedata,cut_clipboard,
-					  &import_active);
+					  &import_active,"RDLibrary",this);
   import->enableAutotrim(rda->libraryConf()->defaultTrimState());
   import->setAutotrimLevel(rda->libraryConf()->trimThreshold());
   import->enableNormalization(rda->libraryConf()->ripperLevel()!=0);

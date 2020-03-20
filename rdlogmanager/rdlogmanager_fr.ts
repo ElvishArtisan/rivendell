@@ -533,6 +533,10 @@ Do you want to overwrite it?</source>
         <source>Artist Separation</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Search</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditEventLine</name>
@@ -948,18 +952,6 @@ Do you want to save?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Set PLAY Transition</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Set SEGUE Transition</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Set STOP Transition</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
@@ -989,6 +981,18 @@ Do you want to save?</source>
     </message>
     <message>
         <source>STOP</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>PLAY Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SEGUE Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>STOP Transition</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1313,11 +1317,19 @@ Report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Report Complete</source>
+        <source>File Exists</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Report generated in</source>
+        <source>File Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to open report file at</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The report file already exists.  Overwrite?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

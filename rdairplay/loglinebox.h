@@ -21,13 +21,12 @@
 #ifndef LOGLINEBOX_H
 #define LOGLINEBOX_H
 
-#include <q3progressbar.h>
-
+#include <qlabel.h>
 #include <qpixmap.h>
+#include <qprogressbar.h>
 
 #include <rdairplay_conf.h>
 #include <rdcartdrag.h>
-#include <rdlabel.h>
 #include <rdlog_line.h>
 #include <rdlog_event.h>
 #include <rdwidget.h>
@@ -37,6 +36,7 @@
 //
 #define LOGLINEBOX_FULL_HEIGHT 85
 #define LOGLINEBOX_HALF_HEIGHT 50
+#define LOGLINEBOX_DRAG_THRESHOLD 20
 
 class LogLineBox : public RDWidget
 {
@@ -95,8 +95,8 @@ class LogLineBox : public RDWidget
   QLabel *line_talktime_label;
   QLabel *line_up_label;
   QLabel *line_down_label;
-  RDLabel *line_comment_label;
-  Q3ProgressBar *line_position_bar;
+  QLabel *line_comment_label;
+  QProgressBar *line_position_bar;
   QTimer *line_countdown_timer;
   QTime line_end_time;
   int log_id;
@@ -127,6 +127,7 @@ class LogLineBox : public RDWidget
   QPixmap *line_traffic_map;
   QPixmap *line_music_map;
   int line_move_count;
+  QPoint line_drag_start_pos;
   RDLogLine::Status line_status;
   QString line_title_template;
   QString line_artist_template;

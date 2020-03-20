@@ -514,6 +514,31 @@
     </para>
   </sect2>
 
+  <sect2 xml:id="sect.rml.disconnect_all_jack_ports__jz_">
+    <title>Disconnect All Jack Ports [JZ]</title>
+    <para>
+      <variablelist>
+	<varlistentry>
+	  <term>Module</term>
+	  <listitem><command>ripcd</command><manvolnum>8</manvolnum></listitem>
+	</varlistentry>
+	<varlistentry>
+	  <term>Mnemonic</term>
+	  <listitem><userinput>JZ</userinput></listitem>
+	</varlistentry>
+      </variablelist>
+    </para>
+    <para>
+      Disconnect all JACK input port connections.
+    </para>
+    <para>
+      <userinput>JZ!</userinput>
+    </para>
+    <para>
+      Attempt to disconnect all JACK port connections.
+    </para>
+  </sect2>
+
   <sect2 xml:id="sect.rml.duck_panel_button__pd_">
     <title>Duck Panel Button [PD]</title>
     <para>

@@ -23,8 +23,9 @@
 
 #include <vector>
 
-#include <q3socket.h>
+//#include <q3socket.h>
 #include <qhostaddress.h>
+#include <qtcpsocket.h>
 #include <qtimer.h>
 
 #include <rd.h>
@@ -54,7 +55,7 @@ class SasUsi : public Switcher
   void connectedData();
   void connectionClosedData();
   void readyReadData();
-  void errorData(int err);
+  void errorData(QAbstractSocket::SocketError err);
 
  private:
   void SendCommand(char *str);
@@ -62,7 +63,8 @@ class SasUsi : public Switcher
   void ExecuteMacroCart(unsigned cartnum);
   QString PrettifyCommand(const char *cmd) const;
   RDTTYDevice *sas_device;
-  Q3Socket *sas_socket;
+  QTcpSocket *sas_socket;
+  //  Q3Socket *sas_socket;
   char sas_buffer[SASUSI_MAX_LENGTH];
   unsigned sas_ptr;
   QHostAddress sas_ipaddress;

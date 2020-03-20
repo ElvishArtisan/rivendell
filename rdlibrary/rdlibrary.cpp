@@ -2,7 +2,7 @@
 //
 // The Library Utility for Rivendell.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -516,7 +516,7 @@ QSizePolicy MainWidget::sizePolicy() const
 void MainWidget::caeConnectedData(bool state)
 {
   if(state) {
-    std::vector<int> cards;
+    QList<int> cards;
     cards.push_back(rda->libraryConf()->inputCard());
     cards.push_back(rda->libraryConf()->outputCard());
     rda->cae()->enableMetering(&cards);
@@ -1109,12 +1109,12 @@ void MainWidget::resizeEvent(QResizeEvent *e)
     lib_filter_label->setGeometry(10,10,55,20);
     lib_group_label->setGeometry(10,40,55,20);
     lib_group_box->setGeometry(70,40,100,20);
-    lib_codes_label->setGeometry(165,40,130,20);
-    lib_codes_box->setGeometry(300,40,100,20);
-    lib_codes2_label->setGeometry(415,40,130,20);
-    lib_codes2_box->setGeometry(550,40,100,20);
+    lib_codes_label->setGeometry(160,40,130,20);
+    lib_codes_box->setGeometry(295,40,100,20);
+    lib_codes2_label->setGeometry(410,40,130,20);
+    lib_codes2_box->setGeometry(545,40,100,20);
     lib_matches_label->setGeometry(660,40,100,20);
-    lib_matches_edit->setGeometry(755,40,65,20);
+    lib_matches_edit->setGeometry(765,40,55,20);
     lib_showmatches_label->setGeometry(760,66,200,20);
     lib_showmatches_box->setGeometry(740,68,15,15);
     lib_allowdrag_label->setGeometry(580,66,130,20);

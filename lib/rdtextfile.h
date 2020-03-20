@@ -24,6 +24,8 @@
 #include <qstring.h>
 
 bool RDTextFile(const QString &data,bool delete_on_exit=true);
+bool RDTextViewer(const QString &filename);
+bool RDWebBrowser(const QString &url);
 
 
 #endif  // RDTEXTFILE_H

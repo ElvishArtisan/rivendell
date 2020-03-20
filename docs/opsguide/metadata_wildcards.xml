@@ -37,7 +37,10 @@
 	  <row><entry><userinput>%t</userinput></entry><entry><userinput>%T</userinput></entry><entry>Title</entry></row>
 	  <row><entry><userinput>%u</userinput></entry><entry><userinput>%U</userinput></entry><entry>User Definied</entry></row>
 	  <row><entry><userinput>%v</userinput></entry><entry><userinput>%V</userinput></entry><entry>Event length (seconds, rounded down)</entry></row>
-	  <row><entry><userinput>%w</userinput></entry><entry><userinput>%W</userinput></entry><entry>[Unassigned]</entry></row>
+	  <row><entry><userinput>%wc</userinput></entry><entry><userinput>%WC</userinput></entry><entry>Industry Standard Commercial Identification (ISCI) Code</entry></row>
+	  <row><entry><userinput>%wi</userinput></entry><entry><userinput>%WI</userinput></entry><entry>International Standard Recording Code</entry></row>
+	  <row><entry><userinput>%wm</userinput></entry><entry><userinput>%Wm</userinput></entry><entry>MusicBrainz Recording ID</entry></row>
+	  <row><entry><userinput>%wr</userinput></entry><entry><userinput>%Wr</userinput></entry><entry>MusicBrainz Release ID</entry></row>
 	  <row><entry><userinput>%x</userinput></entry><entry><userinput>%X</userinput></entry><entry>Log line ID (numeric)</entry></row>
 	  <row><entry><userinput>%y</userinput></entry><entry><userinput>%Y</userinput></entry><entry>Release Year</entry></row>
 	  <row><entry><userinput>%z</userinput></entry><entry><userinput>%Z</userinput></entry><entry>Log line number (numeric)</entry></row>

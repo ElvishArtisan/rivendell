@@ -757,6 +757,14 @@
         <source>No carts found in group</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>-- End of List --</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CounterPoint Traffic Reconciliation v2</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddCart</name>
@@ -1212,6 +1220,14 @@ Color</translation>
         <source>End</source>
         <translation type="unfinished">Final</translation>
     </message>
+    <message>
+        <source>Open Audio File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancelar</translation>
+    </message>
 </context>
 <context>
     <name>RDCddbLookup</name>
@@ -1220,16 +1236,8 @@ Color</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Multiple Matches Found!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>OK</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Cancel</source>
-        <translation type="unfinished">Cancelar</translation>
+        <translation type="obsolete">Cancelar</translation>
     </message>
 </context>
 <context>
@@ -1407,6 +1415,29 @@ Cartucho</translation>
     <message>
         <source>Su</source>
         <translation>Do</translation>
+    </message>
+</context>
+<context>
+    <name>RDDiscLookup</name>
+    <message>
+        <source>Multiple Matches Found!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Cancelar</translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to read CD.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2137,6 +2168,14 @@ Do you still want to proceed?</source>
         <source>Abort</source>
         <translation>Abortar</translation>
     </message>
+    <message>
+        <source>Select Audio File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Save Audio File</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDIntegerDialog</name>
@@ -2372,6 +2411,49 @@ Do you still want to proceed?</source>
     <message>
         <source>RDLogManager</source>
         <translation type="obsolete">RDLogManager</translation>
+    </message>
+</context>
+<context>
+    <name>RDMbLookup</name>
+    <message>
+        <source>Connection Exception</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Last Result</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>LastHTTPCode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>LastErrorMessage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Timeout Exception</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Authentication Exception</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fetch Exception</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Request Exception</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Lookup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Resource Not Found</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

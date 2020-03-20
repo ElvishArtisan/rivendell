@@ -597,6 +597,8 @@ void MainWidget::UpdateLabelsUp(int last_line)
   }
   gpi_up_button->setEnabled(q->next());
   delete q;
+
+  RefreshGpioStates();
 }
 
 
@@ -643,6 +645,23 @@ void MainWidget::UpdateLabelsDown(int first_line)
   }
   gpi_down_button->setEnabled(q->next());
   delete q;
+
+  RefreshGpioStates();
+}
+
+
+void MainWidget::RefreshGpioStates()
+{
+  if(gpi_type_box->currentIndex()==0) {
+    rda->ripc()->sendGpiStatus(gpi_matrix_box->currentIndex());
+    rda->ripc()->sendGpiCart(gpi_matrix_box->currentIndex());
+    rda->ripc()->sendGpiMask(gpi_matrix_box->currentIndex());
+  }
+  else {
+    rda->ripc()->sendGpoStatus(gpi_matrix_box->currentIndex());
+    rda->ripc()->sendGpoCart(gpi_matrix_box->currentIndex());
+    rda->ripc()->sendGpoMask(gpi_matrix_box->currentIndex());
+  }
 }
 
 

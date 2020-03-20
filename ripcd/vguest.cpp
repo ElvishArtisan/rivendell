@@ -235,7 +235,7 @@ VGuest::VGuest(RDMatrix *matrix,QObject *parent)
 	vguest_device[i]->setSpeed(tty->baudRate());
 	vguest_device[i]->setWordLength(tty->dataBits());
 	vguest_device[i]->setParity(tty->parity());
-	vguest_device[i]->open(QIODevice::Unbuffered|QIODevice::ReadWrite);
+	vguest_device[i]->open(QIODevice::Unbuffered|QIODevice::WriteOnly);
       }
       delete tty;
     }
@@ -248,8 +248,9 @@ VGuest::VGuest(RDMatrix *matrix,QObject *parent)
 		this,SLOT(connectionClosedData(int)));
 	connect(vguest_socket[i],SIGNAL(readyReadID(int)),
 		this,SLOT(readyReadData(int)));
-	connect(vguest_socket[i],SIGNAL(errorID(int,int)),
-		this,SLOT(errorData(int,int)));
+	connect(vguest_socket[i],
+		SIGNAL(errorID(QAbstractSocket::SocketError,int)),
+		this,SLOT(errorData(QAbstractSocket::SocketError,int)));
 	ipConnect(i);
       }
     }
@@ -533,42 +534,43 @@ void VGuest::readyReadData(int id)
 }
 
 
-void VGuest::errorData(int err,int id)
+void VGuest::errorData(QAbstractSocket::SocketError err,int id)
 {
   int interval=VGUEST_RECONNECT_MIN_INTERVAL;
 
-  switch((Q3Socket::Error)err) {
-      case Q3Socket::ErrConnectionRefused:
-	interval=GetHoldoff();
-	if(!vguest_error_notified[id]) {
-	  rda->syslog(LOG_WARNING,
+  switch(err) {
+  case QAbstractSocket::ConnectionRefusedError:
+    interval=GetHoldoff();
+    if(!vguest_error_notified[id]) {
+      rda->syslog(LOG_WARNING,
 	   "connection to vGuest device at %s:%d refused, attempting reconnect",
-		      (const char *)vguest_ipaddress[id].toString().toUtf8(),
-		      vguest_ipport[id]);
-	  vguest_error_notified[id]=true;
-	}
-	vguest_reconnect_timer[id]->start(interval,true);
-	break;
+		  (const char *)vguest_ipaddress[id].toString().toUtf8(),
+		  vguest_ipport[id]);
+      vguest_error_notified[id]=true;
+    }
+    vguest_reconnect_timer[id]->start(interval,true);
+    break;
 
-      case Q3Socket::ErrHostNotFound:
-	if(!vguest_error_notified[id]) {
-	  rda->syslog(LOG_WARNING,
+  case QAbstractSocket::HostNotFoundError:
+    if(!vguest_error_notified[id]) {
+      rda->syslog(LOG_WARNING,
 		"error on connection to vGuest device at %s:%d: Host Not Found",
-		      (const char *)vguest_ipaddress[id].toString().toUtf8(),
-		      vguest_ipport[id]);
-	  vguest_error_notified[id]=true;
-	}
-	break;
+		  (const char *)vguest_ipaddress[id].toString().toUtf8(),
+		  vguest_ipport[id]);
+      vguest_error_notified[id]=true;
+    }
+    break;
 
-      case Q3Socket::ErrSocketRead:
-	if(!vguest_error_notified[id]) {
-	  rda->syslog(LOG_WARNING,
-	     "error on connection to vGuest device at %s:%d: Socket Read Error",
-		      (const char *)vguest_ipaddress[id].toString().toUtf8(),
-		      vguest_ipport[id]);
-	  vguest_error_notified[id]=true;
-	}
-	break;
+  default:
+    if(!vguest_error_notified[id]) {
+      rda->syslog(LOG_WARNING,
+	     "error %d on connection to vGuest device at %s:%d: Socket Read Error",
+		  err,
+		  (const char *)vguest_ipaddress[id].toString().toUtf8(),
+		  vguest_ipport[id]);
+      vguest_error_notified[id]=true;
+    }
+    break;
   }
 }
 
@@ -594,7 +596,6 @@ void VGuest::pingData(int id)
 
 void VGuest::pingResponseData(int id)
 {
-  vguest_socket[id]->clearPendingData();
   vguest_socket[id]->close();
   rda->syslog(LOG_WARNING,"vGuest connection to "+
 	      vguest_ipaddress[id].toString()+

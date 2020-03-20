@@ -2,7 +2,7 @@
 //
 // Abstract an rdlogmanager(1) Import List
 //
-//   (C) Copyright 2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2019 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -21,14 +21,15 @@
 #ifndef RDEVENTIMPORTLIST_H
 #define RDEVENTIMPORTLIST_H
 
-#include <vector>
+#include <qlist.h>
 
 #include <rdlog_line.h>
 
 class RDEventImportItem
 {
  public:
-  RDEventImportItem();
+  RDEventImportItem(bool end_marker=false);
+  bool isEndMarker() const;
   RDLogLine::Type eventType() const;
   void setEventType(RDLogLine::Type type);
   unsigned cartNumber() const;
@@ -39,6 +40,7 @@ class RDEventImportItem
   void setMarkerComment(const QString &str);
 
  private:
+  bool event_end_marker;
   RDLogLine::Type event_type;
   unsigned event_cart_number;
   RDLogLine::TransType event_trans_type;
@@ -57,6 +59,7 @@ class RDEventImportList
   void setType(ImportType type);
   int size();
   RDEventImportItem *item(int n) const;
+  RDEventImportItem *endMarkerItem() const;
   void takeItem(int before_line,RDEventImportItem *item);
   void removeItem(int n);
   void moveItem(int from_line,int to_line);
@@ -67,7 +70,7 @@ class RDEventImportList
  private:
   QString list_event_name;
   ImportType list_type;
-  std::vector<RDEventImportItem *> list_items;
+  QList<RDEventImportItem *> list_items;
 };
 
 

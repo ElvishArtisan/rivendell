@@ -608,6 +608,10 @@ Vil du byta henne ut?</translation>
         <source>Artist Separation</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Search</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditEventLine</name>
@@ -1066,15 +1070,15 @@ Flettar du på nytt, vil du fjerna desse dataa. Flett på nytt?</translation>
     </message>
     <message>
         <source>Set PLAY Transition</source>
-        <translation>Set SPEL-overgang</translation>
+        <translation type="obsolete">Set SPEL-overgang</translation>
     </message>
     <message>
         <source>Set SEGUE Transition</source>
-        <translation>Set KRYSSTONING-overgang</translation>
+        <translation type="obsolete">Set KRYSSTONING-overgang</translation>
     </message>
     <message>
         <source>Set STOP Transition</source>
-        <translation>Set STOPP-overgang</translation>
+        <translation type="obsolete">Set STOPP-overgang</translation>
     </message>
     <message>
         <source>Set OVERLAP Transition</source>
@@ -1115,6 +1119,18 @@ Flettar du på nytt, vil du fjerna desse dataa. Flett på nytt?</translation>
     <message>
         <source>OVERLAP</source>
         <translation type="obsolete">OVERLAPP</translation>
+    </message>
+    <message>
+        <source>PLAY Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>SEGUE Transition</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>STOP Transition</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1474,14 +1490,26 @@ rapport</translation>
     </message>
     <message>
         <source>Report Complete</source>
-        <translation>Rapporten ferdig</translation>
+        <translation type="obsolete">Rapporten ferdig</translation>
     </message>
     <message>
         <source>Report complete!</source>
         <translation type="obsolete">Rapporten er ferdig!</translation>
     </message>
     <message>
-        <source>Report generated in</source>
+        <source>File Exists</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>File Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to open report file at</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>The report file already exists.  Overwrite?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

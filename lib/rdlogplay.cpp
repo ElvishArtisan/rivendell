@@ -31,7 +31,6 @@
 #include "rdlog.h"
 #include "rdlogplay.h"
 #include "rdmixer.h"
-#include "rdnownext.h"
 #include "rdsvc.h"
 #include "rdweb.h"
 
@@ -2709,6 +2708,9 @@ void RDLogPlay::Playing(int id)
   if (isRefreshable()&&play_log->autoRefresh()) {
     refresh();
   }
+  if((logline->timeType()==RDLogLine::Hard)&&(play_grace_timer->isActive())) {
+    play_grace_timer->stop();
+  }
   LogPlayEvent(logline);
   emit transportChanged();
 }
@@ -3102,6 +3104,8 @@ QString RDLogPlay::GetPadJson(const QString &name,RDLogLine *ll,
     ret+=RDJsonField("description",ll->description(),4+padding);
     ret+=RDJsonField("isrc",ll->isrc(),4+padding);
     ret+=RDJsonField("isci",ll->isci(),4+padding);
+    ret+=RDJsonField("recordingMbId",ll->recordingMbId(),4+padding);
+    ret+=RDJsonField("releaseMbId",ll->releaseMbId(),4+padding);
     ret+=RDJsonField("externalEventId",ll->extEventId(),4+padding);
     ret+=RDJsonField("externalData",ll->extData(),4+padding);
     ret+=RDJsonField("externalAnncType",ll->extAnncType(),4+padding,true);

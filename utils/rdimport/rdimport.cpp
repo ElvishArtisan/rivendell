@@ -2,7 +2,7 @@
 //
 // A Batch Importer for Rivendell.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -41,6 +41,7 @@
 #include <rdconf.h>
 #include <rdcut.h>
 #include <rddatedecode.h>
+#include <rddisclookup.h>
 #include <rdescape_string.h>
 #include <rdlibrary_conf.h>
 #include <rdtempdirectory.h>
@@ -381,6 +382,28 @@ MainObject::MainObject(QObject *parent)
       import_string_outcue=rda->cmdSwitch()->value(i);
       rda->cmdSwitch()->setProcessed(i,true);
     }
+    if(rda->cmdSwitch()->key(i)=="--set-string-isci") {
+      import_string_isci=rda->cmdSwitch()->value(i);
+      rda->cmdSwitch()->setProcessed(i,true);
+    }
+    if(rda->cmdSwitch()->key(i)=="--set-string-isrc") {
+      if(RDDiscLookup::isrcIsValid(rda->cmdSwitch()->value(i))) {
+	import_string_isrc=rda->cmdSwitch()->value(i);
+	rda->cmdSwitch()->setProcessed(i,true);
+      }
+      else {
+	Log(LOG_ERR,"invalid ISRC \""+rda->cmdSwitch()->value(i)+"\"\n");
+	exit(1);
+      }
+    }
+    if(rda->cmdSwitch()->key(i)=="--set-string-recording-mbid") {
+      import_string_recording_mbid=rda->cmdSwitch()->value(i);
+      rda->cmdSwitch()->setProcessed(i,true);
+    }
+    if(rda->cmdSwitch()->key(i)=="--set-string-release-mbid") {
+      import_string_release_mbid=rda->cmdSwitch()->value(i);
+      rda->cmdSwitch()->setProcessed(i,true);
+    }
     if(rda->cmdSwitch()->key(i)=="--set-string-publisher") {
       import_string_publisher=rda->cmdSwitch()->value(i);
       rda->cmdSwitch()->setProcessed(i,true);
@@ -498,7 +521,7 @@ MainObject::MainObject(QObject *parent)
   for(unsigned i=0;i<import_add_scheduler_codes.size();i++) {
     if(!SchedulerCodeExists(import_add_scheduler_codes[i])) {
       Log(LOG_ERR,QString().sprintf("rdimport: scheduler code \"%s\" does not exist\n",
-	      (const char *)import_add_scheduler_codes[i].utf8()));
+	      (const char *)import_add_scheduler_codes[i].toUtf8()));
       exit(2);
     }
   }
@@ -644,7 +667,7 @@ MainObject::MainObject(QObject *parent)
   if(import_add_scheduler_codes.size()>0) {
     Log(LOG_INFO,QString(" Adding Scheduler Code(s):\n"));
     for(unsigned i=0;i<import_add_scheduler_codes.size();i++) {
-      Log(LOG_INFO,QString().sprintf(" %s\n",(const char *)import_add_scheduler_codes[i].utf8()));
+      Log(LOG_INFO,QString().sprintf(" %s\n",(const char *)import_add_scheduler_codes[i].toUtf8()));
     }
   }
   if(!import_set_user_defined.isEmpty()) {
@@ -723,6 +746,18 @@ MainObject::MainObject(QObject *parent)
   if(!import_string_outcue.isNull()) {
     Log(LOG_INFO,QString().sprintf(" Outcue set to: %s\n",(const char *)import_string_outcue));
   }
+  if(!import_string_isci.isNull()) {
+    Log(LOG_INFO,QString().sprintf(" ISCI set to: %s\n",(const char *)import_string_isci));
+  }
+  if(!import_string_isrc.isNull()) {
+    Log(LOG_INFO,QString().sprintf(" ISRC set to: %s\n",(const char *)import_string_isrc));
+  }
+  if(!import_string_recording_mbid.isNull()) {
+    Log(LOG_INFO,QString().sprintf(" MusicBrainz recording ID set to: %s\n",(const char *)import_string_recording_mbid));
+  }
+  if(!import_string_release_mbid.isNull()) {
+    Log(LOG_INFO,QString().sprintf(" MusicBrainz release ID set to: %s\n",(const char *)import_string_release_mbid));
+  }
   if(!import_string_publisher.isNull()) {
     Log(LOG_INFO,QString().sprintf(" Publisher set to: %s\n",(const char *)import_string_publisher));
   }
@@ -750,7 +785,16 @@ MainObject::MainObject(QObject *parent)
   import_fadeup_marker->dump();
   Log(LOG_INFO,QString(" Files to process:\n"));
   for(unsigned i=import_file_key;i<rda->cmdSwitch()->keys();i++) {
-    Log(LOG_INFO,QString().sprintf("   \"%s\"\n",(const char *)rda->cmdSwitch()->key(i)));
+    if(rda->cmdSwitch()->key(i)=="-") {
+      if(!import_stdin_specified) {
+	Log(LOG_INFO,"   [stdin]\n");
+	import_stdin_specified=true;
+      }
+    }
+    else {
+      Log(LOG_INFO,QString().sprintf("   \"%s\"\n",
+			  (const char *)rda->cmdSwitch()->key(i).toUtf8()));
+    }
   }
 
   // 
@@ -787,52 +831,14 @@ void MainObject::userData()
   }
   else {
     for(unsigned i=import_file_key;i<rda->cmdSwitch()->keys();i++) {
-      ProcessFileList(rda->cmdSwitch()->key(i));
+      ProcessFileEntry(rda->cmdSwitch()->key(i));
     }
     if(import_stdin_specified) {
-      bool quote_mode=false;
-      bool escape_mode=false;
-      char buffer[PATH_MAX];
-      unsigned ptr=0;
-      while((ptr<PATH_MAX)&&(read(0,buffer+ptr,1)==1)) {
-	if(quote_mode) {
-	  if(buffer[ptr]=='\"') {
-	    quote_mode=false;
-	  }
-	  else {
-	    ptr++;
-	  }
-	}
-	else {
-	  if(escape_mode) {
-	    ptr++;
-	    escape_mode=false;
-	  }
-	  else {
-	    if(buffer[ptr]=='\"') {
-	      quote_mode=true;
-	    }
-	    else {
-	      if(buffer[ptr]=='\\') {
-		escape_mode=true;
-	      }
-	      else {
-		if(isspace(buffer[ptr])) {
-		  buffer[ptr]=0;
-		  ProcessFileList(buffer);
-		  ptr=0;
-		}
-		else {
-		  ptr++;
-		}
-	      }
-	    }
-	  }
-	}
-      }
-      if(ptr>0) {
-	buffer[ptr]=0;
-	ProcessFileList(buffer);
+      QTextStream in_stream(stdin,QIODevice::ReadOnly);
+      QString line=in_stream.readLine();
+      while(!line.isNull()) {
+	ProcessFileEntry(line);
+	line=in_stream.readLine();
       }
     }
   }
@@ -873,7 +879,7 @@ void MainObject::RunDropBox()
     // Scan for Eligible Imports
     //
     for(unsigned i=import_file_key;i<rda->cmdSwitch()->keys();i++) {
-      ProcessFileList(rda->cmdSwitch()->key(i));
+      ProcessFileEntry(rda->cmdSwitch()->key(i));
     }
 
     //
@@ -895,17 +901,6 @@ void MainObject::RunDropBox()
 }
 
 
-void MainObject::ProcessFileList(const QString &flist)
-{
-  QString entry;
-
-  for(int i=0;i<flist.length();i++) {
-    entry+=flist.at(i);
-  }
-  ProcessFileEntry(entry);
-}
-
-
 void MainObject::ProcessFileEntry(const QString &entry)
 {
   glob_t globbuf;
@@ -917,7 +912,7 @@ void MainObject::ProcessFileEntry(const QString &entry)
   }
   globbuf.gl_offs=RDIMPORT_GLOB_SIZE;
   while((globbuf.gl_pathc==RDIMPORT_GLOB_SIZE)||(gflags==GLOB_MARK)) {
-    glob(RDEscapeString(entry),gflags,NULL,&globbuf);
+    glob(RDEscapeString(entry.toUtf8()),gflags,NULL,&globbuf);
     if((globbuf.gl_pathc==0)&&(gflags==GLOB_MARK)&&(!import_drop_box)) {
       Log(LOG_WARNING,QString().sprintf(" Unable to open \"%s\", skipping...\n",
 	      (const char *)entry));
@@ -963,13 +958,13 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   else {
     if(import_fix_broken_formats) {
       Log(LOG_WARNING,QString().sprintf(" File \"%s\" appears to be malformed, trying workaround ... ",
-		       (const char *)RDGetBasePart(filename).utf8()));
+		       (const char *)RDGetBasePart(filename).toUtf8()));
       delete wavefile;
       if((wavefile=FixFile(filename,wavedata))==NULL) {
 	Log(LOG_WARNING,QString().sprintf("failed.\n"));
 	Log(LOG_WARNING,QString().sprintf(
 		" File \"%s\" is not readable or not a recognized format, skipping...\n",
-		(const char *)RDGetBasePart(filename).utf8()));
+		(const char *)RDGetBasePart(filename).toUtf8()));
 	delete wavefile;
 	delete wavedata;
 	delete effective_group;
@@ -989,7 +984,7 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
     else {
       Log(LOG_WARNING,QString().sprintf(
         " File \"%s\" is not readable or not a recognized format, skipping...\n",
-        (const char *)RDGetBasePart(filename).utf8()));
+        (const char *)RDGetBasePart(filename).toUtf8()));
       delete wavefile;
       delete wavedata;
       delete effective_group;
@@ -1010,14 +1005,14 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
     if(wavedata->validateDateTimes()) {
       Log(LOG_WARNING,QString().sprintf(
 	      " File \"%s\": End date/time cannot be prior to start date/time, ignoring...\n",
-	      (const char *)filename.utf8()));
+	      (const char *)filename.toUtf8()));
     }
     if(groupname!=effective_group->name()) {
       delete effective_group;
       effective_group=new RDGroup(groupname);
       if(!effective_group->exists()) {
 	Log(LOG_WARNING,QString().sprintf(" Specified group \"%s\" from file \"%s\" does not exist, using default group...\n",
-		(const char *)groupname,(const char *)filename.utf8()));
+		(const char *)groupname,(const char *)filename.toUtf8()));
 	delete effective_group;
 	effective_group=new RDGroup(import_group->name());
       }
@@ -1040,7 +1035,7 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
 	(!effective_group->cartNumberValid(*cartnum)))) {
       Log(LOG_WARNING,QString().sprintf(
 	      " File \"%s\" has an invalid or out of range Cart Number, skipping...\n",
-	      (const char *)RDGetBasePart(filename).utf8()));
+	      (const char *)RDGetBasePart(filename).toUtf8()));
       wavefile->closeWave();
       delete wavefile;
       delete wavedata;
@@ -1109,19 +1104,19 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   conv->setUseMetadata(cart_created);
   if(wavedata->title().length()==0 || ( (wavedata->title().length()>0) && (wavedata->title()[0] == '\0')) ) {
     Log(LOG_INFO,QString().sprintf(" Importing file \"%s\" to cart %06u ... ",
-		(const char *)RDGetBasePart(filename).utf8(),*cartnum));
+		(const char *)RDGetBasePart(filename).toUtf8(),*cartnum));
   }
   else {
     if(import_string_title.isNull()) {
       Log(LOG_INFO,QString().sprintf(" Importing file \"%s\" [%s] to cart %06u ... ",
-		  (const char *)RDGetBasePart(filename).utf8(),
-		  (const char *)wavedata->title().stripWhiteSpace().utf8(),
+		  (const char *)RDGetBasePart(filename).toUtf8(),
+		  (const char *)wavedata->title().stripWhiteSpace().toUtf8(),
 				     *cartnum));
     }
     else {
       Log(LOG_INFO,QString().sprintf(" Importing file \"%s\" [%s] to cart %06u ... ",
-		  (const char *)RDGetBasePart(filename).utf8(),
-		  (const char *)import_string_title.stripWhiteSpace().utf8(),
+		  (const char *)RDGetBasePart(filename).toUtf8(),
+		  (const char *)import_string_title.stripWhiteSpace().toUtf8(),
 		  *cartnum));
     }
   }
@@ -1135,7 +1130,7 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   default:
     Log(LOG_INFO,QString().sprintf(" %s, skipping %s...\n",
 	    (const char *)RDAudioImport::errorText(conv_err,audio_conv_err),
-	    (const char *)filename.utf8()));
+	    (const char *)filename.toUtf8()));
     if(cart_created) {
       cart->remove(rda->station(),rda->user(),rda->config());
     }
@@ -1174,10 +1169,10 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
      ((wavedata->title().length()>0)&&(wavedata->title()[0] == '\0'))) {
     QString title=effective_group->generateTitle(filename);
     if((!wavedata->metadataFound())&&(!wavedata->description().isEmpty())) {
-      cut->setDescription(title.utf8());
+      cut->setDescription(title);
     }
     if(cart_created) {
-      cart->setTitle(title.utf8());
+      cart->setTitle(title);
     }
   }
   if(import_title_from_cartchunk_cutid) {    
@@ -1253,6 +1248,18 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   }
   if(!import_string_outcue.isNull()) {
     cut->setOutcue(import_string_outcue);
+  }
+  if(!import_string_isci.isNull()) {
+    cut->setIsci(import_string_isci);
+  }
+  if(!import_string_isrc.isNull()) {
+    cut->setIsrc(RDDiscLookup::normalizedIsrc(import_string_isrc));
+  }
+  if(!import_string_recording_mbid.isNull()) {
+    cut->setRecordingMbId(import_string_recording_mbid);
+  }
+  if(!import_string_release_mbid.isNull()) {
+    cut->setReleaseMbId(import_string_release_mbid);
   }
   if(!import_string_publisher.isNull()) {
     cart->setPublisher(import_string_publisher);
@@ -1336,8 +1343,8 @@ MainObject::Result MainObject::ImportFile(const QString &filename,
   delete effective_group;
 
   if(import_delete_source) {
-    unlink(filename.utf8());
-    Log(LOG_INFO,QString().sprintf(" Deleted file \"%s\"\n",(const char *)RDGetBasePart(filename).utf8()));
+    unlink(filename.toUtf8());
+    Log(LOG_INFO,QString().sprintf(" Deleted file \"%s\"\n",(const char *)RDGetBasePart(filename).toUtf8()));
   }
   if(!import_run) {
     exit(0);
@@ -1619,6 +1626,7 @@ bool MainObject::RunPattern(const QString &pattern,const QString &filename,
   bool macro_active=false;
   int ptr=0;
   QChar field;
+  QChar subfield;
   QString value;
   QChar delimiter;
   bool found_cartnum=false;
@@ -1641,12 +1649,31 @@ bool MainObject::RunPattern(const QString &pattern,const QString &filename,
   if((pattern.at(0)=='%')&&(pattern.at(1)!='%')) {
     field=pattern.at(1);
     value="";
-    if(pattern.length()>=3) {
-      delimiter=pattern.at(2);
-      ptr=3;
+    if(field==QChar('w')) {
+      if(pattern.length()>=4) {
+	subfield=pattern.at(2);
+	delimiter=pattern.at(3);
+	ptr=4;
+      }
+      else {
+	if(pattern.length()>=3) {
+	  subfield=pattern.at(2);
+	  delimiter=QChar();
+	  ptr=3;
+	}
+	else {
+	  ptr=2;
+	}
+      }
     }
     else {
-      ptr=2;
+      if(pattern.length()>=3) {
+	delimiter=pattern.at(2);
+	ptr=3;
+      }
+      else {
+	ptr=2;
+      }
     }
     macro_active=true;
   }
@@ -1657,14 +1684,14 @@ bool MainObject::RunPattern(const QString &pattern,const QString &filename,
 
   for(int i=0;i<=filename.length();i++) {
     if(macro_active) {
-      if(((!delimiter.isNull())&&(filename.at(i)==delimiter))||
-	 (i==filename.length())) {
+      if((i==filename.length())||
+	 ((!delimiter.isNull())&&(filename.at(i)==delimiter))) {
 	switch(field.toAscii()) {
 	case 'a':
 	  wavedata->setArtist(value);
 	  wavedata->setMetadataFound(true);
 	  break;
-  
+
 	case 'b':
 	  wavedata->setLabel(value);
 	  wavedata->setMetadataFound(true);
@@ -1782,6 +1809,36 @@ bool MainObject::RunPattern(const QString &pattern,const QString &filename,
 	  wavedata->setMetadataFound(true);
 	  break;
 
+	case 'w':
+	  switch(subfield.toAscii()) {
+	  case 'c':
+	    wavedata->setIsci(value);
+	    wavedata->setMetadataFound(true);
+	    break;
+
+	  case 'i':
+	    if(RDDiscLookup::isrcIsValid(value)) {
+	      wavedata->setIsrc(RDDiscLookup::normalizedIsrc(value));
+	      wavedata->setMetadataFound(true);
+	    }
+	    else {
+	      Log(LOG_ERR,"invalid ISRC \""+value+"\"\n");
+	      exit(1);
+	    }
+	    break;
+
+	  case 'm':
+	    wavedata->setRecordingMbId(value);
+	    wavedata->setMetadataFound(true);
+	    break;
+
+	  case 'r':
+	    wavedata->setReleaseMbId(value);
+	    wavedata->setMetadataFound(true);
+	    break;
+	  }
+	  break;
+
 	case 'y':
 	  wavedata->setReleaseYear(value.toInt());
 	  wavedata->setMetadataFound(true);
@@ -1793,12 +1850,35 @@ bool MainObject::RunPattern(const QString &pattern,const QString &filename,
 	}
 	if((pattern.at(ptr)=='%')&&(pattern.at(ptr+1)!='%')) {
 	  field=pattern.at(ptr+1);
-	  delimiter=pattern.at(ptr+2);
-	  ptr+=3;
-	  macro_active=true;
+	  if(field==QChar('w')) {
+	    if(pattern.length()>(ptr+3)) {
+	      delimiter=pattern.at(ptr+3);
+	    }
+	    else {
+	      delimiter=QChar();
+	    }
+	    subfield=pattern.at(ptr+2);
+	    ptr+=4;
+	    macro_active=true;
+	  }
+	  else {
+	    if(pattern.length()>(ptr+2)) {
+	      delimiter=pattern.at(ptr+2);
+	    }
+	    else {
+	      delimiter=QChar();
+	    }
+	    ptr+=3;
+	    macro_active=true;
+	  }
 	}
 	else {
-	  delimiter=pattern.at(ptr);
+	  if(pattern.length()>ptr) {
+	    delimiter=pattern.at(ptr);
+	  }
+	  else {
+	    delimiter=QChar();
+	  }
 	  ptr++;
 	  macro_active=false;
 	}
@@ -1816,9 +1896,17 @@ bool MainObject::RunPattern(const QString &pattern,const QString &filename,
       }
       if((pattern.at(ptr)=='%')&&(pattern.at(ptr+1)!='%')) {
 	field=pattern.at(ptr+1);
-	delimiter=pattern.at(ptr+2);
-	ptr+=3;
-	macro_active=true;
+	if(field==QChar('w')) {
+	  delimiter=pattern.at(ptr+3);
+	  subfield=pattern.at(ptr+2);
+	  ptr+=4;
+	  macro_active=true;
+	}
+	else {
+	  delimiter=pattern.at(ptr+2);
+	  ptr+=3;
+	  macro_active=true;
+	}
       }
       else {
 	delimiter=pattern.at(ptr);
@@ -1841,6 +1929,9 @@ bool MainObject::VerifyPattern(const QString &pattern)
 	return false;
       }
       macro_active=true;
+      if(i>=(pattern.length()-1)) {
+	return false;
+      }
       switch(pattern.at(++i).toAscii()) {
       case 'a':
       case 'b':
@@ -1863,6 +1954,18 @@ bool MainObject::VerifyPattern(const QString &pattern)
       case 'u':
       case 'y':
       case '%':
+	break;
+
+      case 'w':
+	if(i>=(pattern.length()-1)) {
+	  return false;
+	}
+	switch(pattern.at(++i).toAscii()) {
+	case 'i':
+	case 'm':
+	case 'r':
+	  break;
+	}
 	break;
 
       default:
@@ -2027,12 +2130,12 @@ void MainObject::Log(int prio,const QString &msg) const
   }
 
   if(prio==LOG_ERR) {
-    fprintf(stderr,"%s",(const char *)msg);
+    fprintf(stderr,"%s",(const char *)msg.toUtf8());
     fflush(stderr);
   }
   else {
     if(import_verbose) {
-      fprintf(stdout,"%s",(const char *)msg);
+      fprintf(stdout,"%s",(const char *)msg.toUtf8());
       fflush(stdout);
     }
   }

@@ -109,7 +109,7 @@
     <para>
       <mediaobject>
 	<imageobject>
-	  <imagedata align="center" fileref="rdlogedit.edit_log_dialog.png" scale="55"/>
+	  <imagedata align="center" fileref="rdlogedit.edit_log_dialog.png" scale="50"/>
 	</imageobject>
 	<caption>
 	  <para>The Edit Log Dialog</para>
@@ -479,6 +479,37 @@
 	</para>
       </sect3>
     </sect2>
+
+    <sect2 xml:id="sect.rdlogedit.estimated_vs__scheduled_start_times">
+      <title>Estimated vs. Scheduled Start Times</title>
+      <para>
+	When viewing log events in
+	<command>rdlogedit</command><manvolnum>1</manvolnum>, the displayed
+	start time style for each event can be either
+	<userinput>Estimated</userinput> or
+	<userinput>Scheduled</userinput>, as selected in the
+	<computeroutput>Show Start Times As</computeroutput> dropdown box.
+	<userinput>Estimated</userinput> will give start time values
+	based on any hard start times in the log, taking the known
+	lengths of the relevant carts, while <userinput>Scheduled</userinput>
+	will display the start times as provided by an external music and/or
+	traffic scheduling system.
+      </para>
+      <para>
+	The optimum style to use is largely dependent on how a particular
+	log was assembled. If the log was generated using
+	<command>rdlogmanager</command><manvolnum>1</manvolnum> and largely
+	populated with events from external music and traffic systems, the
+	<userinput>Scheduled</userinput> style will usually be preferred
+	as this permits the start times provided by those external schedulers
+	to be visible. On the other hand, if the log was mostly assembled
+	&quot;on the fly&quot; in
+	<command>rdlogedit</command><manvolnum>1</manvolnum>, the
+	<userinput>Estimated</userinput> style will usually provide more
+	insight on a log will actually time out when played.
+      </para>
+    </sect2>
+
   </sect1>
   <sect1 xml:id="sect.rdlogedit.editing_log_event_parameters">
     <title>Editing Log Event Parameters</title>

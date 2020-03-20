@@ -52,8 +52,6 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
 		 vector<QString> *new_logs,QWidget *parent)
   : RDDialog(parent)
 {
-  setModal(true);
-
   QString sql;
   RDSqlQuery *q;
   QStringList services_list;
@@ -72,7 +70,6 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   bool editing_allowed=rda->user()->arrangeLog();
   bool saveas_allowed=rda->user()->createLog();
 
-  setModal(true);
   setWindowTitle("RDLogEdit - "+tr("Edit Log"));
 
   //
@@ -87,8 +84,8 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   //
   // Fix the Window Size
   //
-  setMinimumWidth(sizeHint().width());
-  setMinimumHeight(sizeHint().height());
+  setMinimumWidth(RDLOGEDIT_EDITLOG_DEFAULT_WIDTH);
+  setMinimumHeight(RDLOGEDIT_EDITLOG_DEFAULT_HEIGHT);
 
   //
   // Create Icons
@@ -468,6 +465,20 @@ EditLog::EditLog(QString logname,QString *filter,QString *group,
   edit_player->stopButton()->setOnColor(Qt::red);
 
   //
+  // Start Time Style
+  //
+  edit_timestyle_box=new QComboBox(this);
+  edit_timestyle_box->insertItem(edit_timestyle_box->count(),tr("Estimated"));
+  edit_timestyle_box->insertItem(edit_timestyle_box->count(),tr("Scheduled"));
+  edit_timestyle_box->setCurrentIndex(global_start_time_style);
+  connect(edit_timestyle_box,SIGNAL(activated(int)),
+	  this,SLOT(timestyleChangedData(int)));
+  edit_timestyle_label=
+    new QLabel(edit_timestyle_box,tr("Show Start Times As"),this);
+  edit_timestyle_label->setFont(labelFont());
+  edit_timestyle_label->setAlignment(Qt::AlignCenter|Qt::AlignVCenter);
+
+  //
   //  Ok Button
   //
   edit_ok_button=new QPushButton(this);
@@ -601,7 +612,7 @@ EditLog::~EditLog()
 
 QSize EditLog::sizeHint() const
 {
-  return QSize(800,600);
+  return global_logedit_window_size;
 } 
 
 
@@ -690,6 +701,17 @@ void EditLog::endDateEnabledData(bool state)
   edit_enddate_edit->setEnabled(state);
   edit_enddate_label->setEnabled(state);
   SetLogModified(true);
+}
+
+
+void EditLog::timestyleChangedData(int index)
+{
+  RDListViewItem *item=(RDListViewItem *)edit_log_list->firstChild();
+  while(item!=NULL) {
+    SetStartTimeField(item);
+    item=(RDListViewItem *)item->nextSibling();
+  }
+  global_start_time_style=index;
 }
 
 
@@ -1276,8 +1298,8 @@ void EditLog::resizeEvent(QResizeEvent *e)
   edit_endtime_label->setGeometry(625,102,65,18);
   edit_endtime_edit->setGeometry(695,102,60,18);
 
-  edit_log_list->setGeometry(10,128,
-			    size().width()-20,size().height()-258);
+  edit_log_list->setGeometry(10,127,
+			    size().width()-20,size().height()-257);
   edit_cart_button->setGeometry(20,size().height()-125,80,50);
   edit_marker_button->setGeometry(110,size().height()-125,80,50);
   edit_edit_button->setGeometry(200,size().height()-125,80,50);
@@ -1296,9 +1318,15 @@ void EditLog::resizeEvent(QResizeEvent *e)
   edit_renderas_button->setGeometry(190,size().height()-60,80,50);
   edit_player->playButton()->setGeometry(410,size().height()-60,80,50);
   edit_player->stopButton()->setGeometry(500,size().height()-60,80,50);
+
+  edit_timestyle_label->setGeometry(600,size().height()-60,150,20);
+  edit_timestyle_box->setGeometry(625,size().height()-40,100,30);
+
   edit_ok_button->
     setGeometry(size().width()-180,size().height()-60,80,50);
   edit_cancel_button->setGeometry(size().width()-90,size().height()-60,80,50);
+
+  global_logedit_window_size=e->size();
 }
 
 
@@ -1381,28 +1409,8 @@ void EditLog::RefreshLine(RDListViewItem *item)
     return;
   }
   edit_log_event->refresh(line);
+  SetStartTimeField(item);
   RDLogLine *logline=edit_log_event->logLine(line);
-  switch(logline->timeType()) {
-  case RDLogLine::Hard:
-    item->setText(1,QString("T")+edit_log_event->
-		  logLine(line)->startTime(RDLogLine::Logged).
-		  toString("hh:mm:ss.zzz").left(10));
-    break;
-
-  default:
-    if(logline->
-       startTime(RDLogLine::Predicted).isNull()) {
-      item->setText(1,edit_log_event->
-		    blockStartTime(line).
-		    toString("hh:mm:ss.zzz").left(10));
-    }
-    else {
-      item->setText(1,edit_log_event->
-		    logLine(line)->startTime(RDLogLine::Predicted).
-		    toString("hh:mm:ss.zzz").left(10));
-    }
-    break;
-  }
   switch(logline->transType()) {
   case RDLogLine::Play:
     item->setText(2,tr("PLAY"));
@@ -1562,6 +1570,56 @@ void EditLog::RefreshLine(RDListViewItem *item)
   }
   item->setText(13,QString().sprintf("%d",logline->id()));
   UpdateColor(item,logline);
+}
+
+
+void EditLog::SetStartTimeField(RDListViewItem *item)
+{
+  int line=item->text(14).toInt();
+  RDLogLine *logline=edit_log_event->logLine(line);
+
+  if(edit_timestyle_box->currentIndex()==0) {  // Estimated
+    edit_log_list->setColumnText(1,tr("Est. Time"));
+  }
+  else {  // Scheduled
+    edit_log_list->setColumnText(1,tr("Sch. Time"));
+  }
+
+  if(logline!=NULL) {
+    switch(logline->timeType()) {
+    case RDLogLine::Hard:
+      item->setText(1,QString("T")+edit_log_event->
+		    logLine(line)->startTime(RDLogLine::Logged).
+		    toString("hh:mm:ss.zzz").left(10));
+      break;
+
+    default:
+      if(edit_timestyle_box->currentIndex()==0) {  // Estimated
+	if(logline->
+	   startTime(RDLogLine::Predicted).isNull()) {
+	  item->setText(1,edit_log_event->
+			blockStartTime(line).
+			toString("hh:mm:ss.zzz").left(10));
+	}
+	else {
+	  item->setText(1,edit_log_event->
+			logLine(line)->startTime(RDLogLine::Predicted).
+			toString("hh:mm:ss.zzz").left(10));
+	}
+      }
+      else {   // Scheduled
+	if(logline->startTime(RDLogLine::Logged).isNull()) {
+	  item->setText(1,"");
+	}
+	else {
+	  item->setText(1,edit_log_event->
+			logLine(line)->startTime(RDLogLine::Logged).
+			toString("hh:mm:ss.zzz").left(10));
+	}
+      }
+      break;
+    }
+  }
 }
 
 

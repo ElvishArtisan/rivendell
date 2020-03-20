@@ -1,8 +1,8 @@
 //   rdsocket.cpp
 //
-//   A QSocket object with connection-ID.
+//   A QTcpSocket object with connection-ID.
 //
-//   (C) Copyright 2002,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -21,22 +21,22 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <qwidget.h>
-#include <q3socket.h>
 
-#include <rdsocket.h>
+#include "rdsocket.h"
 
 RDSocket::RDSocket(int id,QObject *parent)
-  : Q3Socket(parent)
+  : QTcpSocket(parent)
 {
   id_num=id;
   connect(this,SIGNAL(hostFound()),this,SLOT(hostFoundData()));
   connect(this,SIGNAL(connected()),this,SLOT(connectedData()));
-  connect(this,SIGNAL(connectionClosed()),this,SLOT(connectionClosedData()));
+  connect(this,SIGNAL(disconnected()),this,SLOT(connectionClosedData()));
   connect(this,SIGNAL(delayedCloseFinished()),
 	  this,SLOT(delayedCloseFinishedData()));
   connect(this,SIGNAL(readyRead()),this,SLOT(readyReadData()));
   connect(this,SIGNAL(bytesWritten(int)),this,SLOT(bytesWrittenData(int)));
-  connect(this,SIGNAL(error(int)),this,SLOT(errorData(int)));
+  connect(this,SIGNAL(error(QAbstractSocket::SocketError)),
+	  this,SLOT(errorData(QAbstractSocket::SocketError)));
 }
 
 
@@ -76,7 +76,7 @@ void RDSocket::bytesWrittenData(int nbytes)
 }
 
 
-void RDSocket::errorData(int error)
+void RDSocket::errorData(QAbstractSocket::SocketError error)
 {
   emit errorID(error,id_num);
 }
