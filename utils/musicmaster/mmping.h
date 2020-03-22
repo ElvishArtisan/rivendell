@@ -22,7 +22,6 @@
 #define MMPING_H
 
 #include <QObject>
-#include <QDomElement>
 
 #include "rdnexus.h"
 
