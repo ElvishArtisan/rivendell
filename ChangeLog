@@ -19749,3 +19749,6 @@
 	* Fixed a regression in rdairplay(1) that caused two events to be
 	started by a single spacebar tap if a SoundPanel event had been
 	played previously.
+2020-04-01 Patrick Linstruth <patrick@deltecent.com>
+	* Modified rdairplay(1) to always scroll log to the top when using
+	the hour selector.
