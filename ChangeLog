@@ -19749,3 +19749,6 @@
 	* Fixed a regression in rdairplay(1) that caused two events to be
 	started by a single spacebar tap if a SoundPanel event had been
 	played previously.
+2020-04-04 Patrick Linstruth <patrick@deltecent.com>
+	* Modified rdlogmanager(1) to disable merge buttons if the selected
+	log does not contain any import links.
