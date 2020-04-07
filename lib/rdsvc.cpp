@@ -311,8 +311,25 @@ void RDSvc::setPreimportCommand(ImportSource src,const QString &path) const
 
 int RDSvc::importOffset(ImportSource src,ImportField field) const
 {
-  QString fieldname=SourceString(src)+FieldString(field)+"OFFSET";
-  return RDGetSqlValue("SERVICES","NAME",svc_name,fieldname).toInt();
+  QString parser_table;
+  QString parser_name;
+  QString src_str="";
+
+  //
+  // Set Import Source
+  //
+  if(importTemplate(src).isEmpty()) {
+    src_str=SourceString(src);
+    parser_table="SERVICES";
+    parser_name=svc_name;
+  }
+  else {
+    src_str="";
+    parser_table="IMPORT_TEMPLATES";
+    parser_name=importTemplate(src);
+  }
+  QString fieldname=src_str+FieldString(field)+"OFFSET";
+  return RDGetSqlValue(parser_table,"NAME",parser_name,fieldname).toInt();
 }
 
 
@@ -326,8 +343,25 @@ void RDSvc::setImportOffset(ImportSource src,ImportField field,int offset)
 
 int RDSvc::importLength(ImportSource src,ImportField field) const
 {
-  QString fieldname=SourceString(src)+FieldString(field)+"LENGTH";
-  return RDGetSqlValue("SERVICES","NAME",svc_name,fieldname).toInt();
+  QString parser_table;
+  QString parser_name;
+  QString src_str="";
+
+  //
+  // Set Import Source
+  //
+  if(importTemplate(src).isEmpty()) {
+    src_str=SourceString(src);
+    parser_table="SERVICES";
+    parser_name=svc_name;
+  }
+  else {
+    src_str="";
+    parser_table="IMPORT_TEMPLATES";
+    parser_name=importTemplate(src);
+  }
+  QString fieldname=src_str+FieldString(field)+"LENGTH";
+  return RDGetSqlValue(parser_table,"NAME",parser_name,fieldname).toInt();
 }
 
 

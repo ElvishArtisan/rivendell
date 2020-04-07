@@ -4136,6 +4136,11 @@ debe guardarse.  ¿Hacerlo ahora?</translation>
         <source>Include Import Markers in Finished Logs</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Copy To
+Custom</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditSvcPerms</name>
