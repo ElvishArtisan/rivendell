@@ -19749,7 +19749,6 @@
 	* Fixed a regression in rdairplay(1) that caused two events to be
 	started by a single spacebar tap if a SoundPanel event had been
 	played previously.
-<<<<<<< HEAD
 2020-04-08 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdlogmanager(1) that caused the initial event
 	in an imported set to fail receive the proper time and transition
@@ -19764,3 +19763,6 @@
 2020-04-08 Patrick Linstruth <patrick@deltecent.com>
 	* Fixed a bug in rdairplay(1) with HourSelector::updateTimeData()
 	where timer was not set properly when crossing midnight.
+2020-04-08 Patrick Linstruth <patrick@deltecent.com>
+	* Modified rdairplay(1) to always scroll log to the top when using
+	the hour selector.
