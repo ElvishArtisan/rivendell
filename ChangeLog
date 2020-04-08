@@ -19769,3 +19769,7 @@
 2020-04-08 Patrick Linstruth <patrick@deltecent.com>
 	* Modified rdlogmanager(1) to disable merge buttons if the selected
 	log does not contain any import links.
+2020-04-08 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the error message rendered when 'configure' fails to
+	detect one or more of the MusicBrainz dependencies to be less
+	ambiguous.
