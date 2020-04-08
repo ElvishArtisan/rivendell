@@ -19766,3 +19766,6 @@
 2020-04-08 Patrick Linstruth <patrick@deltecent.com>
 	* Modified rdairplay(1) to always scroll log to the top when using
 	the hour selector.
+2020-04-08 Patrick Linstruth <patrick@deltecent.com>
+	* Modified rdlogmanager(1) to disable merge buttons if the selected
+	log does not contain any import links.
