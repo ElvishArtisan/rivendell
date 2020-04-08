@@ -260,7 +260,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   event_post_box=new QCheckBox(this);
   event_post_box->setGeometry(CENTER_LINE+35,108,15,15);
   event_post_label=new QLabel(event_post_box,tr("Make Post Point"),this);
-  event_post_label->setGeometry(CENTER_LINE+55,107,95,16);
+  event_post_label->setGeometry(CENTER_LINE+55,107,105,16);
   event_post_label->setFont(labelFont());
   event_post_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
@@ -271,23 +271,23 @@ EditEvent::EditEvent(QString eventname,bool new_event,
     new QGroupBox(tr("Action If Previous Event Still Playing"),this);
   event_grace_groupbox->setFont(labelFont());
   event_grace_groupbox->
-    setGeometry(CENTER_LINE+160,77,sizeHint().width()-CENTER_LINE-200,45);
+    setGeometry(CENTER_LINE+170,77,sizeHint().width()-CENTER_LINE-200,45);
   event_grace_group=new QButtonGroup(this);
   event_immediate_button=new QRadioButton(tr("Start immediately"),this);
-  event_immediate_button->setGeometry(CENTER_LINE+170,100,160,15);
+  event_immediate_button->setGeometry(CENTER_LINE+180,100,160,15);
   event_immediate_button->setFont(subLabelFont());
   event_grace_group->addButton(event_immediate_button,0);
   event_next_button=new QRadioButton(tr("Make next"),this);
-  event_next_button->setGeometry(CENTER_LINE+310,100,160,15);
+  event_next_button->setGeometry(CENTER_LINE+320,100,160,15);
   event_next_button->setFont(subLabelFont());
   event_grace_group->addButton(event_next_button,1);
   event_wait_button=new QRadioButton(tr("Wait up to"),this);
-  event_wait_button->setGeometry(CENTER_LINE+420,100,160,15);
+  event_wait_button->setGeometry(CENTER_LINE+430,100,160,15);
   event_wait_button->setFont(subLabelFont());
   event_grace_group->addButton(event_wait_button,2);
 
   event_grace_edit=new QTimeEdit(this);
-  event_grace_edit->setGeometry(CENTER_LINE+500,95,60,20);
+  event_grace_edit->setGeometry(CENTER_LINE+510,95,60,20);
   event_grace_edit->setDisplayFormat("mm:ss");
   connect(event_timetype_check,SIGNAL(toggled(bool)),
 	  this,SLOT(timeToggledData(bool)));
