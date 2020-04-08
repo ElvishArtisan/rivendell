@@ -19754,3 +19754,6 @@
 	in an imported set to fail receive the proper time and transition
 	type if the 'Include Import Markers in Finished Logs' checkbox in
 	rdadmin(1) had not been ticked.
+2020-04-08 David Klann <dklann@linux.com>
+	* Fixed a regression in rdexport(1) that caused exported file
+	names to be constructed improperly.
