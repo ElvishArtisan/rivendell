@@ -19757,3 +19757,6 @@
 2020-04-08 David Klann <dklann@linux.com>
 	* Fixed a regression in rdexport(1) that caused exported file
 	names to be constructed improperly.
+2020-04-08 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed a bug in rdlogmanager(1) that caused 'Make Post Point'
+	label to be displayed without last 't'.
