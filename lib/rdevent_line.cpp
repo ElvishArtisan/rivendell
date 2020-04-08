@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Log Manager Event
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -996,15 +996,22 @@ bool RDEventLine::linkLog(RDLogEvent *e,RDLog *log,const QString &svcname,
     *(e->logLine(e->size()-1))=*logline;
     delete logline;
     logline=NULL;
-  }
 
-  //
-  // Clear Leading Event Values
-  //
-  time_type=RDLogLine::Relative;
-  trans_type=event_default_transtype;
-  //  time=time.addMSecs(length);
-  grace_time=-1;
+    //
+    // Clear Leading Event Values
+    //
+    time_type=RDLogLine::Relative;
+    trans_type=event_default_transtype;
+    grace_time=-1;
+  }
+  else {
+    //
+    // Propagate Leading Event Values to Next Event
+    //
+    time_type=link_logline->timeType();
+    trans_type=link_logline->transType();
+    grace_time=link_logline->graceTime();
+  }
 
   //
   // Calculate Event Time Boundaries
@@ -1190,6 +1197,13 @@ bool RDEventLine::linkLog(RDLogEvent *e,RDLog *log,const QString &svcname,
       }
     }
     time=time.addMSecs(length);
+
+    //
+    // Clear Leading Event Values
+    //
+    time_type=RDLogLine::Relative;
+    trans_type=event_default_transtype;
+    grace_time=-1;
   }
   delete q;
 
