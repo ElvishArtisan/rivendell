@@ -321,6 +321,15 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   connect(button,SIGNAL(clicked()),this,SLOT(trafficData()));
 
   //
+  //  Traffic Copy Button
+  //
+  svc_tfc_copy_button=new QPushButton(this);
+  svc_tfc_copy_button->setGeometry(360,389,60,40);
+  svc_tfc_copy_button->setFont(buttonFont());
+  svc_tfc_copy_button->setText(tr("Copy To\nCustom"));
+  connect(svc_tfc_copy_button,SIGNAL(clicked()),this,SLOT(trafficCopyData()));
+
+  //
   // Music Import Section
   //
   label=new QLabel(tr("Music Data Import"),this);
@@ -416,6 +425,15 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
   button->setFont(buttonFont());
   button->setText(tr("Test \n&Music"));
   connect(button,SIGNAL(clicked()),this,SLOT(musicData()));
+
+  //
+  // Music Copy Button
+  //
+  svc_mus_copy_button=new QPushButton(this);
+  svc_mus_copy_button->setGeometry(795,410,60,40);
+  svc_mus_copy_button->setFont(buttonFont());
+  svc_mus_copy_button->setText(tr("Copy To\nCustom"));
+  connect(svc_mus_copy_button,SIGNAL(clicked()),this,SLOT(musicCopyData()));
 
   //
   //  Ok Button
@@ -515,10 +533,8 @@ EditSvc::EditSvc(QString svc,QWidget *parent)
     setText(svc_svc->breakString());
   svc_mus_track_edit->
     setText(svc_svc->trackString(RDSvc::Music));
-  svc_tfc_fields->setFields(svc_svc,RDSvc::Traffic);
   tfcTemplateActivatedData(svc_tfc_import_template_box->currentItem());
   musTemplateActivatedData(svc_mus_import_template_box->currentItem());
-  svc_mus_fields->setFields(svc_svc,RDSvc::Music);
   import_changed=false;
 }
 
@@ -564,9 +580,37 @@ void EditSvc::trafficData()
 }
 
 
+void EditSvc::trafficCopyData()
+{
+  if (QMessageBox::question(this,tr("Copy To Custom"),
+                              tr("This action will overwrite your existing [custom] Traffic Data Import settings. Continue?"),
+                              QMessageBox::Yes,QMessageBox::No)==QMessageBox::No) {
+    return;
+  }
+  svc_svc->setImportTemplate(RDSvc::Traffic,"");
+  svc_tfc_import_template_box->setCurrentItem(0);
+  svc_tfc_fields->setEnabled(1);
+  svc_tfc_copy_button->setEnabled(0);
+}
+
+
 void EditSvc::musicData()
 {
   TestDataImport(RDSvc::Music);
+}
+
+
+void EditSvc::musicCopyData()
+{
+  if (QMessageBox::question(this,tr("Copy To Custom"),
+                              tr("This action will overwrite your existing [custom] Music Data Import settings. Continue?"),
+                              QMessageBox::Yes,QMessageBox::No)==QMessageBox::No) {
+    return;
+  }
+  svc_svc->setImportTemplate(RDSvc::Music,"");
+  svc_mus_import_template_box->setCurrentItem(0);
+  svc_mus_fields->setEnabled(1);
+  svc_mus_copy_button->setEnabled(0);
 }
 
 
@@ -578,15 +622,66 @@ void EditSvc::textChangedData(const QString &)
 
 void EditSvc::tfcTemplateActivatedData(int index)
 {
+  //
+  // Save stored template
+  //
+  QString t;
+
+  t=svc_svc->importTemplate(RDSvc::Traffic);
+
+  //
+  // Temporarily set selected template
+  //
+  if(svc_tfc_import_template_box->currentItem()==0) {
+    svc_svc->setImportTemplate(RDSvc::Traffic,"");
+  }
+  else {
+    svc_svc->setImportTemplate(RDSvc::Traffic,
+                              svc_tfc_import_template_box->currentText());
+  }
+
+  svc_tfc_fields->setFields(svc_svc,RDSvc::Traffic);
   svc_tfc_fields->setEnabled(index==0);
+  svc_tfc_copy_button->setEnabled(index!=0);
   import_changed=true;
+
+  //
+  // Restore saved template
+  //
+  svc_svc->setImportTemplate(RDSvc::Traffic,t);
 }
 
 
 void EditSvc::musTemplateActivatedData(int index)
 {
+
+  //
+  // Save stored template
+  //
+  QString t;
+
+  t=svc_svc->importTemplate(RDSvc::Music);
+
+  //
+  // Temporarily set selected template
+  //
+  if(svc_mus_import_template_box->currentItem()==0) {
+    svc_svc->setImportTemplate(RDSvc::Music,"");
+  }
+  else {
+    svc_svc->setImportTemplate(RDSvc::Music,
+			       svc_mus_import_template_box->currentText());
+  }
+
+  svc_mus_fields->setFields(svc_svc,RDSvc::Music);
   svc_mus_fields->setEnabled(index==0);
+  svc_mus_copy_button->setEnabled(index!=0);
   import_changed=true;
+
+  //
+  // Restore saved template
+  //
+  svc_svc->setImportTemplate(RDSvc::Music,t);
 }
 
 
@@ -653,6 +748,7 @@ void EditSvc::Save()
     setPreimportCommand(RDSvc::Traffic,svc_tfc_preimport_cmd_edit->text());
   if(svc_tfc_import_template_box->currentItem()==0) {
     svc_svc->setImportTemplate(RDSvc::Traffic,"");
+    svc_tfc_fields->readFields(svc_svc,RDSvc::Traffic);
   }
   else {
     svc_svc->setImportTemplate(RDSvc::Traffic,
@@ -660,11 +756,11 @@ void EditSvc::Save()
   }
   svc_svc->setLabelCart(RDSvc::Traffic,svc_tfc_label_cart_edit->text());
   svc_svc->setTrackString(RDSvc::Traffic,svc_tfc_track_edit->text());
-  svc_tfc_fields->readFields(svc_svc,RDSvc::Traffic);
   svc_svc->setImportPath(RDSvc::Music,svc_mus_path_edit->text());
   svc_svc->setPreimportCommand(RDSvc::Music,svc_mus_preimport_cmd_edit->text());
   if(svc_mus_import_template_box->currentItem()==0) {
     svc_svc->setImportTemplate(RDSvc::Music,"");
+    svc_mus_fields->readFields(svc_svc,RDSvc::Music);
   }
   else {
     svc_svc->setImportTemplate(RDSvc::Music,
@@ -673,7 +769,6 @@ void EditSvc::Save()
   svc_svc->setBreakString(svc_mus_break_edit->text());
   svc_svc->setTrackString(RDSvc::Music,svc_mus_track_edit->text());
   svc_svc->setLabelCart(RDSvc::Music,svc_mus_label_cart_edit->text());
-  svc_mus_fields->readFields(svc_svc,RDSvc::Music);
   import_changed=false;
   if(svc_voice_group_box->currentItem()==0) {
     svc_svc->setTrackGroup("");
