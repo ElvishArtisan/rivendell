@@ -582,6 +582,11 @@ void EditSvc::trafficData()
 
 void EditSvc::trafficCopyData()
 {
+  if (QMessageBox::question(this,tr("Copy To Custom"),
+                              tr("This action will overwrite your existing [custom] Traffic Data Import settings. Continue?"),
+                              QMessageBox::Yes,QMessageBox::No)==QMessageBox::No) {
+    return;
+  }
   svc_svc->setImportTemplate(RDSvc::Traffic,"");
   svc_tfc_import_template_box->setCurrentItem(0);
   svc_tfc_fields->setEnabled(1);
@@ -597,6 +602,11 @@ void EditSvc::musicData()
 
 void EditSvc::musicCopyData()
 {
+  if (QMessageBox::question(this,tr("Copy To Custom"),
+                              tr("This action will overwrite your existing [custom] Music Data Import settings. Continue?"),
+                              QMessageBox::Yes,QMessageBox::No)==QMessageBox::No) {
+    return;
+  }
   svc_svc->setImportTemplate(RDSvc::Music,"");
   svc_mus_import_template_box->setCurrentItem(0);
   svc_mus_fields->setEnabled(1);
