@@ -19778,3 +19778,7 @@
 	* Modified rdadmin(1) Edit Service dialog to display built-in
 	traffic and music import template values.
 	* Added "Copy To Custom" buttons to rdadmin(1) Edit Service dialog.
+2020-04-08 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'List GPIs' dialog in rdadmin(1) that
+	prevented changes in GPI assignments from being propagated
+	to the underlying device.
