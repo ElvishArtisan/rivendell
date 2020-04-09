@@ -19774,7 +19774,7 @@
 	* Changed the error message rendered when 'configure' fails to
 	detect one or more of the MusicBrainz dependencies to be less
 	ambiguous.
-2020-04-07 Patrick Linstruth <patrick@deltecent.com>
+2020-04-08 Patrick Linstruth <patrick@deltecent.com>
 	* Modified rdadmin(1) Edit Service dialog to display built-in
 	traffic and music import template values.
 	* Added "Copy To Custom" buttons to rdadmin(1) Edit Service dialog.
