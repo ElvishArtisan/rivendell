@@ -19782,3 +19782,7 @@
 	* Fixed a bug in the 'List GPIs' dialog in rdadmin(1) that
 	prevented changes in GPI assignments from being propagated
 	to the underlying device.
+2020-04-13 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'Software Authority' driver that caused
+	autodetection of the number of GPIOs in a router to be unreliable.
+	* Removed superfluous code from rdgpimon(1).

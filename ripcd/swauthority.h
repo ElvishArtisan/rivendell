@@ -79,6 +79,7 @@ class SoftwareAuthority : public Switcher
   unsigned swa_start_cart;
   unsigned swa_stop_cart;
   int swa_istate;
+  bool swa_is_gpio;
   RDMatrix::PortType swa_porttype;
   std::map<int,QString> swa_gpi_states;
   std::map<int,QString> swa_gpo_states;
