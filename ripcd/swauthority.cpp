@@ -53,6 +53,8 @@ SoftwareAuthority::SoftwareAuthority(RDMatrix *matrix,QObject *parent)
   swa_stop_cart=matrix->stopCart(RDMatrix::Primary);
   swa_is_gpio=false;
 
+  rda->syslog(LOG_DEBUG,"%p - card: %d\n",this,swa_card);
+
   //
   // Reconnection Timer
   //
@@ -157,6 +159,8 @@ void SoftwareAuthority::processCommand(RDMacro *cmd)
 
 void SoftwareAuthority::ipConnect()
 {
+  rda->syslog(LOG_DEBUG,"%p - connecting to %s:%d",this,
+	      swa_ipaddress.toString().toUtf8().constData(),swa_ipport);
   swa_socket->connectToHost(swa_ipaddress.toString(),swa_ipport);
 }
 
@@ -237,6 +241,7 @@ void SoftwareAuthority::errorData(QAbstractSocket::SocketError err)
 void SoftwareAuthority::SendCommand(const char *str)
 {
   //  LogLine(RDConfig::LogDebug,QString().sprintf("sending SA cmd: %s",(const char *)PrettifyCommand(str)));
+  rda->syslog(LOG_DEBUG,"%p - sending \"%s\"",this,str);
   QString cmd=QString().sprintf("%s\x0d\x0a",(const char *)str);
   swa_socket->writeBlock((const char *)cmd,strlen(cmd));
 }
@@ -256,6 +261,8 @@ void SoftwareAuthority::DispatchCommand()
 
   QString line_in=swa_buffer;
   QString section=line_in.lower().replace(">>","");
+  rda->syslog(LOG_DEBUG,"%p - received \"%s\"",this,
+	      section.toUtf8().constData());
 
   //
   // Startup Sequence. Get initial GPIO states and the input and output lists.

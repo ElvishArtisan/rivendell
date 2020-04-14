@@ -19786,3 +19786,6 @@
 	* Fixed a bug in the 'Software Authority' driver that caused
 	autodetection of the number of GPIOs in a router to be unreliable.
 	* Removed superfluous code from rdgpimon(1).
+2020-04-14 Fred Gleason <fredg@paravelsystems.com>
+	* Added debug syslog messages to the 'Software Authority' driver
+	in ripcd(8).
