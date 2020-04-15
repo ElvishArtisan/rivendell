@@ -2,7 +2,7 @@
 //
 // Abstract Rivendell Log Events.
 //
-//   (C) Copyright 2002-2014,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -117,7 +117,7 @@ int RDLogEvent::load(bool track_ptrs)
   log_max_id=log->nextId();
   delete log;
 
-  LoadLines(0,track_ptrs);
+  LoadLines(log_name,0,track_ptrs);
 
   return log_line.size();
 }
@@ -179,7 +179,7 @@ void RDLogEvent::save(RDConfig *config,bool update_tracks,int line)
 
 int RDLogEvent::append(const QString &logname,bool track_ptrs)
 {
-  return LoadLines(log_max_id,track_ptrs);
+  return LoadLines(logname,log_max_id,track_ptrs);
 }
 
 
@@ -794,7 +794,7 @@ QString RDLogEvent::xml() const
 }
 
 
-int RDLogEvent::LoadLines(int id_offset,bool track_ptrs)
+int RDLogEvent::LoadLines(const QString &logname,int id_offset,bool track_ptrs)
 {
   RDLogLine line;
   RDSqlQuery *q1;
@@ -887,7 +887,7 @@ int RDLogEvent::LoadLines(int id_offset,bool track_ptrs)
     "CART.NOTES	"+                   // 65
     "from LOG_LINES left join CART "+
     "on LOG_LINES.CART_NUMBER=CART.NUMBER where "+
-    "LOG_LINES.LOG_NAME=\""+RDEscapeString(log_name)+"\" "+
+    "LOG_LINES.LOG_NAME=\""+RDEscapeString(logname)+"\" "+
     "order by COUNT";
    q=new RDSqlQuery(sql);
   if(q->size()<=0) {
