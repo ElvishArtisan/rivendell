@@ -194,7 +194,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   event_remarks_edit->
     setGeometry(10,sizeHint().height()-150,CENTER_LINE-20,140);
   event_remarks_edit->setTextFormat(Qt::PlainText);
-  label=new QLabel(event_remarks_edit,tr("REMARKS"),this);
+  label=new QLabel(event_remarks_edit,tr("USER NOTES"),this);
   label->setFont(labelFont());
   label->setGeometry(15,sizeHint().height()-165,100,15);
   label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);

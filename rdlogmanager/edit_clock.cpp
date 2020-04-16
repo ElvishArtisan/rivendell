@@ -2,7 +2,7 @@
 //
 // Edit Rivendell Log Clock
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -140,7 +140,7 @@ EditClock::EditClock(QString clockname,bool new_clock,
   edit_remarks_edit=new QTextEdit(this);
   edit_remarks_edit->setGeometry(10,sizeHint().height()-140,CENTER_LINE-20,130);
   edit_remarks_edit->setTextFormat(Qt::PlainText);
-  label=new QLabel(edit_remarks_edit,tr("Remarks"),this);
+  label=new QLabel(edit_remarks_edit,tr("USER NOTES"),this);
   label->setGeometry(15,sizeHint().height()-155,CENTER_LINE-20,15);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);

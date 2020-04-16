@@ -191,7 +191,7 @@ horario</translation>
     </message>
     <message>
         <source>Remarks</source>
-        <translation>Comentarios</translation>
+        <translation type="obsolete">Comentarios</translation>
     </message>
     <message>
         <source>&amp;Clone</source>
@@ -216,6 +216,10 @@ horario</translation>
     </message>
     <message>
         <source>That event does not exist.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>USER NOTES</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -535,7 +539,7 @@ Do you want to overwrite it?</source>
     </message>
     <message>
         <source>REMARKS</source>
-        <translation>COMENTARIOS</translation>
+        <translation type="obsolete">COMENTARIOS</translation>
     </message>
     <message>
         <source>Len:</source>
@@ -615,6 +619,10 @@ Do you want to overwrite it?</source>
     </message>
     <message>
         <source>Import inline traffic event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>USER NOTES</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

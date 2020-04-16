@@ -19806,3 +19806,8 @@
 	'RDEventLine::setPostPoint()' methods.
 	* Removed the 'Post Point' checkbox from the 'Editing Event' dialog
 	in rdlogmanager(1).
+2020-04-16 Fred Gleason <fredg@paravelsystems.com>
+	* Renamed the 'REMARKS' field to 'USER NOTES' in the 'Editing Event'
+	dialog in rdlogmanager(1).
+	* Renamed the 'REMARKS' field to 'USER NOTES' in the 'Edit Clock'
+	dialog in rdlogmanager(1).

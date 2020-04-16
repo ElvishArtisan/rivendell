@@ -94,7 +94,7 @@
     </message>
     <message>
         <source>Remarks</source>
-        <translation>Observações</translation>
+        <translation type="obsolete">Observações</translation>
     </message>
     <message>
         <source>Scheduler
@@ -218,6 +218,10 @@ Você quer salvar?</translation>
         <source>That event does not exist.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>USER NOTES</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditEvent</name>
@@ -279,7 +283,7 @@ Você quer salvar?</translation>
     </message>
     <message>
         <source>REMARKS</source>
-        <translation>OBSERVAÇÕES</translation>
+        <translation type="obsolete">OBSERVAÇÕES</translation>
     </message>
     <message>
         <source>ALL</source>
@@ -615,6 +619,10 @@ Você quer sobreescrêve-lo?</translation>
     </message>
     <message>
         <source>Import inline traffic event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>USER NOTES</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

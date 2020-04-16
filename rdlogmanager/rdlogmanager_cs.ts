@@ -189,7 +189,7 @@ Chcete je uložit?</translation>
     </message>
     <message>
         <source>Remarks</source>
-        <translation>Poznámky</translation>
+        <translation type="obsolete">Poznámky</translation>
     </message>
     <message>
         <source>&amp;Clone</source>
@@ -214,6 +214,10 @@ Chcete je uložit?</translation>
     </message>
     <message>
         <source>That event does not exist.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>USER NOTES</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -533,7 +537,7 @@ Chcete ji přepsat?</translation>
     </message>
     <message>
         <source>REMARKS</source>
-        <translation>POZNÁMKY</translation>
+        <translation type="obsolete">POZNÁMKY</translation>
     </message>
     <message>
         <source>Len:</source>
@@ -613,6 +617,10 @@ Chcete ji přepsat?</translation>
     </message>
     <message>
         <source>Import inline traffic event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>USER NOTES</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

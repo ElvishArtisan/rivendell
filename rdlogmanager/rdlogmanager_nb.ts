@@ -189,10 +189,6 @@ Vil du lagra?</translation>
         <translation>Denne koden er alt i bruk!</translation>
     </message>
     <message>
-        <source>Remarks</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Clone</source>
         <translation type="unfinished"></translation>
     </message>
@@ -215,6 +211,10 @@ Vil du lagra?</translation>
     </message>
     <message>
         <source>That event does not exist.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>USER NOTES</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -541,10 +541,6 @@ Vil du byta henne ut?</translation>
         <translation>, Innlinje-trafikk</translation>
     </message>
     <message>
-        <source>REMARKS</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Len:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -622,6 +618,10 @@ Vil du byta henne ut?</translation>
     </message>
     <message>
         <source>Import inline traffic event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>USER NOTES</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -189,7 +189,7 @@ Wollen Sie sie speichern?</translation>
     </message>
     <message>
         <source>Remarks</source>
-        <translation>Bemerkungen</translation>
+        <translation type="obsolete">Bemerkungen</translation>
     </message>
     <message>
         <source>&amp;Clone</source>
@@ -214,6 +214,10 @@ Wollen Sie sie speichern?</translation>
     </message>
     <message>
         <source>That event does not exist.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>USER NOTES</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -533,7 +537,7 @@ Wollen Sie es überschreiben?</translation>
     </message>
     <message>
         <source>REMARKS</source>
-        <translation>BEMERKUNGEN</translation>
+        <translation type="obsolete">BEMERKUNGEN</translation>
     </message>
     <message>
         <source>Len:</source>
@@ -613,6 +617,10 @@ Wollen Sie es überschreiben?</translation>
     </message>
     <message>
         <source>Import inline traffic event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>USER NOTES</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

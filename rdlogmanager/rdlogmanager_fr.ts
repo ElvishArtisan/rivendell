@@ -168,10 +168,6 @@ Do you want to save?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Remarks</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Clone</source>
         <translation type="unfinished"></translation>
     </message>
@@ -194,6 +190,10 @@ Do you want to save?</source>
     </message>
     <message>
         <source>That event does not exist.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>USER NOTES</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -438,10 +438,6 @@ Do you want to overwrite it?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>REMARKS</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Len:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -527,6 +523,10 @@ Do you want to overwrite it?</source>
     </message>
     <message>
         <source>Import inline traffic event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>USER NOTES</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
