@@ -303,7 +303,7 @@ horario</translation>
     </message>
     <message>
         <source>Make Post Point</source>
-        <translation>Hacer Post Point</translation>
+        <translation type="unfinished">Hacer Post Point</translation>
     </message>
     <message>
         <source>Action If Previous Event Still Playing</source>
@@ -335,7 +335,7 @@ horario</translation>
     </message>
     <message>
         <source>Transition if previous event ends before start time:</source>
-        <translation>Transición si evento termina antes que éste inicie:</translation>
+        <translation type="obsolete">Transición si evento termina antes que éste inicie:</translation>
     </message>
     <message>
         <source>ENFORCING LENGTH</source>
@@ -387,11 +387,11 @@ horario</translation>
     </message>
     <message>
         <source>Imported carts have a</source>
-        <translation>Transic. cart. importados</translation>
+        <translation type="unfinished">Transic. cart. importados</translation>
     </message>
     <message>
         <source>transition.</source>
-        <translation>.</translation>
+        <translation type="unfinished">.</translation>
     </message>
     <message>
         <source>POST-IMPORT CARTS</source>
@@ -469,7 +469,7 @@ List</source>
     </message>
     <message>
         <source>, Post</source>
-        <translation>, Post</translation>
+        <translation type="unfinished">, Post</translation>
     </message>
     <message>
         <source>, Fill</source>
@@ -507,11 +507,11 @@ Do you want to overwrite it?</source>
     </message>
     <message>
         <source>event.</source>
-        <translation>.</translation>
+        <translation type="obsolete">.</translation>
     </message>
     <message>
         <source>Import inline traffic with the</source>
-        <translation>Importar tráfico con el evento</translation>
+        <translation type="obsolete">Importar tráfico con el evento</translation>
     </message>
     <message>
         <source>, Inline Traffic</source>
@@ -603,6 +603,18 @@ Do you want to overwrite it?</source>
     </message>
     <message>
         <source>Search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TRANSITIONS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CART STACK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import inline traffic event</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

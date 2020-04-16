@@ -19792,4 +19792,9 @@
 2020-04-16 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in 'RDEventLine' that caused the
 	'Append Log' ['AL'] RML to append a copy of the currently loaded
-	log instead of the one specified in the RML command.
+	log instead of the one specified in the RML command
+2020-04-16 Fred Gleason <fredg@paravelsystems.com>
+	* Added font metrics methods for each standard font role in
+	'RDFontEngine'.
+	* Refactored the control layout in the 'Editing Event' dialog
+	in rdlogmanager.

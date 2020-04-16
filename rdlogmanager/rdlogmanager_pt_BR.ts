@@ -307,7 +307,7 @@ Você quer salvar?</translation>
     </message>
     <message>
         <source>Make Post Point</source>
-        <translation>Fazer Marcação </translation>
+        <translation type="unfinished">Fazer Marcação </translation>
     </message>
     <message>
         <source>Action If Previous Event Still Playing</source>
@@ -339,7 +339,7 @@ Você quer salvar?</translation>
     </message>
     <message>
         <source>Transition if previous event ends before start time:</source>
-        <translation>Transição se evento anterior acabar antes do horário de início:</translation>
+        <translation type="obsolete">Transição se evento anterior acabar antes do horário de início:</translation>
     </message>
     <message>
         <source>ENFORCING LENGTH</source>
@@ -415,15 +415,15 @@ Você quer salvar?</translation>
     </message>
     <message>
         <source>Imported carts have a</source>
-        <translation>Cartões importados têm</translation>
+        <translation type="unfinished">Cartões importados têm</translation>
     </message>
     <message>
         <source>transition.</source>
-        <translation>transição.</translation>
+        <translation type="unfinished">transição.</translation>
     </message>
     <message>
         <source>Import inline traffic with the</source>
-        <translation>Importar Tráfego interno com</translation>
+        <translation type="obsolete">Importar Tráfego interno com</translation>
     </message>
     <message>
         <source>[none]</source>
@@ -431,7 +431,7 @@ Você quer salvar?</translation>
     </message>
     <message>
         <source>event.</source>
-        <translation>evento.</translation>
+        <translation type="obsolete">evento.</translation>
     </message>
     <message>
         <source>POST-IMPORT CARTS</source>
@@ -515,7 +515,7 @@ Você quer sobreescrêve-lo?</translation>
     </message>
     <message>
         <source>, Post</source>
-        <translation>, Pós</translation>
+        <translation type="unfinished">, Pós</translation>
     </message>
     <message>
         <source>, Fill</source>
@@ -603,6 +603,18 @@ Você quer sobreescrêve-lo?</translation>
     </message>
     <message>
         <source>Search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TRANSITIONS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CART STACK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import inline traffic event</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

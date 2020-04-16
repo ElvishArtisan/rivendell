@@ -301,7 +301,7 @@ Wollen Sie sie speichern?</translation>
     </message>
     <message>
         <source>Make Post Point</source>
-        <translation>Post Point machen</translation>
+        <translation type="unfinished">Post Point machen</translation>
     </message>
     <message>
         <source>Action If Previous Event Still Playing</source>
@@ -333,7 +333,7 @@ Wollen Sie sie speichern?</translation>
     </message>
     <message>
         <source>Transition if previous event ends before start time:</source>
-        <translation>Übergang wenn vorheriges Event vor der Startzeit endet:</translation>
+        <translation type="obsolete">Übergang wenn vorheriges Event vor der Startzeit endet:</translation>
     </message>
     <message>
         <source>ENFORCING LENGTH</source>
@@ -405,15 +405,15 @@ Wollen Sie sie speichern?</translation>
     </message>
     <message>
         <source>Imported carts have a</source>
-        <translation>Importierte Carts haben eine</translation>
+        <translation type="unfinished">Importierte Carts haben eine</translation>
     </message>
     <message>
         <source>transition.</source>
-        <translation>Übergang.</translation>
+        <translation type="unfinished">Übergang.</translation>
     </message>
     <message>
         <source>Import inline traffic with the</source>
-        <translation>Importiere Inline-Traffic mit dem</translation>
+        <translation type="obsolete">Importiere Inline-Traffic mit dem</translation>
     </message>
     <message>
         <source>[none]</source>
@@ -421,7 +421,7 @@ Wollen Sie sie speichern?</translation>
     </message>
     <message>
         <source>event.</source>
-        <translation>Event.</translation>
+        <translation type="obsolete">Event.</translation>
     </message>
     <message>
         <source>POST-IMPORT CARTS</source>
@@ -505,7 +505,7 @@ Wollen Sie es überschreiben?</translation>
     </message>
     <message>
         <source>, Post</source>
-        <translation>, Nach</translation>
+        <translation type="unfinished">, Nach</translation>
     </message>
     <message>
         <source>, Fill</source>
@@ -601,6 +601,18 @@ Wollen Sie es überschreiben?</translation>
     </message>
     <message>
         <source>Search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TRANSITIONS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CART STACK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import inline traffic event</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

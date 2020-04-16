@@ -248,10 +248,6 @@ Do you want to save?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Make Post Point</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Action If Previous Event Still Playing</source>
         <translation type="unfinished"></translation>
     </message>
@@ -277,10 +273,6 @@ Do you want to save?</source>
     </message>
     <message>
         <source>Stop</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Transition if previous event ends before start time:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -344,23 +336,7 @@ Do you want to save?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Imported carts have a</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>transition.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Import inline traffic with the</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>[none]</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>event.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -435,10 +411,6 @@ Do you want to overwrite it?</source>
     </message>
     <message>
         <source>, Timed(MakeNext)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>, Post</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -535,6 +507,34 @@ Do you want to overwrite it?</source>
     </message>
     <message>
         <source>Search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Imported carts have a</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>transition.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TRANSITIONS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CART STACK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import inline traffic event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Make Post Point</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>, Post</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -232,7 +232,7 @@ void ImportListView::refreshList(int line)
 
 void ImportListView::validateTransitions()
 {
-  if(import_list->size()>1) {
+  if(import_list->size()>=1) {
     if(import_force_trans!=RDLogLine::NoTrans) {
       import_list->item(0)->setTransType(import_force_trans);
     }
