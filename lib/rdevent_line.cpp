@@ -102,18 +102,6 @@ void RDEventLine::setGraceTime(int offset)
 }
 
 
-bool RDEventLine::postPoint() const
-{
-  return event_post_point;
-}
-
-
-void RDEventLine::setPostPoint(bool state)
-{
-  event_post_point=state;
-}
-
-
 bool RDEventLine::useAutofill() const
 {
   return event_use_autofill;
@@ -299,7 +287,6 @@ void RDEventLine::clear()
    event_preposition=0;
    event_time_type=RDLogLine::Relative;
    event_grace_time=0;
-   event_post_point=false;
    event_use_autofill=false;
    event_use_timescale=false;
    event_import_source=RDEventLine::None;
@@ -329,22 +316,21 @@ bool RDEventLine::load()
     "PREPOSITION,"+         // 01
     "TIME_TYPE,"+           // 02
     "GRACE_TIME,"+          // 03
-    "POST_POINT,"+          // 04
-    "USE_AUTOFILL,"+        // 05
-    "USE_TIMESCALE,"+       // 06
-    "IMPORT_SOURCE,"+       // 07
-    "START_SLOP,"+          // 08
-    "END_SLOP,"+            // 09
-    "FIRST_TRANS_TYPE,"+    // 10
-    "DEFAULT_TRANS_TYPE,"+  // 11
-    "COLOR,"+               // 12
-    "AUTOFILL_SLOP,"+       // 13
-    "NESTED_EVENT,"+        // 14
-    "SCHED_GROUP,"+         // 15
-    "ARTIST_SEP,"+          // 16
-    "TITLE_SEP,"+           // 17
-    "HAVE_CODE,"+           // 18
-    "HAVE_CODE2	"+          // 19
+    "USE_AUTOFILL,"+        // 04
+    "USE_TIMESCALE,"+       // 05
+    "IMPORT_SOURCE,"+       // 06
+    "START_SLOP,"+          // 07
+    "END_SLOP,"+            // 08
+    "FIRST_TRANS_TYPE,"+    // 09
+    "DEFAULT_TRANS_TYPE,"+  // 10
+    "COLOR,"+               // 11
+    "AUTOFILL_SLOP,"+       // 12
+    "NESTED_EVENT,"+        // 13
+    "SCHED_GROUP,"+         // 14
+    "ARTIST_SEP,"+          // 15
+    "TITLE_SEP,"+           // 16
+    "HAVE_CODE,"+           // 17
+    "HAVE_CODE2	"+          // 18
     "from EVENTS where "+
     "NAME=\""+RDEscapeString(event_name)+"\"";
   RDSqlQuery *q=new RDSqlQuery(sql);
@@ -358,27 +344,26 @@ bool RDEventLine::load()
   event_preposition=q->value(1).toInt();
   event_time_type=(RDLogLine::TimeType)q->value(2).toInt();
   event_grace_time=q->value(3).toInt();
-  event_post_point=RDBool(q->value(4).toString());
-  event_use_autofill=RDBool(q->value(5).toString());
-  event_use_timescale=RDBool(q->value(6).toString());
-  event_import_source=(RDEventLine::ImportSource)q->value(7).toInt();
-  event_start_slop=q->value(8).toInt();
-  event_end_slop=q->value(9).toInt();
-  event_first_transtype=(RDLogLine::TransType)q->value(10).toInt();
-  event_default_transtype=(RDLogLine::TransType)q->value(11).toInt();
-  if(q->value(12).isNull()) {
+  event_use_autofill=RDBool(q->value(4).toString());
+  event_use_timescale=RDBool(q->value(5).toString());
+  event_import_source=(RDEventLine::ImportSource)q->value(6).toInt();
+  event_start_slop=q->value(7).toInt();
+  event_end_slop=q->value(8).toInt();
+  event_first_transtype=(RDLogLine::TransType)q->value(9).toInt();
+  event_default_transtype=(RDLogLine::TransType)q->value(10).toInt();
+  if(q->value(11).isNull()) {
     event_color=QColor();
   }
   else {
-    event_color=QColor(q->value(12).toString());
+    event_color=QColor(q->value(11).toString());
   }
-  event_autofill_slop=q->value(13).toInt();
-  event_nested_event=q->value(14).toString();
-  event_sched_group=q->value(15).toString();
-  event_artist_sep=q->value(16).toInt();
-  event_title_sep=q->value(17).toInt();
-  event_have_code=q->value(18).toString();
-  event_have_code2=q->value(19).toString();
+  event_autofill_slop=q->value(12).toInt();
+  event_nested_event=q->value(13).toString();
+  event_sched_group=q->value(14).toString();
+  event_artist_sep=q->value(15).toInt();
+  event_title_sep=q->value(16).toInt();
+  event_have_code=q->value(17).toString();
+  event_have_code2=q->value(18).toString();
 
   delete q;
   event_preimport_list->load();
@@ -398,7 +383,6 @@ bool RDEventLine::save(RDConfig *config)
       QString().sprintf("PREPOSITION=%d,",event_preposition)+
       QString().sprintf("TIME_TYPE=%d,",event_time_type)+
       QString().sprintf("GRACE_TIME=%d,",event_grace_time)+
-      "POST_POINT=\""+RDYesNo(event_post_point)+"\","+
       "USE_AUTOFILL=\""+RDYesNo(event_use_autofill)+"\","+
       "USE_TIMESCALE=\""+RDYesNo(event_use_timescale)+"\","+
       QString().sprintf("IMPORT_SOURCE=%d,",event_import_source)+
@@ -423,7 +407,6 @@ bool RDEventLine::save(RDConfig *config)
       QString().sprintf("PREPOSITION=%d,",event_preposition)+
       QString().sprintf("TIME_TYPE=%d,",event_time_type)+
       QString().sprintf("GRACE_TIME=%d,",event_grace_time)+
-      "POST_POINT=\""+RDYesNo(event_post_point)+"\","+
       "USE_AUTOFILL=\""+RDYesNo(event_use_autofill)+"\","+
       "USE_TIMESCALE=\""+RDYesNo(event_use_timescale)+"\","+
       QString().sprintf("IMPORT_SOURCE=%d,",event_import_source)+
@@ -463,7 +446,6 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
   RDLogLine::TransType trans_type=event_first_transtype;
   RDLogLine::TimeType time_type=event_time_type;
   RDLogLine::Type link_type=RDLogLine::MusicLink;
-  bool post_point=event_post_point;
   int grace_time=event_grace_time;
   int link_id=0;
 
@@ -519,7 +501,6 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
       QString().sprintf("GRACE_TIME=%d,",grace_time)+
       QString().sprintf("CART_NUMBER=%u,",i_item->cartNumber())+
       QString().sprintf("TIME_TYPE=%d,",time_type)+
-      "POST_POINT=\""+RDYesNo(post_point)+"\","+
       QString().sprintf("TRANS_TYPE=%d,",i_item->transType())+
       "COMMENT=\""+RDEscapeString(i_item->markerComment())+"\","+
       QString().sprintf("EVENT_LENGTH=%d",event_length);
@@ -527,7 +508,6 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
     count++;
     trans_type=event_default_transtype;
     time_type=RDLogLine::Relative;
-    post_point=false;
     grace_time=-1;
 
     postimport_length+=GetLength(i_item->cartNumber());
@@ -560,7 +540,6 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
       QString().sprintf("START_TIME=%d,",QTime().msecsTo(time))+
       QString().sprintf("GRACE_TIME=%d,",grace_time)+
       QString().sprintf("TIME_TYPE=%d,",time_type)+
-      "POST_POINT=\""+RDYesNo(post_point)+"\","+
       QString().sprintf("TRANS_TYPE=%d,",trans_type)+
       "LINK_EVENT_NAME=\""+RDEscapeString(event_name)+"\","+
       QString().sprintf("LINK_START_TIME=%d,",
@@ -577,7 +556,6 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
     time=time.addMSecs(event_length);
     trans_type=event_default_transtype;
     time_type=RDLogLine::Relative;
-    post_point=false;
     grace_time=-1;
   }
 
@@ -884,7 +862,6 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
 	QString().sprintf("GRACE_TIME=%d,",grace_time)+
 	QString().sprintf("CART_NUMBER=%u,",schedCL->getItemCartNumber(schedpos))+
 	QString().sprintf("TIME_TYPE=%d,",time_type)+
-	"POST_POINT=\""+RDYesNo(post_point)+"\","+
 	QString().sprintf("TRANS_TYPE=%d,",trans_type)+
 	"EXT_START_TIME="+RDCheckDateTime(time,"hh:mm:ss")+","+
 	QString().sprintf("EVENT_LENGTH=%d",event_length);
@@ -937,7 +914,6 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
       QString().sprintf("GRACE_TIME=%d,",grace_time)+
       QString().sprintf("CART_NUMBER=%u,",i_item->cartNumber())+
       QString().sprintf("TIME_TYPE=%d,",time_type)+
-      "POST_POINT=\""+RDYesNo(post_point)+"\","+
       QString().sprintf("TRANS_TYPE=%d,",i_item->transType())+
       "COMMENT=\""+RDEscapeString(i_item->markerComment())+"\","+
       QString().sprintf("EVENT_LENGTH=%d",event_length);
@@ -946,7 +922,6 @@ bool RDEventLine::generateLog(QString logname,const QString &svcname,
     time=time.addMSecs(GetLength(i_item->cartNumber()));
     time_type=RDLogLine::Relative;
     trans_type=event_default_transtype;
-    post_point=false;
     grace_time=-1;
   }
 

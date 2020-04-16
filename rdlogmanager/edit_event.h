@@ -116,7 +116,6 @@ class EditEvent : public RDDialog
   QPixmap *event_playout_map;
   QPixmap *event_macro_map;
   QGroupBox *event_position_group;
-  //  QLabel *event_position_header;
   QLabel *event_position_label;
   QLabel *event_position_unit;
   QCheckBox *event_position_box;
@@ -124,8 +123,6 @@ class EditEvent : public RDDialog
   QGroupBox *event_timetype_group;
   QCheckBox *event_timetype_check;
   QLabel *event_timetype_label;
-  QCheckBox *event_post_box;
-  QLabel *event_post_label;
   QButtonGroup *event_grace_group;
   QGroupBox *event_grace_groupbox;
   QRadioButton *event_immediate_button;
@@ -160,7 +157,6 @@ class EditEvent : public RDDialog
   QLabel *event_defaulttrans_unit;
   QLabel *event_nestevent_label;
   QComboBox *event_nestevent_box;
-  //  QLabel *event_nestevent_unit;
   ImportListView *event_postimport_list;
   QLineEdit *event_postimport_length_edit;
   RDTransportButton *event_postimport_up_button;

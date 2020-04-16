@@ -301,7 +301,7 @@ Chcete je uložit?</translation>
     </message>
     <message>
         <source>Make Post Point</source>
-        <translation type="unfinished">Udělat bod vyvěšení</translation>
+        <translation type="obsolete">Udělat bod vyvěšení</translation>
     </message>
     <message>
         <source>Action If Previous Event Still Playing</source>
@@ -505,7 +505,7 @@ Chcete ji přepsat?</translation>
     </message>
     <message>
         <source>, Post</source>
-        <translation type="unfinished">, Po</translation>
+        <translation type="obsolete">, Po</translation>
     </message>
     <message>
         <source>, Fill</source>

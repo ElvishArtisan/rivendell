@@ -41,6 +41,25 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // NEW SCHEMA REVERSIONS GO HERE...
 
   //
+  // Revert 315
+  //
+  if((cur_schema==315)&&(set_schema<cur_schema)) {
+    sql=QString("alter table EVENTS add column POST_POINT enum('N','Y') ")+
+      "default 'N' after GRACE_TIME";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table LOG_LINES add column POST_POINT enum('N','Y') ")+
+      "default 'N' after TIME_TYPE";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 314
   //
   if((cur_schema==314)&&(set_schema<cur_schema)) {

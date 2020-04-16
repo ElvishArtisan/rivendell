@@ -303,7 +303,7 @@ horario</translation>
     </message>
     <message>
         <source>Make Post Point</source>
-        <translation type="unfinished">Hacer Post Point</translation>
+        <translation type="obsolete">Hacer Post Point</translation>
     </message>
     <message>
         <source>Action If Previous Event Still Playing</source>
@@ -469,7 +469,7 @@ List</source>
     </message>
     <message>
         <source>, Post</source>
-        <translation type="unfinished">, Post</translation>
+        <translation type="obsolete">, Post</translation>
     </message>
     <message>
         <source>, Fill</source>

@@ -2,7 +2,7 @@
 //
 //   The Import Carts ListView widget for RDLogManager.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -207,11 +207,6 @@ void ImportListView::refreshList(int line)
 	  break;
 	}
 	item->setText(6,QString().sprintf("%d",i));
-	/*
-	if(i==line) {
-	  select_item=item;
-	}
-	*/
 	if(cart!=NULL) {
 	  delete cart;
 	  cart=NULL;

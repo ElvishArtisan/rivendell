@@ -307,7 +307,7 @@ Você quer salvar?</translation>
     </message>
     <message>
         <source>Make Post Point</source>
-        <translation type="unfinished">Fazer Marcação </translation>
+        <translation type="obsolete">Fazer Marcação </translation>
     </message>
     <message>
         <source>Action If Previous Event Still Playing</source>
@@ -515,7 +515,7 @@ Você quer sobreescrêve-lo?</translation>
     </message>
     <message>
         <source>, Post</source>
-        <translation type="unfinished">, Pós</translation>
+        <translation type="obsolete">, Pós</translation>
     </message>
     <message>
         <source>, Fill</source>

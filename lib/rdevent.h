@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Log Manager Event
 //
-//   (C) Copyright 2002-2004,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -43,8 +43,6 @@ class RDEvent
   void setTimeType(RDLogLine::TimeType type) const;
   int graceTime() const;
   void setGraceTime(int offset) const;
-  bool postPoint() const;
-  void setPostPoint(bool state) const;
   bool useAutofill() const;
   void setUseAutofill(bool state) const;
   int autofillSlop() const;

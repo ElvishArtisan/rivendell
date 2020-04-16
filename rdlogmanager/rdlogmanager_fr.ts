@@ -529,14 +529,6 @@ Do you want to overwrite it?</source>
         <source>Import inline traffic event</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Make Post Point</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>, Post</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>EditEventLine</name>

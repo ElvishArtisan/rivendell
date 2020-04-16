@@ -302,7 +302,7 @@ Vil du lagra?</translation>
     </message>
     <message>
         <source>Make Post Point</source>
-        <translation type="unfinished">Lag Etter-punkt</translation>
+        <translation type="obsolete">Lag Etter-punkt</translation>
     </message>
     <message>
         <source>Action If Previous Event Still Playing</source>
@@ -514,7 +514,7 @@ Vil du byta henne ut?</translation>
     </message>
     <message>
         <source>, Post</source>
-        <translation type="unfinished">, Etter</translation>
+        <translation type="obsolete">, Etter</translation>
     </message>
     <message>
         <source>, Fill</source>

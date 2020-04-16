@@ -260,16 +260,6 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   event_timetype_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
-  // Post Point
-  //
-  event_post_box=new QCheckBox(this);
-  event_post_box->setGeometry(CENTER_LINE+35,90,15,15);
-  event_post_label=new QLabel(event_post_box,tr("Make Post Point"),this);
-  event_post_label->setGeometry(CENTER_LINE+55,89,105,16);
-  event_post_label->setFont(labelFont());
-  event_post_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
-
-  //
   // Grace Time
   //
   event_grace_groupbox=
@@ -777,7 +767,7 @@ EditEvent::EditEvent(QString eventname,bool new_event,
 	
   case RDLogLine::Hard:
     event_timetype_check->setChecked(true);
-    event_post_box->setChecked(event_event->postPoint());
+    //    event_post_box->setChecked(event_event->postPoint());
     event_firsttrans_box->setCurrentItem(event_event->firstTransType());
     switch((grace=event_event->graceTime())) {
     case 0:
@@ -974,8 +964,6 @@ void EditEvent::timeToggledData(bool state)
   event_next_button->setEnabled(state);
   event_wait_button->setEnabled(state);
   event_grace_edit->setEnabled(state);
-  event_post_label->setEnabled(state&&(event_grace_group->checkedId()==0));
-  event_post_box->setEnabled(state&&(event_grace_group->checkedId()==0));
   if(state) {
     event_preimport_list->
       setForceTrans((RDLogLine::TransType)event_firsttrans_box->currentItem());
@@ -999,7 +987,6 @@ void EditEvent::timeToggledData(bool state)
     event_position_unit->setDisabled(true);
   }
   else {
-    event_post_box->setChecked(false);
     event_grace_edit->setDisabled(true);
     if(event_position_box->isChecked()) {
       event_position_edit->setEnabled(true);
@@ -1021,22 +1008,16 @@ void EditEvent::graceClickedData(int id)
 {
   switch(id) {
   case 0:
-    event_post_label->setEnabled(event_timetype_check->isChecked());
-    event_post_box->setEnabled(event_timetype_check->isChecked());
     timeTransitionData(RDLogLine::Stop);
     event_grace_edit->setDisabled(true);
     break;
 
   case 1:
-    event_post_label->setDisabled(true);
-    event_post_box->setDisabled(true);
     timeTransitionData(RDLogLine::Segue);
     event_grace_edit->setDisabled(true);
     break;
 
   case 2:
-    event_post_label->setDisabled(true);
-    event_post_box->setDisabled(true);
     timeTransitionData(RDLogLine::Segue);
     event_grace_edit->setEnabled(true);
     break;
@@ -1456,7 +1437,7 @@ void EditEvent::Save()
   }
   if(event_timetype_check->isChecked()) {
     event_event->setTimeType(RDLogLine::Hard);
-    event_event->setPostPoint(event_post_box->isChecked());
+    //    event_event->setPostPoint(event_post_box->isChecked());
     event_event->setFirstTransType((RDLogLine::TransType)
 				   event_firsttrans_box->currentItem());
     switch(event_grace_group->checkedId()) {
@@ -1476,7 +1457,7 @@ void EditEvent::Save()
   else {
     event_event->setTimeType(RDLogLine::Relative);
     event_event->setGraceTime(0);
-    event_event->setPostPoint(false);
+    //    event_event->setPostPoint(false);
     event_event->setFirstTransType(RDLogLine::Play);
   }
 
@@ -1589,9 +1570,6 @@ QString EditEvent::GetProperties()
       properties+=", "+tr("Timed(Wait)")+" "+
 	event_grace_edit->time().toString("mm:ss");
       break;
-    }
-    if(event_post_box->isChecked()) {
-      properties+=tr(", Post");
     }
   }
   if(event_autofill_box->isChecked()) {
