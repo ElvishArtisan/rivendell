@@ -19789,7 +19789,7 @@
 2020-04-14 Fred Gleason <fredg@paravelsystems.com>
 	* Added debug syslog messages to the 'Software Authority' driver
 	in ripcd(8).
-2020-04-16 Fred Gleason <fredg@paravelsystems.com>
+2020-04-15 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in 'RDEventLine' that caused the
 	'Append Log' ['AL'] RML to append a copy of the currently loaded
 	log instead of the one specified in the RML command
