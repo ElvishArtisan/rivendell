@@ -19801,7 +19801,7 @@
 2020-04-16 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the 'EVENTS.POST_POINT' field from the database.
 	* Removed the 'LOG_LINES.POST_POINT' field from the database.
-	* Incremented the database version tp 315.
+	* Incremented the database version to 315.
 	* Removed 'RDEventLine::postPoint()' and
 	'RDEventLine::setPostPoint()' methods.
 	* Removed the 'Post Point' checkbox from the 'Editing Event' dialog
