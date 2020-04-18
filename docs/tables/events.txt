@@ -5,7 +5,6 @@ The EVENTS table holds data defining each event in rdlogmanager(1).
 FIELD NAME           TYPE               REMARKS
 ------------------------------------------------------------------------
 NAME                 varchar(64)        Primary key
-PROPERTIES           varchar(64)
 DISPLAY_TEXT         varchar(64)
 NOTE_TEXT            varchar(191)
 PREPOSITION          int(11)

@@ -37,8 +37,6 @@ class RDEventLine
   RDEventLine(RDStation *station);
   QString name() const;
   void setName(const QString &name);
-  QString properties() const;
-  void setProperties(const QString &str);
   int preposition() const;
   void setPreposition(int offset);
   RDLogLine::TimeType timeType() const;
@@ -84,11 +82,18 @@ class RDEventLine
 	       RDLogLine *link_logline,const QString &track_str,
 	       const QString &label_cart,const QString &track_cart,
 	       QString *errors);
+  QString propertiesText() const;
+  static QString propertiesText(int prepos_msec,
+				RDLogLine::TransType first_trans,
+				RDLogLine::TimeType time_type,
+				int grace_msec,
+				bool autofill,
+				RDEventLine::ImportSource import_src,
+				bool inline_tfc);
   
  private:
   int GetLength(unsigned cartnum,int def_length=0);
   QString event_name;
-  QString event_properties;
   int event_preposition;
   RDLogLine::TimeType event_time_type;
   int event_grace_time;

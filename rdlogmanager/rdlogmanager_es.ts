@@ -222,6 +222,10 @@ horario</translation>
         <source>USER NOTES</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Trans</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditEvent</name>
@@ -445,27 +449,27 @@ List</source>
     </message>
     <message>
         <source>Cue</source>
-        <translation>Cue</translation>
+        <translation type="obsolete">Cue</translation>
     </message>
     <message>
         <source>SEGUE</source>
-        <translation>SEGUE</translation>
+        <translation type="obsolete">SEGUE</translation>
     </message>
     <message>
         <source>STOP</source>
-        <translation>PARAR</translation>
+        <translation type="obsolete">PARAR</translation>
     </message>
     <message>
         <source>PLAY</source>
-        <translation>REPROD</translation>
+        <translation type="obsolete">REPROD</translation>
     </message>
     <message>
         <source>, Timed(Start)</source>
-        <translation>, Tiempo(Inicio)</translation>
+        <translation type="obsolete">, Tiempo(Inicio)</translation>
     </message>
     <message>
         <source>, Timed(MakeNext)</source>
-        <translation>, Tiempo(HacerSiguiente)</translation>
+        <translation type="obsolete">, Tiempo(HacerSiguiente)</translation>
     </message>
     <message>
         <source>Timed(Wait</source>
@@ -477,19 +481,19 @@ List</source>
     </message>
     <message>
         <source>, Fill</source>
-        <translation>, Llenar</translation>
+        <translation type="obsolete">, Llenar</translation>
     </message>
     <message>
         <source>, Scale</source>
-        <translation>, Escalar</translation>
+        <translation type="obsolete">, Escalar</translation>
     </message>
     <message>
         <source>, Traffic</source>
-        <translation>, Tráfico</translation>
+        <translation type="obsolete">, Tráfico</translation>
     </message>
     <message>
         <source>, Music</source>
-        <translation>, Música</translation>
+        <translation type="obsolete">, Música</translation>
     </message>
     <message>
         <source>Event already exists!
@@ -519,7 +523,7 @@ Do you want to overwrite it?</source>
     </message>
     <message>
         <source>, Inline Traffic</source>
-        <translation>, tráfico en línea</translation>
+        <translation type="obsolete">, tráfico en línea</translation>
     </message>
     <message>
         <source>Select from:</source>
@@ -535,7 +539,7 @@ Do you want to overwrite it?</source>
     </message>
     <message>
         <source>, Scheduler</source>
-        <translation>, Programador</translation>
+        <translation type="obsolete">, Programador</translation>
     </message>
     <message>
         <source>REMARKS</source>
@@ -555,10 +559,6 @@ Do you want to overwrite it?</source>
     </message>
     <message>
         <source>and code</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Timed(Wait)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1263,7 +1263,7 @@ eliminar</translation>
     </message>
     <message>
         <source>Color</source>
-        <translation>Color</translation>
+        <translation type="obsolete">Color</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -1345,6 +1345,10 @@ eliminar</translation>
     </message>
     <message>
         <source>is in use in the following clocks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trans</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

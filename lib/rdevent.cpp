@@ -58,19 +58,6 @@ QString RDEvent::name() const
 }
 
 
-QString RDEvent::properties() const
-{
-  bool ok;
-  return GetStringValue("PROPERTIES",&ok);
-}
-
-
-void RDEvent::setProperties(const QString &str) const
-{
-  SetRow("PROPERTIES",str,true);
-}
-
-
 QString RDEvent::displayText(bool *ok) const
 {
   return GetStringValue("DISPLAY_TEXT",ok);

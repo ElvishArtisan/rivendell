@@ -217,6 +217,10 @@ Vil du lagra?</translation>
         <source>USER NOTES</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Trans</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditEvent</name>
@@ -482,15 +486,15 @@ Vil du byta henne ut?</translation>
     </message>
     <message>
         <source>Cue</source>
-        <translation>Sporing</translation>
+        <translation type="obsolete">Sporing</translation>
     </message>
     <message>
         <source>SEGUE</source>
-        <translation>KRYSSTON</translation>
+        <translation type="obsolete">KRYSSTON</translation>
     </message>
     <message>
         <source>STOP</source>
-        <translation>STOPP</translation>
+        <translation type="obsolete">STOPP</translation>
     </message>
     <message>
         <source>OVERLAP</source>
@@ -498,15 +502,15 @@ Vil du byta henne ut?</translation>
     </message>
     <message>
         <source>PLAY</source>
-        <translation>SPEL</translation>
+        <translation type="obsolete">SPEL</translation>
     </message>
     <message>
         <source>, Timed(Start)</source>
-        <translation>, Tidlagt(Start)</translation>
+        <translation type="obsolete">, Tidlagt(Start)</translation>
     </message>
     <message>
         <source>, Timed(MakeNext)</source>
-        <translation>, Tidlagt(Gjer-neste)</translation>
+        <translation type="obsolete">, Tidlagt(Gjer-neste)</translation>
     </message>
     <message>
         <source>Timed(Wait</source>
@@ -518,27 +522,27 @@ Vil du byta henne ut?</translation>
     </message>
     <message>
         <source>, Fill</source>
-        <translation>, Fyll</translation>
+        <translation type="obsolete">, Fyll</translation>
     </message>
     <message>
         <source>, Scale</source>
-        <translation>, Skalering</translation>
+        <translation type="obsolete">, Skalering</translation>
     </message>
     <message>
         <source>, Traffic</source>
-        <translation>, Trafikk</translation>
+        <translation type="obsolete">, Trafikk</translation>
     </message>
     <message>
         <source>, Music</source>
-        <translation>, Musikk</translation>
+        <translation type="obsolete">, Musikk</translation>
     </message>
     <message>
         <source>, Scheduler</source>
-        <translation>, Planleggar</translation>
+        <translation type="obsolete">, Planleggar</translation>
     </message>
     <message>
         <source>, Inline Traffic</source>
-        <translation>, Innlinje-trafikk</translation>
+        <translation type="obsolete">, Innlinje-trafikk</translation>
     </message>
     <message>
         <source>Len:</source>
@@ -554,10 +558,6 @@ Vil du byta henne ut?</translation>
     </message>
     <message>
         <source>and code</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Timed(Wait)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1266,7 +1266,7 @@ sletta</translation>
     </message>
     <message>
         <source>Color</source>
-        <translation>Farge</translation>
+        <translation type="obsolete">Farge</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -1340,6 +1340,10 @@ sletta</translation>
     </message>
     <message>
         <source>is in use in the following clocks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trans</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

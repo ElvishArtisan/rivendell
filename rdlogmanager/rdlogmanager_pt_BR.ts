@@ -222,6 +222,10 @@ Você quer salvar?</translation>
         <source>USER NOTES</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Trans</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditEvent</name>
@@ -491,27 +495,27 @@ Você quer sobreescrêve-lo?</translation>
     </message>
     <message>
         <source>Cue</source>
-        <translation>Marca</translation>
+        <translation type="obsolete">Marca</translation>
     </message>
     <message>
         <source>SEGUE</source>
-        <translation>SOBRE</translation>
+        <translation type="obsolete">SOBRE</translation>
     </message>
     <message>
         <source>STOP</source>
-        <translation>PARE</translation>
+        <translation type="obsolete">PARE</translation>
     </message>
     <message>
         <source>PLAY</source>
-        <translation>SIMPLES</translation>
+        <translation type="obsolete">SIMPLES</translation>
     </message>
     <message>
         <source>, Timed(Start)</source>
-        <translation>, Hora Certa(Início)</translation>
+        <translation type="obsolete">, Hora Certa(Início)</translation>
     </message>
     <message>
         <source>, Timed(MakeNext)</source>
-        <translation>,  Hora Certa(Ser Próximo)</translation>
+        <translation type="obsolete">,  Hora Certa(Ser Próximo)</translation>
     </message>
     <message>
         <source>Timed(Wait</source>
@@ -523,27 +527,27 @@ Você quer sobreescrêve-lo?</translation>
     </message>
     <message>
         <source>, Fill</source>
-        <translation>, Preencher</translation>
+        <translation type="obsolete">, Preencher</translation>
     </message>
     <message>
         <source>, Scale</source>
-        <translation>, Escala</translation>
+        <translation type="obsolete">, Escala</translation>
     </message>
     <message>
         <source>, Traffic</source>
-        <translation>, Tráfego</translation>
+        <translation type="obsolete">, Tráfego</translation>
     </message>
     <message>
         <source>, Music</source>
-        <translation>, Música</translation>
+        <translation type="obsolete">, Música</translation>
     </message>
     <message>
         <source>, Scheduler</source>
-        <translation>, Agendador</translation>
+        <translation type="obsolete">, Agendador</translation>
     </message>
     <message>
         <source>, Inline Traffic</source>
-        <translation>, Tráfego Interno</translation>
+        <translation type="obsolete">, Tráfego Interno</translation>
     </message>
     <message>
         <source>PRE-IMPORT CARTS</source>
@@ -555,10 +559,6 @@ Você quer sobreescrêve-lo?</translation>
     </message>
     <message>
         <source>and code</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Timed(Wait)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1267,7 +1267,7 @@ deletar</translation>
     </message>
     <message>
         <source>Color</source>
-        <translation>Cor</translation>
+        <translation type="obsolete">Cor</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -1345,6 +1345,10 @@ deletar</translation>
     </message>
     <message>
         <source>is in use in the following clocks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trans</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

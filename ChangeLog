@@ -19811,3 +19811,13 @@
 	dialog in rdlogmanager(1).
 	* Renamed the 'REMARKS' field to 'USER NOTES' in the 'Edit Clock'
 	dialog in rdlogmanager(1).
+2020-04-18 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'EVENTS.PROPERTIES' field from the database.
+	* Incremented the database version to 316.
+	* Removed the 'RDEventLine::properties()' and
+	'RDEventLine::setProperties()' methods.
+	* Added 'RDEventLine::propertiesText()' methods.
+	* Added a 'Trans' column to the event list in the 'Edit Clock'
+	dialog in rdlogmanager(1).
+	* Added a 'Trans' column to the event list in the 'List Events'
+	dialog in rdlogmanager(1).

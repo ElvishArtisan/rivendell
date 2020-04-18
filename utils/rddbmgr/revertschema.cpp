@@ -37,8 +37,22 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // corresponding update in updateschema.cpp!
   //
 
-
   // NEW SCHEMA REVERSIONS GO HERE...
+
+
+
+  //
+  // Revert 316
+  //
+  if((cur_schema==316)&&(set_schema<cur_schema)) {
+    sql=QString("alter table EVENTS add column PROPERTIES varchar(64) ")+
+      "after NAME";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(--cur_schema);
+  }
 
   //
   // Revert 315

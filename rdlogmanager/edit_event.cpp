@@ -1489,7 +1489,6 @@ void EditEvent::Save()
   else {
     event_event->setNestedEvent(event_nestevent_box->currentText());
   }
-  event_event->setProperties(GetProperties());
   event_event->setSchedGroup(event_sched_group_box->currentText());  
   event_event->setArtistSep(event_artist_sep_spinbox->value());
   event_event->setTitleSep(event_title_sep_spinbox->value());
@@ -1528,77 +1527,40 @@ void EditEvent::Save()
 
 QString EditEvent::GetProperties()
 {
-  QString properties;
-  RDLogLine::TransType trans_type=RDLogLine::Stop;
-  QString str;
+  int prepos_msec=-1;
+  RDLogLine::TimeType time_type=RDLogLine::Relative;
+  int grace_msec=-1;
 
   if(event_position_box->isChecked()) {
-    properties+=tr("Cue")+
-      "(-"+event_position_edit->time().toString("mm:ss")+")";
+    prepos_msec=QTime().msecsTo(event_position_edit->time());
   }
-  else {
-    trans_type=(RDLogLine::TransType)event_firsttrans_box->currentItem();
+  if(event_timetype_check->isChecked()) {
+    time_type=RDLogLine::Hard;
   }
-  switch(trans_type) {
-  case RDLogLine::Play:
-    properties+=tr("PLAY");
-    break;
-
-  case RDLogLine::Segue:
-    properties+=tr("SEGUE");
-    break;
-
-  case RDLogLine::Stop:
-    properties+=tr("STOP");
-    break;
-
-  default:
-    break;
-  }
-
   if(event_timetype_check->isChecked()) {
     switch(event_grace_group->checkedId()) {
     case 0:
-      properties+=tr(", Timed(Start)");
+      grace_msec=0;
       break;
 
     case 1:
-      properties+=tr(", Timed(MakeNext)");
+      grace_msec=-1;
       break;
 
     default:
-      properties+=", "+tr("Timed(Wait)")+" "+
-	event_grace_edit->time().toString("mm:ss");
-      break;
+      grace_msec=QTime().msecsTo(event_grace_edit->time());
+      break;	  
     }
   }
-  if(event_autofill_box->isChecked()) {
-    properties+=tr(", Fill");
-  }
-  if(event_timescale_box->isChecked()) {
-    properties+=tr(", Scale");
-  }
-  switch((RDEventLine::ImportSource)event_source_group->checkedId()) {
-  case RDEventLine::Traffic:
-    properties+=tr(", Traffic");
-    break;
 
-  case RDEventLine::Music:
-    properties+=tr(", Music");
-    break;
-
-  case RDEventLine::Scheduler:
-    properties+=tr(", Scheduler");
-    break;
-
-  default:
-    break;
-  }
-  if(event_nestevent_box->currentItem()>0) {
-    properties+=tr(", Inline Traffic");
-  }
-
-  return properties;
+  return RDEventLine::
+    propertiesText(prepos_msec,
+		   (RDLogLine::TransType)event_firsttrans_box->currentItem(),
+		   time_type,
+		   grace_msec,
+		   event_autofill_box->isChecked(),
+		   (RDEventLine::ImportSource)event_source_group->checkedId(),
+		   event_nestevent_box->currentItem()>0);
 }
 
 

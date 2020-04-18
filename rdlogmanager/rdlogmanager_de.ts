@@ -220,6 +220,10 @@ Wollen Sie sie speichern?</translation>
         <source>USER NOTES</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Trans</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditEvent</name>
@@ -481,27 +485,27 @@ Wollen Sie es überschreiben?</translation>
     </message>
     <message>
         <source>Cue</source>
-        <translation>CUE</translation>
+        <translation type="obsolete">CUE</translation>
     </message>
     <message>
         <source>SEGUE</source>
-        <translation>ÜBERGANG</translation>
+        <translation type="obsolete">ÜBERGANG</translation>
     </message>
     <message>
         <source>STOP</source>
-        <translation>STOP</translation>
+        <translation type="obsolete">STOP</translation>
     </message>
     <message>
         <source>PLAY</source>
-        <translation>PLAY</translation>
+        <translation type="obsolete">PLAY</translation>
     </message>
     <message>
         <source>, Timed(Start)</source>
-        <translation>, Fest (Start)</translation>
+        <translation type="obsolete">, Fest (Start)</translation>
     </message>
     <message>
         <source>, Timed(MakeNext)</source>
-        <translation>, Zeitstart(AlsNächstes)</translation>
+        <translation type="obsolete">, Zeitstart(AlsNächstes)</translation>
     </message>
     <message>
         <source>Timed(Wait</source>
@@ -513,27 +517,27 @@ Wollen Sie es überschreiben?</translation>
     </message>
     <message>
         <source>, Fill</source>
-        <translation>, Füllen</translation>
+        <translation type="obsolete">, Füllen</translation>
     </message>
     <message>
         <source>, Scale</source>
-        <translation>, Scale</translation>
+        <translation type="obsolete">, Scale</translation>
     </message>
     <message>
         <source>, Traffic</source>
-        <translation>, Traffic</translation>
+        <translation type="obsolete">, Traffic</translation>
     </message>
     <message>
         <source>, Music</source>
-        <translation>, Musik</translation>
+        <translation type="obsolete">, Musik</translation>
     </message>
     <message>
         <source>, Scheduler</source>
-        <translation>, Scheduler</translation>
+        <translation type="obsolete">, Scheduler</translation>
     </message>
     <message>
         <source>, Inline Traffic</source>
-        <translation>, Inline Traffic</translation>
+        <translation type="obsolete">, Inline Traffic</translation>
     </message>
     <message>
         <source>REMARKS</source>
@@ -553,10 +557,6 @@ Wollen Sie es überschreiben?</translation>
     </message>
     <message>
         <source>and code</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Timed(Wait)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1260,7 +1260,7 @@ delete</source>
     </message>
     <message>
         <source>Color</source>
-        <translation>Farbe</translation>
+        <translation type="obsolete">Farbe</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -1341,6 +1341,10 @@ delete</source>
     </message>
     <message>
         <source>is in use in the following clocks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trans</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

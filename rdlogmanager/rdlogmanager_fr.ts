@@ -196,6 +196,10 @@ Do you want to save?</source>
         <source>USER NOTES</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Trans</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditEvent</name>
@@ -390,54 +394,6 @@ Do you want to overwrite it?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Cue</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>SEGUE</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>STOP</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>PLAY</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>, Timed(Start)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>, Timed(MakeNext)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>, Fill</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>, Scale</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>, Traffic</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>, Music</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>, Scheduler</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>, Inline Traffic</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Len:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -451,10 +407,6 @@ Do you want to overwrite it?</source>
     </message>
     <message>
         <source>and code</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Timed(Wait)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1094,10 +1046,6 @@ Do you want to save?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Color</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Add</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1163,6 +1111,10 @@ Do you want to save?</source>
     </message>
     <message>
         <source>is in use in the following clocks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trans</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

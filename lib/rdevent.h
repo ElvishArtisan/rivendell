@@ -31,8 +31,6 @@ class RDEvent
  public:
   RDEvent(const QString &name,bool create=false);
   QString name() const;
-  QString properties() const;
-  void setProperties(const QString &str) const;
   QString displayText(bool *ok) const;
   void setDisplayText(bool ok,const QString &text) const;
   QString noteText(bool *ok) const;
