@@ -19821,3 +19821,7 @@
 	dialog in rdlogmanager(1).
 	* Added a 'Trans' column to the event list in the 'List Events'
 	dialog in rdlogmanager(1).
+2020-04-20 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdlogedit(1) that caused garbled text to appear
+	when 'Start Immediately' was selected din the 'Edit Log Entry'
+	dialog box.
