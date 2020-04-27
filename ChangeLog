@@ -19823,3 +19823,5 @@
 	* Fixed a bug in rdlogedit(1) that caused garbled text to appear
 	when 'Start Immediately' was selected in the 'Edit Log Entry'
 	dialog box.
+2020-04-27 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.3.0int0.

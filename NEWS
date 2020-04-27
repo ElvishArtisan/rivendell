@@ -1,6 +1,23 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
+v3.3.0int0 -- 27 April 2020
+
+Changes:
+   Edit Event dialog in rdlogmanager(1) - Cleaned up the layout of the
+   'Edit Event' dialog in rdlogmanager(1) to better reflect operational
+   flow.
+
+   Multiple Bugfixes. See 'ChangeLog' for details.
+
+Database Update:
+   This version of Rivendell uses database schema version 316, and will
+   automatically upgrade any earlier versions. To see the current schema
+   version prior to upgrade, see RDAdmin->SystemInfo.
+
+   Be sure to run 'rddbmgr --modify' (as root) immediately after upgrading
+   to allow any necessary changes to the database schema to be applied.
+-------------------------------------------------------------------------------
 v3.3.0 -- 16 March 2020
 
 Changes:
