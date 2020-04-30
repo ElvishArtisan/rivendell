@@ -126,7 +126,7 @@ MainObject::MainObject(QObject *parent)
   QString err (tr("upload_test: "));
   QSqlDatabase *db=RDInitDb(&schema,&err);
   if(!db) {
-    fprintf(stderr,err.ascii());
+    fprintf(stderr,"%s",err.ascii());
     delete cmd;
     exit(256);
   }

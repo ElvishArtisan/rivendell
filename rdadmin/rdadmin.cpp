@@ -71,7 +71,7 @@ void PrintError(const QString &str,bool interactive)
     QMessageBox::warning(NULL,QObject::tr("RDAdmin Error"),str);
   }
   else {
-    fprintf(stderr,QString().sprintf("rdadmin: %s\n",(const char *)str));
+    fprintf(stderr,"rdadmin: %s\n",(const char *)str));
   }
 }
 

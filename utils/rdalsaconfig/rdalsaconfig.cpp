@@ -323,7 +323,7 @@ void MainWidget::SaveConfig(const QString &filename) const
     return;
   }
   for(int i=0;i<alsa_other_lines.size();i++) {
-    fprintf(f,alsa_other_lines.at(i));
+    fprintf(f,"%s",alsa_other_lines.at(i));
   }
   fprintf(f,"%s\n",START_MARKER);
   QModelIndexList indexes=alsa_system_list->selectionModel()->selectedIndexes();

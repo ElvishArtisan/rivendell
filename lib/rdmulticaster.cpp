@@ -65,8 +65,8 @@ void RDMulticaster::subscribe(const QHostAddress &addr)
     mreq.imr_ifindex=0;
     if(setsockopt(multi_socket->socket(),IPPROTO_IP,IP_ADD_MEMBERSHIP,
 		  &mreq,sizeof(mreq))<0) {
-      fprintf(stderr,tr("Unable to subscribe to multicast address")+" \""+
-	      addr.toString()+"\" ["+QString(strerror(errno))+"]");
+      fprintf(stderr,tr("Unable to subscribe to multicast address")+" \"%s\" [%s]",
+	      addr.toString(),QString(strerror(errno)));
     }
   }
 }

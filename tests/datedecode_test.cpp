@@ -85,7 +85,7 @@ MainObject::MainObject(QObject *parent)
   //
   QString err (tr("datedecode_test: "));
   if(!RDOpenDb(&schema,&err,config)) {
-    fprintf(stderr,err.ascii());
+    fprintf(stderr,"%s",err.ascii());
     delete cmd;
     exit(256);
   }

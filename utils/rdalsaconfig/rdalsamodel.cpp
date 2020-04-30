@@ -277,7 +277,7 @@ bool RDAlsaModel::saveConfig(const QString &filename)
     return false;
   }
   for(int i=0;i<model_other_lines.size();i++) {
-    fprintf(f,model_other_lines.at(i));
+    fprintf(f,"%s",model_other_lines.at(i));
   }
   fprintf(f,"%s\n",START_MARKER);
   for(int i=0;i<model_alsa_cards.size();i++) {
