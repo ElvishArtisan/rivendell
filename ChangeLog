@@ -19830,3 +19830,5 @@
 	table in the database.
 	* Incremented the database version to 317.
 	* Cleaned up SQL generation in rdmaint(8).
+2020-05-02 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.3.0int1.
