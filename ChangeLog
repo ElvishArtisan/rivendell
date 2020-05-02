@@ -19825,3 +19825,8 @@
 	dialog box.
 2020-04-27 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.3.0int0.
+2020-05-02 Fred Gleason <fredg@paravelsystems.com>
+	* Added a'STACK_LINES_ID_IDX' index to the 'STACK_SCHED_CODES'
+	table in the database.
+	* Incremented the database version to 317.
+	* Cleaned up SQL generation in rdmaint(8).

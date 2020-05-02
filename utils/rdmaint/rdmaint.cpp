@@ -2,7 +2,7 @@
 //
 // A Utility for running periodic system maintenance.
 //
-//   (C) Copyright 2008-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2008-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -316,7 +316,7 @@ void MainObject::PurgeStacks()
   sql="select NAME from SERVICES";
   q=new RDSqlQuery(sql);
   while(q->next()) {
-    sql=QString().sprintf("select MAX(SCHED_STACK_ID) from STACK_LINES where ")+
+    sql=QString("select MAX(SCHED_STACK_ID) from STACK_LINES where ")+
       "SERVICE_NAME=\""+RDEscapeString(q->value(0).toString())+"\"";
     q1=new RDSqlQuery(sql);
     if (q1->next()) {

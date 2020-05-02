@@ -42,6 +42,15 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
 
   //
+  // Revert 317
+  //
+  if((cur_schema==317)&&(set_schema<cur_schema)) {
+    DropIndex("STACK_SCHED_CODES","STACK_LINES_ID_IDX");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 316
   //
   if((cur_schema==316)&&(set_schema<cur_schema)) {
