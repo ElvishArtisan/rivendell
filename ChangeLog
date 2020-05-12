@@ -19708,6 +19708,7 @@
 	in rdadmin(1).
 2020-02-21 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'USERS.EMAIL_ADDRESS' field to the database.
+	* Incremented the database version to 317.
 	* Added 'RDUser::emailAddress()', 'RDUser::setEmaiAddress()' and
 	'RDUser::emailContact()' methods.
 	* Added 'RDUser::emailIsValid()' and 'RDUser::emailContact()'
@@ -19836,4 +19837,5 @@
 	played previously.
 2020-05-12 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'FEED_IMAGES' table to the database.
+	* Incremented the database version to 320.
 	* Added 'feed_image_test' in 'tests/'.
