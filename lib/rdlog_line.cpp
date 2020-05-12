@@ -2038,6 +2038,7 @@ void RDLogLine::loadCart(int cartnum,int cutnum)
       log_average_segue_length=segueStartPoint(RDLogLine::AutoPointer)-
        startPoint(RDLogLine::AutoPointer);
     }
+    log_cut_number=cutnum;
     log_outcue=q->value(10).toString();
     log_isrc=q->value(11).toString();
     log_isci=q->value(12).toString();

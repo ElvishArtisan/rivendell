@@ -189,10 +189,6 @@ Vil du lagra?</translation>
         <translation>Denne koden er alt i bruk!</translation>
     </message>
     <message>
-        <source>Remarks</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Clone</source>
         <translation type="unfinished"></translation>
     </message>
@@ -215,6 +211,14 @@ Vil du lagra?</translation>
     </message>
     <message>
         <source>That event does not exist.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>USER NOTES</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trans</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -302,7 +306,7 @@ Vil du lagra?</translation>
     </message>
     <message>
         <source>Make Post Point</source>
-        <translation>Lag Etter-punkt</translation>
+        <translation type="obsolete">Lag Etter-punkt</translation>
     </message>
     <message>
         <source>Action If Previous Event Still Playing</source>
@@ -338,7 +342,7 @@ Vil du lagra?</translation>
     </message>
     <message>
         <source>Transition if previous event ends before start time:</source>
-        <translation>Overgang viss førre hendinga sluttar før starttida:</translation>
+        <translation type="obsolete">Overgang viss førre hendinga sluttar før starttida:</translation>
     </message>
     <message>
         <source>ENFORCING LENGTH</source>
@@ -410,15 +414,15 @@ Vil du lagra?</translation>
     </message>
     <message>
         <source>Imported carts have a</source>
-        <translation>Importerte korger har</translation>
+        <translation type="unfinished">Importerte korger har</translation>
     </message>
     <message>
         <source>transition.</source>
-        <translation>ein overgang.</translation>
+        <translation type="unfinished">ein overgang.</translation>
     </message>
     <message>
         <source>Import inline traffic with the</source>
-        <translation>Importer innlinje-trafikk med</translation>
+        <translation type="obsolete">Importer innlinje-trafikk med</translation>
     </message>
     <message>
         <source>[none]</source>
@@ -426,7 +430,7 @@ Vil du lagra?</translation>
     </message>
     <message>
         <source>event.</source>
-        <translation>hending.</translation>
+        <translation type="obsolete">hending.</translation>
     </message>
     <message>
         <source>POST-IMPORT CARTS</source>
@@ -482,15 +486,15 @@ Vil du byta henne ut?</translation>
     </message>
     <message>
         <source>Cue</source>
-        <translation>Sporing</translation>
+        <translation type="obsolete">Sporing</translation>
     </message>
     <message>
         <source>SEGUE</source>
-        <translation>KRYSSTON</translation>
+        <translation type="obsolete">KRYSSTON</translation>
     </message>
     <message>
         <source>STOP</source>
-        <translation>STOPP</translation>
+        <translation type="obsolete">STOPP</translation>
     </message>
     <message>
         <source>OVERLAP</source>
@@ -498,15 +502,15 @@ Vil du byta henne ut?</translation>
     </message>
     <message>
         <source>PLAY</source>
-        <translation>SPEL</translation>
+        <translation type="obsolete">SPEL</translation>
     </message>
     <message>
         <source>, Timed(Start)</source>
-        <translation>, Tidlagt(Start)</translation>
+        <translation type="obsolete">, Tidlagt(Start)</translation>
     </message>
     <message>
         <source>, Timed(MakeNext)</source>
-        <translation>, Tidlagt(Gjer-neste)</translation>
+        <translation type="obsolete">, Tidlagt(Gjer-neste)</translation>
     </message>
     <message>
         <source>Timed(Wait</source>
@@ -514,35 +518,31 @@ Vil du byta henne ut?</translation>
     </message>
     <message>
         <source>, Post</source>
-        <translation>, Etter</translation>
+        <translation type="obsolete">, Etter</translation>
     </message>
     <message>
         <source>, Fill</source>
-        <translation>, Fyll</translation>
+        <translation type="obsolete">, Fyll</translation>
     </message>
     <message>
         <source>, Scale</source>
-        <translation>, Skalering</translation>
+        <translation type="obsolete">, Skalering</translation>
     </message>
     <message>
         <source>, Traffic</source>
-        <translation>, Trafikk</translation>
+        <translation type="obsolete">, Trafikk</translation>
     </message>
     <message>
         <source>, Music</source>
-        <translation>, Musikk</translation>
+        <translation type="obsolete">, Musikk</translation>
     </message>
     <message>
         <source>, Scheduler</source>
-        <translation>, Planleggar</translation>
+        <translation type="obsolete">, Planleggar</translation>
     </message>
     <message>
         <source>, Inline Traffic</source>
-        <translation>, Innlinje-trafikk</translation>
-    </message>
-    <message>
-        <source>REMARKS</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">, Innlinje-trafikk</translation>
     </message>
     <message>
         <source>Len:</source>
@@ -558,10 +558,6 @@ Vil du byta henne ut?</translation>
     </message>
     <message>
         <source>and code</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Timed(Wait)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -610,6 +606,22 @@ Vil du byta henne ut?</translation>
     </message>
     <message>
         <source>Search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TRANSITIONS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CART STACK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import inline traffic event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>USER NOTES</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1254,7 +1266,7 @@ sletta</translation>
     </message>
     <message>
         <source>Color</source>
-        <translation>Farge</translation>
+        <translation type="obsolete">Farge</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -1328,6 +1340,10 @@ sletta</translation>
     </message>
     <message>
         <source>is in use in the following clocks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trans</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

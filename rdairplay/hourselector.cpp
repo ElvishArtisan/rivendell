@@ -46,6 +46,7 @@ HourSelector::HourSelector(QWidget *parent)
   // Update Timer
   //
   hour_update_timer=new QTimer(this);
+  hour_update_timer->setSingleShot(true);
   connect(hour_update_timer,SIGNAL(timeout()),this,SLOT(updateTimeData()));
   updateTimeData();
 }
@@ -124,10 +125,13 @@ void HourSelector::hourClicked(int hour)
 
 void HourSelector::updateTimeData()
 {
-  QTime now=QTime::currentTime();
+  QDateTime now=QDateTime::currentDateTime();
+  QDateTime next;
   for(unsigned i=0;i<24;i++) {
     hour_button[i]->setPalette(palette());
   }
-  hour_button[now.hour()]->setPalette(hour_active_palette);
-  hour_update_timer->start(now.msecsTo(QTime(now.hour()+1,0,1)),true);
+  hour_button[now.time().hour()]->setPalette(hour_active_palette);
+  next=now.addSecs(60*60);			// Next hour
+  next.setTime(QTime(next.time().hour(),0,1));	// Set top of hour HH:00:01
+  hour_update_timer->start(now.msecsTo(next));	// Start timer
 }

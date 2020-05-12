@@ -94,7 +94,7 @@
     </message>
     <message>
         <source>Remarks</source>
-        <translation>Observações</translation>
+        <translation type="obsolete">Observações</translation>
     </message>
     <message>
         <source>Scheduler
@@ -218,6 +218,14 @@ Você quer salvar?</translation>
         <source>That event does not exist.</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>USER NOTES</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trans</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditEvent</name>
@@ -279,7 +287,7 @@ Você quer salvar?</translation>
     </message>
     <message>
         <source>REMARKS</source>
-        <translation>OBSERVAÇÕES</translation>
+        <translation type="obsolete">OBSERVAÇÕES</translation>
     </message>
     <message>
         <source>ALL</source>
@@ -307,7 +315,7 @@ Você quer salvar?</translation>
     </message>
     <message>
         <source>Make Post Point</source>
-        <translation>Fazer Marcação </translation>
+        <translation type="obsolete">Fazer Marcação </translation>
     </message>
     <message>
         <source>Action If Previous Event Still Playing</source>
@@ -339,7 +347,7 @@ Você quer salvar?</translation>
     </message>
     <message>
         <source>Transition if previous event ends before start time:</source>
-        <translation>Transição se evento anterior acabar antes do horário de início:</translation>
+        <translation type="obsolete">Transição se evento anterior acabar antes do horário de início:</translation>
     </message>
     <message>
         <source>ENFORCING LENGTH</source>
@@ -415,15 +423,15 @@ Você quer salvar?</translation>
     </message>
     <message>
         <source>Imported carts have a</source>
-        <translation>Cartões importados têm</translation>
+        <translation type="unfinished">Cartões importados têm</translation>
     </message>
     <message>
         <source>transition.</source>
-        <translation>transição.</translation>
+        <translation type="unfinished">transição.</translation>
     </message>
     <message>
         <source>Import inline traffic with the</source>
-        <translation>Importar Tráfego interno com</translation>
+        <translation type="obsolete">Importar Tráfego interno com</translation>
     </message>
     <message>
         <source>[none]</source>
@@ -431,7 +439,7 @@ Você quer salvar?</translation>
     </message>
     <message>
         <source>event.</source>
-        <translation>evento.</translation>
+        <translation type="obsolete">evento.</translation>
     </message>
     <message>
         <source>POST-IMPORT CARTS</source>
@@ -487,27 +495,27 @@ Você quer sobreescrêve-lo?</translation>
     </message>
     <message>
         <source>Cue</source>
-        <translation>Marca</translation>
+        <translation type="obsolete">Marca</translation>
     </message>
     <message>
         <source>SEGUE</source>
-        <translation>SOBRE</translation>
+        <translation type="obsolete">SOBRE</translation>
     </message>
     <message>
         <source>STOP</source>
-        <translation>PARE</translation>
+        <translation type="obsolete">PARE</translation>
     </message>
     <message>
         <source>PLAY</source>
-        <translation>SIMPLES</translation>
+        <translation type="obsolete">SIMPLES</translation>
     </message>
     <message>
         <source>, Timed(Start)</source>
-        <translation>, Hora Certa(Início)</translation>
+        <translation type="obsolete">, Hora Certa(Início)</translation>
     </message>
     <message>
         <source>, Timed(MakeNext)</source>
-        <translation>,  Hora Certa(Ser Próximo)</translation>
+        <translation type="obsolete">,  Hora Certa(Ser Próximo)</translation>
     </message>
     <message>
         <source>Timed(Wait</source>
@@ -515,31 +523,31 @@ Você quer sobreescrêve-lo?</translation>
     </message>
     <message>
         <source>, Post</source>
-        <translation>, Pós</translation>
+        <translation type="obsolete">, Pós</translation>
     </message>
     <message>
         <source>, Fill</source>
-        <translation>, Preencher</translation>
+        <translation type="obsolete">, Preencher</translation>
     </message>
     <message>
         <source>, Scale</source>
-        <translation>, Escala</translation>
+        <translation type="obsolete">, Escala</translation>
     </message>
     <message>
         <source>, Traffic</source>
-        <translation>, Tráfego</translation>
+        <translation type="obsolete">, Tráfego</translation>
     </message>
     <message>
         <source>, Music</source>
-        <translation>, Música</translation>
+        <translation type="obsolete">, Música</translation>
     </message>
     <message>
         <source>, Scheduler</source>
-        <translation>, Agendador</translation>
+        <translation type="obsolete">, Agendador</translation>
     </message>
     <message>
         <source>, Inline Traffic</source>
-        <translation>, Tráfego Interno</translation>
+        <translation type="obsolete">, Tráfego Interno</translation>
     </message>
     <message>
         <source>PRE-IMPORT CARTS</source>
@@ -551,10 +559,6 @@ Você quer sobreescrêve-lo?</translation>
     </message>
     <message>
         <source>and code</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Timed(Wait)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -603,6 +607,22 @@ Você quer sobreescrêve-lo?</translation>
     </message>
     <message>
         <source>Search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TRANSITIONS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CART STACK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import inline traffic event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>USER NOTES</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1247,7 +1267,7 @@ deletar</translation>
     </message>
     <message>
         <source>Color</source>
-        <translation>Cor</translation>
+        <translation type="obsolete">Cor</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -1325,6 +1345,10 @@ deletar</translation>
     </message>
     <message>
         <source>is in use in the following clocks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trans</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

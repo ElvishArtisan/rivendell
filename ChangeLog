@@ -19457,6 +19457,7 @@
 	class.
 	* Added a 'CUTS.RECORDING_MBID' field to the database.
 	* Added a 'CUTS.RELEASE_MBID' field to the database.
+	* Incremented the database version to 313.
 2020-02-01 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'MusicBrainz' CD metadata lookup method in 'RDMbLookup'.
 2020-02-01 Fred Gleason <fredg@paravelsystems.com>
@@ -19542,24 +19543,6 @@
 2020-02-10 Fred Gleason <fredg@paravelsys tems.com>
 	* Cleaned up UI alignment in the 'Rivendell Feed List' dialog in
 	rdadmin(1).
-2020-02-11 Fred Gleason <fredg@paravelsys tems.com>
-	* Added a 'FEEDS.IS_SUPERFEED' field to the database.
-	* Added a 'SUPERFEED_MAPS' table to the database.
-	* Incremented the database version to 315.
-	* Added a 'Superfeed' column to the feed list in the 'Rivendell
-	Feed List' dialog in rdadmin(1).
-	* Added an 'Is Superfeed' dropdown to the 'Feed' dialog in
-	rdadmin(1).
-	* Added a 'Select Member Feeds' button to the 'Feed' dialog in
-	rdadmin(1).
-	* Added an 'RSS Superfeed' selection dialog to rdadmin(1).
-2020-02-11 Fred Gleason <fredg@paravelsys tems.com>
-	* Added an 'RDFeed::create()' method.
-	* Added a 'Base Feed On' dropdown to the 'Add RSS Feed' dialog
-	in rdadmin(1).
-2020-02-11 Fred Gleason <fredg@paravelsys tems.com>
-	* Added a check to the 'Add RSS Feed' dialog in rdadmin(1) to
-	prevent creation of feeds with a blank name.
 2020-02-14 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in the BroadcastTools SS16.4 switcher driver
 	that could cause deadlocks and intermittent operation.
@@ -19686,36 +19669,6 @@
 	* Added a 'metadata_wildcard_test' harness.
 2020-02-19 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.2.1int3.
-2020-02-20 Fred Gleason <fredg@paravelsystems.com>
-	* Added a 'FEEDS.AUDIENCE_METRICS' field to the database.
-	* Incremented the database version to 316.
-	* Added a 'Collect Audience Metrics' checkbox to the 'Feed'
-	dialog in rdadmin(1).
-	* Added an 'RDTransfer' base class.
-	* Rebased 'RDDelete' to 'RDTransfer'.
-	* Added 'sftp' support to 'RDDelete'.
-	* Added 'file' support to 'RDDelete'.
-	* Refactored RSS generation to occur in 'RDFeed'.
-	* Added a 'delete_test' test harness.
-2020-02-20 Fred Gleason <fredg@paravelsystems.com>
-	* Rebased 'RDUpload' to 'RDTransfer'.
-2020-02-20 Fred Gleason <fredg@paravelsystems.com>
-	* Rebased 'RDDownload' to 'RDTransfer'.
-2020-02-20 Fred Gleason <fredg@paravelsystems.com>
-	* Updated the URL scheme check code in the 'Edit Feed' dialog
-	in rdadmin(1).
-2020-02-21 Fred Gleason <fredg@paravelsystems.com>
-	* Added a 'USERS.EMAIL_ADDRESS' field to the database.
-	* Incremented the database version to 317.
-	* Added 'RDUser::emailAddress()', 'RDUser::setEmaiAddress()' and
-	'RDUser::emailContact()' methods.
-	* Added 'RDUser::emailIsValid()' and 'RDUser::emailContact()'
-	static methods.
-	* Added logic to rdcastmanager(1) to insert the author's e-mail
-	contact automatically when posting a new episode.
-2020-02-21 Fred Gleason <fredg@paravelsystems.com>
-	* Tweaked controls to be disabled for superfeeds in the 'Edit Feed'
-	dialog in rdadmin(1).
 2020-02-21 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdlogmanager(1) that caused trailer
 	whitespace to be generated in the 'EXT_DATA', 'EXT_EVENT',
@@ -19815,25 +19768,163 @@
 	that caused the Transition Type dropdown to be greyed-out when
 	the 'IMPORT' controls were set to use the built-in music
 	scheduler.
-2020-03-16 Fred Gleason <fredg@paravelsystems.com>
-	* Updated the maximum length of RSS <channel> entries to match
-	the current DB schema in the 'Edit Feed' dialog in rdadmin(1).
-	* Added a 'FEEDS.CHANNEL_EDITOR' field to the database.
-	* Incremented the database version to 318.
-	* Added 'RDFeed::channelEditor()' and
-	'RDFeed::setChannelEditor()' methods.
-	* Added an 'Editor' control to the 'Channel' controls in the
-	'Edit Feed' dialog in rdadmin(1).
-2020-03-16 Fred Gleason <fredg@paravelsystems.com>
-	* Added an 'RSS_SCHEMAS' table to the database.
-	* Incremented the database version to 319.
-	* Added an 'RSS Schema' dropdown to the 'Edit Feed' dialog in
-	rdadmin(1).
 2020-03-18 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a regression in rdairplay(1) that caused two events to be
 	started by a single spacebar tap if a SoundPanel event had been
 	played previously.
+2020-04-08 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdlogmanager(1) that caused the initial event
+	in an imported set to fail receive the proper time and transition
+	type if the 'Include Import Markers in Finished Logs' checkbox in
+	rdadmin(1) had not been ticked.
+2020-04-08 David Klann <dklann@linux.com>
+	* Fixed a regression in rdexport(1) that caused exported file
+	names to be constructed improperly.
+2020-04-08 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed a bug in rdlogmanager(1) that caused 'Make Post Point'
+	label to be displayed without last 't'.
+2020-04-08 Patrick Linstruth <patrick@deltecent.com>
+	* Fixed a bug in rdairplay(1) with HourSelector::updateTimeData()
+	where timer was not set properly when crossing midnight.
+2020-04-08 Patrick Linstruth <patrick@deltecent.com>
+	* Modified rdairplay(1) to always scroll log to the top when using
+	the hour selector.
+2020-04-08 Patrick Linstruth <patrick@deltecent.com>
+	* Modified rdlogmanager(1) to disable merge buttons if the selected
+	log does not contain any import links.
+2020-04-08 Fred Gleason <fredg@paravelsystems.com>
+	* Changed the error message rendered when 'configure' fails to
+	detect one or more of the MusicBrainz dependencies to be less
+	ambiguous.
+2020-04-08 Patrick Linstruth <patrick@deltecent.com>
+	* Modified rdadmin(1) Edit Service dialog to display built-in
+	traffic and music import template values.
+	* Added "Copy To Custom" buttons to rdadmin(1) Edit Service dialog.
+2020-04-08 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'List GPIs' dialog in rdadmin(1) that
+	prevented changes in GPI assignments from being propagated
+	to the underlying device.
+2020-04-13 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'Software Authority' driver that caused
+	autodetection of the number of GPIOs in a router to be unreliable.
+	* Removed superfluous code from rdgpimon(1).
+2020-04-14 Fred Gleason <fredg@paravelsystems.com>
+	* Added debug syslog messages to the 'Software Authority' driver
+	in ripcd(8).
+2020-04-15 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in 'RDEventLine' that caused the
+	'Append Log' ['AL'] RML to append a copy of the currently loaded
+	log instead of the one specified in the RML command
+2020-04-16 Fred Gleason <fredg@paravelsystems.com>
+	* Added font metrics methods for each standard font role in
+	'RDFontEngine'.
+	* Refactored the control layout in the 'Editing Event' dialog
+	in rdlogmanager.
+2020-04-16 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'EVENTS.POST_POINT' field from the database.
+	* Removed the 'LOG_LINES.POST_POINT' field from the database.
+	* Incremented the database version to 315.
+	* Removed 'RDEventLine::postPoint()' and
+	'RDEventLine::setPostPoint()' methods.
+	* Removed the 'Post Point' checkbox from the 'Editing Event' dialog
+	in rdlogmanager(1).
+2020-04-16 Fred Gleason <fredg@paravelsystems.com>
+	* Renamed the 'REMARKS' field to 'USER NOTES' in the 'Editing Event'
+	dialog in rdlogmanager(1).
+	* Renamed the 'REMARKS' field to 'USER NOTES' in the 'Edit Clock'
+	dialog in rdlogmanager(1).
+2020-04-18 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'EVENTS.PROPERTIES' field from the database.
+	* Incremented the database version to 316.
+	* Removed the 'RDEventLine::properties()' and
+	'RDEventLine::setProperties()' methods.
+	* Added 'RDEventLine::propertiesText()' methods.
+	* Added a 'Trans' column to the event list in the 'Edit Clock'
+	dialog in rdlogmanager(1).
+	* Added a 'Trans' column to the event list in the 'List Events'
+	dialog in rdlogmanager(1).
+2020-04-20 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdlogedit(1) that caused garbled text to appear
+	when 'Start Immediately' was selected in the 'Edit Log Entry'
+	dialog box.
+2020-04-27 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.3.0int0.
+2020-05-02 Fred Gleason <fredg@paravelsystems.com>
+	* Added a'STACK_LINES_ID_IDX' index to the 'STACK_SCHED_CODES'
+	table in the database.
+	* Incremented the database version to 317.
+	* Cleaned up SQL generation in rdmaint(8).
+2020-05-02 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.3.0int1.
+2020-05-12 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression that broke the ability to scroll through
+	Sound Panel panels by means of the mouse wheel.
+2020-05-12 Fred Gleason <fredg@paravelsystems.com>
+	* Rebased DB schema changes 315-320 from the 'rss' branch
+	to be 318-323.
+2020-05-12 Fred Gleason <fredg@paravelsys tems.com>
+	* Added a 'FEEDS.IS_SUPERFEED' field to the database.
+	* Added a 'SUPERFEED_MAPS' table to the database.
+	* Incremented the database version to 318.
+	* Added a 'Superfeed' column to the feed list in the 'Rivendell
+	Feed List' dialog in rdadmin(1).
+	* Added an 'Is Superfeed' dropdown to the 'Feed' dialog in
+	rdadmin(1).
+	* Added a 'Select Member Feeds' button to the 'Feed' dialog in
+	rdadmin(1).
+	* Added an 'RSS Superfeed' selection dialog to rdadmin(1).
+2020-05-12 Fred Gleason <fredg@paravelsys tems.com>
+	* Added an 'RDFeed::create()' method.
+	* Added a 'Base Feed On' dropdown to the 'Add RSS Feed' dialog
+	in rdadmin(1).
+2020-05-12 Fred Gleason <fredg@paravelsys tems.com>
+	* Added a check to the 'Add RSS Feed' dialog in rdadmin(1) to
+	prevent creation of feeds with a blank name.
+2020-05-12 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'FEEDS.AUDIENCE_METRICS' field to the database.
+	* Incremented the database version to 319.
+	* Added a 'Collect Audience Metrics' checkbox to the 'Feed'
+	dialog in rdadmin(1).
+	* Added an 'RDTransfer' base class.
+	* Rebased 'RDDelete' to 'RDTransfer'.
+	* Added 'sftp' support to 'RDDelete'.
+	* Added 'file' support to 'RDDelete'.
+	* Refactored RSS generation to occur in 'RDFeed'.
+	* Added a 'delete_test' test harness.
+2020-05-12 Fred Gleason <fredg@paravelsystems.com>
+	* Rebased 'RDUpload' to 'RDTransfer'.
+2020-05-12 Fred Gleason <fredg@paravelsystems.com>
+	* Rebased 'RDDownload' to 'RDTransfer'.
+2020-05-12 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the URL scheme check code in the 'Edit Feed' dialog
+	in rdadmin(1).
+2020-05-12 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'USERS.EMAIL_ADDRESS' field to the database.
+	* Incremented the database version to 320.
+	* Added 'RDUser::emailAddress()', 'RDUser::setEmaiAddress()' and
+	'RDUser::emailContact()' methods.
+	* Added 'RDUser::emailIsValid()' and 'RDUser::emailContact()'
+	static methods.
+	* Added logic to rdcastmanager(1) to insert the author's e-mail
+	contact automatically when posting a new episode.
+2020-05-12 Fred Gleason <fredg@paravelsystems.com>
+	* Tweaked controls to be disabled for superfeeds in the 'Edit Feed'
+	dialog in rdadmin(1).
+2020-05-12 Fred Gleason <fredg@paravelsystems.com>
+	* Updated the maximum length of RSS <channel> entries to match
+	the current DB schema in the 'Edit Feed' dialog in rdadmin(1).
+	* Added a 'FEEDS.CHANNEL_EDITOR' field to the database.
+	* Incremented the database version to 321.
+	* Added 'RDFeed::channelEditor()' and
+	'RDFeed::setChannelEditor()' methods.
+	* Added an 'Editor' control to the 'Channel' controls in the
+	'Edit Feed' dialog in rdadmin(1).
+2020-05-12 Fred Gleason <fredg@paravelsystems.com>
+	* Added an 'RSS_SCHEMAS' table to the database.
+	* Incremented the database version to 322.
+	* Added an 'RSS Schema' dropdown to the 'Edit Feed' dialog in
+	rdadmin(1).
 2020-05-12 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'FEED_IMAGES' table to the database.
-	* Incremented the database version to 320.
+	* Incremented the database version to 323.
 	* Added 'feed_image_test' in 'tests/'.

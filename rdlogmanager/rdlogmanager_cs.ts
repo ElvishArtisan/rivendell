@@ -189,7 +189,7 @@ Chcete je uložit?</translation>
     </message>
     <message>
         <source>Remarks</source>
-        <translation>Poznámky</translation>
+        <translation type="obsolete">Poznámky</translation>
     </message>
     <message>
         <source>&amp;Clone</source>
@@ -214,6 +214,14 @@ Chcete je uložit?</translation>
     </message>
     <message>
         <source>That event does not exist.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>USER NOTES</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trans</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -301,7 +309,7 @@ Chcete je uložit?</translation>
     </message>
     <message>
         <source>Make Post Point</source>
-        <translation>Udělat bod vyvěšení</translation>
+        <translation type="obsolete">Udělat bod vyvěšení</translation>
     </message>
     <message>
         <source>Action If Previous Event Still Playing</source>
@@ -333,7 +341,7 @@ Chcete je uložit?</translation>
     </message>
     <message>
         <source>Transition if previous event ends before start time:</source>
-        <translation>Přechod, když předchozí událost končí před počátečním časem:</translation>
+        <translation type="obsolete">Přechod, když předchozí událost končí před počátečním časem:</translation>
     </message>
     <message>
         <source>ENFORCING LENGTH</source>
@@ -405,15 +413,15 @@ Chcete je uložit?</translation>
     </message>
     <message>
         <source>Imported carts have a</source>
-        <translation>Zavedené vozíky mají</translation>
+        <translation type="unfinished">Zavedené vozíky mají</translation>
     </message>
     <message>
         <source>transition.</source>
-        <translation>přechod.</translation>
+        <translation type="unfinished">přechod.</translation>
     </message>
     <message>
         <source>Import inline traffic with the</source>
-        <translation>Zavést vložený přenos s</translation>
+        <translation type="obsolete">Zavést vložený přenos s</translation>
     </message>
     <message>
         <source>[none]</source>
@@ -421,7 +429,7 @@ Chcete je uložit?</translation>
     </message>
     <message>
         <source>event.</source>
-        <translation>událost.</translation>
+        <translation type="obsolete">událost.</translation>
     </message>
     <message>
         <source>POST-IMPORT CARTS</source>
@@ -477,27 +485,27 @@ Chcete ji přepsat?</translation>
     </message>
     <message>
         <source>Cue</source>
-        <translation>CUE</translation>
+        <translation type="obsolete">CUE</translation>
     </message>
     <message>
         <source>SEGUE</source>
-        <translation>PŘECHOD</translation>
+        <translation type="obsolete">PŘECHOD</translation>
     </message>
     <message>
         <source>STOP</source>
-        <translation>ZASTAVIT</translation>
+        <translation type="obsolete">ZASTAVIT</translation>
     </message>
     <message>
         <source>PLAY</source>
-        <translation>PŘEHRÁT</translation>
+        <translation type="obsolete">PŘEHRÁT</translation>
     </message>
     <message>
         <source>, Timed(Start)</source>
-        <translation>, Pevný (Začátek)</translation>
+        <translation type="obsolete">, Pevný (Začátek)</translation>
     </message>
     <message>
         <source>, Timed(MakeNext)</source>
-        <translation>, Načasovaný (Jako další)</translation>
+        <translation type="obsolete">, Načasovaný (Jako další)</translation>
     </message>
     <message>
         <source>Timed(Wait</source>
@@ -505,35 +513,35 @@ Chcete ji přepsat?</translation>
     </message>
     <message>
         <source>, Post</source>
-        <translation>, Po</translation>
+        <translation type="obsolete">, Po</translation>
     </message>
     <message>
         <source>, Fill</source>
-        <translation>, Vyplnit</translation>
+        <translation type="obsolete">, Vyplnit</translation>
     </message>
     <message>
         <source>, Scale</source>
-        <translation>, Změnit velikost</translation>
+        <translation type="obsolete">, Změnit velikost</translation>
     </message>
     <message>
         <source>, Traffic</source>
-        <translation>, Přenos</translation>
+        <translation type="obsolete">, Přenos</translation>
     </message>
     <message>
         <source>, Music</source>
-        <translation>, Hudba</translation>
+        <translation type="obsolete">, Hudba</translation>
     </message>
     <message>
         <source>, Scheduler</source>
-        <translation>, Rozvrhovač</translation>
+        <translation type="obsolete">, Rozvrhovač</translation>
     </message>
     <message>
         <source>, Inline Traffic</source>
-        <translation>, Vložený přenos</translation>
+        <translation type="obsolete">, Vložený přenos</translation>
     </message>
     <message>
         <source>REMARKS</source>
-        <translation>POZNÁMKY</translation>
+        <translation type="obsolete">POZNÁMKY</translation>
     </message>
     <message>
         <source>Len:</source>
@@ -549,10 +557,6 @@ Chcete ji přepsat?</translation>
     </message>
     <message>
         <source>and code</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Timed(Wait)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -601,6 +605,22 @@ Chcete ji přepsat?</translation>
     </message>
     <message>
         <source>Search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TRANSITIONS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CART STACK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import inline traffic event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>USER NOTES</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1240,7 +1260,7 @@ delete</source>
     </message>
     <message>
         <source>Color</source>
-        <translation>Barva</translation>
+        <translation type="obsolete">Barva</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -1321,6 +1341,10 @@ delete</source>
     </message>
     <message>
         <source>is in use in the following clocks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trans</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

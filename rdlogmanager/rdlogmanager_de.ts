@@ -189,7 +189,7 @@ Wollen Sie sie speichern?</translation>
     </message>
     <message>
         <source>Remarks</source>
-        <translation>Bemerkungen</translation>
+        <translation type="obsolete">Bemerkungen</translation>
     </message>
     <message>
         <source>&amp;Clone</source>
@@ -214,6 +214,14 @@ Wollen Sie sie speichern?</translation>
     </message>
     <message>
         <source>That event does not exist.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>USER NOTES</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trans</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -301,7 +309,7 @@ Wollen Sie sie speichern?</translation>
     </message>
     <message>
         <source>Make Post Point</source>
-        <translation>Post Point machen</translation>
+        <translation type="obsolete">Post Point machen</translation>
     </message>
     <message>
         <source>Action If Previous Event Still Playing</source>
@@ -333,7 +341,7 @@ Wollen Sie sie speichern?</translation>
     </message>
     <message>
         <source>Transition if previous event ends before start time:</source>
-        <translation>Übergang wenn vorheriges Event vor der Startzeit endet:</translation>
+        <translation type="obsolete">Übergang wenn vorheriges Event vor der Startzeit endet:</translation>
     </message>
     <message>
         <source>ENFORCING LENGTH</source>
@@ -405,15 +413,15 @@ Wollen Sie sie speichern?</translation>
     </message>
     <message>
         <source>Imported carts have a</source>
-        <translation>Importierte Carts haben eine</translation>
+        <translation type="unfinished">Importierte Carts haben eine</translation>
     </message>
     <message>
         <source>transition.</source>
-        <translation>Übergang.</translation>
+        <translation type="unfinished">Übergang.</translation>
     </message>
     <message>
         <source>Import inline traffic with the</source>
-        <translation>Importiere Inline-Traffic mit dem</translation>
+        <translation type="obsolete">Importiere Inline-Traffic mit dem</translation>
     </message>
     <message>
         <source>[none]</source>
@@ -421,7 +429,7 @@ Wollen Sie sie speichern?</translation>
     </message>
     <message>
         <source>event.</source>
-        <translation>Event.</translation>
+        <translation type="obsolete">Event.</translation>
     </message>
     <message>
         <source>POST-IMPORT CARTS</source>
@@ -477,27 +485,27 @@ Wollen Sie es überschreiben?</translation>
     </message>
     <message>
         <source>Cue</source>
-        <translation>CUE</translation>
+        <translation type="obsolete">CUE</translation>
     </message>
     <message>
         <source>SEGUE</source>
-        <translation>ÜBERGANG</translation>
+        <translation type="obsolete">ÜBERGANG</translation>
     </message>
     <message>
         <source>STOP</source>
-        <translation>STOP</translation>
+        <translation type="obsolete">STOP</translation>
     </message>
     <message>
         <source>PLAY</source>
-        <translation>PLAY</translation>
+        <translation type="obsolete">PLAY</translation>
     </message>
     <message>
         <source>, Timed(Start)</source>
-        <translation>, Fest (Start)</translation>
+        <translation type="obsolete">, Fest (Start)</translation>
     </message>
     <message>
         <source>, Timed(MakeNext)</source>
-        <translation>, Zeitstart(AlsNächstes)</translation>
+        <translation type="obsolete">, Zeitstart(AlsNächstes)</translation>
     </message>
     <message>
         <source>Timed(Wait</source>
@@ -505,35 +513,35 @@ Wollen Sie es überschreiben?</translation>
     </message>
     <message>
         <source>, Post</source>
-        <translation>, Nach</translation>
+        <translation type="obsolete">, Nach</translation>
     </message>
     <message>
         <source>, Fill</source>
-        <translation>, Füllen</translation>
+        <translation type="obsolete">, Füllen</translation>
     </message>
     <message>
         <source>, Scale</source>
-        <translation>, Scale</translation>
+        <translation type="obsolete">, Scale</translation>
     </message>
     <message>
         <source>, Traffic</source>
-        <translation>, Traffic</translation>
+        <translation type="obsolete">, Traffic</translation>
     </message>
     <message>
         <source>, Music</source>
-        <translation>, Musik</translation>
+        <translation type="obsolete">, Musik</translation>
     </message>
     <message>
         <source>, Scheduler</source>
-        <translation>, Scheduler</translation>
+        <translation type="obsolete">, Scheduler</translation>
     </message>
     <message>
         <source>, Inline Traffic</source>
-        <translation>, Inline Traffic</translation>
+        <translation type="obsolete">, Inline Traffic</translation>
     </message>
     <message>
         <source>REMARKS</source>
-        <translation>BEMERKUNGEN</translation>
+        <translation type="obsolete">BEMERKUNGEN</translation>
     </message>
     <message>
         <source>Len:</source>
@@ -549,10 +557,6 @@ Wollen Sie es überschreiben?</translation>
     </message>
     <message>
         <source>and code</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Timed(Wait)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -601,6 +605,22 @@ Wollen Sie es überschreiben?</translation>
     </message>
     <message>
         <source>Search</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>TRANSITIONS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>CART STACK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import inline traffic event</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>USER NOTES</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -1240,7 +1260,7 @@ delete</source>
     </message>
     <message>
         <source>Color</source>
-        <translation>Farbe</translation>
+        <translation type="obsolete">Farbe</translation>
     </message>
     <message>
         <source>&amp;Add</source>
@@ -1321,6 +1341,10 @@ delete</source>
     </message>
     <message>
         <source>is in use in the following clocks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Trans</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

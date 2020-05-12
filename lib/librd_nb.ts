@@ -765,6 +765,42 @@
         <source>CounterPoint Traffic Reconciliation v2</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Cue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Timed(Wait)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Fill</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Timed(Start), </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Timed(MakeNext), </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Traffic, </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Music, </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Scheduler, </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Inline Traffic, </source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddCart</name>

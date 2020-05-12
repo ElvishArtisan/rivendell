@@ -37,23 +37,23 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // corresponding update in updateschema.cpp!
   //
 
-
   // NEW SCHEMA REVERSIONS GO HERE...
 
 
+
   //
-  // Revert 320
+  // Revert 323
   //
-  if((cur_schema==320)&&(set_schema<cur_schema)) {
+  if((cur_schema==323)&&(set_schema<cur_schema)) {
     DropTable("FEED_IMAGES");
 
     WriteSchemaVersion(--cur_schema);
   }
 
   //
-  // Revert 319
+  // Revert 322
   //
-  if((cur_schema==319)&&(set_schema<cur_schema)) {
+  if((cur_schema==322)&&(set_schema<cur_schema)) {
     sql=QString("select ID,RSS_SCHEMA from FEEDS where RSS_SCHEMA!=0");
     q=new RDSqlQuery(sql);
     while(q->next()) {
@@ -85,10 +85,39 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   }
 
   //
+  // Revert 321
+  //
+  if((cur_schema==321)&&(set_schema<cur_schema)) {
+    DropColumn("FEEDS","CHANNEL_EDITOR");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
+  // Revert 320
+  //
+  if((cur_schema==320)&&(set_schema<cur_schema)) {
+    DropColumn("USERS","EMAIL_ADDRESS");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
+  // Revert 319
+  //
+  if((cur_schema==319)&&(set_schema<cur_schema)) {
+    DropColumn("FEEDS","AUDIENCE_METRICS");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 318
   //
   if((cur_schema==318)&&(set_schema<cur_schema)) {
-    DropColumn("FEEDS","CHANNEL_EDITOR");
+    DropTable("SUPERFEED_MAPS");
+    DropIndex("FEEDS","IS_SUPERFEED_IDX");
+    DropColumn("FEEDS","IS_SUPERFEED");
 
     WriteSchemaVersion(--cur_schema);
   }
@@ -97,7 +126,7 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // Revert 317
   //
   if((cur_schema==317)&&(set_schema<cur_schema)) {
-    DropColumn("USERS","EMAIL_ADDRESS");
+    DropIndex("STACK_SCHED_CODES","STACK_LINES_ID_IDX");
 
     WriteSchemaVersion(--cur_schema);
   }
@@ -106,7 +135,11 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // Revert 316
   //
   if((cur_schema==316)&&(set_schema<cur_schema)) {
-    DropColumn("FEEDS","AUDIENCE_METRICS");
+    sql=QString("alter table EVENTS add column PROPERTIES varchar(64) ")+
+      "after NAME";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
 
     WriteSchemaVersion(--cur_schema);
   }
@@ -115,9 +148,17 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
   // Revert 315
   //
   if((cur_schema==315)&&(set_schema<cur_schema)) {
-    DropTable("SUPERFEED_MAPS");
-    DropIndex("FEEDS","IS_SUPERFEED_IDX");
-    DropColumn("FEEDS","IS_SUPERFEED");
+    sql=QString("alter table EVENTS add column POST_POINT enum('N','Y') ")+
+      "default 'N' after GRACE_TIME";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table LOG_LINES add column POST_POINT enum('N','Y') ")+
+      "default 'N' after TIME_TYPE";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
 
     WriteSchemaVersion(--cur_schema);
   }

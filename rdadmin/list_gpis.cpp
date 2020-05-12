@@ -2,7 +2,7 @@
 //
 // List Rivendell GPIOs
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -30,8 +30,6 @@
 ListGpis::ListGpis(RDMatrix *matrix,RDMatrix::GpioType type,QWidget *parent)
   : RDDialog(parent)
 {
-  setModal(true);
-
   QString sql;
   RDSqlQuery *q;
   Q3ListViewItem *l;
@@ -289,6 +287,13 @@ void ListGpis::okData()
   rml.setEchoRequested(false);
   delete station;
 
+  //
+  // Placeholders for the actual values generated below
+  //
+  rml.addArg(0);
+  rml.addArg(0);
+  rml.addArg(0);
+
   Q3ListViewItem *item=list_list_view->firstChild();
   while(item!=NULL) {
     sql=QString("insert into ")+list_tablename+" set "+
@@ -299,9 +304,9 @@ void ListGpis::okData()
       QString().sprintf("OFF_MACRO_CART=%d",item->text(3).toInt());
     q=new RDSqlQuery(sql);
     delete q;
-    rml.addArg(item->text(0).toInt());
-    rml.addArg(true);
-    rml.addArg(item->text(1).toInt());
+    rml.setArg(2,item->text(0).toInt());
+    rml.setArg(3,true);
+    rml.setArg(4,item->text(1).toInt());
     rda->ripc()->sendRml(&rml);
     rml.setArg(3,false);
     rml.setArg(4,item->text(3).toInt());

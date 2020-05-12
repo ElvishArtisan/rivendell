@@ -9905,6 +9905,35 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
   }
 
   if((cur_schema<315)&&(set_schema>cur_schema)) {
+    DropColumn("EVENTS","POST_POINT");
+    DropColumn("LOG_LINES","POST_POINT");
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
+  if((cur_schema<316)&&(set_schema>cur_schema)) {
+    DropColumn("EVENTS","PROPERTIES");
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
+  if((cur_schema<316)&&(set_schema>cur_schema)) {
+    DropColumn("EVENTS","PROPERTIES");
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
+  if((cur_schema<317)&&(set_schema>cur_schema)) {
+    sql=QString("create index STACK_LINES_ID_IDX on ")+
+      "STACK_SCHED_CODES(STACK_LINES_ID)";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
+  if((cur_schema<318)&&(set_schema>cur_schema)) {
     sql=QString("alter table FEEDS add column ")+
       "IS_SUPERFEED enum('N','Y') default 'N' after KEY_NAME";
     if(!RDSqlQuery::apply(sql,err_msg)) {
@@ -9932,7 +9961,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
-  if((cur_schema<316)&&(set_schema>cur_schema)) {
+  if((cur_schema<319)&&(set_schema>cur_schema)) {
     sql=QString("alter table FEEDS add column ")+
       "AUDIENCE_METRICS enum('N','Y') default 'N' after IS_SUPERFEED";
     if(!RDSqlQuery::apply(sql,err_msg)) {
@@ -9946,7 +9975,8 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
-  if((cur_schema<317)&&(set_schema>cur_schema)) {
+  ///
+  if((cur_schema<320)&&(set_schema>cur_schema)) {
     sql=QString("alter table USERS add column ")+
       "EMAIL_ADDRESS varchar(191) after FULL_NAME";
     if(!RDSqlQuery::apply(sql,err_msg)) {
@@ -9956,7 +9986,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
-  if((cur_schema<318)&&(set_schema>cur_schema)) {
+  if((cur_schema<321)&&(set_schema>cur_schema)) {
     sql=QString("alter table FEEDS add column ")+
       "CHANNEL_EDITOR varchar(64) after CHANNEL_COPYRIGHT";
     if(!RDSqlQuery::apply(sql,err_msg)) {
@@ -9966,7 +9996,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
-  if((cur_schema<319)&&(set_schema>cur_schema)) {
+  if((cur_schema<322)&&(set_schema>cur_schema)) {
     sql=QString("create table RSS_SCHEMAS (")+
       "ID int unsigned primary key,"+
       "NAME varchar(64) unique not null,"+
@@ -10011,7 +10041,7 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
-  if((cur_schema<320)&&(set_schema>cur_schema)) {
+  if((cur_schema<323)&&(set_schema>cur_schema)) {
     sql=QString("create table FEED_IMAGES (")+
       "ID int unsigned primary key,"+
       "FEED_ID int unsigned not null,"+
@@ -10029,7 +10059,6 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
 
     WriteSchemaVersion(++cur_schema);
   }
-
 
 
 

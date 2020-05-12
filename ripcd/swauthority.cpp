@@ -51,6 +51,9 @@ SoftwareAuthority::SoftwareAuthority(RDMatrix *matrix,QObject *parent)
   swa_gpos=0;
   swa_start_cart=matrix->startCart(RDMatrix::Primary);
   swa_stop_cart=matrix->stopCart(RDMatrix::Primary);
+  swa_is_gpio=false;
+
+  rda->syslog(LOG_DEBUG,"%p - card: %d\n",this,swa_card);
 
   //
   // Reconnection Timer
@@ -156,6 +159,8 @@ void SoftwareAuthority::processCommand(RDMacro *cmd)
 
 void SoftwareAuthority::ipConnect()
 {
+  rda->syslog(LOG_DEBUG,"%p - connecting to %s:%d",this,
+	      swa_ipaddress.toString().toUtf8().constData(),swa_ipport);
   swa_socket->connectToHost(swa_ipaddress.toString(),swa_ipport);
 }
 
@@ -236,6 +241,7 @@ void SoftwareAuthority::errorData(QAbstractSocket::SocketError err)
 void SoftwareAuthority::SendCommand(const char *str)
 {
   //  LogLine(RDConfig::LogDebug,QString().sprintf("sending SA cmd: %s",(const char *)PrettifyCommand(str)));
+  rda->syslog(LOG_DEBUG,"%p - sending \"%s\"",this,str);
   QString cmd=QString().sprintf("%s\x0d\x0a",(const char *)str);
   swa_socket->writeBlock((const char *)cmd,strlen(cmd));
 }
@@ -255,11 +261,18 @@ void SoftwareAuthority::DispatchCommand()
 
   QString line_in=swa_buffer;
   QString section=line_in.lower().replace(">>","");
+  rda->syslog(LOG_DEBUG,"%p - received \"%s\"",this,
+	      section.toUtf8().constData());
 
   //
   // Startup Sequence. Get initial GPIO states and the input and output lists.
   //
   if(section=="login successful") {
+    swa_inputs=0;
+    swa_outputs=0;
+    swa_gpis=0;
+    swa_gpos=0;
+    swa_is_gpio=false;
     sprintf(buffer,"gpistat %d\x0D\x0A",swa_card);      // Request GPI States
     SendCommand(buffer);
     sprintf(buffer,"gpostat %d\x0D\x0A",swa_card);      // Request GPO States
@@ -299,8 +312,12 @@ void SoftwareAuthority::DispatchCommand()
       // Write Sources Data
       //
       swa_istate=0;
+      if(swa_is_gpio) {
+	swa_gpis=swa_inputs*RD_LIVEWIRE_GPIO_BUNDLE_SIZE;
+      }
       sql=QString("update MATRICES set ")+
-	QString().sprintf("INPUTS=%d ",swa_inputs)+
+	QString().sprintf("INPUTS=%d,",swa_inputs)+
+	QString().sprintf("GPIS=%d ",swa_gpis)+
 	"where (STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\")&&"+
 	QString().sprintf("(MATRIX=%d)",swa_matrix);
       q=new RDSqlQuery(sql);
@@ -345,8 +362,12 @@ void SoftwareAuthority::DispatchCommand()
       // Write Destinations Data
       //
       swa_istate=0;
+      if(swa_is_gpio) {
+	swa_gpos=swa_outputs*RD_LIVEWIRE_GPIO_BUNDLE_SIZE;
+      }
       sql=QString("update MATRICES set ")+
-	QString().sprintf("OUTPUTS=%d ",swa_outputs)+
+	QString().sprintf("OUTPUTS=%d,",swa_outputs)+
+	QString().sprintf("GPOS=%d ",swa_gpos)+
 	"where (STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\")&&"+
 	QString().sprintf("(MATRIX=%d)",swa_matrix);
       q=new RDSqlQuery(sql);
@@ -391,16 +412,6 @@ void SoftwareAuthority::DispatchCommand()
     delete q;
     q=new RDSqlQuery(sql);
     delete q;
-
-    //
-    // Write GPIO Data
-    //
-    sql=QString("update MATRICES set ")+
-      QString().sprintf("GPIS=%d,GPOS=%d where ",swa_gpis,swa_gpos)+
-      "(STATION_NAME=\""+RDEscapeString(rda->station()->name())+"\")&&"+
-      QString().sprintf("(MATRIX=%d)",swa_matrix);
-    q=new RDSqlQuery(sql);
-    delete q;
     break;
   }
 
@@ -411,9 +422,6 @@ void SoftwareAuthority::DispatchCommand()
   if((f0.size()==4)&&(f0[0].lower()=="gpistat")&&(f0[1].toInt()==swa_card)) {
     if(swa_gpi_states[f0[2].toInt()].isEmpty()) {
       swa_gpi_states[f0[2].toInt()]=f0[3];
-      if((RD_LIVEWIRE_GPIO_BUNDLE_SIZE*f0[2].toInt())>swa_gpis) {
-	swa_gpis=RD_LIVEWIRE_GPIO_BUNDLE_SIZE*f0[2].toInt();
-      }
     }
     else {
       for(unsigned i=0;i<RD_LIVEWIRE_GPIO_BUNDLE_SIZE;i++) {
@@ -424,13 +432,11 @@ void SoftwareAuthority::DispatchCommand()
       }
       swa_gpi_states[f0[2].toInt()]=f0[3];
     }
+    swa_is_gpio=true;
   }
   if((f0.size()==4)&&(f0[0].lower()=="gpostat")&&(f0[1].toInt()==swa_card)) {
     if(swa_gpo_states[f0[2].toInt()].isEmpty()) {
       swa_gpo_states[f0[2].toInt()]=f0[3];
-      if((RD_LIVEWIRE_GPIO_BUNDLE_SIZE*f0[2].toInt())>swa_gpos) {
-	swa_gpos=RD_LIVEWIRE_GPIO_BUNDLE_SIZE*f0[2].toInt();
-      }
     }
     else {
       for(unsigned i=0;i<RD_LIVEWIRE_GPIO_BUNDLE_SIZE;i++) {
@@ -441,6 +447,7 @@ void SoftwareAuthority::DispatchCommand()
       }
       swa_gpo_states[f0[2].toInt()]=f0[3];
     }
+    swa_is_gpio=true;
   }
 }
 

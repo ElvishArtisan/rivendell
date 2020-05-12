@@ -586,6 +586,8 @@ void ListLog::selectHour(int hour)
   while(item!=NULL) {
     if(PredictedStartHour(item)==hour) {
       list_log_list->clearSelection();
+      // Always start from the bottom so visible item is at the top
+      list_log_list->ensureItemVisible(list_log_list->lastItem());
       list_log_list->ensureItemVisible(item);
       list_log_list->setSelected(item,true);
       return;

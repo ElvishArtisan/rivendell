@@ -2,7 +2,7 @@
 //
 // Edit Rivendell Log Clock
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -83,11 +83,13 @@ EditClock::EditClock(QString clockname,bool new_clock,
   edit_clocks_list->setSorting(-1);
   edit_clocks_list->addColumn(tr("Start"));
   edit_clocks_list->addColumn(tr("End"));
+  edit_clocks_list->addColumn(tr("Trans"));
+  edit_clocks_list->setColumnAlignment(2,Qt::AlignCenter);
   edit_clocks_list->addColumn(tr("Event"));
   edit_clocks_list->addColumn(tr("Length"));
-  edit_clocks_list->setColumnAlignment(3,Qt::AlignRight);
+  edit_clocks_list->setColumnAlignment(4,Qt::AlignRight);
   edit_clocks_list->addColumn(tr("Count"));
-  edit_clocks_list->setColumnAlignment(4,Qt::AlignCenter);
+  edit_clocks_list->setColumnAlignment(5,Qt::AlignCenter);
   edit_clocks_list->setColumnSortType(4,RDListView::LineSort);
   edit_clocks_list->setHardSortColumn(4);
   connect(edit_clocks_list,
@@ -140,7 +142,7 @@ EditClock::EditClock(QString clockname,bool new_clock,
   edit_remarks_edit=new QTextEdit(this);
   edit_remarks_edit->setGeometry(10,sizeHint().height()-140,CENTER_LINE-20,130);
   edit_remarks_edit->setTextFormat(Qt::PlainText);
-  label=new QLabel(edit_remarks_edit,tr("Remarks"),this);
+  label=new QLabel(edit_remarks_edit,tr("USER NOTES"),this);
   label->setGeometry(15,sizeHint().height()-155,CENTER_LINE-20,15);
   label->setFont(labelFont());
   label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
@@ -257,11 +259,11 @@ void EditClock::selectionChangedData(Q3ListViewItem *l)
     return;
   }
   RDListViewItem *item=(RDListViewItem *)l;
-  if(item->text(3).isEmpty()) {
+  if(item->text(4).isEmpty()) {
     UpdateClock();
     return;
   }
-  UpdateClock(item->text(4).toInt());
+  UpdateClock(item->text(5).toInt());
 }
 
 
@@ -296,10 +298,10 @@ void EditClock::editData()
   if(item==NULL) {
     return;
   }
-  if(item->text(4).isEmpty()) {
+  if(item->text(5).isEmpty()) {
     return;
   }
-  int line=item->text(4).toInt();
+  int line=item->text(5).toInt();
   if(line<0) {
     return;
   }
@@ -321,10 +323,10 @@ void EditClock::cloneData()
   if(item==NULL) {
     return;
   }
-  if(item->text(4).isEmpty()) {
+  if(item->text(5).isEmpty()) {
     return;
   }
-  int line=item->text(4).toInt();
+  int line=item->text(5).toInt();
   
   RDEventLine *selectedEventLine = edit_clock->eventLine(line);
 
@@ -363,18 +365,18 @@ void EditClock::deleteData()
   if(item==NULL) {
     return;
   }
-  if(item->text(4).isEmpty()) {
+  if(item->text(5).isEmpty()) {
     return;
   }
   str=QString(tr("Are you sure you want to delete\n"));
   if(QMessageBox::question(this,"RDLogManager - "+tr("Delete Event"),
 			   tr("Are you sure you want to delete")+
-			   "\n \"("+item->text(0)+") "+item->text(2)+"\"?",
+			   "\n \"("+item->text(0)+") "+item->text(3)+"\"?",
 			  QMessageBox::Yes,QMessageBox::No)!=
      QMessageBox::Yes) {
     return;
   }
-  edit_clock->remove(item->text(4).toInt());
+  edit_clock->remove(item->text(5).toInt());
   edit_modified=true;
   RefreshList();
 }
@@ -610,9 +612,10 @@ void EditClock::RefreshList(int select_line)
       item->setText(1,eventline->startTime().
 		    addMSecs(eventline->length()).toString("mm:ss.zzz").
 		    left(7));
-      item->setText(3,RDGetTimeLength(eventline->length(),false,true));
-      item->setText(2,eventline->name()+" ["+eventline->properties()+"]");
-      item->setText(4,QString().sprintf("%d",i));
+      item->setText(2,RDLogLine::transText(eventline->firstTransType()));
+      item->setText(3,eventline->name()+" ["+eventline->propertiesText()+"]");
+      item->setText(4,RDGetTimeLength(eventline->length(),false,true));
+      item->setText(5,QString().sprintf("%d",i));
       if(eventline->color().isValid()) {
 	item->setBackgroundColor(eventline->color());
       }
@@ -626,20 +629,12 @@ void EditClock::RefreshList(int select_line)
 
 void EditClock::RefreshNames()
 {
-  QString sql;
-  RDSqlQuery *q;
   RDEventLine *eventline=NULL;
   RDListViewItem *item=(RDListViewItem *)edit_clocks_list->firstChild();
   while(item!=NULL) {
-    if(!item->text(4).isEmpty()) {
-      if((eventline=edit_clock->eventLine(item->text(4).toInt()))!=NULL) {
-	sql=QString("select PROPERTIES from EVENTS where ")+
-	  "NAME=\""+RDEscapeString(eventline->name())+"\"";
-	q=new RDSqlQuery(sql);
-	if(q->next()) {
-	  item->setText(2,eventline->name()+" ["+q->value(0).toString()+"]");
-	}
-	delete q;
+    if(!item->text(5).isEmpty()) {
+      if((eventline=edit_clock->eventLine(item->text(5).toInt()))!=NULL) {
+	item->setText(3,eventline->name()+" ["+eventline->propertiesText()+"]");
       }
     }
     item=(RDListViewItem *)item->nextSibling();

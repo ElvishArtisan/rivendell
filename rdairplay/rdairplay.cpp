@@ -2024,6 +2024,20 @@ void MainWidget::paintEvent(QPaintEvent *e)
 }
 
 
+void MainWidget::wheelEvent(QWheelEvent *e)
+{
+  if((air_panel!=NULL)&&(e->orientation()==Qt::Vertical)) {
+    if(e->delta()>0) {
+      air_panel->panelDown();
+    }
+    if(e->delta()<0) {
+      air_panel->panelUp();
+    }
+  }
+  e->accept();
+}
+
+
 void SigHandler(int signo)
 {
   pid_t pLocalPid;
