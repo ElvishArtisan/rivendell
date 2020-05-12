@@ -19457,6 +19457,7 @@
 	class.
 	* Added a 'CUTS.RECORDING_MBID' field to the database.
 	* Added a 'CUTS.RELEASE_MBID' field to the database.
+	* Incremented the database version to 313.
 2020-02-01 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'MusicBrainz' CD metadata lookup method in 'RDMbLookup'.
 2020-02-01 Fred Gleason <fredg@paravelsystems.com>
