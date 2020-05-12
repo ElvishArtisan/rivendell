@@ -10011,6 +10011,26 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<320)&&(set_schema>cur_schema)) {
+    sql=QString("create table FEED_IMAGES (")+
+      "ID int unsigned primary key,"+
+      "FEED_ID int unsigned not null,"+
+      "FEED_KEY_NAME varchar(8) not null,"+
+      "WIDTH int not null,"+\
+      "HEIGHT int not null,"+
+      "DEPTH int not null,"+
+      "DESCRIPTION text,"+
+      "DATA mediumblob not null,"+
+      "index FEED_ID_IDX (FEED_ID),"+
+      "index FEED_KEY_NAME_IDX (FEED_KEY_NAME))";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
+
 
 
   // NEW SCHEMA UPDATES GO HERE...

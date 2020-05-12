@@ -36,6 +36,7 @@ noinst_PROGRAMS = audio_convert_test\
                   db_charset_test\
                   delete_test\
                   download_test\
+                  feed_image_test\
                   getpids_test\
                   log_unlink_test\
                   mcast_recv_test\
@@ -80,6 +81,9 @@ delete_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@ -lQt3
 
 dist_download_test_SOURCES = download_test.cpp download_test.h
 download_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@ -lQt3Support
+
+dist_feed_image_test_SOURCES = feed_image_test.cpp feed_image_test.h
+feed_image_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@ -lQt3Support
 
 dist_getpids_test_SOURCES = getpids_test.cpp getpids_test.h
 getpids_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@ -lQt3Support

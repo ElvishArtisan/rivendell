@@ -50,6 +50,7 @@ EXTRA_DIST = audio_cards.txt\
              events.txt\
              extended_panel_names.txt\
              extended_panels.txt\
+             feed_images.txt\
              feed_perms.txt\
              feeds.txt\
              gpio_events.txt\

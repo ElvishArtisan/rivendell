@@ -42,6 +42,15 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
 
   //
+  // Revert 320
+  //
+  if((cur_schema==320)&&(set_schema<cur_schema)) {
+    DropTable("FEED_IMAGES");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 319
   //
   if((cur_schema==319)&&(set_schema<cur_schema)) {
