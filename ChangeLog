@@ -19245,7 +19245,6 @@
 	* Added an rdsoftkeys(1) man page.
 2019-10-31 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.2.0.
-<<<<<<< HEAD
 2019-11-20 Fred Gleason <fredg@paravelsystems.com>
 	* Added interlocks to the 'Edit Switcher' and 'Edit Serial Ports'
 	dialogs in rdadmin(1) to prohibit use of a disabled serial device.
@@ -19534,7 +19533,6 @@
 	* Cleaned up a compiler warning in 'lib/rdcae.cpp'.
 2020-02-07 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.2.1int1.
-<<<<<<< HEAD
 2020-02-07 Fred Gleason <fredg@paravelsystems.com>
 	* Removed Q3Support dependencies from the 'Editing Feed' dialog
 	in rdadmin(1).
