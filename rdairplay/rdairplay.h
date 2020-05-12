@@ -102,6 +102,9 @@ class MainWidget : public RDWidget
   void closeEvent(QCloseEvent *);
   void paintEvent(QPaintEvent *e);
   
+ protected:
+  void wheelEvent(QWheelEvent *e);
+
  private:
   void RunLocalMacros(RDMacro *rml);
   void StopEvent(int button_id);

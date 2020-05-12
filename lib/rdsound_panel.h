@@ -92,6 +92,8 @@ class RDSoundPanel : public RDWidget
 		      const QString &);
   void changeUser();
   void tickClock();
+  void panelUp();
+  void panelDown();
 
  signals:
   void tick();
@@ -113,6 +115,9 @@ class RDSoundPanel : public RDWidget
   void panelSetupData();
   void onairFlagChangedData(bool state);
   void scanPanelData();
+
+ protected:
+  void wheelEvent(QWheelEvent *e);
 
  private:
   void PlayButton(RDAirPlayConf::PanelType type,int panel,int row,int col,

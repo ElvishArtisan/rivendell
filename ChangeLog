@@ -19832,3 +19832,6 @@
 	* Cleaned up SQL generation in rdmaint(8).
 2020-05-02 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.3.0int1.
+2020-05-12 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression that broke the ability to scroll through
+	Sound Panel panels by means of the mouse wheel.
