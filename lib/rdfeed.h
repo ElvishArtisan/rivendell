@@ -66,6 +66,10 @@ class RDFeed : public QObject
   void setChannelWebmaster(const QString &str) const;
   QString channelLanguage() const;
   void setChannelLanguage(const QString &str);
+  int channelImageId() const;
+  void setChannelImageId(int img_id) const;
+  int defaultItemImageId() const;
+  void setDefaultItemImageId(int img_id) const;
   QString baseUrl(const QString &subfeed_key_name) const;
   QString baseUrl(int subfeed_feed_id) const;
   void setBaseUrl(const QString &str) const;
@@ -118,8 +122,12 @@ class RDFeed : public QObject
   void setRedirectPath(const QString &str);
   RDFeed::MediaLinkMode mediaLinkMode() const;
   void setMediaLinkMode(RDFeed::MediaLinkMode mode) const;
+  int importImageFile(const QString &pathname,QString *err_msg,
+		      QString desc="") const;
+  bool deleteImage(int img_id,QString *err_msg);
   QString audioUrl(RDFeed::MediaLinkMode mode,const QString &cgi_hostname,
 		   unsigned cast_id);
+  QString imageUrl(int img_id) const;
   bool postXml(QString *err_msg);
   bool postXmlConditional(const QString &caption,QWidget *widget);
   bool deleteXml(QString *err_msg);
@@ -137,6 +145,7 @@ class RDFeed : public QObject
   static QString rssHeaderTemplate(RssSchema schema);
   static QString rssChannelTemplate(RssSchema schema);
   static QString rssItemTemplate(RssSchema schema);
+  static QString imageFilename(int feed_id,int img_id,const QString &ext);
 
  signals:
   void postProgressChanged(int step);

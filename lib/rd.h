@@ -449,6 +449,11 @@
 #define RD_IMAGE_FILE_FILTER "Image Files (*.png *.bmp *.xbm *.xpm *.pbm *.pgm *.ppm *.jpg *.mng *.gif *.PNG *.BMP *.XBM *.XPM *.PBM *.PGM *.PPM *.JPG *.MNG *.GIF)\nAll Files (*.*)"
 
 /*
+ * Podcast Image File Filter for QFileDialog
+ */
+#define RD_PODCAST_IMAGE_FILE_FILTER "Image Files (*.png *.jpg *.PNG *.JPG *.jpeg *.JPEG)\nAll Files (*.*)"
+
+/*
  * Loadable Module Filter for QFileDialog
  */
 #define RD_MODULE_FILE_FILTER "Rivendell Loadable Modules (*.rlm)\nAll Files (*.*)"

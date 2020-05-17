@@ -32,25 +32,29 @@
 
 #include <rddialog.h>
 #include <rdfeed.h>
+#include <rdimagepickerbox.h>
 #include <rdsettings.h>
 #include <rdstation.h>
+
+#include "list_images.h"
 
 class EditFeed : public RDDialog
 {
  Q_OBJECT
  public:
   EditFeed(const QString &feed,QWidget *parent=0);
+  ~EditFeed();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
 
  private slots:
-   //  void isSuperfeedChangedData(int n);
   void comboboxActivatedData(int n);
   void checkboxToggledData(bool state);
   void lineeditChangedData(const QString &str);
   void selectSubfeedsData();
   void setFormatData();
   void redirectToggledData(bool state);
+  void listImagesData();
   void okData();
   void cancelData();
 
@@ -60,10 +64,12 @@ class EditFeed : public RDDialog
  private:
   void UpdateControlState();
   RDFeed *feed_feed;
+  RDImagePickerModel *feed_image_model;
   QLabel *feed_keyname_label;
   QLineEdit *feed_keyname_edit;
   QLabel *feed_is_superfeed_label;
   QPushButton *feed_is_superfeed_button;
+  QPushButton *feed_list_images_button;
   QCheckBox *feed_audience_metrics_check;
   QLabel *feed_audience_metrics_label;
   QComboBox *feed_is_superfeed_box;
@@ -93,6 +99,7 @@ class EditFeed : public RDDialog
   QCheckBox *feed_autopost_box;
   QCheckBox *feed_keep_metadata_box;
   RDSettings feed_settings;
+  ListImages *feed_images_dialog;
   QLineEdit *feed_format_edit;
   QCheckBox *feed_normalize_check;
   QLabel *feed_normalize_label;
@@ -112,6 +119,8 @@ class EditFeed : public RDDialog
   QLabel *feed_channel_copyright_label;
   QLabel *feed_channel_language_label;
   QLabel *feed_channel_description_label;
+  QLabel *feed_channel_image_label;
+  RDImagePickerBox *feed_channel_image_box;
   QLabel *feed_base_url_label;
   QLabel *feed_base_preamble_label;
   QLabel *feed_purge_url_label;
@@ -125,6 +134,8 @@ class EditFeed : public RDDialog
   QLabel *feed_castorder_label;
   QLabel *feed_media_link_mode_label;
   QLabel *feed_extension_label;
+  QLabel *feed_item_image_label;
+  RDImagePickerBox *feed_item_image_box;
   QPushButton *feed_ok_button;
   QPushButton *feed_cancel_button;
   QLabel *feed_header_xml_label;

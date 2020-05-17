@@ -143,6 +143,8 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdhotkeys.cpp rdhotkeys.h\
                         rdhotkeylist.cpp rdhotkeylist.h\
                         rdidvalidator.cpp rdidvalidator.h\
+                        rdimagepickerbox.cpp rdimagepickerbox.h\
+                        rdimagepickermodel.cpp rdimagepickermodel.h\
                         rdimport_audio.cpp rdimport_audio.h\
                         rdinstancelock.cpp rdinstancelock.h\
                         rd.h\
@@ -291,6 +293,8 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdgpioselector.cpp\
                           moc_rdhotkeys.cpp\
                           moc_rdhotkeylist.cpp\
+                          moc_rdimagepickerbox.cpp\
+                          moc_rdimagepickermodel.cpp\
                           moc_rdimport_audio.cpp\
                           moc_rdkernelgpio.cpp\
                           moc_rdlineedit.cpp\

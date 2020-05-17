@@ -18,6 +18,7 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include <errno.h>
 #include <math.h>
 
 #include <curl/curl.h>
@@ -277,6 +278,32 @@ QString RDFeed::channelLanguage() const
 void RDFeed::setChannelLanguage(const QString &str)
 {
   SetRow("CHANNEL_LANGUAGE",str);
+}
+
+
+int RDFeed::channelImageId() const
+{
+  return RDGetSqlValue("FEEDS","KEY_NAME",feed_keyname,"CHANNEL_IMAGE_ID").
+    toInt();
+}
+
+
+void RDFeed::setChannelImageId(int img_id) const
+{
+  SetRow("CHANNEL_IMAGE_ID",img_id);
+}
+
+
+int RDFeed::defaultItemImageId() const
+{
+  return RDGetSqlValue("FEEDS","KEY_NAME",feed_keyname,"DEFAULT_ITEM_IMAGE_ID").
+    toInt();
+}
+
+
+void RDFeed::setDefaultItemImageId(int img_id) const
+{
+  SetRow("DEFAULT_ITEM_IMAGE_ID",img_id);
 }
 
 
@@ -625,6 +652,94 @@ void RDFeed::setMediaLinkMode(RDFeed::MediaLinkMode mode) const
 }
 
 
+int RDFeed::importImageFile(const QString &pathname,QString *err_msg,
+			    QString desc) const
+{
+  bool ok=false;
+  QString sql;
+  int ret;
+
+  *err_msg="OK";
+
+  //
+  // Load the image
+  //
+  QFile file(pathname);
+  if(!file.open(QIODevice::ReadOnly)) {
+    *err_msg=QString("unable to open image file [")+
+      QString(strerror(errno))+"]";
+    return -1;
+  }
+  QByteArray data=file.readAll();
+  file.close();
+
+  //
+  // Validate the image
+  //
+  QImage *img=new QImage();
+  if(!img->loadFromData(data)) {
+    *err_msg="invalid image file";
+    return -1;
+  }
+
+  //
+  // Fix up the Description
+  //
+  if(desc.isEmpty()) {
+    desc=tr("Imported from")+" "+pathname;
+  }
+
+  //
+  // FIXME: Upload to remote file store here...
+  //
+
+  //
+  // Write it to the DB
+  //
+  QStringList f0=pathname.split(".",QString::SkipEmptyParts);
+  sql=QString("insert into FEED_IMAGES set ")+
+    QString().sprintf("FEED_ID=%u,",id())+
+    "FEED_KEY_NAME=\""+RDEscapeString(keyName())+"\","+
+    QString().sprintf("WIDTH=%d,",img->width())+
+    QString().sprintf("HEIGHT=%d,",img->height())+
+    QString().sprintf("DEPTH=%d,",img->depth())+
+    "DESCRIPTION=\""+RDEscapeString(desc)+"\","+
+    "FILE_EXTENSION=\""+RDEscapeString(f0.last().toLower())+"\","+
+    "DATA="+RDEscapeBlob(data);
+  ret=RDSqlQuery::run(sql,&ok).toInt();
+  if(!ok) {
+    *err_msg="Unable to write to database";
+    return -1;
+  }
+
+  return ret;
+}
+
+
+bool RDFeed::deleteImage(int img_id,QString *err_msg)
+{
+  QString sql;
+  RDSqlQuery *q=NULL;
+
+  *err_msg="OK";
+
+  //
+  // FIXME: Delete from remote file store here...
+  //
+
+  sql=QString("delete from FEED_IMAGES where ")+
+    QString().sprintf("ID=%d",img_id);
+  if(!RDSqlQuery::apply(sql,err_msg)) {
+    *err_msg=QString("database error: ")+*err_msg;
+    delete q;
+    return false;
+  }
+  delete q;
+
+  return true;
+}
+
+
 QString RDFeed::audioUrl(RDFeed::MediaLinkMode mode,
 			 const QString &cgi_hostname,unsigned cast_id)
 {
@@ -649,6 +764,26 @@ QString RDFeed::audioUrl(RDFeed::MediaLinkMode mode,
     break;
   }
   delete cast;
+
+  return ret;
+}
+
+
+QString RDFeed::imageUrl(int img_id) const
+{
+  QString ret;
+
+  QString sql=QString("select ")+
+    "FEED_ID,"+         // 00
+    "FILE_EXTENSION "+  // 01
+    "from FEED_IMAGES where "+
+    QString().sprintf("ID=%d",img_id);
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  if(q->first()) {
+    ret=baseUrl(q->value(0).toUInt())+"/"+
+      RDFeed::imageFilename(id(),img_id,q->value(1).toString());
+  }
+  delete q;
 
   return ret;
 }
@@ -1414,6 +1549,12 @@ QString RDFeed::rssItemTemplate(RDFeed::RssSchema schema)
   }
 
   return ret;
+}
+
+
+QString RDFeed::imageFilename(int feed_id,int img_id,const QString &ext)
+{
+  return QString().sprintf("img%06d_%06d.",feed_id,img_id)+ext;
 }
 
 

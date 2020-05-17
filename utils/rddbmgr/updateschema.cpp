@@ -10043,16 +10043,37 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
 
   if((cur_schema<323)&&(set_schema>cur_schema)) {
     sql=QString("create table FEED_IMAGES (")+
-      "ID int unsigned primary key,"+
+      "ID int unsigned primary key auto_increment,"+
       "FEED_ID int unsigned not null,"+
       "FEED_KEY_NAME varchar(8) not null,"+
       "WIDTH int not null,"+\
       "HEIGHT int not null,"+
       "DEPTH int not null,"+
-      "DESCRIPTION text,"+
+      "DESCRIPTION varchar(191) not null,"+
+      "FILE_EXTENSION varchar(10) not null,"+
       "DATA mediumblob not null,"+
       "index FEED_ID_IDX (FEED_ID),"+
       "index FEED_KEY_NAME_IDX (FEED_KEY_NAME))";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
+  if((cur_schema<324)&&(set_schema>cur_schema)) {
+    sql=QString("alter table FEEDS add column CHANNEL_IMAGE_ID ")+
+      "int not null default -1 after CHANNEL_LANGUAGE";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table FEEDS add column DEFAULT_ITEM_IMAGE_ID ")+
+      "int not null default -1 after KEEP_METADATA";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table PODCASTS add column ITEM_IMAGE_ID ")+
+      "int not null default -1 after ITEM_SOURCE_URL";
     if(!RDSqlQuery::apply(sql,err_msg)) {
       return false;
     }

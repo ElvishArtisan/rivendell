@@ -1754,6 +1754,13 @@ figure for the report period.
     </message>
 </context>
 <context>
+    <name>RDImagePickerModel</name>
+    <message>
+        <source>Image</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>RDImportAudio</name>
     <message>
         <source>Import/Export Audio File</source>

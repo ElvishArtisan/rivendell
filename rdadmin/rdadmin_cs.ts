@@ -1673,6 +1673,22 @@ Feeds</source>
         <source>RSS Schema</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Default Item Image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Manage</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Images</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditFeedPerms</name>
@@ -1944,6 +1960,25 @@ Stále ještě chcete uložit?</translation>
     </message>
     <message>
         <source>No Duplicates allowed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>EditImage</name>
+    <message>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation type="unfinished">Zrušit</translation>
+    </message>
+    <message>
+        <source>Image Viewer</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5301,6 +5336,81 @@ Stále ještě jej chcete smazat?</translation>
     </message>
     <message>
         <source>Are you sure you want to delete the variable</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ListImages</name>
+    <message>
+        <source>Add</source>
+        <translation type="unfinished">Přidat</translation>
+    </message>
+    <message>
+        <source>View</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="unfinished">Smazat</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Image Manager</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Open Podcast Image File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Import Error</source>
+        <translation type="unfinished">Chyba při zavedení</translation>
+    </message>
+    <message>
+        <source>Image import failed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Podcast Image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Are you sure you want to delete this image?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Image deletion failed!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Upload Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Image upload failed!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unable to delete remote file!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Delete local data?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Uploading image...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

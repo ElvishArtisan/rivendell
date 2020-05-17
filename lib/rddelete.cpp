@@ -117,6 +117,7 @@ RDDelete::ErrorCode RDDelete::runDelete(const QString &username,
     rda->syslog(LOG_ERR,"unable to initialize curl library\n");
     return RDDelete::ErrorInternal;
   }
+
   curl_easy_setopt(curl,CURLOPT_URL,conv_target_url.toEncoded().constData());
   curl_easy_setopt(curl,CURLOPT_USERNAME,username.toUtf8().constData());
   curl_easy_setopt(curl,CURLOPT_PASSWORD,password.toUtf8().constData());
@@ -149,8 +150,6 @@ RDDelete::ErrorCode RDDelete::runDelete(const QString &username,
   }
 
   curl_easy_setopt(curl,CURLOPT_QUOTE,cmds);
-
-
 
   switch((err=curl_easy_perform(curl))) {
   case CURLE_OK:
@@ -191,7 +190,7 @@ RDDelete::ErrorCode RDDelete::runDelete(const QString &username,
   }
   curl_slist_free_all(cmds);
   curl_easy_cleanup(curl);
-    
+
   return ret;
 }
 

@@ -42,6 +42,17 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
 
   //
+  // Revert 324
+  //
+  if((cur_schema==324)&&(set_schema<cur_schema)) {
+    DropColumn("PODCASTS","ITEM_IMAGE_ID");
+    DropColumn("FEEDS","DEFAULT_ITEM_IMAGE_ID");
+    DropColumn("FEEDS","CHANNEL_IMAGE_ID");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 323
   //
   if((cur_schema==323)&&(set_schema<cur_schema)) {

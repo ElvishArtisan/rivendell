@@ -41,6 +41,7 @@ x11 {
   SOURCES += edit_group.cpp
   SOURCES += edit_hostvar.cpp
   SOURCES += edit_hotkeys.cpp
+  SOURCES += edit_image.cpp
   SOURCES += edit_jack.cpp
   SOURCES += edit_jack_client.cpp
   SOURCES += edit_livewiregpio.cpp
@@ -68,6 +69,7 @@ x11 {
   SOURCES += list_gpis.cpp
   SOURCES += list_groups.cpp
   SOURCES += list_hostvars.cpp
+  SOURCES += list_images.cpp
   SOURCES += list_livewiregpios.cpp
   SOURCES += list_matrices.cpp
   SOURCES += list_pypads.cpp
@@ -109,6 +111,7 @@ x11 {
   HEADERS += edit_group.h
   HEADERS += edit_hostvar.h
   HEADERS += edit_hotkeys.h
+  HEADERS += edit_image.h
   HEADERS += edit_jack.h
   HEADERS += edit_jack_client.h
   HEADERS += edit_livewiregpio.h
@@ -136,6 +139,7 @@ x11 {
   HEADERS += list_gpis.h
   HEADERS += list_groups.h
   HEADERS += list_hostvars.h
+  HEADERS += list_images.h
   HEADERS += list_livewiregpios.h
   HEADERS += list_matrices.h
   HEADERS += list_pypads.h

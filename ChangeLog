@@ -19928,3 +19928,10 @@
 	* Added a 'FEED_IMAGES' table to the database.
 	* Incremented the database version to 323.
 	* Added 'feed_image_test' in 'tests/'.
+2020-05-17 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'FEEDS.CHANNEL_IMAGE_ID' field to the database.
+	* Added a 'FEEDS.DEFAULT_ITEM_IMAGE_ID' field to the database.
+	* Added a 'PODCASTS.ITEM_IMAGE_ID' field to the database.
+	* Incremented the database version to 324.
+	* Added an 'Image Manager' dialog to rdadmin(1).
+	* Added an 'Image Viewer' dialog on rdadmin(1).
