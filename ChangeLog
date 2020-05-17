@@ -19939,3 +19939,6 @@
 	* Dropped the 'RSS_SCHEMAS' table from the database.
 	* Incremented the database version to 325.
 	* Moved RSS template definitions to 'lib/rdfeed.h'.
+2020-05-17 Fred Gleason <fredg@paravelsystems.com>
+	* Updated interlocking logic in the 'Edit Feed' dialog in
+	rdadmin(1) to handle image assignments correctly.

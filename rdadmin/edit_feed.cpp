@@ -775,10 +775,13 @@ void EditFeed::UpdateControlState()
   bool custom_schema=
     feed_rss_schema_box->itemData(feed_rss_schema_box->currentIndex()).toInt()==
     RDFeed::CustomSchema;
+  bool item_image=feed_rss_schema_box->itemData(feed_rss_schema_box->currentIndex()).toInt()!=RDFeed::Rss202Schema;
 
   feed_is_superfeed_label->setDisabled(redirected);
   feed_is_superfeed_box->setDisabled(redirected);
   feed_is_superfeed_button->setDisabled(redirected||(!superfeed));
+
+  feed_list_images_button->setDisabled(redirected);
 
   feed_audience_metrics_check->setDisabled(redirected);
   feed_audience_metrics_label->setDisabled(redirected);
@@ -799,6 +802,8 @@ void EditFeed::UpdateControlState()
   feed_channel_copyright_label->setDisabled(redirected);
   feed_channel_language_label->setDisabled(redirected);
   feed_channel_description_label->setDisabled(redirected);
+  feed_channel_image_label->setDisabled(redirected);
+  feed_channel_image_box->setDisabled(redirected);
 
   feed_redirect_url_label->setEnabled(redirected);
   feed_redirect_url_edit->setEnabled(redirected);
@@ -840,6 +845,9 @@ void EditFeed::UpdateControlState()
     setDisabled(redirected||superfeed||(!feed_normalize_check->isChecked()));
   feed_media_link_mode_box->setDisabled(redirected||superfeed);
   feed_media_link_mode_label->setDisabled(redirected||superfeed);
+
+  feed_item_image_label->setEnabled(item_image&&(!redirected));
+  feed_item_image_box->setEnabled(item_image&&(!redirected));
 
   feed_header_xml_label->setDisabled(redirected||(!custom_schema));
   feed_header_xml_edit->setDisabled(redirected||(!custom_schema));
