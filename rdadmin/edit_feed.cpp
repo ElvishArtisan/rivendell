@@ -39,9 +39,6 @@
 EditFeed::EditFeed(const QString &feed,QWidget *parent)
   : RDDialog(parent)
 {
-  QString sql;
-  RDSqlQuery *q=NULL;
-
   //
   // Fix the Window Size
   //
@@ -385,17 +382,11 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   // RSS Schema
   //
   feed_rss_schema_box=new QComboBox(this);
-  sql=QString("select ")+
-    "ID,"+    // 00
-    "NAME "+  // 01
-    "from RSS_SCHEMAS order by NAME";
-  q=new RDSqlQuery(sql);
-  while(q->next()) {
+  for(int i=0;i<RDFeed::LastSchema;i++) {
     feed_rss_schema_box->
-      insertItem(feed_rss_schema_box->count(),q->value(1).toString(),
-		 q->value(0).toUInt());
+      insertItem(feed_rss_schema_box->count(),
+		 RDFeed::rssSchemaString((RDFeed::RssSchema)i),i);
   }
-  delete q;
   connect(feed_rss_schema_box,SIGNAL(activated(int)),
 	  this,SLOT(comboboxActivatedData(int)));
   feed_rss_schema_label=new QLabel(tr("RSS Schema")+":",this);

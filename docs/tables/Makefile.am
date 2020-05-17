@@ -92,7 +92,6 @@ EXTRA_DIST = audio_cards.txt\
              report_services.txt\
              report_stations.txt\
              reports.txt\
-             rss_schemas.txt\
              rule_lines.txt\
              service_clocks.txt\
              service_perms.txt\

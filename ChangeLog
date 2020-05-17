@@ -19935,3 +19935,7 @@
 	* Incremented the database version to 324.
 	* Added an 'Image Manager' dialog to rdadmin(1).
 	* Added an 'Image Viewer' dialog on rdadmin(1).
+2020-05-17 Fred Gleason <fredg@paravelsystems.com>
+	* Dropped the 'RSS_SCHEMAS' table from the database.
+	* Incremented the database version to 325.
+	* Moved RSS template definitions to 'lib/rdfeed.h'.

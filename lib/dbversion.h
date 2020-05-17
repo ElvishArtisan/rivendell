@@ -24,7 +24,7 @@
 /*
  * Current Database Version
  */
-#define RD_VERSION_DATABASE 324
+#define RD_VERSION_DATABASE 325
 
 
 #endif  // DBVERSION_H

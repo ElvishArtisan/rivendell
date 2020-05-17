@@ -30,6 +30,23 @@
 #include <rduser.h>
 #include <rdweb.h>
 
+//
+// RSS-2.0.2 Templates
+//
+#define RSS_2_0_2_NAME "RSS 2.0.2"
+
+#define RSS_2_0_2_IMAGE_MIN_SIZE QSize(88,31)
+#define RSS_2_0_2_IMAGE_MAX_SIZE QSize(144,400)
+#define RSS_2_0_2_IMAGE_IN_ITEM false
+
+#define RSS_2_0_2_HEADER_XML "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\">"
+
+#define RSS_2_0_2_CHANNEL_XML "<title>%TITLE%</title>\n<description>%DESCRIPTION%</description>\n<category>%CATEGORY%</category>\n<link>%LINK%</link>\n<language>%LANGUAGE%</language>\n<copyright>%COPYRIGHT%</copyright>\n<lastBuildDate>%BUILD_DATE%</lastBuildDate>\n<pubDate>%PUBLISH_DATE%</pubDate>\n<managingEditor>%EDITOR%</managingEditor>\n<webMaster>%WEBMASTER%</webMaster>\n<generator>%GENERATOR%</generator>\n<image>\n  <url>%IMAGE_URL%</url>\n  <title>%TITLE%</title>\n  <link>%LINK%</link>\n  <width>%IMAGE_WIDTH%</width>\n  <height>%IMAGE_HEIGHT%</height>\n  <description>%IMAGE_DESCRIPTION%</description>\n</image>\n<atom:link href=\"%FEED_URL%\" rel=\"self\" type=\"application/rss+xml\" />"
+
+#define RSS_2_0_2_ITEM_XML "<title>%ITEM_TITLE%</title>\n<link>%ITEM_LINK%</link>\n<guid isPermaLink=\"false\">%ITEM_GUID%</guid>\n<description>%ITEM_DESCRIPTION%</description>\n<author>%ITEM_AUTHOR%</author>\n<comments>%ITEM_COMMENTS%</comments>\n<source url=\"%ITEM_SOURCE_URL%\">%ITEM_SOURCE_TEXT%</source>\n<enclosure url=\"%ITEM_AUDIO_URL%\" length=\"%ITEM_AUDIO_LENGTH%\"  type=\"audio/mpeg\" />\n<category>%ITEM_CATEGORY%</category>\n<pubDate>%ITEM_PUBLISH_DATE%</pubDate>"
+
+
+
 #define RDFEED_TOTAL_POST_STEPS 4
 
 class RDFeed : public QObject
@@ -152,8 +169,9 @@ class RDFeed : public QObject
 
  private:
   unsigned CreateCast(QString *filename,int bytes,int msecs) const;
-  QString ResolveChannelWildcards(RDSqlQuery *chan_q);
-  QString ResolveItemWildcards(RDSqlQuery *item_q,RDSqlQuery *chan_q);
+  QString ResolveChannelWildcards(const QString &tmplt,RDSqlQuery *chan_q);
+  QString ResolveItemWildcards(const QString &tmplt,RDSqlQuery *item_q,
+			       RDSqlQuery *chan_q);
   QString GetTempFilename() const;
   void SetRow(const QString &param,int value) const;
   void SetRow(const QString &param,const QString &value) const;

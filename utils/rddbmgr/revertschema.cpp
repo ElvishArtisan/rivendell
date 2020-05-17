@@ -42,6 +42,24 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
 
   //
+  // Revert 325
+  //
+  if((cur_schema==325)&&(set_schema<cur_schema)) {
+    sql=QString("create table RSS_SCHEMAS (")+
+      "ID int unsigned primary key,"+
+      "NAME varchar(64) unique not null,"+
+      "HEADER_XML text,"+
+      "CHANNEL_XML text,"+
+      "ITEM_XML text,"+
+      "index NAME_IDX(NAME))";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 324
   //
   if((cur_schema==324)&&(set_schema<cur_schema)) {

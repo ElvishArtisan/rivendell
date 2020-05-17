@@ -22,7 +22,7 @@ BASE_PREAMBLE          varchar(191)
 PURGE_URL              varchar(191)
 PURGE_USERNAME         varchar(64)
 PURGE_PASSWORD         varchar(64)
-RSS_SCHEMA             int(10) unsigned  From RSS_SCHEMAS.ID
+RSS_SCHEMA             int(10) unsigned  0=Custom, 1=RSS-2.0.2
 HEADER_XML             text
 CHANNEL_XML            text
 ITEM_XML               text
