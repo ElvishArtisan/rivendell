@@ -79,6 +79,8 @@ RDFeed::RDFeed(const QString &keyname,RDConfig *config,QObject *parent)
   feed_keyname=keyname;
   feed_config=config;
 
+  feed_schemas=new RDRssSchemas();
+
   sql=QString("select ID from FEEDS where ")+
     "KEY_NAME=\""+RDEscapeString(keyname)+"\"";
   q=new RDSqlQuery(sql);
@@ -105,12 +107,20 @@ RDFeed::RDFeed(unsigned id,RDConfig *config,QObject *parent)
   feed_id=id;
   feed_config=config;
 
+  feed_schemas=new RDRssSchemas();
+
   sql=QString().sprintf("select KEY_NAME from FEEDS where ID=%u",id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     feed_keyname=q->value(0).toString();
   }
   delete q;
+}
+
+
+RDFeed::~RDFeed()
+{
+  delete feed_schemas;
 }
 
 
@@ -387,14 +397,14 @@ void RDFeed::setPurgePassword(const QString &str) const
 }
 
 
-RDFeed::RssSchema RDFeed::rssSchema() const
+RDRssSchemas::RssSchema RDFeed::rssSchema() const
 {
-  return (RDFeed::RssSchema)RDGetSqlValue("FEEDS","KEY_NAME",feed_keyname,
-					  "RSS_SCHEMA").toUInt();
+  return (RDRssSchemas::RssSchema)RDGetSqlValue("FEEDS","KEY_NAME",feed_keyname,
+					       "RSS_SCHEMA").toUInt();
 }
 
 
-void RDFeed::setRssSchema(RDFeed::RssSchema schema) const
+void RDFeed::setRssSchema(RDRssSchemas::RssSchema schema) const
 {
   SetRow("RSS_SCHEMA",(unsigned)schema);
 }
@@ -1141,10 +1151,6 @@ QString RDFeed::rssXml(QString *err_msg,bool *ok)
   RDSqlQuery *q;
   RDSqlQuery *q1;
 
-  QString header_template;
-  QString channel_template;
-  QString item_template;
-
   if(ok!=NULL) {
     *ok=false;
   }
@@ -1186,21 +1192,16 @@ QString RDFeed::rssXml(QString *err_msg,bool *ok)
     return QString();
   }
 
-  switch(rssSchema()) {
-  case RDFeed::CustomSchema:
+  //
+  // Load the XML Templates
+  //
+  QString header_template=rssSchemas()->headerTemplate(rssSchema());
+  QString channel_template=rssSchemas()->channelTemplate(rssSchema());
+  QString item_template=rssSchemas()->itemTemplate(rssSchema());
+  if(rssSchema()==RDRssSchemas::CustomSchema) {
     header_template=q->value(10).toString();
     channel_template=q->value(11).toString();
     item_template=q->value(12).toString();
-    break;
-
-  case RDFeed::Rss202Schema:
-    header_template=RSS_2_0_2_HEADER_XML;
-    channel_template= RSS_2_0_2_CHANNEL_XML;
-    item_template=RSS_2_0_2_ITEM_XML;
-    break;
-
-  case RDFeed::LastSchema:
-    break;
   }
 
   //
@@ -1277,6 +1278,12 @@ QString RDFeed::rssXml(QString *err_msg,bool *ok)
 }
 
 
+RDRssSchemas *RDFeed::rssSchemas() const
+{
+  return feed_schemas;
+}
+
+
 unsigned RDFeed::create(const QString &keyname,bool enable_users,
 			QString *err_msg,const QString &exemplar)
 {
@@ -1306,9 +1313,9 @@ unsigned RDFeed::create(const QString &keyname,bool enable_users,
     sql=QString("insert into FEEDS set ")+
       "KEY_NAME=\""+RDEscapeString(keyname)+"\","+
       "ORIGIN_DATETIME=now(),"+
-      "HEADER_XML=\""+RDEscapeString(RSS_2_0_2_HEADER_XML)+"\","+
-      "CHANNEL_XML=\""+RDEscapeString(RSS_2_0_2_CHANNEL_XML)+"\","+
-      "ITEM_XML=\""+RDEscapeString(RSS_2_0_2_ITEM_XML)+"\"";
+      "HEADER_XML=\"\","+
+      "CHANNEL_XML=\"\","+
+      "ITEM_XML=\"\"";
     q=new RDSqlQuery(sql);
     feed_id=q->lastInsertId().toUInt();
     delete q;
@@ -1470,81 +1477,6 @@ QString RDFeed::errorString(RDFeed::Error err)
     ret="General Error";
     break;
   }
-  return ret;
-}
-
-
-QString RDFeed::rssSchemaString(RDFeed::RssSchema schema)
-{
-  QString ret="Unknown";
-
-  switch(schema) {
-  case RDFeed::CustomSchema:
-    ret="[custom schema]";
-    break;
-
-  case RDFeed::Rss202Schema:
-    ret="RSS 2.0.2";
-    break;
-
-  case RDFeed::LastSchema:
-    break;
-  }
-
-  return ret;
-}
-
-
-QString RDFeed::rssHeaderTemplate(RDFeed::RssSchema schema)
-{
-  QString ret;
-
-  switch(schema) {
-  case RDFeed::Rss202Schema:
-    ret=RSS_2_0_2_HEADER_XML;
-    break;
-
-  case RDFeed::CustomSchema:
-  case RDFeed::LastSchema:
-    break;
-  }
-
-  return ret;
-}
-
-
-QString RDFeed::rssChannelTemplate(RDFeed::RssSchema schema)
-{
-  QString ret;
-
-  switch(schema) {
-  case RDFeed::Rss202Schema:
-    ret=RSS_2_0_2_CHANNEL_XML;
-    break;
-
-  case RDFeed::CustomSchema:
-  case RDFeed::LastSchema:
-    break;
-  }
-
-  return ret;
-}
-
-
-QString RDFeed::rssItemTemplate(RDFeed::RssSchema schema)
-{
-  QString ret;
-
-  switch(schema) {
-  case RDFeed::Rss202Schema:
-    ret=RSS_2_0_2_ITEM_XML;
-    break;
-
-  case RDFeed::CustomSchema:
-  case RDFeed::LastSchema:
-    break;
-  }
-
   return ret;
 }
 

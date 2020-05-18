@@ -382,10 +382,10 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   // RSS Schema
   //
   feed_rss_schema_box=new QComboBox(this);
-  for(int i=0;i<RDFeed::LastSchema;i++) {
+  for(int i=0;i<RDRssSchemas::LastSchema;i++) {
     feed_rss_schema_box->
       insertItem(feed_rss_schema_box->count(),
-		 RDFeed::rssSchemaString((RDFeed::RssSchema)i),i);
+		 feed_feed->rssSchemas()->name((RDRssSchemas::RssSchema)i),i);
   }
   connect(feed_rss_schema_box,SIGNAL(activated(int)),
 	  this,SLOT(comboboxActivatedData(int)));
@@ -458,7 +458,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   feed_purge_url_edit->setText(feed_feed->purgeUrl());
   feed_purge_username_edit->setText(feed_feed->purgeUsername());
   feed_purge_password_edit->setText(feed_feed->purgePassword());
-  RDFeed::RssSchema schema=feed_feed->rssSchema();
+  RDRssSchemas::RssSchema schema=feed_feed->rssSchema();
   for(int i=0;i<feed_rss_schema_box->count();i++) {
     if(feed_rss_schema_box->itemData(i).toInt()==schema) {
       feed_rss_schema_box->setCurrentItem(i);
@@ -625,7 +625,7 @@ void EditFeed::okData()
   feed_feed->setPurgeUsername(feed_purge_username_edit->text());
   feed_feed->setPurgePassword(feed_purge_password_edit->text());
   feed_feed->
-    setRssSchema((RDFeed::RssSchema)feed_rss_schema_box->
+    setRssSchema((RDRssSchemas::RssSchema)feed_rss_schema_box->
 		 itemData(feed_rss_schema_box->currentIndex()).toUInt());
   feed_feed->setHeaderXml(feed_header_xml_edit->text());
   feed_feed->setChannelXml(feed_channel_xml_edit->text());
@@ -774,8 +774,8 @@ void EditFeed::UpdateControlState()
   bool redirected=feed_redirect_check->isChecked();
   bool custom_schema=
     feed_rss_schema_box->itemData(feed_rss_schema_box->currentIndex()).toInt()==
-    RDFeed::CustomSchema;
-  bool item_image=feed_rss_schema_box->itemData(feed_rss_schema_box->currentIndex()).toInt()!=RDFeed::Rss202Schema;
+    RDRssSchemas::CustomSchema;
+  bool item_image=feed_rss_schema_box->itemData(feed_rss_schema_box->currentIndex()).toInt()!=RDRssSchemas::Rss202Schema;
 
   feed_is_superfeed_label->setDisabled(redirected);
   feed_is_superfeed_box->setDisabled(redirected);

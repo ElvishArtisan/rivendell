@@ -199,6 +199,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdreport.cpp rdreport.h\
                         rdringbuffer.cpp rdringbuffer.h\
                         rdripc.cpp rdripc.h\
+                        rdrssschemas.cpp rdrssschemas.h\
                         rdschedcartlist.cpp rdschedcartlist.h\
                         rdschedcode.cpp rdschedcode.h\
                         rdschedcodes_dialog.cpp rdschedcodes_dialog.h\
