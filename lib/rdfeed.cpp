@@ -897,6 +897,37 @@ bool RDFeed::deleteXml(QString *err_msg)
 }
 
 
+bool RDFeed::deleteImages(QString *err_msg)
+{
+  RDDelete::ErrorCode conv_err=RDDelete::ErrorOk;
+
+  QString sql=QString("select ")+
+    "ID,"+              // 00
+    "FILE_EXTENSION "+  // 01
+    "from FEED_IMAGES where "+
+    "FEED_KEY_NAME=\""+RDEscapeString(keyName())+"\"";
+  RDSqlQuery *q=new RDSqlQuery(sql);
+  while(q->next()) {
+    QString img_url=purgeUrl()+"/"+
+      RDFeed::imageFilename(id(),q->value(0).toInt(),q->value(1).toString());
+    RDDelete *conv=new RDDelete(rda->config());
+    if(!conv->urlIsSupported(img_url)) {
+      *err_msg="unsupported url scheme";
+      delete conv;
+      return false;
+    }
+    conv->setTargetUrl(img_url);
+    conv_err=conv->runDelete(purgeUsername(),purgePassword(),
+			     rda->config()->logXloadDebugData());
+    *err_msg=RDDelete::errorText(conv_err);
+    delete conv;
+  }
+  delete q;
+
+  return conv_err==RDDelete::ErrorOk;
+}
+
+
 unsigned RDFeed::postCut(RDUser *user,RDStation *station,
 			 const QString &cutname,Error *err,bool log_debug,
 			 RDConfig *config)
@@ -1308,7 +1339,7 @@ unsigned RDFeed::create(const QString &keyname,bool enable_users,
 
   if(exemplar.isEmpty()) {
     //
-    // Create Feed
+    // Create an Empty Feed
     //
     sql=QString("insert into FEEDS set ")+
       "KEY_NAME=\""+RDEscapeString(keyname)+"\","+
@@ -1321,6 +1352,9 @@ unsigned RDFeed::create(const QString &keyname,bool enable_users,
     delete q;
   }
   else {
+    //
+    // Create a Cloned Feed
+    //
     sql=QString("select ")+
       "IS_SUPERFEED,"+         // 00
       "AUDIENCE_METRICS,"+     // 01
@@ -1351,7 +1385,8 @@ unsigned RDFeed::create(const QString &keyname,bool enable_users,
       "UPLOAD_EXTENSION,"+     // 26
       "NORMALIZE_LEVEL,"+      // 27
       "REDIRECT_PATH,"+        // 28
-      "MEDIA_LINK_MODE "+      // 29
+      "MEDIA_LINK_MODE,"+      // 29
+      "CHANNEL_IMAGE_ID "+     // 30
       "from FEEDS where "+
       "KEY_NAME=\""+RDEscapeString(exemplar)+"\"";
     q=new RDSqlQuery(sql);
@@ -1390,6 +1425,8 @@ unsigned RDFeed::create(const QString &keyname,bool enable_users,
 	QString().sprintf("NORMALIZE_LEVEL=%d,",q->value(27).toInt())+
 	"REDIRECT_PATH=\""+RDEscapeString(q->value(28).toString())+"\","+
 	QString().sprintf("MEDIA_LINK_MODE=%d",q->value(29).toInt());
+	//	QString().sprintf("CHANNEL_IMAGE_ID=%d",q->value(30).toInt());
+
       feed_id=RDSqlQuery::run(sql,&ok).toUInt();
       if(!ok) {
 	*err_msg=tr("Unable to insert new feed record!");
@@ -1418,6 +1455,40 @@ unsigned RDFeed::create(const QString &keyname,bool enable_users,
 	}
 	delete q1;
       }
+
+      //
+      // Duplicate Image Library Entries
+      //
+      sql=QString("select ")+
+	"ID,"+              // 00
+	"WIDTH,"+           // 01
+	"HEIGHT,"+          // 02
+	"DEPTH,"+           // 03
+	"DESCRIPTION,"+     // 04
+	"FILE_EXTENSION,"+  // 05
+	"DATA "             // 06
+	"from FEED_IMAGES where "+
+	"FEED_KEY_NAME=\""+RDEscapeString(exemplar)+"\"";
+      q1=new RDSqlQuery(sql);
+      while(q1->next()) {
+	sql=QString("insert into FEED_IMAGES set ")+
+	  QString().sprintf("FEED_ID=%u,",feed_id)+
+	  "FEED_KEY_NAME=\""+RDEscapeString(keyname)+"\","+
+	  QString().sprintf("WIDTH=%d,",q1->value(1).toInt())+
+	  QString().sprintf("HEIGHT=%d,",q1->value(2).toInt())+
+	  QString().sprintf("DEPTH=%d,",q1->value(3).toInt())+
+	  "DESCRIPTION=\""+RDEscapeString(q1->value(4).toString())+"\","+
+	  "FILE_EXTENSION=\""+RDEscapeString(q1->value(5).toString())+"\","+
+	  "DATA="+RDEscapeBlob(q1->value(6).toByteArray());
+	int img_id=RDSqlQuery::run(sql,&ok).toInt();
+	if(ok&&(q1->value(0).toInt()==q->value(30).toInt())) {
+	  sql=QString("update FEEDS set ")+
+	    QString().sprintf("CHANNEL_IMAGE_ID=%d ",img_id)+
+	    "where KEY_NAME=\""+RDEscapeString(keyname)+"\"";
+	  RDSqlQuery::apply(sql);
+	}
+      }
+      delete q1;
     }
     else {
       *err_msg=tr("Exemplar feed")+" \""+exemplar+"\" "+tr("does not exist!");

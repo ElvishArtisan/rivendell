@@ -5129,19 +5129,23 @@ Stále ještě jej chcete smazat?</translation>
     </message>
     <message>
         <source>Deleting</source>
-        <translation>Mazání</translation>
+        <translation type="obsolete">Mazání</translation>
     </message>
     <message>
         <source>Superfeed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Error</source>
+        <source>Failed to delete remote feed XML.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Failed to delete remote feed XML.</source>
+        <source>Failed to delete remote images.</source>
         <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Warning</source>
+        <translation type="unfinished">Varování</translation>
     </message>
 </context>
 <context>

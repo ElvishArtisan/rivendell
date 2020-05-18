@@ -4938,19 +4938,19 @@ Você ainda quer Deletar?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Deleting</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Superfeed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Error</source>
+        <source>Failed to delete remote feed XML.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Failed to delete remote feed XML.</source>
+        <source>Failed to delete remote images.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

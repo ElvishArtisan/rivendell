@@ -134,28 +134,7 @@ void ListImages::addData()
 			   "["+err_msg+"].");
       list_feed->deleteImage(img_id,&err_msg);
     }
-    /*
-    RDUpload *upload=new RDUpload(rda->config(),this);
-    upload->setSourceFile(filename);
-    upload->setDestinationUrl(list_feed->purgeUrl()+"/"+
-			      RDFeed::imageFilename(list_feed->id(),img_id,
-						    f0.last()));
-    QProgressDialog *pd=new QProgressDialog(tr("Uploading image..."),"",
-					    0,upload->totalSteps(),this);
-    connect(upload,SIGNAL(progressChanged(int)),pd,SLOT(setValue(int)));
-    if((err_code=upload->runUpload(list_feed->purgeUsername(),
-				   list_feed->purgePassword(),false))!=
-       RDUpload::ErrorOk) {
-      QMessageBox::warning(this,"RDAdmin - "+tr("Upload Error"),
-			   tr("Image upload failed!")+"\n"+
-			   "["+RDUpload::errorText(err_code)+"].");
-      list_feed->deleteImage(img_id,&err_msg);
-      delete upload;
-      return;
-    }
-    delete pd;
-    delete upload;
-    */
+
     //
     // Open dialog for setting the metadata
     //

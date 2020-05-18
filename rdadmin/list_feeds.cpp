@@ -135,7 +135,6 @@ void ListFeeds::addData()
   QString feed;
   unsigned id;
   QString sql;
-  RDSqlQuery *q;
 
   AddFeed *add_feed=new AddFeed(&id,&feed,this);
   if(add_feed->exec()<0) {
@@ -149,12 +148,16 @@ void ListFeeds::addData()
   if(edit_feed->exec()<0) {
     sql=QString("delete from FEED_PERMS where ")+
       "KEY_NAME=\""+RDEscapeString(feed)+"\"";
-    q=new RDSqlQuery(sql);
-    delete q;
+    RDSqlQuery::apply(sql);
+
+    sql=QString("delete from FEED_IMAGES where ")+
+      "FEED_KEY_NAME=\""+RDEscapeString(feed)+"\"";
+    RDSqlQuery::apply(sql);
+
     sql=QString("delete from FEEDS where ")+
       "KEY_NAME=\""+RDEscapeString(feed)+"\"";
-    q=new RDSqlQuery(sql);
-    delete q;
+    RDSqlQuery::apply(sql);
+
     RDDeleteFeedLog(feed);
     delete edit_feed;
     return;
@@ -221,9 +224,9 @@ void ListFeeds::deleteData()
   RDPodcast *cast;
   sql=QString().sprintf("select ID from PODCASTS where FEED_ID=%d",item->id());
   q=new RDSqlQuery(sql);
-  QProgressDialog *pd=new QProgressDialog(tr("Deleting Audio..."),tr("Cancel"),
+  QProgressDialog *pd=new QProgressDialog(tr("Deleting remote audio..."),"",
 					  0,q->size()+1,this);
-  pd->setWindowTitle("RDAdmin - "+tr("Deleting"));
+  pd->setWindowTitle("RDAdmin");
   pd->setValue(0);
   qApp->processEvents();
   sleep(1);
@@ -241,7 +244,7 @@ void ListFeeds::deleteData()
   //
   if(!feed->audienceMetrics()) {
     if(!feed->deleteXml(&errs)) {
-      QMessageBox::warning(this,"RDAdmin - "+tr("Error"),
+      QMessageBox::warning(this,"RDAdmin - "+tr("Warning"),
 			   tr("Failed to delete remote feed XML.")+
 			   "["+errs+"].");
     }
@@ -251,8 +254,19 @@ void ListFeeds::deleteData()
   // Delete Cast Entries
   //
   sql=QString().sprintf("delete from PODCASTS where FEED_ID=%d",item->id());
-  q=new RDSqlQuery(sql);
-  delete q;
+  RDSqlQuery::apply(sql);
+
+  //
+  // Delete Images
+  //
+  if(!feed->deleteImages(&errs)) {
+    QMessageBox::warning(this,"RDAdmin - "+tr("Warning"),
+			 tr("Failed to delete remote images.")+
+			 "["+errs+"].");
+  }
+  sql=QString("delete from FEED_IMAGES where ")+
+    QString().sprintf("FEED_ID=%d",feed->id());
+  RDSqlQuery::apply(sql);
 
   //
   // Delete Feed

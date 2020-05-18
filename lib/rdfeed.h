@@ -132,6 +132,7 @@ class RDFeed : public QObject
   bool postXml(QString *err_msg);
   bool postXmlConditional(const QString &caption,QWidget *widget);
   bool deleteXml(QString *err_msg);
+  bool deleteImages(QString *err_msg);
   unsigned postCut(RDUser *user,RDStation *station,
 		   const QString &cutname,Error *err,bool log_debug,
 		   RDConfig *config);
