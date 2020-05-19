@@ -1,7 +1,7 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v3.3.0int1 -- 2 May 2020
+v3.4.0 -- 19 May 2020
 
 Changes:
    Edit Event dialog in rdlogmanager(1) - Cleaned up the layout of the
