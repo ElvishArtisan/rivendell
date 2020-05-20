@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Podcast
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -127,6 +127,31 @@ QString RDPodcast::itemDescription() const
 void RDPodcast::setItemDescription(const QString &str) const
 {
   SetRow("ITEM_DESCRIPTION",str);
+}
+
+
+bool RDPodcast::itemExplicit() const
+{
+  return RDBool(RDGetSqlValue("PODCASTS","ID",podcast_id,
+			      "ITEM_EXPLICIT").toString());
+}
+
+
+void RDPodcast::setItemExplicit(bool state) const
+{
+  SetRow("ITEM_EXPLICIT",RDYesNo(state));
+}
+
+
+int RDPodcast::itemImageId() const
+{
+  return RDGetSqlValue("PODCASTS","ID",podcast_id,"ITEM_IMAGE_ID").toInt();
+}
+
+
+void RDPodcast::setItemImageId(int img_id) const
+{
+  SetRow("ITEM_IMAGE_ID",img_id);
 }
 
 

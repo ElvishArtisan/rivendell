@@ -19961,3 +19961,11 @@
 	'Edit Feed' dialog box in rdadmin(1).
 	* Added a 'Channel contains explicit content' checkbox to the
 	'Edit Feed' dialog box in rdadmin(1).
+2020-05-20 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDPodcast::itemExplicit()', 'RDPodcast::setItemExplicit()',
+	'RDPodcast::itemImageId()', and 'RDPodcast::setItemImageId()'
+	methods.
+	* Added a 'Post contains explicit content' checkbox to the 'Edit
+	Podcast' dialog in rdcastmanager(1).
+	* Added an 'Image' control to the 'Edit Podcast dialog in
+	rdcastmanager(1).

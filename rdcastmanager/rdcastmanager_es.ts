@@ -97,6 +97,14 @@ Episodios</translation>
         <source>Expires On:</source>
         <translation>Expira el:</translation>
     </message>
+    <message>
+        <source>Post contains explicit content</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Image</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListCasts</name>

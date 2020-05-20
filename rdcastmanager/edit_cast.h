@@ -21,8 +21,8 @@
 #ifndef EDIT_CAST_H
 #define EDIT_CAST_H
 
-
 #include <qbuttongroup.h>
+#include <qcheckbox.h>
 #include <qcombobox.h>
 #include <qdatetimeedit.h>
 #include <qlabel.h>
@@ -33,6 +33,7 @@
 
 #include <rddialog.h>
 #include <rdfeed.h>
+#include <rdimagepickerbox.h>
 #include <rdpodcast.h>
 
 class EditCast : public RDDialog
@@ -70,6 +71,10 @@ class EditCast : public RDDialog
   QLineEdit *cast_item_link_edit;
   QLabel *cast_item_description_label;
   QTextEdit *cast_item_description_edit;
+  QCheckBox *cast_item_explicit_check;
+  QLabel *cast_item_explicit_label;
+  QLabel *cast_item_image_label;
+  RDImagePickerBox *cast_item_image_box;
   QLabel *cast_item_comments_label;
   QLineEdit *cast_item_comments_edit;
   QLabel *cast_item_origin_label;

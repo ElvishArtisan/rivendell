@@ -18,8 +18,6 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#include <qsqldatabase.h>
-
 #include <rdconfig.h>
 #include <rdfeed.h>
 
@@ -40,6 +38,10 @@ class RDPodcast
   void setItemTitle(const QString &str) const;
   QString itemDescription() const;
   void setItemDescription(const QString &str) const;
+  bool itemExplicit() const;
+  void setItemExplicit(bool state) const;
+  int itemImageId() const;
+  void setItemImageId(int img_id) const;
   QString itemCategory() const;
   void setItemCategory(const QString &str) const;
   QString itemLink() const;

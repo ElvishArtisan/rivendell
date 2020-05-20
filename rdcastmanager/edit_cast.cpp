@@ -101,6 +101,20 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
     setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
+  // Item Explicit
+  //
+  cast_item_explicit_check=new QCheckBox(this);
+  cast_item_explicit_label=new QLabel(cast_item_explicit_check,
+				     tr("Post contains explicit content"),this);
+  cast_item_explicit_label->setFont(labelFont());
+  cast_item_explicit_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
+
+  cast_item_image_box=new RDImagePickerBox("FEED_IMAGES","FEED_ID","ID",this);
+  cast_item_image_label=new QLabel(cast_item_image_box,tr("Image")+":",this);
+  cast_item_image_label->setFont(labelFont());
+  cast_item_image_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+
+  //
   // Item Comments
   //
   cast_item_comments_edit=new QLineEdit(this);
@@ -169,8 +183,6 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   cast_item_expiration_button->
     setEnabled(cast_status!=RDPodcast::StatusExpired);
 
-
-
   //
   // Cast Status
   //
@@ -238,6 +250,9 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   cast_item_category_edit->setText(cast_cast->itemCategory());
   cast_item_link_edit->setText(cast_cast->itemLink());
   cast_item_description_edit->setText(cast_cast->itemDescription());
+  cast_item_explicit_check->setChecked(cast_cast->itemExplicit());
+  cast_item_image_box->setCategoryId(cast_feed->id());
+  cast_item_image_box->setCurrentImageId(cast_cast->itemImageId());
   cast_item_comments_edit->setText(cast_cast->itemComments());
   cast_item_effective_edit->
     setDateTime(RDUtcToLocal(cast_cast->effectiveDateTime()));
@@ -279,7 +294,7 @@ EditCast::~EditCast()
 
 QSize EditCast::sizeHint() const
 {
-  return QSize(640,420);
+  return QSize(640,442);
 } 
 
 
@@ -345,6 +360,8 @@ void EditCast::okData()
   cast_cast->setItemCategory(cast_item_category_edit->text());
   cast_cast->setItemLink(cast_item_link_edit->text());
   cast_cast->setItemDescription(cast_item_description_edit->text());
+  cast_cast->setItemExplicit(cast_item_explicit_check->isChecked());
+  cast_cast->setItemImageId(cast_item_image_box->currentImageId());
   cast_cast->setItemComments(cast_item_comments_edit->text());
   cast_cast->
     setEffectiveDateTime(RDLocalToUtc(cast_item_effective_edit->dateTime()));
@@ -391,7 +408,6 @@ void EditCast::cancelData()
 void EditCast::resizeEvent(QResizeEvent *e)
 {
   int ypos=0;
-  int w=size().width();
   int h=size().height();
 
   cast_item_medialink_edit->setGeometry(135,10,size().width()-145,20);
@@ -412,7 +428,14 @@ void EditCast::resizeEvent(QResizeEvent *e)
   cast_item_link_label->setGeometry(20,ypos+66,110,20);
   cast_item_description_label->setGeometry(20,ypos+88,110,20);
   cast_item_description_edit->
-    setGeometry(135,ypos+88,size().width()-145,h-ypos-297);
+    setGeometry(135,ypos+88,size().width()-145,h-ypos-359);
+
+  cast_item_explicit_check->setGeometry(140,h-266,15,15);
+  cast_item_explicit_label->setGeometry(160,h-269,size().width()-145,20);
+
+  cast_item_image_label->setGeometry(20,h-247,110,20);
+  cast_item_image_box->setIconSize(QSize(36,36));
+  cast_item_image_box->setGeometry(135,h-247,300,38);
 
   // "Comments URL"
   cast_item_comments_edit->setGeometry(135,h-207,size().width()-145,20);
