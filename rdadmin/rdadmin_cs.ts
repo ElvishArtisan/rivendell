@@ -1445,7 +1445,7 @@ files, causing any whose files remain to be imported again.</source>
     </message>
     <message>
         <source>Key Name:</source>
-        <translation>Název klíče:</translation>
+        <translation type="obsolete">Název klíče:</translation>
     </message>
     <message>
         <source>CHANNEL VALUES</source>
@@ -1687,6 +1687,22 @@ Feeds</source>
     </message>
     <message>
         <source>Images</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Author:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Owner Name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Owner E-Mail:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Channel contains explicit content</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5121,11 +5137,11 @@ Stále ještě jej chcete smazat?</translation>
     </message>
     <message>
         <source>Deleting Audio...</source>
-        <translation>Mazání zvuku...</translation>
+        <translation type="obsolete">Mazání zvuku...</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Zrušit</translation>
+        <translation type="obsolete">Zrušit</translation>
     </message>
     <message>
         <source>Deleting</source>
@@ -5146,6 +5162,10 @@ Stále ještě jej chcete smazat?</translation>
     <message>
         <source>Warning</source>
         <translation type="unfinished">Varování</translation>
+    </message>
+    <message>
+        <source>Deleting remote audio...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

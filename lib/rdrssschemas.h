@@ -29,7 +29,7 @@
 class RDRssSchemas
 {
  public:
-  enum RssSchema {CustomSchema=0,Rss202Schema=1,LastSchema=2};
+  enum RssSchema {CustomSchema=0,Rss202Schema=1,AppleSchema=2,LastSchema=3};
   RDRssSchemas();
   QString name(RssSchema schema) const;
   QSize minimumImageSize(RssSchema schema) const;
@@ -37,6 +37,7 @@ class RDRssSchemas
   QString headerTemplate(RssSchema schema) const;
   QString channelTemplate(RssSchema schema) const;
   QString itemTemplate(RssSchema schema) const;
+  bool supportsItemImages(RssSchema schema) const;
 
  private:
   QStringList c_names;
@@ -45,6 +46,7 @@ class RDRssSchemas
   QStringList c_header_templates;
   QStringList c_channel_templates;
   QStringList c_item_templates;
+  QList<bool> c_supports_item_images;
 };
 
 

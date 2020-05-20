@@ -19946,3 +19946,18 @@
 	* Added 'RDRssSchemas' class.
 2020-05-18 Fred Gleason <fredg@paravelsystems.com>
 	* Added code to remove remote imaging when deleting an RSS feed.
+2020-05-20 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'FEEDS.CHANNEL_AUTHOR', 'FEEDS.CHANNEL_OWNER_NAME',
+	'FEEDS.CHANNEL_OWNER_EMAIL', 'FEEDS.CHANNEL_EXPLICIT' and
+	'PODCASTS.ITEM_EXPLICIT' fields to the database.
+	* Incremented the database version to 326.
+	* Added 'RDFeed::channelAuthor()', 'RDFeed::setChannelAuthor()',
+	'RDFeed::channelOwnerName()', 'RDFeed::setChannelOwnerName()',
+	'RDFeed::channelOwnerEmail(), 'RDFeed::setChannelOwnerEmail()',
+	'RDFeed::channelExplicit()', 'RDFeed::setChannelExplicit()',
+	'RDPodcast::itemExplicit()' and 'RDPodcast::setItemExplicit()'
+	methods.
+	* Added 'Author', Owner Name' and 'Owner E-Mail controls to the
+	'Edit Feed' dialog box in rdadmin(1).
+	* Added a 'Channel contains explicit content' checkbox to the
+	'Edit Feed' dialog box in rdadmin(1).

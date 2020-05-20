@@ -15,6 +15,7 @@ ITEM_COMMENTS        varchar(191)
 ITEM_AUTHOR          varchar(191)
 ITEM_SOURCE_TEXT     varchar(64)
 ITEM_SOURCE_URL      varchar(191)
+ITEM_EXPLICIT        enum('N','Y')
 ITEM_IMAGE_ID        int(11)           From FEED_IMAGES.ID
 AUDIO_FILENAME       varchar(191)
 AUDIO_LENGTH         int(10) unsigned

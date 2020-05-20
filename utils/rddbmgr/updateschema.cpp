@@ -10063,6 +10063,36 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<326)&&(set_schema>cur_schema)) {
+    sql=QString("alter table FEEDS add column CHANNEL_AUTHOR varchar(64) ")+
+      "after CHANNEL_EDITOR";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table FEEDS add column CHANNEL_OWNER_NAME varchar(64) ")+
+      "after CHANNEL_AUTHOR";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table FEEDS add column ")+
+      "CHANNEL_OWNER_EMAIL varchar(64) after CHANNEL_OWNER_NAME";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table FEEDS add column CHANNEL_EXPLICIT enum('N','Y') ")+
+      "not null default 'N' after CHANNEL_LANGUAGE";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("alter table PODCASTS add column ITEM_EXPLICIT enum('N','Y') ")+
+      "not null default 'N' after ITEM_SOURCE_URL";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
 
 
   // NEW SCHEMA UPDATES GO HERE...

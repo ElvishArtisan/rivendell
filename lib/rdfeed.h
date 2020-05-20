@@ -63,10 +63,18 @@ class RDFeed : public QObject
   void setChannelCopyright(const QString &str) const;
   QString channelEditor() const;
   void setChannelEditor(const QString &str) const;
+  QString channelAuthor() const;
+  void setChannelAuthor(const QString &str) const;
+  QString channelOwnerName() const;
+  void setChannelOwnerName(const QString &str) const;
+  QString channelOwnerEmail() const;
+  void setChannelOwnerEmail(const QString &str) const;
   QString channelWebmaster() const;
   void setChannelWebmaster(const QString &str) const;
   QString channelLanguage() const;
   void setChannelLanguage(const QString &str);
+  bool channelExplicit() const;
+  void setChannelExplicit(bool state) const;
   int channelImageId() const;
   void setChannelImageId(int img_id) const;
   int defaultItemImageId() const;

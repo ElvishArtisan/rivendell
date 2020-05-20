@@ -1447,7 +1447,7 @@ files, causing any whose files remain to be imported again.</source>
     </message>
     <message>
         <source>Key Name:</source>
-        <translation>Nombre:</translation>
+        <translation type="obsolete">Nombre:</translation>
     </message>
     <message>
         <source>Title:</source>
@@ -1690,6 +1690,22 @@ Feeds</source>
     </message>
     <message>
         <source>Images</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Author:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Owner Name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Owner E-Mail:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Channel contains explicit content</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5088,11 +5104,11 @@ Do you still want to delete it?</source>
     </message>
     <message>
         <source>Deleting Audio...</source>
-        <translation>Eliminando Audio...</translation>
+        <translation type="obsolete">Eliminando Audio...</translation>
     </message>
     <message>
         <source>Cancel</source>
-        <translation>Cancelar</translation>
+        <translation type="obsolete">Cancelar</translation>
     </message>
     <message>
         <source>Deleting</source>
@@ -5113,6 +5129,10 @@ Do you still want to delete it?</source>
     <message>
         <source>Warning</source>
         <translation type="unfinished">Advertencia</translation>
+    </message>
+    <message>
+        <source>Deleting remote audio...</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

@@ -42,6 +42,19 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
 
   //
+  // Revert 326
+  //
+  if((cur_schema==326)&&(set_schema<cur_schema)) {
+    DropColumn("PODCASTS","ITEM_EXPLICIT");
+    DropColumn("FEEDS","CHANNEL_EXPLICIT");
+    DropColumn("FEEDS","CHANNEL_OWNER_EMAIL");
+    DropColumn("FEEDS","CHANNEL_OWNER_NAME");
+    DropColumn("FEEDS","CHANNEL_AUTHOR");
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 325
   //
   if((cur_schema==325)&&(set_schema<cur_schema)) {

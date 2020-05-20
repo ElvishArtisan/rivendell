@@ -1324,10 +1324,6 @@ files, causing any whose files remain to be imported again.</source>
         <translation type="unfinished">Feed: </translation>
     </message>
     <message>
-        <source>Key Name:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Title:</source>
         <translation type="unfinished">Título:</translation>
     </message>
@@ -1542,6 +1538,22 @@ Feeds</source>
     </message>
     <message>
         <source>Images</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Author:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Owner Name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Owner E-Mail:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Channel contains explicit content</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4930,14 +4942,6 @@ Você ainda quer Deletar?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Deleting Audio...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Superfeed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4951,6 +4955,10 @@ Você ainda quer Deletar?</translation>
     </message>
     <message>
         <source>Warning</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Deleting remote audio...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

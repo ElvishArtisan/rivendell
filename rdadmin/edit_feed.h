@@ -65,8 +65,6 @@ class EditFeed : public RDDialog
   void UpdateControlState();
   RDFeed *feed_feed;
   RDImagePickerModel *feed_image_model;
-  QLabel *feed_keyname_label;
-  QLineEdit *feed_keyname_edit;
   QLabel *feed_is_superfeed_label;
   QPushButton *feed_is_superfeed_button;
   QPushButton *feed_list_images_button;
@@ -80,9 +78,17 @@ class EditFeed : public RDDialog
   QLineEdit *feed_channel_copyright_edit;
   QLabel *feed_channel_editor_label;
   QLineEdit *feed_channel_editor_edit;
+  QLabel *feed_channel_author_label;
+  QLineEdit *feed_channel_author_edit;
+  QLabel *feed_channel_owner_name_label;
+  QLineEdit *feed_channel_owner_name_edit;
+  QLabel *feed_channel_owner_email_label;
+  QLineEdit *feed_channel_owner_email_edit;
   QLabel *feed_channel_webmaster_label;
   QLineEdit *feed_channel_webmaster_edit;
   QLineEdit *feed_channel_language_edit;
+  QCheckBox *feed_channel_explicit_check;
+  QLabel *feed_channel_explicit_label;
   QLineEdit *feed_base_url_edit;
   QLineEdit *feed_base_preamble_edit;
   QLineEdit *feed_purge_url_edit;

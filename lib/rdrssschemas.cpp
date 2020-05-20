@@ -27,20 +27,23 @@ RDRssSchemas::RDRssSchemas()
   //
   c_names.push_back("Custom");     // CustomSchema
   c_names.push_back("RSS 2.0.2");  // Rss202Schema
+  c_names.push_back("Apple");      // AppleSchema
 
 
   //
   // Minimum Images Sizes
   //
-  c_minimum_image_sizes.push_back(QSize(0,0));      // CustomSchema
-  c_minimum_image_sizes.push_back(QSize(88,31));    // Rss202Schema
+  c_minimum_image_sizes.push_back(QSize(0,0));       // CustomSchema
+  c_minimum_image_sizes.push_back(QSize(88,31));     // Rss202Schema
+  c_minimum_image_sizes.push_back(QSize(1400,1400)); // AppleSchema
 
 
   //
   // Maximum Image Sizes
   //
-  c_maximum_image_sizes.push_back(QSize(0,0));      // CustomSchema
-  c_maximum_image_sizes.push_back(QSize(144,400));  // Rss202Schema
+  c_maximum_image_sizes.push_back(QSize(0,0));        // CustomSchema
+  c_maximum_image_sizes.push_back(QSize(144,400));    // Rss202Schema
+  c_maximum_image_sizes.push_back(QSize(3000,3000));  // AppleSchema
 
 
   //
@@ -52,6 +55,8 @@ RDRssSchemas::RDRssSchemas()
   // Rss202Schema
   c_header_templates.push_back("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\">");
 
+  // AppleSchema
+  c_header_templates.push_back("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<rss version=\"2.0\" xmlns:itunes=\"http://www.itunes.com/dtds/podcast-1.0.dtd\" xmlns:content=\"http://purl.org/rss/1.0/modules/content/\">");
 
   //
   // Channel Templates
@@ -61,6 +66,22 @@ RDRssSchemas::RDRssSchemas()
 
   // Rs202Schema
   c_channel_templates.push_back("<title>%TITLE%</title>\n<description>%DESCRIPTION%</description>\n<category>%CATEGORY%</category>\n<link>%LINK%</link>\n<language>%LANGUAGE%</language>\n<copyright>%COPYRIGHT%</copyright>\n<lastBuildDate>%BUILD_DATE%</lastBuildDate>\n<pubDate>%PUBLISH_DATE%</pubDate>\n<managingEditor>%EDITOR%</managingEditor>\n<webMaster>%WEBMASTER%</webMaster>\n<generator>%GENERATOR%</generator>\n<image>\n  <url>%IMAGE_URL%</url>\n  <title>%TITLE%</title>\n  <link>%LINK%</link>\n  <width>%IMAGE_WIDTH%</width>\n  <height>%IMAGE_HEIGHT%</height>\n  <description>%IMAGE_DESCRIPTION%</description>\n</image>\n<atom:link href=\"%FEED_URL%\" rel=\"self\" type=\"application/rss+xml\" />");
+
+  // AppleSchema
+  c_channel_templates.push_back("<title>%TITLE%</title>\n<description>%DESCRIPTION%</description>\n<category>%CATEGORY%</category>\n<link>%LINK%</link>\n<language>%LANGUAGE%</language>\n<copyright>%COPYRIGHT%</copyright>\n<itunes:author>%AUTHOR%</itunes:author>\n<lastBuildDate>%BUILD_DATE%</lastBuildDate>\n<pubDate>%PUBLISH_DATE%</pubDate>\n<managingEditor>%EDITOR%</managingEditor>\n<webMaster>%WEBMASTER%</webMaster>\n<generator>%GENERATOR%</generator>\n<image>\n  <url>%IMAGE_URL%</url>\n  <title>%TITLE%</title>\n  <link>%LINK%</link>\n  <width>%IMAGE_WIDTH%</width>\n  <height>%IMAGE_HEIGHT%</height>\n  <description>%IMAGE_DESCRIPTION%</description>\n</image>\n<atom:link href=\"%FEED_URL%\" rel=\"self\" type=\"application/rss+xml\" />");
+
+
+  //
+  // Item Image Support
+  //
+  // CustomSchema
+  c_supports_item_images.push_back(true);
+
+  // Rss202Schema
+  c_supports_item_images.push_back(false);
+
+  // AppleSchema
+  c_supports_item_images.push_back(true);
 
 
   //
@@ -107,4 +128,10 @@ QString RDRssSchemas::channelTemplate(RssSchema schema) const
 QString RDRssSchemas::itemTemplate(RssSchema schema) const
 {
   return c_item_templates.at(schema);
+}
+
+
+bool RDRssSchemas::supportsItemImages(RssSchema schema) const
+{
+  return c_supports_item_images.at(schema);
 }

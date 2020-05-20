@@ -1024,10 +1024,6 @@ files, causing any whose files remain to be imported again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Key Name:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Title:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1242,6 +1238,22 @@ Feeds</source>
     </message>
     <message>
         <source>Images</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Author:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Owner Name:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Owner E-Mail:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Channel contains explicit content</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4100,14 +4112,6 @@ Permissions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Deleting Audio...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Superfeed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4121,6 +4125,10 @@ Permissions</source>
     </message>
     <message>
         <source>Warning</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Deleting remote audio...</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
