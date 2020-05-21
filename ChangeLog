@@ -19981,3 +19981,6 @@
 2020-05-21 Fred Gleason <fredg@paravelsystems.com>
 	* Added image size and type data to the 'View Image' dialog in
 	rdadmin(1).
+2020-05-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added a check to verify correct size of imported images in
+	'RDFeed::importImageFile()'.

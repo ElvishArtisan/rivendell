@@ -741,7 +741,8 @@ int RDFeed::importImageFile(const QString &pathname,QString *err_msg,
   bool ok=false;
   QString sql;
   int ret;
-
+  QSize min=rssSchemas()->minimumImageSize(rssSchema());
+  QSize max=rssSchemas()->maximumImageSize(rssSchema());
   *err_msg="OK";
 
   //
@@ -749,7 +750,7 @@ int RDFeed::importImageFile(const QString &pathname,QString *err_msg,
   //
   QFile file(pathname);
   if(!file.open(QIODevice::ReadOnly)) {
-    *err_msg=QString("unable to open image file [")+
+    *err_msg=QString("Unable to open image file [")+
       QString(strerror(errno))+"]";
     return -1;
   }
@@ -761,7 +762,21 @@ int RDFeed::importImageFile(const QString &pathname,QString *err_msg,
   //
   QImage *img=new QImage();
   if(!img->loadFromData(data)) {
-    *err_msg="invalid image file";
+    *err_msg="Invalid image file!";
+    return -1;
+  }
+  if((!min.isNull())&&
+     ((img->width()<min.width())||(img->height()<min.height()))) {
+    *err_msg=
+      QString().sprintf("Image is too small - %dx%d or larger required",
+			min.width(),min.height());
+    return -1;
+  }
+  if((!max.isNull())&&
+     ((img->width()>max.width())||(img->height()>max.height()))) {
+    *err_msg=
+      QString().sprintf("Image is too large - %dx%d or smaller required",
+			max.width(),max.height());
     return -1;
   }
 
