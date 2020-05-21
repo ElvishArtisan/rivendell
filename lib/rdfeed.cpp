@@ -44,16 +44,6 @@
 #include "rdupload.h"
 #include "rdwavefile.h"
 
-//
-// Default XML Templates
-//
-/*
-#define DEFAULT_HEADER_XML "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<rss version=\"2.0\" xmlns:atom=\"http://www.w3.org/2005/Atom\">"
-
-#define DEFAULT_CHANNEL_XML "<title>%TITLE%</title>\n<description>%DESCRIPTION%</description>\n<category>%CATEGORY%</category>\n<link>%LINK%</link>\n<language>%LANGUAGE%</language>\n<copyright>%COPYRIGHT%</copyright>\n<lastBuildDate>%BUILD_DATE%</lastBuildDate>\n<pubDate>%PUBLISH_DATE%</pubDate>\n<managingEditor>%EDITOR%</managingEditor>\n<webMaster>%WEBMASTER%</webMaster>\n<generator>%GENERATOR%</generator>\n<atom:link href=\"%FEED_URL%\" rel=\"self\" type=\"application/rss+xml\" />"
-
-#define DEFAULT_ITEM_XML "<title>%ITEM_TITLE%</title>\n<link>%ITEM_LINK%</link>\n<guid isPermaLink=\"false\">%ITEM_GUID%</guid>\n<description>%ITEM_DESCRIPTION%</description>\n<author>%ITEM_AUTHOR%</author>\n<comments>%ITEM_COMMENTS%</comments>\n<source url=\"%ITEM_SOURCE_URL%\">%ITEM_SOURCE_TEXT%</source>\n<enclosure url=\"%ITEM_AUDIO_URL%\" length=\"%ITEM_AUDIO_LENGTH%\"  type=\"audio/mpeg\" />\n<category>%ITEM_CATEGORY%</category>\n<pubDate>%ITEM_PUBLISH_DATE%</pubDate>"
-*/
 size_t __RDFeed_Readfunction_Callback(char *buffer,size_t size,size_t nitems,
 				      void *userdata)
 {
@@ -1116,6 +1106,12 @@ unsigned RDFeed::postCut(RDUser *user,RDStation *station,
   emit postProgressChanged(3);
   unlink(tmpfile);
   delete upload;
+
+  //
+  // Set default cast parameters
+  //
+  cast->setItemAuthor(user->emailContact());
+  cast->setItemImageId(defaultItemImageId());
   delete cast;
 
   if(!audienceMetrics()) {
@@ -1129,8 +1125,9 @@ unsigned RDFeed::postCut(RDUser *user,RDStation *station,
 }
 
 
-unsigned RDFeed::postFile(RDStation *station,const QString &srcfile,Error *err,
-			  bool log_debug,RDConfig *config)
+unsigned RDFeed::postFile(RDUser *user,RDStation *station,
+			  const QString &srcfile,Error *err,bool log_debug,
+			  RDConfig *config)
 {
   QString err_msg;
   QString sql;
@@ -1236,9 +1233,16 @@ unsigned RDFeed::postFile(RDStation *station,const QString &srcfile,Error *err,
     return 0;
   }
   delete upload;
-  delete cast;
+
   unlink(QString(tmpfile)+".wav");
   unlink(tmpfile);
+
+  //
+  // Set default cast parameters
+  //
+  cast->setItemAuthor(user->emailContact());
+  cast->setItemImageId(defaultItemImageId());
+  delete cast;
 
   if(!audienceMetrics()) {
     emit postProgressChanged(4);
@@ -1357,26 +1361,27 @@ QString RDFeed::rssXml(QString *err_msg,bool *ok)
     where =QString().sprintf("(PODCASTS.FEED_ID=%u)&&",q->value(18).toUInt());
   }
   sql=QString("select ")+
-    "PODCASTS.ITEM_TITLE,"+          // 00
-    "PODCASTS.ITEM_DESCRIPTION,"+    // 01
-    "PODCASTS.ITEM_CATEGORY,"+       // 02
-    "PODCASTS.ITEM_LINK,"+           // 03
-    "PODCASTS.ITEM_AUTHOR,"+         // 04
-    "PODCASTS.ITEM_SOURCE_TEXT,"+    // 05
-    "PODCASTS.ITEM_SOURCE_URL,"+     // 06
-    "PODCASTS.ITEM_COMMENTS,"+       // 07
-    "PODCASTS.ITEM_EXPLICIT,"+       // 08
-    "PODCASTS.AUDIO_FILENAME,"+      // 09
-    "PODCASTS.AUDIO_LENGTH,"+        // 10
-    "PODCASTS.AUDIO_TIME,"+          // 11
-    "PODCASTS.EFFECTIVE_DATETIME,"+  // 12
-    "PODCASTS.ID,"+                  // 13
-    "FEEDS.BASE_URL,"+               // 14
-    "FEED_IMAGES.ID,"+               // 15
-    "FEED_IMAGES.WIDTH,"+            // 16
-    "FEED_IMAGES.HEIGHT,"+           // 17
-    "FEED_IMAGES.DESCRIPTION,"+      // 18
-    "FEED_IMAGES.FILE_EXTENSION "+   // 19
+    "PODCASTS.FEED_ID,"+             // 00
+    "PODCASTS.ITEM_TITLE,"+          // 01
+    "PODCASTS.ITEM_DESCRIPTION,"+    // 02
+    "PODCASTS.ITEM_CATEGORY,"+       // 03
+    "PODCASTS.ITEM_LINK,"+           // 04
+    "PODCASTS.ITEM_AUTHOR,"+         // 05
+    "PODCASTS.ITEM_SOURCE_TEXT,"+    // 06
+    "PODCASTS.ITEM_SOURCE_URL,"+     // 07
+    "PODCASTS.ITEM_COMMENTS,"+       // 08
+    "PODCASTS.ITEM_EXPLICIT,"+       // 09
+    "PODCASTS.AUDIO_FILENAME,"+      // 10
+    "PODCASTS.AUDIO_LENGTH,"+        // 11
+    "PODCASTS.AUDIO_TIME,"+          // 12
+    "PODCASTS.EFFECTIVE_DATETIME,"+  // 13
+    "PODCASTS.ID,"+                  // 14
+    "FEEDS.BASE_URL,"+               // 15
+    "FEED_IMAGES.ID,"+               // 16
+    "FEED_IMAGES.WIDTH,"+            // 17
+    "FEED_IMAGES.HEIGHT,"+           // 18
+    "FEED_IMAGES.DESCRIPTION,"+      // 19
+    "FEED_IMAGES.FILE_EXTENSION "+   // 20
     "from PODCASTS left join FEEDS "+
     "on PODCASTS.FEED_ID=FEEDS.ID "+
     "left join FEED_IMAGES "+
@@ -1770,57 +1775,57 @@ QString RDFeed::ResolveItemWildcards(const QString &tmplt,RDSqlQuery *item_q,
   QString ret="      "+tmplt;
 
   ret.replace("\n","\r\n      ");
-  ret.replace("%ITEM_TITLE%",RDXmlEscape(item_q->value(0).toString()));
+  ret.replace("%ITEM_TITLE%",RDXmlEscape(item_q->value(1).toString()));
   ret.replace("%ITEM_DESCRIPTION%",
-	      RDXmlEscape(item_q->value(1).toString()));
-  ret.replace("%ITEM_CATEGORY%",
 	      RDXmlEscape(item_q->value(2).toString()));
-  ret.replace("%ITEM_LINK%",RDXmlEscape(item_q->value(3).toString()));
-  ret.replace("%ITEM_AUTHOR%",RDXmlEscape(item_q->value(4).toString()));
+  ret.replace("%ITEM_CATEGORY%",
+	      RDXmlEscape(item_q->value(3).toString()));
+  ret.replace("%ITEM_LINK%",RDXmlEscape(item_q->value(4).toString()));
+  ret.replace("%ITEM_AUTHOR%",RDXmlEscape(item_q->value(5).toString()));
   if(chan_q->value(1).toString()=="Y") {  // Audience Metrics
     ret.replace("%ITEM_SOURCE_TEXT%",
-		RDXmlEscape(item_q->value(5).toString()));
-    ret.replace("%ITEM_SOURCE_URL%",
 		RDXmlEscape(item_q->value(6).toString()));
+    ret.replace("%ITEM_SOURCE_URL%",
+		RDXmlEscape(item_q->value(7).toString()));
   }
   else {
     ret.replace("%ITEM_SOURCE_TEXT%",
 		RDXmlEscape(chan_q->value(0).toString()));
     ret.replace("%ITEM_SOURCE_URL%",
-		RDXmlEscape(item_q->value(14).toString()+"/"+keyName()));    
+		RDXmlEscape(item_q->value(15).toString()+"/"+keyName()));    
   }
   ret.replace("%ITEM_COMMENTS%",
-	      RDXmlEscape(item_q->value(7).toString()));
+	      RDXmlEscape(item_q->value(8).toString()));
   QString explicit_str="false";
-  if(item_q->value(8).toString()=="Y") {
+  if(item_q->value(9).toString()=="Y") {
     explicit_str="true";
   }
   ret.replace("%ITEM_EXPLICIT%",explicit_str);
   if(chan_q->value(23).toString()=="Y") {
     ret.replace("%ITEM_AUDIO_URL%",
 		RDXmlEscape(audioUrl(RDFeed::LinkCounted,feed_cgi_hostname,
-				     item_q->value(13).toUInt())));
+				     item_q->value(14).toUInt())));
   }
   else {
     ret.replace("%ITEM_AUDIO_URL%",
 		RDXmlEscape(audioUrl(RDFeed::LinkDirect,feed_cgi_hostname,
-				     item_q->value(13).toUInt())));
+				     item_q->value(14).toUInt())));
   }
-  ret.replace("%ITEM_AUDIO_LENGTH%",item_q->value(10).toString());
+  ret.replace("%ITEM_AUDIO_LENGTH%",item_q->value(11).toString());
   ret.replace("%ITEM_AUDIO_TIME%",
-	      RDGetTimeLength(item_q->value(11).toInt(),false,false));
+	      RDGetTimeLength(item_q->value(12).toInt(),false,false));
   ret.replace("%ITEM_AUDIO_SECONDS%",
-	      QString().sprintf("%d",item_q->value(11).toInt()/1000));
-  ret.replace("%ITEM_PUBLISH_DATE%",item_q->value(12).toDateTime().
+	      QString().sprintf("%d",item_q->value(12).toInt()/1000));
+  ret.replace("%ITEM_PUBLISH_DATE%",item_q->value(13).toDateTime().
 	      toString("ddd, d MMM yyyy hh:mm:ss ")+"GMT");
-  ret.replace("%ITEM_GUID%",RDPodcast::guid(chan_q->value(17).toString(),
-					    item_q->value(9).toString(),
-					    chan_q->value(16).toUInt(),
-					    item_q->value(13).toUInt()));
-  ret.replace("%ITEM_IMAGE_URL%",chan_q->value(17).toString()+"/"+
-	      RDFeed::imageFilename(chan_q->value(18).toInt(),
-				    item_q->value(15).toInt(),
-				    item_q->value(19).toString()));
+  ret.replace("%ITEM_GUID%",RDPodcast::guid(item_q->value(15).toString(),
+					    item_q->value(10).toString(),
+					    item_q->value(0).toUInt(),
+					    item_q->value(14).toUInt()));
+  ret.replace("%ITEM_IMAGE_URL%",item_q->value(15).toString()+"/"+
+	      RDFeed::imageFilename(item_q->value(0).toInt(),
+				    item_q->value(16).toInt(),
+				    item_q->value(20).toString()));
   return ret;
 }
 

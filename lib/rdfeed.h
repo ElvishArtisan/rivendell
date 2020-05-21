@@ -145,8 +145,8 @@ class RDFeed : public QObject
   unsigned postCut(RDUser *user,RDStation *station,
 		   const QString &cutname,Error *err,bool log_debug,
 		   RDConfig *config);
-  unsigned postFile(RDStation *station,const QString &srcfile,Error *err,
-		    bool log_debug,RDConfig *config);
+  unsigned postFile(RDUser *user,RDStation *station,const QString &srcfile,
+		    Error *err,bool log_debug,RDConfig *config);
   int totalPostSteps() const;
   QString rssXml(QString *err_msg,bool *ok=NULL);
   RDRssSchemas *rssSchemas() const;

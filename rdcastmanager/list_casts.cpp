@@ -145,6 +145,7 @@ ListCasts::ListCasts(unsigned feed_id,bool is_super,QWidget *parent)
   list_cart_button=new QPushButton(this);
   list_cart_button->setFont(buttonFont());
   list_cart_button->setText(tr("Post From\nCar&t/Cut"));
+  list_cart_button->setDisabled(list_feed->isSuperfeed());
   connect(list_cart_button,SIGNAL(clicked()),this,SLOT(addCartData()));
 
   //
@@ -153,6 +154,7 @@ ListCasts::ListCasts(unsigned feed_id,bool is_super,QWidget *parent)
   list_file_button=new QPushButton(this);
   list_file_button->setFont(buttonFont());
   list_file_button->setText(tr("Post From\n&File"));
+  list_file_button->setDisabled(list_feed->isSuperfeed());
   connect(list_file_button,SIGNAL(clicked()),this,SLOT(addFileData()));
 
   //
@@ -253,7 +255,7 @@ void ListCasts::addFileData()
     return;
   }
   RDFeed::Error err;
-  unsigned cast_id=list_feed->postFile(rda->station(),srcfile,&err,
+  unsigned cast_id=list_feed->postFile(rda->user(),rda->station(),srcfile,&err,
 				       rda->config()->logXloadDebugData(),rda->config());
   if(err!=RDFeed::ErrorOk) {
     QMessageBox::warning(this,"RDCastManager - "+tr("Posting Error"),
@@ -366,10 +368,15 @@ void ListCasts::doubleClickedData(Q3ListViewItem *item,const QPoint &pt,
 
 void ListCasts::userChangedData()
 {
-  list_cart_button->setEnabled(rda->user()->addPodcast()&&(list_encoder_id>=0));
-  list_file_button->setEnabled(rda->user()->addPodcast()&&(list_encoder_id>=0));
-  list_edit_button->setEnabled(rda->user()->editPodcast());
-  list_delete_button->setEnabled(rda->user()->deletePodcast());
+  bool is_superfeed=list_feed->isSuperfeed();
+
+  list_cart_button->setEnabled(rda->user()->addPodcast()&&
+			       (list_encoder_id>=0)&&(!is_superfeed));
+  list_file_button->setEnabled(rda->user()->addPodcast()&&
+			       (list_encoder_id>=0)&&(!is_superfeed));
+  list_edit_button->setEnabled(rda->user()->editPodcast()&&(!is_superfeed));
+  list_delete_button->
+    setEnabled(rda->user()->deletePodcast()&&(!is_superfeed));
 }
 
 

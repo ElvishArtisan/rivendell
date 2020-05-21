@@ -19984,3 +19984,12 @@
 2020-05-21 Fred Gleason <fredg@paravelsystems.com>
 	* Added a check to verify correct size of imported images in
 	'RDFeed::importImageFile()'.
+2020-05-21 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed bugs in the podcasting system that caused corrupt URLs
+	to be generated for GUID and image tags for items contained in
+	a superfeed.
+	* Commented out file posting code in the web version of
+	RDCastManager.
+	* Disabled the 'Post from Cart/Cut', 'Post from File', 'Edit' and
+	'Delete' buttons when showing a superfeed in the 'Podcast List'
+	dialog of rdcastmanager(1).

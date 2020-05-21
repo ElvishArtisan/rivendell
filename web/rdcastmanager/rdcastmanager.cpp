@@ -1569,6 +1569,7 @@ void MainObject::ServeSubscriptionReport()
 
 void MainObject::PostEpisode()
 {
+  /*
   QString media_file;
 
   GetContext();
@@ -1609,7 +1610,7 @@ void MainObject::PostEpisode()
     Exit(0);
   }
   ServeEditCast(cast_id);
-    
+  */    
   Exit(0);
 }
 
