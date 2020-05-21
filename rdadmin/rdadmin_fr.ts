@@ -1549,6 +1549,14 @@ Do you still want to save?</source>
         <source>Image Viewer</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Native Size</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditJack</name>

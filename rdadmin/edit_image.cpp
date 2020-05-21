@@ -36,9 +36,22 @@ EditImage::EditImage(QWidget *parent)
   c_image_label=new QLabel(this);
 
   c_description_label=new QLabel(tr("Description")+":",this);
-  c_description_label->setAlignment(Qt::AlignRight);
+  c_description_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   c_description_label->setFont(labelFont());
   c_description_edit=new QLineEdit(this);
+  c_description_edit->setMaxLength(191);
+
+  c_size_label=new QLabel(tr("Native Size")+":",this);
+  c_size_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  c_size_label->setFont(labelFont());
+  c_size_value_label=new QLabel(this);
+  c_size_value_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
+
+  c_extension_label=new QLabel(tr("Type")+":",this);
+  c_extension_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  c_extension_label->setFont(labelFont());
+  c_extension_value_label=new QLabel(this);
+  c_extension_value_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   c_ok_button=new QPushButton(tr("OK"),this);
   c_ok_button->setFont(buttonFont());
@@ -47,6 +60,8 @@ EditImage::EditImage(QWidget *parent)
   c_cancel_button=new QPushButton(tr("Cancel"),this);
   c_cancel_button->setFont(buttonFont());
   connect(c_cancel_button,SIGNAL(clicked()),this,SLOT(cancelData()));
+
+  setMinimumSize(sizeHint());
 }
 
 
@@ -62,7 +77,7 @@ EditImage::~EditImage()
 
 QSize EditImage::sizeHint() const
 {
-  return QSize(400,300);
+  return QSize(600,700);
 }
 
 
@@ -74,25 +89,31 @@ int EditImage::exec(int img_id)
   c_image_id=img_id;
 
   sql=QString("select ")+
-    "DESCRIPTION,"+  // 00
-    "WIDTH,"+        // 01
-    "HEIGHT,"+       // 02
-    "DEPTH,"+        // 03
-    "DATA "+         // 04
+    "DESCRIPTION,"+     // 00
+    "FILE_EXTENSION,"+  // 01
+    "WIDTH,"+           // 02
+    "HEIGHT,"+          // 03
+    "DEPTH,"+           // 04
+    "DATA "+            // 05
     "from FEED_IMAGES where "+
     QString().sprintf("ID=%d",img_id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     c_description_edit->setText(q->value(0).toString());
+    c_extension_value_label->setText(q->value(1).toString().toUpper());
+    c_size_value_label->
+      setText(QString().sprintf("%dx%d",q->value(2).toInt(),
+				q->value(3).toInt()));
     c_image=QImage();
-    c_image.loadFromData(q->value(4).toByteArray());
+    c_image.loadFromData(q->value(5).toByteArray());
 
     QSize fsize=FittedSize(c_image.size());
     c_image_label->setPixmap(QPixmap::fromImage(c_image.
 						scaled(fsize,
 						       Qt::KeepAspectRatio)));
-    resize(EDIT_IMAGE_WIDTH_OFFSET+fsize.width(),
-	   EDIT_IMAGE_HEIGHT_OFFSET+fsize.height());
+    //    resize(EDIT_IMAGE_WIDTH_OFFSET+fsize.width(),
+    //	   EDIT_IMAGE_HEIGHT_OFFSET+fsize.height());
+    resize(sizeHint());
   }
   delete q;
   
@@ -135,6 +156,13 @@ void EditImage::resizeEvent(QResizeEvent *e)
 
   c_description_label->setGeometry(10,h-87,120,20);
   c_description_edit->setGeometry(135,h-87,w-145,20);
+
+  c_size_label->
+    setGeometry(140,h-65,80,20);
+  c_size_value_label->setGeometry(225,h-65,80,20);
+
+  c_extension_label->setGeometry(300,h-65,50,20);
+  c_extension_value_label->setGeometry(355,h-65,100,20);
 
   c_ok_button->setGeometry(w-180,h-60,80,50);
   c_cancel_button->setGeometry(w-90,h-60,80,50);

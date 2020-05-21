@@ -56,6 +56,10 @@ class EditImage : public RDDialog
   QLabel *c_image_label;
   QLabel *c_description_label;
   QLineEdit *c_description_edit;
+  QLabel *c_size_label;
+  QLabel *c_size_value_label;
+  QLabel *c_extension_label;
+  QLabel *c_extension_value_label;
   QPushButton *c_ok_button;
   QPushButton *c_cancel_button;
   QImage c_image;

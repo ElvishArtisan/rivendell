@@ -19976,3 +19976,8 @@
 	superfeed setups to be saved with no member subfeeds.
 	* Fixed a bug in the 'Edit Feed' dialog in rdadmin(1) that allowed
 	a per-item default image to be configured for superfeeds.
+2020-05-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added a file-type field to the image attributes line in rdadmin(1).
+2020-05-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added image size and type data to the 'View Image' dialog in
+	rdadmin(1).
