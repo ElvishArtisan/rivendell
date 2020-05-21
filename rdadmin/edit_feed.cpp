@@ -625,6 +625,12 @@ void EditFeed::listImagesData()
 
 void EditFeed::okData()
 {
+  if(feed_is_superfeed_box->currentItem()&&
+     feed_feed->subfeedNames().size()==0) {
+    QMessageBox::warning(this,"RDAdmin - "+tr("Error"),
+		      tr("Superfeed must have at least one subfeed assigned!"));
+    return;
+  }
   RDDelete *d=new RDDelete(rda->config(),this);
   RDUpload *u=new RDUpload(rda->config(),this);
   if((!d->urlIsSupported(feed_purge_url_edit->text()))||
@@ -919,8 +925,8 @@ void EditFeed::UpdateControlState()
   feed_media_link_mode_box->setDisabled(redirected||superfeed);
   feed_media_link_mode_label->setDisabled(redirected||superfeed);
 
-  feed_item_image_label->setEnabled(item_image&&(!redirected));
-  feed_item_image_box->setEnabled(item_image&&(!redirected));
+  feed_item_image_label->setDisabled(item_image&&(redirected||superfeed));
+  feed_item_image_box->setDisabled(item_image&&(redirected||superfeed));
 
   feed_header_xml_label->setDisabled(redirected||(!custom_schema));
   feed_header_xml_edit->setDisabled(redirected||(!custom_schema));

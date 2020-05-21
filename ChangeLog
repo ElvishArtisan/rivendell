@@ -19971,3 +19971,8 @@
 	rdcastmanager(1).
 2020-05-21 Fred Gleason <fredg@paravelsystems.com>
 	* Populated the 'Apple' RSS schema.
+2020-05-21 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in the 'Edit Feed' dialog in rdadmin(1) that allowed
+	superfeed setups to be saved with no member subfeeds.
+	* Fixed a bug in the 'Edit Feed' dialog in rdadmin(1) that allowed
+	a per-item default image to be configured for superfeeds.

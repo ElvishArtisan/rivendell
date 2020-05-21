@@ -48,6 +48,7 @@ class RDFeed : public QObject
   bool exists() const;
   bool isSuperfeed() const;
   void setIsSuperfeed(bool state) const;
+  QStringList subfeedNames() const;
   QStringList isSubfeedOf() const;
   bool audienceMetrics() const;
   void setAudienceMetrics(bool state);

@@ -144,6 +144,26 @@ void RDFeed::setIsSuperfeed(bool state) const
 }
 
 
+QStringList RDFeed::subfeedNames() const
+{
+  QString sql;
+  RDSqlQuery *q=NULL;
+  QStringList ret;
+
+  sql=QString("select ")+
+    "MEMBER_KEY_NAME "+  // 00
+    "from SUPERFEED_MAPS where "+
+    "KEY_NAME=\""+RDEscapeString(keyName())+"\"";
+  q=new RDSqlQuery(sql);
+  while(q->next()) {
+    ret.push_back(q->value(0).toString());
+  }
+  delete q;
+
+  return ret;
+}
+
+
 QStringList RDFeed::isSubfeedOf() const
 {
   QStringList ret;
@@ -1306,7 +1326,7 @@ QString RDFeed::rssXml(QString *err_msg,bool *ok)
   // Render Item XML
   //
   QString where;
-  if(q->value(24).toString()=="Y") {
+  if(q->value(24).toString()=="Y") {  // Is a Superfeed
     sql=QString("select ")+
       "MEMBER_FEED_ID "+  // 00
       "from SUPERFEED_MAPS where "+

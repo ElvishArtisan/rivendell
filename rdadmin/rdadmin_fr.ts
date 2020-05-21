@@ -1256,6 +1256,10 @@ Feeds</source>
         <source>Channel contains explicit content</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Superfeed must have at least one subfeed assigned!</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditFeedPerms</name>
