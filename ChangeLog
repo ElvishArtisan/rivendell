@@ -19969,3 +19969,5 @@
 	Podcast' dialog in rdcastmanager(1).
 	* Added an 'Image' control to the 'Edit Podcast dialog in
 	rdcastmanager(1).
+2020-05-21 Fred Gleason <fredg@paravelsystems.com>
+	* Populated the 'Apple' RSS schema.
