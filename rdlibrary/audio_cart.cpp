@@ -2,7 +2,7 @@
 //
 // The audio cart editor for RDLibrary.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -102,7 +102,7 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
   rdcart_cut_list->setAllColumnsShowFocus(true);
   rdcart_cut_list->setSelectionMode(Q3ListView::Extended);
   rdcart_cut_list->setItemMargin(5);
-  rdcart_cut_list->setSorting(11);
+  rdcart_cut_list->setSorting(12);
   connect(rdcart_cut_list,
 	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,
@@ -110,7 +110,7 @@ AudioCart::AudioCart(AudioControls *controls,RDCart *cart,QString *path,
 
   rdcart_cut_list->addColumn(tr("Wt"));
   rdcart_cut_list->setColumnAlignment(0,Qt::AlignHCenter);
-  rdcart_cut_list->setColumnSortType(0,RDListView::LineSort);
+  rdcart_cut_list->setColumnSortType(0,RDListView::NumericSort);
 
   rdcart_cut_list->addColumn(tr("Description"));
   rdcart_cut_list->setColumnAlignment(1,Qt::AlignLeft);
@@ -268,9 +268,11 @@ void AudioCart::changeCutScheduling(int sched)
   }
   if(sched) {
     rdcart_cut_list->setColumnText(0,tr("Wt"));
+    rdcart_cut_list->setSortColumn(12);
   }
   else {
     rdcart_cut_list->setColumnText(0,tr("Ord"));
+    rdcart_cut_list->setSortColumn(0);
   }
   rdcart_use_weighting=sched!=0;
 }

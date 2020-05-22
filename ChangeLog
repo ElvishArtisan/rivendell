@@ -19838,3 +19838,8 @@
 	Sound Panel panels by means of the mouse wheel.
 2020-05-19 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.4.0.
+2020-05-22 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDListView::NumericSort' to the 'RDListView::SortType'
+	enumeration.
+	* Fixed a bug in rdlibrary(1) that caused cuts to be incorrectly
+	sorted when scheduled 'By Specified Order'.

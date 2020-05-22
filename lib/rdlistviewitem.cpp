@@ -2,7 +2,7 @@
 //
 //   A color-selectable QListViewItem class for Rivendell
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -174,6 +174,8 @@ int RDListViewItem::compare(Q3ListViewItem *i,int col,bool ascending) const
   int length;
   QStringList fields;
   QStringList prev_fields;
+  int this_num;
+  int that_num;
 
   if((hard_column=list_parent->hardSortColumn())<0) {
     switch(list_parent->columnSortType(col)) {
@@ -204,6 +206,17 @@ int RDListViewItem::compare(Q3ListViewItem *i,int col,bool ascending) const
 	return 1;
       }
       if(fields[0].toInt()<prev_fields[0].toInt()) {
+	return -1;
+      }
+      return 0;
+
+    case RDListView::NumericSort:
+      this_num=text(col).toInt();
+      that_num=i->text(col).toInt();
+      if(this_num>that_num) {
+	return 1;
+      }
+      if(this_num<that_num) {
 	return -1;
       }
       return 0;
