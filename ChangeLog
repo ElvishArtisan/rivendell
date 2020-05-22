@@ -19993,3 +19993,5 @@
 	* Disabled the 'Post from Cart/Cut', 'Post from File', 'Edit' and
 	'Delete' buttons when showing a superfeed in the 'Podcast List'
 	dialog of rdcastmanager(1).
+2020-05-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'URL' field to the 'View Image' dialog in rdadmin(1).

@@ -1854,6 +1854,10 @@ Vil du framleis lagra?</translation>
         <source>Type</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>URL</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditJack</name>

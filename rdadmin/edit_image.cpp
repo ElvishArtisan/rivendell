@@ -19,6 +19,7 @@
 //
 
 #include <rddb.h>
+#include <rdfeed.h>
 #include <rdescape_string.h>
 
 #include <qapplication.h>
@@ -40,6 +41,12 @@ EditImage::EditImage(QWidget *parent)
   c_description_label->setFont(labelFont());
   c_description_edit=new QLineEdit(this);
   c_description_edit->setMaxLength(191);
+
+  c_url_label=new QLabel(tr("URL")+":",this);
+  c_url_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  c_url_label->setFont(labelFont());
+  c_url_edit=new QLineEdit(this);
+  c_url_edit->setReadOnly(true);
 
   c_size_label=new QLabel(tr("Native Size")+":",this);
   c_size_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -70,6 +77,12 @@ EditImage::~EditImage()
   delete c_image_label;
   delete c_description_label;
   delete c_description_edit;
+  delete c_url_label;
+  delete c_url_edit;
+  delete c_size_label;
+  delete c_size_value_label;
+  delete c_extension_label;
+  delete c_extension_value_label;
   delete c_ok_button;
   delete c_cancel_button;
 }
@@ -77,7 +90,7 @@ EditImage::~EditImage()
 
 QSize EditImage::sizeHint() const
 {
-  return QSize(600,700);
+  return QSize(600,722);
 }
 
 
@@ -89,17 +102,23 @@ int EditImage::exec(int img_id)
   c_image_id=img_id;
 
   sql=QString("select ")+
-    "DESCRIPTION,"+     // 00
-    "FILE_EXTENSION,"+  // 01
-    "WIDTH,"+           // 02
-    "HEIGHT,"+          // 03
-    "DEPTH,"+           // 04
-    "DATA "+            // 05
-    "from FEED_IMAGES where "+
-    QString().sprintf("ID=%d",img_id);
+    "FEED_IMAGES.DESCRIPTION,"+     // 00
+    "FEED_IMAGES.FILE_EXTENSION,"+  // 01
+    "FEED_IMAGES.WIDTH,"+           // 02
+    "FEED_IMAGES.HEIGHT,"+          // 03
+    "FEED_IMAGES.DEPTH,"+           // 04
+    "FEED_IMAGES.DATA,"+            // 05
+    "FEED_IMAGES.FEED_ID,"+         // 06
+    "FEEDS.BASE_URL "+              // 07
+    "from FEED_IMAGES left join FEEDS "+
+    "on FEED_IMAGES.FEED_ID=FEEDS.ID where "+
+    QString().sprintf("FEED_IMAGES.ID=%d",img_id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     c_description_edit->setText(q->value(0).toString());
+    c_url_edit->setText(q->value(7).toString()+"/"+
+			RDFeed::imageFilename(q->value(6).toInt(),img_id,
+					      q->value(1).toString()));
     c_extension_value_label->setText(q->value(1).toString().toUpper());
     c_size_value_label->
       setText(QString().sprintf("%dx%d",q->value(2).toInt(),
@@ -154,8 +173,11 @@ void EditImage::resizeEvent(QResizeEvent *e)
   c_image_label->setPixmap(QPixmap::fromImage(c_image.
 			 scaled(c_image_label->size(),Qt::KeepAspectRatio)));
 
-  c_description_label->setGeometry(10,h-87,120,20);
-  c_description_edit->setGeometry(135,h-87,w-145,20);
+  c_description_label->setGeometry(10,h-109,120,20);
+  c_description_edit->setGeometry(135,h-109,w-145,20);
+
+  c_url_label->setGeometry(10,h-87,120,20);
+  c_url_edit->setGeometry(135,h-87,w-145,20);
 
   c_size_label->
     setGeometry(140,h-65,80,20);
