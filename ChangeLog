@@ -19995,3 +19995,6 @@
 	dialog of rdcastmanager(1).
 2020-05-21 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'URL' field to the 'View Image' dialog in rdadmin(1).
+2020-05-21 Fred Gleason <fredg@paravelsystems.com>
+	* Added '<itunes:author>' tags to the 'Apple' RSS schema.
+	* Added '<itunes:summary>' tags to the 'Apple' RSS schema.
