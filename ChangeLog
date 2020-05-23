@@ -19847,3 +19847,6 @@
 	* Added a 'cmdline_parser_test' test harness.
 	* Fixed a bug in 'RDCmdSwitch' that caused value-only arguments
 	containing '=' characters to be incorrectly parsed.
+2020-05-23 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'RDFormPost' that caused an error when processing
+	multipart-mime submissions containing '=' characters.
