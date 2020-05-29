@@ -2,7 +2,7 @@
 //
 // The full log list widget for RDAirPlay.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -34,7 +34,7 @@ class ListLog : public RDWidget
 {
  Q_OBJECT
  public:
-  ListLog(RDLogPlay *log,RDCae *cae,int id,bool allow_pause=false,
+  ListLog(RDLogPlay *log,int id,bool allow_pause=false,
 	  QWidget *parent=0);
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -139,7 +139,6 @@ class ListLog : public RDWidget
   bool list_pause_allowed;
   bool list_audition_head_playing;
   bool list_audition_tail_playing;
-  RDCae *list_cae;
 };
 
 

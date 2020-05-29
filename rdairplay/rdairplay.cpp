@@ -623,7 +623,7 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   //
   air_pause_enabled=rda->airplayConf()->pauseEnabled();
   for(int i=0;i<RDAIRPLAY_LOG_QUANTITY;i++) {
-    air_log_list[i]=new ListLog(air_log[i],rda->cae(),i,air_pause_enabled,this);
+    air_log_list[i]=new ListLog(air_log[i],i,air_pause_enabled,this);
     air_log_list[i]->setGeometry(510,140,air_log_list[i]->sizeHint().width(),
 			      air_log_list[i]->sizeHint().height());
     air_log_list[i]->hide();
@@ -690,8 +690,8 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   //
   // Button Log
   //
-  air_button_list=new ButtonLog(air_log[0],rda->cae(),0,rda->airplayConf(),
-				air_pause_enabled,this);
+  air_button_list=
+    new ButtonLog(air_log[0],0,rda->airplayConf(),air_pause_enabled,this);
   air_button_list->setGeometry(10,140,air_button_list->sizeHint().width(),
 			       air_button_list->sizeHint().height());
   connect(air_button_list,SIGNAL(selectClicked(int,int,RDLogLine::Status)),

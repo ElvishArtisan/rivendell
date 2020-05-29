@@ -35,13 +35,12 @@
 #include "../icons/traffic.xpm"
 #include "../icons/music.xpm"
 
-ListLog::ListLog(RDLogPlay *log,RDCae *cae,int id,bool allow_pause,
+ListLog::ListLog(RDLogPlay *log,int id,bool allow_pause,
 		 QWidget *parent)
   : RDWidget(parent)
 {
   list_id=id;
   list_log=log;
-  list_cae=cae;
   list_op_mode=RDAirPlayConf::LiveAssist;
   list_action_mode=RDAirPlayConf::Normal;
   list_time_mode=RDAirPlayConf::TwentyFourHour;
@@ -358,7 +357,7 @@ ListLog::ListLog(RDLogPlay *log,RDCae *cae,int id,bool allow_pause,
   //
   // Edit Event Dialog
   //
-  list_event_edit=new EditEvent(list_log,list_cae,this);
+  list_event_edit=new EditEvent(list_log,this);
 
   //
   // Map Slots

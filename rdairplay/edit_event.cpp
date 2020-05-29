@@ -2,7 +2,7 @@
 //
 // Event Editor for RDAirPlay
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,11 +23,10 @@
 
 #include "edit_event.h"
 
-EditEvent::EditEvent(RDLogPlay *log,RDCae *cae,QWidget *parent)
+EditEvent::EditEvent(RDLogPlay *log,QWidget *parent)
   : RDDialog(parent)
 {
   edit_log=log;
-  edit_cae=cae;
   edit_height=385;
   setWindowTitle("RDAirPlay - "+tr("Edit Event"));
 
@@ -112,8 +111,7 @@ EditEvent::EditEvent(RDLogPlay *log,RDCae *cae,QWidget *parent)
   //
   // Cue Editor
   //
-  edit_cue_edit=new RDCueEdit(edit_cae,rda->station()->cueCard(),
-			      rda->station()->cuePort(),this);
+  edit_cue_edit=new RDCueEdit(this);
 
   //
   // Cart Notes

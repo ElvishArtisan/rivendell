@@ -19850,3 +19850,6 @@
 2020-05-23 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in 'RDFormPost' that caused an error when processing
 	multipart-mime submissions containing '=' characters.
+2020-05-29 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdairplay(1) where attempting to audition an
+	audio cart with a disabled cue output would crash the application.

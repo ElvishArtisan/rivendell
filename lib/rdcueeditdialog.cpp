@@ -2,7 +2,7 @@
 //
 // A Dialog Box for using an RDCueEdit widget.
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU Library General Public License 
@@ -32,7 +32,7 @@ RDCueEditDialog::RDCueEditDialog(RDCae *cae,int play_card,int play_port,
   //
   // Cue Editor
   //
-  cue_edit=new RDCueEdit(cae,play_card,play_port,this);
+  cue_edit=new RDCueEdit(this);
   cue_edit->setGeometry(15,10,
 			cue_edit->sizeHint().width(),
 			cue_edit->sizeHint().height());
