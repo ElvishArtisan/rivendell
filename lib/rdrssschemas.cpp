@@ -25,9 +25,10 @@ RDRssSchemas::RDRssSchemas()
   //
   // Names
   //
-  c_names.push_back("Custom");     // CustomSchema
-  c_names.push_back("RSS 2.0.2");  // Rss202Schema
-  c_names.push_back("Apple");      // AppleSchema
+  c_names.push_back("Custom");                    // CustomSchema
+  c_names.push_back("RSS 2.0.2");                 // Rss202Schema
+  c_names.push_back("Apple iTunes");              // AppleSchema
+  c_names.push_back("Apple iTunes + Superfeed");  // AppleSuperfeedSchema
 
 
   //
@@ -36,6 +37,7 @@ RDRssSchemas::RDRssSchemas()
   c_minimum_image_sizes.push_back(QSize(0,0));       // CustomSchema
   c_minimum_image_sizes.push_back(QSize(88,31));     // Rss202Schema
   c_minimum_image_sizes.push_back(QSize(1400,1400)); // AppleSchema
+  c_minimum_image_sizes.push_back(QSize(1400,1400)); // AppleSuperfeedSchema
 
 
   //
@@ -44,6 +46,7 @@ RDRssSchemas::RDRssSchemas()
   c_maximum_image_sizes.push_back(QSize(0,0));        // CustomSchema
   c_maximum_image_sizes.push_back(QSize(144,400));    // Rss202Schema
   c_maximum_image_sizes.push_back(QSize(3000,3000));  // AppleSchema
+  c_maximum_image_sizes.push_back(QSize(3000,3000));  // AppleSuperfeedSchema
 
 
   //
@@ -58,6 +61,9 @@ RDRssSchemas::RDRssSchemas()
   // AppleSchema
   c_header_templates.push_back("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<rss version=\"2.0\" xmlns:itunes=\"http://www.itunes.com/dtds/podcast-1.0.dtd\" xmlns:content=\"http://purl.org/rss/1.0/modules/content/\" xmlns:atom=\"http://www.w3.org/2005/Atom\">");
 
+  // AppleSuperfeedSchema
+  c_header_templates.push_back("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<rss version=\"2.0\" xmlns:itunes=\"http://www.itunes.com/dtds/podcast-1.0.dtd\" xmlns:content=\"http://purl.org/rss/1.0/modules/content/\" xmlns:atom=\"http://www.w3.org/2005/Atom\" xmlns:superfeed=\"http://www.rivendellaudio.org/dtds/superfeed-0.1.dtd\">");
+
   //
   // Channel Templates
   //
@@ -68,6 +74,9 @@ RDRssSchemas::RDRssSchemas()
   c_channel_templates.push_back("<title>%TITLE%</title>\n<description>%DESCRIPTION%</description>\n<category>%CATEGORY%</category>\n<link>%LINK%</link>\n<language>%LANGUAGE%</language>\n<copyright>%COPYRIGHT%</copyright>\n<lastBuildDate>%BUILD_DATE%</lastBuildDate>\n<pubDate>%PUBLISH_DATE%</pubDate>\n<managingEditor>%EDITOR%</managingEditor>\n<webMaster>%WEBMASTER%</webMaster>\n<generator>%GENERATOR%</generator>\n<image>\n  <url>%IMAGE_URL%</url>\n  <title>%TITLE%</title>\n  <link>%LINK%</link>\n  <width>%IMAGE_WIDTH%</width>\n  <height>%IMAGE_HEIGHT%</height>\n  <description>%IMAGE_DESCRIPTION%</description>\n</image>\n<atom:link href=\"%FEED_URL%\" rel=\"self\" type=\"application/rss+xml\" />");
 
   // AppleSchema
+  c_channel_templates.push_back("<title>%TITLE%</title>\n<description>%DESCRIPTION%</description>\n<itunes:summary>%DESCRIPTION%</itunes:summary>\n<category>%CATEGORY%</category>\n<link>%LINK%</link>\n<language>%LANGUAGE%</language>\n<copyright>%COPYRIGHT%</copyright>\n<lastBuildDate>%BUILD_DATE%</lastBuildDate>\n<pubDate>%PUBLISH_DATE%</pubDate>\n<managingEditor>%EDITOR%</managingEditor>\n<webMaster>%WEBMASTER%</webMaster>\n<generator>%GENERATOR%</generator>\n<image>\n  <url>%IMAGE_URL%</url>\n  <title>%TITLE%</title>\n  <link>%LINK%</link>\n  <width>%IMAGE_WIDTH%</width>\n  <height>%IMAGE_HEIGHT%</height>\n  <description>%IMAGE_DESCRIPTION%</description>\n</image>\n<atom:link href=\"%FEED_URL%\" rel=\"self\" type=\"application/rss+xml\" />\n<itunes:author>%AUTHOR%</itunes:author>\n<itunes:type>episodic</itunes:type>\n<itunes:owner>\n <itunes:name>%OWNER_NAME%</itunes:name>\n  <itunes:email>%OWNER_EMAIL%</itunes:email>\n</itunes:owner>\n<itunes:image href=\"%IMAGE_URL%\" />\n<itunes:category text=\"%CATEGORY%\" />\n<itunes:explicit>%EXPLICIT%</itunes:explicit>");
+
+  // AppleSuperfeedSchema
   c_channel_templates.push_back("<title>%TITLE%</title>\n<description>%DESCRIPTION%</description>\n<itunes:summary>%DESCRIPTION%</itunes:summary>\n<category>%CATEGORY%</category>\n<link>%LINK%</link>\n<language>%LANGUAGE%</language>\n<copyright>%COPYRIGHT%</copyright>\n<lastBuildDate>%BUILD_DATE%</lastBuildDate>\n<pubDate>%PUBLISH_DATE%</pubDate>\n<managingEditor>%EDITOR%</managingEditor>\n<webMaster>%WEBMASTER%</webMaster>\n<generator>%GENERATOR%</generator>\n<image>\n  <url>%IMAGE_URL%</url>\n  <title>%TITLE%</title>\n  <link>%LINK%</link>\n  <width>%IMAGE_WIDTH%</width>\n  <height>%IMAGE_HEIGHT%</height>\n  <description>%IMAGE_DESCRIPTION%</description>\n</image>\n<atom:link href=\"%FEED_URL%\" rel=\"self\" type=\"application/rss+xml\" />\n<itunes:author>%AUTHOR%</itunes:author>\n<itunes:type>episodic</itunes:type>\n<itunes:owner>\n <itunes:name>%OWNER_NAME%</itunes:name>\n  <itunes:email>%OWNER_EMAIL%</itunes:email>\n</itunes:owner>\n<itunes:image href=\"%IMAGE_URL%\" />\n<itunes:category text=\"%CATEGORY%\" />\n<itunes:explicit>%EXPLICIT%</itunes:explicit>");
 
 
@@ -83,6 +92,9 @@ RDRssSchemas::RDRssSchemas()
   // AppleSchema
   c_supports_item_images.push_back(true);
 
+  // AppleSuperfeedSchema
+  c_supports_item_images.push_back(true);
+
 
   //
   // Item Templates
@@ -95,6 +107,9 @@ RDRssSchemas::RDRssSchemas()
 
   // AppleSchema
   c_item_templates.push_back("<title>%ITEM_TITLE%</title>\n<itunes:title>%ITEM_TITLE%</itunes:title>\n<link>%ITEM_LINK%</link>\n<guid isPermaLink=\"false\">%ITEM_GUID%</guid>\n<description>%ITEM_DESCRIPTION%</description>\n<itunes:summary>%ITEM_DESCRIPTION%</itunes:summary>\n<author>%ITEM_AUTHOR%</author>\n<itunes:author>%ITEM_AUTHOR%</itunes:author>\n<comments>%ITEM_COMMENTS%</comments>\n<source url=\"%ITEM_SOURCE_URL%\">%ITEM_SOURCE_TEXT%</source>\n<enclosure url=\"%ITEM_AUDIO_URL%\" length=\"%ITEM_AUDIO_LENGTH%\" type=\"audio/mpeg\" />\n<category>%ITEM_CATEGORY%</category>\n<pubDate>%ITEM_PUBLISH_DATE%</pubDate>\n<itunes:duration>%ITEM_AUDIO_SECONDS%</itunes:duration>\n<itunes:image href=\"%ITEM_IMAGE_URL%\" />\n<itunes:explicit>%ITEM_EXPLICIT%</itunes:explicit>");
+
+  // AppleSuperfeedSchema
+  c_item_templates.push_back("<superfeed:channelTitle>%ITEM_CHANNEL_TITLE%</superfeed:channelTitle>\n<superfeed:channelDescription>%ITEM_CHANNEL_DESCRIPTION%</superfeed:channelDescription>\n<title>%ITEM_TITLE%</title>\n<itunes:title>%ITEM_TITLE%</itunes:title>\n<link>%ITEM_LINK%</link>\n<guid isPermaLink=\"false\">%ITEM_GUID%</guid>\n<description>%ITEM_DESCRIPTION%</description>\n<itunes:summary>%ITEM_DESCRIPTION%</itunes:summary>\n<author>%ITEM_AUTHOR%</author>\n<itunes:author>%ITEM_AUTHOR%</itunes:author>\n<comments>%ITEM_COMMENTS%</comments>\n<source url=\"%ITEM_SOURCE_URL%\">%ITEM_SOURCE_TEXT%</source>\n<enclosure url=\"%ITEM_AUDIO_URL%\" length=\"%ITEM_AUDIO_LENGTH%\" type=\"audio/mpeg\" />\n<category>%ITEM_CATEGORY%</category>\n<pubDate>%ITEM_PUBLISH_DATE%</pubDate>\n<itunes:duration>%ITEM_AUDIO_SECONDS%</itunes:duration>\n<itunes:image href=\"%ITEM_IMAGE_URL%\" />\n<itunes:explicit>%ITEM_EXPLICIT%</itunes:explicit>");
 }
 
 

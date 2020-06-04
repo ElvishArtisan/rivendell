@@ -1377,11 +1377,13 @@ QString RDFeed::rssXml(QString *err_msg,bool *ok)
     "PODCASTS.EFFECTIVE_DATETIME,"+  // 13
     "PODCASTS.ID,"+                  // 14
     "FEEDS.BASE_URL,"+               // 15
-    "FEED_IMAGES.ID,"+               // 16
-    "FEED_IMAGES.WIDTH,"+            // 17
-    "FEED_IMAGES.HEIGHT,"+           // 18
-    "FEED_IMAGES.DESCRIPTION,"+      // 19
-    "FEED_IMAGES.FILE_EXTENSION "+   // 20
+    "FEEDS.CHANNEL_TITLE,"+          // 16
+    "FEEDS.CHANNEL_DESCRIPTION,"+    // 17
+    "FEED_IMAGES.ID,"+               // 18
+    "FEED_IMAGES.WIDTH,"+            // 19
+    "FEED_IMAGES.HEIGHT,"+           // 20
+    "FEED_IMAGES.DESCRIPTION,"+      // 21
+    "FEED_IMAGES.FILE_EXTENSION "+   // 22
     "from PODCASTS left join FEEDS "+
     "on PODCASTS.FEED_ID=FEEDS.ID "+
     "left join FEED_IMAGES "+
@@ -1775,6 +1777,10 @@ QString RDFeed::ResolveItemWildcards(const QString &tmplt,RDSqlQuery *item_q,
   QString ret="      "+tmplt;
 
   ret.replace("\n","\r\n      ");
+
+  ret.replace("%ITEM_CHANNEL_TITLE%",RDXmlEscape(item_q->value(16).toString()));
+  ret.replace("%ITEM_CHANNEL_DESCRIPTION%",
+	      RDXmlEscape(item_q->value(17).toString()));
   ret.replace("%ITEM_TITLE%",RDXmlEscape(item_q->value(1).toString()));
   ret.replace("%ITEM_DESCRIPTION%",
 	      RDXmlEscape(item_q->value(2).toString()));
@@ -1824,8 +1830,8 @@ QString RDFeed::ResolveItemWildcards(const QString &tmplt,RDSqlQuery *item_q,
 					    item_q->value(14).toUInt()));
   ret.replace("%ITEM_IMAGE_URL%",item_q->value(15).toString()+"/"+
 	      RDFeed::imageFilename(item_q->value(0).toInt(),
-				    item_q->value(16).toInt(),
-				    item_q->value(20).toString()));
+				    item_q->value(18).toInt(),
+				    item_q->value(22).toString()));
   return ret;
 }
 

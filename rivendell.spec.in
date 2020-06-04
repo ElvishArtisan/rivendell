@@ -147,6 +147,9 @@ cp docs/misc/ando_interface.odt $RPM_BUILD_ROOT/@DOC_PATH@/misc/
 mkdir -p $RPM_BUILD_ROOT/@DOC_PATH@
 mkdir -p $RPM_BUILD_ROOT/@DOC_PATH@/apis
 cp docs/apis/*.pdf $RPM_BUILD_ROOT/@DOC_PATH@/apis/
+mkdir -p $RPM_BUILD_ROOT/@DOC_PATH@/dtds
+cp docs/dtds/*.html $RPM_BUILD_ROOT/@DOC_PATH@/dtds/
+cp docs/dtds/*.pdf $RPM_BUILD_ROOT/@DOC_PATH@/dtds/
 mkdir -p $RPM_BUILD_ROOT/@DOC_PATH@/tables
 cp docs/tables/*.txt $RPM_BUILD_ROOT/@DOC_PATH@/tables/
 mkdir -p $RPM_BUILD_ROOT/@DOC_PATH@/scripts

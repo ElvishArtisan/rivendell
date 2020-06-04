@@ -29,7 +29,8 @@
 class RDRssSchemas
 {
  public:
-  enum RssSchema {CustomSchema=0,Rss202Schema=1,AppleSchema=2,LastSchema=3};
+  enum RssSchema {CustomSchema=0,Rss202Schema=1,AppleSchema=2,
+		  AppleSuperfeedSchema=3,LastSchema=4};
   RDRssSchemas();
   QString name(RssSchema schema) const;
   QSize minimumImageSize(RssSchema schema) const;

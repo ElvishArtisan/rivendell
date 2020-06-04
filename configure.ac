@@ -515,6 +515,7 @@ AC_CONFIG_FILES([rivendell.spec \
     conf/Makefile \
     docs/Makefile \
     docs/apis/Makefile \
+    docs/dtds/Makefile \
     docs/examples/Makefile \
     docs/manpages/Makefile \
     docs/misc/Makefile \

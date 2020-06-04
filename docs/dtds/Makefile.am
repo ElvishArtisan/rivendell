@@ -1,8 +1,8 @@
-## automake.am
+## Makefile.am
 ##
-## docs/automake.am for Rivendell
+## docs/dtds/Makefile.am for Rivendell
 ##
-## (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+## (C) Copyright 2020 Fred Gleason <fredg@paravelsystems.com>
 ##
 ##   This program is free software; you can redistribute it and/or modify
 ##   it under the terms of the GNU General Public License version 2 as
@@ -19,16 +19,27 @@
 ##
 ## Use automake to process this into a Makefile.in
 
-if DOCBOOK_AM
-  DOCBOOK_AM_OPT = stylesheets apis manpages opsguide rivwebcapi dtds
-endif
+##
+## Build Dependencies
+##
+%.html:	%.xml
+	xsltproc -o $@ $(DOCBOOK_STYLESHEETS)/xhtml/docbook.xsl $<
+%.pdf:	%.xml
+	xsltproc $(DOCBOOK_STYLESHEETS)/fo/docbook.xsl $< | fop - -pdf $@
 
-SUBDIRS = $(DOCBOOK_AM_OPT) examples\
-          misc\
-          tables
+all-local:	superfeed.html\
+                superfeed.pdf
+
+EXTRA_DIST = superfeed.html\
+             superfeed.pdf\
+             superfeed.xml
 
 CLEANFILES = *~
 MAINTAINERCLEANFILES = *~\
+                       *.1\
+                       *.8\
+                       *.html\
+                       *.pdf\
                        aclocal.m4\
                        configure\
                        Makefile.in
