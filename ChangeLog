@@ -19853,3 +19853,5 @@
 2020-05-29 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdairplay(1) where attempting to audition an
 	audio cart with a disabled cue output would crash the application.
+2020-06-04 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Results Report' report in rdadmin(1).

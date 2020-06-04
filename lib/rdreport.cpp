@@ -654,6 +654,10 @@ bool RDReport::generateReport(const QDate &startdate,const QDate &enddate,
     ret=ExportCutLog(filename,startdate,enddate,mixname);
     break;
 
+  case RDReport::ResultsReport:
+    ret=ExportResultsReport(filename,startdate,enddate,mixname);
+    break;
+
   default:
     return false;
     break;
@@ -731,6 +735,9 @@ QString RDReport::filterText(RDReport::ExportFilter filter)
   case RDReport::CutLog:
     return QObject::tr("Cut Log");
 
+  case RDReport::ResultsReport:
+    return QObject::tr("Results Report");
+
   case RDReport::LastFilter:
     break;
   }
@@ -776,6 +783,7 @@ bool RDReport::multipleDaysAllowed(RDReport::ExportFilter filter)
   case RDReport::SpinCount:
   case RDReport::WideOrbit:
   case RDReport::CutLog:
+  case RDReport::ResultsReport:
     return false;
 
   case RDReport::BmiEmr:
@@ -807,6 +815,7 @@ bool RDReport::multipleMonthsAllowed(RDReport::ExportFilter filter)
   case RDReport::NaturalLog:
   case RDReport::WideOrbit:
   case RDReport::CutLog:
+  case RDReport::ResultsReport:
     return false;
     
   case RDReport::MusicSummary:
