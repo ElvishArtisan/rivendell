@@ -19855,3 +19855,5 @@
 	audio cart with a disabled cue output would crash the application.
 2020-06-04 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'Results Report' report in rdadmin(1).
+2020-06-05 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version 3.4.0int0.
