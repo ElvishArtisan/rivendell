@@ -19857,3 +19857,7 @@
 	* Added a 'Results Report' report in rdadmin(1).
 2020-06-05 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version 3.4.0int0.
+2020-06-08 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdairplay(1) that caused the 'Forced Segue'
+	setting in rdadmin(1) to be ignored when executing an event with
+	a hard start attribute.
