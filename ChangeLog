@@ -19872,3 +19872,7 @@
 	* Fixed a bug in rdlibrary(1) that would throw a segfault when
 	attempting to delete a range of cuts, one of which was in the
 	clipboard.
+2020-06-09 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a math bug in rdairplay(1) that caused the estimated
+	stop-down times in the post point widget to be incorrect after
+	adding or removing events from a running log.

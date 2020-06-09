@@ -2420,7 +2420,8 @@ void RDLogPlay::UpdatePostPoint(int line)
     if((line<size())&&(play_trans_line>=0)&&(play_trans_line<size())) {
       post_line=play_trans_line;
       post_time=logLine(post_line)->startTime(RDLogLine::Logged);
-      offset=length(line,post_line)-QTime::currentTime().msecsTo(post_time);
+      offset=length(line,post_line)-QTime::currentTime().msecsTo(post_time)-
+	logLine(line)->playPosition();
     }
   }
   if((post_time!=play_post_time)||(offset!=play_post_offset)) {
