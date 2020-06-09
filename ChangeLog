@@ -19880,3 +19880,7 @@
 	* Fixed a bug in rdadmin(1) that made it impossible to enter
 	useful strings in the 'WaveForm Caption' control on the
 	'Edit RDLogEdit' dialog.
+2020-06-09 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in RDRenderer that caused segue transitions to
+	be rendered without regard to the 'No Fade on Segue Out' checkbox
+	in the 'Edit Audio' dialog.
