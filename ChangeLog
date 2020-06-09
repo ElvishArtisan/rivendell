@@ -19864,3 +19864,7 @@
 2020-06-08 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in rdairplay(1) where a paused event could not be
 	removed by dropping the empty cart on it.
+2020-06-09 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a cast overflow bug in rdairplay(1) that cause incorrect
+	pie timer indications after adding or deleting events to a running
+	log.

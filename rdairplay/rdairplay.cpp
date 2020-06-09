@@ -1724,15 +1724,17 @@ void MainWidget::transportChangedData()
 	case RDAirPlayConf::CartTransition:
 	  if((next_logline=air_log[0]->
 	      logLine(air_log[0]->nextLine(line)))!=NULL) {
-	    if((unsigned)logline->startTime(RDLogLine::Actual).
+	    //
+	    // Are we not past the segue point?
+	    //
+	    if((logline->playPosition()>
+		(unsigned)logline->segueLength(next_logline->transType()))||
+	       ((unsigned)logline->startTime(RDLogLine::Actual).
 	       msecsTo(QTime::currentTime())<
 	       logline->segueLength(next_logline->transType())-
-	       logline->playPosition()) {
+	       logline->playPosition())) {
 	      air_pie_counter->
 		setTime(logline->segueLength(next_logline->transType()));
-	    }
-	    else {
-	      air_pie_counter->setTime(logline->effectiveLength());
 	    }
 	  }
 	  else {
