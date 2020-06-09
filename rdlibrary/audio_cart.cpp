@@ -360,15 +360,18 @@ void AudioCart::deleteCutData()
   // Check Clipboard
   //
   if(cut_clipboard!=NULL) {
-    if(item->text(12)==cut_clipboard->cutName()) {
-      if(QMessageBox::question(this,tr("Empty Clipboard"),
-			      tr("Deleting this cut will also empty the clipboard.\nDo you still want to proceed?"),QMessageBox::Yes,QMessageBox::No)==
-	 QMessageBox::No) {
-	return;
+    for(unsigned i=0;i<cutnames.size();i++) {
+      if(cutnames.at(i)==cut_clipboard->cutName()) {
+	if(QMessageBox::question(this,tr("Empty Clipboard"),
+				 tr("Deleting this cut will also empty the clipboard.\nDo you still want to proceed?"),QMessageBox::Yes,QMessageBox::No)==
+	   QMessageBox::No) {
+	  return;
+	}
+	delete cut_clipboard;
+	cut_clipboard=NULL;
+	paste_cut_button->setDisabled(true);
+	break;
       }
-      delete cut_clipboard;
-      cut_clipboard=NULL;
-      paste_cut_button->setDisabled(true);
     }
   }
 
