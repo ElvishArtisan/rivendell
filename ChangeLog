@@ -19876,3 +19876,7 @@
 	* Fixed a math bug in rdairplay(1) that caused the estimated
 	stop-down times in the post point widget to be incorrect after
 	adding or removing events from a running log.
+2020-06-09 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdadmin(1) that made it impossible to enter
+	useful strings in the 'WaveForm Caption' control on the
+	'Edit RDLogEdit' dialog.
