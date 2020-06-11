@@ -1,9 +1,12 @@
 The NEWS file for the Rivendell package.
 
 -------------------------------------------------------------------------------
-v3.4.0int0 -- 5 June 2020
+v3.4.0rss0 -- 11 June 2020
 
 Changes:
+   Podcasting. The podcasting subsystem has been completely overhauled so
+   as to support the 'Apple iTunes' DTD as well as superfeeds.
+
    As-played Reports. Added a 'Results Report'.
 
    Various Bugfixes. See 'ChangeLog' for details.
