@@ -44,17 +44,23 @@ RDCmdSwitch::RDCmdSwitch(int argc,char *argv[],const char *modname,
     if(value=="-d") {
       switch_debug=true;
     }
-    QStringList f0=value.split("=");
+    QStringList f0=value.split("=",QString::KeepEmptyParts);
     if(f0.size()>=2) {
-      switch_keys.push_back(f0[0]);
-      for(int i=2;i<f0.size();i++) {
-	f0[1]+="="+f0[i];
-      }
-      if(f0[1].isEmpty()) {
-	switch_values.push_back("");
+      if(f0.at(0).left(1)=="-") {
+	switch_keys.push_back(f0.at(0));
+	for(int i=2;i<f0.size();i++) {
+	  f0[1]+="="+f0.at(i);
+	}
+	if(f0.at(1).isEmpty()) {
+	  switch_values.push_back("");
+	}
+	else {
+	  switch_values.push_back(f0.at(1));
+	}
       }
       else {
-	switch_values.push_back(f0[1]);
+	switch_keys.push_back(f0.join("="));
+	switch_values.push_back("");
       }
       switch_processed.push_back(false);
     }

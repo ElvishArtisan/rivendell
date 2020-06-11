@@ -2,7 +2,7 @@
 //
 // Cueing Editor for RDLogLine-based Events
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -39,7 +39,7 @@ class RDCueEdit : public RDWidget
 {
   Q_OBJECT
  public:
-  RDCueEdit(RDCae *cae,int card,int port,QWidget *parent=0);
+  RDCueEdit(QWidget *parent=0);
   ~RDCueEdit();
   QSize sizeHint() const;
   QSizePolicy sizePolicy() const;
@@ -82,9 +82,6 @@ class RDCueEdit : public RDWidget
   RDEventPlayer *edit_event_player;
   QString edit_start_rml;
   QString edit_stop_rml;
-  RDCae *edit_cae;
-  int edit_play_card;
-  int edit_play_port;
   RDSlider *edit_slider;
   QLabel *edit_up_label;
   QLabel *edit_down_label;

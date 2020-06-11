@@ -20000,3 +20000,52 @@
 	* Added '<itunes:summary>' tags to the 'Apple' RSS schema.
 2020-06-04 Fred Gleason <fredg@paravelsystems.com>
 	* Added an 'iTunes + Superfeed' RSS schema.
+2020-05-22 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'RDListView::NumericSort' to the 'RDListView::SortType'
+	enumeration.
+	* Fixed a bug in rdlibrary(1) that caused cuts to be incorrectly
+	sorted when scheduled 'By Specified Order'.
+2020-05-23 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'cmdline_parser_test' test harness.
+	* Fixed a bug in 'RDCmdSwitch' that caused value-only arguments
+	containing '=' characters to be incorrectly parsed.
+2020-05-23 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in 'RDFormPost' that caused an error when processing
+	multipart-mime submissions containing '=' characters.
+2020-05-29 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdairplay(1) where attempting to audition an
+	audio cart with a disabled cue output would crash the application.
+2020-06-04 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'Results Report' report in rdadmin(1).
+2020-06-05 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version 3.4.0int0.
+2020-06-08 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in rdairplay(1) that caused the 'Forced Segue'
+	setting in rdadmin(1) to be ignored when executing an event with
+	a hard start attribute.
+2020-06-08 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdairplay(1) where a paused event could not be
+	removed by dropping the empty cart on it.
+2020-06-09 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a cast overflow bug in rdairplay(1) that cause incorrect
+	pie timer indications after adding or deleting events to a running
+	log.
+2020-06-09 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdlibrary(1) that would throw a segfault when
+	attempting to delete a range of cuts, one of which was in the
+	clipboard.
+2020-06-09 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a math bug in rdairplay(1) that caused the estimated
+	stop-down times in the post point widget to be incorrect after
+	adding or removing events from a running log.
+2020-06-09 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdadmin(1) that made it impossible to enter
+	useful strings in the 'WaveForm Caption' control on the
+	'Edit RDLogEdit' dialog.
+2020-06-09 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in RDRenderer that caused segue transitions to
+	be rendered without regard to the 'No Fade on Segue Out' checkbox
+	in the 'Edit Audio' dialog.
+2020-06-10 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in ripcd(8) that caused connections to ModbusTCP
+	devices to fail to be properly restored by the connection watchdog.

@@ -771,6 +771,10 @@
         <source>Inline Traffic, </source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Results Report</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RDAddCart</name>

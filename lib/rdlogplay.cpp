@@ -2,7 +2,7 @@
 //
 // Rivendell Log Playout Machine
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -1432,7 +1432,13 @@ void RDLogPlay::transTimerData()
     }
     makeNext(play_trans_line);
     if(logline->transType()!=RDLogLine::Stop || grace>=0) {
-      StartEvent(trans_line,RDLogLine::Play,0,RDLogLine::StartTime);
+      if(play_trans_length>0) {
+	StartEvent(trans_line,RDLogLine::Segue,play_trans_length,
+		   RDLogLine::StartTime);
+      }
+      else {
+	StartEvent(trans_line,RDLogLine::Play,0,RDLogLine::StartTime);
+      }
     }
   }
   SetTransTimer();
@@ -2414,7 +2420,8 @@ void RDLogPlay::UpdatePostPoint(int line)
     if((line<size())&&(play_trans_line>=0)&&(play_trans_line<size())) {
       post_line=play_trans_line;
       post_time=logLine(post_line)->startTime(RDLogLine::Logged);
-      offset=length(line,post_line)-QTime::currentTime().msecsTo(post_time);
+      offset=length(line,post_line)-QTime::currentTime().msecsTo(post_time)-
+	logLine(line)->playPosition();
     }
   }
   if((post_time!=play_post_time)||(offset!=play_post_offset)) {
