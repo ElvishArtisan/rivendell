@@ -19890,3 +19890,6 @@
 2020-06-18 Fred Gleason <fredg@paravelsystems.com>
 	* Modified the 'Edit Event' dialog in rdlogmanager(1) to use
 	symbolic menu item ids.
+2020-06-18 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the checkbox from the 'Delete' right-click menu item
+	in the 'Edit Event' dialog in rdlogmanager(1).

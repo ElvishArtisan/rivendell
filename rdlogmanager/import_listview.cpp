@@ -274,7 +274,6 @@ void ImportListView::aboutToShowData()
     import_menu->setItemEnabled(MENU_SEGUE_TRANS,false);
     import_menu->setItemChecked(MENU_STOP_TRANS,false);
     import_menu->setItemEnabled(MENU_STOP_TRANS,false);
-    import_menu->setItemChecked(MENU_DELETE,false);
     import_menu->setItemEnabled(MENU_DELETE,false);
     return;
   }
@@ -293,7 +292,6 @@ void ImportListView::aboutToShowData()
   import_menu->setItemChecked(MENU_PLAY_TRANS,false);
   import_menu->setItemChecked(MENU_SEGUE_TRANS,false);
   import_menu->setItemChecked(MENU_STOP_TRANS,false);
-  import_menu->setItemChecked(MENU_DELETE,false);
   if(import_menu_line==0) {
     import_menu->setItemEnabled(MENU_PLAY_TRANS,import_allow_first_trans);
     import_menu->setItemEnabled(MENU_SEGUE_TRANS,import_allow_first_trans);
