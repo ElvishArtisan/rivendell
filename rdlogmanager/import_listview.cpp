@@ -39,6 +39,18 @@
 #include "../icons/mic16.xpm"
 #include "../icons/notemarker.xpm"
 
+//
+// Menu Items
+//
+#define MENU_INSERT_NOTE 0
+#define MENU_EDIT_NOTE 1
+#define MENU_INSERT_TRACK 2
+#define MENU_EDIT_TRACK 3
+#define MENU_PLAY_TRANS 4
+#define MENU_SEGUE_TRANS 5
+#define MENU_STOP_TRANS 6
+#define MENU_DELETE 7
+
 ImportListView::ImportListView(QWidget *parent)
   : Q3ListView(parent)
 {
@@ -62,23 +74,26 @@ ImportListView::ImportListView(QWidget *parent)
   //
   import_menu=new Q3PopupMenu(this);
   connect(import_menu,SIGNAL(aboutToShow()),this,SLOT(aboutToShowData()));
-  import_menu->
-    insertItem(tr("Insert Log Note"),this,SLOT(insertNoteMenuData()),0,0);
-  import_menu->
-    insertItem(tr("Edit Log Note"),this,SLOT(editNoteMenuData()),0,1);
+  import_menu->insertItem(tr("Insert Log Note"),this,SLOT(insertNoteMenuData()),
+			    0,MENU_INSERT_NOTE);
+  import_menu->insertItem(tr("Edit Log Note"),this,SLOT(editNoteMenuData()),
+			    0,MENU_EDIT_NOTE);
   import_menu->insertSeparator();
-  import_menu->
-    insertItem(tr("Insert Voice Track"),this,SLOT(insertTrackMenuData()),0,2);
-  import_menu->
-    insertItem(tr("Edit Voice Track"),this,SLOT(editTrackMenuData()),0,3);
+  import_menu->insertItem(tr("Insert Voice Track"),
+			    this,SLOT(insertTrackMenuData()),
+			    0,MENU_INSERT_TRACK);
+  import_menu->insertItem(tr("Edit Voice Track"),this,SLOT(editTrackMenuData()),
+			    0,MENU_EDIT_TRACK);
   import_menu->insertSeparator();
-  import_menu->insertItem(tr("PLAY Transition"),this,SLOT(playMenuData()),0,4);
-  import_menu->
-    insertItem(tr("SEGUE Transition"),this,SLOT(segueMenuData()),0,5);
-  import_menu->insertItem(tr("STOP Transition"),this,SLOT(stopMenuData()),0,6);
+  import_menu->insertItem(tr("PLAY Transition"),this,SLOT(playMenuData()),
+			    0,MENU_PLAY_TRANS);
+  import_menu->insertItem(tr("SEGUE Transition"),this,SLOT(segueMenuData()),
+			    0,MENU_SEGUE_TRANS);
+  import_menu->insertItem(tr("STOP Transition"),this,SLOT(stopMenuData()),
+			    0,MENU_STOP_TRANS);
   import_menu->insertSeparator();
-  import_menu->
-    insertItem(tr("Delete"),this,SLOT(deleteMenuData()),0,8);
+  import_menu->insertItem(tr("Delete"),this,SLOT(deleteMenuData()),
+			    0,MENU_DELETE);
 
   import_force_trans=RDLogLine::NoTrans;
   import_allow_stop=true;
@@ -249,77 +264,76 @@ void ImportListView::validateTransitions()
 void ImportListView::aboutToShowData()
 {
   if((import_menu_item==NULL)||(import_menu_i_item->isEndMarker())) {
-    import_menu->setItemEnabled(0,true);
-    import_menu->setItemEnabled(1,false);
-    import_menu->setItemEnabled(2,true);
-    import_menu->setItemEnabled(3,false);
-    import_menu->setItemChecked(4,false);
-    import_menu->setItemEnabled(4,false);
-    import_menu->setItemChecked(5,false);
-    import_menu->setItemEnabled(5,false);
-    import_menu->setItemChecked(6,false);
-    import_menu->setItemEnabled(6,false);
-    import_menu->setItemChecked(7,false);
-    import_menu->setItemEnabled(7,false);
-    import_menu->setItemEnabled(8,false);
+    import_menu->setItemEnabled(MENU_INSERT_NOTE,true);
+    import_menu->setItemEnabled(MENU_EDIT_NOTE,false);
+    import_menu->setItemEnabled(MENU_INSERT_TRACK,true);
+    import_menu->setItemEnabled(MENU_EDIT_TRACK,false);
+    import_menu->setItemChecked(MENU_PLAY_TRANS,false);
+    import_menu->setItemEnabled(MENU_PLAY_TRANS,false);
+    import_menu->setItemChecked(MENU_SEGUE_TRANS,false);
+    import_menu->setItemEnabled(MENU_SEGUE_TRANS,false);
+    import_menu->setItemChecked(MENU_STOP_TRANS,false);
+    import_menu->setItemEnabled(MENU_STOP_TRANS,false);
+    import_menu->setItemChecked(MENU_DELETE,false);
+    import_menu->setItemEnabled(MENU_DELETE,false);
     return;
   }
   if(import_menu_i_item->eventType()==RDLogLine::Marker) {
-    import_menu->setItemEnabled(1,true);
+    import_menu->setItemEnabled(MENU_EDIT_NOTE,true);
   }
   else {
-    import_menu->setItemEnabled(1,false);
+    import_menu->setItemEnabled(MENU_EDIT_NOTE,false);
   }
   if(import_menu_i_item->eventType()==RDLogLine::Track) {
-    import_menu->setItemEnabled(3,true);
+    import_menu->setItemEnabled(MENU_EDIT_TRACK,true);
   }
   else {
-    import_menu->setItemEnabled(3,false);
+    import_menu->setItemEnabled(MENU_EDIT_TRACK,false);
   }
-  import_menu->setItemChecked(4,false);
-  import_menu->setItemChecked(5,false);
-  import_menu->setItemChecked(6,false);
-  import_menu->setItemChecked(7,false);
+  import_menu->setItemChecked(MENU_PLAY_TRANS,false);
+  import_menu->setItemChecked(MENU_SEGUE_TRANS,false);
+  import_menu->setItemChecked(MENU_STOP_TRANS,false);
+  import_menu->setItemChecked(MENU_DELETE,false);
   if(import_menu_line==0) {
-    import_menu->setItemEnabled(4,import_allow_first_trans);
-    import_menu->setItemEnabled(5,import_allow_first_trans);
-    import_menu->setItemEnabled(7,import_allow_first_trans);
+    import_menu->setItemEnabled(MENU_PLAY_TRANS,import_allow_first_trans);
+    import_menu->setItemEnabled(MENU_SEGUE_TRANS,import_allow_first_trans);
+    import_menu->setItemEnabled(MENU_DELETE,import_allow_first_trans);
     if((import_menu_line==0)&&import_allow_stop&&import_allow_first_trans) {
-      import_menu->setItemEnabled(6,true);
+      import_menu->setItemEnabled(MENU_STOP_TRANS,true);
     }
     else {
-      import_menu->setItemEnabled(6,false);
+      import_menu->setItemEnabled(MENU_STOP_TRANS,false);
     }
   }
   else {
-    import_menu->setItemEnabled(4,true);
-    import_menu->setItemEnabled(5,true);
-    import_menu->setItemEnabled(7,true);
+    import_menu->setItemEnabled(MENU_PLAY_TRANS,true);
+    import_menu->setItemEnabled(MENU_SEGUE_TRANS,true);
+    import_menu->setItemEnabled(MENU_DELETE,true);
     if((import_menu_line==0)&&import_allow_stop) {
-      import_menu->setItemEnabled(6,true);
-      import_menu->setItemEnabled(6,true);
+      import_menu->setItemEnabled(MENU_STOP_TRANS,true);
+      import_menu->setItemEnabled(MENU_STOP_TRANS,true);
     }
     else {
-      import_menu->setItemEnabled(6,false);
+      import_menu->setItemEnabled(MENU_STOP_TRANS,false);
     }
   }
   switch(import_menu_i_item->transType()) {
   case RDLogLine::Play:
-    import_menu->setItemChecked(4,true);
+    import_menu->setItemChecked(MENU_PLAY_TRANS,true);
     break;
 
   case RDLogLine::Segue:
-    import_menu->setItemChecked(5,true);
+    import_menu->setItemChecked(MENU_SEGUE_TRANS,true);
     break;
 
   case RDLogLine::Stop:
-    import_menu->setItemChecked(6,true);
+    import_menu->setItemChecked(MENU_STOP_TRANS,true);
     break;
 
   default:
     break;
   }
-  import_menu->setItemEnabled(8,true);
+  import_menu->setItemEnabled(MENU_DELETE,true);
 }
 
 

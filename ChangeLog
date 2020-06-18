@@ -19887,3 +19887,6 @@
 2020-06-10 Fred Gleason <fredg@paravelsystems.com>
 	* Fixed a bug in ripcd(8) that caused connections to ModbusTCP
 	devices to fail to be properly restored by the connection watchdog.
+2020-06-18 Fred Gleason <fredg@paravelsystems.com>
+	* Modified the 'Edit Event' dialog in rdlogmanager(1) to use
+	symbolic menu item ids.
