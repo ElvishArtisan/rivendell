@@ -33,6 +33,7 @@ class ImportListView : public Q3ListView
 
  public:
   ImportListView(QWidget *parent);
+  RDEventImportList *eventImportList() const;
   void setForceTrans(RDLogLine::TransType trans);
   void setAllowStop(bool state);
   void setAllowFirstTrans(bool state);

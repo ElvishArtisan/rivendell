@@ -103,6 +103,12 @@ ImportListView::ImportListView(QWidget *parent)
 }
 
 
+RDEventImportList *ImportListView::eventImportList() const
+{
+  return import_list;
+}
+
+
 void ImportListView::setForceTrans(RDLogLine::TransType trans)
 {
   import_force_trans=trans;

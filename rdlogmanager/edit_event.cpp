@@ -460,9 +460,9 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   connect(event_preimport_down_button,SIGNAL(clicked()),
 	  this,SLOT(preimportDownData()));
 
-  //
+  // *************************
   // Import Section
-  //
+  // *************************
   label=new QLabel(tr("IMPORT"),this);
   label->setFont(labelFont());
   label->setGeometry(CENTER_LINE+15,387,200,16);
@@ -767,8 +767,6 @@ EditEvent::EditEvent(QString eventname,bool new_event,
 	
   case RDLogLine::Hard:
     event_timetype_check->setChecked(true);
-    //    event_post_box->setChecked(event_event->postPoint());
-    event_firsttrans_box->setCurrentItem(event_event->firstTransType());
     switch((grace=event_event->graceTime())) {
     case 0:
       event_grace_group->button(0)->setChecked(true);
@@ -801,7 +799,31 @@ EditEvent::EditEvent(QString eventname,bool new_event,
   event_source_group->button(event_event->importSource())->setChecked(true);
   event_startslop_edit->setTime(QTime().addMSecs(event_event->startSlop()));
   event_endslop_edit->setTime(QTime().addMSecs(event_event->endSlop()));
-  event_firsttrans_box->setCurrentItem(event_event->firstTransType());
+  if(event_position_box->isChecked()||event_timetype_check->isChecked()) {
+    event_firsttrans_box->setCurrentItem(event_event->firstTransType());
+  }
+  else {
+    if(event_preimport_list->eventImportList()->size()>=1) {
+      event_firsttrans_box->
+	setCurrentItem(event_preimport_list->eventImportList()->
+		       item(0)->transType());
+    }
+    else {
+      if(event_event->importSource()!=RDEventLine::None) {
+	event_firsttrans_box->setCurrentItem(event_event->firstTransType());
+      }
+      else {
+	if(event_postimport_list->eventImportList()->size()>=1) {
+	  event_firsttrans_box->
+	    setCurrentItem(event_postimport_list->eventImportList()->
+			   item(0)->transType());
+	}
+	else {
+	  event_firsttrans_box->setCurrentItem(event_event->firstTransType());
+	}
+      }
+    }
+  }
   event_defaulttrans_box->setCurrentItem(event_event->defaultTransType());
   if(!event_event->schedGroup().isEmpty()) {
     event_sched_group_box->setCurrentText(event_event->schedGroup());

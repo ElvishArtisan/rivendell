@@ -19893,3 +19893,7 @@
 2020-06-18 Fred Gleason <fredg@paravelsystems.com>
 	* Removed the checkbox from the 'Delete' right-click menu item
 	in the 'Edit Event' dialog in rdlogmanager(1).
+2020-06-18 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a regression in the 'Edit Event' dialog in rdlogmanager(1)
+	that caused the first cart transition type to be incorrect when
+	the 'Pre-Import Carts' list was populated.
