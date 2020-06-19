@@ -71,26 +71,26 @@ ImportListView::ImportListView(QWidget *parent)
   //
   // Right Button Menu
   //
-  import_menu=new Q3PopupMenu(this);
+  import_menu=new QMenu(this);
   connect(import_menu,SIGNAL(aboutToShow()),this,SLOT(aboutToShowData()));
   import_menu->insertItem(tr("Insert Log Note"),this,SLOT(insertNoteMenuData()),
-			    0,MENU_INSERT_NOTE);
+			  0,MENU_INSERT_NOTE);
   import_menu->insertItem(tr("Edit Log Note"),this,SLOT(editNoteMenuData()),
-			    0,MENU_EDIT_NOTE);
+			  0,MENU_EDIT_NOTE);
   import_menu->insertSeparator();
   import_menu->insertItem(tr("Insert Voice Track"),
-			    this,SLOT(insertTrackMenuData()),
-			    0,MENU_INSERT_TRACK);
+			  this,SLOT(insertTrackMenuData()),
+			  0,MENU_INSERT_TRACK);
   import_menu->insertItem(tr("Edit Voice Track"),this,SLOT(editTrackMenuData()),
-			    0,MENU_EDIT_TRACK);
+			  0,MENU_EDIT_TRACK);
   import_menu->insertSeparator();
   import_menu->insertItem(tr("PLAY Transition"),this,SLOT(playMenuData()),
 			    0,MENU_PLAY_TRANS);
   import_menu->insertItem(tr("SEGUE Transition"),this,SLOT(segueMenuData()),
-			    0,MENU_SEGUE_TRANS);
+			  0,MENU_SEGUE_TRANS);
   import_menu->insertSeparator();
   import_menu->insertItem(tr("Delete"),this,SLOT(deleteMenuData()),
-			    0,MENU_DELETE);
+			  0,MENU_DELETE);
   import_allow_first_trans=true;
   setAcceptDrops(true);
 }

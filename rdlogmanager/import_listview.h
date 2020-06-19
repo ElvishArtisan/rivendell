@@ -23,7 +23,7 @@
 
 #include <q3listview.h>
 #include <qpixmap.h>
-#include <q3popupmenu.h>
+#include <qmenu.h>
 
 #include <rdeventimportlist.h>
 
@@ -70,7 +70,7 @@ class ImportListView : public Q3ListView
   QPixmap *import_macro_map;
   QPixmap *import_notemarker_map;
   QPixmap *import_mic16_map;
-  Q3PopupMenu *import_menu;
+  QMenu *import_menu;
   int import_menu_line;
   RDEventImportItem *import_menu_i_item;
   Q3ListViewItem *import_menu_item;

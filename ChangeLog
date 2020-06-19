@@ -19901,3 +19901,5 @@
 	* Modified the 'Edit Event' dialog in rdlogmanager(1) to show '[auto]'
 	as the transition type for the leading event in Pre-/Post-Import
 	lists.
+2020-06-19 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'Q3PopupMenu' dependency from rdlogmanager(1).
