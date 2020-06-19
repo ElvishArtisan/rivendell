@@ -48,8 +48,7 @@
 #define MENU_EDIT_TRACK 3
 #define MENU_PLAY_TRANS 4
 #define MENU_SEGUE_TRANS 5
-#define MENU_STOP_TRANS 6
-#define MENU_DELETE 7
+#define MENU_DELETE 6
 
 ImportListView::ImportListView(QWidget *parent)
   : Q3ListView(parent)
@@ -89,16 +88,10 @@ ImportListView::ImportListView(QWidget *parent)
 			    0,MENU_PLAY_TRANS);
   import_menu->insertItem(tr("SEGUE Transition"),this,SLOT(segueMenuData()),
 			    0,MENU_SEGUE_TRANS);
-  import_menu->insertItem(tr("STOP Transition"),this,SLOT(stopMenuData()),
-			    0,MENU_STOP_TRANS);
   import_menu->insertSeparator();
   import_menu->insertItem(tr("Delete"),this,SLOT(deleteMenuData()),
 			    0,MENU_DELETE);
-
-  import_force_trans=RDLogLine::NoTrans;
-  import_allow_stop=true;
   import_allow_first_trans=true;
-
   setAcceptDrops(true);
 }
 
@@ -109,22 +102,26 @@ RDEventImportList *ImportListView::eventImportList() const
 }
 
 
-void ImportListView::setForceTrans(RDLogLine::TransType trans)
-{
-  import_force_trans=trans;
-  validateTransitions();
-}
-
-
-void ImportListView::setAllowStop(bool state)
-{
-  import_allow_stop=state;
-}
-
-
 void ImportListView::setAllowFirstTrans(bool state)
 {
-  import_allow_first_trans=state;
+  Q3ListViewItem *item=NULL;
+  RDEventImportItem *i_item=NULL;
+
+  if(state!=import_allow_first_trans) {
+    if(childCount()>=2) {
+      if((item=firstChild())!=NULL) {
+	if(!state) {
+	  item->setText(5,tr("[auto]"));
+	}
+	else {
+	  if((i_item=import_list->item(0))!=NULL) {
+	    item->setText(5,RDLogLine::transText(i_item->transType()));
+	  }
+	}
+      }
+    }
+    import_allow_first_trans=state;
+  }
 }
 
 
@@ -150,9 +147,14 @@ bool ImportListView::load(const QString &event_name,
 }
 
 
-void ImportListView::save()
+void ImportListView::save(RDLogLine::TransType first_trans)
 {
-  import_list->save();
+  if(import_allow_first_trans) {
+    import_list->save(RDLogLine::NoTrans);
+  }
+  else {
+    import_list->save(first_trans);
+  }
 }
 
 
@@ -211,21 +213,11 @@ void ImportListView::refreshList(int line)
 	default:
 	  break;
 	}
-	switch(i_item->transType()) {
-	case RDLogLine::Play:
-	  item->setText(5,tr("PLAY"));
-	  break;
-
-	case RDLogLine::Segue:
-	  item->setText(5,tr("SEGUE"));
-	  break;
-
-	case RDLogLine::Stop:
-	  item->setText(5,tr("STOP"));
-	  break;
-
-	default:
-	  break;
+	if((i==0)&&(!import_allow_first_trans)) {
+	  item->setText(5,tr("[auto]"));
+	}
+	else {
+	  item->setText(5,RDLogLine::transText(i_item->transType()));
 	}
 	item->setText(6,QString().sprintf("%d",i));
 	if(cart!=NULL) {
@@ -246,22 +238,18 @@ void ImportListView::refreshList(int line)
 }
 
 
-void ImportListView::validateTransitions()
+void ImportListView::fixupTransitions(RDLogLine::TransType repl_trans)
 {
-  if(import_list->size()>=1) {
-    if(import_force_trans!=RDLogLine::NoTrans) {
-      import_list->item(0)->setTransType(import_force_trans);
-    }
-    else {
-      if((import_list->item(0)->transType()==RDLogLine::Stop)&&
-	 (!import_allow_stop)) {
-	import_list->item(0)->setTransType(RDLogLine::Segue);
-      }
-    }
+  Q3ListViewItem *item=firstChild();
+
+  if(repl_trans==RDLogLine::Stop) {
+    repl_trans=RDLogLine::RDLogLine::Segue;
   }
-  for(int i=1;i<(import_list->size()-1);i++) {
-    if(import_list->item(i)->transType()==RDLogLine::Stop) {
-      import_list->item(1)->setTransType(RDLogLine::Segue);
+  for(int i=0;i<import_list->size();i++) {
+    if(import_list->item(i)->transType()==RDLogLine::NoTrans) {
+      import_list->item(i)->setTransType(repl_trans);
+      item->setText(5,RDLogLine::transText(repl_trans));
+      item=item->nextSibling();
     }
   }
 }
@@ -278,8 +266,6 @@ void ImportListView::aboutToShowData()
     import_menu->setItemEnabled(MENU_PLAY_TRANS,false);
     import_menu->setItemChecked(MENU_SEGUE_TRANS,false);
     import_menu->setItemEnabled(MENU_SEGUE_TRANS,false);
-    import_menu->setItemChecked(MENU_STOP_TRANS,false);
-    import_menu->setItemEnabled(MENU_STOP_TRANS,false);
     import_menu->setItemEnabled(MENU_DELETE,false);
     return;
   }
@@ -297,41 +283,29 @@ void ImportListView::aboutToShowData()
   }
   import_menu->setItemChecked(MENU_PLAY_TRANS,false);
   import_menu->setItemChecked(MENU_SEGUE_TRANS,false);
-  import_menu->setItemChecked(MENU_STOP_TRANS,false);
   if(import_menu_line==0) {
     import_menu->setItemEnabled(MENU_PLAY_TRANS,import_allow_first_trans);
     import_menu->setItemEnabled(MENU_SEGUE_TRANS,import_allow_first_trans);
-    import_menu->setItemEnabled(MENU_DELETE,import_allow_first_trans);
-    if((import_menu_line==0)&&import_allow_stop&&import_allow_first_trans) {
-      import_menu->setItemEnabled(MENU_STOP_TRANS,true);
-    }
-    else {
-      import_menu->setItemEnabled(MENU_STOP_TRANS,false);
-    }
   }
   else {
     import_menu->setItemEnabled(MENU_PLAY_TRANS,true);
     import_menu->setItemEnabled(MENU_SEGUE_TRANS,true);
     import_menu->setItemEnabled(MENU_DELETE,true);
-    if((import_menu_line==0)&&import_allow_stop) {
-      import_menu->setItemEnabled(MENU_STOP_TRANS,true);
-      import_menu->setItemEnabled(MENU_STOP_TRANS,true);
-    }
-    else {
-      import_menu->setItemEnabled(MENU_STOP_TRANS,false);
-    }
   }
   switch(import_menu_i_item->transType()) {
   case RDLogLine::Play:
     import_menu->setItemChecked(MENU_PLAY_TRANS,true);
+    import_menu->setItemChecked(MENU_SEGUE_TRANS,false);
     break;
 
   case RDLogLine::Segue:
+    import_menu->setItemChecked(MENU_PLAY_TRANS,false);
     import_menu->setItemChecked(MENU_SEGUE_TRANS,true);
     break;
 
   case RDLogLine::Stop:
-    import_menu->setItemChecked(MENU_STOP_TRANS,true);
+    import_menu->setItemChecked(MENU_PLAY_TRANS,false);
+    import_menu->setItemChecked(MENU_SEGUE_TRANS,false);
     break;
 
   default:
@@ -361,9 +335,9 @@ void ImportListView::insertNoteMenuData()
   RDEventImportItem *i_item=new RDEventImportItem();
   i_item->setEventType(RDLogLine::Marker);
   i_item->setMarkerComment(note);
-  i_item->setTransType(RDLogLine::Segue);
+  i_item->setTransType(RDLogLine::NoTrans);
   import_list->takeItem(import_menu_line,i_item);
-  validateTransitions();
+  emit validationNeeded();
   refreshList(import_menu_line);
   emit sizeChanged(childCount());
 }
@@ -401,9 +375,9 @@ void ImportListView::insertTrackMenuData()
   RDEventImportItem *i_item=new RDEventImportItem();
   i_item->setEventType(RDLogLine::Track);
   i_item->setMarkerComment(note);
-  i_item->setTransType(RDLogLine::Segue);
+  i_item->setTransType(RDLogLine::NoTrans);
   import_list->takeItem(import_menu_line,i_item);
-  validateTransitions();
+  emit validationNeeded();
   refreshList(import_menu_line);
   emit sizeChanged(childCount());
 }
@@ -445,7 +419,7 @@ void ImportListView::stopMenuData()
 void ImportListView::deleteMenuData()
 {
   import_list->removeItem(import_menu_item->text(6).toInt());
-  validateTransitions();
+  emit validationNeeded();
   refreshList();
   emit sizeChanged(childCount());
 }
@@ -543,12 +517,12 @@ void ImportListView::dropEvent(QDropEvent *e)
       else {
 	i_item->setEventType(RDLogLine::Macro);
       }
-      i_item->setTransType(RDLogLine::Segue);
+      i_item->setTransType(RDLogLine::NoTrans);
       import_list->takeItem(line,i_item);
       delete cart;
     }
   }
-  validateTransitions();
+  emit validationNeeded();
   refreshList(line);
   emit sizeChanged(childCount());
 }

@@ -1141,7 +1141,7 @@ Flettar du på nytt, vil du fjerna desse dataa. Flett på nytt?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>STOP Transition</source>
+        <source>[auto]</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

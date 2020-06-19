@@ -936,7 +936,7 @@ Do you want to save?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>STOP Transition</source>
+        <source>[auto]</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -1138,7 +1138,7 @@ Re-agregar removerá estes dados.  Re-agregar? </translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>STOP Transition</source>
+        <source>[auto]</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
