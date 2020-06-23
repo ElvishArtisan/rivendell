@@ -191,6 +191,7 @@ MainWidget::MainWidget(RDConfig *config,QWidget *parent)
   //
   rdairplay_previous_exit_code=rda->airplayConf()->exitCode();
   rda->airplayConf()->setExitCode(RDAirPlayConf::ExitDirty);
+  air_default_trans_type=rda->airplayConf()->defaultTransType();
   air_clear_filter=rda->airplayConf()->clearFilter();
   air_bar_action=rda->airplayConf()->barAction();
   air_op_mode_style=rda->airplayConf()->opModeStyle();
