@@ -308,7 +308,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
        (rml->arg(1).toInt()>AIR_PANEL_BUTTON_COLUMNS)||
        (rml->arg(2).toInt()<=0)||
        (rml->arg(2).toInt()>AIR_PANEL_BUTTON_ROWS)||
-       (rml->arg(3).toUInt()>999999)) {
+       (rml->arg(3).toUInt()>RD_MAX_CART_NUMBER)) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
 	rda->ripc()->sendRml(rml);
@@ -799,7 +799,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
     offset=0;
     trans=air_default_trans_type;
     if((mach<1)||(mach>3)||
-       (rml->arg(1).toUInt()>999999)) {
+       (rml->arg(1).toUInt()>RD_MAX_CART_NUMBER)) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
 	rda->ripc()->sendRml(rml);
@@ -904,7 +904,7 @@ void MainWidget::RunLocalMacros(RDMacro *rml)
       }
       return;
     }
-    if(rml->arg(2).toUInt()>999999) {
+    if(rml->arg(2).toUInt()>RD_MAX_CART_NUMBER) {
       if(rml->echoRequested()) {
 	rml->acknowledge(false);
 	rda->ripc()->sendRml(rml);

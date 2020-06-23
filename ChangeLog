@@ -19909,3 +19909,6 @@
 	* Fixed a bug in the 'Add Next' ['PX'] RML that failed to honor
 	the 'Default Trans. Type' setting in the 'Configure RDAirPlay'
 	dialog in rdadmin(1).
+2020-06-23 Fred Gleason <fredg@paravelsystems.com>
+	* Applied the RD_MAX_CART_NUMBER define in
+	'rdairplay/local_macros.cpp'.
