@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Log Manager Event.
 //
-//   (C) Copyright 2002-2004,2016 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -55,19 +55,6 @@ RDEvent::RDEvent(const QString &name,bool create)
 QString RDEvent::name() const
 {
   return event_name;
-}
-
-
-QString RDEvent::properties() const
-{
-  bool ok;
-  return GetStringValue("PROPERTIES",&ok);
-}
-
-
-void RDEvent::setProperties(const QString &str) const
-{
-  SetRow("PROPERTIES",str,true);
 }
 
 
@@ -128,19 +115,6 @@ int RDEvent::graceTime() const
 void RDEvent::setGraceTime(int offset) const
 {
   SetRow("GRACE_TIME",offset);
-}
-
-
-bool RDEvent::postPoint() const
-{
-  bool ok;
-  return RDBool(GetStringValue("POST_POINT",&ok));
-}
-
-
-void RDEvent::setPostPoint(bool state) const
-{
-  SetRow("POST_POINT",RDYesNo(state),true);
 }
 
 

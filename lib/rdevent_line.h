@@ -2,7 +2,7 @@
 //
 // Abstract a Rivendell Log Manager Event
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -37,16 +37,12 @@ class RDEventLine
   RDEventLine(RDStation *station);
   QString name() const;
   void setName(const QString &name);
-  QString properties() const;
-  void setProperties(const QString &str);
   int preposition() const;
   void setPreposition(int offset);
   RDLogLine::TimeType timeType() const;
   void setTimeType(RDLogLine::TimeType type);
   int graceTime() const;
   void setGraceTime(int offset);
-  bool postPoint() const;
-  void setPostPoint(bool state);
   bool useAutofill() const;
   void setUseAutofill(bool state);
   int autofillSlop() const;
@@ -86,15 +82,21 @@ class RDEventLine
 	       RDLogLine *link_logline,const QString &track_str,
 	       const QString &label_cart,const QString &track_cart,
 	       QString *errors);
+  QString propertiesText() const;
+  static QString propertiesText(int prepos_msec,
+				RDLogLine::TransType first_trans,
+				RDLogLine::TimeType time_type,
+				int grace_msec,
+				bool autofill,
+				RDEventLine::ImportSource import_src,
+				bool inline_tfc);
   
  private:
   int GetLength(unsigned cartnum,int def_length=0);
   QString event_name;
-  QString event_properties;
   int event_preposition;
   RDLogLine::TimeType event_time_type;
   int event_grace_time;
-  bool event_post_point;
   bool event_use_autofill;
   bool event_use_timescale;
   RDEventLine::ImportSource event_import_source;

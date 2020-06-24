@@ -37,7 +37,7 @@ class RDReport
 		     CounterPoint=7,Music1=8,MusicSummary=9,WideOrbit=10,
 		     NprSoundExchange=11,MusicPlayout=12,NaturalLog=13,
 		     MusicClassical=14,MrMaster=15,SpinCount=16,CutLog=17,
-		     CounterPoint2=18,LastFilter=19};
+		     CounterPoint2=18,ResultsReport=19,LastFilter=20};
   enum ExportOs {Linux=0,Windows=1};
   enum ExportType {Generic=0,Traffic=1,Music=2};
   enum StationType {TypeOther=0,TypeAm=1,TypeFm=2,TypeLast=3};
@@ -124,6 +124,8 @@ class RDReport
 		       const QDate &enddate,const QString &mixtable);
   bool ExportCutLog(const QString &filename,const QDate &startdate,
 		    const QDate &enddate,const QString &mixtable);
+  bool ExportResultsReport(const QString &filename,const QDate &startdate,
+			   const QDate &enddate,const QString &mixtable);
   void SetRow(const QString &param,const QString &value) const;
   void SetRow(const QString &param,int value) const;
   void SetRow(const QString &param,unsigned value) const;

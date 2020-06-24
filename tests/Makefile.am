@@ -31,6 +31,7 @@ noinst_PROGRAMS = audio_convert_test\
                   audio_import_test\
                   audio_metadata_test\
                   audio_peaks_test\
+                  cmdline_parser_test\
                   datedecode_test\
                   dateparse_test\
                   db_charset_test\
@@ -64,6 +65,9 @@ audio_metadata_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIB
 
 dist_audio_peaks_test_SOURCES = audio_peaks_test.cpp audio_peaks_test.h
 audio_peaks_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@ -lQt3Support
+
+dist_cmdline_parser_test_SOURCES = cmdline_parser_test.cpp cmdline_parser_test.h
+cmdline_parser_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@ -lQt3Support
 
 dist_datedecode_test_SOURCES = datedecode_test.cpp datedecode_test.h
 datedecode_test_LDADD = @LIB_RDLIBS@ @LIBVORBIS@ @QT4_LIBS@ @MUSICBRAINZ_LIBS@ -lQt3Support

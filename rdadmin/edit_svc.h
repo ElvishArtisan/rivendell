@@ -45,7 +45,9 @@ class EditSvc : public RDDialog
   void autofillData();
   void enableHostsData();
   void trafficData();
+  void trafficCopyData();
   void musicData();
+  void musicCopyData();
   void textChangedData(const QString &);
   void tfcTemplateActivatedData(int index);
   void musTemplateActivatedData(int index);
@@ -85,6 +87,8 @@ class EditSvc : public RDDialog
   QCheckBox *svc_shelflife_box;
   QSpinBox *svc_shelflife_spin;
   QCheckBox *svc_import_markers_check;
+  QPushButton *svc_tfc_copy_button;
+  QPushButton *svc_mus_copy_button;
   bool import_changed;
 };
 

@@ -47,9 +47,32 @@ RDFontEngine::RDFontEngine(RDConfig *c)
 }
 
 
+RDFontEngine::~RDFontEngine()
+{
+  delete font_button_font_metrics;
+  delete font_huge_button_font_metrics;
+  delete font_big_button_font_metrics;
+  delete font_sub_button_font_metrics;
+  delete font_section_label_font_metrics;
+  delete font_label_font_metrics;
+  delete font_sub_label_font_metrics;
+  delete font_progress_font_metrics;
+  delete font_banner_font_metrics;
+  delete font_timer_font_metrics;
+  delete font_small_timer_font_metrics;
+  delete font_default_font_metrics;
+}
+
+
 QFont RDFontEngine::buttonFont() const
 {
   return font_button_font;
+}
+
+
+QFontMetrics *RDFontEngine::buttonFontMetrics() const
+{
+  return font_button_font_metrics;
 }
 
 
@@ -59,9 +82,21 @@ QFont RDFontEngine::hugeButtonFont() const
 }
 
 
+QFontMetrics *RDFontEngine::hugeButtonFontMetrics() const
+{
+  return font_huge_button_font_metrics;
+}
+
+
 QFont RDFontEngine::bigButtonFont() const
 {
   return font_big_button_font;
+}
+
+
+QFontMetrics *RDFontEngine::bigButtonFontMetrics() const
+{
+  return font_big_button_font_metrics;
 }
 
 
@@ -71,9 +106,21 @@ QFont RDFontEngine::subButtonFont() const
 }
 
 
+QFontMetrics *RDFontEngine::subButtonFontMetrics() const
+{
+  return font_sub_button_font_metrics;
+}
+
+
 QFont RDFontEngine::sectionLabelFont() const
 {
   return font_section_label_font;
+}
+
+
+QFontMetrics *RDFontEngine::sectionLabelFontMetrics() const
+{
+  return font_section_label_font_metrics;
 }
 
 
@@ -83,9 +130,21 @@ QFont RDFontEngine::labelFont() const
 }
 
 
+QFontMetrics *RDFontEngine::labelFontMetrics() const
+{
+  return font_label_font_metrics;
+}
+
+
 QFont RDFontEngine::subLabelFont() const
 {
   return font_sub_label_font;
+}
+
+
+QFontMetrics *RDFontEngine::subLabelFontMetrics() const
+{
+  return font_sub_label_font_metrics;
 }
 
 
@@ -95,9 +154,21 @@ QFont RDFontEngine::progressFont() const
 }
 
 
+QFontMetrics *RDFontEngine::progressFontMetrics() const
+{
+  return font_progress_font_metrics;
+}
+
+
 QFont RDFontEngine::bannerFont() const
 {
   return font_banner_font;
+}
+
+
+QFontMetrics *RDFontEngine::bannerFontMetrics() const
+{
+  return font_banner_font_metrics;
 }
 
 
@@ -107,15 +178,33 @@ QFont RDFontEngine::timerFont() const
 }
 
 
+QFontMetrics *RDFontEngine::timerFontMetrics() const
+{
+  return font_timer_font_metrics;
+}
+
+
 QFont RDFontEngine::smallTimerFont() const
 {
   return font_small_timer_font;
 }
 
 
+QFontMetrics *RDFontEngine::smallTimerFontMetrics() const
+{
+  return font_small_timer_font_metrics;
+}
+
+
 QFont RDFontEngine::defaultFont() const
 {
   return font_default_font;
+}
+
+
+QFontMetrics *RDFontEngine::defaultFontMetrics() const
+{
+  return font_default_font_metrics;
 }
 
 
@@ -157,37 +246,49 @@ void RDFontEngine::MakeFonts(const QFont &default_font)
   //
   font_button_font=QFont(family,button_size,QFont::Bold);
   font_button_font.setPixelSize(button_size);
+  font_button_font_metrics=new QFontMetrics(font_button_font);
 
   font_huge_button_font=QFont(family,button_size+24,QFont::DemiBold);
   font_huge_button_font.setPixelSize(button_size+24);
+  font_huge_button_font_metrics=new QFontMetrics(font_huge_button_font);
 
   font_big_button_font=QFont(family,button_size+4,QFont::DemiBold);
   font_big_button_font.setPixelSize(button_size+4);
+  font_big_button_font_metrics=new QFontMetrics(font_big_button_font);
 
   font_sub_button_font=QFont(family,button_size-2,QFont::Normal);
   font_sub_button_font.setPixelSize(button_size-2);
+  font_sub_button_font_metrics=new QFontMetrics(font_sub_button_font);
 
   font_section_label_font=QFont(family,label_size+2,QFont::Bold);
   font_section_label_font.setPixelSize(label_size+2);
+  font_section_label_font_metrics=new QFontMetrics(font_section_label_font);
 
   font_label_font=QFont(family,label_size,QFont::Bold);
   font_label_font.setPixelSize(label_size);
+  font_label_font_metrics=new QFontMetrics(font_label_font);
 
   font_sub_label_font=QFont(family,label_size,QFont::Normal);
   font_sub_label_font.setPixelSize(label_size);
+  font_sub_label_font_metrics=new QFontMetrics(font_sub_label_font);
 
   font_progress_font=QFont(family,label_size+4,QFont::Bold);
   font_progress_font.setPixelSize(label_size+4);
+  font_progress_font_metrics=new QFontMetrics(font_progress_font);
 
   font_banner_font=QFont(family,26,QFont::Normal);
   font_banner_font.setPixelSize(26);
+  font_banner_font_metrics=new QFontMetrics(font_banner_font);
 
   font_timer_font=QFont(family,20,QFont::Normal);
   font_timer_font.setPixelSize(20);
+  font_timer_font_metrics=new QFontMetrics(font_timer_font);
 
   font_small_timer_font=QFont(family,default_size+2,QFont::Normal);
   font_small_timer_font.setPixelSize(default_size+2);
+  font_small_timer_font_metrics=new QFontMetrics(font_small_timer_font);
 
   font_default_font=QFont(family,default_size,QFont::Normal);
   font_default_font.setPixelSize(default_size);
+  font_default_font_metrics=new QFontMetrics(font_default_font);
 }

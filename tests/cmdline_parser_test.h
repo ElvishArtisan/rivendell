@@ -1,8 +1,8 @@
-// dbversion.h
+// cmdline_parser_test.h
 //
-// The Current Database Schema Version for Rivendell
+// Test the Rivendell command-line parser routines.
 //
-//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -18,13 +18,18 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
-#ifndef DBVERSION_H
-#define DBVERSION_H
+#ifndef CMDLINE_PARSER_TEST_H
+#define CMDLINE_PARSER_TEST_H
 
-/*
- * Current Database Version
- */
-#define RD_VERSION_DATABASE 317
+#include <qobject.h>
+
+#define CMDLINE_PARSER_TEST_USAGE "<test-args> ...\n\n"
+
+class MainObject : public QObject
+{
+ public:
+  MainObject(QObject *parent=0);
+};
 
 
-#endif  // DBVERSION_H
+#endif  // CMDLINE_PARSER_TEST_H

@@ -489,7 +489,13 @@ void RDFormPost::LoadUrlEncoding(char first)
   post_data[post_content_length]=0;
   lines=QString(post_data).split("&");
   for(int i=0;i<lines.size();i++) {
-    line=lines[i].split("=");
+    line=lines[i].split("=",QString::KeepEmptyParts);
+    for(int j=2;j<line.size();j++) {
+      line[1]+="="+line.at(j);
+    }
+    while(line.size()>2) {
+      line.removeLast();
+    }
     switch(line.size()) {
     case 1:
       post_values[line[0]]="";
@@ -572,14 +578,19 @@ bool RDFormPost::GetMimePart(QString *name,QString *value,bool *is_file)
   // Headers
   //
   do {
-    //    line=post_text_reader->readLine();
     line=QString::fromUtf8(GetLine());
     QStringList f0=line.split(":");
     if(f0.size()==2) {
       if(f0[0].lower()=="content-disposition") {
 	QStringList f1=f0[1].split(";");
 	for(int i=0;i<f1.size();i++) {
-	  QStringList f2=f1[i].trimmed().split("=");
+	  QStringList f2=f1[i].trimmed().split("=",QString::KeepEmptyParts);
+	  for(int j=2;j<f2.size();j++) {
+	    f2[1]+="="+f2.at(j);
+	  }
+	  while(f2.size()>2) {
+	    f2.removeLast();
+	  }
 	  if(f2.size()==2) {
 	    if(f2[0]=="name") {
 	      *name=f2[1].replace("\"","");

@@ -341,6 +341,20 @@ void MainWidget::masterTimerData()
 }
 
 
+void MainWidget::wheelEvent(QWheelEvent *e)
+{
+  if(e->orientation()==Qt::Vertical) {
+    if(e->delta()>0) {
+      panel_panel->panelDown();
+    }
+    if(e->delta()<0) {
+      panel_panel->panelUp();
+    }
+  }
+  e->accept();
+}
+
+
 void MainWidget::closeEvent(QCloseEvent *e)
 {
   panel_db->removeDatabase(rda->config()->mysqlDbname());

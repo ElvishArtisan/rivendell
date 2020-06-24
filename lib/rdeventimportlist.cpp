@@ -2,7 +2,7 @@
 //
 // Abstract an rdlogmanager(1) Import List
 //
-//   (C) Copyright 2018-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2018-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -191,7 +191,7 @@ void RDEventImportList::load()
 }
 
 
-void RDEventImportList::save() const
+void RDEventImportList::save(RDLogLine::TransType first_trans) const
 {
   QString sql=QString("delete from EVENT_LINES where ")+
     "EVENT_NAME=\""+RDEscapeString(list_event_name)+"\" && "+
@@ -205,8 +205,14 @@ void RDEventImportList::save() const
       QString().sprintf("COUNT=%u,",i)+
       QString().sprintf("EVENT_TYPE=%d,",item->eventType())+
       QString().sprintf("CART_NUMBER=%u,",item->cartNumber())+
-      QString().sprintf("TRANS_TYPE=%d,",item->transType())+
-      "MARKER_COMMENT=\""+RDEscapeString(item->markerComment())+"\"";
+      "MARKER_COMMENT=\""+RDEscapeString(item->markerComment())+"\",";
+    if(first_trans==RDLogLine::NoTrans) { 
+      sql+=QString().sprintf("TRANS_TYPE=%d",item->transType());
+    }
+    else {
+      sql+=QString().sprintf("TRANS_TYPE=%d",first_trans);
+      first_trans=RDLogLine::NoTrans;
+    }
     RDSqlQuery::apply(sql);
   }
 }

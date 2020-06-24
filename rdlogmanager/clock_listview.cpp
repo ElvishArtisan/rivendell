@@ -2,7 +2,7 @@
 //
 //   The Clock Carts ListView widget for RDLogManager.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -46,13 +46,13 @@ ClockListView::ClockListView(QWidget *parent)
 void ClockListView::aboutToShowData()
 {
   clock_menu->setItemEnabled(0,(clock_menu_item!=NULL)&&
-			     (!clock_menu_item->text(4).isEmpty()));
+			     (!clock_menu_item->text(5).isEmpty()));
 }
 
 
 void ClockListView::editEventData()
 {
-  emit editLine(clock_menu_item->text(4).toInt());
+  emit editLine(clock_menu_item->text(5).toInt());
 }
 
 
