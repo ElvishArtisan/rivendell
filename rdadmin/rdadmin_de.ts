@@ -173,14 +173,6 @@ worden. Aktuelle Version</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Empty Feed Config</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Base Feed On</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Add Feed Error</source>
         <translation type="unfinished"></translation>
     </message>

@@ -66,23 +66,6 @@ AddFeed::AddFeed(unsigned *id,QString *keyname,QWidget *parent)
   feed_keyname_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
-  // Exemplar
-  //
-  feed_exemplar_box=new QComboBox(this);
-  feed_exemplar_box->insertItem(0,tr("Empty Feed Config"));
-  QString sql=QString("select KEY_NAME from FEEDS order by KEY_NAME");
-  RDSqlQuery *q=new RDSqlQuery(sql);
-  while(q->next()) {
-    feed_exemplar_box->
-      insertItem(feed_exemplar_box->count(),q->value(0).toString());
-  }
-  delete q;
-  feed_exemplar_label=
-    new QLabel(feed_exemplar_box,tr("Base Feed On")+": ",this);
-  feed_exemplar_label->setFont(labelFont());
-  feed_exemplar_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-
-  //
   // Enable Users Checkbox
   //
   feed_users_box=new QCheckBox(this);
@@ -119,7 +102,7 @@ AddFeed::~AddFeed()
 
 QSize AddFeed::sizeHint() const
 {
-  return QSize(290,153);
+  return QSize(290,123);
 } 
 
 
@@ -138,13 +121,9 @@ void AddFeed::keynameChangedData(const QString &str)
 void AddFeed::okData()
 {
   QString err_msg;
-  QString exemplar="";
 
-  if(feed_exemplar_box->currentIndex()!=0) {
-    exemplar=feed_exemplar_box->currentText();
-  }
   *feed_id=RDFeed::create(feed_keyname_edit->text(),feed_users_box->isChecked(),
-			  &err_msg,exemplar);
+			  &err_msg);
   if(*feed_id!=0) {
     *feed_keyname=feed_keyname_edit->text();
     done(0);
@@ -166,11 +145,8 @@ void AddFeed::resizeEvent(QResizeEvent *e)
   feed_keyname_label->setGeometry(10,11,120,19);
   feed_keyname_edit->setGeometry(135,11,sizeHint().width()-140,19);
 
-  feed_exemplar_label->setGeometry(10,35,120,19);
-  feed_exemplar_box->setGeometry(135,35,sizeHint().width()-140,19);
-
-  feed_users_box->setGeometry(40,65,15,15);
-  feed_users_label->setGeometry(60,63,sizeHint().width()-60,19);
+  feed_users_box->setGeometry(40,35,15,15);
+  feed_users_label->setGeometry(60,33,sizeHint().width()-60,19);
 
   feed_ok_button->setGeometry(size().width()-180,size().height()-60,80,50);
   feed_cancel_button->setGeometry(size().width()-90,size().height()-60,80,50);

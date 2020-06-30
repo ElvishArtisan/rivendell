@@ -1422,13 +1422,12 @@ RDRssSchemas *RDFeed::rssSchemas() const
 
 
 unsigned RDFeed::create(const QString &keyname,bool enable_users,
-			QString *err_msg,const QString &exemplar)
+			QString *err_msg)
 {
   QString sql;
   RDSqlQuery *q;
   RDSqlQuery *q1;
   unsigned feed_id=0;
-  bool ok=false;
 
   //
   // Sanity Checks
@@ -1443,166 +1442,18 @@ unsigned RDFeed::create(const QString &keyname,bool enable_users,
   }
   delete q;
 
-  if(exemplar.isEmpty()) {
-    //
-    // Create an Empty Feed
-    //
-    sql=QString("insert into FEEDS set ")+
-      "KEY_NAME=\""+RDEscapeString(keyname)+"\","+
-      "ORIGIN_DATETIME=now(),"+
-      "HEADER_XML=\"\","+
-      "CHANNEL_XML=\"\","+
-      "ITEM_XML=\"\"";
-    q=new RDSqlQuery(sql);
-    feed_id=q->lastInsertId().toUInt();
-    delete q;
-  }
-  else {
-    //
-    // Create a Cloned Feed
-    //
-    sql=QString("select ")+
-      "IS_SUPERFEED,"+         // 00
-      "AUDIENCE_METRICS,"+     // 01
-      "CHANNEL_TITLE,"+        // 02
-      "CHANNEL_DESCRIPTION,"+  // 03
-      "CHANNEL_CATEGORY,"+     // 04
-      "CHANNEL_LINK,"+         // 05
-      "CHANNEL_COPYRIGHT,"+    // 06
-      "CHANNEL_WEBMASTER,"+    // 07
-      "CHANNEL_LANGUAGE,"+     // 08
-      "BASE_URL,"+             // 09
-      "BASE_PREAMBLE,"+        // 10
-      "PURGE_URL,"+            // 11
-      "PURGE_USERNAME,"+       // 12
-      "PURGE_PASSWORD,"+       // 13
-      "HEADER_XML,"+           // 14
-      "CHANNEL_XML,"+          // 15
-      "ITEM_XML,"+             // 16
-      "CAST_ORDER,"+           // 17
-      "MAX_SHELF_LIFE,"+       // 18
-      "ENABLE_AUTOPOST,"+      // 19
-      "KEEP_METADATA,"+        // 20
-      "UPLOAD_FORMAT,"+        // 21
-      "UPLOAD_CHANNELS,"+      // 22
-      "UPLOAD_SAMPRATE,"+      // 23
-      "UPLOAD_BITRATE,"+       // 24
-      "UPLOAD_QUALITY,"+       // 25
-      "UPLOAD_EXTENSION,"+     // 26
-      "NORMALIZE_LEVEL,"+      // 27
-      "REDIRECT_PATH,"+        // 28
-      "MEDIA_LINK_MODE,"+      // 29
-      "CHANNEL_IMAGE_ID "+     // 30
-      "from FEEDS where "+
-      "KEY_NAME=\""+RDEscapeString(exemplar)+"\"";
-    q=new RDSqlQuery(sql);
-    if(q->first()) {
-      sql=QString("insert into FEEDS set ")+
-	"KEY_NAME=\""+RDEscapeString(keyname)+"\","+
-	"IS_SUPERFEED=\""+q->value(0).toString()+"\","+
-	"AUDIENCE_METRICS=\""+q->value(1).toString()+"\","+
-	"CHANNEL_TITLE=\""+RDEscapeString(q->value(2).toString())+"\","+
-	"CHANNEL_DESCRIPTION=\""+RDEscapeString(q->value(3).toString())+"\","+
-	"CHANNEL_CATEGORY=\""+RDEscapeString(q->value(4).toString())+"\","+
-	"CHANNEL_LINK=\""+RDEscapeString(q->value(5).toString())+"\","+
-	"CHANNEL_COPYRIGHT=\""+RDEscapeString(q->value(6).toString())+"\","+
-	"CHANNEL_WEBMASTER=\""+RDEscapeString(q->value(7).toString())+"\","+
-	"CHANNEL_LANGUAGE=\""+RDEscapeString(q->value(8).toString())+"\","+
-	"BASE_URL=\""+RDEscapeString(q->value(9).toString())+"\","+
-	"BASE_PREAMBLE=\""+RDEscapeString(q->value(10).toString())+"\","+
-	"PURGE_URL=\""+RDEscapeString(q->value(11).toString())+"\","+
-	"PURGE_USERNAME=\""+RDEscapeString(q->value(12).toString())+"\","+
-	"PURGE_PASSWORD=\""+RDEscapeString(q->value(13).toString())+"\","+
-	"HEADER_XML=\""+RDEscapeString(q->value(14).toString())+"\","+
-	"CHANNEL_XML=\""+RDEscapeString(q->value(15).toString())+"\","+
-	"ITEM_XML=\""+RDEscapeString(q->value(16).toString())+"\","+
-	"CAST_ORDER=\""+RDEscapeString(q->value(17).toString())+"\","+
-	QString().sprintf("MAX_SHELF_LIFE=%d,",q->value(18).toInt())+
-	"LAST_BUILD_DATETIME=now(),"+
-	"ORIGIN_DATETIME=now(),"+
-	"ENABLE_AUTOPOST=\""+RDEscapeString(q->value(19).toString())+"\","+
-	"KEEP_METADATA=\""+RDEscapeString(q->value(20).toString())+"\","+
-	QString().sprintf("UPLOAD_FORMAT=%d,",q->value(21).toInt())+
-	QString().sprintf("UPLOAD_CHANNELS=%d,",q->value(22).toInt())+
-	QString().sprintf("UPLOAD_SAMPRATE=%d,",q->value(23).toInt())+
-	QString().sprintf("UPLOAD_BITRATE=%d,",q->value(24).toInt())+
-	QString().sprintf("UPLOAD_QUALITY=%d,",q->value(25).toInt())+
-	"UPLOAD_EXTENSION=\""+RDEscapeString(q->value(26).toString())+"\","+
-	QString().sprintf("NORMALIZE_LEVEL=%d,",q->value(27).toInt())+
-	"REDIRECT_PATH=\""+RDEscapeString(q->value(28).toString())+"\","+
-	QString().sprintf("MEDIA_LINK_MODE=%d",q->value(29).toInt());
-	//	QString().sprintf("CHANNEL_IMAGE_ID=%d",q->value(30).toInt());
-
-      feed_id=RDSqlQuery::run(sql,&ok).toUInt();
-      if(!ok) {
-	*err_msg=tr("Unable to insert new feed record!");
-	delete q;
-	return 0;
-      }
-
-      //
-      // Duplicate member feed references
-      //
-      if(q->value(0).toString()=="Y") {
-	sql=QString("select ")+
-	  "MEMBER_KEY_NAME,"+  // 00
-	  "FEED_ID,"+          // 01
-	  "MEMBER_FEED_ID "+   // 02
-	  "from SUPERFEED_MAPS where "+
-	  "KEY_NAME=\""+RDEscapeString(exemplar)+"\"";
-	q1=new RDSqlQuery(sql);
-	while(q1->next()) {
-	  sql=QString("insert into SUPERFEED_MAPS set ")+
-	    "KEY_NAME=\""+RDEscapeString(keyname)+"\","+
-	    "MEMBER_KEY_NAME=\""+RDEscapeString(q1->value(0).toString())+"\","+
-	    QString().sprintf("FEED_ID=%u,",q1->value(1).toUInt())+
-	    QString().sprintf("MEMBER_FEED_ID=%u",q1->value(2).toUInt());
-	  RDSqlQuery::apply(sql);
-	}
-	delete q1;
-      }
-
-      //
-      // Duplicate Image Library Entries
-      //
-      sql=QString("select ")+
-	"ID,"+              // 00
-	"WIDTH,"+           // 01
-	"HEIGHT,"+          // 02
-	"DEPTH,"+           // 03
-	"DESCRIPTION,"+     // 04
-	"FILE_EXTENSION,"+  // 05
-	"DATA "             // 06
-	"from FEED_IMAGES where "+
-	"FEED_KEY_NAME=\""+RDEscapeString(exemplar)+"\"";
-      q1=new RDSqlQuery(sql);
-      while(q1->next()) {
-	sql=QString("insert into FEED_IMAGES set ")+
-	  QString().sprintf("FEED_ID=%u,",feed_id)+
-	  "FEED_KEY_NAME=\""+RDEscapeString(keyname)+"\","+
-	  QString().sprintf("WIDTH=%d,",q1->value(1).toInt())+
-	  QString().sprintf("HEIGHT=%d,",q1->value(2).toInt())+
-	  QString().sprintf("DEPTH=%d,",q1->value(3).toInt())+
-	  "DESCRIPTION=\""+RDEscapeString(q1->value(4).toString())+"\","+
-	  "FILE_EXTENSION=\""+RDEscapeString(q1->value(5).toString())+"\","+
-	  "DATA="+RDEscapeBlob(q1->value(6).toByteArray());
-	int img_id=RDSqlQuery::run(sql,&ok).toInt();
-	if(ok&&(q1->value(0).toInt()==q->value(30).toInt())) {
-	  sql=QString("update FEEDS set ")+
-	    QString().sprintf("CHANNEL_IMAGE_ID=%d ",img_id)+
-	    "where KEY_NAME=\""+RDEscapeString(keyname)+"\"";
-	  RDSqlQuery::apply(sql);
-	}
-      }
-      delete q1;
-    }
-    else {
-      *err_msg=tr("Exemplar feed")+" \""+exemplar+"\" "+tr("does not exist!");
-      delete q;
-      return 0;
-    }
-    delete q;
-  }
+  //
+  // Create Feed
+  //
+  sql=QString("insert into FEEDS set ")+
+    "KEY_NAME=\""+RDEscapeString(keyname)+"\","+
+    "ORIGIN_DATETIME=now(),"+
+    "HEADER_XML=\"\","+
+    "CHANNEL_XML=\"\","+
+    "ITEM_XML=\"\"";
+  q=new RDSqlQuery(sql);
+  feed_id=q->lastInsertId().toUInt();
+  delete q;
 
   //
   // Create Default Feed Perms

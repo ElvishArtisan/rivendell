@@ -49,8 +49,6 @@ class AddFeed : public RDDialog
   private:
    QLabel *feed_keyname_label;
    QLineEdit *feed_keyname_edit;
-   QLabel *feed_exemplar_label;
-   QComboBox *feed_exemplar_box;
    QCheckBox *feed_users_box;
    QLabel *feed_users_label;
    QPushButton *feed_ok_button;

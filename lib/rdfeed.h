@@ -151,7 +151,7 @@ class RDFeed : public QObject
   QString rssXml(QString *err_msg,bool *ok=NULL);
   RDRssSchemas *rssSchemas() const;
   static unsigned create(const QString &keyname,bool enable_users,
-			 QString *err_msg,const QString &exemplar="");
+			 QString *err_msg);
   static QString errorString(RDFeed::Error err);
   static QString imageFilename(int feed_id,int img_id,const QString &ext);
   static QString publicUrl(const QString &base_url,const QString &keyname);

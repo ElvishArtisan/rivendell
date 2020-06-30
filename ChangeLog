@@ -20059,3 +20059,8 @@
 	main window of rdcastmanager(1).
 	* Added a 'Public URL' column and a 'Copy URL to Clipboard'
 	button to the main window of rdcastmanager(1).
+2020-06-30 Fred Gleason <fredg@paravelsystems.com>
+	* Removed the 'exemplar' parameter from the 'RDFeed::create()'
+	method.
+	* Removed the 'Base Feed On' dropdown from the 'Add Feed'
+	dialog in rdadmin(1).

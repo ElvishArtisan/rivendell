@@ -246,14 +246,6 @@ a záloha původní databáze uložena v </translation>
         <source>Add RSS Feed</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <source>Empty Feed Config</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Base Feed On</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>AddGroup</name>
