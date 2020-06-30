@@ -5150,6 +5150,10 @@ Do you still want to delete it?</source>
         <source>Deleting remote audio...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Public URL</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListGpis</name>

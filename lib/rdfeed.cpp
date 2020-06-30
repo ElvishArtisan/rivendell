@@ -1664,6 +1664,12 @@ QString RDFeed::imageFilename(int feed_id,int img_id,const QString &ext)
 }
 
 
+QString RDFeed::publicUrl(const QString &base_url,const QString &keyname)
+{
+  return base_url+"/"+keyname+"."+RD_RSS_XML_FILE_EXTENSION;
+}
+
+
 unsigned RDFeed::CreateCast(QString *filename,int bytes,int msecs) const
 {
   QString sql;

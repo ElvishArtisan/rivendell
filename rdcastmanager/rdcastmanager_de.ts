@@ -323,7 +323,7 @@ Podcast trotzdem löschen?</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation>Beschreibung</translation>
+        <translation type="obsolete">Beschreibung</translation>
     </message>
     <message>
         <source>Casts</source>
@@ -356,7 +356,16 @@ Feed</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Superfeed</source>
+        <source>Public URL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy URL to
+Clipboard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[superfeed]</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -4997,6 +4997,10 @@ Wollen Sie ihn immernoch löschen?</translation>
         <source>Deleting remote audio...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Public URL</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListGpis</name>

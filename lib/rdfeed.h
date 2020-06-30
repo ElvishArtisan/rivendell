@@ -154,6 +154,7 @@ class RDFeed : public QObject
 			 QString *err_msg,const QString &exemplar="");
   static QString errorString(RDFeed::Error err);
   static QString imageFilename(int feed_id,int img_id,const QString &ext);
+  static QString publicUrl(const QString &base_url,const QString &keyname);
 
  signals:
   void postProgressChanged(int step);

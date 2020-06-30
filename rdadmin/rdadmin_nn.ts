@@ -4854,6 +4854,10 @@ Klikk på &quot;Lisens&quot;-knappen for fleire opplysningar.</translation>
         <source>Deleting remote audio...</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Public URL</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>ListGpis</name>

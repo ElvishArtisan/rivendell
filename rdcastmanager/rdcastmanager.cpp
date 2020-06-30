@@ -19,9 +19,11 @@
 //
 
 #include <qapplication.h>
+#include <qclipboard.h>
 #include <qtranslator.h>
 #include <qmessagebox.h>
 
+#include <rdconf.h>
 #include <rdescape_string.h>
 #include <rdpodcast.h>
 
@@ -104,6 +106,8 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   cast_feed_list=new RDListView(this);
   cast_feed_list->setAllColumnsShowFocus(true);
   cast_feed_list->setItemMargin(5);
+  connect(cast_feed_list,SIGNAL(clicked(Q3ListViewItem *)),
+	  this,SLOT(feedClickedData(Q3ListViewItem *)));
   connect(cast_feed_list,
 	  SIGNAL(doubleClicked(Q3ListViewItem *,const QPoint &,int)),
 	  this,
@@ -112,19 +116,16 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   cast_feed_list->setColumnAlignment(0,Qt::AlignCenter);
 
   cast_feed_list->addColumn(tr("Key Name"));
-  cast_feed_list->setColumnAlignment(1,Qt::AlignHCenter);
+  cast_feed_list->setColumnAlignment(1,Qt::AlignLeft);
 
   cast_feed_list->addColumn(tr("Feed Name"));
   cast_feed_list->setColumnAlignment(2,Qt::AlignLeft);
 
-  cast_feed_list->addColumn(tr("Superfeed"));
+  cast_feed_list->addColumn(tr("Casts"));
   cast_feed_list->setColumnAlignment(3,Qt::AlignCenter);
 
-  cast_feed_list->addColumn(tr("Description"));
+  cast_feed_list->addColumn(tr("Public URL"));
   cast_feed_list->setColumnAlignment(4,Qt::AlignLeft);
-
-  cast_feed_list->addColumn(tr("Casts"));
-  cast_feed_list->setColumnAlignment(5,Qt::AlignCenter);
 
   //
   // Open Button
@@ -132,7 +133,17 @@ MainWidget::MainWidget(RDConfig *c,QWidget *parent)
   cast_open_button=new QPushButton(this);
   cast_open_button->setFont(buttonFont());
   cast_open_button->setText(tr("&View\nFeed"));
+  cast_open_button->setDisabled(true);
   connect(cast_open_button,SIGNAL(clicked()),this,SLOT(openData()));
+
+  //
+  // Copy Button
+  //
+  cast_copy_button=new QPushButton(this);
+  cast_copy_button->setFont(buttonFont());
+  cast_copy_button->setText(tr("Copy URL to\nClipboard"));
+  cast_copy_button->setDisabled(true);
+  connect(cast_copy_button,SIGNAL(clicked()),this,SLOT(copyData()));
 
   //
   // Close Button
@@ -170,6 +181,13 @@ void MainWidget::userChangedData()
 }
 
 
+void MainWidget::feedClickedData(Q3ListViewItem *item)
+{
+  cast_open_button->setDisabled(item==NULL);
+  cast_copy_button->setDisabled(item==NULL);
+}
+
+
 void MainWidget::openData()
 {
   RDListViewItem *item=(RDListViewItem *)cast_feed_list->selectedItem();
@@ -180,6 +198,16 @@ void MainWidget::openData()
   casts->exec();
   RefreshItem(item);
   delete casts;
+}
+
+
+void MainWidget::copyData()
+{
+  RDListViewItem *item=(RDListViewItem *)cast_feed_list->selectedItem();
+  if(item==NULL) {
+    return;
+  }
+  QApplication::clipboard()->setText(item->text(4));
 }
 
 
@@ -200,6 +228,7 @@ void MainWidget::resizeEvent(QResizeEvent *e)
   if(cast_resize) {
     cast_feed_list->setGeometry(10,10,size().width()-20,size().height()-70);
     cast_open_button->setGeometry(10,size().height()-55,80,50);
+    cast_copy_button->setGeometry(120,size().height()-55,100,50);
     cast_close_button->setGeometry(size().width()-90,size().height()-55,80,50);
   }
 }
@@ -214,16 +243,16 @@ void MainWidget::RefreshItem(RDListViewItem *item)
   int total=0;
 
   sql=QString("select ")+
-    "CHANNEL_TITLE,"+        // 00
-    "IS_SUPERFEED,"+         // 01
-    "CHANNEL_DESCRIPTION,"+  // 02
-    "ID "+                   // 03
+    "CHANNEL_TITLE,"+    // 00
+    "IS_SUPERFEED,"+     // 01
+    "ID,"+               // 02
+    "BASE_URL "+         // 03
     "from FEEDS where "+
     "KEY_NAME=\""+RDEscapeString(item->text(1))+"\"";
   q=new RDSqlQuery(sql);
   while(q->next()) {
     sql=QString().sprintf("select STATUS from PODCASTS where FEED_ID=%u",
-			  q->value(3).toUInt());
+			  q->value(2).toUInt());
     q1=new RDSqlQuery(sql);
     while(q1->next()) {
       total++;
@@ -245,9 +274,13 @@ void MainWidget::RefreshItem(RDListViewItem *item)
       item->setPixmap(0,*cast_redx_map);
     }
     item->setText(2,q->value(0).toString());
-    item->setText(3,q->value(1).toString());
-    item->setText(4,q->value(2).toString());
-    item->setText(5,QString().sprintf("%d / %d",active,total));
+    if(RDBool(q->value(1).toString())) {
+      item->setText(3,tr("[superfeed]"));
+    }
+    else {
+      item->setText(3,QString().sprintf("%d / %d",active,total));
+    }
+    item->setText(4,RDFeed::publicUrl(q->value(3).toString(),item->text(1)));
   }
   delete q;
 }

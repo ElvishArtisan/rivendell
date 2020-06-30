@@ -274,7 +274,7 @@ Suscripción</translation>
     </message>
     <message>
         <source>Description</source>
-        <translation>Descripción</translation>
+        <translation type="obsolete">Descripción</translation>
     </message>
     <message>
         <source>Casts</source>
@@ -306,7 +306,16 @@ Feed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Superfeed</source>
+        <source>Public URL</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Copy URL to
+Clipboard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>[superfeed]</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
