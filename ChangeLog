@@ -20076,3 +20076,5 @@
 	* Added a 'RDRssCategoryBox' widget.
 	* Updated the 'Edit Feed' dialog in rdadmin(1) to use the
 	'RDRssCategoryBox' widget.
+2020-07-02 Fred Gleason <fredg@paravelsystems.com>
+	* Added support for iTunes subcategories to the podcast subsystem.

@@ -157,6 +157,8 @@ class RDFeed : public QObject
   static QString errorString(RDFeed::Error err);
   static QString imageFilename(int feed_id,int img_id,const QString &ext);
   static QString publicUrl(const QString &base_url,const QString &keyname);
+  static QString itunesCategoryXml(const QString &category,
+				   const QString &sub_category,int padding=0);
 
  signals:
   void postProgressChanged(int step);
