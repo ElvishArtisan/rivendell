@@ -20078,3 +20078,5 @@
 	'RDRssCategoryBox' widget.
 2020-07-02 Fred Gleason <fredg@paravelsystems.com>
 	* Added support for iTunes subcategories to the podcast subsystem.
+2020-07-02 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'RDRssSchemas::supportsItemCategories()' method.

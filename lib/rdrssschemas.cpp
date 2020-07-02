@@ -76,10 +76,9 @@ RDRssSchemas::RDRssSchemas()
 
   // AppleSchema
   c_channel_templates.push_back("<title>%TITLE%</title>\n<description>%DESCRIPTION%</description>\n<itunes:summary>%DESCRIPTION%</itunes:summary>\n<category>%CATEGORY%</category>\n<link>%LINK%</link>\n<language>%LANGUAGE%</language>\n<copyright>%COPYRIGHT%</copyright>\n<lastBuildDate>%BUILD_DATE%</lastBuildDate>\n<pubDate>%PUBLISH_DATE%</pubDate>\n<managingEditor>%EDITOR%</managingEditor>\n<webMaster>%WEBMASTER%</webMaster>\n<generator>%GENERATOR%</generator>\n<image>\n  <url>%IMAGE_URL%</url>\n  <title>%TITLE%</title>\n  <link>%LINK%</link>\n  <width>%IMAGE_WIDTH%</width>\n  <height>%IMAGE_HEIGHT%</height>\n  <description>%IMAGE_DESCRIPTION%</description>\n</image>\n<atom:link href=\"%FEED_URL%\" rel=\"self\" type=\"application/rss+xml\" />\n<itunes:author>%AUTHOR%</itunes:author>\n<itunes:type>episodic</itunes:type>\n<itunes:owner>\n <itunes:name>%OWNER_NAME%</itunes:name>\n  <itunes:email>%OWNER_EMAIL%</itunes:email>\n</itunes:owner>\n<itunes:image href=\"%IMAGE_URL%\" />\n%ITUNES_CATEGORY%\n<itunes:explicit>%EXPLICIT%</itunes:explicit>");
-  //  c_channel_templates.push_back("<title>%TITLE%</title>\n<description>%DESCRIPTION%</description>\n<itunes:summary>%DESCRIPTION%</itunes:summary>\n<category>%CATEGORY%</category>\n<link>%LINK%</link>\n<language>%LANGUAGE%</language>\n<copyright>%COPYRIGHT%</copyright>\n<lastBuildDate>%BUILD_DATE%</lastBuildDate>\n<pubDate>%PUBLISH_DATE%</pubDate>\n<managingEditor>%EDITOR%</managingEditor>\n<webMaster>%WEBMASTER%</webMaster>\n<generator>%GENERATOR%</generator>\n<image>\n  <url>%IMAGE_URL%</url>\n  <title>%TITLE%</title>\n  <link>%LINK%</link>\n  <width>%IMAGE_WIDTH%</width>\n  <height>%IMAGE_HEIGHT%</height>\n  <description>%IMAGE_DESCRIPTION%</description>\n</image>\n<atom:link href=\"%FEED_URL%\" rel=\"self\" type=\"application/rss+xml\" />\n<itunes:author>%AUTHOR%</itunes:author>\n<itunes:type>episodic</itunes:type>\n<itunes:owner>\n <itunes:name>%OWNER_NAME%</itunes:name>\n  <itunes:email>%OWNER_EMAIL%</itunes:email>\n</itunes:owner>\n<itunes:image href=\"%IMAGE_URL%\" />\n<itunes:category text=\"%CATEGORY%\" />\n<itunes:explicit>%EXPLICIT%</itunes:explicit>");
 
   // AppleSuperfeedSchema
-  c_channel_templates.push_back("<title>%TITLE%</title>\n<description>%DESCRIPTION%</description>\n<itunes:summary>%DESCRIPTION%</itunes:summary>\n<category>%CATEGORY%</category>\n<link>%LINK%</link>\n<language>%LANGUAGE%</language>\n<copyright>%COPYRIGHT%</copyright>\n<lastBuildDate>%BUILD_DATE%</lastBuildDate>\n<pubDate>%PUBLISH_DATE%</pubDate>\n<managingEditor>%EDITOR%</managingEditor>\n<webMaster>%WEBMASTER%</webMaster>\n<generator>%GENERATOR%</generator>\n<image>\n  <url>%IMAGE_URL%</url>\n  <title>%TITLE%</title>\n  <link>%LINK%</link>\n  <width>%IMAGE_WIDTH%</width>\n  <height>%IMAGE_HEIGHT%</height>\n  <description>%IMAGE_DESCRIPTION%</description>\n</image>\n<atom:link href=\"%FEED_URL%\" rel=\"self\" type=\"application/rss+xml\" />\n<itunes:author>%AUTHOR%</itunes:author>\n<itunes:type>episodic</itunes:type>\n<itunes:owner>\n <itunes:name>%OWNER_NAME%</itunes:name>\n  <itunes:email>%OWNER_EMAIL%</itunes:email>\n</itunes:owner>\n<itunes:image href=\"%IMAGE_URL%\" />\n<itunes:category text=\"%CATEGORY%\" />\n<itunes:explicit>%EXPLICIT%</itunes:explicit>");
+  c_channel_templates.push_back("<title>%TITLE%</title>\n<description>%DESCRIPTION%</description>\n<itunes:summary>%DESCRIPTION%</itunes:summary>\n<category>%CATEGORY%</category>\n<link>%LINK%</link>\n<language>%LANGUAGE%</language>\n<copyright>%COPYRIGHT%</copyright>\n<lastBuildDate>%BUILD_DATE%</lastBuildDate>\n<pubDate>%PUBLISH_DATE%</pubDate>\n<managingEditor>%EDITOR%</managingEditor>\n<webMaster>%WEBMASTER%</webMaster>\n<generator>%GENERATOR%</generator>\n<image>\n  <url>%IMAGE_URL%</url>\n  <title>%TITLE%</title>\n  <link>%LINK%</link>\n  <width>%IMAGE_WIDTH%</width>\n  <height>%IMAGE_HEIGHT%</height>\n  <description>%IMAGE_DESCRIPTION%</description>\n</image>\n<atom:link href=\"%FEED_URL%\" rel=\"self\" type=\"application/rss+xml\" />\n<itunes:author>%AUTHOR%</itunes:author>\n<itunes:type>episodic</itunes:type>\n<itunes:owner>\n <itunes:name>%OWNER_NAME%</itunes:name>\n  <itunes:email>%OWNER_EMAIL%</itunes:email>\n</itunes:owner>\n<itunes:image href=\"%IMAGE_URL%\" />\n%ITUNES_CATEGORY%\n<itunes:explicit>%EXPLICIT%</itunes:explicit>");
 
 
   //
@@ -96,6 +95,22 @@ RDRssSchemas::RDRssSchemas()
 
   // AppleSuperfeedSchema
   c_supports_item_images.push_back(true);
+
+
+  //
+  // Item Category Support
+  //
+  // CustomSchema
+  c_supports_item_categories.push_back(true);
+
+  // Rss202Schema
+  c_supports_item_categories.push_back(true);
+
+  // AppleSchema
+  c_supports_item_categories.push_back(false);
+
+  // AppleSuperfeedSchema
+  c_supports_item_categories.push_back(false);
 
 
   //
@@ -326,6 +341,12 @@ QString RDRssSchemas::itemTemplate(RssSchema schema) const
 bool RDRssSchemas::supportsItemImages(RssSchema schema) const
 {
   return c_supports_item_images.at(schema);
+}
+
+
+bool RDRssSchemas::supportsItemCategories(RssSchema schema) const
+{
+  return c_supports_item_categories.at(schema);
 }
 
 
