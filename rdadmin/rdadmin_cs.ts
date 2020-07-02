@@ -1701,6 +1701,10 @@ Feeds</source>
         <source>Superfeed must have at least one subfeed assigned!</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>[none]</source>
+        <translation type="obsolete">[žádný]</translation>
+    </message>
 </context>
 <context>
     <name>EditFeedPerms</name>

@@ -34,6 +34,7 @@
 #include <rdfeed.h>
 #include <rdimagepickerbox.h>
 #include <rdsettings.h>
+#include <rdrsscategorybox.h>
 #include <rdstation.h>
 
 #include "list_images.h"
@@ -48,7 +49,8 @@ class EditFeed : public RDDialog
   QSizePolicy sizePolicy() const;
 
  private slots:
-  void comboboxActivatedData(int n);
+  void superfeedActivatedData(int n);
+  void schemaActivatedData(int n);
   void checkboxToggledData(bool state);
   void lineeditChangedData(const QString &str);
   void selectSubfeedsData();
@@ -73,7 +75,8 @@ class EditFeed : public RDDialog
   QComboBox *feed_is_superfeed_box;
   QLineEdit *feed_channel_title_edit;
   QTextEdit *feed_channel_description_edit;
-  QLineEdit *feed_channel_category_edit;
+  QLabel *feed_channel_category_label;
+  RDRssCategoryBox *feed_channel_category_box;
   QLineEdit *feed_channel_link_edit;
   QLineEdit *feed_channel_copyright_edit;
   QLabel *feed_channel_editor_label;
@@ -120,7 +123,6 @@ class EditFeed : public RDDialog
   QPushButton *feed_format_button;
   QGroupBox *feed_channel_section_groupbox;
   QLabel *feed_channel_title_label;
-  QLabel *feed_channel_category_label;
   QLabel *feed_channel_link_label;
   QLabel *feed_channel_copyright_label;
   QLabel *feed_channel_language_label;

@@ -63,7 +63,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   feed_is_superfeed_box->insertItem(0,tr("No"));
   feed_is_superfeed_box->insertItem(1,tr("Yes"));
   connect(feed_is_superfeed_box,SIGNAL(activated(int)),
-	  this,SLOT(comboboxActivatedData(int)));
+	  this,SLOT(superfeedActivatedData(int)));
   feed_is_superfeed_label=new QLabel(tr("Is Superfeed")+":",this);
   feed_is_superfeed_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   feed_is_superfeed_label->setFont(labelFont());
@@ -107,13 +107,11 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   //
   // Channel Category
   //
-  feed_channel_category_edit=new QLineEdit(this);
-  feed_channel_category_edit->setMaxLength(64);
-  feed_channel_category_label=
-    new QLabel(feed_channel_category_edit,tr("Category:"),this);
+  feed_channel_category_box=
+    new RDRssCategoryBox(feed_feed->rssSchemas(),this);
+  feed_channel_category_label=new QLabel(tr("Category:"),this);
   feed_channel_category_label->setFont(labelFont());
-  feed_channel_category_label->
-    setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  feed_channel_category_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
 
   //
   // Channel Link
@@ -409,7 +407,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
 		 feed_feed->rssSchemas()->name((RDRssSchemas::RssSchema)i),i);
   }
   connect(feed_rss_schema_box,SIGNAL(activated(int)),
-	  this,SLOT(comboboxActivatedData(int)));
+	  this,SLOT(schemaActivatedData(int)));
   feed_rss_schema_label=new QLabel(tr("RSS Schema")+":",this);
   feed_rss_schema_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   feed_rss_schema_label->setFont(labelFont());
@@ -485,7 +483,9 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   feed_redirect_check->setEnabled(feed_audience_metrics_check->isChecked());
   feed_redirect_label->setEnabled(feed_audience_metrics_check->isChecked());
   feed_channel_title_edit->setText(feed_feed->channelTitle());
-  feed_channel_category_edit->setText(feed_feed->channelCategory());
+  feed_channel_category_box->setSchema(feed_feed->rssSchema());
+  feed_channel_category_box->
+    setCategory(feed_feed->channelCategory(),feed_feed->channelSubCategory());
   feed_channel_link_edit->setText(feed_feed->channelLink());
   feed_channel_copyright_edit->setText(feed_feed->channelCopyright());
   feed_channel_editor_edit->setText(feed_feed->channelEditor());
@@ -562,8 +562,16 @@ QSizePolicy EditFeed::sizePolicy() const
 
 
 
-void EditFeed::comboboxActivatedData(int n)
+void EditFeed::superfeedActivatedData(int n)
 {
+  UpdateControlState();
+}
+
+
+void EditFeed::schemaActivatedData(int n)
+{
+  feed_channel_category_box->setSchema((RDRssSchemas::RssSchema)n);
+  
   UpdateControlState();
 }
 
@@ -660,7 +668,8 @@ void EditFeed::okData()
   feed_feed->setIsSuperfeed(feed_is_superfeed_box->currentItem());
   feed_feed->setAudienceMetrics(feed_audience_metrics_check->isChecked());
   feed_feed->setChannelTitle(feed_channel_title_edit->text());
-  feed_feed->setChannelCategory(feed_channel_category_edit->text());
+  feed_feed->setChannelCategory(feed_channel_category_box->category());
+  feed_feed->setChannelSubCategory(feed_channel_category_box->subCategory());
   feed_feed->setChannelLink(feed_channel_link_edit->text());
   feed_feed->setChannelCopyright(feed_channel_copyright_edit->text());
   feed_feed->setChannelEditor(feed_channel_editor_edit->text());
@@ -738,7 +747,7 @@ void EditFeed::resizeEvent(QResizeEvent *e)
   feed_channel_section_groupbox->setGeometry(10,77,sizeHint().width()/2-10,355);
   feed_channel_title_edit->setGeometry(115,92,375,19);
   feed_channel_title_label->setGeometry(20,92,90,19);
-  feed_channel_category_edit->setGeometry(115,114,375,19);
+  feed_channel_category_box->setGeometry(115,114,375,19);
   feed_channel_category_label->setGeometry(20,114,90,19);
   feed_channel_link_edit->setGeometry(115,136,375,19);
   feed_channel_link_label->setGeometry(20,136,90,19);
@@ -761,9 +770,11 @@ void EditFeed::resizeEvent(QResizeEvent *e)
   feed_channel_language_edit->setGeometry(115,289,60,19);
   feed_channel_language_label->setGeometry(20,289,90,19);
   feed_channel_explicit_check->setGeometry(205,291,15,15);
-  feed_channel_explicit_label->setGeometry(225,289,260,19);
+  feed_channel_explicit_label->setGeometry(225,291,260,19);
   feed_channel_description_edit->setGeometry(115,311,375,76);
   feed_channel_description_label->setGeometry(20,311,90,19);
+
+
   feed_channel_image_box->setGeometry(115,389,375,38);
   feed_channel_image_box->setIconSize(QSize(36,36));
   feed_channel_image_label->setGeometry(20,389,90,19);
@@ -859,7 +870,7 @@ void EditFeed::UpdateControlState()
 
   feed_channel_title_edit->setDisabled(redirected);
   feed_channel_description_edit->setDisabled(redirected);
-  feed_channel_category_edit->setDisabled(redirected);
+  feed_channel_category_box->setDisabled(redirected);
   feed_channel_link_edit->setDisabled(redirected);
   feed_channel_copyright_edit->setDisabled(redirected);
   feed_channel_editor_label->setDisabled(redirected);

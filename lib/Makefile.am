@@ -201,6 +201,7 @@ dist_librd_la_SOURCES = dbversion.h\
                         rdringbuffer.cpp rdringbuffer.h\
                         rdripc.cpp rdripc.h\
                         rdrssschemas.cpp rdrssschemas.h\
+                        rdrsscategorybox.cpp rdrsscategorybox.h\
                         rdschedcartlist.cpp rdschedcartlist.h\
                         rdschedcode.cpp rdschedcode.h\
                         rdschedcodes_dialog.cpp rdschedcodes_dialog.h\
@@ -325,6 +326,7 @@ nodist_librd_la_SOURCES = moc_rdadd_cart.cpp\
                           moc_rdrenderer.cpp\
                           moc_rdripc.cpp\
                           moc_rdschedcodes_dialog.cpp\
+                          moc_rdrsscategorybox.cpp\
                           moc_rdsegmeter.cpp\
                           moc_rdsimpleplayer.cpp\
                           moc_rdslider.cpp\

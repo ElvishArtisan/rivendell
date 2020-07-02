@@ -22,6 +22,7 @@
 #define RDRSSSCHEMAS_H
 
 #include <qlist.h>
+#include <qmap.h>
 #include <qstring.h>
 #include <qsize.h>
 #include <qstringlist.h>
@@ -39,6 +40,8 @@ class RDRssSchemas
   QString channelTemplate(RssSchema schema) const;
   QString itemTemplate(RssSchema schema) const;
   bool supportsItemImages(RssSchema schema) const;
+  QStringList categories(RssSchema schema) const;
+  QStringList subCategories(RssSchema schema,const QString &category) const;
 
  private:
   QStringList c_names;
@@ -48,6 +51,8 @@ class RDRssSchemas
   QStringList c_channel_templates;
   QStringList c_item_templates;
   QList<bool> c_supports_item_images;
+  QList<QStringList> c_categories;
+  QList<QMap<QString,QStringList> > c_sub_categories;
 };
 
 

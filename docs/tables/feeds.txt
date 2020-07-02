@@ -11,6 +11,7 @@ AUDIENCE_METRICS       enum('N','Y')
 CHANNEL_TITLE          varchar(191)
 CHANNEL_DESCRIPTION    text
 CHANNEL_CATEGORY       varchar(64)
+CHANNEL_SUB_CATEGORY   varchar(64)
 CHANNEL_LINK           varchar(191)
 CHANNEL_COPYRIGHT      varchar(64)
 CHANNEL_EDITOR         varchar(64)

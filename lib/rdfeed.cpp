@@ -236,6 +236,19 @@ void RDFeed::setChannelCategory(const QString &str) const
 }
 
 
+QString RDFeed::channelSubCategory() const
+{
+  return RDGetSqlValue("FEEDS","KEY_NAME",feed_keyname,"CHANNEL_SUB_CATEGORY").
+    toString();
+}
+
+
+void RDFeed::setChannelSubCategory(const QString &str) const
+{
+  SetRow("CHANNEL_SUB_CATEGORY",str);
+}
+
+
 QString RDFeed::channelLink() const
 {
   return RDGetSqlValue("FEEDS","KEY_NAME",feed_keyname,"CHANNEL_LINK").
