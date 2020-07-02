@@ -20064,3 +20064,7 @@
 	method.
 	* Removed the 'Base Feed On' dropdown from the 'Add Feed'
 	dialog in rdadmin(1).
+2020-07-02 Fred Gleason <fredg@paravelsystems.com>
+	* Fixed a bug in rdadmin(1) that caused the 'Public URL' column in
+	the 'List Feeds' dialog to display incorrect data after editing
+	a feed.

@@ -369,8 +369,8 @@ void ListFeeds::RefreshItem(RDListViewItem *item)
   if(q->next()) {
     item->setText(0,q->value(0).toString());
     item->setText(1,q->value(1).toString());
-    item->setText(2,RDFeed::publicUrl(q->value(0).toString(),
-				      q->value(6).toString()));
+    item->setText(2,RDFeed::publicUrl(q->value(6).toString(),
+				      q->value(0).toString()));
     item->setText(3,q->value(2).toString());
     item->setText(4,q->value(3).toString());
     item->setText(5,q->value(4).toString());
