@@ -26,14 +26,13 @@
 #include <qlineedit.h>
 #include <QResizeEvent>
 
-#include <rdrssschemas.h>
 #include <rdwidget.h>
 
 class RDRssCategoryBox : public RDWidget
 {
   Q_OBJECT
  public:
-  RDRssCategoryBox(RDRssSchemas *schemas,QWidget *parent=0);
+  RDRssCategoryBox(QWidget *parent=0);
   ~RDRssCategoryBox();
   RDRssSchemas::RssSchema schema() const;
   void setSchema(RDRssSchemas::RssSchema schema);
@@ -55,7 +54,6 @@ class RDRssCategoryBox : public RDWidget
   void RefreshSubcategories(RDRssSchemas::RssSchema schema,
 			    const QString &category,
 			    const QString &sub_category);
-  RDRssSchemas *c_schemas;
   RDRssSchemas::RssSchema c_schema;
   QComboBox *c_box;
   QComboBox *c_sub_box;

@@ -60,6 +60,7 @@ size_t __RDFeed_Readfunction_Callback(char *buffer,size_t size,size_t nitems,
   return curlsize;
 }
 
+
 RDFeed::RDFeed(const QString &keyname,RDConfig *config,QObject *parent)
   : QObject(parent)
 {
@@ -68,8 +69,6 @@ RDFeed::RDFeed(const QString &keyname,RDConfig *config,QObject *parent)
 
   feed_keyname=keyname;
   feed_config=config;
-
-  feed_schemas=new RDRssSchemas();
 
   sql=QString("select ID from FEEDS where ")+
     "KEY_NAME=\""+RDEscapeString(keyname)+"\"";
@@ -97,20 +96,12 @@ RDFeed::RDFeed(unsigned id,RDConfig *config,QObject *parent)
   feed_id=id;
   feed_config=config;
 
-  feed_schemas=new RDRssSchemas();
-
   sql=QString().sprintf("select KEY_NAME from FEEDS where ID=%u",id);
   q=new RDSqlQuery(sql);
   if(q->first()) {
     feed_keyname=q->value(0).toString();
   }
   delete q;
-}
-
-
-RDFeed::~RDFeed()
-{
-  delete feed_schemas;
 }
 
 
@@ -744,8 +735,8 @@ int RDFeed::importImageFile(const QString &pathname,QString *err_msg,
   bool ok=false;
   QString sql;
   int ret;
-  QSize min=rssSchemas()->minimumImageSize(rssSchema());
-  QSize max=rssSchemas()->maximumImageSize(rssSchema());
+  QSize min=rda->rssSchemas()->minimumImageSize(rssSchema());
+  QSize max=rda->rssSchemas()->maximumImageSize(rssSchema());
   *err_msg="OK";
 
   //
@@ -1338,9 +1329,9 @@ QString RDFeed::rssXml(QString *err_msg,bool *ok)
   //
   // Load the XML Templates
   //
-  QString header_template=rssSchemas()->headerTemplate(rssSchema());
-  QString channel_template=rssSchemas()->channelTemplate(rssSchema());
-  QString item_template=rssSchemas()->itemTemplate(rssSchema());
+  QString header_template=rda->rssSchemas()->headerTemplate(rssSchema());
+  QString channel_template=rda->rssSchemas()->channelTemplate(rssSchema());
+  QString item_template=rda->rssSchemas()->itemTemplate(rssSchema());
   if(rssSchema()==RDRssSchemas::CustomSchema) {
     header_template=chan_q->value(15).toString();
     channel_template=chan_q->value(16).toString();
@@ -1429,12 +1420,6 @@ QString RDFeed::rssXml(QString *err_msg,bool *ok)
   }
 
   return ret;
-}
-
-
-RDRssSchemas *RDFeed::rssSchemas() const
-{
-  return feed_schemas;
 }
 
 

@@ -20080,3 +20080,6 @@
 	* Added support for iTunes subcategories to the podcast subsystem.
 2020-07-02 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'RDRssSchemas::supportsItemCategories()' method.
+2020-07-02 Fred Gleason <fredg@paravelsystems.com>
+	* Added a 'RDApplication::rssSchemas()' method.
+	* Removed the 'RDFeed::rssSchemas()' method.

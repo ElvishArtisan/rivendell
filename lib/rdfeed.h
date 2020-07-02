@@ -42,7 +42,6 @@ class RDFeed : public QObject
   enum MediaLinkMode {LinkNone=0,LinkDirect=1,LinkCounted=2};
   RDFeed(const QString &keyname,RDConfig *config,QObject *parent=0);
   RDFeed(unsigned id,RDConfig *config,QObject *parent=0);
-  ~RDFeed();
   QString keyName() const;
   unsigned id() const;
   bool exists() const;
@@ -151,7 +150,6 @@ class RDFeed : public QObject
 		    Error *err,bool log_debug,RDConfig *config);
   int totalPostSteps() const;
   QString rssXml(QString *err_msg,bool *ok=NULL);
-  RDRssSchemas *rssSchemas() const;
   static unsigned create(const QString &keyname,bool enable_users,
 			 QString *err_msg);
   static QString errorString(RDFeed::Error err);
@@ -180,7 +178,6 @@ class RDFeed : public QObject
   RDConfig *feed_config;
   QByteArray feed_xml;
   int feed_xml_ptr;
-  RDRssSchemas *feed_schemas;
   friend size_t __RDFeed_Readfunction_Callback(char *buffer,size_t size,
 					       size_t nitems,void *userdata);
 };

@@ -18,12 +18,12 @@
 //   Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 //
 
+#include "rdapplication.h"
 #include "rdrsscategorybox.h"
 
-RDRssCategoryBox::RDRssCategoryBox(RDRssSchemas *schemas,QWidget *parent)
+RDRssCategoryBox::RDRssCategoryBox(QWidget *parent)
   : RDWidget(parent)
 {
-  c_schemas=schemas;
   c_schema=RDRssSchemas::CustomSchema;
 
   //
@@ -123,7 +123,7 @@ void RDRssCategoryBox::RefreshCategories(RDRssSchemas::RssSchema schema,
 					 const QString &category,
 					 const QString &sub_category)
 {
-  QStringList categories=c_schemas->categories(schema);
+  QStringList categories=rda->rssSchemas()->categories(schema);
   c_edit->setVisible(categories.size()==0);
   c_sub_edit->setVisible(categories.size()==0);
   c_box->setVisible(categories.size()>0);
@@ -146,7 +146,7 @@ void RDRssCategoryBox::RefreshSubcategories(RDRssSchemas::RssSchema schema,
 					    const QString &category,
 					    const QString &sub_category)
 {
-  QStringList subcategories=c_schemas->subCategories(schema,category);
+  QStringList subcategories=rda->rssSchemas()->subCategories(schema,category);
 
   c_sub_box->clear();
   for(int i=0;i<subcategories.size();i++) {

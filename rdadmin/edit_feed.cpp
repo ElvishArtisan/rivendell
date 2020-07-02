@@ -107,8 +107,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   //
   // Channel Category
   //
-  feed_channel_category_box=
-    new RDRssCategoryBox(feed_feed->rssSchemas(),this);
+  feed_channel_category_box=new RDRssCategoryBox(this);
   feed_channel_category_label=new QLabel(tr("Category:"),this);
   feed_channel_category_label->setFont(labelFont());
   feed_channel_category_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -404,7 +403,7 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   for(int i=0;i<RDRssSchemas::LastSchema;i++) {
     feed_rss_schema_box->
       insertItem(feed_rss_schema_box->count(),
-		 feed_feed->rssSchemas()->name((RDRssSchemas::RssSchema)i),i);
+		 rda->rssSchemas()->name((RDRssSchemas::RssSchema)i),i);
   }
   connect(feed_rss_schema_box,SIGNAL(activated(int)),
 	  this,SLOT(schemaActivatedData(int)));
@@ -855,7 +854,7 @@ void EditFeed::UpdateControlState()
   bool custom_schema=
     feed_rss_schema_box->itemData(feed_rss_schema_box->currentIndex()).toInt()==
     RDRssSchemas::CustomSchema;
-  bool item_image=feed_feed->rssSchemas()->
+  bool item_image=rda->rssSchemas()->
     supportsItemImages((RDRssSchemas::RssSchema)feed_rss_schema_box->
 		       itemData(feed_rss_schema_box->currentIndex()).toInt());
 
