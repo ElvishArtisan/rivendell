@@ -49,7 +49,6 @@ class EditCast : public RDDialog
   void expirationSelectedData(int state);
   void effectiveSelectData();
   void expirationSelectData();
-  void reportData();
   void okData();
   void cancelData();
 
@@ -59,8 +58,6 @@ class EditCast : public RDDialog
  private:
   RDFeed *cast_feed;
   RDPodcast *cast_cast;
-  QLabel *cast_item_medialink_label;
-  QLineEdit *cast_item_medialink_edit;
   QLabel *cast_item_title_label;
   QLineEdit *cast_item_title_edit;
   QLabel *cast_item_author_label;
@@ -93,7 +90,6 @@ class EditCast : public RDDialog
   QDateTimeEdit *cast_item_effective_edit;
   QPushButton *cast_item_effective_button;
   QButtonGroup *cast_item_status_group;
-  QPushButton *cast_report_button;
   QPushButton *cast_ok_button;
   QPushButton *cast_cancel_button;
   RDPodcast::Status cast_status;

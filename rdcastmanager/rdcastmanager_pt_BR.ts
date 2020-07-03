@@ -9,7 +9,7 @@
     </message>
     <message>
         <source>Media Link:</source>
-        <translation>Link de Mídia:</translation>
+        <translation type="obsolete">Link de Mídia:</translation>
     </message>
     <message>
         <source>Title:</source>
@@ -86,7 +86,7 @@
     <message>
         <source>Episode
 &amp;Report</source>
-        <translation>&amp;Relatório do
+        <translation type="obsolete">&amp;Relatório do
 Episódio</translation>
     </message>
     <message>
@@ -192,7 +192,7 @@ Car&amp;t/Cut</source>
     <message>
         <source>Subscription
 &amp;Report</source>
-        <translation>&amp;Relatório de
+        <translation type="obsolete">&amp;Relatório de
 Assinaturas</translation>
     </message>
     <message>
@@ -337,29 +337,8 @@ Clipboard</source>
 <context>
     <name>PickReportDates</name>
     <message>
-        <source>Select Report Dates</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Start Date:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Select</source>
-        <translation type="unfinished">&amp;Selecionar</translation>
-    </message>
-    <message>
-        <source>&amp;End Date:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Generate
-Report</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>C&amp;lose</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">&amp;Selecionar</translation>
     </message>
 </context>
 </TS>

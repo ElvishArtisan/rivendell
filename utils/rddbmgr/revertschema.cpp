@@ -42,6 +42,55 @@ bool MainObject::RevertSchema(int cur_schema,int set_schema,QString *err_msg)
 
 
   //
+  // Revert 328
+  //
+  if((cur_schema==328)&&(set_schema<cur_schema)) {
+    sql=QString("create table if not exists CAST_DOWNLOADS (")+
+      "ID int unsigned not null auto_increment primary key,"+
+      "FEED_KEY_NAME varchar(8) not null,"+
+      "CAST_ID int unsigned not null,"+
+      "ACCESS_DATE date not null,"+
+      "ACCESS_COUNT int unsigned not null default 0,"+
+      "unique index KEY_NAME_CAST_ID_DATE_IDX(FEED_KEY_NAME,CAST_ID,ACCESS_DATE))"+
+      " charset latin1 collate latin1_swedish_ci"+
+      db_table_create_postfix;
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table FEEDS add column ")+
+      "AUDIENCE_METRICS enum('N','Y') default 'N' after IS_SUPERFEED";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+    sql=QString("update FEEDS set AUDIENCE_METRICS='Y'");
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table FEEDS add column ")+
+      "KEEP_METADATA enum('N','Y') default 'Y' after ENABLE_AUTOPOST";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table FEEDS add column ")+
+      "REDIRECT_PATH varchar(191) after NORMALIZE_LEVEL";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+    sql=QString("alter table FEEDS add column ")+
+      "MEDIA_LINK_MODE int default 0 after REDIRECT_PATH";
+    if(!RDSqlQuery::apply(sql,err_msg)) {
+      return false;
+    }
+
+
+    WriteSchemaVersion(--cur_schema);
+  }
+
+  //
   // Revert 327
   //
   if((cur_schema==327)&&(set_schema<cur_schema)) {

@@ -20088,3 +20088,11 @@
 	'Editing Podcast' dialog in rdcastmanager(1).
 	* Made the 'Category' control conditional in the 'Editing Podcast'
 	dialog in rdcastmanager(1).
+2020-07-03 Fred Gleason <fredg@paravelsystems.com>
+	* Dropped the 'FEEDS.AUDIENCE_METRICS' field from the database.
+	* Dropped the 'FEEDS.KEEP_METADATA' field from the database.
+	* Dropped the 'FEEDS.MEDIA_LINK_MODE' field from the database.
+	* Dropped the 'FEEDS.REDIRECT_PATH' field from the database.
+	* Dropped the 'CAST_DOWNLOADS' table from the database.
+	* Incremented the database version to 328.
+	* Removed support for dynamically generated RSS feed metadata.

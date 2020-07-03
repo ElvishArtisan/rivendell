@@ -813,6 +813,7 @@ void MainObject::ServeEditCast(int cast_id)
   //
   // Media Link
   //
+  /*
   if(feed->mediaLinkMode()!=RDFeed::LinkNone) {
     printf("<tr>\n");
     printf("<td align=\"right\" bgcolor=\"%s\">Media Link:</td>\n",
@@ -828,7 +829,7 @@ void MainObject::ServeEditCast(int cast_id)
     printf("<td colspan=\"3\">&nbsp;</td>\n");
     printf("</tr>\n");
   }
-
+  */
   //
   // Cast Data
   //

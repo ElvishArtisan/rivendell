@@ -10104,6 +10104,16 @@ bool MainObject::UpdateSchema(int cur_schema,int set_schema,QString *err_msg)
     WriteSchemaVersion(++cur_schema);
   }
 
+  if((cur_schema<328)&&(set_schema>cur_schema)) {
+    DropColumn("FEEDS","AUDIENCE_METRICS");
+    DropColumn("FEEDS","KEEP_METADATA");
+    DropColumn("FEEDS","MEDIA_LINK_MODE");
+    DropColumn("FEEDS","REDIRECT_PATH");
+    DropTable("CAST_DOWNLOADS");
+
+    WriteSchemaVersion(++cur_schema);
+  }
+
 
 
   // NEW SCHEMA UPDATES GO HERE...

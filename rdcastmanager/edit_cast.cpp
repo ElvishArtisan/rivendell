@@ -25,7 +25,6 @@
 
 #include "edit_cast.h"
 #include "globals.h"
-#include "pick_report_dates.h"
 
 EditCast::EditCast(unsigned cast_id,QWidget *parent)
   : RDDialog(parent)
@@ -34,20 +33,6 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   cast_feed=new RDFeed(cast_cast->feedId(),rda->config());
   cast_status=cast_cast->status();
   setWindowTitle("RDCastManager - "+tr("Editing PodCast"));
-
-  //
-  // Item Media Link
-  //
-  cast_item_medialink_edit=new QLineEdit(this);
-  cast_item_medialink_edit->setReadOnly(true);
-  cast_item_medialink_label=
-    new QLabel(cast_item_medialink_edit,tr("Media Link:"),this);
-  cast_item_medialink_label->setFont(labelFont());
-  cast_item_medialink_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-  if(cast_feed->mediaLinkMode()==RDFeed::LinkNone) {
-    cast_item_medialink_edit->hide();
-    cast_item_medialink_label->hide();
-  }
 
   //
   // Item Title
@@ -211,15 +196,6 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   cast_active_rbutton->setEnabled(cast_status!=RDPodcast::StatusExpired);
 
   //
-  //  Report Button
-  //
-  cast_report_button=new QPushButton(this);
-  cast_report_button->setFont(buttonFont());
-  cast_report_button->setText(tr("Episode\n&Report"));
-  cast_report_button->setEnabled(cast_feed->audienceMetrics());
-  connect(cast_report_button,SIGNAL(clicked()),this,SLOT(reportData()));
-
-  //
   //  Ok Button
   //
   cast_ok_button=new QPushButton(this);
@@ -240,9 +216,6 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   //
   // Populate Values
   //
-  cast_item_medialink_edit->
-    setText(cast_feed->audioUrl(cast_feed->mediaLinkMode(),
-				"[web-hostname]",cast_cast->id()));
   cast_item_title_edit->setText(cast_cast->itemTitle());
   cast_item_author_edit->setText(cast_cast->itemAuthor());
   cast_item_origin_edit->setText(RDUtcToLocal(cast_cast->originDateTime()).
@@ -349,14 +322,6 @@ void EditCast::expirationSelectData()
 }
 
 
-void EditCast::reportData()
-{
-  PickReportDates *rd=new PickReportDates(cast_cast->feedId(),cast_cast->id());
-  rd->exec();
-  delete rd;
-}
-
-
 void EditCast::okData()
 {
   QString err_msg;
@@ -416,14 +381,7 @@ void EditCast::resizeEvent(QResizeEvent *e)
   int ypos=0;
   int h=size().height();
 
-  cast_item_medialink_edit->setGeometry(135,10,size().width()-145,20);
-  cast_item_medialink_label->setGeometry(20,10,110,20);
-  if(cast_feed->mediaLinkMode()==RDFeed::LinkNone) {
-    ypos=10;
-  }
-  else {
-    ypos=42;
-  }
+  ypos=2;
 
   //
   // Title
@@ -520,7 +478,6 @@ void EditCast::resizeEvent(QResizeEvent *e)
   //
   // Buttons
   //
-  cast_report_button->setGeometry(10,size().height()-60,80,50);
   cast_ok_button->setGeometry(size().width()-180,size().height()-60,80,50);
   cast_cancel_button->setGeometry(size().width()-90,size().height()-60,80,50);
 }

@@ -26,7 +26,6 @@
 #include <rddb.h>
 #include <rdapplication.h>
 #include <rdescape_string.h>
-#include <rdfeedlog.h>
 #include <rdtextvalidator.h>
 
 #include "add_feed.h"

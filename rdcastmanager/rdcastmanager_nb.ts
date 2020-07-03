@@ -78,7 +78,7 @@
     <message>
         <source>Episode
 &amp;Report</source>
-        <translation>Episode-
+        <translation type="obsolete">Episode-
 &amp;rapport</translation>
     </message>
     <message>
@@ -88,10 +88,6 @@
     <message>
         <source>&amp;Cancel</source>
         <translation>&amp;Avbryt</translation>
-    </message>
-    <message>
-        <source>Media Link:</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Air Date/Time:</source>
@@ -139,7 +135,7 @@ Korg/Ku&amp;tt</translation>
     <message>
         <source>Subscription
 &amp;Report</source>
-        <translation>Abonnements&amp;rapport</translation>
+        <translation type="obsolete">Abonnements&amp;rapport</translation>
     </message>
     <message>
         <source>&amp;Close</source>
@@ -371,29 +367,8 @@ Clipboard</source>
 <context>
     <name>PickReportDates</name>
     <message>
-        <source>Select Report Dates</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Start Date:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Select</source>
-        <translation type="unfinished">&amp;Vel</translation>
-    </message>
-    <message>
-        <source>&amp;End Date:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Generate
-Report</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>C&amp;lose</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">&amp;Vel</translation>
     </message>
 </context>
 </TS>

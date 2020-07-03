@@ -42,7 +42,6 @@ class ListCasts : public RDDialog
   void addFileData();
   void editData();
   void deleteData();
-  void reportData();
   void doubleClickedData(Q3ListViewItem *item,const QPoint &pt,int col);
   void userChangedData();
   void filterChangedData(const QString &str);
@@ -63,7 +62,6 @@ class ListCasts : public RDDialog
   QPushButton *list_file_button;
   QPushButton *list_edit_button;
   QPushButton *list_delete_button;
-  QPushButton *list_report_button;
   QPushButton *list_close_button;
   QPixmap *list_redball_map;
   QPixmap *list_greenball_map;

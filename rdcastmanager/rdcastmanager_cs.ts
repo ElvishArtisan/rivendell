@@ -78,7 +78,7 @@
     <message>
         <source>Episode
 &amp;Report</source>
-        <translation>&amp;Zpráva o
+        <translation type="obsolete">&amp;Zpráva o
 dílu</translation>
     </message>
     <message>
@@ -95,7 +95,7 @@ dílu</translation>
     </message>
     <message>
         <source>Media Link:</source>
-        <translation>Multimediální odkaz:</translation>
+        <translation type="obsolete">Multimediální odkaz:</translation>
     </message>
     <message>
         <source>Expires On:</source>
@@ -139,7 +139,7 @@ vozí&amp;ku/záběru</translation>
     <message>
         <source>Subscription
 &amp;Report</source>
-        <translation>Zpráva o
+        <translation type="obsolete">Zpráva o
 &amp;odběru</translation>
     </message>
     <message>
@@ -383,29 +383,8 @@ Clipboard</source>
 <context>
     <name>PickReportDates</name>
     <message>
-        <source>Select Report Dates</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Start Date:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;Select</source>
-        <translation type="unfinished">&amp;Vybrat</translation>
-    </message>
-    <message>
-        <source>&amp;End Date:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Generate
-Report</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>C&amp;lose</source>
-        <translation type="unfinished"></translation>
+        <translation type="obsolete">&amp;Vybrat</translation>
     </message>
 </context>
 </TS>

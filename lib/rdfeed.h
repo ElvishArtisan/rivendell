@@ -39,7 +39,6 @@ class RDFeed : public QObject
  public:
   enum Error {ErrorOk=0,ErrorNoFile=1,ErrorCannotOpenFile=2,
 	      ErrorUnsupportedType=3,ErrorUploadFailed=4,ErrorGeneral=5};
-  enum MediaLinkMode {LinkNone=0,LinkDirect=1,LinkCounted=2};
   RDFeed(const QString &keyname,RDConfig *config,QObject *parent=0);
   RDFeed(unsigned id,RDConfig *config,QObject *parent=0);
   QString keyName() const;
@@ -49,8 +48,6 @@ class RDFeed : public QObject
   void setIsSuperfeed(bool state) const;
   QStringList subfeedNames() const;
   QStringList isSubfeedOf() const;
-  bool audienceMetrics() const;
-  void setAudienceMetrics(bool state);
   QString channelTitle() const;
   void setChannelTitle(const QString &str) const;
   QString channelDescription() const;
@@ -111,8 +108,6 @@ class RDFeed : public QObject
   void setOriginDateTime(const QDateTime &datetime) const;
   bool enableAutopost() const;
   void setEnableAutopost(bool state) const;
-  bool keepMetadata() const;
-  void setKeepMetadata(bool state);
   RDSettings::Format uploadFormat() const;
   void setUploadFormat(RDSettings::Format fmt) const;
   int uploadChannels() const;
@@ -129,15 +124,10 @@ class RDFeed : public QObject
   void setUploadMimetype(const QString &str);
   int normalizeLevel() const;
   void setNormalizeLevel(int lvl) const;
-  QString redirectPath() const;
-  void setRedirectPath(const QString &str);
-  RDFeed::MediaLinkMode mediaLinkMode() const;
-  void setMediaLinkMode(RDFeed::MediaLinkMode mode) const;
   int importImageFile(const QString &pathname,QString *err_msg,
 		      QString desc="") const;
   bool deleteImage(int img_id,QString *err_msg);
-  QString audioUrl(RDFeed::MediaLinkMode mode,const QString &cgi_hostname,
-		   unsigned cast_id);
+  QString audioUrl(const QString &cgi_hostname,unsigned cast_id);
   QString imageUrl(int img_id) const;
   bool postXml(QString *err_msg);
   bool postXmlConditional(const QString &caption,QWidget *widget);

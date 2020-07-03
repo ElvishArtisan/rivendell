@@ -163,19 +163,6 @@ QStringList RDFeed::isSubfeedOf() const
 }
 
 
-bool RDFeed::audienceMetrics() const
-{
-  return RDBool(RDGetSqlValue("FEEDS","KEY_NAME",feed_keyname,
-			      "AUDIENCE_METRICS").toString());
-}
-
-
-void RDFeed::setAudienceMetrics(bool state)
-{
-  SetRow("AUDIENCE_METRICS",RDYesNo(state));
-}
-
-
 QString RDFeed::keyName() const
 {
   return feed_keyname;
@@ -585,19 +572,6 @@ void RDFeed::setEnableAutopost(bool state) const
 }
 
 
-bool RDFeed::keepMetadata() const
-{
-  return RDBool(RDGetSqlValue("FEEDS","KEY_NAME",feed_keyname,
-			      "KEEP_METADATA").toString());
-}
-
-
-void RDFeed::setKeepMetadata(bool state)
-{
-  SetRow("KEEP_METADATA",RDYesNo(state));
-}
-
-
 RDSettings::Format RDFeed::uploadFormat() const
 {
   return (RDSettings::Format)RDGetSqlValue("FEEDS","KEY_NAME",feed_keyname,
@@ -699,33 +673,6 @@ int RDFeed::normalizeLevel() const
 void RDFeed::setNormalizeLevel(int lvl) const
 {
   SetRow("NORMALIZE_LEVEL",lvl);
-}
-
-
-QString RDFeed::redirectPath() const
-{
-  return RDGetSqlValue("FEEDS","KEY_NAME",feed_keyname,"REDIRECT_PATH").
-    toString();
-}
-
-
-void RDFeed::setRedirectPath(const QString &str)
-{
-  SetRow("REDIRECT_PATH",str);
-}
-
-
-RDFeed::MediaLinkMode RDFeed::mediaLinkMode() const
-{
-  return (RDFeed::MediaLinkMode)RDGetSqlValue("FEEDS","KEY_NAME",
-					      feed_keyname,"MEDIA_LINK_MODE").
-    toUInt();
-}
-  
-
-void RDFeed::setMediaLinkMode(RDFeed::MediaLinkMode mode) const
-{
-  SetRow("MEDIA_LINK_MODE",(unsigned)mode);
 }
 
 
@@ -832,29 +779,13 @@ bool RDFeed::deleteImage(int img_id,QString *err_msg)
 }
 
 
-QString RDFeed::audioUrl(RDFeed::MediaLinkMode mode,
-			 const QString &cgi_hostname,unsigned cast_id)
+QString RDFeed::audioUrl(const QString &cgi_hostname,unsigned cast_id)
 {
   RDPodcast *cast=new RDPodcast(feed_config,cast_id);
   QUrl url(baseUrl(cast->feedId()));
   QString ret;
 
-  switch(mode) {
-  case RDFeed::LinkNone:
-    ret="";
-    break;
-
-  case RDFeed::LinkDirect:
-    cast=new RDPodcast(feed_config,cast_id);
-    ret=url.toString()+"/"+cast->audioFilename();
-    break;
-
-  case RDFeed::LinkCounted:
-    ret=QString("http://")+basePreamble()+cgi_hostname+
-      "/rd-bin/rdfeed."+uploadExtension()+"?"+keyName()+
-      QString().sprintf("&cast_id=%d",cast_id);
-    break;
-  }
+  ret=url.toString()+"/"+cast->audioFilename();
   delete cast;
 
   return ret;
@@ -946,15 +877,12 @@ bool RDFeed::postXmlConditional(const QString &caption,QWidget *widget)
 {
   QString err_msg;
 
-  if(!audienceMetrics()) {
-    if(!postXml(&err_msg)) {
-      QMessageBox::warning(widget,caption+" - "+tr("Error"),
-			   tr("XML data upload failed!")+"\n"+
-			   "["+err_msg+"]");
-      return false;
-    }
+  if(!postXml(&err_msg)) {
+    QMessageBox::warning(widget,caption+" - "+tr("Error"),
+			 tr("XML data upload failed!")+"\n"+
+			 "["+err_msg+"]");
+    return false;
   }
-
   return true;
 }
 
@@ -1118,10 +1046,8 @@ unsigned RDFeed::postCut(RDUser *user,RDStation *station,
   cast->setItemImageId(defaultItemImageId());
   delete cast;
 
-  if(!audienceMetrics()) {
-    emit postProgressChanged(4);
-    postXml(&err_msg);
-  }
+  emit postProgressChanged(4);
+  postXml(&err_msg);
 
   emit postProgressChanged(totalPostSteps());
 
@@ -1248,10 +1174,8 @@ unsigned RDFeed::postFile(RDUser *user,RDStation *station,
   cast->setItemImageId(defaultItemImageId());
   delete cast;
 
-  if(!audienceMetrics()) {
-    emit postProgressChanged(4);
-    postXml(&err_msg);
-  }
+  emit postProgressChanged(4);
+  postXml(&err_msg);
 
   emit postProgressChanged(totalPostSteps());
 
@@ -1262,9 +1186,6 @@ unsigned RDFeed::postFile(RDUser *user,RDStation *station,
 
 int RDFeed::totalPostSteps() const
 {
-  if(audienceMetrics()) {
-    return RDFEED_TOTAL_POST_STEPS;
-  }
   return RDFEED_TOTAL_POST_STEPS+1;
 }
 
@@ -1285,9 +1206,7 @@ QString RDFeed::rssXml(QString *err_msg,bool *ok)
     "FEEDS.CHANNEL_TITLE,"+        // 00
     "FEEDS.CHANNEL_DESCRIPTION,"+  // 01
     "FEEDS.CHANNEL_CATEGORY,"+     // 02
-
     "FEEDS.CHANNEL_SUB_CATEGORY,"+ // 03
-
     "FEEDS.CHANNEL_LINK,"+         // 04
     "FEEDS.CHANNEL_COPYRIGHT,"+    // 05
     "FEEDS.CHANNEL_EDITOR,"+       // 06
@@ -1306,15 +1225,13 @@ QString RDFeed::rssXml(QString *err_msg,bool *ok)
     "FEEDS.ID,"+                   // 19
     "FEEDS.UPLOAD_EXTENSION,"+     // 20
     "FEEDS.CAST_ORDER,"+           // 21
-    "FEEDS.REDIRECT_PATH,"+        // 22
-    "FEEDS.BASE_PREAMBLE,"+        // 23
-    "FEEDS.AUDIENCE_METRICS,"+     // 24
-    "FEEDS.IS_SUPERFEED,"+         // 25
-    "FEED_IMAGES.ID,"+             // 26
-    "FEED_IMAGES.WIDTH,"+          // 27
-    "FEED_IMAGES.HEIGHT,"+         // 28
-    "FEED_IMAGES.DESCRIPTION,"+    // 29
-    "FEED_IMAGES.FILE_EXTENSION "+ // 30
+    "FEEDS.BASE_PREAMBLE,"+        // 22
+    "FEEDS.IS_SUPERFEED,"+         // 23
+    "FEED_IMAGES.ID,"+             // 24
+    "FEED_IMAGES.WIDTH,"+          // 25
+    "FEED_IMAGES.HEIGHT,"+         // 26
+    "FEED_IMAGES.DESCRIPTION,"+    // 27
+    "FEED_IMAGES.FILE_EXTENSION "+ // 28
     "from FEEDS ";
   sql+="left join FEED_IMAGES ";
   sql+="on FEEDS.CHANNEL_IMAGE_ID=FEED_IMAGES.ID ";
@@ -1353,7 +1270,7 @@ QString RDFeed::rssXml(QString *err_msg,bool *ok)
   // Render Item XML
   //
   QString where;
-  if(chan_q->value(25).toString()=="Y") {  // Is a Superfeed
+  if(chan_q->value(23).toString()=="Y") {  // Is a Superfeed
     sql=QString("select ")+
       "MEMBER_FEED_ID "+  // 00
       "from SUPERFEED_MAPS where "+
@@ -1642,13 +1559,13 @@ QString RDFeed::ResolveChannelWildcards(const QString &tmplt,RDSqlQuery *chan_q)
   ret.replace("%FEED_URL%",RDXmlEscape(chan_q->value(18).toString())+"/"+
 	      RDXmlEscape(keyName()+"."+RD_RSS_XML_FILE_EXTENSION));
   ret.replace("%IMAGE_URL%",chan_q->value(18).toString()+"/"+
-	      RDFeed::imageFilename(id(),chan_q->value(26).toInt(),
-				    chan_q->value(30).toString()));
+	      RDFeed::imageFilename(id(),chan_q->value(24).toInt(),
+				    chan_q->value(28).toString()));
   ret.replace("%IMAGE_WIDTH%",
-	      QString().sprintf("%d",chan_q->value(27).toInt()));
+	      QString().sprintf("%d",chan_q->value(25).toInt()));
   ret.replace("%IMAGE_HEIGHT%",
-	      QString().sprintf("%d",chan_q->value(27).toInt()));
-  ret.replace("%IMAGE_DESCRIPTION%",chan_q->value(29).toString());
+	      QString().sprintf("%d",chan_q->value(25).toInt()));
+  ret.replace("%IMAGE_DESCRIPTION%",chan_q->value(27).toString());
 
   return ret;
 }
@@ -1671,18 +1588,10 @@ QString RDFeed::ResolveItemWildcards(const QString &tmplt,RDSqlQuery *item_q,
 	      RDXmlEscape(item_q->value(3).toString()));
   ret.replace("%ITEM_LINK%",RDXmlEscape(item_q->value(4).toString()));
   ret.replace("%ITEM_AUTHOR%",RDXmlEscape(item_q->value(5).toString()));
-  if(chan_q->value(1).toString()=="Y") {  // Audience Metrics
-    ret.replace("%ITEM_SOURCE_TEXT%",
-		RDXmlEscape(item_q->value(6).toString()));
-    ret.replace("%ITEM_SOURCE_URL%",
-		RDXmlEscape(item_q->value(7).toString()));
-  }
-  else {
-    ret.replace("%ITEM_SOURCE_TEXT%",
-		RDXmlEscape(chan_q->value(0).toString()));
-    ret.replace("%ITEM_SOURCE_URL%",
-		RDXmlEscape(item_q->value(15).toString()+"/"+keyName()));    
-  }
+  ret.replace("%ITEM_SOURCE_TEXT%",
+	      RDXmlEscape(chan_q->value(0).toString()));
+  ret.replace("%ITEM_SOURCE_URL%",
+	      RDXmlEscape(item_q->value(15).toString()+"/"+keyName()));    
   ret.replace("%ITEM_COMMENTS%",
 	      RDXmlEscape(item_q->value(8).toString()));
   QString explicit_str="false";
@@ -1690,16 +1599,9 @@ QString RDFeed::ResolveItemWildcards(const QString &tmplt,RDSqlQuery *item_q,
     explicit_str="true";
   }
   ret.replace("%ITEM_EXPLICIT%",explicit_str);
-  if(chan_q->value(24).toString()=="Y") {
-    ret.replace("%ITEM_AUDIO_URL%",
-		RDXmlEscape(audioUrl(RDFeed::LinkCounted,feed_cgi_hostname,
-				     item_q->value(14).toUInt())));
-  }
-  else {
-    ret.replace("%ITEM_AUDIO_URL%",
-		RDXmlEscape(audioUrl(RDFeed::LinkDirect,feed_cgi_hostname,
-				     item_q->value(14).toUInt())));
-  }
+  ret.replace("%ITEM_AUDIO_URL%",
+	      RDXmlEscape(audioUrl(feed_cgi_hostname,
+				   item_q->value(14).toUInt())));
   ret.replace("%ITEM_AUDIO_LENGTH%",item_q->value(11).toString());
   ret.replace("%ITEM_AUDIO_TIME%",
 	      RDGetTimeLength(item_q->value(12).toInt(),false,false));

@@ -1396,10 +1396,6 @@ files, causing any whose files remain to be imported again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Keep Expired Metadata</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Enable AutoPost</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1409,14 +1405,6 @@ files, causing any whose files remain to be imported again.</source>
     </message>
     <message>
         <source>Audio Extension:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>None</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Maximum Shelf Life:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1433,26 +1421,6 @@ files, causing any whose files remain to be imported again.</source>
     </message>
     <message>
         <source>Episode Sort Order:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Direct</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Counted</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Media Link Mode:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Enable Feed Redirection</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>URL:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1476,18 +1444,6 @@ files, causing any whose files remain to be imported again.</source>
         <translation type="unfinished">Abbre&amp;chen</translation>
     </message>
     <message>
-        <source>Edit Feed - Redirect</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Enabling feed redirection will cause clients subscribed to
-this feed to be PERMANENTLY redirected to the
-specified URL.
-
-Do you still want to enable redireciton?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Channel Values</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1508,16 +1464,8 @@ Do you still want to enable redireciton?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>The Feed Redirection URL is invalid!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Select Member
 Feeds</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Collect Audience Metrics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1583,6 +1531,14 @@ Feeds</source>
     <message>
         <source>[none]</source>
         <translation type="obsolete">[keine]</translation>
+    </message>
+    <message>
+        <source>Default Shelf Life</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unlimited</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4951,10 +4907,6 @@ Wollen Sie ihn immernoch löschen?</translation>
     </message>
     <message>
         <source>AutoPost</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Keep Metadata</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

@@ -26,12 +26,10 @@
 #include <rdconf.h>
 #include <rdcut_dialog.h>
 #include <rdescape_string.h>
-#include <rdfeedlog.h>
 
 #include "edit_cast.h"
 #include "globals.h"
 #include "list_casts.h"
-#include "pick_report_dates.h"
 
 //
 // Icons
@@ -69,7 +67,8 @@ ListCasts::ListCasts(unsigned feed_id,bool is_super,QWidget *parent)
   // Progress Dialog
   //
   list_progress_dialog=
-    new QProgressDialog(tr("Uploading Audio..."),tr("Cancel"),0,list_feed->totalPostSteps(),this);
+    new QProgressDialog(tr("Uploading Audio..."),tr("Cancel"),0,
+			list_feed->totalPostSteps(),this);
   list_progress_dialog->setWindowTitle("RDCastManager - "+tr("Progress"));
   list_progress_dialog->setMinimumDuration(0);
   connect(list_feed,SIGNAL(postProgressChanged(int)),
@@ -174,15 +173,6 @@ ListCasts::ListCasts(unsigned feed_id,bool is_super,QWidget *parent)
   connect(list_delete_button,SIGNAL(clicked()),this,SLOT(deleteData()));
 
   //
-  //  Report Button
-  //
-  list_report_button=new QPushButton(this);
-  list_report_button->setFont(buttonFont());
-  list_report_button->setText(tr("Subscription\n&Report"));
-  list_report_button->setEnabled(list_feed->audienceMetrics());
-  connect(list_report_button,SIGNAL(clicked()),this,SLOT(reportData()));
-
-  //
   //  Close Button
   //
   list_close_button=new QPushButton(this);
@@ -230,7 +220,8 @@ void ListCasts::addCartData()
   delete cd;
   RDFeed::Error err;
   unsigned cast_id=list_feed->postCut(rda->user(),rda->station(),cutname,&err,
-				      rda->config()->logXloadDebugData(),rda->config());
+				      rda->config()->logXloadDebugData(),
+				      rda->config());
   if(err!=RDFeed::ErrorOk) {
     QMessageBox::warning(this,"RDCastManager - "+tr("Posting Error"),
 			 RDFeed::errorString(err));
@@ -256,7 +247,8 @@ void ListCasts::addFileData()
   }
   RDFeed::Error err;
   unsigned cast_id=list_feed->postFile(rda->user(),rda->station(),srcfile,&err,
-				       rda->config()->logXloadDebugData(),rda->config());
+				       rda->config()->logXloadDebugData(),
+				       rda->config());
   if(err!=RDFeed::ErrorOk) {
     QMessageBox::warning(this,"RDCastManager - "+tr("Posting Error"),
 			 RDFeed::errorString(err));
@@ -313,7 +305,8 @@ void ListCasts::deleteData()
   sleep(1);
   qApp->processEvents();
   RDPodcast *cast=new RDPodcast(rda->config(),item->id());
-  if(!cast->removeAudio(list_feed,&err_text,rda->config()->logXloadDebugData())) {
+  if(!cast->removeAudio(list_feed,&err_text,
+			rda->config()->logXloadDebugData())) {
     if(QMessageBox::warning(this,"RDCastManager - "+tr("Remote Error"),
 			    tr("Unable to delete remote audio!\n")+
 			    tr("The server said: \"")+err_text+"\".\n\n"+
@@ -334,28 +327,17 @@ void ListCasts::deleteData()
   q=new RDSqlQuery(sql);
   delete q;
 
-  if(!list_feed->audienceMetrics()) {
-    if(!list_feed->postXml(&err_text)) {
-      QMessageBox::warning(this,"RDCastManager - "+tr("Remote Error"),
-			    tr("Unable to update remote XML data!\n")+
-			   tr("The server said: \"")+err_text+"\".");
-    }
+  if(!list_feed->postXml(&err_text)) {
+    QMessageBox::warning(this,"RDCastManager - "+tr("Remote Error"),
+			 tr("Unable to update remote XML data!\n")+
+			 tr("The server said: \"")+err_text+"\".");
   }
-  RDDeleteCastCount(list_feed_id,item->id());
 
   pd->reset();
 
   delete pd;
   delete cast;
   delete item;
-}
-
-
-void ListCasts::reportData()
-{
-  PickReportDates *rd=new PickReportDates(list_feed_id,0);
-  rd->exec();
-  delete rd;
 }
 
 
@@ -427,7 +409,6 @@ void ListCasts::resizeEvent(QResizeEvent *e)
   list_file_button->setGeometry(100,size().height()-60,80,50);
   list_edit_button->setGeometry(190,size().height()-60,80,50);
   list_delete_button->setGeometry(280,size().height()-60,80,50);
-  list_report_button->setGeometry(400,size().height()-60,110,50);
   list_close_button->setGeometry(size().width()-90,size().height()-60,80,50);
 }
 

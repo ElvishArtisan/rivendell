@@ -28,7 +28,6 @@ EXTRA_DIST = audio_cards.txt\
              aux_metadata.txt\
              cart.txt\
              cartslots.txt\
-             cast_downloads.txt\
              clipboard.txt\
              clock_lines.txt\
              clock_perms.txt\

@@ -55,7 +55,6 @@ class EditFeed : public RDDialog
   void lineeditChangedData(const QString &str);
   void selectSubfeedsData();
   void setFormatData();
-  void redirectToggledData(bool state);
   void listImagesData();
   void okData();
   void cancelData();
@@ -70,8 +69,6 @@ class EditFeed : public RDDialog
   QLabel *feed_is_superfeed_label;
   QPushButton *feed_is_superfeed_button;
   QPushButton *feed_list_images_button;
-  QCheckBox *feed_audience_metrics_check;
-  QLabel *feed_audience_metrics_label;
   QComboBox *feed_is_superfeed_box;
   QLineEdit *feed_channel_title_edit;
   QTextEdit *feed_channel_description_edit;
@@ -105,8 +102,8 @@ class EditFeed : public RDDialog
   QTextEdit *feed_channel_xml_edit;
   QTextEdit *feed_item_xml_edit;
   QSpinBox *feed_max_shelf_life_spin;
-  QCheckBox *feed_autopost_box;
-  QCheckBox *feed_keep_metadata_box;
+  QLabel *feed_autopost_label;
+  QComboBox *feed_autopost_box;
   RDSettings feed_settings;
   ListImages *feed_images_dialog;
   QLineEdit *feed_format_edit;
@@ -115,11 +112,6 @@ class EditFeed : public RDDialog
   QSpinBox *feed_normalize_spin;
   QLineEdit *feed_extension_edit;
   QComboBox *feed_castorder_box;
-  QComboBox *feed_media_link_mode_box;
-  QLabel *feed_redirect_label;
-  QCheckBox *feed_redirect_check;
-  QLabel *feed_redirect_url_label;
-  QLineEdit *feed_redirect_url_edit;
   QPushButton *feed_format_button;
   QGroupBox *feed_channel_section_groupbox;
   QLabel *feed_channel_title_label;
@@ -134,13 +126,10 @@ class EditFeed : public RDDialog
   QLabel *feed_purge_url_label;
   QLabel *feed_max_shelf_life_label;
   QLabel *feed_max_shelf_life_unit_label;
-  QLabel *feed_autopost_label;
-  QLabel *feed_keep_metadata_label;
   QLabel *feed_format_label;
   QLabel *feed_normalize_check_label;
   QLabel *feed_normalize_unit_label;
   QLabel *feed_castorder_label;
-  QLabel *feed_media_link_mode_label;
   QLabel *feed_extension_label;
   QLabel *feed_item_image_label;
   RDImagePickerBox *feed_item_image_box;

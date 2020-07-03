@@ -82,7 +82,7 @@
     <message>
         <source>Episode
 &amp;Report</source>
-        <translation>&amp;Reporte de
+        <translation type="obsolete">&amp;Reporte de
 Episodios</translation>
     </message>
     <message>
@@ -91,7 +91,7 @@ Episodios</translation>
     </message>
     <message>
         <source>Media Link:</source>
-        <translation>Enlace al medio:</translation>
+        <translation type="obsolete">Enlace al medio:</translation>
     </message>
     <message>
         <source>Expires On:</source>
@@ -183,7 +183,7 @@ Car&amp;t./Audio</translation>
     <message>
         <source>Subscription
 &amp;Report</source>
-        <translation>&amp;Reporte de
+        <translation type="obsolete">&amp;Reporte de
 Suscripción</translation>
     </message>
     <message>
@@ -323,29 +323,29 @@ Clipboard</source>
     <name>PickReportDates</name>
     <message>
         <source>Select Report Dates</source>
-        <translation>Elegir Fechas del Reporte</translation>
+        <translation type="obsolete">Elegir Fechas del Reporte</translation>
     </message>
     <message>
         <source>&amp;Start Date:</source>
-        <translation>Fech. &amp;Inicio:</translation>
+        <translation type="obsolete">Fech. &amp;Inicio:</translation>
     </message>
     <message>
         <source>&amp;Select</source>
-        <translation>&amp;Elegir</translation>
+        <translation type="obsolete">&amp;Elegir</translation>
     </message>
     <message>
         <source>&amp;End Date:</source>
-        <translation>Fech. &amp;Fin:</translation>
+        <translation type="obsolete">Fech. &amp;Fin:</translation>
     </message>
     <message>
         <source>&amp;Generate
 Report</source>
-        <translation>&amp;Generar
+        <translation type="obsolete">&amp;Generar
 Reporte</translation>
     </message>
     <message>
         <source>C&amp;lose</source>
-        <translation>&amp;Cerrar</translation>
+        <translation type="obsolete">&amp;Cerrar</translation>
     </message>
 </context>
 </TS>

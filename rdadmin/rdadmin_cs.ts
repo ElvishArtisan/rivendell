@@ -1509,7 +1509,7 @@ files, causing any whose files remain to be imported again.</source>
     </message>
     <message>
         <source>Keep Expired Metadata</source>
-        <translation>Zachovat prošlá popisná data</translation>
+        <translation type="obsolete">Zachovat prošlá popisná data</translation>
     </message>
     <message>
         <source>Enable AutoPost</source>
@@ -1525,11 +1525,11 @@ files, causing any whose files remain to be imported again.</source>
     </message>
     <message>
         <source>None</source>
-        <translation>Žádná</translation>
+        <translation type="obsolete">Žádná</translation>
     </message>
     <message>
         <source>Maximum Shelf Life:</source>
-        <translation>Největší čas před vypršením:</translation>
+        <translation type="obsolete">Největší čas před vypršením:</translation>
     </message>
     <message>
         <source>days</source>
@@ -1549,23 +1549,23 @@ files, causing any whose files remain to be imported again.</source>
     </message>
     <message>
         <source>Direct</source>
-        <translation>Přímé</translation>
+        <translation type="obsolete">Přímé</translation>
     </message>
     <message>
         <source>Counted</source>
-        <translation>Počítané</translation>
+        <translation type="obsolete">Počítané</translation>
     </message>
     <message>
         <source>Media Link Mode:</source>
-        <translation>Režim odkazu na media:</translation>
+        <translation type="obsolete">Režim odkazu na media:</translation>
     </message>
     <message>
         <source>Enable Feed Redirection</source>
-        <translation>Povolit přesměrování přívodu</translation>
+        <translation type="obsolete">Povolit přesměrování přívodu</translation>
     </message>
     <message>
         <source>URL:</source>
-        <translation>Adresa (URL):</translation>
+        <translation type="obsolete">Adresa (URL):</translation>
     </message>
     <message>
         <source>Header XML:</source>
@@ -1595,7 +1595,7 @@ pole popisných dat</translation>
     </message>
     <message>
         <source>Edit Feed - Redirect</source>
-        <translation>Upravit přívod - Přesměrovat</translation>
+        <translation type="obsolete">Upravit přívod - Přesměrovat</translation>
     </message>
     <message>
         <source>Enabling feed redirection will cause clients subscribed to
@@ -1603,7 +1603,7 @@ this feed to be PERMANENTLY redirected to the
 specified URL.
 
 Do you still want to enable redireciton?</source>
-        <translation>Povolení přesměrování přívodu způsobí, že klienti přihlášení k tomuto
+        <translation type="obsolete">Povolení přesměrování přívodu způsobí, že klienti přihlášení k tomuto
 přívodu budou TRVALE přesměrováni na zadanou adresu.
 
 Pořád ještě chcete povolit přesměrování?</translation>
@@ -1629,16 +1629,8 @@ Pořád ještě chcete povolit přesměrování?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>The Feed Redirection URL is invalid!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Select Member
 Feeds</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Collect Audience Metrics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1704,6 +1696,14 @@ Feeds</source>
     <message>
         <source>[none]</source>
         <translation type="obsolete">[žádný]</translation>
+    </message>
+    <message>
+        <source>Default Shelf Life</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unlimited</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -5129,7 +5129,7 @@ Stále ještě jej chcete smazat?</translation>
     </message>
     <message>
         <source>Keep Metadata</source>
-        <translation>Zachovat popisná data</translation>
+        <translation type="obsolete">Zachovat popisná data</translation>
     </message>
     <message>
         <source>Creation Date</source>

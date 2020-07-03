@@ -2,7 +2,7 @@
 //
 // A Utility to Purge Expired Podcasts.
 //
-//   (C) Copyright 2007,2016-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2007-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -119,9 +119,7 @@ void MainObject::PurgeCast(unsigned id)
   QString errs;
 
   sql=QString("select ")+
-    "FEEDS.ID,"+             // 00
-    "FEEDS.KEEP_METADATA,"+  // 01
-    "FEEDS.KEY_NAME "+       // 02
+    "FEEDS.ID "+             // 00
     "from PODCASTS left join FEEDS "+
     "on(PODCASTS.FEED_ID=FEEDS.ID) where "+
     QString().sprintf("PODCASTS.ID=%u",id);
@@ -135,25 +133,11 @@ void MainObject::PurgeCast(unsigned id)
     }
     delete cast;
     delete feed;
-    if(RDBool(q->value(1).toString())) {
-      sql=QString("update PODCASTS set ")+
-	QString().sprintf("STATUS=%u where ",RDPodcast::StatusExpired)+
-	QString().sprintf("ID=%u",id);
-      q1=new RDSqlQuery(sql);
-      delete q1;
-    }
-    else {
-      sql=QString("delete from CAST_DOWNLOADS where ")+
-	"FEED_KEY_NAME=\""+RDEscapeString(q->value(2).toString())+"\" && "+
-	QString().sprintf("CAST_ID=%d",id);
-      q1=new RDSqlQuery(sql);
-      delete q1;
 
-      sql=QString("delete from PODCASTS where ")+
-	QString().sprintf("ID=%d",id);
-      q1=new RDSqlQuery(sql);
-      delete q1;
-    }
+    sql=QString("delete from PODCASTS where ")+
+      QString().sprintf("ID=%d",id);
+    q1=new RDSqlQuery(sql);
+    delete q1;
     sql=QString("update FEEDS set ")+
       "LAST_BUILD_DATETIME=\""+
       RDEscapeString(current_datetime.toString("yyyy-MM-dd hh:mm:ss"))+

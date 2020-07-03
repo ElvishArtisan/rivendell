@@ -1507,7 +1507,7 @@ files, causing any whose files remain to be imported again.</source>
     </message>
     <message>
         <source>Keep Expired Metadata</source>
-        <translation>Mantener metadatos vencidos</translation>
+        <translation type="obsolete">Mantener metadatos vencidos</translation>
     </message>
     <message>
         <source>Enable AutoPost</source>
@@ -1523,11 +1523,11 @@ files, causing any whose files remain to be imported again.</source>
     </message>
     <message>
         <source>None</source>
-        <translation>Ninguno</translation>
+        <translation type="obsolete">Ninguno</translation>
     </message>
     <message>
         <source>Maximum Shelf Life:</source>
-        <translation>Vida útil máxima:</translation>
+        <translation type="obsolete">Vida útil máxima:</translation>
     </message>
     <message>
         <source>days</source>
@@ -1547,23 +1547,23 @@ files, causing any whose files remain to be imported again.</source>
     </message>
     <message>
         <source>Direct</source>
-        <translation>Directo</translation>
+        <translation type="obsolete">Directo</translation>
     </message>
     <message>
         <source>Counted</source>
-        <translation>Contado</translation>
+        <translation type="obsolete">Contado</translation>
     </message>
     <message>
         <source>Media Link Mode:</source>
-        <translation>Modo de los Enlaces:</translation>
+        <translation type="obsolete">Modo de los Enlaces:</translation>
     </message>
     <message>
         <source>Enable Feed Redirection</source>
-        <translation>Activar redirec. de feed</translation>
+        <translation type="obsolete">Activar redirec. de feed</translation>
     </message>
     <message>
         <source>URL:</source>
-        <translation>URL:</translation>
+        <translation type="obsolete">URL:</translation>
     </message>
     <message>
         <source>Header XML:</source>
@@ -1593,7 +1593,7 @@ metadatos auxiliares</translation>
     </message>
     <message>
         <source>Edit Feed - Redirect</source>
-        <translation>Edtar feed - Redireccionar</translation>
+        <translation type="obsolete">Edtar feed - Redireccionar</translation>
     </message>
     <message>
         <source>Enabling feed redirection will cause clients subscribed to
@@ -1601,7 +1601,7 @@ this feed to be PERMANENTLY redirected to the
 specified URL.
 
 Do you still want to enable redireciton?</source>
-        <translation>Activar el redireccionamiento de feeds causará que los clientes
+        <translation type="obsolete">Activar el redireccionamiento de feeds causará que los clientes
 suscritos a este feed sean redireccionados PERMANENTEMENTE
 al URL especificado.
 
@@ -1632,16 +1632,8 @@ al URL especificado.
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>The Feed Redirection URL is invalid!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Select Member
 Feeds</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Collect Audience Metrics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -1702,6 +1694,14 @@ Feeds</source>
     </message>
     <message>
         <source>Superfeed must have at least one subfeed assigned!</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Default Shelf Life</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Unlimited</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5092,7 +5092,7 @@ Do you still want to delete it?</source>
     </message>
     <message>
         <source>Keep Metadata</source>
-        <translation>Mantener metadatos</translation>
+        <translation type="obsolete">Mantener metadatos</translation>
     </message>
     <message>
         <source>Creation Date</source>

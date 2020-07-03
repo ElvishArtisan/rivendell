@@ -64,11 +64,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>Episode
-&amp;Report</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>&amp;OK</source>
         <translation type="unfinished"></translation>
     </message>
@@ -78,10 +73,6 @@
     </message>
     <message>
         <source>Air Date/Time:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Media Link:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -119,11 +110,6 @@ Car&amp;t/Cut</source>
     </message>
     <message>
         <source>&amp;Delete</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Subscription
-&amp;Report</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -291,34 +277,6 @@ Clipboard</source>
     </message>
     <message>
         <source>[superfeed]</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>PickReportDates</name>
-    <message>
-        <source>Select Report Dates</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Start Date:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Select</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;End Date:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>&amp;Generate
-Report</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>C&amp;lose</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

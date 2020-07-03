@@ -1,7 +1,7 @@
 ## rivendell.spec.in
 ##
 ##    The Rivendell Radio Automation System
-##    Copyright (C) 2002-2019  Fred Gleason <fredg@paravelsystems.com>
+##    Copyright (C) 2002-2020  Fred Gleason <fredg@paravelsystems.com>
 ##
 ##    This program is free software; you can redistribute it and/or modify
 ##    it under the terms of version 2 of the GNU General Public License as
@@ -378,9 +378,7 @@ rm -rf $RPM_BUILD_ROOT
 @libexecdir@/*.gif
 @libexecdir@/*.html
 @libexecdir@/*.js
-@libexecdir@/*.mp3
 @libexecdir@/*.png
-@libexecdir@/*.xml
 @libexecdir@/rdcastmanager.cgi
 %attr(6755,root,root) @libexecdir@/rdxport.cgi
 %attr(6755,root,root) @libexecdir@/webget.cgi

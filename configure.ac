@@ -507,7 +507,6 @@ AC_CONFIG_FILES([rivendell.spec \
     rdhpi/Makefile \
     cae/Makefile \
     web/Makefile \
-    web/rdfeed/Makefile \
     web/rdcastmanager/Makefile \
     web/rdxport/Makefile \
     web/tests/Makefile \
