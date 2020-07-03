@@ -20083,3 +20083,8 @@
 2020-07-02 Fred Gleason <fredg@paravelsystems.com>
 	* Added a 'RDApplication::rssSchemas()' method.
 	* Removed the 'RDFeed::rssSchemas()' method.
+2020-07-03 Fred Gleason <fredg@paravelsystems.com>
+	* Moved the relocated the 'Comment URL' control in the
+	'Editing Podcast' dialog in rdcastmanager(1).
+	* Made the 'Category' control conditional in the 'Editing Podcast'
+	dialog in rdcastmanager(1).

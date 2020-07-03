@@ -248,6 +248,12 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   cast_item_origin_edit->setText(RDUtcToLocal(cast_cast->originDateTime()).
 				 toString("MM/dd/yyyy - hh:mm:ss"));
   cast_item_category_edit->setText(cast_cast->itemCategory());
+  cast_item_category_label->
+    setVisible(rda->rssSchemas()->
+	       supportsItemCategories(cast_feed->rssSchema()));
+  cast_item_category_edit->
+    setVisible(rda->rssSchemas()->
+	       supportsItemCategories(cast_feed->rssSchema()));
   cast_item_link_edit->setText(cast_cast->itemLink());
   cast_item_description_edit->setText(cast_cast->itemDescription());
   cast_item_explicit_check->setChecked(cast_cast->itemExplicit());
@@ -418,54 +424,102 @@ void EditCast::resizeEvent(QResizeEvent *e)
   else {
     ypos=42;
   }
+
+  //
+  // Title
+  //
   cast_item_title_edit->setGeometry(135,ypos,size().width()-145,20);
   cast_item_title_label->setGeometry(20,ypos,110,20);
-  cast_item_author_edit->setGeometry(135,ypos+22,size().width()-145,20);
-  cast_item_author_label->setGeometry(20,ypos+22,110,20);
-  cast_item_category_edit->setGeometry(135,ypos+44,size().width()-145,20);
-  cast_item_category_label->setGeometry(20,ypos+44,110,20);
-  cast_item_link_edit->setGeometry(135,ypos+66,size().width()-145,20);
-  cast_item_link_label->setGeometry(20,ypos+66,110,20);
-  cast_item_description_label->setGeometry(20,ypos+88,110,20);
-  cast_item_description_edit->
-    setGeometry(135,ypos+88,size().width()-145,h-ypos-359);
+  ypos+=22;
 
+  //
+  // Author E-Mail
+  //
+  cast_item_author_edit->setGeometry(135,ypos,size().width()-145,20);
+  cast_item_author_label->setGeometry(20,ypos,110,20);
+  ypos+=22;
+
+  //
+  // Category
+  //
+  if(rda->rssSchemas()->supportsItemCategories(cast_feed->rssSchema())) {
+    cast_item_category_edit->setGeometry(135,ypos,size().width()-145,20);
+    cast_item_category_label->setGeometry(20,ypos,110,20);
+    ypos+=22;
+  }
+
+  //
+  // Link URL
+  //
+  cast_item_link_edit->setGeometry(135,ypos,size().width()-145,20);
+  cast_item_link_label->setGeometry(20,ypos,110,20);
+  ypos+=22;
+
+  //
+  // Comments URL
+  //
+  cast_item_comments_edit->setGeometry(135,ypos,size().width()-145,20);
+  cast_item_comments_label->setGeometry(10,ypos,120,20);
+  ypos+=22;
+
+  //
+  // Description
+  //
+  cast_item_description_label->setGeometry(20,ypos,110,20);
+  cast_item_description_edit->
+    setGeometry(135,ypos,size().width()-145,h-ypos-271);
+
+  //
+  // Explicit Content
+  //
   cast_item_explicit_check->setGeometry(140,h-266,15,15);
   cast_item_explicit_label->setGeometry(160,h-269,size().width()-145,20);
 
+  //
+  // Image
+  //
   cast_item_image_label->setGeometry(20,h-247,110,20);
   cast_item_image_box->setIconSize(QSize(36,36));
   cast_item_image_box->setGeometry(135,h-247,300,38);
 
-  // "Comments URL"
-  cast_item_comments_edit->setGeometry(135,h-207,size().width()-145,20);
-  cast_item_comments_label->setGeometry(10,h-207,120,20);
+  //
+  // Air Date/Time
+  //
+  cast_item_effective_edit->setGeometry(135,h-207,165,20);
+  cast_item_effective_label->setGeometry(20,h-207,110,20);
+  cast_item_effective_button->setGeometry(310,h-207,50,20);
 
-  // "Air Date/Time"
-  cast_item_effective_edit->setGeometry(135,h-185,165,20);
-  cast_item_effective_label->setGeometry(20,h-185,110,20);
-  cast_item_effective_button->setGeometry(310,h-185,50,20);
+  //
+  // Posted At
+  //
+  cast_item_origin_edit->setGeometry(135,h-185,165,20);
+  cast_item_origin_label->setGeometry(20,h-185,110,20);
 
-  // "Posted At"
-  cast_item_origin_edit->setGeometry(135,h-163,165,20);
-  cast_item_origin_label->setGeometry(20,h-163,110,20);
+  //
+  // Cast Expires
+  //
+  cast_item_expiration_box->setGeometry(135,h-163,50,20);
+  cast_item_expiration_box_label->setGeometry(20,h-163,110,20);
 
-  // "Cast Expires"
-  cast_item_expiration_box->setGeometry(135,h-141,50,20);
-  cast_item_expiration_box_label->setGeometry(20,h-141,110,20);
+  //
+  // Expires On
+  //
+  cast_item_expiration_edit->setGeometry(135,h-141,95,20);
+  cast_item_expiration_label->setGeometry(20,h-141,110,20);
+  cast_item_expiration_button->setGeometry(240,h-141,50,20);
 
-  // "Expires On"
-  cast_item_expiration_edit->setGeometry(135,h-119,95,20);
-  cast_item_expiration_label->setGeometry(20,h-119,110,20);
-  cast_item_expiration_button->setGeometry(240,h-119,50,20);
+  //
+  // Posting Status
+  //
+  cast_hold_rbutton->setGeometry(140,h-114,15,15);
+  cast_hold_label->setGeometry(160,h-114,30,15);
+  cast_active_rbutton->setGeometry(210,h-114,15,15);
+  cast_active_label->setGeometry(230,h-114,80,15);
+  cast_status_label->setGeometry(20,h-114,110,20);
 
-  // "Posting Status"
-  cast_hold_rbutton->setGeometry(140,h-92,15,15);
-  cast_hold_label->setGeometry(160,h-92,30,15);
-  cast_active_rbutton->setGeometry(210,h-92,15,15);
-  cast_active_label->setGeometry(230,h-92,80,15);
-  cast_status_label->setGeometry(20,h-92,110,20);
-
+  //
+  // Buttons
+  //
   cast_report_button->setGeometry(10,size().height()-60,80,50);
   cast_ok_button->setGeometry(size().width()-180,size().height()-60,80,50);
   cast_cancel_button->setGeometry(size().width()-90,size().height()-60,80,50);
