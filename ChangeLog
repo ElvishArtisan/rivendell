@@ -20096,3 +20096,6 @@
 	* Dropped the 'CAST_DOWNLOADS' table from the database.
 	* Incremented the database version to 328.
 	* Removed support for dynamically generated RSS feed metadata.
+2020-07-07 Fred Gleason <fredg@paravelsystems.com>
+	* Added 'Copy to Clipboard' buttons for the XML template editors
+	in the 'Edit Feed' dialog in rdadmin(1).

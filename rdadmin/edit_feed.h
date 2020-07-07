@@ -56,6 +56,9 @@ class EditFeed : public RDDialog
   void selectSubfeedsData();
   void setFormatData();
   void listImagesData();
+  void copyHeaderXmlData();
+  void copyChannelXmlData();
+  void copyItemXmlData();
   void okData();
   void cancelData();
 
@@ -98,9 +101,15 @@ class EditFeed : public RDDialog
   QLineEdit *feed_purge_password_edit;
   QLabel *feed_rss_schema_label;
   QComboBox *feed_rss_schema_box;
+  QLabel *feed_header_xml_label;
   QTextEdit *feed_header_xml_edit;
+  QPushButton *feed_header_xml_button;
+  QLabel *feed_channel_xml_label;
   QTextEdit *feed_channel_xml_edit;
+  QPushButton *feed_channel_xml_button;
+  QLabel *feed_item_xml_label;
   QTextEdit *feed_item_xml_edit;
+  QPushButton *feed_item_xml_button;
   QSpinBox *feed_max_shelf_life_spin;
   QLabel *feed_autopost_label;
   QComboBox *feed_autopost_box;
@@ -135,9 +144,6 @@ class EditFeed : public RDDialog
   RDImagePickerBox *feed_item_image_box;
   QPushButton *feed_ok_button;
   QPushButton *feed_cancel_button;
-  QLabel *feed_header_xml_label;
-  QLabel *feed_channel_xml_label;
-  QLabel *feed_item_xml_label;
 };
 
 

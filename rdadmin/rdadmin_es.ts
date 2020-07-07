@@ -1704,6 +1704,11 @@ Feeds</source>
         <source>Unlimited</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <source>Copy to
+Clipboard</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>EditFeedPerms</name>

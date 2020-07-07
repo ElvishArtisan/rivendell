@@ -20,6 +20,8 @@
 
 #include <math.h>
 
+#include <qapplication.h>
+#include <qclipboard.h>
 #include <qdatetime.h>
 #include <qevent.h>
 #include <qmessagebox.h>
@@ -390,6 +392,10 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   feed_header_xml_label=new QLabel(feed_header_xml_edit,tr("Header XML:"),this);
   feed_header_xml_label->setFont(labelFont());
   feed_header_xml_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  feed_header_xml_button=new QPushButton(tr("Copy to\nClipboard"),this);
+  feed_header_xml_button->setFont(subButtonFont());
+  connect(feed_header_xml_button,SIGNAL(clicked()),
+	  this,SLOT(copyHeaderXmlData()));
 
   //
   // Channel XML
@@ -400,6 +406,10 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
     new QLabel(feed_channel_xml_edit,tr("Channel XML:"),this);
   feed_channel_xml_label->setFont(labelFont());
   feed_channel_xml_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  feed_channel_xml_button=new QPushButton(tr("Copy to\nClipboard"),this);
+  feed_channel_xml_button->setFont(subButtonFont());
+  connect(feed_channel_xml_button,SIGNAL(clicked()),
+	  this,SLOT(copyChannelXmlData()));
 
   //
   // Item XML
@@ -409,6 +419,10 @@ EditFeed::EditFeed(const QString &feed,QWidget *parent)
   feed_item_xml_label=new QLabel(feed_item_xml_edit,tr("Item XML:"),this);
   feed_item_xml_label->setFont(labelFont());
   feed_item_xml_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
+  feed_item_xml_button=new QPushButton(tr("Copy to\nClipboard"),this);
+  feed_item_xml_button->setFont(subButtonFont());
+  connect(feed_item_xml_button,SIGNAL(clicked()),
+	  this,SLOT(copyItemXmlData()));
 
   //
   //  Ok Button
@@ -553,6 +567,51 @@ void EditFeed::listImagesData()
   feed_images_dialog->exec(feed_feed);
   feed_channel_image_box->refresh();
   feed_item_image_box->refresh();
+}
+
+
+void EditFeed::copyHeaderXmlData()
+{
+  RDRssSchemas::RssSchema schema=
+    (RDRssSchemas::RssSchema)feed_rss_schema_box->currentIndex();
+
+  if(schema==RDRssSchemas::CustomSchema) {
+    QApplication::clipboard()->setText(feed_header_xml_edit->text());
+  }
+  else {
+    QApplication::clipboard()->
+      setText(rda->rssSchemas()->headerTemplate(schema));
+  }
+}
+
+
+void EditFeed::copyChannelXmlData()
+{
+  RDRssSchemas::RssSchema schema=
+    (RDRssSchemas::RssSchema)feed_rss_schema_box->currentIndex();
+
+  if(schema==RDRssSchemas::CustomSchema) {
+    QApplication::clipboard()->setText(feed_channel_xml_edit->text());
+  }
+  else {
+    QApplication::clipboard()->
+      setText(rda->rssSchemas()->channelTemplate(schema));
+  }
+}
+
+
+void EditFeed::copyItemXmlData()
+{
+  RDRssSchemas::RssSchema schema=
+    (RDRssSchemas::RssSchema)feed_rss_schema_box->currentIndex();
+
+  if(schema==RDRssSchemas::CustomSchema) {
+    QApplication::clipboard()->setText(feed_item_xml_edit->text());
+  }
+  else {
+    QApplication::clipboard()->
+      setText(rda->rssSchemas()->itemTemplate(schema));
+  }
 }
 
 
@@ -738,12 +797,15 @@ void EditFeed::resizeEvent(QResizeEvent *e)
 
   feed_header_xml_label->setGeometry(520,32,90,19);
   feed_header_xml_edit->setGeometry(615,32,size().width()-625,76);
+  feed_header_xml_button->setGeometry(540,54,70,30);
 
   feed_channel_xml_label->setGeometry(520,110,90,19);
   feed_channel_xml_edit->setGeometry(615,110,size().width()-625,256);
+  feed_channel_xml_button->setGeometry(540,132,70,30);
 
   feed_item_xml_label->setGeometry(520,368,90,19);
   feed_item_xml_edit->setGeometry(615,368,size().width()-625,240);
+  feed_item_xml_button->setGeometry(540,390,70,30);
 
   feed_ok_button->setGeometry(size().width()-180,size().height()-60,80,50);
   feed_cancel_button->setGeometry(size().width()-90,size().height()-60,80,50);
@@ -786,14 +848,10 @@ void EditFeed::UpdateControlState()
   feed_item_image_label->setDisabled(item_image&&(superfeed));
   feed_item_image_box->setDisabled(item_image&&(superfeed));
 
-  feed_header_xml_label->setEnabled(custom_schema);
   feed_header_xml_edit->setEnabled(custom_schema);
-
-  feed_channel_xml_label->setEnabled(custom_schema);
   feed_channel_xml_edit->setEnabled(custom_schema);
-
-  feed_item_xml_label->setDisabled(superfeed||(!custom_schema));
   feed_item_xml_edit->setDisabled(superfeed||(!custom_schema));
+  feed_item_xml_button->setDisabled(superfeed);
 
   feed_purge_password_label->
     setDisabled(feed_purge_username_edit->text().isEmpty()||
