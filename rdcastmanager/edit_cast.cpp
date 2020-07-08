@@ -2,7 +2,7 @@
 //
 // Edit a Rivendell Cast
 //
-//   (C) Copyright 2002-2019 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -33,6 +33,15 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   cast_feed=new RDFeed(cast_cast->feedId(),rda->config());
   cast_status=cast_cast->status();
   setWindowTitle("RDCastManager - "+tr("Editing PodCast"));
+
+  //
+  // Active Checkbox
+  //
+  cast_active_check=new QCheckBox(this);
+  cast_active_label=
+    new QLabel(cast_active_check,tr("Cast Active"),this);
+  cast_active_label->setFont(labelFont());
+  cast_active_label->setAlignment(Qt::AlignLeft|Qt::AlignVCenter);
 
   //
   // Item Title
@@ -113,15 +122,11 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   // Effective DateTime
   //
   cast_item_effective_edit=new QDateTimeEdit(this);
+  cast_item_effective_edit->setDisplayFormat("MM/dd/yyyy hh:mm:ss");
   cast_item_effective_label=
     new QLabel(cast_item_effective_edit,tr("Air Date/Time:"),this);
   cast_item_effective_label->setFont(labelFont());
   cast_item_effective_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-  cast_item_effective_button=new QPushButton(this);
-  cast_item_effective_button->setFont(subButtonFont());
-  cast_item_effective_button->setText(tr("&Select"));
-  connect(cast_item_effective_button,SIGNAL(clicked()),
-	  this,SLOT(effectiveSelectData()));
 
   //
   // Item Origin
@@ -149,11 +154,12 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   cast_item_expiration_box_label->
     setAlignment(Qt::AlignRight|Qt::AlignVCenter);
   cast_item_expiration_box->setEnabled(cast_status!=RDPodcast::StatusExpired);
-  cast_item_expiration_box_label->setEnabled(cast_status!=RDPodcast::StatusExpired);
+  cast_item_expiration_box_label->
+    setEnabled(cast_status!=RDPodcast::StatusExpired);
 
   cast_item_expiration_edit=new QDateEdit(this);
   cast_item_expiration_label=
-    new QLabel(cast_item_expiration_edit,tr("Expires On:"),this);
+    new QLabel(cast_item_expiration_edit,tr("Expires On")+":",this);
   cast_item_expiration_label->setFont(labelFont());
   cast_item_expiration_label->
     setAlignment(Qt::AlignRight|Qt::AlignVCenter);
@@ -167,33 +173,6 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
     setEnabled(cast_status!=RDPodcast::StatusExpired);
   cast_item_expiration_button->
     setEnabled(cast_status!=RDPodcast::StatusExpired);
-
-  //
-  // Cast Status
-  //
-  cast_item_status_group=new QButtonGroup(this);
-  cast_item_status_group->setExclusive(true);
-
-  cast_hold_rbutton=new QRadioButton(this);
-  cast_item_status_group->addButton(cast_hold_rbutton,0);
-  cast_hold_label=new QLabel(cast_hold_rbutton,tr("Hold"),this);
-  cast_hold_label->setFont(subButtonFont());
-  cast_hold_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
-  cast_hold_rbutton->setChecked(true);
-  cast_hold_label->setEnabled(cast_status!=RDPodcast::StatusExpired);
-  cast_hold_rbutton->setEnabled(cast_status!=RDPodcast::StatusExpired);
-
-  cast_active_rbutton=new QRadioButton(this);
-  cast_item_status_group->addButton(cast_active_rbutton,1);
-  cast_active_label=new QLabel(cast_active_rbutton,tr("Active"),this);
-  cast_active_label->setFont(subLabelFont());
-  cast_active_label->setAlignment(Qt::AlignVCenter|Qt::AlignLeft);
-  cast_active_label->setEnabled(cast_status!=RDPodcast::StatusExpired);
-  cast_status_label=new QLabel(tr("Posting Status:"),this);
-  cast_status_label->setFont(labelFont());
-  cast_status_label->setAlignment(Qt::AlignRight|Qt::AlignVCenter);
-  cast_status_label->setEnabled(cast_status!=RDPodcast::StatusExpired);
-  cast_active_rbutton->setEnabled(cast_status!=RDPodcast::StatusExpired);
 
   //
   //  Ok Button
@@ -244,16 +223,16 @@ EditCast::EditCast(unsigned cast_id,QWidget *parent)
   expirationSelectedData(cast_item_expiration_box->currentItem());
   switch(cast_status) {
   case RDPodcast::StatusActive:
-    cast_item_status_group->button(1)->setChecked(true);
+    cast_active_check->setChecked(true);
     break;
 
   case RDPodcast::StatusPending:
-    cast_item_status_group->button(0)->setChecked(true);
+    cast_active_check->setChecked(false);
     break;
 
   case RDPodcast::StatusExpired:
-    cast_item_status_group->button(0)->setDisabled(true);
-    cast_item_status_group->button(1)->setDisabled(true);
+    cast_active_check->setDisabled(true);
+    cast_active_label->setDisabled(true);
     break;
   }
 
@@ -273,7 +252,7 @@ EditCast::~EditCast()
 
 QSize EditCast::sizeHint() const
 {
-  return QSize(640,442);
+  return QSize(640,480);
 } 
 
 
@@ -289,22 +268,6 @@ void EditCast::expirationSelectedData(int state)
   cast_item_expiration_edit->setEnabled(state);
   cast_item_expiration_button->setEnabled(state);
   cast_item_expiration_label->setEnabled(state);
-}
-
-
-void EditCast::effectiveSelectData()
-{
-  QDate current_date=QDate::currentDate();
-  QDateTime datetime=cast_item_effective_edit->dateTime();
-  QDate date=datetime.date();
-
-  RDDateDialog *dd=
-    new RDDateDialog(current_date.year()-5,current_date.year()+5,this);
-  if(dd->exec(&date)==0) {
-    datetime.setDate(date);
-    cast_item_effective_edit->setDateTime(datetime);
-  }
-  delete dd;
 }
 
 
@@ -336,7 +299,7 @@ void EditCast::okData()
   cast_cast->setItemComments(cast_item_comments_edit->text());
   cast_cast->
     setEffectiveDateTime(RDLocalToUtc(cast_item_effective_edit->dateTime()));
-  if(cast_item_status_group->button(0)->isEnabled()) {
+  if(cast_active_check->isEnabled()) {
     if(cast_item_expiration_box->currentItem()) {
       int shelf_life=RDUtcToLocal(cast_cast->originDateTime()).date().
 	daysTo(cast_item_expiration_edit->date());
@@ -348,14 +311,11 @@ void EditCast::okData()
     else {
       cast_cast->setShelfLife(0);
     }
-    switch(cast_item_status_group->checkedId()) {
-      case 0:
-	cast_cast->setStatus(RDPodcast::StatusPending);
-	break;
-	
-      case 1:
-	cast_cast->setStatus(RDPodcast::StatusActive);
-	break;
+    if(cast_active_check->isChecked()) {
+      cast_cast->setStatus(RDPodcast::StatusActive);
+    }
+    else {
+      cast_cast->setStatus(RDPodcast::StatusPending);
     }
   }
 
@@ -379,9 +339,24 @@ void EditCast::cancelData()
 void EditCast::resizeEvent(QResizeEvent *e)
 {
   int ypos=0;
+  int w=size().width();
   int h=size().height();
 
   ypos=2;
+
+  //
+  // Posting Status
+  //
+  cast_active_check->setGeometry(10,ypos+2,15,15);
+  cast_active_label->setGeometry(30,ypos,300,20);
+
+  //
+  // Posted At
+  //
+  cast_item_origin_edit->setGeometry(w-160,ypos,150,20);
+  cast_item_origin_label->setGeometry(w-275,ypos,110,20);
+
+  ypos+=27;
 
   //
   // Title
@@ -425,55 +400,39 @@ void EditCast::resizeEvent(QResizeEvent *e)
   //
   cast_item_description_label->setGeometry(20,ypos,110,20);
   cast_item_description_edit->
-    setGeometry(135,ypos,size().width()-145,h-ypos-271);
+    setGeometry(135,ypos,size().width()-145,h-ypos-221);
 
   //
   // Explicit Content
   //
-  cast_item_explicit_check->setGeometry(140,h-266,15,15);
-  cast_item_explicit_label->setGeometry(160,h-269,size().width()-145,20);
+  cast_item_explicit_check->setGeometry(140,h-216,15,15);
+  cast_item_explicit_label->setGeometry(160,h-219,size().width()-145,20);
 
   //
   // Image
   //
-  cast_item_image_label->setGeometry(20,h-247,110,20);
+  cast_item_image_label->setGeometry(20,h-197,110,20);
   cast_item_image_box->setIconSize(QSize(36,36));
-  cast_item_image_box->setGeometry(135,h-247,300,38);
+  cast_item_image_box->setGeometry(135,h-197,300,38);
 
   //
   // Air Date/Time
   //
-  cast_item_effective_edit->setGeometry(135,h-207,165,20);
-  cast_item_effective_label->setGeometry(20,h-207,110,20);
-  cast_item_effective_button->setGeometry(310,h-207,50,20);
-
-  //
-  // Posted At
-  //
-  cast_item_origin_edit->setGeometry(135,h-185,165,20);
-  cast_item_origin_label->setGeometry(20,h-185,110,20);
+  cast_item_effective_edit->setGeometry(135,h-157,150,20);
+  cast_item_effective_label->setGeometry(20,h-157,110,20);
 
   //
   // Cast Expires
   //
-  cast_item_expiration_box->setGeometry(135,h-163,50,20);
-  cast_item_expiration_box_label->setGeometry(20,h-163,110,20);
+  cast_item_expiration_box->setGeometry(135,h-135,50,20);
+  cast_item_expiration_box_label->setGeometry(20,h-135,110,20);
 
   //
   // Expires On
   //
-  cast_item_expiration_edit->setGeometry(135,h-141,95,20);
-  cast_item_expiration_label->setGeometry(20,h-141,110,20);
-  cast_item_expiration_button->setGeometry(240,h-141,50,20);
-
-  //
-  // Posting Status
-  //
-  cast_hold_rbutton->setGeometry(140,h-114,15,15);
-  cast_hold_label->setGeometry(160,h-114,30,15);
-  cast_active_rbutton->setGeometry(210,h-114,15,15);
-  cast_active_label->setGeometry(230,h-114,80,15);
-  cast_status_label->setGeometry(20,h-114,110,20);
+  cast_item_expiration_edit->setGeometry(135,h-113,95,20);
+  cast_item_expiration_label->setGeometry(20,h-113,110,20);
+  cast_item_expiration_button->setGeometry(240,h-113,50,20);
 
   //
   // Buttons

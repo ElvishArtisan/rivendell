@@ -41,15 +41,15 @@
     </message>
     <message>
         <source>Hold</source>
-        <translation>Mantener</translation>
+        <translation type="obsolete">Mantener</translation>
     </message>
     <message>
         <source>Active</source>
-        <translation>Activo</translation>
+        <translation type="obsolete">Activo</translation>
     </message>
     <message>
         <source>Posting Status:</source>
-        <translation>Estado del Post:</translation>
+        <translation type="obsolete">Estado del Post:</translation>
     </message>
     <message>
         <source>&amp;OK</source>
@@ -95,7 +95,7 @@ Episodios</translation>
     </message>
     <message>
         <source>Expires On:</source>
-        <translation>Expira el:</translation>
+        <translation type="obsolete">Expira el:</translation>
     </message>
     <message>
         <source>Post contains explicit content</source>
@@ -103,6 +103,14 @@ Episodios</translation>
     </message>
     <message>
         <source>Image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cast Active</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Expires On</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

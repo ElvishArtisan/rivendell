@@ -65,15 +65,15 @@
     </message>
     <message>
         <source>Hold</source>
-        <translation>Hold</translation>
+        <translation type="obsolete">Hold</translation>
     </message>
     <message>
         <source>Active</source>
-        <translation>Aktiv</translation>
+        <translation type="obsolete">Aktiv</translation>
     </message>
     <message>
         <source>Posting Status:</source>
-        <translation>Posting Status:</translation>
+        <translation type="obsolete">Posting Status:</translation>
     </message>
     <message>
         <source>Episode
@@ -98,15 +98,19 @@
         <translation type="obsolete">Medienlink:</translation>
     </message>
     <message>
-        <source>Expires On:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Post contains explicit content</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cast Active</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Expires On</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

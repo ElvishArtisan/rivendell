@@ -47,7 +47,6 @@ class EditCast : public RDDialog
 
  private slots:
   void expirationSelectedData(int state);
-  void effectiveSelectData();
   void expirationSelectData();
   void okData();
   void cancelData();
@@ -79,17 +78,12 @@ class EditCast : public RDDialog
   QLabel *cast_item_expiration_box_label;
   QComboBox *cast_item_expiration_box;
   QLabel *cast_item_expiration_label;
-  QRadioButton *cast_hold_rbutton;
-  QLabel *cast_hold_label;
-  QRadioButton *cast_active_rbutton;
+  QCheckBox *cast_active_check;
   QLabel *cast_active_label;
-  QLabel *cast_status_label;
   QPushButton *cast_item_expiration_button;
   QDateEdit *cast_item_expiration_edit;
   QLabel *cast_item_effective_label;
   QDateTimeEdit *cast_item_effective_edit;
-  QPushButton *cast_item_effective_button;
-  QButtonGroup *cast_item_status_group;
   QPushButton *cast_ok_button;
   QPushButton *cast_cancel_button;
   RDPodcast::Status cast_status;

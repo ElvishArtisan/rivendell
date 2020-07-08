@@ -73,15 +73,15 @@
     </message>
     <message>
         <source>Hold</source>
-        <translation>Espere</translation>
+        <translation type="obsolete">Espere</translation>
     </message>
     <message>
         <source>Active</source>
-        <translation>Ativo</translation>
+        <translation type="obsolete">Ativo</translation>
     </message>
     <message>
         <source>Posting Status:</source>
-        <translation>Publicação:</translation>
+        <translation type="obsolete">Publicação:</translation>
     </message>
     <message>
         <source>Episode
@@ -98,15 +98,19 @@ Episódio</translation>
         <translation>&amp;Cancelar</translation>
     </message>
     <message>
-        <source>Expires On:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <source>Post contains explicit content</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cast Active</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Expires On</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

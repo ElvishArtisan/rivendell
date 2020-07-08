@@ -65,15 +65,15 @@
     </message>
     <message>
         <source>Hold</source>
-        <translation>Držet</translation>
+        <translation type="obsolete">Držet</translation>
     </message>
     <message>
         <source>Active</source>
-        <translation>Činný</translation>
+        <translation type="obsolete">Činný</translation>
     </message>
     <message>
         <source>Posting Status:</source>
-        <translation>Stav vyvěšení:</translation>
+        <translation type="obsolete">Stav vyvěšení:</translation>
     </message>
     <message>
         <source>Episode
@@ -99,7 +99,7 @@ dílu</translation>
     </message>
     <message>
         <source>Expires On:</source>
-        <translation>Přestane platit:</translation>
+        <translation type="obsolete">Přestane platit:</translation>
     </message>
     <message>
         <source>Post contains explicit content</source>
@@ -107,6 +107,14 @@ dílu</translation>
     </message>
     <message>
         <source>Image</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Cast Active</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Expires On</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
