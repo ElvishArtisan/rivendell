@@ -20132,3 +20132,5 @@
 	* Modified the layout of the 'Editing PodCast' dialog in
 	rdcastmanager(1) to more consistent with the event editing
 	dialogs in rdcatch(1).
+2020-07-08 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.4.0rss1.
