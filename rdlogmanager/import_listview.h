@@ -2,7 +2,7 @@
 //
 //   The Import Carts ListView widget for RDLogManager.
 //
-//   (C) Copyright 2002-2018 Fred Gleason <fredg@paravelsystems.com>
+//   (C) Copyright 2002-2020 Fred Gleason <fredg@paravelsystems.com>
 //
 //   This program is free software; you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License version 2 as
@@ -23,7 +23,7 @@
 
 #include <q3listview.h>
 #include <qpixmap.h>
-#include <q3popupmenu.h>
+#include <qmenu.h>
 
 #include <rdeventimportlist.h>
 
@@ -33,19 +33,19 @@ class ImportListView : public Q3ListView
 
  public:
   ImportListView(QWidget *parent);
-  void setForceTrans(RDLogLine::TransType trans);
-  void setAllowStop(bool state);
+  RDEventImportList *eventImportList() const;
   void setAllowFirstTrans(bool state);
   void move(int from_line,int to_line);
   void setEventName(const QString &str);
   bool load(const QString &event_name,RDEventImportList::ImportType type);
-  void save();
+  void save(RDLogLine::TransType first_trans);
   void refreshList(int line=-1);
-  void validateTransitions();
+  void fixupTransitions(RDLogLine::TransType repl_trans);
 
  signals:
   void sizeChanged(int size);
   void lengthChanged(int msecs);
+  void validationNeeded();
 
  private slots:
   void aboutToShowData();
@@ -70,12 +70,10 @@ class ImportListView : public Q3ListView
   QPixmap *import_macro_map;
   QPixmap *import_notemarker_map;
   QPixmap *import_mic16_map;
-  Q3PopupMenu *import_menu;
+  QMenu *import_menu;
   int import_menu_line;
   RDEventImportItem *import_menu_i_item;
   Q3ListViewItem *import_menu_item;
-  RDLogLine::TransType import_force_trans;
-  bool import_allow_stop;
   bool import_allow_first_trans;
   QWidget *import_parent;
 };

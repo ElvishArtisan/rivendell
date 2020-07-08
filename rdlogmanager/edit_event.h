@@ -68,7 +68,6 @@ class EditEvent : public RDDialog
   void autofillToggledData(bool);
   void autofillWarnToggledData(bool);
   void importClickedData(int);
-  void preimportChangedData(int size);
   void preimportLengthChangedData(int msecs);
   void preimportUpData();
   void preimportDownData();
@@ -81,6 +80,7 @@ class EditEvent : public RDDialog
   void saveAsData();
   void svcData();
   void colorData();
+  void validate();
   void okData();
   void cancelData();
 
@@ -90,7 +90,6 @@ class EditEvent : public RDDialog
 
  private:
   void RefreshLibrary();
-  void SetPostTransition();
   void Save();
   void CopyEventPerms(QString old_name,QString new_name);
   void AbandonEvent(QString name);

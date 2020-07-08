@@ -1138,7 +1138,7 @@ removerá estos datos.  ¿Remezclar?</translation>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <source>STOP Transition</source>
+        <source>[auto]</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
