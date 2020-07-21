@@ -19918,3 +19918,5 @@
 	"PME Mastering, Inc."
 2020-07-07 Fred Gleason <fredg@paravelsystems.com>
 	* Incremented the package version to 3.4.0int1.
+2020-07-21 Fred Gleason <fredg@paravelsystems.com>
+	* Incremented the package version to 3.4.1.
